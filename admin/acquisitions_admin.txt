@@ -46,18 +46,13 @@ Create a claim policy
 The claim policy link enables you to name the claim policy and specify the organization that owns it.
 
 . To create a claim policy, click _Admin -> Server Administration -> Acquisitions -> Claim Policies_.
-
 . Create a claim policy name. No limits exist on the number of characters that can be entered in this field.
-
 . Select an org unit from the drop down menu. The org unit indicates the organizational units whose staff can use this claim policy. This menu is populated with the shortnames that you created for your libraries in the organizational units tree (See Admin -> Server Administration -> Organizational Units).
-
 +
 [NOTE]
 The rule of parental inheritance applies to this list.
 +
-
 . Enter a description. No limits exist on the number of characters that can be entered in this field.
-
 . Click _Save_.
 
 Create a claim type
@@ -66,18 +61,13 @@ Create a claim type
 The claim type link enables you to specify the reason for a type of claim.
 
 . To create a claim type, click _Admin -> Server Administration -> Acquisitions -> Claim types_.
-
 . Create a claim type. No limits exist on the number of characters that can be entered in this field.
-
 . Select an org unit from the drop down menu. The org unit indicates the organizational units whose staff can use this claim type. This menu is populated with the shortnames that you created for your libraries in the organizational units tree (See Admin -> Server Administration -> Organizational Units).
-
 +
 [NOTE]
 The rule of parental inheritance applies to this list.
 +
-
 . Enter a description. No limits exist on the number of characters that can be entered in this field.
-
 . Click _Save_.
 
 Create a claim event type
@@ -86,25 +76,18 @@ Create a claim event type
 The claim event type describes the physical action that should occur when an item needs to be claimed. For example, the user should notify the vendor via email that the library is claiming an item.
 
 . To access the claim event types, click _Admin -> Server Administration -> Acquisitions ->Claim event type_.
-
 . Enter a code for the claim event type. No limits exist on the number of characters that can be entered in this field.
-
 . Select an org unit from the drop down menu. The org unit indicates the organizational units whose staff can use this event type. This menu is populated with the shortnames that you created for your libraries in the organizational units tree (See Admin -> Server Administration -> Organizational Units).
-
 +
 [NOTE]
 The rule of parental inheritance applies to this list.
 +
-
 . Enter a description. No limits exist on the number of characters that can be entered in this field.
-
 . If this claim is initiated by the user, then check the box adjacent to Library Initiated.
-
 +
 [NOTE]
 Currently, all claims are initiated by a user. The ILS cannot automatically claim an issue.
 +
-
 . Click _Save_.
 
 Create a claim policy action
@@ -162,32 +145,20 @@ Create a distribution formula
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 . Click _Admin -> Server Administration -> Acquisitions ->Distribution Formulas_.
-
 . Click _New Formula_.
-
 . Enter a Formula Name. No limits exist on the number of characters that can be entered in this field.
-
 . Choose a Formula Owner from the drop down menu. The Formula Owner indicates the organizational units whose staff can use this formula. This menu is populated with the shortnames that you created for your libraries in the organizational units tree (See Admin -> Server Administration -> Organizational Units).
-
 +
 [NOTE]
 The rule of parental inheritance applies to this list.
 +
-
 . Ignore the Skip Count field which is currently not used.
-
 . Click _Save_.
-
 . Click _New Entry_.
-
 . Select an Owning Library from the drop down menu. This indicates the branch that will receive the items. This menu is populated with the shortnames that you created for your libraries in the organizational units tree (See _Admin -> Server Administration -> Organizational Units_).
-
 . Select a Shelving Location from the drop down menu.
-
 . In the Item Count field, enter the number of items that should be distributed to the branch. You can enter the number or use the arrows on the right side of the field.
-
 . Click _Apply Changes_. The screen will reload.
-
 . To view the changes to your formula, click Admin -> Server Administration -> Acquisitions -> Distribution Formulas. The item_count will reflect the entries to your distribution formula.
 
 [NOTE]
@@ -213,34 +184,21 @@ EDI Accounts
 Create EDI Accounts to communicate electronically with providers.
 
 . Create a label. The label allows you to differentiate between accounts for the same provider. No limits exist on the number of characters that can be entered in this field.
-
 . Enter a host. Your provider will provide you with the requisite FTP or SCP information.
-
 . Enter the username that has been supplied by your provider.
-
 . Enter the password that has been supplied by your provider.
-
 . Enter account information. This field enables you to add a supplemental password for entry to a remote system after log in has been completed. This field is optional for the ILS but may be required by your provider.
-
 . Select an owner from the drop down menu. The owner indicates the organizational units whose staff can use this EDI account. This menu is populated with the shortnames that you created for your libraries in the organizational units tree (See Admin -> Server Administration -> Organizational Units).
-
 +
 [NOTE]
 The rule of parental inheritance applies to this list.
 +
-
 . The Last Activity updates automatically with any inbound or outbound communication.
-
 . Select a provider from the drop down menu to whom this account belongs.
-
 . Enter a path. The path indicates the remote location on the server from which files are pulled in to the ILS.
-
 . Enter the incoming directory. This directory indicates the location on your local network to which the files download.
-
 . Enter the vendor account number supplied by your provider.
-
 . Enter the vendor account code supplied by your provider.
-
 . Click Save.
 
 EDI Messages
@@ -279,24 +237,16 @@ MARC Federated Search
 The MARC Federated Search enables you to import bibliographic records into a selection list or purchase order from a Z39.50 source.
 
 . Click _Acquisitions -> MARC Federated Search_.
-
 . Check the boxes of Z39.50 services that you want to search. Your local Evergreen Catalog is checked by default. Click Submit.
-
 +
-~~~~
 image::media/acq_marc_search.png[search form]
-~~~~
 +
-
 . A list of results will appear. Click the _Copies_ link to add copy information to the line item. See the link:line_items.txt[section on Line Items] for more information.
-
 . Click the Notes link to add notes or line item alerts to the line item. See the link:line_items.txt[section on Line Items] for more information.
-
 . Enter a price in the _Estimated Price_ field.
-
 . You can save the line item(s) to a selection list by checking the box on the line item and clicking _Actions -> Save Items to Selection List_. You can also create a purchase order from the line item(s) by checking the box on the line item and clicking _Actions -> Create Purchase Order_.
 
-image::media/acq_marc_search~2.png[line item]
+image::media/acq_marc_search-2.png[line item]
 
 Fund Tags
 ~~~~~~~~~
@@ -306,18 +256,13 @@ You can apply tags to funds so that you can group funds for easy reporting. For 
 Create a Fund Tag
 
 . To create a fund tag, click _Admin -> Server Administration -> Acquisitions -> Fund Tags_.
-
 . Click _New Fund Tag_. No limits exist on the number of characters that can be entered in this field.
-
 . Select a Fund Tag Owner from the drop down menu. The owner indicates the organizational unit(s) whose staff can use this fund tag. This menu is populated with the shortnames that you created for your libraries in the organizational units tree (See Admin -> Server Administration -> Organizational Units).
-
 +
 [NOTE]
 The rule of parental inheritance applies to this list.
 +
-
 . Enter a Fund Tag Name. No limits exist on the number of characters that can be entered in this field.
-
 . Click _Save_.
 
 Funding Sources
@@ -329,20 +274,14 @@ Create a funding source
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 . To create a new funding source, click _Admin -> Server Administration -> Acquisitions -> Funding Source_.
-
 . Enter a funding source name. No limits exist on the number of characters that can be entered in this field.
-
 . Select an owner from the drop down menu. The owner indicates the organizational unit(s) whose staff can use this funding source. This menu is populated with the shortnames that you created for your libraries in the organizational units tree (See Admin -> Server Administration -> Organizational Units).
-
 +
 [NOTE]
 The rule of parental inheritance applies to this list. For example, if a system is made the owner of a funding source, then users with appropriate permissions at the branches within the system could also use the funding source.
 +
-
 . Create a code for the source. No limits exist on the number of characters that can be entered in this field.
-
 . Select a currency from the drop down menu. This menu is populated from the choices in the Currency Types interface.
-
 . Click _Save_.
 
 Allocate Credits to Funding Sources
@@ -389,32 +328,20 @@ Create a fund
 ^^^^^^^^^^^^^
 
 . To create a new fund, click _Admin -> Server Administration -> Acquisitions -> Funds_.
-
 . Enter a name for the fund. No limits exist on the number of characters that can be entered in this field.
-
 . Create a code for the fund. No limits exist on the number of characters that can be entered in this field.
-
 . Enter a year for the fund. This can be a fiscal year or a calendar year. The format of the year is YYYY.
-
 . Select an org unit from the drop down menu. The org unit indicates the organizational units whose staff can use this fund. This menu is populated with the shortnames that you created for your libraries in the organizational units tree (See Admin -> Server Administration -> Organizational Units).
-
 +
 [NOTE]
 The rule of parental inheritance applies to this list. See section
 +
-
 . Select a currency type from the drop down menu. This menu is comprised of entries in the currency types menu. When a fund is applied to a line item or copy, the price of the item will be encumbered in the currency associated with the fund.
-
 . Click the Active box to activate this fund. You cannot make purchases from this fund if it is not active.
-
 . Enter a Balance Stop Percent. The balance stop percent prevents you from making purchases when only a specified amount of the fund remains. For example, if you want to spend 95 percent of your funds, leaving a five percent balance in the fund, then you would enter 95 in the field. When the fund reaches its balance stop percent, it will appear in red when you apply funds to copies.
-
 . Enter a Balance Warning Percent. The balance warning percent gives you a warning that the fund is low. You can specify any percent. For example, if you want to spend 90 percent of your funds and be warned when the fund has only 10 percent of its balance remaining, then enter 90 in the field. When the fund reaches its balance warning percent, it will appear in yellow when you apply funds to copies.
-
 . Check the Propagate box to propagate funds. When you propagate a fund, the ILS will create a new fund for the following fisca year with the same parameters as your current fund. All of the settings transfer except for the year and the amount of money in the fund. Propagation occurs during the fiscal year close~out operation.
-
 . Check the Rollover box if you want to roll over remaining funds into the same fund next year.
-
 . Click _Save_.
 
 Allocate Credits from Funding Sources to Funds

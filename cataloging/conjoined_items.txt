@@ -27,6 +27,7 @@ image::media/conj1.jpg[conj1]
 5) Click *Actions for this Record -> Holdings Maintenance.* 
  
 6) Select the copy that you want to link to the other bibliographic record.  Right-click, or click *Actions for Selected Rows -> Link as Conjoined Items to Previously Marked Bib Record.* 
+
 image::media/conj2.jpg[conj2]
  
  

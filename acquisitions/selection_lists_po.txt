@@ -114,7 +114,7 @@ You can add brief records to new or existing purchase orders.
 . Enter bibliographic information in the desired fields. Notice that the record is added to the purchase order that you just created.
 . Click Save Record.
 
-image::media/acq_brief_record~2.png[]
+image::media/acq_brief_record-2.png[]
 
 MARC Federated Search
 ~~~~~~~~~~~~~~~~~~~~~
@@ -133,4 +133,4 @@ image::media/acq_marc_search.png[search form]
 . Enter a price in the "Estimated Price" field.
 . You can save the line item(s) to a selection list by checking the box on the line item and clicking Actions -> Save Items to Selection List. You can also create a purchase order from the line item(s) by checking the box on the line item and clicking Actions ~> Create Purchase Order.
 
-image::media/acq_marc_search~2.png[line item]
+image::media/acq_marc_search-2.png[line item]

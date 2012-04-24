@@ -137,7 +137,7 @@ image::media/renew_action.png[]
 image::media/renew_specific_date.png[]
  
 [TIP]
-Renewal can also be done on the *Item Status* screen. See the section called <<xref:anchor-itemstatus, Item Status (F5)>> for more information.
+Renewal can also be done on the *Item Status* screen. See the section called <<itemstatus,Item Status (F5)>> for more information.
 
 Renewing by Item Barcode
 ^^^^^^^^^^^^^^^^^^^^^^^^

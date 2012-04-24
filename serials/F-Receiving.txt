@@ -46,6 +46,7 @@ image::media/scv-srec.jpg[Receiving]
 Advanced Batch Receiving
 ^^^^^^^^^^^^^^^^^^^^^^^^
 Follow these steps to receive items in batch in a simple interface.
+
 image::media/scv-srec.jpg[Receiving]
 
 . The Batch Receive interface displays issues that have not yet been received. The earliest expected issue appears at the top of the list.

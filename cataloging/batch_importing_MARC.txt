@@ -202,7 +202,7 @@ image::media/Batch_Importing_MARC_Records10.jpg[Batch_Importing_MARC_Records10]
 
 15) A pop up window will offer you the same import choices that were present on the *Import Records* screen.  You can choose one of the import options, or click *Import*.
 
-image::media/Batch_Importing_MARC_Records9a.jpg[Batch_Importing_MARC_Records9a]
+image::media/Batch_Importing_MARC_Records9.jpg[Batch_Importing_MARC_Records9]
 
 16) The screen will refresh.  The *Queue Summary* indicates that the record was imported.  The *Import Time* column records the date that the record was imported.
 
