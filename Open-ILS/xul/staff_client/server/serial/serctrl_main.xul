@@ -83,6 +83,9 @@ vim:noet:sw=4:ts=4:
         <command id="cmd_transfer_sdists"/>
         <command id="cmd_transfer_sstrs"/>
         <command id="cmd_transfer_subscription"/>
+        <command id="cmd_view_sdist_notes"/>
+        <command id="cmd_view_sitem_notes"/>
+        <command id="cmd_view_ssub_notes"/>
 		<command id="save_columns" />
 		<command id="sel_clip" />
 		<command id="sel_mark_items_damaged" />
