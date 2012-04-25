@@ -112,7 +112,7 @@ serial.ssub_editor.prototype = {
                 'owning_lib',
                 {
                     render: 'typeof fm.owning_lib() == "object" ? fm.owning_lib().shortname() : obj.data.hash.aou[ fm.owning_lib() ].shortname()',
-                    input: 'c = function(v){ obj.apply("owning_lib",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( obj.data.list.aou, function(myobj) { var sname = myobj.shortname(); for (i = sname.length; i < 20; i++) sname += " "; return [ myobj.name() ? sname + " " + myobj.name() : myobj.shortname(), myobj.id(), ( ! get_bool( obj.data.hash.aout[ myobj.ou_type() ].can_have_vols() ) ), ( obj.data.hash.aout[ myobj.ou_type() ].depth() * 2), ]; }), obj.data.list.au[0].ws_ou()); x.setAttribute("value",obj.editor_values.owning_lib); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+                    input: 'c = function(v){ obj.apply("owning_lib",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( obj.data.list.aou, function(myobj) { var sname = myobj.shortname(); for (i = sname.length; i < 20; i++) sname += " "; return [ myobj.name() ? sname + " " + myobj.name() : myobj.shortname(), myobj.id(), false, ( obj.data.hash.aout[ myobj.ou_type() ].depth() * 2), ]; }), obj.data.list.au[0].ws_ou()); x.setAttribute("value",obj.editor_values.owning_lib); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
                     value_key: 'owning_lib',
                     dropdown_key: 'fm.owning_lib() == null ? null : typeof fm.owning_lib() == "object" ? fm.owning_lib().id() : fm.owning_lib()',
                 }

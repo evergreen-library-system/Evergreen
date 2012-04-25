@@ -208,12 +208,6 @@ serial.manage_subs.prototype = {
                                 obj.show_all_libs();
                             }
                         ],
-                        'cmd_show_libs_with_distributions' : [
-                            ['command'],
-                            function() {
-                                obj.show_libs_with_distributions();
-                            }
-                        ],
                         'cmd_clear' : [
                             ['command'],
                             function() {
@@ -681,211 +675,7 @@ serial.manage_subs.prototype = {
                                     obj.error.standard_unexpected_error_alert('cmd_make_predictions failed!',E);
                                 }
                             }
-                        ],
-/*dbw2                      'sel_distribution_details' : [
-                            ['command'],
-                            function() {
-                                JSAN.use('util.functional');
-
-                                var list = util.functional.filter_list(
-                                    obj.sel_list,
-                                    function (o) {
-                                        return o.split(/_/)[0] == 'sdist';
-                                    }
-                                );
-
-                                list = util.functional.map_list(
-                                    list,
-                                    function (o) {
-                                        return o.split(/_/)[1];
-                                    }
-                                );
-    
-                                JSAN.use('circ.util');
-                                for (var i = 0; i < list.length; i++) {
-                                    circ.util.show_copy_details( list[i] );
-                                }
-                            }
-                        ],
-                        'cmd_edit_sdists' : [
-                            ['command'],
-                            function() {
-                                try {
-                                    JSAN.use('util.functional');
-
-                                    var list = util.functional.filter_list(
-                                        obj.sel_list,
-                                        function (o) {
-                                            return o.split(/_/)[0] == 'sdist';
-                                        }
-                                    );
-
-                                    list = util.functional.map_list(
-                                        list,
-                                        function (o) {
-                                            return o.split(/_/)[1];
-                                        }
-                                    );
-
-                                    JSAN.use('cat.util'); cat.util.spawn_copy_editor( { 'copy_ids' : list, 'edit' : 1 } );
-                                    obj.refresh_list();
-
-                                } catch(E) {
-                                    obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_items.error'),E);
-                                }
-                            }
-                        ], dbw2*/
-
-/*dbw2                      'cmd_print_spine_labels' : [
-                            ['command'],
-                            function() {
-                                try {
-                                    JSAN.use('util.functional');
-                                    
-                                    var list = util.functional.filter_list(
-                                        obj.sel_list,
-                                        function (o) {
-                                            return o.split(/_/)[0] == 'sdist';
-                                        }
-                                    );
-
-                                    list = util.functional.map_list(
-                                        list,
-                                        function (o) {
-                                            return obj.map_sdist[ o ];
-                                        }
-                                    );
-
-                                    obj.data.temp_barcodes_for_labels = util.functional.map_list( list, function(o){return o.barcode();}) ; 
-                                    obj.data.stash('temp_barcodes_for_labels');
-                                    xulG.new_tab(
-                                        xulG.url_prefix( urls.XUL_SPINE_LABEL ),
-                                        { 'tab_name' : document.getElementById('catStrings').getString('staff.cat.copy_browser.print_spine.tab') },
-                                        {}
-                                    );
-                                } catch(E) {
-                                    obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.print_spine.error'),E);
-                                }
-                            }
-                        ],
-                        'cmd_edit_subscriptions' : [
-                            ['command'],
-                            function() {
-                                try {
-                                    JSAN.use('util.functional');
-                                    var list = util.functional.map_list(
-                                        util.functional.filter_list(
-                                            obj.sel_list,
-                                            function (o) {
-                                                return o.split(/_/)[0] == 'ssub';
-                                            }
-                                        ),
-                                        function (o) {
-                                            return o.split(/_/)[1];
-                                        }
-                                    );
-                                    if (list.length == 0) return;
-
-                                    var edit = 0;
-                                    try {
-                                        edit = obj.network.request(
-                                            api.PERM_MULTI_ORG_CHECK.app,
-                                            api.PERM_MULTI_ORG_CHECK.method,
-                                            [ 
-                                                ses(), 
-                                                obj.data.list.au[0].id(), 
-                                                util.functional.map_list(
-                                                    list,
-                                                    function (o) {
-                                                        return obj.map_ssub[ 'ssub_' + o ].owning_lib();
-                                                    }
-                                                ),
-                                                [ 'UPDATE_VOLUME' ]
-                                            ]
-                                        ).length == 0 ? 1 : 0;
-                                    } catch(E) {
-                                        obj.error.sdump('D_ERROR','batch permission check: ' + E);
-                                    }
-
-                                    if (edit==0) {
-                                        alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_volume.permission_error'));
-                                        return; // no read-only view for this interface
-                                    }
-
-                                    list = util.functional.map_list(
-                                        list,
-                                        function (o) {
-                                            var my_ssub = obj.map_ssub['ssub_' + o];
-                                            return function(r){return r;}(my_ssub);
-                                        }
-                                    );
-
-                                    var title;
-                                    if (list.length == 1) {
-                                        title = document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_volume.title');
-                                    } else {
-                                        title = document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_volume.title.plural');
-                                    }
-
-                                    JSAN.use('util.window'); var win = new util.window();
-                                    //obj.data.volumes_temp = js2JSON( list );
-                                    //obj.data.stash('volumes_temp');
-                                    var my_xulG = win.open(
-                                        window.xulG.url_prefix(urls.XUL_VOLUME_EDITOR),
-                                        title,
-                                        'chrome,modal,resizable',
-                                        { 'subscriptions' : JSON2js(js2JSON(list)) }
-                                    );
-
-                                    // FIXME -- need to unique the temp space, and not rely on modalness of window
-                                    //obj.data.stash_retrieve();
-                                    if (typeof my_xulG.update_these_subscriptions == 'undefined') { return; }
-                                    var subscriptions = my_xulG.subscriptions;
-                                    if (!subscriptions) return;
-                                
-                                    subscriptions = util.functional.filter_list(
-                                        subscriptions,
-                                        function (o) {
-                                            return o.ischanged() == '1';
-                                        }
-                                    );
-
-                                    subscriptions = util.functional.map_list(
-                                        subscriptions,
-                                        function (o) {
-                                            o.record( obj.docid ); // staff client 2 did not do this.  Does it matter?
-                                            return o;
-                                        }
-                                    );
-
-                                    if (subscriptions.length == 0) return;
-
-                                    try {
-                                        var r = obj.network.request(
-                                            api.FM_ACN_TREE_UPDATE.app,
-                                            api.FM_ACN_TREE_UPDATE.method,
-                                            [ ses(), subscriptions, true ]
-                                        );
-                                        if (typeof r.ilsevent != 'undefined') {
-                                            switch(Number(r.ilsevent)) {
-                                                case 1705 : // VOLUME_LABEL_EXISTS
-                                                    alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_volume.failed'));
-                                                    break;
-                                                default: throw(r);
-                                            }
-                                        } else {
-                                            alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_volume.success'));
-                                        }
-                                    } catch(E) {
-                                        obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_volume.error'),E);
-                                    }
-                                    obj.refresh_list();
-
-                                } catch(E) {
-                                    obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_volume.exception'),E);
-                                }
-                            }
-                        ], dbw2*/
+                        ]
                     }
                 }
             );
@@ -909,6 +699,9 @@ serial.manage_subs.prototype = {
             file = new util.file('offline_ou_list'); 
             if (file._file.exists()) {
                 list_data = file.get_object(); file.close();
+                for (var i = 0; i < list_data[0].length; i++) { // make sure all entries are enabled
+                    list_data[0][i][2] = false;
+                }
                 ml = util.widgets.make_menulist( list_data[0], list_data[1] );
                 ml.setAttribute('id','lib_menu'); document.getElementById('serial_sub_lib_menu').appendChild(ml);
                 //TODO: class this menu properly
@@ -989,103 +782,6 @@ serial.manage_subs.prototype = {
                 if (typeof org != 'object') org = obj.data.hash.aou[ org ];
             }
             obj.show_libs( org, false );
-        
-            var p_org = obj.data.hash.aou[ org.parent_ou() ];
-            if (p_org) {
-                obj.funcs.push( function() { 
-                    document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
-                    document.getElementById('cmd_show_libs_with_distributions').setAttribute('disabled','true'); 
-                    document.getElementById('lib_menu').setAttribute('disabled','true'); 
-                } );
-                for (var i = 0; i < p_org.children().length; i++) {
-                    obj.funcs.push(
-                        function(o) {
-                            return function() {
-                                obj.show_libs( o, false );
-                            }
-                        }( p_org.children()[i] )
-                    );
-                }
-                obj.funcs.push( function() { 
-                    document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
-                    document.getElementById('cmd_show_libs_with_distributions').setAttribute('disabled','false'); 
-                    document.getElementById('lib_menu').setAttribute('disabled','false'); 
-                } );
-            }
-        } catch(E) {
-            alert(E);
-        }
-    },
-
-    'show_all_libs' : function() {
-        var obj = this;
-        try {
-            obj.show_my_libs();
-
-            obj.show_libs( obj.data.tree.aou );
-
-            obj.funcs.push( function() { 
-                document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
-                document.getElementById('cmd_show_libs_with_distributions').setAttribute('disabled','true'); 
-                document.getElementById('lib_menu').setAttribute('disabled','true'); 
-            } );
-
-            for (var i = 0; i < obj.data.tree.aou.children().length; i++) {
-                obj.funcs.push(
-                    function(o) {
-                        return function() {
-                            obj.show_libs( o );
-                        }
-                    }( obj.data.tree.aou.children()[i] )
-                );
-            }
-            obj.funcs.push( function() { 
-                document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
-                document.getElementById('cmd_show_libs_with_distributions').setAttribute('disabled','false'); 
-                document.getElementById('lib_menu').setAttribute('disabled','false'); 
-            } );
-
-        } catch(E) {
-            alert(E);
-        }
-    },
-
-    'show_libs_with_distributions' : function() {
-        var obj = this;
-        try {
-            JSAN.use('util.functional');
-
-            var orgs = util.functional.map_list(
-                obj.org_ids,
-                function(id) { return obj.data.hash.aou[id]; }
-            ).sort(
-                function( a, b ) {
-                    if (a.shortname() < b.shortname()) return -1;
-                    if (a.shortname() > b.shortname()) return 1;
-                    return 0;
-                }
-            );
-            obj.funcs.push( function() { 
-                document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
-                document.getElementById('cmd_show_libs_with_distributions').setAttribute('disabled','true'); 
-                document.getElementById('lib_menu').setAttribute('disabled','true'); 
-            } );
-
-            for (var i = 0; i < orgs.length; i++) {
-                obj.funcs.push(
-                    function(o) {
-                        return function() {
-                            obj.show_libs(o,false);
-                        }
-                    }( orgs[i] )
-                );
-            }
-            obj.funcs.push( function() { 
-                document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
-                document.getElementById('cmd_show_libs_with_distributions').setAttribute('disabled','false'); 
-                document.getElementById('lib_menu').setAttribute('disabled','false'); 
-            } );
-
         } catch(E) {
             alert(E);
         }
@@ -1182,7 +878,6 @@ serial.manage_subs.prototype = {
             var ssub_tree = obj.map_ssub[ 'ssub_' + ssub_id ];
             obj.funcs.push( function() { 
                 document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
-                document.getElementById('cmd_show_libs_with_distributions').setAttribute('disabled','true'); 
                 document.getElementById('lib_menu').setAttribute('disabled','true'); 
             } );
             if (ssub_tree.distributions()) {
@@ -1220,7 +915,6 @@ serial.manage_subs.prototype = {
             }
             obj.funcs.push( function() { 
                 document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
-                document.getElementById('cmd_show_libs_with_distributions').setAttribute('disabled','false'); 
                 document.getElementById('lib_menu').setAttribute('disabled','false'); 
             } );
         } catch(E) {
@@ -1287,20 +981,23 @@ serial.manage_subs.prototype = {
     'on_click_aou' : function(org_id,twisty) {
         var obj = this;
         var org = obj.data.hash.aou[ org_id ];
+        var default_aou = obj.data.hash.aou[obj.default_lib];
         obj.funcs.push( function() { 
             document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
-            document.getElementById('cmd_show_libs_with_distributions').setAttribute('disabled','true'); 
             document.getElementById('lib_menu').setAttribute('disabled','true'); 
         } );
         if (org.children()) {
             for (var i = 0; i < org.children().length; i++) {
-                obj.funcs.push(
-                    function(o,p) {
-                        return function() {
-                            obj.append_org(o,p)
-                        }
-                    }(org.children()[i],org)
-                );
+                var child = org.children()[i];
+                if (orgIsMine(default_aou,child)) {
+                    obj.funcs.push(
+                        function(o,p) {
+                            return function() {
+                                obj.append_org(o,p)
+                            }
+                        }(child,org)
+                    );
+                }
             }
         } 
         if (obj.map_ssub[ 'aou_' + org_id ]) {
@@ -1316,7 +1013,6 @@ serial.manage_subs.prototype = {
         }
         obj.funcs.push( function() { 
             document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
-            document.getElementById('cmd_show_libs_with_distributions').setAttribute('disabled','false'); 
             document.getElementById('lib_menu').setAttribute('disabled','false'); 
         } );
 
@@ -1353,21 +1049,16 @@ serial.manage_subs.prototype = {
         
             var ssub_tree_list;
             if ( obj.org_ids.indexOf( Number( org.id() ) ) == -1 ) {
-                if ( get_bool( obj.data.hash.aout[ org.ou_type() ].can_have_vols() ) ) {
-                    data.row.my.subscription_count = '0';
-                    //data.row.my.distribution_count = '<0>';
-                } else {
-                    data.row.my.subscription_count = '';
-                    //data.row.my.distribution_count = '';
-                }
+                data.row.my.subscription_count = '0';
+                //data.row.my.distribution_count = '<0>';
             } else {
-                var v_count = 0; var d_count = 0;
+                var s_count = 0; //var d_count = 0;
                 ssub_tree_list = obj.network.simple_request(
                     'FM_SSUB_TREE_LIST_RETRIEVE_VIA_RECORD_ID_AND_ORG_IDS.authoritative',
                     [ ses(), obj.docid, [ org.id() ] ]
                 );
                 for (var i = 0; i < ssub_tree_list.length; i++) {
-                    v_count++;
+                    s_count++;
                     obj.map_ssub[ 'ssub_' + ssub_tree_list[i].id() ] = function(r){return r;}(ssub_tree_list[i]);
                     var distributions = ssub_tree_list[i].distributions();
                     //if (distributions) d_count += distributions.length;
@@ -1383,7 +1074,7 @@ serial.manage_subs.prototype = {
                         obj.map_scap[ 'scap_' + scaps[j].id() ] = function(r){return r;}(scaps[j]);
                     }
                 }
-                data.row.my.subscription_count = v_count;
+                data.row.my.subscription_count = s_count;
                 //data.row.my.distribution_count = '<' + d_count + '>';
             }
             if (parent_org) {
@@ -1405,9 +1096,11 @@ serial.manage_subs.prototype = {
             if (parent_org) {
                 if ( obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ].parent_ou() == parent_org.id() ) {
                     data.node.setAttribute('open','true');
+                    obj.funcs.push( function() { obj.on_click_aou( org.id() ); } );
                 }
             } else {
                 obj.map_tree[ 'aou_' + org.id() ].setAttribute('open','true');
+                obj.funcs.push( function() { obj.on_click_aou( org.id() ); } );
             }
 
             if (ssub_tree_list) {
@@ -1754,7 +1447,8 @@ serial.manage_subs.prototype = {
             var org = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
             obj.show_libs( org );
             */
-            obj.show_my_libs( document.getElementById('lib_menu').value );
+            obj.default_lib = document.getElementById('lib_menu').value;
+            obj.show_my_libs( obj.default_lib );
         } catch(E) {
             this.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.refresh_list.error'),E);
         }
