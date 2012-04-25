@@ -7,7 +7,7 @@
         IF attrs.copy_counts.$depth.count > 0;
 %]
 <div class="result_count">
-[% IF ctx.get_aou(attrs.copy_counts.$depth.org_unit).opac_visible == 't' AND !ctx.is_staff %]
+[% IF ctx.get_aou(attrs.copy_counts.$depth.org_unit).opac_visible == 't' %]
     [% l('[_1] of [quant,_2,copy,copies] available at [_3].',
         attrs.copy_counts.$depth.available,
         attrs.copy_counts.$depth.count,
