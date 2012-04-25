@@ -6,7 +6,7 @@
 # ----------------------------------------------------------------------------------
 # Point / to the opac - if you have a custom skin or locale, point at it here
 # ----------------------------------------------------------------------------------
-RedirectMatch 301 ^/$ /opac/en-US/skin/default/xml/index.xml
+RedirectMatch 301 ^/$ /eg/opac/home
 
 # ----------------------------------------------------------------------------------
 # Point / to the IP address redirector
@@ -85,6 +85,50 @@ RewriteRule . - [E=OILS_OPAC_RID:%2,E=OILS_TIME_YEAR:%{TIME_YEAR}]
 # ----------------------------------------------------------------------------------
 RewriteCond %{REQUEST_URI} ^/opac/(.*?)/
 RewriteRule . - [E=locale:%1]
+
+# ----------------------------------------------------------------------------------
+# Rewrite JSPac->TPac with redirects
+# ----------------------------------------------------------------------------------
+
+# First things first, extract useful data
+# And we are going to start with a "this is the JSPac" check on each of these:
+# RewriteCond %{REQUEST_URI} ^/?opac/
+
+# Basic (overall) search type, if present
+# I am cheating and grabbing RT or TP because I dunno the difference between them.
+RewriteCond %{REQUEST_URI} ^/opac/
+RewriteCond %{QUERY_STRING} (^|[^0-9a-zA-Z])(rt|tp)=([^;&]*)
+RewriteRule . - [E=OILS_JSPAC_SEARCH_TYPE:qtype=%3;]
+
+# Basic (overall) search term(s), if present - NOTE: Not doing advanced search.
+RewriteCond %{REQUEST_URI} ^/opac/
+RewriteCond %{QUERY_STRING} (^|[^0-9a-zA-Z])t=([^;&]*)
+RewriteRule . - [E=OILS_JSPAC_SEARCH_TERMS:query=%2;]
+
+# Search Location, if present
+RewriteCond %{REQUEST_URI} ^/opac/
+RewriteCond %{QUERY_STRING} (^|[^0-9a-zA-Z])l=([^;&]*)
+RewriteRule . - [E=OILS_JSPAC_SEARCH_LOCATION:locg=%2;]
+
+# My Account
+RewriteRule /opac/[^/]*/skin/default/xml/myopac.xml /eg/opac/myopac/main?%{ENV:OILS_JSPAC_SEARCH_TYPE}%{ENV:OILS_JSPAC_SEARCH_TERMS}%{ENV:OILS_JSPAC_SEARCH_LOCATION} [NE,R,L]
+
+# Record Pages
+# /opac/en-US/skin/default/xml/rdetail.xml?r=32 -> /eg/opac/record/32
+RewriteCond %{QUERY_STRING} (^|[^0-9a-zA-Z])r=([^;&]*)
+RewriteRule /opac/.*/rdetail.xml /eg/opac/record/%2?%{ENV:OILS_JSPAC_SEARCH_TYPE}%{ENV:OILS_JSPAC_SEARCH_TERMS}%{ENV:OILS_JSPAC_SEARCH_LOCATION} [NE,R,L]
+
+# Bookbag Pages
+# /opac/extras/feed/bookbag/html-full/1 -> /eg/opac/results?bookbag=1;page=0;locg=1;depth=0
+RewriteRule /opac/extras/feed/bookbag/html-full/(\d*) /eg/opac/results?bookbag=$1;%{ENV:OILS_JSPAC_SEARCH_TYPE}%{ENV:OILS_JSPAC_SEARCH_TERMS}%{ENV:OILS_JSPAC_SEARCH_LOCATION} [NE,R,L]
+
+# Search Results Pages
+RewriteRule /opac/[^/]*/skin/[^/]*/xml/rresult.xml /eg/opac/results?%{ENV:OILS_JSPAC_SEARCH_TYPE}%{ENV:OILS_JSPAC_SEARCH_TERMS}%{ENV:OILS_JSPAC_SEARCH_LOCATION} [NE,R,L]
+
+# Basic Search (STILL not doing advanced)
+# Fallback! But only for things that end in xml, htm, or html
+# Images, CSS, etc can stick around.
+RewriteRule /opac/[^/]*/skin/.*(xml|htm|html|/)$ /eg/opac/home?%{ENV:OILS_JSPAC_SEARCH_TYPE}%{ENV:OILS_JSPAC_SEARCH_TERMS}%{ENV:OILS_JSPAC_SEARCH_LOCATION} [NE,R,L]
 
 # ----------------------------------------------------------------------------------
 # For sanity reasons, default indexes to Off
