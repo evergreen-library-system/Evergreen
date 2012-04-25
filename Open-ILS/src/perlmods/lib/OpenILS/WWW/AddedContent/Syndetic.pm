@@ -115,13 +115,18 @@ sub reviews_html {
 
     my %reviews;
 
-    $reviews{ljreview} = $self->fetch_content('ljreview.html', $key);
-    $reviews{pwreview} = $self->fetch_content('pwreview.html', $key);
-    $reviews{slreview} = $self->fetch_content('slreview.html', $key);
-    $reviews{chreview} = $self->fetch_content('chreview.html', $key);
-    $reviews{blreview} = $self->fetch_content('blreview.html', $key);
-    $reviews{hbreview} = $self->fetch_content('hbreview.html', $key);
-    $reviews{kireview} = $self->fetch_content('kireview.html', $key);
+    $reviews{ljreview} = $self->fetch_content('ljreview.html', $key); # Library Journal
+    $reviews{pwreview} = $self->fetch_content('pwreview.html', $key); # Publishers Weekly
+    $reviews{sljreview} = $self->fetch_content('sljreview.html', $key); # School Library Journal
+    $reviews{chreview} = $self->fetch_content('chreview.html', $key); # CHOICE Review
+    $reviews{blreview} = $self->fetch_content('blreview.html', $key); # Booklist Review
+    $reviews{hbreview} = $self->fetch_content('hbreview.html', $key); # Horn Book Review
+    $reviews{kireview} = $self->fetch_content('kireview.html', $key); # Kirkus Reviews
+    #$reviews{abreview} = $self->fetch_content('abreview.html', $key); # Bookseller+Publisher
+    #$reviews{criticasreview} = $self->fetch_content('criticasreview.html', $key); # Criticas
+    $reviews{nyreview} = $self->fetch_content('nyreview.html', $key); # New York Times
+    #$reviews{gdnreview} = $self->fetch_content('gdnreview.html', $key); # Guardian Review
+    #$reviews{doodysreview} = $self->fetch_content('doodysreview.html', $key); # Doody's Reviews
 
     for(keys %reviews) {
         if( ! $self->data_exists($reviews{$_}) ) {
@@ -148,11 +153,16 @@ sub reviews_xml {
 
     $reviews{ljreview} = $self->fetch_content('ljreview.xml', $key);
     $reviews{pwreview} = $self->fetch_content('pwreview.xml', $key);
-    $reviews{slreview} = $self->fetch_content('slreview.xml', $key);
+    $reviews{sljreview} = $self->fetch_content('sljreview.xml', $key);
     $reviews{chreview} = $self->fetch_content('chreview.xml', $key);
     $reviews{blreview} = $self->fetch_content('blreview.xml', $key);
     $reviews{hbreview} = $self->fetch_content('hbreview.xml', $key);
     $reviews{kireview} = $self->fetch_content('kireview.xml', $key);
+    #$reviews{abreview} = $self->fetch_content('abreview.xml', $key);
+    #$reviews{criticasreview} = $self->fetch_content('criticasreview.xml', $key);
+    $reviews{nyreview} = $self->fetch_content('nyreview.xml', $key);
+    #$reviews{gdnreview} = $self->fetch_content('gdnreview.xml', $key);
+    #$reviews{doodysreview} = $self->fetch_content('doodysreview.xml', $key);
 
     for(keys %reviews) {
         if( ! $self->data_exists($reviews{$_}) ) {
