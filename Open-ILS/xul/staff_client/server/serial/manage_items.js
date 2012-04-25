@@ -96,6 +96,9 @@ serial.manage_items.prototype = {
         file = new util.file('offline_ou_list');
         if (file._file.exists()) {
             list_data = file.get_object(); file.close();
+            for (var i = 0; i < list_data[0].length; i++) { // make sure all entries are enabled
+                    list_data[0][i][2] = false;
+            }
             ml = util.widgets.make_menulist( list_data[0], list_data[1] );
             ml.setAttribute('id','serial_item_lib_menu'); document.getElementById('serial_item_lib_menu_box').appendChild(ml);
             //TODO: class this menu properly
