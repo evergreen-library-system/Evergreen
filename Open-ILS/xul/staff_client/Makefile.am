@@ -2,7 +2,7 @@
 # Makefile.am for xul/staff_client
 ## Process this file with automake to generate Makefile.in
 #---------------------------------------------------------
-
+export WEBDIR=@localstatedir@/web
 export STAFF_CLIENT_BUILD_ID = $$(/bin/cat build/BUILD_ID)
 export STAFF_CLIENT_VERSION = $$(/bin/cat build/VERSION)
 export STAFF_CLIENT_STAMP_ID = $$(/bin/cat build/STAMP_ID)
