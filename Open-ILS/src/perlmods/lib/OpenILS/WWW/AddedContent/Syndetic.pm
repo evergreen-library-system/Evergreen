@@ -30,21 +30,21 @@ sub userid {
 
 # --------------------------------------------------------------------------
 sub jacket_small {
-    my( $self, $key ) = @_;
+    my( $self, $keys ) = @_;
     return $self->send_img(
-        $self->fetch_response('sc.gif', $key, 1));
+        $self->fetch_response('sc.gif', $keys, 1));
 }
 
 sub jacket_medium {
-    my( $self, $key ) = @_;
+    my( $self, $keys ) = @_;
     return $self->send_img(
-        $self->fetch_response('mc.gif', $key, 1));
+        $self->fetch_response('mc.gif', $keys, 1));
 
 }
 sub jacket_large {
-    my( $self, $key ) = @_;
+    my( $self, $keys ) = @_;
     return $self->send_img(
-        $self->fetch_response('lc.gif', $key, 1));
+        $self->fetch_response('lc.gif', $keys, 1));
 }
 
 # --------------------------------------------------------------------------
@@ -281,9 +281,14 @@ sub fetch_content {
 
 # returns the HTTP response object from the URL fetch
 sub fetch_response {
-    my( $self, $page, $key, $notype ) = @_;
+    my( $self, $page, $keys, $notype ) = @_;
     my $uname = $self->userid;
-    my $url = $self->base_url . "?isbn=$key/$page&client=$uname" . (($notype) ? '' : "&type=rw12");
+
+    # Fetch single isbn and single upc
+    my $isbn = $keys->{isbn}[0];
+    my $upc = $keys->{upc}[0];
+
+    my $url = $self->base_url . "?isbn=$isbn/$page&client=$uname" . (($notype) ? '' : "&type=rw12");
     return $AC->get_url($url);
 }
 
