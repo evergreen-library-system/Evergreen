@@ -14,6 +14,7 @@ use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
 use DateTime::Format::ISO8601;
 use CGI qw(:all -utf8);
+use Time::HiRes;
 
 # EGCatLoader sub-modules 
 use OpenILS::WWW::EGCatLoader::Util;
@@ -33,6 +34,8 @@ use constant COOKIE_ANON_CACHE => 'anoncache';
 use constant ANON_CACHE_MYLIST => 'mylist';
 use constant ANON_CACHE_STAFF_SEARCH => 'staffsearch';
 
+use constant DEBUG_TIMING => 0;
+
 sub new {
     my($class, $apache, $ctx) = @_;
 
@@ -41,6 +44,7 @@ sub new {
     $self->apache($apache);
     $self->ctx($ctx);
     $self->cgi(new CGI);
+    $self->timelog("New page");
 
     OpenILS::Utils::CStoreEditor->init; # just in case
     $self->editor(new_editor());
@@ -77,6 +81,20 @@ sub cgi {
     return $self->{cgi};
 }
 
+sub timelog {
+    my($self, $description) = @_;
+
+    return unless DEBUG_TIMING;
+    return unless $description;
+    $self->ctx->{timing} ||= [];
+    
+    my $timer = [Time::HiRes::gettimeofday()];
+    $self->ctx->{time_begin} ||= $timer;
+
+    push @{$self->ctx->{timing}}, [
+        Time::HiRes::tv_interval($self->ctx->{time_begin}, $timer), $description
+    ];
+}
 
 # -----------------------------------------------------------------------------
 # Perform initial setup, load common data, then load page data
@@ -85,6 +103,7 @@ sub load {
     my $self = shift;
 
     $self->init_ro_object_cache;
+    $self->timelog("Initial load");
 
     my $stat = $self->load_common;
     return $stat unless $stat == Apache2::Const::OK;
