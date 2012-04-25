@@ -943,9 +943,11 @@ serial.manage_dists.prototype = {
             if (parent_org) {
                 if ( obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ].parent_ou() == parent_org.id() ) {
                     data.node.setAttribute('open','true');
+                    obj.funcs.push( function() { obj.on_click_aou( org.id() ); } );
                 }
             } else {
                 obj.map_tree[ 'aou_' + org.id() ].setAttribute('open','true');
+                obj.funcs.push( function() { obj.on_click_aou( org.id() ); } );
             }
 
             if (sdist_tree_list) {
