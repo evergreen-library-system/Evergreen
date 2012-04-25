@@ -229,6 +229,8 @@ sub get_records_and_facets {
     $unapi_args->{flesh_depth} ||= 5;
 
     my @data;
+    my $outer_self = $self;
+    $self->timelog("get_records_and_facets(): about to call multisession");
     my $ses = OpenSRF::MultiSession->new(
         app => 'open-ils.cstore',
         cap => 10, # XXX config
@@ -236,11 +238,14 @@ sub get_records_and_facets {
             my($self, $req) = @_;
             my $data = $req->{response}->[0]->content;
 
+            $outer_self->timelog("get_records_and_facets(): got response content");
+
             # Protect against requests for non-existent records
             return unless $data->{'unapi.bre'};
 
             my $xml = XML::LibXML->new->parse_string($data->{'unapi.bre'})->documentElement;
 
+            $outer_self->timelog("get_records_and_facets(): parsed xml");
             # Protect against legacy invalid MARCXML that might not have a 901c
             my $bre_id;
             my $bre_id_nodes =  $xml->find('*[@tag="901"]/*[@code="c"]');
@@ -250,8 +255,11 @@ sub get_records_and_facets {
                 $logger->warn("Missing 901 subfield 'c' in " . $xml->toString());
             }
             push(@data, {id => $bre_id, marc_xml => $xml});
+            $outer_self->timelog("get_records_and_facets(): end of success handler");
         }
     );
+
+    $self->timelog("get_records_and_facets(): about to call unapi.bre via json_query (rec_ids has " . scalar(@$rec_ids));
 
     $ses->request(
         'open-ils.cstore.json_query',
@@ -265,6 +273,8 @@ sub get_records_and_facets {
         ]}
     ) for @$rec_ids;
 
+
+    $self->timelog("get_records_and_facets():almost ready to fetch facets");
     # collect the facet data
     my $search = OpenSRF::AppSession->create('open-ils.search');
     my $facet_req = $search->request(
@@ -273,10 +283,12 @@ sub get_records_and_facets {
 
     # gather up the unapi recs
     $ses->session_wait(1);
+    $self->timelog("get_records_and_facets():past session wait");
 
     my $facets = {};
     if ($facet_key) {
         my $tmp_facets = $facet_req->gather(1);
+        $self->timelog("get_records_and_facets(): gathered facet data");
         for my $cmf_id (keys %$tmp_facets) {
 
             # sort highest to lowest match count
@@ -291,6 +303,7 @@ sub get_records_and_facets {
                 data => \@entries
             }
         }
+        $self->timelog("get_records_and_facets(): gathered/sorted facet data");
     } else {
         $facets = undef;
     }
