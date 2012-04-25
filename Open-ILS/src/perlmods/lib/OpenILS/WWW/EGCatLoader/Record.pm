@@ -14,6 +14,7 @@ sub load_record {
     my $ctx = $self->ctx;
     $ctx->{page} = 'record';  
 
+    $self->timelog("load_record() began");
     my $org = $self->_get_search_lib();
     my $org_name = $ctx->{get_aou}->($org)->shortname;
     my $pref_ou = $self->_get_pref_lib();
@@ -35,8 +36,10 @@ sub load_record {
     if ($ctx->{staff_saved_search_size}) {
         $ctx->{saved_searches} = ($self->staff_load_searches)[1];
     }
+    $self->timelog("past staff saved searches");
 
     $self->fetch_related_search_info($rec_id);
+    $self->timelog("past related search info");
 
     # run copy retrieval in parallel to bib retrieval
     # XXX unapi
@@ -52,10 +55,13 @@ sub load_record {
         depth => $depth,
         pref_lib => $pref_ou
     });
+
+    $self->timelog("past get_records_and_facets()");
     $ctx->{bre_id} = $rec_data[0]->{id};
     $ctx->{marc_xml} = $rec_data[0]->{marc_xml};
 
     $ctx->{copies} = $copy_rec->gather(1);
+    $self->timelog("past store copy retrieval call");
     $ctx->{copy_limit} = $copy_limit;
     $ctx->{copy_offset} = $copy_offset;
 
@@ -64,6 +70,7 @@ sub load_record {
 
     $self->get_hold_copy_summary($rec_id, $org);
 
+    $self->timelog("past get_hold_copy_summary()");
     $self->ctx->{bib_is_dead} = OpenILS::Application::AppUtils->is_true(
         OpenILS::Utils::CStoreEditor->new->json_query({
             select => { bre => [ 'deleted' ] },
@@ -91,6 +98,8 @@ sub load_record {
         };
     }
 
+    $self->timelog("past serials holding stuff");
+
     my %expandies = (
         marchtml => sub {
             $ctx->{marchtml} = $self->mk_marc_html($rec_id);
@@ -116,6 +125,7 @@ sub load_record {
         }
     }
 
+    $self->timelog("past expandies");
     return Apache2::Const::OK;
 }
 
