@@ -9,7 +9,14 @@
     <a href="http://example.com">[% l('Bottom Link 3') %]</a> &nbsp;|&nbsp;
     <a href="http://example.com">[% l('Bottom Link 4') %]</a> &nbsp;|&nbsp;
     <a href="http://example.com">[% l('Bottom Link 5') %]</a>
-
+    [% IF ctx.timing %]
+    <div id="timing">
+        [% FOR event IN ctx.timing %]
+        At <span class="timing-time">[% event.0 | format("%0.4f") %]</span>:
+        <span class="timing-event">[% event.1 %]</span><br />
+        [% END %]
+    </div>
+    [% END %]
     <div id="copyright_text" style="margin-top: 2em;">
         [% l('Copyright &copy; 2006-[_1] Georgia Public Library Service, and others', date.format(date.now, '%Y')) %]
     </div>
