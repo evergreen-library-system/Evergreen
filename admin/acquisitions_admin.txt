@@ -116,7 +116,7 @@ Currency types can be created and applied to funds in the administrative module.
 Create a currency type
 ^^^^^^^^^^^^^^^^^^^^^^
 
-. To create a new currency type, click Admin ? Server Administration ? Acquisitions? Currency types.
+. To create a new currency type, click _Admin -> Server Administration -> Acquisitions -> Currency types_.
 
 . Enter the currency code. No limits exist on the number of characters that can be entered in this field.
 
@@ -391,12 +391,12 @@ The Fund Details allows you to track the fund's balance, encumbrances, and amoun
 
 . The Summary allows you to track the following:
 
-	. Balance - The balance is calculated by subtracting both items that have been invoiced and encumbrances from the total allocated to the fund.
-	. Total Allocated - This amount is the total amount allocated from the Funding Source.
-	. Spent Balance - This balance is calculated by subtracting only the items that have been invoiced from the total allocated to the fund. It does not include encumbrances.
-	. Total Debits - The total debits are calculated by adding the cost of items that have been invoiced and encumbrances.
-	. Total Spent - The total spent is calculated by adding the cost of items that have been invoiced. It does not include encumbrances.
-	. Total Encumbered - The total encumbered is calculated by adding all encumbrances.
+. Balance - The balance is calculated by subtracting both items that have been invoiced and encumbrances from the total allocated to the fund.
+. Total Allocated - This amount is the total amount allocated from the Funding Source.
+. Spent Balance - This balance is calculated by subtracting only the items that have been invoiced from the total allocated to the fund. It does not include encumbrances.
+. Total Debits - The total debits are calculated by adding the cost of items that have been invoiced and encumbrances.
+. Total Spent - The total spent is calculated by adding the cost of items that have been invoiced. It does not include encumbrances.
+. Total Encumbered - The total encumbered is calculated by adding all encumbrances.
 
 Edit a Fund
 ^^^^^^^^^^^
