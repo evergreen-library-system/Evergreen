@@ -158,11 +158,13 @@ sub _get_search_limit {
     return $limit if $limit;
 
     if($self->editor->requestor) {
+        $self->timelog("Checking for opac.hits_per_page preference");
         # See if the user has a hit count preference
         my $lset = $self->editor->search_actor_user_setting({
             usr => $self->editor->requestor->id, 
             name => 'opac.hits_per_page'
         })->[0];
+        $self->timelog("Got opac.hits_per_page preference");
         return OpenSRF::Utils::JSON->JSON2perl($lset->value) if $lset;
     }
 
@@ -173,12 +175,15 @@ sub tag_circed_items {
     my $self = shift;
     my $e = $self->editor;
 
+    $self->timelog("Tag circed items?");
     return 0 unless $e->requestor;
+    $self->timelog("Checking for opac.search.tag_circulated_items");
     return 0 unless $self->ctx->{get_org_setting}->(
         $e->requestor->home_ou, 
         'opac.search.tag_circulated_items');
 
     # user has to be opted-in to circ history in some capacity
+    $self->timelog("Checking for history.circ.retention_*");
     my $sets = $e->search_actor_user_setting({
         usr => $e->requestor->id, 
         name => [
@@ -186,6 +191,8 @@ sub tag_circed_items {
             'history.circ.retention_start'
         ]
     });
+
+    $self->timelog("Return from checking for history.circ.retention_*");
 
     return 0 unless @$sets;
     return 1;
@@ -206,9 +213,11 @@ sub load_rresults_bookbag {
         ("-or" => {"pub" => "t", "owner" => $self->ctx->{"user"}->id}) :
         ("pub" => "t");
 
+    $self->timelog("Load results bookbag");
     my $bbag = $self->editor->search_container_biblio_record_entry_bucket(
         {"id" => $bookbag_id, "btype" => "bookbag", %authz}
     );
+    $self->timelog("Got results bookbag");
 
     if (!$bbag) {
         $self->apache->log->warn(
@@ -227,6 +236,7 @@ sub load_rresults_bookbag {
 sub load_rresults_bookbag_item_notes {
     my ($self, $rec_ids) = @_;
 
+    $self->timelog("Load results bookbag item notes");
     my $items_with_notes =
         $self->editor->search_container_biblio_record_entry_bucket_item([
             {"target_biblio_record_entry" => $rec_ids,
@@ -234,6 +244,7 @@ sub load_rresults_bookbag_item_notes {
             {"flesh" => 1, "flesh_fields" => {"cbrebi" => ["notes"]},
                 "order_by" => {"cbrebi" => ["id"]}}
         ]);
+    $self->timelog("Got results bookbag item notes");
 
     if (!$items_with_notes) {
         $self->apache->log->warn("error from cstore retrieving cbrebi objects");
@@ -259,6 +270,7 @@ sub load_rresults {
     my $ctx = $self->ctx;
     my $e = $self->editor;
 
+    $self->timelog("Loading results");
     # load bookbag metadata, if requested.
     if (my $bbag_err = $self->load_rresults_bookbag) {
         return $bbag_err;
@@ -272,15 +284,19 @@ sub load_rresults {
 
     # Special alternative searches here.  This could all stand to be cleaner.
     if ($cgi->param("_special")) {
+        $self->timelog("Calling MARC expert search");
         return $self->marc_expert_search(%args) if scalar($cgi->param("tag"));
+        $self->timelog("Calling item barcode search");
         return $self->item_barcode_shortcut if (
             $cgi->param("qtype") and ($cgi->param("qtype") eq "item_barcode")
         );
+        $self->timelog("Calling call number browse");
         return $self->call_number_browse_standalone if (
             $cgi->param("qtype") and ($cgi->param("qtype") eq "cnbrowse")
         );
     }
 
+    $self->timelog("Getting search parameters");
     my $page = $cgi->param('page') || 0;
     my @facets = $cgi->param('facet');
     my $limit = $self->_get_search_limit;
@@ -290,6 +306,7 @@ sub load_rresults {
     my $metarecord = $cgi->param('metarecord');
     my $results; 
     my $tag_circs = $self->tag_circed_items;
+    $self->timelog("Got search parameters");
 
     $ctx->{page_size} = $limit;
     $ctx->{search_page} = $page;
@@ -322,11 +339,13 @@ sub load_rresults {
     if ($metarecord and !$internal) {
 
         # TODO: other limits, like SVF/format, etc.
+        $self->timelog("Getting metarecords to records");
         $results = $U->simplereq(
             'open-ils.search', 
             'open-ils.search.biblio.metarecord_to_records',
             $metarecord, {org => $ctx->{search_ou}, depth => $depth}
         );
+        $self->timelog("Got metarecords to records");
 
         # force the metarecord result blob to match the format of regular search results
         $results->{ids} = [map { [$_] } @{$results->{ids}}]; 
@@ -358,7 +377,10 @@ sub load_rresults {
 
             my $method = 'open-ils.search.biblio.multiclass.query';
             $method .= '.staff' if $ctx->{is_staff};
+
+            $self->timelog("Firing off the multiclass query");
             $results = $U->simplereq('open-ils.search', $method, $args, $query, 1);
+            $self->timelog("Returned from the multiclass query");
 
         } catch Error with {
             my $err = shift;
@@ -377,6 +399,7 @@ sub load_rresults {
 
     $self->load_rresults_bookbag_item_notes($rec_ids) if $ctx->{bookbag};
 
+    $self->timelog("Calling get_records_and_facets()");
     my ($facets, @data) = $self->get_records_and_facets(
         $rec_ids, $results->{facet_key}, 
         {
@@ -386,6 +409,7 @@ sub load_rresults {
             pref_lib => $ctx->{pref_ou},
         }
     );
+    $self->timelog("Returned from get_records_and_facets()");
 
     if ($page == 0) {
         my $stat = $self->check_1hit_redirect($rec_ids);
@@ -426,6 +450,7 @@ sub check_1hit_redirect {
 
     my ($sname, $org);
 
+    $self->timelog("Checking whether to jump to details on a single hit");
     if ($ctx->{is_staff}) {
         $sname = 'opac.staff.jump_to_details_on_single_hit';
         $org = $ctx->{user}->ws_ou;
@@ -434,6 +459,8 @@ sub check_1hit_redirect {
         $sname = 'opac.patron.jump_to_details_on_single_hit';
         $org = $self->_get_search_lib();
     }
+
+    $self->timelog("Return from checking whether to jump to details on a single hit");
 
     return undef unless 
         $self->ctx->{get_org_setting}->($org, $sname);
@@ -466,12 +493,14 @@ sub check_1hit_redirect {
 sub item_barcode_shortcut {
     my ($self) = @_;
 
+    $self->timelog("Searching for item_barcode");
     my $method = "open-ils.search.multi_home.bib_ids.by_barcode";
     if (my $search = create OpenSRF::AppSession("open-ils.search")) {
         my $rec_ids = $search->request(
             $method, $self->cgi->param("query")
         )->gather(1);
         $search->kill_me;
+        $self->timelog("Finished searching for item_barcode");
 
         if (ref $rec_ids ne 'ARRAY') {
 
@@ -492,9 +521,11 @@ sub item_barcode_shortcut {
             }
         }
 
+        $self->timelog("Calling get_records_and_facets() for item_barcode");
         my ($facets, @data) = $self->get_records_and_facets(
             $rec_ids, undef, {flesh => "{holdings_xml,mra,acnp,acns,bmp}"}
         );
+        $self->timelog("Returned from calling get_records_and_facets() for item_barcode");
 
         $self->ctx->{records} = [@data];
         $self->ctx->{search_facets} = {};
@@ -529,12 +560,14 @@ sub marc_expert_search {
 
     $logger->info("query for expert search: " . Dumper($query));
 
+    $self->timelog("Getting search parameters");
     # loc, limit and offset
     my $page = $self->cgi->param("page") || 0;
     my $limit = $self->_get_search_limit;
     $self->ctx->{search_ou} = $self->_get_search_lib();
     $self->ctx->{pref_ou} = $self->_get_pref_lib();
     my $offset = $page * $limit;
+    $self->timelog("Got search parameters");
 
     $self->ctx->{records} = [];
     $self->ctx->{search_facets} = {};
@@ -551,6 +584,7 @@ sub marc_expert_search {
         $offset = 0;
     }
 
+    $self->timelog("Searching for MARC expert");
     my $timeout = 120;
     my $ses = OpenSRF::AppSession->create('open-ils.search');
     my $req = $ses->request(
@@ -561,6 +595,7 @@ sub marc_expert_search {
     my $resp = $req->recv($timeout);
     my $results = $resp ? $resp->content : undef;
     $ses->kill_me;
+    $self->timelog("Got our MARC expert results");
 
     if (defined $U->event_code($results)) {
         $self->apache->log->warn(
@@ -580,12 +615,14 @@ sub marc_expert_search {
         return $stat if $stat;
     }
 
+    $self->timelog("Calling get_records_and_facets() for MARC expert");
     my ($facets, @data) = $self->get_records_and_facets(
         $self->ctx->{ids}, undef, {
             flesh => "{holdings_xml,mra,acnp,acns}",
             pref_lib => $self->ctx->{pref_ou},
         }
     );
+    $self->timelog("Returned from calling get_records_and_facets() for MARC expert");
 
     $self->ctx->{records} = [@data];
 
@@ -625,10 +662,12 @@ sub get_staff_search_settings {
         return;
     }
 
+    $self->timelog("Getting staff search size");
     my $sss_size = $self->ctx->{get_org_setting}->(
         $self->ctx->{physical_loc} || $self->ctx->{aou_tree}->()->id,
         "opac.staff_saved_search.size",
     );
+    $self->timelog("Got staff search size");
 
     # Sic: 0 is 0 (off), but undefined is 10.
     $sss_size = 10 unless defined $sss_size;
@@ -643,11 +682,13 @@ sub staff_load_searches {
 
     my $list = [];
     if ($cache_key) {
+        $self->timelog("Getting anon_cache value");
         $list = $U->simplereq(
             "open-ils.actor",
             "open-ils.actor.anon_cache.get_value",
             $cache_key, (ref $self)->ANON_CACHE_STAFF_SEARCH
         );
+        $self->timelog("Got anon_cache value");
 
         unless ($list) {
             undef $cache_key;
@@ -671,11 +712,13 @@ sub staff_save_search {
 
     splice @$list, $sss_size if scalar @$list > $sss_size;
 
+    $self->timelog("Setting anon_cache value");
     $cache_key = $U->simplereq(
         "open-ils.actor",
         "open-ils.actor.anon_cache.set_value",
         $cache_key, (ref $self)->ANON_CACHE_STAFF_SEARCH, $list
     );
+    $self->timelog("Set anon_cache value");
 
     return ($cache_key, $list);
 }
