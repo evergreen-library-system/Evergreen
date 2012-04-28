@@ -10,11 +10,6 @@ use Data::Dumper;
 $Data::Dumper::Indent = 0;
 my $U = 'OpenILS::Application::AppUtils';
 
-# when fetching "all" search results for staff client 
-# start/end paging, fetch this many IDs at most
-my $all_recs_limit = 10000;
-
-
 sub _prepare_biblio_search_basics {
     my ($cgi) = @_;
 
@@ -311,9 +306,9 @@ sub load_rresults {
     $ctx->{page_size} = $limit;
     $ctx->{search_page} = $page;
 
-    # fetch the first hit from the next page
+    # fetch this page plus the first hit from the next page
     if ($internal) {
-        $limit = $all_recs_limit;
+        $limit = $offset + $limit + 1;
         $offset = 0;
     }
 
@@ -580,7 +575,7 @@ sub marc_expert_search {
     return Apache2::Const::OK if @$query == 0;
 
     if ($args{internal}) {
-        $limit = $all_recs_limit;
+        $limit = $offset + $limit + 1;
         $offset = 0;
     }
 

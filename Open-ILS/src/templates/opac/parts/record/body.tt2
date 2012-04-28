@@ -18,7 +18,8 @@
             [%
                 IF ctx.prev_search_record;
                     prev_args = {};
-                    IF ctx.search_result_index % (ctx.page_size + 1) == 0; # first record in the page
+                    IF ctx.search_page > 0 AND 
+                            ctx.search_result_index % ((ctx.page_size * ctx.search_page)) == 0; # first record in the page
                         prev_args.page = ctx.search_page - 1;
                     END;
                     ctx.prev_rec_url = mkurl(ctx.prev_search_record, prev_args, stop_parms);
@@ -30,7 +31,7 @@
             [% 
                 IF ctx.next_search_record;
                     next_args = {};
-                    IF ctx.page_size == ctx.search_result_index + 1;
+                    IF (ctx.page_size * (ctx.search_page + 1)) == ctx.search_result_index + 1;
                         next_args.page = ctx.search_page + 1;
                     END;
                     ctx.next_rec_url = mkurl(ctx.next_search_record, next_args, stop_parms);
