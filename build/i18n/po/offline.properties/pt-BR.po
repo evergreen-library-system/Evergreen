@@ -8,14 +8,15 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2010-02-12 19:45+0000\n"
-"Last-Translator: jobdrb <jobdrb@gmail.com>\n"
+"PO-Revision-Date: 2012-04-20 00:25+0000\n"
+"Last-Translator: Filipe Pinheiro dos Santos Cantarelli "
+"<filipe.cantarelli@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:46+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2012-04-21 05:02+0000\n"
+"X-Generator: Launchpad (build 15120)\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -34,31 +35,31 @@ msgstr ""
 
 #: common.jsan.missing
 msgid "The JSAN library object is missing."
-msgstr "Esta faltando o JSAN library object."
+msgstr "A biblioteca JSAN não foi encontrada."
 
 #: common.ok
 msgctxt "common.ok"
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 #: common.ok.label
 msgctxt "common.ok.label"
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 #: common.ok.accesskey
 msgid "O"
-msgstr ""
+msgstr "O"
 
 #: common.cancel.label
 msgctxt "common.cancel.label"
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: common.cancel.accesskey
 msgctxt "common.cancel.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: common.clear
 msgid "Clear"
@@ -70,7 +71,7 @@ msgstr "Marque aqui para confirmar esta ação"
 
 #: common.error.default
 msgid "Please report that this happened."
-msgstr "Favor reportar que isto aconteceu."
+msgstr "Por favor, informe que isto aconteceu."
 
 #: common.error.copy_msg
 msgid "Copy Message"
@@ -78,7 +79,7 @@ msgstr "Copiar Mensagem"
 
 #: common.barcode.status.warning
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3$s."
-msgstr ""
+msgstr "Aviso:  O código-de-barras (%2$s) foi marcado %3$s, como %1$s."
 
 #: common.barcode.status.warning.lost
 msgid "Lost"
@@ -159,7 +160,7 @@ msgstr "Anular exclusão"
 #: cat.opac.cancel
 msgctxt "cat.opac.cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: cat.opac.record_deleted
 msgid "Record deleted."
@@ -192,12 +193,12 @@ msgstr "Erro ao des-excluir registro #%1$s : %2$s : %3$s"
 #: cat.opac.record_marked_for_overlay.record_id.alert
 msgctxt "cat.opac.record_marked_for_overlay.record_id.alert"
 msgid "Record with ID %1$s marked for overlay."
-msgstr ""
+msgstr "Registro com ID%1$s marcado para sobreposição."
 
 #: cat.opac.record_marked_for_overlay.tcn.alert
 msgctxt "cat.opac.record_marked_for_overlay.tcn.alert"
 msgid "Record with TCN %1$s marked for overlay."
-msgstr ""
+msgstr "Registro com TCN %1$s marcado para sobreposição."
 
 #: cat.opac.record_marked_for_multi_home.record_id.alert
 msgctxt "cat.opac.record_marked_for_multi_home.record_id.alert"
@@ -210,7 +211,7 @@ msgstr ""
 
 #: cat.opac.clear_statusbar
 msgid "Un-target/un-mark this record?"
-msgstr ""
+msgstr "Desmarcar este registro?"
 
 #: cat.save_record
 msgid "Save Record"
@@ -527,7 +528,7 @@ msgstr "Registrar Leitor"
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode
 #: staff.circ.work_log_patron_registration.message
 msgid "%1$s registered %3$s (%2$s)"
-msgstr ""
+msgstr "%1$s registrado %3$s (%2$s)"
 
 #: menu.cmd_browse_holds.tab
 msgid "Hold Browser"
@@ -656,6 +657,8 @@ msgid ""
 "Sorry, we can't create any more tabs in this window.\n"
 "Would you like to create a new tab in another window?"
 msgstr ""
+"Desculpe, não podemos criar mais tabelas nesta janela.\n"
+"Deseja criar uma nova tabela em outra janela?"
 
 #: main.session_cookie.error
 msgid "Error setting session cookie: %1$s"
@@ -1001,7 +1004,7 @@ msgstr "Copiar Campo da Linha Selecionada para a Área de Transferência"
 #: list.actions.field_to_clipboard.accesskey
 msgctxt "list.actions.field_to_clipboard.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: list.actions.csv_to_clipboard.label
 msgid "Copy List CSV to Clipboard"
@@ -1113,7 +1116,7 @@ msgstr ""
 
 #: menu.cmd_acq_from_bib.tab
 msgid "Load Catalog Record IDs"
-msgstr ""
+msgstr "Carregar catalogos de IDs de registro"
 
 #: menu.cmd_acq_unified_search.tab
 msgid "Acquisitions Search"
@@ -1133,7 +1136,7 @@ msgstr "Pedidos de Compra"
 
 #: menu.cmd_acq_user_requests.tab
 msgid "Patron Requests"
-msgstr ""
+msgstr "Requisições de cliente"
 
 #: menu.cmd_acq_claim_eligible.tab
 msgid "Claim-Ready Items"
@@ -1141,7 +1144,7 @@ msgstr ""
 
 #: menu.cmd_serial_batch_receive.tab
 msgid "Batch Receive"
-msgstr ""
+msgstr "Receber em lote"
 
 #: menu.cmd_booking_resource.tab
 msgid "Resources"
@@ -1157,7 +1160,7 @@ msgstr ""
 
 #: menu.cmd_booking_reservation_return.tab
 msgid "Reservation Return"
-msgstr ""
+msgstr "Retorno de reserva"
 
 #: menu.cmd_booking_pull_list.tab
 msgid "Booking Pull List"
@@ -1181,7 +1184,7 @@ msgstr "Log de Trabalho"
 
 #: menu.local_admin.patrons_due_refunds.tab
 msgid "Patrons With Negative Balances"
-msgstr ""
+msgstr "Clientes com saldos negativos"
 
 #: menu.circulation.staged_patrons.tab
 msgid "Pending Patrons"
@@ -1202,11 +1205,11 @@ msgstr "Configurações de Impressão"
 
 #: staff.cat.util.copy_editor.batch_edit
 msgid "Batch Edit"
-msgstr ""
+msgstr "Alteração em Lote"
 
 #: staff.cat.util.copy_editor.batch_view
 msgid "Batch View"
-msgstr ""
+msgstr "Visualização em lote"
 
 #: staff.cat.util.copy_editor.edit
 msgid "Edit"
@@ -1214,15 +1217,17 @@ msgstr "Editar"
 
 #: staff.cat.util.copy_editor.view
 msgid "View"
-msgstr ""
+msgstr "Exibir"
 
 #: staff.circ.copy_status.add_volumes.perm_failure
 msgid "You do not have permission to add volumes to the workstation library."
 msgstr ""
+"Você não tem permissão para adicionar volumes na estação de trabalho da "
+"biblioteca."
 
 #: staff.circ.copy_status.add_volumes.title
 msgid "Add Volume/Item for Record # %1$s"
-msgstr ""
+msgstr "Inclui Volume/Item para o Registro # %1$s"
 
 #: staff.cat.copy_browser.marked_record_for_multi_home_indicator.tcn.label
 msgid "Record with TCN %1$s targeted for Multi-Bib items."
@@ -1237,12 +1242,12 @@ msgstr ""
 #: staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label
 msgctxt "staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label"
 msgid "Record with TCN %1$s marked for overlay."
-msgstr ""
+msgstr "Registro com TCN %1$s marcado para sobreposição."
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label
 msgctxt "staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label"
 msgid "Record with ID %1$s marked for overlay."
-msgstr ""
+msgstr "Registro com ID%1$s marcado para sobreposição."
 
 #: staff.cat.opac.marked_record_for_hold_transfer_indicator.tcn.label
 msgid "Record with TCN %1$s marked for title hold transfer."
@@ -1258,19 +1263,19 @@ msgstr ""
 
 #: staff.cat.opac.title_for_hold_transfer.success.label
 msgid "Holds transferred."
-msgstr ""
+msgstr "Reservas transferidas."
 
 #: staff.cat.opac.title_for_hold_transfer.failure.label
 msgid "Holds not transferred."
-msgstr ""
+msgstr "Reservas não transferidas."
 
 #: staff.cat.opac.related_items
 msgid "Related Lineitems"
-msgstr ""
+msgstr "Itens de linha relacionados"
 
 #: staff.cat.opac.serial_alt_mgmt
 msgid "Subscriptions"
-msgstr ""
+msgstr "Assinaturas"
 
 #: staff.cat.create_or_rebarcode_items
 msgid "Create or Re-barcode Items"
@@ -1341,18 +1346,20 @@ msgstr ""
 #: browser.reload.unsaved_data_warning
 msgid "This page may have unsaved data. Reload it anyway?"
 msgstr ""
+"Esta página pode ter dados não salvos. Deseja recarregá-la mesmo assim?"
 
 #: menu.close_tab.unsaved_data_warning
 msgid "This tab may have unsaved data. Close it anyway?"
-msgstr ""
+msgstr "Esta guia pode ter dados não salvos. Deseja fechá-la mesmo assim?"
 
 #: menu.replace_tab.unsaved_data_warning
 msgid "This tab may have unsaved data. Replace it anyway?"
 msgstr ""
+"Esta guia pode ter dados não salvos. Deseja substituí-la mesmo assim?"
 
 #: menu.close_window.unsaved_data_warning
 msgid "This window may have unsaved data. Close it anyway?"
-msgstr ""
+msgstr "Esta janela pode ter dados não salvos. Deseja fechá-la mesmo assim?"
 
 #: menu.logoff.unsaved_data_warning
 msgid "This session may have unsaved data. Logoff anyway?"
@@ -1360,58 +1367,13 @@ msgstr ""
 
 #: menu.shutdown.unsaved_data_warning
 msgid "This application may have unsaved data. Exit it anyway?"
-msgstr ""
+msgstr "Esta aplicação pode ter dados não salvos. Deseja sair mesmo assim?"
 
 #~ msgid "Ok"
 #~ msgstr "Ok"
 
-#~ msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3."
-#~ msgstr "Aviso:  O código-de-barras (%2$s) foi marcado %3$s, como %1$s."
-
 #~ msgid "Cancel"
 #~ msgstr "Cancelar"
 
-#~ msgid "Record with ID %1$s marked for overlay."
-#~ msgstr "Registro com ID %1$s marcado para sobreposição"
-
-#~ msgid "Record with TCN %1$s marked for overlay."
-#~ msgstr "Registro com TCN %1$s marcado para sobreposição"
-
-#~ msgid "Record successfully saved."
-#~ msgstr "Registro salvo com sucesso."
-
-#~ msgid "Override"
-#~ msgstr "Substituir"
-
 #~ msgid "C"
 #~ msgstr "C"
-
-#~ msgid "Selection Lists"
-#~ msgstr "Listas de seleção"
-
-#~ msgid "Title Search"
-#~ msgstr "Pesquisa por Título"
-
-#~ msgid "Load Order Record"
-#~ msgstr "Carregar Registro de Ordenação"
-
-#~ msgid "Funds"
-#~ msgstr "Fundos"
-
-#~ msgid "Funding Sources"
-#~ msgstr "Fontes de financiamento"
-
-#~ msgid "Providers"
-#~ msgstr "Fornecedores"
-
-#~ msgid "Currency Types"
-#~ msgstr "Tipos de moeda"
-
-#~ msgid "Exchange Rates"
-#~ msgstr "Taxas de Câmbio"
-
-#~ msgid "Distribution Formulas"
-#~ msgstr "Fórmulas de Distribuição"
-
-#~ msgid "Barcode: <%1$s>"
-#~ msgstr "Código de Barras: <%1$s>"

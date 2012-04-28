@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2011-12-08 01:43+0000\n"
-"Last-Translator: Tomas Abril <Unknown>\n"
+"PO-Revision-Date: 2012-04-19 05:29+0000\n"
+"Last-Translator: Aline D'Oleron <doleron.aline@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-12-09 04:48+0000\n"
-"X-Generator: Launchpad (build 14450)\n"
+"X-Launchpad-Export-Date: 2012-04-20 04:44+0000\n"
+"X-Generator: Launchpad (build 15120)\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -1240,11 +1240,11 @@ msgstr ""
 
 #: staff.cat.opac.title_for_hold_transfer.success.label
 msgid "Holds transferred."
-msgstr ""
+msgstr "Reservas transferidas."
 
 #: staff.cat.opac.title_for_hold_transfer.failure.label
 msgid "Holds not transferred."
-msgstr ""
+msgstr "Reservas não transferidas."
 
 #: staff.cat.record_buckets.tab_name
 msgid "Record Buckets"
@@ -1679,10 +1679,12 @@ msgid ""
 "Item %1$s will be marked damaged.  Was returned on %3$s for %2$s.  Charge "
 "this patron $%4$s for the damage? "
 msgstr ""
+"O item %1$s será marcado como danificado. Foi retornado em %3$s por %2$s. "
+"Cobrar esse cliente $%4$s pelo dano? "
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.title
 msgid "Charge Patron For Damaged Item? "
-msgstr ""
+msgstr "Cobrar cliente por item danificado? "
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.ok_label
 msgid "OK "
@@ -1801,11 +1803,11 @@ msgstr ""
 
 #: staff.cat.util.mark_item_missing_pieces.one_item_missing_pieces
 msgid "Item marked as missing pieces."
-msgstr ""
+msgstr "Item marcado como peças que faltam."
 
 #: staff.cat.util.mark_item_missing_pieces.multiple_item_missing_pieces
 msgid "%1$s items marked as missing pieces."
-msgstr ""
+msgstr "%1$s itens marcados como peças que faltam."
 
 #: staff.cat.util.mark_item_missing_pieces.circ_not_found
 msgid ""
@@ -1849,7 +1851,7 @@ msgstr "D"
 
 #: staff.cat.volume_copy_creator.create.btn.label
 msgid "Create Volumes/Items"
-msgstr ""
+msgstr "Criar volumes/itens"
 
 #: staff.cat.volume_copy_creator.create.btn.accesskey
 msgctxt "staff.cat.volume_copy_creator.create.btn.accesskey"
@@ -1957,13 +1959,13 @@ msgstr "Erro ao armazenar preferencias"
 #: staff.cat.volume_copy_creator.call_number_prefix.menuitem_label
 msgctxt "staff.cat.volume_copy_creator.call_number_prefix.menuitem_label"
 msgid "%2$s : %1$s"
-msgstr ""
+msgstr "%2$s : %1$s"
 
 #. # %1$s = Call Number Suffix Label, %2$s = Call Number Suffix Owning Lib Shortname
 #: staff.cat.volume_copy_creator.call_number_suffix.menuitem_label
 msgctxt "staff.cat.volume_copy_creator.call_number_suffix.menuitem_label"
 msgid "%2$s : %1$s"
-msgstr ""
+msgstr "%2$s : %1$s"
 
 #: staff.cat.z3950.native_catalog
 msgid "Native Catalog"
@@ -2104,7 +2106,7 @@ msgstr "Exibindo %1$s de %2$s para %3$s"
 
 #: staff.cat.z3950.handle_results.showing_total_results
 msgid "Showing %1$s of %2$s "
-msgstr ""
+msgstr "Mostrando %1$s de %2$s "
 
 #: staff.cat.z3950.handle_results.num_of_results
 msgid "%1$s records found"
@@ -2125,7 +2127,7 @@ msgstr "Obtendo título..."
 
 #: staff.cat.z3950.spawn_marc_editor.save_button_label
 msgid "Import Record"
-msgstr ""
+msgstr "Importar Registro"
 
 #: staff.cat.z3950.spawn_marc_editor.same_tcn
 msgctxt "staff.cat.z3950.spawn_marc_editor.same_tcn"

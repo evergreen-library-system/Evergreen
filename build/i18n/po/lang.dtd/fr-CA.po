@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen ILS > lang.dtd.po\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-04-18 21:44-0400\n"
-"PO-Revision-Date: 2011-05-20 13:35+0000\n"
-"Last-Translator: Warren Layton <Unknown>\n"
+"PO-Revision-Date: 2012-04-27 15:38+0000\n"
+"Last-Translator: George Duimovich <George.Duimovich@nrcan-rncan.gc.ca>\n"
 "Language-Team: NRCan Library <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-21 05:03+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2012-04-28 04:56+0000\n"
+"X-Generator: Launchpad (build 15149)\n"
 "X-Poedit-Country: CANADA\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: French\n"
@@ -255,7 +255,7 @@ msgstr ""
 #: common.browser.help.accesskey
 msgctxt "common.browser.help.label common.browser.help.accesskey"
 msgid "&Help"
-msgstr ""
+msgstr "&Aide"
 
 #: common.browser.find.label
 #: common.browser.find.accesskey
@@ -270,7 +270,7 @@ msgstr ""
 #: common.browser.view_source.label
 #: common.browser.view_source.accesskey
 msgid "&View Source"
-msgstr ""
+msgstr "&Voir la source"
 
 #: common.textbox.cut
 msgctxt "common.textbox.cut"
@@ -13727,42 +13727,11 @@ msgstr ""
 msgid "Powered by"
 msgstr ""
 
-#~ msgid "About this client..."
-#~ msgstr "À propos de ce client..."
-
-#~ msgid "&Next"
-#~ msgstr "Sui&vant"
-
-#~ msgctxt "staff.main.menu.edit.cut.key"
-#~ msgid "t"
-#~ msgstr "t"
-
-#~ msgid "Default"
-#~ msgstr "Défaut"
-
-#~ msgid "End Date"
-#~ msgstr "Date de fin"
-
 #~ msgid "Pull List for Hold Requests"
 #~ msgstr "Liste d’extraction des demandes d’articles mis en réserve"
 
-#~ msgid "Stop Fines Time"
-#~ msgstr "Arrêt du temps relatif aux amendes"
-
-#~ msgid "Stop Fines Reason"
-#~ msgstr "Arrêt du motif des amendes"
-
 #~ msgid "&Import"
 #~ msgstr "&Importer"
-
-#~ msgid "Title:"
-#~ msgstr "Titre :"
-
-#~ msgid "Author:"
-#~ msgstr "Auteur :"
-
-#~ msgid "Publication Date:"
-#~ msgstr "Date de publication :"
 
 #~ msgctxt ""
 #~ "staff.cat.copy_browser.actions.cmd_edit_items.label "
@@ -13774,12 +13743,6 @@ msgstr ""
 #~ msgid "Replace Barcode"
 #~ msgstr "Remplacer le code à barres"
 
-#~ msgid ""
-#~ "Green in the list below means the library has volumes for this record."
-#~ msgstr ""
-#~ "La couleur verte dans la liste ci dessous signifie que la bibliothèque a des "
-#~ "volumes associés à ce compte."
-
 #~ msgctxt ""
 #~ "staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.label "
 #~ "staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.accesskey"
@@ -13789,71 +13752,11 @@ msgstr ""
 #~ msgid "Edit Item Attributes"
 #~ msgstr "Modifier les attributs de l’article"
 
-#~ msgid "Identification"
-#~ msgstr "Identification"
-
-#~ msgctxt "staff.cat.copy_summary.save_columns.label"
-#~ msgid "Save Columns"
-#~ msgstr "Enregistrer les colonnes"
-
-#~ msgctxt "staff.cat.copy_summary.sel_clip.label"
-#~ msgid "Copy to Clipboard"
-#~ msgstr "Copier dans le presse-papiers"
-
-#~ msgctxt "staff.cat.copy_summary.print_export.label"
-#~ msgid "Print Export"
-#~ msgstr "Imprimer la liste exportée"
-
-#~ msgid "Check &Barcodes?"
-#~ msgstr "Vérifier les &codes à barres?"
-
-#~ msgid "Edit then &Create"
-#~ msgstr "Modifier puis &créer"
-
-#~ msgid "Modify"
-#~ msgstr "Modifier"
-
-#~ msgctxt "staff.cat.volume_editor.cancel.label"
-#~ msgid "Cancel"
-#~ msgstr "Annuler"
-
 #~ msgid "MARC Editor for &Overlay"
 #~ msgstr "Éditeur de MARC pour le &recouvrement"
 
 #~ msgid "MARC Editor for &Import"
 #~ msgstr "Éditeur de MARC pour l’&importation"
-
-#~ msgctxt "staff.patron.bill_interface.add_billing.label"
-#~ msgid "Add Billing"
-#~ msgstr "Ajouter la facturation"
-
-#~ msgid "Uncheck All"
-#~ msgstr "Désélectionner tout"
-
-#~ msgid "Check All"
-#~ msgstr "Sélectionner tout"
-
-#~ msgctxt "staff.patron.bills_overlay.payment_type.accesskey"
-#~ msgid "t"
-#~ msgstr "t"
-
-#~ msgid "Annotate Payment"
-#~ msgstr "Paiement annoté"
-
-#~ msgid "Convert Change to Patron Credit"
-#~ msgstr "Convertir le changement à « crédit du client »"
-
-#~ msgid "&Group"
-#~ msgstr "&Groupe"
-
-#~ msgid "Print"
-#~ msgstr "Imprimer"
-
-#~ msgid "Mailing"
-#~ msgstr "Courrier"
-
-#~ msgid "Billing"
-#~ msgstr "Facturation"
 
 #~ msgid "Evergreen Staff Client Portal Page"
 #~ msgstr "Page du portail des clients membres du personnel d’Evergreen"
@@ -13869,58 +13772,3 @@ msgstr ""
 #~ "fonctionnalité dont votre organisation a besoin pour prendre en charge ses "
 #~ "opérations. Par exemple, vous pouvez ajouter des liens au processus et des "
 #~ "documents de procédures."
-
-#~ msgctxt "staff.circ.alternate_copy_summary.Call_Number.label"
-#~ msgid "Call Number"
-#~ msgstr "Cote"
-
-#~ msgid "&Survey Wizard"
-#~ msgstr "Assistant de &sondage"
-
-#~ msgid "n"
-#~ msgstr "n"
-
-#~ msgid "Info"
-#~ msgstr "Information"
-
-#~ msgid "Update"
-#~ msgstr "Mettre à jour"
-
-#~ msgid "Auto-Print Hold and Transit Slips"
-#~ msgstr ""
-#~ "Imprimer automatiquement l’article mis en réserve et les bordereaux "
-#~ "d’acheminement"
-
-#~ msgid "u"
-#~ msgstr "u"
-
-#~ msgid "Enter a workstation name and library to register this client under:"
-#~ msgstr ""
-#~ "Entrer un nom de poste de travail et une bibliothèque pour inscrire ce "
-#~ "client :"
-
-#~ msgid "Show Notices"
-#~ msgstr "Afficher les avis"
-
-#~ msgid "r"
-#~ msgstr "r"
-
-#~ msgid "Evergreen Staff Client 3"
-#~ msgstr "Client membre du personnel d’Evergreen 3"
-
-#~ msgid "Providers"
-#~ msgstr "Fournisseurs"
-
-#~ msgid "Funds"
-#~ msgstr "Fonds"
-
-#~ msgid "Exchange Rates"
-#~ msgstr "Taux d'échange"
-
-#~ msgctxt "staff.patron_display.physical.copy"
-#~ msgid "(Copy)"
-#~ msgstr "(Copier)"
-
-#~ msgctxt "staff.patron_display.mailing.copy"
-#~ msgid "(Copy)"
-#~ msgstr "(Copier)"

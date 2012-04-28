@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2010-02-05 13:58+0000\n"
-"Last-Translator: jobdrb <jobdrb@gmail.com>\n"
+"PO-Revision-Date: 2012-04-19 02:33+0000\n"
+"Last-Translator: Aline D'Oleron <doleron.aline@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:43+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2012-04-20 04:44+0000\n"
+"X-Generator: Launchpad (build 15120)\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -60,7 +60,7 @@ msgstr "O objeto \"config_circ_matrix_test\" solicitado não foi encontrado"
 
 #: 7004.COPY_NOT_AVAILABLE:826
 msgid "Copy is not available"
-msgstr ""
+msgstr "Cópia não disponível"
 
 #: 1591.METABIB_SERIES_FIELD_ENTRY_NOT_FOUND:414
 msgid "The requested metabib_series_field_entry was not found"
@@ -126,6 +126,8 @@ msgid ""
 "Someone attempted to retrieve a transit object from the system and the "
 "object was not found."
 msgstr ""
+"Alguém tentou recuperar um objeto de trânsito do sistema e do objeto não foi "
+"encontrado."
 
 #: 1538.ACTION_SURVEY_RESPONSE_NOT_FOUND:262
 msgid "The requested action_survey_response was not found"
@@ -181,7 +183,7 @@ msgstr "O objeto \"config_audience_map\" solicitado não foi encontrado"
 #: 8004.OFFLINE_CONFIG_ERROR:910 8005.OFFLINE_CHECKSUM_FAILED:913
 #: 8006.OFFLINE_SESSION_NOT_FOUND:916
 msgid "Offline server is not configured properly"
-msgstr ""
+msgstr "O servidor offline não está configurado corretamente"
 
 #: 1001.NO_SESSION:26
 msgid "User login session has either timed out or does not exist"
@@ -189,7 +191,7 @@ msgstr "A sessão de usuário ou expirou ou não existe"
 
 #: 4019.CREDIT_PROCESSOR_INVALID_CC_NUMBER:775
 msgid "An invalid credit card number has been supplied."
-msgstr ""
+msgstr "Um número de cartão de crédito inválido foi fornecido."
 
 #: 1880.CONFIG_BILLING_TYPE_NOT_FOUND:691
 msgid "The requested config_billing_type was not found"
@@ -272,7 +274,7 @@ msgstr "O objeto \"perm_ex\" solicitado não foi encontrada"
 
 #: 10101.ACQ_ALREADY_CANCELED:959
 msgid "The object is already canceled."
-msgstr ""
+msgstr "O objeto já foi cancelado."
 
 #: 1553.ACTOR_ORG_UNIT_CLOSED_DATE_NOT_FOUND:304
 msgid "The requested actor_org_unit_closed_date was not found"
@@ -313,7 +315,7 @@ msgstr "O objeto \"money_collections_tracker\" solicitado não foi encontrado"
 
 #: 1651.AUTHORITY_RECORD_NUMBER_EXISTS:593
 msgid "An authority record already exists with the requested ARN"
-msgstr ""
+msgstr "Um registro de autoridade já existe com o ARN solicitado"
 
 #: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:972
 msgid "The caption/pattern still has dependent issuances"
@@ -372,7 +374,7 @@ msgstr ""
 
 #: 7021.RESERVATION_NOT_FOUND:880
 msgid "Booking reservation not found"
-msgstr ""
+msgstr "Reserva não encontrada"
 
 #: 1700.NON_CAT_TYPE_EXISTS:699
 msgid "The non-cataloged type object already exists"
@@ -764,7 +766,7 @@ msgstr "O objeto \"config_item_type_map\" solicitado não foi encontrado"
 
 #: 8007.OFFLINE_SESSION_EXISTS:919
 msgid "A session with the given name already exists"
-msgstr ""
+msgstr "Uma seção com o nome dado já existe"
 
 #: 1650.CONFIG_CIRC_MATRIX_RULESET_NOT_FOUND:590
 msgid "The requested config_circ_matrix_ruleset_not_found was not found"
@@ -1226,225 +1228,3 @@ msgstr ""
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:453
 msgid "The requested money_user_summary was not found"
 msgstr "O objeto \"money_user_summary\" solicitado não foi encontrado"
-
-#~ msgid ""
-#~ "A *TERRIBLE* problem has occurred: a credit\n"
-#~ "            card transaction was processed successfuly, but the patron's\n"
-#~ "            payment could not be recorded within Evergreen.  Please seek\n"
-#~ "            assistance."
-#~ msgstr ""
-#~ "Um problema *TERRÍVEL* ocorreu: uma transação\n"
-#~ "            de cartão de crédito foi processada com sucesso, mas o "
-#~ "pagamento\n"
-#~ "            do leitor não pode ser processado pelo Evergreen.  Por favor "
-#~ "procure\n"
-#~ "            por assistência."
-
-#~ msgid " An offline file or directory could not be created or accessed "
-#~ msgstr " Um arquivo ou diretório «offline» não pode ser criado ou acessado "
-
-#~ msgid ""
-#~ "\n"
-#~ "\t\t\tSomeone attempted to retrieve a copy object from the \n"
-#~ "\t\t\tsystem and the object was not found.\n"
-#~ "\t\t"
-#~ msgstr ""
-#~ "\n"
-#~ "\t\t\tAlguém tentou recuperar um objeto de exemplar \n"
-#~ "\t\t\tdo sistema e o objeto não foi encontrado.\n"
-#~ "\t\t"
-
-#~ msgid " "
-#~ msgstr " "
-
-#~ msgid " Copy is reference material "
-#~ msgstr " O exemplar é um material de referência "
-
-#~ msgid ""
-#~ "\n"
-#~ "\t\t\tSomeone attempted to retrieve a container item object from the \n"
-#~ "\t\t\tsystem and the object was not found.\n"
-#~ "\t\t"
-#~ msgstr ""
-#~ "\n"
-#~ "\t\t\tAlguem tentou obter do sistema um objeto recipiente de item\n"
-#~ "\t\t\te o objeto não foi encontrado.\n"
-#~ "\t\t"
-
-#~ msgid " An offline session for this location is currently processing "
-#~ msgstr ""
-#~ " Uma sessão «offline» para esta localização esta atualmente em processamento "
-
-#~ msgid " Requested billing note does not exist "
-#~ msgstr " A Nota de Faturamento solicitada não existe "
-
-#~ msgid " An offline file for this workstation exists within this session "
-#~ msgstr ""
-#~ " Existe um arquivo «offline»  para esta estação de trabalho dentro desta "
-#~ "sessão "
-
-#~ msgid " A session with the given name already exists "
-#~ msgstr " Uma sessão com o nome fornecido já existe "
-
-#~ msgid " A report template with the given name and folder already exists"
-#~ msgstr ""
-#~ " Já existe um modelo de relatório com o mesmo nome no diretório fornecido"
-
-#~ msgid " The copy location object already exists "
-#~ msgstr " O objeto de localização do exemplar já existe "
-
-#~ msgid " A workstation with that name already exists "
-#~ msgstr " Já existe uma estação de trabalho com o mesmo nome "
-
-#~ msgid ""
-#~ " \n"
-#~ "\t\tA copy needs to be routed to a copy location.  The location\n"
-#~ "\t\tshould be specified within the event with a 'location' key\n"
-#~ "\t\t"
-#~ msgstr ""
-#~ " \n"
-#~ "\t\tUm exemplar precisa ser direcionado para uma localização. A localização\n"
-#~ "\t\tdeve ser especificada dentro do evento com uma chave de  'localização'\n"
-#~ "\t\t"
-
-#~ msgid ""
-#~ "\n"
-#~ "\t\t\tSomeone attempted to retrieve a transit object from the \n"
-#~ "\t\t\tsystem and the object was not found.\n"
-#~ "\t\t"
-#~ msgstr ""
-#~ "\n"
-#~ "\t\t\tAlguém tentou obter do sistema um objeto de trânsito \n"
-#~ "\t\t\te o objeto não foi encontrado.\n"
-#~ "\t\t"
-
-#~ msgid " Requested title note does not exist "
-#~ msgstr " A nota do título solicitada não existe "
-
-#~ msgid " A report with the given name and folder already exists"
-#~ msgstr " Já existe um relatório com o mesmo nome no diretório fornecido"
-
-#~ msgid " Location does not allow materials to circulate "
-#~ msgstr " A localização não permite a circulação de materiais "
-
-#~ msgid " Requested circulation is marked claims returned "
-#~ msgstr " A circulação requisitada esta marcada para pedido de retorno "
-
-#~ msgid " Missing params in offline upload "
-#~ msgstr " Faltam parâmetros no carregamento offline "
-
-#~ msgid ""
-#~ "\n"
-#~ "\t\t\tThe selected copy may not circulate because the recipient's home \n"
-#~ "\t\t\tlocation is not within the copy's circulation range\n"
-#~ "\t\t"
-#~ msgstr ""
-#~ "\n"
-#~ "\t\t\tA cópia selecionada pode não circular porque a localização origem\n"
-#~ "\t\t\tnão esta dentro da abrangência de circulação de exemplares\n"
-#~ "\t\t"
-
-#~ msgid " There is an open circulation on the requested item "
-#~ msgstr " Existe uma circulação aberta para o item solicitado "
-
-#~ msgid " Copy is not available "
-#~ msgstr " Exemplar indisponível "
-
-#~ msgid ""
-#~ "\n"
-#~ "\t\t\tThe patron in question is not able to check out materials because\n"
-#~ "\t\t\ttheir account is in bad standing\n"
-#~ "\t\t"
-#~ msgstr ""
-#~ "\n"
-#~ "\t\t\tO Leitor em questão não esta habilitado a retirar materiais porque\n"
-#~ "\t\t\tsua conta esta em situação ruim\n"
-#~ "\t\t"
-
-#~ msgid ""
-#~ "\n"
-#~ "\t\t\tThe given circulation is not in a standard status or\n"
-#~ "\t\t\tthe circulation was never fully closed properly\n"
-#~ "\t\t"
-#~ msgstr ""
-#~ "\n"
-#~ "\t\t\tA circulação fornecida não está com a situação padrão\n"
-#~ "\t\t\tou a circulação nunca foi totalmente fechada\n"
-#~ "\t\t"
-
-#~ msgid ""
-#~ " \n"
-#~ "\t\t\tA copy needs to be routed to a different location\t\n"
-#~ "\t\t\tThe destination location will be specified by an 'org' key\n"
-#~ "\t\t\twithin the event object\n"
-#~ "\t\t"
-#~ msgstr ""
-#~ " \n"
-#~ "\t\t\tO exemplar precisa ser direcionado para uma localização diferente\t\n"
-#~ "\t\t\tA localização destino será especificada por uma chave 'org'\n"
-#~ "\t\t\tdentro deste objeto de evento\n"
-#~ "\t\t"
-
-#~ msgid " Copy is needed to fulfil a hold "
-#~ msgstr " É necessário uma cópia para se fazer uma reserva "
-
-#~ msgid " The requested copy has an alert message attached "
-#~ msgstr " Exite mensagem de alerta anexada ao exemplar solicitado. "
-
-#~ msgid " Offline server is not configured properly "
-#~ msgstr " O servidor offline não esta configurado de propriamente "
-
-#~ msgid " Target copy is not allowed to circulate "
-#~ msgstr " O exemplar escolhido não permite circulação "
-
-#~ msgid " Circulation has no more renewals remaining "
-#~ msgstr " Não há mais renovações restantes para circulação "
-
-#~ msgid " No org id was provided "
-#~ msgstr " Não foi provido o id de organização "
-
-#~ msgid ""
-#~ "\n"
-#~ "\t\t\tSomeone attempted to retrieve a circulation object from the system and "
-#~ "\n"
-#~ "\t\t\tthe object was not found.\n"
-#~ "\t\t"
-#~ msgstr ""
-#~ "\n"
-#~ "\t\t\tAlguem tentou obter do sistema um objeto de circulação e\n"
-#~ "\t\t\to objeto não foi encontrado.\n"
-#~ "\t\t"
-
-#~ msgid " The session name is invalid "
-#~ msgstr " O nome de sessão é inválido "
-
-#~ msgid ""
-#~ "\n"
-#~ "\t\t\tSomeone attempted to retrieve a container object from the \n"
-#~ "\t\t\tsystem and the object was not found.\n"
-#~ "\t\t"
-#~ msgstr ""
-#~ "\n"
-#~ "\t\t\tAlguem tentou obter do sistema um objeto recipiente e\n"
-#~ "\t\t\to objeto não foi encontrado.\n"
-#~ "\t\t"
-
-#~ msgid " The non-cataloged type object already exists "
-#~ msgstr " Já existe o objeto tipo não-catalogado "
-
-#~ msgid ""
-#~ "\n"
-#~ "\t\t\tThis refund amount is not allowed because it exceeds \n"
-#~ "\t\t\tthe total amount of desk payments for this transaction.\n"
-#~ "\t\t"
-#~ msgstr ""
-#~ "\n"
-#~ "\t\t\tEste montante de reenbolso não é permitido porque excede \n"
-#~ "\t\t\to montante total de pagamentos do setor para esta transação.\n"
-#~ "\t\t"
-
-#~ msgid " Requested workstation object does not exist "
-#~ msgstr " O objeto solicitado pela estação de trabalho não existe "
-
-#~ msgid "An authority record with the same identifier already exists"
-#~ msgstr "J� existe um registro de autoriza��o com o mesmo identificador"

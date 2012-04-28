@@ -8,18 +8,18 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:44-0400\n"
-"PO-Revision-Date: 2011-12-31 15:08+0000\n"
+"PO-Revision-Date: 2012-01-11 16:08+0000\n"
 "Last-Translator: Daniel Winzen <d@winzen4.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-01-01 05:32+0000\n"
-"X-Generator: Launchpad (build 14560)\n"
+"X-Launchpad-Export-Date: 2012-01-12 05:43+0000\n"
+"X-Generator: Launchpad (build 14640)\n"
 
 #: field.bre.source.label:2042
 msgid "Record Source"
-msgstr ""
+msgstr "Datenherkunft"
 
 #: class.rxpt.label:7106
 msgid "Transaction Paid Totals"
@@ -51,7 +51,7 @@ msgstr ""
 
 #: field.auri.use_restriction.label:1960
 msgid "Use Information"
-msgstr ""
+msgstr "Benutzungsinformationen"
 
 #: class.cmrtm.label:8147
 msgid "MARC21 Record Type Map"
@@ -69,7 +69,7 @@ msgstr "Host"
 
 #: field.rccbs.patron_city.label:8357
 msgid "User City"
-msgstr ""
+msgstr "Benutzerstadt"
 
 #: class.cmsa.label:1749
 msgid "Metabib Search Alias"
@@ -96,7 +96,7 @@ msgstr ""
 
 #: field.auri.id.label:1957
 msgid "URI ID"
-msgstr ""
+msgstr "URI ID"
 
 #: field.mcrp.id.label:4428
 msgid "Pyament ID"
@@ -129,7 +129,7 @@ msgstr ""
 #: field.vii.ref.label:198 field.viiad.ref.label:246
 #: field.rocit.ref.label:8662
 msgid "Reference"
-msgstr ""
+msgstr "Verweis"
 
 #: field.acqfsb.amount.label:6221
 msgid "Balance after Spent"
@@ -141,7 +141,7 @@ msgstr ""
 
 #: class.cit.label:1374
 msgid "Identification Type"
-msgstr ""
+msgstr "Identifizierungsart"
 
 #: field.vbm.matched_attr.label:369 field.vam.matched_attr.label:482
 msgid "Matched Attribute"
@@ -257,7 +257,7 @@ msgstr ""
 #: field.acqpoh.owner.label:6385 field.acqedi.owner.label:6807
 #: field.afs.owner.label:7465
 msgid "Owner"
-msgstr ""
+msgstr "Besitzer"
 
 #: field.bresv.current_resource.label:3283
 msgid "Current Resource"

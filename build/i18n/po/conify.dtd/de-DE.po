@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:44-0400\n"
-"PO-Revision-Date: 2010-02-23 15:46+0000\n"
-"Last-Translator: Provetin <hamburgskaddi@web.de>\n"
+"PO-Revision-Date: 2012-01-11 16:15+0000\n"
+"Last-Translator: Daniel Winzen <d@winzen4.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:40+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2012-01-12 05:43+0000\n"
+"X-Generator: Launchpad (build 14640)\n"
 
 #. Common entities
 #: conify.save_button.label
@@ -173,31 +173,31 @@ msgstr "Geschlossen"
 
 #: conify.org_unit.hoo_pane.monday
 msgid "Monday"
-msgstr ""
+msgstr "Montag"
 
 #: conify.org_unit.hoo_pane.tuesday
 msgid "Tuesday"
-msgstr ""
+msgstr "Dienstag"
 
 #: conify.org_unit.hoo_pane.wednesday
 msgid "Wednesday"
-msgstr ""
+msgstr "Mittwoch"
 
 #: conify.org_unit.hoo_pane.thursday
 msgid "Thursday"
-msgstr ""
+msgstr "Donnerstag"
 
 #: conify.org_unit.hoo_pane.friday
 msgid "Friday"
-msgstr ""
+msgstr "Freitag"
 
 #: conify.org_unit.hoo_pane.saturday
 msgid "Saturday"
-msgstr ""
+msgstr "Samstag"
 
 #: conify.org_unit.hoo_pane.sunday
 msgid "Sunday"
-msgstr ""
+msgstr "Sonntag"
 
 #. Addresses
 #: conify.org_unit.addresses_pane.title
@@ -206,7 +206,7 @@ msgstr "Adressen"
 
 #: conify.org_unit.addresses_pane.physical.title
 msgid "Physical Address"
-msgstr ""
+msgstr "Physikalische Adresse"
 
 #: conify.org_unit.addresses_pane.holds.title
 msgid "Holds Address"
@@ -218,11 +218,11 @@ msgstr "Postadresse"
 
 #: conify.org_unit.addresses_pane.ill.title
 msgid "ILL Address"
-msgstr ""
+msgstr "ILL Adresse"
 
 #: conify.org_unit.addresses_pane.type
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: conify.org_unit.addresses_pane.valid
 msgid "Valid"
@@ -254,7 +254,7 @@ msgstr "Land"
 
 #: conify.org_unit.addresses_pane.county
 msgid "County"
-msgstr ""
+msgstr "Land"
 
 #. This is a highlighted label that is followed by the name of the organizational unit
 #: conify.org_unit.status_bar
@@ -267,7 +267,7 @@ msgstr ""
 
 #: conify.copy_status.new_status.label
 msgid "New Status:"
-msgstr ""
+msgstr "Neuer Status:"
 
 #: conify.copy_status.new_status.name
 msgid "New Status Name"
@@ -307,7 +307,7 @@ msgstr ""
 
 #: conify.marc_code_maps.new_value
 msgid "New Value"
-msgstr ""
+msgstr "Neuer Wert"
 
 #: conify.marc_code_maps.audience_map.description
 msgctxt "conify.marc_code_maps.audience_map.description"
@@ -418,7 +418,7 @@ msgstr ""
 
 #: conify.grp_tree.group_config.label
 msgid "Group Configuration"
-msgstr ""
+msgstr "Gruppeneinstellungen"
 
 #: conify.grp_tree.group_name.label
 msgid "Group Name"
@@ -443,7 +443,7 @@ msgstr ""
 
 #: conify.grp_tree.parent_group.label
 msgid "Parent Group"
-msgstr ""
+msgstr "Elterngruppe"
 
 #: conify.grp_tree.user_group.label
 msgid "User Group"
@@ -466,7 +466,7 @@ msgstr ""
 
 #: conify.grp_tree.group_permissions.title
 msgid "Group Permissions"
-msgstr ""
+msgstr "Gruppenberechtigungen"
 
 #: conify.grp_tree.new_mapping.label
 msgid "New Mapping"
@@ -474,11 +474,11 @@ msgstr ""
 
 #: conify.grp_tree.permission.label
 msgid "Permission:"
-msgstr ""
+msgstr "Berechtigung:"
 
 #: conify.grp_tree.depth.label
 msgid "Depth:"
-msgstr ""
+msgstr "Tiefe:"
 
 #: conify.grp_tree.grantable.label
 msgid "Grantable:"

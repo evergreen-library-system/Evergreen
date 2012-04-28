@@ -161,8 +161,8 @@ B<update_pofile> B<--launchpad-base-dir>=I<translation-export-directory>
 
 =head1 DESCRIPTION
 
-Assuming that you have an updated bzr checkout of
-satisfy the 'launchpad-base-dir' argument, and an updated git clone
+Assuming that you have an updated bzr checkout of the translation-export
+to satisfy the 'launchpad-base-dir' argument, and an updated git clone
 of Evergreen master to satisfy the 'evergreen-base-dir' argument,
 this script attempts to copy only the new or changed translations
 from the Launchpad directory into the Evergreen directory. It
@@ -179,11 +179,13 @@ updated translations.
 =item * B<-l> I<translation-export-directory>, B<--launchpad-base-dir>=I<translation-export-directory>
 
 Specifies the directory holding the updated bzr checkout of
-https://code.launchpad.net/~denials/evergreen/translation-export
+https://code.launchpad.net/~denials/evergreen/translation-export - which
+you can create via "bzr lp:~denials/evergreen/translation-export".
 
 =item * B<-e> I<evergreen-directory>, B<--evergreen-base-dir>=I<evergreen-directory>
 
-Specifies the directory holding the updated git clone of Evergreen.
+Specifies the directory holding the updated git clone of Evergreen, which you
+can create via "git clone git://git.evergreen-ils.org/Evergreen.git".
 
 =back
 

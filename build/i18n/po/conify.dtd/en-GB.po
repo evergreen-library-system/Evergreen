@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:44-0400\n"
-"PO-Revision-Date: 2011-07-13 23:17+0000\n"
-"Last-Translator: Warren Layton <Unknown>\n"
+"PO-Revision-Date: 2012-01-24 17:47+0000\n"
+"Last-Translator: Anthony Harrington <untaintableangel@hotmail.co.uk>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-07-15 04:52+0000\n"
-"X-Generator: Launchpad (build 13405)\n"
+"X-Launchpad-Export-Date: 2012-01-25 05:26+0000\n"
+"X-Generator: Launchpad (build 14719)\n"
 
 #. Common entities
 #: conify.save_button.label
@@ -246,7 +246,7 @@ msgstr "County"
 
 #: conify.org_unit.addresses_pane.zip
 msgid "Zip"
-msgstr "Post code"
+msgstr "Postcode"
 
 #: conify.org_unit.addresses_pane.country
 msgid "Country"

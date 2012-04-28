@@ -8,28 +8,25 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:44-0400\n"
-"PO-Revision-Date: 2011-12-24 10:36+0000\n"
+"PO-Revision-Date: 2012-04-12 13:33+0000\n"
 "Last-Translator: Daniel Winzen <d@winzen4.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-12-25 04:54+0000\n"
-"X-Generator: Launchpad (build 14560)\n"
+"X-Launchpad-Export-Date: 2012-04-13 05:28+0000\n"
+"X-Generator: Launchpad (build 15070)\n"
 
 #. =================================================================
 #. Some generic stuff
 #. =================================================================
 #: lang.version
 msgid "remote v1"
-msgstr ""
-"Fernbedinung v1 \t\r\n"
-"================================================================= allgemeine "
-"Ausgaben   ================================================================="
+msgstr "Entfernte V1"
 
 #: lang.description
 msgid "English"
-msgstr "English"
+msgstr "Englisch"
 
 #: lang.author
 msgid "PINES"
@@ -643,15 +640,15 @@ msgstr "Sie haben zur Zeit keine Medien ausgeliehen"
 
 #: myopac.checked.other.circ
 msgid "Other Circulations"
-msgstr ""
+msgstr "Andere Umlauf-Arten"
 
 #: myopac.checked.circ.lib
 msgid "Circulating Library"
-msgstr ""
+msgstr "Verteilende Bibliothek"
 
 #: myopac.checked.item.type
 msgid "Circulation Type"
-msgstr ""
+msgstr "Umlauf-Art"
 
 #: myopac.checked.circ.time
 msgid "Please return by ..."
@@ -671,12 +668,17 @@ msgid ""
 "means the item is needed to fulfill a hold.  Please see a librarian for "
 "further help."
 msgstr ""
+"Das System kann im Moment den ausgewählten Gegenstand nicht erneuern. Dies "
+"bedeutet, dass der Gegenstand durch eine Reservierung blockiert wird. Bitte "
+"sprechen Sie einen Bibliothekar an, um sich helfen zu lassen."
 
 #: myopac.checked.renew.fail2
 msgid ""
 "Library policy prevents the renewal of this item at this time.  Please see a "
 "librarian for further details."
 msgstr ""
+"Die Bibliotheksregeln verhindern zurzeit die Verlängerung dieses "
+"Gegenstands. Bitte sprechen Sie einen Bibliothekar an, um mehr zu erfahren."
 
 #. =================================================================
 #. MyOPAC Fines Page
@@ -684,7 +686,7 @@ msgstr ""
 #: myopac.fines.title
 msgctxt "myopac.fines.title"
 msgid "Summary"
-msgstr ""
+msgstr "Zusammenfassung"
 
 #: myopac.fines.owed
 msgid "Total Owed"
@@ -692,7 +694,7 @@ msgstr "Gesamter offener Betrag"
 
 #: myopac.fines.paid
 msgid "Total Paid"
-msgstr ""
+msgstr "Gesamter Zahlbetrag"
 
 #: myopac.fines.balance
 msgid "Balance Owed"
@@ -722,7 +724,7 @@ msgstr "Rückgabe Datum"
 
 #: myopac.fines.accruing
 msgid "(fines accruing)"
-msgstr ""
+msgstr "(aufgelaufene Ordnungsgelder)"
 
 #: myopac.fines.other
 msgid "Other Fees"
@@ -730,7 +732,7 @@ msgstr "Sonstige Gebühren"
 
 #: myopac.fines.time.start
 msgid "Transaction Start Time"
-msgstr ""
+msgstr "Anfangszeit der Transaktion"
 
 #: myopac.fines.time.paid
 msgid "Last Payment Time"
@@ -738,7 +740,7 @@ msgstr "Datum der letzten Bezahlung"
 
 #: myopac.fines.owed.initial
 msgid "Initial Amount Owed"
-msgstr ""
+msgstr "Anfänglich besessender Betrag"
 
 #: myopac.fines.paid.amount
 msgid "Total Amount Paid"
@@ -788,6 +790,8 @@ msgstr "Abbrechen"
 msgid ""
 "If you wish to cancel the selected hold, click OK, otherwise click Cancel."
 msgstr ""
+"Wenn Sie die ausgewählte Reservierung abbrechen wollen, wählen Sie "
+"Bestätigen, ansonsten wählen Sie abbrechen."
 
 #: myopac.holds.freeze_selected
 msgid "Suspend"
@@ -799,7 +803,7 @@ msgstr "Aktivieren"
 
 #: myopac.holds.thaw_date_selected
 msgid "Set Active Date"
-msgstr ""
+msgstr "Aktives Datum festlegen"
 
 #: myopac.holds.cancel_selected
 msgctxt "myopac.holds.cancel_selected"
@@ -809,14 +813,16 @@ msgstr "Abbrechen"
 #: myopac.holds.processing
 msgid "Processing holds... This may take a moment."
 msgstr ""
+"Die Reservierungen werden verarbeitet... Dies kann einen Moment dauern."
 
 #: myopac.holds.actions
 msgid "Actions for selected holds"
-msgstr ""
+msgstr "Aktionen bezüglich der ausgewählten Reservierungen"
 
 #: myopac.holds.cancel.confirm
 msgid "Are you sure you wish to cancel the selected holds?"
 msgstr ""
+"Sind Sie sicher, dass Sie die ausgewählten Reservierungen abbrechen wollen?"
 
 #: myopac.holds.freeze.confirm
 msgid ""
@@ -824,35 +830,46 @@ msgid ""
 "If an item has already been selected to fulfill the hold, it will not be "
 "suspended"
 msgstr ""
+"Sind Sie sicher, dass Sie die ausgewählten Reservierungen zurückstellen "
+"wollen? \n"
+"Wenn ein Gegenstand bereits ausgewählt wurde, um der Reservierung genüge zu "
+"tun, wird dieser nicht zurückgestellt"
 
 #: myopac.holds.thaw.confirm
 msgid "Are you sure you wish to activate the selected holds?"
-msgstr ""
+msgstr "Wollen Sie tatsächlich die ausgewählten Reservierungen aktivieren?"
 
 #: myopac.holds.thaw_date.confirm
 msgid ""
 "Are you sure you wish to change the activate date for the selected holds?"
 msgstr ""
+"Wollen sie tatsächlich das Aktivierungsdatum für die ausgewählten "
+"Reservierungen ändern?"
 
 #: myopac.holds.freeze.select_thaw
 msgid ""
 "Select an automatic activation date.  If no date is chosen, the holds will "
 "remain suspended until they are manually activated."
 msgstr ""
+"Wählen Sie ein automatisch festzulegendes Aktivierungsdatum. Wenn kein Datum "
+"ausgewählt wird, werden die Reservierungen zurückgestellt, bis sie manuell "
+"aktiviert werden."
 
 #: opac.holds.freeze
 msgid "Suspend this hold"
-msgstr ""
+msgstr "Diese Reservierung zurückstellen"
 
 #: opac.holds.freeze.help
 msgid ""
 "A suspended hold will retain its place in the queue, but will not be "
 "fulfilled until it has been activated."
 msgstr ""
+"Eine zurückgestellte Reservierung bleibt in der Warteschlange erhalten aber "
+"wird nicht durchgeführt, bis sie aktiviert wurde."
 
 #: opac.holds.freeze.thaw_date
 msgid "Automatically activate hold on:"
-msgstr ""
+msgstr "Reservierung automatisch aktivieren am:"
 
 #: opac.holds.expire_time
 msgid "Expiration date"
@@ -887,7 +904,7 @@ msgstr "Große Schrift"
 
 #: myopac.prefs.holds.notify
 msgid "Default Hold Notification Method"
-msgstr ""
+msgstr "Reservierungsbenachrichtigungsmethode (Vorgabe)"
 
 #: myopac.prefs.holds.both
 msgid "Use Phone and Email"
@@ -907,7 +924,7 @@ msgstr "Standard Such-Ort"
 
 #: myopac.prefs.search.home
 msgid "Always search my home library by default."
-msgstr ""
+msgstr "Normalerweise meine Heimatbibliothek durchsuchen."
 
 #: myopac.prefs.search.range
 msgid "Default Search Range"
@@ -933,6 +950,10 @@ msgid ""
 "However, you will still have the option to change individual holds "
 "regardless of this setting."
 msgstr ""
+"Diese Einstellung legt fest, wie Sie über Reservierungen benachrichtigt "
+"werden, die in der Bibliothek abgeholt werden können. \n"
+"Normalerweise wird die hier festgelegte Benachrichtigungsart benutzt. \n"
+"Sie können jedoch diese Art jederzeit für einzelne Reservierung ändern."
 
 #: myopac.holds.unfrozen
 msgid "Active"
@@ -940,7 +961,7 @@ msgstr "Aktiv"
 
 #: myopac.holds.frozen.until
 msgid "Activate on..."
-msgstr ""
+msgstr "Am... aktivieren"
 
 #. =================================================================
 #. MyOPAC Summary page
@@ -955,7 +976,7 @@ msgstr ""
 
 #: myopac.summary.notes
 msgid "* Staff Notes *"
-msgstr ""
+msgstr "* Hinweise für Mitarbeiter *"
 
 #: myopac.summary.phone.day
 msgid "Day Phone"
@@ -1003,7 +1024,7 @@ msgstr "Neue Email-Adresse eingeben:"
 
 #: myopac.summary.id.primary
 msgid "Primary Identification"
-msgstr ""
+msgstr "Hauptidentifikationsmerkmal"
 
 #: myopac.summary.barcode
 msgid "Active Barcode"
@@ -1011,7 +1032,7 @@ msgstr "Aktiver Barcode"
 
 #: myopac.summary.home
 msgid "Home Library"
-msgstr ""
+msgstr "Heimatbibliothek"
 
 #: myopac.summary.genesis
 msgid "Account Creation Date"
@@ -1023,7 +1044,7 @@ msgstr "Adressen"
 
 #: myopac.summary.addresses.pending
 msgid "Pending Addresses"
-msgstr ""
+msgstr "Ausstehende Adressen"
 
 #: myopac.summary.address.type
 msgid "Address Type"
@@ -1128,7 +1149,7 @@ msgstr "Das ausgewählte Feld enthält <u>genau</u> den Ausdruck"
 
 #: opac.advanced.refined.title
 msgid "Refined Advanced Search"
-msgstr ""
+msgstr "Verfeinerte fortgeschrittene Suche"
 
 #: opac.advanced.refined.title_contains
 msgid "Title contains the following words"
@@ -1144,7 +1165,7 @@ msgstr "Das Thema enthält die folgenden Wörter"
 
 #: opac.advanced.refined.series_contains
 msgid "Series contains the following words"
-msgstr ""
+msgstr "Die Reihe enthält die folgenden Worte"
 
 #: opac.advanced.refined.contains
 msgid "Contains"
@@ -1169,19 +1190,19 @@ msgstr "MARC Suche für Experten"
 
 #: opac.advanced.marc.tag
 msgid "MARC Tag"
-msgstr ""
+msgstr "MARC-Kennzeichen"
 
 #: opac.advanced.marc.ind1
 msgid "Indicator 1"
-msgstr ""
+msgstr "Anzeiger 1"
 
 #: opac.advanced.marc.ind2
 msgid "Indicator 2"
-msgstr ""
+msgstr "Anzeiger 2"
 
 #: opac.advanced.marc.subfield
 msgid "Subfield"
-msgstr ""
+msgstr "Teil-Feld"
 
 #: opac.advanced.marc.value
 msgid "Value"
@@ -1216,7 +1237,7 @@ msgstr "TCN"
 
 #: opac.advanced.quick.barcode
 msgid "Item Barcode"
-msgstr ""
+msgstr "Strichcode des Gegenstands"
 
 #: opac.advanced.quick.cn
 msgctxt "opac.advanced.quick.cn"
@@ -1225,7 +1246,7 @@ msgstr "Signatur"
 
 #: opac.advanced.copy_loc_filter
 msgid "Shelving Location"
-msgstr ""
+msgstr "Abstellort"
 
 #. ==========================================================
 #. MARC expert search
@@ -1233,7 +1254,7 @@ msgstr ""
 #: search.marc
 msgctxt "search.marc"
 msgid "MARC Expert Search"
-msgstr ""
+msgstr "MARC-Expertensuche"
 
 #: search.marc.tag
 msgid "Tag:"
@@ -1241,7 +1262,7 @@ msgstr "Stichwort:"
 
 #: search.marc.subfield
 msgid "Subfield:"
-msgstr ""
+msgstr "Teil-Feld"
 
 #: search.marc.value
 msgid "Value:"
@@ -1256,7 +1277,7 @@ msgstr "Zeile hinzufügen"
 #. ==========================================================
 #: status.results
 msgid "Including results for"
-msgstr ""
+msgstr "Einschluß der Ergebnisse für"
 
 #. ==========================================================
 #. Tips
@@ -1314,7 +1335,7 @@ msgstr "Anmelden"
 
 #: navigate.login.title
 msgid "Log in for personalized features"
-msgstr ""
+msgstr "Wenn es um Sie persönlich geht, melden Sie sich bitte an"
 
 #: navigate.logout
 msgctxt "navigate.logout"
@@ -1349,15 +1370,15 @@ msgstr "Meine Suchergebnisse"
 
 #: navigate.titleResults
 msgid "My Title Results"
-msgstr ""
+msgstr "Meine Titel-Ergebnisse"
 
 #: navigate.facetRefine
 msgid "Refine your search"
-msgstr ""
+msgstr "Verfeinern Sie Ihre Suche"
 
 #: navigate.title.details
 msgid "My Title Details"
-msgstr ""
+msgstr "Meine Titel-Ergebnisse"
 
 #: navigate.record.details
 msgid "Record Details"
@@ -1369,7 +1390,7 @@ msgstr "Eintragungsdetails"
 #: footer.basic
 msgctxt "footer.basic"
 msgid "Basic Catalog (HTML only)"
-msgstr ""
+msgstr "Grundlegender Katalog (nur HTML)"
 
 #: footer.find.library
 msgid "Find a Library Near Me"
@@ -1422,15 +1443,15 @@ msgstr "Kontenzusammenfassung"
 
 #: myopac.checkouts
 msgid "Items Checked Out"
-msgstr ""
+msgstr "Ausgeliehende Gegenstände"
 
 #: myopac.holds
 msgid "Items on Hold"
-msgstr ""
+msgstr "Reservierte Gegenstände"
 
 #: myopac.fines
 msgid "Fines"
-msgstr ""
+msgstr "Ordnungsgelder"
 
 #: myopac.preferences
 msgid "Account Preferences"
@@ -1439,27 +1460,27 @@ msgstr "Benutzerkontoeinstellungen"
 #: myopac.bookbags
 msgctxt "myopac.bookbags"
 msgid "My Bookbags"
-msgstr ""
+msgstr "Meine Büchermappen"
 
 #. =================================================================
 #. Sidebar
 #. =================================================================
 #: sidebar.relevantSubjects.headerLabel
 msgid "Relevant Subjects"
-msgstr ""
+msgstr "Maßgebliche Themen"
 
 #: sidebar.relevantAuthors.headerLabel
 msgid "Relevant Authors"
-msgstr ""
+msgstr "Maßgebliche Autoren"
 
 #: sidebar.relevantSeries.headerLabel
 msgid "Relevant Series"
-msgstr ""
+msgstr "Maßgebliche Reihen"
 
 #: sidebar.relevantReviews.headerLabel
 msgctxt "sidebar.relevantReviews.headerLabel"
 msgid "Reviews"
-msgstr ""
+msgstr "Rezensionen"
 
 #: sidebar.quick.search
 msgctxt "sidebar.quick.search"
@@ -1468,7 +1489,7 @@ msgstr "Schnellsuche"
 
 #: sidebar.copy.not.found
 msgid "No copy with the requested barcode was found"
-msgstr ""
+msgstr "Es gibt keine Ausgabe mit diesem Strichcode"
 
 #. =================================================================
 #. Search formats
@@ -1483,7 +1504,7 @@ msgstr "Alle Formate"
 
 #: opac.search.largePrint
 msgid "Large Print Books"
-msgstr ""
+msgstr "Großdruckbücher"
 
 #: opac.search.ebook
 msgid "E-Books"
@@ -1503,7 +1524,7 @@ msgstr "Musik"
 
 #: opac.search.electronic
 msgid "Electronic Resources"
-msgstr ""
+msgstr "Elektronische Ressourcen"
 
 #: opac.search.nowSearching
 msgid "Now Searching"
@@ -1514,23 +1535,23 @@ msgstr "Sucht gerade"
 #. =================================================================
 #: opac.title.home
 msgid "Evergreen Home"
-msgstr ""
+msgstr "Immergrünes Zuhause"
 
 #: opac.title.mresult
 msgid "Evergreen Title Groups"
-msgstr ""
+msgstr "Evergreen-TItelgruppen"
 
 #: opac.title.rresult
 msgid "Evergreen Titles"
-msgstr ""
+msgstr "Evergreen-Titel"
 
 #: opac.title.myopac
 msgid "Evergreen My Account"
-msgstr ""
+msgstr "Mein Evergreen-Konto"
 
 #: opac.title.rdetail
 msgid "Evergreen Title Details"
-msgstr ""
+msgstr "Evergreen-Titeldetails"
 
 #: opac.title.advanced
 msgid "Evergreen Advanced Search"
@@ -1538,19 +1559,19 @@ msgstr "Evergreen erweiterte Suche"
 
 #: opac.title.reqitems
 msgid "Evergreen Request Items"
-msgstr ""
+msgstr "Evergreen Anfragegegenstände"
 
 #: opac.title.cnbrowse
 msgid "Evergreen Call Number Browse"
-msgstr ""
+msgstr "Evergreen Aufrufzahl durchkämmen"
 
 #: opac.holds.forMe
 msgid "Place this hold for myself"
-msgstr ""
+msgstr "Mir diesen Gegenstand reservieren"
 
 #: opac.holds.xulRecipient
 msgid "Enter recipient barcode"
-msgstr ""
+msgstr "Empfänger-Strichcode eingeben"
 
 #: opac.holds.recipient
 msgid "Recipient"
@@ -1559,12 +1580,12 @@ msgstr "Empfänger"
 #: opac.holds.placeHold
 msgctxt "opac.holds.placeHold"
 msgid "Place Hold"
-msgstr ""
+msgstr "Reservierung durchführen"
 
 #: opac.holds.exportRefWorks
 msgctxt "opac.holds.exportRefWorks"
 msgid "Export to RefWorks"
-msgstr ""
+msgstr "Nach RefWorks exportieren"
 
 #: opac.holds.contactPhone
 msgid "Contact telephone number"
@@ -1576,30 +1597,30 @@ msgstr "E-Mail-Adresse"
 
 #: opac.holds.pickupLocation
 msgid "Pickup location"
-msgstr ""
+msgstr "Abholort"
 
 #: opac.holds.success
 msgid "Hold was successfully placed"
-msgstr ""
+msgstr "Die Reservierung wurde erfolgreich durchgeführt"
 
 #: opac.holds.failure
 msgid "Hold was not successfully placed"
-msgstr ""
+msgstr "Die Reservierung konnte nicht erfolgreich durchgeführt werden"
 
 #. =================================================================
 #. Advanced
 #. =================================================================
 #: advanced.search.title
 msgid "Search Input"
-msgstr ""
+msgstr "Sucheingabe"
 
 #: advanced.add.row
 msgid "Add Search Row"
-msgstr ""
+msgstr "Suchzeile hinzufügen"
 
 #: advanced.search.submit
 msgid "Submit Search"
-msgstr ""
+msgstr "Suche durchführen"
 
 #: advanced.search.reset
 msgid "Reset Form"
@@ -1607,11 +1628,11 @@ msgstr "Formular zurücksetzen"
 
 #: advanced.search.filters
 msgid "Search Filters"
-msgstr ""
+msgstr "Suchfilter"
 
 #: advanced.item.form
 msgid "Item Form"
-msgstr ""
+msgstr "Suchformular"
 
 #: advanced.item.type
 msgid "Item Type"
@@ -1635,7 +1656,7 @@ msgstr "Sachbuch"
 
 #: advanced.fiction
 msgid "Fiction"
-msgstr ""
+msgstr "Belletristik"
 
 #: advanced.language
 msgid "Language"
@@ -1667,7 +1688,7 @@ msgstr "Bibliothek durchsuchen"
 
 #: advanced.relevance
 msgid "Relevance"
-msgstr ""
+msgstr "Relevanz"
 
 #: advanced.pubdate
 msgid "Publication date"
@@ -1683,7 +1704,7 @@ msgstr "Absteigend / Z bis A"
 
 #: advanced.frbrize
 msgid "Group Formats and Editions"
-msgstr ""
+msgstr "Ausführungen und Ausgaben gruppieren"
 
 #: advanced.go
 msgid "Go"
@@ -1699,7 +1720,7 @@ msgstr "Erscheinungsjahr"
 
 #: advanced.filter.pubyear.equals
 msgid "Is"
-msgstr ""
+msgstr "Entspricht"
 
 #: advanced.filter.pubyear.before
 msgid "Before"
@@ -1739,11 +1760,11 @@ msgstr ""
 
 #: rdetail.cn.genesis
 msgid "Create Date"
-msgstr ""
+msgstr "Erstellungsdatum"
 
 #: rdetail.cn.holdable
 msgid "Holdable"
-msgstr ""
+msgstr "Reservierbar"
 
 #: rdetail.cn.due
 msgctxt "rdetail.cn.due"
@@ -1760,27 +1781,27 @@ msgstr "weniger Informationen"
 
 #: rdetail.cn.hold
 msgid "place hold"
-msgstr ""
+msgstr "Reservierung durchführen"
 
 #: rdetail.cn.reserve
 msgid "book now"
-msgstr ""
+msgstr "Jetzt buchen"
 
 #: rdetail.cn.multi_home
 msgid "linked titles"
-msgstr ""
+msgstr "Verwandte Titel"
 
 #: rdetail.cn.disabled
 msgid "- Disabled -"
-msgstr ""
+msgstr "- deaktiviert -"
 
 #: rdetail.cn.note
 msgid "Copy Note"
-msgstr ""
+msgstr "Kopierhinweis"
 
 #: rdetail.cn.category
 msgid "Copy Category"
-msgstr ""
+msgstr "Kopierkategorie"
 
 #: rdetail.cn.print
 msgid "Print Page"
@@ -1788,16 +1809,16 @@ msgstr "Seite drucken"
 
 #: rdetail.page.results
 msgid "First results page"
-msgstr ""
+msgstr "Erste Ergebnisseite"
 
 #. Result # &common.of; #
 #: rdetail.result
 msgid "Result"
-msgstr ""
+msgstr "Ergebnis"
 
 #: rdetail.start
 msgid "Start"
-msgstr ""
+msgstr "Anfang"
 
 #: rdetail.page.previous
 msgid "Previous page"
@@ -1805,7 +1826,7 @@ msgstr "Vorherige Seite"
 
 #: rdetail.page.previous.short
 msgid "&#171;"
-msgstr ""
+msgstr "&#171;"
 
 #: rdetail.page.next
 msgid "Next page"
@@ -1813,11 +1834,11 @@ msgstr "Nächste Seite"
 
 #: rdetail.page.next.short
 msgid "&#187;"
-msgstr ""
+msgstr "&#187;"
 
 #: rdetail.page.last
 msgid "Last results page"
-msgstr ""
+msgstr "Letzte Ergebnisseite"
 
 #: rdetail.end
 msgid "End"
@@ -1825,15 +1846,15 @@ msgstr "Ende"
 
 #: rdetail.more
 msgid "More Actions..."
-msgstr ""
+msgstr "Weitere Aktionen..."
 
 #: rdetail.bookbag.add
 msgid "Add to bookbag"
-msgstr ""
+msgstr "Zur Büchermappe hinzufügen..."
 
 #: rdetail.bookbag.create
 msgid "Create a new bookbag"
-msgstr ""
+msgstr "Neue Büchermappe erstellen"
 
 #: rdetail.record.deleted
 msgid ""
@@ -1841,6 +1862,9 @@ msgid ""
 "We recommend that you remove this title from any bookbags it may have been "
 "added to."
 msgstr ""
+"Dieser Eintrag wurde aus der Datenbank entfernt. \n"
+"Wir empfehlen, dass Sie diesen Titel aus allen betroffenen Büchermappen "
+"entfernen."
 
 #: rdetail.none
 msgid "(none)"
@@ -1848,15 +1872,15 @@ msgstr "(ohne)"
 
 #: rdetail.bookbag.add.success
 msgid "Item successfully added to bookbag"
-msgstr ""
+msgstr "Gegenstand erfolgreich zur Büchermappe hinzugefügt"
 
 #: rdetail.bookbag.name
 msgid "Enter the name of the new bookbag"
-msgstr ""
+msgstr "Geben Sie den Namen der neuen Büchermappe ein"
 
 #: rdetail.bookbag.create.success
 msgid "Bookbag successfully created"
-msgstr ""
+msgstr "Büchermappe erfolgreich erstellt"
 
 #: rdetail.detailMain.headerLabel
 msgid "Record Summary"
@@ -1885,7 +1909,7 @@ msgstr "Suche nach Autor"
 
 #: rdetail.copyInfo.headerLabel
 msgid "Copy Information"
-msgstr ""
+msgstr "Kopierinformationen"
 
 #: rdetail.copyInfo.library
 msgctxt "rdetail.copyInfo.library"
@@ -1898,19 +1922,19 @@ msgstr "Signatur"
 
 #: rdetail.copyInfo.copylocation
 msgid "Copy Location"
-msgstr ""
+msgstr "Standort kopieren"
 
 #: rdetail.copyInfo.local
 msgid "View Copy Information for this location only"
-msgstr ""
+msgstr "Kopierinformationen speziell für diesen Standort ansehen"
 
 #: rdetail.copyInfo.all
 msgid "View copy information for all libraries"
-msgstr ""
+msgstr "Allgemeine Kopierinformationen ansehen"
 
 #: rdetail.copyInfo.actions
 msgid "Actions"
-msgstr ""
+msgstr "Aktionen"
 
 #: rdetail.copyInfo.print
 msgid "Print Call Numbers for this library"
@@ -1918,7 +1942,7 @@ msgstr "Signaturen für diese Bibliothek drucken"
 
 #: rdetail.copyInfo.details
 msgid "Copy Details"
-msgstr ""
+msgstr "Kopierdetails"
 
 #: rdetail.copyInfo.browse
 msgid "Browse Call Numbers"
@@ -1927,7 +1951,7 @@ msgstr "Signaturen durchsehen"
 #: rdetail.copyInfo.hold
 msgctxt "rdetail.copyInfo.hold"
 msgid "Place Hold"
-msgstr ""
+msgstr "Reservierung durchführen"
 
 #: rdetail.extras.summary
 msgid "Copy Summary"
@@ -1936,7 +1960,7 @@ msgstr "Zusammenfassung kopieren"
 #: rdetail.extras.browser
 msgctxt "rdetail.extras.browser"
 msgid "Shelf Browser"
-msgstr ""
+msgstr "Regal-Explorer"
 
 #: rdetail.extras.bib_summary
 msgctxt "rdetail.extras.bib_summary"
@@ -1946,7 +1970,7 @@ msgstr "Zusammenfassung"
 #: rdetail.extras.reviews
 msgctxt "rdetail.extras.reviews"
 msgid "Reviews"
-msgstr ""
+msgstr "Rezensionen"
 
 #: rdetail.extras.toc
 msgid "Table of Contents"
@@ -1962,7 +1986,7 @@ msgstr "Vorschau"
 
 #: rdetail.extras.author.notes
 msgid "Author Notes"
-msgstr ""
+msgstr "Autor-Notizen"
 
 #: rdetail.extras.annotation
 msgid "Annotation"
@@ -1974,7 +1998,7 @@ msgstr "MARC Eintrag"
 
 #: rdetail.extras.foreign_items
 msgid "Linked Titles"
-msgstr ""
+msgstr "Verknüpfte Titel"
 
 #: rdetail.extras.call.null
 msgid "There are no call numbers for this item at this location."
@@ -2003,7 +2027,7 @@ msgstr "Vorschläge von NoveList"
 
 #: rdetail.loading
 msgid "Loading copy information..."
-msgstr ""
+msgstr "Lade Kopierinformationen..."
 
 #: rdetail.noneAvailable
 msgid " * There are no copies in this location"
@@ -2011,7 +2035,7 @@ msgstr " Kein Exemplar an diesem Standort"
 
 #: rdetail.summary.online
 msgid "Online Resources"
-msgstr ""
+msgstr "Online-Ressourcen"
 
 #: rdetail.summary.subjects
 msgctxt "rdetail.summary.subjects"
@@ -2020,7 +2044,7 @@ msgstr "Themen"
 
 #: rdetail.summary.issues_held
 msgid "Issues Held"
-msgstr ""
+msgstr "Reservierte Ausgaben"
 
 #: result.sort_by
 msgid "Sort Results by Relevance"
@@ -2049,10 +2073,13 @@ msgstr "Verfühbare Exmeplare / Gesamte Exemplare"
 #: result.info.no.items
 msgid "No items with the selected format were found in this location."
 msgstr ""
+"An diesem Ort gibt es keine Gegenstände in der ausgewählten Ausführung."
 
 #: result.info.format.items
 msgid "Listed below are all items in the catalog with the chosen format."
 msgstr ""
+"In Folge aufgelistet sind alle Katalogeinträge in der ausgewählten "
+"Ausführung."
 
 #: result.info.show
 msgid "Show records for"
@@ -2073,6 +2100,7 @@ msgstr "Vielleicht meinten Sie:"
 #: result.lowhits.formats
 msgid "You will find more hits when searching all item formats:"
 msgstr ""
+"Sie finden mehr Treffer, wenn Sie nach einer beliebigen Ausführung suchen:"
 
 #: result.lowhits.formats.search
 msgid "Search again with all formats?"
@@ -2080,19 +2108,20 @@ msgstr "Noch einmal mit allen Formaten suchen?"
 
 #: result.lowhits.related
 msgid "You may also like to try these related searches:"
-msgstr ""
+msgstr "Vielleicht möchten Sie diese verwandten Suchen ausführen:"
 
 #: result.lowhits.expand
 msgid "You may also wish to expand your search range to:"
-msgstr ""
+msgstr "Sie möchten vielleicht außerdem Ihren Suchbereich erweitern auf:"
 
 #: result.lowhits.class
 msgid "You can try searching the same terms by:"
 msgstr ""
+"Sie können versuchen, nach denselben Begriffen auf diese Weise zu suchen:"
 
 #: result.lowhits.title
 msgid "title"
-msgstr "Titel:"
+msgstr "Titel"
 
 #: result.lowhits.author
 msgid "author"
@@ -2104,7 +2133,7 @@ msgstr "Thema"
 
 #: result.lowhits.series
 msgid "series"
-msgstr ""
+msgstr "Reihe"
 
 #: result.lowhits.keyword
 msgid "keyword"
@@ -2125,7 +2154,7 @@ msgstr "Googe Books Search durchsuchen"
 #: result.localCallNumbers
 msgctxt "result.localCallNumbers"
 msgid "Local Call Numbers:"
-msgstr ""
+msgstr "Lokale Ausleihnummern:"
 
 #: common.call.number.label
 msgid "Call Number:"
@@ -2141,7 +2170,7 @@ msgstr "ISSN"
 
 #: common.mono_parts.label
 msgid "Monograph Parts:"
-msgstr ""
+msgstr "Teile der Monographie:"
 
 #: common.copy.barcode.label
 msgid "Copy Barcode:"
@@ -2149,27 +2178,27 @@ msgstr "Barcode kopieren:"
 
 #: common.issuance_label.label
 msgid "Issuance Label:"
-msgstr ""
+msgstr "Ausgabebezeichnung:"
 
 #: common.hold.place
 msgid "Place hold for my account"
-msgstr ""
+msgstr "Reservierung für meinen Zugang vornehmen"
 
 #: common.hold.check
 msgid "Checking for possibility of hold fulfillment..."
-msgstr ""
+msgstr "Die Möglichkeit der Reservierung prüfen..."
 
 #: common.hold.create
 msgid "Create / Edit a Hold"
-msgstr ""
+msgstr "Reservierung erstellen / bearbeiten"
 
 #: common.hold.update
 msgid "Update Hold"
-msgstr ""
+msgstr "Reservierung  aktualisieren"
 
 #: common.hold.type.label
 msgid "Hold Type:"
-msgstr ""
+msgstr "Reservierungstyp:"
 
 #: common.hold.volume
 msgid "Volume Hold"
@@ -2177,38 +2206,44 @@ msgstr ""
 
 #: common.hold.copy
 msgid "Copy Hold"
-msgstr ""
+msgstr "Einzelreservierung"
 
 #: common.hold.issuance
 msgid "Issuance Hold"
-msgstr ""
+msgstr "Ausgabenreservierung"
 
 #: common.hold.advanced
 msgid "Advanced Hold Options"
-msgstr ""
+msgstr "Erweiterte Reservierungseinstellungen"
 
 #: common.hold.delivery
 msgid "Please select a physical location where your hold can be delivered."
 msgstr ""
+"Bitte wählen Sie den physikalischen Ort, wohin Ihre Reservierung geliefert "
+"werden soll."
 
 #: common.hold.checked_out
 msgid "This item is already checked out."
-msgstr ""
+msgstr "Dieser Gegenstand wurde bereits ausgeliehen."
 
 #: common.hold.checked_out.override
 msgid ""
 "This item is already checked out.  Would you like to place the hold anyway?"
 msgstr ""
+"Dieser Gegenstand wurde bereits ausgeliehen. Wollen Sie Ihn trotzdem "
+"reservieren?"
 
 #: common.hold.exists
 msgid "A hold already exists on the requested item."
-msgstr ""
+msgstr "Es gibt bereits eine Reservierung für diesen Gegenstand."
 
 #: common.hold.exists.override
 msgid ""
 "A hold already exists on the requested item. Would you like to create the "
 "hold anyway?"
 msgstr ""
+"Es gibt bereits eine Reservierung für diesen Gegenstand. Wollen Sie Ihn "
+"trotzdem reservieren?"
 
 #: common.hold.barred
 msgid ""
@@ -2216,6 +2251,9 @@ msgid ""
 "\"Staff Notes\" section of your \"My Account\" page or contact your local "
 "library."
 msgstr ""
+"GAST GESPERRT. Bitte prüfen Sie die Notizen im \n"
+"Bereich \"Mitarbeiternotizen\"Ihrer Seite \"Mein Zugang\" oder sprechen Sie "
+"mit Ihrer Ortsbibliothek."
 
 #: common.hold.item.invalid
 msgid ""
@@ -2224,10 +2262,16 @@ msgid ""
 "and \n"
 "place a new one."
 msgstr ""
+"Diese Reservierung ist ungültig. Möglicherweise wurde das \n"
+"Reservierungsziel aus dem System gelöscht. Bitte brechen Sie die "
+"Reservierung ab \n"
+"und legen eine neue an."
 
 #: common.hold.patron.invalid
 msgid "The patron barcode entered as the hold recipient is invalid."
 msgstr ""
+"Der Kundenstrichcode, der für den Reservierungsempfänger gescannt wurde, ist "
+"ungültig."
 
 #. Was (??), perhaps change to a button or icon?
 #: common.help
@@ -2250,6 +2294,14 @@ msgid ""
 "It is also possible that you have exceeded the number of allowable holds. \n"
 "For further information, please consult your local librarian."
 msgstr ""
+"Es gibt keine Gegenstände, welche die angefragten Reservierungen erfüllen "
+"können. \n"
+"Es mag sein, dass die Auswahl einer anderen Ausführung in einer "
+"erfolgreichen Reservierung mündet. \n"
+"Es kann auch sein, dass Sie die Anzahl maximal zulässiger Reservierungen "
+"überschritten haben. \n"
+"Bitte wenden Sie sich an einen Ortsbibliothekar, wenn Sie weitere Hinweise "
+"wünschen."
 
 #: common.control.click
 msgid "(control-click to select multiple formats)"
@@ -2257,7 +2309,7 @@ msgstr "(Strg+Klick um mehrere Medienarten auszuwählen)"
 
 #: common.format.alternatives
 msgid "Acceptable Alternative Formats:"
-msgstr ""
+msgstr "Zulässige alternative Formate:"
 
 #: common.phone.format
 msgid "(XXX-YYY-ZZZZ)"
@@ -2265,15 +2317,15 @@ msgstr "(XXX-YYY-ZZZZ)"
 
 #: common.phone.enable
 msgid "Enable phone notifications for this hold?"
-msgstr ""
+msgstr "Telefonische Benachrichtigungen für diese Reservierung aktivieren?"
 
 #: common.email.enable
 msgid "Enable email notifications for this hold?"
-msgstr ""
+msgstr "E-Mail-Benachrichtigungen für diese Reservierung ermöglichen?"
 
 #: common.email.none
 msgid "(Patron has no configured email address)"
-msgstr ""
+msgstr "(Für den Kunden wurde keine E-Mail-Adresse hinterlegt)"
 
 #: common.email.set
 msgid ""
@@ -2289,11 +2341,11 @@ msgstr "Schlüsselwörter:"
 
 #: common.physical.label
 msgid "Physical Description:"
-msgstr ""
+msgstr "Physikalische Beschreibung:"
 
 #: common.series.label
 msgid "Series:"
-msgstr ""
+msgstr "Reihe:"
 
 #: common.subject.label
 msgid "Subject:"
@@ -2313,7 +2365,7 @@ msgstr "Format:"
 
 #: library.select
 msgid "Find results in"
-msgstr ""
+msgstr "Ergebnisse finden in"
 
 #: library.select.label
 msgid "Choose a different library..."
@@ -2396,7 +2448,7 @@ msgstr ""
 
 #: button.go
 msgid "Go!"
-msgstr ""
+msgstr "Los!"
 
 #. =================================================================
 #. Slimpac Simple Search
@@ -2415,14 +2467,14 @@ msgstr "Sucht gerade: "
 
 #: slimpac.start.dynamic
 msgid "Dynamic Catalog"
-msgstr ""
+msgstr "Dynamischer Katalog"
 
 #. =================================================================
 #. Slimpac Advanced Search
 #. =================================================================
 #: slimpac.advanced.language
 msgid "Item Language"
-msgstr ""
+msgstr "Sprache des Gegenstands"
 
 #: slimpac.advanced.create_date
 msgid "Record Creation Date"
@@ -2434,7 +2486,7 @@ msgstr "Eintragsbearbeitungsdatum"
 
 #: opac.image_provided
 msgid "Image provided by"
-msgstr ""
+msgstr "Bild bereitstellt von"
 
 #: vendor.name
 msgid "Amazon"
@@ -2467,7 +2519,7 @@ msgstr "Abschicken"
 
 #: selfck.clear
 msgid "Clear"
-msgstr ""
+msgstr "Löschen"
 
 #: selfck.patron_barcode_label
 msgid "Please scan your library barcode"
@@ -2475,7 +2527,7 @@ msgstr "Bitte scannen Sie ihren Bibliotheks-Barcode"
 
 #: selfck.item_barcode_label
 msgid "Please scan an item to checkout or renew:"
-msgstr ""
+msgstr "Bitte scannen Sie einen Gegensatnd zum Ausleihen oder Verlängern:"
 
 #: selfck.barcode
 msgctxt "selfck.barcode"
@@ -2504,7 +2556,7 @@ msgstr "Verbleibende Verlängerungen"
 
 #: selfck.cotype
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: selfck.cotype_co
 msgid "Checkout"
@@ -2524,7 +2576,7 @@ msgstr "Willkommen"
 
 #: selfck.printing
 msgid "Printing Receipt..."
-msgstr ""
+msgstr "Quittung wird gedruckt..."
 
 #. event messages
 #: selfck.event.co_success
@@ -2537,11 +2589,11 @@ msgstr "Ein unerwartetes Ereignis ist eingetreten"
 
 #: selfck.event.dupe_barcode
 msgid "This item has already been checked out during this session"
-msgstr ""
+msgstr "Dieser Gegenstand wurde in dieser Sitzung bereits ausgeliehen"
 
 #: selfck.event.patron_not_found
 msgid "The patron barcode was not found"
-msgstr ""
+msgstr "Der Kundenstrichcode wurde nicht gefunden"
 
 #: selfck.event.item_noncat
 msgid "The requested item is not in the catalog"
@@ -2601,19 +2653,19 @@ msgstr "Das Kundenkonto ist gesperrt"
 
 #: circ.fail_part.asset.copy.circulate
 msgid "The item does not circulate"
-msgstr ""
+msgstr "Dieser Gegenstand kann nicht verliehen werden"
 
 #: circ.fail_part.asset.copy_location.circulate
 msgid "Items from this shelving location do not circulate"
-msgstr ""
+msgstr "Gegenstände aus diesem Regalstandort können nicht verliegen werden"
 
 #: circ.fail_part.asset.copy.status
 msgid "The item cannot circulate at this time"
-msgstr ""
+msgstr "Der Gegenstand kann aktuell nicht verliehen werden"
 
 #: circ.fail_part.circ.holds.target_skip_me
 msgid "The item's circulation library does not fulfill holds"
-msgstr ""
+msgstr "Die Umlaufbibliothek dieses Gegenstands leistet keine Ablagen"
 
 #: circ.fail_part.config.circ_matrix_circ_mod_test
 msgid "The patron has too many items of this type checked out"
@@ -2622,26 +2674,31 @@ msgstr "Der Kunde hat zu viele Medien dieses Typs ausgeliehen"
 #: circ.fail_part.config.circ_matrix_test.available_copy_hold_ratio
 msgid "The available item-to-hold ratio is too low"
 msgstr ""
+"Das Verhältnis ausgeliehene zu reservierten Gegenständen ist zu gering"
 
 #: circ.fail_part.config.circ_matrix_test.circulate
 msgid "Circulation rules reject this item as non-circulatable"
 msgstr ""
+"Die Umlaufregeln kennzeichnen diesen Gegenstand als nicht zirkulierbar"
 
 #: circ.fail_part.config.circ_matrix_test.total_copy_hold_ratio
 msgid "The total item-to-hold ratio is too low"
 msgstr ""
+"Das Gesamtverhältnis ausgeliehene zu reservierten Gegenständen ist zu gering"
 
 #: circ.fail_part.config.hold_matrix_test.holdable
 msgid "Hold rules reject this item as unholdable"
 msgstr ""
+"Die Reservierungsregeln legen fest, dass dieser Gegenstand nicht reserviert "
+"werden darf"
 
 #: circ.fail_part.config.hold_matrix_test.max_holds
 msgid "The patron has reached the maximum number of holds"
-msgstr ""
+msgstr "Der Kunde hat die maximale Anzahl zulässiger Reservierungen erreicht"
 
 #: circ.fail_part.config.rule_age_hold_protect.prox
 msgid "The item is too new to transit this far"
-msgstr ""
+msgstr "Dieser Gegenstand ist zu neu, um so weit transportiert zu werden"
 
 #: circ.fail_part.no_item
 msgid "The system could not find this item"
@@ -2650,10 +2707,14 @@ msgstr "Das Medium konnte nicht gefunden werden"
 #: circ.fail_part.no_ultimate_items
 msgid "The system could not find any items to match this hold request"
 msgstr ""
+"Das System konnte keine Gegenstände finden, die dieser Reservierungsanfrage "
+"entsprechen"
 
 #: circ.fail_part.no_matchpoint
 msgid "System rules do not define how to handle this item"
 msgstr ""
+"Die Systemregeln legen nicht fest, wie mit diesem Gegenstand umgegangen "
+"werden soll"
 
 #: circ.fail_part.no_user
 msgid "The system could not find this patron"
@@ -2661,4 +2722,4 @@ msgstr "Das Kundenkonto konnte nicht gefunden werden"
 
 #: circ.fail_part.transit_range
 msgid "The item cannot transit this far"
-msgstr ""
+msgstr "Dieser Gegenstand kann nicht so weit reisen"

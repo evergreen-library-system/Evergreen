@@ -1,70 +1,77 @@
-#. extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/auth.properties
+# Arabic translation for evergreen
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-07 02:03-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2012-04-07 06:46+0000\n"
+"Last-Translator: Hassan Radi <Unknown>\n"
+"Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
-"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2012-04-08 04:39+0000\n"
+"X-Generator: Launchpad (build 15060)\n"
 
 #: staff.auth.controller.not_configured
 msgid "Not yet configured for the specified server."
-msgstr ""
+msgstr "لم يتم ضبطها بعد على الخادم المحدد."
 
 #: staff.auth.controller.testing_hostname
 msgid "Testing hostname..."
-msgstr ""
+msgstr "اختبار اسم المضيف..."
 
 #: staff.auth.controller.prompt_hostname
 msgid "Please enter a server hostname."
-msgstr ""
+msgstr "الرجاء ادخال اسم المضيف للخادم."
 
 #: staff.auth.controller.error_hostname
 msgid "There was an error testing this hostname."
-msgstr ""
+msgstr "لقد حدث خطأ ما أثناء اختبار اسم المضيف هذا."
 
 #: staff.auth.controller.status
 msgid "%1$s : %2$s"
-msgstr ""
+msgstr "%1$s : %2$s"
 
 #: staff.auth.controller.testing_version
 msgid "Testing version..."
-msgstr ""
+msgstr "اختبار الاصدار..."
 
 #: staff.auth.controller.error_version
 msgid "There was an error checking version support."
-msgstr ""
+msgstr "لقد حدث خطأ ما أثناء اختبار دعم الاصدار."
 
 #: staff.auth.controller.version_mismatch
 msgid ""
 "This server does not support your version of the staff client.  Please check "
 "with your system administrator."
 msgstr ""
+"هذا الخادم لا يدعم نسختك الحالية من البرنامج. برجاء الاتصال بمسؤول النظام."
 
 #. # login with <username> and <password> at <server>
 #: staff.auth.controller.error_login
 msgid "login with %1$s and %2$s at %3$s"
-msgstr ""
+msgstr "تسجيل الدخول ب %1$s و %2$s فى %3$s"
 
 #: staff.auth.controller.confirm_close
 msgid "Are you sure you would like to exit the program completely?"
-msgstr ""
+msgstr "هل انت متأكد من رغبتك فى الخروج من البرنامج؟"
 
 #: staff.auth.session.unregistered
 msgid "%1$s is not registered with this server."
-msgstr ""
+msgstr "%1$s غير مسجل مع هذا الخادم."
 
 #: staff.auth.session.login_failed
 msgid ""
 "Login failed.  Please check your Server Hostname, Username, Password, and "
 "your CAPS LOCK key."
 msgstr ""
+"لقد فشل تسجيل الدخول. برجاء التأكد من اسم المضيف للخادم، اسم المستخدم، كلمة "
+"السر والتأكد ايضا من مفتاح ال CAPS LOCK."
 
 #: staff.auth.session.init_false
 msgid "open-ils.auth.authenticate.init returned false"

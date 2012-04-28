@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 22:55-0400\n"
-"PO-Revision-Date: 2010-04-16 12:17+0000\n"
+"PO-Revision-Date: 2012-03-05 07:17+0000\n"
 "Last-Translator: Cédric VALMARY (Tot en òc) <cvalmary@yahoo.fr>\n"
 "Language-Team: Occitan (post 1500) <oc@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:41+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2012-03-06 04:50+0000\n"
+"X-Generator: Launchpad (build 14900)\n"
 
 #: 950.data.seed-values.sql:97 950.data.seed-values.sql:2490
 msgid "Internal ID"
@@ -32,11 +32,11 @@ msgstr "Títol"
 
 #: 950.data.seed-values.sql:1952
 msgid "AuthorizeNet password"
-msgstr ""
+msgstr "Senhal d'AuthorizeNet"
 
 #: 950.data.seed-values.sql:39
 msgid "Series Title"
-msgstr ""
+msgstr "Títol del periodic"
 
 #: 950.data.seed-values.sql:3704
 msgid "Javanese"
@@ -56,7 +56,7 @@ msgstr "Palauan"
 
 #: 950.data.seed-values.sql:233
 msgid "On reservation shelf"
-msgstr ""
+msgstr "Sus la laissa de las reservacions"
 
 #: 950.data.seed-values.sql:3961
 msgid "Vai"
@@ -64,7 +64,7 @@ msgstr "Vai"
 
 #: 950.data.seed-values.sql:2002
 msgid "Credit card processing: PayflowPro vendor"
-msgstr ""
+msgstr "Tractament de las cartas de crèdit: Payflow Pro provesidor"
 
 #: 950.data.seed-values.sql:5334
 msgid ""
@@ -74,7 +74,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1971
 msgid "PayPal login"
-msgstr ""
+msgstr "connexion PayPal"
 
 #: 950.data.seed-values.sql:4042
 msgid "Serial component part"
@@ -90,11 +90,11 @@ msgstr "Fanti"
 
 #: 950.data.seed-values.sql:1994
 msgid "Credit card processing: PayflowPro password"
-msgstr ""
+msgstr "Tractament de las cartas de crèdit: Payflow Pro senhal"
 
 #: 950.data.seed-values.sql:165
 msgid "7_days_0_renew"
-msgstr ""
+msgstr "7_jorns_0_renovelament"
 
 #: 950.data.seed-values.sql:3817
 msgid "Norwegian"
@@ -137,7 +137,7 @@ msgstr "Duala"
 
 #: 950.data.seed-values.sql:85
 msgid "ISMN"
-msgstr ""
+msgstr "ISMN"
 
 #: 950.data.seed-values.sql:3965
 msgid "Votic"
@@ -175,7 +175,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1396
 msgid "Acquisitions"
-msgstr ""
+msgstr "Aquisicions"
 
 #: 950.data.seed-values.sql:3716
 msgid "Kanuri"
@@ -187,15 +187,15 @@ msgstr "Umbundu"
 
 #: 950.data.seed-values.sql:207
 msgid "10_cent_per_day"
-msgstr ""
+msgstr "10_cents_per_jorn"
 
 #: 950.data.seed-values.sql:23
 msgid "Keyword"
-msgstr ""
+msgstr "Mot clau"
 
 #: 950.data.seed-values.sql:2563
 msgid "Renew Circulations"
-msgstr ""
+msgstr "Renovelar de prèstes"
 
 #: 950.data.seed-values.sql:2256
 msgid "GUI: Example for day_phone field on patron registration"
@@ -207,7 +207,7 @@ msgstr "Celticas (autras)"
 
 #: 950.data.seed-values.sql:19
 msgid "Barred"
-msgstr ""
+msgstr "Raiat"
 
 #: 950.data.seed-values.sql:3676
 msgid "Hiligaynon"
@@ -215,7 +215,7 @@ msgstr "Hiligaynon"
 
 #: 950.data.seed-values.sql:1781
 msgid "Alert on empty bib records"
-msgstr ""
+msgstr "Alèrta sus las notícias bibs voidas"
 
 #: 950.data.seed-values.sql:3710
 msgid "Kachin"
@@ -223,7 +223,7 @@ msgstr "Kachin"
 
 #: 950.data.seed-values.sql:195
 msgid "overdue_max"
-msgstr ""
+msgstr "retard_maximum"
 
 #: 950.data.seed-values.sql:2233
 msgid ""
@@ -251,7 +251,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:6483
 msgid "Tax"
-msgstr ""
+msgstr "Impòstes e taxas"
 
 #: 950.data.seed-values.sql:3836
 msgid "Pampanga"
@@ -276,7 +276,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:3593
 msgid "Creoles and Pidgins, Portuguese-based (Other)"
-msgstr ""
+msgstr "Lengas creòlas e pidgin, portugués (Autre)"
 
 #: 950.data.seed-values.sql:3938
 msgid "Tongan"
@@ -344,7 +344,7 @@ msgstr "Disponible"
 
 #: 950.data.seed-values.sql:175
 msgid "35_days_1_renew"
-msgstr ""
+msgstr "35_jorns_1_renovelament"
 
 #: 950.data.seed-values.sql:3747
 msgid "Latin"
@@ -424,7 +424,7 @@ msgstr "Divehi"
 
 #: 950.data.seed-values.sql:3876
 msgid "Irish, Old (to 1100)"
-msgstr ""
+msgstr "Vièlh irlandés (fins a 1100)"
 
 #: 950.data.seed-values.sql:396 950.data.seed-values.sql:1666
 #: 950.data.seed-values.sql:1667
@@ -439,7 +439,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:169
 msgid "3_months_0_renew"
-msgstr ""
+msgstr "3_meses_0_renovelament"
 
 #: 950.data.seed-values.sql:3855
 msgid "Romance (Other)"
@@ -447,7 +447,7 @@ msgstr "Romanicas (Autras)"
 
 #: 950.data.seed-values.sql:6486
 msgid "Handling Charge"
-msgstr ""
+msgstr "Fraisses de manutencion"
 
 #: 950.data.seed-values.sql:3748
 msgid "Latvian"
@@ -490,7 +490,7 @@ msgstr "Inuktitut"
 
 #: 950.data.seed-values.sql:3795
 msgid "Munda (Other)"
-msgstr ""
+msgstr "Monda (Autre)"
 
 #: 950.data.seed-values.sql:3844
 msgid "Pali"
@@ -502,7 +502,7 @@ msgstr "Gã"
 
 #: 950.data.seed-values.sql:3977
 msgid "Yapese"
-msgstr "Yapese"
+msgstr "Yapés"
 
 #: 950.data.seed-values.sql:3519
 msgid "Arabic"
@@ -518,7 +518,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1390
 msgid "Staff"
-msgstr ""
+msgstr "Membres del personal"
 
 #: 950.data.seed-values.sql:7250
 msgid "Persistent Login Duration"
@@ -545,7 +545,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:42
 msgid "Abbreviated Title"
-msgstr ""
+msgstr "Abreviacion del títol"
 
 #: 950.data.seed-values.sql:3822
 msgid "Nyankole"
@@ -1313,7 +1313,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:3706
 msgid "Judeo-Persian"
-msgstr "Judeopersan"
+msgstr "Judeopèrse"
 
 #: 950.data.seed-values.sql:5364
 msgid "Use audio alerts for selfcheck events"
@@ -1541,7 +1541,7 @@ msgstr "Papó (Autras)"
 
 #: 950.data.seed-values.sql:3784 950.data.seed-values.sql:3785
 msgid "Malagasy"
-msgstr "Malgach"
+msgstr "Malgash"
 
 #: 950.data.seed-values.sql:3935
 msgid "Tlingit"
@@ -2951,7 +2951,7 @@ msgstr "Ponape"
 
 #: 950.data.seed-values.sql:3917
 msgid "Tahitian"
-msgstr "Taician"
+msgstr "Tahitian"
 
 #: 950.data.seed-values.sql:3555
 msgid "Siksika"

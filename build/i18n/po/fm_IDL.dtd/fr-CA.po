@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:44-0400\n"
-"PO-Revision-Date: 2011-11-08 22:04+0000\n"
-"Last-Translator: George Duimovich <George.Duimovich@nrcan-rncan.gc.ca>\n"
+"PO-Revision-Date: 2012-03-25 21:04+0000\n"
+"Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-11-09 04:51+0000\n"
-"X-Generator: Launchpad (build 14263)\n"
+"X-Launchpad-Export-Date: 2012-03-26 04:39+0000\n"
+"X-Generator: Launchpad (build 15008)\n"
 
 #: field.bre.source.label:2042
 msgid "Record Source"
@@ -31,7 +31,7 @@ msgstr "Clé de tri"
 
 #: field.mrd.vr_format.label:2647
 msgid "Video Recording Format"
-msgstr ""
+msgstr "Format d'enregistrement vidéo"
 
 #: class.acqlih.label:6539
 msgid "Line Item History"
@@ -39,7 +39,7 @@ msgstr ""
 
 #: field.au.ident_value2.label:2305
 msgid "Secondary Identification"
-msgstr ""
+msgstr "Identification secondaire"
 
 #: field.sdist.record_entry.label:3601
 msgid "Legacy Record Entry"
@@ -84,11 +84,11 @@ msgstr ""
 
 #: field.qsq.where_clause.label:7570
 msgid "WHERE Clause"
-msgstr ""
+msgstr "Clause WHERE"
 
 #: field.brt.transferable.label:3130
 msgid "Transferable"
-msgstr ""
+msgstr "Transférable"
 
 #: class.aoa.label:4135
 msgid "Org Address"
@@ -116,11 +116,11 @@ msgstr ""
 
 #: field.bra.required.label:3191
 msgid "Is Required"
-msgstr ""
+msgstr "Est requis"
 
 #: field.bresv.booking_interval.label:3277
 msgid "Booking Interval"
-msgstr ""
+msgstr "Intervale de réservation"
 
 #: field.cmfinm.params.label:558 field.crainm.params.label:627
 msgid "Parameters (JSON Array)"
@@ -129,7 +129,7 @@ msgstr "Paramètres (liste JSON)"
 #: field.vii.ref.label:198 field.viiad.ref.label:246
 #: field.rocit.ref.label:8662
 msgid "Reference"
-msgstr ""
+msgstr "Référence"
 
 #: field.acqfsb.amount.label:6221
 msgid "Balance after Spent"
@@ -141,7 +141,7 @@ msgstr ""
 
 #: class.cit.label:1374
 msgid "Identification Type"
-msgstr ""
+msgstr "Type d'identification"
 
 #: field.vbm.matched_attr.label:369 field.vam.matched_attr.label:482
 msgid "Matched Attribute"
@@ -162,11 +162,11 @@ msgstr ""
 #: field.circ.checkin_lib.label:2921 field.combcirc.checkin_lib.label:2983
 #: field.acirc.checkin_lib.label:3048 field.rodcirc.checkin_lib.label:8585
 msgid "Check In Library"
-msgstr ""
+msgstr "Bibliothèque d’entrée"
 
 #: class.citm.label:3997
 msgid "Item Type Map"
-msgstr ""
+msgstr "Carte de type d'article"
 
 #: field.ccmw.id.label:1171
 msgid "Circ Weights ID"
@@ -231,7 +231,7 @@ msgstr ""
 
 #: field.au.family_name.label:2298 field.stgu.family_name.label:7402
 msgid "Last Name"
-msgstr ""
+msgstr "Nom de famille"
 
 #: class.rlcd.label:8161
 msgid "Last Copy Delete Time"
@@ -245,7 +245,7 @@ msgstr ""
 #: field.sunit.stat_cat_entries.label:3814
 #: field.acp.stat_cat_entries.label:4816
 msgid "Statistical Category Entries"
-msgstr ""
+msgstr "Entrées pour la catégorie Statistiques"
 
 #: field.vmp.owner.label:145 field.vibtf.owner.label:168
 #: field.viiad.owner.label:234 field.vbq.owner.label:274
@@ -257,7 +257,7 @@ msgstr ""
 #: field.acqpoh.owner.label:6385 field.acqedi.owner.label:6807
 #: field.afs.owner.label:7465
 msgid "Owner"
-msgstr ""
+msgstr "Propriétaire"
 
 #: field.bresv.current_resource.label:3283
 msgid "Current Resource"
@@ -277,11 +277,11 @@ msgstr ""
 
 #: field.pgpt.grp.label:2683
 msgid "Group"
-msgstr ""
+msgstr "Groupe"
 
 #: field.au.ident_type2.label:2303
 msgid "Secondary Identification Type"
-msgstr ""
+msgstr "Type d’identification secondaire"
 
 #: field.auoi.staff.label:505
 msgid "Staff Member"
@@ -299,7 +299,7 @@ msgstr ""
 
 #: field.qrc.column_type.label:7752
 msgid "Column Type"
-msgstr ""
+msgstr "Type de colonne"
 
 #: field.aou.shortname.label:4252
 msgid "Short (Policy) Name"
@@ -309,7 +309,7 @@ msgstr ""
 #: field.sre.deleted.label:3483 field.sunit.deleted.label:3786
 #: field.acp.deleted.label:4790
 msgid "Is Deleted"
-msgstr ""
+msgstr "Est supprimé"
 
 #: field.mg.xact_finish.label:4527
 msgid "Transaction Finish Timestamp"
@@ -349,21 +349,21 @@ msgstr ""
 
 #: field.vii.definition.label:188
 msgid "Attribute Definition"
-msgstr ""
+msgstr "Définition d'attribut"
 
 #: class.acqcl.label:7278
 msgid "Claim"
-msgstr ""
+msgstr "Réclamation"
 
 #: class.cbt.label:5463 field.rmocbbol.billing_type.label:8685
 #: field.rmocbbcol.billing_type.label:8710
 #: field.rmocbbhol.billing_type.label:8738
 msgid "Billing Type"
-msgstr ""
+msgstr "Type de facturation"
 
 #: class.rrf.label:6912
 msgid "Report Folder"
-msgstr ""
+msgstr "Répertoire de rapport"
 
 #: field.jub.lineitem_notes.label:6507
 msgid "Line Item Notes"
@@ -375,7 +375,7 @@ msgstr ""
 
 #: field.aout.name.label:4474
 msgid "Type Name"
-msgstr ""
+msgstr "Nom du type"
 
 #: field.ahr.cancel_time.label:4186
 msgid "Hold Cancel Date/Time"
@@ -392,7 +392,7 @@ msgstr ""
 #: field.crad.format.label:586 field.cza.format.label:722
 #: field.cvrfm.value.label:1128 field.cmf.format.label:1796
 msgid "Format"
-msgstr ""
+msgstr "Format"
 
 #: class.aiit.label:984
 msgid "Non-bibliographic Invoice Item Type"
@@ -410,7 +410,7 @@ msgstr ""
 #: field.aufhol.circ_lib.label:7554 field.rodcirc.circ_lib.label:8588
 #: field.rmocbbcol.circ_lib.label:8708 field.rmobbcol.circ_lib.label:8722
 msgid "Circulating Library"
-msgstr ""
+msgstr "Bibliothèque de prêt"
 
 #: field.afs.scheduled_time.label:7469
 msgid "Scheduled Time"

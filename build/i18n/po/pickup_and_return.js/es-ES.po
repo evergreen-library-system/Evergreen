@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2011-06-25 19:20+0000\n"
-"Last-Translator: Paco Molinero <paco@byasl.com>\n"
+"PO-Revision-Date: 2012-01-14 23:47+0000\n"
+"Last-Translator: Carlos Morawski <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-06-26 04:37+0000\n"
-"X-Generator: Launchpad (build 13168)\n"
+"X-Launchpad-Export-Date: 2012-01-16 05:22+0000\n"
+"X-Generator: Launchpad (build 14664)\n"
 
 #: pickup_and_return.js:NO_SUCH_RETURNABLE_RESOURCE
 msgid "No such returnable resource."
@@ -65,7 +65,7 @@ msgstr ""
 
 #: pickup_and_return.js:RESERVATIONS_ERROR
 msgid "Error communicating with server (asking for reservations):"
-msgstr ""
+msgstr "Error comunicando con el servidor (pidiendo reservaciones):"
 
 #: pickup_and_return.js:AUTO_return_h1
 msgid "Reservations Return"

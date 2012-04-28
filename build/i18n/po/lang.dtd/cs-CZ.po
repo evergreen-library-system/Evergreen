@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-04-18 21:44-0400\n"
-"PO-Revision-Date: 2011-12-10 18:57+0000\n"
+"PO-Revision-Date: 2012-04-25 17:44+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-12-11 05:37+0000\n"
-"X-Generator: Launchpad (build 14450)\n"
+"X-Launchpad-Export-Date: 2012-04-26 04:42+0000\n"
+"X-Generator: Launchpad (build 15149)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -1214,7 +1214,7 @@ msgstr "Označit exemplář jako &rezervovatelný zdroj"
 #: staff.cat.opac.menu.label
 #: staff.cat.opac.menu.accesskey
 msgid "&Actions for this Record"
-msgstr "&Akce pro tento záznam"
+msgstr "Ak&ce pro tento záznam"
 
 #: staff.cat.opac.opac_view.label
 #: staff.cat.opac.opac_view.accesskey
@@ -7646,7 +7646,9 @@ msgstr "Rezervace: Interval pro vypršení"
 msgid ""
 "Amount of time after a hold is placed before the hold expires.  Example "
 "\"100 days\""
-msgstr "Doba vypršení rezervace od jejího zadání. Příklad \"100 dní\""
+msgstr ""
+"Doba od zadaní rezervace, po jejímž uplynutí rezervace vyprší. Příklad: "
+"\"100 days\""
 
 #: staff.server.admin.org_settings.global.credit.allow
 msgid "Allow Credit Card Payments"
@@ -7798,7 +7800,8 @@ msgid ""
 "The age at which a user is no long considered a juvenile.  For example, \"18 "
 "years\"."
 msgstr ""
-"Věk, v němž již uživatel není považován za nezletilého. Například \"18 let\"."
+"Věk, v němž již uživatel není považován za nezletilého. Například \"18 "
+"years\"."
 
 #: staff.server.admin.org_settings.cat.bib.keep_on_empty
 msgid "Do not automatically delete empty bib records"
@@ -8273,7 +8276,7 @@ msgctxt ""
 "staff.circ.checkin_overlay.actions.label "
 "staff.circ.checkin_overlay.actions.accesskey"
 msgid "Actions for &Selected Items"
-msgstr "Akce pro &vybrané exempláře"
+msgstr "Akce pro vy&brané exempláře"
 
 #: staff.circ.checkin_overlay.checkin_export.label
 msgctxt "staff.circ.checkin_overlay.checkin_export.label"
@@ -8411,7 +8414,7 @@ msgctxt ""
 "staff.circ.renew_overlay.actions.label "
 "staff.circ.renew_overlay.actions.accesskey"
 msgid "Actions for &Selected Items"
-msgstr "Akce pro &vybrané exempláře"
+msgstr "Akce pro vy&brané exempláře"
 
 #: staff.circ.renew_overlay.renew_export.label
 msgctxt "staff.circ.renew_overlay.renew_export.label"
@@ -8575,7 +8578,7 @@ msgctxt ""
 "staff.circ.copy_status_overlay.sel_items.label "
 "staff.circ.copy_status_overlay.sel_items.accesskey"
 msgid "Actions for &Selected Items"
-msgstr "Akce pro &vybrané exempláře"
+msgstr "Akce pro vy&brané exempláře"
 
 #: staff.circ.copy_status_overlay.sel_clip.label
 #: staff.circ.copy_status_overlay.sel_clip.accesskey
@@ -8718,7 +8721,7 @@ msgctxt ""
 "staff.circ.copy_status_overlay.cmd_add_volumes.label "
 "staff.circ.copy_status_overlay.cmd_add_volumes.accesskey"
 msgid "Add &Volumes"
-msgstr "Přidat &svazky"
+msgstr "Přidat sva&zky"
 
 #: staff.circ.copy_status_overlay.cmd_mark_library.label
 #: staff.circ.copy_status_overlay.cmd_mark_library.accesskey
@@ -9423,7 +9426,7 @@ msgstr "&Zobrazit v katalogu"
 #: staff.cat.manage_multi_bib_items.actions.menu_entry.change_peer_type.label
 #: staff.cat.manage_multi_bib_items.actions.menu_entry.change_peer_type.accesskey
 msgid "&Change Peer Type"
-msgstr "Změňa rovno&cenného  typu"
+msgstr "Změnit způsob spo&jení"
 
 #: staff.cat.manage_multi_bib_items.actions.menu_entry.unlink_from_bib.label
 #: staff.cat.manage_multi_bib_items.actions.menu_entry.unlink_from_bib.accesskey
@@ -9433,7 +9436,7 @@ msgstr "Odst&ranit z bib"
 #: staff.cat.manage_multi_bib_items.peer_type.menu.label
 #: staff.cat.manage_multi_bib_items.peer_type.menu.accesskey
 msgid "Peer &Type:"
-msgstr "Rovnocenný &typ"
+msgstr "&Způsob spojení"
 
 #: staff.cat.manage_multi_bib_items.barcode.textbox.label
 #: staff.cat.manage_multi_bib_items.barcode.textbox.accesskey
@@ -9446,7 +9449,7 @@ msgstr "Čárový &kód"
 #: staff.cat.manage_multi_bib_items.barcode.submit.label
 #: staff.cat.manage_multi_bib_items.barcode.submit.accesskey
 msgid "Link to Bib (&Submit)"
-msgstr "Odkaz na Bib (&Potvrdit)"
+msgstr "Odkaz na bibliografický záznam  (&Potvrdit)"
 
 #: staff.cat.copy_browser.actions.sel_clip.label
 #: staff.cat.copy_browser.actions.sel_clip.accesskey
@@ -9611,7 +9614,7 @@ msgctxt ""
 "staff.cat.copy_browser.actions.cmd_refresh_list.label "
 "staff.cat.copy_browser.actions.cmd_refresh_list.accesskey"
 msgid "&Refresh Listing"
-msgstr "&Obnovit seznam"
+msgstr "O&bnovit seznam"
 
 #: staff.cat.copy_browser.holdings_maintenance.caption
 msgid "Holdings Maintenance"
@@ -9659,7 +9662,7 @@ msgstr "Ukázat knihovny s exemp&láři"
 #: staff.cat.copy_browser.holdings_maintenance.actions.label
 #: staff.cat.copy_browser.holdings_maintenance.actions.accesskey
 msgid "Actions &for Selected Rows"
-msgstr "Akce&pro vybrané řádky"
+msgstr "Akce &pro vybrané řádky"
 
 #: staff.cat.copy_browser.holdings_maintenance.sel_clip.label
 #: staff.cat.copy_browser.holdings_maintenance.sel_clip.accesskey
@@ -9715,7 +9718,7 @@ msgctxt ""
 "staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.label "
 "staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.accesskey"
 msgid "&Transfer Items to Previously Marked Volume"
-msgstr "&Přesunout exempláře do předem označeného svazku"
+msgstr "Přes&unout exempláře do předem označeného svazku"
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.label
 #: staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.accesskey
@@ -9723,7 +9726,7 @@ msgctxt ""
 "staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.label "
 "staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.accesskey"
 msgid "Add &Volumes"
-msgstr "Přidat &svazky"
+msgstr "Přida&t svazky"
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_mark_library.label
 #: staff.cat.copy_browser.holdings_maintenance.cmd_mark_library.accesskey
@@ -9755,7 +9758,7 @@ msgctxt ""
 "staff.cat.copy_browser.holdings_maintenance.cmd_mark_volume.label "
 "staff.cat.copy_browser.holdings_maintenance.cmd_mark_volume.accesskey"
 msgid "&Mark Volume as Item Transfer Destination"
-msgstr "&Označit svazek jako cíl přesunu exempláře"
+msgstr "Označ&it svazek jako cíl přesunu exempláře"
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_transfer_volume.label
 #: staff.cat.copy_browser.holdings_maintenance.cmd_transfer_volume.accesskey
@@ -9763,7 +9766,7 @@ msgctxt ""
 "staff.cat.copy_browser.holdings_maintenance.cmd_transfer_volume.label "
 "staff.cat.copy_browser.holdings_maintenance.cmd_transfer_volume.accesskey"
 msgid "&Transfer Volumes to Previously Marked Library"
-msgstr "&Přesunout  svazky do předem označené knihovny"
+msgstr "Přesunout  s&vazky do předem označené knihovny"
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_delete_items.label
 msgctxt "staff.cat.copy_browser.holdings_maintenance.cmd_delete_items.label"
@@ -9782,7 +9785,7 @@ msgctxt ""
 "staff.cat.copy_browser.holdings_maintenance.sel_mark_items_damaged.label "
 "staff.cat.copy_browser.holdings_maintenance.sel_mark_items_damaged.accesskey"
 msgid "Mark Item &Damaged"
-msgstr "Označit exemplář jako &poškozený"
+msgstr "Označit e&xemplář jako poškozený"
 
 #: staff.cat.copy_browser.holdings_maintenance.sel_mark_items_missing.label
 #: staff.cat.copy_browser.holdings_maintenance.sel_mark_items_missing.accesskey
@@ -11751,7 +11754,7 @@ msgstr "Filtr:"
 #: staff.patron.holds_overlay.actions_for_holds.label
 #: staff.patron.holds_overlay.actions_for_holds.accesskey
 msgid "Actions for &Selected Holds"
-msgstr "Akce pro &vybranoé rezervace"
+msgstr "Akce pro &vybrané rezervace"
 
 #: staff.patron.holds_overlay.holds_export.label
 msgctxt "staff.patron.holds_overlay.holds_export.label"
@@ -12179,7 +12182,7 @@ msgstr "Telefonní číslo večer"
 #: staff.patron.ue.other_phone.label
 msgctxt "staff.patron.ue.other_phone.label"
 msgid "Other Phone"
-msgstr "Jiné telefonní číslo"
+msgstr "Další telefonní číslo"
 
 #: staff.patron.ue.home_library.label
 msgctxt "staff.patron.ue.home_library.label"
@@ -13220,7 +13223,7 @@ msgstr "Je nutné vybrat profil skupiny"
 
 #: ev.staff.patron.ue_xhtml.print_page.label
 msgid "Print Page"
-msgstr "Vytisknout stránku"
+msgstr "Tisk stránky"
 
 #: ev.staff.patron.ue_xhtml.return_to_editor.label
 msgid "Return to Editor"
@@ -13373,7 +13376,7 @@ msgstr "Vydání"
 
 #: staff.circ.alternate_copy_summary.Floating.label
 msgid "Floating"
-msgstr "Cirkulační"
+msgstr "Pohyblivý exemplář"
 
 #: staff.circ.alternate_copy_summary.Holdable.label
 msgctxt "staff.circ.alternate_copy_summary.Holdable.label"
@@ -13819,3 +13822,17 @@ msgstr "Provozováno v systému"
 
 #~ msgid "Edit Item Attributes"
 #~ msgstr "Editovat vlastnosti exempláře"
+
+#~ msgid ""
+#~ "This is the Evergreen staff client portal page. You can customize this with "
+#~ "the information or functionality your organization needs to support its "
+#~ "operations. For example, you could add links to process and procedure "
+#~ "documents."
+#~ msgstr ""
+#~ "Toto je vstupní stránka pracovního klienta Evergreenu. Tuto stránku je možné "
+#~ "přizpůsobit z hlediska informací nebo funkcí podle potřeb vaší  vaší "
+#~ "organizace (například zde lze přidat odkazy na různé funkce Evergreenu nebo "
+#~ "pracovní procesy či postupy)."
+
+#~ msgid "Evergreen Staff Client Portal Page"
+#~ msgstr "Vstupní stránka pracovního klienta Evergreenu"

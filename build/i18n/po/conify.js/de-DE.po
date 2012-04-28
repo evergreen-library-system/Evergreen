@@ -8,18 +8,18 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2011-06-05 13:12+0000\n"
-"Last-Translator: vulpecula <Unknown>\n"
+"PO-Revision-Date: 2012-01-11 16:10+0000\n"
+"Last-Translator: Daniel Winzen <d@winzen4.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-06-06 04:38+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2012-01-12 05:43+0000\n"
+"X-Generator: Launchpad (build 14640)\n"
 
 #: conify.js:SURVEY_ID
 msgid "Survey ID # ${0}"
-msgstr ""
+msgstr "ID aufnehmen # ${0}"
 
 #: conify.js:SUCCESS_NEW_PERM_MAP
 msgid "New permission map created"
@@ -27,7 +27,7 @@ msgstr "Neue Erlaubniskarte kreiert"
 
 #: conify.js:END_SURVEY
 msgid "End Survey Now"
-msgstr ""
+msgstr "Aufnahme jetzt beenden"
 
 #: conify.js:SUCCESS_SAVING_DATA conify.js:SUCCESS_SAVE
 msgid "Saved changes to ${0}"
@@ -35,7 +35,7 @@ msgstr "Änderungen an ${0} gespeichert"
 
 #: conify.js:ERROR_FETCHING_PHYSICAL
 msgid "Problem fetching Physical Address for ${0}"
-msgstr ""
+msgstr "Problem beim Abrufende der physikalische Adresse für ${0}"
 
 #: conify.js:SURVEY_ADD_ANSWER
 msgid "Add Answer"
@@ -47,7 +47,7 @@ msgstr "Übersetzung"
 
 #: conify.js:ACQ_DISTRIB_FORMULA_NAME_CLONE
 msgid "${0} (Clone)"
-msgstr ""
+msgstr "${0} (Klon}"
 
 #: conify.js:ERROR_DELETING_LAST_AOU
 msgid "Cannot delete ${0}, you need at least one organization unit."
@@ -75,7 +75,7 @@ msgstr "Änderungen speichern"
 
 #: conify.js:ERROR_CREATING_CHILD_GROUP
 msgid "Problem creating child Group"
-msgstr ""
+msgstr "Problem Erstellen einer Kindergruppe"
 
 #: conify.js:SUCCESS_SAVE_PERM
 msgid "Saved permission changes to ${0}"
@@ -95,11 +95,11 @@ msgstr "Problem Statuses abzurufen"
 
 #: conify.js:ERROR_SAVING_PERM_DATA
 msgid "Problem saving permission data for ${0}"
-msgstr ""
+msgstr "Problem beim speichern der Zugangsdaten für ${0}"
 
 #: conify.js:SUCCESS_CREATING_STATUS
 msgid "New ${0} status created"
-msgstr ""
+msgstr "Neuer ${0} Status erstellt"
 
 #: conify.js:SURVEY_DELETE_QUESTION
 msgid "Delete Question & Answers"
@@ -165,7 +165,7 @@ msgstr ""
 
 #: conify.js:LABEL_NEW_GROUP
 msgid "New Group"
-msgstr ""
+msgstr "Neue Gruppe"
 
 #: conify.js:CONFIRM_EXIT_PGT
 msgid ""
@@ -211,7 +211,7 @@ msgstr ""
 
 #: conify.js:LABEL_NEW_TYPE
 msgid "New Type"
-msgstr ""
+msgstr "Neuer Typ"
 
 #: conify.js:ERROR_CREATING_CHILD_AOU
 msgid "Problem creating child organizational unit"
@@ -239,11 +239,11 @@ msgstr ""
 
 #: conify.js:SUCCESS_CREATING_CODE
 msgid "New ${0} ${1} created"
-msgstr ""
+msgstr "Neues ${0} ${1} erstellt"
 
 #: conify.js:LABEL_CODE
 msgid "Code"
-msgstr ""
+msgstr "Code"
 
 #: conify.js:SURVEY_FOOT_LABEL
 msgid "Questions & Answers"
@@ -345,7 +345,7 @@ msgstr ""
 
 #: conify.js:ID
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: conify.js:SUCCESS_SAVING_HOLDS
 msgid "Saved changes to the Holds Address of ${0}"

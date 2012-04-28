@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 22:55-0400\n"
-"PO-Revision-Date: 2011-12-30 13:25+0000\n"
-"Last-Translator: Daniel Winzen <d@winzen4.de>\n"
+"PO-Revision-Date: 2012-01-22 14:11+0000\n"
+"Last-Translator: Karsten Tinnefeld <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-12-31 05:56+0000\n"
-"X-Generator: Launchpad (build 14560)\n"
+"X-Launchpad-Export-Date: 2012-01-23 05:21+0000\n"
+"X-Generator: Launchpad (build 14700)\n"
 
 #: 950.data.seed-values.sql:97 950.data.seed-values.sql:2490
 msgid "Internal ID"
@@ -32,11 +32,11 @@ msgstr "Titel"
 
 #: 950.data.seed-values.sql:1952
 msgid "AuthorizeNet password"
-msgstr ""
+msgstr "Passwort für AuthorizeNet"
 
 #: 950.data.seed-values.sql:39
 msgid "Series Title"
-msgstr ""
+msgstr "Reihentitel"
 
 #: 950.data.seed-values.sql:3704
 msgid "Javanese"
@@ -48,7 +48,7 @@ msgstr "Poesie"
 
 #: 950.data.seed-values.sql:224
 msgid "In transit"
-msgstr ""
+msgstr "Im Transport"
 
 #: 950.data.seed-values.sql:3839
 msgid "Palauan"
@@ -56,7 +56,7 @@ msgstr "Palau-Sprache"
 
 #: 950.data.seed-values.sql:233
 msgid "On reservation shelf"
-msgstr ""
+msgstr "Im Reservierungsregal"
 
 #: 950.data.seed-values.sql:3961
 msgid "Vai"
@@ -64,17 +64,19 @@ msgstr "Vai-Sprache"
 
 #: 950.data.seed-values.sql:2002
 msgid "Credit card processing: PayflowPro vendor"
-msgstr ""
+msgstr "Kreditkartenverarbeitung: PayflowPro-Verkäufer"
 
 #: 950.data.seed-values.sql:5334
 msgid ""
 "This prevents the system from charging more than the item price in overdue "
 "fines"
 msgstr ""
+"Dies hindert das System daran, mehr als den Einzelpreis in Verzugsgebühren "
+"zu berechnen"
 
 #: 950.data.seed-values.sql:1971
 msgid "PayPal login"
-msgstr ""
+msgstr "PayPal-Anmeldung"
 
 #: 950.data.seed-values.sql:4042
 msgid "Serial component part"
@@ -90,7 +92,7 @@ msgstr "Fante-Sprache"
 
 #: 950.data.seed-values.sql:1994
 msgid "Credit card processing: PayflowPro password"
-msgstr ""
+msgstr "Kreditkartenverarbeitung: PayflowPro-Passwort"
 
 #: 950.data.seed-values.sql:165
 msgid "7_days_0_renew"
@@ -116,12 +118,16 @@ msgstr "Bambara-Sprache"
 #: 950.data.seed-values.sql:2026
 msgid "Holds: Block Renewal of Items Needed for Holds"
 msgstr ""
+"Reservierungen: Verlängerung von Gegenständen, die für Reservierungen "
+"benötigt werden"
 
 #: 950.data.seed-values.sql:2413
 msgid ""
 "Instead of All fields, show just suggested fields in patron registration by "
 "default."
 msgstr ""
+"Statt aller Felder, als Vorgabe nur die empfohlenen Felder in der "
+"Benutzerregistrierung anzeigen."
 
 #: 950.data.seed-values.sql:3502
 msgid "Abkhaz"
@@ -137,7 +143,7 @@ msgstr "Duala-Sprachen"
 
 #: 950.data.seed-values.sql:85
 msgid "ISMN"
-msgstr ""
+msgstr "ISMN"
 
 #: 950.data.seed-values.sql:3965
 msgid "Votic"
@@ -150,10 +156,12 @@ msgstr "Unbekannt"
 #: 950.data.seed-values.sql:2408
 msgid "GUI: Regex for post_code field on patron registration"
 msgstr ""
+"Grafische Oberfläche: Regulärer Ausdruck für die Postleitzahl in der "
+"Benutzerregistrierung"
 
 #: 950.data.seed-values.sql:372
 msgid "Example Branch 2"
-msgstr ""
+msgstr "Beispielfiliale 2"
 
 #: 950.data.seed-values.sql:3943
 msgid "Tsonga"
@@ -165,6 +173,10 @@ msgid ""
 "Suggesting a field makes it appear when suggested fields are shown. If the "
 "field is shown or required this setting is ignored."
 msgstr ""
+"Das Feld ident_value2 wird dem Benutzer als \"Eingabe empfohlen\" bei der "
+"Registrierung angezeigt. Wenn nur empfohlene Felder angezeigt werden sollen, "
+"ist dieses Feld dabei. Wenn dieses Feld als \"immer anzeigen\" oder "
+"\"Pflichteingabe\" gekennzeichnet ist, wird die Einstellung ignoriert."
 
 #: 950.data.seed-values.sql:2357
 msgid ""
@@ -172,10 +184,14 @@ msgid ""
 "Showing a field makes it appear with required fields even when not required. "
 "If the field is required this setting is ignored."
 msgstr ""
+"Das Feld master_account wird dem Benutzer bei der Registrierung angezeigt. "
+"Dieses führt dazu, dass es mit den Pflichtfeldern angezeigt wird, selbst "
+"wenn es kein Pflichtfeld ist. Ist es ein Pflichtfeld, wird diese Einstellung "
+"ignoriert."
 
 #: 950.data.seed-values.sql:1396
 msgid "Acquisitions"
-msgstr ""
+msgstr "Erwerbungen"
 
 #: 950.data.seed-values.sql:3716
 msgid "Kanuri"
@@ -187,15 +203,15 @@ msgstr "Mbundu-Sprache"
 
 #: 950.data.seed-values.sql:207
 msgid "10_cent_per_day"
-msgstr ""
+msgstr "10 Cent täglich"
 
 #: 950.data.seed-values.sql:23
 msgid "Keyword"
-msgstr ""
+msgstr "Schlüsselwort"
 
 #: 950.data.seed-values.sql:2563
 msgid "Renew Circulations"
-msgstr ""
+msgstr "Umläufe aktualisieren"
 
 #: 950.data.seed-values.sql:2256
 msgid "GUI: Example for day_phone field on patron registration"
@@ -4059,7 +4075,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:89
 msgid "ISRC"
-msgstr ""
+msgstr "ISRC"
 
 #: 950.data.seed-values.sql:3634
 msgid "Finno-Ugrian (Other)"

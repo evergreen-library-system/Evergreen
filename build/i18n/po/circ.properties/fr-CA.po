@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: Evergreen ILS > circ.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2009-11-24 21:11+0000\n"
-"Last-Translator: Warren Layton <Unknown>\n"
+"PO-Revision-Date: 2012-04-27 15:32+0000\n"
+"Last-Translator: George Duimovich <George.Duimovich@nrcan-rncan.gc.ca>\n"
 "Language-Team: NRCan Library\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:39+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2012-04-28 04:56+0000\n"
+"X-Generator: Launchpad (build 15149)\n"
 "X-Poedit-Country: Canada\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: French\n"
@@ -129,7 +129,7 @@ msgstr ""
 
 #: staff.circ.backdate.circ_ids.prompt
 msgid "Number of circulations selected: %1$s "
-msgstr ""
+msgstr "Nombre de circulations sélectionnés : %1$s "
 
 #: staff.circ.backdate.circ_ids.failed
 msgid "Number of circulations not backdated: %1$s "
@@ -896,7 +896,7 @@ msgstr "Fermer la fenêtre"
 
 #: staff.circ.print_list_template.preview
 msgid "preview: "
-msgstr ""
+msgstr "aperçu: "
 
 #: staff.circ.print_list_template.save
 msgid "Template Saved"
@@ -1040,15 +1040,15 @@ msgstr "Bibliothèque propriétaire"
 
 #: staff.circ.utils.prefix
 msgid "Prefix"
-msgstr ""
+msgstr "Préfixe"
 
 #: staff.circ.utils.suffix
 msgid "Suffix"
-msgstr ""
+msgstr "Suffixe"
 
 #: staff.circ.utils.label_class
 msgid "Classification"
-msgstr ""
+msgstr "Classification"
 
 #: staff.circ.utils.loan_duration.short
 msgid "Short"
@@ -1144,7 +1144,7 @@ msgstr "Poste de travail pour le renouvellement ou la distribution"
 
 #: staff.circ.utils.checkout_workstation_top_of_chain
 msgid "Checkout Workstation"
-msgstr ""
+msgstr "Poste de travail pour le retour"
 
 #: staff.circ.utils.xact_start
 msgid "Checkout Date"
@@ -1160,11 +1160,11 @@ msgstr "Transaction terminée"
 
 #: staff.circ.utils.checkin_scan_time
 msgid "Checkin Scan Date"
-msgstr ""
+msgstr "Vérification de la date du balayage"
 
 #: staff.circ.utils.checkin_workstation
 msgid "Checkin Workstation"
-msgstr ""
+msgstr "Poste de travail pour l’emprunt"
 
 #: staff.circ.utils.create_date
 msgid "Date Created"
@@ -1172,7 +1172,7 @@ msgstr "Date de création"
 
 #: staff.circ.utils.edit_date
 msgid "Date Last Edited "
-msgstr ""
+msgstr "Dernière Date Edité "
 
 #: staff.circ.utils.bre.create_date
 msgid "Date Record Created"
@@ -1993,7 +1993,7 @@ msgstr "Il semble que les articles mis en réserve n’ont pas été suspendus."
 
 #: staff.circ.holds.alt_view.label
 msgid "Detail View"
-msgstr ""
+msgstr "Vue détaillée"
 
 #: staff.circ.holds.alt_view.accesskey
 msgctxt "staff.circ.holds.alt_view.accesskey"
@@ -2021,127 +2021,3 @@ msgstr "Pièces manquantes"
 #: staff.circ.missing_pieces.scan_item.error_alert
 msgid "No item with barcode \"%1$s\""
 msgstr "Aucun article dont le code à barres est \\\"%1$s\\\""
-
-#~ msgctxt "staff.circ.invalid_date"
-#~ msgid "Invalid Date"
-#~ msgstr "Date invalide"
-
-#~ msgid "items ="
-#~ msgstr "Articles ="
-
-#~ msgid "preview:"
-#~ msgstr "aperçu :"
-
-#~ msgid "Date Last Edited"
-#~ msgstr "Date de la dernière modification"
-
-#~ msgid "Request Date"
-#~ msgstr "Date de la demande"
-
-#~ msgid "Activation Date"
-#~ msgstr "Date d’activation"
-
-#~ msgid "Title: %1$s"
-#~ msgstr "Titre : %1$s"
-
-#~ msgid "Request Date: %1$s"
-#~ msgstr "Date de demande : %1$s"
-
-#~ msgid "Slip Date: %1$s"
-#~ msgstr "Date de bordereau : %1$s"
-
-#~ msgid "Do Not Capture"
-#~ msgstr "Ne pas saisir"
-
-#~ msgid "Check In Failed (in circ.util.checkin) (%1$s):"
-#~ msgstr "Échec de l’entrée (dans circ.util.checkin) (%1$s) :"
-
-#~ msgid ""
-#~ "Please enter an Activation Date (or leave blank to unset) for hold %1$s.  "
-#~ "This will also Suspend the hold."
-#~ msgstr ""
-#~ "Veuillez entrer une date d’activation (ou laissez en blanc pour rétablir) "
-#~ "pour l’article mis en réserve %1$s, ce qui suspendra l’article mis en "
-#~ "réserve."
-
-#~ msgid ""
-#~ "Please enter an Activation Date (or leave blank to unset) for holds %1$s.  "
-#~ "This will also Suspend the holds."
-#~ msgstr ""
-#~ "Veuillez entrer une date d’activation (ou laissez en blanc pour rétablir) "
-#~ "pour les articles mis en réserve %1$s, ce qui suspendra les articles mis en "
-#~ "réserve."
-
-#~ msgid ""
-#~ "Activation Date needs to be either unset or set to fall on a future date."
-#~ msgstr ""
-#~ "La date d’activation doit être rétablie ou réglée à une date ultérieure."
-
-#~ msgctxt "staff.circ.holds.activation_date.invalid_date"
-#~ msgid "Invalid Date"
-#~ msgstr "Date invalide"
-
-#~ msgid ""
-#~ "Please enter an Expiration Date (or leave blank to unset) for hold %1$s."
-#~ msgstr ""
-#~ "Veuillez entrer une date d'expiration (ou laissez vide pour canceller) pour "
-#~ "l'article mis en réserve %1$s."
-
-#~ msgid ""
-#~ "Please enter an Expiration Date (or leave blank to unset) for holds %1$s."
-#~ msgstr ""
-#~ "Veuillez entrer une date d'expiration (ou laissez vide pour canceller) pour "
-#~ "les articles mis en réserve %1$s."
-
-#~ msgid ""
-#~ "Expiration Date needs to be either unset or set to fall on a future date."
-#~ msgstr ""
-#~ "La date d’activation doit être rétablie ou réglée à une date ultérieure."
-
-#~ msgctxt "staff.circ.holds.expire_time.invalid_date"
-#~ msgid "Invalid Date"
-#~ msgstr "Date invalide"
-
-#~ msgctxt "staff.circ.holds.shelf_expire_time.invalid_date"
-#~ msgid "Invalid Date"
-#~ msgstr "Date invalide"
-
-#~ msgid "Checkout Timestamp"
-#~ msgstr "Horodateur -  Sortie"
-
-#~ msgid "Checkin Timestamp"
-#~ msgstr "Horodateur -  Entrée"
-
-#~ msgid "Request Timestamp"
-#~ msgstr "Heure de la demande (horodateur)"
-
-#~ msgid "Available On (Timestamp)"
-#~ msgstr "Disponible le (horodateur)"
-
-#~ msgid "Capture Timestamp"
-#~ msgstr "Heure de saisie (horodateur)"
-
-#~ msgid "Checkout Library"
-#~ msgstr "Sortie de la bibliothèque"
-
-#~ msgid ""
-#~ "You may not edit the pickup library for holds that are in-transit or ready "
-#~ "for pickup."
-#~ msgstr ""
-#~ "Vous ne pouvez pas modifier la bibliothèque d’emprunt lorsque les articles "
-#~ "mis en réserve sont en transit ou prêts à être empruntés."
-
-#~ msgid "Number of circulations not backdated: %1$s"
-#~ msgstr "Nombre d’exemplaires qui ne sont pas antidatés : %1$s"
-
-#~ msgid "Number of circulations selected: %1$s"
-#~ msgstr "Nombre d’exemplaires sélectionnés : %1$s"
-
-#~ msgid "Date Record Last Edited"
-#~ msgstr "Date de la dernière modification du dossier"
-
-#~ msgid "Potential Copies"
-#~ msgstr "Exemplaires possibles"
-
-#~ msgid "Number of holds not updated: %1$s"
-#~ msgstr "Nombre d’articles mis en réserve non mis à jour : %1$s"

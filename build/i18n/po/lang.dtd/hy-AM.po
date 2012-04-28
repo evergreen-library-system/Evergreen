@@ -3,19 +3,36 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-04-18 21:44-0400\n"
-"PO-Revision-Date: 2011-07-16 08:54+0000\n"
+"PO-Revision-Date: 2012-01-15 16:37+0000\n"
 "Last-Translator: Serj Safarian <serjsafarian@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-07-17 04:33+0000\n"
-"X-Generator: Launchpad (build 13405)\n"
+"X-Launchpad-Export-Date: 2012-01-16 05:22+0000\n"
+"X-Generator: Launchpad (build 14664)\n"
 "X-Accelerator-Marker: &\n"
 
 #: common.logout
 msgid "Log Out"
 msgstr "Ելք"
+
+#: common.browser.reload.label
+#: common.browser.reload.accesskey
+msgid "Re&load"
+msgstr "Վերա&բեռնել"
+
+#: common.browser.print.label
+#: common.browser.print.accesskey
+msgid "&Print Page"
+msgstr "&Տպել էջը"
+
+#: staff.circ.offline.cmd_exit.label
+#: staff.circ.offline.cmd_exit.accesskey
+msgctxt ""
+"staff.circ.offline.cmd_exit.label staff.circ.offline.cmd_exit.accesskey"
+msgid "E&xit"
+msgstr "&Ելք"
 
 #: staff.copy.attr.stat.genre.example13
 msgid "Western"
@@ -29,6 +46,10 @@ msgstr "Գտնել"
 msgctxt "staff.main.menu.edit.paste.label"
 msgid "Paste"
 msgstr "Դնել"
+
+#: staff.main.menu.edit.redo.label
+msgid "Redo"
+msgstr "Վերարկել"
 
 #: staff.main.menu.edit.undo.label
 msgid "Undo"
@@ -48,6 +69,10 @@ msgstr "&Նշոց"
 #: staff.main.menu.file.new_tab.accesskey
 msgid "New &Tab"
 msgstr "Նոր &ներդիր"
+
+#: staff.marc.file.reload
+msgid "Reload"
+msgstr "Վերաբեռնել"
 
 #: staff.server.admin.stat_cat.type
 msgid "Type: "
@@ -301,16 +326,6 @@ msgstr "Գնա Առա&ջ"
 #: common.browser.backward.accesskey
 msgid "Go &Back"
 msgstr "Գնա &Հետ"
-
-#: common.browser.reload.label
-#: common.browser.reload.accesskey
-msgid "Re&load"
-msgstr "Վերա&բեռնիր"
-
-#: common.browser.print.label
-#: common.browser.print.accesskey
-msgid "&Print Page"
-msgstr "&Տպիր էջը"
 
 #: common.browser.help.label
 #: common.browser.help.accesskey
@@ -1698,13 +1713,6 @@ msgstr "Գրանցիր &Ընթերցող"
 #: staff.circ.offline.cmd_print_last_receipt.accesskey
 msgid "&Last Receipt"
 msgstr "&Վերջին ստացական"
-
-#: staff.circ.offline.cmd_exit.label
-#: staff.circ.offline.cmd_exit.accesskey
-msgctxt ""
-"staff.circ.offline.cmd_exit.label staff.circ.offline.cmd_exit.accesskey"
-msgid "E&xit"
-msgstr "&Ելք"
 
 #: staff.circ.offline_checkin.main.label
 msgid "Standalone Check In"
@@ -3709,10 +3717,6 @@ msgctxt "staff.main.menu.edit.redo.key"
 msgid "R"
 msgstr "R"
 
-#: staff.main.menu.edit.redo.label
-msgid "Redo"
-msgstr "վերարկել"
-
 #: staff.main.menu.edit.select_all.key
 msgctxt "staff.main.menu.edit.select_all.key"
 msgid "A"
@@ -5173,10 +5177,6 @@ msgstr "Հիշիր (to DB)"
 msgctxt "staff.marc.file.publish.key"
 msgid "S"
 msgstr "S"
-
-#: staff.marc.file.reload
-msgid "Reload"
-msgstr "Վերաբեռնավորիր"
 
 #: staff.marc.file.reload.key
 msgctxt "staff.marc.file.reload.key"
@@ -13757,39 +13757,11 @@ msgstr ""
 msgid "Powered by"
 msgstr "Ուժեղացված"
 
-#~ msgid "&Next"
-#~ msgstr "&Հաջորդ"
-
-#~ msgctxt "staff.main.menu.edit.cut.key"
-#~ msgid "t"
-#~ msgstr "t"
-
-#~ msgid "Default"
-#~ msgstr "Լռակյաց"
-
-#~ msgid "End Date"
-#~ msgstr "Ավարտի ամսաթիվ"
-
 #~ msgid "Pull List for Hold Requests"
 #~ msgstr "Հրելու ցուցակ պահման հարցումների համար"
 
-#~ msgid "Stop Fines Time"
-#~ msgstr "Տուգանքի կանգնեցման ժամ"
-
-#~ msgid "Stop Fines Reason"
-#~ msgstr "Տուգանքի կանգնեցման պատճառ"
-
 #~ msgid "&Import"
 #~ msgstr "&Ներմուծում"
-
-#~ msgid "Title:"
-#~ msgstr "Վերնագիր"
-
-#~ msgid "Author:"
-#~ msgstr "Հեղինակ"
-
-#~ msgid "Publication Date:"
-#~ msgstr "Հրատարակման ամսաթիվ"
 
 #~ msgctxt ""
 #~ "staff.cat.copy_browser.actions.cmd_edit_items.label "
@@ -13801,12 +13773,6 @@ msgstr "Ուժեղացված"
 #~ msgid "Replace Barcode"
 #~ msgstr "Փոխարինիր շտրիխ կոդը"
 
-#~ msgid ""
-#~ "Green in the list below means the library has volumes for this record."
-#~ msgstr ""
-#~ "Ստորև բերված ցւոցակում կանաչը նշանակւոմ է որ գրադարանը ունի հատորներ այս "
-#~ "գրառման համար"
-
 #~ msgctxt ""
 #~ "staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.label "
 #~ "staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.accesskey"
@@ -13816,71 +13782,11 @@ msgstr "Ուժեղացված"
 #~ msgid "Edit Item Attributes"
 #~ msgstr "Խմբագրի նյութի բաղկացուցիչները"
 
-#~ msgid "Identification"
-#~ msgstr "Բնութագրում"
-
-#~ msgctxt "staff.cat.copy_summary.save_columns.label"
-#~ msgid "Save Columns"
-#~ msgstr "Հիշիր սյունակները"
-
-#~ msgctxt "staff.cat.copy_summary.sel_clip.label"
-#~ msgid "Copy to Clipboard"
-#~ msgstr "Արտագրիր կլիպբորդ"
-
-#~ msgctxt "staff.cat.copy_summary.print_export.label"
-#~ msgid "Print Export"
-#~ msgstr "Տպիր Արտահանումը"
-
-#~ msgid "Check &Barcodes?"
-#~ msgstr "Ստուգե՞լ &Շտրիխ կոդը"
-
-#~ msgid "Edit then &Create"
-#~ msgstr "Խմբագրիր ապա &Ստեղծիր"
-
-#~ msgid "Modify"
-#~ msgstr "Ձևափոխիր"
-
-#~ msgctxt "staff.cat.volume_editor.cancel.label"
-#~ msgid "Cancel"
-#~ msgstr "Չեղյալ անել"
-
 #~ msgid "MARC Editor for &Overlay"
 #~ msgstr "MARC խմբագրիչ &վերածածկման համար"
 
 #~ msgid "MARC Editor for &Import"
 #~ msgstr "MARC խմբագրիչ &ներմուծման համար"
-
-#~ msgctxt "staff.patron.bill_interface.add_billing.label"
-#~ msgid "Add Billing"
-#~ msgstr "Ավելացրու հաշիվ"
-
-#~ msgid "Uncheck All"
-#~ msgstr "Հետ ընտրիր բոլորը"
-
-#~ msgid "Check All"
-#~ msgstr "Ընտրիր բոլորը"
-
-#~ msgctxt "staff.patron.bills_overlay.payment_type.accesskey"
-#~ msgid "t"
-#~ msgstr "t"
-
-#~ msgid "Annotate Payment"
-#~ msgstr "Անոտացրու վճարը"
-
-#~ msgid "Convert Change to Patron Credit"
-#~ msgstr "Ձևափոխիր փոխանակումը ընթերցողի կրեդիտի"
-
-#~ msgid "&Group"
-#~ msgstr "&Խումբ"
-
-#~ msgid "Print"
-#~ msgstr "Տպել"
-
-#~ msgid "Mailing"
-#~ msgstr "Փոստային"
-
-#~ msgid "Billing"
-#~ msgstr "Հաշիվ"
 
 #~ msgid "Evergreen Staff Client Portal Page"
 #~ msgstr "Evergreen Staff Client Portal Page"
@@ -13895,129 +13801,5 @@ msgstr "Ուժեղացված"
 #~ "կազմակերպության պահանջներին համապատասխան: Օրինակ, կարող ես ավելացնել "
 #~ "հղումներ գործողոթյուններ իրականացնող փաստաթղթերին:"
 
-#~ msgctxt "staff.circ.alternate_copy_summary.Call_Number.label"
-#~ msgid "Call Number"
-#~ msgstr "Դասիչ"
-
-#~ msgid "&Survey Wizard"
-#~ msgstr "&Հարցախույզի պատկեր"
-
-#~ msgid "n"
-#~ msgstr "n"
-
-#~ msgid "Info"
-#~ msgstr "Info"
-
-#~ msgid "Update"
-#~ msgstr "Թարմացրու"
-
-#~ msgid "Auto-Print Hold and Transit Slips"
-#~ msgstr "Ավտո տպիր պահման և տրանզիտի կտրոնները"
-
-#~ msgid "u"
-#~ msgstr "u"
-
-#~ msgid "Enter a workstation name and library to register this client under:"
-#~ msgstr ""
-#~ "Մուտք արա աշխատանքային կայանի անունն և գրադարանը օգտվողին գրանցելու համար"
-
-#~ msgid "Show Notices"
-#~ msgstr "Ցույց տուր Նշումները"
-
-#~ msgid "r"
-#~ msgstr "r"
-
-#~ msgid "Evergreen Staff Client 3"
-#~ msgstr "Evergreen Staff Client 3"
-
-#~ msgid "Evergreen 0.1.0 20051202"
-#~ msgstr "Evergreen 0.1.0 20051202"
-
-#~ msgid "CSV to Clipboard"
-#~ msgstr "CSV դեպի կլիպբորդ"
-
-#~ msgctxt "staff.cat.record_buckets_overlay.query_list_actions.label"
-#~ msgid "List Actions"
-#~ msgstr "Թվարկիր գործողությունները"
-
-#~ msgctxt "staff.cat.record_buckets_overlay.pending_buckets_list_actions.label"
-#~ msgid "List Actions"
-#~ msgstr "Թվարկիր գործողությունները"
-
-#~ msgid "Most Recently Affected Patrons and Last Action for each"
-#~ msgstr ""
-#~ "Ամենավերջին վնասված ընթերցողները, և յուրաքանչյուրի վերջին գործողությունը"
-
-#~ msgid "Most Recent Staff Actions"
-#~ msgstr "Աշխատակազմի ամենավերջին գործողութունները"
-
-#~ msgid "About this client..."
-#~ msgstr "Այս հաճախորդի մասին..."
-
 #~ msgid "MARC Codes"
 #~ msgstr "MARC կոդեր"
-
-#~ msgid "Acquisitions"
-#~ msgstr "Համալրում"
-
-#~ msgid "New Brief Record"
-#~ msgstr "Նոր հակիրճ գրառում"
-
-#~ msgid "Load Order Record"
-#~ msgstr "Բեռնավորիր Պատվերի գրառումը"
-
-#~ msgid "Selection Lists"
-#~ msgstr "Ընտրության ցուցակներ"
-
-#~ msgid "Title Search"
-#~ msgstr "Վերնագրի փնտրում"
-
-#~ msgid "Funding Sources"
-#~ msgstr "Ֆինանսավորման աղբյուրներ"
-
-#~ msgid "Providers"
-#~ msgstr "Ուղեկցողներ"
-
-#~ msgid "Purchase Orders"
-#~ msgstr "Գնման պատվեր"
-
-#~ msgid "Funds"
-#~ msgstr "Ֆոնդեր"
-
-#~ msgid "Distribution Formulas"
-#~ msgstr "Տարածման ֆորմուլաներ"
-
-#~ msgid "Currency Types"
-#~ msgstr "Արտարժոյթի տեսակներ"
-
-#~ msgid "Exchange Rates"
-#~ msgstr "Փոխանակման կուրսեր"
-
-#~ msgctxt "staff.patron_display.physical.copy"
-#~ msgid "(Copy)"
-#~ msgstr "(Պատճե)"
-
-#~ msgctxt "staff.patron_display.mailing.copy"
-#~ msgid "(Copy)"
-#~ msgstr "(Պատճե)"
-
-#~ msgid "&Modify"
-#~ msgstr "&Ձևափոխում"
-
-#~ msgid "Password format"
-#~ msgstr "Գաղտնաբառի ձևաչափ"
-
-#~ msgid "Regular expression defining the password format"
-#~ msgstr "Գաղտնաբառի ձևաչափը սահմանող կանոնավոր արտահայտություն"
-
-#~ msgid "Cataloging Info"
-#~ msgstr "Քարտագրման տեղեկատվություն"
-
-#~ msgid "Quick Summary"
-#~ msgstr "Հակիրճ համառոտագրություն"
-
-#~ msgid "Circulation History"
-#~ msgstr "Սպասարկման պատմություն"
-
-#~ msgid "Total Circs"
-#~ msgstr "Գումարաճին տացքեր"

@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2011-04-19 04:00+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2012-04-17 21:17+0000\n"
+"Last-Translator: Aline D'Oleron <doleron.aline@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:48+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2012-04-18 04:43+0000\n"
+"X-Generator: Launchpad (build 15108)\n"
 
 #: pickup_and_return.js:NO_SUCH_RETURNABLE_RESOURCE
 msgid "No such returnable resource."
@@ -31,6 +31,9 @@ msgid ""
 "${1}\n"
 "${2}, ${3} ${4}"
 msgstr ""
+"${0}\n"
+"${1}\n"
+"${2}, ${3} ${4}"
 
 #: pickup_and_return.js:AUTO_ready_bresv
 msgid "Patron has these reservations ready for pickup:"
@@ -42,7 +45,7 @@ msgstr ""
 
 #: pickup_and_return.js:RETURN_ERROR
 msgid "Error communicating with server (attempting return):"
-msgstr ""
+msgstr "Erro ao comunicar com o servidor(tentando retorno)"
 
 #: pickup_and_return.js:AUTO_no_in_bresv
 msgid "Patron has not returned any resources today."
@@ -50,7 +53,7 @@ msgstr ""
 
 #: pickup_and_return.js:NO_PATRON_BARCODE
 msgid "Please enter a patron barcode."
-msgstr ""
+msgstr "Por favor, digite o código de barra do cliente."
 
 #: pickup_and_return.js:AUTO_ATTR_VALUE_return
 msgid "Return"
