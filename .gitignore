@@ -1,6 +1,3 @@
-# Hide temp files
-*.swp
-
 # Hide built objects
 *.[oa]
 *.la
@@ -328,3 +325,4 @@ Open-ILS/xul/staff_client/evergreen_staff_client.tar.bz2
 Open-ILS/xul/staff_client/xulrunner-3.6.25.en-US.linux-i686.tar.bz2
 Open-ILS/xul/staff_client/xulrunner/
 README.html
+HACKING.html
