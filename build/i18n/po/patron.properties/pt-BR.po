@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2010-02-22 21:57+0000\n"
-"Last-Translator: jobdrb <jobdrb@gmail.com>\n"
+"PO-Revision-Date: 2012-04-19 01:55+0000\n"
+"Last-Translator: Aline D'Oleron <doleron.aline@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:47+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2012-04-20 04:44+0000\n"
+"X-Generator: Launchpad (build 15120)\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -79,7 +79,7 @@ msgstr "lançando editor de permissões de usuário"
 
 #: staff.patron.bill_interface.payment_pending.column_header
 msgid "Payment Pending"
-msgstr ""
+msgstr "Pagamento pendente"
 
 #: staff.patron.bill_cc_info.need_cc_number
 msgid "You must provide a credit card number"
@@ -218,17 +218,17 @@ msgstr ""
 #: staff.patron.bill_history.handle_void.btn_yes
 msgctxt "staff.patron.bill_history.handle_void.btn_yes"
 msgid "Yes"
-msgstr ""
+msgstr "Sim"
 
 #: staff.patron.bill_history.handle_void.btn_no
 msgctxt "staff.patron.bill_history.handle_void.btn_no"
 msgid "No"
-msgstr ""
+msgstr "Não"
 
 #: staff.patron.bill_history.handle_void.confirm_message
 msgctxt "staff.patron.bill_history.handle_void.confirm_message"
 msgid "Check here to confirm this message"
-msgstr ""
+msgstr "Marque aqui para confirmar esta mensagem"
 
 #: staff.patron.bills.handle_refund.message_plural
 msgid ""
@@ -255,17 +255,17 @@ msgstr ""
 #: staff.patron.bills.handle_refund.btn_yes
 msgctxt "staff.patron.bills.handle_refund.btn_yes"
 msgid "Yes"
-msgstr ""
+msgstr "Sim"
 
 #: staff.patron.bills.handle_refund.btn_no
 msgctxt "staff.patron.bills.handle_refund.btn_no"
 msgid "No"
-msgstr ""
+msgstr "Não"
 
 #: staff.patron.bills.handle_refund.confirm_message
 msgctxt "staff.patron.bills.handle_refund.confirm_message"
 msgid "Check here to confirm this message"
-msgstr ""
+msgstr "Marque aqui para confirmar esta mensagem"
 
 #: staff.patron.bill_history.print_bills.print_error
 msgid "printing bills"
@@ -334,12 +334,12 @@ msgstr "O pagamento da fatura provavelmente falhou"
 
 #: staff.patron.bills.info_box.label_value.reservation
 msgid "Reservation"
-msgstr ""
+msgstr "Reserva"
 
 #. # 1 - Resource Barcode  2 - Resource Type Name
 #: staff.patron.bills.info_box.value_format.reservation
 msgid "%1$s : %2$s"
-msgstr ""
+msgstr "%1$s : %2$s"
 
 #: staff.patron.bills.info_box.label_value.title
 msgctxt "staff.patron.bills.info_box.label_value.title"
@@ -408,7 +408,7 @@ msgstr "Erro ao anular faturas."
 
 #: staff.patron.bills.void_all_billings.billings_voided
 msgid "Billings voided."
-msgstr ""
+msgstr "Cobranças anuladas"
 
 #: staff.patron.bill_wizard.patron_bill_finish.billing_added
 msgid "Billing added."
@@ -630,7 +630,7 @@ msgstr "Pelo Admin."
 
 #: staff.patron.hold_notes.by_patron
 msgid "By Patron "
-msgstr ""
+msgstr "Pelo cliente "
 
 #: staff.patron.hold_notes.new_note.public
 msgid "Public?"
@@ -675,7 +675,7 @@ msgstr "Erro ao processar ou obter as notificações de reserva."
 
 #: staff.patron.holds.total_count
 msgid "Total Holds: %1$s"
-msgstr ""
+msgstr "Total de reservas: %1$s"
 
 #: staff.patron.holds.holds_edit_selection_depth.choose_hold_range
 msgid "Please choose a Hold Range:"
@@ -1226,7 +1226,7 @@ msgstr ""
 
 #: staff.patron.info_group.column.circs_overdue.label
 msgid "Items Overdue"
-msgstr ""
+msgstr "Itens vencidos"
 
 #: staff.patron.info_group.column.circs_claimed_returned.label
 msgid "Items Claimed Returned"
@@ -1238,7 +1238,7 @@ msgstr ""
 
 #: staff.patron.info_group.column.circs_lost.label
 msgid "Items Lost"
-msgstr ""
+msgstr "Itens perdidos"
 
 #: staff.patron.info_group.total_owed.label
 msgid "Total Owed: %1$s"
@@ -1480,7 +1480,7 @@ msgstr "Editar Datas de Vencimento"
 
 #: staff.patron.items.items_edit.edit_due_date.description
 msgid "Due Date"
-msgstr ""
+msgstr "Data de Vencimento"
 
 #: staff.patron.items.items_edit.new_due_date
 msgid "Enter a new due date for these items: %1$s"
@@ -1647,15 +1647,15 @@ msgstr "Sem Bloqueios/Penalidades"
 
 #: staff.patron.summary.group_list.column.family_name.label
 msgid "Family Name"
-msgstr ""
+msgstr "Nome da Família"
 
 #: staff.patron.summary.group_list.column.first_given_name.label
 msgid "First Name"
-msgstr ""
+msgstr "Primeiro Nome"
 
 #: staff.patron.summary.group_list.column.second_given_name.label
 msgid "Middle Name"
-msgstr ""
+msgstr "Nome do Meio"
 
 #: staff.patron.summary.group_list.column.home_ou.label
 msgid "Home Lib"
@@ -1667,7 +1667,7 @@ msgstr ""
 
 #: staff.patron.summary.tab.group_list_with_total_owed.label
 msgid "Group: %1$s"
-msgstr ""
+msgstr "Grupo: %1$s"
 
 #: staff.patron.staged.register_patron
 msgid "Registering Pending Patron: %1$s"
@@ -1845,49 +1845,3 @@ msgstr ""
 #: staff.circ.work_log_patron_edit.message
 msgid "%1$s edited %3$s (%2$s)"
 msgstr ""
-
-#~ msgctxt "staff.patron.bill_details.handle_void.billings_voided"
-#~ msgid "Billings voided."
-#~ msgstr "Lançamentos anulados."
-
-#~ msgid "Void All Billings"
-#~ msgstr "Anular Todos Faturamentos"
-
-#~ msgctxt "staff.patron.bills.void_all_billings.billings_voided"
-#~ msgid "Billings voided."
-#~ msgstr "Lançamentos anulados."
-
-#~ msgid "Editor would like to search for: %1$s"
-#~ msgstr "Editor deseja procurar por: %1$s"
-
-#~ msgid "By Patron"
-#~ msgstr "Por Leitor"
-
-#~ msgctxt "staff.patron.info_group.spwan_editor.editing_patron"
-#~ msgid "Editing Related Patron"
-#~ msgstr "Editando leitor relacionado"
-
-#~ msgid "Note added."
-#~ msgstr "Observação incluída."
-
-#~ msgid "Renew with Due Date"
-#~ msgstr "Renovar com Data de Vencimento"
-
-#~ msgid "Missing Due Date. Renewal canceled."
-#~ msgstr "Data de Devolução Perdida. Renovação cancelada."
-
-#~ msgid "Invalid Date"
-#~ msgstr "Data Inválida"
-
-#~ msgid "Due date needs to be after today."
-#~ msgstr "Data de vencimento precisa ser maior que hoje."
-
-#~ msgid "Claims Returned Date cannot be in the future."
-#~ msgstr "Data para pedido de devolução não pode ser no futuro."
-
-#~ msgctxt "staff.patron.holds.holds_edit_email_notify.disable_email.plural"
-#~ msgid ""
-#~ "Are you sure you would like to disable email notification for hold %1$s?"
-#~ msgstr ""
-#~ "Você tem certeza que deseja desabilitar a notificação por email para as "
-#~ "reservas %1$s?"

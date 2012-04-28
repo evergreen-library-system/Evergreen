@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2011-12-24 08:45+0000\n"
-"Last-Translator: Provetin <hamburgskaddi@web.de>\n"
+"PO-Revision-Date: 2012-03-09 11:37+0000\n"
+"Last-Translator: Henrik Graßhoff <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-12-25 04:54+0000\n"
-"X-Generator: Launchpad (build 14560)\n"
+"X-Launchpad-Export-Date: 2012-03-10 04:55+0000\n"
+"X-Generator: Launchpad (build 14914)\n"
 
 #: common.exception
 msgid ""
@@ -31,31 +31,31 @@ msgstr ""
 
 #: common.jsan.missing
 msgid "The JSAN library object is missing."
-msgstr ""
+msgstr "Die JSAN Bibliothek fehlt."
 
 #: common.ok
 msgctxt "common.ok"
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 #: common.ok.label
 msgctxt "common.ok.label"
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 #: common.ok.accesskey
 msgid "O"
-msgstr ""
+msgstr "O"
 
 #: common.cancel.label
 msgctxt "common.cancel.label"
 msgid "Cancel"
-msgstr ""
+msgstr "Abbrechen"
 
 #: common.cancel.accesskey
 msgctxt "common.cancel.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: common.clear
 msgid "Clear"
@@ -153,7 +153,7 @@ msgstr "Wiederherstellen"
 #: cat.opac.cancel
 msgctxt "cat.opac.cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Abbrechen"
 
 #: cat.opac.record_deleted
 msgid "Record deleted."
@@ -212,7 +212,7 @@ msgstr "Eintrag speichern"
 
 #: cat.save.failure
 msgid "Record not likely updated."
-msgstr ""
+msgstr "Eintrag wurde vermutlich nicht aktualisiert."
 
 #: cat.record.counter
 msgid "Record %1$s of %2$s"
@@ -244,7 +244,7 @@ msgstr ""
 
 #: circ.standalone
 msgid "Standalone"
-msgstr ""
+msgstr "Eigenständig"
 
 #: circ.duplicate_scan.msg
 msgid "This barcode has already been scanned."
@@ -796,11 +796,11 @@ msgstr ""
 #: network.new_session.authorize
 msgctxt "network.new_session.authorize"
 msgid "Authorize"
-msgstr "Erlauben"
+msgstr "Autorisieren"
 
 #: network.new_session.expired
 msgid "Session Expired"
-msgstr ""
+msgstr "Sitzung abgelaufen"
 
 #: network.new_session.expired.prompt
 msgid "Please enter the credentials for a new login session."
@@ -819,7 +819,7 @@ msgstr ""
 #: network.permission.authorize
 msgctxt "network.permission.authorize"
 msgid "Authorize"
-msgstr "Erlauben"
+msgstr "Autorisieren"
 
 #: network.permission.description.brief
 msgid "Permission Denied: %1$s"
@@ -889,7 +889,7 @@ msgstr ""
 
 #: openils.global_util.clipboard
 msgid "Copied \"%1$s\" to clipboard."
-msgstr "Kopiere \"%1$s\" in die Zwischenablage"
+msgstr "\"%1$s\" wurde in die Zwischenablage kopiert."
 
 #: openils.global_util.content_window_jsobject.error
 msgid "Error with get_contentWindow(%1$s) and wrappedJSObject: %2$s"

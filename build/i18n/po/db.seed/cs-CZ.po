@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2011-04-18 22:55-0400\n"
-"PO-Revision-Date: 2011-12-07 14:53+0000\n"
+"PO-Revision-Date: 2012-02-07 16:15+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-12-08 05:37+0000\n"
-"X-Generator: Launchpad (build 14443)\n"
+"X-Launchpad-Export-Date: 2012-02-08 06:11+0000\n"
+"X-Generator: Launchpad (build 14747)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -291,7 +291,7 @@ msgstr ""
 "Cílem je poskytnout časový interval mezi dobou, kdy exemplář získá status na "
 "regále s rezervacemi, a dobou, kdy je z hlediska čtenáře reálně na regále s "
 "rezervacemi. To umožňuje personálu zpracovat exemplář předtím, než je "
-"zobrazeno, že je k vyzvednutí. Příklady: \"5 dní\", \"1 hodina\""
+"zobrazeno, že je k vyzvednutí. Příklady: \"5 days\", \"1 hour\""
 
 #: 950.data.seed-values.sql:6483
 msgid "Tax"
@@ -1091,7 +1091,7 @@ msgid ""
 "\"available\".  Examples: \"1 day\", \"6 hours\""
 msgstr ""
 "Doba čekání před změnou statusu exempláře z \"vráceno, dosud nezařazeno\" na "
-"\"dostupné\". Příklady: \"1 den\", \"6 hodin\""
+"\"dostupné\". Příklady: \"1 day\", \"6 hours\""
 
 #: 950.data.seed-values.sql:1975
 msgid "PayPal password"
@@ -1446,7 +1446,7 @@ msgid ""
 msgstr ""
 "Při odhadování doby, po kterou bude čtenář čekat na splnění rezervace, je "
 "toto standardní odhadovaná doba za předpokladu, že exemplář bude vypůjčen. "
-"Příklady: \"3 týdny\", \"7 dní\""
+"Příklady: \"3 weeks\", \"7 days\""
 
 # id::clm.value__mad
 #: 950.data.seed-values.sql:3764
@@ -1682,7 +1682,9 @@ msgstr "Na regále s rezervacemi"
 msgid ""
 "Amount of time after a hold is placed before the hold expires.  Example "
 "\"100 days\""
-msgstr "Doba vypršení rezervace od jejího zadání. Příklad \"100 dní\""
+msgstr ""
+"Doba od zadaní rezervace, po jejímž uplynutí rezervace vyprší. Příklad: "
+"\"100 days\""
 
 #: 950.data.seed-values.sql:3950
 msgid "Tuvaluan"
@@ -1952,7 +1954,7 @@ msgstr "Mapuche (araukánština)"
 
 #: 950.data.seed-values.sql:14
 msgid "Set"
-msgstr "Nastavit"
+msgstr "Sada"
 
 #: 950.data.seed-values.sql:2396
 msgid "GUI: Suggest suffix field on patron registration"
@@ -2008,7 +2010,7 @@ msgid ""
 msgstr ""
 "Při odhadu doby, po kterou bude čtenář čekat na splnění rezervace, je toto "
 "minimální odhadovaná doba za předpokladu, že exemplář bude vypůjčen. "
-"Příklady: \"2 týdny\", \"5 dní\""
+"Příklady: \"2 weeks\", \"5 days\""
 
 #: 950.data.seed-values.sql:1961
 msgid "Credit card processing: AuthorizeNet test mode"
@@ -2655,7 +2657,8 @@ msgid ""
 "The age at which a user is no long considered a juvenile.  For example, \"18 "
 "years\"."
 msgstr ""
-"Věk, v němž již uživatel není považován za nezletilého. Například \"18 let\"."
+"Věk, v němž již uživatel není považován za nezletilého. Například \"18 "
+"years\"."
 
 #: 950.data.seed-values.sql:404
 msgid "Damaged Item Processing Fee"
@@ -3240,7 +3243,7 @@ msgid ""
 "alerted. Examples: \"5 days\", \"1 hour\""
 msgstr ""
 "Doba před expirací rezervace, kdy by měl být čtenář upozorněn. Příklady: \"5 "
-"dní\", \"1 hodina\""
+"days\", \"1 hour\""
 
 # id::clm.value__mon
 #: 950.data.seed-values.sql:3792
@@ -3552,8 +3555,8 @@ msgid ""
 "How long to wait before allowing remote items to be opportunistically "
 "captured for a hold.  Example \"5 days\""
 msgstr ""
-"Doba čekání před povolením uložení záznamu rezervace vzdáleného exempláře. "
-"Příklad \"5 dní\""
+"Doba čekání před tím, než bude povoleno zachytit vhodný vzdálený exemplář. "
+"Příklad: \"5 days\""
 
 #: 950.data.seed-values.sql:3596
 msgid "Creoles and Pidgins (Other)"

@@ -8,18 +8,18 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-23 01:33-0400\n"
-"PO-Revision-Date: 2011-04-19 04:00+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2012-04-03 03:50+0000\n"
+"Last-Translator: Alexsandro Haag <alexsandro.haag@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:48+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2012-04-04 04:42+0000\n"
+"X-Generator: Launchpad (build 15055)\n"
 
 #: register.js:USER_SETTINGS
 msgid "User Settings"
-msgstr ""
+msgstr "Configurações do Usuário"
 
 #: register.js:DUPE_PATRON_EMAIL
 msgid "Found ${0} patron(s) with the same email address"
@@ -27,11 +27,11 @@ msgstr "Encontrados ${0} padr(ão/ões) com a mesma direção de email"
 
 #: register.js:ADDRESS_BILLING
 msgid "Billing"
-msgstr ""
+msgstr "Cobrança"
 
 #: register.js:ADDRESS_OWNED
 msgid "This address is owned by another user: "
-msgstr ""
+msgstr "Este endereço é utilizado por outro usuário: "
 
 #: register.js:REPLACED_ADDRESS
 msgid ""
@@ -42,7 +42,7 @@ msgstr ""
 
 #: register.js:SHOW_REQUIRED
 msgid "Show Only Required Fields"
-msgstr ""
+msgstr "Mostrar somente Campos Obrigatórios"
 
 #: register.js:DUPE_PATRON_ADDR
 msgid "Found ${0} patron(s) with the same address"
@@ -50,7 +50,7 @@ msgstr "Encontrados ${0} padr(ão/ões) com o mesmo endereço"
 
 #: register.js:SAVE
 msgid "Save"
-msgstr ""
+msgstr "Salvar"
 
 #: register.js:DUPE_PATRON_IDENT
 msgid "Found ${0} patron(s) with the same identification"
@@ -58,11 +58,11 @@ msgstr "Encontrados ${0} padr(ão/ões) com a mesma identificação"
 
 #: register.js:ADDRESS_MAILING
 msgid "Mailing"
-msgstr ""
+msgstr "Correio"
 
 #: register.js:REPLACE_BARCODE
 msgid "Replace Barcode"
-msgstr ""
+msgstr "Substituir Código-de-barras"
 
 #: register.js:NEED_ADDRESS
 msgid "An address is required during registration."
@@ -70,11 +70,11 @@ msgstr "Um endereço é exigido durante o registro."
 
 #: register.js:PARENT_OR_GUARDIAN
 msgid "Parent/Guardian"
-msgstr ""
+msgstr "Pai/Guardião"
 
 #: register.js:ADDRESS_HEADER
 msgid "Address"
-msgstr ""
+msgstr "Endereço"
 
 #: register.js:DUPE_PATRON_PHONE
 msgid "Found ${0} patron(s) with the same phone number"
@@ -86,23 +86,23 @@ msgstr "Formulário está inválido. Por favor, edite e tente novamente."
 
 #: register.js:BARCODE_IN_USE
 msgid "Barcode is already in use"
-msgstr ""
+msgstr "Código de Barras já está em uso"
 
 #: register.js:EXAMPLE
 msgid "Example: "
-msgstr ""
+msgstr "Examplo: "
 
 #: register.js:SHOW_SUGGESTED
 msgid "Show Suggested Fields"
-msgstr ""
+msgstr "Mostrar Campos Sugeridos"
 
 #: register.js:ADDRESS_PENDING
 msgid "This is a pending address: "
-msgstr ""
+msgstr "Este é um endereço pendente: "
 
 #: register.js:DUPE_USERNAME
 msgid "Username is already in use"
-msgstr ""
+msgstr "Nome de Usuário já está em uso"
 
 #: register.js:DUPE_PATRON_NAME
 msgid "Found ${0} patron(s) with the same name"
@@ -114,35 +114,35 @@ msgstr "Mensagens"
 
 #: register.js:SHOW_ALL
 msgid "Show All Fields"
-msgstr ""
+msgstr "Mostar todos os campos"
 
 #: register.js:ADDRESS_APPROVE
 msgid "Approve Address"
-msgstr ""
+msgstr "Aprovar Endereço"
 
 #: register.js:VERIFY_PASSWORD
 msgid "Verify Password"
-msgstr ""
+msgstr "Verificar Senha"
 
 #: register.js:SAVE_CLONE
 msgid "Save &amp; Clone"
-msgstr ""
+msgstr "Salvar &amp; Clonar"
 
 #: register.js:STAT_CATS
 msgid "Statistical Categories"
-msgstr ""
+msgstr "Categorias Estatísticas"
 
 #: register.js:ADDRESS_NEW
 msgid "New Address"
-msgstr ""
+msgstr "Novo Endereço"
 
 #: register.js:RESET_PASSWORD
 msgid "Reset Password"
-msgstr ""
+msgstr "Restaurar Senha"
 
 #: register.js:SEE_ALL
 msgid "See All"
-msgstr ""
+msgstr "Ver Todos"
 
 #: register.js:DELETE_ADDRESS
 msgid "Delete address ${0}?"

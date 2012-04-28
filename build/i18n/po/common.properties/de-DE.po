@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2010-03-08 17:00+0000\n"
-"Last-Translator: Provetin <hamburgskaddi@web.de>\n"
+"PO-Revision-Date: 2012-01-11 16:26+0000\n"
+"Last-Translator: Daniel Winzen <d@winzen4.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:40+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2012-01-12 05:43+0000\n"
+"X-Generator: Launchpad (build 14640)\n"
 
 #: common.exception
 msgid ""
@@ -31,11 +31,12 @@ msgstr ""
 
 #: common.jsan.missing
 msgid "The JSAN library object is missing."
-msgstr ""
+msgstr "Die JSAN Bibliothek fehlt."
 
 #: common.error
 msgid "Please inform your help desk or developers of this error:"
 msgstr ""
+"Bitte informieren Sie Ihren Helpdesk oder Entwickler über diesen Fehler"
 
 #: common.ok
 msgid "Ok"
@@ -51,7 +52,7 @@ msgstr "Klicken Sie hier, um diese Nachricht zu bestätigen."
 
 #: common.cancelled
 msgid "Action Cancelled"
-msgstr ""
+msgstr "Aktion abgebrochen"
 
 #: common.error.default
 msgid "Please report that this happened."
@@ -72,11 +73,11 @@ msgstr "Abgelaufen"
 #: common.barcode.status.warning.barred
 msgctxt "common.barcode.status.warning.barred"
 msgid "Barred"
-msgstr ""
+msgstr "Gesperrt"
 
 #: common.barcode.status.warning.blocked
 msgid "Blocked"
-msgstr ""
+msgstr "Blockiert"
 
 #: common.barcode.status.warning.unknown
 msgid "with an unknown code: %1$s"
@@ -88,16 +89,16 @@ msgstr "Ungültiges Datum"
 
 #: common.action_complete
 msgid "Action completed."
-msgstr ""
+msgstr "Aktion abgeschlossen."
 
 #. # common.grouping_string = the string that should be inserted between elements of a grouped list
 #: common.grouping_string
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: common.unimplemented
 msgid "Not yet implemented"
-msgstr ""
+msgstr "Noch nicht implementiert."
 
 #: common.yes
 msgctxt "common.yes"
@@ -126,7 +127,7 @@ msgstr ""
 
 #: openils.global_util.clipboard
 msgid "Copied \"%1$s\" to clipboard."
-msgstr ""
+msgstr "\"%1$s\" wurde in die Zwischenablage kopiert."
 
 #: openils.global_util.content_window_jsobject.error
 msgid "Error with get_contentWindow(%1$s) and wrappedJSObject: %2$s"
@@ -143,7 +144,7 @@ msgstr "Fehler beim Einrichten der Schriftgröße: %1$s"
 #. # Appended to notes with certain settings enabled.  First position is staff initials, and second position is a date for when the initials were added.
 #: staff.initials.format
 msgid "[ %1$s %2$s @ %3$s ]"
-msgstr ""
+msgstr "[ %1$s %2$s @ %3$s ]"
 
 #: staff.acp_label_barcode
 msgctxt "staff.acp_label_barcode"
@@ -169,7 +170,7 @@ msgstr ""
 #. # %1$s = circ modifier code, %2$s = circ modifier name, %3$s = circ modifier description
 #: staff.circ_modifier.display
 msgid "%1$s : %2$s : %3$s"
-msgstr ""
+msgstr "%1$s : %2$s : %3$s"
 
 #: staff.acp_label_copy_number
 msgid "Copy Number"
@@ -177,7 +178,7 @@ msgstr ""
 
 #: staff.acp_label_parts
 msgid "Part"
-msgstr ""
+msgstr "Teil"
 
 #: staff.acp_label_deposit_amount
 msgid "Deposit Amount"
@@ -201,7 +202,7 @@ msgstr ""
 
 #: staff.acp_label_price
 msgid "Price"
-msgstr ""
+msgstr "Preis"
 
 #: staff.acp_label_status
 msgctxt "staff.acp_label_status"
@@ -210,7 +211,7 @@ msgstr "Status"
 
 #: staff.ahr_current_copy_label
 msgid "Current Copy"
-msgstr ""
+msgstr "Aktuelle Kopie"
 
 #: staff.ahr_current_copy_location_label
 msgid "Current Copy Location"
@@ -222,7 +223,7 @@ msgstr "Email-Benachrichtigung"
 
 #: staff.ahr_expire_date_label
 msgid "Expire Date"
-msgstr ""
+msgstr "Ablaufdatum"
 
 #: staff.ahr_fulfillment_time_label
 msgid "Fulfillment Time"
@@ -231,7 +232,7 @@ msgstr ""
 #: staff.ahr_hold_type_label
 msgctxt "staff.ahr_hold_type_label"
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: staff.ahr_holdable_formats_label
 msgid "Holdable Formats"
@@ -280,7 +281,7 @@ msgstr "Status"
 
 #: staff.ahr_target_label
 msgid "Target"
-msgstr ""
+msgstr "Ziel"
 
 #: staff.ahr_usr_label
 msgctxt "staff.ahr_usr_label"
@@ -386,11 +387,11 @@ msgstr ""
 
 #: staff.ausp_note_label
 msgid "Note "
-msgstr ""
+msgstr "Notiz "
 
 #: staff.ausp_org_unit_label
 msgid "Library "
-msgstr ""
+msgstr "Bibliothek "
 
 #: staff.mbts_id_label
 msgid "Bill # "
@@ -407,7 +408,7 @@ msgstr ""
 #: staff.mbts_xact_type_label
 msgctxt "staff.mbts_xact_type_label"
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: staff.mbts_total_owed_label
 msgid "Total Billed"
@@ -452,7 +453,7 @@ msgstr ""
 
 #: staff.mb_billing_type_label
 msgid "Billing Type"
-msgstr ""
+msgstr "Rechnungsart"
 
 #: staff.mb_xact_label
 msgctxt "staff.mb_xact_label"
@@ -471,7 +472,7 @@ msgstr ""
 #: staff.mb_note_label
 msgctxt "staff.mb_note_label"
 msgid "Note"
-msgstr ""
+msgstr "Notiz"
 
 #: staff.mb_amount_label
 msgctxt "staff.mb_amount_label"
@@ -823,15 +824,3 @@ msgstr ""
 #: tab.label.triggered_events_for_copy
 msgid "Triggered Events: %1$s"
 msgstr ""
-
-#~ msgid ","
-#~ msgstr ","
-
-#~ msgid "Library"
-#~ msgstr "Bibliothek"
-
-#~ msgid "Applied On"
-#~ msgstr "Angewendet auf"
-
-#~ msgid "Applied By"
-#~ msgstr "Angewendet von"

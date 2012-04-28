@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 22:55-0400\n"
-"PO-Revision-Date: 2011-12-08 01:19+0000\n"
-"Last-Translator: Tomas Abril <Unknown>\n"
+"PO-Revision-Date: 2012-04-19 04:03+0000\n"
+"Last-Translator: Augusto Matos <neojamaj@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-12-09 04:48+0000\n"
-"X-Generator: Launchpad (build 14450)\n"
+"X-Launchpad-Export-Date: 2012-04-20 04:44+0000\n"
+"X-Generator: Launchpad (build 15120)\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -38,7 +38,7 @@ msgstr "Título"
 
 #: 950.data.seed-values.sql:1952
 msgid "AuthorizeNet password"
-msgstr ""
+msgstr "Senha da AuthorizeNet"
 
 #: 950.data.seed-values.sql:39
 msgid "Series Title"
@@ -75,14 +75,15 @@ msgstr "Vai"
 
 #: 950.data.seed-values.sql:2002
 msgid "Credit card processing: PayflowPro vendor"
-msgstr ""
+msgstr "Cartão de crédito processando: Fornecedor PlayflowPro"
 
-# id::coust.description__circ.max_fine.cap_at_price
 #: 950.data.seed-values.sql:5334
 msgid ""
 "This prevents the system from charging more than the item price in overdue "
 "fines"
 msgstr ""
+"Isto impede o sistema de cobrar mais do que o preço do item em multas de "
+"vencimento"
 
 #: 950.data.seed-values.sql:1971
 msgid "PayPal login"
@@ -105,7 +106,7 @@ msgstr "Fanti"
 
 #: 950.data.seed-values.sql:1994
 msgid "Credit card processing: PayflowPro password"
-msgstr ""
+msgstr "Cartão de crédito processando: Senha PlayflowPro"
 
 # id::crcd.name__1
 #: 950.data.seed-values.sql:165
@@ -135,13 +136,15 @@ msgstr "Bambara"
 
 #: 950.data.seed-values.sql:2026
 msgid "Holds: Block Renewal of Items Needed for Holds"
-msgstr ""
+msgstr "Reservas: Bloquear renovação de itens necessários para reservas"
 
 #: 950.data.seed-values.sql:2413
 msgid ""
 "Instead of All fields, show just suggested fields in patron registration by "
 "default."
 msgstr ""
+"Ao invés de todos os campos, mostrar apenas os campos sugeridos em registro "
+"de clientes por padrão."
 
 # id::clm.value__abk
 #: 950.data.seed-values.sql:3502
@@ -174,7 +177,7 @@ msgstr "Desconhecido"
 
 #: 950.data.seed-values.sql:2408
 msgid "GUI: Regex for post_code field on patron registration"
-msgstr ""
+msgstr "GUI: Expressão regular para o campo post_code em registro de cliente"
 
 # id::aou.name__5
 #: 950.data.seed-values.sql:372
@@ -200,10 +203,9 @@ msgid ""
 "If the field is required this setting is ignored."
 msgstr ""
 
-# id::pgt.name__6
 #: 950.data.seed-values.sql:1396
 msgid "Acquisitions"
-msgstr ""
+msgstr "Aquisições"
 
 # id::clm.value__kau
 #: 950.data.seed-values.sql:3716
@@ -222,7 +224,7 @@ msgstr "10_centavos_por_dia"
 
 #: 950.data.seed-values.sql:23
 msgid "Keyword"
-msgstr ""
+msgstr "Palavra-Chave"
 
 # id::pgt.name__5
 #: 950.data.seed-values.sql:2563
@@ -231,7 +233,7 @@ msgstr "Renovar Circulações"
 
 #: 950.data.seed-values.sql:2256
 msgid "GUI: Example for day_phone field on patron registration"
-msgstr ""
+msgstr "GUI: Exemplo para o campo day_phone em registro de cliente"
 
 # id::clm.value__cel
 #: 950.data.seed-values.sql:3572
@@ -250,7 +252,7 @@ msgstr "Hiligaynon"
 
 #: 950.data.seed-values.sql:1781
 msgid "Alert on empty bib records"
-msgstr ""
+msgstr "Alerta sobre registros bibliográficos vazios"
 
 # id::clm.value__kac
 #: 950.data.seed-values.sql:3710
@@ -268,6 +270,9 @@ msgid ""
 "field makes it appear with required fields even when not required. If the "
 "field is required this setting is ignored."
 msgstr ""
+"O código de barras será mostrado na tela de registro de cliente. Mostrar um "
+"campo o faz aparecer com campos requeridos mesmo quando não requerido. Se o "
+"campo é requerido esta configuração é ignorada."
 
 # id::clm.value__pag
 #: 950.data.seed-values.sql:3834
@@ -278,6 +283,7 @@ msgstr "Pangasinan"
 msgid ""
 "The evening_phone field will be required on the patron registration screen."
 msgstr ""
+"O campo evening_phone será solicitado na tela de registro de cliente."
 
 #: 950.data.seed-values.sql:1892
 msgid ""
@@ -289,7 +295,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:6483
 msgid "Tax"
-msgstr ""
+msgstr "Imposto"
 
 # id::clm.value__pam
 #: 950.data.seed-values.sql:3836
@@ -314,7 +320,7 @@ msgstr "Sindhi"
 #: 950.data.seed-values.sql:2373
 msgid ""
 "The other_phone field will be required on the patron registration screen."
-msgstr ""
+msgstr "O campo other_phone será solicitado na tela de registro de cliente."
 
 # id::clm.value__cpp
 #: 950.data.seed-values.sql:3593
@@ -331,10 +337,10 @@ msgstr "Tongan"
 msgid "Ijo"
 msgstr "IJO"
 
-# id::coust.description__circ.selfcheck.patron_password_required
 #: 950.data.seed-values.sql:5356
 msgid "Patron must log in with barcode and password at selfcheck station"
 msgstr ""
+"Cliente deve logar com código de barras e senha na estação de autoatendimento"
 
 # id::clm.value__gil
 #: 950.data.seed-values.sql:3653
@@ -387,7 +393,7 @@ msgstr "Geral"
 
 #: 950.data.seed-values.sql:1991
 msgid "Often the same thing as the PayPal manager login"
-msgstr ""
+msgstr "Frequentemente a mesma coisa que o login do PayPal"
 
 # id::clm.value__sas
 #: 950.data.seed-values.sql:3869
@@ -430,7 +436,7 @@ msgstr "ILOCANO"
 
 #: 950.data.seed-values.sql:1822
 msgid "Restore overdue fines on lost item return"
-msgstr ""
+msgstr "Restaurar multas em atraso no retorno de item perdido"
 
 # id::clm.value__arc
 #: 950.data.seed-values.sql:3520
@@ -443,6 +449,9 @@ msgid ""
 "Showing a field makes it appear with required fields even when not required. "
 "If the field is required this setting is ignored."
 msgstr ""
+"O campo second_given_name será mostrado na tela de registro de cliente. "
+"Mostrar um campo o faz aparecer com campos requeridos mesmo quando não "
+"requerido. Se o campo é requerido esta configuração é ignorada."
 
 # id::clm.value__chk id::clm.value__-tru
 #: 950.data.seed-values.sql:3578 950.data.seed-values.sql:3940
@@ -500,17 +509,18 @@ msgstr "Divehi"
 msgid "Irish, Old (to 1100)"
 msgstr "Irlandesa, Velha (para 1100)"
 
-# id::cbt.name__4
 #: 950.data.seed-values.sql:396 950.data.seed-values.sql:1666
 #: 950.data.seed-values.sql:1667
 msgid "Lost Materials Processing Fee"
-msgstr ""
+msgstr "Taxa de processamento de materiais perdidos"
 
 #: 950.data.seed-values.sql:2042
 msgid ""
 "Prevent the creation of new self-serve password reset requests until the "
 "number of active requests drops back below this number."
 msgstr ""
+"Evita a criação de novas requisições de reset de senhas de autoatendimento "
+"até que o número de requisições ativas caia abaixo deste número."
 
 # id::crcd.name__3
 #: 950.data.seed-values.sql:169
@@ -556,6 +566,8 @@ msgid ""
 "If enabled, patrons will be able to pay fines accrued at this location via "
 "credit card"
 msgstr ""
+"Se habilitado, clientes poderão pagar multas acumuladas nesta localização "
+"por cartão de crédito"
 
 # id::clm.value__chi
 #: 950.data.seed-values.sql:3577
@@ -613,7 +625,7 @@ msgstr "Administração"
 
 #: 950.data.seed-values.sql:7250
 msgid "Persistent Login Duration"
-msgstr ""
+msgstr "Duração de login persistente"
 
 # id::clm.value''in__gwi
 #: 950.data.seed-values.sql:3669
@@ -634,11 +646,11 @@ msgstr "Kutenai"
 
 #: 950.data.seed-values.sql:2324
 msgid "GUI: Show evening_phone field on patron registration"
-msgstr ""
+msgstr "GUI: Mostrar campo evening_phone no registro de cliente"
 
 #: 950.data.seed-values.sql:42
 msgid "Abbreviated Title"
-msgstr ""
+msgstr "Titulo abreviado"
 
 # id::clm.value__nyn
 #: 950.data.seed-values.sql:3822
@@ -647,7 +659,7 @@ msgstr "Nyankole"
 
 #: 950.data.seed-values.sql:1831
 msgid "Holds: FIFO"
-msgstr ""
+msgstr "Reserva: Fila"
 
 # id::i18n_l.name__en-CA
 #: 950.data.seed-values.sql:253
@@ -678,6 +690,9 @@ msgid ""
 "field makes it appear with required fields even when not required. If the "
 "field is required this setting is ignored."
 msgstr ""
+"O campo active será mostrado na tela de registro de cliente. Mostrar um "
+"campo o faz aparecer com campos requeridos mesmo quando nao for requerido. "
+"Se o campo é requerido esta configuração é ignorada."
 
 #: 950.data.seed-values.sql:2325
 msgid ""
@@ -685,18 +700,21 @@ msgid ""
 "Showing a field makes it appear with required fields even when not required. "
 "If the field is required this setting is ignored."
 msgstr ""
+"O campo evening_phone será mostrado na tela de registro de cliente. Mostrar "
+"um campo o faz aparecer com campos requeridos mesmo quando não for "
+"requerido. Se o campo é requerido esta configuração é ignorada."
 
 #: 950.data.seed-values.sql:1916 950.data.seed-values.sql:1917
 msgid "Default level of patrons' internet access"
-msgstr ""
+msgstr "Nivel padrão do acesso à internet do cliente"
 
 #: 950.data.seed-values.sql:46
 msgid "Alternate Title"
-msgstr ""
+msgstr "Título Alternativo"
 
 #: 950.data.seed-values.sql:1978
 msgid "Credit card processing: PayPal signature"
-msgstr ""
+msgstr "Cartão de crédito processando: Assinatura PayPal"
 
 # id::clm.value__cmc
 #: 950.data.seed-values.sql:3587
@@ -739,7 +757,7 @@ msgstr "Manchu"
 
 #: 950.data.seed-values.sql:1946
 msgid "Credit card processing: AuthorizeNet login"
-msgstr ""
+msgstr "Cartão de crédito processando: Login AuthorizeNet"
 
 # id::aou.name__1
 #: 950.data.seed-values.sql:364
@@ -754,7 +772,7 @@ msgstr "Russo"
 
 #: 950.data.seed-values.sql:1691
 msgid "Allow Credit Card Payments"
-msgstr ""
+msgstr "Permitir pagamento por cartão de crédito"
 
 # id::clm.value__kaz
 #: 950.data.seed-values.sql:3718
@@ -778,10 +796,12 @@ msgid ""
 "The Regular Expression for validation on the evening_phone field in patron "
 "registration."
 msgstr ""
+"A expressão regular para validação no campo evening_phone em registro de "
+"cliente."
 
 #: 950.data.seed-values.sql:2248
 msgid "GUI: Show claims_returned_count field on patron registration"
-msgstr ""
+msgstr "GUI: Mostra o campo claims_returned_count em registro de cliente"
 
 # id::clm.value__hmo
 #: 950.data.seed-values.sql:3681
@@ -794,6 +814,9 @@ msgid ""
 "field makes it appear with required fields even when not required. If the "
 "field is required this setting is ignored."
 msgstr ""
+"O campo email será mostrado na tela de registro de cliente. Mostrar um campo "
+"o faz aparecer com campos requeridos mesmo quando não requerido. Se o campo "
+"é requerido esta configuração é ignorada."
 
 # id::cnal.name__3
 #: 950.data.seed-values.sql:242
@@ -802,11 +825,11 @@ msgstr "Sem acesso"
 
 #: 950.data.seed-values.sql:1986
 msgid "Credit card processing: Enable PayflowPro payments"
-msgstr ""
+msgstr "Cartão de crédito processando: Ativar pagamentos PayflowPro"
 
 #: 950.data.seed-values.sql:2021
 msgid "Courier Code"
-msgstr ""
+msgstr "Código de correio"
 
 # id::i18n_l.description__en-CA
 #: 950.data.seed-values.sql:254
@@ -848,6 +871,9 @@ msgid ""
 "Suggesting a field makes it appear when suggested fields are shown. If the "
 "field is shown or required this setting is ignored."
 msgstr ""
+"O campo ident_value será sugerido na tela de registro de cliente. Sugerir um "
+"campo o faz aparecer quando campos sugeridos são mostrados. Se o campo é "
+"mostrado ou requerido esta configuração é ignorada."
 
 # id::citm.value__m
 #: 950.data.seed-values.sql:4013
@@ -866,7 +892,7 @@ msgstr "Alemão"
 
 #: 950.data.seed-values.sql:6490
 msgid "EDI"
-msgstr ""
+msgstr "EDI"
 
 #: 950.data.seed-values.sql:5918
 msgid ""
@@ -874,6 +900,9 @@ msgid ""
 "usernames in addition to barcode.  For this setting to work, a barcode "
 "format must also be defined"
 msgstr ""
+"Durante circulações offline, permitir clientes  a se identificarem com nomes "
+"de usuários além do código de barras. Para esta configuração funcionar, um "
+"formato de código de barras deve ser definido"
 
 # id::clm.value__sla
 #: 950.data.seed-values.sql:3884
@@ -906,7 +935,7 @@ msgstr "oclc"
 
 #: 950.data.seed-values.sql:7124
 msgid "Holds: Has Local Copy Block"
-msgstr ""
+msgstr "Reservas: Tem bloqueio de cópia local."
 
 # id::clm.value__bnt
 #: 950.data.seed-values.sql:3556
@@ -919,6 +948,9 @@ msgid ""
 "registration screen. Suggesting a field makes it appear when suggested "
 "fields are shown. If the field is shown or required this setting is ignored."
 msgstr ""
+"O campo claims_never_cheked_out_count será sugerido na tela de registro de "
+"cliente. Sugerir um campo o faz aparecer quando sugerir campos é mostrado. "
+"Se o campo é mostrado ou requerido esta configuração é ignorada."
 
 # id::cblvl.value__a
 #: 950.data.seed-values.sql:4041
@@ -984,6 +1016,7 @@ msgstr "Sami Skolt"
 #: 950.data.seed-values.sql:1851
 msgid "GUI: Record In-House Use: Maximum # of uses allowed per entry."
 msgstr ""
+"GUI: Registro interno de uso: Número máximo de usos permitidos por entrada."
 
 # id::ccs.name__4
 #: 950.data.seed-values.sql:222
@@ -997,7 +1030,7 @@ msgstr "Galês"
 
 #: 950.data.seed-values.sql:1786
 msgid "Patron: password from phone #"
-msgstr ""
+msgstr "Leitor: senha de telefone #"
 
 # id::clm.value__ota
 #: 950.data.seed-values.sql:3831
@@ -1016,6 +1049,8 @@ msgid ""
 "Do not really process transactions, but stay in test mode - uses pilot-"
 "payflowpro.paypal.com instead of the usual host"
 msgstr ""
+"Não processar transações realmente, mas ficar em modo de teste - usa pilot-"
+"payflowpro.paypal.com ao invés do hospedeiro comum"
 
 #: 950.data.seed-values.sql:2031
 msgid ""
@@ -1030,11 +1065,11 @@ msgstr "Alemão, Old High (ca. 750-1050)"
 
 #: 950.data.seed-values.sql:2284
 msgid "GUI: Show dob field on patron registration"
-msgstr ""
+msgstr "GUI: Mostrar campo dob no registro de cliente"
 
 #: 950.data.seed-values.sql:2340
 msgid "GUI: Show ident_value2 field on patron registration"
-msgstr ""
+msgstr "GUI: Mostrar campo ident_value2 em registro de cliente."
 
 # id::clm.value__ber
 #: 950.data.seed-values.sql:3549
@@ -1061,10 +1096,12 @@ msgid ""
 "Amount of time to wait before changing an item from \"reshelving\" status to "
 "\"available\".  Examples: \"1 day\", \"6 hours\""
 msgstr ""
+"Quantidade de tempo para esperar antes de trocar o status de um item de "
+"\"reshelving\" para \"available\". Exemplos: \"1 dia\", \"6 horas\""
 
 #: 950.data.seed-values.sql:1975
 msgid "PayPal password"
-msgstr ""
+msgstr "Senha PayPal"
 
 # id::clm.value__kam
 #: 950.data.seed-values.sql:3712
@@ -1087,11 +1124,11 @@ msgstr "Leitores"
 
 #: 950.data.seed-values.sql:1937
 msgid "This might be \"AuthorizeNet\", \"PayPal\", etc."
-msgstr ""
+msgstr "Isto pode ser \"AuthorizeNet\", \"PayPal\", etc."
 
 #: 950.data.seed-values.sql:1727
 msgid "Regular expression defining the patron barcode format"
-msgstr ""
+msgstr "Expressão regular que define o formato do código de barras do Leitor"
 
 # id::clm.value__lus
 #: 950.data.seed-values.sql:3762
@@ -1100,7 +1137,7 @@ msgstr "Lushai"
 
 #: 950.data.seed-values.sql:6485
 msgid "Shipping Charge"
-msgstr ""
+msgstr "Taxa de envio"
 
 # id::clm.value__nbl
 #: 950.data.seed-values.sql:3804
@@ -1124,7 +1161,7 @@ msgstr "Makasar"
 
 #: 950.data.seed-values.sql:27
 msgid "Series"
-msgstr ""
+msgstr "Séries"
 
 #: 950.data.seed-values.sql:1796 950.data.seed-values.sql:1797
 msgid "Charge lost on zero"
@@ -1162,7 +1199,7 @@ msgstr "Hebraico"
 
 #: 950.data.seed-values.sql:1886 950.data.seed-values.sql:1887
 msgid "Button bar"
-msgstr ""
+msgstr "Barra de botões"
 
 # id::clm.value__epo id::clm.value__-esp
 #: 950.data.seed-values.sql:3621 950.data.seed-values.sql:3623
@@ -1171,7 +1208,7 @@ msgstr "Esperanto"
 
 #: 950.data.seed-values.sql:2384
 msgid "GUI: Show second_given_name field on patron registration"
-msgstr ""
+msgstr "GUI: Mostrar campo second_given_name em registro de cliente"
 
 # id::clm.value__ssw id::clm.value__-swz
 #: 950.data.seed-values.sql:3907 950.data.seed-values.sql:3914
@@ -1198,10 +1235,9 @@ msgstr "Sami"
 msgid "Indic (Other)"
 msgstr "Indic (Other)"
 
-# id::coust.label__ui.admin.work_log.max_entries
 #: 950.data.seed-values.sql:2011
 msgid "GUI: Work Log: Maximum Actions Logged"
-msgstr ""
+msgstr "GUI: Log de trabalho: Número máximo de ações registradas"
 
 # id::cza.label__4 id::cza.label__13
 #: 950.data.seed-values.sql:25 950.data.seed-values.sql:287
@@ -1216,7 +1252,7 @@ msgstr "Sistema Local"
 
 #: 950.data.seed-values.sql:2320
 msgid "GUI: Require evening_phone field on patron registration"
-msgstr ""
+msgstr "GUI: Requerer campo evening_phone em registro de cliente"
 
 # id::clm.value__kir
 #: 950.data.seed-values.sql:3726
@@ -1241,7 +1277,7 @@ msgstr "Sem Filtro"
 #: 950.data.seed-values.sql:2405
 msgid ""
 "The Example for validation on the post_code field in patron registration."
-msgstr ""
+msgstr "O exemplo para validação no campo post_code em registro de cliente."
 
 # id::clfm.value__j
 #: 950.data.seed-values.sql:4024
@@ -1254,6 +1290,9 @@ msgid ""
 "field makes it appear with required fields even when not required. If the "
 "field is required this setting is ignored."
 msgstr ""
+"O campo suffix será mostrado na tela de registro de cliente. Mostrar um "
+"campo o faz aparecer com campos requeridos mesmo quando nao for requerido. "
+"Se o campo é requerido esta configuração é ignorada."
 
 # id::clm.value__ful
 #: 950.data.seed-values.sql:3641
@@ -1269,6 +1308,8 @@ msgid ""
 "The Regular Expression for validation on phone fields in patron "
 "registration. Applies to all phone fields without their own setting."
 msgstr ""
+"A expressão regular para validação no campo phone em registro de cliente. "
+"Aplica-se a todos campos phone sem suas próprias configurações."
 
 # id::clm.value__nub
 #: 950.data.seed-values.sql:3819
@@ -1337,7 +1378,7 @@ msgstr "Monografia / Item"
 
 #: 950.data.seed-values.sql:2401
 msgid "The county field will be required on the patron registration screen."
-msgstr ""
+msgstr "O campo país será requerido na tela de registro de cliente."
 
 # id::ccs.name__5
 #: 950.data.seed-values.sql:223
@@ -1391,17 +1432,19 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1942
 msgid "Enable AuthorizeNet payments"
-msgstr ""
+msgstr "Habilitar pagamentos via AuthorizeNet"
 
 #: 950.data.seed-values.sql:1787
 msgid ""
 "Use the last 4 digits of the patrons phone number as the default password "
 "when creating new users"
 msgstr ""
+"Usar os últimos 4 dígitos do telefone do cliente como senha padrão ao criar "
+"novos usuários"
 
 #: 950.data.seed-values.sql:2280
 msgid "GUI: Require dob field on patron registration"
-msgstr ""
+msgstr "GUI: Requerir campo com data de nascimento ao registrar cliente"
 
 # id::clm.value__mic
 #: 950.data.seed-values.sql:3780
@@ -1453,7 +1496,7 @@ msgstr "Khasi"
 
 #: 950.data.seed-values.sql:26
 msgid "Subject"
-msgstr ""
+msgstr "Assunto"
 
 # id::clm.value__mah
 #: 950.data.seed-values.sql:3766
@@ -1467,6 +1510,7 @@ msgstr ""
 #: 950.data.seed-values.sql:2356
 msgid "GUI: Show master_account field on patron registration"
 msgstr ""
+"GUI: Mostrar o campo master_account (conta mestra) no registro do cliente"
 
 # id::clm.value__yao
 #: 950.data.seed-values.sql:3976
@@ -1491,6 +1535,7 @@ msgstr "Salishan línguas"
 #: 950.data.seed-values.sql:2372
 msgid "GUI: Require other_phone field on patron registration"
 msgstr ""
+"GUI: Requerir o campo other_phone (outro telefone) no registro do cliente"
 
 # id::clm.value__san
 #: 950.data.seed-values.sql:3867
@@ -1566,6 +1611,8 @@ msgstr ""
 #: 950.data.seed-values.sql:1782
 msgid "Alert staff when the last copy for a record is being deleted"
 msgstr ""
+"Alertar administração quando o último exemplar de um registro estiver sendo "
+"excluído"
 
 # id::aou.name__7
 #: 950.data.seed-values.sql:376
@@ -1895,7 +1942,7 @@ msgstr "BALÚCHI"
 
 #: 950.data.seed-values.sql:1732
 msgid "Regular expression defining the password format"
-msgstr ""
+msgstr "Expressão regular para definir formato de senha"
 
 #: 950.data.seed-values.sql:2400
 msgid "GUI: Require county field on patron registration"
@@ -2327,7 +2374,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:6484
 msgid "Processing Fee"
-msgstr ""
+msgstr "Taxa de Processamento"
 
 #: 950.data.seed-values.sql:1861 950.data.seed-values.sql:1862
 msgid "Default circulation modifier"
@@ -2664,7 +2711,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1661 950.data.seed-values.sql:1662
 msgid "Staff Login Inactivity Timeout (in seconds)"
-msgstr ""
+msgstr "Período máximo de inatividade da sessão administrativa (em segundos)"
 
 # id::clm.value__art
 #: 950.data.seed-values.sql:3525
@@ -2676,11 +2723,12 @@ msgid ""
 "The age at which a user is no long considered a juvenile.  For example, \"18 "
 "years\"."
 msgstr ""
+"A idade na qual um usuário não é mais considerado um jovem. Por exemplo, "
+"\"18 anos \"."
 
-# id::cbt.name__8
 #: 950.data.seed-values.sql:404
 msgid "Damaged Item Processing Fee"
-msgstr ""
+msgstr "Taxa de Processamento de Item Danificado"
 
 #: 950.data.seed-values.sql:1857
 msgid ""
@@ -2700,7 +2748,7 @@ msgstr "Cheyenne"
 
 #: 950.data.seed-values.sql:12
 msgid "Bilingual"
-msgstr ""
+msgstr "Bilíngue"
 
 # id::clm.value__fon
 #: 950.data.seed-values.sql:3635

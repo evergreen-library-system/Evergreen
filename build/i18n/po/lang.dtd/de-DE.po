@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:44-0400\n"
-"PO-Revision-Date: 2011-12-24 10:38+0000\n"
-"Last-Translator: Daniel Winzen <d@winzen4.de>\n"
+"PO-Revision-Date: 2012-04-05 15:23+0000\n"
+"Last-Translator: Dennis Baudys <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-12-25 04:54+0000\n"
-"X-Generator: Launchpad (build 14560)\n"
+"X-Launchpad-Export-Date: 2012-04-06 04:38+0000\n"
+"X-Generator: Launchpad (build 15060)\n"
 
 #: lang.version
 msgid "remote v1"
@@ -60,11 +60,11 @@ msgstr "Heute + 14 Tage"
 
 #: common.date_helper.21_days
 msgid "Today + 21 days"
-msgstr ""
+msgstr "Heute + 21 Tage"
 
 #: common.date_helper.28_days
 msgid "Today + 28 days"
-msgstr ""
+msgstr "Heute + 28 Tage"
 
 #: common.date_helper.30_days
 msgid "Today + 30 days"
@@ -78,7 +78,7 @@ msgstr ""
 #: common.enter.accesskey
 msgctxt "common.enter.label common.enter.accesskey"
 msgid "&Enter"
-msgstr ""
+msgstr "&Enter"
 
 #: common.enter_barcode.description
 msgid "Enter the item barcode:"
@@ -111,7 +111,7 @@ msgstr "Schlüsselwort"
 #: common.type
 msgctxt "common.type"
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: common.isbn
 msgctxt "common.isbn"
@@ -121,7 +121,7 @@ msgstr "ISBN"
 #: common.format
 msgctxt "common.format"
 msgid "Format"
-msgstr ""
+msgstr "Format"
 
 #: common.login
 msgid "Login"
@@ -213,7 +213,7 @@ msgstr "Benutzer nicht gefunden"
 
 #: common.unimplemented
 msgid "Not Yet Implemented"
-msgstr ""
+msgstr "Noch nicht implementiert"
 
 #: common.delete_transactions.label
 msgid "Delete selected transaction"
@@ -226,11 +226,11 @@ msgstr ""
 
 #: common.true
 msgid "True"
-msgstr ""
+msgstr "Richtig"
 
 #: common.false
 msgid "False"
-msgstr ""
+msgstr "Falsch"
 
 #: common.browser.forward.label
 #: common.browser.forward.accesskey
@@ -245,7 +245,7 @@ msgstr ""
 #: common.browser.reload.label
 #: common.browser.reload.accesskey
 msgid "Re&load"
-msgstr ""
+msgstr "Neu &laden"
 
 #: common.browser.print.label
 #: common.browser.print.accesskey
@@ -256,7 +256,7 @@ msgstr ""
 #: common.browser.help.accesskey
 msgctxt "common.browser.help.label common.browser.help.accesskey"
 msgid "&Help"
-msgstr ""
+msgstr "&Hilfe"
 
 #: common.browser.find.label
 #: common.browser.find.accesskey
@@ -271,7 +271,7 @@ msgstr ""
 #: common.browser.view_source.label
 #: common.browser.view_source.accesskey
 msgid "&View Source"
-msgstr ""
+msgstr "&Quelltext anzeigen"
 
 #: common.textbox.cut
 msgctxt "common.textbox.cut"
@@ -306,7 +306,7 @@ msgstr ""
 
 #: ilsevent.1001
 msgid "Login session has timed out or does not exist"
-msgstr ""
+msgstr "Login Sitzung ist ausgelaufen oder existiert nicht"
 
 #: ilsevent.1002
 msgid "User was not found in the database"
@@ -318,7 +318,7 @@ msgstr "Zugriff verweigert"
 
 #: ilsperm.CREATE_HOLD
 msgid "User is not allowed to create holds for other users at this location"
-msgstr ""
+msgstr "Der Nutzer darf keine Räume für andere Nutzer anlegen"
 
 #: common.cancel.accesskey
 msgctxt "common.cancel.accesskey"
@@ -409,7 +409,7 @@ msgstr ""
 #: staff.acp_label_status
 msgctxt "staff.acp_label_status"
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: staff.ahr_capture_time_label
 msgid "Capture Time"
@@ -417,7 +417,7 @@ msgstr ""
 
 #: staff.ahr_current_copy_label
 msgid "Current Copy"
-msgstr ""
+msgstr "Aktuelle Kopie"
 
 #: staff.ahr_email_notify_label
 msgid "Email Notify"
@@ -425,7 +425,7 @@ msgstr "Email-Benachrichtigung"
 
 #: staff.ahr_expire_time_label
 msgid "Expire Time"
-msgstr ""
+msgstr "Ablaufzeit"
 
 #: staff.ahr_fulfillment_time_label
 msgid "Fulfillment Time"
@@ -434,7 +434,7 @@ msgstr ""
 #: staff.ahr_hold_type_label
 msgctxt "staff.ahr_hold_type_label"
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: staff.ahr_holdable_formats_label
 msgid "Holdable Formats"
@@ -487,11 +487,11 @@ msgstr ""
 #: staff.ahr_status_label
 msgctxt "staff.ahr_status_label"
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: staff.ahr_target_label
 msgid "Target"
-msgstr ""
+msgstr "Ziel"
 
 #: staff.ahr_usr_label
 msgid "User"
@@ -515,7 +515,7 @@ msgstr ""
 #: staff.au_billing_address_label
 msgctxt "staff.au_billing_address_label"
 msgid "Billing Address"
-msgstr ""
+msgstr "Rechnungsadresse"
 
 #: staff.au_card_label
 msgid "Card"
@@ -536,7 +536,7 @@ msgstr ""
 
 #: staff.au_create_date_label
 msgid "Create Date"
-msgstr ""
+msgstr "Erstellungsdatum"
 
 #: staff.au_credit_forward_balance_label
 msgid "Credit Forward Balance"
@@ -563,7 +563,7 @@ msgstr "Telefon abends"
 #: staff.au_expire_date_label
 msgctxt "staff.au_expire_date_label"
 msgid "Expire Date"
-msgstr ""
+msgstr "Ablaufdatum"
 
 #: staff.au_family_name_label
 msgctxt "staff.au_family_name_label"
@@ -585,7 +585,7 @@ msgstr ""
 
 #: staff.au_id_label
 msgid "User ID"
-msgstr ""
+msgstr "Benutzer-ID"
 
 #: staff.au_ident_type2_label
 msgid "Identification Type2"
@@ -593,7 +593,7 @@ msgstr ""
 
 #: staff.au_ident_type_label
 msgid "Identification Type"
-msgstr ""
+msgstr "Identifizierungsart"
 
 #: staff.au_ident_value2_label
 msgid "Identification Value2"
@@ -640,17 +640,17 @@ msgstr ""
 #: staff.au_label_prefix
 msgctxt "staff.au_label_prefix"
 msgid "Prefix"
-msgstr ""
+msgstr "Präfix"
 
 #: staff.au_label_second_given_name
 msgctxt "staff.au_label_second_given_name"
 msgid "Middle Name"
-msgstr ""
+msgstr "Zweiter Vorname"
 
 #: staff.au_label_suffix
 msgctxt "staff.au_label_suffix"
 msgid "Suffix"
-msgstr ""
+msgstr "Suffix"
 
 #. "xact" is a transaction
 #: staff.au_last_xact_id_label
@@ -692,7 +692,7 @@ msgstr "Foto URL"
 #: staff.au_prefix_label
 msgctxt "staff.au_prefix_label"
 msgid "Prefix"
-msgstr ""
+msgstr "Präfix"
 
 #: staff.au_profile_label
 msgctxt "staff.au_profile_label"
@@ -710,7 +710,7 @@ msgstr "Einstellungen"
 #: staff.au_standing_label
 msgctxt "staff.au_standing_label"
 msgid "Standing"
-msgstr ""
+msgstr "Stehend"
 
 #: staff.au_stat_cat_entries_label
 msgid "Statistical Category Entries"
@@ -719,7 +719,7 @@ msgstr ""
 #: staff.au_suffix_label
 msgctxt "staff.au_suffix_label"
 msgid "Suffix"
-msgstr ""
+msgstr "Suffix"
 
 #: staff.au_super_user_label
 msgid "Super User"
@@ -739,15 +739,15 @@ msgstr "Benutzername"
 
 #: staff.admin.survey.available.label
 msgid "Available to:"
-msgstr ""
+msgstr "Verfügbar zu:"
 
 #: staff.admin.survey.description.label
 msgid "Description:"
-msgstr ""
+msgstr "Beschreibung:"
 
 #: staff.admin.survey.end.label
 msgid "End:"
-msgstr ""
+msgstr "Ende:"
 
 #: staff.admin.survey.format.label
 msgid "Poll Format:"
@@ -778,7 +778,7 @@ msgstr ""
 
 #: staff.admin.survey.start.label
 msgid "Start:"
-msgstr ""
+msgstr "Start:"
 
 #: staff.admin.work_log.list1.header
 msgid "Most Recently Logged Staff Actions"
@@ -916,11 +916,11 @@ msgstr ""
 #: staff.auth.verify.retrieve.label
 #: staff.auth.verify.retrieve.accesskey
 msgid "&Retrieve"
-msgstr ""
+msgstr "&Abholen"
 
 #: staff.bills_current_payment_label
 msgid "Current Payment"
-msgstr ""
+msgstr "Laufende Zahlung"
 
 #: staff.bills_information
 msgid "Information"
@@ -929,7 +929,7 @@ msgstr "Information"
 #: staff.bills_interface_label
 msgctxt "staff.bills_interface_label"
 msgid "Bills"
-msgstr ""
+msgstr "Rechnungen"
 
 #: staff.bills_money_label
 msgid "Money"
@@ -964,7 +964,7 @@ msgstr ""
 #: staff.browse_list.circ_lib
 msgctxt "staff.browse_list.circ_lib"
 msgid "Circulating Library"
-msgstr ""
+msgstr "Verteilende Bibliothek"
 
 #: staff.browse_list.circ_modifier
 msgctxt "staff.browse_list.circ_modifier"
@@ -1038,22 +1038,22 @@ msgstr "OPAC"
 #: staff.browse_list.price
 msgctxt "staff.browse_list.price"
 msgid "Price"
-msgstr ""
+msgstr "Preis"
 
 #: staff.browse_list.ref
 msgctxt "staff.browse_list.ref"
 msgid "Reference"
-msgstr ""
+msgstr "Verweis"
 
 #: staff.browse_list.shelving_loc
 msgctxt "staff.browse_list.shelving_loc"
 msgid "Shelving Location"
-msgstr ""
+msgstr "Abstellort"
 
 #: staff.browse_list.status
 msgctxt "staff.browse_list.status"
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: staff.browse_list.win_title
 msgctxt "staff.browse_list.win_title"
@@ -1103,7 +1103,7 @@ msgstr "REC"
 #: staff.cat.fixed.REC.key
 msgctxt "staff.cat.fixed.REC.key"
 msgid "R"
-msgstr ""
+msgstr "R"
 
 #: staff.cat.fixed.SCO
 msgid "SCO"
@@ -1112,7 +1112,7 @@ msgstr ""
 #: staff.cat.fixed.SCO.key
 msgctxt "staff.cat.fixed.SCO.key"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.cat.fixed.SER
 msgid "SER"
@@ -1223,24 +1223,24 @@ msgstr ""
 #: staff.cat.opac.record_end.label
 #: staff.cat.opac.record_end.accesskey
 msgid "&End"
-msgstr ""
+msgstr "&Ende"
 
 #: staff.cat.opac.record_next.label
 #: staff.cat.opac.record_next.accesskey
 msgctxt ""
 "staff.cat.opac.record_next.label staff.cat.opac.record_next.accesskey"
 msgid "&Next"
-msgstr ""
+msgstr "&Weiter"
 
 #: staff.cat.opac.record_prev.label
 #: staff.cat.opac.record_prev.accesskey
 msgid "&Previous"
-msgstr ""
+msgstr "&Zurück"
 
 #: staff.cat.opac.record_start.label
 #: staff.cat.opac.record_start.accesskey
 msgid "&Start"
-msgstr ""
+msgstr "&Start"
 
 #: staff.cat.opac.refresh_me.label
 msgid "Reset Display"
@@ -1300,7 +1300,7 @@ msgstr ""
 #: staff.cat.record_buckets.merge_records.button.label
 #: staff.cat.record_buckets.merge_records.button.accesskey
 msgid "&Merge"
-msgstr ""
+msgstr "&Zusammenführen"
 
 #: staff.cat.record_buckets.merge_records.cancel_button.label
 #: staff.cat.record_buckets.merge_records.cancel_button.accesskey
@@ -1308,7 +1308,7 @@ msgctxt ""
 "staff.cat.record_buckets.merge_records.cancel_button.label "
 "staff.cat.record_buckets.merge_records.cancel_button.accesskey"
 msgid "&Cancel"
-msgstr ""
+msgstr "&Abbrechen"
 
 #: staff.cat.record_buckets.merge_records.lead
 msgid "Lead Record?"
@@ -1320,7 +1320,7 @@ msgstr ""
 
 #: staff.cat.search_advanced
 msgid "Advanced"
-msgstr ""
+msgstr "Erweitert"
 
 #: staff.cat.search_advanced.key
 msgctxt "staff.cat.search_advanced.key"
@@ -1368,7 +1368,7 @@ msgstr "Suchkriterien"
 #: staff.cat.search_format
 msgctxt "staff.cat.search_format"
 msgid "Format"
-msgstr ""
+msgstr "Format"
 
 #: staff.cat.search_format.key
 msgctxt "staff.cat.search_format.key"
@@ -1377,7 +1377,7 @@ msgstr "F"
 
 #: staff.cat.search_id
 msgid "System ID"
-msgstr ""
+msgstr "System-ID"
 
 #: staff.cat.search_isbn
 msgid "ISBN or ISSN"
@@ -1442,7 +1442,7 @@ msgstr "Titel"
 #: staff.cat.search_type
 msgctxt "staff.cat.search_type"
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: staff.cat.search_type.key
 msgctxt "staff.cat.search_type.key"
@@ -1464,7 +1464,7 @@ msgstr ""
 
 #: staff.cat.type_of_material
 msgid "All"
-msgstr ""
+msgstr "Alle"
 
 #: staff.cat.type_of_material.a
 msgid "Language Material"
@@ -5918,7 +5918,7 @@ msgstr ""
 #: staff.patron_search_form.email.label
 msgctxt "staff.patron_search_form.email.label"
 msgid "Email:"
-msgstr "Emailadresse:"
+msgstr "E-Mail:"
 
 #: staff.patron_search_form.family_name.label
 #: staff.patron_search_form.family_name.accesskey
@@ -13343,7 +13343,7 @@ msgstr ""
 #: staff.circ.alternate_copy_summary.Reference.label
 msgctxt "staff.circ.alternate_copy_summary.Reference.label"
 msgid "Reference"
-msgstr ""
+msgstr "Verweis"
 
 #: staff.circ.alternate_copy_summary.Remaining_Renewals.label
 msgctxt "staff.circ.alternate_copy_summary.Remaining_Renewals.label"
@@ -13365,7 +13365,7 @@ msgstr ""
 #: staff.circ.alternate_copy_summary.Status.label
 msgctxt "staff.circ.alternate_copy_summary.Status.label"
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: staff.circ.alternate_copy_summary.Stop_Fines.label
 msgctxt "staff.circ.alternate_copy_summary.Stop_Fines.label"
@@ -13380,7 +13380,7 @@ msgstr ""
 #: staff.circ.alternate_copy_summary.TCN.label
 msgctxt "staff.circ.alternate_copy_summary.TCN.label"
 msgid "TCN"
-msgstr ""
+msgstr "TCN"
 
 #: staff.circ.alternate_copy_summary.Total_Circs___Current_Year.label
 msgid "Total Circs - Current Year"
@@ -13448,7 +13448,7 @@ msgstr ""
 
 #: staff.printing.page_settings
 msgid "Page Settings"
-msgstr ""
+msgstr "Seiteneinstellungen"
 
 #: staff.printing.context.header
 msgid "Printer Context"
@@ -13465,7 +13465,7 @@ msgstr ""
 #: staff.printing.context.radio.default.label
 msgctxt "staff.printing.context.radio.default.label"
 msgid "Default"
-msgstr ""
+msgstr "Standard"
 
 #: staff.printing.context.radio.receipt.label
 msgid "Receipt"
@@ -13482,15 +13482,15 @@ msgstr ""
 
 #: staff.printing.context.radio.offline.label
 msgid "Offline"
-msgstr ""
+msgstr "Offline"
 
 #: staff.printing.normal_settings.header
 msgid "Normal Settings"
-msgstr ""
+msgstr "Normale Einstellungen"
 
 #: staff.printing.advanced_settings.header
 msgid "Advanced Settings"
-msgstr ""
+msgstr "Erweiterte Einstellungen"
 
 #: staff.printing.advanced.mozilla_print
 msgid "Use default print strategy (Mozilla Print)"
@@ -13562,7 +13562,7 @@ msgstr ""
 
 #: staff.client.portal.welcome
 msgid "Welcome to Evergreen"
-msgstr ""
+msgstr "Willkommen bei Evergreen"
 
 #: staff.client.portal.circpatron
 msgid "Circulation and Patrons"
@@ -13599,7 +13599,7 @@ msgstr ""
 
 #: staff.client.portal.advsearch
 msgid "Advanced Search"
-msgstr ""
+msgstr "Erweiterte Suche"
 
 #: staff.client.portal.itemstatus
 msgid "Item Status / Display"
@@ -13611,7 +13611,7 @@ msgstr ""
 
 #: staff.client.portal.z3950
 msgid "z39.50 Import"
-msgstr ""
+msgstr "z39.50 Import"
 
 #: staff.client.portal.copybuckets
 msgctxt "staff.client.portal.copybuckets"
@@ -13625,16 +13625,16 @@ msgstr ""
 
 #: staff.client.portal.admin
 msgid "Administration"
-msgstr ""
+msgstr "Administration"
 
 #: staff.client.portal.helpdesk
 msgid "Get Help with Evergreen"
-msgstr ""
+msgstr "Hilfe mit Evergreen bekommen"
 
 #: staff.client.portal.reports
 msgctxt "staff.client.portal.reports"
 msgid "Reports"
-msgstr ""
+msgstr "Berichte"
 
 #: staff.client.portal.receipts
 msgid "Edit Receipt Templates"

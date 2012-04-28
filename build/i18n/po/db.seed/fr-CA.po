@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen ILS > db.seed.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2011-04-18 22:55-0400\n"
-"PO-Revision-Date: 2011-07-30 16:54+0000\n"
-"Last-Translator: Linux-ubuntu david <Unknown>\n"
+"PO-Revision-Date: 2012-03-06 15:47+0000\n"
+"Last-Translator: LEROY Jean-Christophe <Unknown>\n"
 "Language-Team: NRCan Library\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-07-31 04:39+0000\n"
-"X-Generator: Launchpad (build 13405)\n"
+"X-Launchpad-Export-Date: 2012-03-07 05:14+0000\n"
+"X-Generator: Launchpad (build 14907)\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 # id::vqbrad.description__11
@@ -73,7 +73,7 @@ msgstr "Vaï"
 
 #: 950.data.seed-values.sql:2002
 msgid "Credit card processing: PayflowPro vendor"
-msgstr ""
+msgstr "Traitement des cartes de crédit: Payflow Pro fournisseur"
 
 #: 950.data.seed-values.sql:5334
 msgid ""
@@ -85,7 +85,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1971
 msgid "PayPal login"
-msgstr ""
+msgstr "connexion PayPal"
 
 # id::cblvl.value__b
 # id::b
@@ -107,7 +107,7 @@ msgstr "Fanti"
 
 #: 950.data.seed-values.sql:1994
 msgid "Credit card processing: PayflowPro password"
-msgstr ""
+msgstr "Traitement des cartes de crédit: Payflow Pro mot de passe"
 
 # id::crcd.name__1
 # id::1
@@ -150,6 +150,8 @@ msgid ""
 "Instead of All fields, show just suggested fields in patron registration by "
 "default."
 msgstr ""
+"Instead of All fields, show just suggested fields in patron registration by "
+"default."
 
 # id::clm.value__abk
 # id::abk
@@ -187,7 +189,7 @@ msgstr "Inconnu"
 
 #: 950.data.seed-values.sql:2408
 msgid "GUI: Regex for post_code field on patron registration"
-msgstr ""
+msgstr "GUI: Regex pour le champ post_code sur l'enregistrement client"
 
 # id::aou.name__5
 # id::5
@@ -207,6 +209,9 @@ msgid ""
 "Suggesting a field makes it appear when suggested fields are shown. If the "
 "field is shown or required this setting is ignored."
 msgstr ""
+"Le champ ident_value2 sera proposé sur l'écran d'enregistrement client. "
+"Suggérer un champ la fait apparaître lorsque les champs proposés figurent. "
+"Si le champ est affiché ou nécessaire ce paramètre est ignoré."
 
 #: 950.data.seed-values.sql:2357
 msgid ""
@@ -214,6 +219,10 @@ msgid ""
 "Showing a field makes it appear with required fields even when not required. "
 "If the field is required this setting is ignored."
 msgstr ""
+"Le champ master_account sera montré sur l'écran d'enregistrement client. "
+"L'affichage d'un champ fait apparaître des champs obligatoires même "
+"lorsqu'ils ne sont pas nécessaire. Si le champ est obligatoire ce paramètre "
+"est ignoré"
 
 #: 950.data.seed-values.sql:1396
 msgid "Acquisitions"
@@ -5380,157 +5389,9 @@ msgid ""
 "want to allow before minimizing (requires staff client restart)."
 msgstr ""
 
-# id::ppl.description__115
-# id::115
-#~ msgid ""
-#~ "Allow a user to create duplicate holds (two or more holds on the same title)"
-#~ msgstr ""
-#~ "Permet à un utilisateur de créer des copies d’articles mis en réserve (p. "
-#~ "ex. deux articles mis en réserve pour le même titre)"
-
-# id::ppl.description__123
-# id::123
-#~ msgid "Allow a user to un-bar a patron"
-#~ msgstr "Permet à un utilisateur d’annuler l’exclusion d’un client"
-
 # id::cam.description__b
 #~ msgid "The item is intended for children, approximate ages 6-8 years."
 #~ msgstr "L'article est destiné aux enfants âgés de 6 à 8 ans."
-
-# id::ppl.description__43
-# id::43
-#~ msgid "Allow a user to create a new bill on a transaction"
-#~ msgstr ""
-#~ "Permet à un utilisateur de créer une nouvelle facture pour une transaction"
-
-# id::ppl.description__41
-# id::41
-# id::43
-#~ msgid "Allow a user to create a new billable transaction"
-#~ msgstr ""
-#~ "Permet à un utilisateur de créer une nouvelle facture pour une transaction"
-
-# id::ppl.description__164
-# id::164
-# id::77
-#~ msgid "Allow a user to update a fund allocation"
-#~ msgstr "Permet à un utilisateur de mettre à jour une allocation de fonds"
-
-# id::ppl.description__156
-# id::156
-# id::153
-# id::157
-# id::88
-#~ msgid "Allow a user to update a funding source"
-#~ msgstr "Permet à un utilisateur de mettre à jour une source de fonds"
-
-# id::ppl.description__82
-# id::82
-#~ msgid "Allow a user to view which users have checked out a given copy"
-#~ msgstr ""
-#~ "Permet à un utilisateur de savoir quels utilisateurs ont sorti un exemplaire "
-#~ "en particulier"
-
-# id::ppl.description__117
-# id::117
-#~ msgid "Allow a user to update a closed date interval for a given location"
-#~ msgstr ""
-#~ "Permet à un utilisateur de mettre à jour un intervalle de dates de fermeture "
-#~ "pour un emplacement donné"
-
-# id::ppl.description__132
-# id::132
-#~ msgid "Allow a user to add/remove users to/from the \"LibraryManager\" group"
-#~ msgstr ""
-#~ "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-#~ "\"LibraryManager\""
-
-# id::ppl.description__20
-#~ msgid "Allow a user to import a MARC record via the Z39.50 interface"
-#~ msgstr ""
-#~ "Permet à un utilisateur d'importer un fichier MARC à partir de l'interface "
-#~ "Z39.50"
-
-# id::ppl.description__180
-#~ msgid "Allow a user to mark a transaction as bad (unrecoverable) debt"
-#~ msgstr ""
-#~ "Permet à un utilisateur de désigné une transaction comme une dette non-"
-#~ "recouvrable"
-
-# id::ppl.description__87
-# id::87
-#~ msgid "Allow a user to view all notes attached to a title"
-#~ msgstr ""
-#~ "Permet à un utilisateur d’afficher toutes les notes associées à un titre"
-
-# id::ppl.description__155
-# id::155
-# id::153
-# id::157
-# id::88
-#~ msgid "Allow a user to view a funding source"
-#~ msgstr "Permet à un utilisateur d'afficher une source de fonds"
-
-# id::ppl.description__84
-# id::84
-#~ msgid "Allow a user to register a new workstation"
-#~ msgstr "Permet à un utilisateur d’inscrire un nouveau poste de travail"
-
-# id::ppl.description__7
-#~ msgid "Allow a user to place a volume level hold"
-#~ msgstr ""
-#~ "Permet à un utilisateur de placer une demande de mise en réserve au niveau "
-#~ "du volume"
-
-# id::ppl.description__55
-# id::55
-#~ msgid "Allow a user to edit copies in batch"
-#~ msgstr "Permet à un utilisateur de modifier les exemplaires par lots"
-
-# id::ppl.description__51
-# id::51
-#~ msgid "Allow a user to add other users to permission groups"
-#~ msgstr ""
-#~ "L’utilisateur peut ajouter d’autres utilisateurs aux groupes de permission"
-
-# id::ppl.description__11
-# id::11
-#~ msgid "Allow a user to view another user's holds"
-#~ msgstr ""
-#~ "Permet à un utilisateur de consulter les articles mis en réserve par un "
-#~ "autre utilisateur"
-
-# id::ppl.description__119
-# id::119
-#~ msgid "Allow a user to delete a non cataloged type"
-#~ msgstr "Permet à un utilisateur de supprimer un type non catalogué"
-
-# id::ppl.description__34
-#~ msgid ""
-#~ "Allow a user to view user permissions within the user permissions editor"
-#~ msgstr ""
-#~ "Permet à l'utilisateur d'afficher les permissions dans l'éditeur de "
-#~ "permissons"
-
-# id::ppl.description__134
-# id::134
-#~ msgid "Allow a user to add/remove users to/from the \"Supercat\" group"
-#~ msgstr ""
-#~ "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-#~ "\"Supercat\""
-
-# id::ppl.description__125
-# id::125
-#~ msgid "Allow a user to add/remove users to/from the \"User\" group"
-#~ msgstr ""
-#~ "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-#~ "\"Utilisateur'\"."
-
-# id::ppl.description__139
-# id::139
-#~ msgid "Allow staff to override checkout count failure"
-#~ msgstr ""
-#~ "Permet aux membres du personnel de contourner un échec du nombre de sorties"
 
 # id::cam.description__f
 #~ msgid ""
@@ -5540,203 +5401,17 @@ msgstr ""
 #~ "L'article est destiné à une audience particulier et la nature de sa "
 #~ "présentation fait qu'il n'intéresserait pas une autre audience."
 
-# id::ppl.description__90
-# id::90
-#~ msgid "Allow a user to create a new title note"
-#~ msgstr "Permet à un utilisateur de créer une nouvelle note de titre"
-
-# id::ppl.description__175
-#~ msgid "Allow a user to create/view/update/delete a provider"
-#~ msgstr ""
-#~ "Permet à l'utilisateur de créer/afficher/modifier/supprimer un fournisseur"
-
-# id::ppl.description__108
-# id::108
-#~ msgid "Allow a user to check in/out an item that has an alert message"
-#~ msgstr ""
-#~ "Permet à un utilisateur d’entrer ou de sortir un article associé à un "
-#~ "message d’alerte"
-
 # id::clfm.description__i
 #~ msgid "The item is a single letter or collection of correspondence."
 #~ msgstr "L'article est une lettre ou une collection de correspondance."
-
-# id::ppl.description__131
-# id::131
-#~ msgid "Allow a user to add/remove users to/from the \"LocalAdmin\" group"
-#~ msgstr ""
-#~ "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-#~ "\"LocalAdmin\""
-
-# id::ppl.description__33
-#~ msgid "Allow a user to place an item in transit"
-#~ msgstr "Permet à l'utilisateur de faire passer l'article en transit"
-
-# id::ppl.description__27
-#~ msgid ""
-#~ "Allow a user to continue to renew an item even if it is required for a hold"
-#~ msgstr ""
-#~ "Permet à un utilisateur de continuer de renouveler un article même si ce "
-#~ "dernier est requis pour un demande de mis en réserve"
-
-# id::ppl.description__71
-# id::71
-#~ msgid "User may delete a copy statistical category entry map"
-#~ msgstr ""
-#~ "L’utilisateur peut supprimer une carte d’entrée de catégorie statistique "
-#~ "d’exemplaires"
 
 # id::clfm.description__p
 #~ msgid "The item is a poem or collection of poems."
 #~ msgstr "L'article est un poème ou une collection de poèmes."
 
-# id::ppl.description__127
-# id::127
-#~ msgid "Allow a user to add/remove users to/from the \"Staff\" group"
-#~ msgstr ""
-#~ "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-#~ "\"Personnel\""
-
-# id::ppl.description__70
-# id::70
-#~ msgid "User may delete a patron statistical category entry map"
-#~ msgstr ""
-#~ "L’utilisateur peut supprimer une carte d’entrée de catégorie statistique de "
-#~ "clients"
-
-# id::ppl.description__28
-# id::28
-# id::14
-#~ msgid "Allow a user to create another user"
-#~ msgstr "Permet à un utilisateur de créer une autre utilisateur"
-
-# id::ppl.description__102
-# id::102
-#~ msgid "Allow a user to change the due date on an item to any date"
-#~ msgstr ""
-#~ "Permet à un utilisateur de régler la date d’échéance relative à un article"
-
-# id::ppl.description__76
-# id::76
-#~ msgid "Allow a user to create a new copy location"
-#~ msgstr "Permet à un utilisateur de créer un nouvel emplacement d’exemplaire"
-
-# id::ppl.description__67
-# id::67
-# id::69
-#~ msgid "User may delete a copy statistical category"
-#~ msgstr ""
-#~ "L’utilisateur peut supprimer une entrée de catégorie statistique "
-#~ "d’exemplaires"
-
-# id::ppl.description__65
-#~ msgid "User may link a copy to an entry in a statistical category"
-#~ msgstr ""
-#~ "L'utilisateur peut lier un exemplaire à une entrée dans une catégorie "
-#~ "statistique"
-
-# id::ppl.description__154
-# id::154
-# id::153
-# id::157
-# id::88
-#~ msgid "Allow a user to delete a funding source"
-#~ msgstr "Permet à un utilisateur de supprimer une source de fonds"
-
-# id::ppl.description__161
-# id::161
-# id::76
-#~ msgid "Allow a user to create a new fund allocation"
-#~ msgstr "Permet à un utilisateur de créer une nouvelle allocation de fonds"
-
-# id::ppl.description__133
-# id::133
-#~ msgid "Allow a user to add/remove users to/from the \"Cat1\" group"
-#~ msgstr ""
-#~ "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-#~ "\"Cat1\""
-
-# id::ppl.description__25
-# id::25
-# id::75
-#~ msgid "Allow a user to edit a copy"
-#~ msgstr "Permet à un utilisateur de modifier un exemplaire"
-
-# id::ppl.description__61
-# id::61
-# id::63
-#~ msgid "User may update a copy statistical category"
-#~ msgstr ""
-#~ "L’utilisateur peut mettre à jour une entrée de catégorie statistique "
-#~ "d’exemplaires"
-
-# id::ppl.description__126
-# id::126
-#~ msgid "Allow a user to add/remove users to/from the \"Patron\" group"
-#~ msgstr ""
-#~ "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-#~ "\"Client\""
-
 # id::clfm.description__s
 #~ msgid "The item is a speech or collection of speeches."
 #~ msgstr "L'article est un discours ou une collection de discours."
-
-# id::ppl.description__10 id::ppl.description__13 id::ppl.description__35
-#~ msgid "* no longer applicable"
-#~ msgstr "* n'est plus applicable"
-
-# id::ppl.description__103
-# id::103
-#~ msgid "Allow a user to bypass the circulation permit call for check out"
-#~ msgstr ""
-#~ "Permet à un utilisateur de contourner un appel d’autorisation de prêt pour "
-#~ "sortir un article"
-
-# id::ppl.description__112
-# id::112
-#~ msgid ""
-#~ "Allow a user to abort a copy transit if the user is not at the transit "
-#~ "source or dest"
-#~ msgstr ""
-#~ "Permet à un utilisateur d’annuler un transit d’exemplaire si l’utilisateur "
-#~ "ne se trouve pas à la source ou à la destination du transit"
-
-# id::ppl.description__152
-# id::152
-#~ msgid ""
-#~ "Allow a staff member to define where another staff member has their "
-#~ "permissions"
-#~ msgstr ""
-#~ "Permet aux membres du personnel de déterminer pour quelles actions un autre "
-#~ "membre du personnel a obtenu leurs permissions"
-
-# id::ppl.description__153
-# id::153
-# id::157
-# id::88
-#~ msgid "Allow a user to create a new funding source"
-#~ msgstr "Permet à un utilisateur de créer une nouvelle source de fonds"
-
-# id::ppl.description__53
-# id::53
-#~ msgid "Allow a user to view other users' permission groups"
-#~ msgstr ""
-#~ "Permet à un utilisateur de consulter les groupes de permission des autres "
-#~ "utilisateurs"
-
-# id::ppl.description__57
-# id::57
-# id::56
-#~ msgid "User may create a copy statistical category"
-#~ msgstr ""
-#~ "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
-
-# id::ppl.description__118
-# id::118
-#~ msgid "Allow a user to create a new closed date for a location"
-#~ msgstr ""
-#~ "Permet à un utilisateur de créer une nouvelle date de fermeture pour un "
-#~ "emplacement"
 
 # id::cam.description__j
 #~ msgid ""
@@ -5746,236 +5421,9 @@ msgstr ""
 #~ "L'article est destiné aux enfants et aux jeunes entre les âges approximatifs "
 #~ "de 0 à 15 ans."
 
-# id::ppl.description__72
-# id::72
-#~ msgid "Allow a user to create a new non-cataloged item type"
-#~ msgstr ""
-#~ "Permet à un utilisateur de créer un nouveau type d’article non catalogué"
-
-# id::ppl.description__54
-# id::54
-#~ msgid "Allow a user to determine whether another user can check out an item"
-#~ msgstr ""
-#~ "Permet à un utilisateur de déterminer si un autre utilisateur peut sortir un "
-#~ "article"
-
-# id::ppl.description__104
-# id::104
-#~ msgid "Allow a user to override the copy_is_reference event"
-#~ msgstr "Permet à un utilisateur d’éviter un cas de copy_is_reference"
-
-# id::ppl.description__15
-#~ msgid "Allow a user to renew items"
-#~ msgstr "Permet à l'utilisateur de renouveller des articles"
-
-# id::ppl.description__176
-#~ msgid "Allow a user to view and purchase from a provider"
-#~ msgstr "Permet à un utilisateur d'afficher et d'acheter d'un fournisseur"
-
-# id::ppl.description__173
-#~ msgid "Allow a user to view/credit/debit a fund"
-#~ msgstr "Permet à un utilisateur d'afficher/créditer/débiter une caisse"
-
-# id::ppl.description__78
-# id::78
-#~ msgid "Allow a user to delete a copy location"
-#~ msgstr "Permet à un utilisateur de supprimer un emplacement d’exemplaires"
-
-# id::ppl.description__42
-# id::42
-#~ msgid "Allow a user may view another user's transactions"
-#~ msgstr "L’utilisateur peut consulter les transactions d’un autre utilisateur"
-
-# id::ppl.description__77
-# id::77
-#~ msgid "Allow a user to update a copy location"
-#~ msgstr ""
-#~ "Permet à un utilisateur de mettre à jour un emplacement d’exemplaires"
-
-# id::ppl.description__111
-# id::111
-#~ msgid ""
-#~ "Allow a user to abort a copy transit if the user is at the transit "
-#~ "destination or source"
-#~ msgstr ""
-#~ "Permet à un utilisateur d’annuler un transit d’exemplaire si l’utilisateur "
-#~ "se trouve à la source ou à la destination du transit"
-
-# id::ppl.description__101
-# id::101
-#~ msgid "Allow a user to execute an offline script batch"
-#~ msgstr "Permet à un utilisateur d’exécuter un lot de scripts hors ligne"
-
-# id::ppl.description__81
-# id::81
-#~ msgid ""
-#~ "Allow a user to see if another user has permission to place a hold on a "
-#~ "given copy"
-#~ msgstr ""
-#~ "Permet à un utilisateur de savoir si un autre utilisateur est autorisé à "
-#~ "mettre en réserve un exemplaire en particulier"
-
-# id::ppl.description__88
-# id::88
-#~ msgid "Allow a user to create a new copy note"
-#~ msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
-
-# id::ppl.description__16
-#~ msgid "Allow a user to view bill details"
-#~ msgstr "Permet à l'utilisateur d'afficher les détails des factures"
-
-# id::ppl.description__4
-#~ msgid "Allow a user to log in to the staff client"
-#~ msgstr ""
-#~ "Permet à l'utilisateur d'ouvrir une session avec le client du personnel"
-
-# id::ppl.description__62
-# id::62
-# id::56
-#~ msgid "User may update an entry in a patron statistical category"
-#~ msgstr ""
-#~ "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
-
-# id::ppl.description__38
-#~ msgid "Allow a user to mark an item as 'missing'"
-#~ msgstr ""
-#~ "Permet à l'utilisateur de désigner un article comme étant « manquant »"
-
-# id::ppl.description__69
-# id::69
-# id::59
-# id::56
-#~ msgid "User may delete an entry from a copy statistical category"
-#~ msgstr ""
-#~ "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
-
-# id::ppl.description__140
-# id::140
-#~ msgid "Allow staff to override overdue count failure"
-#~ msgstr ""
-#~ "Permet aux membres du personnel de contourner un échec du nombre de retards"
-
-# id::ppl.description__162
-# id::162
-# id::78
-#~ msgid "Allow a user to delete a fund allocation"
-#~ msgstr "Permet à un utilisateur de supprimer une allocation de fonds"
-
-# id::ppl.description__167
-# id::167
-# id::166
-# id::88
-#~ msgid "Allow a user to delate a provider"
-#~ msgstr "Permet à un utilisateur de supprimer un fournisseur"
-
-# id::ppl.description__147
-# id::147
-#~ msgid "Allow a user to run reports"
-#~ msgstr "Permet à un utilisateur d’exécuter des rapports"
-
-# id::ppl.description__83
-# id::83
-#~ msgid "Allow a user to perform Z39.50 queries against remote servers"
-#~ msgstr ""
-#~ "Permet à un utilisateur d’effectuer des requêtes Z39.50 auprès des serveurs "
-#~ "à distance"
-
-# id::ppl.description__110
-# id::110
-#~ msgid "Allow a user to change the missing status on a copy"
-#~ msgstr ""
-#~ "Permet à un utilisateur de changer l’état « manquant » d’un exemplaire"
-
-# id::ppl.description__32
-# id::32
-# id::75
-#~ msgid "Allow a user to check in a copy"
-#~ msgstr "Permet à un utilisateur de sortir un exemplaire"
-
-# id::ppl.description__105
-# id::105
-#~ msgid "Allow a user to void a bill"
-#~ msgstr "Permet à un utilisateur d’annuler une facture"
-
-# id::ppl.description__36
-#~ msgid "Allow a user to record payments in the Billing Interface"
-#~ msgstr ""
-#~ "Permet à un utilisateur d'enregistrer des paiements dans l'interface de "
-#~ "facturation"
-
-# id::ppl.description__96
-# id::96
-#~ msgid "Allow a user to view notifications attached to a hold"
-#~ msgstr ""
-#~ "Permet à un utilisateur d’afficher les notifications associées à un article "
-#~ "mis en réserve"
-
-# id::ppl.description__44
-# id::44
-#~ msgid "Allow a user to view another user's containers (buckets)"
-#~ msgstr ""
-#~ "Permet à l’utilisateur de consulter les paniers d’un autre utilisateur"
-
-# id::ppl.description__79
-# id::79
-#~ msgid "Allow a user to create a transit_copy object for transiting a copy"
-#~ msgstr ""
-#~ "Permet à un utilisateur de créer un objet de copie de transit pour procéder "
-#~ "à la transition d’un exemplaire"
-
-# id::ppl.description__24
-# id::24
-# id::88
-#~ msgid "Allow a user to create a new copy object"
-#~ msgstr "Permet à un utilisateur de créer un nouvel objet d'exemplaire"
-
-# id::ppl.description__60
-# id::60
-# id::56
-#~ msgid "User may update a patron statistical category"
-#~ msgstr ""
-#~ "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
-
-# id::ppl.description__149
-# id::149
-#~ msgid "Allow a user to view report output"
-#~ msgstr "Permet à un utilisateur de consulter le résultat d’un rapport"
-
-# id::ppl.description__89
-# id::89
-#~ msgid "Allow a user to create a new volume note"
-#~ msgstr "Permet à un utilisateur de créer une nouvelle note sur un volume"
-
 # id::clfm.description__u
 #~ msgid "The literary form of the item is unknown."
 #~ msgstr "La forme littéraire de l'article est inconnue."
-
-# id::ppl.description__202
-#~ msgid "Allow a user to create/view/update/delete a fund"
-#~ msgstr ""
-#~ "Permet à un utilisateur de créer/afficher/modifier/supprimer une caisse"
-
-# id::ppl.description__158
-# id::158
-# id::157
-# id::88
-#~ msgid "Allow a user to delete a fund"
-#~ msgstr "Permet à un utilisateur de supprimer un fonds"
-
-# id::ppl.description__31
-# id::31
-# id::11
-#~ msgid "Allow a user to view another user's Patron Record"
-#~ msgstr ""
-#~ "Permet à un utilisateur de consulter les articles mis en réserve par un "
-#~ "autre utilisateur"
-
-# id::ppl.description__160
-# id::160
-# id::157
-# id::88
-#~ msgid "Allow a user to update a fund"
-#~ msgstr "Permet à un utilisateur de mettre à jour un fonds"
 
 # id::clfm.description__m
 #~ msgid ""
@@ -5984,170 +5432,10 @@ msgstr ""
 #~ "L'article contient plusieurs formes littéraires (par exemple, poésie et "
 #~ "nouvelles)."
 
-# id::ppl.description__91
-# id::91
-# id::49
-#~ msgid "Allow a user to delete another user's copy notes"
-#~ msgstr ""
-#~ "Permet à un utilisateur de supprimer les notes d'exemplaire d’un autre "
-#~ "utilisateur"
-
-# id::ppl.description__94
-# id::94
-#~ msgid "Allow a user to update another user's container"
-#~ msgstr ""
-#~ "Permet à un utilisateur de mettre à jour un autre panier d’utilisateur"
-
-# id::ppl.description__124
-# id::124
-#~ msgid ""
-#~ "Allow a user to remove an existing workstation so a new one can replace it"
-#~ msgstr ""
-#~ "Permet à un utilisateur de supprimer un poste de travail existant afin qu’un "
-#~ "nouveau poste puisse le remplacer"
-
-# id::ppl.description__179
-#~ msgid "Allow a user to create/view/update/delete a currency_type"
-#~ msgstr ""
-#~ "Permet à un utilisateur de créer/afficher/modifier/supprimer une devise"
-
-# id::ppl.description__92
-# id::92
-# id::49
-#~ msgid "Allow a user to delete another user's volume note"
-#~ msgstr ""
-#~ "Permet à un utilisateur de supprimer les notes de volume d’un autre "
-#~ "utilisateur"
-
-# id::ppl.description__178
-# id::178
-# id::153
-#~ msgid "Allow a staff member to directly remove a bibliographic record"
-#~ msgstr ""
-#~ "Permet à un membre du personnel de supprimer directement une fiche "
-#~ "bibliographique"
-
 # id::cam.description__d
 #~ msgid "The item is intended for young people, approximate ages 14-17 years."
 #~ msgstr ""
 #~ "L'article est destiné au jeunes entre les âges approximatifs de 14 à 17 ans."
-
-# id::ppl.description__73
-# id::73
-#~ msgid "Allow a user to update a non-cataloged item type"
-#~ msgstr "Permet à un utilisateur de mettre à jour un type non catalogué"
-
-# id::ppl.description__168
-# id::168
-# id::166
-# id::88
-#~ msgid "Allow a user to view a provider"
-#~ msgstr "Permet à un utilisateur d'afficher les détails d'un fournisseur"
-
-# id::ppl.description__63
-# id::63
-# id::59
-# id::56
-#~ msgid "User may update an entry in a copy statistical category"
-#~ msgstr ""
-#~ "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
-
-# id::ppl.description__45
-# id::45
-#~ msgid "Allow a user to create a new container for another user"
-#~ msgstr ""
-#~ "Permet à un utilisateur de créer un nouveau panier pour un autre utilisateur"
-
-# id::ppl.description__166
-# id::166
-# id::88
-#~ msgid "Allow a user to create a new provider"
-#~ msgstr "Permet à un utilisateur de créer un nouveau fournisseur"
-
-# id::ppl.description__121
-# id::121
-#~ msgid "Allow a user to remove someone from collections"
-#~ msgstr "Permet à un utilisateur de retirer une personne des collections"
-
-# id::ppl.description__177
-# id::177
-# id::11
-#~ msgid "Allow a user to view another users picklist"
-#~ msgstr ""
-#~ "Permet à un utilisateur de consulter la liste de choix d'un autre utilisateur"
-
-# id::ppl.description__80
-# id::80
-#~ msgid "Allow a user to close out a transit on a copy"
-#~ msgstr "Permet à un utilisateur de fermer un transit relatif à un exemplaire"
-
-# id::ppl.description__122
-# id::122
-#~ msgid "Allow a user to bar a patron"
-#~ msgstr "Permet à un utilisateur d’exclure un client"
-
-# id::ppl.description__150
-# id::150
-#~ msgid "Allow a user to checkout an item that is marked as non-circ"
-#~ msgstr ""
-#~ "Permet à un utilisateur de sortir un article qui est désigné comme « non "
-#~ "prêté »"
-
-# id::ppl.description__74
-# id::74
-#~ msgid "Allow a user to create a new in-house-use "
-#~ msgstr ""
-#~ "Permet à un utilisateur de créer une nouvelle utilisation à l’interne "
-
-# id::ppl.description__95
-# id::95
-#~ msgid "Allow a user to create a container for themselves"
-#~ msgstr "Permet à un utilisateur de créer son propre panier"
-
-# id::ppl.description__130
-# id::130
-#~ msgid "Allow a user to add/remove users to/from the \"GlobalAdmin\" group"
-#~ msgstr ""
-#~ "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-#~ "\"GlobalAdmin\""
-
-# id::ppl.description__97
-# id::97
-#~ msgid "Allow a user to create new hold notifications"
-#~ msgstr ""
-#~ "Permet à un utilisateur de créer de nouvelles notifications relatives à des "
-#~ "articles mis en réserve"
-
-# id::ppl.description__37
-#~ msgid "Allow a user to mark an item as 'lost'"
-#~ msgstr "Permet à l'utilisateur de désigner un article comme étant « perdu »"
-
-# id::ppl.description__174
-# id::174
-# id::21
-# id::89
-#~ msgid "Allows a user to create a picklist"
-#~ msgstr "Permet à un utilisateur de créer une liste de choix"
-
-# id::ppl.description__113
-# id::113
-#~ msgid "Allow a user to query the ZIP code data method"
-#~ msgstr ""
-#~ "Permet à un utilisateur d’interroger la méthode de données relatives aux "
-#~ "codes postaux"
-
-# id::ppl.description__47
-#~ msgid "Allow a user to change the settings for an organization unit"
-#~ msgstr ""
-#~ "Permet à un utilisateur de changer les paramètres d'une unité "
-#~ "organisationnelle"
-
-# id::ppl.description__93
-# id::93
-# id::49
-#~ msgid "Allow a user to delete another user's title note"
-#~ msgstr ""
-#~ "Permet à un utilisateur de supprimer une note de titre d’un autre utilisateur"
 
 # id::cam.description__
 #~ msgid "The target audience for the item not known or not specified."
@@ -6157,285 +5445,13 @@ msgstr ""
 #~ msgid "The item is a short story or collection of short stories."
 #~ msgstr "L'article est une nouvelle ou une collection de nouvelles."
 
-# id::ppl.description__165
-#~ msgid "Lowest level permission required to access the ACQ interface"
-#~ msgstr "Niveau de permission minimale nécessaire pour accéder l'interface"
-
-# id::ppl.description__85
-# id::85
-#~ msgid "Allow a user to view all notes attached to a copy"
-#~ msgstr ""
-#~ "Permet à un utilisateur d’afficher toutes les notes associées à un exemplaire"
-
-# id::ppl.description__169
-# id::169
-# id::166
-# id::88
-#~ msgid "Allow a user to update a provider"
-#~ msgstr ""
-#~ "Permet à un utilisateur de mettre à jour les détails d'un fournisseur"
-
-# id::ppl.description__50
-# id::50
-# id::45
-#~ msgid "Allow a user to create a container item for another user"
-#~ msgstr ""
-#~ "Permet à un utilisateur de créer un nouveau panier pour un autre utilisateur"
-
-# id::ppl.description__86
-# id::86
-#~ msgid "Allow a user to view all notes attached to a volume"
-#~ msgstr ""
-#~ "Permet à un utilisateur d’afficher toutes les notes associées à un volume"
-
-# id::ppl.description__170
-#~ msgid "Allow a user to create/view/update/delete a funding source"
-#~ msgstr ""
-#~ "Permet à un utilisateur de créer/afficher/modifier/supprimer une source de "
-#~ "fonds"
-
-# id::ppl.description__107
-# id::107
-#~ msgid "Allow a user to check out an item in a non-circulatable status"
-#~ msgstr "Permet à un utilisateur de sortir un article qui n’est pas prêtable"
-
-# id::ppl.description__151
-# id::151
-#~ msgid "Allow a user to delete an item out of another user's container"
-#~ msgstr ""
-#~ "Permet à un utilisateur de supprimer un article qui se trouve dans le panier "
-#~ "d’un autre utilisateur"
-
-# id::ppl.description__120
-# id::120
-#~ msgid "Allow a user to put someone into collections"
-#~ msgstr "Permet à un utilisateur d’ajouter une personne aux collections"
-
-# id::ppl.description__98
-# id::98
-#~ msgid "Allow a user to update an organization unit setting"
-#~ msgstr ""
-#~ "Permet à un utilisateur de mettre à jour un paramètre d’unité "
-#~ "organisationnelle"
-
-# id::ppl.description__75
-# id::75
-#~ msgid "Allow a user to check out a copy"
-#~ msgstr "Permet à un utilisateur de sortir un exemplaire"
-
-# id::ppl.description__23
-# id::23
-# id::21
-# id::89
-#~ msgid "Allow a user to delete a volume"
-#~ msgstr "Permet à un utilisateur de créer une nouvelle note sur un volume"
-
-# id::ppl.description__141
-# id::141
-#~ msgid "Allow staff to override fine amount checkout failure"
-#~ msgstr ""
-#~ "Permet aux membres du personnel de contourner un échec de sortie relatif au "
-#~ "montant d’une amende"
-
-# id::ppl.description__135
-# id::135
-#~ msgid "Allow a user to add/remove users to/from the \"SIP-Client\" group"
-#~ msgstr ""
-#~ "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-#~ "\"SIP-Client\""
-
-# id::ppl.description__14
-# id::14
-#~ msgid "Allow a user to update another user's hold"
-#~ msgstr ""
-#~ "Permet à un utilisateur de mettre à jour l’article mis en réserve d’un autre "
-#~ "utilisateur"
-
-# id::ppl.description__59
-# id::59
-# id::56
-#~ msgid "User may create an entry in a copy statistical category"
-#~ msgstr ""
-#~ "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
-
-# id::ppl.description__29
-#~ msgid "Allow a user to edit a user's record"
-#~ msgstr "Permet à l'utilisateur de modifier un compte d'un utilisateur"
-
 # id::cam.description__c
 #~ msgid "The item is intended for young people, approximate ages 9-13 years."
 #~ msgstr "L'article est destiné aux jeunes d'âges approximatifs de 9 à 13 ans."
 
-# id::ppl.description__8
-# id::8
-#~ msgid "Allow a user to place a hold on a specific copy"
-#~ msgstr ""
-#~ "L’utilisateur est autorisé à mettre en réserve un exemplaire spécifique"
-
-# id::ppl.description__136
-# id::136
-#~ msgid "Allow a user to add/remove users to/from the \"Vendor\" group"
-#~ msgstr ""
-#~ "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-#~ "\"Vendor\""
-
-# id::ppl.description__128
-# id::128
-#~ msgid "Allow a user to add/remove users to/from the \"Circulator\" group"
-#~ msgstr ""
-#~ "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-#~ "\"Circulator\""
-
-# id::ppl.description__56
-# id::56
-#~ msgid "User may create a new patron statistical category"
-#~ msgstr ""
-#~ "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
-
-# id::ppl.description__66
-# id::66
-# id::56
-#~ msgid "User may delete a patron statistical category"
-#~ msgstr ""
-#~ "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
-
-# id::ppl.description__159
-# id::159
-# id::158
-# id::157
-# id::88
-#~ msgid "Allow a user to view a fund"
-#~ msgstr "Permet à un utilisateur d'afficher un fonds"
-
-# id::ppl.description__148
-# id::148
-#~ msgid "Allow a user to share report his own folders"
-#~ msgstr ""
-#~ "Permet à un utilisateur de partager un rapport dans ses propres dossiers"
-
-# id::ppl.description__100
-# id::100
-#~ msgid "Allow a user to view uploaded offline script information"
-#~ msgstr ""
-#~ "Permet à un utilisateur d’afficher les renseignements d’un script hors ligne "
-#~ "téléversé"
-
-# id::ppl.description__52
-# id::52
-#~ msgid "Allow a user to remove other users from permission groups"
-#~ msgstr ""
-#~ "L’utilisateur peut supprimer d’autres utilisateurs des groupes de permission"
-
-# id::ppl.description__2
-#~ msgid "Allow a user to log in to the OPAC"
-#~ msgstr "Permet à un utilisateur d'ouvrir une session dans le catalogue"
-
-# id::ppl.description__19
-#~ msgid "Allow a user to create new MARC records"
-#~ msgstr "Permet à un utilisateur de créer des nouveau comptes MARC"
-
 # id::cam.description__e
 #~ msgid "The item is intended for adults."
 #~ msgstr "Cet article est destiné aux adultes."
-
-# id::ppl.description__116
-# id::116
-#~ msgid "Allow a user to remove a closed date interval for a given location"
-#~ msgstr ""
-#~ "Permet à un utilisateur de supprimer un intervalle de dates de fermeture "
-#~ "pour un emplacement donné"
-
-# id::ppl.description__157
-# id::157
-# id::88
-#~ msgid "Allow a user to create a new fund"
-#~ msgstr "Permet à un utilisateur de créer un nouveau fonds"
-
-# id::ppl.description__114
-#~ msgid "Allow a user to cancel holds"
-#~ msgstr "Permet à un utilisateur d'annuler des demandes de mise en réserve"
-
-# id::ppl.description__109
-# id::109
-#~ msgid "Allow a user to remove the lost status from a copy"
-#~ msgstr ""
-#~ "Permet à un utilisateur de supprimer l’état « perdu » d’un exemplaire"
-
-# id::ppl.description__144
-# id::144
-#~ msgid "Allow staff to force checkout of Missing/Lost type items"
-#~ msgstr ""
-#~ "Permet aux membres du personnel de forcer la sortie des types d’articles "
-#~ "manquants ou perdus"
-
-# id::ppl.description__68
-# id::68
-# id::58
-# id::56
-#~ msgid "User may delete an entry from a patron statistical category"
-#~ msgstr ""
-#~ "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
-
-# id::ppl.description__26
-# id::26
-# id::25
-# id::75
-#~ msgid "Allow a user to delete a copy"
-#~ msgstr "Permet à un utilisateur de supprimer un exemplaire"
-
-# id::ppl.description__146
-# id::146
-#~ msgid "Allow a user to place multiple holds on a single title"
-#~ msgstr ""
-#~ "Permet à un utilisateur d’effectuer de multiples mises en réserve pour un "
-#~ "seul titre"
-
-# id::ppl.description__129
-# id::129
-#~ msgid "Allow a user to add/remove users to/from the \"Cataloger\" group"
-#~ msgstr ""
-#~ "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-#~ "\"Cataloger\""
-
-# id::ppl.description__21
-# id::21
-# id::89
-#~ msgid "Allow a user to create a volume"
-#~ msgstr "Permet à un utilisateur de créer un nouveau volume"
-
-# id::ppl.description__137
-# id::137
-#~ msgid "Allow a user to place a hold on an age-protected item"
-#~ msgstr ""
-#~ "Permet à un utilisateur de mettre en réserve un article protégé contre "
-#~ "l’usure"
-
-# id::ppl.description__58
-# id::58
-# id::56
-#~ msgid "User may create an entry in a patron statistical category"
-#~ msgstr ""
-#~ "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
-
-# id::ppl.description__99
-# id::99
-#~ msgid "Allow a user to upload an offline script"
-#~ msgstr "Permet à un utilisateur de téléverser un script hors ligne"
-
-# id::ppl.description__18
-#~ msgid "Allow a user to edit a MARC record"
-#~ msgstr "Permet à un utilisateur de modifier un fichier MARC"
-
-# id::ppl.description__163
-# id::163
-# id::162
-# id::78
-#~ msgid "Allow a user to view a fund allocation"
-#~ msgstr "Permet à un utilisateur d'afficher une allocation de fonds"
-
-#~ msgid "Allow a user to mark a user as deleted"
-#~ msgstr ""
-#~ "Permet à l'utilisateur de désigner un utilisateur comme étant supprimé"
 
 #~ msgid ""
 #~ "The item is not a work of fiction and no further identification of the "

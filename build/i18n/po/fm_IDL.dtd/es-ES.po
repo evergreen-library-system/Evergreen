@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:44-0400\n"
-"PO-Revision-Date: 2011-06-25 19:25+0000\n"
-"Last-Translator: Paco Molinero <paco@byasl.com>\n"
+"PO-Revision-Date: 2012-04-25 15:41+0000\n"
+"Last-Translator: Carlos Morawski <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-06-26 04:37+0000\n"
-"X-Generator: Launchpad (build 13168)\n"
+"X-Launchpad-Export-Date: 2012-04-26 04:42+0000\n"
+"X-Generator: Launchpad (build 15149)\n"
 
 #: field.bre.source.label:2042
 msgid "Record Source"
@@ -31,7 +31,7 @@ msgstr ""
 
 #: field.mrd.vr_format.label:2647
 msgid "Video Recording Format"
-msgstr ""
+msgstr "Formato De Vídeo Grabación"
 
 #: class.acqlih.label:6539
 msgid "Line Item History"
@@ -6781,12 +6781,3 @@ msgstr "Anular Estampilla de Tiempo"
 #: field.au.billable_transactions.label:2327
 msgid "Billable Transactions"
 msgstr "Transacciones facturables"
-
-#~ msgid "End date"
-#~ msgstr "Fecha de finalización"
-
-#~ msgid "Start date"
-#~ msgstr "Fecha inicial"
-
-#~ msgid "Picklist ID"
-#~ msgstr "ID de lista de seleccion"

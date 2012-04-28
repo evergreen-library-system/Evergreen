@@ -7,14 +7,15 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2011-04-18 21:44-0400\n"
-"PO-Revision-Date: 2010-03-29 18:38+0000\n"
-"Last-Translator: jobdrb <jobdrb@gmail.com>\n"
+"PO-Revision-Date: 2012-04-17 21:11+0000\n"
+"Last-Translator: Filipe Pinheiro dos Santos Cantarelli "
+"<filipe.cantarelli@gmail.com>\n"
 "Language-Team: Evergreen-brazil\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:43+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2012-04-18 04:43+0000\n"
+"X-Generator: Launchpad (build 15108)\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -37,7 +38,7 @@ msgstr "Formato da Gravação em Vídeo"
 
 #: class.acqlih.label:6539
 msgid "Line Item History"
-msgstr ""
+msgstr "Histórico de item de linha"
 
 #: field.au.ident_value2.label:2305
 msgid "Secondary Identification"
@@ -86,7 +87,7 @@ msgstr "Totais da Cobrança"
 
 #: field.qsq.where_clause.label:7570
 msgid "WHERE Clause"
-msgstr ""
+msgstr "Cláusula WHERE"
 
 #: field.brt.transferable.label:3130
 msgid "Transferable"
@@ -213,7 +214,7 @@ msgstr "Valores Válidos"
 
 #: field.sstr.items.label:3678 field.siss.items.label:3747
 msgid "Items"
-msgstr ""
+msgstr "Itens"
 
 #: field.ac.active.label:4355
 msgid "IsActive?"
@@ -275,7 +276,7 @@ msgstr "Formatos Reserváveis (para reserva tipo-M)"
 
 #: class.acqie.label:5694
 msgid "Invoice Entry"
-msgstr ""
+msgstr "Entrada de fatura"
 
 #: field.pgpt.grp.label:2683
 msgid "Group"
@@ -293,7 +294,7 @@ msgstr "Funcionário"
 #: field.sssum.generated_coverage.label:3934
 #: field.sisum.generated_coverage.label:3961
 msgid "Generated Coverage"
-msgstr ""
+msgstr "Cobertura gerada"
 
 #: class.mdp.label:5227
 msgid "Payments: Desk"
@@ -355,7 +356,7 @@ msgstr "Definição de Atributo"
 
 #: class.acqcl.label:7278
 msgid "Claim"
-msgstr ""
+msgstr "Reinvindicação"
 
 #: class.cbt.label:5463 field.rmocbbol.billing_type.label:8685
 #: field.rmocbbcol.billing_type.label:8710
@@ -385,11 +386,11 @@ msgstr "Data/Hora de cancelamento de artigo em reserva"
 
 #: class.acqcle.label:7292
 msgid "Claim Event"
-msgstr ""
+msgstr "Caso de sinistro"
 
 #: class.xcol.label:7879
 msgid "Column Expression"
-msgstr ""
+msgstr "Expressão de coluna"
 
 #: field.crad.format.label:586 field.cza.format.label:722
 #: field.cvrfm.value.label:1128 field.cmf.format.label:1796
@@ -416,7 +417,7 @@ msgstr "Biblioteca de Circulação"
 
 #: field.afs.scheduled_time.label:7469
 msgid "Scheduled Time"
-msgstr ""
+msgstr "Tempo programado"
 
 #: field.auri.call_number_maps.label:1962
 msgid "Call Number Maps"
@@ -622,7 +623,7 @@ msgstr "Validador"
 
 #: field.acqpon.vendor_public.label:6423 field.acqlin.vendor_public.label:6614
 msgid "Vendor Public"
-msgstr ""
+msgstr "Fornecedor publico"
 
 #: field.pgt.application_perm.label:4944
 msgid "Required Permission"
@@ -727,7 +728,7 @@ msgstr ""
 
 #: field.aur.need_before.label:5512
 msgid "Need Before Date/Time"
-msgstr ""
+msgstr "Necessário antes de Data/Tempo"
 
 #: field.acqfdeb.encumbrance.label:6027
 msgid "Encumbrance"
@@ -772,7 +773,7 @@ msgstr ""
 
 #: field.aur.holdable_formats.label:5506
 msgid "Holdable Formats"
-msgstr ""
+msgstr "Formatos de reserva"
 
 #: field.acqpo.id.label:6337 field.acqpoh.id.label:6384
 msgid "Purchase Order ID"
@@ -806,7 +807,7 @@ msgstr "Gaveta do Caixa"
 
 #: field.acnc.field.label:1867
 msgid "Call number fields"
-msgstr ""
+msgstr "Campos de número"
 
 #: class.cza.label:715
 msgid "Z39.50 Attribute"
@@ -6791,30 +6792,6 @@ msgstr "Anula Registro de Tempo"
 #: field.au.billable_transactions.label:2327
 msgid "Billable Transactions"
 msgstr "Transações Cobráveis"
-
-#~ msgid "Picklist ID"
-#~ msgstr "ID Seleção"
-
-#~ msgid "Pick List"
-#~ msgstr "Lista de Seleção"
-
-#~ msgid "End date"
-#~ msgstr "Data final"
-
-#~ msgid "Bib Summary"
-#~ msgstr "Sumário Catalográfico"
-
-#~ msgid "Picklist"
-#~ msgstr "Picklist"
-
-#~ msgid "Index Summary"
-#~ msgstr "Índice Sumário"
-
-#~ msgid "Start date"
-#~ msgstr "Data Inicial"
-
-#~ msgid "Binding Unit"
-#~ msgstr "Unidade de Encardenação"
 
 #~ msgid "Field Class"
 #~ msgstr "Classe do Campo"
