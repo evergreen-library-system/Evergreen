@@ -508,8 +508,10 @@ function _rdetailDraw(r) {
 			rdetailCheckForGBPreview();
 
 		} else {
-			hideMe($("rdetail.jacket_attrib_div"));
-			hideMe($("rdetail_img_link"));
+			if(!record.doc_id()) {
+				hideMe($("rdetail.jacket_attrib_div"));
+				hideMe($("rdetail_img_link"));
+			}
 		}
 	} catch(E) {}
 
@@ -599,8 +601,8 @@ function _rdetailDraw(r) {
 		unHideMe($('rdetail_exp_refworks_span'));
 	}
 
-	$('rdetail_img_link').setAttribute('href', buildISBNSrc(cleanISBN(record.isbn()), 'large'));
-	G.ui.rdetail.image.setAttribute("src", buildISBNSrc(cleanISBN(record.isbn())));
+	$('rdetail_img_link').setAttribute('href', buildJacketSrc(record.doc_id()), 'large'));
+	G.ui.rdetail.image.setAttribute("src", buildJacketSrc(record.doc_id()));
 	runEvt("rdetail", "recordDrawn");
 	recordsCache.push(record);
 

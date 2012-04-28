@@ -531,8 +531,8 @@ function resultDisplayRecord(rec, pos, is_mr) {
 */
 
     var pic = $n(r, config.names.result.item_jacket);
-    if (currentISBN) {
-        pic.setAttribute("src", buildISBNSrc(currentISBN));
+    if (rec.doc_id()) {
+        pic.setAttribute("src", buildJacketSrc(rec.doc_id()));
     } else {
         pic.setAttribute("src", "/opac/images/blank.png");
     }

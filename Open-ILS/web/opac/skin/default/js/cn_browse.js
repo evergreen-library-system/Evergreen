@@ -133,7 +133,7 @@ function cnBrowseDrawTitle(mods, title_td, author_td, pic_td) {
 
 	buildTitleDetailLink(mods, title_td); 
 	buildSearchLink(STYPE_AUTHOR, mods.author(), author_td);
-	pic_td.setAttribute("src", buildISBNSrc(cleanISBN(mods.isbn())));
+	pic_td.setAttribute("src", buildJacketSrc(mods.doc_id()));
 
 	var args = {};
 	args.page = RDETAIL;

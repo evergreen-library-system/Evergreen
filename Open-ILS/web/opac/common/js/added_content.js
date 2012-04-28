@@ -11,6 +11,17 @@ function buildISBNSrc(isbn, size) {
 	return '../../../../extras/ac/jacket/'+size+'/'+isbn;
 }      
 
+/**
+* This function should return a URL which points to the book cover image based on record ID.
+*/
+
+function buildJacketSrc(rec_id, size) {
+size = (size) ? size : 'small';
+	var protocol = (OILS_OPAC_STATIC_PROTOCOL) ? OILS_OPAC_STATIC_PROTOCOL + ':' : location.protocol;
+	if(OILS_OPAC_IMAGES_HOST)
+		return protocol + '//' + OILS_OPAC_IMAGES_HOST + size + '/r/' + rec_id;
+	return '../../../../extras/ac/jacket/'+size+'/r/'+rec_id;
+}
 
 function acMakeURL(type, key) {
 	return '../../../../extras/ac/' + type + '/html/' + key;
