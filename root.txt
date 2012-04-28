@@ -198,8 +198,34 @@ Developer Resources
 Introduction
 ------------
 
+
+
 Developers can use this part to learn more about the programming languages, communication protocols and standards used in Evergreen.  
 
 [appendix]
 
 include::attributions.txt[]
+
+Admonitions
+===========
+
+Images used for Admonitions
+---------------------------
+
+* Note 
+
+image::media/note.png[]
+
+* warning
+
+image::media/warning.png[]
+
+* caution
+
+image::media/caution.png[]
+
+* tip
+
+image::media/tip.png[]
+
+
