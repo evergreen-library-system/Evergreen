@@ -33,7 +33,7 @@ function searchBarInit() {
 	G.ui.searchbar.text.value = (getTerm() != null) ? getTerm() : "";
 	if (!isFrontPage) G.ui.searchbar.facets.value = (getFacet() != null) ? getFacet() : "";
 	setSelector(_ts,	getStype());
-	setSelector(_fs,	getItemType());
+	setSelector(_fs,	getForm());
 
 	depthSelInit();
 
