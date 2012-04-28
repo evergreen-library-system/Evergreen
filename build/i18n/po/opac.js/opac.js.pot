@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 23:09:02-0400\n"
+"POT-Creation-Date: 2012-04-28 14:18:01-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,7 +12,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8-bit\n"
 
 #: opac.js:PWD_RESET_SUBMIT_PROMPT
-msgid "To begin the password reset process, enter either your barcode or user name in the form below and click 'Submit'"
+msgid ""
+"To begin the password reset process, enter either your barcode or user name "
+"in the form below and click 'Submit'"
 msgstr ""
 
 #: opac.js:PWD_RESET_FORM_TITLE
@@ -43,8 +45,8 @@ msgstr ""
 msgid "Additional Supplement Information"
 msgstr ""
 
-#: opac.js:MORE_COPIES_FULL_RECORD
-msgid "... more copies listed in full record"
+#: opac.js:DELETED_MFHD_RECORD
+msgid "Deleted MFHD record ${0}"
 msgstr ""
 
 #: opac.js:HOLD_STATUS_PLURAL
@@ -55,12 +57,14 @@ msgstr ""
 msgid "More"
 msgstr ""
 
-#: opac.js:EDIT_PROPERTIES
-msgid "Edit Properties"
+#: opac.js:MORE_COPIES_FULL_RECORD
+msgid "... more copies listed in full record"
 msgstr ""
 
 #: opac.js:PWD_RESET_SUBMIT_ERROR
-msgid "The system could not process your request for a password reset. Please try again, or contact circulation staff for assistance."
+msgid ""
+"The system could not process your request for a password reset. Please try "
+"again, or contact circulation staff for assistance."
 msgstr ""
 
 #: opac.js:EDIT_MFHD_RECORD
@@ -85,10 +89,6 @@ msgstr ""
 
 #: opac.js:MISSING_VOLUMES
 msgid "Missing volumes"
-msgstr ""
-
-#: opac.js:DELETED_MFHD_RECORD
-msgid "Deleted MFHD record ${0}"
 msgstr ""
 
 #: opac.js:HOLD_STATUS_SINGULAR
@@ -131,6 +131,10 @@ msgstr ""
 msgid "Current supplements"
 msgstr ""
 
+#: opac.js:SOURCE_CANNOT_HAVE_COPIES
+msgid "Records from ${0} cannot have copies."
+msgstr ""
+
 #: opac.js:CURRENT_INDEXES
 msgid "Current indexes"
 msgstr ""
@@ -147,12 +151,19 @@ msgstr ""
 msgid "User name: "
 msgstr ""
 
+#: opac.js:EDIT_PROPERTIES
+msgid "Edit Properties"
+msgstr ""
+
 #: opac.js:DELETE_MFHD_CONFIRM
 msgid "Are you sure you want to delete this serial record?"
 msgstr ""
 
 #: opac.js:PWD_RESET_SUBMIT_SUCCESS
-msgid "Your request to begin the password reset process has been processed. If your account has a valid email address, you should soon receive an email containing further instructions for resetting your password."
+msgid ""
+"Your request to begin the password reset process has been processed. If your"
+" account has a valid email address, you should soon receive an email "
+"containing further instructions for resetting your password."
 msgstr ""
 
 #: opac.js:CANCEL_BUTTON_LABEL

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-23 01:33:28-0400\n"
+"POT-Creation-Date: 2012-04-28 14:18:00-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -13,6 +13,10 @@ msgstr ""
 
 #: register.js:USER_SETTINGS
 msgid "User Settings"
+msgstr ""
+
+#: register.js:ALL_CARDS_APPLY
+msgid "Apply Changes"
 msgstr ""
 
 #: register.js:DUPE_PATRON_EMAIL
@@ -27,8 +31,13 @@ msgstr ""
 msgid "This address is owned by another user: "
 msgstr ""
 
+#: register.js:ADDRESS_NEW
+msgid "New Address"
+msgstr ""
+
 #: register.js:REPLACED_ADDRESS
-msgid "<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
+msgid ""
+"<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
 msgstr ""
 
 #: register.js:SHOW_REQUIRED
@@ -59,12 +68,20 @@ msgstr ""
 msgid "An address is required during registration."
 msgstr ""
 
-#: register.js:PARENT_OR_GUARDIAN
-msgid "Parent/Guardian"
+#: register.js:ALL_CARDS_PRIMARY
+msgid "Primary"
+msgstr ""
+
+#: register.js:BARCODE_IN_USE
+msgid "Barcode is already in use"
 msgstr ""
 
 #: register.js:ADDRESS_HEADER
 msgid "Address"
+msgstr ""
+
+#: register.js:ALL_CARDS_ACTIVE
+msgid "Active"
 msgstr ""
 
 #: register.js:DUPE_PATRON_PHONE
@@ -75,8 +92,8 @@ msgstr ""
 msgid "Form is invalid.  Please edit and try again."
 msgstr ""
 
-#: register.js:BARCODE_IN_USE
-msgid "Barcode is already in use"
+#: register.js:PARENT_OR_GUARDIAN
+msgid "Parent/Guardian"
 msgstr ""
 
 #: register.js:EXAMPLE
@@ -95,12 +112,24 @@ msgstr ""
 msgid "Username is already in use"
 msgstr ""
 
+#: register.js:HOLD_NOTIFY_PHONE
+msgid "Phone: "
+msgstr ""
+
 #: register.js:DUPE_PATRON_NAME
 msgid "Found ${0} patron(s) with the same name"
 msgstr ""
 
 #: register.js:DEFAULT_ADDRESS_TYPE
 msgid "MAILING"
+msgstr ""
+
+#: register.js:HOLD_NOTIFY_SMS
+msgid "SMS: "
+msgstr ""
+
+#: register.js:INVALIDATE
+msgid "Invalidate"
 msgstr ""
 
 #: register.js:SHOW_ALL
@@ -123,16 +152,24 @@ msgstr ""
 msgid "Statistical Categories"
 msgstr ""
 
-#: register.js:ADDRESS_NEW
-msgid "New Address"
+#: register.js:ALL_CARDS_BARCODE
+msgid "Barcode"
 msgstr ""
 
 #: register.js:RESET_PASSWORD
 msgid "Reset Password"
 msgstr ""
 
+#: register.js:HOLD_NOTIFY_EMAIL
+msgid "Email: "
+msgstr ""
+
 #: register.js:SEE_ALL
 msgid "See All"
+msgstr ""
+
+#: register.js:ALL_CARDS_CLOSE
+msgid "Close"
 msgstr ""
 
 #: register.js:DELETE_ADDRESS
