@@ -288,7 +288,10 @@ sub fetch_response {
     my $isbn = $keys->{isbn}[0];
     my $upc = $keys->{upc}[0];
 
-    my $url = $self->base_url . "?isbn=$isbn/$page&client=$uname" . (($notype) ? '' : "&type=rw12");
+    $isbn = '' if !defined($isbn);
+    $upc = '' if !defined($upc);
+
+    my $url = $self->base_url . "?isbn=$isbn/$page&upc=$upc&client=$uname" . (($notype) ? '' : "&type=rw12");
     return $AC->get_url($url);
 }
 
