@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45:32-0400\n"
+"POT-Creation-Date: 2012-04-28 14:18:01-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,7 +24,9 @@ msgid "You have already loaded the maximum number of terms."
 msgstr ""
 
 #: XULTermLoader.js:TERM_LIMIT_SOME
-msgid "Could not load all terms from the file without exceeding maximum number of terms. Some data not included."
+msgid ""
+"Could not load all terms from the file without exceeding maximum number of "
+"terms. Some data not included."
 msgstr ""
 
 #: XULTermLoader.js:CHOOSE_FILE

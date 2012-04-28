@@ -145,7 +145,7 @@ msgstr ""
 msgid "- All Parts -"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:188 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:30
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:192 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:30
 msgid "-- Actions for these items --"
 msgstr ""
 
@@ -326,7 +326,7 @@ msgstr ""
 msgid "Author Notes: "
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:178 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:27
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:182 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:27
 msgid "Author(s)"
 msgstr ""
 
@@ -553,7 +553,7 @@ msgid "Continue"
 msgstr ""
 
 #. (date.format(date.now, "%Y"))
-#: ../../Open-ILS/src/templates/opac/parts/footer.tt2:14
+#: ../../Open-ILS/src/templates/opac/parts/footer.tt2:21
 msgid "Copyright &copy; 2006-%1 Georgia Public Library Service, and others"
 msgstr ""
 
@@ -653,7 +653,7 @@ msgstr ""
 msgid "Delete List"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:149
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:153
 msgid "Description:"
 msgstr ""
 
@@ -690,7 +690,7 @@ msgstr ""
 msgid "Earlier issues"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:183
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:187
 msgid "Edit"
 msgstr ""
 
@@ -785,7 +785,7 @@ msgstr ""
 msgid "Evening Phone"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/footer.tt2:21
+#: ../../Open-ILS/src/templates/opac/parts/footer.tt2:28
 msgid "Evergreen"
 msgstr ""
 
@@ -884,7 +884,7 @@ msgstr ""
 msgid "Geographic Setting: "
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circs.tt2:50 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:51 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:47 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:48 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:193 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:42
+#: ../../Open-ILS/src/templates/opac/myopac/circs.tt2:50 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:51 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:47 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:48 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:197 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:42
 msgid "Go"
 msgstr ""
 
@@ -896,7 +896,7 @@ msgstr ""
 msgid "Go back to try again or to cancel this payment attempt."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:110
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:114
 msgid "HTML View"
 msgstr ""
 
@@ -1249,7 +1249,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:136
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:140
 msgid "Name:"
 msgstr ""
 
@@ -1326,7 +1326,7 @@ msgstr ""
 msgid "Note: carrier charges may apply"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:181
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:185
 msgid "Notes"
 msgstr ""
 
@@ -1503,7 +1503,7 @@ msgstr ""
 msgid "Place Hold"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:189 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:31
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:193 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:31
 msgid "Place hold"
 msgstr ""
 
@@ -1548,7 +1548,7 @@ msgstr ""
 msgid "Please see a librarian to renew your account."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/footer.tt2:17
+#: ../../Open-ILS/src/templates/opac/parts/footer.tt2:24
 msgid "Powered by"
 msgstr ""
 
@@ -1678,7 +1678,7 @@ msgstr ""
 msgid "Regular Font"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:190 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:32
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:194 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:32
 msgid "Remove from list"
 msgstr ""
 
@@ -1710,7 +1710,7 @@ msgstr ""
 msgid "Reviews:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:145 ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:93 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:95
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:149 ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:93 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:95
 msgid "Save"
 msgstr ""
 
@@ -1718,11 +1718,11 @@ msgstr ""
 msgid "Save Changes"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:241
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:245
 msgid "Save Notes"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:144
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:148
 msgid "Save changes to name or description?"
 msgstr ""
 
@@ -1834,7 +1834,7 @@ msgstr ""
 msgid "Sharing Help"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:254
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:258
 msgid ""
 "Sharing a Bookbag means that the contents \n"
 "of the Bookbag will be visible to others.  \n"
@@ -1896,7 +1896,7 @@ msgstr ""
 msgid "Sorry, no entries were found for"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:125 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:10
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:129 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:10
 msgid "Sort"
 msgstr ""
 
@@ -1924,7 +1924,7 @@ msgstr ""
 msgid "Sort by Title"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:119 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:4
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:123 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:4
 msgid "Sort list items by: "
 msgstr ""
 
@@ -2117,11 +2117,11 @@ msgstr ""
 msgid "This appears to be the first time you have logged in.  You will need to change your password."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:200
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:204
 msgid "This list contains no items."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/body.tt2:48
+#: ../../Open-ILS/src/templates/opac/parts/record/body.tt2:47
 msgid "This record has been deleted from the database.  We recommend that you remove this title from any bookbags it may have been added to."
 msgstr ""
 
@@ -2137,7 +2137,7 @@ msgstr ""
 msgid "Tip:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:52 ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:45 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:175 ../../Open-ILS/src/templates/opac/myopac/main.tt2:22 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:26 ../../Open-ILS/src/templates/opac/parts/qtype_selector.tt2:1
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:52 ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:45 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:179 ../../Open-ILS/src/templates/opac/myopac/main.tt2:22 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:26 ../../Open-ILS/src/templates/opac/parts/qtype_selector.tt2:1
 msgid "Title"
 msgstr ""
 

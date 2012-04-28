@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
+"POT-Creation-Date: 2012-04-28 14:18:00-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -113,6 +113,10 @@ msgstr ""
 msgid "- Or -"
 msgstr ""
 
+#: reservation.js:AUTO_email_notify
+msgid "Send email notification when resource is available for pickup."
+msgstr ""
+
 #: reservation.js:SELECT_A_BRSRC_THEN
 msgid ""
 "You have clicked 'Reserve Selected', but nothing is selected!\n"
@@ -184,7 +188,10 @@ msgid "This user has no existing reservations at this time."
 msgstr ""
 
 #: reservation.js:AUTO_explain_bookable
-msgid "To reserve an item that is not yet registered as a bookable resource, find it in the catalog or under <em>Display Item</em>, and select <em>Make Item Bookable</em> or <em>Book Item Now</em> there."
+msgid ""
+"To reserve an item that is not yet registered as a bookable resource, find "
+"it in the catalog or under <em>Display Item</em>, and select <em>Make Item "
+"Bookable</em> or <em>Book Item Now</em> there."
 msgstr ""
 
 #: reservation.js:CXL_BRESV_FAILURE2

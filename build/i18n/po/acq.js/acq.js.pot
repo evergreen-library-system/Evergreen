@@ -3,13 +3,332 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
+"POT-Creation-Date: 2012-04-28 14:18:00-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
+
+#: acq.js:ADD_LI_TO_PO_BAD_LI_STATE
+msgid ""
+"The selected lineitem is not in a state that can be added to a purchase "
+"order"
+msgstr ""
+
+#: acq.js:CONFIRM_FUNDS_AT_WARNING
+msgid ""
+"One or more of the selected funds has a balance below its warning level.\n"
+"Continue?"
+msgstr ""
+
+#: acq.js:NO_LID_TO_CLAIM
+msgid "You have not selected any lineitem details to claim."
+msgstr ""
+
+#: acq.js:FUND_LIST_ROLLOVER_SUMMARY_FUNDS
+msgid ""
+"<b>${1}</b> funds propagated for fiscal year ${0} for the selected locations"
+msgstr ""
+
+#: acq.js:ONE_LI_ATTR_SEARCH_AT_A_TIME
+msgid ""
+"You cannot both type in an attribute value search and search for an uploaded"
+" file of terms at the same time."
+msgstr ""
+
+#: acq.js:PREPAYMENT_REQUIRED_REMINDER
+msgid ""
+"This PO requires prepayment.  Are you certain you're ready to activate it?"
+msgstr ""
+
+#: acq.js:INVOICE_EXTRA_COPIES
+msgid ""
+"You are attempting to invoice <b>${0}</b> more copies than originally "
+"ordered.  <br/><br/>To add these items to the original order, select a fund "
+"and choose 'Add New Items' below.  <br/>After saving the invoice, you may "
+"finish editing and importing the new copies from the lineitem details page."
+msgstr ""
+
+#: acq.js:LI_ATTR_SEARCH_CHOOSE_FILE
+msgid "Select file with search terms"
+msgstr ""
+
+#: acq.js:ALERT_UNSELECTED
+msgid "You must choose an alert code."
+msgstr ""
+
+#: acq.js:INVOICE_CONFIRM_PRORATE
+msgid ""
+"Prorate charges?\n"
+"\n"
+"Any subsequent changes to the invoice that would affect prorated amounts should be resolved manually."
+msgstr ""
+
+#: acq.js:FUND_LIST_ROLLOVER_SUMMARY
+msgid "Fund Propagation &amp; Rollover Summary for Fiscal Year ${0}"
+msgstr ""
+
+#: acq.js:CONFIRM_FUNDS_AT_STOP
+msgid ""
+"One or more of the selected funds has a balance below its stop level.\n"
+"You may not be able to activate purchase orders incorporating these copies.\n"
+"Continue?"
+msgstr ""
+
+#: acq.js:INVOICE_ITEM_DETAILS
+msgid ""
+"${0} <br/> ${1} <br/> ${2}. <br/> Estimated Price: $${3}. <br/> Lineitem ID:"
+" ${4} <br/> PO: ${5} <br/> Order Date: ${6}"
+msgstr ""
+
+#: acq.js:XUL_RECORD_DETAIL_PAGE
+msgid "Record Details"
+msgstr ""
+
+#: acq.js:DFA_NOT_ALL
+msgid "Could not record all of your applications of distribution forumulas."
+msgstr ""
+
+#: acq.js:CONFIRM_DELETE_MAPPING
+msgid "Are you sure you want to remove this tag from this fund?"
+msgstr ""
+
+#: acq.js:VENDOR_SAYS_PREPAY_NOT_NEEDED
+msgid ""
+"The selected vendor does not necessarily require prepayment, according\n"
+"to records. Require prepayment on this PO anyway?"
+msgstr ""
+
+#: acq.js:INVOICE_CONFIRM_ITEM_DELETE
+msgid "Remove this $${0} '${1}' charge from the invoice?"
+msgstr ""
+
+#: acq.js:PO_WARNING_NO_BLOCK_ACTIVATION
+msgid "Yes; fund ${0} (${1}) would be encumbered beyond its warning level."
+msgstr ""
+
+#: acq.js:FUND_XFER_SAME_SOURCE_AND_DEST
+msgid "Cannot transfer. The source and destination funds are the same."
+msgstr ""
+
+#: acq.js:LOAD_TERMS_FIRST
+msgid ""
+"You can't retrieve records until you've loaded a CSV file\n"
+"with bibliographic IDs in the first column."
+msgstr ""
+
+#: acq.js:LI_FORMAT_ERROR
+msgid "Unexpected error retrieving formatted lineitem information."
+msgstr ""
+
+#: acq.js:PO_STOP_BLOCKS_ACTIVATION
+msgid "No; fund ${0} (${1}) would be encumbered beyond its stop level."
+msgstr ""
+
+#: acq.js:NO_FIND_INVOICE
+msgid ""
+"Could not find that invoice.\n"
+"Note that the Invoice # field is case-sensitive."
+msgstr ""
+
+#: acq.js:ROLLBACK_PO_RECEIVE_CONFIRM
+msgid ""
+"This will rollback receipt of all copies for this purchase order.\n"
+"\n"
+"Continue?"
+msgstr ""
+
+#: acq.js:PO_CANCEL_CONFIRM
+msgid "Are you SURE you want to cancel this purchase order?"
+msgstr ""
+
+#: acq.js:PRINT
+msgid "Print"
+msgstr ""
+
+#: acq.js:INVOICE_ITEM_PO_DETAILS
+msgid ""
+"<b>${0}</b><br/><a href='${1}/acq/po/view/${2}'>PO #${3} ${4}</a><br/>Total "
+"Estimated Cost: $${5}"
+msgstr ""
+
+#: acq.js:LI_CANCEL_CONFIRM
+msgid "Are you SURE you want to cancel this line item?"
+msgstr ""
+
+#: acq.js:SELECT_AN_LI_ATTRIBUTE
+msgid "You must select an LI attribute."
+msgstr ""
+
+#: acq.js:EXPLAIN_DFA_MGMT
+msgid "Remove record of this distribution formula usage?"
+msgstr ""
+
+#: acq.js:UNNAMED
+msgid "Unnamed"
+msgstr ""
+
+#: acq.js:DEL_LI_FROM_PO
+msgid ""
+"That item has already been ordered!  Deleting it now will not revoke or "
+"modify any order that has been placed with a vendor.  Deleting the item may "
+"put the system's idea of your purchase order in a state that is inconsistent"
+" with reality.  Are you sure you mean to do this?"
+msgstr ""
+
+#: acq.js:CREATE_PO_ASSETS_CONFIRM
+msgid ""
+"This will create bibliographic, call number, and copy records for this purchase order in the ILS.\n"
+"\n"
+"Continue?"
+msgstr ""
+
+#: acq.js:LID_CANCEL_CONFIRM
+msgid "Are you SURE you want to cancel this copy?"
+msgstr ""
+
+#: acq.js:INVOICE_CONFIRM_ENTRY_DETACH
+msgid "Remove $${0} charge for item '${1}, ${2} [${3}] from the invoice?"
+msgstr ""
+
+#: acq.js:SELECT_SEARCH_FIELD
+msgid "Select Search Field"
+msgstr ""
+
+#: acq.js:VENDOR_PUBLIC
+msgid "VENDOR PUBLIC"
+msgstr ""
+
+#: acq.js:VENDOR_SAYS_PREPAY_NEEDED
+msgid ""
+"The selected vendor requires prepayment, according to records.\n"
+"Proceed anyway without required prepayment on this PO?"
+msgstr ""
+
+#: acq.js:INVOICES
+msgid "Invoices"
+msgstr ""
+
+#: acq.js:INVOICE_NUMBER
+msgid "Invoice #${0}"
+msgstr ""
+
+#: acq.js:CANCELED
+msgid "Canceled"
+msgstr ""
+
+#: acq.js:COULD_NOT_DELETE_MAPPING
+msgid "Error removing tag from fund."
+msgstr ""
+
+#: acq.js:YES
+msgid "Yes"
+msgstr ""
+
+#: acq.js:COPIES_TO_RECEIVE
+msgid "Number of copies to receive: "
+msgstr ""
+
+#: acq.js:PO_CHECKING
+msgid "[One moment...]"
+msgstr ""
+
+#: acq.js:PO_COULD_ACTIVATE
+msgid "Yes."
+msgstr ""
+
+#: acq.js:CONFIRM_LI_ALERT
+msgid ""
+"An alert has been placed on the lineitem titled,\n"
+"\"${0}\":\n"
+"\n"
+"${1}\n"
+"${2}\n"
+"${3}\n"
+"Choose OK if you wish to acknowledge this alert."
+msgstr ""
+
+#: acq.js:NO
+msgid "No"
+msgstr ""
+
+#: acq.js:NO_RESULTS
+msgid "No results."
+msgstr ""
+
+#: acq.js:RECVD
+msgid "Recv'd"
+msgstr ""
+
+#: acq.js:NUM_CLAIMS_EXISTING
+msgid "Claims (${0} existing)"
+msgstr ""
+
+#: acq.js:FUND_LIST_ROLLOVER_SUMMARY_ROLLOVER_AMOUNT
+msgid ""
+"<b>$${1}</b> unspent money rolled over to fiscal year ${0} for the selected "
+"locations"
+msgstr ""
+
+#: acq.js:DFA_TIP
+msgid "<strong>Applied by</strong>: ${0}<br /><strong>When</strong>: ${1}"
+msgstr ""
+
+#: acq.js:OUT_OF_COPIES
+msgid "You have applied distribution formulas to every copy."
+msgstr ""
+
+#: acq.js:CREATE_PO_INVALID
+msgid "A purchase order must have an ordering agency and a provider."
+msgstr ""
+
+#: acq.js:LI_ATTR_SEARCH_TOO_LARGE
+msgid "That file is too large for this operation."
+msgstr ""
+
+#: acq.js:PO_HEADING_ERROR
+msgid "Unexpected problem building virtual combined PO"
+msgstr ""
+
+#: acq.js:DELETE_LI_COPIES_CONFIRM
+msgid "This will delete the last ${0} copies in the table.  Proceed?"
+msgstr ""
+
+#: acq.js:FUND_XFER_CONFIRM
+msgid "Are you sure you're ready to commit this transfer?"
+msgstr ""
+
+#: acq.js:PO_FUND_WARNING_CONFIRM
+msgid "Are you sure? Did you see the warning about over-encumbering a fund?"
+msgstr ""
+
+#: acq.js:NO_LI_TO_CLAIM
+msgid "You have not selected any lineitems to claim."
+msgstr ""
+
+#: acq.js:UR_FILTER_USER
+msgid "Enter barcode for user (or leave blank to unset the filter):"
+msgstr ""
+
+#: acq.js:UR_FILTER_LINEITEM
+msgid "Enter id for lineitem (or leave blank to unset the filter):"
+msgstr ""
+
+#: acq.js:JUST_NOW
+msgid "Just now"
+msgstr ""
+
+#: acq.js:CANCEL
+msgid "Cancel"
+msgstr ""
+
+#: acq.js:CONFIRM_SPLIT_PO
+msgid ""
+"Are you sure you want to split this purchase order into\n"
+"one purchase order for every constituent line item?"
+msgstr ""
 
 #: acq.js:LINEITEM_SUMMARY
 msgid ""
@@ -30,240 +349,56 @@ msgstr ""
 msgid "Activated ${0}"
 msgstr ""
 
-#: acq.js:CONFIRM_LI_ALERT
-msgid ""
-"An alert has been placed on the lineitem titled,\n"
-"\"${0}\":\n"
-"\n"
-"${1}\n"
-"${2}\n"
-"${3}\n"
-"Choose OK if you wish to acknowledge this alert."
-msgstr ""
-
-#: acq.js:LI_FORMAT_ERROR
-msgid "Unexpected error retrieving formatted lineitem information."
-msgstr ""
-
-#: acq.js:NO
-msgid "No"
-msgstr ""
-
-#: acq.js:NO_RESULTS
-msgid "No results."
-msgstr ""
-
-#: acq.js:NO_FIND_INVOICE
-msgid ""
-"Could not find that invoice.\n"
-"Note that the Invoice # field is case-sensitive."
-msgstr ""
-
-#: acq.js:NO_LID_TO_CLAIM
-msgid "You have not selected any lineitem details to claim."
-msgstr ""
-
-#: acq.js:FUND_LIST_ROLLOVER_SUMMARY_FUNDS
-msgid "<b>${1}</b> funds propagated for fiscal year ${0} for the selected locations"
-msgstr ""
-
-#: acq.js:DFA_TIP
-msgid "<strong>Applied by</strong>: ${0}<br /><strong>When</strong>: ${1}"
-msgstr ""
-
-#: acq.js:PO_CANCEL_CONFIRM
-msgid "Are you SURE you want to cancel this purchase order?"
-msgstr ""
-
-#: acq.js:DELETE_LI_COPIES_CONFIRM
-msgid "This will delete the last ${0} copies in the table.  Proceed?"
-msgstr ""
-
-#: acq.js:ONE_LI_ATTR_SEARCH_AT_A_TIME
-msgid "You cannot both type in an attribute value search and search for an uploaded file of terms at the same time."
-msgstr ""
-
-#: acq.js:PREPAYMENT_REQUIRED_REMINDER
-msgid "This PO requires prepayment.  Are you certain you're ready to activate it?"
-msgstr ""
-
-#: acq.js:NOT_RECVD
-msgid "Not recv'd"
-msgstr ""
-
-#: acq.js:FUND_LIST_ROLLOVER_SUMMARY_ROLLOVER_AMOUNT
-msgid "<b>$${1}</b> unspent money rolled over to fiscal year ${0} for the selected locations"
-msgstr ""
-
-#: acq.js:PRINT
-msgid "Print"
-msgstr ""
-
-#: acq.js:CREATE_PO_ASSETS_CONFIRM
-msgid ""
-"This will create bibliographic, call number, and copy records for this purchase order in the ILS.\n"
-"\n"
-"Continue?"
-msgstr ""
-
-#: acq.js:ITS_YOU
-msgid "You"
-msgstr ""
-
-#: acq.js:EXPLAIN_DFA_MGMT
-msgid "Remove record of this distribution formula usage?"
-msgstr ""
-
-#: acq.js:PO_COULD_ACTIVATE
-msgid "Yes."
-msgstr ""
-
-#: acq.js:INVOICE_EXTRA_COPIES
-msgid "You are attempting to invoice <b>${0}</b> more copies than originally ordered.  <br/><br/>To add these items to the original order, select a fund and choose 'Add New Items' below.  <br/>After saving the invoice, you may finish editing and importing the new copies from the lineitem details page."
-msgstr ""
-
-#: acq.js:OUT_OF_COPIES
-msgid "You have applied distribution formulas to every copy."
-msgstr ""
-
-#: acq.js:SELECT_SEARCH_FIELD
-msgid "Select Search Field"
-msgstr ""
-
-#: acq.js:LI_ATTR_SEARCH_CHOOSE_FILE
-msgid "Select file with search terms"
-msgstr ""
-
-#: acq.js:ALERT_UNSELECTED
-msgid "You must choose an alert code."
-msgstr ""
-
-#: acq.js:PO_STOP_BLOCKS_ACTIVATION
-msgid "No; fund ${0} (${1}) would be encumbered beyond its stop level."
-msgstr ""
-
-#: acq.js:INVOICE_ITEM_PO_DETAILS
-msgid "<b>${0}</b><br/><a href='${1}/acq/po/view/${2}'>PO #${3} ${4}</a><br/>Total Estimated Cost: $${5}"
-msgstr ""
-
-#: acq.js:CONFIRM_FUNDS_AT_STOP
-msgid ""
-"One or more of the selected funds has a balance below its stop level.\n"
-"You may not be able to activate purchase orders incorporating these copies.\n"
-"Continue?"
-msgstr ""
-
-#: acq.js:RESET_FORMULAE
-msgid "Reset Formulas"
-msgstr ""
-
-#: acq.js:LI_CANCEL_CONFIRM
-msgid "Are you SURE you want to cancel this line item?"
-msgstr ""
-
-#: acq.js:LI_ATTR_SEARCH_TOO_LARGE
-msgid "That file is too large for this operation."
-msgstr ""
-
-#: acq.js:UNRECEIVE_LI
-msgid "Are you sure you want to mark this lineitem as UN-received?"
-msgstr ""
-
-#: acq.js:SELECT_AN_LI_ATTRIBUTE
-msgid "You must select an LI attribute."
-msgstr ""
-
-#: acq.js:INVOICE_CONFIRM_PRORATE
-msgid ""
-"Prorate charges?\n"
-"\n"
-"Any subsequent changes to the invoice that would affect prorated amounts should be resolved manually."
-msgstr ""
-
-#: acq.js:FUND_LIST_ROLLOVER_SUMMARY
-msgid "Fund Propagation &amp; Rollover Summary for Fiscal Year ${0}"
-msgstr ""
-
-#: acq.js:COULD_NOT_CREATE_MAPPING
-msgid "Error tagging fund."
-msgstr ""
-
-#: acq.js:INVOICE_ITEM_DETAILS
-msgid "${0} <br/> ${1} <br/> ${2}. <br/> Estimated Price: $${3}. <br/> Lineitem ID: ${4} <br/> PO: ${5} <br/> Order Date: ${6}"
-msgstr ""
-
-#: acq.js:PO_WARNING_NO_BLOCK_ACTIVATION
-msgid "Yes; fund ${0} (${1}) would be encumbered beyond its warning level."
-msgstr ""
-
-#: acq.js:PO_HEADING_ERROR
-msgid "Unexpected problem building virtual combined PO"
-msgstr ""
-
-#: acq.js:UNRECEIVE_LID
-msgid "Are you sure you want to mark this copy as UN-received?"
-msgstr ""
-
-#: acq.js:UR_CANCEL_CONFIRM
-msgid "Are you SURE you want to cancel this user request?"
-msgstr ""
-
-#: acq.js:UNNAMED
-msgid "Unnamed"
-msgstr ""
-
-#: acq.js:DFA_NOT_ALL
-msgid "Could not record all of your applications of distribution forumulas."
-msgstr ""
-
-#: acq.js:CANCEL_REASON
-msgid "Cancel reason"
-msgstr ""
-
-#: acq.js:FUND_XFER_CONFIRM
-msgid "Are you sure you're ready to commit this transfer?"
-msgstr ""
-
-#: acq.js:NO_PO_RESULTS
-msgid "No results"
-msgstr ""
-
-#: acq.js:CONFIRM_FUNDS_AT_WARNING
-msgid ""
-"One or more of the selected funds has a balance below its warning level.\n"
-"Continue?"
-msgstr ""
-
-#: acq.js:PO_FUND_WARNING_CONFIRM
-msgid "Are you sure? Did you see the warning about over-encumbering a fund?"
+#: acq.js:ADD_LI_TO_PO_BAD_PO_STATE
+msgid "The selected PO has already been activated"
 msgstr ""
 
 #: acq.js:EXPORT_SAVE_DIALOG_TITLE
 msgid "Save field values to a file"
 msgstr ""
 
-#: acq.js:NO_LI_TO_CLAIM
-msgid "You have not selected any lineitems to claim."
+#: acq.js:NOT_RECVD
+msgid "Not recv'd"
 msgstr ""
 
-#: acq.js:LID_CANCEL_CONFIRM
-msgid "Are you SURE you want to cancel this copy?"
+#: acq.js:ITS_YOU
+msgid "You"
 msgstr ""
 
-#: acq.js:RECVD
-msgid "Recv'd"
+#: acq.js:UR_CANCEL_CONFIRM
+msgid "Are you SURE you want to cancel this user request?"
 msgstr ""
 
-#: acq.js:INVOICE_CONFIRM_ENTRY_DETACH
-msgid "Remove $${0} charge for item '${1}, ${2} [${3}] from the invoice?"
+#: acq.js:RESET_FORMULAE
+msgid "Reset Formulas"
+msgstr ""
+
+#: acq.js:UNRECEIVE_LI
+msgid "Are you sure you want to mark this lineitem as UN-received?"
+msgstr ""
+
+#: acq.js:COULD_NOT_CREATE_MAPPING
+msgid "Error tagging fund."
+msgstr ""
+
+#: acq.js:UNRECEIVE_LID
+msgid "Are you sure you want to mark this copy as UN-received?"
+msgstr ""
+
+#: acq.js:CANCEL_REASON
+msgid "Cancel reason"
+msgstr ""
+
+#: acq.js:NO_PO_RESULTS
+msgid "No results"
+msgstr ""
+
+#: acq.js:FUND_NOT_YET_LOADED
+msgid "Fund not yet loaded. Try coming back to this display later."
 msgstr ""
 
 #: acq.js:LIBRARY_INITIATED
 msgid "Library Initiated"
-msgstr ""
-
-#: acq.js:VENDOR_PUBLIC
-msgid "VENDOR PUBLIC"
 msgstr ""
 
 #: acq.js:EXPORT_SHORT_LIST
@@ -272,93 +407,14 @@ msgid ""
 "Choose OK to save those values that could be found."
 msgstr ""
 
-#: acq.js:APPLY
-msgid "Apply"
-msgstr ""
-
-#: acq.js:VENDOR_SAYS_PREPAY_NEEDED
-msgid ""
-"The selected vendor requires prepayment, according to records.\n"
-"Proceed anyway without required prepayment on this PO?"
-msgstr ""
-
-#: acq.js:CONFIRM_DELETE_MAPPING
-msgid "Are you sure you want to remove this tag from this fund?"
-msgstr ""
-
-#: acq.js:VENDOR_SAYS_PREPAY_NOT_NEEDED
-msgid ""
-"The selected vendor does not necessarily require prepayment, according\n"
-"to records. Require prepayment on this PO anyway?"
-msgstr ""
-
-#: acq.js:FUND_NOT_YET_LOADED
-msgid "Fund not yet loaded. Try coming back to this display later."
-msgstr ""
-
-#: acq.js:INVOICE_CONFIRM_ITEM_DELETE
-msgid "Remove this $${0} '${1}' charge from the invoice?"
-msgstr ""
-
-#: acq.js:ROLLBACK_PO_RECEIVE_CONFIRM
-msgid ""
-"This will rollback receipt of all copies for this purchase order.\n"
-"\n"
-"Continue?"
-msgstr ""
-
-#: acq.js:INVOICES
-msgid "Invoices"
+#: acq.js:INVOICE_COPY_COUNT_INFO
+msgid "Copies received on this invoice: ${0} out of ${1}."
 msgstr ""
 
 #: acq.js:EXPORT_EMPTY_LIST
 msgid "No values for attribute '${0}' found."
 msgstr ""
 
-#: acq.js:XUL_RECORD_DETAIL_PAGE
-msgid "Record Details"
-msgstr ""
-
-#: acq.js:JUST_NOW
-msgid "Just now"
-msgstr ""
-
-#: acq.js:CANCELED
-msgid "Canceled"
-msgstr ""
-
-#: acq.js:NUM_CLAIMS_EXISTING
-msgid "Claims (${0} existing)"
-msgstr ""
-
-#: acq.js:COULD_NOT_DELETE_MAPPING
-msgid "Error removing tag from fund."
-msgstr ""
-
-#: acq.js:LOAD_TERMS_FIRST
-msgid ""
-"You can't retrieve records until you've loaded a CSV file\n"
-"with bibliographic IDs in the first column."
-msgstr ""
-
-#: acq.js:CANCEL
-msgid "Cancel"
-msgstr ""
-
-#: acq.js:CONFIRM_SPLIT_PO
-msgid ""
-"Are you sure you want to split this purchase order into\n"
-"one purchase order for every constituent line item?"
-msgstr ""
-
-#: acq.js:YES
-msgid "Yes"
-msgstr ""
-
-#: acq.js:PO_CHECKING
-msgid "[One moment...]"
-msgstr ""
-
-#: acq.js:FUND_XFER_SAME_SOURCE_AND_DEST
-msgid "Cannot transfer. The source and destination funds are the same."
+#: acq.js:APPLY
+msgid "Apply"
 msgstr ""

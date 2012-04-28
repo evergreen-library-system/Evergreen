@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
+"POT-Creation-Date: 2012-04-28 14:18:00-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -116,7 +116,9 @@ msgid "Problem fetching Mailing Address for ${0}"
 msgstr ""
 
 #: conify.js:CONFIRM_EXIT_AOU
-msgid "There are unsaved changes to one or more organizational units. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved changes to one or more organizational units. Click OK to "
+"save these changes, or Cancel to abandon them."
 msgstr ""
 
 #: conify.js:SURVEY_SAVE_ADD
@@ -160,7 +162,9 @@ msgid "New Group"
 msgstr ""
 
 #: conify.js:CONFIRM_EXIT_PGT
-msgid "There are unsaved modified permission maps. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved modified permission maps. Click OK to save these changes, "
+"or Cancel to abandon them."
 msgstr ""
 
 #: conify.js:SUCCESS_SAVING_MAILING
@@ -184,11 +188,15 @@ msgid "Are you sure you want to delete ${0}?"
 msgstr ""
 
 #: conify.js:CONFIRM_EXIT_PPL
-msgid "There are unsaved modified permissions. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved modified permissions. Click OK to save these changes, or "
+"Cancel to abandon them."
 msgstr ""
 
 #: conify.js:CONFIRM_UNSAVED_CHANGES
-msgid "There are unsaved changes to one or more organization types. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved changes to one or more organization types. Click OK to "
+"save these changes, or Cancel to abandon them."
 msgstr ""
 
 #: conify.js:ERROR_FETCHING_HOURS
@@ -271,6 +279,10 @@ msgstr ""
 msgid "Problem fetching perms"
 msgstr ""
 
+#: conify.js:COPY_ACTIVE
+msgid "Sets copy active"
+msgstr ""
+
 #: conify.js:LABEL_DESCRIPTION
 msgid "Description"
 msgstr ""
@@ -292,7 +304,9 @@ msgid "Problem fetching organizational unit data"
 msgstr ""
 
 #: conify.js:CONFIRM_EXIT_CCS
-msgid "There are unsaved changes to one or more copy statuses. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved changes to one or more copy statuses. Click OK to save "
+"these changes, or Cancel to abandon them."
 msgstr ""
 
 #: conify.js:OPAC_VISIBLE
@@ -344,7 +358,9 @@ msgid "${0}: ${1}"
 msgstr ""
 
 #: conify.js:CONFIRM_EXIT_CAM
-msgid "There are unsaved changes to one or more ${0} codes. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved changes to one or more ${0} codes. Click OK to save these "
+"changes, or Cancel to abandon them."
 msgstr ""
 
 #: conify.js:ERROR_CALLING_METHOD_PGT
