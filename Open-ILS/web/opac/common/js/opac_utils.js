@@ -295,12 +295,6 @@ function findBaseURL(ssl) {
 	return proto + "//" + h + path;
 }
 
-/*
-function buildISBNSrc(isbn) {
-	return "http://" + location.host + "/jackets/" + isbn;
-}
-*/
-
 function buildImageLink(name, ssl) {
 	return findBaseURL(ssl) + "../../../../images/" + name;
 }
