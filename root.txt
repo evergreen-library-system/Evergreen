@@ -11,7 +11,16 @@ Introduction
 About This Documentation
 ------------------------
 
-This guide was produced by the Evergreen Documentation Interest Group (DIG), consisting of numerous volunteers from many different organizations. The DIG has drawn together, edited, and supplemented pre-existing documentation contributed by libraries and consortia running Evergreen that were kind enough to release their documentation into the creative commons. For a full list of authors and contributing organizations, see Appendix B, About this Documentation. Just like the software it describes, this guide is a work in progress, continually revised to meet the needs of its users, so if you find errors or omissions, please let us know, by contacting the DIG facilitators at docs@evergreen-ils.org.
+This guide was produced by the Evergreen Documentation Interest Group (DIG),
+consisting of numerous volunteers from many different organizations. The DIG
+has drawn together, edited, and supplemented pre-existing documentation
+contributed by libraries and consortia running Evergreen that were kind enough
+to release their documentation into the creative commons. Please see the
+<<attributions,Attributions>> section for a full list of authors and
+contributing organizations. Just like the software it describes, this guide is
+a work in progress, continually revised to meet the needs of its users, so if
+you find errors or omissions, please let us know, by contacting the DIG
+facilitators at docs@evergreen-ils.org.
 
 This guide to Evergreen is intended to meet the needs of front-line library staff, catalogers, library administrators, system administrators, and software developers. It is organized into Parts, Chapters, and Sections addressing key aspects of the software, beginning with the topics of broadest interest to the largest groups of users and progressing to some of the more specialized and technical topics of interest to smaller numbers of users.
 
