@@ -18,7 +18,7 @@ Add a new permission:
 
 3) In the *New Permission* field, enter the text that describes the new permission.
 
-image::media/Restrict_Z39.50_Sources_by_Permission_Group1.jpg[Restrict_Z39.50_Sources_by_Permission_Group1]
+image::media/Restrict_Z39_50_Sources_by_Permission_Group1.jpg[]
 
 4) Click *Add*.
 
@@ -35,14 +35,14 @@ Restrict Z39.50 Sources by Permission Group
 
 3) Select the permission that you added to restrict Z39.50 use from the drop down menu.
 
-image::media/Restrict_Z39.50_Sources_by_Permission_Group2.jpg[Restrict_Z39.50_Sources_by_Permission_Group2]
+image::media/Restrict_Z39_50_Sources_by_Permission_Group2.jpg[]
 
 4) Click *Save*.
 
 5) Add the permission that you created to a user or user group so that they can access the restricted server.
 
 
-image::media/Restrict_Z39.50_Sources_by_Permission_Group3.jpg[Restrict_Z39.50_Sources_by_Permission_Group3]
+image::media/Restrict_Z39_50_Sources_by_Permission_Group3.jpg[]
 
 6) Users that log in to the staff client and have that permission will be able to see the restricted Z39.50 server.  
 
