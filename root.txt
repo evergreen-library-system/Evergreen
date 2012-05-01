@@ -2,6 +2,8 @@ Evergreen Documentation
 =======================
 Documentation Interest Group
 :doctype: book
+:toc:
+:numbered:
 
 Introduction
 ============ 
@@ -32,7 +34,13 @@ The community’s development requirements state that Evergreen must be:
 
 Evergreen, which first launched in 2006 now powers over 544 libraries of every type – public, academic, special, school, and even tribal and home libraries – in over a dozen countries worldwide.
 
+// Push titles down one level.
+:leveloffset: 1
+
 include::release_notes.txt[]
+
+// Return to normal title levels.
+:leveloffset: 0
 
 Software Installation
 =====================
@@ -46,7 +54,13 @@ This part will guide you through the installation steps installation or upgradin
 
 include::installation/system_requirements.txt[]
 
+// Push titles down one level.
+:leveloffset: 1
+
 include::installation/server_installation.txt[]
+
+// Return to normal title levels.
+:leveloffset: 0
 
 include::installation/server_upgrade.txt[]
 

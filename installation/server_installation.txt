@@ -1,8 +1,10 @@
-Evergreen Server Installation
------------------------------
+README for Evergreen 2.2
+========================
+:toc:
+:numbered:
 
 Preamble: referenced user accounts
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------------
 
 In subsequent sections, we will refer to a number of different accounts, as
 follows:
@@ -30,20 +32,8 @@ follows:
        Evergreen that you will use to test connectivity and configure your
        Evergreen instance.
 
-Preamble: Getting an Evergreen official release tarball
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-To download and extract the source for the current release of Evergreen, issue
-the following commands as the *user* Linux account:
-
-[source, bash]
-------------------------------------------------------------------------------
-wget -c http://evergreen-ils.org/downloads/Evergreen-ILS-2.2-beta2.tar.gz
-tar xzf Evergreen-ILS-2.2-beta2.tar.gz
-------------------------------------------------------------------------------
-
 Preamble: Developer instructions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------------
 
 [NOTE]
 Skip this section if you are using an official release tarball downloaded
@@ -64,7 +54,7 @@ source directory to generate the configure script and Makefiles:
 
 [source, bash]
 ------------------------------------------------------------------------------
-./autogen.sh
+autoreconf -i
 ------------------------------------------------------------------------------
 
 After running `make install`, developers also need to install the Dojo Toolkit
@@ -81,7 +71,7 @@ cp -r /openils/var/web/js/dojo-release-1.3.3/* /openils/var/web/js/dojo/.
 ------------------------------------------------------------------------------
 
 Installing prerequisites
-~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------
 
 Evergreen has a number of prerequisite packages that must be installed
 before you can successfully configure, compile, and install Evergreen.
@@ -112,13 +102,15 @@ add-apt-repository ppa:pitti/postgresql
 ------------------------------------------------------------------------------
 +
   * Ubuntu Precise comes with PostgreSQL 9, so no additional steps are required.
++
   * Fedora 16 comes with PostgreSQL 9, so no additional steps are required.
 +
 3. On Debian and Ubuntu, run `aptitude update` as the *root* Linux account to
    retrieve the new packages from the backports repository.
 4. Issue the following commands as the *root* Linux account to install
    prerequisites using the `Makefile.install` prerequisite installer,
-   substituting `debian-squeeze`, `fedora16`, `ubuntu-lucid` or `ubuntu-precise` for <osname> below:
+   substituting `debian-squeeze`, `fedora16`, `ubuntu-lucid`, or
+   `ubuntu-precise` for <osname> below:
 +
 [source, bash]
 ------------------------------------------------------------------------------
@@ -129,8 +121,9 @@ make -f Open-ILS/src/extras/Makefile.install <osname>
    issuing the following commands as the *root* Linux account:
 +
 [NOTE]
-You should skip this step if installing on Ubuntu Precise. The `ubuntu-precise` target uses libdbd-pgsql from packages.
-
+You should skip this step if installing on Ubuntu Precise. The ubuntu-precise
+target uses libdbd-pgsql from packages.
++
 .Debian / Ubuntu Lucid
 [source, bash]
 ------------------------------------------------------------------------------
@@ -146,7 +139,7 @@ ldconfig
 ------------------------------------------------------------------------------
 
 Configuration and compilation instructions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------------------------
 
 For the time being, we are still installing everything in the `/openils/`
 directory. From the Evergreen source directory, issue the following commands as
@@ -159,7 +152,7 @@ make
 ------------------------------------------------------------------------------
 
 Installation instructions
-~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------
 
 1. Once you have configured and compiled Evergreen, issue the following
    command as the *root* Linux account to install Evergreen, build the server
@@ -170,7 +163,7 @@ Installation instructions
 +
 [source, bash]
 ------------------------------------------------------------------------------
-make STAFF_CLIENT_STAMP_ID=rel_2_2_beta2 install
+make STAFF_CLIENT_STAMP_ID=rel_2_2 install
 ------------------------------------------------------------------------------
 +
 2. The server portion of the staff client expects `http://hostname/xul/server`
@@ -186,7 +179,7 @@ ln -sf rel_name/server server
 ------------------------------------------------------------------------------
 
 Change ownership of the Evergreen files
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------------------
 
 All files in the `/openils/` directory and subdirectories must be owned by the
 `opensrf` user. Issue the following command as the *root* Linux account to
@@ -198,7 +191,7 @@ chown -R opensrf:opensrf /openils
 ------------------------------------------------------------------------------
 
 Configure the Apache Web server
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------------
 
 1. Use the example configuration files in `Open-ILS/examples/apache/` to
 configure your Web server for the Evergreen catalog, staff client, Web
@@ -243,7 +236,8 @@ place.
   a. Replace `Allow from 10.0.0.0/8` with `Allow from all` (to enable
      access to the offline upload / execute interface from any workstation on
      any network - note that you must secure this for a production instance)
-  b.(Ferdora): Change references from the non-existent /etc/apache2/ directory to /etc/httpd/.
+  b. (Fedora): Change references from the non-existent `/etc/apache2/` directory
+     to `/etc/httpd/`.
 4. Change the user for the Apache server.
   * (Debian and Ubuntu): As the *root* Linux account, edit
     `/etc/apache2/envvars`.  Change `export APACHE_RUN_USER=www-data` to 
@@ -272,7 +266,9 @@ place.
 </IfModule>
 ------------------------------------------------------------------------------
 +
-6.(Fedora): As the root Linux account, edit the /etc/httpd/eg_vhost.conf file to change references from the non-existent /etc/apache2/ directory to /etc/httpd/.  
+6. (Fedora): As the *root* Linux account, edit the `/etc/httpd/eg_vhost.conf`
+   file to change references from the non-existent `/etc/apache2/` directory
+   to `/etc/httpd/`.
 7. (Debian and Ubuntu): As the *root* Linux account, enable the Evergreen site:
 +
 [source,bash]
@@ -282,7 +278,7 @@ a2ensite eg.conf
 ------------------------------------------------------------------------------
 
 Configure OpenSRF for the Evergreen application
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------------------------
 There are a number of example OpenSRF configuration files in `/openils/conf/`
 that you can use as a template for your Evergreen installation. Issue the
 following commands as the *opensrf* Linux account:
@@ -309,19 +305,19 @@ domains, you can retrieve the settings from the backup version of the files.
 connection information in `opensrf.xml` for you.
 
 Creating the Evergreen database
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------------
 
 By default, the `Makefile.install` prerequisite installer does not install
 the PostgreSQL 9 database server required by every Evergreen system;
 for production use, most libraries install the PostgreSQL database server on a
-dedicated machine. You can install the packages required by Debian or Ubuntu
+dedicated machine. You can install the packages required by Debian or Ubuntu Lucid
 on the machine of your choice using the following commands as the *root*
 Linux account:
 
-.(Debian / Ubuntu Lucid) Installing PostgreSQL 9.1 server packages
+.(Debian and Ubuntu Lucid) Installing PostgreSQL 9.1 server packages
 [source, bash]
 ------------------------------------------------------------------------------
-make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_91
+make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_backport_debs_91
 ------------------------------------------------------------------------------
 
 .(Ubuntu Precise) Installing PostgreSQL 9.1 server packages
@@ -399,32 +395,37 @@ administration scripts, and sets the user name and password for the *egadmin*
 Evergreen administrator account to your requested values.
 
 Creating the database on a remote server
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-In a production instance of Evergreen, your PostgreSQL server should be installed on a dedicated server.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In a production instance of Evergreen, your PostgreSQL server should be
+installed on a dedicated server.
 
 PostgreSQL 9.1 and later
-++++++++++++++++++++++++
-
-To create the database instance on a remote database server running PostgreSQL 9.1 or later, simply use the --create-database flag on eg_db_config.pl.
+^^^^^^^^^^^^^^^^^^^^^^^^
+To create the database instance on a remote database server running PostgreSQL
+9.1 or later, simply use the `--create-database` flag on `eg_db_config.pl`.
 
 For PostgreSQL 9.0
-++++++++++++++++++
+^^^^^^^^^^^^^^^^^^
+To create the database instance on a remote database server running PostgreSQL
+9.0, you can either:
 
-To create the database instance on a remote database server running PostgreSQL 9.0, you can either:
-
-* Install the PostgreSQL contrib modules on the machine on which you are installing the Evergreen code, and use the --create-database option from that machine, or
-* Copy the Open-ILS/src/sql/Pg/create_database.sql script to your PostgreSQL server and invoke it as the postgres Linux account:
+  *  Install the PostgreSQL contrib modules on the machine on which you
+     are installing the Evergreen code, and use the `--create-database`
+     option from that machine, or
+  *  Copy the `Open-ILS/src/sql/Pg/create_database.sql` script to your
+     PostgreSQL server and invoke it as the *postgres* Linux account:
 +
 [source, bash]
 ------------------------------------------------------------------------------
 psql -vdb_name=<dbname> -vcontrib_dir=`pg_config --sharedir`/contrib -f create_database.sql
 ------------------------------------------------------------------------------
 
-Then you can issue the eg_db_config.pl command as above without the --create-database argument to create your schema and configure your configuration files.
+Then you can issue the `eg_db_config.pl` command as above _without_ the
+`--create-database` argument to create your schema and configure your
+configuration files.
 
 Starting Evergreen
-~~~~~~~~~~~~~~~~~~
+------------------
 1. As the *root* Linux account, start the `memcached` and `ejabberd` services
 (if they aren't already running):
 +
@@ -479,7 +480,7 @@ might not be able to successfully log in to the OPAC or staff client until the
 Apache Web server is restarted.
 
 Testing connections to Evergreen
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------------
 
 Once you have installed and started Evergreen, test your connection to
 Evergreen via `srfsh`. As the *opensrf* Linux account, issue the following
@@ -534,9 +535,15 @@ If this does not work, it's time to do some troubleshooting.
     configuration.
 
 Getting help
-~~~~~~~~~~~~
+------------
 
 Need help installing or using Evergreen? Join the mailing lists at
 http://evergreen-ils.org/listserv.php or contact us on the Freenode
 IRC network on the #evergreen channel.
 
+License
+-------
+This work is licensed under the Creative Commons Attribution-ShareAlike 3.0
+Unported License. To view a copy of this license, visit
+http://creativecommons.org/licenses/by-sa/3.0/ or send a letter to Creative
+Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, USA.
