@@ -1,5 +1,7 @@
 Release notes
 =============
+:toc:
+:numbered:
 
 Upgrade notes
 -------------
@@ -47,30 +49,70 @@ Administration
 
 Custom Org Unit Trees
 ^^^^^^^^^^^^^^^^^^^^^
-Evergreen enables you to create an organizational tree that describes the systems, branches, or other units that comprise your organization. By default, the org unit tree that appears to patrons in the OPAC is identical to the one that appears to users of the staff client. Using this feature, you can condense or re-order the organizational tree into a simpler structure for patrons using the OPAC while maintaining the complex organizational tree that is available to users of the staff client.
+Evergreen enables you to create an organizational tree that describes the
+systems, branches, or other units that comprise your organization. By default,
+the org unit tree that appears to patrons in the OPAC is identical to the one
+that appears to users of the staff client. Using this feature, you can condense
+or re-order the organizational tree into a simpler structure for patrons using
+the OPAC while maintaining the complex organizational tree that is available to
+users of the staff client.
 
-As a further enhancement, you can hide a parental org unit yet still make its child org units visible in the OPAC. In previous versions of Evergreen, child org units inherited the visibility setting of their parents.  Documentation for this feature is available in the Book of Evergreen at http://docs.evergreen-ils.org/2.2/
+As a further enhancement, you can hide a parental org unit yet still make its
+child org units visible in the OPAC. In previous versions of Evergreen, child
+org units inherited the visibility setting of their parents.
 
+Documentation for this feature is available in the Book of Evergreen at
+http://docs.evergreen-ils.org/2.2/
 
 Fine Accrual on Closed Dates
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-By default, fines accrue only on dates that the library is open. This feature enables you to charge patrons fines on dates the library is closed. Fines accrue during scheduled closings as well as during normal weekly closed dates.  Documentation for this feature is available in the Book of Evergreen at http://docs.evergreen-ils.org/2.2/
+By default, fines accrue only on dates that the library is open. This feature
+enables you to charge patrons fines on dates the library is closed. Fines
+accrue during scheduled closings as well as during normal weekly closed dates.
 
+Documentation for this feature is available in the Book of Evergreen at
+http://docs.evergreen-ils.org/2.2/
 
 Target Copies for Holds at Closed Libraries
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-By default, when a patron places a hold on a title, the hold targeter will search for copies to fill the hold only at circulating libraries that are open. Copies at closed libraries are not targeted to fill holds. When turned on, this feature enables Evergreen to target copies that have closed circulating libraries to fill holds. Two new org unit settings control this feature.  Documentation for this feature is available in the Book of Evergreen at http://docs.evergreen-ils.org/2.2/
+By default, when a patron places a hold on a title, the hold targeter will
+search for copies to fill the hold only at circulating libraries that are open.
+Copies at closed libraries are not targeted to fill holds. When turned on, this
+feature enables Evergreen to target copies that have closed circulating
+libraries to fill holds. Two new org unit settings control this feature.
 
+Documentation for this feature is available in the Book of Evergreen at
+http://docs.evergreen-ils.org/2.2/
 
 OPAC
-~~
+~~~~
+
+Template Toolkit OPAC (_TPAC_)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The basic catalog has been replaced by the Template Toolkit OPAC (_TPAC_).
+Compared to the traditional catalog (_JSPAC_), TPAC uses far fewer network
+calls for each page, resulting in faster loading pages. TPAC is built on the
+http://template-toolkit.org[Template Toolkit] language to enable simple but
+powerful customization, and supports integrated `gettext`-based translation
+for strings--including placeholders and quantities--for better
+internationalization support.
+
+The next feature release of Evergreen will make TPAC the primary catalog
+and deprecate the use of the JSPAC.
 
 Auto Suggest in Catalog Search
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The auto suggest feature suggests the completion of search terms as the user enters his query.  By default, the user will see ten suggestions although this number is configurable at the database level.  Scroll through suggestions with your mouse, or use the arrow keys to scroll through the suggestions. Select a suggestion to view records that are linked to this suggestion. 
+The auto suggest feature suggests the completion of search terms as the user
+enters his query.  By default, the user will see ten suggestions although this
+number is configurable at the database level.  Scroll through suggestions with
+your mouse, or use the arrow keys to scroll through the suggestions. Select a
+suggestion to view records that are linked to this suggestion. 
 
-This feature is not turned on by default. You must turn it on in the Admin module.  Documentation for this feature is available in the Book of Evergreen at http://docs.evergreen-ils.org/2.2/
+This feature is not turned on by default. You must turn it on in the Admin
+module.
 
+Documentation for this feature is available in the Book of Evergreen
+at http://docs.evergreen-ils.org/2.2/
 
 Copy Location Groups
 ^^^^^^^^^^^^^^^^^^^^
@@ -87,190 +129,303 @@ location_groups().
 
 My Lists
 ^^^^^^^^
-The My Lists feature replaces the bookbag feature that was available in versions proior to 2.2. This feature enables you to create temporary and permanent lists; create and edit notes for items in lists; place holds on items in lists; and share lists via RSS feeds and CSV files.  Documentation for this feature is available in the Book of Evergreen at http://docs.evergreen-ils.org/2.2/  
+The My Lists feature replaces the bookbag feature that was available in
+versions proior to 2.2. This feature enables you to create temporary and
+permanent lists; create and edit notes for items in lists; place holds on items
+in lists; and share lists via RSS feeds and CSV files.
+
+Documentation for this feature is available in the Book of Evergreen at
+http://docs.evergreen-ils.org/2.2/  
 
 SMS Text Messaging
 ^^^^^^^^^^^^^^^^^^
-The SMS Text Messaging feature enables users to receive hold notices via text message. Users can opt-in to this hold notification as their default setting for all holds, or they can receive specific hold notifications via text message. Users can also send call numbers and copy locations via text message.  Documentation for this feature is available in the Book of Evergreen at http://docs.evergreen-ils.org/2.2/
+The SMS Text Messaging feature enables users to receive hold notices via text
+message. Users can opt-in to this hold notification as their default setting
+for all holds, or they can receive specific hold notifications via text
+message. Users can also send call numbers and copy locations via text message.
+
+Documentation for this feature is available in the Book of Evergreen at
+http://docs.evergreen-ils.org/2.2/
 
 New Patron Preferences
 ^^^^^^^^^^^^^^^^^^^^^^^
-Users will now have the ability to designate the following preferences in the template toolkit catalog:
+Users will now have the ability to designate the following preferences in the
+Template Toolkit catalog (_TPAC_):
 
-* A preferred search location. Unlike the default search library in jspac, this setting will also control which copies display first
-in search results and record detail screens.
+* A preferred search location. Unlike the default search library in JSPAC, this
+  setting will also control which copies display first in search results and
+  record detail screens.
 * A preferred pickup location.
 * The ability to keep a history of checked out items.
 * The ability to keep a history of holds.
 
 Credit Card Payment via Public Catalog
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Patrons can now use credit cards to pay fines and bills in 'My Account' of the template toolkit OPAC.
+Patrons can now use credit cards to pay fines and bills in *My Account* of the
+TPAC.
 
 Record Detail Print and E-mail Actions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Implements Print and Email actions (as links below add-to-list) in the tpac record detail page.
+Implements Print and Email actions as links below the *Add to List* link
+in the TPAC record detail page.
 
 Identify Previously-Checked-Out Items in Search Results
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-When a user is logged into the tpac and performs a search, this feature indicates in the results set when any of the result items were ever checked
-out by the logged-in user.  Items will only be tagged when the related org setting is enabled and the user has opted in to circ history tracking.
+When a user is logged into the TPAC and performs a search, this feature
+indicates in the results set when any of the result items were ever checked
+out by the logged-in user. Items will only be tagged when the related org
+setting is enabled and the user has opted in to circ history tracking.
 
 Patron Management
 ~~~~~~~~~~~~~~~~~
+
 Patron Statistical Category Enhancements
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The following enahncements have been added to patron statistical categories:
+The following enhancements have been added to patron statistical categories:
 
-  * categories can be marked as 'required' (must be filled out when a patron is registered)
+  * categories can be marked as 'required' (must be filled out when a patron is
+    registered)
   * categories can be marked to allow or disallow user-created entries
-  * an entry for a given category and org unit can be marked as the default entry. It will be automatically selected in the new patron registration screen.
+  * an entry for a given category and org unit can be marked as the default
+    entry. It will be automatically selected in the new patron registration
+    screen.
 
 User Settings Available from Patron Editor
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Staff can now access and update user settings, like notification prefererences and default pickup library, in the patron editor.
+Staff can now access and update user settings, like notification prefererences
+and default pickup library, in the patron editor.
 
 Mark Patron E-mail or Phone as Invalid
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Staff can mark a patron's e-mail or phone as invalid in the patron editor. The system will clear the email
-(or phone) field from actor.usr, and [both optionally, per OU setting] 1)create a corresponding standing penalty against the user, for staff to
-notice next time they bring up said patron in the staff client, and 2)create a patron note. Related penalties (but not notes) will be cleared
-whenever that patron's email address or phone number is updated again.
+Staff can mark a patron's email address or phone number as invalid in the
+patron editor. The system will clear the email (or phone) field from
+`actor.usr`, and [both optionally, per OU setting]:
+
+  . create a corresponding standing penalty against the user, for staff to
+    notice next time they bring up said patron in the staff client;
+  . create a patron note. Related penalties (but not notes) will be cleared
+    whenever that patron's email address or phone number is updated again.
 
 Address Alert in Patron Registration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Support for comparing user addresses to alert addresses.  When an address is found, the address in question is styled (the header row
-turns red) and the configured alert message is shown along the top-right, where other warnings appear. 
+Support for comparing user addresses to alert addresses.  When an address is
+found, the address in question is styled (the header row turns red) and the
+configured alert message is shown along the top-right, where other warnings
+appear. 
 
 Circulation
 ~~~~~~~~~~~
+
 Telephony Improvements
 ^^^^^^^^^^^^^^^^^^^^^^
 Enhancements to notifications by telephony, including:
 
-* A feature that allows an Evergreen system to roll over failed notifcations into new ones with a different notification method.
-* Holiday awareness. There's a script (set_pbx_holidays) that can be run by cron on an Evergreen system to periodically update the PBX's table of holidays based on a given org unit's closed date ranges.
-* Smart retry. In certain situations, if you put too many callfiles into Asterisk's spool at once, Asterisk will try to make too many
-calls at once, and all such calls just fail. That's what the allocator is meant to prevent. Smart retry is about moving calls that
-have been tried once, and will be retried again later due to resulting in a busy signal or other problem, out of the spool to make room for
-other calls that could be made in the meantime.
+* A feature that allows an Evergreen system to roll over failed notifcations
+  into new ones with a different notification method.
+* Holiday awareness. System administrators can, via `cron`, schedule the
+  `set_pbx_holidays` script on an Evergreen system to periodically update
+  the PBX's table of holidays, based on a given org unit's closed date ranges.
+* Smart retry. In certain situations, if you put too many callfiles into
+  Asterisk's spool at once, Asterisk will try to make too many calls at
+  once, and all such calls just fail. That is what the allocator is meant to
+  prevent. Smart retry is about moving calls that have been tried once, and will
+  be retried again later due to resulting in a busy signal or other problem, out
+  of the spool to make room for other calls that could be made in the meantime.
 
 Circulation Limit Groups & Limit Sets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The new Circulation Limit Groups (server admin) can be thought of as 'Tags' the system places on circulations so
-that it can find them later. The Limit Sets (local admin) define rules for limiting the number of active circulations a patron
-may have based on Circulation Modifiers and Limit Groups. These new features support the following options:
+The new *Circulation Limit Groups* interface found in the *Server
+administration* menu can be thought of as _tags_ the system places on
+circulations so that it can find them later. The *Limit Sets* interface found
+in the *Local administration* menu defines rules for limiting the number of
+active circulations a patron may have based on Circulation Modifiers and Limit
+Groups. These new features support the following options:
 
-* Setting circ limits for circulations that have no circ modifiers. This is useful for systems with circ rules based on something other than circ modifiers (e.g. MARC type)
-or for grouping items that may have different circ modifiers so that, for example, you can count every video, regardles off circ modifiers.
-* The ability to set limits for a single library's items, regardless of the checkout library.
-	
+* Setting circ limits for circulations that have no circ modifiers. This is
+  useful for systems with circulation rules based on something other than
+  circulation modifiers (for example, *MARC type*) or for grouping items
+  that may have different circulation modifiers so that, for example, you
+  can count every video, regardless of circulation modifiers.
+* The ability to set limits for a single library's items, regardless of
+  the checkout library.
+
 New Checkin Modifiers
 ^^^^^^^^^^^^^^^^^^^^^
 The following modifiers have been added to the check-in interface:
 
-* Clear Shelf-Expired Holds. When checking in something on the hold shelf run a 'Clear Shelf Process' for the specific copy id at that library to auto-clear any Shelf-Expired holds. 
-* Retarget Local Holds. When checking in 'in process' items that are owned by the library, attempt to find a local hold to retarget. This is intended to help with proper targeting of newly-cataloged items.
-* Retarget All Statuses. Similar to 'Retarget Local Holds', this modifier will attempt to find a local hold to retarget, regardless of the status of the item being checked in. This modifier must be used in conjunction with the
-'Retarget Local Holds' modifier.
-* Capture Local Holds as Transits. With this checkin modifier, any local holds will be given an 'in transit' status instead of 'holds shelf'. The intent is to stop the system from sending holds notifications before the item is ready to be placed on the holds shelf. Possible use cases include Automated Materials Handling(AMH) checkins
-in which items may be sitting in a bin for a while before landing on the holds shelf and checkins done on closed days. 
+* *Clear Shelf-Expired Holds*. When checking in something on the hold shelf,
+  run a 'Clear Shelf Process' for the specific copy ID at that library to
+  auto-clear any Shelf-Expired holds. 
+* *Retarget Local Holds*. When checking in 'in process' items that are owned by
+  the library, attempt to find a local hold to retarget. This is intended to
+  help with proper targeting of newly-cataloged items.
+* *Retarget All Statuses*. Similar to 'Retarget Local Holds', this modifier will
+  attempt to find a local hold to retarget, regardless of the status of the
+  item being checked in. This modifier must be used in conjunction with the
+ 'Retarget Local Holds' modifier.
+* *Capture Local Holds as Transits*. With this checkin modifier, any local holds
+  will be given an 'in transit' status instead of 'holds shelf'. The intent is
+  to stop the system from sending holds notifications before the item is ready
+  to be placed on the holds shelf. Possible use cases include Automated
+  Materials Handling(AMH) checkins, in which items may be sitting in a bin for a
+  while before landing on the holds shelf, and checkins done on closed days. 
 
 Copy Location Alerts
 ^^^^^^^^^^^^^^^^^^^^
-This enhancement adds a new 'checkin_alert' column to copy locations. If true (defaults to false),
-then a routing alert is generated at reshelving time for the location. This is intended for special locations, 
-such as 'Display', that may require special handling, or that temporarily contain items that are not normally in that location.
+This enhancement adds a new 'checkin_alert' column to copy locations. If true
+(defaults to false), then a routing alert is generated at reshelving time for
+the location. This is intended for special locations, such as 'Display', that
+may require special handling, or that temporarily contain items that are not
+normally in that location.
 
 Age Hold Protection Based on a Copy's Active Date
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-* Adds a 'Sets copy active' column to the 'Copy Statuses' interface to identify statuses that indicate a copy is active and ready for checkout. The first time a copy is set to one of these statuses, the system adds an 'active date' for the copy, which can be used for reporting.
-* Provides a new library setting for age hold protection to be based on the copy's active date instead of its create date.
+* Adds a 'Sets copy active' column to the 'Copy Statuses' interface to identify
+  statuses that indicate a copy is active and ready for checkout. The first
+  time a copy is set to one of these statuses, the system adds an 'active date'
+  for the copy, which can be used for reporting.
+* Provides a new library setting for age hold protection to be based on the
+  copy's active date instead of its create date.
 
 Option to Place Holds on Age Protected Items
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Allow choice of placing hold despite age protection. This alters the backend to watch when so much as one copy failed
-only due to age protection. In jspac, an alternate confirm message is shown.  In tpac, the failure message is changed and
-override is always allowed for the hold in question.
+Allow choice of placing hold despite age protection. This alters the backend to
+watch when so much as one copy failed only due to age protection. In JSPAC, an
+alternate confirm message is shown.  In TPAC, the failure message is changed
+and override is always allowed for the hold in question.
 
 Force and Cataloging Recall Holds
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Creates two new types of copy-level holds to cut in front of all other holds and ignore hold rules. For cataloging recall holds, the copy's status changes to 'cataloging' when it reaches its destination.
+Creates two new types of copy-level holds, *Force* and *Cataloging Recall*,
+that cut in front of all other holds and ignore hold rules. For cataloging
+recall holds, the copy's status changes to 'cataloging' when it reaches its
+destination.
 
-Archiving Stat Cats and Circ-Time Copy Locations
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Circ-time copy locations are now archived with circulations (aged or active). Using the Statistical Categories Editor, staff can also
-designate stat cats (patron and copy) to archive with circulations.	
+Archiving Statistical Categories and Circulation-Time Copy Locations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Circulation-time copy locations are now archived with circulations (aged or active).
+
+Using the *Statistical Categories Editor*, staff can also designate statistical
+categories (patron and copy) to archive with circulations.
 
 Browse Holds Shelf Interface Displays Canceled Holds
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Holds that are canceled after they are placed on the holds shelf will continue to display in this interface and will also display in the 'shelf-expired holds' view.
+Holds that are canceled after they are placed on the holds shelf will continue
+to display in this interface and will also display in the 'shelf-expired holds'
+view.
 
 Acquisitions
-~~~~~~~~~~
+~~~~~~~~~~~~
 
 Vandelay Integration into Acquisitions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The Acquisitions Load MARC Order Record interface enables you to add MARC records to selection lists and purchase orders and upload the records into the catalog. The Vandelay interface enables you to create specific match points between incoming MARC records and exisiting catalog records. Combining these two features enables you to track on order MARC records through the Acquisitions interface and to utilize the record matching mechanisms available in Vandelay when importing acquisitions records.  Documentation for this feature is available in the Book of Evergreen at http://docs.evergreen-ils.org/2.2/
+The Acquisitions Load MARC Order Record interface enables you to add MARC
+records to selection lists and purchase orders and upload the records into the
+catalog. The Vandelay interface enables you to create specific match points
+between incoming MARC records and exisiting catalog records. Combining these
+two features enables you to track on order MARC records through the
+Acquisitions interface and to utilize the record matching mechanisms available
+in Vandelay when importing acquisitions records.
 
+Documentation for this feature is available in the Book of Evergreen at
+http://docs.evergreen-ils.org/2.2/
 
 Receive Items from an Invoice
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This feature enables users to receive items from an invoice. Staff can receive individual copies, or they can receive items in batch.  Documentation for this feature is available in the Book of Evergreen at http://docs.evergreen-ils.org/2.2/
+This feature enables users to receive items from an invoice. Staff can receive
+individual copies, or they can receive items in batch.
+
+Documentation for this feature is available in the Book of Evergreen at
+http://docs.evergreen-ils.org/2.2/
 
 Lineitem and Copy Actions Accessible from More Interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Users can now access lineitem actions (e.g. receive, unreceive, update barcodes, new invoice) from the acquisitions lineitem search results and selection list interfaces. Also available on these interfaces is a link to copy details
-where users can take receive actions (receive, unreceive, cancel) on individual copies.
+Users can now access lineitem actions (for example, receive, unreceive, update
+barcodes, new invoice) from the acquisitions lineitem search results and
+selection list interfaces. Also available on these interfaces is a link to copy
+details where users can take receive actions (receive, unreceive, cancel) on
+individual copies.
 
-Improved Displays for Provider and Fund Admin Pages
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This enhancement provides improved support for viewing the provider and fund admin pages. It also allows staff to use filters to find
-providers and funds.
+Improved Displays for Provider and Fund Administration Pages
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This enhancement provides improved support for viewing the provider and fund
+administation pages. It also allows staff to use filters to find providers and
+funds.
 
 Cataloging
-~~~~~~~~
+~~~~~~~~~~
 
 Authority Control Sets
 ^^^^^^^^^^^^^^^^^^^^^^
-The tags and subfields that display in authority records in Evergreen are proscribed by control sets. The Library of Congress control set is the default control set in all versions of Evergreen. However, in Evergreen release 2.2, you can create customized control sets for authority records, and you can define thesauri and authority fields for these control sets.
+The tags and subfields that display in authority records in Evergreen are
+proscribed by control sets. The Library of Congress control set is the default
+control set in all versions of Evergreen. However, in Evergreen release 2.2,
+you can create customized control sets for authority records, and you can
+define thesauri and authority fields for these control sets.
 
-Patrons and staff will be able to browse authorities in the OPAC. The following fields are browsable by default: author, series, subject, title, and topic. You will be able to add custom browse axes in addition to these default fields.  Documentation for this feature is available in the Book of Evergreen at http://docs.evergreen-ils.org/2.2/
+Patrons and staff can browse authorities in the JSPAC. The following fields are
+browsable by default: author, series, subject, title, and topic. You can add
+custom browse axes in addition to these default fields.
 
+Documentation for this feature is available in the Book of Evergreen at
+http://docs.evergreen-ils.org/2.2/
 
 Batch Importing MARC Records
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The MARC Batch Import interface features improved matching of records and managing of your import queue. In version 2.2, you can specify match points between incoming and existing records to better detect matching records and prevent record duplication. You can also create quality controls to ensure that incoming matching records are superior in quality to existing catalog records.  
+The MARC Batch Import interface features improved matching of records and
+managing of your import queue. In version 2.2, you can specify match points
+between incoming and existing records to better detect matching records and
+prevent record duplication. You can also create quality controls to ensure that
+incoming matching records are superior in quality to existing catalog records.  
 
-You also have new options for managing your queue.  You can apply filters to your queue, and you can generate a list of import errors. You can also print your queue, email your queue, or export your queue as a CSV file.  Documentation for this feature is available in the Book of Evergreen at http://docs.evergreen-ils.org/2.2/
+You also have new options for managing your queue.  You can apply filters to
+your queue, and you can generate a list of import errors. You can also print
+your queue, email your queue, or export your queue as a CSV file.
 
+Documentation for this feature is available in the Book of Evergreen at
+http://docs.evergreen-ils.org/2.2/
 
 Hide Fields in Copy Editor
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
-Customize the Copy Editor for your staff by hiding fields in the Copy Editor that are not relevant to your staff.  You can set these fields by org unit(s).  Select the top level org unit that will use these settings, and the descendant org units will also recieve these settings.  Documentation for this feature is available in the Book of Evergreen at http://docs.evergreen-ils.org/2.2/  
+You can customize the *Copy Editor* for staff by hiding fields in the *Copy
+Editor* that are not relevant for workflows at particular org units. Descendant
+org units inherit the settings of their parents.
 
+Documentation for this feature is available in the Book of Evergreen at
+http://docs.evergreen-ils.org/2.2/  
 
 Prevent Bibliographic Records from Having Attached Copies
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-To enable libraries to designate specific sets of records as only for use
-as electronic resources, it is possible to configure a bibliographic source
-such that physical copies or MFHD records may not be attached to records
-from that source. The `config.bib_source` table now includes a new Boolean
-column, `can_have_copies`, that controls this behavior. If `can_have_copies`
-for a given bibliographic source is `TRUE`, then the staff client will prevent
-a cataloger from adding volumes or MFHD records to records belonging to that
-source.  Documentation for this feature is available in the Book of Evergreen at http://docs.evergreen-ils.org/2.2/
+To enable libraries to designate specific sets of records as only for use as
+electronic resources, it is possible to configure a bibliographic source such
+that physical copies or MFHD records may not be attached to records from that
+source. The `config.bib_source` table now includes a new Boolean column,
+`can_have_copies`, that controls this behavior. If `can_have_copies` for a
+given bibliographic source is `TRUE`, then the staff client will prevent a
+cataloger from adding volumes or MFHD records to records belonging to that
+source.
 
+Documentation for this feature is available in the Book of Evergreen at
+http://docs.evergreen-ils.org/2.2/
 
 Overlay Existing Catalog Record via Z39.50 Import
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This feature enables you to replace a catalog record with a record obtained through a Z39.50 search. No new permissions or administrative settings are needed to use this feature.  Documentation for this feature is available in the Book of Evergreen at http://docs.evergreen-ils.org/2.2/
+You can replace an existing catalog record with a record obtained through a
+Z39.50 search. No new permissions or administrative settings are needed to use
+this feature.
 
+Documentation for this feature is available in the Book of Evergreen at
+http://docs.evergreen-ils.org/2.2/
 
 Restrict Z39.50 Sources by Permission Group
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This new feature enables you to use a permission to restrict users' access to Z39.50 servers. You can apply a permission to the Z39.50 servers to restrict access to that server, and then assign that permission to users or groups so that they can access the restricted servers.  Documentation for this feature is available in the Book of Evergreen at http://docs.evergreen-ils.org/2.2/
+You can use a permission to restrict users' access to Z39.50 servers. You can
+apply a permission to the Z39.50 servers to restrict access to that server, and
+then assign that permission to users or groups so that they can access the
+restricted servers.
 
+Documentation for this feature is available in the Book of Evergreen at
+http://docs.evergreen-ils.org/2.2/
 
 Switch Copy Location Name and Library Short Name in Copy Editor
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -278,16 +433,23 @@ By default, the copy editor shows the library shortname ('BR1' or 'CONS')
 followed by the copy location name ('Stacks', 'Reference').  A new workstation
 setting, under *Admin -> Workstation Administration -> Copy Editor: Copy
 Location Name First*, enables staff to change the display so that the copy
-location name is displayed first, followed by the library shortname. This
-may be particularly useful for libraries that have defined one set of copy
+location name is displayed first, followed by the library shortname. This may
+be particularly useful for libraries that have defined one set of copy
 locations at the consortial level and want to enable quick keyboard navigation
-to copy locations by typing just the first letters of the copy location.  Documentation for this feature is available in the Book of Evergreen at http://docs.evergreen-ils.org/2.2/
+to copy locations by typing just the first letters of the copy location.
 
+Documentation for this feature is available in the Book of Evergreen at
+http://docs.evergreen-ils.org/2.2/
 
 User Activity Types
 ~~~~~~~~~~~~~~~~~~~
-The User Activity Types feature enables you to specify the user activity that you want to record in the database. You can use this feature for reporting purposes. This function will also display a last activity date in a user's account. Currently, this feature only tracks user authentication. Documentation for this feature is available in the Book of Evergreen at http://docs.evergreen-ils.org/2.2/
+The User Activity Types feature enables you to specify the user activity that
+you want to record in the database. You can use this feature for reporting
+purposes. This function will also display a last activity date in a user's
+account. Currently, this feature only tracks user authentication.
 
+Documentation for this feature is available in the Book of Evergreen at
+http://docs.evergreen-ils.org/2.2/
 
 Authentication Proxy
 ~~~~~~~~~~~~~~~~~~
@@ -313,11 +475,12 @@ attributes can be found in `opensrf.xml.example`.
 Auditor Tables
 ~~~~~~~~~~~~~~
 This enhancement adds user and workstation IDs to the auditor tables. It also
-adds/changes auditor functions to allow for setting, getting, and clearing auditor information,
-as well as adding a couple of utility functions for updating auditors after changes to their origin columns.
+adds/changes auditor functions to allow for setting, getting, and clearing
+auditor information, as well as adding a couple of utility functions for
+updating auditors after changes to their origin columns.
 
 Reports
-~~~~~
+~~~~~~~
 
 New Views for Reporting Sources
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -336,44 +499,88 @@ Staff Client Navigation
 
 Customizable Toolbar
 ^^^^^^^^^^^^^^^^^^^^
-By default, two toolbars are available in the staff client: circulation and cataloging. This feature enables you to customize toolbars in the staff client. You can add buttons that will enable quick access to a variety of features.  You can create toolbars for specific org unit(s), workstation(s), or login(s).  Documentation for this feature is available in the Book of Evergreen at http://docs.evergreen-ils.org/2.2/
+By default, two toolbars are available in the staff client: circulation and
+cataloging. This feature enables you to customize toolbars in the staff client.
+You can add buttons that will enable quick access to a variety of features.
+You can create toolbars for specific org unit(s), workstation(s), or login(s).
 
+Documentation for this feature is available in the Book of Evergreen at
+http://docs.evergreen-ils.org/2.2/
 
 Double Clicking in the Staff Client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-You can search for a patron's record, and double click on a result to access that record. You can double click on an item in the Holdings Maintenance screen to access copy information. The item is linked to the Volume/Copy Creator, if you turned it on in the staff client's org unit settings. If you did not turn on the Volume/Copy Creator, then the item links to the Item Attributes.  Documentation for this feature is available in the Book of Evergreen at http://docs.evergreen-ils.org/2.2/
+You can search for a patron's record, and double click on a result to access
+that record. You can double click on an item in the *Holdings Maintenance*
+screen to access copy information. The item is linked to the *Volume/Copy
+Creator*, if you turned it on in the staff client's org unit settings. If you
+did not turn on the *Volume/Copy Creator*, then the item links to the *Item
+Attributes*.
 
+Documentation for this feature is available in the Book of Evergreen at
+http://docs.evergreen-ils.org/2.2/
 
 Recent Staff Searches
 ^^^^^^^^^^^^^^^^^^^^^
-This feature enables you to view your recent searches as you perform them in the staff client. By default, staff can view then recent searches although the number is configurable.  This feature is only available through the staff client; it is not available to patrons in the OPAC.  Documentation for this feature is available in the Book of Evergreen at http://docs.evergreen-ils.org/2.2/
+You can view your recent searches as you perform them in the staff client. By
+default, staff can view their recent searches, although the number is
+configurable. This feature is only available through the staff client; it is
+not available to patrons in the OPAC.
 
+Documentation for this feature is available in the Book of Evergreen at
+http://docs.evergreen-ils.org/2.2/
 
 Return to Search Results from MARC Record
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This feature enables you to return to your title search results directly from any view of the MARC record, including the OPAC View, MARC Record, MARC Edit, and Holdings Maintenance. You can use this feature to page through records in the MARC Record View or Edit interfaces. You do not have to return to the OPAC View to access title results.  Documentation for this feature is available in the Book of Evergreen at http://docs.evergreen-ils.org/2.2/
+This feature enables you to return to your title search results directly from
+any view of the MARC record, including the *OPAC View*, *MARC Record*, *MARC
+Edit*, and *Holdings Maintenance* views. You can use this feature to page
+through records in the *MARC Record View* or *Edit* interfaces. You do not have
+to return to the *OPAC View* to access title results.
 
+Documentation for this feature is available in the Book of Evergreen at
+http://docs.evergreen-ils.org/2.2/
 
 Sorting Columns
 ^^^^^^^^^^^^^^^
-This feature enables you to sort by multiple display columns so that you can find easily the information that you need on a screen. You can sort display columns on any screen that is built on a grid, such as the Check In screen or the On Shelf Pull List.
+This feature enables you to sort by multiple display columns so that you can
+find easily the information that you need on a screen. You can sort display
+columns on any screen that is built on a grid, such as the *Check In* screen or
+the *On Shelf Pull List*.
 
-You can also sort the columns on the following Administration screens: Circulation Policies, Hold Policies, Circulation Limit Sets, Barcode Completion, Acquisitions User Request List, and Vandelay Import Errors.
+You can also sort the columns on the following *Administration* screens:
 
-You can sort items in an ascending or descending order, and you can prioritize the order in which columns will sort. Documentation for this feature is available in the Book of Evergreen at http://docs.evergreen-ils.org/2.2/
+  * Circulation Policies
+  * Hold Policies
+  * Circulation Limit Sets
+  * Barcode Completion
+  * Acquisitions User Request List
+  * Vandelay Import Errors
+
+You can sort items in an ascending or descending order, and you can prioritize
+the order in which columns will sort.
+
+Documentation for this feature is available in the Book of Evergreen at
+http://docs.evergreen-ils.org/2.2/
 
 Tab Button
 ^^^^^^^^^^
-This feature enables you to add a new tab to the Evergreen staff client by clicking the + sign adjacent to the tab that you currently have opened. As in previous versions, you can also add new tabs by clicking File -> New Tab, or use the hotkey, Ctrl+T.  Documentation for this feature is available in the Book of Evergreen at http://docs.evergreen-ils.org/2.2/
+This feature enables you to add a new tab to the Evergreen staff client by
+clicking the *+* sign adjacent to the tab that you currently have opened. As in
+previous versions, you can also add new tabs by clicking *File -> New Tab*, or
+use the hotkey, *Ctrl+T*.
+
+Documentation for this feature is available in the Book of Evergreen at
+http://docs.evergreen-ils.org/2.2/
 
 Close All Tabs Shortcut
 ^^^^^^^^^^^^^^^^^^^^^^^
-Supports using CTRL+Click on the close tab 'X' to close all tabs.
+You can use *CTRL+Click* on the close tab (*X*) button to close all tabs.
 
 Independent Column Configurations and Receipt Templates for Different Hold List Interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Previously, all hold list interfaces shared the same column picker settings and receipt templates. This enhancement creates
-independependent settings for the following interfaces:
+Previously, all hold list interfaces shared the same column picker settings and
+receipt templates. This enhancement creates independent settings for the
+following interfaces:
 
 * Actions for this Record -> View Holds
 * Patron Display -> Holds
@@ -382,12 +589,20 @@ independependent settings for the following interfaces:
 
 Line Number Columns
 ^^^^^^^^^^^^^^^^^^^
-The addition of a non-sortable line number column which displays the ordinal position of each row in the list. The first row in such a list will always have a value of 1 in the ordinal column, no matter how the list is sorted.
-There's no special handling for paged interfaces; the first row on any given page still gets an ordinal value of 1.
+List displays in the staff client now have a non-sortable line number column
+which displays the ordinal position of each row in the list. The first row in
+such a list will always have a value of 1 in the ordinal column, no matter how
+the list is sorted.  There is no special handling for paged interfaces; the
+first row on any given page still gets an ordinal value of 1.
 
 Auto-Login
 ^^^^^^^^^^
-Supports auto-login in the staff client by adding three new command line parameters: -ILSuser - Username to log in with -ILSpassword - Password to use -ILShost - hostname to use
+Supports auto-login in the staff client by adding three new command line
+parameters:
+
+* `-ILSuser`: user name to log in with
+* `-ILSpassword`: password to use
+* `-ILShost`: hostname to use
 
 License
 -------
