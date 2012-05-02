@@ -321,10 +321,14 @@ sub create_lineitem_list_assets {
 
 sub test_vandelay_import_args {
     my $vandelay = shift;
+    my $q_needed = shift;
 
-    # we need a queue
-    return 0 unless $vandelay and 
-        ($vandelay->{queue_name} or $vandelay->{existing_queue});
+    # we need valid args and (sometimes) a queue
+    return 0 unless $vandelay and (
+        !$q_needed or
+        $vandelay->{queue_name} or 
+        $vandelay->{existing_queue}
+    );
 
     # match-based merge/overlay import
     return 2 if $vandelay->{merge_profile} and (
@@ -392,18 +396,44 @@ sub import_li_bibs_via_vandelay {
         return {li_ids => $li_ids};
     }
 
+    # see if we have any records that are not yet linked to VL records (i.e. 
+    # not in a queue).  This will tell us if lack of a queue name is an error.
+    my $non_queued = $e->search_acq_lineitem(
+        {id => $needs_importing, queued_record => undef},
+        {idlist => 1}
+    );
+
     # add the already-imported records to the response list
     push(@{$res->{li_ids}}, grep { $_ != @$needs_importing } @$li_ids);
 
     $logger->info("acq-vl: processing recs via Vandelay with args: ".Dumper($vandelay));
 
-    my $vl_stat = test_vandelay_import_args($vandelay);
+    my $vl_stat = test_vandelay_import_args($vandelay, scalar(@$non_queued));
     if ($vl_stat == 0) {
         $logger->error("acq-vl: invalid vandelay arguments for acq import (queue needed)");
         return $res;
     }
 
-    my $queue = find_or_create_vandelay_queue($e, $vandelay) or return $res;
+    my $queue;
+    if (@$non_queued) {
+        # when any non-queued lineitems exist, their vandelay counterparts 
+        # require a place to live.
+        $queue = find_or_create_vandelay_queue($e, $vandelay) or return $res;
+
+    } else {
+        # if all lineitems are already queued, the queue reported to the user
+        # is purely for information / convenience.  pick a random queue.
+        $queue = $e->retrieve_acq_lineitem([
+            $needs_importing->[0], {   
+                flesh => 2, 
+                flesh_fields => {
+                    jub => ['queued_record'], 
+                    vqbr => ['queue']
+                }
+            }
+        ])->queued_record->queue;
+    }
+
     $mgr->{args}->{queue} = $queue;
 
     # load the lineitems into the queue for merge processing
@@ -413,18 +443,28 @@ sub import_li_bibs_via_vandelay {
 
         my $li = $e->retrieve_acq_lineitem($li_id) or return $res;
 
-        my $vqbr = Fieldmapper::vandelay::queued_bib_record->new;
-        $vqbr->marc($li->marc);
-        $vqbr->queue($queue->id);
-        $vqbr->bib_source($vandelay->{bib_source} || undef); # avoid ''
-        $vqbr = $e->create_vandelay_queued_bib_record($vqbr) or return $res;
-        push(@vqbr_ids, $vqbr->id);
+        if ($li->queued_record) {
+            $logger->info("acq-vl: $li_id already linked to a vandelay record");
+            push(@vqbr_ids, $li->queued_record);
+
+        } else {
+            $logger->info("acq-vl: creating new vandelay record for lineitem $li_id");
+
+            # create a new VL queued record and link it up
+            my $vqbr = Fieldmapper::vandelay::queued_bib_record->new;
+            $vqbr->marc($li->marc);
+            $vqbr->queue($queue->id);
+            $vqbr->bib_source($vandelay->{bib_source} || undef); # avoid ''
+            $vqbr = $e->create_vandelay_queued_bib_record($vqbr) or return $res;
+            push(@vqbr_ids, $vqbr->id);
+
+            # tell the acq record which vandelay record it's linked to
+            $li->queued_record($vqbr->id);
+            $e->update_acq_lineitem($li) or return $res;
+        }
+
         $mgr->add_vqbr;
         $mgr->respond;
-
-        # tell the acq record which vandelay record it's linked to
-        $li->queued_record($vqbr->id);
-        $e->update_acq_lineitem($li) or return $res;
         push(@lis, $li);
     }
 
