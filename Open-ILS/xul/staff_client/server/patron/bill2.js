@@ -493,7 +493,6 @@ function init_lists() {
                     }
                 ]
             ))),
-        'map_row_to_columns' : patron.util.std_map_row_to_columns(' '),
         'on_select' : function(ev) {
             JSAN.use('util.functional');
             g.bill_list_selection = util.functional.map_list(

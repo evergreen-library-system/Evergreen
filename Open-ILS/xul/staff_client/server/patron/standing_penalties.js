@@ -52,7 +52,6 @@ function init_list() {
         list.init( 
             {
                 'columns' : patron.util.ausp_columns({}),
-                'map_row_to_columns' : patron.util.std_map_row_to_columns(),
                 'retrieve_row' : retrieve_row,
                 'on_select' : generate_handle_selection(list)
             } 
@@ -71,7 +70,6 @@ function init_archived_list() {
         archived_list.init( 
             {
                 'columns' : patron.util.ausp_columns({}),
-                'map_row_to_columns' : patron.util.std_map_row_to_columns(),
                 'retrieve_row' : retrieve_row, // We're getting fleshed objects for now, but if we move to just ausp.id's, then we'll need to put a per-id fetcher in here
                 'on_select' : generate_handle_selection(archived_list)
             } 
