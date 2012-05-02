@@ -4,7 +4,7 @@ if (typeof patron == 'undefined') var patron = {};
 patron.util = {};
 
 patron.util.EXPORT_OK    = [ 
-    'columns', 'mbts_columns', 'mb_columns', 'mp_columns', /*'std_map_row_to_column',*/ 'std_map_row_to_columns',
+    'columns', 'mbts_columns', 'mb_columns', 'mp_columns',
     'retrieve_au_via_id', 'retrieve_fleshed_au_via_id', 'retrieve_fleshed_au_via_barcode', 'set_penalty_css', 'retrieve_name_via_id',
     'merge', 'ausp_columns', 'format_name', 'work_log_patron_edit'
 ];
@@ -57,7 +57,13 @@ patron.util.mbts_columns = function(modify,params) {
             'persist' : 'hidden width ordinal', 'id' : 'last_billing_ts', 'label' : commonStrings.getString('staff.mbts_last_billing_timestamp_label'), 'flex' : 1,
             'sort_type' : 'date',
             'primary' : false, 'hidden' : true, 'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.mbts.last_billing_ts(), "%{localized}" ); }
-            ,'sort_value' : function(my) { return util.date.db_date2Date( my.mbts.last_billing_ts() ).getTime(); }
+            ,'sort_value' : function(my) {
+                return util.date.db_date2Date(
+                    my.mbts
+                    ? my.mbts.last_billing_ts()
+                    : null
+                ).getTime();
+            }
         },
         {
             'persist' : 'hidden width ordinal', 'id' : 'last_payment_note', 'label' : commonStrings.getString('staff.mbts_last_payment_note_label'), 'flex' : 2,
@@ -71,19 +77,34 @@ patron.util.mbts_columns = function(modify,params) {
             'persist' : 'hidden width ordinal', 'id' : 'last_payment_ts', 'label' : commonStrings.getString('staff.mbts_last_payment_timestamp_label'), 'flex' : 1,
             'sort_type' : 'date',
             'primary' : false, 'hidden' : true, 'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.mbts.last_payment_ts(), "%{localized}" ); }
-            ,'sort_value' : function(my) { return util.date.db_date2Date( my.mbts.last_payment_ts() ).getTime(); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date(
+                    my.mbts
+                    ? my.mbts.last_payment_ts()
+                    : null
+                ).getTime();
+            }
         },
         {
             'persist' : 'hidden width ordinal', 'id' : 'mbts_xact_start', 'label' : commonStrings.getString('staff.mbts_xact_start_label'), 'flex' : 1,
             'sort_type' : 'date',
             'primary' : false, 'hidden' : false, 'editable' : false, 'render' : function(my) { return my.mbts.xact_start() ? util.date.formatted_date( my.mbts.xact_start(), "%{localized}" ) : ""; }
-            ,'sort_value' : function(my) { return util.date.db_date2Date( my.mbts.xact_start() ).getTime(); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date(
+                    my.mbts
+                    ? my.mbts.xact_start()
+                    : null
+                ).getTime();
+            }
         },
         {
             'persist' : 'hidden width ordinal', 'id' : 'mbts_xact_finish', 'label' : commonStrings.getString('staff.mbts_xact_finish_label'), 'flex' : 1,
             'sort_type' : 'date',
             'primary' : false, 'hidden' : false, 'editable' : false, 'render' : function(my) { return my.mbts.xact_finish() ? util.date.formatted_date( my.mbts.xact_finish(), "%{localized}" ) : ""; }
-            ,'sort_value' : function(my) { return util.date.db_date2Date( my.mbts.xact_finish() ).getTime(); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date(
+                    my.mbts
+                    ? my.mbts.xact_finish()
+                    : null
+                ).getTime();
+            }
         },
     ];
     for (var i = 0; i < c.length; i++) {
@@ -140,7 +161,12 @@ patron.util.mb_columns = function(modify,params) {
             'persist' : 'hidden width ordinal', 'id' : 'void_time', 'label' : commonStrings.getString('staff.mb_void_time_label'), 'flex' : 1,
             'sort_type' : 'date',
             'primary' : false, 'hidden' : true, 'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.mb.void_time(), "%{localized}" ); }
-            ,'sort_value' : function(my) { return util.date.db_date2Date( my.mb.void_time() ).getTime(); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date(
+                    my.mbts
+                    ? my.mb.void_time()
+                    : null
+                ).getTime();
+            }
         },
         {
             'persist' : 'hidden width ordinal', 'id' : 'amount', 'label' : commonStrings.getString('staff.mb_amount_label'), 'flex' : 1,
@@ -155,7 +181,12 @@ patron.util.mb_columns = function(modify,params) {
             'persist' : 'hidden width ordinal', 'id' : 'billing_ts', 'label' : commonStrings.getString('staff.mb_billing_ts_label'), 'flex' : 1,
             'sort_type' : 'date',
             'primary' : false, 'hidden' : false, 'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.mb.billing_ts(), "%{localized}" ); }
-            ,'sort_value' : function(my) { return util.date.db_date2Date( my.mb.billing_ts() ).getTime(); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date(
+                    my.mb
+                    ? my.mb.billing_ts()
+                    : null
+                ).getTime();
+            }
         },
         {
             'persist' : 'hidden width ordinal', 'id' : 'note', 'label' : commonStrings.getString('staff.mb_note_label'), 'flex' : 2,
@@ -222,7 +253,12 @@ patron.util.mp_columns = function(modify,params) {
             'persist' : 'hidden width ordinal', 'id' : 'mp_payment_ts', 'label' : commonStrings.getString('staff.mp_payment_timestamp_label'), 'flex' : 1,
             'sort_type' : 'date',
             'primary' : false, 'hidden' : false, 'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.mp.payment_ts(), "%{localized}" ); }
-            ,'sort_value' : function(my) { return util.date.db_date2Date( my.mp.payment_ts() ).getTime(); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date(
+                    my.mp
+                    ? my.mp.payment_ts()
+                    : null
+                ).getTime();
+            }
         },
         {
             'persist' : 'hidden width ordinal', 'id' : 'mp_note', 'label' : commonStrings.getString('staff.mp_note_label'), 'flex' : 2,
@@ -334,7 +370,12 @@ patron.util.ausp_columns = function(modify,params) {
             'primary' : false, 'hidden' : false, 'editable' : false, 'render' : function(my) { 
                 return my.ausp ? util.date.formatted_date( my.ausp.set_date(), "%{localized}" ) : '';
             }
-            ,'sort_value' : function(my) { return util.date.db_date2Date( my.ausp.set_date() ).getTime(); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date(
+                    my.ausp
+                    ? my.ausp.set_date()
+                    : null
+                ).getTime();
+            }
         },
         {
             'persist' : 'hidden width ordinal', 'id' : 'ausp_note', 'label' : commonStrings.getString('staff.ausp_note_label'), 'flex' : 1,
@@ -443,20 +484,35 @@ patron.util.columns = function(modify,params) {
             'persist' : 'hidden width ordinal', 'id' : 'au_create_date', 'label' : commonStrings.getString('staff.au_create_date_label'), 'flex' : 1, 
             'sort_type' : 'date',
             'primary' : false, 'hidden' : true, 'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.au.create_date(), "%{localized}" ); }
-            ,'sort_value' : function(my) { return util.date.db_date2Date( my.au.create_date() ).getTime(); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date(
+                    my.au
+                    ? my.au.create_date()
+                    : null
+                ).getTime();
+            }
         },
         { 
             'persist' : 'hidden width ordinal', 'id' : 'au_last_update_time', 'label' : commonStrings.getString('staff.au_last_update_time_label'), 'flex' : 1, 
             'sort_type' : 'date',
             'primary' : false, 'hidden' : true, 'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.au.last_update_time(), "%{localized}" ); }
-            ,'sort_value' : function(my) { return util.date.db_date2Date( my.au.last_update_time() ).getTime(); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date(
+                    my.au
+                    ? my.au.last_update_time()
+                    : null
+                ).getTime();
+            }
         },
 
         { 
             'persist' : 'hidden width ordinal', 'id' : 'expire_date', 'label' : commonStrings.getString('staff.au_expire_date_label'), 'flex' : 1, 
             'sort_type' : 'date',
             'primary' : false, 'hidden' : true, 'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.au.expire_date(), "%{localized_date}" ); }
-            ,'sort_value' : function(my) { return util.date.db_date2Date( my.au.expire_date() ).getTime(); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date(
+                    my.au
+                    ? my.au.expire_date()
+                    : null
+                ).getTime();
+            }
         },
         { 
             'persist' : 'hidden width ordinal', 'id' : 'home_ou', 'label' : commonStrings.getString('staff.au_home_library_label'), 'flex' : 1, 
@@ -495,7 +551,12 @@ patron.util.columns = function(modify,params) {
             'persist' : 'hidden width ordinal', 'id' : 'dob', 'label' : commonStrings.getString('staff.au_birth_date_label'), 'flex' : 1, 
             'sort_type' : 'date',
             'primary' : false, 'hidden' : true, 'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.au.dob(), "%{localized_date}" ); }
-            ,'sort_value' : function(my) { return util.date.db_date2Date( my.au.dob() ).getTime(); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date(
+                    my.au
+                    ? my.au.dob()
+                    : null
+                ).getTime();
+            }
         },
         { 
             'persist' : 'hidden width ordinal', 'id' : 'ident_type', 'label' : commonStrings.getString('staff.au_ident_type_label'), 'flex' : 1, 
@@ -555,53 +616,6 @@ patron.util.columns = function(modify,params) {
 
     }
     return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
-}
-
-patron.util.std_map_row_to_columns = function(error_value) {
-    return function(row,cols,scratch) {
-        // row contains { 'my' : { 'au' : {} } }
-        // cols contains all of the objects listed above in columns
-        // scratch is a temporary space shared by all cells/rows (or just per row if not explicitly passed in)
-        
-        var obj = {}; obj.OpenILS = {}; 
-        JSAN.use('util.error'); obj.error = new util.error();
-        JSAN.use('OpenILS.data'); obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
-        JSAN.use('util.date'); JSAN.use('util.money');
-
-        var my = row.my;
-        var values = [];
-        var sort_values = [];
-        var cmd = '';
-        try { 
-            for (var i = 0; i < cols.length; i++) {
-                switch (typeof cols[i].render) {
-                    case 'function': try { values[i] = cols[i].render(my); } catch(E) { values[i] = error_value; obj.error.sdump('D_COLUMN_RENDER_ERROR',E); } break;
-                    case 'string' : cmd += 'try { ' + cols[i].render + '; values['+i+'] = v; } catch(E) { values['+i+'] = error_value; }'; break;
-                    default: cmd += 'values['+i+'] = "??? '+(typeof cols[i].render)+'"; ';
-                }
-                switch (typeof cols[i].sort_value) {
-                    case 'function':
-                        try {
-                            sort_values[i] = cols[i].sort_value(my,scratch);
-                        } catch(E) {
-                            sort_values[i] = error_value;
-                            obj.error.sdump('D_COLUMN_RENDER_ERROR',E);
-                        }
-                        break;
-                    case 'string' :
-                        sort_values[i] = JSON2js(cols[i].sort_value);
-                        break;
-                    default:
-                        cmd += 'sort_values['+i+'] = values[' + i + '];';
-                }
-            }
-            if (cmd) eval( cmd );
-        } catch(E) {
-            obj.error.sdump('D_WARN','map_row_to_column: ' + E);
-            if (error_value) { value = error_value; } else { value = '   ' };
-        }
-        return {values: values, sort_values: sort_values};
-    }
 }
 
 patron.util.retrieve_au_via_id = function(session, id, f) {

@@ -2161,6 +2161,10 @@ util.list.prototype = {
             JSAN.use('util.network'); obj.network = new util.network();
             JSAN.use('util.money');
 
+            // FIXME: backwards compatability with server/patron code and the old patron.util.std_map_row_to_columns.
+            // Will remove in a separate commit and change all instances of obj.OpenILS.data to obj.data at the same time.
+            obj.OpenILS = { 'data' : obj.data };
+
             var my = row.my;
             var values = [];
             var sort_values = [];
@@ -2182,13 +2186,7 @@ util.list.prototype = {
                             }
                         break;
                         case 'string' :
-                            cmd += 'try { '
-                                + cols[i].sort_value
-                                + '; values['
-                                + i
-                                +'] = v; } catch(E) { sort_values['
-                                + i
-                                + '] = error_value; }';
+                            sort_values[i] = JSON2js(cols[i].sort_value);
                         break;
                         default:
                             cmd += 'sort_values['+i+'] = values[' + i + '];';

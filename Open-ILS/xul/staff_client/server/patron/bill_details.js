@@ -129,7 +129,6 @@ function init_lists() {
 
     g.bill_list.init( {
         'columns' : patron.util.mb_columns({}),
-        'map_row_to_columns' : patron.util.std_map_row_to_columns(),
         'on_select' : function(ev) {
             JSAN.use('util.functional');
             g.bill_list_selection = util.functional.map_list(
@@ -146,7 +145,6 @@ function init_lists() {
 
     g.payment_list.init( {
         'columns' : patron.util.mp_columns({}),
-        'map_row_to_columns' : patron.util.std_map_row_to_columns(),
         'on_select' : function(ev) {
             JSAN.use('util.functional');
             g.payment_list_selection = util.functional.map_list(

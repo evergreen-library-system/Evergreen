@@ -117,7 +117,6 @@ admin.offline_manage_xacts.prototype = {
                     'render' : function(my) { return my.key; }
                 },
             ],
-            'map_row_to_columns' : patron.util.std_map_row_to_columns(),
             'on_select' : function(ev) {
                 try {
                     $('deck').selectedIndex = 0;
@@ -218,8 +217,7 @@ admin.offline_manage_xacts.prototype = {
                     'label' : $('adminStrings').getString('staff.admin.offline_manage_xacts.init_script_list.workstation'),
                     'render' : function(my) { return my.workstation; }
                 },
-            ],
-            'map_row_to_columns' : patron.util.std_map_row_to_columns()
+            ]
         } );
 
 
@@ -301,7 +299,6 @@ admin.offline_manage_xacts.prototype = {
                     'render' : function(my) { return my.command.noncat_count || ""; }
                 },
             ],
-            'map_row_to_columns' : patron.util.std_map_row_to_columns(),
             'on_select' : function(ev) {
                 try {
                     var sel = obj.error_list.retrieve_selection();
