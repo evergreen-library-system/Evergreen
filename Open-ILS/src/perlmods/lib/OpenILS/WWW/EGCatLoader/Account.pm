@@ -113,7 +113,7 @@ sub load_myopac_prefs {
         $self->ctx->{username_change_disallowed} = 1;
     } else {
         my $username_unlimit = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'opac.unlimit_usernames');
-        if(defined($username_unlimit) and $username_unlimit != 1) {
+        if(!$username_unlimit) {
             my $regex_check = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'opac.barcode_regex');
             if(!$regex_check) {
                 # Default is "starts with a number"
@@ -1489,7 +1489,7 @@ sub load_myopac_update_username {
         # We want this further down.
         $regex_check = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'opac.barcode_regex');
         my $username_unlimit = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'opac.unlimit_usernames');
-        if(defined($username_unlimit) and $username_unlimit != 1) {
+        if(!$username_unlimit) {
             if(!$regex_check) {
                 # Default is "starts with a number"
                 $regex_check = '^\d+';
