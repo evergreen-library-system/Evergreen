@@ -265,6 +265,9 @@ sub load_rresults {
     my $ctx = $self->ctx;
     my $e = $self->editor;
 
+    # find the last record in the set, then redirect
+    my $find_last = $cgi->param('find_last');
+
     $self->timelog("Loading results");
     # load bookbag metadata, if requested.
     if (my $bbag_err = $self->load_rresults_bookbag) {
@@ -316,7 +319,7 @@ sub load_rresults {
 
     $self->get_staff_search_settings;
 
-    if ($ctx->{staff_saved_search_size}) {
+    if (!$find_last and $ctx->{staff_saved_search_size}) {
         my ($key, $list) = $self->staff_save_search($query);
         if ($key) {
             $self->apache->headers_out->add(
@@ -389,6 +392,15 @@ sub load_rresults {
     $ctx->{ids} = $rec_ids;
     $ctx->{hit_count} = $results->{count};
     $ctx->{parsed_query} = $results->{parsed_query};
+
+    if ($find_last) {
+        # redirect to the record detail page for the last record in the results
+        my $rec_id = pop @$rec_ids;
+        $cgi->delete('find_last');
+        my $url = $cgi->url(-full => 1, -path => 1, -query => 1);
+        $url =~ s|/results|/record/$rec_id|;
+        return $self->generic_redirect($url);
+    }
 
     return Apache2::Const::OK if @$rec_ids == 0 or $internal;
 
