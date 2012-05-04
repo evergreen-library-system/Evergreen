@@ -802,7 +802,7 @@ msgid "Excerpt"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:143
-msgid "Exipration Month"
+msgid "Expiration Month"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/record/issues-db.tt2:1 ../../Open-ILS/src/templates/opac/parts/result/facets.tt2:71 ../../Open-ILS/src/templates/opac/parts/staff_saved_searches.tt2:11
