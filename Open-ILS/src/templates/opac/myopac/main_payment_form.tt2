@@ -140,7 +140,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>[% l('Exipration Month') %]</td>
+                    <td>[% l('Expiration Month') %]</td>
                     <td>
                         <select name="expire_month">
                             <option value="01">[% l("January") %]</option>
