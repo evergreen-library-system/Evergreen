@@ -15607,10 +15607,10 @@ SELECT evergreen.upgrade_deps_block_check('0702', :eg_version);
 
 INSERT INTO config.global_flag (name, enabled, label) 
     VALUES (
-        'opac.org_unit.non_inheritied_visibility',
+        'opac.org_unit.non_inherited_visibility',
         FALSE,
         oils_i18n_gettext(
-            'opac.org_unit.non_inheritied_visibility',
+            'opac.org_unit.non_inherited_visibility',
             'Org Units Do Not Inherit Visibility',
             'cgf',
             'label'

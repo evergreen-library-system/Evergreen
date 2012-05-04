@@ -8,7 +8,7 @@
 
 BLOCK build_org_selector;
     node_stack = [{org => org_unit || ctx.aouct_tree || ctx.aou_tree}];
-    inherited_vis = ctx.get_cgf('opac.org_unit.non_inheritied_visibility').enabled == 'f';
+    inherited_vis = ctx.get_cgf('opac.org_unit.non_inherited_visibility').enabled == 'f';
 
     IF !name; 
         name = 'loc';
