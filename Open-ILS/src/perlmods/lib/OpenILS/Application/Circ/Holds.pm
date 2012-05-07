@@ -3540,7 +3540,7 @@ sub hold_has_copy_at {
                 ccs  => {field => 'id', filter => { holdable => 't'}, fkey => 'status'  }
             }
         },
-        where => {'+acp' => { circulate => 't', deleted => 'f', holdable => 't', circ_lib => $org_unit}},
+        where => {'+acp' => { circulate => 't', deleted => 'f', holdable => 't', circ_lib => $org_unit, status => [0,7]}},
         limit => 1
     };
 
@@ -3551,7 +3551,23 @@ sub hold_has_copy_at {
     } elsif($hold_type eq 'V') {
 
         $query->{where}->{'+acp'}->{call_number} = $hold_target;
-    
+
+    } elsif($hold_type eq 'P') {
+
+        $query->{from}->{acp}->{acpm} = {
+            field  => 'target_copy',
+            fkey   => 'id',
+            filter => {part => $hold_target},
+        };
+
+    } elsif($hold_type eq 'I') {
+
+        $query->{from}->{acp}->{sitem} = {
+            field  => 'unit',
+            fkey   => 'id',
+            filter => {issuance => $hold_target},
+        };
+
     } elsif($hold_type eq 'T') {
 
         $query->{from}->{acp}->{acn} = {
