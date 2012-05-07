@@ -883,11 +883,23 @@ sub batch_update_hold {
 sub update_hold_impl {
     my($self, $e, $hold, $values) = @_;
     my $hold_status;
+    my $need_retarget = 0;
 
     unless($hold) {
         $hold = $e->retrieve_action_hold_request($values->{id})
             or return $e->die_event;
         for my $k (keys %$values) {
+            # Outside of pickup_lib (covered by the first regex) I don't know when these would currently change.
+            # But hey, why not cover things that may happen later?
+            if ($k =~ '_(lib|ou)$' || $k eq 'target' || $k eq 'hold_type' || $k eq 'requestor' || $k eq 'selection_depth' || $k eq 'holdable_formats') {
+                if (defined $values->{$k} && defined $hold->$k() && $values->{$k} ne $hold->$k()) {
+                    # Value changed? RETARGET!
+                    $need_retarget = 1;
+                } elsif (defined $hold->$k() != defined $values->{$k}) {
+                    # Value being set or cleared? RETARGET!
+                    $need_retarget = 1;
+                }
+            }
             if (defined $values->{$k}) {
                 $hold->$k($values->{$k});
             } else {
@@ -993,6 +1005,9 @@ sub update_hold_impl {
     # a change to mint-condition changes the set of potential copies, so retarget the hold;
     if($U->is_true($hold->mint_condition) and !$U->is_true($orig_hold->mint_condition)) {
         _reset_hold($self, $e->requestor, $hold) 
+    } elsif($need_retarget && !defined $hold->capture_time()) { # If needed, retarget the hold due to changes
+        $U->storagereq(
+    		'open-ils.storage.action.hold_request.copy_targeter', undef, $hold->id );
     }
 
     return $hold->id;
