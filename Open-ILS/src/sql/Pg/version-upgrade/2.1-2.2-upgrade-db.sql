@@ -6,9 +6,9 @@
 -- DROP objects that might have existed from a prior run of 0526
 -- Yes this is ironic.
 DROP TABLE IF EXISTS config.db_patch_dependencies;
-ALTER TABLE config.upgrade_log DROP COLUMN applied_to;
-DROP FUNCTION evergreen.upgrade_list_applied_deprecates(TEXT);
-DROP FUNCTION evergreen.upgrade_list_applied_supersedes(TEXT);
+ALTER TABLE config.upgrade_log DROP COLUMN IF EXISTS applied_to;
+DROP FUNCTION IF EXISTS evergreen.upgrade_list_applied_deprecates(TEXT);
+DROP FUNCTION IF EXISTS evergreen.upgrade_list_applied_supersedes(TEXT);
 
 BEGIN;
 INSERT INTO config.upgrade_log (version) VALUES ('2.2-beta2');
