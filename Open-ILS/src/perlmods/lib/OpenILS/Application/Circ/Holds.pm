@@ -2904,7 +2904,7 @@ sub find_nearest_permitted_hold {
 	# search for what should be the best holds for this copy to fulfill
 	my $best_holds = $U->storagereq(
         "open-ils.storage.action.hold_request.nearest_hold.atomic", 
-		$user->ws_ou, $copy->id, 10, $hold_stall_interval, $fifo );
+		$user->ws_ou, $copy->id, 100, $hold_stall_interval, $fifo );
 
 	# Add any pre-targeted holds to the list too? Unless they are already there, anyway.
 	if ($old_holds) {
