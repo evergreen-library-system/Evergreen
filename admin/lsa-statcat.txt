@@ -71,6 +71,8 @@ An entry can be set as the *default* entry for a category and for an org unit.  
 
 Lower-level org unit defaults override defaults set for higher-level org units;  but in the absence of a default set for a given org unit, the nearest parent org unit default will be selected.
 
+Default entries for the focus location org unit are marked with an asterisk in the entry dropdowns.
+
 This is how patron stat cats appear in the patron registration/edit screen:
 
 image::media/lsa-statcat-8.png[Patron stat cats in registration screen]
