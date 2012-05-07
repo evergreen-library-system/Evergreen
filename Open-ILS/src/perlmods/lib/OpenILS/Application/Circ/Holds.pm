@@ -2906,13 +2906,15 @@ sub find_nearest_permitted_hold {
         "open-ils.storage.action.hold_request.nearest_hold.atomic", 
 		$user->ws_ou, $copy->id, 10, $hold_stall_interval, $fifo );
 
-	unless(@$best_holds) {
-
-		if( my $hold = $$old_holds[0] ) {
-			$logger->info("circulator: using existing pre-targeted hold ".$hold->id." in hold search");
-			return ($hold);
+	# Add any pre-targeted holds to the list too? Unless they are already there, anyway.
+	if ($old_holds) {
+		for my $holdid (@$old_holds) {
+			next unless $holdid;
+			push(@$best_holds, $holdid) unless ( grep { ''.$holdid eq ''.$_ } @$best_holds );
 		}
+	}
 
+	unless(@$best_holds) {
 		$logger->info("circulator: no suitable holds found for copy $bc");
 		return (undef, $evt);
 	}
@@ -2954,11 +2956,6 @@ sub find_nearest_permitted_hold {
 
 
 	unless( $best_hold ) { # no "good" permitted holds were found
-		if( my $hold = $$old_holds[0] ) { # can we return a pre-targeted hold?
-			$logger->info("circulator: using existing pre-targeted hold ".$hold->id." in hold search");
-			return ($hold);
-		}
-
 		# we got nuthin
 		$logger->info("circulator: no suitable holds found for copy $bc");
 		return (undef, $evt);
