@@ -100,11 +100,14 @@ sub _prepare_biblio_search {
         }
     }
 
-    my $site;
+    my (@naive_query_re, $site);
+
     my $org = $ctx->{search_ou};
     if (defined($org) and $org ne '' and ($org ne $ctx->{aou_tree}->()->id) and not $query =~ /site\(\S+\)/) {
-        $site = $ctx->{get_aou}->($org)->shortname;
-        $query .= " site($site)";
+        my $thing = " site(" . $ctx->{get_aou}->($org)->shortname . ")";
+
+        $query .= $thing;
+        push @naive_query_re, $thing;
     }
 
     my $pref_ou = $ctx->{pref_ou};
@@ -137,8 +140,20 @@ sub _prepare_biblio_search {
             my ($org) = grep { $_->shortname eq $site } @{$ctx->{aou_list}->()};
             $depth = $org->ou_type->depth;
         }
-        $query .= " depth($depth)";
+        my $thing = " depth($depth)";
+
+        $query .= $thing;
+        push @naive_query_re, $thing;
     }
+
+    # This gives templates a way to take site() and depth() back out of
+    # query strings when they shouldn't be there (because they're controllable
+    # with other widgets).
+    $ctx->{naive_query_scrub} = sub {
+        my ($query) = @_;
+        $query =~ s/\Q$_\E// foreach (@naive_query_re);
+        return $query;
+    };
 
     $logger->info("tpac: site=$site, depth=$depth, query=$query");
 
