@@ -21,7 +21,7 @@
 # Make any assumptions about the shell being used explicit
 SHELL=/bin/bash 
 
-LIBJS=js185-1.0.0
+LIBJS=js-1.7.0
 LIBJS_PERL=JavaScript-SpiderMonkey-0.21
 LIBJS_URL=http://ftp.mozilla.org/pub/mozilla.org/js/$(LIBJS).tar.gz
 LIBJS_PERL_URL=http://mirror.datapipe.net/pub/CPAN/authors/id/T/TB/TBUSCH/$(LIBJS_PERL).tar.gz
