@@ -691,7 +691,11 @@ function AcqLiTable() {
             {
                 "data": acqliat.toStoreData(
                     this.pcrud.search(
-                        "acqliat", {"id": {"!=": null}}
+                        "acqliat", {
+                            "owning_lib": aou.orgNodeTrail(
+                                aou.findOrgUnit(openils.User.user.ws_ou())
+                            ).map(function(o) { return o.id(); })
+                        }
                     )
                 )
             }
@@ -771,7 +775,12 @@ function AcqLiTable() {
         nodeByName("value", row).innerHTML = note.value();
         var alert_node = nodeByName("alert_code", row);
         if (note.alert_text()) {
-            alert_node.innerHTML = note.alert_text().code();
+            alert_node.innerHTML = dojo.string.substitute(
+                "[${0}] ${1}", [
+                    aou.findOrgUnit(note.alert_text().owning_lib()).shortname(),
+                    note.alert_text().code()
+                ]
+            );
             if (note.alert_text().description()) {
                 new dijit.Tooltip(
                     {
@@ -1868,8 +1877,17 @@ function AcqLiTable() {
                 localeStrings.CONFIRM_LI_ALERT, [
                     (new openils.acq.Lineitem({"lineitem": li})).findAttr(
                         "title", "lineitem_marc_attr_definition"
+                    ), (
+                        /* XXX it's really better add a parameter and to adjust
+                         * the format string rather than do this concatenation
+                         * here, but if someone wants this for 2.2 in a hurry,
+                         * we can sidestep the problem of updating the strings
+                         * while the translators are working. */
+                        "[" +
+                        aou.findOrgUnit(lin.alert_text().owning_lib()).shortname() +
+                        "] " +
+                        lin.alert_text().code()
                     ),
-                    lin.alert_text().code(),
                     lin.alert_text().description() || "",
                     lin.value()
                 ]
