@@ -356,7 +356,7 @@ sub sip_circulation_status {
     return '12' if $stat == OILS_COPY_STATUS_LOST;
     return '13' if $stat == OILS_COPY_STATUS_MISSING;
         
-    return 01;
+    return '01';
 }
 
 sub sip_security_marker {
