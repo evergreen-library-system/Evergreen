@@ -16,7 +16,7 @@
         %]
         <span class='search_box_wrapper'>
             <input type="text" id="search_box" name="query"
-                value="[% is_advanced ? ctx.processed_search_query : CGI.param('query') | html %]"
+                value="[% is_advanced ? ctx.naive_query_scrub(ctx.processed_search_query) : CGI.param('query') | html %]"
                 [%- IF use_autosuggest.enabled == "t" %]
                 dojoType="openils.widget.AutoSuggest" type_selector="'qtype'"
                 submitter="this.textbox.form.submit();"
