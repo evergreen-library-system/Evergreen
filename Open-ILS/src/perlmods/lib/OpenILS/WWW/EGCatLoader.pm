@@ -349,6 +349,9 @@ sub load_login {
 
     my $bc_regex = $ctx->{get_org_setting}->($org_unit, 'opac.barcode_regex');
 
+    # To avoid surprises, default to "Barcodes start with digits"
+    $bc_regex = '^\d' unless $bc_regex;
+
     $args->{barcode} = delete $args->{username} 
         if $bc_regex and ($username =~ /$bc_regex/);
 
