@@ -2365,7 +2365,7 @@ sub checkin_retarget {
     # Check for parts on this copy
     my $parts = $self->editor->search_asset_copy_part_map({ target_copy => $self->copy->id });
     my %parts_hash = ();
-    %parts_hash = map {$_->id, 1} @$parts if @$parts;
+    %parts_hash = map {$_->part, 1} @$parts if @$parts;
 
     # Loop over holds in request-ish order
     # Stage 1: Get them into request-ish order
