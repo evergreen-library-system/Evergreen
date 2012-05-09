@@ -219,15 +219,13 @@
                 }
                 function find_patron(newtab) {
                         if(newtab)
-                                xulG.new_tab(urls.XUL_PATRON_DISPLAY,{},{});
+                                xulG.new_patron_tab({},{});
                         else
-                                xulG.set_tab(urls.XUL_PATRON_DISPLAY,{},{});
+                                xulG.set_patron_tab({},{});
                 }
                 
                 function spawn_search(s) {
-                        var loc = urls.XUL_PATRON_DISPLAY;
-                        loc += '?doit=1&amp;query=' + window.escape(js2JSON(s));
-                        xulG.new_tab( loc, {}, {} );
+                        xulG.new_patron_tab( {}, { 'doit' : 1, 'query' : js2JSON(s) } );
                 }
                 function register_patron(newtab) {
                         function spawn_editor(p) {
