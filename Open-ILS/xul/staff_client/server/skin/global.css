@@ -28,6 +28,9 @@ treechildren::-moz-tree-column(ordinal) {
 treechildren::-moz-tree-cell-text(ordinal) {
     font-weight: bold ! important;
 }
+
+#lineno { min-width: 3em ! important; }
+
 /*
 treechildren::-moz-tree-cell-text(selected,focus) {
     color: black;
