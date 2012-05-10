@@ -8384,6 +8384,4041 @@ SELECT evergreen.upgrade_deps_block_check('0671', :eg_version);
 ALTER TABLE asset.copy_location
     ADD COLUMN checkin_alert BOOL NOT NULL DEFAULT FALSE;
 
+-- Evergreen DB patch 0673.data.acq-cancel-reason-cleanup.sql
+--
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0673', :eg_version);
+
+DELETE FROM
+    acq.cancel_reason
+WHERE
+    -- any entries with id >= 2000 were added locally.  
+    id < 2000 
+
+    -- these cancel_reason's are actively used by the system
+    AND id NOT IN (1, 2, 3, 1002, 1003, 1004, 1005, 1010, 1024, 1211, 1221, 1246, 1283)
+
+    -- don't delete any cancel_reason's that may be in use locally
+    AND id NOT IN (SELECT DISTINCT(cancel_reason) FROM acq.user_request WHERE cancel_reason IS NOT NULL)
+    AND id NOT IN (SELECT DISTINCT(cancel_reason) FROM acq.purchase_order WHERE cancel_reason IS NOT NULL)
+    AND id NOT IN (SELECT DISTINCT(cancel_reason) FROM acq.lineitem WHERE cancel_reason IS NOT NULL)
+    AND id NOT IN (SELECT DISTINCT(cancel_reason) FROM acq.lineitem_detail WHERE cancel_reason IS NOT NULL)
+    AND id NOT IN (SELECT DISTINCT(cancel_reason) FROM acq.acq_lineitem_history WHERE cancel_reason IS NOT NULL)
+    AND id NOT IN (SELECT DISTINCT(cancel_reason) FROM acq.acq_purchase_order_history WHERE cancel_reason IS NOT NULL);
+
+
+SELECT evergreen.upgrade_deps_block_check('0674', :eg_version);
+
+ALTER TABLE config.copy_status
+	  ADD COLUMN restrict_copy_delete BOOL NOT NULL DEFAULT FALSE;
+
+UPDATE config.copy_status
+SET restrict_copy_delete = TRUE
+WHERE id IN (1,3,6,8);
+
+INSERT INTO permission.perm_list (id, code, description) VALUES (
+    520,
+    'COPY_DELETE_WARNING.override',
+    'Allow a user to override warnings about deleting copies in problematic situations.'
+);
+
+
+SELECT evergreen.upgrade_deps_block_check('0675', :eg_version);
+
+-- set expected row count to low value to avoid problem
+-- where use of this function by the circ tagging feature
+-- results in full scans of asset.call_number
+CREATE OR REPLACE FUNCTION action.usr_visible_circ_copies( INTEGER ) RETURNS SETOF BIGINT AS $$
+    SELECT DISTINCT(target_copy) FROM action.usr_visible_circs($1)
+$$ LANGUAGE SQL ROWS 10;
+
+
+SELECT evergreen.upgrade_deps_block_check('0676', :eg_version);
+
+INSERT INTO config.global_flag (name, label, enabled, value) VALUES (
+    'opac.use_autosuggest',
+    'OPAC: Show auto-completing suggestions dialog under basic search box (put ''opac_visible'' into the value field to limit suggestions to OPAC-visible items, or blank the field for a possible performance improvement)',
+    TRUE,
+    'opac_visible'
+);
+
+CREATE TABLE metabib.browse_entry (
+    id BIGSERIAL PRIMARY KEY,
+    value TEXT unique,
+    index_vector tsvector
+);
+--Skip this, will be created differently later
+--CREATE INDEX metabib_browse_entry_index_vector_idx ON metabib.browse_entry USING GIST (index_vector);
+CREATE TRIGGER metabib_browse_entry_fti_trigger
+    BEFORE INSERT OR UPDATE ON metabib.browse_entry
+    FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('keyword');
+
+
+CREATE TABLE metabib.browse_entry_def_map (
+    id BIGSERIAL PRIMARY KEY,
+    entry BIGINT REFERENCES metabib.browse_entry (id),
+    def INT REFERENCES config.metabib_field (id),
+    source BIGINT REFERENCES biblio.record_entry (id)
+);
+
+ALTER TABLE config.metabib_field ADD COLUMN browse_field BOOLEAN DEFAULT TRUE NOT NULL;
+ALTER TABLE config.metabib_field ADD COLUMN browse_xpath TEXT;
+
+ALTER TABLE config.metabib_class ADD COLUMN bouyant BOOLEAN DEFAULT FALSE NOT NULL;
+ALTER TABLE config.metabib_class ADD COLUMN restrict BOOLEAN DEFAULT FALSE NOT NULL;
+ALTER TABLE config.metabib_field ADD COLUMN restrict BOOLEAN DEFAULT FALSE NOT NULL;
+
+-- one good exception to default true:
+UPDATE config.metabib_field
+    SET browse_field = FALSE
+    WHERE (field_class = 'keyword' AND name = 'keyword') OR
+        (field_class = 'subject' AND name = 'complete');
+
+-- AFTER UPDATE OR INSERT trigger for biblio.record_entry
+-- We're only touching it here to add a DELETE statement to the IF NEW.deleted
+-- block.
+
+CREATE OR REPLACE FUNCTION biblio.indexing_ingest_or_delete () RETURNS TRIGGER AS $func$
+DECLARE
+    transformed_xml TEXT;
+    prev_xfrm       TEXT;
+    normalizer      RECORD;
+    xfrm            config.xml_transform%ROWTYPE;
+    attr_value      TEXT;
+    new_attrs       HSTORE := ''::HSTORE;
+    attr_def        config.record_attr_definition%ROWTYPE;
+BEGIN
+
+    IF NEW.deleted IS TRUE THEN -- If this bib is deleted
+        DELETE FROM metabib.metarecord_source_map WHERE source = NEW.id; -- Rid ourselves of the search-estimate-killing linkage
+        DELETE FROM metabib.record_attr WHERE id = NEW.id; -- Kill the attrs hash, useless on deleted records
+        DELETE FROM authority.bib_linking WHERE bib = NEW.id; -- Avoid updating fields in bibs that are no longer visible
+        DELETE FROM biblio.peer_bib_copy_map WHERE peer_record = NEW.id; -- Separate any multi-homed items
+        DELETE FROM metabib.browse_entry_def_map WHERE source = NEW.id; -- Don't auto-suggest deleted bibs
+        RETURN NEW; -- and we're done
+    END IF;
+
+    IF TG_OP = 'UPDATE' THEN -- re-ingest?
+        PERFORM * FROM config.internal_flag WHERE name = 'ingest.reingest.force_on_same_marc' AND enabled;
+
+        IF NOT FOUND AND OLD.marc = NEW.marc THEN -- don't do anything if the MARC didn't change
+            RETURN NEW;
+        END IF;
+    END IF;
+
+    -- Record authority linking
+    PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_authority_linking' AND enabled;
+    IF NOT FOUND THEN
+        PERFORM biblio.map_authority_linking( NEW.id, NEW.marc );
+    END IF;
+
+    -- Flatten and insert the mfr data
+    PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_metabib_full_rec' AND enabled;
+    IF NOT FOUND THEN
+        PERFORM metabib.reingest_metabib_full_rec(NEW.id);
+
+        -- Now we pull out attribute data, which is dependent on the mfr for all but XPath-based fields
+        PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_metabib_rec_descriptor' AND enabled;
+        IF NOT FOUND THEN
+            FOR attr_def IN SELECT * FROM config.record_attr_definition ORDER BY format LOOP
+
+                IF attr_def.tag IS NOT NULL THEN -- tag (and optional subfield list) selection
+                    SELECT  ARRAY_TO_STRING(ARRAY_ACCUM(value), COALESCE(attr_def.joiner,' ')) INTO attr_value
+                      FROM  (SELECT * FROM metabib.full_rec ORDER BY tag, subfield) AS x
+                      WHERE record = NEW.id
+                            AND tag LIKE attr_def.tag
+                            AND CASE
+                                WHEN attr_def.sf_list IS NOT NULL 
+                                    THEN POSITION(subfield IN attr_def.sf_list) > 0
+                                ELSE TRUE
+                                END
+                      GROUP BY tag
+                      ORDER BY tag
+                      LIMIT 1;
+
+                ELSIF attr_def.fixed_field IS NOT NULL THEN -- a named fixed field, see config.marc21_ff_pos_map.fixed_field
+                    attr_value := biblio.marc21_extract_fixed_field(NEW.id, attr_def.fixed_field);
+
+                ELSIF attr_def.xpath IS NOT NULL THEN -- and xpath expression
+
+                    SELECT INTO xfrm * FROM config.xml_transform WHERE name = attr_def.format;
+            
+                    -- See if we can skip the XSLT ... it's expensive
+                    IF prev_xfrm IS NULL OR prev_xfrm <> xfrm.name THEN
+                        -- Can't skip the transform
+                        IF xfrm.xslt <> '---' THEN
+                            transformed_xml := oils_xslt_process(NEW.marc,xfrm.xslt);
+                        ELSE
+                            transformed_xml := NEW.marc;
+                        END IF;
+            
+                        prev_xfrm := xfrm.name;
+                    END IF;
+
+                    IF xfrm.name IS NULL THEN
+                        -- just grab the marcxml (empty) transform
+                        SELECT INTO xfrm * FROM config.xml_transform WHERE xslt = '---' LIMIT 1;
+                        prev_xfrm := xfrm.name;
+                    END IF;
+
+                    attr_value := oils_xpath_string(attr_def.xpath, transformed_xml, COALESCE(attr_def.joiner,' '), ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]);
+
+                ELSIF attr_def.phys_char_sf IS NOT NULL THEN -- a named Physical Characteristic, see config.marc21_physical_characteristic_*_map
+                    SELECT  m.value INTO attr_value
+                      FROM  biblio.marc21_physical_characteristics(NEW.id) v
+                            JOIN config.marc21_physical_characteristic_value_map m ON (m.id = v.value)
+                      WHERE v.subfield = attr_def.phys_char_sf
+                      LIMIT 1; -- Just in case ...
+
+                END IF;
+
+                -- apply index normalizers to attr_value
+                FOR normalizer IN
+                    SELECT  n.func AS func,
+                            n.param_count AS param_count,
+                            m.params AS params
+                      FROM  config.index_normalizer n
+                            JOIN config.record_attr_index_norm_map m ON (m.norm = n.id)
+                      WHERE attr = attr_def.name
+                      ORDER BY m.pos LOOP
+                        EXECUTE 'SELECT ' || normalizer.func || '(' ||
+                            COALESCE( quote_literal( attr_value ), 'NULL' ) ||
+                            CASE
+                                WHEN normalizer.param_count > 0
+                                    THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
+                                    ELSE ''
+                                END ||
+                            ')' INTO attr_value;
+        
+                END LOOP;
+
+                -- Add the new value to the hstore
+                new_attrs := new_attrs || hstore( attr_def.name, attr_value );
+
+            END LOOP;
+
+            IF TG_OP = 'INSERT' OR OLD.deleted THEN -- initial insert OR revivication
+                INSERT INTO metabib.record_attr (id, attrs) VALUES (NEW.id, new_attrs);
+            ELSE
+                UPDATE metabib.record_attr SET attrs = new_attrs WHERE id = NEW.id;
+            END IF;
+
+        END IF;
+    END IF;
+
+    -- Gather and insert the field entry data
+    PERFORM metabib.reingest_metabib_field_entries(NEW.id);
+
+    -- Located URI magic
+    IF TG_OP = 'INSERT' THEN
+        PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_located_uri' AND enabled;
+        IF NOT FOUND THEN
+            PERFORM biblio.extract_located_uris( NEW.id, NEW.marc, NEW.editor );
+        END IF;
+    ELSE
+        PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_located_uri' AND enabled;
+        IF NOT FOUND THEN
+            PERFORM biblio.extract_located_uris( NEW.id, NEW.marc, NEW.editor );
+        END IF;
+    END IF;
+
+    -- (re)map metarecord-bib linking
+    IF TG_OP = 'INSERT' THEN -- if not deleted and performing an insert, check for the flag
+        PERFORM * FROM config.internal_flag WHERE name = 'ingest.metarecord_mapping.skip_on_insert' AND enabled;
+        IF NOT FOUND THEN
+            PERFORM metabib.remap_metarecord_for_bib( NEW.id, NEW.fingerprint );
+        END IF;
+    ELSE -- we're doing an update, and we're not deleted, remap
+        PERFORM * FROM config.internal_flag WHERE name = 'ingest.metarecord_mapping.skip_on_update' AND enabled;
+        IF NOT FOUND THEN
+            PERFORM metabib.remap_metarecord_for_bib( NEW.id, NEW.fingerprint );
+        END IF;
+    END IF;
+
+    RETURN NEW;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION metabib.browse_normalize(facet_text TEXT, mapped_field INT) RETURNS TEXT AS $$
+DECLARE
+    normalizer  RECORD;
+BEGIN
+
+    FOR normalizer IN
+        SELECT  n.func AS func,
+                n.param_count AS param_count,
+                m.params AS params
+          FROM  config.index_normalizer n
+                JOIN config.metabib_field_index_norm_map m ON (m.norm = n.id)
+          WHERE m.field = mapped_field AND m.pos < 0
+          ORDER BY m.pos LOOP
+
+            EXECUTE 'SELECT ' || normalizer.func || '(' ||
+                quote_literal( facet_text ) ||
+                CASE
+                    WHEN normalizer.param_count > 0
+                        THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
+                        ELSE ''
+                    END ||
+                ')' INTO facet_text;
+
+    END LOOP;
+
+    RETURN facet_text;
+END;
+
+$$ LANGUAGE PLPGSQL;
+
+DROP FUNCTION biblio.extract_metabib_field_entry(bigint, text);
+DROP FUNCTION biblio.extract_metabib_field_entry(bigint);
+
+DROP TYPE metabib.field_entry_template;
+CREATE TYPE metabib.field_entry_template AS (
+        field_class     TEXT,
+        field           INT,
+        facet_field     BOOL,
+        search_field    BOOL,
+        browse_field   BOOL,
+        source          BIGINT,
+        value           TEXT
+);
+
+
+CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry ( rid BIGINT, default_joiner TEXT ) RETURNS SETOF metabib.field_entry_template AS $func$
+DECLARE
+    bib     biblio.record_entry%ROWTYPE;
+    idx     config.metabib_field%ROWTYPE;
+    xfrm        config.xml_transform%ROWTYPE;
+    prev_xfrm   TEXT;
+    transformed_xml TEXT;
+    xml_node    TEXT;
+    xml_node_list   TEXT[];
+    facet_text  TEXT;
+    browse_text TEXT;
+    raw_text    TEXT;
+    curr_text   TEXT;
+    joiner      TEXT := default_joiner; -- XXX will index defs supply a joiner?
+    output_row  metabib.field_entry_template%ROWTYPE;
+BEGIN
+
+    -- Get the record
+    SELECT INTO bib * FROM biblio.record_entry WHERE id = rid;
+
+    -- Loop over the indexing entries
+    FOR idx IN SELECT * FROM config.metabib_field ORDER BY format LOOP
+
+        SELECT INTO xfrm * from config.xml_transform WHERE name = idx.format;
+
+        -- See if we can skip the XSLT ... it's expensive
+        IF prev_xfrm IS NULL OR prev_xfrm <> xfrm.name THEN
+            -- Can't skip the transform
+            IF xfrm.xslt <> '---' THEN
+                transformed_xml := oils_xslt_process(bib.marc,xfrm.xslt);
+            ELSE
+                transformed_xml := bib.marc;
+            END IF;
+
+            prev_xfrm := xfrm.name;
+        END IF;
+
+        xml_node_list := oils_xpath( idx.xpath, transformed_xml, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]] );
+
+        raw_text := NULL;
+        FOR xml_node IN SELECT x FROM unnest(xml_node_list) AS x LOOP
+            CONTINUE WHEN xml_node !~ E'^\\s*<';
+
+            curr_text := ARRAY_TO_STRING(
+                oils_xpath( '//text()',
+                    REGEXP_REPLACE( -- This escapes all &s not followed by "amp;".  Data ise returned from oils_xpath (above) in UTF-8, not entity encoded
+                        REGEXP_REPLACE( -- This escapes embeded <s
+                            xml_node,
+                            $re$(>[^<]+)(<)([^>]+<)$re$,
+                            E'\\1&lt;\\3',
+                            'g'
+                        ),
+                        '&(?!amp;)',
+                        '&amp;',
+                        'g'
+                    )
+                ),
+                ' '
+            );
+
+            CONTINUE WHEN curr_text IS NULL OR curr_text = '';
+
+            IF raw_text IS NOT NULL THEN
+                raw_text := raw_text || joiner;
+            END IF;
+
+            raw_text := COALESCE(raw_text,'') || curr_text;
+
+            -- autosuggest/metabib.browse_entry
+            IF idx.browse_field THEN
+
+                IF idx.browse_xpath IS NOT NULL AND idx.browse_xpath <> '' THEN
+                    browse_text := oils_xpath_string( idx.browse_xpath, xml_node, joiner, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]] );
+                ELSE
+                    browse_text := curr_text;
+                END IF;
+
+                output_row.field_class = idx.field_class;
+                output_row.field = idx.id;
+                output_row.source = rid;
+                output_row.value = BTRIM(REGEXP_REPLACE(browse_text, E'\\s+', ' ', 'g'));
+
+                output_row.browse_field = TRUE;
+                RETURN NEXT output_row;
+                output_row.browse_field = FALSE;
+            END IF;
+
+            -- insert raw node text for faceting
+            IF idx.facet_field THEN
+
+                IF idx.facet_xpath IS NOT NULL AND idx.facet_xpath <> '' THEN
+                    facet_text := oils_xpath_string( idx.facet_xpath, xml_node, joiner, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]] );
+                ELSE
+                    facet_text := curr_text;
+                END IF;
+
+                output_row.field_class = idx.field_class;
+                output_row.field = -1 * idx.id;
+                output_row.source = rid;
+                output_row.value = BTRIM(REGEXP_REPLACE(facet_text, E'\\s+', ' ', 'g'));
+
+                output_row.facet_field = TRUE;
+                RETURN NEXT output_row;
+                output_row.facet_field = FALSE;
+            END IF;
+
+        END LOOP;
+
+        CONTINUE WHEN raw_text IS NULL OR raw_text = '';
+
+        -- insert combined node text for searching
+        IF idx.search_field THEN
+            output_row.field_class = idx.field_class;
+            output_row.field = idx.id;
+            output_row.source = rid;
+            output_row.value = BTRIM(REGEXP_REPLACE(raw_text, E'\\s+', ' ', 'g'));
+
+            output_row.search_field = TRUE;
+            RETURN NEXT output_row;
+        END IF;
+
+    END LOOP;
+
+END;
+$func$ LANGUAGE PLPGSQL;
+
+-- default to a space joiner
+CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry ( BIGINT ) RETURNS SETOF metabib.field_entry_template AS $func$
+    SELECT * FROM biblio.extract_metabib_field_entry($1, ' ');
+    $func$ LANGUAGE SQL;
+
+
+CREATE OR REPLACE FUNCTION metabib.reingest_metabib_field_entries( bib_id BIGINT ) RETURNS VOID AS $func$
+DECLARE
+    fclass          RECORD;
+    ind_data        metabib.field_entry_template%ROWTYPE;
+    mbe_row         metabib.browse_entry%ROWTYPE;
+    mbe_id          BIGINT;
+BEGIN
+    PERFORM * FROM config.internal_flag WHERE name = 'ingest.assume_inserts_only' AND enabled;
+    IF NOT FOUND THEN
+        FOR fclass IN SELECT * FROM config.metabib_class LOOP
+            -- RAISE NOTICE 'Emptying out %', fclass.name;
+            EXECUTE $$DELETE FROM metabib.$$ || fclass.name || $$_field_entry WHERE source = $$ || bib_id;
+        END LOOP;
+        DELETE FROM metabib.facet_entry WHERE source = bib_id;
+        DELETE FROM metabib.browse_entry_def_map WHERE source = bib_id;
+    END IF;
+
+    FOR ind_data IN SELECT * FROM biblio.extract_metabib_field_entry( bib_id ) LOOP
+        IF ind_data.field < 0 THEN
+            ind_data.field = -1 * ind_data.field;
+        END IF;
+
+        IF ind_data.facet_field THEN
+            INSERT INTO metabib.facet_entry (field, source, value)
+                VALUES (ind_data.field, ind_data.source, ind_data.value);
+        END IF;
+
+        IF ind_data.browse_field THEN
+            SELECT INTO mbe_row * FROM metabib.browse_entry WHERE value = ind_data.value;
+            IF FOUND THEN
+                mbe_id := mbe_row.id;
+            ELSE
+                INSERT INTO metabib.browse_entry (value) VALUES
+                    (metabib.browse_normalize(ind_data.value, ind_data.field));
+                mbe_id := CURRVAL('metabib.browse_entry_id_seq'::REGCLASS);
+            END IF;
+
+            INSERT INTO metabib.browse_entry_def_map (entry, def, source)
+                VALUES (mbe_id, ind_data.field, ind_data.source);
+        END IF;
+
+        IF ind_data.search_field THEN
+            EXECUTE $$
+                INSERT INTO metabib.$$ || ind_data.field_class || $$_field_entry (field, source, value)
+                    VALUES ($$ ||
+                        quote_literal(ind_data.field) || $$, $$ ||
+                        quote_literal(ind_data.source) || $$, $$ ||
+                        quote_literal(ind_data.value) ||
+                    $$);$$;
+        END IF;
+
+    END LOOP;
+
+    RETURN;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+-- This mimics a specific part of QueryParser, turning the first part of a
+-- classed search (search_class) into a set of classes and possibly fields.
+-- search_class might look like "author" or "title|proper" or "ti|uniform"
+-- or "au" or "au|corporate|personal" or anything like that, where the first
+-- element of the list you get by separating on the "|" character is either
+-- a registered class (config.metabib_class) or an alias
+-- (config.metabib_search_alias), and the rest of any such elements are
+-- fields (config.metabib_field).
+CREATE OR REPLACE
+    FUNCTION metabib.search_class_to_registered_components(search_class TEXT)
+    RETURNS SETOF RECORD AS $func$
+DECLARE
+    search_parts        TEXT[];
+    field_name          TEXT;
+    search_part_count   INTEGER;
+    rec                 RECORD;
+    registered_class    config.metabib_class%ROWTYPE;
+    registered_alias    config.metabib_search_alias%ROWTYPE;
+    registered_field    config.metabib_field%ROWTYPE;
+BEGIN
+    search_parts := REGEXP_SPLIT_TO_ARRAY(search_class, E'\\|');
+
+    search_part_count := ARRAY_LENGTH(search_parts, 1);
+    IF search_part_count = 0 THEN
+        RETURN;
+    ELSE
+        SELECT INTO registered_class
+            * FROM config.metabib_class WHERE name = search_parts[1];
+        IF FOUND THEN
+            IF search_part_count < 2 THEN   -- all fields
+                rec := (registered_class.name, NULL::INTEGER);
+                RETURN NEXT rec;
+                RETURN; -- done
+            END IF;
+            FOR field_name IN SELECT *
+                FROM UNNEST(search_parts[2:search_part_count]) LOOP
+                SELECT INTO registered_field
+                    * FROM config.metabib_field
+                    WHERE name = field_name AND
+                        field_class = registered_class.name;
+                IF FOUND THEN
+                    rec := (registered_class.name, registered_field.id);
+                    RETURN NEXT rec;
+                END IF;
+            END LOOP;
+        ELSE
+            -- maybe we have an alias?
+            SELECT INTO registered_alias
+                * FROM config.metabib_search_alias WHERE alias=search_parts[1];
+            IF NOT FOUND THEN
+                RETURN;
+            ELSE
+                IF search_part_count < 2 THEN   -- return w/e the alias says
+                    rec := (
+                        registered_alias.field_class, registered_alias.field
+                    );
+                    RETURN NEXT rec;
+                    RETURN; -- done
+                ELSE
+                    FOR field_name IN SELECT *
+                        FROM UNNEST(search_parts[2:search_part_count]) LOOP
+                        SELECT INTO registered_field
+                            * FROM config.metabib_field
+                            WHERE name = field_name AND
+                                field_class = registered_alias.field_class;
+                        IF FOUND THEN
+                            rec := (
+                                registered_alias.field_class,
+                                registered_field.id
+                            );
+                            RETURN NEXT rec;
+                        END IF;
+                    END LOOP;
+                END IF;
+            END IF;
+        END IF;
+    END IF;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+
+CREATE OR REPLACE
+    FUNCTION metabib.suggest_browse_entries(
+        query_text      TEXT,   -- 'foo' or 'foo & ba:*',ready for to_tsquery()
+        search_class    TEXT,   -- 'alias' or 'class' or 'class|field..', etc
+        headline_opts   TEXT,   -- markup options for ts_headline()
+        visibility_org  INTEGER,-- null if you don't want opac visibility test
+        query_limit     INTEGER,-- use in LIMIT clause of interal query
+        normalization   INTEGER -- argument to TS_RANK_CD()
+    ) RETURNS TABLE (
+        value                   TEXT,   -- plain
+        field                   INTEGER,
+        bouyant_and_class_match BOOL,
+        field_match             BOOL,
+        field_weight            INTEGER,
+        rank                    REAL,
+        bouyant                 BOOL,
+        match                   TEXT    -- marked up
+    ) AS $func$
+DECLARE
+    query                   TSQUERY;
+    opac_visibility_join    TEXT;
+    search_class_join       TEXT;
+    r_fields                RECORD;
+BEGIN
+    query := TO_TSQUERY('keyword', query_text);
+
+    IF visibility_org IS NOT NULL THEN
+        opac_visibility_join := '
+    JOIN asset.opac_visible_copies aovc ON (
+        aovc.record = mbedm.source AND
+        aovc.circ_lib IN (SELECT id FROM actor.org_unit_descendants($4))
+    )';
+    ELSE
+        opac_visibility_join := '';
+    END IF;
+
+    -- The following determines whether we only provide suggestsons matching
+    -- the user's selected search_class, or whether we show other suggestions
+    -- too. The reason for MIN() is that for search_classes like
+    -- 'title|proper|uniform' you would otherwise get multiple rows.  The
+    -- implication is that if title as a class doesn't have restrict,
+    -- nor does the proper field, but the uniform field does, you're going
+    -- to get 'false' for your overall evaluation of 'should we restrict?'
+    -- To invert that, change from MIN() to MAX().
+
+    SELECT
+        INTO r_fields
+            MIN(cmc.restrict::INT) AS restrict_class,
+            MIN(cmf.restrict::INT) AS restrict_field
+        FROM metabib.search_class_to_registered_components(search_class)
+            AS _registered (field_class TEXT, field INT)
+        JOIN
+            config.metabib_class cmc ON (cmc.name = _registered.field_class)
+        LEFT JOIN
+            config.metabib_field cmf ON (cmf.id = _registered.field);
+
+    -- evaluate 'should we restrict?'
+    IF r_fields.restrict_field::BOOL OR r_fields.restrict_class::BOOL THEN
+        search_class_join := '
+    JOIN
+        metabib.search_class_to_registered_components($2)
+        AS _registered (field_class TEXT, field INT) ON (
+            (_registered.field IS NULL AND
+                _registered.field_class = cmf.field_class) OR
+            (_registered.field = cmf.id)
+        )
+    ';
+    ELSE
+        search_class_join := '
+    LEFT JOIN
+        metabib.search_class_to_registered_components($2)
+        AS _registered (field_class TEXT, field INT) ON (
+            _registered.field_class = cmc.name
+        )
+    ';
+    END IF;
+
+    RETURN QUERY EXECUTE 'SELECT *, TS_HEADLINE(value, $1, $3) FROM (SELECT DISTINCT
+        mbe.value,
+        cmf.id,
+        cmc.bouyant AND _registered.field_class IS NOT NULL,
+        _registered.field = cmf.id,
+        cmf.weight,
+        TS_RANK_CD(mbe.index_vector, $1, $6),
+        cmc.bouyant
+    FROM metabib.browse_entry_def_map mbedm
+    JOIN metabib.browse_entry mbe ON (mbe.id = mbedm.entry)
+    JOIN config.metabib_field cmf ON (cmf.id = mbedm.def)
+    JOIN config.metabib_class cmc ON (cmf.field_class = cmc.name)
+    '  || search_class_join || opac_visibility_join ||
+    ' WHERE $1 @@ mbe.index_vector
+    ORDER BY 3 DESC, 4 DESC NULLS LAST, 5 DESC, 6 DESC, 7 DESC, 1 ASC
+    LIMIT $5) x
+    ORDER BY 3 DESC, 4 DESC NULLS LAST, 5 DESC, 6 DESC, 7 DESC, 1 ASC
+    '   -- sic, repeat the order by clause in the outer select too
+    USING
+        query, search_class, headline_opts,
+        visibility_org, query_limit, normalization
+        ;
+
+    -- sort order:
+    --  bouyant AND chosen class = match class
+    --  chosen field = match field
+    --  field weight
+    --  rank
+    --  bouyancy
+    --  value itself
+
+END;
+$func$ LANGUAGE PLPGSQL;
+
+-- The advantage of this over the stock regexp_split_to_array() is that it
+-- won't degrade unicode strings.
+CREATE OR REPLACE FUNCTION evergreen.regexp_split_to_array(TEXT, TEXT)
+RETURNS TEXT[] AS $$
+    return encode_array_literal([split $_[1], $_[0]]);
+$$ LANGUAGE PLPERLU STRICT IMMUTABLE;
+
+
+-- Adds some logic for browse_entry to split on non-word chars for index_vector, post-normalize
+CREATE OR REPLACE FUNCTION oils_tsearch2 () RETURNS TRIGGER AS $$
+DECLARE
+    normalizer      RECORD;
+    value           TEXT := '';
+BEGIN
+
+    value := NEW.value;
+
+    IF TG_TABLE_NAME::TEXT ~ 'field_entry$' THEN
+        FOR normalizer IN
+            SELECT  n.func AS func,
+                    n.param_count AS param_count,
+                    m.params AS params
+              FROM  config.index_normalizer n
+                    JOIN config.metabib_field_index_norm_map m ON (m.norm = n.id)
+              WHERE field = NEW.field AND m.pos < 0
+              ORDER BY m.pos LOOP
+                EXECUTE 'SELECT ' || normalizer.func || '(' ||
+                    quote_literal( value ) ||
+                    CASE
+                        WHEN normalizer.param_count > 0
+                            THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
+                            ELSE ''
+                        END ||
+                    ')' INTO value;
+
+        END LOOP;
+
+        NEW.value := value;
+    END IF;
+
+    IF NEW.index_vector = ''::tsvector THEN
+        RETURN NEW;
+    END IF;
+
+    IF TG_TABLE_NAME::TEXT ~ 'field_entry$' THEN
+        FOR normalizer IN
+            SELECT  n.func AS func,
+                    n.param_count AS param_count,
+                    m.params AS params
+              FROM  config.index_normalizer n
+                    JOIN config.metabib_field_index_norm_map m ON (m.norm = n.id)
+              WHERE field = NEW.field AND m.pos >= 0
+              ORDER BY m.pos LOOP
+                EXECUTE 'SELECT ' || normalizer.func || '(' ||
+                    quote_literal( value ) ||
+                    CASE
+                        WHEN normalizer.param_count > 0
+                            THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
+                            ELSE ''
+                        END ||
+                    ')' INTO value;
+
+        END LOOP;
+    END IF;
+
+    IF TG_TABLE_NAME::TEXT ~ 'browse_entry$' THEN
+        value :=  ARRAY_TO_STRING(
+            evergreen.regexp_split_to_array(value, E'\\W+'), ' '
+        );
+    END IF;
+
+    NEW.index_vector = to_tsvector((TG_ARGV[0])::regconfig, value);
+
+    RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+-- Evergreen DB patch 0677.schema.circ_limits.sql
+--
+-- FIXME: insert description of change, if needed
+--
+
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0677', :eg_version);
+
+-- FIXME: add/check SQL statements to perform the upgrade
+-- Limit groups for circ counting
+CREATE TABLE config.circ_limit_group (
+    id          SERIAL  PRIMARY KEY,
+    name        TEXT    UNIQUE NOT NULL,
+    description TEXT
+);
+
+-- Limit sets
+CREATE TABLE config.circ_limit_set (
+    id          SERIAL  PRIMARY KEY,
+    name        TEXT    UNIQUE NOT NULL,
+    owning_lib  INT     NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+    items_out   INT     NOT NULL, -- Total current active circulations must be less than this. 0 means skip counting (always pass)
+    depth       INT     NOT NULL DEFAULT 0, -- Depth count starts at
+    global      BOOL    NOT NULL DEFAULT FALSE, -- If enabled, include everything below depth, otherwise ancestors/descendants only
+    description TEXT
+);
+
+-- Linkage between matchpoints and limit sets
+CREATE TABLE config.circ_matrix_limit_set_map (
+    id          SERIAL  PRIMARY KEY,
+    matchpoint  INT     NOT NULL REFERENCES config.circ_matrix_matchpoint (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    limit_set   INT     NOT NULL REFERENCES config.circ_limit_set (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    fallthrough BOOL    NOT NULL DEFAULT FALSE, -- If true fallthrough will grab this rule as it goes along
+    active      BOOL    NOT NULL DEFAULT TRUE,
+    CONSTRAINT circ_limit_set_once_per_matchpoint UNIQUE (matchpoint, limit_set)
+);
+
+-- Linkage between limit sets and circ mods
+CREATE TABLE config.circ_limit_set_circ_mod_map (
+    id          SERIAL  PRIMARY KEY,
+    limit_set   INT     NOT NULL REFERENCES config.circ_limit_set (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    circ_mod    TEXT    NOT NULL REFERENCES config.circ_modifier (code) ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    CONSTRAINT cm_once_per_set UNIQUE (limit_set, circ_mod)
+);
+
+-- Linkage between limit sets and limit groups
+CREATE TABLE config.circ_limit_set_group_map (
+    id          SERIAL  PRIMARY KEY,
+    limit_set    INT     NOT NULL REFERENCES config.circ_limit_set (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    limit_group INT     NOT NULL REFERENCES config.circ_limit_group (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    check_only  BOOL    NOT NULL DEFAULT FALSE, -- If true, don't accumulate this limit_group for storing with the circulation
+    CONSTRAINT clg_once_per_set UNIQUE (limit_set, limit_group)
+);
+
+-- Linkage between limit groups and circulations
+CREATE TABLE action.circulation_limit_group_map (
+    circ        BIGINT      NOT NULL REFERENCES action.circulation (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    limit_group INT         NOT NULL REFERENCES config.circ_limit_group (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    PRIMARY KEY (circ, limit_group)
+);
+
+-- Function for populating the circ/limit group mappings
+CREATE OR REPLACE FUNCTION action.link_circ_limit_groups ( BIGINT, INT[] ) RETURNS VOID AS $func$
+    INSERT INTO action.circulation_limit_group_map(circ, limit_group) SELECT $1, id FROM config.circ_limit_group WHERE id IN (SELECT * FROM UNNEST($2));
+$func$ LANGUAGE SQL;
+
+DROP TYPE IF EXISTS action.circ_matrix_test_result CASCADE;
+CREATE TYPE action.circ_matrix_test_result AS ( success BOOL, fail_part TEXT, buildrows INT[], matchpoint INT, circulate BOOL, duration_rule INT, recurring_fine_rule INT, max_fine_rule INT, hard_due_date INT, renewals INT, grace_period INTERVAL, limit_groups INT[] );
+
+CREATE OR REPLACE FUNCTION action.item_user_circ_test( circ_ou INT, match_item BIGINT, match_user INT, renewal BOOL ) RETURNS SETOF action.circ_matrix_test_result AS $func$
+DECLARE
+    user_object             actor.usr%ROWTYPE;
+    standing_penalty        config.standing_penalty%ROWTYPE;
+    item_object             asset.copy%ROWTYPE;
+    item_status_object      config.copy_status%ROWTYPE;
+    item_location_object    asset.copy_location%ROWTYPE;
+    result                  action.circ_matrix_test_result;
+    circ_test               action.found_circ_matrix_matchpoint;
+    circ_matchpoint         config.circ_matrix_matchpoint%ROWTYPE;
+    circ_limit_set          config.circ_limit_set%ROWTYPE;
+    hold_ratio              action.hold_stats%ROWTYPE;
+    penalty_type            TEXT;
+    items_out               INT;
+    context_org_list        INT[];
+    done                    BOOL := FALSE;
+BEGIN
+    -- Assume success unless we hit a failure condition
+    result.success := TRUE;
+
+    -- Need user info to look up matchpoints
+    SELECT INTO user_object * FROM actor.usr WHERE id = match_user AND NOT deleted;
+
+    -- (Insta)Fail if we couldn't find the user
+    IF user_object.id IS NULL THEN
+        result.fail_part := 'no_user';
+        result.success := FALSE;
+        done := TRUE;
+        RETURN NEXT result;
+        RETURN;
+    END IF;
+
+    -- Need item info to look up matchpoints
+    SELECT INTO item_object * FROM asset.copy WHERE id = match_item AND NOT deleted;
+
+    -- (Insta)Fail if we couldn't find the item 
+    IF item_object.id IS NULL THEN
+        result.fail_part := 'no_item';
+        result.success := FALSE;
+        done := TRUE;
+        RETURN NEXT result;
+        RETURN;
+    END IF;
+
+    SELECT INTO circ_test * FROM action.find_circ_matrix_matchpoint(circ_ou, item_object, user_object, renewal);
+
+    circ_matchpoint             := circ_test.matchpoint;
+    result.matchpoint           := circ_matchpoint.id;
+    result.circulate            := circ_matchpoint.circulate;
+    result.duration_rule        := circ_matchpoint.duration_rule;
+    result.recurring_fine_rule  := circ_matchpoint.recurring_fine_rule;
+    result.max_fine_rule        := circ_matchpoint.max_fine_rule;
+    result.hard_due_date        := circ_matchpoint.hard_due_date;
+    result.renewals             := circ_matchpoint.renewals;
+    result.grace_period         := circ_matchpoint.grace_period;
+    result.buildrows            := circ_test.buildrows;
+
+    -- (Insta)Fail if we couldn't find a matchpoint
+    IF circ_test.success = false THEN
+        result.fail_part := 'no_matchpoint';
+        result.success := FALSE;
+        done := TRUE;
+        RETURN NEXT result;
+        RETURN;
+    END IF;
+
+    -- All failures before this point are non-recoverable
+    -- Below this point are possibly overridable failures
+
+    -- Fail if the user is barred
+    IF user_object.barred IS TRUE THEN
+        result.fail_part := 'actor.usr.barred';
+        result.success := FALSE;
+        done := TRUE;
+        RETURN NEXT result;
+    END IF;
+
+    -- Fail if the item can't circulate
+    IF item_object.circulate IS FALSE THEN
+        result.fail_part := 'asset.copy.circulate';
+        result.success := FALSE;
+        done := TRUE;
+        RETURN NEXT result;
+    END IF;
+
+    -- Fail if the item isn't in a circulateable status on a non-renewal
+    IF NOT renewal AND item_object.status NOT IN ( 0, 7, 8 ) THEN 
+        result.fail_part := 'asset.copy.status';
+        result.success := FALSE;
+        done := TRUE;
+        RETURN NEXT result;
+    -- Alternately, fail if the item isn't checked out on a renewal
+    ELSIF renewal AND item_object.status <> 1 THEN
+        result.fail_part := 'asset.copy.status';
+        result.success := FALSE;
+        done := TRUE;
+        RETURN NEXT result;
+    END IF;
+
+    -- Fail if the item can't circulate because of the shelving location
+    SELECT INTO item_location_object * FROM asset.copy_location WHERE id = item_object.location;
+    IF item_location_object.circulate IS FALSE THEN
+        result.fail_part := 'asset.copy_location.circulate';
+        result.success := FALSE;
+        done := TRUE;
+        RETURN NEXT result;
+    END IF;
+
+    -- Use Circ OU for penalties and such
+    SELECT INTO context_org_list ARRAY_AGG(id) FROM actor.org_unit_full_path( circ_ou );
+
+    IF renewal THEN
+        penalty_type = '%RENEW%';
+    ELSE
+        penalty_type = '%CIRC%';
+    END IF;
+
+    FOR standing_penalty IN
+        SELECT  DISTINCT csp.*
+          FROM  actor.usr_standing_penalty usp
+                JOIN config.standing_penalty csp ON (csp.id = usp.standing_penalty)
+          WHERE usr = match_user
+                AND usp.org_unit IN ( SELECT * FROM unnest(context_org_list) )
+                AND (usp.stop_date IS NULL or usp.stop_date > NOW())
+                AND csp.block_list LIKE penalty_type LOOP
+
+        result.fail_part := standing_penalty.name;
+        result.success := FALSE;
+        done := TRUE;
+        RETURN NEXT result;
+    END LOOP;
+
+    -- Fail if the test is set to hard non-circulating
+    IF circ_matchpoint.circulate IS FALSE THEN
+        result.fail_part := 'config.circ_matrix_test.circulate';
+        result.success := FALSE;
+        done := TRUE;
+        RETURN NEXT result;
+    END IF;
+
+    -- Fail if the total copy-hold ratio is too low
+    IF circ_matchpoint.total_copy_hold_ratio IS NOT NULL THEN
+        SELECT INTO hold_ratio * FROM action.copy_related_hold_stats(match_item);
+        IF hold_ratio.total_copy_ratio IS NOT NULL AND hold_ratio.total_copy_ratio < circ_matchpoint.total_copy_hold_ratio THEN
+            result.fail_part := 'config.circ_matrix_test.total_copy_hold_ratio';
+            result.success := FALSE;
+            done := TRUE;
+            RETURN NEXT result;
+        END IF;
+    END IF;
+
+    -- Fail if the available copy-hold ratio is too low
+    IF circ_matchpoint.available_copy_hold_ratio IS NOT NULL THEN
+        IF hold_ratio.hold_count IS NULL THEN
+            SELECT INTO hold_ratio * FROM action.copy_related_hold_stats(match_item);
+        END IF;
+        IF hold_ratio.available_copy_ratio IS NOT NULL AND hold_ratio.available_copy_ratio < circ_matchpoint.available_copy_hold_ratio THEN
+            result.fail_part := 'config.circ_matrix_test.available_copy_hold_ratio';
+            result.success := FALSE;
+            done := TRUE;
+            RETURN NEXT result;
+        END IF;
+    END IF;
+
+    -- Fail if the user has too many items out by defined limit sets
+    FOR circ_limit_set IN SELECT ccls.* FROM config.circ_limit_set ccls
+      JOIN config.circ_matrix_limit_set_map ccmlsm ON ccmlsm.limit_set = ccls.id
+      WHERE ccmlsm.active AND ( ccmlsm.matchpoint = circ_matchpoint.id OR
+        ( ccmlsm.matchpoint IN (SELECT * FROM unnest(result.buildrows)) AND ccmlsm.fallthrough )
+        ) LOOP
+            IF circ_limit_set.items_out > 0 AND NOT renewal THEN
+                SELECT INTO context_org_list ARRAY_AGG(aou.id)
+                  FROM actor.org_unit_full_path( circ_ou ) aou
+                    JOIN actor.org_unit_type aout ON aou.ou_type = aout.id
+                  WHERE aout.depth >= circ_limit_set.depth;
+                IF circ_limit_set.global THEN
+                    WITH RECURSIVE descendant_depth AS (
+                        SELECT  ou.id,
+                            ou.parent_ou
+                        FROM  actor.org_unit ou
+                        WHERE ou.id IN (SELECT * FROM unnest(context_org_list))
+                            UNION
+                        SELECT  ou.id,
+                            ou.parent_ou
+                        FROM  actor.org_unit ou
+                            JOIN descendant_depth ot ON (ot.id = ou.parent_ou)
+                    ) SELECT INTO context_org_list ARRAY_AGG(ou.id) FROM actor.org_unit ou JOIN descendant_depth USING (id);
+                END IF;
+                SELECT INTO items_out COUNT(DISTINCT circ.id)
+                  FROM action.circulation circ
+                    JOIN asset.copy copy ON (copy.id = circ.target_copy)
+                    LEFT JOIN action.circulation_limit_group_map aclgm ON (circ.id = aclgm.circ)
+                  WHERE circ.usr = match_user
+                    AND circ.circ_lib IN (SELECT * FROM unnest(context_org_list))
+                    AND circ.checkin_time IS NULL
+                    AND (circ.stop_fines IN ('MAXFINES','LONGOVERDUE') OR circ.stop_fines IS NULL)
+                    AND (copy.circ_modifier IN (SELECT circ_mod FROM config.circ_limit_set_circ_mod_map WHERE limit_set = circ_limit_set.id)
+                        OR aclgm.limit_group IN (SELECT limit_group FROM config.circ_limit_set_group_map WHERE limit_set = circ_limit_set.id)
+                    );
+                IF items_out >= circ_limit_set.items_out THEN
+                    result.fail_part := 'config.circ_matrix_circ_mod_test';
+                    result.success := FALSE;
+                    done := TRUE;
+                    RETURN NEXT result;
+                END IF;
+            END IF;
+            SELECT INTO result.limit_groups result.limit_groups || ARRAY_AGG(limit_group) FROM config.circ_limit_set_group_map WHERE limit_set = circ_limit_set.id AND NOT check_only;
+    END LOOP;
+
+    -- If we passed everything, return the successful matchpoint
+    IF NOT done THEN
+        RETURN NEXT result;
+    END IF;
+
+    RETURN;
+END;
+$func$ LANGUAGE plpgsql;
+
+-- We need to re-create these, as they got dropped with the type above.
+CREATE OR REPLACE FUNCTION action.item_user_circ_test( INT, BIGINT, INT ) RETURNS SETOF action.circ_matrix_test_result AS $func$
+    SELECT * FROM action.item_user_circ_test( $1, $2, $3, FALSE );
+$func$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION action.item_user_renew_test( INT, BIGINT, INT ) RETURNS SETOF action.circ_matrix_test_result AS $func$
+    SELECT * FROM action.item_user_circ_test( $1, $2, $3, TRUE );
+$func$ LANGUAGE SQL;
+
+-- Temp function for migrating circ mod limits.
+CREATE OR REPLACE FUNCTION evergreen.temp_migrate_circ_mod_limits() RETURNS VOID AS $func$
+DECLARE
+    circ_mod_group config.circ_matrix_circ_mod_test%ROWTYPE;
+    current_set INT;
+    circ_mod_count INT;
+BEGIN
+    FOR circ_mod_group IN SELECT * FROM config.circ_matrix_circ_mod_test LOOP
+        INSERT INTO config.circ_limit_set(name, owning_lib, items_out, depth, global, description)
+            SELECT org_unit || ' : Matchpoint ' || circ_mod_group.matchpoint || ' : Circ Mod Test ' || circ_mod_group.id, org_unit, circ_mod_group.items_out, 0, false, 'Migrated from Circ Mod Test System'
+                FROM config.circ_matrix_matchpoint WHERE id = circ_mod_group.matchpoint
+            RETURNING id INTO current_set;
+        INSERT INTO config.circ_matrix_limit_set_map(matchpoint, limit_set, fallthrough, active) VALUES (circ_mod_group.matchpoint, current_set, false, true);
+        INSERT INTO config.circ_limit_set_circ_mod_map(limit_set, circ_mod)
+            SELECT current_set, circ_mod FROM config.circ_matrix_circ_mod_test_map WHERE circ_mod_test = circ_mod_group.id;
+        SELECT INTO circ_mod_count count(id) FROM config.circ_limit_set_circ_mod_map WHERE limit_set = current_set;
+        RAISE NOTICE 'Created limit set with id % and % circ modifiers attached to matchpoint %', current_set, circ_mod_count, circ_mod_group.matchpoint;
+    END LOOP;
+END;
+$func$ LANGUAGE plpgsql;
+
+-- Run the temp function
+SELECT * FROM evergreen.temp_migrate_circ_mod_limits();
+
+-- Drop the temp function
+DROP FUNCTION evergreen.temp_migrate_circ_mod_limits();
+
+--Drop the old tables
+--Not sure we want to do this. Keeping them may help "something went wrong" correction.
+--DROP TABLE IF EXISTS config.circ_matrix_circ_mod_test_map, config.circ_matrix_circ_mod_test;
+
+
+-- Evergreen DB patch 0678.data.vandelay-default-merge-profiles.sql
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0678', :eg_version);
+
+INSERT INTO vandelay.merge_profile (owner, name, replace_spec) 
+    VALUES (1, 'Match-Only Merge', '901c');
+
+INSERT INTO vandelay.merge_profile (owner, name, preserve_spec) 
+    VALUES (1, 'Full Overlay', '901c');
+
+-- Evergreen DB patch 0681.schema.user-activity.sql
+--
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0681', :eg_version);
+
+-- SCHEMA --
+
+CREATE TYPE config.usr_activity_group AS ENUM ('authen','authz','circ','hold','search');
+
+CREATE TABLE config.usr_activity_type (
+    id          SERIAL                      PRIMARY KEY, 
+    ewho        TEXT,
+    ewhat       TEXT,
+    ehow        TEXT,
+    label       TEXT                        NOT NULL, -- i18n
+    egroup      config.usr_activity_group   NOT NULL,
+    enabled     BOOL                        NOT NULL DEFAULT TRUE,
+    transient   BOOL                        NOT NULL DEFAULT FALSE,
+    CONSTRAINT  one_of_wwh CHECK (COALESCE(ewho,ewhat,ehow) IS NOT NULL)
+);
+
+CREATE UNIQUE INDEX unique_wwh ON config.usr_activity_type 
+    (COALESCE(ewho,''), COALESCE (ewhat,''), COALESCE(ehow,''));
+
+CREATE TABLE actor.usr_activity (
+    id          BIGSERIAL   PRIMARY KEY,
+    usr         INT         REFERENCES actor.usr (id) ON DELETE SET NULL,
+    etype       INT         NOT NULL REFERENCES config.usr_activity_type (id),
+    event_time  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- remove transient activity entries on insert of new entries
+CREATE OR REPLACE FUNCTION actor.usr_activity_transient_trg () RETURNS TRIGGER AS $$
+BEGIN
+    DELETE FROM actor.usr_activity act USING config.usr_activity_type atype
+        WHERE atype.transient AND 
+            NEW.etype = atype.id AND
+            act.etype = atype.id AND
+            act.usr = NEW.usr;
+    RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER remove_transient_usr_activity
+    BEFORE INSERT ON actor.usr_activity
+    FOR EACH ROW EXECUTE PROCEDURE actor.usr_activity_transient_trg();
+
+-- given a set of activity criteria, find the most approprate activity type
+CREATE OR REPLACE FUNCTION actor.usr_activity_get_type (
+        ewho TEXT, 
+        ewhat TEXT, 
+        ehow TEXT
+    ) RETURNS SETOF config.usr_activity_type AS $$
+SELECT * FROM config.usr_activity_type 
+    WHERE 
+        enabled AND 
+        (ewho  IS NULL OR ewho  = $1) AND
+        (ewhat IS NULL OR ewhat = $2) AND
+        (ehow  IS NULL OR ehow  = $3) 
+    ORDER BY 
+        -- BOOL comparisons sort false to true
+        COALESCE(ewho, '')  != COALESCE($1, ''),
+        COALESCE(ewhat,'')  != COALESCE($2, ''),
+        COALESCE(ehow, '')  != COALESCE($3, '') 
+    LIMIT 1;
+$$ LANGUAGE SQL;
+
+-- given a set of activity criteria, finds the best
+-- activity type and inserts the activity entry
+CREATE OR REPLACE FUNCTION actor.insert_usr_activity (
+        usr INT,
+        ewho TEXT, 
+        ewhat TEXT, 
+        ehow TEXT
+    ) RETURNS SETOF actor.usr_activity AS $$
+DECLARE
+    new_row actor.usr_activity%ROWTYPE;
+BEGIN
+    SELECT id INTO new_row.etype FROM actor.usr_activity_get_type(ewho, ewhat, ehow);
+    IF FOUND THEN
+        new_row.usr := usr;
+        INSERT INTO actor.usr_activity (usr, etype) 
+            VALUES (usr, new_row.etype)
+            RETURNING * INTO new_row;
+        RETURN NEXT new_row;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+-- SEED DATA --
+
+INSERT INTO config.usr_activity_type (id, ewho, ewhat, ehow, egroup, label) VALUES
+
+     -- authen/authz actions
+     -- note: "opensrf" is the default ingress/ehow
+     (1,  NULL, 'login',  'opensrf',      'authen', oils_i18n_gettext(1 , 'Login via opensrf', 'cuat', 'label'))
+    ,(2,  NULL, 'login',  'srfsh',        'authen', oils_i18n_gettext(2 , 'Login via srfsh', 'cuat', 'label'))
+    ,(3,  NULL, 'login',  'gateway-v1',   'authen', oils_i18n_gettext(3 , 'Login via gateway-v1', 'cuat', 'label'))
+    ,(4,  NULL, 'login',  'translator-v1','authen', oils_i18n_gettext(4 , 'Login via translator-v1', 'cuat', 'label'))
+    ,(5,  NULL, 'login',  'xmlrpc',       'authen', oils_i18n_gettext(5 , 'Login via xmlrpc', 'cuat', 'label'))
+    ,(6,  NULL, 'login',  'remoteauth',   'authen', oils_i18n_gettext(6 , 'Login via remoteauth', 'cuat', 'label'))
+    ,(7,  NULL, 'login',  'sip2',         'authen', oils_i18n_gettext(7 , 'SIP2 Proxy Login', 'cuat', 'label'))
+    ,(8,  NULL, 'login',  'apache',       'authen', oils_i18n_gettext(8 , 'Login via Apache module', 'cuat', 'label'))
+
+    ,(9,  NULL, 'verify', 'opensrf',      'authz',  oils_i18n_gettext(9 , 'Verification via opensrf', 'cuat', 'label'))
+    ,(10, NULL, 'verify', 'srfsh',        'authz',  oils_i18n_gettext(10, 'Verification via srfsh', 'cuat', 'label'))
+    ,(11, NULL, 'verify', 'gateway-v1',   'authz',  oils_i18n_gettext(11, 'Verification via gateway-v1', 'cuat', 'label'))
+    ,(12, NULL, 'verify', 'translator-v1','authz',  oils_i18n_gettext(12, 'Verification via translator-v1', 'cuat', 'label'))
+    ,(13, NULL, 'verify', 'xmlrpc',       'authz',  oils_i18n_gettext(13, 'Verification via xmlrpc', 'cuat', 'label'))
+    ,(14, NULL, 'verify', 'remoteauth',   'authz',  oils_i18n_gettext(14, 'Verification via remoteauth', 'cuat', 'label'))
+    ,(15, NULL, 'verify', 'sip2',         'authz',  oils_i18n_gettext(15, 'SIP2 User Verification', 'cuat', 'label'))
+
+     -- authen/authz actions w/ known uses of "who"
+    ,(16, 'opac',        'login',  'gateway-v1',   'authen', oils_i18n_gettext(16, 'OPAC Login (jspac)', 'cuat', 'label'))
+    ,(17, 'opac',        'login',  'apache',       'authen', oils_i18n_gettext(17, 'OPAC Login (tpac)', 'cuat', 'label'))
+    ,(18, 'staffclient', 'login',  'gateway-v1',   'authen', oils_i18n_gettext(18, 'Staff Client Login', 'cuat', 'label'))
+    ,(19, 'selfcheck',   'login',  'translator-v1','authen', oils_i18n_gettext(19, 'Self-Check Proxy Login', 'cuat', 'label'))
+    ,(20, 'ums',         'login',  'xmlrpc',       'authen', oils_i18n_gettext(20, 'Unique Mgt Login', 'cuat', 'label'))
+    ,(21, 'authproxy',   'login',  'apache',       'authen', oils_i18n_gettext(21, 'Apache Auth Proxy Login', 'cuat', 'label'))
+    ,(22, 'libraryelf',  'login',  'xmlrpc',       'authz',  oils_i18n_gettext(22, 'LibraryElf Login', 'cuat', 'label'))
+
+    ,(23, 'selfcheck',   'verify', 'translator-v1','authz',  oils_i18n_gettext(23, 'Self-Check User Verification', 'cuat', 'label'))
+    ,(24, 'ezproxy',     'verify', 'remoteauth',   'authz',  oils_i18n_gettext(24, 'EZProxy Verification', 'cuat', 'label'))
+    -- ...
+    ;
+
+-- reserve the first 1000 slots
+SELECT SETVAL('config.usr_activity_type_id_seq'::TEXT, 1000);
+
+INSERT INTO config.org_unit_setting_type 
+    (name, label, description, grp, datatype) 
+    VALUES (
+        'circ.patron.usr_activity_retrieve.max',
+         oils_i18n_gettext(
+            'circ.patron.usr_activity_retrieve.max',
+            'Max user activity entries to retrieve (staff client)',
+            'coust', 
+            'label'
+        ),
+        oils_i18n_gettext(
+            'circ.patron.usr_activity_retrieve.max',
+            'Sets the maxinum number of recent user activity entries to retrieve for display in the staff client.  0 means show none, -1 means show all.  Default is 1.',
+            'coust', 
+            'description'
+        ),
+        'gui',
+        'integer'
+    );
+
+
+SELECT evergreen.upgrade_deps_block_check('0682', :eg_version);
+
+CREATE TABLE asset.copy_location_group (
+    id              SERIAL  PRIMARY KEY,
+    name            TEXT    NOT NULL, -- i18n
+    owner           INT     NOT NULL REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    pos             INT     NOT NULL DEFAULT 0,
+    top             BOOL    NOT NULL DEFAULT FALSE,
+    opac_visible    BOOL    NOT NULL DEFAULT TRUE,
+    CONSTRAINT lgroup_once_per_owner UNIQUE (owner,name)
+);
+
+CREATE TABLE asset.copy_location_group_map (
+    id       SERIAL PRIMARY KEY,
+    location    INT     NOT NULL REFERENCES asset.copy_location (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    lgroup      INT     NOT NULL REFERENCES asset.copy_location_group (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    CONSTRAINT  lgroup_once_per_group UNIQUE (lgroup,location)
+);
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0683', :eg_version);
+
+INSERT INTO action_trigger.event_params (event_def, param, value)
+    VALUES (5, 'check_email_notify', 1);
+INSERT INTO action_trigger.event_params (event_def, param, value)
+    VALUES (7, 'check_email_notify', 1);
+INSERT INTO action_trigger.event_params (event_def, param, value)
+    VALUES (9, 'check_email_notify', 1);
+INSERT INTO action_trigger.validator (module,description) VALUES
+    ('HoldNotifyCheck',
+    oils_i18n_gettext(
+        'HoldNotifyCheck',
+        'Check Hold notification flag(s)',
+        'atval',
+        'description'
+    ));
+UPDATE action_trigger.event_definition SET validator = 'HoldNotifyCheck' WHERE id = 9;
+
+-- NOT COVERED: Adding check_sms_notify to the proper trigger. It doesn't have a static id.
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0684', :eg_version);
+
+-- schema --
+
+-- Replace the constraints with more flexible ENUM's
+ALTER TABLE vandelay.queue DROP CONSTRAINT queue_queue_type_check;
+ALTER TABLE vandelay.bib_queue DROP CONSTRAINT bib_queue_queue_type_check;
+ALTER TABLE vandelay.authority_queue DROP CONSTRAINT authority_queue_queue_type_check;
+
+CREATE TYPE vandelay.bib_queue_queue_type AS ENUM ('bib', 'acq');
+CREATE TYPE vandelay.authority_queue_queue_type AS ENUM ('authority');
+
+-- dropped column is also implemented by the child tables
+ALTER TABLE vandelay.queue DROP COLUMN queue_type; 
+
+-- to recover after using the undo sql from below
+-- alter table vandelay.bib_queue  add column queue_type text default 'bib' not null;
+-- alter table vandelay.authority_queue  add column queue_type text default 'authority' not null;
+
+-- modify the child tables to use the ENUMs
+ALTER TABLE vandelay.bib_queue 
+    ALTER COLUMN queue_type DROP DEFAULT,
+    ALTER COLUMN queue_type TYPE vandelay.bib_queue_queue_type 
+        USING (queue_type::vandelay.bib_queue_queue_type),
+    ALTER COLUMN queue_type SET DEFAULT 'bib';
+
+ALTER TABLE vandelay.authority_queue 
+    ALTER COLUMN queue_type DROP DEFAULT,
+    ALTER COLUMN queue_type TYPE vandelay.authority_queue_queue_type 
+        USING (queue_type::vandelay.authority_queue_queue_type),
+    ALTER COLUMN queue_type SET DEFAULT 'authority';
+
+-- give lineitems a pointer to their vandelay queued_record
+
+ALTER TABLE acq.lineitem ADD COLUMN queued_record BIGINT
+    REFERENCES vandelay.queued_bib_record (id) 
+    ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
+
+ALTER TABLE acq.acq_lineitem_history ADD COLUMN queued_record BIGINT
+    REFERENCES vandelay.queued_bib_record (id) 
+    ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
+
+-- seed data --
+
+INSERT INTO permission.perm_list ( id, code, description ) 
+    VALUES ( 
+        521, 
+        'IMPORT_ACQ_LINEITEM_BIB_RECORD_UPLOAD', 
+        oils_i18n_gettext( 
+            521,
+            'Allows a user to create new bibs directly from an ACQ MARC file upload', 
+            'ppl', 
+            'description' 
+        )
+    );
+
+
+INSERT INTO vandelay.import_error ( code, description ) 
+    VALUES ( 
+        'import.record.perm_failure', 
+        oils_i18n_gettext(
+            'import.record.perm_failure', 
+            'Perm failure creating a record', 'vie', 'description') 
+    );
+
+
+
+
+-- Evergreen DB patch 0685.data.bluray_vr_format.sql
+--
+-- FIXME: insert description of change, if needed
+--
+
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0685', :eg_version);
+
+-- FIXME: add/check SQL statements to perform the upgrade
+DO $FUNC$
+DECLARE
+    same_marc BOOL;
+BEGIN
+    -- Check if it is already there
+    PERFORM * FROM config.marc21_physical_characteristic_value_map v
+        JOIN config.marc21_physical_characteristic_subfield_map s ON v.ptype_subfield = s.id
+        WHERE s.ptype_key = 'v' AND s.subfield = 'e' AND s.start_pos = '4' AND s.length = '1'
+            AND v.value = 's';
+
+    -- If it is, bail.
+    IF FOUND THEN
+        RETURN;
+    END IF;
+
+    -- Otherwise, insert it
+    INSERT INTO config.marc21_physical_characteristic_value_map (value,ptype_subfield,label)
+    SELECT 's',id,'Blu-ray'
+        FROM config.marc21_physical_characteristic_subfield_map
+        WHERE ptype_key = 'v' AND subfield = 'e' AND start_pos = '4' AND length = '1';
+
+    -- And reingest the blue-ray items so that things see the new value
+    SELECT INTO same_marc enabled FROM config.internal_flag WHERE name = 'ingest.reingest.force_on_same_marc';
+    UPDATE config.internal_flag SET enabled = true WHERE name = 'ingest.reingest.force_on_same_marc';
+    UPDATE biblio.record_entry SET marc=marc WHERE id IN (SELECT record
+        FROM
+            metabib.full_rec a JOIN metabib.full_rec b USING (record)
+        WHERE
+            a.tag = 'LDR' AND a.value LIKE '______g%'
+        AND b.tag = '007' AND b.value LIKE 'v___s%');
+    UPDATE config.internal_flag SET enabled = same_marc WHERE name = 'ingest.reingest.force_on_same_marc';
+END;
+$FUNC$;
+
+
+-- Evergreen DB patch 0686.schema.auditor_boost.sql
+--
+-- FIXME: insert description of change, if needed
+--
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0686', :eg_version);
+
+-- FIXME: add/check SQL statements to perform the upgrade
+-- These three functions are for capturing, getting, and clearing user and workstation information
+
+-- Set the User AND workstation in one call. Tis faster. And less calls.
+-- First argument is user, second is workstation
+CREATE OR REPLACE FUNCTION auditor.set_audit_info(INT, INT) RETURNS VOID AS $$
+    $_SHARED{"eg_audit_user"} = $_[0];
+    $_SHARED{"eg_audit_ws"} = $_[1];
+$$ LANGUAGE plperl;
+
+-- Get the User AND workstation in one call. Less calls, useful for joins ;)
+CREATE OR REPLACE FUNCTION auditor.get_audit_info() RETURNS TABLE (eg_user INT, eg_ws INT) AS $$
+    return [{eg_user => $_SHARED{"eg_audit_user"}, eg_ws => $_SHARED{"eg_audit_ws"}}];
+$$ LANGUAGE plperl;
+
+-- Clear the audit info, for whatever reason
+CREATE OR REPLACE FUNCTION auditor.clear_audit_info() RETURNS VOID AS $$
+    delete($_SHARED{"eg_audit_user"});
+    delete($_SHARED{"eg_audit_ws"});
+$$ LANGUAGE plperl;
+
+CREATE OR REPLACE FUNCTION auditor.create_auditor_history ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
+BEGIN
+    EXECUTE $$
+        CREATE TABLE auditor.$$ || sch || $$_$$ || tbl || $$_history (
+            audit_id	BIGINT				PRIMARY KEY,
+            audit_time	TIMESTAMP WITH TIME ZONE	NOT NULL,
+            audit_action	TEXT				NOT NULL,
+            audit_user  INT,
+            audit_ws    INT,
+            LIKE $$ || sch || $$.$$ || tbl || $$
+        );
+    $$;
+	RETURN TRUE;
+END;
+$creator$ LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION auditor.create_auditor_func    ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
+DECLARE
+    column_list TEXT[];
+BEGIN
+    SELECT INTO column_list array_agg(a.attname)
+        FROM pg_catalog.pg_attribute a
+            JOIN pg_catalog.pg_class c ON a.attrelid = c.oid
+            JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+        WHERE relkind = 'r' AND n.nspname = sch AND c.relname = tbl AND a.attnum > 0 AND NOT a.attisdropped;
+
+    EXECUTE $$
+        CREATE OR REPLACE FUNCTION auditor.audit_$$ || sch || $$_$$ || tbl || $$_func ()
+        RETURNS TRIGGER AS $func$
+        BEGIN
+            INSERT INTO auditor.$$ || sch || $$_$$ || tbl || $$_history ( audit_id, audit_time, audit_action, audit_user, audit_ws, $$
+            || array_to_string(column_list, ', ') || $$ )
+                SELECT  nextval('auditor.$$ || sch || $$_$$ || tbl || $$_pkey_seq'),
+                    now(),
+                    SUBSTR(TG_OP,1,1),
+                    eg_user,
+                    eg_ws,
+                    OLD.$$ || array_to_string(column_list, ', OLD.') || $$
+                FROM auditor.get_audit_info();
+            RETURN NULL;
+        END;
+        $func$ LANGUAGE 'plpgsql';
+    $$;
+    RETURN TRUE;
+END;
+$creator$ LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION auditor.create_auditor_lifecycle     ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
+DECLARE
+    column_list TEXT[];
+BEGIN
+    SELECT INTO column_list array_agg(a.attname)
+        FROM pg_catalog.pg_attribute a
+            JOIN pg_catalog.pg_class c ON a.attrelid = c.oid
+            JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+        WHERE relkind = 'r' AND n.nspname = sch AND c.relname = tbl AND a.attnum > 0 AND NOT a.attisdropped;
+
+    EXECUTE $$
+        CREATE VIEW auditor.$$ || sch || $$_$$ || tbl || $$_lifecycle AS
+            SELECT -1 AS audit_id,
+                   now() AS audit_time,
+                   '-' AS audit_action,
+                   -1 AS audit_user,
+                   -1 AS audit_ws,
+                   $$ || array_to_string(column_list, ', ') || $$
+              FROM $$ || sch || $$.$$ || tbl || $$
+                UNION ALL
+            SELECT audit_id, audit_time, audit_action, audit_user, audit_ws,
+            $$ || array_to_string(column_list, ', ') || $$
+              FROM auditor.$$ || sch || $$_$$ || tbl || $$_history;
+    $$;
+    RETURN TRUE;
+END;
+$creator$ LANGUAGE 'plpgsql';
+
+-- Corrects all column discrepencies between audit table and core table:
+-- Adds missing columns
+-- Removes leftover columns
+-- Updates types
+-- Also, ensures all core auditor columns exist.
+CREATE OR REPLACE FUNCTION auditor.fix_columns() RETURNS VOID AS $BODY$
+DECLARE
+    current_table TEXT = ''; -- Storage for post-loop main table name
+    current_audit_table TEXT = ''; -- Storage for post-loop audit table name
+    query TEXT = ''; -- Storage for built query
+    cr RECORD; -- column record object
+    alter_t BOOL = false; -- Has the alter table command been appended yet
+    auditor_cores TEXT[] = ARRAY[]::TEXT[]; -- Core auditor function list (filled inside of loop)
+    core_column TEXT; -- The current core column we are adding
+BEGIN
+    FOR cr IN
+        WITH audit_tables AS ( -- Basic grab of auditor tables. Anything in the auditor namespace, basically. With oids.
+            SELECT c.oid AS audit_oid, c.relname AS audit_table
+            FROM pg_catalog.pg_class c
+            JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+            WHERE relkind='r' AND nspname = 'auditor'
+        ),
+        table_set AS ( -- Union of auditor tables with their "main" tables. With oids.
+            SELECT a.audit_oid, a.audit_table, c.oid AS main_oid, n.nspname as main_namespace, c.relname as main_table
+            FROM pg_catalog.pg_class c
+            JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+            JOIN audit_tables a ON a.audit_table = n.nspname || '_' || c.relname || '_history'
+            WHERE relkind = 'r'
+        ),
+        column_lists AS ( -- All columns associated with the auditor or main table, grouped by the main table's oid.
+            SELECT DISTINCT ON (main_oid, attname) t.main_oid, a.attname
+            FROM table_set t
+            JOIN pg_catalog.pg_attribute a ON a.attrelid IN (t.main_oid, t.audit_oid)
+            WHERE attnum > 0 AND NOT attisdropped
+        ),
+        column_defs AS ( -- The motherload, every audit table and main table plus column names and defs.
+            SELECT audit_table,
+                   main_namespace,
+                   main_table,
+                   a.attname AS main_column, -- These two will be null for columns that have since been deleted, or for auditor core columns
+                   pg_catalog.format_type(a.atttypid, a.atttypmod) AS main_column_def,
+                   b.attname AS audit_column, -- These two will be null for columns that have since been added
+                   pg_catalog.format_type(b.atttypid, b.atttypmod) AS audit_column_def
+            FROM table_set t
+            JOIN column_lists c USING (main_oid)
+            LEFT JOIN pg_catalog.pg_attribute a ON a.attname = c.attname AND a.attrelid = t.main_oid AND a.attnum > 0 AND NOT a.attisdropped
+            LEFT JOIN pg_catalog.pg_attribute b ON b.attname = c.attname AND b.attrelid = t.audit_oid AND b.attnum > 0 AND NOT b.attisdropped
+        )
+        -- Nice sorted output from the above
+        SELECT * FROM column_defs WHERE main_column_def IS DISTINCT FROM audit_column_def ORDER BY main_namespace, main_table, main_column, audit_column
+    LOOP
+        IF current_table <> (cr.main_namespace || '.' || cr.main_table) THEN -- New table?
+            FOR core_column IN SELECT DISTINCT unnest(auditor_cores) LOOP -- Update missing core auditor columns
+                IF NOT alter_t THEN -- Add ALTER TABLE if we haven't already
+                    query:=query || $$ALTER TABLE auditor.$$ || current_audit_table;
+                    alter_t:=TRUE;
+                ELSE
+                    query:=query || $$,$$;
+                END IF;
+                -- Bit of a sneaky bit here. Create audit_id as a bigserial so it gets automatic values and doesn't complain about nulls when becoming a PRIMARY KEY.
+                query:=query || $$ ADD COLUMN $$ || CASE WHEN core_column = 'audit_id bigint' THEN $$audit_id bigserial PRIMARY KEY$$ ELSE core_column END;
+            END LOOP;
+            IF alter_t THEN -- Open alter table = needs a semicolon
+                query:=query || $$; $$;
+                alter_t:=FALSE;
+                IF 'audit_id bigint' = ANY(auditor_cores) THEN -- We added a primary key...
+                    -- Fun! Drop the default on audit_id, drop the auto-created sequence, create a new one, and set the current value
+                    -- For added fun, we have to execute in chunks due to the parser checking setval/currval arguments at parse time.
+                    EXECUTE query;
+                    EXECUTE $$ALTER TABLE auditor.$$ || current_audit_table || $$ ALTER COLUMN audit_id DROP DEFAULT; $$ ||
+                        $$CREATE SEQUENCE auditor.$$ || current_audit_table || $$_pkey_seq;$$;
+                    EXECUTE $$SELECT setval('auditor.$$ || current_audit_table || $$_pkey_seq', currval('auditor.$$ || current_audit_table || $$_audit_id_seq')); $$ ||
+                        $$DROP SEQUENCE auditor.$$ || current_audit_table || $$_audit_id_seq;$$;
+                    query:='';
+                END IF;
+            END IF;
+            -- New table means we reset the list of needed auditor core columns
+            auditor_cores = ARRAY['audit_id bigint', 'audit_time timestamp with time zone', 'audit_action text', 'audit_user integer', 'audit_ws integer'];
+            -- And store some values for use later, because we can't rely on cr in all places.
+            current_table:=cr.main_namespace || '.' || cr.main_table;
+            current_audit_table:=cr.audit_table;
+        END IF;
+        IF cr.main_column IS NULL AND cr.audit_column LIKE 'audit_%' THEN -- Core auditor column?
+            -- Remove core from list of cores
+            SELECT INTO auditor_cores array_agg(core) FROM unnest(auditor_cores) AS core WHERE core != (cr.audit_column || ' ' || cr.audit_column_def);
+        ELSIF cr.main_column IS NULL THEN -- Main column doesn't exist, and it isn't an auditor column. Needs dropping from the auditor.
+            IF NOT alter_t THEN
+                query:=query || $$ALTER TABLE auditor.$$ || current_audit_table;
+                alter_t:=TRUE;
+            ELSE
+                query:=query || $$,$$;
+            END IF;
+            query:=query || $$ DROP COLUMN $$ || cr.audit_column;
+        ELSIF cr.audit_column IS NULL AND cr.main_column IS NOT NULL THEN -- New column auditor doesn't have. Add it.
+            IF NOT alter_t THEN
+                query:=query || $$ALTER TABLE auditor.$$ || current_audit_table;
+                alter_t:=TRUE;
+            ELSE
+                query:=query || $$,$$;
+            END IF;
+            query:=query || $$ ADD COLUMN $$ || cr.main_column || $$ $$ || cr.main_column_def;
+        ELSIF cr.main_column IS NOT NULL AND cr.audit_column IS NOT NULL THEN -- Both sides have this column, but types differ. Fix that.
+            IF NOT alter_t THEN
+                query:=query || $$ALTER TABLE auditor.$$ || current_audit_table;
+                alter_t:=TRUE;
+            ELSE
+                query:=query || $$,$$;
+            END IF;
+            query:=query || $$ ALTER COLUMN $$ || cr.audit_column || $$ TYPE $$ || cr.main_column_def;
+        END IF;
+    END LOOP;
+    FOR core_column IN SELECT DISTINCT unnest(auditor_cores) LOOP -- Repeat this outside of the loop to catch the last table
+        IF NOT alter_t THEN
+            query:=query || $$ALTER TABLE auditor.$$ || current_audit_table;
+            alter_t:=TRUE;
+        ELSE
+            query:=query || $$,$$;
+        END IF;
+        -- Bit of a sneaky bit here. Create audit_id as a bigserial so it gets automatic values and doesn't complain about nulls when becoming a PRIMARY KEY.
+        query:=query || $$ ADD COLUMN $$ || CASE WHEN core_column = 'audit_id bigint' THEN $$audit_id bigserial PRIMARY KEY$$ ELSE core_column END;
+    END LOOP;
+    IF alter_t THEN -- Open alter table = needs a semicolon
+        query:=query || $$;$$;
+        IF 'audit_id bigint' = ANY(auditor_cores) THEN -- We added a primary key...
+            -- Fun! Drop the default on audit_id, drop the auto-created sequence, create a new one, and set the current value
+            -- For added fun, we have to execute in chunks due to the parser checking setval/currval arguments at parse time.
+            EXECUTE query;
+            EXECUTE $$ALTER TABLE auditor.$$ || current_audit_table || $$ ALTER COLUMN audit_id DROP DEFAULT; $$ ||
+                $$CREATE SEQUENCE auditor.$$ || current_audit_table || $$_pkey_seq;$$;
+            EXECUTE $$SELECT setval('auditor.$$ || current_audit_table || $$_pkey_seq', currval('auditor.$$ || current_audit_table || $$_audit_id_seq')); $$ ||
+                $$DROP SEQUENCE auditor.$$ || current_audit_table || $$_audit_id_seq;$$;
+            query:='';
+        END IF;
+    END IF;
+    EXECUTE query;
+END;
+$BODY$ LANGUAGE plpgsql;
+
+-- Update it all routine
+CREATE OR REPLACE FUNCTION auditor.update_auditors() RETURNS boolean AS $BODY$
+DECLARE
+    auditor_name TEXT;
+    table_schema TEXT;
+    table_name TEXT;
+BEGIN
+    -- Drop Lifecycle view(s) before potential column changes
+    FOR auditor_name IN
+        SELECT c.relname
+            FROM pg_catalog.pg_class c
+                JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+            WHERE relkind = 'v' AND n.nspname = 'auditor' LOOP
+        EXECUTE $$ DROP VIEW auditor.$$ || auditor_name || $$;$$;
+    END LOOP;
+    -- Fix all column discrepencies
+    PERFORM auditor.fix_columns();
+    -- Re-create trigger functions and lifecycle views
+    FOR table_schema, table_name IN
+        WITH audit_tables AS (
+            SELECT c.oid AS audit_oid, c.relname AS audit_table
+            FROM pg_catalog.pg_class c
+            JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+            WHERE relkind='r' AND nspname = 'auditor'
+        ),
+        table_set AS (
+            SELECT a.audit_oid, a.audit_table, c.oid AS main_oid, n.nspname as main_namespace, c.relname as main_table
+            FROM pg_catalog.pg_class c
+            JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+            JOIN audit_tables a ON a.audit_table = n.nspname || '_' || c.relname || '_history'
+            WHERE relkind = 'r'
+        )
+        SELECT main_namespace, main_table FROM table_set LOOP
+        
+        PERFORM auditor.create_auditor_func(table_schema, table_name);
+        PERFORM auditor.create_auditor_lifecycle(table_schema, table_name);
+    END LOOP;
+    RETURN TRUE;
+END;
+$BODY$ LANGUAGE plpgsql;
+
+-- Go ahead and update them all now
+SELECT auditor.update_auditors();
+
+
+-- Evergreen DB patch 0687.schema.enhance_reingest.sql
+--
+-- FIXME: insert description of change, if needed
+--
+
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0687', :eg_version);
+
+-- FIXME: add/check SQL statements to perform the upgrade
+-- New function def
+CREATE OR REPLACE FUNCTION metabib.reingest_metabib_field_entries( bib_id BIGINT, skip_facet BOOL DEFAULT FALSE, skip_browse BOOL DEFAULT FALSE, skip_search BOOL DEFAULT FALSE ) RETURNS VOID AS $func$
+DECLARE
+    fclass          RECORD;
+    ind_data        metabib.field_entry_template%ROWTYPE;
+    mbe_row         metabib.browse_entry%ROWTYPE;
+    mbe_id          BIGINT;
+BEGIN
+    PERFORM * FROM config.internal_flag WHERE name = 'ingest.assume_inserts_only' AND enabled;
+    IF NOT FOUND THEN
+        IF NOT skip_search THEN
+            FOR fclass IN SELECT * FROM config.metabib_class LOOP
+                -- RAISE NOTICE 'Emptying out %', fclass.name;
+                EXECUTE $$DELETE FROM metabib.$$ || fclass.name || $$_field_entry WHERE source = $$ || bib_id;
+            END LOOP;
+        END IF;
+        IF NOT skip_facet THEN
+            DELETE FROM metabib.facet_entry WHERE source = bib_id;
+        END IF;
+        IF NOT skip_browse THEN
+            DELETE FROM metabib.browse_entry_def_map WHERE source = bib_id;
+        END IF;
+    END IF;
+
+    FOR ind_data IN SELECT * FROM biblio.extract_metabib_field_entry( bib_id ) LOOP
+        IF ind_data.field < 0 THEN
+            ind_data.field = -1 * ind_data.field;
+        END IF;
+
+        IF ind_data.facet_field AND NOT skip_facet THEN
+            INSERT INTO metabib.facet_entry (field, source, value)
+                VALUES (ind_data.field, ind_data.source, ind_data.value);
+        END IF;
+
+        IF ind_data.browse_field AND NOT skip_browse THEN
+            -- A caveat about this SELECT: this should take care of replacing
+            -- old mbe rows when data changes, but not if normalization (by
+            -- which I mean specifically the output of
+            -- evergreen.oils_tsearch2()) changes.  It may or may not be
+            -- expensive to add a comparison of index_vector to index_vector
+            -- to the WHERE clause below.
+            SELECT INTO mbe_row * FROM metabib.browse_entry WHERE value = ind_data.value;
+            IF FOUND THEN
+                mbe_id := mbe_row.id;
+            ELSE
+                INSERT INTO metabib.browse_entry (value) VALUES
+                    (metabib.browse_normalize(ind_data.value, ind_data.field));
+                mbe_id := CURRVAL('metabib.browse_entry_id_seq'::REGCLASS);
+            END IF;
+
+            INSERT INTO metabib.browse_entry_def_map (entry, def, source)
+                VALUES (mbe_id, ind_data.field, ind_data.source);
+        END IF;
+
+        IF ind_data.search_field AND NOT skip_search THEN
+            EXECUTE $$
+                INSERT INTO metabib.$$ || ind_data.field_class || $$_field_entry (field, source, value)
+                    VALUES ($$ ||
+                        quote_literal(ind_data.field) || $$, $$ ||
+                        quote_literal(ind_data.source) || $$, $$ ||
+                        quote_literal(ind_data.value) ||
+                    $$);$$;
+        END IF;
+
+    END LOOP;
+
+    RETURN;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+-- Delete old one
+DROP FUNCTION IF EXISTS metabib.reingest_metabib_field_entries(BIGINT);
+
+-- Evergreen DB patch 0688.data.circ_history_export_csv.sql
+--
+-- FIXME: insert description of change, if needed
+--
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0688', :eg_version);
+
+INSERT INTO action_trigger.hook (key, core_type, description, passive)
+VALUES (
+    'circ.format.history.csv',
+    'circ',
+    oils_i18n_gettext(
+        'circ.format.history.csv',
+        'Produce CSV of circulation history',
+        'ath',
+        'description'
+    ),
+    FALSE
+);
+
+INSERT INTO action_trigger.event_definition (
+    active, owner, name, hook, reactor, validator, group_field, template) 
+VALUES (
+    TRUE, 1, 'Circ History CSV', 'circ.format.history.csv', 'ProcessTemplate', 'NOOP_True', 'usr',
+$$
+Title,Author,Call Number,Barcode,Format
+[%-
+FOR circ IN target;
+    bibxml = helpers.unapi_bre(circ.target_copy.call_number.record, {flesh => '{mra}'});
+    title = "";
+    FOR part IN bibxml.findnodes('//*[@tag="245"]/*[@code="a" or @code="b"]');
+        title = title _ part.textContent;
+    END;
+    author = bibxml.findnodes('//*[@tag="100"]/*[@code="a"]').textContent;
+    item_type = bibxml.findnodes('//*[local-name()="attributes"]/*[local-name()="field"][@name="item_type"]').getAttribute('coded-value') %]
+
+    [%- helpers.csv_datum(title) -%],
+    [%- helpers.csv_datum(author) -%],
+    [%- helpers.csv_datum(circ.target_copy.call_number.label) -%],
+    [%- helpers.csv_datum(circ.target_copy.barcode) -%],
+    [%- helpers.csv_datum(item_type) %]
+[%- END -%]
+$$
+);
+
+INSERT INTO action_trigger.environment (event_def, path)
+    VALUES (
+        currval('action_trigger.event_definition_id_seq'),
+        'target_copy.call_number'
+    );
+
+
+-- Evergreen DB patch 0689.data.record_print_format_update.sql
+--
+-- Updates print and email templates for bib record actions
+--
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0689', :eg_version);
+
+UPDATE action_trigger.event_definition SET template = $$
+<div>
+    <style> li { padding: 8px; margin 5px; }</style>
+    <ol>
+    [% FOR cbreb IN target %]
+    [% FOR item IN cbreb.items;
+        bre_id = item.target_biblio_record_entry;
+
+        bibxml = helpers.unapi_bre(bre_id, {flesh => '{mra}'});
+        FOR part IN bibxml.findnodes('//*[@tag="245"]/*[@code="a" or @code="b"]');
+            title = title _ part.textContent;
+        END;
+
+        author = bibxml.findnodes('//*[@tag="100"]/*[@code="a"]').textContent;
+        item_type = bibxml.findnodes('//*[local-name()="attributes"]/*[local-name()="field"][@name="item_type"]').getAttribute('coded-value');
+        publisher = bibxml.findnodes('//*[@tag="260"]/*[@code="b"]').textContent;
+        pubdate = bibxml.findnodes('//*[@tag="260"]/*[@code="c"]').textContent;
+        isbn = bibxml.findnodes('//*[@tag="020"]/*[@code="a"]').textContent;
+        issn = bibxml.findnodes('//*[@tag="022"]/*[@code="a"]').textContent;
+        upc = bibxml.findnodes('//*[@tag="024"]/*[@code="a"]').textContent;
+        %]
+
+        <li>
+            Bib ID# [% bre_id %]<br/>
+            [% IF isbn %]ISBN: [% isbn %]<br/>[% END %]
+            [% IF issn %]ISSN: [% issn %]<br/>[% END %]
+            [% IF upc  %]UPC:  [% upc %]<br/>[% END %]
+            Title: [% title %]<br />
+            Author: [% author %]<br />
+            Publication Info: [% publisher %] [% pubdate %]<br/>
+            Item Type: [% item_type %]
+        </li>
+    [% END %]
+    [% END %]
+    </ol>
+</div>
+$$ 
+WHERE hook = 'biblio.format.record_entry.print' AND id < 100; -- sample data
+
+
+UPDATE action_trigger.event_definition SET delay = '00:00:00', template = $$
+[%- SET user = target.0.owner -%]
+To: [%- params.recipient_email || user.email %]
+From: [%- params.sender_email || default_sender %]
+Subject: Bibliographic Records
+
+[% FOR cbreb IN target %]
+[% FOR item IN cbreb.items;
+    bre_id = item.target_biblio_record_entry;
+
+    bibxml = helpers.unapi_bre(bre_id, {flesh => '{mra}'});
+    FOR part IN bibxml.findnodes('//*[@tag="245"]/*[@code="a" or @code="b"]');
+        title = title _ part.textContent;
+    END;
+
+    author = bibxml.findnodes('//*[@tag="100"]/*[@code="a"]').textContent;
+    item_type = bibxml.findnodes('//*[local-name()="attributes"]/*[local-name()="field"][@name="item_type"]').getAttribute('coded-value');
+    publisher = bibxml.findnodes('//*[@tag="260"]/*[@code="b"]').textContent;
+    pubdate = bibxml.findnodes('//*[@tag="260"]/*[@code="c"]').textContent;
+    isbn = bibxml.findnodes('//*[@tag="020"]/*[@code="a"]').textContent;
+    issn = bibxml.findnodes('//*[@tag="022"]/*[@code="a"]').textContent;
+    upc = bibxml.findnodes('//*[@tag="024"]/*[@code="a"]').textContent;
+%]
+
+[% loop.count %]/[% loop.size %].  Bib ID# [% bre_id %] 
+[% IF isbn %]ISBN: [% isbn _ "\n" %][% END -%]
+[% IF issn %]ISSN: [% issn _ "\n" %][% END -%]
+[% IF upc  %]UPC:  [% upc _ "\n" %] [% END -%]
+Title: [% title %]
+Author: [% author %]
+Publication Info: [% publisher %] [% pubdate %]
+Item Type: [% item_type %]
+
+[% END %]
+[% END %]
+$$ 
+WHERE hook = 'biblio.format.record_entry.email' AND id < 100; -- sample data
+
+-- remove a swath of unused environment entries
+
+DELETE FROM action_trigger.environment env 
+    USING action_trigger.event_definition def 
+    WHERE env.event_def = def.id AND 
+        env.path != 'items' AND 
+        def.hook = 'biblio.format.record_entry.print' AND 
+        def.id < 100; -- sample data
+
+DELETE FROM action_trigger.environment env 
+    USING action_trigger.event_definition def 
+    WHERE env.event_def = def.id AND 
+        env.path != 'items' AND 
+        env.path != 'owner' AND 
+        def.hook = 'biblio.format.record_entry.email' AND 
+        def.id < 100; -- sample data
+
+-- Evergreen DB patch 0690.schema.unapi_limit_rank.sql
+--
+-- Rewrite the in-database unapi functions to include per-object limits and
+-- offsets, such as a maximum number of copies and call numbers for given
+-- bib record via the HSTORE syntax (for example, 'acn => 5, acp => 10' would
+-- limit to a maximum of 5 call numbers for the bib, with up to 10 copies per
+-- call number).
+--
+-- Add some notion of "preferred library" that will provide copy counts
+-- and optionally affect the sorting of returned copies.
+--
+-- Sort copies by availability, preferring the most available copies.
+--
+-- Return located URIs.
+--
+--
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0690', :eg_version);
+
+-- The simplest way to apply all of these changes is just to replace the unapi
+-- schema entirely -- the following is a copy of 990.schema.unapi.sql with
+-- the initial COMMIT in place in case the upgrade_deps_block_check fails;
+-- if it does, then the attempt to create the unapi schema in the following
+-- transaction will also fail. Not graceful, but safe!
+DROP SCHEMA IF EXISTS unapi CASCADE;
+
+CREATE SCHEMA unapi;
+
+CREATE OR REPLACE FUNCTION evergreen.org_top()
+RETURNS SETOF actor.org_unit AS $$
+    SELECT * FROM actor.org_unit WHERE parent_ou IS NULL LIMIT 1;
+$$ LANGUAGE SQL STABLE
+ROWS 1;
+
+CREATE OR REPLACE FUNCTION evergreen.array_remove_item_by_value(inp ANYARRAY, el ANYELEMENT)
+RETURNS anyarray AS $$
+    SELECT ARRAY_ACCUM(x.e) FROM UNNEST( $1 ) x(e) WHERE x.e <> $2;
+$$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION evergreen.rank_ou(lib INT, search_lib INT, pref_lib INT DEFAULT NULL)
+RETURNS INTEGER AS $$
+    WITH search_libs AS (
+        SELECT id, distance FROM actor.org_unit_descendants_distance($2)
+    )
+    SELECT COALESCE(
+        (SELECT -10000 FROM actor.org_unit
+         WHERE $1 = $3 AND id = $3 AND $2 IN (
+                SELECT id FROM actor.org_unit WHERE parent_ou IS NULL
+             )
+        ),
+        (SELECT distance FROM search_libs WHERE id = $1),
+        10000
+    );
+$$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION evergreen.rank_cp_status(status INT)
+RETURNS INTEGER AS $$
+    WITH totally_available AS (
+        SELECT id, 0 AS avail_rank
+        FROM config.copy_status
+        WHERE opac_visible IS TRUE
+            AND copy_active IS TRUE
+            AND id != 1 -- "Checked out"
+    ), almost_available AS (
+        SELECT id, 10 AS avail_rank
+        FROM config.copy_status
+        WHERE holdable IS TRUE
+            AND opac_visible IS TRUE
+            AND copy_active IS FALSE
+            OR id = 1 -- "Checked out"
+    )
+    SELECT COALESCE(
+        (SELECT avail_rank FROM totally_available WHERE $1 IN (id)),
+        (SELECT avail_rank FROM almost_available WHERE $1 IN (id)),
+        100
+    );
+$$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION evergreen.ranked_volumes(
+    bibid BIGINT, 
+    ouid INT,
+    depth INT DEFAULT NULL,
+    slimit HSTORE DEFAULT NULL,
+    soffset HSTORE DEFAULT NULL,
+    pref_lib INT DEFAULT NULL
+) RETURNS TABLE (id BIGINT, name TEXT, label_sortkey TEXT, rank BIGINT) AS $$
+    SELECT ua.id, ua.name, ua.label_sortkey, MIN(ua.rank) AS rank FROM (
+        SELECT acn.id, aou.name, acn.label_sortkey,
+            evergreen.rank_ou(aou.id, $2, $6), evergreen.rank_cp_status(acp.status),
+            RANK() OVER w
+        FROM asset.call_number acn
+            JOIN asset.copy acp ON (acn.id = acp.call_number)
+            JOIN actor.org_unit_descendants( $2, COALESCE(
+                $3, (
+                    SELECT depth
+                    FROM actor.org_unit_type aout
+                        INNER JOIN actor.org_unit ou ON ou_type = aout.id
+                    WHERE ou.id = $2
+                ), $6)
+            ) AS aou ON (acp.circ_lib = aou.id)
+        WHERE acn.record = $1
+            AND acn.deleted IS FALSE
+            AND acp.deleted IS FALSE
+        GROUP BY acn.id, acp.status, aou.name, acn.label_sortkey, aou.id
+        WINDOW w AS (
+            ORDER BY evergreen.rank_ou(aou.id, $2, $6), evergreen.rank_cp_status(acp.status)
+        )
+    ) AS ua
+    GROUP BY ua.id, ua.name, ua.label_sortkey
+    ORDER BY rank, ua.name, ua.label_sortkey
+    LIMIT ($4 -> 'acn')::INT
+    OFFSET ($5 -> 'acn')::INT;
+$$
+LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION evergreen.located_uris (
+    bibid BIGINT, 
+    ouid INT,
+    pref_lib INT DEFAULT NULL
+) RETURNS TABLE (id BIGINT, name TEXT, label_sortkey TEXT, rank INT) AS $$
+    SELECT acn.id, aou.name, acn.label_sortkey, evergreen.rank_ou(aou.id, $2, $3) AS pref_ou
+      FROM asset.call_number acn
+           INNER JOIN asset.uri_call_number_map auricnm ON acn.id = auricnm.call_number 
+           INNER JOIN asset.uri auri ON auri.id = auricnm.uri
+           INNER JOIN actor.org_unit_ancestors( COALESCE($3, $2) ) aou ON (acn.owning_lib = aou.id)
+      WHERE acn.record = $1
+          AND acn.deleted IS FALSE
+          AND auri.active IS TRUE
+    UNION
+    SELECT acn.id, aou.name, acn.label_sortkey, evergreen.rank_ou(aou.id, $2, $3) AS pref_ou
+      FROM asset.call_number acn
+           INNER JOIN asset.uri_call_number_map auricnm ON acn.id = auricnm.call_number 
+           INNER JOIN asset.uri auri ON auri.id = auricnm.uri
+           INNER JOIN actor.org_unit_ancestors( $2 ) aou ON (acn.owning_lib = aou.id)
+      WHERE acn.record = $1
+          AND acn.deleted IS FALSE
+          AND auri.active IS TRUE;
+$$
+LANGUAGE SQL STABLE;
+
+CREATE TABLE unapi.bre_output_layout (
+    name                TEXT    PRIMARY KEY,
+    transform           TEXT    REFERENCES config.xml_transform (name) ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    mime_type           TEXT    NOT NULL,
+    feed_top            TEXT    NOT NULL,
+    holdings_element    TEXT,
+    title_element       TEXT,
+    description_element TEXT,
+    creator_element     TEXT,
+    update_ts_element   TEXT
+);
+
+INSERT INTO unapi.bre_output_layout
+    (name,           transform, mime_type,              holdings_element, feed_top,         title_element, description_element, creator_element, update_ts_element)
+        VALUES
+    ('holdings_xml', NULL,      'application/xml',      NULL,             'hxml',           NULL,          NULL,                NULL,            NULL),
+    ('marcxml',      'marcxml', 'application/marc+xml', 'record',         'collection',     NULL,          NULL,                NULL,            NULL),
+    ('mods32',       'mods32',  'application/mods+xml', 'mods',           'modsCollection', NULL,          NULL,                NULL,            NULL)
+;
+
+-- Dummy functions, so we can create the real ones out of order
+CREATE OR REPLACE FUNCTION unapi.aou    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.acnp   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.acns   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.acn    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.ssub   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.sdist  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.sstr   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.sitem  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.sunit  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.sisum  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.sbsum  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.sssum  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.siss   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.auri   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.acp    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.acpn   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.acl    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.ccs    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.ascecm ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.bre (
+    obj_id BIGINT,
+    format TEXT,
+    ename TEXT,
+    includes TEXT[],
+    org TEXT,
+    depth INT DEFAULT NULL,
+    slimit HSTORE DEFAULT NULL,
+    soffset HSTORE DEFAULT NULL,
+    include_xmlns BOOL DEFAULT TRUE,
+    pref_lib INT DEFAULT NULL
+)
+RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.bmp    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.mra    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.circ   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT DEFAULT '-', depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.holdings_xml (
+    bid BIGINT,
+    ouid INT,
+    org TEXT,
+    depth INT DEFAULT NULL,
+    includes TEXT[] DEFAULT NULL::TEXT[],
+    slimit HSTORE DEFAULT NULL,
+    soffset HSTORE DEFAULT NULL,
+    include_xmlns BOOL DEFAULT TRUE,
+    pref_lib INT DEFAULT NULL
+)
+RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.biblio_record_entry_feed ( id_list BIGINT[], format TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE, title TEXT DEFAULT NULL, description TEXT DEFAULT NULL, creator TEXT DEFAULT NULL, update_ts TEXT DEFAULT NULL, unapi_url TEXT DEFAULT NULL, header_xml XML DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.memoize (classname TEXT, obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+DECLARE
+    key     TEXT;
+    output  XML;
+BEGIN
+    key :=
+        'id'        || COALESCE(obj_id::TEXT,'') ||
+        'format'    || COALESCE(format::TEXT,'') ||
+        'ename'     || COALESCE(ename::TEXT,'') ||
+        'includes'  || COALESCE(includes::TEXT,'{}'::TEXT[]::TEXT) ||
+        'org'       || COALESCE(org::TEXT,'') ||
+        'depth'     || COALESCE(depth::TEXT,'') ||
+        'slimit'    || COALESCE(slimit::TEXT,'') ||
+        'soffset'   || COALESCE(soffset::TEXT,'') ||
+        'include_xmlns'   || COALESCE(include_xmlns::TEXT,'');
+    -- RAISE NOTICE 'memoize key: %', key;
+
+    key := MD5(key);
+    -- RAISE NOTICE 'memoize hash: %', key;
+
+    -- XXX cache logic ... memcached? table?
+
+    EXECUTE $$SELECT unapi.$$ || classname || $$( $1, $2, $3, $4, $5, $6, $7, $8, $9);$$ INTO output USING obj_id, format, ename, includes, org, depth, slimit, soffset, include_xmlns;
+    RETURN output;
+END;
+$F$ LANGUAGE PLPGSQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.biblio_record_entry_feed ( id_list BIGINT[], format TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE, title TEXT DEFAULT NULL, description TEXT DEFAULT NULL, creator TEXT DEFAULT NULL, update_ts TEXT DEFAULT NULL, unapi_url TEXT DEFAULT NULL, header_xml XML DEFAULT NULL ) RETURNS XML AS $F$
+DECLARE
+    layout          unapi.bre_output_layout%ROWTYPE;
+    transform       config.xml_transform%ROWTYPE;
+    item_format     TEXT;
+    tmp_xml         TEXT;
+    xmlns_uri       TEXT := 'http://open-ils.org/spec/feed-xml/v1';
+    ouid            INT;
+    element_list    TEXT[];
+BEGIN
+
+    IF org = '-' OR org IS NULL THEN
+        SELECT shortname INTO org FROM evergreen.org_top();
+    END IF;
+
+    SELECT id INTO ouid FROM actor.org_unit WHERE shortname = org;
+    SELECT * INTO layout FROM unapi.bre_output_layout WHERE name = format;
+
+    IF layout.name IS NULL THEN
+        RETURN NULL::XML;
+    END IF;
+
+    SELECT * INTO transform FROM config.xml_transform WHERE name = layout.transform;
+    xmlns_uri := COALESCE(transform.namespace_uri,xmlns_uri);
+
+    -- Gather the bib xml
+    SELECT XMLAGG( unapi.bre(i, format, '', includes, org, depth, slimit, soffset, include_xmlns)) INTO tmp_xml FROM UNNEST( id_list ) i;
+
+    IF layout.title_element IS NOT NULL THEN
+        EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.title_element ||', XMLATTRIBUTES( $1 AS xmlns), $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, title;
+    END IF;
+
+    IF layout.description_element IS NOT NULL THEN
+        EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.description_element ||', XMLATTRIBUTES( $1 AS xmlns), $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, description;
+    END IF;
+
+    IF layout.creator_element IS NOT NULL THEN
+        EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.creator_element ||', XMLATTRIBUTES( $1 AS xmlns), $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, creator;
+    END IF;
+
+    IF layout.update_ts_element IS NOT NULL THEN
+        EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.update_ts_element ||', XMLATTRIBUTES( $1 AS xmlns), $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, update_ts;
+    END IF;
+
+    IF unapi_url IS NOT NULL THEN
+        EXECUTE $$SELECT XMLCONCAT( XMLELEMENT( name link, XMLATTRIBUTES( 'http://www.w3.org/1999/xhtml' AS xmlns, 'unapi-server' AS rel, $1 AS href, 'unapi' AS title)), $2)$$ INTO tmp_xml USING unapi_url, tmp_xml::XML;
+    END IF;
+
+    IF header_xml IS NOT NULL THEN tmp_xml := XMLCONCAT(header_xml,tmp_xml::XML); END IF;
+
+    element_list := regexp_split_to_array(layout.feed_top,E'\\.');
+    FOR i IN REVERSE ARRAY_UPPER(element_list, 1) .. 1 LOOP
+        EXECUTE 'SELECT XMLELEMENT( name '|| quote_ident(element_list[i]) ||', XMLATTRIBUTES( $1 AS xmlns), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML;
+    END LOOP;
+
+    RETURN tmp_xml::XML;
+END;
+$F$ LANGUAGE PLPGSQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.bre (
+    obj_id BIGINT,
+    format TEXT,
+    ename TEXT,
+    includes TEXT[],
+    org TEXT,
+    depth INT DEFAULT NULL,
+    slimit HSTORE DEFAULT NULL,
+    soffset HSTORE DEFAULT NULL,
+    include_xmlns BOOL DEFAULT TRUE,
+    pref_lib INT DEFAULT NULL
+)
+RETURNS XML AS $F$
+DECLARE
+    me      biblio.record_entry%ROWTYPE;
+    layout  unapi.bre_output_layout%ROWTYPE;
+    xfrm    config.xml_transform%ROWTYPE;
+    ouid    INT;
+    tmp_xml TEXT;
+    top_el  TEXT;
+    output  XML;
+    hxml    XML;
+    axml    XML;
+BEGIN
+
+    IF org = '-' OR org IS NULL THEN
+        SELECT shortname INTO org FROM evergreen.org_top();
+    END IF;
+
+    SELECT id INTO ouid FROM actor.org_unit WHERE shortname = org;
+
+    IF ouid IS NULL THEN
+        RETURN NULL::XML;
+    END IF;
+
+    IF format = 'holdings_xml' THEN -- the special case
+        output := unapi.holdings_xml( obj_id, ouid, org, depth, includes, slimit, soffset, include_xmlns);
+        RETURN output;
+    END IF;
+
+    SELECT * INTO layout FROM unapi.bre_output_layout WHERE name = format;
+
+    IF layout.name IS NULL THEN
+        RETURN NULL::XML;
+    END IF;
+
+    SELECT * INTO xfrm FROM config.xml_transform WHERE name = layout.transform;
+
+    SELECT * INTO me FROM biblio.record_entry WHERE id = obj_id;
+
+    -- grab SVF if we need them
+    IF ('mra' = ANY (includes)) THEN 
+        axml := unapi.mra(obj_id,NULL,NULL,NULL,NULL);
+    ELSE
+        axml := NULL::XML;
+    END IF;
+
+    -- grab holdings if we need them
+    IF ('holdings_xml' = ANY (includes)) THEN 
+        hxml := unapi.holdings_xml(obj_id, ouid, org, depth, evergreen.array_remove_item_by_value(includes,'holdings_xml'), slimit, soffset, include_xmlns, pref_lib);
+    ELSE
+        hxml := NULL::XML;
+    END IF;
+
+
+    -- generate our item node
+
+
+    IF format = 'marcxml' THEN
+        tmp_xml := me.marc;
+        IF tmp_xml !~ E'<marc:' THEN -- If we're not using the prefixed namespace in this record, then remove all declarations of it
+           tmp_xml := REGEXP_REPLACE(tmp_xml, ' xmlns:marc="http://www.loc.gov/MARC21/slim"', '', 'g');
+        END IF; 
+    ELSE
+        tmp_xml := oils_xslt_process(me.marc, xfrm.xslt)::XML;
+    END IF;
+
+    top_el := REGEXP_REPLACE(tmp_xml, E'^.*?<((?:\\S+:)?' || layout.holdings_element || ').*$', E'\\1');
+
+    IF axml IS NOT NULL THEN 
+        tmp_xml := REGEXP_REPLACE(tmp_xml, '</' || top_el || '>(.*?)$', axml || '</' || top_el || E'>\\1');
+    END IF;
+
+    IF hxml IS NOT NULL THEN -- XXX how do we configure the holdings position?
+        tmp_xml := REGEXP_REPLACE(tmp_xml, '</' || top_el || '>(.*?)$', hxml || '</' || top_el || E'>\\1');
+    END IF;
+
+    IF ('bre.unapi' = ANY (includes)) THEN 
+        output := REGEXP_REPLACE(
+            tmp_xml,
+            '</' || top_el || '>(.*?)',
+            XMLELEMENT(
+                name abbr,
+                XMLATTRIBUTES(
+                    'http://www.w3.org/1999/xhtml' AS xmlns,
+                    'unapi-id' AS class,
+                    'tag:open-ils.org:U2@bre/' || obj_id || '/' || org AS title
+                )
+            )::TEXT || '</' || top_el || E'>\\1'
+        );
+    ELSE
+        output := tmp_xml;
+    END IF;
+
+    output := REGEXP_REPLACE(output::TEXT,E'>\\s+<','><','gs')::XML;
+    RETURN output;
+END;
+$F$ LANGUAGE PLPGSQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.holdings_xml (
+    bid BIGINT,
+    ouid INT,
+    org TEXT,
+    depth INT DEFAULT NULL,
+    includes TEXT[] DEFAULT NULL::TEXT[],
+    slimit HSTORE DEFAULT NULL,
+    soffset HSTORE DEFAULT NULL,
+    include_xmlns BOOL DEFAULT TRUE,
+    pref_lib INT DEFAULT NULL
+)
+RETURNS XML AS $F$
+     SELECT  XMLELEMENT(
+                 name holdings,
+                 XMLATTRIBUTES(
+                    CASE WHEN $8 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
+                    CASE WHEN ('bre' = ANY ($5)) THEN 'tag:open-ils.org:U2@bre/' || $1 || '/' || $3 ELSE NULL END AS id
+                 ),
+                 XMLELEMENT(
+                     name counts,
+                     (SELECT  XMLAGG(XMLELEMENT::XML) FROM (
+                         SELECT  XMLELEMENT(
+                                     name count,
+                                     XMLATTRIBUTES('public' as type, depth, org_unit, coalesce(transcendant,0) as transcendant, available, visible as count, unshadow)
+                                 )::text
+                           FROM  asset.opac_ou_record_copy_count($2,  $1)
+                                     UNION
+                         SELECT  XMLELEMENT(
+                                     name count,
+                                     XMLATTRIBUTES('staff' as type, depth, org_unit, coalesce(transcendant,0) as transcendant, available, visible as count, unshadow)
+                                 )::text
+                           FROM  asset.staff_ou_record_copy_count($2, $1)
+                                     UNION
+                         SELECT  XMLELEMENT(
+                                     name count,
+                                     XMLATTRIBUTES('pref_lib' as type, depth, org_unit, coalesce(transcendant,0) as transcendant, available, visible as count, unshadow)
+                                 )::text
+                           FROM  asset.opac_ou_record_copy_count($9,  $1)
+                                     ORDER BY 1
+                     )x)
+                 ),
+                 CASE 
+                     WHEN ('bmp' = ANY ($5)) THEN
+                        XMLELEMENT(
+                            name monograph_parts,
+                            (SELECT XMLAGG(bmp) FROM (
+                                SELECT  unapi.bmp( id, 'xml', 'monograph_part', evergreen.array_remove_item_by_value( evergreen.array_remove_item_by_value($5,'bre'), 'holdings_xml'), $3, $4, $6, $7, FALSE)
+                                  FROM  biblio.monograph_part
+                                  WHERE record = $1
+                            )x)
+                        )
+                     ELSE NULL
+                 END,
+                 XMLELEMENT(
+                     name volumes,
+                     (SELECT XMLAGG(acn ORDER BY rank, name, label_sortkey) FROM (
+                        -- Physical copies
+                        SELECT  unapi.acn(y.id,'xml','volume',evergreen.array_remove_item_by_value( evergreen.array_remove_item_by_value($5,'holdings_xml'),'bre'), $3, $4, $6, $7, FALSE), y.rank, name, label_sortkey
+                        FROM evergreen.ranked_volumes($1, $2, $4, $6, $7, $9) AS y
+                        UNION ALL
+                        -- Located URIs
+                        SELECT unapi.acn(uris.id,'xml','volume',evergreen.array_remove_item_by_value( evergreen.array_remove_item_by_value($5,'holdings_xml'),'bre'), $3, $4, $6, $7, FALSE), 0, name, label_sortkey
+                        FROM evergreen.located_uris($1, $2, $9) AS uris
+                     )x)
+                 ),
+                 CASE WHEN ('ssub' = ANY ($5)) THEN 
+                     XMLELEMENT(
+                         name subscriptions,
+                         (SELECT XMLAGG(ssub) FROM (
+                            SELECT  unapi.ssub(id,'xml','subscription','{}'::TEXT[], $3, $4, $6, $7, FALSE)
+                              FROM  serial.subscription
+                              WHERE record_entry = $1
+                        )x)
+                     )
+                 ELSE NULL END,
+                 CASE WHEN ('acp' = ANY ($5)) THEN 
+                     XMLELEMENT(
+                         name foreign_copies,
+                         (SELECT XMLAGG(acp) FROM (
+                            SELECT  unapi.acp(p.target_copy,'xml','copy',evergreen.array_remove_item_by_value($5,'acp'), $3, $4, $6, $7, FALSE)
+                              FROM  biblio.peer_bib_copy_map p
+                                    JOIN asset.copy c ON (p.target_copy = c.id)
+                              WHERE NOT c.deleted AND p.peer_record = $1
+                            LIMIT ($6 -> 'acp')::INT
+                            OFFSET ($7 -> 'acp')::INT
+                        )x)
+                     )
+                 ELSE NULL END
+             );
+$F$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.ssub ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+        SELECT  XMLELEMENT(
+                    name subscription,
+                    XMLATTRIBUTES(
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
+                        'tag:open-ils.org:U2@ssub/' || id AS id,
+                        'tag:open-ils.org:U2@aou/' || owning_lib AS owning_lib,
+                        start_date AS start, end_date AS end, expected_date_offset
+                    ),
+                    CASE 
+                        WHEN ('sdist' = ANY ($4)) THEN
+                            XMLELEMENT( name distributions,
+                                (SELECT XMLAGG(sdist) FROM (
+                                    SELECT  unapi.sdist( id, 'xml', 'distribution', evergreen.array_remove_item_by_value($4,'ssub'), $5, $6, $7, $8, FALSE)
+                                      FROM  serial.distribution
+                                      WHERE subscription = ssub.id
+                                )x)
+                            )
+                        ELSE NULL
+                    END
+                )
+          FROM  serial.subscription ssub
+          WHERE id = $1
+          GROUP BY id, start_date, end_date, expected_date_offset, owning_lib;
+$F$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.sdist ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+        SELECT  XMLELEMENT(
+                    name distribution,
+                    XMLATTRIBUTES(
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
+                        'tag:open-ils.org:U2@sdist/' || id AS id,
+            			'tag:open-ils.org:U2@acn/' || receive_call_number AS receive_call_number,
+			            'tag:open-ils.org:U2@acn/' || bind_call_number AS bind_call_number,
+                        unit_label_prefix, label, unit_label_suffix, summary_method
+                    ),
+                    unapi.aou( holding_lib, $2, 'holding_lib', evergreen.array_remove_item_by_value($4,'sdist'), $5, $6, $7, $8),
+                    CASE WHEN subscription IS NOT NULL AND ('ssub' = ANY ($4)) THEN unapi.ssub( subscription, 'xml', 'subscription', evergreen.array_remove_item_by_value($4,'sdist'), $5, $6, $7, $8, FALSE) ELSE NULL END,
+                    CASE 
+                        WHEN ('sstr' = ANY ($4)) THEN
+                            XMLELEMENT( name streams,
+                                (SELECT XMLAGG(sstr) FROM (
+                                    SELECT  unapi.sstr( id, 'xml', 'stream', evergreen.array_remove_item_by_value($4,'sdist'), $5, $6, $7, $8, FALSE)
+                                      FROM  serial.stream
+                                      WHERE distribution = sdist.id
+                                )x)
+                            )
+                        ELSE NULL
+                    END,
+                    XMLELEMENT( name summaries,
+                        CASE 
+                            WHEN ('sbsum' = ANY ($4)) THEN
+                                (SELECT XMLAGG(sbsum) FROM (
+                                    SELECT  unapi.sbsum( id, 'xml', 'serial_summary', evergreen.array_remove_item_by_value($4,'sdist'), $5, $6, $7, $8, FALSE)
+                                      FROM  serial.basic_summary
+                                      WHERE distribution = sdist.id
+                                )x)
+                            ELSE NULL
+                        END,
+                        CASE 
+                            WHEN ('sisum' = ANY ($4)) THEN
+                                (SELECT XMLAGG(sisum) FROM (
+                                    SELECT  unapi.sisum( id, 'xml', 'serial_summary', evergreen.array_remove_item_by_value($4,'sdist'), $5, $6, $7, $8, FALSE)
+                                      FROM  serial.index_summary
+                                      WHERE distribution = sdist.id
+                                )x)
+                            ELSE NULL
+                        END,
+                        CASE 
+                            WHEN ('sssum' = ANY ($4)) THEN
+                                (SELECT XMLAGG(sssum) FROM (
+                                    SELECT  unapi.sssum( id, 'xml', 'serial_summary', evergreen.array_remove_item_by_value($4,'sdist'), $5, $6, $7, $8, FALSE)
+                                      FROM  serial.supplement_summary
+                                      WHERE distribution = sdist.id
+                                )x)
+                            ELSE NULL
+                        END
+                    )
+                )
+          FROM  serial.distribution sdist
+          WHERE id = $1
+          GROUP BY id, label, unit_label_prefix, unit_label_suffix, holding_lib, summary_method, subscription, receive_call_number, bind_call_number;
+$F$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.sstr ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+    SELECT  XMLELEMENT(
+                name stream,
+                XMLATTRIBUTES(
+                    CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
+                    'tag:open-ils.org:U2@sstr/' || id AS id,
+                    routing_label
+                ),
+                CASE WHEN distribution IS NOT NULL AND ('sdist' = ANY ($4)) THEN unapi.sssum( distribution, 'xml', 'distribtion', evergreen.array_remove_item_by_value($4,'sstr'), $5, $6, $7, $8, FALSE) ELSE NULL END,
+                CASE 
+                    WHEN ('sitem' = ANY ($4)) THEN
+                        XMLELEMENT( name items,
+                            (SELECT XMLAGG(sitem) FROM (
+                                SELECT  unapi.sitem( id, 'xml', 'serial_item', evergreen.array_remove_item_by_value($4,'sstr'), $5, $6, $7, $8, FALSE)
+                                  FROM  serial.item
+                                  WHERE stream = sstr.id
+                            )x)
+                        )
+                    ELSE NULL
+                END
+            )
+      FROM  serial.stream sstr
+      WHERE id = $1
+      GROUP BY id, routing_label, distribution;
+$F$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.siss ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+    SELECT  XMLELEMENT(
+                name issuance,
+                XMLATTRIBUTES(
+                    CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
+                    'tag:open-ils.org:U2@siss/' || id AS id,
+                    create_date, edit_date, label, date_published,
+                    holding_code, holding_type, holding_link_id
+                ),
+                CASE WHEN subscription IS NOT NULL AND ('ssub' = ANY ($4)) THEN unapi.ssub( subscription, 'xml', 'subscription', evergreen.array_remove_item_by_value($4,'siss'), $5, $6, $7, $8, FALSE) ELSE NULL END,
+                CASE 
+                    WHEN ('sitem' = ANY ($4)) THEN
+                        XMLELEMENT( name items,
+                            (SELECT XMLAGG(sitem) FROM (
+                                SELECT  unapi.sitem( id, 'xml', 'serial_item', evergreen.array_remove_item_by_value($4,'siss'), $5, $6, $7, $8, FALSE)
+                                  FROM  serial.item
+                                  WHERE issuance = sstr.id
+                            )x)
+                        )
+                    ELSE NULL
+                END
+            )
+      FROM  serial.issuance sstr
+      WHERE id = $1
+      GROUP BY id, create_date, edit_date, label, date_published, holding_code, holding_type, holding_link_id, subscription;
+$F$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.sitem ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+        SELECT  XMLELEMENT(
+                    name serial_item,
+                    XMLATTRIBUTES(
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
+                        'tag:open-ils.org:U2@sitem/' || id AS id,
+                        'tag:open-ils.org:U2@siss/' || issuance AS issuance,
+                        date_expected, date_received
+                    ),
+                    CASE WHEN issuance IS NOT NULL AND ('siss' = ANY ($4)) THEN unapi.siss( issuance, $2, 'issuance', evergreen.array_remove_item_by_value($4,'sitem'), $5, $6, $7, $8, FALSE) ELSE NULL END,
+                    CASE WHEN stream IS NOT NULL AND ('sstr' = ANY ($4)) THEN unapi.sstr( stream, $2, 'stream', evergreen.array_remove_item_by_value($4,'sitem'), $5, $6, $7, $8, FALSE) ELSE NULL END,
+                    CASE WHEN unit IS NOT NULL AND ('sunit' = ANY ($4)) THEN unapi.sunit( unit, $2, 'serial_unit', evergreen.array_remove_item_by_value($4,'sitem'), $5, $6, $7, $8, FALSE) ELSE NULL END,
+                    CASE WHEN uri IS NOT NULL AND ('auri' = ANY ($4)) THEN unapi.auri( uri, $2, 'uri', evergreen.array_remove_item_by_value($4,'sitem'), $5, $6, $7, $8, FALSE) ELSE NULL END
+--                    XMLELEMENT( name notes,
+--                        CASE 
+--                            WHEN ('acpn' = ANY ($4)) THEN
+--                                (SELECT XMLAGG(acpn) FROM (
+--                                    SELECT  unapi.acpn( id, 'xml', 'copy_note', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8)
+--                                      FROM  asset.copy_note
+--                                      WHERE owning_copy = cp.id AND pub
+--                                )x)
+--                            ELSE NULL
+--                        END
+--                    )
+                )
+          FROM  serial.item sitem
+          WHERE id = $1;
+$F$ LANGUAGE SQL STABLE;
+
+
+CREATE OR REPLACE FUNCTION unapi.sssum ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+    SELECT  XMLELEMENT(
+                name serial_summary,
+                XMLATTRIBUTES(
+                    CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
+                    'tag:open-ils.org:U2@sbsum/' || id AS id,
+                    'sssum' AS type, generated_coverage, textual_holdings, show_generated
+                ),
+                CASE WHEN ('sdist' = ANY ($4)) THEN unapi.sdist( distribution, 'xml', 'distribtion', evergreen.array_remove_item_by_value($4,'ssum'), $5, $6, $7, $8, FALSE) ELSE NULL END
+            )
+      FROM  serial.supplement_summary ssum
+      WHERE id = $1
+      GROUP BY id, generated_coverage, textual_holdings, distribution, show_generated;
+$F$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.sbsum ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+    SELECT  XMLELEMENT(
+                name serial_summary,
+                XMLATTRIBUTES(
+                    CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
+                    'tag:open-ils.org:U2@sbsum/' || id AS id,
+                    'sbsum' AS type, generated_coverage, textual_holdings, show_generated
+                ),
+                CASE WHEN ('sdist' = ANY ($4)) THEN unapi.sdist( distribution, 'xml', 'distribtion', evergreen.array_remove_item_by_value($4,'ssum'), $5, $6, $7, $8, FALSE) ELSE NULL END
+            )
+      FROM  serial.basic_summary ssum
+      WHERE id = $1
+      GROUP BY id, generated_coverage, textual_holdings, distribution, show_generated;
+$F$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.sisum ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+    SELECT  XMLELEMENT(
+                name serial_summary,
+                XMLATTRIBUTES(
+                    CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
+                    'tag:open-ils.org:U2@sbsum/' || id AS id,
+                    'sisum' AS type, generated_coverage, textual_holdings, show_generated
+                ),
+                CASE WHEN ('sdist' = ANY ($4)) THEN unapi.sdist( distribution, 'xml', 'distribtion', evergreen.array_remove_item_by_value($4,'ssum'), $5, $6, $7, $8, FALSE) ELSE NULL END
+            )
+      FROM  serial.index_summary ssum
+      WHERE id = $1
+      GROUP BY id, generated_coverage, textual_holdings, distribution, show_generated;
+$F$ LANGUAGE SQL STABLE;
+
+
+CREATE OR REPLACE FUNCTION unapi.aou ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+DECLARE
+    output XML;
+BEGIN
+    IF ename = 'circlib' THEN
+        SELECT  XMLELEMENT(
+                    name circlib,
+                    XMLATTRIBUTES(
+                        'http://open-ils.org/spec/actors/v1' AS xmlns,
+                        id AS ident
+                    ),
+                    name
+                ) INTO output
+          FROM  actor.org_unit aou
+          WHERE id = obj_id;
+    ELSE
+        EXECUTE $$SELECT  XMLELEMENT(
+                    name $$ || ename || $$,
+                    XMLATTRIBUTES(
+                        'http://open-ils.org/spec/actors/v1' AS xmlns,
+                        'tag:open-ils.org:U2@aou/' || id AS id,
+                        shortname, name, opac_visible
+                    )
+                )
+          FROM  actor.org_unit aou
+         WHERE id = $1 $$ INTO output USING obj_id;
+    END IF;
+
+    RETURN output;
+
+END;
+$F$ LANGUAGE PLPGSQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.acl ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+    SELECT  XMLELEMENT(
+                name location,
+                XMLATTRIBUTES(
+                    CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
+                    id AS ident,
+                    holdable,
+                    opac_visible,
+                    label_prefix AS prefix,
+                    label_suffix AS suffix
+                ),
+                name
+            )
+      FROM  asset.copy_location
+      WHERE id = $1;
+$F$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.ccs ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+    SELECT  XMLELEMENT(
+                name status,
+                XMLATTRIBUTES(
+                    CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
+                    id AS ident,
+                    holdable,
+                    opac_visible
+                ),
+                name
+            )
+      FROM  config.copy_status
+      WHERE id = $1;
+$F$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.acpn ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+        SELECT  XMLELEMENT(
+                    name copy_note,
+                    XMLATTRIBUTES(
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
+                        create_date AS date,
+                        title
+                    ),
+                    value
+                )
+          FROM  asset.copy_note
+          WHERE id = $1;
+$F$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.ascecm ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+        SELECT  XMLELEMENT(
+                    name statcat,
+                    XMLATTRIBUTES(
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
+                        sc.name,
+                        sc.opac_visible
+                    ),
+                    asce.value
+                )
+          FROM  asset.stat_cat_entry asce
+                JOIN asset.stat_cat sc ON (sc.id = asce.stat_cat)
+          WHERE asce.id = $1;
+$F$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.bmp ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+        SELECT  XMLELEMENT(
+                    name monograph_part,
+                    XMLATTRIBUTES(
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
+                        'tag:open-ils.org:U2@bmp/' || id AS id,
+                        id AS ident,
+                        label,
+                        label_sortkey,
+                        'tag:open-ils.org:U2@bre/' || record AS record
+                    ),
+                    CASE 
+                        WHEN ('acp' = ANY ($4)) THEN
+                            XMLELEMENT( name copies,
+                                (SELECT XMLAGG(acp) FROM (
+                                    SELECT  unapi.acp( cp.id, 'xml', 'copy', evergreen.array_remove_item_by_value($4,'bmp'), $5, $6, $7, $8, FALSE)
+                                      FROM  asset.copy cp
+                                            JOIN asset.copy_part_map cpm ON (cpm.target_copy = cp.id)
+                                      WHERE cpm.part = $1
+                                          AND cp.deleted IS FALSE
+                                      ORDER BY COALESCE(cp.copy_number,0), cp.barcode
+                                      LIMIT ($7 -> 'acp')::INT
+                                      OFFSET ($8 -> 'acp')::INT
+
+                                )x)
+                            )
+                        ELSE NULL
+                    END,
+                    CASE WHEN ('bre' = ANY ($4)) THEN unapi.bre( record, 'marcxml', 'record', evergreen.array_remove_item_by_value($4,'bmp'), $5, $6, $7, $8, FALSE) ELSE NULL END
+                )
+          FROM  biblio.monograph_part
+          WHERE id = $1
+          GROUP BY id, label, label_sortkey, record;
+$F$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.acp ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+        SELECT  XMLELEMENT(
+                    name copy,
+                    XMLATTRIBUTES(
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
+                        'tag:open-ils.org:U2@acp/' || id AS id, id AS copy_id,
+                        create_date, edit_date, copy_number, circulate, deposit,
+                        ref, holdable, deleted, deposit_amount, price, barcode,
+                        circ_modifier, circ_as_type, opac_visible, age_protect
+                    ),
+                    unapi.ccs( status, $2, 'status', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE),
+                    unapi.acl( location, $2, 'location', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE),
+                    unapi.aou( circ_lib, $2, 'circ_lib', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8),
+                    unapi.aou( circ_lib, $2, 'circlib', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8),
+                    CASE WHEN ('acn' = ANY ($4)) THEN unapi.acn( call_number, $2, 'call_number', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE) ELSE NULL END,
+                    CASE 
+                        WHEN ('acpn' = ANY ($4)) THEN
+                            XMLELEMENT( name copy_notes,
+                                (SELECT XMLAGG(acpn) FROM (
+                                    SELECT  unapi.acpn( id, 'xml', 'copy_note', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE)
+                                      FROM  asset.copy_note
+                                      WHERE owning_copy = cp.id AND pub
+                                )x)
+                            )
+                        ELSE NULL
+                    END,
+                    CASE 
+                        WHEN ('ascecm' = ANY ($4)) THEN
+                            XMLELEMENT( name statcats,
+                                (SELECT XMLAGG(ascecm) FROM (
+                                    SELECT  unapi.ascecm( stat_cat_entry, 'xml', 'statcat', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE)
+                                      FROM  asset.stat_cat_entry_copy_map
+                                      WHERE owning_copy = cp.id
+                                )x)
+                            )
+                        ELSE NULL
+                    END,
+                    CASE
+                        WHEN ('bre' = ANY ($4)) THEN
+                            XMLELEMENT( name foreign_records,
+                                (SELECT XMLAGG(bre) FROM (
+                                    SELECT  unapi.bre(peer_record,'marcxml','record','{}'::TEXT[], $5, $6, $7, $8, FALSE)
+                                      FROM  biblio.peer_bib_copy_map
+                                      WHERE target_copy = cp.id
+                                )x)
+
+                            )
+                        ELSE NULL
+                    END,
+                    CASE 
+                        WHEN ('bmp' = ANY ($4)) THEN
+                            XMLELEMENT( name monograph_parts,
+                                (SELECT XMLAGG(bmp) FROM (
+                                    SELECT  unapi.bmp( part, 'xml', 'monograph_part', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE)
+                                      FROM  asset.copy_part_map
+                                      WHERE target_copy = cp.id
+                                )x)
+                            )
+                        ELSE NULL
+                    END,
+                    CASE 
+                        WHEN ('circ' = ANY ($4)) THEN
+                            XMLELEMENT( name current_circulation,
+                                (SELECT XMLAGG(circ) FROM (
+                                    SELECT  unapi.circ( id, 'xml', 'circ', evergreen.array_remove_item_by_value($4,'circ'), $5, $6, $7, $8, FALSE)
+                                      FROM  action.circulation
+                                      WHERE target_copy = cp.id
+                                            AND checkin_time IS NULL
+                                )x)
+                            )
+                        ELSE NULL
+                    END
+                )
+          FROM  asset.copy cp
+          WHERE id = $1
+              AND cp.deleted IS FALSE
+          GROUP BY id, status, location, circ_lib, call_number, create_date,
+              edit_date, copy_number, circulate, deposit, ref, holdable,
+              deleted, deposit_amount, price, barcode, circ_modifier,
+              circ_as_type, opac_visible, age_protect;
+$F$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.sunit ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+        SELECT  XMLELEMENT(
+                    name serial_unit,
+                    XMLATTRIBUTES(
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
+                        'tag:open-ils.org:U2@acp/' || id AS id, id AS copy_id,
+                        create_date, edit_date, copy_number, circulate, deposit,
+                        ref, holdable, deleted, deposit_amount, price, barcode,
+                        circ_modifier, circ_as_type, opac_visible, age_protect,
+                        status_changed_time, floating, mint_condition,
+                        detailed_contents, sort_key, summary_contents, cost 
+                    ),
+                    unapi.ccs( status, $2, 'status', evergreen.array_remove_item_by_value( evergreen.array_remove_item_by_value($4,'acp'),'sunit'), $5, $6, $7, $8, FALSE),
+                    unapi.acl( location, $2, 'location', evergreen.array_remove_item_by_value( evergreen.array_remove_item_by_value($4,'acp'),'sunit'), $5, $6, $7, $8, FALSE),
+                    unapi.aou( circ_lib, $2, 'circ_lib', evergreen.array_remove_item_by_value( evergreen.array_remove_item_by_value($4,'acp'),'sunit'), $5, $6, $7, $8),
+                    unapi.aou( circ_lib, $2, 'circlib', evergreen.array_remove_item_by_value( evergreen.array_remove_item_by_value($4,'acp'),'sunit'), $5, $6, $7, $8),
+                    CASE WHEN ('acn' = ANY ($4)) THEN unapi.acn( call_number, $2, 'call_number', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE) ELSE NULL END,
+                    XMLELEMENT( name copy_notes,
+                        CASE 
+                            WHEN ('acpn' = ANY ($4)) THEN
+                                (SELECT XMLAGG(acpn) FROM (
+                                    SELECT  unapi.acpn( id, 'xml', 'copy_note', evergreen.array_remove_item_by_value( evergreen.array_remove_item_by_value($4,'acp'),'sunit'), $5, $6, $7, $8, FALSE)
+                                      FROM  asset.copy_note
+                                      WHERE owning_copy = cp.id AND pub
+                                )x)
+                            ELSE NULL
+                        END
+                    ),
+                    XMLELEMENT( name statcats,
+                        CASE 
+                            WHEN ('ascecm' = ANY ($4)) THEN
+                                (SELECT XMLAGG(ascecm) FROM (
+                                    SELECT  unapi.ascecm( stat_cat_entry, 'xml', 'statcat', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE)
+                                      FROM  asset.stat_cat_entry_copy_map
+                                      WHERE owning_copy = cp.id
+                                )x)
+                            ELSE NULL
+                        END
+                    ),
+                    XMLELEMENT( name foreign_records,
+                        CASE
+                            WHEN ('bre' = ANY ($4)) THEN
+                                (SELECT XMLAGG(bre) FROM (
+                                    SELECT  unapi.bre(peer_record,'marcxml','record','{}'::TEXT[], $5, $6, $7, $8, FALSE)
+                                      FROM  biblio.peer_bib_copy_map
+                                      WHERE target_copy = cp.id
+                                )x)
+                            ELSE NULL
+                        END
+                    ),
+                    CASE 
+                        WHEN ('bmp' = ANY ($4)) THEN
+                            XMLELEMENT( name monograph_parts,
+                                (SELECT XMLAGG(bmp) FROM (
+                                    SELECT  unapi.bmp( part, 'xml', 'monograph_part', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE)
+                                      FROM  asset.copy_part_map
+                                      WHERE target_copy = cp.id
+                                )x)
+                            )
+                        ELSE NULL
+                    END,
+                    CASE 
+                        WHEN ('circ' = ANY ($4)) THEN
+                            XMLELEMENT( name current_circulation,
+                                (SELECT XMLAGG(circ) FROM (
+                                    SELECT  unapi.circ( id, 'xml', 'circ', evergreen.array_remove_item_by_value($4,'circ'), $5, $6, $7, $8, FALSE)
+                                      FROM  action.circulation
+                                      WHERE target_copy = cp.id
+                                            AND checkin_time IS NULL
+                                )x)
+                            )
+                        ELSE NULL
+                    END
+                )
+          FROM  serial.unit cp
+          WHERE id = $1
+              AND cp.deleted IS FALSE
+          GROUP BY id, status, location, circ_lib, call_number, create_date,
+              edit_date, copy_number, circulate, floating, mint_condition,
+              deposit, ref, holdable, deleted, deposit_amount, price,
+              barcode, circ_modifier, circ_as_type, opac_visible,
+              status_changed_time, detailed_contents, sort_key,
+              summary_contents, cost, age_protect;
+$F$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.acn ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+        SELECT  XMLELEMENT(
+                    name volume,
+                    XMLATTRIBUTES(
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
+                        'tag:open-ils.org:U2@acn/' || acn.id AS id,
+                        acn.id AS vol_id, o.shortname AS lib,
+                        o.opac_visible AS opac_visible,
+                        deleted, label, label_sortkey, label_class, record
+                    ),
+                    unapi.aou( owning_lib, $2, 'owning_lib', evergreen.array_remove_item_by_value($4,'acn'), $5, $6, $7, $8),
+                    CASE 
+                        WHEN ('acp' = ANY ($4)) THEN
+                            CASE WHEN $6 IS NOT NULL THEN
+                                XMLELEMENT( name copies,
+                                    (SELECT XMLAGG(acp ORDER BY rank_avail) FROM (
+                                        SELECT  unapi.acp( cp.id, 'xml', 'copy', evergreen.array_remove_item_by_value($4,'acn'), $5, $6, $7, $8, FALSE),
+                                            evergreen.rank_cp_status(cp.status) AS rank_avail
+                                          FROM  asset.copy cp
+                                                JOIN actor.org_unit_descendants( (SELECT id FROM actor.org_unit WHERE shortname = $5), $6) aoud ON (cp.circ_lib = aoud.id)
+                                          WHERE cp.call_number = acn.id
+                                              AND cp.deleted IS FALSE
+                                          ORDER BY rank_avail, COALESCE(cp.copy_number,0), cp.barcode
+                                          LIMIT ($7 -> 'acp')::INT
+                                          OFFSET ($8 -> 'acp')::INT
+                                    )x)
+                                )
+                            ELSE
+                                XMLELEMENT( name copies,
+                                    (SELECT XMLAGG(acp ORDER BY rank_avail) FROM (
+                                        SELECT  unapi.acp( cp.id, 'xml', 'copy', evergreen.array_remove_item_by_value($4,'acn'), $5, $6, $7, $8, FALSE),
+                                            evergreen.rank_cp_status(cp.status) AS rank_avail
+                                          FROM  asset.copy cp
+                                                JOIN actor.org_unit_descendants( (SELECT id FROM actor.org_unit WHERE shortname = $5) ) aoud ON (cp.circ_lib = aoud.id)
+                                          WHERE cp.call_number = acn.id
+                                              AND cp.deleted IS FALSE
+                                          ORDER BY rank_avail, COALESCE(cp.copy_number,0), cp.barcode
+                                          LIMIT ($7 -> 'acp')::INT
+                                          OFFSET ($8 -> 'acp')::INT
+                                    )x)
+                                )
+                            END
+                        ELSE NULL
+                    END,
+                    XMLELEMENT(
+                        name uris,
+                        (SELECT XMLAGG(auri) FROM (SELECT unapi.auri(uri,'xml','uri', evergreen.array_remove_item_by_value($4,'acn'), $5, $6, $7, $8, FALSE) FROM asset.uri_call_number_map WHERE call_number = acn.id)x)
+                    ),
+                    unapi.acnp( acn.prefix, 'marcxml', 'prefix', evergreen.array_remove_item_by_value($4,'acn'), $5, $6, $7, $8, FALSE),
+                    unapi.acns( acn.suffix, 'marcxml', 'suffix', evergreen.array_remove_item_by_value($4,'acn'), $5, $6, $7, $8, FALSE),
+                    CASE WHEN ('bre' = ANY ($4)) THEN unapi.bre( acn.record, 'marcxml', 'record', evergreen.array_remove_item_by_value($4,'acn'), $5, $6, $7, $8, FALSE) ELSE NULL END
+                ) AS x
+          FROM  asset.call_number acn
+                JOIN actor.org_unit o ON (o.id = acn.owning_lib)
+          WHERE acn.id = $1
+              AND acn.deleted IS FALSE
+          GROUP BY acn.id, o.shortname, o.opac_visible, deleted, label, label_sortkey, label_class, owning_lib, record, acn.prefix, acn.suffix;
+$F$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.acnp ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+        SELECT  XMLELEMENT(
+                    name call_number_prefix,
+                    XMLATTRIBUTES(
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
+                        id AS ident,
+                        label,
+                        'tag:open-ils.org:U2@aou/' || owning_lib AS owning_lib,
+                        label_sortkey
+                    )
+                )
+          FROM  asset.call_number_prefix
+          WHERE id = $1;
+$F$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.acns ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+        SELECT  XMLELEMENT(
+                    name call_number_suffix,
+                    XMLATTRIBUTES(
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
+                        id AS ident,
+                        label,
+                        'tag:open-ils.org:U2@aou/' || owning_lib AS owning_lib,
+                        label_sortkey
+                    )
+                )
+          FROM  asset.call_number_suffix
+          WHERE id = $1;
+$F$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.auri ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+        SELECT  XMLELEMENT(
+                    name uri,
+                    XMLATTRIBUTES(
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
+                        'tag:open-ils.org:U2@auri/' || uri.id AS id,
+                        use_restriction,
+                        href,
+                        label
+                    ),
+                    CASE 
+                        WHEN ('acn' = ANY ($4)) THEN
+                            XMLELEMENT( name copies,
+                                (SELECT XMLAGG(acn) FROM (SELECT unapi.acn( call_number, 'xml', 'copy', evergreen.array_remove_item_by_value($4,'auri'), $5, $6, $7, $8, FALSE) FROM asset.uri_call_number_map WHERE uri = uri.id)x)
+                            )
+                        ELSE NULL
+                    END
+                ) AS x
+          FROM  asset.uri uri
+          WHERE uri.id = $1
+          GROUP BY uri.id, use_restriction, href, label;
+$F$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.mra ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+        SELECT  XMLELEMENT(
+                    name attributes,
+                    XMLATTRIBUTES(
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/indexing/v1' ELSE NULL END AS xmlns,
+                        'tag:open-ils.org:U2@mra/' || mra.id AS id,
+                        'tag:open-ils.org:U2@bre/' || mra.id AS record
+                    ),
+                    (SELECT XMLAGG(foo.y)
+                      FROM (SELECT XMLELEMENT(
+                                name field,
+                                XMLATTRIBUTES(
+                                    key AS name,
+                                    cvm.value AS "coded-value",
+                                    rad.filter,
+                                    rad.sorter
+                                ),
+                                x.value
+                            )
+                           FROM EACH(mra.attrs) AS x
+                                JOIN config.record_attr_definition rad ON (x.key = rad.name)
+                                LEFT JOIN config.coded_value_map cvm ON (cvm.ctype = x.key AND code = x.value)
+                        )foo(y)
+                    )
+                )
+          FROM  metabib.record_attr mra
+          WHERE mra.id = $1;
+$F$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.circ (obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT DEFAULT '-', depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+    SELECT XMLELEMENT(
+        name circ,
+        XMLATTRIBUTES(
+            CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
+            'tag:open-ils.org:U2@circ/' || id AS id,
+            xact_start,
+            due_date
+        ),
+        CASE WHEN ('aou' = ANY ($4)) THEN unapi.aou( circ_lib, $2, 'circ_lib', evergreen.array_remove_item_by_value($4,'circ'), $5, $6, $7, $8, FALSE) ELSE NULL END,
+        CASE WHEN ('acp' = ANY ($4)) THEN unapi.acp( circ_lib, $2, 'target_copy', evergreen.array_remove_item_by_value($4,'circ'), $5, $6, $7, $8, FALSE) ELSE NULL END
+    )
+    FROM action.circulation
+    WHERE id = $1;
+$F$ LANGUAGE SQL STABLE;
+
+/*
+
+ -- Some test queries
+
+SELECT unapi.memoize( 'bre', 1,'mods32','','{holdings_xml,acp}'::TEXT[], 'SYS1');
+SELECT unapi.memoize( 'bre', 1,'marcxml','','{holdings_xml,acp}'::TEXT[], 'SYS1');
+SELECT unapi.memoize( 'bre', 1,'holdings_xml','','{holdings_xml,acp}'::TEXT[], 'SYS1');
+
+SELECT unapi.biblio_record_entry_feed('{1}'::BIGINT[],'mods32','{holdings_xml,acp}'::TEXT[],'SYS1',NULL,'acn=>1',NULL, NULL,NULL,NULL,NULL,'http://c64/opac/extras/unapi', '<totalResults xmlns="http://a9.com/-/spec/opensearch/1.1/">2</totalResults><startIndex xmlns="http://a9.com/-/spec/opensearch/1.1/">1</startIndex><itemsPerPage xmlns="http://a9.com/-/spec/opensearch/1.1/">10</itemsPerPage>');
+
+SELECT unapi.biblio_record_entry_feed('{7209,7394}'::BIGINT[],'marcxml','{}'::TEXT[],'SYS1',NULL,'acn=>1',NULL, NULL,NULL,NULL,NULL,'http://fulfillment2.esilibrary.com/opac/extras/unapi', '<totalResults xmlns="http://a9.com/-/spec/opensearch/1.1/">2</totalResults><startIndex xmlns="http://a9.com/-/spec/opensearch/1.1/">1</startIndex><itemsPerPage xmlns="http://a9.com/-/spec/opensearch/1.1/">10</itemsPerPage>');
+EXPLAIN ANALYZE SELECT unapi.biblio_record_entry_feed('{7209,7394}'::BIGINT[],'marcxml','{}'::TEXT[],'SYS1',NULL,'acn=>1',NULL, NULL,NULL,NULL,NULL,'http://fulfillment2.esilibrary.com/opac/extras/unapi', '<totalResults xmlns="http://a9.com/-/spec/opensearch/1.1/">2</totalResults><startIndex xmlns="http://a9.com/-/spec/opensearch/1.1/">1</startIndex><itemsPerPage xmlns="http://a9.com/-/spec/opensearch/1.1/">10</itemsPerPage>');
+EXPLAIN ANALYZE SELECT unapi.biblio_record_entry_feed('{7209,7394}'::BIGINT[],'marcxml','{holdings_xml}'::TEXT[],'SYS1',NULL,'acn=>1',NULL, NULL,NULL,NULL,NULL,'http://fulfillment2.esilibrary.com/opac/extras/unapi', '<totalResults xmlns="http://a9.com/-/spec/opensearch/1.1/">2</totalResults><startIndex xmlns="http://a9.com/-/spec/opensearch/1.1/">1</startIndex><itemsPerPage xmlns="http://a9.com/-/spec/opensearch/1.1/">10</itemsPerPage>');
+EXPLAIN ANALYZE SELECT unapi.biblio_record_entry_feed('{7209,7394}'::BIGINT[],'mods32','{holdings_xml}'::TEXT[],'SYS1',NULL,'acn=>1',NULL, NULL,NULL,NULL,NULL,'http://fulfillment2.esilibrary.com/opac/extras/unapi', '<totalResults xmlns="http://a9.com/-/spec/opensearch/1.1/">2</totalResults><startIndex xmlns="http://a9.com/-/spec/opensearch/1.1/">1</startIndex><itemsPerPage xmlns="http://a9.com/-/spec/opensearch/1.1/">10</itemsPerPage>');
+
+SELECT unapi.biblio_record_entry_feed('{216}'::BIGINT[],'marcxml','{}'::TEXT[], 'BR1');
+EXPLAIN ANALYZE SELECT unapi.bre(216,'marcxml','record','{holdings_xml,bre.unapi}'::TEXT[], 'BR1');
+EXPLAIN ANALYZE SELECT unapi.bre(216,'holdings_xml','record','{}'::TEXT[], 'BR1');
+EXPLAIN ANALYZE SELECT unapi.holdings_xml(216,4,'BR1',2,'{bre}'::TEXT[]);
+EXPLAIN ANALYZE SELECT unapi.bre(216,'mods32','record','{}'::TEXT[], 'BR1');
+
+-- Limit to 5 call numbers, 5 copies, with a preferred library of 4 (BR1), in SYS2 at a depth of 0
+EXPLAIN ANALYZE SELECT unapi.bre(36,'marcxml','record','{holdings_xml,mra,acp,acnp,acns,bmp}','SYS2',0,'acn=>5,acp=>5',NULL,TRUE,4);
+
+*/
+
+
+SELECT evergreen.upgrade_deps_block_check('0691', :eg_version);
+
+CREATE INDEX poi_po_idx ON acq.po_item (purchase_order);
+
+CREATE INDEX ie_inv_idx on acq.invoice_entry (invoice);
+CREATE INDEX ie_po_idx on acq.invoice_entry (purchase_order);
+CREATE INDEX ie_li_idx on acq.invoice_entry (lineitem);
+
+CREATE INDEX ii_inv_idx on acq.invoice_item (invoice);
+CREATE INDEX ii_po_idx on acq.invoice_item (purchase_order);
+CREATE INDEX ii_poi_idx on acq.invoice_item (po_item);
+
+
+SELECT evergreen.upgrade_deps_block_check('0692', :eg_version);
+
+INSERT INTO config.org_unit_setting_type
+    (name, label, description, grp, datatype)
+    VALUES (
+        'circ.fines.charge_when_closed',
+         oils_i18n_gettext(
+            'circ.fines.charge_when_closed',
+            'Charge fines on overdue circulations when closed',
+            'coust',
+            'label'
+        ),
+        oils_i18n_gettext(
+            'circ.fines.charge_when_closed',
+            'Normally, fines are not charged when a library is closed.  When set to True, fines will be charged during scheduled closings and normal weekly closed days.',
+            'coust',
+            'description'
+        ),
+        'circ',
+        'bool'
+    );
+
+SELECT evergreen.upgrade_deps_block_check('0694', :eg_version);
+
+INSERT into config.org_unit_setting_type
+( name, grp, label, description, datatype, fm_class ) VALUES
+
+( 'ui.patron.edit.au.prefix.require', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.prefix.require',
+        'Require prefix field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.prefix.require',
+        'The prefix field will be required on the patron registration screen.',
+        'coust', 'description'),
+    'bool', null)
+	
+,( 'ui.patron.edit.au.prefix.show', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.prefix.show',
+        'Show prefix field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.prefix.show',
+        'The prefix field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.prefix.suggest', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.prefix.suggest',
+        'Suggest prefix field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.prefix.suggest',
+        'The prefix field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+;		
+
+
+-- Evergreen DB patch 0695.schema.custom_toolbars.sql
+--
+-- FIXME: insert description of change, if needed
+--
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0695', :eg_version);
+
+CREATE TABLE actor.toolbar (
+    id          BIGSERIAL   PRIMARY KEY,
+    ws          INT         REFERENCES actor.workstation (id) ON DELETE CASCADE,
+    org         INT         REFERENCES actor.org_unit (id) ON DELETE CASCADE,
+    usr         INT         REFERENCES actor.usr (id) ON DELETE CASCADE,
+    label       TEXT        NOT NULL,
+    layout      TEXT        NOT NULL,
+    CONSTRAINT only_one_type CHECK (
+        (ws IS NOT NULL AND COALESCE(org,usr) IS NULL) OR
+        (org IS NOT NULL AND COALESCE(ws,usr) IS NULL) OR
+        (usr IS NOT NULL AND COALESCE(org,ws) IS NULL)
+    ),
+    CONSTRAINT layout_must_be_json CHECK ( is_json(layout) )
+);
+CREATE UNIQUE INDEX label_once_per_ws ON actor.toolbar (ws, label) WHERE ws IS NOT NULL;
+CREATE UNIQUE INDEX label_once_per_org ON actor.toolbar (org, label) WHERE org IS NOT NULL;
+CREATE UNIQUE INDEX label_once_per_usr ON actor.toolbar (usr, label) WHERE usr IS NOT NULL;
+
+-- this one unrelated to toolbars but is a gap in the upgrade scripts
+INSERT INTO permission.perm_list ( id, code, description )
+    SELECT
+        522,
+        'IMPORT_AUTHORITY_MARC',
+        oils_i18n_gettext(
+            522,
+            'Allows a user to create new authority records',
+            'ppl',
+            'description'
+        )
+    WHERE NOT EXISTS (
+        SELECT 1
+        FROM permission.perm_list
+        WHERE
+            id = 522
+    );
+
+INSERT INTO permission.perm_list ( id, code, description ) VALUES (
+    523,
+    'ADMIN_TOOLBAR',
+    oils_i18n_gettext(
+        523,
+        'Allows a user to create, edit, and delete custom toolbars',
+        'ppl',
+        'description'
+    )
+);
+
+-- Don't want to assume stock perm groups in an upgrade script, but here for ease of testing
+-- INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT pgt.id, perm.id, aout.depth, FALSE FROM permission.grp_tree pgt, permission.perm_list perm, actor.org_unit_type aout WHERE pgt.name = 'Staff' AND aout.name = 'Branch' AND perm.code = 'ADMIN_TOOLBAR';
+
+INSERT INTO actor.toolbar(org,label,layout) VALUES
+    ( 1, 'circ', '["circ_checkout","circ_checkin","toolbarseparator.1","search_opac","copy_status","toolbarseparator.2","patron_search","patron_register","toolbarspacer.3","hotkeys_toggle"]' ),
+    ( 1, 'cat', '["circ_checkin","toolbarseparator.1","search_opac","copy_status","toolbarseparator.2","create_marc","authority_manage","retrieve_last_record","toolbarspacer.3","hotkeys_toggle"]' );
+
+-- delete from permission.grp_perm_map where perm in (select id from permission.perm_list where code ~ 'TOOLBAR'); delete from permission.perm_list where code ~ 'TOOLBAR'; drop table actor.toolbar ;
+
+-- Evergreen DB patch 0696.no_plperl.sql
+--
+-- FIXME: insert description of change, if needed
+--
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0696', :eg_version);
+
+-- Re-create these as plperlu instead of plperl
+CREATE OR REPLACE FUNCTION auditor.set_audit_info(INT, INT) RETURNS VOID AS $$
+    $_SHARED{"eg_audit_user"} = $_[0];
+    $_SHARED{"eg_audit_ws"} = $_[1];
+$$ LANGUAGE plperlu;
+
+CREATE OR REPLACE FUNCTION auditor.get_audit_info() RETURNS TABLE (eg_user INT, eg_ws INT) AS $$
+    return [{eg_user => $_SHARED{"eg_audit_user"}, eg_ws => $_SHARED{"eg_audit_ws"}}];
+$$ LANGUAGE plperlu;
+
+CREATE OR REPLACE FUNCTION auditor.clear_audit_info() RETURNS VOID AS $$
+    delete($_SHARED{"eg_audit_user"});
+    delete($_SHARED{"eg_audit_ws"});
+$$ LANGUAGE plperlu;
+
+-- And remove the language so that we don't use it later.
+DROP LANGUAGE plperl;
+
+-- Evergreen DB patch 0697.data.place_currently_unfillable_hold.sql
+--
+-- FIXME: insert description of change, if needed
+--
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0697', :eg_version);
+
+-- FIXME: add/check SQL statements to perform the upgrade
+INSERT INTO permission.perm_list ( id, code, description ) VALUES
+ ( 524, 'PLACE_UNFILLABLE_HOLD', oils_i18n_gettext( 524,
+    'Allows a user to place a hold that cannot currently be filled.', 'ppl', 'description' ));
+
+-- Evergreen DB patch 0698.hold_default_pickup.sql
+--
+-- FIXME: insert description of change, if needed
+--
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0698', :eg_version);
+
+INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
+    VALUES ('opac.default_pickup_location', TRUE, 'Default Hold Pickup Location', 'Default location for holds pickup', 'integer');
+
+SELECT evergreen.upgrade_deps_block_check('0699', :eg_version);
+
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, grp )
+    VALUES (
+        'ui.hide_copy_editor_fields',
+        oils_i18n_gettext(
+            'ui.hide_copy_editor_fields',
+            'GUI: Hide these fields within the Item Attribute Editor',
+            'coust',
+            'label'
+        ),
+        oils_i18n_gettext(
+            'ui.hide_copy_editor_fields',
+            'This setting may be best maintained with the dedicated configuration'
+            || ' interface within the Item Attribute Editor.  However, here it'
+            || ' shows up as comma separated list of field identifiers to hide.',
+            'coust',
+            'description'
+        ),
+        'array',
+        'gui'
+    );
+
+
+SELECT evergreen.upgrade_deps_block_check('0700', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0706', :eg_version);
+
+-- This throws away data, but only data that causes breakage anyway.
+UPDATE serial.issuance SET holding_code = NULL WHERE NOT is_json(holding_code);
+
+-- If we don't do this, we have unprocessed triggers and we can't alter the table
+SET CONSTRAINTS serial.issuance_caption_and_pattern_fkey IMMEDIATE;
+
+ALTER TABLE serial.issuance ADD CHECK (holding_code IS NULL OR is_json(holding_code));
+
+INSERT INTO config.internal_flag (name, value, enabled) VALUES (
+    'serial.rematerialize_on_same_holding_code', NULL, FALSE
+);
+
+INSERT INTO config.org_unit_setting_type (
+    name, label, grp, description, datatype
+) VALUES (
+    'serial.default_display_grouping',
+    'Default display grouping for serials distributions presented in the OPAC.',
+    'serial',
+    'Default display grouping for serials distributions presented in the OPAC. This can be "enum" or "chron".',
+    'string'
+);
+
+ALTER TABLE serial.distribution
+    ADD COLUMN display_grouping TEXT NOT NULL DEFAULT 'chron'
+        CHECK (display_grouping IN ('enum', 'chron'));
+
+-- why didn't we just make one summary table in the first place?
+CREATE VIEW serial.any_summary AS
+    SELECT
+        'basic' AS summary_type, id, distribution,
+        generated_coverage, textual_holdings, show_generated
+    FROM serial.basic_summary
+    UNION
+    SELECT
+        'index' AS summary_type, id, distribution,
+        generated_coverage, textual_holdings, show_generated
+    FROM serial.index_summary
+    UNION
+    SELECT
+        'supplement' AS summary_type, id, distribution,
+        generated_coverage, textual_holdings, show_generated
+    FROM serial.supplement_summary ;
+
+
+-- Given the IDs of two rows in actor.org_unit, *the second being an ancestor
+-- of the first*, return in array form the path from the ancestor to the
+-- descendant, with each point in the path being an org_unit ID.  This is
+-- useful for sorting org_units by their position in a depth-first (display
+-- order) representation of the tree.
+--
+-- This breaks with the precedent set by actor.org_unit_full_path() and others,
+-- and gets the parameters "backwards," but otherwise this function would
+-- not be very usable within json_query.
+CREATE OR REPLACE FUNCTION actor.org_unit_simple_path(INT, INT)
+RETURNS INT[] AS $$
+    WITH RECURSIVE descendant_depth(id, path) AS (
+        SELECT  aou.id,
+                ARRAY[aou.id]
+          FROM  actor.org_unit aou
+                JOIN actor.org_unit_type aout ON (aout.id = aou.ou_type)
+          WHERE aou.id = $2
+            UNION ALL
+        SELECT  aou.id,
+                dd.path || ARRAY[aou.id]
+          FROM  actor.org_unit aou
+                JOIN actor.org_unit_type aout ON (aout.id = aou.ou_type)
+                JOIN descendant_depth dd ON (dd.id = aou.parent_ou)
+    ) SELECT dd.path
+        FROM actor.org_unit aou
+        JOIN descendant_depth dd USING (id)
+        WHERE aou.id = $1 ORDER BY dd.path;
+$$ LANGUAGE SQL STABLE;
+
+CREATE TABLE serial.materialized_holding_code (
+    id BIGSERIAL PRIMARY KEY,
+    issuance INTEGER NOT NULL REFERENCES serial.issuance (id) ON DELETE CASCADE,
+    subfield CHAR,
+    value TEXT
+);
+
+CREATE OR REPLACE FUNCTION serial.materialize_holding_code() RETURNS TRIGGER
+AS $func$ 
+use strict;
+
+use MARC::Field;
+use JSON::XS;
+
+if (not defined $_TD->{new}{holding_code}) {
+    elog(WARNING, 'NULL in "holding_code" column of serial.issuance allowed for now, but may not be useful');
+    return;
+}
+
+# Do nothing if holding_code has not changed...
+
+if ($_TD->{new}{holding_code} eq $_TD->{old}{holding_code}) {
+    # ... unless the following internal flag is set.
+
+    my $flag_rv = spi_exec_query(q{
+        SELECT * FROM config.internal_flag
+        WHERE name = 'serial.rematerialize_on_same_holding_code' AND enabled
+    }, 1);
+    return unless $flag_rv->{processed};
+}
+
+
+my $holding_code = (new JSON::XS)->decode($_TD->{new}{holding_code});
+
+my $field = new MARC::Field('999', @$holding_code); # tag doesnt matter
+
+my $dstmt = spi_prepare(
+    'DELETE FROM serial.materialized_holding_code WHERE issuance = $1',
+    'INT'
+);
+spi_exec_prepared($dstmt, $_TD->{new}{id});
+
+my $istmt = spi_prepare(
+    q{
+        INSERT INTO serial.materialized_holding_code (
+            issuance, subfield, value
+        ) VALUES ($1, $2, $3)
+    }, qw{INT CHAR TEXT}
+);
+
+foreach ($field->subfields) {
+    spi_exec_prepared(
+        $istmt,
+        $_TD->{new}{id},
+        $_->[0],
+        $_->[1]
+    );
+}
+
+return;
+
+$func$ LANGUAGE 'plperlu';
+
+CREATE INDEX assist_holdings_display
+    ON serial.materialized_holding_code (issuance, subfield);
+
+CREATE TRIGGER materialize_holding_code
+    AFTER INSERT OR UPDATE ON serial.issuance
+    FOR EACH ROW EXECUTE PROCEDURE serial.materialize_holding_code() ;
+
+-- starting here, we materialize all existing holding codes.
+
+UPDATE config.internal_flag
+    SET enabled = TRUE
+    WHERE name = 'serial.rematerialize_on_same_holding_code';
+
+UPDATE serial.issuance SET holding_code = holding_code;
+
+UPDATE config.internal_flag
+    SET enabled = FALSE
+    WHERE name = 'serial.rematerialize_on_same_holding_code';
+
+-- finish holding code materialization process
+
+-- fix up missing holding_code fields from serial.issuance
+UPDATE serial.issuance siss
+    SET holding_type = scap.type
+    FROM serial.caption_and_pattern scap
+    WHERE scap.id = siss.caption_and_pattern AND siss.holding_type IS NULL;
+
+
+-- Evergreen DB patch 0701.schema.patron_stat_category_enhancements.sql
+--
+-- Enables users to set patron statistical categories as required,
+-- whether or not users can input free text for the category value.
+-- Enables administrators to set an entry as the default for any
+-- given patron statistical category and org unit.
+--
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0701', :eg_version);
+
+-- New table
+
+CREATE TABLE actor.stat_cat_entry_default (
+    id              SERIAL  PRIMARY KEY,
+    stat_cat_entry  INT     NOT NULL REFERENCES actor.stat_cat_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    stat_cat        INT     NOT NULL REFERENCES actor.stat_cat (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    owner           INT     NOT NULL REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    CONSTRAINT sced_once_per_owner UNIQUE (stat_cat,owner)
+);
+
+COMMENT ON TABLE actor.stat_cat_entry_default IS $$
+User Statistical Category Default Entry
+
+A library may choose one of the stat_cat entries to be the
+default entry.
+$$;
+
+-- Add columns to existing tables
+
+-- Patron stat cat required column
+ALTER TABLE actor.stat_cat
+    ADD COLUMN required BOOL NOT NULL DEFAULT FALSE;
+
+-- Patron stat cat allow_freetext column
+ALTER TABLE actor.stat_cat
+    ADD COLUMN allow_freetext BOOL NOT NULL DEFAULT TRUE;
+
+-- Add permissions
+
+INSERT INTO permission.perm_list ( id, code, description ) VALUES
+    ( 525, 'CREATE_PATRON_STAT_CAT_ENTRY_DEFAULT', oils_i18n_gettext( 525, 
+        'User may set a default entry in a patron statistical category', 'ppl', 'description' )),
+    ( 526, 'UPDATE_PATRON_STAT_CAT_ENTRY_DEFAULT', oils_i18n_gettext( 526, 
+        'User may reset a default entry in a patron statistical category', 'ppl', 'description' )),
+    ( 527, 'DELETE_PATRON_STAT_CAT_ENTRY_DEFAULT', oils_i18n_gettext( 527, 
+        'User may unset a default entry in a patron statistical category', 'ppl', 'description' ));
+
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
+    SELECT
+        pgt.id, perm.id, aout.depth, TRUE
+    FROM
+        permission.grp_tree pgt,
+        permission.perm_list perm,
+        actor.org_unit_type aout
+    WHERE
+        pgt.name = 'Circulation Administrator' AND
+        aout.name = 'System' AND
+        perm.code IN ('CREATE_PATRON_STAT_CAT_ENTRY_DEFAULT', 'DELETE_PATRON_STAT_CAT_ENTRY_DEFAULT');
+
+
+SELECT evergreen.upgrade_deps_block_check('0702', :eg_version);
+
+INSERT INTO config.global_flag (name, enabled, label) 
+    VALUES (
+        'opac.org_unit.non_inherited_visibility',
+        FALSE,
+        oils_i18n_gettext(
+            'opac.org_unit.non_inherited_visibility',
+            'Org Units Do Not Inherit Visibility',
+            'cgf',
+            'label'
+        )
+    );
+
+CREATE TYPE actor.org_unit_custom_tree_purpose AS ENUM ('opac');
+
+CREATE TABLE actor.org_unit_custom_tree (
+    id              SERIAL  PRIMARY KEY,
+    active          BOOLEAN DEFAULT FALSE,
+    purpose         actor.org_unit_custom_tree_purpose NOT NULL DEFAULT 'opac' UNIQUE
+);
+
+CREATE TABLE actor.org_unit_custom_tree_node (
+    id              SERIAL  PRIMARY KEY,
+    tree            INTEGER REFERENCES actor.org_unit_custom_tree (id) DEFERRABLE INITIALLY DEFERRED,
+	org_unit        INTEGER NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+	parent_node     INTEGER REFERENCES actor.org_unit_custom_tree_node (id) DEFERRABLE INITIALLY DEFERRED,
+    sibling_order   INTEGER NOT NULL DEFAULT 0,
+    CONSTRAINT aouctn_once_per_org UNIQUE (tree, org_unit)
+);
+    
+
+/* UNDO
+BEGIN;
+DELETE FROM config.global_flag WHERE name = 'opac.org_unit.non_inheritied_visibility';
+DROP TABLE actor.org_unit_custom_tree_node;
+DROP TABLE actor.org_unit_custom_tree;
+DROP TYPE actor.org_unit_custom_tree_purpose;
+COMMIT;
+*/
+
+-- Evergreen DB patch 0704.schema.query_parser_fts.sql
+--
+-- Add pref_ou query filter for preferred library searching
+--
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0704', :eg_version);
+
+-- Create the new 11-parameter function, featuring param_pref_ou
+CREATE OR REPLACE FUNCTION search.query_parser_fts (
+
+    param_search_ou INT,
+    param_depth     INT,
+    param_query     TEXT,
+    param_statuses  INT[],
+    param_locations INT[],
+    param_offset    INT,
+    param_check     INT,
+    param_limit     INT,
+    metarecord      BOOL,
+    staff           BOOL,
+    param_pref_ou   INT DEFAULT NULL
+) RETURNS SETOF search.search_result AS $func$
+DECLARE
+
+    current_res         search.search_result%ROWTYPE;
+    search_org_list     INT[];
+    luri_org_list       INT[];
+    tmp_int_list        INT[];
+
+    check_limit         INT;
+    core_limit          INT;
+    core_offset         INT;
+    tmp_int             INT;
+
+    core_result         RECORD;
+    core_cursor         REFCURSOR;
+    core_rel_query      TEXT;
+
+    total_count         INT := 0;
+    check_count         INT := 0;
+    deleted_count       INT := 0;
+    visible_count       INT := 0;
+    excluded_count      INT := 0;
+
+BEGIN
+
+    check_limit := COALESCE( param_check, 1000 );
+    core_limit  := COALESCE( param_limit, 25000 );
+    core_offset := COALESCE( param_offset, 0 );
+
+    -- core_skip_chk := COALESCE( param_skip_chk, 1 );
+
+    IF param_search_ou > 0 THEN
+        IF param_depth IS NOT NULL THEN
+            SELECT array_accum(distinct id) INTO search_org_list FROM actor.org_unit_descendants( param_search_ou, param_depth );
+        ELSE
+            SELECT array_accum(distinct id) INTO search_org_list FROM actor.org_unit_descendants( param_search_ou );
+        END IF;
+
+        SELECT array_accum(distinct id) INTO luri_org_list FROM actor.org_unit_ancestors( param_search_ou );
+
+    ELSIF param_search_ou < 0 THEN
+        SELECT array_accum(distinct org_unit) INTO search_org_list FROM actor.org_lasso_map WHERE lasso = -param_search_ou;
+
+        FOR tmp_int IN SELECT * FROM UNNEST(search_org_list) LOOP
+            SELECT array_accum(distinct id) INTO tmp_int_list FROM actor.org_unit_ancestors( tmp_int );
+            luri_org_list := luri_org_list || tmp_int_list;
+        END LOOP;
+
+        SELECT array_accum(DISTINCT x.id) INTO luri_org_list FROM UNNEST(luri_org_list) x(id);
+
+    ELSIF param_search_ou = 0 THEN
+        -- reserved for user lassos (ou_buckets/type='lasso') with ID passed in depth ... hack? sure.
+    END IF;
+
+    IF param_pref_ou IS NOT NULL THEN
+        SELECT array_accum(distinct id) INTO tmp_int_list FROM actor.org_unit_ancestors(param_pref_ou);
+        luri_org_list := luri_org_list || tmp_int_list;
+    END IF;
+
+    OPEN core_cursor FOR EXECUTE param_query;
+
+    LOOP
+
+        FETCH core_cursor INTO core_result;
+        EXIT WHEN NOT FOUND;
+        EXIT WHEN total_count >= core_limit;
+
+        total_count := total_count + 1;
+
+        CONTINUE WHEN total_count NOT BETWEEN  core_offset + 1 AND check_limit + core_offset;
+
+        check_count := check_count + 1;
+
+        PERFORM 1 FROM biblio.record_entry b WHERE NOT b.deleted AND b.id IN ( SELECT * FROM unnest( core_result.records ) );
+        IF NOT FOUND THEN
+            -- RAISE NOTICE ' % were all deleted ... ', core_result.records;
+            deleted_count := deleted_count + 1;
+            CONTINUE;
+        END IF;
+
+        PERFORM 1
+          FROM  biblio.record_entry b
+                JOIN config.bib_source s ON (b.source = s.id)
+          WHERE s.transcendant
+                AND b.id IN ( SELECT * FROM unnest( core_result.records ) );
+
+        IF FOUND THEN
+            -- RAISE NOTICE ' % were all transcendant ... ', core_result.records;
+            visible_count := visible_count + 1;
+
+            current_res.id = core_result.id;
+            current_res.rel = core_result.rel;
+
+            tmp_int := 1;
+            IF metarecord THEN
+                SELECT COUNT(DISTINCT s.source) INTO tmp_int FROM metabib.metarecord_source_map s WHERE s.metarecord = core_result.id;
+            END IF;
+
+            IF tmp_int = 1 THEN
+                current_res.record = core_result.records[1];
+            ELSE
+                current_res.record = NULL;
+            END IF;
+
+            RETURN NEXT current_res;
+
+            CONTINUE;
+        END IF;
+
+        PERFORM 1
+          FROM  asset.call_number cn
+                JOIN asset.uri_call_number_map map ON (map.call_number = cn.id)
+                JOIN asset.uri uri ON (map.uri = uri.id)
+          WHERE NOT cn.deleted
+                AND cn.label = '##URI##'
+                AND uri.active
+                AND ( param_locations IS NULL OR array_upper(param_locations, 1) IS NULL )
+                AND cn.record IN ( SELECT * FROM unnest( core_result.records ) )
+                AND cn.owning_lib IN ( SELECT * FROM unnest( luri_org_list ) )
+          LIMIT 1;
+
+        IF FOUND THEN
+            -- RAISE NOTICE ' % have at least one URI ... ', core_result.records;
+            visible_count := visible_count + 1;
+
+            current_res.id = core_result.id;
+            current_res.rel = core_result.rel;
+
+            tmp_int := 1;
+            IF metarecord THEN
+                SELECT COUNT(DISTINCT s.source) INTO tmp_int FROM metabib.metarecord_source_map s WHERE s.metarecord = core_result.id;
+            END IF;
+
+            IF tmp_int = 1 THEN
+                current_res.record = core_result.records[1];
+            ELSE
+                current_res.record = NULL;
+            END IF;
+
+            RETURN NEXT current_res;
+
+            CONTINUE;
+        END IF;
+
+        IF param_statuses IS NOT NULL AND array_upper(param_statuses, 1) > 0 THEN
+
+            PERFORM 1
+              FROM  asset.call_number cn
+                    JOIN asset.copy cp ON (cp.call_number = cn.id)
+              WHERE NOT cn.deleted
+                    AND NOT cp.deleted
+                    AND cp.status IN ( SELECT * FROM unnest( param_statuses ) )
+                    AND cn.record IN ( SELECT * FROM unnest( core_result.records ) )
+                    AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
+              LIMIT 1;
+
+            IF NOT FOUND THEN
+                PERFORM 1
+                  FROM  biblio.peer_bib_copy_map pr
+                        JOIN asset.copy cp ON (cp.id = pr.target_copy)
+                  WHERE NOT cp.deleted
+                        AND cp.status IN ( SELECT * FROM unnest( param_statuses ) )
+                        AND pr.peer_record IN ( SELECT * FROM unnest( core_result.records ) )
+                        AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
+                  LIMIT 1;
+
+                IF NOT FOUND THEN
+                -- RAISE NOTICE ' % and multi-home linked records were all status-excluded ... ', core_result.records;
+                    excluded_count := excluded_count + 1;
+                    CONTINUE;
+                END IF;
+            END IF;
+
+        END IF;
+
+        IF param_locations IS NOT NULL AND array_upper(param_locations, 1) > 0 THEN
+
+            PERFORM 1
+              FROM  asset.call_number cn
+                    JOIN asset.copy cp ON (cp.call_number = cn.id)
+              WHERE NOT cn.deleted
+                    AND NOT cp.deleted
+                    AND cp.location IN ( SELECT * FROM unnest( param_locations ) )
+                    AND cn.record IN ( SELECT * FROM unnest( core_result.records ) )
+                    AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
+              LIMIT 1;
+
+            IF NOT FOUND THEN
+                PERFORM 1
+                  FROM  biblio.peer_bib_copy_map pr
+                        JOIN asset.copy cp ON (cp.id = pr.target_copy)
+                  WHERE NOT cp.deleted
+                        AND cp.location IN ( SELECT * FROM unnest( param_locations ) )
+                        AND pr.peer_record IN ( SELECT * FROM unnest( core_result.records ) )
+                        AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
+                  LIMIT 1;
+
+                IF NOT FOUND THEN
+                    -- RAISE NOTICE ' % and multi-home linked records were all copy_location-excluded ... ', core_result.records;
+                    excluded_count := excluded_count + 1;
+                    CONTINUE;
+                END IF;
+            END IF;
+
+        END IF;
+
+        IF staff IS NULL OR NOT staff THEN
+
+            PERFORM 1
+              FROM  asset.opac_visible_copies
+              WHERE circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
+                    AND record IN ( SELECT * FROM unnest( core_result.records ) )
+              LIMIT 1;
+
+            IF NOT FOUND THEN
+                PERFORM 1
+                  FROM  biblio.peer_bib_copy_map pr
+                        JOIN asset.opac_visible_copies cp ON (cp.copy_id = pr.target_copy)
+                  WHERE cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
+                        AND pr.peer_record IN ( SELECT * FROM unnest( core_result.records ) )
+                  LIMIT 1;
+
+                IF NOT FOUND THEN
+
+                    -- RAISE NOTICE ' % and multi-home linked records were all visibility-excluded ... ', core_result.records;
+                    excluded_count := excluded_count + 1;
+                    CONTINUE;
+                END IF;
+            END IF;
+
+        ELSE
+
+            PERFORM 1
+              FROM  asset.call_number cn
+                    JOIN asset.copy cp ON (cp.call_number = cn.id)
+              WHERE NOT cn.deleted
+                    AND NOT cp.deleted
+                    AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
+                    AND cn.record IN ( SELECT * FROM unnest( core_result.records ) )
+              LIMIT 1;
+
+            IF NOT FOUND THEN
+
+                PERFORM 1
+                  FROM  biblio.peer_bib_copy_map pr
+                        JOIN asset.copy cp ON (cp.id = pr.target_copy)
+                  WHERE NOT cp.deleted
+                        AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
+                        AND pr.peer_record IN ( SELECT * FROM unnest( core_result.records ) )
+                  LIMIT 1;
+
+                IF NOT FOUND THEN
+
+                    PERFORM 1
+                      FROM  asset.call_number cn
+                            JOIN asset.copy cp ON (cp.call_number = cn.id)
+                      WHERE cn.record IN ( SELECT * FROM unnest( core_result.records ) )
+                            AND NOT cp.deleted
+                      LIMIT 1;
+
+                    IF FOUND THEN
+                        -- RAISE NOTICE ' % and multi-home linked records were all visibility-excluded ... ', core_result.records;
+                        excluded_count := excluded_count + 1;
+                        CONTINUE;
+                    END IF;
+                END IF;
+
+            END IF;
+
+        END IF;
+
+        visible_count := visible_count + 1;
+
+        current_res.id = core_result.id;
+        current_res.rel = core_result.rel;
+
+        tmp_int := 1;
+        IF metarecord THEN
+            SELECT COUNT(DISTINCT s.source) INTO tmp_int FROM metabib.metarecord_source_map s WHERE s.metarecord = core_result.id;
+        END IF;
+
+        IF tmp_int = 1 THEN
+            current_res.record = core_result.records[1];
+        ELSE
+            current_res.record = NULL;
+        END IF;
+
+        RETURN NEXT current_res;
+
+        IF visible_count % 1000 = 0 THEN
+            -- RAISE NOTICE ' % visible so far ... ', visible_count;
+        END IF;
+
+    END LOOP;
+
+    current_res.id = NULL;
+    current_res.rel = NULL;
+    current_res.record = NULL;
+    current_res.total = total_count;
+    current_res.checked = check_count;
+    current_res.deleted = deleted_count;
+    current_res.visible = visible_count;
+    current_res.excluded = excluded_count;
+
+    CLOSE core_cursor;
+
+    RETURN NEXT current_res;
+
+END;
+$func$ LANGUAGE PLPGSQL;
+
+-- Drop the old 10-parameter function
+DROP FUNCTION IF EXISTS search.query_parser_fts (
+    INT, INT, TEXT, INT[], INT[], INT, INT, INT, BOOL, BOOL
+);
+
+-- Evergreen DB patch 0705.data.custom-org-tree-perms.sql
+--
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0705', :eg_version);
+
+INSERT INTO permission.perm_list (id, code, description)
+    VALUES (
+        528,
+        'ADMIN_ORG_UNIT_CUSTOM_TREE',
+        oils_i18n_gettext(
+            528,
+            'User may update custom org unit trees',
+            'ppl',
+            'description'
+        )
+    );
+
+-- Evergreen DB patch 0707.schema.acq-vandelay-integration.sql
+
+SELECT evergreen.upgrade_deps_block_check('0707', :eg_version);
+
+-- seed data --
+
+INSERT INTO permission.perm_list ( id, code, description )
+    VALUES (
+        529,
+        'ADMIN_IMPORT_MATCH_SET',
+        oils_i18n_gettext(
+            529,
+            'Allows a user to create/retrieve/update/delete vandelay match sets',
+            'ppl',
+            'description'
+        )
+    ), (
+        530,
+        'VIEW_IMPORT_MATCH_SET',
+        oils_i18n_gettext(
+            530,
+            'Allows a user to view vandelay match sets',
+            'ppl',
+            'description'
+        )
+    );
+
+-- This upgrade script fixed a typo in a previous one. It was corrected in the proper place in this file.
+-- Still, record the fact it has been "applied".
+SELECT evergreen.upgrade_deps_block_check('0708', :eg_version);
+
+-- Evergreen DB patch 0709.data.misc_missing_perms.sql
+
+SELECT evergreen.upgrade_deps_block_check('0709', :eg_version);
+
+INSERT INTO permission.perm_list ( id, code, description ) 
+    VALUES ( 
+        531, 
+        'ADMIN_ADDRESS_ALERT',
+        oils_i18n_gettext( 
+            531,
+            'Allows a user to create/retrieve/update/delete address alerts',
+            'ppl', 
+            'description' 
+        )
+    ), ( 
+        532, 
+        'VIEW_ADDRESS_ALERT',
+        oils_i18n_gettext( 
+            532,
+            'Allows a user to view address alerts',
+            'ppl', 
+            'description' 
+        )
+    ), ( 
+        533, 
+        'ADMIN_COPY_LOCATION_GROUP',
+        oils_i18n_gettext( 
+            533,
+            'Allows a user to create/retrieve/update/delete copy location groups',
+            'ppl', 
+            'description' 
+        )
+    ), ( 
+        534, 
+        'ADMIN_USER_ACTIVITY_TYPE',
+        oils_i18n_gettext( 
+            534,
+            'Allows a user to create/retrieve/update/delete user activity types',
+            'ppl', 
+            'description' 
+        )
+    );
+
+COMMIT;
+
+\qecho ************************************************************************
+\qecho The following transaction, wrapping upgrade 0672, may take a while.  If
+\qecho it takes an unduly long time, try it outside of a transaction.
+\qecho ************************************************************************
+
+BEGIN;
+
 -- Evergreen DB patch 0672.fix-nonfiling-titles.sql
 --
 -- Titles that begin with non-filing articles using apostrophes
@@ -11627,1105 +15662,17 @@ SELECT metabib.reingest_metabib_field_entries(record)
     AND subfield = 'a'
     AND value LIKE '%''%'
 ;
--- Evergreen DB patch 0673.data.acq-cancel-reason-cleanup.sql
---
 
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0673', :eg_version);
+COMMIT;
 
-DELETE FROM
-    acq.cancel_reason
-WHERE
-    -- any entries with id >= 2000 were added locally.  
-    id < 2000 
+-- This is split out because it takes forever to run on large bib collections.
+\qecho ************************************************************************
+\qecho The following transaction, wrapping upgrades 0679 and 0680, may take a
+\qecho *really* long time, and you might be able to run it by itself in
+\qecho parallel with other operations using a separate sesion.
+\qecho ************************************************************************
 
-    -- these cancel_reason's are actively used by the system
-    AND id NOT IN (1, 2, 3, 1002, 1003, 1004, 1005, 1010, 1024, 1211, 1221, 1246, 1283)
-
-    -- don't delete any cancel_reason's that may be in use locally
-    AND id NOT IN (SELECT DISTINCT(cancel_reason) FROM acq.user_request WHERE cancel_reason IS NOT NULL)
-    AND id NOT IN (SELECT DISTINCT(cancel_reason) FROM acq.purchase_order WHERE cancel_reason IS NOT NULL)
-    AND id NOT IN (SELECT DISTINCT(cancel_reason) FROM acq.lineitem WHERE cancel_reason IS NOT NULL)
-    AND id NOT IN (SELECT DISTINCT(cancel_reason) FROM acq.lineitem_detail WHERE cancel_reason IS NOT NULL)
-    AND id NOT IN (SELECT DISTINCT(cancel_reason) FROM acq.acq_lineitem_history WHERE cancel_reason IS NOT NULL)
-    AND id NOT IN (SELECT DISTINCT(cancel_reason) FROM acq.acq_purchase_order_history WHERE cancel_reason IS NOT NULL);
-
-
-SELECT evergreen.upgrade_deps_block_check('0674', :eg_version);
-
-ALTER TABLE config.copy_status
-	  ADD COLUMN restrict_copy_delete BOOL NOT NULL DEFAULT FALSE;
-
-UPDATE config.copy_status
-SET restrict_copy_delete = TRUE
-WHERE id IN (1,3,6,8);
-
-INSERT INTO permission.perm_list (id, code, description) VALUES (
-    520,
-    'COPY_DELETE_WARNING.override',
-    'Allow a user to override warnings about deleting copies in problematic situations.'
-);
-
-
-SELECT evergreen.upgrade_deps_block_check('0675', :eg_version);
-
--- set expected row count to low value to avoid problem
--- where use of this function by the circ tagging feature
--- results in full scans of asset.call_number
-CREATE OR REPLACE FUNCTION action.usr_visible_circ_copies( INTEGER ) RETURNS SETOF BIGINT AS $$
-    SELECT DISTINCT(target_copy) FROM action.usr_visible_circs($1)
-$$ LANGUAGE SQL ROWS 10;
-
-
-SELECT evergreen.upgrade_deps_block_check('0676', :eg_version);
-
-INSERT INTO config.global_flag (name, label, enabled, value) VALUES (
-    'opac.use_autosuggest',
-    'OPAC: Show auto-completing suggestions dialog under basic search box (put ''opac_visible'' into the value field to limit suggestions to OPAC-visible items, or blank the field for a possible performance improvement)',
-    TRUE,
-    'opac_visible'
-);
-
-CREATE TABLE metabib.browse_entry (
-    id BIGSERIAL PRIMARY KEY,
-    value TEXT unique,
-    index_vector tsvector
-);
---Skip this, will be created differently later
---CREATE INDEX metabib_browse_entry_index_vector_idx ON metabib.browse_entry USING GIST (index_vector);
-CREATE TRIGGER metabib_browse_entry_fti_trigger
-    BEFORE INSERT OR UPDATE ON metabib.browse_entry
-    FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('keyword');
-
-
-CREATE TABLE metabib.browse_entry_def_map (
-    id BIGSERIAL PRIMARY KEY,
-    entry BIGINT REFERENCES metabib.browse_entry (id),
-    def INT REFERENCES config.metabib_field (id),
-    source BIGINT REFERENCES biblio.record_entry (id)
-);
-
-ALTER TABLE config.metabib_field ADD COLUMN browse_field BOOLEAN DEFAULT TRUE NOT NULL;
-ALTER TABLE config.metabib_field ADD COLUMN browse_xpath TEXT;
-
-ALTER TABLE config.metabib_class ADD COLUMN bouyant BOOLEAN DEFAULT FALSE NOT NULL;
-ALTER TABLE config.metabib_class ADD COLUMN restrict BOOLEAN DEFAULT FALSE NOT NULL;
-ALTER TABLE config.metabib_field ADD COLUMN restrict BOOLEAN DEFAULT FALSE NOT NULL;
-
--- one good exception to default true:
-UPDATE config.metabib_field
-    SET browse_field = FALSE
-    WHERE (field_class = 'keyword' AND name = 'keyword') OR
-        (field_class = 'subject' AND name = 'complete');
-
--- AFTER UPDATE OR INSERT trigger for biblio.record_entry
--- We're only touching it here to add a DELETE statement to the IF NEW.deleted
--- block.
-
-CREATE OR REPLACE FUNCTION biblio.indexing_ingest_or_delete () RETURNS TRIGGER AS $func$
-DECLARE
-    transformed_xml TEXT;
-    prev_xfrm       TEXT;
-    normalizer      RECORD;
-    xfrm            config.xml_transform%ROWTYPE;
-    attr_value      TEXT;
-    new_attrs       HSTORE := ''::HSTORE;
-    attr_def        config.record_attr_definition%ROWTYPE;
-BEGIN
-
-    IF NEW.deleted IS TRUE THEN -- If this bib is deleted
-        DELETE FROM metabib.metarecord_source_map WHERE source = NEW.id; -- Rid ourselves of the search-estimate-killing linkage
-        DELETE FROM metabib.record_attr WHERE id = NEW.id; -- Kill the attrs hash, useless on deleted records
-        DELETE FROM authority.bib_linking WHERE bib = NEW.id; -- Avoid updating fields in bibs that are no longer visible
-        DELETE FROM biblio.peer_bib_copy_map WHERE peer_record = NEW.id; -- Separate any multi-homed items
-        DELETE FROM metabib.browse_entry_def_map WHERE source = NEW.id; -- Don't auto-suggest deleted bibs
-        RETURN NEW; -- and we're done
-    END IF;
-
-    IF TG_OP = 'UPDATE' THEN -- re-ingest?
-        PERFORM * FROM config.internal_flag WHERE name = 'ingest.reingest.force_on_same_marc' AND enabled;
-
-        IF NOT FOUND AND OLD.marc = NEW.marc THEN -- don't do anything if the MARC didn't change
-            RETURN NEW;
-        END IF;
-    END IF;
-
-    -- Record authority linking
-    PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_authority_linking' AND enabled;
-    IF NOT FOUND THEN
-        PERFORM biblio.map_authority_linking( NEW.id, NEW.marc );
-    END IF;
-
-    -- Flatten and insert the mfr data
-    PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_metabib_full_rec' AND enabled;
-    IF NOT FOUND THEN
-        PERFORM metabib.reingest_metabib_full_rec(NEW.id);
-
-        -- Now we pull out attribute data, which is dependent on the mfr for all but XPath-based fields
-        PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_metabib_rec_descriptor' AND enabled;
-        IF NOT FOUND THEN
-            FOR attr_def IN SELECT * FROM config.record_attr_definition ORDER BY format LOOP
-
-                IF attr_def.tag IS NOT NULL THEN -- tag (and optional subfield list) selection
-                    SELECT  ARRAY_TO_STRING(ARRAY_ACCUM(value), COALESCE(attr_def.joiner,' ')) INTO attr_value
-                      FROM  (SELECT * FROM metabib.full_rec ORDER BY tag, subfield) AS x
-                      WHERE record = NEW.id
-                            AND tag LIKE attr_def.tag
-                            AND CASE
-                                WHEN attr_def.sf_list IS NOT NULL 
-                                    THEN POSITION(subfield IN attr_def.sf_list) > 0
-                                ELSE TRUE
-                                END
-                      GROUP BY tag
-                      ORDER BY tag
-                      LIMIT 1;
-
-                ELSIF attr_def.fixed_field IS NOT NULL THEN -- a named fixed field, see config.marc21_ff_pos_map.fixed_field
-                    attr_value := biblio.marc21_extract_fixed_field(NEW.id, attr_def.fixed_field);
-
-                ELSIF attr_def.xpath IS NOT NULL THEN -- and xpath expression
-
-                    SELECT INTO xfrm * FROM config.xml_transform WHERE name = attr_def.format;
-            
-                    -- See if we can skip the XSLT ... it's expensive
-                    IF prev_xfrm IS NULL OR prev_xfrm <> xfrm.name THEN
-                        -- Can't skip the transform
-                        IF xfrm.xslt <> '---' THEN
-                            transformed_xml := oils_xslt_process(NEW.marc,xfrm.xslt);
-                        ELSE
-                            transformed_xml := NEW.marc;
-                        END IF;
-            
-                        prev_xfrm := xfrm.name;
-                    END IF;
-
-                    IF xfrm.name IS NULL THEN
-                        -- just grab the marcxml (empty) transform
-                        SELECT INTO xfrm * FROM config.xml_transform WHERE xslt = '---' LIMIT 1;
-                        prev_xfrm := xfrm.name;
-                    END IF;
-
-                    attr_value := oils_xpath_string(attr_def.xpath, transformed_xml, COALESCE(attr_def.joiner,' '), ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]);
-
-                ELSIF attr_def.phys_char_sf IS NOT NULL THEN -- a named Physical Characteristic, see config.marc21_physical_characteristic_*_map
-                    SELECT  m.value INTO attr_value
-                      FROM  biblio.marc21_physical_characteristics(NEW.id) v
-                            JOIN config.marc21_physical_characteristic_value_map m ON (m.id = v.value)
-                      WHERE v.subfield = attr_def.phys_char_sf
-                      LIMIT 1; -- Just in case ...
-
-                END IF;
-
-                -- apply index normalizers to attr_value
-                FOR normalizer IN
-                    SELECT  n.func AS func,
-                            n.param_count AS param_count,
-                            m.params AS params
-                      FROM  config.index_normalizer n
-                            JOIN config.record_attr_index_norm_map m ON (m.norm = n.id)
-                      WHERE attr = attr_def.name
-                      ORDER BY m.pos LOOP
-                        EXECUTE 'SELECT ' || normalizer.func || '(' ||
-                            COALESCE( quote_literal( attr_value ), 'NULL' ) ||
-                            CASE
-                                WHEN normalizer.param_count > 0
-                                    THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
-                                    ELSE ''
-                                END ||
-                            ')' INTO attr_value;
-        
-                END LOOP;
-
-                -- Add the new value to the hstore
-                new_attrs := new_attrs || hstore( attr_def.name, attr_value );
-
-            END LOOP;
-
-            IF TG_OP = 'INSERT' OR OLD.deleted THEN -- initial insert OR revivication
-                INSERT INTO metabib.record_attr (id, attrs) VALUES (NEW.id, new_attrs);
-            ELSE
-                UPDATE metabib.record_attr SET attrs = new_attrs WHERE id = NEW.id;
-            END IF;
-
-        END IF;
-    END IF;
-
-    -- Gather and insert the field entry data
-    PERFORM metabib.reingest_metabib_field_entries(NEW.id);
-
-    -- Located URI magic
-    IF TG_OP = 'INSERT' THEN
-        PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_located_uri' AND enabled;
-        IF NOT FOUND THEN
-            PERFORM biblio.extract_located_uris( NEW.id, NEW.marc, NEW.editor );
-        END IF;
-    ELSE
-        PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_located_uri' AND enabled;
-        IF NOT FOUND THEN
-            PERFORM biblio.extract_located_uris( NEW.id, NEW.marc, NEW.editor );
-        END IF;
-    END IF;
-
-    -- (re)map metarecord-bib linking
-    IF TG_OP = 'INSERT' THEN -- if not deleted and performing an insert, check for the flag
-        PERFORM * FROM config.internal_flag WHERE name = 'ingest.metarecord_mapping.skip_on_insert' AND enabled;
-        IF NOT FOUND THEN
-            PERFORM metabib.remap_metarecord_for_bib( NEW.id, NEW.fingerprint );
-        END IF;
-    ELSE -- we're doing an update, and we're not deleted, remap
-        PERFORM * FROM config.internal_flag WHERE name = 'ingest.metarecord_mapping.skip_on_update' AND enabled;
-        IF NOT FOUND THEN
-            PERFORM metabib.remap_metarecord_for_bib( NEW.id, NEW.fingerprint );
-        END IF;
-    END IF;
-
-    RETURN NEW;
-END;
-$func$ LANGUAGE PLPGSQL;
-
-CREATE OR REPLACE FUNCTION metabib.browse_normalize(facet_text TEXT, mapped_field INT) RETURNS TEXT AS $$
-DECLARE
-    normalizer  RECORD;
-BEGIN
-
-    FOR normalizer IN
-        SELECT  n.func AS func,
-                n.param_count AS param_count,
-                m.params AS params
-          FROM  config.index_normalizer n
-                JOIN config.metabib_field_index_norm_map m ON (m.norm = n.id)
-          WHERE m.field = mapped_field AND m.pos < 0
-          ORDER BY m.pos LOOP
-
-            EXECUTE 'SELECT ' || normalizer.func || '(' ||
-                quote_literal( facet_text ) ||
-                CASE
-                    WHEN normalizer.param_count > 0
-                        THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
-                        ELSE ''
-                    END ||
-                ')' INTO facet_text;
-
-    END LOOP;
-
-    RETURN facet_text;
-END;
-
-$$ LANGUAGE PLPGSQL;
-
-DROP FUNCTION biblio.extract_metabib_field_entry(bigint, text);
-DROP FUNCTION biblio.extract_metabib_field_entry(bigint);
-
-DROP TYPE metabib.field_entry_template;
-CREATE TYPE metabib.field_entry_template AS (
-        field_class     TEXT,
-        field           INT,
-        facet_field     BOOL,
-        search_field    BOOL,
-        browse_field   BOOL,
-        source          BIGINT,
-        value           TEXT
-);
-
-
-CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry ( rid BIGINT, default_joiner TEXT ) RETURNS SETOF metabib.field_entry_template AS $func$
-DECLARE
-    bib     biblio.record_entry%ROWTYPE;
-    idx     config.metabib_field%ROWTYPE;
-    xfrm        config.xml_transform%ROWTYPE;
-    prev_xfrm   TEXT;
-    transformed_xml TEXT;
-    xml_node    TEXT;
-    xml_node_list   TEXT[];
-    facet_text  TEXT;
-    browse_text TEXT;
-    raw_text    TEXT;
-    curr_text   TEXT;
-    joiner      TEXT := default_joiner; -- XXX will index defs supply a joiner?
-    output_row  metabib.field_entry_template%ROWTYPE;
-BEGIN
-
-    -- Get the record
-    SELECT INTO bib * FROM biblio.record_entry WHERE id = rid;
-
-    -- Loop over the indexing entries
-    FOR idx IN SELECT * FROM config.metabib_field ORDER BY format LOOP
-
-        SELECT INTO xfrm * from config.xml_transform WHERE name = idx.format;
-
-        -- See if we can skip the XSLT ... it's expensive
-        IF prev_xfrm IS NULL OR prev_xfrm <> xfrm.name THEN
-            -- Can't skip the transform
-            IF xfrm.xslt <> '---' THEN
-                transformed_xml := oils_xslt_process(bib.marc,xfrm.xslt);
-            ELSE
-                transformed_xml := bib.marc;
-            END IF;
-
-            prev_xfrm := xfrm.name;
-        END IF;
-
-        xml_node_list := oils_xpath( idx.xpath, transformed_xml, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]] );
-
-        raw_text := NULL;
-        FOR xml_node IN SELECT x FROM unnest(xml_node_list) AS x LOOP
-            CONTINUE WHEN xml_node !~ E'^\\s*<';
-
-            curr_text := ARRAY_TO_STRING(
-                oils_xpath( '//text()',
-                    REGEXP_REPLACE( -- This escapes all &s not followed by "amp;".  Data ise returned from oils_xpath (above) in UTF-8, not entity encoded
-                        REGEXP_REPLACE( -- This escapes embeded <s
-                            xml_node,
-                            $re$(>[^<]+)(<)([^>]+<)$re$,
-                            E'\\1&lt;\\3',
-                            'g'
-                        ),
-                        '&(?!amp;)',
-                        '&amp;',
-                        'g'
-                    )
-                ),
-                ' '
-            );
-
-            CONTINUE WHEN curr_text IS NULL OR curr_text = '';
-
-            IF raw_text IS NOT NULL THEN
-                raw_text := raw_text || joiner;
-            END IF;
-
-            raw_text := COALESCE(raw_text,'') || curr_text;
-
-            -- autosuggest/metabib.browse_entry
-            IF idx.browse_field THEN
-
-                IF idx.browse_xpath IS NOT NULL AND idx.browse_xpath <> '' THEN
-                    browse_text := oils_xpath_string( idx.browse_xpath, xml_node, joiner, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]] );
-                ELSE
-                    browse_text := curr_text;
-                END IF;
-
-                output_row.field_class = idx.field_class;
-                output_row.field = idx.id;
-                output_row.source = rid;
-                output_row.value = BTRIM(REGEXP_REPLACE(browse_text, E'\\s+', ' ', 'g'));
-
-                output_row.browse_field = TRUE;
-                RETURN NEXT output_row;
-                output_row.browse_field = FALSE;
-            END IF;
-
-            -- insert raw node text for faceting
-            IF idx.facet_field THEN
-
-                IF idx.facet_xpath IS NOT NULL AND idx.facet_xpath <> '' THEN
-                    facet_text := oils_xpath_string( idx.facet_xpath, xml_node, joiner, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]] );
-                ELSE
-                    facet_text := curr_text;
-                END IF;
-
-                output_row.field_class = idx.field_class;
-                output_row.field = -1 * idx.id;
-                output_row.source = rid;
-                output_row.value = BTRIM(REGEXP_REPLACE(facet_text, E'\\s+', ' ', 'g'));
-
-                output_row.facet_field = TRUE;
-                RETURN NEXT output_row;
-                output_row.facet_field = FALSE;
-            END IF;
-
-        END LOOP;
-
-        CONTINUE WHEN raw_text IS NULL OR raw_text = '';
-
-        -- insert combined node text for searching
-        IF idx.search_field THEN
-            output_row.field_class = idx.field_class;
-            output_row.field = idx.id;
-            output_row.source = rid;
-            output_row.value = BTRIM(REGEXP_REPLACE(raw_text, E'\\s+', ' ', 'g'));
-
-            output_row.search_field = TRUE;
-            RETURN NEXT output_row;
-        END IF;
-
-    END LOOP;
-
-END;
-$func$ LANGUAGE PLPGSQL;
-
--- default to a space joiner
-CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry ( BIGINT ) RETURNS SETOF metabib.field_entry_template AS $func$
-    SELECT * FROM biblio.extract_metabib_field_entry($1, ' ');
-    $func$ LANGUAGE SQL;
-
-
-CREATE OR REPLACE FUNCTION metabib.reingest_metabib_field_entries( bib_id BIGINT ) RETURNS VOID AS $func$
-DECLARE
-    fclass          RECORD;
-    ind_data        metabib.field_entry_template%ROWTYPE;
-    mbe_row         metabib.browse_entry%ROWTYPE;
-    mbe_id          BIGINT;
-BEGIN
-    PERFORM * FROM config.internal_flag WHERE name = 'ingest.assume_inserts_only' AND enabled;
-    IF NOT FOUND THEN
-        FOR fclass IN SELECT * FROM config.metabib_class LOOP
-            -- RAISE NOTICE 'Emptying out %', fclass.name;
-            EXECUTE $$DELETE FROM metabib.$$ || fclass.name || $$_field_entry WHERE source = $$ || bib_id;
-        END LOOP;
-        DELETE FROM metabib.facet_entry WHERE source = bib_id;
-        DELETE FROM metabib.browse_entry_def_map WHERE source = bib_id;
-    END IF;
-
-    FOR ind_data IN SELECT * FROM biblio.extract_metabib_field_entry( bib_id ) LOOP
-        IF ind_data.field < 0 THEN
-            ind_data.field = -1 * ind_data.field;
-        END IF;
-
-        IF ind_data.facet_field THEN
-            INSERT INTO metabib.facet_entry (field, source, value)
-                VALUES (ind_data.field, ind_data.source, ind_data.value);
-        END IF;
-
-        IF ind_data.browse_field THEN
-            SELECT INTO mbe_row * FROM metabib.browse_entry WHERE value = ind_data.value;
-            IF FOUND THEN
-                mbe_id := mbe_row.id;
-            ELSE
-                INSERT INTO metabib.browse_entry (value) VALUES
-                    (metabib.browse_normalize(ind_data.value, ind_data.field));
-                mbe_id := CURRVAL('metabib.browse_entry_id_seq'::REGCLASS);
-            END IF;
-
-            INSERT INTO metabib.browse_entry_def_map (entry, def, source)
-                VALUES (mbe_id, ind_data.field, ind_data.source);
-        END IF;
-
-        IF ind_data.search_field THEN
-            EXECUTE $$
-                INSERT INTO metabib.$$ || ind_data.field_class || $$_field_entry (field, source, value)
-                    VALUES ($$ ||
-                        quote_literal(ind_data.field) || $$, $$ ||
-                        quote_literal(ind_data.source) || $$, $$ ||
-                        quote_literal(ind_data.value) ||
-                    $$);$$;
-        END IF;
-
-    END LOOP;
-
-    RETURN;
-END;
-$func$ LANGUAGE PLPGSQL;
-
--- This mimics a specific part of QueryParser, turning the first part of a
--- classed search (search_class) into a set of classes and possibly fields.
--- search_class might look like "author" or "title|proper" or "ti|uniform"
--- or "au" or "au|corporate|personal" or anything like that, where the first
--- element of the list you get by separating on the "|" character is either
--- a registered class (config.metabib_class) or an alias
--- (config.metabib_search_alias), and the rest of any such elements are
--- fields (config.metabib_field).
-CREATE OR REPLACE
-    FUNCTION metabib.search_class_to_registered_components(search_class TEXT)
-    RETURNS SETOF RECORD AS $func$
-DECLARE
-    search_parts        TEXT[];
-    field_name          TEXT;
-    search_part_count   INTEGER;
-    rec                 RECORD;
-    registered_class    config.metabib_class%ROWTYPE;
-    registered_alias    config.metabib_search_alias%ROWTYPE;
-    registered_field    config.metabib_field%ROWTYPE;
-BEGIN
-    search_parts := REGEXP_SPLIT_TO_ARRAY(search_class, E'\\|');
-
-    search_part_count := ARRAY_LENGTH(search_parts, 1);
-    IF search_part_count = 0 THEN
-        RETURN;
-    ELSE
-        SELECT INTO registered_class
-            * FROM config.metabib_class WHERE name = search_parts[1];
-        IF FOUND THEN
-            IF search_part_count < 2 THEN   -- all fields
-                rec := (registered_class.name, NULL::INTEGER);
-                RETURN NEXT rec;
-                RETURN; -- done
-            END IF;
-            FOR field_name IN SELECT *
-                FROM UNNEST(search_parts[2:search_part_count]) LOOP
-                SELECT INTO registered_field
-                    * FROM config.metabib_field
-                    WHERE name = field_name AND
-                        field_class = registered_class.name;
-                IF FOUND THEN
-                    rec := (registered_class.name, registered_field.id);
-                    RETURN NEXT rec;
-                END IF;
-            END LOOP;
-        ELSE
-            -- maybe we have an alias?
-            SELECT INTO registered_alias
-                * FROM config.metabib_search_alias WHERE alias=search_parts[1];
-            IF NOT FOUND THEN
-                RETURN;
-            ELSE
-                IF search_part_count < 2 THEN   -- return w/e the alias says
-                    rec := (
-                        registered_alias.field_class, registered_alias.field
-                    );
-                    RETURN NEXT rec;
-                    RETURN; -- done
-                ELSE
-                    FOR field_name IN SELECT *
-                        FROM UNNEST(search_parts[2:search_part_count]) LOOP
-                        SELECT INTO registered_field
-                            * FROM config.metabib_field
-                            WHERE name = field_name AND
-                                field_class = registered_alias.field_class;
-                        IF FOUND THEN
-                            rec := (
-                                registered_alias.field_class,
-                                registered_field.id
-                            );
-                            RETURN NEXT rec;
-                        END IF;
-                    END LOOP;
-                END IF;
-            END IF;
-        END IF;
-    END IF;
-END;
-$func$ LANGUAGE PLPGSQL;
-
-
-CREATE OR REPLACE
-    FUNCTION metabib.suggest_browse_entries(
-        query_text      TEXT,   -- 'foo' or 'foo & ba:*',ready for to_tsquery()
-        search_class    TEXT,   -- 'alias' or 'class' or 'class|field..', etc
-        headline_opts   TEXT,   -- markup options for ts_headline()
-        visibility_org  INTEGER,-- null if you don't want opac visibility test
-        query_limit     INTEGER,-- use in LIMIT clause of interal query
-        normalization   INTEGER -- argument to TS_RANK_CD()
-    ) RETURNS TABLE (
-        value                   TEXT,   -- plain
-        field                   INTEGER,
-        bouyant_and_class_match BOOL,
-        field_match             BOOL,
-        field_weight            INTEGER,
-        rank                    REAL,
-        bouyant                 BOOL,
-        match                   TEXT    -- marked up
-    ) AS $func$
-DECLARE
-    query                   TSQUERY;
-    opac_visibility_join    TEXT;
-    search_class_join       TEXT;
-    r_fields                RECORD;
-BEGIN
-    query := TO_TSQUERY('keyword', query_text);
-
-    IF visibility_org IS NOT NULL THEN
-        opac_visibility_join := '
-    JOIN asset.opac_visible_copies aovc ON (
-        aovc.record = mbedm.source AND
-        aovc.circ_lib IN (SELECT id FROM actor.org_unit_descendants($4))
-    )';
-    ELSE
-        opac_visibility_join := '';
-    END IF;
-
-    -- The following determines whether we only provide suggestsons matching
-    -- the user's selected search_class, or whether we show other suggestions
-    -- too. The reason for MIN() is that for search_classes like
-    -- 'title|proper|uniform' you would otherwise get multiple rows.  The
-    -- implication is that if title as a class doesn't have restrict,
-    -- nor does the proper field, but the uniform field does, you're going
-    -- to get 'false' for your overall evaluation of 'should we restrict?'
-    -- To invert that, change from MIN() to MAX().
-
-    SELECT
-        INTO r_fields
-            MIN(cmc.restrict::INT) AS restrict_class,
-            MIN(cmf.restrict::INT) AS restrict_field
-        FROM metabib.search_class_to_registered_components(search_class)
-            AS _registered (field_class TEXT, field INT)
-        JOIN
-            config.metabib_class cmc ON (cmc.name = _registered.field_class)
-        LEFT JOIN
-            config.metabib_field cmf ON (cmf.id = _registered.field);
-
-    -- evaluate 'should we restrict?'
-    IF r_fields.restrict_field::BOOL OR r_fields.restrict_class::BOOL THEN
-        search_class_join := '
-    JOIN
-        metabib.search_class_to_registered_components($2)
-        AS _registered (field_class TEXT, field INT) ON (
-            (_registered.field IS NULL AND
-                _registered.field_class = cmf.field_class) OR
-            (_registered.field = cmf.id)
-        )
-    ';
-    ELSE
-        search_class_join := '
-    LEFT JOIN
-        metabib.search_class_to_registered_components($2)
-        AS _registered (field_class TEXT, field INT) ON (
-            _registered.field_class = cmc.name
-        )
-    ';
-    END IF;
-
-    RETURN QUERY EXECUTE 'SELECT *, TS_HEADLINE(value, $1, $3) FROM (SELECT DISTINCT
-        mbe.value,
-        cmf.id,
-        cmc.bouyant AND _registered.field_class IS NOT NULL,
-        _registered.field = cmf.id,
-        cmf.weight,
-        TS_RANK_CD(mbe.index_vector, $1, $6),
-        cmc.bouyant
-    FROM metabib.browse_entry_def_map mbedm
-    JOIN metabib.browse_entry mbe ON (mbe.id = mbedm.entry)
-    JOIN config.metabib_field cmf ON (cmf.id = mbedm.def)
-    JOIN config.metabib_class cmc ON (cmf.field_class = cmc.name)
-    '  || search_class_join || opac_visibility_join ||
-    ' WHERE $1 @@ mbe.index_vector
-    ORDER BY 3 DESC, 4 DESC NULLS LAST, 5 DESC, 6 DESC, 7 DESC, 1 ASC
-    LIMIT $5) x
-    ORDER BY 3 DESC, 4 DESC NULLS LAST, 5 DESC, 6 DESC, 7 DESC, 1 ASC
-    '   -- sic, repeat the order by clause in the outer select too
-    USING
-        query, search_class, headline_opts,
-        visibility_org, query_limit, normalization
-        ;
-
-    -- sort order:
-    --  bouyant AND chosen class = match class
-    --  chosen field = match field
-    --  field weight
-    --  rank
-    --  bouyancy
-    --  value itself
-
-END;
-$func$ LANGUAGE PLPGSQL;
-
--- The advantage of this over the stock regexp_split_to_array() is that it
--- won't degrade unicode strings.
-CREATE OR REPLACE FUNCTION evergreen.regexp_split_to_array(TEXT, TEXT)
-RETURNS TEXT[] AS $$
-    return encode_array_literal([split $_[1], $_[0]]);
-$$ LANGUAGE PLPERLU STRICT IMMUTABLE;
-
-
--- Adds some logic for browse_entry to split on non-word chars for index_vector, post-normalize
-CREATE OR REPLACE FUNCTION oils_tsearch2 () RETURNS TRIGGER AS $$
-DECLARE
-    normalizer      RECORD;
-    value           TEXT := '';
-BEGIN
-
-    value := NEW.value;
-
-    IF TG_TABLE_NAME::TEXT ~ 'field_entry$' THEN
-        FOR normalizer IN
-            SELECT  n.func AS func,
-                    n.param_count AS param_count,
-                    m.params AS params
-              FROM  config.index_normalizer n
-                    JOIN config.metabib_field_index_norm_map m ON (m.norm = n.id)
-              WHERE field = NEW.field AND m.pos < 0
-              ORDER BY m.pos LOOP
-                EXECUTE 'SELECT ' || normalizer.func || '(' ||
-                    quote_literal( value ) ||
-                    CASE
-                        WHEN normalizer.param_count > 0
-                            THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
-                            ELSE ''
-                        END ||
-                    ')' INTO value;
-
-        END LOOP;
-
-        NEW.value := value;
-    END IF;
-
-    IF NEW.index_vector = ''::tsvector THEN
-        RETURN NEW;
-    END IF;
-
-    IF TG_TABLE_NAME::TEXT ~ 'field_entry$' THEN
-        FOR normalizer IN
-            SELECT  n.func AS func,
-                    n.param_count AS param_count,
-                    m.params AS params
-              FROM  config.index_normalizer n
-                    JOIN config.metabib_field_index_norm_map m ON (m.norm = n.id)
-              WHERE field = NEW.field AND m.pos >= 0
-              ORDER BY m.pos LOOP
-                EXECUTE 'SELECT ' || normalizer.func || '(' ||
-                    quote_literal( value ) ||
-                    CASE
-                        WHEN normalizer.param_count > 0
-                            THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
-                            ELSE ''
-                        END ||
-                    ')' INTO value;
-
-        END LOOP;
-    END IF;
-
-    IF TG_TABLE_NAME::TEXT ~ 'browse_entry$' THEN
-        value :=  ARRAY_TO_STRING(
-            evergreen.regexp_split_to_array(value, E'\\W+'), ' '
-        );
-    END IF;
-
-    NEW.index_vector = to_tsvector((TG_ARGV[0])::regconfig, value);
-
-    RETURN NEW;
-END;
-$$ LANGUAGE PLPGSQL;
-
--- Evergreen DB patch 0677.schema.circ_limits.sql
---
--- FIXME: insert description of change, if needed
---
-
-
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0677', :eg_version);
-
--- FIXME: add/check SQL statements to perform the upgrade
--- Limit groups for circ counting
-CREATE TABLE config.circ_limit_group (
-    id          SERIAL  PRIMARY KEY,
-    name        TEXT    UNIQUE NOT NULL,
-    description TEXT
-);
-
--- Limit sets
-CREATE TABLE config.circ_limit_set (
-    id          SERIAL  PRIMARY KEY,
-    name        TEXT    UNIQUE NOT NULL,
-    owning_lib  INT     NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
-    items_out   INT     NOT NULL, -- Total current active circulations must be less than this. 0 means skip counting (always pass)
-    depth       INT     NOT NULL DEFAULT 0, -- Depth count starts at
-    global      BOOL    NOT NULL DEFAULT FALSE, -- If enabled, include everything below depth, otherwise ancestors/descendants only
-    description TEXT
-);
-
--- Linkage between matchpoints and limit sets
-CREATE TABLE config.circ_matrix_limit_set_map (
-    id          SERIAL  PRIMARY KEY,
-    matchpoint  INT     NOT NULL REFERENCES config.circ_matrix_matchpoint (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    limit_set   INT     NOT NULL REFERENCES config.circ_limit_set (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    fallthrough BOOL    NOT NULL DEFAULT FALSE, -- If true fallthrough will grab this rule as it goes along
-    active      BOOL    NOT NULL DEFAULT TRUE,
-    CONSTRAINT circ_limit_set_once_per_matchpoint UNIQUE (matchpoint, limit_set)
-);
-
--- Linkage between limit sets and circ mods
-CREATE TABLE config.circ_limit_set_circ_mod_map (
-    id          SERIAL  PRIMARY KEY,
-    limit_set   INT     NOT NULL REFERENCES config.circ_limit_set (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    circ_mod    TEXT    NOT NULL REFERENCES config.circ_modifier (code) ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    CONSTRAINT cm_once_per_set UNIQUE (limit_set, circ_mod)
-);
-
--- Linkage between limit sets and limit groups
-CREATE TABLE config.circ_limit_set_group_map (
-    id          SERIAL  PRIMARY KEY,
-    limit_set    INT     NOT NULL REFERENCES config.circ_limit_set (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    limit_group INT     NOT NULL REFERENCES config.circ_limit_group (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    check_only  BOOL    NOT NULL DEFAULT FALSE, -- If true, don't accumulate this limit_group for storing with the circulation
-    CONSTRAINT clg_once_per_set UNIQUE (limit_set, limit_group)
-);
-
--- Linkage between limit groups and circulations
-CREATE TABLE action.circulation_limit_group_map (
-    circ        BIGINT      NOT NULL REFERENCES action.circulation (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    limit_group INT         NOT NULL REFERENCES config.circ_limit_group (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    PRIMARY KEY (circ, limit_group)
-);
-
--- Function for populating the circ/limit group mappings
-CREATE OR REPLACE FUNCTION action.link_circ_limit_groups ( BIGINT, INT[] ) RETURNS VOID AS $func$
-    INSERT INTO action.circulation_limit_group_map(circ, limit_group) SELECT $1, id FROM config.circ_limit_group WHERE id IN (SELECT * FROM UNNEST($2));
-$func$ LANGUAGE SQL;
-
-DROP TYPE IF EXISTS action.circ_matrix_test_result CASCADE;
-CREATE TYPE action.circ_matrix_test_result AS ( success BOOL, fail_part TEXT, buildrows INT[], matchpoint INT, circulate BOOL, duration_rule INT, recurring_fine_rule INT, max_fine_rule INT, hard_due_date INT, renewals INT, grace_period INTERVAL, limit_groups INT[] );
-
-CREATE OR REPLACE FUNCTION action.item_user_circ_test( circ_ou INT, match_item BIGINT, match_user INT, renewal BOOL ) RETURNS SETOF action.circ_matrix_test_result AS $func$
-DECLARE
-    user_object             actor.usr%ROWTYPE;
-    standing_penalty        config.standing_penalty%ROWTYPE;
-    item_object             asset.copy%ROWTYPE;
-    item_status_object      config.copy_status%ROWTYPE;
-    item_location_object    asset.copy_location%ROWTYPE;
-    result                  action.circ_matrix_test_result;
-    circ_test               action.found_circ_matrix_matchpoint;
-    circ_matchpoint         config.circ_matrix_matchpoint%ROWTYPE;
-    circ_limit_set          config.circ_limit_set%ROWTYPE;
-    hold_ratio              action.hold_stats%ROWTYPE;
-    penalty_type            TEXT;
-    items_out               INT;
-    context_org_list        INT[];
-    done                    BOOL := FALSE;
-BEGIN
-    -- Assume success unless we hit a failure condition
-    result.success := TRUE;
-
-    -- Need user info to look up matchpoints
-    SELECT INTO user_object * FROM actor.usr WHERE id = match_user AND NOT deleted;
-
-    -- (Insta)Fail if we couldn't find the user
-    IF user_object.id IS NULL THEN
-        result.fail_part := 'no_user';
-        result.success := FALSE;
-        done := TRUE;
-        RETURN NEXT result;
-        RETURN;
-    END IF;
-
-    -- Need item info to look up matchpoints
-    SELECT INTO item_object * FROM asset.copy WHERE id = match_item AND NOT deleted;
-
-    -- (Insta)Fail if we couldn't find the item 
-    IF item_object.id IS NULL THEN
-        result.fail_part := 'no_item';
-        result.success := FALSE;
-        done := TRUE;
-        RETURN NEXT result;
-        RETURN;
-    END IF;
-
-    SELECT INTO circ_test * FROM action.find_circ_matrix_matchpoint(circ_ou, item_object, user_object, renewal);
-
-    circ_matchpoint             := circ_test.matchpoint;
-    result.matchpoint           := circ_matchpoint.id;
-    result.circulate            := circ_matchpoint.circulate;
-    result.duration_rule        := circ_matchpoint.duration_rule;
-    result.recurring_fine_rule  := circ_matchpoint.recurring_fine_rule;
-    result.max_fine_rule        := circ_matchpoint.max_fine_rule;
-    result.hard_due_date        := circ_matchpoint.hard_due_date;
-    result.renewals             := circ_matchpoint.renewals;
-    result.grace_period         := circ_matchpoint.grace_period;
-    result.buildrows            := circ_test.buildrows;
-
-    -- (Insta)Fail if we couldn't find a matchpoint
-    IF circ_test.success = false THEN
-        result.fail_part := 'no_matchpoint';
-        result.success := FALSE;
-        done := TRUE;
-        RETURN NEXT result;
-        RETURN;
-    END IF;
-
-    -- All failures before this point are non-recoverable
-    -- Below this point are possibly overridable failures
-
-    -- Fail if the user is barred
-    IF user_object.barred IS TRUE THEN
-        result.fail_part := 'actor.usr.barred';
-        result.success := FALSE;
-        done := TRUE;
-        RETURN NEXT result;
-    END IF;
-
-    -- Fail if the item can't circulate
-    IF item_object.circulate IS FALSE THEN
-        result.fail_part := 'asset.copy.circulate';
-        result.success := FALSE;
-        done := TRUE;
-        RETURN NEXT result;
-    END IF;
-
-    -- Fail if the item isn't in a circulateable status on a non-renewal
-    IF NOT renewal AND item_object.status NOT IN ( 0, 7, 8 ) THEN 
-        result.fail_part := 'asset.copy.status';
-        result.success := FALSE;
-        done := TRUE;
-        RETURN NEXT result;
-    -- Alternately, fail if the item isn't checked out on a renewal
-    ELSIF renewal AND item_object.status <> 1 THEN
-        result.fail_part := 'asset.copy.status';
-        result.success := FALSE;
-        done := TRUE;
-        RETURN NEXT result;
-    END IF;
-
-    -- Fail if the item can't circulate because of the shelving location
-    SELECT INTO item_location_object * FROM asset.copy_location WHERE id = item_object.location;
-    IF item_location_object.circulate IS FALSE THEN
-        result.fail_part := 'asset.copy_location.circulate';
-        result.success := FALSE;
-        done := TRUE;
-        RETURN NEXT result;
-    END IF;
-
-    -- Use Circ OU for penalties and such
-    SELECT INTO context_org_list ARRAY_AGG(id) FROM actor.org_unit_full_path( circ_ou );
-
-    IF renewal THEN
-        penalty_type = '%RENEW%';
-    ELSE
-        penalty_type = '%CIRC%';
-    END IF;
-
-    FOR standing_penalty IN
-        SELECT  DISTINCT csp.*
-          FROM  actor.usr_standing_penalty usp
-                JOIN config.standing_penalty csp ON (csp.id = usp.standing_penalty)
-          WHERE usr = match_user
-                AND usp.org_unit IN ( SELECT * FROM unnest(context_org_list) )
-                AND (usp.stop_date IS NULL or usp.stop_date > NOW())
-                AND csp.block_list LIKE penalty_type LOOP
-
-        result.fail_part := standing_penalty.name;
-        result.success := FALSE;
-        done := TRUE;
-        RETURN NEXT result;
-    END LOOP;
-
-    -- Fail if the test is set to hard non-circulating
-    IF circ_matchpoint.circulate IS FALSE THEN
-        result.fail_part := 'config.circ_matrix_test.circulate';
-        result.success := FALSE;
-        done := TRUE;
-        RETURN NEXT result;
-    END IF;
-
-    -- Fail if the total copy-hold ratio is too low
-    IF circ_matchpoint.total_copy_hold_ratio IS NOT NULL THEN
-        SELECT INTO hold_ratio * FROM action.copy_related_hold_stats(match_item);
-        IF hold_ratio.total_copy_ratio IS NOT NULL AND hold_ratio.total_copy_ratio < circ_matchpoint.total_copy_hold_ratio THEN
-            result.fail_part := 'config.circ_matrix_test.total_copy_hold_ratio';
-            result.success := FALSE;
-            done := TRUE;
-            RETURN NEXT result;
-        END IF;
-    END IF;
-
-    -- Fail if the available copy-hold ratio is too low
-    IF circ_matchpoint.available_copy_hold_ratio IS NOT NULL THEN
-        IF hold_ratio.hold_count IS NULL THEN
-            SELECT INTO hold_ratio * FROM action.copy_related_hold_stats(match_item);
-        END IF;
-        IF hold_ratio.available_copy_ratio IS NOT NULL AND hold_ratio.available_copy_ratio < circ_matchpoint.available_copy_hold_ratio THEN
-            result.fail_part := 'config.circ_matrix_test.available_copy_hold_ratio';
-            result.success := FALSE;
-            done := TRUE;
-            RETURN NEXT result;
-        END IF;
-    END IF;
-
-    -- Fail if the user has too many items out by defined limit sets
-    FOR circ_limit_set IN SELECT ccls.* FROM config.circ_limit_set ccls
-      JOIN config.circ_matrix_limit_set_map ccmlsm ON ccmlsm.limit_set = ccls.id
-      WHERE ccmlsm.active AND ( ccmlsm.matchpoint = circ_matchpoint.id OR
-        ( ccmlsm.matchpoint IN (SELECT * FROM unnest(result.buildrows)) AND ccmlsm.fallthrough )
-        ) LOOP
-            IF circ_limit_set.items_out > 0 AND NOT renewal THEN
-                SELECT INTO context_org_list ARRAY_AGG(aou.id)
-                  FROM actor.org_unit_full_path( circ_ou ) aou
-                    JOIN actor.org_unit_type aout ON aou.ou_type = aout.id
-                  WHERE aout.depth >= circ_limit_set.depth;
-                IF circ_limit_set.global THEN
-                    WITH RECURSIVE descendant_depth AS (
-                        SELECT  ou.id,
-                            ou.parent_ou
-                        FROM  actor.org_unit ou
-                        WHERE ou.id IN (SELECT * FROM unnest(context_org_list))
-                            UNION
-                        SELECT  ou.id,
-                            ou.parent_ou
-                        FROM  actor.org_unit ou
-                            JOIN descendant_depth ot ON (ot.id = ou.parent_ou)
-                    ) SELECT INTO context_org_list ARRAY_AGG(ou.id) FROM actor.org_unit ou JOIN descendant_depth USING (id);
-                END IF;
-                SELECT INTO items_out COUNT(DISTINCT circ.id)
-                  FROM action.circulation circ
-                    JOIN asset.copy copy ON (copy.id = circ.target_copy)
-                    LEFT JOIN action.circulation_limit_group_map aclgm ON (circ.id = aclgm.circ)
-                  WHERE circ.usr = match_user
-                    AND circ.circ_lib IN (SELECT * FROM unnest(context_org_list))
-                    AND circ.checkin_time IS NULL
-                    AND (circ.stop_fines IN ('MAXFINES','LONGOVERDUE') OR circ.stop_fines IS NULL)
-                    AND (copy.circ_modifier IN (SELECT circ_mod FROM config.circ_limit_set_circ_mod_map WHERE limit_set = circ_limit_set.id)
-                        OR aclgm.limit_group IN (SELECT limit_group FROM config.circ_limit_set_group_map WHERE limit_set = circ_limit_set.id)
-                    );
-                IF items_out >= circ_limit_set.items_out THEN
-                    result.fail_part := 'config.circ_matrix_circ_mod_test';
-                    result.success := FALSE;
-                    done := TRUE;
-                    RETURN NEXT result;
-                END IF;
-            END IF;
-            SELECT INTO result.limit_groups result.limit_groups || ARRAY_AGG(limit_group) FROM config.circ_limit_set_group_map WHERE limit_set = circ_limit_set.id AND NOT check_only;
-    END LOOP;
-
-    -- If we passed everything, return the successful matchpoint
-    IF NOT done THEN
-        RETURN NEXT result;
-    END IF;
-
-    RETURN;
-END;
-$func$ LANGUAGE plpgsql;
-
--- We need to re-create these, as they got dropped with the type above.
-CREATE OR REPLACE FUNCTION action.item_user_circ_test( INT, BIGINT, INT ) RETURNS SETOF action.circ_matrix_test_result AS $func$
-    SELECT * FROM action.item_user_circ_test( $1, $2, $3, FALSE );
-$func$ LANGUAGE SQL;
-
-CREATE OR REPLACE FUNCTION action.item_user_renew_test( INT, BIGINT, INT ) RETURNS SETOF action.circ_matrix_test_result AS $func$
-    SELECT * FROM action.item_user_circ_test( $1, $2, $3, TRUE );
-$func$ LANGUAGE SQL;
-
--- Temp function for migrating circ mod limits.
-CREATE OR REPLACE FUNCTION evergreen.temp_migrate_circ_mod_limits() RETURNS VOID AS $func$
-DECLARE
-    circ_mod_group config.circ_matrix_circ_mod_test%ROWTYPE;
-    current_set INT;
-    circ_mod_count INT;
-BEGIN
-    FOR circ_mod_group IN SELECT * FROM config.circ_matrix_circ_mod_test LOOP
-        INSERT INTO config.circ_limit_set(name, owning_lib, items_out, depth, global, description)
-            SELECT org_unit || ' : Matchpoint ' || circ_mod_group.matchpoint || ' : Circ Mod Test ' || circ_mod_group.id, org_unit, circ_mod_group.items_out, 0, false, 'Migrated from Circ Mod Test System'
-                FROM config.circ_matrix_matchpoint WHERE id = circ_mod_group.matchpoint
-            RETURNING id INTO current_set;
-        INSERT INTO config.circ_matrix_limit_set_map(matchpoint, limit_set, fallthrough, active) VALUES (circ_mod_group.matchpoint, current_set, false, true);
-        INSERT INTO config.circ_limit_set_circ_mod_map(limit_set, circ_mod)
-            SELECT current_set, circ_mod FROM config.circ_matrix_circ_mod_test_map WHERE circ_mod_test = circ_mod_group.id;
-        SELECT INTO circ_mod_count count(id) FROM config.circ_limit_set_circ_mod_map WHERE limit_set = current_set;
-        RAISE NOTICE 'Created limit set with id % and % circ modifiers attached to matchpoint %', current_set, circ_mod_count, circ_mod_group.matchpoint;
-    END LOOP;
-END;
-$func$ LANGUAGE plpgsql;
-
--- Run the temp function
-SELECT * FROM evergreen.temp_migrate_circ_mod_limits();
-
--- Drop the temp function
-DROP FUNCTION evergreen.temp_migrate_circ_mod_limits();
-
---Drop the old tables
---Not sure we want to do this. Keeping them may help "something went wrong" correction.
---DROP TABLE IF EXISTS config.circ_matrix_circ_mod_test_map, config.circ_matrix_circ_mod_test;
-
-
--- Evergreen DB patch 0678.data.vandelay-default-merge-profiles.sql
-
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0678', :eg_version);
-
-INSERT INTO vandelay.merge_profile (owner, name, replace_spec) 
-    VALUES (1, 'Match-Only Merge', '901c');
-
-INSERT INTO vandelay.merge_profile (owner, name, preserve_spec) 
-    VALUES (1, 'Full Overlay', '901c');
-
+BEGIN;
 SELECT evergreen.upgrade_deps_block_check('0679', :eg_version);
 
 -- Address typo in column name
@@ -13145,2505 +16092,6 @@ SELECT  DISTINCT
 END;
 $func$ LANGUAGE PLPGSQL;
 
-
--- Evergreen DB patch 0681.schema.user-activity.sql
---
-
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0681', :eg_version);
-
--- SCHEMA --
-
-CREATE TYPE config.usr_activity_group AS ENUM ('authen','authz','circ','hold','search');
-
-CREATE TABLE config.usr_activity_type (
-    id          SERIAL                      PRIMARY KEY, 
-    ewho        TEXT,
-    ewhat       TEXT,
-    ehow        TEXT,
-    label       TEXT                        NOT NULL, -- i18n
-    egroup      config.usr_activity_group   NOT NULL,
-    enabled     BOOL                        NOT NULL DEFAULT TRUE,
-    transient   BOOL                        NOT NULL DEFAULT FALSE,
-    CONSTRAINT  one_of_wwh CHECK (COALESCE(ewho,ewhat,ehow) IS NOT NULL)
-);
-
-CREATE UNIQUE INDEX unique_wwh ON config.usr_activity_type 
-    (COALESCE(ewho,''), COALESCE (ewhat,''), COALESCE(ehow,''));
-
-CREATE TABLE actor.usr_activity (
-    id          BIGSERIAL   PRIMARY KEY,
-    usr         INT         REFERENCES actor.usr (id) ON DELETE SET NULL,
-    etype       INT         NOT NULL REFERENCES config.usr_activity_type (id),
-    event_time  TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-
--- remove transient activity entries on insert of new entries
-CREATE OR REPLACE FUNCTION actor.usr_activity_transient_trg () RETURNS TRIGGER AS $$
-BEGIN
-    DELETE FROM actor.usr_activity act USING config.usr_activity_type atype
-        WHERE atype.transient AND 
-            NEW.etype = atype.id AND
-            act.etype = atype.id AND
-            act.usr = NEW.usr;
-    RETURN NEW;
-END;
-$$ LANGUAGE PLPGSQL;
-
-CREATE TRIGGER remove_transient_usr_activity
-    BEFORE INSERT ON actor.usr_activity
-    FOR EACH ROW EXECUTE PROCEDURE actor.usr_activity_transient_trg();
-
--- given a set of activity criteria, find the most approprate activity type
-CREATE OR REPLACE FUNCTION actor.usr_activity_get_type (
-        ewho TEXT, 
-        ewhat TEXT, 
-        ehow TEXT
-    ) RETURNS SETOF config.usr_activity_type AS $$
-SELECT * FROM config.usr_activity_type 
-    WHERE 
-        enabled AND 
-        (ewho  IS NULL OR ewho  = $1) AND
-        (ewhat IS NULL OR ewhat = $2) AND
-        (ehow  IS NULL OR ehow  = $3) 
-    ORDER BY 
-        -- BOOL comparisons sort false to true
-        COALESCE(ewho, '')  != COALESCE($1, ''),
-        COALESCE(ewhat,'')  != COALESCE($2, ''),
-        COALESCE(ehow, '')  != COALESCE($3, '') 
-    LIMIT 1;
-$$ LANGUAGE SQL;
-
--- given a set of activity criteria, finds the best
--- activity type and inserts the activity entry
-CREATE OR REPLACE FUNCTION actor.insert_usr_activity (
-        usr INT,
-        ewho TEXT, 
-        ewhat TEXT, 
-        ehow TEXT
-    ) RETURNS SETOF actor.usr_activity AS $$
-DECLARE
-    new_row actor.usr_activity%ROWTYPE;
-BEGIN
-    SELECT id INTO new_row.etype FROM actor.usr_activity_get_type(ewho, ewhat, ehow);
-    IF FOUND THEN
-        new_row.usr := usr;
-        INSERT INTO actor.usr_activity (usr, etype) 
-            VALUES (usr, new_row.etype)
-            RETURNING * INTO new_row;
-        RETURN NEXT new_row;
-    END IF;
-END;
-$$ LANGUAGE plpgsql;
-
--- SEED DATA --
-
-INSERT INTO config.usr_activity_type (id, ewho, ewhat, ehow, egroup, label) VALUES
-
-     -- authen/authz actions
-     -- note: "opensrf" is the default ingress/ehow
-     (1,  NULL, 'login',  'opensrf',      'authen', oils_i18n_gettext(1 , 'Login via opensrf', 'cuat', 'label'))
-    ,(2,  NULL, 'login',  'srfsh',        'authen', oils_i18n_gettext(2 , 'Login via srfsh', 'cuat', 'label'))
-    ,(3,  NULL, 'login',  'gateway-v1',   'authen', oils_i18n_gettext(3 , 'Login via gateway-v1', 'cuat', 'label'))
-    ,(4,  NULL, 'login',  'translator-v1','authen', oils_i18n_gettext(4 , 'Login via translator-v1', 'cuat', 'label'))
-    ,(5,  NULL, 'login',  'xmlrpc',       'authen', oils_i18n_gettext(5 , 'Login via xmlrpc', 'cuat', 'label'))
-    ,(6,  NULL, 'login',  'remoteauth',   'authen', oils_i18n_gettext(6 , 'Login via remoteauth', 'cuat', 'label'))
-    ,(7,  NULL, 'login',  'sip2',         'authen', oils_i18n_gettext(7 , 'SIP2 Proxy Login', 'cuat', 'label'))
-    ,(8,  NULL, 'login',  'apache',       'authen', oils_i18n_gettext(8 , 'Login via Apache module', 'cuat', 'label'))
-
-    ,(9,  NULL, 'verify', 'opensrf',      'authz',  oils_i18n_gettext(9 , 'Verification via opensrf', 'cuat', 'label'))
-    ,(10, NULL, 'verify', 'srfsh',        'authz',  oils_i18n_gettext(10, 'Verification via srfsh', 'cuat', 'label'))
-    ,(11, NULL, 'verify', 'gateway-v1',   'authz',  oils_i18n_gettext(11, 'Verification via gateway-v1', 'cuat', 'label'))
-    ,(12, NULL, 'verify', 'translator-v1','authz',  oils_i18n_gettext(12, 'Verification via translator-v1', 'cuat', 'label'))
-    ,(13, NULL, 'verify', 'xmlrpc',       'authz',  oils_i18n_gettext(13, 'Verification via xmlrpc', 'cuat', 'label'))
-    ,(14, NULL, 'verify', 'remoteauth',   'authz',  oils_i18n_gettext(14, 'Verification via remoteauth', 'cuat', 'label'))
-    ,(15, NULL, 'verify', 'sip2',         'authz',  oils_i18n_gettext(15, 'SIP2 User Verification', 'cuat', 'label'))
-
-     -- authen/authz actions w/ known uses of "who"
-    ,(16, 'opac',        'login',  'gateway-v1',   'authen', oils_i18n_gettext(16, 'OPAC Login (jspac)', 'cuat', 'label'))
-    ,(17, 'opac',        'login',  'apache',       'authen', oils_i18n_gettext(17, 'OPAC Login (tpac)', 'cuat', 'label'))
-    ,(18, 'staffclient', 'login',  'gateway-v1',   'authen', oils_i18n_gettext(18, 'Staff Client Login', 'cuat', 'label'))
-    ,(19, 'selfcheck',   'login',  'translator-v1','authen', oils_i18n_gettext(19, 'Self-Check Proxy Login', 'cuat', 'label'))
-    ,(20, 'ums',         'login',  'xmlrpc',       'authen', oils_i18n_gettext(20, 'Unique Mgt Login', 'cuat', 'label'))
-    ,(21, 'authproxy',   'login',  'apache',       'authen', oils_i18n_gettext(21, 'Apache Auth Proxy Login', 'cuat', 'label'))
-    ,(22, 'libraryelf',  'login',  'xmlrpc',       'authz',  oils_i18n_gettext(22, 'LibraryElf Login', 'cuat', 'label'))
-
-    ,(23, 'selfcheck',   'verify', 'translator-v1','authz',  oils_i18n_gettext(23, 'Self-Check User Verification', 'cuat', 'label'))
-    ,(24, 'ezproxy',     'verify', 'remoteauth',   'authz',  oils_i18n_gettext(24, 'EZProxy Verification', 'cuat', 'label'))
-    -- ...
-    ;
-
--- reserve the first 1000 slots
-SELECT SETVAL('config.usr_activity_type_id_seq'::TEXT, 1000);
-
-INSERT INTO config.org_unit_setting_type 
-    (name, label, description, grp, datatype) 
-    VALUES (
-        'circ.patron.usr_activity_retrieve.max',
-         oils_i18n_gettext(
-            'circ.patron.usr_activity_retrieve.max',
-            'Max user activity entries to retrieve (staff client)',
-            'coust', 
-            'label'
-        ),
-        oils_i18n_gettext(
-            'circ.patron.usr_activity_retrieve.max',
-            'Sets the maxinum number of recent user activity entries to retrieve for display in the staff client.  0 means show none, -1 means show all.  Default is 1.',
-            'coust', 
-            'description'
-        ),
-        'gui',
-        'integer'
-    );
-
-
-SELECT evergreen.upgrade_deps_block_check('0682', :eg_version);
-
-CREATE TABLE asset.copy_location_group (
-    id              SERIAL  PRIMARY KEY,
-    name            TEXT    NOT NULL, -- i18n
-    owner           INT     NOT NULL REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    pos             INT     NOT NULL DEFAULT 0,
-    top             BOOL    NOT NULL DEFAULT FALSE,
-    opac_visible    BOOL    NOT NULL DEFAULT TRUE,
-    CONSTRAINT lgroup_once_per_owner UNIQUE (owner,name)
-);
-
-CREATE TABLE asset.copy_location_group_map (
-    id       SERIAL PRIMARY KEY,
-    location    INT     NOT NULL REFERENCES asset.copy_location (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    lgroup      INT     NOT NULL REFERENCES asset.copy_location_group (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    CONSTRAINT  lgroup_once_per_group UNIQUE (lgroup,location)
-);
-
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0683', :eg_version);
-
-INSERT INTO action_trigger.event_params (event_def, param, value)
-    VALUES (5, 'check_email_notify', 1);
-INSERT INTO action_trigger.event_params (event_def, param, value)
-    VALUES (7, 'check_email_notify', 1);
-INSERT INTO action_trigger.event_params (event_def, param, value)
-    VALUES (9, 'check_email_notify', 1);
-INSERT INTO action_trigger.validator (module,description) VALUES
-    ('HoldNotifyCheck',
-    oils_i18n_gettext(
-        'HoldNotifyCheck',
-        'Check Hold notification flag(s)',
-        'atval',
-        'description'
-    ));
-UPDATE action_trigger.event_definition SET validator = 'HoldNotifyCheck' WHERE id = 9;
-
--- NOT COVERED: Adding check_sms_notify to the proper trigger. It doesn't have a static id.
-
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0684', :eg_version);
-
--- schema --
-
--- Replace the constraints with more flexible ENUM's
-ALTER TABLE vandelay.queue DROP CONSTRAINT queue_queue_type_check;
-ALTER TABLE vandelay.bib_queue DROP CONSTRAINT bib_queue_queue_type_check;
-ALTER TABLE vandelay.authority_queue DROP CONSTRAINT authority_queue_queue_type_check;
-
-CREATE TYPE vandelay.bib_queue_queue_type AS ENUM ('bib', 'acq');
-CREATE TYPE vandelay.authority_queue_queue_type AS ENUM ('authority');
-
--- dropped column is also implemented by the child tables
-ALTER TABLE vandelay.queue DROP COLUMN queue_type; 
-
--- to recover after using the undo sql from below
--- alter table vandelay.bib_queue  add column queue_type text default 'bib' not null;
--- alter table vandelay.authority_queue  add column queue_type text default 'authority' not null;
-
--- modify the child tables to use the ENUMs
-ALTER TABLE vandelay.bib_queue 
-    ALTER COLUMN queue_type DROP DEFAULT,
-    ALTER COLUMN queue_type TYPE vandelay.bib_queue_queue_type 
-        USING (queue_type::vandelay.bib_queue_queue_type),
-    ALTER COLUMN queue_type SET DEFAULT 'bib';
-
-ALTER TABLE vandelay.authority_queue 
-    ALTER COLUMN queue_type DROP DEFAULT,
-    ALTER COLUMN queue_type TYPE vandelay.authority_queue_queue_type 
-        USING (queue_type::vandelay.authority_queue_queue_type),
-    ALTER COLUMN queue_type SET DEFAULT 'authority';
-
--- give lineitems a pointer to their vandelay queued_record
-
-ALTER TABLE acq.lineitem ADD COLUMN queued_record BIGINT
-    REFERENCES vandelay.queued_bib_record (id) 
-    ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
-
-ALTER TABLE acq.acq_lineitem_history ADD COLUMN queued_record BIGINT
-    REFERENCES vandelay.queued_bib_record (id) 
-    ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
-
--- seed data --
-
-INSERT INTO permission.perm_list ( id, code, description ) 
-    VALUES ( 
-        521, 
-        'IMPORT_ACQ_LINEITEM_BIB_RECORD_UPLOAD', 
-        oils_i18n_gettext( 
-            521,
-            'Allows a user to create new bibs directly from an ACQ MARC file upload', 
-            'ppl', 
-            'description' 
-        )
-    );
-
-
-INSERT INTO vandelay.import_error ( code, description ) 
-    VALUES ( 
-        'import.record.perm_failure', 
-        oils_i18n_gettext(
-            'import.record.perm_failure', 
-            'Perm failure creating a record', 'vie', 'description') 
-    );
-
-
-
-
--- Evergreen DB patch 0685.data.bluray_vr_format.sql
---
--- FIXME: insert description of change, if needed
---
-
-
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0685', :eg_version);
-
--- FIXME: add/check SQL statements to perform the upgrade
-DO $FUNC$
-DECLARE
-    same_marc BOOL;
-BEGIN
-    -- Check if it is already there
-    PERFORM * FROM config.marc21_physical_characteristic_value_map v
-        JOIN config.marc21_physical_characteristic_subfield_map s ON v.ptype_subfield = s.id
-        WHERE s.ptype_key = 'v' AND s.subfield = 'e' AND s.start_pos = '4' AND s.length = '1'
-            AND v.value = 's';
-
-    -- If it is, bail.
-    IF FOUND THEN
-        RETURN;
-    END IF;
-
-    -- Otherwise, insert it
-    INSERT INTO config.marc21_physical_characteristic_value_map (value,ptype_subfield,label)
-    SELECT 's',id,'Blu-ray'
-        FROM config.marc21_physical_characteristic_subfield_map
-        WHERE ptype_key = 'v' AND subfield = 'e' AND start_pos = '4' AND length = '1';
-
-    -- And reingest the blue-ray items so that things see the new value
-    SELECT INTO same_marc enabled FROM config.internal_flag WHERE name = 'ingest.reingest.force_on_same_marc';
-    UPDATE config.internal_flag SET enabled = true WHERE name = 'ingest.reingest.force_on_same_marc';
-    UPDATE biblio.record_entry SET marc=marc WHERE id IN (SELECT record
-        FROM
-            metabib.full_rec a JOIN metabib.full_rec b USING (record)
-        WHERE
-            a.tag = 'LDR' AND a.value LIKE '______g%'
-        AND b.tag = '007' AND b.value LIKE 'v___s%');
-    UPDATE config.internal_flag SET enabled = same_marc WHERE name = 'ingest.reingest.force_on_same_marc';
-END;
-$FUNC$;
-
-
--- Evergreen DB patch 0686.schema.auditor_boost.sql
---
--- FIXME: insert description of change, if needed
---
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0686', :eg_version);
-
--- FIXME: add/check SQL statements to perform the upgrade
--- These three functions are for capturing, getting, and clearing user and workstation information
-
--- Set the User AND workstation in one call. Tis faster. And less calls.
--- First argument is user, second is workstation
-CREATE OR REPLACE FUNCTION auditor.set_audit_info(INT, INT) RETURNS VOID AS $$
-    $_SHARED{"eg_audit_user"} = $_[0];
-    $_SHARED{"eg_audit_ws"} = $_[1];
-$$ LANGUAGE plperl;
-
--- Get the User AND workstation in one call. Less calls, useful for joins ;)
-CREATE OR REPLACE FUNCTION auditor.get_audit_info() RETURNS TABLE (eg_user INT, eg_ws INT) AS $$
-    return [{eg_user => $_SHARED{"eg_audit_user"}, eg_ws => $_SHARED{"eg_audit_ws"}}];
-$$ LANGUAGE plperl;
-
--- Clear the audit info, for whatever reason
-CREATE OR REPLACE FUNCTION auditor.clear_audit_info() RETURNS VOID AS $$
-    delete($_SHARED{"eg_audit_user"});
-    delete($_SHARED{"eg_audit_ws"});
-$$ LANGUAGE plperl;
-
-CREATE OR REPLACE FUNCTION auditor.create_auditor_history ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
-BEGIN
-    EXECUTE $$
-        CREATE TABLE auditor.$$ || sch || $$_$$ || tbl || $$_history (
-            audit_id	BIGINT				PRIMARY KEY,
-            audit_time	TIMESTAMP WITH TIME ZONE	NOT NULL,
-            audit_action	TEXT				NOT NULL,
-            audit_user  INT,
-            audit_ws    INT,
-            LIKE $$ || sch || $$.$$ || tbl || $$
-        );
-    $$;
-	RETURN TRUE;
-END;
-$creator$ LANGUAGE 'plpgsql';
-
-CREATE OR REPLACE FUNCTION auditor.create_auditor_func    ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
-DECLARE
-    column_list TEXT[];
-BEGIN
-    SELECT INTO column_list array_agg(a.attname)
-        FROM pg_catalog.pg_attribute a
-            JOIN pg_catalog.pg_class c ON a.attrelid = c.oid
-            JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
-        WHERE relkind = 'r' AND n.nspname = sch AND c.relname = tbl AND a.attnum > 0 AND NOT a.attisdropped;
-
-    EXECUTE $$
-        CREATE OR REPLACE FUNCTION auditor.audit_$$ || sch || $$_$$ || tbl || $$_func ()
-        RETURNS TRIGGER AS $func$
-        BEGIN
-            INSERT INTO auditor.$$ || sch || $$_$$ || tbl || $$_history ( audit_id, audit_time, audit_action, audit_user, audit_ws, $$
-            || array_to_string(column_list, ', ') || $$ )
-                SELECT  nextval('auditor.$$ || sch || $$_$$ || tbl || $$_pkey_seq'),
-                    now(),
-                    SUBSTR(TG_OP,1,1),
-                    eg_user,
-                    eg_ws,
-                    OLD.$$ || array_to_string(column_list, ', OLD.') || $$
-                FROM auditor.get_audit_info();
-            RETURN NULL;
-        END;
-        $func$ LANGUAGE 'plpgsql';
-    $$;
-    RETURN TRUE;
-END;
-$creator$ LANGUAGE 'plpgsql';
-
-CREATE OR REPLACE FUNCTION auditor.create_auditor_lifecycle     ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
-DECLARE
-    column_list TEXT[];
-BEGIN
-    SELECT INTO column_list array_agg(a.attname)
-        FROM pg_catalog.pg_attribute a
-            JOIN pg_catalog.pg_class c ON a.attrelid = c.oid
-            JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
-        WHERE relkind = 'r' AND n.nspname = sch AND c.relname = tbl AND a.attnum > 0 AND NOT a.attisdropped;
-
-    EXECUTE $$
-        CREATE VIEW auditor.$$ || sch || $$_$$ || tbl || $$_lifecycle AS
-            SELECT -1 AS audit_id,
-                   now() AS audit_time,
-                   '-' AS audit_action,
-                   -1 AS audit_user,
-                   -1 AS audit_ws,
-                   $$ || array_to_string(column_list, ', ') || $$
-              FROM $$ || sch || $$.$$ || tbl || $$
-                UNION ALL
-            SELECT audit_id, audit_time, audit_action, audit_user, audit_ws,
-            $$ || array_to_string(column_list, ', ') || $$
-              FROM auditor.$$ || sch || $$_$$ || tbl || $$_history;
-    $$;
-    RETURN TRUE;
-END;
-$creator$ LANGUAGE 'plpgsql';
-
--- Corrects all column discrepencies between audit table and core table:
--- Adds missing columns
--- Removes leftover columns
--- Updates types
--- Also, ensures all core auditor columns exist.
-CREATE OR REPLACE FUNCTION auditor.fix_columns() RETURNS VOID AS $BODY$
-DECLARE
-    current_table TEXT = ''; -- Storage for post-loop main table name
-    current_audit_table TEXT = ''; -- Storage for post-loop audit table name
-    query TEXT = ''; -- Storage for built query
-    cr RECORD; -- column record object
-    alter_t BOOL = false; -- Has the alter table command been appended yet
-    auditor_cores TEXT[] = ARRAY[]::TEXT[]; -- Core auditor function list (filled inside of loop)
-    core_column TEXT; -- The current core column we are adding
-BEGIN
-    FOR cr IN
-        WITH audit_tables AS ( -- Basic grab of auditor tables. Anything in the auditor namespace, basically. With oids.
-            SELECT c.oid AS audit_oid, c.relname AS audit_table
-            FROM pg_catalog.pg_class c
-            JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
-            WHERE relkind='r' AND nspname = 'auditor'
-        ),
-        table_set AS ( -- Union of auditor tables with their "main" tables. With oids.
-            SELECT a.audit_oid, a.audit_table, c.oid AS main_oid, n.nspname as main_namespace, c.relname as main_table
-            FROM pg_catalog.pg_class c
-            JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
-            JOIN audit_tables a ON a.audit_table = n.nspname || '_' || c.relname || '_history'
-            WHERE relkind = 'r'
-        ),
-        column_lists AS ( -- All columns associated with the auditor or main table, grouped by the main table's oid.
-            SELECT DISTINCT ON (main_oid, attname) t.main_oid, a.attname
-            FROM table_set t
-            JOIN pg_catalog.pg_attribute a ON a.attrelid IN (t.main_oid, t.audit_oid)
-            WHERE attnum > 0 AND NOT attisdropped
-        ),
-        column_defs AS ( -- The motherload, every audit table and main table plus column names and defs.
-            SELECT audit_table,
-                   main_namespace,
-                   main_table,
-                   a.attname AS main_column, -- These two will be null for columns that have since been deleted, or for auditor core columns
-                   pg_catalog.format_type(a.atttypid, a.atttypmod) AS main_column_def,
-                   b.attname AS audit_column, -- These two will be null for columns that have since been added
-                   pg_catalog.format_type(b.atttypid, b.atttypmod) AS audit_column_def
-            FROM table_set t
-            JOIN column_lists c USING (main_oid)
-            LEFT JOIN pg_catalog.pg_attribute a ON a.attname = c.attname AND a.attrelid = t.main_oid AND a.attnum > 0 AND NOT a.attisdropped
-            LEFT JOIN pg_catalog.pg_attribute b ON b.attname = c.attname AND b.attrelid = t.audit_oid AND b.attnum > 0 AND NOT b.attisdropped
-        )
-        -- Nice sorted output from the above
-        SELECT * FROM column_defs WHERE main_column_def IS DISTINCT FROM audit_column_def ORDER BY main_namespace, main_table, main_column, audit_column
-    LOOP
-        IF current_table <> (cr.main_namespace || '.' || cr.main_table) THEN -- New table?
-            FOR core_column IN SELECT DISTINCT unnest(auditor_cores) LOOP -- Update missing core auditor columns
-                IF NOT alter_t THEN -- Add ALTER TABLE if we haven't already
-                    query:=query || $$ALTER TABLE auditor.$$ || current_audit_table;
-                    alter_t:=TRUE;
-                ELSE
-                    query:=query || $$,$$;
-                END IF;
-                -- Bit of a sneaky bit here. Create audit_id as a bigserial so it gets automatic values and doesn't complain about nulls when becoming a PRIMARY KEY.
-                query:=query || $$ ADD COLUMN $$ || CASE WHEN core_column = 'audit_id bigint' THEN $$audit_id bigserial PRIMARY KEY$$ ELSE core_column END;
-            END LOOP;
-            IF alter_t THEN -- Open alter table = needs a semicolon
-                query:=query || $$; $$;
-                alter_t:=FALSE;
-                IF 'audit_id bigint' = ANY(auditor_cores) THEN -- We added a primary key...
-                    -- Fun! Drop the default on audit_id, drop the auto-created sequence, create a new one, and set the current value
-                    -- For added fun, we have to execute in chunks due to the parser checking setval/currval arguments at parse time.
-                    EXECUTE query;
-                    EXECUTE $$ALTER TABLE auditor.$$ || current_audit_table || $$ ALTER COLUMN audit_id DROP DEFAULT; $$ ||
-                        $$CREATE SEQUENCE auditor.$$ || current_audit_table || $$_pkey_seq;$$;
-                    EXECUTE $$SELECT setval('auditor.$$ || current_audit_table || $$_pkey_seq', currval('auditor.$$ || current_audit_table || $$_audit_id_seq')); $$ ||
-                        $$DROP SEQUENCE auditor.$$ || current_audit_table || $$_audit_id_seq;$$;
-                    query:='';
-                END IF;
-            END IF;
-            -- New table means we reset the list of needed auditor core columns
-            auditor_cores = ARRAY['audit_id bigint', 'audit_time timestamp with time zone', 'audit_action text', 'audit_user integer', 'audit_ws integer'];
-            -- And store some values for use later, because we can't rely on cr in all places.
-            current_table:=cr.main_namespace || '.' || cr.main_table;
-            current_audit_table:=cr.audit_table;
-        END IF;
-        IF cr.main_column IS NULL AND cr.audit_column LIKE 'audit_%' THEN -- Core auditor column?
-            -- Remove core from list of cores
-            SELECT INTO auditor_cores array_agg(core) FROM unnest(auditor_cores) AS core WHERE core != (cr.audit_column || ' ' || cr.audit_column_def);
-        ELSIF cr.main_column IS NULL THEN -- Main column doesn't exist, and it isn't an auditor column. Needs dropping from the auditor.
-            IF NOT alter_t THEN
-                query:=query || $$ALTER TABLE auditor.$$ || current_audit_table;
-                alter_t:=TRUE;
-            ELSE
-                query:=query || $$,$$;
-            END IF;
-            query:=query || $$ DROP COLUMN $$ || cr.audit_column;
-        ELSIF cr.audit_column IS NULL AND cr.main_column IS NOT NULL THEN -- New column auditor doesn't have. Add it.
-            IF NOT alter_t THEN
-                query:=query || $$ALTER TABLE auditor.$$ || current_audit_table;
-                alter_t:=TRUE;
-            ELSE
-                query:=query || $$,$$;
-            END IF;
-            query:=query || $$ ADD COLUMN $$ || cr.main_column || $$ $$ || cr.main_column_def;
-        ELSIF cr.main_column IS NOT NULL AND cr.audit_column IS NOT NULL THEN -- Both sides have this column, but types differ. Fix that.
-            IF NOT alter_t THEN
-                query:=query || $$ALTER TABLE auditor.$$ || current_audit_table;
-                alter_t:=TRUE;
-            ELSE
-                query:=query || $$,$$;
-            END IF;
-            query:=query || $$ ALTER COLUMN $$ || cr.audit_column || $$ TYPE $$ || cr.main_column_def;
-        END IF;
-    END LOOP;
-    FOR core_column IN SELECT DISTINCT unnest(auditor_cores) LOOP -- Repeat this outside of the loop to catch the last table
-        IF NOT alter_t THEN
-            query:=query || $$ALTER TABLE auditor.$$ || current_audit_table;
-            alter_t:=TRUE;
-        ELSE
-            query:=query || $$,$$;
-        END IF;
-        -- Bit of a sneaky bit here. Create audit_id as a bigserial so it gets automatic values and doesn't complain about nulls when becoming a PRIMARY KEY.
-        query:=query || $$ ADD COLUMN $$ || CASE WHEN core_column = 'audit_id bigint' THEN $$audit_id bigserial PRIMARY KEY$$ ELSE core_column END;
-    END LOOP;
-    IF alter_t THEN -- Open alter table = needs a semicolon
-        query:=query || $$;$$;
-        IF 'audit_id bigint' = ANY(auditor_cores) THEN -- We added a primary key...
-            -- Fun! Drop the default on audit_id, drop the auto-created sequence, create a new one, and set the current value
-            -- For added fun, we have to execute in chunks due to the parser checking setval/currval arguments at parse time.
-            EXECUTE query;
-            EXECUTE $$ALTER TABLE auditor.$$ || current_audit_table || $$ ALTER COLUMN audit_id DROP DEFAULT; $$ ||
-                $$CREATE SEQUENCE auditor.$$ || current_audit_table || $$_pkey_seq;$$;
-            EXECUTE $$SELECT setval('auditor.$$ || current_audit_table || $$_pkey_seq', currval('auditor.$$ || current_audit_table || $$_audit_id_seq')); $$ ||
-                $$DROP SEQUENCE auditor.$$ || current_audit_table || $$_audit_id_seq;$$;
-            query:='';
-        END IF;
-    END IF;
-    EXECUTE query;
-END;
-$BODY$ LANGUAGE plpgsql;
-
--- Update it all routine
-CREATE OR REPLACE FUNCTION auditor.update_auditors() RETURNS boolean AS $BODY$
-DECLARE
-    auditor_name TEXT;
-    table_schema TEXT;
-    table_name TEXT;
-BEGIN
-    -- Drop Lifecycle view(s) before potential column changes
-    FOR auditor_name IN
-        SELECT c.relname
-            FROM pg_catalog.pg_class c
-                JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
-            WHERE relkind = 'v' AND n.nspname = 'auditor' LOOP
-        EXECUTE $$ DROP VIEW auditor.$$ || auditor_name || $$;$$;
-    END LOOP;
-    -- Fix all column discrepencies
-    PERFORM auditor.fix_columns();
-    -- Re-create trigger functions and lifecycle views
-    FOR table_schema, table_name IN
-        WITH audit_tables AS (
-            SELECT c.oid AS audit_oid, c.relname AS audit_table
-            FROM pg_catalog.pg_class c
-            JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
-            WHERE relkind='r' AND nspname = 'auditor'
-        ),
-        table_set AS (
-            SELECT a.audit_oid, a.audit_table, c.oid AS main_oid, n.nspname as main_namespace, c.relname as main_table
-            FROM pg_catalog.pg_class c
-            JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
-            JOIN audit_tables a ON a.audit_table = n.nspname || '_' || c.relname || '_history'
-            WHERE relkind = 'r'
-        )
-        SELECT main_namespace, main_table FROM table_set LOOP
-        
-        PERFORM auditor.create_auditor_func(table_schema, table_name);
-        PERFORM auditor.create_auditor_lifecycle(table_schema, table_name);
-    END LOOP;
-    RETURN TRUE;
-END;
-$BODY$ LANGUAGE plpgsql;
-
--- Go ahead and update them all now
-SELECT auditor.update_auditors();
-
-
--- Evergreen DB patch 0687.schema.enhance_reingest.sql
---
--- FIXME: insert description of change, if needed
---
-
-
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0687', :eg_version);
-
--- FIXME: add/check SQL statements to perform the upgrade
--- New function def
-CREATE OR REPLACE FUNCTION metabib.reingest_metabib_field_entries( bib_id BIGINT, skip_facet BOOL DEFAULT FALSE, skip_browse BOOL DEFAULT FALSE, skip_search BOOL DEFAULT FALSE ) RETURNS VOID AS $func$
-DECLARE
-    fclass          RECORD;
-    ind_data        metabib.field_entry_template%ROWTYPE;
-    mbe_row         metabib.browse_entry%ROWTYPE;
-    mbe_id          BIGINT;
-BEGIN
-    PERFORM * FROM config.internal_flag WHERE name = 'ingest.assume_inserts_only' AND enabled;
-    IF NOT FOUND THEN
-        IF NOT skip_search THEN
-            FOR fclass IN SELECT * FROM config.metabib_class LOOP
-                -- RAISE NOTICE 'Emptying out %', fclass.name;
-                EXECUTE $$DELETE FROM metabib.$$ || fclass.name || $$_field_entry WHERE source = $$ || bib_id;
-            END LOOP;
-        END IF;
-        IF NOT skip_facet THEN
-            DELETE FROM metabib.facet_entry WHERE source = bib_id;
-        END IF;
-        IF NOT skip_browse THEN
-            DELETE FROM metabib.browse_entry_def_map WHERE source = bib_id;
-        END IF;
-    END IF;
-
-    FOR ind_data IN SELECT * FROM biblio.extract_metabib_field_entry( bib_id ) LOOP
-        IF ind_data.field < 0 THEN
-            ind_data.field = -1 * ind_data.field;
-        END IF;
-
-        IF ind_data.facet_field AND NOT skip_facet THEN
-            INSERT INTO metabib.facet_entry (field, source, value)
-                VALUES (ind_data.field, ind_data.source, ind_data.value);
-        END IF;
-
-        IF ind_data.browse_field AND NOT skip_browse THEN
-            -- A caveat about this SELECT: this should take care of replacing
-            -- old mbe rows when data changes, but not if normalization (by
-            -- which I mean specifically the output of
-            -- evergreen.oils_tsearch2()) changes.  It may or may not be
-            -- expensive to add a comparison of index_vector to index_vector
-            -- to the WHERE clause below.
-            SELECT INTO mbe_row * FROM metabib.browse_entry WHERE value = ind_data.value;
-            IF FOUND THEN
-                mbe_id := mbe_row.id;
-            ELSE
-                INSERT INTO metabib.browse_entry (value) VALUES
-                    (metabib.browse_normalize(ind_data.value, ind_data.field));
-                mbe_id := CURRVAL('metabib.browse_entry_id_seq'::REGCLASS);
-            END IF;
-
-            INSERT INTO metabib.browse_entry_def_map (entry, def, source)
-                VALUES (mbe_id, ind_data.field, ind_data.source);
-        END IF;
-
-        IF ind_data.search_field AND NOT skip_search THEN
-            EXECUTE $$
-                INSERT INTO metabib.$$ || ind_data.field_class || $$_field_entry (field, source, value)
-                    VALUES ($$ ||
-                        quote_literal(ind_data.field) || $$, $$ ||
-                        quote_literal(ind_data.source) || $$, $$ ||
-                        quote_literal(ind_data.value) ||
-                    $$);$$;
-        END IF;
-
-    END LOOP;
-
-    RETURN;
-END;
-$func$ LANGUAGE PLPGSQL;
-
--- Delete old one
-DROP FUNCTION IF EXISTS metabib.reingest_metabib_field_entries(BIGINT);
-
--- Evergreen DB patch 0688.data.circ_history_export_csv.sql
---
--- FIXME: insert description of change, if needed
---
-
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0688', :eg_version);
-
-INSERT INTO action_trigger.hook (key, core_type, description, passive)
-VALUES (
-    'circ.format.history.csv',
-    'circ',
-    oils_i18n_gettext(
-        'circ.format.history.csv',
-        'Produce CSV of circulation history',
-        'ath',
-        'description'
-    ),
-    FALSE
-);
-
-INSERT INTO action_trigger.event_definition (
-    active, owner, name, hook, reactor, validator, group_field, template) 
-VALUES (
-    TRUE, 1, 'Circ History CSV', 'circ.format.history.csv', 'ProcessTemplate', 'NOOP_True', 'usr',
-$$
-Title,Author,Call Number,Barcode,Format
-[%-
-FOR circ IN target;
-    bibxml = helpers.unapi_bre(circ.target_copy.call_number.record, {flesh => '{mra}'});
-    title = "";
-    FOR part IN bibxml.findnodes('//*[@tag="245"]/*[@code="a" or @code="b"]');
-        title = title _ part.textContent;
-    END;
-    author = bibxml.findnodes('//*[@tag="100"]/*[@code="a"]').textContent;
-    item_type = bibxml.findnodes('//*[local-name()="attributes"]/*[local-name()="field"][@name="item_type"]').getAttribute('coded-value') %]
-
-    [%- helpers.csv_datum(title) -%],
-    [%- helpers.csv_datum(author) -%],
-    [%- helpers.csv_datum(circ.target_copy.call_number.label) -%],
-    [%- helpers.csv_datum(circ.target_copy.barcode) -%],
-    [%- helpers.csv_datum(item_type) %]
-[%- END -%]
-$$
-);
-
-INSERT INTO action_trigger.environment (event_def, path)
-    VALUES (
-        currval('action_trigger.event_definition_id_seq'),
-        'target_copy.call_number'
-    );
-
-
--- Evergreen DB patch 0689.data.record_print_format_update.sql
---
--- Updates print and email templates for bib record actions
---
-
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0689', :eg_version);
-
-UPDATE action_trigger.event_definition SET template = $$
-<div>
-    <style> li { padding: 8px; margin 5px; }</style>
-    <ol>
-    [% FOR cbreb IN target %]
-    [% FOR item IN cbreb.items;
-        bre_id = item.target_biblio_record_entry;
-
-        bibxml = helpers.unapi_bre(bre_id, {flesh => '{mra}'});
-        FOR part IN bibxml.findnodes('//*[@tag="245"]/*[@code="a" or @code="b"]');
-            title = title _ part.textContent;
-        END;
-
-        author = bibxml.findnodes('//*[@tag="100"]/*[@code="a"]').textContent;
-        item_type = bibxml.findnodes('//*[local-name()="attributes"]/*[local-name()="field"][@name="item_type"]').getAttribute('coded-value');
-        publisher = bibxml.findnodes('//*[@tag="260"]/*[@code="b"]').textContent;
-        pubdate = bibxml.findnodes('//*[@tag="260"]/*[@code="c"]').textContent;
-        isbn = bibxml.findnodes('//*[@tag="020"]/*[@code="a"]').textContent;
-        issn = bibxml.findnodes('//*[@tag="022"]/*[@code="a"]').textContent;
-        upc = bibxml.findnodes('//*[@tag="024"]/*[@code="a"]').textContent;
-        %]
-
-        <li>
-            Bib ID# [% bre_id %]<br/>
-            [% IF isbn %]ISBN: [% isbn %]<br/>[% END %]
-            [% IF issn %]ISSN: [% issn %]<br/>[% END %]
-            [% IF upc  %]UPC:  [% upc %]<br/>[% END %]
-            Title: [% title %]<br />
-            Author: [% author %]<br />
-            Publication Info: [% publisher %] [% pubdate %]<br/>
-            Item Type: [% item_type %]
-        </li>
-    [% END %]
-    [% END %]
-    </ol>
-</div>
-$$ 
-WHERE hook = 'biblio.format.record_entry.print' AND id < 100; -- sample data
-
-
-UPDATE action_trigger.event_definition SET delay = '00:00:00', template = $$
-[%- SET user = target.0.owner -%]
-To: [%- params.recipient_email || user.email %]
-From: [%- params.sender_email || default_sender %]
-Subject: Bibliographic Records
-
-[% FOR cbreb IN target %]
-[% FOR item IN cbreb.items;
-    bre_id = item.target_biblio_record_entry;
-
-    bibxml = helpers.unapi_bre(bre_id, {flesh => '{mra}'});
-    FOR part IN bibxml.findnodes('//*[@tag="245"]/*[@code="a" or @code="b"]');
-        title = title _ part.textContent;
-    END;
-
-    author = bibxml.findnodes('//*[@tag="100"]/*[@code="a"]').textContent;
-    item_type = bibxml.findnodes('//*[local-name()="attributes"]/*[local-name()="field"][@name="item_type"]').getAttribute('coded-value');
-    publisher = bibxml.findnodes('//*[@tag="260"]/*[@code="b"]').textContent;
-    pubdate = bibxml.findnodes('//*[@tag="260"]/*[@code="c"]').textContent;
-    isbn = bibxml.findnodes('//*[@tag="020"]/*[@code="a"]').textContent;
-    issn = bibxml.findnodes('//*[@tag="022"]/*[@code="a"]').textContent;
-    upc = bibxml.findnodes('//*[@tag="024"]/*[@code="a"]').textContent;
-%]
-
-[% loop.count %]/[% loop.size %].  Bib ID# [% bre_id %] 
-[% IF isbn %]ISBN: [% isbn _ "\n" %][% END -%]
-[% IF issn %]ISSN: [% issn _ "\n" %][% END -%]
-[% IF upc  %]UPC:  [% upc _ "\n" %] [% END -%]
-Title: [% title %]
-Author: [% author %]
-Publication Info: [% publisher %] [% pubdate %]
-Item Type: [% item_type %]
-
-[% END %]
-[% END %]
-$$ 
-WHERE hook = 'biblio.format.record_entry.email' AND id < 100; -- sample data
-
--- remove a swath of unused environment entries
-
-DELETE FROM action_trigger.environment env 
-    USING action_trigger.event_definition def 
-    WHERE env.event_def = def.id AND 
-        env.path != 'items' AND 
-        def.hook = 'biblio.format.record_entry.print' AND 
-        def.id < 100; -- sample data
-
-DELETE FROM action_trigger.environment env 
-    USING action_trigger.event_definition def 
-    WHERE env.event_def = def.id AND 
-        env.path != 'items' AND 
-        env.path != 'owner' AND 
-        def.hook = 'biblio.format.record_entry.email' AND 
-        def.id < 100; -- sample data
-
--- Evergreen DB patch 0690.schema.unapi_limit_rank.sql
---
--- Rewrite the in-database unapi functions to include per-object limits and
--- offsets, such as a maximum number of copies and call numbers for given
--- bib record via the HSTORE syntax (for example, 'acn => 5, acp => 10' would
--- limit to a maximum of 5 call numbers for the bib, with up to 10 copies per
--- call number).
---
--- Add some notion of "preferred library" that will provide copy counts
--- and optionally affect the sorting of returned copies.
---
--- Sort copies by availability, preferring the most available copies.
---
--- Return located URIs.
---
---
-
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0690', :eg_version);
-
--- The simplest way to apply all of these changes is just to replace the unapi
--- schema entirely -- the following is a copy of 990.schema.unapi.sql with
--- the initial COMMIT in place in case the upgrade_deps_block_check fails;
--- if it does, then the attempt to create the unapi schema in the following
--- transaction will also fail. Not graceful, but safe!
-DROP SCHEMA IF EXISTS unapi CASCADE;
-
-CREATE SCHEMA unapi;
-
-CREATE OR REPLACE FUNCTION evergreen.org_top()
-RETURNS SETOF actor.org_unit AS $$
-    SELECT * FROM actor.org_unit WHERE parent_ou IS NULL LIMIT 1;
-$$ LANGUAGE SQL STABLE
-ROWS 1;
-
-CREATE OR REPLACE FUNCTION evergreen.array_remove_item_by_value(inp ANYARRAY, el ANYELEMENT)
-RETURNS anyarray AS $$
-    SELECT ARRAY_ACCUM(x.e) FROM UNNEST( $1 ) x(e) WHERE x.e <> $2;
-$$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION evergreen.rank_ou(lib INT, search_lib INT, pref_lib INT DEFAULT NULL)
-RETURNS INTEGER AS $$
-    WITH search_libs AS (
-        SELECT id, distance FROM actor.org_unit_descendants_distance($2)
-    )
-    SELECT COALESCE(
-        (SELECT -10000 FROM actor.org_unit
-         WHERE $1 = $3 AND id = $3 AND $2 IN (
-                SELECT id FROM actor.org_unit WHERE parent_ou IS NULL
-             )
-        ),
-        (SELECT distance FROM search_libs WHERE id = $1),
-        10000
-    );
-$$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION evergreen.rank_cp_status(status INT)
-RETURNS INTEGER AS $$
-    WITH totally_available AS (
-        SELECT id, 0 AS avail_rank
-        FROM config.copy_status
-        WHERE opac_visible IS TRUE
-            AND copy_active IS TRUE
-            AND id != 1 -- "Checked out"
-    ), almost_available AS (
-        SELECT id, 10 AS avail_rank
-        FROM config.copy_status
-        WHERE holdable IS TRUE
-            AND opac_visible IS TRUE
-            AND copy_active IS FALSE
-            OR id = 1 -- "Checked out"
-    )
-    SELECT COALESCE(
-        (SELECT avail_rank FROM totally_available WHERE $1 IN (id)),
-        (SELECT avail_rank FROM almost_available WHERE $1 IN (id)),
-        100
-    );
-$$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION evergreen.ranked_volumes(
-    bibid BIGINT, 
-    ouid INT,
-    depth INT DEFAULT NULL,
-    slimit HSTORE DEFAULT NULL,
-    soffset HSTORE DEFAULT NULL,
-    pref_lib INT DEFAULT NULL
-) RETURNS TABLE (id BIGINT, name TEXT, label_sortkey TEXT, rank BIGINT) AS $$
-    SELECT ua.id, ua.name, ua.label_sortkey, MIN(ua.rank) AS rank FROM (
-        SELECT acn.id, aou.name, acn.label_sortkey,
-            evergreen.rank_ou(aou.id, $2, $6), evergreen.rank_cp_status(acp.status),
-            RANK() OVER w
-        FROM asset.call_number acn
-            JOIN asset.copy acp ON (acn.id = acp.call_number)
-            JOIN actor.org_unit_descendants( $2, COALESCE(
-                $3, (
-                    SELECT depth
-                    FROM actor.org_unit_type aout
-                        INNER JOIN actor.org_unit ou ON ou_type = aout.id
-                    WHERE ou.id = $2
-                ), $6)
-            ) AS aou ON (acp.circ_lib = aou.id)
-        WHERE acn.record = $1
-            AND acn.deleted IS FALSE
-            AND acp.deleted IS FALSE
-        GROUP BY acn.id, acp.status, aou.name, acn.label_sortkey, aou.id
-        WINDOW w AS (
-            ORDER BY evergreen.rank_ou(aou.id, $2, $6), evergreen.rank_cp_status(acp.status)
-        )
-    ) AS ua
-    GROUP BY ua.id, ua.name, ua.label_sortkey
-    ORDER BY rank, ua.name, ua.label_sortkey
-    LIMIT ($4 -> 'acn')::INT
-    OFFSET ($5 -> 'acn')::INT;
-$$
-LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION evergreen.located_uris (
-    bibid BIGINT, 
-    ouid INT,
-    pref_lib INT DEFAULT NULL
-) RETURNS TABLE (id BIGINT, name TEXT, label_sortkey TEXT, rank INT) AS $$
-    SELECT acn.id, aou.name, acn.label_sortkey, evergreen.rank_ou(aou.id, $2, $3) AS pref_ou
-      FROM asset.call_number acn
-           INNER JOIN asset.uri_call_number_map auricnm ON acn.id = auricnm.call_number 
-           INNER JOIN asset.uri auri ON auri.id = auricnm.uri
-           INNER JOIN actor.org_unit_ancestors( COALESCE($3, $2) ) aou ON (acn.owning_lib = aou.id)
-      WHERE acn.record = $1
-          AND acn.deleted IS FALSE
-          AND auri.active IS TRUE
-    UNION
-    SELECT acn.id, aou.name, acn.label_sortkey, evergreen.rank_ou(aou.id, $2, $3) AS pref_ou
-      FROM asset.call_number acn
-           INNER JOIN asset.uri_call_number_map auricnm ON acn.id = auricnm.call_number 
-           INNER JOIN asset.uri auri ON auri.id = auricnm.uri
-           INNER JOIN actor.org_unit_ancestors( $2 ) aou ON (acn.owning_lib = aou.id)
-      WHERE acn.record = $1
-          AND acn.deleted IS FALSE
-          AND auri.active IS TRUE;
-$$
-LANGUAGE SQL STABLE;
-
-CREATE TABLE unapi.bre_output_layout (
-    name                TEXT    PRIMARY KEY,
-    transform           TEXT    REFERENCES config.xml_transform (name) ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    mime_type           TEXT    NOT NULL,
-    feed_top            TEXT    NOT NULL,
-    holdings_element    TEXT,
-    title_element       TEXT,
-    description_element TEXT,
-    creator_element     TEXT,
-    update_ts_element   TEXT
-);
-
-INSERT INTO unapi.bre_output_layout
-    (name,           transform, mime_type,              holdings_element, feed_top,         title_element, description_element, creator_element, update_ts_element)
-        VALUES
-    ('holdings_xml', NULL,      'application/xml',      NULL,             'hxml',           NULL,          NULL,                NULL,            NULL),
-    ('marcxml',      'marcxml', 'application/marc+xml', 'record',         'collection',     NULL,          NULL,                NULL,            NULL),
-    ('mods32',       'mods32',  'application/mods+xml', 'mods',           'modsCollection', NULL,          NULL,                NULL,            NULL)
-;
-
--- Dummy functions, so we can create the real ones out of order
-CREATE OR REPLACE FUNCTION unapi.aou    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.acnp   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.acns   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.acn    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.ssub   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.sdist  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.sstr   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.sitem  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.sunit  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.sisum  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.sbsum  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.sssum  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.siss   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.auri   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.acp    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.acpn   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.acl    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.ccs    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.ascecm ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.bre (
-    obj_id BIGINT,
-    format TEXT,
-    ename TEXT,
-    includes TEXT[],
-    org TEXT,
-    depth INT DEFAULT NULL,
-    slimit HSTORE DEFAULT NULL,
-    soffset HSTORE DEFAULT NULL,
-    include_xmlns BOOL DEFAULT TRUE,
-    pref_lib INT DEFAULT NULL
-)
-RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.bmp    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.mra    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.circ   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT DEFAULT '-', depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.holdings_xml (
-    bid BIGINT,
-    ouid INT,
-    org TEXT,
-    depth INT DEFAULT NULL,
-    includes TEXT[] DEFAULT NULL::TEXT[],
-    slimit HSTORE DEFAULT NULL,
-    soffset HSTORE DEFAULT NULL,
-    include_xmlns BOOL DEFAULT TRUE,
-    pref_lib INT DEFAULT NULL
-)
-RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.biblio_record_entry_feed ( id_list BIGINT[], format TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE, title TEXT DEFAULT NULL, description TEXT DEFAULT NULL, creator TEXT DEFAULT NULL, update_ts TEXT DEFAULT NULL, unapi_url TEXT DEFAULT NULL, header_xml XML DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.memoize (classname TEXT, obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-DECLARE
-    key     TEXT;
-    output  XML;
-BEGIN
-    key :=
-        'id'        || COALESCE(obj_id::TEXT,'') ||
-        'format'    || COALESCE(format::TEXT,'') ||
-        'ename'     || COALESCE(ename::TEXT,'') ||
-        'includes'  || COALESCE(includes::TEXT,'{}'::TEXT[]::TEXT) ||
-        'org'       || COALESCE(org::TEXT,'') ||
-        'depth'     || COALESCE(depth::TEXT,'') ||
-        'slimit'    || COALESCE(slimit::TEXT,'') ||
-        'soffset'   || COALESCE(soffset::TEXT,'') ||
-        'include_xmlns'   || COALESCE(include_xmlns::TEXT,'');
-    -- RAISE NOTICE 'memoize key: %', key;
-
-    key := MD5(key);
-    -- RAISE NOTICE 'memoize hash: %', key;
-
-    -- XXX cache logic ... memcached? table?
-
-    EXECUTE $$SELECT unapi.$$ || classname || $$( $1, $2, $3, $4, $5, $6, $7, $8, $9);$$ INTO output USING obj_id, format, ename, includes, org, depth, slimit, soffset, include_xmlns;
-    RETURN output;
-END;
-$F$ LANGUAGE PLPGSQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.biblio_record_entry_feed ( id_list BIGINT[], format TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE, title TEXT DEFAULT NULL, description TEXT DEFAULT NULL, creator TEXT DEFAULT NULL, update_ts TEXT DEFAULT NULL, unapi_url TEXT DEFAULT NULL, header_xml XML DEFAULT NULL ) RETURNS XML AS $F$
-DECLARE
-    layout          unapi.bre_output_layout%ROWTYPE;
-    transform       config.xml_transform%ROWTYPE;
-    item_format     TEXT;
-    tmp_xml         TEXT;
-    xmlns_uri       TEXT := 'http://open-ils.org/spec/feed-xml/v1';
-    ouid            INT;
-    element_list    TEXT[];
-BEGIN
-
-    IF org = '-' OR org IS NULL THEN
-        SELECT shortname INTO org FROM evergreen.org_top();
-    END IF;
-
-    SELECT id INTO ouid FROM actor.org_unit WHERE shortname = org;
-    SELECT * INTO layout FROM unapi.bre_output_layout WHERE name = format;
-
-    IF layout.name IS NULL THEN
-        RETURN NULL::XML;
-    END IF;
-
-    SELECT * INTO transform FROM config.xml_transform WHERE name = layout.transform;
-    xmlns_uri := COALESCE(transform.namespace_uri,xmlns_uri);
-
-    -- Gather the bib xml
-    SELECT XMLAGG( unapi.bre(i, format, '', includes, org, depth, slimit, soffset, include_xmlns)) INTO tmp_xml FROM UNNEST( id_list ) i;
-
-    IF layout.title_element IS NOT NULL THEN
-        EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.title_element ||', XMLATTRIBUTES( $1 AS xmlns), $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, title;
-    END IF;
-
-    IF layout.description_element IS NOT NULL THEN
-        EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.description_element ||', XMLATTRIBUTES( $1 AS xmlns), $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, description;
-    END IF;
-
-    IF layout.creator_element IS NOT NULL THEN
-        EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.creator_element ||', XMLATTRIBUTES( $1 AS xmlns), $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, creator;
-    END IF;
-
-    IF layout.update_ts_element IS NOT NULL THEN
-        EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.update_ts_element ||', XMLATTRIBUTES( $1 AS xmlns), $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, update_ts;
-    END IF;
-
-    IF unapi_url IS NOT NULL THEN
-        EXECUTE $$SELECT XMLCONCAT( XMLELEMENT( name link, XMLATTRIBUTES( 'http://www.w3.org/1999/xhtml' AS xmlns, 'unapi-server' AS rel, $1 AS href, 'unapi' AS title)), $2)$$ INTO tmp_xml USING unapi_url, tmp_xml::XML;
-    END IF;
-
-    IF header_xml IS NOT NULL THEN tmp_xml := XMLCONCAT(header_xml,tmp_xml::XML); END IF;
-
-    element_list := regexp_split_to_array(layout.feed_top,E'\\.');
-    FOR i IN REVERSE ARRAY_UPPER(element_list, 1) .. 1 LOOP
-        EXECUTE 'SELECT XMLELEMENT( name '|| quote_ident(element_list[i]) ||', XMLATTRIBUTES( $1 AS xmlns), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML;
-    END LOOP;
-
-    RETURN tmp_xml::XML;
-END;
-$F$ LANGUAGE PLPGSQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.bre (
-    obj_id BIGINT,
-    format TEXT,
-    ename TEXT,
-    includes TEXT[],
-    org TEXT,
-    depth INT DEFAULT NULL,
-    slimit HSTORE DEFAULT NULL,
-    soffset HSTORE DEFAULT NULL,
-    include_xmlns BOOL DEFAULT TRUE,
-    pref_lib INT DEFAULT NULL
-)
-RETURNS XML AS $F$
-DECLARE
-    me      biblio.record_entry%ROWTYPE;
-    layout  unapi.bre_output_layout%ROWTYPE;
-    xfrm    config.xml_transform%ROWTYPE;
-    ouid    INT;
-    tmp_xml TEXT;
-    top_el  TEXT;
-    output  XML;
-    hxml    XML;
-    axml    XML;
-BEGIN
-
-    IF org = '-' OR org IS NULL THEN
-        SELECT shortname INTO org FROM evergreen.org_top();
-    END IF;
-
-    SELECT id INTO ouid FROM actor.org_unit WHERE shortname = org;
-
-    IF ouid IS NULL THEN
-        RETURN NULL::XML;
-    END IF;
-
-    IF format = 'holdings_xml' THEN -- the special case
-        output := unapi.holdings_xml( obj_id, ouid, org, depth, includes, slimit, soffset, include_xmlns);
-        RETURN output;
-    END IF;
-
-    SELECT * INTO layout FROM unapi.bre_output_layout WHERE name = format;
-
-    IF layout.name IS NULL THEN
-        RETURN NULL::XML;
-    END IF;
-
-    SELECT * INTO xfrm FROM config.xml_transform WHERE name = layout.transform;
-
-    SELECT * INTO me FROM biblio.record_entry WHERE id = obj_id;
-
-    -- grab SVF if we need them
-    IF ('mra' = ANY (includes)) THEN 
-        axml := unapi.mra(obj_id,NULL,NULL,NULL,NULL);
-    ELSE
-        axml := NULL::XML;
-    END IF;
-
-    -- grab holdings if we need them
-    IF ('holdings_xml' = ANY (includes)) THEN 
-        hxml := unapi.holdings_xml(obj_id, ouid, org, depth, evergreen.array_remove_item_by_value(includes,'holdings_xml'), slimit, soffset, include_xmlns, pref_lib);
-    ELSE
-        hxml := NULL::XML;
-    END IF;
-
-
-    -- generate our item node
-
-
-    IF format = 'marcxml' THEN
-        tmp_xml := me.marc;
-        IF tmp_xml !~ E'<marc:' THEN -- If we're not using the prefixed namespace in this record, then remove all declarations of it
-           tmp_xml := REGEXP_REPLACE(tmp_xml, ' xmlns:marc="http://www.loc.gov/MARC21/slim"', '', 'g');
-        END IF; 
-    ELSE
-        tmp_xml := oils_xslt_process(me.marc, xfrm.xslt)::XML;
-    END IF;
-
-    top_el := REGEXP_REPLACE(tmp_xml, E'^.*?<((?:\\S+:)?' || layout.holdings_element || ').*$', E'\\1');
-
-    IF axml IS NOT NULL THEN 
-        tmp_xml := REGEXP_REPLACE(tmp_xml, '</' || top_el || '>(.*?)$', axml || '</' || top_el || E'>\\1');
-    END IF;
-
-    IF hxml IS NOT NULL THEN -- XXX how do we configure the holdings position?
-        tmp_xml := REGEXP_REPLACE(tmp_xml, '</' || top_el || '>(.*?)$', hxml || '</' || top_el || E'>\\1');
-    END IF;
-
-    IF ('bre.unapi' = ANY (includes)) THEN 
-        output := REGEXP_REPLACE(
-            tmp_xml,
-            '</' || top_el || '>(.*?)',
-            XMLELEMENT(
-                name abbr,
-                XMLATTRIBUTES(
-                    'http://www.w3.org/1999/xhtml' AS xmlns,
-                    'unapi-id' AS class,
-                    'tag:open-ils.org:U2@bre/' || obj_id || '/' || org AS title
-                )
-            )::TEXT || '</' || top_el || E'>\\1'
-        );
-    ELSE
-        output := tmp_xml;
-    END IF;
-
-    output := REGEXP_REPLACE(output::TEXT,E'>\\s+<','><','gs')::XML;
-    RETURN output;
-END;
-$F$ LANGUAGE PLPGSQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.holdings_xml (
-    bid BIGINT,
-    ouid INT,
-    org TEXT,
-    depth INT DEFAULT NULL,
-    includes TEXT[] DEFAULT NULL::TEXT[],
-    slimit HSTORE DEFAULT NULL,
-    soffset HSTORE DEFAULT NULL,
-    include_xmlns BOOL DEFAULT TRUE,
-    pref_lib INT DEFAULT NULL
-)
-RETURNS XML AS $F$
-     SELECT  XMLELEMENT(
-                 name holdings,
-                 XMLATTRIBUTES(
-                    CASE WHEN $8 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                    CASE WHEN ('bre' = ANY ($5)) THEN 'tag:open-ils.org:U2@bre/' || $1 || '/' || $3 ELSE NULL END AS id
-                 ),
-                 XMLELEMENT(
-                     name counts,
-                     (SELECT  XMLAGG(XMLELEMENT::XML) FROM (
-                         SELECT  XMLELEMENT(
-                                     name count,
-                                     XMLATTRIBUTES('public' as type, depth, org_unit, coalesce(transcendant,0) as transcendant, available, visible as count, unshadow)
-                                 )::text
-                           FROM  asset.opac_ou_record_copy_count($2,  $1)
-                                     UNION
-                         SELECT  XMLELEMENT(
-                                     name count,
-                                     XMLATTRIBUTES('staff' as type, depth, org_unit, coalesce(transcendant,0) as transcendant, available, visible as count, unshadow)
-                                 )::text
-                           FROM  asset.staff_ou_record_copy_count($2, $1)
-                                     UNION
-                         SELECT  XMLELEMENT(
-                                     name count,
-                                     XMLATTRIBUTES('pref_lib' as type, depth, org_unit, coalesce(transcendant,0) as transcendant, available, visible as count, unshadow)
-                                 )::text
-                           FROM  asset.opac_ou_record_copy_count($9,  $1)
-                                     ORDER BY 1
-                     )x)
-                 ),
-                 CASE 
-                     WHEN ('bmp' = ANY ($5)) THEN
-                        XMLELEMENT(
-                            name monograph_parts,
-                            (SELECT XMLAGG(bmp) FROM (
-                                SELECT  unapi.bmp( id, 'xml', 'monograph_part', evergreen.array_remove_item_by_value( evergreen.array_remove_item_by_value($5,'bre'), 'holdings_xml'), $3, $4, $6, $7, FALSE)
-                                  FROM  biblio.monograph_part
-                                  WHERE record = $1
-                            )x)
-                        )
-                     ELSE NULL
-                 END,
-                 XMLELEMENT(
-                     name volumes,
-                     (SELECT XMLAGG(acn ORDER BY rank, name, label_sortkey) FROM (
-                        -- Physical copies
-                        SELECT  unapi.acn(y.id,'xml','volume',evergreen.array_remove_item_by_value( evergreen.array_remove_item_by_value($5,'holdings_xml'),'bre'), $3, $4, $6, $7, FALSE), y.rank, name, label_sortkey
-                        FROM evergreen.ranked_volumes($1, $2, $4, $6, $7, $9) AS y
-                        UNION ALL
-                        -- Located URIs
-                        SELECT unapi.acn(uris.id,'xml','volume',evergreen.array_remove_item_by_value( evergreen.array_remove_item_by_value($5,'holdings_xml'),'bre'), $3, $4, $6, $7, FALSE), 0, name, label_sortkey
-                        FROM evergreen.located_uris($1, $2, $9) AS uris
-                     )x)
-                 ),
-                 CASE WHEN ('ssub' = ANY ($5)) THEN 
-                     XMLELEMENT(
-                         name subscriptions,
-                         (SELECT XMLAGG(ssub) FROM (
-                            SELECT  unapi.ssub(id,'xml','subscription','{}'::TEXT[], $3, $4, $6, $7, FALSE)
-                              FROM  serial.subscription
-                              WHERE record_entry = $1
-                        )x)
-                     )
-                 ELSE NULL END,
-                 CASE WHEN ('acp' = ANY ($5)) THEN 
-                     XMLELEMENT(
-                         name foreign_copies,
-                         (SELECT XMLAGG(acp) FROM (
-                            SELECT  unapi.acp(p.target_copy,'xml','copy',evergreen.array_remove_item_by_value($5,'acp'), $3, $4, $6, $7, FALSE)
-                              FROM  biblio.peer_bib_copy_map p
-                                    JOIN asset.copy c ON (p.target_copy = c.id)
-                              WHERE NOT c.deleted AND p.peer_record = $1
-                            LIMIT ($6 -> 'acp')::INT
-                            OFFSET ($7 -> 'acp')::INT
-                        )x)
-                     )
-                 ELSE NULL END
-             );
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.ssub ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-        SELECT  XMLELEMENT(
-                    name subscription,
-                    XMLATTRIBUTES(
-                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                        'tag:open-ils.org:U2@ssub/' || id AS id,
-                        'tag:open-ils.org:U2@aou/' || owning_lib AS owning_lib,
-                        start_date AS start, end_date AS end, expected_date_offset
-                    ),
-                    CASE 
-                        WHEN ('sdist' = ANY ($4)) THEN
-                            XMLELEMENT( name distributions,
-                                (SELECT XMLAGG(sdist) FROM (
-                                    SELECT  unapi.sdist( id, 'xml', 'distribution', evergreen.array_remove_item_by_value($4,'ssub'), $5, $6, $7, $8, FALSE)
-                                      FROM  serial.distribution
-                                      WHERE subscription = ssub.id
-                                )x)
-                            )
-                        ELSE NULL
-                    END
-                )
-          FROM  serial.subscription ssub
-          WHERE id = $1
-          GROUP BY id, start_date, end_date, expected_date_offset, owning_lib;
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.sdist ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-        SELECT  XMLELEMENT(
-                    name distribution,
-                    XMLATTRIBUTES(
-                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                        'tag:open-ils.org:U2@sdist/' || id AS id,
-            			'tag:open-ils.org:U2@acn/' || receive_call_number AS receive_call_number,
-			            'tag:open-ils.org:U2@acn/' || bind_call_number AS bind_call_number,
-                        unit_label_prefix, label, unit_label_suffix, summary_method
-                    ),
-                    unapi.aou( holding_lib, $2, 'holding_lib', evergreen.array_remove_item_by_value($4,'sdist'), $5, $6, $7, $8),
-                    CASE WHEN subscription IS NOT NULL AND ('ssub' = ANY ($4)) THEN unapi.ssub( subscription, 'xml', 'subscription', evergreen.array_remove_item_by_value($4,'sdist'), $5, $6, $7, $8, FALSE) ELSE NULL END,
-                    CASE 
-                        WHEN ('sstr' = ANY ($4)) THEN
-                            XMLELEMENT( name streams,
-                                (SELECT XMLAGG(sstr) FROM (
-                                    SELECT  unapi.sstr( id, 'xml', 'stream', evergreen.array_remove_item_by_value($4,'sdist'), $5, $6, $7, $8, FALSE)
-                                      FROM  serial.stream
-                                      WHERE distribution = sdist.id
-                                )x)
-                            )
-                        ELSE NULL
-                    END,
-                    XMLELEMENT( name summaries,
-                        CASE 
-                            WHEN ('sbsum' = ANY ($4)) THEN
-                                (SELECT XMLAGG(sbsum) FROM (
-                                    SELECT  unapi.sbsum( id, 'xml', 'serial_summary', evergreen.array_remove_item_by_value($4,'sdist'), $5, $6, $7, $8, FALSE)
-                                      FROM  serial.basic_summary
-                                      WHERE distribution = sdist.id
-                                )x)
-                            ELSE NULL
-                        END,
-                        CASE 
-                            WHEN ('sisum' = ANY ($4)) THEN
-                                (SELECT XMLAGG(sisum) FROM (
-                                    SELECT  unapi.sisum( id, 'xml', 'serial_summary', evergreen.array_remove_item_by_value($4,'sdist'), $5, $6, $7, $8, FALSE)
-                                      FROM  serial.index_summary
-                                      WHERE distribution = sdist.id
-                                )x)
-                            ELSE NULL
-                        END,
-                        CASE 
-                            WHEN ('sssum' = ANY ($4)) THEN
-                                (SELECT XMLAGG(sssum) FROM (
-                                    SELECT  unapi.sssum( id, 'xml', 'serial_summary', evergreen.array_remove_item_by_value($4,'sdist'), $5, $6, $7, $8, FALSE)
-                                      FROM  serial.supplement_summary
-                                      WHERE distribution = sdist.id
-                                )x)
-                            ELSE NULL
-                        END
-                    )
-                )
-          FROM  serial.distribution sdist
-          WHERE id = $1
-          GROUP BY id, label, unit_label_prefix, unit_label_suffix, holding_lib, summary_method, subscription, receive_call_number, bind_call_number;
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.sstr ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-    SELECT  XMLELEMENT(
-                name stream,
-                XMLATTRIBUTES(
-                    CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                    'tag:open-ils.org:U2@sstr/' || id AS id,
-                    routing_label
-                ),
-                CASE WHEN distribution IS NOT NULL AND ('sdist' = ANY ($4)) THEN unapi.sssum( distribution, 'xml', 'distribtion', evergreen.array_remove_item_by_value($4,'sstr'), $5, $6, $7, $8, FALSE) ELSE NULL END,
-                CASE 
-                    WHEN ('sitem' = ANY ($4)) THEN
-                        XMLELEMENT( name items,
-                            (SELECT XMLAGG(sitem) FROM (
-                                SELECT  unapi.sitem( id, 'xml', 'serial_item', evergreen.array_remove_item_by_value($4,'sstr'), $5, $6, $7, $8, FALSE)
-                                  FROM  serial.item
-                                  WHERE stream = sstr.id
-                            )x)
-                        )
-                    ELSE NULL
-                END
-            )
-      FROM  serial.stream sstr
-      WHERE id = $1
-      GROUP BY id, routing_label, distribution;
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.siss ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-    SELECT  XMLELEMENT(
-                name issuance,
-                XMLATTRIBUTES(
-                    CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                    'tag:open-ils.org:U2@siss/' || id AS id,
-                    create_date, edit_date, label, date_published,
-                    holding_code, holding_type, holding_link_id
-                ),
-                CASE WHEN subscription IS NOT NULL AND ('ssub' = ANY ($4)) THEN unapi.ssub( subscription, 'xml', 'subscription', evergreen.array_remove_item_by_value($4,'siss'), $5, $6, $7, $8, FALSE) ELSE NULL END,
-                CASE 
-                    WHEN ('sitem' = ANY ($4)) THEN
-                        XMLELEMENT( name items,
-                            (SELECT XMLAGG(sitem) FROM (
-                                SELECT  unapi.sitem( id, 'xml', 'serial_item', evergreen.array_remove_item_by_value($4,'siss'), $5, $6, $7, $8, FALSE)
-                                  FROM  serial.item
-                                  WHERE issuance = sstr.id
-                            )x)
-                        )
-                    ELSE NULL
-                END
-            )
-      FROM  serial.issuance sstr
-      WHERE id = $1
-      GROUP BY id, create_date, edit_date, label, date_published, holding_code, holding_type, holding_link_id, subscription;
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.sitem ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-        SELECT  XMLELEMENT(
-                    name serial_item,
-                    XMLATTRIBUTES(
-                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                        'tag:open-ils.org:U2@sitem/' || id AS id,
-                        'tag:open-ils.org:U2@siss/' || issuance AS issuance,
-                        date_expected, date_received
-                    ),
-                    CASE WHEN issuance IS NOT NULL AND ('siss' = ANY ($4)) THEN unapi.siss( issuance, $2, 'issuance', evergreen.array_remove_item_by_value($4,'sitem'), $5, $6, $7, $8, FALSE) ELSE NULL END,
-                    CASE WHEN stream IS NOT NULL AND ('sstr' = ANY ($4)) THEN unapi.sstr( stream, $2, 'stream', evergreen.array_remove_item_by_value($4,'sitem'), $5, $6, $7, $8, FALSE) ELSE NULL END,
-                    CASE WHEN unit IS NOT NULL AND ('sunit' = ANY ($4)) THEN unapi.sunit( unit, $2, 'serial_unit', evergreen.array_remove_item_by_value($4,'sitem'), $5, $6, $7, $8, FALSE) ELSE NULL END,
-                    CASE WHEN uri IS NOT NULL AND ('auri' = ANY ($4)) THEN unapi.auri( uri, $2, 'uri', evergreen.array_remove_item_by_value($4,'sitem'), $5, $6, $7, $8, FALSE) ELSE NULL END
---                    XMLELEMENT( name notes,
---                        CASE 
---                            WHEN ('acpn' = ANY ($4)) THEN
---                                (SELECT XMLAGG(acpn) FROM (
---                                    SELECT  unapi.acpn( id, 'xml', 'copy_note', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8)
---                                      FROM  asset.copy_note
---                                      WHERE owning_copy = cp.id AND pub
---                                )x)
---                            ELSE NULL
---                        END
---                    )
-                )
-          FROM  serial.item sitem
-          WHERE id = $1;
-$F$ LANGUAGE SQL STABLE;
-
-
-CREATE OR REPLACE FUNCTION unapi.sssum ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-    SELECT  XMLELEMENT(
-                name serial_summary,
-                XMLATTRIBUTES(
-                    CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                    'tag:open-ils.org:U2@sbsum/' || id AS id,
-                    'sssum' AS type, generated_coverage, textual_holdings, show_generated
-                ),
-                CASE WHEN ('sdist' = ANY ($4)) THEN unapi.sdist( distribution, 'xml', 'distribtion', evergreen.array_remove_item_by_value($4,'ssum'), $5, $6, $7, $8, FALSE) ELSE NULL END
-            )
-      FROM  serial.supplement_summary ssum
-      WHERE id = $1
-      GROUP BY id, generated_coverage, textual_holdings, distribution, show_generated;
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.sbsum ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-    SELECT  XMLELEMENT(
-                name serial_summary,
-                XMLATTRIBUTES(
-                    CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                    'tag:open-ils.org:U2@sbsum/' || id AS id,
-                    'sbsum' AS type, generated_coverage, textual_holdings, show_generated
-                ),
-                CASE WHEN ('sdist' = ANY ($4)) THEN unapi.sdist( distribution, 'xml', 'distribtion', evergreen.array_remove_item_by_value($4,'ssum'), $5, $6, $7, $8, FALSE) ELSE NULL END
-            )
-      FROM  serial.basic_summary ssum
-      WHERE id = $1
-      GROUP BY id, generated_coverage, textual_holdings, distribution, show_generated;
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.sisum ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-    SELECT  XMLELEMENT(
-                name serial_summary,
-                XMLATTRIBUTES(
-                    CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                    'tag:open-ils.org:U2@sbsum/' || id AS id,
-                    'sisum' AS type, generated_coverage, textual_holdings, show_generated
-                ),
-                CASE WHEN ('sdist' = ANY ($4)) THEN unapi.sdist( distribution, 'xml', 'distribtion', evergreen.array_remove_item_by_value($4,'ssum'), $5, $6, $7, $8, FALSE) ELSE NULL END
-            )
-      FROM  serial.index_summary ssum
-      WHERE id = $1
-      GROUP BY id, generated_coverage, textual_holdings, distribution, show_generated;
-$F$ LANGUAGE SQL STABLE;
-
-
-CREATE OR REPLACE FUNCTION unapi.aou ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-DECLARE
-    output XML;
-BEGIN
-    IF ename = 'circlib' THEN
-        SELECT  XMLELEMENT(
-                    name circlib,
-                    XMLATTRIBUTES(
-                        'http://open-ils.org/spec/actors/v1' AS xmlns,
-                        id AS ident
-                    ),
-                    name
-                ) INTO output
-          FROM  actor.org_unit aou
-          WHERE id = obj_id;
-    ELSE
-        EXECUTE $$SELECT  XMLELEMENT(
-                    name $$ || ename || $$,
-                    XMLATTRIBUTES(
-                        'http://open-ils.org/spec/actors/v1' AS xmlns,
-                        'tag:open-ils.org:U2@aou/' || id AS id,
-                        shortname, name, opac_visible
-                    )
-                )
-          FROM  actor.org_unit aou
-         WHERE id = $1 $$ INTO output USING obj_id;
-    END IF;
-
-    RETURN output;
-
-END;
-$F$ LANGUAGE PLPGSQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.acl ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-    SELECT  XMLELEMENT(
-                name location,
-                XMLATTRIBUTES(
-                    CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                    id AS ident,
-                    holdable,
-                    opac_visible,
-                    label_prefix AS prefix,
-                    label_suffix AS suffix
-                ),
-                name
-            )
-      FROM  asset.copy_location
-      WHERE id = $1;
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.ccs ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-    SELECT  XMLELEMENT(
-                name status,
-                XMLATTRIBUTES(
-                    CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                    id AS ident,
-                    holdable,
-                    opac_visible
-                ),
-                name
-            )
-      FROM  config.copy_status
-      WHERE id = $1;
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.acpn ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-        SELECT  XMLELEMENT(
-                    name copy_note,
-                    XMLATTRIBUTES(
-                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                        create_date AS date,
-                        title
-                    ),
-                    value
-                )
-          FROM  asset.copy_note
-          WHERE id = $1;
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.ascecm ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-        SELECT  XMLELEMENT(
-                    name statcat,
-                    XMLATTRIBUTES(
-                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                        sc.name,
-                        sc.opac_visible
-                    ),
-                    asce.value
-                )
-          FROM  asset.stat_cat_entry asce
-                JOIN asset.stat_cat sc ON (sc.id = asce.stat_cat)
-          WHERE asce.id = $1;
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.bmp ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-        SELECT  XMLELEMENT(
-                    name monograph_part,
-                    XMLATTRIBUTES(
-                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                        'tag:open-ils.org:U2@bmp/' || id AS id,
-                        id AS ident,
-                        label,
-                        label_sortkey,
-                        'tag:open-ils.org:U2@bre/' || record AS record
-                    ),
-                    CASE 
-                        WHEN ('acp' = ANY ($4)) THEN
-                            XMLELEMENT( name copies,
-                                (SELECT XMLAGG(acp) FROM (
-                                    SELECT  unapi.acp( cp.id, 'xml', 'copy', evergreen.array_remove_item_by_value($4,'bmp'), $5, $6, $7, $8, FALSE)
-                                      FROM  asset.copy cp
-                                            JOIN asset.copy_part_map cpm ON (cpm.target_copy = cp.id)
-                                      WHERE cpm.part = $1
-                                          AND cp.deleted IS FALSE
-                                      ORDER BY COALESCE(cp.copy_number,0), cp.barcode
-                                      LIMIT ($7 -> 'acp')::INT
-                                      OFFSET ($8 -> 'acp')::INT
-
-                                )x)
-                            )
-                        ELSE NULL
-                    END,
-                    CASE WHEN ('bre' = ANY ($4)) THEN unapi.bre( record, 'marcxml', 'record', evergreen.array_remove_item_by_value($4,'bmp'), $5, $6, $7, $8, FALSE) ELSE NULL END
-                )
-          FROM  biblio.monograph_part
-          WHERE id = $1
-          GROUP BY id, label, label_sortkey, record;
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.acp ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-        SELECT  XMLELEMENT(
-                    name copy,
-                    XMLATTRIBUTES(
-                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                        'tag:open-ils.org:U2@acp/' || id AS id, id AS copy_id,
-                        create_date, edit_date, copy_number, circulate, deposit,
-                        ref, holdable, deleted, deposit_amount, price, barcode,
-                        circ_modifier, circ_as_type, opac_visible, age_protect
-                    ),
-                    unapi.ccs( status, $2, 'status', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE),
-                    unapi.acl( location, $2, 'location', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE),
-                    unapi.aou( circ_lib, $2, 'circ_lib', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8),
-                    unapi.aou( circ_lib, $2, 'circlib', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8),
-                    CASE WHEN ('acn' = ANY ($4)) THEN unapi.acn( call_number, $2, 'call_number', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE) ELSE NULL END,
-                    CASE 
-                        WHEN ('acpn' = ANY ($4)) THEN
-                            XMLELEMENT( name copy_notes,
-                                (SELECT XMLAGG(acpn) FROM (
-                                    SELECT  unapi.acpn( id, 'xml', 'copy_note', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE)
-                                      FROM  asset.copy_note
-                                      WHERE owning_copy = cp.id AND pub
-                                )x)
-                            )
-                        ELSE NULL
-                    END,
-                    CASE 
-                        WHEN ('ascecm' = ANY ($4)) THEN
-                            XMLELEMENT( name statcats,
-                                (SELECT XMLAGG(ascecm) FROM (
-                                    SELECT  unapi.ascecm( stat_cat_entry, 'xml', 'statcat', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE)
-                                      FROM  asset.stat_cat_entry_copy_map
-                                      WHERE owning_copy = cp.id
-                                )x)
-                            )
-                        ELSE NULL
-                    END,
-                    CASE
-                        WHEN ('bre' = ANY ($4)) THEN
-                            XMLELEMENT( name foreign_records,
-                                (SELECT XMLAGG(bre) FROM (
-                                    SELECT  unapi.bre(peer_record,'marcxml','record','{}'::TEXT[], $5, $6, $7, $8, FALSE)
-                                      FROM  biblio.peer_bib_copy_map
-                                      WHERE target_copy = cp.id
-                                )x)
-
-                            )
-                        ELSE NULL
-                    END,
-                    CASE 
-                        WHEN ('bmp' = ANY ($4)) THEN
-                            XMLELEMENT( name monograph_parts,
-                                (SELECT XMLAGG(bmp) FROM (
-                                    SELECT  unapi.bmp( part, 'xml', 'monograph_part', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE)
-                                      FROM  asset.copy_part_map
-                                      WHERE target_copy = cp.id
-                                )x)
-                            )
-                        ELSE NULL
-                    END,
-                    CASE 
-                        WHEN ('circ' = ANY ($4)) THEN
-                            XMLELEMENT( name current_circulation,
-                                (SELECT XMLAGG(circ) FROM (
-                                    SELECT  unapi.circ( id, 'xml', 'circ', evergreen.array_remove_item_by_value($4,'circ'), $5, $6, $7, $8, FALSE)
-                                      FROM  action.circulation
-                                      WHERE target_copy = cp.id
-                                            AND checkin_time IS NULL
-                                )x)
-                            )
-                        ELSE NULL
-                    END
-                )
-          FROM  asset.copy cp
-          WHERE id = $1
-              AND cp.deleted IS FALSE
-          GROUP BY id, status, location, circ_lib, call_number, create_date,
-              edit_date, copy_number, circulate, deposit, ref, holdable,
-              deleted, deposit_amount, price, barcode, circ_modifier,
-              circ_as_type, opac_visible, age_protect;
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.sunit ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-        SELECT  XMLELEMENT(
-                    name serial_unit,
-                    XMLATTRIBUTES(
-                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                        'tag:open-ils.org:U2@acp/' || id AS id, id AS copy_id,
-                        create_date, edit_date, copy_number, circulate, deposit,
-                        ref, holdable, deleted, deposit_amount, price, barcode,
-                        circ_modifier, circ_as_type, opac_visible, age_protect,
-                        status_changed_time, floating, mint_condition,
-                        detailed_contents, sort_key, summary_contents, cost 
-                    ),
-                    unapi.ccs( status, $2, 'status', evergreen.array_remove_item_by_value( evergreen.array_remove_item_by_value($4,'acp'),'sunit'), $5, $6, $7, $8, FALSE),
-                    unapi.acl( location, $2, 'location', evergreen.array_remove_item_by_value( evergreen.array_remove_item_by_value($4,'acp'),'sunit'), $5, $6, $7, $8, FALSE),
-                    unapi.aou( circ_lib, $2, 'circ_lib', evergreen.array_remove_item_by_value( evergreen.array_remove_item_by_value($4,'acp'),'sunit'), $5, $6, $7, $8),
-                    unapi.aou( circ_lib, $2, 'circlib', evergreen.array_remove_item_by_value( evergreen.array_remove_item_by_value($4,'acp'),'sunit'), $5, $6, $7, $8),
-                    CASE WHEN ('acn' = ANY ($4)) THEN unapi.acn( call_number, $2, 'call_number', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE) ELSE NULL END,
-                    XMLELEMENT( name copy_notes,
-                        CASE 
-                            WHEN ('acpn' = ANY ($4)) THEN
-                                (SELECT XMLAGG(acpn) FROM (
-                                    SELECT  unapi.acpn( id, 'xml', 'copy_note', evergreen.array_remove_item_by_value( evergreen.array_remove_item_by_value($4,'acp'),'sunit'), $5, $6, $7, $8, FALSE)
-                                      FROM  asset.copy_note
-                                      WHERE owning_copy = cp.id AND pub
-                                )x)
-                            ELSE NULL
-                        END
-                    ),
-                    XMLELEMENT( name statcats,
-                        CASE 
-                            WHEN ('ascecm' = ANY ($4)) THEN
-                                (SELECT XMLAGG(ascecm) FROM (
-                                    SELECT  unapi.ascecm( stat_cat_entry, 'xml', 'statcat', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE)
-                                      FROM  asset.stat_cat_entry_copy_map
-                                      WHERE owning_copy = cp.id
-                                )x)
-                            ELSE NULL
-                        END
-                    ),
-                    XMLELEMENT( name foreign_records,
-                        CASE
-                            WHEN ('bre' = ANY ($4)) THEN
-                                (SELECT XMLAGG(bre) FROM (
-                                    SELECT  unapi.bre(peer_record,'marcxml','record','{}'::TEXT[], $5, $6, $7, $8, FALSE)
-                                      FROM  biblio.peer_bib_copy_map
-                                      WHERE target_copy = cp.id
-                                )x)
-                            ELSE NULL
-                        END
-                    ),
-                    CASE 
-                        WHEN ('bmp' = ANY ($4)) THEN
-                            XMLELEMENT( name monograph_parts,
-                                (SELECT XMLAGG(bmp) FROM (
-                                    SELECT  unapi.bmp( part, 'xml', 'monograph_part', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE)
-                                      FROM  asset.copy_part_map
-                                      WHERE target_copy = cp.id
-                                )x)
-                            )
-                        ELSE NULL
-                    END,
-                    CASE 
-                        WHEN ('circ' = ANY ($4)) THEN
-                            XMLELEMENT( name current_circulation,
-                                (SELECT XMLAGG(circ) FROM (
-                                    SELECT  unapi.circ( id, 'xml', 'circ', evergreen.array_remove_item_by_value($4,'circ'), $5, $6, $7, $8, FALSE)
-                                      FROM  action.circulation
-                                      WHERE target_copy = cp.id
-                                            AND checkin_time IS NULL
-                                )x)
-                            )
-                        ELSE NULL
-                    END
-                )
-          FROM  serial.unit cp
-          WHERE id = $1
-              AND cp.deleted IS FALSE
-          GROUP BY id, status, location, circ_lib, call_number, create_date,
-              edit_date, copy_number, circulate, floating, mint_condition,
-              deposit, ref, holdable, deleted, deposit_amount, price,
-              barcode, circ_modifier, circ_as_type, opac_visible,
-              status_changed_time, detailed_contents, sort_key,
-              summary_contents, cost, age_protect;
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.acn ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-        SELECT  XMLELEMENT(
-                    name volume,
-                    XMLATTRIBUTES(
-                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                        'tag:open-ils.org:U2@acn/' || acn.id AS id,
-                        acn.id AS vol_id, o.shortname AS lib,
-                        o.opac_visible AS opac_visible,
-                        deleted, label, label_sortkey, label_class, record
-                    ),
-                    unapi.aou( owning_lib, $2, 'owning_lib', evergreen.array_remove_item_by_value($4,'acn'), $5, $6, $7, $8),
-                    CASE 
-                        WHEN ('acp' = ANY ($4)) THEN
-                            CASE WHEN $6 IS NOT NULL THEN
-                                XMLELEMENT( name copies,
-                                    (SELECT XMLAGG(acp ORDER BY rank_avail) FROM (
-                                        SELECT  unapi.acp( cp.id, 'xml', 'copy', evergreen.array_remove_item_by_value($4,'acn'), $5, $6, $7, $8, FALSE),
-                                            evergreen.rank_cp_status(cp.status) AS rank_avail
-                                          FROM  asset.copy cp
-                                                JOIN actor.org_unit_descendants( (SELECT id FROM actor.org_unit WHERE shortname = $5), $6) aoud ON (cp.circ_lib = aoud.id)
-                                          WHERE cp.call_number = acn.id
-                                              AND cp.deleted IS FALSE
-                                          ORDER BY rank_avail, COALESCE(cp.copy_number,0), cp.barcode
-                                          LIMIT ($7 -> 'acp')::INT
-                                          OFFSET ($8 -> 'acp')::INT
-                                    )x)
-                                )
-                            ELSE
-                                XMLELEMENT( name copies,
-                                    (SELECT XMLAGG(acp ORDER BY rank_avail) FROM (
-                                        SELECT  unapi.acp( cp.id, 'xml', 'copy', evergreen.array_remove_item_by_value($4,'acn'), $5, $6, $7, $8, FALSE),
-                                            evergreen.rank_cp_status(cp.status) AS rank_avail
-                                          FROM  asset.copy cp
-                                                JOIN actor.org_unit_descendants( (SELECT id FROM actor.org_unit WHERE shortname = $5) ) aoud ON (cp.circ_lib = aoud.id)
-                                          WHERE cp.call_number = acn.id
-                                              AND cp.deleted IS FALSE
-                                          ORDER BY rank_avail, COALESCE(cp.copy_number,0), cp.barcode
-                                          LIMIT ($7 -> 'acp')::INT
-                                          OFFSET ($8 -> 'acp')::INT
-                                    )x)
-                                )
-                            END
-                        ELSE NULL
-                    END,
-                    XMLELEMENT(
-                        name uris,
-                        (SELECT XMLAGG(auri) FROM (SELECT unapi.auri(uri,'xml','uri', evergreen.array_remove_item_by_value($4,'acn'), $5, $6, $7, $8, FALSE) FROM asset.uri_call_number_map WHERE call_number = acn.id)x)
-                    ),
-                    unapi.acnp( acn.prefix, 'marcxml', 'prefix', evergreen.array_remove_item_by_value($4,'acn'), $5, $6, $7, $8, FALSE),
-                    unapi.acns( acn.suffix, 'marcxml', 'suffix', evergreen.array_remove_item_by_value($4,'acn'), $5, $6, $7, $8, FALSE),
-                    CASE WHEN ('bre' = ANY ($4)) THEN unapi.bre( acn.record, 'marcxml', 'record', evergreen.array_remove_item_by_value($4,'acn'), $5, $6, $7, $8, FALSE) ELSE NULL END
-                ) AS x
-          FROM  asset.call_number acn
-                JOIN actor.org_unit o ON (o.id = acn.owning_lib)
-          WHERE acn.id = $1
-              AND acn.deleted IS FALSE
-          GROUP BY acn.id, o.shortname, o.opac_visible, deleted, label, label_sortkey, label_class, owning_lib, record, acn.prefix, acn.suffix;
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.acnp ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-        SELECT  XMLELEMENT(
-                    name call_number_prefix,
-                    XMLATTRIBUTES(
-                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                        id AS ident,
-                        label,
-                        'tag:open-ils.org:U2@aou/' || owning_lib AS owning_lib,
-                        label_sortkey
-                    )
-                )
-          FROM  asset.call_number_prefix
-          WHERE id = $1;
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.acns ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-        SELECT  XMLELEMENT(
-                    name call_number_suffix,
-                    XMLATTRIBUTES(
-                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                        id AS ident,
-                        label,
-                        'tag:open-ils.org:U2@aou/' || owning_lib AS owning_lib,
-                        label_sortkey
-                    )
-                )
-          FROM  asset.call_number_suffix
-          WHERE id = $1;
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.auri ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-        SELECT  XMLELEMENT(
-                    name uri,
-                    XMLATTRIBUTES(
-                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                        'tag:open-ils.org:U2@auri/' || uri.id AS id,
-                        use_restriction,
-                        href,
-                        label
-                    ),
-                    CASE 
-                        WHEN ('acn' = ANY ($4)) THEN
-                            XMLELEMENT( name copies,
-                                (SELECT XMLAGG(acn) FROM (SELECT unapi.acn( call_number, 'xml', 'copy', evergreen.array_remove_item_by_value($4,'auri'), $5, $6, $7, $8, FALSE) FROM asset.uri_call_number_map WHERE uri = uri.id)x)
-                            )
-                        ELSE NULL
-                    END
-                ) AS x
-          FROM  asset.uri uri
-          WHERE uri.id = $1
-          GROUP BY uri.id, use_restriction, href, label;
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.mra ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-        SELECT  XMLELEMENT(
-                    name attributes,
-                    XMLATTRIBUTES(
-                        CASE WHEN $9 THEN 'http://open-ils.org/spec/indexing/v1' ELSE NULL END AS xmlns,
-                        'tag:open-ils.org:U2@mra/' || mra.id AS id,
-                        'tag:open-ils.org:U2@bre/' || mra.id AS record
-                    ),
-                    (SELECT XMLAGG(foo.y)
-                      FROM (SELECT XMLELEMENT(
-                                name field,
-                                XMLATTRIBUTES(
-                                    key AS name,
-                                    cvm.value AS "coded-value",
-                                    rad.filter,
-                                    rad.sorter
-                                ),
-                                x.value
-                            )
-                           FROM EACH(mra.attrs) AS x
-                                JOIN config.record_attr_definition rad ON (x.key = rad.name)
-                                LEFT JOIN config.coded_value_map cvm ON (cvm.ctype = x.key AND code = x.value)
-                        )foo(y)
-                    )
-                )
-          FROM  metabib.record_attr mra
-          WHERE mra.id = $1;
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.circ (obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT DEFAULT '-', depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-    SELECT XMLELEMENT(
-        name circ,
-        XMLATTRIBUTES(
-            CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-            'tag:open-ils.org:U2@circ/' || id AS id,
-            xact_start,
-            due_date
-        ),
-        CASE WHEN ('aou' = ANY ($4)) THEN unapi.aou( circ_lib, $2, 'circ_lib', evergreen.array_remove_item_by_value($4,'circ'), $5, $6, $7, $8, FALSE) ELSE NULL END,
-        CASE WHEN ('acp' = ANY ($4)) THEN unapi.acp( circ_lib, $2, 'target_copy', evergreen.array_remove_item_by_value($4,'circ'), $5, $6, $7, $8, FALSE) ELSE NULL END
-    )
-    FROM action.circulation
-    WHERE id = $1;
-$F$ LANGUAGE SQL STABLE;
-
-/*
-
- -- Some test queries
-
-SELECT unapi.memoize( 'bre', 1,'mods32','','{holdings_xml,acp}'::TEXT[], 'SYS1');
-SELECT unapi.memoize( 'bre', 1,'marcxml','','{holdings_xml,acp}'::TEXT[], 'SYS1');
-SELECT unapi.memoize( 'bre', 1,'holdings_xml','','{holdings_xml,acp}'::TEXT[], 'SYS1');
-
-SELECT unapi.biblio_record_entry_feed('{1}'::BIGINT[],'mods32','{holdings_xml,acp}'::TEXT[],'SYS1',NULL,'acn=>1',NULL, NULL,NULL,NULL,NULL,'http://c64/opac/extras/unapi', '<totalResults xmlns="http://a9.com/-/spec/opensearch/1.1/">2</totalResults><startIndex xmlns="http://a9.com/-/spec/opensearch/1.1/">1</startIndex><itemsPerPage xmlns="http://a9.com/-/spec/opensearch/1.1/">10</itemsPerPage>');
-
-SELECT unapi.biblio_record_entry_feed('{7209,7394}'::BIGINT[],'marcxml','{}'::TEXT[],'SYS1',NULL,'acn=>1',NULL, NULL,NULL,NULL,NULL,'http://fulfillment2.esilibrary.com/opac/extras/unapi', '<totalResults xmlns="http://a9.com/-/spec/opensearch/1.1/">2</totalResults><startIndex xmlns="http://a9.com/-/spec/opensearch/1.1/">1</startIndex><itemsPerPage xmlns="http://a9.com/-/spec/opensearch/1.1/">10</itemsPerPage>');
-EXPLAIN ANALYZE SELECT unapi.biblio_record_entry_feed('{7209,7394}'::BIGINT[],'marcxml','{}'::TEXT[],'SYS1',NULL,'acn=>1',NULL, NULL,NULL,NULL,NULL,'http://fulfillment2.esilibrary.com/opac/extras/unapi', '<totalResults xmlns="http://a9.com/-/spec/opensearch/1.1/">2</totalResults><startIndex xmlns="http://a9.com/-/spec/opensearch/1.1/">1</startIndex><itemsPerPage xmlns="http://a9.com/-/spec/opensearch/1.1/">10</itemsPerPage>');
-EXPLAIN ANALYZE SELECT unapi.biblio_record_entry_feed('{7209,7394}'::BIGINT[],'marcxml','{holdings_xml}'::TEXT[],'SYS1',NULL,'acn=>1',NULL, NULL,NULL,NULL,NULL,'http://fulfillment2.esilibrary.com/opac/extras/unapi', '<totalResults xmlns="http://a9.com/-/spec/opensearch/1.1/">2</totalResults><startIndex xmlns="http://a9.com/-/spec/opensearch/1.1/">1</startIndex><itemsPerPage xmlns="http://a9.com/-/spec/opensearch/1.1/">10</itemsPerPage>');
-EXPLAIN ANALYZE SELECT unapi.biblio_record_entry_feed('{7209,7394}'::BIGINT[],'mods32','{holdings_xml}'::TEXT[],'SYS1',NULL,'acn=>1',NULL, NULL,NULL,NULL,NULL,'http://fulfillment2.esilibrary.com/opac/extras/unapi', '<totalResults xmlns="http://a9.com/-/spec/opensearch/1.1/">2</totalResults><startIndex xmlns="http://a9.com/-/spec/opensearch/1.1/">1</startIndex><itemsPerPage xmlns="http://a9.com/-/spec/opensearch/1.1/">10</itemsPerPage>');
-
-SELECT unapi.biblio_record_entry_feed('{216}'::BIGINT[],'marcxml','{}'::TEXT[], 'BR1');
-EXPLAIN ANALYZE SELECT unapi.bre(216,'marcxml','record','{holdings_xml,bre.unapi}'::TEXT[], 'BR1');
-EXPLAIN ANALYZE SELECT unapi.bre(216,'holdings_xml','record','{}'::TEXT[], 'BR1');
-EXPLAIN ANALYZE SELECT unapi.holdings_xml(216,4,'BR1',2,'{bre}'::TEXT[]);
-EXPLAIN ANALYZE SELECT unapi.bre(216,'mods32','record','{}'::TEXT[], 'BR1');
-
--- Limit to 5 call numbers, 5 copies, with a preferred library of 4 (BR1), in SYS2 at a depth of 0
-EXPLAIN ANALYZE SELECT unapi.bre(36,'marcxml','record','{holdings_xml,mra,acp,acnp,acns,bmp}','SYS2',0,'acn=>5,acp=>5',NULL,TRUE,4);
-
-*/
-
-
-SELECT evergreen.upgrade_deps_block_check('0691', :eg_version);
-
-CREATE INDEX poi_po_idx ON acq.po_item (purchase_order);
-
-CREATE INDEX ie_inv_idx on acq.invoice_entry (invoice);
-CREATE INDEX ie_po_idx on acq.invoice_entry (purchase_order);
-CREATE INDEX ie_li_idx on acq.invoice_entry (lineitem);
-
-CREATE INDEX ii_inv_idx on acq.invoice_item (invoice);
-CREATE INDEX ii_po_idx on acq.invoice_item (purchase_order);
-CREATE INDEX ii_poi_idx on acq.invoice_item (po_item);
-
-
-SELECT evergreen.upgrade_deps_block_check('0692', :eg_version);
-
-INSERT INTO config.org_unit_setting_type
-    (name, label, description, grp, datatype)
-    VALUES (
-        'circ.fines.charge_when_closed',
-         oils_i18n_gettext(
-            'circ.fines.charge_when_closed',
-            'Charge fines on overdue circulations when closed',
-            'coust',
-            'label'
-        ),
-        oils_i18n_gettext(
-            'circ.fines.charge_when_closed',
-            'Normally, fines are not charged when a library is closed.  When set to True, fines will be charged during scheduled closings and normal weekly closed days.',
-            'coust',
-            'description'
-        ),
-        'circ',
-        'bool'
-    );
-
-SELECT evergreen.upgrade_deps_block_check('0694', :eg_version);
-
-INSERT into config.org_unit_setting_type
-( name, grp, label, description, datatype, fm_class ) VALUES
-
-( 'ui.patron.edit.au.prefix.require', 'gui',
-    oils_i18n_gettext('ui.patron.edit.au.prefix.require',
-        'Require prefix field on patron registration',
-        'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.prefix.require',
-        'The prefix field will be required on the patron registration screen.',
-        'coust', 'description'),
-    'bool', null)
-	
-,( 'ui.patron.edit.au.prefix.show', 'gui',
-    oils_i18n_gettext('ui.patron.edit.au.prefix.show',
-        'Show prefix field on patron registration',
-        'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.prefix.show',
-        'The prefix field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
-        'coust', 'description'),
-    'bool', null)
-
-,( 'ui.patron.edit.au.prefix.suggest', 'gui',
-    oils_i18n_gettext('ui.patron.edit.au.prefix.suggest',
-        'Suggest prefix field on patron registration',
-        'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.prefix.suggest',
-        'The prefix field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
-        'coust', 'description'),
-    'bool', null)
-;		
-
-
--- Evergreen DB patch 0695.schema.custom_toolbars.sql
---
--- FIXME: insert description of change, if needed
---
-
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0695', :eg_version);
-
-CREATE TABLE actor.toolbar (
-    id          BIGSERIAL   PRIMARY KEY,
-    ws          INT         REFERENCES actor.workstation (id) ON DELETE CASCADE,
-    org         INT         REFERENCES actor.org_unit (id) ON DELETE CASCADE,
-    usr         INT         REFERENCES actor.usr (id) ON DELETE CASCADE,
-    label       TEXT        NOT NULL,
-    layout      TEXT        NOT NULL,
-    CONSTRAINT only_one_type CHECK (
-        (ws IS NOT NULL AND COALESCE(org,usr) IS NULL) OR
-        (org IS NOT NULL AND COALESCE(ws,usr) IS NULL) OR
-        (usr IS NOT NULL AND COALESCE(org,ws) IS NULL)
-    ),
-    CONSTRAINT layout_must_be_json CHECK ( is_json(layout) )
-);
-CREATE UNIQUE INDEX label_once_per_ws ON actor.toolbar (ws, label) WHERE ws IS NOT NULL;
-CREATE UNIQUE INDEX label_once_per_org ON actor.toolbar (org, label) WHERE org IS NOT NULL;
-CREATE UNIQUE INDEX label_once_per_usr ON actor.toolbar (usr, label) WHERE usr IS NOT NULL;
-
--- this one unrelated to toolbars but is a gap in the upgrade scripts
-INSERT INTO permission.perm_list ( id, code, description )
-    SELECT
-        522,
-        'IMPORT_AUTHORITY_MARC',
-        oils_i18n_gettext(
-            522,
-            'Allows a user to create new authority records',
-            'ppl',
-            'description'
-        )
-    WHERE NOT EXISTS (
-        SELECT 1
-        FROM permission.perm_list
-        WHERE
-            id = 522
-    );
-
-INSERT INTO permission.perm_list ( id, code, description ) VALUES (
-    523,
-    'ADMIN_TOOLBAR',
-    oils_i18n_gettext(
-        523,
-        'Allows a user to create, edit, and delete custom toolbars',
-        'ppl',
-        'description'
-    )
-);
-
--- Don't want to assume stock perm groups in an upgrade script, but here for ease of testing
--- INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT pgt.id, perm.id, aout.depth, FALSE FROM permission.grp_tree pgt, permission.perm_list perm, actor.org_unit_type aout WHERE pgt.name = 'Staff' AND aout.name = 'Branch' AND perm.code = 'ADMIN_TOOLBAR';
-
-INSERT INTO actor.toolbar(org,label,layout) VALUES
-    ( 1, 'circ', '["circ_checkout","circ_checkin","toolbarseparator.1","search_opac","copy_status","toolbarseparator.2","patron_search","patron_register","toolbarspacer.3","hotkeys_toggle"]' ),
-    ( 1, 'cat', '["circ_checkin","toolbarseparator.1","search_opac","copy_status","toolbarseparator.2","create_marc","authority_manage","retrieve_last_record","toolbarspacer.3","hotkeys_toggle"]' );
-
--- delete from permission.grp_perm_map where perm in (select id from permission.perm_list where code ~ 'TOOLBAR'); delete from permission.perm_list where code ~ 'TOOLBAR'; drop table actor.toolbar ;
-
--- Evergreen DB patch 0696.no_plperl.sql
---
--- FIXME: insert description of change, if needed
---
-
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0696', :eg_version);
-
--- Re-create these as plperlu instead of plperl
-CREATE OR REPLACE FUNCTION auditor.set_audit_info(INT, INT) RETURNS VOID AS $$
-    $_SHARED{"eg_audit_user"} = $_[0];
-    $_SHARED{"eg_audit_ws"} = $_[1];
-$$ LANGUAGE plperlu;
-
-CREATE OR REPLACE FUNCTION auditor.get_audit_info() RETURNS TABLE (eg_user INT, eg_ws INT) AS $$
-    return [{eg_user => $_SHARED{"eg_audit_user"}, eg_ws => $_SHARED{"eg_audit_ws"}}];
-$$ LANGUAGE plperlu;
-
-CREATE OR REPLACE FUNCTION auditor.clear_audit_info() RETURNS VOID AS $$
-    delete($_SHARED{"eg_audit_user"});
-    delete($_SHARED{"eg_audit_ws"});
-$$ LANGUAGE plperlu;
-
--- And remove the language so that we don't use it later.
-DROP LANGUAGE plperl;
-
--- Evergreen DB patch 0697.data.place_currently_unfillable_hold.sql
---
--- FIXME: insert description of change, if needed
---
-
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0697', :eg_version);
-
--- FIXME: add/check SQL statements to perform the upgrade
-INSERT INTO permission.perm_list ( id, code, description ) VALUES
- ( 524, 'PLACE_UNFILLABLE_HOLD', oils_i18n_gettext( 524,
-    'Allows a user to place a hold that cannot currently be filled.', 'ppl', 'description' ));
-
--- Evergreen DB patch 0698.hold_default_pickup.sql
---
--- FIXME: insert description of change, if needed
---
-
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0698', :eg_version);
-
-INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
-    VALUES ('opac.default_pickup_location', TRUE, 'Default Hold Pickup Location', 'Default location for holds pickup', 'integer');
-
-SELECT evergreen.upgrade_deps_block_check('0699', :eg_version);
-
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, grp )
-    VALUES (
-        'ui.hide_copy_editor_fields',
-        oils_i18n_gettext(
-            'ui.hide_copy_editor_fields',
-            'GUI: Hide these fields within the Item Attribute Editor',
-            'coust',
-            'label'
-        ),
-        oils_i18n_gettext(
-            'ui.hide_copy_editor_fields',
-            'This setting may be best maintained with the dedicated configuration'
-            || ' interface within the Item Attribute Editor.  However, here it'
-            || ' shows up as comma separated list of field identifiers to hide.',
-            'coust',
-            'description'
-        ),
-        'array',
-        'gui'
-    );
-
-
-SELECT evergreen.upgrade_deps_block_check('0700', :eg_version);
-SELECT evergreen.upgrade_deps_block_check('0706', :eg_version);
-
--- This throws away data, but only data that causes breakage anyway.
-UPDATE serial.issuance SET holding_code = NULL WHERE NOT is_json(holding_code);
-
--- If we don't do this, we have unprocessed triggers and we can't alter the table
-SET CONSTRAINTS serial.issuance_caption_and_pattern_fkey IMMEDIATE;
-
-ALTER TABLE serial.issuance ADD CHECK (holding_code IS NULL OR is_json(holding_code));
-
-INSERT INTO config.internal_flag (name, value, enabled) VALUES (
-    'serial.rematerialize_on_same_holding_code', NULL, FALSE
-);
-
-INSERT INTO config.org_unit_setting_type (
-    name, label, grp, description, datatype
-) VALUES (
-    'serial.default_display_grouping',
-    'Default display grouping for serials distributions presented in the OPAC.',
-    'serial',
-    'Default display grouping for serials distributions presented in the OPAC. This can be "enum" or "chron".',
-    'string'
-);
-
-ALTER TABLE serial.distribution
-    ADD COLUMN display_grouping TEXT NOT NULL DEFAULT 'chron'
-        CHECK (display_grouping IN ('enum', 'chron'));
-
--- why didn't we just make one summary table in the first place?
-CREATE VIEW serial.any_summary AS
-    SELECT
-        'basic' AS summary_type, id, distribution,
-        generated_coverage, textual_holdings, show_generated
-    FROM serial.basic_summary
-    UNION
-    SELECT
-        'index' AS summary_type, id, distribution,
-        generated_coverage, textual_holdings, show_generated
-    FROM serial.index_summary
-    UNION
-    SELECT
-        'supplement' AS summary_type, id, distribution,
-        generated_coverage, textual_holdings, show_generated
-    FROM serial.supplement_summary ;
-
-
--- Given the IDs of two rows in actor.org_unit, *the second being an ancestor
--- of the first*, return in array form the path from the ancestor to the
--- descendant, with each point in the path being an org_unit ID.  This is
--- useful for sorting org_units by their position in a depth-first (display
--- order) representation of the tree.
---
--- This breaks with the precedent set by actor.org_unit_full_path() and others,
--- and gets the parameters "backwards," but otherwise this function would
--- not be very usable within json_query.
-CREATE OR REPLACE FUNCTION actor.org_unit_simple_path(INT, INT)
-RETURNS INT[] AS $$
-    WITH RECURSIVE descendant_depth(id, path) AS (
-        SELECT  aou.id,
-                ARRAY[aou.id]
-          FROM  actor.org_unit aou
-                JOIN actor.org_unit_type aout ON (aout.id = aou.ou_type)
-          WHERE aou.id = $2
-            UNION ALL
-        SELECT  aou.id,
-                dd.path || ARRAY[aou.id]
-          FROM  actor.org_unit aou
-                JOIN actor.org_unit_type aout ON (aout.id = aou.ou_type)
-                JOIN descendant_depth dd ON (dd.id = aou.parent_ou)
-    ) SELECT dd.path
-        FROM actor.org_unit aou
-        JOIN descendant_depth dd USING (id)
-        WHERE aou.id = $1 ORDER BY dd.path;
-$$ LANGUAGE SQL STABLE;
-
-CREATE TABLE serial.materialized_holding_code (
-    id BIGSERIAL PRIMARY KEY,
-    issuance INTEGER NOT NULL REFERENCES serial.issuance (id) ON DELETE CASCADE,
-    subfield CHAR,
-    value TEXT
-);
-
-CREATE OR REPLACE FUNCTION serial.materialize_holding_code() RETURNS TRIGGER
-AS $func$ 
-use strict;
-
-use MARC::Field;
-use JSON::XS;
-
-if (not defined $_TD->{new}{holding_code}) {
-    elog(WARNING, 'NULL in "holding_code" column of serial.issuance allowed for now, but may not be useful');
-    return;
-}
-
-# Do nothing if holding_code has not changed...
-
-if ($_TD->{new}{holding_code} eq $_TD->{old}{holding_code}) {
-    # ... unless the following internal flag is set.
-
-    my $flag_rv = spi_exec_query(q{
-        SELECT * FROM config.internal_flag
-        WHERE name = 'serial.rematerialize_on_same_holding_code' AND enabled
-    }, 1);
-    return unless $flag_rv->{processed};
-}
-
-
-my $holding_code = (new JSON::XS)->decode($_TD->{new}{holding_code});
-
-my $field = new MARC::Field('999', @$holding_code); # tag doesnt matter
-
-my $dstmt = spi_prepare(
-    'DELETE FROM serial.materialized_holding_code WHERE issuance = $1',
-    'INT'
-);
-spi_exec_prepared($dstmt, $_TD->{new}{id});
-
-my $istmt = spi_prepare(
-    q{
-        INSERT INTO serial.materialized_holding_code (
-            issuance, subfield, value
-        ) VALUES ($1, $2, $3)
-    }, qw{INT CHAR TEXT}
-);
-
-foreach ($field->subfields) {
-    spi_exec_prepared(
-        $istmt,
-        $_TD->{new}{id},
-        $_->[0],
-        $_->[1]
-    );
-}
-
-return;
-
-$func$ LANGUAGE 'plperlu';
-
-CREATE INDEX assist_holdings_display
-    ON serial.materialized_holding_code (issuance, subfield);
-
-CREATE TRIGGER materialize_holding_code
-    AFTER INSERT OR UPDATE ON serial.issuance
-    FOR EACH ROW EXECUTE PROCEDURE serial.materialize_holding_code() ;
-
--- starting here, we materialize all existing holding codes.
-
-UPDATE config.internal_flag
-    SET enabled = TRUE
-    WHERE name = 'serial.rematerialize_on_same_holding_code';
-
-UPDATE serial.issuance SET holding_code = holding_code;
-
-UPDATE config.internal_flag
-    SET enabled = FALSE
-    WHERE name = 'serial.rematerialize_on_same_holding_code';
-
--- finish holding code materialization process
-
--- fix up missing holding_code fields from serial.issuance
-UPDATE serial.issuance siss
-    SET holding_type = scap.type
-    FROM serial.caption_and_pattern scap
-    WHERE scap.id = siss.caption_and_pattern AND siss.holding_type IS NULL;
-
-
--- Evergreen DB patch 0701.schema.patron_stat_category_enhancements.sql
---
--- Enables users to set patron statistical categories as required,
--- whether or not users can input free text for the category value.
--- Enables administrators to set an entry as the default for any
--- given patron statistical category and org unit.
---
-
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0701', :eg_version);
-
--- New table
-
-CREATE TABLE actor.stat_cat_entry_default (
-    id              SERIAL  PRIMARY KEY,
-    stat_cat_entry  INT     NOT NULL REFERENCES actor.stat_cat_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    stat_cat        INT     NOT NULL REFERENCES actor.stat_cat (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    owner           INT     NOT NULL REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    CONSTRAINT sced_once_per_owner UNIQUE (stat_cat,owner)
-);
-
-COMMENT ON TABLE actor.stat_cat_entry_default IS $$
-User Statistical Category Default Entry
-
-A library may choose one of the stat_cat entries to be the
-default entry.
-$$;
-
--- Add columns to existing tables
-
--- Patron stat cat required column
-ALTER TABLE actor.stat_cat
-    ADD COLUMN required BOOL NOT NULL DEFAULT FALSE;
-
--- Patron stat cat allow_freetext column
-ALTER TABLE actor.stat_cat
-    ADD COLUMN allow_freetext BOOL NOT NULL DEFAULT TRUE;
-
--- Add permissions
-
-INSERT INTO permission.perm_list ( id, code, description ) VALUES
-    ( 525, 'CREATE_PATRON_STAT_CAT_ENTRY_DEFAULT', oils_i18n_gettext( 525, 
-        'User may set a default entry in a patron statistical category', 'ppl', 'description' )),
-    ( 526, 'UPDATE_PATRON_STAT_CAT_ENTRY_DEFAULT', oils_i18n_gettext( 526, 
-        'User may reset a default entry in a patron statistical category', 'ppl', 'description' )),
-    ( 527, 'DELETE_PATRON_STAT_CAT_ENTRY_DEFAULT', oils_i18n_gettext( 527, 
-        'User may unset a default entry in a patron statistical category', 'ppl', 'description' ));
-
-INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
-    SELECT
-        pgt.id, perm.id, aout.depth, TRUE
-    FROM
-        permission.grp_tree pgt,
-        permission.perm_list perm,
-        actor.org_unit_type aout
-    WHERE
-        pgt.name = 'Circulation Administrator' AND
-        aout.name = 'System' AND
-        perm.code IN ('CREATE_PATRON_STAT_CAT_ENTRY_DEFAULT', 'DELETE_PATRON_STAT_CAT_ENTRY_DEFAULT');
-
-
-SELECT evergreen.upgrade_deps_block_check('0702', :eg_version);
-
-INSERT INTO config.global_flag (name, enabled, label) 
-    VALUES (
-        'opac.org_unit.non_inherited_visibility',
-        FALSE,
-        oils_i18n_gettext(
-            'opac.org_unit.non_inherited_visibility',
-            'Org Units Do Not Inherit Visibility',
-            'cgf',
-            'label'
-        )
-    );
-
-CREATE TYPE actor.org_unit_custom_tree_purpose AS ENUM ('opac');
-
-CREATE TABLE actor.org_unit_custom_tree (
-    id              SERIAL  PRIMARY KEY,
-    active          BOOLEAN DEFAULT FALSE,
-    purpose         actor.org_unit_custom_tree_purpose NOT NULL DEFAULT 'opac' UNIQUE
-);
-
-CREATE TABLE actor.org_unit_custom_tree_node (
-    id              SERIAL  PRIMARY KEY,
-    tree            INTEGER REFERENCES actor.org_unit_custom_tree (id) DEFERRABLE INITIALLY DEFERRED,
-	org_unit        INTEGER NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
-	parent_node     INTEGER REFERENCES actor.org_unit_custom_tree_node (id) DEFERRABLE INITIALLY DEFERRED,
-    sibling_order   INTEGER NOT NULL DEFAULT 0,
-    CONSTRAINT aouctn_once_per_org UNIQUE (tree, org_unit)
-);
-    
-
-/* UNDO
-BEGIN;
-DELETE FROM config.global_flag WHERE name = 'opac.org_unit.non_inheritied_visibility';
-DROP TABLE actor.org_unit_custom_tree_node;
-DROP TABLE actor.org_unit_custom_tree;
-DROP TYPE actor.org_unit_custom_tree_purpose;
-COMMIT;
-*/
-
 COMMIT;
 
 -- This is split out because it was backported to 2.1, but may not exist before upgrades
@@ -15693,445 +16141,3 @@ SELECT metabib.reingest_metabib_field_entries(source)
 
 COMMIT;
 
--- Evergreen DB patch 0704.schema.query_parser_fts.sql
---
--- Add pref_ou query filter for preferred library searching
---
-BEGIN;
-
-
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0704', :eg_version);
-
--- Create the new 11-parameter function, featuring param_pref_ou
-CREATE OR REPLACE FUNCTION search.query_parser_fts (
-
-    param_search_ou INT,
-    param_depth     INT,
-    param_query     TEXT,
-    param_statuses  INT[],
-    param_locations INT[],
-    param_offset    INT,
-    param_check     INT,
-    param_limit     INT,
-    metarecord      BOOL,
-    staff           BOOL,
-    param_pref_ou   INT DEFAULT NULL
-) RETURNS SETOF search.search_result AS $func$
-DECLARE
-
-    current_res         search.search_result%ROWTYPE;
-    search_org_list     INT[];
-    luri_org_list       INT[];
-    tmp_int_list        INT[];
-
-    check_limit         INT;
-    core_limit          INT;
-    core_offset         INT;
-    tmp_int             INT;
-
-    core_result         RECORD;
-    core_cursor         REFCURSOR;
-    core_rel_query      TEXT;
-
-    total_count         INT := 0;
-    check_count         INT := 0;
-    deleted_count       INT := 0;
-    visible_count       INT := 0;
-    excluded_count      INT := 0;
-
-BEGIN
-
-    check_limit := COALESCE( param_check, 1000 );
-    core_limit  := COALESCE( param_limit, 25000 );
-    core_offset := COALESCE( param_offset, 0 );
-
-    -- core_skip_chk := COALESCE( param_skip_chk, 1 );
-
-    IF param_search_ou > 0 THEN
-        IF param_depth IS NOT NULL THEN
-            SELECT array_accum(distinct id) INTO search_org_list FROM actor.org_unit_descendants( param_search_ou, param_depth );
-        ELSE
-            SELECT array_accum(distinct id) INTO search_org_list FROM actor.org_unit_descendants( param_search_ou );
-        END IF;
-
-        SELECT array_accum(distinct id) INTO luri_org_list FROM actor.org_unit_ancestors( param_search_ou );
-
-    ELSIF param_search_ou < 0 THEN
-        SELECT array_accum(distinct org_unit) INTO search_org_list FROM actor.org_lasso_map WHERE lasso = -param_search_ou;
-
-        FOR tmp_int IN SELECT * FROM UNNEST(search_org_list) LOOP
-            SELECT array_accum(distinct id) INTO tmp_int_list FROM actor.org_unit_ancestors( tmp_int );
-            luri_org_list := luri_org_list || tmp_int_list;
-        END LOOP;
-
-        SELECT array_accum(DISTINCT x.id) INTO luri_org_list FROM UNNEST(luri_org_list) x(id);
-
-    ELSIF param_search_ou = 0 THEN
-        -- reserved for user lassos (ou_buckets/type='lasso') with ID passed in depth ... hack? sure.
-    END IF;
-
-    IF param_pref_ou IS NOT NULL THEN
-        SELECT array_accum(distinct id) INTO tmp_int_list FROM actor.org_unit_ancestors(param_pref_ou);
-        luri_org_list := luri_org_list || tmp_int_list;
-    END IF;
-
-    OPEN core_cursor FOR EXECUTE param_query;
-
-    LOOP
-
-        FETCH core_cursor INTO core_result;
-        EXIT WHEN NOT FOUND;
-        EXIT WHEN total_count >= core_limit;
-
-        total_count := total_count + 1;
-
-        CONTINUE WHEN total_count NOT BETWEEN  core_offset + 1 AND check_limit + core_offset;
-
-        check_count := check_count + 1;
-
-        PERFORM 1 FROM biblio.record_entry b WHERE NOT b.deleted AND b.id IN ( SELECT * FROM unnest( core_result.records ) );
-        IF NOT FOUND THEN
-            -- RAISE NOTICE ' % were all deleted ... ', core_result.records;
-            deleted_count := deleted_count + 1;
-            CONTINUE;
-        END IF;
-
-        PERFORM 1
-          FROM  biblio.record_entry b
-                JOIN config.bib_source s ON (b.source = s.id)
-          WHERE s.transcendant
-                AND b.id IN ( SELECT * FROM unnest( core_result.records ) );
-
-        IF FOUND THEN
-            -- RAISE NOTICE ' % were all transcendant ... ', core_result.records;
-            visible_count := visible_count + 1;
-
-            current_res.id = core_result.id;
-            current_res.rel = core_result.rel;
-
-            tmp_int := 1;
-            IF metarecord THEN
-                SELECT COUNT(DISTINCT s.source) INTO tmp_int FROM metabib.metarecord_source_map s WHERE s.metarecord = core_result.id;
-            END IF;
-
-            IF tmp_int = 1 THEN
-                current_res.record = core_result.records[1];
-            ELSE
-                current_res.record = NULL;
-            END IF;
-
-            RETURN NEXT current_res;
-
-            CONTINUE;
-        END IF;
-
-        PERFORM 1
-          FROM  asset.call_number cn
-                JOIN asset.uri_call_number_map map ON (map.call_number = cn.id)
-                JOIN asset.uri uri ON (map.uri = uri.id)
-          WHERE NOT cn.deleted
-                AND cn.label = '##URI##'
-                AND uri.active
-                AND ( param_locations IS NULL OR array_upper(param_locations, 1) IS NULL )
-                AND cn.record IN ( SELECT * FROM unnest( core_result.records ) )
-                AND cn.owning_lib IN ( SELECT * FROM unnest( luri_org_list ) )
-          LIMIT 1;
-
-        IF FOUND THEN
-            -- RAISE NOTICE ' % have at least one URI ... ', core_result.records;
-            visible_count := visible_count + 1;
-
-            current_res.id = core_result.id;
-            current_res.rel = core_result.rel;
-
-            tmp_int := 1;
-            IF metarecord THEN
-                SELECT COUNT(DISTINCT s.source) INTO tmp_int FROM metabib.metarecord_source_map s WHERE s.metarecord = core_result.id;
-            END IF;
-
-            IF tmp_int = 1 THEN
-                current_res.record = core_result.records[1];
-            ELSE
-                current_res.record = NULL;
-            END IF;
-
-            RETURN NEXT current_res;
-
-            CONTINUE;
-        END IF;
-
-        IF param_statuses IS NOT NULL AND array_upper(param_statuses, 1) > 0 THEN
-
-            PERFORM 1
-              FROM  asset.call_number cn
-                    JOIN asset.copy cp ON (cp.call_number = cn.id)
-              WHERE NOT cn.deleted
-                    AND NOT cp.deleted
-                    AND cp.status IN ( SELECT * FROM unnest( param_statuses ) )
-                    AND cn.record IN ( SELECT * FROM unnest( core_result.records ) )
-                    AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
-              LIMIT 1;
-
-            IF NOT FOUND THEN
-                PERFORM 1
-                  FROM  biblio.peer_bib_copy_map pr
-                        JOIN asset.copy cp ON (cp.id = pr.target_copy)
-                  WHERE NOT cp.deleted
-                        AND cp.status IN ( SELECT * FROM unnest( param_statuses ) )
-                        AND pr.peer_record IN ( SELECT * FROM unnest( core_result.records ) )
-                        AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
-                  LIMIT 1;
-
-                IF NOT FOUND THEN
-                -- RAISE NOTICE ' % and multi-home linked records were all status-excluded ... ', core_result.records;
-                    excluded_count := excluded_count + 1;
-                    CONTINUE;
-                END IF;
-            END IF;
-
-        END IF;
-
-        IF param_locations IS NOT NULL AND array_upper(param_locations, 1) > 0 THEN
-
-            PERFORM 1
-              FROM  asset.call_number cn
-                    JOIN asset.copy cp ON (cp.call_number = cn.id)
-              WHERE NOT cn.deleted
-                    AND NOT cp.deleted
-                    AND cp.location IN ( SELECT * FROM unnest( param_locations ) )
-                    AND cn.record IN ( SELECT * FROM unnest( core_result.records ) )
-                    AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
-              LIMIT 1;
-
-            IF NOT FOUND THEN
-                PERFORM 1
-                  FROM  biblio.peer_bib_copy_map pr
-                        JOIN asset.copy cp ON (cp.id = pr.target_copy)
-                  WHERE NOT cp.deleted
-                        AND cp.location IN ( SELECT * FROM unnest( param_locations ) )
-                        AND pr.peer_record IN ( SELECT * FROM unnest( core_result.records ) )
-                        AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
-                  LIMIT 1;
-
-                IF NOT FOUND THEN
-                    -- RAISE NOTICE ' % and multi-home linked records were all copy_location-excluded ... ', core_result.records;
-                    excluded_count := excluded_count + 1;
-                    CONTINUE;
-                END IF;
-            END IF;
-
-        END IF;
-
-        IF staff IS NULL OR NOT staff THEN
-
-            PERFORM 1
-              FROM  asset.opac_visible_copies
-              WHERE circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
-                    AND record IN ( SELECT * FROM unnest( core_result.records ) )
-              LIMIT 1;
-
-            IF NOT FOUND THEN
-                PERFORM 1
-                  FROM  biblio.peer_bib_copy_map pr
-                        JOIN asset.opac_visible_copies cp ON (cp.copy_id = pr.target_copy)
-                  WHERE cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
-                        AND pr.peer_record IN ( SELECT * FROM unnest( core_result.records ) )
-                  LIMIT 1;
-
-                IF NOT FOUND THEN
-
-                    -- RAISE NOTICE ' % and multi-home linked records were all visibility-excluded ... ', core_result.records;
-                    excluded_count := excluded_count + 1;
-                    CONTINUE;
-                END IF;
-            END IF;
-
-        ELSE
-
-            PERFORM 1
-              FROM  asset.call_number cn
-                    JOIN asset.copy cp ON (cp.call_number = cn.id)
-              WHERE NOT cn.deleted
-                    AND NOT cp.deleted
-                    AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
-                    AND cn.record IN ( SELECT * FROM unnest( core_result.records ) )
-              LIMIT 1;
-
-            IF NOT FOUND THEN
-
-                PERFORM 1
-                  FROM  biblio.peer_bib_copy_map pr
-                        JOIN asset.copy cp ON (cp.id = pr.target_copy)
-                  WHERE NOT cp.deleted
-                        AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
-                        AND pr.peer_record IN ( SELECT * FROM unnest( core_result.records ) )
-                  LIMIT 1;
-
-                IF NOT FOUND THEN
-
-                    PERFORM 1
-                      FROM  asset.call_number cn
-                            JOIN asset.copy cp ON (cp.call_number = cn.id)
-                      WHERE cn.record IN ( SELECT * FROM unnest( core_result.records ) )
-                            AND NOT cp.deleted
-                      LIMIT 1;
-
-                    IF FOUND THEN
-                        -- RAISE NOTICE ' % and multi-home linked records were all visibility-excluded ... ', core_result.records;
-                        excluded_count := excluded_count + 1;
-                        CONTINUE;
-                    END IF;
-                END IF;
-
-            END IF;
-
-        END IF;
-
-        visible_count := visible_count + 1;
-
-        current_res.id = core_result.id;
-        current_res.rel = core_result.rel;
-
-        tmp_int := 1;
-        IF metarecord THEN
-            SELECT COUNT(DISTINCT s.source) INTO tmp_int FROM metabib.metarecord_source_map s WHERE s.metarecord = core_result.id;
-        END IF;
-
-        IF tmp_int = 1 THEN
-            current_res.record = core_result.records[1];
-        ELSE
-            current_res.record = NULL;
-        END IF;
-
-        RETURN NEXT current_res;
-
-        IF visible_count % 1000 = 0 THEN
-            -- RAISE NOTICE ' % visible so far ... ', visible_count;
-        END IF;
-
-    END LOOP;
-
-    current_res.id = NULL;
-    current_res.rel = NULL;
-    current_res.record = NULL;
-    current_res.total = total_count;
-    current_res.checked = check_count;
-    current_res.deleted = deleted_count;
-    current_res.visible = visible_count;
-    current_res.excluded = excluded_count;
-
-    CLOSE core_cursor;
-
-    RETURN NEXT current_res;
-
-END;
-$func$ LANGUAGE PLPGSQL;
-
--- Drop the old 10-parameter function
-DROP FUNCTION IF EXISTS search.query_parser_fts (
-    INT, INT, TEXT, INT[], INT[], INT, INT, INT, BOOL, BOOL
-);
-
-COMMIT;
-
--- Evergreen DB patch 0705.data.custom-org-tree-perms.sql
---
-BEGIN;
-
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0705', :eg_version);
-
-INSERT INTO permission.perm_list (id, code, description)
-    VALUES (
-        528,
-        'ADMIN_ORG_UNIT_CUSTOM_TREE',
-        oils_i18n_gettext(
-            528,
-            'User may update custom org unit trees',
-            'ppl',
-            'description'
-        )
-    );
-
-COMMIT;
-
-
--- Evergreen DB patch 0707.schema.acq-vandelay-integration.sql
-BEGIN;
-
-SELECT evergreen.upgrade_deps_block_check('0707', :eg_version);
-
--- seed data --
-
-INSERT INTO permission.perm_list ( id, code, description )
-    VALUES (
-        529,
-        'ADMIN_IMPORT_MATCH_SET',
-        oils_i18n_gettext(
-            529,
-            'Allows a user to create/retrieve/update/delete vandelay match sets',
-            'ppl',
-            'description'
-        )
-    ), (
-        530,
-        'VIEW_IMPORT_MATCH_SET',
-        oils_i18n_gettext(
-            530,
-            'Allows a user to view vandelay match sets',
-            'ppl',
-            'description'
-        )
-    );
-
-COMMIT;
-
--- Evergreen DB patch 0709.data.misc_missing_perms.sql
---
--- Fixes a typo in the name of a global flag
-
-BEGIN;
-
-SELECT evergreen.upgrade_deps_block_check('0709', :eg_version);
-
-INSERT INTO permission.perm_list ( id, code, description ) 
-    VALUES ( 
-        531, 
-        'ADMIN_ADDRESS_ALERT',
-        oils_i18n_gettext( 
-            531,
-            'Allows a user to create/retrieve/update/delete address alerts',
-            'ppl', 
-            'description' 
-        )
-    ), ( 
-        532, 
-        'VIEW_ADDRESS_ALERT',
-        oils_i18n_gettext( 
-            532,
-            'Allows a user to view address alerts',
-            'ppl', 
-            'description' 
-        )
-    ), ( 
-        533, 
-        'ADMIN_COPY_LOCATION_GROUP',
-        oils_i18n_gettext( 
-            533,
-            'Allows a user to create/retrieve/update/delete copy location groups',
-            'ppl', 
-            'description' 
-        )
-    ), ( 
-        534, 
-        'ADMIN_USER_ACTIVITY_TYPE',
-        oils_i18n_gettext( 
-            534,
-            'Allows a user to create/retrieve/update/delete user activity types',
-            'ppl', 
-            'description' 
-        )
-    );
-
-COMMIT;
