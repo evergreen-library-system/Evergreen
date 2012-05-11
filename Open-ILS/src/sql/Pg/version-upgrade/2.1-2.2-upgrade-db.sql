@@ -11698,14 +11698,29 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, g
 
 SELECT evergreen.upgrade_deps_block_check('0700', :eg_version);
 SELECT evergreen.upgrade_deps_block_check('0706', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0710', :eg_version);
+
+CREATE OR REPLACE FUNCTION evergreen.could_be_serial_holding_code(TEXT) RETURNS BOOL AS $$
+    use JSON::XS;
+    use MARC::Field;
+
+    eval {
+        my $holding_code = (new JSON::XS)->decode(shift);
+        new MARC::Field('999', @$holding_code);
+    };  
+    return $@ ? 0 : 1;
+$$ LANGUAGE PLPERLU;
 
 -- This throws away data, but only data that causes breakage anyway.
-UPDATE serial.issuance SET holding_code = NULL WHERE NOT is_json(holding_code);
+UPDATE serial.issuance SET holding_code = NULL WHERE NOT could_be_serial_holding_code(holding_code);
 
 -- If we don't do this, we have unprocessed triggers and we can't alter the table
 SET CONSTRAINTS serial.issuance_caption_and_pattern_fkey IMMEDIATE;
 
-ALTER TABLE serial.issuance ADD CHECK (holding_code IS NULL OR is_json(holding_code));
+ALTER TABLE serial.issuance
+    DROP CONSTRAINT IF EXISTS issuance_holding_code_check;
+
+ALTER TABLE serial.issuance ADD CHECK (holding_code IS NULL OR could_be_serial_holding_code(holding_code));
 
 INSERT INTO config.internal_flag (name, value, enabled) VALUES (
     'serial.rematerialize_on_same_holding_code', NULL, FALSE
