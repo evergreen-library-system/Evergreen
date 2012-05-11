@@ -11648,9 +11648,6 @@ CREATE OR REPLACE FUNCTION auditor.clear_audit_info() RETURNS VOID AS $$
     delete($_SHARED{"eg_audit_ws"});
 $$ LANGUAGE plperlu;
 
--- And remove the language so that we don't use it later.
-DROP LANGUAGE plperl;
-
 -- Evergreen DB patch 0697.data.place_currently_unfillable_hold.sql
 --
 -- FIXME: insert description of change, if needed
@@ -15656,7 +15653,7 @@ COMMIT;
 \qecho ************************************************************************
 \qecho The following transaction, wrapping upgrades 0679 and 0680, may take a
 \qecho *really* long time, and you might be able to run it by itself in
-\qecho parallel with other operations using a separate sesion.
+\qecho parallel with other operations using a separate session.
 \qecho ************************************************************************
 
 BEGIN;
@@ -16146,4 +16143,12 @@ CREATE INDEX ii_inv_idx on acq.invoice_item (invoice);
 CREATE INDEX ii_po_idx on acq.invoice_item (purchase_order);
 CREATE INDEX ii_poi_idx on acq.invoice_item (po_item);
 
+\qecho All Evergreen core database functions have been converted to
+\qecho use PLPERLU instead of PLPERL, so we are attempting to remove
+\qecho the PLPERL language here; but it is entirely possible that
+\qecho existing sites will have custom PLPERL functions that they
+\qecho will want to retain, so the following DROP LANGUAGE statement
+\qecho may fail, and that is okay.
+
+DROP LANGUAGE plperl;
 
