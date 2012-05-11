@@ -679,6 +679,11 @@ div.format_icon {
 	height:29px;
 }
 
+#login-failed-message {
+	font-size: 16px;
+	color: red;
+}
+
 #home-buttons-inner {
 	height:117px;
 	background:#bda964;
