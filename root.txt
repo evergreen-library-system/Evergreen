@@ -122,6 +122,7 @@ include::admin/restrict_Z39.50_sources_by_perm_group.txt[]
 
 include::admin/booking-admin.txt[]
 
+include::admin/SMS_messaging.txt[]
 
 Local Administration
 ====================

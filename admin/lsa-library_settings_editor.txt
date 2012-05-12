@@ -1,6 +1,19 @@
 Library Settings Editor
 -----------------------
 
+Fine Accrual on Closed Dates
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default, fines accrue only on dates that the library is open.  This feature enables you to charge patrons fines on dates the library is closed. Fines accrue during scheduled closings as well as during normal weekly closed dates.
+
+To enable this feature:
+
+. Click *Admin* -> *Local Administration* -> *Library Settings* -> *Charge fines on overdue circulations when closed*
+. Click *Edit*.
+. Set the value to *True*.
+. Click *Update Setting*.   
+
+
 Target Copies for Holds at Closed Libraries 2.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
