@@ -94,6 +94,7 @@ The Evergreen system allows a free range of customizations to every aspect of th
 
 
 include::admin/template_toolkit.txt[]
+include::admin/auto_suggest_search.txt[]
 
 
 //include::staff_client_customization.txt[]
