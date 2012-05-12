@@ -14,8 +14,8 @@ To enable this feature:
 . Click *Update Setting*.   
 
 
-Target Copies for Holds at Closed Libraries 2.2
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Target Copies for Holds at Closed Libraries
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 By default, when a patron places a hold on a title, the hold targeter will search for copies to fill the hold only at circulating libraries that are open.  Copies at closed libraries 
 are not targeted to fill holds. When turned on, this feature enables Evergreen to target copies that have closed circulating libraries to fill holds. Two new org unit settings control this feature.
