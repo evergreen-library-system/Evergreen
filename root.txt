@@ -136,6 +136,8 @@ This part covers the options in the Local Administration menu found in the staff
 
 include::admin/recent_staff_searches.txt[]
 
+include::admin/lsa-library_settings_editor.txt[]
+
 include::admin/lsa-statcat.txt[]
 
 
