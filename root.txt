@@ -88,18 +88,27 @@ Introduction
 
 The Evergreen system allows a free range of customizations to every aspect of the system. Use this part of the documentation to become familiar with the tools for  configuring the system as well as  customizing  the OPAC and staff client.  
 
-
 // include::global_system_configuration.txt[]
 // include::opac_customization.txt[]
 
-
 include::admin/template_toolkit.txt[]
+
 include::admin/auto_suggest_search.txt[]
 
+include::customize_staff_client.txt[]
 
-//include::staff_client_customization.txt[]
 // include::backing_up.txt[]
  
+
+
+Using the Staff Client
+======================
+
+
+Introduction
+------------
+
+This part of the documentation deals with general Staff Client usage including logging in, navigation and shortcuts.
 
 
 System Administration From the Staff Client
