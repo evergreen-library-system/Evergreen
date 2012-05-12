@@ -151,6 +151,8 @@ include::acquisitions/selection_lists_po.txt[]
 
 include::acquisitions/receive_items_from_invoice.txt[]
 
+include::acquisitions/vandelay_acquisitions_integration.txt[]
+
 
 Cataloging
 ==========
