@@ -1,0 +1,59 @@
+Sorting Columns
+---------------
+
+This feature enables you to sort display columns so that you can find easily the
+information that you need on a screen that contains multiple columns.  You can
+sort display columns on any screen that is built on a grid, such as the Check In
+screen or the On Shelf Pull List. 
+
+You can also sort the columns on the following Administration screens:
+Circulation Policies, Hold Policies, Circulation Limit Sets, Barcode Completion,
+Acquisitions User Request List, and Vandelay Import Errors.
+
+You can sort items in an ascending or descending order, and you can prioritize
+the order in which columns will sort.  The following use cases illustrate how to
+sort items within the Circulation and Administration interfaces.
+
+Sorting the On Shelf Pull List
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You want to capture items that are on the shelf to fill current holds.  To
+simplify this process, you will sort the items on the On Shelf Pull List by Copy
+Location and Call Number.
+
+. Click *Circulation* -> *Pull List for Hold Requests*.
+. The first column that you want to sort is the column, Current Copy Location. Right click the column header, Current Copy Location.  
+. Click *Sort First (Descending)*.
++
+image::media/Sorting_Columns3.jpg[Sorting_Columns3]
++
+. The next column that you want to sort is the column, Call Number.  Right click the column header, Call Number.  
+. Click *Sort Next (Ascending)*.
++
+image::media/Sorting_Columns4.jpg[Sorting_Columns4]
++
+. The pull list has now been sorted by copy location and call number.
+
+image::media/Sorting_Columns5.jpg[Sorting_Columns5]
+
+NOTE: If you wanted to sort more columns, you could continue the process by clicking *Sort Next* for any subsequent columns.
+
+
+Sorting Circulation Policies
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You want to sort the display of circulation policies in your staff client. 
+
+. Click *Administration* -> *Local Administration* -> *Circulation Policies*.
+. Right click on any column header.
+. A pop-up box appears.
++
+image::media/Sorting_Columns2.jpg[Sorting_Columns2]
++
+. Check the *Display* box if you want to display a column in the staff client.
+. Check the *Auto Width* box if you want the width of the columns to adjust to fit the staff client.
+. Select a sort priority. 
+.. A sort priority of "0" indicates that no sorting has been applied. Columns will display in their default order.
+.. A sort priority of "1" indicates that ascending sorting should be applied to this column first. Subsequent sorts will be applied as you continue to enter increasing numbers.
+.. A sort priority of "-1" indicates that descending sorting should be applied to this column.
+. Click *Save*.  The circulation policies will now sort according to your selections each time that you log into the staff client.

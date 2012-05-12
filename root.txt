@@ -95,7 +95,7 @@ include::admin/template_toolkit.txt[]
 
 include::admin/auto_suggest_search.txt[]
 
-include::customize_staff_client.txt[]
+include::admin/customize_staff_client.txt[]
 
 // include::backing_up.txt[]
  
@@ -110,6 +110,16 @@ Introduction
 
 This part of the documentation deals with general Staff Client usage including logging in, navigation and shortcuts.
 
+
+include::admin/staff_client-tab_buttons.txt[]
+
+include::admin/staff_client-double_clicking.txt[]
+
+include::admin/staff_client-sorting_columns.txt[]
+
+include::admin/staff_client-recent_searches.txt[]
+
+include::admin/staff_client-return_to_results_from_marc.txt[]
 
 System Administration From the Staff Client
 ===========================================
