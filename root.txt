@@ -114,7 +114,7 @@ This part deals with the options in the Server Administration menu found in the 
 
 include::admin/acquisitions_admin.txt[]
 
-include::admin/authority_control_sets.txt[]
+include::admin/authorities.txt[]
 
 include::admin/cn_prefixes_and_suffixes.txt[]
 
