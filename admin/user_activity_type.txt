@@ -1,0 +1,32 @@
+User Activity Types
+-------------------
+
+The User Activity Types feature enables you to specify the user activity that you want to record in the database.  You can use this feature for reporting purposes. This function will also display a last activity date in a user's account.
+
+Enabling this Feature
+~~~~~~~~~~~~~~~~~~~~~
+
+Click *Admin* -> *Server Administration* -> *User Activity Types* to access the default set of user activity types and to add new ones.  The default set of user activity types records user logins to the Evergreen ILS and to third party products that communicate with Evergreen.
+
+The *Label* is a free text field that enables you to describe the activity that you are tracking.
+
+The *Event Caller* describes the third party software or Evergreen interface that interacts with the Evergreen database and is responsible for managing the communication between the parties.
+
+The *Event Type* describes the type of activity that Evergreen is tracking.  Currently, this feature only tracks user authentication.  
+
+The *Event Mechanism* describes the framework for communication between the third party software or OPAC and the database.  Enter an event mechanism if you want to track the means by which the software communicates with the database.  If you do not want to track how the softwares communicate, then leave this field empty.
+
+The *Enabled* field allows you to specify which types of user activity that you would like to track.
+
+The *Transient* column enables you to decide how many actions you want to track. If you want to track only the last activity, then enter *True.*  If you want to trace all activity by the user, enter *False*.
+
+image::media/User_Activity_Types1A.jpg[User_Activity_Types1A]
+
+
+Using this Feature
+~~~~~~~~~~~~~~~~~~
+
+The last activty date for user logins appears in the patron's summary.
+
+image::media/User_Activity_Types2A.jpg[User_Activity_Types2A]
+ 

@@ -124,6 +124,9 @@ include::admin/booking-admin.txt[]
 
 include::admin/SMS_messaging.txt[]
 
+include::admin/user_activity_type.txt[]
+
+
 Local Administration
 ====================
 
