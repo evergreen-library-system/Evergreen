@@ -10082,6 +10082,9 @@ SELECT auditor.update_auditors();
 
 -- check whether patch can be applied
 SELECT evergreen.upgrade_deps_block_check('0687', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0711', :eg_version); -- introduces
+-- changes to metabib.reingest_metabib_field_entries() that must happen here
+-- rather than later in a separate CREATE OR REPLACE FUNCTION statement.
 
 -- FIXME: add/check SQL statements to perform the upgrade
 -- New function def
@@ -10091,6 +10094,7 @@ DECLARE
     ind_data        metabib.field_entry_template%ROWTYPE;
     mbe_row         metabib.browse_entry%ROWTYPE;
     mbe_id          BIGINT;
+    normalized_value    TEXT;
 BEGIN
     PERFORM * FROM config.internal_flag WHERE name = 'ingest.assume_inserts_only' AND enabled;
     IF NOT FOUND THEN
@@ -10125,12 +10129,15 @@ BEGIN
             -- evergreen.oils_tsearch2()) changes.  It may or may not be
             -- expensive to add a comparison of index_vector to index_vector
             -- to the WHERE clause below.
-            SELECT INTO mbe_row * FROM metabib.browse_entry WHERE value = ind_data.value;
+            normalized_value := metabib.browse_normalize(
+                ind_data.value, ind_data.field
+            );
+
+            SELECT INTO mbe_row * FROM metabib.browse_entry WHERE value = normalized_value;
             IF FOUND THEN
                 mbe_id := mbe_row.id;
             ELSE
-                INSERT INTO metabib.browse_entry (value) VALUES
-                    (metabib.browse_normalize(ind_data.value, ind_data.field));
+                INSERT INTO metabib.browse_entry (value) VALUES (normalized_value);
                 mbe_id := CURRVAL('metabib.browse_entry_id_seq'::REGCLASS);
             END IF;
 
@@ -11699,6 +11706,7 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, g
 SELECT evergreen.upgrade_deps_block_check('0700', :eg_version);
 SELECT evergreen.upgrade_deps_block_check('0706', :eg_version);
 SELECT evergreen.upgrade_deps_block_check('0710', :eg_version);
+
 
 CREATE OR REPLACE FUNCTION evergreen.could_be_serial_holding_code(TEXT) RETURNS BOOL AS $$
     use JSON::XS;
