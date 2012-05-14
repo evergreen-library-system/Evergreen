@@ -2,6 +2,7 @@
     PROCESS "opac/parts/misc_util.tt2";
     PROCESS get_marc_attrs args=attrs;
     stop_parms = ['expand','cnoffset'];
+    ctx.record_attrs = attrs; # capture for JS
 %]
 <div id='canvas_main' class='canvas' itemscope itemtype='[% args.schema.itemtype %]'>
 

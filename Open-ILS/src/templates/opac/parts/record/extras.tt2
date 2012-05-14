@@ -22,6 +22,7 @@
             {name => 'excerpt',  label => l('Excerpt'), hide => 1},
             {name => 'issues',   label => l('Issues Held'), hide => !(ctx.have_holdings_to_show || ctx.have_mfhd_to_show)},
             {name => 'preview',  label => l('Preview'), hide => 1}, 
+            {name => 'addedcontent',  label => l('Additional Content')},  # hide if all content is known to not exist
             {name => 'cnbrowse', label => l('Shelf Browser')},
             {name => 'marchtml', label => l('MARC Record')}
         ];
@@ -40,7 +41,7 @@
             <div class="rdetail_extras_link">
                 [%  
                     IF tab_is_active(name);
-                        href = mkurl('', {}, ['expand']);
+                        href = mkurl('', {}, ['expand', 'ac']);
                         img_url = ctx.media_prefix _ '/images/rdetail_arrow_down.png';
                     ELSE;
                         href = mkurl('', {expand => name}) _ '#' _ name; 

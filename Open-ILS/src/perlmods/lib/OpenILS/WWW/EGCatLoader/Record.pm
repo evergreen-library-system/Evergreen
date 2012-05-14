@@ -5,7 +5,11 @@ use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
+use Net::HTTP::NB;
+use IO::Select;
 my $U = 'OpenILS::Application::AppUtils';
+
+our $ac_types = ['toc',  'anotes', 'excerpt', 'summary', 'reviews'];
 
 # context additions: 
 #   record : bre object
@@ -15,6 +19,13 @@ sub load_record {
     $ctx->{page} = 'record';  
 
     $self->timelog("load_record() began");
+
+    my $rec_id = $ctx->{page_args}->[0]
+        or return Apache2::Const::HTTP_BAD_REQUEST;
+
+    $self->added_content_stage1($rec_id);
+    $self->timelog("past added content stage 1");
+
     my $org = $self->_get_search_lib();
     my $org_name = $ctx->{get_aou}->($org)->shortname;
     my $pref_ou = $self->_get_pref_lib();
@@ -28,9 +39,6 @@ sub load_record {
 
     my $copy_limit = int($self->cgi->param('copy_limit') || 10);
     my $copy_offset = int($self->cgi->param('copy_offset') || 0);
-
-    my $rec_id = $ctx->{page_args}->[0]
-        or return Apache2::Const::HTTP_BAD_REQUEST;
 
     $self->get_staff_search_settings;
     if ($ctx->{staff_saved_search_size}) {
@@ -126,6 +134,11 @@ sub load_record {
     }
 
     $self->timelog("past expandies");
+
+    $self->added_content_stage2($rec_id);
+
+    $self->timelog("past added content stage 2");
+
     return Apache2::Const::OK;
 }
 
@@ -396,6 +409,116 @@ sub load_email_record {
         $self->ctx->{authtoken}, $rec_id);
 
     return Apache2::Const::OK;
+}
+
+# for each type, fire off the reqeust to see if content is available
+# ctx.added_content.$type.status:
+#   1 == available
+#   2 == not available
+#   3 == unknown
+sub added_content_stage1 {
+    my $self = shift;
+    my $rec_id = shift;
+    my $ctx = $self->ctx;
+    my $sel_type = $self->cgi->param('ac') || '';
+    my $key = $self->get_ac_key($rec_id);
+    ($key = $key->{value}) =~ s/^\s+//g if $key;
+
+    $ctx->{added_content} = {};
+    for my $type (@$ac_types) {
+        $ctx->{added_content}->{$type} = {content => ''};
+        $ctx->{added_content}->{$type}->{status} = $key ? 3 : 2;
+
+        if ($key) {
+            $logger->debug("tpac: starting added content request for $key => $type");
+
+            my $req = Net::HTTP::NB->new(Host => $self->apache->hostname);
+
+            if (!$req) {
+                $logger->warn("Unable to fetch added content from " . $self->apache->hostname . ": $@");
+                next;
+            }
+
+            my $http_type = ($type eq $sel_type) ? 'GET' : 'HEAD';
+            $req->write_request($http_type => "/opac/extras/ac/$type/html/$key");
+            $ctx->{added_content}->{$type}->{request} = $req;
+        }
+    }
+}
+
+# check each outstanding request.  If it's ready, read the HTTP 
+# status and use it to determine if content is available.  Otherwise,
+# leave the status as unknown.
+sub added_content_stage2 {
+    my $self = shift;
+    my $ctx = $self->ctx;
+    my $sel_type = $self->cgi->param('ac') || '';
+
+    for my $type (keys %{$ctx->{added_content}}) {
+        my $content = $ctx->{added_content}->{$type};
+
+        if ($content->{status} == 3) {
+            $logger->debug("tpac: finishing added content request for $type");
+
+            my $req = $content->{request};
+            my $sel = IO::Select->new($req);
+
+            # if we are requesting a specific type of content, give the 
+            # backend code a little extra time to retrieve the content.
+            my $wait = $type eq $sel_type ? 3 : 0; # TODO: config?
+
+            if ($sel->can_read($wait)) {
+                my ($code) = $req->read_response_headers;
+                $content->{status} = $code eq '200' ? 1 : 2;
+                $logger->debug("tpac: added content request for $type returned $code");
+
+                if ($type eq $sel_type) {
+                    while (1) {
+                        my $buf;
+                        my $n = $req->read_entity_body($buf, 1024);
+                        last unless $n;
+                        $content->{content} .= $buf;
+                    }
+                }
+            }
+        }
+    }
+}
+
+# XXX this is copied directly from AddedContent.pm in 
+# working/user/jeff/ac_by_record_id_rebase.  When Jeff's
+# branch is merged and Evergreen gets added content 
+# lookup by ID, this can be removed.
+# returns [{tag => $tag, value => $value}, {tag => $tag2, value => $value2}]
+sub get_ac_key {
+    my $self = shift;
+    my $rec_id = shift;
+    my $key_data = $self->editor->json_query({
+        select => {mfr => ['tag', 'value']},
+        from => 'mfr',
+        where => {
+            record => $rec_id,
+            '-or' => [
+                {
+                    '-and' => [
+                        {tag => '020'},
+                        {subfield => 'a'}
+                    ]
+                }, {
+                    '-and' => [
+                        {tag => '024'},
+                        {subfield => 'a'},
+                        {ind1 => 1}
+                    ]
+                }
+            ]
+        }
+    });
+
+    return (
+        grep {$_->{tag} eq '020'} @$key_data,
+        grep {$_->{tag} eq '024'} @$key_data
+    )[0];
 }
 
 1;

@@ -77,4 +77,42 @@
 </script>
 [% END; # use_autosuggest %]
 
+<script type="text/javascript">
+    [% ac_types = ['toc',  'anotes', 'excerpt', 'summary', 'reviews'] %]
+
+    /* Checks to see if a given type of added content has data to show.
+     * The first arg to callback() is boolean indicating the presence of data.
+     */
+    function acIsAvailable(ident, type, callback) {
+        var url = '/opac/extras/ac/' + type + '/html/' + ident;
+        dojo.xhr('HEAD', {
+            url : url, 
+            failOk : true, // http://bugs.dojotoolkit.org/ticket/11568
+            error : function(err) { callback(false, ident, type); },
+            load : function(result) { callback(true, ident, type); }
+        });
+    }
+
+    [% 
+        IF ctx.page == 'record';
+            # XXX revisit when ident=ctx.bre_id
+            ident = ctx.record_attrs.isbn_clean || ctx.record_attrs.upc; 
+            IF ident; 
+                FOR type IN ac_types;
+                    IF ctx.added_content.$type.status == '3' # status unknown %]
+                        dojo.addOnLoad(function() {
+                            var ident = '[% ident %]';
+                            var type = '[% type %]';
+                            acIsAvailable(ident, type, function(avail, ident, type) { 
+                                // if the content is available, un-hide the tab
+                                if (avail) dojo.removeClass(dojo.byId('ac:' + type), 'hidden');
+                            });
+                        });
+                    [% END; # IF status unknown
+                END; 
+            END; # IF ident
+        END;
+    %]
+</script>
+
 [%- END; # want_dojo -%]

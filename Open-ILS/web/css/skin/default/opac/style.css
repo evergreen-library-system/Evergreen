@@ -1431,3 +1431,7 @@ a.preflib_change {
     margin: 1em;
     border: thick solid red;
 }
+
+#ac_tab_wrapper { width : 100%; }
+.ac_tab { float: left; padding-right: 10px; font-size: 110%;  }
+#ac_content { clear: both; width: 100%; margin-top: 10px; }
