@@ -51,10 +51,13 @@ function filterGrid(org) {
     var locs = [];
 
     // sort and append by existing order settings
-    dojo.forEach(orders, 
+    dojo.forEach(
+        orders,
         function(order) {
-            locs.push( 
-                locations.filter(function(l) {return l.id() == order.location()})[0] 
+            locs = locs.concat(
+                locations.filter(
+                    function(l) { return l.id() == order.location(); }
+                )
             );
         }
     );
