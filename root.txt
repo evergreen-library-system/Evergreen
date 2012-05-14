@@ -22,16 +22,28 @@ a work in progress, continually revised to meet the needs of its users, so if
 you find errors or omissions, please let us know, by contacting the DIG
 facilitators at docs@evergreen-ils.org.
 
-This guide to Evergreen is intended to meet the needs of front-line library staff, catalogers, library administrators, system administrators, and software developers. It is organized into Parts, Chapters, and Sections addressing key aspects of the software, beginning with the topics of broadest interest to the largest groups of users and progressing to some of the more specialized and technical topics of interest to smaller numbers of users.
+This guide to Evergreen is intended to meet the needs of front-line library
+staff, catalogers, library administrators, system administrators, and software
+developers. It is organized into Parts, Chapters, and Sections addressing key
+aspects of the software, beginning with the topics of broadest interest to the
+largest groups of users and progressing to some of the more specialized and
+technical topics of interest to smaller numbers of users.
 
 Copies of this guide can be accessed in PDF and HTML formats from http://docs.evergreen-ils.org/.
 
 About Evergreen
 ---------------
 
-Evergreen is an open source library automation software designed to meet the needs of the very smallest to the very largest libraries and consortia. Through its staff interface, it facilitates the management, cataloging, and circulation of library materials, and through its online public access interface it helps patrons find those materials.
+Evergreen is an open source library automation software designed to meet the
+needs of the very smallest to the very largest libraries and consortia. Through
+its staff interface, it facilitates the management, cataloging, and circulation
+of library materials, and through its online public access interface it helps
+patrons find those materials.
 
-The Evergreen software is freely licensed under the GNU General Public License, meaning that it is free to download, use, view, modify, and share. It has an active development and user community, as well as several companies offering migration, support, hosting, and development services.
+The Evergreen software is freely licensed under the GNU General Public License,
+meaning that it is free to download, use, view, modify, and share. It has an
+active development and user community, as well as several companies offering
+migration, support, hosting, and development services.
 
 The community’s development requirements state that Evergreen must be:
 
@@ -41,7 +53,9 @@ The community’s development requirements state that Evergreen must be:
 * Secure, to protect our patrons’ privacy and data.
 * User-friendly, to facilitate patron and staff use of the system.
 
-Evergreen, which first launched in 2006 now powers over 544 libraries of every type – public, academic, special, school, and even tribal and home libraries – in over a dozen countries worldwide.
+Evergreen, which first launched in 2006 now powers over 544 libraries of every
+type – public, academic, special, school, and even tribal and home libraries –
+in over a dozen countries worldwide.
 
 // Push titles down one level.
 :leveloffset: 1
@@ -58,7 +72,8 @@ Software Installation
 Introduction
 ------------
 
-This part will guide you through the installation steps installation or upgrading your Evergreen system. It is intended for system administrators. 
+This part will guide you through the installation steps installation or
+upgrading your Evergreen system. It is intended for system administrators. 
 
 
 include::installation/system_requirements.txt[]
@@ -86,7 +101,9 @@ System Configuration and Customization
 Introduction
 ------------
 
-The Evergreen system allows a free range of customizations to every aspect of the system. Use this part of the documentation to become familiar with the tools for  configuring the system as well as  customizing  the OPAC and staff client.  
+The Evergreen system allows a free range of customizations to every aspect of
+the system. Use this part of the documentation to become familiar with the tools
+for  configuring the system as well as  customizing  the OPAC and staff client.  
 
 // include::global_system_configuration.txt[]
 // include::opac_customization.txt[]
@@ -108,7 +125,8 @@ Using the Staff Client
 Introduction
 ------------
 
-This part of the documentation deals with general Staff Client usage including logging in, navigation and shortcuts.
+This part of the documentation deals with general Staff Client usage including
+logging in, navigation and shortcuts.
 
 
 include::admin/staff_client-tab_buttons.txt[]
@@ -127,7 +145,8 @@ System Administration From the Staff Client
 Introduction
 ------------
 
-This part deals with the options in the Server Administration menu found in the staff client. 
+This part deals with the options in the Server Administration menu found in the
+staff client. 
 
 // Follow structure from staff client system admin menu.
 
@@ -152,7 +171,8 @@ Local Administration
 Introduction
 ------------
 
-This part covers the options in the Local Administration menu found in the staff client. 
+This part covers the options in the Local Administration menu found in the staff
+client. 
 
 // Follow structure from staff client local admin menu.
 
@@ -182,7 +202,8 @@ Cataloging
 Introduction
 ------------
 
-Cataloguers should use this part for understanding the cataloguing procedures used in Evergreen.
+Cataloguers should use this part for understanding the cataloguing procedures
+used in Evergreen.
 
 include::cataloging/batch_importing_MARC.txt[]
 
@@ -219,7 +240,8 @@ Circulation
 Introduction
 ------------
 
-Use this section for understanding the circulation procedures in the Evergreen system.  
+Use this section for understanding the circulation procedures in the Evergreen
+system.  
 
 include::circulation/circulating_items.txt[]
 
@@ -249,7 +271,8 @@ Developer Resources
 Introduction
 ------------
 
-Developers can use this part to learn more about the programming languages, communication protocols and standards used in Evergreen.  
+Developers can use this part to learn more about the programming languages,
+communication protocols and standards used in Evergreen.  
 
 // Push titles down one level.
 :leveloffset: 1
