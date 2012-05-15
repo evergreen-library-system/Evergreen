@@ -19,12 +19,16 @@
             END;
         END;
 
-        # if no added content is available, hide the main tab
+        # if no added content is available, hide the main tab.
+        # if any content is available, use the first tab as the default display tab.
+        default_ac = '';
         IF !tab_is_active('addedcontent');
             hide_ac = 1;
             FOR type IN ctx.added_content.keys;
-                SET hide_ac = 0 IF 
-                    ctx.added_content.$type.status != '2'; # not available
+                IF ctx.added_content.$type.status != '2'; # not available
+                    hide_ac = 0;
+                    SET default_ac = type UNLESS default_ac;
+                END;
             END;
         END;
 
@@ -53,7 +57,11 @@
                         href = mkurl('', {}, ['expand', 'ac']);
                         img_url = ctx.media_prefix _ '/images/rdetail_arrow_down.png';
                     ELSE;
-                        href = mkurl('', {expand => name}) _ '#' _ name; 
+                        IF name == 'addedcontent' AND default_ac;
+                            href = mkurl('', {expand => name, ac => default_ac}) _ '#' _ name; 
+                        ELSE;
+                            href = mkurl('', {expand => name}) _ '#' _ name; 
+                        END;
                         img_url = ctx.media_prefix _ '/images/rdetail_arrow.png';
                     END;
                 %]
