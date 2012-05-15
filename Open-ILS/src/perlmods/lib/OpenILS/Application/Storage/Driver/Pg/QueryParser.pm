@@ -520,35 +520,9 @@ sub toSQL {
     }
     $rel = "1.0/($rel)::NUMERIC";
 
-    my %dyn_filters = ( '' => [] ); # the "catch-all" key
-    for my $f ( @{ $self->QueryParser->dynamic_filters } ) {
-        my $col = $f;
-        $col = 'item_lang' if ($f eq 'language'); #XXX filter aliases would address this ... booo ... later
-
-        my ($filter) = $self->find_filter($f);
-        if ($filter) {
-            my @fargs = @{$filter->args};
-
-            if (@fargs > 1 || $filter->negate) {
-                my $NOT = $filter->negate ? 'NOT' : '';
-                $dyn_filters{$f} = "$NOT( " .
-                    join(
-                        " OR ",
-                        map { "mrd.attrs \@> hstore('$col', " . $self->QueryParser->quote_value($_) . ")" } @fargs
-                    ) . 
-                    " )";
-            } else {
-                push(@{$dyn_filters{''}}, "hstore('$col', " . $self->QueryParser->quote_value($fargs[0]) . ")");
-            }
-        }
-    }
-
-    my $combined_dyn_filters = '';
-    $combined_dyn_filters .= 'AND mrd.attrs @> (' . join(' || ', @{$dyn_filters{''}}) . ') ' if (@{$dyn_filters{''}});
-    delete($dyn_filters{''});
-
-    my @dyn_filter_list = values(%dyn_filters);
-    $combined_dyn_filters .= 'AND ' . join(' AND ', @dyn_filter_list) if (@dyn_filter_list);
+    my $mra_join = 'INNER JOIN metabib.record_attr mrd ON (m.source = mrd.id';
+    $mra_join .= ' AND '. $flat_plan->{fwhere} if $flat_plan->{fwhere};
+    $mra_join .= ')';
     
     my $rank = $rel;
 
@@ -676,16 +650,15 @@ SELECT  $key AS id,
         $rank AS rank, 
         FIRST(mrd.attrs->'date1') AS tie_break
   FROM  metabib.metarecord_source_map m
-        JOIN metabib.record_attr mrd ON (m.source = mrd.id)
         $container
         $record_list
         $$flat_plan{from}
+        $mra_join
   WHERE 1=1
         $before
         $after
         $during
         $between
-        $combined_dyn_filters
         $flat_where
   GROUP BY 1
   ORDER BY 4 $desc $nullpos, 5 DESC $nullpos, 3 DESC
@@ -726,9 +699,18 @@ sub flatten {
     my $from = shift || '';
     my $where = shift || '(';
     my $with = '';
+    my $fwhere = shift || ''; # for joining dynamic filters (mra)
+
+    my @dyn_filters;
+    for my $filter (@{$self->filters}) {
+        push(@dyn_filters, $filter) if 
+            grep { $_ eq $filter->name } 
+                @{ $self->QueryParser->dynamic_filters };
+    };
 
     my @rank_list;
     for my $node ( @{$self->query_nodes} ) {
+
         if (ref($node)) {
             if ($node->isa( 'QueryParser::query_plan::node' )) {
 
@@ -794,10 +776,19 @@ sub flatten {
                     }
                 }
 
-                $where .= '(' . $talias . ".id IS NOT NULL";
-                $where .= ' AND ' . join(' AND ', map {"${talias}.value ~* ".$self->QueryParser->quote_phrase_value($_)} @{$node->phrases}) if (@{$node->phrases});
-                $where .= ' AND ' . join(' AND ', map {"${talias}.value !~* ".$self->QueryParser->quote_phrase_value($_)} @{$node->unphrases}) if (@{$node->unphrases});
-                $where .= ')';
+
+                my $twhere .= '(' . $talias . ".id IS NOT NULL";
+                $twhere .= ' AND ' . join(' AND ', map {"${talias}.value ~* ".$self->QueryParser->quote_phrase_value($_)} @{$node->phrases}) if (@{$node->phrases});
+                $twhere .= ' AND ' . join(' AND ', map {"${talias}.value !~* ".$self->QueryParser->quote_phrase_value($_)} @{$node->unphrases}) if (@{$node->unphrases});
+                $twhere .= ')';
+
+                if (@dyn_filters or !$self->top_plan) {
+                    # if this WHERE is represented within the dynamic 
+                    # filter's ON clause, it's not also needed in the main WHERE.
+                    $fwhere .= $twhere;
+                } else {
+                    $where .= $twhere;
+                }
 
                 push @rank_list, $node_rank;
 
@@ -813,19 +804,35 @@ sub flatten {
                     @field_ids = @{ $self->QueryParser->facet_field_ids_by_class( $node->classname ) };
                 }
 
-                my $join_type = $node->negate ? 'LEFT' : 'INNER';
+                my $join_type = ($node->negate or @dyn_filters or !$self->top_plan) ? 'LEFT' : 'INNER';
                 $from .= "\n${spc}$join_type JOIN /* facet */ metabib.facet_entry $talias ON (\n${spc}${spc}m.source = ${talias}.source\n${spc}${spc}".
                          "AND SUBSTRING(${talias}.value,1,1024) IN (" . join(",", map { $self->QueryParser->quote_value($_) } @{$node->values}) . ")\n${spc}${spc}".
                          "AND ${talias}.field IN (". join(',', @field_ids) . ")\n${spc})";
 
-                $where .= $node->negate ? "${talias}.id IS NULL" : 'TRUE';
+                if (@dyn_filters or !$self->top_plan) {
+                    my $NOT = $node->negate ? '' : ' NOT';
+                    $fwhere .= "${talias}.id IS$NOT NULL";
+                } else {
+                    $where .= $node->negate ? "${talias}.id IS NULL" : 'TRUE';
+                }
 
             } else {
                 my $subnode = $node->flatten;
 
+                # strip the trailing bool from the previous loop if there is 
+                # nothing to add to the where/fwhere within this loop.
+                if ($$subnode{where} eq '()') {
+                    $where =~ s/\s(AND|OR)\s$//;
+
+                } elsif ($$subnode{fwhere} eq '') {
+                    $fwhere =~ s/\s(AND|OR)\s$//;
+                }
+
                 push(@rank_list, @{$$subnode{rank_list}});
                 $from .= $$subnode{from};
-                $where .= "($$subnode{where})";
+
+                $where .= "($$subnode{where})" unless $$subnode{where} eq '()';
+                $fwhere .= "($$subnode{fwhere})" if $$subnode{fwhere};
 
                 if ($$subnode{with}) {
                     $with .= ', ' if $with;
@@ -833,14 +840,47 @@ sub flatten {
                 }
             }
         } else {
-            $where .= ' AND ' if ($node eq '&');
-            $where .= ' OR ' if ($node eq '|');
-            # ... stitching the WHERE together ...
+
+            warn "flatten(): appending WHERE bool to: $where\n" if $self->QueryParser->debug;
+
+            if ($fwhere) {
+                # bool joiner for inter-plan filters
+                $fwhere .= ' AND ' if ($node eq '&');
+                $fwhere .= ' OR ' if ($node eq '|');
+
+            } elsif ($where ne '(') {
+
+                $where .= ' AND ' if ($node eq '&');
+                $where .= ' OR ' if ($node eq '|');
+            }
         }
     }
 
-    return { rank_list => \@rank_list, from => $from, where => $where.')', with => $with };
+    # for each dynamic filter, build the ON clause for the JOIN
+    for my $filter (@dyn_filters) {
+        
+        warn "flatten(): processing dynamic filter ". $filter->name ."\n"
+            if $self->QueryParser->debug;
 
+        # bool joiner for intra-plan nodes/filters
+        $fwhere .= sprintf(" %s ", ($self->joiner eq '&' ? 'AND' : 'OR')) if $fwhere;
+
+        my @fargs = @{$filter->args};
+        my $NOT = $filter->negate ? ' NOT' : '';
+        my $fname = $filter->name;
+        $fname = 'item_lang' if $fname eq 'language'; #XXX filter aliases 
+
+        $fwhere .= sprintf(
+            "attrs->'%s'$NOT IN (%s)", $fname, 
+            join(',', map { $self->QueryParser->quote_value($_) } @fargs)
+        );
+
+        warn "flatten(): filter where => $fwhere\n"
+            if $self->QueryParser->debug;
+    }
+    warn "flatten(): full filter where => $fwhere\n" if $self->QueryParser->debug;
+
+    return { rank_list => \@rank_list, from => $from, where => $where.')',  with => $with, fwhere => $fwhere };
 }
 
 
