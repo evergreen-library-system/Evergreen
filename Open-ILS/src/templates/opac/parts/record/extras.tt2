@@ -3,6 +3,11 @@
 
         [%  # Hidden extras are not yet implemented.  Some may require JS
 
+        MACRO tab_is_active(tab) BLOCK;
+            exp_name = 'expand_' _ tab;
+            IF ctx.$exp_name OR ctx.expand_all; 1; END;
+        END;
+
         # Let's see if we should hide the content cafe / simple summary content
         hide_summary = 1;
         IF attrs.summary.0; hide_summary = 0; ELSE;
@@ -14,6 +19,15 @@
             END;
         END;
 
+        # if no added content is available, hide the main tab
+        IF !tab_is_active('addedcontent');
+            hide_ac = 1;
+            FOR type IN ctx.added_content.keys;
+                SET hide_ac = 0 IF 
+                    ctx.added_content.$type.status != '2'; # not available
+            END;
+        END;
+
         extras = [
             {name => 'summaryplus',  label => l('Summaries &amp; More'), hide => hide_summary}, 
             {name => 'contents',  label => l('Contents'), hide => !attrs.contents},
@@ -22,15 +36,10 @@
             {name => 'excerpt',  label => l('Excerpt'), hide => 1},
             {name => 'issues',   label => l('Issues Held'), hide => !(ctx.have_holdings_to_show || ctx.have_mfhd_to_show)},
             {name => 'preview',  label => l('Preview'), hide => 1}, 
-            {name => 'addedcontent',  label => l('Additional Content')},  # hide if all content is known to not exist
+            {name => 'addedcontent',  label => l('Additional Content'), hide => hide_ac},  # hide if all content is known to not exist
             {name => 'cnbrowse', label => l('Shelf Browser')},
             {name => 'marchtml', label => l('MARC Record')}
         ];
-
-        MACRO tab_is_active(tab) BLOCK;
-            exp_name = 'expand_' _ tab;
-            IF ctx.$exp_name OR ctx.expand_all; 1; END;
-        END;
 
         FOREACH extra IN extras;
             IF extra.hide; NEXT; END; 

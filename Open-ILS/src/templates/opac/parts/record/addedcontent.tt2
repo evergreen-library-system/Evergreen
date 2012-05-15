@@ -18,9 +18,13 @@
 %]
 
     <div id='ac_tab_wrapper'>
-        [% FOR type IN ac_types.keys;
+    [% 
+        all_hidden = 1;
+        FOR type IN ac_types.keys;
             tab_class = 'ac_tab';
+            SET tab_class = tab_class _ ' ac_tab_selected' IF type == selected_type; 
             IF ctx.added_content.$type.status != '2'; # no content
+                all_hidden = 0;
                 IF ctx.added_content.$type.status == '3' AND want_dojo; # status unknown
                     tab_class = tab_class _ ' hidden';
                 END %]
@@ -28,7 +32,8 @@
                 <a href="[% mkurl('', {ac => type}) _ '#addedcontent' %]">[% ac_types.$type %]</a>
             </div>
             [% END;
-        END %]
+        END;
+    %]
     </div>
 
     <div id='ac_content'>
@@ -41,6 +46,8 @@
                 ELSE;
                     l('No Content Available');
                 END;
+            ELSIF all_hidden;
+                l('No Content Available');
             END;
         %]
     </div>
