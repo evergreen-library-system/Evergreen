@@ -472,7 +472,7 @@ sub added_content_stage2 {
                 $content->{status} = $code eq '200' ? 1 : 2;
                 $logger->debug("tpac: added content request for $type returned $code");
 
-                if ($type eq $sel_type) {
+                if ($code eq '200' and $type eq $sel_type) {
                     while (1) {
                         my $buf;
                         my $n = $req->read_entity_body($buf, 1024);
