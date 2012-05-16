@@ -110,7 +110,7 @@ sub create_auth_queue {
     return $e->die_event unless $e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE');
     $owner ||= $e->requestor->id;
 
-    if ($e->search_vandelay_bib_queue({name => $name, owner => $owner, queue_type => $type})->[0]) {
+    if ($e->search_vandelay_authority_queue({name => $name, owner => $owner, queue_type => $type})->[0]) {
         $e->rollback;
         return OpenILS::Event->new('AUTH_QUEUE_EXISTS') 
     }
