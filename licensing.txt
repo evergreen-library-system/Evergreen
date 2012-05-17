@@ -4,8 +4,7 @@ Licensing
 Creative Commons License
 ------------------------
 
-image::ccbysa.png["CC-BY-SA",
-link="http://creativecommons.org/licenses/by-sa/3.0/"]
+image::media/ccbysa.png["CC-BY-SA",link="http://creativecommons.org/licenses/by-sa/3.0/"]
 
 This work is licensed under a 
 link:http://creativecommons.org/licenses/by-sa/3.0/[Creative 
@@ -14,11 +13,11 @@ Commons Attribution-ShareAlike 3.0 Unported License].
 Additional Licensed Content
 ---------------------------
 
-The icon
+The 
 
-image::media/application-pdf.png 
+image::media/application-pdf.png["PDF"] 
 
-comes from the KDE project at: http://kde.org/ and is licensed under the GNU
+icon comes from the KDE project at: http://kde.org/ and is licensed under the GNU
 Lesser General Public License 3.0 
 
 ....
