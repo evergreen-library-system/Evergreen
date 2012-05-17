@@ -293,6 +293,8 @@ include::development/updating_translations_launchpad.txt[]
 
 include::attributions.txt[]
 
+include::licensing.txt[]
+
 Admonitions
 ===========
 
