@@ -705,7 +705,7 @@ main.menu.prototype = {
             ],
             'cmd_local_admin_printer' : [
                 ['oncommand'],
-                function(event) { open_admin_page('printer_settings.html', 'menu.cmd_local_admin_printer.tab', true, event); }
+                function(event) { open_admin_page('printer_settings.xul', 'menu.cmd_local_admin_printer.tab', false, event); }
             ],
             'cmd_local_admin_do_not_auto_attempt_print_setting' : [
                 ['oncommand'],

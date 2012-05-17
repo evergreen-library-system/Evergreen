@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding="UTF-8"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<window id="workstation_printer_settings_edit" onload="try { my_init(); } catch(E) { alert(E); }" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <script type="text/javascript" src="/opac/common/js/utils.js"></script>
+    <script type="text/javascript" src="/opac/common/js/CGI.js"></script>
+    <script type="text/javascript" src="/opac/common/js/md5.js"></script>
+    <script type="text/javascript" src="/opac/common/js/JSON_v1.js"></script>
+    <script type="text/javascript" src="/opac/common/js/fmall.js"></script>
+    <script type="text/javascript" src="/opac/common/js/fmgen.js"></script>
+    <script type="text/javascript" src="/opac/common/js/RemoteRequest.js"></script>
+    <script type='text/javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js'></script>
+    <script type="text/javascript" src="/opac/common/js/org_utils.js"></script>
+
+    <script type="text/javascript" src="/xul/server/OpenILS/global_util.js"></script>
+    <script type="text/javascript" src="/xul/server/main/constants.js"></script>
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"></script>
+    <script type="text/javascript" src="printer_settings.js"></script>
+    <messagecatalog id="offlineStrings" src="/xul/server/locale/<!--#echo var='locale'-->/offline.properties" />
+    <groupbox>
+        <caption label="&staff.printing.context.header;" />
+        <vbox>
+            <description>&staff.printing.context.desc;</description>
+            <radiogroup orient="horizontal">
+                <radio value="default" checked="checked" oncommand="g.set_printer_context('default');" label="&staff.printing.context.radio.default.label;" />
+                <radio value="receipt" oncommand="g.set_printer_context('receipt');" label="&staff.printing.context.radio.receipt.label;" />
+                <radio value="label" oncommand="g.set_printer_context('label');" label="&staff.printing.context.radio.label.label;" />
+                <radio value="mail" oncommand="g.set_printer_context('mail');" label="&staff.printing.context.radio.mail.label;" />
+                <radio value="offline" oncommand="g.set_printer_context('offline');" label="&staff.printing.context.radio.offline.label;" />
+            </radiogroup>
+        </vbox>
+    </groupbox>
+    <groupbox>
+        <caption label="&staff.printing.normal_settings.header;" />
+        <vbox>
+            <iframe id="sample" src="printer_settings.txt" oils_force_external="true" type="content" style="background-color: white;" />
+            <hbox>
+                <button oncommand="try { g.printer_settings(); } catch(E) { alert(E); }" label="&staff.printing.set_default;" />
+                <button oncommand="try { g.page_settings(); } catch(E) { alert(E); }" label="&staff.printing.page_settings;" />
+            </hbox>
+        </vbox>
+    </groupbox>
+    <groupbox>
+        <caption value="&staff.printing.advanced_settings.header;" />
+        <checkbox id='print_silent' oncommand='g.toggle_silent_print(event);' label="&staff.printing.advanced.mozilla_print.print_silent;" />
+        <hbox>
+            <button oncommand="try { g.set_print_strategy('webBrowserPrint'); } catch(E) { alert(E); }" label="&staff.printing.advanced.mozilla_print;" />
+            <button oncommand="try { g.set_print_strategy('dos.print'); } catch(E) { alert(E); }" label="&staff.printing.advanced.dos_print;" />
+            <button oncommand="try { g.set_print_strategy('custom.print'); } catch(E) { alert(E); }" label="&staff.printing.advanced.custom_print;" />
+        </hbox>
+        <label value="&staff.printing.advanced.dos_print.warning.header;" style="font-weight: bold" />
+        <description>&staff.printing.advanced.dos_print.warning.text;</description>
+        <label value="&staff.printing.advanced.custom_print.warning.header;" style="font-weight: bold" />
+        <description>&staff.printing.advanced.custom_print.warning.text;</description>
+        <label value="&staff.printing.advanced.html_templates.warning.header;" style="font-weight: bold" />
+        <description>&staff.printing.advanced.html_templates.warning.text;</description>
+    </groupbox>
+</window>
