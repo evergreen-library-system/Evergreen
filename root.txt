@@ -176,6 +176,13 @@ client.
 
 // Follow structure from staff client local admin menu.
 
+// Push titles down one level.
+:leveloffset: 1
+
+include::admin/hold_driven_recalls.txt[]
+
+// Return to normal title levels.
+:leveloffset: 0
 
 include::admin/recent_staff_searches.txt[]
 
