@@ -2,7 +2,11 @@
     PROCESS "opac/parts/misc_util.tt2";
     PROCESS "opac/parts/hold_status.tt2";
     WRAPPER "opac/parts/myopac/base.tt2";
-    myopac_page = "holds"  %]
+    myopac_page = "holds";
+    limit = ctx.holds_limit;
+    offset = ctx.holds_offset;
+    count = ctx.holds_ids.size;
+%]
 <div id='myopac_holds_div'>
 
     <div id="acct_holds_tabs">
@@ -10,7 +14,7 @@
             <a href='#'>[% l("Items on Hold") %]</a>
         </div>
         <div class="align">
-            <a href='[% mkurl('hold_history') %]'>[% l("Holds History") %]</a>
+            <a href='[% mkurl('hold_history', {}, ['limit','offset','available']) %]'>[% l("Holds History") %]</a>
         </div>
     </div>
 
@@ -23,6 +27,25 @@
                 END
             %]
         </span>
+        <span class='float-left' style='padding-left: 10px;'>
+            <a href='[% mkurl('holds', {limit => limit,offset => (offset - limit)}) %]'
+                [% IF offset <= 0 %] class='invisible' [% END %]><span class="nav_arrow_fix">&#9668;</span>[% l('Previous') %]</a>
+            [% IF offset > 0 || count > limit;
+                curpage = 0;
+                WHILE curpage * limit < count;
+                    IF curpage * limit == offset;
+            %]
+            [% curpage + 1 %]
+                    [%- ELSE %]
+            <a href='[% mkurl('holds', {limit => limit, offset => (curpage * limit)}) %]'>[% curpage + 1 %]</a>
+                    [%- END;
+                    curpage = curpage + 1;
+                END;
+            END %]
+            <a href='[% mkurl('holds', {limit => limit, offset => (offset + limit)}) %]'
+               [% IF count <= limit + offset %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
+        </span>
+
         <span style="float:right;">
             <a class="hide_me" href="#">Export List</a>
         </span>
@@ -62,11 +85,11 @@
                 <td align="right">
                     [% l("Show") %] &nbsp; &nbsp;
                     [% IF CGI.param("available") %]
-                    <a href="[% mkurl('holds', {}, ['available']) %]">[% l('all') %]</a> |
+                    <a href="[% mkurl('holds', {},['limit','offset','available']) %]">[% l('all') %]</a> |
                     <strong>[% l("only available") %]</strong>
                     [% ELSE %]
                     <strong>[% l("all") %]</strong> |
-                    <a href="[% mkurl('holds', {available => 1}) %]">[% l("only available") %]</a>
+                    <a href="[% mkurl('holds', {available => 1}, ['limit','offset']) %]">[% l("only available") %]</a>
                     [% END %] &nbsp; &nbsp;
                     [% l("holds") %]
                     <select class="hide_me" id="holds_sort">

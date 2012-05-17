@@ -419,7 +419,8 @@ __PACKAGE__->register_method(
         desc   => "Retrieves all the holds, with hold transits attached, for the specified user.  $ses_is_req_note",
         params => [
             { desc => 'Authentication token', type => 'string'  },
-            { desc => 'User ID',              type => 'integer' }
+            { desc => 'User ID',              type => 'integer' },
+            { desc => 'Available Only',       type => 'boolean' }
         ],
         return => {
             desc => 'list of holds, event on error',
@@ -435,7 +436,8 @@ __PACKAGE__->register_method(
         desc   => "Retrieves all the hold IDs, for the specified user.  $ses_is_req_note",
         params => [
             { desc => 'Authentication token', type => 'string'  },
-            { desc => 'User ID',              type => 'integer' }
+            { desc => 'User ID',              type => 'integer' },
+            { desc => 'Available Only',       type => 'boolean' }
         ],
         return => {
             desc => 'list of holds, event on error',
@@ -477,7 +479,7 @@ __PACKAGE__->register_method(
 
 
 sub retrieve_holds {
-    my ($self, $client, $auth, $user_id) = @_;
+    my ($self, $client, $auth, $user_id, $available) = @_;
 
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
@@ -551,6 +553,11 @@ sub retrieve_holds {
 
         ];
         $holds_query->{where}->{cancel_time} = undef;
+        if($available) {
+            $holds_query->{where}->{shelf_time} = {'!=' => undef};
+            # Maybe?
+            $holds_query->{where}->{pickup_lib} = {'+ahr' => 'current_shelf_lib'};
+        }
     }
 
     my $hold_ids = $e->json_query($holds_query);

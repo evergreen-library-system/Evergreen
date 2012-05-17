@@ -5,13 +5,14 @@
     myopac_page = "holds";
     limit = ctx.hold_history_limit;
     offset = ctx.hold_history_offset;
+    count = ctx.hold_history_ids.size;
 %]
 
 <div id='myopac_holds_div'>
 
     <div id="acct_holds_tabs">
         <div class="align">
-            <a href='[% mkurl('holds') %]'>[% l("Items on Hold") %]</a>
+            <a href='[% mkurl('holds',{},['limit','offset']) %]'>[% l("Items on Hold") %]</a>
         </div>
         <div class="align selected">
             <a href="#">[% l("Holds History") %]</a>
@@ -21,11 +22,22 @@
     <div class="header_middle">
         <span style="float:left;">[% l("Previously Held Items") %]</span>
         <span class='float-left' style='padding-left: 10px;'>
-            <a href='[% mkurl(hold_history, {limit => limit,offset => (offset - limit)}) %]'
+            <a href='[% mkurl('hold_history', {limit => limit,offset => (offset - limit)}) %]'
                 [% IF offset == 0 %] class='invisible' [% END %]><span class="nav_arrow_fix">&#9668;</span>[% l('Previous') %]</a>
-            [%# TODO: get total to prevent paging off then end of the list.. %]
-            <a href='[% mkurl(hold_history, {limit => limit, offset => (offset + limit)}) %]'
-               [% IF ctx.holds.size < limit %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
+            [% IF offset > 0 || count > limit;
+                curpage = 0;
+                WHILE curpage * limit < count;
+                    IF curpage * limit == offset;
+            %]
+            [% curpage + 1 %]
+                    [%- ELSE %]
+            <a href='[% mkurl('holds_history', {limit => limit, offset => (curpage * limit)}) %]'>[% curpage + 1 %]</a>
+                    [%- END;
+                    curpage = curpage + 1;
+                END;
+            END %]
+            <a href='[% mkurl('hold_history', {limit => limit, offset => (offset + limit)}) %]'
+               [% IF count <= limit + offset %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
         </span>
         <span style="float:right;">
             <a class="hide_me" href="#">Export List</a>
