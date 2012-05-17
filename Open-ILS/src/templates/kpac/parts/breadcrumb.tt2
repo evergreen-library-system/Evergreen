@@ -33,7 +33,7 @@
                 # I know there's a way to do this all w/ substr, 
                 # but it's trying my patience.  this works.
             %]
-            <a href="javascript:;">[% title | html %]</a>
+            <a href="[% mkurl(ctx.kpac_root _ '/record/' _ ctx.bre_id) %]">[% title | html %]</a>
 
             <!-- Get it -->
             <div class="bread_green_last">&nbsp;</div>
