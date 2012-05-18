@@ -12,6 +12,7 @@
     "OPERATOR_LIKE": "is like",
     "OPERATOR_NOT_LIKE": "is not like",
     "EMPTY_CASE": "Add rows to filter results, or just click Apply to see unfiltered results.",
+    "EMPTY_CASE_COMPACT": "Add rows to filter results.",
     "DEFAULT_DIALOG_TITLE": "Filter Results",
     "ADD_ROW": "Add Row",
     "APPLY": "Apply",

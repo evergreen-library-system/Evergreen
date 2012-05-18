@@ -344,10 +344,12 @@ patron.display.prototype = {
                         ['command'],
                         function(ev) {
                             obj.right_deck.set_iframe(
-                                urls.XUL_TRIGGER_EVENTS,
+                                xulG.url_prefix(urls.XUL_REMOTE_BROWSER),
                                 {},
                                 {
-                                    'patron_id' : obj.patron.id()
+                                    'url': urls.EG_TRIGGER_EVENTS + "?patron_id=" + obj.patron.id(),
+                                    'show_print_button': false,
+                                    'show_nav_buttons': false
                                 }
                             );
                         }

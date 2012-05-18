@@ -1557,7 +1557,10 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 533, 'ADMIN_COPY_LOCATION_GROUP', oils_i18n_gettext( 533,
     'Allows a user to create/retrieve/update/delete copy location groups', 'ppl', 'description' )), 
  ( 534, 'ADMIN_USER_ACTIVITY_TYPE', oils_i18n_gettext( 534,
-    'Allows a user to create/retrieve/update/delete user activity types', 'ppl', 'description' ));
+    'Allows a user to create/retrieve/update/delete user activity types', 'ppl', 'description' )),
+( 535, 'VIEW_TRIGGER_EVENT', oils_i18n_gettext( 535,
+    'Allows a user to view circ- and hold-related action/trigger events', 'ppl', 'description'))
+;
 
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -10175,7 +10178,24 @@ INSERT INTO config.usr_setting_type (name,grp,opac_visible,label,description,dat
         'description'
     ),
     'string'
-);
+), (
+    'ui.grid_columns.actor.user.event_log',
+    'gui',
+    FALSE,
+    oils_i18n_gettext(
+        'ui.grid_columns.actor.user.event_log',
+        'User Event Log',
+        'cust',
+        'label'
+    ),
+    oils_i18n_gettext(
+        'ui.grid_columns.actor.user.event_log',
+        'User Event Log Saved Column Settings',
+        'cust',
+        'description'
+    ),
+    'string'
+) ;
 
 SELECT setval( 'config.sms_carrier_id_seq', 1000 );
 INSERT INTO config.sms_carrier VALUES
@@ -11695,3 +11715,14 @@ VALUES (
     ),
     'integer'
 );
+
+INSERT INTO config.org_unit_setting_type (
+    name, grp, label, description, datatype
+) VALUES (
+    'circ.staff.max_visible_event_age',
+    'circ',
+    'Maximum visible age of User Trigger Events in Staff Interfaces',
+    'If this is unset, staff can view User Trigger Events regardless of age. When this is set to an interval, it represents the age of the oldest possible User Trigger Event that can be viewed.',
+    'interval'
+);
+

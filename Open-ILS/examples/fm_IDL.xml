@@ -1101,6 +1101,84 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
+	<class id="atul" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::user_log" reporter:label="Action Trigger User Log" oils_persist:readonly="true">
+		<oils_persist:source_definition><![CDATA[
+		SELECT	atevdef.hook,
+			atevdef.name,
+			atevdef.reactor,
+			atev.id,
+			atev.event_def,
+			atev.add_time,
+			atev.run_time,
+			atev.start_time,
+			atev.update_time,
+			atev.complete_time,
+			atev.update_process,
+			atev.state,
+			atev.user_data,
+			atev.template_output,
+			atev.error_output,
+			atev.async_output,
+			targ_circ.id AS target_circ,
+			targ_ahr.id AS target_hold,
+			COALESCE(
+				targ_circ.circ_lib,
+				targ_ahr.pickup_lib
+			) AS perm_lib
+		FROM action_trigger.event atev
+		JOIN action_trigger.event_definition atevdef ON
+			(atevdef.id = atev.event_def)
+		JOIN action_trigger.hook ath ON
+			(ath.key = atevdef.hook)
+		LEFT JOIN action.circulation targ_circ ON
+			(ath.core_type = 'circ' AND targ_circ.id = atev.target)
+		LEFT JOIN action.hold_request targ_ahr ON
+			(ath.core_type = 'ahr' AND targ_ahr.id = atev.target)
+		WHERE atev.add_time > NOW() - (SELECT MAX(value) FROM (
+			SELECT value::INTERVAL FROM actor.org_unit_ancestor_setting(
+				'circ.staff.max_visible_event_age',
+				COALESCE(targ_circ.circ_lib, targ_ahr.pickup_lib)
+			) UNION
+			SELECT '1000 YEARS'::INTERVAL AS value
+		) ous)
+		]]></oils_persist:source_definition>
+		<fields oils_persist:primary="id">
+			<field reporter:label="Hook" name="hook" reporter:datatype="link" />
+			<field reporter:label="Name" name="name" reporter:datatype="text" />
+			<field reporter:label="Reactor" name="reactor" reporter:datatype="text" />
+			<field reporter:label="Event ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Event Definition ID" name="event_def" reporter:datatype="int" />
+			<field reporter:label="Event Add Time" name="add_time" reporter:datatype="timestamp" />
+			<field reporter:label="Event Run Time" name="run_time" reporter:datatype="timestamp" />
+			<field reporter:label="Event Start Time" name="start_time" reporter:datatype="timestamp" />
+			<field reporter:label="Event Update Time" name="update_time" reporter:datatype="timestamp" />
+			<field reporter:label="Event Complete Time" name="complete_time" reporter:datatype="timestamp" />
+			<field reporter:label="Event Update PID" name="update_process" reporter:datatype="int" />
+			<field reporter:label="Event State" name="state" reporter:datatype="text" />
+			<field reporter:label="Event User Data" name="user_data" reporter:datatype="text" />
+			<field reporter:label="Event Template Output" name="template_output" reporter:datatype="link" />
+			<field reporter:label="Event Error Output" name="error_output" reporter:datatype="link" />
+			<field reporter:label="Event Async Output" name="async_output" reporter:datatype="link" />
+			<field reporter:label="Target Circulation" name="target_circ" reporter:datatype="link" />
+			<field reporter:label="Target Hold" name="target_hold" reporter:datatype="link" />
+			<field reporter:label="Permission Context" name="perm_lib" reporter:datatype="org_unit" />
+		</fields>
+		<links>
+			<link field="hook" reltype="has_a" key="key" map="" class="ath" />
+			<link field="template_output" reltype="has_a" key="id" map="" class="ateo" />
+			<link field="error_output" reltype="has_a" key="id" map="" class="ateo" />
+			<link field="async_output" reltype="has_a" key="id" map="" class="ateo" />
+			<link field="target_circ" reltype="has_a" key="id" map="" class="circ" />
+			<link field="target_hold" reltype="has_a" key="id" map="" class="ahr" />
+			<link field="perm_lib" reltype="has_a" key="id" map="" class="aou" />
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="VIEW_TRIGGER_EVENT" context_field="perm_lib" />
+			</actions>
+		</permacrud>
+	</class>
+
 	<class id="aws" controller="open-ils.cstore" oils_obj:fieldmapper="actor::workstation" oils_persist:tablename="actor.workstation" reporter:label="Workstation">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.workstation_id_seq">
 			<field reporter:label="Workstation ID" name="id" reporter:datatype="id"/>
@@ -3442,7 +3520,7 @@ SELECT  usr,
             <link field="usr" reltype="has_a" key="id" map="" class="au"/>
         </links>
 	</class>
-	<class id="circ" controller="open-ils.cstore" oils_obj:fieldmapper="action::circulation" oils_persist:tablename="action.circulation" reporter:core="true" reporter:label="Circulation">
+	<class id="circ" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::circulation" oils_persist:tablename="action.circulation" reporter:core="true" reporter:label="Circulation">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.billable_xact_id_seq">
 			<field reporter:label="Check In Library" name="checkin_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Check In Staff" name="checkin_staff" reporter:datatype="link"/>
@@ -3509,6 +3587,11 @@ SELECT  usr,
 			<link field="aaactsc_entries" reltype="has_many" key="xact" map="" class="aaactsc"/>
 			<link field="aaasc_entries" reltype="has_many" key="xact" map="" class="aaasc"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="VIEW_CIRCULATIONS" context_field="circ_lib" />
+			</actions>
+		</permacrud>
 	</class>
 	<class id="combcirc" controller="open-ils.cstore" oils_obj:fieldmapper="action::all_circulation" oils_persist:tablename="action.all_circulation" reporter:core="true" reporter:label="Combined Aged and Active Circulations" oils_persist:readonly="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.billable_xact_id_seq">

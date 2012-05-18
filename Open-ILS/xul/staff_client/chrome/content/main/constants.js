@@ -492,7 +492,6 @@ var urls = {
     'XUL_SURVEY_WIZARD' : 'chrome://open_ils_staff_client/content/admin/survey_wizard.xul',
     'XUL_TIMESTAMP_DIALOG' : '/xul/server/util/timestamp.xul',
     'XUL_TOOLBAR_CONFIG' : '/xul/server/admin/toolbar.xul',
-    'XUL_TRIGGER_EVENTS' : '/xul/server/patron/trigger_events.xul',
     'XUL_USER_BUCKETS' : '/xul/server/patron/user_buckets.xul',
     'XUL_VERIFY_CREDENTIALS' : '/xul/server/main/verify_credentials.xul',
     'XUL_VOLUME_BUCKETS' : '/xul/server/cat/volume_buckets.xul',
@@ -512,7 +511,8 @@ var urls = {
     'XUL_REPORTS' : '/reports/oils_rpt.xhtml',
     'EG_ACQ_PO_VIEW' : '/eg/acq/po/view',
     'EG_ACQ_USER_REQUESTS' : '/eg/acq/picklist/user_request',
-    'XUL_SERIAL_BATCH_RECEIVE': '/xul/server/serial/batch_receive.xul'
+    'XUL_SERIAL_BATCH_RECEIVE': '/xul/server/serial/batch_receive.xul',
+    'EG_TRIGGER_EVENTS' : '/eg/actor/user/event_log'
 }
 
 if(use_tpac) {

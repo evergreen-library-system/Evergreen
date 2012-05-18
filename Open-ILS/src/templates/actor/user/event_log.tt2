@@ -1,0 +1,282 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = "Triggered Event Log" %]
+<script type="text/javascript">
+    dojo.require("dijit.form.Button");
+    dojo.require("dojo.data.ItemFileReadStore");
+    dojo.require("openils.CGI");
+    dojo.require("openils.widget.FlattenerGrid");
+    dojo.require("openils.widget.OrgUnitFilteringSelect");
+    dojo.require("openils.widget.ProgressDialog");
+
+    /* If you want to expand this list of supported core_types, you must also
+       change openils.widget._FSBuilder.CoreType further down, so that it
+       includes labels for these in its data store for filter widget
+       purposes. */
+    var initial_query = {"core_type": ["circ", "ahr"]};
+
+    /* Pre-filter by patron ID or copy ID if those are passed in as CGI
+       parameters.  It's an either-or proposition for now. */
+    var cgi = new openils.CGI();
+    var patron_id = cgi.param("patron_id");
+    var copy_id = cgi.param("copy_id");
+
+    /* These features depends on target_{circ,hold}_{patron,copy}_id fields
+       being present in map_extras later. */
+    if (patron_id) {
+        initial_query["-or"] = {
+            "target_circ_patron_id": patron_id,
+            "target_hold_patron_id": patron_id
+        };
+        openils.Util.addOnLoad(
+            function() { openils.Util.show("patron_specific", "inline"); }
+        );
+    } else if (copy_id) {
+        initial_query["-or"] = {
+            "target_circ_copy_id": copy_id,
+            "target_hold_copy_id": copy_id
+        };
+        openils.Util.addOnLoad(
+            function() { openils.Util.show("copy_specific", "inline"); }
+        );
+    }
+
+    /* This semaphore business exists to prevent a race condition. Both
+       the OrgUnitFilteringSelect and the FlattenerFilterPane try to refresh
+       the grid when they're done loading, but that doesn't need to happen
+       until they're /both/ done loading. */
+    var _filter_semaphore_ctr = 2;
+    function filter_semaphore() { return --_filter_semaphore_ctr <= 0; }
+    function filter_semaphore_callback() {
+        grid.fetchLock = false;
+        grid.filterUi.doApply();
+    }
+
+    /* This and its subclasses exist because *FilterPane expect things that
+       act like AutoFieldWidget, which is a widget /builder/.  */
+    dojo.declare(
+        "openils.widget._FSBuilder", null, {
+            "dijitArgs": null,
+            "parentNode": null,
+            "useCorrectly": true,
+
+            "constructor": function(args) {
+                dojo.mixin(this, args);
+            },
+
+            "build": function() {
+                var dijitArgs = dojo.mixin(
+                    {
+                        "store": this.store,
+                        "query": {},
+                        "labelAttr": "label",
+                        "searchAttr": "label",
+                    }, this.dijitArgs
+                );
+
+                this.widget =
+                    new dijit.form.FilteringSelect(dijitArgs, this.parentNode);
+            }
+        }
+    );
+
+    dojo.declare(
+        "openils.widget._FSBuilder.CoreType",
+        [openils.widget._FSBuilder], {
+            "store": new dojo.data.ItemFileReadStore({
+                "data": {
+                    "identifier": "name",
+                    "items": [  /* XXX i18n */
+                        {"name": "circ", "label": "Circulation"},
+                        {"name": "ahr", "label": "Hold"}
+                    ]
+                }
+            })
+        }
+    );
+
+    dojo.declare(
+        "openils.widget._FSBuilder.EventState",
+        [openils.widget._FSBuilder], {
+            "store": new dojo.data.ItemFileReadStore({
+                "data": {
+                    "identifier": "name",
+                    "items": [  /* XXX i18n */
+                        {"name": "found", "label": "Found"},
+                        {"name": "collected", "label": "Collected"},
+                        {"name": "invalid", "label": "Invalid"},
+                        {"name": "pending", "label": "Pending"},
+                        {"name": "reacting", "label": "Reacting"},
+                        {"name": "complete", "label": "Complete"},
+                        {"name": "error", "label": "Error"}
+                    ]
+                }
+            })
+        }
+    );
+
+    /* Various things with which to initialize FlattenerGrid. */
+    var map_extras = {
+        "core_type": {"path": "hook.core_type", "filter": true},
+        "perm_lib": {"path": "perm_lib", "filter": true},
+        "target_circ_patron_id": {"path": "target_circ.usr", "filter": true},
+        "target_hold_patron_id": {"path": "target_hold.usr", "filter": true},
+        "target_circ_copy_id":{"path":"target_circ.target_copy","filter":true},
+        "target_hold_copy_id":{"path":"target_hold.current_copy","filter":true}
+    };
+
+    var filter_initializers = [
+        {"field": "state", "operator": "=", "value": "complete"},
+        {"field": "core_type", "operator": "=", "value": "circ"}
+    ];
+
+    var filter_widget_builders = {
+        "ath:core_type": openils.widget._FSBuilder.CoreType,
+        "atul:state": openils.widget._FSBuilder.EventState,
+    };
+
+    function print_all() {
+        var n;
+        if ((n = parseInt(prompt('[% l("Up to how many rows?") %]','100'))) > 0)
+            grid.print(n);
+    }
+
+    function act_on_events(id_list, action) {
+        console.log(id_list);
+        var method = "open-ils.actor.user.event." + action + ".batch";
+        if (id_list.length < 1) {
+            alert("[% l('You selected nothing.') %]");
+            return;
+        }
+
+        var count = 0;
+        progress_dialog.show(true);
+        fieldmapper.standardRequest(
+            ["open-ils.actor", method], {
+                "async": true,
+                "params": [openils.User.authtoken, id_list],
+                "onresponse": function(r) {
+                    if (r = openils.Util.readResponse(r)) {
+                        progress_dialog.update(
+                            {"maximum": id_list.length, "progress": ++count}
+                        );
+                    }
+                },
+                "oncomplete": function(r) {
+                    progress_dialog.hide();
+                    r = openils.Util.readResponse(r);
+                    grid.refresh();
+                }
+            }
+        );
+    }
+
+    /* The callback fired when the OrgUnitFilteringSelect is changed */
+    function set_grid_query_from_org_selector() {
+        /* Naughty: shouldn't use _baseQuery like this, but need to rethink
+           multiple competing filtering mechanisms. */
+        grid._baseQuery.perm_lib = aou.descendantNodeList(
+            org_selector.attr("value"), /* as id */ true
+        );
+
+        /* But for the persistent filter UI, this would be grid.refresh() */
+        if (filter_semaphore())   /* avoid race between ou selector and other
+                                     filter thing */
+            filter_semaphore_callback();
+    }
+
+    /* Builds a OrgUnitFilteringSelect limited to org units where you have
+       a given permission. */
+    function prepare_org_selector(perm) {
+        new openils.User().buildPermOrgSelector(
+            perm, org_selector, null,
+            function() {
+                dojo.connect(
+                    org_selector, "onChange", set_grid_query_from_org_selector
+                );
+                set_grid_query_from_org_selector();
+            }
+        );
+    }
+
+    openils.Util.addOnLoad(
+        function() {
+            prepare_org_selector("VIEW_TRIGGER_EVENT");
+        }
+    );
+</script>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane"
+         layoutAlign="top" class="oils-header-panel">
+        <div>
+            [% ctx.page_title %]
+            <span id="copy_specific" class="hidden">([% l('copy specific') %])</span>
+            <span id="patron_specific" class="hidden">([% l('patron specific') %])</span>
+        </div>
+        <div>
+            <button dojoType="dijit.form.Button"
+                onClick="act_on_events(grid.getSelectedIDs(), 'reset');">[% l('Reset Selected Events') %]</button>
+            <button dojoType="dijit.form.Button"
+                onClick="act_on_events(grid.getSelectedIDs(), 'cancel');">[% l('Cancel Selected Events') %]</button>
+            <button dojoType="dijit.form.Button"
+                onClick="grid.printSelected();">[% l('Print Selected Events') %]</button>
+            <button dojoType="dijit.form.Button"
+                onClick="print_all();">[% l('Print All Events') %]</button>
+        </div>
+    </div>
+    <div class="oils-acq-basic-roomy">
+        <label for="org_selector">[% l('Show events at and below') %]:</label>
+        <select
+            id="org_selector" jsId="org_selector"
+            dojoType="openils.widget.OrgUnitFilteringSelect"
+            searchAttr="name" labelAttr="name">
+        </select>
+    </div>
+    <div>
+        <div style="float: left; width: 66%;">
+            <table id="gridNode"
+                jsid="grid"
+                dojoType="openils.widget.FlattenerGrid"
+                columnPersistKey='"ui.grid_columns.actor.user.event_log"'
+                autoHeight="10"
+                selectable="true"
+                editOnEnter="false"
+                showLoadFilter="true"
+                filterAlwaysInDiv="'filter_holder'"
+                filterInitializers="filter_initializers"
+                filterWidgetBuilders="filter_widget_builders"
+                filterSemaphore="filter_semaphore"
+                filterSemaphoreCallback="filter_semaphore_callback"
+                fmClass="'atul'"
+                autoFieldFields="['target_hold','target_circ']"
+                defaultSort="['run_time']"
+                mapExtras="map_extras"
+                fetchLock="true"
+                query="initial_query">
+                <thead>
+                    <tr>
+                        <th field="name" fpath="name" ffilter="true">Event Name</th>
+                        <th field="reactor" fpath="reactor" ffilter="true"></th>
+                        <th field="run_time" fpath="run_time" ffilter="true"></th><!-- XXX TODO formatters for *_time -->
+                        <th field="add_time" fpath="add_time" ffilter="true" _visible="false"></th>
+                        <th field="start_time" fpath="start_time" ffilter="true" _visible="false"></th>
+                        <th field="update_time" fpath="update_time" ffilter="true" _visible="false"></th>
+                        <th field="complete_time" fpath="complete_time" ffilter="true" _visible="false"></th>
+                        <th field="id" fpath="id" ffilter="true" _visible="false"></th>
+                        <th field="state" fpath="state" ffilter="true"></th>
+                        <th field="target_circ_copy_barcode" fpath="target_circ.target_copy.barcode" ffilter="true">Target Circulation - Copy Barcode</th>
+                        <th field="target_circ_copy_title" fpath="target_circ.target_copy.call_number.record.simple_record.title">Target Circulation - Title</th>
+                        <th field="target_circ_copy_author" fpath="target_circ.target_copy.call_number.record.simple_record.author">Target Circulation - Author</th>
+                        <th field="target_circ_patron_barcode" fpath="target_circ.usr.card.barcode" ffilter="true">Target Circulation - Patron Barcode</th>
+                        <th field="target_hold_patron_barcode" fpath="target_hold.usr.card.barcode" ffilter="true">Target Hold - Patron Barcode</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div style="float: right; width: 33%;">
+            <div id="filter_holder"></div>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+</div>
+<div dojoType="openils.widget.ProgressDialog" jsId="progress_dialog"></div>
+[% END %]

@@ -18,10 +18,16 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
             "columnPersistKey": null,
             "autoCoreFields": false,
             "autoFieldFields": null,
-            "showLoadFilter": false,    /* use FlattenerFilterDialog */
+            "showLoadFilter": false,    /* use FlattenerFilter(Dialog|Pane) */
+            "filterAlwaysInDiv": null,  /* use FlattenerFilterPane and put its
+                                           content in this HTML element */
             "fetchLock": false,
+            "filterInitializers": null,
+            "filterWidgetBuilders": null,
+            "filterSemaphore": null,
+            "filterSemaphoreCallback": null,
 
-            /* These potential constructor arguments maybe useful to
+            /* These potential constructor arguments may be useful to
              * FlattenerGrid in their own right, and are passed to
              * FlattenerStore. */
             "fmClass": null,
@@ -346,7 +352,6 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                                                 c.fpath.match(wbp_re);
                                         }
                                     ).length) {
-                                        console.info("adding auto field" + would_be_path);
                                         self.structure[0].cells[0].push({
                                             "field": "AUTO_" + beginning.name +
                                                 "_" + field.name,
@@ -479,14 +484,21 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                 dojo.place(this.linkHolder.domNode, this.domNode, "before");
 
                 if (this.showLoadFilter) {
-                    dojo.require("openils.widget.FlattenerFilterDialog");
-                    this.filterDialog =
-                        new openils.widget.FlattenerFilterDialog({
+                    var which_filter_ui = this.filterAlwaysInDiv ?
+                        "FlattenerFilterPane" : "FlattenerFilterDialog";
+
+                    dojo.require("openils.widget." + which_filter_ui);
+                    this.filterUi =
+                        new openils.widget[which_filter_ui]({
                             "fmClass": this.fmClass,
-                            "mapTerminii": this.mapTerminii
+                            "mapTerminii": this.mapTerminii,
+                            "useDiv": this.filterAlwaysInDiv,
+                            "compact": true,
+                            "initializers": this.filterInitializers,
+                            "widgetBuilders": this.filterWidgetBuilders
                         });
 
-                    this.filterDialog.onApply = dojo.hitch(
+                    this.filterUi.onApply = dojo.hitch(
                         this, function(filter) {
                             this.filter(
                                 dojo.mixin(filter, this._baseQuery),
@@ -495,16 +507,23 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                         }
                     );
 
-                    this.filterDialog.startup();
-                    dojo.create(
-                        "a", {
-                            "innerHTML": "Filter",  /* XXX i18n */
-                            "href": "javascript:void(0);",
-                            "onclick": dojo.hitch(this, function() {
-                                this.filterDialog.show();
-                            })
-                        }, this.linkHolder.domNode
-                    );
+                    this.filterUi.startup();
+
+                    if (this.filterSemaphore && this.filterSemaphore()) {
+                        if (this.filterSemaphoreCallback)
+                            this.filterSemaphoreCallback();
+                    }
+                    if (!this.filterAlwaysInDiv) {
+                        dojo.create(
+                            "a", {
+                                "innerHTML": "Filter",  /* XXX i18n */
+                                "href": "javascript:void(0);",
+                                "onclick": dojo.hitch(this, function() {
+                                    this.filterUi.show();
+                                })
+                            }, this.linkHolder.domNode
+                        );
+                    }
                 }
             },
 
@@ -832,15 +851,24 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                 );
             },
 
+            "getSelectedIDs": function() {
+                return this.getSelectedItems().map(
+                    dojo.hitch(
+                        this,
+                        function(item) { return this.store.getIdentity(item); }
+                    )
+                );
+            },
+
             /* Print the same data that the Flattener is feeding to the
-             * grid, sorted the same way too. remove limit and offset (i.e.,
-             * print it all. */
-            "print": function() {
+             * grid, sorted the same way too. Remove limit and offset (i.e.,
+             * print it all) unless those are passed in to the print() method.
+             */
+            "print": function(limit, offset, query_mixin) {
                 var coal = this._columnOrderingAndLabels();
                 var req = {
-                    "query": this.query,
+                    "query": dojo.mixin({}, this.query, query_mixin),
                     "queryOptions": {
-                        "all": true,
                         "columns": coal.columns,
                         "labels": coal.labels
                     },
@@ -849,7 +877,22 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                     }
                 };
 
+                if (limit) {
+                    req.count = limit;
+                    req.start = offset || 0;
+                } else {
+                    req.queryOptions.all = true;
+                }
+
                 this.store.fetchToPrint(req);
+            },
+
+            "printSelected": function() {
+                var id_blob = {};
+                id_blob[this.store.getIdentityAttributes()[0]] =
+                    this.getSelectedIDs();
+
+                this.print(null, null, id_blob);
             }
         }
     );

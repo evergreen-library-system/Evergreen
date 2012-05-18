@@ -92,6 +92,13 @@ table { border-collapse: collapse; }
 }
 .oils-fm-edit-dialog td { border:1px solid #999;}
 .oils-pcrudfilterdialog-table tr td { padding: 0.75ex 0.5em; }
+.oils-pcrudfilterdialog-table tr:nth-child(event) {
+    background-color: #d7d7d7;
+}
+.oils-pcrudfilterdialog-remover-holder {
+    text-align: left; vertical-align: middle;
+    width: 33%;
+}
 .oils-pcrudfilterdialog-remover {
     background-color: #ccc; color: #f00;
     padding: 0.25em; border: 1px outset #000;

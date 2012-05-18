@@ -187,12 +187,14 @@ circ.copy_status.prototype = {
                             try {
                                 for (var i = 0; i < obj.selection_list.length; i++) {
                                     xulG.new_tab(
-                                        urls.XUL_TRIGGER_EVENTS,
+                                        xulG.url_prefix(urls.XUL_REMOTE_BROWSER),
                                         {
                                             'tab_name' : document.getElementById('commonStrings').getFormattedString('tab.label.triggered_events_for_copy',[ obj.selection_list[i].barcode ])
                                         },
                                         {
-                                            'copy_id' : obj.selection_list[i].copy_id
+                                            'url': urls.EG_TRIGGER_EVENTS + "?copy_id=" + obj.selection_list[i].copy_id,
+                                            'show_print_button': false,
+                                            'show_nav_buttons': false
                                         }
                                     );
                                 }
