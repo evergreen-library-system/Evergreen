@@ -70,6 +70,8 @@
     <div class="clear">&nbsp;</div>
 </div>
 
+<div id="chili_review_[% attrs.isbn_clean | html %]" style="display: none;" align="center" width="100%"></div>
+
 <div class="sub_header">[% l('You can find this item at these locations:') %]</div>
     <div class="item_detail_location_wrapper">
         [% INCLUDE 'kpac/parts/copy_table.tt2' %]
@@ -87,14 +89,18 @@
 
     <!-- TODO -->
     <div class="item_detail_extras_tabs">
-        <a href="javascript:;">Reviews</a>
+        <a href="javascript:;">[% l('Reviews') %]</a>
+        <!--
         <div class="selected">Rate this Item</div>
-        <a href="javascript:;">About the Author</a>
+        -->
+        <a href="javascript:;">[% l('About the Author') %]</a>
         <div class="clear">&nbsp;</div>
     </div>
+    <!--
     <div class="item_detail_rating">
         <div id="chili_review_[% attrs.isbn_clean | html %]" style="display: none;" align="center" width="100%"></div>
     </div>
+    -->
 </div>
 
 <!--
