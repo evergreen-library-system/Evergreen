@@ -1779,6 +1779,10 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
         if (MARC.Record._ff_pos[field].ldr && _l) {
             if (MARC.Record._ff_pos[field].ldr[rtype]) { // It's in the leader
                 val = value.substr(0, MARC.Record._ff_pos[field].ldr[rtype].len);
+                if (val.length < MARC.Record._ff_pos[field].ldr[rtype].len) {
+                    //right-pad val with the appropriate default character
+                    val += Array(MARC.Record._ff_pos[field].ldr[rtype].len - val.length + 1).join(MARC.Record._ff_pos[field].ldr[rtype].def);
+                }
                 this.leader =
                     _l.substring(0, MARC.Record._ff_pos[field].ldr[rtype].start) +
                     val +
@@ -1790,6 +1794,10 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
         } else if (MARC.Record._ff_pos[field]._8 && _8) {
             if (MARC.Record._ff_pos[field]._8[rtype]) { // Nope, it's in the 008
                 val = value.substr(0, MARC.Record._ff_pos[field]._8[rtype].len);
+                if (val.length < MARC.Record._ff_pos[field]._8[rtype].len) {
+                    //right-pad val with the appropriate default character
+                    val += Array(MARC.Record._ff_pos[field]._8[rtype].len - val.length + 1).join(MARC.Record._ff_pos[field]._8[rtype].def);
+                }
                 this.field('008').update(
                     _8.substring(0, MARC.Record._ff_pos[field]._8[rtype].start) +
                     val +
@@ -1804,6 +1812,10 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
         if (!val && MARC.Record._ff_pos[field]._6 && _6) {
             if (MARC.Record._ff_pos[field]._6[rtype]) { // ok, maybe the 006?
                 val = value.substr(0, MARC.Record._ff_pos[field]._6[rtype].len);
+                if (val.length < MARC.Record._ff_pos[field]._6[rtype].len) {
+                    //right-pad val with the appropriate default character
+                    val += Array(MARC.Record._ff_pos[field]._6[rtype].len - val.length + 1).join(MARC.Record._ff_pos[field]._6[rtype].def);
+                }
                 this.field('006').update(
                     _6.substring(0, MARC.Record._ff_pos[field]._6[rtype].start) +
                     val +
