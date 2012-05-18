@@ -656,6 +656,7 @@ sub toSQL {
         $flat_where = "AND $flat_where";
     }
     my $with = $$flat_plan{with};
+    $with= "\n\t\t\tWITH $with" if $with;
 
     # Need an array for query parser db function; this gives a better plan
     # than the ARRAY_AGG(DISTINCT m.source) option as of PostgreSQL 9.1
@@ -741,12 +742,13 @@ sub flatten {
                 my $node_rank = 'COALESCE(' . $node->rank . " * ${talias}.weight, 0.0)";
 
                 my $core_limit = $self->QueryParser->core_limit || 25000;
-                $from .= "\n\tLEFT JOIN (\n\t\tSELECT fe.*, fe_weight.weight, xq.tsq /* search */\n\t\t  FROM  $table AS fe";
+                $from .= "\n\tLEFT JOIN (\n\t\tSELECT fe.*, fe_weight.weight, ${talias}_xq.tsq /* search */\n\t\t  FROM  $table AS fe";
                 $from .= "\n\t\t\tJOIN config.metabib_field AS fe_weight ON (fe_weight.id = fe.field)";
 
                 if ($node->dummy_count < @{$node->only_atoms} ) {
-                    $with.= "\n\t\t\tWITH xq AS (SELECT ". $node->tsquery ." AS tsq )";
-                    $from .= "\n\t\t\tJOIN xq ON (fe.index_vector @@ xq.tsq)";
+                    #$with.= "\n\t\t\tWITH ${talias}_xq AS (SELECT ". $node->tsquery ." AS tsq )";
+                    $with.= "${talias}_xq AS (SELECT ". $node->tsquery ." AS tsq )";
+                    $from .= "\n\t\t\tJOIN ${talias}_xq ON (fe.index_vector @@ ${talias}_xq.tsq)";
                 } else {
                     $from .= "\n\t\t\t, (SELECT NULL::tsquery AS tsq ) AS x";
                 }
@@ -814,6 +816,11 @@ sub flatten {
                 push(@rank_list, @{$$subnode{rank_list}});
                 $from .= $$subnode{from};
                 $where .= "($$subnode{where})";
+
+                if ($$subnode{with}) {
+                    $with .= ', ' if $with;
+                    $with .= " " . $$subnode{with};
+                }
             }
         } else {
             $where .= ' AND ' if ($node eq '&');
