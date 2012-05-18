@@ -1,0 +1,55 @@
+
+<script type="text/javascript">
+
+    /* Checks to see if a given type of added content has data to show.
+     * The first arg to callback() is boolean indicating the presence of data */
+    function acIsAvailable(ident, type, callback) {
+        var url = '/opac/extras/ac/' + type + '/html/' + ident;
+        dojo.xhr('HEAD', {
+            url : url, 
+            failOk : true, // http://bugs.dojotoolkit.org/ticket/11568
+            error : function(err) { callback(false, ident, type); },
+            load : function(result) { callback(true, ident, type); }
+        });
+    }
+
+    [%-  # XXX revisit when ident=ctx.bre_id
+        ident = ctx.record_attrs.isbn_clean || ctx.record_attrs.upc; 
+        IF ident; 
+            FOR type IN ctx.added_content.keys;
+                IF ctx.added_content.$type.status == '3' # status unknown %]
+
+                    dojo.addOnLoad(function() {
+                        var ident = '[% ident %]';
+                        var type = '[% type %]';
+
+                        acIsAvailable(ident, type, function(avail, ident, type) { 
+                            if (avail) {
+
+                                [% IF CGI.param('expand') == 'addedcontent' %]
+
+                                    // if the content is available, un-hide the tab
+                                    dojo.removeClass(dojo.byId('ac:' + type), 'hidden');
+
+                                [% ELSE %]
+                                    // if no default type is selected on the main tab link
+                                    // set one here, since we have available content
+
+                                    var link = dojo.query('[name=addedcontent]')[0];
+                                    var href = link.getAttribute('href');
+                                    if (!href.match('[\&;]ac=')) {
+                                        href = href.replace('#addedcontent', ';ac=' + type + '#addedcontent');
+                                        dojo.attr(link, 'href', href);
+                                        dojo.attr(dojo.query('[name=addedcontent_lbl]')[0], 'href', href);
+                                    }
+
+                                [% END %]
+                            }
+                        });
+                    });
+                [% END; # IF status unknown
+            END; 
+        END; # IF ident
+    %]
+</script>
+

@@ -27,6 +27,8 @@
             FOR type IN ctx.added_content.keys;
                 IF ctx.added_content.$type.status != '2'; # not available
                     hide_ac = 0;
+                END;
+                IF ctx.added_content.$type.status == '1';
                     SET default_ac = type UNLESS default_ac;
                 END;
             END;
@@ -66,7 +68,7 @@
                     END;
                 %]
                 <a name='[% name %]' href='[% href %]'><img alt='[% extra.label %]' src='[% img_url %]'/></a>
-                <a href='[% href %]' class="rdetail_extras_lbl">[% extra.label %]</a>
+                <a name='[% name %]_lbl' href='[% href %]' class="rdetail_extras_lbl">[% extra.label %]</a>
             </div>
         </div>
         <div class='rdetail_extras_div'>
