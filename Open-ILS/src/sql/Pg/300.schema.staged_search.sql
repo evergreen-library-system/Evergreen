@@ -102,7 +102,7 @@ BEGIN
     END IF;
 
     IF param_pref_ou IS NOT NULL THEN
-        SELECT array_accum(distinct id) INTO tmp_int_list FROM actor.org_unit_ancestors(param_pref_ou);
+        SELECT array_agg(distinct id) INTO tmp_int_list FROM actor.org_unit_ancestors(param_pref_ou);
         luri_org_list := luri_org_list || tmp_int_list;
     END IF;
 

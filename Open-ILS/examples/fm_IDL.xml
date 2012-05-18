@@ -3702,7 +3702,7 @@ SELECT  usr,
 	<class id="ocirclist" controller="open-ils.cstore" oils_obj:fieldmapper="action::open_circ_list" reporter:label="Open Circulation List" oils_persist:readonly="true">
         <oils_persist:source_definition>
 SELECT  usr,
-        ARRAY_TO_STRING(ARRAY_ACCUM(
+        STRING_AGG(
             CASE
                 WHEN (
                     ((fine_interval >= '1 day' AND due_date >= 'today') OR (fine_interval &lt; '1 day'  AND due_date > 'now'))
@@ -3710,9 +3710,9 @@ SELECT  usr,
                 ) THEN id
                 ELSE 0
             END
-        ),',') AS out,
+        ,',') AS out,
 
-        ARRAY_TO_STRING(ARRAY_ACCUM(
+        STRING_AGG(
             CASE
                 WHEN (
                     ((fine_interval >= '1 day' AND due_date &lt; 'today') OR (fine_interval &lt; '1 day'  AND due_date &lt; 'now'))
@@ -3720,11 +3720,11 @@ SELECT  usr,
                 ) THEN id
                 ELSE 0
             END
-        ),',') AS overdue,
+        ,',') AS overdue,
 
-        ARRAY_TO_STRING(ARRAY_ACCUM( CASE WHEN (xact_finish IS NULL AND stop_fines = 'LOST') THEN id ELSE 0 END),',') AS lost,
-        ARRAY_TO_STRING(ARRAY_ACCUM( CASE WHEN (xact_finish IS NULL AND stop_fines = 'CLAIMSRETURNED') THEN id ELSE 0 END),',') AS claims_returned,
-        ARRAY_TO_STRING(ARRAY_ACCUM( CASE WHEN (xact_finish IS NULL AND stop_fines = 'LONGOVERDUE') THEN id ELSE 0 END),',') AS long_overdue
+        STRING_AGG( CASE WHEN (xact_finish IS NULL AND stop_fines = 'LOST') THEN id ELSE 0 END,',') AS lost,
+        STRING_AGG( CASE WHEN (xact_finish IS NULL AND stop_fines = 'CLAIMSRETURNED') THEN id ELSE 0 END,',') AS claims_returned,
+        STRING_AGG( CASE WHEN (xact_finish IS NULL AND stop_fines = 'LONGOVERDUE') THEN id ELSE 0 END,',') AS long_overdue
   FROM  action.circulation
   WHERE checkin_time IS NULL
   GROUP BY 1
