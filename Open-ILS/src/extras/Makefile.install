@@ -110,7 +110,8 @@ EXTRA_DEBS_PRECISE = \
     liblibrary-callnumber-lc-perl \
     libsru-perl \
     libnet-z3950-simple2zoom-perl \
-    libuuid-tiny-perl
+    libuuid-tiny-perl \
+    libnet-https-any-perl
 
 FEDORA_RPMS = \
 	aspell \
