@@ -757,9 +757,17 @@ sub flatten {
                 if (@{$node->fields} > 0) {
                     @bump_fields = @{$node->fields};
 
-                    my @field_ids;
-                    push(@field_ids, $self->QueryParser->search_field_ids_by_class( $node->classname, $_ )->[0]) for (@bump_fields);
-                    $from .= "\n\t\t\tWHERE fe_weight.id IN  (". join(',', @field_ids) .")";
+                    my @field_ids = grep defined, (
+                        map {
+                            $self->QueryParser->search_field_ids_by_class(
+                                $node->classname, $_
+                            )->[0]
+                        } @bump_fields
+                    );
+                    if (@field_ids) {
+                        $from .= "\n\t\t\tWHERE fe_weight.id IN  (" .
+                            join(',', @field_ids) . ")";
+                    }
 
                 } else {
                     @bump_fields = @{$self->QueryParser->search_fields->{$node->classname}};
