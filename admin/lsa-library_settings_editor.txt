@@ -1,0 +1,38 @@
+Library Settings Editor
+-----------------------
+
+Fine Accrual on Closed Dates
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default, fines accrue only on dates that the library is open.  This feature enables you to charge patrons fines on dates the library is closed. Fines accrue during scheduled closings as well as during normal weekly closed dates.
+
+To enable this feature:
+
+. Click *Admin* -> *Local Administration* -> *Library Settings* -> *Charge fines on overdue circulations when closed*
+. Click *Edit*.
+. Set the value to *True*.
+. Click *Update Setting*.   
+
+
+Target Copies for Holds at Closed Libraries
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default, when a patron places a hold on a title, the hold targeter will search for copies to fill the hold only at circulating libraries that are open.  Copies at closed libraries 
+are not targeted to fill holds. When turned on, this feature enables Evergreen to target copies that have closed circulating libraries to fill holds. Two new org unit settings control this feature.
+
+Use the following setting to target copies for holds at closed circulating libraries:
+
+. Click *Admin* -> *Local Administration* -> *Library Settings Editor* -> *Target copies for a hold even if copy's circ lib is closed*
+. Set the value to *True* if you want to target copies for holds at closed circulating libraries. Set the value to *False*, or leave it unset, if you do not want to enable this feature.
+. Click *Update Setting*.
+
+image::media/Target_Pickup_Lib1.jpg[Target_Pickup_Lib1]
+
+Use the following setting to target copies for holds IF AND ONLY IF the circulating library is the hold's pickup library.
+
+. Click *Admin* -> *Local Administration* -> *Library Settings Editor* ->  *Target copies for a hold even if copy's circ lib is closed IF the circ lib is the hold's pickup lib*
+. Set the value to *True* if you want to target copies for holds at closed circulating libraries when the circulating library of the item and the pickup library of the hold are 
+the same. Set the value to *False*, or leave it unset, if you do not want to enable this feature.
+. Click *Update Setting*.
+
+image::media/Target_Pickup_Lib2.jpg[Target_Pickup_Lib2]

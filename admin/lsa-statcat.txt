@@ -1,0 +1,79 @@
+Statistical Categories Editor
+-----------------------------
+
+This is where you configure your statistical categories (stat cats).  Stat cats are a way to save and report on additional information that doesn’t fit elsewhere in Evergreen's default records.  It is possible to have stat cats for copies or patrons.
+
+1. Click *Admin -> Local Administration -> Statistical Categories Editor.*
+
+2. To create a new stat cat, enter the name of the category and select either _patron_ or _copy_ from the *Type* dropdown menu. Each category type has a number of options you may set.
+
+*Copy Statistical Categories*
+
+Copy stat cats appear in the _Copy Editor_, also known as the _Edit Item Attributes_ screen. You might use copy stat cats to track books you have bought from a specific vendor, or donations.
+
+An example of the _Create a new statistical category_ controls for copies:
+
+image::media/lsa-statcat-1.png[Create copy stat cat]
+
+* _OPAC Visibility_:  Should the category be displayed in the OPAC?
+* _Required_:  Must the category be assigned a value when editing the item attributes?
+* _Archive with Circs_:  Should the category and its values for the copy be archived with aged circulation data?
+* _SIP Field_:  Select the SIP field identifier that will contain the category and its value
+* _SIP Format_:  Specify the SIP format string
+
+Some sample copy stat cats:
+
+image::media/lsa-statcat-2.png[Sample copy stat cats]
+
+To add an entry, select _Add_.  To edit an entry, select the entry you wish to edit from the drop-down list for the category.
+
+This is how the copy stat cats appear in the _Copy Editor_:
+
+image::media/lsa-statcat-3.png[Stat cats in Copy Editor]
+
+*Patron Statistical Categories*
+
+Patron stat cats can be used to keep track of information such as the high school a patron attends, or the home library for a consortium patron, e.g. Interlink, or patron preferences. They appear in the fifth section of the _Patron Registration_ or _Edit Patron_ screen.
+
+An example of the _Create a new statistical category_ controls for patrons:
+
+image::media/lsa-statcat-4.png[Create patron stat cat]
+
+* _OPAC Visibility_:  Should the category be displayed in the OPAC?
+* _Required_:  Must the category be assigned a value when registering a new patron or editing an existing one?
+* _Archive with Circs_:  Should the category and its values for the patron be archived with aged circulation data?
+* _Allow Free Text_:  May the person registering/editing the patron information supply their own value for the category?
+* _Show in Summary_:  Display the category and its value in the patron summary view?
+* _SIP Field_:  Select the SIP field identifier that will contain the category and its value
+* _SIP Format_:  Specify the SIP format string
+
+[WARNING]
+.WARNING
+=====================================
+If you make a category *required* and also *disallow free text*, make sure that you populate an entry list for the category so that the user may select a value.  Failure to do so will result in an unsubmittable patron registration/edit form!
+=====================================
+
+Some sample patron stat cats:
+
+image::media/lsa-statcat-5.png[Sample patron stat cats]
+
+To add an entry, click on _Add_ in the category row under the _Add Entry_ column:
+
+image::media/lsa-statcat-6.png[Add patron category entry]  
+
+To edit an entry, select the entry you wish to edit from the drop-down list for the category:
+
+image::media/lsa-statcat-7.png[Edit patron category entry]
+
+An *organizational unit* (consortium, library system branch library, sub library, etc.) may create their own categories and entries, or supplement categories defined by a higher-level org unit with their own entries.
+
+An entry can be set as the *default* entry for a category and for an org unit.  If an entry is set as the default, it will be automatically selected in the patron edit screen, provided no other value has been previously set for the patron. Only one default may be set per category for any given org unit.
+
+Lower-level org unit defaults override defaults set for higher-level org units;  but in the absence of a default set for a given org unit, the nearest parent org unit default will be selected.
+
+Default entries for the focus location org unit are marked with an asterisk in the entry dropdowns.
+
+This is how patron stat cats appear in the patron registration/edit screen:
+
+image::media/lsa-statcat-8.png[Patron stat cats in registration screen]
+

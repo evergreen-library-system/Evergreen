@@ -1,0 +1,320 @@
+Evergreen Documentation
+=======================
+Documentation Interest Group
+:doctype: book
+:toc:
+:numbered:
+
+Introduction
+============ 
+
+About This Documentation
+------------------------
+
+This guide was produced by the Evergreen Documentation Interest Group (DIG),
+consisting of numerous volunteers from many different organizations. The DIG
+has drawn together, edited, and supplemented pre-existing documentation
+contributed by libraries and consortia running Evergreen that were kind enough
+to release their documentation into the creative commons. Please see the
+<<attributions,Attributions>> section for a full list of authors and
+contributing organizations. Just like the software it describes, this guide is
+a work in progress, continually revised to meet the needs of its users, so if
+you find errors or omissions, please let us know, by contacting the DIG
+facilitators at docs@evergreen-ils.org.
+
+This guide to Evergreen is intended to meet the needs of front-line library
+staff, catalogers, library administrators, system administrators, and software
+developers. It is organized into Parts, Chapters, and Sections addressing key
+aspects of the software, beginning with the topics of broadest interest to the
+largest groups of users and progressing to some of the more specialized and
+technical topics of interest to smaller numbers of users.
+
+Copies of this guide can be accessed in PDF and HTML formats from http://docs.evergreen-ils.org/.
+
+About Evergreen
+---------------
+
+Evergreen is an open source library automation software designed to meet the
+needs of the very smallest to the very largest libraries and consortia. Through
+its staff interface, it facilitates the management, cataloging, and circulation
+of library materials, and through its online public access interface it helps
+patrons find those materials.
+
+The Evergreen software is freely licensed under the GNU General Public License,
+meaning that it is free to download, use, view, modify, and share. It has an
+active development and user community, as well as several companies offering
+migration, support, hosting, and development services.
+
+The community’s development requirements state that Evergreen must be:
+
+* Stable, even under extreme load.
+* Robust, and capable of handling a high volume of transactions and simultaneous users.
+* Flexible, to accommodate the varied needs of libraries.
+* Secure, to protect our patrons’ privacy and data.
+* User-friendly, to facilitate patron and staff use of the system.
+
+Evergreen, which first launched in 2006 now powers over 544 libraries of every
+type – public, academic, special, school, and even tribal and home libraries –
+in over a dozen countries worldwide.
+
+// Push titles down one level.
+:leveloffset: 1
+
+include::release_notes.txt[]
+
+// Return to normal title levels.
+:leveloffset: 0
+
+Software Installation
+=====================
+
+
+Introduction
+------------
+
+This part will guide you through the installation steps installation or
+upgrading your Evergreen system. It is intended for system administrators. 
+
+
+include::installation/system_requirements.txt[]
+
+// Push titles down one level.
+:leveloffset: 1
+
+include::installation/server_installation.txt[]
+
+// Return to normal title levels.
+:leveloffset: 0
+
+include::installation/server_upgrade.txt[]
+
+include::installation/edi_setup.txt[]
+
+// include::staff_client_installation.txt[] 
+// include::org_unit_structure_initialization.txt[]
+// include::loading_data.txt[]
+
+
+System Configuration and Customization
+======================================
+
+Introduction
+------------
+
+The Evergreen system allows a free range of customizations to every aspect of
+the system. Use this part of the documentation to become familiar with the tools
+for  configuring the system as well as  customizing  the OPAC and staff client.  
+
+// include::global_system_configuration.txt[]
+// include::opac_customization.txt[]
+
+include::admin/template_toolkit.txt[]
+
+include::admin/auto_suggest_search.txt[]
+
+include::admin/customize_staff_client.txt[]
+
+// include::backing_up.txt[]
+ 
+
+
+Using the Staff Client
+======================
+
+
+Introduction
+------------
+
+This part of the documentation deals with general Staff Client usage including
+logging in, navigation and shortcuts.
+
+
+include::admin/staff_client-tab_buttons.txt[]
+
+include::admin/staff_client-double_clicking.txt[]
+
+include::admin/staff_client-sorting_columns.txt[]
+
+include::admin/staff_client-recent_searches.txt[]
+
+include::admin/staff_client-return_to_results_from_marc.txt[]
+
+System Administration From the Staff Client
+===========================================
+
+Introduction
+------------
+
+This part deals with the options in the Server Administration menu found in the
+staff client. 
+
+// Follow structure from staff client system admin menu.
+
+include::admin/acquisitions_admin.txt[]
+
+include::admin/authorities.txt[]
+
+include::admin/cn_prefixes_and_suffixes.txt[]
+
+include::admin/restrict_Z39.50_sources_by_perm_group.txt[]
+
+include::admin/booking-admin.txt[]
+
+include::admin/SMS_messaging.txt[]
+
+include::admin/user_activity_type.txt[]
+
+
+Local Administration
+====================
+
+Introduction
+------------
+
+This part covers the options in the Local Administration menu found in the staff
+client. 
+
+// Follow structure from staff client local admin menu.
+
+// Push titles down one level.
+:leveloffset: 1
+
+include::admin/hold_driven_recalls.txt[]
+
+// Return to normal title levels.
+:leveloffset: 0
+
+include::admin/recent_staff_searches.txt[]
+
+include::admin/lsa-library_settings_editor.txt[]
+
+include::admin/lsa-statcat.txt[]
+
+
+Acquisitions
+===========
+
+include::acquisitions/introduction.txt[]
+
+include::acquisitions/selection_lists_po.txt[]
+
+include::acquisitions/receive_items_from_invoice.txt[]
+
+include::acquisitions/vandelay_acquisitions_integration.txt[]
+
+
+Cataloging
+==========
+
+Introduction
+------------
+
+Cataloguers should use this part for understanding the cataloguing procedures
+used in Evergreen.
+
+include::cataloging/batch_importing_MARC.txt[]
+
+include::cataloging/overlay_record_3950_import.txt[]
+
+include::cataloging/monograph_parts.txt[]
+
+include::cataloging/conjoined_items.txt[]
+
+
+Serials
+=======
+
+include::serials/A-intro.txt[]
+
+include::serials/B-copy_template.txt[]
+
+include::serials/C-subscription-SCV.txt[]
+
+include::serials/D-subscription-ASCV.txt[]
+
+include::serials/E-edit_subscriptions.txt[]
+
+include::serials/F-Receiving.txt[]
+
+include::serials/G-Special_issue.txt[]
+
+include::serials/H-holdings_statements.txt[]
+
+
+Circulation
+===========
+
+Introduction
+------------
+
+Use this section for understanding the circulation procedures in the Evergreen
+system.  
+
+include::circulation/circulating_items.txt[]
+
+include::circulation/booking.txt[]
+
+Reports
+=======
+
+Introduction
+------------
+
+Learn how to create and use reports in Evergreen. 
+
+Using the Public Access Catalog
+===============================
+
+Introduction
+------------
+
+Use this part for information about searching the Evergreen public access catalog.
+
+include::opac/my_lists.txt[]
+
+Developer Resources
+===================
+
+Introduction
+------------
+
+Developers can use this part to learn more about the programming languages,
+communication protocols and standards used in Evergreen.  
+
+// Push titles down one level.
+:leveloffset: 1
+
+include::development/updating_translations_launchpad.txt[]
+
+// Return to normal title levels.
+:leveloffset: 0
+
+[appendix]
+
+include::attributions.txt[]
+
+include::licensing.txt[]
+
+Admonitions
+===========
+
+Images used for Admonitions
+---------------------------
+
+* Note 
+
+image::media/note.png[]
+
+* warning
+
+image::media/warning.png[]
+
+* caution
+
+image::media/caution.png[]
+
+* tip
+
+image::media/tip.png[]
+
+

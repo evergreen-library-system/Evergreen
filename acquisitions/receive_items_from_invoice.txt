@@ -1,0 +1,73 @@
+Receive Items From an Invoice
+-----------------------------
+
+This feature enables users to receive items from an invoice.  Staff can receive individual copies, or they can receive items in batch.
+
+Receive Items in Batch (List Mode)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In this example, we have created a purchase order, added line items and copies, and activated the purchase order.  We will create an invoice from the purchase order, receive items, and invoice them.  We will receive the items in batch from the invoice.
+
+1) Retrieve a purchase order.
+
+2) Click *Create Invoice*.
+
+image::media/Receive_Items_From_an_Invoice1.jpg[Receive_Items_From_an_Invoice1]
+
+3) The blank invoice appears.  In the top half of the invoice, enter descriptive information about the invoice.  In the bottom half of the invoice, enter the number of items for which you were invoiced, the amount that you were billed, and the amount that you paid.
+
+
+image::media/Receive_Items_From_an_Invoice2.jpg[Receive_Items_From_an_Invoice2]
+
+
+4) Click *Save*.  You must choose a save option before you can receive items.
+
+
+5) The screen refreshes.  In the top right corner of the screen, click *Receive Items*.
+
+
+6) The *Acquisitions Invoice Receiving* screen opens.  By default, this screen enables users to receive items in batch, or *Numeric Mode*.  You can select the number of copies that you want to receive; you are not receiving specific copies in this mode. 
+
+
+7) Select the number of copies that you want to receive.  By default, the number that you invoiced will appear.  In this example, we will receive one copy of each title.
+
+
+NOTE: You cannot receive fewer items than 0 (zero) or more items than the number that you ordered.
+
+
+8) Click *Receive Selected Copies*.
+
+
+image::media/Receive_Items_From_an_Invoice4.jpg[Receive_Items_From_an_Invoice4]
+
+
+9) When you are finished receiving items, close the screen.  You can repeat this process as you receive more copies.
+
+
+
+Receive Specific Copies (Numeric Mode)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In this example, we have created a purchase order, added line items and copies, and activated the purchase order.  We will create an invoice from the purchase order, receive items, and invoice them. We will receive specific copies from the invoice.  This function may be useful to libraries who purchase items that have been barcoded by their vendor. 
+
+
+1) Complete steps 1-5 in the previous section.
+
+2) The *Acquisitions Invoice Receiving* screen by default enables user to receive items in batch, or *Numeric Mode*.  Click *Use List Mode* to receive specific copies.
+
+3) Select the check boxes adjacent to the copies that you want to receive.  Leave unchecked the copies that you do not want to receive.
+
+4) Click *Receive Selected Copies*.  
+
+image::media/Receive_Items_From_an_Invoice5.jpg[Receive_Items_From_an_Invoice5]
+
+
+The screen will refresh.  Copies that have not yet been received remain on the screen so that you can receive them when they arrive.
+
+
+5) When all copies on an invoice have been received, a message confirms that no copies remain to be received.
+
+6) The purchase order records that all items have been received.
+
+image::media/Receive_Items_From_an_Invoice7.jpg[Receive_Items_From_an_Invoice7]
+

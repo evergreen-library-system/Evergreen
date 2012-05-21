@@ -1,0 +1,32 @@
+Auto Suggest in Catalog Search
+------------------------------
+
+The auto suggest feature suggestions for completing search terms as the user enters his search query.  Ten suggestions are the default, but the number of suggestions is configurable at 
+the database level. Scroll through suggestions with your mouse, or use the arrow keys to scroll through the suggestions.  Select a suggestion to view records that are linked to 
+this suggestion. This feature is not turned on by default.  You must turn it on in the Admin module.
+
+
+Enabling this Feature
+~~~~~~~~~~~~~~~~~~~~~
+
+. To enable this feature, click *Admin* -> *Server Administration* -> *Global Flags*.
+. Scroll down to item 10, OPAC.
+. Double click anywhere in the row to edit the fields.
+. Check the box adjacent to *Enabled* to turn on the feature.
+. The *Value* field is optional.  If you checked *Enabled* in step 4, and you leave this field empty, then Evergreen will only suggest searches for which there are any corresponding MARC records.
++
+note: If you checked *Enabled* in step 4, and you enter the string, *opac_visible*, into this field, then Evergreen will suggest searches for which 
+there are matching MARC records with copies within your search scope.  For example, it will suggest MARC records with copies at your branch.
++
+. Click *Save.*
+
+image::media/Auto_Suggest_in_Catalog_Search2.jpg[Auto_Suggest_in_Catalog_Search2]
+
+Using this Feature
+~~~~~~~~~~~~~~~~~~
+
+. Enter search terms into the basic search field.  Evergreen will automatically suggest search terms.
+. Select a suggestion to view records that are linked to this suggestion. 
+
+image::media/Auto_Suggest_in_Catalog_Search1.jpg[Auto_Suggest_in_Catalog_Search1]
+

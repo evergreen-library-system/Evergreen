@@ -1,0 +1,46 @@
+Call Number Prefixes and Suffixes
+---------------------------------
+
+You can configure call number prefixes and suffixes in the Admin module.  This feature ensures more precise cataloging because each cataloger will have access to an identical drop down menu of call number prefixes and suffixes that are used at his library.  In addition, it may streamline cataloging workflow.  Catalogers can use a drop down menu to enter call number prefixes and suffixes rather than entering them manually.  You can also run reports on call number prefixes and suffixes that would facilitate collection development and maintenance.
+
+
+Configure call number prefixes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Call number prefixes are codes that precede a call number.
+
+To configure call number prefixes:
+
+1. Select *Admin -> Server Administration -> Call Number Prefixes*.
+2. Click *New Prefix*.
+3. Enter the *call number label* that will appear on the item.
+4. Select the *owning library* from the drop down menu. Staff at this library, and its descendant org units, with the appropriate permissions, will be able to apply this call number prefix.
+5. Click *Save*.
+
+
+
+image::media/Call_Number_Prefixes_and_Suffixes_2_21.jpg[Call_Number_Prefixes_and_Suffixes_2_21]
+
+
+
+Configure call number suffixes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Call number suffixes are codes that succeed a call number.
+
+To configure call number suffixes:
+
+1. Select *Admin -> Server Administration -> Call Number Suffixes*.
+2. Click *New Suffix*.
+3. Enter the *call number label* that will appear on the item.
+4. Select the *owning library* from the drop down menu. Staff at this library, and its descendant org units, with the appropriate permissions, will be able to apply this call number suffix.
+5. Click *Save*.
+
+
+image::media/Call_Number_Prefixes_and_Suffixes_2_22.jpg[Call_Number_Prefixes_and_Suffixes_2_22]
+
+
+Apply Call Number Prefixes and Suffixes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can apply call number prefixes and suffixes to items from a pre-configured list in the *Unified Volume/Copy Creator*.  See the document, Unified Volume/Copy Creator, for an example.

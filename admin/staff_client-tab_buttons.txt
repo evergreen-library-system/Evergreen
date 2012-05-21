@@ -1,0 +1,6 @@
+Tab Buttons
+-----------
+
+This feature enables you to add a new tab to the Evergreen staff client by clicking the + sign adjacent to the tab that you currently have opened.  As in previous versions, you can also add new tabs by clicking *File -> New Tab*, or use the hotkey, Ctrl+T. 
+
+image::media/New_Tab_Button1.jpg[New_Tab_Button1]

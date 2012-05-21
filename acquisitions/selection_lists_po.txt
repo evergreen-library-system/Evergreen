@@ -1,0 +1,136 @@
+Selection Lists and Purchase Orders
+-----------------------------------
+
+Selection Lists
+~~~~~~~~~~~~~~~
+
+Selection lists allow you to create, manage, and save lists of items that you may want to purchase. To view your selection list, click Acquisitions -> My Selection Lists. Use the general search to view selection lists created by other users.
+
+Create a selection list
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Selection lists can be created in four areas within the module. Selection lists can be created when you link:brief_records.txt[Add Brief Records], Upload MARC Order Records, or find records through the link:federated.txt[MARC Federated Search]. In each of these interfaces, you will find the Add to Selection List field. Enter the name of the selection list that you want to create in that field.
+
+Selection lists can also be created through the My Selection Lists interface:
+
+. Click Acquisitions -> My Selection Lists.
+. Click the New Selection List drop down arrow.
+. Enter the name of the selection list in the box that appears.
+. Click Create.
+
+image::media/acq_selection_create.png[create selection list]
+
+Add items to a selection list
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can add items to a selection list in one of three ways: link:brief_records.txt[add a brief record]; upload MARC order records; add records through a link:federated.txt[federated search]; or use the link:federated.txt[View/Place Orders] menu item in the catalog.
+
+Clone selection lists
+^^^^^^^^^^^^^^^^^^^^^
+
+Cloning selection lists enables you to copy one selection list into a new selection list. You can maintain both copies of the list, or you can delete the previous list.
+
+. Click Acquisitions -> My Selection Lists.
+. Check the box adjacent to the list that you want to clone.
+. Click Clone Selected.
+. Enter a name into the box that appears, and click Clone.
+
+image::media/acq_selection_clone.png[clone selection list]
+
+Merge selection lists
+^^^^^^^^^^^^^^^^^^^^^
+
+You can merge two or more selection lists into one selection list.
+
+
+. Click Acquisitions -> My Selection Lists.
+. Check the boxes adjacent to the selection lists that you want to merge, and click Merge Selected.
+. Choose the Lead Selection List from the drop down menu. This is the list to which the items on the other list(s) will be transferred.
+. Click Merge.
+
+image::media/acq_selection_merge.png[merge selection list]
+
+Delete selection lists
+^^^^^^^^^^^^^^^^^^^^^^
+
+You can delete selection lists that you do not want to save. You will not be able to retrieve these items through the General Search after you have deleted the list. You must delete all line items from a selection list before you can delete the list.
+
+
+. Click Acquisitions -> My Selection Lists.
+. Check the box adjacent to the selection list(s) that you want to delete.
+. Click Delete Selected.
+
+Mark Ready for Selector
+^^^^^^^^^^^^^^^^^^^^^^^
+
+After an item has been added to a selection list or purchase order, you can mark it ready for selector. This step is optional but may be useful to individual workflows.
+
+
+. If you want to mark part of a selection list ready for selector, then you can check the box(es) of the line item(s) that you wish to mark ready for selector. If you want to mark the entire list ready for selector, then skip to step 2.
+. Click Actions -> Mark Ready for Selector.
+. A pop up box will appear. Choose to mark the selected line items or all line items.
+. Click Go.
+. The screen will refresh. The marked line item(s) will be highlighted pink, and the status changes to selector~ready.
+
+image::media/acq_selection_mark_ready.png[mark ready]
+
+Convert selection list to purchase order
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Use the Actions menu to convert a selection list to a purchase order.
+
+
+. From a selection list, click Actions ~> Create Purchase Order.
+. A pop up box will appear.
+. Select the ordering agency from the drop down menu.
+. Enter the provider.
+. Check the box adjacent to prepayment required if prepayment is required.
+. Choose if you will add All Lineitems or Selected Lineitems to your purchase order.
+. Check the box if you want to Import Bibs and Create Copies in the catalog.
+. Click Submit.
+
+Brief Records
+~~~~~~~~~~~~~
+
+Brief records are short bibliographic records with minimal information that are often used as placeholder records until items are received. Brief records can be added to selection lists or purchase orders and can be imported into the catalog. You can add brief records to new or existing selection lists. You can add brief records to new, pending or on~order purchase orders.
+
+Add brief records to a selection list
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+. Click Acquisitions -> New Brief Record. You can also add brief records to an existing selection list by clicking the Actions menu on the selection list and choosing Add Brief Record.
+. Choose a selection list from the drop down menu, or enter the name of a new selection list.
+. Enter bibliographic information in the desired fields.
+. Click Save Record.
+
+image::media/acq_brief_record.png[]
+
+Add brief records to purchase orders
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can add brief records to new or existing purchase orders.
+
+. Open or create a purchase order. See the section on link:03~PO.txt[purchase orders] for more information.
+. Click Add Brief Record.
+. Enter bibliographic information in the desired fields. Notice that the record is added to the purchase order that you just created.
+. Click Save Record.
+
+image::media/acq_brief_record-2.png[]
+
+MARC Federated Search
+~~~~~~~~~~~~~~~~~~~~~
+
+The MARC Federated Search enables you to import bibliographic records into a selection list or purchase order from a Z39.50 source.
+
+. Click Acquisitions -> MARC Federated Search.
+. Check the boxes of Z39.50 services that you want to search. Your local Evergreen Catalog is checked by default. Click Submit.
++
+----
+image::media/acq_marc_search.png[search form]
+----
++
+. A list of results will appear. Click the "Copies" link to add copy information to the line item. See the link:line_items.txt[section on Line Items] for more information.
+. Click the Notes link to add notes or line item alerts to the line item. See the link:line_items.txt[section on Line Items] for more information.
+. Enter a price in the "Estimated Price" field.
+. You can save the line item(s) to a selection list by checking the box on the line item and clicking Actions -> Save Items to Selection List. You can also create a purchase order from the line item(s) by checking the box on the line item and clicking Actions ~> Create Purchase Order.
+
+image::media/acq_marc_search-2.png[line item]

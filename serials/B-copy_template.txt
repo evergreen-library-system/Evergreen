@@ -1,0 +1,43 @@
+Copy Template for Serials
+-------------------------
+
+A copy template enables you to specify item attributes that should be applied by default to copies of serials. You can create one copy template and apply it to multiple serials. You can also create multiple copy templates. Templates will be used in the Alternate Serial Control View or the Serial Control View.
+
+Create a copy template
+~~~~~~~~~~~~~~~~~~~~~~
+
+To create a copy template, click Admin -> Local Administration -> Copy Template Editor.
+
+. Enter a Name for the template.
+. Select an owning library from the Owning lib drop down menu. This organization owns the copy template. A staff member with permissions at that organization can modify the copy template. The menu is populated from the organizations that you created in Admin . Server Administration . Organizational Units.
+. Click the box adjacent to Circulate. If you want the item to circulate.
+. Check the box adjacent to Holdable. if patrons can place holds on the item.
+. Check the box adjacent to OPAC Visible. if you want patrons to be able to see the item in the OPAC after you receive it.
+. Select a loan duration rule from the drop down menu.
+. Select a fine level for the item from the drop down menu.
+. Select a copy Location from the drop down menu. The menu is populated from the copy locations that you created in Admin . Local Administration . Copy Locations.
+. Select a circ modifier from the drop down box. The menu is populated from the modifiers that you created in Admin . Server Administration . Circulation Modifiers.
+. Check the box adjacent to Floating. if the item is part of a floating collection.
+. Check the box adjacent to Deposit. if patrons must place a deposit on the copy before they can use it.
+. Check the box adjacent to Reference. if the item is a reference item.
+. If the item is in mint condition, then check the box adjacent to Mint Condition.
+. Enter age protection rules in the Age Protect field. Age protection allows you to control the extent to which an item can circulate after it has been received. For example, you may want to protect new copies of a serial so that only patrons who check out the item at your branch can use it.
+. Enter a message in the Alert Message field. This message will appear every time the item is checked out to a patron.
+. Enter a code from the MARC fixed fields if you want to control the circulation based on the item type in the Circ as Type field.
+. Enter a deposit amount if patrons must place a deposit on the copy before they can use it.
+. Enter the price of the item.
+. Enter the ID of the copy status in the Status field. A list of copy statuses and their IDs can be found in Admin . Server Administration . Copy Status.
+. Click Save.
+. Fine level and loan duration are required fields in the Copy Template Editor.
+
+Edit a copy template
+~~~~~~~~~~~~~~~~~~~~
+
+You can make changes to an existing copy template. Changes that you make to a copy template will apply to any items that you receive after you edited the template.
+
+. To edit a copy template, click your cursor in the row that you want to edit. The row will turn blue.
+. Double-click. The copy template will appear, and you can edit the fields.
+. After making changes, click Save.
+
+[NOTE]
+From the copy template interface, you can delete copy templates that have never been used.

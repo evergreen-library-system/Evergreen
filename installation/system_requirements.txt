@@ -1,0 +1,32 @@
+System Requirements
+-------------------
+
+Server Minimum Requirements
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following are the base requirements setting Evergreen up on a test server:
+ 
+ * An available desktop, server or virtual image
+ * 1GB RAM, or more if your server also runs a graphical desktop
+ * Linux Operating System
+ * Ports 80 and 443 should be opened in your firewall for TCP connections to allow OPAC and staff client connections to the Evergreen server.
+
+Staff Client Requirements
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Staff terminals connect to the central database using the Evergreen staff client, available for download from The Evergreen download page. 
+The staff client must be installed on each staff workstation and requires at minimum:
+ 
+ * Windows (XP, Vista, or 7), Mac OS X, or Linux operating system
+ * a reliable high speed Internet connection
+ * 512Mb of RAM
+ * The staff client uses the TCP protocal on ports 80 and 443 to communicate with the Evergreen server.
+
+*Barcode Scanners*
+
+Evergreen will work with virtually any barcode scanner – if it worked with your legacy system it should work on Evergreen.
+
+*Printers*
+
+Evergreen can use any printer configured for your terminal to print receipts, check-out slips, holds lists, etc. The single exception is spine label printing, 
+which is still under development. Evergreen currently formats spine labels for output to a label roll printer. If you do not have a roll printer manual formatting may be required. 
