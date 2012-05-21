@@ -364,9 +364,9 @@ sub TEST_SETUP {
     __PACKAGE__->add_relevance_bump( title => proper => full_match => 20 );
     __PACKAGE__->add_relevance_bump( title => proper => word_order => 10 );
     
-    __PACKAGE__->add_search_field_id_map( author => coporate => 7 => 1 );
-    __PACKAGE__->add_relevance_bump( author => coporate => first_word => 1.5 );
-    __PACKAGE__->add_relevance_bump( author => coporate => full_match => 20 );
+    __PACKAGE__->add_search_field_id_map( author => corporate => 7 => 1 );
+    __PACKAGE__->add_relevance_bump( author => corporate => first_word => 1.5 );
+    __PACKAGE__->add_relevance_bump( author => corporate => full_match => 20 );
     
     __PACKAGE__->add_facet_field_id_map( author => personal => 8 => 1 );
 
