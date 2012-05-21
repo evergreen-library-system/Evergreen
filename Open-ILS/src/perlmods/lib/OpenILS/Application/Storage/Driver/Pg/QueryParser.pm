@@ -746,8 +746,8 @@ sub flatten {
                 $from .= "\n\t\t\tJOIN config.metabib_field AS fe_weight ON (fe_weight.id = fe.field)";
 
                 if ($node->dummy_count < @{$node->only_atoms} ) {
-                    #$with.= "\n\t\t\tWITH ${talias}_xq AS (SELECT ". $node->tsquery ." AS tsq )";
-                    $with.= "${talias}_xq AS (SELECT ". $node->tsquery ." AS tsq )";
+                    $with .= ",\n" if $with;
+                    $with .= "${talias}_xq AS (SELECT ". $node->tsquery ." AS tsq )";
                     $from .= "\n\t\t\tJOIN ${talias}_xq ON (fe.index_vector @@ ${talias}_xq.tsq)";
                 } else {
                     $from .= "\n\t\t\t, (SELECT NULL::tsquery AS tsq ) AS x";
