@@ -60,7 +60,7 @@ in over a dozen countries worldwide.
 // Push titles down one level.
 :leveloffset: 1
 
-include::release_notes.txt[]
+include::RELEASE_NOTES_2_2.txt[]
 
 // Return to normal title levels.
 :leveloffset: 0
