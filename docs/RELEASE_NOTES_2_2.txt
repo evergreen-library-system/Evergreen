@@ -102,17 +102,16 @@ and deprecate the use of the JSPAC.
 
 Auto Suggest in Catalog Search
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The auto suggest feature suggests the completion of search terms as the user
-enters his query.  By default, the user will see ten suggestions although this
+The
+http://docs.evergreen-ils.org/2.2/_auto_suggest_in_catalog_search_2.html[auto
+suggest feature] suggests the completion of search terms as the user enters his
+query.  By default, the user will see ten suggestions although this
 number is configurable at the database level.  Scroll through suggestions with
 your mouse, or use the arrow keys to scroll through the suggestions. Select a
 suggestion to view records that are linked to this suggestion. 
 
 This feature is not turned on by default. You must turn it on in the Admin
 module.
-
-Documentation for this feature is available in the Book of Evergreen
-at http://docs.evergreen-ils.org/2.2/
 
 Copy Location Groups
 ^^^^^^^^^^^^^^^^^^^^
