@@ -971,11 +971,80 @@ sub new_filter {
     return $node;
 }
 
+
+sub _merge_filters {
+    my $left_filter = shift;
+    my $right_filter = shift;
+    my $join = shift;
+
+    return undef unless $left_filter or $right_filter;
+    return $right_filter unless $left_filter;
+    return $left_filter unless $right_filter;
+
+    my $args = $left_filter->{args} || [];
+
+    if ($join eq '|') {
+        push(@$args, @{$right_filter->{args}});
+
+    } else {
+        # find the intersect values
+        my %new_vals;
+        map { $new_vals{$_} = 1 } @{$right_filter->{args} || []};
+        $args = [ grep { $new_vals{$_} } @$args ];
+    }
+
+    $left_filter->{args} = $args;
+    return $left_filter;
+}
+
+sub collapse_filters {
+    my $self = shift;
+    my $name = shift;
+
+    # start by merging any filters at this level.
+    # like-level filters are always ORed together
+
+    my $cur_filter;
+    my @cur_filters = grep {$_->name eq $name } @{ $self->filters };
+    if (@cur_filters) {
+        $cur_filter = shift @cur_filters;
+        my $args = $cur_filter->{args} || [];
+        $cur_filter = _merge_filters($cur_filter, $_, '|') for @cur_filters;
+    }
+
+    # next gather the collapsed filters from sub-plans and 
+    # merge them with our own
+
+    my @subquery = @{$self->{query}};
+
+    while (@subquery) {
+        my $blob = shift @subquery;
+        shift @subquery; # joiner
+        next unless $blob->isa('QueryParser::query_plan');
+        my $sub_filter = $blob->collapse_filters($name);
+        $cur_filter = _merge_filters($cur_filter, $sub_filter, $self->joiner);
+    }
+
+    if ($self->QueryParser->debug) {
+        my @args = ($cur_filter and $cur_filter->{args}) ? @{$cur_filter->{args}} : ();
+        warn "collapse_filters($name) => [@args]\n";
+    }
+
+    return $cur_filter;
+}
+
 sub find_filter {
     my $self = shift;
     my $needle = shift;;
     return undef unless ($needle);
-    return grep { $_->name eq $needle } @{ $self->filters };
+
+    my $filter = $self->collapse_filters($needle);
+
+    warn "find_filter($needle) => " . 
+        (($filter and $filter->{args}) ? "@{$filter->{args}}" : '[]') . "\n" 
+        if $self->QueryParser->debug;
+
+    return $filter ? ($filter) : ();
 }
 
 sub find_modifier {
@@ -1109,7 +1178,6 @@ sub add_filter {
     my $filter = shift;
 
     $self->{filters} ||= [];
-    $self->{filters} = [ grep {$_->name ne $filter->name} @{$self->{filters}} ];
 
     push(@{$self->{filters}}, $filter);
 
