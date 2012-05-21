@@ -8,6 +8,8 @@ use OpenSRF::Utils::JSON;
 use OpenILS::Application::AppUtils;
 my $U = 'OpenILS::Application::AppUtils';
 
+my ${spc} = ' ' x 2;
+
 sub quote_value {
     my $self = shift;
     my $value = shift;
@@ -501,7 +503,7 @@ sub toSQL {
     my $flat_plan = $self->flatten;
 
     # generate the relevance ranking
-    my $rel = "AVG(\n\t\t(" . join(")+\n\t\t(", @{$$flat_plan{rank_list}}) . ")\n\t)+1";
+    my $rel = "AVG(\n${spc}${spc}(" . join(")+\n${spc}${spc}(", @{$$flat_plan{rank_list}}) . ")\n${spc})+1";
 
     # find any supplied sort option
     my ($sort_filter) = $self->find_filter('sort');
@@ -656,7 +658,7 @@ sub toSQL {
         $flat_where = "AND $flat_where";
     }
     my $with = $$flat_plan{with};
-    $with= "\n\t\t\tWITH $with" if $with;
+    $with= "\nWITH $with" if $with;
 
     # Need an array for query parser db function; this gives a better plan
     # than the ARRAY_AGG(DISTINCT m.source) option as of PostgreSQL 9.1
@@ -742,15 +744,15 @@ sub flatten {
                 my $node_rank = 'COALESCE(' . $node->rank . " * ${talias}.weight, 0.0)";
 
                 my $core_limit = $self->QueryParser->core_limit || 25000;
-                $from .= "\n\tLEFT JOIN (\n\t\tSELECT fe.*, fe_weight.weight, ${talias}_xq.tsq /* search */\n\t\t  FROM  $table AS fe";
-                $from .= "\n\t\t\tJOIN config.metabib_field AS fe_weight ON (fe_weight.id = fe.field)";
+                $from .= "\n${spc}LEFT JOIN (\n${spc}${spc}SELECT fe.*, fe_weight.weight, ${talias}_xq.tsq /* search */\n${spc}${spc}  FROM  $table AS fe";
+                $from .= "\n${spc}${spc}${spc}JOIN config.metabib_field AS fe_weight ON (fe_weight.id = fe.field)";
 
                 if ($node->dummy_count < @{$node->only_atoms} ) {
                     $with .= ",\n" if $with;
                     $with .= "${talias}_xq AS (SELECT ". $node->tsquery ." AS tsq )";
-                    $from .= "\n\t\t\tJOIN ${talias}_xq ON (fe.index_vector @@ ${talias}_xq.tsq)";
+                    $from .= "\n${spc}${spc}${spc}JOIN ${talias}_xq ON (fe.index_vector @@ ${talias}_xq.tsq)";
                 } else {
-                    $from .= "\n\t\t\t, (SELECT NULL::tsquery AS tsq ) AS x";
+                    $from .= "\n${spc}${spc}${spc}, (SELECT NULL::tsquery AS tsq ) AS x";
                 }
 
                 my @bump_fields;
@@ -765,7 +767,7 @@ sub flatten {
                         } @bump_fields
                     );
                     if (@field_ids) {
-                        $from .= "\n\t\t\tWHERE fe_weight.id IN  (" .
+                        $from .= "\n${spc}${spc}${spc}WHERE fe_weight.id IN  (" .
                             join(',', @field_ids) . ")";
                     }
 
@@ -773,8 +775,8 @@ sub flatten {
                     @bump_fields = @{$self->QueryParser->search_fields->{$node->classname}};
                 }
 
-                ###$from .= "\n\t\tLIMIT $core_limit";
-                $from .= "\n\t) AS $talias ON (m.source = ${talias}.source)";
+                ###$from .= "\n${spc}${spc}LIMIT $core_limit";
+                $from .= "\n${spc}) AS $talias ON (m.source = ${talias}.source)";
 
 
                 my %used_bumps;
@@ -788,7 +790,7 @@ sub flatten {
                         next if ($$bumps{$b}{multiplier} == 1); # optimization to remove unneeded bumps
 
                         my $bump_case = $self->rel_bump( $node, $b, $$bumps{$b}{multiplier} );
-                        $node_rank .= "\n\t\t\t\t * " . $bump_case if ($bump_case);
+                        $node_rank .= "\n${spc}${spc}${spc}${spc} * " . $bump_case if ($bump_case);
                     }
                 }
 
@@ -812,9 +814,9 @@ sub flatten {
                 }
 
                 my $join_type = $node->negate ? 'LEFT' : 'INNER';
-                $from .= "\n\t$join_type JOIN /* facet */ metabib.facet_entry $talias ON (\n\t\tm.source = ${talias}.source\n\t\t".
-                         "AND SUBSTRING(${talias}.value,1,1024) IN (" . join(",", map { $self->QueryParser->quote_value($_) } @{$node->values}) . ")\n\t\t".
-                         "AND ${talias}.field IN (". join(',', @field_ids) . ")\n\t)";
+                $from .= "\n${spc}$join_type JOIN /* facet */ metabib.facet_entry $talias ON (\n${spc}${spc}m.source = ${talias}.source\n${spc}${spc}".
+                         "AND SUBSTRING(${talias}.value,1,1024) IN (" . join(",", map { $self->QueryParser->quote_value($_) } @{$node->values}) . ")\n${spc}${spc}".
+                         "AND ${talias}.field IN (". join(',', @field_ids) . ")\n${spc})";
 
                 $where .= $node->negate ? "${talias}.id IS NULL" : 'TRUE';
 
@@ -892,7 +894,7 @@ sub sql {
     my $sql = shift;
 
     $self->{sql} = $sql if ($sql);
-    
+
     return $self->{sql} if ($self->{sql});
     return $self->buildSQL;
 }
@@ -998,7 +1000,7 @@ sub tsquery {
 
     for my $atom (@{$self->query_atoms}) {
         if (ref($atom)) {
-            $self->{tsquery} .= "\n\t\t\t" .$atom->sql;
+            $self->{tsquery} .= "\n${spc}${spc}${spc}" .$atom->sql;
         } else {
             $self->{tsquery} .= $atom x 2;
         }
@@ -1011,7 +1013,7 @@ sub rank {
     my $self = shift;
 
     my $rank_norm_map = $self->plan->QueryParser->custom_data->{rank_cd_weight_map};
-    
+
     my $cover_density = 0;
     for my $norm ( keys %$rank_norm_map) {
         $cover_density += $$rank_norm_map{$norm} if ($self->plan->find_modifier($norm));
