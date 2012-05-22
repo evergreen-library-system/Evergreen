@@ -78,6 +78,7 @@
                 <tr>
                     <th only="shelf_expired_holds">Patron</th>
                     <th only="shelf_expired_holds">Action</th>
+                    <th>Type</th>
                     <th>Title</th>
                     <th>Author</th>
                     <th>Shelving Location</th>
@@ -91,6 +92,7 @@
                 <tr>
                     <td only="shelf_expired_holds">${usr.display_name}</td>
                     <td only="shelf_expired_holds">${action}</td>
+                    <td>${hold_type}</td>
                     <td type='opac/slot-data' query='datafield[tag=245]'></td>
                     <td type='opac/slot-data' query='datafield[tag^=1]' limit='1'> </td>
                     <td>${current_copy.location.name}</td>

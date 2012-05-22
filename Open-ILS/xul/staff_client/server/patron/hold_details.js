@@ -109,6 +109,7 @@ function init_list() {
             'current_copy' : { 'hidden' : false },
             'phone_notify' : { 'hidden' : false },
             'email_notify' : { 'hidden' : false },
+            'hold_type' : { 'hidden' : false },
         } 
     );
     JSAN.use('util.list'); g.list = new util.list('holds_list');

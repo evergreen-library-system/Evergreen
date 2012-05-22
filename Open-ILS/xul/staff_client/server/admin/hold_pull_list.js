@@ -87,6 +87,7 @@ function pullListDrawTitle( tbody, row, hold, idx, record ) {
 
 function pullListDrawCopy( tbody, row, hold, idx, copy ) {
 
+    $n(row, 'hold_type').appendChild(text(hold.hold_type()));
     $n(row, 'barcode').appendChild(text(copy.barcode()));
     $n(row, 'copy_location').appendChild(text(copy.location().name()));
     $n(row, 'copy_number').appendChild(text(copy.copy_number()));
