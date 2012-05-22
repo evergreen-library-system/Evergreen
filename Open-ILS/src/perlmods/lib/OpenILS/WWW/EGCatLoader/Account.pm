@@ -852,7 +852,15 @@ sub attempt_hold_placement {
     }
 
     my $method = 'open-ils.circ.holds.test_and_create.batch';
-    $method .= '.override' if $cgi->param('override');
+
+    if ($cgi->param('override')) {
+        $method .= '.override';
+
+    } elsif (!$ctx->{is_staff})  {
+
+        $method .= '.override' if $self->ctx->{get_org_setting}->(
+            $e->requestor->home_ou, "opac.patron.auto_overide_hold_events");
+    }
 
     my @create_targets = map {$_->{target_id}} (grep { !$_->{hold_failed} } @hold_data);
 
