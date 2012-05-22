@@ -9,7 +9,7 @@
     <div class="header_utils">
         <a href="javascript:;" class="text_size_btn"><span>Text size</span> &nbsp; <img 
             alt="text size" src="[% ctx.media_prefix %]/images/kpac/text_size_btn.png" /></a>
-        <a href="javascript:;" class="print_btn"><span>Print</span> &nbsp; <img 
+        <a href="javascript:window.print()" class="print_btn"><span>Print</span> &nbsp; <img 
             alt="print" src="[% ctx.media_prefix %]/images/kpac/print_btn.png" /></a>
     </div>
     <div class="header_menu">
