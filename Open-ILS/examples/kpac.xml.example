@@ -35,24 +35,17 @@
             <cell name="Politics"       img="category.png" type="search">su:politics sort(pubdate)#descending</cell>
             <cell name="Economy"        img="category.png" type="search">su:economy sort(pubdate)#descending</cell>
         </page>
-        <page id="12" columns="3" name="Programming" img="category.png">
-        </page>
-        <page id="13" columns="3" name="It's Alive!" img="category.png">
-        </page>
-        <page id="14" columns="3" name="Book Series" img="category.png">
-        </page>
-        <page id="15" columns="3" name="Book Series" img="category.png">
-        </page>
-        <page id="16" columns="3" name="Book Series" img="category.png">
-        </page>
-        <page id="17" columns="3" name="Book Series" img="category.png">
-        </page>
-        <page id="18" columns="3" name="Book Series" img="category.png">
-        </page>
-        <page id="19" columns="3" name="Book Series" img="category.png">
-        </page>
+        <page id="12" columns="3" name="Programming" img="category.png"/>
+        <page id="13" columns="3" name="It's Alive!" img="category.png"/>
+        <page id="14" columns="3" name="Book Series" img="category.png"/>
+        <page id="15" columns="3" name="Book Series" img="category.png"/>
+        <page id="16" columns="3" name="Book Series" img="category.png"/>
+        <page id="17" columns="3" name="Book Series" img="category.png"/>
+        <page id="18" columns="3" name="Book Series" img="category.png"/>
+        <page id="19" columns="3" name="Book Series" img="category.png"/>
     </pages>
 
     <layout owner="1" page="1"/>
     <layout owner="213" page="23"/>
 </kpac>
+<!-- vim: set ft=xml: -->
