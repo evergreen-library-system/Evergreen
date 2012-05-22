@@ -905,7 +905,8 @@ sub attempt_hold_placement {
                             $hdata->{could_override} = 1;
                             $hdata->{age_protect} = 1;
                         } else {
-                            $hdata->{could_override} = $result->{place_unfillable};
+                            $hdata->{could_override} = $result->{place_unfillable} || 
+                                $self->test_could_override($hdata->{hold_failed_event});
                         }
                     } elsif (ref $result eq 'ARRAY') {
                         $hdata->{hold_failed_event} = $result->[0];
@@ -914,7 +915,8 @@ sub attempt_hold_placement {
                             $hdata->{could_override} = 1;
                             $hdata->{age_protect} = 1;
                         } else {
-                            $hdata->{could_override} = $result->[4]; # place_unfillable
+                            $hdata->{could_override} = $result->[4] || # place_unfillable
+                                $self->test_could_override($hdata->{hold_failed_event});
                         }
                     }
                 }
