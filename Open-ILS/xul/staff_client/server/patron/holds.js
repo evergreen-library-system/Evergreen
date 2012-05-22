@@ -232,8 +232,10 @@ patron.holds.prototype = {
                     'alt_view_btn' : [
                         ['render'],
                         function(e) {
-                            e.setAttribute('label', document.getElementById("circStrings").getString('staff.circ.holds.alt_view.label'));
-                            e.setAttribute('accesskey', document.getElementById("circStrings").getString('staff.circ.holds.alt_view.accesskey'));
+                            return function() {
+                                e.setAttribute('label', document.getElementById("circStrings").getString('staff.circ.holds.alt_view.label'));
+                                e.setAttribute('accesskey', document.getElementById("circStrings").getString('staff.circ.holds.alt_view.accesskey'));
+                            };
                         }
                     ],
                     'cmd_alt_view' : [
