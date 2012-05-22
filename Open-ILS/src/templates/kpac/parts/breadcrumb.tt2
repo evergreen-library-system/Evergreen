@@ -1,4 +1,5 @@
 <div class="breadcrumb">
+    [% clear_params = ['action', 'hold', 'pickup_lib', 'ac'] %]
 
     <!-- home page -->
     <a href="[% mkurl(ctx.kpac_root _ '/home', {}, ['trail', 'page']) %]" 
@@ -12,14 +13,14 @@
             page = ctx.kpac_config.pages.page.$page_id %]
             <div class="bread_green_mid">&nbsp;</div>
             <a href="[% mkurl(ctx.kpac_root _ '/category', 
-                {trail = trail_splice(page_id)}) %]">[% page.name | html %]</a>
+                {trail = trail_splice(page_id)}, clear_params) %]">[% page.name | html %]</a>
     [%  END %]
 
     [% IF ctx.page != 'index' AND ctx.page != 'category' %]
 
         <!-- search results -->
         <div class="bread_green_mid">&nbsp;</div>
-        <a href="[% mkurl(ctx.kpac_root _ '/results') %]">[% l('search results') | html %]</a>
+        <a href="[% mkurl(ctx.kpac_root _ '/results', {}, clear_params) %]">[% l('search results') | html %]</a>
 
         [% IF ctx.page != 'rresult' %]
 
@@ -33,7 +34,7 @@
                 # I know there's a way to do this all w/ substr, 
                 # but it's trying my patience.  this works.
             %]
-            <a href="[% mkurl(ctx.kpac_root _ '/record/' _ ctx.bre_id) %]">[% title | html %]</a>
+            <a href="[% mkurl(ctx.kpac_root _ '/record/' _ ctx.bre_id, {}, clear_params) %]">[% title | html %]</a>
 
             <!-- Get it -->
             <div class="bread_green_last">&nbsp;</div>
