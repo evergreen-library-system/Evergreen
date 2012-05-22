@@ -1,6 +1,8 @@
 
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0712', :eg_version);
+
 -- General purpose query container.  Any table the needs to store
 -- a QueryParser query should store it here.  This will be the 
 -- source for top-level and QP sub-search inclusion queries.
