@@ -49,7 +49,7 @@ database server connection information:
 
 [source, bash]
 ----------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.1-beta2/Open-ILS/src/sql/Pg
+cd /home/opensrf/Evergreen-ILS-2.1-rc1/Open-ILS/src/sql/Pg
 psql -U evergreen -h localhost -f version_upgrade/2.1-2.2-upgrade-db.sql evergreen
 ----------------------------------------------------------
 
@@ -75,8 +75,8 @@ the http://evergreen-ils.org/opensrf.php[OpenSRF download page].
 +
 [source, bash]
 -----------------------------------------------
-wget http://evergreen-ils.org/downloads/previews/Evergreen-ILS-2.2-beta2.tar.gz
-tar xzf Evergreen-ILS-2.2-beta2.tar.gz
+wget http://evergreen-ils.org/downloads/previews/Evergreen-ILS-2.2-rc1.tar.gz
+tar xzf Evergreen-ILS-2.2-rc1.tar.gz
 -----------------------------------------------
 +
 [NOTE]
@@ -86,7 +86,7 @@ For the latest edition of Evergreen, check the http://evergreen-ils.org/download
 +
 [source, bash]
 ----------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.2-beta2
+cd /home/opensrf/Evergreen-ILS-2.2-rc1
 ---------------------------------------------
 +
 On the next command, replace `[distribution]` with one of these values for your
@@ -105,7 +105,7 @@ make -f Open-ILS/src/extras/Makefile.install [distribution]
 +
 [source, bash]
 ------------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.2-beta2
+cd /home/opensrf/Evergreen-ILS-2.2-rc1
 ./configure --prefix=/openils --sysconfdir=/openils/conf
 make
 ------------------------------------------------------------
@@ -114,8 +114,8 @@ make
 +
 [source, bash]
 ------------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.2-beta2
-make STAFF_CLIENT_STAMP_ID=rel_2_2_beta2 install
+cd /home/opensrf/Evergreen-ILS-2.2-rc1
+make STAFF_CLIENT_STAMP_ID=rel_2_2_rc1 install
 ------------------------------------------------------------
 +
 . As the root user, change all files to be owned by the opensrf user and group:
@@ -129,7 +129,7 @@ chown -R opensrf:opensrf /openils
 +
 [source, bash]
 -----------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.2-beta2
+cd /home/opensrf/Evergreen-ILS-2.2-rc1
 
 perl Open-ILS/src/support-scripts/eg_db_config.pl \
 --create-offline --user evergreen --password evergreen \
@@ -142,7 +142,7 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl \
 -----------------------------------------------------------
 cd /openils/var/web/xul/
 rm server
-ln -s rel_2_2_beta2/server
+ln -s rel_2_2_rc1/server
 ----------------------------------------------------------
 +
 . As the opensrf user, update opensrf_core.xml and opensrf.xml by copying the
@@ -175,7 +175,7 @@ opensrf.xml.example, then:
 [source, bash]
 -------------------------------------------------------------------------
 cp -b /openils/conf/opensrf.xml.example /openils/conf/opensrf.xml
-cd /home/opensrf/Evergreen-ILS-2.2-beta2
+cd /home/opensrf/Evergreen-ILS-2.2-rc1
 perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config --service all \
 --database evergreen --host localhost --user evergreen --password evergreen
 -------------------------------------------------------------------------
