@@ -97,7 +97,7 @@
                                 <div class="box_inside">
                                     <p>[% l('Add to one of your lists?') %]</p>
                                     <select name='bookbag'>
-                                        <option selected='selected'>[% l('-- Select a List --') %]</option>
+                                        <option value='' selected='selected'>[% l('-- Temporary List --') %]</option>
                                         [% FOR bbag IN ctx.bookbags %]
                                             <option value="[% bbag.id %]">[% bbag.name | html %]</option>
                                         [% END %]
