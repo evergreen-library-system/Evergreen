@@ -1,5 +1,5 @@
 <div class="breadcrumb">
-    [% clear_params = ['action', 'hold', 'pickup_lib', 'ac'] %]
+    [% clear_params = ['action', 'hold', 'pickup_lib', 'ac', 'copy_limit', 'copy_offset', 'list'] %]
 
     <!-- home page -->
     <a href="[% mkurl(ctx.kpac_root _ '/home', {}, ['trail', 'page']) %]" 
