@@ -63,6 +63,14 @@ sub filters {
     return $parser_config{$class}{filters};
 }
 
+sub filter_callbacks {
+    my $class = shift;
+    $class = ref($class) || $class;
+
+    $parser_config{$class}{filter_callbacks} ||= {};
+    return $parser_config{$class}{filter_callbacks};
+}
+
 sub modifiers {
     my $class = shift;
     $class = ref($class) || $class;
@@ -100,9 +108,11 @@ sub add_search_filter {
     my $pkg = shift;
     $pkg = ref($pkg) || $pkg;
     my $filter = shift;
+    my $callback = shift;
 
     return $filter if (grep { $_ eq $filter } @{$pkg->filters});
     push @{$pkg->filters}, $filter;
+    $pkg->filter_callbacks->{$filter} = $callback if ($callback);
     return $filter;
 }
 
@@ -475,40 +485,46 @@ sub decompose {
     my $first_class = 1;
 
     my %seen_classes;
-    for my $class ( keys %{$pkg->search_fields} ) {
+    for my $class ( keys %{$pkg->search_field_aliases} ) {
+        warn " *** ... Looking for search fields in $class\n" if $self->debug;
 
-        for my $field ( @{$pkg->search_fields->{$class}} ) {
+        for my $field ( keys %{$pkg->search_field_aliases->{$class}} ) {
+            warn " *** ... Looking for aliases of $field\n" if $self->debug;
 
             for my $alias ( @{$pkg->search_field_aliases->{$class}{$field}} ) {
-                $alias = qr/$alias/;
-                s/(^|\s+)$alias[:=]/$1$class\|$field:/g;
+                my $aliasr = qr/$alias/;
+                s/(^|\s+)$aliasr\|/$1$class\|$field#$alias\|/g;
+                s/(^|\s+)$aliasr[:=]/$1$class\|$field#$alias:/g;
+                warn " *** Rewriting: $alias ($aliasr) as $class\|$field\n" if $self->debug;
             }
         }
 
         $search_class_re .= '|' unless ($first_class);
         $first_class = 0;
-        $search_class_re .= $class . '(?:\|\w+)*';
+        $search_class_re .= $class . '(?:[|#][^:|]+)*';
         $seen_classes{$class} = 1;
     }
 
     for my $class ( keys %{$pkg->search_class_aliases} ) {
 
         for my $alias ( @{$pkg->search_class_aliases->{$class}} ) {
-            $alias = qr/$alias/;
-            s/(^|[^|])\b$alias\|/$1$class\|/g;
-            s/(^|[^|])\b$alias[:=]/$1$class:/g;
+            my $aliasr = qr/$alias/;
+            s/(^|[^|])\b$aliasr\|/$1$class#$alias\|/g;
+            s/(^|[^|])\b$aliasr[:=]/$1$class#$alias:/g;
+            warn " *** Rewriting: $alias ($aliasr) as $class\n" if $self->debug;
         }
 
         if (!$seen_classes{$class}) {
             $search_class_re .= '|' unless ($first_class);
             $first_class = 0;
 
-            $search_class_re .= $class . '(?:\|\w+)*';
+            $search_class_re .= $class . '(?:[|#][^:|]+)*';
             $seen_classes{$class} = 1;
         }
     }
     $search_class_re .= '):';
 
+    warn " ** Rewritten query: $_\n" if $self->debug;
     warn " ** Search class RE: $search_class_re\n" if $self->debug;
 
     my $required_re = $pkg->operator('required');
@@ -535,7 +551,7 @@ sub decompose {
 
     # Build the filter and modifier uber-regexps
     my $facet_re = '^\s*(-?)((?:' . join( '|', @{$pkg->facet_classes}) . ')(?:\|\w+)*)\[(.+?)\]';
-    warn " Facet RE: $facet_re\n" if $self->debug;
+    warn " ** Facet RE: $facet_re\n" if $self->debug;
 
     my $filter_re = '^\s*(-?)(' . join( '|', @{$pkg->filters}) . ')\(([^()]+)\)';
     my $filter_as_class_re = '^\s*(-?)(' . join( '|', @{$pkg->filters}) . '):\s*(\S+)';
@@ -562,7 +578,17 @@ sub decompose {
 
             my $negate = ($1 eq $pkg->operator('disallowed')) ? 1 : 0;
             $_ = $';
-            $struct->new_filter( $2 => [ split '[,]+', $3 ], $negate );
+
+            my $filter = $2;
+            my $params = [ split '[,]+', $3 ];
+
+            if ($pkg->filter_callbacks->{$filter}) {
+                my $replacement = $pkg->filter_callbacks->{$filter}->($self, $struct, $filter, $params, $negate);
+                $_ = "$replacement $_" if ($replacement);
+            } else {
+                $struct->new_filter( $filter => $params, $negate );
+            }
+
 
             $last_type = '';
         } elsif ($self->filter_count && /$filter_as_class_re/) { # found a filter
@@ -570,7 +596,16 @@ sub decompose {
 
             my $negate = ($1 eq $pkg->operator('disallowed')) ? 1 : 0;
             $_ = $';
-            $struct->new_filter( $2 => [ split '[,]+', $3 ], $negate );
+
+            my $filter = $2;
+            my $params = [ split '[,]+', $3 ];
+
+            if ($pkg->filter_callbacks->{$filter}) {
+                my $replacement = $pkg->filter_callbacks->{$filter}->($self, $struct, $filter, $params, $negate);
+                $_ = "$replacement $_" if ($replacement);
+            } else {
+                $struct->new_filter( $filter => $params, $negate );
+            }
 
             $last_type = '';
         } elsif ($self->modifier_count && /$modifier_re/) { # found a modifier
@@ -642,8 +677,7 @@ sub decompose {
 
             warn "Encountered class change: $1\n" if $self->debug;
 
-            $current_class = $1;
-            $struct->classed_node( $current_class );
+            $current_class = $struct->classed_node( $1 )->requested_class();
             $_ = $';
 
             $last_type = 'CLASS';
@@ -718,7 +752,10 @@ sub decompose {
 
     }
 
-    $struct = undef if (scalar(@{$struct->query_nodes}) == 0 && !$struct->top_plan);
+    $struct = undef if 
+        scalar(@{$struct->query_nodes}) == 0 &&
+        scalar(@{$struct->filters}) == 0 &&
+        !$struct->top_plan;
 
     return $struct if !wantarray;
     return ($struct, $remainder);
@@ -761,6 +798,156 @@ sub superpage_size {
     return $self->{superpage_size};
 }
 
+
+#-------------------------------
+package QueryParser::_util;
+
+# At this level, joiners are always & or |.  This is not
+# the external, configurable representation of joiners that
+# defaults to # && and ||.
+sub is_joiner {
+    my $str = shift;
+
+    return (not ref $str and ($str eq '&' or $str eq '|'));
+}
+
+sub default_joiner { '&' }
+
+# 0 for different, 1 for the same.
+sub compare_abstract_atoms {
+    my ($left, $right) = @_;
+
+    foreach (qw/prefix suffix content/) {
+        no warnings;    # undef can stand in for '' here
+        return 0 unless $left->{$_} eq $right->{$_};
+    }
+
+    return 1;
+}
+
+sub fake_abstract_atom_from_phrase {
+    my ($phrase, $neg) = @_;
+
+    my $prefix = '"';
+    if ($neg) {
+        $prefix =
+            $QueryParser::parser_config{QueryParser}{operators}{disallowed} .
+            $prefix;
+    }
+
+    return {
+        "type" => "atom", "prefix" => $prefix, "suffix" => '"',
+        "content" => $phrase
+    }
+}
+
+sub find_arrays_in_abstract {
+    my ($hash) = @_;
+
+    my @arrays;
+    foreach my $key (keys %$hash) {
+        if (ref $hash->{$key} eq "ARRAY") {
+            push @arrays, $hash->{$key};
+            foreach (@{$hash->{$key}}) {
+                push @arrays, find_arrays_in_abstract($_);
+            }
+        }
+    }
+
+    return @arrays;
+}
+
+#-------------------------------
+package QueryParser::Canonicalize;  # not OO
+
+sub _abstract_query2str_filter {
+    my $f = shift;
+    my $qpconfig = $parser_config{QueryParser};
+
+    return sprintf(
+        "%s%s(%s)",
+        $f->{negate} ? $qpconfig->{operators}{disallowed} : "",
+        $f->{name},
+        join(",", @{$f->{args}})
+    );
+}
+
+sub _abstract_query2str_modifier {
+    my $f = shift;
+    my $qpconfig = $parser_config{QueryParser};
+
+    return $qpconfig->{operators}{modifier} . $f;
+}
+
+# This should produce an equivalent query to the original, given an
+# abstract_query.
+sub abstract_query2str_impl {
+    my ($abstract_query, $depth) = @_;
+
+    my $qpconfig = $parser_config{QueryParser};
+
+    my $gs = $qpconfig->{operators}{group_start};
+    my $ge = $qpconfig->{operators}{group_end};
+    my $and = $qpconfig->{operators}{and};
+    my $or = $qpconfig->{operators}{or};
+
+    my $q = "";
+    $q .= $gs if $abstract_query->{type} and $abstract_query->{type} eq "query_plan" and $depth;
+
+    if (exists $abstract_query->{type}) {
+        if ($abstract_query->{type} eq 'query_plan') {
+            $q .= join(" ", map { _abstract_query2str_filter($_) } @{$abstract_query->{filters}}) if
+                exists $abstract_query->{filters};
+            $q .= " ";
+
+            $q .= join(" ", map { _abstract_query2str_modifier($_) } @{$abstract_query->{modifiers}}) if
+                exists $abstract_query->{modifiers};
+        } elsif ($abstract_query->{type} eq 'node') {
+            if ($abstract_query->{alias}) {
+                $q .= " " . $abstract_query->{alias};
+                $q .= "|$_" foreach @{$abstract_query->{alias_fields}};
+            } else {
+                $q .= " " . $abstract_query->{class};
+                $q .= "|$_" foreach @{$abstract_query->{fields}};
+            }
+            $q .= ":";
+        } elsif ($abstract_query->{type} eq 'atom') {
+            my $prefix = $abstract_query->{prefix} || '';
+            $prefix = $qpconfig->{operators}{disallowed} if $prefix eq '!';
+            $q .= $prefix .
+                ($abstract_query->{content} || '') .
+                ($abstract_query->{suffix} || '');
+        } elsif ($abstract_query->{type} eq 'facet') {
+            # facet syntax [ # ] is hardcoded I guess?
+            my $prefix = $abstract_query->{negate} ? $qpconfig->{operators}{disallowed} : '';
+            $q .= $prefix . $abstract_query->{name} . "[" .
+                join(" # ", @{$abstract_query->{values}}) . "]";
+        }
+    }
+
+    if (exists $abstract_query->{children}) {
+        my $op = (keys(%{$abstract_query->{children}}))[0];
+        $q .= join(
+            " " . ($op eq '&' ? $and : $or) . " ",
+            map {
+                abstract_query2str_impl($_, $depth + 1)
+            } @{$abstract_query->{children}{$op}}
+        );
+    } elsif ($abstract_query->{'&'} or $abstract_query->{'|'}) {
+        my $op = (keys(%{$abstract_query}))[0];
+        $q .= join(
+            " " . ($op eq '&' ? $and : $or) . " ",
+            map {
+                abstract_query2str_impl($_, $depth + 1)
+            } @{$abstract_query->{$op}}
+        );
+    }
+    $q .= " ";
+
+    $q .= $ge if $abstract_query->{type} and $abstract_query->{type} eq "query_plan" and $depth;
+
+    return $q;
+}
 
 #-------------------------------
 package QueryParser::query_plan;
@@ -813,11 +1000,80 @@ sub new_filter {
     return $node;
 }
 
+
+sub _merge_filters {
+    my $left_filter = shift;
+    my $right_filter = shift;
+    my $join = shift;
+
+    return undef unless $left_filter or $right_filter;
+    return $right_filter unless $left_filter;
+    return $left_filter unless $right_filter;
+
+    my $args = $left_filter->{args} || [];
+
+    if ($join eq '|') {
+        push(@$args, @{$right_filter->{args}});
+
+    } else {
+        # find the intersect values
+        my %new_vals;
+        map { $new_vals{$_} = 1 } @{$right_filter->{args} || []};
+        $args = [ grep { $new_vals{$_} } @$args ];
+    }
+
+    $left_filter->{args} = $args;
+    return $left_filter;
+}
+
+sub collapse_filters {
+    my $self = shift;
+    my $name = shift;
+
+    # start by merging any filters at this level.
+    # like-level filters are always ORed together
+
+    my $cur_filter;
+    my @cur_filters = grep {$_->name eq $name } @{ $self->filters };
+    if (@cur_filters) {
+        $cur_filter = shift @cur_filters;
+        my $args = $cur_filter->{args} || [];
+        $cur_filter = _merge_filters($cur_filter, $_, '|') for @cur_filters;
+    }
+
+    # next gather the collapsed filters from sub-plans and 
+    # merge them with our own
+
+    my @subquery = @{$self->{query}};
+
+    while (@subquery) {
+        my $blob = shift @subquery;
+        shift @subquery; # joiner
+        next unless $blob->isa('QueryParser::query_plan');
+        my $sub_filter = $blob->collapse_filters($name);
+        $cur_filter = _merge_filters($cur_filter, $sub_filter, $self->joiner);
+    }
+
+    if ($self->QueryParser->debug) {
+        my @args = ($cur_filter and $cur_filter->{args}) ? @{$cur_filter->{args}} : ();
+        warn "collapse_filters($name) => [@args]\n";
+    }
+
+    return $cur_filter;
+}
+
 sub find_filter {
     my $self = shift;
     my $needle = shift;;
     return undef unless ($needle);
-    return grep { $_->name eq $needle } @{ $self->filters };
+
+    my $filter = $self->collapse_filters($needle);
+
+    warn "find_filter($needle) => " . 
+        (($filter and $filter->{args}) ? "@{$filter->{args}}" : '[]') . "\n" 
+        if $self->QueryParser->debug;
+
+    return $filter ? ($filter) : ();
 }
 
 sub find_modifier {
@@ -915,7 +1171,7 @@ sub add_modifier {
     my $modifier = shift;
 
     $self->{modifiers} ||= [];
-    return $self if (grep {$$_ eq $$modifier} @{$self->{modifiers}});
+    $self->{modifiers} = [ grep {$_->name ne $modifier->name} @{$self->{modifiers}} ];
 
     push(@{$self->{modifiers}}, $modifier);
 
@@ -933,7 +1189,7 @@ sub add_facet {
     my $facet = shift;
 
     $self->{facets} ||= [];
-    return $self if (grep {$_->name eq $facet->name} @{$self->{facets}});
+    $self->{facets} = [ grep {$_->name ne $facet->name} @{$self->{facets}} ];
 
     push(@{$self->{facets}}, $facet);
 
@@ -951,16 +1207,66 @@ sub add_filter {
     my $filter = shift;
 
     $self->{filters} ||= [];
-    return $self if (grep {$_->name eq $filter->name} @{$self->{filters}});
 
     push(@{$self->{filters}}, $filter);
 
     return $self;
 }
 
+# %opts supports two options at this time:
+#   no_phrases :
+#       If true, do not do anything to the phrases and unphrases
+#       fields on any discovered nodes.
+#   with_config :
+#       If true, also return the query parser config as part of the blob.
+#       This will get set back to 0 before recursion to avoid repetition.
+sub to_abstract_query {
+    my $self = shift;
+    my %opts = @_;
+
+    my $pkg = ref $self->QueryParser || $self->QueryParser;
+
+    my $abstract_query = {
+        type => "query_plan",
+        filters => [map { $_->to_abstract_query } @{$self->filters}],
+        modifiers => [map { $_->to_abstract_query } @{$self->modifiers}]
+    };
+
+    if ($opts{with_config}) {
+        $opts{with_config} = 0;
+        $abstract_query->{config} = $QueryParser::parser_config{$pkg};
+    }
+
+    my $kids = [];
+
+    for my $qnode (@{$self->query_nodes}) {
+        # Remember: qnode can be a joiner string, a node, or another query_plan
+
+        if (QueryParser::_util::is_joiner($qnode)) {
+            if ($abstract_query->{children}) {
+                my $open_joiner = (keys(%{$abstract_query->{children}}))[0];
+                next if $open_joiner eq $qnode;
+
+                my $oldroot = $abstract_query->{children};
+                $kids = [$oldroot];
+                $abstract_query->{children} = {$qnode => $kids};
+            } else {
+                $abstract_query->{children} = {$qnode => $kids};
+            }
+        } else {
+            push @$kids, $qnode->to_abstract_query(%opts);
+        }
+    }
+
+    $abstract_query->{children} ||= { QueryParser::_util::default_joiner() => $kids };
+    return $abstract_query;
+}
+
 
 #-------------------------------
 package QueryParser::query_plan::node;
+use Data::Dumper;
+$Data::Dumper::Indent = 0;
 
 sub new {
     my $pkg = shift;
@@ -976,17 +1282,31 @@ sub new_atom {
     return do{$pkg.'::atom'}->new( @_ );
 }
 
-sub requested_class { # also split into classname and fields
+sub requested_class { # also split into classname, fields and alias
     my $self = shift;
     my $class = shift;
 
     if ($class) {
+        my @afields;
+        my (undef, $alias) = split '#', $class;
+        if ($alias) {
+            $class =~ s/#[^|]+//;
+            ($alias, @afields) = split '\|', $alias;
+        }
+
+        my @fields = @afields;
         my ($class_part, @field_parts) = split '\|', $class;
+        for my $f (@field_parts) {
+             push(@fields, $f) unless (grep { $f eq $_ } @fields);
+        }
+
         $class_part ||= $class;
 
         $self->{requested_class} = $class;
+        $self->{alias} = $alias if $alias;
+        $self->{alias_fields} = \@afields if $alias;
         $self->{classname} = $class_part;
-        $self->{fields} = \@field_parts;
+        $self->{fields} = \@fields;
     }
 
     return $self->{requested_class};
@@ -998,6 +1318,22 @@ sub plan {
 
     $self->{plan} = $plan if ($plan);
     return $self->{plan};
+}
+
+sub alias {
+    my $self = shift;
+    my $alias = shift;
+
+    $self->{alias} = $alias if ($alias);
+    return $self->{alias};
+}
+
+sub alias_fields {
+    my $self = shift;
+    my $alias = shift;
+
+    $self->{alias_fields} = $alias if ($alias);
+    return $self->{alias_fields};
 }
 
 sub classname {
@@ -1091,6 +1427,144 @@ sub add_dummy_atom {
     return $self;
 }
 
+# This will find up to one occurence of @$short_list within @$long_list, and
+# replace it with the single atom $replacement.
+sub replace_phrase_in_abstract_query {
+    my ($self, $short_list, $long_list, $replacement) = @_;
+
+    my $success = 0;
+    my @already = ();
+    my $goal = scalar @$short_list;
+
+    for (my $i = 0; $i < scalar (@$long_list); $i++) {
+        my $right = $long_list->[$i];
+
+        if (QueryParser::_util::compare_abstract_atoms(
+            $short_list->[scalar @already], $right
+        )) {
+            push @already, $i;
+        } elsif (scalar @already) {
+            @already = ();
+            next;
+        }
+
+        if (scalar @already == $goal) {
+            splice @$long_list, $already[0], scalar(@already), $replacement;
+            $success = 1;
+            last;
+        }
+    }
+
+    return $success;
+}
+
+sub to_abstract_query {
+    my $self = shift;
+    my %opts = @_;
+
+    my $pkg = ref $self->plan->QueryParser || $self->plan->QueryParser;
+
+    my $abstract_query = {
+        "type" => "node",
+        "alias" => $self->alias,
+        "alias_fields" => $self->alias_fields,
+        "class" => $self->classname,
+        "fields" => $self->fields
+    };
+
+    my $kids = [];
+
+    for my $qatom (@{$self->query_atoms}) {
+        if (QueryParser::_util::is_joiner($qatom)) {
+            if ($abstract_query->{children}) {
+                my $open_joiner = (keys(%{$abstract_query->{children}}))[0];
+                next if $open_joiner eq $qatom;
+
+                my $oldroot = $abstract_query->{children};
+                $kids = [$oldroot];
+                $abstract_query->{children} = {$qatom => $kids};
+            } else {
+                $abstract_query->{children} = {$qatom => $kids};
+            }
+        } else {
+            push @$kids, $qatom->to_abstract_query;
+        }
+    }
+
+    if ($self->{phrases} and not $opts{no_phrases}) {
+        for my $phrase (@{$self->{phrases}}) {
+            # Phrases appear duplication in a real QP tree, and we don't want
+            # that duplication in our abstract query.  So for all our phrases,
+            # break them into atoms as QP would, and remove any matching
+            # sequences of atoms from our abstract query.
+
+            my $tmptree = $self->{plan}->{QueryParser}->new(query => '"'.$phrase.'"')->parse->parse_tree;
+            if ($tmptree) {
+                # For a well-behaved phrase, we should now have only one node
+                # in the $tmptree query plan, and that node should have an
+                # orderly list of atoms and joiners.
+
+                if ($tmptree->{query} and scalar(@{$tmptree->{query}}) == 1) {
+                    my $tmplist;
+
+                    eval {
+                        $tmplist = $tmptree->{query}->[0]->to_abstract_query(
+                            no_phrases => 1
+                        )->{children}->{'&'}->[0]->{children}->{'&'};
+                    };
+                    next if $@;
+
+                    foreach (
+                        QueryParser::_util::find_arrays_in_abstract($abstract_query->{children})
+                    ) {
+                        last if $self->replace_phrase_in_abstract_query(
+                            $tmplist,
+                            $_,
+                            QueryParser::_util::fake_abstract_atom_from_phrase($phrase)
+                        );
+                    }
+                }
+            }
+        }
+    }
+
+    # Do the same as the preceding block for unphrases (negated phrases).
+    if ($self->{unphrases} and not $opts{no_phrases}) {
+        for my $phrase (@{$self->{unphrases}}) {
+            my $tmptree = $self->{plan}->{QueryParser}->new(
+                query => $QueryParser::parser_config{$pkg}{operators}{disallowed}.
+                    '"' . $phrase . '"'
+            )->parse->parse_tree;
+
+            if ($tmptree) {
+                if ($tmptree->{query} and scalar(@{$tmptree->{query}}) == 1) {
+                    my $tmplist;
+
+                    eval {
+                        $tmplist = $tmptree->{query}->[0]->to_abstract_query(
+                            no_phrases => 1
+                        )->{children}->{'&'}->[0]->{children}->{'&'};
+                    };
+                    next if $@;
+
+                    foreach (
+                        QueryParser::_util::find_arrays_in_abstract($abstract_query->{children})
+                    ) {
+                        last if $self->replace_phrase_in_abstract_query(
+                            $tmplist,
+                            $_,
+                            QueryParser::_util::fake_abstract_atom_from_phrase($phrase, 1)
+                        );
+                    }
+                }
+            }
+        }
+    }
+
+    $abstract_query->{children} ||= { QueryParser::_util::default_joiner() => $kids };
+    return $abstract_query;
+}
+
 #-------------------------------
 package QueryParser::query_plan::node::atom;
 
@@ -1126,6 +1600,14 @@ sub suffix {
     return $self->{suffix};
 }
 
+sub to_abstract_query {
+    my ($self) = @_;
+    
+    return {
+        (map { $_ => $self->$_ } qw/prefix suffix content/),
+        "type" => "atom"
+    };
+}
 #-------------------------------
 package QueryParser::query_plan::filter;
 
@@ -1155,6 +1637,14 @@ sub negate {
 sub args {
     my $self = shift;
     return $self->{args};
+}
+
+sub to_abstract_query {
+    my ($self) = @_;
+    
+    return {
+        map { $_ => $self->$_ } qw/name negate args/
+    };
 }
 
 #-------------------------------
@@ -1188,6 +1678,15 @@ sub values {
     return $self->{'values'};
 }
 
+sub to_abstract_query {
+    my ($self) = @_;
+
+    return {
+        (map { $_ => $self->$_ } qw/name negate values/),
+        "type" => "facet"
+    };
+}
+
 #-------------------------------
 package QueryParser::query_plan::modifier;
 
@@ -1195,14 +1694,25 @@ sub new {
     my $pkg = shift;
     $pkg = ref($pkg) || $pkg;
     my $modifier = shift;
+    my $negate = shift;
 
-    return bless \$modifier => $pkg;
+    return bless { name => $modifier, negate => $negate } => $pkg;
 }
 
 sub name {
     my $self = shift;
-    return $$self;
+    return $self->{name};
 }
 
+sub negate {
+    my $self = shift;
+    return $self->{negate};
+}
+
+sub to_abstract_query {
+    my ($self) = @_;
+    
+    return $self->name;
+}
 1;
 

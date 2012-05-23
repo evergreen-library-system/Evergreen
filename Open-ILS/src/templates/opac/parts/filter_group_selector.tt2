@@ -1,0 +1,31 @@
+[%- 
+    # If caller passes a list of possible filter_groups
+    # search all until we find some values
+    IF !filter_group.size; filter_group = [filter_group]; END;
+    group = '';
+    FOR code IN filter_group;
+        group = ctx.search_filter_groups.$code;
+        LAST IF group AND group.entries.size;
+    END;
+    name = name || "fg:" _ group.code;
+    id = id || group.code _ "_selector";
+    values = values || CGI.param(name); 
+-%]
+
+<select id='[% id %]' name='[% name %]'[%
+    multiple ? ' multiple="multiple"' : '';
+    size ? (' size="' _ size _ '"') : ''; %]>
+[% IF none_ok %]
+    <option value=''>[% none_label ? none_label : l('-- Any --') %]</option>
+[% END;
+# turn the list of objects into a list of hashes to 
+# leverage TT's array.sort('<hashkey>') behavior
+sorter = [];
+FOR o IN group.entries;
+    sorter.push({id => o.id, label => o.query.label}); 
+END;
+FOR o IN sorter.sort('label') %]
+    <option value='[% o.id %]'[% values.grep(o.id).size ? ' selected="selected"' : '' %]>[% o.label | html %]</option>
+[%  END -%]
+</select>
+

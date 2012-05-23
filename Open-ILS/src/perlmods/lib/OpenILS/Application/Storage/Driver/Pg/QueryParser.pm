@@ -6,7 +6,41 @@ use OpenILS::Application::Storage::QueryParser;
 use base 'QueryParser';
 use OpenSRF::Utils::JSON;
 use OpenILS::Application::AppUtils;
+use OpenILS::Utils::CStoreEditor;
 my $U = 'OpenILS::Application::AppUtils';
+
+my ${spc} = ' ' x 2;
+sub subquery_callback {
+    my ($invocant, $self, $struct, $filter, $params, $negate) = @_;
+
+    return join(
+        ' ',
+        map {
+            $_->query_text
+        } @{
+            OpenILS::Utils::CStoreEditor
+                ->new
+                ->search_actor_search_query({ id => $params })
+        }
+    );
+}
+
+sub filter_group_entry_callback {
+    my ($invocant, $self, $struct, $filter, $params, $negate) = @_;
+
+    return sprintf(' saved_query(%s)', 
+        join(
+            ',', 
+            map {
+                $_->query
+            } @{
+                OpenILS::Utils::CStoreEditor
+                    ->new
+                    ->search_actor_search_filter_group_entry({ id => $params })
+            }
+        )
+    );
+}
 
 sub quote_value {
     my $self = shift;
@@ -364,9 +398,9 @@ sub TEST_SETUP {
     __PACKAGE__->add_relevance_bump( title => proper => full_match => 20 );
     __PACKAGE__->add_relevance_bump( title => proper => word_order => 10 );
     
-    __PACKAGE__->add_search_field_id_map( author => coporate => 7 => 1 );
-    __PACKAGE__->add_relevance_bump( author => coporate => first_word => 1.5 );
-    __PACKAGE__->add_relevance_bump( author => coporate => full_match => 20 );
+    __PACKAGE__->add_search_field_id_map( author => corporate => 7 => 1 );
+    __PACKAGE__->add_relevance_bump( author => corporate => first_word => 1.5 );
+    __PACKAGE__->add_relevance_bump( author => corporate => full_match => 20 );
     
     __PACKAGE__->add_facet_field_id_map( author => personal => 8 => 1 );
 
@@ -409,6 +443,10 @@ sub TEST_SETUP {
 }
 
 __PACKAGE__->default_search_class( 'keyword' );
+
+# implements EG-specific stored subqueries
+__PACKAGE__->add_search_filter( 'saved_query', sub { return __PACKAGE__->subquery_callback(@_) } );
+__PACKAGE__->add_search_filter( 'filter_group_entry', sub { return __PACKAGE__->filter_group_entry_callback(@_) } );
 
 # will be retained simply for back-compat
 __PACKAGE__->add_search_filter( 'format' );
@@ -501,7 +539,7 @@ sub toSQL {
     my $flat_plan = $self->flatten;
 
     # generate the relevance ranking
-    my $rel = "AVG(\n\t\t(" . join(")+\n\t\t(", @{$$flat_plan{rank_list}}) . ")\n\t)+1";
+    my $rel = "AVG(\n${spc}${spc}(" . join(")+\n${spc}${spc}(", @{$$flat_plan{rank_list}}) . ")\n${spc})+1";
 
     # find any supplied sort option
     my ($sort_filter) = $self->find_filter('sort');
@@ -518,35 +556,9 @@ sub toSQL {
     }
     $rel = "1.0/($rel)::NUMERIC";
 
-    my %dyn_filters = ( '' => [] ); # the "catch-all" key
-    for my $f ( @{ $self->QueryParser->dynamic_filters } ) {
-        my $col = $f;
-        $col = 'item_lang' if ($f eq 'language'); #XXX filter aliases would address this ... booo ... later
-
-        my ($filter) = $self->find_filter($f);
-        if ($filter) {
-            my @fargs = @{$filter->args};
-
-            if (@fargs > 1 || $filter->negate) {
-                my $NOT = $filter->negate ? 'NOT' : '';
-                $dyn_filters{$f} = "$NOT( " .
-                    join(
-                        " OR ",
-                        map { "mrd.attrs \@> hstore('$col', " . $self->QueryParser->quote_value($_) . ")" } @fargs
-                    ) . 
-                    " )";
-            } else {
-                push(@{$dyn_filters{''}}, "hstore('$col', " . $self->QueryParser->quote_value($fargs[0]) . ")");
-            }
-        }
-    }
-
-    my $combined_dyn_filters = '';
-    $combined_dyn_filters .= 'AND mrd.attrs @> (' . join(' || ', @{$dyn_filters{''}}) . ') ' if (@{$dyn_filters{''}});
-    delete($dyn_filters{''});
-
-    my @dyn_filter_list = values(%dyn_filters);
-    $combined_dyn_filters .= 'AND ' . join(' AND ', @dyn_filter_list) if (@dyn_filter_list);
+    my $mra_join = 'INNER JOIN metabib.record_attr mrd ON (m.source = mrd.id';
+    $mra_join .= ' AND '. $flat_plan->{fwhere} if $flat_plan->{fwhere};
+    $mra_join .= ')';
     
     my $rank = $rel;
 
@@ -656,6 +668,7 @@ sub toSQL {
         $flat_where = "AND $flat_where";
     }
     my $with = $$flat_plan{with};
+    $with= "\nWITH $with" if $with;
 
     # Need an array for query parser db function; this gives a better plan
     # than the ARRAY_AGG(DISTINCT m.source) option as of PostgreSQL 9.1
@@ -673,16 +686,15 @@ SELECT  $key AS id,
         $rank AS rank, 
         FIRST(mrd.attrs->'date1') AS tie_break
   FROM  metabib.metarecord_source_map m
-        JOIN metabib.record_attr mrd ON (m.source = mrd.id)
         $container
         $record_list
         $$flat_plan{from}
+        $mra_join
   WHERE 1=1
         $before
         $after
         $during
         $between
-        $combined_dyn_filters
         $flat_where
   GROUP BY 1
   ORDER BY 4 $desc $nullpos, 5 DESC $nullpos, 3 DESC
@@ -723,9 +735,18 @@ sub flatten {
     my $from = shift || '';
     my $where = shift || '(';
     my $with = '';
+    my $fwhere = shift || ''; # for joining dynamic filters (mra)
+
+    my @dyn_filters;
+    for my $filter (@{$self->filters}) {
+        push(@dyn_filters, $filter) if 
+            grep { $_ eq $filter->name } 
+                @{ $self->QueryParser->dynamic_filters };
+    };
 
     my @rank_list;
     for my $node ( @{$self->query_nodes} ) {
+
         if (ref($node)) {
             if ($node->isa( 'QueryParser::query_plan::node' )) {
 
@@ -741,30 +762,39 @@ sub flatten {
                 my $node_rank = 'COALESCE(' . $node->rank . " * ${talias}.weight, 0.0)";
 
                 my $core_limit = $self->QueryParser->core_limit || 25000;
-                $from .= "\n\tLEFT JOIN (\n\t\tSELECT fe.*, fe_weight.weight, xq.tsq /* search */\n\t\t  FROM  $table AS fe";
-                $from .= "\n\t\t\tJOIN config.metabib_field AS fe_weight ON (fe_weight.id = fe.field)";
+                $from .= "\n${spc}LEFT JOIN (\n${spc}${spc}SELECT fe.*, fe_weight.weight, ${talias}_xq.tsq /* search */\n${spc}${spc}  FROM  $table AS fe";
+                $from .= "\n${spc}${spc}${spc}JOIN config.metabib_field AS fe_weight ON (fe_weight.id = fe.field)";
 
                 if ($node->dummy_count < @{$node->only_atoms} ) {
-                    $with.= "\n\t\t\tWITH xq AS (SELECT ". $node->tsquery ." AS tsq )";
-                    $from .= "\n\t\t\tJOIN xq ON (fe.index_vector @@ xq.tsq)";
+                    $with .= ",\n" if $with;
+                    $with .= "${talias}_xq AS (SELECT ". $node->tsquery ." AS tsq )";
+                    $from .= "\n${spc}${spc}${spc}JOIN ${talias}_xq ON (fe.index_vector @@ ${talias}_xq.tsq)";
                 } else {
-                    $from .= "\n\t\t\t, (SELECT NULL::tsquery AS tsq ) AS x";
+                    $from .= "\n${spc}${spc}${spc}, (SELECT NULL::tsquery AS tsq ) AS x";
                 }
 
                 my @bump_fields;
                 if (@{$node->fields} > 0) {
                     @bump_fields = @{$node->fields};
 
-                    my @field_ids;
-                    push(@field_ids, $self->QueryParser->search_field_ids_by_class( $node->classname, $_ )->[0]) for (@bump_fields);
-                    $from .= "\n\t\t\tWHERE fe_weight.id IN  (". join(',', @field_ids) .")";
+                    my @field_ids = grep defined, (
+                        map {
+                            $self->QueryParser->search_field_ids_by_class(
+                                $node->classname, $_
+                            )->[0]
+                        } @bump_fields
+                    );
+                    if (@field_ids) {
+                        $from .= "\n${spc}${spc}${spc}WHERE fe_weight.id IN  (" .
+                            join(',', @field_ids) . ")";
+                    }
 
                 } else {
                     @bump_fields = @{$self->QueryParser->search_fields->{$node->classname}};
                 }
 
-                ###$from .= "\n\t\tLIMIT $core_limit";
-                $from .= "\n\t) AS $talias ON (m.source = ${talias}.source)";
+                ###$from .= "\n${spc}${spc}LIMIT $core_limit";
+                $from .= "\n${spc}) AS $talias ON (m.source = ${talias}.source)";
 
 
                 my %used_bumps;
@@ -778,14 +808,23 @@ sub flatten {
                         next if ($$bumps{$b}{multiplier} == 1); # optimization to remove unneeded bumps
 
                         my $bump_case = $self->rel_bump( $node, $b, $$bumps{$b}{multiplier} );
-                        $node_rank .= "\n\t\t\t\t * " . $bump_case if ($bump_case);
+                        $node_rank .= "\n${spc}${spc}${spc}${spc} * " . $bump_case if ($bump_case);
                     }
                 }
 
-                $where .= '(' . $talias . ".id IS NOT NULL";
-                $where .= ' AND ' . join(' AND ', map {"${talias}.value ~* ".$self->QueryParser->quote_phrase_value($_)} @{$node->phrases}) if (@{$node->phrases});
-                $where .= ' AND ' . join(' AND ', map {"${talias}.value !~* ".$self->QueryParser->quote_phrase_value($_)} @{$node->unphrases}) if (@{$node->unphrases});
-                $where .= ')';
+
+                my $twhere .= '(' . $talias . ".id IS NOT NULL";
+                $twhere .= ' AND ' . join(' AND ', map {"${talias}.value ~* ".$self->QueryParser->quote_phrase_value($_)} @{$node->phrases}) if (@{$node->phrases});
+                $twhere .= ' AND ' . join(' AND ', map {"${talias}.value !~* ".$self->QueryParser->quote_phrase_value($_)} @{$node->unphrases}) if (@{$node->unphrases});
+                $twhere .= ')';
+
+                if (@dyn_filters or !$self->top_plan) {
+                    # if this WHERE is represented within the dynamic 
+                    # filter's ON clause, it's not also needed in the main WHERE.
+                    $fwhere .= $twhere;
+                } else {
+                    $where .= $twhere;
+                }
 
                 push @rank_list, $node_rank;
 
@@ -801,29 +840,83 @@ sub flatten {
                     @field_ids = @{ $self->QueryParser->facet_field_ids_by_class( $node->classname ) };
                 }
 
-                my $join_type = $node->negate ? 'LEFT' : 'INNER';
-                $from .= "\n\t$join_type JOIN /* facet */ metabib.facet_entry $talias ON (\n\t\tm.source = ${talias}.source\n\t\t".
-                         "AND SUBSTRING(${talias}.value,1,1024) IN (" . join(",", map { $self->QueryParser->quote_value($_) } @{$node->values}) . ")\n\t\t".
-                         "AND ${talias}.field IN (". join(',', @field_ids) . ")\n\t)";
+                my $join_type = ($node->negate or @dyn_filters or !$self->top_plan) ? 'LEFT' : 'INNER';
+                $from .= "\n${spc}$join_type JOIN /* facet */ metabib.facet_entry $talias ON (\n${spc}${spc}m.source = ${talias}.source\n${spc}${spc}".
+                         "AND SUBSTRING(${talias}.value,1,1024) IN (" . join(",", map { $self->QueryParser->quote_value($_) } @{$node->values}) . ")\n${spc}${spc}".
+                         "AND ${talias}.field IN (". join(',', @field_ids) . ")\n${spc})";
 
-                $where .= $node->negate ? "${talias}.id IS NULL" : 'TRUE';
+                if (@dyn_filters or !$self->top_plan) {
+                    my $NOT = $node->negate ? '' : ' NOT';
+                    $fwhere .= "${talias}.id IS$NOT NULL";
+                } else {
+                    $where .= $node->negate ? "${talias}.id IS NULL" : 'TRUE';
+                }
 
             } else {
                 my $subnode = $node->flatten;
 
+                # strip the trailing bool from the previous loop if there is 
+                # nothing to add to the where/fwhere within this loop.
+                if ($$subnode{where} eq '()') {
+                    $where =~ s/\s(AND|OR)\s$//;
+
+                } elsif ($$subnode{fwhere} eq '') {
+                    $fwhere =~ s/\s(AND|OR)\s$//;
+                }
+
                 push(@rank_list, @{$$subnode{rank_list}});
                 $from .= $$subnode{from};
-                $where .= "($$subnode{where})";
+
+                $where .= "($$subnode{where})" unless $$subnode{where} eq '()';
+                $fwhere .= "($$subnode{fwhere})" if $$subnode{fwhere};
+
+                if ($$subnode{with}) {
+                    $with .= ', ' if $with;
+                    $with .= " " . $$subnode{with};
+                }
             }
         } else {
-            $where .= ' AND ' if ($node eq '&');
-            $where .= ' OR ' if ($node eq '|');
-            # ... stitching the WHERE together ...
+
+            warn "flatten(): appending WHERE bool to: $where\n" if $self->QueryParser->debug;
+
+            if ($fwhere) {
+                # bool joiner for inter-plan filters
+                $fwhere .= ' AND ' if ($node eq '&');
+                $fwhere .= ' OR ' if ($node eq '|');
+
+            } elsif ($where ne '(') {
+
+                $where .= ' AND ' if ($node eq '&');
+                $where .= ' OR ' if ($node eq '|');
+            }
         }
     }
 
-    return { rank_list => \@rank_list, from => $from, where => $where.')', with => $with };
+    # for each dynamic filter, build the ON clause for the JOIN
+    for my $filter (@dyn_filters) {
+        
+        warn "flatten(): processing dynamic filter ". $filter->name ."\n"
+            if $self->QueryParser->debug;
 
+        # bool joiner for intra-plan nodes/filters
+        $fwhere .= sprintf(" %s ", ($self->joiner eq '&' ? 'AND' : 'OR')) if $fwhere;
+
+        my @fargs = @{$filter->args};
+        my $NOT = $filter->negate ? ' NOT' : '';
+        my $fname = $filter->name;
+        $fname = 'item_lang' if $fname eq 'language'; #XXX filter aliases 
+
+        $fwhere .= sprintf(
+            "attrs->'%s'$NOT IN (%s)", $fname, 
+            join(',', map { $self->QueryParser->quote_value($_) } @fargs)
+        );
+
+        warn "flatten(): filter where => $fwhere\n"
+            if $self->QueryParser->debug;
+    }
+    warn "flatten(): full filter where => $fwhere\n" if $self->QueryParser->debug;
+
+    return { rank_list => \@rank_list, from => $from, where => $where.')',  with => $with, fwhere => $fwhere };
 }
 
 
@@ -877,7 +970,7 @@ sub sql {
     my $sql = shift;
 
     $self->{sql} = $sql if ($sql);
-    
+
     return $self->{sql} if ($self->{sql});
     return $self->buildSQL;
 }
@@ -983,7 +1076,7 @@ sub tsquery {
 
     for my $atom (@{$self->query_atoms}) {
         if (ref($atom)) {
-            $self->{tsquery} .= "\n\t\t\t" .$atom->sql;
+            $self->{tsquery} .= "\n${spc}${spc}${spc}" .$atom->sql;
         } else {
             $self->{tsquery} .= $atom x 2;
         }
@@ -996,7 +1089,7 @@ sub rank {
     my $self = shift;
 
     my $rank_norm_map = $self->plan->QueryParser->custom_data->{rank_cd_weight_map};
-    
+
     my $cover_density = 0;
     for my $norm ( keys %$rank_norm_map) {
         $cover_density += $$rank_norm_map{$norm} if ($self->plan->find_modifier($norm));

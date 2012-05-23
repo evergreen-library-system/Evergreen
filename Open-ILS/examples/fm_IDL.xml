@@ -4771,6 +4771,68 @@ SELECT  usr,
             </actions>
         </permacrud>
 	</class>
+	<class id="asq" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::search_query" oils_persist:tablename="actor.search_query" reporter:label="Search Query" oils_persist:field_safe="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.search_query_id_seq">
+			<field name="id" reporter:datatype="id" reporter:selector="label"/>
+			<field name="label" reporter:datatype="text" oils_persist:i18n="true"/>
+			<field name="query_text" reporter:datatype="text"/>
+		</fields>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve/>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="asfg" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::search_filter_group" oils_persist:tablename="actor.search_filter_group" reporter:label="Search Filter Group" oils_persist:field_safe="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.search_filter_group_id_seq">
+			<field name="id" reporter:datatype="id" reporter:selector="label"/>
+			<field name="owner" reporter:datatype="org_unit"/>
+			<field name="code" reporter:datatype="text"/>
+			<field name="label" reporter:datatype="text" oils_persist:i18n="true"/>
+			<field name="create_date" reporter:datatype="timestamp"/>
+			<field name="entries" oils_persist:virtual="true" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="entries" reltype="has_many" key="grp" map="" class="asfge"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_SEARCH_FILTER_GROUP" context_field="owner"/>
+                <retrieve/>
+                <update permission="ADMIN_SEARCH_FILTER_GROUP" context_field="owner"/>
+                <delete permission="ADMIN_SEARCH_FILTER_GROUP" context_field="owner"/>
+            </actions>
+        </permacrud>
+	</class>
+	<class id="asfge" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::search_filter_group_entry" oils_persist:tablename="actor.search_filter_group_entry" reporter:label="Search Filter Group Entry" oils_persist:field_safe="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.search_filter_group_entry_id_seq">
+			<field name="id" reporter:datatype="id" reporter:selector="label"/>
+			<field name="grp" reporter:datatype="link"/>
+			<field name="pos" reporter:datatype="int"/>
+			<field name="query" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="grp" reltype="has_a" key="id" map="" class="asfge"/>
+			<link field="query" reltype="has_a" key="id" map="" class="asq"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_SEARCH_FILTER_GROUP">
+                    <context link="grp" field="owner"/>
+                </create>
+                <retrieve/>
+                <update permission="ADMIN_SEARCH_FILTER_GROUP">
+                    <context link="grp" field="owner"/>
+                </update>
+                <delete permission="ADMIN_SEARCH_FILTER_GROUP">
+                    <context link="grp" field="owner"/>
+                </delete>
+            </actions>
+        </permacrud>
+	</class>
+
 	<!-- A note: Please update alhr when updating ahr -->
 	<class id="ahr" controller="open-ils.cstore" oils_obj:fieldmapper="action::hold_request" oils_persist:tablename="action.hold_request" reporter:core="true" reporter:label="Hold Request">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.hold_request_id_seq">

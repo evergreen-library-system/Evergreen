@@ -65,6 +65,15 @@ sub _prepare_biblio_search {
         $query .= " $1($term)" if length $term;
     }
 
+    # filter group entries.  Entries from like filters are grouped into a single 
+    # filter_group_entry() filter (ORed).  Each collection is ANDed together.
+    # fg:foo_group=foo_entry_id
+    foreach (grep /^fg:/, $cgi->param) {
+        /:(-?\w+)$/ or next;
+        my $term = join(",", $cgi->param($_));
+        $query .= " filter_group_entry($term)" if length $term;
+    }
+
     if ($cgi->param("bookbag")) {
         $query .= " container(bre,bookbag," . int($cgi->param("bookbag")) . ")";
     }
