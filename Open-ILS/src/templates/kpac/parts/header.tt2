@@ -17,7 +17,8 @@
         [% IF ctx.user %]
             [% redir = CGI.url('-base' => 1) _ ctx.kpac_root _ '/home' %]
             <a href="[% mkurl(ctx.logout_page, 
-                {redirect_to => redir.replace('^https:', 'http:')}, 1) %]">[% l('Logout') %]</a>
+                {redirect_to => redir.replace('^https:', 'http:')}, 1) %]">[% 
+                    l('Logout ([_1] [_2])', ctx.user.first_given_name, ctx.user.family_name) %]</a>
         [% ELSE %]
             <a href="[% mkurl(ctx.opac_root _ '/login').replace('^http:', 'https:') %]">[% l('Login') %]</a>
         [% END %]
