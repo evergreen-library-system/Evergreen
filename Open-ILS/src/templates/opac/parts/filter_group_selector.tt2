@@ -9,10 +9,11 @@
     END;
     name = name || "fg:" _ group.code;
     id = id || group.code _ "_selector";
+    class = class || '';
     values = values || CGI.param(name); 
 -%]
 
-<select id='[% id %]' name='[% name %]'[%
+<select id='[% id %]' class='[% class %]' name='[% name %]'[%
     multiple ? ' multiple="multiple"' : '';
     size ? (' size="' _ size _ '"') : ''; %]>
 [% IF none_ok %]
@@ -22,9 +23,9 @@
 # leverage TT's array.sort('<hashkey>') behavior
 sorter = [];
 FOR o IN group.entries;
-    sorter.push({id => o.id, label => o.query.label}); 
+    sorter.push({id => o.id, label => o.query.label, pos => o.pos}); 
 END;
-FOR o IN sorter.sort('label') %]
+FOR o IN sorter.sort('pos') %]
     <option value='[% o.id %]'[% values.grep(o.id).size ? ' selected="selected"' : '' %]>[% o.label | html %]</option>
 [%  END -%]
 </select>
