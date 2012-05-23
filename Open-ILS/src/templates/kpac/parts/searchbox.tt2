@@ -32,10 +32,16 @@
     </table>
     <div class="hr">&nbsp;</div>
     <div class="sub_search_category">
-        <!-- XXX TODO: QP Groups / saved searches -->
-        <select class="search_category" name="search_category">
-            <option>Children's Material</option>
-        </select>
+        <span>[% ctx.filter_groups.kpac.label %]<span>
+        <span>
+        [% 
+            INCLUDE 'opac/parts/filter_group_selector.tt2' 
+            filter_group='kpac_main' 
+            class='search_category'
+            none_label=l('Full Collection')
+            none_ok=1 
+        %]
+        <span>
     </div>
     <div class="hr">&nbsp;</div>
     <div>
