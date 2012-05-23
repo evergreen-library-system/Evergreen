@@ -1,4 +1,13 @@
 <kpac version="1.0" xmlns="http://evergreen-ils.org/spec/OPAC/kpac/v1">
+
+    <!-- 
+    If configured, all searches, including topic searches configured
+    below, will be appended with this filter.  The purpose is to restrict 
+    all searches within the kpac to a specific collection.
+
+    <global_filter>audience(a,b,c,d,j)</global_filter>
+    -->
+
     <pages>
         <!-- top-level layout pages -->
         <page id="1" columns="5" name="Home" img="/images/home.jpg">

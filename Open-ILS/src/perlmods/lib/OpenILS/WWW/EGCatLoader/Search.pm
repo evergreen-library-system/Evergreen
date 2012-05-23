@@ -64,6 +64,8 @@ sub _prepare_biblio_search {
 
     my $query = _prepare_biblio_search_basics($cgi) || '';
 
+    $query .= ' ' . $ctx->{global_search_filter} if $ctx->{global_search_filter};
+
     foreach ($cgi->param('modifier')) {
         # The unless bit is to avoid stacking modifiers.
         $query = ('#' . $_ . ' ' . $query) unless $query =~ qr/\#\Q$_/;
