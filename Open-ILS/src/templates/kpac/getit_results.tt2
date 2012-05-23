@@ -30,11 +30,11 @@
         <p>
     [% ELSIF CGI.param('hold') %]
         [% lib_html = ctx.get_aou(ctx.hold.pickup_lib).name | html %]
-        <h2 class="sub_header2">[% l('You Got It!') %]</h2>
+        <h2 class="sub_header2">[% l('Hold Successfull!') %]</h2>
         <p>
         [% |l(title_html, lib_html) %]
         Your request for <a href="[% mkurl(ctx.kpac_root _ '/record/' _ ctx.bre_id, {}, kill_params) %]">[_1]</a> was successful.<br/>
-        You will be able to pick up this material at [_2].
+        You will be notified when your item is ready for pickup.  You will be able to pick your item up at [_2].
         [% END %]
         <p>
     [% ELSE %]

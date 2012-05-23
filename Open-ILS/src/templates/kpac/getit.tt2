@@ -26,7 +26,7 @@
 
                     <div class="top_side">
                         <h2>get it!</h2>
-                        <p>[% |l %]If you would like to request this item, please enter the 
+                        <p>[% |l %]If you would like to place a hold on this item, please enter the 
                             following information and click<br />Submit below:[% END %]</p>
                     </div>
 
