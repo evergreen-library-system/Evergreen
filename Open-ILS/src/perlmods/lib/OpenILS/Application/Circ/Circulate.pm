@@ -191,12 +191,13 @@ __PACKAGE__->register_method(
 
 
 sub run_method {
-    my( $self, $conn, $auth, $args ) = @_;
+    my( $self, $conn, $auth, $args, $oargs ) = @_;
     translate_legacy_args($args);
+    $oargs = { all => 1 } unless defined $oargs;
     my $api = $self->api_name;
 
     my $circulator = 
-        OpenILS::Application::Circ::Circulator->new($auth, %$args);
+        OpenILS::Application::Circ::Circulator->new($auth, %$args, $oargs);
 
     return circ_events($circulator) if $circulator->bail_out;
 
@@ -540,6 +541,7 @@ my @AUTOLOAD_FIELDS = qw/
     hold_as_transit
     fake_hold_dest
     limit_groups
+    override_args
 /;
 
 
@@ -569,12 +571,13 @@ sub AUTOLOAD {
 
 
 sub new {
-    my( $class, $auth, %args ) = @_;
+    my( $class, $auth, %args, $oargs ) = @_;
     $class = ref($class) || $class;
     my $self = bless( {}, $class );
 
     $self->events([]);
     $self->editor(new_editor(xact => 1, authtoken => $auth));
+    $self->override_args($oargs);
 
     unless( $self->editor->checkauth ) {
         $self->bail_on_events($self->editor->event);
@@ -1367,6 +1370,7 @@ sub override_events {
     my $self = shift;
     my @events = @{$self->events};
     return unless @events;
+    my $oargs = $self->override_args;
 
     if(!$self->override) {
         return $self->bail_out(1) 
@@ -1375,14 +1379,18 @@ sub override_events {
 
     $self->events([]);
     
-   for my $e (@events) {
-      my $tc = $e->{textcode};
-      next if $tc eq 'SUCCESS';
-      my $ov = "$tc.override";
-      $logger->info("circulator: attempting to override event: $ov");
+    for my $e (@events) {
+        my $tc = $e->{textcode};
+        next if $tc eq 'SUCCESS';
+        if($oargs->{all} || grep { $_ eq $tc } @{$oargs->{events}}) {
+            my $ov = "$tc.override";
+            $logger->info("circulator: attempting to override event: $ov");
 
-        return $self->bail_on_events($self->editor->event)
-            unless( $self->editor->allowed($ov) );
+            return $self->bail_on_events($self->editor->event)
+                unless( $self->editor->allowed($ov) );
+        } else {
+            return $self->bail_out(1);
+        }
    }
 }
     
@@ -1408,7 +1416,7 @@ sub handle_claims_returned {
     my $evt;
 
     # - If the caller has set the override flag, we will check the item in
-    if($self->override) {
+    if($self->override && ($self->override_args->{all} || grep { $_ eq 'CIRC_CLAIMS_RETURNED' } @{$self->override_args->{events}}) ) {
 
         $CR->checkin_time('now');   
         $CR->checkin_scan_time('now');   

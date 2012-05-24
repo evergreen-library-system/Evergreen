@@ -106,9 +106,10 @@ __PACKAGE__->register_method(
 );
 
 sub create_record_xml {
-    my( $self, $client, $login, $xml, $source ) = @_;
+    my( $self, $client, $login, $xml, $source, $oargs ) = @_;
 
     my $override = 1 if $self->api_name =~ /override/;
+    $oargs = { all => 1 } unless defined $oargs;
 
     my( $user_obj, $evt ) = $U->checksesperm($login, 'CREATE_MARC');
     return $evt if $evt;
@@ -120,7 +121,7 @@ sub create_record_xml {
     $meth = $self->method_lookup(
         "open-ils.cat.biblio.record.xml.import.override") if $override;
 
-    my ($s) = $meth->run($login, $xml, $source);
+    my ($s) = $meth->run($login, $xml, $source, $oargs);
     return $s;
 }
 
@@ -155,16 +156,20 @@ __PACKAGE__->register_method(
 );
 
 sub biblio_record_replace_marc  {
-    my( $self, $conn, $auth, $recid, $newxml, $source ) = @_;
+    my( $self, $conn, $auth, $recid, $newxml, $source, $oargs ) = @_;
     my $e = new_editor(authtoken=>$auth, xact=>1);
     return $e->die_event unless $e->checkauth;
     return $e->die_event unless $e->allowed('CREATE_MARC', $e->requestor->ws_ou);
 
     my $fix_tcn = $self->api_name =~ /replace/o;
-    my $override = $self->api_name =~ /override/o;
+    if($self->api_name =~ /override/o) {
+        $oargs = { all => 1 } unless defined $oargs;
+    } else {
+        $oargs = {};
+    }
 
     my $res = OpenILS::Application::Cat::BibCommon->biblio_record_replace_marc(
-        $e, $recid, $newxml, $source, $fix_tcn, $override);
+        $e, $recid, $newxml, $source, $fix_tcn, $oargs);
 
     $e->commit unless $U->event_code($res);
 
@@ -404,14 +409,18 @@ __PACKAGE__->register_method(
 
 
 sub biblio_record_xml_import {
-    my( $self, $client, $authtoken, $xml, $source, $auto_tcn) = @_;
+    my( $self, $client, $authtoken, $xml, $source, $auto_tcn, $oargs) = @_;
     my $e = new_editor(xact=>1, authtoken=>$authtoken);
     return $e->die_event unless $e->checkauth;
     return $e->die_event unless $e->allowed('IMPORT_MARC', $e->requestor->ws_ou);
 
-    my $override = $self->api_name =~ /override/;
+    if ($self->api_name =~ /override/) {
+        $oargs = { all => 1 } unless defined $oargs;
+    } else {
+        $oargs = {};
+    }
     my $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import(
-        $e, $xml, $source, $auto_tcn, $override);
+        $e, $xml, $source, $auto_tcn, $oargs);
 
     return $record if $U->event_code($record);
 
@@ -718,15 +727,19 @@ __PACKAGE__->register_method(
 
 
 sub fleshed_copy_update {
-    my( $self, $conn, $auth, $copies, $delete_stats ) = @_;
+    my( $self, $conn, $auth, $copies, $delete_stats, $oargs ) = @_;
     return 1 unless ref $copies;
     my( $reqr, $evt ) = $U->checkses($auth);
     return $evt if $evt;
     my $editor = new_editor(requestor => $reqr, xact => 1);
-    my $override = $self->api_name =~ /override/;
+    if ($self->api_name =~ /override/) {
+        $oargs = { all => 1 } unless defined $oargs;
+    } else {
+        $oargs = {};
+    }
     my $retarget_holds = [];
     $evt = OpenILS::Application::Cat::AssetCommon->update_fleshed_copies(
-        $editor, $override, undef, $copies, $delete_stats, $retarget_holds, undef);
+        $editor, $oargs, undef, $copies, $delete_stats, $retarget_holds, undef);
 
     if( $evt ) { 
         $logger->info("fleshed copy update failed with event: ".OpenSRF::Utils::JSON->perl2JSON($evt));
@@ -845,12 +858,16 @@ __PACKAGE__->register_method(
     api_name => "open-ils.cat.asset.volume.fleshed.batch.update.override",);
 
 sub fleshed_volume_update {
-    my( $self, $conn, $auth, $volumes, $delete_stats, $options ) = @_;
+    my( $self, $conn, $auth, $volumes, $delete_stats, $options, $oargs ) = @_;
     my( $reqr, $evt ) = $U->checkses($auth);
     return $evt if $evt;
     $options ||= {};
 
-    my $override = ($self->api_name =~ /override/);
+    if ($self->api_name =~ /override/) {
+        $oargs = { all => 1 } unless defined $oargs;
+    } else {
+        $oargs = {};
+    }
     my $editor = new_editor( requestor => $reqr, xact => 1 );
     my $retarget_holds = [];
     my $auto_merge_vols = $options->{auto_merge_vols};
@@ -873,7 +890,7 @@ sub fleshed_volume_update {
             return $editor->die_event unless
                 $editor->allowed('UPDATE_VOLUME', $vol->owning_lib);
 
-            if(my $evt = $assetcom->delete_volume($editor, $vol, $override, $$options{force_delete_copies})) {
+            if(my $evt = $assetcom->delete_volume($editor, $vol, $oargs, $$options{force_delete_copies})) {
                 $editor->rollback;
                 return $evt;
             }
@@ -883,12 +900,12 @@ sub fleshed_volume_update {
 
         } elsif( $vol->isnew ) {
             $logger->info("vol-update: creating volume");
-            $evt = $assetcom->create_volume( $override, $editor, $vol );
+            $evt = $assetcom->create_volume( $oargs, $editor, $vol );
             return $evt if $evt;
 
         } elsif( $vol->ischanged ) {
             $logger->info("vol-update: update volume");
-            my $resp = update_volume($vol, $editor, ($override or $auto_merge_vols));
+            my $resp = update_volume($vol, $editor, ($oargs->{all} or grep { $_ eq 'VOLUME_LABEL_EXISTS' } @{$oargs->{events}} or $auto_merge_vols));
             return $resp->{evt} if $resp->{evt};
             $vol = $resp->{merge_vol};
         }
@@ -897,7 +914,7 @@ sub fleshed_volume_update {
         if( $copies and @$copies and !$vol->isdeleted ) {
             $_->call_number($vol->id) for @$copies;
             $evt = $assetcom->update_fleshed_copies(
-                $editor, $override, $vol, $copies, $delete_stats, $retarget_holds, undef);
+                $editor, $oargs, $vol, $copies, $delete_stats, $retarget_holds, undef);
             return $evt if $evt;
         }
     }
@@ -982,7 +999,7 @@ __PACKAGE__->register_method (
 
 
 sub batch_volume_transfer {
-    my( $self, $conn, $auth, $args ) = @_;
+    my( $self, $conn, $auth, $args, $oargs ) = @_;
 
     my $evt;
     my $rec     = $$args{docid};
@@ -990,6 +1007,7 @@ sub batch_volume_transfer {
     my $vol_ids = $$args{volumes};
 
     my $override = 1 if $self->api_name =~ /override/;
+    $oargs = { all => 1 } unless defined $oargs;
 
     $logger->info("merge: transferring volumes to lib=$o_lib and record=$rec");
 
@@ -1026,7 +1044,7 @@ sub batch_volume_transfer {
         # for each volume, see if there are any copies that have a 
         # remote circ_lib (circ_lib != vol->owning_lib and != $o_lib ).  
         # if so, warn them
-        unless( $override ) {
+        unless( $override && ($oargs->{all} || grep { $_ eq 'COPY_REMOTE_CIRC_LIB' } @{$oargs->{events}}) ) {
             for my $v (@all) {
 
                 $logger->debug("merge: searching for copies with remote circ_lib for volume ".$v->id);
@@ -1157,9 +1175,10 @@ __PACKAGE__->register_method(
 );
 
 sub create_serial_record_xml {
-    my( $self, $client, $login, $source, $owning_lib, $record_id, $xml ) = @_;
+    my( $self, $client, $login, $source, $owning_lib, $record_id, $xml, $oargs ) = @_;
 
     my $override = 1 if $self->api_name =~ /override/; # not currently used
+    $oargs = { all => 1 } unless defined $oargs; # Not currently used, but here for consistency.
 
     my $e = new_editor(xact=>1, authtoken=>$login);
     return $e->die_event unless $e->checkauth;

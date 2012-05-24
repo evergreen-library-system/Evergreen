@@ -67,9 +67,10 @@ __PACKAGE__->register_method(
 
 
 sub test_and_create_hold_batch {
-	my( $self, $conn, $auth, $params, $target_list ) = @_;
+	my( $self, $conn, $auth, $params, $target_list, $oargs ) = @_;
 
 	my $override = 1 if $self->api_name =~ /override/;
+    $oargs = { all => 1 } unless defined $oargs;
 
 	my $e = new_editor(authtoken=>$auth);
 	return $e->die_event unless $e->checkauth;
@@ -89,17 +90,15 @@ sub test_and_create_hold_batch {
     foreach (@$target_list) {
         $$params{$target_field} = $_;
         my $res;
-        if (! $override) {        
-            ($res) = $self->method_lookup(
-                'open-ils.circ.title_hold.is_possible')->run($auth, $params);
-        }
-        if ($override || $res->{'success'} == 1) {
+        ($res) = $self->method_lookup(
+            'open-ils.circ.title_hold.is_possible')->run($auth, $params, $override ? $oargs : {});
+        if ($res->{'success'} == 1) {
             my $ahr = construct_hold_request_object($params);
             my ($res2) = $self->method_lookup(
                 $override
                 ? 'open-ils.circ.holds.create.override'
                 : 'open-ils.circ.holds.create'
-            )->run($auth, $ahr);
+            )->run($auth, $ahr, $oargs);
             $res2 = {
                 'target' => $$params{$target_field},
                 'result' => $res2
@@ -166,10 +165,10 @@ __PACKAGE__->register_method(
 
 
 sub create_hold_batch {
-	my( $self, $conn, $auth, $hold_list ) = @_;
+	my( $self, $conn, $auth, $hold_list, $oargs ) = @_;
     (my $method = $self->api_name) =~ s/\.batch//og;
     foreach (@$hold_list) {
-        my ($res) = $self->method_lookup($method)->run($auth, $_);
+        my ($res) = $self->method_lookup($method)->run($auth, $_, $oargs);
         $conn->respond($res);
     }
     return undef;
@@ -223,12 +222,13 @@ __PACKAGE__->register_method(
 );
 
 sub create_hold {
-	my( $self, $conn, $auth, $hold ) = @_;
+	my( $self, $conn, $auth, $hold, $oargs ) = @_;
     return -1 unless $hold;
 	my $e = new_editor(authtoken=>$auth, xact=>1);
 	return $e->die_event unless $e->checkauth;
 
 	my $override = 1 if $self->api_name =~ /override/;
+    $oargs = { all => 1 } unless defined $oargs;
 
     my @events;
 
@@ -306,7 +306,12 @@ sub create_hold {
         for my $evt (@events) {
             next unless $evt;
             my $name = $evt->{textcode};
-            return $e->die_event unless $e->allowed("$name.override", $porg);
+            if($oargs->{all} || grep { $_ eq $name } @{$oargs->{events}}) {
+                return $e->die_event unless $e->allowed("$name.override", $porg);
+            } else {
+                $e->rollback;
+                return \@events;
+            }
         }
     }
 
@@ -2159,9 +2164,9 @@ __PACKAGE__->register_method(
 );
 
 sub check_title_hold_batch {
-    my($self, $client, $authtoken, $param_list) = @_;
+    my($self, $client, $authtoken, $param_list, $oargs) = @_;
     foreach (@$param_list) {
-        my ($res) = $self->method_lookup('open-ils.circ.title_hold.is_possible')->run($authtoken, $_);
+        my ($res) = $self->method_lookup('open-ils.circ.title_hold.is_possible')->run($authtoken, $_, $oargs);
         $client->respond($res);
     }
     return undef;
@@ -2215,9 +2220,14 @@ All key/value pairs are passed on to do_possibility_checks.
 # FIXME: specify proper usage/interaction of selection_ou and pickup_lib
 
 sub check_title_hold {
-    my( $self, $client, $authtoken, $params ) = @_;
+    my( $self, $client, $authtoken, $params, $oargs ) = @_;
     my $e = new_editor(authtoken=>$authtoken);
     return $e->event unless $e->checkauth;
+    $oargs = {} unless defined $oargs;
+
+    if($oargs->{events}) {
+        @{$oargs->{events}} = grep { $e->allowed($_ . '.override', $e->requestor->ws_ou); } @{$oargs->{events}};
+    }
 
     my %params       = %$params;
     my $depth        = $params{depth}        || 0;
@@ -2252,7 +2262,7 @@ sub check_title_hold {
         my $depth = $soft_boundary;
         while($depth >= $min_depth) {
             $logger->info("performing hold possibility check with soft boundary $depth");
-            @status = do_possibility_checks($e, $patron, $request_lib, $depth, %params);
+            @status = do_possibility_checks($e, $patron, $request_lib, $depth, %params, $oargs);
             if ($status[0]) {
                 $return_depth = $depth;
                 last;
@@ -2262,11 +2272,11 @@ sub check_title_hold {
     } elsif(defined $hard_boundary and $depth < $hard_boundary) {
         # there is no soft boundary, enforce the hard boundary if it exists
         $logger->info("performing hold possibility check with hard boundary $hard_boundary");
-        @status = do_possibility_checks($e, $patron, $request_lib, $hard_boundary, %params);
+        @status = do_possibility_checks($e, $patron, $request_lib, $hard_boundary, %params, $oargs);
     } else {
         # no boundaries defined, fall back to user specifed boundary or no boundary
         $logger->info("performing hold possibility check with no boundary");
-        @status = do_possibility_checks($e, $patron, $request_lib, $params{depth}, %params);
+        @status = do_possibility_checks($e, $patron, $request_lib, $params{depth}, %params, $oargs);
     }
 
     my $place_unfillable = 0;
@@ -2289,7 +2299,7 @@ sub check_title_hold {
 
 
 sub do_possibility_checks {
-    my($e, $patron, $request_lib, $depth, %params) = @_;
+    my($e, $patron, $request_lib, $depth, %params, $oargs) = @_;
 
     my $issuanceid   = $params{issuanceid}      || "";
     my $partid       = $params{partid}      || "";
@@ -2315,7 +2325,7 @@ sub do_possibility_checks {
 
         return (1, 1, []) if( $hold_type eq OILS_HOLD_TYPE_RECALL || $hold_type eq OILS_HOLD_TYPE_FORCE);
         return verify_copy_for_hold( 
-            $patron, $e->requestor, $title, $copy, $pickup_lib, $request_lib
+            $patron, $e->requestor, $title, $copy, $pickup_lib, $request_lib, $oargs
         );
 
 	} elsif( $hold_type eq OILS_HOLD_TYPE_VOLUME ) {
@@ -2324,25 +2334,25 @@ sub do_possibility_checks {
 		return $e->event unless $title  = $e->retrieve_biblio_record_entry($volume->record);
 
 		return _check_volume_hold_is_possible(
-			$volume, $title, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou
+			$volume, $title, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou, $oargs
         );
 
 	} elsif( $hold_type eq OILS_HOLD_TYPE_TITLE ) {
 
 		return _check_title_hold_is_possible(
-			$titleid, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou
+			$titleid, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou, $oargs
         );
 
 	} elsif( $hold_type eq OILS_HOLD_TYPE_ISSUANCE ) {
 
 		return _check_issuance_hold_is_possible(
-			$issuanceid, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou
+			$issuanceid, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou, $oargs
         );
 
 	} elsif( $hold_type eq OILS_HOLD_TYPE_MONOPART ) {
 
 		return _check_monopart_hold_is_possible(
-			$partid, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou
+			$partid, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou, $oargs
         );
 
 	} elsif( $hold_type eq OILS_HOLD_TYPE_METARECORD ) {
@@ -2352,7 +2362,7 @@ sub do_possibility_checks {
 		my @status = ();
 		for my $rec (@recs) {
 			@status = _check_title_hold_is_possible(
-				$rec, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou, $holdable_formats
+				$rec, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou, $holdable_formats, $oargs
 			);
 			last if $status[0];
 		}
@@ -2387,7 +2397,7 @@ sub create_ranged_org_filter {
 
 
 sub _check_title_hold_is_possible {
-    my( $titleid, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou, $holdable_formats ) = @_;
+    my( $titleid, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou, $holdable_formats, $oargs ) = @_;
    
     my ($types, $formats, $lang);
     if (defined($holdable_formats)) {
@@ -2517,7 +2527,7 @@ sub _check_title_hold_is_possible {
          }
    
          @status = verify_copy_for_hold(
-            $patron, $requestor, $title, $copy, $pickup_lib, $request_lib);
+            $patron, $requestor, $title, $copy, $pickup_lib, $request_lib, $oargs);
 
          $age_protect_only ||= $status[3];
          last OUTER if $status[0];
@@ -2529,7 +2539,7 @@ sub _check_title_hold_is_possible {
 }
 
 sub _check_issuance_hold_is_possible {
-    my( $issuanceid, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou ) = @_;
+    my( $issuanceid, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou, $oargs ) = @_;
    
     my $e = new_editor();
     my %org_filter = create_ranged_org_filter($e, $selection_ou, $depth);
@@ -2646,7 +2656,7 @@ sub _check_issuance_hold_is_possible {
          }
    
          @status = verify_copy_for_hold(
-            $patron, $requestor, $title, $copy, $pickup_lib, $request_lib);
+            $patron, $requestor, $title, $copy, $pickup_lib, $request_lib, $oargs);
 
          $age_protect_only ||= $status[3];
          last OUTER if $status[0];
@@ -2666,7 +2676,7 @@ sub _check_issuance_hold_is_possible {
 }
 
 sub _check_monopart_hold_is_possible {
-    my( $partid, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou ) = @_;
+    my( $partid, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou, $oargs ) = @_;
    
     my $e = new_editor();
     my %org_filter = create_ranged_org_filter($e, $selection_ou, $depth);
@@ -2783,7 +2793,7 @@ sub _check_monopart_hold_is_possible {
          }
    
          @status = verify_copy_for_hold(
-            $patron, $requestor, $title, $copy, $pickup_lib, $request_lib);
+            $patron, $requestor, $title, $copy, $pickup_lib, $request_lib, $oargs);
 
          $age_protect_only ||= $status[3];
          last OUTER if $status[0];
@@ -2804,7 +2814,7 @@ sub _check_monopart_hold_is_possible {
 
 
 sub _check_volume_hold_is_possible {
-	my( $vol, $title, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou ) = @_;
+	my( $vol, $title, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou, $oargs ) = @_;
     my %org_filter = create_ranged_org_filter(new_editor(), $selection_ou, $depth);
 	my $copies = new_editor->search_asset_copy({call_number => $vol->id, %org_filter});
 	$logger->info("checking possibility of volume hold for volume ".$vol->id);
@@ -2830,7 +2840,7 @@ sub _check_volume_hold_is_possible {
     my $age_protect_only = 0;
 	for my $copy ( @$copies ) {
         @status = verify_copy_for_hold(
-			$patron, $requestor, $title, $copy, $pickup_lib, $request_lib );
+			$patron, $requestor, $title, $copy, $pickup_lib, $request_lib, $oargs );
         $age_protect_only ||= $status[3];
         last if $status[0];
 	}
@@ -2841,7 +2851,8 @@ sub _check_volume_hold_is_possible {
 
 
 sub verify_copy_for_hold {
-	my( $patron, $requestor, $title, $copy, $pickup_lib, $request_lib ) = @_;
+	my( $patron, $requestor, $title, $copy, $pickup_lib, $request_lib, $oargs ) = @_;
+    $oargs = {} unless defined $oargs;
 	$logger->info("checking possibility of copy in hold request for copy ".$copy->id);
     my $permitted = OpenILS::Utils::PermitHold::permit_copy_hold(
 		{	patron				=> $patron, 
@@ -2855,6 +2866,17 @@ sub verify_copy_for_hold {
             show_event_list     => 1
 		} 
 	);
+
+    # All overridden?
+    my $permit_anyway = 0;
+    foreach my $permit_event (@$permitted) {
+        if (grep { $_ eq $permit_event->{textcode} } @{$oargs->{events}}) {
+            $permit_anyway = 1;
+            last;
+        }
+    }
+    $permitted = [] if $permit_anyway;
+
     my $age_protect_only = 0;
     if (@$permitted == 1 && @$permitted[0]->{textcode} eq 'ITEM_AGE_PROTECTED') {
         $age_protect_only = 1;

@@ -384,9 +384,10 @@ __PACKAGE__->register_method (
 );
 
 sub delete_survey {
-    my($self, $conn, $auth, $survey_id) = @_;
+    my($self, $conn, $auth, $survey_id, $oargs) = @_;
     my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
+    $oargs = { all => 1 } unless defined $oargs;
 
     my $survey = $e->retrieve_action_survey($survey_id) 
         or return $e->die_event;
@@ -398,7 +399,7 @@ sub delete_survey {
     my $responses = $e->search_action_survey_response({survey => $survey_id});
 
     return OpenILS::Event->new('SURVEY_RESPONSES_EXIST')
-        if @$responses and $self->api_name =! /override/;
+        if @$responses and ($self->api_name =! /override/ || !($oargs->{all} || grep { $_ eq 'SURVEY_RESPONSES_EXIST' } @{$oargs->{events}}));
 
     for my $resp (@$responses) {
         $e->delete_action_survey_response($resp) or return $e->die_event;

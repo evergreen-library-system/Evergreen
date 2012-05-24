@@ -195,6 +195,9 @@ sub update_copy_parts {
 sub update_copy {
 	my($class, $editor, $override, $vol, $copy, $retarget_holds, $force_delete_empty_bib) = @_;
 
+    $override = { all => 1 } if($override && !ref $override);
+    $override = { all => 0 } if(!ref $override);
+
 	my $evt;
 	my $org = (ref $copy->circ_lib) ? $copy->circ_lib->id : $copy->circ_lib;
 	return $evt if ( $evt = $class->org_cannot_have_vols($editor, $org) );
@@ -254,6 +257,9 @@ sub check_hold_retarget {
 # this does the actual work
 sub update_fleshed_copies {
 	my($class, $editor, $override, $vol, $copies, $delete_stats, $retarget_holds, $force_delete_empty_bib) = @_;
+
+    $override = { all => 1 } if($override && !ref $override);
+    $override = { all => 0 } if(!ref $override);
 
 	my $evt;
 	my $fetchvol = ($vol) ? 0 : 1;
@@ -322,9 +328,12 @@ sub delete_copy {
 	return $editor->event unless
 		$editor->allowed('DELETE_COPY', $class->copy_perm_org($vol, $copy));
 
+    $override = { all => 1 } if($override && !ref $override);
+    $override = { all => 0 } if(!ref $override);
+
 	my $stat = $U->copy_status($copy->status);
 	if ($U->is_true($stat->restrict_copy_delete)) {
-		if ($override) {
+		if ($override->{all} || grep { $_ eq 'COPY_DELETE_WARNING' } @{$override->{events}}) {
 			return $editor->event unless $editor->allowed('COPY_DELETE_WARNING.override', $class->copy_perm_org($vol, $copy))
 		} else {
 			return OpenILS::Event->new('COPY_DELETE_WARNING', payload => $copy->id )
@@ -421,6 +430,9 @@ sub create_volume {
 
 	return $evt if ( $evt = $class->org_cannot_have_vols($editor, $vol->owning_lib) );
 
+    $override = { all => 1 } if($override && !ref $override);
+    $override = { all => 0 } if(!ref $override);
+
    # see if the record this volume references is marked as deleted
    my $rec = $editor->retrieve_biblio_record_entry($vol->record)
       or return $editor->die_event;
@@ -441,7 +453,7 @@ sub create_volume {
 	my $label = undef;
 	if(@$vols) {
       # we've found an exising volume
-		if($override) { 
+		if($override->{all} || grep { $_ eq 'VOLUME_LABEL_EXISTS' } @{$override->{events}}) {
 			$label = $vol->label;
 		} else {
 			return OpenILS::Event->new(
@@ -534,6 +546,9 @@ sub create_copy_note {
 sub remove_empty_objects {
 	my($class, $editor, $override, $vol, $force_delete_empty_bib) = @_; 
 
+    $override = { all => 1 } if($override && !ref $override);
+    $override = { all => 0 } if(!ref $override);
+
     my $koe = $U->ou_ancestor_setting_value(
         $editor->requestor->ws_ou, 'cat.bib.keep_on_empty', $editor);
     my $aoe =  $U->ou_ancestor_setting_value(
@@ -548,7 +563,7 @@ sub remove_empty_objects {
         }
 
         return OpenILS::Event->new('TITLE_LAST_COPY', payload => $vol->record ) 
-            if $aoe and not $override and not $force_delete_empty_bib;
+            if $aoe and not ($override->{all} || grep { $_ eq 'TITLE_LAST_COPY' } @{$override->{events}}) and not $force_delete_empty_bib;
 
         unless($koe and not $force_delete_empty_bib) {
             # delete the bib record if the keep-on-empty setting is not set (and we're not otherwise forcing things, say through acq settings)

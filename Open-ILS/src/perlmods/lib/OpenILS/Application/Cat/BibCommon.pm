@@ -38,6 +38,9 @@ sub fetch_bib_sources {
 sub biblio_record_replace_marc  {
 	my($class, $e, $recid, $newxml, $source, $fixtcn, $override) = @_;
 
+    $override = { all => 1 } if($override && !ref $override);
+    $override = { all => 0 } if(!ref $override);
+
 	my $rec = $e->retrieve_biblio_record_entry($recid)
 		or return $e->die_event;
 
@@ -48,7 +51,7 @@ sub biblio_record_replace_marc  {
 
 	my( $tcn, $tsource, $marcdoc, $evt);
 
-    if($fixtcn or $override) {
+    if($fixtcn or $override->{all} or $override->{events}) {
 
 	    ($tcn, $tsource, $marcdoc, $evt) = 
 		    _find_tcn_info($e, $newxml, $override, $recid);
@@ -75,6 +78,9 @@ sub biblio_record_replace_marc  {
 
 sub biblio_record_xml_import {
 	my($class, $e, $xml, $source, $auto_tcn, $override) = @_;
+
+    $override = { all => 1 } if($override && !ref $override);
+    $override = { all => 0 } if(!ref $override);
 
 	my( $evt, $tcn, $tcn_source, $marcdoc );
 
@@ -171,6 +177,9 @@ sub _find_tcn_info {
 	my $override	= shift;
 	my $existing_rec	= shift || 0;
 
+    $override = { all => 1 } if($override && !ref $override);
+    $override = { all => 0 } if(!ref $override);
+
 	# parse the XML
 	my $marcxml = __make_marc_doc($xml);
 
@@ -187,7 +196,7 @@ sub _find_tcn_info {
 		$tcn = find_free_tcn( $marcxml, $editor, $existing_rec );
 
 		# if we're overriding, try to find a different TCN to use
-		if( $override ) {
+		if( $override->{all} || grep { $_ eq 'TCN_EXISTS' } @{$override->{events}} ) {
 
          # XXX Create ALLOW_ALT_TCN permission check support 
 

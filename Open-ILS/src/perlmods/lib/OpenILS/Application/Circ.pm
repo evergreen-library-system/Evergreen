@@ -400,10 +400,12 @@ __PACKAGE__->register_method(
 );
 
 sub set_circ_claims_returned {
-    my( $self, $conn, $auth, $args ) = @_;
+    my( $self, $conn, $auth, $args, $oargs ) = @_;
 
     my $e = new_editor(authtoken=>$auth, xact=>1);
     return $e->die_event unless $e->checkauth;
+
+    $oargs = { all => 1 } unless defined $oargs;
 
     my $barcode = $$args{barcode};
     my $backdate = $$args{backdate};
@@ -429,7 +431,7 @@ sub set_circ_claims_returned {
     # 0 means all attempts require an override
     if(defined $max_count and $patron->claims_returned_count >= $max_count) {
 
-        if($self->api_name =~ /override/) {
+        if($self->api_name =~ /override/ && ($oargs->{all} || grep { $_ eq 'PATRON_EXCEEDS_CLAIMS_RETURN_COUNT' } @{$oargs->{events}})) {
 
             # see if we're allowed to override
             return $e->die_event unless 
@@ -1393,7 +1395,7 @@ sub mark_item_missing_pieces {
             }
         }
 
-        my ($res) = $self->method_lookup('open-ils.circ.checkout.full.override')->run($e->authtoken,$co_params);
+        my ($res) = $self->method_lookup('open-ils.circ.checkout.full.override')->run($e->authtoken,$co_params,{ all => 1 });
         if (ref $res ne 'ARRAY') { $res = [ $res ]; }
         if ( $res->[0]->{textcode} eq 'SUCCESS' ) {
             $logger->info('open-ils.circ.mark_item_missing_pieces: successful checkout');

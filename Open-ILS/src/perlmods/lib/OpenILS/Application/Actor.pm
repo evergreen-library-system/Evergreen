@@ -2396,16 +2396,17 @@ __PACKAGE__->register_method(
 );
 
 sub register_workstation {
-	my( $self, $conn, $authtoken, $name, $owner ) = @_;
+	my( $self, $conn, $authtoken, $name, $owner, $oargs ) = @_;
 
 	my $e = new_editor(authtoken=>$authtoken, xact=>1);
 	return $e->die_event unless $e->checkauth;
 	return $e->die_event unless $e->allowed('REGISTER_WORKSTATION', $owner);
 	my $existing = $e->search_actor_workstation({name => $name})->[0];
+    $oargs = { all => 1 } unless defined $oargs;
 
 	if( $existing ) {
 
-		if( $self->api_name =~ /override/o ) {
+		if( $self->api_name =~ /override/o && ($oargs->{all} || grep { $_ eq 'WORKSTATION_NAME_EXISTS' } @{$oargs->{events}}) ) {
             # workstation with the given name exists.  
 
             if($owner ne $existing->owning_lib) {
@@ -3639,9 +3640,10 @@ __PACKAGE__->register_method (
 );
 
 sub really_delete_user {
-    my($self, $conn, $auth, $user_id, $dest_user_id) = @_;
+    my($self, $conn, $auth, $user_id, $dest_user_id, $oargs) = @_;
     my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
+    $oargs = { all => 1 } unless defined $oargs;
 
     # Find all unclosed billings for for user $user_id, thereby, also checking for open circs
     my $open_bills = $e->json_query({
@@ -3658,7 +3660,7 @@ sub really_delete_user {
     # No deleting patrons with open billings or checked out copies, unless perm-enabled override
     if (@$open_bills) {
         return $e->die_event(OpenILS::Event->new('ACTOR_USER_DELETE_OPEN_XACTS'))
-        unless $self->api_name =~ /override/o
+        unless $self->api_name =~ /override/o && ($oargs->{all} || grep { $_ eq 'ACTOR_USER_DELETE_OPEN_XACTS' } @{$oargs->{events}})
         && $e->allowed('ACTOR_USER_DELETE_OPEN_XACTS.override', $user->home_ou);
     }
     # No deleting yourself - UI is supposed to stop you first, though.
