@@ -391,6 +391,7 @@ sub owner {
 
 sub hold_queue {
     my $self = shift;
+    return [$self->{hold}->id] if $self->{hold};
     return [];
 }
 
