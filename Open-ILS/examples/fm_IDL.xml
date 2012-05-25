@@ -4934,13 +4934,13 @@ SELECT  usr,
 	</class>
 	<class id="asfge" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::search_filter_group_entry" oils_persist:tablename="actor.search_filter_group_entry" reporter:label="Search Filter Group Entry" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.search_filter_group_entry_id_seq">
-			<field name="id" reporter:datatype="id" reporter:selector="label"/>
+			<field name="id" reporter:datatype="id"/>
 			<field name="grp" reporter:datatype="link"/>
 			<field name="pos" reporter:datatype="int"/>
 			<field name="query" reporter:datatype="link"/>
 		</fields>
 		<links>
-			<link field="grp" reltype="has_a" key="id" map="" class="asfge"/>
+			<link field="grp" reltype="has_a" key="id" map="" class="asfg"/>
 			<link field="query" reltype="has_a" key="id" map="" class="asq"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">

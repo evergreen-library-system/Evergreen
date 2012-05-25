@@ -4644,4 +4644,116 @@ sub get_all_at_reactors_in_use {
     return [ map { $_->{reactor} } @$reactors ];
 }
 
+__PACKAGE__->register_method(
+    method   => "filter_group_entry_crud",
+    api_name => "open-ils.actor.filter_group_entry.crud",
+    signature => {
+        desc => q/
+            Provides CRUD access to filter group entry objects.  These are not full accessible
+            via PCRUD, since they requre "asq" objects for storing the query, and "asq" objects
+            are not accessible via PCRUD (because they have no fields against which to link perms)
+            /,
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {desc => "Entry ID / Entry Object", type => "number"},
+            {desc => "Additional note text (optional)", type => "string"},
+            {desc => "penalty org unit ID (optional, default to top of org tree)",
+                type => "number"}
+        ],
+        return => {
+            desc => "Entry fleshed with query on Create, Retrieve, and Uupdate.  1 on Delete", 
+            type => "object"
+        }
+    }
+);
+
+sub filter_group_entry_crud {
+    my ($self, $conn, $auth, $arg) = @_;
+
+    return OpenILS::Event->new('BAD_PARAMS') unless $arg;
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+
+    if (ref $arg) {
+
+        if ($arg->isnew) {
+            
+            my $grp = $e->retrieve_actor_search_filter_group($arg->grp)
+                or return $e->die_event;
+
+            return $e->die_event unless $e->allowed(
+                'ADMIN_SEARCH_FILTER_GROUP', $grp->owner);
+
+            my $query = $arg->query;
+            $query = $e->create_actor_search_query($query) or return $e->die_event;
+            $arg->query($query->id);
+            my $entry = $e->create_actor_search_filter_group_entry($arg) or return $e->die_event;
+            $entry->query($query);
+
+            $e->commit;
+            return $entry;
+
+        } elsif ($arg->ischanged) {
+
+            my $entry = $e->retrieve_actor_search_filter_group_entry([
+                $arg->id, {
+                    flesh => 1,
+                    flesh_fields => {asfge => ['grp']}
+                }
+            ]) or return $e->die_event;
+
+            return $e->die_event unless $e->allowed(
+                'ADMIN_SEARCH_FILTER_GROUP', $entry->grp->owner);
+
+            my $query = $e->update_actor_search_query($arg->query) or return $e->die_event;
+            $arg->query($arg->query->id);
+            $e->update_actor_search_filter_group_entry($arg) or return $e->die_event;
+            $arg->query($query);
+
+            $e->commit;
+            return $arg;
+
+        } elsif ($arg->isdeleted) {
+
+            my $entry = $e->retrieve_actor_search_filter_group_entry([
+                $arg->id, {
+                    flesh => 1,
+                    flesh_fields => {asfge => ['grp', 'query']}
+                }
+            ]) or return $e->die_event;
+
+            return $e->die_event unless $e->allowed(
+                'ADMIN_SEARCH_FILTER_GROUP', $entry->grp->owner);
+
+            $e->delete_actor_search_filter_group_entry($entry) or return $e->die_event;
+            $e->delete_actor_search_query($entry->query) or return $e->die_event;
+
+            $e->commit;
+            return 1;
+
+        } else {
+
+            $e->rollback;
+            return undef;
+        }
+
+    } else {
+
+        my $entry = $e->retrieve_actor_search_filter_group_entry([
+            $arg, {
+                flesh => 1,
+                flesh_fields => {asfge => ['grp', 'query']}
+            }
+        ]) or return $e->die_event;
+
+        return $e->die_event unless $e->allowed(
+            ['ADMIN_SEARCH_FILTER_GROUP', 'VIEW_SEARCH_FILTER_GROUP'], 
+            $entry->grp->owner);
+
+        $e->rollback;
+        $entry->grp($entry->grp->id); # for consistency
+        return $entry;
+    }
+}
+
 1;

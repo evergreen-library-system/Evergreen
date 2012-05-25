@@ -1,0 +1,104 @@
+[% 
+    WRAPPER base.tt2;
+    ctx.page_title = l('Search Filter Group');
+    filter_group_id = ctx.page_args.0;
+%]
+
+<style>
+    #fge-edit-div {margin-top: 20px;}
+    #fge-edit-div td {padding : 5px;}
+</style>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+
+    [% IF filter_group_id %]
+
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>[% l('Search Filter Group') %]</div>
+        <div>
+            <button dojoType='dijit.form.Button' onClick='showFgeEditor(null, true)'>[% l('New') %]</button>
+            <button dojoType='dijit.form.Button' onClick='fgeDelete()'>[% l('Delete Selected') %]</button>
+        </div>
+    </div>
+
+    <a href="[% ctx.base_path %]/conify/global/actor/search_filter_group">&#x2196; [% l('Return to Filter Groups') %]</a>
+    <br/> <br/>
+
+    <table
+        id="fgeGrid"
+        jsid="fgeGrid"
+        dojoType="openils.widget.FlattenerGrid"
+        columnPersistKey='"conify.actor.search_filter_group_entry"'
+        autoHeight="true"
+        showLoadFilter="true"
+        fmClass="'asfge'"
+        defaultSort="['pos']"
+        _mapExtras="{id : {path : 'id'}}"
+        query="{'grp': ['[% filter_group_id %]']}">
+        <thead>
+            <tr>
+                <th field="query_label" fpath="query.label" ffilter="true" get='getFgeLabel' formatter='formatFgeLabel'>[% l('Label') %]</th>
+                <th field="query_text" fpath="query.query_text" ffilter="true">[% l('Query Text') %]</th>
+                <th field="pos">[% l('Sort Position') %]</th>
+                <!-- mapExtras should cover "id", but it's not working;  investigate.. -->
+                <th field="id">[% l('ID') %]</th>
+            </tr>
+        </thead>
+    </table>
+
+    <div id='fge-edit-div' class='hidden'>
+        <table>
+            <tr><td>[% l('Label') %]</td><td><div id='fge-edit-label'></div></td></tr>
+            <tr><td>[% l('Query') %]</td><td><div id='fge-edit-query'></div></td></tr>
+            <tr><td>[% l('Position') %]</td><td><div id='fge-edit-pos'></div></td></tr>
+            <tr>
+                <td><button dojoType='dijit.form.Button' jsId='fgeSave'>[% l('Save') %]</button></td>
+                <td><button dojoType='dijit.form.Button' jsId='fgeCancel'>[% l('Cancel') %]</button></td>
+            </tr>
+        </table>
+    </div>
+
+    [% ELSE %]
+
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>[% l('Search Filter Group') %]</div>
+        <div>
+            <button dojoType='dijit.form.Button' onClick='fgGrid.showCreateDialog()'>[% l('New') %]</button>
+            <button dojoType='dijit.form.Button' onClick='fgGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
+        </div>
+    </div>
+
+    <table
+        id="fgGrid"
+        jsid="fgGrid"
+        dojoType="openils.widget.FlattenerGrid"
+        columnPersistKey='"conify.actor.search_filter_group"'
+        autoHeight="true"
+        editOnEnter="true"
+        editStyle="pane"
+        showLoadFilter="true"
+        fmClass="'asfg'"
+        defaultSort="['code']"
+        mapExtras="{owner: {path: 'owner.id'}}"
+        fetchLock="true">
+        <thead>
+            <tr>
+                <th field="code" fpath="code" ffilter="true" get='getFgCode' formatter='formatFgCode'>[% l('Code') %]</th>
+                <th field="owner_sn" fpath="owner.shortname" ffilter="true">[% l('Owner') %]</th>
+                <th field="label" fpath="label" ffilter="true">[% l('Label') %]</th>
+                <th field="create_date" fpath="create_date" ffilter="true">[% l('Create Date') %]</th>
+            </tr>
+        </thead>
+    </table>
+
+    <br/><br/>
+    <div><i>[% l('To view groups for a different location, use the "Filter" option') %]</i></div>
+
+    [% END %]
+</div>
+
+<script type="text/javascript">var filterGroupId = '[% filter_group_id %]'</script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/actor/search_filter_group.js'> </script>
+[% END %]
+
+
