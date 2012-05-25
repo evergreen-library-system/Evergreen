@@ -57,11 +57,11 @@
         <div class="bookbag-controls-holder">
             <div class="bookbag-controls most">
                 [% baseurl = ctx.opac_root _ '/myopac/lists';
-                IF bbag.id != CGI.param("id");
-                    url = mkurl(baseurl,{id => bbag.id},['edit_notes','sort']);
+                IF bbag.id != CGI.param("bbid");
+                    url = mkurl(baseurl,{bbid => bbag.id},['edit_notes','sort']);
                     ltitle = l("Show items in list");
                 ELSE;
-                    url = mkurl(baseurl, {}, ['id', 'edit_notes', 'sort']);
+                    url = mkurl(baseurl, {}, ['bbid', 'edit_notes', 'sort']);
                     ltitle = l("Hide items in list");
                 END %]
                 <h2 class="bookbag-name"><a title="[% ltitle %]" href="[% url %]">[% bbag.name | html %]</a></h2>
@@ -116,7 +116,7 @@
             </div>
             <div class="clear-both pad-bottom-five"></div>
         </div>
-        [% IF CGI.param("id") == bbag.id %]
+        [% IF CGI.param("bbid") == bbag.id %]
         <div class="bookbag-specific">
             <div class="sort">
                 <form method="GET">
@@ -125,7 +125,7 @@
                     [% INCLUDE "opac/parts/filtersort.tt2"
                         value=CGI.param('sort') mode='bookbag' %]
                     <input type="hidden" name="id"
-                        value="[% CGI.param('id') | html %]" />
+                        value="[% CGI.param('bbid') | html %]" />
                     <input type="submit" value="[% l('Sort') %]" />
                 </form>
             </div>
@@ -213,12 +213,12 @@
                         <input type="checkbox" name="selected_item" value="[% item.id %]" bbag='[% bbag.id %]'/>
                     </td>
                     <td class="list_entry">
-                        <a href="[% mkurl(ctx.opac_root _ '/record/' _ rec_id, {}, ['edit_notes', 'id']) %]">[% attrs.title | html %]</a>
+                        <a href="[% mkurl(ctx.opac_root _ '/record/' _ rec_id, {}, ['edit_notes', 'bbid']) %]">[% attrs.title | html %]</a>
                     </td>
                     <td class="list_entry">
                         <a href="[%- 
                             authorquery = attrs.author | replace('[,\.:;]', '');
-                            mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, ['page', 'id', 'edit_notes'])
+                            mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, ['page', 'bbid', 'edit_notes'])
                             -%]">[% attrs.author | html %]</a>
                     [% IF CGI.param("edit_notes") == bbag.id %]
                     <td class="list_entry">
@@ -241,7 +241,7 @@
                     <td colspan="3"><!-- All space left of notes column --></td>
                     <td class="save-notes">
                         [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
-                        <input type="hidden" name="id" value="[% CGI.param('id') | html %]" />
+                        <input type="hidden" name="id" value="[% CGI.param('bbid') | html %]" />
                         <input type="submit" name="save_notes" value="[% l('Save Notes') %]" />
                     </td>
                 </tr>

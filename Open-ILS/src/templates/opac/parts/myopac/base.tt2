@@ -23,7 +23,7 @@
                     ELSE;
                         cls_which = "acct-tab-off";
                     END -%]
-                <a href="[% mkurl(ctx.opac_root _ '/myopac/' _ page.url) %]"
+                <a href="[% mkurl(ctx.opac_root _ '/myopac/' _ page.url, {}, ['bbid']) %]"
                     class="[% cls_which %]">[% page.name; %]</a>
                 [% END %]
             </div>
