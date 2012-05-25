@@ -1641,22 +1641,22 @@ sub load_myopac_bookbags {
     # If the user wants a specific bookbag's items, load them.
     # XXX add bookbag item paging support
 
-    if ($self->cgi->param("id")) {
+    if ($self->cgi->param("bbid")) {
         my ($bookbag) =
-            grep { $_->id eq $self->cgi->param("id") } @{$ctx->{bookbags}};
+            grep { $_->id eq $self->cgi->param("bbid") } @{$ctx->{bookbags}};
 
         if (!$bookbag) {
             $e->rollback;
             return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
         }
 
-        if ($self->cgi->param("action") eq "editmeta") {
+        if ( ($self->cgi->param("action") || '') eq "editmeta") {
             if (!$self->_update_bookbag_metadata($bookbag))  {
                 $e->rollback;
                 return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
             } else {
                 $e->commit;
-                my $url = $self->ctx->{opac_root} . '/myopac/lists?id=' .
+                my $url = $self->ctx->{opac_root} . '/myopac/lists?bbid=' .
                     $bookbag->id;
 
                 foreach my $param (('loc', 'qtype', 'query', 'sort')) {
@@ -1813,7 +1813,7 @@ sub load_myopac_bookbag_update {
         }
     } elsif ($action eq 'save_notes') {
         $success = $self->update_bookbag_item_notes;
-        $url .= "&id=" . uri_escape($cgi->param("id")) if $cgi->param("id");
+        $url .= "&bbid=" . uri_escape($cgi->param("bbid")) if $cgi->param("bbid");
     }
 
     return $self->generic_redirect($url) if $success;
