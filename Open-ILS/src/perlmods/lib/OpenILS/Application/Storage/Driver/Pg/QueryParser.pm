@@ -647,7 +647,7 @@ sub toSQL {
                       $rec_join
                 WHERE c.btype = > . $self->QueryParser->quote_value($ctype) .
                     qq< AND c.id = > . $self->QueryParser->quote_value($cid) .
-                    qq< AND (c.pub IS TRUE $perm_join)) container ON (container.container_item = mrd.id) >;
+                    qq< AND (c.pub IS TRUE $perm_join)) container ON (container.container_item = m.source) >;
         } else {$container = ''};
     } else {
         $container = '';
