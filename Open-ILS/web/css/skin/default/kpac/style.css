@@ -620,8 +620,7 @@ input[type=text], input[type=password], textarea {
 	background:#e3e3e3;
 }
 
-.item_detail_extras_tabs a,
-.item_detail_extras_tabs div.selected {
+.item_detail_extras_tabs a {
 	display:block;
 	float:left;
 	padding:14px 35px;
@@ -631,8 +630,8 @@ input[type=text], input[type=password], textarea {
 	margin-right:10px;
 }
 
-.item_detail_extras_tabs a.selected,
-.item_detail_extras_tabs div.selected {
+.item_detail_extras_tabs a.ac_tab_selected,
+.item_detail_extras_tabs div.ac_tab_selected {
 	background:white;
 	color:#424242;
 }
@@ -1019,16 +1018,8 @@ div.hr {
     visibility : hidden;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
+.hidden {
+    visibility : hidden;
+    display : none;
+}
 

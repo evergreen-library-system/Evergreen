@@ -1,0 +1,54 @@
+<a name='addedcontent'></a> <!-- for page focus -->
+<div class='item_detail_extras_tabs'>
+[%-
+    # NOTE: enabling all of these types may result in the tabs occupying 
+    # too much horizontal space to fit within the fixed-width box.
+
+    ac_types = {
+        reviews => l('Reviews'),
+        anotes  => l('Author Notes'),
+        toc     => l('Table of Contents'),
+        excerpt => l('Excerpt'),
+        summary => l('Smmary')
+    };
+
+    selected_type = CGI.param('ac');
+    
+    # For each type of added content, render the link if it's known to have
+    # content, do not render the link if it's known to not have content.  If 
+    # the content status is unknown, render the link, but hide the link via CSS
+    # if dojo is enabled.  If dojo is not enabled, render and display the link.
+
+    all_hidden = 1;
+    FOR type IN ac_types.keys;
+        tab_class = '';
+        SET tab_class = 'ac_tab_selected' IF type == selected_type; 
+        '<!-- status = ' _ type _ ' : ' _ ctx.added_content.$type.status _ '-->';
+        IF ctx.added_content.$type.status != '2'; # no content
+            all_hidden = 0;
+            IF ctx.added_content.$type.status == '3' AND want_dojo; # status unknown
+                tab_class = tab_class _ ' hidden';
+            END %]
+            <a class="[% tab_class %]" id="ac:[% type %]" href="[% mkurl('', {ac => type}) _ '#addedcontent' %]">[% ac_types.$type %]</a>
+        [% END;
+    END %]
+
+    <div class="clear">&nbsp;</div>
+</div>
+
+<div style='width:98%; padding:5px;'> 
+    <div id='ac_content'>
+        [% 
+            IF selected_type; 
+                content = ctx.added_content.$selected_type.content;
+                IF content;
+                    content;
+                ELSE;
+                    l('No Content Available');
+                END;
+            END;
+        %]
+    </div>
+</div>
+
+
