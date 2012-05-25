@@ -1,5 +1,5 @@
-README for Evergreen 2.2
-========================
+Installing the Evergreen server
+===============================
 :toc:
 :numbered:
 
@@ -32,7 +32,7 @@ follows:
        Evergreen that you will use to test connectivity and configure your
        Evergreen instance.
 
-Preamble: Developer instructions
+Preamble: developer instructions
 --------------------------------
 
 [NOTE]
