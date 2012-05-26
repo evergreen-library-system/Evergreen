@@ -268,7 +268,7 @@ The rule of parental inheritance applies to this list.
 Funding Sources
 ~~~~~~~~~~~~~~~
 
-Funding sources allow you to specify the sources that contribute monies to your fund(s). You can create as few or as many funding sources as you need.   These can be used to track exact ammounts for accounts in your general ledger.  You can then use funds to track spending and purchases for specific collections.
+Funding sources allow you to specify the sources that contribute monies to your fund(s). You can create as few or as many funding sources as you need.   These can be used to track exact amounts for accounts in your general ledger.  You can then use funds to track spending and purchases for specific collections.
 
 Create a funding source
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -340,7 +340,7 @@ The rule of parental inheritance applies to this list. See section
 . Click the Active box to activate this fund. You cannot make purchases from this fund if it is not active.
 . Enter a Balance Stop Percent. The balance stop percent prevents you from making purchases when only a specified amount of the fund remains. For example, if you want to spend 95 percent of your funds, leaving a five percent balance in the fund, then you would enter 95 in the field. When the fund reaches its balance stop percent, it will appear in red when you apply funds to copies.
 . Enter a Balance Warning Percent. The balance warning percent gives you a warning that the fund is low. You can specify any percent. For example, if you want to spend 90 percent of your funds and be warned when the fund has only 10 percent of its balance remaining, then enter 90 in the field. When the fund reaches its balance warning percent, it will appear in yellow when you apply funds to copies.
-. Check the Propagate box to propagate funds. When you propagate a fund, the ILS will create a new fund for the following fisca year with the same parameters as your current fund. All of the settings transfer except for the year and the amount of money in the fund. Propagation occurs during the fiscal year close~out operation.
+. Check the Propagate box to propagate funds. When you propagate a fund, the ILS will create a new fund for the following fiscal year with the same parameters as your current fund. All of the settings transfer except for the year and the amount of money in the fund. Propagation occurs during the fiscal year close~out operation.
 . Check the Rollover box if you want to roll over remaining funds into the same fund next year.
 . Click _Save_.
 
