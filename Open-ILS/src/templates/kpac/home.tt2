@@ -35,7 +35,8 @@
                                 [% IF qtype == 'author' %]checked="checked"[% END %]/></td>
                             <td class="st_label st_author_box"><label for="st_author">[% l('Author') %]</label></td>
 
-                            <td><input type="text" class="search_box" name="query" value="[% CGI.param('query') | html %]"/></td>
+                            <td><input type="text" class="search_box" name="query" 
+                                value="[% CGI.param('nosprop') ? '' : CGI.param('query') | html  %]"/></td>
                             <td><input type="image" src="[% ctx.media_prefix %]/images/kpac/search_btn.png" alt="search" /></td>
                         </tr>
                     </table>
