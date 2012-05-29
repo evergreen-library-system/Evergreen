@@ -33,8 +33,8 @@ __PACKAGE__->register_method (
 sub create_user_stage {
     my($self, $conn, $user, $mail_addr, $bill_addr, $statcats) = @_; # more?
 
-    return 0 unless $U->ou_ancestor_setting_value('opac.allow_pending_user');
     return OpenILS::Event->new('BAD_PARAMS') unless $user;
+    return 0 unless $U->ou_ancestor_setting_value($user->home_ou, 'opac.allow_pending_user');
 
     my $e = new_editor(xact => 1);
 
