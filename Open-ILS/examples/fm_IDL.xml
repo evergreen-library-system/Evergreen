@@ -8747,7 +8747,7 @@ SELECT  usr,
 	</class>
 
     <class id="stgu" controller="open-ils.cstore" oils_obj:fieldmapper="staging::user_stage" oils_persist:tablename="staging.user_stage" reporter:label="User Stage">
-        <fields oils_persist:primary="row_id" oils_persist:sequence="staging.usr_stage_row_id_seq">
+        <fields oils_persist:primary="row_id" oils_persist:sequence="staging.user_stage_row_id_seq">
             <field reporter:label="Row ID" name="row_id" reporter:datatype="id"/>
             <field reporter:label="Row Date" name="row_date" reporter:datatype="timestamp"/>
             <field reporter:label="User Name" name="usrname" reporter:datatype="text"/>
@@ -8792,7 +8792,7 @@ SELECT  usr,
     </class>
 
     <class id="stgba" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="staging::billing_address_stage" oils_persist:tablename="staging.billing_address_stage" reporter:label="Billing Address Stage">
-        <fields oils_persist:primary="row_id" oils_persist:sequence="staging.billing_address_stage_row_id_seq">
+        <fields oils_persist:primary="row_id" oils_persist:sequence="staging.mailing_address_stage_row_id_seq">
             <field reporter:label="Row ID" name="row_id" reporter:datatype="id"/>
             <field reporter:label="Row Date" name="row_date" reporter:datatype="timestamp"/>
             <field reporter:label="User Name" name="usrname" reporter:datatype="text"/>
