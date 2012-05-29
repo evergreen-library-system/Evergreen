@@ -21,8 +21,10 @@ sub load_record {
 
     $self->timelog("load_record() began");
 
-    my $rec_id = $ctx->{page_args}->[0]
-        or return Apache2::Const::HTTP_BAD_REQUEST;
+    my $rec_id = $ctx->{page_args}->[0];
+
+    return Apache2::Const::HTTP_BAD_REQUEST 
+        unless $rec_id and $rec_id =~ /^\d+$/;
 
     $self->added_content_stage1($rec_id);
     $self->timelog("past added content stage 1");
