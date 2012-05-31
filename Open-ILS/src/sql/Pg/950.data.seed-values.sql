@@ -1561,7 +1561,11 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
 ( 535, 'VIEW_TRIGGER_EVENT', oils_i18n_gettext( 535,
     'Allows a user to view circ- and hold-related action/trigger events', 'ppl', 'description')),
 ( 536, 'IMPORT_OVERLAY_COPY', oils_i18n_gettext( 536,
-    'Allows a user to overlay copy data in MARC import', 'ppl', 'description'))
+    'Allows a user to overlay copy data in MARC import', 'ppl', 'description')),
+ ( 537, 'ADMIN_SEARCH_FILTER_GROUP', oils_i18n_gettext( 537,
+    'Allows staff to manage search filter groups and entries', 'ppl', 'description' )),
+ ( 538, 'VIEW_SEARCH_FILTER_GROUP', oils_i18n_gettext( 538,
+    'Allows staff to view search filter groups and entries', 'ppl', 'description' ))
 ;
 
 
