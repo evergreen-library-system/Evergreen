@@ -156,6 +156,8 @@
              />
     <command id="cmd_local_admin_copy_location_group"
              perm="ADMIN_COPY_LOCATION_GROUP VIEW_COPY_LOCATION_GROUP" />
+    <command id="cmd_local_admin_search_filter_group"
+             perm="ADMIN_SEARCH_FILTER_GROUP VIEW_SEARCH_FILTER_GROUP" />
 
     <!-- server admin menu commands -->
     <command id="cmd_server_admin_org_type"
@@ -515,6 +517,7 @@
                 <menuitem label="&staff.main.menu.admin.local_admin.patrons_due_refunds.label;" accesskey="&staff.main.menu.admin.local_admin.patrons_due_refunds.accesskey;" command="cmd_local_admin_patrons_due_refunds"/>
                 <menuitem command="cmd_local_admin_do_not_auto_attempt_print_setting" label="&staff.server.admin.index.do_not_auto_attempt_print_setting.label;" accesskey="&staff.server.admin.index.do_not_auto_attempt_print_setting.accesskey;"/>
                 <menuitem label="&staff.server.admin.index.reports;" command="cmd_local_admin_reports"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.search_filter_group.label;" command="cmd_local_admin_search_filter_group"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.standing_penalty.label;" command="cmd_local_admin_standing_penalty"/>
                 <menuitem label="&staff.server.admin.index.statistical_categories;" command="cmd_local_admin_stat_cats"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.survey.label;" command="cmd_local_admin_survey"/>

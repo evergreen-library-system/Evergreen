@@ -746,6 +746,7 @@
 <!ENTITY staff.main.menu.admin.local_admin.address_alert.label "Address Alerts">
 <!ENTITY staff.main.menu.admin.local_admin.circ_limit_set.label "Circulation Limit Sets">
 <!ENTITY staff.main.menu.admin.local_admin.copy_location_group.label "Copy Location Groups">
+<!ENTITY staff.main.menu.admin.local_admin.search_filter_group.label "Search Filter Groups">
 
 <!ENTITY staff.main.menu.admin.server_admin.label "Server Administration">
 <!ENTITY staff.main.menu.admin.server_admin.conify.org_unit_type.label "Organization Types">

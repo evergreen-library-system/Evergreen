@@ -1055,6 +1055,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/asset/copy_location_group', null, event); }
             ],
+            'cmd_local_admin_search_filter_group' : [
+                ['oncommand'],
+                function(event) { open_eg_web_page('conify/global/actor/search_filter_group', null, event); }
+            ],
             'cmd_acq_create_invoice' : [
                 ['oncommand'],
                 function(event) { open_eg_web_page('acq/invoice/view?create=1', 'menu.cmd_acq_create_invoice.tab', event); }
