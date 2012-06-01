@@ -2220,18 +2220,19 @@ All key/value pairs are passed on to do_possibility_checks.
 # FIXME: specify proper usage/interaction of selection_ou and pickup_lib
 
 sub check_title_hold {
-    my( $self, $client, $authtoken, $params, $oargs ) = @_;
+    my( $self, $client, $authtoken, $params ) = @_;
     my $e = new_editor(authtoken=>$authtoken);
     return $e->event unless $e->checkauth;
-    $oargs = {} unless defined $oargs;
+
+    my %params       = %$params;
+    my $depth        = $params{depth}        || 0;
+    my $selection_ou = $params{selection_ou} || $params{pickup_lib};
+    my $oargs        = $params{oargs}        || {};
 
     if($oargs->{events}) {
         @{$oargs->{events}} = grep { $e->allowed($_ . '.override', $e->requestor->ws_ou); } @{$oargs->{events}};
     }
 
-    my %params       = %$params;
-    my $depth        = $params{depth}        || 0;
-    my $selection_ou = $params{selection_ou} || $params{pickup_lib};
 
 	my $patron = $e->retrieve_actor_user($params{patronid})
 		or return $e->event;
@@ -2262,7 +2263,7 @@ sub check_title_hold {
         my $depth = $soft_boundary;
         while($depth >= $min_depth) {
             $logger->info("performing hold possibility check with soft boundary $depth");
-            @status = do_possibility_checks($e, $patron, $request_lib, $depth, %params, $oargs);
+            @status = do_possibility_checks($e, $patron, $request_lib, $depth, %params);
             if ($status[0]) {
                 $return_depth = $depth;
                 last;
@@ -2272,11 +2273,11 @@ sub check_title_hold {
     } elsif(defined $hard_boundary and $depth < $hard_boundary) {
         # there is no soft boundary, enforce the hard boundary if it exists
         $logger->info("performing hold possibility check with hard boundary $hard_boundary");
-        @status = do_possibility_checks($e, $patron, $request_lib, $hard_boundary, %params, $oargs);
+        @status = do_possibility_checks($e, $patron, $request_lib, $hard_boundary, %params);
     } else {
         # no boundaries defined, fall back to user specifed boundary or no boundary
         $logger->info("performing hold possibility check with no boundary");
-        @status = do_possibility_checks($e, $patron, $request_lib, $params{depth}, %params, $oargs);
+        @status = do_possibility_checks($e, $patron, $request_lib, $params{depth}, %params);
     }
 
     my $place_unfillable = 0;
@@ -2299,7 +2300,7 @@ sub check_title_hold {
 
 
 sub do_possibility_checks {
-    my($e, $patron, $request_lib, $depth, %params, $oargs) = @_;
+    my($e, $patron, $request_lib, $depth, %params) = @_;
 
     my $issuanceid   = $params{issuanceid}      || "";
     my $partid       = $params{partid}      || "";
@@ -2311,6 +2312,7 @@ sub do_possibility_checks {
     my $hold_type    = $params{hold_type}    || 'T';
     my $selection_ou = $params{selection_ou} || $pickup_lib;
     my $holdable_formats = $params{holdable_formats};
+    my $oargs        = $params{oargs}        || {};
 
 
 	my $copy;

@@ -191,13 +191,13 @@ __PACKAGE__->register_method(
 
 
 sub run_method {
-    my( $self, $conn, $auth, $args, $oargs ) = @_;
+    my( $self, $conn, $auth, $args ) = @_;
     translate_legacy_args($args);
-    $oargs = { all => 1 } unless defined $oargs;
+    $args->{override_args} = { all => 1 } unless defined $args->{override_args};
     my $api = $self->api_name;
 
     my $circulator = 
-        OpenILS::Application::Circ::Circulator->new($auth, %$args, $oargs);
+        OpenILS::Application::Circ::Circulator->new($auth, %$args);
 
     return circ_events($circulator) if $circulator->bail_out;
 
@@ -571,13 +571,12 @@ sub AUTOLOAD {
 
 
 sub new {
-    my( $class, $auth, %args, $oargs ) = @_;
+    my( $class, $auth, %args ) = @_;
     $class = ref($class) || $class;
     my $self = bless( {}, $class );
 
     $self->events([]);
     $self->editor(new_editor(xact => 1, authtoken => $auth));
-    $self->override_args($oargs);
 
     unless( $self->editor->checkauth ) {
         $self->bail_on_events($self->editor->event);
