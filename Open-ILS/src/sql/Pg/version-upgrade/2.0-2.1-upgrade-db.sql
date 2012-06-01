@@ -5732,7 +5732,16 @@ INSERT INTO permission.perm_list
 
 -- Prevent conflicts with existing custom permission groups; as of 2.0.10, 
 -- highest permission.grp_tree ID was 10 for Local System Administrator
-UPDATE permission.grp_tree SET id = id + 100 WHERE id > 10;
+DO $$
+DECLARE i INTEGER;
+BEGIN
+    FOR i IN
+        SELECT id FROM permission.grp_tree WHERE id > 10 ORDER BY id DESC
+    LOOP
+        UPDATE permission.grp_tree SET id = id + 100 WHERE id = i;
+    END LOOP;
+END;
+$$;
 UPDATE permission.grp_tree SET parent = parent + 100 WHERE parent > 10;
 UPDATE actor.usr SET profile = profile + 100 WHERE profile > 10;
 UPDATE permission.grp_perm_map SET grp = grp + 100 WHERE grp > 10;
