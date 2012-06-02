@@ -93,8 +93,9 @@ def parse_properties():
                 continue
 
             for entry in properties[prop_key]:
-                if ['file'] == short_pf:
-                    print("%s:%d: Duplicate key '%s' in line [%s]" % (short_pf, line_num, prop_key, line[0:-1]))
+                if entry['file'] == short_pf:
+                    print("File: %s:%d"% (short_pf, line_num))
+                    print("\tDuplicate key '%s' in line [%s]" % (prop_key, line[0:-1]))
                     continue
 
             properties[prop_key].append({'value': value, 'file': short_pf})
