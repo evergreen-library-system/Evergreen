@@ -246,10 +246,7 @@ if [ $PREV_BRANCH != "PACKAGE" ]; then
     grep -i -m 1 Signed-off-by ChangeLog &> /dev/null
     if [ $? -ne 0 ]; then
         echo "Building ChangeLog"
-        # git2cl doesn't seem to play nice with piping from git log. So write to a file, then push that into git2cl.
-        git log --cherry-pick --right-only --no-merges --pretty --summary --numstat $PREV_BRANCH..HEAD > ChangeLog.temp
-        git2cl < ChangeLog.temp > $GIT_ABS/ChangeLog
-        rm ChangeLog.temp
+        git log --cherry-pick --right-only --no-merges --pretty --summary --numstat $PREV_BRANCH..HEAD > $GIT_ABS/ChangeLog
     else
         echo "Not overwriting existing ChangeLog!"
     fi
