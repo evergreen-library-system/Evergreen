@@ -4,7 +4,9 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (squeeze), Ubuntu (10.04), Ubuntu (12.04) and Fedora (16).
+# Currently supports Debian (squeeze), Ubuntu (10.04), Ubuntu (12.04) and
+# Fedora (16 and 17).
+#
 # Installs Perl prereqs, libjs with Perl wrapper, libdbi, libdbi-drivers, and libyaz
 #
 # usage:
@@ -14,7 +16,7 @@
 # 	- or -
 # 	make -f Makefile.install ubuntu-precise
 # 	- or -
-# 	make -f Makefile.install fedora16
+# 	make -f Makefile.install fedora
 #
 # ---------------------------------------------------------------------
  
@@ -122,6 +124,7 @@ FEDORA_RPMS = \
 	libssh2-devel \
 	libyaz \
 	libyaz-devel \
+	mingw32-nsiswrapper \
 	mod_ssl \
 	ncurses-devel \
 	ncurses-libs \
@@ -152,7 +155,7 @@ FEDORA_RPMS = \
 
 # Note: B:O:AuthorizeNet 3.21 fails with https://rt.cpan.org/Public/Bug/Display.html?id=55172
 # Should be fixed in 3.22
-# MARC::Record 2.0.1 is required but only 2.0.0 is packaged
+# MARC::Record 2.0.1+ is required but only 2.0.0 is packaged
 FEDORA_CPAN = \
 	Business::OnlinePayment \
 	Business::OnlinePayment::AuthorizeNet \
@@ -261,7 +264,7 @@ all:
 # these should be the same for any distro
 install: install_cpan install_js_sm install_cpan_force
 
-fedora16: install_fedora_rpms install_cpan_fedora install_cpan_marc install
+fedora: install_fedora_rpms install_cpan_fedora install_cpan_marc install
 
 debian-squeeze: squeeze generic_debian
 squeeze: install_pgsql_client_backport_debs_91  install_extra_debs_squeeze
