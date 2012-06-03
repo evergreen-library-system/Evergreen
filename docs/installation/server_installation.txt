@@ -103,13 +103,13 @@ add-apt-repository ppa:pitti/postgresql
 +
   * Ubuntu Precise comes with PostgreSQL 9, so no additional steps are required.
 +
-  * Fedora 16 comes with PostgreSQL 9, so no additional steps are required.
+  * Fedora comes with PostgreSQL 9, so no additional steps are required.
 +
 3. On Debian and Ubuntu, run `aptitude update` as the *root* Linux account to
    retrieve the new packages from the backports repository.
 4. Issue the following commands as the *root* Linux account to install
    prerequisites using the `Makefile.install` prerequisite installer,
-   substituting `debian-squeeze`, `fedora16`, `ubuntu-lucid`, or
+   substituting `debian-squeeze`, `fedora`, `ubuntu-lucid`, or
    `ubuntu-precise` for <osname> below:
 +
 [source, bash]
@@ -329,7 +329,7 @@ make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_91
 You can install the packages required by Fedora on the machine of your choice
 using the following commands as the *root* Linux account:
 
-.(Fedora 16) Installing PostgreSQL server packages
+.(Fedora) Installing PostgreSQL server packages
 [source, bash]
 ------------------------------------------------------------------------------
 make -f Open-ILS/src/extras/Makefile.install install_fedora_pgsql_server
@@ -351,7 +351,7 @@ cpan MARC::File::XML
 cpan UUID::Tiny
 ------------------------------------------------------------------------------
 
-.(Fedora 16) Installing additional Perl modules on a standalone PostgreSQL 9 server
+.(Fedora) Installing additional Perl modules on a standalone PostgreSQL 9 server
 [source, bash]
 ------------------------------------------------------------------------------
 yum install gcc perl-XML-LibXML perl-XML-LibXSLT perl-Business-ISBN
