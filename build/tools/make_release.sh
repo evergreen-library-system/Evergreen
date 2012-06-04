@@ -287,8 +287,8 @@ echo "Grabbing XULRunner (to avoid issues with version changes)"
 cd Open-ILS/xul/staff_client
 XULRUNNER_VERSION=`grep '^XULRUNNER_VERSION' Makefile.am`
 XULRUNNER_VERSION=${XULRUNNER_VERSION##XULRUNNER_VERSION=}
-wget http://download02.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.win32.zip
-wget http://download02.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.linux-i686.tar.bz2
+wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.win32.zip
+wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.linux-i686.tar.bz2
 
 echo "Prepping server download files"
 cd ../../../../
