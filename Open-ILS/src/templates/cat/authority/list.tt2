@@ -2,7 +2,14 @@
 [% WRAPPER base.tt2 %]
 
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/cat/authority/list.js'> </script>
-
+<style type="text/css">
+    .authEntry { clear: both; }
+    .authEntry > *:first-child { float: left; width: 20%; }
+    .authEntry > .text { float: left; width: 46%; }
+    .authEntry > .authority-control-set { float: right; width: 33%; ; font-style: italic; }
+    .authority-control-set .acs-name { font-weight: bold; }
+    .authority-control-set .acs-id { }
+</style>
 <div dojoType="dijit.form.Form" id="myForm" jsId="myForm" encType="multipart/form-data" action="" method="">
     <span style="white-space: nowrap;">
         <label for="authTerm">Search term: </label>

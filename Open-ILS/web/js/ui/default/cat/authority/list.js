@@ -15,10 +15,24 @@ dojo.require('openils.PermaCrud');
 dojo.require('openils.XUL');
 dojo.require('openils.widget.OrgUnitFilteringSelect');
 dojo.require("openils.widget.PCrudAutocompleteBox");
+dojo.require("MARC.FixedFields");
 dojo.requireLocalization("openils.authority", "authority");
 var auth_strings = dojo.i18n.getLocalization("openils.authority", "authority");
 
 var cgi = new openils.CGI();
+var pcrud = new openils.PermaCrud();
+
+var _acs_cache_by_at = {};
+function fetch_control_set(thesaurus) {
+    if (!_acs_cache_by_at[thesaurus]) {
+        var at = pcrud.retrieve(
+            "at", thesaurus,
+            {"flesh": 1, "flesh_fields": {"at": ["control_set"]}}
+        );
+        _acs_cache_by_at[thesaurus] = at.control_set();
+    }
+    return _acs_cache_by_at[thesaurus];
+}
 
 /*
 // OrgUnits do not currently affect the retrieval of authority records,
@@ -40,6 +54,7 @@ function displayAuthorities(data) {
     dojo.query("record", data).forEach(function(node) {
         var auth = {};
         auth.text = '';
+        auth.thesaurus = '|';
         auth.id = 0;
 
         // Grab each authority record field from the authority record
@@ -56,17 +71,38 @@ function displayAuthorities(data) {
             auth.id = dojox.xml.parser.textContent(dfNode); 
         });
 
+        /* I wrap this in try/catch only because:
+         *  a) this interface hasn't hitherto relied on MARC.Record, and
+         *  b) the functionality we need it for is optional
+         */
+        try {
+            var marc = new MARC.Record({"rtype": "AUT", "xml": node});
+            auth.thesaurus = marc.extractFixedField("Subj", "|");
+        } catch (E) {
+            console.warn(
+                "MARC.Record didn't work for authority record " +
+                auth.id + ": " + E
+            );
+        }
+
         idArr.push(parseInt(auth.id));
 
-        // Create the authority record listing entry
-        dojo.place('<div class="authEntry" id="auth' + auth.id + '"><span class="text" id="authLabel' + auth.id + '">' + auth.text + '</span></div>', "authlist-div", "last");
+        // Create the authority record listing entry. XXX i18n
+        dojo.place(
+            '<div class="authEntry" id="auth' + auth.id + '">' +
+            '<div class="text" id="authLabel' + auth.id + '">' + auth.text + '</div>' +
+            '<div class="authority-control-set">Control Set: <span class="acs-name">' +
+            fetch_control_set(auth.thesaurus).name() +
+            '</span> <span class="acs-id">(#' +
+            fetch_control_set(auth.thesaurus).id() + ')</span></div></div>',
+            "authlist-div", "last"
+        );
 
         // Add the menu of new/edit/delete/mark-for-merge options
         var auth_menu = new dijit.Menu({});
 
         // "Edit" menu item
         new dijit.MenuItem({"id": "edit_" + auth.id, "onClick": function(){
-            var pcrud = new openils.PermaCrud();
             var auth_rec = pcrud.retrieve("are", auth.id);
             if (auth_rec) {
                 loadMarcEditor(pcrud, auth_rec);
@@ -100,7 +136,6 @@ function displayAuthorities(data) {
             "onClick":function(){
                 auth.text = '';
 
-                var pcrud = new openils.PermaCrud();
                 var auth_rec = pcrud.retrieve("are", auth.id);
 
                 // Bit of a hack to get the linked bib count until an explicit ID
@@ -145,7 +180,7 @@ function displayAuthorities(data) {
         }, "label":auth_strings.DELETE}).placeAt(auth_menu, "last");
 
         auth_mb = new dijit.form.DropDownButton({dropDown: auth_menu, label: auth_strings.ACTIONS, id:"menu" + auth.id});
-        auth_mb.placeAt("auth" + auth.id, "first");
+        auth_mb.placeAt(dojo.create("div", null, "auth" + auth.id, "first"), "first");
         auth_menu.startup();
     });
 
@@ -194,7 +229,6 @@ function cancelDelete(recId) {
 }
 
 function confirmDelete(recId) {
-    var pcrud = new openils.PermaCrud();
     var auth_rec = pcrud.retrieve("are", recId);
     if (auth_rec) {
         pcrud.eliminate(auth_rec);
@@ -214,7 +248,7 @@ function showBibCount(authIds) {
         var msg = r.recv().content();
         dojo.forEach(msg, function(auth) {
                 linkedIds.push(auth.authority);
-                dojo.place('<span class="bibcount">' + auth.bibs + '</span>', 'authLabel' + auth.authority, 'before');
+                dojo.place('<span class="bibcount">' + auth.bibs + '</span> ', 'authLabel' + auth.authority, 'first');
             }
         );
 
@@ -227,7 +261,7 @@ function showBibCount(authIds) {
                 }
             });
             if (!found) {
-                dojo.place('<span class="bibcount">0</span>', 'authLabel' + id, 'before');
+                dojo.place('<span class="bibcount">0</span> ', 'authLabel' + id, 'first');
             }
         });
     }

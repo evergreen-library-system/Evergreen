@@ -106,10 +106,14 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
 
         retrieve : function ( fm_class /* Fieldmapper class hint */, id /* Fieldmapper object primary key value */,  opts /* Option hash */) {
             if(!opts) opts = {};
+            var ffj = {};
+            if (opts.join) ffj.join = opts.join;
+            if (opts.flesh) ffj.flesh = opts.flesh;
+            if (opts.flesh_fields) ffj.flesh_fields = opts.flesh_fields;
             var req_hash = dojo.mixin(
                 opts, 
                 { method : 'open-ils.pcrud.retrieve.' + fm_class,
-                  params : [ this.auth(), id ]
+                  params : [ this.auth(), id, ffj ]
                 }
             );
 
