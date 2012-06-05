@@ -209,8 +209,8 @@
                             <textbox id="HeadMain_tb" context="clipboard" class="plain" name="HeadMain" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                         </row>
                         <row>
-                            <label name="HeadSubj" control="HeadSubj_tb" set="AUT" value="HeadSubj" />
-                            <textbox id="HeadSubj_tb" context="clipboard" class="plain" name="HeadSubj" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="Subj" control="Subj_tb" set="AUT" value="Subj" />
+                            <textbox id="Subj_tb" context="clipboard" class="plain" name="Subj" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="HeadSer" control="HeadSer_tb" set="AUT" value="HeadSer" />
                             <textbox id="HeadSer_tb" context="clipboard" class="plain" name="HeadSer" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="TypeSubd" control="TypeSubd_tb" set="AUT" value="TypeSubd" />
