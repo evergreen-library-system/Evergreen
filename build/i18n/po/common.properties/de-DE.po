@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
 "PO-Revision-Date: 2012-01-11 16:26+0000\n"
 "Last-Translator: Daniel Winzen <d@winzen4.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-01-12 05:43+0000\n"
-"X-Generator: Launchpad (build 14640)\n"
+"X-Launchpad-Export-Date: 2012-04-30 04:44+0000\n"
+"X-Generator: Launchpad (build 15171)\n"
 
 #: common.exception
 msgid ""
@@ -111,6 +111,10 @@ msgstr "Nein"
 
 #: common.check_to_confirm
 msgid "Check here to confirm this message"
+msgstr ""
+
+#: common.processing
+msgid "Processing"
 msgstr ""
 
 #: lang.version
@@ -253,6 +257,14 @@ msgstr ""
 #: staff.ahr_phone_notify_label
 msgid "Phone Notify"
 msgstr "Telefonbenachrichtigung"
+
+#: staff.ahr_sms_notify_label
+msgid "Text Notify"
+msgstr ""
+
+#: staff.ahr_sms_carrier_label
+msgid "Text Carrier"
+msgstr ""
 
 #: staff.ahr_pickup_lib_label
 msgid "Pickup Library"
@@ -599,6 +611,10 @@ msgstr "Erstellt am"
 msgid "Expires On"
 msgstr ""
 
+#: staff.au_last_update_time_label
+msgid "Updated On"
+msgstr ""
+
 #: staff.au_home_library_label
 msgid "Home Library"
 msgstr ""
@@ -668,7 +684,7 @@ msgid "User ID"
 msgstr ""
 
 #: staff.au_name_prefix_label
-msgid "Prefix"
+msgid "Name Prefix"
 msgstr ""
 
 #: staff.au_family_name_label
@@ -684,7 +700,7 @@ msgid "Middle Name"
 msgstr ""
 
 #: staff.au_name_suffix_label
-msgid "Suffix"
+msgid "Name Suffix"
 msgstr ""
 
 #: staff.z39_50.search_class.author

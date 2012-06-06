@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-18 21:44-0400\n"
-"PO-Revision-Date: 2012-04-12 13:33+0000\n"
-"Last-Translator: Daniel Winzen <d@winzen4.de>\n"
+"POT-Creation-Date: 2012-04-28 14:16-0400\n"
+"PO-Revision-Date: 2012-05-18 12:32+0000\n"
+"Last-Translator: Karsten Tinnefeld <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-13 05:28+0000\n"
-"X-Generator: Launchpad (build 15070)\n"
+"X-Launchpad-Export-Date: 2012-05-19 05:22+0000\n"
+"X-Generator: Launchpad (build 15259)\n"
 
 #. =================================================================
 #. Some generic stuff
@@ -781,6 +781,10 @@ msgstr "In Bearbeitung"
 msgid "Ready for Pickup"
 msgstr "Bereit zur Abholung"
 
+#: myopac.holds.status.suspended
+msgid "Suspended"
+msgstr ""
+
 #: myopac.holds.cancel
 msgctxt "myopac.holds.cancel"
 msgid "Cancel"
@@ -1102,10 +1106,10 @@ msgid "Username update failed"
 msgstr "Aktualisierung des Benutzernamens gescheitert"
 
 #: myopac.summary.username.invalid
-msgid "Username cannot contain spaces or have the same format as a barcode"
+msgid ""
+"Username cannot contain spaces or have the same format as a barcode, and may "
+"be restricted by policy"
 msgstr ""
-"Der Benutzername kann keine Leerzeichen enthalten oder das gleiche Format "
-"wie ein Barcode haben"
 
 #: myopac.summary.email.error
 msgid "Please enter a valid email address"
@@ -1425,9 +1429,9 @@ msgid "GALILEO"
 msgstr "GALILEO"
 
 #: footer.copyright
-msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
+msgid "Copyright &#xA9; 2006-2012 Georgia Public Library Service, and others"
 msgstr ""
-"Copyright &#xA9; 2006-2010 Georgia Public Library Service, und andere"
+"Copyright &#xA9; 2006 - 2012 Georgia Puplic Library Service, und andere"
 
 #. Introduces the logo for the project
 #: footer.logo
@@ -1487,9 +1491,17 @@ msgctxt "sidebar.quick.search"
 msgid "Quick Search"
 msgstr "Schnellsuche"
 
+#: sidebar.authority.browse
+msgid "Authority Browse"
+msgstr ""
+
 #: sidebar.copy.not.found
 msgid "No copy with the requested barcode was found"
 msgstr "Es gibt keine Ausgabe mit diesem Strichcode"
+
+#: sidebar.copy.not.cataloged
+msgid "The copy with the requested barcode is not cataloged"
+msgstr ""
 
 #. =================================================================
 #. Search formats
@@ -1565,6 +1577,10 @@ msgstr "Evergreen Anfragegegenstände"
 msgid "Evergreen Call Number Browse"
 msgstr "Evergreen Aufrufzahl durchkämmen"
 
+#: opac.title.authbrowse
+msgid "Evergreen Authority Record Browse"
+msgstr ""
+
 #: opac.holds.forMe
 msgid "Place this hold for myself"
 msgstr "Mir diesen Gegenstand reservieren"
@@ -1606,6 +1622,12 @@ msgstr "Die Reservierung wurde erfolgreich durchgeführt"
 #: opac.holds.failure
 msgid "Hold was not successfully placed"
 msgstr "Die Reservierung konnte nicht erfolgreich durchgeführt werden"
+
+#: opac.hold.has_parts
+msgid ""
+"The system was not able to place the requested hold.  The item requested has "
+"multiple parts to choose from.  Try selecting a specific part for the hold."
+msgstr ""
 
 #. =================================================================
 #. Advanced
@@ -1756,11 +1778,15 @@ msgstr "Standort"
 
 #: rdetail.cn.hold.age
 msgid "Age Hold Protection"
-msgstr ""
+msgstr "Reservierungsaltersschutz"
 
 #: rdetail.cn.genesis
 msgid "Create Date"
 msgstr "Erstellungsdatum"
+
+#: rdetail.cn.active
+msgid "Active Date"
+msgstr ""
 
 #: rdetail.cn.holdable
 msgid "Holdable"
@@ -2245,6 +2271,19 @@ msgstr ""
 "Es gibt bereits eine Reservierung für diesen Gegenstand. Wollen Sie Ihn "
 "trotzdem reservieren?"
 
+#: common.hold.age_protect.override
+msgid ""
+"This hold may take extra time to fill due to library policies. Would you "
+"like to create the hold anyway?"
+msgstr ""
+
+#: common.hold.place_unfillable.override
+msgid ""
+"The requested hold cannot currently be filled. You have permission to place "
+"the hold regardless, but should only do so if you believe the hold will "
+"eventually be filled. Would you like to create the hold anyway?"
+msgstr ""
+
 #: common.hold.barred
 msgid ""
 "PATRON BARRED. Please see any notes in the \n"
@@ -2723,3 +2762,12 @@ msgstr "Das Kundenkonto konnte nicht gefunden werden"
 #: circ.fail_part.transit_range
 msgid "The item cannot transit this far"
 msgstr "Dieser Gegenstand kann nicht so weit reisen"
+
+#~ msgid "Username cannot contain spaces or have the same format as a barcode"
+#~ msgstr ""
+#~ "Der Benutzername kann keine Leerzeichen enthalten oder das gleiche Format "
+#~ "wie ein Barcode haben"
+
+#~ msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
+#~ msgstr ""
+#~ "Copyright &#xA9; 2006-2010 Georgia Public Library Service, und andere"

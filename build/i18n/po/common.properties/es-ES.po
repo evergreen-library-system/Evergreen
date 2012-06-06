@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
 "PO-Revision-Date: 2011-09-13 16:46+0000\n"
 "Last-Translator: Emerson Posadas <toxickore@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-09-14 04:42+0000\n"
-"X-Generator: Launchpad (build 13921)\n"
+"X-Launchpad-Export-Date: 2012-04-30 04:44+0000\n"
+"X-Generator: Launchpad (build 15171)\n"
 
 #: common.exception
 msgid ""
@@ -113,6 +113,10 @@ msgstr "No"
 #: common.check_to_confirm
 msgid "Check here to confirm this message"
 msgstr "Marque aquí para confirmar este mensaje"
+
+#: common.processing
+msgid "Processing"
+msgstr ""
 
 #: lang.version
 msgid "remote v1"
@@ -254,6 +258,14 @@ msgstr "Identificación del Apartado"
 #: staff.ahr_phone_notify_label
 msgid "Phone Notify"
 msgstr "Notificar por teléfono"
+
+#: staff.ahr_sms_notify_label
+msgid "Text Notify"
+msgstr ""
+
+#: staff.ahr_sms_carrier_label
+msgid "Text Carrier"
+msgstr ""
 
 #: staff.ahr_pickup_lib_label
 msgid "Pickup Library"
@@ -600,6 +612,10 @@ msgstr "Creado En"
 msgid "Expires On"
 msgstr "Caduca el"
 
+#: staff.au_last_update_time_label
+msgid "Updated On"
+msgstr ""
+
 #: staff.au_home_library_label
 msgid "Home Library"
 msgstr "Biblioteca Principal"
@@ -669,8 +685,8 @@ msgid "User ID"
 msgstr "ID de usuario"
 
 #: staff.au_name_prefix_label
-msgid "Prefix"
-msgstr "Prefijo"
+msgid "Name Prefix"
+msgstr ""
 
 #: staff.au_family_name_label
 msgid "Family Name"
@@ -685,8 +701,8 @@ msgid "Middle Name"
 msgstr "Segundo nombre"
 
 #: staff.au_name_suffix_label
-msgid "Suffix"
-msgstr "Sufijo"
+msgid "Name Suffix"
+msgstr ""
 
 #: staff.z39_50.search_class.author
 msgctxt "staff.z39_50.search_class.author"
@@ -825,3 +841,9 @@ msgstr "No permitido hoy."
 #: tab.label.triggered_events_for_copy
 msgid "Triggered Events: %1$s"
 msgstr "Eventos disparados: %1$s"
+
+#~ msgid "Prefix"
+#~ msgstr "Prefijo"
+
+#~ msgid "Suffix"
+#~ msgstr "Sufijo"

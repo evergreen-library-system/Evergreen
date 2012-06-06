@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2011-05-20 13:47+0000\n"
-"Last-Translator: Warren Layton <Unknown>\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
+"PO-Revision-Date: 2012-05-15 06:10+0000\n"
+"Last-Translator: Yves MATHIEU <MisterY_vonvon@hotmail.com>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-21 05:03+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2012-05-16 04:52+0000\n"
+"X-Generator: Launchpad (build 15247)\n"
 
 #: staff.serial.editor_base.handle_update.error
 msgid "serial update error:"
@@ -28,12 +28,12 @@ msgstr "Enregistrement réussi"
 #: staff.serial.sbsum_editor.count
 msgctxt "staff.serial.sbsum_editor.count"
 msgid "1 summary"
-msgstr ""
+msgstr "1 sommaire"
 
 #: staff.serial.sbsum_editor.count.plural
 msgctxt "staff.serial.sbsum_editor.count.plural"
 msgid "%1$s summaries"
-msgstr ""
+msgstr "%1$s sommaires"
 
 #: staff.serial.sbsum_editor.modify.label
 msgid "Modify Basic Summary"
@@ -42,17 +42,17 @@ msgstr ""
 #: staff.serial.sbsum_editor.modify.accesskey
 msgctxt "staff.serial.sbsum_editor.modify.accesskey"
 msgid "M"
-msgstr ""
+msgstr "M"
 
 #: staff.serial.sisum_editor.count
 msgctxt "staff.serial.sisum_editor.count"
 msgid "1 summary"
-msgstr ""
+msgstr "1 sommaire"
 
 #: staff.serial.sisum_editor.count.plural
 msgctxt "staff.serial.sisum_editor.count.plural"
 msgid "%1$s summaries"
-msgstr ""
+msgstr "%1$s sommaires"
 
 #: staff.serial.sisum_editor.modify.label
 msgid "Modify Index Summary"
@@ -61,17 +61,17 @@ msgstr ""
 #: staff.serial.sisum_editor.modify.accesskey
 msgctxt "staff.serial.sisum_editor.modify.accesskey"
 msgid "M"
-msgstr ""
+msgstr "M"
 
 #: staff.serial.sssum_editor.count
 msgctxt "staff.serial.sssum_editor.count"
 msgid "1 summary"
-msgstr ""
+msgstr "1 sommaire"
 
 #: staff.serial.sssum_editor.count.plural
 msgctxt "staff.serial.sssum_editor.count.plural"
 msgid "%1$s summaries"
-msgstr ""
+msgstr "%1$s sommaires"
 
 #: staff.serial.sssum_editor.modify.label
 msgid "Modify Supplement Summary"
@@ -80,7 +80,7 @@ msgstr ""
 #: staff.serial.sssum_editor.modify.accesskey
 msgctxt "staff.serial.sssum_editor.modify.accesskey"
 msgid "M"
-msgstr ""
+msgstr "M"
 
 #: staff.serial.scap_editor.count
 msgid "1 caption and pattern"
@@ -106,7 +106,7 @@ msgstr ""
 #: staff.serial.scap_editor.modify.accesskey
 msgctxt "staff.serial.scap_editor.modify.accesskey"
 msgid "M"
-msgstr ""
+msgstr "M"
 
 #: staff.serial.scap_editor.notes
 msgid "Caption and Pattern Notes"
@@ -127,7 +127,7 @@ msgstr ""
 #: staff.serial.sdist_editor.create.accesskey
 msgctxt "staff.serial.sdist_editor.create.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.serial.sdist_editor.modify.label
 msgid "Modify Distribution(s)"
@@ -136,10 +136,30 @@ msgstr ""
 #: staff.serial.sdist_editor.modify.accesskey
 msgctxt "staff.serial.sdist_editor.modify.accesskey"
 msgid "M"
-msgstr ""
+msgstr "M"
 
 #: staff.serial.sdist_editor.notes
 msgid "Distribution Notes"
+msgstr ""
+
+#: staff.serial.sdist_editor.add_to_sre.label
+msgid "Add to record entry"
+msgstr ""
+
+#: staff.serial.sdist_editor.merge_with_sre.label
+msgid "Merge with record entry"
+msgstr ""
+
+#: staff.serial.sdist_editor.use_sre_only.label
+msgid "Use record entry only"
+msgstr ""
+
+#: staff.serial.sdist_editor.use_sdist_only.label
+msgid "Do not use record entry"
+msgstr ""
+
+#: staff.serial.sdist_editor.no_mfhd_available.label
+msgid "No MFHD records for this Holding Lib"
 msgstr ""
 
 #: staff.serial.siss_editor.count
@@ -284,6 +304,18 @@ msgid ""
 "Override Delete Failure? Doing so will delete all attached items as well!"
 msgstr ""
 
+#: staff.serial.manage_items.subscriber.label
+msgid "Subscriber"
+msgstr ""
+
+#: staff.serial.manage_items.holder.label
+msgid "Holder"
+msgstr ""
+
+#: staff.serial.manage_items.notes_column.label
+msgid "Notes (Item/Dist/Sub)"
+msgstr ""
+
 #: staff.serial.manage_subs.add.error
 msgid "error adding object in manage_subs.js:"
 msgstr ""
@@ -360,6 +392,22 @@ msgstr ""
 #: staff.serial.manage_subs.delete_ssub.override
 msgid ""
 "Override Delete Failure? Doing so will delete all related data as well!"
+msgstr ""
+
+#: staff.serial.notes.do_edit_note.label
+msgid "Edit This Note"
+msgstr ""
+
+#: staff.serial.notes.edit_note.label
+msgid "Edit Note"
+msgstr ""
+
+#: staff.serial.notes.edit_note.accesskey
+msgid "E"
+msgstr ""
+
+#: staff.serial.required_fields_alert
+msgid "These fields are required: "
 msgstr ""
 
 #: batch_receive.bib_lookup.empty

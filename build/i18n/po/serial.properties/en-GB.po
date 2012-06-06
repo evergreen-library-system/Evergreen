@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2011-07-14 00:02+0000\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
+"PO-Revision-Date: 2012-05-02 18:39+0000\n"
 "Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-07-15 04:53+0000\n"
-"X-Generator: Launchpad (build 13405)\n"
+"X-Launchpad-Export-Date: 2012-05-03 05:28+0000\n"
+"X-Generator: Launchpad (build 15185)\n"
 
 #: staff.serial.editor_base.handle_update.error
 msgid "serial update error:"
@@ -141,6 +141,26 @@ msgstr "M"
 #: staff.serial.sdist_editor.notes
 msgid "Distribution Notes"
 msgstr "Distribution Notes"
+
+#: staff.serial.sdist_editor.add_to_sre.label
+msgid "Add to record entry"
+msgstr "Add to record entry"
+
+#: staff.serial.sdist_editor.merge_with_sre.label
+msgid "Merge with record entry"
+msgstr "Merge with record entry"
+
+#: staff.serial.sdist_editor.use_sre_only.label
+msgid "Use record entry only"
+msgstr "Use record entry only"
+
+#: staff.serial.sdist_editor.use_sdist_only.label
+msgid "Do not use record entry"
+msgstr "Do not use record entry"
+
+#: staff.serial.sdist_editor.no_mfhd_available.label
+msgid "No MFHD records for this Holding Lib"
+msgstr "No MFHD records for this Holding Lib"
 
 #: staff.serial.siss_editor.count
 msgid "1 issuance"
@@ -285,6 +305,18 @@ msgid ""
 msgstr ""
 "Override Delete Failure? Doing so will delete all attached items as well!"
 
+#: staff.serial.manage_items.subscriber.label
+msgid "Subscriber"
+msgstr "Subscriber"
+
+#: staff.serial.manage_items.holder.label
+msgid "Holder"
+msgstr "Holder"
+
+#: staff.serial.manage_items.notes_column.label
+msgid "Notes (Item/Dist/Sub)"
+msgstr "Notes (Item/Dist/Sub)"
+
 #: staff.serial.manage_subs.add.error
 msgid "error adding object in manage_subs.js:"
 msgstr "error adding object in manage_subs.js:"
@@ -367,6 +399,22 @@ msgid ""
 "Override Delete Failure? Doing so will delete all related data as well!"
 msgstr ""
 "Override Delete Failure? Doing so will delete all related data as well!"
+
+#: staff.serial.notes.do_edit_note.label
+msgid "Edit This Note"
+msgstr "Edit This Note"
+
+#: staff.serial.notes.edit_note.label
+msgid "Edit Note"
+msgstr "Edit Note"
+
+#: staff.serial.notes.edit_note.accesskey
+msgid "E"
+msgstr "E"
+
+#: staff.serial.required_fields_alert
+msgid "These fields are required: "
+msgstr "These fields are required: "
 
 #: batch_receive.bib_lookup.empty
 msgid "Enter a search term."
@@ -639,3 +687,14 @@ msgstr "Subscription : # %1$s"
 #: serial.manage_subs.subscriptions
 msgid "Subscriptions"
 msgstr "Subscriptions"
+
+#~ msgid ""
+#~ "Override Delete Failure? Doing so will delete all attached items as well!"
+#~ msgstr ""
+#~ "Override Delete Failure? Doing so will delete all attached items as well!"
+
+#~ msgid "Successfully predicted %1$s issuance(s) for subscription # %2$s."
+#~ msgstr "Successfully predicted %1$s issuance(s) for subscription # %2$s."
+
+#~ msgid "Number of Predicted Items"
+#~ msgstr "Number of Predicted Items"

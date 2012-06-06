@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-18 21:44-0400\n"
-"PO-Revision-Date: 2012-02-26 19:41+0000\n"
-"Last-Translator: Irmak Bıçakçıgil <Unknown>\n"
+"POT-Creation-Date: 2012-04-28 14:16-0400\n"
+"PO-Revision-Date: 2012-05-12 08:34+0000\n"
+"Last-Translator: kulkke <Unknown>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-02-27 04:53+0000\n"
-"X-Generator: Launchpad (build 14868)\n"
+"X-Launchpad-Export-Date: 2012-05-13 04:44+0000\n"
+"X-Generator: Launchpad (build 15225)\n"
 
 #. =================================================================
 #. Some generic stuff
@@ -149,11 +149,11 @@ msgstr ""
 
 #: common.no
 msgid "No"
-msgstr ""
+msgstr "Hayır"
 
 #: common.yes
 msgid "Yes"
-msgstr ""
+msgstr "Evet"
 
 #: common.cancel
 msgctxt "common.cancel"
@@ -185,7 +185,7 @@ msgstr "kapat"
 
 #: common.and
 msgid "and"
-msgstr ""
+msgstr "ve"
 
 #: common.user_not_found
 msgid "User not found"
@@ -210,7 +210,7 @@ msgstr "Eşleşme Durumu: "
 
 #: common.tips
 msgid "Tips:"
-msgstr ""
+msgstr "İpuçları:"
 
 #: common.tips.tip1
 msgid ""
@@ -243,7 +243,7 @@ msgstr ""
 #: common.org.note
 msgctxt "common.org.note"
 msgid "Tip:"
-msgstr ""
+msgstr "İpucu:"
 
 #: common.org.notetext
 msgid ""
@@ -715,6 +715,10 @@ msgstr ""
 msgid "Ready for Pickup"
 msgstr ""
 
+#: myopac.holds.status.suspended
+msgid "Suspended"
+msgstr ""
+
 #: myopac.holds.cancel
 msgctxt "myopac.holds.cancel"
 msgid "Cancel"
@@ -1013,7 +1017,9 @@ msgid "Username update failed"
 msgstr ""
 
 #: myopac.summary.username.invalid
-msgid "Username cannot contain spaces or have the same format as a barcode"
+msgid ""
+"Username cannot contain spaces or have the same format as a barcode, and may "
+"be restricted by policy"
 msgstr ""
 
 #: myopac.summary.email.error
@@ -1334,7 +1340,7 @@ msgid "GALILEO"
 msgstr ""
 
 #: footer.copyright
-msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
+msgid "Copyright &#xA9; 2006-2012 Georgia Public Library Service, and others"
 msgstr ""
 
 #. Introduces the logo for the project
@@ -1395,8 +1401,16 @@ msgctxt "sidebar.quick.search"
 msgid "Quick Search"
 msgstr ""
 
+#: sidebar.authority.browse
+msgid "Authority Browse"
+msgstr ""
+
 #: sidebar.copy.not.found
 msgid "No copy with the requested barcode was found"
+msgstr ""
+
+#: sidebar.copy.not.cataloged
+msgid "The copy with the requested barcode is not cataloged"
 msgstr ""
 
 #. =================================================================
@@ -1473,6 +1487,10 @@ msgstr ""
 msgid "Evergreen Call Number Browse"
 msgstr ""
 
+#: opac.title.authbrowse
+msgid "Evergreen Authority Record Browse"
+msgstr ""
+
 #: opac.holds.forMe
 msgid "Place this hold for myself"
 msgstr ""
@@ -1513,6 +1531,12 @@ msgstr ""
 
 #: opac.holds.failure
 msgid "Hold was not successfully placed"
+msgstr ""
+
+#: opac.hold.has_parts
+msgid ""
+"The system was not able to place the requested hold.  The item requested has "
+"multiple parts to choose from.  Try selecting a specific part for the hold."
 msgstr ""
 
 #. =================================================================
@@ -1668,6 +1692,10 @@ msgstr ""
 
 #: rdetail.cn.genesis
 msgid "Create Date"
+msgstr ""
+
+#: rdetail.cn.active
+msgid "Active Date"
 msgstr ""
 
 #: rdetail.cn.holdable
@@ -2137,6 +2165,19 @@ msgstr ""
 msgid ""
 "A hold already exists on the requested item. Would you like to create the "
 "hold anyway?"
+msgstr ""
+
+#: common.hold.age_protect.override
+msgid ""
+"This hold may take extra time to fill due to library policies. Would you "
+"like to create the hold anyway?"
+msgstr ""
+
+#: common.hold.place_unfillable.override
+msgid ""
+"The requested hold cannot currently be filled. You have permission to place "
+"the hold regardless, but should only do so if you believe the hold will "
+"eventually be filled. Would you like to create the hold anyway?"
 msgstr ""
 
 #: common.hold.barred

@@ -7,16 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2012-04-19 22:31+0000\n"
-"Last-Translator: Filipe Pinheiro dos Santos Cantarelli "
-"<filipe.cantarelli@gmail.com>\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
+"PO-Revision-Date: 2012-05-28 02:29+0000\n"
+"Last-Translator: Tomas Abril <Unknown>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-20 04:44+0000\n"
-"X-Generator: Launchpad (build 15120)\n"
+"X-Launchpad-Export-Date: 2012-05-29 04:49+0000\n"
+"X-Generator: Launchpad (build 15316)\n"
 
 #: staff.serial.editor_base.handle_update.error
 msgid "serial update error:"
@@ -143,6 +142,26 @@ msgstr "M"
 msgid "Distribution Notes"
 msgstr "Notas de distribuição"
 
+#: staff.serial.sdist_editor.add_to_sre.label
+msgid "Add to record entry"
+msgstr "Adicionar a entrada de registro"
+
+#: staff.serial.sdist_editor.merge_with_sre.label
+msgid "Merge with record entry"
+msgstr "Mesclar com entrada de registro"
+
+#: staff.serial.sdist_editor.use_sre_only.label
+msgid "Use record entry only"
+msgstr "Usar apenas entrada de registro"
+
+#: staff.serial.sdist_editor.use_sdist_only.label
+msgid "Do not use record entry"
+msgstr ""
+
+#: staff.serial.sdist_editor.no_mfhd_available.label
+msgid "No MFHD records for this Holding Lib"
+msgstr ""
+
 #: staff.serial.siss_editor.count
 msgid "1 issuance"
 msgstr "1 emissão"
@@ -205,7 +224,7 @@ msgstr "Notas de item"
 
 #: staff.serial.sstr_editor.count
 msgid "1 stream"
-msgstr ""
+msgstr "1 fluxo"
 
 #: staff.serial.sstr_editor.count.plural
 msgid "%1$s streams"
@@ -213,7 +232,7 @@ msgstr "%1$s fluxos"
 
 #: staff.serial.sstr_editor.create.label
 msgid "Create Stream(s)"
-msgstr ""
+msgstr "Criar fluxo(s)"
 
 #: staff.serial.sstr_editor.create.accesskey
 msgctxt "staff.serial.sstr_editor.create.accesskey"
@@ -222,7 +241,7 @@ msgstr "C"
 
 #: staff.serial.sstr_editor.modify.label
 msgid "Modify Stream(s)"
-msgstr ""
+msgstr "Modificar fluxo(s)"
 
 #: staff.serial.sstr_editor.modify.accesskey
 msgctxt "staff.serial.sstr_editor.modify.accesskey"
@@ -269,20 +288,32 @@ msgstr "erro ao deletar objeto em manage_dists.js:"
 
 #: staff.serial.manage_dists.delete_sstr.confirm
 msgid "Are you sure you would like to delete this stream?"
-msgstr ""
+msgstr "Você tem certeza que deseja deletar este fluxo?"
 
 #: staff.serial.manage_dists.delete_sstr.confirm.plural
 msgid "Are you sure you would like to delete these %1$s streams?"
-msgstr ""
+msgstr "Você tem certeza que deseja deletar estes %1$s fluxos?"
 
 #: staff.serial.manage_dists.delete_sstr.title
 msgid "Delete Streams?"
-msgstr ""
+msgstr "Deletar fluxos?"
 
 #: staff.serial.manage_dists.delete_sstr.override
 msgctxt "staff.serial.manage_dists.delete_sstr.override"
 msgid ""
 "Override Delete Failure? Doing so will delete all attached items as well!"
+msgstr ""
+
+#: staff.serial.manage_items.subscriber.label
+msgid "Subscriber"
+msgstr "Assinante"
+
+#: staff.serial.manage_items.holder.label
+msgid "Holder"
+msgstr ""
+
+#: staff.serial.manage_items.notes_column.label
+msgid "Notes (Item/Dist/Sub)"
 msgstr ""
 
 #: staff.serial.manage_subs.add.error
@@ -363,6 +394,22 @@ msgid ""
 "Override Delete Failure? Doing so will delete all related data as well!"
 msgstr ""
 
+#: staff.serial.notes.do_edit_note.label
+msgid "Edit This Note"
+msgstr "Editar Esta Nota"
+
+#: staff.serial.notes.edit_note.label
+msgid "Edit Note"
+msgstr "Editar Nota"
+
+#: staff.serial.notes.edit_note.accesskey
+msgid "E"
+msgstr "E"
+
+#: staff.serial.required_fields_alert
+msgid "These fields are required: "
+msgstr "Estes campos são requeridos: "
+
 #: batch_receive.bib_lookup.empty
 msgid "Enter a search term."
 msgstr "Digite um termo de pesquisa."
@@ -401,11 +448,11 @@ msgstr ""
 
 #: batch_receive.autogen_barcodes.remove
 msgid "Clear the barcodes that have already been auto-generated?"
-msgstr ""
+msgstr "Limpar os códigos de barra que já foram gerados automaticamente?"
 
 #: batch_receive.none
 msgid "[None]"
-msgstr ""
+msgstr "[Nenhum]"
 
 #: batch_receive.apply
 msgid "Apply"
@@ -554,11 +601,11 @@ msgstr ""
 
 #: serial.manage_dists.streams
 msgid "Streams"
-msgstr ""
+msgstr "Fluxos"
 
 #: serial.manage_dists.stream_num
 msgid "Stream : # %1$s"
-msgstr ""
+msgstr "Fluxo : # %1$s"
 
 #: serial.manage_dists.sbsum
 msgid "Basic Summary"
@@ -574,7 +621,7 @@ msgstr ""
 
 #: serial.manage_dists.library_label
 msgid "%1$s : %2$s"
-msgstr ""
+msgstr "%1$s : %2$s"
 
 #: serial.manage_dists.distributions
 msgctxt "serial.manage_dists.distributions"
@@ -583,7 +630,7 @@ msgstr "Distribuições"
 
 #: serial.common.default
 msgid "Default"
-msgstr ""
+msgstr "Padrão"
 
 #: serial.manage_subs.predict.alert
 msgid "You must select a subscription before predicting issuances."

@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
 "PO-Revision-Date: 2010-03-26 10:28+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:39+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2012-04-30 04:43+0000\n"
+"X-Generator: Launchpad (build 15171)\n"
 "X-Accelerator-Marker: &\n"
 
 #: staff.circ.alert
@@ -235,6 +235,12 @@ msgid ""
 msgstr ""
 "Платежное поручение за плату аренды единицы будет добавлено к счету "
 "пользователя если это действие не принимается во внимание"
+
+#: staff.circ.checkout.override.will_auto
+msgid ""
+"If overriden now, subsequent checkouts during this patron's session will "
+"auto-override this event."
+msgstr ""
 
 #: staff.circ.checkout.not_cataloged.confirm
 msgid "Mis-scan or non-cataloged item.  Checkout as a pre-cataloged item?"
@@ -578,14 +584,17 @@ msgstr "Отвергать ошибку удаления?"
 
 #: staff.circ.copy_status.delete_volumes.delete_copies
 msgid ""
-"You must delete all the copies on the volume before you may delete the "
-"volume itself."
+"You must delete all the items on the volume before you may delete the volume "
+"itself."
 msgstr ""
-"Вы должны удалить все копии тома прежде, чем Вы сможете удалить сам том."
 
-#: staff.circ.copy_status.delete_volumes.success
-msgid "Volumes deleted."
-msgstr "Тома удалены"
+#: staff.circ.copy_status.delete_volumes.delete_copies.confirm
+msgid "Delete Volume and Items"
+msgstr ""
+
+#: staff.circ.copy_status.delete_volumes.delete_copies.cancel
+msgid "Cancel Delete"
+msgstr ""
 
 #: staff.circ.copy_status.mark_volume.status
 msgid "Volume marked as Item Transfer Destination"
@@ -875,7 +884,7 @@ msgstr "Закройте окно"
 
 #: staff.circ.print_list_template.preview
 msgid "preview: "
-msgstr ""
+msgstr "предпросмотр "
 
 #: staff.circ.print_list_template.save
 msgid "Template Saved"
@@ -1015,11 +1024,11 @@ msgid "Owning Library"
 msgstr "Собственная библиотека"
 
 #: staff.circ.utils.prefix
-msgid "Prefix"
+msgid "CN Prefix"
 msgstr ""
 
 #: staff.circ.utils.suffix
-msgid "Suffix"
+msgid "CN Suffix"
 msgstr ""
 
 #: staff.circ.utils.label_class
@@ -1066,11 +1075,15 @@ msgstr "Удерживаемый?"
 
 #: staff.circ.utils.floating
 msgid "Floating?"
-msgstr ""
+msgstr "Плавающий?"
 
 #: staff.circ.utils.hold_note
-msgid "Hold Note(s)"
-msgstr "Примечание(я) хранения"
+msgid "Hold Note(s) Count"
+msgstr ""
+
+#: staff.circ.utils.hold_note_text
+msgid "Hold Note(s) Text"
+msgstr ""
 
 #: staff.circ.utils.staff_hold
 msgid "Staff Hold?"
@@ -1148,7 +1161,7 @@ msgstr "Дата создана"
 
 #: staff.circ.utils.edit_date
 msgid "Date Last Edited "
-msgstr ""
+msgstr "Дата последнего редактирования "
 
 #: staff.circ.utils.bre.create_date
 msgid "Date Record Created"
@@ -1156,7 +1169,7 @@ msgstr "Данные записи созданны"
 
 #: staff.circ.utils.bre.edit_date
 msgid "Date Record Last Edited "
-msgstr ""
+msgstr "Дата последнего редактирования записи "
 
 #: staff.circ.utils.edition
 msgid "Edition"
@@ -1180,7 +1193,7 @@ msgstr "Создано"
 
 #: staff.circ.utils.owner
 msgid "Owned By"
-msgstr ""
+msgstr "Владелец"
 
 #: staff.circ.utils.editor
 msgid "Edited By"
@@ -1322,6 +1335,14 @@ msgstr "Забронированно/В ожидании"
 msgid "Canceled"
 msgstr ""
 
+#: staff.circ.utils.hold_status.7
+msgid "Suspended"
+msgstr ""
+
+#: staff.circ.utils.hold_status.8
+msgid "Wrong Shelf"
+msgstr ""
+
 #: staff.circ.utils.hold_post_clear_shelf_action.label
 msgid "Post-Clear"
 msgstr ""
@@ -1349,7 +1370,7 @@ msgstr "Активный?"
 #: staff.circ.utils.thaw_date
 msgctxt "staff.circ.utils.thaw_date"
 msgid "Activation Date"
-msgstr ""
+msgstr "Дата активации"
 
 #: staff.circ.utils.thaw_date.none
 msgid "No Date"
@@ -1483,6 +1504,10 @@ msgstr "Хранение для клиента %1$s"
 msgid "Notify by phone: %1$s"
 msgstr "Уведомлять по телефону: %1$s"
 
+#: staff.circ.utils.payload.hold.sms_notify
+msgid "Notify by text: %1$s"
+msgstr ""
+
 #: staff.circ.utils.payload.hold.email_notify
 msgid "Notify by email: %1$s"
 msgstr "Уведомлять по эл. почте: %1$s"
@@ -1490,7 +1515,7 @@ msgstr "Уведомлять по эл. почте: %1$s"
 #: staff.circ.utils.payload.hold.request_date
 msgctxt "staff.circ.utils.payload.hold.request_date"
 msgid "Request Date: %1$s"
-msgstr ""
+msgstr "Дата запроса: %1$s"
 
 #: staff.circ.utils.payload.hold.slip_date
 msgctxt "staff.circ.utils.payload.hold.slip_date"
@@ -1522,7 +1547,7 @@ msgstr "Не печатать"
 #: staff.circ.utils.payload.reservation.barcode
 msgctxt "staff.circ.utils.payload.reservation.barcode"
 msgid "Barcode: %1$s"
-msgstr ""
+msgstr "Штрих-код: %1$s"
 
 #: staff.circ.utils.payload.reservation.title
 msgctxt "staff.circ.utils.payload.reservation.title"
@@ -1955,125 +1980,14 @@ msgstr ""
 msgid "No item with barcode \"%1$s\""
 msgstr ""
 
-#~ msgctxt "staff.circ.invalid_date"
-#~ msgid "Invalid Date"
-#~ msgstr "Неправильная дата"
-
-#~ msgid "items ="
-#~ msgstr "Единицы ="
-
-#~ msgid "preview:"
-#~ msgstr "предварительный просмотр:"
-
-#~ msgid "Date Last Edited"
-#~ msgstr "Последняя отредактирования дата"
-
-#~ msgid "Request Date"
-#~ msgstr "Запрос даты"
-
-#~ msgid "Activation Date"
-#~ msgstr "Дата Активации"
-
-#~ msgid "Title: %1$s"
-#~ msgstr "Заглавие:  %1$s"
-
-#~ msgid "Request Date: %1$s"
-#~ msgstr "Дата запроса: %1$s"
-
-#~ msgid "Slip Date: %1$s"
-#~ msgstr "Slip Date: %1$s"
-
-#~ msgid "Do Not Capture"
-#~ msgstr "Не охваченный"
-
-#~ msgid "Check In Failed (in circ.util.checkin) (%1$s):"
-#~ msgstr "Прием не удался  (in circ.util.checkin) (%1$s):"
-
 #~ msgid ""
-#~ "Please enter an Activation Date (or leave blank to unset) for hold %1$s.  "
-#~ "This will also Suspend the hold."
+#~ "You must delete all the copies on the volume before you may delete the "
+#~ "volume itself."
 #~ msgstr ""
-#~ "Пожалуйста введите дату активации  (или оставьте пустым чтобы сбросить) для "
-#~ "резерва %1$s. Это также приостановит  резервирование."
+#~ "Вы должны удалить все копии тома прежде, чем Вы сможете удалить сам том."
 
-#~ msgid ""
-#~ "Please enter an Activation Date (or leave blank to unset) for holds %1$s.  "
-#~ "This will also Suspend the holds."
-#~ msgstr ""
-#~ "Пожалуйста введите дату активации  (или оставьте пустым для сброса) для "
-#~ "резервов  %1$s. Это также приостановит  резервирования."
+#~ msgid "Volumes deleted."
+#~ msgstr "Тома удалены"
 
-#~ msgid ""
-#~ "Activation Date needs to be either unset or set to fall on a future date."
-#~ msgstr ""
-#~ "Дата активации должна быть либо сброшена либо установлена  на дату в будущем."
-
-#~ msgctxt "staff.circ.holds.activation_date.invalid_date"
-#~ msgid "Invalid Date"
-#~ msgstr "Неправильная  дата"
-
-#~ msgid ""
-#~ "Please enter an Expiration Date (or leave blank to unset) for hold %1$s."
-#~ msgstr ""
-#~ "Пожалуйста введите дату истечения (или оставьте пустым для сброса) для "
-#~ "резерва %1$s."
-
-#~ msgid ""
-#~ "Please enter an Expiration Date (or leave blank to unset) for holds %1$s."
-#~ msgstr ""
-#~ "Пожалуйста введите дату истечения (или оставьте пустым для сброса) для "
-#~ "резервов %1$s."
-
-#~ msgid ""
-#~ "Expiration Date needs to be either unset or set to fall on a future date."
-#~ msgstr ""
-#~ "Дата истечения должен быть либо сброшен либо  либо установлена  на дату в "
-#~ "будущем."
-
-#~ msgctxt "staff.circ.holds.expire_time.invalid_date"
-#~ msgid "Invalid Date"
-#~ msgstr "Неправильная  дата"
-
-#~ msgctxt "staff.circ.holds.shelf_expire_time.invalid_date"
-#~ msgid "Invalid Date"
-#~ msgstr "Неправильная  дата"
-
-#~ msgid "Checkout Timestamp"
-#~ msgstr "Штамп времени Выдачи"
-
-#~ msgid "Checkin Timestamp"
-#~ msgstr "Штамп времени Регистрации"
-
-#~ msgid "Request Timestamp"
-#~ msgstr "Запрос времени"
-
-#~ msgid "Available On (Timestamp)"
-#~ msgstr "Доступный в (штамп времени)"
-
-#~ msgid "Capture Timestamp"
-#~ msgstr "Штамп времени захвата"
-
-#~ msgid "Checkout Library"
-#~ msgstr "Библиотеки выдачи"
-
-#~ msgid ""
-#~ "You may not edit the pickup library for holds that are in-transit or ready "
-#~ "for pickup."
-#~ msgstr ""
-#~ "Вы можете не редактировать библиотеку подбора для хранений  которые в "
-#~ "транзите или ждут подбора."
-
-#~ msgid "Number of holds not updated: %1$s"
-#~ msgstr "Количество хранений  не обновлены:% 1 $ S"
-
-#~ msgid "Potential Copies"
-#~ msgstr "Потенциальные Копии"
-
-#~ msgid "Number of circulations selected: %1$s"
-#~ msgstr "Количество циркуляций выбраны: %1$s"
-
-#~ msgid "Number of circulations not backdated: %1$s"
-#~ msgstr "Количество циркуляций  не записанны задним числом: %1$s"
-
-#~ msgid "Date Record Last Edited"
-#~ msgstr "Данные записи последний раз отредактированны"
+#~ msgid "Hold Note(s)"
+#~ msgstr "Примечание(я) хранения"

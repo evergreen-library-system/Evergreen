@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-18 21:44-0400\n"
+"POT-Creation-Date: 2012-04-28 14:16-0400\n"
 "PO-Revision-Date: 2011-07-15 17:50+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-07-16 04:57+0000\n"
-"X-Generator: Launchpad (build 13405)\n"
+"X-Launchpad-Export-Date: 2012-04-30 04:50+0000\n"
+"X-Generator: Launchpad (build 15171)\n"
 "X-Accelerator-Marker: &\n"
 
 #: common.keyword
@@ -806,6 +806,10 @@ msgstr "Փոխանցման մեջ"
 msgid "Ready for Pickup"
 msgstr "Վերցնելու համար պատրաստ է"
 
+#: myopac.holds.status.suspended
+msgid "Suspended"
+msgstr ""
+
 #: myopac.holds.cancel
 msgctxt "myopac.holds.cancel"
 msgid "Cancel"
@@ -1119,10 +1123,10 @@ msgid "Username update failed"
 msgstr "Օգտվողի անվան թարմացումը ձախողվեց։"
 
 #: myopac.summary.username.invalid
-msgid "Username cannot contain spaces or have the same format as a barcode"
+msgid ""
+"Username cannot contain spaces or have the same format as a barcode, and may "
+"be restricted by policy"
 msgstr ""
-"Օգտվողի անունը չի կարող պարունակել բացատներ կամ ունենա նույն ձևաչափը ինչ որ "
-"շտրիխ կոդը։"
 
 #: myopac.summary.email.error
 msgid "Please enter a valid email address"
@@ -1453,10 +1457,8 @@ msgid "GALILEO"
 msgstr "GALILEO"
 
 #: footer.copyright
-msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
+msgid "Copyright &#xA9; 2006-2012 Georgia Public Library Service, and others"
 msgstr ""
-"Հեղինակային իրավունք &#xA9; 2006-2010 Գեորգիայի հանրային գրադարանի "
-"ծառայություն և մյուսներ"
 
 # Introduces the logo for the project
 #. Introduces the logo for the project
@@ -1521,9 +1523,17 @@ msgctxt "sidebar.quick.search"
 msgid "Quick Search"
 msgstr "Արագ փնտրում"
 
+#: sidebar.authority.browse
+msgid "Authority Browse"
+msgstr ""
+
 #: sidebar.copy.not.found
 msgid "No copy with the requested barcode was found"
 msgstr "Պահանջվող շտրիխ կոդով պատճեներ չեն գտնվել"
+
+#: sidebar.copy.not.cataloged
+msgid "The copy with the requested barcode is not cataloged"
+msgstr ""
 
 # =================================================================
 # Search formats
@@ -1599,6 +1609,10 @@ msgstr "Evergreen պատվիրված նյութեր"
 msgid "Evergreen Call Number Browse"
 msgstr "Evergreen դասիչի դիտում"
 
+#: opac.title.authbrowse
+msgid "Evergreen Authority Record Browse"
+msgstr ""
+
 #: opac.holds.forMe
 msgid "Place this hold for myself"
 msgstr "Տեղադրիր այս պահումը իմ փոխարեն"
@@ -1640,6 +1654,12 @@ msgstr "Պահումը հաջողությամբ տեղաբաշխված է"
 #: opac.holds.failure
 msgid "Hold was not successfully placed"
 msgstr "Պահումը անհաջող է տեղաբաշխվել"
+
+#: opac.hold.has_parts
+msgid ""
+"The system was not able to place the requested hold.  The item requested has "
+"multiple parts to choose from.  Try selecting a specific part for the hold."
+msgstr ""
 
 # =================================================================
 # Advanced
@@ -1799,6 +1819,10 @@ msgstr "տարիքի պահման պաշտպանություն"
 #: rdetail.cn.genesis
 msgid "Create Date"
 msgstr "Ստեղծիր ամսաթիվ"
+
+#: rdetail.cn.active
+msgid "Active Date"
+msgstr ""
 
 #: rdetail.cn.holdable
 msgid "Holdable"
@@ -2276,6 +2300,19 @@ msgid ""
 msgstr ""
 "Պահանջվող նյութի համար արդեն կա պահում։ Ցանկանում՞ ես կատարել պահում։"
 
+#: common.hold.age_protect.override
+msgid ""
+"This hold may take extra time to fill due to library policies. Would you "
+"like to create the hold anyway?"
+msgstr ""
+
+#: common.hold.place_unfillable.override
+msgid ""
+"The requested hold cannot currently be filled. You have permission to place "
+"the hold regardless, but should only do so if you believe the hold will "
+"eventually be filled. Would you like to create the hold anyway?"
+msgstr ""
+
 #: common.hold.barred
 msgid ""
 "PATRON BARRED. Please see any notes in the \n"
@@ -2728,38 +2765,12 @@ msgstr "Համակարգը չի կարող գտնել այս ընթերցողի�
 msgid "The item cannot transit this far"
 msgstr "Նյութը չի կարել դնել տրանզիտ"
 
-# =================================================================
-# MyOPAC Fines Page
-#~ msgid "Summary"
-#~ msgstr "Ընդհանրացում"
-
-#~ msgid "Local Call Numbers:"
-#~ msgstr "Տեղային դասիչներ"
-
-#~ msgid "Loading copy infomation..."
-#~ msgstr "Պատճենի տեղեկատվության բեռնավորում..."
-
-#~ msgid "details"
-#~ msgstr "մանրամասներ"
-
-#~ msgid "browse"
-#~ msgstr "դիտիր"
-
-#~ msgid "YYYY-MM-DD"
-#~ msgstr "ՏՏՏՏ-ԱԱ-ՕՕ"
-
-#~ msgid "Literary&nbsp;Form"
-#~ msgstr "Գրական&nbsp;Կաղապար"
-
-#~ msgid " of at least "
-#~ msgstr " ամենաքիչը "
-
-#~ msgid "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
-#~ msgstr "Հեղինակային իրավունք &#xA9; 2006-2008 Georgia Public Library Service"
-
-#~ msgid ""
-#~ "A hold already exists on the requested \n"
-#~ "item. Would you like to create the hold anyway?"
+#~ msgid "Username cannot contain spaces or have the same format as a barcode"
 #~ msgstr ""
-#~ "Պահանջվողի համար արդեն պահում կա։ \n"
-#~ "Ցանկանու՞մ ես ստեղծել պահում։"
+#~ "Օգտվողի անունը չի կարող պարունակել բացատներ կամ ունենա նույն ձևաչափը ինչ որ "
+#~ "շտրիխ կոդը։"
+
+#~ msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
+#~ msgstr ""
+#~ "Հեղինակային իրավունք &#xA9; 2006-2010 Գեորգիայի հանրային գրադարանի "
+#~ "ծառայություն և մյուսներ"

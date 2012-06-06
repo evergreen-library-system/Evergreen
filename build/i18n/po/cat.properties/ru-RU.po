@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
 "PO-Revision-Date: 2010-03-23 07:40+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:39+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2012-04-30 04:43+0000\n"
+"X-Generator: Launchpad (build 15171)\n"
 "X-Accelerator-Marker: &\n"
 
 #: bib.no_marc
@@ -38,8 +38,8 @@ msgid "Returning %1$s hits"
 msgstr "Возвращает %1$s попаданий"
 
 #: staff.cat.bib_brief.record_id
-msgid "Record ID = %1$s"
-msgstr "Запись ID = %1$s"
+msgid "Database ID = %1$s"
+msgstr ""
 
 #: staff.cat.bib_brief.deleted
 msgid "(Deleted)"
@@ -57,9 +57,9 @@ msgstr "(Не каталогизирован)"
 msgid "Item not cataloged."
 msgstr "Единица не каталогизирована"
 
-#. # %1$s = Bib Record ID
+#. # %1$s = Bib Record Database ID
 #: staff.cat.manage_multi_bib_items.tab_name
-msgid "Manage Foreign Items for Bib %1$s"
+msgid "Manage Conjoined Items for Bib with DB ID %1$s"
 msgstr ""
 
 #: staff.cat.manage_multi_bib_items.result.column.value.error
@@ -90,14 +90,14 @@ msgstr ""
 msgid "Change Peer Type"
 msgstr ""
 
-#. # %1$s = Bib Record ID
+#. # %1$s = Bib Record Database ID
 #: staff.cat.manage_multi_bib_items.prompt.confirm.unlink_item_from_bib.singular
-msgid "Unlink selected item from Bib %1$s"
+msgid "Unlink selected item from Bib with DB ID %1$s"
 msgstr ""
 
-#. # %1$s = Bib Record ID, %2$s = Number of selected items
+#. # %1$s = Bib Record Database ID, %2$s = Number of selected items
 #: staff.cat.manage_multi_bib_items.prompt.confirm.unlink_item_from_bib.plural
-msgid "Unlink %2$s selected items from Bib %1$s"
+msgid "Unlink %2$s selected items from Bib with DB ID %1$s"
 msgstr ""
 
 #: staff.cat.copy_browser.add_item.title
@@ -114,7 +114,7 @@ msgstr "копи браузер -> добавка копий в корзину"
 
 #: staff.cat.copy_browser.make_bookable.create_failed_silent
 msgid "No response from server"
-msgstr ""
+msgstr "Нет отклика от сервера"
 
 #: staff.cat.copy_browser.make_bookable.create_failed
 msgid ""
@@ -122,14 +122,17 @@ msgid ""
 "%3$s\n"
 "%4$s"
 msgstr ""
+"Ошибка сервера: %1$d %2$s\n"
+"%3$s\n"
+"%4$s"
 
 #: staff.cat.copy_browser.make_bookable.newtab_failed
 msgid "Could not open new tab"
-msgstr ""
+msgstr "Невозможно открыть новую вкладку"
 
 #: staff.cat.copy_browser.make_bookable.newtab_name
 msgid "Resources"
-msgstr ""
+msgstr "Ресурсы"
 
 #: staff.cat.copy_browser.replace_barcode.failed
 msgid "Barcode %1$s not likely replaced."
@@ -201,7 +204,7 @@ msgstr "копи браузер -> добавить тома"
 
 #: staff.cat.edit_volume.permission_error
 msgid "You do not have permission to edit the volume or volumes selected."
-msgstr ""
+msgstr "У вас недостаточно прав для изменения тома или выбранных томов."
 
 #: staff.cat.edit_volume.title
 msgid "Volume"
@@ -210,7 +213,7 @@ msgstr "Том"
 #: staff.cat.edit_volume.title.plural
 msgctxt "staff.cat.edit_volume.title.plural"
 msgid "Volumes"
-msgstr ""
+msgstr "Тома"
 
 #: staff.cat.edit_volumes.override.confirm
 msgid "Override volume re-labeling collision and merge the volumes?"
@@ -218,6 +221,10 @@ msgstr ""
 
 #: staff.cat.edit_volumes.label_exists.details
 msgid "%1$s"
+msgstr ""
+
+#: staff.cat.copy_browser.can_have_copies.false
+msgid "Records from %1$s cannot have copies."
 msgstr ""
 
 #: staff.cat.copy_browser.delete_volume.prompt
@@ -249,10 +256,17 @@ msgstr "Отвергать ошибку удаления?"
 
 #: staff.cat.copy_browser.delete_volume.copies_remain
 msgid ""
-"You must delete all the copies on the volume before you may delete the "
-"volume itself."
+"You must delete all the items on the volume before you may delete the volume "
+"itself."
 msgstr ""
-"Вы должны удалить все копии тома прежде, чем Вы сможете удалить сам том."
+
+#: staff.cat.copy_browser.delete_volume.copies_remain.confirm
+msgid "Delete Volume and Items"
+msgstr ""
+
+#: staff.cat.copy_browser.delete_volume.copies_remain.cancel
+msgid "Cancel Delete"
+msgstr ""
 
 #: staff.cat.copy_browser.delete_volume.exception
 msgid "copy browser -> delete volumes"
@@ -353,7 +367,7 @@ msgstr "Все копии не переданы"
 
 #: staff.cat.copy_browser.link_as_multi_bib.missing_bib
 msgid ""
-"Please Mark a bib record as a Target for Foreign Items and try this again."
+"Please Mark a bib record as a Target for Conjoined Items and try this again."
 msgstr ""
 
 #: staff.cat.copy_browser.missing_library
@@ -672,6 +686,11 @@ msgstr ""
 msgid "Error importing templates"
 msgstr "Ошибка при импортировании шаблонов"
 
+#: staff.cat.copy_editor.apply_unsafe_field
+msgid ""
+"Template tried to change field '%1$s', which is not allowed currently."
+msgstr ""
+
 #: staff.cat.copy_editor.apply_owning_lib.undefined_volume.error
 msgid ""
 "Error retrieving Volume information for copy %1$s.  The owning library for "
@@ -761,6 +780,10 @@ msgstr "Штрих-код"
 msgid "Creation Date"
 msgstr "Дата создания"
 
+#: staff.cat.copy_editor.field.active_date.label
+msgid "Active Date"
+msgstr ""
+
 #: staff.cat.copy_editor.field.last_edit_date.label
 msgid "Last Edit Date"
 msgstr "Дата последнего редактирования"
@@ -812,12 +835,12 @@ msgstr ""
 #: staff.cat.copy_editor.field.floating.yes_or_true
 msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
 msgid "Yes"
-msgstr ""
+msgstr "Да"
 
 #: staff.cat.copy_editor.field.floating.no_or_false
 msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
 msgid "No"
-msgstr ""
+msgstr "Нет"
 
 #: staff.cat.copy_editor.field.age_based_hold_protection.label
 msgid "Age-based Hold Protection"
@@ -1062,11 +1085,11 @@ msgstr "Не каталогизирована"
 
 #: staff.cat.marcedit.authority_see_also
 msgid "See also: %1$s"
-msgstr ""
+msgstr "См. также: %1$s"
 
 #: staff.cat.marcedit.authority_see_from
 msgid "See from: %1$s"
-msgstr ""
+msgstr "См.: %1$s"
 
 #: staff.cat.marcedit.help.add_row
 msgid "Add Row: CTRL+Enter"
@@ -1158,11 +1181,11 @@ msgstr "Не найдены совпадающие авторитетные за
 
 #: staff.cat.marcedit.next_page.label
 msgid "Next page"
-msgstr ""
+msgstr "Следующая страница"
 
 #: staff.cat.marcedit.previous_page.label
 msgid "Previous page"
-msgstr ""
+msgstr "Предыдущая  страница"
 
 #: staff.cat.marcedit.create_authority.label
 msgid "Create New Authority from this Field"
@@ -1205,6 +1228,14 @@ msgstr "Ошибка при создании MARC записи"
 msgid "Error loading MARC template: %1$s"
 msgstr "Ошибка при загрузке MARC шаблона: %1$s"
 
+#: staff.cat.marc_new.set_default.error
+msgid "Error setting default MARC template: %1$s"
+msgstr ""
+
+#: staff.cat.marc_new.set_default.success
+msgid "Default template set to %1$s"
+msgstr ""
+
 #: staff.cat.opac.set_marc_edit.alert
 msgid "Record successfully saved."
 msgstr "Запись успешно сохранена"
@@ -1218,8 +1249,8 @@ msgid "Not yet implemented.  Work around: Choose Duplicate in New Tab option"
 msgstr "Еще не внедрена. Работа ведется. Выберите копию в  опции New"
 
 #: staff.cat.opac.set_tab_name
-msgid "Record: %1$s"
-msgstr "Запись: %1$s"
+msgid "Record DB ID: %1$s"
+msgstr ""
 
 #: staff.cat.opac.title_for_hold_transfer.destination_needed.label
 msgid "Need to mark a record as a Title Hold Transfer Destination first."
@@ -1231,6 +1262,11 @@ msgstr ""
 
 #: staff.cat.opac.title_for_hold_transfer.failure.label
 msgid "Holds not transferred."
+msgstr ""
+
+#: staff.cat.opac.title_for_hold_transfer.many_bibs.warning
+msgid ""
+"WARNING: Move selected holds from multiple bibs to single targeted bib?"
 msgstr ""
 
 #: staff.cat.record_buckets.tab_name
@@ -1678,7 +1714,7 @@ msgid "Change Amount "
 msgstr ""
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.cancel_label
-msgid "Cancel "
+msgid "No Charge"
 msgstr ""
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.confirm_action
@@ -1797,6 +1833,15 @@ msgid ""
 "No circulation found for item with barcode %1$s.  Item left unmodified."
 msgstr ""
 
+#: staff.cat.util.show_in_opac.retrieving_title
+msgctxt "staff.cat.util.show_in_opac.retrieving_title"
+msgid "Retrieving title..."
+msgstr ""
+
+#: staff.cat.util.add_titles_to_bucket.number_of_precats_skipped
+msgid "Skipping %1$s pre-cat records..."
+msgstr ""
+
 #: staff.cat.volume_buckets.window_tab_name
 msgid "Volume Buckets"
 msgstr "Тома  корзин"
@@ -1881,8 +1926,8 @@ msgid "Prefix"
 msgstr ""
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.call_nums
-msgid "Call Numbers"
-msgstr "Растановочные Шифры"
+msgid "Call Number"
+msgstr ""
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.suffix
 msgid "Suffix"
@@ -1893,7 +1938,7 @@ msgid "# of Copies"
 msgstr "Копии #"
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.barcodes_and_parts
-msgid "Barcodes / Part Designation"
+msgid "Barcode / Part Designation"
 msgstr ""
 
 #: staff.cat.volume_copy_creator.render_barcode_entry.alert_message
@@ -2274,45 +2319,84 @@ msgstr "Ошибка при извлечении сохраненной в z39.5
 msgid "Problem storing z39.50 credentials."
 msgstr "Проблема при сохранении в z39.50 мандатов"
 
-#~ msgid "You do not have permission to edit this volume."
-#~ msgstr "У Вас нет разрешения отредактировать этот том"
+#: staff.cat.bib_brief.title.label
+msgid "Title:"
+msgstr ""
 
-#~ msgctxt "staff.cat.copy_browser.edit_volume.title.plural"
-#~ msgid "Volumes"
-#~ msgstr "Тома"
+#: staff.cat.bib_brief.author.label
+msgid "Author:"
+msgstr ""
+
+#: staff.cat.bib_brief.edition.label
+msgid "Edition:"
+msgstr ""
+
+#: staff.cat.bib_brief.pubdate.label
+msgid "Pub Date:"
+msgstr ""
+
+#: staff.cat.bib_brief.bib_call_number.label
+msgid "Bib Call #:"
+msgstr ""
+
+#: staff.cat.bib_brief.call_number.label
+msgid "Item Call #:"
+msgstr ""
+
+#: staff.cat.bib_brief.tcn.label
+msgid "TCN:"
+msgstr ""
+
+#: staff.cat.bib_brief.mvr_doc_id.label
+msgid "Bib DB ID:"
+msgstr ""
+
+#: staff.cat.bib_brief.owner.label
+msgid "Record Owner:"
+msgstr ""
+
+#: staff.cat.bib_brief.creator.label
+msgid "Created By:"
+msgstr ""
+
+#: staff.cat.bib_brief.create_date.label
+msgid "Created On:"
+msgstr ""
+
+#: staff.cat.bib_brief.editor.label
+msgid "Last Edited By:"
+msgstr ""
+
+#: staff.cat.bib_brief.edit_date.label
+msgid "Last Edited On:"
+msgstr ""
+
+#: staff.cat.bib_brief.holds.label
+msgid "Holds:"
+msgstr ""
+
+#: staff.cat.bib_brief.items.label
+msgid "Items:"
+msgstr ""
+
+#: staff.cat.bib_brief.items.available.tooltip
+msgid "%1$s available"
+msgstr ""
+
+#~ msgid "Record ID = %1$s"
+#~ msgstr "Запись ID = %1$s"
 
 #~ msgid ""
-#~ "Edit failed:  You tried to change a volume's callnumber to one that is "
-#~ "already in use for the given library.  You should transfer the items to the "
-#~ "desired callnumber instead."
+#~ "You must delete all the copies on the volume before you may delete the "
+#~ "volume itself."
 #~ msgstr ""
-#~ "Ошибка редактирования: Вы попытались изменить указатель тома на тот, который "
-#~ "уже существуетв этой библиотеке. Взамен вы должны перевести единицы под "
-#~ "желанный указатель."
-
-#~ msgid "Volumes modified."
-#~ msgstr "Тома изменены"
-
-#~ msgid "volume update error:"
-#~ msgstr "ошибка обновления тома:"
-
-#~ msgid "Copy Browser -> Volume Edit"
-#~ msgstr "Копи браузер -> редактировать том"
+#~ "Вы должны удалить все копии тома прежде, чем Вы сможете удалить сам том."
 
 #~ msgid "Volumes deleted."
 #~ msgstr "Тома вычеркнуты."
 
-#~ msgid "Create Copies"
-#~ msgstr "Создать копии"
-
-#~ msgid "Items were added or modified."
-#~ msgstr "Библ. единицы были добавлены или изменены."
-
-#~ msgid "Note added."
-#~ msgstr "Заметка добавлена"
-
-#~ msgid "Record created."
-#~ msgstr "Запись создана"
+#~ msgid "Record: %1$s"
+#~ msgstr "Запись: %1$s"
 
 #~ msgid "Merge these records? (Select the \"lead\" record first)"
 #~ msgstr "Обьединить эти записи? (Выберите сначала \"lead\"запись)"
@@ -2343,58 +2427,5 @@ msgstr "Проблема при сохранении в z39.50 мандатов"
 #~ msgid "Records were not likely merged."
 #~ msgstr "Записи вероятно не были объединены"
 
-#~ msgid "Batch"
-#~ msgstr "Группа"
-
-#~ msgid "Copies not modified."
-#~ msgstr "Копии не изменены"
-
-#~ msgctxt "staff.cat.util.mark_item_damaged.charge_patron_prompt.ok_label"
-#~ msgid "OK"
-#~ msgstr "OK"
-
-#~ msgctxt "staff.cat.util.mark_item_damaged.charge_patron_prompt.cancel_label"
-#~ msgid "Cancel"
-#~ msgstr "Отмена"
-
-#~ msgctxt ""
-#~ "staff.cat.util.mark_item_damaged.charge_patron_prompt.confirm_action"
-#~ msgid "Check here to confirm this action"
-#~ msgstr "Отметите здесь, чтобы подтвердить это сообщение"
-
-#~ msgid "Add Subfield: CTRL+D"
-#~ msgstr "Добавить подполе : CTRL + D"
-
-#~ msgid ""
-#~ "Change the status for these items to Damaged?  You will have to manually "
-#~ "retrieve the last circulation if you need to bill a patron.  Barcodes: %1$s"
-#~ msgstr ""
-#~ "Изменить статус этих единиц на поврежденный? Вам придется вручную загружать "
-#~ "последняя циркуляцию, если вы хотите выставить счет пользователю. Штрих-"
-#~ "коды: %1$s"
-
-#~ msgid "Showing %1$s of %2$s"
-#~ msgstr "Показывает %1$s из %2$s"
-
-#~ msgid ""
-#~ "WARNING: This is not a simple keyword search.  Enter raw z39.50 PQN search "
-#~ "string:"
-#~ msgstr ""
-#~ "ВНИМАНИЕ: Это не простой поиск по ключевым словам. Введите  строку "
-#~ "несовершенного z39.50 PQN  поиска"
-
-#~ msgid "Charge Patron For Damaged Item?"
-#~ msgstr "Взыскать с  читателя за повреждённую единицу?"
-
-#~ msgid ""
-#~ "Item %1$s will be marked damaged.  Was returned on %3$s for %2$s.  Charge "
-#~ "this patron $%4$s for the damage?"
-#~ msgstr ""
-#~ "Единица %1$s будет отмечена повреждённой. Была возвращена  %3$s для %2$s. "
-#~ "Взыскать  этого читателя $%4$s за повреждение?"
-
-#~ msgid "Item %1$s is checked out to patron, %2$s, and is due on %3$s."
-#~ msgstr "Единица %1$s выдана читателю,  %2$s,  и будет возвращена %3$s."
-
-#~ msgid "Change Amount"
-#~ msgstr "Изменить сумму"
+#~ msgid "Call Numbers"
+#~ msgstr "Растановочные Шифры"

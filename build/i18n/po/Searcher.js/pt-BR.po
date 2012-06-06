@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2012-04-19 01:16+0000\n"
-"Last-Translator: Aline D'Oleron <doleron.aline@gmail.com>\n"
+"PO-Revision-Date: 2012-05-25 23:07+0000\n"
+"Last-Translator: Tomas Abril <Unknown>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-20 04:44+0000\n"
-"X-Generator: Launchpad (build 15120)\n"
+"X-Launchpad-Export-Date: 2012-05-26 05:09+0000\n"
+"X-Generator: Launchpad (build 15288)\n"
 
 #: Searcher.js:before
 msgid "Published Before"
@@ -31,7 +31,7 @@ msgstr ""
 
 #: Searcher.js:contains
 msgid "Contains"
-msgstr ""
+msgstr "Contém"
 
 #: Searcher.js:more
 msgid "More..."
@@ -55,7 +55,7 @@ msgstr ""
 
 #: Searcher.js:depth
 msgid "Search Depth"
-msgstr ""
+msgstr "Profundidade da Busca"
 
 #: Searcher.js:available
 msgid "Available"
@@ -87,7 +87,7 @@ msgstr ""
 
 #: Searcher.js:exact
 msgid "Exactly Matches"
-msgstr ""
+msgstr "Corresponde Exatamente"
 
 #: Searcher.js:advanced
 msgid "Advanced"
@@ -107,7 +107,7 @@ msgstr ""
 
 #: Searcher.js:perform_search
 msgid "Go!"
-msgstr ""
+msgstr "Ir!"
 
 #: Searcher.js:remove
 msgid "Remove"
@@ -131,7 +131,7 @@ msgstr ""
 
 #: Searcher.js:and
 msgid "AND"
-msgstr ""
+msgstr "E"
 
 #: Searcher.js:vr_format
 msgid "Videorecording Format"
@@ -143,11 +143,11 @@ msgstr ""
 
 #: Searcher.js:site
 msgid "Site"
-msgstr ""
+msgstr "Página"
 
 #: Searcher.js:notcontains
 msgid "Does Not Contain"
-msgstr ""
+msgstr "Não Contém"
 
 #: Searcher.js:sort
 msgid "Sort Axis"
@@ -155,7 +155,7 @@ msgstr ""
 
 #: Searcher.js:filters
 msgid "Filters"
-msgstr ""
+msgstr "Filtros"
 
 #: Searcher.js:bib_level
 msgid "Bibliographic Level"
@@ -171,8 +171,8 @@ msgstr "Ordenar em Ordem Crescente"
 
 #: Searcher.js:or
 msgid "OR"
-msgstr ""
+msgstr "OU"
 
 #: Searcher.js:statuses
 msgid "Statuses"
-msgstr ""
+msgstr "Estados"

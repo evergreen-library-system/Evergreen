@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2011-04-19 04:00+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2012-04-28 14:18-0400\n"
+"PO-Revision-Date: 2012-05-02 18:38+0000\n"
+"Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:48+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2012-05-03 05:28+0000\n"
+"X-Generator: Launchpad (build 15185)\n"
 
 #: reservation.js:AUTO_ending_at
 msgid "and"
@@ -126,6 +126,10 @@ msgstr "No server response after attempting to look up patron by barcode."
 #: reservation.js:AUTO_or
 msgid "- Or -"
 msgstr "- Or -"
+
+#: reservation.js:AUTO_email_notify
+msgid "Send email notification when resource is available for pickup."
+msgstr "Send email notification when resource is available for pickup."
 
 #: reservation.js:SELECT_A_BRSRC_THEN
 msgid ""

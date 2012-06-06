@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2011-11-01 13:56+0000\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
+"PO-Revision-Date: 2012-05-01 14:49+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-11-02 04:57+0000\n"
-"X-Generator: Launchpad (build 14214)\n"
+"X-Launchpad-Export-Date: 2012-05-02 05:28+0000\n"
+"X-Generator: Launchpad (build 15177)\n"
 
 #: staff.serial.editor_base.handle_update.error
 msgid "serial update error:"
@@ -141,6 +141,26 @@ msgstr "M"
 #: staff.serial.sdist_editor.notes
 msgid "Distribution Notes"
 msgstr "Poznámky k distribuci"
+
+#: staff.serial.sdist_editor.add_to_sre.label
+msgid "Add to record entry"
+msgstr "Přidat k záhlaví záznamu"
+
+#: staff.serial.sdist_editor.merge_with_sre.label
+msgid "Merge with record entry"
+msgstr "Sloučit se záhlavím záznamu"
+
+#: staff.serial.sdist_editor.use_sre_only.label
+msgid "Use record entry only"
+msgstr "Použít pouze záhlaví záznamu"
+
+#: staff.serial.sdist_editor.use_sdist_only.label
+msgid "Do not use record entry"
+msgstr "Nepoužívat záhlaví záznamu"
+
+#: staff.serial.sdist_editor.no_mfhd_available.label
+msgid "No MFHD records for this Holding Lib"
+msgstr "Pro vlastnickou knihovnu neexistují MFHD záznamy"
 
 #: staff.serial.siss_editor.count
 msgid "1 issuance"
@@ -285,6 +305,18 @@ msgid ""
 msgstr ""
 "Obejít chybu při mazání? Tím budou vymazány také všechny připojené exempláře!"
 
+#: staff.serial.manage_items.subscriber.label
+msgid "Subscriber"
+msgstr "Předplatitel"
+
+#: staff.serial.manage_items.holder.label
+msgid "Holder"
+msgstr "Držitel"
+
+#: staff.serial.manage_items.notes_column.label
+msgid "Notes (Item/Dist/Sub)"
+msgstr "Poznámky (jednotky/distribuce/předpl.)"
+
 #: staff.serial.manage_subs.add.error
 msgid "error adding object in manage_subs.js:"
 msgstr "chyba při přidání objektu v manage_subs.js:"
@@ -366,6 +398,22 @@ msgid ""
 "Override Delete Failure? Doing so will delete all related data as well!"
 msgstr ""
 "Obejít chybu při mazání? Tím budou vymazána také všechna související data!"
+
+#: staff.serial.notes.do_edit_note.label
+msgid "Edit This Note"
+msgstr "Editace této poznámky"
+
+#: staff.serial.notes.edit_note.label
+msgid "Edit Note"
+msgstr "Editace poznámky"
+
+#: staff.serial.notes.edit_note.accesskey
+msgid "E"
+msgstr "E"
+
+#: staff.serial.required_fields_alert
+msgid "These fields are required: "
+msgstr "Požadovaná pole: "
 
 #: batch_receive.bib_lookup.empty
 msgid "Enter a search term."

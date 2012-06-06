@@ -2,497 +2,501 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
 "PO-Revision-Date: 2010-05-11 08:59+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:43+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2012-04-30 04:46+0000\n"
+"X-Generator: Launchpad (build 15171)\n"
 
-#: 1208.TITLE_LAST_COPY:66
+#: 1208.TITLE_LAST_COPY:71
 msgid "The last copy attached to a title is being removed or deleted"
 msgstr "Последняя копия прикрепленная к заглавию удаляется или перемещается"
 
-#: 1598.MONEY_USER_CIRCULATION_SUMMARY_NOT_FOUND:435
+#: 1598.MONEY_USER_CIRCULATION_SUMMARY_NOT_FOUND:443
 msgid "The requested money_user_circulation_summary was not found"
 msgstr "Запрашиваемый money_user_circulation_summary не найден"
 
-#: 1621.CONTAINER_COPY_BUCKET_NOT_FOUND:503
+#: 1621.CONTAINER_COPY_BUCKET_NOT_FOUND:512
 msgid "The requested container_copy_bucket was not found"
 msgstr "Запрашиваемый container_copy_bucket не нйден"
 
-#: 1218.ITEM_AGE_PROTECTED:104
+#: 1218.ITEM_AGE_PROTECTED:109
 msgid "This item is too new to have a hold placed on it"
 msgstr "диница очень свежа чтобы поставить на нем хранение"
 
-#: 1214.PATRON_DUP_IDENT1:87
+#: 1214.PATRON_DUP_IDENT1:92
 msgid ""
 "The selected primary identification type and value are in use by another "
 "patron"
 msgstr ""
 "Выбранные тип исходной идентификации и значение в пользовании другим патроном"
 
-#: 1561.PERMISSION_PERM_LIST_NOT_FOUND:327
+#: 1561.PERMISSION_PERM_LIST_NOT_FOUND:335
 msgid "The requested permission_perm_list was not found"
 msgstr "Запрашиваемый permission_perm_list не нйден"
 
-#: 1213.PATRON_BARRED:83
+#: 1213.PATRON_BARRED:88
 msgid "The patron is barred"
 msgstr "Запрещенный патрон"
 
-#: 1645.CONFIG_CIRC_MATRIX_TEST_NOT_FOUND:575
+#: 1645.CONFIG_CIRC_MATRIX_TEST_NOT_FOUND:584
 msgid "The requested config_circ_matrix_test was not found"
 msgstr "Запрашиваемый config_circ_matrix_test не найден"
 
-#: 7004.COPY_NOT_AVAILABLE:826
+#: 7004.COPY_NOT_AVAILABLE:841
 msgid "Copy is not available"
 msgstr ""
 
-#: 1591.METABIB_SERIES_FIELD_ENTRY_NOT_FOUND:414
+#: 1591.METABIB_SERIES_FIELD_ENTRY_NOT_FOUND:422
 msgid "The requested metabib_series_field_entry was not found"
 msgstr "Запрашиваемый metabib_series_field_entry не найден"
 
-#: 4003.CREDIT_PROCESSOR_NOT_ALLOWED:766
+#: 4003.CREDIT_PROCESSOR_NOT_ALLOWED:781
 msgid "The credit card processor you have named is not allowed"
 msgstr "Названое вами обрабатывающее устройство кредитных карт запрещено"
 
-#: 4010.CREDIT_PROCESSOR_NO_DEFAULT_SELECTED:772
+#: 4010.CREDIT_PROCESSOR_NO_DEFAULT_SELECTED:787
 msgid "No default credit processor is selected"
 msgstr "Не выбран способ оплаты по умолчанию"
 
-#: 1862.ACQ_FUND_EXCEEDS_STOP_PERCENT:658
+#: 1862.ACQ_FUND_EXCEEDS_STOP_PERCENT:667
 msgid ""
 "The requested acq.purchase_order cannot be activated because it would over-"
 "encumber a fund."
 msgstr ""
 
-#: 1649.VANDELAY_IMPORT_ITEM_NOT_FOUND:587
+#: 1649.VANDELAY_IMPORT_ITEM_NOT_FOUND:596
 msgid "The requested vandelay.import_item was not found"
 msgstr "Запрашиваемый vandelay.import_item не найден"
 
-#: 1639.REPORTER_SCHEDULE_NOT_FOUND:557
+#: 1639.REPORTER_SCHEDULE_NOT_FOUND:566
 msgid "The requested reporter_schedule was not found"
 msgstr "Запрашиваемый reporter_schedule не найден"
 
-#: 1847.ACQ_FUNDING_SOURCE_DEDIT_NOT_FOUND:613
+#: 1847.ACQ_FUNDING_SOURCE_DEDIT_NOT_FOUND:622
 msgid "The requested acq.funding_source_dedit was not found"
 msgstr "Запрашиваемый  acq.funding_source_dedit  не был найден"
 
-#: 1641.ACTION_OPEN_CIRC_COUNT_BY_CIRC_MOD_NOT_FOUND:563
+#: 1641.ACTION_OPEN_CIRC_COUNT_BY_CIRC_MOD_NOT_FOUND:572
 msgid "The requested action_open_circ_count_by_circ_mod was not found"
 msgstr "Запрашиваемый action_open_circ_count_by_circ_mod не найден"
 
-#: 1608.METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND:465
+#: 1608.METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND:473
 msgid "The requested metabib_subject_field_entry was not found"
 msgstr "Запрашиваемый metabib_subject_field_entry не найден"
 
-#: 1711.BIB_QUEUE_EXISTS:732
+#: 1711.BIB_QUEUE_EXISTS:741
 msgid "A bib record queue with the same name already exists"
 msgstr "Очередь библ записи с тем же назыанием уже существует"
 
-#: 1875.ACQ_LINEITEM_GENERATED_ATTR_DEFINITION_NOT_FOUND:676
-#: 1876.ACQ_LINEITEM_LOCAL_ATTR_DEFINITION_NOT_FOUND:679
-#: 1877.ACQ_LINEITEM_MARC_ATTR_DEFINITION_NOT_FOUND:682
-#: 1878.ACQ_LINEITEM_USR_ATTR_DEFINITION_NOT_FOUND:685
-#: 1879.ACQ_LINEITEM_PROVIDER_ATTR_DEFINITION_NOT_FOUND:688
+#: 1875.ACQ_LINEITEM_GENERATED_ATTR_DEFINITION_NOT_FOUND:685
+#: 1876.ACQ_LINEITEM_LOCAL_ATTR_DEFINITION_NOT_FOUND:688
+#: 1877.ACQ_LINEITEM_MARC_ATTR_DEFINITION_NOT_FOUND:691
+#: 1878.ACQ_LINEITEM_USR_ATTR_DEFINITION_NOT_FOUND:694
+#: 1879.ACQ_LINEITEM_PROVIDER_ATTR_DEFINITION_NOT_FOUND:697
 msgid "The requested acq_lineitem_attr was not found"
 msgstr "Запрашиваемый acq_lineitem_attr не  был найден"
 
-#: 1207.REFUND_EXCEEDS_BALANCE:63
+#: 1207.REFUND_EXCEEDS_BALANCE:68
 msgid ""
 "A refund greater than the negative balance on a transaction was provided"
 msgstr "Возмещение больше чем отрицательный баланс на данную транзакцию"
 
-#: 1504.ACTION_TRANSIT_COPY_NOT_FOUND:191
+#: 1504.ACTION_TRANSIT_COPY_NOT_FOUND:199
 msgid ""
 "Someone attempted to retrieve a transit object from the system and the "
 "object was not found."
 msgstr ""
 
-#: 1538.ACTION_SURVEY_RESPONSE_NOT_FOUND:262
+#: 1538.ACTION_SURVEY_RESPONSE_NOT_FOUND:270
 msgid "The requested action_survey_response was not found"
 msgstr "Запрашиваемый action_survey_response не найден"
 
-#: 1555.MONEY_OPEN_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND:310
+#: 1555.MONEY_OPEN_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND:318
 msgid "The requested money_open_billable_transaction_summary was not found"
 msgstr "Запрашиваемый money_open_billable_transaction_summary не найден"
 
-#: 7000.ROUTE_ITEM:809
+#: 7000.ROUTE_ITEM:824
 msgid ""
 "A copy needs to be routed to a different location The destination location "
 "will be specified by an 'org' key within the event object"
 msgstr ""
 
-#: 1554.CONFIG_RULES_CIRC_DURATION_NOT_FOUND:307
+#: 1554.CONFIG_RULES_CIRC_DURATION_NOT_FOUND:315
 msgid "The requested config_rules_circ_duration was not found"
 msgstr "Запрашиваемый config_rules_circ_duration не найден"
 
-#: 1607.ACTION_OPEN_CIRCULATION_NOT_FOUND:462
+#: 1607.ACTION_OPEN_CIRCULATION_NOT_FOUND:470
 msgid "The requested action_open_circulation was not found"
 msgstr "Запрашиваемый action_open_circulation не найден"
 
-#: 1559.METABIB_FULL_REC_NOT_FOUND:321
+#: 1559.METABIB_FULL_REC_NOT_FOUND:329
 msgid "The requested metabib_full_rec was not found"
 msgstr "Запрашиваемый metabib_full_rec не найден"
 
-#: 1527.OPEN_TCN_NOT_FOUND:228
+#: 1527.OPEN_TCN_NOT_FOUND:236
 msgid "No TCN could be found that does not collide with existing records"
 msgstr "Не можно найти TCN который не конфликтует с сущечтвующими записями"
 
-#: 7016.ITEM_ON_HOLDS_SHELF:862
+#: 7016.ITEM_ON_HOLDS_SHELF:877
 msgid "This requested item is currently on the holds shelf"
 msgstr "Запршенная единица находится на полке хранений"
 
-#: 2001.DATABASE_UPDATE_FAILED:749
+#: 2001.DATABASE_UPDATE_FAILED:761
 msgid "The attempt to write to the DB failed"
 msgstr "Попытка записать в базу провалилась"
 
-#: 1563.METABIB_KEYWORD_FIELD_ENTRY_NOT_FOUND:333
+#: 1563.METABIB_KEYWORD_FIELD_ENTRY_NOT_FOUND:341
 msgid "The requested metabib_keyword_field_entry was not found"
 msgstr "Запрашиваемый metabib_keyword_field_entry не найден"
 
-#: 1546.CONFIG_AUDIENCE_MAP_NOT_FOUND:286
+#: 1546.CONFIG_AUDIENCE_MAP_NOT_FOUND:294
 msgid "The requested config_audience_map was not found"
 msgstr "Запрашиваемый config_audience_map не найден"
 
-#: 8004.OFFLINE_CONFIG_ERROR:910 8005.OFFLINE_CHECKSUM_FAILED:913
-#: 8006.OFFLINE_SESSION_NOT_FOUND:916
+#: 8004.OFFLINE_CONFIG_ERROR:925 8005.OFFLINE_CHECKSUM_FAILED:928
+#: 8006.OFFLINE_SESSION_NOT_FOUND:931
 msgid "Offline server is not configured properly"
 msgstr ""
 
-#: 1001.NO_SESSION:26
+#: 1001.NO_SESSION:31
 msgid "User login session has either timed out or does not exist"
 msgstr "Сессия пользователя или просрочена или не существует"
 
-#: 4019.CREDIT_PROCESSOR_INVALID_CC_NUMBER:775
+#: 4019.CREDIT_PROCESSOR_INVALID_CC_NUMBER:790
 msgid "An invalid credit card number has been supplied."
 msgstr ""
 
-#: 1880.CONFIG_BILLING_TYPE_NOT_FOUND:691
+#: 1880.CONFIG_BILLING_TYPE_NOT_FOUND:700
 msgid "The requested config_billing_type was not found"
 msgstr "Запрашиваемый config_billing_type не  был найден"
 
-#: 1851.ACQ_FUND_ENCUMBRANCE_TOTAL_NOT_FOUND:625
+#: 1851.ACQ_FUND_ENCUMBRANCE_TOTAL_NOT_FOUND:634
 msgid "The requested acq.fund_encumbrance_total was not found"
 msgstr "Запрашиваемый acq.fund_encumbrance_total не  был найден"
 
-#: 1529.ACTOR_WORKSTATION_NOT_FOUND:236
+#: 1529.ACTOR_WORKSTATION_NOT_FOUND:244
 msgid "The requested actor_workstation was not found"
 msgstr "Запрашиваемый actor_workstation не найден"
 
-#: 1227.COPY_DELETE_WARNING:140
+#: 1227.COPY_DELETE_WARNING:145
 msgid "The copy in question is not in an ideal status for deleting"
 msgstr "Копия в вопросе это не идеальный статус для удаления"
 
-#: 1204.CIRC_BAD_STATUS:54
+#: 1204.CIRC_BAD_STATUS:59
 msgid ""
 "The given circulation is not in a standard status or the circulation was "
 "never fully closed properly"
 msgstr ""
 
-#: 1855.ACQ_FUNDING_SOURCE_CREDIT_TOTAL_NOT_FOUND:637
+#: 1855.ACQ_FUNDING_SOURCE_CREDIT_TOTAL_NOT_FOUND:646
 msgid "The requested acq.funding_source_credit_total was not found"
 msgstr "Запрашиваемый  acq.funding_source_credit_total  не был найден"
 
-#: 1870.ACQ_LINEITEM_DETAIL_NOT_FOUND:664
+#: 1870.ACQ_LINEITEM_DETAIL_NOT_FOUND:673
 msgid "The requested acq.lineitem_detail was not found"
 msgstr "Запрашиваемый  acq.lineitem_detail  не был найден"
 
-#: 1223.PATRON_NO_PHONE:122
+#: 1223.PATRON_NO_PHONE:127
 msgid "The user does not have a valid phone number assigned"
 msgstr "У пользователя нету назначенного действительного телефонного номера"
 
-#: 1002.ACTOR_USER_NOT_FOUND:29
+#: 1002.ACTOR_USER_NOT_FOUND:34
 msgid ""
 "Someone attempted to retrieve a user from the system and the user was not "
 "found"
 msgstr ""
 "Кто то попытался извлечь пользователя из системы и пользователь не найдена"
 
-#: 7010.COPY_ALERT_MESSAGE:844
+#: 7010.COPY_ALERT_MESSAGE:859
 msgid "The requested copy has an alert message attached"
 msgstr ""
 
-#: 1643.VANDELAY_BIB_QUEUE_NOT_FOUND:569
+#: 1643.VANDELAY_BIB_QUEUE_NOT_FOUND:578
 msgid "The requested vandelay_bib_queue was not found"
 msgstr "Запрашиваемый vandelay_bib_queue не найден"
 
-#: 1849.ACQ_FUND_DEBIT_TOTAL_NOT_FOUND:619
+#: 1849.ACQ_FUND_DEBIT_TOTAL_NOT_FOUND:628
 msgid "The requested acq.fund_debit_total was not found"
 msgstr "Запрашиваемый  acq.fund_debit_total  не  был найден"
 
-#: 1636.REPORTER_OUTPUT_FOLDER_NOT_FOUND:548
+#: 1636.REPORTER_OUTPUT_FOLDER_NOT_FOUND:557
 msgid "The requested reporter_output_folder was not found"
 msgstr "Запрашиваемый reporter_output_folder не найден"
 
-#: 7008.MAX_RENEWALS_REACHED:838
+#: 7008.MAX_RENEWALS_REACHED:853
 msgid "Circulation has no more renewals remaining"
 msgstr ""
 
-#: 1217.PATRON_INACTIVE:101
+#: 1217.PATRON_INACTIVE:106
 msgid "This account is marked as inactive"
 msgstr "Этот абонентский счет отмечен как неактивный"
 
-#: 8003.OFFLINE_PARAM_ERROR:907
+#: 8003.OFFLINE_PARAM_ERROR:922
 msgid "Missing params in offline upload"
 msgstr ""
 
-#: 1637.REPORTER_REPORT_FOLDER_NOT_FOUND:551
+#: 1637.REPORTER_REPORT_FOLDER_NOT_FOUND:560
 msgid "The requested reporter_report_folder was not found"
 msgstr "Запрашиваемый reporter_report_folder не найден"
 
-#: 1545.PERM_EX_NOT_FOUND:283
+#: 1545.PERM_EX_NOT_FOUND:291
 msgid "The requested perm_ex was not found"
 msgstr "Запрашиваемый perm_ex не найден"
 
-#: 10101.ACQ_ALREADY_CANCELED:959
+#: 10101.ACQ_ALREADY_CANCELED:977
 msgid "The object is already canceled."
 msgstr ""
 
-#: 1553.ACTOR_ORG_UNIT_CLOSED_DATE_NOT_FOUND:304
+#: 1553.ACTOR_ORG_UNIT_CLOSED_DATE_NOT_FOUND:312
 msgid "The requested actor_org_unit_closed_date was not found"
 msgstr "Запрашиваемый actor_org_unit_closed_date не найден"
 
-#: 1609.CONFIG_RULES_RECURRING_FINE_NOT_FOUND:468
-msgid "The requested config_rules_recurring_fine was not found"
-msgstr "Запрашиваемый config_rules_recurring_fine не  был найден"
+#: 1531.ACTION_SURVEY_QUESTION_NOT_FOUND:250
+msgid "The requested action_survey_question was not found"
+msgstr "Запрашиваемый action_survey_question не найден"
 
-#: 1541.AUTHORITY_RECORD_DESCRIPTOR_NOT_FOUND:271
+#: 1541.AUTHORITY_RECORD_DESCRIPTOR_NOT_FOUND:279
 msgid "The requested authority_record_descriptor was not found"
 msgstr "Запрашиваемый authority_record_descriptor не найден"
 
-#: 7011.COPY_STATUS_LOST:847
+#: 7011.COPY_STATUS_LOST:862
 msgid "Copy has is marked as lost"
 msgstr "Копия отмечена как утерянная"
 
-#: 1587.CONTAINER_CALL_NUMBER_BUCKET_NOT_FOUND:402
+#: 1587.CONTAINER_CALL_NUMBER_BUCKET_NOT_FOUND:410
 msgid "The requested container_call_number_bucket was not found"
 msgstr "Запрашиваемый container_call_number_bucket не найден"
 
-#: 1229.VOLUME_DELETED:147
+#: 1229.VOLUME_DELETED:152
 msgid "The requested volume is marked as deleted"
 msgstr "Запрашиваемый том отмечен как удаленный"
 
-#: 1635.REPORTER_REPORT_NOT_FOUND:545
+#: 1635.REPORTER_REPORT_NOT_FOUND:554
 msgid "The requested reporter_report was not found"
 msgstr "Запрашиваемый reporter_report не найден"
 
-#: 1631.MONEY_COLLECTIONS_TRACKER_NOT_FOUND:533
-#: 1632.CONFIG_RULES_AGE_HOLD_PROTECT_NOT_FOUND:536
-#: 1633.MONEY_DESK_PAYMENT_NOT_FOUND:539
+#: 1631.MONEY_COLLECTIONS_TRACKER_NOT_FOUND:542
+#: 1632.CONFIG_RULES_AGE_HOLD_PROTECT_NOT_FOUND:545
+#: 1633.MONEY_DESK_PAYMENT_NOT_FOUND:548
 msgid "The requested money_collections_tracker was not found"
 msgstr "Запрашиваемый money_collections_tracker не найден"
 
-#: 1651.AUTHORITY_RECORD_NUMBER_EXISTS:593
+#: 1651.AUTHORITY_RECORD_NUMBER_EXISTS:602
 msgid "An authority record already exists with the requested ARN"
 msgstr ""
 
-#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:972
+#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:990
 msgid "The caption/pattern still has dependent issuances"
 msgstr ""
 
-#: 5000.PERM_FAILURE:789
+#: 5000.PERM_FAILURE:804
 msgid "Permission Denied"
 msgstr "Полномочия запрещены"
 
-#: 7015.NEGATIVE_PATRON_BALANCE:859
+#: 7015.NEGATIVE_PATRON_BALANCE:874
 msgid "This requested action would result in a negative patron balance"
 msgstr "Запрашиваемое действие приведет к негативному балансу патрона"
 
-#: 1569.ACTOR_USER_STANDING_PENALTY_NOT_FOUND:351
+#: 1569.ACTOR_USER_STANDING_PENALTY_NOT_FOUND:359
 msgid "The requested actor_user_standing_penalty was not found"
 msgstr "Запрашиваемый actor_user_standing_penalty не найден"
 
-#: 8000.OFFLINE_SESSION_ACTIVE:898
+#: 8000.OFFLINE_SESSION_ACTIVE:913
 msgid "An offline session for this location is currently processing"
 msgstr ""
 
-#: 1200.USERNAME_EXISTS:39
+#: 1200.USERNAME_EXISTS:44
 msgid "The given username already exists in the database"
 msgstr "Данное имя пользователя уже есть в базе"
 
-#: 1602.ACTOR_STAT_CAT_ENTRY_NOT_FOUND:447
+#: 1602.ACTOR_STAT_CAT_ENTRY_NOT_FOUND:455
 msgid "The requested actor_stat_cat_entry was not found"
 msgstr "Запрашиваемый actor_stat_cat_entry не найден"
 
-#: 1710.CONTAINER_EXISTS:729
+#: 1710.CONTAINER_EXISTS:738
 msgid "User has already created a bucket with the requested name"
 msgstr "Пользователь уже создал букет с запрашиваемым именем"
 
-#: 7001.PATRON_BAD_STANDING:816
+#: 7001.PATRON_BAD_STANDING:831
 msgid ""
 "The patron in question is not able to check out materials because their "
 "account is in bad standing"
 msgstr ""
 
-#: 1525.BILLING_NOT_FOUND:224
+#: 1525.BILLING_NOT_FOUND:232
 msgid "Requested billing note does not exist"
 msgstr ""
 
-#: 11102.SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER:980
+#: 11102.SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER:998
 msgid ""
 "Units cannot be created for the given item because its associated "
 "distribution does not have a call number."
 msgstr ""
 
-#: 1575.CONTAINER_BIBLIO_RECORD_ENTRY_BUCKET_NOT_FOUND:367
+#: 1575.CONTAINER_BIBLIO_RECORD_ENTRY_BUCKET_NOT_FOUND:375
 msgid "The requested container_biblio_record_entry_bucket was not found"
 msgstr "Запрашиваемый container_biblio_record_entry_bucket не найден"
 
-#: 7021.RESERVATION_NOT_FOUND:880
+#: 7021.RESERVATION_NOT_FOUND:895
 msgid "Booking reservation not found"
 msgstr ""
 
-#: 1700.NON_CAT_TYPE_EXISTS:699
+#: 1700.NON_CAT_TYPE_EXISTS:708
 msgid "The non-cataloged type object already exists"
 msgstr ""
 
-#: 1860.ACQ_PURCHASE_ORDER_TOO_SHORT:652
+#: 1860.ACQ_PURCHASE_ORDER_TOO_SHORT:661
 msgid ""
 "The requested acq.purchase_order cannot be split because it does not have "
 "more than one lineitem"
 msgstr ""
 
-#: 10004.ACQ_LINEITEM_NO_PRICE:952
+#: 10004.ACQ_LINEITEM_NO_PRICE:970
 msgid "The lineitem has no price"
 msgstr "Строка не имеет цены"
 
-#: 1226.REFUND_EXCEEDS_DESK_PAYMENTS:135
+#: 1226.REFUND_EXCEEDS_DESK_PAYMENTS:140
 msgid ""
 "This refund amount is not allowed because it exceeds the total amount of "
 "desk payments for this transaction."
 msgstr ""
 
-#: 1619.ACTOR_STAT_CAT_ENTRY_USER_MAP_NOT_FOUND:497
+#: 1619.ACTOR_STAT_CAT_ENTRY_USER_MAP_NOT_FOUND:506
 msgid "The requested actor_stat_cat_entry_user_map was not found"
 msgstr "Запрашиваемый actor_stat_cat_entry_user_map не найден"
 
-#: 1858.ACQ_LINEITEM_NOT_FOUND:646
+#: 1858.ACQ_LINEITEM_NOT_FOUND:655
 msgid "The requested acq.po_lineitem was not found"
 msgstr "Запрашиваемый assacq.po_lineitem не был найден"
 
-#: 1558.ASSET_COPY_NOTE_NOT_FOUND:318
+#: 1558.ASSET_COPY_NOTE_NOT_FOUND:326
 msgid "The requested asset_copy_note was not found"
 msgstr "Запрашиваемый asset_copy_note не найден"
 
-#: 1853.ACQ_FUND_COMBINED_BALANCE_NOT_FOUND:631
+#: 1853.ACQ_FUND_COMBINED_BALANCE_NOT_FOUND:640
 msgid "The requested acq.fund_combined_balance was not found"
 msgstr "Запрашиваемый acq.fund_combined_balance не был найден"
 
-#: 1850.ACQ_FUND_ALLOCATION_TOTAL_NOT_FOUND:622
+#: 1850.ACQ_FUND_ALLOCATION_TOTAL_NOT_FOUND:631
 msgid "The requested acq.fund_allocation_total was not found"
 msgstr "Запрашиваемый  acq.fund_allocation_total не был найден"
 
-#: 1616.MONEY_OPEN_USER_CIRCULATION_SUMMARY_NOT_FOUND:488
+#: 1616.MONEY_OPEN_USER_CIRCULATION_SUMMARY_NOT_FOUND:497
 msgid "The requested money_open_user_circulation_summary was not found"
 msgstr "Запрашиваемый money_open_user_circulation_summaryне найден"
 
-#: 1624.MONEY_PAYMENT_NOT_FOUND:512
+#: 1624.MONEY_PAYMENT_NOT_FOUND:521
 msgid "The requested money_payment was not found"
 msgstr "Запрашиваемый money_payment не найден"
 
-#: 1596.ACTOR_ORG_UNIT_TYPE_NOT_FOUND:429
+#: 1596.ACTOR_ORG_UNIT_TYPE_NOT_FOUND:437
 msgid "The requested actor_org_unit_type was not found"
 msgstr "Запрашиваемый actor_org_unit_type не найден"
 
-#: 1004.Z3950_BAD_QUERY:35
+#: 1004.Z3950_BAD_QUERY:40
 msgid "The Z query is not formatted correctly"
 msgstr "Z очередь не оформлена корректно"
 
-#: 1205.CARD_EXISTS:57
+#: 1205.CARD_EXISTS:62
 msgid "The given user barcode already exists"
 msgstr "Штрих код заданного пользователя уже есть"
 
-#: 1713.SURVEY_RESPONSES_EXIST:738
+#: 1713.SURVEY_RESPONSES_EXIST:747
 msgid "Responses to this survey exist"
 msgstr "Ответы на этот  опрос имеются"
 
-#: 1544.CONFIG_METABIB_FIELD_NOT_FOUND:280
+#: 1544.CONFIG_METABIB_FIELD_NOT_FOUND:288
 msgid "The requested config_metabib_field was not found"
 msgstr "Запрашиваемый config_metabib_field не найден"
 
-#: 1584.ACTOR_ORG_ADDRESS_NOT_FOUND:394
+#: 1584.ACTOR_ORG_ADDRESS_NOT_FOUND:402
 msgid "The requested actor_org_address was not found"
 msgstr "Запрашиваемый actor_org_address не найден"
 
-#: 1501.BIBLIO_RECORD_ENTRY_NOT_FOUND:176
+#: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1002
+msgid "Checkin attempted on item during minimum transit checkin interval."
+msgstr ""
+
+#: 1501.BIBLIO_RECORD_ENTRY_NOT_FOUND:184
 msgid "The requested biblio_record_entry was not found"
 msgstr "Запрашиваемый biblio_record_entry не найден"
 
-#: 1852.ACQ_FUND_SPENT_TOTAL_NOT_FOUND:628
+#: 1852.ACQ_FUND_SPENT_TOTAL_NOT_FOUND:637
 msgid "The requested acq.fund_spent_total was not found"
 msgstr "Запрашиваемый acq.fund_spent_total не был найден"
 
-#: 1613.PERMISSION_GRP_TREE_NOT_FOUND:479
+#: 1613.PERMISSION_GRP_TREE_NOT_FOUND:488
 msgid "The requested permission_grp_tree was not found"
 msgstr "Запрашиваемый permission_grp_tree не найден"
 
-#: 10001.ACQ_LINEITEM_NO_COPIES:943
+#: 10001.ACQ_LINEITEM_NO_COPIES:961
 msgid "The lineitem has no attached copies"
 msgstr "К строке(lineitem)  не прилагаются копии"
 
-#: 1536.ACTION_IN_HOUSE_USE_NOT_FOUND:257
+#: 1536.ACTION_IN_HOUSE_USE_NOT_FOUND:265
 msgid "The requested action_in_house_use was not found"
 msgstr "Запрашиваемый action_in_house_use не найден"
 
-#: 1872.ACQ_LINEITEM_PROVIDER_ATTR_DEFINITION_NOT_FOUND:670
+#: 1872.ACQ_LINEITEM_PROVIDER_ATTR_DEFINITION_NOT_FOUND:679
 msgid "The requested acq.lineitem_provider_attr_definition was not found"
 msgstr "Запрашиваемый acq.lineitem_provider_attr_definition не был найден"
 
-#: 7007.COPY_NEEDED_FOR_HOLD:835
+#: 7007.COPY_NEEDED_FOR_HOLD:850
 msgid "Copy is needed to fulfill a hold"
 msgstr ""
 
-#: 1562.METABIB_METARECORD_SOURCE_MAP_NOT_FOUND:330
+#: 1562.METABIB_METARECORD_SOURCE_MAP_NOT_FOUND:338
 msgid "The requested metabib_metarecord_source_map was not found"
 msgstr "Запрашиваемый metabib_metarecord_source_map не найден"
 
-#: 1531.ACTION_SURVEY_QUESTION_NOT_FOUND:242
-msgid "The requested action_survey_question was not found"
-msgstr "Запрашиваемый action_survey_question не найден"
+#: 4.CACHE_MISS:24
+msgid "A cached object could not be retrieved by the given reference."
+msgstr ""
 
-#: 1612.CONFIG_RULES_MAX_FINE_NOT_FOUND:476
+#: 1612.CONFIG_RULES_MAX_FINE_NOT_FOUND:485
 msgid "The requested config_rules_max_fine was not found"
 msgstr "Запрашиваемый config_rules_max_fine не найден"
 
-#: 1557.ACTOR_ORG_UNIT_SETTING_NOT_FOUND:315
+#: 1557.ACTOR_ORG_UNIT_SETTING_NOT_FOUND:323
 msgid "The requested actor_org_unit_setting was not found"
 msgstr "Запрашиваемый actor_org_unit_setting не найден"
 
-#: 1629.PERMISSION_USR_GRP_MAP_NOT_FOUND:526
+#: 1629.PERMISSION_USR_GRP_MAP_NOT_FOUND:535
 msgid "The requested permission_usr_grp_map was not found"
 msgstr "Запрашиваемый permission_usr_grp_map не найден"
 
-#: 1215.CIRC_EXCEEDS_COPY_RANGE:94
+#: 1215.CIRC_EXCEEDS_COPY_RANGE:99
 msgid ""
 "The selected copy may not circulate because the recipient's home location is "
 "not within the copy's circulation range"
 msgstr ""
 
-#: 10005.ACQ_LINEITEM_NO_PROVIDER:955
+#: 10005.ACQ_LINEITEM_NO_PROVIDER:973
 msgid "The lineitem has no provider"
 msgstr ""
 
-#: 1606.MONEY_WORK_PAYMENT_NOT_FOUND:459
+#: 1606.MONEY_WORK_PAYMENT_NOT_FOUND:467
 msgid "The requested money_work_payment was not found"
 msgstr "Запрашиваемый money_work_payment не найден"
 
-#: 2000.BAD_PARAMS:746
+#: 2000.BAD_PARAMS:758
 msgid "Invalid parameters were encountered in a method"
 msgstr "В методе обнаружены неправильные параметры"
 
-#: 1564.MONEY_CASH_PAYMENT_NOT_FOUND:336
+#: 1564.MONEY_CASH_PAYMENT_NOT_FOUND:344
 msgid "The requested money_cash_payment was not found"
 msgstr "Запашиваемый money_cash_payment не найден"
 
-#: 1221.ORG_CANNOT_HAVE_VOLS:115
+#: 1221.ORG_CANNOT_HAVE_VOLS:120
 msgid "The selected location cannot have volumes attached"
 msgstr "Выбранное местоположение не может иметь прикрепленных томов"
 
-#: 1704.TCN_EXISTS:711
+#: 1704.TCN_EXISTS:720
 msgid "A record already exists with the requested TCN value"
 msgstr "Запись с запрошенным значением TCN уже есть"
 
@@ -500,160 +504,160 @@ msgstr "Запись с запрошенным значением TCN уже е�
 msgid "Placeholder event.  Used for development only"
 msgstr "Placeholder event.  Used for development only"
 
-#: 1622.BIBLIO_RECORD_NODE_NOT_FOUND:506
+#: 1622.BIBLIO_RECORD_NODE_NOT_FOUND:515
 msgid "The requested biblio_record_node was not found"
 msgstr "Запрашиваемый biblio_record_node не найден"
 
-#: 1534.ACTOR_USER_SETTING_NOT_FOUND:251
+#: 1534.ACTOR_USER_SETTING_NOT_FOUND:259
 msgid "The requested actor_user_setting was not found"
 msgstr "Запрашиваемый actor_user_setting не найден"
 
-#: 1211.BILL_ALREADY_VOIDED:76
+#: 1211.BILL_ALREADY_VOIDED:81
 msgid "The selecte bill has already been voided"
 msgstr "Выбор счета для оплаты опустошен"
 
-#: 7026.PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST:795
+#: 7026.PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST:810
 msgid ""
 "The user attempted to update their password using a stale or inactive "
 "password reset request session."
 msgstr ""
 
-#: 1222.PATRON_NO_EMAIL_ADDRESS:119
+#: 1222.PATRON_NO_EMAIL_ADDRESS:124
 msgid "The user does not have a valid email address assigned"
 msgstr "Пользователь не имеет дйствительный адрес эл почты"
 
-#: 1854.ACQ_FUND_SPENT_BALANCE_NOT_FOUND:634
+#: 1854.ACQ_FUND_SPENT_BALANCE_NOT_FOUND:643
 msgid "The requested acq.fund_spent_balance was not found"
 msgstr "Запрашиваемый acq.fund_spent_balance не был найден"
 
-#: 11000.SERIAL_SUBSCRIPTION_NOT_EMPTY:968
+#: 11000.SERIAL_SUBSCRIPTION_NOT_EMPTY:986
 msgid "The subscription still has dependent objects"
 msgstr ""
 
-#: 1523.TITLE_NOTE_NOT_FOUND:221
+#: 1523.TITLE_NOTE_NOT_FOUND:229
 msgid "Requested title note does not exist"
 msgstr ""
 
-#: 1605.CONFIG_LIT_FORM_MAP_NOT_FOUND:456
+#: 1605.CONFIG_LIT_FORM_MAP_NOT_FOUND:464
 msgid "The requested config_lit_form_map was not found"
 msgstr "Запрашиваемый config_lit_form_map не найден"
 
-#: 1567.METABIB_RECORD_DESCRIPTOR_NOT_FOUND:345
+#: 1567.METABIB_RECORD_DESCRIPTOR_NOT_FOUND:353
 msgid "The requested metabib_record_descriptor was not found"
 msgstr "Запрашиваемый metabib_record_descriptor не найден"
 
-#: 10102.ACQ_NOT_CANCELABLE:962
+#: 10102.ACQ_NOT_CANCELABLE:980
 msgid "The object is not in a cancelable state."
 msgstr ""
 
-#: 9000.REPORT_TEMPLATE_EXISTS:932
+#: 9000.REPORT_TEMPLATE_EXISTS:950
 msgid "A report template with the given name and folder already exists"
 msgstr ""
 
-#: 1500.ACTION_CIRCULATION_NOT_FOUND:173
+#: 1500.ACTION_CIRCULATION_NOT_FOUND:181
 msgid ""
 "Someone attempted to retrieve a circulation object from the system and the "
 "object was not found."
 msgstr ""
 
-#: 4001.CREDIT_PROCESSOR_NOT_ENABLED:760
+#: 4001.CREDIT_PROCESSOR_NOT_ENABLED:775
 msgid "Credit card processor not enabled"
 msgstr "Обрабатывающее устройство кредитной карты не включено"
 
-#: 1630.ACTOR_USER_NOTE_NOT_FOUND:529
+#: 1630.ACTOR_USER_NOTE_NOT_FOUND:538
 msgid "The requested actor_user_note was not found"
 msgstr "Запршенный actor_user_note не найден"
 
-#: 7005.LOCATION_CIRC_NOT_ALLOWED:829
+#: 7005.LOCATION_CIRC_NOT_ALLOWED:844
 msgid "Location does not allow materials to circulate"
 msgstr ""
 
-#: 1508.ASSET_CALL_NUMBER_NOT_FOUND:208
+#: 1508.ASSET_CALL_NUMBER_NOT_FOUND:216
 msgid "Requested asset_call_number was not found"
 msgstr "Запрашиваемый asset_call_number не найден"
 
-#: 1209.Z3950_LOGIN_FAILED:69
+#: 1209.Z3950_LOGIN_FAILED:74
 msgid "The login failed"
 msgstr "Логин не удался"
 
-#: 1543.MONEY_CREDIT_CARD_PAYMENT_NOT_FOUND:277
+#: 1543.MONEY_CREDIT_CARD_PAYMENT_NOT_FOUND:285
 msgid "The requested money_credit_card_payment was not found"
 msgstr "Запрашиваемый money_credit_card_payment не найден"
 
-#: 7023.RESERVATION_BAD_PARAMS:886
+#: 7023.RESERVATION_BAD_PARAMS:901
 msgid "Provided parameters describe unacceptable reservation."
 msgstr ""
 
-#: 1857.ACQ_FUNDING_SOURCE_BALANCE_NOT_FOUND:643
+#: 1857.ACQ_FUNDING_SOURCE_BALANCE_NOT_FOUND:652
 msgid "The requested acq.funding_source_balance was not found"
 msgstr "Запрашиваемый  acq.funding_source_balance не был найден"
 
-#: 10000.ACQ_LINEITEM_APPROVED:940
+#: 10000.ACQ_LINEITEM_APPROVED:958
 msgid "The lineitem cannot be altered because it has already been approved"
 msgstr ""
 "Содержимое строки не может быть изменено, так как оно уже было утвержденно"
 
-#: 1714.HIGH_LEVEL_HOLD_HAS_NO_COPIES:741
+#: 1714.HIGH_LEVEL_HOLD_HAS_NO_COPIES:750
 msgid ""
 "A hold request at a higher level than copy has been attempted, but there are "
 "no copies that belonging to the higher-level unit."
 msgstr ""
 
-#: 1614.ACTION_SURVEY_ANSWER_NOT_FOUND:482
-msgid "The requested action_survey_answer was not found"
-msgstr "Запрашиваемый action_survey_answer не найден"
+#: 1611.ACTOR_STAT_CAT_ENTRY_DEFAULT_NOT_FOUND:482
+msgid "The requested actor_stat_cat_entry_default was not found"
+msgstr ""
 
-#: 1535.METABIB_AUTHOR_FIELD_ENTRY_NOT_FOUND:254
+#: 1535.METABIB_AUTHOR_FIELD_ENTRY_NOT_FOUND:262
 msgid "The requested metabib_author_field_entry was not found"
 msgstr "Запрашиваемый metabib_author_field_entry не найден"
 
-#: 1626.ASSET_STAT_CAT_ENTRY_NOT_FOUND:518
+#: 1626.ASSET_STAT_CAT_ENTRY_NOT_FOUND:527
 msgid "The requested asset_stat_cat_entry was not found"
 msgstr "Запрашиваемый asset_stat_cat_entry не найден"
 
-#: 1595.CONFIG_NON_CATALOGED_TYPE_NOT_FOUND:426
+#: 1595.CONFIG_NON_CATALOGED_TYPE_NOT_FOUND:434
 msgid "The requested config_non_cataloged_type was not found"
 msgstr "Запрашиваемый config_non_cataloged_type не найден"
 
-#: 1225.TRANSIT_ABORT_NOT_ALLOWED:128
+#: 1225.TRANSIT_ABORT_NOT_ALLOWED:133
 msgid ""
 "The transit on this item may not be aborted due to the state the item is in"
 msgstr ""
 "Транзит на данную единицу невозможно прекратить в связи с состоянием единицы"
 
-#: 1542.CONFIG_LANGUAGE_MAP_NOT_FOUND:274
+#: 1542.CONFIG_LANGUAGE_MAP_NOT_FOUND:282
 msgid "The requested config_language_map was not found"
 msgstr "Запрашиваемый config_language_map не найден"
 
-#: 1844.ACQ_FUNDING_SOURCE_NOT_FOUND:604
+#: 1844.ACQ_FUNDING_SOURCE_NOT_FOUND:613
 msgid "The requested acq.funding_source was not found"
 msgstr "Запрашиваемый acq.funding_source не был найден"
 
-#: 1206.VOLUME_NOT_EMPTY:60
+#: 1206.VOLUME_NOT_EMPTY:65
 msgid "The selected volume has copies attached"
 msgstr "Выбранный том имеет прикрепленные копии"
 
-#: 1540.AUTHORITY_RECORD_ENTRY_NOT_FOUND:268
+#: 1540.AUTHORITY_RECORD_ENTRY_NOT_FOUND:276
 msgid "The requested authority_record_entry was not found"
 msgstr "Запрашиваемый authority_record_entry не найден"
 
-#: 1203.COPY_BAD_STATUS:48
+#: 1203.COPY_BAD_STATUS:53
 msgid "The given copy is not in a standard circulation status"
 msgstr "Данная копия не в стандартном состоянии циркуляции"
 
-#: 1601.MONEY_BILLABLE_TRANSACTION_NOT_FOUND:444
+#: 1601.MONEY_BILLABLE_TRANSACTION_NOT_FOUND:452
 msgid "The requested money_billable_transaction was not found"
 msgstr "Запрашиваемый money_billable_transaction не найден"
 
-#: 1871.PERMISSION_USR_OBJECT_PERM_MAP_NOT_FOUND:667
+#: 1871.PERMISSION_USR_OBJECT_PERM_MAP_NOT_FOUND:676
 msgid "The requested permission.usr_object_perm_map was not found"
 msgstr "Запрашиваемый permission.usr_object_perm_map не был найден"
 
-#: 7020.COPY_RESERVED:877
+#: 7020.COPY_RESERVED:892
 msgid "Item reserved for booking request"
 msgstr ""
 
-#: 1550.MONEY_OPEN_USER_SUMMARY_NOT_FOUND:296
+#: 1550.MONEY_OPEN_USER_SUMMARY_NOT_FOUND:304
 msgid "The requested money_open_user_summary was not found"
 msgstr "Запрашиваемый money_open_user_summary не найден"
 
@@ -661,103 +665,103 @@ msgstr "Запрашиваемый money_open_user_summary не найден"
 msgid "No change occurred"
 msgstr "Нету изменений"
 
-#: 1201.CIRC_PERMIT_BAD_KEY:42
+#: 1201.CIRC_PERMIT_BAD_KEY:47
 msgid "A checkout was attempted without a valid checkout permit key"
 msgstr "Попытка выдачи без разрешенного ключа выдачи"
 
-#: 1593.MONEY_CREDIT_PAYMENT_NOT_FOUND:420
+#: 1593.MONEY_CREDIT_PAYMENT_NOT_FOUND:428
 msgid "The requested money_credit_payment was not found"
 msgstr "Запрашиваемый money_credit_payment не найден"
 
-#: 7017.ROUTE_TO_COPY_LOCATION:868
+#: 7017.ROUTE_TO_COPY_LOCATION:883
 msgid ""
 "A copy needs to be routed to a copy location.  The location should be "
 "specified within the event with a 'location' key"
 msgstr ""
 
-#: 1618.METABIB_TITLE_FIELD_ENTRY_NOT_FOUND:494
+#: 1618.METABIB_TITLE_FIELD_ENTRY_NOT_FOUND:503
 msgid "The requested metabib_title_field_entry was not found"
 msgstr "Запрашиваемый metabib_title_field_entry не найден"
 
-#: 7022.RESERVATION_CAPTURE_FAILED:883
+#: 7022.RESERVATION_CAPTURE_FAILED:898
 msgid "Booking reservation capture failed"
 msgstr ""
 
-#: 1202.ITEM_NOT_CATALOGED:45
+#: 1202.ITEM_NOT_CATALOGED:50
 msgid "The requested item is not cataloged in the database"
 msgstr "Запрошенная единица не каталогизирована в базе"
 
-#: 1520.WORKSTATION_NOT_FOUND:218
+#: 1520.WORKSTATION_NOT_FOUND:226
 msgid "Requested workstation object does not exist"
 msgstr ""
 
-#: 1628.MONEY_BILLING_NOT_FOUND:523
+#: 1628.MONEY_BILLING_NOT_FOUND:532
 msgid "The requested money_billing was not found"
 msgstr "Запрашиваемый money_billing не найден"
 
-#: 1507.CONTAINER_ITEM_NOT_FOUND:205
+#: 1507.CONTAINER_ITEM_NOT_FOUND:213
 msgid ""
 "Someone attempted to retrieve a container item object from the system and "
 "the object was not found."
 msgstr ""
 
-#: 2002.DATABASE_QUERY_FAILED:752
+#: 2002.DATABASE_QUERY_FAILED:764
 msgid "The attempt to query to the DB failed"
 msgstr "Попытка опроса базы провалилась"
 
-#: 1549.CONFIG_STANDING_NOT_FOUND:293
+#: 1549.CONFIG_STANDING_NOT_FOUND:301
 msgid "The requested config_standing was not found"
 msgstr "Запрашиваемый config_standing не найден"
 
-#: 1861.ACQ_PURCHASE_ORDER_TOO_LATE:655
+#: 1861.ACQ_PURCHASE_ORDER_TOO_LATE:664
 msgid ""
 "The requested acq.purchase_order cannot be split because it has gone beyond "
 "the \"pending\" state"
 msgstr ""
 
-#: 1210.INCORRECT_PASSWORD:73
+#: 1210.INCORRECT_PASSWORD:78
 msgid "The provided password is not correct"
 msgstr "Установленный пароль не правильный"
 
-#: 1582.CONFIG_ITEM_TYPE_MAP_NOT_FOUND:388
+#: 1582.CONFIG_ITEM_TYPE_MAP_NOT_FOUND:396
 msgid "The requested config_item_type_map was not found"
 msgstr "Запрашиваемый config_item_type_map не найден"
 
-#: 8007.OFFLINE_SESSION_EXISTS:919
+#: 8007.OFFLINE_SESSION_EXISTS:934
 msgid "A session with the given name already exists"
 msgstr ""
 
-#: 1650.CONFIG_CIRC_MATRIX_RULESET_NOT_FOUND:590
+#: 1650.CONFIG_CIRC_MATRIX_RULESET_NOT_FOUND:599
 msgid "The requested config_circ_matrix_ruleset_not_found was not found"
 msgstr "Запрашиваемый config_circ_matrix_ruleset_not_found не найден"
 
-#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:946
+#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:964
 msgid "The lineitem detail has no associated fund"
 msgstr "Детали строки(lineitem) не имеют ассоциированного фонда"
 
-#: 7003.COPY_CIRC_NOT_ALLOWED:823
+#: 7003.COPY_CIRC_NOT_ALLOWED:838
 msgid "Target copy is not allowed to circulate"
 msgstr ""
 
-#: 1530.CONFIG_IDENTIFICATION_TYPE_NOT_FOUND:239
+#: 1530.CONFIG_IDENTIFICATION_TYPE_NOT_FOUND:247
 msgid "The requested config_identification_type was not found"
 msgstr "Запрашиваемый config_identification_type не найден"
 
-#: 1579.ASSET_COPY_LOCATION_NOT_FOUND:379
+#: 1579.ASSET_COPY_LOCATION_NOT_FOUND:387
 msgid "The requested asset_copy_location was not found"
 msgstr "Запрашиваемый asset_copy_location не найден"
 
-#: 1506.CONTAINER_NOT_FOUND:199
+#: 1506.CONTAINER_NOT_FOUND:207
 msgid ""
 "Someone attempted to retrieve a container object from the system and the "
 "object was not found."
 msgstr ""
 
-#: 1571.ASSET_CALL_NUMBER_NOTE_NOT_FOUND:356
+#: 1571.ASSET_CALL_NUMBER_NOTE_NOT_FOUND:364
 msgid "The requested asset_call_number_note was not found"
 msgstr "Запрашиваемый asset_call_number_note не найдвен"
 
-#: 4004.CREDIT_PROCESSOR_NOT_SPECIFIED:769
+#: 4004.CREDIT_PROCESSOR_NOT_SPECIFIED:784
 msgid ""
 "No credit card processor specified either in org unit settings or in call to "
 "credit service API method."
@@ -765,49 +769,53 @@ msgstr ""
 "Нет процессора кредитной карты определенного индивидуальными признаками  в "
 "настройках организационной единицы  и в вызове метода кредитных услуг API."
 
-#: 1528.ACTOR_USER_ADDRESS_NOT_FOUND:231
+#: 1528.ACTOR_USER_ADDRESS_NOT_FOUND:239
 msgid "Requested address was not found"
 msgstr "Затребованный адрес не найден"
 
-#: 7002.PATRON_EXCEEDS_CHECKOUT_COUNT:820
+#: 7002.PATRON_EXCEEDS_CHECKOUT_COUNT:835
 msgid ""
 "The patron in question has the maximum number of items already checked out"
 msgstr "Патрон в запросе имет максимальное число выданных материалов"
 
-#: 1003.Z3950_SEARCH_FAILED:32
+#: 1609.CONFIG_RULES_RECURRING_FINE_NOT_FOUND:476
+msgid "The requested config_rules_recurring_fine was not found"
+msgstr "Запрашиваемый config_rules_recurring_fine не  был найден"
+
+#: 1003.Z3950_SEARCH_FAILED:37
 msgid "The Z search did not succeed"
 msgstr "Z поиск неудался"
 
-#: 1533.ACTOR_USR_NOTE_NOT_FOUND:248
+#: 1533.ACTOR_USR_NOTE_NOT_FOUND:256
 msgid "The requested actor_usr_note was not found"
 msgstr "Запрашиваемый actor_usr_note не найден"
 
-#: 1620.PERMISSION_GRP_PERM_MAP_NOT_FOUND:500
+#: 1620.PERMISSION_GRP_PERM_MAP_NOT_FOUND:509
 msgid "The requested permission_grp_perm_map was not found"
 msgstr "Запрашиваемый permission_grp_perm_map не найден"
 
-#: 7025.PATRON_TOO_MANY_ACTIVE_PASSWORD_RESET_REQUESTS:792
+#: 7025.PATRON_TOO_MANY_ACTIVE_PASSWORD_RESET_REQUESTS:807
 msgid ""
 "There are too many active password reset request sessions for this patron."
 msgstr ""
 
-#: 1709.MAX_HOLDS:726
+#: 1709.MAX_HOLDS:735
 msgid "User has reached the maximum number of holds"
 msgstr "Пользователь достиг максимального числа хранений"
 
-#: 1706.ITEM_BARCODE_EXISTS:717
+#: 1706.ITEM_BARCODE_EXISTS:726
 msgid "An item with the same barcode exists"
 msgstr "Единица с тем же штрих кодом существует"
 
-#: 7014.COPY_IN_TRANSIT:856
+#: 7014.COPY_IN_TRANSIT:871
 msgid "Copy is in transit"
 msgstr "Копия в транзите"
 
-#: 1219.COPY_REMOTE_CIRC_LIB:107 1220.ITEM_NOT_HOLDABLE:111
+#: 1219.COPY_REMOTE_CIRC_LIB:112 1220.ITEM_NOT_HOLDABLE:116
 msgid "A copy with a remote circulating library (circ_lib) was encountered"
 msgstr "Копия удаленной циркулирующей библиотеки (circ_lib) обнаружена"
 
-#: 1702.OPEN_CIRCULATION_EXISTS:705
+#: 1702.OPEN_CIRCULATION_EXISTS:714
 msgid "There is an open circulation on the requested item"
 msgstr ""
 
@@ -815,570 +823,385 @@ msgstr ""
 msgid "Success"
 msgstr ""
 
-#: 1231.RECORD_NOT_EMPTY:154
+#: 1231.RECORD_NOT_EMPTY:159
 msgid "The selected bib record has volumes attached"
 msgstr "Выбранная библ запись имеет прикрепленные тома"
 
-#: 1503.ACTION_HOLD_REQUEST_NOT_FOUND:185
+#: 1503.ACTION_HOLD_REQUEST_NOT_FOUND:193
 msgid "The requested action_hold_request was not found"
 msgstr "Запрашиваемый action_hold_request не найден"
 
-#: 1212.PATRON_EXCEEDS_OVERDUE_COUNT:79
+#: 8011.SKIP_ASSET_CHANGED:946
+msgid "Asset status was changed since the offline transaction was recorded"
+msgstr ""
+
+#: 1212.PATRON_EXCEEDS_OVERDUE_COUNT:84
 msgid "The patron has too many overdue items"
 msgstr "Патрон имеет слишком много просроченных единиц"
 
-#: 1863.ACQ_FUND_EXCEEDS_WARN_PERCENT:661
+#: 1863.ACQ_FUND_EXCEEDS_WARN_PERCENT:670
 msgid ""
 "Activating the requested acq.purchase_order would encumber it beyond its "
 "warning level."
 msgstr ""
 
-#: 1578.ACTION_HOLD_NOTIFICATION_NOT_FOUND:376
+#: 1578.ACTION_HOLD_NOTIFICATION_NOT_FOUND:384
 msgid "The requested action_hold_notification was not found"
 msgstr "Запрашиваемый action_hold_notification не найден"
 
-#: 1610.MONEY_CHECK_PAYMENT_NOT_FOUND:471
+#: 1610.MONEY_CHECK_PAYMENT_NOT_FOUND:479
 msgid "The requested money_check_payment was not found"
 msgstr "Запрашиваемый money_check_payment не найден"
 
-#: 1623.PERMISSION_USR_PERM_MAP_NOT_FOUND:509
+#: 1623.PERMISSION_USR_PERM_MAP_NOT_FOUND:518
 msgid "The requested permission_usr_perm_map was not found"
 msgstr "Запрашиваемый permission_usr_perm_map Запрашиваемый"
 
-#: 1581.ASSET_STAT_CAT_ENTRY_COPY_MAP_NOT_FOUND:385
+#: 1581.ASSET_STAT_CAT_ENTRY_COPY_MAP_NOT_FOUND:393
 msgid "The requested asset_stat_cat_entry_copy_map was not found"
 msgstr "Запрашиваемый asset_stat_cat_entry_copy_map не найден"
 
-#: 1547.CONFIG_ITEM_FORM_MAP_NOT_FOUND:289
+#: 1547.CONFIG_ITEM_FORM_MAP_NOT_FOUND:297
 msgid "The requested config_item_form_map was not found"
 msgstr "Запрашиваемый config_item_form_map не найден"
 
-#: 1592.CONTAINER_USER_BUCKET_NOT_FOUND:417
+#: 1592.CONTAINER_USER_BUCKET_NOT_FOUND:425
 msgid "The requested container_user_bucket was not found"
 msgstr "Запрашиваемый container_user_bucket не найден"
 
-#: 1617.ACTION_UNFULFILLED_HOLD_LIST_NOT_FOUND:491
+#: 1617.ACTION_UNFULFILLED_HOLD_LIST_NOT_FOUND:500
 msgid "The requested action_unfulfilled_hold_list was not found"
 msgstr "Запрашиваемый action_unfulfilled_hold_list не найен"
 
-#: 1552.ACTOR_ORG_UNIT_HOURS_OF_OPERATION_NOT_FOUND:301
+#: 1552.ACTOR_ORG_UNIT_HOURS_OF_OPERATION_NOT_FOUND:309
 msgid "The requested actor_org_unit_hours_of_operation was not found"
 msgstr "Запрашиваемый actor_org_unit_hours_of_operation не найден"
 
-#: 1576.EX_NOT_FOUND:370
+#: 1576.EX_NOT_FOUND:378
 msgid "The requested ex was not found"
 msgstr "Запршенный ex не найден"
 
-#: 7019.HOLD_CAPTURE_DELAYED:874
+#: 7019.HOLD_CAPTURE_DELAYED:889
 msgid "Hold capture was delayed for this item"
 msgstr "Захват хранения для этой единицы отложен"
 
-#: 1502.ASSET_COPY_NOT_FOUND:182
+#: 1502.ASSET_COPY_NOT_FOUND:190
 msgid ""
 "Someone attempted to retrieve a copy object from the system and the object "
 "was not found."
 msgstr ""
 
-#: 1703.WORKSTATION_NAME_EXISTS:708
+#: 1703.WORKSTATION_NAME_EXISTS:717
 msgid "A workstation with that name already exists"
 msgstr ""
 
-#: 1568.CONFIG_COPY_STATUS_NOT_FOUND:348
+#: 1235.INVALID_USER_XACT_ID:171
+msgid ""
+"While you were trying to make payments, this account's transaction history "
+"changed.  Please go back and try again."
+msgstr ""
+
+#: 1568.CONFIG_COPY_STATUS_NOT_FOUND:356
 msgid "The requested config_copy_status was not found"
 msgstr "Запрашиваемый config_copy_status не найден"
 
-#: 1539.CONTAINER_COPY_BUCKET_ITEM_NOT_FOUND:265
+#: 1539.CONTAINER_COPY_BUCKET_ITEM_NOT_FOUND:273
 msgid "The requested container_copy_bucket_item was not found"
 msgstr "Запршенный container_copy_bucket_item не найден"
 
-#: 1590.ACTOR_STAT_CAT_NOT_FOUND:411
+#: 1590.ACTOR_STAT_CAT_NOT_FOUND:419
 msgid "The requested actor_stat_cat was not found"
 msgstr "Запрашиваемый actor_stat_cat не найден"
 
-#: 7027.PATRON_PASSWORD_WAS_NOT_STRONG:798
+#: 7027.PATRON_PASSWORD_WAS_NOT_STRONG:813
 msgid "The user attempted to set their password to a weak value."
 msgstr ""
 
-#: 9001.REPORT_REPORT_EXISTS:936
+#: 9001.REPORT_REPORT_EXISTS:954
 msgid "A report with the given name and folder already exists"
 msgstr ""
 
-#: 1705.VOLUME_LABEL_EXISTS:714
+#: 1705.VOLUME_LABEL_EXISTS:723
 msgid "A volume with the same label, title and owning library exists"
 msgstr "Том с тем же ярлыком, заглавием и библиотекой собственником уже есть"
 
-#: 8008.OFFLINE_INVALID_SESSION:922
+#: 8008.OFFLINE_INVALID_SESSION:937
 msgid "The session name is invalid"
 msgstr ""
 
-#: 7009.CIRC_CLAIMS_RETURNED:841
+#: 7009.CIRC_CLAIMS_RETURNED:856
 msgid "Requested circulation is marked claims returned"
 msgstr ""
 
-#: 1577.ACTION_HOLD_COPY_MAP_NOT_FOUND:373
+#: 1577.ACTION_HOLD_COPY_MAP_NOT_FOUND:381
 msgid "The requested action_hold_copy_map was not found"
 msgstr "Запрашиваемый action_hold_copy_map не найден"
 
-#: 1648.PERMISSION_USR_WORK_OU_MAP_NOT_FOUND:584
+#: 1648.PERMISSION_USR_WORK_OU_MAP_NOT_FOUND:593
 msgid "The requested permission_usr_work_ou_map was not found"
 msgstr "Запрашиваемый permission_usr_work_ou_map не найден"
 
-#: 1638.REPORTER_TEMPLATE_FOLDER_NOT_FOUND:554
+#: 1638.REPORTER_TEMPLATE_FOLDER_NOT_FOUND:563
 msgid "The requested reporter_template_folder was not found"
 msgstr "Запрашиваемый reporter_template_folder не найден"
 
-#: 4002.CREDIT_PROCESSOR_BAD_PARAMS:763
+#: 4002.CREDIT_PROCESSOR_BAD_PARAMS:778
 msgid "Not enough parameters to use credit card processor"
 msgstr ""
 "Не достаточно аргументов, чтобы использовать процессор кредитных карт"
 
-#: 7024.HOLD_RESERVATION_CONFLICT:889
+#: 7024.HOLD_RESERVATION_CONFLICT:904
 msgid ""
 "Both a hold and a reservation exist for this item; staff intervention is "
 "required to resolve the conflict."
 msgstr ""
 
-#: 1644.VANDELAY_AUTHORITY_QUEUE_NOT_FOUND:572
+#: 1644.VANDELAY_AUTHORITY_QUEUE_NOT_FOUND:581
 msgid "The requested vandelay_authority_queue was not found"
 msgstr "Запрашиваемый vandelay_authority_queue не найден"
 
-#: 7006.COPY_IS_REFERENCE:832
+#: 7006.COPY_IS_REFERENCE:847
 msgid "Copy is reference material"
 msgstr ""
 
-#: 1634.REPORTER_TEMPLATE_NOT_FOUND:542
+#: 1634.REPORTER_TEMPLATE_NOT_FOUND:551
 msgid "The requested reporter_template was not found"
 msgstr "Запрашиваемый reporter_template не найден"
 
-#: 1583.ACTION_SURVEY_NOT_FOUND:391
+#: 1583.ACTION_SURVEY_NOT_FOUND:399
 msgid "The requested action_survey was not found"
 msgstr "Запрашиваемый action_survey не найден"
 
-#: 1859.ACQ_PURCHASE_ORDER_NOT_FOUND:649
+#: 1859.ACQ_PURCHASE_ORDER_NOT_FOUND:658
 msgid "The requested acq.purchase_order was not found"
 msgstr "Запрашиваемый  acq.purchase_order не был найден"
 
-#: 1625.CONTAINER_BIBLIO_RECORD_ENTRY_BUCKET_ITEM_NOT_FOUND:515
+#: 1625.CONTAINER_BIBLIO_RECORD_ENTRY_BUCKET_ITEM_NOT_FOUND:524
 msgid "The requested container_biblio_record_entry_bucket_item was not found"
 msgstr "Запрашиваемый container_biblio_record_entry_bucket_item не найден"
 
-#: 1000.LOGIN_FAILED:23
+#: 1000.LOGIN_FAILED:28
 msgid "User login failed"
 msgstr "Логин пользователя не удалась"
 
-#: 1873.ACQ_CURRENCY_TYPE_NOT_FOUND:673
+#: 1873.ACQ_CURRENCY_TYPE_NOT_FOUND:682
 msgid "The requested acq.currency_type was not found"
 msgstr "Запрашиваемый  acq.currency_type не был найден"
 
-#: 1599.MONEY_GROCERY_NOT_FOUND:438
+#: 1599.MONEY_GROCERY_NOT_FOUND:446
 msgid "The requested money_grocery was not found"
 msgstr "Запрашиваемый money_grocery не найден"
 
-#: 8009.OFFLINE_NO_ORG:925 8010.OFFLINE_SESSION_COMPLETE:928
+#: 8009.OFFLINE_NO_ORG:940 8010.OFFLINE_SESSION_COMPLETE:943
 msgid "No org id was provided"
 msgstr ""
 
-#: 7012.COPY_STATUS_MISSING:850
+#: 7012.COPY_STATUS_MISSING:865
 msgid "Copy has is marked as missing"
 msgstr "Копия отмечена как отсутствующая"
 
-#: 1532.MONEY_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND:245
+#: 1532.MONEY_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND:253
 msgid "The requested money_billable_transaction_summary was not found"
 msgstr "Запрашиваемый money_billable_transaction_summary не найден"
 
-#: 8001.OFFLINE_SESSION_FILE_EXISTS:901
+#: 8001.OFFLINE_SESSION_FILE_EXISTS:916
 msgid "An offline file for this workstation exists within this session"
 msgstr ""
 
-#: 2003.INTERNAL_SERVER_ERROR:755
+#: 2003.INTERNAL_SERVER_ERROR:767
 msgid "There was an internal server error"
 msgstr "Внутренняя ошибка сервера"
 
-#: 4020.CREDIT_PROCESSOR_DECLINED_TRANSACTION:778
+#: 4020.CREDIT_PROCESSOR_DECLINED_TRANSACTION:793
 msgid "The credit card processor has declined the transaction."
 msgstr "Процессор кредитных карт отклонил сделку"
 
-#: 1647.VANDELAY_QUEUED_AUTHORITY_RECORD_NOT_FOUND:581
+#: 1647.VANDELAY_QUEUED_AUTHORITY_RECORD_NOT_FOUND:590
 msgid "The requested vandelay_queued_authority_record was not found"
 msgstr "Запрашиваемый vandelay_queued_authority_record не найден"
 
-#: 8002.OFFLINE_FILE_ERROR:904
+#: 8002.OFFLINE_FILE_ERROR:919
 msgid "An offline file or directory could not be created or accessed"
 msgstr ""
 
-#: 1597.BIBLIO_RECORD_NOTE_NOT_FOUND:432
+#: 1597.BIBLIO_RECORD_NOTE_NOT_FOUND:440
 msgid "The requested biblio_record_note was not found"
 msgstr "Запрашиваемый biblio_record_note не найден"
 
-#: 1846.ACQ_FUNDING_SOURCE_CREDIT_NOT_FOUND:610
+#: 1846.ACQ_FUNDING_SOURCE_CREDIT_NOT_FOUND:619
 msgid "The requested acq.funding_source_credit was not found"
 msgstr "Запрашиваемый acq.funding_source_credit  не был найден"
 
-#: 1588.ASSET_STAT_CAT_NOT_FOUND:405
+#: 1588.ASSET_STAT_CAT_NOT_FOUND:413
 msgid "The requested asset_stat_cat was not found"
 msgstr "Запрашиваемый asset_stat_cat не найден"
 
-#: 1224.PATRON_ACCOUNT_EXPIRED:125
+#: 1224.PATRON_ACCOUNT_EXPIRED:130
 msgid "The patron's account has expired"
 msgstr "Клиентский счет патрона истек"
 
-#: 1560.METABIB_METARECORD_NOT_FOUND:324
+#: 1560.METABIB_METARECORD_NOT_FOUND:332
 msgid "The requested metabib_metarecord was not found"
 msgstr "Запрашиваемый metabib_metarecord не найден"
 
-#: 1707.HOLD_EXISTS:720
+#: 1707.HOLD_EXISTS:729
 msgid "User already has an open hold on the selected item"
 msgstr "На выбранную единицу пользователь уже имеет открытое хранение"
 
-#: 1712.AUTH_QUEUE_EXISTS:735
+#: 1712.AUTH_QUEUE_EXISTS:744
 msgid "An authority record queue with the same name already exists"
 msgstr "Очередь авторитетной записи с тем же именем уже есть"
 
-#: 1566.MONEY_FORGIVE_PAYMENT_NOT_FOUND:342
+#: 1566.MONEY_FORGIVE_PAYMENT_NOT_FOUND:350
 msgid "The requested money_forgive_payment was not found"
 msgstr "Запрашиваемый money_forgive_payment не найден"
 
-#: 1230.XACT_COLLISION:150
+#: 1230.XACT_COLLISION:155
 msgid "The saved item has been edited by another user"
 msgstr "Сохраненная единица отредактирована другим пользователем"
 
-#: 1843.ACQ_LINEITEM_ATTR_NOT_FOUND:601
+#: 1843.ACQ_LINEITEM_ATTR_NOT_FOUND:610
 msgid "The requested acq.lineitem_attr was not found"
 msgstr "Запрашиваемый  acq.lineitem_attr не был найден"
 
-#: 1708.MONEY_COLLECTIONS_TRACKER_EXISTS:723
+#: 1715.HOLD_SUSPEND_AFTER_CAPTURE:753
+msgid "Attempt to suspend a hold after it has been captured."
+msgstr ""
+
+#: 1708.MONEY_COLLECTIONS_TRACKER_EXISTS:732
 msgid ""
 "A duplicate money.collections_tracker object already exists in the database"
 msgstr "Дублетный money.collections_tracker объект уже есть в базе"
 
-#: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:784
+#: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:799
 msgid ""
 "A *TERRIBLE* problem has occurred: a credit card transaction was processed "
 "successfuly, but the patron's payment could not be recorded within "
 "Evergreen.  Please seek assistance."
 msgstr ""
 
-#: 1845.ACQ_PROVIDER_NOT_FOUND:607
+#: 1614.ACTION_SURVEY_ANSWER_NOT_FOUND:491
+msgid "The requested action_survey_answer was not found"
+msgstr "Запрашиваемый action_survey_answer не найден"
+
+#: 2004.ACTOR_USER_DELETE_OPEN_XACTS:770
+msgid ""
+"The user you have attempted to delete cannot be deleted because it has open "
+"circulations and/or unpaid bills."
+msgstr ""
+
+#: 1845.ACQ_PROVIDER_NOT_FOUND:616
 msgid "The requested acq.provider was not found"
 msgstr "Запрашиваемый  acq.provider не был найден"
 
-#: 1600.CONFIG_BIB_SOURCE_NOT_FOUND:441
+#: 1600.CONFIG_BIB_SOURCE_NOT_FOUND:449
 msgid "The requested config_bib_source was not found"
 msgstr "Запрашиваемый config_bib_source не найден"
 
-#: 1646.VANDELAY_QUEUED_BIB_RECORD_NOT_FOUND:578
+#: 1646.VANDELAY_QUEUED_BIB_RECORD_NOT_FOUND:587
 msgid "The requested vandelay_queued_bib_record was not found"
 msgstr "Запрашиваемый vandelay_queued_bib_record не найден"
 
-#: 1228.BIB_RECORD_DELETED:144
+#: 1228.BIB_RECORD_DELETED:149
 msgid "The requested bib record is marked as deleted"
 msgstr "Запрашиваемая библ запись отмечена как стертая"
 
-#: 1841.ACQ_PICKLIST_NOT_FOUND:598
+#: 1841.ACQ_PICKLIST_NOT_FOUND:607
 msgid "The requested acq.picklist was not found"
 msgstr "Запрашиваемый acq.picklist  не был найден"
 
-#: 7018.COPY_MARKED_LOST:871
+#: 7018.COPY_MARKED_LOST:886
 msgid "The requested item is already marked as lost"
 msgstr "Запрашиваемая единица отмечена как утерянная"
 
-#: 1642.CONFIG_CIRC_MODIFIER_NOT_FOUND:566
+#: 1642.CONFIG_CIRC_MODIFIER_NOT_FOUND:575
 msgid "The requested config_circ_modifier was not found"
 msgstr "Запрашиваемый config_circ_modifier не найден"
 
-#: 1701.COPY_LOCATION_EXISTS:702
+#: 1701.COPY_LOCATION_EXISTS:711
 msgid "The copy location object already exists"
 msgstr ""
 
-#: 1589.ACTOR_CARD_NOT_FOUND:408
+#: 1589.ACTOR_CARD_NOT_FOUND:416
 msgid "The requested actor_card was not found"
 msgstr "Запрашиваемый actor_card не найден"
 
-#: 1856.ACQ_FUNDING_SOURCE_ALLOCATION_TOTAL_NOT_FOUND:640
+#: 1856.ACQ_FUNDING_SOURCE_ALLOCATION_TOTAL_NOT_FOUND:649
 msgid "The requested acq.funding_source_allocation_total was not found"
 msgstr "Запрашиваемый acq.funding_source_allocation_total не был найден"
 
-#: 1216.PATRON_CARD_INACTIVE:98
+#: 1216.PATRON_CARD_INACTIVE:103
 msgid "The patron's card is not active"
 msgstr "Карта патрона неактивна"
 
-#: 1881.PERMISSION_GRP_PENALTY_THRESHOLD_NOT_FOUND:694
+#: 1881.PERMISSION_GRP_PENALTY_THRESHOLD_NOT_FOUND:703
 msgid "The requested permission_grp_penalty_threshold was not found"
 msgstr "Запрашиваемый  permission_grp_penalty_threshold не был найден"
 
-#: 7013.PATRON_EXCEEDS_FINES:853
+#: 7013.PATRON_EXCEEDS_FINES:868
 msgid "The patron in question has reached the maximum fine amount"
 msgstr "Патрон в запросе имет максимальное значение штрафа"
 
-#: 1586.ACTOR_ORG_UNIT_NOT_FOUND:399
+#: 1586.ACTOR_ORG_UNIT_NOT_FOUND:407
 msgid "The requested actor_org_unit was not found"
 msgstr "Запрашиваемый actor_org_unit не найден"
 
-#: 1574.CONTAINER_CALL_NUMBER_BUCKET_ITEM_NOT_FOUND:364
+#: 1574.CONTAINER_CALL_NUMBER_BUCKET_ITEM_NOT_FOUND:372
 msgid "The requested container_call_number_bucket_item was not found"
 msgstr "Запрашиваемый container_call_number_bucket_item не найден"
 
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:949
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:967
 msgid "The lineitem detail has no owning_lib"
 msgstr "Детали строки(lineitem) не имеют owning_lib"
 
-#: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:976
+#: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:994
 msgid ""
 "Units cannot be created for the given item because its associated "
 "distribution does not have a copy template."
 msgstr ""
 
-#: 1518.ACTION_HOLD_TRANSIT_COPY_NOT_FOUND:213
+#: 1518.ACTION_HOLD_TRANSIT_COPY_NOT_FOUND:221
 msgid "The requested action_hold_transit_copy was not found"
 msgstr "Запрашиваемый action_hold_transit_copy не найден"
 
-#: 1594.AUTHORITY_FULL_REC_NOT_FOUND:423
+#: 1594.AUTHORITY_FULL_REC_NOT_FOUND:431
 msgid "The requested authority_full_rec was not found"
 msgstr "Запрашиваемый authority_full_rec не найден"
 
-#: 1565.ACTOR_PROFILE_NOT_FOUND:339
+#: 1565.ACTOR_PROFILE_NOT_FOUND:347
 msgid "The requested actor_profile was not found"
 msgstr "Запрашиваемый actor_profile не найден"
 
-#: 1580.METABIB_VIRTUAL_RECORD_NOT_FOUND:382
+#: 1580.METABIB_VIRTUAL_RECORD_NOT_FOUND:390
 msgid "The requested metabib_virtual_record was not found"
 msgstr "Запрашиваемый metabib_virtual_record не найден"
 
-#: 1640.ACTOR_USR_ORG_UNIT_OPT_IN_NOT_FOUND:560
+#: 1640.ACTOR_USR_ORG_UNIT_OPT_IN_NOT_FOUND:569
 msgid "The requested actor_usr_org_unit_opt_in was not found"
 msgstr "Запрашиваемый actor_usr_org_unit_opt_in не найден"
 
-#: 1572.AUTHORITY_RECORD_NOTE_NOT_FOUND:359
+#: 1572.AUTHORITY_RECORD_NOTE_NOT_FOUND:367
 msgid "The requested authority_record_note was not found"
 msgstr "Запрашиваемый authority_record_note не найден"
 
-#: 1848.ACQ_FUND_NOT_FOUND:616
+#: 1848.ACQ_FUND_NOT_FOUND:625
 msgid "The requested acq.fund was not found"
 msgstr "Запрашиваемый  acq.fund не был найден"
 
-#: 1603.CONTAINER_USER_BUCKET_ITEM_NOT_FOUND:450
+#: 1603.CONTAINER_USER_BUCKET_ITEM_NOT_FOUND:458
 msgid "The requested container_user_bucket_item was not found"
 msgstr "Запрашиваемый container_user_bucket_item не найден"
 
-#: 1615.ACTION_NON_CATALOGED_CIRCULATION_NOT_FOUND:485
+#: 1615.ACTION_NON_CATALOGED_CIRCULATION_NOT_FOUND:494
 msgid "The requested action_non_cataloged_circulation was not found"
 msgstr "Запрашиваемый action_non_cataloged_circulation не найден"
 
-#: 1604.MONEY_USER_SUMMARY_NOT_FOUND:453
+#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1007
+msgid ""
+"A serial pattern code has been configured that fails to conform to MFHD "
+"standards for fields 853-855."
+msgstr ""
+
+#: 1604.MONEY_USER_SUMMARY_NOT_FOUND:461
 msgid "The requested money_user_summary was not found"
 msgstr "Запрашиваемый money_user_summary не найден"
-
-#~ msgid " An offline file or directory could not be created or accessed "
-#~ msgstr " Офлайн файл или папка не возможно создавать или сделать доступным "
-
-#~ msgid ""
-#~ "\n"
-#~ "\t\t\tSomeone attempted to retrieve a copy object from the \n"
-#~ "\t\t\tsystem and the object was not found.\n"
-#~ "\t\t"
-#~ msgstr ""
-#~ "\n"
-#~ "\t\t\tКто то попытался извлечь копия объект из \n"
-#~ "\t\t\tсистемы и объект не найден.\n"
-#~ "\t\t"
-
-#~ msgid " Copy is reference material "
-#~ msgstr " Копия является справочным материалом "
-
-#~ msgid ""
-#~ "\n"
-#~ "\t\t\tSomeone attempted to retrieve a container item object from the \n"
-#~ "\t\t\tsystem and the object was not found.\n"
-#~ "\t\t"
-#~ msgstr ""
-#~ "\n"
-#~ "\t\t\tКто то попытался извлечь единица объект контейтера из \n"
-#~ "\t\t\tсистемы и объект не айден.\n"
-#~ "\t\t"
-
-#~ msgid " An offline session for this location is currently processing "
-#~ msgstr " Офлайн сессия для этого местоположения на данный момент в процессе "
-
-#~ msgid " Requested billing note does not exist "
-#~ msgstr " Запрашиваемая заметка на счет оплаты не существует "
-
-#~ msgid " An offline file for this workstation exists within this session "
-#~ msgstr ""
-#~ " Офлайновый файл для этой рабочей станции существует внутри данной сесси "
-
-#~ msgid " A session with the given name already exists "
-#~ msgstr " Сессия с таким именем уже есть "
-
-#~ msgid " A report template with the given name and folder already exists"
-#~ msgstr " Шаблон отчета с заданным именем и папкой уже существует"
-
-#~ msgid " The copy location object already exists "
-#~ msgstr " Объект копии местоположения уже существует "
-
-#~ msgid " A workstation with that name already exists "
-#~ msgstr " Рабочяя станция с таким именем уже есть "
-
-#~ msgid ""
-#~ " \n"
-#~ "\t\tA copy needs to be routed to a copy location.  The location\n"
-#~ "\t\tshould be specified within the event with a 'location' key\n"
-#~ "\t\t"
-#~ msgstr ""
-#~ " \n"
-#~ "\t\tКопия должна быть перенаправлена в местоположение копии. Местоположение\n"
-#~ "\t\tдолжно быть указано внутри события с ключом 'местоположение'\n"
-#~ "\t\t"
-
-#~ msgid ""
-#~ "\n"
-#~ "\t\t\tSomeone attempted to retrieve a transit object from the \n"
-#~ "\t\t\tsystem and the object was not found.\n"
-#~ "\t\t"
-#~ msgstr ""
-#~ "\n"
-#~ "\t\t\tКто то попытался извлечь транзитный объект из \n"
-#~ "\t\t\tсистемы и объект не найден.\n"
-#~ "\t\t"
-
-#~ msgid " Requested title note does not exist "
-#~ msgstr " Запрошенное примечание заглавия не существует "
-
-#~ msgid " A report with the given name and folder already exists"
-#~ msgstr " Отчет с заданным именем и папкой уже существует"
-
-#~ msgid " Location does not allow materials to circulate "
-#~ msgstr " Местоположение не разрешает циркулировать материалы "
-
-#~ msgid " Requested circulation is marked claims returned "
-#~ msgstr " Запрошенная циркуляция отмечена возврат рекламаций "
-
-#~ msgid " Missing params in offline upload "
-#~ msgstr " Отсутствующие параметры в офлайн выгрузке "
-
-#~ msgid ""
-#~ "\n"
-#~ "\t\t\tThe selected copy may not circulate because the recipient's home \n"
-#~ "\t\t\tlocation is not within the copy's circulation range\n"
-#~ "\t\t"
-#~ msgstr ""
-#~ "\n"
-#~ "\t\t\tВыбранная копия не может быть циркулирована так как местонахождение \n"
-#~ "\t\t\tполучателя не в интервале циркуляции копии\n"
-#~ "\t\t"
-
-#~ msgid " There is an open circulation on the requested item "
-#~ msgstr " На запрокенную единицу есть открытая циркуляция "
-
-#~ msgid " Copy is not available "
-#~ msgstr " Копия недоступна "
-
-#~ msgid ""
-#~ "\n"
-#~ "\t\t\tThe patron in question is not able to check out materials because\n"
-#~ "\t\t\ttheir account is in bad standing\n"
-#~ "\t\t"
-#~ msgstr ""
-#~ "\n"
-#~ "\t\t\tПатрон в вопросе не может взять материалы, так как\n"
-#~ "\t\t\tего клиентский счет в плохом состоянии\n"
-#~ "\t\t"
-
-#~ msgid ""
-#~ "\n"
-#~ "\t\t\tThe given circulation is not in a standard status or\n"
-#~ "\t\t\tthe circulation was never fully closed properly\n"
-#~ "\t\t"
-#~ msgstr ""
-#~ "\n"
-#~ "\t\t\tДанная циркуляция не в стандартном состоянии или\n"
-#~ "\t\t\tциркуляция никогда не была правильно закрыта\n"
-#~ "\t\t"
-
-#~ msgid ""
-#~ " \n"
-#~ "\t\t\tA copy needs to be routed to a different location\t\n"
-#~ "\t\t\tThe destination location will be specified by an 'org' key\n"
-#~ "\t\t\twithin the event object\n"
-#~ "\t\t"
-#~ msgstr ""
-#~ " \n"
-#~ "\t\t\tнеобходимо перенаправлять копию в другое местоположение\t\n"
-#~ "\t\t\tМестоположение пункта доставки будет определено с помощью ключа 'org' "
-#~ "\n"
-#~ "\t\t\tвнутри объекта события\n"
-#~ "\t\t"
-
-#~ msgid " Copy is needed to fulfil a hold "
-#~ msgstr " Для осуществения хранения требуется копия "
-
-#~ msgid " The requested copy has an alert message attached "
-#~ msgstr " Запрошенная копия имеет прикрепленным сообщение тревоги "
-
-#~ msgid " Offline server is not configured properly "
-#~ msgstr " Офлайн сервер конфигурирован неправильно "
-
-#~ msgid " Target copy is not allowed to circulate "
-#~ msgstr " Копия мишень нельзя циркулировать "
-
-#~ msgid " Circulation has no more renewals remaining "
-#~ msgstr " Циркуляция не имеет больше ожидающих обновлений "
-
-#~ msgid " No org id was provided "
-#~ msgstr " Не проведен орг id "
-
-#~ msgid ""
-#~ "\n"
-#~ "\t\t\tSomeone attempted to retrieve a circulation object from the system and "
-#~ "\n"
-#~ "\t\t\tthe object was not found.\n"
-#~ "\t\t"
-#~ msgstr ""
-#~ "\n"
-#~ "\t\t\tКто то попытался извлечь объект циркуляции из системы и \n"
-#~ "\t\t\tобъект не найден.\n"
-#~ "\t\t"
-
-#~ msgid " The session name is invalid "
-#~ msgstr " Неправильная имя сессии "
-
-#~ msgid ""
-#~ "\n"
-#~ "\t\t\tSomeone attempted to retrieve a container object from the \n"
-#~ "\t\t\tsystem and the object was not found.\n"
-#~ "\t\t"
-#~ msgstr ""
-#~ "\n"
-#~ "\t\t\tКто то попытался извлечь объект контейнера из \n"
-#~ "\t\t\tсистемы и объект не найден.\n"
-#~ "\t\t"
-
-#~ msgid " The non-cataloged type object already exists "
-#~ msgstr " Объект некаталогизированного типа уже есть "
-
-#~ msgid ""
-#~ "\n"
-#~ "\t\t\tThis refund amount is not allowed because it exceeds \n"
-#~ "\t\t\tthe total amount of desk payments for this transaction.\n"
-#~ "\t\t"
-#~ msgstr ""
-#~ "\n"
-#~ "\t\t\tЭтот размер компенсации не разрешен, так как превышает \n"
-#~ "\t\t\tсуммарный размер кассовых оплат для данной транзакций.\n"
-#~ "\t\t"
-
-#~ msgid " Requested workstation object does not exist "
-#~ msgstr " Запрашиваемый объект для рабочей станции не существует "
-
-#~ msgid ""
-#~ "A *TERRIBLE* problem has occurred: a credit\n"
-#~ "            card transaction was processed successfuly, but the patron's\n"
-#~ "            payment could not be recorded within Evergreen.  Please seek\n"
-#~ "            assistance."
-#~ msgstr ""
-#~ "Была обнаружена *серьёзная* проблема:\n"
-#~ "            операция по кредитной карте была успешно выполнена,\n"
-#~ "            но платёж не был зарегистрирован в Evergreen.\n"
-#~ "            Обратитесь в службу поддержки."
-
-#~ msgid " "
-#~ msgstr " "

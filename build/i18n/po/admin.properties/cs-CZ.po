@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2011-12-09 20:39+0000\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
+"PO-Revision-Date: 2012-04-30 14:15+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-12-10 04:59+0000\n"
-"X-Generator: Launchpad (build 14450)\n"
+"X-Launchpad-Export-Date: 2012-05-01 05:29+0000\n"
+"X-Generator: Launchpad (build 15171)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -135,6 +135,34 @@ msgstr "Písmo bylo nastaveno na velikost 17 bodů"
 #: staff.admin.font_settings.status_msg.ALL_FONTS_18PT
 msgid "Global Font set to 18pt"
 msgstr "Písmo bylo nastaveno na velikost 18 bodů"
+
+#: staff.admin.toolbar.unsaved_changes
+msgid ""
+"Unsaved changes. Choose either Save Toolbar or Cancel Changes if you wish to "
+"select a different toolbar."
+msgstr ""
+"Neuložené změny. Zvolte buď Uložit nástrojovou lištu nebo, pokud chcete "
+"vybrat jinou nástrojovou lištu, zvolte Storno."
+
+#: staff.admin.toolbar.tab_name
+msgid "Toolbars"
+msgstr "Nástrojové lišty"
+
+#: staff.admin.toolbar.button_id.header
+msgid "Button ID"
+msgstr "ID tlačítka"
+
+#: staff.admin.toolbar.label.header
+msgid "Label"
+msgstr "Označení"
+
+#: staff.admin.toolbar.toolbar_separator.list_entry
+msgid "Toolbar Separator"
+msgstr "Oddělovač lišty"
+
+#: staff.admin.toolbar.toolbar_spacer.list_entry
+msgid "Toolbar Spacer"
+msgstr "Mezera lišty"
 
 #: staff.admin.transit_list.missing_list
 msgid "Missing library list."

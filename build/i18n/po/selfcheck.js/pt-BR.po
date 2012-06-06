@@ -7,19 +7,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2012-04-20 00:07+0000\n"
-"Last-Translator: Aline D'Oleron <doleron.aline@gmail.com>\n"
+"POT-Creation-Date: 2012-04-28 14:18-0400\n"
+"PO-Revision-Date: 2012-05-25 23:08+0000\n"
+"Last-Translator: Tomas Abril <Unknown>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-21 05:02+0000\n"
-"X-Generator: Launchpad (build 15120)\n"
+"X-Launchpad-Export-Date: 2012-05-26 05:09+0000\n"
+"X-Generator: Launchpad (build 15288)\n"
 
 #: selfcheck.js:FAIL_PART_config_hold_matrix_test_max_holds
 msgid "The patron has reached the maximum number of holds"
 msgstr "O cliente atingiu o número máximo de reservas"
+
+#: selfcheck.js:FAIL_PART_location.holdable
+msgid "The item's location is not holdable"
+msgstr ""
 
 #: selfcheck.js:CHECKOUT_SUCCESS
 msgid "Checkout of item ${0} succeeded"
@@ -39,7 +43,7 @@ msgstr "Bem-vindo, ${0}"
 
 #: selfcheck.js:FAIL_PART_config_hold_matrix_test_holdable
 msgid "Hold rules reject this item as unholdable"
-msgstr ""
+msgstr "Regras de reserva rejeitaram este item como não reservável"
 
 #: selfcheck.js:TOTAL_FINES_ACCOUNT
 msgid "Total fines on account: <b>$${0}</b>."
@@ -119,6 +123,10 @@ msgstr ""
 "partir de outra localização. Por favor, atualize a interface ou relogue para "
 "receber as informações mais recentes da conta."
 
+#: selfcheck.js:FAIL_PART_status.holdable
+msgid "The item is not in a holdable status"
+msgstr ""
+
 #: selfcheck.js:CC_PAYABLE_BALANCE
 msgid "Total amount to pay: $${0}"
 msgstr "Valor total a pagar: $${0}"
@@ -150,6 +158,10 @@ msgstr "Não é permitido realizar mais renovações do item ${0}"
 
 #: selfcheck.js:HOLDS_READY_FOR_PICKUP
 msgid "You have <b>${0}</b> item(s) ready for pickup."
+msgstr ""
+
+#: selfcheck.js:FAIL_PART_item.holdable
+msgid "The item is not holdable"
 msgstr ""
 
 #: selfcheck.js:FAIL_PART_config_circ_matrix_test_circulate

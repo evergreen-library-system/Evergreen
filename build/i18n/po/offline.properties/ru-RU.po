@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
 "PO-Revision-Date: 2010-05-11 07:38+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:46+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2012-04-30 04:49+0000\n"
+"X-Generator: Launchpad (build 15171)\n"
 "X-Accelerator-Marker: &\n"
 
 #: common.exception
@@ -121,6 +121,10 @@ msgstr "Еще не Внедрена"
 #: cat.bib_record
 msgid "Bib Record: %1$s"
 msgstr "Библ. запись: %1$s"
+
+#: serial.delete_record.confirm
+msgid "Are you sure you want to delete MFHD record #%1$s?"
+msgstr ""
 
 #: cat.opac.delete_record.confirm
 msgid "Are you sure you want to delete title record #%1$s from the catalog?"
@@ -494,6 +498,14 @@ msgstr "Каков внутренний ID для библиографическ
 #: menu.cmd_search_bib_id.prompt
 msgid "Bib ID Lookup"
 msgstr "Просмотр Библ. ID"
+
+#: menu.cmd_search_usr_id.tab
+msgid "What is the internal database ID for the patron account?"
+msgstr ""
+
+#: menu.cmd_search_usr_id.prompt
+msgid "Patron ID Lookup"
+msgstr ""
 
 #: menu.cmd_search_tcn.tab
 msgid "What is the TCN or accession ID for the record?"
@@ -1040,6 +1052,10 @@ msgstr "S"
 msgid "=-=-="
 msgstr "=-=-="
 
+#: list.line_number
+msgid "#"
+msgstr ""
+
 #: menu.cmd_survey_wizard.inadequate_perm
 msgid ""
 "You are lacking the CREATE_SURVEY permission and/or working locations."
@@ -1157,6 +1173,14 @@ msgstr ""
 msgid "Booking Capture"
 msgstr ""
 
+#: menu.cmd_authority_manage.tab
+msgid "Manage Authorities"
+msgstr ""
+
+#: menu.local_admin.barcode_completion.tab
+msgid "Barcode Completion"
+msgstr ""
+
 #: menu.local_admin.circ_matrix_matchpoint.tab
 msgid "Circulation Policies"
 msgstr "Политика циркуляции"
@@ -1265,6 +1289,10 @@ msgstr ""
 msgid "Create or Re-barcode Items"
 msgstr ""
 
+#: staff.cat.bib_source.can_have_copies.false
+msgid "Records from %1$s cannot have copies."
+msgstr ""
+
 #: printing.nothing_to_reprint
 msgid "Nothing to re-print"
 msgstr ""
@@ -1327,6 +1355,12 @@ msgstr ""
 msgid "0"
 msgstr ""
 
+#: generic.unsaved_data_warning
+msgid ""
+"This action may cause you to lose unsaved information in the current "
+"interface. Continue anyway?"
+msgstr ""
+
 #: browser.reload.unsaved_data_warning
 msgid "This page may have unsaved data. Reload it anyway?"
 msgstr ""
@@ -1351,54 +1385,112 @@ msgstr ""
 msgid "This application may have unsaved data. Exit it anyway?"
 msgstr ""
 
+#: hotkeys.Default
+msgid "Default"
+msgstr ""
+
+#: hotkeys.None
+msgid "No Hotkeys"
+msgstr ""
+
+#: barcode_choice.join_barcodes
+msgid "%1$s / %2$s"
+msgstr ""
+
+#: barcode_choice.actor
+msgid "%1$s : %2$s, %3$s from %4$s (%5$s)"
+msgstr ""
+
+#: barcode_choice.asset
+msgid "%1$s : %2$s from %3$s (%4$s)"
+msgstr ""
+
+#: barcode_choice.none
+msgid "None of the above"
+msgstr ""
+
+#: barcode_choice.prompt
+msgid ""
+"After auto completion multiple barcodes may match your input. Please choose "
+"the barcode you intended below."
+msgstr ""
+
+#: barcode_choice.errors_found
+msgid ""
+"In addition to the options below, one or more errors were encountered on "
+"items not shown."
+msgstr ""
+
+#: barcode_choice.title
+msgid "Barcode Choice"
+msgstr ""
+
+#: barcode_choice.choice_label
+msgid "Found Barcodes:"
+msgstr ""
+
+#: barcode_choice.actor_label
+msgid "Patron : %1$s"
+msgstr ""
+
+#: barcode_choice.asset_label
+msgid "Item : %1$s"
+msgstr ""
+
+#: barcode_choice.serial_label
+msgid "Serial : %1$s"
+msgstr ""
+
+#: barcode_choice.booking_label
+msgid "Booking : %1$s"
+msgstr ""
+
+#: staff.main.button_bar.none
+msgid "None"
+msgstr ""
+
+#: util.hide_elements.title
+msgid "Hide UI Elements"
+msgstr ""
+
+#: util.hide_elements.desc
+msgid ""
+"This is a list of hideable elements for this interface.  Check the ones that "
+"you want hidden and the library (and descendants) you want to affect:"
+msgstr ""
+
+#: util.hide_elements.current_setting_preamble
+msgid ""
+"Workstation library %1$s is currently hiding these elements based on a "
+"setting inherited from %2$s:"
+msgstr ""
+
+#: util.hide_elements.current_setting_nonexistent
+msgid ""
+"Workstation library %1$s is not currently hiding any of these elements."
+msgstr ""
+
+#: util.hide_elements.update_setting.update_success
+msgid "Successfully updated the setting."
+msgstr ""
+
+#: util.hide_elements.update_setting.delete_success
+msgid "Successfully deleted the setting."
+msgstr ""
+
+#: util.hide_elements.update_setting.failure
+msgid "Setting not changed."
+msgstr ""
+
+#: util.hide_elements.missing_permission
+msgid "Missing permission %1$s"
+msgstr ""
+
 #~ msgid "Ok"
 #~ msgstr "Ok"
-
-#~ msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3."
-#~ msgstr ""
-#~ "Предупреждение: что касается %1$s, этот штрих-код (%2$s) был отмечен %3."
 
 #~ msgid "Cancel"
 #~ msgstr "Отменить"
 
-#~ msgid "Record with ID %1$s marked for overlay."
-#~ msgstr "Запись с ID %1$s помечена для наложения."
-
-#~ msgid "Record with TCN %1$s marked for overlay."
-#~ msgstr "Запись с TCN %1$s помечена для наложения."
-
-#~ msgid "Record successfully saved."
-#~ msgstr "Запись успешно сохранена"
-
-#~ msgid "Override"
-#~ msgstr "Аннулировать"
-
 #~ msgid "C"
 #~ msgstr "C"
-
-#~ msgid "Funds"
-#~ msgstr "Фонды"
-
-#~ msgid "Currency Types"
-#~ msgstr "Типы валют"
-
-#~ msgid "Funding Sources"
-#~ msgstr "Источники финансирования"
-
-#~ msgid "Providers"
-#~ msgstr "Провайдеры"
-
-#~ msgid "Exchange Rates"
-#~ msgstr "Курсы обмена валют"
-
-#~ msgid "Selection Lists"
-#~ msgstr "Списки выбора"
-
-#~ msgid "Title Search"
-#~ msgstr "Поиск по заглавию"
-
-#~ msgid "Load Order Record"
-#~ msgstr "Загрузить заказанную запись"
-
-#~ msgid "Distribution Formulas"
-#~ msgstr "Формула распределения"

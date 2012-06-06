@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
 "PO-Revision-Date: 2011-12-12 10:17+0000\n"
 "Last-Translator: Fitoschido <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-12-13 05:02+0000\n"
-"X-Generator: Launchpad (build 14458)\n"
+"X-Launchpad-Export-Date: 2012-04-30 04:43+0000\n"
+"X-Generator: Launchpad (build 15171)\n"
 
 #: staff.circ.alert
 msgid "Alert"
@@ -234,6 +234,12 @@ msgstr ""
 msgid ""
 "A billing for an Item Rental Fee will be added to the patron's account if "
 "this action is overrided."
+msgstr ""
+
+#: staff.circ.checkout.override.will_auto
+msgid ""
+"If overriden now, subsequent checkouts during this patron's session will "
+"auto-override this event."
 msgstr ""
 
 #: staff.circ.checkout.not_cataloged.confirm
@@ -573,15 +579,17 @@ msgstr "¿Sobrepasar El Fracaso De Borro?"
 
 #: staff.circ.copy_status.delete_volumes.delete_copies
 msgid ""
-"You must delete all the copies on the volume before you may delete the "
-"volume itself."
+"You must delete all the items on the volume before you may delete the volume "
+"itself."
 msgstr ""
-"Debe borrar todas las copias en el volumen antes de que pueda borrar el "
-"volumen."
 
-#: staff.circ.copy_status.delete_volumes.success
-msgid "Volumes deleted."
-msgstr "Volúmenes eliminados."
+#: staff.circ.copy_status.delete_volumes.delete_copies.confirm
+msgid "Delete Volume and Items"
+msgstr ""
+
+#: staff.circ.copy_status.delete_volumes.delete_copies.cancel
+msgid "Cancel Delete"
+msgstr ""
 
 #: staff.circ.copy_status.mark_volume.status
 msgid "Volume marked as Item Transfer Destination"
@@ -1010,11 +1018,11 @@ msgid "Owning Library"
 msgstr "Biblioteca Dueña"
 
 #: staff.circ.utils.prefix
-msgid "Prefix"
+msgid "CN Prefix"
 msgstr ""
 
 #: staff.circ.utils.suffix
-msgid "Suffix"
+msgid "CN Suffix"
 msgstr ""
 
 #: staff.circ.utils.label_class
@@ -1064,8 +1072,12 @@ msgid "Floating?"
 msgstr "¿Flotando?"
 
 #: staff.circ.utils.hold_note
-msgid "Hold Note(s)"
-msgstr "Nota(s) Del Apartado"
+msgid "Hold Note(s) Count"
+msgstr ""
+
+#: staff.circ.utils.hold_note_text
+msgid "Hold Note(s) Text"
+msgstr ""
 
 #: staff.circ.utils.staff_hold
 msgid "Staff Hold?"
@@ -1317,6 +1329,14 @@ msgstr "Reservado/Pendiente"
 msgid "Canceled"
 msgstr "Cancelado"
 
+#: staff.circ.utils.hold_status.7
+msgid "Suspended"
+msgstr ""
+
+#: staff.circ.utils.hold_status.8
+msgid "Wrong Shelf"
+msgstr ""
+
 #: staff.circ.utils.hold_post_clear_shelf_action.label
 msgid "Post-Clear"
 msgstr "Después De Ser Clarificado"
@@ -1476,6 +1496,10 @@ msgstr "Apartado para el cliente %1$s"
 #: staff.circ.utils.payload.hold.phone_notify
 msgid "Notify by phone: %1$s"
 msgstr "Avisar por teléfono: %1$s"
+
+#: staff.circ.utils.payload.hold.sms_notify
+msgid "Notify by text: %1$s"
+msgstr ""
 
 #: staff.circ.utils.payload.hold.email_notify
 msgid "Notify by email: %1$s"
@@ -1977,3 +2001,16 @@ msgstr "Piezas Que Faltan"
 #: staff.circ.missing_pieces.scan_item.error_alert
 msgid "No item with barcode \"%1$s\""
 msgstr "Ningun artículo con el código de barras \"%1$s\""
+
+#~ msgid "Volumes deleted."
+#~ msgstr "Volúmenes eliminados."
+
+#~ msgid ""
+#~ "You must delete all the copies on the volume before you may delete the "
+#~ "volume itself."
+#~ msgstr ""
+#~ "Debe borrar todas las copias en el volumen antes de que pueda borrar el "
+#~ "volumen."
+
+#~ msgid "Hold Note(s)"
+#~ msgstr "Nota(s) Del Apartado"

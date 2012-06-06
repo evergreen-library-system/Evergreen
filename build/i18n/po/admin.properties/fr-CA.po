@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > admin.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2012-04-27 15:27+0000\n"
-"Last-Translator: George Duimovich <George.Duimovich@nrcan-rncan.gc.ca>\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
+"PO-Revision-Date: 2012-05-15 06:16+0000\n"
+"Last-Translator: LEROY Jean-Christophe <Unknown>\n"
 "Language-Team: NRCan Library\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-28 04:56+0000\n"
-"X-Generator: Launchpad (build 15149)\n"
+"X-Launchpad-Export-Date: 2012-05-16 04:52+0000\n"
+"X-Generator: Launchpad (build 15247)\n"
 "X-Poedit-Country: CANADA\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: French\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: staff.admin.age_overdue_circulations_to_lost.chunks_processed
 msgid "Chunks Processed: %1$s"
-msgstr ""
+msgstr "Morceaux traités :%1$s"
 
 #: staff.admin.age_overdue_circulations_to_lost.events_created
 msgid "Events Created: %1$s"
@@ -141,6 +141,35 @@ msgstr "La police Global Font est réglée à « 17 pts »"
 #: staff.admin.font_settings.status_msg.ALL_FONTS_18PT
 msgid "Global Font set to 18pt"
 msgstr "La police Global Font est réglée à « 18 pts »"
+
+#: staff.admin.toolbar.unsaved_changes
+msgid ""
+"Unsaved changes. Choose either Save Toolbar or Cancel Changes if you wish to "
+"select a different toolbar."
+msgstr ""
+"Modifications non enregistrées. Choisir entre Enregistrer Barre d'outils ou "
+"Annuler les Modifications si vous souhaitez sélectionner une barre d'outils "
+"différente."
+
+#: staff.admin.toolbar.tab_name
+msgid "Toolbars"
+msgstr "Barre d'outils"
+
+#: staff.admin.toolbar.button_id.header
+msgid "Button ID"
+msgstr "ID Bouton"
+
+#: staff.admin.toolbar.label.header
+msgid "Label"
+msgstr "Label"
+
+#: staff.admin.toolbar.toolbar_separator.list_entry
+msgid "Toolbar Separator"
+msgstr "Séparateur Barre d'outils"
+
+#: staff.admin.toolbar.toolbar_spacer.list_entry
+msgid "Toolbar Spacer"
+msgstr "Espacement Barre d'outils"
 
 #: staff.admin.transit_list.missing_list
 msgid "Missing library list."
@@ -453,6 +482,9 @@ msgid ""
 "Workstation library %1$s is currently suppressing auto-print for these "
 "receipt/slip types based on a setting inherited from %2$s:"
 msgstr ""
+"La bibliothèque Station de travail %1$s est en train de supprimer "
+"l'impression automatique de ce type de reçu/bordereau basés sur un paramètre "
+"hérité de %2$s:"
 
 #. # 1 - workstation library shortname
 #: staff.admin.staff.do_not_auto_attempt_print_setting.current_setting_nonexistent
@@ -460,3 +492,5 @@ msgid ""
 "Workstation library %1$s is not currently suppressing auto-print for any "
 "receipt/slip types."
 msgstr ""
+"La bibliothèque Station de travail %1$s n'est pas en train de supprimer "
+"l'impression automatique pour tous les types de reçu/bordereau."

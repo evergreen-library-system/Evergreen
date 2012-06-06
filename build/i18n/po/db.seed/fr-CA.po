@@ -2,265 +2,212 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > db.seed.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 22:55-0400\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
 "PO-Revision-Date: 2012-03-06 15:47+0000\n"
 "Last-Translator: LEROY Jean-Christophe <Unknown>\n"
 "Language-Team: NRCan Library\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-03-07 05:14+0000\n"
-"X-Generator: Launchpad (build 14907)\n"
+"X-Launchpad-Export-Date: 2012-04-30 04:44+0000\n"
+"X-Generator: Launchpad (build 15171)\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 # id::vqbrad.description__11
-#: 950.data.seed-values.sql:97 950.data.seed-values.sql:2490
+#: 950.data.seed-values.sql:170 950.data.seed-values.sql:4767
 msgid "Internal ID"
 msgstr "ID interne"
 
-# id::clm.value__ady
-# id::ady
-#: 950.data.seed-values.sql:3506
-msgid "Adygei"
-msgstr "Adygué"
+# id::clm.value__vai
+# id::vai
+#: 950.data.seed-values.sql:6248
+msgid "Vai"
+msgstr "Vaï"
 
-#: 950.data.seed-values.sql:24 950.data.seed-values.sql:289
-#: 950.data.seed-values.sql:310 950.data.seed-values.sql:329
+#: 950.data.seed-values.sql:97 950.data.seed-values.sql:368
+#: 950.data.seed-values.sql:389 950.data.seed-values.sql:408
 msgid "Title"
 msgstr "le titre"
 
-#: 950.data.seed-values.sql:1952
-msgid "AuthorizeNet password"
-msgstr "Mot de passe d'AuthorizeNet"
-
-#: 950.data.seed-values.sql:39
+#: 950.data.seed-values.sql:112
 msgid "Series Title"
 msgstr "Titre du périodique"
 
-# id::clm.value__jav
-# id::jav
-#: 950.data.seed-values.sql:3704
-msgid "Javanese"
-msgstr "Javanais"
-
 # id::clfm.value__p
 # id::p
-#: 950.data.seed-values.sql:4026
+#: 950.data.seed-values.sql:6313
 msgid "Poetry"
 msgstr "Poésie"
 
 # id::ccs.name__6
 # id::6
-#: 950.data.seed-values.sql:224
+#: 950.data.seed-values.sql:303
 msgid "In transit"
 msgstr "En transit"
 
 # id::clm.value__pau
 # id::pau
-#: 950.data.seed-values.sql:3839
+#: 950.data.seed-values.sql:6126
 msgid "Palauan"
 msgstr "Palauan"
 
-#: 950.data.seed-values.sql:233
+#: 950.data.seed-values.sql:312
 msgid "On reservation shelf"
 msgstr "Sur l’étagère des réservations"
 
-# id::clm.value__vai
-# id::vai
-#: 950.data.seed-values.sql:3961
-msgid "Vai"
-msgstr "Vaï"
-
-#: 950.data.seed-values.sql:2002
-msgid "Credit card processing: PayflowPro vendor"
-msgstr "Traitement des cartes de crédit: Payflow Pro fournisseur"
-
-#: 950.data.seed-values.sql:5334
-msgid ""
-"This prevents the system from charging more than the item price in overdue "
-"fines"
-msgstr ""
-"Cela empêche le système de facturer un prix supérieur à la valeur de "
-"l’article dans les amendes imposées pour les retards"
-
-#: 950.data.seed-values.sql:1971
-msgid "PayPal login"
-msgstr "connexion PayPal"
+# id::clm.value__kir
+# id::kir
+#: 950.data.seed-values.sql:6013
+msgid "Kyrgyz"
+msgstr "Kirghize"
 
 # id::cblvl.value__b
 # id::b
-#: 950.data.seed-values.sql:4042
+#: 950.data.seed-values.sql:6329
 msgid "Serial component part"
 msgstr "Élément de collections"
 
 # id::clm.value__niu
 # id::niu
-#: 950.data.seed-values.sql:3812
+#: 950.data.seed-values.sql:6099
 msgid "Niuean"
 msgstr "Niue"
 
 # id::clm.value__fat
 # id::fat
-#: 950.data.seed-values.sql:3631
+#: 950.data.seed-values.sql:5918
 msgid "Fanti"
 msgstr "Fanti"
 
-#: 950.data.seed-values.sql:1994
-msgid "Credit card processing: PayflowPro password"
-msgstr "Traitement des cartes de crédit: Payflow Pro mot de passe"
+#: 950.data.seed-values.sql:2461
+msgid "OPAC"
+msgstr ""
 
 # id::crcd.name__1
 # id::1
-#: 950.data.seed-values.sql:165
+#: 950.data.seed-values.sql:244
 msgid "7_days_0_renew"
 msgstr "7_jours_0_renouvellement"
 
-# id::clm.value__nor
-# id::nor
-#: 950.data.seed-values.sql:3817
-msgid "Norwegian"
-msgstr "Norvégien"
-
 # id::cza.label__3 id::cza.label__12 id::cza.label__21
-#: 950.data.seed-values.sql:285 950.data.seed-values.sql:306
-#: 950.data.seed-values.sql:325
+#: 950.data.seed-values.sql:364 950.data.seed-values.sql:385
+#: 950.data.seed-values.sql:404
 msgid "LCCN"
 msgstr "LCCN"
 
 # id::clm.value__mas
 # id::mas
-#: 950.data.seed-values.sql:3774
+#: 950.data.seed-values.sql:6061
 msgid "Masai"
 msgstr "Masai"
 
 # id::clm.value__bam
 # id::bam
-#: 950.data.seed-values.sql:3540
+#: 950.data.seed-values.sql:5827
 msgid "Bambara"
 msgstr "Bambara"
 
-#: 950.data.seed-values.sql:2026
-msgid "Holds: Block Renewal of Items Needed for Holds"
-msgstr ""
-"Articles mis en réserve : Bloquer le renouvellement d’articles qui doivent "
-"être mis en réserve"
+# id::clm.value__snd
+# id::snd
+#: 950.data.seed-values.sql:6182
+msgid "Sindhi"
+msgstr "Sindhi"
 
-#: 950.data.seed-values.sql:2413
-msgid ""
-"Instead of All fields, show just suggested fields in patron registration by "
-"default."
-msgstr ""
-"Instead of All fields, show just suggested fields in patron registration by "
-"default."
+# id::clm.value__lug
+# id::lug
+#: 950.data.seed-values.sql:6045
+msgid "Ganda"
+msgstr "Ganda"
 
-# id::clm.value__abk
-# id::abk
-#: 950.data.seed-values.sql:3502
-msgid "Abkhaz"
-msgstr "Abkhaz"
+#: 950.data.seed-values.sql:33
+msgid "Alerting block on Circ"
+msgstr ""
 
 # id::clm.value__sat
 # id::sat
-#: 950.data.seed-values.sql:3870
+#: 950.data.seed-values.sql:6157
 msgid "Santali"
 msgstr "Santali"
 
 # id::clm.value__dua
 # id::dua
-#: 950.data.seed-values.sql:3610
+#: 950.data.seed-values.sql:5897
 msgid "Duala"
 msgstr "Douala"
 
-#: 950.data.seed-values.sql:85
+#: 950.data.seed-values.sql:158
 msgid "ISMN"
 msgstr "ISMN"
 
 # id::clm.value__vot
 # id::vot
-#: 950.data.seed-values.sql:3965
+#: 950.data.seed-values.sql:6252
 msgid "Votic"
 msgstr "Votic"
 
 # id::clfm.value__u
 # id::u
-#: 950.data.seed-values.sql:4028
+#: 950.data.seed-values.sql:6315
 msgid "Unknown"
 msgstr "Inconnu"
 
-#: 950.data.seed-values.sql:2408
-msgid "GUI: Regex for post_code field on patron registration"
-msgstr "GUI: Regex pour le champ post_code sur l'enregistrement client"
+#: 950.data.seed-values.sql:4839
+msgid "View Circulations"
+msgstr "Voir les prêts"
 
 # id::aou.name__5
 # id::5
-#: 950.data.seed-values.sql:372
+#: 950.data.seed-values.sql:451
 msgid "Example Branch 2"
 msgstr "Exemple de succursale 2"
 
 # id::clm.value__tso
 # id::tso
-#: 950.data.seed-values.sql:3943
+#: 950.data.seed-values.sql:6230
 msgid "Tsonga"
 msgstr "Balonga"
 
-#: 950.data.seed-values.sql:2345
-msgid ""
-"The ident_value2 field will be suggested on the patron registration screen. "
-"Suggesting a field makes it appear when suggested fields are shown. If the "
-"field is shown or required this setting is ignored."
-msgstr ""
-"Le champ ident_value2 sera proposé sur l'écran d'enregistrement client. "
-"Suggérer un champ la fait apparaître lorsque les champs proposés figurent. "
-"Si le champ est affiché ou nécessaire ce paramètre est ignoré."
-
-#: 950.data.seed-values.sql:2357
-msgid ""
-"The master_account field will be shown on the patron registration screen. "
-"Showing a field makes it appear with required fields even when not required. "
-"If the field is required this setting is ignored."
-msgstr ""
-"Le champ master_account sera montré sur l'écran d'enregistrement client. "
-"L'affichage d'un champ fait apparaître des champs obligatoires même "
-"lorsqu'ils ne sont pas nécessaire. Si le champ est obligatoire ce paramètre "
-"est ignoré"
-
-#: 950.data.seed-values.sql:1396
+#: 950.data.seed-values.sql:1561
 msgid "Acquisitions"
 msgstr "Acquisitions"
 
 # id::clm.value__kau
 # id::kau
-#: 950.data.seed-values.sql:3716
+#: 950.data.seed-values.sql:6003
 msgid "Kanuri"
 msgstr "Kanuri"
 
 # id::clm.value__umb
 # id::umb
-#: 950.data.seed-values.sql:3957
+#: 950.data.seed-values.sql:6244
 msgid "Umbundu"
 msgstr "Mbundu"
 
 # id::crrf.name__2
 # id::2
-#: 950.data.seed-values.sql:207
+#: 950.data.seed-values.sql:286
 msgid "10_cent_per_day"
 msgstr "10_cents_par_jour"
 
-#: 950.data.seed-values.sql:23
+#: 950.data.seed-values.sql:96
 msgid "Keyword"
 msgstr "Mot clé"
 
-#: 950.data.seed-values.sql:2563
+#: 950.data.seed-values.sql:4840
 msgid "Renew Circulations"
 msgstr "Renouveler des prêts"
 
-#: 950.data.seed-values.sql:2256
-msgid "GUI: Example for day_phone field on patron registration"
+#: 950.data.seed-values.sql:9986
+msgid "See Also Tracing -- Chronological Subdivision"
+msgstr ""
+
+#: 950.data.seed-values.sql:9237
+msgid "Overlay failed due to missing system id"
 msgstr ""
 
 # id::clm.value__cel
 # id::cel
-#: 950.data.seed-values.sql:3572
+#: 950.data.seed-values.sql:5859
 msgid "Celtic (Other)"
 msgstr "Celtique (Autre)"
 
@@ -272,749 +219,665 @@ msgstr "Barré"
 
 # id::clm.value__hil
 # id::hil
-#: 950.data.seed-values.sql:3676
+#: 950.data.seed-values.sql:5963
 msgid "Hiligaynon"
 msgstr "Hiligaynon"
 
-#: 950.data.seed-values.sql:1781
-msgid "Alert on empty bib records"
-msgstr "Alerte sur les notices bibs vides"
-
 # id::clm.value__kac
 # id::kac
-#: 950.data.seed-values.sql:3710
+#: 950.data.seed-values.sql:5997
 msgid "Kachin"
 msgstr "Kachin"
 
+#: 950.data.seed-values.sql:9941
+msgid "Heading -- Meeting Name"
+msgstr ""
+
 # id::crmf.name__4
 # id::4
-#: 950.data.seed-values.sql:195
+#: 950.data.seed-values.sql:274
 msgid "overdue_max"
 msgstr "retard_maximum"
 
-#: 950.data.seed-values.sql:2233
-msgid ""
-"The barred field will be shown on the patron registration screen. Showing a "
-"field makes it appear with required fields even when not required. If the "
-"field is required this setting is ignored."
+#: 950.data.seed-values.sql:2467
+msgid "Recalls"
 msgstr ""
+
+#: 950.data.seed-values.sql:1583
+msgid "Volunteers"
+msgstr ""
+
+# id::clfm.value__j
+# id::j
+#: 950.data.seed-values.sql:6311
+msgid "Short stories"
+msgstr "Nouvelles"
 
 # id::clm.value__pag
 # id::pag
-#: 950.data.seed-values.sql:3834
+#: 950.data.seed-values.sql:6121
 msgid "Pangasinan"
 msgstr "Pangasinan"
 
-#: 950.data.seed-values.sql:2321
-msgid ""
-"The evening_phone field will be required on the patron registration screen."
+#: 950.data.seed-values.sql:8739 950.data.seed-values.sql:8789
+#: 950.data.seed-values.sql:8790
+msgid "Historical Circulation Retention Age"
+msgstr "Période historique de la conservation pour prêts"
+
+#: 950.data.seed-values.sql:10058
+msgid "LC subject headings for children's literature"
 msgstr ""
 
-#: 950.data.seed-values.sql:1892
-msgid ""
-"The purpose is to provide an interval of time after an item goes into the on-"
-"holds-shelf status before it appears to patrons that it is actually on the "
-"holds shelf.  This gives staff time to process the item before it shows as "
-"ready-for-pickup. Examples: \"5 days\", \"1 hour\""
+#: 950.data.seed-values.sql:2463
+msgid "Global"
 msgstr ""
 
-#: 950.data.seed-values.sql:6483
+#: 950.data.seed-values.sql:8646
 msgid "Tax"
 msgstr "Impôt"
 
 # id::clm.value__pam
 # id::pam
-#: 950.data.seed-values.sql:3836
+#: 950.data.seed-values.sql:6123
 msgid "Pampanga"
 msgstr "Pampangan"
 
 # id::clm.value__nah
 # id::nah
-#: 950.data.seed-values.sql:3799
+#: 950.data.seed-values.sql:6086
 msgid "Nahuatl"
 msgstr "Nahuatl"
 
 # id::clm.value__yid
 # id::yid
-#: 950.data.seed-values.sql:3978
+#: 950.data.seed-values.sql:6265
 msgid "Yiddish"
 msgstr "Judéo-allemand"
 
-# id::clm.value__snd
-# id::snd
-#: 950.data.seed-values.sql:3895
-msgid "Sindhi"
-msgstr "Sindhi"
-
-#: 950.data.seed-values.sql:2373
-msgid ""
-"The other_phone field will be required on the patron registration screen."
-msgstr ""
-
 # id::clm.value__cpp
 # id::cpp
-#: 950.data.seed-values.sql:3593
+#: 950.data.seed-values.sql:5880
 msgid "Creoles and Pidgins, Portuguese-based (Other)"
 msgstr "Langues créoles et pidgin, portuguais (Autre)"
 
 # id::clm.value__ton
 # id::ton
-#: 950.data.seed-values.sql:3938
+#: 950.data.seed-values.sql:6225
 msgid "Tongan"
 msgstr "Tongan"
 
 # id::clm.value__ijo
 # id::ijo
-#: 950.data.seed-values.sql:3689
+#: 950.data.seed-values.sql:5976
 msgid "Ijo"
 msgstr "Ijo"
 
-#: 950.data.seed-values.sql:5356
-msgid "Patron must log in with barcode and password at selfcheck station"
-msgstr ""
-"Le client doit ouvrir une session à l’aide d’un code à barres et d’un mot de "
-"passe à un poste d’auto-contrôle"
+#: 950.data.seed-values.sql:8650
+msgid "Non-library Item"
+msgstr "Pas un article de bibliothèque"
 
 # id::clm.value__gil
 # id::gil
-#: 950.data.seed-values.sql:3653
+#: 950.data.seed-values.sql:5940
 msgid "Gilbertese"
 msgstr "Gilbertais"
 
 # id::ccs.name__14
 # id::14
-#: 950.data.seed-values.sql:232
+#: 950.data.seed-values.sql:311
 msgid "Damaged"
 msgstr "Endommagé"
 
-#: 950.data.seed-values.sql:7235 950.data.seed-values.sql:7236
+#: 950.data.seed-values.sql:8810 950.data.seed-values.sql:8811
 msgid "Historical Hold Retention Start Date"
 msgstr ""
 "Date de début historique de la conservation des articles mis en réserve"
 
 # id::aout.name__5
 # id::5
-#: 950.data.seed-values.sql:359
+#: 950.data.seed-values.sql:438
 msgid "Bookmobile"
 msgstr "Bibliobus"
 
 # id::clm.value__kaw
 # id::kaw
-#: 950.data.seed-values.sql:3717
+#: 950.data.seed-values.sql:6004
 msgid "Kawi"
 msgstr "Kawi"
 
-# id::clm.value__tel
-# id::tel
-#: 950.data.seed-values.sql:3923
-msgid "Telugu"
-msgstr "Telugu"
+#: 950.data.seed-values.sql:10060
+msgid "National Agricultural Library subject authority file"
+msgstr ""
 
-# id::clm.value__new
-# id::new
-#: 950.data.seed-values.sql:3809
-msgid "Newari"
-msgstr "Newari"
+#: 950.data.seed-values.sql:2454
+msgid "GUI"
+msgstr ""
 
 # id::clm.value__kok
 # id::kok
-#: 950.data.seed-values.sql:3728
+#: 950.data.seed-values.sql:6015
 msgid "Konkani"
 msgstr "Konkani"
 
 # id::clm.value__nau
 # id::nau
-#: 950.data.seed-values.sql:3802
+#: 950.data.seed-values.sql:6089
 msgid "Nauru"
 msgstr "Nauru"
 
 # id::cam.value__g
 # id::g
-#: 950.data.seed-values.sql:3996
+#: 950.data.seed-values.sql:6283
 msgid "General"
 msgstr "Généralités"
 
-#: 950.data.seed-values.sql:1991
-msgid "Often the same thing as the PayPal manager login"
-msgstr ""
-
 # id::clm.value__sas
 # id::sas
-#: 950.data.seed-values.sql:3869
+#: 950.data.seed-values.sql:6156
 msgid "Sasak"
 msgstr "Sasak"
 
 # id::ccs.name__0
 # id::0
-#: 950.data.seed-values.sql:218
+#: 950.data.seed-values.sql:297
 msgid "Available"
 msgstr "Disponible"
 
 # id::crcd.name__6
 # id::6
-#: 950.data.seed-values.sql:175
+#: 950.data.seed-values.sql:254
 msgid "35_days_1_renew"
 msgstr "35_jours_1_renouvellement"
 
 # id::clm.value__lat
 # id::lat
-#: 950.data.seed-values.sql:3747
+#: 950.data.seed-values.sql:6034
 msgid "Latin"
 msgstr "Latin"
 
 # id::clm.value__zul
 # id::zul
-#: 950.data.seed-values.sql:3985
+#: 950.data.seed-values.sql:6272
 msgid "Zulu"
 msgstr "Zoulou"
 
-# id::clm.value__dum
-# id::dum
-#: 950.data.seed-values.sql:3611
-msgid "Dutch, Middle (ca. 1050-1350)"
-msgstr "Moyen néerlandais (aux environs de 1050-1350)"
-
-#: 950.data.seed-values.sql:1777
-msgid "Retain a bib record even when all attached copies are deleted"
+#: 950.data.seed-values.sql:9241
+msgid "New record had insufficient quality"
 msgstr ""
+
+# id::clm.value__geo
+# id::geo
+#: 950.data.seed-values.sql:5937
+msgid "Georgian"
+msgstr "Géorgien"
 
 # id::clm.value__ilo
 # id::ilo
-#: 950.data.seed-values.sql:3692
+#: 950.data.seed-values.sql:5979
 msgid "Iloko"
 msgstr "Iloko"
 
-#: 950.data.seed-values.sql:1822
-msgid "Restore overdue fines on lost item return"
-msgstr ""
-
 # id::clm.value__arc
 # id::arc
-#: 950.data.seed-values.sql:3520
+#: 950.data.seed-values.sql:5807
 msgid "Aramaic"
 msgstr "Araméen"
 
-#: 950.data.seed-values.sql:2385
-msgid ""
-"The second_given_name field will be shown on the patron registration screen. "
-"Showing a field makes it appear with required fields even when not required. "
-"If the field is required this setting is ignored."
-msgstr ""
+# id::clm.value__tir
+# id::tir
+#: 950.data.seed-values.sql:6219
+msgid "Tigrinya"
+msgstr "Tigrina"
 
 # id::clm.value__chk id::clm.value__-tru
 # id::chk
-#: 950.data.seed-values.sql:3578 950.data.seed-values.sql:3940
+#: 950.data.seed-values.sql:5865 950.data.seed-values.sql:6227
 msgid "Truk"
 msgstr "Trukois"
 
-# id::clm.value__per
-# id::per
-#: 950.data.seed-values.sql:3841
-msgid "Persian"
-msgstr "Persan"
-
 # id::clm.value__tib
 # id::tib
-#: 950.data.seed-values.sql:3930
+#: 950.data.seed-values.sql:6217
 msgid "Tibetan"
 msgstr "Tibétain"
 
 # id::cza.label__7 id::cza.label__16 id::cza.label__25
 # id::vqbrad.description__12
-#: 950.data.seed-values.sql:293 950.data.seed-values.sql:314
-#: 950.data.seed-values.sql:333 950.data.seed-values.sql:2491
+#: 950.data.seed-values.sql:372 950.data.seed-values.sql:393
+#: 950.data.seed-values.sql:412 950.data.seed-values.sql:4768
 msgid "Publisher"
 msgstr "Éditeur"
 
 # id::clm.value__inh
 # id::inh
-#: 950.data.seed-values.sql:3697
+#: 950.data.seed-values.sql:5984
 msgid "Ingush"
 msgstr "Ingouche"
 
+#: 950.data.seed-values.sql:31
+msgid "Alerting Note, no blocks"
+msgstr ""
+
 # id::clm.value__dzo
 # id::dzo
-#: 950.data.seed-values.sql:3614
+#: 950.data.seed-values.sql:5901
 msgid "Dzongkha"
 msgstr "Dzonga"
 
 # id::clm.value__grn id::clm.value__-gua
 # id::grn
-#: 950.data.seed-values.sql:3666 950.data.seed-values.sql:3667
+#: 950.data.seed-values.sql:5953 950.data.seed-values.sql:5954
 msgid "Guarani"
 msgstr "Guarani"
 
 # id::clm.value__iii
 # id::iii
-#: 950.data.seed-values.sql:3688
+#: 950.data.seed-values.sql:5975
 msgid "Sichuan Yi"
 msgstr "Sichuan Yi"
 
 # id::clm.value__btk
 # id::btk
-#: 950.data.seed-values.sql:3560
+#: 950.data.seed-values.sql:5847
 msgid "Batak"
 msgstr "Batak"
 
 # id::clm.value__div
 # id::div
-#: 950.data.seed-values.sql:3607
+#: 950.data.seed-values.sql:5894
 msgid "Divehi"
 msgstr "Divehi"
 
 # id::clm.value__sga
 # id::sga
-#: 950.data.seed-values.sql:3876
+#: 950.data.seed-values.sql:6163
 msgid "Irish, Old (to 1100)"
 msgstr "Vieil irlandais (jusqu’à 1100)"
 
-#: 950.data.seed-values.sql:396 950.data.seed-values.sql:1666
-#: 950.data.seed-values.sql:1667
+#: 950.data.seed-values.sql:475
 msgid "Lost Materials Processing Fee"
 msgstr "Frais de traitement du matériel perdu"
 
-#: 950.data.seed-values.sql:2042
-msgid ""
-"Prevent the creation of new self-serve password reset requests until the "
-"number of active requests drops back below this number."
+# id::clm.value__her
+# id::her
+#: 950.data.seed-values.sql:5962
+msgid "Herero"
+msgstr "Herero"
+
+#: 950.data.seed-values.sql:1581
+msgid "Data Review"
 msgstr ""
-"Empêcher la création de nouvelles demandes autonomes de rétablir le mot de "
-"passe tant que le nombre de demandes actives n’est pas inférieur à ce nombre"
 
 # id::crcd.name__3
 # id::3
-#: 950.data.seed-values.sql:169
+#: 950.data.seed-values.sql:248
 msgid "3_months_0_renew"
 msgstr "3_mois_0_renouvellement"
 
-# id::clm.value__roa
-# id::roa
-#: 950.data.seed-values.sql:3855
-msgid "Romance (Other)"
-msgstr "Sentimental (Autre)"
+#: 950.data.seed-values.sql:9945
+msgid "Heading -- General Subdivision"
+msgstr ""
 
-#: 950.data.seed-values.sql:6486
-msgid "Handling Charge"
-msgstr "Frais de manutention"
+#: 950.data.seed-values.sql:1575
+msgid "System Administrator"
+msgstr ""
 
 # id::clm.value__lav
 # id::lav
-#: 950.data.seed-values.sql:3748
+#: 950.data.seed-values.sql:6035
 msgid "Latvian"
 msgstr "Lette"
 
 # id::clm.value__eng
 # id::eng
-#: 950.data.seed-values.sql:3619
+#: 950.data.seed-values.sql:5906
 msgid "English"
 msgstr "Anglais"
 
-#: 950.data.seed-values.sql:7190 950.data.seed-values.sql:7214
-#: 950.data.seed-values.sql:7215
-msgid "Historical Circulation Retention Age"
-msgstr "Période historique de la conservation pour prêts"
-
 # id::cam.value__
 # id::
-#: 950.data.seed-values.sql:3989
+#: 950.data.seed-values.sql:6276
 msgid "Unknown or unspecified"
 msgstr "Inconnu ou non spécifié"
 
-# id::clm.value__scr
-# id::scr
-#: 950.data.seed-values.sql:3873
-msgid "Croatian"
-msgstr "Croate"
-
-#: 950.data.seed-values.sql:1692
-msgid ""
-"If enabled, patrons will be able to pay fines accrued at this location via "
-"credit card"
+#: 950.data.seed-values.sql:2471
+msgid "SMS Text Messages"
 msgstr ""
+
+# id::cam.value__j
+# id::j
+#: 950.data.seed-values.sql:6284
+msgid "Juvenile"
+msgstr "Jeunes"
 
 # id::clm.value__chi
 # id::chi
-#: 950.data.seed-values.sql:3577
+#: 950.data.seed-values.sql:5864
 msgid "Chinese"
 msgstr "Chinois"
 
-# id::clm.value__wol
-# id::wol
-#: 950.data.seed-values.sql:3973
-msgid "Wolof"
-msgstr "Wolof"
+#: 950.data.seed-values.sql:10063
+msgid "Art and Architecture Thesaurus"
+msgstr ""
 
 # id::clm.value__iku
 # id::iku
-#: 950.data.seed-values.sql:3690
+#: 950.data.seed-values.sql:5977
 msgid "Inuktitut"
 msgstr "Inuktitut"
 
 # id::clm.value__mun
 # id::mun
-#: 950.data.seed-values.sql:3795
+#: 950.data.seed-values.sql:6082
 msgid "Munda (Other)"
 msgstr "Mounda (Autre)"
 
 # id::clm.value__pli
 # id::pli
-#: 950.data.seed-values.sql:3844
+#: 950.data.seed-values.sql:6131
 msgid "Pali"
 msgstr "Pali"
 
 # id::clm.value__gaa
 # id::gaa
-#: 950.data.seed-values.sql:3643
+#: 950.data.seed-values.sql:5930
 msgid "Gã"
 msgstr "Gã"
 
 # id::clm.value__yap
 # id::yap
-#: 950.data.seed-values.sql:3977
+#: 950.data.seed-values.sql:6264
 msgid "Yapese"
 msgstr "Yapois"
 
 # id::clm.value__ara
 # id::ara
-#: 950.data.seed-values.sql:3519
+#: 950.data.seed-values.sql:5806
 msgid "Arabic"
 msgstr "Arabe"
 
 # id::clm.value__ven
 # id::ven
-#: 950.data.seed-values.sql:3962
+#: 950.data.seed-values.sql:6249
 msgid "Venda"
 msgstr "Venda"
 
-#: 950.data.seed-values.sql:1821
-msgid "Circ: Restore overdues on lost item return"
-msgstr ""
-
 # id::pgt.name__3
-#: 950.data.seed-values.sql:1390
+#: 950.data.seed-values.sql:1555
 msgid "Staff"
 msgstr "Membres du personnel"
 
-#: 950.data.seed-values.sql:7250
-msgid "Persistent Login Duration"
-msgstr "Durée d’une ouverture de session incessante"
-
 # id::clm.value''in__gwi
-#: 950.data.seed-values.sql:3669
+#: 950.data.seed-values.sql:5956
 msgid "Gwich"
 msgstr "Gwich"
 
-#: 950.data.seed-values.sql:2353
-msgid ""
-"The juvenile field will be suggested on the patron registration screen. "
-"Suggesting a field makes it appear when suggested fields are shown. If the "
-"field is shown or required this setting is ignored."
-msgstr ""
+# id::clm.value__iro
+# id::iro
+#: 950.data.seed-values.sql:5989
+msgid "Iroquoian (Other)"
+msgstr "Langue iroquoianne (Autre)"
 
 # id::clm.value__kut
 # id::kut
-#: 950.data.seed-values.sql:3740
+#: 950.data.seed-values.sql:6027
 msgid "Kutenai"
 msgstr "Kutenai"
 
-#: 950.data.seed-values.sql:2324
-msgid "GUI: Show evening_phone field on patron registration"
+# id::clm.value__ori
+# id::ori
+#: 950.data.seed-values.sql:6114
+msgid "Oriya"
+msgstr "Oriya"
+
+#: 950.data.seed-values.sql:11431
+msgid "Verification via opensrf"
 msgstr ""
 
-#: 950.data.seed-values.sql:42
+#: 950.data.seed-values.sql:115
 msgid "Abbreviated Title"
 msgstr "Abréviation du titre"
 
 # id::clm.value__nyn
 # id::nyn
-#: 950.data.seed-values.sql:3822
+#: 950.data.seed-values.sql:6109
 msgid "Nyankole"
 msgstr "Nkole"
 
-#: 950.data.seed-values.sql:1831
-msgid "Holds: FIFO"
+#: 950.data.seed-values.sql:9947
+msgid "Heading -- Chronological Subdivision"
+msgstr ""
+
+#: 950.data.seed-values.sql:2470
+msgid "Receipt Template"
 msgstr ""
 
 # id::i18n_l.name__en-CA
-#: 950.data.seed-values.sql:253
+#: 950.data.seed-values.sql:332
 msgid "English (Canada)"
 msgstr "Anglais (Canada)"
 
-#: 950.data.seed-values.sql:2032
-msgid ""
-"When a user has more than this number of concurrently active self-serve "
-"password reset requests for their account, prevent the user from creating "
-"any new self-serve password reset requests until the number of active "
-"requests for the user drops back below this number."
-msgstr ""
-"Lorsqu’un utilisateur a plus que ce nombre de demandes de rétablissement "
-"autonome du mot de passe actives en même temps pour son compte, l’empêcher "
-"de créer toute nouvelle demande de rétablissement autonome du mot de passe "
-"tant que le nombre de ses demandes actives ne seront pas inférieures à ce "
-"nombre."
+# id::clm.value__hin
+# id::hin
+#: 950.data.seed-values.sql:5965
+msgid "Hindi"
+msgstr "Hindi"
 
 # id::clm.value__ewo
 # id::ewo
-#: 950.data.seed-values.sql:3627
+#: 950.data.seed-values.sql:5914
 msgid "Ewondo"
 msgstr "Ewondo"
 
 # id::i18n_l.description__es-MX
 # id::es-MX
-#: 950.data.seed-values.sql:266
+#: 950.data.seed-values.sql:345
 msgid "Mexican Spanish"
 msgstr "Espagnol mexicain"
 
-#: 950.data.seed-values.sql:2209
-msgid ""
-"The active field will be shown on the patron registration screen. Showing a "
-"field makes it appear with required fields even when not required. If the "
-"field is required this setting is ignored."
+#: 950.data.seed-values.sql:9948
+msgid "Heading -- Form Subdivision"
 msgstr ""
 
-#: 950.data.seed-values.sql:2325
-msgid ""
-"The evening_phone field will be shown on the patron registration screen. "
-"Showing a field makes it appear with required fields even when not required. "
-"If the field is required this setting is ignored."
-msgstr ""
+# id::clm.value__abk
+# id::abk
+#: 950.data.seed-values.sql:5789
+msgid "Abkhaz"
+msgstr "Abkhaz"
 
-#: 950.data.seed-values.sql:1916 950.data.seed-values.sql:1917
-msgid "Default level of patrons' internet access"
-msgstr ""
-
-#: 950.data.seed-values.sql:46
+#: 950.data.seed-values.sql:119
 msgid "Alternate Title"
 msgstr "Autre titre"
 
-#: 950.data.seed-values.sql:1978
-msgid "Credit card processing: PayPal signature"
-msgstr ""
-
 # id::clm.value__cmc
 # id::cmc
-#: 950.data.seed-values.sql:3587
+#: 950.data.seed-values.sql:5874
 msgid "Chamic languages"
 msgstr "Langues chamiques"
 
 # id::clfm.value__f
 # id::f
-#: 950.data.seed-values.sql:4021
+#: 950.data.seed-values.sql:6308
 msgid "Novels"
 msgstr "Romans"
 
-#: 950.data.seed-values.sql:1832
-msgid "Force holds to a more strict First-In, First-Out capture"
-msgstr ""
+# id::clm.value__wol
+# id::wol
+#: 950.data.seed-values.sql:6260
+msgid "Wolof"
+msgstr "Wolof"
 
 # id::clm.value__bos
 # id::bos
-#: 950.data.seed-values.sql:3557
+#: 950.data.seed-values.sql:5844
 msgid "Bosnian"
 msgstr "Bosniaque"
 
 # id::clm.value__rom
 # id::rom
-#: 950.data.seed-values.sql:3857
+#: 950.data.seed-values.sql:6144
 msgid "Romani"
 msgstr "Romani"
 
-# id::clm.value__mdr
-# id::mdr
-#: 950.data.seed-values.sql:3777
-msgid "Mandar"
-msgstr "Mandar"
+# id::clm.value__vie
+# id::vie
+#: 950.data.seed-values.sql:6250
+msgid "Vietnamese"
+msgstr "Vietnamien"
 
 # id::aout.opac_label__4
-#: 950.data.seed-values.sql:357
+#: 950.data.seed-values.sql:436
 msgid "This Specialized Library"
 msgstr "Cette bibliothèque spécialisée"
 
 # id::clm.value__mnc
 # id::mnc
-#: 950.data.seed-values.sql:3787
+#: 950.data.seed-values.sql:6074
 msgid "Manchu"
 msgstr "Mandchou"
 
-#: 950.data.seed-values.sql:1946
-msgid "Credit card processing: AuthorizeNet login"
+#: 950.data.seed-values.sql:32
+msgid "Note, no blocks"
 msgstr ""
 
 # id::aou.name__1
 # id::1
-#: 950.data.seed-values.sql:364
+#: 950.data.seed-values.sql:443
 msgid "Example Consortium"
 msgstr "Exemple de consortium"
 
 # id::clm.value__rus id::i18n_l.name__ru-RU id::i18n_l.description__ru-RU
 # id::rus
-#: 950.data.seed-values.sql:268 950.data.seed-values.sql:269
-#: 950.data.seed-values.sql:3860
+#: 950.data.seed-values.sql:347 950.data.seed-values.sql:348
+#: 950.data.seed-values.sql:6147
 msgid "Russian"
 msgstr "Russie"
 
-#: 950.data.seed-values.sql:1691
-msgid "Allow Credit Card Payments"
-msgstr ""
+# id::clm.value__gba
+# id::gba
+#: 950.data.seed-values.sql:5935
+msgid "Gbaya"
+msgstr "Gbaya"
 
 # id::clm.value__kaz
 # id::kaz
-#: 950.data.seed-values.sql:3718
+#: 950.data.seed-values.sql:6005
 msgid "Kazakh"
 msgstr "Kazakh"
 
 # id::clm.value__tiv
 # id::tiv
-#: 950.data.seed-values.sql:3933
+#: 950.data.seed-values.sql:6220
 msgid "Tiv"
 msgstr "Tiv"
 
-#: 950.data.seed-values.sql:1902
-msgid ""
-"When a patron checks out an item and they have no holds that directly target "
-"the item, the system will attempt to find a hold for the patron that could "
-"be fulfilled by the checked out item and fulfills it"
-msgstr ""
-
-#: 950.data.seed-values.sql:2317
-msgid ""
-"The Regular Expression for validation on the evening_phone field in patron "
-"registration."
-msgstr ""
-
-#: 950.data.seed-values.sql:2248
-msgid "GUI: Show claims_returned_count field on patron registration"
-msgstr ""
+# id::clm.value__und
+# id::und
+#: 950.data.seed-values.sql:6245
+msgid "Undetermined"
+msgstr "Indéterminé"
 
 # id::clm.value__hmo
 # id::hmo
-#: 950.data.seed-values.sql:3681
+#: 950.data.seed-values.sql:5968
 msgid "Hiri Motu"
 msgstr "Hiri-motu"
 
-#: 950.data.seed-values.sql:2305
-msgid ""
-"The email field will be shown on the patron registration screen. Showing a "
-"field makes it appear with required fields even when not required. If the "
-"field is required this setting is ignored."
+#: 950.data.seed-values.sql:2458
+msgid "Holds"
 msgstr ""
 
 # id::cnal.name__3
 # id::3
-#: 950.data.seed-values.sql:242
+#: 950.data.seed-values.sql:321
 msgid "No Access"
 msgstr "Aucun accès"
 
-#: 950.data.seed-values.sql:1986
-msgid "Credit card processing: Enable PayflowPro payments"
-msgstr ""
-
-#: 950.data.seed-values.sql:2021
-msgid "Courier Code"
-msgstr "Code de messager"
-
 # id::i18n_l.description__en-CA
 # id::en-CA
-#: 950.data.seed-values.sql:254
+#: 950.data.seed-values.sql:333
 msgid "Canadian English"
 msgstr "Anglais canadien"
 
-#: 950.data.seed-values.sql:2562
-msgid "View Circulations"
-msgstr "Voir les prêts"
-
-#: 950.data.seed-values.sql:6488
+#: 950.data.seed-values.sql:8651
 msgid "Serial Subscription"
 msgstr "Abonnement à un périodique"
 
-# id::clm.value__slv
-# id::slv
-#: 950.data.seed-values.sql:3886
-msgid "Slovenian"
-msgstr "Slovène"
-
 # id::clm.value__bra
 # id::bra
-#: 950.data.seed-values.sql:3558
+#: 950.data.seed-values.sql:5845
 msgid "Braj"
 msgstr "Braj"
 
 # id::clm.value__bat
 # id::bat
-#: 950.data.seed-values.sql:3544
+#: 950.data.seed-values.sql:5831
 msgid "Baltic (Other)"
 msgstr "Balti (Autre)"
 
+#: 950.data.seed-values.sql:9248
+msgid "Invalid value for \"deposit_amount\""
+msgstr ""
+
 # id::clfm.value__h
 # id::h
-#: 950.data.seed-values.sql:4022
+#: 950.data.seed-values.sql:6309
 msgid "Humor, satires, etc."
 msgstr "Humeur, satires, etc."
 
-#: 950.data.seed-values.sql:2337
-msgid ""
-"The ident_value field will be suggested on the patron registration screen. "
-"Suggesting a field makes it appear when suggested fields are shown. If the "
-"field is shown or required this setting is ignored."
+#: 950.data.seed-values.sql:11428
+msgid "SIP2 Proxy Login"
 msgstr ""
 
 # id::citm.value__m
 # id::m
-#: 950.data.seed-values.sql:4013
+#: 950.data.seed-values.sql:6300
 msgid "Computer file"
 msgstr "Fichier informatique"
 
 # id::clm.value__phi
 # id::phi
-#: 950.data.seed-values.sql:3842
+#: 950.data.seed-values.sql:6129
 msgid "Philippine (Other)"
 msgstr "Philippine (Autre)"
 
+#: 950.data.seed-values.sql:9974
+msgid "Subdivision Linking Entry -- Form Subdivision"
+msgstr ""
+
 # id::clm.value__ger
 # id::ger
-#: 950.data.seed-values.sql:3651
+#: 950.data.seed-values.sql:5938
 msgid "German"
 msgstr "Allemand"
 
-#: 950.data.seed-values.sql:6490
+#: 950.data.seed-values.sql:8653
 msgid "EDI"
 msgstr "EDI"
 
-#: 950.data.seed-values.sql:5918
-msgid ""
-"During offline circulations, allow patrons to identify themselves with "
-"usernames in addition to barcode.  For this setting to work, a barcode "
-"format must also be defined"
+#: 950.data.seed-values.sql:9232
+msgid "Import failed due to barcode collision"
 msgstr ""
-"Durant les prêts hors ligne, permettre aux clients de s’identifier à l’aide "
-"de leur nom d’utilisateur en plus du code à barres. Pour que ce réglage "
-"fonctionne, le format du code à barres doit être défini"
+
+#: 950.data.seed-values.sql:2455
+msgid "Library"
+msgstr ""
 
 # id::clm.value__sla
 # id::sla
-#: 950.data.seed-values.sql:3884
+#: 950.data.seed-values.sql:6171
 msgid "Slavic (Other)"
 msgstr "Slave (Autre)"
 
-#: 950.data.seed-values.sql:1741
-msgid "Change reshelving status interval"
-msgstr ""
-
-# id::clm.value__tem
-# id::tem
-#: 950.data.seed-values.sql:3924
-msgid "Temne"
-msgstr "Temne"
-
 # id::clm.value__baq
 # id::baq
-#: 950.data.seed-values.sql:3542
+#: 950.data.seed-values.sql:5829
 msgid "Basque"
 msgstr "Basque"
 
 # id::clm.value__tum
 # id::tum
-#: 950.data.seed-values.sql:3946
+#: 950.data.seed-values.sql:6233
 msgid "Tumbuka"
 msgstr "Tamboka"
 
@@ -1024,118 +887,117 @@ msgstr "Tamboka"
 msgid "oclc"
 msgstr "oclc"
 
-#: 950.data.seed-values.sql:7124
-msgid "Holds: Has Local Copy Block"
-msgstr "Articles mis en réserve : exemplaire local bloqué"
+#: 950.data.seed-values.sql:1572 950.data.seed-values.sql:2466
+msgid "Serials"
+msgstr ""
 
 # id::clm.value__bnt
 # id::bnt
-#: 950.data.seed-values.sql:3556
+#: 950.data.seed-values.sql:5843
 msgid "Bantu (Other)"
 msgstr "Bantu (Autre)"
 
-#: 950.data.seed-values.sql:2245
-msgid ""
-"The claims_never_checked_out_count field will be suggested on the patron "
-"registration screen. Suggesting a field makes it appear when suggested "
-"fields are shown. If the field is shown or required this setting is ignored."
+#: 950.data.seed-values.sql:9939
+msgid "Heading -- Personal Name"
 msgstr ""
+
+# id::clm.value__mdr
+# id::mdr
+#: 950.data.seed-values.sql:6064
+msgid "Mandar"
+msgstr "Mandar"
 
 # id::cblvl.value__a
 # id::a
-#: 950.data.seed-values.sql:4041
+#: 950.data.seed-values.sql:6328
 msgid "Monographic component part"
 msgstr "Partie composante monographique"
 
-# id::clm.value__gem
-# id::gem
-#: 950.data.seed-values.sql:3649
-msgid "Germanic (Other)"
-msgstr "Germanique (Autre)"
-
 # id::citm.value__t
 # id::t
-#: 950.data.seed-values.sql:4001
+#: 950.data.seed-values.sql:6288
 msgid "Manuscript language material"
 msgstr "Texte manuscrit"
 
-# id::cza.label__9 id::cza.label__18 id::cza.label__27
-#: 950.data.seed-values.sql:297 950.data.seed-values.sql:318
-#: 950.data.seed-values.sql:337
-msgid "Item Type"
-msgstr "Type d'article"
+# id::clm.value__che
+# id::che
+#: 950.data.seed-values.sql:5862
+msgid "Chechen"
+msgstr "Tchétchène"
 
 # id::clm.value__nzi
 # id::nzi
-#: 950.data.seed-values.sql:3824
+#: 950.data.seed-values.sql:6111
 msgid "Nzima"
 msgstr "Nzima"
 
 # id::clm.value__dut
 # id::dut
-#: 950.data.seed-values.sql:3612
+#: 950.data.seed-values.sql:5899
 msgid "Dutch"
 msgstr "Hollandais"
 
 # id::clm.value__kos id::clm.value__-kus
 # id::kos
-#: 950.data.seed-values.sql:3732 950.data.seed-values.sql:3739
+#: 950.data.seed-values.sql:6019 950.data.seed-values.sql:6026
 msgid "Kusaie"
 msgstr "Kusaie"
 
 # id::clm.value__eka
 # id::eka
-#: 950.data.seed-values.sql:3617
+#: 950.data.seed-values.sql:5904
 msgid "Ekajuk"
 msgstr "Ekajuk"
 
 # id::clm.value__grb
 # id::grb
-#: 950.data.seed-values.sql:3663
+#: 950.data.seed-values.sql:5950
 msgid "Grebo"
 msgstr "Grebo"
 
+#: 950.data.seed-values.sql:2464
+msgid "Finances"
+msgstr ""
+
 # id::crcd.name__2
 # id::2
-#: 950.data.seed-values.sql:167
+#: 950.data.seed-values.sql:246
 msgid "28_days_2_renew"
 msgstr "28_jours_2_renouvellements"
 
-# id::clm.value__nap
-# id::nap
-#: 950.data.seed-values.sql:3801
-msgid "Neapolitan Italian"
-msgstr "Italien napolitain"
+# id::clm.value__nep
+# id::nep
+#: 950.data.seed-values.sql:6095
+msgid "Nepali"
+msgstr "Népalais"
 
 # id::clm.value__sms
 # id::sms
-#: 950.data.seed-values.sql:3893
+#: 950.data.seed-values.sql:6180
 msgid "Skolt Sami"
 msgstr "Skolt Lapon"
 
-#: 950.data.seed-values.sql:1851
-msgid "GUI: Record In-House Use: Maximum # of uses allowed per entry."
-msgstr ""
+# id::clm.value__fin
+# id::fin
+#: 950.data.seed-values.sql:5920
+msgid "Finnish"
+msgstr "Finnois"
 
-# id::ccs.name__4
-# id::4
-#: 950.data.seed-values.sql:222
-msgid "Missing"
-msgstr "Manquant"
+# id::clm.value__bih
+# id::bih
+#: 950.data.seed-values.sql:5838
+msgid "Bihari"
+msgstr "Bihari"
 
 # id::clm.value__wel
 # id::wel
-#: 950.data.seed-values.sql:3970
+#: 950.data.seed-values.sql:6257
 msgid "Welsh"
 msgstr "Gallois"
 
-#: 950.data.seed-values.sql:1786
-msgid "Patron: password from phone #"
-msgstr ""
-
 # id::clm.value__ota
 # id::ota
-#: 950.data.seed-values.sql:3831
+#: 950.data.seed-values.sql:6118
 msgid "Turkish, Ottoman"
 msgstr "Turquie, Ottoman"
 
@@ -1143,228 +1005,215 @@ msgstr "Turquie, Ottoman"
 # id::vqbrad.description__6
 # id::6
 # id::2
-#: 950.data.seed-values.sql:81 950.data.seed-values.sql:291
-#: 950.data.seed-values.sql:312 950.data.seed-values.sql:331
-#: 950.data.seed-values.sql:2485
+#: 950.data.seed-values.sql:154 950.data.seed-values.sql:370
+#: 950.data.seed-values.sql:391 950.data.seed-values.sql:410
+#: 950.data.seed-values.sql:4762
 msgid "ISSN"
 msgstr "ISSN"
 
-#: 950.data.seed-values.sql:1999
-msgid ""
-"Do not really process transactions, but stay in test mode - uses pilot-"
-"payflowpro.paypal.com instead of the usual host"
-msgstr ""
+# id::clm.value__kro
+# id::kro
+#: 950.data.seed-values.sql:6021
+msgid "Kru"
+msgstr "Kru"
 
-#: 950.data.seed-values.sql:2031
-msgid ""
-"Circulation: Maximum concurrently active self-serve password reset requests "
-"per user"
+#: 950.data.seed-values.sql:2468
+msgid "Booking"
 msgstr ""
-"Prêts : Maximum de demandes actives en même temps de rétablissement autonome "
-"d’un mot de passe par usager"
 
 # id::clm.value__goh
 # id::goh
-#: 950.data.seed-values.sql:3659
+#: 950.data.seed-values.sql:5946
 msgid "German, Old High (ca. 750-1050)"
 msgstr "Vieux haut-allemand (aux environs de 750-1050)"
 
-#: 950.data.seed-values.sql:2284
-msgid "GUI: Show dob field on patron registration"
-msgstr ""
+# id::clm.value__tem
+# id::tem
+#: 950.data.seed-values.sql:6211
+msgid "Temne"
+msgstr "Temne"
 
-#: 950.data.seed-values.sql:2340
-msgid "GUI: Show ident_value2 field on patron registration"
-msgstr ""
+# id::clm.value__jpr
+# id::jpr
+#: 950.data.seed-values.sql:5993
+msgid "Judeo-Persian"
+msgstr "Judéo-persan"
 
-# id::clm.value__ber
-# id::ber
-#: 950.data.seed-values.sql:3549
-msgid "Berber (Other)"
-msgstr "Berbère (Autre)"
-
-#: 950.data.seed-values.sql:2559
+#: 950.data.seed-values.sql:4836
 msgid "Friends"
 msgstr "Amis"
 
+#: 950.data.seed-values.sql:23
+msgid "Patron exceeds fine threshold"
+msgstr ""
+
 # id::clm.value__day
 # id::day
-#: 950.data.seed-values.sql:3602
+#: 950.data.seed-values.sql:5889
 msgid "Dayak"
 msgstr "Dayak"
 
 # id::clm.value__gon
 # id::gon
-#: 950.data.seed-values.sql:3660
+#: 950.data.seed-values.sql:5947
 msgid "Gondi"
 msgstr "Gondi"
 
-#: 950.data.seed-values.sql:1742
-msgid ""
-"Amount of time to wait before changing an item from \"reshelving\" status to "
-"\"available\".  Examples: \"1 day\", \"6 hours\""
-msgstr ""
+# id::clm.value__hun
+# id::hun
+#: 950.data.seed-values.sql:5969
+msgid "Hungarian"
+msgstr "Hongrois"
 
-#: 950.data.seed-values.sql:1975
-msgid "PayPal password"
-msgstr ""
+# id::clm.value__bak
+# id::bak
+#: 950.data.seed-values.sql:5825
+msgid "Bashkir"
+msgstr "Bashkir"
 
 # id::clm.value__kam
 # id::kam
-#: 950.data.seed-values.sql:3712
+#: 950.data.seed-values.sql:5999
 msgid "Kamba"
 msgstr "Kamba"
 
-#: 950.data.seed-values.sql:1911
-msgid "Disable Automatic Print Attempt Type List"
-msgstr ""
+# id::i18n_l.name__es-MX
+#: 950.data.seed-values.sql:344
+msgid "Spanish (Mexico)"
+msgstr "Espagnol (Mexique)"
 
 # id::citm.value__i
 # id::i
-#: 950.data.seed-values.sql:4011
+#: 950.data.seed-values.sql:6298
 msgid "Nonmusical sound recording"
 msgstr "Enregistrement sonore non musical"
 
 # id::pgt.name__2
-#: 950.data.seed-values.sql:1388
+#: 950.data.seed-values.sql:1553
 msgid "Patrons"
 msgstr "Clients"
 
-#: 950.data.seed-values.sql:1937
-msgid "This might be \"AuthorizeNet\", \"PayPal\", etc."
-msgstr ""
-
-#: 950.data.seed-values.sql:1727
-msgid "Regular expression defining the patron barcode format"
-msgstr ""
-
-# id::clm.value__lus
-# id::lus
-#: 950.data.seed-values.sql:3762
-msgid "Lushai"
-msgstr "Lushei"
-
-#: 950.data.seed-values.sql:6485
+#: 950.data.seed-values.sql:8648
 msgid "Shipping Charge"
 msgstr "Frais d’envoi"
 
 # id::clm.value__nbl
 # id::nbl
-#: 950.data.seed-values.sql:3804
+#: 950.data.seed-values.sql:6091
 msgid "Ndebele (South Africa)"
 msgstr "Ndébélé (Afrique du Sud)"
 
 # id::crcd.name__8
 # id::8
-#: 950.data.seed-values.sql:179
+#: 950.data.seed-values.sql:258
 msgid "1_hour_2_renew"
 msgstr "1_heure_2_renouvellements"
 
 # id::clfm.value__i
 # id::i
-#: 950.data.seed-values.sql:4023
+#: 950.data.seed-values.sql:6310
 msgid "Letters"
 msgstr "Lettres"
 
 # id::clm.value__mak
 # id::mak
-#: 950.data.seed-values.sql:3768
+#: 950.data.seed-values.sql:6055
 msgid "Makasar"
 msgstr "Macassar"
 
-#: 950.data.seed-values.sql:27
+#: 950.data.seed-values.sql:100
 msgid "Series"
 msgstr "périodique"
 
-#: 950.data.seed-values.sql:1796 950.data.seed-values.sql:1797
-msgid "Charge lost on zero"
-msgstr ""
+# id::clm.value__afa
+# id::afa
+#: 950.data.seed-values.sql:5794
+msgid "Afroasiatic (Other)"
+msgstr "Afro-asiatique (Autre)"
 
-# id::clm.value__bih
-# id::bih
-#: 950.data.seed-values.sql:3551
-msgid "Bihari"
-msgstr "Bihari"
+# id::ccs.name__4
+# id::4
+#: 950.data.seed-values.sql:301
+msgid "Missing"
+msgstr "Manquant"
 
 # id::clm.value__bin
 # id::bin
-#: 950.data.seed-values.sql:3553
+#: 950.data.seed-values.sql:5840
 msgid "Edo"
 msgstr "Edo"
 
 # id::clm.value__kin
 # id::kin
-#: 950.data.seed-values.sql:3725
+#: 950.data.seed-values.sql:6012
 msgid "Kinyarwanda"
 msgstr "Kinyarwanda"
 
 # id::clm.value__ile
 # id::ile
-#: 950.data.seed-values.sql:3691
+#: 950.data.seed-values.sql:5978
 msgid "Interlingue"
 msgstr "Interlingue"
 
+#: 950.data.seed-values.sql:11449
+msgid "EZProxy Verification"
+msgstr ""
+
 # id::ccs.name__12
 # id::12
-#: 950.data.seed-values.sql:230
+#: 950.data.seed-values.sql:309
 msgid "Reserves"
 msgstr "Réserves"
 
 # id::clm.value__heb
 # id::heb
-#: 950.data.seed-values.sql:3674
+#: 950.data.seed-values.sql:5961
 msgid "Hebrew"
 msgstr "Hébreu"
 
-#: 950.data.seed-values.sql:1886 950.data.seed-values.sql:1887
-msgid "Button bar"
-msgstr ""
-
 # id::clm.value__epo id::clm.value__-esp
 # id::epo
-#: 950.data.seed-values.sql:3621 950.data.seed-values.sql:3623
+#: 950.data.seed-values.sql:5908 950.data.seed-values.sql:5910
 msgid "Esperanto"
 msgstr "Espéranto"
 
-#: 950.data.seed-values.sql:2384
-msgid "GUI: Show second_given_name field on patron registration"
+#: 950.data.seed-values.sql:9246
+msgid "Invalid value for \"price\""
 msgstr ""
+
+# id::clm.value__cpf
+# id::cpf
+#: 950.data.seed-values.sql:5879
+msgid "Creoles and Pidgins, French-based (Other)"
+msgstr "Langues créoles et pidgin, français (Autre)"
 
 # id::clm.value__ssw id::clm.value__-swz
 # id::ssw
-#: 950.data.seed-values.sql:3907 950.data.seed-values.sql:3914
+#: 950.data.seed-values.sql:6194 950.data.seed-values.sql:6201
 msgid "Swazi"
 msgstr "Swazi"
 
-#: 950.data.seed-values.sql:2560
-msgid "List Published Book Bags"
-msgstr "Énumérer les sacs de livres publiés"
-
-# id::clm.value__hup
-# id::hup
-#: 950.data.seed-values.sql:3683
-msgid "Hupa"
-msgstr "Hupa"
-
 # id::clm.value__-lap id::clm.value__smi
 # id::-lap
-#: 950.data.seed-values.sql:3746 950.data.seed-values.sql:3889
+#: 950.data.seed-values.sql:6033 950.data.seed-values.sql:6176
 msgid "Sami"
 msgstr "Lapon"
 
 # id::clm.value__inc
 # id::inc
-#: 950.data.seed-values.sql:3694
+#: 950.data.seed-values.sql:5981
 msgid "Indic (Other)"
 msgstr "Langue indo-aryenne (Autre)"
 
-#: 950.data.seed-values.sql:2011
-msgid "GUI: Work Log: Maximum Actions Logged"
-msgstr "GUI : registre de travail : maximum de mesures enregistrées"
+# id::clm.value__tel
+# id::tel
+#: 950.data.seed-values.sql:6210
+msgid "Telugu"
+msgstr "Telugu"
 
 # id::cza.label__4 id::cza.label__13 id::cza.label__22
-#: 950.data.seed-values.sql:25 950.data.seed-values.sql:287
-#: 950.data.seed-values.sql:308 950.data.seed-values.sql:327
+#: 950.data.seed-values.sql:98 950.data.seed-values.sql:366
+#: 950.data.seed-values.sql:387 950.data.seed-values.sql:406
 msgid "Author"
 msgstr "Auteur"
 
@@ -1374,828 +1223,708 @@ msgstr "Auteur"
 msgid "System Local"
 msgstr "Système local"
 
-#: 950.data.seed-values.sql:2320
-msgid "GUI: Require evening_phone field on patron registration"
+#: 950.data.seed-values.sql:11435
+msgid "Verification via xmlrpc"
 msgstr ""
 
-# id::clm.value__kir
-# id::kir
-#: 950.data.seed-values.sql:3726
-msgid "Kyrgyz"
-msgstr "Kirghize"
+# id::clm.value__new
+# id::new
+#: 950.data.seed-values.sql:6096
+msgid "Newari"
+msgstr "Newari"
 
 # id::clm.value__sam
 # id::sam
-#: 950.data.seed-values.sql:3866
+#: 950.data.seed-values.sql:6153
 msgid "Samaritan Aramaic"
 msgstr "Araméen samaritain"
 
 # id::crcd.name__5
 # id::5
-#: 950.data.seed-values.sql:173
+#: 950.data.seed-values.sql:252
 msgid "2_months_2_renew"
 msgstr "2_mois_2_renouvellements"
 
 # id::cnal.name__2
 # id::2
-#: 950.data.seed-values.sql:240
+#: 950.data.seed-values.sql:319
 msgid "Unfiltered"
 msgstr "Non filtré"
 
-#: 950.data.seed-values.sql:2405
-msgid ""
-"The Example for validation on the post_code field in patron registration."
+#: 950.data.seed-values.sql:9979
+msgid "See Also Tracing -- Corporate Name"
 msgstr ""
 
-# id::clfm.value__j
-# id::j
-#: 950.data.seed-values.sql:4024
-msgid "Short stories"
-msgstr "Nouvelles"
-
-#: 950.data.seed-values.sql:2393
-msgid ""
-"The suffix field will be shown on the patron registration screen. Showing a "
-"field makes it appear with required fields even when not required. If the "
-"field is required this setting is ignored."
+#: 950.data.seed-values.sql:41
+msgid "Patron has been referred to a collections agency"
 msgstr ""
+
+# id::clm.value__tah
+# id::tah
+#: 950.data.seed-values.sql:6204
+msgid "Tahitian"
+msgstr "Tahitien"
 
 # id::clm.value__ful
 # id::ful
-#: 950.data.seed-values.sql:3641
+#: 950.data.seed-values.sql:5928
 msgid "Fula"
 msgstr "Fulfude"
 
-#: 950.data.seed-values.sql:2236
-msgid "GUI: Suggest barred field on patron registration"
-msgstr ""
+# id::cifm.value__a
+# id::a
+#: 950.data.seed-values.sql:6319
+msgid "Microfilm"
+msgstr "Microfilm"
 
-#: 950.data.seed-values.sql:2421
-msgid ""
-"The Regular Expression for validation on phone fields in patron "
-"registration. Applies to all phone fields without their own setting."
+#: 950.data.seed-values.sql:9944
+msgid "Heading -- Genre/Form Term"
 msgstr ""
 
 # id::clm.value__nub
 # id::nub
-#: 950.data.seed-values.sql:3819
+#: 950.data.seed-values.sql:6106
 msgid "Nubian languages"
 msgstr "Langues nubiennes"
 
 # id::clm.value__arm id::i18n_l.name__hy-AM id::i18n_l.description__hy-AM
 # id::arm
-#: 950.data.seed-values.sql:259 950.data.seed-values.sql:260
-#: 950.data.seed-values.sql:3522
+#: 950.data.seed-values.sql:338 950.data.seed-values.sql:339
+#: 950.data.seed-values.sql:5809
 msgid "Armenian"
 msgstr "Arménien"
 
-#: 950.data.seed-values.sql:5341
-msgid "Holds: Clear shelf copy status"
-msgstr "Article en réserve : Enlever l’état de la copie en étagère"
-
 # id::aou.name__2
 # id::2
-#: 950.data.seed-values.sql:366
+#: 950.data.seed-values.sql:445
 msgid "Example System 1"
 msgstr "Exemple de système 1"
 
-# id::clm.value__ypk
-# id::ypk
-#: 950.data.seed-values.sql:3980
-msgid "Yupik languages"
-msgstr "Langues yupiks"
-
 # id::aou.name__3
 # id::3
-#: 950.data.seed-values.sql:368
+#: 950.data.seed-values.sql:447
 msgid "Example System 2"
 msgstr "Exemple de système 2"
 
 # id::clm.value__tam
 # id::tam
-#: 950.data.seed-values.sql:3920
+#: 950.data.seed-values.sql:6207
 msgid "Tamil"
 msgstr "Tamoul"
 
 # id::clm.value__aus
 # id::aus
-#: 950.data.seed-values.sql:3530
+#: 950.data.seed-values.sql:5817
 msgid "Australian languages"
 msgstr "Langues australiennes"
 
 # id::clm.value__roh
 # id::roh
-#: 950.data.seed-values.sql:3856
+#: 950.data.seed-values.sql:6143
 msgid "Raeto-Romance"
 msgstr "Rhéto-roman"
 
-#: 950.data.seed-values.sql:5351
-msgid "All selfcheck stations must use a workstation"
-msgstr "Tout poste d’auto-contrôle doit utiliser un poste de travail"
-
-#: 950.data.seed-values.sql:5350
-msgid "Selfcheck: Workstation Required"
-msgstr "Auto-contrôle : Poste de travail nécessaire"
-
-#: 950.data.seed-values.sql:2412
-msgid "GUI: Default showing suggested patron registration fields"
-msgstr ""
-
 # id::cblvl.value__m
 # id::m
-#: 950.data.seed-values.sql:4046
+#: 950.data.seed-values.sql:6333
 msgid "Monograph/Item"
 msgstr "Monographie ou article"
 
-#: 950.data.seed-values.sql:2401
-msgid "The county field will be required on the patron registration screen."
-msgstr ""
+# id::clm.value__pus
+# id::pus
+#: 950.data.seed-values.sql:6137
+msgid "Pushto"
+msgstr "Afghan"
 
-# id::ccs.name__5
-# id::5
-#: 950.data.seed-values.sql:223
-msgid "In process"
-msgstr "En traitement"
-
-#: 950.data.seed-values.sql:1906
-msgid "Selfcheck override events list"
+#: 950.data.seed-values.sql:9972
+msgid "Subdivision Linking Entry -- Geographic Subdivision"
 msgstr ""
-
-#: 950.data.seed-values.sql:1896
-msgid "Invalid patron address penalty"
-msgstr ""
-
-#: 950.data.seed-values.sql:6471
-msgid ""
-"When the amount remaining in the fund, including spent money and "
-"encumbrances, goes below this percentage, attempts to spend from the fund "
-"will result in a warning to the staff."
-msgstr ""
-"Quand le montant qui reste dans le fonds, incluant l’argent dépensé et les "
-"créances, arrive en dessous de ce pourcentage, des tentatives de dépenser "
-"des sommes du fonds déclencheront un avertissement au personnel"
 
 # id::cifm.value__b
 # id::b
-#: 950.data.seed-values.sql:4033
+#: 950.data.seed-values.sql:6320
 msgid "Microfiche"
 msgstr "Microfiche"
 
-# id::clm.value__her
-# id::her
-#: 950.data.seed-values.sql:3675
-msgid "Herero"
-msgstr "Herero"
-
 # id::clm.value__wln
 # id::wln
-#: 950.data.seed-values.sql:3972
+#: 950.data.seed-values.sql:6259
 msgid "Walloon"
 msgstr "Wallon"
 
 # id::clm.value__din
 # id::din
-#: 950.data.seed-values.sql:3606
+#: 950.data.seed-values.sql:5893
 msgid "Dinka"
 msgstr "Dinka"
 
-# id::i18n_l.description__en-US
-# id::en-US
-#: 950.data.seed-values.sql:248
-msgid "American English"
-msgstr "Anglais américain"
+# id::clm.value__chu
+# id::chu
+#: 950.data.seed-values.sql:5871
+msgid "Church Slavic"
+msgstr "Slavon liturgique"
 
-#: 950.data.seed-values.sql:278
+#: 950.data.seed-values.sql:357
 msgid "‡biblios.net"
 msgstr "‡biblios.net"
 
-#: 950.data.seed-values.sql:1942
-msgid "Enable AuthorizeNet payments"
-msgstr ""
+# id::clm.value__lam
+# id::lam
+#: 950.data.seed-values.sql:6030
+msgid "Lamba"
+msgstr "Lamba"
 
-#: 950.data.seed-values.sql:1787
-msgid ""
-"Use the last 4 digits of the patrons phone number as the default password "
-"when creating new users"
-msgstr ""
-
-#: 950.data.seed-values.sql:2280
-msgid "GUI: Require dob field on patron registration"
+#: 950.data.seed-values.sql:9957
+msgid "See Also From Tracing -- Genre/Form Term"
 msgstr ""
 
 # id::clm.value__mic
 # id::mic
-#: 950.data.seed-values.sql:3780
+#: 950.data.seed-values.sql:6067
 msgid "Micmac"
 msgstr "Micmac"
 
-#: 950.data.seed-values.sql:55
+#: 950.data.seed-values.sql:128
 msgid "Personal Author"
 msgstr "Auteur personnel"
 
-#: 950.data.seed-values.sql:1747
-msgid ""
-"When predicting the amount of time a patron will be waiting for a hold to be "
-"fulfilled, this is the default estimated length of time to assume an item "
-"will be checked out. Examples: \"3 weeks\", \"7 days\""
+# id::clm.value__-gag id::clm.value__glg
+# id::-gag
+#: 950.data.seed-values.sql:5932 950.data.seed-values.sql:5943
+msgid "Galician"
+msgstr "Galicien"
+
+#: 950.data.seed-values.sql:11440
+msgid "OPAC Login (jspac)"
 msgstr ""
 
 # id::clm.value__mad
 # id::mad
-#: 950.data.seed-values.sql:3764
+#: 950.data.seed-values.sql:6051
 msgid "Madurese"
 msgstr "Madurais"
 
-#: 950.data.seed-values.sql:2253
-msgid ""
-"The claims_returned_count field will be suggested on the patron registration "
-"screen. Suggesting a field makes it appear when suggested fields are shown. "
-"If the field is shown or required this setting is ignored."
-msgstr ""
-
 # id::clm.value__kmb
 # id::kmb
-#: 950.data.seed-values.sql:3727
+#: 950.data.seed-values.sql:6014
 msgid "Kimbundu"
 msgstr "Kimboundou"
 
 # id::clm.value__ssa
 # id::ssa
-#: 950.data.seed-values.sql:3905
+#: 950.data.seed-values.sql:6192
 msgid "Nilo-Saharan (Other)"
 msgstr "Nilo-saharien (Autre)"
 
 # id::clm.value__sag
 # id::sag
-#: 950.data.seed-values.sql:3862
+#: 950.data.seed-values.sql:6149
 msgid "Sango (Ubangi Creole)"
 msgstr "Sango (Ubangi Creole)"
 
 # id::clm.value__kha
 # id::kha
-#: 950.data.seed-values.sql:3720
+#: 950.data.seed-values.sql:6007
 msgid "Khasi"
 msgstr "Khasi"
 
-#: 950.data.seed-values.sql:26
+#: 950.data.seed-values.sql:9256
+msgid "Invalid value for \"circ_as_type\""
+msgstr ""
+
+#: 950.data.seed-values.sql:99
 msgid "Subject"
 msgstr "Sujet"
 
 # id::clm.value__mah
 # id::mah
-#: 950.data.seed-values.sql:3766
+#: 950.data.seed-values.sql:6053
 msgid "Marshallese"
 msgstr "Marshallois"
 
-#: 950.data.seed-values.sql:1696 950.data.seed-values.sql:1697
-msgid "Global Default Locale"
-msgstr ""
-
-#: 950.data.seed-values.sql:2356
-msgid "GUI: Show master_account field on patron registration"
-msgstr ""
-
 # id::clm.value__yao
 # id::yao
-#: 950.data.seed-values.sql:3976
+#: 950.data.seed-values.sql:6263
 msgid "Yao (Africa)"
 msgstr "Yao (Afrique)"
 
+#: 950.data.seed-values.sql:9988
+msgid "See Also Tracing -- Chronological Term"
+msgstr ""
+
 # id::clm.value__mar
 # id::mar
-#: 950.data.seed-values.sql:3773
+#: 950.data.seed-values.sql:6060
 msgid "Marathi"
 msgstr "Marathi"
 
-# id::clm.value__slo
-# id::slo
-#: 950.data.seed-values.sql:3885
-msgid "Slovak"
-msgstr "Slovaque"
+# id::clm.value__slv
+# id::slv
+#: 950.data.seed-values.sql:6173
+msgid "Slovenian"
+msgstr "Slovène"
+
+#: 950.data.seed-values.sql:9235 950.data.seed-values.sql:9236
+msgid "Import failed due to system id collision"
+msgstr ""
 
 # id::clm.value__sal
 # id::sal
-#: 950.data.seed-values.sql:3865
+#: 950.data.seed-values.sql:6152
 msgid "Salishan languages"
 msgstr "Langues salish"
 
-#: 950.data.seed-values.sql:2372
-msgid "GUI: Require other_phone field on patron registration"
+#: 950.data.seed-values.sql:11448
+msgid "Self-Check User Verification"
+msgstr ""
+
+#: 950.data.seed-values.sql:9943
+msgid "Heading -- Geographic Name"
 msgstr ""
 
 # id::clm.value__san
 # id::san
-#: 950.data.seed-values.sql:3867
+#: 950.data.seed-values.sql:6154
 msgid "Sanskrit"
 msgstr "Sanskrit"
 
+#: 950.data.seed-values.sql:11441
+msgid "OPAC Login (tpac)"
+msgstr ""
+
 # id::ccs.name__9
 # id::9
-#: 950.data.seed-values.sql:227
+#: 950.data.seed-values.sql:306
 msgid "On order"
 msgstr "Sur commande"
 
-# id::clm.value__gay
-# id::gay
-#: 950.data.seed-values.sql:3647
-msgid "Gayo"
-msgstr "Gayo"
-
 # id::clfm.value__e
 # id::e
-#: 950.data.seed-values.sql:4020
+#: 950.data.seed-values.sql:6307
 msgid "Essays"
 msgstr "Essais"
 
 # id::aout.opac_label__2
-#: 950.data.seed-values.sql:351
+#: 950.data.seed-values.sql:430
 msgid "Local Library System"
 msgstr "Système local de bibliothèques"
 
 # id::cifm.value__r
 # id::r
-#: 950.data.seed-values.sql:4037
+#: 950.data.seed-values.sql:6324
 msgid "Regular print reproduction"
 msgstr "Reproduction d’imprimés réguliers"
 
-# id::clm.value__jpr
-# id::jpr
-#: 950.data.seed-values.sql:3706
-msgid "Judeo-Persian"
-msgstr "Judéo-persan"
+# id::clm.value__elx
+# id::elx
+#: 950.data.seed-values.sql:5905
+msgid "Elamite"
+msgstr "Élamite"
 
-#: 950.data.seed-values.sql:5364
-msgid "Use audio alerts for selfcheck events"
-msgstr "Utiliser les alertes sonores pour les événements d’auto-contrôle"
+# id::clm.value__ady
+# id::ady
+#: 950.data.seed-values.sql:5793
+msgid "Adygei"
+msgstr "Adygué"
 
-#: 950.data.seed-values.sql:2289
-msgid ""
-"The dob field will be suggested on the patron registration screen. "
-"Suggesting a field makes it appear when suggested fields are shown. If the "
-"field is shown or required this setting is ignored."
-msgstr ""
-
-#: 950.data.seed-values.sql:2037
-msgid ""
-"Length of time (in seconds) a self-serve password reset request should "
-"remain active."
-msgstr ""
-"Durée (en secondes) de la période durant laquelle une demande de "
-"rétablissement autonome du mot de passe doit rester active"
-
-# id::clfm.value__c
-# id::c
-#: 950.data.seed-values.sql:4018
-msgid "Comic strips"
-msgstr "Bandes dessinées"
-
-#: 950.data.seed-values.sql:2252
-msgid "GUI: Suggest claims_returned_count field on patron registration"
-msgstr ""
-
-#: 950.data.seed-values.sql:2548 950.data.seed-values.sql:2551
-#: 950.data.seed-values.sql:2552 950.data.seed-values.sql:2558
+#: 950.data.seed-values.sql:4825 950.data.seed-values.sql:4828
+#: 950.data.seed-values.sql:4829 950.data.seed-values.sql:4835
 msgid "Miscellaneous"
 msgstr "Divers"
 
-#: 950.data.seed-values.sql:1721 950.data.seed-values.sql:1722
-msgid "Holds: Soft boundary"
-msgstr ""
-
-#: 950.data.seed-values.sql:1782
-msgid "Alert staff when the last copy for a record is being deleted"
-msgstr ""
+# id::clm.value__nor
+# id::nor
+#: 950.data.seed-values.sql:6104
+msgid "Norwegian"
+msgstr "Norvégien"
 
 # id::aou.name__7
 # id::7
-#: 950.data.seed-values.sql:376
+#: 950.data.seed-values.sql:455
 msgid "Example Branch 4"
 msgstr "Exemple de succursale 4"
 
 # id::aout.opac_label__1
-#: 950.data.seed-values.sql:348
+#: 950.data.seed-values.sql:427
 msgid "Everywhere"
 msgstr "Partout"
 
 # id::aou.name__6
 # id::6
-#: 950.data.seed-values.sql:374
+#: 950.data.seed-values.sql:453
 msgid "Example Branch 3"
 msgstr "Exemple de succursale 3"
 
 # id::aou.name__4
 # id::4
-#: 950.data.seed-values.sql:370
+#: 950.data.seed-values.sql:449
 msgid "Example Branch 1"
 msgstr "Exemple de succursale 1"
 
 # id::clm.value__kom
 # id::kom
-#: 950.data.seed-values.sql:3729
+#: 950.data.seed-values.sql:6016
 msgid "Komi"
 msgstr "Komi"
 
+#: 950.data.seed-values.sql:9926
+msgid "Library of Congress standard authority record control semantics"
+msgstr ""
+
 # id::clm.value__hit
 # id::hit
-#: 950.data.seed-values.sql:3679
+#: 950.data.seed-values.sql:5966
 msgid "Hittite"
 msgstr "Hittite"
 
-# id::cifm.value__s
-# id::s
-#: 950.data.seed-values.sql:4038
-msgid "Electronic"
-msgstr "Électronique"
-
-# id::clm.value__nep
-# id::nep
-#: 950.data.seed-values.sql:3808
-msgid "Nepali"
-msgstr "Népalais"
-
 # id::clm.value__tuk
 # id::tuk
-#: 950.data.seed-values.sql:3945
+#: 950.data.seed-values.sql:6232
 msgid "Turkmen"
 msgstr "Türkmène"
 
-#: 950.data.seed-values.sql:2388
-msgid "GUI: Suggest second_given_name field on patron registration"
+#: 950.data.seed-values.sql:9981
+msgid "See Also Tracing -- Topical Term"
 msgstr ""
 
 # id::clm.value__suk
 # id::suk
-#: 950.data.seed-values.sql:3908
+#: 950.data.seed-values.sql:6195
 msgid "Sukuma"
 msgstr "Sukuma"
 
 # id::citm.value__p
 # id::p
-#: 950.data.seed-values.sql:4006
+#: 950.data.seed-values.sql:6293
 msgid "Mixed materials"
 msgstr "Documents divers"
 
-#: 950.data.seed-values.sql:6470
-msgid "Fund Spending Limit for Warning"
-msgstr "Limite des fonds dépensés avant avertissement"
-
-#: 950.data.seed-values.sql:2273
-msgid ""
-"The day_phone field will be suggested on the patron registration screen. "
-"Suggesting a field makes it appear when suggested fields are shown. If the "
-"field is shown or required this setting is ignored."
+#: 950.data.seed-values.sql:2456
+msgid "Security"
 msgstr ""
 
 # id::ccs.name__8
 # id::8
-#: 950.data.seed-values.sql:226
+#: 950.data.seed-values.sql:305
 msgid "On holds shelf"
 msgstr "Étagère des articles mis en réserve"
 
-#: 950.data.seed-values.sql:1687
-msgid ""
-"Amount of time after a hold is placed before the hold expires.  Example "
-"\"100 days\""
+#: 950.data.seed-values.sql:11432
+msgid "Verification via srfsh"
 msgstr ""
+
+# id::clm.value__ypk
+# id::ypk
+#: 950.data.seed-values.sql:6267
+msgid "Yupik languages"
+msgstr "Langues yupiks"
 
 # id::clm.value__tvl
 # id::tvl
-#: 950.data.seed-values.sql:3950
+#: 950.data.seed-values.sql:6237
 msgid "Tuvaluan"
 msgstr "Tuvaluan"
 
-#: 950.data.seed-values.sql:2017
-msgid ""
-"Maximum entries for \"Most Recently Affected Patrons...\" section of the "
-"Work Log interface."
+#: 950.data.seed-values.sql:10067
+msgid "No attempt to code"
 msgstr ""
-"Maximum d’entrées pour la section \\\"Most Recently Affected Patrons...\\\" "
-"dans l’interface du journal de travail"
-
-# id::clm.value__bak
-# id::bak
-#: 950.data.seed-values.sql:3538
-msgid "Bashkir"
-msgstr "Bashkir"
-
-# id::clm.value__kua
-# id::kua
-#: 950.data.seed-values.sql:3736
-msgid "Kuanyama"
-msgstr "Ovambo"
 
 # id::clm.value__nso
 # id::nso
-#: 950.data.seed-values.sql:3818
+#: 950.data.seed-values.sql:6105
 msgid "Northern Sotho"
 msgstr "Sotho du Nord"
 
-# id::clm.value__bai
-# id::bai
-#: 950.data.seed-values.sql:3537
-msgid "Bamileke languages"
-msgstr "Langues bamilekes"
-
 # id::clm.value__bej
 # id::bej
-#: 950.data.seed-values.sql:3545
+#: 950.data.seed-values.sql:5832
 msgid "Beja"
 msgstr "Beja"
 
-# id::i18n_l.name__es-MX
-#: 950.data.seed-values.sql:265
-msgid "Spanish (Mexico)"
-msgstr "Espagnol (Mexique)"
+# id::clm.value__gem
+# id::gem
+#: 950.data.seed-values.sql:5936
+msgid "Germanic (Other)"
+msgstr "Germanique (Autre)"
 
-#: 950.data.seed-values.sql:2007
-msgid "Often \"PayPal\" or \"VeriSign\", sometimes others"
+# id::cza.label__9 id::cza.label__18 id::cza.label__27
+#: 950.data.seed-values.sql:376 950.data.seed-values.sql:397
+#: 950.data.seed-values.sql:416
+msgid "Item Type"
+msgstr "Type d'article"
+
+#: 950.data.seed-values.sql:9258
+msgid "Perm failure creating a record"
 msgstr ""
 
 # id::clm.value__kab
 # id::kab
-#: 950.data.seed-values.sql:3709
+#: 950.data.seed-values.sql:5996
 msgid "Kabyle"
 msgstr "Kabyle"
 
 # id::crcd.name__10
 # id::10
-#: 950.data.seed-values.sql:183
+#: 950.data.seed-values.sql:262
 msgid "14_days_2_renew"
 msgstr "14_jours_2_renouvellements"
 
 # id::cit.name__2
 # id::2
-#: 950.data.seed-values.sql:159
+#: 950.data.seed-values.sql:238
 msgid "SSN"
 msgstr "SSN"
 
 # id::clm.value__got
 # id::got
-#: 950.data.seed-values.sql:3662
+#: 950.data.seed-values.sql:5949
 msgid "Gothic"
 msgstr "Gotique"
 
 # id::clm.value__tmh
 # id::tmh
-#: 950.data.seed-values.sql:3936
+#: 950.data.seed-values.sql:6223
 msgid "Tamashek"
 msgstr "Tamacheq"
 
 # id::clm.value__kaa
 # id::kaa
-#: 950.data.seed-values.sql:3708
+#: 950.data.seed-values.sql:5995
 msgid "Kara-Kalpak"
 msgstr "Kara-kalpak"
 
 # id::clm.value__swa
 # id::swa
-#: 950.data.seed-values.sql:3912
+#: 950.data.seed-values.sql:6199
 msgid "Swahili"
 msgstr "Swahili"
 
-#: 950.data.seed-values.sql:6487
-msgid "Non-library Item"
-msgstr "Pas un article de bibliothèque"
-
 # id::clm.value__car
 # id::car
-#: 950.data.seed-values.sql:3568
+#: 950.data.seed-values.sql:5855
 msgid "Carib"
 msgstr "Caribe"
 
 # id::aout.name__4
-#: 950.data.seed-values.sql:356
+#: 950.data.seed-values.sql:435
 msgid "Sub-library"
 msgstr "Sous-bibliothèque"
 
-#: 950.data.seed-values.sql:2329
-msgid ""
-"The evening_phone field will be suggested on the patron registration screen. "
-"Suggesting a field makes it appear when suggested fields are shown. If the "
-"field is shown or required this setting is ignored."
-msgstr ""
-
 # id::clm.value__chr
 # id::chr
-#: 950.data.seed-values.sql:3583
+#: 950.data.seed-values.sql:5870
 msgid "Cherokee"
 msgstr "Cherokee"
 
-# id::citm.value__f
-# id::f
-#: 950.data.seed-values.sql:4008
-msgid "Manuscript cartographic material"
-msgstr "Document cartographique manuscrit"
-
-#: 950.data.seed-values.sql:1817
-msgid "Void processing fee when lost item returned"
+#: 950.data.seed-values.sql:9946
+msgid "Heading -- Geographic Subdivision"
 msgstr ""
 
-# id::vqbrad.description__9
-#: 950.data.seed-values.sql:2488
-msgid "TCN Value"
-msgstr "Valeur de NCT"
+# id::ccs.name__5
+# id::5
+#: 950.data.seed-values.sql:302
+msgid "In process"
+msgstr "En traitement"
 
-#: 950.data.seed-values.sql:7241 950.data.seed-values.sql:7242
+#: 950.data.seed-values.sql:35
+msgid "Alerting block on Circ and Renew"
+msgstr ""
+
+#: 950.data.seed-values.sql:2462
+msgid "Program"
+msgstr ""
+
+#: 950.data.seed-values.sql:8816 950.data.seed-values.sql:8817
 msgid "Historical Hold Retention Count"
 msgstr "Nombre historique de conservation d’articles mis en réserve"
 
-#: 950.data.seed-values.sql:2003
-msgid "Often the same thing as the login"
-msgstr ""
-
 # id::clm.value__mag
 # id::mag
-#: 950.data.seed-values.sql:3765
+#: 950.data.seed-values.sql:6052
 msgid "Magahi"
 msgstr "Magahi"
 
 # id::clm.value__paa
 # id::paa
-#: 950.data.seed-values.sql:3833
+#: 950.data.seed-values.sql:6120
 msgid "Papuan (Other)"
 msgstr "Papou (Autre)"
 
+# id::clm.value__jrb
+# id::jrb
+#: 950.data.seed-values.sql:5994
+msgid "Judeo-Arabic"
+msgstr "Judéo-arabe"
+
 # id::clm.value__-mla id::clm.value__mlg
 # id::-mla
-#: 950.data.seed-values.sql:3784 950.data.seed-values.sql:3785
+#: 950.data.seed-values.sql:6071 950.data.seed-values.sql:6072
 msgid "Malagasy"
 msgstr "Malgache"
 
 # id::clm.value__tli
 # id::tli
-#: 950.data.seed-values.sql:3935
+#: 950.data.seed-values.sql:6222
 msgid "Tlingit"
 msgstr "Tlingit"
 
+#: 950.data.seed-values.sql:9983
+msgid "See Also Tracing -- Genre/Form Term"
+msgstr ""
+
+#: 950.data.seed-values.sql:9932
+msgid "See Also From Tracing -- Uniform Title"
+msgstr ""
+
 # id::clm.value__mao
 # id::mao
-#: 950.data.seed-values.sql:3771
+#: 950.data.seed-values.sql:6058
 msgid "Maori"
 msgstr "Maori"
 
-# id::clm.value__vie
-# id::vie
-#: 950.data.seed-values.sql:3963
-msgid "Vietnamese"
-msgstr "Vietnamien"
-
 # id::clm.value__frm
 # id::frm
-#: 950.data.seed-values.sql:3638
+#: 950.data.seed-values.sql:5925
 msgid "French, Middle (ca. 1400-1600)"
 msgstr "Moyen français (aux environs de 1400-1600)"
 
-#: 950.data.seed-values.sql:2416
-msgid "GUI: Example for phone fields on patron registration"
-msgstr ""
-
-#: 950.data.seed-values.sql:2392
-msgid "GUI: Show suffix field on patron registration"
-msgstr ""
+# id::clm.value__bai
+# id::bai
+#: 950.data.seed-values.sql:5824
+msgid "Bamileke languages"
+msgstr "Langues bamilekes"
 
 # id::clm.value__ibo
 # id::ibo
-#: 950.data.seed-values.sql:3685
+#: 950.data.seed-values.sql:5972
 msgid "Igbo"
 msgstr "Igbo"
 
+#: 950.data.seed-values.sql:11442
+msgid "Staff Client Login"
+msgstr ""
+
 # id::clm.value__lad
 # id::lad
-#: 950.data.seed-values.sql:3741
+#: 950.data.seed-values.sql:6028
 msgid "Ladino"
 msgstr "Ladino"
 
-# id::clm.value__srr
-# id::srr
-#: 950.data.seed-values.sql:3904
-msgid "Serer"
-msgstr "Sérère"
-
 # id::clm.value__cat
 # id::cat
-#: 950.data.seed-values.sql:3569
+#: 950.data.seed-values.sql:5856
 msgid "Catalan"
 msgstr "Catalan"
 
-# id::clm.value__kro
-# id::kro
-#: 950.data.seed-values.sql:3734
-msgid "Kru"
-msgstr "Kru"
+# id::clm.value__srr
+# id::srr
+#: 950.data.seed-values.sql:6191
+msgid "Serer"
+msgstr "Sérère"
 
 # id::cam.value__e
 # id::e
-#: 950.data.seed-values.sql:3994
+#: 950.data.seed-values.sql:6281
 msgid "Adult"
 msgstr "Adulte"
 
 # id::clm.value__phn
 # id::phn
-#: 950.data.seed-values.sql:3843
+#: 950.data.seed-values.sql:6130
 msgid "Phoenician"
 msgstr "Phénicien"
 
-#: 950.data.seed-values.sql:2036
-msgid "Circulation: Self-serve password reset request time-to-live"
-msgstr ""
-"Prêts : Durée de vie d’une demande de rétablissement autonome du mot de passe"
-
 # id::clm.value__wen
 # id::wen
-#: 950.data.seed-values.sql:3971
+#: 950.data.seed-values.sql:6258
 msgid "Sorbian languages"
 msgstr "Langues sorabes"
 
+#: 950.data.seed-values.sql:9953
+msgid "See Also From Tracing -- Corporate Name"
+msgstr ""
+
+#: 950.data.seed-values.sql:9233
+msgid "Import failed due to invalid circulation modifier"
+msgstr ""
+
 # id::cam.value__a
 # id::a
-#: 950.data.seed-values.sql:3990
+#: 950.data.seed-values.sql:6277
 msgid "Preschool"
 msgstr "Préscolaire"
 
 # id::clm.value__sel
 # id::sel
-#: 950.data.seed-values.sql:3874
+#: 950.data.seed-values.sql:6161
 msgid "Selkup"
 msgstr "Selkoup"
 
-# id::crcd.name__4
-# id::4
-#: 950.data.seed-values.sql:171
-msgid "3_days_1_renew"
-msgstr "3_jours_1_renouvellement"
-
 # id::clm.value__nob
 # id::nob
-#: 950.data.seed-values.sql:3814
+#: 950.data.seed-values.sql:6101
 msgid "Norwegian (Bokmål)"
 msgstr "Norvégien (Bokmål)"
 
-#: 950.data.seed-values.sql:1791 950.data.seed-values.sql:1792
-msgid "Charge item price when marked damaged"
+#: 950.data.seed-values.sql:2459
+msgid "Circulation"
 msgstr ""
 
 # id::clm.value__bal
 # id::bal
-#: 950.data.seed-values.sql:3539
+#: 950.data.seed-values.sql:5826
 msgid "Baluchi"
 msgstr "Baluchi"
 
-#: 950.data.seed-values.sql:1732
-msgid "Regular expression defining the password format"
-msgstr ""
-
-#: 950.data.seed-values.sql:2400
-msgid "GUI: Require county field on patron registration"
-msgstr ""
-
 # id::clm.value__pan
 # id::pan
-#: 950.data.seed-values.sql:3837
+#: 950.data.seed-values.sql:6124
 msgid "Panjabi"
 msgstr "Panjabi"
 
 # id::clm.value__oss
 # id::oss
-#: 950.data.seed-values.sql:3830
+#: 950.data.seed-values.sql:6117
 msgid "Ossetic"
 msgstr "Ossète"
 
-#: 950.data.seed-values.sql:1947
-msgid "AuthorizeNet login"
-msgstr ""
+# id::clm.value__khi
+# id::khi
+#: 950.data.seed-values.sql:6008
+msgid "Khoisan (Other)"
+msgstr "Khoin (Autre)"
 
 # id::clm.value__raj
 # id::raj
-#: 950.data.seed-values.sql:3852
+#: 950.data.seed-values.sql:6139
 msgid "Rajasthani"
 msgstr "Rajasthani"
 
-# id::clm.value__nia
-# id::nia
-#: 950.data.seed-values.sql:3810
-msgid "Nias"
-msgstr "Nias"
+# id::clm.value__non
+# id::non
+#: 950.data.seed-values.sql:6103
+msgid "Old Norse"
+msgstr "Vieil islandais"
 
 # id::acpl.name__1
 # id::1
-#: 950.data.seed-values.sql:1596
+#: 950.data.seed-values.sql:2394
 msgid "Stacks"
 msgstr "Piles"
 
 # id::clm.value__hau
 # id::hau
-#: 950.data.seed-values.sql:3672
+#: 950.data.seed-values.sql:5959
 msgid "Hausa"
 msgstr "Haoussa"
 
-#: 950.data.seed-values.sql:2566
+#: 950.data.seed-values.sql:4843
 msgid "Cancel Holds"
 msgstr "Annuler les articles mis en réserve"
 
 # id::clm.value__arn
 # id::arn
-#: 950.data.seed-values.sql:3523
+#: 950.data.seed-values.sql:5810
 msgid "Mapuche"
 msgstr "Mapuche"
 
@@ -2203,26 +1932,32 @@ msgstr "Mapuche"
 msgid "Set"
 msgstr ""
 
-#: 950.data.seed-values.sql:2396
-msgid "GUI: Suggest suffix field on patron registration"
+# id::clm.value__mol
+# id::mol
+#: 950.data.seed-values.sql:6078
+msgid "Moldavian"
+msgstr "Moldave"
+
+#: 950.data.seed-values.sql:9968
+msgid "Established Heading Linking Entry -- Topical Term"
 msgstr ""
 
-#: 950.data.seed-values.sql:1716 950.data.seed-values.sql:1717
-msgid "Holds: Hard boundary"
+#: 950.data.seed-values.sql:9940
+msgid "Heading -- Corporate Name"
 msgstr ""
 
-#: 950.data.seed-values.sql:44
+#: 950.data.seed-values.sql:117
 msgid "Translated Title"
 msgstr "Titre traduit"
 
 # id::clm.value__kum
 # id::kum
-#: 950.data.seed-values.sql:3737
+#: 950.data.seed-values.sql:6024
 msgid "Kumyk"
 msgstr "Kumyk"
 
 # id::vqbrad.description__14
-#: 950.data.seed-values.sql:2493
+#: 950.data.seed-values.sql:4770
 msgid "Edition"
 msgstr "Édition"
 
@@ -2230,407 +1965,339 @@ msgstr "Édition"
 msgid "Back-to-back"
 msgstr ""
 
-#: 950.data.seed-values.sql:1927
-msgid ""
-"When true, the Date of Birth column in patron lists will default to Not "
-"Visible, and in the Patron Summary sidebar the value will display as "
-"<Hidden> unless the field label is clicked."
+#: 950.data.seed-values.sql:40
+msgid "Patron has an invalid address"
 msgstr ""
 
 # id::clm.value__ava
 # id::ava
-#: 950.data.seed-values.sql:3531
+#: 950.data.seed-values.sql:5818
 msgid "Avaric"
 msgstr "Avaric"
 
-#: 950.data.seed-values.sql:2047
-msgid ""
-"Show fully compressed serial holdings for all libraries at and below the "
-"current context unit"
+#: 950.data.seed-values.sql:27
+msgid "Patron exceeds max checked out item threshold"
 msgstr ""
 
-#: 950.data.seed-values.sql:1752
-msgid ""
-"When predicting the amount of time a patron will be waiting for a hold to be "
-"fulfilled, this is the minimum estimated length of time to assume an item "
-"will be checked out. Examples: \"2 weeks\", \"5 days\""
+# id::clm.value__uig
+# id::uig
+#: 950.data.seed-values.sql:6242
+msgid "Uighur"
+msgstr "Ouïgour"
+
+#: 950.data.seed-values.sql:176
+msgid "LC Control Number"
 msgstr ""
 
-#: 950.data.seed-values.sql:1961
-msgid "Credit card processing: AuthorizeNet test mode"
+#: 950.data.seed-values.sql:1570
+msgid "Can do anything at the Branch level"
 msgstr ""
 
-# id::clm.value__afa
-# id::afa
-#: 950.data.seed-values.sql:3507
-msgid "Afroasiatic (Other)"
-msgstr "Afro-asiatique (Autre)"
-
-#: 950.data.seed-values.sql:1922
-msgid ""
-"When this count is exceeded, a staff override is required to mark the item "
-"as claims returned"
+#: 950.data.seed-values.sql:11424
+msgid "Login via gateway-v1"
 msgstr ""
 
 # id::clm.value__gmh
 # id::gmh
-#: 950.data.seed-values.sql:3658
+#: 950.data.seed-values.sql:5945
 msgid "German, Middle High (ca. 1050-1500)"
 msgstr "Haut-allemand moyen (aux environs de 1050-1500)"
-
-# id::clm.value__kho
-# id::kho
-#: 950.data.seed-values.sql:3723
-msgid "Khotanese"
-msgstr "Khotanais"
 
 # id::cza.label__2 id::cza.label__11 id::cza.label__20
 # id::vqbrad.description__5
 # id::2
 # id::6
-#: 950.data.seed-values.sql:79 950.data.seed-values.sql:283
-#: 950.data.seed-values.sql:304 950.data.seed-values.sql:323
-#: 950.data.seed-values.sql:2484
+#: 950.data.seed-values.sql:152 950.data.seed-values.sql:362
+#: 950.data.seed-values.sql:383 950.data.seed-values.sql:402
+#: 950.data.seed-values.sql:4761
 msgid "ISBN"
 msgstr "ISBN"
 
 # id::clm.value__mai
 # id::mai
-#: 950.data.seed-values.sql:3767
+#: 950.data.seed-values.sql:6054
 msgid "Maithili"
 msgstr "Maithili"
 
-#: 950.data.seed-values.sql:2293
-msgid "The Example for validation on the email field in patron registration."
+#: 950.data.seed-values.sql:1559
+msgid "Circulators"
+msgstr "Ouvrages à prêter"
+
+#: 950.data.seed-values.sql:9949
+msgid "Heading -- Chronological Term"
 msgstr ""
 
 # id::clm.value__tai
 # id::tai
-#: 950.data.seed-values.sql:3918
+#: 950.data.seed-values.sql:6205
 msgid "Tai (Other)"
 msgstr "Tai (Autre)"
 
 # id::clm.value__tpi
 # id::tpi
-#: 950.data.seed-values.sql:3939
+#: 950.data.seed-values.sql:6226
 msgid "Tok Pisin"
 msgstr "Tok Pisin"
 
 # id::clm.value__jpn
 # id::jpn
-#: 950.data.seed-values.sql:3705
+#: 950.data.seed-values.sql:5992
 msgid "Japanese"
 msgstr "Japonais"
 
-#: 950.data.seed-values.sql:68
+#: 950.data.seed-values.sql:141
 msgid "Topic Subject"
 msgstr "Rubrique"
 
+#: 950.data.seed-values.sql:10065
+msgid "Repertoire de vedettes-matiere"
+msgstr ""
+
+#: 950.data.seed-values.sql:25
+msgid "Patron exceeds max overdue item threshold"
+msgstr ""
+
 # id::cit.name__3
 # id::3
-#: 950.data.seed-values.sql:161
+#: 950.data.seed-values.sql:240 950.data.seed-values.sql:10066
 msgid "Other"
 msgstr "Autre"
 
 # id::clm.value__peo
 # id::peo
-#: 950.data.seed-values.sql:3840
+#: 950.data.seed-values.sql:6127
 msgid "Old Persian (ca. 600-400 B.C.)"
 msgstr "Vieux perse (aux environs de 600 à 400 avant J.-C.)"
 
-# id::citm.value__c
-# id::c
-#: 950.data.seed-values.sql:4009
-msgid "Notated music"
-msgstr "Musique annotée"
+#: 950.data.seed-values.sql:9962
+msgid "See Also From Tracing -- Chronological Term"
+msgstr ""
 
 # id::citm.value__k
 # id::k
-#: 950.data.seed-values.sql:4003
+#: 950.data.seed-values.sql:6290
 msgid "Two-dimensional nonprojectable graphic"
 msgstr "Schéma non projetable à deux dimensions"
 
 # id::clm.value__ban
 # id::ban
-#: 950.data.seed-values.sql:3541
+#: 950.data.seed-values.sql:5828
 msgid "Balinese"
 msgstr "Balinais"
 
-#: 950.data.seed-values.sql:1956
-msgid "Credit card processing: AuthorizeNet server"
-msgstr ""
+#: 950.data.seed-values.sql:8795 950.data.seed-values.sql:8796
+msgid "Historical Circulation Retention Start Date"
+msgstr "Date de début historique de la conservation pour prêt"
 
-#: 950.data.seed-values.sql:2404
-msgid "GUI: Example for post_code field on patron registration"
-msgstr ""
+# id::clm.value__tkl
+# id::tkl
+#: 950.data.seed-values.sql:6221
+msgid "Tokelauan"
+msgstr "Tokelauan"
 
 # id::clm.value__doi
 # id::doi
-#: 950.data.seed-values.sql:3608
+#: 950.data.seed-values.sql:5895
 msgid "Dogri"
 msgstr "Dogra"
 
 # id::pgt.name__1
-#: 950.data.seed-values.sql:1386
+#: 950.data.seed-values.sql:1551
 msgid "Users"
 msgstr "Utilisateurs"
 
 # id::clm.value__lim
 # id::lim
-#: 950.data.seed-values.sql:3750
+#: 950.data.seed-values.sql:6037
 msgid "Limburgish"
 msgstr "Limburgish"
 
-# id::vqbrad.description__1
-#: 950.data.seed-values.sql:2480
-msgid "Title of work"
-msgstr "Titre de l'oeuvre"
+# id::clm.value__egy
+# id::egy
+#: 950.data.seed-values.sql:5903
+msgid "Egyptian"
+msgstr "Égyptien"
 
-# id::vqbrad.description__7
-#: 950.data.seed-values.sql:2486
-msgid "Price"
-msgstr "Prix"
+#: 950.data.seed-values.sql:1578
+msgid "Global Administrator"
+msgstr ""
 
 # id::clm.value__tyv
 # id::tyv
-#: 950.data.seed-values.sql:3952
+#: 950.data.seed-values.sql:6239
 msgid "Tuvinian"
 msgstr "Tuvinian"
 
-#: 950.data.seed-values.sql:57
-msgid "Conference Author"
-msgstr "Auteur de la conférence"
+#: 950.data.seed-values.sql:2465
+msgid "Credit Card Processing"
+msgstr ""
 
 # id::citm.value__o
 # id::o
-#: 950.data.seed-values.sql:4005
+#: 950.data.seed-values.sql:6292
 msgid "Kit"
 msgstr "Trousse"
 
-#: 950.data.seed-values.sql:1846
-msgid "GUI: Idle timeout"
-msgstr ""
-
-#: 950.data.seed-values.sql:1841
-msgid "Show billing tab first when bills are present"
-msgstr ""
-
-#: 950.data.seed-values.sql:2364
-msgid "GUI: Example for other_phone field on patron registration"
-msgstr ""
+#: 950.data.seed-values.sql:8647
+msgid "Processing Fee"
+msgstr "Frais de traitement"
 
 # id::clm.value__mul
 # id::mul
-#: 950.data.seed-values.sql:3794
+#: 950.data.seed-values.sql:6081
 msgid "Multiple languages"
 msgstr "Langues multiples"
 
 # id::clm.value__mlt
 # id::mlt
-#: 950.data.seed-values.sql:3786
+#: 950.data.seed-values.sql:6073
 msgid "Maltese"
 msgstr "Maltais"
 
 # id::clm.value__asm
 # id::asm
-#: 950.data.seed-values.sql:3527
+#: 950.data.seed-values.sql:5814
 msgid "Assamese"
 msgstr "Assamais"
 
-#: 950.data.seed-values.sql:6479
-msgid ""
-"When the amount remaining in the fund, including spent money and "
-"encumbrances, goes below this percentage, attempts to spend from the fund "
-"will be blocked."
+#: 950.data.seed-values.sql:9238
+msgid "Import failed due to Accession Number collision"
 msgstr ""
-"Quand le montant qui reste dans le fonds, incluant l’argent dépensé et les "
-"créances, arrive en dessous de ce pourcentage, des tentatives de dépenser "
-"des sommes du fonds seront bloquées"
 
 # id::citm.value__r
 # id::r
-#: 950.data.seed-values.sql:4004
+#: 950.data.seed-values.sql:6291
 msgid "Three-dimensional artifact or naturally occurring object"
 msgstr "Artefact à trois dimensions ou objet d’origine naturelle"
 
 # id::vqbrad.description__8
-#: 950.data.seed-values.sql:77 950.data.seed-values.sql:2487
+#: 950.data.seed-values.sql:150 950.data.seed-values.sql:4764
 msgid "Accession Number"
 msgstr "Numéro de versement"
 
-# id::clm.value__que
-# id::que
-#: 950.data.seed-values.sql:3851
-msgid "Quechua"
-msgstr "Quechua"
-
-#: 950.data.seed-values.sql:74
+#: 950.data.seed-values.sql:147
 msgid "All Subjects"
 msgstr "Tous les sujets"
 
 # id::clm.value__tsn id::clm.value__-tsw
 # id::tsn
-#: 950.data.seed-values.sql:3942 950.data.seed-values.sql:3944
+#: 950.data.seed-values.sql:6229 950.data.seed-values.sql:6231
 msgid "Tswana"
 msgstr "Bechouana"
 
 # id::crmf.name__6
 # id::6
-#: 950.data.seed-values.sql:199
+#: 950.data.seed-values.sql:278
 msgid "overdue_equip_mid"
 msgstr "retard_équipement_moyen"
 
 # id::clm.value__cop
 # id::cop
-#: 950.data.seed-values.sql:3588
+#: 950.data.seed-values.sql:5875
 msgid "Coptic"
 msgstr "Copte"
 
 # id::crmf.name__5
 # id::5
-#: 950.data.seed-values.sql:197
+#: 950.data.seed-values.sql:276
 msgid "overdue_equip_min"
 msgstr "retard_équipement_minimum"
 
 # id::clm.value__ltz
 # id::ltz
-#: 950.data.seed-values.sql:3755
+#: 950.data.seed-values.sql:6042
 msgid "Letzeburgesch"
 msgstr "Letzeburgesch"
 
-#: 950.data.seed-values.sql:1852
-msgid ""
-"The # of uses entry in the Record In-House Use interface may not exceed the "
-"value of this setting."
-msgstr ""
+# id::clm.value__-fri id::clm.value__fry
+# id::-fri
+#: 950.data.seed-values.sql:5924 950.data.seed-values.sql:5927
+msgid "Frisian"
+msgstr "Frison"
 
 # id::clm.value__myn
 # id::myn
-#: 950.data.seed-values.sql:3798
+#: 950.data.seed-values.sql:6085
 msgid "Mayan languages"
 msgstr "Langues mayas"
 
-#: 950.data.seed-values.sql:1761
-msgid "Selfcheck: Pop-up alert for errors"
-msgstr ""
+# id::clm.value__por
+# id::por
+#: 950.data.seed-values.sql:6134
+msgid "Portuguese"
+msgstr "Portuguais"
 
-# id::ccs.name__2
-# id::2
-#: 950.data.seed-values.sql:220
-msgid "Bindery"
-msgstr "Atelier de reliure"
+# id::clm.value__ace
+# id::ace
+#: 950.data.seed-values.sql:5790
+msgid "Achinese"
+msgstr "Aceh"
 
 # id::cit.name__1
 # id::1
-#: 950.data.seed-values.sql:157
+#: 950.data.seed-values.sql:236
 msgid "Drivers License"
 msgstr "Permis de conduire"
 
-#: 950.data.seed-values.sql:1995
-msgid "PayflowPro password"
-msgstr ""
-
-#: 950.data.seed-values.sql:1776
-msgid "Retain empty bib records"
+#: 950.data.seed-values.sql:9971
+msgid "Subdivision Linking Entry -- General Subdivision"
 msgstr ""
 
 # id::clm.value__ter
 # id::ter
-#: 950.data.seed-values.sql:3925
+#: 950.data.seed-values.sql:6212
 msgid "Terena"
 msgstr "Terena"
 
-# id::clm.value__che
-# id::che
-#: 950.data.seed-values.sql:3575
-msgid "Chechen"
-msgstr "Tchétchène"
-
-#: 950.data.seed-values.sql:2224
-msgid "GUI: Show alias field on patron registration"
-msgstr ""
-
 # id::clm.value__ave
 # id::ave
-#: 950.data.seed-values.sql:3532
+#: 950.data.seed-values.sql:5819
 msgid "Avestan"
 msgstr "Avesta"
 
-#: 950.data.seed-values.sql:91
+#: 950.data.seed-values.sql:164
 msgid "SICI"
 msgstr "SICI"
 
-#: 950.data.seed-values.sql:1970
-msgid "Credit card processing: PayPal login"
-msgstr ""
-
 # id::clm.value__min
 # id::min
-#: 950.data.seed-values.sql:3781
+#: 950.data.seed-values.sql:6068
 msgid "Minangkabau"
 msgstr "Minangkabau"
 
-#: 950.data.seed-values.sql:2304
-msgid "GUI: Show email field on patron registration"
-msgstr ""
-
-# id::clm.value__geo
-# id::geo
-#: 950.data.seed-values.sql:3650
-msgid "Georgian"
-msgstr "Géorgien"
-
 # id::clm.value__him
 # id::him
-#: 950.data.seed-values.sql:3677
+#: 950.data.seed-values.sql:5964
 msgid "Himachali"
 msgstr "Himachali"
 
-#: 950.data.seed-values.sql:1701 950.data.seed-values.sql:1702
-msgid "Void overdue fines when items are marked lost"
+#: 950.data.seed-values.sql:11443
+msgid "Self-Check Proxy Login"
 msgstr ""
 
 # id::cblvl.value__i
 # id::i
-#: 950.data.seed-values.sql:4045
+#: 950.data.seed-values.sql:6332
 msgid "Integrating resource"
 msgstr "Ressource intégrée"
 
-#: 950.data.seed-values.sql:2312
-msgid "GUI: Example for evening_phone field on patron registration"
-msgstr ""
-
-#: 950.data.seed-values.sql:2344
-msgid "GUI: Suggest ident_value2 field on patron registration"
-msgstr ""
+# id::clm.value__znd
+# id::znd
+#: 950.data.seed-values.sql:6271
+msgid "Zande"
+msgstr "Azande"
 
 # id::clm.value__fro
 # id::fro
-#: 950.data.seed-values.sql:3639
+#: 950.data.seed-values.sql:5926
 msgid "French, Old (ca. 842-1400)"
 msgstr "Ancien français (aux environs de 842-1400)"
 
-#: 950.data.seed-values.sql:1912
-msgid ""
-"Disable automatic print attempts from staff client interfaces for the "
-"receipt types in this list.  Possible values: \"Checkout\", \"Bill Pay\", "
-"\"Hold Slip\", \"Transit Slip\", and \"Hold/Transit Slip\".  This is "
-"different from the Auto-Print checkbox in the pertinent interfaces in that "
-"it disables automatic print attempts altogether, rather than encouraging "
-"silent printing by suppressing the print dialog.  The Auto-Print checkbox in "
-"these interfaces have no effect on the behavior for this setting.  In the "
-"case of the Hold, Transit, and Hold/Transit slips, this also suppresses the "
-"alert dialogs that precede the print dialog (the ones that offer Print and "
-"Do Not Print as options)."
-msgstr ""
-
-#: 950.data.seed-values.sql:6484
-msgid "Processing Fee"
-msgstr "Frais de traitement"
-
-#: 950.data.seed-values.sql:1861 950.data.seed-values.sql:1862
-msgid "Default circulation modifier"
-msgstr ""
+# id::clm.value__sit
+# id::sit
+#: 950.data.seed-values.sql:6170
+msgid "Sino-Tibetan (Other)"
+msgstr "Sino-tibétain (Autre)"
 
 #: 950.data.seed-values.sql:11
 msgid "Bound Volume"
@@ -2638,409 +2305,349 @@ msgstr ""
 
 # id::clm.value__-eth id::clm.value__gez
 # id::-eth
-#: 950.data.seed-values.sql:3625 950.data.seed-values.sql:3652
+#: 950.data.seed-values.sql:5912 950.data.seed-values.sql:5939
 msgid "Ethiopic"
 msgstr "Éthiopien"
 
-#: 950.data.seed-values.sql:2332
-msgid "GUI: Show ident_value field on patron registration"
+#: 950.data.seed-values.sql:9931
+msgid "Heading -- Uniform Title"
 msgstr ""
 
 # id::clm.value__sma
 # id::sma
-#: 950.data.seed-values.sql:3887
+#: 950.data.seed-values.sql:6174
 msgid "Southern Sami"
 msgstr "Lapon du Sud"
 
-# id::clm.value__cpf
-# id::cpf
-#: 950.data.seed-values.sql:3592
-msgid "Creoles and Pidgins, French-based (Other)"
-msgstr "Langues créoles et pidgin, français (Autre)"
-
 # id::ccs.name__13
 # id::13
-#: 950.data.seed-values.sql:231
+#: 950.data.seed-values.sql:310
 msgid "Discard/Weed"
 msgstr "Retrait/Triage"
 
+#: 950.data.seed-values.sql:2460
+msgid "Self Check"
+msgstr ""
+
 # id::clm.value__cor
 # id::cor
-#: 950.data.seed-values.sql:3589
+#: 950.data.seed-values.sql:5876
 msgid "Cornish"
 msgstr "Cornique"
 
 # id::clm.value__bul
 # id::bul
-#: 950.data.seed-values.sql:3563
+#: 950.data.seed-values.sql:5850
 msgid "Bulgarian"
 msgstr "Bulgare"
 
-#: 950.data.seed-values.sql:2313
-msgid ""
-"The Example for validation on the evening_phone field in patron registration."
-msgstr ""
-
-#: 950.data.seed-values.sql:2225
-msgid ""
-"The alias field will be shown on the patron registration screen. Showing a "
-"field makes it appear with required fields even when not required. If the "
-"field is required this setting is ignored."
-msgstr ""
-
-# id::clm.value__tir
-# id::tir
-#: 950.data.seed-values.sql:3932
-msgid "Tigrinya"
-msgstr "Tigrina"
-
-#: 950.data.seed-values.sql:1983
-msgid "PayPal test mode"
-msgstr ""
+# id::clm.value__roa
+# id::roa
+#: 950.data.seed-values.sql:6142
+msgid "Romance (Other)"
+msgstr "Sentimental (Autre)"
 
 # id::clm.value__yor
 # id::yor
-#: 950.data.seed-values.sql:3979
+#: 950.data.seed-values.sql:6266
 msgid "Yoruba"
 msgstr "Yoruba"
 
 # id::clm.value__arw
 # id::arw
-#: 950.data.seed-values.sql:3526
+#: 950.data.seed-values.sql:5813
 msgid "Arawak"
 msgstr "Arawak"
 
-#: 950.data.seed-values.sql:392
+#: 950.data.seed-values.sql:471
 msgid "Long Overdue Collection Fee"
 msgstr "Frais pour les collections  très en retard"
 
 # id::clm.value__fre
 # id::fre
-#: 950.data.seed-values.sql:3636
+#: 950.data.seed-values.sql:5923
 msgid "French"
 msgstr "Français"
 
 # id::clm.value__tog
 # id::tog
-#: 950.data.seed-values.sql:3937
+#: 950.data.seed-values.sql:6224
 msgid "Tonga (Nyasa)"
 msgstr "Tonga (Nyassa)"
 
 # id::clm.value__ben
 # id::ben
-#: 950.data.seed-values.sql:3548
+#: 950.data.seed-values.sql:5835
 msgid "Bengali"
 msgstr "Bengali"
 
-#: 950.data.seed-values.sql:1836
-msgid "OPAC: Allow pending addresses"
-msgstr ""
-
 # id::clm.value__bas
 # id::bas
-#: 950.data.seed-values.sql:3543
+#: 950.data.seed-values.sql:5830
 msgid "Basa"
 msgstr "Baasa"
 
-#: 950.data.seed-values.sql:1771
-msgid "Juvenile Age Threshold"
-msgstr ""
-
-#: 950.data.seed-values.sql:2261
-msgid ""
-"The Regular Expression for validation on the day_phone field in patron "
-"registration."
-msgstr ""
-
 # id::clfm.value__s
 # id::s
-#: 950.data.seed-values.sql:4027
+#: 950.data.seed-values.sql:6314
 msgid "Speeches"
 msgstr "Discours"
 
+#: 950.data.seed-values.sql:9970
+msgid "Established Heading Linking Entry -- Genre/Form Term"
+msgstr ""
+
 # id::cnct.name__1
 # id::1
-#: 950.data.seed-values.sql:153
+#: 950.data.seed-values.sql:232
 msgid "Paperback Book"
 msgstr "Livre de poche"
 
-#: 950.data.seed-values.sql:1686
-msgid "Holds: Expire Interval"
+# id::clm.value__nap
+# id::nap
+#: 950.data.seed-values.sql:6088
+msgid "Neapolitan Italian"
+msgstr "Italien napolitain"
+
+#: 950.data.seed-values.sql:1573
+msgid "Serials (includes admin features)"
 msgstr ""
 
-# id::clm.value__fin
-# id::fin
-#: 950.data.seed-values.sql:3633
-msgid "Finnish"
-msgstr "Finnois"
+#: 950.data.seed-values.sql:9954
+msgid "See Also From Tracing -- Meeting Name"
+msgstr ""
 
 # id::clm.value__sun
 # id::sun
-#: 950.data.seed-values.sql:3909
+#: 950.data.seed-values.sql:6196
 msgid "Sundanese"
 msgstr "Soudanais"
 
 # id::clm.value__alb
 # id::alb
-#: 950.data.seed-values.sql:3513
+#: 950.data.seed-values.sql:5800
 msgid "Albanian"
 msgstr "Albanais"
 
-#: 950.data.seed-values.sql:2565
+#: 950.data.seed-values.sql:4842
 msgid "View Holds"
 msgstr "Afficher les articles mis en réserve"
 
-#: 950.data.seed-values.sql:7120
-msgid ""
-"If there is an available copy at the requesting library that could fulfill a "
-"hold during hold placement time, alert the patron"
-msgstr ""
-"Si une copie est disponible à la bibliothèque faisant la demande et pourrait "
-"être mise en réserve durant la période de placement en réserve, en informer "
-"le client"
-
 # id::clm.value__osa
 # id::osa
-#: 950.data.seed-values.sql:3829
+#: 950.data.seed-values.sql:6116
 msgid "Osage"
 msgstr "Osage"
 
 # id::vqbrad.description__10
-#: 950.data.seed-values.sql:2489
+#: 950.data.seed-values.sql:4766
 msgid "TCN Source"
 msgstr "Source de NCT"
 
-#: 950.data.seed-values.sql:2012
-msgid ""
-"Maximum entries for \"Most Recent Staff Actions\" section of the Work Log "
-"interface."
-msgstr ""
-"Maximum d’entrées pour la section \\\"Most Recent Staff Actions\\\" dans "
-"l’interface du journal de travail"
-
-#: 950.data.seed-values.sql:66
+#: 950.data.seed-values.sql:139
 msgid "Temporal Subject"
 msgstr "Sujet temporel"
 
 # id::clm.value__-tag id::clm.value__tgl
 # id::-tag
-#: 950.data.seed-values.sql:3916 950.data.seed-values.sql:3928
+#: 950.data.seed-values.sql:6203 950.data.seed-values.sql:6215
 msgid "Tagalog"
 msgstr "Tagal"
 
 # id::clm.value__scc
 # id::scc
-#: 950.data.seed-values.sql:3871
+#: 950.data.seed-values.sql:6158
 msgid "Serbian"
 msgstr "Serbe"
 
+#: 950.data.seed-values.sql:9987
+msgid "See Also Tracing -- Form Subdivision"
+msgstr ""
+
 # id::clm.value__ast
 # id::ast
-#: 950.data.seed-values.sql:3528
+#: 950.data.seed-values.sql:5815
 msgid "Bable"
 msgstr "Bable"
 
 # id::cblvl.value__d
 # id::d
-#: 950.data.seed-values.sql:4044
+#: 950.data.seed-values.sql:6331
 msgid "Subunit"
 msgstr "Sous-unité"
 
 # id::clm.value__ita
 # id::ita
-#: 950.data.seed-values.sql:3703
+#: 950.data.seed-values.sql:5990
 msgid "Italian"
 msgstr "Italien"
 
+#: 950.data.seed-values.sql:11446
+msgid "LibraryElf Login"
+msgstr ""
+
 # id::clm.value__chb
 # id::chb
-#: 950.data.seed-values.sql:3574
+#: 950.data.seed-values.sql:5861
 msgid "Chibcha"
 msgstr "Chibcha"
 
 # id::aou.name__8
 # id::8
-#: 950.data.seed-values.sql:378
+#: 950.data.seed-values.sql:457
 msgid "Example Sub-library 1"
 msgstr "Exemple de sous-bibliothèque 1"
 
 # id::clm.value__nav
 # id::nav
-#: 950.data.seed-values.sql:3803
+#: 950.data.seed-values.sql:6090
 msgid "Navajo"
 msgstr "Navaho"
 
-# id::clm.value__mol
-# id::mol
-#: 950.data.seed-values.sql:3791
-msgid "Moldavian"
-msgstr "Moldave"
-
-#: 950.data.seed-values.sql:2241
-msgid ""
-"The claims_never_checked_out_count field will be shown on the patron "
-"registration screen. Showing a field makes it appear with required fields "
-"even when not required. If the field is required this setting is ignored."
-msgstr ""
-
 # id::clm.value__mno
 # id::mno
-#: 950.data.seed-values.sql:3789
+#: 950.data.seed-values.sql:6076
 msgid "Manobo languages"
 msgstr "Langues Manobo"
 
-#: 950.data.seed-values.sql:5363
-msgid "Selfcheck: Audio Alerts"
-msgstr "Auto-contrôle : alertes sonores"
-
 # id::clm.value__cha
 # id::cha
-#: 950.data.seed-values.sql:3573
+#: 950.data.seed-values.sql:5860
 msgid "Chamorro"
 msgstr "Chamorro"
 
 # id::clm.value__lua
 # id::lua
-#: 950.data.seed-values.sql:3756
+#: 950.data.seed-values.sql:6043
 msgid "Luba-Lulua"
 msgstr "Luba-Lulua"
 
-#: 950.data.seed-values.sql:1931
-msgid "GUI: Toggle off the patron summary sidebar after first view."
-msgstr ""
-
 # id::pgt.name__4
-#: 950.data.seed-values.sql:1392
+#: 950.data.seed-values.sql:1557
 msgid "Catalogers"
 msgstr "Catalogueurs"
 
 # id::clm.value__wak
 # id::wak
-#: 950.data.seed-values.sql:3966
+#: 950.data.seed-values.sql:6253
 msgid "Wakashan languages"
 msgstr "Langues wakashes"
 
 # id::clm.value__amh
 # id::amh
-#: 950.data.seed-values.sql:3516
+#: 950.data.seed-values.sql:5803
 msgid "Amharic"
 msgstr "Amharic"
 
 # id::crcd.name__11 id::crmf.name__1 id::crrf.name__1
 # id::11
-#: 950.data.seed-values.sql:185 950.data.seed-values.sql:189
-#: 950.data.seed-values.sql:205
+#: 950.data.seed-values.sql:264 950.data.seed-values.sql:268
+#: 950.data.seed-values.sql:284
 msgid "default"
 msgstr "par défaut"
 
-#: 950.data.seed-values.sql:390
+#: 950.data.seed-values.sql:469
 msgid "Overdue Materials"
 msgstr "Articles en retard"
 
 # id::clm.value__-taj id::clm.value__tgk
 # id::-taj
-#: 950.data.seed-values.sql:3919 950.data.seed-values.sql:3927
+#: 950.data.seed-values.sql:6206 950.data.seed-values.sql:6214
 msgid "Tajik"
 msgstr "Tadjik"
 
 # id::clm.value__rap
 # id::rap
-#: 950.data.seed-values.sql:3853
+#: 950.data.seed-values.sql:6140
 msgid "Rapanui"
 msgstr "Rapanui"
 
-#: 950.data.seed-values.sql:2228
-msgid "GUI: Suggest alias field on patron registration"
-msgstr ""
-
 # id::clm.value__urd
 # id::urd
-#: 950.data.seed-values.sql:3959
+#: 950.data.seed-values.sql:6246
 msgid "Urdu"
 msgstr "Urdu"
 
-#: 950.data.seed-values.sql:1866 950.data.seed-values.sql:1867
-msgid "Temporary barcode prefix"
+#: 950.data.seed-values.sql:9252
+msgid "Invalid value for \"circ_lib\""
+msgstr ""
+
+#: 950.data.seed-values.sql:10057
+msgid "Library of Congress Subject Headings"
 msgstr ""
 
 # id::clm.value__loz
 # id::loz
-#: 950.data.seed-values.sql:3754
+#: 950.data.seed-values.sql:6041
 msgid "Lozi"
 msgstr "Lozi"
 
+#: 950.data.seed-values.sql:9960
+msgid "See Also From Tracing -- Chronological Subdivision"
+msgstr ""
+
 # id::clm.value__gor
 # id::gor
-#: 950.data.seed-values.sql:3661
+#: 950.data.seed-values.sql:5948
 msgid "Gorontalo"
 msgstr "Gorontalo"
 
+#: 950.data.seed-values.sql:9967
+msgid "Established Heading Linking Entry -- Meeting Name"
+msgstr ""
+
 # id::clm.value__chg
 # id::chg
-#: 950.data.seed-values.sql:3576
+#: 950.data.seed-values.sql:5863
 msgid "Chagatai"
 msgstr "Djaghatai"
 
-#: 950.data.seed-values.sql:2041
-msgid ""
-"Circulation: Maximum concurrently active self-serve password reset requests"
-msgstr ""
-"Prêts : Maximum de demandes autonomes de rétablissement du mot de passe "
-"actives en même temps"
-
 # id::crcd.name__9
 # id::9
-#: 950.data.seed-values.sql:181
+#: 950.data.seed-values.sql:260
 msgid "28_days_0_renew"
 msgstr "28_jours_0_renouvellement"
 
 # id::ccs.name__11
 # id::11
-#: 950.data.seed-values.sql:229
+#: 950.data.seed-values.sql:308 950.data.seed-values.sql:2457
 msgid "Cataloging"
 msgstr "Catalogage"
 
-#: 950.data.seed-values.sql:1812
-msgid ""
-"Items that have been lost this long will not result in voided billings when "
-"returned.  E.g. '6 months'"
-msgstr ""
-
-#: 950.data.seed-values.sql:1661 950.data.seed-values.sql:1662
-msgid "Staff Login Inactivity Timeout (in seconds)"
-msgstr ""
+# id::crcd.name__4
+# id::4
+#: 950.data.seed-values.sql:250
+msgid "3_days_1_renew"
+msgstr "3_jours_1_renouvellement"
 
 # id::clm.value__art
 # id::art
-#: 950.data.seed-values.sql:3525
+#: 950.data.seed-values.sql:5812
 msgid "Artificial (Other)"
 msgstr "Artificiel (Autre)"
 
-#: 950.data.seed-values.sql:1772
-msgid ""
-"The age at which a user is no long considered a juvenile.  For example, \"18 "
-"years\"."
-msgstr ""
+# id::clm.value__nia
+# id::nia
+#: 950.data.seed-values.sql:6097
+msgid "Nias"
+msgstr "Nias"
 
-#: 950.data.seed-values.sql:404
+#: 950.data.seed-values.sql:483
 msgid "Damaged Item Processing Fee"
 msgstr "Frais de traitement d’un article endommagé"
 
-#: 950.data.seed-values.sql:1857
-msgid ""
-"In the Record In-House Use interface, a submission attempt will warn if the "
-"# of uses field exceeds the value of this setting."
-msgstr ""
+# id::vqbrad.description__9
+#: 950.data.seed-values.sql:4765
+msgid "TCN Value"
+msgstr "Valeur de NCT"
 
-# id::clm.value__uig
-# id::uig
-#: 950.data.seed-values.sql:3955
-msgid "Uighur"
-msgstr "Ouïgour"
+#: 950.data.seed-values.sql:29
+msgid "Patron exceeds pre-collections warning fine threshold"
+msgstr ""
 
 # id::clm.value__chy
 # id::chy
-#: 950.data.seed-values.sql:3586
+#: 950.data.seed-values.sql:5873
 msgid "Cheyenne"
 msgstr "Cheyenne"
 
@@ -3050,48 +2657,37 @@ msgstr ""
 
 # id::clm.value__fon
 # id::fon
-#: 950.data.seed-values.sql:3635
+#: 950.data.seed-values.sql:5922
 msgid "Fon"
 msgstr "Fon"
 
 # id::clm.value__awa
 # id::awa
-#: 950.data.seed-values.sql:3533
+#: 950.data.seed-values.sql:5820
 msgid "Awadhi"
 msgstr "Awadhi"
 
 # id::clm.value__cre
 # id::cre
-#: 950.data.seed-values.sql:3594
+#: 950.data.seed-values.sql:5881
 msgid "Cree"
 msgstr "Cri"
 
-#: 950.data.seed-values.sql:2361
-msgid ""
-"The master_account field will be suggested on the patron registration "
-"screen. Suggesting a field makes it appear when suggested fields are shown. "
-"If the field is shown or required this setting is ignored."
-msgstr ""
-
 # id::clm.value__oto
 # id::oto
-#: 950.data.seed-values.sql:3832
+#: 950.data.seed-values.sql:6119
 msgid "Otomian languages"
 msgstr "Langues otomangues"
 
-#: 950.data.seed-values.sql:1941
-msgid "Credit card processing: Enable AuthorizeNet payments"
-msgstr ""
-
-# id::clm.value__ace
-# id::ace
-#: 950.data.seed-values.sql:3503
-msgid "Achinese"
-msgstr "Aceh"
+# id::clm.value__nym
+# id::nym
+#: 950.data.seed-values.sql:6108
+msgid "Nyamwezi"
+msgstr "Nyamwezi"
 
 # id::clm.value__ind
 # id::ind
-#: 950.data.seed-values.sql:3695
+#: 950.data.seed-values.sql:5982
 msgid "Indonesian"
 msgstr "Indonésienne"
 
@@ -3103,148 +2699,132 @@ msgstr "Bien"
 
 # id::clm.value__den
 # id::den
-#: 950.data.seed-values.sql:3604
+#: 950.data.seed-values.sql:5891
 msgid "Slave"
 msgstr "Slave"
 
 # id::clm.value__uga
 # id::uga
-#: 950.data.seed-values.sql:3954
+#: 950.data.seed-values.sql:6241
 msgid "Ugaritic"
 msgstr "Ougaritique"
 
 # id::clm.value__haw
 # id::haw
-#: 950.data.seed-values.sql:3673
+#: 950.data.seed-values.sql:5960
 msgid "Hawaiian"
 msgstr "Hawaïen"
 
 # id::clm.value__mac
 # id::mac
-#: 950.data.seed-values.sql:3763
+#: 950.data.seed-values.sql:6050
 msgid "Macedonian"
 msgstr "Macédonien"
 
-#: 950.data.seed-values.sql:2212
-msgid "GUI: Suggest active field on patron registration"
-msgstr ""
-
 # id::clm.value__sid
 # id::sid
-#: 950.data.seed-values.sql:3880
+#: 950.data.seed-values.sql:6167
 msgid "Sidamo"
 msgstr "Sidamo"
 
-#: 950.data.seed-values.sql:1380
-msgid "Receive serial items"
-msgstr ""
-
-# id::clm.value__fij
-# id::fij
-#: 950.data.seed-values.sql:3632
-msgid "Fijian"
-msgstr "Fidjien"
-
 # id::clm.value__pro
 # id::pro
-#: 950.data.seed-values.sql:3849
+#: 950.data.seed-values.sql:6136
 msgid "Provençal (to 1500)"
 msgstr "Provençal (jusqu’à 1500)"
 
-#: 950.data.seed-values.sql:1801 950.data.seed-values.sql:1802
-msgid "Charge processing fee for damaged items"
-msgstr ""
+#: 950.data.seed-values.sql:4837
+msgid "List Published Book Bags"
+msgstr "Énumérer les sacs de livres publiés"
 
 # id::clm.value__sin id::clm.value__-snh
 # id::sin
-#: 950.data.seed-values.sql:3881 950.data.seed-values.sql:3896
+#: 950.data.seed-values.sql:6168 950.data.seed-values.sql:6183
 msgid "Sinhalese"
 msgstr "Singhalais"
 
 # id::clm.value__ada
 # id::ada
-#: 950.data.seed-values.sql:3505
+#: 950.data.seed-values.sql:5792
 msgid "Adangme"
 msgstr "Adangme"
 
 # id::clm.value__tha
 # id::tha
-#: 950.data.seed-values.sql:3929
+#: 950.data.seed-values.sql:6216
 msgid "Thai"
 msgstr "Thai"
 
 # id::clm.value__afr
 # id::afr
-#: 950.data.seed-values.sql:3509
+#: 950.data.seed-values.sql:5796
 msgid "Afrikaans"
 msgstr "Afrikaans"
 
-#: 950.data.seed-values.sql:1767
-msgid ""
-"If true, patrons will be required to enter their password in addition to "
-"their username/barcode to log into the selfcheck interface"
+#: 950.data.seed-values.sql:9965
+msgid "Established Heading Linking Entry -- Personal Name"
 msgstr ""
 
 # id::citm.value__a
 # id::a
-#: 950.data.seed-values.sql:4000
+#: 950.data.seed-values.sql:6287
 msgid "Language material"
 msgstr "Document linguistique"
 
 # id::vqbrad.description__4
-#: 950.data.seed-values.sql:2483
+#: 950.data.seed-values.sql:4760
 msgid "Pagination"
 msgstr "Pagination"
 
-#: 950.data.seed-values.sql:402
+#: 950.data.seed-values.sql:481
 msgid "Damaged Item"
 msgstr "Article endommagé"
 
 # id::clm.value__uzb
 # id::uzb
-#: 950.data.seed-values.sql:3960
+#: 950.data.seed-values.sql:6247
 msgid "Uzbek"
 msgstr "Ouzbek"
 
 # id::clm.value__kru
 # id::kru
-#: 950.data.seed-values.sql:3735
+#: 950.data.seed-values.sql:6022
 msgid "Kurukh"
 msgstr "Kurukh"
 
 # id::clm.value__ira
 # id::ira
-#: 950.data.seed-values.sql:3700
+#: 950.data.seed-values.sql:5987
 msgid "Iranian (Other)"
 msgstr "Iranien (Autre)"
 
 # id::clm.value__zen
 # id::zen
-#: 950.data.seed-values.sql:3982
+#: 950.data.seed-values.sql:6269
 msgid "Zenaga"
 msgstr "Zenaga"
 
 # id::clm.value__bug
 # id::bug
-#: 950.data.seed-values.sql:3562
+#: 950.data.seed-values.sql:5849
 msgid "Bugis"
 msgstr "Bugis"
 
 # id::ccs.name__7
 # id::7
-#: 950.data.seed-values.sql:225
+#: 950.data.seed-values.sql:304
 msgid "Reshelving"
 msgstr "Remise des documents sur les rayons"
 
 # id::clm.value__bur
 # id::bur
-#: 950.data.seed-values.sql:3564
+#: 950.data.seed-values.sql:5851
 msgid "Burmese"
 msgstr "Birman"
 
 # id::clm.value__ale
 # id::ale
-#: 950.data.seed-values.sql:3514
+#: 950.data.seed-values.sql:5801
 msgid "Aleut"
 msgstr "Aléoute"
 
@@ -3253,892 +2833,721 @@ msgid "e-Reader Preload"
 msgstr ""
 
 # id::vqarad.description__1
-#: 950.data.seed-values.sql:22 950.data.seed-values.sql:2544
+#: 950.data.seed-values.sql:95 950.data.seed-values.sql:4821
 msgid "Identifier"
 msgstr "Identificateur"
 
+#: 950.data.seed-values.sql:11433
+msgid "Verification via gateway-v1"
+msgstr ""
+
 # id::clm.value__lin
 # id::lin
-#: 950.data.seed-values.sql:3751
+#: 950.data.seed-values.sql:6038
 msgid "Lingala"
 msgstr "Lingala"
 
-#: 950.data.seed-values.sql:1726
-msgid "Patron barcode format"
-msgstr ""
-
-#: 950.data.seed-values.sql:400
+#: 950.data.seed-values.sql:479
 msgid "System: Rental"
 msgstr "Système : location"
 
+#: 950.data.seed-values.sql:11429
+msgid "Login via Apache module"
+msgstr ""
+
 # id::ccs.name__1
 # id::1
-#: 950.data.seed-values.sql:219
+#: 950.data.seed-values.sql:298
 msgid "Checked out"
 msgstr "Sortie"
 
 # id::clm.value__lun
 # id::lun
-#: 950.data.seed-values.sql:3760
+#: 950.data.seed-values.sql:6047
 msgid "Lunda"
 msgstr "Lunda"
 
-#: 950.data.seed-values.sql:1807
-msgid "Void lost item billing when returned"
-msgstr ""
+# id::clm.value__mos
+# id::mos
+#: 950.data.seed-values.sql:6080
+msgid "Mooré"
+msgstr "Mooré"
 
 # id::clm.value__arg
 # id::arg
-#: 950.data.seed-values.sql:3521
+#: 950.data.seed-values.sql:5808
 msgid "Aragonese Spanish"
 msgstr "Aragonais, espagnol"
 
-#: 950.data.seed-values.sql:2229
-msgid ""
-"The alias field will be suggested on the patron registration screen. "
-"Suggesting a field makes it appear when suggested fields are shown. If the "
-"field is shown or required this setting is ignored."
-msgstr ""
+# id::cam.value__b
+# id::b
+#: 950.data.seed-values.sql:6278
+msgid "Primary"
+msgstr "Primaire"
 
 # id::clm.value__mis
 # id::mis
-#: 950.data.seed-values.sql:3782
+#: 950.data.seed-values.sql:6069
 msgid "Miscellaneous languages"
 msgstr "Diverses langues"
 
 # id::clm.value__lui
 # id::lui
-#: 950.data.seed-values.sql:3759
+#: 950.data.seed-values.sql:6046
 msgid "Luiseño"
 msgstr "Luiseño"
 
-#: 950.data.seed-values.sql:1856
-msgid ""
-"GUI: Record In-House Use: # of uses threshold for Are You Sure? dialog."
-msgstr ""
+# id::clm.value__syr
+# id::syr
+#: 950.data.seed-values.sql:6202
+msgid "Syriac"
+msgstr "Syriaque"
 
 # id::clm.value__kar
 # id::kar
-#: 950.data.seed-values.sql:3714
+#: 950.data.seed-values.sql:6001
 msgid "Karen"
 msgstr "Karen"
 
 # id::clm.value__grc
 # id::grc
-#: 950.data.seed-values.sql:3664
+#: 950.data.seed-values.sql:5951
 msgid "Greek, Ancient (to 1453)"
 msgstr "Grec ancien (jusqu’à 1453)"
 
 # id::clm.value__fur
 # id::fur
-#: 950.data.seed-values.sql:3642
+#: 950.data.seed-values.sql:5929
 msgid "Friulian"
 msgstr "Frioulan"
 
 # id::clm.value__nyo
 # id::nyo
-#: 950.data.seed-values.sql:3823
+#: 950.data.seed-values.sql:6110
 msgid "Nyoro"
 msgstr "Nyoro"
 
-#: 950.data.seed-values.sql:2556
+#: 950.data.seed-values.sql:4833
 msgid "Template Merge Container"
 msgstr ""
 
-#: 950.data.seed-values.sql:1881
-msgid ""
-"GUI: Require staff initials for entry/edit of item/patron/penalty "
-"notes/messages."
-msgstr ""
-"GUI : Initiales du personnel nécessaire pour entrer/modifier un "
-"article/client/commentaire sur la pénalité/message"
-
 # id::clm.value__bre
 # id::bre
-#: 950.data.seed-values.sql:3559
+#: 950.data.seed-values.sql:5846
 msgid "Breton"
 msgstr "Breton"
 
-#: 950.data.seed-values.sql:2046
-msgid "OPAC: Use fully compressed serial holdings"
-msgstr ""
-
-#: 950.data.seed-values.sql:1926
-msgid "Obscure the Date of Birth field"
+#: 950.data.seed-values.sql:9956
+msgid "See Also From Tracing -- Geographic Name"
 msgstr ""
 
 # id::clm.value__-gae id::clm.value__gla
 # id::-gae
-#: 950.data.seed-values.sql:3644 950.data.seed-values.sql:3654
+#: 950.data.seed-values.sql:5931 950.data.seed-values.sql:5941
 msgid "Scottish Gaelic"
 msgstr "Gaélique d'Écosse"
 
 # id::clm.value__tur
 # id::tur
-#: 950.data.seed-values.sql:3948
+#: 950.data.seed-values.sql:6235
 msgid "Turkish"
 msgstr "Turc"
 
-# id::clm.value__mal
-# id::mal
-#: 950.data.seed-values.sql:3769
-msgid "Malayalam"
-msgstr "Malayalam"
+#: 950.data.seed-values.sql:9975
+msgid "Established Heading Linking Entry -- Chronological Term"
+msgstr ""
 
 # id::ccs.name__10
 # id::10
-#: 950.data.seed-values.sql:228
+#: 950.data.seed-values.sql:307
 msgid "ILL"
 msgstr "Prêts entre bibliothèques"
 
 # id::clm.value__del
 # id::del
-#: 950.data.seed-values.sql:3603
+#: 950.data.seed-values.sql:5890
 msgid "Delaware"
 msgstr "Delaware"
 
 # id::clm.value__war
 # id::war
-#: 950.data.seed-values.sql:3968
+#: 950.data.seed-values.sql:6255
 msgid "Waray"
 msgstr "Waray"
 
 # id::aout.name__1
 # id::1
-#: 950.data.seed-values.sql:347
+#: 950.data.seed-values.sql:426
 msgid "Consortium"
 msgstr "Consortium"
 
-#: 950.data.seed-values.sql:2216
-msgid "GUI: Show alert_message field on patron registration"
+#: 950.data.seed-values.sql:36
+msgid "Alerting block on Circ, Hold and Renew"
 msgstr ""
 
-#: 950.data.seed-values.sql:1979
-msgid "PayPal signature"
-msgstr ""
+# id::clm.value__snk
+# id::snk
+#: 950.data.seed-values.sql:6184
+msgid "Soninke"
+msgstr "Soninké"
 
-# id::clm.value__sit
-# id::sit
-#: 950.data.seed-values.sql:3883
-msgid "Sino-Tibetan (Other)"
-msgstr "Sino-tibétain (Autre)"
+#: 950.data.seed-values.sql:9955
+msgid "See Also From Tracing -- Topical Term"
+msgstr ""
 
 # id::clm.value__zap
 # id::zap
-#: 950.data.seed-values.sql:3981
+#: 950.data.seed-values.sql:6268
 msgid "Zapotec"
 msgstr "Zapoteco"
 
 # id::clm.value__hmn
 # id::hmn
-#: 950.data.seed-values.sql:3680
+#: 950.data.seed-values.sql:5967
 msgid "Hmong"
 msgstr "Hmong"
 
-# id::clm.value__son
-# id::son
-#: 950.data.seed-values.sql:3900
-msgid "Songhai"
-msgstr "Songhaï"
-
-# id::cifm.value__a
-# id::a
-#: 950.data.seed-values.sql:4032
-msgid "Microfilm"
-msgstr "Microfilm"
-
-#: 950.data.seed-values.sql:1897
-msgid ""
-"When set, if a patron address is set to invalid, a penalty is applied."
-msgstr ""
-
-#: 950.data.seed-values.sql:1711 950.data.seed-values.sql:1712
-msgid "Holds: Hard stalling interval"
+#: 950.data.seed-values.sql:9925
+msgid "LoC"
 msgstr ""
 
 # id::clm.value__-cam id::clm.value__khm
 # id::-cam
-#: 950.data.seed-values.sql:3567 950.data.seed-values.sql:3722
+#: 950.data.seed-values.sql:5854 950.data.seed-values.sql:6009
 msgid "Khmer"
 msgstr "Khmer"
 
 # id::clm.value__chv
 # id::chv
-#: 950.data.seed-values.sql:3585
+#: 950.data.seed-values.sql:5872
 msgid "Chuvash"
 msgstr "Tchouvache"
 
 # id::clm.value__ine
 # id::ine
-#: 950.data.seed-values.sql:3696
+#: 950.data.seed-values.sql:5983
 msgid "Indo-European (Other)"
 msgstr "Indo-européenne (Autre)"
 
-#: 950.data.seed-values.sql:1816
-msgid "Circ: Void processing fee on lost item return"
-msgstr ""
-
-#: 950.data.seed-values.sql:2244
-msgid ""
-"GUI: Suggest claims_never_checked_out_count field on patron registration"
-msgstr ""
-
-#: 950.data.seed-values.sql:48
+#: 950.data.seed-values.sql:121
 msgid "Uniform Title"
 msgstr "Titre uniforme"
 
-#: 950.data.seed-values.sql:394
+#: 950.data.seed-values.sql:473
 msgid "Lost Materials"
 msgstr "Matériel perdu"
 
-#: 950.data.seed-values.sql:2409
-msgid ""
-"The Regular Expression for validation on the post_code field in patron "
-"registration."
-msgstr ""
-
-#: 950.data.seed-values.sql:2265
-msgid ""
-"The day_phone field will be required on the patron registration screen."
-msgstr ""
+# id::clm.value__lit
+# id::lit
+#: 950.data.seed-values.sql:6039
+msgid "Lithuanian"
+msgstr "Lituanien"
 
 # id::clm.value__may
 # id::may
-#: 950.data.seed-values.sql:3776
+#: 950.data.seed-values.sql:6063
 msgid "Malay"
 msgstr "Malais"
 
 # id::clm.value__kal
 # id::kal
-#: 950.data.seed-values.sql:3711
+#: 950.data.seed-values.sql:5998
 msgid "Kalâtdlisut"
 msgstr "Kalâtdlisut"
 
 # id::clm.value__zun
 # id::zun
-#: 950.data.seed-values.sql:3986
+#: 950.data.seed-values.sql:6273
 msgid "Zuni"
 msgstr "Zuni"
 
-#: 950.data.seed-values.sql:1907
-msgid ""
-"List of checkout/renewal events that the selfcheck interface should "
-"automatically override instead instead of alerting and stopping the "
-"transaction"
-msgstr ""
+# id::citm.value__f
+# id::f
+#: 950.data.seed-values.sql:6295
+msgid "Manuscript cartographic material"
+msgstr "Document cartographique manuscrit"
 
-#: 950.data.seed-values.sql:2249
-msgid ""
-"The claims_returned_count field will be shown on the patron registration "
-"screen. Showing a field makes it appear with required fields even when not "
-"required. If the field is required this setting is ignored."
-msgstr ""
-
-#: 950.data.seed-values.sql:62
+#: 950.data.seed-values.sql:135
 msgid "Geographic Subject"
 msgstr "Sujet géographique"
 
 # id::clm.value__iba
 # id::iba
-#: 950.data.seed-values.sql:3684
+#: 950.data.seed-values.sql:5971
 msgid "Iban"
 msgstr "Iban"
 
 # id::aout.opac_label__3
-#: 950.data.seed-values.sql:354
+#: 950.data.seed-values.sql:433
 msgid "This Branch"
 msgstr "Cette succursale"
 
-#: 950.data.seed-values.sql:406
+#: 950.data.seed-values.sql:485
 msgid "Notification Fee"
 msgstr "Frais de notification"
 
-#: 950.data.seed-values.sql:1827
-msgid "Lost items are usable on checkin instead of going 'home' first"
-msgstr ""
-
-# id::clm.value__tut
-# id::tut
-#: 950.data.seed-values.sql:3949
-msgid "Altaic (Other)"
-msgstr "Altaïque (Autre)"
-
-# id::clm.value__hun
-# id::hun
-#: 950.data.seed-values.sql:3682
-msgid "Hungarian"
-msgstr "Hongrois"
-
-#: 950.data.seed-values.sql:1394
-msgid "Circulators"
-msgstr "Ouvrages à prêter"
+# id::clm.value__scr
+# id::scr
+#: 950.data.seed-values.sql:6160
+msgid "Croatian"
+msgstr "Croate"
 
 # id::clm.value__ceb
 # id::ceb
-#: 950.data.seed-values.sql:3571
+#: 950.data.seed-values.sql:5858
 msgid "Cebuano"
 msgstr "Cebuano"
 
-#: 950.data.seed-values.sql:1957
-msgid "Required if using a developer/test account with AuthorizeNet"
+#: 950.data.seed-values.sql:1576
+msgid "Can do anything at the System level"
 msgstr ""
 
 # id::clm.value__moh
 # id::moh
-#: 950.data.seed-values.sql:3790
+#: 950.data.seed-values.sql:6077
 msgid "Mohawk"
 msgstr "Mohawk"
 
 # id::clm.value__dgr
 # id::dgr
-#: 950.data.seed-values.sql:3605
+#: 950.data.seed-values.sql:5892
 msgid "Dogrib"
 msgstr "Dogrib"
 
 # id::clm.value__vol
 # id::vol
-#: 950.data.seed-values.sql:3964
+#: 950.data.seed-values.sql:6251
 msgid "Volapük"
 msgstr "Volapük"
 
-#: 950.data.seed-values.sql:7251
-msgid "How long a persistent login lasts.  E.g. '2 weeks'"
-msgstr ""
-"Quelle est la durée d’une ouverture de session incessante. P. ex. 2 semaines"
-
 # id::clm.value__mga
 # id::mga
-#: 950.data.seed-values.sql:3779
+#: 950.data.seed-values.sql:6066
 msgid "Irish, Middle (ca. 1100-1550)"
 msgstr "Moyen irlandais (aux environs de 1100-1550)"
 
-# id::cam.value__j
+# id::citm.value__j
 # id::j
-#: 950.data.seed-values.sql:3997
-msgid "Juvenile"
-msgstr "Jeunes"
-
-#: 950.data.seed-values.sql:2281
-msgid "The dob field will be required on the patron registration screen."
-msgstr ""
+#: 950.data.seed-values.sql:6299
+msgid "Musical sound recording"
+msgstr "Enregistrement sonore musical"
 
 # id::clm.value__ukr
 # id::ukr
-#: 950.data.seed-values.sql:3956
+#: 950.data.seed-values.sql:6243
 msgid "Ukrainian"
 msgstr "Ukrainien"
 
 # id::clm.value__sad
 # id::sad
-#: 950.data.seed-values.sql:3861
+#: 950.data.seed-values.sql:6148
 msgid "Sandawe"
 msgstr "Wassandaui"
 
-# id::clm.value__nym
-# id::nym
-#: 950.data.seed-values.sql:3821
-msgid "Nyamwezi"
-msgstr "Nyamwezi"
-
 # id::czs.label__oclc
-#: 950.data.seed-values.sql:276
+#: 950.data.seed-values.sql:355
 msgid "OCLC"
 msgstr "OCLC"
 
-#: 950.data.seed-values.sql:1736
-msgid "Maximum previous checkouts displayed"
-msgstr ""
-
-#: 950.data.seed-values.sql:2555
-msgid "Reading List"
-msgstr "Liste de lecture"
-
-#: 950.data.seed-values.sql:2296
-msgid "GUI: Regex for email field on patron registration"
-msgstr ""
-
-#: 950.data.seed-values.sql:5342
-msgid ""
-"Any copies that have not been put into reshelving, in-transit, or on-holds-"
-"shelf (for a new hold) during the clear shelf process will be put into this "
-"status.  This is basically a purgatory status for copies waiting to be "
-"pulled from the shelf and processed by hand"
-msgstr ""
-"Tous les exemplaires qui sont destinés à être remis en étagère, mis en "
-"transit ou en étagère de réserve (pour une nouvelle réserve) durant le "
-"processus de libération de l’étagère seront mis dans cet état. C’est "
-"fondamentalement un état de purge pour les exemplaires qui doivent être "
-"retirés de l’étagère ou traités manuellement"
+# id::clm.value__jav
+# id::jav
+#: 950.data.seed-values.sql:5991
+msgid "Javanese"
+msgstr "Javanais"
 
 # id::clm.value__bad
 # id::bad
-#: 950.data.seed-values.sql:3536
+#: 950.data.seed-values.sql:5823
 msgid "Banda"
 msgstr "Banda"
 
 # id::vqbrad.description__2
-#: 950.data.seed-values.sql:2481
+#: 950.data.seed-values.sql:4758
 msgid "Author of work"
 msgstr "Auteur de l'oeuvre"
 
-#: 950.data.seed-values.sql:408
+#: 950.data.seed-values.sql:487
 msgid "Misc"
 msgstr "Divers"
 
+# id::clm.value__tut
+# id::tut
+#: 950.data.seed-values.sql:6236
+msgid "Altaic (Other)"
+msgstr "Altaïque (Autre)"
+
 # id::clm.value__kan
 # id::kan
-#: 950.data.seed-values.sql:3713
+#: 950.data.seed-values.sql:6000
 msgid "Kannada"
 msgstr "Kannara"
 
-#: 950.data.seed-values.sql:2232
-msgid "GUI: Show barred field on patron registration"
-msgstr ""
+# id::clm.value__dum
+# id::dum
+#: 950.data.seed-values.sql:5898
+msgid "Dutch, Middle (ca. 1050-1350)"
+msgstr "Moyen néerlandais (aux environs de 1050-1350)"
 
-#: 950.data.seed-values.sql:1682
-msgid ""
-"Amount of time before a hold expires at which point the patron should be "
-"alerted. Examples: \"5 days\", \"1 hour\""
+# id::clm.value__per
+# id::per
+#: 950.data.seed-values.sql:6128
+msgid "Persian"
+msgstr "Persan"
+
+#: 950.data.seed-values.sql:11445
+msgid "Apache Auth Proxy Login"
 msgstr ""
 
 # id::clm.value__mon
 # id::mon
-#: 950.data.seed-values.sql:3792
+#: 950.data.seed-values.sql:6079
 msgid "Mongolian"
 msgstr "Mongol"
 
 # id::clm.value__cho
 # id::cho
-#: 950.data.seed-values.sql:3581
+#: 950.data.seed-values.sql:5868
 msgid "Choctaw"
 msgstr "Choctaw"
 
-# id::clm.value__mos
-# id::mos
-#: 950.data.seed-values.sql:3793
-msgid "Mooré"
-msgstr "Mooré"
-
 # id::clm.value__aym
 # id::aym
-#: 950.data.seed-values.sql:3534
+#: 950.data.seed-values.sql:5821
 msgid "Aymara"
 msgstr "Aïmara"
 
 # id::clm.value__sai
 # id::sai
-#: 950.data.seed-values.sql:3864
+#: 950.data.seed-values.sql:6151
 msgid "South American Indian (Other)"
 msgstr "Indien de l’Amérique du Sud (Autre)"
 
-# id::clm.value__tkl
-# id::tkl
-#: 950.data.seed-values.sql:3934
-msgid "Tokelauan"
-msgstr "Tokelauan"
-
-#: 950.data.seed-values.sql:1982
-msgid "Credit card processing: PayPal test mode"
+#: 950.data.seed-values.sql:9984
+msgid "See Also Tracing -- General Subdivision"
 msgstr ""
 
 # id::cza.label__1 id::cza.label__10 id::cza.label__19
-#: 950.data.seed-values.sql:95 950.data.seed-values.sql:281
-#: 950.data.seed-values.sql:302 950.data.seed-values.sql:321
+#: 950.data.seed-values.sql:168 950.data.seed-values.sql:360
+#: 950.data.seed-values.sql:381 950.data.seed-values.sql:400
 msgid "Title Control Number"
 msgstr "Numéro de contrôle pour les titres"
 
-#: 950.data.seed-values.sql:1967
-msgid "Enable PayPal payments"
-msgstr ""
-
 # id::clm.value__-sho id::clm.value__sna
 # id::-sho
-#: 950.data.seed-values.sql:3879 950.data.seed-values.sql:3894
+#: 950.data.seed-values.sql:6166 950.data.seed-values.sql:6181
 msgid "Shona"
 msgstr "Shona"
 
 # id::clm.value__chp
 # id::chp
-#: 950.data.seed-values.sql:3582
+#: 950.data.seed-values.sql:5869
 msgid "Chipewyan"
 msgstr "Chippewyan"
 
-#: 950.data.seed-values.sql:1932
-msgid ""
-"When true, the patron summary sidebar will collapse after a new patron sub-"
-"interface is selected."
-msgstr ""
-
 # id::clm.value__cos
 # id::cos
-#: 950.data.seed-values.sql:3590
+#: 950.data.seed-values.sql:5877
 msgid "Corsican"
 msgstr "Corse"
 
-# id::cam.value__b
-# id::b
-#: 950.data.seed-values.sql:3991
-msgid "Primary"
-msgstr "Primaire"
+#: 950.data.seed-values.sql:9234
+msgid "Import failed due to invalid copy location"
+msgstr ""
 
 # id::clm.value__kpe
 # id::kpe
-#: 950.data.seed-values.sql:3733
+#: 950.data.seed-values.sql:6020
 msgid "Kpelle"
 msgstr "Kpellé"
 
+#: 950.data.seed-values.sql:11437
+msgid "SIP2 User Verification"
+msgstr ""
+
 # id::cifm.value__c
 # id::c
-#: 950.data.seed-values.sql:4034
+#: 950.data.seed-values.sql:6321
 msgid "Microopaque"
 msgstr "Microfiche opaque"
 
 # id::clm.value__som
 # id::som
-#: 950.data.seed-values.sql:3899
+#: 950.data.seed-values.sql:6186
 msgid "Somali"
 msgstr "Somali"
 
 # id::clm.value__arp
 # id::arp
-#: 950.data.seed-values.sql:3524
+#: 950.data.seed-values.sql:5811
 msgid "Arapaho"
 msgstr "Arapaho"
 
-#: 950.data.seed-values.sql:1901
-msgid "Checkout Fills Related Hold"
-msgstr ""
-
-# id::pgt.description__10
-#: 950.data.seed-values.sql:1401
-msgid "System maintenance, configuration, etc."
-msgstr "Entretient du système, configuration, etc."
+# id::clm.value__ber
+# id::ber
+#: 950.data.seed-values.sql:5836
+msgid "Berber (Other)"
+msgstr "Berbère (Autre)"
 
 # id::clm.value__chn
 # id::chn
-#: 950.data.seed-values.sql:3580
+#: 950.data.seed-values.sql:5867
 msgid "Chinook jargon"
 msgstr "Chinook"
 
 # id::clm.value__aka
 # id::aka
-#: 950.data.seed-values.sql:3511
+#: 950.data.seed-values.sql:5798
 msgid "Akan"
 msgstr "Akan"
 
-#: 950.data.seed-values.sql:1766
-msgid "Selfcheck: Require patron password"
-msgstr ""
-
-# id::clm.value__syr
-# id::syr
-#: 950.data.seed-values.sql:3915
-msgid "Syriac"
-msgstr "Syriaque"
-
-#: 950.data.seed-values.sql:1806
-msgid "Circ: Void lost item billing when returned"
-msgstr ""
+# id::clm.value__lus
+# id::lus
+#: 950.data.seed-values.sql:6049
+msgid "Lushai"
+msgstr "Lushei"
 
 # id::i18n_l.name__en-US
-#: 950.data.seed-values.sql:247
+#: 950.data.seed-values.sql:326
 msgid "English (US)"
 msgstr "Anglais (États-Unis)"
 
-#: 950.data.seed-values.sql:2213
-msgid ""
-"The active field will be suggested on the patron registration screen. "
-"Suggesting a field makes it appear when suggested fields are shown. If the "
-"field is shown or required this setting is ignored."
-msgstr ""
-
 # id::clm.value__pon
 # id::pon
-#: 950.data.seed-values.sql:3846
+#: 950.data.seed-values.sql:6133
 msgid "Ponape"
 msgstr "Ponapé"
 
-# id::clm.value__tah
-# id::tah
-#: 950.data.seed-values.sql:3917
-msgid "Tahitian"
-msgstr "Tahitien"
+#: 950.data.seed-values.sql:1565
+msgid "Cataloging Administrator"
+msgstr ""
 
 # id::clm.value__bla
 # id::bla
-#: 950.data.seed-values.sql:3555
+#: 950.data.seed-values.sql:5842
 msgid "Siksika"
 msgstr "Siksika"
 
-#: 950.data.seed-values.sql:1842
-msgid ""
-"If enabled and a patron has outstanding bills and the alert page is not "
-"required, show the billing tab by default, instead of the checkout tab, when "
-"a patron is loaded"
-msgstr ""
-
 # id::clm.value__nds
 # id::nds
-#: 950.data.seed-values.sql:3807
+#: 950.data.seed-values.sql:6094
 msgid "Low German"
 msgstr "Bas-allemand"
 
-# id::clm.value__pus
-# id::pus
-#: 950.data.seed-values.sql:3850
-msgid "Pushto"
-msgstr "Afghan"
-
 # id::clm.value__dar
 # id::dar
-#: 950.data.seed-values.sql:3601
+#: 950.data.seed-values.sql:5888
 msgid "Dargwa"
 msgstr "Dargwa"
 
 # id::clfm.value__m
 # id::m
-#: 950.data.seed-values.sql:4025
+#: 950.data.seed-values.sql:6312
 msgid "Mixed forms"
 msgstr "Divers genres"
 
-#: 950.data.seed-values.sql:2389
-msgid ""
-"The second_given_name field will be suggested on the patron registration "
-"screen. Suggesting a field makes it appear when suggested fields are shown. "
-"If the field is shown or required this setting is ignored."
-msgstr ""
-
 # id::clm.value__sog
 # id::sog
-#: 950.data.seed-values.sql:3898
+#: 950.data.seed-values.sql:6185
 msgid "Sogdian"
 msgstr "Sogdien"
 
 # id::clm.value__pra
 # id::pra
-#: 950.data.seed-values.sql:3848
+#: 950.data.seed-values.sql:6135
 msgid "Prakrit languages"
 msgstr "Langues prâkrit"
 
-# id::clm.value__crh
-# id::crh
-#: 950.data.seed-values.sql:3595
-msgid "Crimean Tatar"
-msgstr "Tatar de Crimée"
+# id::clm.value__gay
+# id::gay
+#: 950.data.seed-values.sql:5934
+msgid "Gayo"
+msgstr "Gayo"
 
-#: 950.data.seed-values.sql:1966
-msgid "Credit card processing: Enable PayPal payments"
-msgstr ""
-
-#: 950.data.seed-values.sql:7220 950.data.seed-values.sql:7221
-msgid "Historical Circulation Retention Start Date"
-msgstr "Date de début historique de la conservation pour prêt"
-
-#: 950.data.seed-values.sql:1987
-msgid ""
-"This is NOT the same thing as the settings labeled with just \"PayPal.\""
+#: 950.data.seed-values.sql:9958
+msgid "See Also From Tracing -- General Subdivision"
 msgstr ""
 
 # id::clfm.value__0
 # id::0
-#: 950.data.seed-values.sql:4016
+#: 950.data.seed-values.sql:6303
 msgid "Not fiction (not further specified)"
 msgstr "néraux (aucune autre spécification)"
 
-#: 950.data.seed-values.sql:2316
-msgid "GUI: Regex for evening_phone field on patron registration"
-msgstr ""
+# id::clm.value__kua
+# id::kua
+#: 950.data.seed-values.sql:6023
+msgid "Kuanyama"
+msgstr "Ovambo"
 
 # id::clm.value__-tar id::clm.value__tat
 # id::-tar
-#: 950.data.seed-values.sql:3921 950.data.seed-values.sql:3922
+#: 950.data.seed-values.sql:6208 950.data.seed-values.sql:6209
 msgid "Tatar"
 msgstr "Tatar"
 
-# id::clm.value__lao
-# id::lao
-#: 950.data.seed-values.sql:3745
-msgid "Lao"
-msgstr "Lao"
+# id::citm.value__c
+# id::c
+#: 950.data.seed-values.sql:6296
+msgid "Notated music"
+msgstr "Musique annotée"
 
-#: 950.data.seed-values.sql:1998
-msgid "Credit card processing: PayflowPro test mode"
+#: 950.data.seed-values.sql:39
+msgid "Alerting block on Renew"
 msgstr ""
 
 # id::crmf.name__7
 # id::7
-#: 950.data.seed-values.sql:201
+#: 950.data.seed-values.sql:280
 msgid "overdue_equip_max"
 msgstr "retard_équipement_maximum"
 
-# id::clm.value__jrb
-# id::jrb
-#: 950.data.seed-values.sql:3707
-msgid "Judeo-Arabic"
-msgstr "Judéo-arabe"
+#: 950.data.seed-values.sql:174
+msgid "System Control Number"
+msgstr ""
 
 # id::clm.value__-gal id::clm.value__orm
 # id::-gal
-#: 950.data.seed-values.sql:3646 950.data.seed-values.sql:3828
+#: 950.data.seed-values.sql:5933 950.data.seed-values.sql:6115
 msgid "Oromo"
 msgstr "Oromo"
 
 # id::cblvl.value__s
 # id::s
-#: 950.data.seed-values.sql:4047
+#: 950.data.seed-values.sql:6334
 msgid "Serial"
 msgstr "Periodique"
 
-# id::clm.value__-sao id::clm.value__smo
-# id::-sao
-#: 950.data.seed-values.sql:3868 950.data.seed-values.sql:3892
-msgid "Samoan"
-msgstr "Samoan"
-
-#: 950.data.seed-values.sql:2277
-msgid ""
-"If set the calendar widget will appear when editing the dob field on the "
-"patron registration form."
-msgstr ""
+#: 950.data.seed-values.sql:4832
+msgid "Reading List"
+msgstr "Liste de lecture"
 
 # id::citm.value__e
 # id::e
-#: 950.data.seed-values.sql:4007
+#: 950.data.seed-values.sql:6294
 msgid "Cartographic material"
 msgstr "Document cartographique"
 
 # id::clm.value__sem
 # id::sem
-#: 950.data.seed-values.sql:3875
+#: 950.data.seed-values.sql:6162
 msgid "Semitic (Other)"
 msgstr "Sémitique (Autre)"
 
-#: 950.data.seed-values.sql:2272
-msgid "GUI: Suggest day_phone field on patron registration"
-msgstr ""
-
-#: 950.data.seed-values.sql:72
+#: 950.data.seed-values.sql:145
 msgid "General Keywords"
 msgstr "Mots clés généraux"
 
-# id::clm.value__egy
-# id::egy
-#: 950.data.seed-values.sql:3616
-msgid "Egyptian"
-msgstr "Égyptien"
+# id::clm.value__kho
+# id::kho
+#: 950.data.seed-values.sql:6010
+msgid "Khotanese"
+msgstr "Khotanais"
 
 # id::clm.value__bem
 # id::bem
-#: 950.data.seed-values.sql:3547
+#: 950.data.seed-values.sql:5834
 msgid "Bemba"
 msgstr "Bemba"
 
-#: 950.data.seed-values.sql:1974
-msgid "Credit card processing: PayPal password"
+# id::vqbrad.description__1
+#: 950.data.seed-values.sql:4757
+msgid "Title of work"
+msgstr "Titre de l'oeuvre"
+
+# id::clm.value__que
+# id::que
+#: 950.data.seed-values.sql:6138
+msgid "Quechua"
+msgstr "Quechua"
+
+#: 950.data.seed-values.sql:9985
+msgid "See Also Tracing -- Geographic Subdivision"
 msgstr ""
 
-# id::pgt.name__10
-#: 950.data.seed-values.sql:1400
-msgid "Local System Administrator"
-msgstr "Administrateur de système local"
-
-#: 950.data.seed-values.sql:2333
-msgid ""
-"The ident_value field will be shown on the patron registration screen. "
-"Showing a field makes it appear with required fields even when not required. "
-"If the field is required this setting is ignored."
-msgstr ""
-
-#: 950.data.seed-values.sql:2308
-msgid "GUI: Suggest email field on patron registration"
-msgstr ""
-
-#: 950.data.seed-values.sql:1707
-msgid ""
-"How long to wait before allowing remote items to be opportunistically "
-"captured for a hold.  Example \"5 days\""
-msgstr ""
+# id::vqbrad.description__7
+#: 950.data.seed-values.sql:4763
+msgid "Price"
+msgstr "Prix"
 
 # id::clm.value__crp
 # id::crp
-#: 950.data.seed-values.sql:3596
+#: 950.data.seed-values.sql:5883
 msgid "Creoles and Pidgins (Other)"
 msgstr "Langues créoles et pidgin (Autre)"
 
-#: 950.data.seed-values.sql:1936
-msgid "Credit card processing: Name default credit processor"
-msgstr ""
-
 # id::clm.value__nic
 # id::nic
-#: 950.data.seed-values.sql:3811
+#: 950.data.seed-values.sql:6098
 msgid "Niger-Kordofanian (Other)"
 msgstr "Niger-Kordofanian (Autre)"
 
 # id::clm.value__est
 # id::est
-#: 950.data.seed-values.sql:3624
+#: 950.data.seed-values.sql:5911
 msgid "Estonian"
 msgstr "Estonien"
 
 # id::clm.value__fan
 # id::fan
-#: 950.data.seed-values.sql:3628
+#: 950.data.seed-values.sql:5915
 msgid "Fang"
 msgstr "Fan"
 
 # id::clm.value__lol
 # id::lol
-#: 950.data.seed-values.sql:3753
+#: 950.data.seed-values.sql:6040
 msgid "Mongo-Nkundu"
 msgstr "Mongo-Nkundu"
 
-# id::clm.value__gre
-# id::gre
-#: 950.data.seed-values.sql:3665
-msgid "Greek, Modern (1453- )"
-msgstr "Grec moderne (de 1453 à)"
+#: 950.data.seed-values.sql:9231
+msgid "Import or Overlay failed"
+msgstr ""
 
-#: 950.data.seed-values.sql:1681
-msgid "Holds: Expire Alert Interval"
+# id::clm.value__mal
+# id::mal
+#: 950.data.seed-values.sql:6056
+msgid "Malayalam"
+msgstr "Malayalam"
+
+#: 950.data.seed-values.sql:11444
+msgid "Unique Mgt Login"
 msgstr ""
 
 # id::clm.value__smn
 # id::smn
-#: 950.data.seed-values.sql:3891
+#: 950.data.seed-values.sql:6178
 msgid "Inari Sami"
 msgstr "Inari Lapon"
 
 # id::i18n_l.name__fr-CA
-#: 950.data.seed-values.sql:256
+#: 950.data.seed-values.sql:335
 msgid "French (Canada)"
 msgstr "Français (Canada)"
 
+#: 950.data.seed-values.sql:130
+msgid "Conference Author"
+msgstr "Auteur de la conférence"
+
 # id::aout.name__3
 # id::3
-#: 950.data.seed-values.sql:353
+#: 950.data.seed-values.sql:432
 msgid "Branch"
 msgstr "Succursale"
 
-#: 950.data.seed-values.sql:2260
-msgid "GUI: Regex for day_phone field on patron registration"
-msgstr ""
+# id::clm.value__afh
+# id::afh
+#: 950.data.seed-values.sql:5795
+msgid "Afrihili (Artificial language)"
+msgstr "Afrihili (langage artificiel)"
 
 # id::vqbrad.description__15
-#: 950.data.seed-values.sql:2494
+#: 950.data.seed-values.sql:4771
 msgid "Item Barcode"
 msgstr "Code à barres de l'article"
 
-#: 950.data.seed-values.sql:2285
-msgid ""
-"The dob field will be shown on the patron registration screen. Showing a "
-"field makes it appear with required fields even when not required. If the "
-"field is required this setting is ignored."
+#: 950.data.seed-values.sql:9240
+msgid "Malformed record cause Overlay failure"
 msgstr ""
-
-#: 950.data.seed-values.sql:5355
-msgid "Selfcheck: Require Patron Password"
-msgstr "Auto-contrôle : Le mot de passe du client est obligatoire"
 
 # id::cbs.source__3
 # id::3
@@ -4148,1245 +3557,1020 @@ msgstr "Project Gutenberg"
 
 # id::aou.name__9
 # id::9
-#: 950.data.seed-values.sql:380
+#: 950.data.seed-values.sql:459
 msgid "Example Bookmobile 1"
 msgstr "Exemple de bibliobus de 1"
 
-#: 950.data.seed-values.sql:2268
-msgid "GUI: Show day_phone field on patron registration"
-msgstr ""
-
-#: 950.data.seed-values.sql:2377
-msgid ""
-"The other_phone field will be shown on the patron registration screen. "
-"Showing a field makes it appear with required fields even when not required. "
-"If the field is required this setting is ignored."
-msgstr ""
-
 # id::cam.value__f
 # id::f
-#: 950.data.seed-values.sql:3995
+#: 950.data.seed-values.sql:6282
 msgid "Specialized"
 msgstr "Spécialisé"
 
-#: 950.data.seed-values.sql:2220
-msgid "GUI: Suggest alert_message field on patron registration"
+# id::clm.value__fij
+# id::fij
+#: 950.data.seed-values.sql:5919
+msgid "Fijian"
+msgstr "Fidjien"
+
+#: 950.data.seed-values.sql:9969
+msgid "Established Heading Linking Entry -- Geographic Name"
 msgstr ""
 
-#: 950.data.seed-values.sql:2257
-msgid ""
-"The Example for validation on the day_phone field in patron registration."
+# id::i18n_l.description__en-US
+# id::en-US
+#: 950.data.seed-values.sql:327
+msgid "American English"
+msgstr "Anglais américain"
+
+#: 950.data.seed-values.sql:172
+msgid "Authority Record ID"
 msgstr ""
 
-#: 950.data.seed-values.sql:2221
-msgid ""
-"The alert_message field will be suggested on the patron registration screen. "
-"Suggesting a field makes it appear when suggested fields are shown. If the "
-"field is shown or required this setting is ignored."
+#: 950.data.seed-values.sql:11434
+msgid "Verification via translator-v1"
 msgstr ""
 
-#: 950.data.seed-values.sql:2292
-msgid "GUI: Example for email field on patron registration"
-msgstr ""
-
-#: 950.data.seed-values.sql:1731
-msgid "Password format"
-msgstr ""
-
-# id::clm.value__chu
-# id::chu
-#: 950.data.seed-values.sql:3584
-msgid "Church Slavic"
-msgstr "Slavon liturgique"
-
-# id::clm.value__iro
-# id::iro
-#: 950.data.seed-values.sql:3702
-msgid "Iroquoian (Other)"
-msgstr "Langue iroquoianne (Autre)"
-
-# id::ccs.name__3
-# id::3
-#: 950.data.seed-values.sql:221
-msgid "Lost"
-msgstr "Perdu"
-
-# id::clm.value__men
-# id::men
-#: 950.data.seed-values.sql:3778
-msgid "Mende"
-msgstr "Mendé"
-
-#: 950.data.seed-values.sql:1871 950.data.seed-values.sql:1872
-msgid "Temporary call number prefix"
-msgstr ""
-
-#: 950.data.seed-values.sql:7229 950.data.seed-values.sql:7230
+#: 950.data.seed-values.sql:8804 950.data.seed-values.sql:8805
 msgid "Historical Hold Retention Age"
 msgstr "Période historique de la conservation pour mise en réserve"
 
-# id::clm.value__sah
-# id::sah
-#: 950.data.seed-values.sql:3863
-msgid "Yakut"
-msgstr "Yakoute"
-
 # id::clm.value__nno
 # id::nno
-#: 950.data.seed-values.sql:3813
+#: 950.data.seed-values.sql:6100
 msgid "Norwegian (Nynorsk)"
 msgstr "Norvégien (Nynorsk)"
 
 # id::clm.value__tig
 # id::tig
-#: 950.data.seed-values.sql:3931
+#: 950.data.seed-values.sql:6218
 msgid "Tigré"
 msgstr "Tigré"
 
-# id::clm.value__ori
-# id::ori
-#: 950.data.seed-values.sql:3827
-msgid "Oriya"
-msgstr "Oriya"
+# id::clm.value__-sao id::clm.value__smo
+# id::-sao
+#: 950.data.seed-values.sql:6155 950.data.seed-values.sql:6179
+msgid "Samoan"
+msgstr "Samoan"
 
-#: 950.data.seed-values.sql:2549 950.data.seed-values.sql:2553
+#: 950.data.seed-values.sql:4826 950.data.seed-values.sql:4830
 msgid "General Staff Client container"
 msgstr "Contenu général personnel-client"
 
+#: 950.data.seed-values.sql:1567
+msgid "Circulation Administrator"
+msgstr ""
+
 # id::clm.value__glv id::clm.value__-max
 # id::glv
-#: 950.data.seed-values.sql:3657 950.data.seed-values.sql:3775
+#: 950.data.seed-values.sql:5944 950.data.seed-values.sql:6062
 msgid "Manx"
 msgstr "Manx"
 
 # id::clm.value__rar
 # id::rar
-#: 950.data.seed-values.sql:3854
+#: 950.data.seed-values.sql:6141
 msgid "Rarotongan"
 msgstr "Rarotonga"
 
-#: 950.data.seed-values.sql:2309
-msgid ""
-"The email field will be suggested on the patron registration screen. "
-"Suggesting a field makes it appear when suggested fields are shown. If the "
-"field is shown or required this setting is ignored."
+#: 950.data.seed-values.sql:9973
+msgid "Subdivision Linking Entry -- Chronological Subdivision"
+msgstr ""
+
+#: 950.data.seed-values.sql:10064
+msgid "Sears List of Subject Headings"
 msgstr ""
 
 # id::crrf.name__3
 # id::3
-#: 950.data.seed-values.sql:209
+#: 950.data.seed-values.sql:288
 msgid "50_cent_per_day"
 msgstr "50_cents_par_jour"
 
-#: 950.data.seed-values.sql:1962
-msgid "AuthorizeNet test mode"
-msgstr ""
-
 # id::clm.value__dyu
 # id::dyu
-#: 950.data.seed-values.sql:3613
+#: 950.data.seed-values.sql:5900
 msgid "Dyula"
 msgstr "Dyula"
 
 # id::clm.value__ipk
 # id::ipk
-#: 950.data.seed-values.sql:3699
+#: 950.data.seed-values.sql:5986
 msgid "Inupiaq"
 msgstr "Inupiaq"
 
-#: 950.data.seed-values.sql:2027
-msgid ""
-"When an item could fulfill a hold, do not allow the current patron to renew"
-msgstr ""
-"Lorsqu’un article pourrait satisfaire à une mise en réserve, ne pas "
-"permettre au client en cours de renouveler"
-
-#: 950.data.seed-values.sql:1837
-msgid ""
-"If enabled, patrons can create and edit existing addresses.  Addresses are "
-"kept in a pending state until staff approves the changes"
-msgstr ""
+# id::clm.value__gre
+# id::gre
+#: 950.data.seed-values.sql:5952
+msgid "Greek, Modern (1453- )"
+msgstr "Grec moderne (de 1453 à)"
 
 # id::clm.value__efi
 # id::efi
-#: 950.data.seed-values.sql:3615
+#: 950.data.seed-values.sql:5902
 msgid "Efik"
 msgstr "Efik"
 
-#: 950.data.seed-values.sql:53
+#: 950.data.seed-values.sql:126
 msgid "Corporate Author"
 msgstr "Auteur corporatif"
 
-#: 950.data.seed-values.sql:2368
-msgid "GUI: Regex for other_phone field on patron registration"
-msgstr ""
-
-# id::clm.value__lit
-# id::lit
-#: 950.data.seed-values.sql:3752
-msgid "Lithuanian"
-msgstr "Lituanien"
-
 # id::clm.value__mus
 # id::mus
-#: 950.data.seed-values.sql:3796
+#: 950.data.seed-values.sql:6083
 msgid "Creek"
 msgstr "Creek"
 
 # id::cam.value__c
 # id::c
-#: 950.data.seed-values.sql:3992
+#: 950.data.seed-values.sql:6279
 msgid "Pre-adolescent"
 msgstr "Pré-adolescent"
 
 # id::clm.value__smj
 # id::smj
-#: 950.data.seed-values.sql:3890
+#: 950.data.seed-values.sql:6177
 msgid "Lule Sami"
 msgstr "Lule Lapon"
 
-# id::clm.value__afh
-# id::afh
-#: 950.data.seed-values.sql:3508
-msgid "Afrihili (Artificial language)"
-msgstr "Afrihili (langage artificiel)"
-
-#: 950.data.seed-values.sql:2348
-msgid "GUI: Show juvenile field on patron registration"
-msgstr ""
-
 # id::clm.value__bis
 # id::bis
-#: 950.data.seed-values.sql:3554
+#: 950.data.seed-values.sql:5841
 msgid "Bislama"
 msgstr "Bislama"
 
 # id::clm.value__kon
 # id::kon
-#: 950.data.seed-values.sql:3730
+#: 950.data.seed-values.sql:6017
 msgid "Kongo"
 msgstr "Kongo"
 
-# id::clm.value__snk
-# id::snk
-#: 950.data.seed-values.sql:3897
-msgid "Soninke"
-msgstr "Soninké"
+#: 950.data.seed-values.sql:9250
+msgid "Invalid value for \"owning_lib\""
+msgstr ""
+
+#: 950.data.seed-values.sql:11423
+msgid "Login via srfsh"
+msgstr ""
 
 # id::clm.value__ach
 # id::ach
-#: 950.data.seed-values.sql:3504
+#: 950.data.seed-values.sql:5791
 msgid "Acoli"
 msgstr "Acoli"
 
 # id::clm.value__mkh
 # id::mkh
-#: 950.data.seed-values.sql:3783
+#: 950.data.seed-values.sql:6070
 msgid "Mon-Khmer (Other)"
 msgstr "Mon-Khmer (Autre)"
 
-# id::clm.value__lam
-# id::lam
-#: 950.data.seed-values.sql:3743
-msgid "Lamba"
-msgstr "Lamba"
+#: 950.data.seed-values.sql:9952
+msgid "See Also From Tracing -- Personal Name"
+msgstr ""
 
 # id::clm.value__pap
 # id::pap
-#: 950.data.seed-values.sql:3838
+#: 950.data.seed-values.sql:6125
 msgid "Papiamento"
 msgstr "Papiamento"
 
-#: 950.data.seed-values.sql:2352
-msgid "GUI: Suggest juvenile field on patron registration"
-msgstr ""
-
 # id::clm.value__mwr
 # id::mwr
-#: 950.data.seed-values.sql:3797
+#: 950.data.seed-values.sql:6084
 msgid "Marwari"
 msgstr "Marvari"
 
 # id::crmf.name__2
 # id::2
-#: 950.data.seed-values.sql:191
+#: 950.data.seed-values.sql:270
 msgid "overdue_min"
 msgstr "retard_minimum"
 
 # id::clm.value__dak
 # id::dak
-#: 950.data.seed-values.sql:3599
+#: 950.data.seed-values.sql:5886
 msgid "Dakota"
 msgstr "Dakota"
 
-# id::clm.value__pol
-# id::pol
-#: 950.data.seed-values.sql:3845
-msgid "Polish"
-msgstr "Polonais"
+#: 950.data.seed-values.sql:1569
+msgid "Local Administrator"
+msgstr ""
 
 # id::crmf.name__3
 # id::3
-#: 950.data.seed-values.sql:193
+#: 950.data.seed-values.sql:272
 msgid "overdue_mid"
 msgstr "retard_moyen"
 
-#: 950.data.seed-values.sql:2328
-msgid "GUI: Suggest evening_phone field on patron registration"
-msgstr ""
+# id::clm.value__hat
+# id::hat
+#: 950.data.seed-values.sql:5958
+msgid "Haitian French Creole"
+msgstr "Créole français de Haïti"
 
 # id::clm.value__bik
 # id::bik
-#: 950.data.seed-values.sql:3552
+#: 950.data.seed-values.sql:5839
 msgid "Bikol"
 msgstr "Bikol"
 
-# id::clm.value__hin
-# id::hin
-#: 950.data.seed-values.sql:3678
-msgid "Hindi"
-msgstr "Hindi"
-
 # id::clm.value__swe
 # id::swe
-#: 950.data.seed-values.sql:3913
+#: 950.data.seed-values.sql:6200
 msgid "Swedish"
 msgstr "Suédois"
 
-# id::clm.value__kur
-# id::kur
-#: 950.data.seed-values.sql:3738
-msgid "Kurdish"
-msgstr "Kurde"
+#: 950.data.seed-values.sql:9254
+msgid "Invalid value for \"copy_number\""
+msgstr ""
 
 # id::clm.value__sgn
 # id::sgn
-#: 950.data.seed-values.sql:3877
+#: 950.data.seed-values.sql:6164
 msgid "Sign languages"
 msgstr "Langages gestuels"
 
-# id::aout.name__2
-# id::2
-#: 950.data.seed-values.sql:350
-msgid "System"
-msgstr "Système"
+# id::clm.value__chm
+# id::chm
+#: 950.data.seed-values.sql:5866
+msgid "Mari"
+msgstr "Mari"
 
 # id::clm.value__ewe
 # id::ewe
-#: 950.data.seed-values.sql:3626
+#: 950.data.seed-values.sql:5913
 msgid "Ewe"
 msgstr "Éwé"
 
 # id::clm.value__tup
 # id::tup
-#: 950.data.seed-values.sql:3947
+#: 950.data.seed-values.sql:6234
 msgid "Tupi languages"
 msgstr "Langues tupies"
 
 # id::clm.value__alg
 # id::alg
-#: 950.data.seed-values.sql:3515
+#: 950.data.seed-values.sql:5802
 msgid "Algonquian (Other)"
 msgstr "Algonquins (Autre)"
 
-#: 950.data.seed-values.sql:2440 950.data.seed-values.sql:2441
-msgid "Default copy location"
-msgstr ""
-
 # id::clm.value__fao id::clm.value__-far
 # id::fao
-#: 950.data.seed-values.sql:3629 950.data.seed-values.sql:3630
+#: 950.data.seed-values.sql:5916 950.data.seed-values.sql:5917
 msgid "Faroese"
 msgstr "Féringien"
 
-#: 950.data.seed-values.sql:2365
-msgid ""
-"The Example for validation on the other_phone field in patron registration."
+#: 950.data.seed-values.sql:34
+msgid "Alerting block on Circ and Hold"
 msgstr ""
 
 # id::clm.value__dan
 # id::dan
-#: 950.data.seed-values.sql:3600
+#: 950.data.seed-values.sql:5887
 msgid "Danish"
 msgstr "Danois"
 
 # id::clm.value__dra
 # id::dra
-#: 950.data.seed-values.sql:3609
+#: 950.data.seed-values.sql:5896
 msgid "Dravidian (Other)"
 msgstr "Dravidienne (Autre)"
 
-#: 950.data.seed-values.sql:2417
-msgid ""
-"The Example for validation on phone fields in patron registration. Applies "
-"to all phone fields without their own setting."
+#: 950.data.seed-values.sql:9966
+msgid "Established Heading Linking Entry -- Corporate Name"
 msgstr ""
 
-#: 950.data.seed-values.sql:2269
-msgid ""
-"The day_phone field will be shown on the patron registration screen. Showing "
-"a field makes it appear with required fields even when not required. If the "
-"field is required this setting is ignored."
-msgstr ""
+# id::ccs.name__3
+# id::3
+#: 950.data.seed-values.sql:300
+msgid "Lost"
+msgstr "Perdu"
 
 # id::clm.value__cpe
 # id::cpe
-#: 950.data.seed-values.sql:3591
+#: 950.data.seed-values.sql:5878
 msgid "Creoles and Pidgins, English-based (Other)"
 msgstr "Langues créoles et pidgin, anglais (Autre)"
 
-# id::clm.value__lez
-# id::lez
-#: 950.data.seed-values.sql:3749
-msgid "Lezgian"
-msgstr "Lezgian"
-
 # id::clm.value__cus
 # id::cus
-#: 950.data.seed-values.sql:3597
+#: 950.data.seed-values.sql:5884
 msgid "Cushitic (Other)"
 msgstr "Couchitique (Autre)"
 
-# id::clm.value__lug
-# id::lug
-#: 950.data.seed-values.sql:3758
-msgid "Ganda"
-msgstr "Ganda"
-
 # id::clm.value__tet
 # id::tet
-#: 950.data.seed-values.sql:3926
+#: 950.data.seed-values.sql:6213
 msgid "Tetum"
 msgstr "Tetum"
 
 # id::clm.value__pal
 # id::pal
-#: 950.data.seed-values.sql:3835
+#: 950.data.seed-values.sql:6122
 msgid "Pahlavi"
 msgstr "Pahlavi"
 
-#: 950.data.seed-values.sql:2561
+#: 950.data.seed-values.sql:4838
 msgid "Add to Published Book Bags"
 msgstr "Ajouter aux sacs de livres publiés"
 
-# id::clm.value__znd
-# id::znd
-#: 950.data.seed-values.sql:3984
-msgid "Zande"
-msgstr "Azande"
+#: 950.data.seed-values.sql:9244
+msgid "Invalid value for \"status\""
+msgstr ""
 
-# id::clm.value__-gag id::clm.value__glg
-# id::-gag
-#: 950.data.seed-values.sql:3645 950.data.seed-values.sql:3656
-msgid "Galician"
-msgstr "Galicien"
+#: 950.data.seed-values.sql:9978
+msgid "See Also Tracing -- Personal Name"
+msgstr ""
+
+# id::clm.value__slo
+# id::slo
+#: 950.data.seed-values.sql:6172
+msgid "Slovak"
+msgstr "Slovaque"
+
+#: 950.data.seed-values.sql:10062
+msgid "Not applicable"
+msgstr ""
 
 # id::clm.value__cai
 # id::cai
-#: 950.data.seed-values.sql:3566
+#: 950.data.seed-values.sql:5853
 msgid "Central American Indian (Other)"
 msgstr "Amérindien de l’Amérique centrale (Autre)"
 
-#: 950.data.seed-values.sql:2288
-msgid "GUI: Suggest dob field on patron registration"
-msgstr ""
-
-#: 950.data.seed-values.sql:2217
-msgid ""
-"The alert_message field will be shown on the patron registration screen. "
-"Showing a field makes it appear with required fields even when not required. "
-"If the field is required this setting is ignored."
-msgstr ""
-
 # id::clm.value__kik
 # id::kik
-#: 950.data.seed-values.sql:3724
+#: 950.data.seed-values.sql:6011
 msgid "Kikuyu"
 msgstr "Kikuyu"
 
 # id::crahp.name__2
 # id::2
-#: 950.data.seed-values.sql:215
+#: 950.data.seed-values.sql:294
 msgid "6month"
 msgstr "6 mois"
 
-#: 950.data.seed-values.sql:7194
+#: 950.data.seed-values.sql:8743
 msgid "Historical Circulations per Copy"
 msgstr "Prêts historiques par exemplaire"
 
-#: 950.data.seed-values.sql:83
+#: 950.data.seed-values.sql:156
 msgid "UPC"
 msgstr "CUP"
 
-#: 950.data.seed-values.sql:1676 950.data.seed-values.sql:1677
-msgid "Sending email address for patron notices"
+#: 950.data.seed-values.sql:8649
+msgid "Handling Charge"
+msgstr "Frais de manutention"
+
+#: 950.data.seed-values.sql:10061
+msgid "Canadian Subject Headings"
 msgstr ""
 
 # id::clm.value__ang
 # id::ang
-#: 950.data.seed-values.sql:3517
+#: 950.data.seed-values.sql:5804
 msgid "English, Old (ca. 450-1100)"
 msgstr "Ancien anglais (aux environs de 450-1100)"
 
 # id::clm.value__nai
 # id::nai
-#: 950.data.seed-values.sql:3800
+#: 950.data.seed-values.sql:6087
 msgid "North American Indian (Other)"
 msgstr "Indien de l'Amerique du Nort (Autre)"
 
-#: 950.data.seed-values.sql:2016
-msgid "GUI: Work Log: Maximum Patrons Logged"
-msgstr "GUI : Registre de travail : Maximum de clients en session"
+# id::clm.value__pol
+# id::pol
+#: 950.data.seed-values.sql:6132
+msgid "Polish"
+msgstr "Polonais"
 
-#: 950.data.seed-values.sql:2397
-msgid ""
-"The suffix field will be suggested on the patron registration screen. "
-"Suggesting a field makes it appear when suggested fields are shown. If the "
-"field is shown or required this setting is ignored."
+#: 950.data.seed-values.sql:9942
+msgid "Heading -- Topical Term"
 msgstr ""
 
-#: 950.data.seed-values.sql:2381
-msgid ""
-"The other_phone field will be suggested on the patron registration screen. "
-"Suggesting a field makes it appear when suggested fields are shown. If the "
-"field is shown or required this setting is ignored."
-msgstr ""
+# id::clm.value__crh
+# id::crh
+#: 950.data.seed-values.sql:5882
+msgid "Crimean Tatar"
+msgstr "Tatar de Crimée"
 
-#: 950.data.seed-values.sql:2554
+#: 950.data.seed-values.sql:4831
 msgid "Book Bag"
 msgstr "Sac à livres"
 
-#: 950.data.seed-values.sql:1951
-msgid "Credit card processing: AuthorizeNet password"
+#: 950.data.seed-values.sql:9980
+msgid "See Also Tracing -- Meeting Name"
 msgstr ""
 
 # id::clm.value__bho
 # id::bho
-#: 950.data.seed-values.sql:3550
+#: 950.data.seed-values.sql:5837
 msgid "Bhojpuri"
 msgstr "Bhojpuri"
 
 # id::clm.value__tsi
 # id::tsi
-#: 950.data.seed-values.sql:3941
+#: 950.data.seed-values.sql:6228
 msgid "Tsimshian"
 msgstr "Tsimshian"
 
 # id::aout.opac_label__5
-#: 950.data.seed-values.sql:360
+#: 950.data.seed-values.sql:439
 msgid "Your Bookmobile"
 msgstr "Votre bibliobus"
 
 # id::clm.value__nog
 # id::nog
-#: 950.data.seed-values.sql:3815
+#: 950.data.seed-values.sql:6102
 msgid "Nogai"
 msgstr "Nogai"
 
-#: 950.data.seed-values.sql:2349
-msgid ""
-"The juvenile field will be shown on the patron registration screen. Showing "
-"a field makes it appear with required fields even when not required. If the "
-"field is required this setting is ignored."
+#: 950.data.seed-values.sql:11436
+msgid "Verification via remoteauth"
 msgstr ""
 
 # id::clm.value__enm
 # id::enm
-#: 950.data.seed-values.sql:3620
+#: 950.data.seed-values.sql:5907
 msgid "English, Middle (1100-1500)"
 msgstr "Moyen anglais (1100-1500)"
 
-# id::clm.value__hat
-# id::hat
-#: 950.data.seed-values.sql:3671
-msgid "Haitian French Creole"
-msgstr "Créole français de Haïti"
+# id::clm.value__sah
+# id::sah
+#: 950.data.seed-values.sql:6150
+msgid "Yakut"
+msgstr "Yakoute"
 
 # id::clm.value__sux
 # id::sux
-#: 950.data.seed-values.sql:3911
+#: 950.data.seed-values.sql:6198
 msgid "Sumerian"
 msgstr "Sumérien"
 
-#: 950.data.seed-values.sql:1756
-msgid "Selfcheck: Patron Login Timeout (in seconds)"
-msgstr ""
-
-#: 950.data.seed-values.sql:6491
+#: 950.data.seed-values.sql:8654
 msgid "Paper"
 msgstr "Document"
 
-#: 950.data.seed-values.sql:1751
-msgid "Holds: Minimum Estimated Wait"
-msgstr ""
-
 # id::clm.value__xho
 # id::xho
-#: 950.data.seed-values.sql:3975
+#: 950.data.seed-values.sql:6262
 msgid "Xhosa"
 msgstr "Xhosa"
 
-#: 950.data.seed-values.sql:2300
-msgid "GUI: Require email field on patron registration"
-msgstr ""
+# id::clm.value__mni
+# id::mni
+#: 950.data.seed-values.sql:6075
+msgid "Manipuri"
+msgstr "Meithei"
 
 # id::clm.value__bua
 # id::bua
-#: 950.data.seed-values.sql:3561
+#: 950.data.seed-values.sql:5848
 msgid "Buriat"
 msgstr "Buriat"
 
 # id::clm.value__man
 # id::man
-#: 950.data.seed-values.sql:3770
+#: 950.data.seed-values.sql:6057
 msgid "Mandingo"
 msgstr "Meninka"
 
-#: 950.data.seed-values.sql:1656 950.data.seed-values.sql:1657
-msgid "OPAC Inactivity Timeout (in seconds)"
-msgstr ""
-
-#: 950.data.seed-values.sql:2369
-msgid ""
-"The Regular Expression for validation on the other_phone field in patron "
-"registration."
-msgstr ""
+# id::clm.value__hup
+# id::hup
+#: 950.data.seed-values.sql:5970
+msgid "Hupa"
+msgstr "Hupa"
 
 # id::clm.value__ina id::clm.value__-int
 # id::ina
-#: 950.data.seed-values.sql:3693 950.data.seed-values.sql:3698
+#: 950.data.seed-values.sql:5980 950.data.seed-values.sql:5985
 msgid "Interlingua (International Auxiliary Language Association)"
 msgstr "Interlingua (Langue Auxiliaire Internationale)"
 
 # id::clm.value__ice
 # id::ice
-#: 950.data.seed-values.sql:3686
+#: 950.data.seed-values.sql:5973
 msgid "Icelandic"
 msgstr "Islandais"
 
 # id::clm.value__twi
 # id::twi
-#: 950.data.seed-values.sql:3951
+#: 950.data.seed-values.sql:6238
 msgid "Twi"
 msgstr "Twi"
 
-#: 950.data.seed-values.sql:2297
-msgid ""
-"The Regular Expression for validation on the email field in patron "
-"registration."
-msgstr ""
-
 # id::clm.value__guj
 # id::guj
-#: 950.data.seed-values.sql:3668
+#: 950.data.seed-values.sql:5955
 msgid "Gujarati"
 msgstr "Gujarati"
 
 # id::clfm.value__1
 # id::1
-#: 950.data.seed-values.sql:4017
+#: 950.data.seed-values.sql:6304
 msgid "Fiction (not further specified)"
 msgstr "Fiction (aucune autre spécification)"
 
 # id::clm.value__map
 # id::map
-#: 950.data.seed-values.sql:3772
+#: 950.data.seed-values.sql:6059
 msgid "Austronesian (Other)"
 msgstr "Austronesian (Autre)"
 
 # id::clm.value__akk
 # id::akk
-#: 950.data.seed-values.sql:3512
+#: 950.data.seed-values.sql:5799
 msgid "Akkadian"
 msgstr "Akkadien"
 
-#: 950.data.seed-values.sql:1762
-msgid ""
-"If true, checkout/renewal errors will cause a pop-up window in addition to "
-"the on-screen message"
-msgstr ""
-
 # id::cnal.name__1
 # id::1
-#: 950.data.seed-values.sql:238
+#: 950.data.seed-values.sql:317
 msgid "Filtered"
 msgstr "Filtré"
 
 # id::clm.value__kor
 # id::kor
-#: 950.data.seed-values.sql:3731
+#: 950.data.seed-values.sql:6018
 msgid "Korean"
 msgstr "Coréen"
 
-#: 950.data.seed-values.sql:2376
-msgid "GUI: Show other_phone field on patron registration"
-msgstr ""
-
 # id::clm.value__shn
 # id::shn
-#: 950.data.seed-values.sql:3878
+#: 950.data.seed-values.sql:6165
 msgid "Shan"
 msgstr "Shan"
 
-#: 950.data.seed-values.sql:1882
-msgid "Appends staff initials and edit date into note content."
-msgstr ""
-"Ajouter les initiales de l’employé et modifier la date dans le contenu de la "
-"note"
-
-#: 950.data.seed-values.sql:2380
-msgid "GUI: Suggest other_phone field on patron registration"
-msgstr ""
-
 # id::citm.value__d
 # id::d
-#: 950.data.seed-values.sql:4010
+#: 950.data.seed-values.sql:6297
 msgid "Manuscript notated music"
 msgstr "Manuscrit de musique annotée"
 
-#: 950.data.seed-values.sql:1737
-msgid ""
-"This is the maximum number of previous circulations the staff client will "
-"display when investigating item details"
-msgstr ""
-
-#: 950.data.seed-values.sql:1746
-msgid "Holds: Default Estimated Wait"
-msgstr ""
-
-#: 950.data.seed-values.sql:1921
-msgid "Max Patron Claims Returned Count"
-msgstr ""
-
-#: 950.data.seed-values.sql:1671 950.data.seed-values.sql:1672
-msgid "Default Item Price"
+#: 950.data.seed-values.sql:9933
+msgid "Established Heading Linking Entry -- Uniform Title"
 msgstr ""
 
 # id::cblvl.value__c
 # id::c
-#: 950.data.seed-values.sql:4043
+#: 950.data.seed-values.sql:6330
 msgid "Collection"
 msgstr "Collection"
 
 # id::clm.value__nya
 # id::nya
-#: 950.data.seed-values.sql:3820
+#: 950.data.seed-values.sql:6107
 msgid "Nyanja"
 msgstr "Nyanga"
 
-# id::clm.value__khi
-# id::khi
-#: 950.data.seed-values.sql:3721
-msgid "Khoisan (Other)"
-msgstr "Khoin (Autre)"
+#: 950.data.seed-values.sql:9982
+msgid "See Also Tracing -- Geographic Name"
+msgstr ""
+
+#: 950.data.seed-values.sql:1579
+msgid "Can do anything at the Consortium level"
+msgstr ""
 
 # id::clm.value__cad
 # id::cad
-#: 950.data.seed-values.sql:3565
+#: 950.data.seed-values.sql:5852
 msgid "Caddo"
 msgstr "Caddo"
 
-# id::clm.value__-fri id::clm.value__fry
-# id::-fri
-#: 950.data.seed-values.sql:3637 950.data.seed-values.sql:3640
-msgid "Frisian"
-msgstr "Frison"
-
-#: 950.data.seed-values.sql:5917
-msgid "Offline: Patron Usernames Allowed"
-msgstr "Hors ligne : Le nom d’utilisateur des clients est autorisé"
+# id::clm.value__lez
+# id::lez
+#: 950.data.seed-values.sql:6036
+msgid "Lezgian"
+msgstr "Lezgian"
 
 # id::clm.value__kas
 # id::kas
-#: 950.data.seed-values.sql:3715
+#: 950.data.seed-values.sql:6002
 msgid "Kashmiri"
 msgstr "Kachméré"
 
 # id::clm.value__hai
 # id::hai
-#: 950.data.seed-values.sql:3670
+#: 950.data.seed-values.sql:5957
 msgid "Haida"
 msgstr "Skittagetan"
 
-#: 950.data.seed-values.sql:93
+#: 950.data.seed-values.sql:166
 msgid "Local Free-Text Call Number"
 msgstr "Numéro d’appel local texte libre"
 
 # id::clm.value__-lan id::clm.value__oci
 # id::-lan
-#: 950.data.seed-values.sql:3744 950.data.seed-values.sql:3825
+#: 950.data.seed-values.sql:6031 950.data.seed-values.sql:6112
 msgid "Occitan (post-1500)"
 msgstr "Occitan (après 1500)"
 
-# id::clm.value__por
-# id::por
-#: 950.data.seed-values.sql:3847
-msgid "Portuguese"
-msgstr "Portuguais"
+#: 950.data.seed-values.sql:9239
+msgid "Malformed record cause Import failure"
+msgstr ""
 
-# id::clm.value__non
-# id::non
-#: 950.data.seed-values.sql:3816
-msgid "Old Norse"
-msgstr "Vieil islandais"
+# id::clm.value__son
+# id::son
+#: 950.data.seed-values.sql:6187
+msgid "Songhai"
+msgstr "Songhaï"
 
 # id::i18n_l.name__es-US
-#: 950.data.seed-values.sql:262
+#: 950.data.seed-values.sql:341
 msgid "Spanish (US)"
 msgstr "Espagnol (États-Unis)"
 
-#: 950.data.seed-values.sql:2208
-msgid "GUI: Show active field on patron registration"
-msgstr ""
+# id::ccs.name__2
+# id::2
+#: 950.data.seed-values.sql:299
+msgid "Bindery"
+msgstr "Atelier de reliure"
 
-#: 950.data.seed-values.sql:2360
-msgid "GUI: Suggest master_account field on patron registration"
-msgstr ""
+# id::aout.name__2
+# id::2
+#: 950.data.seed-values.sql:429 950.data.seed-values.sql:2453
+msgid "System"
+msgstr "Système"
 
-# id::clm.value__chm
-# id::chm
-#: 950.data.seed-values.sql:3579
-msgid "Mari"
-msgstr "Mari"
-
-#: 950.data.seed-values.sql:1398
+#: 950.data.seed-values.sql:1563
 msgid "Acquisitions Administrator"
 msgstr "Administrateur des acquisitions"
 
-#: 950.data.seed-values.sql:2276
-msgid "GUI: Show calendar widget for dob field on patron registration"
+#: 950.data.seed-values.sql:10083
+msgid "Vandelay Queue"
 msgstr ""
 
 # id::vqbrad.description__3
-#: 950.data.seed-values.sql:2482
+#: 950.data.seed-values.sql:4759
 msgid "Language of work"
 msgstr "Langue de l'oeuvre"
 
-#: 950.data.seed-values.sql:2006
-msgid "Credit card processing: PayflowPro partner"
-msgstr ""
-
-#: 950.data.seed-values.sql:2264
-msgid "GUI: Require day_phone field on patron registration"
-msgstr ""
-
 # id::clm.value__aar
 # id::aar
-#: 950.data.seed-values.sql:3501
+#: 950.data.seed-values.sql:5788
 msgid "Afar"
 msgstr "Afar"
 
 # id::crahp.name__1
 # id::1
-#: 950.data.seed-values.sql:213
+#: 950.data.seed-values.sql:292
 msgid "3month"
 msgstr "3 mois"
 
 # id::cza.label__8 id::cza.label__17 id::cza.label__26
 # id::vqbrad.description__13
-#: 950.data.seed-values.sql:295 950.data.seed-values.sql:316
-#: 950.data.seed-values.sql:335 950.data.seed-values.sql:2492
+#: 950.data.seed-values.sql:374 950.data.seed-values.sql:395
+#: 950.data.seed-values.sql:414 950.data.seed-values.sql:4769
 msgid "Publication Date"
 msgstr "Date de publication"
 
 # id::clm.value__udm
 # id::udm
-#: 950.data.seed-values.sql:3953
+#: 950.data.seed-values.sql:6240
 msgid "Udmurt"
 msgstr "Oudmourte"
 
 # id::clm.value__gle id::clm.value__-iri
 # id::gle
-#: 950.data.seed-values.sql:3655 950.data.seed-values.sql:3701
+#: 950.data.seed-values.sql:5942 950.data.seed-values.sql:5988
 msgid "Irish"
 msgstr "Irlandais"
 
-# id::clm.value__gba
-# id::gba
-#: 950.data.seed-values.sql:3648
-msgid "Gbaya"
-msgstr "Gbaya"
-
-#: 950.data.seed-values.sql:5333
-msgid "Circ: Cap Max Fine at Item Price"
-msgstr "Prêts : L’amende maximale est la valeur de l’article"
+#: 950.data.seed-values.sql:9934
+msgid "See Also Tracing -- Uniform Title"
+msgstr ""
 
 # id::clm.value__cze id::i18n_l.name__cs-CZ id::i18n_l.description__cs-CZ
 # id::cze
-#: 950.data.seed-values.sql:250 950.data.seed-values.sql:251
-#: 950.data.seed-values.sql:3598
+#: 950.data.seed-values.sql:329 950.data.seed-values.sql:330
+#: 950.data.seed-values.sql:5885
 msgid "Czech"
 msgstr "Tchèque"
 
 # id::clm.value__luo
 # id::luo
-#: 950.data.seed-values.sql:3761
+#: 950.data.seed-values.sql:6048
 msgid "Luo (Kenya and Tanzania)"
 msgstr "Luo (Kenya et Tanzanie)"
 
 # id::clm.value__kbd
 # id::kbd
-#: 950.data.seed-values.sql:3719
+#: 950.data.seed-values.sql:6006
 msgid "Kabardian"
 msgstr "Kabardine"
 
 # id::clm.value__lah
 # id::lah
-#: 950.data.seed-values.sql:3742
+#: 950.data.seed-values.sql:6029
 msgid "Lahnda"
 msgstr "Lahnda"
 
 # id::clm.value__bel
 # id::bel
-#: 950.data.seed-values.sql:3546
+#: 950.data.seed-values.sql:5833
 msgid "Belarusian"
 msgstr "Bélarussien"
 
-# id::clm.value__mni
-# id::mni
-#: 950.data.seed-values.sql:3788
-msgid "Manipuri"
-msgstr "Meithei"
-
 # id::czs.label__loc
-#: 950.data.seed-values.sql:274
+#: 950.data.seed-values.sql:353
 msgid "Library of Congress"
 msgstr "Bibliothèque du Congrès"
 
-#: 950.data.seed-values.sql:2336
-msgid "GUI: Suggest ident_value field on patron registration"
+#: 950.data.seed-values.sql:11422
+msgid "Login via opensrf"
 msgstr ""
 
 # id::cifm.value__d
 # id::d
-#: 950.data.seed-values.sql:4035
+#: 950.data.seed-values.sql:6322
 msgid "Large print"
 msgstr "Gros caractères"
 
 # id::clm.value__-ajm
 # id::-ajm
-#: 950.data.seed-values.sql:3510
+#: 950.data.seed-values.sql:5797
 msgid "Aljamía"
 msgstr "Aljamía"
 
-#: 950.data.seed-values.sql:64
+#: 950.data.seed-values.sql:137
 msgid "Name Subject"
 msgstr "Nommer le sujet"
 
 # id::clm.value__sme
 # id::sme
-#: 950.data.seed-values.sql:3888
+#: 950.data.seed-values.sql:6175
 msgid "Northern Sami"
 msgstr "Lapon du Nord"
 
-# id::clm.value__und
-# id::und
-#: 950.data.seed-values.sql:3958
-msgid "Undetermined"
-msgstr "Indéterminé"
-
 # id::clm.value__xal
 # id::xal
-#: 950.data.seed-values.sql:3974
+#: 950.data.seed-values.sql:6261
 msgid "Kalmyk"
 msgstr "Kalmouk"
 
-#: 950.data.seed-values.sql:50
+#: 950.data.seed-values.sql:123
 msgid "Title Proper"
 msgstr "Titre juste"
 
 # id::cam.value__d
 # id::d
-#: 950.data.seed-values.sql:3993
+#: 950.data.seed-values.sql:6280
 msgid "Adolescent"
 msgstr "Adolescent"
 
-#: 950.data.seed-values.sql:2237
-msgid ""
-"The barred field will be suggested on the patron registration screen. "
-"Suggesting a field makes it appear when suggested fields are shown. If the "
-"field is shown or required this setting is ignored."
-msgstr ""
-
 # id::clm.value__rum
 # id::rum
-#: 950.data.seed-values.sql:3858
+#: 950.data.seed-values.sql:6145
 msgid "Romanian"
 msgstr "Roumain"
 
 # id::clm.value__aze
 # id::aze
-#: 950.data.seed-values.sql:3535
+#: 950.data.seed-values.sql:5822
 msgid "Azerbaijani"
 msgstr "Azerbaïdjanais"
 
 # id::clm.value__srd
 # id::srd
-#: 950.data.seed-values.sql:3903
+#: 950.data.seed-values.sql:6190
 msgid "Sardinian"
 msgstr "Sarde"
 
-#: 950.data.seed-values.sql:398
+#: 950.data.seed-values.sql:477
 msgid "System: Deposit"
 msgstr "Système : dépôt"
 
-#: 950.data.seed-values.sql:1811
-msgid "Circ: Void lost max interval"
+#: 950.data.seed-values.sql:10059
+msgid "Medical Subject Headings"
+msgstr ""
+
+#: 950.data.seed-values.sql:11425
+msgid "Login via translator-v1"
 msgstr ""
 
 # id::citm.value__g
 # id::g
-#: 950.data.seed-values.sql:4002
+#: 950.data.seed-values.sql:6289
 msgid "Projected medium"
 msgstr "Support média projeté"
 
-#: 950.data.seed-values.sql:2301
-msgid "The email field will be required on the patron registration screen."
+#: 950.data.seed-values.sql:2469
+msgid "Offline"
 msgstr ""
 
-#: 950.data.seed-values.sql:1757
-msgid ""
-"Number of seconds of inactivity before the patron is logged out of the "
-"selfcheck interface"
-msgstr ""
+# id::clm.value__lao
+# id::lao
+#: 950.data.seed-values.sql:6032
+msgid "Lao"
+msgstr "Lao"
 
-#: 950.data.seed-values.sql:87
+#: 950.data.seed-values.sql:160
 msgid "EAN"
 msgstr "NEA"
 
-#: 950.data.seed-values.sql:1876 950.data.seed-values.sql:1877
-msgid "Patron circulation summary is horizontal"
+#: 950.data.seed-values.sql:11427
+msgid "Login via remoteauth"
 msgstr ""
-
-#: 950.data.seed-values.sql:2022
-msgid ""
-"Courier Code for the library.  Available in transit slip templates as the "
-"%courier_code% macro."
-msgstr ""
-"Code de messager pour la bibliothèque. Modèles de fiche en transit utilisant "
-"la macro %courier_code%"
 
 # id::clm.value__sio
 # id::sio
-#: 950.data.seed-values.sql:3882
+#: 950.data.seed-values.sql:6169
 msgid "Siouan (Other)"
 msgstr "Sioux (Autre)"
 
-#: 950.data.seed-values.sql:1706
-msgid "Holds: Soft stalling interval"
-msgstr ""
+# id::clm.value__sco
+# id::sco
+#: 950.data.seed-values.sql:6159
+msgid "Scots"
+msgstr "Écossais"
 
-#: 950.data.seed-values.sql:2240
-msgid "GUI: Show claims_never_checked_out_count field on patron registration"
-msgstr ""
-
-#: 950.data.seed-values.sql:6478
-msgid "Fund Spending Limit for Block"
-msgstr "Limite de dépenses à même le fonds aux fins de blocage"
+# id::clm.value__men
+# id::men
+#: 950.data.seed-values.sql:6065
+msgid "Mende"
+msgstr "Mendé"
 
 # id::clm.value__oji
 # id::oji
-#: 950.data.seed-values.sql:3826
+#: 950.data.seed-values.sql:6113
 msgid "Ojibwa"
 msgstr "Ojibwa"
 
 # id::clm.value__sus
 # id::sus
-#: 950.data.seed-values.sql:3910
+#: 950.data.seed-values.sql:6197
 msgid "Susu"
 msgstr "Soso"
 
 # id::clm.value__cau
 # id::cau
-#: 950.data.seed-values.sql:3570
+#: 950.data.seed-values.sql:5857
 msgid "Caucasian (Other)"
 msgstr "Catalan (Autre)"
 
-# id::clm.value__elx
-# id::elx
-#: 950.data.seed-values.sql:3618
-msgid "Elamite"
-msgstr "Élamite"
+# id::clm.value__kur
+# id::kur
+#: 950.data.seed-values.sql:6025
+msgid "Kurdish"
+msgstr "Kurde"
 
 # id::clm.value__wal
 # id::wal
-#: 950.data.seed-values.sql:3967
+#: 950.data.seed-values.sql:6254
 msgid "Walamo"
 msgstr "Walamo"
 
+#: 950.data.seed-values.sql:11426
+msgid "Login via xmlrpc"
+msgstr ""
+
 # id::i18n_l.description__es-US
 # id::es-US
-#: 950.data.seed-values.sql:263
+#: 950.data.seed-values.sql:342
 msgid "American Spanish"
 msgstr "Espagnol américain"
 
 # id::clm.value__nde
 # id::nde
-#: 950.data.seed-values.sql:3805
+#: 950.data.seed-values.sql:6092
 msgid "Ndebele (Zimbabwe)  "
 msgstr "Ndébélé (Zimbabwe)  "
 
 # id::clm.value__lub
 # id::lub
-#: 950.data.seed-values.sql:3757
+#: 950.data.seed-values.sql:6044
 msgid "Luba-Katanga"
 msgstr "Luba-Katanga"
 
-#: 950.data.seed-values.sql:1826
-msgid "Circ: Lost items usable on checkin"
-msgstr ""
+# id::cifm.value__s
+# id::s
+#: 950.data.seed-values.sql:6325
+msgid "Electronic"
+msgstr "Électronique"
 
 # id::clfm.value__d
 # id::d
-#: 950.data.seed-values.sql:4019
+#: 950.data.seed-values.sql:6306
 msgid "Dramas"
 msgstr "Drames"
 
 # id::clm.value__zha
 # id::zha
-#: 950.data.seed-values.sql:3983
+#: 950.data.seed-values.sql:6270
 msgid "Zhuang"
 msgstr "Zhuang"
 
 # id::cifm.value__f
 # id::f
-#: 950.data.seed-values.sql:4036
+#: 950.data.seed-values.sql:6323
 msgid "Braille"
 msgstr "Braille"
 
-#: 950.data.seed-values.sql:1891
-msgid "Hold Shelf Status Delay"
-msgstr ""
-
-#: 950.data.seed-values.sql:2420
-msgid "GUI: Regex for phone fields on patron registration"
-msgstr ""
-
-# id::citm.value__j
-# id::j
-#: 950.data.seed-values.sql:4012
-msgid "Musical sound recording"
-msgstr "Enregistrement sonore musical"
-
-#: 950.data.seed-values.sql:1990
-msgid "Credit card processing: PayflowPro login/merchant ID"
-msgstr ""
+# id::clfm.value__c
+# id::c
+#: 950.data.seed-values.sql:6305
+msgid "Comic strips"
+msgstr "Bandes dessinées"
 
 # id::clm.value__ido
 # id::ido
-#: 950.data.seed-values.sql:3687
+#: 950.data.seed-values.sql:5974
 msgid "Ido"
 msgstr "Ido"
 
 # id::i18n_l.description__fr-CA
 # id::fr-CA
-#: 950.data.seed-values.sql:257
+#: 950.data.seed-values.sql:336
 msgid "Canadian French"
 msgstr "Français canadien"
 
-#: 950.data.seed-values.sql:2341
-msgid ""
-"The ident_value2 field will be shown on the patron registration screen. "
-"Showing a field makes it appear with required fields even when not required. "
-"If the field is required this setting is ignored."
-msgstr ""
-
-#: 950.data.seed-values.sql:89
+#: 950.data.seed-values.sql:162
 msgid "ISRC"
 msgstr "IRSC"
 
 # id::clm.value__fiu
 # id::fiu
-#: 950.data.seed-values.sql:3634
+#: 950.data.seed-values.sql:5921
 msgid "Finno-Ugrian (Other)"
 msgstr "Finno-ougrienne (Autre)"
 
 # id::clm.value__apa
 # id::apa
-#: 950.data.seed-values.sql:3518
+#: 950.data.seed-values.sql:5805
 msgid "Apache languages"
 msgstr "Langues apaches"
 
-#: 950.data.seed-values.sql:7125
-msgid ""
-"If there is an available copy at the requesting library that could fulfill a "
-"hold during hold placement time, do not allow the hold to be placed"
+#: 950.data.seed-values.sql:38
+msgid "Alerting block on Hold"
 msgstr ""
-"Si une copie est disponible à la bibliothèque faisant la demande et pourrait "
-"être mise en réserve durant la période de placement en réserve, ne pas "
-"autoriser la mise en réserve"
 
 # id::clm.value__run
 # id::run
-#: 950.data.seed-values.sql:3859
+#: 950.data.seed-values.sql:6146
 msgid "Rundi"
 msgstr "Rundi"
 
 # id::crcd.name__7
 # id::7
-#: 950.data.seed-values.sql:177
+#: 950.data.seed-values.sql:256
 msgid "7_days_2_renew"
 msgstr "7_jours_2_renouvellements"
 
 # id::clm.value__-esk
 # id::-esk
-#: 950.data.seed-values.sql:3622
+#: 950.data.seed-values.sql:5909
 msgid "Eskimo languages"
 msgstr "Langues inuites"
 
-#: 950.data.seed-values.sql:2564
+#: 950.data.seed-values.sql:4841
 msgid "Checkout Items"
 msgstr "Articles empruntés"
 
-#: 950.data.seed-values.sql:59
+#: 950.data.seed-values.sql:132
 msgid "Other Author"
 msgstr "Autre auteur"
 
 # id::clm.value__ath
 # id::ath
-#: 950.data.seed-values.sql:3529
+#: 950.data.seed-values.sql:5816
 msgid "Athapascan (Other)"
 msgstr "Athapascan (Autre)"
 
 # id::clm.value__ndo
 # id::ndo
-#: 950.data.seed-values.sql:3806
+#: 950.data.seed-values.sql:6093
 msgid "Ndonga"
 msgstr "Ndonga"
 
-#: 950.data.seed-values.sql:7119
-msgid "Holds: Has Local Copy Alert"
-msgstr "Articles mis en réserve : alerte d’exemplaire local"
-
-# id::clm.value__sco
-# id::sco
-#: 950.data.seed-values.sql:3872
-msgid "Scots"
-msgstr "Écossais"
+#: 950.data.seed-values.sql:37
+msgid "Alerting block on Hold and Renew"
+msgstr ""
 
 # id::clm.value__sot id::clm.value__-sso
 # id::sot
-#: 950.data.seed-values.sql:3901 950.data.seed-values.sql:3906
+#: 950.data.seed-values.sql:6188 950.data.seed-values.sql:6193
 msgid "Sotho"
 msgstr "Sotho"
 
 # id::clm.value__was
 # id::was
-#: 950.data.seed-values.sql:3969
+#: 950.data.seed-values.sql:6256
 msgid "Washo"
 msgstr "Washo"
 
 # id::clm.value__spa
 # id::spa
-#: 950.data.seed-values.sql:3902
+#: 950.data.seed-values.sql:6189
 msgid "Spanish"
 msgstr "Espagnol"
 
-#: 950.data.seed-values.sql:1847
-msgid ""
-"If you want staff client windows to be minimized after a certain amount of "
-"system idle time, set this to the number of seconds of idle time that you "
-"want to allow before minimizing (requires staff client restart)."
+#: 950.data.seed-values.sql:9961
+msgid "See Also From Tracing -- Form Subdivision"
+msgstr ""
+
+#: 950.data.seed-values.sql:9959
+msgid "See Also From Tracing -- Geographic Subdivision"
 msgstr ""
 
 # id::cam.description__b
@@ -5421,6 +4605,10 @@ msgstr ""
 #~ "L'article est destiné aux enfants et aux jeunes entre les âges approximatifs "
 #~ "de 0 à 15 ans."
 
+# id::pgt.name__10
+#~ msgid "Local System Administrator"
+#~ msgstr "Administrateur de système local"
+
 # id::clfm.description__u
 #~ msgid "The literary form of the item is unknown."
 #~ msgstr "La forme littéraire de l'article est inconnue."
@@ -5453,6 +4641,22 @@ msgstr ""
 #~ msgid "The item is intended for adults."
 #~ msgstr "Cet article est destiné aux adultes."
 
+# id::pgt.description__10
+#~ msgid "System maintenance, configuration, etc."
+#~ msgstr "Entretient du système, configuration, etc."
+
+#~ msgid ""
+#~ "Prevent the creation of new self-serve password reset requests until the "
+#~ "number of active requests drops back below this number."
+#~ msgstr ""
+#~ "Empêcher la création de nouvelles demandes autonomes de rétablir le mot de "
+#~ "passe tant que le nombre de demandes actives n’est pas inférieur à ce nombre"
+
+#~ msgid "Patron must log in with barcode and password at selfcheck station"
+#~ msgstr ""
+#~ "Le client doit ouvrir une session à l’aide d’un code à barres et d’un mot de "
+#~ "passe à un poste d’auto-contrôle"
+
 #~ msgid ""
 #~ "The item is not a work of fiction and no further identification of the "
 #~ "literary form is desired"
@@ -5460,12 +4664,164 @@ msgstr ""
 #~ "L’article n’est pas un ouvrage de fiction et aucune autre désignation de "
 #~ "forme littéraire n’est souhaitée"
 
+#~ msgid "Courier Code"
+#~ msgstr "Code de messager"
+
+#~ msgid "Holds: Has Local Copy Block"
+#~ msgstr "Articles mis en réserve : exemplaire local bloqué"
+
+#~ msgid ""
+#~ "Circulation: Maximum concurrently active self-serve password reset requests "
+#~ "per user"
+#~ msgstr ""
+#~ "Prêts : Maximum de demandes actives en même temps de rétablissement autonome "
+#~ "d’un mot de passe par usager"
+
+#~ msgid "Holds: Block Renewal of Items Needed for Holds"
+#~ msgstr ""
+#~ "Articles mis en réserve : Bloquer le renouvellement d’articles qui doivent "
+#~ "être mis en réserve"
+
+#~ msgid "Holds: Clear shelf copy status"
+#~ msgstr "Article en réserve : Enlever l’état de la copie en étagère"
+
+#~ msgid ""
+#~ "Length of time (in seconds) a self-serve password reset request should "
+#~ "remain active."
+#~ msgstr ""
+#~ "Durée (en secondes) de la période durant laquelle une demande de "
+#~ "rétablissement autonome du mot de passe doit rester active"
+
+#~ msgid "Use audio alerts for selfcheck events"
+#~ msgstr "Utiliser les alertes sonores pour les événements d’auto-contrôle"
+
+#~ msgid ""
+#~ "When the amount remaining in the fund, including spent money and "
+#~ "encumbrances, goes below this percentage, attempts to spend from the fund "
+#~ "will result in a warning to the staff."
+#~ msgstr ""
+#~ "Quand le montant qui reste dans le fonds, incluant l’argent dépensé et les "
+#~ "créances, arrive en dessous de ce pourcentage, des tentatives de dépenser "
+#~ "des sommes du fonds déclencheront un avertissement au personnel"
+
+#~ msgid ""
+#~ "Maximum entries for \"Most Recently Affected Patrons...\" section of the "
+#~ "Work Log interface."
+#~ msgstr ""
+#~ "Maximum d’entrées pour la section \\\"Most Recently Affected Patrons...\\\" "
+#~ "dans l’interface du journal de travail"
+
+#~ msgid "Selfcheck: Workstation Required"
+#~ msgstr "Auto-contrôle : Poste de travail nécessaire"
+
+#~ msgid "Circulation: Self-serve password reset request time-to-live"
+#~ msgstr ""
+#~ "Prêts : Durée de vie d’une demande de rétablissement autonome du mot de passe"
+
+#~ msgid "Fund Spending Limit for Warning"
+#~ msgstr "Limite des fonds dépensés avant avertissement"
+
+#~ msgid "GUI: Work Log: Maximum Actions Logged"
+#~ msgstr "GUI : registre de travail : maximum de mesures enregistrées"
+
+#~ msgid ""
+#~ "Maximum entries for \"Most Recent Staff Actions\" section of the Work Log "
+#~ "interface."
+#~ msgstr ""
+#~ "Maximum d’entrées pour la section \\\"Most Recent Staff Actions\\\" dans "
+#~ "l’interface du journal de travail"
+
+#~ msgid "Persistent Login Duration"
+#~ msgstr "Durée d’une ouverture de session incessante"
+
+#~ msgid ""
+#~ "When the amount remaining in the fund, including spent money and "
+#~ "encumbrances, goes below this percentage, attempts to spend from the fund "
+#~ "will be blocked."
+#~ msgstr ""
+#~ "Quand le montant qui reste dans le fonds, incluant l’argent dépensé et les "
+#~ "créances, arrive en dessous de ce pourcentage, des tentatives de dépenser "
+#~ "des sommes du fonds seront bloquées"
+
+#~ msgid ""
+#~ "During offline circulations, allow patrons to identify themselves with "
+#~ "usernames in addition to barcode.  For this setting to work, a barcode "
+#~ "format must also be defined"
+#~ msgstr ""
+#~ "Durant les prêts hors ligne, permettre aux clients de s’identifier à l’aide "
+#~ "de leur nom d’utilisateur en plus du code à barres. Pour que ce réglage "
+#~ "fonctionne, le format du code à barres doit être défini"
+
+#~ msgid ""
+#~ "If there is an available copy at the requesting library that could fulfill a "
+#~ "hold during hold placement time, alert the patron"
+#~ msgstr ""
+#~ "Si une copie est disponible à la bibliothèque faisant la demande et pourrait "
+#~ "être mise en réserve durant la période de placement en réserve, en informer "
+#~ "le client"
+
+#~ msgid ""
+#~ "Circulation: Maximum concurrently active self-serve password reset requests"
+#~ msgstr ""
+#~ "Prêts : Maximum de demandes autonomes de rétablissement du mot de passe "
+#~ "actives en même temps"
+
+#~ msgid ""
+#~ "GUI: Require staff initials for entry/edit of item/patron/penalty "
+#~ "notes/messages."
+#~ msgstr ""
+#~ "GUI : Initiales du personnel nécessaire pour entrer/modifier un "
+#~ "article/client/commentaire sur la pénalité/message"
+
+#~ msgid "Selfcheck: Audio Alerts"
+#~ msgstr "Auto-contrôle : alertes sonores"
+
+#~ msgid ""
+#~ "Any copies that have not been put into reshelving, in-transit, or on-holds-"
+#~ "shelf (for a new hold) during the clear shelf process will be put into this "
+#~ "status.  This is basically a purgatory status for copies waiting to be "
+#~ "pulled from the shelf and processed by hand"
+#~ msgstr ""
+#~ "Tous les exemplaires qui sont destinés à être remis en étagère, mis en "
+#~ "transit ou en étagère de réserve (pour une nouvelle réserve) durant le "
+#~ "processus de libération de l’étagère seront mis dans cet état. C’est "
+#~ "fondamentalement un état de purge pour les exemplaires qui doivent être "
+#~ "retirés de l’étagère ou traités manuellement"
+
+#~ msgid "All selfcheck stations must use a workstation"
+#~ msgstr "Tout poste d’auto-contrôle doit utiliser un poste de travail"
+
+#~ msgid "Selfcheck: Require Patron Password"
+#~ msgstr "Auto-contrôle : Le mot de passe du client est obligatoire"
+
 #~ msgid ""
 #~ "The item is of general interest and not aimed at an audience of a particular "
 #~ "intellectual level."
 #~ msgstr ""
 #~ "L’article est d’intérêt général et n’est pas destiné à un public d’un niveau "
 #~ "intellectuel particulier"
+
+#~ msgid "How long a persistent login lasts.  E.g. '2 weeks'"
+#~ msgstr ""
+#~ "Quelle est la durée d’une ouverture de session incessante. P. ex. 2 semaines"
+
+#~ msgid ""
+#~ "When an item could fulfill a hold, do not allow the current patron to renew"
+#~ msgstr ""
+#~ "Lorsqu’un article pourrait satisfaire à une mise en réserve, ne pas "
+#~ "permettre au client en cours de renouveler"
+
+#~ msgid ""
+#~ "When a user has more than this number of concurrently active self-serve "
+#~ "password reset requests for their account, prevent the user from creating "
+#~ "any new self-serve password reset requests until the number of active "
+#~ "requests for the user drops back below this number."
+#~ msgstr ""
+#~ "Lorsqu’un utilisateur a plus que ce nombre de demandes de rétablissement "
+#~ "autonome du mot de passe actives en même temps pour son compte, l’empêcher "
+#~ "de créer toute nouvelle demande de rétablissement autonome du mot de passe "
+#~ "tant que le nombre de ses demandes actives ne seront pas inférieures à ce "
+#~ "nombre."
 
 #~ msgid "The item is a humorous work, satire or of similar literary form."
 #~ msgstr ""
@@ -5479,5 +4835,47 @@ msgstr ""
 #~ "L’article est un ouvrage de fiction et aucune autre désignation de forme "
 #~ "littéraire n’est souhaitée"
 
+#~ msgid "Appends staff initials and edit date into note content."
+#~ msgstr ""
+#~ "Ajouter les initiales de l’employé et modifier la date dans le contenu de la "
+#~ "note"
+
+#~ msgid "Offline: Patron Usernames Allowed"
+#~ msgstr "Hors ligne : Le nom d’utilisateur des clients est autorisé"
+
+#~ msgid "GUI: Work Log: Maximum Patrons Logged"
+#~ msgstr "GUI : Registre de travail : Maximum de clients en session"
+
+#~ msgid "Fund Spending Limit for Block"
+#~ msgstr "Limite de dépenses à même le fonds aux fins de blocage"
+
+#~ msgid ""
+#~ "Courier Code for the library.  Available in transit slip templates as the "
+#~ "%courier_code% macro."
+#~ msgstr ""
+#~ "Code de messager pour la bibliothèque. Modèles de fiche en transit utilisant "
+#~ "la macro %courier_code%"
+
 #~ msgid "The item is intended for children, approximate ages 0-5 years."
 #~ msgstr "L’article est destiné aux enfants d’environ 0 à 5 ans"
+
+#~ msgid ""
+#~ "This prevents the system from charging more than the item price in overdue "
+#~ "fines"
+#~ msgstr ""
+#~ "Cela empêche le système de facturer un prix supérieur à la valeur de "
+#~ "l’article dans les amendes imposées pour les retards"
+
+#~ msgid "Circ: Cap Max Fine at Item Price"
+#~ msgstr "Prêts : L’amende maximale est la valeur de l’article"
+
+#~ msgid "Holds: Has Local Copy Alert"
+#~ msgstr "Articles mis en réserve : alerte d’exemplaire local"
+
+#~ msgid ""
+#~ "If there is an available copy at the requesting library that could fulfill a "
+#~ "hold during hold placement time, do not allow the hold to be placed"
+#~ msgstr ""
+#~ "Si une copie est disponible à la bibliothèque faisant la demande et pourrait "
+#~ "être mise en réserve durant la période de placement en réserve, ne pas "
+#~ "autoriser la mise en réserve"

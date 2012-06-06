@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
 "PO-Revision-Date: 2012-04-19 23:40+0000\n"
 "Last-Translator: Aline D'Oleron <doleron.aline@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-21 05:02+0000\n"
-"X-Generator: Launchpad (build 15120)\n"
+"X-Launchpad-Export-Date: 2012-04-30 04:43+0000\n"
+"X-Generator: Launchpad (build 15171)\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -242,6 +242,12 @@ msgid ""
 msgstr ""
 "Uma fatura para uma Taxa de Aluguel de Item será acrescentado à conta do "
 "leitor se esta ação for substituída"
+
+#: staff.circ.checkout.override.will_auto
+msgid ""
+"If overriden now, subsequent checkouts during this patron's session will "
+"auto-override this event."
+msgstr ""
 
 #: staff.circ.checkout.not_cataloged.confirm
 msgid "Mis-scan or non-cataloged item.  Checkout as a pre-cataloged item?"
@@ -583,15 +589,17 @@ msgstr "Ignorar Falha ao Excluir?"
 
 #: staff.circ.copy_status.delete_volumes.delete_copies
 msgid ""
-"You must delete all the copies on the volume before you may delete the "
-"volume itself."
+"You must delete all the items on the volume before you may delete the volume "
+"itself."
 msgstr ""
-"Você deve excluir todas as cópias de um volume antes de excluir o próprio "
-"volume."
 
-#: staff.circ.copy_status.delete_volumes.success
-msgid "Volumes deleted."
-msgstr "Volumes excluídos."
+#: staff.circ.copy_status.delete_volumes.delete_copies.confirm
+msgid "Delete Volume and Items"
+msgstr ""
+
+#: staff.circ.copy_status.delete_volumes.delete_copies.cancel
+msgid "Cancel Delete"
+msgstr ""
 
 #: staff.circ.copy_status.mark_volume.status
 msgid "Volume marked as Item Transfer Destination"
@@ -1024,12 +1032,12 @@ msgid "Owning Library"
 msgstr "Posse de Biblioteca"
 
 #: staff.circ.utils.prefix
-msgid "Prefix"
-msgstr "Prefixo"
+msgid "CN Prefix"
+msgstr ""
 
 #: staff.circ.utils.suffix
-msgid "Suffix"
-msgstr "Sufixo"
+msgid "CN Suffix"
+msgstr ""
 
 #: staff.circ.utils.label_class
 msgid "Classification"
@@ -1078,8 +1086,12 @@ msgid "Floating?"
 msgstr ""
 
 #: staff.circ.utils.hold_note
-msgid "Hold Note(s)"
-msgstr "Nota(s) de Reservas"
+msgid "Hold Note(s) Count"
+msgstr ""
+
+#: staff.circ.utils.hold_note_text
+msgid "Hold Note(s) Text"
+msgstr ""
 
 #: staff.circ.utils.staff_hold
 msgid "Staff Hold?"
@@ -1331,6 +1343,14 @@ msgstr "Reservado/Pendente"
 msgid "Canceled"
 msgstr "Cancelado"
 
+#: staff.circ.utils.hold_status.7
+msgid "Suspended"
+msgstr ""
+
+#: staff.circ.utils.hold_status.8
+msgid "Wrong Shelf"
+msgstr ""
+
 #: staff.circ.utils.hold_post_clear_shelf_action.label
 msgid "Post-Clear"
 msgstr ""
@@ -1492,6 +1512,10 @@ msgstr "Reserva para leitor %1$s"
 #: staff.circ.utils.payload.hold.phone_notify
 msgid "Notify by phone: %1$s"
 msgstr "Notificar por telefone: %1$s"
+
+#: staff.circ.utils.payload.hold.sms_notify
+msgid "Notify by text: %1$s"
+msgstr ""
 
 #: staff.circ.utils.payload.hold.email_notify
 msgid "Notify by email: %1$s"
@@ -1967,3 +1991,16 @@ msgstr ""
 #: staff.circ.missing_pieces.scan_item.error_alert
 msgid "No item with barcode \"%1$s\""
 msgstr "Nenhum item com código de barras \"%1$s\""
+
+#~ msgid ""
+#~ "You must delete all the copies on the volume before you may delete the "
+#~ "volume itself."
+#~ msgstr ""
+#~ "Você deve excluir todas as cópias de um volume antes de excluir o próprio "
+#~ "volume."
+
+#~ msgid "Volumes deleted."
+#~ msgstr "Volumes excluídos."
+
+#~ msgid "Hold Note(s)"
+#~ msgstr "Nota(s) de Reservas"

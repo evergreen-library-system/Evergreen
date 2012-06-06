@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > common.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2012-04-27 15:36+0000\n"
-"Last-Translator: George Duimovich <George.Duimovich@nrcan-rncan.gc.ca>\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
+"PO-Revision-Date: 2012-05-18 21:17+0000\n"
+"Last-Translator: LEROY Jean-Christophe <Unknown>\n"
 "Language-Team: NRCan Library\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-28 04:56+0000\n"
-"X-Generator: Launchpad (build 15149)\n"
+"X-Launchpad-Export-Date: 2012-05-19 05:21+0000\n"
+"X-Generator: Launchpad (build 15259)\n"
 "X-Poedit-Country: Canada\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: French\n"
@@ -116,6 +116,10 @@ msgstr "Non"
 msgid "Check here to confirm this message"
 msgstr "Cochez ici pour confirmer ce message"
 
+#: common.processing
+msgid "Processing"
+msgstr "Traitement"
+
 #: lang.version
 msgid "remote v1"
 msgstr "remote v1"
@@ -182,7 +186,7 @@ msgstr "Numéro d’exemplaire"
 
 #: staff.acp_label_parts
 msgid "Part"
-msgstr ""
+msgstr "Partie"
 
 #: staff.acp_label_deposit_amount
 msgid "Deposit Amount"
@@ -257,6 +261,14 @@ msgstr "ID de la mise en réserve"
 #: staff.ahr_phone_notify_label
 msgid "Phone Notify"
 msgstr "Avis téléphonique"
+
+#: staff.ahr_sms_notify_label
+msgid "Text Notify"
+msgstr ""
+
+#: staff.ahr_sms_carrier_label
+msgid "Text Carrier"
+msgstr ""
 
 #: staff.ahr_pickup_lib_label
 msgid "Pickup Library"
@@ -383,11 +395,11 @@ msgstr ""
 
 #: staff.ausp_staff_label
 msgid "Applied By "
-msgstr ""
+msgstr "Appliqué par "
 
 #: staff.ausp_set_date_label
 msgid "Applied On "
-msgstr ""
+msgstr "Appliqué le "
 
 #: staff.ausp_note_label
 msgid "Note "
@@ -603,6 +615,10 @@ msgstr "Créé le :"
 msgid "Expires On"
 msgstr "Expire le :"
 
+#: staff.au_last_update_time_label
+msgid "Updated On"
+msgstr "Mise à jour à"
+
 #: staff.au_home_library_label
 msgid "Home Library"
 msgstr "Bibliothèque d’origine"
@@ -672,8 +688,8 @@ msgid "User ID"
 msgstr "Code d’utilisateur"
 
 #: staff.au_name_prefix_label
-msgid "Prefix"
-msgstr "Préfixe"
+msgid "Name Prefix"
+msgstr "Préfixe du Nom"
 
 #: staff.au_family_name_label
 msgid "Family Name"
@@ -688,8 +704,8 @@ msgid "Middle Name"
 msgstr "Second prénom"
 
 #: staff.au_name_suffix_label
-msgid "Suffix"
-msgstr "Suffixe"
+msgid "Name Suffix"
+msgstr "Suffixe du Nom"
 
 #: staff.z39_50.search_class.author
 msgctxt "staff.z39_50.search_class.author"
@@ -828,3 +844,9 @@ msgstr "Aujourd'hui refusé."
 #: tab.label.triggered_events_for_copy
 msgid "Triggered Events: %1$s"
 msgstr "Évènements déclenchés : %1 $s"
+
+#~ msgid "Prefix"
+#~ msgstr "Préfixe"
+
+#~ msgid "Suffix"
+#~ msgstr "Suffixe"

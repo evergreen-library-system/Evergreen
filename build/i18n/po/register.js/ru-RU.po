@@ -7,19 +7,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-23 01:33-0400\n"
+"POT-Creation-Date: 2012-04-28 14:18-0400\n"
 "PO-Revision-Date: 2011-07-31 17:37+0000\n"
 "Last-Translator: Alexander Sapronov <Unknown>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-08-01 04:42+0000\n"
-"X-Generator: Launchpad (build 13405)\n"
+"X-Launchpad-Export-Date: 2012-04-30 04:51+0000\n"
+"X-Generator: Launchpad (build 15171)\n"
 
 #: register.js:USER_SETTINGS
 msgid "User Settings"
 msgstr "Настройки пользователя"
+
+#: register.js:ALL_CARDS_APPLY
+msgid "Apply Changes"
+msgstr ""
 
 #: register.js:DUPE_PATRON_EMAIL
 msgid "Found ${0} patron(s) with the same email address"
@@ -32,6 +36,10 @@ msgstr "Счет"
 #: register.js:ADDRESS_OWNED
 msgid "This address is owned by another user: "
 msgstr "Этот адрес принадлежит другому пользователю: "
+
+#: register.js:ADDRESS_NEW
+msgid "New Address"
+msgstr "Новый адрес"
 
 #: register.js:REPLACED_ADDRESS
 msgid ""
@@ -67,13 +75,21 @@ msgstr "Замените штрих-код"
 msgid "An address is required during registration."
 msgstr "При регистрации требуется адрес"
 
-#: register.js:PARENT_OR_GUARDIAN
-msgid "Parent/Guardian"
-msgstr "Родитель/Опекун"
+#: register.js:ALL_CARDS_PRIMARY
+msgid "Primary"
+msgstr ""
+
+#: register.js:BARCODE_IN_USE
+msgid "Barcode is already in use"
+msgstr "Штрих-код уже используется"
 
 #: register.js:ADDRESS_HEADER
 msgid "Address"
 msgstr "Почтовый адрес"
+
+#: register.js:ALL_CARDS_ACTIVE
+msgid "Active"
+msgstr ""
 
 #: register.js:DUPE_PATRON_PHONE
 msgid "Found ${0} patron(s) with the same phone number"
@@ -85,9 +101,9 @@ msgstr ""
 "Форма является недействительной. Пожалуйста, редактируйте и попробуйте еще "
 "раз."
 
-#: register.js:BARCODE_IN_USE
-msgid "Barcode is already in use"
-msgstr "Штрих-код уже используется"
+#: register.js:PARENT_OR_GUARDIAN
+msgid "Parent/Guardian"
+msgstr "Родитель/Опекун"
 
 #: register.js:EXAMPLE
 msgid "Example: "
@@ -105,6 +121,10 @@ msgstr ""
 msgid "Username is already in use"
 msgstr "Имя пользователя уже используется"
 
+#: register.js:HOLD_NOTIFY_PHONE
+msgid "Phone: "
+msgstr ""
+
 #: register.js:DUPE_PATRON_NAME
 msgid "Found ${0} patron(s) with the same name"
 msgstr "Найден(о) ${0} пользователь(я.ей) с таким же именем"
@@ -112,6 +132,14 @@ msgstr "Найден(о) ${0} пользователь(я.ей) с таким ж
 #: register.js:DEFAULT_ADDRESS_TYPE
 msgid "MAILING"
 msgstr "ПОЧТОВЫЙ"
+
+#: register.js:HOLD_NOTIFY_SMS
+msgid "SMS: "
+msgstr ""
+
+#: register.js:INVALIDATE
+msgid "Invalidate"
+msgstr ""
 
 #: register.js:SHOW_ALL
 msgid "Show All Fields"
@@ -133,17 +161,25 @@ msgstr ""
 msgid "Statistical Categories"
 msgstr "Статистические категории"
 
-#: register.js:ADDRESS_NEW
-msgid "New Address"
-msgstr "Новый адрес"
+#: register.js:ALL_CARDS_BARCODE
+msgid "Barcode"
+msgstr ""
 
 #: register.js:RESET_PASSWORD
 msgid "Reset Password"
 msgstr "Сбросить пароль"
 
+#: register.js:HOLD_NOTIFY_EMAIL
+msgid "Email: "
+msgstr ""
+
 #: register.js:SEE_ALL
 msgid "See All"
 msgstr "Смотреть все"
+
+#: register.js:ALL_CARDS_CLOSE
+msgid "Close"
+msgstr ""
 
 #: register.js:DELETE_ADDRESS
 msgid "Delete address ${0}?"
