@@ -17,7 +17,7 @@
             <td><a href="[% mkurl(ctx.home_page, {}, ['trail']) %]">
                 <img src="[% ctx.media_prefix %]/images/kpac/go_back_btn.png" /></a></td>
             <td width="100%" class="nav_mid_bg"></td>
-            <td class="to_top_btn"><a href="[% mkurl(ctx.unparsed_uri) %]">
+            <td class="to_top_btn"><a href="[% mkurl(ctx.unparsed_uri, {}, 1) %]">
                 <img src="[% ctx.media_prefix %]/images/kpac/to_top_btn.png" /></a></td>
         </tr>
     </table>
