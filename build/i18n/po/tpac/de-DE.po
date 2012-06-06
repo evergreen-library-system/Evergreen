@@ -1,19 +1,20 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
+# German translation for evergreen
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2012-05-17 20:49+0000\n"
+"Last-Translator: Nico Verse <Unknown>\n"
+"Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Launchpad (build 15259)\n"
+"X-Launchpad-Export-Date: 2012-05-18 04:46+0000\n"
 
 #. (ctx.result_start, ctx.result_stop, ctx.hit_count)
 #: ../../Open-ILS/src/templates/opac/parts/result/paginate.tt2:5
@@ -22,6 +23,10 @@ msgid ""
 "                Results <strong>%1</strong> - <strong>%2</strong> of <strong>%3</strong>\n"
 "                "
 msgstr ""
+"\n"
+"                Ergebnisse <strong>%1</strong> - <strong>%2</strong> von "
+"<strong>%3</strong>\n"
+"                "
 
 #. (bad_user)
 #: ../../Open-ILS/src/templates/opac/myopac/update_username.tt2:16
@@ -30,6 +35,10 @@ msgid ""
 "        The username \"<b>%1</b>\" is taken.  Please try a different username.\n"
 "        "
 msgstr ""
+"\n"
+"        Der Benutzername \"<b>%1</b>\" wurde bereits verwendet. Bitte "
+"versuchen Sie es mit einen anderen Benutzernamen.\n"
+"        "
 
 #. ("<br/>", "<br/>")
 #: ../../Open-ILS/src/templates/opac/parts/login/password_hint.tt2:2
@@ -38,50 +47,60 @@ msgid ""
 "       If this is your first time logging in, please enter %1 the last 4 digits of your phone number. %2 Example: 0926\n"
 "    "
 msgstr ""
+"\n"
+"       Wenn dies ihre erste Anmeldung ist, geben Sie bitte %1 die letzten 4 "
+"Ziffern Ihrer Telefonnummer an. %2 Beispiel: 0926\n"
+"    "
 
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:113 ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:118
 msgid " / "
-msgstr ""
+msgstr " / "
 
 #: ../../Open-ILS/src/templates/opac/myopac/update_password.tt2:10
 msgid " New password is invalid.  Please try a different password.  "
 msgstr ""
+" Das neue Passwort ist ungültig. Bitte versuchen Sie es mit ein anderes "
+"Passwort.  "
 
 #: ../../Open-ILS/src/templates/opac/myopac/update_password.tt2:15
 msgid " Passwords do not match. "
-msgstr ""
+msgstr " Passwörter stimmen nicht überein. "
 
 #: ../../Open-ILS/src/templates/opac/myopac/update_email.tt2:15 ../../Open-ILS/src/templates/opac/myopac/update_password.tt2:20 ../../Open-ILS/src/templates/opac/myopac/update_username.tt2:23
 msgid " Your current password was not correct. "
-msgstr ""
+msgstr " Ihr jetztiges Passwort war nicht korrekt. "
 
 #: ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:12
 msgid " for "
-msgstr ""
+msgstr " für "
 
 #: ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:30
 msgid " in "
-msgstr ""
+msgstr " in "
 
 #. (bad_user)
 #: ../../Open-ILS/src/templates/opac/myopac/update_username.tt2:10
 msgid "\"<b>%1</b>\" is not a valid username.  Usernames cannot have any spaces or look like a barcode, and may be restricted by policy.  Please try a different username."
 msgstr ""
+"\"<b>%1</b> ist kein gültiger Benutzername. Benutzernamen dürfen keine "
+"Leerzeichen enthalten oder wie ein Barcode ausschauen und könnten in den "
+"Richtlinien eingeschränkt sein. Bitte versuchen Sie es mit einen anderen "
+"Benutzername."
 
 #: ../../Open-ILS/src/templates/opac/parts/header.tt2:1
 msgid "$%.2f"
-msgstr ""
+msgstr "$%.2f"
 
 #. (ctx.user.first_given_name, ctx.user.family_name)
 #: ../../Open-ILS/src/templates/opac/parts/topnav.tt2:19
 msgid "%1 %2"
-msgstr ""
+msgstr "%1 %2"
 
 #. (title, part.label)
 #. (title, hold.hold.part.label)
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:136 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:25 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:37
 msgid "%1 (%2)"
-msgstr ""
+msgstr "%1 (%2)"
 
 #. (hold.hold.queue_position, hold.hold.potential_copies)
 #: ../../Open-ILS/src/templates/opac/parts/hold_status.tt2:26
@@ -96,7 +115,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/header.tt2:1
 msgid "%m/%d/%Y"
-msgstr ""
+msgstr "%d/%m/%Y"
 
 #. (ou_avail, ou_name)
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:19
@@ -110,40 +129,40 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/record/body.tt2:12
 msgid "&#9668; Search Results"
-msgstr ""
+msgstr "&#9668; Suchergebnisse"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/cnbrowse.tt2:17
 msgid "&lt;&lt; Previous Page"
-msgstr ""
+msgstr "&lt;&lt; Vorherige Seite"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:42
 msgid "(Show preferred library)"
-msgstr ""
+msgstr "(Bevorzugte Bibliotheken anzeigen)"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:24
 msgid "(Show)"
-msgstr ""
+msgstr "(Anzeigen)"
 
 #: ../../Open-ILS/src/templates/opac/myopac/main.tt2:81
 msgid "(fines accruing)"
-msgstr ""
+msgstr "(aufgelaufene Ordnungsgelder)"
 
 #: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:95
 msgid "(not shown)"
-msgstr ""
+msgstr "(Nicht anzeigen)"
 
 #. (page + 1, page_count)
 #: ../../Open-ILS/src/templates/opac/parts/result/paginate.tt2:9
 msgid "(page <strong>%1</strong> of <strong>%2</strong>)"
-msgstr ""
+msgstr "(Seite <strong>%1</strong> von <strong>%2</strong>)"
 
 #: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:30
 msgid "* Staff Notes *"
-msgstr ""
+msgstr "* Hinweise für Mitarbeiter *"
 
 #: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:53
 msgid "- All Parts -"
-msgstr ""
+msgstr "- Alle Teile -"
 
 #: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:192 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:30
 msgid "-- Actions for these items --"
@@ -151,35 +170,35 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/coded_value_selector.tt2:22 ../../Open-ILS/src/templates/opac/parts/filter_group_selector.tt2:19
 msgid "-- Any --"
-msgstr ""
+msgstr "-- Alle --"
 
 #: ../../Open-ILS/src/templates/opac/parts/pref_lib_display.tt2:5
 msgid "?"
-msgstr ""
+msgstr "?"
 
 #: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:131
 msgid "Account Creation Date"
-msgstr ""
+msgstr "Datum der Kontoerstellung"
 
 #: ../../Open-ILS/src/templates/opac/parts/myopac/prefs_base.tt2:45
 msgid "Account Information and Preferences"
-msgstr ""
+msgstr "Kontoinformationen und Einstellungen"
 
 #: ../../Open-ILS/src/templates/opac/login.tt2:1
 msgid "Account Login"
-msgstr ""
+msgstr "Kontoanmeldung"
 
 #: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:3
 msgid "Account Preferences"
-msgstr ""
+msgstr "Kontoeinstellungen"
 
 #: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:17 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:16
 msgid "Account Successfully Updated"
-msgstr ""
+msgstr "Konto erfolgreich geändert"
 
 #: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:3 ../../Open-ILS/src/templates/opac/parts/myopac/main_base.tt2:9
 msgid "Account Summary"
-msgstr ""
+msgstr "Kontoübersicht"
 
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:38
 msgid "Actions for selected holds"
@@ -187,11 +206,11 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:41
 msgid "Activate"
-msgstr ""
+msgstr "Aktivieren"
 
 #: ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:50
 msgid "Active"
-msgstr ""
+msgstr "Aktiv"
 
 #: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:120
 msgid "Active Barcode"
@@ -202,8 +221,9 @@ msgid "Active On"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:75
+#, fuzzy
 msgid "Active?"
-msgstr ""
+msgstr "Aktiv"
 
 #: ../../Open-ILS/src/templates/opac/parts/advanced/search.tt2:21
 msgid "Add Search Row"
@@ -1415,8 +1435,9 @@ msgid "Passwords did not match. Please try again"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/login/form.tt2:46
+#, fuzzy
 msgid "Passwords do not match"
-msgstr ""
+msgstr " Passwörter stimmen nicht überein. "
 
 #: ../../Open-ILS/src/templates/opac/parts/record/awards.tt2:5
 msgid "Patron Reviews:"
