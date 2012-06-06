@@ -274,7 +274,7 @@ sub promote_lineitem_holds {
             $hold->target( $li->eg_bib_id );
         }
 
-        $mgr->editor->create_actor_hold_request( $hold ) or return 0;
+        $mgr->editor->create_action_hold_request( $hold ) or return 0;
     }
 
     return $li;
