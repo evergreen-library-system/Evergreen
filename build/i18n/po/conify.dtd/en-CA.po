@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-18 21:44-0400\n"
-"PO-Revision-Date: 2011-07-18 01:49+0000\n"
+"POT-Creation-Date: 2012-04-28 14:16-0400\n"
+"PO-Revision-Date: 2012-05-01 20:02+0000\n"
 "Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-07-19 04:39+0000\n"
-"X-Generator: Launchpad (build 13405)\n"
+"X-Launchpad-Export-Date: 2012-05-02 05:27+0000\n"
+"X-Generator: Launchpad (build 15177)\n"
 "X-Accelerator-Marker: &\n"
 
 #. Common entities
@@ -252,6 +252,10 @@ msgstr "Country"
 #: conify.org_unit.addresses_pane.county
 msgid "County"
 msgstr "County"
+
+#: conify.org_unit.addresses_pane.san
+msgid "SAN"
+msgstr "SAN"
 
 #. This is a highlighted label that is followed by the name of the organizational unit
 #: conify.org_unit.status_bar

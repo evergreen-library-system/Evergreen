@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergeen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2012-03-09 21:17+0000\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
+"PO-Revision-Date: 2012-05-01 14:40+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <petrkubiska@seznam.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-03-10 04:55+0000\n"
-"X-Generator: Launchpad (build 14914)\n"
+"X-Launchpad-Export-Date: 2012-05-02 05:28+0000\n"
+"X-Generator: Launchpad (build 15177)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -123,6 +123,10 @@ msgstr "Zatím neimplementováno"
 #: cat.bib_record
 msgid "Bib Record: %1$s"
 msgstr "Bibliografický záznam: %1$s"
+
+#: serial.delete_record.confirm
+msgid "Are you sure you want to delete MFHD record #%1$s?"
+msgstr "Opravdu chcete smazat MFHD záznam #%1$s?"
 
 #: cat.opac.delete_record.confirm
 msgid "Are you sure you want to delete title record #%1$s from the catalog?"
@@ -488,6 +492,14 @@ msgstr "Zadejte interní ID bibliografického záznamu"
 #: menu.cmd_search_bib_id.prompt
 msgid "Bib ID Lookup"
 msgstr "Vyhledávání podle bib ID"
+
+#: menu.cmd_search_usr_id.tab
+msgid "What is the internal database ID for the patron account?"
+msgstr "Zadejte interní databázové ID čtenářského účtu:"
+
+#: menu.cmd_search_usr_id.prompt
+msgid "Patron ID Lookup"
+msgstr "Hledání ID čtenáře"
 
 #: menu.cmd_search_tcn.tab
 msgid "What is the TCN or accession ID for the record?"
@@ -1039,6 +1051,10 @@ msgstr "U"
 msgid "=-=-="
 msgstr "=-=-="
 
+#: list.line_number
+msgid "#"
+msgstr "č."
+
 #: menu.cmd_survey_wizard.inadequate_perm
 msgid ""
 "You are lacking the CREATE_SURVEY permission and/or working locations."
@@ -1156,6 +1172,14 @@ msgstr "Seznam rezervovaných zdrojů"
 msgid "Booking Capture"
 msgstr "Zachycení rezervovaného zdroje"
 
+#: menu.cmd_authority_manage.tab
+msgid "Manage Authorities"
+msgstr "Spravovat autority"
+
+#: menu.local_admin.barcode_completion.tab
+msgid "Barcode Completion"
+msgstr "Doplnění čárového kódu"
+
 #: menu.local_admin.circ_matrix_matchpoint.tab
 msgid "Circulation Policies"
 msgstr "Nastavení pravidel pro půjčování"
@@ -1266,6 +1290,10 @@ msgstr "Předplatné"
 msgid "Create or Re-barcode Items"
 msgstr "Vytvořit nebo změnit čárový kód exempláře"
 
+#: staff.cat.bib_source.can_have_copies.false
+msgid "Records from %1$s cannot have copies."
+msgstr "Záznamy z %1$s nemohou mít exempláře"
+
 #: printing.nothing_to_reprint
 msgid "Nothing to re-print"
 msgstr "Není co znovu vytisknout"
@@ -1334,6 +1362,14 @@ msgstr "9"
 msgid "0"
 msgstr "0"
 
+#: generic.unsaved_data_warning
+msgid ""
+"This action may cause you to lose unsaved information in the current "
+"interface. Continue anyway?"
+msgstr ""
+"Tato akce může způsobit ztrátu neuložených dat v aktuálním rozhraní. Chcete "
+"přesto pokračovat?"
+
 #: browser.reload.unsaved_data_warning
 msgid "This page may have unsaved data. Reload it anyway?"
 msgstr ""
@@ -1363,6 +1399,116 @@ msgid "This application may have unsaved data. Exit it anyway?"
 msgstr ""
 "Je možné, že některá data v této aplikaci nebyla uložena. Chcete aplikaci "
 "přesto ukončit?"
+
+#: hotkeys.Default
+msgid "Default"
+msgstr "Výchozí"
+
+#: hotkeys.None
+msgid "No Hotkeys"
+msgstr "Bez klávesových zkratek"
+
+#: barcode_choice.join_barcodes
+msgid "%1$s / %2$s"
+msgstr "%1$s / %2$s"
+
+#: barcode_choice.actor
+msgid "%1$s : %2$s, %3$s from %4$s (%5$s)"
+msgstr "%1$s : %2$s, %3$s z %4$s (%5$s)"
+
+#: barcode_choice.asset
+msgid "%1$s : %2$s from %3$s (%4$s)"
+msgstr "%1$s : %2$s z %3$s (%4$s)"
+
+#: barcode_choice.none
+msgid "None of the above"
+msgstr "Nic z výše uvedeného"
+
+#: barcode_choice.prompt
+msgid ""
+"After auto completion multiple barcodes may match your input. Please choose "
+"the barcode you intended below."
+msgstr ""
+"Po automatickém doplnění odpovídá vašemu vstupu n ěkolik čárových kódů. "
+"Prosím, níže vyberte čárový kód, který jste měli na mysli."
+
+#: barcode_choice.errors_found
+msgid ""
+"In addition to the options below, one or more errors were encountered on "
+"items not shown."
+msgstr ""
+"Kromě možností uvedených níže, došlo u nezobrazených jednotek k jedné nebo "
+"více chybám."
+
+#: barcode_choice.title
+msgid "Barcode Choice"
+msgstr "Volba čárového kódu"
+
+#: barcode_choice.choice_label
+msgid "Found Barcodes:"
+msgstr "Nalezené čárové kódy"
+
+#: barcode_choice.actor_label
+msgid "Patron : %1$s"
+msgstr "čtenář: %1$s"
+
+#: barcode_choice.asset_label
+msgid "Item : %1$s"
+msgstr "Exemplář: %1$s"
+
+#: barcode_choice.serial_label
+msgid "Serial : %1$s"
+msgstr "Seriál : %1$s"
+
+#: barcode_choice.booking_label
+msgid "Booking : %1$s"
+msgstr "Rezervace zdrojů : %1$s"
+
+#: staff.main.button_bar.none
+msgid "None"
+msgstr "Žádný"
+
+#: util.hide_elements.title
+msgid "Hide UI Elements"
+msgstr "Skrýt prvky uživatelského rozhraní"
+
+#: util.hide_elements.desc
+msgid ""
+"This is a list of hideable elements for this interface.  Check the ones that "
+"you want hidden and the library (and descendants) you want to affect:"
+msgstr ""
+"Toto je seznam prvků uživatelského rozhraní, které lze skrýt. Zaškrtněte ty, "
+"které chcete skrýt a knihovnu (a vnořené jednotky), které mají být "
+"nastavením ovlivněny."
+
+#: util.hide_elements.current_setting_preamble
+msgid ""
+"Workstation library %1$s is currently hiding these elements based on a "
+"setting inherited from %2$s:"
+msgstr ""
+"Knihovna  %1$s, v níž je pracovní stanice registrována má momentálně  skryté "
+"tyto prvků na základě nastavení zděděných od %2$s:"
+
+#: util.hide_elements.current_setting_nonexistent
+msgid ""
+"Workstation library %1$s is not currently hiding any of these elements."
+msgstr "Knihovna  %1$s momentálně nemá skryté tyto prvky."
+
+#: util.hide_elements.update_setting.update_success
+msgid "Successfully updated the setting."
+msgstr "Nastavení bylo úspěšně aktualizováno."
+
+#: util.hide_elements.update_setting.delete_success
+msgid "Successfully deleted the setting."
+msgstr "Nastavení bylo úspěšně smazáno."
+
+#: util.hide_elements.update_setting.failure
+msgid "Setting not changed."
+msgstr "Nastavení nebylo změněno"
+
+#: util.hide_elements.missing_permission
+msgid "Missing permission %1$s"
+msgstr "Chybí oprávnění  %1$s"
 
 #~ msgid "Ok"
 #~ msgstr "Ok"

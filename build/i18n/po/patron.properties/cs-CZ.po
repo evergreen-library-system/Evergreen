@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2011-12-10 14:45+0000\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
+"PO-Revision-Date: 2012-05-03 20:01+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-12-11 05:37+0000\n"
-"X-Generator: Launchpad (build 14450)\n"
+"X-Launchpad-Export-Date: 2012-05-04 04:49+0000\n"
+"X-Generator: Launchpad (build 15195)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -373,7 +373,7 @@ msgstr "Anulovat všechny faktury"
 
 #: staff.patron.bills.info_box.label_value.full_details
 msgid "Full Details"
-msgstr ""
+msgstr "Zobrazení detailů"
 
 #: staff.patron.bills.void_all_billings.all_voided
 msgid "All billings already voided on this bill."
@@ -393,12 +393,12 @@ msgstr "Rušení naúčtovaných poplatků"
 #: staff.patron.bills.void_all_billings.void.yes
 msgctxt "staff.patron.bills.void_all_billings.void.yes"
 msgid "Yes"
-msgstr ""
+msgstr "Ano"
 
 #: staff.patron.bills.void_all_billings.void.no
 msgctxt "staff.patron.bills.void_all_billings.void.no"
 msgid "No"
-msgstr ""
+msgstr "Ne"
 
 #: staff.patron.bills.void_all_billings.void.confirm_message
 msgctxt "staff.patron.bills.void_all_billings.void.confirm_message"
@@ -481,6 +481,10 @@ msgstr ""
 "Nelze označit uživatele určeného ke smazání jako cílového uživatele. Mazaní "
 "uživatele bylo zrušeno."
 
+#: staff.patron.display.cmd_patron_delete.override_prompt
+msgid "Override patron deletion failure?"
+msgstr "Obejít chybu při mazání čtenáře?"
+
 #: staff.patron.display.spawn_editor.editing_related_patron
 msgctxt "staff.patron.display.spawn_editor.editing_related_patron"
 msgid "Editing Related Patron"
@@ -551,10 +555,10 @@ msgstr "Čtenář:"
 msgid "No Alerts, Blocks, or Messages"
 msgstr "Žádná varování, blokace nebo zprávy"
 
-#. # Field 1 = actor.usr.id, Field 2 = actor.usr.create_date
+#. # Field 1 = actor.usr.id, Field 2 = actor.usr.create_date, Field 3 = actor.usr.last_update_time
 #: staff.patron.display.db_data
-msgid "Record ID: %1$s Create Date: %2$s "
-msgstr "ID záznamu: %1$s Datum vytvoření: %2$s "
+msgid "Database ID: %1$s Create Date: %2$s Last Updated: %3$s"
+msgstr "Databázové ID: %1$s Datum vytvoření: %2$s Naposledy editováno: %3$s"
 
 #: staff.patron.hold_notices.tooltiptext
 msgid "ID: %1$s Hold ID: %2$s Notifying Staff ID: %3$s"
@@ -832,6 +836,110 @@ msgstr ""
 
 #: staff.patron.holds.holds_edit_phone_notify.modifying_holds_title
 msgctxt "staff.patron.holds.holds_edit_phone_notify.modifying_holds_title"
+msgid "Modifying Holds"
+msgstr "Úprava rezervací"
+
+#: staff.patron.holds.holds_edit_sms_notify.new_phone_number
+msgid ""
+"Please enter a new mobile number for hold notification via text (leave the "
+"field empty to disable):"
+msgstr ""
+"Zadejte prosím nové číslo obilního telefonu pro oznámení o rezervacích "
+"prostřednictvím SMS (pro vypnutí volby nechte pole prázdné):"
+
+#: staff.patron.holds.holds_edit_sms_notify.btn_done.label
+msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_done.label"
+msgid "Done"
+msgstr "Hotovo"
+
+#: staff.patron.holds.holds_edit_sms_notify.btn_done.accesskey
+msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_done.accesskey"
+msgid "D"
+msgstr "H"
+
+#: staff.patron.holds.holds_edit_sms_notify.btn_cancel.label
+msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_cancel.label"
+msgid "Cancel"
+msgstr "Storno"
+
+#: staff.patron.holds.holds_edit_sms_notify.btn_cancel.accesskey
+msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_cancel.accesskey"
+msgid "C"
+msgstr "S"
+
+#: staff.patron.holds.holds_edit_sms_notify.choose_phone_number
+msgid "Choose a Hold Notification Mobile Text Number"
+msgstr "Vyberte číslo mobilního telefonu pro SMS oznámení o rezevaci"
+
+#: staff.patron.holds.holds_edit_sms_notify.confirm_phone_number_change.singular
+msgid ""
+"Are you sure you would like to change the Notification Mobile/Text Number "
+"for hold %1$s to \"%2$s\"?"
+msgstr ""
+"Opravdu chcete změnit číslo pro telefonické/SMS oznámení pro rezervaci %1$s "
+"na \"%2$s\"?"
+
+#: staff.patron.holds.holds_edit_sms_notify.confirm_phone_number_change.plural
+msgid ""
+"Are you sure you would like to change the Notification Mobile/Text Number "
+"for holds %1$s to \"%2$s\"?"
+msgstr ""
+"Opravdu chcete změnit číslo pro telefonické/SMS oznámení pro rezervace %1$s "
+"na \"%2$s\"?"
+
+#: staff.patron.holds.holds_edit_sms_notify.modifying_holds_title
+msgctxt "staff.patron.holds.holds_edit_sms_notify.modifying_holds_title"
+msgid "Modifying Holds"
+msgstr "Úprava rezervací"
+
+#: staff.patron.holds.holds_edit_sms_carrier.new_carrier
+msgid "Please select a new mobile carrier for hold notification via text:"
+msgstr ""
+"Zadejte prosím nového mobilního operátora pro oznámení o rezervacích "
+"prostředncitvím SMS:"
+
+#: staff.patron.holds.holds_edit_sms_carrier.btn_done.label
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_done.label"
+msgid "Done"
+msgstr "Hotovo"
+
+#: staff.patron.holds.holds_edit_sms_carrier.btn_done.accesskey
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_done.accesskey"
+msgid "D"
+msgstr "H"
+
+#: staff.patron.holds.holds_edit_sms_carrier.btn_cancel.label
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_cancel.label"
+msgid "Cancel"
+msgstr "Storno"
+
+#: staff.patron.holds.holds_edit_sms_carrier.btn_cancel.accesskey
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_cancel.accesskey"
+msgid "C"
+msgstr "S"
+
+#: staff.patron.holds.holds_edit_sms_carrier.choose_carrier
+msgid "Select a Hold Notification Mobile Text Carrier"
+msgstr "Vyberte mobilního operátora pro SMS oznámení o rezervacích"
+
+#: staff.patron.holds.holds_edit_sms_carrier.confirm_carrier_change.singular
+msgid ""
+"Are you sure you would like to change the Notification Mobile/Text Carrier "
+"for hold %1$s to \"%2$s\"?"
+msgstr ""
+"Opravdu chcete změnit mobilního operátora pro telefonické / SMS oznámení pro "
+"rezervaci %1$s na \"%2$s\"?"
+
+#: staff.patron.holds.holds_edit_sms_carrier.confirm_carrier_change.plural
+msgid ""
+"Are you sure you would like to change the Notification Mobile/Text Carrier "
+"for holds %1$s to \"%2$s\"?"
+msgstr ""
+"Opravdu chcete změnit mobilního operátora pro telefonické / SMS oznámení pro "
+"rezervace %1$s na \"%2$s\"?"
+
+#: staff.patron.holds.holds_edit_sms_carrier.modifying_holds_title
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.modifying_holds_title"
 msgid "Modifying Holds"
 msgstr "Úprava rezervací"
 
@@ -1128,7 +1236,7 @@ msgstr "Registrovat klon čtenáře do skupiny"
 
 #: staff.patron.info_group.clone_patron.error_spawning_editors
 msgid "error spawning user editors"
-msgstr ""
+msgstr "chyba spouštění uživatelských editorů"
 
 #: staff.patron.info_group.spawn_editor.editing_patron
 msgctxt "staff.patron.info_group.spawn_editor.editing_patron"
@@ -1137,7 +1245,7 @@ msgstr "Editace údajů dotyčného čtenáře"
 
 #: staff.patron.info_group.spawn_search
 msgid "spawn search"
-msgstr ""
+msgstr "hromadné hledání"
 
 #: staff.patron.info_group.remove_patron.warning_message
 msgid ""
@@ -1525,6 +1633,22 @@ msgstr "Opravdu chcete vrátit exemplář %1$s?"
 msgid "Are you sure you would like to check in items %1$s?"
 msgstr "Opravdu chcete vrátit exempláře  %1$s?"
 
+#: staff.patron.items.items_checkin.confirm_item_claimed_never_checked_out.singular
+msgid ""
+"Are you sure you would like to mark this item as Claimed Never Checked Out? "
+"%1$s"
+msgstr ""
+"Opravdu chcete označit tento exemplář jako \"Prohlášeno jako nikdy "
+"nevypůjčené\"?  %1$s"
+
+#: staff.patron.items.items_checkin.confirm_item_claimed_never_checked_out.plural
+msgid ""
+"Are you sure you would like to mark these items as Claimed Never Checked "
+"Out? %1$s"
+msgstr ""
+"Opravdu chcete označit tyto exempláře za \"Prohlášeno jako nikdy "
+"nevypůjčené\"?  %1$s"
+
 #: staff.patron.items.items_checkin.no_checkin
 msgid "Checkin probably did not happen."
 msgstr "Vrácení pravděpodobně neproběhlo."
@@ -1590,7 +1714,7 @@ msgstr "Zadejte prosím termíny pro vyhledávání."
 
 #: staff.patron.search_result.init.typeof_params
 msgid "typeof params.on_retrieve == %1$s"
-msgstr ""
+msgstr "typeof params.on_retrieve == %1$s"
 
 #: staff.patron.search_result.init.search_print
 msgid "patron search print"
@@ -1624,9 +1748,21 @@ msgstr "hlášení: Žádný čárový kód nebo ID"
 msgid "Internet"
 msgstr "Internet"
 
+#: staff.patron.summary.create_date
+msgid "Account created on"
+msgstr "Účet vytvořen"
+
 #: staff.patron.summary.expires_on
 msgid "Expires on"
 msgstr "Vyprší dne"
+
+#: staff.patron.summary.last_activity
+msgid "Last Activity"
+msgstr "Poslední aktivita"
+
+#: staff.patron.summary.updated_on
+msgid "Last updated on"
+msgstr "Naposledy aktualizováno"
 
 #: staff.patron.summary.standing_penalty.remove
 msgid "Remove"
@@ -1837,3 +1973,32 @@ msgstr ""
 #: staff.circ.work_log_patron_edit.message
 msgid "%1$s edited %3$s (%2$s)"
 msgstr "%3$s (%2$s) editován(a) pracovníkem %1$s"
+
+#. # 1 - Number of hold requests created
+#: staff.item.batch.hold.x_holds_created
+msgid "%1$s holds created."
+msgstr "Vytvořeno %1$s rezervací."
+
+#. # 1 - Number of holds not created for a given reason  2 - the reason for failure
+#: staff.item.batch.hold.x_failed_holds
+msgid "%1$s failed for %2$s"
+msgstr "%1$s rezervací nevytvořeno kvůli %2$s"
+
+#: staff.item.batch.hold.tab_name
+msgid "Item Hold/Recall/Force"
+msgstr "Rezervace / znovuvyvolání /vynucení exempláře"
+
+#: staff.item.batch.hold.retry_btn_label
+msgid "Retry"
+msgstr "Zkusit znovu"
+
+#: staff.item.batch.hold.override_btn_label
+msgid "Override"
+msgstr "Přesto pokračovat"
+
+#: staff.item.batch.hold.user_not_found
+msgid "User Not Found"
+msgstr "Uživatel nenalezen"
+
+#~ msgid "Record ID: %1$s Create Date: %2$s "
+#~ msgstr "ID záznamu: %1$s Datum vytvoření: %2$s "

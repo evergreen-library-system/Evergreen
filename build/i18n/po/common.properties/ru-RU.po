@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
 "PO-Revision-Date: 2010-03-23 10:21+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:40+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2012-04-30 04:44+0000\n"
+"X-Generator: Launchpad (build 15171)\n"
 "X-Accelerator-Marker: &\n"
 
 #: common.exception
@@ -108,6 +108,10 @@ msgstr "Нет"
 #: common.check_to_confirm
 msgid "Check here to confirm this message"
 msgstr "Отметите здесь, чтобы подтвердить это сообщение"
+
+#: common.processing
+msgid "Processing"
+msgstr ""
 
 #: lang.version
 msgid "remote v1"
@@ -249,6 +253,14 @@ msgstr "ID резерва"
 #: staff.ahr_phone_notify_label
 msgid "Phone Notify"
 msgstr "Уведомление по Телефону"
+
+#: staff.ahr_sms_notify_label
+msgid "Text Notify"
+msgstr ""
+
+#: staff.ahr_sms_carrier_label
+msgid "Text Carrier"
+msgstr ""
 
 #: staff.ahr_pickup_lib_label
 msgid "Pickup Library"
@@ -595,6 +607,10 @@ msgstr "Создано"
 msgid "Expires On"
 msgstr "Истекает"
 
+#: staff.au_last_update_time_label
+msgid "Updated On"
+msgstr ""
+
 #: staff.au_home_library_label
 msgid "Home Library"
 msgstr "Домашняя библиотека"
@@ -664,8 +680,8 @@ msgid "User ID"
 msgstr "ID пользователя"
 
 #: staff.au_name_prefix_label
-msgid "Prefix"
-msgstr "Префикс"
+msgid "Name Prefix"
+msgstr ""
 
 #: staff.au_family_name_label
 msgid "Family Name"
@@ -680,8 +696,8 @@ msgid "Middle Name"
 msgstr "Отчество"
 
 #: staff.au_name_suffix_label
-msgid "Suffix"
-msgstr "Суффикс"
+msgid "Name Suffix"
+msgstr ""
 
 #: staff.z39_50.search_class.author
 msgctxt "staff.z39_50.search_class.author"
@@ -821,30 +837,8 @@ msgstr "Сегодня отказано"
 msgid "Triggered Events: %1$s"
 msgstr "Триггерные  мероприятия: %1$s"
 
-#~ msgid ","
-#~ msgstr ","
+#~ msgid "Prefix"
+#~ msgstr "Префикс"
 
-#~ msgctxt "staff.ausp_note_label"
-#~ msgid "Note"
-#~ msgstr "Заметка"
-
-#~ msgid "Bill #"
-#~ msgstr "Счет#"
-
-#~ msgid "error in noncat sorting:"
-#~ msgstr "ошибка в не катал сортировке:"
-
-#~ msgid "Expire Time"
-#~ msgstr "Время истечения"
-
-#~ msgid "Library"
-#~ msgstr "Библиотека"
-
-#~ msgid "Applied On"
-#~ msgstr "Применяются на"
-
-#~ msgid "Applied By"
-#~ msgstr "Применяемые"
-
-#~ msgid "Penalty ID"
-#~ msgstr "ID штрафа"
+#~ msgid "Suffix"
+#~ msgstr "Суффикс"

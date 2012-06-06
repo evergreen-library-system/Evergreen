@@ -7,39 +7,39 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2011-11-17 22:12+0000\n"
-"Last-Translator: George Duimovich <George.Duimovich@nrcan-rncan.gc.ca>\n"
+"POT-Creation-Date: 2012-04-28 14:18-0400\n"
+"PO-Revision-Date: 2012-05-15 06:19+0000\n"
+"Last-Translator: Yves MATHIEU <MisterY_vonvon@hotmail.com>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-11-18 05:13+0000\n"
-"X-Generator: Launchpad (build 14299)\n"
-
-#: authority.js:MENU_MERGE
-msgid "Mark for Merge"
-msgstr "Marquer pour fusion"
-
-#: authority.js:CONFIRM_DELETE_TITLE
-msgid "Delete the authority record: \"${0}\"?"
-msgstr "Supprimer la notice d’autorité : \\\"${0}\\\"?"
-
-#: authority.js:VIEW_MARC
-msgid "View MARC"
-msgstr "Voir le MARC"
-
-#: authority.js:TARGET_RECORD
-msgid "Target"
-msgstr "Cible"
+"X-Launchpad-Export-Date: 2012-05-16 04:52+0000\n"
+"X-Generator: Launchpad (build 15247)\n"
 
 #: authority.js:CONFIRM_DELETE_RESULT
 msgid "Deleted authority record # ${0}."
 msgstr "Notice d’autorité # ${0. supprimée."
 
-#: authority.js:MERGE_RESULT_SUCCESS
-msgid "Record merge is complete."
-msgstr "Fusion de la notice terminée."
+#: authority.js:MENU_MERGE
+msgid "Mark for Merge"
+msgstr "Marquer pour fusion"
+
+#: authority.js:VIEW_MARC
+msgid "View MARC"
+msgstr "Voir le MARC"
+
+#: authority.js:SAVE
+msgid "Save"
+msgstr "Sauvegarder"
+
+#: authority.js:TARGET_RECORD
+msgid "Target"
+msgstr "Cible"
+
+#: authority.js:CONFIRM_DELETE_TITLE
+msgid "Delete the authority record: \"${0}\"?"
+msgstr "Supprimer la notice d’autorité : \\\"${0}\\\"?"
 
 #: authority.js:MENU_EDIT
 msgid "Edit"
@@ -53,29 +53,49 @@ msgstr "Notice sauvegardée."
 msgid "Hide MARC"
 msgstr "Cacher MARC"
 
-#: authority.js:CONFIRM_DELETE_PROMPT
-msgid "Confirm deletion of record # ${0}"
-msgstr "Confirmer la suppression de la notice # ${0}"
+#: authority.js:ACTIONS
+msgid "Actions"
+msgstr "Actions"
+
+#: authority.js:AUTHORITY_FIELDS
+msgid "Authority Fields (${0})"
+msgstr ""
+
+#: authority.js:LINKED_BIBS
+msgid "Number of linked bibliographic records: ${0}"
+msgstr "Nombre de fiches bibliographiques associées : ${0}"
+
+#: authority.js:CONTROL_SET_METADATA
+msgid "(${0}) ${1} / ${2}"
+msgstr "(${0}) ${1} / ${2}"
 
 #: authority.js:MASTER_RECORD
 msgid "Master"
 msgstr "Original"
 
-#: authority.js:ACTIONS
-msgid "Actions"
-msgstr "Actions"
+#: authority.js:CONFIRM_DELETE_PROMPT
+msgid "Confirm deletion of record # ${0}"
+msgstr "Confirmer la suppression de la notice # ${0}"
+
+#: authority.js:MERGE_RESULT_SUCCESS
+msgid "Record merge is complete."
+msgstr "Fusion de la notice terminée."
 
 #: authority.js:CANCEL
 msgid "Cancel"
 msgstr "Annuler"
 
-#: authority.js:SAVE
-msgid "Save"
-msgstr "Sauvegarder"
+#: authority.js:THESAURI
+msgid "Thesauri (${0})"
+msgstr ""
 
-#: authority.js:LINKED_BIBS
-msgid "Number of linked bibliographic records: ${0}"
-msgstr "Nombre de fiches bibliographiques associées : ${0}"
+#: authority.js:NONE_LINK
+msgid "[None]"
+msgstr "[Aucun]"
+
+#: authority.js:AUTHORITY_FIELD_METADATA
+msgid "${3} (${1} ‡${2}) ${4}"
+msgstr "${3} (${1} ‡${2}) ${4}"
 
 #: authority.js:MENU_DELETE authority.js:DELETE
 msgid "Delete"

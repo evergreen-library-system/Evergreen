@@ -1,15 +1,21 @@
+# Turkish translation for evergreen
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2010-06-07 02:03:44-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2012-05-12 18:04+0000\n"
+"Last-Translator: kulkke <Unknown>\n"
+"Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
+"X-Launchpad-Export-Date: 2012-05-13 04:44+0000\n"
+"X-Generator: Launchpad (build 15225)\n"
 
 #: pull_list.js:PULL_LIST_NO_RESPONSE
 msgid "No response from server trying to get pull list!"
@@ -23,21 +29,21 @@ msgstr ""
 msgid "Error looking up copies by barcode: "
 msgstr ""
 
-#: pull_list.js:AUTO_no_results
-msgid "No results"
-msgstr ""
-
 #: pull_list.js:COPY_LOOKUP_NO_RESPONSE
 msgid "No response looking up copies by barcode"
+msgstr ""
+
+#: pull_list.js:FOR
+msgid "for"
 msgstr ""
 
 #: pull_list.js:AUTO_pull_list_title
 msgid "Booking Pull List"
 msgstr ""
 
-#: pull_list.js:AUTO_th_copy_number
-msgid "Copy number"
-msgstr ""
+#: pull_list.js:AUTO_no_results
+msgid "No results."
+msgstr "Sonuç yok."
 
 #: pull_list.js:AUTO_th_barcode
 msgid "Barcode"
@@ -63,6 +69,10 @@ msgstr ""
 msgid "Reservation details"
 msgstr ""
 
+#: pull_list.js:AT
+msgid "at"
+msgstr ""
+
 #: pull_list.js:AUTO_ATTR_VALUE_fetch
 msgid "Fetch"
 msgstr ""
@@ -73,6 +83,10 @@ msgstr ""
 
 #: pull_list.js:AUTO_ATTR_VALUE_print
 msgid "Print"
+msgstr ""
+
+#: pull_list.js:AUTO_th_pickup_lib
+msgid "Pickup library"
 msgstr ""
 
 #: pull_list.js:AUTO_th_copy_location

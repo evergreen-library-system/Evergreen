@@ -7,19 +7,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-23 01:33-0400\n"
+"POT-Creation-Date: 2012-04-28 14:18-0400\n"
 "PO-Revision-Date: 2011-04-26 11:35+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:48+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2012-04-30 04:51+0000\n"
+"X-Generator: Launchpad (build 15171)\n"
 
 #: register.js:USER_SETTINGS
 msgid "User Settings"
 msgstr "Օգտվողի կարգաբերումներ"
+
+#: register.js:ALL_CARDS_APPLY
+msgid "Apply Changes"
+msgstr ""
 
 #: register.js:DUPE_PATRON_EMAIL
 msgid "Found ${0} patron(s) with the same email address"
@@ -32,6 +36,10 @@ msgstr "Հաշիվ"
 #: register.js:ADDRESS_OWNED
 msgid "This address is owned by another user: "
 msgstr "Հասցեն տնօրինվում է այլ օգտվողի կողմից: "
+
+#: register.js:ADDRESS_NEW
+msgid "New Address"
+msgstr "Նոր հասցե"
 
 #: register.js:REPLACED_ADDRESS
 msgid ""
@@ -67,13 +75,21 @@ msgstr "Փոխարինիր շտրիխ կոդը"
 msgid "An address is required during registration."
 msgstr "Գրանցման ժամանակ պահանջվում է հասցե"
 
-#: register.js:PARENT_OR_GUARDIAN
-msgid "Parent/Guardian"
-msgstr "Ծնող/Խնամակալ"
+#: register.js:ALL_CARDS_PRIMARY
+msgid "Primary"
+msgstr ""
+
+#: register.js:BARCODE_IN_USE
+msgid "Barcode is already in use"
+msgstr "Շտրիխ կոդը արդեն օգտագործման մեջ է"
 
 #: register.js:ADDRESS_HEADER
 msgid "Address"
 msgstr "Հասցե"
+
+#: register.js:ALL_CARDS_ACTIVE
+msgid "Active"
+msgstr ""
 
 #: register.js:DUPE_PATRON_PHONE
 msgid "Found ${0} patron(s) with the same phone number"
@@ -83,9 +99,9 @@ msgstr "Գտնվել է ${0} ընթերցող միևնույն հեռախոսա�
 msgid "Form is invalid.  Please edit and try again."
 msgstr "Ձևը սխալ է։ խմբագրի և նորից փորձի"
 
-#: register.js:BARCODE_IN_USE
-msgid "Barcode is already in use"
-msgstr "Շտրիխ կոդը արդեն օգտագործման մեջ է"
+#: register.js:PARENT_OR_GUARDIAN
+msgid "Parent/Guardian"
+msgstr "Ծնող/Խնամակալ"
 
 #: register.js:EXAMPLE
 msgid "Example: "
@@ -103,6 +119,10 @@ msgstr "Սա պասող հասցե է: "
 msgid "Username is already in use"
 msgstr "Օգտվողի անունը արդեն օգտագործվում է"
 
+#: register.js:HOLD_NOTIFY_PHONE
+msgid "Phone: "
+msgstr ""
+
 #: register.js:DUPE_PATRON_NAME
 msgid "Found ${0} patron(s) with the same name"
 msgstr "Գտնվել է ${0} ընթերցող միևնույն անունով"
@@ -110,6 +130,14 @@ msgstr "Գտնվել է ${0} ընթերցող միևնույն անունով"
 #: register.js:DEFAULT_ADDRESS_TYPE
 msgid "MAILING"
 msgstr "ԱՌԱՔՈՒՄ"
+
+#: register.js:HOLD_NOTIFY_SMS
+msgid "SMS: "
+msgstr ""
+
+#: register.js:INVALIDATE
+msgid "Invalidate"
+msgstr ""
 
 #: register.js:SHOW_ALL
 msgid "Show All Fields"
@@ -131,17 +159,25 @@ msgstr "Հիշիր &amp; Կլոն"
 msgid "Statistical Categories"
 msgstr "Վիճակագրական դասեր"
 
-#: register.js:ADDRESS_NEW
-msgid "New Address"
-msgstr "Նոր հասցե"
+#: register.js:ALL_CARDS_BARCODE
+msgid "Barcode"
+msgstr ""
 
 #: register.js:RESET_PASSWORD
 msgid "Reset Password"
 msgstr "Վերագրի գաղտնաբառը"
 
+#: register.js:HOLD_NOTIFY_EMAIL
+msgid "Email: "
+msgstr ""
+
 #: register.js:SEE_ALL
 msgid "See All"
 msgstr "Տես բոլորը"
+
+#: register.js:ALL_CARDS_CLOSE
+msgid "Close"
+msgstr ""
 
 #: register.js:DELETE_ADDRESS
 msgid "Delete address ${0}?"

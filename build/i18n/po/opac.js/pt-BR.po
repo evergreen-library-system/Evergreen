@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-18 23:09-0400\n"
-"PO-Revision-Date: 2011-12-08 01:15+0000\n"
-"Last-Translator: Tomas Abril <Unknown>\n"
+"POT-Creation-Date: 2012-04-28 14:18-0400\n"
+"PO-Revision-Date: 2012-06-01 11:45+0000\n"
+"Last-Translator: Job Diógenes Ribeiro Borges <jobdrb@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-12-09 04:48+0000\n"
-"X-Generator: Launchpad (build 14450)\n"
+"X-Launchpad-Export-Date: 2012-06-02 05:41+0000\n"
+"X-Generator: Launchpad (build 15342)\n"
 
 #: opac.js:PWD_RESET_SUBMIT_PROMPT
 msgid ""
@@ -27,7 +27,7 @@ msgstr ""
 
 #: opac.js:PWD_RESET_FORM_TITLE
 msgid "Request password reset"
-msgstr "Pedido de redefinição de senha"
+msgstr "Solicitação de redefinição de senha"
 
 #: opac.js:PWD_RESET_RESPONSE_TITLE
 msgid "Password reset response"
@@ -51,31 +51,31 @@ msgstr "Esqueceu sua senha?"
 
 #: opac.js:SUPPLEMENT_HOLDINGS_ADD
 msgid "Additional Supplement Information"
-msgstr "Suplemento de Informações adicionais"
+msgstr "Informações Suplementares extras"
 
-#: opac.js:MORE_COPIES_FULL_RECORD
-msgid "... more copies listed in full record"
-msgstr "...mais cópias listadas no registro completo"
+#: opac.js:DELETED_MFHD_RECORD
+msgid "Deleted MFHD record ${0}"
+msgstr "Excluir registro MFHD ${0}"
 
 #: opac.js:HOLD_STATUS_PLURAL
 msgid "hold # ${0} of ${1} total holds and ${2} potential items"
-msgstr "manter # ${0} de ${1} total mantidos e ${2} items em potencial"
+msgstr "Reserva # ${0} de ${1} totais reservados e ${2} itens em potencial"
 
 #: opac.js:MORE
 msgid "More"
 msgstr "Mais"
 
-#: opac.js:EDIT_PROPERTIES
-msgid "Edit Properties"
-msgstr "Editar Propriedades"
+#: opac.js:MORE_COPIES_FULL_RECORD
+msgid "... more copies listed in full record"
+msgstr "... mais cópias listadas com registro completo"
 
 #: opac.js:PWD_RESET_SUBMIT_ERROR
 msgid ""
 "The system could not process your request for a password reset. Please try "
 "again, or contact circulation staff for assistance."
 msgstr ""
-"O sistema não pode processar seu pedido para restaurar a senha. Por favor, "
-"tente novamente ou contate o administrador ou responsável."
+"O sistema não pôde processar seu pedido de redefinição de senha. Por favor, "
+"tente novamente ou contate o pessoal administrativo para assistência."
 
 #: opac.js:EDIT_MFHD_RECORD
 msgid "Edit Record"
@@ -87,7 +87,7 @@ msgstr "Salvar MFHD"
 
 #: opac.js:INDEX_HOLDINGS_ADD
 msgid "Additional Index Information"
-msgstr "Informação adicional de índice"
+msgstr "Informações extras de índice"
 
 #: opac.js:INCOMPLETE_VOLUMES
 msgid "Incomplete volumes"
@@ -101,21 +101,17 @@ msgstr "Volume atual"
 msgid "Missing volumes"
 msgstr "Volumes em falta"
 
-#: opac.js:DELETED_MFHD_RECORD
-msgid "Deleted MFHD record ${0}"
-msgstr "Excluir registro MFHD ${0}"
-
 #: opac.js:HOLD_STATUS_SINGULAR
 msgid "hold # ${0} of ${1} total holds and ${2} potential item"
-msgstr "manter # ${0} de ${1} total mantidos e ${2} items em potencial"
+msgstr "reserva # $(0) de (1) reservas totais e $(2) item em potencial"
 
 #: opac.js:PLACE_HOLD
 msgid "Place hold"
-msgstr "Segurar"
+msgstr "Reservar"
 
 #: opac.js:BASIC_HOLDINGS_ADD
 msgid "Additional Volume Information"
-msgstr "Informações sobre o volume adicional"
+msgstr "Informações extras do volume"
 
 #: opac.js:EDIT_MFHD_MENU
 msgid "Edit Holdings"
@@ -143,7 +139,11 @@ msgstr "Índices"
 
 #: opac.js:CURRENT_SUPPLEMENTS
 msgid "Current supplements"
-msgstr "Suplementos Atuais"
+msgstr "Suplementos atuais"
+
+#: opac.js:SOURCE_CANNOT_HAVE_COPIES
+msgid "Records from ${0} cannot have copies."
+msgstr "Registros a partir de $(0) não podem possuir cópias."
 
 #: opac.js:CURRENT_INDEXES
 msgid "Current indexes"
@@ -159,11 +159,15 @@ msgstr "Incluir Registro  MFHD"
 
 #: opac.js:USERNAME_PROMPT
 msgid "User name: "
-msgstr "Nome do usuário: "
+msgstr "Nome de usuário: "
+
+#: opac.js:EDIT_PROPERTIES
+msgid "Edit Properties"
+msgstr "Editar Propriedades"
 
 #: opac.js:DELETE_MFHD_CONFIRM
 msgid "Are you sure you want to delete this serial record?"
-msgstr "Tem certeza de que deseja excluir este registro serial?"
+msgstr "Você tem certeza que deseja excluir este periódico?"
 
 #: opac.js:PWD_RESET_SUBMIT_SUCCESS
 msgid ""
@@ -171,9 +175,10 @@ msgid ""
 "account has a valid email address, you should soon receive an email "
 "containing further instructions for resetting your password."
 msgstr ""
-"O seu pedido para iniciar o processo de redefinição de senha foi processado. "
-"Se a sua conta de um e-mail é válida, você deverá em breve receber um email "
-"com mais instruções para redefinir sua senha."
+"Sua solicitação para iniciar o processo de redefinição de senha foi "
+"processada Se a sua conta tiver um endereço de e-mail válido, você deverá "
+"receber em breve um e-mail contendo novas instruções para redefinir a sua "
+"senha."
 
 #: opac.js:CANCEL_BUTTON_LABEL
 msgid "Cancel"
@@ -181,7 +186,7 @@ msgstr "Cancelar"
 
 #: opac.js:PWD_RESET_SUBMIT_STATUS
 msgid "Sending request..."
-msgstr "Enviando requisição..."
+msgstr "Enviando solicitação..."
 
 #: opac.js:ONLINE_VOLUMES
 msgid "Online volumes"

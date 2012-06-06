@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
 "PO-Revision-Date: 2012-04-19 05:29+0000\n"
 "Last-Translator: Aline D'Oleron <doleron.aline@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-20 04:44+0000\n"
-"X-Generator: Launchpad (build 15120)\n"
+"X-Launchpad-Export-Date: 2012-04-30 04:43+0000\n"
+"X-Generator: Launchpad (build 15171)\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -45,8 +45,8 @@ msgid "Returning %1$s hits"
 msgstr "Foram obtidos %1$s resultados"
 
 #: staff.cat.bib_brief.record_id
-msgid "Record ID = %1$s"
-msgstr "ID do Registro = %1$s"
+msgid "Database ID = %1$s"
+msgstr ""
 
 #: staff.cat.bib_brief.deleted
 msgid "(Deleted)"
@@ -64,9 +64,9 @@ msgstr "(Não catalogado)"
 msgid "Item not cataloged."
 msgstr "Item não catalogado."
 
-#. # %1$s = Bib Record ID
+#. # %1$s = Bib Record Database ID
 #: staff.cat.manage_multi_bib_items.tab_name
-msgid "Manage Foreign Items for Bib %1$s"
+msgid "Manage Conjoined Items for Bib with DB ID %1$s"
 msgstr ""
 
 #: staff.cat.manage_multi_bib_items.result.column.value.error
@@ -97,14 +97,14 @@ msgstr ""
 msgid "Change Peer Type"
 msgstr ""
 
-#. # %1$s = Bib Record ID
+#. # %1$s = Bib Record Database ID
 #: staff.cat.manage_multi_bib_items.prompt.confirm.unlink_item_from_bib.singular
-msgid "Unlink selected item from Bib %1$s"
+msgid "Unlink selected item from Bib with DB ID %1$s"
 msgstr ""
 
-#. # %1$s = Bib Record ID, %2$s = Number of selected items
+#. # %1$s = Bib Record Database ID, %2$s = Number of selected items
 #: staff.cat.manage_multi_bib_items.prompt.confirm.unlink_item_from_bib.plural
-msgid "Unlink %2$s selected items from Bib %1$s"
+msgid "Unlink %2$s selected items from Bib with DB ID %1$s"
 msgstr ""
 
 #: staff.cat.copy_browser.add_item.title
@@ -227,6 +227,10 @@ msgstr "Substituir colisão de re-rotulagem do volume e mesclar os volumes?"
 msgid "%1$s"
 msgstr "%1$s"
 
+#: staff.cat.copy_browser.can_have_copies.false
+msgid "Records from %1$s cannot have copies."
+msgstr ""
+
 #: staff.cat.copy_browser.delete_volume.prompt
 msgid "Are you sure you would like to delete this volume?"
 msgstr "Tem certeza que quer Excluir este volume?"
@@ -256,11 +260,17 @@ msgstr "Ignorar Erro ao Excluir?"
 
 #: staff.cat.copy_browser.delete_volume.copies_remain
 msgid ""
-"You must delete all the copies on the volume before you may delete the "
-"volume itself."
+"You must delete all the items on the volume before you may delete the volume "
+"itself."
 msgstr ""
-"Você deve excluir todos os exemplares de um volume antes de excluir o "
-"próprio volume."
+
+#: staff.cat.copy_browser.delete_volume.copies_remain.confirm
+msgid "Delete Volume and Items"
+msgstr ""
+
+#: staff.cat.copy_browser.delete_volume.copies_remain.cancel
+msgid "Cancel Delete"
+msgstr ""
 
 #: staff.cat.copy_browser.delete_volume.exception
 msgid "copy browser -> delete volumes"
@@ -364,7 +374,7 @@ msgstr "Todos os exemplares provavelmente não foram transferidos."
 
 #: staff.cat.copy_browser.link_as_multi_bib.missing_bib
 msgid ""
-"Please Mark a bib record as a Target for Foreign Items and try this again."
+"Please Mark a bib record as a Target for Conjoined Items and try this again."
 msgstr ""
 
 #: staff.cat.copy_browser.missing_library
@@ -683,6 +693,11 @@ msgstr ""
 msgid "Error importing templates"
 msgstr "Erro ao importar modelos"
 
+#: staff.cat.copy_editor.apply_unsafe_field
+msgid ""
+"Template tried to change field '%1$s', which is not allowed currently."
+msgstr ""
+
 #: staff.cat.copy_editor.apply_owning_lib.undefined_volume.error
 msgid ""
 "Error retrieving Volume information for copy %1$s.  The owning library for "
@@ -771,6 +786,10 @@ msgstr "Código de Barras"
 #: staff.cat.copy_editor.field.creation_date.label
 msgid "Creation Date"
 msgstr "Data de Criação"
+
+#: staff.cat.copy_editor.field.active_date.label
+msgid "Active Date"
+msgstr ""
 
 #: staff.cat.copy_editor.field.last_edit_date.label
 msgid "Last Edit Date"
@@ -1216,6 +1235,14 @@ msgstr "Erro ao criar registro MARC."
 msgid "Error loading MARC template: %1$s"
 msgstr "Erro ao carregar modelo MARC: %1$s"
 
+#: staff.cat.marc_new.set_default.error
+msgid "Error setting default MARC template: %1$s"
+msgstr ""
+
+#: staff.cat.marc_new.set_default.success
+msgid "Default template set to %1$s"
+msgstr ""
+
 #: staff.cat.opac.set_marc_edit.alert
 msgid "Record successfully saved."
 msgstr "Registro salvo com sucesso."
@@ -1231,8 +1258,8 @@ msgstr ""
 "Aba"
 
 #: staff.cat.opac.set_tab_name
-msgid "Record: %1$s"
-msgstr "Registro : %1$s"
+msgid "Record DB ID: %1$s"
+msgstr ""
 
 #: staff.cat.opac.title_for_hold_transfer.destination_needed.label
 msgid "Need to mark a record as a Title Hold Transfer Destination first."
@@ -1245,6 +1272,11 @@ msgstr "Reservas transferidas."
 #: staff.cat.opac.title_for_hold_transfer.failure.label
 msgid "Holds not transferred."
 msgstr "Reservas não transferidas."
+
+#: staff.cat.opac.title_for_hold_transfer.many_bibs.warning
+msgid ""
+"WARNING: Move selected holds from multiple bibs to single targeted bib?"
+msgstr ""
 
 #: staff.cat.record_buckets.tab_name
 msgid "Record Buckets"
@@ -1695,8 +1727,8 @@ msgid "Change Amount "
 msgstr "Alterar Quantidade "
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.cancel_label
-msgid "Cancel "
-msgstr "Cancelar "
+msgid "No Charge"
+msgstr ""
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.confirm_action
 msgid "Check here to confirm this action "
@@ -1814,6 +1846,15 @@ msgid ""
 "No circulation found for item with barcode %1$s.  Item left unmodified."
 msgstr ""
 
+#: staff.cat.util.show_in_opac.retrieving_title
+msgctxt "staff.cat.util.show_in_opac.retrieving_title"
+msgid "Retrieving title..."
+msgstr ""
+
+#: staff.cat.util.add_titles_to_bucket.number_of_precats_skipped
+msgid "Skipping %1$s pre-cat records..."
+msgstr ""
+
 #: staff.cat.volume_buckets.window_tab_name
 msgid "Volume Buckets"
 msgstr "Cestas de Volume"
@@ -1899,8 +1940,8 @@ msgid "Prefix"
 msgstr "Prefixo"
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.call_nums
-msgid "Call Numbers"
-msgstr "Números de Chamada"
+msgid "Call Number"
+msgstr ""
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.suffix
 msgid "Suffix"
@@ -1911,7 +1952,7 @@ msgid "# of Copies"
 msgstr "# de exemplares"
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.barcodes_and_parts
-msgid "Barcodes / Part Designation"
+msgid "Barcode / Part Designation"
 msgstr ""
 
 #: staff.cat.volume_copy_creator.render_barcode_entry.alert_message
@@ -2292,8 +2333,85 @@ msgstr "Erro ao obter as credenciais z39.50 armazenadas"
 msgid "Problem storing z39.50 credentials."
 msgstr "Problema ao armazenar credenciais z39.50."
 
+#: staff.cat.bib_brief.title.label
+msgid "Title:"
+msgstr ""
+
+#: staff.cat.bib_brief.author.label
+msgid "Author:"
+msgstr ""
+
+#: staff.cat.bib_brief.edition.label
+msgid "Edition:"
+msgstr ""
+
+#: staff.cat.bib_brief.pubdate.label
+msgid "Pub Date:"
+msgstr ""
+
+#: staff.cat.bib_brief.bib_call_number.label
+msgid "Bib Call #:"
+msgstr ""
+
+#: staff.cat.bib_brief.call_number.label
+msgid "Item Call #:"
+msgstr ""
+
+#: staff.cat.bib_brief.tcn.label
+msgid "TCN:"
+msgstr ""
+
+#: staff.cat.bib_brief.mvr_doc_id.label
+msgid "Bib DB ID:"
+msgstr ""
+
+#: staff.cat.bib_brief.owner.label
+msgid "Record Owner:"
+msgstr ""
+
+#: staff.cat.bib_brief.creator.label
+msgid "Created By:"
+msgstr ""
+
+#: staff.cat.bib_brief.create_date.label
+msgid "Created On:"
+msgstr ""
+
+#: staff.cat.bib_brief.editor.label
+msgid "Last Edited By:"
+msgstr ""
+
+#: staff.cat.bib_brief.edit_date.label
+msgid "Last Edited On:"
+msgstr ""
+
+#: staff.cat.bib_brief.holds.label
+msgid "Holds:"
+msgstr ""
+
+#: staff.cat.bib_brief.items.label
+msgid "Items:"
+msgstr ""
+
+#: staff.cat.bib_brief.items.available.tooltip
+msgid "%1$s available"
+msgstr ""
+
+#~ msgid "Record ID = %1$s"
+#~ msgstr "ID do Registro = %1$s"
+
+#~ msgid ""
+#~ "You must delete all the copies on the volume before you may delete the "
+#~ "volume itself."
+#~ msgstr ""
+#~ "Você deve excluir todos os exemplares de um volume antes de excluir o "
+#~ "próprio volume."
+
 #~ msgid "Volumes deleted."
 #~ msgstr "Volumes excluídos."
+
+#~ msgid "Record: %1$s"
+#~ msgstr "Registro : %1$s"
 
 #~ msgid "Merge these records? (Select the \"lead\" record first)"
 #~ msgstr ""
@@ -2324,3 +2442,9 @@ msgstr "Problema ao armazenar credenciais z39.50."
 
 #~ msgid "Records were not likely merged."
 #~ msgstr "Os registros provavelmente não foram mesclados."
+
+#~ msgid "Call Numbers"
+#~ msgstr "Números de Chamada"
+
+#~ msgid "Cancel "
+#~ msgstr "Cancelar "

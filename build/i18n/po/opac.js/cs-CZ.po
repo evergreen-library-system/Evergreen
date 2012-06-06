@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 23:09-0400\n"
-"PO-Revision-Date: 2011-10-03 20:44+0000\n"
+"POT-Creation-Date: 2012-04-28 14:18-0400\n"
+"PO-Revision-Date: 2012-04-30 12:59+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-10-04 05:03+0000\n"
-"X-Generator: Launchpad (build 14071)\n"
+"X-Launchpad-Export-Date: 2012-05-01 05:30+0000\n"
+"X-Generator: Launchpad (build 15171)\n"
 
 #: opac.js:PWD_RESET_SUBMIT_PROMPT
 msgid ""
@@ -48,9 +48,9 @@ msgstr "Zapomněli jste heslo?"
 msgid "Additional Supplement Information"
 msgstr "Další informace o přílohách"
 
-#: opac.js:MORE_COPIES_FULL_RECORD
-msgid "... more copies listed in full record"
-msgstr "... více exemplářů vypsáno v detailním záznamu"
+#: opac.js:DELETED_MFHD_RECORD
+msgid "Deleted MFHD record ${0}"
+msgstr "Smazaný záznam MFHD ${0}"
 
 #: opac.js:HOLD_STATUS_PLURAL
 msgid "hold # ${0} of ${1} total holds and ${2} potential items"
@@ -60,9 +60,9 @@ msgstr "rezervace č. ${0} z ${1} celkových rezerací a ${2} možných exemplá
 msgid "More"
 msgstr "Více"
 
-#: opac.js:EDIT_PROPERTIES
-msgid "Edit Properties"
-msgstr "Editovat vlastnosti"
+#: opac.js:MORE_COPIES_FULL_RECORD
+msgid "... more copies listed in full record"
+msgstr "... více exemplářů vypsáno v detailním záznamu"
 
 #: opac.js:PWD_RESET_SUBMIT_ERROR
 msgid ""
@@ -95,10 +95,6 @@ msgstr "Aktuální svazek"
 #: opac.js:MISSING_VOLUMES
 msgid "Missing volumes"
 msgstr "Chybějící svazky"
-
-#: opac.js:DELETED_MFHD_RECORD
-msgid "Deleted MFHD record ${0}"
-msgstr "Smazaný záznam MFHD ${0}"
 
 #: opac.js:HOLD_STATUS_SINGULAR
 msgid "hold # ${0} of ${1} total holds and ${2} potential item"
@@ -141,6 +137,10 @@ msgstr "Rejstříky"
 msgid "Current supplements"
 msgstr "Aktuální dodatky"
 
+#: opac.js:SOURCE_CANNOT_HAVE_COPIES
+msgid "Records from ${0} cannot have copies."
+msgstr "Záznam z  ${0} nemůže mít exempláře."
+
 #: opac.js:CURRENT_INDEXES
 msgid "Current indexes"
 msgstr "Aktuální rejstříky"
@@ -156,6 +156,10 @@ msgstr "Přidat záznam MFHD"
 #: opac.js:USERNAME_PROMPT
 msgid "User name: "
 msgstr "Uživatelské jméno: "
+
+#: opac.js:EDIT_PROPERTIES
+msgid "Edit Properties"
+msgstr "Editovat vlastnosti"
 
 #: opac.js:DELETE_MFHD_CONFIRM
 msgid "Are you sure you want to delete this serial record?"

@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2011-07-14 00:16+0000\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
+"PO-Revision-Date: 2012-05-02 18:38+0000\n"
 "Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-07-15 04:52+0000\n"
-"X-Generator: Launchpad (build 13405)\n"
+"X-Launchpad-Export-Date: 2012-05-03 05:27+0000\n"
+"X-Generator: Launchpad (build 15185)\n"
 
 #: common.exception
 msgid ""
@@ -111,6 +111,10 @@ msgstr "No"
 #: common.check_to_confirm
 msgid "Check here to confirm this message"
 msgstr "Check here to confirm this message"
+
+#: common.processing
+msgid "Processing"
+msgstr "Processing"
 
 #: lang.version
 msgid "remote v1"
@@ -252,6 +256,14 @@ msgstr "Hold ID"
 #: staff.ahr_phone_notify_label
 msgid "Phone Notify"
 msgstr "Phone Notify"
+
+#: staff.ahr_sms_notify_label
+msgid "Text Notify"
+msgstr "Text Notify"
+
+#: staff.ahr_sms_carrier_label
+msgid "Text Carrier"
+msgstr "Text Carrier"
 
 #: staff.ahr_pickup_lib_label
 msgid "Pickup Library"
@@ -598,6 +610,10 @@ msgstr "Created On"
 msgid "Expires On"
 msgstr "Expires On"
 
+#: staff.au_last_update_time_label
+msgid "Updated On"
+msgstr "Updated On"
+
 #: staff.au_home_library_label
 msgid "Home Library"
 msgstr "Home Library"
@@ -667,8 +683,8 @@ msgid "User ID"
 msgstr "User ID"
 
 #: staff.au_name_prefix_label
-msgid "Prefix"
-msgstr "Prefix"
+msgid "Name Prefix"
+msgstr "Name Prefix"
 
 #: staff.au_family_name_label
 msgid "Family Name"
@@ -683,8 +699,8 @@ msgid "Middle Name"
 msgstr "Middle Name"
 
 #: staff.au_name_suffix_label
-msgid "Suffix"
-msgstr "Suffix"
+msgid "Name Suffix"
+msgstr "Name Suffix"
 
 #: staff.z39_50.search_class.author
 msgctxt "staff.z39_50.search_class.author"
@@ -824,27 +840,8 @@ msgstr "Today disallowed."
 msgid "Triggered Events: %1$s"
 msgstr "Triggered Events: %1$s"
 
-#~ msgid ","
-#~ msgstr ","
+#~ msgid "Prefix"
+#~ msgstr "Prefix"
 
-#~ msgid "Penalty ID"
-#~ msgstr "Penalty ID"
-
-#~ msgid "Applied By"
-#~ msgstr "Applied By"
-
-#~ msgid "Applied On"
-#~ msgstr "Applied On"
-
-#~ msgctxt "staff.ausp_note_label"
-#~ msgid "Note"
-#~ msgstr "Note"
-
-#~ msgid "Library"
-#~ msgstr "Library"
-
-#~ msgid "Bill #"
-#~ msgstr "Bill #"
-
-#~ msgid "error in noncat sorting:"
-#~ msgstr "error in noncat sorting:"
+#~ msgid "Suffix"
+#~ msgstr "Suffix"

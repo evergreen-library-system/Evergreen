@@ -7,19 +7,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-23 01:33-0400\n"
-"PO-Revision-Date: 2012-04-03 03:50+0000\n"
-"Last-Translator: Alexsandro Haag <alexsandro.haag@gmail.com>\n"
+"POT-Creation-Date: 2012-04-28 14:18-0400\n"
+"PO-Revision-Date: 2012-05-25 23:04+0000\n"
+"Last-Translator: Tomas Abril <Unknown>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-04 04:42+0000\n"
-"X-Generator: Launchpad (build 15055)\n"
+"X-Launchpad-Export-Date: 2012-05-26 05:09+0000\n"
+"X-Generator: Launchpad (build 15288)\n"
 
 #: register.js:USER_SETTINGS
 msgid "User Settings"
 msgstr "Configurações do Usuário"
+
+#: register.js:ALL_CARDS_APPLY
+msgid "Apply Changes"
+msgstr "Aplicar Alterações"
 
 #: register.js:DUPE_PATRON_EMAIL
 msgid "Found ${0} patron(s) with the same email address"
@@ -32,6 +36,10 @@ msgstr "Cobrança"
 #: register.js:ADDRESS_OWNED
 msgid "This address is owned by another user: "
 msgstr "Este endereço é utilizado por outro usuário: "
+
+#: register.js:ADDRESS_NEW
+msgid "New Address"
+msgstr "Novo Endereço"
 
 #: register.js:REPLACED_ADDRESS
 msgid ""
@@ -68,13 +76,21 @@ msgstr "Substituir Código-de-barras"
 msgid "An address is required during registration."
 msgstr "Um endereço é exigido durante o registro."
 
-#: register.js:PARENT_OR_GUARDIAN
-msgid "Parent/Guardian"
-msgstr "Pai/Guardião"
+#: register.js:ALL_CARDS_PRIMARY
+msgid "Primary"
+msgstr "Primário"
+
+#: register.js:BARCODE_IN_USE
+msgid "Barcode is already in use"
+msgstr "Código de Barras já está em uso"
 
 #: register.js:ADDRESS_HEADER
 msgid "Address"
 msgstr "Endereço"
+
+#: register.js:ALL_CARDS_ACTIVE
+msgid "Active"
+msgstr "Ativo"
 
 #: register.js:DUPE_PATRON_PHONE
 msgid "Found ${0} patron(s) with the same phone number"
@@ -84,9 +100,9 @@ msgstr "Encontrados ${0} padr(ão/ões) com o mesmo número de telefone"
 msgid "Form is invalid.  Please edit and try again."
 msgstr "Formulário está inválido. Por favor, edite e tente novamente."
 
-#: register.js:BARCODE_IN_USE
-msgid "Barcode is already in use"
-msgstr "Código de Barras já está em uso"
+#: register.js:PARENT_OR_GUARDIAN
+msgid "Parent/Guardian"
+msgstr "Pai/Guardião"
 
 #: register.js:EXAMPLE
 msgid "Example: "
@@ -104,6 +120,10 @@ msgstr "Este é um endereço pendente: "
 msgid "Username is already in use"
 msgstr "Nome de Usuário já está em uso"
 
+#: register.js:HOLD_NOTIFY_PHONE
+msgid "Phone: "
+msgstr "Telefone: "
+
 #: register.js:DUPE_PATRON_NAME
 msgid "Found ${0} patron(s) with the same name"
 msgstr "Encontrados ${0} padr(ão/ões) com o mesmo nome"
@@ -111,6 +131,14 @@ msgstr "Encontrados ${0} padr(ão/ões) com o mesmo nome"
 #: register.js:DEFAULT_ADDRESS_TYPE
 msgid "MAILING"
 msgstr "Mensagens"
+
+#: register.js:HOLD_NOTIFY_SMS
+msgid "SMS: "
+msgstr "SMS: "
+
+#: register.js:INVALIDATE
+msgid "Invalidate"
+msgstr "Invalidar"
 
 #: register.js:SHOW_ALL
 msgid "Show All Fields"
@@ -132,17 +160,25 @@ msgstr "Salvar &amp; Clonar"
 msgid "Statistical Categories"
 msgstr "Categorias Estatísticas"
 
-#: register.js:ADDRESS_NEW
-msgid "New Address"
-msgstr "Novo Endereço"
+#: register.js:ALL_CARDS_BARCODE
+msgid "Barcode"
+msgstr "Código de barras"
 
 #: register.js:RESET_PASSWORD
 msgid "Reset Password"
 msgstr "Restaurar Senha"
 
+#: register.js:HOLD_NOTIFY_EMAIL
+msgid "Email: "
+msgstr "E-mail: "
+
 #: register.js:SEE_ALL
 msgid "See All"
 msgstr "Ver Todos"
+
+#: register.js:ALL_CARDS_CLOSE
+msgid "Close"
+msgstr "Fechar"
 
 #: register.js:DELETE_ADDRESS
 msgid "Delete address ${0}?"

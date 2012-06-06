@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-18 23:09-0400\n"
+"POT-Creation-Date: 2012-04-28 14:18-0400\n"
 "PO-Revision-Date: 2012-01-19 23:19+0000\n"
 "Last-Translator: Burak Bayram <Unknown>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-01-21 05:47+0000\n"
-"X-Generator: Launchpad (build 14700)\n"
+"X-Launchpad-Export-Date: 2012-04-30 04:50+0000\n"
+"X-Generator: Launchpad (build 15171)\n"
 
 #: opac.js:PWD_RESET_SUBMIT_PROMPT
 msgid ""
@@ -51,9 +51,9 @@ msgstr ""
 msgid "Additional Supplement Information"
 msgstr ""
 
-#: opac.js:MORE_COPIES_FULL_RECORD
-msgid "... more copies listed in full record"
-msgstr ""
+#: opac.js:DELETED_MFHD_RECORD
+msgid "Deleted MFHD record ${0}"
+msgstr "Silinmiş MFHD kayıt $ {0}"
 
 #: opac.js:HOLD_STATUS_PLURAL
 msgid "hold # ${0} of ${1} total holds and ${2} potential items"
@@ -63,8 +63,8 @@ msgstr ""
 msgid "More"
 msgstr ""
 
-#: opac.js:EDIT_PROPERTIES
-msgid "Edit Properties"
+#: opac.js:MORE_COPIES_FULL_RECORD
+msgid "... more copies listed in full record"
 msgstr ""
 
 #: opac.js:PWD_RESET_SUBMIT_ERROR
@@ -96,10 +96,6 @@ msgstr "Geçerli cilt"
 #: opac.js:MISSING_VOLUMES
 msgid "Missing volumes"
 msgstr "Eksik disk bölümleri"
-
-#: opac.js:DELETED_MFHD_RECORD
-msgid "Deleted MFHD record ${0}"
-msgstr "Silinmiş MFHD kayıt $ {0}"
 
 #: opac.js:HOLD_STATUS_SINGULAR
 msgid "hold # ${0} of ${1} total holds and ${2} potential item"
@@ -141,6 +137,10 @@ msgstr ""
 msgid "Current supplements"
 msgstr "Mevcut Eklentiler"
 
+#: opac.js:SOURCE_CANNOT_HAVE_COPIES
+msgid "Records from ${0} cannot have copies."
+msgstr ""
+
 #: opac.js:CURRENT_INDEXES
 msgid "Current indexes"
 msgstr "güncel indeksler"
@@ -155,6 +155,10 @@ msgstr "MHFD Kaydı Ekle"
 
 #: opac.js:USERNAME_PROMPT
 msgid "User name: "
+msgstr ""
+
+#: opac.js:EDIT_PROPERTIES
+msgid "Edit Properties"
 msgstr ""
 
 #: opac.js:DELETE_MFHD_CONFIRM

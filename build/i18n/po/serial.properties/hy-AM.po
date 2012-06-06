@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
 "PO-Revision-Date: 2011-05-17 06:04+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:48+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2012-04-30 04:51+0000\n"
+"X-Generator: Launchpad (build 15171)\n"
 
 #: serial.manage_subs.tree_location
 msgid "Location"
@@ -149,6 +149,26 @@ msgstr "M"
 #: staff.serial.sdist_editor.notes
 msgid "Distribution Notes"
 msgstr "Տարածման նշումներ"
+
+#: staff.serial.sdist_editor.add_to_sre.label
+msgid "Add to record entry"
+msgstr ""
+
+#: staff.serial.sdist_editor.merge_with_sre.label
+msgid "Merge with record entry"
+msgstr ""
+
+#: staff.serial.sdist_editor.use_sre_only.label
+msgid "Use record entry only"
+msgstr ""
+
+#: staff.serial.sdist_editor.use_sdist_only.label
+msgid "Do not use record entry"
+msgstr ""
+
+#: staff.serial.sdist_editor.no_mfhd_available.label
+msgid "No MFHD records for this Holding Lib"
+msgstr ""
 
 #: staff.serial.siss_editor.count
 msgid "1 issuance"
@@ -292,6 +312,18 @@ msgid ""
 "Override Delete Failure? Doing so will delete all attached items as well!"
 msgstr "Վերագրե՞լ Ձախողման Ջնջումը։ Սա անելով կջնջեք բոլոր կից նյութերը։"
 
+#: staff.serial.manage_items.subscriber.label
+msgid "Subscriber"
+msgstr ""
+
+#: staff.serial.manage_items.holder.label
+msgid "Holder"
+msgstr ""
+
+#: staff.serial.manage_items.notes_column.label
+msgid "Notes (Item/Dist/Sub)"
+msgstr ""
+
 #: staff.serial.manage_subs.add.error
 msgid "error adding object in manage_subs.js:"
 msgstr "սխալ երբ ավելացվում է օբյեկտ այստեղ manage_subs.js:"
@@ -372,6 +404,22 @@ msgid ""
 "Override Delete Failure? Doing so will delete all related data as well!"
 msgstr ""
 "Վերագրե՞լ Ձախողման Ջնջումը։ Անելով սա կջնջեք բոլոր կապակցված տվյալները։"
+
+#: staff.serial.notes.do_edit_note.label
+msgid "Edit This Note"
+msgstr ""
+
+#: staff.serial.notes.edit_note.label
+msgid "Edit Note"
+msgstr ""
+
+#: staff.serial.notes.edit_note.accesskey
+msgid "E"
+msgstr ""
+
+#: staff.serial.required_fields_alert
+msgid "These fields are required: "
+msgstr ""
 
 #: batch_receive.bib_lookup.empty
 msgid "Enter a search term."

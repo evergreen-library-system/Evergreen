@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2011-07-13 23:14+0000\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
+"PO-Revision-Date: 2012-05-02 18:37+0000\n"
 "Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-07-15 04:52+0000\n"
-"X-Generator: Launchpad (build 13405)\n"
+"X-Launchpad-Export-Date: 2012-05-03 05:27+0000\n"
+"X-Generator: Launchpad (build 15185)\n"
 
 #: staff.admin.age_overdue_circulations_to_lost.chunks_processed
 msgid "Chunks Processed: %1$s"
@@ -136,6 +136,34 @@ msgstr "Global Font set to 17pt"
 #: staff.admin.font_settings.status_msg.ALL_FONTS_18PT
 msgid "Global Font set to 18pt"
 msgstr "Global Font set to 18pt"
+
+#: staff.admin.toolbar.unsaved_changes
+msgid ""
+"Unsaved changes. Choose either Save Toolbar or Cancel Changes if you wish to "
+"select a different toolbar."
+msgstr ""
+"Unsaved changes. Choose either Save Toolbar or Cancel Changes if you wish to "
+"select a different toolbar."
+
+#: staff.admin.toolbar.tab_name
+msgid "Toolbars"
+msgstr "Toolbars"
+
+#: staff.admin.toolbar.button_id.header
+msgid "Button ID"
+msgstr "Button ID"
+
+#: staff.admin.toolbar.label.header
+msgid "Label"
+msgstr "Label"
+
+#: staff.admin.toolbar.toolbar_separator.list_entry
+msgid "Toolbar Separator"
+msgstr "Toolbar Separator"
+
+#: staff.admin.toolbar.toolbar_spacer.list_entry
+msgid "Toolbar Spacer"
+msgstr "Toolbar Spacer"
 
 #: staff.admin.transit_list.missing_list
 msgid "Missing library list."

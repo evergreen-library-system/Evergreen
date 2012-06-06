@@ -7,16 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-18 21:44-0400\n"
-"PO-Revision-Date: 2012-04-17 21:17+0000\n"
-"Last-Translator: Filipe Pinheiro dos Santos Cantarelli "
-"<filipe.cantarelli@gmail.com>\n"
+"POT-Creation-Date: 2012-04-28 14:16-0400\n"
+"PO-Revision-Date: 2012-05-26 03:40+0000\n"
+"Last-Translator: jobdrb <jobdrb@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-18 04:43+0000\n"
-"X-Generator: Launchpad (build 15108)\n"
+"X-Launchpad-Export-Date: 2012-05-27 04:42+0000\n"
+"X-Generator: Launchpad (build 15288)\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -770,6 +769,10 @@ msgstr "Em Transito"
 msgid "Ready for Pickup"
 msgstr "Pronto para Coletar"
 
+#: myopac.holds.status.suspended
+msgid "Suspended"
+msgstr "Suspenso"
+
 #: myopac.holds.cancel
 msgctxt "myopac.holds.cancel"
 msgid "Cancel"
@@ -1088,10 +1091,12 @@ msgid "Username update failed"
 msgstr "A atualização de nome de usuário falhou"
 
 #: myopac.summary.username.invalid
-msgid "Username cannot contain spaces or have the same format as a barcode"
+msgid ""
+"Username cannot contain spaces or have the same format as a barcode, and may "
+"be restricted by policy"
 msgstr ""
-"O Nome de Usuário não pode conter espaços ou ter o mesmo formato como um "
-"código de barras"
+"O nome de usuário não pode conter espaços ou ter o formato igual ao um "
+"código de barras, e pode ter restrição por política de uso"
 
 #: myopac.summary.email.error
 msgid "Please enter a valid email address"
@@ -1411,9 +1416,10 @@ msgid "GALILEO"
 msgstr "GALILEO"
 
 #: footer.copyright
-msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
+msgid "Copyright &#xA9; 2006-2012 Georgia Public Library Service, and others"
 msgstr ""
-"Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
+"Copyright &#xA9; 2006-2012 Serviço de Bibliotecas Públicas da Georgia EUA, e "
+"outros"
 
 #. Introduces the logo for the project
 #: footer.logo
@@ -1473,9 +1479,17 @@ msgctxt "sidebar.quick.search"
 msgid "Quick Search"
 msgstr "Pesquisa Rápida"
 
+#: sidebar.authority.browse
+msgid "Authority Browse"
+msgstr "Ver Autoridades"
+
 #: sidebar.copy.not.found
 msgid "No copy with the requested barcode was found"
 msgstr "Nenhum exemplar encontrado para o código-de-barras solicitado"
+
+#: sidebar.copy.not.cataloged
+msgid "The copy with the requested barcode is not cataloged"
+msgstr "O exemplar solicitado pelo código de barras não está catalogado"
 
 #. =================================================================
 #. Search formats
@@ -1551,6 +1565,10 @@ msgstr "Ítens Solicitados Evergreen"
 msgid "Evergreen Call Number Browse"
 msgstr "Navegação por Nº de Chamadas Evergreen"
 
+#: opac.title.authbrowse
+msgid "Evergreen Authority Record Browse"
+msgstr "Ver Registros de Autoridades do Sistema Evergreen"
+
 #: opac.holds.forMe
 msgid "Place this hold for myself"
 msgstr "Por esta reserva para eu mesmo"
@@ -1592,6 +1610,15 @@ msgstr "A reserva foi realizada com sucesso"
 #: opac.holds.failure
 msgid "Hold was not successfully placed"
 msgstr "Sem sucesso ao realizar a reserva"
+
+#: opac.hold.has_parts
+msgid ""
+"The system was not able to place the requested hold.  The item requested has "
+"multiple parts to choose from.  Try selecting a specific part for the hold."
+msgstr ""
+"O sistema não conseguir fazer reserva solicitada. O item solicitado tem "
+"várias partes para se escolher. Tente selecionar uma parte específica para a "
+"reserva."
 
 #. =================================================================
 #. Advanced
@@ -1747,6 +1774,10 @@ msgstr "Proteção de Reserva por Tempo"
 #: rdetail.cn.genesis
 msgid "Create Date"
 msgstr "Data de Cria"
+
+#: rdetail.cn.active
+msgid "Active Date"
+msgstr "Data ativa"
 
 #: rdetail.cn.holdable
 msgid "Holdable"
@@ -2030,7 +2061,7 @@ msgstr "Assuntos"
 
 #: rdetail.summary.issues_held
 msgid "Issues Held"
-msgstr ""
+msgstr "Edições Reservadas"
 
 #: result.sort_by
 msgid "Sort Results by Relevance"
@@ -2225,6 +2256,25 @@ msgid ""
 msgstr ""
 "Uma reserva já existe no item solicitado. Você gostaria de criar a reserva "
 "de qualquer maneira?"
+
+#: common.hold.age_protect.override
+msgid ""
+"This hold may take extra time to fill due to library policies. Would you "
+"like to create the hold anyway?"
+msgstr ""
+"Esta reserva pode demorar mais tempo para preencher devido às políticas da "
+"biblioteca. Gostaria mesmo assim de solicitar a reserva?"
+
+#: common.hold.place_unfillable.override
+msgid ""
+"The requested hold cannot currently be filled. You have permission to place "
+"the hold regardless, but should only do so if you believe the hold will "
+"eventually be filled. Would you like to create the hold anyway?"
+msgstr ""
+"A reserva solicitada não pode atualmente ser completada. Independentemente "
+"você tem permissão para fazer a reserva, mas você só deve fazê-la se você "
+"acreditar que a reserva acabará sendo completada. Gostaria de criar a "
+"reserva de qualquer maneira?"
 
 #: common.hold.barred
 msgid ""
@@ -2687,3 +2737,12 @@ msgstr "O sistema não pode encontrar este cliente."
 #: circ.fail_part.transit_range
 msgid "The item cannot transit this far"
 msgstr "Este item não pode transitar esta distância"
+
+#~ msgid "Username cannot contain spaces or have the same format as a barcode"
+#~ msgstr ""
+#~ "O Nome de Usuário não pode conter espaços ou ter o mesmo formato como um "
+#~ "código de barras"
+
+#~ msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
+#~ msgstr ""
+#~ "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"

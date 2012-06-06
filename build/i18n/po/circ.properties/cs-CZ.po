@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2012-02-29 21:00+0000\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
+"PO-Revision-Date: 2012-05-01 13:26+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <petrkubiska@seznam.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-03-01 04:48+0000\n"
-"X-Generator: Launchpad (build 14874)\n"
+"X-Launchpad-Export-Date: 2012-05-02 05:27+0000\n"
+"X-Generator: Launchpad (build 15177)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -239,6 +239,14 @@ msgid ""
 msgstr ""
 "Pokud při nyní zvolíte možnost \"obejít\", čtenáři bude naúčtován poplatek "
 "za půjčení."
+
+#: staff.circ.checkout.override.will_auto
+msgid ""
+"If overriden now, subsequent checkouts during this patron's session will "
+"auto-override this event."
+msgstr ""
+"Pokud budete  nyní pokračovat, následující výpůjčky během této čtenářovy "
+"relace budou automaticky obcházet tuto událost."
 
 #: staff.circ.checkout.not_cataloged.confirm
 msgid "Mis-scan or non-cataloged item.  Checkout as a pre-cataloged item?"
@@ -587,14 +595,17 @@ msgstr "Obejít chybu přis mazání?"
 
 #: staff.circ.copy_status.delete_volumes.delete_copies
 msgid ""
-"You must delete all the copies on the volume before you may delete the "
-"volume itself."
-msgstr ""
-"Před smazáním celého svazku musíte smazat všechny exempláře ve svazku."
+"You must delete all the items on the volume before you may delete the volume "
+"itself."
+msgstr "Před vymazáním svazku musíte smazat všechny exempláře ve svazku"
 
-#: staff.circ.copy_status.delete_volumes.success
-msgid "Volumes deleted."
-msgstr "Svazky smazány."
+#: staff.circ.copy_status.delete_volumes.delete_copies.confirm
+msgid "Delete Volume and Items"
+msgstr "Smazat svazky a exempláře"
+
+#: staff.circ.copy_status.delete_volumes.delete_copies.cancel
+msgid "Cancel Delete"
+msgstr "Zrušit mazání"
 
 #: staff.circ.copy_status.mark_volume.status
 msgid "Volume marked as Item Transfer Destination"
@@ -1022,12 +1033,12 @@ msgid "Owning Library"
 msgstr "Vlastnická knihovna"
 
 #: staff.circ.utils.prefix
-msgid "Prefix"
-msgstr "Titul"
+msgid "CN Prefix"
+msgstr "Prefix signatury"
 
 #: staff.circ.utils.suffix
-msgid "Suffix"
-msgstr "Titul za jménem"
+msgid "CN Suffix"
+msgstr "Sufix signatury"
 
 #: staff.circ.utils.label_class
 msgid "Classification"
@@ -1076,8 +1087,12 @@ msgid "Floating?"
 msgstr "Pohyblivý exemplář?"
 
 #: staff.circ.utils.hold_note
-msgid "Hold Note(s)"
-msgstr "Poznámka(y) o rezervaci"
+msgid "Hold Note(s) Count"
+msgstr "Počet poznámek k rezervacím"
+
+#: staff.circ.utils.hold_note_text
+msgid "Hold Note(s) Text"
+msgstr "Text poznámek  k rezervacím"
 
 #: staff.circ.utils.staff_hold
 msgid "Staff Hold?"
@@ -1329,6 +1344,14 @@ msgstr "Rezervováno/Zatím nevyřízeno"
 msgid "Canceled"
 msgstr "Zrušeno"
 
+#: staff.circ.utils.hold_status.7
+msgid "Suspended"
+msgstr "Pozastaveno"
+
+#: staff.circ.utils.hold_status.8
+msgid "Wrong Shelf"
+msgstr "Nesprávný regál"
+
 #: staff.circ.utils.hold_post_clear_shelf_action.label
 msgid "Post-Clear"
 msgstr "Následné vyčištění"
@@ -1489,6 +1512,10 @@ msgstr "Rezervace pro čtenáře %1$s"
 #: staff.circ.utils.payload.hold.phone_notify
 msgid "Notify by phone: %1$s"
 msgstr "Telefonické upozornění: %1$s"
+
+#: staff.circ.utils.payload.hold.sms_notify
+msgid "Notify by text: %1$s"
+msgstr "SMS oznámení: %1$s"
 
 #: staff.circ.utils.payload.hold.email_notify
 msgid "Notify by email: %1$s"
@@ -1987,3 +2014,15 @@ msgstr "Chybějící části"
 #: staff.circ.missing_pieces.scan_item.error_alert
 msgid "No item with barcode \"%1$s\""
 msgstr "Exemplář s čárovým kódem \"%1$s\" neexistuje"
+
+#~ msgid ""
+#~ "You must delete all the copies on the volume before you may delete the "
+#~ "volume itself."
+#~ msgstr ""
+#~ "Před smazáním celého svazku musíte smazat všechny exempláře ve svazku."
+
+#~ msgid "Volumes deleted."
+#~ msgstr "Svazky smazány."
+
+#~ msgid "Hold Note(s)"
+#~ msgstr "Poznámka(y) o rezervaci"

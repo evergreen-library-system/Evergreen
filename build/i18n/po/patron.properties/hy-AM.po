@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
 "PO-Revision-Date: 2011-05-17 12:51+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:47+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2012-04-30 04:50+0000\n"
+"X-Generator: Launchpad (build 15171)\n"
 "X-Accelerator-Marker: &\n"
 
 #: staff.patron.summary.patron_net_access
@@ -489,6 +489,10 @@ msgstr ""
 "Չի կրող բնութագրել ջնջված օգտվողին որպես նպատակակետ օգտվող։ Օգտվողի ջնջումը "
 "կասեցվել է։"
 
+#: staff.patron.display.cmd_patron_delete.override_prompt
+msgid "Override patron deletion failure?"
+msgstr ""
+
 #: staff.patron.display.spawn_editor.editing_related_patron
 msgctxt "staff.patron.display.spawn_editor.editing_related_patron"
 msgid "Editing Related Patron"
@@ -557,10 +561,10 @@ msgstr "Ընթերցող:"
 msgid "No Alerts, Blocks, or Messages"
 msgstr "Չկան ազդանշաններ, բլոկներ, հաղորդագրություններ։"
 
-#. # Field 1 = actor.usr.id, Field 2 = actor.usr.create_date
+#. # Field 1 = actor.usr.id, Field 2 = actor.usr.create_date, Field 3 = actor.usr.last_update_time
 #: staff.patron.display.db_data
-msgid "Record ID: %1$s Create Date: %2$s "
-msgstr "Գրառման ID: %1$s Ստեղծիր ամսաթիվ Date: %2$s "
+msgid "Database ID: %1$s Create Date: %2$s Last Updated: %3$s"
+msgstr ""
 
 #: staff.patron.hold_notices.tooltiptext
 msgid "ID: %1$s Hold ID: %2$s Notifying Staff ID: %3$s"
@@ -844,6 +848,98 @@ msgstr ""
 msgctxt "staff.patron.holds.holds_edit_phone_notify.modifying_holds_title"
 msgid "Modifying Holds"
 msgstr "Ձևափոխիր պահումները"
+
+#: staff.patron.holds.holds_edit_sms_notify.new_phone_number
+msgid ""
+"Please enter a new mobile number for hold notification via text (leave the "
+"field empty to disable):"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_notify.btn_done.label
+msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_done.label"
+msgid "Done"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_notify.btn_done.accesskey
+msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_done.accesskey"
+msgid "D"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_notify.btn_cancel.label
+msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_cancel.label"
+msgid "Cancel"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_notify.btn_cancel.accesskey
+msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_cancel.accesskey"
+msgid "C"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_notify.choose_phone_number
+msgid "Choose a Hold Notification Mobile Text Number"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_notify.confirm_phone_number_change.singular
+msgid ""
+"Are you sure you would like to change the Notification Mobile/Text Number "
+"for hold %1$s to \"%2$s\"?"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_notify.confirm_phone_number_change.plural
+msgid ""
+"Are you sure you would like to change the Notification Mobile/Text Number "
+"for holds %1$s to \"%2$s\"?"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_notify.modifying_holds_title
+msgctxt "staff.patron.holds.holds_edit_sms_notify.modifying_holds_title"
+msgid "Modifying Holds"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_carrier.new_carrier
+msgid "Please select a new mobile carrier for hold notification via text:"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_carrier.btn_done.label
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_done.label"
+msgid "Done"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_carrier.btn_done.accesskey
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_done.accesskey"
+msgid "D"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_carrier.btn_cancel.label
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_cancel.label"
+msgid "Cancel"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_carrier.btn_cancel.accesskey
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_cancel.accesskey"
+msgid "C"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_carrier.choose_carrier
+msgid "Select a Hold Notification Mobile Text Carrier"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_carrier.confirm_carrier_change.singular
+msgid ""
+"Are you sure you would like to change the Notification Mobile/Text Carrier "
+"for hold %1$s to \"%2$s\"?"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_carrier.confirm_carrier_change.plural
+msgid ""
+"Are you sure you would like to change the Notification Mobile/Text Carrier "
+"for holds %1$s to \"%2$s\"?"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_carrier.modifying_holds_title
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.modifying_holds_title"
+msgid "Modifying Holds"
+msgstr ""
 
 #: staff.patron.holds.holds_edit_email_notify.description
 msgid ""
@@ -1546,6 +1642,18 @@ msgstr "Վստա՞հ ես որ նյութը ցանկանում ես հետ ըն�
 msgid "Are you sure you would like to check in items %1$s?"
 msgstr "Վստա՞հ ես որ նյութերը ցանկանում ես հետ ընդունել %1$s"
 
+#: staff.patron.items.items_checkin.confirm_item_claimed_never_checked_out.singular
+msgid ""
+"Are you sure you would like to mark this item as Claimed Never Checked Out? "
+"%1$s"
+msgstr ""
+
+#: staff.patron.items.items_checkin.confirm_item_claimed_never_checked_out.plural
+msgid ""
+"Are you sure you would like to mark these items as Claimed Never Checked "
+"Out? %1$s"
+msgstr ""
+
 #: staff.patron.items.items_checkin.no_checkin
 msgid "Checkin probably did not happen."
 msgstr "Հետ ընդունումը հավանաբար չկայացավ:"
@@ -1640,9 +1748,21 @@ msgstr "$ %1$s"
 msgid "summary: No barcode or ID"
 msgstr "հանրագումար: Չկա շտրիխ կոդ կամ  ID"
 
+#: staff.patron.summary.create_date
+msgid "Account created on"
+msgstr ""
+
 #: staff.patron.summary.expires_on
 msgid "Expires on"
 msgstr "Լրանում է"
+
+#: staff.patron.summary.last_activity
+msgid "Last Activity"
+msgstr ""
+
+#: staff.patron.summary.updated_on
+msgid "Last updated on"
+msgstr ""
 
 #: staff.patron.summary.standing_penalty.remove
 msgid "Remove"
@@ -1853,41 +1973,31 @@ msgstr ""
 msgid "%1$s edited %3$s (%2$s)"
 msgstr "%1$s խմբագրած %3$s (%2$s)"
 
-#~ msgctxt "staff.patron.bill_details.handle_void.billings_voided"
-#~ msgid "Billings voided."
-#~ msgstr "Հաշիվները կասեցված են"
+#. # 1 - Number of hold requests created
+#: staff.item.batch.hold.x_holds_created
+msgid "%1$s holds created."
+msgstr ""
 
-#~ msgid "Void All Billings"
-#~ msgstr "Շրջանցիր բոլոր հաշիվները"
+#. # 1 - Number of holds not created for a given reason  2 - the reason for failure
+#: staff.item.batch.hold.x_failed_holds
+msgid "%1$s failed for %2$s"
+msgstr ""
 
-#~ msgctxt "staff.patron.bills.void_all_billings.billings_voided"
-#~ msgid "Billings voided."
-#~ msgstr "Հաշիվները շրջանցված են"
+#: staff.item.batch.hold.tab_name
+msgid "Item Hold/Recall/Force"
+msgstr ""
 
-#~ msgid "Editor would like to search for: %1$s"
-#~ msgstr "Խմբագրիչը կցանկանա փնտրել: %1$s"
+#: staff.item.batch.hold.retry_btn_label
+msgid "Retry"
+msgstr ""
 
-#~ msgctxt "staff.patron.info_group.spwan_editor.editing_patron"
-#~ msgid "Editing Related Patron"
-#~ msgstr "Կապված ընթերցողի խմբագրում"
+#: staff.item.batch.hold.override_btn_label
+msgid "Override"
+msgstr ""
 
-#~ msgid "Note added."
-#~ msgstr "Նշումը ավելացված է"
+#: staff.item.batch.hold.user_not_found
+msgid "User Not Found"
+msgstr ""
 
-#~ msgid "Invalid Date"
-#~ msgstr "Սխալ ամսաթիվ:"
-
-#~ msgid "Due date needs to be after today."
-#~ msgstr "Վերադարձի ամսաթիվը պետք է լինի այսօրից հետո:"
-
-#~ msgid "Claims Returned Date cannot be in the future."
-#~ msgstr "Խարանվածների վերադարձի ամսաթիվը չի կարող լինել ապագայում:"
-
-#~ msgid "By Patron"
-#~ msgstr "Ընթերցողի կողմից"
-
-#~ msgid "Missing Due Date. Renewal canceled."
-#~ msgstr "Բացակայող վերադարձի ամսաթիվ։ Թարմացումը չեղյալ է արված։"
-
-#~ msgid "Renew with Due Date"
-#~ msgstr "Թարմացրու Վերադարձի ամսաթվով"
+#~ msgid "Record ID: %1$s Create Date: %2$s "
+#~ msgstr "Գրառման ID: %1$s Ստեղծիր ամսաթիվ Date: %2$s "

@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
 "PO-Revision-Date: 2010-03-23 18:18+0000\n"
 "Last-Translator: Can Bülbül <a_bulbul@ug.bilkent.edu.tr>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:39+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2012-04-30 04:43+0000\n"
+"X-Generator: Launchpad (build 15171)\n"
 
 #: bib.no_marc
 msgid "No MARC Record"
@@ -42,7 +42,7 @@ msgid "Returning %1$s hits"
 msgstr ""
 
 #: staff.cat.bib_brief.record_id
-msgid "Record ID = %1$s"
+msgid "Database ID = %1$s"
 msgstr ""
 
 #: staff.cat.bib_brief.deleted
@@ -61,9 +61,9 @@ msgstr ""
 msgid "Item not cataloged."
 msgstr ""
 
-#. # %1$s = Bib Record ID
+#. # %1$s = Bib Record Database ID
 #: staff.cat.manage_multi_bib_items.tab_name
-msgid "Manage Foreign Items for Bib %1$s"
+msgid "Manage Conjoined Items for Bib with DB ID %1$s"
 msgstr ""
 
 #: staff.cat.manage_multi_bib_items.result.column.value.error
@@ -94,14 +94,14 @@ msgstr ""
 msgid "Change Peer Type"
 msgstr ""
 
-#. # %1$s = Bib Record ID
+#. # %1$s = Bib Record Database ID
 #: staff.cat.manage_multi_bib_items.prompt.confirm.unlink_item_from_bib.singular
-msgid "Unlink selected item from Bib %1$s"
+msgid "Unlink selected item from Bib with DB ID %1$s"
 msgstr ""
 
-#. # %1$s = Bib Record ID, %2$s = Number of selected items
+#. # %1$s = Bib Record Database ID, %2$s = Number of selected items
 #: staff.cat.manage_multi_bib_items.prompt.confirm.unlink_item_from_bib.plural
-msgid "Unlink %2$s selected items from Bib %1$s"
+msgid "Unlink %2$s selected items from Bib with DB ID %1$s"
 msgstr ""
 
 #: staff.cat.copy_browser.add_item.title
@@ -224,6 +224,10 @@ msgstr ""
 msgid "%1$s"
 msgstr ""
 
+#: staff.cat.copy_browser.can_have_copies.false
+msgid "Records from %1$s cannot have copies."
+msgstr ""
+
 #: staff.cat.copy_browser.delete_volume.prompt
 msgid "Are you sure you would like to delete this volume?"
 msgstr ""
@@ -253,8 +257,16 @@ msgstr ""
 
 #: staff.cat.copy_browser.delete_volume.copies_remain
 msgid ""
-"You must delete all the copies on the volume before you may delete the "
-"volume itself."
+"You must delete all the items on the volume before you may delete the volume "
+"itself."
+msgstr ""
+
+#: staff.cat.copy_browser.delete_volume.copies_remain.confirm
+msgid "Delete Volume and Items"
+msgstr ""
+
+#: staff.cat.copy_browser.delete_volume.copies_remain.cancel
+msgid "Cancel Delete"
 msgstr ""
 
 #: staff.cat.copy_browser.delete_volume.exception
@@ -350,7 +362,7 @@ msgstr ""
 
 #: staff.cat.copy_browser.link_as_multi_bib.missing_bib
 msgid ""
-"Please Mark a bib record as a Target for Foreign Items and try this again."
+"Please Mark a bib record as a Target for Conjoined Items and try this again."
 msgstr ""
 
 #: staff.cat.copy_browser.missing_library
@@ -661,6 +673,11 @@ msgstr ""
 msgid "Error importing templates"
 msgstr ""
 
+#: staff.cat.copy_editor.apply_unsafe_field
+msgid ""
+"Template tried to change field '%1$s', which is not allowed currently."
+msgstr ""
+
 #: staff.cat.copy_editor.apply_owning_lib.undefined_volume.error
 msgid ""
 "Error retrieving Volume information for copy %1$s.  The owning library for "
@@ -743,6 +760,10 @@ msgstr ""
 
 #: staff.cat.copy_editor.field.creation_date.label
 msgid "Creation Date"
+msgstr ""
+
+#: staff.cat.copy_editor.field.active_date.label
+msgid "Active Date"
 msgstr ""
 
 #: staff.cat.copy_editor.field.last_edit_date.label
@@ -1189,6 +1210,14 @@ msgstr ""
 msgid "Error loading MARC template: %1$s"
 msgstr ""
 
+#: staff.cat.marc_new.set_default.error
+msgid "Error setting default MARC template: %1$s"
+msgstr ""
+
+#: staff.cat.marc_new.set_default.success
+msgid "Default template set to %1$s"
+msgstr ""
+
 #: staff.cat.opac.set_marc_edit.alert
 msgid "Record successfully saved."
 msgstr ""
@@ -1202,7 +1231,7 @@ msgid "Not yet implemented.  Work around: Choose Duplicate in New Tab option"
 msgstr ""
 
 #: staff.cat.opac.set_tab_name
-msgid "Record: %1$s"
+msgid "Record DB ID: %1$s"
 msgstr ""
 
 #: staff.cat.opac.title_for_hold_transfer.destination_needed.label
@@ -1215,6 +1244,11 @@ msgstr ""
 
 #: staff.cat.opac.title_for_hold_transfer.failure.label
 msgid "Holds not transferred."
+msgstr ""
+
+#: staff.cat.opac.title_for_hold_transfer.many_bibs.warning
+msgid ""
+"WARNING: Move selected holds from multiple bibs to single targeted bib?"
 msgstr ""
 
 #: staff.cat.record_buckets.tab_name
@@ -1655,7 +1689,7 @@ msgid "Change Amount "
 msgstr ""
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.cancel_label
-msgid "Cancel "
+msgid "No Charge"
 msgstr ""
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.confirm_action
@@ -1771,6 +1805,15 @@ msgid ""
 "No circulation found for item with barcode %1$s.  Item left unmodified."
 msgstr ""
 
+#: staff.cat.util.show_in_opac.retrieving_title
+msgctxt "staff.cat.util.show_in_opac.retrieving_title"
+msgid "Retrieving title..."
+msgstr ""
+
+#: staff.cat.util.add_titles_to_bucket.number_of_precats_skipped
+msgid "Skipping %1$s pre-cat records..."
+msgstr ""
+
 #: staff.cat.volume_buckets.window_tab_name
 msgid "Volume Buckets"
 msgstr ""
@@ -1854,7 +1897,7 @@ msgid "Prefix"
 msgstr ""
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.call_nums
-msgid "Call Numbers"
+msgid "Call Number"
 msgstr ""
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.suffix
@@ -1866,7 +1909,7 @@ msgid "# of Copies"
 msgstr ""
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.barcodes_and_parts
-msgid "Barcodes / Part Designation"
+msgid "Barcode / Part Designation"
 msgstr ""
 
 #: staff.cat.volume_copy_creator.render_barcode_entry.alert_message
@@ -2235,4 +2278,68 @@ msgstr ""
 
 #: staff.cat.z3950.save_creds.z3950_cred_error
 msgid "Problem storing z39.50 credentials."
+msgstr ""
+
+#: staff.cat.bib_brief.title.label
+msgid "Title:"
+msgstr ""
+
+#: staff.cat.bib_brief.author.label
+msgid "Author:"
+msgstr ""
+
+#: staff.cat.bib_brief.edition.label
+msgid "Edition:"
+msgstr ""
+
+#: staff.cat.bib_brief.pubdate.label
+msgid "Pub Date:"
+msgstr ""
+
+#: staff.cat.bib_brief.bib_call_number.label
+msgid "Bib Call #:"
+msgstr ""
+
+#: staff.cat.bib_brief.call_number.label
+msgid "Item Call #:"
+msgstr ""
+
+#: staff.cat.bib_brief.tcn.label
+msgid "TCN:"
+msgstr ""
+
+#: staff.cat.bib_brief.mvr_doc_id.label
+msgid "Bib DB ID:"
+msgstr ""
+
+#: staff.cat.bib_brief.owner.label
+msgid "Record Owner:"
+msgstr ""
+
+#: staff.cat.bib_brief.creator.label
+msgid "Created By:"
+msgstr ""
+
+#: staff.cat.bib_brief.create_date.label
+msgid "Created On:"
+msgstr ""
+
+#: staff.cat.bib_brief.editor.label
+msgid "Last Edited By:"
+msgstr ""
+
+#: staff.cat.bib_brief.edit_date.label
+msgid "Last Edited On:"
+msgstr ""
+
+#: staff.cat.bib_brief.holds.label
+msgid "Holds:"
+msgstr ""
+
+#: staff.cat.bib_brief.items.label
+msgid "Items:"
+msgstr ""
+
+#: staff.cat.bib_brief.items.available.tooltip
+msgid "%1$s available"
 msgstr ""

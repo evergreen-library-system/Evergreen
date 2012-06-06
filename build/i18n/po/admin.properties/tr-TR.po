@@ -1,17 +1,29 @@
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/admin.properties
+# Turkish translation for evergreen
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-07 02:03-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
+"PO-Revision-Date: 2012-05-12 10:02+0000\n"
+"Last-Translator: kulkke <Unknown>\n"
+"Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
-"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2012-05-13 04:44+0000\n"
+"X-Generator: Launchpad (build 15225)\n"
+
+#: staff.admin.age_overdue_circulations_to_lost.chunks_processed
+msgid "Chunks Processed: %1$s"
+msgstr ""
+
+#: staff.admin.age_overdue_circulations_to_lost.events_created
+msgid "Events Created: %1$s"
+msgstr ""
 
 #: staff.admin.font_settings.sound
 msgid "Sound preference saved to file system."
@@ -123,6 +135,32 @@ msgstr ""
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_18PT
 msgid "Global Font set to 18pt"
+msgstr ""
+
+#: staff.admin.toolbar.unsaved_changes
+msgid ""
+"Unsaved changes. Choose either Save Toolbar or Cancel Changes if you wish to "
+"select a different toolbar."
+msgstr ""
+
+#: staff.admin.toolbar.tab_name
+msgid "Toolbars"
+msgstr ""
+
+#: staff.admin.toolbar.button_id.header
+msgid "Button ID"
+msgstr ""
+
+#: staff.admin.toolbar.label.header
+msgid "Label"
+msgstr ""
+
+#: staff.admin.toolbar.toolbar_separator.list_entry
+msgid "Toolbar Separator"
+msgstr ""
+
+#: staff.admin.toolbar.toolbar_spacer.list_entry
+msgid "Toolbar Spacer"
 msgstr ""
 
 #: staff.admin.transit_list.missing_list
@@ -411,11 +449,11 @@ msgstr ""
 
 #: staff.admin.offline_manage_xacts.no
 msgid "No"
-msgstr ""
+msgstr "Hayır"
 
 #: staff.admin.offline_manage_xacts.yes
 msgid "Yes"
-msgstr ""
+msgstr "Evet"
 
 #: staff.admin.staff.do_not_auto_attempt_print_setting.update_success
 msgid "Setting updated"
