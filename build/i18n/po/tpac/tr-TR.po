@@ -1,19 +1,20 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
+# Turkish translation for evergreen
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2012-05-12 08:45+0000\n"
+"Last-Translator: kulkke <Unknown>\n"
+"Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Launchpad (build 15225)\n"
+"X-Launchpad-Export-Date: 2012-05-13 04:44+0000\n"
 
 #. (ctx.result_start, ctx.result_stop, ctx.hit_count)
 #: ../../Open-ILS/src/templates/opac/parts/result/paginate.tt2:5
@@ -41,7 +42,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:113 ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:118
 msgid " / "
-msgstr ""
+msgstr " / "
 
 #: ../../Open-ILS/src/templates/opac/myopac/update_password.tt2:10
 msgid " New password is invalid.  Please try a different password.  "
@@ -75,13 +76,13 @@ msgstr ""
 #. (ctx.user.first_given_name, ctx.user.family_name)
 #: ../../Open-ILS/src/templates/opac/parts/topnav.tt2:19
 msgid "%1 %2"
-msgstr ""
+msgstr "%1 %2"
 
 #. (title, part.label)
 #. (title, hold.hold.part.label)
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:136 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:25 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:37
 msgid "%1 (%2)"
-msgstr ""
+msgstr "%1 (%2)"
 
 #. (hold.hold.queue_position, hold.hold.potential_copies)
 #: ../../Open-ILS/src/templates/opac/parts/hold_status.tt2:26
@@ -96,7 +97,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/header.tt2:1
 msgid "%m/%d/%Y"
-msgstr ""
+msgstr "%m/%d/%Y"
 
 #. (ou_avail, ou_name)
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:19
@@ -110,11 +111,11 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/record/body.tt2:12
 msgid "&#9668; Search Results"
-msgstr ""
+msgstr "&#9668; Arama Sonuçları"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/cnbrowse.tt2:17
 msgid "&lt;&lt; Previous Page"
-msgstr ""
+msgstr "&lt;&lt; Önceki Sayfa"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:42
 msgid "(Show preferred library)"
@@ -155,7 +156,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/pref_lib_display.tt2:5
 msgid "?"
-msgstr ""
+msgstr "?"
 
 #: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:131
 msgid "Account Creation Date"
@@ -167,11 +168,11 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/login.tt2:1
 msgid "Account Login"
-msgstr ""
+msgstr "Hesap Girişi"
 
 #: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:3
 msgid "Account Preferences"
-msgstr ""
+msgstr "Hesap Tercihleri"
 
 #: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:17 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:16
 msgid "Account Successfully Updated"
@@ -179,7 +180,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:3 ../../Open-ILS/src/templates/opac/parts/myopac/main_base.tt2:9
 msgid "Account Summary"
-msgstr ""
+msgstr "Hesap Özeti"
 
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:38
 msgid "Actions for selected holds"
@@ -187,11 +188,11 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:41
 msgid "Activate"
-msgstr ""
+msgstr "Etkinleştir"
 
 #: ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:50
 msgid "Active"
-msgstr ""
+msgstr "Etkin"
 
 #: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:120
 msgid "Active Barcode"
@@ -202,8 +203,9 @@ msgid "Active On"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:75
+#, fuzzy
 msgid "Active?"
-msgstr ""
+msgstr "Etkin"
 
 #: ../../Open-ILS/src/templates/opac/parts/advanced/search.tt2:21
 msgid "Add Search Row"
@@ -215,7 +217,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:33 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:227
 msgid "Add to my list"
-msgstr ""
+msgstr "Listeme ekle"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/authors.tt2:1
 msgid "Added Author"
@@ -247,7 +249,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:143
 msgid "Addresses"
-msgstr ""
+msgstr "Adresler"
 
 #: ../../Open-ILS/src/templates/opac/advanced.tt2:1 ../../Open-ILS/src/templates/opac/advanced.tt2:19 ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:10 ../../Open-ILS/src/templates/opac/results.tt2:28
 msgid "Advanced Search"
@@ -275,7 +277,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/advanced/global_row.tt2:30
 msgid "And"
-msgstr ""
+msgstr "Ve"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/extras.tt2:4
 msgid "Annotation"
@@ -287,7 +289,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:149
 msgid "April"
-msgstr ""
+msgstr "Nisan"
 
 #. (money(ctx.fines.balance_owed))
 #: ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:18
@@ -320,7 +322,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:153
 msgid "August"
-msgstr ""
+msgstr "Ağustos"
 
 #: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:53 ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:46 ../../Open-ILS/src/templates/opac/myopac/main.tt2:23 ../../Open-ILS/src/templates/opac/parts/qtype_selector.tt2:1 ../../Open-ILS/src/templates/opac/parts/record/authors.tt2:1
 msgid "Author"
@@ -376,11 +378,11 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:65 ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:41
 msgid "Barcode"
-msgstr ""
+msgstr "Barkod"
 
 #: ../../Open-ILS/src/templates/opac/password_reset.tt2:54
 msgid "Barcode:"
-msgstr ""
+msgstr "Barkod:"
 
 #: ../../Open-ILS/src/templates/opac/advanced.tt2:13
 msgid "Basic Search"
@@ -465,7 +467,7 @@ msgstr ""
 #. (ctx.page_title)
 #: ../../Open-ILS/src/templates/opac/parts/base.tt2:12
 msgid "Catalog - %1"
-msgstr ""
+msgstr "Katalog - %1"
 
 #: ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:66
 msgid "Catalog Home"
@@ -563,11 +565,11 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:177 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:226
 msgid "Country"
-msgstr ""
+msgstr "Ülke"
 
 #: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:175 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:218
 msgid "County"
-msgstr ""
+msgstr "Ülke"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:45
 msgid "Create Date"
@@ -635,7 +637,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:157
 msgid "December"
-msgstr ""
+msgstr "Aralık"
 
 #: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:83
 msgid "Default Font Size"
@@ -751,7 +753,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:13
 msgid "Enter the name of the new list:"
-msgstr ""
+msgstr "Yeni listenin adını girin:"
 
 #: ../../Open-ILS/src/templates/opac/parts/login/form.tt2:27
 msgid "Enter the new password"
@@ -799,7 +801,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/login/form.tt2:92
 msgid "Example: 0026626051"
-msgstr ""
+msgstr "Örnek: 0026626051"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/addedcontent.tt2:3 ../../Open-ILS/src/templates/opac/parts/record/extras.tt2:4
 msgid "Excerpt"
@@ -836,7 +838,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/login/help.tt2:11
 msgid "FAQs"
-msgstr ""
+msgstr "SSS"
 
 #. (ctx.failed_renewals)
 #: ../../Open-ILS/src/templates/opac/myopac/circs.tt2:35
@@ -845,7 +847,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:147
 msgid "February"
-msgstr ""
+msgstr "Şubat"
 
 #. (locname)
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:105
@@ -959,19 +961,19 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:11
 msgid "ISBN"
-msgstr ""
+msgstr "ISBN"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:117 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:93
 msgid "ISBN:"
-msgstr ""
+msgstr "ISBN:"
 
 #: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:12
 msgid "ISSN"
-msgstr ""
+msgstr "ISSN"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:124
 msgid "ISSN:"
-msgstr ""
+msgstr "ISSN:"
 
 #: ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:90
 msgid "If suspended, activate on"
