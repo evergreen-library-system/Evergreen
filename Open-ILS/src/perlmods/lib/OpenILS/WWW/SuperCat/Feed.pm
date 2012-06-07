@@ -223,6 +223,7 @@ sub link {};
 sub title {};
 sub update_ts {};
 sub creator {};
+sub description {};
 
 #----------------------------------------------------------
 
