@@ -2054,7 +2054,7 @@ sub basic_opac_copy_query {
                 acpm => {
                     type => 'left',
                     join => {
-                        bmp => { type => 'left' }
+                        bmp => { type => 'left', filter => { deleted => 'f' } }
                     }
                 }
             }
