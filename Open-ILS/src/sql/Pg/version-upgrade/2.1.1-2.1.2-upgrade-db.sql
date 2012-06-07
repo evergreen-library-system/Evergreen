@@ -1,9 +1,6 @@
--- Fix sorting by pubdate by ensuring migrated records
--- have a pubdate attribute in metabib.record_attr.attrs
-UPDATE metabib.record_attr
-   SET attrs = attrs || ('pubdate' => (attrs->'date1'))
-   WHERE defined(attrs, 'pubdate') IS FALSE
-   AND defined(attrs, 'date1') IS TRUE;
+--Upgrade Script for 2.1.1 to 2.1.2
+BEGIN;
+INSERT INTO config.upgrade_log (version) VALUES ('2.1.2');
 
 CREATE OR REPLACE FUNCTION biblio.extract_located_uris( bib_id BIGINT, marcxml TEXT, editor_id INT ) RETURNS VOID AS $func$
 DECLARE
@@ -116,6 +113,44 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
+
+INSERT INTO config.upgrade_log (version) VALUES ('0658');
+
+CREATE OR REPLACE FUNCTION asset.label_normalizer_dewey(TEXT) RETURNS TEXT AS $func$
+    # Derived from the Koha C4::ClassSortRoutine::Dewey module
+    # Copyright (C) 2007 LibLime
+    # Licensed under the GPL v2 or later
+
+    use strict;
+    use warnings;
+
+    my $init = uc(shift);
+    $init =~ s/^\s+//;
+    $init =~ s/\s+$//;
+    $init =~ s!/!!g;
+    $init =~ s/^([\p{IsAlpha}]+)/$1 /;
+    my @tokens = split /\.|\s+/, $init;
+    my $digit_group_count = 0;
+    for (my $i = 0; $i <= $#tokens; $i++) {
+        if ($tokens[$i] =~ /^\d+$/) {
+            $digit_group_count++;
+            if (2 == $digit_group_count) {
+                $tokens[$i] = sprintf("%-15.15s", $tokens[$i]);
+                $tokens[$i] =~ tr/ /0/;
+            }
+        }
+    }
+    # Pad the first digit_group if there was only one
+    if (1 == $digit_group_count) {
+        $tokens[0] .= '_000000000000000'
+    }
+    my $key = join("_", @tokens);
+    $key =~ s/[^\p{IsAlnum}_]//g;
+
+    return $key;
+
+$func$ LANGUAGE PLPERLU;
+
 INSERT INTO config.upgrade_log (version) VALUES ('0693');
 
 -- Delete the index normalizer that was meant to remove spaces from ISSNs
@@ -130,17 +165,12 @@ DELETE FROM config.metabib_field_index_norm_map WHERE id IN (
         AND map.params = $$[" ",""]$$
 );
 
--- Reindex records that have more than just a single ISSN
--- to ensure that spaces are maintained
-SELECT metabib.reingest_metabib_field_entries(source)
-  FROM metabib.identifier_field_entry mife
-    INNER JOIN config.metabib_field cmf ON cmf.id = mife.field
-  WHERE cmf.field_class = 'identifier'
-    AND cmf.name = 'issn'
-    AND char_length(value) > 9
-;
+COMMIT;
 
--- Add indexes to speed up acquisitions search
+\qecho We will attempt to create indexes that may have already been
+\qecho created if you upgraded to 2.0.11. You might see failures
+\qecho as a result.
+-- Placeholder for backported fix
 INSERT INTO config.upgrade_log (version) VALUES ('0691');
 
 CREATE INDEX poi_po_idx ON acq.po_item (purchase_order);
@@ -152,3 +182,27 @@ CREATE INDEX ie_li_idx on acq.invoice_entry (lineitem);
 CREATE INDEX ii_inv_idx on acq.invoice_item (invoice);
 CREATE INDEX ii_po_idx on acq.invoice_item (purchase_order);
 CREATE INDEX ii_poi_idx on acq.invoice_item (po_item);
+
+\qecho Finished schema updates; now updating the indexes for
+\qecho Dewey call numbers and ISSNs
+
+-- regenerate sort keys for any dewey call numbers
+UPDATE asset.call_number SET id = id WHERE label_class = 2;
+
+-- Reindex records that have more than just a single ISSN
+-- to ensure that spaces are maintained
+SELECT metabib.reingest_metabib_field_entries(source)
+  FROM metabib.identifier_field_entry mife
+    INNER JOIN config.metabib_field cmf ON cmf.id = mife.field
+  WHERE cmf.field_class = 'identifier'
+    AND cmf.name = 'issn'
+    AND char_length(value) > 9
+;
+
+-- Fix sorting by pubdate by ensuring migrated records
+-- have a pubdate attribute in metabib.record_attr.attrs
+UPDATE metabib.record_attr
+   SET attrs = attrs || ('pubdate' => (attrs->'date1'))
+   WHERE defined(attrs, 'pubdate') IS FALSE
+   AND defined(attrs, 'date1') IS TRUE;
+
