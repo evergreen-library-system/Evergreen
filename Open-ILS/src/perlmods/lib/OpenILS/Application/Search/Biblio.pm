@@ -2637,7 +2637,8 @@ sub rec_hold_parts {
                     },
                     distinct => 1,
                 }
-            }
+            },
+            deleted => 'f'
         },
         order_by =>[{class=>'bmp', field=>'label_sortkey'}]
     };

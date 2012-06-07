@@ -191,7 +191,7 @@ function(egCore , $q) {
             return $q.when(service.bmp_parts[rec]);
 
         return egCore.pcrud.search('bmp',
-            {record : rec},
+            {record : rec, deleted : 'f'},
             null, {atomic : true}
         ).then(function(list) {
             service.bmp_parts[rec] = list;

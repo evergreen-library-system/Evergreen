@@ -37,7 +37,7 @@
     openils.Util.addOnLoad( function() {
         monoPartGrid.overrideEditWidgets.record = new dijit.form.TextBox({"disabled": true});
         monoPartGrid.overrideEditWidgets.record.shove = { create : cgi.param('r') };
-        monoPartGrid.loadAll({order_by : [{class : 'bmp', field : 'label_sortkey'}]}, {record : cgi.param('r')});
+        monoPartGrid.loadAll({order_by : [{class : 'bmp', field : 'label_sortkey'}]}, {deleted : 'f', record : cgi.param('r')});
     });
 </script>
 [% END %]

@@ -98,6 +98,7 @@ CREATE TABLE biblio.monograph_part (
     record          BIGINT  NOT NULL REFERENCES biblio.record_entry (id),
     label           TEXT    NOT NULL,
     label_sortkey   TEXT    NOT NULL,
+    deleted         BOOL    NOT NULL DEFAULT FALSE,
     CONSTRAINT record_label_unique UNIQUE (record,label)
 );
 
