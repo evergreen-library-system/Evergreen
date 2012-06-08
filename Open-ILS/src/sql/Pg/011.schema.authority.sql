@@ -47,7 +47,7 @@ CREATE TABLE authority.control_set_bib_field (
 
 CREATE TABLE authority.thesaurus (
     code        TEXT    PRIMARY KEY,     -- MARC21 thesaurus code
-    control_set INT     NOT NULL REFERENCES authority.control_set (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    control_set INT     REFERENCES authority.control_set (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     name        TEXT    NOT NULL UNIQUE, -- i18n
     description TEXT                     -- i18n
 );
