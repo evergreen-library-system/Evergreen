@@ -207,6 +207,10 @@ function performRollover(args) {
                     }
                 )
 
+                // add the new, rolled funds to the cache.  Note that in dry-run 
+                // mode, these are ephemeral and no longer exist on the server.
+                cachedFunds = cachedFunds.concat(rolloverResponses);
+
                 dojo.byId('acq-fund-list-rollover-summary-header').innerHTML = 
                     dojo.string.substitute(
                         localeStrings.FUND_LIST_ROLLOVER_SUMMARY,
