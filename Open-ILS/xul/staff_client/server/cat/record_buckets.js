@@ -296,7 +296,7 @@ cat.record_buckets.prototype = {
                                         util.functional.filter_list(
                                             buckets.biblio,
                                             function(o) {
-                                                return o.btype() == 'staff_client';
+                                                return (o.btype() == 'staff_client' || o.btype() == 'vandelay_queue');
                                             }
                                         ),
                                         function(o) {
