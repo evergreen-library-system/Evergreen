@@ -48,3 +48,5 @@ table.dijitTooltipTable { border-collapse: separate; }
 .queue-pager-span { padding-right: 5px; margin-right: 5px; border-right: 2px solid #e8e1cf; }
 #vl-queue-paging-table td { padding-bottom: 0px; }
 #vl-file-label { margin-right: 10px; }
+
+#vlQueueSelectList td { padding-top: 5px; padding-bottom: 5px; }
