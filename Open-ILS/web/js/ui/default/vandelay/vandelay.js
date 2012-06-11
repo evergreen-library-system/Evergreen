@@ -498,7 +498,9 @@ function retrieveQueuedRecords(type, queueId, onload, doExport) {
     selectableGridRecords = {};
 
     if(!type) type = currentType;
+    else currentType = type;
     if(!queueId) queueId = currentQueueId;
+    else currentQueueId = queueId;
     if(!onload) onload = handleRetrieveRecords;
 
     var method = 'open-ils.vandelay.'+type+'_queue.records.retrieve';
