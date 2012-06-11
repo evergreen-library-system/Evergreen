@@ -42,8 +42,7 @@ if (!dojo._hasResource['openils.widget.PCrudFilterDialog']) {
 
     dojo.requireLocalization("openils.widget", "PCrudFilterDialog");
 
-    /* XXX namespace pollution! arg! Fix this whole module sometime. */
-    var localeStrings = dojo.i18n.getLocalization(
+    var pcFilterLocaleStrings = dojo.i18n.getLocalization(
         "openils.widget", "PCrudFilterDialog"
     );
 
@@ -59,65 +58,65 @@ if (!dojo._hasResource['openils.widget.PCrudFilterDialog']) {
                 "items": [
                     {
                         "name": "=",
-                        "label": localeStrings.OPERATOR_EQ,
+                        "label": pcFilterLocaleStrings.OPERATOR_EQ,
                         "param_count": 1,
                         "minimal": true,
                         "strict": true
                     }, {
                         "name": "!=",
-                        "label": localeStrings.OPERATOR_NE,
+                        "label": pcFilterLocaleStrings.OPERATOR_NE,
                         "param_count": 1,
                         "minimal": true,
                         "strict": true
                     }, {
                         "name": "null",
-                        "label": localeStrings.OPERATOR_IS_NULL,
+                        "label": pcFilterLocaleStrings.OPERATOR_IS_NULL,
                         "param_count": 0,
                         "minimal": true,
                         "strict": true
                     }, {
                         "name": "not null",
-                        "label": localeStrings.OPERATOR_IS_NOT_NULL,
+                        "label": pcFilterLocaleStrings.OPERATOR_IS_NOT_NULL,
                         "param_count": 0,
                         "minimal": true,
                         "strict": true
                     }, {
                         "name": ">",
-                        "label": localeStrings.OPERATOR_GT,
+                        "label": pcFilterLocaleStrings.OPERATOR_GT,
                         "param_count": 1,
                         "strict": true
                     }, {
                         "name": "<",
-                        "label": localeStrings.OPERATOR_LT,
+                        "label": pcFilterLocaleStrings.OPERATOR_LT,
                         "param_count": 1,
                         "strict": true
                     }, {
                         "name": ">=",
-                        "label": localeStrings.OPERATOR_GTE,
+                        "label": pcFilterLocaleStrings.OPERATOR_GTE,
                         "param_count": 1,
                         "strict": true
                     }, {
                         "name": "<=",
-                        "label": localeStrings.OPERATOR_LTE,
+                        "label": pcFilterLocaleStrings.OPERATOR_LTE,
                         "param_count": 1,
                         "strict": true
                     }, {
                         "name": "between",
-                        "label": localeStrings.OPERATOR_BETWEEN,
+                        "label": pcFilterLocaleStrings.OPERATOR_BETWEEN,
                         "param_count": 2,
                         "strict": true
                     }, {
                         "name": "not between",
-                        "label": localeStrings.OPERATOR_NOT_BETWEEN,
+                        "label": pcFilterLocaleStrings.OPERATOR_NOT_BETWEEN,
                         "param_count": 2,
                         "strict": true
                     }, {
                         "name": "like",
-                        "label": localeStrings.OPERATOR_LIKE,
+                        "label": pcFilterLocaleStrings.OPERATOR_LIKE,
                         "param_count": 1
                     }, {
                         "name": "not like",
-                        "label": localeStrings.OPERATOR_NOT_LIKE,
+                        "label": pcFilterLocaleStrings.OPERATOR_NOT_LIKE,
                         "param_count": 1
                     }
                 ]
@@ -197,7 +196,7 @@ if (!dojo._hasResource['openils.widget.PCrudFilterDialog']) {
             dojo.create(
                 "td", {
                     "colspan": 4,
-                    "innerHTML": localeStrings.EMPTY_CASE
+                    "innerHTML": pcFilterLocaleStrings.EMPTY_CASE
                 }, tr
             );
 
@@ -516,7 +515,7 @@ if (!dojo._hasResource['openils.widget.PCrudFilterDialog']) {
             constructor : function(args) {
                 for(var k in args)
                     this[k] = args[k];
-                this.title = this.title || localeStrings.DEFAULT_DIALOG_TITLE;
+                this.title = this.title || pcFilterLocaleStrings.DEFAULT_DIALOG_TITLE;
                 this.widgetIndex = 0;
                 this.widgetCache = {};
             },
@@ -532,7 +531,7 @@ if (!dojo._hasResource['openils.widget.PCrudFilterDialog']) {
 
                 new dijit.form.Button(
                     {
-                        "label": localeStrings.ADD_ROW,
+                        "label": pcFilterLocaleStrings.ADD_ROW,
                         "scrollOnFocus": false, /* almost always better */
                         "onClick": function() {
                             self.filter_row_manager.add_row();
@@ -542,7 +541,7 @@ if (!dojo._hasResource['openils.widget.PCrudFilterDialog']) {
 
                 new dijit.form.Button(
                     {
-                        "label": localeStrings.APPLY,
+                        "label": pcFilterLocaleStrings.APPLY,
                         "scrollOnFocus": false,
                         "onClick": function() {
                             if (self.onApply)
@@ -554,7 +553,7 @@ if (!dojo._hasResource['openils.widget.PCrudFilterDialog']) {
 
                 new dijit.form.Button(
                     {
-                        "label": localeStrings.CANCEL,
+                        "label": pcFilterLocaleStrings.CANCEL,
                         "scrollOnFocus": false,
                         "onClick": function() {
                             if (self.onCancel)
