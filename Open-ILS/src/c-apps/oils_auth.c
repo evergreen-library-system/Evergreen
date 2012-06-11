@@ -642,7 +642,20 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 		}
 	}
 
-	if(!userObj) {
+	int     barred = 0, deleted = 0;
+	char   *barred_str, *deleted_str;
+
+	if(userObj) {
+		barred_str = oilsFMGetString( userObj, "barred" );
+		barred = oilsUtilsIsDBTrue( barred_str );
+		free( barred_str );
+
+		deleted_str = oilsFMGetString( userObj, "deleted" );
+		deleted = oilsUtilsIsDBTrue( deleted_str );
+		free( deleted_str );
+	}
+
+	if(!userObj || barred || deleted) {
 		response = oilsNewEvent( OSRF_LOG_MARK, OILS_EVENT_AUTH_FAILED );
 		osrfLogInfo(OSRF_LOG_MARK,  "failed login: username=%s, barcode=%s, workstation=%s",
 				uname, (barcode ? barcode : "(none)"), ws );
@@ -651,7 +664,8 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 		return 0;           // No such user
 	}
 
-	// Such a user exists.  Now see if he or she has the right credentials.
+	// Such a user exists and isn't barred or deleted.
+	// Now see if he or she has the right credentials.
 	int passOK = -1;
 	if(uname)
 		passOK = oilsAuthVerifyPassword( ctx, userObj, uname, password );
