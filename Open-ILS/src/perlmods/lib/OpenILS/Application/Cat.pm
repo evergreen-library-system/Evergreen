@@ -158,7 +158,7 @@ sub biblio_record_replace_marc  {
     my( $self, $conn, $auth, $recid, $newxml, $source ) = @_;
     my $e = new_editor(authtoken=>$auth, xact=>1);
     return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('CREATE_MARC', $e->requestor->ws_ou);
+    return $e->die_event unless $e->allowed('UPDATE_MARC', $e->requestor->ws_ou);
 
     my $fix_tcn = $self->api_name =~ /replace/o;
     my $override = $self->api_name =~ /override/o;
