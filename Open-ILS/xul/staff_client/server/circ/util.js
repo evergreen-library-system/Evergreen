@@ -1203,13 +1203,26 @@ circ.util.columns = function(modify,params) {
             'id' : 'title',
             'label' : document.getElementById('commonStrings').getString('staff.mvr_label_title'),
             'flex' : 2,
-            'sort_type' : 'title',
+//            'sort_type' : 'title',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) {
                 if (my.mvr) {
                     if (my.mvr.doc_id() == -1) {
                         return my.acp.dummy_title();
+                    } else {
+                        return my.mvr.title();
+                    }
+                } else {
+                    return my.acp.dummy_title();
+                }
+            },
+            'sort_value' : function(my) {
+                if (my.mvr) {
+                    if (my.mvr.doc_id() == -1) {
+                        return my.acp.dummy_title();
+                    } else if (my.mvr.titlesort()) {
+                        return my.mvr.titlesort();
                     } else {
                         return my.mvr.title();
                     }
@@ -1626,6 +1639,19 @@ circ.util.transit_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) {
                 try { return my.mvr.title(); }
                 catch(E) { return my.acp.dummy_title(); }
+            },
+            'sort_value' : function(my) {
+                if (my.mvr) {
+                    if (my.mvr.doc_id() == -1) {
+                        return my.acp.dummy_title();
+                    } else if (my.mvr.titlesort()) {
+                        return my.mvr.titlesort();
+                    } else {
+                        return my.mvr.title();
+                    }
+                } else {
+                    return my.acp.dummy_title();
+                }
             }
         },
         {
@@ -2269,12 +2295,23 @@ circ.util.hold_columns = function(modify,params) {
             'id' : 'title',
             'label' : document.getElementById('commonStrings').getString('staff.mvr_label_title'),
             'flex' : 1,
-            'sort_type' : 'title',
+//            'sort_type' : 'title',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) {
                 if (my.mvr) {
                     return my.mvr.title();
+                } else {
+                    return document.getElementById('circStrings').getString('staff.circ.utils.title.none');
+                }
+            },
+            'sort_value' : function(my) {
+                if (my.mvr) {
+                    if (my.mvr.titlesort()) {
+                        return my.mvr.titlesort();
+                    } else {
+                        return my.mvr.title();
+                    }
                 } else {
                     return document.getElementById('circStrings').getString('staff.circ.utils.title.none');
                 }
