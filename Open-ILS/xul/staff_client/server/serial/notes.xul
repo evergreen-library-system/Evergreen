@@ -77,7 +77,11 @@
 		}
 
 		function retrieve_notes() {
-			g.notes = g.network.simple_request('FM_'+g.function_type+'_RETRIEVE_ALL',[ { 'authtoken' : ses(), 'object_id' : g.object_id } ]).reverse();
+			g.notes = g.network.simple_request(
+				'FM_' + g.function_type + '_RETRIEVE_ALL', [
+					{ 'authtoken' : ses(), 'object_id' : g.object_id }
+				]
+			);
 		}
 
 		function apply(node,field,value) {
