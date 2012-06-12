@@ -124,14 +124,14 @@
                     [%- INCLUDE "opac/parts/preserve_params.tt2" params=['loc', 'query', 'qtype']; %]
                     [% INCLUDE "opac/parts/filtersort.tt2"
                         value=CGI.param('sort') mode='bookbag' %]
-                    <input type="hidden" name="id"
+                    <input type="hidden" name="bbid"
                         value="[% CGI.param('bbid') | html %]" />
                     <input type="submit" value="[% l('Sort') %]" />
                 </form>
             </div>
             <div class="meta">
                 <form method="POST">
-                    <input type="hidden" name="id" value="[% bbag.id %]" />
+                    <input type="hidden" name="bbid" value="[% bbag.id %]" />
                     <input type="hidden" name="action" value="editmeta" />
                     [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
                     <table id="bbag-name-desc-form">
@@ -241,7 +241,7 @@
                     <td colspan="3"><!-- All space left of notes column --></td>
                     <td class="save-notes">
                         [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
-                        <input type="hidden" name="id" value="[% CGI.param('bbid') | html %]" />
+                        <input type="hidden" name="bbid" value="[% CGI.param('bbid') | html %]" />
                         <input type="submit" name="save_notes" value="[% l('Save Notes') %]" />
                     </td>
                 </tr>
