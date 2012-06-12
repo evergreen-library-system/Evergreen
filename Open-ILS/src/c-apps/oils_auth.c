@@ -576,6 +576,12 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 
 	const char* ws = (workstation) ? workstation : "";
 
+	/* Use __FILE__, harmless_line_number for creating
+	 * OILS_EVENT_AUTH_FAILED events (instead of OSRF_LOG_MARK) to avoid
+	 * giving away information about why an authentication attempt failed.
+	 */
+	int harmless_line_number = __LINE__;
+
 	if( !type )
 		 type = OILS_AUTH_STAFF;
 
@@ -643,7 +649,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 	}
 
 	if(!userObj || barred || deleted) {
-		response = oilsNewEvent( OSRF_LOG_MARK, OILS_EVENT_AUTH_FAILED );
+		response = oilsNewEvent( __FILE__, harmless_line_number, OILS_EVENT_AUTH_FAILED );
 		osrfLogInfo(OSRF_LOG_MARK,  "failed login: username=%s, barcode=%s, workstation=%s",
 				uname, (barcode ? barcode : "(none)"), ws );
 		osrfAppRespondComplete( ctx, oilsEventToJSON(response) );
@@ -670,7 +676,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 		if( passOK )
 			response = oilsNewEvent( OSRF_LOG_MARK, "PATRON_INACTIVE" );
 		else
-			response = oilsNewEvent( OSRF_LOG_MARK, OILS_EVENT_AUTH_FAILED );
+			response = oilsNewEvent( __FILE__, harmless_line_number, OILS_EVENT_AUTH_FAILED );
 
 		osrfAppRespondComplete( ctx, oilsEventToJSON(response) );
 		oilsEventFree(response);
@@ -725,7 +731,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 		response = oilsAuthHandleLoginOK( userObj, uname, type, orgloc, workstation );
 
 	} else {
-		response = oilsNewEvent( OSRF_LOG_MARK, OILS_EVENT_AUTH_FAILED );
+		response = oilsNewEvent( __FILE__, harmless_line_number, OILS_EVENT_AUTH_FAILED );
 		osrfLogInfo(OSRF_LOG_MARK,  "failed login: username=%s, barcode=%s, workstation=%s",
 				uname, (barcode ? barcode : "(none)"), ws );
 	}
