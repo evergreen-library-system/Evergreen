@@ -221,7 +221,7 @@ sub abort_transit {
 
 sub __abort_transit {
 
-	my( $e, $transit, $copy, $no_reset_hold ) = @_;
+	my( $e, $transit, $copy, $no_reset_hold, $no_commit ) = @_;
 
 	my $evt;
 	my $hold;
@@ -253,7 +253,7 @@ sub __abort_transit {
 	return $e->die_event unless $e->delete_action_transit_copy($transit);
 	return $e->die_event unless $e->update_asset_copy($copy);
 
-	$e->commit;
+	$e->commit unless $no_commit;
 
 	# if this is a hold transit, un-capture/un-target the hold
 	if($holdtransit and !$no_reset_hold) {
