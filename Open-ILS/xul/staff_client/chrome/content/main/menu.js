@@ -1732,6 +1732,14 @@ main.menu.prototype = {
                     )
                 );
 
+                x.appendChild(
+                    create_menuitem(
+                        offlineStrings.getString('staff.main.button_bar.default'),
+                        'default',
+                        true
+                    )
+                );
+
                 for (var i = 0; i < this.data.list.atb.length; i++) {
                     var def = this.data.list.atb[i];
                     x.appendChild(
@@ -1778,6 +1786,7 @@ main.menu.prototype = {
                 var x = document.getElementById('main.menu.admin.client.toolbars.current.popup');
                 if (x) {
                     var selectitems = x.getElementsByAttribute('value',button_bar);
+                    if(selectitems.length < 1) selecteditems = x.getElementsByAttribute('value','default');
                     if(selectitems.length > 0) selectitems[0].setAttribute('checked','true');
                 }
             }
