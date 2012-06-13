@@ -1861,7 +1861,7 @@ sub _reset_hold {
 				my $trans = $e->retrieve_action_transit_copy($transid);
 				if( $trans ) {
 					$logger->info("Aborting transit [$transid] on hold [$hid] reset...");
-					my $evt = OpenILS::Application::Circ::Transit::__abort_transit($e, $trans, $copy, 1);
+					my $evt = OpenILS::Application::Circ::Transit::__abort_transit($e, $trans, $copy, 1, 1);
 					$logger->info("Transit abort completed with result $evt");
 					unless ("$evt" eq 1) {
                         $e->rollback;
