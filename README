@@ -1,5 +1,5 @@
-Installing the Evergreen server
-===============================
+Installing the Evergreen 2.2.0
+==============================
 :toc:
 :numbered:
 
@@ -163,7 +163,7 @@ Installation instructions
 +
 [source, bash]
 ------------------------------------------------------------------------------
-make STAFF_CLIENT_STAMP_ID=rel_2_2 install
+make STAFF_CLIENT_STAMP_ID=rel_2_2_0 install
 ------------------------------------------------------------------------------
 +
 2. The server portion of the staff client expects `http://hostname/xul/server`
