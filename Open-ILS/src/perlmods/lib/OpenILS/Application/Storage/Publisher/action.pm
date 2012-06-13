@@ -1245,17 +1245,18 @@ sub new_hold_copy_targeter {
 				push @$all_copies, $_cp if $_cp;
 			}
 
-            # Force and recall holds bypass pretty much everything
-            if ($hold->hold_type ne 'R' && $hold->hold_type ne 'F') {
-    			# trim unholdables
-	    		@$all_copies = grep {	isTrue($_->status->holdable) && 
-		    				isTrue($_->location->holdable) && 
-			    			isTrue($_->holdable) &&
-				    		!isTrue($_->deleted) &&
-					    	(isTrue($hold->mint_condition) ? isTrue($_->mint_condition) : 1) &&
-						    ($hold->hold_type ne 'P' ? $_->part_maps->count == 0 : 1)
-    					} @$all_copies;
-            }
+			# Force and recall holds bypass pretty much everything
+			if ($hold->hold_type ne 'R' && $hold->hold_type ne 'F') {
+				# trim unholdables
+				@$all_copies = grep {	isTrue($_->status->holdable) && 
+							isTrue($_->location->holdable) && 
+							isTrue($_->holdable) &&
+							!isTrue($_->deleted) &&
+							(isTrue($hold->mint_condition) ? isTrue($_->mint_condition) : 1) &&
+							( ($hold->hold_type ne 'C' && $hold->hold_type ne 'I') ? # Copy-ish holds can target if they slipped through
+								($hold->hold_type ne 'P' ? $_->part_maps->count == 0 : 1) : 1 )
+						} @$all_copies;
+			}
 
 			# let 'em know we're still working
 			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
