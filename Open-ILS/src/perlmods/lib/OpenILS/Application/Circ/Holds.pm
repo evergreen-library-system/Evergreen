@@ -2342,7 +2342,7 @@ sub do_possibility_checks {
 	} elsif( $hold_type eq OILS_HOLD_TYPE_TITLE ) {
 
 		return _check_title_hold_is_possible(
-			$titleid, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou, $oargs
+			$titleid, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou, undef, $oargs
         );
 
 	} elsif( $hold_type eq OILS_HOLD_TYPE_ISSUANCE ) {
