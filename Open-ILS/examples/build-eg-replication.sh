@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Copyright (C) 2009 Equinox Software, Inc.
 # Author: Mike Rylander <miker@esilibrary.com>
@@ -52,7 +52,7 @@ fi
 
 if [ "_$TABLES" == "_" ]; then
   TABLES=$(psql -tc "
-    select array_to_string(array_accum(table_schema || '.' || table_name),' ')
+    select array_to_string(array_agg(table_schema || '.' || table_name),' ')
       from information_schema.tables
       where table_schema in (
         'acq', 'action', 'action_trigger', 'actor', 'asset', 'asset_hist', 'auditor',
@@ -65,7 +65,7 @@ if [ "_$TABLES" == "_" ]; then
 fi
 
 if [ "_$SEQUENCES" == "_" ]; then
-  SEQUENCES=$(psql -tc "select array_to_string(array_accum(schemaname || '.' || relname),' ') from pg_statio_user_sequences;")
+  SEQUENCES=$(psql -tc "select array_to_string(array_agg(schemaname || '.' || relname),' ') from pg_statio_user_sequences;")
 fi
 
 
