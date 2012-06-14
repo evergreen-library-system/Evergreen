@@ -159,6 +159,10 @@ sub load {
     # ----------------------------------------------------------------
     return $self->redirect_auth unless $self->editor->requestor;
 
+    # Don't cache anything requiring auth for security reasons
+    $self->apache->headers_out->add("cache-control" => "no-store, no-cache, must-revalidate");
+    $self->apache->headers_out->add("expires" => "-1");
+
     return $self->load_email_record if $path =~ m|opac/record/email|;
 
     return $self->load_place_hold if $path =~ m|opac/place_hold|;
