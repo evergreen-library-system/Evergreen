@@ -157,7 +157,7 @@ DECLARE
     heading_text    TEXT;
     tmp_text        TEXT;
     first_sf        BOOL;
-    auth_id         INT DEFAULT oils_xpath_string('//*[@tag="901"]/*[local-name()="subfield" and @code="c"]', marcxml)::INT;
+    auth_id         INT DEFAULT COALESCE(NULLIF(oils_xpath_string('//*[@tag="901"]/*[local-name()="subfield" and @code="c"]', marcxml), ''), '0')::INT; 
 BEGIN
     SELECT control_set INTO cset FROM authority.record_entry WHERE id = auth_id;
 
