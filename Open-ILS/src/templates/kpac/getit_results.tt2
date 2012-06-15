@@ -30,7 +30,7 @@
         <p>
     [% ELSIF CGI.param('hold') %]
         [% lib_html = ctx.get_aou(ctx.hold.pickup_lib).name | html %]
-        <h2 class="sub_header2">[% l('Hold Successfull!') %]</h2>
+        <h2 class="sub_header2">[% l('Hold Successful!') %]</h2>
         <p>
         [% |l(title_html, lib_html) %]
         Your request for <a href="[% mkurl(ctx.kpac_root _ '/record/' _ ctx.bre_id, {}, kill_params) %]">[_1]</a> was successful.<br/>
