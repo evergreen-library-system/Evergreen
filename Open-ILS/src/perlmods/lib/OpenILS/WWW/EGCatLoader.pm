@@ -349,14 +349,16 @@ sub load_login {
     # initial log form only
     return Apache2::Const::OK unless $username and $password;
 
-	my $seed = $U->simplereq(
-        'open-ils.auth', 
-		'open-ils.auth.authenticate.init', $username);
+    my $auth_proxy_enabled = 0; # default false
+    try { # if the service is not running, just let this fail silently
+        $auth_proxy_enabled = $U->simplereq(
+            'open-ils.auth_proxy',
+            'open-ils.auth_proxy.enabled');
+    } catch Error with {};
 
     my $args = {	
-        username => $username, 
-        password => md5_hex($seed . md5_hex($password)), 
         type => ($persist) ? 'persist' : 'opac',
+        org => $org_unit,
         agent => 'opac'
     };
 
@@ -365,11 +367,26 @@ sub load_login {
     # To avoid surprises, default to "Barcodes start with digits"
     $bc_regex = '^\d' unless $bc_regex;
 
-    $args->{barcode} = delete $args->{username} 
-        if $bc_regex and ($username =~ /$bc_regex/);
+    if ($bc_regex and ($username =~ /$bc_regex/)) {
+        $args->{barcode} = $username;
+    } else {
+        $args->{username} = $username;
+    }
 
-	my $response = $U->simplereq(
-        'open-ils.auth', 'open-ils.auth.authenticate.complete', $args);
+    my $response;
+    if (!$auth_proxy_enabled) {
+        my $seed = $U->simplereq(
+            'open-ils.auth',
+            'open-ils.auth.authenticate.init', $username);
+        $args->{password} = md5_hex($seed . md5_hex($password));
+	    $response = $U->simplereq(
+            'open-ils.auth', 'open-ils.auth.authenticate.complete', $args);
+    } else {
+        $args->{password} = $password;
+	    $response = $U->simplereq(
+            'open-ils.auth_proxy',
+            'open-ils.auth_proxy.login', $args);
+    }
 
     if($U->event_code($response)) { 
         # login failed, report the reason to the template
