@@ -14,13 +14,24 @@
         FOR isbn IN xml.findnodes('//*[@tag="020"]/*[@code="a"]');
             args.isbns.push(isbn.textContent);
         END;
+
         args.upcs = [];
         FOR upc IN xml.findnodes('//*[@tag="024"]/*[@code="a"]');
             args.upcs.push(upc.textContent);
         END;
         args.upc = args.upcs.0; # use first UPC as the default
-        args.issn = xml.findnodes('//*[@tag="022"]/*[@code="a"]').textContent;
-        args.author = xml.findnodes('//*[@tag="100"]/*[@code="a"]').textContent;
+
+        args.issns = [];
+        FOR sub IN xml.findnodes('//*[@tag="022"]/*[@code="a"]');
+            args.issns.push(sub.textContent);
+        END;
+        args.issn = (args.issns.size) ? args.issn.0 : '';
+
+        args.authors = [];
+        FOR sub IN xml.findnodes('//*[@tag="100"]/*[@code="a"]');
+            args.authors.push(sub.textContent);
+        END;
+        args.author = (args.authors.size) ? args.authors.0 : '';
 
         # Include subfields 'abnp' to generate a more comprehensive title display in search results
         titresults = xml.findnodes('//*[@tag="245"]/*[@code="a" or @code="b" or @code="n" or @code="p"]');
@@ -36,23 +47,55 @@
             FOR sub IN titsubs; titsubs_content.push(sub.textContent); END;
         args.title_extended = titsubs_content.join(" ");
 
-        args.publisher = xml.findnodes('//*[@tag="260"]/*[@code="b"]').textContent;
-        args.pubdate = xml.findnodes('//*[@tag="260"]/*[@code="c"]').textContent;
-        args.summary = xml.findnodes('//*[@tag="520"]/*[@code="a"]').textContent;
-        args.edition = xml.findnodes('//*[@tag="250"]/*[@code="a"]').textContent ||
-            xml.findnodes('//*[@tag="534"]/*[@code="b"]').textContent ||
-            xml.findnodes('//*[@tag="775"]/*[@code="b"]').textContent;
-        phys = xml.findnodes(
+        args.publishers = [];
+        FOR sub IN xml.findnodes('//*[@tag="260"]/*[@code="b"]');
+            args.publishers.push(sub.textContent);
+        END;
+        args.publisher = (args.publishers.size) ? args.publishers.0 : '';
+
+        args.pubdates = [];
+        FOR sub IN xml.findnodes('//*[@tag="260"]/*[@code="c"]');
+            args.pubdates.push(sub.textContent);
+        END;
+        args.pubdate = (args.pubdates.size) ? args.pubdates.0 : '';
+
+        args.summaries = [];
+        FOR sub IN xml.findnodes('//*[@tag="520"]/*[@code="a"]');
+            args.summaries.push(sub.textContent);
+        END;
+        args.summary = (args.summary.size) ? args.summary.0 : '';
+
+        args.editions = [];
+        ed_hunt = xml.findnodes('//*[@tag="250"]/*[@code="a"]') &&
+            xml.findnodes('//*[@tag="534"]/*[@code="b"]') &&
+            xml.findnodes('//*[@tag="775"]/*[@code="b"]');
+        FOR sub IN ed_hunt;
+            args.editions.push(sub.textContent);
+        END;
+        args.edition = (args.editions.size) ? args.editions.0 : '';
+
+        phys_content = [];
+        FOR sub IN xml.findnodes(
             '//*[@tag="300"]/*[@code="a" or @code="b" or @code="c" or @code="e"]'
         );
-        phys_content = [];
-        FOR p IN phys; phys_content.push(p.textContent); END;
+            phys_content.push(sub.textContent);
+        END;
         args.phys_desc = phys_content.join("");
 
-        args.contents = xml.findnodes('//*[@tag="505"]').textContent;
+        args.contents_list = [];
+        FOR sub IN xml.findnodes('//*[@tag="505"]');
+            args.contents_list.push(sub.textContent);
+        END;
+        args.contents = args.contents_list.join(" ");
+        args.content = (args.contents.size) ? args.contents.0 : '';
 
         # MARC Callnumber
-        args.marc_cn = xml.findnodes('//*[@tag="092" or @tag="099"]/*').textContent;
+        args.marc_cns = [];
+        FOR sub IN xml.findnodes('//*[@tag="092" or @tag="099"]/*');
+            args.marc_cns.push(sub.textContent);
+        END;
+        args.marc_cn = (args.marc_cns.size ) ? args.marc_cns.0 : '';
+            
 
         # clean up the ISBN
         args.isbn_clean = args.isbns.0.replace('\ .*', '');
