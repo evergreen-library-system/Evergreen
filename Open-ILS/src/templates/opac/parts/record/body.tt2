@@ -4,49 +4,12 @@
     stop_parms = ['expand','cnoffset'];
 %]
 <div id='canvas_main' class='canvas' itemscope itemtype='[% args.schema.itemtype %]'>
-
-    [% IF ctx.search_result_index >= 0 %]
-    <div id="rdetail_header">
-        <span id="rdetail_results">
-            <a href='[% mkurl(ctx.opac_root _ '/results', {}, stop_parms); %]'>[% l('&#9668; Search Results') %]</a>
-            <span id="rdetail_result_count">
-                [% l('Showing Item [_1] of [_2]', ctx.search_result_index + 1, ctx.hit_count) %]
-            </span>
-        </span>
-        [%- INCLUDE "opac/parts/pref_lib_display.tt2" %]
-        <div id="rdetail_result_nav">
-            [%
-                IF ctx.prev_search_record;
-                    prev_args = {};
-                    IF ctx.search_page > 0 AND 
-                            ctx.search_result_index % ((ctx.page_size * ctx.search_page)) == 0; # first record in the page
-                        prev_args.page = ctx.search_page - 1;
-                    END;
-                    ctx.prev_rec_url = mkurl(ctx.prev_search_record, prev_args, stop_parms);
-            %]
-            <a class='np_nav_link classic_link' title='[% l("Previous Record") %]'
-                href='[% ctx.prev_rec_url %]'>&#9668; [% l('Previous') %]</a>
-            [% END %]
-
-            [% 
-                IF ctx.next_search_record;
-                    next_args = {};
-                    IF (ctx.page_size * (ctx.search_page + 1)) == ctx.search_result_index + 1;
-                        next_args.page = ctx.search_page + 1;
-                    END;
-                    ctx.next_rec_url = mkurl(ctx.next_search_record, next_args, stop_parms);
-            %]
-            <a class='np_nav_link classic_link' title='[% l("Next Record") %]'
-                href='[% ctx.next_rec_url %]'>[% l('Next') %] &#9658;</a>
-            [% END %]
-
-        </div>
-    </div>
-    [% END %]
+    [%- INCLUDE "opac/parts/record/navigation.tt2" %]
     [%- IF ctx.bib_is_dead %]
     <div id='rdetail_deleted_exp'>
         [% l("This record has been deleted from the database.  We recommend that you remove this title from any bookbags it may have been added to.") %]
     </div>
     [%- END %]
     [% INCLUDE "opac/parts/record/summary.tt2" %]
+    [%- INCLUDE "opac/parts/record/navigation.tt2" %]
 </div>
