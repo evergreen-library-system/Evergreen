@@ -335,26 +335,26 @@ span.dash_divider {
     color: #666;
 }
 
-#rdetail_header {
+.rdetail_header {
     padding: 5px 7px 6px 0px;
     margin-left: 1em;
     border-bottom: 1px dotted #ccc;
 }
 
-#rdetail_results a {
+.rdetail_results a {
     color:#007a54;
     font-weight:bold;
     font-size: 1.2em;
 }
 
-#rdetail_result_count {
+.rdetail_result_count {
     color: black;
     font-weight: normal;
     padding-left: 1em;
     display: inline-block;
 }
 
-#rdetail_result_nav {
+.rdetail_result_nav {
     font-weight:normal;
     padding-left: 1em;
     display: inline-block;
