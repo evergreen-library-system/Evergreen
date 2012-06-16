@@ -80,7 +80,7 @@
         );
             phys_content.push(sub.textContent);
         END;
-        args.phys_desc = phys_content.join("");
+        args.phys_desc = phys_content.join(" ");
 
         args.contents_list = [];
         FOR sub IN xml.findnodes('//*[@tag="505"]');
