@@ -9080,6 +9080,16 @@ INSERT INTO config.global_flag (name, label, value, enabled)
         TRUE
     );
 
+INSERT INTO config.global_flag (name, label)
+    VALUES (
+        'history.circ.rentention_uses_last_finished',
+        oils_i18n_gettext(
+            'history.circ.retention_uses_last_finished',
+            'Historical Circulations use most recent xact_finish date instead of last circ''s.',
+            'cgf',
+            'label'
+        )
+    );
 
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
     VALUES (

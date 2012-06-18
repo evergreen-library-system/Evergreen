@@ -977,6 +977,7 @@ DECLARE
     usr_keep_age    actor.usr_setting%ROWTYPE;
     usr_keep_start  actor.usr_setting%ROWTYPE;
     org_keep_age    INTERVAL;
+    org_use_last    BOOL = false;
     org_keep_count  INT;
 
     keep_age        INTERVAL;
@@ -988,6 +989,8 @@ DECLARE
     purge_position  INT;
     count_purged    INT;
     num_incomplete  INT;
+
+    last_finished   TIMESTAMP WITH TIME ZONE;
 BEGIN
 
     count_purged := 0;
@@ -998,6 +1001,8 @@ BEGIN
     IF org_keep_count IS NULL THEN
         RETURN count_purged; -- Gimme a count to keep, or I keep them all, forever
     END IF;
+
+    SELECT enabled INTO org_use_last FROM config.global_flag WHERE name = 'history.circ.retention_uses_last_finished';
 
     -- First, find copies with more than keep_count non-renewal circs
     FOR target_acp IN
@@ -1023,8 +1028,12 @@ BEGIN
             EXIT WHEN target_acp.total_real_circs - purge_position <= org_keep_count;
 
             SELECT * INTO circ_chain_tail FROM action.circ_chain(circ_chain_head.id) ORDER BY xact_start DESC LIMIT 1;
-            SELECT COUNT(CASE WHEN xact_finish IS NULL THEN 1 ELSE NULL END) INTO num_incomplete FROM action.circ_chain(circ_chain_head.id);
+            SELECT COUNT(CASE WHEN xact_finish IS NULL THEN 1 ELSE NULL END), MAX(xact_finish) INTO num_incomplete, last_finished FROM action.circ_chain(circ_chain_head.id);
             EXIT WHEN circ_chain_tail.xact_finish IS NULL OR num_incomplete > 0;
+
+            IF NOT org_use_last THEN
+                last_finished := circ_chain_tail.xact_finish;
+            END IF;
 
             -- Now get the user settings, if any, to block purging if the user wants to keep more circs
             usr_keep_age.value := NULL;
@@ -1045,7 +1054,7 @@ BEGIN
                 keep_age := COALESCE( org_keep_age::INTERVAL, '2000 years'::INTERVAL );
             END IF;
 
-            EXIT WHEN AGE(NOW(), circ_chain_tail.xact_finish) < keep_age;
+            EXIT WHEN AGE(NOW(), last_finished) < keep_age;
 
             -- We've passed the purging tests, purge the circ chain starting at the end
             DELETE FROM action.circulation WHERE id = circ_chain_tail.id;
