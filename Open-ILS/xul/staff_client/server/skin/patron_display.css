@@ -11,11 +11,20 @@ deck#patron_deck { border-left: solid thin black; }
 
 row#row_billing_first { padding-top: 10px; }
 row#row_billing_zip { padding-bottom: 10px; }
-.NO_PENALTIES .patronNameLarge { border: solid thick lime; padding: 10px; }
-/*
-.ONE_PENALTY .patronNameLarge { background-color: fuchsia; }
-.MULTIPLE_PENALTIES .patronNameLarge { background-color: #CC3300; }
-*/
+
+/* To keep the size consistent. Other CSS rules for this need only change border-color.
+   This helps keep things like patron search from being "jumpy" */
+.patronNameLarge { border: solid thick transparent; padding: 10px; }
+
+/* This also helps keep things from being "jumpy" by ensuring that the expired/alert/whatever
+   notice area always takes up space, even when empty. Otherwise things popping into and out of
+   existence when you select/update patrons can cause it to come and go, bouncing other parts
+   of the screen up and down. */
+#pdm2hb1a { min-height: 1.5em; }
+
+.NO_PENALTIES .patronNameLarge { border-color: lime; }
+.ONE_PENALTY .patronNameLarge { border-color: #66FFFF; }
+.MULTIPLE_PENALTIES .patronNameLarge { border-color: #FF6633; }
 
 .PATRON_HAS_BILLS .patronNameLarge { border: solid thick #FFC266; padding: 10px; }
 .PATRON_HAS_BILLS label.bill { color: #AA4400; }
