@@ -95,10 +95,10 @@ __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/request_time capture_time fulfillment_time
 				     prev_check_time expire_time requestor usr cancel_cause
 				     hold_type holdable_formats target cancel_time shelf_time
-				     phone_notify email_notify selection_depth cancel_note
+				     phone_notify email_notify sms_notify sms_carrier selection_depth cancel_note
 				     pickup_lib current_copy request_lib frozen thaw_date mint_condition
 				     fulfillment_staff fulfillment_lib selection_ou cut_in_line
-					 shelf_expire_time/);
+					 shelf_expire_time current_shelf_lib/);
 
 #-------------------------------------------------------------------------------
 
