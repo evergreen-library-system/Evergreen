@@ -784,7 +784,7 @@ CREATE TYPE action.circ_chain_summary AS (
 );
 
 
-CREATE OR REPLACE FUNCTION action.circ_chain ( ctx_circ_id INTEGER ) RETURNS SETOF action.circulation AS $$
+CREATE OR REPLACE FUNCTION action.circ_chain ( ctx_circ_id BIGINT ) RETURNS SETOF action.circulation AS $$
 DECLARE
     tmp_circ action.circulation%ROWTYPE;
     circ_0 action.circulation%ROWTYPE;
@@ -819,7 +819,7 @@ BEGIN
 END;
 $$ LANGUAGE 'plpgsql';
 
-CREATE OR REPLACE FUNCTION action.summarize_circ_chain ( ctx_circ_id INTEGER ) RETURNS action.circ_chain_summary AS $$
+CREATE OR REPLACE FUNCTION action.summarize_circ_chain ( ctx_circ_id BIGINT ) RETURNS action.circ_chain_summary AS $$
 
 DECLARE
 
