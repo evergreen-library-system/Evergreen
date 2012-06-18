@@ -987,6 +987,7 @@ DECLARE
 
     purge_position  INT;
     count_purged    INT;
+    num_incomplete  INT;
 BEGIN
 
     count_purged := 0;
@@ -1022,7 +1023,8 @@ BEGIN
             EXIT WHEN target_acp.total_real_circs - purge_position <= org_keep_count;
 
             SELECT * INTO circ_chain_tail FROM action.circ_chain(circ_chain_head.id) ORDER BY xact_start DESC LIMIT 1;
-            EXIT WHEN circ_chain_tail.xact_finish IS NULL;
+            SELECT COUNT(CASE WHEN xact_finish IS NULL THEN 1 ELSE NULL END) INTO num_incomplete FROM action.circ_chain(circ_chain_head.id);
+            EXIT WHEN circ_chain_tail.xact_finish IS NULL OR num_incomplete > 0;
 
             -- Now get the user settings, if any, to block purging if the user wants to keep more circs
             usr_keep_age.value := NULL;
