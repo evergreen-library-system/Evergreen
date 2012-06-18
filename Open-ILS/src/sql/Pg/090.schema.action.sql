@@ -978,6 +978,7 @@ DECLARE
     usr_keep_start  actor.usr_setting%ROWTYPE;
     org_keep_age    INTERVAL;
     org_use_last    BOOL = false;
+    org_age_is_min  BOOL = false;
     org_keep_count  INT;
 
     keep_age        INTERVAL;
@@ -1002,6 +1003,7 @@ BEGIN
     END IF;
 
     SELECT enabled INTO org_use_last FROM config.global_flag WHERE name = 'history.circ.retention_uses_last_finished';
+    SELECT enabled INTO org_age_is_min FROM config.global_flag WHERE name = 'history.circ.retention_age_is_min';
 
     -- First, find copies with more than keep_count non-renewal circs
     FOR target_acp IN
@@ -1051,7 +1053,11 @@ BEGIN
             ELSIF usr_keep_start.value IS NOT NULL THEN
                 keep_age := AGE(NOW(), oils_json_to_text(usr_keep_start.value)::TIMESTAMPTZ);
             ELSE
-                keep_age := COALESCE( org_keep_age::INTERVAL, '2000 years'::INTERVAL );
+                keep_age := COALESCE( org_keep_age, '2000 years'::INTERVAL );
+            END IF;
+
+            IF org_age_is_min THEN
+                keep_age := GREATEST( keep_age, org_keep_age );
             END IF;
 
             CONTINUE WHEN AGE(NOW(), last_finished) < keep_age;

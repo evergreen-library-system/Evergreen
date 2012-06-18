@@ -9089,6 +9089,14 @@ INSERT INTO config.global_flag (name, label)
             'cgf',
             'label'
         )
+    ),(
+        'history.circ.retention_age_is_min',
+        oils_i18n_gettext(
+            'history.circ.retention_age_is_min',
+            'Historical Circulations are kept for global retention age at a minimum, regardless of user preferences.',
+            'cgf',
+            'label'
+        )
     );
 
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
