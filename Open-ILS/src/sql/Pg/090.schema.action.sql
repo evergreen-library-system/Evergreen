@@ -1057,11 +1057,8 @@ BEGIN
             CONTINUE WHEN AGE(NOW(), last_finished) < keep_age;
 
             -- We've passed the purging tests, purge the circ chain starting at the end
+            -- A trigger should auto-purge the rest of the chain.
             DELETE FROM action.circulation WHERE id = circ_chain_tail.id;
-            WHILE circ_chain_tail.parent_circ IS NOT NULL LOOP
-                SELECT * INTO circ_chain_tail FROM action.circulation WHERE id = circ_chain_tail.parent_circ;
-                DELETE FROM action.circulation WHERE id = circ_chain_tail.id;
-            END LOOP;
 
             count_purged := count_purged + 1;
 
