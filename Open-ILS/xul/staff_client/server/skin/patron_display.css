@@ -23,10 +23,8 @@ row#row_billing_zip { padding-bottom: 10px; }
 #pdm2hb1a { min-height: 1.5em; }
 
 .NO_PENALTIES .patronNameLarge { border-color: lime; }
-/*
-.ONE_PENALTY .patronNameLarge { background-color: fuchsia; }
-.MULTIPLE_PENALTIES .patronNameLarge { background-color: #CC3300; }
-*/
+.ONE_PENALTY .patronNameLarge { border-color: #66FFFF; }
+.MULTIPLE_PENALTIES .patronNameLarge { border-color: #FF6633; }
 
 .PATRON_HAS_STAFF_ALERT .patronNameLarge { border-color: blue; }
 
