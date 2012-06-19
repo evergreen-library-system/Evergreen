@@ -29,14 +29,9 @@ our (@ISA, @EXPORT_OK);
 
 my $INET_PRIVS;
 
-#
-# OpenILS::SIP::Patron->new($barcode);
-# OpenILS::SIP::Patron->new(barcode => $barcode);   # same as above
-# OpenILS::SIP::Patron->new(    usr => $id);       
-
 sub new {
     my $class = shift;
-    my $key   = (@_ > 1) ? shift : 'barcode';  # if we have multiple args, the first is the key index (default barcode)
+    my $key   = shift;
     my $patron_id = shift;
     my %args = @_;
 
@@ -110,6 +105,7 @@ sub new {
 
     $self->flesh_user_penalties($user, $e) unless $args{slim_user};
 
+    $self->{authtoken} = $args{authtoken} if $args{authtoken};
     $self->{editor} = $e;
     $self->{user}   = $user;
     $self->{id}     = ($key eq 'barcode') ? $patron_id : $user->card->barcode;   # The barcode IS the ID to SIP.  

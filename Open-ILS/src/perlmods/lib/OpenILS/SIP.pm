@@ -234,10 +234,17 @@ sub login {
 	return $self->{authtoken} = $key;
 }
 
+#
+# find_patron($barcode);
+# find_patron(barcode => $barcode);   # same as above
+# find_patron(usr => $id);
 
 sub find_patron {
 	my $self = shift;
-	return OpenILS::SIP::Patron->new(@_);
+    my $key  =  (@_ > 1) ? shift : 'barcode';  # if we have multiple args, the first is the key index (default barcode)
+    my $patron_id = shift;
+
+	return OpenILS::SIP::Patron->new($key => $patron_id, authtoken => $self->{authtoken}, @_);
 }
 
 
