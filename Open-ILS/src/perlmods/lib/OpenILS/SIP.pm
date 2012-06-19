@@ -466,9 +466,9 @@ sub pay_fee {
     $xact->sip_fee_type($fee_type);
     $xact->transaction_id($trans_id);
     $xact->fee_id($fee_id);
-    # We don't presently use these, but we might in the future.
-    $xact->patron_password($patron_pwd);
     $xact->sip_payment_type($pay_type);
+    # We don't presently use this, but we might in the future.
+    $xact->patron_password($patron_pwd);
 
     $xact->do_fee_payment();
 

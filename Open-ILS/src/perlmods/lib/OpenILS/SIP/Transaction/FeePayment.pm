@@ -189,9 +189,19 @@ sub do_fee_payment {
 sub pay_bills {
     my ($self, $paymentref) = @_;
     my $user = $self->patron->{user};
-    return $U->simplereq('open-ils.circ', 'open-ils.circ.money.payment', $self->{authtoken},
-                         { payment_type => "cash_payment", userid => $user->id, note => "via SIP2",
-                           payments => $paymentref}, $user->last_xact_id);
+    if ($self->sip_payment_type eq '02') {
+        # '02' is "credit card"
+        my $transaction_id = $self->transaction_id ? $self->transaction_id : 'Not provided by SIP client';
+        return $U->simplereq('open-ils.circ', 'open-ils.circ.money.payment', $self->{authtoken},
+                             { payment_type => "credit_card_payment", userid => $user->id, note => "via SIP2",
+                               cc_args => { approval_code => $transaction_id, },
+                               payments => $paymentref}, $user->last_xact_id);
+    } else {
+        # record as "cash"
+        return $U->simplereq('open-ils.circ', 'open-ils.circ.money.payment', $self->{authtoken},
+                             { payment_type => "cash_payment", userid => $user->id, note => "via SIP2",
+                               payments => $paymentref}, $user->last_xact_id);
+    }
 }
 
 
