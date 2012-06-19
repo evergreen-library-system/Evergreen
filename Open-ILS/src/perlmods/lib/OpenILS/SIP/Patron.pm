@@ -627,7 +627,21 @@ sub charged_items {
 sub fine_items {
 	my ($self, $start, $end) = @_;
 	my @fines;
-	syslog('LOG_DEBUG', 'OILS: Patron->fine_items()');
+    eval {
+           my $xacts = $U->simplereq('open-ils.actor', 'open-ils.actor.user.transactions.history.have_balance', $self->{authtoken}, $self->{user}->id);
+           foreach my $xact (@{$xacts}) {
+                my $line = $xact->balance_owed . " " . $xact->last_billing_type . " ";
+                if ($xact->xact_type eq 'circulation') {
+                    my $mods = $U->simplereq('open-ils.circ', 'open-ils.circ.circ_transaction.find_title', $self->{authtoken}, $xact->id);
+                    $line .= $mods->title . ' / ' . $mods->author;
+                } else {
+                    $line .= $xact->last_billing_note;
+                }
+                push @fines, OpenILS::SIP::clean_text($line);
+           }
+    };
+    my $log_status = $@ ? 'ERROR: ' . $@ : 'OK';
+	syslog('LOG_DEBUG', 'OILS: Patron->fine_items() ' . $log_status);
 	return (defined $start and defined $end) ? 
 		[ $fines[($start-1)..($end-1)] ] : \@fines;
 }
