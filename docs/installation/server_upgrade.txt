@@ -24,35 +24,6 @@ To switch from the root user to a different user, issue the `su - [user]`
 command; for example, `su - opensrf`. Once you have become a non-root user, to
 become the root user again simply issue the `exit` command.
 
-[CAUTION]
-Pay attention to error output as you run these scripts. If you encounter errors
-that you cannot resolve yourself through additional troubleshooting, please
-report the errors to the http://evergreen-ils.org/listserv.php[Evergreen
-Technical Discussion List].
-
-Upgrade the Evergreen database schema
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The upgrade of the Evergreen database schema is the lengthiest part of the
-upgrade process for sites with a significant amount of production data.
-
-Before running the upgrade script against your production Evergreen database,
-back up your database, restore it to a test server, and run the upgrade script
-against the test server. This enables you to determine how long the upgrade
-will take and whether any local customizations present problems for the
-stock upgrade script that require further tailoring of the upgrade script.
-The backup also enables you to cleanly restore your production data if
-anything goes wrong during the upgrade.
-
-Run the following script as a user with the ability to connect to the
-database server. Adjust the arguments to the `psql` command to reflect your
-database server connection information:
-
-[source, bash]
-----------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.1-rc1/Open-ILS/src/sql/Pg
-psql -U evergreen -h localhost -f version_upgrade/2.1-2.2-upgrade-db.sql evergreen
-----------------------------------------------------------
-
 Upgrade the Evergreen code
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 The following steps guide you through a simplistic upgrade of a production
@@ -75,8 +46,8 @@ the http://evergreen-ils.org/opensrf.php[OpenSRF download page].
 +
 [source, bash]
 -----------------------------------------------
-wget http://evergreen-ils.org/downloads/previews/Evergreen-ILS-2.2-rc1.tar.gz
-tar xzf Evergreen-ILS-2.2-rc1.tar.gz
+wget http://evergreen-ils.org/downloads/Evergreen-ILS-2.2.0.tar.gz
+tar xzf Evergreen-ILS-2.2.0.tar.gz
 -----------------------------------------------
 +
 [NOTE]
@@ -86,7 +57,7 @@ For the latest edition of Evergreen, check the http://evergreen-ils.org/download
 +
 [source, bash]
 ----------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.2-rc1
+cd /home/opensrf/Evergreen-ILS-2.2.0
 ---------------------------------------------
 +
 On the next command, replace `[distribution]` with one of these values for your
@@ -105,7 +76,7 @@ make -f Open-ILS/src/extras/Makefile.install [distribution]
 +
 [source, bash]
 ------------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.2-rc1
+cd /home/opensrf/Evergreen-ILS-2.2.0
 ./configure --prefix=/openils --sysconfdir=/openils/conf
 make
 ------------------------------------------------------------
@@ -114,8 +85,8 @@ make
 +
 [source, bash]
 ------------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.2-rc1
-make STAFF_CLIENT_STAMP_ID=rel_2_2_rc1 install
+cd /home/opensrf/Evergreen-ILS-2.2.0
+make STAFF_CLIENT_STAMP_ID=rel_2_2_0 install
 ------------------------------------------------------------
 +
 . As the root user, change all files to be owned by the opensrf user and group:
@@ -129,7 +100,7 @@ chown -R opensrf:opensrf /openils
 +
 [source, bash]
 -----------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.2-rc1
+cd /home/opensrf/Evergreen-ILS-2.2.0
 
 perl Open-ILS/src/support-scripts/eg_db_config.pl \
 --create-offline --user evergreen --password evergreen \
@@ -142,7 +113,7 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl \
 -----------------------------------------------------------
 cd /openils/var/web/xul/
 rm server
-ln -s rel_2_2_rc1/server
+ln -s rel_2_2_0/server
 ----------------------------------------------------------
 +
 . As the opensrf user, update opensrf_core.xml and opensrf.xml by copying the
@@ -175,12 +146,42 @@ opensrf.xml.example, then:
 [source, bash]
 -------------------------------------------------------------------------
 cp -b /openils/conf/opensrf.xml.example /openils/conf/opensrf.xml
-cd /home/opensrf/Evergreen-ILS-2.2-rc1
+cd /home/opensrf/Evergreen-ILS-2.2.0
 perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config --service all \
 --database evergreen --host localhost --user evergreen --password evergreen
 -------------------------------------------------------------------------
 +
 Otherwise, compare /openils/conf/opensrf.xml with /openils/conf/opensrf.xml.example and manually copy the new pieces into place in your existing opensrf.xml file
+
+
+Upgrade the Evergreen database schema
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The upgrade of the Evergreen database schema is the lengthiest part of the
+upgrade process for sites with a significant amount of production data.
+
+Before running the upgrade script against your production Evergreen database,
+back up your database, restore it to a test server, and run the upgrade script
+against the test server. This enables you to determine how long the upgrade
+will take and whether any local customizations present problems for the
+stock upgrade script that require further tailoring of the upgrade script.
+The backup also enables you to cleanly restore your production data if
+anything goes wrong during the upgrade.
+
+[CAUTION]
+Pay attention to error output as you run the upgrade scripts. If you encounter errors
+that you cannot resolve yourself through additional troubleshooting, please
+report the errors to the http://evergreen-ils.org/listserv.php[Evergreen
+Technical Discussion List].
+
+Run the following script as a user with the ability to connect to the
+database server. Adjust the arguments to the `psql` command to reflect your
+database server connection information:
+
+[source, bash]
+----------------------------------------------------------
+cd /home/opensrf/Evergreen-ILS-2.2.0/Open-ILS/src/sql/Pg
+psql -U evergreen -h localhost -f version_upgrade/2.1-2.2-upgrade-db.sql evergreen
+----------------------------------------------------------
 
 Restart Evergreen and Test
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
