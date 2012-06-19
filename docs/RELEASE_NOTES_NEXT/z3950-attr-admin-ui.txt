@@ -1,0 +1,16 @@
+Z39.50 Source Attributes Management Interface
+---------------------------------------------
+
+There is a new interface for managing Z39.50 attributes on a Z39.50
+source.  The interface is linked from each source name in the Z39.50
+Source administrative interface.
+
+Cloning
+~~~~~~~
+
+In addition to attribute creation, deletion, and editing, it's also 
+possible to clone a set of attributes from one source into another.
+When cloning, any attributes present in the cloned source that are
+not present in the destination source are copied into the destination 
+source.
+

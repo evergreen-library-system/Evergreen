@@ -4,6 +4,54 @@
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
 
+[%  source_code = ctx.page_args.0; 
+    IF source_code %]
+
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>[% l('Z39.50 Attributes for [_1]', source_code) | html %]</div>
+        <div>
+            <button dojoType='dijit.form.Button' onClick='zaGrid.showCreateDialog()'>[% l('New') %]</button>
+            <button dojoType='dijit.form.Button' onClick='zaGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
+            <button dojoType='dijit.form.Button' onClick='showAttrCloneDialog()'>[% l('Clone Attributes From Source') %]</button>
+        </div>
+    </div>
+    <div>
+        <button onClick="location.href = location.href.replace(/\/[^\/]+$/, '')">[% l('Return to Sources') %]</button>
+    </div>
+    <br/>
+
+    <table
+        id="zaGrid"
+        jsid="zaGrid"
+        dojoType="openils.widget.FlattenerGrid"
+        columnPersistKey='"conify.config.z3950_attr"'
+        autoHeight="true"
+        editOnEnter="true"
+        editStyle="pane"
+        showLoadFilter="true"
+        fmClass="'cza'"
+        defaultSort="['code']"
+        query="{'source': ['[% source_code %]']}">
+        <thead>
+            <tr>
+                <th field="source" fpath="source" ffilter="true"/>
+                <th field="name" fpath="name" ffilter="true"/>
+                <th field="label" fpath="label" ffilter="true"/>
+                <th field="code" fpath="code" ffilter="true"/>
+                <th field="format" fpath="format" ffilter="true"/>
+                <th field="truncation" fpath="truncation" ffilter="true"/>
+            </tr>
+        </thead>
+    </table>
+
+    <div jsId="attrCloneDialog" dojoType="dijit.Dialog">
+        <span>[% l('Select a source to clone') %]</span>
+        <span><div id='attr-clone-source'></div></span>
+        <span><button onClick='cloneFromSource()'>[% l('Apply') %]</button></span>
+    </div>
+
+[% ELSE %]
+
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
         <div>Z39.50 Servers</div>
         <div>
@@ -20,9 +68,16 @@
             defaultCellWidth='"auto"'
             fmClass='czs'
             editOnEnter='true'>
+        <thead>
+            <th field='name' formatter='formatSourceName'/>
+        </thead>
     </table>
-</div>
 
 [% END %]
 
+</div>
+
+<script>var sourceCode = '[% source_code %]';</script>
+
+[% END %]
 
