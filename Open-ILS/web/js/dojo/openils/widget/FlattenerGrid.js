@@ -379,6 +379,10 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
 
                 this.fmIdentifier = this.fmIdentifier ||
                     fieldmapper.IDL.fmclasses[this.fmClass].pkey;
+
+                this.overrideEditWidgets = {};
+                this.overrideEditWidgetClass = {};
+                this.overrideWidgetArgs = {};
             },
 
             "startup": function() {
@@ -458,10 +462,6 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                     this._refresh(true);
 
                 this._showing_create_pane = false;
-
-                this.overrideEditWidgets = {};
-                this.overrideEditWidgetClass = {};
-                this.overrideWidgetArgs = {};
 
                 if (this.editOnEnter)
                     this._applyEditOnEnter();
