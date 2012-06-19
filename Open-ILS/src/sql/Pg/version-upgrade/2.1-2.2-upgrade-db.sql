@@ -1975,6 +1975,7 @@ ALTER TABLE vandelay.queued_authority_record
     ADD COLUMN error_detail TEXT;
 
 ALTER TABLE vandelay.authority_match DROP COLUMN matched_attr;
+ALTER TABLE vandelay.authority_match ADD COLUMN quality INTEGER NOT NULL DEFAULT 0;
 
 CREATE OR REPLACE FUNCTION vandelay.cleanup_authority_marc ( ) RETURNS TRIGGER AS $$
 BEGIN
