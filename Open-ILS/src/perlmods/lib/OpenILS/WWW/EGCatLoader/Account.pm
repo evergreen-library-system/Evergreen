@@ -1436,7 +1436,12 @@ sub load_myopac_main {
     my $limit = $self->cgi->param('limit') || 0;
     my $offset = $self->cgi->param('offset') || 0;
     $self->ctx->{search_ou} = $self->_get_search_lib();
-
+    $self->ctx->{user}->notes(
+        $self->editor->search_actor_usr_note({
+            usr => $self->ctx->{user}->id,
+            pub => 't'
+        })
+    );
     return $self->prepare_fines($limit, $offset) || Apache2::Const::OK;
 }
 

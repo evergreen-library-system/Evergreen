@@ -81,6 +81,16 @@
                     </tr>
                 </table>
             </div>
+
+            [% IF ctx.user.notes.0 %]
+            <div class="acct_sum_row">
+                <table>
+                [% FOR note IN ctx.user.notes %]
+                    <tr><td class='public-note-title'>[% l('* [_1]: ', note.title) | html %]</td><td>[% note.value | html %]</td></tr>
+                [% END %]
+                </table>
+            </div>
+            [% END %]
         </div>
     </div>
     <div class="clear-both"></div>
