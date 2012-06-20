@@ -1675,6 +1675,9 @@ g.populate_stat_cats = function() {
             var entries = g.copies[i].stat_cat_entries();
             if (!entries) entries = [];
             for (var j = 0; j < entries.length; j++) {
+                if (typeof g.data.hash.asc[ entries[j].stat_cat() ] != 'undefined') {
+                    continue; // We already have this stat cat, so assume we have everything we need for this lib
+                }
                 var lib = entries[j].owner(); if (typeof lib == 'object') lib = lib.id();
                 sc_libs[ lib ] = true;
             }
@@ -1685,6 +1688,9 @@ g.populate_stat_cats = function() {
         sc_libs = {};
         for (var i = 0; i < g.copies.length; i++) {
             var circ_lib = g.copies[i].circ_lib(); if (typeof circ_lib == 'object') circ_lib = circ_lib.id();
+            if (typeof g.data.hash.my_aou[ circ_lib ] != 'undefined') {
+                continue; // We should already have everything we need for this lib
+            }
             sc_libs[ circ_lib ] = true;
         }
         add_common_ancestors(sc_libs);
@@ -1703,6 +1709,9 @@ g.populate_stat_cats = function() {
                     }
                 }
                 var owning_lib = g.map_acn[ cn_id ].owning_lib(); if (typeof owning_lib == 'object') owning_lib = owning_lib.id();
+                if (typeof g.data.hash.my_aou[ owning_lib ] != 'undefined') {
+                    continue; // We should already have everything we need for this lib
+                }
                 sc_libs[ owning_lib ] = true;
             }
         }
