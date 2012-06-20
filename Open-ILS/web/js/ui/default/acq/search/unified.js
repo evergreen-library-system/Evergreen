@@ -128,6 +128,8 @@ function TermSelectorFactory(terms) {
         ) {
             var term = this.getTerm();
             var widgetKey = this.uniq;
+            var target = termManager.getLinkTarget(term);
+
             if (matchHow.getValue() == "__in") {
                 new openils.widget.XULTermLoader({
                     "parentNode": parentNode
@@ -147,7 +149,9 @@ function TermSelectorFactory(terms) {
                     }
                 );
             } else if (term.hint == "acqlia" ||
-                (term.hint == "jub" && term.field == "eg_bib_id")) {
+                (term.hint == "jub" && term.field == "eg_bib_id") ||
+                term.datatype == "org_unit" ||
+                (term.datatype == "link" && target == "au")) {
                 /* The test for jub.eg_bib_id is a special case to prevent
                  * AutoFieldWidget from trying to render a ridiculous dropdown
                  * of every bib record ID in the system. */
