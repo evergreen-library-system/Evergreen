@@ -1104,23 +1104,26 @@ sub run_patron_permit_scripts {
             if ($self->is_noncat) {
                 # no_item result is OK during noncat checkout
                 @trimmed_results = grep { ($_->{fail_part} || '') ne 'no_item' } @$results;
+
             } else {
-                @trimmed_results = @$results;
-            }
 
-            if ($self->checkout_is_for_hold) {
-                # if this checkout will fulfill a hold, ignore CIRC blocks
-                # and rely instead on the (later-checked) FULFILL block
+                if ($self->checkout_is_for_hold) {
+                    # if this checkout will fulfill a hold, ignore CIRC blocks
+                    # and rely instead on the (later-checked) FULFILL block
 
-                my @pen_names = grep {$_} map {$_->{fail_part}} @$results;
-                my $fblock_pens = $self->editor->search_config_standing_penalty(
-                    {name => [@pen_names], block_list => {like => '%CIRC%'}});
+                    my @pen_names = grep {$_} map {$_->{fail_part}} @$results;
+                    my $fblock_pens = $self->editor->search_config_standing_penalty(
+                        {name => [@pen_names], block_list => {like => '%CIRC%'}});
 
-                for my $res (@$results) {
-                    my $name = $res->{fail_part} || '';
-                    next if grep {$_->name eq $name} @$fblock_pens or 
-                        ($self->is_noncat and $name eq 'no_item');
-                    push(@trimmed_results, $res);
+                    for my $res (@$results) {
+                        my $name = $res->{fail_part} || '';
+                        next if grep {$_->name eq $name} @$fblock_pens;
+                        push(@trimmed_results, $res);
+                    }
+
+                } else { 
+                    # not for hold or noncat
+                    @trimmed_results = @$results;
                 }
             }
 
