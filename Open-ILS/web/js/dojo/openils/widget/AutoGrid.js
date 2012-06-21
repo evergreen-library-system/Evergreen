@@ -410,6 +410,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 this.editDialog = new openils.widget.EditDialog({editPane:pane});
                 this.editDialog.startup();
                 this.editDialog.show();
+                if(this.onEditPane) this.onEditPane(pane);
             },
 
             /**
