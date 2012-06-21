@@ -156,6 +156,10 @@ function drawProviderSummary(child) {
         case 'tab-hold': 
             phsListGrid.overrideEditWidgets.provider = new
                 dijit.form.TextBox({disabled: 'true', value: providerId});
+            phsListGrid.overrideEditWidgets.name = holdingSubfieldSelector;
+            phsListGrid.onEditPane = function(pane) {
+                holdingSubfieldSelector.attr('value', pane.fmObject.name());
+            }
             phsListGrid.resetStore();
             phsListGrid.loadAll({order_by:{acqphsm : 'name'}}, {provider : providerId});
             break;

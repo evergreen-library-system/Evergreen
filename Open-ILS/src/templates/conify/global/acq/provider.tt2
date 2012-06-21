@@ -144,6 +144,20 @@
                         editOnEnter='true'>
                 </table>
             </div>
+            <div class='hidden'>
+                <select dojoType='dijit.form.FilteringSelect' jsId='holdingSubfieldSelector'>
+                    <option value='quantity'>[% l('Quantity') %]</option>
+                    <option value='estimated_price'>[% l('Estimated Price') %]</option>
+                    <option value='owning_lib'>[% l('Owning Library') %]</option>
+                    <option value='call_number'>[% l('Call Number') %]</option>
+                    <option value='fund_code'>[% l('Fund Code') %]</option>
+                    <option value='circ_modifier'>[% l('Circ Modifier') %]</option>
+                    <option value='note'>[% l('Note') %]</option>
+                    <option value='copy_location'>[% l('Shelving Location') %]</option>
+                    <option value='barcode'>[% l('Barcode') %]</option>
+                    <option value='collection_code'>[% l('Collection Code') %]</option>
+                </select>
+            </div>
         </div>
 
         <div dojoType="dijit.layout.ContentPane" title="Invoices" id="tab-invoice">
