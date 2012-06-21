@@ -20,13 +20,13 @@ INSERT INTO config.standing (id, value) VALUES (2, oils_i18n_gettext(2, 'Barred'
 SELECT SETVAL('config.standing_id_seq'::TEXT, 100);
 
 INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert)
-	VALUES (1,'PATRON_EXCEEDS_FINES',oils_i18n_gettext(1, 'Patron exceeds fine threshold', 'csp', 'label'),'CIRC|HOLD|CAPTURE|FULFILL|RENEW', TRUE);
+	VALUES (1,'PATRON_EXCEEDS_FINES',oils_i18n_gettext(1, 'Patron exceeds fine threshold', 'csp', 'label'),'CIRC|FULFILL|HOLD|CAPTURE|RENEW', TRUE);
 INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert)
-	VALUES (2,'PATRON_EXCEEDS_OVERDUE_COUNT',oils_i18n_gettext(2, 'Patron exceeds max overdue item threshold', 'csp', 'label'),'CIRC|HOLD|CAPTURE|FULFILL|RENEW', TRUE);
+	VALUES (2,'PATRON_EXCEEDS_OVERDUE_COUNT',oils_i18n_gettext(2, 'Patron exceeds max overdue item threshold', 'csp', 'label'),'CIRC|FULFILL|HOLD|CAPTURE|RENEW', TRUE);
 INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert)
-	VALUES (3,'PATRON_EXCEEDS_CHECKOUT_COUNT',oils_i18n_gettext(3, 'Patron exceeds max checked out item threshold', 'csp', 'label'),'CIRC', TRUE);
+	VALUES (3,'PATRON_EXCEEDS_CHECKOUT_COUNT',oils_i18n_gettext(3, 'Patron exceeds max checked out item threshold', 'csp', 'label'),'CIRC|FULFILL', TRUE);
 INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert)
-	VALUES (4,'PATRON_EXCEEDS_COLLECTIONS_WARNING',oils_i18n_gettext(4, 'Patron exceeds pre-collections warning fine threshold', 'csp', 'label'),'CIRC|HOLD|CAPTURE|FULFILL|RENEW', TRUE);
+	VALUES (4,'PATRON_EXCEEDS_COLLECTIONS_WARNING',oils_i18n_gettext(4, 'Patron exceeds pre-collections warning fine threshold', 'csp', 'label'),'CIRC|FULFILL|HOLD|CAPTURE|RENEW', TRUE);
 
 INSERT INTO config.standing_penalty (id,name,label,staff_alert) VALUES (20,'ALERT_NOTE',oils_i18n_gettext(20, 'Alerting Note, no blocks', 'csp', 'label'),TRUE);
 INSERT INTO config.standing_penalty (id,name,label) VALUES (21,'SILENT_NOTE',oils_i18n_gettext(21, 'Note, no blocks', 'csp', 'label'));
