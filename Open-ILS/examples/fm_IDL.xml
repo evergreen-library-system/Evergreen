@@ -5048,6 +5048,18 @@ SELECT  usr,
 		JOIN asset.call_number_prefix acnp ON (acn.prefix = acnp.id)
 		JOIN asset.call_number_suffix acns ON (acn.suffix = acns.id)
 		JOIN actor.usr au ON (au.id = ahr.usr)
+		LEFT JOIN actor.usr_standing_penalty ausp 
+			ON (ahr.usr = ausp.usr AND (ausp.stop_date IS NULL OR ausp.stop_date > NOW()))
+		LEFT JOIN config.standing_penalty csp
+			ON (
+				csp.id = ausp.standing_penalty AND 
+				csp.block_list LIKE '%CAPTURE%' AND (
+					(csp.org_depth IS NULL AND ahr.pickup_lib = ausp.org_unit) OR
+					(csp.org_depth IS NOT NULL AND ahr.pickup_lib IN (
+						SELECT id FROM actor.org_unit_descendants(ausp.org_unit, csp.org_depth))
+					)
+				)
+			)
 		LEFT JOIN serial.issuance siss
 			ON (ahr.hold_type = 'I' AND siss.id = ahr.target)
 		LEFT JOIN asset.copy_location_order acplo
@@ -5056,6 +5068,7 @@ SELECT  usr,
 		WHERE
 			ahr.capture_time IS NULL AND
 			ahr.cancel_time IS NULL AND
+			csp.id IS NULL AND
 			(ahr.expire_time is NULL OR ahr.expire_time > NOW())
 		]]></oils_persist:source_definition>
 		<fields oils_persist:primary="id">
