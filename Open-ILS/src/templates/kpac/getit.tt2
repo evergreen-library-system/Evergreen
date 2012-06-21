@@ -87,7 +87,13 @@
                 <div class="right_brain">
                     <div class="top_side">
                         <h2>[% l('save it!') %]</h2>
-                        <p>[% l('If you would like to save this item to a list to be requested later, please choose a location and click <br/>Submit below.') %]</p>
+                        <p>[% l('If you would like to save this item to a list to be requested later, click Submit below.') %]</p>
+                        [% IF ctx.user AND ctx.bookbags AND ctx.bookbags.size > 0 %]
+                        <br/>
+                        <p>
+                            [% l('You may also save this item to a list you have already created by selecting one of your lists below.') %]
+                        </p>
+                        [% END %]
                     </div>
                     <form method='POST'>
                         <input type='hidden' name='action' value='save'/>
