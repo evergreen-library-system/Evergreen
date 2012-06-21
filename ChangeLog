@@ -1,1 +1,1882 @@
-#ChangeLog
+commit 3957f63b56713f6f0f3273813cb07269621d842b
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Tue Jun 12 17:26:39 2012 -0400
+
+    Security fix: For auth, give same stacktrace for all cases of LOGIN_FAILED
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+9	3	Open-ILS/src/c-apps/oils_auth.c
+
+commit bc98cea611d82fceb84689dabefcc87bebe56394
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Mon Jun 11 14:16:34 2012 -0400
+
+    Security fix: Prevent login by deleted and barred users
+    
+    An existing comment in the code suggested that we thought we were already
+    keeping barred users out.  LP #1010671 brings up that deleted users were
+    not being kept out.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+16	2	Open-ILS/src/c-apps/oils_auth.c
+
+commit a9685a919941f2ad2a33cc4f6c13256e522b1291
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Mon Jun 11 16:12:54 2012 -0400
+
+    Security fix for Launchpad Bug 1003052.
+    
+    Bug reported by James Fournie:
+    
+    Revoking the UPDATE_MARC permission doesn't actually seem to prevent a
+    user from editing a record. Our use case is that we would like a user
+    to create new records but not edit existing MARC records.
+    
+    Changing CREATE_MARC to UPDATE_MARC in OpenILS::Application::Cat's
+    biblio_record_replace_marc() method seems to fix the problem.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat.pm
+
+commit 87994668254d199213d51a2cb8b6db0532f67e48
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Wed Jun 13 10:12:05 2012 -0400
+
+    Fix in-transit hold retarget
+    
+    Tell the abort transit function to not commit our editor on us, basically.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Transit.pm
+
+commit f6801714e97cde8dde09f9137b7e2c4a5f019536
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Thu Apr 19 22:37:56 2012 -0400
+
+    fix double-click in Holdings Maintenance
+    
+    so that it won't attempt to spawn the Item Editor for non-items
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+3	1	Open-ILS/xul/staff_client/server/cat/copy_browser.js
+
+commit 23cd9af7ca58174389308bae2cf34018ce500305
+Author: James Fournie <jfournie@sitka.bclibraries.ca>
+Date:   Wed Jun 6 14:47:30 2012 -0700
+
+    LP1009752: activate purchase orders with patron requests
+    
+    Simple typo: "actor_hold_request" should be "action_hold_request".
+    
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Order.pm
+
+commit 29e7e64f969605eee4d9a6031fec450d0de52dd5
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Jun 6 23:19:10 2012 -0400
+
+    Update 2.1.2 DB schema upgrade script
+    
+    As part of the march to 2.1.2, and in time for 2.2.0, update the
+    2.1.1-2.1.2 update script.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+70	16	Open-ILS/src/sql/Pg/version-upgrade/2.1.1-2.1.2-upgrade-db.sql
+
+commit f9773d70c5a7d273fa3a92df73ff2d2da0883278
+Author: Dan Scott <dan@coffeecode.net>
+Date:   Tue Jun 5 09:17:52 2012 -0400
+
+    Move 2.0.11 upgrade script into version_upgrade dir
+    
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+0	501	Open-ILS/src/sql/Pg/2.0.10-2.0.11-upgrade-db.sql
+501	0	Open-ILS/src/sql/Pg/version-upgrade/2.0.10-2.0.11-upgrade-db.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/2.0.10-2.0.11-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.0.10-2.0.11-upgrade-db.sql
+
+commit 3b847a438325e7a4ba36889208111a5790c8bf6b
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Thu May 10 13:56:41 2012 -0400
+
+    Add the 2.0.10-2.0.11 upgrade script.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+501	0	Open-ILS/src/sql/Pg/2.0.10-2.0.11-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/2.0.10-2.0.11-upgrade-db.sql
+
+commit 12cab0be2f084c0f03c2c8b223fe3e53d0421329
+Author: Dan Scott <dan@coffeecode.net>
+Date:   Sat Jun 2 20:06:30 2012 -0400
+
+    Distinguish route-to-cataloging exception circ messages
+    
+    It appears as though a copy-and-paste error introduced duplicate keys in
+    circ.properties, which in turn makes newer versions of the Translate
+    Toolkit unhappy and results in empty translated files. Tracing through
+    the pertinent code in xul/staff_client/server/circ/util.js, it looks
+    like the desired key was for "not_found" for the second "cataloging" key
+    - so change that accordingly.
+    
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+1	1	Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
+
+commit 8aa2bd571354b0187794559536e93b5a135dc9df
+Author: Dan Scott <dan@coffeecode.net>
+Date:   Sat Jun 2 19:51:55 2012 -0400
+
+    Fix check for duplicate strings in i18n properties
+    
+    We had the core of the check in place - just failed to check the
+    property we were iterating over. Doh.
+    
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+3	2	build/i18n/tests/check_properties.py
+
+commit 5d169df87671cf34086c9f2ce354f6636b13b580
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Apr 17 17:34:06 2012 -0400
+
+    Clean up and refine serial note support, part 1
+    
+    This commit fixes a number of minor problems with serial notes:
+    
+    1) Serial notes are currently returned in "random" (database)
+    order.  Adding a create_date sort is a sensible default.
+    
+    2) If you have many notes, they start to display in a squashed and
+    unreadable fashion.  Switching from a groupbox to a styled vbox
+    provides a simple workaround.
+    
+    3) It is currently impossible to display newlines in notes.  We can
+    deal with this by changing the display style.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+8	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Serial.pm
+4	4	Open-ILS/xul/staff_client/server/serial/notes.xul
+
+commit 5f27cb82d6584a49d16a995104b1e929814c847c
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Apr 17 16:02:49 2012 -0400
+
+    Limit excess serial data fetching
+    
+    Overfetching and duplication of data in the interface is both
+    inefficient and bug-inducing.  This reduces a couple big offenders.
+    
+    First, in the items tab, we will store distribution and subscription
+    data separately, rather than duplicating for every row.  Second, we
+    will only redraw rows as needed rather than refresh the whole list so
+    often.  Finally, we no longer need to lookup call numbers separately,
+    as they are included in the one-time distribution fetch.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Serial.pm
+79	28	Open-ILS/xul/staff_client/server/serial/manage_items.js
+
+commit e871a59c1ecc8a2032567fb8f7eeb9164e2342d0
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Wed May 9 10:30:17 2012 -0400
+
+    LP975422 patron search from portal/splash page
+    
+    make it consider the "Patron circulation summary is horizontal" library setting
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+3	5	Open-ILS/xul/staff_client/server/index.xhtml
+
+commit 20dc2fb5eabe1dc36a2b5219f9a1c833b6bd4506
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Mar 23 15:17:50 2012 -0400
+
+    ACQ guarantee no PO re-activation
+    
+    Prevent the possibility of double PO activation by preventing it within
+    the API.  There have been reports in the wild of double-activation, even
+    though the UI is supposed to prevent it.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+    
+    Conflicts:
+    	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Order.pm
+
+3	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Order.pm
+
+commit 573f15ee1d309f4f79b41e4802013d0ee271fdf8
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu May 31 23:31:11 2012 -0400
+
+    lp#1007248: tweak order in which pgt rows are renumbered
+    
+    Need to renumber from highest to lowest.  Because the primary
+    key constraint is not deferred, doing the renumbering in a single
+    statement will fail if there is overlap between the set of
+    existing pgt.id values and the set of {pgt.id + 100}.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+10	1	Open-ILS/src/sql/Pg/version-upgrade/2.0-2.1-upgrade-db.sql
+
+commit c91ed7b35048fc59ccb36468e81aae6f3ad42958
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Wed Apr 11 12:04:19 2012 -0400
+
+    LP#856708 - Scrolling/div size issues in action trigger interface
+    
+    The event definition content pane does not properly accommodate its contents.
+    In the Event Definitions tab, the list of event definitions exceeds the height of the
+    pane, but you can't scroll all the way down to the bottom of the list -- some of the
+    content gets cut off. Likewise, when editing an event definition, you can't scroll
+    all the way to the bottom of the page; the Cancel and Save buttons are cut off, and
+    you have to use the Tab key to move the focus down to those buttons, which forces
+    the pane to scroll to the bottom so that they're visible.
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2	1	Open-ILS/web/templates/default/conify/global/action_trigger/event_definition.tt2
+
+commit b0718250dcbd48ed609636aa8e11086531245170
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Wed Apr 18 12:05:20 2012 -0400
+
+    Add missing weights fm_IDL entries
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+5	0	Open-ILS/examples/fm_IDL.xml
+
+commit 36e85252445dba320d965b4338adc2405094fdfb
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri May 4 09:18:10 2012 -0400
+
+    Check if transaction needs closing after adding billings
+    
+    This addresses the issue where issuing refunds results in a negative
+    ballance and it is then impossible to close the transaction by creating
+    new billings.
+    
+    https://bugs.launchpad.net/evergreen/+bug/758982
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+4	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Money.pm
+
+commit d1dc323481a52b1c04e5b3d4af1da171c01a6a24
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Thu Sep 22 09:24:56 2011 -0400
+
+    Throw out non-digit barcodes for strict check
+    
+    Characters like "." are valid for numbers, but not the algorithm.
+    
+    Thus, we need to throw out "16.00" despite the check for
+    "16.00" == Number("16.00")
+    returning true.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+3	0	Open-ILS/xul/staff_client/chrome/content/util/barcode.js
+
+commit a8fc7e7a84bd94d2cd5f89ff38901cc716192f08
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Thu Sep 22 09:16:31 2011 -0400
+
+    Don't check barcode without strict enabled
+    
+    Item status was, unlike other interfaces, doing the strict check, THEN
+    looking at the checkbox and if it was checked return.
+    
+    This caused issues when the barcode crashes out the strict checking.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	1	Open-ILS/xul/staff_client/server/circ/copy_status.js
+
+commit 7dfa704da0513dfa2ac25db19eb31910815efae6
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Mon Jan 23 11:49:07 2012 -0500
+
+    Install RPC::XML::Function on Ubuntu Lucid.
+    
+    Change the LUCID_CPAN target to install RPC::XML::Function instead of
+    XML::RPC.
+    
+    Based on public bug report by Ben Shum (LP 920535).
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	1	Open-ILS/src/extras/Makefile.install
+
+commit 7e18a8bf869ea09c1b187ab05fd20bc3cbacfe59
+Author: Steven Callender <stevecallender@esilibrary.com>
+Date:   Tue May 8 17:15:14 2012 -0400
+
+    lp996776: Patch to fix the response if no configured status is detected.
+    
+    SIP response messages that use circulation_status where defaulting to just 1
+    rather than 01 if the status was not detected. Since SIP needs a 2 character
+    response, this was causing issues in some 3rd party devices. Added quoting
+    around the 01 to force the 2 characters.
+    
+    Signed-off-by: Steven Callender <stevecallender@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/SIP/Item.pm
+
+commit 3c631c0c156024a627e44aae77d260d5253659a7
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Mar 26 16:17:03 2012 -0400
+
+    Small fix to Holding Code wizard widget
+    
+    The issuance editor has a wizard widget for the holding code field
+    which expected a 'grid' as an argument, but then referenced a global
+    'iss_grid' variable.  This hurt reusability of this widget.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+1	1	Open-ILS/web/js/ui/default/serial/subscription/issuance.js
+
+commit d5f4a15d2a99de85707cf0bd30e2ac09c82af6fb
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Mar 26 16:07:58 2012 -0400
+
+    Serial Control: Refresh node map on edit
+    
+    While it would be nice to redraw any affected tree nodes when
+    editing, we should at least replace the map data in case it is
+    used in other functions.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+25	1	Open-ILS/xul/staff_client/server/serial/manage_subs.js
+
+commit 3c54cf5d5431ef5d2eefaf045d679944a689fbea
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Apr 25 15:56:20 2012 -0400
+
+    Allow subscriptions at org units without volumes
+    
+    Subscriptions are sometimes owned at the consortium or system
+    level, so forcing can_have_vols() to be true was incorrect.
+    
+    This commit removes those checks.  In addition, we also remove
+    some dead code and make the subscription org unit selector
+    consistent with the distribution org unit selector.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2	0	Open-ILS/xul/staff_client/server/serial/manage_dists.js
+3	0	Open-ILS/xul/staff_client/server/serial/manage_items.js
+24	330	Open-ILS/xul/staff_client/server/serial/manage_subs.js
+1	1	Open-ILS/xul/staff_client/server/serial/ssub_editor.js
+
+commit 3719f7026a46a9a831d9c621eb37fad89fe8e4f8
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu May 3 16:44:14 2012 -0400
+
+    Add indexes to 2.1.2 upgrade script to speed up acq search
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+12	0	Open-ILS/src/sql/Pg/version-upgrade/2.1.1-2.1.2-upgrade-db.sql
+
+commit 2759e4e9b3604379be518e7ae34962d6a4be5846
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Tue Feb 14 17:49:54 2012 -0500
+
+    Acq: General Search refactor
+    
+    This is a combination of the following three commits from master:
+    
+    3149433d354889fb
+    56121886c72b2d41
+    35fe5b9cbe10b132
+    
+    The first two were meant for backport to rel_2_0 and rel_2_1 at the
+    time, but the backport wasn't done.  They were buggy anyway, and now it
+    makes the most sense (I hope) to backport them together with the
+    corrective commit all at once.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+136	0	Open-ILS/examples/fm_IDL.xml
+67	54	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Search.pm
+10	0	Open-ILS/src/sql/Pg/200.schema.acq.sql
+15	0	Open-ILS/src/sql/Pg/upgrade/0691.schema.acq_fk_indices.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0691.schema.acq_fk_indices.sql
+
+commit 064785f3bdf573ba7e5731f90abf6a0caff26f07
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Tue Apr 17 10:46:22 2012 -0400
+
+    Fix LP 984039: correct Syndetic Kirkus Reviews
+    
+    Use correct "filename" component of URL for retrieving Kirkus
+    Reviews content from Syndetic Solutions.
+    
+    Correct filename confirmed by Bowker technical support, and by
+    empirical tests.
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/WWW/AddedContent/Syndetic.pm
+
+commit 2f973f8013ea730cd5beb8edc52cce1153a1ebe3
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Tue Apr 3 14:45:10 2012 -0400
+
+    Fix some "null" instead of blank values in JSPac
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+1	1	Open-ILS/web/opac/skin/default/js/holds.js
+5	3	Open-ILS/web/opac/skin/default/js/myopac.js
+
+commit 5b1dd7898de6e96e22e137f116d8f8418b8c1236
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Fri Mar 30 15:32:53 2012 -0400
+
+    unsaved data loophole
+    
+    The Start/Previous/Next/End/Search Results buttons in the staff client OPAC
+    wrapper do not fire unsaved data warnings for the MARC editor when changing
+    records. This plugs that hole, but it's not a complete solution, as you can
+    still move away from the record by clicking on hyperlinks in the OPAC View,
+    though that's less likely to happen.
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+
+36	10	Open-ILS/xul/staff_client/chrome/content/cat/opac.js
+8	0	Open-ILS/xul/staff_client/chrome/content/main/menu.js
+1	0	Open-ILS/xul/staff_client/chrome/content/util/browser.js
+1	0	Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
+
+commit da0f2e9a54fea02523506fac8a435d379f9cfd5b
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Apr 13 09:53:32 2012 -0400
+
+    Better Prediction for Incomplete Chronologies
+    
+    While relatively rare, some journals record only the year on the
+    cover, even if they come out monthly or weekly.  This commit
+    expands our previous support for serials with no chronology at
+    all to cover serials with partial chronology.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+34	19	Open-ILS/src/perlmods/lib/OpenILS/Application/Serial.pm
+
+commit 6e832380b0d106ee6ab54b92b2819da8c8bf81cd
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Mar 26 11:09:14 2012 -0400
+
+    Add ISSN fix to the version upgrade script
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+24	0	Open-ILS/src/sql/Pg/version-upgrade/2.1.1-2.1.2-upgrade-db.sql
+
+commit bb6f48d88c57c67bb33b4975c63aacead8b11cf2
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Mar 26 11:02:33 2012 -0400
+
+    Stamping upgrade script for ISSN normalization fix
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+28	0	Open-ILS/src/sql/Pg/upgrade/0693.schema.do_not_despace_issns.sql
+0	21	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.do_not_despace_issns.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0693.schema.do_not_despace_issns.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.do_not_despace_issns.sql
+
+commit 4eae8cdad8f32c31671b6ecec73122263aeb98f6
+Author: Dan Scott <dan@coffeecode.net>
+Date:   Wed Mar 21 22:48:46 2012 -0400
+
+    LP932540: Fix ISSN indexing
+    
+    The default config.metabib_field_index_norm_map contains a 'replace'
+    entry for the ISSN identifier field that replaces spaces with "". That
+    was meant to handle ISSNs that incorrectly contain a space instead of a
+    hyphen; it normalizes them from: "1234 1234" to "12341234".
+    
+    However, that breaks indexing ISSNs if there are multiple ISSNs in the
+    record, or even if there is an extra character in the same subfield as
+    the primary ISSN, as all spaces are removed.
+    
+    This commit removes the 'replace' entry for the ISSN identifier field
+    and reindexes potentially damaged ISSN index entries.
+    
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+0	9	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+21	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.do_not_despace_issns.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.do_not_despace_issns.sql
+
+commit c0e3515dbbf5ac7941b183d6f0f063d1e2b992d0
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Mar 21 12:14:44 2012 -0400
+
+    Shooting 2 obvious thinkos d-e-d dead. Pardon the rogueness.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2	2	Open-ILS/src/c-apps/oils_sql.c
+
+commit b7eebefcf24ed9b4f85b1088410f1ec120a66163
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Wed Jan 11 13:57:43 2012 -0500
+
+    LP914821 template selection should be sticky
+    
+    in Unified Volume/Copy Editor.
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+9	1	Open-ILS/xul/staff_client/server/cat/copy_editor.js
+6	0	Open-ILS/xul/staff_client/server/cat/volume_copy_editor.js
+
+commit e25b067cac5f47d1b1ada9eee114d915287fa2dc
+Author: Michael Peters <mrpeters@library.in.gov>
+Date:   Fri Mar 16 13:56:57 2012 -0400
+
+    LP#707167 Make open-ils.actor.usrname.exists not ignore deleted users
+    
+    Currently, open-ils.actor.usrname.exists filters out deleted users.  This
+    results in a user recieving indication as to why a user update
+    failed, when the reason is the username they're attempting to use
+    is in use, but is "deleted" in the database.
+    
+    This branch makes open-ils.actor.usrname.exists look at deleted users
+    since they still prevent re-use of the delted user's username.
+    
+    More information is in the original bug, https://bugs.launchpad.net/evergreen/+bug/707167.
+    
+    Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor.pm
+
+commit d9760ee099c7eb23ab7fa8ed7c3d75278fd18860
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Thu Feb 2 09:19:11 2012 -0500
+
+    Use getItemType() instead of getForm() in searchBarInit().
+    
+    This seems to actually fix the problem with the item type limiter
+    being lost when going from advanced search to the results page.
+    
+    Looks like the wrong method was being used to set the form_selector
+    value in search_bar.js. It was being set to the web form itself and
+    not to the value of the it (item type) parameter.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/web/opac/skin/default/js/search_bar.js
+
+commit 42a4469a0a9c13d09a04adbe49ff48f835020245
+Author: Liam Whalen <lwhalen@evergreen-dev.catalogue.nrcan.gc.ca>
+Date:   Tue Nov 1 14:18:32 2011 -0400
+
+    When sorting a search results set the isFilterSort variable is passed
+    to searchBarSubmit.  In side searchBarSumbit there is a call to the
+    opac_utils.js function clearSearchParams function.  This removes all
+    search paramaters when sorting a result set, which is not the desired
+    effect.  I have wraped clearSearchParams in a check to make sure
+    isFilterSort is not set before calling the clearSearchParams function,
+    and this check ensures that the current search's paramaters are passed
+    to sort operations.
+    
+    Signed-off-by: Liam Whalen <lwhalen@evergreen-dev.catalogue.nrcan.gc.ca>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+3	1	Open-ILS/web/opac/skin/default/js/search_bar.js
+
+commit 013b5ad589db41698c9a5986d30ba0beacfc939e
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Jan 18 00:27:05 2012 -0500
+
+    LP918020: Fix regression in biblio.extract_located_uris
+    
+    The 2.0-2.1 upgrade script contained an old version of
+    biblio.extract_located_uris that functioned poorly. Fix the 2.0-2.1
+    upgrade script and ensure that sites upgrading to 2.1.2 get the fix as
+    well.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+27	12	Open-ILS/src/sql/Pg/version-upgrade/2.0-2.1-upgrade-db.sql
+112	0	Open-ILS/src/sql/Pg/version-upgrade/2.1.1-2.1.2-upgrade-db.sql
+
+commit c7835817977a4b38ea0c4478c17a515a573d1ec8
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Fri Feb 24 14:56:18 2012 -0500
+
+    Avoid JSPAC hold placement interface problems when no holdable copies
+    
+    This addresses a bug brought to my attention by John Jones.
+    
+    When you're trying to place certain holds (at least title level holds) on
+    records for which there are no holdable formats (no descriptors as returned by
+    open-ils.search.metabib.record_to_descriptors), then
+    holdArgs.recordDescriptors in holds.js can be an empty array.  There is
+    a line of code that assumes this will never happen.
+    
+    The end user-visible result of the javascript failing here is an alert()
+    dialog about phone number format, but this is a red herring.  That only
+    happens because the problem code is in one big function that has too
+    many responsibilites.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/web/opac/skin/default/js/holds.js
+
+commit e5b2b74c1f8fe9efe0cd62411dd2d27df672c47d
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Feb 1 13:53:55 2012 -0500
+
+    Paging repairs for Event definition admin UI
+    
+    If there are multiple event definitions with the same name that lie along
+    the page boundaries, it's possible to page through event definitions
+    seeing some def's multiple times and others never.  This is a result of
+    sorting solely on event def. name when fetching event def's for display.
+    This patch adds secondary (and tertiary, and quaternary, and quinary)
+    sort columns as tie breakers to guarantee a unique set of defs across
+    pages.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/web/js/ui/default/conify/global/action_trigger/event_definition.js
+
+commit 9143ad5d046d2a1c65f7901b4f22914b1107c744
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Thu Jan 12 15:37:48 2012 -0500
+
+    Disable mod_deflate on XMLENT filtered files
+    
+    Default configs for Ubuntu, at least, enable mod_deflate too broadly, and
+    XMLENT filtering needs to happen before mod_deflate kicks in.
+    
+    Because we can't change the filter order, instead disable mod_deflate for
+    those files we have enabled XMLENT filtering, by use of the no-gzip ENV.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+17	0	Open-ILS/examples/apache/eg_vhost.conf
+
+commit d9ade6659460c92e3316743c46988d0bc7122660
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Sun Mar 4 01:49:43 2012 -0500
+
+    Backport version_upgrade directory from master
+    
+    Along with offering consistency across the two major current releases
+    for database schema upgrade scripts, it also enables us to backport the
+    much sought after fix for sorting by publication date in LP # 920134.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+0	719	Open-ILS/src/sql/Pg/1.2.1-1.2.2-upgrade-db.sql
+0	44	Open-ILS/src/sql/Pg/1.2.2.0-1.2.2.1-upgrade-db.sql
+0	58	Open-ILS/src/sql/Pg/1.2.2.1-1.2.2.2-upgrade-db.sql
+0	64	Open-ILS/src/sql/Pg/1.2.2.2-1.2.2.3-upgrade-db.sql
+0	522	Open-ILS/src/sql/Pg/1.2.2.3-1.2.3.0-upgrade.sql
+0	5735	Open-ILS/src/sql/Pg/1.2.4-1.4-upgrade-db.sql
+0	100	Open-ILS/src/sql/Pg/1.4-shadow_full_rec-upgrade-db.sql
+0	7506	Open-ILS/src/sql/Pg/1.4.0.5-1.6.0.0-upgrade-db.sql
+0	19597	Open-ILS/src/sql/Pg/1.6.1-2.0-upgrade-db.sql
+0	8932	Open-ILS/src/sql/Pg/2.0-2.1-upgrade-db.sql
+0	164	Open-ILS/src/sql/Pg/2.0.3-2.0.4-upgrade-db.sql
+19597	0	Open-ILS/src/sql/Pg/version-upgrade/1.6.1-2.0-upgrade-db.sql
+8933	0	Open-ILS/src/sql/Pg/version-upgrade/2.0-2.1-upgrade-db.sql
+445	0	Open-ILS/src/sql/Pg/version-upgrade/2.0.1-2.0.2-upgrade-db.sql
+232	0	Open-ILS/src/sql/Pg/version-upgrade/2.0.2-2.0.3-upgrade-db.sql
+175	0	Open-ILS/src/sql/Pg/version-upgrade/2.0.3-2.0.4-upgrade-db.sql
+99	0	Open-ILS/src/sql/Pg/version-upgrade/2.0.4-2.0.5-upgrade-db.sql
+972	0	Open-ILS/src/sql/Pg/version-upgrade/2.0.5-2.0.6-upgrade-db.sql
+949	0	Open-ILS/src/sql/Pg/version-upgrade/2.0.6-2.0.7-upgrade-db.sql
+637	0	Open-ILS/src/sql/Pg/version-upgrade/2.0.7-2.0.8-upgrade-db.sql
+249	0	Open-ILS/src/sql/Pg/version-upgrade/2.0.8-2.0.9-upgrade-db.sql
+14	0	Open-ILS/src/sql/Pg/version-upgrade/2.0.9-2.0.10-upgrade-db.sql
+951	0	Open-ILS/src/sql/Pg/version-upgrade/2.1.0-2.1.1-upgrade-db.sql
+6	0	Open-ILS/src/sql/Pg/version-upgrade/2.1.1-2.1.2-upgrade-db.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/1.2.1-1.2.2-upgrade-db.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/1.2.2.0-1.2.2.1-upgrade-db.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/1.2.2.1-1.2.2.2-upgrade-db.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/1.2.2.2-1.2.2.3-upgrade-db.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/1.2.2.3-1.2.3.0-upgrade.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/1.2.4-1.4-upgrade-db.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/1.4-shadow_full_rec-upgrade-db.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/1.4.0.5-1.6.0.0-upgrade-db.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/1.6.1-2.0-upgrade-db.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/2.0-2.1-upgrade-db.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/2.0.3-2.0.4-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/1.6.1-2.0-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.0-2.1-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.0.1-2.0.2-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.0.2-2.0.3-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.0.3-2.0.4-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.0.4-2.0.5-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.0.5-2.0.6-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.0.6-2.0.7-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.0.7-2.0.8-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.0.8-2.0.9-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.0.9-2.0.10-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.1.0-2.1.1-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.1.1-2.1.2-upgrade-db.sql
+
+commit 90822bae307bdf64007ca7f18295809c4f525420
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Feb 24 13:40:06 2012 -0500
+
+    Correctly quote regexp-y characters in phrase quoting helper
+    
+    There was one extra character that caused the use of quotemeta() to not
+    actually happen.  This broke two things:
+    
+      1) phrase searching when the phrase had certain special characters in it
+            -- test case: "c++"
+      2) use of relevance bumps in the same situation
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+4	4	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+
+commit 8cfa6fff805686e4f998d85a335b23562c2a9a8e
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Mon Jan 30 13:34:53 2012 -0500
+
+    Stop targeter crash on empty metarecord with holds
+    
+    By checking for 1 or more records before looking them up.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+27	24	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+
+commit bd1e1adb4c60f518dac9f248d9eb477d68cced8b
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Feb 15 17:07:24 2012 -0500
+
+    Update pickup lib from holds shelf status test repair
+    
+    When determining whether a hold is getting updated while already on the
+    holds shelf, it's important to also treat hold status 5 as an on-shelf
+    status.  Status 5 comes into play when the circ.hold_shelf_status_delay
+    org unit setting is activated and acts as a virtual status indicating
+    the item is physically en route to the shelf.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit 29eefd73c3a6926a23328d7fbc53ec4a55bf2d20
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Feb 14 11:09:41 2012 -0500
+
+    Correct special winter handling in predictions
+    
+    The current serials prediction code has an exception for handling
+    cases where 'Winter 2010' is followed by 'Spring 2010' rather than
+    'Spring 2011'.  This exception assumed the more common case of a
+    combined subfield $y, e.g.:
+    
+    $yps21,22,23,24
+    
+    In doing so, it incorrectly handled less common cases where the $y
+    is listed separately:
+    
+    $yps21$yps22$yps23$yps24
+    
+    This change (with test data) ensures we only check the first $y
+    for our 'early winter' exception.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+7	2	Open-ILS/src/perlmods/lib/OpenILS/Utils/MFHD/Caption.pm
+6	0	Open-ILS/src/perlmods/lib/OpenILS/Utils/MFHD/test/mfhddata.txt
+
+commit 49d9cd14364d50f0ca1f309b6766d635952c6809
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Wed Feb 1 18:11:52 2012 -0500
+
+    Booking: make pick up interface show resources captured for reservation ...
+    
+    ... even beyond the first day of the reservation.  I can think of no
+    reason why this limitation existed in the first place.
+    
+    Also, just replace naive_start_of_day() with "today"
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2	3	Open-ILS/src/perlmods/lib/OpenILS/Application/Booking.pm
+
+commit 0041f47ce1e467b76115912c8a0666be7f3f0cc1
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Oct 17 12:27:04 2011 -0400
+
+    Stream results from targetable holds list retrieval
+    
+    Tested and slightly modified patch from Mike R. to improve multi-session
+    hold targeting.  This patch includes an update to the targetable holds
+    API call to stream results instead of returning them in 1 big chunk,
+    which has been known to result in messages too large for jabber
+    (max_stanza_size).  hold_targer.pl is updated to handle the stream.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+8	4	Open-ILS/src/support-scripts/hold_targeter.pl
+
+commit c3c37595218672b8b623ce8a38de4675b7807231
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Thu Jan 19 17:01:22 2012 -0500
+
+    Handle search timeouts more gracefully
+    
+    Another tweak courtesy of berick
+    
+    Returns 0 results if open-ils.storage timeouts instead of a nasty uncaught
+    undefined ARRAY exception resulting in an OPAC "spinning wheel of death"
+    (formerly the "green knight rider bar of death".
+    
+    Note that in the event of storage timeouts, you should tune and/or beef-up
+    your database.
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+
+commit c72d7d33a6c5721098665c296b6eff837a6d750e
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Sun Jan 22 11:42:08 2012 -0500
+
+    Fix "prefered_language" typo that blocked preferred language
+    
+    "preferred_language" is used everywhere else, but in the crucial core of
+    metabib.pm the "prefered_language" variant is used to check on the value
+    - hence, nothing other than the default "eng" is being used. Fix that.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/metabib.pm
+
+commit b13a713e9216df11da43688f5a382052e3e6457b
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Mon Jan 9 15:18:15 2012 -0500
+
+    Fix self-fetching callnumber columns
+    
+    The callnumber (and related) columns from circ.util.columns() is meant to
+    retrieve call number objects if given call number id's instead of objects,
+    but there was a bug preventing that.
+    
+    This fixes LP#906523, no call number information in billing interface
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+20	5	Open-ILS/xul/staff_client/server/circ/util.js
+
+commit 18f40ebb25221e77b610b3349a4c610e6c406807
+Author: James Fournie <jfournie@sitka.bclibraries.ca>
+Date:   Wed Dec 7 11:27:45 2011 -0800
+
+    Acq fix for LP#901378
+    
+    Proratable invoice charges do not have a fund_debit, we need to check for
+    this before attempting to delete the charge.  If there's no fund_debit
+    we can generally assume that there's no corresponding debit to this charge
+    and skip trying to delete it.
+    
+    Signed-off-by: James Fournie <jfournie@sitka.bclibraries.ca>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Invoice.pm
+
+commit c939a54bf867d7de5b8236610115f85ed4159608
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Tue Jan 17 11:13:15 2012 -0500
+
+    Don't show estimated wait for negative estimates
+    
+    JSPac code was just checking for the truth of the estimated_wait return,
+    but the estimated_wait return can be -1 under some circumstances.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2	1	Open-ILS/web/opac/skin/default/js/myopac.js
+
+commit 76ddaa1ac6bf26d33c71aa7f2158a60b51ad8913
+Author: James Fournie <jfournie@sitka.bclibraries.ca>
+Date:   Thu Dec 8 17:00:14 2011 -0800
+
+    P898427 Get holdings_xml.retrieve to flesh URIs properly
+    
+    Flesh URIs when requested with the -uris or -full feed type.
+    This was broken when commit f2b822f8 fixed authority browsing.
+    
+    holdings_xml-full never appeared to retrieve URIs properly, so that has
+    been added.
+    
+    This also makes holdings_xml-uris behave in the new manner of URIs as per
+    git commit ba47ecc61, retrieving URIs for ancestors rather than descendants.
+    
+    Signed-off-by: James Fournie <jfournie@sitka.bclibraries.ca>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+49	11	Open-ILS/src/perlmods/lib/OpenILS/Application/SuperCat.pm
+
+commit dc218c85eaa217bfb0e00cb145f6d6554e740f50
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Mon Dec 19 15:55:52 2011 -0500
+
+    Receipt Template Non-String Protection
+    
+    Don't try to replace on things that aren't strings.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2	1	Open-ILS/xul/staff_client/chrome/content/util/print.js
+
+commit 669dd0930025da28ec2a98b9ae706759b1abfc99
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Tue Jan 10 11:55:20 2012 -0500
+
+    Remove 'boo' alert in hold details interface
+    
+    Willing to let any surprises here be natural. :-)  We can re-bug if there are
+    issues.
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	1	Open-ILS/xul/staff_client/server/patron/hold_details.js
+
+commit e573374c6652d4b4131e9bc4d2133ae7d7ec11bc
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Jan 10 14:53:06 2012 -0500
+
+    Add customization to staff client serial and print CSS files
+    
+    The *_custom.css variants of these are created automatically at install
+    time, so give the parents the ability to actually use them.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2	0	Open-ILS/xul/staff_client/server/skin/print.css
+2	0	Open-ILS/xul/staff_client/server/skin/serial.css
+
+commit 728a4156b15b0934b78d9bdc835cb50b97e816e6
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Fri Jan 6 18:02:06 2012 -0800
+
+    Fix shelf_expire_time closed date overlap test
+    
+    One-liner courtesy of berick.
+    
+    * Steps to test
+    
+    This is time and timezone sensitive, so on the server:
+    
+    Change your timezone to America/Los Angeles: sudo dpkg-reconfigure tzdata
+    Stop your NTP server: sudo /etc/init.d/ntp stop
+    Set the time to 5pm: sudo date --set 17:00:00
+    
+    Stop Evergreen, Restart Postgres, Start Evergreen
+    
+    On the client:
+    
+    Make sure the timezone is set to Pacific time.
+    
+    1) Change the Library Setting "Default hold shelf expire interval" in the Holds group to have a value of "7 days" (without the quotes) for org BR1 (or if there is an existing value, you can keep it).
+    
+    2) Create a bib with one item: htest1  (Status of Available)
+    
+    3) Place a title level hold on the bib
+    
+    4) Check in htest1 (it should get captured for the hold)
+    
+    5) Browse the Hold Shelf and note the Shelf Expire Time for the hold that captured htest1 (it should be a week from now, unless you already have a conflicting closed date configured)
+    
+    6) Cancel the hold and re-check-in htest1 (to remove the Hold Shelf status)
+    
+    7) In the Closed Dates Editor, Add Single Day Closing for the date noticed previously in the Shelf Expire Time for BR1.
+    
+    8) Place a title level hold on the bib
+    
+    9) Check in htest1 (it should get captured for the hold)
+    
+    10) Browse the Hold Shelf and note the Shelf Expire Time for the hold that captured htest1 (now the bug is illustrated if you get the same date for Shelf Expire Time as you did before, since that day is now a Closed Date and should be skipped over.  The patch should fix this.)
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit 7a238e086a1a074914dcd8f53a663b109f106685
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Dec 29 13:46:24 2011 -0500
+
+    SETVAL the permission.grp_tree sequence after adding pinned IDs
+    
+    If we do not update the associated sequence after adding pinned IDs,
+    sites will be unable to add new permission groups until enough attempts
+    have failed. Let's bypass that little bit of pain.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/2.0-2.1-upgrade-db.sql
+
+commit 696b1de85eaf2b42b7b85ab62dd160444ce3f5b1
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Dec 29 13:33:38 2011 -0500
+
+    Prevent permission group conflicts in 2.1 upgrade script
+    
+    The 2.0-2.1 upgrade script relies on pinned IDs for permission.grp_tree
+    entries, which might conflict with custom permission groups that a site
+    might have added previously. A little manipulation can make life safe
+    for the pinned IDs.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+12	0	Open-ILS/src/sql/Pg/2.0-2.1-upgrade-db.sql
+
+commit cca9eb12e0173214a1521b45cc16a79e348421b3
+Author: James Fournie <jfournie@sitka.bclibraries.ca>
+Date:   Tue Nov 15 16:56:16 2011 -0800
+
+    Making the user profile selector disabled rather than readonly
+    in the case of a user editing their own account.  This prevents
+    a nasty bug whereby Dojo widgets with the readOnly flag set
+    become labels and therefore do not correctly hold a 'value'
+    like a normal form widget.  See LP#806625 for details.
+    
+    Signed-off-by: James Fournie <jfournie@sitka.bclibraries.ca>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+6	3	Open-ILS/web/js/ui/default/actor/user/register.js
+
+commit 1fc6e778db6ba859c63c20a799e7c4b2cb331837
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Jan 9 15:53:28 2012 -0500
+
+    Placeholder upgrade script for late-backport of a fix for 2.0
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+4	0	Open-ILS/src/sql/Pg/upgrade/0665.schema.placelholder.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0665.schema.placelholder.sql
+
+commit 426f01667cf17331e31666788fbae4d44449410a
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Mon Sep 26 14:40:19 2011 -0400
+
+    LP#845763 remote added content breaks
+    
+    remote added content breaks when using locally served content
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+4	3	Open-ILS/src/perlmods/lib/OpenILS/WWW/AddedContent.pm
+
+commit 89efa5fd441576dfc219257dd858c540ce98e6cf
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Jan 5 01:16:12 2012 -0500
+
+    Update translations from Launchpad
+    
+    Created using the fancy new update_pofiles script. Huzzah!
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+4	3	build/i18n/po/AutoFieldWidget.js/cs-CZ.po
+20	10	build/i18n/po/AutoFieldWidget.js/de-DE.po
+4	3	build/i18n/po/AutoFieldWidget.js/en-CA.po
+4	3	build/i18n/po/AutoFieldWidget.js/en-GB.po
+4	3	build/i18n/po/AutoFieldWidget.js/es-ES.po
+4	3	build/i18n/po/AutoFieldWidget.js/fr-CA.po
+4	3	build/i18n/po/AutoFieldWidget.js/hy-AM.po
+20	10	build/i18n/po/AutoFieldWidget.js/oc-FR.po
+4	3	build/i18n/po/AutoFieldWidget.js/pt-BR.po
+4	3	build/i18n/po/AutoFieldWidget.js/ru-RU.po
+18	8	build/i18n/po/AutoFieldWidget.js/tr-TR.po
+173	0	build/i18n/po/Searcher.js/ar-AR.po
+178	0	build/i18n/po/Searcher.js/cs-CZ.po
+178	0	build/i18n/po/Searcher.js/de-DE.po
+178	0	build/i18n/po/Searcher.js/en-CA.po
+178	0	build/i18n/po/Searcher.js/en-GB.po
+178	0	build/i18n/po/Searcher.js/es-ES.po
+178	0	build/i18n/po/Searcher.js/fr-CA.po
+173	0	build/i18n/po/Searcher.js/he-IL.po
+173	0	build/i18n/po/Searcher.js/hu-HU.po
+178	0	build/i18n/po/Searcher.js/hy-AM.po
+173	0	build/i18n/po/Searcher.js/oc-FR.po
+173	0	build/i18n/po/Searcher.js/pt-BR.po
+178	0	build/i18n/po/Searcher.js/ru-RU.po
+173	0	build/i18n/po/Searcher.js/sv-SE.po
+173	0	build/i18n/po/Searcher.js/tr-TR.po
+9	8	build/i18n/po/TranslatorPopup.js/cs-CZ.po
+19	13	build/i18n/po/TranslatorPopup.js/de-DE.po
+4	3	build/i18n/po/TranslatorPopup.js/en-CA.po
+4	3	build/i18n/po/TranslatorPopup.js/en-GB.po
+4	3	build/i18n/po/TranslatorPopup.js/es-ES.po
+4	3	build/i18n/po/TranslatorPopup.js/fr-CA.po
+4	3	build/i18n/po/TranslatorPopup.js/hy-AM.po
+19	13	build/i18n/po/TranslatorPopup.js/oc-FR.po
+4	3	build/i18n/po/TranslatorPopup.js/pt-BR.po
+4	3	build/i18n/po/TranslatorPopup.js/ru-RU.po
+18	12	build/i18n/po/TranslatorPopup.js/tr-TR.po
+4	3	build/i18n/po/User.js/cs-CZ.po
+13	7	build/i18n/po/User.js/de-DE.po
+4	3	build/i18n/po/User.js/en-CA.po
+4	3	build/i18n/po/User.js/en-GB.po
+4	3	build/i18n/po/User.js/es-ES.po
+4	3	build/i18n/po/User.js/fr-CA.po
+4	3	build/i18n/po/User.js/hy-AM.po
+14	8	build/i18n/po/User.js/oc-FR.po
+4	3	build/i18n/po/User.js/pt-BR.po
+4	3	build/i18n/po/User.js/ru-RU.po
+13	7	build/i18n/po/User.js/tr-TR.po
+7	4	build/i18n/po/XULTermLoader.js/cs-CZ.po
+18	10	build/i18n/po/XULTermLoader.js/de-DE.po
+7	4	build/i18n/po/XULTermLoader.js/en-CA.po
+7	4	build/i18n/po/XULTermLoader.js/en-GB.po
+7	4	build/i18n/po/XULTermLoader.js/es-ES.po
+7	4	build/i18n/po/XULTermLoader.js/fr-CA.po
+7	4	build/i18n/po/XULTermLoader.js/hy-AM.po
+19	11	build/i18n/po/XULTermLoader.js/oc-FR.po
+7	4	build/i18n/po/XULTermLoader.js/pt-BR.po
+7	4	build/i18n/po/XULTermLoader.js/ru-RU.po
+22	12	build/i18n/po/XULTermLoader.js/tr-TR.po
+35	37	build/i18n/po/admin.properties/cs-CZ.po
+59	29	build/i18n/po/admin.properties/de-DE.po
+2	3	build/i18n/po/admin.properties/en-CA.po
+3	4	build/i18n/po/admin.properties/en-GB.po
+7	6	build/i18n/po/admin.properties/es-ES.po
+2	3	build/i18n/po/admin.properties/fr-CA.po
+2	3	build/i18n/po/admin.properties/hy-AM.po
+17	13	build/i18n/po/admin.properties/oc-FR.po
+8	13	build/i18n/po/admin.properties/pt-BR.po
+6	5	build/i18n/po/admin.properties/ru-RU.po
+7	8	build/i18n/po/auth.properties/cs-CZ.po
+5	5	build/i18n/po/auth.properties/de-DE.po
+2	3	build/i18n/po/auth.properties/en-CA.po
+3	4	build/i18n/po/auth.properties/en-GB.po
+3	4	build/i18n/po/auth.properties/es-ES.po
+5	6	build/i18n/po/auth.properties/fr-CA.po
+4	4	build/i18n/po/auth.properties/hy-AM.po
+15	11	build/i18n/po/auth.properties/oc-FR.po
+2	3	build/i18n/po/auth.properties/pt-BR.po
+2	3	build/i18n/po/auth.properties/ru-RU.po
+16	13	build/i18n/po/auth.properties/tr-TR.po
+97	0	build/i18n/po/authority.js/ar-AR.po
+82	0	build/i18n/po/authority.js/cs-CZ.po
+82	0	build/i18n/po/authority.js/de-DE.po
+82	0	build/i18n/po/authority.js/en-CA.po
+82	0	build/i18n/po/authority.js/en-GB.po
+82	0	build/i18n/po/authority.js/es-ES.po
+82	0	build/i18n/po/authority.js/fr-CA.po
+97	0	build/i18n/po/authority.js/he-IL.po
+97	0	build/i18n/po/authority.js/hu-HU.po
+82	0	build/i18n/po/authority.js/hy-AM.po
+82	0	build/i18n/po/authority.js/oc-FR.po
+82	0	build/i18n/po/authority.js/pt-BR.po
+97	0	build/i18n/po/authority.js/ru-RU.po
+97	0	build/i18n/po/authority.js/sv-SE.po
+97	0	build/i18n/po/authority.js/tr-TR.po
+12	9	build/i18n/po/capture.js/cs-CZ.po
+93	33	build/i18n/po/capture.js/de-DE.po
+7	4	build/i18n/po/capture.js/en-CA.po
+7	4	build/i18n/po/capture.js/en-GB.po
+7	4	build/i18n/po/capture.js/es-ES.po
+11	8	build/i18n/po/capture.js/fr-CA.po
+15	12	build/i18n/po/capture.js/hy-AM.po
+94	34	build/i18n/po/capture.js/oc-FR.po
+23	18	build/i18n/po/capture.js/pt-BR.po
+7	4	build/i18n/po/capture.js/ru-RU.po
+142	143	build/i18n/po/cat.properties/cs-CZ.po
+615	523	build/i18n/po/cat.properties/de-DE.po
+16	15	build/i18n/po/cat.properties/en-CA.po
+13	14	build/i18n/po/cat.properties/en-GB.po
+58	59	build/i18n/po/cat.properties/es-ES.po
+83	151	build/i18n/po/cat.properties/fr-CA.po
+16	16	build/i18n/po/cat.properties/hy-AM.po
+55	129	build/i18n/po/cat.properties/pt-BR.po
+62	55	build/i18n/po/cat.properties/ru-RU.po
+183	56	build/i18n/po/cat.properties/tr-TR.po
+111	160	build/i18n/po/circ.properties/cs-CZ.po
+299	44	build/i18n/po/circ.properties/de-DE.po
+28	21	build/i18n/po/circ.properties/en-CA.po
+29	22	build/i18n/po/circ.properties/en-GB.po
+35	51	build/i18n/po/circ.properties/es-ES.po
+92	66	build/i18n/po/circ.properties/fr-CA.po
+23	17	build/i18n/po/circ.properties/hy-AM.po
+107	84	build/i18n/po/circ.properties/pt-BR.po
+103	80	build/i18n/po/circ.properties/ru-RU.po
+79	110	build/i18n/po/common.properties/cs-CZ.po
+113	101	build/i18n/po/common.properties/de-DE.po
+2	19	build/i18n/po/common.properties/en-CA.po
+3	20	build/i18n/po/common.properties/en-GB.po
+5	24	build/i18n/po/common.properties/es-ES.po
+34	33	build/i18n/po/common.properties/fr-CA.po
+18	35	build/i18n/po/common.properties/hy-AM.po
+44	35	build/i18n/po/common.properties/oc-FR.po
+11	52	build/i18n/po/common.properties/pt-BR.po
+29	34	build/i18n/po/common.properties/ru-RU.po
+15	17	build/i18n/po/conify.dtd/cs-CZ.po
+8	4	build/i18n/po/conify.dtd/de-DE.po
+2	3	build/i18n/po/conify.dtd/en-CA.po
+3	4	build/i18n/po/conify.dtd/en-GB.po
+3	4	build/i18n/po/conify.dtd/es-ES.po
+2	3	build/i18n/po/conify.dtd/fr-CA.po
+2	3	build/i18n/po/conify.dtd/hy-AM.po
+3	4	build/i18n/po/conify.dtd/pt-BR.po
+2	3	build/i18n/po/conify.dtd/ru-RU.po
+84	72	build/i18n/po/conify.js/cs-CZ.po
+210	202	build/i18n/po/conify.js/de-DE.po
+20	9	build/i18n/po/conify.js/en-CA.po
+22	9	build/i18n/po/conify.js/en-GB.po
+24	10	build/i18n/po/conify.js/es-ES.po
+24	14	build/i18n/po/conify.js/fr-CA.po
+24	11	build/i18n/po/conify.js/hy-AM.po
+24	11	build/i18n/po/conify.js/pt-BR.po
+20	9	build/i18n/po/conify.js/ru-RU.po
+217	191	build/i18n/po/conify.js/tr-TR.po
+509	1186	build/i18n/po/db.seed/cs-CZ.po
+2127	2233	build/i18n/po/db.seed/de-DE.po
+379	1123	build/i18n/po/db.seed/en-CA.po
+381	1125	build/i18n/po/db.seed/en-GB.po
+373	1150	build/i18n/po/db.seed/es-ES.po
+457	1150	build/i18n/po/db.seed/fr-CA.po
+363	1049	build/i18n/po/db.seed/hy-AM.po
+1983	3496	build/i18n/po/db.seed/oc-FR.po
+354	1908	build/i18n/po/db.seed/pt-BR.po
+348	999	build/i18n/po/db.seed/ru-RU.po
+1800	3306	build/i18n/po/db.seed/tr-TR.po
+658	789	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+4729	2673	build/i18n/po/fm_IDL.dtd/de-DE.po
+6	4	build/i18n/po/fm_IDL.dtd/en-CA.po
+6	4	build/i18n/po/fm_IDL.dtd/en-GB.po
+103	186	build/i18n/po/fm_IDL.dtd/es-ES.po
+26	38	build/i18n/po/fm_IDL.dtd/fr-CA.po
+46	43	build/i18n/po/fm_IDL.dtd/hy-AM.po
+65	113	build/i18n/po/fm_IDL.dtd/pt-BR.po
+62	104	build/i18n/po/fm_IDL.dtd/ru-RU.po
+152	103	build/i18n/po/ils_events.xml/cs-CZ.po
+332	247	build/i18n/po/ils_events.xml/de-DE.po
+87	38	build/i18n/po/ils_events.xml/en-CA.po
+95	41	build/i18n/po/ils_events.xml/en-GB.po
+138	123	build/i18n/po/ils_events.xml/es-ES.po
+176	93	build/i18n/po/ils_events.xml/fr-CA.po
+96	45	build/i18n/po/ils_events.xml/hy-AM.po
+377	178	build/i18n/po/ils_events.xml/pt-BR.po
+325	153	build/i18n/po/ils_events.xml/ru-RU.po
+1583	728	build/i18n/po/lang.dtd/ar-AR.po
+1415	1460	build/i18n/po/lang.dtd/cs-CZ.po
+4337	3687	build/i18n/po/lang.dtd/de-DE.po
+615	666	build/i18n/po/lang.dtd/en-CA.po
+624	846	build/i18n/po/lang.dtd/en-GB.po
+903	1263	build/i18n/po/lang.dtd/es-ES.po
+857	981	build/i18n/po/lang.dtd/fr-CA.po
+677	724	build/i18n/po/lang.dtd/hy-AM.po
+796	900	build/i18n/po/lang.dtd/pt-BR.po
+724	1024	build/i18n/po/lang.dtd/ru-RU.po
+123	97	build/i18n/po/multiclass_search_help.html/cs-CZ.po
+104	78	build/i18n/po/multiclass_search_help.html/en-CA.po
+104	77	build/i18n/po/multiclass_search_help.html/en-GB.po
+120	93	build/i18n/po/multiclass_search_help.html/es-ES.po
+108	77	build/i18n/po/multiclass_search_help.html/fr-CA.po
+116	8	build/i18n/po/multiclass_search_help.html/hu-HU.po
+103	77	build/i18n/po/multiclass_search_help.html/hy-AM.po
+99	48	build/i18n/po/multiclass_search_help.html/oc-FR.po
+122	95	build/i18n/po/multiclass_search_help.html/pt-BR.po
+119	93	build/i18n/po/multiclass_search_help.html/ru-RU.po
+129	7	build/i18n/po/multiclass_search_help.html/tr-TR.po
+229	218	build/i18n/po/offline.properties/cs-CZ.po
+292	32	build/i18n/po/offline.properties/de-DE.po
+24	18	build/i18n/po/offline.properties/en-CA.po
+23	18	build/i18n/po/offline.properties/en-GB.po
+21	27	build/i18n/po/offline.properties/es-ES.po
+47	52	build/i18n/po/offline.properties/fr-CA.po
+35	30	build/i18n/po/offline.properties/hy-AM.po
+37	37	build/i18n/po/offline.properties/pt-BR.po
+34	34	build/i18n/po/offline.properties/ru-RU.po
+186	77	build/i18n/po/offline.properties/tr-TR.po
+117	112	build/i18n/po/opac.dtd/cs-CZ.po
+233	75	build/i18n/po/opac.dtd/de-DE.po
+20	15	build/i18n/po/opac.dtd/en-CA.po
+21	16	build/i18n/po/opac.dtd/en-GB.po
+18	15	build/i18n/po/opac.dtd/es-ES.po
+29	18	build/i18n/po/opac.dtd/fr-CA.po
+192	108	build/i18n/po/opac.dtd/he-IL.po
+81	77	build/i18n/po/opac.dtd/hy-AM.po
+150	23	build/i18n/po/opac.dtd/oc-FR.po
+49	70	build/i18n/po/opac.dtd/pt-BR.po
+15	15	build/i18n/po/opac.dtd/ru-RU.po
+149	29	build/i18n/po/opac.dtd/tr-TR.po
+27	21	build/i18n/po/opac.js/cs-CZ.po
+142	44	build/i18n/po/opac.js/de-DE.po
+16	10	build/i18n/po/opac.js/en-CA.po
+20	21	build/i18n/po/opac.js/en-GB.po
+19	11	build/i18n/po/opac.js/es-ES.po
+20	14	build/i18n/po/opac.js/fr-CA.po
+17	11	build/i18n/po/opac.js/hy-AM.po
+83	30	build/i18n/po/opac.js/oc-FR.po
+24	22	build/i18n/po/opac.js/pt-BR.po
+17	8	build/i18n/po/opac.js/ru-RU.po
+68	24	build/i18n/po/opac.js/sv-SE.po
+79	29	build/i18n/po/opac.js/tr-TR.po
+272	256	build/i18n/po/patron.properties/cs-CZ.po
+406	319	build/i18n/po/patron.properties/de-DE.po
+48	44	build/i18n/po/patron.properties/en-CA.po
+48	43	build/i18n/po/patron.properties/en-GB.po
+45	59	build/i18n/po/patron.properties/es-ES.po
+86	83	build/i18n/po/patron.properties/fr-CA.po
+43	41	build/i18n/po/patron.properties/hy-AM.po
+54	64	build/i18n/po/patron.properties/pt-BR.po
+68	74	build/i18n/po/patron.properties/ru-RU.po
+127	79	build/i18n/po/patron.properties/tr-TR.po
+27	26	build/i18n/po/pickup_and_return.js/cs-CZ.po
+45	16	build/i18n/po/pickup_and_return.js/de-DE.po
+4	3	build/i18n/po/pickup_and_return.js/en-CA.po
+4	3	build/i18n/po/pickup_and_return.js/en-GB.po
+4	3	build/i18n/po/pickup_and_return.js/es-ES.po
+4	3	build/i18n/po/pickup_and_return.js/fr-CA.po
+4	3	build/i18n/po/pickup_and_return.js/hy-AM.po
+4	3	build/i18n/po/pickup_and_return.js/pt-BR.po
+4	3	build/i18n/po/pickup_and_return.js/ru-RU.po
+11	11	build/i18n/po/pull_list.js/cs-CZ.po
+29	15	build/i18n/po/pull_list.js/de-DE.po
+4	3	build/i18n/po/pull_list.js/en-CA.po
+4	3	build/i18n/po/pull_list.js/en-GB.po
+4	3	build/i18n/po/pull_list.js/es-ES.po
+12	11	build/i18n/po/pull_list.js/fr-CA.po
+4	3	build/i18n/po/pull_list.js/hy-AM.po
+17	16	build/i18n/po/pull_list.js/pt-BR.po
+4	3	build/i18n/po/pull_list.js/ru-RU.po
+17	15	build/i18n/po/register.js/cs-CZ.po
+125	14	build/i18n/po/register.js/de-DE.po
+6	4	build/i18n/po/register.js/en-CA.po
+6	4	build/i18n/po/register.js/en-GB.po
+7	6	build/i18n/po/register.js/es-ES.po
+32	31	build/i18n/po/register.js/fr-CA.po
+6	4	build/i18n/po/register.js/hy-AM.po
+6	4	build/i18n/po/register.js/pt-BR.po
+6	4	build/i18n/po/register.js/ru-RU.po
+123	12	build/i18n/po/register.js/tr-TR.po
+121	124	build/i18n/po/reports.dtd/cs-CZ.po
+13	12	build/i18n/po/reports.dtd/de-DE.po
+2	3	build/i18n/po/reports.dtd/en-CA.po
+3	4	build/i18n/po/reports.dtd/en-GB.po
+11	12	build/i18n/po/reports.dtd/es-ES.po
+4	5	build/i18n/po/reports.dtd/fr-CA.po
+14	15	build/i18n/po/reports.dtd/hy-AM.po
+3	4	build/i18n/po/reports.dtd/pt-BR.po
+2	3	build/i18n/po/reports.dtd/ru-RU.po
+6	7	build/i18n/po/reports.dtd/tr-TR.po
+44	44	build/i18n/po/reports.js/cs-CZ.po
+37	34	build/i18n/po/reports.js/de-DE.po
+4	4	build/i18n/po/reports.js/en-CA.po
+6	4	build/i18n/po/reports.js/en-GB.po
+6	4	build/i18n/po/reports.js/es-ES.po
+6	5	build/i18n/po/reports.js/fr-CA.po
+16	9	build/i18n/po/reports.js/hu-HU.po
+4	4	build/i18n/po/reports.js/hy-AM.po
+6	4	build/i18n/po/reports.js/pt-BR.po
+4	4	build/i18n/po/reports.js/ru-RU.po
+8	7	build/i18n/po/reports.js/tr-TR.po
+59	50	build/i18n/po/reservation.js/cs-CZ.po
+91	58	build/i18n/po/reservation.js/de-DE.po
+12	6	build/i18n/po/reservation.js/en-CA.po
+12	6	build/i18n/po/reservation.js/en-GB.po
+13	8	build/i18n/po/reservation.js/es-ES.po
+21	14	build/i18n/po/reservation.js/fr-CA.po
+14	7	build/i18n/po/reservation.js/hy-AM.po
+12	6	build/i18n/po/reservation.js/ru-RU.po
+24	16	build/i18n/po/selfcheck.js/cs-CZ.po
+120	36	build/i18n/po/selfcheck.js/de-DE.po
+13	6	build/i18n/po/selfcheck.js/en-CA.po
+13	6	build/i18n/po/selfcheck.js/en-GB.po
+16	12	build/i18n/po/selfcheck.js/es-ES.po
+13	6	build/i18n/po/selfcheck.js/fr-CA.po
+17	8	build/i18n/po/selfcheck.js/hy-AM.po
+13	6	build/i18n/po/selfcheck.js/pt-BR.po
+13	6	build/i18n/po/selfcheck.js/ru-RU.po
+656	0	build/i18n/po/serial.properties/ar-AR.po
+646	0	build/i18n/po/serial.properties/cs-CZ.po
+620	0	build/i18n/po/serial.properties/de-DE.po
+641	0	build/i18n/po/serial.properties/en-CA.po
+641	0	build/i18n/po/serial.properties/en-GB.po
+618	0	build/i18n/po/serial.properties/es-ES.po
+620	0	build/i18n/po/serial.properties/fr-CA.po
+656	0	build/i18n/po/serial.properties/he-IL.po
+656	0	build/i18n/po/serial.properties/hu-HU.po
+649	0	build/i18n/po/serial.properties/hy-AM.po
+656	0	build/i18n/po/serial.properties/oc-FR.po
+656	0	build/i18n/po/serial.properties/pt-BR.po
+656	0	build/i18n/po/serial.properties/ru-RU.po
+656	0	build/i18n/po/serial.properties/sv-SE.po
+656	0	build/i18n/po/serial.properties/tr-TR.po
+37	35	build/i18n/po/vandelay.dtd/cs-CZ.po
+39	19	build/i18n/po/vandelay.dtd/de-DE.po
+2	3	build/i18n/po/vandelay.dtd/en-CA.po
+3	4	build/i18n/po/vandelay.dtd/en-GB.po
+11	8	build/i18n/po/vandelay.dtd/es-ES.po
+4	4	build/i18n/po/vandelay.dtd/fr-CA.po
+30	31	build/i18n/po/vandelay.dtd/hy-AM.po
+3	4	build/i18n/po/vandelay.dtd/pt-BR.po
+4	4	build/i18n/po/vandelay.dtd/ru-RU.po
+46	38	build/i18n/po/vandelay.dtd/tr-TR.po
+ create mode 100644 build/i18n/po/Searcher.js/ar-AR.po
+ create mode 100644 build/i18n/po/Searcher.js/cs-CZ.po
+ create mode 100644 build/i18n/po/Searcher.js/de-DE.po
+ create mode 100644 build/i18n/po/Searcher.js/en-CA.po
+ create mode 100644 build/i18n/po/Searcher.js/en-GB.po
+ create mode 100644 build/i18n/po/Searcher.js/es-ES.po
+ create mode 100644 build/i18n/po/Searcher.js/fr-CA.po
+ create mode 100644 build/i18n/po/Searcher.js/he-IL.po
+ create mode 100644 build/i18n/po/Searcher.js/hu-HU.po
+ create mode 100644 build/i18n/po/Searcher.js/hy-AM.po
+ create mode 100644 build/i18n/po/Searcher.js/oc-FR.po
+ create mode 100644 build/i18n/po/Searcher.js/pt-BR.po
+ create mode 100644 build/i18n/po/Searcher.js/ru-RU.po
+ create mode 100644 build/i18n/po/Searcher.js/sv-SE.po
+ create mode 100644 build/i18n/po/Searcher.js/tr-TR.po
+ create mode 100644 build/i18n/po/authority.js/ar-AR.po
+ create mode 100644 build/i18n/po/authority.js/cs-CZ.po
+ create mode 100644 build/i18n/po/authority.js/de-DE.po
+ create mode 100644 build/i18n/po/authority.js/en-CA.po
+ create mode 100644 build/i18n/po/authority.js/en-GB.po
+ create mode 100644 build/i18n/po/authority.js/es-ES.po
+ create mode 100644 build/i18n/po/authority.js/fr-CA.po
+ create mode 100644 build/i18n/po/authority.js/he-IL.po
+ create mode 100644 build/i18n/po/authority.js/hu-HU.po
+ create mode 100644 build/i18n/po/authority.js/hy-AM.po
+ create mode 100644 build/i18n/po/authority.js/oc-FR.po
+ create mode 100644 build/i18n/po/authority.js/pt-BR.po
+ create mode 100644 build/i18n/po/authority.js/ru-RU.po
+ create mode 100644 build/i18n/po/authority.js/sv-SE.po
+ create mode 100644 build/i18n/po/authority.js/tr-TR.po
+ create mode 100644 build/i18n/po/serial.properties/ar-AR.po
+ create mode 100644 build/i18n/po/serial.properties/cs-CZ.po
+ create mode 100644 build/i18n/po/serial.properties/de-DE.po
+ create mode 100644 build/i18n/po/serial.properties/en-CA.po
+ create mode 100644 build/i18n/po/serial.properties/en-GB.po
+ create mode 100644 build/i18n/po/serial.properties/es-ES.po
+ create mode 100644 build/i18n/po/serial.properties/fr-CA.po
+ create mode 100644 build/i18n/po/serial.properties/he-IL.po
+ create mode 100644 build/i18n/po/serial.properties/hu-HU.po
+ create mode 100644 build/i18n/po/serial.properties/hy-AM.po
+ create mode 100644 build/i18n/po/serial.properties/oc-FR.po
+ create mode 100644 build/i18n/po/serial.properties/pt-BR.po
+ create mode 100644 build/i18n/po/serial.properties/ru-RU.po
+ create mode 100644 build/i18n/po/serial.properties/sv-SE.po
+ create mode 100644 build/i18n/po/serial.properties/tr-TR.po
+
+commit c557a3d40fa1d7bb9be6fdee396ad5ce6c24dccc
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Fri Dec 30 11:54:00 2011 -0500
+
+    Fix typo causing Javascript Shell to not enable
+    
+    DEBUG_CIENT != DEBUG_CLIENT
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	1	Open-ILS/xul/staff_client/chrome/content/main/menu_frame_menus.xul
+
+commit 8811aae7ba0a136b6ed6e07d267d1197a80ceb93
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Fri Dec 30 10:39:01 2011 -0500
+
+    Use the FTP site for Xulrunner downloads
+    
+    releases.mozilla.org was causing trouble for us; the FTP site appears to
+    be more stable.
+    
+    Oh, and bump the Xulrunner version slightly while we are at it.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2	2	Open-ILS/xul/staff_client/Makefile.am
+
+commit 24b99f9bc8c566f3fe1d589ccadda819b76b9279
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Nov 22 12:00:06 2011 -0500
+
+    Avoid updating deleted call numbers for 2.0 -> 2.1 upgrade
+    
+    25% of the call numbers on our production system are deleted, so
+    filtering out the deleted call numbers from the update in the 2.0 ->
+    2.1 upgrade saves a significant amount of time.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	1	Open-ILS/src/sql/Pg/2.0-2.1-upgrade-db.sql
+
+commit b78cdbe029cc1df6143329f490e984a57b0b31bb
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Thu Dec 8 11:26:33 2011 -0500
+
+    Show Suspended holds as Suspended
+    
+    In the staff client and JSPac show the status of a suspended hold as
+    Suspended rather than something like "Waiting for copy".
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+4	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+1	0	Open-ILS/web/opac/locale/en-US/opac.dtd
+3	1	Open-ILS/web/opac/skin/default/js/myopac.js
+1	0	Open-ILS/web/opac/skin/default/xml/myopac/myopac_holds.xml
+3	0	Open-ILS/xul/staff_client/server/circ/util.js
+1	0	Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
+
+commit 98dee37e088dd8d45fa98de3378462d23a09994a
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Thu Dec 15 14:38:54 2011 -0500
+
+    LP904915 Restore call number columns
+    
+    in Check In interface
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	1	Open-ILS/xul/staff_client/server/circ/checkin.js
+
+commit f7b94541b17dbb4e195222e89c750abdd02ac821
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Fri Dec 16 14:12:08 2011 -0500
+
+    LP# 902667 - Wrap upgrade script for Dewey sorting
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+43	0	Open-ILS/src/sql/Pg/upgrade/0658.schema.acn_dewey_sort_fix.sql
+0	43	Open-ILS/src/sql/Pg/upgrade/xxxx.dewey-sort-fix.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0658.schema.acn_dewey_sort_fix.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.dewey-sort-fix.sql
+
+commit 6412fa4aa6319a8ae5ad4a3251dc5d8c7285daef
+Author: James Fournie <jfournie@sitka.bclibraries.ca>
+Date:   Sat Dec 10 16:49:01 2011 -0800
+
+    Fix Dewey call number sorting
+    
+    Ported over Koha commit aef8358c - fix for Koha Bug 4265.
+    Further documented in Evergreen LP # 902667
+    Here's the description from the commit message by Magnus Enger:
+    
+    C4::ClassSortRoutine::Dewey turns "306 Les" into "306_Les"
+    for items.cn_sort and MARC-field 952$6, which results in
+    "306.46 Les" being sorted before "306 Les" in the OPAC.
+    With this patch, "306 Les" is turned into "306_000000000000000_Les".
+    
+    Signed-off-by: James Fournie <jfournie@sitka.bclibraries.ca>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+4	0	Open-ILS/src/sql/Pg/040.schema.asset.sql
+43	0	Open-ILS/src/sql/Pg/upgrade/xxxx.dewey-sort-fix.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.dewey-sort-fix.sql
+
+commit 9652c1fbeff393cf6b2b80bb3bd32fbaec8971ca
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Thu Dec 15 10:28:33 2011 -0500
+
+    turn objects (such as null) into empty strings
+    
+    when they're being treated as strings (with escape_html) during printing
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	0	Open-ILS/xul/staff_client/chrome/content/util/print.js
+
+commit b334f72f06831c4c497df539e9a2a35908bb85a6
+Author: bott <bott@grpl.org>
+Date:   Wed Dec 14 12:31:30 2011 -0500
+
+    Allow for the page offset when listing the "Result x of y" values.
+    
+    The record details page did not show the page offset correctly, so
+    result 13 would show up as "Result 3 of ###", and result 23 would also
+    show up as "Result 3 of ###".
+    
+    Signed-off-by: bott <bott@grpl.org>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+4	0	Open-ILS/web/opac/skin/default/js/rdetail.js
+
+commit 03f59215d8f659619135b8c30974b1196fa17728
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Dec 13 14:32:45 2011 -0500
+
+    Clear hold shelf/shelf_expire time for pickup lib change
+    
+    If a hold is on the holds shelf and the pickup library changes, clear
+    the shelf_time and shelf_expire_time, since the hold is now in transit.
+    
+    This is particularly important for avoiding action_trigger events for
+    the "hold_request.shelf_expires_soon" hook for what is now an
+    in-transit item.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+
+4	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit 6b3b8fd90f5649175f51fe9e76eebfc17333e4d3
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Wed Nov 16 15:19:18 2011 -0500
+
+    Serials: be less eager to offer season dropdown in holding code mini-wizard
+    
+    The recent commit (ebce79a288b in master) to make the holding code
+    mini-wizard offer a dropdown for season offers it too often, sometimes
+    in completely inappropriate cases.
+    
+    This commit gets it right, and incidentally fixes two totally broken
+    links elsewhere in alternate serials control view interfaces.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+3	3	Open-ILS/web/js/dojo/openils/widget/HoldingCode.js
+1	1	Open-ILS/web/js/ui/default/serial/list_item.js
+1	1	Open-ILS/web/js/ui/default/serial/list_stream.js
+
+commit b7c3db9deae29a376b00e44376e5f24d30a1fcb6
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Dec 5 11:44:41 2011 -0500
+
+    Code comments and tweaks for lost processing
+    
+    This commit is intended to do the following:
+    
+    * Fix case where MISSING status is not retained for items
+      being sent 'home' (as it was in previous versions)
+    * Be more explicit about when we unset the LOST status and when
+      we do not in checkin_handle_lost()
+    * Prevent update of the copy in checkin_handle_lost() unless we
+      actually change the status
+    * Restore log messages for special handling of LOST/MISSING
+      checkins away from 'home'
+    * Provide additional code comments to clarify intended behavior
+    
+    Note: Given the current restructure, MISSING item behavior is no
+    longer affected by 'lost_immediately_available' setting.  That
+    seemed more bug than feature, and can be implemented later
+    (perhaps as a separate setting) if required.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+27	8	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit d5c59feb5ebe33afc9e65e8e41e53e47b8f25c40
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Tue Nov 29 09:22:29 2011 -0500
+
+    Check OILS_SETTING_LOST_IMMEDIATELY_AVAILABLE in checkin_handle_lost.
+    
+    Check the value of OILS_SETTING_LOST_IMMEDIATELY_AVAILABLE before
+    changing the copy status in checkin_handle_lost. This makes the setting
+    actually do something.
+    
+    Add a couple of blank lines to aid in readability.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit 5fd9350ab5ac9c2718bbd0d9aecabedc0f027857
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Thu Nov 17 15:15:09 2011 -0500
+
+    Fix LP851000.
+    
+    Remove about 14 lines from OpenILS/Application/Circ/Circulate.pm
+    in the checkin_handle_circ subroutine that check whether or not
+    the checkin happens at the copy's circ_lib and the value of the
+    circ.lost_immediately_available org unit setting.
+    
+    This change causes the handle_lost subroutine to run regardless of
+    where the checkin takes place for a more consistent experience.
+    
+    Whether or not billings are voided, overdues restored, etc. is still
+    determined by the copy's circ_lib.
+    
+    Given how the hold targeter and transit code works, it does not appear
+    the the circ.lost_immediately_available setting could ever do what it
+    was intended to do. Given these changes to the code it is now unnecessary.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	15	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit 36978ac3dd74ffd44a73a290e6363ca6762af515
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Dec 1 23:06:50 2011 -0500
+
+    LP881774: Missing schema on function in 2.0-2.1 upgrade
+    
+    Although the search path is altered to include the evergreen schema at
+    the start of the upgrade, one of the functions in the evergreen schema
+    does not resolve when invoked without the explicit schema later in the
+    upgrade script. We address that superficial (but failure provoking / time
+    wasting) problem by qualifying the function with the evergreen schema in
+    this commit, but we should also find out why the altered search path
+    does not seem to be functioning in the upgrade script.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	1	Open-ILS/src/sql/Pg/2.0-2.1-upgrade-db.sql
+
+commit a70e7212db7e4932d2447019d0bd2b71f6db4e48
+Author: Ben Shum <bshum@biblio.org>
+Date:   Wed Nov 23 15:14:32 2011 -0500
+
+    Fix for LP894125 - reshelving interval
+    
+    Update to reshelving code to utilize actor.org_unit_ancestor_setting function
+    and properly retrieve org settings for "circ.reshelving_complete.interval" for
+    org unit or ancestors.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+2	5	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+
+commit 08d4c868183d2a3eb1ea74513f28f5fe3ac24094
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Nov 22 13:33:07 2011 -0500
+
+    Enable record summary to be scrollable at larger font sizes
+    
+    The record summary at the top of the cataloguing interfaces appears to
+    determine its size based on the "normal" font size at load; then, when a
+    larger font size is applied to the page, the text gets hidden by the
+    fixed size of the groupbox.  Ideally the groupbox would adjust to
+    accomodate the larger font size, but after trying many different
+    approaches the best short-term approach seems to be to enable overflow
+    so that scrollbars can appear when necessary.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+1	1	Open-ILS/xul/staff_client/server/cat/bib_brief.xul
+
+commit 22f7c28bbfe83b204cbc1107ed7d3bcd3b21ff2d
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Nov 17 16:22:58 2011 -0500
+
+    Switch to new Google Books API; make SSL friendly
+    
+    As implied in the title, this commit does two things.  First, it
+    switches to the new Google Books API (which is both imminent and
+    also necessary to make SSL calls work).  From what I have read and
+    experienced, we do not need an API key to do searches and previews.
+    I have also not hit any kind of unauthenticated limit in several
+    days of heavy testing, so I would figure we are safe (at this
+    point) for normal end-user OPAC browsing.
+    
+    Second, all Google Book requests are now done over https.  This
+    eliminates the majority of mixed content warnings when browsing
+    securely, though you still get a warning when you actual do preview
+    a book.
+    
+    In addition to possibly implementing protocol detection (rather
+    than doing https all the time as a "lowest" common denominator),
+    there are a few minor points where we might consider future changes.
+    Those points are commented within the code.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+6	10	Open-ILS/web/opac/skin/default/js/rdetail.js
+36	11	Open-ILS/web/opac/skin/default/js/result_common.js
