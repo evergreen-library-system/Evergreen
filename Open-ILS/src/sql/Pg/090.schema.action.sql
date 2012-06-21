@@ -757,8 +757,8 @@ BEGIN
           FROM  action.hold_request
           WHERE usr = usr_id
                 AND ( fulfillment_time IS NOT NULL OR cancel_time IS NOT NULL )
-                AND request_time > NOW() - view_age
-          ORDER BY request_time DESC
+                AND COALESCE(fulfillment_time, cancel_time) > NOW() - view_age
+          ORDER BY COALESCE(fulfillment_time, cancel_time) DESC
           LIMIT view_count
     LOOP
         RETURN NEXT h;
