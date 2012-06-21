@@ -1104,6 +1104,8 @@ sub run_patron_permit_scripts {
             if ($self->is_noncat) {
                 # no_item result is OK during noncat checkout
                 @trimmed_results = grep { ($_->{fail_part} || '') ne 'no_item' } @$results;
+            } else {
+                @trimmed_results = @$results;
             }
 
             if ($self->checkout_is_for_hold) {
