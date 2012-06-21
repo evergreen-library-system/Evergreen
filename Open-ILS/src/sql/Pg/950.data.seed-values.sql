@@ -9004,6 +9004,45 @@ INSERT INTO config.global_flag (name,label,enabled)
         TRUE
     );
 
+INSERT INTO config.global_flag  (name, enabled, label)
+    VALUES (
+        'history.hold.retention_age',
+        oils_i18n_gettext('history.hold.retention_age', 'Historical Hold Retention Age', 'cgf', 'label'),
+        TRUE
+    ),(
+        'history.hold.retention_age_fulfilled',
+        oils_i18n_gettext('history.hold.retention_age_fulfilled', 'Historical Hold Retention Age - Fulfilled', 'cgf', 'label'),
+        FALSE
+    ),(
+        'history.hold.retention_age_canceled',
+        oils_i18n_gettext('history.hold.retention_age_canceled', 'Historical Hold Retention Age - Canceled (Default)', 'cgf', 'label'),
+        FALSE
+    ),(
+        'history.hold.retention_age_canceled_1',
+        oils_i18n_gettext('history.hold.retention_age_canceled_1', 'Historical Hold Retention Age - Canceled (Untarged expiration)', 'cgf', 'label'),
+        FALSE
+    ),(
+        'history.hold.retention_age_canceled_2',
+        oils_i18n_gettext('history.hold.retention_age_canceled_2', 'Historical Hold Retention Age - Canceled (Hold Shelf expiration)', 'cgf', 'label'),
+        FALSE
+    ),(
+        'history.hold.retention_age_canceled_3',
+        oils_i18n_gettext('history.hold.retention_age_canceled_3', 'Historical Hold Retention Age - Canceled (Patron via phone)', 'cgf', 'label'),
+        TRUE
+    ),(
+        'history.hold.retention_age_canceled_4',
+        oils_i18n_gettext('history.hold.retention_age_canceled_4', 'Historical Hold Retention Age - Canceled (Patron in person)', 'cgf', 'label'),
+        TRUE
+    ),(
+        'history.hold.retention_age_canceled_5',
+        oils_i18n_gettext('history.hold.retention_age_canceled_5', 'Historical Hold Retention Age - Canceled (Staff forced)', 'cgf', 'label'),
+        TRUE
+    ),(
+        'history.hold.retention_age_canceled_6',
+        oils_i18n_gettext('history.hold.retention_age_canceled_6', 'Historical Hold Retention Age - Canceled (Patron via OPAC)', 'cgf', 'label'),
+        FALSE
+    );
+
 INSERT INTO config.global_flag (name, label, enabled)
     VALUES (
         'cat.maintain_control_numbers',
