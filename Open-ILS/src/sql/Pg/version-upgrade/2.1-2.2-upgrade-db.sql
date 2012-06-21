@@ -1,7 +1,7 @@
---Upgrade Script for 2.1 to 2.2-alpha2
+--Upgrade Script for 2.1 to 2.2.0
 
 -- Don't require use of -vegversion=something
-\set eg_version '''2.2'''
+\set eg_version '''2.2.0'''
 
 -- DROP objects that might have existed from a prior run of 0526
 -- Yes this is ironic.
@@ -11,7 +11,7 @@ DROP FUNCTION IF EXISTS evergreen.upgrade_list_applied_deprecates(TEXT);
 DROP FUNCTION IF EXISTS evergreen.upgrade_list_applied_supersedes(TEXT);
 
 BEGIN;
-INSERT INTO config.upgrade_log (version) VALUES ('2.2-beta2');
+INSERT INTO config.upgrade_log (version) VALUES ('2.2.0');
 
 INSERT INTO config.upgrade_log (version) VALUES ('0526'); --miker
 
