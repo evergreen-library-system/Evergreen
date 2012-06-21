@@ -3637,7 +3637,12 @@ sub checkin_handle_backdate {
     my $new_date = DateTime::Format::ISO8601->new->parse_datetime($bd);
     $new_date->set_hour($original_date->hour());
     $new_date->set_minute($original_date->minute());
-    $bd = cleanse_ISO8601($new_date->datetime());
+    if ($new_date >= DateTime->now) {
+        # We can't say that the item will be checked in later...so assume someone's clock is wrong instead.
+        $bd = undef;
+    } else {
+        $bd = cleanse_ISO8601($new_date->datetime());
+    }
 
     $self->backdate($bd);
     return undef;
