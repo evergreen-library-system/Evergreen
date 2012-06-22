@@ -51,6 +51,8 @@
         grid.filterUi.doApply();
     }
 
+    var _reactors_cache;
+
     /* This and its subclasses exist because *FilterPane expect things that
        act like AutoFieldWidget, which is a widget /builder/.  */
     dojo.declare(
@@ -66,7 +68,7 @@
             "build": function() {
                 var dijitArgs = dojo.mixin(
                     {
-                        "store": this.store,
+                        "store": this.store || this.storeBuilder(),
                         "query": {},
                         "labelAttr": "label",
                         "searchAttr": "label",
@@ -75,6 +77,27 @@
 
                 this.widget =
                     new dijit.form.FilteringSelect(dijitArgs, this.parentNode);
+            }
+        }
+    );
+
+    dojo.declare(
+        "openils.widget._FSBuilder.Reactor",
+        [openils.widget._FSBuilder], {
+            "storeBuilder": function() {
+                _reactors_cache = _reactors_cache ||
+                    fieldmapper.standardRequest(
+                        ["open-ils.actor", "open-ils.actor.action_trigger.reactors.all_in_use"],
+                        { "params": [openils.User.authtoken] }
+                    ).sort();
+                return new dojo.data.ItemFileReadStore({
+                    "data": {
+                        "identifier": "name",
+                        "items": _reactors_cache.map(
+                            function(o) { return {"name": o, "label": o}; }
+                        )
+                    }
+                });
             }
         }
     );
@@ -132,6 +155,7 @@
     var filter_widget_builders = {
         "ath:core_type": openils.widget._FSBuilder.CoreType,
         "atul:state": openils.widget._FSBuilder.EventState,
+        "atul:reactor": openils.widget._FSBuilder.Reactor,
     };
 
     function print_all() {

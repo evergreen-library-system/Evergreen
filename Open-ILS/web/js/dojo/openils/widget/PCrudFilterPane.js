@@ -486,6 +486,11 @@ if (!dojo._hasResource['openils.widget.PCrudFilterPane']) {
                 return;
         };
 
+        /* wrap s in %'s unless it already contains at least one %. */
+        this._add_like_wildcards = function(s) {
+            return s.indexOf("%") == -1 ? ("%" + s + "%") : s;
+        };
+
         this.get_selected_operator = function() {
             if (this.operator_selector)
                 return this.operator_selector.item;
@@ -538,10 +543,15 @@ if (!dojo._hasResource['openils.widget.PCrudFilterPane']) {
                 } else {
                     var clause = {};
                     var op = this.get_selected_operator_name();
+
+                    var prep_function = function(o) { return o; /* no-op */ };
+                    if (String(op).match(/like/))
+                        prep_function = this._add_like_wildcards;
+
                     if (values.length == 1)
-                        clause[op] = values.pop();
+                        clause[op] = prep_function(values.pop());
                     else
-                        clause[op] = values;
+                        clause[op] = dojo.map(values, prep_function);
                     return clause;
                 }
             } else {

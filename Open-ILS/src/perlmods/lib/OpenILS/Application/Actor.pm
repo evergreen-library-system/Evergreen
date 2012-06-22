@@ -4605,4 +4605,43 @@ sub mark_users_contact_invalid {
     );
 }
 
+# Putting the following method in open-ils.actor is a bad fit, except in that
+# it serves an interface that lives under 'actor' in the templates directory,
+# and in that there's nowhere else obvious to put it (open-ils.trigger is
+# private).
+__PACKAGE__->register_method(
+    api_name => "open-ils.actor.action_trigger.reactors.all_in_use",
+    method   => "get_all_at_reactors_in_use",
+    api_level=> 1,
+    argc     => 1,
+    signature=> {
+        params => [
+            { name => 'authtoken', type => 'string' }
+        ],
+        return => {
+            desc => 'list of reactor names', type => 'array'
+        }
+    }
+);
+
+sub get_all_at_reactors_in_use {
+    my ($self, $conn, $auth) = @_;
+
+    my $e = new_editor(authtoken => $auth);
+    $e->checkauth or return $e->die_event;
+    return $e->die_event unless $e->allowed('VIEW_TRIGGER_EVENT_DEF');
+
+    my $reactors = $e->json_query({
+        select => {
+            atevdef => [{column => "reactor", transform => "distinct"}]
+        },
+        from => {atevdef => {}}
+    });
+
+    return $e->die_event unless ref $reactors eq "ARRAY";
+    $e->disconnect;
+
+    return [ map { $_->{reactor} } @$reactors ];
+}
+
 1;
