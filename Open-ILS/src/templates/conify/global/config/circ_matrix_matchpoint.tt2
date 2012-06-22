@@ -9,7 +9,7 @@
     <table  jsId="cmGrid"
             style="height: 600px;"
             dojoType="openils.widget.AutoGrid"
-            fieldOrder="['id', 'active', 'grp', 'org_unit', 'copy_circ_lib', 'copy_owning_lib', 'user_home_ou', 'is_renewal', 'juvenile_flag', 'circ_modifier', 'marc_type', 'marc_form', 'marc_bib_level', 'marc_vr_format', 'ref_flag', 'usr_age_lower_bound', 'usr_age_upper_bound', 'item_age', 'circulate', 'duration_rule', 'renewals', 'hard_due_date', 'recurring_fine_rule', 'grace_period', 'max_fine_rule', 'available_copy_hold_ratio', 'total_copy_hold_ratio', 'script_test']"
+            fieldOrder="['id', 'active', 'grp', 'org_unit', 'copy_circ_lib', 'copy_owning_lib', 'user_home_ou', 'is_renewal', 'juvenile_flag', 'circ_modifier', 'copy_location', 'marc_type', 'marc_form', 'marc_bib_level', 'marc_vr_format', 'ref_flag', 'usr_age_lower_bound', 'usr_age_upper_bound', 'item_age', 'circulate', 'duration_rule', 'renewals', 'hard_due_date', 'recurring_fine_rule', 'grace_period', 'max_fine_rule', 'available_copy_hold_ratio', 'total_copy_hold_ratio', 'script_test']"
             defaultCellWidth='"auto"'
             query="{id: '*'}"
             fmClass='ccmm'

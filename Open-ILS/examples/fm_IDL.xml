@@ -1413,6 +1413,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             <field reporter:label="User Home Lib" name="user_home_ou" reporter:datatype="float"/>
             <field reporter:label="Permission Group" name="grp" reporter:datatype="float"/>
             <field reporter:label="Circulation Modifier" name="circ_modifier" reporter:datatype="float"/>
+            <field reporter:label="Copy Location" name="copy_location" reporter:datatype="float"/>
             <field reporter:label="MARC Type" name="marc_type" reporter:datatype="float"/>
             <field reporter:label="MARC Form" name="marc_form" reporter:datatype="float"/>
             <field reporter:label="MARC Bib Level" name="marc_bib_level" reporter:datatype="float"/>
@@ -1520,6 +1521,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="User Home Lib" name="user_home_ou" reporter:datatype="org_unit"/>
 			<field reporter:label="Permission Group" name="grp" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Circulation Modifier" name="circ_modifier" oils_persist:primitive="string" reporter:datatype="link"/>
+			<field reporter:label="Copy Location" name="copy_location" reporter:datatype="link"/>
 			<field reporter:label="MARC Type" name="marc_type" oils_persist:primitive="string" reporter:datatype="link"/>
 			<field reporter:label="MARC Form" name="marc_form" oils_persist:primitive="string" reporter:datatype="link"/>
 			<field reporter:label="MARC Bib Level" name="marc_bib_level" oils_persist:primitive="string" reporter:datatype="link"/>
@@ -1547,6 +1549,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="user_home_ou" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="grp" reltype="has_a" key="id" map="" class="pgt"/>
 			<link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
+			<link field="copy_location" reltype="has_a" key="id" map="" class="acpl"/>
 			<link field="marc_type" reltype="has_a" key="code" map="" class="citm"/>
 			<link field="marc_form" reltype="has_a" key="code" map="" class="cifm"/>
 			<link field="marc_bib_level" reltype="has_a" key="code" map="" class="cblvl"/>

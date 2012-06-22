@@ -57,6 +57,7 @@ CREATE TABLE config.circ_matrix_matchpoint (
     org_unit             INT        NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
     grp                  INT     NOT NULL REFERENCES permission.grp_tree (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top applicable group from the group tree; will need descendents and prox functions for filtering
     circ_modifier        TEXT    REFERENCES config.circ_modifier (code) DEFERRABLE INITIALLY DEFERRED,
+    copy_location        INT     REFERENCES asset.copy_location (id) DEFERRABLE INITIALLY DEFERRED,
     marc_type            TEXT,
     marc_form            TEXT,
     marc_bib_level       TEXT,
@@ -84,7 +85,7 @@ CREATE TABLE config.circ_matrix_matchpoint (
 );
 
 -- Nulls don't count for a constraint match, so we have to coalesce them into something that does.
-CREATE UNIQUE INDEX ccmm_once_per_paramset ON config.circ_matrix_matchpoint (org_unit, grp, COALESCE(circ_modifier, ''), COALESCE(marc_type, ''), COALESCE(marc_form, ''), COALESCE(marc_bib_level,''), COALESCE(marc_vr_format, ''), COALESCE(copy_circ_lib::TEXT, ''), COALESCE(copy_owning_lib::TEXT, ''), COALESCE(user_home_ou::TEXT, ''), COALESCE(ref_flag::TEXT, ''), COALESCE(juvenile_flag::TEXT, ''), COALESCE(is_renewal::TEXT, ''), COALESCE(usr_age_lower_bound::TEXT, ''), COALESCE(usr_age_upper_bound::TEXT, ''), COALESCE(item_age::TEXT, '')) WHERE active;
+CREATE UNIQUE INDEX ccmm_once_per_paramset ON config.circ_matrix_matchpoint (org_unit, grp, COALESCE(circ_modifier, ''), COALESCE(copy_location::TEXT, ''), COALESCE(marc_type, ''), COALESCE(marc_form, ''), COALESCE(marc_bib_level,''), COALESCE(marc_vr_format, ''), COALESCE(copy_circ_lib::TEXT, ''), COALESCE(copy_owning_lib::TEXT, ''), COALESCE(user_home_ou::TEXT, ''), COALESCE(ref_flag::TEXT, ''), COALESCE(juvenile_flag::TEXT, ''), COALESCE(is_renewal::TEXT, ''), COALESCE(usr_age_lower_bound::TEXT, ''), COALESCE(usr_age_upper_bound::TEXT, ''), COALESCE(item_age::TEXT, '')) WHERE active;
 
 -- Limit groups for circ counting
 CREATE TABLE config.circ_limit_group (
@@ -195,6 +196,7 @@ BEGIN
         weights.grp                 := 11.0;
         weights.org_unit            := 10.0;
         weights.circ_modifier       := 5.0;
+        weights.copy_location       := 5.0;
         weights.marc_type           := 4.0;
         weights.marc_form           := 3.0;
         weights.marc_bib_level      := 2.0;
@@ -246,6 +248,7 @@ BEGIN
                 AND (m.usr_age_upper_bound      IS NULL OR (user_age IS NOT NULL AND m.usr_age_upper_bound > user_age))
                 -- Static Item Checks
                 AND (m.circ_modifier            IS NULL OR m.circ_modifier = item_object.circ_modifier)
+                AND (m.copy_location            IS NULL OR m.copy_location = item_object.location)
                 AND (m.marc_type                IS NULL OR m.marc_type = COALESCE(item_object.circ_as_type, rec_descriptor.item_type))
                 AND (m.marc_form                IS NULL OR m.marc_form = rec_descriptor.item_form)
                 AND (m.marc_bib_level           IS NULL OR m.marc_bib_level = rec_descriptor.bib_level)
@@ -268,6 +271,7 @@ BEGIN
                 CASE WHEN m.usr_age_upper_bound IS NOT NULL THEN 4^weights.usr_age_upper_bound ELSE 0.0 END +
                 -- Static Item Checks
                 CASE WHEN m.circ_modifier       IS NOT NULL THEN 4^weights.circ_modifier ELSE 0.0 END +
+                CASE WHEN m.copy_location       IS NOT NULL THEN 4^weights.copy_location ELSE 0.0 END +
                 CASE WHEN m.marc_type           IS NOT NULL THEN 4^weights.marc_type ELSE 0.0 END +
                 CASE WHEN m.marc_form           IS NOT NULL THEN 4^weights.marc_form ELSE 0.0 END +
                 CASE WHEN m.marc_vr_format      IS NOT NULL THEN 4^weights.marc_vr_format ELSE 0.0 END +

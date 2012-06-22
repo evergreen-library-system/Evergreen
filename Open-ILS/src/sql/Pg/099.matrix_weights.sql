@@ -8,6 +8,7 @@ CREATE TABLE config.circ_matrix_weights (
     org_unit                NUMERIC(6,2)   NOT NULL,
     grp                     NUMERIC(6,2)   NOT NULL,
     circ_modifier           NUMERIC(6,2)   NOT NULL,
+    copy_location           NUMERIC(6,2)   NOT NULL,
     marc_type               NUMERIC(6,2)   NOT NULL,
     marc_form               NUMERIC(6,2)   NOT NULL,
     marc_bib_level          NUMERIC(6,2)   NOT NULL,
