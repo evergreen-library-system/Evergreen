@@ -35,10 +35,10 @@ circ.util.abort_transits = function(selection_list) {
                 if (typeof robj.ilsevent != 'undefined') {
                     switch(Number(robj.ilsevent)) {
                         case 1225 /* TRANSIT_ABORT_NOT_ALLOWED */ :
-                            alert(document.getElementById('circString').getFormattedString('staff.circ.utils.abort_transits.not_allowed', [copy_id]) + '\n' + robj.desc);
+                            alert(document.getElementById('circStrings').getFormattedString('staff.circ.utils.abort_transits.not_allowed', [copy_id]) + '\n' + robj.desc);
                         break;
                         case 1504 /* ACTION_TRANSIT_COPY_NOT_FOUND */ :
-                            alert(document.getElementById('circString').getString('staff.circ.utils.abort_transits.not_found'));
+                            alert(document.getElementById('circStrings').getString('staff.circ.utils.abort_transits.not_found'));
                         break;
                         case 5000 /* PERM_FAILURE */ :
                         break;
@@ -49,7 +49,7 @@ circ.util.abort_transits = function(selection_list) {
                 }
             }
         } catch(E) {
-            obj.error.standard_unexpected_error_alert(document.getElementById('circString').getString('staff.circ.utils.abort_transits.unexpected_error'),E);
+            obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.utils.abort_transits.unexpected_error'),E);
         }
     }
 };
