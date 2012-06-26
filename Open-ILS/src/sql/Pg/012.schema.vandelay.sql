@@ -506,7 +506,7 @@ BEGIN
 
     -- generate the where clause and return that directly (into wq), and as
     -- a side-effect, populate the _vandelay_tmp_[qj]rows tables.
-    wq := vandelay.get_expr_from_match_set(match_set_id);
+    wq := vandelay.get_expr_from_match_set(match_set_id, tags_rstore);
 
     query_ := 'SELECT DISTINCT(bre.id) AS record, ';
 
@@ -569,7 +569,8 @@ END;
 $func$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION vandelay.get_expr_from_match_set(
-    match_set_id INTEGER
+    match_set_id INTEGER,
+    tags_rstore HSTORE
 ) RETURNS TEXT AS $$
 DECLARE
     root    vandelay.match_set_point;
@@ -577,12 +578,13 @@ BEGIN
     SELECT * INTO root FROM vandelay.match_set_point
         WHERE parent IS NULL AND match_set = match_set_id;
 
-    RETURN vandelay.get_expr_from_match_set_point(root);
+    RETURN vandelay.get_expr_from_match_set_point(root, tags_rstore);
 END;
 $$  LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION vandelay.get_expr_from_match_set_point(
-    node vandelay.match_set_point
+    node vandelay.match_set_point,
+    tags_rstore HSTORE
 ) RETURNS TEXT AS $$
 DECLARE
     q           TEXT;
@@ -605,13 +607,13 @@ BEGIN
                 q := q || ' ' || this_op || ' ';
             END IF;
             i := i + 1;
-            q := q || vandelay.get_expr_from_match_set_point(child);
+            q := q || vandelay.get_expr_from_match_set_point(child, tags_rstore);
         END LOOP;
         q := q || ')';
         RETURN q;
     ELSIF node.bool_op IS NULL THEN
         PERFORM vandelay._get_expr_push_qrow(node);
-        PERFORM vandelay._get_expr_push_jrow(node);
+        PERFORM vandelay._get_expr_push_jrow(node, tags_rstore);
         RETURN vandelay._get_expr_render_one(node);
     ELSE
         RETURN '';
@@ -629,7 +631,8 @@ END;
 $$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION vandelay._get_expr_push_jrow(
-    node vandelay.match_set_point
+    node vandelay.match_set_point,
+    tags_rstore HSTORE
 ) RETURNS VOID AS $$
 DECLARE
     jrow        TEXT;
@@ -678,13 +681,8 @@ BEGIN
         END IF;
         jrow := jrow || ' AND (';
 
-        IF caseless THEN
-            jrow := jrow || 'LOWER(' || my_alias || '.value) ' || op;
-        ELSE
-            jrow := jrow || my_alias || '.value ' || op;
-        END IF;
-
-        jrow := jrow || ' ANY(($1->''' || tagkey || ''')::TEXT[])))';
+        jrow := jrow || vandelay._node_tag_comparisons(caseless, my_alias, op, tags_rstore, tagkey);
+        jrow := jrow || '))';
     ELSE    -- svf
         jrow := jrow || 'record_attr) ' || my_alias || ' ON (' ||
             my_alias || '.id = bre.id AND (' ||
@@ -692,6 +690,50 @@ BEGIN
             ''' ' || op || ' $2->''' || node.svf || '''))';
     END IF;
     INSERT INTO _vandelay_tmp_jrows (j) VALUES (jrow);
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION vandelay._node_tag_comparisons(
+    caseless BOOLEAN,
+    my_alias TEXT,
+    op TEXT,
+    tags_rstore HSTORE,
+    tagkey TEXT
+) RETURNS TEXT AS $$
+DECLARE
+    result  TEXT;
+    i       INT;
+    vals    TEXT[];
+BEGIN
+    i := 1;
+    vals := tags_rstore->tagkey;
+    result := '';
+
+    WHILE TRUE LOOP
+        IF i > 1 THEN
+            IF vals[i] IS NULL THEN
+                EXIT;
+            ELSE
+                result := result || ' OR ';
+            END IF;
+        END IF;
+
+        IF caseless THEN
+            result := result || 'LOWER(' || my_alias || '.value) ' || op;
+        ELSE
+            result := result || my_alias || '.value ' || op;
+        END IF;
+
+        result := result || ' ' || COALESCE('''' || vals[i] || '''', 'NULL');
+
+        IF vals[i] IS NULL THEN
+            EXIT;
+        END IF;
+        i := i + 1;
+    END LOOP;
+
+    RETURN result;
+
 END;
 $$ LANGUAGE PLPGSQL;
 
