@@ -43,8 +43,10 @@
         </td>
 
         <!-- Top of page -->
-        [% IF showtop; href = mmkurl('').replace('#.*', '') %]
-        <td class="to_top_btn"><a href="[% href %]"><img src="[% ctx.media_prefix %]/images/kpac/to_top_btn.png" /></a></td>
+        [% IF showtop %]
+            <td class="to_top_btn"><a href="[% mkurl('').replace('#.*', '') %]">
+                <img src="[% ctx.media_prefix %]/images/kpac/to_top_btn.png" />
+            </a></td>
         [% END %]
     </tr>
 </table>
