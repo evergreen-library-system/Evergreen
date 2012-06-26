@@ -10,9 +10,32 @@ use Apache2::Const -compile => qw(
 use XML::LibXML;
 use Text::Glob;
 use CGI qw(:all -utf8);
+use Digest::MD5 qw(md5_hex);
 
 use OpenSRF::Utils::JSON;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
+use OpenSRF::Utils::Logger qw/:level/;
+use OpenSRF::Utils::SettingsClient;
+use OpenSRF::Utils::Cache;
+
+my $log = 'OpenSRF::Utils::Logger';
+
+my $init_done = 0;
+my $cache;
+my $cache_timeout;
+
+sub initialize {
+
+    my $conf = OpenSRF::Utils::SettingsClient->new;
+
+    $cache_timeout = $conf->config_value(
+            "apps", "open-ils.search", "app_settings", "cache_timeout" ) || 300;
+
+}
+sub child_init {
+    $cache = OpenSRF::Utils::Cache->new('global');
+    $init_done = 1;
+}
 
 # BEGIN package globals
 
@@ -91,7 +114,23 @@ sub get_suggestions {
         defined $short_word_length ? int($short_word_length) : undef
     );
 
-    return $editor->json_query({
+    my $key = 'oils_AS_' . md5_hex(
+        $query .
+        $search_class .
+        $org_unit .
+        $css_prefix .
+        $highlight_min .
+        $highlight_max .
+        $normalization .
+        $limit .
+        $short_word_length
+    );
+
+    my $res = $cache->get_cache( $key );
+
+    return $res if ($res);
+
+    $res = $editor->json_query({
         "from" => [
             "metabib.suggest_browse_entries",
             $query,
@@ -102,6 +141,10 @@ sub get_suggestions {
             $normalization
         ]
     });
+
+    $cache->put_cache( $key => $res => $cache_timeout );
+
+    return $res;
 }
 
 sub suggestions_to_xml {
@@ -160,6 +203,8 @@ sub output_handler {
 }
 
 sub handler {
+    child_init() unless $init_done;
+
     my $r = shift;
     my $cgi = new CGI;
 
