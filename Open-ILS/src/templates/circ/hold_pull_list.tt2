@@ -89,6 +89,7 @@
                 <th field="title" fpath="current_copy.call_number.record.simple_record.title" ffilter="true">Title</th>
                 <th field="barcode" fpath="current_copy.barcode" ffilter="true"></th>
                 <th field="parts" fpath="current_copy.parts.label" fsort="false">Parts</th>
+                <th field="copy_status" fpath="current_copy.status.name">Copy Status</th>
                 <th field="notes" fpath="notes.body" fsort="false" _visible="false">Hold Notes</th>
                 <th field="patron_barcode" fpath="usr.card.barcode" _visible="false" ffilter="true">Patron Barcode</th>
                 <th field="pickup_lib_name" fpath="pickup_lib.name" _visible="false" ffilter="true">Pickup Library</th>

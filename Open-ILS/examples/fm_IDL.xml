@@ -5048,7 +5048,8 @@ SELECT  usr,
 			TRIM(acnp.label || ' ' || acn.label || ' ' || acns.label)
 				AS call_number_label,
 			siss.label AS issuance_label,
-			(ahr.usr <> ahr.requestor) AS is_staff_hold
+			(ahr.usr <> ahr.requestor) AS is_staff_hold,
+			ahcm_1.copy_count AS potential_copies
 		FROM action.hold_request ahr
 		JOIN asset.copy acp ON (acp.id = ahr.current_copy)
 		JOIN asset.call_number acn ON (acp.call_number = acn.id)
@@ -5071,6 +5072,11 @@ SELECT  usr,
 					)
 				)
 			)
+		JOIN (
+			SELECT COUNT(target_copy) AS copy_count, hold
+			FROM action.hold_copy_map
+			GROUP BY 2
+		) ahcm_1 ON (ahcm_1.hold = ahr.id)
 		LEFT JOIN serial.issuance siss
 			ON (ahr.hold_type = 'I' AND siss.id = ahr.target)
 		LEFT JOIN asset.copy_location_order acplo
@@ -5128,6 +5134,7 @@ SELECT  usr,
 			<field reporter:label="Call Number Label" name="call_number_label" reporter:datatype="text" />
 			<field reporter:label="Issuance Label" name="issuance_label" reporter:datatype="text" />
 			<field reporter:label="Is Staff Hold?" name="is_staff_hold" reporter:datatype="bool" />
+			<field reporter:label="Potential Copies" name="potential_copies" reporter:datatype="int" />
 		</fields>
 		<links>
 			<link field="fulfillment_lib" reltype="has_a" key="id" map="" class="aou"/>
