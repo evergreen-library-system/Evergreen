@@ -2688,11 +2688,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Other Phone" name="other_phone"  reporter:datatype="text"/>
 			<field reporter:label="Password" name="passwd"  reporter:datatype="text"/>
 			<field reporter:label="Photo URL" name="photo_url"  reporter:datatype="text"/>
-			<field reporter:label="Prefix" name="prefix"  reporter:datatype="text"/>
+			<field reporter:label="Prefix/Title" name="prefix"  reporter:datatype="text"/>
 			<field reporter:label="Main (Profile) Permission Group" name="profile" reporter:datatype="link"/>
 			<field reporter:label="Middle Name" name="second_given_name"  reporter:datatype="text"/>
 			<field reporter:label="Standing (unused)" name="standing" reporter:datatype="link"/>
-			<field reporter:label="Suffix/Title" name="suffix"  reporter:datatype="text"/>
+			<field reporter:label="Suffix" name="suffix"  reporter:datatype="text"/>
 			<field reporter:label="Is Super User" name="super_user" reporter:datatype="bool"/>
 			<field reporter:label="Family Linkage or other Group" name="usrgroup" reporter:datatype="int"/>
 			<field reporter:label="OPAC/Staff Client User Name" name="usrname"  reporter:datatype="text"/>

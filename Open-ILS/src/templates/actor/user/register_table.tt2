@@ -24,9 +24,9 @@
         </td>
     </tr>
     <tr fmclass='au' fmfield='passwd2' required='required'><td/><td id='verifyPassword'></td><td/></tr>
+    <tr fmclass='au' fmfield='prefix'/>
     <tr fmclass='au' fmfield='first_given_name' required='required'/>
     <tr fmclass='au' fmfield='second_given_name'/>
-    <tr fmclass='au' fmfield='prefix'/>
     <tr fmclass='au' fmfield='family_name' required='required'/>
     <tr fmclass='au' fmfield='suffix'/>
     <tr fmclass='au' fmfield='alias'/>
