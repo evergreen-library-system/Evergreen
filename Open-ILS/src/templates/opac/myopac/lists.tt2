@@ -1,7 +1,10 @@
 [%  PROCESS "opac/parts/header.tt2";
     PROCESS "opac/parts/misc_util.tt2";
     WRAPPER "opac/parts/myopac/base.tt2";
-    myopac_page = "lists"  %]
+    myopac_page = "lists"  
+    limit = ctx.bookbags_limit;
+    offset = ctx.bookbags_offset;
+%]
 <div id='myopac_bookbag_div' style="padding:5px;">
 
     <!-- new list creation -->
@@ -52,6 +55,18 @@
     <h1>[% l("Your existing lists") %]</h1>
     [% INCLUDE "opac/parts/anon_list.tt2" %]
     [% IF ctx.bookbags.size %]
+    <div class="header_middle">
+        <span class="float-left">[% l('Saved Lists') %]</span>
+        <span class='float-left' style='padding-left: 10px;'>
+            <a href='[% mkurl(ctx.opac_root _ '/myopac/lists', {limit => limit, offset => (offset - limit)}) %]'
+                [% IF offset == 0 %] class='invisible' [% END %]><span class="nav_arrow_fix">&#9668;</span>[% l('Previous') %]</a>
+            [%# TODO: get total to prevent paging off then end of the list.. %]
+            <a href='[% mkurl(ctx.opac_root _ '/myopac/lists', {limit => limit, offset => (offset + limit)}) %]'
+               [% IF ctx.bookbags.size < limit %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
+        </span>
+    </div>
+    <div class="clear-both"></div>
+
     <div id='acct_lists_prime'>
         [% FOR bbag IN ctx.bookbags %]
         <div class="bookbag-controls-holder">
@@ -133,6 +148,8 @@
                 <form method="POST">
                     <input type="hidden" name="bbid" value="[% bbag.id %]" />
                     <input type="hidden" name="action" value="editmeta" />
+                    <input type="hidden" name="limit" value="[% limit %]" />
+                    <input type="hidden" name="offset" value="[% offset %]" />
                     [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
                     <table id="bbag-name-desc-form">
                         <tr>

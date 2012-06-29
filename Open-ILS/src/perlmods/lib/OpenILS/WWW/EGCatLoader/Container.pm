@@ -38,7 +38,11 @@ sub fetch_mylist {
     if (@$list) {
         my ($sorter, $modifier) = $self->_get_bookbag_sort_params("anonsort");
         my $query = $self->_prepare_anonlist_sorting_query($list, $sorter, $modifier);
-        $list = $U->bib_record_list_via_search($query) or
+        my $args = {
+            "limit" => 1000,
+            "offset" => 0
+        };
+        $list = $U->bib_record_list_via_search($query, $args) or
             return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
     }
 
