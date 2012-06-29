@@ -1620,6 +1620,11 @@ sub load_myopac_bookbags {
     my $self = shift;
     my $e = $self->editor;
     my $ctx = $self->ctx;
+    my $limit = $self->cgi->param('limit') || 10;
+    my $offset = $self->cgi->param('offset') || 0;
+
+    $ctx->{bookbags_limit} = $limit;
+    $ctx->{bookbags_offset} = $offset;
 
     my ($sorter, $modifier) = $self->_get_bookbag_sort_params("sort");
     $e->xact_begin; # replication...
@@ -1634,8 +1639,8 @@ sub load_myopac_bookbags {
         [
             {owner => $e->requestor->id, btype => 'bookbag'}, {
                 order_by => {cbreb => 'name'},
-                limit => $self->cgi->param('limit') || 10,
-                offset => $self->cgi->param('offset') || 0
+                limit => $limit,
+                offset => $offset
             }
         ],
         {substream => 1}
@@ -1653,48 +1658,50 @@ sub load_myopac_bookbags {
         my ($bookbag) =
             grep { $_->id eq $self->cgi->param("bbid") } @{$ctx->{bookbags}};
 
-        if (!$bookbag) {
-            $e->rollback;
-            return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
-        }
+        if ($bookbag) {
+            if ( ($self->cgi->param("action") || '') eq "editmeta") {
+                if (!$self->_update_bookbag_metadata($bookbag))  {
+                    $e->rollback;
+                    return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+                } else {
+                    $e->commit;
+                    my $url = $self->ctx->{opac_root} . '/myopac/lists?bbid=' .
+                        $bookbag->id;
 
-        if ( ($self->cgi->param("action") || '') eq "editmeta") {
-            if (!$self->_update_bookbag_metadata($bookbag))  {
-                $e->rollback;
-                return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
-            } else {
-                $e->commit;
-                my $url = $self->ctx->{opac_root} . '/myopac/lists?bbid=' .
-                    $bookbag->id;
-
-                foreach my $param (('loc', 'qtype', 'query', 'sort')) {
-                    if ($self->cgi->param($param)) {
-                        $url .= ";$param=" . uri_escape($self->cgi->param($param));
+                    foreach my $param (('loc', 'qtype', 'query', 'sort', 'offset', 'limit')) {
+                        if ($self->cgi->param($param)) {
+                            $url .= ";$param=" . uri_escape($self->cgi->param($param));
+                        }
                     }
+
+                    return $self->generic_redirect($url);
                 }
-
-                return $self->generic_redirect($url);
             }
+
+            my $query = $self->_prepare_bookbag_container_query(
+                $bookbag->id, $sorter, $modifier
+            );
+
+            # XXX Limiting to 1000 for now.  This way you should be able to see entire
+            # list contents.  Need to add paging here instead.
+            my $args = {
+                "limit" => 1000,
+                "offset" => 0
+            };
+
+            my $items = $U->bib_container_items_via_search($bookbag->id, $query, $args)
+                or return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+
+            my (undef, @recs) = $self->get_records_and_facets(
+                [ map {$_->target_biblio_record_entry->id} @$items ],
+                undef, 
+                {flesh => '{mra}'}
+            );
+
+            $ctx->{bookbags_marc_xml}{$_->{id}} = $_->{marc_xml} for @recs;
+
+            $bookbag->items($items);
         }
-
-        my $query = $self->_prepare_bookbag_container_query(
-            $bookbag->id, $sorter, $modifier
-        );
-
-        # XXX we need to limit the number of records per bbag; use third arg
-        # of bib_container_items_via_search() i think.
-        my $items = $U->bib_container_items_via_search($bookbag->id, $query)
-            or return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
-
-        my (undef, @recs) = $self->get_records_and_facets(
-            [ map {$_->target_biblio_record_entry->id} @$items ],
-            undef, 
-            {flesh => '{mra}'}
-        );
-
-        $ctx->{bookbags_marc_xml}{$_->{id}} = $_->{marc_xml} for @recs;
-
-        $bookbag->items($items);
     }
 
     $e->rollback;
