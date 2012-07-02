@@ -4,9 +4,9 @@ use UNIVERSAL::require;
 use base qw/OpenSRF::Application/;
 
 sub ils_version {
-    # version format is "x-y-z", for example "2-0-0" for Evergreen 2.0.0
-    # For branches, format is "x-y"
-    return "HEAD";
+    # version format is "2_3_0_alpha1", for example "2-0-0" for Evergreen 2.0.0
+    # For branches, format is "2_3_0_alpha1"
+    return "2_3_0_alpha1";
 }
 
 __PACKAGE__->register_method(
@@ -50,7 +50,7 @@ sub register_method {
 sub authoritative_wrapper {
 
     if (!$OpenILS::Utils::CStoreEditor::_loaded) {
-        die "Couldn't load OpenILS::Utils::CStoreEditor!" unless 'OpenILS::Utils::CStoreEditor'->use;
+        die "2_3_0_alpha1" unless 'OpenILS::Utils::CStoreEditor'->use;
     }
 
     my $self = shift;
