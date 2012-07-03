@@ -226,7 +226,7 @@ span.dash_divider {
 }
 
 .search_box_wrapper {
-	padding: 1px 1px 1px 3px;
+	padding: 10px 5px 5px 3px;
 }
 
 #search-wrapper #breadcrumb {
@@ -253,6 +253,8 @@ span.dash_divider {
 #search-wrapper #search-box {
 	margin-left: 1em;
 	padding-left: 0px;
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 
 #utils {

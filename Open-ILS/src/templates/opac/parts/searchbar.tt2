@@ -9,7 +9,7 @@
             id="home_adv_search_link"><span
             class="adv_search_font">[% l('Advanced Search') %]</span></a>
     </div>
-    <div style="font-weight: bold">[%- l('Search ');
+    <div style="font-weight: bold; padding-top: 10px;">[%- l('Search ');
         INCLUDE "opac/parts/coded_value_selector.tt2"
             attr=["mattype", "item_type"] none_ok=1 none_label=l('All Formats');
             l(' for ');
