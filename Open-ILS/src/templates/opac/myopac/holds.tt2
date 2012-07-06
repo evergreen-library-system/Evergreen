@@ -62,7 +62,7 @@
                 <td align="right">
                     [% l("Show") %] &nbsp; &nbsp;
                     [% IF CGI.param("available") %]
-                    <a href="[% mkurl('holds') %]">[% l('all') %]</a> |
+                    <a href="[% mkurl('holds', {}, ['available']) %]">[% l('all') %]</a> |
                     <strong>[% l("only available") %]</strong>
                     [% ELSE %]
                     <strong>[% l("all") %]</strong> |

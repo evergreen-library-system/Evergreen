@@ -33,7 +33,7 @@
                 </span>
                 <span class="dash_divider">|</span>
                 <span class="dash-align">
-                    <a class="dash-link" href="[% mkurl(ctx.opac_root _ '/myopac/holds')
+                    <a class="dash-link" href="[% mkurl(ctx.opac_root _ '/myopac/holds', {}, ['available'])
                         %]"><span id="dash_holds">[% ctx.user_stats.holds.total
                         %]</span> [% l("On Hold") %]</a>
                 </span>
