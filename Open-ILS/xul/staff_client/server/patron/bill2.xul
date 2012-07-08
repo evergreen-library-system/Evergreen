@@ -34,6 +34,7 @@
 
     <messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
     <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties"/>
+    <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties"/>
 
     <commandset>
         <command id="opac" label="&staff.patron.bill_interface.show_in_catalog.label;" accesskey="&staff.patron.bill_interface.show_in_catalog.accesskey;" disabled="true"/>
