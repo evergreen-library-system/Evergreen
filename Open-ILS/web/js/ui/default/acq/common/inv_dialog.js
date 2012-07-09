@@ -4,8 +4,14 @@ function InvoiceLinkDialogManager(which, target) {
 
     this.linkFoundInvoice = function(r) {
         self.inv = openils.Util.readResponse(r);
-        location.href = oilsBasePath + "/acq/invoice/view/" + self.inv.id() +
-            "?attach_" + self.which + "=" + self.target.id();
+        var path = oilsBasePath + "/acq/invoice/view/" + self.inv.id();
+        if (!dojo.isArray(self.target)) self.target = [self.target];
+        dojo.forEach(self.target, function(target, idx) { 
+            id = (typeof target != 'object') ? target : target.id();
+            var join = (idx == 0) ? '?' : '&';
+            path += join + "attach_" + self.which + "=" + id;
+        });
+        location.href = path;
     };
 
     this.which = which;
