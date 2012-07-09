@@ -43,8 +43,14 @@ function nodeByName(name, context) {
 
 function init() {
 
-    attachLi = cgi.param('attach_li');
-    attachPo = cgi.param('attach_po');
+    attachLi = cgi.param('attach_li') || [];
+    if (!dojo.isArray(attachLi)) 
+        attachLi = [attachLi];
+
+    attachPo = cgi.param('attach_po') || [];
+    if (!dojo.isArray(attachPo)) 
+        attachPo = [attachPo];
+
     focusLineitem = new openils.CGI().param('focus_li');
 
     itemTypes = pcrud.retrieveAll('aiit');
@@ -80,7 +86,7 @@ function init() {
 function renderInvoice() {
 
     // in create mode, let the LI or PO render the invoice with seed data
-    if( !(cgi.param('create') && (attachPo || attachLi)) ) {
+    if( !(cgi.param('create') && (attachPo.length || attachLi.length)) ) {
         invoicePane = drawInvoicePane(dojo.byId('acq-view-invoice-div'), invoice);
     }
 
@@ -127,8 +133,8 @@ function renderInvoice() {
         );
     }
 
-    if(attachLi) doAttachLi();
-    if(attachPo) doAttachPo();
+    if(attachLi.length) doAttachLi();
+    if(attachPo.length) doAttachPo(0);
 }
 
 function doAttachLi() {
@@ -136,10 +142,11 @@ function doAttachLi() {
     //var invoiceArgs = {provider : lineitem.provider(), shipper : lineitem.provider()}; 
     if(cgi.param('create')) {
 
+        // use the first LI in the list to determine the default provider
         fieldmapper.standardRequest(
             ['open-ils.acq', 'open-ils.acq.lineitem.retrieve.authoritative'],
             {
-                params : [openils.User.authtoken, attachLi, {clear_marc:1}],
+                params : [openils.User.authtoken, attachLi[0], {clear_marc:1}],
                 oncomplete : function(r) {
                     var li = openils.Util.readResponse(r);
                     invoicePane = drawInvoicePane(
@@ -151,27 +158,34 @@ function doAttachLi() {
         );
     }
 
-    var entry = new fieldmapper.acqie();
-    entry.id(virtualId--);
-    entry.isnew(true);
-    entry.lineitem(attachLi);
-    addInvoiceEntry(entry);
+    dojo.forEach(attachLi,
+        function(li) {
+            var entry = new fieldmapper.acqie();
+            entry.id(virtualId--);
+            entry.isnew(true);
+            entry.lineitem(li);
+            addInvoiceEntry(entry);
+        }
+    );
 }
 
-function doAttachPo() {
+function doAttachPo(idx) {
+
+    if (idx == attachPo.length) return;
+    var poId = attachPo[idx];
 
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.purchase_order.retrieve'],
         {   async: true,
             params: [
-                openils.User.authtoken, attachPo, 
+                openils.User.authtoken, poId,
                 {flesh_lineitem_ids : true, flesh_po_items : true}
             ],
             oncomplete: function(r) {
                 var po = openils.Util.readResponse(r);
 
-                if(cgi.param('create')) {
-                    // render the invoice using some seed data from the PO
+                if(cgi.param('create') && idx == 0) {
+                    // render the invoice using some seed data from the first PO
                     var invoiceArgs = {provider : po.provider(), shipper : po.provider()}; 
                     invoicePane = drawInvoicePane(dojo.byId('acq-view-invoice-div'), null, invoiceArgs);
                 }
@@ -202,6 +216,8 @@ function doAttachPo() {
                         addInvoiceItem(item);
                     }
                 );
+
+                doAttachPo(++idx);
             }
         }
     );
