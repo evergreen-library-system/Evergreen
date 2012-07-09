@@ -32,6 +32,8 @@
                                             <option mask='po' value='rollback_receive_po'>Un-Receive Purchase Order</option>
                                             <option mask='po' value='print_po'>Print Purchase Order</option>
                                             <option mask='po' value='po_history'>View PO History</option>
+                                            <option mask='po' value='batch_create_invoice'>[% l('Create Invoice From Selected Lineitems') %]</option>
+                                            <option mask='po' value='batch_link_invoice'>[% l('Link To Invoice for Selected Lineitems') %]</option>
                                         </select>
                                         <span id="acq-lit-export-attr-holder" class="hidden">
                                             <input dojoType="dijit.form.FilteringSelect" id="acq-lit-export-attr" jsId="acqLitExportAttrSelector" labelAttr="description" searchAttr="description" />

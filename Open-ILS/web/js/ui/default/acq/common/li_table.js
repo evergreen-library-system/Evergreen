@@ -2121,6 +2121,14 @@ function AcqLiTable() {
                 location.href = oilsBasePath + '/acq/po/history/' + this.isPO;
                 break;
 
+            case 'batch_create_invoice':
+                this.batchCreateInvoice();
+                break;
+
+            case 'batch_link_invoice':
+                this.batchLinkInvoice();
+                break;
+
             case 'receive_po':
                 this.receivePO();
                 break;
@@ -2368,8 +2376,26 @@ function AcqLiTable() {
                 }
             }
         );
-    }
+    };
 
+    this.batchCreateInvoice = function() {
+        var liIds = this.getSelected(false, null, true /* id_list */)
+        if (!liIds.length) return;
+        var path = oilsBasePath + '/acq/invoice/view?create=1';
+        dojo.forEach(liIds, function(li, idx) { path += '&attach_li=' + li });
+        location.href = path;
+    };
+
+    this.batchLinkInvoice = function(create) {
+        var liIds = this.getSelected(false, null, true /* id_list */)
+        if (!liIds.length) return;
+        if (!self.invoiceLinkDialogManager) {
+            self.invoiceLinkDialogManager =
+                new InvoiceLinkDialogManager("li");
+        }
+        self.invoiceLinkDialogManager.target = liIds;
+        acqLitLinkInvoiceDialog.show();
+    };
 
     this.receivePO = function() {
         if (!this.isPO) return;
