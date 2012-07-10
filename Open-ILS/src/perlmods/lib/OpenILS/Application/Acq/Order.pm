@@ -760,7 +760,8 @@ sub set_lineitem_attr {
 # Lineitem Debits
 # ----------------------------------------------------------------------------
 sub create_lineitem_debits {
-    my ($mgr, $li, $dry_run) = @_; 
+    my ($mgr, $li, $dry_run, $options) = @_; 
+    $options ||= {};
 
     unless($li->estimated_unit_price) {
         $mgr->editor->event(OpenILS::Event->new('ACQ_LINEITEM_NO_PRICE', payload => $li->id));
@@ -778,6 +779,12 @@ sub create_lineitem_debits {
         {lineitem => $li->id}, 
         {idlist=>1}
     );
+
+    if (@$lid_ids == 0 and !$options->{zero_copy_activate}) {
+        $mgr->editor->event(OpenILS::Event->new('ACQ_LINEITEM_NO_COPIES', payload => $li->id));
+        $mgr->editor->rollback;
+        return 0;
+    }
 
     for my $lid_id (@$lid_ids) {
 
@@ -2305,13 +2312,14 @@ __PACKAGE__->register_method(
 );
 
 sub activate_purchase_order {
-    my($self, $conn, $auth, $po_id, $vandelay) = @_;
+    my($self, $conn, $auth, $po_id, $vandelay, $options) = @_;
+    $options ||= {};
 
     my $dry_run = ($self->api_name =~ /\.dry_run/) ? 1 : 0;
     my $e = new_editor(authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
     my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
-    my $die_event = activate_purchase_order_impl($mgr, $po_id, $vandelay, $dry_run);
+    my $die_event = activate_purchase_order_impl($mgr, $po_id, $vandelay, $dry_run, $options);
     return $e->die_event if $die_event;
     $conn->respond_complete(1);
     $mgr->run_post_response_hooks unless $dry_run;
@@ -2320,7 +2328,7 @@ sub activate_purchase_order {
 
 # xacts managed within
 sub activate_purchase_order_impl {
-    my ($mgr, $po_id, $vandelay, $dry_run) = @_;
+    my ($mgr, $po_id, $vandelay, $dry_run, $options) = @_;
 
     # read-only until lineitem asset creation
     my $e = $mgr->editor;
@@ -2366,7 +2374,7 @@ sub activate_purchase_order_impl {
         $li->state('on-order');
         $li->claim_policy($provider->default_claim_policy)
             if $provider->default_claim_policy and !$li->claim_policy;
-        create_lineitem_debits($mgr, $li, $dry_run) or return $e->die_event;
+        create_lineitem_debits($mgr, $li, $dry_run, $options) or return $e->die_event;
         update_lineitem($mgr, $li) or return $e->die_event;
         $mgr->post_process( sub { create_lineitem_status_events($mgr, $li->id, 'aur.ordered'); });
         $mgr->respond;

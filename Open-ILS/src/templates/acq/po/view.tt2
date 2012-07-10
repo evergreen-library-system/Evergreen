@@ -105,6 +105,11 @@
                     </td>
                 </tr>
                 <tr>
+                    <th></th>
+                    <td></td>
+                    <th>[% l('Allow activation with <br/> zero-copy lineitems') %]</th>
+                    <td><input type='checkbox' id='acq-po-activate-zero-copies' onclick='checkCouldActivatePo()'/></td>
+                <tr>
                     <td colspan='3'>
                         <a class="hidden" id="acq-po-split" href="javascript:void(0);"
                             onclick="if (confirm(localeStrings.CONFIRM_SPLIT_PO)) splitPo();">

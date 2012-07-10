@@ -446,7 +446,12 @@ function checkCouldActivatePo() {
 
     fieldmapper.standardRequest(
         ["open-ils.acq", "open-ils.acq.purchase_order.activate.dry_run"], {
-            "params": [openils.User.authtoken, PO.id()],
+            "params": [
+                openils.User.authtoken,
+                PO.id(),
+                null,  // vandelay options
+                {zero_copy_activate : dojo.byId('acq-po-activate-zero-copies').checked}
+            ],
             "async": true,
             "onresponse": function(r) {
                 if ((r = openils.Util.readResponse(r, true /* eventOk */))) {
@@ -523,7 +528,12 @@ function activatePoStage2() {
     fieldmapper.standardRequest(
         ["open-ils.acq", "open-ils.acq.purchase_order.activate"], {
             "async": true,
-            "params": [openils.User.authtoken, PO.id()],
+            "params": [
+                openils.User.authtoken,
+                PO.id(),
+                null,  // vandelay options
+                {zero_copy_activate : dojo.byId('acq-po-activate-zero-copies').checked}
+            ],
             "onresponse": function(r) {
                 want_refresh = Boolean(openils.Util.readResponse(r));
             },
