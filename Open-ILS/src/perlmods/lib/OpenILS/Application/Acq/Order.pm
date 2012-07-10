@@ -3390,5 +3390,44 @@ sub add_li_to_po {
     return {success => 1};
 }
 
+__PACKAGE__->register_method(
+    method => 'po_lineitems_no_copies',
+    api_name => 'open-ils.acq.purchase_order.no_copy_lineitems.id_list',
+    stream => 1,
+    authoritative => 1, 
+    signature => {
+        desc => q/Returns the set of lineitem IDs for a given PO that have no copies attached/,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'The purchase order id', type => 'number'},
+        ],
+        return => {desc => 'Stream of lineitem IDs on success, event on error'}
+    }
+);
+
+sub po_lineitems_no_copies {
+    my ($self, $conn, $auth, $po_id) = @_;
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    # first check the view perms for LI's attached to this PO
+    my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->event;
+    return $e->event unless $e->allowed('VIEW_PURCHASE_ORDER', $po->ordering_agency);
+
+    my $ids = $e->json_query({
+        select => {jub => ['id']},
+        from => {jub => {acqlid => {type => 'left'}}},
+        where => {
+            '+jub' => {purchase_order => $po_id},
+            '+acqlid' => {lineitem => undef}
+        }
+    });
+
+    $conn->respond($_->{id}) for @$ids;
+    return undef;
+}
+
+
 1;
 

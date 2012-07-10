@@ -481,6 +481,21 @@ function checkCouldActivatePo() {
                         d.innerHTML = localeStrings.NO + ": " +
                             other[0].desc + " (" + other[0].textcode + ")";
                         openils.Util.hide(a);
+                        
+                        if (other[0].textcode == 'ACQ_LINEITEM_NO_COPIES') {
+                            // when LIs w/ zero LIDs are present, list them
+                            fieldmapper.standardRequest(
+                                [   'open-ils.acq', 
+                                    'open-ils.acq.purchase_order.no_copy_lineitems.id_list.authoritative.atomic' ],
+                                {   async : true, 
+                                    params : [openils.User.authtoken, poId],
+                                    oncomplete : function(r) {
+                                        var ids = openils.Util.readResponse(r);
+                                        d.innerHTML += ' (' + ids + ')';
+                                    }
+                                }
+                            );
+                        }
                     } else if (stops.length) {
                         d.innerHTML =
                             dojo.string.substitute(
