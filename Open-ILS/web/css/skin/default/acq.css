@@ -211,7 +211,7 @@ span[name="notes_alert_flag"] {color: #c00;font-weight: bold;font-size: 110%;mar
 .acq-inoice-item-extra-info { padding-left: 10px; }
 .acq-inoice-item-info { font-weight: bold; }
 .acq-invoice-row td { border-bottom: 1px solid #e0e0e0; }
-.acq-invoice-invalid-amount input { color: red; font-weight: bold; }
+.acq-invoice-invalid-amount  { color: red; font-weight: bold; }
 .acq-link-invoice-dialog td,.acq-link-invoice-dialog th {padding-top: 10px;}
 .acq-invoice-paid-col {background : #E0E0E0; text-align: center;}
 .acq-invoice-center-col { text-align: center; }

@@ -229,7 +229,7 @@ sub prepare_terms {
     my $conj = $is_and ? "-and" : "-or";
     my $outer_clause = {};
 
-    foreach my $class (qw/acqpo acqpl acqinv jub/) {
+    foreach my $class (qw/acqpo acqpl acqinv jub acqlid acqlisum acqlisumi/) {
         next if not exists $terms->{$class};
 
         $outer_clause->{$conj} = [] unless $outer_clause->{$conj};
@@ -243,7 +243,12 @@ sub prepare_terms {
             } elsif ($between and could_be_range($v)) {
                 $term_clause = {$k => {"between" => $v}};
             } elsif (check_1d_max($v)) {
-                $v = castdate($v, $gte, $lte) if $castdate;
+                if ($castdate) {
+                    $v = castdate($v, $gte, $lte) if $castdate;
+                } elsif ($gte or $lte) {
+                    my $op = $gte ? '>=' : '<=';
+                    $v = {$op => $v};
+                }
                 $term_clause = {$k => $v};
             } else {
                 next;
@@ -339,6 +344,11 @@ sub build_from_clause_and_joins {
         } else {
             $graft_map{$class} = $query->{from}{$core}{$class} ||= {};
             $graft_map{$class}{type} = $join_type;
+
+            # without this, the SQL attempts to join on 
+            # jub.order_summary, which is a virtual field.
+            $graft_map{$class}{field} = 'lineitem' 
+                if $class eq 'acqlisum' or $class eq 'acqlisumi';
         }
     }
 
@@ -415,6 +425,7 @@ sub unified_search {
         $hint => [{"column" => "id", "transform" => "distinct"}]
     };
 
+    my $attr_from_filter;
     if ($options->{"order_by"}) {
         # What's the point of this block?  When using ORDER BY in conjuction
         # with SELECT DISTINCT, the fields present in ORDER BY have to also
@@ -432,9 +443,30 @@ sub unified_search {
 q/order_by clause must be of the long form, like:
 "order_by": [{"class": "foo", "field": "bar", "direction": "asc"}]/
             );
+
         } else {
+
+            # we can't combine distinct(id) with another select column, 
+            # since the non-distinct column may arbitrarily (via hash keys)
+            # sort to the front of the final SQL, which PG will complain about.  
+            $select_clause = { $hint => ["id"] };
             $select_clause->{$class} ||= [];
-            push @{$select_clause->{$class}}, $field;
+            push @{$select_clause->{$class}}, 
+                {column => $field, transform => 'first', aggregate => 1};
+
+            # when sorting by LI attr values, we have to limit 
+            # to a specific type of attr value to sort on.
+            if ($class eq 'acqlia') {
+                $attr_from_filter = {
+                    "fkey" => "id",
+                    "filter" => {
+                        "attr_type" => "lineitem_marc_attr_definition",
+                        "attr_name" => $options->{"order_by_attr"} || "title"
+                    },
+                    "type" => "left",
+                    "field" =>"lineitem"
+                };
+            }
         }
     }
 
@@ -467,6 +499,14 @@ q/order_by clause must be of the long form, like:
     } else {
         $e->disconnect;
         return new OpenILS::Event("BAD_PARAMS", "desc" => "No usable terms");
+    }
+
+
+    # if ordering by acqlia, insert the from clause 
+    # filter to limit to one type of attr.
+    if ($attr_from_filter) {
+        $query->{from}->{jub} = {} unless $query->{from}->{jub};
+        $query->{from}->{jub}->{acqlia} = $attr_from_filter;
     }
 
     my $results = $e->json_query($query) or return $e->die_event;
