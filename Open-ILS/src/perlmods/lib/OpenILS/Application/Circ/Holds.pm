@@ -998,9 +998,19 @@ sub update_hold_impl {
         }
     } 
 
-    update_hold_if_frozen($self, $e, $hold, $orig_hold);
+    if($U->is_true($hold->frozen)) {
+        $logger->info("clearing current_copy and check_time for frozen hold ".$hold->id);
+        $hold->clear_current_copy;
+        $hold->clear_prev_check_time;
+    }
+
     $e->update_action_hold_request($hold) or return $e->die_event;
     $e->commit;
+
+    if(!$U->is_true($hold->frozen) && $U->is_true($orig_hold->frozen)) {
+        $logger->info("Running targeter on activated hold ".$hold->id);
+        $U->storagereq( 'open-ils.storage.action.hold_request.copy_targeter', undef, $hold->id );
+    }
 
     # a change to mint-condition changes the set of potential copies, so retarget the hold;
     if($U->is_true($hold->mint_condition) and !$U->is_true($orig_hold->mint_condition)) {
