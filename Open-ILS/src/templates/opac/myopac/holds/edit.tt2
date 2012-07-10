@@ -51,7 +51,7 @@
                                 name='pickup_lib' value=ahr.pickup_lib %]
                         </td>
                     </tr>
-                    [% IF hold.hold.status < 3 %]
+                    [% IF hold.hold.status < 3 OR hold.hold.status == 7 %]
                     [%# The following actions cannot be performed on holds that 
                         have already been captured... %]
                     <tr>
