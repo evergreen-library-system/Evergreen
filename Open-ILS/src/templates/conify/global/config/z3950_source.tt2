@@ -69,7 +69,7 @@
             fmClass='czs'
             editOnEnter='true'>
         <thead>
-            <th field='name' formatter='formatSourceName'/>
+            <tr><th field='name' formatter='formatSourceName'/></tr>
         </thead>
     </table>
 
