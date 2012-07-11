@@ -127,6 +127,8 @@ sub load {
     return $self->load_mylist_move if $path =~ m|opac/mylist/move|;
     return $self->load_mylist if $path =~ m|opac/mylist|;
     return $self->load_cache_clear if $path =~ m|opac/cache/clear|;
+    return $self->load_temp_warn_post if $path =~ m|opac/temp_warn/post|;
+    return $self->load_temp_warn if $path =~ m|opac/temp_warn|;
 
     # ----------------------------------------------------------------
     #  Everything below here requires SSL

@@ -63,6 +63,12 @@ sub load_mylist_add {
         'open-ils.actor.anon_cache.set_value', 
         $cache_key, (ref $self)->ANON_CACHE_MYLIST, $list);
 
+    # Check if we need to warn patron about adding to a "temporary"
+    # list:
+    if ($self->check_for_temp_list_warning) {
+        return $self->mylist_warning_redirect($cache_key);
+    }
+
     return $self->mylist_action_redirect($cache_key);
 }
 
@@ -155,11 +161,63 @@ sub mylist_action_redirect {
     );
 }
 
+# called after an anon-cache / my list addition when we are configured
+# to show a warning to the user.
+
+sub mylist_warning_redirect {
+    my $self = shift;
+    my $cache_key = shift;
+
+    my $base_url = sprintf(
+        "%s://%s%s/temp_warn",
+        $self->cgi->https ? 'https' : 'http',
+        $self->apache->hostname,
+        $self->ctx->{opac_root}
+    );
+
+    my $redirect = $self->ctx->{referer};
+    if (my $anchor = $self->cgi->param('anchor')) {
+        $redirect =~ s/#.*|$/#$anchor/;
+    }
+
+    $base_url .= '?redirect_to=' . uri_escape($redirect);
+
+    return $self->generic_redirect(
+        $base_url,
+        $self->cgi->cookie(
+            -name => (ref $self)->COOKIE_ANON_CACHE,
+            -path => '/',
+            -value => ($cache_key) ? $cache_key : '',
+            -expires => ($cache_key) ? undef : '-1h'
+        )
+    );
+}
+
 sub load_mylist {
     my ($self) = shift;
     (undef, $self->ctx->{mylist}, $self->ctx->{mylist_marc_xml}) =
         $self->fetch_mylist(1);
 
+    return Apache2::Const::OK;
+}
+
+sub load_temp_warn_post {
+    my $self = shift;
+    my $url = $self->cgi->param('redirect_to');
+    return $self->generic_redirect(
+        $url,
+        $self->cgi->cookie(
+            -name => 'no_temp_list_warn',
+            -path => '/',
+            -value => ($self->cgi->param('no_temp_list_warn')) ? '1' : '',
+            -expires => ($self->cgi->param('no_temp_list_warn')) ? undef : '-1h'
+        )
+    );
+}
+
+sub load_temp_warn {
+    my $self = shift;
+    $self->ctx->{'redirect_to'} = $self->cgi->param('redirect_to');
     return Apache2::Const::OK;
 }
 

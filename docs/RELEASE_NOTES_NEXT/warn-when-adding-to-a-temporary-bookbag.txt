@@ -1,0 +1,15 @@
+Warn When Adding to a Temporary Bookbag
+---------------------------------------
+
+TPAC has been modified so that a user will see a warning before adding
+a record to a temporary bookbag.  This message serves to inform the
+user that they are adding to a temporary list that will disappear when
+their session ends.
+
+A new org. unit setting has been added,
+opac.patron.temporary_list_warn, that will enable this warning when
+set.  Sites may choose not to display this warning.
+
+The user may also set a preference in their search preferences to
+disable this warning.  The setting only works when a user is logged
+in, of course.

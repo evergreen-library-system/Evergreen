@@ -49,6 +49,12 @@ sub load_record {
     $self->fetch_related_search_info($rec_id);
     $self->timelog("past related search info");
 
+    # Check for user and load lists and prefs
+    if ($self->ctx->{user}) {
+        $self->_load_lists_and_settings;
+        $self->timelog("load user lists and settings");
+    }
+
     # run copy retrieval in parallel to bib retrieval
     # XXX unapi
     my $cstore = OpenSRF::AppSession->create('open-ils.cstore');

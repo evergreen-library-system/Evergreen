@@ -1465,3 +1465,75 @@ a.preflib_change {
 .ac_tab_selected { background-color: #417860; }
 .ac_tab_selected a { color: #FFF; }
 #ac_content { clear: both; width: 100%; margin-top: 10px; }
+
+/* Popmenu styles used for making css menus. */
+.popmenu {
+    margin: 0;
+    padding: 0;
+}
+.popmenu li {
+    list-style: none;
+}
+.popmenu li a {
+    display: block;
+    padding: 3px 5px;
+}
+.popmenu li ul {
+    display: none; 
+    width: 10em; /* Width to help Opera out */
+    background-color: #00593d;
+}
+.popmenu li:hover ul {
+    display: block;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    border-color: black;
+    border-width: 1px;
+    border-style: solid;
+}
+.popmenu li:hover li {
+    float: none;
+}
+.popmenu li:hover li a {
+    background-color: #00593d; 
+    color: #f0e0e0;
+}
+.popmenu li li a:hover {
+    background-color: #f0e0e0; 
+    color: #00593d;
+}
+/* Styles for the temporary list entry. */
+.popmenu li:hover li[class~="temporary"] a {
+    background-color: #00593d; 
+    color: #f0e0e0;
+}
+.popmenu li li[class~="temporary"] a:hover {
+    background-color: #f0e0e0; 
+    color: #00593d;
+}
+/* Styles for the default list entry. */
+.popmenu li:hover li[class~="default"] a {
+    background-color: #00593d; 
+    color: #f0e0e0;
+}
+.popmenu li li[class~="default"] a:hover {
+    background-color: #f0e0e0; 
+    color: #00593d;
+}
+/* Styles for the new list entry. */
+.popmenu li:hover li[class~="new"] a {
+    background-color: #00593d; 
+    color: #f0e0e0;
+}
+.popmenu li li[class~="new"] a:hover {
+    background-color: #f0e0e0; 
+    color: #00593d;
+}
+/* Style to add a divider on the menu. */
+.popmenu li li[class~="divider"] {
+    border-bottom-width: 1px;
+    border-bottom-color: black;
+    border-bottom-style: solid;
+}
+    

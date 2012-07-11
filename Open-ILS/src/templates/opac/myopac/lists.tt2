@@ -19,6 +19,12 @@
                     [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
                     <input id="list_create_name" type="text" name="name" />
                     <input type="hidden" name="action" value="create" />
+                    [% IF ctx.add_rec %]
+                    <input type="hidden" name="add_rec" value="[% ctx.add_rec %]" />
+                    [% END %]
+                    [% IF ctx.where_from %]
+                    <input type="hidden" name="where_from" value="[% ctx.where_from %]" />
+                    [% END %]
                 </td>
                 <td>
                     <label for="list_create_shared">[% l('Share this list?') %]</label>
@@ -57,13 +63,14 @@
     [% IF ctx.bookbags.size %]
     <div class="header_middle">
         <span class="float-left">[% l('Saved Lists') %]</span>
+        [% IF limit < ctx.bookbag_count %]
         <span class='float-left' style='padding-left: 10px;'>
             <a href='[% mkurl(ctx.opac_root _ '/myopac/lists', {limit => limit, offset => (offset - limit)}) %]'
                 [% IF offset == 0 %] class='invisible' [% END %]><span class="nav_arrow_fix">&#9668;</span>[% l('Previous') %]</a>
-            [%# TODO: get total to prevent paging off then end of the list.. %]
             <a href='[% mkurl(ctx.opac_root _ '/myopac/lists', {limit => limit, offset => (offset + limit)}) %]'
                [% IF ctx.bookbags.size < limit %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
         </span>
+        [% END %]
     </div>
     <div class="clear-both"></div>
 
@@ -82,6 +89,19 @@
                 <h2 class="bookbag-name"><a title="[% ltitle %]" href="[% url %]">[% bbag.name | html %]</a></h2>
                 [% IF bbag.description %]<div class="bookbag-description">[% bbag.description | html %]</div>[% END %]
             </div>
+            [% IF ctx.add_rec %]
+            <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update', {}, 1) %]" method="POST">
+                <div class="bookbag-controls">
+                    <input type="hidden" name="action" value="add_rec" />
+                    <input type="hidden" name="list" value="[% bbag.id %]" />
+                    <input type="hidden" name="add_rec" value="[% ctx.add_rec %]" />
+                    [% IF ctx.where_from %]
+                    <input type="hidden" name="where_from" value="[% ctx.where_from %]" />
+                    [% END %]
+                    <input class="fixed" type="submit" value="[% l('Add to this list') %]" />
+                </div>
+            </form>
+            [% END %]
             <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="POST">
                 <div class="bookbag-share">
                     <input type="hidden" name="list" value="[% bbag.id %]" />
@@ -109,6 +129,20 @@
                     <input type="hidden" name="sort" value="[% CGI.param('sort') | html %]" />
                     [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
                     <input type="submit" value="[% l('Download CSV') %]" />
+                </div>
+            </form>
+            [% setting = 'opac.default_list'; %]
+            <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="POST">
+                <div class="bookbag-controls">
+                    <input type="hidden" name="list" value="[% bbag.id %]" />
+                    [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
+                    [% IF ctx.user_setting_map.$setting == bbag.id %]
+                    <input type="hidden" name="action" value="remove_default" />
+                    <input type="submit" value="[% l('Remove Default List') %]" />
+                    [% ELSE %]
+                    <input type="hidden" name="action" value="make_default" />
+                    <input type="submit" value="[% l('Make Default List') %]" />
+                    [% END %]
                 </div>
             </form>
             <div class="bookbag-controls">

@@ -30,7 +30,66 @@
             class="place_hold">[% l('Place Hold') %]</span></a>
         </div>
         <div class="rdetail_aux_utils toggle_list">
-        [%-  
+        [%  IF ctx.user;
+            dsetting = "opac.default_list";
+            tclass = (ctx.user_setting_map.$dsetting) ? "temporary" :
+                         (ctx.bookbags.size) ? "temporary divider" : "temporary";
+            href = mkurl(ctx.opac_root _ '/mylist/add',
+                         {record => ctx.bre_id, anchor => ctx.bre_id}, stop_parms);
+        %]
+            <ul class="popmenu">
+            <li><a href="#" class="no-dec">
+                    <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
+                    [% l("Add to my list") %]
+                </a>
+            <ul>
+            <li class="[% tclass %]">
+                <a href="[% href %]">[% l('Temporary List') %]</a>
+            </li>
+            [% IF ctx.user_setting_map.$dsetting;
+               label = (ctx.default_bookbag) ? ctx.default_bookbag : l('Default List');
+               class = (ctx.bookbags.size) ? "default divider" : "default";
+               href = mkurl(ctx.opac_root _ '/myopac/list/update',
+                            {action => 'add_rec', list => ctx.user_setting_map.$dsetting,
+                             record => ctx.bre_id, anchor => ctx.bre_id}, stop_parms);
+            %]
+            <li class="[% class %]">
+                <a href="[% href %]">[% label %]</a>
+            </li>
+            [% END %]
+            [% IF ctx.bookbags.size;
+               i = 0;
+               FOREACH bag IN ctx.bookbags;
+                   href = mkurl(ctx.opac_root _ '/myopac/list/update',
+                                {action => 'add_rec', list => bag.id, record => ctx.bre_id,
+                                 anchor => ctx.bre_id}, stop_parms);
+                   i = i + 1;
+                   IF i == ctx.bookbags.size;
+            %]
+            <li class="divider">
+                [% ELSE %]
+            <li>
+                [% END %]
+               <a href="[% href %]">[% bag.name %]</a>
+            </li>
+            [%
+               END;
+               END
+            %]
+            <li>
+                <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {limit => ctx.bookbag_count, add_rec => ctx.bre_id}) %]">
+                [% l('See All') %]
+                </a>
+            </li>
+            <li class="new">
+                <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {add_rec => ctx.bre_id}, stop_parms) %]">
+                [% l('Add to new list') %]
+                </a>
+            </li>
+            </ul>
+            </li>
+            </ul>
+        [%  ELSE;
             operation = ctx.mylist.grep(ctx.bre_id).size ? "delete" : "add";
             label = (operation == "add") ? l("Add to my list") : l("Remove from my list"); 
         %]
@@ -38,6 +97,7 @@
                 <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
                 [% label %]
             </a>
+        [% END %]
         </div>
         <div class="rdetail_aux_utils">
             <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />

@@ -458,6 +458,9 @@ sub load_rresults {
         return $stat if $stat;
     }
 
+    # load temporary_list settings for user and ou:
+    $self->_load_lists_and_settings if ($ctx->{user});
+
     # shove recs into context in search results order
     for my $rec_id (@$rec_ids) {
         push(

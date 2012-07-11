@@ -1,0 +1,28 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    WRAPPER "opac/parts/base.tt2";
+    INCLUDE "opac/parts/topnav.tt2";
+    ctx.page_title = l("Temporary List Warning") %]
+    <div id="search-wrapper">
+        [% INCLUDE "opac/parts/searchbar.tt2" %]
+    </div>
+    <div id="content-wrapper">
+        <div id="main-content">
+             <p class="big-strong">[% l('You are adding to a temporary list.') %]
+                [% IF ctx.user ;
+                      l('This information will disappear when you logout, unless you save it to a permanent list.');
+                   ELSE;
+                      l('This information will disappear when you end your session, unless you login and save it to a permanent list.');
+                   END
+                %]</p>
+             <form method="POST" action="[% mkurl(ctx.opac_root _ '/temp_warn/post', {}, 1) %]">
+             <input type="hidden" name="redirect_to" value="[% ctx.redirect_to %]" />
+             <input type="checkbox" name="no_temp_list_warn" value="on" />
+             <label for="no_temp_list_warn">[% l('Do not show this warning again.') %]</label>
+             <br />
+             <input type="submit" class="fixed" value="[% l('OK') %]" />
+             </form>
+            <div class="common-full-pad"></div>	
+        </div>
+    </div>
+[% END %]

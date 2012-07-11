@@ -77,7 +77,14 @@
                             [% IF ctx.user_setting_map.$setting; %] checked='checked' [% END %]/>
                     </td>
                 </tr>
-
+                <tr>
+                    <td>[% l('Skip warning when adding to temporary book list?') %]</td>
+                    <td>
+                        [% setting = 'opac.temporary_list_no_warn' %]
+                        <input name='[% setting %]' type="checkbox"
+                            [% IF ctx.user_setting_map.$setting %] checked='checked' [% END %]/>
+                    </td>
+                </tr>
                 <!--
                 <tr>
                     <td>[% l("Default Font Size") %]</td>
