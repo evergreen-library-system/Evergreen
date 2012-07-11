@@ -2730,7 +2730,7 @@ CREATE TABLE authority.control_set_bib_field (
 
 CREATE TABLE authority.thesaurus (
     code        TEXT    PRIMARY KEY,     -- MARC21 thesaurus code
-    control_set INT     NOT NULL REFERENCES authority.control_set (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    control_set INT     REFERENCES authority.control_set (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     name        TEXT    NOT NULL UNIQUE, -- i18n
     description TEXT                     -- i18n
 );
@@ -12430,7 +12430,9 @@ SELECT SETVAL('config.coded_value_map_id_seq'::TEXT, (SELECT max(id) FROM config
 SELECT evergreen.upgrade_deps_block_check('0717', :eg_version);
 
 -- Allow un-mapped thesauri
-ALTER TABLE authority.thesaurus ALTER COLUMN control_set DROP NOT NULL;
+-- ALTER TABLE authority.thesaurus ALTER COLUMN control_set DROP NOT NULL;
+-- XXX The above line is now covered by changes to the
+-- "CREATE TABLE authority.thesaurus" statement further up.
 
 -- Don't tie "No attempt to code" to LoC
 UPDATE authority.thesaurus SET control_set = NULL WHERE code = '|';
