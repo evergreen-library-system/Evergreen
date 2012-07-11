@@ -1,6 +1,6 @@
 [%  PROCESS "opac/parts/header.tt2";
     WRAPPER "opac/parts/myopac/prefs_base.tt2";
-    myopac_page = "prefs_notify";
+    myopac_page = "prefs";
     prefs_page = 'notify' %]
 
 <form method='POST'>

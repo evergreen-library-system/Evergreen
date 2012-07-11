@@ -1,7 +1,7 @@
 [%  PROCESS "opac/parts/header.tt2";
     PROCESS "opac/parts/org_selector.tt2";
     WRAPPER "opac/parts/myopac/prefs_base.tt2";
-    myopac_page = "prefs_notify";
+    myopac_page = "prefs";
     prefs_page = 'settings' %]
 
 
