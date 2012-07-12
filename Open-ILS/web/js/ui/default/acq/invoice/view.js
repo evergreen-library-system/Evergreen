@@ -35,6 +35,7 @@ var virtualId = -1;
 var extraCopies = {};
 var extraCopiesFund;
 var widgetRegistry = {acqie : {}, acqii : {}};
+var focusLineitem;
 
 function nodeByName(name, context) {
     return dojo.query('[name='+name+']', context)[0];
@@ -44,6 +45,7 @@ function init() {
 
     attachLi = cgi.param('attach_li');
     attachPo = cgi.param('attach_po');
+    focusLineitem = new openils.CGI().param('focus_li');
 
     itemTypes = pcrud.retrieveAll('aiit');
 
@@ -430,6 +432,39 @@ function updateReceiveLink(li) {
     link.onclick = function() { location.href =  oilsBasePath + '/acq/invoice/receive/' + invoiceId; };
 }
 
+/*
+ * Ensures focusLineitem is in view and causes a brief 
+ * border around the lineitem to come to life then fade.
+ */
+function focusLi() {
+    if (!focusLineitem) return;
+
+    // set during addLineitem()
+    var node = dojo.byId('li-title-ref-' + focusLineitem);
+
+    console.log('focus: li-title-ref-' + focusLineitem + ' : ' + node);
+
+    // LI may not yet be rendered
+    if (!node) return; 
+
+    console.log('focusing ' + focusLineitem);
+
+    // prevent numerous re-focuses
+    focusLineitem = null; 
+
+    // causes the full row to be visible
+    dijit.scrollIntoView(node);
+
+    dojo.require('dojox.fx');
+
+    setTimeout(
+        function() {
+            dojox.fx.highlight({color : '#BB4433', node : node, duration : 2000}).play();
+        }, 
+    100);
+}
+
+
 function addInvoiceEntry(entry) {
 
     openils.Util.removeCSSClass(dojo.byId('acq-invoice-entry-header'), 'hidden');
@@ -454,6 +489,9 @@ function addInvoiceEntry(entry) {
             entry.lineitem(li);
             entry.purchase_order(li.purchase_order());
             nodeByName('title_details', row).innerHTML = html;
+
+            nodeByName('title_details', row).parentNode.id = 'li-title-ref-' + li.id();
+            console.log(dojo.byId('li-title-ref-' + li.id()));
 
             updateReceiveLink(li);
 
@@ -499,6 +537,9 @@ function addInvoiceEntry(entry) {
                     );
                 }
             );
+
+            if (focusLineitem == li.id())
+                focusLi();
         }
     );
 
