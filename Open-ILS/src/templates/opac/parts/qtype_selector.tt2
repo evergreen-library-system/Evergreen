@@ -1,6 +1,7 @@
 [%  query_types = [
     {value => "keyword", label => l("Keyword")},
     {value => "title", label => l("Title")},
+    {value => "jtitle", label => l("Journal Title")},
     {value => "author", label => l("Author")},
     {value => "subject", label => l("Subject")},
     {value => "series", label => l("Series")},

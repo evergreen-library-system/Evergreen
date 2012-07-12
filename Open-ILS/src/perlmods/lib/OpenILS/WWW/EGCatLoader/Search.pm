@@ -25,6 +25,12 @@ sub _prepare_biblio_search_basics {
 
         next unless $query =~ /\S/;
 
+        # Hack for journal title
+        my $q = $qtype;
+        if ($q eq 'jtitle') {
+            $qtype = 'title';
+        }
+
         # This stuff probably will need refined or rethought to better handle
         # the weird things Real Users will surely type in.
         $contains = "" unless defined $contains; # silence warning
@@ -40,6 +46,11 @@ sub _prepare_biblio_search_basics {
             $query = '^' . $query . '$';
         }
         $query = "$qtype:$query" unless $qtype eq 'keyword' and $i == 0;
+
+        # Hack for journal title - completed!
+        if ($q eq 'jtitle') {
+            $query = "bib_level:s $query";
+        }
 
         $bool = ($bool and $bool eq 'or') ? '||' : '&&';
         $full_query = $full_query ? "($full_query $bool $query)" : $query;
