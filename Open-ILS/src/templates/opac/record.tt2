@@ -1,7 +1,9 @@
 [%  PROCESS "opac/parts/header.tt2";
     WRAPPER "opac/parts/base.tt2";
     INCLUDE "opac/parts/topnav.tt2";
-    ctx.page_title = l("Record Detail") %]
+    ctx.page_title = l("Record Detail");
+    IF CGI.param("expand"); basic_search = "f"; END;    
+-%]
     <div id="search-wrapper">
         [% INCLUDE "opac/parts/searchbar.tt2" %]
     </div>

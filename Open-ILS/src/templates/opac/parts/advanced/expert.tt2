@@ -6,7 +6,7 @@
         <tbody id="adv_expert_rows_here">
             <tr id="adv_expert_row">
                 <th>[% l("Tag:") %]</th>
-                <td><input type="text" name="tag" size="3" /></td>
+                <td><input type="text" name="tag" size="3" autofocus /></td>
                 <th>[% l("Subfield:") %]</th>
                 <td><input type="text" name="subfield" size="1" /></td>
                 <th>[% l("Value:") %]</th>

@@ -95,7 +95,7 @@
                             </td>
                             <td width="58%" valign="top">
                                 <div class="input_bg">
-                                    <input type="text" id="username_field" name="username"/>
+                                    <input type="text" id="username_field" name="username" autofocus />
                                 </div>
                             </td>
                         </tr>

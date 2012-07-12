@@ -59,7 +59,7 @@
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/dojo/opensrf/opensrf_xhr.js?[% ctx.eg_cache_hash %]"></script>
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/dojo/opensrf/JSON_v1.js?[% ctx.eg_cache_hash %]"></script>
 
-[% IF use_autosuggest.enabled == "t"; %]
+[% IF use_autosuggest.enabled == "t" AND basic_search != "f"; %]
 <script type="text/javascript">
     dojo.require("openils.widget.AutoSuggest");
 
