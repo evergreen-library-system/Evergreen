@@ -14,6 +14,7 @@ dojo.require('dojo.data.ItemFileReadStore');
 dojo.require('openils.widget.ProgressDialog');
 dojo.require('openils.PermaCrud');
 dojo.require("openils.widget.PCrudAutocompleteBox");
+dojo.require('openils.CGI');
 
 if (!localeStrings) {   /* we can do this because javascript doesn't have block scope */
     dojo.requireLocalization('openils.acq', 'acq');
@@ -80,6 +81,8 @@ function AcqLiTable() {
         }
     );
     this.vlAgent = new VLAgent();
+
+    this.focusLineitem = new openils.CGI().param('focus_li');
 
     dojo.byId("acq-lit-li-actions-selector").onchange = function() { 
         self.applySelectedLiAction(this.options[this.selectedIndex].value);
@@ -149,6 +152,37 @@ function AcqLiTable() {
         }
     };
 
+    /*
+     * Ensures this.focusLineitem is in view and causes a brief 
+     * border around the lineitem to come to life then fade.
+     */
+    this.focusLi = function() {
+        if (!this.focusLineitem) return;
+
+        // set during addLineitem()
+        var node = dojo.byId('li-title-ref-' + this.focusLineitem);
+
+        // LI may not yet be rendered
+        if (!node) return; 
+
+        // prevent numerous re-focuses
+        this.focusLineitem = null; 
+        
+        // causes the full row to be visible
+        dijit.scrollIntoView(node);
+
+        // may as well..
+        dojo.query('[attr=title]', node)[0].focus();
+
+        dojo.require('dojox.fx');
+
+        setTimeout(
+            function() {
+                dojox.fx.highlight({color : '#BB4433', node : node, duration : 2000}).play();
+            }, 
+        100);
+    };
+
     this.show = function(div) {
         openils.Util.hide('acq-lit-table-div');
         openils.Util.hide('acq-lit-info-div');
@@ -159,6 +193,7 @@ function AcqLiTable() {
         switch(div) {
             case 'list':
                 openils.Util.show('acq-lit-table-div');
+                this.focusLi();
                 break;
             case 'info':
                 openils.Util.show('acq-lit-info-div');
@@ -345,6 +380,9 @@ function AcqLiTable() {
         dojo.forEach(tds, function(td) {self.setRowAttr(td, liWrapper, td.getAttribute('attr'), td.getAttribute('attr_type'));});
         dojo.query('[name=source_label]', row)[0].appendChild(document.createTextNode(li.source_label()));
 
+        // so we can scroll to it later
+        dojo.query('[name=bib-info-cell]', row)[0].id = 'li-title-ref-' + li.id();
+
         var identifier =
             liWrapper.findAttr("isbn", "lineitem_marc_attr_definition") ||
             liWrapper.findAttr("upc", "lineitem_marc_attr_definition");
@@ -472,6 +510,11 @@ function AcqLiTable() {
         if (skip_final_placement) {
             return row;
         }
+
+        // the last LI may be rendered after the call to show('list'),
+        // so make sure it's focused if necessary.
+        if (this.focusLineitem == li.id())
+            this.focusLi();
     };
 
     this._liCountClaims = function(li) {
@@ -709,6 +752,7 @@ function AcqLiTable() {
      */
     this.drawLiNotes = function(li) {
         var self = this;
+        this.focusLineitem = li.id();
 
         if (!acqLitAlertAlertText._store_ready)
             this._setAlertStore();
@@ -910,6 +954,7 @@ function AcqLiTable() {
     }
 
     this.drawInfo = function(liId) {
+        this.focusLineitem = liId;
         if (!this._isRelatedViewer) {
             var d = dojo.byId("acq-lit-info-related");
             if (!this.relCache[liId]) {
@@ -1072,6 +1117,7 @@ function AcqLiTable() {
     }
 
     this.drawCopies = function(liId, force_fetch) {
+        this.focusLineitem = liId;
         if (typeof force_fetch == "undefined")
             force_fetch = false;
 

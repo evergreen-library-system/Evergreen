@@ -74,7 +74,7 @@
             <tbody id='acq-lit-tbody'>
                 <tr id='acq-lit-row' class='acq-lit-row'>
                     <td name='selector'><input type='checkbox' name='selectbox'/></td>
-                    <td style='width:75%;'>
+                    <td style='width:75%;' name='bib-info-cell'>
                         <table style='width:100%;'>
                             <tbody>
                                 <tr>
