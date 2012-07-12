@@ -1,8 +1,15 @@
 [% WRAPPER "base.tt2" %]
 [% ctx.page_title = "Lineitem Worksheet" %]
-<script type="text/javascript">var liId = "[% ctx.page_args.0 %]";</script>
+<script type="text/javascript">
+    var liId = "[% ctx.page_args.0 %]";
+    dojo.require('openils.CGI');
+    var cgi = new openils.CGI({url : document.referrer});
+    cgi.param('focus_li', liId);
+    var returnRef = cgi.url();
+</script>
 <h1>Lineitem Worksheet</h1>
-<br/>
+<div dojoType='dijit.form.Button' scrollOnFocus='false' onClick='location.href = returnRef'>&#x2196; Return</div>
+<br/><br/>
 <div id="acq-worksheet-contents"></div>
 <div class='hidden'>
     <div jsId='progressDialog' dojoType='openils.widget.ProgressDialog' message='Loading Worksheet...'></div>
