@@ -1268,8 +1268,8 @@ sub new_hold_copy_targeter {
 							isTrue($_->holdable) &&
 							!isTrue($_->deleted) &&
 							(isTrue($hold->mint_condition) ? isTrue($_->mint_condition) : 1) &&
-							( ($hold->hold_type ne 'C' && $hold->hold_type ne 'I') ? # Copy-ish holds can target if they slipped through
-								($hold->hold_type ne 'P' ? $_->part_maps->count == 0 : 1) : 1 )
+							( ( $hold->hold_type ne 'C' && $hold->hold_type ne 'I' # Copy-level holds don't care about parts
+								&& $hold->hold_type ne 'P' ) ? $_->part_maps->count == 0 : 1)
 						} @$all_copies;
 			}
 
