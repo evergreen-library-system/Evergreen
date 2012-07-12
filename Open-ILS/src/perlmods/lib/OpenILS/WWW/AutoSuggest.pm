@@ -94,9 +94,9 @@ sub prepare_headline_opts {
 # Get raw autosuggest data (rows returned from a stored procedure) from the DB.
 sub get_suggestions {
     my $editor = shift;
-    my $query = shift;
-    my $search_class = shift;
-    my $org_unit = shift;
+    my $query = shift || "";            # avoid noise about undef
+    my $search_class = shift || "";
+    my $org_unit = shift || -1;
     my $css_prefix = shift || 'oils_AS';
     my $highlight_min = int(shift || 0);
     my $highlight_max = int(shift || 0);
@@ -118,12 +118,9 @@ sub get_suggestions {
         $query .
         $search_class .
         $org_unit .
-        $css_prefix .
-        $highlight_min .
-        $highlight_max .
         $normalization .
         $limit .
-        $short_word_length
+        $headline_opts
     );
 
     my $res = $cache->get_cache( $key );
