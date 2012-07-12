@@ -42,7 +42,7 @@
             <option value="[% o.value %]" [% c == o.value ? ' selected="selected"' : '' %]>[% o.label %]</option>
             [% END %]
         </select>
-        <input type='text' size='18' name='query' value="[% q | html %]" x-webkit-speech />
+        <input type='text' size='18' name='query' value="[% q | html %]" x-webkit-speech [% IF loop.index == 0 %] autofocus [% END %] />
         <a href="javascript:;" class="row-remover"
             title="[% l('Remove row') %]" alt="[% l('Remove row') %]"
             onclick='return killRowIfAtLeast(2, this);'><img src="[% ctx.media_prefix %]/images/adv_row_close_btn.png" /></a>

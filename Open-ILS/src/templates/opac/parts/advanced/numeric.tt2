@@ -18,7 +18,7 @@
                 </select>
             </td>
             <td>
-                <input type="text" name="query" size="16" />
+                <input type="text" name="query" size="16" autofocus />
             </td>
         </tr>
         <tr>

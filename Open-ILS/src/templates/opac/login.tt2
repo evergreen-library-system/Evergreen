@@ -1,6 +1,7 @@
 [%  PROCESS "opac/parts/header.tt2";
     WRAPPER "opac/parts/base.tt2";
     INCLUDE "opac/parts/topnav.tt2";
+    basic_search = "f";
     ctx.page_title = l("Account Login") %]
     <div id="search-wrapper">
         [% INCLUDE "opac/parts/searchbar.tt2" %]
@@ -9,18 +10,6 @@
         <div id="main-content">
             [% INCLUDE "opac/parts/login/form.tt2" %]
             <div class="clear-both very-big-height"></div>	
-            <script type="text/javascript">
-                /* Note: when common browsers support HTML5 "autofocus", we can remove this */
-                var _onload = window.onload;
-                window.onload = function() {
-                    try {
-                        document.getElementById("username_field").focus();
-                        if (_onload) _onload();
-                    } catch (E) {
-                        void(0);
-                    }
-                };
-            </script>
         </div>
     </div>
 [% END %]
