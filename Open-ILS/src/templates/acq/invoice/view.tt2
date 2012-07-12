@@ -46,7 +46,6 @@
 
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
 
-
         <div dojoType="dijit.layout.TabContainer" style="width: 96%; height: 100%;">
             <div dojoType="dijit.layout.ContentPane" 
                 class='oils-acq-detail-content-pane' title="Invoice" selected='true' style='height:600px'>
@@ -84,7 +83,7 @@
                                 <div name='title_details'></div>
                                 <div name='note'></div>
                             </td>
-                            <td class='acq-invoice-center-col'>
+                            <td class='acq-invoice-center-col' nowrap='nowrap'>
                                 <span name='inv_item_count'></span>&nbsp;/&nbsp;<span name='phys_item_count'></span>
                             </td>
                             <td class='acq-invoice-billed-col'><div name='cost_billed'></div></td>
@@ -301,7 +300,6 @@
             </div> <!-- tab 2 -->
         </div> <!-- end tabcontainer -->
     </div> <!-- end contentpane -->
-
 </div>
 <div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'></div>
 <div jsId='extraItemsDialog' dojoType="dijit.Dialog" title="Extra Items">

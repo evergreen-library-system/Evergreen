@@ -747,7 +747,11 @@ function addInvoiceEntry(entry) {
                 ['inv_item_count', 'phys_item_count', 'cost_billed', 'amount_paid'],
                 function(field) {
                     var dijitArgs = {required : true, constraints : {min: 0}, style : 'width:6em'};
-                    if(!field.match(/count/)) dijitArgs.style = 'width:9em';
+                    if(field.match(/count/)) {
+                        dijitArgs.style = 'width:4em;';
+                    } else {
+                        dijitArgs.style = 'width:9em;';
+                    }
                     if(entry.isnew() && field == 'phys_item_count') {
                         // by default, attempt to pay for all non-canceled and as-of-yet-un-invoiced items
                         var count = Number(li.order_summary().item_count() || 0) - 
