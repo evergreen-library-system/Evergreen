@@ -240,6 +240,7 @@ include::serials/G-Special_issue.txt[]
 
 include::serials/H-holdings_statements.txt[]
 
+include::serials/Group_Serials_Issues_in_the_OPAC_2.2.txt[]
 
 Circulation
 ===========

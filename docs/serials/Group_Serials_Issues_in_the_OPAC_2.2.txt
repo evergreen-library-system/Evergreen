@@ -1,0 +1,51 @@
+Group Serials Issues in the Template Toolkit OPAC
+-------------------------------------------------
+
+In previous versions of Evergreen, issues of serials displayed in a list ordered by publication date.  The list could be lengthy if the library had extensive holdings of a serial.  
+Using the Template Toolkit OPAC that is available in version 2.2, you can group issues of serials in the OPAC by chronology or enumeration. For example, you might group issues by date published or by volume. Users can expand these hyperlinked groups to view holdings of specific issues.  The result is a clean, easy-to-naviagte interface for viewing holdings of serials with a large quantity of issues.  
+
+NOTE: This feature is only available in the Template Toolkit OPAC.
+
+Administration
+~~~~~~~~~~~~~~
+
+Enable the following organizational unit settings to use this feature:
+ 
+. Click *Admin* -> *Local Administration* -> *Library Settings Editor*.
+. Search or scroll to find *Serials: Default display grouping for serials distributions presented in the OPAC*.
+. Click *Edit*.
+. Enter *enum* to display issues by enumeration, or enter *chron* to display issues in chronological order. This value will become your default setting for display issues in the OPAC.
+. Click *Update Setting*.
+. Search or scroll to find *OPAC: Use fully compressed serials holdings*.
+. Select the value, *True*, to view a compressed holdings statement.
+. Click *Update Setting*. 
+
+Displaying Issues in the OPAC
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Your library system has a subscription to the periodical, _Bon Appetit_.  The serials librarian has determined that the issues at the Forest Falls branch should display in the OPAC by month and year.  The issues at the McKinley branch should display by volume and number.  The serials librarian will create two distributions for the serial that will include these groupings.
+
+. Retrieve the bibliographic record for the serial, and click *Actions for this Record* -> *Alternate Serial Control*.
+. Create a *New Subscription* or click on the hyperlinked ID of an existing subscription.
+. Click *New Distribution*.
+. Create a label to identify the distribution.
+. Select the holding library from the drop down menu that will own physical copies of the issues.
+. Select a display grouping.  Select *chronology* from the drop down menu.
+. Select a template from the drop down menu to receive copies.
+. Click *Save*.
++
+image::media/Group_Serials_Issues_in_the_OPAC2.jpg[Group_Serials_Issues_in_the_OPAC2]
++
+. Click *New Distribution* and repeat the process to send issues to the McKinley Branch.  Choose *enumeration* in the *Display Grouping* field to display issues by volume and number.
+. Complete the creation of your subscription.
+. Retrieve the record from the catalog.
+. Scroll down to and click the *Issues Held* link. The issues label for each branch appears.
+. Click the hyperlinked issues label.
+
+The issues owned by the Forest Falls branch are grouped by chronology:
+
+image::media/Group_Serials_Issues_in_the_OPAC5.jpg[Group_Serials_Issues_in_the_OPAC5]
+
+The issues owned by the McKinley branch are grouped by enumeration:
+
+image::media/Group_Serials_Issues_in_the_OPAC7.jpg[Group_Serials_Issues_in_the_OPAC7]
