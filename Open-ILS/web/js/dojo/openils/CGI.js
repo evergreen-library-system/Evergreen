@@ -20,22 +20,38 @@ if(!dojo._hasResource["openils.CGI"]) {
     dojo.provide("openils.CGI");
     dojo.declare('openils.CGI', null, {
 
-        constructor : function() {
+        constructor : function(args) {
 
             this._keys = new Array();
             this.data = new Object();
 
-            var string = location.search.replace(/^\?/,"");
+            var query = location.search.replace(/^\?/,"");
             this.server_name = location.href.replace(/^https?:\/\/([^\/]+).+$/,"$1");
+            this.base_url = location.href.replace(/(.*)\?.*/, '$1'); // proto://hostname/full/path
+
+            // if the user specifies URL components, override URL
+            // components pulled from the current page
+            if (args) {
+                if (url = args.url) { // assignment
+                    this.base_url = url.replace(/(.*)\?.*/, '$1');
+                    query = '';
+                    if (url.match(/\?(.*)/))
+                        query = url.match(/\?(.*)/)[0];
+                }
+                if (args.query)
+                    query = args.query;
+
+                query = query.replace(/^\?/, '');
+            }
 
             var key = ""; 
             var value = "";
             var inkey = true;
             var invalue = false;
 
-            for( var idx = 0; idx!= string.length; idx++ ) {
+            for( var idx = 0; idx!= query.length; idx++ ) {
 
-                var c = string.charAt(idx);
+                var c = query.charAt(idx);
 
                 if( c == "=" )	{
                     invalue = true;
@@ -57,16 +73,38 @@ if(!dojo._hasResource["openils.CGI"]) {
                 else if(invalue) value += c;
             }
 
-            if( ! this.data[key] ) this.data[key] = [];
-            this.data[key].push(decodeURIComponent(value));
-            this._keys.push(key);
+            if (key.length) {
+                if( ! this.data[key] ) this.data[key] = [];
+                this.data[key].push(decodeURIComponent(value));
+                this._keys.push(key);
+            }
         },
 
         /* returns the value for the given param.  If there is only one value for the
            given param, it returns that value.  Otherwise it returns an array of values
          */
-        param : function(p) {
-            if(this.data[p] == null) return null;
+        param : function(p, val, push) {
+            if (p == null || p == '') // invalid param name
+                return null;
+
+            // set param value
+            if (arguments.length > 1) { 
+                if (this.keys().indexOf(p) == -1)
+                    this._keys.push(p);
+
+                if (dojo.isArray(this.data[p])) {
+                    if (push) {
+                        this.data[p].push(val);
+                    } else {
+                        this.data[p] = val;
+                    }
+                } else {
+                    this.data[p] = val;
+                }
+            }
+
+            if(this.data[p] == null)
+                return null;
             if(this.data[p].length == 1)
                 return this.data[p][0];
             return this.data[p];
@@ -77,21 +115,48 @@ if(!dojo._hasResource["openils.CGI"]) {
             return this._keys;
         },
 
+        /* returns the URI-encoded query string */
+        queryString : function() {
+            var query = "";
+            var _this = this;
+
+            dojo.forEach(this.keys(),
+                function(key) {
+                    var params = _this.param(key);
+                    if (!dojo.isArray(params))
+                        params = [params];
+
+                    dojo.forEach(params,
+                        function(param) {
+                            if (param == null) return;
+                            query += ';' + key + '=' + encodeURIComponent(param);
+                        }
+                    );
+                }
+            );
+
+            return query.replace(/^;/, '?');
+        },
+
+        url : function() {
+            return this.base_url + this.queryString();
+        },
+
         /* debugging method */
         toString : function() {
-            var string = "";
+            var query = "";
             var keys = this.keys();
 
             for( var k in keys ) {
-                string += keys[k] + " : ";
+                query += keys[k] + " : ";
                 var params = this.param(keys[k]);
 
                 for( var p in params ) {
-                    string +=  params[p] + " ";
+                    query +=  params[p] + " ";
                 }
-                string += "\n";
+                query += "\n";
             }
-            return string;
+            return query;
         }
     });
 }
