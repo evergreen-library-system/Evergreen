@@ -1,0 +1,318 @@
+Circulation - Patron Record
+---------------------------
+
+[[circulation_searching_patrons]]
+Searching Patrons
+~~~~~~~~~~~~~~~~~
+
+indexterm:[patrons, searching for]
+
+To search for a patron, select the Patron Search option from the toolbar, _Search -> Search for Patrons_ from the menu bar, or *F4*.
+
+The Patron Search screen will display.  The orientation of the search pane may be vertical or horizontal, depending on your library’s configuration.  It will contain options to search on the following fields:
+
+* Last Name
+* First Name
+* Middle Name
+* Alias
+* Address 1
+* Address 2
+* City
+* Zip
+* Phone
+* Email
+* State
+* Barcode
+* OPAC Login
+* ID
+
+Use the options above the search fields to include patrons marked ``inactive'' in your search results or to limit results to patrons in a specific library branch or in a specific permission group.
+
+image::media/circulation_patron_records-1.png[circulation_patron_records 1]
+
+.Tips for searching
+[TIP]
+=================== 
+* Search one field or combine fields for more precise results.
+* Truncate search terms for more search results.
+===================
+
+Once you have located the desired patron, highlight the entry for this patron in the results screen.  A summary for this patron will display in place of the search fields.  
+
+image::media/circulation_patron_records-2.png[circulation_patron_records 2]
+
+Use the _Retrieve Patron_ button to retrieve the patron for circulation or editing.
+
+image::media/circulation_patron_records-3.png[circulation_patron_records 3]
+
+The _Search Form_ button may be used to resume searching for patrons.
+
+Registering New Patrons
+~~~~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[patrons, registering]
+
+To register a new patron, select _Patron Registration_ from the toolbar, _Circulation -> Register Patron_ from the menu bar, or *shift + F1*. The Patron Registration form will display. 
+
+image::media/circulation_patron_records-4.png[circulation_patron_records 4]
+
+Mandatory fields display in yellow.
+
+image::media/circulation_patron_records-5.png[circulation_patron_records 5]
+
+The _Show Only Required Fields_ and _Show Suggested Fields_ may be used to limit the options on this page.
+
+image::media/circulation_patron_records-6.png[circulation_patron_records 6]
+
+When one of these options is selected, it is possible switch to the other limited view or to revert to the original view by selecting _Show All Fields_. 
+
+image::media/circulation_patron_records-7.png[circulation_patron_records 7]
+
+When finished entering the necessary information, select _Save_ to save the new patron record or _Save & Clone_ to register a patron with the same address.  When _Save & Clone_ is selected, the address information is copied into the resulting patron registration screen.  It is linked to the original patron.  Address information may only be edited through the original record.
+
+image::media/circulation_patron_records-8.png[circulation_patron_records 8]
+
+[TIP]
+================================================================================
+* Requested fields may be configured in the _Library Settings Editor_ (_Admin ->
+* Local Admin -> Library Settings Editor_).  
+* Statistical categories may be created for information tracked by your library
+* that is not in the default patron record.  These may be configured in the
+* _Statistical Categories Editor_ (_Admin -> Local Admin -> Statistical Categories Editor_).  
+* Staff accounts may also function as patron accounts.
+===========================================================================================
+
+[[updating_patron_information]]
+Updating Patron Information
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[patrons, updating]
+
+Retrieve the patron record as described in the section <<circulation_searching_patrons,Searching Patrons>>.
+
+Select _Edit_ from the options that display at the top of the patron record. 
+
+image::media/circulation_patron_records-9.png[circulation_patron_records 9]
+
+Edit information as required.  When finished, select _Save_.  If you attempt to close out of the patron account before the information is received, an alert will display.
+
+image::media/circulation_patron_records-10.png[circulation_patron_records 10]
+
+Select _OK_ to continue or _Cancel_ to return to the editing form.
+
+After selecting _Save_, the page will refresh.  The edited information will be reflected in the patron summary pane.
+
+NOTE: If collapsed, you will need to manually ``un-collapse'' this pane. 
+
+Renewing Library Cards
+~~~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[library cards, renewing]
+
+Expired patron accounts display with a black box around the patron’s name, a note that the patron is expired, and – when initially retrieved – an alert stating that the ``Patron account is EXPIRED.''
+
+image::media/circulation_patron_records-11.png[circulation_patron_records 11]
+
+Open the patron record in edit mode as described in the section <<updating_patron_information,Updating Patron Information>>.
+
+Navigate to the information field labeled _Privilege Expiration Date_. 
+Enter a new date in this box.  When you place your cursor in the _Patron Expiration Date box_, a calendar widget will display to help you easily navigate to the desired date. 
+
+image::media/circulation_patron_records-12.png[circulation_patron_records 12]
+
+Select the date using the calendar widget or key the date in manually.  Click the _Save_ button.  The screen will refresh and the ``expired'' alerts on the account will be removed. 
+
+Lost Library Cards
+~~~~~~~~~~~~~~~~~~
+
+indexterm:[library cards, replacing]
+
+Retrieve the patron record as described in the section <<circulation_searching_patrons,Searching Patrons>>. 
+
+Open the patron record in edit mode as described in the section <<updating_patron_information,Updating Patron Information>>.
+ 
+Next to the _Barcode_ field, select the _Replace Barcode_ button.
+
+image::media/circulation_patron_records-13.png[circulation_patron_records 13]
+
+This will clear the barcode field.  Enter a new barcode and _Save_ the record.  The screen will refresh and the new barcode will display in the patron summary pane.  
+
+If a patron’s barcode is mistakenly replaced, the old barcode may be reinstated.  Retrieve the patron record as described in the section <<circulation_searching_patrons,Searching Patrons>>. Open the patron record in edit mode as described in the section <<updating_patron_information,Updating Patron Information>>.
+
+Select the _See All_ button next to the _Replace Barcode_ button.  This will display the current and past barcodes associated with this account. 
+
+image::media/circulation_patron_records-14.png[circulation_patron_records 14]
+
+Check the box(es) for all barcodes that should be ``active'' for the patron.  An ``active'' barcode may be used for circulation transactions.  A patron may have more than one ``active'' barcode.  Only one barcode may be designated ``primary.'' The ``primary'' barcode displays in the patron’s summary information in the _Library Card_ field. 
+
+Once you have modified the patron barcode(s), _Save_ the patron record.  If you modified the ``primary'' barcode, the new primary barcode will display in the patron summary screen. 
+
+Resetting Patron's Password
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[patrons, passwords]
+
+A patron’s password may be reset from the OPAC or through the staff client.  To reset the password from the staff client, retrieve the patron record as described in the section <<circulation_searching_patrons,Searching Patrons>>. 
+
+Open the patron record in edit mode as described in the section <<updating_patron_information,Updating Patron Information>>.
+
+Select the _Reset Password_ button next to the _Password_ field.  
+
+image::media/circulation_patron_records-15.png[circulation_patron_records 15]
+
+NOTE: The existing password is not displayed in patron records for security reasons.
+
+A new number will populate the _Password_ and _Verify Password_ text boxes.  Make note of the new password and _Save_ the patron record.  The screen will refresh and the new password will be suppressed from view.   
+
+Barring a Patron
+~~~~~~~~~~~~~~~~
+
+indexterm:[patrons, barring]
+
+A patron may be barred from circulation activities.  To bar a patron, retrieve the patron record as described in the section <<circulation_searching_patrons,Searching Patrons>>. Open the patron record in edit mode as described in the section <<updating_patron_information,Updating Patron Information>>.
+
+Check the box for _Barred_ in the patron account. 
+
+image::media/circulation_patron_records-16.png[circulation_patron_records 16]
+
+_Save_ the user.  The screen will refresh.  The patron account will now display an alert stating that the patron account is *BARRED*.  Additionally a red box and note will indicate the patron’s barred status. 
+
+image::media/circulation_patron_records-17.png[circulation_patron_records 17]
+
+NOTE: Barring a patron from one library bars that patron from all consortium member libraries. 
+
+To unbar a patron, uncheck the Barred checkbox.
+
+Barred vs. Blocked
+~~~~~~~~~~~~~~~~~~
+
+indexterm:[patrons, barring]
+
+*Barred*: Stops patrons from using their library cards; alerts the staff that the patron is banned/barred from the library. The ``check-out'' functionality is disabled for barred patrons (NO option to override – the checkout window is unusable and the bar must be removed from the account before the patron is able to checkout items).  These patrons may still log in to the OPAC to view their accounts.
+
+indexterm:[patrons, blocking]
+
+*Blocked*: Often, these are system-generated blocks on patron accounts.  
+
+Some examples:
+
+* Patron exceeds fine threshold
+* Patron exceeds max checked out item threshold
+
+A notice appears when a staff person tries to checkout an item to blocked patrons, but staff may be given permissions to override blocks.
+
+Patron Alerts
+~~~~~~~~~~~~~~
+
+indexterm:[patrons, Alerts]
+    
+When an account has an alert on it, a Stop sign is displayed when the record is retrieved.
+
+image::media/circulation_patron_records-18.png[circulation_patron_records 18]
+
+Navigating to an area of the patron record using the navigation buttons at the top of the record (for example, Edit or Bills) will clear the message from view.
+
+If you wish to view these alerts after they are cleared from view, they may be retrieved.  Use the Other menu to select _Display Alert_ and _Messages_.
+
+image::media/circulation_patron_records-19.png[circulation_patron_records 19]
+
+There are two types of Patron Alerts:
+
+*System-generated alerts*: Once the cause is resolved (e.g. patron's account has been renewed), the message will disappear automatically.
+
+*Staff-generated alerts*: Must be added and removed manually. To add an alert to a patron account, retrieve the patron record as described in the section <<circulation_searching_patrons,Searching Patrons>>. Open the patron record in edit mode as described in the section <<updating_patron_information,Updating Patron Information>>.
+
+Enter the alert text in the Alert Message field.
+
+image::media/circulation_patron_records-20.png[circulation_patron_records 20]
+
+_Save_ the record. The screen will refresh and the alert will display.  Additionally, the patron name will be highlighted in yellow and a note will indicate that there is an alert on the account. 
+
+image::media/circulation_patron_records-21.png[circulation_patron_records 21]
+
+To remove the alert, retrieve the patron record as described in the section <<circulation_searching_patrons,Searching Patrons>>. Open the patron record in edit mode as described in the section <<updating_patron_information,Updating Patron Information>>.
+
+Delete the alert text in the _Alert Message_ field. _Save_ the record.  The screen will refresh and the indicators for the alert will be removed from the account. 
+
+Patron Notes
+~~~~~~~~~~~~
+
+indexterm:[patrons, notes]
+
+When a patron account contains a note, a _See Notes_ message appears beneath the patron’s name in the patron summary pane. 
+
+image::media/circulation_patron_records-22.png[circulation_patron_records 22]
+
+Notes are strictly communicative and may be made visible to the patron via their account on the OPAC.  In the JSPAC, these notes display on the account summary screen in the OPAC.
+
+image::media/circulation_patron_records-23.png[circulation_patron_records 23]
+
+To insert or remove a note, retrieve the patron record as described in the section  <<circulation_searching_patrons,Searching Patrons>>. Open the patron record in edit mode as described in the section <<updating_patron_information,Updating Patron Information>>.
+
+Use the Other menu to navigate to _Notes_.
+
+image::media/circulation_patron_records-24.png[circulation_patron_records 24]
+
+Select the _Add New Note_ button. An _Add Note_ window displays.  
+
+Enter note information. 
+
+Select the check box for _Patron Visible_ to display the note in the OPAC. 
+
+image::media/circulation_patron_records-25.png[circulation_patron_records 25]
+
+Select _Add Note_ to save the note to the patron account.  
+
+To delete a note, go to _Other -> Notes_ and use the _Delete This Note_ button under each note.
+
+image::media/circulation_patron_records-26.png[circulation_patron_records 26]
+
+An alert will display.  Click _Yes_ to delete the note or No to retain the note.  A confirmation box will display; click _OK_.
+
+Merging Patron Records
+~~~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[patrons, merging]
+
+When patron records are erroneously duplicated, they may be merged into one record.  As described in the section <<circulation_searching_patrons,Searching Patrons>>, search for the term(s) shared by the two records. 
+
+Select the two records to merge by pressing down the CTRL key and clicking each record. 
+
+Click the _Merge Patrons_ button next to the _Search Form_ and _Retrieve Patron_ buttons on the top of the screen.
+
+image::media/circulation_patron_records-27.png[circulation_patron_records 27]
+
+A Record Merging window will display.  Compare the two records.  Select the record you want to keep by checking the radio button _Lead Record_ next to the appropriate record. 
+
+image::media/circulation_patron_records-28.png[circulation_patron_records 28]
+
+After making your selection, click the _Merge_ button.  The screen will refresh.  Only one of the two patron names will display.
+
+NOTE: Once two records have been merged, the notes, bills, holds and outstanding items under the non-lead record are brought to the lead record. Staff-inserted alert messages are not transferred from the non-lead record; lead record alerts are retained.
+
+Patron records may also be merged from the _Patron Group_ screen
+Retrieve one of the two patron records you want to merge.  Go to _Other -> Group Member Details_.
+
+image::media/circulation_patron_records-29.png[circulation_patron_records 29]
+
+The patron records are displayed as group members. If both patron records are not already displayed on this screen, click _Choose an Action -> Move another patron to this patron group_.
+
+image::media/circulation_patron_records-30.png[circulation_patron_records 30]
+
+At the prompt, scan or type the patron's barcode. Click _OK_. Confirm the move by clicking the _Move_ button on top of the screen. 
+
+image::media/circulation_patron_records-31.png[circulation_patron_records 31]
+
+Click _OK_ on the confirmation pop-up window.
+
+Both records are displayed as group members. 
+
+Select both records by pressing *CTRL* key and clicking each record. 
+
+Click _Choose an Action -> Merge Selected Patrons_. The merging records window pops up. 
+
+Choose the lead record and continue to merge records as described in the above.
+
+NOTE: The merged record will still show under group members. Both members point to the same patron record.
+
+
