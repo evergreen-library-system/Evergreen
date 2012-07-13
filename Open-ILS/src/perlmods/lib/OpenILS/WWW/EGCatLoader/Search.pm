@@ -616,10 +616,12 @@ sub marc_expert_search {
     }
 
     $self->timelog("Searching for MARC expert");
+    my $method = 'open-ils.search.biblio.marc';
+    $method .= '.staff' if $self->ctx->{is_staff};
     my $timeout = 120;
     my $ses = OpenSRF::AppSession->create('open-ils.search');
     my $req = $ses->request(
-        'open-ils.search.biblio.marc',
+        $method,
         {searches => $query, org_unit => $self->ctx->{search_ou}}, 
         $limit, $offset, $timeout);
 
