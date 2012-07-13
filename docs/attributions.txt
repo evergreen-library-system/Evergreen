@@ -1,4 +1,5 @@
 [[attributions]]
+[appendix]
 Attributions
 ============
 

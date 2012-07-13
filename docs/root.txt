@@ -255,6 +255,8 @@ include::circulation/circulating_items.txt[]
 
 include::circulation/booking.txt[]
 
+include::circulation/circulation_patron_records.txt[]
+
 Reports
 =======
 
@@ -296,11 +298,12 @@ include::attributions.txt[]
 
 include::licensing.txt[]
 
+[appendix]
 Admonitions
 ===========
 
 Images used for Admonitions
----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * Note 
 
@@ -318,4 +321,7 @@ image::media/caution.png[]
 
 image::media/tip.png[]
 
+[index]
+Index
+=====
 
