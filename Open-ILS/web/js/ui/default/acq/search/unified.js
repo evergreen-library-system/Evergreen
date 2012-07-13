@@ -775,6 +775,13 @@ function ResultManager(liPager, poGrid, plGrid, invGrid) {
     };
 
     this.resultsComplete = function() {
+
+        // now that the records are loaded, we need to do the actual focusing
+        if (this.result_type == 'lineitem') {
+            if (this.liPager) 
+                this.liPager.focusLi();
+        }
+
         if (!this.count_results)
             this.show("no_results");
         else this.finish(this.result_type);
@@ -836,6 +843,15 @@ function ResultManager(liPager, poGrid, plGrid, invGrid) {
                     }
                 }
             );
+        }
+
+        // if the caller has requested we focus on a specific
+        // lineitem, allow the pager to find the lineitem
+        // and load the results directly.
+        if (this.result_type == 'lineitem') {
+            if (this.liPager && this.liPager.loadFocusLi()) { 
+                return;
+            }
         }
 
         interface.dataLoader();

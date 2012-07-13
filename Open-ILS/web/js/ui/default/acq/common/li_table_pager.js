@@ -60,6 +60,40 @@ function LiTablePager() {
         }
     };
 
+    this.focusLi = function() {
+        var liId = this.liTable.focusLineitem;
+        if (liId && this.liTable.liCache[liId] && dojo.byId('li-title-ref-' + liId))
+            this.liTable.focusLi();
+    };
+
+    /* given a lineitem to focus, this will determine what page in 
+     * the results set the lineitem sits, then fetch that page 
+     * of results.  Returns false if no focus requested.
+     */
+    this.loadFocusLi = function() {
+        var liId = this.liTable.focusLineitem;
+        if (!liId) return false;
+
+        var _this = this;
+        this.getAllLineitemIDs(
+            function(r) {
+                var allIds = openils.Util.readResponse(r);
+                var idx = dojo.indexOf(allIds, liId);
+                // if li not found, result is loading page 1
+
+                var page = 1;
+                while ( idx >= (page * _this.displayLimit) ) { 
+                    page++;
+                }
+
+                _this.displayOffset = (_this.displayLimit * (page - 1));
+                _this.dataLoader();
+            }
+        );
+
+        return true;
+    };
+
     this.getAllLineitemIDs = function(callback) {
         this.dataLoader({
             "id_list": true,
