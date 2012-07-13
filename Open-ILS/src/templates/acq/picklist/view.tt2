@@ -12,6 +12,13 @@
             </div>
         </div>
     </div>
+    <div class='hidden' id='acq-pl-return-to-search'>
+        <button dojoType='dijit.form.Button' id='acq-pl-return-to-search-button'>[% l('&#x2196; Return to Search') %]</button>
+    </div>
+    <div class='hidden' id='acq-pl-return-to-invoice'>
+        <button dojoType='dijit.form.Button' id='acq-pl-return-to-invoice-button'>[% l('&#x2196; Return to Invoice') %]</button>
+    </div>
+
     <script type="text/javascript">var plId = '[% ctx.page_args.0 %]';</script>
     [% INCLUDE 'acq/common/li_table.tt2' %]
 </div>

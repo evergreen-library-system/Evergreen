@@ -158,6 +158,10 @@
             <table style='width:100%'>
                 <tr>
                     <td class="acq-lit-li-menu-left">
+                        <span class='hidden' id='acq-lit-copies-back-to-invoice-button-wrapper'>
+                            <button dojoType='dijit.form.Button' id='acq-lit-copies-back-to-invoice-button' 
+                                scrollOnFocus='false'>[% l('&#x2196; Return To Invoice') %]</button>
+                        </span>
                         <div dojoType='dijit.form.Button' id='acq-lit-copies-back-button' scrollOnFocus='false'>&#x2196; Return</div>
                         <span style='margin-left:10px;padding-left:10px;border-left:2px solid #aaa;'>
                             Item Count: 
