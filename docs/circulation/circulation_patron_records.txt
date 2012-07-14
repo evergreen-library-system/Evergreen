@@ -315,4 +315,163 @@ Choose the lead record and continue to merge records as described in the above.
 
 NOTE: The merged record will still show under group members. Both members point to the same patron record.
 
+[[bills_and_payments]]
+Bills and Payments
+~~~~~~~~~~~~~~~~~~
+
+When a patron account has bills attached to it, a note displays under the patron name in the patron summary panel.  
+
+image::media/circulation_patron_bills-1.png[circulation_patron_bills 1]
+
+To view more information about the patron’s bills, or to make payments on or edit the bills, click on the Bills button from the patron account screen. 
+
+image::media/circulation_patron_bills-2.png[circulation_patron_bills 2]
+
+
+[[circ_vs_grocery]]
+*Circulation bills*: system-generated (overdue fines, lost item cost, processing fees, etc.).
+
+* Overdue fines are added daily once an item is overdue. 
+* When an item is marked as lost, bills may be automatically generated to cover the item's cost and a processing fee, according to library policy.
+
+*Grocery bills*: staff-applied to patron accounts.
+* One default grocery bill, Misc, exists in an unmodified Evergreen installation.
+* Additional grocery bills may be configured through the Admin settings.  Admin -> Server Administration -> Billing Types.
+
+To view more information about a bill, highlight the bill and right-click or use the _Actions for Selected Transactions_ menu to select _Full Details_.
+
+image::media/circulation_patron_bills-3.png[circulation_patron_bills 3]
+
+A window will display additional information about the bill, including a record of any payments that have been made on the bill.
+
+image::media/circulation_patron_bills-4.png[circulation_patron_bills 4] 
+
+From the _Full Details_ screen, portions of the bill may be voided (e.g. an erroneous daily overdue charge) by using the _Void selected billings_ button.  Notes may be added to payments or line items by using the _Edit note_ button.
+
+image::media/circulation_patron_bills-5.png[circulation_patron_bills 5]
+
+[[making_payments]]
+Making Payments
+^^^^^^^^^^^^^^^
+
+To collect payments, retrieve the patron record.  Navigate to the _Bills_ screen as described in <<bills_and_payments,Bills and Payments>>.
+
+When bills are paid, the money applied starts at the top of the list of bills. To pay specific bills, uncheck the bills that you do not wish to pay at this time. The amount displayed in _Total Checked:_ will change to reflect the appropriate amount.
+
+image::media/circulation_patron_bills-6.png[circulation_patron_bills 6]
+
+NOTE: the presence of the _Uncheck All_ and _Check All_ options below the list of bills.
+
+image::media/circulation_patron_bills-7.png[circulation_patron_bills 7]
+
+When you are ready to make a payment, select a payment type from the dropdown menu in the _Pay Bill_ portion of the screen.
+
+image::media/circulation_patron_bills-8.png[circulation_patron_bills 8]
+
+Enter the amount of payment in the _Payment received_ field.  If you would like to add a note to the payment, check the box for _Annotate Payment_.  Click _Apply Payment!_ to make the payment.  If you have selected _Annotate Payment_, a box will display for the annotation.  
+
+The screen will refresh to display the updated bill information for the patron.  If change is due, the bottom portion of the screen, _Change Due Upon Payment:_ will briefly reflect the amount due to the patron.  
+
+TIP: if you need more time to review the amount due, click outside the _Payment Received_ box before selecting _Apply Payment!_ This will cause the screen to refresh and display the amount due.
+
+It is possible to convert change due to a patron credit by selecting the _Convert Change to Patron Credit_ checkbox.
+
+image::media/circulation_patron_bills-9.png[circulation_patron_bills 9]
+
+[TIP]
+================================================ 
+* Items marked with red are still checked out. It is possible for a patron to pay a bill while the item is still out and accruing fines.
+* When Check is selected as the payment type, it is not necessary to select _Annotate Payment_, as a box for the check number and a note displays automatically.
+================================================
+
+Void vs. Forgive
+^^^^^^^^^^^^^^^^
+ 
+Void clears all history of the bill, while forgive retains the history. 
+
+Forgiving Bills
+^^^^^^^^^^^^^^^
+ 
+Choose forgive as the payment type as described in the section <<making_payments,Making Payments>>. 
+
+Enter the amount to be forgiven.  Choose _Annotate Payment_ as required by local policy.
+
+Apply Payment.  Annotate, if prompted.
+
+The screen will refresh to display the payment.
+
+
+Voiding Bills
+^^^^^^^^^^^^^
+
+Bills under one transaction are grouped in one bill line. Bills may be voided in part or in whole.
+
+*To void the full billing amount:* 
+
+Select the bill(s) to be voided from the list in the patron account.  
+
+Right click or use the _Actions for Selected Transactions_ menu to select _Void All Billings_.
+
+image::media/circulation_patron_bills-10.png[circulation_patron_bills 10]
+
+Confirm the action.
+
+*To void a partial amount:*
+
+Select a billing and choose Full Details for the transaction, as described in the section <[[circ_vs_grocery]],Circulation vs. Grocery Bills>>
+
+The bill details screen displays.
+
+Select the specific bill to void.
+
+Void Selected Billings and confirm the action.
+
+image::media/circulation_patron_bills-11.png[circulation_patron_bills 11]
+
+Adding New ``Grocery'' Bills
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A grocery bill can be added as a new bill or to an existing bill.
+
+*To add a as a new bill:*
+
+. Retrieve the patron record. 
+. Navigate to the Bills screen. 
+. Click the _Bill Patron_ button above the list of current bills.
++
+image::media/circulation_patron_bills-12.png[circulation_patron_bills 12]
++
+. Choose appropriate _Billing Type_ from the drop down menu. (``Grocery'' is the only available transaction type.)
+. Enter the Amount and Note (as required).
+. _Submit this Bill_ and confirm this action.
+
+image::media/circulation_patron_bills-13.png[circulation_patron_bills 13]
+
+*To add bill to an existing bill line:*
+
+. Retrieve the patron record.
+. Navigate to the Bills screen.
+. Highlight the desired bill.
+. Use the _Actions for Selected Transactions_ to select _Add Billing_.  Confirm this action.
+. Follow steps 4 through 6 above.  There is no confirmation message after clicking _Submit this Bill_.
+. The _Money Summary_ will adjust accordingly.
+
+Bill History
+~~~~~~~~~~~~
+
+*To view a patron’s bill history:*
+
+. Retrieve the patron record.
+. From the _Bills_ screen, click _History_.
+. A _Bill History_ screen with two tabs will display.  One for _Transactions_ and one for _Payments_.
++
+image::media/circulation_patron_bills-14.png[circulation_patron_bills 14]
++
+. For more information about a specific billing, select the bill and click _Full Details_. A screen detailing item information, billings, and payments will display.
+
+image::media/circulation_patron_bills-15.png[circulation_patron_bills 15]
+
+Items may be deleted from the catalog even if a charge for that item is still attached to the patron's record.  The charge will remain on the patron's account after the deletion.
+
+
 
