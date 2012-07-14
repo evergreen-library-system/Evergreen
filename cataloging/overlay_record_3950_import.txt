@@ -1,0 +1,55 @@
+Overlay Existing Catalog Record via Z39.50 Import
+-------------------------------------------------
+
+This feature enables you to replace a catalog record with a record obtained through a Z39.50 search.  No new permissions or administrative settings are needed to use this feature.
+
+*To Overlay an Existing Record via Z39.50 Import:*
+
+1) Click *Cataloging -> Import Record from Z39.50*
+
+2) Select at least one *Service* in addition to the *Local Catalog* in the *Service and Credentials* window in the top right panel.
+
+3) Enter search terms in the *Query* window in the top left panel.
+
+4) Click *Search*.
+
+image::media/Overlay_Existing_Record_via_Z39_50_Import1.jpg[]
+
+5) The results will appear in the lower window.
+
+6) Select the record in the local catalog that you wish to overlay.
+
+7) Click *Mark Local Result as Overlay Target*
+
+
+image::media/Overlay_Existing_Record_via_Z39_50_Import2.jpg[]
+
+
+8) A confirmation message appears.  Click *OK*.
+
+9) Select the record that you want to replace the existing catalog record.
+
+10) Click *Overlay.*
+
+
+image::media/Overlay_Existing_Record_via_Z39_50_Import3.jpg[]
+
+
+11) The record that you selected will open in the MARC Editor.  Make any desired changes to the record, and click *Overlay Record*.
+
+image::media/Overlay_Existing_Record_via_Z39_50_Import4.jpg[]
+
+
+12) The catalog record that you want to overlay will appear in a new window.  Review the MARC record to verify that you are overlaying the correct catalog record.
+
+13) If the correct record appears, click *Overlay*.
+
+
+image::media/Overlay_Existing_Record_via_Z39_50_Import5.jpg[]
+
+14) A confirmation message will appear to confirm that you have overlaid the record.  Click *Ok*.
+
+15) The screen will refresh in the OPAC View to show that the record has been overlaid.
+
+
+image::media/Overlay_Existing_Record_via_Z39_50_Import6.jpg[]

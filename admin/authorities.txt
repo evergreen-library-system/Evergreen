@@ -1,0 +1,170 @@
+Authorities
+-----------
+
+Authority Control Sets
+~~~~~~~~~~~~~~~~~~~~~~
+
+
+The tags and subfields that display in authority records in Evergreen are
+proscribed by control sets.  The Library of Congress control set is the default
+control set in Evergreen.  In Evergreen release 2.2, you can create customized
+control sets for authority records.  Also, you can define thesauri and authority
+fields for these control sets.
+
+Patrons and staff will be able to browse authorities in the OPAC.  The following
+fields are browsable by default: author, series, subject, title, and topic.  You
+will be able to add custom browse axes in addition to these default fields.
+
+Control Sets
+^^^^^^^^^^^^
+
+You can specify the MARC tags and subfields that an authority record should
+contain.  The Library of Congress control set exists in the staff client by
+default.  The control sets feature enables librarians to add or customize new
+control sets.
+
+To access existing control sets, click *Admin* -> *Server Administration* ->
+*Authorities* -> *Control Sets*.
+
+To add a *control set*:
+
+. Click *Admin* -> *Server Administration* -> *Authorities* -> *Control Sets*.
+. Click *New Control Set*.  . Add a *Name* to the control set. Enter any number
+of characters.  . Add a *Description* of the control set.  Enter any number of
+characters.  . Click *Save*.
+
+image::media/Authority_Control_Sets1.jpg[Authority_Control_Sets1]
+
+Thesauri 
+~~~~~~~~
+
+A thesaurus describes the semantic rules that govern the meaning of words in a
+MARC record. The thesaurus code, which indicates the specific thesarus that
+should control a MARC record, is encoded in a fixed field using the mnemonic
+Subj in the authority record.  Eleven thesauri associated with the Library of
+Congress control set exist by default in the staff client.  
+
+To access an existing thesaurus, click *Admin* -> *Server Administration* ->
+*Authorities* -> *Control Sets*, and choose the hyperlinked thesaurus that you
+want to access, or click *Admin* -> *Server Administration* -> *Authorities* ->
+*Thesauri*.
+
+
+To add a *Thesaurus*:
+
+. Click *Admin* -> *Server Administration* -> *Authorities* -> *Control Sets*,
+and choose the hyperlinked thesaurus that you want to access, or click *Admin*
+-> *Server Administration* -> *Authorities* -> *Thesauri*.  . Click *New
+Thesaurus*.  . Add a *Thesaurus Code*.  Enter any single, upper case character.
+This character will be entered in the fixed fields of the MARC record.  . Add a
+*Name* to the thesaurus. Enter any number of characters.  . Add a *Description*
+of the thesaurus.  Enter any number of characters. 
+
+image::media/Authority_Control_Sets2.jpg[Authority_Control_Sets2]
+
+Authority Fields 
+~~~~~~~~~~~~~~~~
+
+
+Authority fields indicate the tags and subfields that should be entered in the
+authority record.  Authority fields also enable you to specify the type of data
+that should be entered in a tag.  For example, in an authority record governed
+by a Library of Congress control set, the 100 tag would contain a "Heading -
+Personal Name."  Authority fields also enable you to create the corresponding
+tag in the bibliographic record that would contain the same data. 
+
+To create an *Authority Field*: 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+. Click *Admin* -> *Server Administration* -> *Authorities* -> *Control Sets*.
+. Click *Authority Fields*.  The number in parentheses indicates the number of
+authority fields that have been created for the control set.
+. Click *New Authority Field*.
+. Add a *Name* to the authority field. Enter any number of characters.
+. Add a *Description* to describe the type of data that should be entered in
+this tag.  Enter any number of characters.
+. Select a *Main Entry* if you are linking the tag(s) to another entry.
+. Add a tag in the authority record.
+. Add a subfield in the authority record.  Multiple subfields should be entered
+without commas or spaces.
+. Click *Save*.
++
+image::media/Authority_Control_Sets3.jpg[Authority_Control_Sets3]
++
+.Create the corresponding tag in the bibliographic record that should contain
+this information.  Click the *None* link in the *Controlled Bib Fields* column.
+. Click *New Control Set Bib Field*.
+. Add the corresponding tag in the bibiographic record.
+. Click *Save*.
+
+image::media/Authority_Control_Sets4.jpg[Authority_Control_Sets4]
+
+
+
+Browse Axes
+~~~~~~~~~~~
+
+Authority records can be browsed, by default, along five axes: author, series,
+subject, title, and topic. Use the *Browse Axes* feature to create additional
+axes.
+
+
+Create a new *Browse Axis*:
+
+. Click *Admin* -> *Server Administration* -> *Authorities* -> *Browse Axes*
+. Click *New Browse Axis*.
+. Add a *code*.  Do not enter any spaces.
+. Add a *name* to the axis that will appear in the OPAC.  Enter any number of
+characters.
+. Add a *description* of the axis.  Enter any number of characters.
+. Add a *sorter attribute*. The sorter attribute indicates the order in which
+the results will be displayed.
++
+image::media/Authority_Control_Sets5.jpg[Authority_Control_Sets5]
+. Assign the axis to an authority so that users can find the authority record
+when browsing authorities. Click *Admin* -> *Server Administration* ->
+*Authorities* -> *Control Sets*. 
+. Choose the control set to which you will add the axis.  Click *Authority
+Fields*
+. Click the link in the *Axes* column of the tag of your choice.
+. Click *New Browse Axis-Authority Field Map*.
+. Select an *Axis* from the drop down menu.
+. Click *Save*.
+
+image::media/Authority_Control_Sets6.jpg[Authority_Control_Sets6]
+
+
+OPAC Searching of Authorities
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Patrons and librarians can browse authorities through the OPAC.
+
+
+To search for *Authorities*:
+
+. Click *Advanced Search* in the OPAC.
+. Find the *Authority Browse* column in the left side of the screen.
+. Select a browse axis, and enter a keyword. The terms in the middle of the
+results list should yield the best match.
++
+image::media/Authority_Control_Sets7.jpg[Authority_Control_Sets7]
+. Click *Submit*.
+. A list of results will appear.  The authorities with bibliographic records
+attached will be listed in bold with the number of attached bibliographic
+records in parentheses.
++
+image::media/Authority_Control_Sets8.jpg[Authority_Control_Sets8]
++
+. Click on the bolded text to view bibliographic records.
+
+image::media/Authority_Control_Sets9.jpg[Authority_Control_Sets9]
+
+
+*Permissions to use this Feature*
+
+
+To use authority control sets, you will need the following permissions:
+
+* CREATE_AUTHORITY_CONTROL_SET UPDATE_AUTHORITY_CONTROL_SET
+* DELETE_AUTHORITY_CONTROL_SET
+

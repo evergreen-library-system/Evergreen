@@ -1,0 +1,25 @@
+Acquisitions
+------------
+
+This section is intended for those who are responsible for managing and processing acquisitions.
+
+Before beginning to use Acquisitions, the following must be configured by an administrator:
+
+* Cancel/Suspend Reasons (optional)
+* Claiming (optional)
+* Currency Types (defaults exist)
+* Distribution Formulas (optional)
+* EDI Accounts (optional)  (see link:../installation/edi_setup.txt[Setting Up EDI Acquisitions] under Software Installation)
+* Exchange Rates (defaults exist)
+* Funds and Fund Sources
+* Invoice Types (defaults exist) and Invoice Payment Methods
+* Line Item Features (optional)
+* Merge Overlay Profiles and Record Match Sets (see link:../cataloging/batch_importing_MARC.txt[Batch Importing MARC Records] in Cataloging)
+* Providers
+
+Acquisitons Workflow
+~~~~~~~~~~~~~~~~~~~~
+
+The following diagram shows how the workflow functions in Evergreen. One of the differences in this process you should notice is that when creating a selection list on the vendor site, libraries will be downloading and importing the vendor bibs and item records.
+
+image::media/acq_workflow.jpg[workflow diagram]

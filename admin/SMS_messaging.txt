@@ -1,0 +1,122 @@
+SMS Text Messaging
+------------------
+
+The SMS Text Messaging feature enables users to receive hold notices via text message.  Users can opt-in to this hold notification as their default setting for all holds, or they 
+can receive specific hold notifications via text message.    Users can also send call numbers and copy locations via text message.
+
+Administrative Setup
+~~~~~~~~~~~~~~~~~~~~
+
+You cannot receive text messages from Evergreen by default.  You must enable this feature to receive hold notices and copy information from Evergreen via text message.
+
+Enable Text Messages
+^^^^^^^^^^^^^^^^^^^^
+
+. Click *Admin* -> *Local Admin* -> *Library Settings Editor.*
+. Select the setting, *Enable features that send SMS text messages.*
+. Set the value to *True,* and click *Update Setting.*
+
+image::media/SMS_Text_Messaging1.jpg[SMS_Text_Messaging1]
+
+Authenticate Patrons
+^^^^^^^^^^^^^^^^^^^^
+
+By default, you must be logged into your OPAC account to send a text message from Evergreen.  However, if you disable this setting, you can text message copy information without having 
+to login to your OPAC account.
+
+To disable the patron login requirmement:
+
+. Click *Admin* -> *Local Administration* -> *Library Settings Editor.*
+. Select the setting, *Disable auth requirement for texting call numbers*.
+. Set the value to *True,* and click *Update Setting.*
+
+image::media/SMS_Text_Messaging2.jpg[SMS_Text_Messaging2]
+
+Configure SMS Carriers
+^^^^^^^^^^^^^^^^^^^^^^
+
+A list of SMS carriers that can transmit text messages to users is available in the staff client.  Library staff can edit this list, or add new carriers.
+
+To add or edit SMS carriers:
+
+. Click *Admin* -> *Server Administration* -> *SMS Carriers*.
+. To add a new carrier, click the *New Carrier* button in the top right corner of the screen.  To edit an existing carrier, double click in any white space in the carrier's row.
++
+image::media/SMS_Text_Messaging3.jpg[SMS_Text_Messaging3] 
++
+. Enter a (geographical) *Region*.
+. Enter the carrier's *Name*.
+. Enter an *Email Gateway.*  The SMS carrier can provide you with the content for this field.  The $number field is converted to the user's phone number when the text message is generated.
+. Check the *Active* box to use this SMS Carrier.
+
+image::media/SMS_Text_Messaging4.jpg[SMS_Text_Messaging4]
+
+Configure Text Message Templates
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Library staff control the content and format of text messages through the templates in Notifications/Action Triggers.  Patrons cannot add free text to their text messages.
+
+To configure the text of the SMS text message:
+
+. Click *Admin* -> *Local Administration* -> *Notifications/Action Triggers.*
+. Create a new A/T and template, or use or modify an existing template.  For example, a default template, "Hold Ready for Pickup SMS Notification," notifies users that the hold is ready for pickup.  
++
+image::media/SMS_Text_Messaging5.jpg[SMS_Text_Messaging5]
++
+. You can use the  default template, or you can edit the template and add content specific to your library.  Click the hyperlinked name to view and/or edit the hold notice.
+
+image::media/SMS_Text_Messaging6.jpg[SMS_Text_Messaging6]
+
+Receiving Holds Notices via Text Message
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can receive notification that your hold is ready for pickup from a text message that is sent to your mobile phone.
+
+. Login to your account.
++
+image::media/SMS_Text_Messaging12.jpg[SMS_Text_Messaging12]
++
+. Search the catalog.
+. Retrieve a record, and click the *Place Hold* link.
+. Select the option to retrieve hold notification via text message.
+. Choose an SMS Carrier from the drop down menu.  NOTE: You can enter your SMS carrier and phone number into your *Account Preferences* to skip steps five and six.
+. Enter a phone number.
+. Click *Submit.*
+
+image::media/SMS_Text_Messaging13.jpg[SMS_Text_Messaging13]
+
+Sending Copy Locations via Text Message
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+You can search the catalog for an item, and, after retrieving results for the item, click a hyperlink to send the copy location in a text message.
+
+. Login to your account in the OPAC.  NOTE: If you have disabled the setting that requires patron login, then you do not have to login to their accounts to send text messages.  
+See *Administrative Setup* for more information.
++
+image::media/SMS_Text_Messaging7.jpg[SMS_Text_Messaging7]
++
+. Search the catalog, and retrieve a title with copies.
+. Click the *Text* link adjacent to the call number.
++
+image::media/SMS_Text_Messaging8.jpg[SMS_Text_Messaging8]
++
+. The text of the SMS Text Message appears.
++
+image::media/SMS_Text_Messaging9.jpg[SMS_Text_Messaging9]
++
+. Choose an SMS Carrier from the drop down menu.  NOTE: You can enter your SMS carrier and phone number into your *Account Preferences* to skip steps five and six. 
+. Enter a phone number. 
++
+image::media/SMS_Text_Messaging10.jpg[SMS_Text_Messaging10]
++
+. Click *Submit*.
+. The number and carrier are converted to an email address, and the text message is sent to your mobile phone.
+
+image::media/SMS_Text_Messaging11.jpg[SMS_Text_Messaging11]
+
+*Permissions to use this Feature*
+
+ADMIN_SMS_CARRIER - Enables users to add/create/delete SMS Carrier entries.
+
+

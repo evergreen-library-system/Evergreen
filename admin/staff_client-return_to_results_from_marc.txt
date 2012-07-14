@@ -1,0 +1,6 @@
+Return to Search Results from MARC Record
+-----------------------------------------
+
+This feature enables you to return to your title search results directly from any view of the MARC record, including the OPAC View, MARC Record, MARC Edit, and Holdings Maintenance.  You can use this feature to page through records in the MARC Record View or Edit interfaces.  You do not have to return to the OPAC View to access title results.
+
+image::media/Search_Results1.jpg[Search_Results1]

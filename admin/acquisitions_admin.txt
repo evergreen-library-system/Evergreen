@@ -1,0 +1,490 @@
+Acquisitions Administration
+---------------------------
+
+Acquisitions Permissions in the Admin module
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Several setting in the Library Settings area of the Admin module pertain to functions in the Acquisitions module. You can access these settings by clicking _Admin -> Local Administration ->Library Settings Editor_.
+
+* CAT: Delete bib if all copies are deleted via Acquisitions lineitem cancellation - If you cancel a line item, then all of the on order copies in the catalog are deleted. If, when you cancel a line item, you also want to delete the bib record, then set this setting to TRUE.
+* Default circulation modifier - This modifier would be applied to items that are created in the acquisitions module
+* Default copy location - This copy location would be applied to items that are created in the acquisitions module
+* Fund Spending Limit for Block - When the amount remaining in the fund, including spent money and encumbrances, goes below this percentage, attempts to spend from the fund will be blocked.
+* Fund Spending Limit for Warning - When the amount remaining in the fund, including spent money and encumbrances, goes below this percentage, attempts to spend from the fund will result in a warning to the staff.
+* Temporary barcode prefix - Temporary barcode prefix for items that are created in the acquisitions module
+* Temporary call number prefix - Temporary call number prefix for items that are created in the acquisitions module
+
+Cancel/Suspend reasons
+~~~~~~~~~~~~~~~~~~~~~~
+
+The Cancel reasons link enables you to predefine the reasons for which a line item or a PO can be cancelled. A default list of reasons appears, but you can add custom reasons to this list. Applying the cancel reason will prevent the item from appearing in a claims list and will allow you to cancel debits associated with the purchase. Cancel reasons also enable you to suspend or delay a purchase. For example, you could create a cancel reason of 'back ordered,' and you could choose to keep the debits associated with the purchase.
+
+Create a cancel/suspend reason
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+. To add a new cancel reason, click _Administration -> Server Administration -> Acquisitions -> Cancel reasons_.
+
+. Click _New Cancel Reason_.
+
+. Select a using library from the drop down menu. The using library indicates the organizational units whose staff can use this cancel reason. This menu is populated with the shortnames that you created for your libraries in the organizational units tree (See Admin -> Server Administration -> Organizational Units.)
+
+. Create a label for the cancel reason. This label will appear when you select a cancel reason on an item or a PO.
+
+. Create a description of the cancel reason. This is a free text field and can be comprised of any text of your choosing.
+
+. If you want to retain the debits associated with the cancelled purchase, click the box adjacent to Keep Debits->
+
+. Click _Save_.
+
+Claiming
+~~~~~~~~
+Currently, all claiming is manual, but the admin module enables you to build claim policies and specify the action(s) that users should take to claim items.
+
+Create a claim policy
+^^^^^^^^^^^^^^^^^^^^^
+
+The claim policy link enables you to name the claim policy and specify the organization that owns it.
+
+. To create a claim policy, click _Admin -> Server Administration -> Acquisitions -> Claim Policies_.
+. Create a claim policy name. No limits exist on the number of characters that can be entered in this field.
+. Select an org unit from the drop down menu. The org unit indicates the organizational units whose staff can use this claim policy. This menu is populated with the shortnames that you created for your libraries in the organizational units tree (See Admin -> Server Administration -> Organizational Units).
++
+[NOTE]
+The rule of parental inheritance applies to this list.
++
+. Enter a description. No limits exist on the number of characters that can be entered in this field.
+. Click _Save_.
+
+Create a claim type
+^^^^^^^^^^^^^^^^^^^
+
+The claim type link enables you to specify the reason for a type of claim.
+
+. To create a claim type, click _Admin -> Server Administration -> Acquisitions -> Claim types_.
+. Create a claim type. No limits exist on the number of characters that can be entered in this field.
+. Select an org unit from the drop down menu. The org unit indicates the organizational units whose staff can use this claim type. This menu is populated with the shortnames that you created for your libraries in the organizational units tree (See Admin -> Server Administration -> Organizational Units).
++
+[NOTE]
+The rule of parental inheritance applies to this list.
++
+. Enter a description. No limits exist on the number of characters that can be entered in this field.
+. Click _Save_.
+
+Create a claim event type
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The claim event type describes the physical action that should occur when an item needs to be claimed. For example, the user should notify the vendor via email that the library is claiming an item.
+
+. To access the claim event types, click _Admin -> Server Administration -> Acquisitions ->Claim event type_.
+. Enter a code for the claim event type. No limits exist on the number of characters that can be entered in this field.
+. Select an org unit from the drop down menu. The org unit indicates the organizational units whose staff can use this event type. This menu is populated with the shortnames that you created for your libraries in the organizational units tree (See Admin -> Server Administration -> Organizational Units).
++
+[NOTE]
+The rule of parental inheritance applies to this list.
++
+. Enter a description. No limits exist on the number of characters that can be entered in this field.
+. If this claim is initiated by the user, then check the box adjacent to Library Initiated.
++
+[NOTE]
+Currently, all claims are initiated by a user. The ILS cannot automatically claim an issue.
++
+. Click _Save_.
+
+Create a claim policy action
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The claim policy action enables you to specify how long a user should wait before claiming the item.
+
+. To access claim policy actions, click _Admin -> Server Administration -> Acquisitions ->Claim Policy Actions_.
+
+. Select an Action (Event Type) from the drop down menu.
+
+. Enter an action interval. This field indicates how long a user should wait before claiming the item.
+
+. In the Claim Policy ID field, select a claim policy from the drop down menu.
+
+. Click _Save_.
+
+[NOTE]
+You can create claim cycles by adding multiple claim policy actions to a claim policy.
+
+Currency Types
+~~~~~~~~~~~~~~
+
+Currency types can be created and applied to funds in the administrative module. When a fund is applied to a copy or line item for purchase, the item will be purchased in the currency associated with that fund.
+
+Create a currency type
+^^^^^^^^^^^^^^^^^^^^^^
+
+. To create a new currency type, click _Admin -> Server Administration -> Acquisitions -> Currency types_.
+
+. Enter the currency code. No limits exist on the number of characters that can be entered in this field.
+
+. Enter the name of the currency type in Currency Label field. No limits exist on the number of characters that can be entered in this field.
+
+. Click Save.
+
+Edit a currency type
+^^^^^^^^^^^^^^^^^^^^
+
+. To edit a currency type, click your cursor in the row that you want to edit. The row will turn blue.
+
+. Double~click. The pop~up box will appear, and you can edit the fields.
+
+. After making changes, click Save.
+
+[NOTE]
+From the currency types interface, you can delete currencies that have never been applied to funds or used to make purchases.
+
+Distribution Formulas
+~~~~~~~~~~~~~~~~~~~~~
+
+Distribution formulas allow you to specify the number of copies that should be distributed to specific branches. You can create and reuse formulas as needed.
+
+Create a distribution formula
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+. Click _Admin -> Server Administration -> Acquisitions ->Distribution Formulas_.
+. Click _New Formula_.
+. Enter a Formula Name. No limits exist on the number of characters that can be entered in this field.
+. Choose a Formula Owner from the drop down menu. The Formula Owner indicates the organizational units whose staff can use this formula. This menu is populated with the shortnames that you created for your libraries in the organizational units tree (See Admin -> Server Administration -> Organizational Units).
++
+[NOTE]
+The rule of parental inheritance applies to this list.
++
+. Ignore the Skip Count field which is currently not used.
+. Click _Save_.
+. Click _New Entry_.
+. Select an Owning Library from the drop down menu. This indicates the branch that will receive the items. This menu is populated with the shortnames that you created for your libraries in the organizational units tree (See _Admin -> Server Administration -> Organizational Units_).
+. Select a Shelving Location from the drop down menu.
+. In the Item Count field, enter the number of items that should be distributed to the branch. You can enter the number or use the arrows on the right side of the field.
+. Click _Apply Changes_. The screen will reload.
+. To view the changes to your formula, click Admin -> Server Administration -> Acquisitions -> Distribution Formulas. The item_count will reflect the entries to your distribution formula.
+
+[NOTE]
+To edit the Formula Name, click the hyperlinked name of the formula in the top left corner. A pop up box will enable you to enter a new formula name.
+
+Edit a distribution formula
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To edit a distribution formula, click the hyperlinked title of the formula.
+
+EDI
+~~~
+Many libraries use Electronic Data Interchange (EDI) accounts to order new acquisitions. Users can set up EDI accounts and manage EDI messages in the admin module. EDI messages and notes can be viewed in the acquisitions module.  See also the link:../installation/edi_setup.txt[EDI Installation Instructions] because this is required for use of EDI.
+
+The following fields are required to create an EDI account: 
+
+[NOTE]
+host, username, password, path, and incoming directory.
+
+EDI Accounts
+^^^^^^^^^^^^
+
+Create EDI Accounts to communicate electronically with providers.
+
+. Create a label. The label allows you to differentiate between accounts for the same provider. No limits exist on the number of characters that can be entered in this field.
+. Enter a host. Your provider will provide you with the requisite FTP or SCP information.
+. Enter the username that has been supplied by your provider.
+. Enter the password that has been supplied by your provider.
+. Enter account information. This field enables you to add a supplemental password for entry to a remote system after log in has been completed. This field is optional for the ILS but may be required by your provider.
+. Select an owner from the drop down menu. The owner indicates the organizational units whose staff can use this EDI account. This menu is populated with the shortnames that you created for your libraries in the organizational units tree (See Admin -> Server Administration -> Organizational Units).
++
+[NOTE]
+The rule of parental inheritance applies to this list.
++
+. The Last Activity updates automatically with any inbound or outbound communication.
+. Select a provider from the drop down menu to whom this account belongs.
+. Enter a path. The path indicates the remote location on the server from which files are pulled in to the ILS.
+. Enter the incoming directory. This directory indicates the location on your local network to which the files download.
+. Enter the vendor account number supplied by your provider.
+. Enter the vendor account code supplied by your provider.
+. Click Save.
+
+EDI Messages
+^^^^^^^^^^^^
+
+The EDI messages screen displays all incoming and outgoing messages between the library and the vendor.
+
+Exchange Rates
+~~~~~~~~~~~~~~
+
+Exchange rates define the rate of exchange between currencies. Evergreen will automatically calculate exchange rates for purchases. Evergreen assumes that the currency of the purchasing fund is identical to the currency of the provider, but it provides for two unique situations: If the currency of the fund that is used for the purchase is different from the currency of the provider as listed in the provider profile, then Evergreen will use the exchange rate to calculate the price of the item in the currency of the fund and debit the fund accordingly. When money is transferred between funds that use different currency types, Evergreen will automatically use the exchange rate to convert the money to the currency of the receiving fund. During such transfers, however, staff can override the automatic conversion by providing an explicit amount to credit to the receiving fund.
+
+Create an exchange rate
+^^^^^^^^^^^^^^^^^^^^^^^
+
+. To create a new exchange rate, click _Admin -> Server Administration -> Acquisitions -> Exchange Rates_.
+
+. Click New Exchange Rate.
+
+. Enter the From Currency from the drop down menu populated by the currency types.
+
+. Enter the To Currency from the drop down menu populated by the currency types.
+
+. Enter the exchange Ratio.
+
+. Click _Save_.
+
+Edit an Exchange Rate
+^^^^^^^^^^^^^^^^^^^^^
+
+Edit an exchange rate just as you would edit a currency type.
+
+MARC Federated Search
+~~~~~~~~~~~~~~~~~~~~~
+
+The MARC Federated Search enables you to import bibliographic records into a selection list or purchase order from a Z39.50 source.
+
+. Click _Acquisitions -> MARC Federated Search_.
+. Check the boxes of Z39.50 services that you want to search. Your local Evergreen Catalog is checked by default. Click Submit.
++
+image::media/acq_marc_search.png[search form]
++
+. A list of results will appear. Click the _Copies_ link to add copy information to the line item. See the link:line_items.txt[section on Line Items] for more information.
+. Click the Notes link to add notes or line item alerts to the line item. See the link:line_items.txt[section on Line Items] for more information.
+. Enter a price in the _Estimated Price_ field.
+. You can save the line item(s) to a selection list by checking the box on the line item and clicking _Actions -> Save Items to Selection List_. You can also create a purchase order from the line item(s) by checking the box on the line item and clicking _Actions -> Create Purchase Order_.
+
+image::media/acq_marc_search-2.png[line item]
+
+Fund Tags
+~~~~~~~~~
+
+You can apply tags to funds so that you can group funds for easy reporting. For example, you have three funds for children's materials: Children's Board Books, Children's DVDs, and Children's CDs. Assign a fund tag of 'children's' to each fund. When you need to report on the amount that has been spent on all children's materials, you can run a report on the fund tag to find total expenditures on children's materials rather than reporting on each individual fund.
+
+Create a Fund Tag
+
+. To create a fund tag, click _Admin -> Server Administration -> Acquisitions -> Fund Tags_.
+. Click _New Fund Tag_. No limits exist on the number of characters that can be entered in this field.
+. Select a Fund Tag Owner from the drop down menu. The owner indicates the organizational unit(s) whose staff can use this fund tag. This menu is populated with the shortnames that you created for your libraries in the organizational units tree (See Admin -> Server Administration -> Organizational Units).
++
+[NOTE]
+The rule of parental inheritance applies to this list.
++
+. Enter a Fund Tag Name. No limits exist on the number of characters that can be entered in this field.
+. Click _Save_.
+
+Funding Sources
+~~~~~~~~~~~~~~~
+
+Funding sources allow you to specify the sources that contribute monies to your fund(s). You can create as few or as many funding sources as you need.   These can be used to track exact ammounts for accounts in your general ledger.  You can then use funds to track spending and purchases for specific collections.
+
+Create a funding source
+^^^^^^^^^^^^^^^^^^^^^^^
+
+. To create a new funding source, click _Admin -> Server Administration -> Acquisitions -> Funding Source_.
+. Enter a funding source name. No limits exist on the number of characters that can be entered in this field.
+. Select an owner from the drop down menu. The owner indicates the organizational unit(s) whose staff can use this funding source. This menu is populated with the shortnames that you created for your libraries in the organizational units tree (See Admin -> Server Administration -> Organizational Units).
++
+[NOTE]
+The rule of parental inheritance applies to this list. For example, if a system is made the owner of a funding source, then users with appropriate permissions at the branches within the system could also use the funding source.
++
+. Create a code for the source. No limits exist on the number of characters that can be entered in this field.
+. Select a currency from the drop down menu. This menu is populated from the choices in the Currency Types interface.
+. Click _Save_.
+
+Allocate Credits to Funding Sources
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+. Apply a credit to this funding source.
+
+. Enter the amount of money that the funding source contributes to the organization. Funding sources are not tied to fiscal or calendar years, so you can continue to add money to the same funding source over multiple years, e.g. County Funding. Alternatively, you can name funding sources by year, e.g. County Funding 2010 and County Funding 2011, and apply credits each year to the matching source.
+
+. To apply a credit, click on the hyperlinked name of the funding source. The Funding Source Details will appear.
+
+. Click _Apply Credit_.
+
+. Enter an amount to apply to this funding source.
+
+. Enter a note. This field is optional.
+
+. Click _Apply_.
+
+Allocate credits to funds
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you have already set up your funds, then you can then click the Allocate to Fund button to apply credits from the funding sources to the funds. If you have not yet set up your funds, or you need to add a new one, you can allocate credits to funds from the funds interface. See section 1.2 for more information.
+
+. To allocate credits to funds, click _Allocate to Fund_.
+
+. Enter the amount that you want to allocate.
+
+. Enter a note. This field is optional.
+
+. Click _Apply_.
+
+Track Debits and Credits
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can track credits to and allocations from each funding source. These amounts are updated when credits and allocations are made in the Funding Source Details. Access the Funding Source Details by clicking on the hyperlinked name of the Funding Source.
+
+Funds
+~~~~~
+
+Funds allow you to allocate credits toward specific purchases. In the funds interface, you can create funds; allocate credits from funding sources to funds; transfer money between funds; and apply fund tags to funds. Funds are created for a specific year, either fiscal or calendar. These funds are owned by org units. At the top of the funds interface, you can set a contextual org unit and year. The drop down menu at the top of the screen enables you to focus on funds that are owned by specific organizational units during specific years.
+
+Create a fund
+^^^^^^^^^^^^^
+
+. To create a new fund, click _Admin -> Server Administration -> Acquisitions -> Funds_.
+. Enter a name for the fund. No limits exist on the number of characters that can be entered in this field.
+. Create a code for the fund. No limits exist on the number of characters that can be entered in this field.
+. Enter a year for the fund. This can be a fiscal year or a calendar year. The format of the year is YYYY.
+. Select an org unit from the drop down menu. The org unit indicates the organizational units whose staff can use this fund. This menu is populated with the shortnames that you created for your libraries in the organizational units tree (See Admin -> Server Administration -> Organizational Units).
++
+[NOTE]
+The rule of parental inheritance applies to this list. See section
++
+. Select a currency type from the drop down menu. This menu is comprised of entries in the currency types menu. When a fund is applied to a line item or copy, the price of the item will be encumbered in the currency associated with the fund.
+. Click the Active box to activate this fund. You cannot make purchases from this fund if it is not active.
+. Enter a Balance Stop Percent. The balance stop percent prevents you from making purchases when only a specified amount of the fund remains. For example, if you want to spend 95 percent of your funds, leaving a five percent balance in the fund, then you would enter 95 in the field. When the fund reaches its balance stop percent, it will appear in red when you apply funds to copies.
+. Enter a Balance Warning Percent. The balance warning percent gives you a warning that the fund is low. You can specify any percent. For example, if you want to spend 90 percent of your funds and be warned when the fund has only 10 percent of its balance remaining, then enter 90 in the field. When the fund reaches its balance warning percent, it will appear in yellow when you apply funds to copies.
+. Check the Propagate box to propagate funds. When you propagate a fund, the ILS will create a new fund for the following fisca year with the same parameters as your current fund. All of the settings transfer except for the year and the amount of money in the fund. Propagation occurs during the fiscal year close~out operation.
+. Check the Rollover box if you want to roll over remaining funds into the same fund next year.
+. Click _Save_.
+
+Allocate Credits from Funding Sources to Funds
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Credits can be applied to funds from funding sources using the fund interface. The credits that you apply to the fund can be applied later to purchases.
+
+. To access funds, click _Admin -> Server Administration -> Acquisitions -> Funds_.
+
+. Click the hyperlinked name of the fund.
+
+. To add a credit to the fund, click the Create Allocation tab.
+
+. Choose a Funding Source from the drop down menu.
+
+. Enter an amount that you want to apply to the fund from the funding source.
+
+. Enter a note. This field is optional.
+
+. Click _Apply_.
+
+Transfer credits between funds
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The credits that you allocate to funds can be transferred between funds if desired. In the following example, you can transfer $500.00 from the Young Adult Fiction fund to the Children's DVD fund.
+
+. To access funds, click _Admin -> Server Administration -> Acquisitions -> Funds_.
+
+. Click the hyperlinked name of the originating fund.
+
+. The Fund Details screen appears. Click Transfer Money.
+
+. Enter the amount that you would like to transfer.
+
+. From the drop down menu, select the destination fund.
+
+. Add a note. This field is optional.
+
+. Click _Transfer_.
+
+Track Balances and Expenditures
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Fund Details allows you to track the fund's balance, encumbrances, and amount spent. It also allows you to track allocations from the funding source(s), debits, and fund tags.
+
+. To access the fund details, click on the hyperlinked name of the fund that you created.
+
+. The Summary allows you to track the following:
+
+. Balance - The balance is calculated by subtracting both items that have been invoiced and encumbrances from the total allocated to the fund.
+. Total Allocated - This amount is the total amount allocated from the Funding Source.
+. Spent Balance - This balance is calculated by subtracting only the items that have been invoiced from the total allocated to the fund. It does not include encumbrances.
+. Total Debits - The total debits are calculated by adding the cost of items that have been invoiced and encumbrances.
+. Total Spent - The total spent is calculated by adding the cost of items that have been invoiced. It does not include encumbrances.
+. Total Encumbered - The total encumbered is calculated by adding all encumbrances.
+
+Edit a Fund
+^^^^^^^^^^^
+
+Edit a fund just as you would edit a currency type.
+
+Perform Year End Closeout Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Year End Closeout Operation allows you to deactivate funds for the current year and create analogous funds for the next year. It transfers encumbrances to the analogous funds, and it rolls over any remaining funds if you checked the rollover box when creating the fund.
+
+. To access the year end closeout of a fund, click Admin -> Server Administration -> Acquisitions -> Funds.
+
+. Click _Fund Propagation and Rollover_.
+
+. Check the box adjacent to _Perform Fiscal Year Close~Out Operation_.
+
+. Notice that the context org unit reflects the context org unit that you selected at the top of the Funds screen.
+
+. If you want to perform the close~out operation on the context org unit and its child units, then check the box adjacent to Include Funds for Descendant Org Units.
+
+. Check the box adjacent to dry run if you want to test changes to the funds before they are enacted. Evergreen will generate a summary of the changes that would occur during the selected operations. No data will be changed.
+
+. Click _Process_.
+
+. Evergreen will begin the propagation process. Evergreen will make a clone of each fund, but it will increment the year by .
+
+Invoice menus
+~~~~~~~~~~~~~
+
+Invoice menus allow you to create drop down menus that appear on invoices. You can create an invoice item type or invoice payment method.
+
+Invoice item type
+^^^^^^^^^^^^^^^^^
+
+The invoice item type allows you to enter the types of additional charges that you can add to an invoice. Examples of additional charge types might include taxes or processing fees. Charges for bibliographic items are listed separately from these additional charges. A default list of charge types displays, but you can add custom charge types to this list. Invoice item types can also be used when adding non~bibliographic items to a purchase order. When invoiced, the invoice item type will copy from the purchase order to the invoice.
+
+. To create a new charge type, click _Admin -> Server Administration -> Acquisitions -> Invoice Item Type_.
+
+. Click _New Invoice Item Type_.
+
+. Create a code for the charge type. No limits exist on the number of characters that can be entered in this field.
+
+. Create a label. No limits exist on the number of characters that can be entered in this field. The text in this field appears in the drop down menu on the invoice.
+
+. If items on the invoice were purchased with the monies in multiple funds, then you can divide the additional charge across funds. Check the box adjacent to Prorate-> if you want to prorate the charge across funds.
+
+. Click _Save_.
+
+Invoice payment method
+^^^^^^^^^^^^^^^^^^^^^^
+
+The invoice payment method allows you to predefine the type(s) of invoices and payment method(s) that you accept. The text that you enter in the admin module will appear as a drop down menu in the invoice type and payment method fields on the invoice.
+
+. To create a new invoice payment method, click _Admin -> Server Administration -> Acquisitions -> Invoice Payment Method_.
+
+. Click _New Invoice Payment Method_.
+
+. Create a code for the invoice payment method. No limits exist on the number of characters that can be entered in this field.
+
+. Create a name for the invoice payment method. No limits exist on the number of characters that can be entered in this field. The text in this field appears in the drop down menu on the invoice.
+
+. Click _Save_.
+
+Payment methods can be deleted from this screen.
+
+Line item features
+~~~~~~~~~~~~~~~~~~
+
+Line item alerts are predefined text that can be added to line items that are on selection lists or purchase orders. You can define the alerts from which staff can choose. Line item alerts appear in a pop up box when the line item, or any of its copies, are marked as received.
+
+Create a line item alert
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+. To create a line item alert, click _Administration -> Server Administration -> Acquisitions -> Line Item Alerts_.
+
+. Click _New Line Item Alert Text_.
+
+. Create a code for the text. No limits exist on the number of characters that can be entered in this field.
+
+. Create a description for the text. No limits exist on the number of characters that can be entered in this field.
+
+. Select an owning library from the drop down menu. The owning library indicates the organizational units whose staff can use this alert. This menu is populated with the shortnames that you created for your libraries in the organizational units tree (See Admin -> Server Administration -> Organizational Units).
+
+. Click _Save_.
+
+Line Item MARC Attribute Definitions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Line item attributes define the fields that Evergreen needs to extract from the bibliographic records that are in the acquisitions database to display in the catalog. Also, these attributes will appear as fields in the New Brief Record interface. You will be able to enter information for the brief record in the fields where attributes have been defined.
+

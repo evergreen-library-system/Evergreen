@@ -1,0 +1,199 @@
+Booking Module Administration
+-----------------------------
+
+Creating Bookable Non-Bibliographic Resources
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Staff with the required permissions (Circulator and above) can create bookable non-bibliographic resources such as laptops, projectors, and meeting rooms.
+
+The following pieces make up a non-bibliographic resource:
+
+* Resource Type
+* Resource Attribute
+* Resource Attribute Values
+* Resource
+* Resource Attribute Map
+
+You need to create resource types and resource attributes (features of the resource types), and add booking items (resources) to individual resource type. Each resource attribute may have multiple values. You need to link the applicable features (resource attributes and values) to individual item (resource) through the Resource Attribute Map. Before you create resources (booking items) you need to have a resource type and associated resource attributes and values, if any, for them.
+
+Create New Resource Type
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+1) Select Admin --> Server Administration --> Booking --> Resource Types.
+
+image::media/booking-create-resourcetype-1.png[]
+
+2) A list of current resource types will appear. Use Back and Next buttons to browse the whole list.
+
+image::media/booking-create-resourcetype-2.png[]
+
+[NOTE]
+You may also see cataloged items in the list. Those items have been marked bookable or booked before.
+
+
+3) To create a new resource type, click New Resource Type in the top right corner, .
+
+image::media/booking-create-resourcetype-3.png[]
+
+4) A box will appear in which you create your new type of resource.
+
+image::media/booking-create-bookable-1.png[]
+
+* Resource Type Name - Give your resource a name.
+* Fine Interval - How often will fines be charged? This period can be input in several ways:
+
+[NOTE]
+====================================================================
+** second(s), minute(s), hour(s), day(s), week(s), month(s), year(s)
+** sec(s), min(s)
+** s, m, h
+** 00:00:30, 00:01:00, 01:00:00
+===================================================================
+
+* Fine Amount - The amount that will be charged at each Fine Interval.
+* Owning Library - The home library of the resource.
+* Catalog Item - (Function not currently available.)
+* Transferable - This allows the item to be transferred between libraries.
+* Inter-booking and Inter-circulation Interval - The amount of time required by your library between the return of a resource and a new reservation for the resource. This interval uses * the same input conventions as the Fine Interval.
+* Max Fine Amount - The amount at which fines will stop generating.
+
+5) Click Save when you have entered the needed information.
+
+image::media/booking-create-resourcetype-4.png[]
+
+6) The new resource type will appear in the list.
+
+image::media/booking-create-resourcetype-5.png[]
+
+Create New Resource Attribute
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1) Select Server Administration --> Booking --> Resource Attributes.
+
+2) Click New Resource Attribute in the top right corner.
+
+3) A box will appear in which you can add the attributes of the resource. Attributes are categories of descriptive information that are provided to the staff member when the booking request is made. For example, an attribute of a projector may be the type of projector. Other attributes might be the number of seats available in a room, or the computing platform of a laptop.
+
+image::media/booking-create-bookable-2.png[]
+
+* Resource Attribute Name - Give your attribute a name.
+* Owning Library - The home library of the resource.
+* Resource Type - Type in the first letter to list then choose the Resource Type to which the Attribute is applicable.
+* Is Required - (Function not currently available.)
+
+4) Click Save when the necessary information has been entered.
+
+5) The added attribute will appear in the list.
+
+[NOTE]
+One resource type may have multiple attributes. You may repeat the above procedure to add more.
+
+Create New Resource Attribute Value
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1) One resource attribute may have multiple values. To add new attribute value, select Server Administration → Booking → Resource Attribute Values.
+
+2) Click New Resource Attribute Value in the top right corner.
+
+3) A box will appear in which you assign a value to a particular attribute. Values can be numbers, words, or a combination of them, that describe the particular aspects of the resource that have been defined as Attributes. As all values appear on the same list for selection, values should be as unique as possible. For example, a laptop may have a computing platform that is either PC or Mac.
+
+image::media/booking-create-bookable-3.png[]
+
+* Owning Library - The home library of the resource.
+* Resource Attribute - The attribute you wish to assign the value to.
+* Valid Value - Enter the value for your attribute.
+
+4) Click Save when the required information has been added.
+
+5) The attribute value will appear in the list. Each attribute should have at least two values attached to it; repeat this process for all applicable attribute values.
+
+Create New Resource
+^^^^^^^^^^^^^^^^^^^
+
+1) Add items to a resource type. Click Admin → Server Administration → Booking → Resources.
+
+2) Click New Resource in the top right corner.
+
+3) A box will appear. Add information for the resource.
+
+image::media/booking-create-bookable-4.png[]
+
+* Owning Library - The home library of the resource.
+* Resource Type - Type in the first letter of the resource type's name to list then select the resource type for your item.
+* Barcode - Barcode for the resource.
+* Overbook - This allows a single item to be reserved, picked up, and returned by multiple patrons during overlapping or identical time periods.
+* Is Deposit Required - (Function not currently available.)
+* Deposit Amount - (Function not currently available.)
+* User Fee - (Function not currently available.)
+
+4) Click Save when the required information has been added.
+
+5) The resource will appear in the list.
+
+[NOTE]
+One resource type may have multiple resources attached.
+
+Map Resource Attributes and Values to Resources
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1) Use Resource Attribute Maps to bring together the resources and their attributes and values. Select Admin → Server Administration → Booking → Resource Attribute Maps.
+
+2) Click New Resource Attribute Map in the right top corner.
+
+3) A box will appear in which you will map your attributes and values to your resources.
+
+image::media/booking-create-bookable-5.png[]
+
+* Resource - Enter the barcode of your resource.
+* Resource Attribute - Select an attribute that belongs to the Resource Type.
+* Attribute Value - Select a value that belongs to your chosen attribute and describes your resource. If your attribute and value do not belong together you will be unable to save.
+
+4) Click Save once you have entered the required information.
+
+[NOTE]    
+A resource may have multiple attributes and values. Repeat the above steps to map all.
+
+5) The resource attribute map will appear in the list.
+
+Once all attributes have been mapped your resource will be part of a hierarchy similar to the example below.
+
+image::media/booking-create-bookable-6.png[]
+
+
+Editing Non-Bibliographic Resources
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Staff with the required permissions can edit aspects of existing non-bibliographic resources. For example, resource type can be edited in the event that the fine amount for a laptop changes from $2.00 to $5.00.
+
+Editing Resource Types
+^^^^^^^^^^^^^^^^^^^^^^
+
+1) Bring up your list of resource types. Select Admin --> Server Administration --> Booking --> Resource Types.
+
+2) A list of current resource types will appear.
+
+3) Double click anywhere on the line of the resource type you would like to edit.
+
+4) The resource type box will appear. Make your changes and click Save.
+
+5) Following the same procedure you may edit Resource Attributes, Attributes Values, Resources and Attribute Map by selecting them on Admin --> Server Administration --> Booking menu.
+
+
+
+
+Deleting Non-bibliographic Resources
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1) To delete a booking resource, go to Admin → Server Administration → Booking → Resources.
+
+2) Select the checkbox in front the resource you want to delete. Click Delete Selected. The resource will disappear from the list.
+
+Following the same procedure you may delete Resource Attributes Maps.
+
+You may also delete Resource Attribute Values, Resource Attributes and Resource Types. But you have to delete them in the reverse order when you create them to make sure the entry is not in use when you try to delete it.
+
+This is the deletion order: Resource Attribut Map/Resources --> Resource Attribute Values --> Resource Attributes --> Resource Types. 
+
+
+
+

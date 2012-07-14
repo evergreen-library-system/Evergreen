@@ -1,0 +1,63 @@
+My Lists 2.2
+------------
+
+The *My Lists* feature replaces the bookbag feature that was available in versions proior to 2.2.  The *My Lists* feature is a part of the Template Toolkit OPAC that is available in version 2.2.  This feature enables you to create temporary and permanent lists; create and edit notes for items in lists; place holds on items in lists; and share lists via RSS feeds and CSV files.
+
+
+*Create New Lists*
+
+1) Log in to your account in the OPAC.
+
+2) Search for titles.
+
+3) Choose a title to add to your list.  Click *Add to My List*.
+
+image::media/My_Lists1.jpg[My_Lists1]
+
+4) Scroll up to the gray row on top of the *Search Results*. Click *View My List*
+
+5) Items are added to a temporary list.  Your temporary list appears at the bottom of the screen.
+
+6) The *Actions for these items* menu on the right side of the screen demonstrates the actions that you can apply to this list.  You can place holds on items in your temporary list; remove items from the list; or move selected items to a permanent list.  
+
+To place a hold or remove items from the list, check the box adjacent to the title of the item, and select the desired function.
+
+To move selected items into an existing list, check the box adjacent to the title, and highlight the list in which you will store the item.
+
+image::media/My_Lists3.jpg[My_Lists3]
+
+7) If you do not want to place the item into an existing list, you can create a new list to contain the item.  Enter the name of the new list, and, if desired, enter a description.
+
+image::media/My_Lists4.jpg[My_Lists4]
+
+8) Click *Submit*.
+
+9) The new list appears beneath the temporary list.
+
+10) Select the title(s) of the items that you want to add to the list, and click *Actions for these items*.  Select the permanent list that you created from the drop down menu.
+
+image::media/My_Lists5.jpg[My_Lists5]
+
+11) Click *Go*.
+
+12) Your existing lists appear. Click on a list to view the items in the list.  You can sort the items in the permanent list.  You can also add, edit, and remove notes.
+
+13) Click *Edit* to add or edit a note.
+
+14). Enter desired notes, and click *Save Notes*.
+
+image::media/My_Lists6.jpg[My_Lists6]
+
+15) You can keep your list private, or you can share it.  To share your list, click *Share*, and click the orange RSS icon to share through an RSS reader.  You can also click *HTML View* to share your list as an HTML link.  
+
+You can also download your list into a CSV file by clicking *Download CSV*.
+
+image::media/My_Lists7.jpg[My_Lists7]
+
+
+16) When you no longer need a list, click *Delete List*. 
+
+
+
+
+

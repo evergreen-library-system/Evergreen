@@ -1,0 +1,9 @@
+Special Issues
+--------------
+Currently, Setting up the special issue can only be done through the Alternate Serials Control view.
+
+. Create an issuance in the Serials Control View or the Alternate Serials Control View
+. In the Alternate Serials Control View, click on the name of your special issue in the list of issuances.
+. Click the New Items button
+. Enter the appropriate information
+. The item is now ready to receive. If you complete the Date Received field and change the status to received then it will receive the issue but it won't create the associated copy record whereas if you leave it blank and receive the item through the Serials Control View or Batch Receive function you can create the Copy Record at that time.

@@ -1,0 +1,188 @@
+Alternate Serial Control View
+-----------------------------
+
+Using the Alternate Serial Control View, you can create a subscription, a distribution, a stream, and a caption and pattern, and you can generate predictions and receive issues. To access Alternate Serial Control View, open a serials record, and click Actions for this Record >> Alternate Serial Control. This opens the Subscriptions interface
+
+. Create a subscription
+. Create a distribution
+. Create a a stream (within the distribution)
+. Create a caption and pattern (or import from bibliographic or legacy serial records)
+. Create at least the first issuance and generate predictions
+
+Creating a Subscription
+~~~~~~~~~~~~~~~~~~~~~~~
+
+A subscription is designed to hold all information related to a single serial title.  Therefore, each library is likely to have only one subscription per serial title.
+
+image::media/ascv-sub.jpg[Creating a Subscription]
+
+. Add new subscriptions to a serials record that exists in the catalog.
+. Create a subscription
+. Click New Subscription.
+. Select an owning library. The owning library indicates the organizational unit(s) whose staff can use this subscription. This menu is populated with the shortnames that you created for your libraries in the organizational units tree in Admin . Server Administration . Organizational Units. The rule of parental inheritance applies to this list. For example, if a system is made the owner of a subscription, then users, with appropriate permissions, at the branches within the system could also use this subscription.
+. Enter the date that the subscription begins in the start date. Recommended practice is that you select the date from the drop down calendar although you can manually enter a date. Owning library and start date are required fields in the new subscription pop up box.
+. Enter the date that the subscription ends in the end date. Recommended practice is to select a date from the drop down calendar, but you can manually enter a date, also.
+. Enter the difference between the nominal publishing date of an issue and the date that you expect to receive your copy in the Expected Date Offset. For example, if an issue is published the first day of each month, but you receive the copy two days prior to the publication date, then enter -2 days into this field.
+. Click Save.
+
+After you save the subscription, it will appear in a list with a hyperlinked ID number. Use the drop down menu at the top of the screen to view subscriptions at other organizations.
+
+Creating a Distribution
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Distributions indicate the branches that should receive copies of a serial. Distributions work together with streams to indicate the number of copies that should be sent to each branch.
+
+image::media/ascv-distr.jpg[Creating a Distribution]
+
+. Click the Distributions tab.
+. Click New Distribution.
+. Enter a name for the distribution in the Label field. It may be useful to identify the branch to which you are distributing these issues in this field. This field is not publicly visible and only appears when an item is received. There are no limits on the number of characters that can be entered in this field.
+. Select a holding library from the drop down menu. The holding library is the branch that will receive the copies.
+. Select a copy template from the Receive Unit Template drop down menu. This menu is populated with the copy templates that you created in Copy Template Editor.
++
+[NOTE]
+Label, Holding Library, and Receive Unit Template are required fields in the new distribution pop up box.
++
+. Ignore the fields, Unit Label Prefix and Unit Label Suffix. These fields are not functional in Alternate Serial Control View.
+. Click Save. The distribution will appear in a list in the Distributions tab in the Subscription Details.
+
+Creating a Stream
+~~~~~~~~~~~~~~~~~
+
+Distributions work together with streams to indicate the number of copies that should be sent to each branch. Distributions identify the branches that should receive copies of a serial. Streams identify how many copies should be sent to each branch. Streams are intended for copies that are received on a recurring, even if irregular, basis.
+
+. Click the hyperlinked title of the distribution. The number of streams that have already been created for this distribution displays adjacent to the title. You can choose one of two ways to create a stream: New Stream or Create Many Streams. The New Stream button allows you to create one new stream and assign it a routing label.
+. Click New Stream
+. Enter a routing label so that the copy could be read by specific users or departments before the copy is shelved. The routing label appears during receiving and could be added to routing lists; it is not viewable by the public. Routing lists do not print from in 2.0. This field is optional.
+. Click Save.
++
+[NOTE]
+The "Create Many Streams button" allows you to create multiple streams at once, but it does not allow you to add a routing label when you create the stream.
++
+. Click Create Many Streams.
+. Enter the number of streams that you want to create in the How many. Field.
+. Click Create.
+
+Creating a Caption and Pattern
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The Captions and Patterns wizard allows you to enter caption and pattern data as it is described by the 853, 854, and 855 MARC tags. These tags allow you to define how issues will be captioned, and how often the library receives issues of the serial.
+
+. Open the Subscription Details.
+. Click the Captions and Patterns tab.
+. Click Add Caption and Pattern.
+. In the Type drop down box, select the MARC tag to which you would like to add data.
+. In the Pattern Code drop down box, you can enter a JSON representation of the 85X tag by hand, or you can click the Wizard to enter the information in a user-friendly format.
+. The Caption and Pattern that you create is Active by default, but you can deactivate a caption and pattern at a later time by unchecking the box.
+
+
+[NOTE]
+A subscription may have multiple captions and patterns listed in the subscripiton details, but only one Caption and Pattern can be active at any time. If you want to add multiple patterns, e.g. for Basic and Supplement, Click Add Caption and Pattern.
+
+
+Use the Pattern Code Wizard
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Pattern Code Wizard enables you to create the caption of the item and add its publication information. The Wizard is composed of five pages of questions. You can use the Next and Previous navigation buttons in the top corners to flip between pages.
+
+To add a pattern code, click Wizard.
+
+Page 1: Enumerations
+++++++++++++++++++++
+
+image::media/cap-wiz-num.jpg[Enuperation]
+
+. To add an enumeration, check the box adjacent to Use enumerations.. The enumerations conform to $a-$h of the 853,854, and 855 MARC tags.
+. A field for the First level will appear. Enter the enumeration for the first level. A common first level enumeration is volume, or "v."
+. Click Add Enumeration.
+. A field for the Second level will appear. Enter the enumeration for the second level. A common first level enumeration is number, or "no."
+. Enter the number of bibliographic units per next higher level. This conforms to $u in the 853, 854, and 855 MARC tags.
+. Choose the enumeration scheme from the drop down menu. This conforms to $v in the 853, 854, and 855 MARC tags.
++
+[NOTE]
+You can add up to six levels of enumeration.
++
+. Add Alternate Enumeration if desired.
+. When you have completed the enumerations, click Next.
+
+Page 2: Calendar
+++++++++++++++++
+
+image::media/cap-wiz-cal.jpg[Enumeration]
+
+. To use months, seasons, or dates in your caption, check the box adjacent to Use calendar changes.
+. Identify the point in the year at which the highest level enumeration caption changes.
+. In the Type drop down menu, select the points during the year at which you want the calendar to restart.
+. In the Point drop down menu, select the specific time at which you would like to change the calendar
+. To add another calendar change, click Add Calendar Change. There are no limits on the number of calendar changes that you can add.
+. When you have finished the calendar changes, click Next.
+
+Page 3: Chronology
+++++++++++++++++++
+
+image::media/cap-wiz-chron.jpg[Chronology]
+	
+. To add chronological units to the captions, check the box adjacent to Use chronology captions.
+. Choose a chronology for the first level. If you want to display the terms, "year" and "month" next to the chronology caption in the catlaog, then check the box beneath Display in holding field.
+. To include additional levels of chronology, click Add Chronology Caption. Each level that you add must be smaller than the previous level.
+. After you have completed the chronology caption, click Next.
+
+Page 4: Compress and Expand Captions
+++++++++++++++++++++++++++++++++++++
+
+image::media/cap-wiz-freq.jpg[Compress or Expand]
+
+. Select the appropriate option for compressing or expanding your captions in the catalog from the compressibility and expandability drop down menu. The entries in the drop down menu correspond to the indicator codes and the subfield $w in the 853 tag. Compressibility and expandability correspond to the first indicator in the 853 tag.
+. Choose the appropriate caption evaluation from the drop down menu.
+. Choose the frequency of your publication from the drop down menu. For irregular frequencies, you may wish to select use number of issues per year, and enter the total number of issues that you receive each year. However, in the . 0 release, recommended practice is that you use only regular frequencies. Planned development will create an additional step to aid in the creation of irregular frequencies.
+. Click Next.
+
+Page 5: Regularity Information 
+++++++++++++++++++++++++++++++
+
+image::media/cap-wiz-chan.jpg[Changes]
+
+. If needed, check box for Use specific regularity information
+. Choose the appropriate information for combined, omitted or published issues
+. Choose the appropriate frequency and issue
+. Add additional rows as required
+
+Page 5: Finish Captions and Patterns
+++++++++++++++++++++++++++++++++++++
+
+. To complete the wizard, click Create Pattern Code.
+. Return to Subscription Details.
+. Confirm that the box adjacent to Active is checked. Click Save Changes. The row is now highlighted gray instead of orange.
+
+Creating an Issuance
+~~~~~~~~~~~~~~~~~~~~
+
+The Issuances tab enables you to manually create an issue. Evergreen will use the initial issue that you manually create to predict future issues.
+
+image::media/ascv-issues.jpg[Changes]
+
+. Click the Issuances tab in the Subscription Details.
+. Click New Issuance.
+. The Subscription, Creator, and Editor fields contain subscription and user IDs, respectively. These fields are disabled because Evergreen automatically fills in these fields.
+. Enter a name for this issuance in the Label field. There are no limits on the number of characters that can be entered in this field. You may want to enter the month and year of the publication in hand.
+. Enter the Date Published of the issuance that you are editing. Recommended practice is that you select the date from the drop down calendar although you can manually enter a date. If you are creating one manual issue before automatically predicting more issues, then this date should be the date of the most current issue before the prediction starts.
+. Select a Caption/Pattern from the drop down menu. The numbers in the drop down menu correspond to the IDs of the caption/patterns that you created.
+. The Holding Type appears by default and corresponds to the Type that you selected when you created the Caption/Pattern.
+. In the holding code area of the New Issuance dialog, click Wizard. The Wizard enables you to add holdings information.
+. Enter the volume of the item in hand in the v. field.
+. Enter the number of the item in hand in the no. field.
+. Enter the year of publication in the Year field.
+. Enter the month of publication in the Month field if applicable. You must enter the calendar number of the month rather than the name of the month. For example, enter 12 if the item in hand was published in December.
+. Enter the day of publication in the day field if applicable.
+. Click Compile to generate the holdings code.
+
+Generate Item Predictions
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+After you manually create the first issue, Evergreen will predict future issuances. Use the Generate Predictions functionality to predict future issues.
+
+. Click Subscription Details -> Issuances -> Generate Predictions.
+. Choose the length of time for which you want to predict issues. If you select the radio button to predict until end of subscription, then Evergreen will predict issues until the end date that you created when you created the subscription. See simplesect . 1 for more information. If you do not have an end date, select the radio button to predict a certain number of issuances, and enter a number in the field.
+. Click Generate.
+. Evergreen will predict a run of issuances and copies. The prediction will appear in a list.
+. You can delete the first, manual issuance by clicking the check box adjacent to the issuance and clicking Delete Selected.

@@ -1,0 +1,23 @@
+New Options for Double Clicking
+-------------------------------
+
+Double Click to Retrieve a Patron's Record
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+. Click *Search -> Search for Patrons* to access a patron's record
+. Enter search terms.
+. Retrieve a list of possible matches. Double click on the record that you want to open.
+
+image::media/Double_Click1.jpg[Double_Click1]
+
+
+Double Click to Retrieve Item Attributes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+. Enter search terms to retrieve a bibliographic record.
+. Click *Actions for this Record* -> *Holdings Maintenance*.
+. Double click on an item.
++
+image::media/Double_Click3.jpg[Double_Click3]
++
+. The copy information will appear in a new tab.

@@ -1,0 +1,49 @@
+Restrict Z39.50 Sources by Permission Group
+-------------------------------------------
+
+In Evergreen versions preceeding 2.2, all users with cataloging privileges could view all of the Z39.50 servers that were available for use in the staff client.  In Evergreen version 2.2, you can use a permission to restrict users' access to Z39.50 servers.  You can apply a permission to the Z39.50 servers to restrict access to that server, and then assign that permission to users or groups so that they can access the restricted servers.
+
+Administrative Settings
+~~~~~~~~~~~~~~~~~~~~~~~
+
+You can add a permission to limit use of Z39.50 servers, or you can use an existing permission.
+
+NOTE: You must be authorized to add permission types at the database level to add a new permission.
+
+Add a new permission:
+
+1) Create a permission at the database level.
+
+2) Click *Admin -> Server Administration -> Permissions* to add a permission to the staff client.
+
+3) In the *New Permission* field, enter the text that describes the new permission.
+
+image::media/Restrict_Z39_50_Sources_by_Permission_Group1.jpg[]
+
+4) Click *Add*.
+
+5) The new permission appears in the list of permissions.
+
+
+
+Restrict Z39.50 Sources by Permission Group
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1) Click *Admin -> Server Administration -> Z39.50 Servers*
+
+2) Click *New Z39.50 Server*, or double click on an existing Z39.50 server to restrict its use.
+
+3) Select the permission that you added to restrict Z39.50 use from the drop down menu.
+
+image::media/Restrict_Z39_50_Sources_by_Permission_Group2.jpg[]
+
+4) Click *Save*.
+
+5) Add the permission that you created to a user or user group so that they can access the restricted server.
+
+
+image::media/Restrict_Z39_50_Sources_by_Permission_Group3.jpg[]
+
+6) Users that log in to the staff client and have that permission will be able to see the restricted Z39.50 server.  
+
+NOTE: As an alternative to creating a new permission to restrict use, you can use a preexisting permission.  For example, your library uses a permission group called SuperCat, and only members in this group should have access to a restricted Z39.50 source.  Identify a permission that is unique to the SuperCat group (e.g. CREATE_MARC) and apply that permission to the restricted Z39.50 server.  Because these users are in the only group with the permission, they will be the only group w/ access to the restricted server.

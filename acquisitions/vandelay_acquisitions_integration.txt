@@ -1,0 +1,69 @@
+Vandelay Integration into Acquisitions
+--------------------------------------
+The Acquisitions Load MARC Order Record interface enables you to add MARC records to selection lists and purchase orders and upload the records into the catalog.  The Vandelay interface enables you to create specific match points between incoming MARC records and exisiting catalog records.  Combining these two features enables you to track on order MARC records through the Acquisitions interface and to utilize the record matching mechanisms available in Vandelay. 
+
+The purpose of this documentation is to describe the interaction between Vandelay and the Acquisitions MARC Batch Upload interface.  For detailed instructions on
+ using the Acquisitions MARC Batch Upload interface, see the Evergreen Documentation Interest Group's Book of Evergreen, 2.1 documentation, Chapter 5, Load MARC 
+Order Records.  For detailed instructions on using the Vandelay functions for record matching and importing, see the Evergreen Documentation Interest Group's Book of Evergreen, 
+2.2 documentation, Chapter 7, Batch Importing MARC Records.
+
+*Use Cases for Vandelay Integration into Acquisitions*
+
+You can add items to a selection list or purchase order and ignore the Vandelay options, or you can use both acquisitions and cataloging functions.  In these examples, you will use both functions.
+
+Example 1: Using the Acquisitions MARC Batch Load interface, upload MARC records to a selection list and a Vandelay queue, and match queued records with existing catalog records.
+
+In this example, an acquisitions librarian has received a batch of MARC records from a vendor. She will add the records to a selection list and a Vandelay record queue.  
+A cataloger will later view the queue, edit the records, and import them into the catalog.
+
+. Click *Acquisitions -> Load MARC Order Records*
+. Add MARC order records to a *Selection list* and/or a *Purchase Order.*  Check the box to create a purchase order if desired.
+. Select a *Provider* from the drop down menu, or begin typing the code for the provider, and the field will auto-fill.
+. Select a *Context Org Unit* from the drop down menu, or begin typing the code for the context org unit, and the field will auto-fill.
+. Select a *Selection List* from the drop down menu, or begin typing the name of the selection list.  You can create a new list, or the field will auto-fill.
+. Create a new record queue in Vandelay, or upload the records to an existing queue.
+. Select a *Record Match Set*.
+. Browse your computer to find the MARC file, and click *Upload*.
++
+image::media/Vandelay_Integration_into_Acquisitions1.jpg[Vandelay_Integration_into_Acquisitions1]
++
+. The processed items appear at the bottom of the screen.
++
+image::media/Vandelay_Integration_into_Acquisitions2.jpg[Vandelay_Integration_into_Acquisitions2]
+. You can click the link(s) to access the selection list or the import queue.  Click the link to *View Selection List*.
+. Look at the first line item.  The line item has not yet been linked to the catalog, but it is linked to a Vandelay record queue.  Click the link to the *queue* to examine the MARC record.
++
+image::media/Vandelay_Integration_into_Acquisitions3.jpg[Vandelay_Integration_into_Acquisitions3]
+. The Vandelay interface opens in a new tab.  The bibliographic records appear in the queue. Records that have matches are identified in the queue.  You can edit these records and/or import them into the catalog, completing the process.
+
+image::media/Vandelay_Integration_into_Acquisitions4.jpg[Vandelay_Integration_into_Acquisitions4]
+
+Example 2: Using the Acquisitions MARC Batch Load interface, upload MARC records to a selection list, and use the Vandelay options to import the records directly into the catalog.  The Vandelay options will enable you to match incoming records with existing catalog records.
+
+In this example, a librarian will add MARC records to a selection list, create criteria for matching incoming and existing records, and import the matching and non-matching records into the catalog.
+
+. Click *Acquisitions* -> *Load MARC Order Records*
+. Add MARC order records to a *Selection list* and/or a *Purchase Order.*  Check the box to create a purchase order if desired.
+. Select a *Provider* from the drop down menu, or begin typing the code for the provider, and the field will auto-fill.
+. Select a *Context Org Unit* from the drop down menu, or begin typing the code for the context org unit, and the field will auto-fill.
+. Select a *Selection List* from the drop down menu, or begin typing the name of the selection list.  You can create a new list, or the field will auto-fill.
+. Create a new record queue in Vandelay, or upload the records to an existing queue.
+. Select a *Record Match Set*.
+. Select *Merge Profile* -> *Match-Only Merge*.
+. Check the box adjacent to *Merge on Best Match*.
+.  Browse your computer to find the MARC file, and click *Upload*.
++
+image::media/Vandelay_Integration_into_Acquisitions5.jpg[Vandelay_Integration_into_Acquisitions5]
++
+. Click the link to *View Selection List*  Line items that do not match existing catalog records on title and ISBN contain the link, *link to catalog*. This link indicates that you could link the line item to a catalog record, but currently, no match exists between the line item and catalog records.  Line items that do have matching records in the catalog contain the link, *catalog*.
++
+image::/media/Vandelay_Integration_into_Acquisitions6.jpg[Vandelay_Integration_into_Acquisitions6]
++
+. Click the *catalog* link to view the line item in the catalog.
+
+*Permissions to use this Feature*
+
+IMPORT_MARC - Using Vandelay to create new bib records now requres the IMPORT_MARC
+permission (same as open-ils.cat.biblio.record.xml.import).  If the permission fails, the queued record will fail import and be stamped with a new "import.record.perm_failure" vandelay import error
+
+IMPORT_ACQ_LINEITEM_BIB_RECORD_UPLOAD -  This allows interfaces leveraging Vandelay, such as Acquisitions, to create a higher barrier to entry. This permission prevents users from creating new bib records directly from the ACQ vendor MARC file upload interface. 

@@ -1,0 +1,35 @@
+Holdings
+--------
+
+System Generated Holdings Statement
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+As issues are received, Evergreen creates a holding statement in the OPAC based on what is set up in the Caption and Patterns of the subscription.  The systems generated holdings can only be edited by changing caption and pattern information and there is no abilitiy to edit the statement as free text.
+
+MARC Format for Holdings Display (MFHD)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Evergreen users can create, edit and delete their own MFHD.
+
+Create an MFHD record
+^^^^^^^^^^^^^^^^^^^^^
+
+. Open a serial record, and in the bottom right corner above the copy information, click Add MFHD Record. You can also add the MFHD statement by clicking Actions for this Record .MFHD Holdings .Add MFHD Record.
+. A message will confirm that you have created the MFHD Record. Click OK.
+. Click Reload in the top left corner of the record.
+. The Holdings Summary will appear. Click Edit Holdings in the right corner.
+. Click Edit Record.
+. The MFHD window will pop up. Enter holdings information. Click Save MFHD.
+. Close the MFHD window.
+. Click Reload in the top left corner of the record. The Holdings Summary will reflect the changes to the MFHD statement.
+
+Edit a MFHD record
+^^^^^^^^^^^^^^^^^^
+
+. Open a serial record, and in the Actions for this Record, click MFHD Record>>Edit MFHD Record and select the appropriate MFHD. 
+. Edit the MFHD
+. Click Save MFHD
+
+Delete a MFHD Record
+^^^^^^^^^^^^^^^^^^^^
+
+. Open a serial record, and in the Actions for this Record, click MFHD Record>>Delete MFHD Record and select the appropriate MFHD. 
+. Click to confirm the deletion of the MFHD

@@ -1,0 +1,106 @@
+Conjoined Items
+---------------
+
+Prior to Evergreen version 2.1, items could be attached to only one bibliographic record.  The Conjoined Items feature in Evergreen 2.1 enables catalogers to link items to multiple bibliographic records.  This feature will enable more precise cataloging.  For example, catalogers will be able to indicate items that are printed back to back, are bilingual, are part of a bound volume, are part of a set, or are available as an e-reader pre-load.  This feature will also help the user retrieve more relevant search results.  For example, a librarian catalogs a multi-volume festschrift.  She can create a bibliographic record for the festschrift and a record for each volume.  She can link the items on each volume to the festschrift record so that a patron could search for a volume or the festschrift and retrieve information about both works.
+
+In the example below, a librarian has created a bibliographic record for two bestselling items.  These books are available as physical copies in the library, and they are available as e-reader downloads.  The librarian will link the copy of the Kindle to the bibliographic records that are available on the e-reader.
+
+Using the Conjoined Items Feature
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The Conjoined Items feature was designed so that you can link items between bibliographic records when you have the item in hand, or when the item is not physically present.  Both processes are described here.  The steps are fewer if you have the item in hand, but both processes accomplish the same task.  This documentalso demonstrates the process to edit or delete links between items and bibliographic records. Finally, the permission a cataloger needs to use this feature is listed.
+
+.Scenario 1: I want to link an item to another bibliographic record, but I do not have the item in hand
+
+1) Retrieve the bibliographic record to which you would like to link an item.  
+ 
+2) Click *Actions for this Record -> Mark as Target for Conjoined Items.*  
+ 
+                                                                                                                                                                             
+image::media/conj1.jpg[conj1]
+ 
+ 
+3) A confirmation message will appear.  Click *OK.* 
+ 
+4) In a new tab, retrieve the bibliographic record with the item that you want to link to the other record. 
+ 
+5) Click *Actions for this Record -> Holdings Maintenance.* 
+ 
+6) Select the copy that you want to link to the other bibliographic record.  Right-click, or click *Actions for Selected Rows -> Link as Conjoined Items to Previously Marked Bib Record.* 
+
+image::media/conj2.jpg[conj2]
+ 
+ 
+7) The *Manage Conjoined Items* interface opens in a new tab.  This interface enables you to confirm the success of the link, and to change the peer type if desired.  The *Result* column indicates that you created a successful link between the item and the bib record. 
+ 
+image::media/conj3.jpg[conj3]
+ 
+The default peer type, *Back-to-back*, was set as the peer type for our item.  To change a peer type after the link has been created, right-click or click *Actions for Selected Items -> Change Peer Type*.  A drop down menu will appear.  Select the desired peer type, and click *OK.* 
+ 
+ 
+image::media/conj4.jpg[conj4]
+ 
+ 
+8) The *Result* column will indicate that the *Peer Type* [has been] *Updated.* 
+ 
+ 
+image::media/conj5.jpg[conj5]
+ 
+ 
+9) To confirm the link between the item and the desired bib record, reload the tab containing the bib record to which you linked the item. Click the link for *Linked Titles.* 
+ 
+ 
+image::media/conj6.jpg[conj6]
+ 
+ 
+10) To view the copy details, including the peer type, click *Copy Details.* 
+ 
+ 
+image::media/conj7.jpg[conj7]
+ 
+ 
+Items can be linked to multiple bibliographic records simultaneously.  If you click the linked titles button in the copy details, then you will retrieve a list of bibliographic records to which this item is linked. 
+ 
+ 
+image::media/conj8.jpg[conj8]
+ 
+ 
+.Scenario 2: I want to link an item to another bibliographic record, and I do have the item in hand
+
+1) Retrieve the bibliographic record to which you would like to add the item. 
+ 
+2) Click *Actions for this Record -> Manage Conjoined Items.* 
+ 
+ 
+image::media/conj9.jpg[conj9]
+ 
+ 
+3) A note in the bottom left corner of the screen will confirm that the record was targeted for linkage with conjoined items, and the *Manage Conjoined Items* screen will appear. 
+ 
+4) Select the peer type from the drop down menu, and scan in the barcode of the item that you want to link to this record. 
+ 
+5) Click *Link to Bib (Submit).* 
+ 
+ 
+image::media/conj10.jpg[conj10]
+ 
+ 
+6) The linked item will appear in the screen. The *Result* column indicates Success. 
+ 
+7) To confirm the linkage, click *Actions for this Record -> OPAC View.* 
+ 
+8) When the bibliographic record appears, click *Reload.  Linked Titles* will show the linked title and item. 
+ 
+
+.Scenario 3: I want to edit or break the link between a copy and a bibliographic record
+ 
+1) Retrieve the bibliographic record that has a copy linked to it. 
+ 
+2) Click *Actions for this Record -> Manage Conjoined Items.* 
+ 
+3) Select the copy that you want to edit, and right-click or click *Actions for Selected Items.* 
+ 
+4) Make any changes, and click *OK.* 
+ 
+ 
+UPDATE_COPY  -  Link items to bibliographic records
