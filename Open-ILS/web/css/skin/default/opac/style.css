@@ -33,6 +33,11 @@ a {
 	width: 12em;
 }
 
+.searchbar {
+    font-weight: bold;
+    padding-top: 10px;
+}
+
 /*
 #search-wrapper select {
 	border:0px solid black;
