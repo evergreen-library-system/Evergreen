@@ -1285,7 +1285,7 @@ sub new_hold_copy_targeter {
 			my @good_copies;
 			for my $c (@$all_copies) {
 				# current target
-				next if ($c->id eq $hold->current_copy);
+				next if ($hold->current_copy and $c->id eq $hold->current_copy);
 
 				# skip on circ lib is closed IFF we care
 				my $ignore_closing;
