@@ -2045,7 +2045,7 @@ sub basic_record_holdings {
 		my $found = 0;
 		for my $c (@{$cn->copies}) {
 			next unless grep {$c->circ_lib->id == $_} @ou_ids;
-			next unless ( $c->deleted eq 'f' || $c->deleted == 0 );
+			next unless _cp_is_visible($cn, $c);
 			$found = 1;
 			last;
 		}
@@ -2056,7 +2056,7 @@ sub basic_record_holdings {
 		for my $cp (@{$cn->copies}) {
 
 			next unless grep { $cp->circ_lib->id == $_ } @ou_ids;
-			next unless ( $cp->deleted eq 'f' || $cp->deleted == 0 );
+			next unless _cp_is_visible($cn, $cp);
 
 			push @{$holdings{$cn->label}{'copies'}}, {
                 barcode => $cp->barcode,
@@ -2069,6 +2069,24 @@ sub basic_record_holdings {
 	}
 
 	return \%holdings;
+}
+
+sub _cp_is_visible {
+    my $cn = shift;
+    my $cp = shift;
+
+    my $visible = 0;
+    if ( ($cp->deleted eq 'f' || $cp->deleted == 0) &&
+         $cp->location->opac_visible eq 't' && 
+         $cp->status->opac_visible eq 't' &&
+         $cp->opac_visible eq 't' &&
+         $cp->circ_lib->opac_visible eq 't' &&
+         $cn->owning_lib->opac_visible eq 't'
+    ) {
+        $visible = 1;
+    }
+
+    return $visible;
 }
 
 #__PACKAGE__->register_method(
