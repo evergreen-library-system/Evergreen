@@ -82,18 +82,21 @@
                 </table>
             </div>
 
-            [% IF ctx.user.notes.0 %]
-            <div class="acct_sum_row">
-                <table>
-                [% FOR note IN ctx.user.notes %]
-                    <tr><td class='public-note-title'>[% l('* [_1]: ', note.title) | html %]</td><td>[% note.value | html %]</td></tr>
-                [% END %]
-                </table>
-            </div>
-            [% END %]
         </div>
     </div>
     <div class="clear-both"></div>
+
+    [% IF ctx.user.notes.0 %]
+    <table class="acct_notes">
+        <thead><th>[% l('Note title') %]</th><th>[% l('Content') %]</th></thead>
+        <tbody>
+        [% FOR note IN ctx.user.notes %]
+            <tr><td class='public-note-title'>[% note.title | html %]</td><td>[% note.value | html %]</td></tr>
+        [% END %]
+        </tbody>
+    </table>
+    [% END %]
+
     <div id='fines_payments_wrapper'>
         <div id='acct_fines_tabs'>
             [% IF myopac_main_page == 'main' %]
