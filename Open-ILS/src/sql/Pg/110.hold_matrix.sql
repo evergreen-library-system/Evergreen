@@ -236,11 +236,19 @@ DECLARE
     frozen_hold_count    INT;
     context_org_list    INT[];
     done            BOOL := FALSE;
+    hold_penalty TEXT;
 BEGIN
     SELECT INTO user_object * FROM actor.usr WHERE id = match_user;
     SELECT INTO context_org_list ARRAY_ACCUM(id) FROM actor.org_unit_full_path( pickup_ou );
 
     result.success := TRUE;
+
+    -- The HOLD penalty block only applies to new holds.
+    -- The CAPTURE penalty block applies to existing holds.
+    hold_penalty := 'HOLD';
+    IF retargetting THEN
+        hold_penalty := 'CAPTURE';
+    END IF;
 
     -- Fail if we couldn't find a user
     IF user_object.id IS NULL THEN
@@ -353,7 +361,7 @@ BEGIN
           WHERE usr = match_user
                 AND usp.org_unit IN ( SELECT * FROM unnest(context_org_list) )
                 AND (usp.stop_date IS NULL or usp.stop_date > NOW())
-                AND csp.block_list LIKE '%HOLD%' LOOP
+                AND csp.block_list LIKE '%' || hold_penalty || '%' LOOP
 
         result.fail_part := standing_penalty.name;
         result.success := FALSE;
