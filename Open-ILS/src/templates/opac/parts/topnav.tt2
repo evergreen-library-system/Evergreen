@@ -53,6 +53,7 @@
         </div>
         [% END %]
     </div>
+    [%- INCLUDE "opac/parts/locale_picker.tt2" %]
     <div class="common-no-pad"></div>
 </div>
 </div>
