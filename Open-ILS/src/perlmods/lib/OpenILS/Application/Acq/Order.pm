@@ -1417,6 +1417,11 @@ sub upload_records {
         $mgr->respond;
 	}
 
+    if ($po) {
+        $evt = extract_po_name($mgr, $po, \@li_list);
+        return $evt if $evt;
+    }
+
 	$e->commit;
     unlink($filename);
     $cache->delete_cache('vandelay_import_spool_' . $key);
@@ -1432,6 +1437,44 @@ sub upload_records {
     }
 
     return $mgr->respond_complete;
+}
+
+# see if the PO name is encoded in the newly imported records
+sub extract_po_name {
+    my ($mgr, $po, $li_ids) = @_;
+    my $e = $mgr->editor;
+
+    # find the first instance of the name
+    my $attr = $e->search_acq_lineitem_attr([
+        {   lineitem => $li_ids,
+            attr_type => 'lineitem_provider_attr_definition',
+            attr_name => 'purchase_order'
+        }, {
+            order_by => {aqlia => 'id'},
+            limit => 1
+        }
+    ])->[0] or return undef;
+
+    my $name = $attr->attr_value;
+
+    # see if another PO already has the name, provider, and org
+    my $existing = $e->search_acq_purchase_order(
+        {   name => $name,
+            ordering_agency => $po->ordering_agency,
+            provider => $po->provider
+        },
+        {idlist => 1}
+    )->[0];
+
+    # if a PO exists with the same name (and provider/org)
+    # tack the po ID into the name to differentiate
+    $name = sprintf("$name (%s)", $po->id) if $existing;
+
+    $logger->info("Extracted PO name: $name");
+
+    $po->name($name);
+    update_purchase_order($mgr, $po) or return $e->die_event;
+    return undef;
 }
 
 sub import_lineitem_details {
