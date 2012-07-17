@@ -8,14 +8,14 @@ use Encode;
 use Apache2::Const -compile => qw(OK DECLINED HTTP_INTERNAL_SERVER_ERROR);
 use Apache2::Log;
 use OpenSRF::EX qw(:try);
-use OpenILS::Utils::CStoreEditor;
+use OpenILS::Utils::CStoreEditor q/:funcs/;
 
 use constant OILS_HTTP_COOKIE_SKIN => 'eg_skin';
 use constant OILS_HTTP_COOKIE_THEME => 'eg_theme';
 use constant OILS_HTTP_COOKIE_LOCALE => 'eg_locale';
 
 # cache string bundles
-my @registered_locales;
+my %registered_locales;
 
 sub handler {
     my $r = shift;
@@ -152,7 +152,22 @@ sub load_context {
     my %locales = $r->dir_config->get('OILSWebLocale');
     load_locale_handlers($ctx, %locales);
 
-    $ctx->{locale} = 
+    $ctx->{locales} = \%registered_locales;
+
+    # Set a locale cookie if the requested locale is valid
+    my $set_locale = $cgi->param('set_eg_locale');
+    if (!(grep {$_ eq $set_locale} keys %registered_locales)) {
+        $set_locale = '';
+    } else {
+        my $slc = $cgi->cookie({
+            '-name' => OILS_HTTP_COOKIE_LOCALE,
+            '-value' => $set_locale,
+            '-expires' => '+10y'
+        });
+        $r->headers_out->add('Set-Cookie' => $slc);
+    }
+
+    $ctx->{locale} = $set_locale ||
         $cgi->cookie(OILS_HTTP_COOKIE_LOCALE) || 
         parse_accept_lang($r->headers_in->get('Accept-Language')) || 'en_us';
 
@@ -228,6 +243,7 @@ sub load_locale_handlers {
     my $ctx = shift;
     my %locales = @_;
 
+    my $editor = new_editor();
     my @locale_tags = sort { length($a) <=> length($b) } keys %locales;
 
     # always fall back to en_us, the assumed template language
@@ -236,7 +252,17 @@ sub load_locale_handlers {
     for my $idx (0..$#locale_tags) {
 
         my $tag = $locale_tags[$idx];
-        next if grep { $_ eq $tag } @registered_locales;
+        next if grep { $_ eq $tag } keys %registered_locales;
+
+        my $res = $editor->json_query({
+            "from" => [
+                "evergreen.get_locale_name",
+                $tag
+            ]
+        });
+
+        my $locale_name = $res->[0]->{"name"} if exists $res->[0]->{"name"};
+        next unless $locale_name;
 
         my $parent_tag = '';
         my $sub_idx = $idx;
@@ -272,7 +298,7 @@ sub load_locale_handlers {
         if ($@) {
             warn "$@\n" if $@;
         } else {
-            push(@registered_locales, $tag);
+            $registered_locales{"$tag"} = $locale_name;
         }
     }
 }

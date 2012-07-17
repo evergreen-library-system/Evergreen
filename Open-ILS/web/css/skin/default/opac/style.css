@@ -1537,3 +1537,15 @@ a.preflib_change {
     border-bottom-style: solid;
 }
     
+#locale_picker_form {
+    float: right;
+    padding: 0.5em 1em 0.5em 0;
+    border-right: thin #69A088 solid;
+}
+
+#locale_picker_form * {
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+    font-size: 1em;
+}

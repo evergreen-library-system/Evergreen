@@ -1,0 +1,23 @@
+[%- IF ctx.locales.keys.size > 1;
+    set_locale = CGI.param('set_eg_locale') || CGI.cookie('eg_locale');
+%]
+<form id="locale_picker_form" action="[% mkurl() %]">
+    <label for="locale_picker">[% l("Language:") %]</label>
+    [%- FOREACH param IN CGI.params(); -%]
+        [%- NEXT IF param.key == 'set_eg_locale'; -%]
+        <input type="hidden" name="[% param.key %]" value="[% param.value %]" />
+    [%- END; -%]
+    <select id="locale_picker" name="set_eg_locale">
+    [%- FOREACH locale IN ctx.locales.keys %]
+        [%- IF set_locale == locale;
+                selected = 'selected="selected"';
+            ELSE;
+                selected = '';
+            END;
+        %]
+        <option value="[% locale | html %]" [% selected %]>[% ctx.locales.$locale | html %]</option>
+    [%- END %]
+    </select>
+    <input type="submit" value="[% l("Change") %]" />
+</form>
+[%- END %]
