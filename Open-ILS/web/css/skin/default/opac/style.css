@@ -680,8 +680,10 @@ div.format_icon {
 }
 
 #login-failed-message {
-	font-size: 16px;
+	font-size: 125%;
+    font-weight: bold;
 	color: red;
+    padding-top: 1em;
 }
 
 #home-buttons-inner {
