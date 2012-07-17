@@ -16,6 +16,7 @@ use OpenILS::Utils::CStoreEditor q/new_editor/;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::Acq::EDI::Translator;
 
+use OpenILS::Utils::LooseEDI;
 use Business::EDI;
 
 use Data::Dumper;
@@ -177,6 +178,9 @@ sub process_retrieval {
     $e->xact_commit;
     # refresh: send process_jedi the updated row
     $e->xact_begin;
+
+    # LFW: I really don't understand in what sense you could call this
+    # message 'outgoing', except from the vendor's point of view?
     my $outgoing = $e->retrieve_acq_edi_message($incoming->id);  # refresh again!
     $e->xact_rollback;
     my $res = __PACKAGE__->process_jedi($outgoing, $server, $account, $e);
@@ -409,6 +413,16 @@ our @noop_6063 = (21);
 # ->process_jedi($message, $server, $remote, $e)
 # $message is an edi_message object
 #
+# This method has lots of logic to process ORDRSP messages (and theoretically
+# OSTRPT messages) and to make changes based on those to EG acq objects.
+# If it gets an INVOIC message, it hands that off to
+# create_acq_invoice_from_edi() following a new model (this code all wants
+# cleaned-up/refactored).
+#
+# This method currently returns an array of message objects, but no callers use
+# that except in a boolean evaluation to test for success.  So don't count on
+# that array being there or containing anything specific in the future: it
+# might get changed.
 sub process_jedi {
     my ($class, $message, $server, $remote, $e) = @_;
     $message or return;
@@ -449,7 +463,7 @@ sub process_jedi {
 #   $obj->{body}->[0]->{ORDERS}->[0]->[0] eq 'UNH'
 
     $logger->info("EDI interchange body has " . scalar(@{$perl->{body}}) . " message(s)");
-    my @ok_msg_codes = qw/ORDRSP OSTRPT/;
+    my @ok_msg_codes = qw/ORDRSP OSTRPT INVOIC/;
     my @messages;
     my $i = 0;
     foreach my $part (@{$perl->{body}}) {
@@ -463,6 +477,20 @@ sub process_jedi {
                 $logger->warn("EDI interchange $i contains unhandled '$key' message.  Ignoring it.");
                 next;
             }
+            if ($key eq 'INVOIC') {
+                # XXX TODO Maybe subclass O::U::LooseEDI::Message as
+                # something like OpenILS::Acq::{VendorInvoice,OrderReponse},
+                # each one knowing how to read itself and update EG acq
+                # objects (not under OpenILS::Application perhaps).
+                my $invoice_message =
+                    new OpenILS::Utils::LooseEDI::Message($part->{$key});
+                push @messages, $invoice_message if
+                    $class->create_acq_invoice_from_edi(
+                        $e, $invoice_message, $remote->provider
+                    );
+                next;
+            }
+
             my $msg = __PACKAGE__->message_object($part->{$key}) or next;
             push @messages, $msg;
 
@@ -575,6 +603,255 @@ sub process_jedi {
         }
     }
     return \@messages;
+}
+
+
+# create_acq_invoice_from_edi() does what it sounds like it does for INVOIC
+# messages.  For similar operation on ORDRSP messages, see the guts of
+# process_jedi().
+# Return boolean success indicator.
+sub create_acq_invoice_from_edi {
+    my ($class, $e, $invoice, $provider, $message) = @_;
+    # $invoice is O::U::LooseEDI::Message, representing the EDI invoice message.
+    # $provider is only a pkey
+    # $message is Fieldmapper::acq::edi_message
+
+    my $log_prefix = "create_acq_invoice_from_edi(..., <acq.edi_message #" .
+        $message->id . ">): ";
+
+    my $eg_inv = Fieldmapper::acq::invoice->new;
+
+    $eg_inv->provider($provider);
+    $eg_inv->shipper($provider);    # XXX Do we really have a meaningful way to
+                                    # distinguish provider and shipper?
+    $eg_inv->recv_method("EDI");
+
+    # Find the buyer's identifier in the invoice.
+    my $buyer_san;
+    foreach (@{$invoice->{SG2}}) {
+        my $nad = $_->{NAD}[0];
+        if ($nad->{3035} eq 'BY' and $nad->{C082}{3055} eq '91') {
+            $buyer_san = $nad->{C082}{3039};
+        }
+    }
+
+    if (not $buyer_san) {
+        $logger->error($log_prefix . "could not find buyer SAN in INVOIC");
+        return 0;
+    }
+
+    # Find the matching org unit based on SAN via 'aoa' table.
+    my $addrs =
+        $e->search_actor_org_address({valid => "t", san => $buyer_san});
+
+    if (not $addrs or not @$addrs) {
+        $logger->error(
+            $log_prefix . "couldn't find OU unit matching buyer SAN in INVOIC:".
+            $e->event
+        );
+        return 0;
+    }
+
+    # XXX Should we verify that this matches PO ordering agency later?
+    $eg_inv->receiver($addrs->[0]->org_unit);
+
+    try {
+        $eg_inv->inv_ident($invoice->{BGM}[0]{1004});
+    } catch Error with {
+        $logger->error(
+            $log_prefix . "no invoice ID # in INVOIC message; " . shift
+        );
+    }
+    return 0 unless $eg_inv->inv_ident;
+
+    my @eg_inv_entries;
+
+    # The invoice message will have once instance of segment group 25
+    # per lineitem.
+    foreach my $sg25 (@{ $invoice->{SG25} }) {
+        # quantity
+        my $c186 = $sg25->{QTY}[0]{C186};
+        my $quantity = $c186->{6060};
+        # $c186->{6411} will probably say 'PCE', but need we check it?
+
+        # identifiers (typically ISBN for us, and we may not need these)
+        my @identifiers = ();
+        #   from LIN...
+        try {
+            my $c212 = $sg25->{LIN}[0]{C212};
+            push @identifiers, [$c212->{7143}, $c212->{7140}] if
+                $c212 and ref $c212 eq 'HASH';
+        } catch Error with {
+            # move on
+        };
+
+        #   from PIA...
+        try {
+            foreach my $pia (@{ $sg25->{PIA} }) {
+                foreach my $h (@{$pia->{C212}}) {
+                    push @identifiers, [$h->{7143}, $h->{7140}];
+                }
+            }
+        } catch Error with {
+            # move on
+        };
+
+        # @identifiers now contains lists of, say,
+        # ['IB',   '0786222735'], # ISBN 10
+        # ['EN','9780786222735']  # ISBN 13
+
+        # Segment Group 26-47 are all descendants of SG25.
+
+        # Segment Group 26 concerns *lineitem* price (i.e, total for all copies
+        # on this lineitem).
+
+        my $lineitem_price = $sg25->{SG26}[0]{MOA}[0]{C516}{5004};
+
+        # Segment Group 28 concerns *unit* (lineitem detail) price.  We may
+        # not actually use this.  TBD.
+        my $per_unit_price;
+        foreach my $sg28 (@{$sg25->{SG28}}) {
+            my $c509 = $sg28->{PRI}[0]{C509};
+            my ($price_qualifier, $price_qualifier_type);
+            ($per_unit_price, $price_qualifier, $price_qualifier_type) = (
+                $c509->{5118}, $c509->{5125}, $c509->{5387}
+            );
+
+            # price_qualifier=AAA seems to be the price to use.  Otherwise,
+            # take what we can get.
+            last if $price_qualifier eq 'AAA';
+        }
+
+        # Segment Group 29 will have references to LI and PO numbers
+        my $acq_identifiers = {};
+        foreach my $sg29 (@{$sg25->{SG29}}) {
+            foreach my $rff (@{$sg29->{RFF}}) {
+                my $c506 = $rff->{C506};
+                if ($c506->{1153} eq 'ON') {
+                    $acq_identifiers->{po} = $c506->{1154};
+                } elsif ($c506->{1153} eq 'LI') {
+                    my ($po, $li) = split m./., $c506->{1154};
+                    if ($po and $li) {
+                        if ($acq_identifiers->{po}) {
+                            $logger->warn(
+                                $log_prefix .
+                                "RFFs within lineitem disagree on PO # ?"
+                            ) unless $acq_identifiers->{po} eq $po;
+                        }
+                        $acq_identifiers->{li} = $li;
+                        $acq_identifiers->{po} = $po;
+                    } else {
+                        $logger->warn(
+                            $log_prefix .
+                            "RFF 1154 doesn't match expectations (.+/.+) " .
+                            "where 1153 is 'LI'"
+                        );
+                    }
+                }
+            }
+        }
+
+        if ($acq_identifiers->{po}) {
+            # First PO number seen in INVOIC sets the purchase_order field for
+            # the entry in acq.edi_message (which model may need a rethink).
+
+            $message->purchase_order($acq_identifiers->{po}) unless
+                $message->purchase_order;
+        } else {
+            $logger->warn(
+                $log_prefix .
+                "SG29 missing or refers to no purchase order that we can tell"
+            );
+        }
+        if (not $acq_identifiers->{li}) {
+            $logger->warn(
+                $log_prefix .
+                "SG29 missing or refers to no lineitem that we can tell"
+            );
+        }
+
+        my $eg_inv_entry = Fieldmapper::acq::invoice_entry->new;
+        $eg_inv_entry->inv_item_count($quantity);
+
+        # XXX Validate by making sure the LI is on-order and belongs to
+        # the right provider and ordering agency and all that.
+        $eg_inv_entry->lineitem($acq_identifiers->{li});
+
+        # XXX Do we actually need to link to PO directly here?
+        $eg_inv_entry->purchase_order($acq_identifiers->{po});
+
+        # This is the total price for all units billed, not per-unit.
+        $eg_inv_entry->cost_billed($lineitem_price);
+
+        push @eg_inv_entries, $eg_inv_entry;
+    }
+
+    my @eg_inv_items;
+
+    # Find any taxes applied to the whole invoice.
+    try {
+        if ($invoice->{SG50}) {
+            foreach my $sg50 (@{ $invoice->{SG50} }) {
+                if ($sg50->{TAX} and $sg50->{MOA}) {
+                    my $tax_amount = $sg50->{MOA}[0]{C516}{5004};
+
+                    my $eg_inv_item = Fieldmapper::acq::invoice_item->new;
+                    $eg_inv_item->inv_item_type('TAX');
+                    $eg_inv_item->cost_billed($tax_amount);
+                    # XXX i18n somehow? or maybe omit the note.
+                    $eg_inv_item->note('Tax from electronic invoice');
+
+                    push @eg_inv_items, $eg_inv_item;
+                }
+            }
+        }
+    } catch Error with {
+        # move on
+    };
+
+    $e->xact_begin;
+
+    # save changes to acq.edi_message row
+    if (not $e->update_acq_edi_message($message)) {
+        $logger->error(
+            $log_prefix . "couldn't update edi_message " . $message->id
+        );
+        return 0;
+    }
+
+    # create EG invoice
+    if (not $e->create_acq_invoice($eg_inv)) {
+        $logger->error($log_prefix . "couldn't create invoice: " . $e->event);
+        return 0;
+    }
+
+    # Now we have a pkey for our EG invoice, so set the invoice field on all
+    # our entries according and create those too.
+    my $eg_inv_id = $e->data->id;
+    foreach (@eg_inv_entries) {
+        $_->invoice($eg_inv_id);
+        if (not $e->create_acq_invoice_entry($_)) {
+            $logger->error(
+                $log_prefix . "couldn't create entry against lineitem " .
+                $_->lineitem . ": " . $e->event
+            );
+            return 0;
+        }
+    }
+
+    # Create any invoice items (taxes)
+    foreach (@eg_inv_items) {
+        $_->invoice($eg_inv_id);
+        if (not $e->create_acq_invoice_item($_)) {
+            $logger->error(
+                $log_prefix . "couldn't create inv item: " . $e->event
+            );
+            return 0;
+        }
+    }
+
+    $e->xact_commit;
+    return 1;
 }
 
 # returns message object if processing should continue

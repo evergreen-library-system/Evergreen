@@ -1,0 +1,15 @@
+EDI Invoices
+============
+
+The same setup that is required today for retrieving and reacting to EDI Order
+Response messages (ORDRSP) will also react to Invoices (INVOIC).
+
+This essentially means you must have a Provider (acq.provider) configured with
+an EDI Account (acq.edi_account) containing login credentials for a vendor, you must have the edi_webrick service running (EDI translator), and you must have
+the edi_pusher script run periodically by cron.
+
+An open Evergreen invoice will be created for a each EDI Invoice message.
+Evergreen invoice entries will be created for each lineitem detected in the
+EDI message if that lineitem can be linked to a known Evergreen lineitem in
+your system.  An Evergreen invoice item will be created for a whole-invoice
+tax.
