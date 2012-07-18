@@ -57,7 +57,7 @@ image::media/Vandelay_Integration_into_Acquisitions5.jpg[Vandelay_Integration_in
 +
 . Click the link to *View Selection List*  Line items that do not match existing catalog records on title and ISBN contain the link, *link to catalog*. This link indicates that you could link the line item to a catalog record, but currently, no match exists between the line item and catalog records.  Line items that do have matching records in the catalog contain the link, *catalog*.
 +
-image::/media/Vandelay_Integration_into_Acquisitions6.jpg[Vandelay_Integration_into_Acquisitions6]
+image::media/Vandelay_Integration_into_Acquisitions6.jpg[Vandelay_Integration_into_Acquisitions6]
 +
 . Click the *catalog* link to view the line item in the catalog.
 
