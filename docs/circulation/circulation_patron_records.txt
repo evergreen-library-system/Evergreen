@@ -418,7 +418,7 @@ Confirm the action.
 
 *To void a partial amount:*
 
-Select a billing and choose Full Details for the transaction, as described in the section <[[circ_vs_grocery]],Circulation vs. Grocery Bills>>
+Select a billing and choose Full Details for the transaction, as described in the section <circ_vs_grocery,Circulation vs. Grocery Bills>>
 
 The bill details screen displays.
 

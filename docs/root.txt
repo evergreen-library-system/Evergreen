@@ -292,8 +292,6 @@ include::development/updating_translations_launchpad.txt[]
 // Return to normal title levels.
 :leveloffset: 0
 
-[appendix]
-
 include::attributions.txt[]
 
 include::licensing.txt[]
@@ -301,9 +299,6 @@ include::licensing.txt[]
 [appendix]
 Admonitions
 ===========
-
-Images used for Admonitions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * Note 
 

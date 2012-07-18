@@ -1,9 +1,7 @@
+[[licensing]]
 [appendix]
 Licensing
 =========
-
-Creative Commons License
-------------------------
 
 image::media/ccbysa.png["CC-BY-SA",link="http://creativecommons.org/licenses/by-sa/3.0/"]
 
