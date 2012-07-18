@@ -206,6 +206,22 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 return this.fieldList.map(function(a) { return a.name });
             },
 
+            // Apply a function for the name and formatted value of each field
+            // in this edit pane.  If any required value is null, then return
+            // an error object.
+            mapValues: function (fn) {
+                var e = 0, msg = this.fmIDL.label + ' ';
+                dojo.forEach(this.fieldList, function (f) {
+                    var v, w = f.widget;
+                    if ((v = w.getFormattedValue()) === null && w.isRequired()) { e++; }
+                    fn(f.name, v);
+                });
+                if (e > 0) {
+                    msg += 'edit pane has ' + e + ' required field(s) that contain no value(s)';
+                    return new Error(msg);
+                }
+            },
+
             getFieldValue : function(field) {
                 for(var i in this.fieldList) {
                     if(field == this.fieldList[i].name) {

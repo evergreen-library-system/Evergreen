@@ -552,16 +552,45 @@ function saveChanges(doProrate, doClose, doReopen) {
     );
 }
 
+// Define a helper function to 'unflesh' sub-objects from an fmclass object.
+// 'this' specifies the object; the arguments specify a list of names of
+// sub-objects.
+function unflesh() {
+    var _, $ = this;
+    dojo.forEach(arguments, function (n) {
+        _ = $[n]();
+        if (_ !== null && typeof _ === 'object')
+            $[n]( _.id() );
+    });
+}
+
 function saveChangesPartTwo(doProrate, doClose, doReopen) {
     
-    progressDialog.show(true);
 
     if(doReopen) {
         invoice.complete('f');
 
     } else {
 
+        // Prepare an invoice for submission
+        if(!invoice) {
+            invoice = new fieldmapper.acqinv();
+            invoice.isnew(true);
+        } else {
+            invoice.ischanged(true); // for now, just always update
+        }
 
+        var e = invoicePane.mapValues(function (n, v) { invoice[n](v); });
+        if (e instanceof Error) {
+            alert(e.message);
+            return;
+        }
+
+        if(doClose)
+            invoice.complete('t');
+
+
+        // Prepare any charge items
         var updateItems = [];
         for(var id in widgetRegistry.acqii) {
             var reg = widgetRegistry.acqii[id];
@@ -574,19 +603,17 @@ function saveChangesPartTwo(doProrate, doClose, doReopen) {
                         item[field]( reg[field].getFormattedValue() );
                 }
                 
-                // unflesh
-                if(item.purchase_order() != null && typeof item.purchase_order() == 'object')
-                    item.purchase_order( item.purchase_order().id() );
+                unflesh.call(item, 'purchase_order');
+
             }
         }
 
+        // Prepare any line items
         var updateEntries = [];
         for(var id in widgetRegistry.acqie) {
             var reg = widgetRegistry.acqie[id];
             var entry = reg._object;
             if(entry.ischanged() || entry.isnew() || entry.isdeleted()) {
-                entry.lineitem(entry.lineitem().id());
-                entry.purchase_order(entry.purchase_order().id());
                 updateEntries.push(entry);
                 if(entry.isnew()) entry.id(null);
 
@@ -595,33 +622,12 @@ function saveChangesPartTwo(doProrate, doClose, doReopen) {
                         entry[field]( reg[field].getFormattedValue() );
                 }
                 
-                // unflesh
-                dojo.forEach(['purchase_order', 'lineitem'],
-                    function(field) {
-                        if(entry[field]() != null && typeof entry[field]() == 'object')
-                            entry[field]( entry[field]().id() );
-                    }
-                );
+                unflesh.call(entry, 'purchase_order', 'lineitem');
             }
         }
-
-        if(!invoice) {
-            invoice = new fieldmapper.acqinv();
-            invoice.isnew(true);
-        } else {
-            invoice.ischanged(true); // for now, just always update
-        }
-
-        dojo.forEach(invoicePane.fieldList, 
-            function(field) {
-                invoice[field.name]( field.widget.getFormattedValue() );
-            }
-        );
-
-        if(doClose) 
-            invoice.complete('t');
     }
 
+    progressDialog.show(true);
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.invoice.update'],
         {
