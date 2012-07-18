@@ -161,7 +161,7 @@ function ReceivableCopyTable() {
     this._add_lineitem_list_mode = function(details, li, preselect_count) {
         details.forEach(
             function(lid) {
-                dump("preselect_count "+ preselect_count+"\n");
+                //dump("preselect_count "+ preselect_count+"\n");
                 self.add_lineitem_detail(
                     lid, li, Boolean(preselect_count-- > 0)
                 );
