@@ -225,67 +225,8 @@
                                                         </div>
                                                         <div class="results_aux_utils result_util">
                                                             [%  IF ctx.user;
-                                                                dsetting = "opac.default_list";
-                                                                tclass = (ctx.user_setting_map.$dsetting) ? "temporary" :
-                                                                           (ctx.bookbags.size) ? "temporary divider" : "temporary";
-                                                                 href = mkurl(ctx.opac_root _ '/mylist/add',
-                                                                              {record => rec.id, anchor => 'record_' _ rec.id}, 1);
+                                                                INCLUDE "opac/parts/bookbag_actions.tt2";
                                                             %]
-                                                                <ul class="popmenu">
-                                                                    <li><a href="#" class="no-dec">
-                                                                          <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
-                                                                          [% l("Add to my list") %]
-                                                                        </a>
-                                                                    <ul>
-                                                                    <li class="[% tclass %]">
-                                                                    <a href="[% href %]">[% l('Temporary List') %]</a>
-                                                                    </li>
-                                                                    [% IF ctx.user_setting_map.$dsetting;
-                                                                       class = (ctx.bookbags.size) ? "default divider" : "default";
-                                                                       label = (ctx.default_bookbag) ? ctx.default_bookbag : l('Default List');
-                                                                       href = mkurl(ctx.opac_root _ '/myopac/list/update',
-                                                                                {action => 'add_rec', list => ctx.user_setting_map.$dsetting,
-                                                                                 record => rec.id, anchor => 'record_' _ rec.id}, 1);
-                                                                    %]
-                                                                    <li class="[% class %]">
-                                                                    <a href="[% href %]">[% label %]</a>
-                                                                    </li>
-                                                                    [% END %]
-                                                                    [% IF ctx.bookbags.size;
-                                                                       i = 0;
-                                                                       FOREACH bag IN ctx.bookbags;
-                                                                           href = mkurl(ctx.opac_root _ '/myopac/list/update',
-                                                                                    {action => 'add_rec', list => bag.id, record => rec.id,
-                                                                                     anchor => 'record_' _ rec.id}, 1);
-                                                                           i = i + 1;
-                                                                           IF i == ctx.bookbags.size;
-                                                                    %]
-                                                                    <li class="divider">
-                                                                        [% ELSE %]
-                                                                    <li>
-                                                                        [% END %]
-                                                                    <a href="[% href %]">[% bag.name %]</a>
-                                                                    </li>
-                                                                    [%
-                                                                       END;
-                                                                       END
-                                                                    %]
-                                                                    <li>
-                                                                        <a href="[% mkurl(ctx.opac_root _ '/myopac/lists',
-                                                                                          {limit => ctx.bookbag_count, add_rec => rec.id,
-                                                                                           anchor => 'record_' _ rec.id}) %]">
-                                                                        [% l('See All') %]
-                                                                        </a>
-                                                                    </li>
-                                                                    <li class="new">
-                                                                    <a href="[% mkurl(ctx.opac_root _ '/myopac/lists',
-                                                                                      {add_rec => rec.id, anchor => 'record_' _ rec.id}, 0) %]">
-                                                                    [% l('Add to new list') %]
-                                                                    </a>
-                                                                    </li>
-                                                                    </ul>
-                                                                    </li>
-                                                                </ul>
                                                             [%  ELSE;
                                                                 operation = ctx.mylist.grep(rec.id).size ? "delete" : "add";
                                                                 label = (operation == "add") ? l("Add to my list") : l("Remove from my list");

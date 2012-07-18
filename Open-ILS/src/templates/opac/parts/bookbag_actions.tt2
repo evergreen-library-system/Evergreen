@@ -1,0 +1,83 @@
+[%
+    dsetting = "opac.default_list";
+    tclass = "temporary divider";
+
+    IF rec.id;
+        # Results table context
+        ctx.bre_id = rec.id;
+        stop_parms = 1;
+        rec_anchor = 'record_' _ ctx.bre_id;
+    ELSE;
+        # Record details context
+        rec_anchor => ctx.bre_id;
+    END;
+
+    IF ctx.user_setting_map.defined(dsetting);
+        default_list = ctx.user_setting_map.$dsetting;
+    END;
+
+    IF (!default_list) && ctx.bookbags.size;
+        tclass = "temporary";
+    END;
+
+    href = mkurl(ctx.opac_root _ '/mylist/add', {
+        record => ctx.bre_id, anchor => rec_anchor
+    }, stop_parms);
+%]
+<ul class="popmenu">
+    <li><a href="#" class="no-dec">
+          <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
+          [% l("Add to my list") %]
+        </a>
+    <ul>
+    <li class="[% tclass %]">
+    <a href="[% href %]">[% l('Temporary List') %]</a>
+    </li>
+    [% IF default_list;
+       label = (ctx.default_bookbag) ? ctx.default_bookbag : l('Default List');
+       class = (ctx.bookbags.size) ? "default divider" : "default";
+       href = mkurl(ctx.opac_root _ '/myopac/list/update', {
+            action => 'add_rec', list => default_list,
+            record => ctx.bre_id, anchor => rec_anchor
+        }, stop_parms);
+    %]
+    <li class="[% class %]"><a href="[% href %]">[% label %]</a></li>
+    [% END %]
+    [% IF ctx.bookbags.size;
+       i = 0;
+       FOREACH bag IN ctx.bookbags;
+           href = mkurl(ctx.opac_root _ '/myopac/list/update', {
+                action => 'add_rec', list => bag.id, record => ctx.bre_id,
+                anchor => rec_anchor
+           }, stop_parms);
+           i = i + 1;
+           IF i == ctx.bookbags.size;
+    %]
+    <li class="divider">
+        [%- ELSE -%]
+    <li>
+        [%- END -%]
+    <a href="[% href %]">[% bag.name %]</a>
+    </li>
+    [%
+       END;
+       END
+    %]
+    <li>
+        <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {
+            limit => ctx.bookbag_count, add_rec => ctx.bre_id,
+            anchor => rec_anchor
+        }) %]">
+        [% l('See All') %]
+        </a>
+    </li>
+    <li class="new">
+    <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {
+        add_rec => ctx.bre_id, anchor => rec_anchor
+    }, stop_parms) %]">
+    [% l('Add to new list') %]
+    </a>
+    </li>
+    </ul>
+    </li>
+</ul>
