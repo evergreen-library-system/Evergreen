@@ -1,0 +1,64 @@
+Starting and Stopping the Reporter Daemon
+-----------------------------------------
+
+indexterm:[reports, starting server application]
+
+indexterm:[reporter, starting daemon]
+
+Before you can view reports, the Evergreen administrator must start 
+the reporter daemon from the command line of the Evergreen server.
+
+The reporter daemon periodically checks for requests for new reports or 
+scheduled reports and gets them running.
+
+Starting the Reporter Daemon
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[reporter, starting]
+
+To start the reporter daemon, run the following command as the opensrf user:
+
+----
+clark-kent.pl --daemon
+----
+
+You can also specify other options:
+
+* *sleep=interval*: number of seconds to sleep between checks for new reports to 
+run; defaults to 10
+* *lockfile=filename*: where to place the lockfile for the process; defaults to 
+/tmp/reporter-LOCK
+* *concurrency=integer*: number of reporter daemon processes to run; defaults to 
+1
+* *boostrap=filename*: OpenSRF bootstrap configuration file; defaults to 
+/openils/conf/opensrf_core.xml
+
+
+[NOTE]
+=============
+The open-ils.reporter process must be running and enabled on the gateway before 
+the reporter daemon can be started.
+
+Remember that if the server is restarted, the reporter daemon will need to be 
+restarted before you can view reports unless you have configured your server to 
+start the daemonautomatically at start up time. 
+==============
+
+Stopping the Reporter Daemon
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[reports, stopping server application]
+
+indexterm:[reporter, stopping daemon]
+
+To stop the reporter daemon, you have to kill the process and remove the 
+lockfile. Assuming you're running just a single process and that the 
+lockfile is in the default location, perform the following commands as the 
+opensrf user:
+
+----
+kill `ps wax | grep "Clark Kent" | grep -v grep | cut -b1-6`
+
+rm /tmp/reporter-LOCK
+----
+

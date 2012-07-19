@@ -1,0 +1,107 @@
+Template Terminology
+--------------------
+
+Data Types
+~~~~~~~~~~
+
+indexterm:[reports, data types]
+
+The central column of the _Database Source Browser_ lists _Field Name_ and _Data 
+Type_ for the selected database table.
+
++
+image::media/view-output-2.png[view-output-2]
++
+
+Each data type has its own characteristics and uses:
+
+[options="header,footer"]
+|====================================
+|Data Type	|Description	|Notes
+|id		|Unique number assigned by the database to identify a 
+record	|A number that is a meaningful reference for the database but not 
+of much use to a human user. Use in displayed fields when counting records or 
+in filters.
+|text	|Text field	|Usually uses the Raw Data transform.
+|timestamp	|Exact date and time	|Select appropriate date/time transform. 
+Raw Data includes second and timezone information, usually more than is required 
+for a report.
+|bool	|True or False	|Commonly used to filter out deleted item or patron records.
+|org_unit	|A number representing a library, library system, or 
+federation	|When you want to filter on a library, make sure that the field 
+name is on an org_unit or id data type.
+|link	|A link to another database table	|Link outputs a number that is a 
+meaningful reference for the database but not of much use to a human user. You 
+will usually want to drill further down the tree in the Sources pane and select 
+fields from the linked table. However, in some instances you might want to use 
+a link field. For example, to count the number of patrons who borrowed items you 
+could do a count on the Patron link data.
+|int	|Integer	 
+|money	|Number (in dollars)	 
+|=====================================
+
+Field Transforms
+~~~~~~~~~~~~~~~~
+
+indexterm:[reports, field transforms]
+
+A _Field Transform_ tells the reporter how to process a field for output. 
+Different data types have different transform options.
+
+indexterm:[reports, field transforms, raw data]
+
+*Raw Data*.  To display a field exactly as it appears in the database use the 
+_Raw Data_ transform, available for all data types.
+
+indexterm:[reports, field transforms, count]
+
+indexterm:[reports, field transforms, raw distinct]
+
+*Count and Count Distinct*.  These transforms apply to the _id_ data type and 
+are used to count database records (e.g. for circulation statistics). Use Count 
+to tally the total number of records. Use _Count Distinct_ to count the number 
+of unique records, removing duplicates.
+
+To demonstrate the difference between _Count_ and _Count Distinct_, consider an 
+example where you want to know the number of active patrons in a given month, 
+where ``active" means they borrowed at least one item. Each circulation is linked 
+to a _Patron ID_, a number identifying the patron who borrowed the item. If we use 
+the _Count Distinct_ transform for Patron IDs we will know the number of unique 
+patrons who circulated at least one book (2 patrons in the table below). If 
+instead, we use _Count_, we will know how many books were circulated, since every 
+circulation is linked to a _patron ID_ and duplicate values are also counted. To 
+identify the number of active patrons in this example the _Count Distinct_ 
+transform should be used.
+
+[options="header,footer"]
+|====================================
+|Title	|Patron ID	|Patron Name
+|Harry Potter and the Chamber of Secrets	|001 	|John Doe
+|Northern Lights	|001	|John Doe
+|Harry Potter and the Philosopher’s Stone	|222	|Jane Doe
+|====================================
+
+indexterm:[reports, field transforms, output type]
+
+*Output Type*.  Note that each transform has either an _Aggregate_ or 
+_Non-Aggregate_ output type.
+
+indexterm:[reports, field transforms, output type, non-aggregate]
+
+indexterm:[reports, field transforms, output type, aggregate]
+
+Selecting a _Non-Aggregate_ output type will return one row of output in your 
+report for each row in the database. Selecting an Aggregate output type will 
+group together several rows of the database and return just one row of output 
+with, say, the average value or the total count for that group. Other common 
+aggregate types include minimum, maximum, and sum.
+
+When used as filters, non-aggregate and aggregate types correspond to _Base_ and 
+_Aggregate_ filters respectively. To see the difference between a base filter and 
+an aggregate filter, imagine that you are creating a report to count the number 
+of circulations in January. This would require a base filter to specify the 
+month of interest because the month is a non-aggregate output type. Now imagine 
+that you wish to list all items with more than 25 holds. This would require an 
+aggregate filter on the number of holds per item because you must use an 
+aggregate output type to count the holds.
+

@@ -1,0 +1,239 @@
+Adding Data Sources to Reporter
+-------------------------------
+
+indexterm:[reports, adding data sources]
+
+You can further customize your Evergreen reporting environment by adding 
+additional data sources.
+
+The Evergreen reporter module does not build and execute SQL queries directly, 
+but instead uses a data abstraction layer called *Fieldmapper* to mediate queries 
+on the Evergreen database.Fieldmapper is also used by other core Evergreen DAO 
+services, including cstore and permacrud. The configuration file _fm_IDL.xml_ 
+contains the mapping between _Fieldmapper_ class definitions and the database. 
+The _fm_IDL.xml_ file is located in the _/openils/conf_ directory.
+
+indexterm:[fm_IDL.xml]
+
+There are 3 basic steps to adding a new data source. Each step will be discussed 
+in more detail in the
+
+. Create a PostgreSQL query, view, or table that will provide the data for your 
+data source.
+. Add a new class to _fm_IDL.xml_ for your data source.
+. Restart the affected services to see the new data source in Reporter.
+
+There are two possbile sources for new data sources:
+
+indexterm:[PostgreSQL]
+
+indexterm:[SQL]
+
+* An SQL query built directly into the class definition in _fm_IDL.xml_. You can 
+use this method if you are only going to access this data source through the 
+Evergreen reporter and/or cstore code that you write.
+* A new table or view in the Evergreen PostgresSQL database on which a class 
+definition in _fm_IDL.xml_. You can use this method if you want to be able to 
+access this data source through directly through SQL or using other reporting tool.
+
+Create a PostgreSQL query, view, or table for your data source
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[PostgreSQL]
+
+You need to decide whether you will create your data source as a query, a view, 
+or a table.
+
+. Create a query if you are planning to access this data source only through the 
+Evergreen reporter and/or cstore code that you write. You will use this query to 
+create an IDL only view.
+. Create a view if you are planning to access this data source through other 
+methods in addition to the Evergreen reporter, or if you may need to do 
+performance tuning to optimize your query.
+. You may also need to use an additional table as part of your data source if 
+you have additional data that's not included in the base Evergreen, or if you 
+need to use a table to store the results of a query for performance reasons.
+
+To develop and test queries, views, and tables, you will need
+
+* Access to the Evergree PostgreSQL database at the command line. This is 
+normally the psql application. You 
+can access the Postgres documentation at the 
+http://http://www.postgresql.org/docs/[Official Postgres documentation] for 
+more information about PostgreSQL.
+* Knowledge of the Evergreen database structure for the data that you want to 
+access. You can find this information by looking at the Evergreen schema
+http://docs.evergreen-ils.org/2.2/schema/[Evergreen schema] 
+
+indexterm:[database schema]
+
+If the views that you are creating are purely local in usage and are not intended 
+for contribution to the core Evergreen code, create the Views and Tables in the 
+extend_reporter schema. This schema is intended to be used for local 
+customizations and will not be modified during upgrades to the Evergreen system.
+
+You should make that you have an appropriate version control pocess for the SQL 
+used to create you data sources.
+
+Here's an example of a view created to incorporate some locally defined user 
+statistical categories:
+
+.example view for reports
+----------
+create view extend_reporter.patronstats as
+select u.id, 
+grp.name as "ptype",
+rl.stat_cat_entry as "reg_lib",
+gr.stat_cat_entry as "gender",
+ag.stat_cat_entry as "age_group",
+EXTRACT(YEAR FROM age(u.dob)) as "age",
+hl.id as "home_lib",
+u.create_date,
+u.expire_date,
+ms_balance_owed
+from actor.usr u
+join permission.grp_tree grp 
+	on (u.profile = grp.id and (grp.parent = 2 or grp.name = 'patron')) 
+join actor.org_unit hl on (u.home_ou = hl.id)
+left join money.open_usr_summary ms 
+	on (ms.usr = u.id) 
+left join actor.stat_cat_entry_usr_map rl 
+	on (u.id = rl.target_usr and rl.stat_cat = 4) 
+left join actor.stat_cat_entry_usr_map bt 
+	on (u.id = bt.target_usr and bt.stat_cat = 3) 
+left join actor.stat_cat_entry_usr_map gr 
+	on (u.id = gr.target_usr and gr.stat_cat = 2) 
+left join actor.stat_cat_entry_usr_map gr 
+	on (u.id = gr.target_usr and gr.stat_cat = 2) 
+left join actor.stat_cat_entry_usr_map ag 
+	on (u.id = ag.target_usr and ag.stat_cat = 1) 
+where u.active = 't' and u.deleted <> 't';
+-----------
+
+Add a new class to fm_IDL.xml for your data source
+--------------------------------------------------
+
+Once you have your data source, the next step is to add that data source as a 
+new class in _fm_IDL.xml_.
+
+indexterm:[fm_IDL.xml]
+
+You will need to add the following attributes for the class definition
+
+* *id*. You should follow a consistent naming convention for your class names 
+that won't create conflicts in the future with any standard classes added in 
+future upgrades. Evergreen normally names each class with the first letter of 
+each word in the schema and table names. You may want to add a local prefix or 
+suffix to your local class names.
+* *controller=”open-ils.cstore”*
+* *oils_obj:fieldmapper=”extend_reporter::long_name_of_view”*
+* *oils_persist.readonly=”true”*
+* *reporter:core=”true”* (if you want this to show up as a “core” reporting source)
+* *reporter:label*. This is the name that will appear on the data source list in 
+the Evergreen reporter.
+* *oils_persist:source_definition*. If this is an IDL-only view, add the SQL query 
+here. You don't need this attribute if your class is based on a PostgreSQL view 
+or table.
+* *oils_persist:tablename="schemaname.viewname or tablename"* If this class is 
+based on a PostgreSQL view or table, add the table name here. You don't need 
+this attribute is your class is an IDL-only view.
+
+For each column in the view or query output, add field element and set the 
+following attributes. The fields should be wrapped with _<field> </field>_
+
+* *reporter:label*. This is the name that appears in the Evergreen reporter.
+* *name*. This should match the column name in the view or query output.
+* *reporter:datatype* (which can be id, bool, money, org_unit, int, number, 
+interval, float, text, timestamp, or link)
+
+For each linking field, add a link element with the following attributes. The 
+elements should be wrapped with _<link> </link>_
+* *field* (should match field.name)
+* *reltype* (“has_a”, “might_have”, or “has_many”)
+* *map* (“”)
+* *key* (name of the linking field in the foreign table)
+* *class* (ID of the IDL class of the table that is to be linked to)
+
+The following example is a class definition for the example view that was created 
+in the previous section.
+
+.example class definition for reports
+----------
+<class id="erpstats" controller="open-ils.reporter-store" 
+oils_obj:fieldmapper="extend_reporter::patronstats" 
+oils_persist:tablename="extend_reporter.patronstats" oils_persist:readonly="true" 
+reporter:label="Patron Statistics" reporter:core="true">
+  <fields oils_persist:primary="id">
+  <field reporter:label="Patron ID" name="id" reporter:datatype="link" />
+  <field reporter:label="Patron Type" name="ptype" reporter:datatype="text" />
+  <field reporter:label="Reg Lib" name="reg_lib" reporter:datatype="text" />
+  <field reporter:label="Boro/Twp" name="boro_twp" reporter:datatype="text" />
+  <field reporter:label="Gender" name="gender" reporter:datatype="text" />
+  <field reporter:label="Age Group" name="age_group" reporter:datatype="text" />
+  <field reporter:label="Age" name="age" reporter:datatype="int" />
+  <field reporter:label="Home Lib ID" name="home_lib_id" 
+	reporter:datatype="link" />
+  <field reporter:label="Home Lib Code" name="home_lib_code" 
+	reporter:datatype="text" />
+  <field reporter:label="Home Lib" name="home_lib" reporter:datatype="text" />
+  <field reporter:label="Create Date" name="create_date" 
+	reporter:datatype="timestamp" />
+  <field reporter:label="Expire Date" name="expire_date" 
+	reporter:datatype="timestamp" />
+  <field reporter:label="Balance Owed" name="balance_owed" 
+	reporter:datatype="money" />
+</fields>
+<links>
+  <link field="id" reltype="has_a" key="id" map="" class="au"/>
+  <link field="home_lib_id" reltype="has_a" key="id" map="" class="aou"/>
+</links>
+</class>
+---------
+
+NOTE: _fm_IDL.xml_ is used by other core Evergreen DAO services, including cstore 
+and permacrud. So changes to this file can affect the entire Evergreen 
+application, not just reporter. After making changes fm_IDL.xml, it is a good 
+idea to ensure that it is valid XML by using a utility such as *xmllint* – a 
+syntax error can render much of Evergreen nonfunctional. Set up a good change 
+control system for any changes to fm_IDL.xml. You will need to keep a separate 
+copy of you local class definitions so that you can reapply the changes to 
+_fm_IDL.xml_ after Evergreen upgrades.
+
+Restart the affected services to see the new data source in the reporter
+------------------------------------------------------------------------
+
+The following steps are needed to for Evergreen to recognize the changes to 
+_fm_IDL.xml_
+
+. Copy the updated _fm_IDL.xml_ Update _/openils/conf/fm_IDL.xml_ to 
+_/openils/var/web/reports/fm_IDL.xml_
++
+-------------
+cp _/openils/conf/fm_IDL.xml /openils/var/web/reports/fm_IDL.xml
+-------------
++
+. Run Autogen to to update the Javascript versions of the fieldmapper definitions.
++
+-------------
+/openils/bin/autogen.sh
+-------------
++    
+. Restart C services
++
+-------------
+osrf_ctl.sh -l -a restart_c
+-------------
++
+. Restart the Evergreen reporter. You may need to modify this command depending 
+on your system configuration and pid path
++
+------------
+opensrf-perl.pl -l -action restart -service open-ils.reporter \
+-config /openils/conf/opensrf_core.xml -pid-dir /openils/var/run
+------------
++
+. Restart the Evergreen application or _use Admin --> For Developers --> Clear 
+Cache_
+
+
+

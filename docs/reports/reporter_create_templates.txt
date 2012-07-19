@@ -1,0 +1,291 @@
+[[reporter_creating_templates]]
+Creating Templates
+------------------
+
+indexterm:[reports, creating templates]
+
+Once you have created a folder, the next step in building a report is to create 
+or clone a template. Templates allow you to run a report more than once without 
+building it anew every time, by changing definitions to suit current 
+requirements. For example, you can create a shared template that reports on 
+circulation at a given library. Then, other libraries can use your template and 
+simply select their own library when they run the report.
+
+It may take several tries to refine a report to give the output that you want. 
+It can be useful to plan out your report on paper before getting started with 
+the reporting tool. Group together related fields and try to identify the key 
+fields that will help you select the correct source.
+
+It may be useful to create complex queries in several steps. For example, first 
+add all fields from the table at the highest source level. Run a report and check 
+to see that you get results that seem reasonable. Then clone the report, add any 
+filters on fields at that level and run another report. Then drill down to the 
+next table and add any required fields. Run another report. Add any filters at 
+that level. Run another report. Continue until you’ve drilled down to all the 
+fields you need and added all the filters. This might seem time consuming and 
+you will end up cloning your initial report several times. However, it will help 
+you to check the correctness of your results, and will help to debug if you run 
+into problems because you will know exactly what changes caused the problem. 
+Also consider adding extra fields in the intermediate steps to help you check 
+your results for correctness.
+
+This example illustrates creating a template for circulation statistics. This is 
+an example of the most basic template that you can create. The steps required to 
+create a template are the same every time, but the tables chosen, how the data 
+is transformed and displayed, and the filters used will vary depending on your 
+needs.
+
+Choosing Report Fields
+~~~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[reports, creating templates, choosing reports fields]
+
+. Click on the My Folder template folder where you want the template to be saved.
++
+image::media/create-template-1.png[create-template-1]
++
+. Click on Create a new Template for this folder.
++
+image::media/create-template-2.png[create-template-2]
++
+. You can now see the template creating interface. The upper half of the screen 
+is the _Database Source Browser_. The top left hand pane contains the database 
+_Sources_ drop-down list. This is the list of tables available as a starting point 
+for your report. Commonly used sources are _Circulation_ (for circ stats and 
+overdue reports), _ILS User_ (for patron reports), and _Item_ (for reports on a 
+library's holdings).
++
+image::media/create-template-3.png[create-template-3]
++
+The Enable source nullability checkbox below the sources list is for advanced 
+reporting and should be left unchecked by default.
++
+. Select _Circulation_ in the _Sources_ dropdown menu. Note that the _Core 
+Sources_ for reporting are listed first, however it is possible to access all 
+available sources at the bottom of this dropdown menu. You may only specify one 
+source per template.
++
+image::media/create-template-4.png[create-template-4]
++
+. Click on _Circulation_ to retrieve all the field names in the Field Name pane. 
+Note that the _Source_ Specifier (above the middle and right panes) shows the 
+path that you took to get to the specific field.
++
+image::media/create-template-5.png[create-template-5]
++
+. Select _Circ ID_ in the middle _Field Name_ pane, and _Count Distinct_ from the 
+right _Field Transform_ pane. The _Field Transform_ pane is where you choose how 
+to manipulate the data from the selected fields. You are counting the number of 
+circulations.
++
+indexterm:[reports, field transform]
++
+image::media/create-template-6.png[create-template-6]
++
+_Field Transforms_ have either an _Aggregate_ or _Non-Aggregate_ output type. 
+See the section called <<field_transforms,Field Transforms>> for more about 
+_Count, _Count Distinct_, and other transform options.
++
+. Click _Add Selected Fields_ underneath the _Field Transform_ pane to add this 
+field to your report output. Note that _Circ ID_ now shows up in the bottom left 
+hand pane under the _Displayed Fields_ tab.
++
+image::media/create-template-7.png[create-template-7]
++
+. _Circ ID_ will be the column header in the report output. You can rename 
+default display names to something more meaningful. To do so in this example, 
+select the _Circ ID_ row and click _Alter Display Header_.
++
+image::media/create-template-8.png[create-template-8]
++
+Double-clicking on the displayed field name is a shortcut to altering the 
+display header.
++
+. Type in the new column header name, for example _Circ count_ and click _OK_.
++
+image::media/create-template-9.png[create-template-9]
++
+. Add other data to your report by going back to the _Sources_ pane and selecting 
+the desired fields. In this example, we are going to add _Circulating Item --> 
+Shelving Location_ to further refine the circulation report.
++
+In the top left hand _Sources_ pane, expand _Circulation_. Depending on your 
+computer you will either click on the _+_ sign or on an arrow to expand the tree.
++
+image::media/create-template-10.png[create-template-10]
++
+Click on the _+_ or arrow to expand _Circulating Item_. Select 
+_Shelving Location_.
++
+image::media/create-template-11.png[create-template-11]
++
+When you are creating a template take the shortest path to the field you need in 
+the left hand Sources pane. Sometimes it is possible to find the same field name 
+further in the file structure, but the shortest path is the most efficient.
++
+In the Field Name pane select Name.
++
+image::media/create-template-12.png[create-template-12]
++
+In the upper right _Field Transform_ pane, select _Raw Data_ and click _Add Selected_ 
+Fields. Use _Raw Data_ when you do not wish to transform field data in any manner.
++
+image::media/create-template-13.png[create-template-13]
++
+Name will appear in the bottom left pane. Select the Name row and click _Alter 
+Display Header_.
++
+image::media/create-template-15.png[create-template-15]
++
+. Enter a new, more descriptive column header, for example, _Shelving location_. 
+Click _OK_.
++
+image::media/create-template-16.png[create-template-16]
++
+. Note that the order of rows (top to bottom) will correspond to the order of 
+columns (left to right) on the final report. Select _Shelving location_ and click 
+on _Move Up_ to move _Shelving location_ before _Circ count_.
++
+image::media/create-template-17.png[create-template-17]
++
+. Return to the _Sources_ pane to add more fields to your template. Under 
+_Sources_ click _Circulation_, then select _Check Out Date/Time_ from the middle 
+_Field Name_ pane.
++
+image::media/create-template-19.png[create-template-19]
++
+. Select _Year + Month_ in the right hand _Field Transform_ pane and click _Add 
+Selected Fields_
++
+image::media/create-template-20.png[create-template-20]
++
+. _Check Out Date/Time_ will appear in the _Displayed Fields_ pane. In the report 
+it will appear as a year and month _(YYYY-MM)_ corresponding to the selected tranform.
++
+image::media/create-template-21.png[create-template-21]
++
+. Select the _Check Out Date/Time_ row. Click _Alter Display Header_ and change 
+the column header to _Check out month_.
++
+image::media/create-template-22.png[create-template-22]
++
+. Move _Check out month_ to the top of the list using the _Move Up_ button, so 
+that it will be the first column in an MS Excel spreadsheet or in a chart. 
+Report output will sort by the first column.
+
+image::media/create-template-23.png[create-template-23]
+
+[NOTE]
+======
+Note the _Change Transform_ button in the bottom left hand pane. It has the same 
+function as the upper right _Field Transform_ pane for fields that have already 
+been added.
+
+image::media/create-template-24.png[create-template-24]
+======
+
+
+Applying Filters
+~~~~~~~~~~~~~~~~
+
+indexterm:[reports, applying filters]
+
+Evergreen reports access the entire database, so to limit report output to a 
+single library or library system you need to apply filters.
+
+After following the steps in the previous section you will see three fields in 
+the bottom left hand _Template Configuration_ pane. There are three tabs in this 
+pane: _Displayed Fields_ (covered in the previous section), _Base Filters_ and 
+_Aggregate Filters_. A filter allows you to return only the results that meet 
+the criteria you set.
+
+indexterm:[reports, applying filters, base filter]
+
+indexterm:[reports, applying filters, aggregate filters]
+
+_Base Filters_ apply to non-aggregate output types, while _Aggregate Filters_ are 
+used for aggregate types. In most reports you will be using the _Base Filters_ tab. 
+For more information on aggregate and non-aggregate types see the section called 
+“Field Transforms”.
+
+There are many available operators when using filters. Some examples are _Equals_, 
+_In list_, is _NULL_, _Between_, _Greater than_ or _equal to_, and so on. _In list_ 
+is the most flexible operator, and in this case will allow you flexibility when 
+running a report from this template. For example, it would be possible to run a 
+report on a list of timestamps (in this case will be trimmed to year and month 
+only), run a report on a single month, or run a report comparing two months. It 
+is also possible to set up recurring reports to run at the end of each month.
+
+In this example we are going to use a Base Filter to filter out one library’s 
+circulations for a specified time frame. The time frame in the template will be 
+configured so that you can change it each time you run the report.
+
+Using Base Filters
+^^^^^^^^^^^^^^^^^^
+
+indexterm:[reports, applying filters, base filter]
+
+. Select the _Base Filters_ tab in the bottom _Template Configuration_ pane.
+
+. For this circulation statistics example, select _Circulation --> Check Out 
+Date/Time --> Year + Month_ and click on _Add Selected Fields_. You are going to 
+filter on the time period.
++
+image::media/create-template-25.png[create-template-25]
++
+. Select _Check Out Date/Time_. Click on _Change Operator_ and select _In list_ 
+from the dropdown menu. 
++
+image::media/create-template-26.png[create-template-26]
++
+. To filter on the location of the circulation select 
+_Circulation --> Circulating library --> Raw Data_ and click on _Add Selected Fields_.
++
+image::media/create-template-27.png[create-template-276]
++
+. Select _Circulating Library_ and click on _Change Operator_ and select _Equals_. 
+Note that this is a template, so the value for _Equals_ will be filled out when 
+you run the report.
++
+image::media/create-template-28.png[create-template-28]
++
+For multi-branch libraries, you would select _Circulating Library_ with _In list_ 
+as the operator, so you could specify the branch(es) when you run the report. This 
+leaves the template configurable to current requirements. In comparison, sometimes 
+you will want to hardcode true/false values into a template. For example, deleted 
+bibliographic records remain in the database, so perhaps you want to hardcode 
+_deleted=false_, so that deleted records don’t show up in the results. You might 
+want to use _deleted=true_, for a template for a report on deleted items in the 
+last month.
++
+. Once you have configured your template, you must name and save it. Name this 
+template _Circulations by month for one library_. You can also add a description. 
+In this example, the title is descriptive enough, so a description is not necessary. 
+Click _Save_.
++
+image::media/create-template-29.png[create-template-29]
++
+. Click _OK_.
++
+image::media/create-template-30.png[create-template-30]
++
+. You will get a confirmation dialogue box that the template was successfully 
+saved. Click OK.
++
+image::media/create-template-31.png[create-template-31]
++
+After saving it is not possible to edit a template. To make changes you will 
+need to clone it and edit the clone
+
+[NOTE]
+==========
+The bottom right hand pane is also a source specifier. By selecting one of these 
+rows you will limit the fields that are visible to the sources you have specified. 
+This may be helpful when reviewing templates with many fields. Use *Ctrl+Click* to 
+select or deselect items.
+
+image::media/create-template-32.png[create-template-32]
+==========
+
+
+
