@@ -1,0 +1,41 @@
+[[viewing_report_output]]
+Viewing Report Output
+---------------------
+
+indexterm:[reports, output]
+
+indexterm:[reports, output, tabular]
+
+indexterm:[reports, output, Excel]
+
+indexterm:[reports, output, spreadsheet]
+
+When a report runs Evergreen sends an email with a link to the output to the 
+address defined in the report. Output is also stored in the specified Output 
+folder and will remain there until manually deleted.
+
+. To view report output in the staff client, open the reports interface from 
+_Admin (-) --> Local Administration --> Reports_
+. Click on Output to expand the folder. Select _Circulation_ (where you just 
+saved the circulation report output).
++
+image::media/view-output-1.png[view-output-1]
++
+. View report output is the default selection in the dropdown menu. Select 
+_Recurring Monthly Circ by Location_ by clicking the checkbox and click _Submit_.
++
+image::media/view-output-2.png[view-output-2]
++
+. A new tab will open for the report output. Select either _Tabular Output_ or 
+_Excel Output_. If Bar Charts was selected during report definition the chart 
+will also appear.
+. Tabular output looks like this:
++
+image::media/view-output-4.png[view-output-4]
++
+. If you want to manipulate, filter or graph this data, Excel output would be 
+more useful. Excel output looks like this in Excel:
++
+image::media/view-output-5.png[view-output-5]
+
+

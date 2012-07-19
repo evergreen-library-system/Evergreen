@@ -1,0 +1,87 @@
+[[generating_reports]]
+Generating Reports from Templates
+----------------------------------
+
+indexterm:[reports, generating]
+
+Now you are ready to run the report from the template you have created.
+
+. In the My Folders section click the arrow next to _Templates_ to expand this 
+folder and select _circulation_.
++
+image::media/generate-report-1.png[generate-report-1]
++
+. Select the box beside _Circulations by month for one library_. Select _Create a 
+new report_ from selected template from the dropdown menu. Click _Submit_. 
++
+image::media/generate-report-2.png[generate-report-2]
++
+. Complete the first part of report settings. Only _Report Name_ and _Choose a 
+folder_... are required fields.
++
+image::media/generate-report-3.png[generate-report-3]
++
+1)  _Template Name_, _Template Creator_, and _Template Description_ are for 
+informational purposes only. They are hard coded when the template is created. 
+At the report definition stage it is not possible to change them.
++
+2)  _Report Name_ is required. Reports stored in the same folder must have unique 
+names.
++
+3) _Report Description_ is optional but may help distinguish among similar 
+reports.
++
+4)  _Report Columns_ lists the columns that will appear in the output. This is 
+derived from the template and cannot be changed during report definition.
++
+5)  _Pivot Label Column_ and _Pivot Data Column_ are optional. Pivot tables are a 
+different way to view data. If you currently use pivot tables in MS Excel it is 
+better to select an Excel output and continue using pivot tables in Excel.
++
+6)  You must choose a report folder to store this report definition. Only report 
+folders under My Folders are available. Click on the desired folder to select it.
++
+. Select values for the _Circulation > Check Out Date/Time_. Use the calendar 
+widget or manually enter the desired dates, then click Add to include the date 
+on the list. You may add multiple dates.
++
+image::media/generate-report-8.png[generate-report-8]
++
+The Transform for this field is Year + Month, so even if you choose a specific 
+date (2009-10-20) it will appear as the corresponding month only (2009-10).
++
+It is possible to select *relative dates*. If you select a relative date 1 month 
+ago you can schedule reports to automatically run each month. If you want to run 
+monthly reports that also show comparative data from one year ago, select a 
+relative date 1 month ago, and 13 months ago.
++
+. Select a value for the _Circulating Library_.
+. Complete the bottom portion of the report definition interface, then click 
+_Save_.
++
+image::media/generate-report-10.png[generate-report-10]
++
+1) Select one or more output formats. In this example the report output will be 
+available as an Excel spreadsheet, an HTML table (for display in the staff 
+client or browser), and as a bar chart.
++
+2) If you want the report to be recurring, check the box and select the 
+_Recurrence Interval_ as described in <<recurring_reports,Recurring Reports>>.  
+In this example, as this is a report that will only be run once, the _Recurring 
+Report_ box is not checked.
++
+3) Select _Run_ as soon as possible for immediate output. It is also possible to 
+set up reports that run automatically at future intervals.
++
+4) It is optional to fill out an email address where a completion notice can be 
+sent. The email will contain a link to password-protected report output (staff 
+login required). If you have an email address in your Local System Administrator 
+account it will automatically appear in the email notification box.  However, 
+you can enter a different email address or multiple addresses separated by commas.
++
+. Select a folder for the report's output.
+. You will get a confirmation dialogue box that the Action Succeeded. Click _OK_.
++
+image::media/generate-report-14.png[generate-report-14]
++
+Once saved, reports stay there forever unless you delete them.

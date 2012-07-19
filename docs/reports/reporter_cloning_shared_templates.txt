@@ -1,0 +1,42 @@
+Cloning Shared Templates
+------------------------
+
+indexterm:[reports, cloning]
+
+This chapter describes how to make local copies of shared templates for routine 
+reports or as a starting point for customization. When creating a new template 
+it is a good idea to review the shared templates first: even if the exact 
+template you need does not exist it is often faster to modify an existing 
+template than to build a brand new one. A Local System Administrator account is 
+required to clone templates from the _Shared Folders_ section and save them to _My 
+Folders_.
+
+The steps below assume you have already created at least one _Templates_ folder.  
+If you haven’t done this, please see <<reporter_creating_folders,Creating Folders>>.
+
+. Access the reports interface from the _Admin_ (-) menu under _Local 
+Administration --> Reports_
+. Under _Shared Folders_ expand the _Templates_ folder and the subfolder of the 
+report you wish to clone.  To expand the folders click on the grey arrow or 
+folder icon.  Do not click on the blue underlined hyperlink.
+. Click on the subfolder.
+. Select the template you wish to clone.  From the dropdown menu choose _Clone 
+selected templates_, then click _Submit_.  
++
+NOTE: By default Evergreen only displays the first 10 items in any folder. To view 
+all content, change the Limit output setting from 10 to All.
++
+. Choose the folder where you want to save the cloned template, then click 
+_Select Folder_. Only template folders created with your account will be visible. 
+If there are no folders to choose from please see 
+<<reporter_creating_folders,Creating Folders>>.
+
+. The cloned template opens in the template editor. From here you may modify 
+the template by adding, removing, or editing fields and filters as described in 
+<<reporter_creating_templates,Creating Templates>>. _Template Name_ and 
+_Description_ can also be edited. When satisfied with your changes click _Save_.
+
+. Click _OK_ in the resulting confirmation windows.
+
+Once saved it is not possible to edit a template. To make changes, clone a 
+template and change the clone. 

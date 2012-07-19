@@ -1,0 +1,56 @@
+Exporting Report Templates Using phpPgAdmin
+-------------------------------------------
+
+indexterm:[reports, exporting templates]
+
+Once the data is exported. Database Administrators/Systems Administrators can 
+easily import this data into the templates folder to make it available in the 
+client.
+
+Dump the Entire Reports Template Table
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The data exported in this method can create issues importing into a different 
+system if you do not have a matching folder and owner. This is going to export 
+report templates created in your system. The most important fields for importing 
+into the new system are _name_, _description_, and _data_. Data defines the actual 
+structure of the report. The _owner_ and _folder_ fields will unique to the system 
+they were exported from and will have to be altered to ensure they match the 
+appropriate owner and folder information for the new system.
+
+. Go to the *Reporter* schema. Report templates are located in the *Template* table
+. Click on the link to the *Template* table
+. Click the *export* button at the top right of the phpPgAdmin screen
+. Make sure the following is selected
+.. _Data Only_ (checked)
+.. _Format_: Select _CSV_ or _Tabbed_ did get the data in a text format
+.. _Download_ checked
+. Click _export_ button at the bottom
+. A text file will download to your local system
+
+Dump Data with an SQL Statement
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+The following statement could be used to grab the data in the folder and dump it 
+with admin account as the owner and the first folder in your system.
+
+-------------
+SELECT 1 as owner, name, description, data, 1 as folder FROM reporter.template
+-------------
+
+or use the following to capture your folder names for export
+
+--------------
+SELECT 1 as owner, t.name, t.description, t.data, f.name as folder 
+	FROM reporter.template t 
+	JOIN reporter.template_folder f ON t.folder=f.id
+--------------
+    
+. Run the above query
+. Click the *download* link at the bottom of the page
+. Select the file format (_CSV_ or _Tabbed_)
+. Check _download_
+. A text file with the report template data will be downloaded.
+
+
