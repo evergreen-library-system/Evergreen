@@ -284,6 +284,9 @@ sub load_locale_handlers {
             package OpenILS::WWW::EGWeb::I18N::$tag;
             use base 'OpenILS::WWW::EGWeb::I18N$parent_tag';
             if(\$messages) {
+                use Locale::Maketext::Lexicon {
+                    _decode => 1
+                };
                 use Locale::Maketext::Lexicon::Gettext;
                 if(open F, '$messages') {
                     our %Lexicon = (%Lexicon, %{ Locale::Maketext::Lexicon::Gettext->parse(<F>) });
