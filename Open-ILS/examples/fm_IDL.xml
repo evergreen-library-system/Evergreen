@@ -9654,58 +9654,26 @@ SELECT  usr,
 			<link field="claim_policy_action" reltype="has_a" key="id" map="" class="acqclpa"/>
 		</links>
 	</class>
-
-	<class id="acqlisum" controller="open-ils.cstore" oils_obj:fieldmapper="acq::lineitem_summary" oils_persist:readonly="true" reporter:label="Lineitem Summary">
+	<class id="acqlisum" controller="open-ils.cstore" oils_obj:fieldmapper="acq::lineitem_summary" oils_persist:readonly="true" reporter:label="Lineitem Summary" oils_persist:tablename="acq.lineitem_summary">
+		<fields oils_persist:primary="lineitem" oils_persist:sequence="acq.lineitem_id_seq">
+			<field reporter:label="Lineitem" name="lineitem" reporter:datatype="link"/>
+			<field reporter:label="Item Count" name="item_count" reporter:datatype="int"/>
+			<field reporter:label="Receive Count" name="recv_count" reporter:datatype="int"/>
+			<field reporter:label="Cancel Count" name="cancel_count" reporter:datatype="int"/>
+			<field reporter:label="Invoice Count" name="invoice_count" reporter:datatype="int"/>
+			<field reporter:label="Claim Count" name="claim_count" reporter:datatype="int"/>
+			<field reporter:label="Estimated Amount" name="estimated_amount" reporter:datatype="money"/>
+			<field reporter:label="Encumbrance Amount" name="encumbrance_amount" reporter:datatype="money"/>
+			<field reporter:label="Paid Amount" name="paid_amount" reporter:datatype="money"/>
+		</fields>
+		<links>
+			<link field="lineitem" reltype="has_a" key="id" map="" class="jub"/>
+		</links>
+    </class>
+	<class id="acqlisumi" controller="open-ils.cstore" oils_obj:fieldmapper="acq::lineitem_summary_invoiceable" oils_persist:readonly="true" reporter:label="Invoiceable Lineitem Summary">
 		<oils_persist:source_definition>
-
-            SELECT 
-                li.id AS lineitem, 
-                (
-                    SELECT COUNT(lid.id) 
-                    FROM acq.lineitem_detail lid
-                    WHERE lineitem = li.id
-                ) AS item_count,
-                (
-                    SELECT COUNT(lid.id) 
-                    FROM acq.lineitem_detail lid
-                    WHERE recv_time IS NOT NULL AND lineitem = li.id
-                ) AS recv_count,
-                (
-                    SELECT COUNT(lid.id) 
-                    FROM acq.lineitem_detail lid
-                    WHERE cancel_reason IS NOT NULL AND lineitem = li.id
-                ) AS cancel_count,
-                (
-                    SELECT COUNT(lid.id) 
-                    FROM acq.lineitem_detail lid
-                        JOIN acq.fund_debit debit ON (lid.fund_debit = debit.id)
-                    WHERE NOT debit.encumbrance AND lineitem = li.id
-                ) AS invoice_count,
-                (
-                    SELECT COUNT(DISTINCT(lid.id)) 
-                    FROM acq.lineitem_detail lid
-                        JOIN acq.claim claim ON (claim.lineitem_detail = lid.id)
-                    WHERE lineitem = li.id
-                ) AS claim_count,
-                (
-                    SELECT (COUNT(lid.id) * li.estimated_unit_price)::NUMERIC(8,2)
-                    FROM acq.lineitem_detail lid
-                    WHERE lid.cancel_reason IS NULL AND lineitem = li.id
-                ) AS estimated_amount,
-                (
-                    SELECT SUM(debit.amount)::NUMERIC(8,2)
-                    FROM acq.lineitem_detail lid
-                        JOIN acq.fund_debit debit ON (lid.fund_debit = debit.id)
-                    WHERE debit.encumbrance AND lineitem = li.id
-                ) AS encumbrance_amount,
-                (
-                    SELECT SUM(debit.amount)::NUMERIC(8,2)
-                    FROM acq.lineitem_detail lid
-                        JOIN acq.fund_debit debit ON (lid.fund_debit = debit.id)
-                    WHERE NOT debit.encumbrance AND lineitem = li.id
-                ) AS paid_amount
-
-                FROM acq.lineitem AS li
+            SELECT * FROM acq.lineitem_summary 
+				WHERE item_count > (invoice_count + cancel_count)
         </oils_persist:source_definition>
 		<fields oils_persist:primary="lineitem" oils_persist:sequence="acq.lineitem_id_seq">
 			<field reporter:label="Lineitem" name="lineitem" reporter:datatype="link"/>
@@ -9722,8 +9690,6 @@ SELECT  usr,
 			<link field="lineitem" reltype="has_a" key="id" map="" class="jub"/>
 		</links>
     </class>
-
-
 	<class id="iatc" controller="open-ils.reporter-store" oils_obj:fieldmapper="action::intersystem_transit_copy" oils_persist:readonly="true" reporter:core="true" reporter:label="Inter-system Copy Transit">
 		<oils_persist:source_definition>
 
