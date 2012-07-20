@@ -237,6 +237,15 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 }
             },
 
+            setFieldValue : function(field, val) {
+                for(var i in this.fieldList) {
+                    if(field == this.fieldList[i].name) {
+                        this.fieldList[i].widget.widget.attr('value', val);
+                    }
+                }
+            },
+
+
             performAutoEditAction : function() {
                 var self = this;
                 self.performEditAction({
