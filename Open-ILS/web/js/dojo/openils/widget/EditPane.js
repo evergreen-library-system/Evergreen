@@ -222,15 +222,17 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 }
             },
 
-            getFieldValue : function(field) {
+            getFieldValue : function(field, checkRequired) {
                 for(var i in this.fieldList) {
                     if(field == this.fieldList[i].name) {
                         var val = this.fieldList[i].widget.getFormattedValue();
-                        if (val == null && /* XXX stricter check needed? */
+                        if (checkRequired &&
+                            val == null && /* XXX stricter check needed? */
                             this.fieldList[i].widget.isRequired()) {
                             throw new Error("req");
                         }
                         return val;
+
                     }
                 }
             },
@@ -253,7 +255,7 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 try {
                     for(var idx in fields) {
                         this.fmObject[fields[idx]](
-                            this.getFieldValue(fields[idx])
+                            this.getFieldValue(fields[idx], true)
                         );
                     }
                 } catch (E) {
