@@ -1702,6 +1702,15 @@ sub load_myopac_bookbags {
     # We load the user prefs to get their default bookbag.
     $self->_load_user_with_prefs;
 
+    # We also want a total count of the user's bookbags.
+    my $q = {
+        'select' => { 'cbreb' => [ { 'column' => 'id', 'transform' => 'count', 'aggregate' => 'true', 'alias' => 'count' } ] },
+        'from' => 'cbreb',
+        'where' => { 'btype' => 'bookbag', 'owner' => $self->ctx->{user}->id }
+    };
+    my $r = $e->json_query($q);
+    $ctx->{bookbag_count} = $r->[0]->{'count'};
+
     # If the user wants a specific bookbag's items, load them.
     # XXX add bookbag item paging support
 
