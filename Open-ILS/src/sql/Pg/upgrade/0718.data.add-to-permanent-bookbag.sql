@@ -1,7 +1,8 @@
+-- Evergreen DB patch 0718.data.add-to-permanent-bookbag.sql
 BEGIN;
 
--- Check for the upgrade deps block
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0718', :eg_version);
 
 INSERT into config.org_unit_setting_type
     (name, grp, label, description, datatype)
