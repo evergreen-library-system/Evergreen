@@ -7361,7 +7361,51 @@ SELECT  usr,
             </actions>
         </permacrud>
     </class>
+    <class id="acqfsum" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_summary" reporter:label="Fund Summary" reporter:core="true" oils_persist:readonly="true">
+        <oils_persist:source_definition><![CDATA[
+            SELECT
+                acqf.*,
+                COALESCE(acqfat.amount, 0.00) AS allocated_total,
+                COALESCE(acqfst.amount, 0.00) AS spent_total,
+                COALESCE(acqfet.amount, 0.00) AS encumbrance_total,
+                COALESCE(acqfcb.amount, 0.00) AS combined_balance
+            FROM
+                acq.fund acqf
+                LEFT JOIN acq.fund_allocation_total acqfat ON (acqfat.fund = acqf.id)
+                LEFT JOIN acq.fund_spent_total acqfst ON (acqfst.fund = acqf.id)
+                LEFT JOIN acq.fund_encumbrance_total acqfet ON (acqfet.fund = acqf.id)
+                LEFT JOIN acq.fund_combined_balance acqfcb ON (acqfcb.fund = acqf.id)
+        ]]></oils_persist:source_definition>
+        <fields oils_persist:primary="id" oils_persist:sequence="acq.fund_id_seq">
+            <field reporter:label="Fund ID" name="id" reporter:datatype="id" reporter:selector='code'/>
+            <field reporter:label="Org Unit" name="org" reporter:datatype="org_unit" />
+            <field reporter:label="Name" name="name" reporter:datatype="text" />
+            <field reporter:label="Year" name="year" reporter:datatype="int" />
+            <field reporter:label="Currency Type" name="currency_type" reporter:datatype="link" />
+            <field reporter:label="Code" name="code" reporter:datatype="text" />
+            <field reporter:label="Rollover" name="rollover" reporter:datatype="bool" />
+            <field reporter:label="Propagate" name="propagate" reporter:datatype="bool" />
+            <field reporter:label="Active" name="active" reporter:datatype="bool" />
+            <field reporter:label="Balance Warning Percent" name="balance_warning_percent" reporter:datatype="int" />
+            <field reporter:label="Balance Stop Percent" name="balance_stop_percent" reporter:datatype="int" />
 
+            <!-- non fund-native fields -->
+            <field reporter:label="Total Allocated" name="allocated_total" reporter:datatype="money"/>
+            <field reporter:label="Total Spent" name="spent_total" reporter:datatype="money"/>
+            <field reporter:label="Total Encumbered" name="encumbrance_total" reporter:datatype="money"/>
+            <field reporter:label="Remaining Balance" name="combined_balance" reporter:datatype="money"/>
+        </fields>
+        <links>
+            <link field="id" reltype="has_a" key="id" map="" class="acqf"/>
+            <link field="org" reltype="has_a" key="id" map="" class="aou"/>
+            <link field="currency_type" reltype="has_a" key="code" map="" class="acqct"/>
+        </links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="ADMIN_ACQ_FUND VIEW_FUND MANAGE_FUND" context_field="org"/>
+            </actions>
+        </permacrud>
+	</class>
 	<class id="acqfa" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fund_allocation" oils_persist:tablename="acq.fund_allocation" reporter:label="Fund Allocation">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.fund_allocation_id_seq">
 			<field reporter:label="Allocation ID" name="id" reporter:datatype="id" />
