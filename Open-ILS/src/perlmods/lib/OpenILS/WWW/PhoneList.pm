@@ -54,6 +54,7 @@ sub child_init {
     my $idl = OpenSRF::Utils::SettingsClient->new->config_value("IDL");
     Fieldmapper->import(IDL => $idl);
     OpenILS::Utils::CStoreEditor->init;
+    return Apache2::Const::OK;
 }
 
 sub handler {
