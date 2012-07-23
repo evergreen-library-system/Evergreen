@@ -415,23 +415,23 @@ sub transfer_money_between_funds {
     return $e->die_event unless $e->allowed(['ADMIN_FUND','MANAGE_FUND'], $dfund->org, $dfund);
 
     if (!defined $dfund_amount) {
-        my $ratio = 1;
+
         if ($ofund->currency_type ne $dfund->currency_type) {
-            my $exchange_rate = $e->json_query({
-                "select"=>{"acqexr"=>["ratio"]}, 
-                "from"=>"acqexr", 
-                "where"=>{
-                    "from_currency"=>$ofund->currency_type,
-                    "to_currency"=>$dfund->currency_type
-                }
-            });
-            if (scalar(@$exchange_rate)<1) {
-                $logger->error('Unable to find exchange rate for ' . $ofund->currency_type . ' to ' . $dfund->currency_type);
-                return $e->die_event;
-            }
-            $ratio = @{$exchange_rate}[0]->{ratio};
+
+            $dfund_amount = $e->json_query({
+                from => [
+                    'acq.exchange_ratio',
+                    $ofund->currency_type,
+                    $dfund->currency_type,
+                    $ofund_amount
+                ]
+            })->[0]->{'acq.exchange_ratio'};
+
+        } else {
+
+            $dfund_amount = $ofund_amount;
         }
-        $dfund_amount = $ofund_amount * $ratio;
+
     } else {
         return $e->die_event unless $e->allowed("ACQ_XFER_MANUAL_DFUND_AMOUNT");
     }
