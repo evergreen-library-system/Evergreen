@@ -271,6 +271,54 @@ vim:et:ts=4:sw=4:
 
         </added_content>
 
+        <!-- Config section for acq_order_reader.pl script.
+             It reads MARC order record files from disk (presumably
+             an FTP destination) and pushes the order records into ACQ.
+             THIS IS NOT EDI. -->
+        <acq_order_reader>
+
+            <!-- Root directory for all FTP'd ACQ order record files .
+                 If the script is configured to talk to a remote acq server,
+                 this directory has to be a read/write NFS share.  -->
+            <base_dir>/openils/var/data/acq_orders/</base_dir>
+
+            <!-- any files found in the shared subdir must be inspected
+                 (e.g. file name prefix) to determine the provider. -->
+            <shared_subdir>ALL</shared_subdir><!-- SUPPORT PENDING -->
+
+            <!-- providers that don't provide a mechanism to inspect the file
+                 have to push their files to provider-specific locations -->
+            <provider>
+                <ordering_agency>BR1</ordering_agency> <!-- who gets/manages the order -->
+                <provider_code>BAB</provider_code>   
+                <provider_owner>CONS</provider_owner>  <!-- provider provider_owner; org unit shortname -->
+                <subdir>CONS-BAB</subdir> <!-- file directory;  full path = base_dir + subdir -->
+                <activate_po>false</activate_po> <!-- activate PO at upload? -->
+                <vandelay>
+                    <import_no_match>true</import_no_match>
+                    <!-- Most Vandelay options are supported.  For bools, use true/false.
+                        match_quality_ratio 
+                        match_set 
+                        bib_source 
+                        merge_profile
+                        create_assets
+                        import_no_match 
+                        auto_overlay_exact 
+                        auto_overlay_1match 
+                        auto_overlay_best_match
+                    -->
+                </vandelay>
+            </provider>
+
+            <!-- Add more as needed...
+            <provider>
+                ...
+            </provider>
+            -->
+
+        </acq_order_reader>
+
+
         <!-- no apps are enabled globally by default -->
         <activeapps/> 
 
