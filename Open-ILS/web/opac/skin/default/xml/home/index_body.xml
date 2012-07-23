@@ -5,6 +5,7 @@
 		<p style="font-size: 1.3em; padding: 3em; text-align: center;">
 		&home.js.disabled;
 		</p>
+        <a href="/eg/opac/home">&opac.basic;</a>
 	</noscript>
 
 	<table id='toptable' width='100%' style='border-collapse: collapse;'>
