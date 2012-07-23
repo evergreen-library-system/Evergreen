@@ -180,7 +180,7 @@ database server connection information:
 [source, bash]
 ----------------------------------------------------------
 cd /home/opensrf/Evergreen-ILS-2.2.0/Open-ILS/src/sql/Pg
-psql -U evergreen -h localhost -f version_upgrade/2.1-2.2-upgrade-db.sql evergreen
+psql -U evergreen -h localhost -f version-upgrade/2.1-2.2-upgrade-db.sql evergreen
 ----------------------------------------------------------
 
 Restart Evergreen and Test
