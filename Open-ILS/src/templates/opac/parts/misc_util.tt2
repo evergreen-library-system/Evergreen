@@ -66,8 +66,8 @@
         args.summary = (args.summary.size) ? args.summary.0 : '';
 
         args.editions = [];
-        ed_hunt = xml.findnodes('//*[@tag="250"]/*[@code="a"]') &&
-            xml.findnodes('//*[@tag="534"]/*[@code="b"]') &&
+        ed_hunt = xml.findnodes('//*[@tag="250"]/*[@code="a"]') ||
+            xml.findnodes('//*[@tag="534"]/*[@code="b"]') ||
             xml.findnodes('//*[@tag="775"]/*[@code="b"]');
         FOR sub IN ed_hunt;
             args.editions.push(sub.textContent);
