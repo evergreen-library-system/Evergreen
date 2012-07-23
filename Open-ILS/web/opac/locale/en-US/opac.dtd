@@ -118,8 +118,7 @@
 However, it seems JavaScript is either disabled or not supported by your browser.
 To use the regular Evergreen Catalog, enable JavaScript by changing your browser options, then
 <a style='color: blue; text-decoration: underline;' href='/'>try again</a>.
-<br/><br/>Alternatively, you can use the basic HTML-only catalog
-<a style='color: blue; text-decoration: underline;' href='/opac/extras/slimpac/start.html'>here</a>.">
+<br/><br/>Alternatively, you can use the basic HTML-only catalog: ">
 
 <!--	================================================================= 
 	 MyOPAC bookbag page
