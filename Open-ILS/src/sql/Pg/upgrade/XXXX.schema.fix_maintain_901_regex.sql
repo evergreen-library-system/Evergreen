@@ -1,68 +1,99 @@
-BEGIN;
-
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
-
 CREATE OR REPLACE FUNCTION evergreen.maintain_901 () RETURNS TRIGGER AS $func$
-DECLARE
-    use_id_for_tcn BOOLEAN;
-BEGIN
-    -- Remove any existing 901 fields before we insert the authoritative one
-    NEW.marc := REGEXP_REPLACE(NEW.marc, E'<datafield[^>]*?tag="901".+?</datafield>', '', 'g');
+use strict;
+use MARC::Record;
+use MARC::File::XML (BinaryEncoding => 'UTF-8');
+use MARC::Charset;
+use Encode;
+use Unicode::Normalize;
 
-    IF TG_TABLE_SCHEMA = 'biblio' THEN
-        -- Set TCN value to record ID?
-        SELECT enabled FROM config.global_flag INTO use_id_for_tcn
-            WHERE name = 'cat.bib.use_id_for_tcn';
+MARC::Charset->assume_unicode(1);
 
-        IF use_id_for_tcn = 't' THEN
-            NEW.tcn_value := NEW.id;
-        END IF;
+my $schema = $_TD->{table_schema};
+my $marc = MARC::Record->new_from_xml($_TD->{new}{marc});
 
-        NEW.marc := REGEXP_REPLACE(
-            NEW.marc,
-            E'(</(?:[^:>]*?:)?record>)',
-            E'<datafield tag="901" ind1=" " ind2=" ">' ||
-                '<subfield code="a">' || REPLACE(evergreen.xml_escape(NEW.tcn_value), E'\\', E'\\\\') || E'</subfield>' ||
-                '<subfield code="b">' || REPLACE(evergreen.xml_escape(NEW.tcn_source), E'\\', E'\\\\') || E'</subfield>' ||
-                '<subfield code="c">' || NEW.id || E'</subfield>' ||
-                '<subfield code="t">' || TG_TABLE_SCHEMA || E'</subfield>' ||
-                CASE WHEN NEW.owner IS NOT NULL THEN '<subfield code="o">' || NEW.owner || E'</subfield>' ELSE '' END ||
-                CASE WHEN NEW.share_depth IS NOT NULL THEN '<subfield code="d">' || NEW.share_depth || E'</subfield>' ELSE '' END ||
-             E'</datafield>\\1'
-        );
-    ELSIF TG_TABLE_SCHEMA = 'authority' THEN
-        NEW.marc := REGEXP_REPLACE(
-            NEW.marc,
-            E'(</(?:[^:>]*?:)?record>)',
-            E'<datafield tag="901" ind1=" " ind2=" ">' ||
-                '<subfield code="c">' || NEW.id || E'</subfield>' ||
-                '<subfield code="t">' || TG_TABLE_SCHEMA || E'</subfield>' ||
-             E'</datafield>\\1'
-        );
-    ELSIF TG_TABLE_SCHEMA = 'serial' THEN
-        NEW.marc := REGEXP_REPLACE(
-            NEW.marc,
-            E'(</(?:[^:>]*?:)?record>)',
-            E'<datafield tag="901" ind1=" " ind2=" ">' ||
-                '<subfield code="c">' || NEW.id || E'</subfield>' ||
-                '<subfield code="t">' || TG_TABLE_SCHEMA || E'</subfield>' ||
-                '<subfield code="o">' || NEW.owning_lib || E'</subfield>' ||
-                CASE WHEN NEW.record IS NOT NULL THEN '<subfield code="r">' || NEW.record || E'</subfield>' ELSE '' END ||
-             E'</datafield>\\1'
-        );
-    ELSE
-        NEW.marc := REGEXP_REPLACE(
-            NEW.marc,
-            E'(</(?:[^:>]*?:)?record>)',
-            E'<datafield tag="901" ind1=" " ind2=" ">' ||
-                '<subfield code="c">' || NEW.id || E'</subfield>' ||
-                '<subfield code="t">' || TG_TABLE_SCHEMA || E'</subfield>' ||
-             E'</datafield>\\1'
-        );
-    END IF;
+my @old901s = $marc->field('901');
+$marc->delete_fields(@old901s);
 
-    RETURN NEW;
-END;
-$func$ LANGUAGE PLPGSQL;
+if ($schema eq 'biblio') {
+    my $tcn_value = $_TD->{new}{tcn_value};
 
-COMMIT;
+    # Set TCN value to record ID?
+    my $id_as_tcn = spi_exec_query("
+        SELECT enabled
+        FROM config.global_flag
+        WHERE name = 'cat.bib.use_id_for_tcn'
+    ");
+    if (($id_as_tcn->{processed}) && $id_as_tcn->{rows}[0]->{enabled} eq 't') {
+        $tcn_value = $_TD->{new}{id}; 
+    }
+
+    my $new_901 = MARC::Field->new("901", " ", " ",
+        "a" => $tcn_value,
+        "b" => $_TD->{new}{tcn_source},
+        "c" => $_TD->{new}{id},
+        "t" => $schema
+    );
+
+    if ($_TD->{new}{owner}) {
+        $new_901->add_subfields("o" => $_TD->{new}{owner});
+    }
+
+    if ($_TD->{new}{share_depth}) {
+        $new_901->add_subfields("d" => $_TD->{new}{share_depth});
+    }
+
+    $marc->append_fields($new_901);
+} elsif ($schema = 'authority') {
+    $marc->append_fields(
+        ["901", " ", " ",
+            "c" => $_TD->{new}{id},
+            "t" => $schema,
+        ]
+    );
+} elsif ($schema = 'serial') {
+    my $new_901 = MARC::Field->new("901", " ", " ",
+        "c" => $_TD->{new}{id},
+        "t" => $schema,
+        "o" => $_TD->{new}{owning_lib},
+    );
+
+    if ($_TD->{new}{record}) {
+        $new_901->add_subfields("r" => $_TD->{new}{record});
+    }
+
+    $marc->append_fields($new_901);
+} else {
+    $marc->append_fields(
+        ["901", " ", " ",
+            "c" => $_TD->{new}{id},
+            "t" => $schema,
+        ]
+    );
+}
+
+my $xml = $marc->as_xml_record();
+$xml =~ s/\n//sgo;
+$xml =~ s/^<\?xml.+\?\s*>//go;
+$xml =~ s/>\s+</></go;
+$xml =~ s/\p{Cc}//go;
+
+# Embed a version of OpenILS::Application::AppUtils->entityize()
+# to avoid having to set PERL5LIB for PostgreSQL as well
+
+# If we are going to convert non-ASCII characters to XML entities,
+# we had better be dealing with a UTF8 string to begin with
+$xml = decode_utf8($xml);
+
+$xml = NFC($xml);
+
+# Convert raw ampersands to entities
+$xml =~ s/&(?!\S+;)/&amp;/gso;
+
+# Convert Unicode characters to entities
+$xml =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
+
+$xml =~ s/[\x00-\x1f]//go;
+$_TD->{new}{marc} = $xml;
+
+return "MODIFY";
+$func$ LANGUAGE PLPERLU;
