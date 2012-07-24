@@ -339,11 +339,13 @@ sub load_login {
     my $cgi = $self->cgi;
     my $ctx = $self->ctx;
 
+    $self->timelog("Load login begins");
+
     $ctx->{page} = 'login';
 
     my $username = $cgi->param('username');
     my $password = $cgi->param('password');
-    my $org_unit = $cgi->param('loc') || $ctx->{aou_tree}->()->id;
+    my $org_unit = $ctx->{physical_loc} || $ctx->{aou_tree}->()->id;
     my $persist = $cgi->param('persist');
 
     # initial log form only
@@ -356,7 +358,9 @@ sub load_login {
             'open-ils.auth_proxy.enabled');
     } catch Error with {};
 
-    my $args = {	
+    $self->timelog("Checked for auth proxy: $auth_proxy_enabled; org = $org_unit; username = $username");
+
+    my $args = {
         type => ($persist) ? 'persist' : 'opac',
         org => $org_unit,
         agent => 'opac'
@@ -379,14 +383,15 @@ sub load_login {
             'open-ils.auth',
             'open-ils.auth.authenticate.init', $username);
         $args->{password} = md5_hex($seed . md5_hex($password));
-	    $response = $U->simplereq(
+        $response = $U->simplereq(
             'open-ils.auth', 'open-ils.auth.authenticate.complete', $args);
     } else {
         $args->{password} = $password;
-	    $response = $U->simplereq(
+        $response = $U->simplereq(
             'open-ils.auth_proxy',
             'open-ils.auth_proxy.login', $args);
     }
+    $self->timelog("Checked password");
 
     if($U->event_code($response)) { 
         # login failed, report the reason to the template
