@@ -1,7 +1,6 @@
 <form action="[% ctx.opac_root %]/results" method="GET">
     <div class="header_middle">[% l("Expert Search") %]</div>
     <input type="hidden" name="_special" value="1" />
-    [% IF loc %]<input type="hidden" name="loc" value="[% loc %]" />[% END %]
     <table class="expert-search">
         <tbody id="adv_expert_rows_here">
             <tr id="adv_expert_row">
@@ -20,13 +19,20 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="2"><a href="javascript:addExpertRow();">[ [% l("Add row") %] ]</a></td>
-                <td colspan="4">
-                    <input type="submit" value="[% l('Search') %]"
-                        alt="[% l('Search') %]" title="[% l('Search') %]"
-                        class="opac-button" />
-                </td>
+               <td colspan="7"><a href="javascript:addExpertRow();">[ [% l("Add row") %] ]</a>
+	       </td>
             </tr>
+            <tr>
+               <td colspan="5" class="expert-search-row">
+	           [% PROCESS "opac/parts/org_selector.tt2";
+	              l("in");   INCLUDE build_org_selector show_loc_groups=1 %]
+	       </td>
+	       <td colspan="2" class="expert-search-row">
+	            <input type="submit" value="[% l('Search') %]"
+	               alt="[% l('Search') %]" title="[% l('Search') %]"
+	               class="opac-button" />
+	       </td>
+	     </tr>
         </tfoot>
     </table>
 </form>

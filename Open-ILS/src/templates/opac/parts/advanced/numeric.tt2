@@ -2,7 +2,6 @@
     <div class="header_middle">[% l("Numeric Search") %]</div>
     <input type="hidden" name="contains" value="contains" />
     <input type="hidden" name="_special" value="1" />
-    [% IF loc %]<input type="hidden" name="loc" value="[% loc %]" />[% END %]
     <table>
         <tr>
             <td>
@@ -19,6 +18,10 @@
             </td>
             <td>
                 <input type="text" name="query" size="16" autofocus />
+            </td>
+            <td>
+                  [% PROCESS "opac/parts/org_selector.tt2";
+                     l(' in '); INCLUDE build_org_selector show_loc_groups=1 %]
             </td>
         </tr>
         <tr>
