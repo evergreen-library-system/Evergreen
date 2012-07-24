@@ -29,9 +29,12 @@ To access existing control sets, click *Admin* -> *Server Administration* ->
 To add a *control set*:
 
 . Click *Admin* -> *Server Administration* -> *Authorities* -> *Control Sets*.
-. Click *New Control Set*.  . Add a *Name* to the control set. Enter any number
-of characters.  . Add a *Description* of the control set.  Enter any number of
-characters.  . Click *Save*.
+. Click *New Control Set*.  
+. Add a *Name* to the control set. Enter any number
+of characters.  
+. Add a *Description* of the control set.  Enter any number of
+characters.  
+. Click *Save*.
 
 image::media/Authority_Control_Sets1.jpg[Authority_Control_Sets1]
 
@@ -54,11 +57,12 @@ To add a *Thesaurus*:
 
 . Click *Admin* -> *Server Administration* -> *Authorities* -> *Control Sets*,
 and choose the hyperlinked thesaurus that you want to access, or click *Admin*
--> *Server Administration* -> *Authorities* -> *Thesauri*.  . Click *New
-Thesaurus*.  . Add a *Thesaurus Code*.  Enter any single, upper case character.
-This character will be entered in the fixed fields of the MARC record.  . Add a
-*Name* to the thesaurus. Enter any number of characters.  . Add a *Description*
-of the thesaurus.  Enter any number of characters. 
+-> *Server Administration* -> *Authorities* -> *Thesauri*.  
+. Click *New Thesaurus*.  
+. Add a *Thesaurus Code*.  Enter any single, upper case character.
+This character will be entered in the fixed fields of the MARC record.  
+. Add a *Name* to the thesaurus. Enter any number of characters.  
+. Add a *Description* of the thesaurus.  Enter any number of characters. 
 
 image::media/Authority_Control_Sets2.jpg[Authority_Control_Sets2]
 
@@ -91,7 +95,7 @@ without commas or spaces.
 +
 image::media/Authority_Control_Sets3.jpg[Authority_Control_Sets3]
 +
-.Create the corresponding tag in the bibliographic record that should contain
+. Create the corresponding tag in the bibliographic record that should contain
 this information.  Click the *None* link in the *Controlled Bib Fields* column.
 . Click *New Control Set Bib Field*.
 . Add the corresponding tag in the bibiographic record.
@@ -165,6 +169,7 @@ image::media/Authority_Control_Sets9.jpg[Authority_Control_Sets9]
 
 To use authority control sets, you will need the following permissions:
 
-* CREATE_AUTHORITY_CONTROL_SET UPDATE_AUTHORITY_CONTROL_SET
+* CREATE_AUTHORITY_CONTROL_SET 
+* UPDATE_AUTHORITY_CONTROL_SET
 * DELETE_AUTHORITY_CONTROL_SET
 
