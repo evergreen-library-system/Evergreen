@@ -1,6 +1,8 @@
 
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0721', :eg_version);
+
 UPDATE config.standing_penalty 
     SET block_list = REPLACE(block_list, 'HOLD', 'HOLD|CAPTURE') 
     WHERE   
