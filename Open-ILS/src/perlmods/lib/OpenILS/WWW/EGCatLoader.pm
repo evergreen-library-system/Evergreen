@@ -27,6 +27,7 @@ use OpenILS::WWW::EGCatLoader::SMS;
 my $U = 'OpenILS::Application::AppUtils';
 
 use constant COOKIE_SES => 'ses';
+use constant COOKIE_LOGGEDIN => 'eg_loggedin';
 use constant COOKIE_PHYSICAL_LOC => 'eg_physical_loc';
 use constant COOKIE_SSS_EXPAND => 'eg_sss_expand';
 
@@ -233,6 +234,11 @@ sub load_common {
     my $e = $self->editor;
     my $ctx = $self->ctx;
 
+    # redirect non-https to https if we think we are already logged in
+    if ($self->cgi->cookie(COOKIE_LOGGEDIN)) {
+        return $self->redirect_ssl unless $self->cgi->https;
+    }
+
     $ctx->{referer} = $self->cgi->referer;
     $ctx->{path_info} = $self->cgi->path_info;
     $ctx->{full_path} = $ctx->{base_path} . $self->cgi->path_info;
@@ -373,15 +379,30 @@ sub load_login {
     my $acct = $self->apache->unparsed_uri;
     $acct =~ s|/login|/myopac/main|;
 
+    # both login-related cookies should expire at the same time
+    my $login_cookie_expires = ($persist) ? CORE::time + $response->{payload}->{authtime} : undef;
+
     return $self->generic_redirect(
         $cgi->param('redirect_to') || $acct,
-        $cgi->cookie(
-            -name => COOKIE_SES,
-            -path => '/',
-            -secure => 1,
-            -value => $response->{payload}->{authtoken},
-            -expires => ($persist) ? CORE::time + $response->{payload}->{authtime} : undef
-        )
+        [
+            # contains the actual auth token and should be sent only over https
+            $cgi->cookie(
+                -name => COOKIE_SES,
+                -path => '/',
+                -secure => 1,
+                -value => $response->{payload}->{authtoken},
+                -expires => $login_cookie_expires
+            ),
+            # contains only a hint that we are logged in, and is used to
+            # trigger a redirect to https
+            $cgi->cookie(
+                -name => COOKIE_LOGGEDIN,
+                -path => '/',
+                -secure => 0,
+                -value => '1',
+                -expires => $login_cookie_expires
+            )
+        ]
     );
 }
 
@@ -398,12 +419,21 @@ sub load_logout {
 
     return $self->generic_redirect(
         $redirect_to || $self->ctx->{home_page},
-        $self->cgi->cookie(
-            -name => COOKIE_SES,
-            -path => '/',
-            -value => '',
-            -expires => '-1h'
-        )
+        [
+            # clear value of and expire both of these login-related cookies
+            $self->cgi->cookie(
+                -name => COOKIE_SES,
+                -path => '/',
+                -value => '',
+                -expires => '-1h'
+            ),
+            $self->cgi->cookie(
+                -name => COOKIE_LOGGEDIN,
+                -path => '/',
+                -value => '',
+                -expires => '-1h'
+            )
+        ]
     );
 }
 
