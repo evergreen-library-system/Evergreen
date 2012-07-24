@@ -1,3 +1,4 @@
+dojo.require("dijit.form.Button");
 dojo.require("dojo.string");
 dojo.require('dijit.layout.ContentPane');
 dojo.require('openils.PermaCrud');
