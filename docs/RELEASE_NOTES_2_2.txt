@@ -357,7 +357,7 @@ Cataloging
 Authority Control Sets
 ^^^^^^^^^^^^^^^^^^^^^^
 The tags and subfields that display in authority records in Evergreen are
-proscribed by control sets. The Library of Congress control set is the default
+defined by control sets. The Library of Congress control set is the default
 control set in all versions of Evergreen. However, in Evergreen release 2.2,
 you can create customized control sets for authority records, and you can
 define thesauri and authority fields for these control sets.
