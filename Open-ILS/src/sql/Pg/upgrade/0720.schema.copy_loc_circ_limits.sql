@@ -1,3 +1,6 @@
+BEGIN;
+
+SELECT evergreen.upgrade_deps_block_check('0720', :eg_version);
 
 ALTER TABLE config.circ_matrix_weights 
     ADD COLUMN copy_location NUMERIC(6,2) NOT NULL DEFAULT 5.0;
@@ -434,4 +437,5 @@ BEGIN
 END;
 $func$ LANGUAGE plpgsql;
 
+COMMIT;
 
