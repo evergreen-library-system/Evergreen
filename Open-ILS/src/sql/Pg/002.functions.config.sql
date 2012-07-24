@@ -437,7 +437,7 @@ BEGIN
 
         NEW.marc := REGEXP_REPLACE(
             NEW.marc,
-            E'(</(?:[^:]*?:)?record>)',
+            E'(</(?:[^:>]*?:)?record>)',
             E'<datafield tag="901" ind1=" " ind2=" ">' ||
                 '<subfield code="a">' || REPLACE(evergreen.xml_escape(NEW.tcn_value), E'\\', E'\\\\') || E'</subfield>' ||
                 '<subfield code="b">' || REPLACE(evergreen.xml_escape(NEW.tcn_source), E'\\', E'\\\\') || E'</subfield>' ||
@@ -450,7 +450,7 @@ BEGIN
     ELSIF TG_TABLE_SCHEMA = 'authority' THEN
         NEW.marc := REGEXP_REPLACE(
             NEW.marc,
-            E'(</(?:[^:]*?:)?record>)',
+            E'(</(?:[^:>]*?:)?record>)',
             E'<datafield tag="901" ind1=" " ind2=" ">' ||
                 '<subfield code="c">' || NEW.id || E'</subfield>' ||
                 '<subfield code="t">' || TG_TABLE_SCHEMA || E'</subfield>' ||
@@ -459,7 +459,7 @@ BEGIN
     ELSIF TG_TABLE_SCHEMA = 'serial' THEN
         NEW.marc := REGEXP_REPLACE(
             NEW.marc,
-            E'(</(?:[^:]*?:)?record>)',
+            E'(</(?:[^:>]*?:)?record>)',
             E'<datafield tag="901" ind1=" " ind2=" ">' ||
                 '<subfield code="c">' || NEW.id || E'</subfield>' ||
                 '<subfield code="t">' || TG_TABLE_SCHEMA || E'</subfield>' ||
@@ -470,7 +470,7 @@ BEGIN
     ELSE
         NEW.marc := REGEXP_REPLACE(
             NEW.marc,
-            E'(</(?:[^:]*?:)?record>)',
+            E'(</(?:[^:>]*?:)?record>)',
             E'<datafield tag="901" ind1=" " ind2=" ">' ||
                 '<subfield code="c">' || NEW.id || E'</subfield>' ||
                 '<subfield code="t">' || TG_TABLE_SCHEMA || E'</subfield>' ||
