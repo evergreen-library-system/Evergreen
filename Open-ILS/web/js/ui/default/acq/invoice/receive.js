@@ -341,13 +341,15 @@ function ReceivableCopyTable() {
             function(o) { return Boolean(o.alert_text()); }
         );
 
-        for (var i = 0; i < alert_notes.length; i++) {
-            if (this.user_has_acked[alert_notes[i].id()])
+        var i, note, n_notes = alert_notes.length;
+        for (i = 0; i < n_notes; i++) {
+            note = alert_notes[i];
+            if (this.user_has_acked[note.id()])
                 continue;
-            else if (!this.confirm_alert(li, alert_notes[i]))
+            else if (!this.confirm_alert(lineitem, note))
                 return false;
             else
-                this.user_has_acked[alert_notes[i].id()] = true;
+                this.user_has_acked[note.id()] = true;
         }
 
         return true;
