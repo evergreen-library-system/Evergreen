@@ -197,7 +197,7 @@ osrf_ctl.sh -l -a start_all
 [source, bash]
 --------------------------------------------------------------
 cd /openils/bin
-../autogen.sh
+./autogen.sh
 --------------------------------------------------------------
 +
 . Start srfsh and try logging in using your Evergreen username and password:
