@@ -30,7 +30,7 @@ Using the filter in a template
 <span>
 [%
     INCLUDE 'opac/parts/filter_group_selector.tt2'
-    filter_group=reading_level
+    filter_group='reading_level'
     none_ok=1
     none_label=l('All')
 %]
