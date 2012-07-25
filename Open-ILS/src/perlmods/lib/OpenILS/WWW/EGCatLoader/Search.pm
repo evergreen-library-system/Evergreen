@@ -673,6 +673,9 @@ sub marc_expert_search {
     );
     $self->timelog("Returned from calling get_records_and_facets() for MARC expert");
 
+    # load temporary_list settings for user and ou:
+    $self->_load_lists_and_settings if ($self->ctx->{user});
+
     $self->ctx->{records} = [@data];
 
     return Apache2::Const::OK;
