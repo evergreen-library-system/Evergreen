@@ -1163,19 +1163,30 @@ g.stash_and_close = function(param) {
 
         var label_editor_func;
         if (copies.length > 0) {
-            if (param == 'edit') {
+            if (param === 'edit') {
                 JSAN.use('cat.util');
-                copies = cat.util.spawn_copy_editor( { 'edit' : true, 'docid' : g.doc_id, 'copies' : copies, 'caller_handles_update' : true });
+                copies = cat.util.spawn_copy_editor({
+                      'edit' : true
+                    , 'docid' : g.doc_id
+                    , 'copies' : copies
+                    , 'caller_handles_update' : false
+                });
             }
-            if (typeof xul_param('update_copy') == 'function') {
-                xul_param('update_copy')(copies);
-            } else {
-                 var r = g.network.simple_request(
-                    'FM_ACP_FLESHED_BATCH_UPDATE',
-                    [ ses(),copies, true ]
-                );
-                if (typeof r.ilsevent != 'undefined') {
-                    alert('error with copy update:' + js2JSON(r));
+            else {
+                if (typeof xul_param('update_copy') === 'function') {
+                    xul_param('update_copy')(copies);
+                } else {
+                     var r = g.network.simple_request(
+                        'FM_ACP_FLESHED_BATCH_UPDATE',
+                        [ ses(),copies, true ]
+                    );
+                    if (r.textcode === 'ITEM_BARCODE_EXISTS') {
+                        alert('error with item update: ' + r.desc);
+                        dont_close = true;
+                    }
+                    else if (typeof r.ilsevent != 'undefined') {
+                        alert('error with copy update:' + js2JSON(r));
+                    }
                 }
             }
             try {
