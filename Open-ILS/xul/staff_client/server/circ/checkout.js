@@ -924,6 +924,8 @@ circ.checkout.prototype = {
                                 }
 
                                 if (foreign_circ) { // OFFER CANCEL, NORMAL CHECKIN, AND POSSIBLY FORGIVING-BACKDATED CHECKIN
+                                    if (msg.length) msg += ' / ';
+                                    msg+= document.getElementById('circStrings').getFormattedString('staff.circ.checkout.failed_to_patron_other', [ util.date.formatted_date( my_circ.create_time(), '%{localized_date}' ) ]);
                                     var r = obj.error.yns_alert(
                                         msg,
                                         document.getElementById('circStrings').getString('staff.circ.checkout.barcode.check_out_failed'),
@@ -954,6 +956,17 @@ circ.checkout.prototype = {
                                             }
                                         } );
                                     } else {
+
+                                        // Include info about date of previous checkout in warning
+                                        if (msg.length) msg += ' / ';
+                                        var cko_d = util.date.formatted_date( my_circ.create_time(), '%{localized_date}' );
+                                        var cur_d = util.date.formatted_date( new Date(), '%{localized_date}');
+                                        if (cko_d == cur_d) {
+                                            msg+= document.getElementById('circStrings').getString('staff.circ.checkout.failed_to_patron_today');
+                                        } else {
+                                            msg+= document.getElementById('circStrings').getString('staff.circ.checkout.failed_to_patron_renew');
+                                        }
+
                                         var r = obj.error.yns_alert(
                                             msg,
                                             document.getElementById('circStrings').getString('staff.circ.checkout.barcode.check_out_failed'),
