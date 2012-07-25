@@ -344,7 +344,7 @@ function runStartupCommands() {
     dojo.style('vl-nav-bar', 'visibility', 'visible');
     if(currentQueueId)
         return retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
-    if (cgi.param('page', 'inspectq'))
+    if (cgi.param('page') == 'inspectq')
         return vlShowQueueSelect();
         
     vlShowUploadForm();
