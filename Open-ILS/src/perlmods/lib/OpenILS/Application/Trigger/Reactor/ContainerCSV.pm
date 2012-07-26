@@ -28,9 +28,14 @@ sub handler {
 
     # get items for bookbags (bib containers of btype bookbag)
     if ($env->{user_data}{item_search}) {
+        # Since the search is by default limited to 10, let's bump the limit
+        # to 1,000 just for giggles. This oughta be a setting, either YAOUS
+        # or YAUS.
+        my $args = {limit => 1000};
+
         # use the search api for bib container items.  fetch record IDs only.
         my $items = $U->bib_container_items_via_search(
-            $env->{target}->id, $env->{user_data}{item_search}, undef, 1 
+            $env->{target}->id, $env->{user_data}{item_search}, $args, 1
         ) or return 0;  # TODO build error output for db?
 
         $env->{items} = $items;
