@@ -4,8 +4,8 @@
 		<style type="text/css">#toptable { display: none; }</style>
 		<p style="font-size: 1.3em; padding: 3em; text-align: center;">
 		&home.js.disabled;
+        <a href="/eg/opac/home" class="classic_link">&opac.basic;</a>
 		</p>
-        <a href="/eg/opac/home">&opac.basic;</a>
 	</noscript>
 
 	<table id='toptable' width='100%' style='border-collapse: collapse;'>
