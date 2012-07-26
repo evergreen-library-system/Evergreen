@@ -239,6 +239,12 @@
                         <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {sort=>(CGI.param('sort') == 'authorsort' ? 'authorsort.descending' : 'authorsort')}) %]">[% l('Author(s)') %]</a>
                     </td>
                     <td class="list_entry">
+                        <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {sort=>(CGI.param('sort') == 'pubdate' ? 'pubdate.descending' : 'pubdate')}) %]">[% l('Publication Date') %]</a>
+                    </td>
+                    <td class="list_entry">
+                         [% l('Format') %]
+                    </td>
+                    <td class="list_entry">
                         [% l('Notes') %]
                         [% IF CGI.param("edit_notes") != bbag.id %]
                         | <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {edit_notes=> bbag.id}) %]">[% l('Edit') %]</a>
@@ -257,7 +263,7 @@
             </thead>
             <tbody>
                 [% UNLESS bbag.items.size %]
-                <tr><td colspan="4" class="list_is_empty">
+                <tr><td colspan="6" class="list_is_empty">
                     [% l("This list contains no items.") %]
                 </td></tr>
                 [% END %]
@@ -277,6 +283,13 @@
                             authorquery = attrs.author | replace('[,\.:;]', '');
                             mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, ['page', 'bbid', 'edit_notes'])
                             -%]">[% attrs.author | html %]</a>
+                    </td>
+                    <td class="list_entry">
+                          [% attrs.pubdate | html %]
+                    </td>
+                    <td class="list_entry">
+                          [% attrs.format_label | html %]
+                    </td>
                     [% IF CGI.param("edit_notes") == bbag.id %]
                     <td class="list_entry">
                         [% FOR note IN item.notes %]
