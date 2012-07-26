@@ -10,7 +10,7 @@
         <script type="text/javascript" src="/js/dojo/dojo/dojo.js"></script>
         <script type="text/javascript" src="[% ctx.media_prefix %]/js/dojo/dojo/openils_dojo.js"></script>
         <script type="text/javascript" src="[% ctx.media_prefix %]/js/dojo/opensrf/md5.js"></script>
-        <script type="text/javascript">var oilsBasePath = '[% ctx.base_path %]'</script>
+        <script type="text/javascript">var oilsBasePath = [% IF ctx.base_path.substr(0,1) == '/' %]location.href.replace(RegExp(location.pathname + '.*'),'') +[% END %] '[% ctx.base_path %]'</script>
         <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/base.js"></script>
         <script type="text/javascript">
             dojo.require("dijit.layout.LayoutContainer");
