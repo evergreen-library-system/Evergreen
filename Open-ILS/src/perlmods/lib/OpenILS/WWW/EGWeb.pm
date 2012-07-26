@@ -23,8 +23,6 @@ sub handler {
     my $ctx = load_context($r);
     my $base = $ctx->{base_path};
 
-    $r->content_type('text/html; encoding=utf8');
-
     my($template, $page_args, $as_xml) = find_template($r, $base, $ctx);
     $ctx->{page_args} = $page_args;
 
@@ -210,6 +208,12 @@ sub find_template {
 
     my @parts = split('/', $path);
     my $localpath = $path;
+
+    if ($localpath =~ m|opac/css|) {
+        $r->content_type('text/css; encoding=utf8');
+    } else {
+        $r->content_type('text/html; encoding=utf8');
+    }
     my @args;
     while(@parts) {
         last unless $localpath;

@@ -1,0 +1,33 @@
+[%
+    css_colors = {
+
+        background = "#fff", # white
+        background_alert = "#ffcccc", # pink
+        background_invert = "#252525", # charcoal
+        text = "black", # black 
+        text_alert = "red", # red
+        text_attention = "#ffcc33", # pumpkin orange
+        text_badnews = "#f41d36", # cherry red
+        text_goodnews = "#1dd93c", # lime green
+        text_invert = "#fff", # white
+        text_match = "#c00", # deep red
+        primary = "#00593d", # dark green
+        primary_fade = "#007a54", # medium green
+        control = "#69A088", # lighter green
+        accent_light = "#ccc", #  grey (light)
+        accent_lighter = "#ddd", #  grey (lighter)
+        accent_lighter2 = "#d8d8d8", #  grey (lighter again)
+        accent_lightest = "#eee", #  grey (lightest)
+        accent_ultralight = "#f0f0f0", # ivory
+        accent_medium = "#999", # gun metal grey (medium)
+        accent_mediumdark = "#888", # gun metal grey (medium dark)
+        accent_dark = "#666", # gun metal grey (dark)
+        accent_darker = "#333", # gun metal grey (darker)
+        border_standard = "#e9ebf3", # light grey-blue
+        border_alert = "red", # red
+        button_text = "#fbf9f9", # off-white 
+        button_text_shadow = "#555555", # medium grey
+        table_heading = "#d8d8d8", # grey-blue
+    };
+    
+%]
