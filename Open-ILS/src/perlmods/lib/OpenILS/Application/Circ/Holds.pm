@@ -3041,6 +3041,11 @@ sub find_nearest_permitted_hold {
         $logger->info("circulator: checking if hold $holdid is permitted for copy $bc");
 
         my $hold = $editor->retrieve_action_hold_request($holdid) or next;
+        # Force and recall holds bypass all rules
+        if ($hold->hold_type eq 'R' || $hold->hold_type eq 'F') {
+            $best_hold = $hold;
+            last;
+        }
         my $reqr = $reqr_cache{$hold->requestor} || $editor->retrieve_actor_user($hold->requestor);
         my $rlib = $org_cache{$hold->request_lib} || $editor->retrieve_actor_org_unit($hold->request_lib);
 
