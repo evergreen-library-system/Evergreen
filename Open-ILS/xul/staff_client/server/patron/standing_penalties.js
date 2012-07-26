@@ -226,7 +226,7 @@ function handle_remove_penalty(ev) {
                 */
                 document.getElementById('progress').hidden = true;
 
-                patron.util.set_penalty_css(xulG.patron, patron.display.w.document.documentElement);
+                //patron.util.set_penalty_css(xulG.patron);
             }
         );
         document.getElementById('progress').hidden = false;
@@ -311,7 +311,7 @@ function handle_edit_penalty(ev) {
                                     row_params.row.my.csp = p.standing_penalty();
                                     list.refresh_row( row_params );
 
-                                    patron.util.set_penalty_css(xulG.patron, patron.display.w.document.documentElement);
+                                    //patron.util.set_penalty_css(xulG.patron);
                                     document.getElementById('progress').hidden = true;
                                 } catch(E) {
                                     alert(E);
@@ -375,7 +375,7 @@ function handle_archive_penalty(ev) {
                             if (--outstanding_requests==0) {
                                 document.getElementById('progress').hidden = true;
 
-                                patron.util.set_penalty_css(xulG.patron, patron.display.w.document.documentElement);
+                                //patron.util.set_penalty_css(xulG.patron);
                             }
                         }
                     }(ids[i])
