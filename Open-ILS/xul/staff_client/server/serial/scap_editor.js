@@ -142,7 +142,7 @@ serial.scap_editor.prototype = {
         window.openDialog(
             xulG.url_prefix("XUL_SERIAL_PATTERN_WIZARD"),
             "pattern_wizard",
-            "width=800",
+            "width=800,height=400",
             onsubmit
         );
     },

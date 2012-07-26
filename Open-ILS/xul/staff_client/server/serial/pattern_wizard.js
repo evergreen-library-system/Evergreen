@@ -245,7 +245,7 @@ function RegularityRow() {
 
     this.allow_year_split = function(yes) {
         dojo.attr(
-            dojo.query("[name='type_and_code_pattern'] [value='y:YYYY']")[0],
+            dojo.query("[value='y:YYYY']",dojo.query("[name='type_and_code_pattern']")[0])[0],
             "disabled",
             !yes
         );
@@ -423,10 +423,11 @@ function CalendarChangeEditor() {
         this.template.removeAttribute("id");
 
         [
-            dojo.query("[name='month'] menupopup", this.template)[0],
-            dojo.query("[name='date_month'] menupopup", this.template)[0]
+            dojo.query("[name='month']", this.template)[0],
+            dojo.query("[name='date_month']", this.template)[0]
         ].forEach(
             function(menupopup) {
+                menupopup = dojo.query("menupopup", menupopup)[0];
                 _menulist(
                     _chronstants.month.values,
                     _chronstants.month.names,
