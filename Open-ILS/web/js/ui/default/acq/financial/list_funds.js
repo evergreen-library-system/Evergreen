@@ -173,6 +173,8 @@ function performRollover(args) {
     var dryRun = args.dry_run[0] == 'on';
     if(dryRun) method += '.dry_run';
 
+    var encumbOnly = args.encumb_only[0] == 'on';
+
     var count = 0;
     var amount_rolled = 0;
     var year = fundFilterYearSelect.attr('value'); // TODO alternate selector?
@@ -186,7 +188,8 @@ function performRollover(args) {
                 openils.User.authtoken, 
                 year,
                 contextOrg,
-                (args.child_orgs[0] == 'on')
+                (args.child_orgs[0] == 'on'),
+                { encumb_only : encumbOnly }
             ],
 
             onresponse : function(r) {

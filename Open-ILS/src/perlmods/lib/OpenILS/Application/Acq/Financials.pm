@@ -1221,6 +1221,7 @@ __PACKAGE__->register_method (
             {desc => 'Fund Year to roll over', type => 'integer'},
             {desc => 'Org unit ID', type => 'integer'},
             {desc => 'Include Descendant Orgs (boolean)', type => 'integer'},
+            {desc => 'Option hash: limit, offset, encumb_only', type => 'object'},
         ],
         return => {desc => 'Returns a stream of all related funds for the next year including fund summary for each'}
     }
@@ -1277,6 +1278,7 @@ sub process_fiscal_rollover {
     $options ||= {};
 
     my $combined = ($self->api_name =~ /combined/); 
+    my $encumb_only = $U->is_true($options->{encumb_only}) ? 't' : 'f';
 
     my $org_ids = ($descendants) ? 
         [   
@@ -1308,22 +1310,16 @@ sub process_fiscal_rollover {
                 ($descendants) ? 
                     'acq.rollover_funds_by_org_tree' :
                     'acq.rollover_funds_by_org_unit',
-                $year, $e->requestor->id, $org_id
+                $year, $e->requestor->id, $org_id, $encumb_only
             ]
         });
     }
 
     # Fetch all funds for the specified org units for the subsequent year
-    my $fund_ids = $e->search_acq_fund([
-        {
-            year => int($year) + 1, 
+    my $fund_ids = $e->search_acq_fund(
+        [{  year => int($year) + 1, 
             org => $org_ids,
-            propagate => 't'
-        }, {
-            limit => $$options{limit} || 20,
-            offset => $$options{offset} || 0,
-        }
-        ], 
+            propagate => 't' }], 
         {idlist => 1}
     );
 
@@ -1338,7 +1334,7 @@ sub process_fiscal_rollover {
             my $sum = $e->json_query({
                 select => {acqftr => [{column => 'dest_amount', transform => 'sum'}]}, 
                 from => 'acqftr', 
-                where => {dest_fund => $fund->id, note => 'Rollover'}
+                where => {dest_fund => $fund->id, note => { like => 'Rollover%' } }
             })->[0];
 
             $amount = $sum->{dest_amount} if $sum;
