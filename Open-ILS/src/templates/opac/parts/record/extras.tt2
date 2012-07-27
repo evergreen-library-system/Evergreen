@@ -10,7 +10,7 @@
 
         # Let's see if we should hide the content cafe / simple summary content
         hide_summary = 1;
-        IF attrs.summary.0; hide_summary = 0; ELSE;
+        IF attrs.summaries.0; hide_summary = 0; ELSE;
             # Expose content cafe if it's reasonable to do so.
             # This approach only works when using embedded content cafe.
             IF ENV.OILS_CONTENT_CAFE_USER; 
