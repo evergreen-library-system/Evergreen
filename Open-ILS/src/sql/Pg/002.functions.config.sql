@@ -464,14 +464,14 @@ if ($schema eq 'biblio') {
     }
 
     $marc->append_fields($new_901);
-} elsif ($schema = 'authority') {
+} elsif ($schema eq 'authority') {
     $marc->append_fields(
         ["901", " ", " ",
             "c" => $_TD->{new}{id},
             "t" => $schema,
         ]
     );
-} elsif ($schema = 'serial') {
+} elsif ($schema eq 'serial') {
     my $new_901 = MARC::Field->new("901", " ", " ",
         "c" => $_TD->{new}{id},
         "t" => $schema,

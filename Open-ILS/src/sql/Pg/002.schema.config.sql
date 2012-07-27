@@ -57,7 +57,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0722'); -- berick/mrpeters/senator
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0725', :eg_version); -- gmcharlt/denials
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
