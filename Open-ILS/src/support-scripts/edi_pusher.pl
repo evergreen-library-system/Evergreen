@@ -33,7 +33,10 @@ INIT {
 my %defaults = (
     'quiet' => 0,
     'test'  => 0,   # TODO
-    'max-batch-size=i' => -1
+    'max-batch-size=i' => -1,
+
+    # if true, print final EDI to STDOUT, send nothign to the vendor, write nothing to the DB
+    'debug-only' => 0
 );
 
 my $cs = OpenILS::Utils::Cronscript->new(\%defaults);
@@ -171,6 +174,12 @@ foreach my $def (@$defs) {
             next;
             # The premise here is that if the translator failed, it is better to try again later from a "fresh" fetched file
             # than to add a cascade of failing inscrutable copies of the same message(s) to our DB.  
+        }
+
+        if ($opts->{'debug-only'}) {
+            print OpenILS::Application::Acq::EDI->attempt_translation($message, 1)->edi . "\n";
+            print "\ndebug-only => skipping FTP\n";
+            next;
         }
 
         print "Writing new message + translation to DB for $logstr2\n";
