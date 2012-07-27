@@ -8058,7 +8058,32 @@ END;
             "free-text":[ 
                 [% FOR note IN ftx_vals -%] "[% note %]"[% UNLESS loop.last %], [% END %][% END %] 
             ],            
-            "quantity":[% li.lineitem_details.size %]
+            "quantity":[% li.lineitem_details.size %],
+            "copies" : [
+                [%- IF 1 -%]
+                [%- FOR lid IN li.lineitem_details;
+                        fund = lid.fund.code;
+                        item_type = lid.circ_modifier;
+                        callnumber = lid.cn_label;
+                        owning_lib = lid.owning_lib.shortname;
+                        location = lid.location;
+    
+                        # when we have real copy data, treat it as authoritative for some fields
+                        acp = lid.eg_copy_id;
+                        IF acp;
+                            item_type = acp.circ_modifier;
+                            callnumber = acp.call_number.label;
+                            location = acp.location.name;
+                        END -%]
+                {   [%- IF fund %] "fund" : "[% fund %]",[% END -%]
+                    [%- IF callnumber %] "call_number" : "[% callnumber %]", [% END -%]
+                    [%- IF item_type %] "item_type" : "[% item_type %]", [% END -%]
+                    [%- IF location %] "copy_location" : "[% location %]", [% END -%]
+                    [%- IF owning_lib %] "owning_lib" : "[% owning_lib %]", [% END -%]
+                    [%- #chomp %]"copy_id" : "[% lid.id %]" }[% ',' UNLESS loop.last %]
+                [% END -%]
+                [%- END -%]
+             ]
         }[% UNLESS loop.last %],[% END %]
         [%-# TODO: lineitem details (later) -%]
         [% END %]
@@ -8074,7 +8099,11 @@ $$
 
 INSERT INTO action_trigger.environment (event_def, path) VALUES 
   (23, 'lineitems.attributes'), 
-  (23, 'lineitems.lineitem_details'), 
+  (23, 'lineitems.lineitem_details.owning_lib'),
+  (23, 'lineitems.lineitem_details.location'),
+  (23, 'lineitems.lineitem_details.fund'),
+  (23, 'lineitems.lineitem_details.eg_copy_id.location'),
+  (23, 'lineitems.lineitem_details.eg_copy_id.call_number'),
   (23, 'lineitems.lineitem_notes'), 
   (23, 'ordering_agency.mailing_address'), 
   (23, 'provider'),
