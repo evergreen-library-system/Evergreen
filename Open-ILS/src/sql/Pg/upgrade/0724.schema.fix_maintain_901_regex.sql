@@ -1,3 +1,7 @@
+BEGIN;
+
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0724', :eg_version); -- denials/gmcharlt
+
 CREATE OR REPLACE FUNCTION evergreen.maintain_901 () RETURNS TRIGGER AS $func$
 use strict;
 use MARC::Record;
@@ -97,3 +101,5 @@ $_TD->{new}{marc} = $xml;
 
 return "MODIFY";
 $func$ LANGUAGE PLPERLU;
+
+COMMIT;
