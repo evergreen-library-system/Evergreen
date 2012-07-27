@@ -9989,8 +9989,15 @@ FOR item IN items;
     END;
     author = bibxml.findnodes('//*[@tag="100"]/*[@code="a"]').textContent;
     item_type = bibxml.findnodes('//*[local-name()="attributes"]/*[local-name()="field"][@name="item_type"]').getAttribute('coded-value');
-
-    helpers.csv_datum(title) %],[% helpers.csv_datum(author) %],[% helpers.csv_datum(item_type) %],[% FOR note IN item.notes; helpers.csv_datum(note.note); ","; END; "\n";
+    pub_date = "";
+    FOR pdatum IN bibxml.findnodes('//*[@tag="260"]/*[@code="c"]');
+        IF pub_date ;
+            pub_date = pub_date _ ", " _ pdatum.textContent;
+        ELSE ;
+            pub_date = pdatum.textContent;
+        END;
+    END;
+    helpers.csv_datum(title) %],[% helpers.csv_datum(author) %],[% helpers.csv_datum(pub_date) %],[% helpers.csv_datum(item_type) %],[% FOR note IN item.notes; helpers.csv_datum(note.note); ","; END; "\n";
 END -%]
 $$
 );
