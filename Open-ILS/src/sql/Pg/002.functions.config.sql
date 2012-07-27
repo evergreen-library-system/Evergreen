@@ -465,12 +465,11 @@ if ($schema eq 'biblio') {
 
     $marc->append_fields($new_901);
 } elsif ($schema eq 'authority') {
-    $marc->append_fields(
-        ["901", " ", " ",
-            "c" => $_TD->{new}{id},
-            "t" => $schema,
-        ]
+    my $new_901 = MARC::Field->new("901", " ", " ",
+        "c" => $_TD->{new}{id},
+        "t" => $schema,
     );
+    $marc->append_fields($new_901);
 } elsif ($schema eq 'serial') {
     my $new_901 = MARC::Field->new("901", " ", " ",
         "c" => $_TD->{new}{id},
@@ -484,12 +483,11 @@ if ($schema eq 'biblio') {
 
     $marc->append_fields($new_901);
 } else {
-    $marc->append_fields(
-        ["901", " ", " ",
-            "c" => $_TD->{new}{id},
-            "t" => $schema,
-        ]
+    my $new_901 = MARC::Field->new("901", " ", " ",
+        "c" => $_TD->{new}{id},
+        "t" => $schema,
     );
+    $marc->append_fields($new_901);
 }
 
 my $xml = $marc->as_xml_record();
