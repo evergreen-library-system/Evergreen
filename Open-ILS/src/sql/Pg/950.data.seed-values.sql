@@ -11748,7 +11748,6 @@ INSERT INTO config.org_unit_setting_type (
     'interval'
 );
 
-
 -- kid's opac main search filter
 
 INSERT INTO actor.search_filter_group (owner, code, label) 
@@ -11779,3 +11778,23 @@ INSERT INTO actor.search_filter_group_entry (grp, query, pos)
         (SELECT id FROM actor.search_query WHERE label = 'General/Adult Materials'),
         2
     );
+INSERT into config.org_unit_setting_type
+    (name, grp, label, description, datatype)
+    VALUES (
+        'acq.fund.allow_rollover_without_money',
+        'acq',
+        oils_i18n_gettext(
+            'acq.fund.allow_rollover_without_money',
+            'Allow funds to be rolled over without bringing the money along',
+            'coust',
+            'label'
+        ),
+        oils_i18n_gettext(
+            'acq.fund.allow_rollover_without_money',
+            'Allow funds to be rolled over without bringing the money along.  This makes money left in the old fund disappear, modeling its return to some outside entity.',
+            'coust',
+            'description'
+        ),
+        'bool'
+    );
+

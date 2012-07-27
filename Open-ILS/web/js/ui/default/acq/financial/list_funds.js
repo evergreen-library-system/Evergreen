@@ -37,6 +37,21 @@ var cachedFunds = [];
 function initPage() {
     contextOrg = openils.User.user.ws_ou();
 
+    /* Reveal controls for rollover without money if org units say ok.
+     * Actual ability to do the operation is controlled in the database, of
+     * course. */
+    var ouSettings = fieldmapper.aou.fetchOrgSettingBatch(
+        openils.User.user.ws_ou(), ["acq.fund.allow_rollover_without_money"]
+    );
+    if (
+        ouSettings["acq.fund.allow_rollover_without_money"] &&
+        ouSettings["acq.fund.allow_rollover_without_money"].value
+    ) {
+        dojo.query(".encumb_only").forEach(
+            function(o) { openils.Util.show(o, "table-row"); }
+        );
+    }
+
     var connect = function() {
         dojo.connect(contextOrgSelector, 'onChange',
             function() {

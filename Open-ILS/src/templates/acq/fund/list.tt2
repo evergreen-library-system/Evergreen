@@ -72,13 +72,13 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
+                        <tr class="encumb_only hidden">
                             <td><label for="encumb_only">Limit Fiscal Year Close-out Operation to Encumbrances: </label></td>
                             <td>
                                 <input dojoType="dijit.form.CheckBox" name="encumb_only"> </input>
                             </td>
                         </tr>
-                        <tr>
+                        <tr class="encumb_only hidden">
                             <td colspan='2'>
                                 <div style='width:400px;'>
                                 This modifies the above described Close-out Operation, causing funds to be

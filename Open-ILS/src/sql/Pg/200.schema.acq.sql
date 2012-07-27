@@ -1974,7 +1974,7 @@ BEGIN
 		year = old_year
 		AND propagate
 		AND ( ( include_desc AND org IN ( SELECT id FROM actor.org_unit_descendants( org_unit_id ) ) )
-                OR (NOT include_desc AND oldf.org = org_unit_id ) )
+                OR (NOT include_desc AND org = org_unit_id ) )
     
 	LOOP
 		BEGIN
@@ -2028,7 +2028,8 @@ DECLARE
 new_fund    INT;
 new_year    INT := old_year + 1;
 org_found   BOOL;
-xfer_amount NUMERIC;
+perm_ous    BOOL;
+xfer_amount NUMERIC := 0;
 roll_fund   RECORD;
 deb         RECORD;
 detail      RECORD;
@@ -2060,6 +2061,14 @@ BEGIN
 		--
 		IF org_found IS NULL THEN
 			RAISE EXCEPTION 'Org unit id % is invalid', org_unit_id;
+		ELSIF encumb_only THEN
+			SELECT INTO perm_ous value::BOOL FROM
+			actor.org_unit_ancestor_setting(
+				'acq.fund.allow_rollover_without_money', org_unit_id
+			);
+			IF NOT FOUND OR NOT perm_ous THEN
+				RAISE EXCEPTION 'Encumbrance-only rollover not permitted at org %', org_unit_id;
+			END IF;
 		END IF;
 	END IF;
 	--

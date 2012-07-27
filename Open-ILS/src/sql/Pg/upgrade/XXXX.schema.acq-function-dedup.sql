@@ -1,3 +1,6 @@
+BEGIN;
+
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('XXXX', :eg_version); -- miker
 
 DROP FUNCTION acq.propagate_funds_by_org_tree (INT, INT, INT);
 DROP FUNCTION acq.propagate_funds_by_org_unit (INT, INT, INT);
@@ -47,7 +50,7 @@ BEGIN
 		year = old_year
 		AND propagate
 		AND ( ( include_desc AND org IN ( SELECT id FROM actor.org_unit_descendants( org_unit_id ) ) )
-                OR (NOT include_desc AND oldf.org = org_unit_id ) )
+                OR (NOT include_desc AND org = org_unit_id ) )
     
 	LOOP
 		BEGIN
@@ -92,6 +95,7 @@ $$ LANGUAGE SQL;
 DROP FUNCTION acq.rollover_funds_by_org_tree (INT, INT, INT);
 DROP FUNCTION acq.rollover_funds_by_org_unit (INT, INT, INT);
 
+
 CREATE OR REPLACE FUNCTION acq.rollover_funds_by_org_tree(
 	old_year INTEGER,
 	user_id INTEGER,
@@ -104,6 +108,7 @@ DECLARE
 new_fund    INT;
 new_year    INT := old_year + 1;
 org_found   BOOL;
+perm_ous    BOOL;
 xfer_amount NUMERIC := 0;
 roll_fund   RECORD;
 deb         RECORD;
@@ -136,6 +141,14 @@ BEGIN
 		--
 		IF org_found IS NULL THEN
 			RAISE EXCEPTION 'Org unit id % is invalid', org_unit_id;
+		ELSIF encumb_only THEN
+			SELECT INTO perm_ous value::BOOL FROM
+			actor.org_unit_ancestor_setting(
+				'acq.fund.allow_rollover_without_money', org_unit_id
+			);
+			IF NOT FOUND OR NOT perm_ous THEN
+				RAISE EXCEPTION 'Encumbrance-only rollover not permitted at org %', org_unit_id;
+			END IF;
 		END IF;
 	END IF;
 	--
@@ -276,4 +289,24 @@ CREATE OR REPLACE FUNCTION acq.rollover_funds_by_org_unit( old_year INTEGER, use
     SELECT acq.rollover_funds_by_org_tree( $1, $2, $3, $4, FALSE );
 $$ LANGUAGE SQL;
 
+INSERT into config.org_unit_setting_type
+    (name, grp, label, description, datatype)
+    VALUES (
+        'acq.fund.allow_rollover_without_money',
+        'acq',
+        oils_i18n_gettext(
+            'acq.fund.allow_rollover_without_money',
+            'Allow funds to be rolled over without bringing the money along',
+            'coust',
+            'label'
+        ),
+        oils_i18n_gettext(
+            'acq.fund.allow_rollover_without_money',
+            'Allow funds to be rolled over without bringing the money along.  This makes money left in the old fund disappear, modeling its return to some outside entity.',
+            'coust',
+            'description'
+        ),
+        'bool'
+    );
 
+COMMIT;
