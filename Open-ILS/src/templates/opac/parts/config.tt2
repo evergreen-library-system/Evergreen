@@ -6,6 +6,15 @@
 ##############################################################################
 
 ##############################################################################
+# Holds blocking
+##############################################################################
+# Prevent the "Place hold" link from being displayed if a copy is available.
+# This is not perfect, given the umpteen different types of holds that are
+# possible, but addresses the major use case for libraries that don't want
+# to fetch copies from the shelves.
+ctx.holds_block.enabled = 'false';
+
+##############################################################################
 # RefWorks configuration
 ##############################################################################
 # RefWorks is a Web-based citation manager
