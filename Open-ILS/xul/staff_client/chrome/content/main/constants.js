@@ -398,7 +398,7 @@ var urls = {
     'AUDIO_circ_bad' : '/xul/server/skin/media/audio/question.wav',
     'AUDIO_event_ASSET_COPY_NOT_FOUND' : '/xul/server/skin/media/audio/redalert.wav',
 
-    'AUTHORITY_MANAGE' : 'oils://remote/eg/cat/authority/list',
+    'AUTHORITY_MANAGE' : 'cat/authority/list',
     'MANAGE_MULTI_HOME_ITEMS' : 'oils://remote/xul/server/cat/manage_multi_home_items.xul',
     'XUL_AUTH_SIMPLE' : 'oils://remote/xul/server/main/simple_auth.xul',
     'XUL_BIB_BRIEF' : 'oils://remote/xul/server/cat/bib_brief.xul',
