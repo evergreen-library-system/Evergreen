@@ -9,6 +9,7 @@
                         jsId='vlUploadRecordType' onchange='vlShowUploadForm();'>
                     <option value='bib' selected='selected'>[% l('Bibliographic Records') %]</option>
                     <option value='auth'>[% l('Authority Records') %]</option>
+                    <option value='bib-acq'>[% l('Acquisitions Records') %]</option>
                 </select>
             </td>
         </tr>

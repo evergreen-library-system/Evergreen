@@ -1607,6 +1607,7 @@ DECLARE
     opac_visible    TEXT;
     pub_note        TEXT;
     priv_note       TEXT;
+    internal_id     TEXT;
 
     attr_def        RECORD;
     tmp_attr_set    RECORD;
@@ -1757,6 +1758,14 @@ BEGIN
                 ELSE '//*[@tag="' || attr_def.tag || '"]/*' || attr_def.priv_note
             END;
 
+        internal_id :=
+            CASE
+                WHEN attr_def.internal_id IS NULL THEN 'null()'
+                WHEN LENGTH( attr_def.internal_id ) = 1 THEN '//*[@tag="' || attr_def.tag || '"]/*[@code="' || attr_def.internal_id || '"]'
+                ELSE '//*[@tag="' || attr_def.tag || '"]/*' || attr_def.internal_id
+            END;
+
+
 
         xpath :=
             owning_lib      || '|' ||
@@ -1777,6 +1786,7 @@ BEGIN
             alert_message   || '|' ||
             pub_note        || '|' ||
             priv_note       || '|' ||
+            internal_id     || '|' ||
             opac_visible;
 
         FOR tmp_attr_set IN
@@ -1784,7 +1794,7 @@ BEGIN
                   FROM  oils_xpath_table( 'id', 'marc', 'vandelay.queued_bib_record', xpath, 'id = ' || import_id )
                             AS t( id INT, ol TEXT, clib TEXT, cn TEXT, cnum TEXT, cs TEXT, cl TEXT, circ TEXT,
                                   dep TEXT, dep_amount TEXT, r TEXT, hold TEXT, pr TEXT, bc TEXT, circ_mod TEXT,
-                                  circ_as TEXT, amessage TEXT, note TEXT, pnote TEXT, opac_vis TEXT )
+                                  circ_as TEXT, amessage TEXT, note TEXT, pnote TEXT, internal_id TEXT, opac_vis TEXT )
         LOOP
 
             attr_set.import_error := NULL;
@@ -1925,6 +1935,7 @@ BEGIN
             attr_set.pub_note       := tmp_attr_set.note; -- TEXT,
             attr_set.priv_note      := tmp_attr_set.pnote; -- TEXT,
             attr_set.alert_message  := tmp_attr_set.amessage; -- TEXT,
+            attr_set.internal_id    := tmp_attr_set.internal_id::BIGINT;
 
             RETURN NEXT attr_set;
 
@@ -1971,6 +1982,7 @@ BEGIN
             alert_message,
             pub_note,
             priv_note,
+            internal_id,
             opac_visible,
             import_error,
             error_detail
@@ -1995,6 +2007,7 @@ BEGIN
             item_data.alert_message,
             item_data.pub_note,
             item_data.priv_note,
+            item_data.internal_id,
             item_data.opac_visible,
             item_data.import_error,
             item_data.error_detail

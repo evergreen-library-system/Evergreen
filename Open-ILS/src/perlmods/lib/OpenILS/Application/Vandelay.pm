@@ -1574,76 +1574,218 @@ sub import_record_asset_list_impl {
         for my $item_id (@$item_ids) {
             my $e = new_editor(requestor => $requestor, xact => 1);
             my $item = $e->retrieve_vandelay_import_item($item_id);
+            my ($copy, $vol, $evt);
+
             $$report_args{import_item} = $item;
             $$report_args{e} = $e;
             $$report_args{import_error} = undef;
             $$report_args{evt} = undef;
 
-            # --------------------------------------------------------------------------------
-            # Find or create the volume
-            # --------------------------------------------------------------------------------
-            my ($vol, $evt) =
-                OpenILS::Application::Cat::AssetCommon->find_or_create_volume(
-                    $e, $item->call_number, $rec->imported_as, $item->owning_lib);
+            if (my $copy_id = $item->internal_id) { # assignment
+                # copy matches an existing copy.  Overlay instead of create.
 
-            if($evt) {
+                $logger->info("vl: performing copy overlay for internal_id=$copy_id");
 
-                $$report_args{evt} = $evt;
-                respond_with_status($report_args);
-                next;
-            }
+                my $qt = $e->json_query({
+                    select => {vbq => ['queue_type']},
+                    from => {vqbr => 'vbq'},
+                    where => {'+vqbr' => {id => $rec_id}}
+                })->[0]->{queue_type};
 
-            # --------------------------------------------------------------------------------
-            # Create the new copy
-            # --------------------------------------------------------------------------------
-            my $copy = Fieldmapper::asset::copy->new;
-            $copy->loan_duration(2);
-            $copy->fine_level(2);
-            $copy->barcode($item->barcode);
-            $copy->location($item->location);
-            $copy->circ_lib($item->circ_lib || $item->owning_lib);
-            $copy->status( defined($item->status) ? $item->status : OILS_COPY_STATUS_IN_PROCESS );
-            $copy->circulate($item->circulate);
-            $copy->deposit($item->deposit);
-            $copy->deposit_amount($item->deposit_amount);
-            $copy->ref($item->ref);
-            $copy->holdable($item->holdable);
-            $copy->price($item->price);
-            $copy->circ_as_type($item->circ_as_type);
-            $copy->alert_message($item->alert_message);
-            $copy->opac_visible($item->opac_visible);
-            $copy->circ_modifier($item->circ_modifier);
+                if ($qt eq 'acq') {
+                    # internal_id for ACQ queues refers to acq.lineitem_detail.id
+                    # pull the real copy id from the acq LID
 
-            # --------------------------------------------------------------------------------
-            # Check for dupe barcode
-            # --------------------------------------------------------------------------------
-            if($evt = OpenILS::Application::Cat::AssetCommon->create_copy($e, $vol, $copy)) {
-                $$report_args{evt} = $evt;
-                $$report_args{import_error} = 'import.item.duplicate.barcode'
-                    if $evt->{textcode} eq 'ITEM_BARCODE_EXISTS';
-                respond_with_status($report_args);
-                next;
-            }
+                    my $lid = $e->retrieve_acq_lineitem_detail($copy_id);
+                    if (!$lid) {
+                        $$report_args{evt} = $e->die_event;
+                        respond_with_status($report_args);
+                        next;
+                    }
+                    $copy_id = $lid->eg_copy_id;
+                    $logger->info("vl: performing ACQ copy overlay for copy $copy_id");
+                }
 
-            # --------------------------------------------------------------------------------
-            # create copy notes
-            # --------------------------------------------------------------------------------
-            $evt = OpenILS::Application::Cat::AssetCommon->create_copy_note(
-                $e, $copy, '', $item->pub_note, 1) if $item->pub_note;
+                $copy = $e->search_asset_copy([
+                    {id => $copy_id, deleted => 'f'},
+                    {flesh => 1, flesh_fields => {acp => ['call_number']}}
+                ])->[0];
 
-            if($evt) {
-                $$report_args{evt} = $evt;
-                respond_with_status($report_args);
-                next;
-            }
+                if (!$copy) {
+                    $$report_args{evt} = $e->die_event;
+                    respond_with_status($report_args);
+                    next;
+                }
 
-            $evt = OpenILS::Application::Cat::AssetCommon->create_copy_note(
-                $e, $copy, '', $item->priv_note) if $item->priv_note;
+                # prevent update of unrelated copies
+                if ($copy->call_number->record != $rec->imported_as) {
+                    $logger->info("vl: attempt to overlay unrelated copy=$copy_id; rec=".$rec->imported_as);
 
-            if($evt) {
-                $$report_args{evt} = $evt;
-                respond_with_status($report_args);
-                next;
+                    $evt = OpenILS::Event->new('INVALID_IMPORT_COPY_ID', 
+                        note => 'Cannot overlay copies for unlinked bib',
+                        bre => $rec->imported_as, 
+                        copy_id => $copy_id
+                    );
+                    $$report_args{evt} = $evt;
+                    respond_with_status($report_args);
+                    next;
+                }
+
+                # overlaying copies requires an extra permission
+                if (!$e->allowed("IMPORT_OVERLAY_COPY", $copy->call_number->owning_lib)) {
+                    $$report_args{evt} = $e->die_event;
+                    respond_with_status($report_args);
+                    next;
+                }
+
+                # are we updating the call-number?
+                if ($item->call_number and $item->call_number ne $copy->call_number->label) {
+
+                    my $count = $e->json_query({
+                        select => {acp => [{
+                            alias => 'count', 
+                            column => 'id', 
+                            transform => 'count', 
+                            aggregate => 1
+                        }]},
+                        from => 'acp',
+                        where => {
+                            deleted => 'f',
+                            call_number => $copy->call_number->id
+                        }
+                    })->[0]->{count};
+
+                    if ($count == 1) {
+                        # if this is the only copy attached to this 
+                        # callnumber, just update the callnumber
+
+                        $logger->info("vl: updating callnumber label in copy overlay");
+
+                        $copy->call_number->label($item->call_number);
+                        if (!$e->update_asset_call_number($copy->call_number)) {
+                            $$report_args{evt} = $e->die_event;
+                            respond_with_status($report_args);
+                            next;
+                        }
+
+                    } else {
+
+                        # otherwise, move the copy to a new/existing 
+                        # call-number with the given label/owner
+                        # note that overlay does not allow the owning_lib 
+                        # to be changed.  Should it?
+
+                        $logger->info("vl: moving copy to new callnumber in copy overlay");
+
+                        ($vol, $evt) =
+                            OpenILS::Application::Cat::AssetCommon->find_or_create_volume(
+                                $e, $item->call_number, 
+                                $copy->call_number->record, 
+                                $copy->call_number->owning_lib
+                            );
+
+                        if($evt) {
+                            $$report_args{evt} = $evt;
+                            respond_with_status($report_args);
+                            next;
+                        }
+
+                        $copy->call_number($vol);
+                    }
+                } # cn-update
+
+                # for every field that has a non-'' value, overlay the copy value
+                foreach (qw/ barcode location circ_lib status 
+                    circulate deposit deposit_amount ref holdable 
+                    price circ_as_type alert_message opac_visible circ_modifier/) {
+
+                    my $val = $item->$_();
+                    $copy->$_($val) if $val and $val ne '';
+                }
+
+                # de-flesh for update
+                $copy->call_number($copy->call_number->id);
+                $copy->ischanged(1);
+
+                $evt = OpenILS::Application::Cat::AssetCommon->
+                    update_fleshed_copies($e, {all => 1}, undef, [$copy]);
+
+                if($evt) {
+                    $$report_args{evt} = $evt;
+                    respond_with_status($report_args);
+                    next;
+                }
+
+            } else { 
+
+                # Creating a new copy
+                $logger->info("vl: creating new copy in import");
+
+                # --------------------------------------------------------------------------------
+                # Find or create the volume
+                # --------------------------------------------------------------------------------
+                my ($vol, $evt) =
+                    OpenILS::Application::Cat::AssetCommon->find_or_create_volume(
+                        $e, $item->call_number, $rec->imported_as, $item->owning_lib);
+
+                if($evt) {
+                    $$report_args{evt} = $evt;
+                    respond_with_status($report_args);
+                    next;
+                }
+
+                # --------------------------------------------------------------------------------
+                # Create the new copy
+                # --------------------------------------------------------------------------------
+                $copy = Fieldmapper::asset::copy->new;
+                $copy->loan_duration(2);
+                $copy->fine_level(2);
+                $copy->barcode($item->barcode);
+                $copy->location($item->location);
+                $copy->circ_lib($item->circ_lib || $item->owning_lib);
+                $copy->status( defined($item->status) ? $item->status : OILS_COPY_STATUS_IN_PROCESS );
+                $copy->circulate($item->circulate);
+                $copy->deposit($item->deposit);
+                $copy->deposit_amount($item->deposit_amount);
+                $copy->ref($item->ref);
+                $copy->holdable($item->holdable);
+                $copy->price($item->price);
+                $copy->circ_as_type($item->circ_as_type);
+                $copy->alert_message($item->alert_message);
+                $copy->opac_visible($item->opac_visible);
+                $copy->circ_modifier($item->circ_modifier);
+
+                # --------------------------------------------------------------------------------
+                # Check for dupe barcode
+                # --------------------------------------------------------------------------------
+                if($evt = OpenILS::Application::Cat::AssetCommon->create_copy($e, $vol, $copy)) {
+                    $$report_args{evt} = $evt;
+                    $$report_args{import_error} = 'import.item.duplicate.barcode'
+                        if $evt->{textcode} eq 'ITEM_BARCODE_EXISTS';
+                    respond_with_status($report_args);
+                    next;
+                }
+
+                # --------------------------------------------------------------------------------
+                # create copy notes
+                # --------------------------------------------------------------------------------
+                $evt = OpenILS::Application::Cat::AssetCommon->create_copy_note(
+                    $e, $copy, '', $item->pub_note, 1) if $item->pub_note;
+
+                if($evt) {
+                    $$report_args{evt} = $evt;
+                    respond_with_status($report_args);
+                    next;
+                }
+
+                $evt = OpenILS::Application::Cat::AssetCommon->create_copy_note(
+                    $e, $copy, '', $item->priv_note) if $item->priv_note;
+
+                if($evt) {
+                    $$report_args{evt} = $evt;
+                    respond_with_status($report_args);
+                    next;
+                }
             }
 
             # set the import data on the import item
@@ -1664,7 +1806,6 @@ sub import_record_asset_list_impl {
             respond_with_status($report_args);
             $logger->info("vl: successfully imported item " . $item->barcode);
         }
-
     }
 
     $roe->rollback;

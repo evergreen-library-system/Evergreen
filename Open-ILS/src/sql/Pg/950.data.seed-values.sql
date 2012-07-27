@@ -1559,7 +1559,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 534, 'ADMIN_USER_ACTIVITY_TYPE', oils_i18n_gettext( 534,
     'Allows a user to create/retrieve/update/delete user activity types', 'ppl', 'description' )),
 ( 535, 'VIEW_TRIGGER_EVENT', oils_i18n_gettext( 535,
-    'Allows a user to view circ- and hold-related action/trigger events', 'ppl', 'description'))
+    'Allows a user to view circ- and hold-related action/trigger events', 'ppl', 'description')),
+( 536, 'IMPORT_OVERLAY_COPY', oils_i18n_gettext( 536,
+    'Allows a user to overlay copy data in MARC import', 'ppl', 'description'))
 ;
 
 

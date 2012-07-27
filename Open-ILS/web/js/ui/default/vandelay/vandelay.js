@@ -375,10 +375,18 @@ function uploadMARC(onload){
 function createQueue(queueName, type, onload, importDefId, matchSet) {
     var name = (type=='bib') ? 'bib' : 'authority';
     var method = 'open-ils.vandelay.'+ name +'_queue.create'
+
+    var qType = name;
+    if (vlUploadRecordType.getValue().match(/acq/)) 
+        var qType = 'acq';
+
+    console.log('record type ' + vlUploadRecordType.getValue());
+    console.log('record type ' + vlUploadRecordType.getValue());
+
     fieldmapper.standardRequest(
         ['open-ils.vandelay', method],
         {   async: true,
-            params: [authtoken, queueName, null, name, matchSet, importDefId],
+            params: [authtoken, queueName, null, qType, matchSet, importDefId],
             oncomplete : function(r) {
                 var queue = r.recv().content();
                 if(e = openils.Event.parse(queue)) 
@@ -1312,6 +1320,9 @@ function vlImportRecordQueue(type, queueId, recList, onload) {
 function batchUpload() {
     var queueName = dijit.byId('vl-queue-name').getValue();
     currentType = dijit.byId('vl-record-type').getValue();
+
+    // could be bib-acq, which makes no sense in most places
+    if (currentType.match(/bib/)) currentType = 'bib';
 
     var handleProcessSpool = function() {
         if( 
