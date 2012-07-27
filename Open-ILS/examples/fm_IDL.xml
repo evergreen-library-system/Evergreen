@@ -4958,7 +4958,7 @@ SELECT  usr,
 	</class>
 
 	<!-- A note: Please update alhr and ahopl when updating ahr -->
-	<class id="ahr" controller="open-ils.cstore" oils_obj:fieldmapper="action::hold_request" oils_persist:tablename="action.hold_request" reporter:core="true" reporter:label="Hold Request">
+	<class id="ahr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::hold_request" oils_persist:tablename="action.hold_request" reporter:core="true" reporter:label="Hold Request">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.hold_request_id_seq">
 			<field reporter:label="Status" name="status" oils_persist:virtual="true" />
 			<field reporter:label="Transit" name="transit" oils_persist:virtual="true" />
@@ -5019,6 +5019,11 @@ SELECT  usr,
 			<link field="current_shelf_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="sms_carrier" reltype="has_a" key="id" map="" class="csc"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="VIEW_HOLD" context_field="pickup_lib" />
+			</actions>
+		</permacrud>
 	</class>
 	<class id="ahopl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::hold_on_pull_list" reporter:label="Hold On Pull List" oils_persist:readonly="true">
 		<oils_persist:source_definition><![CDATA[

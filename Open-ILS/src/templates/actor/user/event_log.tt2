@@ -267,6 +267,8 @@
                         <th field="target_circ_copy_title" fpath="target_circ.target_copy.call_number.record.simple_record.title">Target Circulation - Title</th>
                         <th field="target_circ_copy_author" fpath="target_circ.target_copy.call_number.record.simple_record.author">Target Circulation - Author</th>
                         <th field="target_circ_patron_barcode" fpath="target_circ.usr.card.barcode" ffilter="true">Target Circulation - Patron Barcode</th>
+                        <th field="target_hold_copy_title" fpath="target_hold.current_copy.call_number.record.simple_record.title">Target Hold - Title</th>
+                        <th field="target_hold_copy_author" fpath="target_hold.current_copy.call_number.record.simple_record.author">Target Hold - Author</th>
                         <th field="target_hold_patron_barcode" fpath="target_hold.usr.card.barcode" ffilter="true">Target Hold - Patron Barcode</th>
                     </tr>
                 </thead>
