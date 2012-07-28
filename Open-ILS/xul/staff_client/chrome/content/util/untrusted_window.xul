@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Window.Open compatible simple browser wrapper for untrusted pages -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<window id="util_window_open_browser_win" 
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <browser id="browser_browser" flex="1" autoscroll="false" type="content-primary" oils_force_external="true" />
+
+</window>
+

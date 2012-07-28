@@ -281,7 +281,7 @@ function loadMarcEditor(pcrud, rec) {
        To run in Firefox directly, must set signed.applets.codebase_principal_support
        to true in about:config
      */
-    win = window.open('/xul/server/cat/marcedit.xul'); // XXX version?
+    win = window.open('/xul/server/cat/marcedit.xul','','chrome'); // XXX version?
 
     win.xulG = {
         "record": {"marc": rec.marc(), "rtype": "are"},

@@ -2662,9 +2662,9 @@ function AcqLiTable() {
             to true in about:config */
 
         if(openils.XUL.isXUL()) {
-            win = window.open('/xul/' + openils.XUL.buildId() + '/server/cat/marcedit.xul');
+            win = window.open('/xul/' + openils.XUL.buildId() + '/server/cat/marcedit.xul','','chrome');
         } else {
-            win = window.open('/xul/server/cat/marcedit.xul'); 
+            win = window.open('/xul/server/cat/marcedit.xul','','chrome'); 
         }
         var self = this;
         win.xulG = {
@@ -2852,7 +2852,7 @@ function AcqLiTable() {
 
         win = window.open(
             oilsBasePath + '/acq/lineitem/findbib?query=' + escape(query),
-            '', 'resizable,scrollbars=1');
+            '', 'resizable,scrollbars=1,chrome');
 
         win.window.recordFound = function(bibId) { 
             win.close();

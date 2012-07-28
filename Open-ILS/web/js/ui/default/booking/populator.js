@@ -333,7 +333,7 @@ function display_transit_slip(e) {
     /* XXX i18n and/or template */
     try {
         var win = window.open(
-            "","","resizeable,width=600,height=400,scrollbars=1"
+            "","","resizeable,width=600,height=400,scrollbars=1,chrome"
         );
         win.document.body.innerHTML =
             "<h1>Transit Slip</h1>\n" +

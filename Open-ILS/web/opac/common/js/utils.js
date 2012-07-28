@@ -564,7 +564,7 @@ function openWindow( data ) {
 			'chrome,resizable,width=700,height=500'); 
 
 	} else {
-		win = window.open('','', 'resizable,width=700,height=500,scrollbars=1'); 
+		win = window.open('','', 'resizable,width=700,height=500,scrollbars=1,chrome'); 
 		win.document.body.innerHTML = data;
 	}
 }

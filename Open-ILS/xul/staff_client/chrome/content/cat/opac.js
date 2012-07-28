@@ -736,7 +736,7 @@ function open_mfhd_editor(sre_id) {
 }
 
 function open_marc_editor(rec, label) {
-    win = window.open( xulG.url_prefix('XUL_MARC_EDIT') );
+    win = window.open( xulG.url_prefix('XUL_MARC_EDIT'), '', 'chrome' );
 
     win.xulG = {
         record : {marc : rec.marc()},

@@ -474,7 +474,7 @@ if(!dojo._hasResource["openils.Util"]) {
      */
     openils.Util.printHtmlString = function(html, callback) {
 
-        var win = window.open('', 'Print Window', 'resizable,width=800,height=600,scrollbars=1'); 
+        var win = window.open('', 'Print Window', 'resizable,width=800,height=600,scrollbars=1,chrome'); 
 
         // force the new window to the background
         win.blur(); 

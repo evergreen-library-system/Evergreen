@@ -510,9 +510,9 @@ util.print.prototype = {
                             }
                         } else {
                             if (params.content_type == 'text/plain') {
-                                w = window.open('data:text/plain,'+escape(params.msg));
+                                w = window.open('data:text/plain,'+escape(params.msg),'','chrome');
                             } else {
-                                w = window.open('data:text/html,'+escape(params.msg));
+                                w = window.open('data:text/html,'+escape(params.msg),'','chrome');
                             }
                             setTimeout(
                                 function() {
@@ -535,9 +535,9 @@ util.print.prototype = {
                             obj._NSPrint_webBrowserPrint(w,silent,params);
                         } else {
                             if (params.content_type == 'text/plain') {
-                                w = window.open('data:text/plain,'+escape(params.msg));
+                                w = window.open('data:text/plain,'+escape(params.msg),'','chrome');
                             } else {
-                                w = window.open('data:text/html,'+escape(params.msg));
+                                w = window.open('data:text/html,'+escape(params.msg),'','chrome');
                             }
                             setTimeout(
                                 function() {

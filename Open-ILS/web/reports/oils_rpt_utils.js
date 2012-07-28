@@ -129,7 +129,7 @@ function oilsRptDebug() {
 
 	/*
 	if(!oilsRptDebugWindow)
-		oilsRptDebugWindow = window.open('','Debug','resizable,width=700,height=500,scrollbars=1'); 
+		oilsRptDebugWindow = window.open('','Debug','resizable,width=700,height=500,scrollbars=1,chrome'); 
 	oilsRptDebugWindow.document.body.innerHTML = oilsRpt.toHTMLString();
 	*/
 }

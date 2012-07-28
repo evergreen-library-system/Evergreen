@@ -1279,7 +1279,7 @@ SelfCheckManager.prototype.printSessionReceipt = function(callback) {
 
 SelfCheckManager.prototype.printData = function(data, numItems, callback) {
 
-    var win = window.open('', '', 'resizable,width=700,height=500,scrollbars=1'); 
+    var win = window.open('', '', 'resizable,width=700,height=500,scrollbars=1,chrome'); 
     win.document.body.innerHTML = data;
     win.print();
 

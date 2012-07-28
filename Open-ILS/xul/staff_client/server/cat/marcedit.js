@@ -2048,7 +2048,7 @@ function loadMarcEditor(pcrud, marcxml, target, sf) {
        To run in Firefox directly, must set signed.applets.codebase_principal_support
        to true in about:config
      */
-    win = window.open('/xul/server/cat/marcedit.xul'); // XXX version?
+    win = window.open('/xul/server/cat/marcedit.xul', '_blank', 'chrome'); // XXX version?
 
     // Match marc2are.pl last_xact_id format, roughly
     var now = new Date;
