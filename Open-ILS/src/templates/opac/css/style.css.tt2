@@ -42,7 +42,7 @@ a {
 
 /*
 #search-wrapper select {
-    border:0px solid black;
+    border:0px solid [% css_colors.border_dark %];
     filter:alpha(opacity=0);
     -moz-opacity:0;
     -khtml-opacity:0;
@@ -512,7 +512,7 @@ div.format_icon {
 }
 
 #paginate-homebanner a.selected {
-    border: 2px solid black;
+    border: 2px solid [% css_colors.border_dark %];
     margin-top:0px;
     margin-left:0px;
     margin-right:0px;
@@ -525,7 +525,7 @@ div.format_icon {
 #content-wrapper {
     background: [% css_colors.background %];
     min-height: 260px;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid [% css_colors.border_dark %];
 }
 
 .content-wrapper-record-page { top: -15px; position: relative; }
@@ -743,7 +743,7 @@ div.result_place_hold {
 }
 
 #myopac_holds_main_table td {
-    border: 1px solid black;
+    border: 1px solid [% css_colors.border_dark %];
     
 }
 
@@ -1187,7 +1187,7 @@ a.opac-button {
 }
 
 .rdetail-mfhd-bottom {
-    border-bottom: thin solid black;
+    border-bottom: thin solid [% css_colors.border_dark %];
     width: 100%;
 }
 
@@ -1365,9 +1365,9 @@ a.preflib_change {
 }
 
 #ac_tab_wrapper { width : 100%; }
-.ac_tab { float: left; padding-right: 10px; font-size: 110%; padding: 5px; border: 1px solid #417860; }
-.ac_tab_selected { background-color: #417860; }
-.ac_tab_selected a { color: #FFF; }
+.ac_tab { float: left; padding-right: 10px; font-size: 110%; padding: 5px; border: 1px solid [% css_colors.primary_offset %]; }
+.ac_tab_selected { background-color: [% css_colors.primary_offset %]; }
+.ac_tab_selected a { color: [% css_colors.text_invert %]; }
 #ac_content { clear: both; width: 100%; margin-top: 10px; }
 
 /* Popmenu styles used for making css menus. */
@@ -1385,14 +1385,14 @@ a.preflib_change {
 .popmenu li ul {
     display: none; 
     width: 10em; /* Width to help Opera out */
-    background-color: #00593d;
+    background-color: [% css_colors.primary %];
 }
 .popmenu li:hover ul {
     display: block;
     position: absolute;
     margin: 0;
     padding: 0;
-    border-color: black;
+    border-color: [% css_colors.border_dark %];
     border-width: 1px;
     border-style: solid;
 }
@@ -1400,44 +1400,44 @@ a.preflib_change {
     float: none;
 }
 .popmenu li:hover li a {
-    background-color: #00593d; 
-    color: #f0e0e0;
+    background-color: [% css_colors.primary %]; 
+    color: [% css_colors.accent_ultratint %];
 }
 .popmenu li li a:hover {
-    background-color: #f0e0e0; 
-    color: #00593d;
+    background-color: [% css_colors.accent_ultratint %]; 
+    color: [% css_colors.primary %];
 }
 /* Styles for the temporary list entry. */
 .popmenu li:hover li[class~="temporary"] a {
-    background-color: #00593d; 
-    color: #f0e0e0;
+    background-color: [% css_colors.primary %]; 
+    color: [% css_colors.accent_ultratint %];
 }
 .popmenu li li[class~="temporary"] a:hover {
-    background-color: #f0e0e0; 
-    color: #00593d;
+    background-color: [% css_colors.accent_ultratint %]; 
+    color: [% css_colors.primary %];
 }
 /* Styles for the default list entry. */
 .popmenu li:hover li[class~="default"] a {
-    background-color: #00593d; 
-    color: #f0e0e0;
+    background-color: [% css_colors.primary %]; 
+    color: [% css_colors.accent_ultratint %];
 }
 .popmenu li li[class~="default"] a:hover {
-    background-color: #f0e0e0; 
-    color: #00593d;
+    background-color: [% css_colors.accent_ultratint %]; 
+    color: [% css_colors.primary %];
 }
 /* Styles for the new list entry. */
 .popmenu li:hover li[class~="new"] a {
-    background-color: #00593d; 
-    color: #f0e0e0;
+    background-color: [% css_colors.primary %]; 
+    color: [% css_colors.accent_ultratint %];
 }
 .popmenu li li[class~="new"] a:hover {
-    background-color: #f0e0e0; 
-    color: #00593d;
+    background-color: [% css_colors.accent_ultratint %]; 
+    color: [% css_colors.primary %];
 }
 /* Style to add a divider on the menu. */
 .popmenu li li[class~="divider"] {
     border-bottom-width: 1px;
-    border-bottom-color: black;
+    border-bottom-color: [% css_colors.border_dark %];
     border-bottom-style: solid;
 }
     
