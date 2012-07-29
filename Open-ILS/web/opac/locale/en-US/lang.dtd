@@ -3311,12 +3311,17 @@
 <!ENTITY staff.patron.summary_overlay.group_tab.retrieve_patron.accesskey "">
 <!ENTITY staff.patron.user_buckets.stub_not_implemented "Just a stub, Not Yet Implemented">
 <!ENTITY staff.patron.user_edit.title "Evergreen User Editor">
+<!ENTITY staff.patron.user_edit.user_info.label "User Information">
 <!ENTITY staff.patron.user_edit.user_name.label "User Name:">
 <!ENTITY staff.patron.user_edit.barcode.label "Barcode:">
 <!ENTITY staff.patron.user_edit.firstname.label "First Name:">
 <!ENTITY staff.patron.user_edit.middlename.label "Middle Name:">
 <!ENTITY staff.patron.user_edit.lastname.label "Last Name:">
 <!ENTITY staff.patron.user_edit.working_location.label "Working Location">
+<!ENTITY staff.patron.user_edit.working_shortname.label "Shortname">
+<!ENTITY staff.patron.user_edit.working_name.label "Name">
+<!ENTITY staff.patron.user_edit.working_ou.label "Work OU?">
+<!ENTITY staff.patron.user_edit.permission_list.label "Permissions">
 <!ENTITY staff.patron.user_edit.permission.label "Permission">
 <!ENTITY staff.patron.user_edit.applied.label "Applied">
 <!ENTITY staff.patron.user_edit.depth.label "Depth">
@@ -3486,107 +3491,6 @@
 <!ENTITY staff.generic.list_actions.csv_to_file.accesskey "F">
 <!ENTITY staff.generic.list_actions.save_columns.label "Save List Configuration">
 <!ENTITY staff.generic.list_actions.save_columns.accesskey "S">
-<!ENTITY ev.staff.patron.ue_xhtml.ev_user_editor.label "Evergreen User Editor">
-<!ENTITY ev.staff.patron.ue_xhtml.welcome.label "Welcome ">
-<!ENTITY ev.staff.patron.ue_xhtml.view_errors.label "View Errors">
-<!ENTITY ev.staff.patron.ue_xhtml.user_id.label "1. User Identification">
-<!ENTITY ev.staff.patron.ue_xhtml.contact_info.label "2. Contact Info">
-<!ENTITY ev.staff.patron.ue_xhtml.addresses.label "3. Addresses">
-<!ENTITY ev.staff.patron.ue_xhtml.groups_permissions.label "4. Groups and Permissions">
-<!ENTITY ev.staff.patron.ue_xhtml.statistical_categories.label "5. Statistical Categories">
-<!ENTITY ev.staff.patron.ue_xhtml.surveys.label "6. Surveys">
-<!ENTITY ev.staff.patron.ue_xhtml.finish.label "7. Finish">
-<!ENTITY ev.staff.patron.ue_xhtml.loading_data.label "Loading data...">
-<!ENTITY ev.staff.patron.ue_xhtml.found_duplicate_patron.label "Number of possible duplicate patron(s):">
-<!ENTITY ev.staff.patron.ue_xhtml.barcode.label "Barcode">
-<!ENTITY ev.staff.patron.ue_xhtml.mark_lost.label "Mark Lost">
-<!ENTITY ev.staff.patron.ue_xhtml.username.label "Username">
-<!ENTITY ev.staff.patron.ue_xhtml.password.label "Password">
-<!ENTITY ev.staff.patron.ue_xhtml.reset.label "Reset">
-<!ENTITY ev.staff.patron.ue_xhtml.re_password.label "Password: ">
-<!ENTITY ev.staff.patron.ue_xhtml.verify_password.label "Verify Password">
-<!ENTITY ev.staff.patron.ue_xhtml.first_name.label "First Name">
-<!ENTITY ev.staff.patron.ue_xhtml.middle_name.label "Middle Name">
-<!ENTITY ev.staff.patron.ue_xhtml.last_name.label "Last Name">
-<!ENTITY ev.staff.patron.ue_xhtml.suffix.label "Suffix">
-<!-- Used in a selection list, the '-' at the start and end draws attention to the entry -->
-<!ENTITY ev.staff.patron.ue_xhtml.pick_suffix.label "- Pick -">
-<!ENTITY ev.staff.patron.ue_xhtml.dob.label "Date of Birth">
-<!ENTITY ev.staff.patron.ue_xhtml.primary_id_type.label "Primary Identification Type">
-<!ENTITY ev.staff.patron.ue_xhtml.primary_id.label "Primary Identification">
-<!ENTITY ev.staff.patron.ue_xhtml.parent_guardian.label "Parent or Guardian">
-<!ENTITY ev.staff.patron.ue_xhtml.email_address.label "Email Address">
-<!ENTITY ev.staff.patron.ue_xhtml.phone_example "Example: 123-456-7890 or 123-456-7890 ex123">
-<!ENTITY ev.staff.patron.ue_xhtml.daytime_phone.label "Daytime Phone">
-<!ENTITY ev.staff.patron.ue_xhtml.evening_phone.label "Evening Phone">
-<!ENTITY ev.staff.patron.ue_xhtml.other_phone.label "Other (Cell Phone)">
-<!ENTITY ev.staff.patron.ue_xhtml.home_library.label "Home Library">
-<!ENTITY ev.staff.patron.ue_xhtml.address.label "Address">
-<!ENTITY ev.staff.patron.ue_xhtml.in_city_limits.label "Within City Limits">
-<!ENTITY ev.staff.patron.ue_xhtml.county.label "County">
-<!ENTITY ev.staff.patron.ue_xhtml.valid.label "Valid">
-<!ENTITY ev.staff.patron.ue_xhtml.mailing_address.label "Mailing Address">
-<!ENTITY ev.staff.patron.ue_xhtml.physical_address.label "Physical Address">
-<!ENTITY ev.staff.patron.ue_xhtml.address_owned_by.label "Address is owned by">
-<!ENTITY ev.staff.patron.ue_xhtml.label.label "Label">
-<!ENTITY ev.staff.patron.ue_xhtml.zip.label "Zip">
-<!ENTITY ev.staff.patron.ue_xhtml.street1.label "Street 1">
-<!ENTITY ev.staff.patron.ue_xhtml.street2.label "Street 2">
-<!ENTITY ev.staff.patron.ue_xhtml.city.label "City">
-<!ENTITY ev.staff.patron.ue_xhtml.conuty.label "County">
-<!ENTITY ev.staff.patron.ue_xhtml.state.label "State">
-<!ENTITY ev.staff.patron.ue_xhtml.country.label "Country">
-<!ENTITY ev.staff.patron.ue_xhtml.profile_group.label "Profile Group">
-<!ENTITY ev.staff.patron.ue_xhtml.ue_addr_delete.label "Delete this Address">
-<!ENTITY ev.staff.patron.ue_xhtml.ue_addr_detach.label "Detach this Address">
-<!ENTITY ev.staff.patron.ue_xhtml.ue_addr_approve.label "Approve Pending Address">
-<!ENTITY ev.staff.patron.ue_xhtml.ue_addr_approve_confirm.label "Approve pending address?  This operation will be be instantaneous.">
-<!ENTITY ev.staff.patron.ue_xhtml.primary_ident_ssn_help.label "(XXX-YY-ZZZZ)">
-<!ENTITY ev.staff.patron.ue_xhtml.primary_ident_dl_help.label "(GA-123456789)">
-<!ENTITY ev.staff.patron.ue_xhtml.edit.label "Edit">
-<!-- Used in a selection list, the '-' at the start and end draws attention to the entry -->
-<!ENTITY ev.staff.patron.ue_xhtml.required.label " -- Required -- ">
-<!ENTITY ev.staff.patron.ue_xhtml.account_expiration_date.label "Account Expiration Date">
-<!ENTITY ev.staff.patron.ue_xhtml.net_access_level.label "Internet Access Level">
-<!ENTITY ev.staff.patron.ue_xhtml.active.label "Active">
-<!ENTITY ev.staff.patron.ue_xhtml.barred.label "Barred">
-<!ENTITY ev.staff.patron.ue_xhtml.juvenile.label "Juvenile">
-<!ENTITY ev.staff.patron.ue_xhtml.set_family_group_lead_account.label "Set as Family or Group Lead Account">
-<!ENTITY ev.staff.patron.ue_xhtml.claims_returned_count.label "Claims Returned Count">
-<!ENTITY ev.staff.patron.ue_xhtml.alert_message.label "Alert Message">
-<!ENTITY ev.staff.patron.ue_xhtml.stat_cat_name.label "Statistical Category Name">
-<!ENTITY ev.staff.patron.ue_xhtml.owner.label "Owner">
-<!ENTITY ev.staff.patron.ue_xhtml.value.label "Value">
-<!-- Used in a selection list, the '-' at the start and end draws attention to the entry -->
-<!ENTITY ev.staff.patron.ue_xhtml.none_selected.label " -- None Selected -- ">
-<!ENTITY ev.staff.patron.ue_xhtml.no_surveys_for_location.label "No surveys have been created for this location.">
-<!ENTITY ev.staff.patron.ue_xhtml.finishing_message.label "You are now ready to save the user to the database.<br/>To view or print a summary of the changes, click on the 'View Summary' link.<br/>To save the user, click on the 'Save User' button.">
-<!ENTITY ev.staff.patron.ue_xhtml.back.label "Back">
-<!ENTITY ev.staff.patron.ue_xhtml.forward.label "Forward">
-<!ENTITY ev.staff.patron.ue_xhtml.secondary_id_type.label "Secondary Identification Type">
-<!ENTITY ev.staff.patron.ue_xhtml.secondary_id.label "Secondary Identification">
-<!ENTITY ev.staff.patron.ue_xhtml.address_label.label "Address Label">
-<!ENTITY ev.staff.patron.ue_xhtml.mailing.label "Mailing">
-<!ENTITY ev.staff.patron.ue_xhtml.billing.label "Billing">
-<!ENTITY ev.staff.patron.ue_xhtml.profile.label "Profile">
-<!ENTITY ev.staff.patron.ue_xhtml.expire_date.label "Expire Date">
-<!ENTITY ev.staff.patron.ue_xhtml.family_lead_account.label "Family Lead Account">
-<!ENTITY ev.staff.patron.ue_xhtml.stat_categories.label "Statistical Categories">
-<!ENTITY ev.staff.patron.ue_xhtml.survey.label "Survey">
-<!ENTITY ev.staff.patron.ue_xhtml.question.label "Question">
-<!ENTITY ev.staff.patron.ue_xhtml.answer.label "Answer">
-<!ENTITY ev.staff.patron.ue_xhtml.claims_return_confirm.label "This will reset the claims returned count for this user. Are you sure you wish to perform this action?">
-<!ENTITY ev.staff.patron.ue_xhtml.unsaved_changes.label "You have unsaved changes.">
-<!ENTITY ev.staff.patron.ue_xhtml.xact_collision.label "It appears that someone else was also editing this user. Saving the user now will destroy their changes.  Click 'OK' to refresh the user and continue editing. Click 'Cancel' to do nothing. Note that you will not be able to save the user until this page has been refreshed.">
-<!ENTITY ev.staff.patron.ue_xhtml.no_profile.label "A profile group must be selected">
-<!ENTITY ev.staff.patron.ue_xhtml.print_page.label "Print Page">
-<!ENTITY ev.staff.patron.ue_xhtml.return_to_editor.label "Return to Editor">
-<!ENTITY ev.staff.patron.ue_xhtml.save_user.value "Save User">
-<!ENTITY ev.staff.patron.ue_xhtml.save_clone_user.value "Save and Clone User">
-<!ENTITY ev.staff.patron.ue_xhtml.cancel.value "Cancel">
-<!ENTITY ev.staff.patron.ue_xhtml.alert_message_reset.value "Clear">
-<!ENTITY ev.staff.patron.ue_xhtml.date_selector.label "Date selector">
-<!ENTITY ev.staff.patron.ue_xhtml.alias.label "Alias">
 <!ENTITY ui.circ.patron_summary.horizontal "GUI: Alternative Horizontal Patron Summary Panel">
 <!ENTITY ui.circ.patron_summary.horizontal.desc "This replaces the vertical Patron Summary Sidebar.">
 <!ENTITY ui.general.button_bar "GUI: Above-Tab Button Bar">

@@ -459,7 +459,7 @@ var urls = {
     'XUL_PATRON_HORIZ_DISPLAY' : 'oils://remote/xul/server/patron/display_horiz.xul',
     'XUL_PATRON_EDIT' : 'oils://remote/eg/actor/user/register',
     'XUL_PATRONS_DUE_REFUNDS' : 'oils://remote/xul/server/admin/patrons_due_refunds.xul',
-    'XUL_USER_PERM_EDITOR' : 'oils://remote/xul/server/patron/user_edit.xhtml',
+    'XUL_USER_PERM_EDITOR' : 'oils://remote/xul/server/patron/user_edit.xul',
     'XUL_PATRON_HOLDS' : 'oils://remote/xul/server/patron/holds.xul',
     'XUL_PATRON_INFO_NOTES' : 'oils://remote/xul/server/patron/info_notes.xul',
     'XUL_PATRON_INFO_STAT_CATS' : 'oils://remote/xul/server/patron/info_stat_cats.xul',

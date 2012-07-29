@@ -50,7 +50,7 @@ function set_work_ou(row) {
 function set_perm(row) {
     var pid = findNodeByName(row,'p.code').getAttribute('permid');
     var papply = findNodeByName(row,'p.id').checked;
-    var pdepth = findNodeByName(row,'p.depth').options[findNodeByName(row,'p.depth').selectedIndex].value;
+    var pdepth = findNodeByName(row,'p.depth').value;
     var pgrant = findNodeByName(row,'p.grantable').checked;
 
     var p;
@@ -145,28 +145,9 @@ function save_user () {
     return false;
 }
 
-var adv_mode = true;
-function apply_adv_mode (root) {
-    adv_items = findNodesByClass(root,'advanced');
-    for (var i in adv_items) {
-        adv_mode ?
-            removeCSSClass(adv_items[i], 'hideme') :
-            addCSSClass(adv_items[i], 'hideme');
-    }
-}
-
 function init_editor (u) {
     
-    var x = document.getElementById('editor').elements;
-    
     cgi = new CGI();
-    if (cgi.param('adv')) adv_mode = true; 
-    try {
-        if (xulG) if (xulG.adv) adv_mode = true;
-        if (xulG) if (xulG.params) if (xulG.params.adv) adv_mode = true;
-    } catch (e) {}
-
-    apply_adv_mode(document.getElementById('editor'));
 
     ses_id = cgi.param('ses'); 
     try {
@@ -199,20 +180,11 @@ function init_editor (u) {
         alert(E);
     }
 
-    if (user.usrname()) x['user.usrname'].value = user.usrname();
-    x['user.usrname'].setAttribute('onchange','user.usrname(this.value)');
-
-    if (user.card() && user.card().barcode()) x['user.card.barcode'].value = user.card().barcode();
-    x['user.card.barcode'].setAttribute('onchange','user.card().barcode(this.value)');
-
-    if (user.first_given_name()) x['user.first_given_name'].value = user.first_given_name();
-    x['user.first_given_name'].setAttribute('onchange','user.first_given_name(this.value)');
-
-    if (user.second_given_name()) x['user.second_given_name'].value = user.second_given_name();
-    x['user.second_given_name'].setAttribute('onchange','user.second_given_name(this.value);');
-
-    if (user.family_name()) x['user.family_name'].value = user.family_name();
-    x['user.family_name'].setAttribute('onchange','user.family_name(this.value)');
+    if (user.usrname()) $('user.usrname').value = user.usrname();
+    if (user.card() && user.card().barcode()) $('user.card.barcode').value = user.card().barcode();
+    if (user.first_given_name()) $('user.first_given_name').value = user.first_given_name();
+    if (user.second_given_name()) $('user.second_given_name').value = user.second_given_name();
+    if (user.family_name()) $('user.family_name').value = user.family_name();
 
     // grab the editing staff user object
     req = new RemoteRequest( 'open-ils.auth', 'open-ils.auth.session.retrieve', ses_id );
@@ -255,14 +227,14 @@ function init_editor (u) {
         perm_list = req.getResultObject();
     }
 
-    f = document.getElementById('permissions');
+    f = $('permissions');
     while (f.firstChild) f.removeChild(f.lastChild);
 
     var rcount = 0;
     for (var i in perm_list.sort(function(a,b){ if (a.code() < b.code()) return -1;return 1; }))
         display_perm(f,perm_list[i],staff_perms, rcount++);
 
-    f = document.getElementById('work_ous');
+    f = $('work_ous');
     while (f.firstChild) f.removeChild(f.lastChild);
 
     //flatten the ou tree, keep only those with can_hav_users = true
@@ -270,7 +242,7 @@ function init_editor (u) {
     trim_ou_tree( [work_ou_tree], work_ou_list );
 
     rcount = 0;
-    for (var i in work_ou_list.sort( function(a,b){ if (a.name() < b.name()) return -1;return 1; }) )
+    for (var i in work_ou_list.sort( function(a,b){ if (a.shortname() < b.shortname()) return -1;return 1; }) )
         display_work_ou(f,work_ou_list[i], rcount++);
 
     return true;
@@ -298,29 +270,29 @@ function trim_ou_tree (tree, list) {
 
 function display_work_ou (root,ou_def,r) {
 
-    var wrow = findNodeByName(document.getElementById('work_ou-tmpl'), 'wrow').cloneNode(true);
+    var wrow = $('work_tmpl').cloneNode(true);
+    wrow.id = null;
+    if (r % 2) wrow.setAttribute('class', 'odd');
     root.appendChild(wrow);
 
-    var label_cell = findNodeByName(wrow,'label');
-    findNodeByName(label_cell,'a.name').appendChild(text(ou_def.name()));
-    findNodeByName(label_cell,'a.shortname').appendChild(text(ou_def.shortname()));
-    if (r % 2) label_cell.className += ' odd';
+    findNodeByName(wrow,'a.name').value = ou_def.name();
+    findNodeByName(wrow,'a.shortname').value = ou_def.shortname();
 
-    var apply_cell = findNodeByName(wrow,'wapply');
-    findNodeByName(apply_cell,'a.id').setAttribute('workou_id', ou_def.id());
-    if (r % 2) apply_cell.className += ' odd';
+    findNodeByName(wrow,'a.id').setAttribute('workou_id', ou_def.id());
 
     var has_it = grep(
         function(x){ return x.work_ou() == ou_def.id() },
         user_work_ous
     ).length;
 
-    findNodeByName(apply_cell,'a.id').checked = has_it > 0 ? true : false;
+    findNodeByName(wrow,'a.id').checked = has_it > 0 ? true : false;
 }
 
 function display_perm (root,perm_def,staff_perms, r) {
 
-    var prow = findNodeByName(document.getElementById('permission-tmpl'), 'prow').cloneNode(true);
+    var prow = $('perm_tmpl').cloneNode(true);
+    prow.id = null;
+    if (r % 2) prow.setAttribute('class', 'odd');
     root.appendChild(prow);
 
     var all = false;
@@ -330,7 +302,6 @@ function display_perm (root,perm_def,staff_perms, r) {
             break;
         }
     }
-
 
     var sp,up;
     if (!all) {
@@ -347,26 +318,19 @@ function display_perm (root,perm_def,staff_perms, r) {
             up = user_perms[i];
     }
 
-
     var dis = false;
     if ((up && up.id() < 0) || !sp || !sp.grantable()) dis = true; 
     if (all) dis = false; 
 
-    var label_cell = findNodeByName(prow,'plabel');
-    findNodeByName(label_cell,'p.code').appendChild(text(perm_def.code()));
-    findNodeByName(label_cell,'p.code').setAttribute('title', perm_def.description());
-    findNodeByName(label_cell,'p.code').setAttribute('permid', perm_def.id());
-    if (r % 2) label_cell.className += ' odd';
+    findNodeByName(prow,'p.code').value = perm_def.code();
+    findNodeByName(prow,'p.code').setAttribute('title', perm_def.description());
+    findNodeByName(prow,'p.code').setAttribute('permid', perm_def.id());
 
-    var apply_cell = findNodeByName(prow,'papply');
-    findNodeByName(apply_cell,'p.id').disabled = dis;
-    findNodeByName(apply_cell,'p.id').checked = up ? true : false;
-    if (r % 2) apply_cell.className += ' odd';
+    findNodeByName(prow,'p.id').disabled = dis;
+    findNodeByName(prow,'p.id').checked = up ? true : false;
 
-    var depth_cell = findNodeByName(prow,'pdepth');
-    findNodeByName(depth_cell,'p.depth').disabled = dis;
-    findNodeByName(depth_cell,'p.depth').id = 'perm-depth-' + perm_def.id();
-    if (r % 2) depth_cell.className += ' odd';
+    findNodeByName(prow,'p.depth').disabled = dis;
+    findNodeByName(prow,'p.depth').id = 'perm-depth-' + perm_def.id();
     selectBuilder(
         'perm-depth-' + perm_def.id(),
         globalOrgTypes,
@@ -377,19 +341,17 @@ function display_perm (root,perm_def,staff_perms, r) {
           empty_value        : '',
           clear            : true }
     );
-    
-    var grant_cell = findNodeByName(prow,'pgrant');
-    findNodeByName(grant_cell,'p.grantable').disabled = dis;
-    findNodeByName(grant_cell,'p.grantable').checked = up ? (up.grantable() ? true : false) : false;
-    if (r % 2) grant_cell.className += ' odd';
+
+    findNodeByName(prow,'p.grantable').disabled = dis;
+    findNodeByName(prow,'p.grantable').checked = up ? (up.grantable() != 0 ? true : false) : false;
 
 }
-
 
 function selectBuilder (id, objects, def, args) {
     var label_field = args['label_field'];
     var value_field = args['value_field'];
     var depth = args['depth'];
+    var newOpt;
 
     if (!depth) depth = 0;
 
@@ -399,16 +361,13 @@ function selectBuilder (id, objects, def, args) {
 
     var sel = id;
     if (typeof sel != 'object')
-        sel = document.getElementById(sel);
-
+        sel = $(sel);
     if (args['clear']) {
-        for (var o in sel.options) {
-            sel.options[o] = null;
-        }
+        sel.removeAllItems()
         args['clear'] = false;
         if (args['empty_label']) {
-            sel.options[0] = new Option( args['empty_label'], args['empty_value'] );
-            sel.selectedIndex = 0;
+            newOpt = sel.appendItem(args['empty_label'], args['empty_value']);
+            sel.selectedItem = newOpt;
         }
     }
 
@@ -422,27 +381,22 @@ function selectBuilder (id, objects, def, args) {
         if (typeof v == 'function')
             v = objects[i][value_field]();
 
-        var opt = new Option( l, v );
+        newOpt = sel.appendItem(l,v);
 
         if (depth) {
             var d = 10 * depth;
-            opt.style.paddingLeft = '' + d + 'px';
+            newOpt.style.paddingLeft = '' + d + 'px';
         }
-
-        sel.options[sel.options.length] = opt;
-
 
         if (typeof def == 'object') {
             for (var j in def) {
                 if (v == def[j]) {
-                    opt.selected = true;
-                    sel.value = v;
+                    sel.selectedItem = newOpt;
                 }
             }
         } else {
             if (v == def) {
-                opt.selected = true;
-                sel.value = v;
+                sel.selectedItem = newOpt;
             }
         }
 

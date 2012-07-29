@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: User Perm Editor -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/patron_display.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<window id="patron_barcode_entry_win" 
+    onload="try { init_editor(); } catch(E) { alert(js2JSON(E)); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
+    <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
+    <script type='text/javascript' src='/opac/common/js/utils.js'/>
+    <script type='text/javascript' src='/opac/common/js//config.js'/>
+    <script type='text/javascript' src='/opac/common/js/CGI.js'/>
+    <script type='text/javascript' src='/opac/common/js/slimtree.js'/>
+    <script type='text/javascript' src='/opac/common/js/JSON_v1.js'/>
+    <script type='text/javascript' src='/opac/common/js/fmall.js'/>
+    <script type='text/javascript' src='/opac/common/js/fmgen.js'/>
+    <script type='text/javascript' src='/opac/common/js/opac_utils.js'/>
+    <script type='text/javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js'/>
+    <script type='text/javascript' src='/opac/common/js/org_utils.js'/>
+    <script type='text/javascript' src='/opac/common/js/init.js'/>
+    <script type='text/javascript' src='/opac/common/js/RemoteRequest.js'/>
+    <script type='text/javascript' src='/opac/common/js/sprintf.js'/>
+
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type='text/javascript' src='user_edit.js'/>
+
+    <groupbox>
+        <caption label="&staff.patron.user_edit.user_info.label;"/>
+        <grid>
+            <columns>
+                <column/>
+                <column flex="1"/>
+                <column/>
+                <column flex="1"/>
+                <column/>
+                <column flex="1"/>
+            </columns>
+            <rows>
+                <row>
+                    <label control="user.usrname" value="&staff.patron.user_edit.user_name.label;"/>
+                    <textbox disabled="true" id="user.usrname"/>
+                    <label control="user.card.barcode" value="&staff.patron.user_edit.barcode.label;"/>
+                    <textbox disabled="true" id="user.card.barcode"/>
+                </row>
+                <row>
+                    <label control="user.first_given_name" value="&staff.patron.user_edit.firstname.label;"/>
+                    <textbox disabled="true" id="user.first_given_name"/>
+                    <label control="user.second_given_name" value="&staff.patron.user_edit.middlename.label;"/>
+                    <textbox disabled="true" id="user.second_given_name"/>
+                    <label control="user.family_name" value="&staff.patron.user_edit.lastname.label;"/>
+                    <textbox disabled="true" id="user.family_name"/>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+    <vbox flex="1" style="overflow: auto">
+        <groupbox>
+            <caption label="&staff.patron.user_edit.working_location.label;"/>
+            <grid>
+                <columns>
+                    <column/>
+                    <column flex="1"/>
+                    <column/>
+                </columns>
+                <rows>
+                    <row>
+                        <label value="&staff.patron.user_edit.working_shortname.label;" style="font-weight: bold"/>
+                        <label value="&staff.patron.user_edit.working_name.label;" style="font-weight: bold"/>
+                        <label value="&staff.patron.user_edit.working_ou.label;" style="font-weight: bold"/>
+                    </row>
+                    <rows id="work_ous"/>
+                </rows>
+            </grid>
+        </groupbox>
+        <groupbox>
+            <caption label="&staff.patron.user_edit.permission_list.label;"/>
+            <grid>
+                <columns>
+                    <column flex="1"/>
+                    <column/>
+                    <column/>
+                    <column/>
+                </columns>
+                <rows>
+                    <row>
+                        <label value="&staff.patron.user_edit.permission.label;" style="font-weight: bold"/>
+                        <label value="&staff.patron.user_edit.applied.label;" style="font-weight: bold"/>
+                        <label value="&staff.patron.user_edit.depth.label;" style="font-weight: bold"/>
+                        <label value="&staff.patron.user_edit.grantable.label;" style="font-weight: bold"/>
+                    </row>
+                    <rows id="permissions"/>
+                </rows>
+            </grid>
+        </groupbox>
+    </vbox>
+    <button oncommand="save_user(); return false;" label="&staff.patron.user_edit.save.label;"/>
+    <vbox style="display: none">
+        <row id="perm_tmpl">
+            <label name="p.code"/>
+            <checkbox name="p.id" oncommand="set_perm(this.parentNode)"/>
+            <menulist name="p.depth" oncommand="set_perm(this.parentNode)"/>
+            <checkbox name="p.grantable" oncommand="set_perm(this.parentNode)"/>
+        </row>
+        <row id="work_tmpl">
+            <label name="a.shortname"/>
+            <label name="a.name"/>
+            <checkbox name="a.id" oncommand="set_work_ou(this.parentNode)"/>
+        </row>
+    </vbox>
+</window>
+

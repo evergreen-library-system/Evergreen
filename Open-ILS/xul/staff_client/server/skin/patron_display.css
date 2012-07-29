@@ -96,3 +96,8 @@ row#row_billing_zip { padding-bottom: 10px; }
 
 .PATRON_JUVENILE .dob { color: purple; }
 .PATRON_JUVENILE label.juvenile_indicator { display: inline; color: purple; }
+
+
+/* New user perm editor stuff */
+row.odd { background-color: lightcyan; }
+rows#work_ous row, rows#permissions row { border-top: 1px solid #444444; }

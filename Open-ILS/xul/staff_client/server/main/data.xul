@@ -117,7 +117,6 @@
             //cache_me('/xul/server/patron/summary_overlay.xul','http'); 
             //cache_me('/xul/server/patron/barcode_entry.xul','http');
 
-            //cache_me('/xul/server/patron/ue.xhtml','http');
             //cache_me('/xul/server/admin/adminlib.js','http');
             //cache_me('/xul/server/admin/admin.css','http');
             //cache_me('/xul/server/patron/ue_config.js','http');
