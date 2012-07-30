@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0728', :eg_version);
 
 INSERT INTO actor.search_filter_group (owner, code, label) 
     VALUES (1, 'kpac_main', 'Kid''s OPAC Search Filter');
