@@ -356,7 +356,7 @@ h2.rdetail_uris {
 }
 div.rdetail_uris {
     padding: 0.5em 1em 0.5em 1em;
-    background-color: lightGray;
+    background-color: [% css_colors.accent_lighter2 %];
 }
 div.rdetail_uris ul li {
     position: relative;
@@ -486,18 +486,7 @@ div.format_icon {
     color: [% css_colors.text_invert %];
 }
 
-#paginate-homebanner a.toc {
-    display:block;
-    width:20px;
-    height:20px;
-    background:gray;
-    float:left;
-    margin-left:2px;
-    margin-right:2px;
-    margin-top:2px;
-}
-
-#rdetail_extras_expand, #rdetail_extras_collapse, #rdetail_locs_collapse {
+##rdetail_extras_expand, #rdetail_extras_collapse, #rdetail_locs_collapse {
     margin-left: 13px;
 }
 
@@ -509,13 +498,6 @@ div.format_icon {
 
 #rdetail_anotes_div .biography {
     margin:0;
-}
-
-#paginate-homebanner a.selected {
-    border: 2px solid [% css_colors.border_dark %];
-    margin-top:0px;
-    margin-left:0px;
-    margin-right:0px;
 }
 
 .almost-content-wrapper {
@@ -591,11 +573,6 @@ div.format_icon {
     font-weight: bold;
     color: [% css_colors.text_alert %];
     padding-top: 1em;
-}
-
-#home-buttons-inner {
-    height:117px;
-    background:#bda964;
 }
 
 #holds_temp_parent td {
@@ -892,7 +869,8 @@ table.acct_notes th {
 }
 
 .payment-processing {
-    font-weight: bold; color: green;
+    font-weight: bold;
+    color: [% css_colors.text_greatnews %];
     font-size: 120%;
     padding: 10px; border: 1px solid [% css_colors.accent_medium_dark %];
     text-align: center;
@@ -928,7 +906,13 @@ table.acct_notes th {
 .facetFieldLabel { padding-left: 2px; margin-top: 5px; margin-bottom: 5px; font-weight: bold; text-align: left; }
 .extraFacetFieldsWrapper { }
 .toggleExtraFacetFieldsButton { float: right; margin: 0px; padding: 0px; }
-.facetFieldLineCount { display: inline-block; border-right: 1px solid [% css_colors.accent_light %]; color: gray; width: 3em; margin-right: 3px }
+.facetFieldLineCount {
+    display: inline-block;
+    border-right: 1px solid [% css_colors.accent_light %];
+    color: [% css_colors.accent_mediumdark %];
+    width: 3em;
+    margin-right: 3px
+}
 .facetField { border-top: 1px solid [% css_colors.accent_light %]; }
 .facetFields { padding-left: 5px; }
 .facetFieldLineValue { overflow: hidden; text-overflow: ellipsis; }
@@ -988,10 +972,6 @@ div.facet_sidebar {
     padding-top:6px;
 }
 
-.facet_box_wrapper .box_wrapper .bottom {
-    background:url('/images/facet_box_bg_bottom.png') no-repeat;
-}
-
 .facet_template {
     padding-bottom:5px;
 }
@@ -1003,7 +983,7 @@ div.facet_sidebar {
 
 .facet_template .count {
     float:right;
-    color:#818080;
+    color: [% css_colors.accent_mediumdark %];
     padding-right:11px;
 }
 
@@ -1204,7 +1184,10 @@ a.opac-button {
 .bookbag-item-row td { vertical-align: top; }
 
 .error { color: [% css_colors.text_alert %]; font-weight: bold; }
-.success { color: green; font-weight: bold; }
+.success {
+    color: [% css_colors.text_greatnews %];
+    font-weight: bold;
+}
 
 .rdetail_related_subjects {
     margin-top: 1.5em;
@@ -1401,37 +1384,37 @@ a.preflib_change {
 }
 .popmenu li:hover li a {
     background-color: [% css_colors.primary %]; 
-    color: [% css_colors.accent_ultratint %];
+    color: [% css_colors.accent_ultralight %];
 }
 .popmenu li li a:hover {
-    background-color: [% css_colors.accent_ultratint %]; 
+    background-color: [% css_colors.accent_ultralight %]; 
     color: [% css_colors.primary %];
 }
 /* Styles for the temporary list entry. */
 .popmenu li:hover li[class~="temporary"] a {
     background-color: [% css_colors.primary %]; 
-    color: [% css_colors.accent_ultratint %];
+    color: [% css_colors.accent_ultralight %];
 }
 .popmenu li li[class~="temporary"] a:hover {
-    background-color: [% css_colors.accent_ultratint %]; 
+    background-color: [% css_colors.accent_ultralight %]; 
     color: [% css_colors.primary %];
 }
 /* Styles for the default list entry. */
 .popmenu li:hover li[class~="default"] a {
     background-color: [% css_colors.primary %]; 
-    color: [% css_colors.accent_ultratint %];
+    color: [% css_colors.accent_ultralight %];
 }
 .popmenu li li[class~="default"] a:hover {
-    background-color: [% css_colors.accent_ultratint %]; 
+    background-color: [% css_colors.accent_ultralight %]; 
     color: [% css_colors.primary %];
 }
 /* Styles for the new list entry. */
 .popmenu li:hover li[class~="new"] a {
     background-color: [% css_colors.primary %]; 
-    color: [% css_colors.accent_ultratint %];
+    color: [% css_colors.accent_ultralight %];
 }
 .popmenu li li[class~="new"] a:hover {
-    background-color: [% css_colors.accent_ultratint %]; 
+    background-color: [% css_colors.accent_ultralight %]; 
     color: [% css_colors.primary %];
 }
 /* Style to add a divider on the menu. */

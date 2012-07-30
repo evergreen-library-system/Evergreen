@@ -9,6 +9,7 @@
         text_attention = "#ffcc33", # pumpkin orange
         text_badnews = "#f41d36", # cherry red
         text_goodnews = "#1dd93c", # lime green
+        text_greatnews = "green", # green
         text_invert = "#fff", # white
         text_match = "#c00", # deep red
         primary = "#00593d", # dark green
@@ -20,7 +21,6 @@
         accent_lighter2 = "#d8d8d8", #  grey (lighter again)
         accent_lightest = "#eee", #  grey (lightest)
         accent_ultralight = "#f0f0f0", # ivory
-        accent_ultratint = "#f0e0e0", # ivory-pink
         accent_medium = "#999", # gun metal grey (medium)
         accent_mediumdark = "#888", # gun metal grey (medium dark)
         accent_dark = "#666", # gun metal grey (dark)

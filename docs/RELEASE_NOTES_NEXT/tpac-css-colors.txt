@@ -1,0 +1,29 @@
+TPAC: Simplified CSS Color Customization
+========================================
+CSS colors are now defined as a pair of Template::Toolkit files,
+`Open-ILS/src/templates/opac/css/styles.css.tt2` and
+`Open-ILS/src/templates/opac/parts/css/colors.tt2`. Evergreen administrators
+can customize the color scheme for a given skin by copying `colors.tt2` into a
+template override directory and adjusting the colors as desired.
+
+Change required to eg_vhost.conf
+--------------------------------
+To enable Apache to pass the CSS file to the Template::Toolkit handler, you
+must remove `.css` from the list of file extensions that should not be passed
+to a handler in `eg_vhost.conf` as follows:
+
+.From
+------------------------------------------------------------------------------
+<LocationMatch ^/eg/.*(\.js|\.css|\.html|\.xhtml|\.xml|\.jpg|\.png|\.gif)$>
+    SetHandler None
+</LocationMatch>
+------------------------------------------------------------------------------
+
+.To
+------------------------------------------------------------------------------
+<LocationMatch ^/eg/.*(\.js|\.html|\.xhtml|\.xml|\.jpg|\.png|\.gif)$>
+    SetHandler None
+</LocationMatch>
+------------------------------------------------------------------------------
+
+After making this change, restart Apache to make the change take effect.
