@@ -1,3 +1,13 @@
+-- Evergreen DB patch 0727.function.xml_pretty_print.sql
+--
+-- A simple pretty printer for XML.
+-- Particularly useful for debugging the biblio.record_entry.marc field.
+--
+BEGIN;
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0727', :eg_version);
+
 CREATE OR REPLACE FUNCTION evergreen.xml_pretty_print(input XML) 
     RETURNS XML
     LANGUAGE SQL AS
@@ -19,3 +29,4 @@ $func$;
 COMMENT ON FUNCTION evergreen.xml_pretty_print(input XML) IS
 'Simple pretty printer for XML, as written by Andrew Dunstan at http://goo.gl/zBHIk';
 
+COMMIT;
