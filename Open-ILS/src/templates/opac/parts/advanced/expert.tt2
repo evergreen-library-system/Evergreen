@@ -19,20 +19,24 @@
         </tbody>
         <tfoot>
             <tr>
-               <td colspan="7"><a href="javascript:addExpertRow();">[ [% l("Add row") %] ]</a>
-	       </td>
+               <td colspan="7"><a href="javascript:addExpertRow();">[ [% l("Add row") %] ]</a></td>
             </tr>
             <tr>
                <td colspan="5" class="expert-search-row">
-	           [% PROCESS "opac/parts/org_selector.tt2";
-	              l("in");   INCLUDE build_org_selector show_loc_groups=1 %]
-	       </td>
-	       <td colspan="2" class="expert-search-row">
-	            <input type="submit" value="[% l('Search') %]"
-	               alt="[% l('Search') %]" title="[% l('Search') %]"
-	               class="opac-button" />
-	       </td>
-	     </tr>
+                   <label><strong>[% l("Search Library:") %]</strong>
+                       [%- PROCESS "opac/parts/org_selector.tt2";
+                           INCLUDE build_org_selector show_loc_groups=1 
+                       %]
+                   </label>
+               </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="expert-search-row">
+                <input type="submit" value="[% l('Search') %]"
+                    alt="[% l('Search') %]" title="[% l('Search') %]"
+                    class="opac-button" />
+                </td>
+            </tr>
         </tfoot>
     </table>
 </form>
