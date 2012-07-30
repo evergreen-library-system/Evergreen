@@ -1,3 +1,10 @@
+-- Evergreen DB patch 0729.vr_format_value_maps.sql
+--
+BEGIN;
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0729', :eg_version);
+
 CREATE OR REPLACE FUNCTION config.update_coded_value_map(in_ctype TEXT, in_code TEXT, in_value TEXT, in_description TEXT DEFAULT NULL, in_opac_visible BOOL DEFAULT NULL, in_search_label TEXT DEFAULT NULL, in_is_simple BOOL DEFAULT NULL, add_only BOOL DEFAULT FALSE) RETURNS VOID AS $f$
 DECLARE
     current_row config.coded_value_map%ROWTYPE;
@@ -47,3 +54,6 @@ SELECT config.update_coded_value_map('vr_format', 'u', 'Unknown', add_only := TR
 SELECT config.update_coded_value_map('vr_format', 'v', 'DVD', add_only := TRUE);
 SELECT config.update_coded_value_map('vr_format', 'z', 'Other', add_only := TRUE);
 SELECT config.update_coded_value_map('vr_format', ' ', 'Unspecified', add_only := TRUE);
+
+
+COMMIT;
