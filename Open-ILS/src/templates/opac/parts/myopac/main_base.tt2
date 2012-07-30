@@ -50,7 +50,11 @@
 
     <div style="width:662px;">
         <div style="float:left;">
-            <div style="padding:10px 0px;"></div>
+            <div style="padding:10px 0px;">
+		[% IF date.format(ctx.user.expire_date, '%s') < date.format(date.now , '%s') %]
+                <span class="alert">Your library card expired on [% date.format(ctx.user.expire_date, '%B %d, %Y') %]. Please contact a librarian to resolve this issue.</span>
+                [% END %]
+	    </div>
             <div class="acct_sum_row">
                 <table width="100%" cellspacing="0" cellpadding="0">
                     <tr>
