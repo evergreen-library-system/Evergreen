@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('XXXX', :eg_version); -- miker
+SELECT evergreen.upgrade_deps_block_check('0730', :eg_version);
 
 DROP FUNCTION acq.propagate_funds_by_org_tree (INT, INT, INT);
 DROP FUNCTION acq.propagate_funds_by_org_unit (INT, INT, INT);
