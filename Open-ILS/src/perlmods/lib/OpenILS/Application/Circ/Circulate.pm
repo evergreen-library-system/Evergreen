@@ -2509,9 +2509,9 @@ sub do_checkin {
 
             $self->hold($hold);
 
-            if( $hold and $hold->cancel_time ) { # this transited hold was cancelled mid-transit
+            if( $hold and ( $hold->cancel_time or $hold->fulfillment_time ) ) { # this transited hold was cancelled or filled mid-transit
 
-                $logger->info("circulator: we received a transit on a cancelled hold " . $hold->id);
+                $logger->info("circulator: we received a transit on a cancelled or filled hold " . $hold->id);
                 $self->reshelve_copy(1);
                 $self->cancelled_hold_transit(1);
                 $self->notify_hold(0); # don't notify for cancelled holds
