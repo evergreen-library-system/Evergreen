@@ -1,4 +1,7 @@
+-- 0732.schema.acq-lineitem-summary.sql
 BEGIN;
+
+SELECT evergreen.upgrade_deps_block_check('0732', :eg_version);
 
 CREATE OR REPLACE VIEW acq.lineitem_summary AS
     SELECT 
