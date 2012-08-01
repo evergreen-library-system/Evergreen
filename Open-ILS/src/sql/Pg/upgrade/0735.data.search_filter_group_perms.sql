@@ -1,8 +1,10 @@
+-- Evergreen DB patch 0735.data.search_filter_group_perms.sql
+--
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0735', :eg_version);
 
--- TODO: verify IDs before merging
 INSERT INTO permission.perm_list ( id, code, description ) 
     VALUES ( 
         537, 
