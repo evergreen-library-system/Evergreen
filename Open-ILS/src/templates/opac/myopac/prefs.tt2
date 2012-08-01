@@ -84,21 +84,29 @@
                     </div>[% l("Username") %]
                 </td>
                 <td class='light_border'>[% ctx.user.usrname | html %]</td>
-                [% IF ctx.username_change_disallowed %]
+                [%- IF ctx.username_change_disallowed %]
                 <td></td>
-                [% ELSE %]
+                [%- ELSE %]
                 <td class='light_border'><a href='update_username'>[% l("Change") %]</a></td>
-                [% END %]
+                [%- END %]
             </tr>
             <tr>
                 <td class='color_4 light_border'>[% l("Password") %]</td>
                 <td class='light_border'>[% l("(not shown)") %]</td>
+                [%- IF disable_password_change == 'true' %]
+                <td></td>
+                [%- ELSE %]
                 <td class='light_border'><a href='update_password'>[% l("Change") %]</a></td>
+                [%- END %]
             </tr>
             <tr>
                 <td class='color_4 light_border'>[% l("Email Address") %]</td>
                 <td class='light_border'>[% ctx.user.email | html %]</td>
+                [%- IF disable_email_change == 'true' %]
+                <td></td>
+                [%- ELSE %]
                 <td class='light_border'><a href='update_email'>[% l('Change') %]</a></td>
+                [%- END %]
             </tr>
 
             [% IF ctx.user.ident_value %]<tr class="hide_me">

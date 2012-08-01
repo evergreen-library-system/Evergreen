@@ -56,6 +56,22 @@ google_analytics.code = 'UA-9999999-99';
 reset_password = 'true';
 
 ##############################################################################
+# Hide various options from user preferences that you might not want to expose
+# if you rely on centralized authentication via open-ils.auth_proxy, like LDAP
+#
+# Username changes can be disabled by the opac.lock_usernames OU setting.
+##############################################################################
+disable_password_change = 'false';
+disable_email_change = 'false';
+
+##############################################################################
+# Some libraries do not do notifications by phone; if not true, then this
+# hides the user preference for phone notifications as well as the phone
+# notification portion of the hold dialogue
+##############################################################################
+allow_phone_notifications = 'true';
+
+##############################################################################
 # Misc. UI Settings
 ##############################################################################
 

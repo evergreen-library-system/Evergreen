@@ -27,6 +27,7 @@
                         [% IF (matches = ctx.user_setting_map.$setting.match('email')); %] checked='checked' [% END %]/>
                 </td>
             </tr>
+            [%- IF allow_phone_notifications == 'true' %]
             <tr>
                 <td>[% l('Notify by Phone by default when a hold is ready for pickup?') %]</td>
                 <td>
@@ -43,6 +44,7 @@
                         [% IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]' [% END %]/>
                 </td>
             </tr>
+            [%- END %]
             [% IF ctx.get_org_setting(ctx.search_ou, 'sms.enable') == 1 %]
             <tr>
                 <td>[% l('Notify by Text by default when a hold is ready for pickup?') %]</td>
