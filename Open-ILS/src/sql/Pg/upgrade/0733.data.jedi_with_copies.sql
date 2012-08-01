@@ -7,6 +7,10 @@
 -- updating.  No env fields are removed (that aren't otherwise replaced).
 --
 
+BEGIN;
+
+SELECT evergreen.upgrade_deps_block_check('0732', :eg_version);
+
 UPDATE action_trigger.event_definition SET template =
 $$[%- USE date -%]
 [%# start JEDI document 
@@ -179,5 +183,5 @@ BEGIN
 
 END $$;
 
-
+COMMIT;
 
