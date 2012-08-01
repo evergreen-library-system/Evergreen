@@ -165,6 +165,16 @@ function TermSelectorFactory(terms) {
                     wStore[widgetKey].focus();
                 if (typeof(callback) == "function")
                     callback(term, widgetKey);
+
+                // submit on enter
+                dojo.connect(wStore[widgetKey], 'onkeyup',
+                    function(e) {
+                        if(e.keyCode == dojo.keys.ENTER) {
+                            resultManager.go(termManager.buildSearchObject());
+                        }
+                    }
+                );
+
             } else {
                 new openils.widget.AutoFieldWidget({
                     "fmClass": term.hint,
@@ -186,9 +196,11 @@ function TermSelectorFactory(terms) {
                             callback(term, widgetKey);
 
                         // submit on enter
-                        openils.Util.registerEnterHandler(w.domNode,
-                            function() { 
-                                resultManager.go(termManager.buildSearchObject());
+                        dojo.connect(w.domNode, 'onkeyup',
+                            function(e) {
+                                if(e.keyCode == dojo.keys.ENTER) {
+                                    resultManager.go(termManager.buildSearchObject());
+                                }
                             }
                         );
                     }
