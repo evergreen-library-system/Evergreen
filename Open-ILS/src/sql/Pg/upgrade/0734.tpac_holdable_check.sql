@@ -1,3 +1,10 @@
+-- Evergreen DB patch 0734.tpac_holdable_check.sql
+--
+BEGIN;
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0734', :eg_version);
+
 CREATE OR REPLACE FUNCTION asset.record_has_holdable_copy ( rid BIGINT ) RETURNS BOOL AS $f$
 BEGIN
     PERFORM 1
@@ -135,3 +142,4 @@ RETURNS XML AS $F$
              );
 $F$ LANGUAGE SQL STABLE;
 
+COMMIT;
