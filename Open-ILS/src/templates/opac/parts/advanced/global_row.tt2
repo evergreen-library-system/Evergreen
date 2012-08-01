@@ -3,7 +3,8 @@
         {value => 'contains', label => l('Contains')},
         {value => 'nocontains', label => l('Does not contain')},
         {value => 'phrase', label => l('Contains phrase')},
-        {value => 'exact', label => l('Matches exactly')}
+        {value => 'exact', label => l('Matches exactly')},
+        {value => 'starts', label => l('Starts with')}
     ];
     contains = CGI.param('contains');
     queries = CGI.param('query');

@@ -44,6 +44,11 @@ sub _prepare_biblio_search_basics {
         } elsif ($contains eq 'exact') {
             $query =~ s/[\^\$]//g;
             $query = '^' . $query . '$';
+        } elsif ($contains eq 'starts') {
+            $query =~ s/"//g;
+            $query =~ s/[\^\$]//g;
+            $query = '^' . $query;
+            $query = ('"' . $query . '"') if index $query, ' ';
         }
         $query = "$qtype:$query" unless $qtype eq 'keyword' and $i == 0;
 
