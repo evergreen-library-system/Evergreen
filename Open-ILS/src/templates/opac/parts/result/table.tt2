@@ -218,11 +218,9 @@
                                                     <div class="result_table_utils">
 [%- search_ou = ctx.search_ou;
     IF ctx.place_unfillable ||
-        (ctx.holds_block.enabled != 'true' &&
-            attrs.marc_xml.findnodes('//*[local-name()="holdings" and @has_holdable="true"]').size > 0
-         ) ||
-        (ctx.holds_block.enable == 'true' && attrs.org_copy_counts.$search_ou.available > 0)
-
+        ( attrs.marc_xml.findnodes('//*[local-name()="holdings" and @has_holdable="true"]').size > 0
+            && (ctx.holds_block.enabled != 'true' || attrs.org_copy_counts.$search_ou.available == 0)
+        )
 %]
                                                         <div class="results_aux_utils place_hold"><a
                                                                 href="[% mkurl(ctx.opac_root _ '/place_hold', 
