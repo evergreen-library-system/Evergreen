@@ -45,7 +45,8 @@ BZIP2=${BZIP2:-bzip2}
 
 GEN_UPDATES=0
 WIN_UPDATES=0
-LINUX_UPDATES=0
+LINUX32_UPDATES=0
+LINUX64_UPDATES=0
 EXT_UPDATES=0
 CLIENTS=0
 case "$2" in
@@ -57,9 +58,13 @@ case "$2" in
 	echo "Building Windows Updates only"
 	WIN_UPDATES=1
 	;;
-	linux-updates*)
-	echo "Building Linux Updates only"
-	LINUX_UPDATES=1
+	linux32-updates*)
+	echo "Building Linux (32 bit) Updates only"
+	LINUX32_UPDATES=1
+	;;
+	linux64-updates*)
+	echo "Building Linux (64 bit) Updates only"
+	LINUX32_UPDATES=1
 	;;
 	extension-updates*)
 	echo "Building Extension Updates only"
@@ -69,7 +74,8 @@ case "$2" in
 	echo "Building All Updates"
 	GEN_UPDATES=1
 	WIN_UPDATES=1
-	LINUX_UPDATES=1
+	LINUX32_UPDATES=1
+	LINUX64_UPDATES=1
 	EXT_UPDATES=1
 	;;
 esac
@@ -296,18 +302,36 @@ if [ $WIN_UPDATES -eq 1 ]; then
 	cleanup_files
 fi
 
-# Linux Updates - Linux XULRunner, update channel of "lin'
-if [ $LINUX_UPDATES -eq 1 ]; then
+# Linux 32 bit Updates - Linux XULRunner, update channel of "lin"
+if [ $LINUX32_UPDATES -eq 1 ]; then
 	PATCHPATH="$prefix/patch/lin"
 	PUBPATH="$prefix/pub/lin"
 	ARCHIVEPATH="$prefix/archives/lin"
 	if [ $CLIENTS -eq 1 ]; then
-		make linux-client
+		make linux32-client
 		mkdir -p "$prefix/pub/clients/"
-		find "$prefix/pub/clients/" -name '*.tar.bz2' -delete
-		mv evergreen_staff_client.tar.bz2 "$prefix/pub/clients/${VERSION}.tar.bz2"
+		find "$prefix/pub/clients/" -name '*_i686.tar.bz2' -delete
+		mv evergreen_staff_client_i686.tar.bz2 "$prefix/pub/clients/${VERSION}_i686.tar.bz2"
 	else
-		make linux-xulrunner
+		make linux32-xulrunner
+	fi
+	make_full_update
+	make_partial_updates
+	cleanup_files
+fi
+
+# Linux 64 bit Updates - Linux XULRunner, update channel of "lin64"
+if [ $LINUX64_UPDATES -eq 1 ]; then
+	PATCHPATH="$prefix/patch/lin64"
+	PUBPATH="$prefix/pub/lin64"
+	ARCHIVEPATH="$prefix/archives/lin64"
+	if [ $CLIENTS -eq 1 ]; then
+		make linux64-client
+		mkdir -p "$prefix/pub/clients/"
+		find "$prefix/pub/clients/" -name '*_x86_64.tar.bz2' -delete
+		mv evergreen_staff_client_x86_64.tar.bz2 "$prefix/pub/clients/${VERSION}_x86_64.tar.bz2"
+	else
+		make linux64-xulrunner
 	fi
 	make_full_update
 	make_partial_updates

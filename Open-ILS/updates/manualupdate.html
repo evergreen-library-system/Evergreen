@@ -24,15 +24,26 @@ if [ -f ../patch/win/VERSION ]; then
 	fi
 fi
 if [ -f ../patch/lin/VERSION ]; then
-	echo "<h2>Linux</h2>"
+	echo "<h2>Linux (32 bit)</h2>"
 	VERSION=$(cat ../patch/lin/VERSION)
-	if [ -f clients/${VERSION}.tar.bz2 ]; then
-		echo "<p>A bundle for Linux is available.</p>"
-		echo "<p><a href=\"clients/${VERSION}.tar.bz2\">Click here to download the bundle (version $VERSION)</a></p>"
+	if [ -f clients/${VERSION}_i686.tar.bz2 ]; then
+		echo "<p>A 32 bit bundle for Linux is available.</p>"
+		echo "<p><a href=\"clients/${VERSION}_i686.tar.bz2\">Click here to download the bundle (version $VERSION)</a></p>"
 	else
-		echo "<p>No bundle is currently available for Linux.</p>"
+		echo "<p>No 32 bit bundle is currently available for Linux.</p>"
 	fi
 fi
+if [ -f ../patch/lin64/VERSION ]; then
+	echo "<h2>Linux (64 bit)</h2>"
+	VERSION=$(cat ../patch/lin64/VERSION)
+	if [ -f clients/${VERSION}_x86_64.tar.bz2 ]; then
+		echo "<p>A 64 bit bundle for Linux is available.</p>"
+		echo "<p><a href=\"clients/${VERSION}_x86_64.tar.bz2\">Click here to download the bundle (version $VERSION)</a></p>"
+	else
+		echo "<p>No 64 bit bundle is currently available for Linux.</p>"
+	fi
+fi
+
 if [ -f ../patch/VERSION ]; then
 	echo "<h2>XULRunner App Bundle</h2>"
 	VERSION=$(cat ../patch/VERSION)
