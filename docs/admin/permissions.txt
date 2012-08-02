@@ -1,0 +1,88 @@
+User and Group Permissions
+--------------------------
+
+It is essential to understand how user and group permissions can be used to
+allow 
+staff to fulfill their roles while ensuring that they only have access to the
+appropriate level.
+
+Permissions in Evergreen are applied to a specific location and system depth 
+based on the home library of the user. The user will only have that permission 
+within the scope provided by the Depth field in relation to his/her working 
+locations.
+
+Evergreen provides group application permissions in order to restrict which 
+staff members have the ability to assign elevated permissions to a user, and 
+which staff members have the ability to edit users in particular groups.
+
+Staff Accounts
+~~~~~~~~~~~~~
+
+New staff accounts are created in much the same way as patron accounts, using
+_Circulation -> Register Patron_ or *Shift+F1*. Select one of the staff
+profiles 
+from the _Profile Group_ drop-down menu.
+
+Each new staff account must be assigned a _Working Location_ which determines
+its 
+access level in staff client interfaces.
+
+. To assign a working location open the newly created staff account using *F1* 
+(retrieve patron) or *F4* (patron search).
+. Select _Other -> User Permission Editor_
+. Place a check in the box next to the desired working location, then scroll to
+the bottom of the display and click _Save_.
++
+NOTE: In multi-branch libraries it is possible to assign more than one working 
+location
+
+Staff Account Permissions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To view a detailed list of permissions for a particular Evergreen account go to 
+_Admin (-) -> User permission editor_ in the staff client.
+
+Granting Additional Permissions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A _Local System Administrator (LSA)_ may selectively grant _LSA_ permissions to 
+other staff accounts. In the example below a _Circ +Full Cat_ account is granted
+permission to process offline transactions, a function which otherwise requires 
+an _LSA_ login.
+
+. Log in as a Local System Administrator.
+. Select _Admin (-) -> User Permission Editor_ and enter the staff account 
+barcode when prompted
++
+OR
++
+Retrieve the staff account first, then select _Other -> User Permission 
+Editor_
++
+. The User Permission Editor will load (this may take a few seconds). Greyed-out
+permissions cannot be edited because they are either a) already granted to the 
+account, or b) not available to any staff account, including LSAs.
++
+image::media/profile-5.png[profile-5]
++
+1) List of permission names.
++
+2) If checked the permission is granted to this account.
++
+3) Depth limits application to the staff member's library and should be left at 
+the default.
++
+4) If checked this staff account will be able to grant the new privilege to 
+other accounts (not recommended).
++
+. To allow processing of offline transactions check the Applied column next to
+_OFFLINE_EXECUTE_.
++
+image::media/profile-6.png[profile-6]
++
+. Scroll down and click Save to apply the changes.
++
+image::media/profile-7.png[profile-7]
+
+
+
