@@ -185,14 +185,14 @@ if [ $PREV_BRANCH != "PACKAGE" ]; then
 
     echo "Finding/updating old \$HeadURL\$ entries"
     HEADURLBASE=`echo ${HEADURLBASE} | sed 's/\?/\\?/'`
-    for file in `grep -Rl --exclude=make_release.sh "$HEADURLBASE" $GIT_ABS`
+    for file in `grep -Rl --exclude=make_release "$HEADURLBASE" $GIT_ABS`
     do
         echo $file
         sed -i "s|${HEADURLBASE}[A-Za-z0-9_]*|$HEADURL|" $file
     done
 
     echo "Applying \$HeadURL\$ - $HEADURL"
-    for file in `grep -Rl --exclude=apply_version.sh '\\$HeadURL\\$' $GIT_ABS`
+    for file in `grep -Rl --exclude=make_release '\\$HeadURL\\$' $GIT_ABS`
     do
         echo $file
         sed -i "s|\\\$HeadURL\\\$|$HEADURL|" $file
@@ -288,6 +288,7 @@ XULRUNNER_VERSION=`grep '^XULRUNNER_VERSION' Makefile.am`
 XULRUNNER_VERSION=${XULRUNNER_VERSION##XULRUNNER_VERSION=}
 wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.win32.zip
 wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.linux-i686.tar.bz2
+wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.linux-x86_64.tar.bz2
 
 echo "Prepping server download files"
 cd ../../../../
@@ -307,11 +308,15 @@ make rigrelease
 make STAFF_CLIENT_STAMP_ID=rel_$UNDER_VERSION build
 make win-client
 mv evergreen_staff_client_setup.exe ../../../../evergreen-setup-$VERSION.exe
-make linux-client
-mv evergreen_staff_client.tar.bz2 ../../../../evergreen-client-$VERSION.tar.bz2
+make linux32-client
+mv evergreen_staff_client_i686.tar.bz2 ../../../../evergreen-client-${VERSION}_i686.tar.bz2
+make linux64-client
+mv evergreen_staff_client_x86_64.tar.bz2 ../../../../evergreen-client-${VERSION}_x86_64.tar.bz2
 cd ../../../../
 md5sum evergreen-setup-$VERSION.exe > evergreen-setup-$VERSION.exe.md5
-md5sum evergreen-client-$VERSION.tar.bz2 > evergreen-client-$VERSION.tar.bz2.md5
+md5sum evergreen-client-${VERSION}_i686.tar.bz2 > evergreen-client-${VERSION}_i686.tar.bz2.md5
+md5sum evergreen-client-${VERSION}_x86_64.tar.bz2 > evergreen-client-${VERSION}_x86_64.tar.bz2.md5
+
 
 echo "Removing build directory"
 rm -rf Evergreen-ILS-$VERSION/
