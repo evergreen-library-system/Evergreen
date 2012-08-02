@@ -88,7 +88,7 @@ sub new {
         $user = $card->usr;
 
     } else {
-	    $user = $e->retrieve_actor_user([$patron_id, $usr_flesh]);
+        $user = $e->retrieve_actor_user([$patron_id, $usr_flesh]);
     }
 
     if(!$user or $U->is_true($user->deleted)) {
@@ -213,7 +213,7 @@ sub format_name {
 sub home_library {
     my $self = shift;
     my $lib = OpenILS::SIP::shortname_from_id($self->{user}->home_ou);
-	syslog('LOG_DEBUG', "OILS: Patron->home_library() = $lib");
+    syslog('LOG_DEBUG', "OILS: Patron->home_library() = $lib");
     return $lib;
 }
 
@@ -242,11 +242,11 @@ sub internal_id {
 }
 
 sub address {
-	my $self = shift;
-	my $u    = $self->{user};
-	my $str  = __addr_string($u->billing_address || $u->mailing_address);
-	syslog('LOG_DEBUG', "OILS: Patron address: $str");
-	return $str;
+    my $self = shift;
+    my $u    = $self->{user};
+    my $str  = __addr_string($u->billing_address || $u->mailing_address);
+    syslog('LOG_DEBUG', "OILS: Patron address: $str");
+    return $str;
 }
 
 sub email_addr {
@@ -260,10 +260,10 @@ sub home_phone {
 }
 
 sub sip_birthdate {
-	my $self = shift;
-	my $dob = OpenILS::SIP->format_date($self->{user}->dob);
-	syslog('LOG_DEBUG', "OILS: Patron DOB = $dob");
-	return $dob;
+    my $self = shift;
+    my $dob = OpenILS::SIP->format_date($self->{user}->dob);
+    syslog('LOG_DEBUG', "OILS: Patron DOB = $dob");
+    return $dob;
 }
 
 sub sip_expire {
@@ -276,7 +276,7 @@ sub sip_expire {
 sub ptype {
     my $self = shift;
 
-	my $use_code = OpenILS::SIP->get_option_value('patron_type_uses_code') || '';
+    my $use_code = OpenILS::SIP->get_option_value('patron_type_uses_code') || '';
 
     # should we use the no_i18n version of patron profile name (as a 'code')?
     return $self->{editor}->retrieve_permission_grp_tree(
@@ -345,21 +345,21 @@ sub recall_overdue {        # not implemented
 }
 
 sub check_password {
-	my ($self, $pwd) = @_;
-	syslog('LOG_DEBUG', 'OILS: Patron->check_password()');
+    my ($self, $pwd) = @_;
+    syslog('LOG_DEBUG', 'OILS: Patron->check_password()');
     return 0 unless (defined $pwd and $self->{user});
-	return md5_hex($pwd) eq $self->{user}->passwd;
+    return md5_hex($pwd) eq $self->{user}->passwd;
 }
 
 sub currency {              # not really implemented
-	my $self = shift;
-	syslog('LOG_DEBUG', 'OILS: Patron->currency()');
-	return 'USD';
+    my $self = shift;
+    syslog('LOG_DEBUG', 'OILS: Patron->currency()');
+    return 'USD';
 }
 
 sub fee_amount {
-	my $self = shift;
-	syslog('LOG_DEBUG', 'OILS: Patron->fee_amount()');
+    my $self = shift;
+    syslog('LOG_DEBUG', 'OILS: Patron->fee_amount()');
     my $user_id = $self->{user}->id;
 
     my $e = $self->{editor};
@@ -368,43 +368,43 @@ sub fee_amount {
     $e->rollback; # xact_rollback + disconnect
 
     my $total = ($summary) ? $summary->balance_owed : 0;
-	syslog('LOG_INFO', "User ".$self->{id} .":$user_id has a fee amount of \$$total");
-	return $total;
+    syslog('LOG_INFO', "User ".$self->{id} .":$user_id has a fee amount of \$$total");
+    return $total;
 }
 
 sub screen_msg {
-	my $self = shift;
-	my $u = $self->{user};
+    my $self = shift;
+    my $u = $self->{user};
 
-	return 'barred' if $u->barred eq 't';
+    return 'barred' if $u->barred eq 't';
 
-	my $b = 'blocked';
+    my $b = 'blocked';
 
-	return $b if $u->active eq 'f';
-	return $b if $u->card->active eq 'f';
+    return $b if $u->active eq 'f';
+    return $b if $u->card->active eq 'f';
 
     # if we have any penalties at this point, they are blocking penalties
     return $b if $u->standing_penalties and @{$u->standing_penalties};
 
     # has the patron account expired?
-	my $expire = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($u->expire_date));
-	return $b if CORE::time > $expire->epoch;
+    my $expire = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($u->expire_date));
+    return $b if CORE::time > $expire->epoch;
 
-	return 'OK';
+    return 'OK';
 }
 
 sub print_line {            # not implemented
     my $self = shift;
-	return '';
+    return '';
 }
 
 sub too_many_charged {      # not implemented
     my $self = shift;
-	return 0;
+    return 0;
 }
 
 sub too_many_overdue { 
-	my $self = shift;
+    my $self = shift;
     return scalar( # PATRON_EXCEEDS_OVERDUE_COUNT
         grep { $_->standing_penalty == 2 } @{$self->{user}->standing_penalties}
     );
@@ -438,14 +438,14 @@ sub excessive_fines {
 # Until someone suggests otherwise, fees and fines are the same
 
 sub excessive_fees {
-	my $self = shift;
+    my $self = shift;
     return $self->excessive_fines;
 }
 
 # not relevant, handled by fines/fees
 sub too_many_billed {
     my $self = shift;
-	return 0;
+    return 0;
 }
 
 
@@ -455,78 +455,78 @@ sub too_many_billed {
 #
 sub hold_items {
     my ($self, $start, $end) = @_;
-	syslog('LOG_DEBUG', 'OILS: Patron->hold_items()');
+    syslog('LOG_DEBUG', 'OILS: Patron->hold_items()');
 
-	 my $holds = $self->{editor}->search_action_hold_request(
-		{ usr => $self->{user}->id, fulfillment_time => undef, cancel_time => undef }
-	 );
+     my $holds = $self->{editor}->search_action_hold_request(
+        { usr => $self->{user}->id, fulfillment_time => undef, cancel_time => undef }
+     );
 
-	my @holds;
-	push( @holds, OpenILS::SIP::clean_text($self->__hold_to_title($_)) ) for @$holds;
+    my @holds;
+    push( @holds, OpenILS::SIP::clean_text($self->__hold_to_title($_)) ) for @$holds;
 
-	return (defined $start and defined $end) ? 
-		[ $holds[($start-1)..($end-1)] ] : 
-		\@holds;
+    return (defined $start and defined $end) ? 
+        [ $holds[($start-1)..($end-1)] ] : 
+        \@holds;
 }
 
 sub __hold_to_title {
-	my $self = shift;
-	my $hold = shift;
-	my $e = $self->{editor};
+    my $self = shift;
+    my $hold = shift;
+    my $e = $self->{editor};
 
-	my( $id, $mods, $title, $volume, $copy );
+    my( $id, $mods, $title, $volume, $copy );
 
-	return __copy_to_title($e, 
-		$e->retrieve_asset_copy($hold->target)) 
-		if $hold->hold_type eq 'C' or $hold->hold_type eq 'F' or $hold->hold_type eq 'R';
+    return __copy_to_title($e, 
+        $e->retrieve_asset_copy($hold->target)) 
+        if $hold->hold_type eq 'C' or $hold->hold_type eq 'F' or $hold->hold_type eq 'R';
 
-	return __volume_to_title($e, 
-		$e->retrieve_asset_call_number($hold->target))
-		if $hold->hold_type eq 'V';
+    return __volume_to_title($e, 
+        $e->retrieve_asset_call_number($hold->target))
+        if $hold->hold_type eq 'V';
 
-	return __record_to_title(
-		$e, $hold->target) if $hold->hold_type eq 'T';
+    return __record_to_title(
+        $e, $hold->target) if $hold->hold_type eq 'T';
 
-	return __metarecord_to_title(
-		$e, $hold->target) if $hold->hold_type eq 'M';
+    return __metarecord_to_title(
+        $e, $hold->target) if $hold->hold_type eq 'M';
 }
 
 sub __copy_to_title {
-	my( $e, $copy ) = @_;
-	#syslog('LOG_DEBUG', "OILS: copy_to_title(%s)", $copy->id);
-	return $copy->dummy_title if $copy->call_number == -1;	
+    my( $e, $copy ) = @_;
+    #syslog('LOG_DEBUG', "OILS: copy_to_title(%s)", $copy->id);
+    return $copy->dummy_title if $copy->call_number == -1;    
 
-	my $vol = (ref $copy->call_number) ?
-		$copy->call_number :
-		$e->retrieve_asset_call_number($copy->call_number);
+    my $vol = (ref $copy->call_number) ?
+        $copy->call_number :
+        $e->retrieve_asset_call_number($copy->call_number);
 
-	return __volume_to_title($e, $vol);
+    return __volume_to_title($e, $vol);
 }
 
 
 sub __volume_to_title {
-	my( $e, $volume ) = @_;
-	#syslog('LOG_DEBUG', "OILS: volume_to_title(%s)", $volume->id);
-	return __record_to_title($e, $volume->record);
+    my( $e, $volume ) = @_;
+    #syslog('LOG_DEBUG', "OILS: volume_to_title(%s)", $volume->id);
+    return __record_to_title($e, $volume->record);
 }
 
 
 sub __record_to_title {
-	my( $e, $title_id ) = @_;
-	#syslog('LOG_DEBUG', "OILS: record_to_title($title_id)");
-	my $mods = $U->simplereq(
-		'open-ils.search',
-		'open-ils.search.biblio.record.mods_slim.retrieve', $title_id );
-	return ($mods) ? $mods->title : "";
+    my( $e, $title_id ) = @_;
+    #syslog('LOG_DEBUG', "OILS: record_to_title($title_id)");
+    my $mods = $U->simplereq(
+        'open-ils.search',
+        'open-ils.search.biblio.record.mods_slim.retrieve', $title_id );
+    return ($mods) ? $mods->title : "";
 }
 
 sub __metarecord_to_title {
-	my( $e, $m_id ) = @_;
-	#syslog('LOG_DEBUG', "OILS: metarecord_to_title($m_id)");
-	my $mods = $U->simplereq(
-		'open-ils.search',
-		'open-ils.search.biblio.metarecord.mods_slim.retrieve', $m_id);
-	return ($U->event_code($mods)) ? "<unknown>" : $mods->title;
+    my( $e, $m_id ) = @_;
+    #syslog('LOG_DEBUG', "OILS: metarecord_to_title($m_id)");
+    my $mods = $U->simplereq(
+        'open-ils.search',
+        'open-ils.search.biblio.metarecord.mods_slim.retrieve', $m_id);
+    return ($U->event_code($mods)) ? "<unknown>" : $mods->title;
 }
 
 
@@ -540,110 +540,110 @@ sub drop_hold {
 }
 
 sub __patron_items_info {
-	my $self = shift;
-	return if $self->{item_info};
-	$self->{item_info} = 
-		OpenILS::Application::Actor::_checked_out(
-			0, $self->{editor}, $self->{user}->id);;
+    my $self = shift;
+    return if $self->{item_info};
+    $self->{item_info} = 
+        OpenILS::Application::Actor::_checked_out(
+            0, $self->{editor}, $self->{user}->id);;
 }
 
 
 
 sub overdue_items {
-	my ($self, $start, $end) = @_;
+    my ($self, $start, $end) = @_;
 
-	$self->__patron_items_info();
-	my @overdues = @{$self->{item_info}->{overdue}};
-	#$overdues[$_] = __circ_to_title($self->{editor}, $overdues[$_]) for @overdues;
+    $self->__patron_items_info();
+    my @overdues = @{$self->{item_info}->{overdue}};
+    #$overdues[$_] = __circ_to_title($self->{editor}, $overdues[$_]) for @overdues;
 
-	my @o;
-	syslog('LOG_DEBUG', "OILS: overdue_items() fleshing circs @overdues");
+    my @o;
+    syslog('LOG_DEBUG', "OILS: overdue_items() fleshing circs @overdues");
 
-	my $return_datatype = OpenILS::SIP->get_option_value('msg64_summary_datatype') || '';
-	
-	for my $circid (@overdues) {
-		next unless $circid;
-		if($return_datatype eq 'barcode') {
-			push( @o, __circ_to_barcode($self->{editor}, $circid));
-		} else {
-			push( @o, OpenILS::SIP::clean_text(__circ_to_title($self->{editor}, $circid)));
-		}
-	}
-	@overdues = @o;
+    my $return_datatype = OpenILS::SIP->get_option_value('msg64_summary_datatype') || '';
+    
+    for my $circid (@overdues) {
+        next unless $circid;
+        if($return_datatype eq 'barcode') {
+            push( @o, __circ_to_barcode($self->{editor}, $circid));
+        } else {
+            push( @o, OpenILS::SIP::clean_text(__circ_to_title($self->{editor}, $circid)));
+        }
+    }
+    @overdues = @o;
 
-	return (defined $start and defined $end) ? 
-		[ $overdues[($start-1)..($end-1)] ] : \@overdues;
+    return (defined $start and defined $end) ? 
+        [ $overdues[($start-1)..($end-1)] ] : \@overdues;
 }
 
 sub __circ_to_barcode {
-	my ($e, $circ) = @_;
-	return unless $circ;
-	$circ = $e->retrieve_action_circulation($circ);
-	my $copy = $e->retrieve_asset_copy($circ->target_copy);
-	return $copy->barcode;
+    my ($e, $circ) = @_;
+    return unless $circ;
+    $circ = $e->retrieve_action_circulation($circ);
+    my $copy = $e->retrieve_asset_copy($circ->target_copy);
+    return $copy->barcode;
 }
 
 sub __circ_to_title {
-	my( $e, $circ ) = @_;
-	return unless $circ;
-	$circ = $e->retrieve_action_circulation($circ);
-	return __copy_to_title( $e, 
-		$e->retrieve_asset_copy($circ->target_copy) );
+    my( $e, $circ ) = @_;
+    return unless $circ;
+    $circ = $e->retrieve_action_circulation($circ);
+    return __copy_to_title( $e, 
+        $e->retrieve_asset_copy($circ->target_copy) );
 }
 
 sub charged_items {
-	my ($self, $start, $end) = shift;
+    my ($self, $start, $end) = shift;
 
-	$self->__patron_items_info();
+    $self->__patron_items_info();
 
-	my @charges = (
-		@{$self->{item_info}->{out}},
-		@{$self->{item_info}->{overdue}}
-		);
+    my @charges = (
+        @{$self->{item_info}->{out}},
+        @{$self->{item_info}->{overdue}}
+        );
 
-	#$charges[$_] = __circ_to_title($self->{editor}, $charges[$_]) for @charges;
+    #$charges[$_] = __circ_to_title($self->{editor}, $charges[$_]) for @charges;
 
-	my @c;
-	syslog('LOG_DEBUG', "OILS: charged_items() fleshing circs @charges");
+    my @c;
+    syslog('LOG_DEBUG', "OILS: charged_items() fleshing circs @charges");
 
-	my $return_datatype = OpenILS::SIP->get_option_value('msg64_summary_datatype') || '';
+    my $return_datatype = OpenILS::SIP->get_option_value('msg64_summary_datatype') || '';
 
-	for my $circid (@charges) {
-		next unless $circid;
-		if($return_datatype eq 'barcode') {
-			push( @c, __circ_to_barcode($self->{editor}, $circid));
-		} else {
-			push( @c, OpenILS::SIP::clean_text(__circ_to_title($self->{editor}, $circid)));
-		}
-	}
+    for my $circid (@charges) {
+        next unless $circid;
+        if($return_datatype eq 'barcode') {
+            push( @c, __circ_to_barcode($self->{editor}, $circid));
+        } else {
+            push( @c, OpenILS::SIP::clean_text(__circ_to_title($self->{editor}, $circid)));
+        }
+    }
 
-	@charges = @c;
+    @charges = @c;
 
-	return (defined $start and defined $end) ? 
-		[ $charges[($start-1)..($end-1)] ] : 
-		\@charges;
+    return (defined $start and defined $end) ? 
+        [ $charges[($start-1)..($end-1)] ] : 
+        \@charges;
 }
 
 sub fine_items {
-	my ($self, $start, $end) = @_;
-	my @fines;
+    my ($self, $start, $end) = @_;
+    my @fines;
     eval {
-           my $xacts = $U->simplereq('open-ils.actor', 'open-ils.actor.user.transactions.history.have_balance', $self->{authtoken}, $self->{user}->id);
-           foreach my $xact (@{$xacts}) {
-                my $line = $xact->balance_owed . " " . $xact->last_billing_type . " ";
-                if ($xact->xact_type eq 'circulation') {
-                    my $mods = $U->simplereq('open-ils.circ', 'open-ils.circ.circ_transaction.find_title', $self->{authtoken}, $xact->id);
-                    $line .= $mods->title . ' / ' . $mods->author;
-                } else {
-                    $line .= $xact->last_billing_note;
-                }
-                push @fines, OpenILS::SIP::clean_text($line);
+       my $xacts = $U->simplereq('open-ils.actor', 'open-ils.actor.user.transactions.history.have_balance', $self->{authtoken}, $self->{user}->id);
+       foreach my $xact (@{$xacts}) {
+           my $line = $xact->balance_owed . " " . $xact->last_billing_type . " ";
+           if ($xact->xact_type eq 'circulation') {
+               my $mods = $U->simplereq('open-ils.circ', 'open-ils.circ.circ_transaction.find_title', $self->{authtoken}, $xact->id);
+               $line .= $mods->title . ' / ' . $mods->author;
+           } else {
+               $line .= $xact->last_billing_note;
            }
+           push @fines, OpenILS::SIP::clean_text($line);
+       }
     };
     my $log_status = $@ ? 'ERROR: ' . $@ : 'OK';
-	syslog('LOG_DEBUG', 'OILS: Patron->fine_items() ' . $log_status);
-	return (defined $start and defined $end) ? 
-		[ $fines[($start-1)..($end-1)] ] : \@fines;
+    syslog('LOG_DEBUG', 'OILS: Patron->fine_items() ' . $log_status);
+    return (defined $start and defined $end) ? 
+        [ $fines[($start-1)..($end-1)] ] : \@fines;
 }
 
 # not currently supported
@@ -685,43 +685,43 @@ sub unavail_holds {
 }
 
 sub block {
-	my ($self, $card_retained, $blocked_card_msg) = @_;
+    my ($self, $card_retained, $blocked_card_msg) = @_;
     $blocked_card_msg ||= '';
 
     my $e = $self->{editor};
-	my $u = $self->{user};
+    my $u = $self->{user};
 
-	syslog('LOG_INFO', "OILS: Blocking user %s", $u->card->barcode );
+    syslog('LOG_INFO', "OILS: Blocking user %s", $u->card->barcode );
 
-	return $self if $u->card->active eq 'f';
+    return $self if $u->card->active eq 'f';
 
     $e->xact_begin;    # connect and start a new transaction
 
-	$u->card->active('f');
-	if( ! $e->update_actor_card($u->card) ) {
-		syslog('LOG_ERR', "OILS: Block card update failed: %s", $e->event->{textcode});
-		$e->rollback; # rollback + disconnect
-		return $self;
-	}
+    $u->card->active('f');
+    if( ! $e->update_actor_card($u->card) ) {
+        syslog('LOG_ERR', "OILS: Block card update failed: %s", $e->event->{textcode});
+        $e->rollback; # rollback + disconnect
+        return $self;
+    }
 
-	# retrieve the un-fleshed user object for update
-	$u = $e->retrieve_actor_user($u->id);
-	my $note = OpenILS::SIP::clean_text($u->alert_message) || "";
-	$note = "<sip> CARD BLOCKED BY SELF-CHECK MACHINE. $blocked_card_msg</sip>\n$note"; # XXX Config option
+    # retrieve the un-fleshed user object for update
+    $u = $e->retrieve_actor_user($u->id);
+    my $note = OpenILS::SIP::clean_text($u->alert_message) || "";
+    $note = "<sip> CARD BLOCKED BY SELF-CHECK MACHINE. $blocked_card_msg</sip>\n$note"; # XXX Config option
     $note =~ s/\s*$//;  # kill trailng whitespace
-	$u->alert_message($note);
+    $u->alert_message($note);
 
-	if( ! $e->update_actor_user($u) ) {
-		syslog('LOG_ERR', "OILS: Block: patron alert update failed: %s", $e->event->{textcode});
-		$e->rollback; # rollback + disconnect
-		return $self;
-	}
+    if( ! $e->update_actor_user($u) ) {
+        syslog('LOG_ERR', "OILS: Block: patron alert update failed: %s", $e->event->{textcode});
+        $e->rollback; # rollback + disconnect
+        return $self;
+    }
 
-	# stay in synch
-	$self->{user}->alert_message( $note );
+    # stay in synch
+    $self->{user}->alert_message( $note );
 
-	$e->commit; # commits and disconnects
-	return $self;
+    $e->commit; # commits and disconnects
+    return $self;
 }
 
 # Testing purposes only
@@ -792,7 +792,7 @@ sub inet_privileges {
 sub extra_fields {
     my( $self ) = @_;
     my $extra_fields = {};
-   	my $u = $self->{user};
+    my $u = $self->{user};
     foreach my $stat_cat_entry (@{$u->stat_cat_entries}) {
         my $stat_cat = $stat_cat_entry->stat_cat;
         next unless ($stat_cat->sip_field);

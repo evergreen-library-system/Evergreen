@@ -35,53 +35,53 @@ my $target_encoding;    # FIXME: this is configured at the institution level.
 use Digest::MD5 qw(md5_hex);
 
 sub new {
-	my ($class, $institution, $login) = @_;
-	my $type = ref($class) || $class;
-	my $self = {};
+    my ($class, $institution, $login) = @_;
+    my $type = ref($class) || $class;
+    my $self = {};
 
-	$self->{login} = $login_account = $login;
+    $self->{login} = $login_account = $login;
 
-	$config = $institution;
-	syslog("LOG_DEBUG", "OILS: new ILS '%s'", $institution->{id});
-	$self->{institution} = $institution;
+    $config = $institution;
+    syslog("LOG_DEBUG", "OILS: new ILS '%s'", $institution->{id});
+    $self->{institution} = $institution;
 
-	my $bsconfig     = $institution->{implementation_config}->{bootstrap};
-	$target_encoding = $institution->{implementation_config}->{encoding} || 'ascii';
+    my $bsconfig     = $institution->{implementation_config}->{bootstrap};
+    $target_encoding = $institution->{implementation_config}->{encoding} || 'ascii';
 
-	syslog('LOG_DEBUG', "OILS: loading bootstrap config: $bsconfig");
+    syslog('LOG_DEBUG', "OILS: loading bootstrap config: $bsconfig");
 
-	# ingress will persist throughout
-	OpenSRF::AppSession->ingress('sip2');
-	
-	local $/ = "\n";    # why?
-	OpenSRF::System->bootstrap_client(config_file => $bsconfig);
-	syslog('LOG_DEBUG', "OILS: bootstrap loaded..");
+    # ingress will persist throughout
+    OpenSRF::AppSession->ingress('sip2');
+    
+    local $/ = "\n";    # why?
+    OpenSRF::System->bootstrap_client(config_file => $bsconfig);
+    syslog('LOG_DEBUG', "OILS: bootstrap loaded..");
 
-	$self->{osrf_config} = OpenSRF::Utils::SettingsClient->new;
+    $self->{osrf_config} = OpenSRF::Utils::SettingsClient->new;
 
-	Fieldmapper->import($self->{osrf_config}->config_value('IDL'));
+    Fieldmapper->import($self->{osrf_config}->config_value('IDL'));
 
-	bless( $self, $type );
+    bless( $self, $type );
 
-	return undef unless 
-		$self->login( $login->{id}, $login->{password} );
+    return undef unless 
+        $self->login( $login->{id}, $login->{password} );
 
-	return $self;
+    return $self;
 }
 
 sub fetch_session {
     my $self = shift;
 
-	my $ses = $U->simplereq( 
-		'open-ils.auth',
-		'open-ils.auth.session.retrieve',  $self->{authtoken});
+    my $ses = $U->simplereq( 
+        'open-ils.auth',
+        'open-ils.auth.session.retrieve',  $self->{authtoken});
 
     return undef if $U->event_code($ses); # auth timed out
     return $self->{login_session} = $ses;
 }
 
 sub verify_session {
-	my $self = shift;
+    my $self = shift;
 
     return 1 if $self->fetch_session;
 
@@ -90,14 +90,14 @@ sub verify_session {
 }
 
 sub editor {
-	return $editor = make_editor();
+    return $editor = make_editor();
 }
 
 sub config {
-	return $config;
+    return $config;
 }
 sub login_account {
-	return $login_account;
+    return $login_account;
 }
 
 sub get_option_value {
@@ -114,7 +114,7 @@ my $cstore_init = 1; # call init on first use
 sub make_editor {
     OpenILS::Utils::CStoreEditor::init() if $cstore_init;
     $cstore_init = 0;
-	return OpenILS::Utils::CStoreEditor->new;
+    return OpenILS::Utils::CStoreEditor->new;
 }
 
 =head2 clean_text(scalar)
@@ -172,66 +172,66 @@ sub patron_barcode_from_id {
 }
 
 sub format_date {
-	my $class = shift;
-	my $date = shift;
-	my $type = shift || 'dob';
+    my $class = shift;
+    my $date = shift;
+    my $type = shift || 'dob';
 
-	return "" unless $date;
+    return "" unless $date;
 
-	$date = DateTime::Format::ISO8601->new->
-		parse_datetime(OpenSRF::Utils::cleanse_ISO8601($date));
-	my @time = localtime($date->epoch);
+    $date = DateTime::Format::ISO8601->new->
+        parse_datetime(OpenSRF::Utils::cleanse_ISO8601($date));
+    my @time = localtime($date->epoch);
 
-	my $year   = $time[5]+1900;
-	my $mon    = $time[4]+1;
-	my $day    = $time[3];
-	my $hour   = $time[2];
- 	my $minute = $time[1];
- 	my $second = $time[0];
+    my $year   = $time[5]+1900;
+    my $mon    = $time[4]+1;
+    my $day    = $time[3];
+    my $hour   = $time[2];
+    my $minute = $time[1];
+    my $second = $time[0];
   
-	$date = sprintf("%04d%02d%02d", $year, $mon, $day);
+    $date = sprintf("%04d%02d%02d", $year, $mon, $day);
 
- 	# Due dates need hyphen separators and time of day as well
- 	if ($type eq 'due') {
- 		$date = sprintf("%04d-%02d-%02d %02d:%02d:%02d", $year, $mon, $day, $hour, $minute, $second);
- 	}
+    # Due dates need hyphen separators and time of day as well
+    if ($type eq 'due') {
+        $date = sprintf("%04d-%02d-%02d %02d:%02d:%02d", $year, $mon, $day, $hour, $minute, $second);
+    }
 
-	syslog('LOG_DEBUG', "OILS: formatted date [type=$type]: $date");
-	return $date;
+    syslog('LOG_DEBUG', "OILS: formatted date [type=$type]: $date");
+    return $date;
 }
 
 
 
 sub login {
-	my( $self, $username, $password ) = @_;
-	syslog('LOG_DEBUG', "OILS: Logging in with username $username");
+    my( $self, $username, $password ) = @_;
+    syslog('LOG_DEBUG', "OILS: Logging in with username $username");
 
-	my $seed = $U->simplereq( 
-		'open-ils.auth',
-		'open-ils.auth.authenticate.init', $username );
+    my $seed = $U->simplereq( 
+        'open-ils.auth',
+        'open-ils.auth.authenticate.init', $username );
 
-	my $response = $U->simplereq(
-		'open-ils.auth', 
-		'open-ils.auth.authenticate.complete', 
-		{	
-			username => $username, 
-			password => md5_hex($seed . md5_hex($password)), 
-			type     => 'opac',
-		}
-	);
+    my $response = $U->simplereq(
+        'open-ils.auth', 
+        'open-ils.auth.authenticate.complete', 
+        {    
+            username => $username, 
+            password => md5_hex($seed . md5_hex($password)), 
+            type     => 'opac',
+        }
+    );
 
-	if( my $code = $U->event_code($response) ) {
-		my $txt = $response->{textcode};
-		syslog('LOG_WARNING', "OILS: Login failed for $username.  $txt:$code");
-		return undef;
-	}
+    if( my $code = $U->event_code($response) ) {
+        my $txt = $response->{textcode};
+        syslog('LOG_WARNING', "OILS: Login failed for $username.  $txt:$code");
+        return undef;
+    }
 
-	my $key = $response->{payload}->{authtoken};
-	syslog('LOG_INFO', "OILS: Login succeeded for $username : authkey = $key");
+    my $key = $response->{payload}->{authtoken};
+    syslog('LOG_INFO', "OILS: Login succeeded for $username : authkey = $key");
 
     $self->fetch_session; # to cache the login
 
-	return $self->{authtoken} = $key;
+    return $self->{authtoken} = $key;
 }
 
 #
@@ -240,17 +240,17 @@ sub login {
 # find_patron(usr => $id);
 
 sub find_patron {
-	my $self = shift;
+    my $self = shift;
     my $key  =  (@_ > 1) ? shift : 'barcode';  # if we have multiple args, the first is the key index (default barcode)
     my $patron_id = shift;
 
-	return OpenILS::SIP::Patron->new($key => $patron_id, authtoken => $self->{authtoken}, @_);
+    return OpenILS::SIP::Patron->new($key => $patron_id, authtoken => $self->{authtoken}, @_);
 }
 
 
 sub find_item {
-	my $self = shift;
-	return OpenILS::SIP::Item->new(@_);
+    my $self = shift;
+    return OpenILS::SIP::Item->new(@_);
 }
 
 
@@ -265,10 +265,10 @@ sub institution_id {
 }
 
 sub supports {
-	my ($self, $op) = @_;
-	my ($i) = grep { $_->{name} eq $op }  
-		@{$config->{implementation_config}->{supports}->{item}};
-	return to_bool($i->{value});
+    my ($self, $op) = @_;
+    my ($i) = grep { $_->{name} eq $op }  
+        @{$config->{implementation_config}->{supports}->{item}};
+    return to_bool($i->{value});
 }
 
 sub check_inst_id {
@@ -290,23 +290,23 @@ sub to_bool {
 }
 
 sub checkout_ok {
-	return to_bool($config->{policy}->{checkout});
+    return to_bool($config->{policy}->{checkout});
 }
 
 sub checkin_ok {
-	return to_bool($config->{policy}->{checkin});
+    return to_bool($config->{policy}->{checkin});
 }
 
 sub renew_ok {
-	return to_bool($config->{policy}->{renewal});
+    return to_bool($config->{policy}->{renewal});
 }
 
 sub status_update_ok {
-	return to_bool($config->{policy}->{status_update});
+    return to_bool($config->{policy}->{status_update});
 }
 
 sub offline_ok {
-	return to_bool($config->{policy}->{offline});
+    return to_bool($config->{policy}->{offline});
 }
 
 
@@ -323,100 +323,100 @@ sub offline_ok {
 ##
 
 sub checkout {
-	my ($self, $patron_id, $item_id, $sc_renew, $fee_ack) = @_;
-	# In order to allow renewals the selfcheck AND the config have to say they are allowed
-	$sc_renew = (chr($sc_renew) eq 'Y' && $self->renew_ok());
+    my ($self, $patron_id, $item_id, $sc_renew, $fee_ack) = @_;
+    # In order to allow renewals the selfcheck AND the config have to say they are allowed
+    $sc_renew = (chr($sc_renew) eq 'Y' && $self->renew_ok());
 
-	$self->verify_session;
+    $self->verify_session;
 
-	syslog('LOG_DEBUG', "OILS: OpenILS::Checkout attempt: patron=$patron_id, item=$item_id");
+    syslog('LOG_DEBUG', "OILS: OpenILS::Checkout attempt: patron=$patron_id, item=$item_id");
 
     my $xact   = OpenILS::SIP::Transaction::Checkout->new( authtoken => $self->{authtoken} );
     my $patron = $self->find_patron($patron_id);
     my $item   = $self->find_item($item_id);
 
-	$xact->patron($patron);
-	$xact->item($item);
+    $xact->patron($patron);
+    $xact->item($item);
 
-	if (!$patron) {
-		$xact->screen_msg("Invalid Patron Barcode '$patron_id'");
-		return $xact;
-	}
+    if (!$patron) {
+        $xact->screen_msg("Invalid Patron Barcode '$patron_id'");
+        return $xact;
+    }
 
-	if (!$patron->charge_ok) {
-		$xact->screen_msg("Patron Blocked");
-		return $xact;
-	}
+    if (!$patron->charge_ok) {
+        $xact->screen_msg("Patron Blocked");
+        return $xact;
+    }
 
-	if( !$item ) {
-		$xact->screen_msg("Invalid Item Barcode: '$item_id'");
-		return $xact;
-	}
+    if( !$item ) {
+        $xact->screen_msg("Invalid Item Barcode: '$item_id'");
+        return $xact;
+    }
 
-	syslog('LOG_DEBUG', "OILS: OpenILS::Checkout data loaded OK, checking out...");
+    syslog('LOG_DEBUG', "OILS: OpenILS::Checkout data loaded OK, checking out...");
 
-	if ($item->{patron} && ($item->{patron} eq $patron_id)) {
-		$xact->renew_ok(1); # So that accept/reject responses have the correct value later
-		if($sc_renew) {
-			syslog('LOG_INFO', "OILS: OpenILS::Checkout data loaded OK, doing renew...");
-		} else {
-			syslog('LOG_INFO', "OILS: OpenILS::Checkout appears to be renew, but renewal disallowed...");
-			$xact->screen_msg("Renewals not permitted");
-			$xact->ok(0);
-			return $xact; # Don't attempt later
+    if ($item->{patron} && ($item->{patron} eq $patron_id)) {
+        $xact->renew_ok(1); # So that accept/reject responses have the correct value later
+        if($sc_renew) {
+            syslog('LOG_INFO', "OILS: OpenILS::Checkout data loaded OK, doing renew...");
+        } else {
+            syslog('LOG_INFO', "OILS: OpenILS::Checkout appears to be renew, but renewal disallowed...");
+            $xact->screen_msg("Renewals not permitted");
+            $xact->ok(0);
+            return $xact; # Don't attempt later
         }
-	} elsif ($item->{patron} && ($item->{patron} ne $patron_id)) {
-		# I can't deal with this right now
-		# XXX check in then check out?
-		$xact->screen_msg("Item checked out to another patron");
-		$xact->ok(0);
-		return $xact; # Don't wipe out the screen message later
-	} else {
-		$sc_renew = 0;
-	} 
+    } elsif ($item->{patron} && ($item->{patron} ne $patron_id)) {
+        # I can't deal with this right now
+        # XXX check in then check out?
+        $xact->screen_msg("Item checked out to another patron");
+        $xact->ok(0);
+        return $xact; # Don't wipe out the screen message later
+    } else {
+        $sc_renew = 0;
+    } 
 
-        # Check for fee and $fee_ack. If there is a fee, and $fee_ack
-        # is 'Y', we proceed, otherwise we reject the checkout.
-        if ($item->fee > 0.0) {
-            $xact->fee_amount($item->fee);
-            $xact->sip_fee_type($item->sip_fee_type);
-            $xact->sip_currency($item->fee_currency);
-            if ($fee_ack && $fee_ack eq 'Y') {
-                $xact->fee_ack(1);
-            } else {
-                $xact->screen_msg('Fee required');
-                $xact->ok(0);
-                return $xact;
-            }
+    # Check for fee and $fee_ack. If there is a fee, and $fee_ack
+    # is 'Y', we proceed, otherwise we reject the checkout.
+    if ($item->fee > 0.0) {
+        $xact->fee_amount($item->fee);
+        $xact->sip_fee_type($item->sip_fee_type);
+        $xact->sip_currency($item->fee_currency);
+        if ($fee_ack && $fee_ack eq 'Y') {
+            $xact->fee_ack(1);
+        } else {
+            $xact->screen_msg('Fee required');
+            $xact->ok(0);
+            return $xact;
         }
+    }
 
-	$xact->do_checkout($sc_renew);
-	$xact->desensitize(!$item->magnetic);
+    $xact->do_checkout($sc_renew);
+    $xact->desensitize(!$item->magnetic);
 
-	if( $xact->ok ) {
-		#editor()->commit;
-		syslog("LOG_DEBUG", "OILS: OpenILS::Checkout: " .
-			"patron %s checkout %s succeeded", $patron_id, $item_id);
-	} else {
-		#editor()->xact_rollback;
-		syslog("LOG_DEBUG", "OILS: OpenILS::Checkout: " .
-			"patron %s checkout %s FAILED, rolling back xact...", $patron_id, $item_id);
-	}
+    if( $xact->ok ) {
+        #editor()->commit;
+        syslog("LOG_DEBUG", "OILS: OpenILS::Checkout: " .
+            "patron %s checkout %s succeeded", $patron_id, $item_id);
+    } else {
+        #editor()->xact_rollback;
+        syslog("LOG_DEBUG", "OILS: OpenILS::Checkout: " .
+            "patron %s checkout %s FAILED, rolling back xact...", $patron_id, $item_id);
+    }
 
-	return $xact;
+    return $xact;
 }
 
 
 sub checkin {
-	my ($self, $item_id, $inst_id, $trans_date, $return_date,
+    my ($self, $item_id, $inst_id, $trans_date, $return_date,
         $current_loc, $item_props, $cancel) = @_;
 
     my $start_time = time();
 
-	$self->verify_session;
+    $self->verify_session;
 
-	syslog('LOG_DEBUG', "OILS: OpenILS::Checkin of item=$item_id (to $inst_id)");
-	
+    syslog('LOG_DEBUG', "OILS: OpenILS::Checkin of item=$item_id (to $inst_id)");
+    
     my $xact = OpenILS::SIP::Transaction::Checkin->new(authtoken => $self->{authtoken});
     my $item = OpenILS::SIP::Item->new($item_id);
 
@@ -428,9 +428,9 @@ sub checkin {
         return $xact;
     }
 
-	$xact->do_checkin( $self, $inst_id, $trans_date, $return_date, $current_loc, $item_props );
-	
-	if ($xact->ok) {
+    $xact->do_checkin( $self, $inst_id, $trans_date, $return_date, $current_loc, $item_props );
+    
+    if ($xact->ok) {
         $xact->patron($self->find_patron(usr => $xact->{circ_user_id}, slim_user => 1)) if $xact->{circ_user_id};
         delete $item->{patron};
         delete $item->{due_date};
@@ -440,7 +440,7 @@ sub checkin {
     }
 
     syslog('LOG_INFO', "OILS: SIP Checkin request took %0.3f seconds", (time() - $start_time));
-	return $xact;
+    return $xact;
 }
 
 ## If the ILS caches patron information, this lets it free it up.
@@ -454,7 +454,7 @@ sub end_patron_session {
 
 sub pay_fee {
     my ($self, $patron_id, $patron_pwd, $fee_amt, $fee_type,
-	$pay_type, $fee_id, $trans_id, $currency) = @_;
+    $pay_type, $fee_id, $trans_id, $currency) = @_;
 
     $self->verify_session;
 
@@ -484,7 +484,7 @@ sub pay_fee {
 
 #sub add_hold {
 #    my ($self, $patron_id, $patron_pwd, $item_id, $title_id,
-#	$expiry_date, $pickup_location, $hold_type, $fee_ack) = @_;
+#    $expiry_date, $pickup_location, $hold_type, $fee_ack) = @_;
 #    my ($patron, $item);
 #    my $hold;
 #    my $trans;
@@ -495,31 +495,31 @@ sub pay_fee {
 #    # BEGIN TRANSACTION
 #    $patron = new ILS::Patron $patron_id;
 #    if (!$patron
-#	|| (defined($patron_pwd) && !$patron->check_password($patron_pwd))) {
-#	$trans->screen_msg("Invalid Patron.");
+#    || (defined($patron_pwd) && !$patron->check_password($patron_pwd))) {
+#    $trans->screen_msg("Invalid Patron.");
 #
-#	return $trans;
+#    return $trans;
 #    }
 #
 #    $item = new ILS::Item ($item_id || $title_id);
 #    if (!$item) {
-#	$trans->screen_msg("No such item.");
+#    $trans->screen_msg("No such item.");
 #
-#	# END TRANSACTION (conditionally)
-#	return $trans;
+#    # END TRANSACTION (conditionally)
+#    return $trans;
 #    } elsif ($item->fee && ($fee_ack ne 'Y')) {
-#	$trans->screen_msg = "Fee required to place hold.";
+#    $trans->screen_msg = "Fee required to place hold.";
 #
-#	# END TRANSACTION (conditionally)
-#	return $trans;
+#    # END TRANSACTION (conditionally)
+#    return $trans;
 #    }
 #
 #    $hold = {
-#	item_id         => $item->id,
-#	patron_id       => $patron->id,
-#	expiration_date => $expiry_date,
-#	pickup_location => $pickup_location,
-#	hold_type       => $hold_type,
+#    item_id         => $item->id,
+#    patron_id       => $patron->id,
+#    expiration_date => $expiry_date,
+#    pickup_location => $pickup_location,
+#    hold_type       => $hold_type,
 #    };
 #
 #    $trans->ok(1);
@@ -545,44 +545,44 @@ sub pay_fee {
 #    # BEGIN TRANSACTION
 #    $patron = new ILS::Patron $patron_id;
 #    if (!$patron) {
-#	$trans->screen_msg("Invalid patron barcode.");
+#    $trans->screen_msg("Invalid patron barcode.");
 #
-#	return $trans;
+#    return $trans;
 #    } elsif (defined($patron_pwd) && !$patron->check_password($patron_pwd)) {
-#	$trans->screen_msg('Invalid patron password.');
+#    $trans->screen_msg('Invalid patron password.');
 #
-#	return $trans;
+#    return $trans;
 #    }
 #
 #    $item = new ILS::Item ($item_id || $title_id);
 #    if (!$item) {
-#	$trans->screen_msg("No such item.");
+#    $trans->screen_msg("No such item.");
 #
-#	# END TRANSACTION (conditionally)
-#	return $trans;
+#    # END TRANSACTION (conditionally)
+#    return $trans;
 #    }
 #
 #    # Remove the hold from the patron's record first
 #    $trans->ok($patron->drop_hold($item_id));
 #
 #    if (!$trans->ok) {
-#	# We didn't find it on the patron record
-#	$trans->screen_msg("No such hold on patron record.");
+#    # We didn't find it on the patron record
+#    $trans->screen_msg("No such hold on patron record.");
 #
-#	# END TRANSACTION (conditionally)
-#	return $trans;
+#    # END TRANSACTION (conditionally)
+#    return $trans;
 #    }
 #
 #    # Now, remove it from the item record.  If it was on the patron
 #    # record but not on the item record, we'll treat that as success.
 #    foreach my $i (0 .. scalar @{$item->hold_queue}) {
-#	$hold = $item->hold_queue->[$i];
+#    $hold = $item->hold_queue->[$i];
 #
-#	if ($hold->{patron_id} eq $patron->id) {
-#	    # found it: delete it.
-#	    splice @{$item->hold_queue}, $i, 1;
-#	    last;
-#	}
+#    if ($hold->{patron_id} eq $patron->id) {
+#        # found it: delete it.
+#        splice @{$item->hold_queue}, $i, 1;
+#        last;
+#    }
 #    }
 #
 #    $trans->screen_msg("Hold Cancelled.");
@@ -597,7 +597,7 @@ sub pay_fee {
 ## date, location, and type can.
 #sub alter_hold {
 #    my ($self, $patron_id, $patron_pwd, $item_id, $title_id,
-#	$expiry_date, $pickup_location, $hold_type, $fee_ack) = @_;
+#    $expiry_date, $pickup_location, $hold_type, $fee_ack) = @_;
 #    my ($patron, $item);
 #    my $hold;
 #    my $trans;
@@ -607,26 +607,26 @@ sub pay_fee {
 #    # BEGIN TRANSACTION
 #    $patron = new ILS::Patron $patron_id;
 #    if (!$patron) {
-#	$trans->screen_msg("Invalid patron barcode.");
+#    $trans->screen_msg("Invalid patron barcode.");
 #
-#	return $trans;
+#    return $trans;
 #    }
 #
 #    foreach my $i (0 .. scalar @{$patron->{hold_items}}) {
-#	$hold = $patron->{hold_items}[$i];
+#    $hold = $patron->{hold_items}[$i];
 #
-#	if ($hold->{item_id} eq $item_id) {
-#	    # Found it.  So fix it.
-#	    $hold->{expiration_date} = $expiry_date if $expiry_date;
-#	    $hold->{pickup_location} = $pickup_location if $pickup_location;
-#	    $hold->{hold_type} = $hold_type if $hold_type;
+#    if ($hold->{item_id} eq $item_id) {
+#        # Found it.  So fix it.
+#        $hold->{expiration_date} = $expiry_date if $expiry_date;
+#        $hold->{pickup_location} = $pickup_location if $pickup_location;
+#        $hold->{hold_type} = $hold_type if $hold_type;
 #
-#	    $trans->ok(1);
-#	    $trans->screen_msg("Hold updated.");
-#	    $trans->patron($patron);
-#	    $trans->item(new ILS::Item $hold->{item_id});
-#	    last;
-#	}
+#        $trans->ok(1);
+#        $trans->screen_msg("Hold updated.");
+#        $trans->patron($patron);
+#        $trans->item(new ILS::Item $hold->{item_id});
+#        last;
+#    }
 #    }
 #
 #    # The same hold structure is linked into both the patron's
@@ -635,7 +635,7 @@ sub pay_fee {
 #    # the item, since it's already been updated by the patron code.
 #
 #    if (!$trans->ok) {
-#	$trans->screen_msg("No such outstanding hold.");
+#    $trans->screen_msg("No such outstanding hold.");
 #    }
 #
 #    return $trans;
@@ -643,52 +643,52 @@ sub pay_fee {
 
 
 sub renew {
-	my ($self, $patron_id, $patron_pwd, $item_id, $title_id,
-		$no_block, $nb_due_date, $third_party, $item_props, $fee_ack) = @_;
+    my ($self, $patron_id, $patron_pwd, $item_id, $title_id,
+        $no_block, $nb_due_date, $third_party, $item_props, $fee_ack) = @_;
 
-	$self->verify_session;
+    $self->verify_session;
 
-	my $trans = OpenILS::SIP::Transaction::Renew->new( authtoken => $self->{authtoken} );
-	$trans->patron($self->find_patron($patron_id));
-	$trans->item($self->find_item($item_id));
+    my $trans = OpenILS::SIP::Transaction::Renew->new( authtoken => $self->{authtoken} );
+    $trans->patron($self->find_patron($patron_id));
+    $trans->item($self->find_item($item_id));
 
-	if(!$trans->patron) {
-		$trans->screen_msg("Invalid patron barcode.");
-		$trans->ok(0);
-		return $trans;
-	}
+    if(!$trans->patron) {
+        $trans->screen_msg("Invalid patron barcode.");
+        $trans->ok(0);
+        return $trans;
+    }
 
-	if(!$trans->patron->renew_ok) {
-		$trans->screen_msg("Renewals not allowed.");
-		$trans->ok(0);
-		return $trans;
-	}
+    if(!$trans->patron->renew_ok) {
+        $trans->screen_msg("Renewals not allowed.");
+        $trans->ok(0);
+        return $trans;
+    }
 
-	if(!$trans->item) {
-		if( $title_id ) {
-			$trans->screen_msg("Title ID renewal not supported.  Use item barcode.");
-		} else {
-			$trans->screen_msg("Invalid item barcode.");
-		}
-		$trans->ok(0);
-		return $trans;
-	}
+    if(!$trans->item) {
+        if( $title_id ) {
+            $trans->screen_msg("Title ID renewal not supported.  Use item barcode.");
+        } else {
+            $trans->screen_msg("Invalid item barcode.");
+        }
+        $trans->ok(0);
+        return $trans;
+    }
 
-	if(!$trans->item->{patron} or 
-			$trans->item->{patron} ne $patron_id) {
-		$trans->screen_msg("Item not checked out to " . $trans->patron->name);
-		$trans->ok(0);
-		return $trans;
-	}
+    if(!$trans->item->{patron} or 
+            $trans->item->{patron} ne $patron_id) {
+        $trans->screen_msg("Item not checked out to " . $trans->patron->name);
+        $trans->ok(0);
+        return $trans;
+    }
 
-	# Perform the renewal
-	$trans->do_renew();
+    # Perform the renewal
+    $trans->do_renew();
 
-	$trans->desensitize(0);	# It's already checked out
-	$trans->item->{due_date} = $nb_due_date if $no_block eq 'Y';
-	$trans->item->{sip_item_properties} = $item_props if $item_props;
+    $trans->desensitize(0);    # It's already checked out
+    $trans->item->{due_date} = $nb_due_date if $no_block eq 'Y';
+    $trans->item->{sip_item_properties} = $item_props if $item_props;
 
-	return $trans;
+    return $trans;
 }
 
 
@@ -705,41 +705,41 @@ sub renew {
 #
 #    $trans->patron($patron = new ILS::Patron $patron_id);
 #    if (defined $patron) {
-#	syslog("LOG_DEBUG", "ILS::renew_all: patron '%s': renew_ok: %s",
-#	       $patron->name, $patron->renew_ok);
+#    syslog("LOG_DEBUG", "ILS::renew_all: patron '%s': renew_ok: %s",
+#           $patron->name, $patron->renew_ok);
 #    } else {
-#	syslog("LOG_DEBUG", "ILS::renew_all: Invalid patron id: '%s'",
-#	       $patron_id);
+#    syslog("LOG_DEBUG", "ILS::renew_all: Invalid patron id: '%s'",
+#           $patron_id);
 #    }
 #
 #    if (!defined($patron)) {
-#	$trans->screen_msg("Invalid patron barcode.");
-#	return $trans;
+#    $trans->screen_msg("Invalid patron barcode.");
+#    return $trans;
 #    } elsif (!$patron->renew_ok) {
-#	$trans->screen_msg("Renewals not allowed.");
-#	return $trans;
+#    $trans->screen_msg("Renewals not allowed.");
+#    return $trans;
 #    } elsif (defined($patron_pwd) && !$patron->check_password($patron_pwd)) {
-#	$trans->screen_msg("Invalid patron password.");
-#	return $trans;
+#    $trans->screen_msg("Invalid patron password.");
+#    return $trans;
 #    }
 #
 #    foreach $item_id (@{$patron->{items}}) {
-#	my $item = new ILS::Item $item_id;
+#    my $item = new ILS::Item $item_id;
 #
-#	if (!defined($item)) {
-#	    syslog("LOG_WARNING",
-#		   "renew_all: Invalid item id associated with patron '%s'",
-#		   $patron->id);
-#	    next;
-#	}
+#    if (!defined($item)) {
+#        syslog("LOG_WARNING",
+#           "renew_all: Invalid item id associated with patron '%s'",
+#           $patron->id);
+#        next;
+#    }
 #
-#	if (@{$item->hold_queue}) {
-#	    # Can't renew if there are outstanding holds
-#	    push @{$trans->unrenewed}, $item_id;
-#	} else {
-#	    $item->{due_date} = time + (14*24*60*60); # two weeks hence
-#	    push @{$trans->renewed}, $item_id;
-#	}
+#    if (@{$item->hold_queue}) {
+#        # Can't renew if there are outstanding holds
+#        push @{$trans->unrenewed}, $item_id;
+#    } else {
+#        $item->{due_date} = time + (14*24*60*60); # two weeks hence
+#        push @{$trans->renewed}, $item_id;
+#    }
 #    }
 #
 #    $trans->ok(1);
