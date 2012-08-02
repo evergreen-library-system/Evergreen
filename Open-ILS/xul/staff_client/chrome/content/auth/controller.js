@@ -276,7 +276,6 @@ auth.controller.prototype = {
         obj.session = new auth.session(obj.controller.view);
 
         obj.controller.render();
-        obj.test_server( obj.controller.view.server_prompt.value );
         obj.controller.render('ws_deck'); 
 
         if (typeof this.on_init == 'function') {
@@ -320,9 +319,15 @@ auth.controller.prototype = {
                     if (x.status == 200) {
                         s.setAttribute('style','color: green;');
                     } else {
+                        if(x.status == 0) {
+                            s.setAttribute('value', document.getElementById('authStrings').getString('staff.auth.controller.error_hostname'));
+                            obj.controller.view.server_prompt.disabled = false;
+                            obj.controller.view.server_prompt.focus();
+                        }
                         s.setAttribute('style','color: red;');
                     }
-                    obj.test_version(url);
+                    if(x.status > 0)
+                        obj.test_version(url);
                 } catch(E) {
                     obj.controller.view.server_prompt.disabled = false;
                     obj.controller.view.server_prompt.focus();
