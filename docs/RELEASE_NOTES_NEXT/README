@@ -1,0 +1,6 @@
+New features should be accompanied by a file in this directory. The file should 
+be in asciidoc format and contain enough description to enable the 
+documentation team to write something coherent about the new functionality. The 
+name of the file should match the feature. No numbering, etc. is required. With 
+each release, the contents of this directory will be appended to the release 
+notes and removed from this directory.
