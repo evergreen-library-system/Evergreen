@@ -567,7 +567,7 @@
                 .getService(Components.interfaces.nsIClipboardHelper);
             gClipboardHelper.copyString(text);
             var Strings = $('offlineStrings') || $('commonStrings');
-            alert(Strings.getFormattedString('openils.global_util.clipboard', [text]));
+            // alert(Strings.getFormattedString('openils.global_util.clipboard', [text]));
         } catch(E) {
             var Strings = $('offlineStrings') || $('commonStrings');
             alert(Strings.getFormattedString('openils.global_util.clipboard.error', [E]));    
