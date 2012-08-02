@@ -1,0 +1,368 @@
+Release notes
+=============
+:toc:
+:numbered:
+
+Upgrade notes
+-------------
+
+New features
+------------
+
+Acquisitions
+~~~~~~~~~~~~
+
+ACQ Invoice Inline Lineitem Search and Add
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Invoice UI is how composed of two tabs, the main invoice tab and a new Search tab.  The search tab consists of a subset of the Acquisitions unified search interface.  The goal is to allow users to search for lineitems to invoice.  Search results may be added directly to the growing invoice.  A number of small usability features are included.
+
+Features
+++++++++
+
+    * Option (default) to limit searches to invoiceable items.  
+        ** These are lineitems that are not cancelled, have at least one invoiceable copy, linked to a PO whose provider matches that of the current invoice, and are not already linked to the current invoice.
+    * Search defaults to last-run search (on workstation).
+    * New Lineitem Detail filter options
+    * Sort searches by lineitem number (default) and title.
+    * There is a new Expected Cost field which includes both the total invoiced cost plus the anticipated cost of lineitems as they are added.
+    * New Price per Copy field
+    * Lineitem count field
+    * Show / Hide Invoice details button.  Details are displayed by default, but hidden when the user enters the search tab.  From there it remains hidden until manually shown (or a new invoice is opened).
+    * A new "Save & Clear" button which saves the current invoice then clears the invoice display to create a new invoice.
+    * Provider, shipper, and receiver fields are auto-populated from the first-added invoice data (when not already set).
+    * Totals are now read-only, since they are derived from existing data (and are informational only).
+
+
+EDI Invoices
+^^^^^^^^^^^^
+
+The same setup that is required today for retrieving and reacting to EDI Order
+Response messages (ORDRSP) will also react to Invoices (INVOIC).
+
+This essentially means you must have a Provider (acq.provider) configured with
+an EDI Account (acq.edi_account) containing login credentials for a vendor, you must have the edi_webrick service running (EDI translator), and you must have
+the edi_pusher script run periodically by cron.
+
+An open Evergreen invoice will be created for a each EDI Invoice message.
+Evergreen invoice entries will be created for each lineitem detected in the
+EDI message if that lineitem can be linked to a known Evergreen lineitem in
+your system.  An Evergreen invoice item will be created for a whole-invoice
+tax.
+
+OPAC
+~~~~
+
+
+TPAC: Simplified CSS Color Customization
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+CSS colors are now defined as a pair of Template::Toolkit files,
+`Open-ILS/src/templates/opac/css/styles.css.tt2` and
+`Open-ILS/src/templates/opac/parts/css/colors.tt2`. Evergreen administrators
+can customize the color scheme for a given skin by copying `colors.tt2` into a
+template override directory and adjusting the colors as desired.
+
+Change required to eg_vhost.conf
+++++++++++++++++++++++++++++++++
+To enable Apache to pass the CSS file to the Template::Toolkit handler, you
+must remove `.css` from the list of file extensions that should not be passed
+to a handler in `eg_vhost.conf` as follows:
+
+.From
+------------------------------------------------------------------------------
+<LocationMatch ^/eg/.*(\.js|\.css|\.html|\.xhtml|\.xml|\.jpg|\.png|\.gif)$>
+    SetHandler None
+</LocationMatch>
+------------------------------------------------------------------------------
+
+.To
+------------------------------------------------------------------------------
+<LocationMatch ^/eg/.*(\.js|\.html|\.xhtml|\.xml|\.jpg|\.png|\.gif)$>
+    SetHandler None
+</LocationMatch>
+------------------------------------------------------------------------------
+
+After making this change, restart Apache to make the change take effect.
+
+
+Add to Permanent Bookbag
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+TPAC was modified to allow a logged-in user to add records from search
+results and record summary screens to their permanent bookbags rather
+than to a temporary bookbag that goes away when logged out.
+
+Bookbag Selection Menu
+++++++++++++++++++++++
+
+The search results and record summary screens were modified so that
+the "Add to my list" will show a menu when moused over by a logged-in
+user.  This menu will display the option to add to a temporary
+bookbag, the user's default list (if any), up to ten of the user's
+other bookbags, a "See all" option to allow the user to choose one of
+the bags not on the menu, and to create a new list and add the record
+to it.
+
+Choosing the temporary list from the menu will add the record to the
+temporary my list as TPAC does before the addition of this feature.
+
+Choosing a named list will add the record to the chosen list.
+
+Choosing "See all" or "Add to new list" will take the user to their My
+Lists page.  (The only difference being that "See all" will actually
+list all of the user's bookbags if they have more than the current
+limit.)  The My Lists page will have a new button "Add to this list"
+next to each of their existing lists.  In addition, if the user
+creates a new list on this screen, the selected record will
+automatically be added to this new list.
+
+You can tell all of the above is working if you are redirected to your
+search results or record summary after adding to a list.  If there was
+a problem, you will get either an error page or will see your My Lists
+page.
+
+Designating a Default Bookbag/list
+++++++++++++++++++++++++++++++++++
+
+The user's My List screen has had a 'Make Default List' button added
+for each list.  Clicking the button will cause that list to be
+registered as the user's default list.  This is the list that will be
+added to when a user chooses the Default List option on the Add to my
+list menu in search or record summary.
+
+The current default list has a 'Remove Default List' button next to
+it.  Clicking this button will unset the default status of the list
+and return to a state of having no default list.
+
+One handy way that users may want to use this feature is to create a
+new list, and then designate it as the default.  This list could then
+be used to add records from searches based on a current topic of
+interest.  Changing the default list is so easy that users may want to
+do so when changing search topics in order to keep their results
+better organized.
+
+A Note on CSS Styles
+++++++++++++++++++++
+
+If a user has a bookbag with an overly long name, the end of it will
+jut out past the right margin of the menu in FireFox and several other
+browsers.  To change this behavior, you may want to edit the `.popmenu
+li:hover li a` css entry in `web/css/skin/default/opac/style.css` by
+adding an `overflow` property.  If you desire to have the longer names
+clipped to the size ofthe menu then add `overlow: hidden`.  If you
+prefer to have a scroll bar for oversized entries, then add `overflow:
+auto`.
+
+
+Warn When Adding to a Temporary Bookbag
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+TPAC has been modified so that a user will see a warning before adding
+a record to a temporary bookbag.  This message serves to inform the
+user that they are adding to a temporary list that will disappear when
+their session ends.
+
+A new org. unit setting has been added,
+opac.patron.temporary_list_warn, that will enable this warning when
+set.  Sites may choose not to display this warning.
+
+The user may also set a preference in their search preferences to
+disable this warning.  The setting only works when a user is logged
+in, of course.
+
+
+Cataloging
+~~~~~~~~~~
+
+Z39.50 Source Attributes Management Interface
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+There is a new interface for managing Z39.50 attributes on a Z39.50
+source.  The interface is linked from each source name in the Z39.50
+Source administrative interface.
+
+Cloning
++++++++
+
+In addition to attribute creation, deletion, and editing, it's also 
+possible to clone a set of attributes from one source into another.
+When cloning, any attributes present in the cloned source that are
+not present in the destination source are copied into the destination 
+source.
+
+Vandelay (MARC Import/Export) Copy Overlay
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Vandelay Item Attributes (Cataloging -> MARC Import / 
+Export -> Import Item Attribute Definitions) contains 
+a new field called "Overlay Match ID".  The presence of data 
+in this field extracted from an import-item copy indicates 
+to the Vandelay import process that a copy overlay is requested 
+instead of new copy creation.  The value for the field is the 
+copy id for bib record queues and the ACQ lineitem_detail ID for 
+Acquisitions Queues.  For either type of queue, however, overlay 
+occurs against a real copy (asset.copy).  In the ACQ queue case, 
+we use the lineitem_detail ID because this is the data ACQ 
+providers and sub-systems will have access to.
+
+When a match point ID value is a set and a matching copy is found, 
+the values extracted from the inbound copy data are used to replace 
+values on the existing found copy, including the call-number label.  
+Any fields on the inbound copy that are empty are ignored.
+
+One use case for this feature are shelf-ready items produced by a 
+3rd-party (e.g. ACQ provider) and delivered to the library via MARC
+file for upload.  The file might contain improved MARC bibliographic
+data as well as real barcodes (i.e. not temporary ACQ generated 
+barcodes) for the copies already purchased through the vendor.
+
+Permission
+++++++++++
+
+This adds a new permission called IMPORT_OVERLAY_COPY which is 
+required to perform the copy overlay step.
+
+Regardless of permission, it is not possible to overlay values on
+a copy unless the imported bib record links (creates/overlays/merges)
+to/with the owning bib record for the copy to be overlaid.  This is 
+both for security and removal of a potent foot-gun.
+
+Circulation
+~~~~~~~~~~~
+
+Simplified Hold Pull List
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+There is a new hold pull list interface based on the Flattener service that's
+designed to perform faster than existing pull list interfaces, both in staff
+client display and printing.
+
+Sorting
++++++++
+
+You can sort on any one column by clicking on it.  Click again to reverse
+direction.  This is typical of similar interfaces.
+
+Now you can also sort by multiple columns.  Right click the column headers of
+the grid in the pull list interface to get a dialog that allows you to sort
+by multiple columns, in any order.
+
+Column Picking
+++++++++++++++
+
+The same dialog that allows you to choose multiple sort columns (accessed by
+right clicking any column header) also allows you to toggle the display of any
+column available to the pull list on or off.
+
+Persistence
++++++++++++
+
+Once saved, your changes in this dialog persist for your user account.  Column
+display, display order, and `sorting choices affect printing as well as
+displayed output.
+
+Administration
+~~~~~~~~~~~~~~
+
+Search Filter Groups
+^^^^^^^^^^^^^^^^^^^^
+
+Search filter groups support the collection of free-form search queries into
+named groups of named filters which can be applied to searches.  The purpose 
+is to allow systems to fine tune filters in the catalog.
+
+Editing the groups and their entries is done in the staff client at
+Admin -> Local Administration -> Search Filter Groups.
+
+Example
++++++++
+
+Consider a new filter called "reading_level".  It uses a combination of 
+MARC audience and shelving location to differentiate items.  It might have
+entries that look like this:
+
+Children's Materials => audience(a,b,c) locations(1,2,3,4,5,6,7)
+
+Young Adult => audience(j,d) locations(5,6,7,8,9,10)
+
+Adult => audience(e,f,g, ) -locations(1,2,3,4,5,6,7,8,9)
+
+Using the filter in a template
+++++++++++++++++++++++++++++++
+
+[source, html]
+---------------------------------------------------
+<span>[% ctx.filter_groups.reading_level.label %]<span>
+<span>
+[%
+    INCLUDE 'opac/parts/filter_group_selector.tt2'
+    filter_group='reading_level'
+    none_ok=1
+    none_label=l('All')
+%]
+<span>
+---------------------------------------------------
+
+Staff Client
+~~~~~~~~~~~~
+
+XULRunner / Firefox
+^^^^^^^^^^^^^^^^^^^
+Support for later versions of XULRunner is included, which means that later
+improvements to XULRunner can be taken advantage of. This also means that the
+Firefox extension mode works in Firefox 3.6+, though some frequent tweaking
+will be needed due to the rapid Firefox major release schedule.
+
+The majority of the actual changes are backend changes, but there are some
+significant things to note for local customizations.
+
+Remote XUL
+++++++++++
+Remote XUL no longer works in XULRunner/Firefox 4+, but to work around it a
+custom extension now creates an oils:// wrapper. Within the staff client that
+wrapper contains a "remote" host, from which server-side XUL can be loaded.
+
+Custom XUL pages stored on the server will need to reference the new wrapper
+to function.
+
+As a note: The new wrapper is used for all OPAC access and only talks SSL.
+
+enablePrivilege
++++++++++++++++
+The enablePrivilege command that would allow code to access various protected
+functionality is no longer available. Any code that depended upon it will need
+to be adjusted to use the oils:// wrapper created for Remote XUL.
+
+Cookies
++++++++
+Unfortunately, the oils:// wrapper has one less than useful effect. Any
+JavaScript loaded via it loses access to cookies. This is most notable when you
+are dealing with authtoken cookies. This only applies to JavaScript, however,
+and the server can still see the cookies when it gets requests.
+
+As a workaround you can load the data stash and fetch authtokens via it instead.
+This should always work when using the oils:// wrapper due to the elevated
+permission set it gets (nearly, if not equal to, local XUL).
+
+url_prefix
+++++++++++
+Finally, as a useful feature, the url_prefix function is now slightly easier to
+use. Instead of needing to reference urls.SOMETHING you can instead just put the
+SOMETHING at the start of the url to prefix:
+
+url_prefix('SOMETHING/stuff.html')
+
+In this case SOMETHING can be terminated by the end of the string or up to the
+first instance of a slash (/), question mark (?), or pipe (|). The pipe is a
+special case and is removed during the replacement.
+
+For example, if urls.REPLACE were set to 'oils://remote/replace':
+
+url_prefix('REPLACE/stuff') becomes 'oils://remote/replace/stuff'
+url_prefix('REPLACE?query') becomes 'oils://remote/replace?query'
+url_prefix('RPLACE|ment') becomes 'oils://remote/replacement'
+
+The pipe is intended for cases where the urls entry may or may not already
+contain a query string, say for differences between OPACs where one requires
+that something be passed into the query string, but the other uses a path
+component instead.
