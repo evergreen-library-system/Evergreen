@@ -160,6 +160,8 @@ include::admin/restrict_Z39.50_sources_by_perm_group.txt[]
 
 include::admin/booking-admin.txt[]
 
+include::admin/permissions.txt[]
+
 include::admin/SMS_messaging.txt[]
 
 include::admin/user_activity_type.txt[]
