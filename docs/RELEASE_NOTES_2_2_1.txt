@@ -1,0 +1,72 @@
+Release Notes for Evergreen 2.2.1
+=================================
+
+This release contains many bugfixes improving on Evergreen 2.2.0.
+Significant changes since 2.2.0 are mentioned below, roughly grouped by area
+affected.  For more information on a given change, see the 
+http://open-ils.org/downloads/ChangeLog-2.2.0-2.2.1[technical changelog].
+
+All releases starting with this one are going to be much larger than they
+used to be now that the Evergreen documentation is stored in the same
+repository as the source code.  Cheers to Robert Soulliere and to so many
+more contributors from our Documentation Interest Group.
+
+We also have some new folks contributing code, as well as continuing
+contributions from all the old folks (har).  Thanks all!
+
+Changes
+-------
+ * ACQ: Vendor Invoice Won't Save
+ * ACQ: Cache propagated funds in fund rollover action
+ * ACQ: Add constraint to PO state value
+ * Documentation: Fix typo in upgrade instructions
+ * Documentation: remove those darn Windows carriage returns
+ * Documentation: Migrate reports documentation from 2.1
+ * Documentation: Format text to limit line length to 80 characters
+ * Documentation: Fix various issues causing errors during processing
+ * Documentation: Add Patron Bills section to Patron Management chapter
+ * Documentation: Add Circulation, Patron management Chapter
+ * Documentation: Add Group Serials Issues Chapter
+ * Documentation: Update EG upgrade instructions to reflect 2.2.0 release
+ * Documentation: Remove antiquated 1.6 directory from docs folder
+ * Documentation: Improve Fedora prereqs and instructions
+ * Documentation: Bump OpenSRF prerequisite to 2.1 for Evergreen 2.2+
+ * Documentation: link README to server install docs
+ * Documentation: Merge the Evergreen docs into the code repository
+ * Documentation: Fix typo in upgrade instructions
+ * Documentation: Add line breaks in authorities chapter to fix
+ * Documentation: Wording improvement for 2.2 release notes
+ * JSPAC: Point to TPAC from <noscript> section
+ * TPAC: Decode translated strings into UTF8
+ * TPAC: Implement a locale picker
+ * TPAC: Allow user to change activation options for suspended holds
+ * TPAC: Fix recognition of logged-in users via HTTP
+ * TPAC: repair editions statement display
+ * TPAC: Set autofocus appropriately for different contexts
+ * TPAC: Use % font size + bold to highlight login failure
+ * TPAC: CSS change for login failure message
+ * TPAC: Physical description, now with spaces
+ * TPAC: Fix glitch returning from viewing ready-for-pickup to all holds
+ * TPAC: Disable caching for auth-required pages
+ * TPAC: Fix titles/tabs in Account Preferences subpages
+ * TPAC: Handle multiple matches for an XPath expression
+ * TPAC: Add paging to My Lists
+ * TPAC: Add record detail navigation to page bottom
+ * TPAC: Search wrapper spacing
+ * Staff client: increase default width for the XUL list line number column
+ * Staff client: Patron name border color for Notes
+ * Staff client: Add component to force external browser use
+ * Staff client: Allow opening of links in default browser
+ * Staff client: Move Prefix field ahead of Names in patron editor
+ * Staff client: Show in Catalog not working in bills interface
+ * Repair PCrudFilter localeStrings variable collisions
+ * Repaired typo in example rsyslog config file
+ * Fix version numbers in 2.1 -> 2.2 upgrade script
+ * Avoid problem with 2.1 -> 2.2 upgrade script issuing error about thesuari
+ * 2.2 upgrade missing vandelay.authority_match.quality column
+ * Teach the autosuggest web service to cache suggestions where appropriate
+ * Add new columns to CDBI table definitions
+ * Switch to a PLPERLU maintain_901() trigger function
+ * Add evergreen.get_locale_name() function to base schema
+ * Squelch uninitialized var warning from hold_copy_targeter
+ * Silence undef string concatenation warning in AutoSuggest
