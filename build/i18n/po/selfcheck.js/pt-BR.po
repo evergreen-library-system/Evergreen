@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2012-04-28 14:18-0400\n"
-"PO-Revision-Date: 2012-05-25 23:08+0000\n"
-"Last-Translator: Tomas Abril <Unknown>\n"
+"PO-Revision-Date: 2012-06-20 01:05+0000\n"
+"Last-Translator: Job Diógenes Ribeiro Borges <jobdrb@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-05-26 05:09+0000\n"
-"X-Generator: Launchpad (build 15288)\n"
+"X-Launchpad-Export-Date: 2012-06-21 05:27+0000\n"
+"X-Generator: Launchpad (build 15435)\n"
 
 #: selfcheck.js:FAIL_PART_config_hold_matrix_test_max_holds
 msgid "The patron has reached the maximum number of holds"
@@ -23,7 +23,7 @@ msgstr "O cliente atingiu o número máximo de reservas"
 
 #: selfcheck.js:FAIL_PART_location.holdable
 msgid "The item's location is not holdable"
-msgstr ""
+msgstr "A localização de um item não é reservável"
 
 #: selfcheck.js:CHECKOUT_SUCCESS
 msgid "Checkout of item ${0} succeeded"
@@ -32,6 +32,8 @@ msgstr "Empréstimo do item ${0} realizado com sucesso"
 #: selfcheck.js:FAIL_PART_no_ultimate_items
 msgid "The system could not find any items to match this hold request"
 msgstr ""
+"O sistema não encontrou nenhum item que corresponda à esta solicitação de "
+"reserva"
 
 #: selfcheck.js:TOTAL_ITEMS_ACCOUNT
 msgid "Total items on account:  <b>${0}</b>."
@@ -55,11 +57,11 @@ msgstr "O item não pode circular neste momento"
 
 #: selfcheck.js:FAIL_PART_no_user
 msgid "The system could not find this patron"
-msgstr ""
+msgstr "O sistema não conseguiu encontrar este usuário"
 
 #: selfcheck.js:FAIL_PART_transit_range
 msgid "The item cannot transit this far"
-msgstr ""
+msgstr "Este item não pode transitar para esta distância"
 
 #: selfcheck.js:WORKSTATION_REQUIRED
 msgid ""
@@ -68,10 +70,15 @@ msgid ""
 "\n"
 "Would you like to register a new workstation for this self-check interface?"
 msgstr ""
+"Uma estação de trabalho é necessária para entrar em AutoAtendimento. Você "
+"pode definir o nome da estação de trabalho com param URL 'ws'.\n"
+"\n"
+"Gostaria de registrar uma nova estação de trabalho para essa interface de "
+"auto-atendimento?"
 
 #: selfcheck.js:FAIL_PART_config_circ_matrix_test_total_copy_hold_ratio
 msgid "The total item-to-hold ratio is too low"
-msgstr ""
+msgstr "O nível total de itens disponíveis para empréstimo esta baixo"
 
 #: selfcheck.js:ALREADY_OUT
 msgid "Item ${0} is already checked out"
@@ -79,19 +86,19 @@ msgstr "Item ${0} já está emprestado"
 
 #: selfcheck.js:FAIL_PART_config_circ_matrix_test_available_copy_hold_ratio
 msgid "The available item-to-hold ratio is too low"
-msgstr ""
+msgstr "O nível de itens disponíveis para reserva está muito baixo"
 
 #: selfcheck.js:HOLD_STATUS_READY
 msgid "Ready for pickup"
-msgstr ""
+msgstr "Pronto para Coletar"
 
 #: selfcheck.js:FAIL_PART_circ_holds_target_skip_me
 msgid "The item's circulation library does not fulfill holds"
-msgstr ""
+msgstr "A biblioteca de circulação deste item não atende reservas"
 
 #: selfcheck.js:HOLD_STATUS_WAITING
 msgid "#${0} in line with ${1} copies"
-msgstr ""
+msgstr "#${0} de acordo com ${1} exemplares"
 
 #: selfcheck.js:RENEW_SUCCESS
 msgid "Renewal of item ${0} succeeded"
@@ -99,7 +106,7 @@ msgstr "Renovação do item ${0} realizada com sucesso"
 
 #: selfcheck.js:FAIL_PART_config_circ_matrix_circ_mod_test
 msgid "The patron has too many items of this type checked out"
-msgstr ""
+msgstr "O usuário esta com itens demais deste tipo emprestados"
 
 #: selfcheck.js:TOTAL_HOLDS
 msgid "You have <b>${0}</b> total holds."
@@ -107,11 +114,11 @@ msgstr "Você possui um total de <b>${0}</b> empréstimos."
 
 #: selfcheck.js:ITEM_NOT_CATALOGED
 msgid "Item ${0} was not found in the system.  Try re-scanning the item."
-msgstr ""
+msgstr "item de ${0} não foi encontrado no sistema. Tente re-entrar o item."
 
 #: selfcheck.js:FAIL_PART_actor_usr_barred
 msgid "The patron is barred"
-msgstr ""
+msgstr "O usuário esta barrado"
 
 #: selfcheck.js:PAYMENT_INVALID_USER_XACT_ID
 msgid ""
@@ -125,7 +132,7 @@ msgstr ""
 
 #: selfcheck.js:FAIL_PART_status.holdable
 msgid "The item is not in a holdable status"
-msgstr ""
+msgstr "A situação do  item não permite reservar"
 
 #: selfcheck.js:CC_PAYABLE_BALANCE
 msgid "Total amount to pay: $${0}"
@@ -141,7 +148,7 @@ msgstr "As regras do sistema não definem como manipular este item"
 
 #: selfcheck.js:FAIL_PART_asset_copy_circulate
 msgid "The item does not circulate"
-msgstr ""
+msgstr "O item não circula"
 
 #: selfcheck.js:LOGIN_FAILED
 msgid "Login for ${0} failed"
@@ -158,15 +165,15 @@ msgstr "Não é permitido realizar mais renovações do item ${0}"
 
 #: selfcheck.js:HOLDS_READY_FOR_PICKUP
 msgid "You have <b>${0}</b> item(s) ready for pickup."
-msgstr ""
+msgstr "Você tem  <b>${0}</b> itens disponíveis para retirar."
 
 #: selfcheck.js:FAIL_PART_item.holdable
 msgid "The item is not holdable"
-msgstr ""
+msgstr "O item não é reservável"
 
 #: selfcheck.js:FAIL_PART_config_circ_matrix_test_circulate
 msgid "Circulation rules reject this item as non-circulatable"
-msgstr ""
+msgstr "Regras de circulação rejeitaram este item como não circulável"
 
 #: selfcheck.js:OPEN_CIRCULATION_EXISTS
 msgid "Item ${0} is already checked out to another user"
@@ -177,6 +184,8 @@ msgid ""
 "This workstation has already been registered.  Would you like to use it for "
 "this self-check station?"
 msgstr ""
+"Esta estação de trabalho já foi registrada. Gostaria de usá-la como estação "
+"de auto empréstimo?"
 
 #: selfcheck.js:UNKNOWN_ERROR
 msgid "An unhandled exception occurred with error code ${0}"
@@ -184,7 +193,7 @@ msgstr "Uma exceção não tratada ocorreu com código de erro ${0}"
 
 #: selfcheck.js:FAIL_PART_asset_copy_location_circulate
 msgid "Items from this shelving location do not circulate"
-msgstr ""
+msgstr "Itens desta localização nas prateleiras não circulam"
 
 #: selfcheck.js:TOTAL_ITEMS_SESSION
 msgid "Total items this session: <b>${0}</b>."
@@ -192,7 +201,7 @@ msgstr "Total de itens desta sessão: <b>${0}</b>."
 
 #: selfcheck.js:FAIL_PART_config_rule_age_hold_protect_prox
 msgid "The item is too new to transit this far"
-msgstr ""
+msgstr "O item é muito novo para transitar nesta distância"
 
 #: selfcheck.js:TOTAL_FINES_SELECTED
 msgid "Selected total: $${0}"

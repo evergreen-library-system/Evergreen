@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2012-04-28 14:18-0400\n"
-"PO-Revision-Date: 2011-06-25 19:23+0000\n"
-"Last-Translator: Paco Molinero <paco@byasl.com>\n"
+"PO-Revision-Date: 2012-07-01 18:34+0000\n"
+"Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-30 04:51+0000\n"
-"X-Generator: Launchpad (build 15171)\n"
+"X-Launchpad-Export-Date: 2012-07-02 04:38+0000\n"
+"X-Generator: Launchpad (build 15520)\n"
 
 #: register.js:USER_SETTINGS
 msgid "User Settings"
@@ -23,7 +23,7 @@ msgstr "Configuración del usuario"
 
 #: register.js:ALL_CARDS_APPLY
 msgid "Apply Changes"
-msgstr ""
+msgstr "Aplicar los cambios"
 
 #: register.js:DUPE_PATRON_EMAIL
 msgid "Found ${0} patron(s) with the same email address"
@@ -32,11 +32,11 @@ msgstr ""
 
 #: register.js:ADDRESS_BILLING
 msgid "Billing"
-msgstr ""
+msgstr "Facturación"
 
 #: register.js:ADDRESS_OWNED
 msgid "This address is owned by another user: "
-msgstr ""
+msgstr "Esta dirección pertenece a otro usuario: "
 
 #: register.js:ADDRESS_NEW
 msgid "New Address"
@@ -51,7 +51,7 @@ msgstr ""
 
 #: register.js:SHOW_REQUIRED
 msgid "Show Only Required Fields"
-msgstr ""
+msgstr "Solo mostrar los campos requeridos"
 
 #: register.js:DUPE_PATRON_ADDR
 msgid "Found ${0} patron(s) with the same address"
@@ -111,7 +111,7 @@ msgstr "Ejemplo: "
 
 #: register.js:SHOW_SUGGESTED
 msgid "Show Suggested Fields"
-msgstr ""
+msgstr "Mostrar campos sugeridos"
 
 #: register.js:ADDRESS_PENDING
 msgid "This is a pending address: "
@@ -119,11 +119,11 @@ msgstr ""
 
 #: register.js:DUPE_USERNAME
 msgid "Username is already in use"
-msgstr ""
+msgstr "El nombre de usuario ya está en uso"
 
 #: register.js:HOLD_NOTIFY_PHONE
 msgid "Phone: "
-msgstr ""
+msgstr "Teléfono: "
 
 #: register.js:DUPE_PATRON_NAME
 msgid "Found ${0} patron(s) with the same name"
@@ -135,19 +135,19 @@ msgstr "Dirección"
 
 #: register.js:HOLD_NOTIFY_SMS
 msgid "SMS: "
-msgstr ""
+msgstr "SMS: "
 
 #: register.js:INVALIDATE
 msgid "Invalidate"
-msgstr ""
+msgstr "Invalidar"
 
 #: register.js:SHOW_ALL
 msgid "Show All Fields"
-msgstr ""
+msgstr "Mostrar todos los campos"
 
 #: register.js:ADDRESS_APPROVE
 msgid "Approve Address"
-msgstr ""
+msgstr "Aprobar dirección"
 
 #: register.js:VERIFY_PASSWORD
 msgid "Verify Password"
@@ -155,7 +155,7 @@ msgstr "Verificar contraseña"
 
 #: register.js:SAVE_CLONE
 msgid "Save &amp; Clone"
-msgstr ""
+msgstr "Guardar y clonar"
 
 #: register.js:STAT_CATS
 msgid "Statistical Categories"
@@ -163,15 +163,15 @@ msgstr ""
 
 #: register.js:ALL_CARDS_BARCODE
 msgid "Barcode"
-msgstr ""
+msgstr "Código de barras"
 
 #: register.js:RESET_PASSWORD
 msgid "Reset Password"
-msgstr ""
+msgstr "Restablecer contraseña"
 
 #: register.js:HOLD_NOTIFY_EMAIL
 msgid "Email: "
-msgstr ""
+msgstr "Correo electrónico: "
 
 #: register.js:SEE_ALL
 msgid "See All"
@@ -179,7 +179,7 @@ msgstr ""
 
 #: register.js:ALL_CARDS_CLOSE
 msgid "Close"
-msgstr ""
+msgstr "Cerrar"
 
 #: register.js:DELETE_ADDRESS
 msgid "Delete address ${0}?"
