@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2012-04-28 14:18:00-0400\n"
+"POT-Creation-Date: 2012-08-03 10:01:36-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,8 +31,12 @@ msgstr ""
 msgid "This address is owned by another user: "
 msgstr ""
 
-#: register.js:ADDRESS_NEW
-msgid "New Address"
+#: register.js:ALL_CARDS_PRIMARY
+msgid "Primary"
+msgstr ""
+
+#: register.js:ALL_CARDS_BARCODE
+msgid "Barcode"
 msgstr ""
 
 #: register.js:REPLACED_ADDRESS
@@ -66,10 +70,6 @@ msgstr ""
 
 #: register.js:NEED_ADDRESS
 msgid "An address is required during registration."
-msgstr ""
-
-#: register.js:ALL_CARDS_PRIMARY
-msgid "Primary"
 msgstr ""
 
 #: register.js:BARCODE_IN_USE
@@ -152,8 +152,8 @@ msgstr ""
 msgid "Statistical Categories"
 msgstr ""
 
-#: register.js:ALL_CARDS_BARCODE
-msgid "Barcode"
+#: register.js:ADDRESS_NEW
+msgid "New Address"
 msgstr ""
 
 #: register.js:RESET_PASSWORD

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-28 14:17-0400\n"
+"POT-Creation-Date: 2012-08-03 10:01-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -512,6 +512,11 @@ msgstr ""
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode
 #: staff.circ.work_log_patron_registration.message
 msgid "%1$s registered %3$s (%2$s)"
+msgstr ""
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Hold ID  5 - Hold Type
+#: staff.circ.work_log_hold_placed.message
+msgid "%1$s placed hold %4$s (%5$s) for %3$s (%2$s)"
 msgstr ""
 
 #: menu.cmd_browse_holds.tab
