@@ -60,7 +60,7 @@ in over a dozen countries worldwide.
 // Push titles down one level.
 :leveloffset: 1
 
-include::RELEASE_NOTES_2_2.txt[]
+include::RELEASE_NOTES_2_3.txt[]
 
 // Return to normal title levels.
 :leveloffset: 0
@@ -88,7 +88,7 @@ include::installation/server_installation.txt[]
 
 include::installation/server_upgrade.txt[]
 
-include::installation/edi_setup.txt[]
+// include::installation/edi_setup.txt[]
 
 // include::staff_client_installation.txt[] 
 // include::org_unit_structure_initialization.txt[]
@@ -108,11 +108,11 @@ for  configuring the system as well as  customizing  the OPAC and staff client.
 // include::global_system_configuration.txt[]
 // include::opac_customization.txt[]
 
-include::admin/template_toolkit.txt[]
+// include::admin/template_toolkit.txt[]
 
-include::admin/auto_suggest_search.txt[]
+// include::admin/auto_suggest_search.txt[]
 
-include::admin/customize_staff_client.txt[]
+// include::admin/customize_staff_client.txt[]
 
 // include::backing_up.txt[]
  
@@ -129,15 +129,15 @@ This part of the documentation deals with general Staff Client usage including
 logging in, navigation and shortcuts.
 
 
-include::admin/staff_client-tab_buttons.txt[]
+// include::admin/staff_client-tab_buttons.txt[]
 
-include::admin/staff_client-double_clicking.txt[]
+// include::admin/staff_client-double_clicking.txt[]
 
-include::admin/staff_client-sorting_columns.txt[]
+// include::admin/staff_client-sorting_columns.txt[]
 
-include::admin/staff_client-recent_searches.txt[]
+// include::admin/staff_client-recent_searches.txt[]
 
-include::admin/staff_client-return_to_results_from_marc.txt[]
+// include::admin/staff_client-return_to_results_from_marc.txt[]
 
 System Administration From the Staff Client
 ===========================================
@@ -150,21 +150,21 @@ staff client.
 
 // Follow structure from staff client system admin menu.
 
-include::admin/acquisitions_admin.txt[]
+// include::admin/acquisitions_admin.txt[]
 
-include::admin/authorities.txt[]
+// include::admin/authorities.txt[]
 
-include::admin/cn_prefixes_and_suffixes.txt[]
+// include::admin/cn_prefixes_and_suffixes.txt[]
 
-include::admin/restrict_Z39.50_sources_by_perm_group.txt[]
+// include::admin/restrict_Z39.50_sources_by_perm_group.txt[]
 
-include::admin/booking-admin.txt[]
+// include::admin/booking-admin.txt[]
 
-include::admin/permissions.txt[]
+// include::admin/permissions.txt[]
 
-include::admin/SMS_messaging.txt[]
+// include::admin/SMS_messaging.txt[]
 
-include::admin/user_activity_type.txt[]
+// include::admin/user_activity_type.txt[]
 
 
 Local Administration
@@ -181,28 +181,28 @@ client.
 // Push titles down one level.
 :leveloffset: 1
 
-include::admin/hold_driven_recalls.txt[]
+// include::admin/hold_driven_recalls.txt[]
 
 // Return to normal title levels.
 :leveloffset: 0
 
-include::admin/recent_staff_searches.txt[]
+// include::admin/recent_staff_searches.txt[]
 
-include::admin/lsa-library_settings_editor.txt[]
+// include::admin/lsa-library_settings_editor.txt[]
 
-include::admin/lsa-statcat.txt[]
+// include::admin/lsa-statcat.txt[]
 
 
 Acquisitions
 ===========
 
-include::acquisitions/introduction.txt[]
+ include::acquisitions/introduction.txt[]
 
-include::acquisitions/selection_lists_po.txt[]
+// include::acquisitions/selection_lists_po.txt[]
 
-include::acquisitions/receive_items_from_invoice.txt[]
+// include::acquisitions/receive_items_from_invoice.txt[]
 
-include::acquisitions/vandelay_acquisitions_integration.txt[]
+// include::acquisitions/vandelay_acquisitions_integration.txt[]
 
 
 Cataloging
@@ -214,13 +214,13 @@ Introduction
 Cataloguers should use this part for understanding the cataloguing procedures
 used in Evergreen.
 
-include::cataloging/batch_importing_MARC.txt[]
+// include::cataloging/batch_importing_MARC.txt[]
 
-include::cataloging/overlay_record_3950_import.txt[]
+// include::cataloging/overlay_record_3950_import.txt[]
 
-include::cataloging/monograph_parts.txt[]
+// include::cataloging/monograph_parts.txt[]
 
-include::cataloging/conjoined_items.txt[]
+// include::cataloging/conjoined_items.txt[]
 
 
 Serials
@@ -228,21 +228,21 @@ Serials
 
 include::serials/A-intro.txt[]
 
-include::serials/B-copy_template.txt[]
+// include::serials/B-copy_template.txt[]
 
-include::serials/C-subscription-SCV.txt[]
+// include::serials/C-subscription-SCV.txt[]
 
-include::serials/D-subscription-ASCV.txt[]
+// include::serials/D-subscription-ASCV.txt[]
 
-include::serials/E-edit_subscriptions.txt[]
+// include::serials/E-edit_subscriptions.txt[]
 
-include::serials/F-Receiving.txt[]
+// include::serials/F-Receiving.txt[]
 
-include::serials/G-Special_issue.txt[]
+// include::serials/G-Special_issue.txt[]
 
-include::serials/H-holdings_statements.txt[]
+// include::serials/H-holdings_statements.txt[]
 
-include::serials/Group_Serials_Issues_in_the_OPAC_2.2.txt[]
+// include::serials/Group_Serials_Issues_in_the_OPAC_2.2.txt[]
 
 Circulation
 ===========
@@ -253,11 +253,11 @@ Introduction
 Use this section for understanding the circulation procedures in the Evergreen
 system.  
 
-include::circulation/circulating_items.txt[]
+// include::circulation/circulating_items.txt[]
 
-include::circulation/booking.txt[]
+// include::circulation/booking.txt[]
 
-include::circulation/circulation_patron_records.txt[]
+// include::circulation/circulation_patron_records.txt[]
 
 Reports
 =======
@@ -267,25 +267,25 @@ Introduction
 
 Learn how to create and use reports in Evergreen. 
 
-include::reports/reporter_daemon.txt[]
+// include::reports/reporter_daemon.txt[]
 
-include::reports/reporter_folder.txt[]
+// include::reports/reporter_folder.txt[]
 
-include::reports/reporter_create_templates.txt[]
+// include::reports/reporter_create_templates.txt[]
 
-include::reports/reporter_generating_reports.txt[]
+// include::reports/reporter_generating_reports.txt[]
 
-include::reports/reporter_view_output.txt[]
+// include::reports/reporter_view_output.txt[]
 
-include::reports/reporter_cloning_shared_templates.txt[]
+// include::reports/reporter_cloning_shared_templates.txt[]
 
-include::reports/reporter_add_data_source.txt[]
+// include::reports/reporter_add_data_source.txt[]
 
-include::reports/running_recurring_reports.txt[]
+// include::reports/running_recurring_reports.txt[]
 
-include::reports/reporter_template_termionology.txt[]
+// include::reports/reporter_template_termionology.txt[]
 
-include::reports/reporter_export_usingpgAdmin.txt[]
+// include::reports/reporter_export_usingpgAdmin.txt[]
 
 Using the Public Access Catalog
 ===============================
@@ -295,7 +295,7 @@ Introduction
 
 Use this part for information about searching the Evergreen public access catalog.
 
-include::opac/my_lists.txt[]
+// include::opac/my_lists.txt[]
 
 Developer Resources
 ===================
@@ -309,7 +309,7 @@ communication protocols and standards used in Evergreen.
 // Push titles down one level.
 :leveloffset: 1
 
-include::development/updating_translations_launchpad.txt[]
+// include::development/updating_translations_launchpad.txt[]
 
 // Return to normal title levels.
 :leveloffset: 0
