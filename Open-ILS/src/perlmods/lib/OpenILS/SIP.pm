@@ -244,9 +244,11 @@ sub login {
     my $key = $response->{payload}->{authtoken};
     syslog('LOG_INFO', "OILS: Login succeeded for $username : authkey = $key");
 
+    $self->{authtoken} = $key;
+
     $self->fetch_session; # to cache the login
 
-    return $self->{authtoken} = $key;
+    return $key;
 }
 
 #
