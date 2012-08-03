@@ -87,6 +87,9 @@
         ELSIF adv_chunk.adv_attr;
             INCLUDE "opac/parts/coded_value_selector.tt2"
                 attr=adv_chunk.adv_attr multiple="multiple" size="4";
+        ELSIF adv_chunk.adv_filter;
+            INCLUDE "opac/parts/filter_group_selector.tt2"
+                filter_group=adv_chunk.adv_filter multiple="multiple" size="4";
         END; %]
             </td>
 [%
