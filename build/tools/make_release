@@ -2,7 +2,7 @@
 
 GIT_ABS=`git rev-parse --show-toplevel`
 GIT_BRANCH=`git rev-parse --abbrev-ref HEAD | sed 's|.*/||'`
-HEADURLBASE="http://git.evergreen-ils.org/Evergreen.git?h=refs/heads/"
+HEADURLBASE="http://git.evergreen-ils.org/Evergreen.git?h=refs/heads/rel_2_3_beta1"
 HEADURL="$HEADURLBASE$GIT_BRANCH"
 
 # Drop to the root of the checkout
