@@ -10,8 +10,13 @@
             class="adv_search_font">[% l('Advanced Search') %]</span></a>
     </div>
     <div class="searchbar">[%- l('Search ');
-        INCLUDE "opac/parts/coded_value_selector.tt2"
-            attr=["mattype", "item_type"] none_ok=1 none_label=l('All Formats');
+        IF search.basic_config.type == 'attr';
+            INCLUDE "opac/parts/coded_value_selector.tt2"
+                attr=search.basic_config.group none_ok=1 none_label=search.basic_config.none_label;
+        ELSIF search.basic_config.type == 'filter';
+            INCLUDE "opac/parts/filter_group_selector.tt2"
+                filter_group=search.basic_config.group none_ok=1 none_label=search.basic_config.none_label;
+        END;
             l(' for ');
         %]
         <span class='search_box_wrapper'>
