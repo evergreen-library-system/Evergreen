@@ -138,7 +138,10 @@ FEDORA_RPMS = \
 	perl-GDGraph3d \
 	perl-JSON-XS \
 	perl-LDAP \
+	perl-Library-CallNumber-LC \
 	perl-Locale-Codes \
+	perl-MARC-Charset \
+	perl-MARC-Record \
 	perl-Net-IP \
 	perl-Net-SSH2 \
 	perl-OLE-Storage_Lite \
@@ -160,7 +163,7 @@ FEDORA_CPAN = \
 	Business::OnlinePayment \
 	Business::OnlinePayment::AuthorizeNet \
 	Business::OnlinePayment::PayPal \
-	MARC::Record \
+	MARC::File::XML \
 	UUID::Tiny
 
 PGSQL_90_RPMS = \
