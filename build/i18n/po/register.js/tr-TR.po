@@ -8,22 +8,22 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2012-04-28 14:18-0400\n"
-"PO-Revision-Date: 2011-04-19 04:00+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2012-07-16 09:59+0000\n"
+"Last-Translator: Irmak Bıçakçıgil <Unknown>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-30 04:51+0000\n"
-"X-Generator: Launchpad (build 15171)\n"
+"X-Launchpad-Export-Date: 2012-07-17 04:50+0000\n"
+"X-Generator: Launchpad (build 15627)\n"
 
 #: register.js:USER_SETTINGS
 msgid "User Settings"
-msgstr ""
+msgstr "Kullanıcı Ayarları"
 
 #: register.js:ALL_CARDS_APPLY
 msgid "Apply Changes"
-msgstr ""
+msgstr "Değişiklikleri Uygula"
 
 #: register.js:DUPE_PATRON_EMAIL
 msgid "Found ${0} patron(s) with the same email address"
@@ -31,15 +31,15 @@ msgstr ""
 
 #: register.js:ADDRESS_BILLING
 msgid "Billing"
-msgstr ""
+msgstr "Ücretlendirme"
 
 #: register.js:ADDRESS_OWNED
 msgid "This address is owned by another user: "
-msgstr ""
+msgstr "Bu adres başka bir kullanıcıya ait: "
 
 #: register.js:ADDRESS_NEW
 msgid "New Address"
-msgstr ""
+msgstr "Yeni Adres"
 
 #: register.js:REPLACED_ADDRESS
 msgid ""
@@ -48,7 +48,7 @@ msgstr ""
 
 #: register.js:SHOW_REQUIRED
 msgid "Show Only Required Fields"
-msgstr ""
+msgstr "Sadece Gerekli Alanları Göster"
 
 #: register.js:DUPE_PATRON_ADDR
 msgid "Found ${0} patron(s) with the same address"
@@ -56,7 +56,7 @@ msgstr ""
 
 #: register.js:SAVE
 msgid "Save"
-msgstr ""
+msgstr "Kaydet"
 
 #: register.js:DUPE_PATRON_IDENT
 msgid "Found ${0} patron(s) with the same identification"
@@ -68,7 +68,7 @@ msgstr ""
 
 #: register.js:REPLACE_BARCODE
 msgid "Replace Barcode"
-msgstr ""
+msgstr "Barkodu Yenile"
 
 #: register.js:NEED_ADDRESS
 msgid "An address is required during registration."
@@ -76,19 +76,19 @@ msgstr ""
 
 #: register.js:ALL_CARDS_PRIMARY
 msgid "Primary"
-msgstr ""
+msgstr "Birincil"
 
 #: register.js:BARCODE_IN_USE
 msgid "Barcode is already in use"
-msgstr ""
+msgstr "Barkod zaten kullanımda"
 
 #: register.js:ADDRESS_HEADER
 msgid "Address"
-msgstr ""
+msgstr "Adres"
 
 #: register.js:ALL_CARDS_ACTIVE
 msgid "Active"
-msgstr ""
+msgstr "Etkin"
 
 #: register.js:DUPE_PATRON_PHONE
 msgid "Found ${0} patron(s) with the same phone number"
@@ -96,7 +96,7 @@ msgstr ""
 
 #: register.js:INVALID_FORM
 msgid "Form is invalid.  Please edit and try again."
-msgstr "Form hatalaı. Lütfen düzenleyip tekrar deneyin."
+msgstr "Form hatalı. Lütfen düzenleyip tekrar deneyin."
 
 #: register.js:PARENT_OR_GUARDIAN
 msgid "Parent/Guardian"
@@ -104,7 +104,7 @@ msgstr ""
 
 #: register.js:EXAMPLE
 msgid "Example: "
-msgstr ""
+msgstr "Örnek: "
 
 #: register.js:SHOW_SUGGESTED
 msgid "Show Suggested Fields"
@@ -112,15 +112,15 @@ msgstr ""
 
 #: register.js:ADDRESS_PENDING
 msgid "This is a pending address: "
-msgstr ""
+msgstr "bu beklemedeki bir adres: "
 
 #: register.js:DUPE_USERNAME
 msgid "Username is already in use"
-msgstr ""
+msgstr "Kullanıcı adı zaten kullanımda"
 
 #: register.js:HOLD_NOTIFY_PHONE
 msgid "Phone: "
-msgstr ""
+msgstr "Telefon: "
 
 #: register.js:DUPE_PATRON_NAME
 msgid "Found ${0} patron(s) with the same name"
@@ -132,15 +132,15 @@ msgstr ""
 
 #: register.js:HOLD_NOTIFY_SMS
 msgid "SMS: "
-msgstr ""
+msgstr "SMS: "
 
 #: register.js:INVALIDATE
 msgid "Invalidate"
-msgstr ""
+msgstr "Geçersiz"
 
 #: register.js:SHOW_ALL
 msgid "Show All Fields"
-msgstr ""
+msgstr "Tüm Alanları Göster"
 
 #: register.js:ADDRESS_APPROVE
 msgid "Approve Address"
@@ -148,7 +148,7 @@ msgstr ""
 
 #: register.js:VERIFY_PASSWORD
 msgid "Verify Password"
-msgstr ""
+msgstr "Parolayı Doğrula"
 
 #: register.js:SAVE_CLONE
 msgid "Save &amp; Clone"
@@ -156,27 +156,27 @@ msgstr ""
 
 #: register.js:STAT_CATS
 msgid "Statistical Categories"
-msgstr ""
+msgstr "İstatistiksel Kategoriler"
 
 #: register.js:ALL_CARDS_BARCODE
 msgid "Barcode"
-msgstr ""
+msgstr "Barkod"
 
 #: register.js:RESET_PASSWORD
 msgid "Reset Password"
-msgstr ""
+msgstr "Parolayı Sıfırla"
 
 #: register.js:HOLD_NOTIFY_EMAIL
 msgid "Email: "
-msgstr ""
+msgstr "Eposta: "
 
 #: register.js:SEE_ALL
 msgid "See All"
-msgstr ""
+msgstr "Hepsini Göster"
 
 #: register.js:ALL_CARDS_CLOSE
 msgid "Close"
-msgstr ""
+msgstr "Kapat"
 
 #: register.js:DELETE_ADDRESS
 msgid "Delete address ${0}?"
