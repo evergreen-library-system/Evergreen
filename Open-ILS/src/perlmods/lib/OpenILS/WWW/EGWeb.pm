@@ -154,7 +154,7 @@ sub load_context {
     $ctx->{locales} = \%registered_locales;
 
     # Set a locale cookie if the requested locale is valid
-    my $set_locale = $cgi->param('set_eg_locale');
+    my $set_locale = $cgi->param('set_eg_locale') || '';
     if (!(grep {$_ eq $set_locale} keys %registered_locales)) {
         $set_locale = '';
     } else {

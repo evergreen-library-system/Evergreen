@@ -247,7 +247,8 @@ sub load_common {
     $ctx->{full_path} = $ctx->{base_path} . $self->cgi->path_info;
     $ctx->{unparsed_uri} = $self->apache->unparsed_uri;
     $ctx->{opac_root} = $ctx->{base_path} . "/opac"; # absolute base url
-    $ctx->{is_staff} = ($self->apache->headers_in->get('OILS-Wrapper') =~ /true/);
+    my $oils_wrapper = $self->apache->headers_in->get('OILS-Wrapper') || '';
+    $ctx->{is_staff} = ($oils_wrapper =~ /true/);
     $ctx->{proto} = 'oils' if $ctx->{is_staff};
     $ctx->{physical_loc} = $self->get_physical_loc;
 
