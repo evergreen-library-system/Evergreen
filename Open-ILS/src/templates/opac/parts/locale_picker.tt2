@@ -1,7 +1,7 @@
 [%- IF ctx.locales.keys.size > 1;
     set_locale = CGI.param('set_eg_locale') || CGI.cookie('eg_locale');
 %]
-<form id="locale_picker_form" action="[% mkurl() %]">
+<form id="locale_picker_form" action="[% mkurl() %]" method="post">
     <label for="locale_picker">[% l("Language:") %]</label>
     [%- FOREACH param IN CGI.params(); -%]
         [%- NEXT IF param.key == 'set_eg_locale'; -%]
