@@ -593,7 +593,7 @@ div.format_icon {
     padding-top:6px;
 }
 
-.cached_list_div { width: 111px; height: 25px; }
+.cached_list_div { height: 25px; }
 
 .results_header_div {
     float: left;
