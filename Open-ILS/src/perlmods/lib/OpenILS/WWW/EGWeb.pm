@@ -144,6 +144,7 @@ sub load_context {
     $ctx->{skin} = $cgi->cookie(OILS_HTTP_COOKIE_SKIN) || 'default';
     $ctx->{theme} = $cgi->cookie(OILS_HTTP_COOKIE_THEME) || 'default';
     $ctx->{proto} = $cgi->https ? 'https' : 'http';
+    my $default_locale = $r->dir_config('OILSWebDefaultLocale') || 'en_us';
 
     my @template_paths = uniq $r->dir_config->get('OILSWebTemplatePath');
     $ctx->{template_paths} = [ reverse @template_paths ];
@@ -167,8 +168,8 @@ sub load_context {
     }
 
     $ctx->{locale} = $set_locale ||
-        $cgi->cookie(OILS_HTTP_COOKIE_LOCALE) || 
-        parse_accept_lang($r->headers_in->get('Accept-Language')) || 'en_us';
+        $cgi->cookie(OILS_HTTP_COOKIE_LOCALE) || $default_locale ||
+        parse_accept_lang($r->headers_in->get('Accept-Language'));
 
     # set the editor default locale for each page load
     $OpenILS::Utils::CStoreEditor::default_locale = parse_eg_locale($ctx->{locale});
