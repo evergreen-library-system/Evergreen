@@ -514,8 +514,8 @@ sub check_1hit_redirect {
 
     my $base_url = sprintf(
         '%s://%s%s/record/%s',
-        $ctx->{proto}, 
-        $self->apache->hostname,
+        ($ctx->{is_staff} ? 'oils' : $ctx->{proto}),
+        ($ctx->{is_staff} ? 'remote' : $self->apache->hostname),
         $self->ctx->{opac_root},
         $$rec_ids[0],
     );
@@ -523,7 +523,7 @@ sub check_1hit_redirect {
     # If we get here from the same record detail page to which we
     # now wish to redirect, do not perform the redirect.  This
     # approach seems to work well, with the rare exception of 
-    # performing a new serach directly from the detail page that 
+    # performing a new search directly from the detail page that 
     # happens to result in the same single hit.  In this case, the 
     # user will be left on the search results page.  This could be 
     # overcome w/ additional CGI, etc., but I'm not sure it's necessary.
