@@ -219,7 +219,8 @@ CPAN_MODULES = \
 	Library::CallNumber::LC \
 	Net::Z3950::Simple2ZOOM \
 	Template::Plugin::POSIX \
-	SRU
+	SRU \
+	Rose::URI
 
 # More chronically unpackaged CPAN modules (available in Squeeze though)
 CPAN_MODULES_MORE = \

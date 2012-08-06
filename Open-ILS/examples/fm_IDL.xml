@@ -19,6 +19,56 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
+############################
+          TEMPLATE
+############################
+
+    <class
+        id=""
+        controller="open-ils.cstore open-ils.pcrud"
+        oils_obj:fieldmapper=""
+        oils_persist:tablename=""
+        reporter:label=""
+        oils_persist:field_safe=""
+        oils_persist:virtual=""
+        oils_persist:readonly=""
+        reporter:core=""
+    >
+
+        <oils_persist:source_definition><![CDATA[
+            SELECT * FROM foo
+        ]]></oils_persist:source_definition>
+
+        <fields oils_persist:primary="" oils_persist:sequence="">
+            <field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="" name="" reporter:datatype="org_unit"/>
+            <field reporter:label="" name="" reporter:datatype="text"/>
+            <field reporter:label="" name="" reporter:datatype="link"/>
+            <field reporter:label="" name="" reporter:datatype="timestamp"/>
+            <field reporter:label="" name="" reporter:datatype="money"/>
+            <field reporter:label="" name="" reporter:datatype="bool"/>
+            <field reporter:label="" name="" reporter:datatype="int" oils_obj:required="true"/>
+            <field reporter:label="" name="" reporter:datatype="int" oils_persist:virtual="true"/>
+        </fields>
+
+        <links>
+            <link field="" reltype="has_a" key="" map="" class=""/>
+        </links>
+
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="" gloabl_required="true"/>
+                <retrieve/>
+                <update permission="" context_field=""/>
+                <delete permission="">
+                    <context link="" field=""/>
+                </delete>
+            </actions>
+        </permacrud>
+
+    </class>
+
+
 -->
 
 <IDL xmlns="http://opensrf.org/spec/IDL/base/v1" xmlns:idl="http://opensrf.org/spec/IDL/base/v1" xmlns:oils_persist="http://open-ils.org/spec/opensrf/IDL/persistence/v1" xmlns:oils_obj="http://open-ils.org/spec/opensrf/IDL/objects/v1" xmlns:reporter="http://open-ils.org/spec/opensrf/IDL/reporter/v1" xmlns:permacrud="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
@@ -9286,6 +9336,247 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
+
+    <class
+        id="uvs"
+        controller="open-ils.cstore open-ils.pcrud"
+        oils_obj:fieldmapper="url_verify::session"
+        oils_persist:tablename="url_verify.session"
+        reporter:label="URL Verification Session"
+    >
+        <fields oils_persist:primary="id" oils_persist:sequence="url_verify.session_id_seq">
+            <field reporter:label="ID" name="id" reporter:datatype="id"/>
+            <field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
+			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="org_unit" oils_obj:required="true"/>
+            <field reporter:label="Creator" name="creator" reporter:datatype="link" oils_obj:required="true"/>
+            <field reporter:label="Record Container" name="container" reporter:datatype="link" oils_obj:required="true"/>
+            <field reporter:label="Create Time" name="create_time" reporter:datatype="timestamp"/>
+            <field reporter:label="Search Constraints" name="search" reporter:datatype="text" oils_obj:required="true"/>
+            <field reporter:label="URL Selectors" name="selectors" reporter:datatype="link" oils_persist:virtual="true"/>
+            <field reporter:label="Verification Attempts" name="attempts" reporter:datatype="link" oils_persist:virtual="true"/>
+        </fields>
+
+        <links>
+            <link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
+            <link field="creator" reltype="has_a" key="id" map="" class="au"/>
+            <link field="container" reltype="has_a" key="id" map="" class="cbreb"/>
+            <link field="selectors" reltype="has_many" key="session" map="" class="uvus"/>
+            <link field="attempts" reltype="has_many" key="session" map="" class="uvva"/>
+        </links>
+
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_URL_VERIFY" context_field="owning_lib"/>
+                <retrieve permission="ADMIN_URL_VERIFY" context_field="owning_lib"/>
+                <update permission="ADMIN_URL_VERIFY" context_field="owning_lib"/>
+                <delete permission="ADMIN_URL_VERIFY" context_field="owning_lib"/>
+            </actions>
+        </permacrud>
+
+    </class>
+
+    <class
+        id="uvus"
+        controller="open-ils.cstore open-ils.pcrud"
+        oils_obj:fieldmapper="url_verify::url_selector"
+        oils_persist:tablename="url_verify.url_selector"
+        reporter:label="URL Verification URL Selector"
+    >
+        <fields oils_persist:primary="id" oils_persist:sequence="url_verify.url_selector_id_seq">
+            <field reporter:label="ID" name="id" reporter:datatype="id"/>
+            <field reporter:label="XPath" name="xpath" reporter:datatype="text" oils_obj:required="true"/>
+			<field reporter:label="Session" name="session" reporter:datatype="link" oils_obj:required="true"/>
+            <field reporter:label="URLs" name="urls" reporter:datatype="link" oils_persist:virtual="true"/>
+        </fields>
+
+        <links>
+            <link field="session" reltype="has_a" key="id" map="" class="uvs"/>
+            <link field="urls" reltype="has_many" key="id" map="" class="uvu"/>
+        </links>
+
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_URL_VERIFY">
+                    <context link="session" field="owning_lib"/>
+                </create>
+                <retrieve permission="ADMIN_URL_VERIFY">
+                    <context link="session" field="owning_lib"/>
+                </retrieve>
+                <update permission="ADMIN_URL_VERIFY">
+                    <context link="session" field="owning_lib"/>
+                </update>
+                <delete permission="ADMIN_URL_VERIFY">
+                    <context link="session" field="owning_lib"/>
+                </delete>
+            </actions>
+        </permacrud>
+
+    </class>
+
+    <class
+        id="uvu"
+        controller="open-ils.cstore open-ils.pcrud"
+        oils_obj:fieldmapper="url_verify::url"
+        oils_persist:tablename="url_verify.url"
+        reporter:label="URL Verification URL"
+    >
+        <fields oils_persist:primary="id" oils_persist:sequence="url_verify.url_id_seq">
+            <field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Redirected From" name="redirect_from" reporter:datatype="link"/>
+			<field reporter:label="Container Item" name="item" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="URL Selector" name="url_selector" reporter:datatype="link"/>
+            <field reporter:label="Tag" name="tag" reporter:datatype="text"/>
+            <field reporter:label="Subfield" name="subfield" reporter:datatype="text"/>
+            <field reporter:label="Ordinal Position" name="ord" reporter:datatype="int"/>
+            <field reporter:label="URL" name="full_url" reporter:datatype="text"/>
+            <field reporter:label="Scheme" name="scheme" reporter:datatype="text"/>
+            <field reporter:label="Host" name="host" reporter:datatype="text"/>
+            <field reporter:label="Domain" name="domain" reporter:datatype="text"/>
+            <field reporter:label="TLD" name="tld" reporter:datatype="text"/>
+            <field reporter:label="Path" name="path" reporter:datatype="text"/>
+            <field reporter:label="Page" name="page" reporter:datatype="text"/>
+            <field reporter:label="Query" name="query" reporter:datatype="text"/>
+            <field reporter:label="Fragment" name="fragment" reporter:datatype="text"/>
+        </fields>
+
+        <links>
+            <link field="redirect_from" reltype="has_a" key="id" map="" class="uvu"/>
+            <link field="item" reltype="has_a" key="id" map="" class="cbrebi"/>
+            <link field="url_selector" reltype="has_a" key="id" map="" class="uvus"/>
+        </links>
+
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_URL_VERIFY">
+                    <context link="url_selector session" field="owning_lib"/>
+                </create>
+                <retrieve permission="ADMIN_URL_VERIFY">
+                    <context link="url_selector session" field="owning_lib"/>
+                </retrieve>
+                <update permission="ADMIN_URL_VERIFY">
+                    <context link="url_selector session" field="owning_lib"/>
+                </update>
+                <delete permission="ADMIN_URL_VERIFY">
+                    <context link="url_selector session" field="owning_lib"/>
+                </delete>
+            </actions>
+        </permacrud>
+
+    </class>
+
+    <class
+        id="uvva"
+        controller="open-ils.cstore open-ils.pcrud"
+        oils_obj:fieldmapper="url_verify::verification_attempt"
+        oils_persist:tablename="url_verify.verification_attempt"
+        reporter:label="URL Verification Attempt"
+    >
+        <fields oils_persist:primary="id" oils_persist:sequence="url_verify.verification_attempt_id_seq">
+            <field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="User" name="usr" reporter:datatype="link"/>
+			<field reporter:label="Session" name="session" reporter:datatype="link"/>
+            <field reporter:label="Start Time" name="start_time" reporter:datatype="timestamp"/>
+            <field reporter:label="Finish Time" name="finish_time" reporter:datatype="timestamp"/>
+        </fields>
+
+        <links>
+            <link field="session" reltype="has_a" key="id" map="" class="uvs"/>
+            <link field="usr" reltype="has_a" key="id" map="" class="au"/>
+        </links>
+
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_URL_VERIFY">
+                    <context link="session" field="owning_lib"/>
+                </create>
+                <retrieve permission="ADMIN_URL_VERIFY">
+                    <context link="session" field="owning_lib"/>
+                </retrieve>
+                <update permission="ADMIN_URL_VERIFY">
+                    <context link="session" field="owning_lib"/>
+                </update>
+                <delete permission="ADMIN_URL_VERIFY">
+                    <context link="session" field="owning_lib"/>
+                </delete>
+            </actions>
+        </permacrud>
+
+    </class>
+
+    <class
+        id="uvuv"
+        controller="open-ils.cstore open-ils.pcrud"
+        oils_obj:fieldmapper="url_verify::url_verification"
+        oils_persist:tablename="url_verify.url_verification"
+        reporter:label="URL Verification"
+    >
+        <fields oils_persist:primary="id" oils_persist:sequence="url_verify.url_verification_id_seq">
+            <field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="URL" name="url" reporter:datatype="link"/>
+			<field reporter:label="Attempt" name="attempt" reporter:datatype="link"/>
+            <field reporter:label="Request Time" name="req_time" reporter:datatype="timestamp"/>
+            <field reporter:label="Result Time" name="res_time" reporter:datatype="timestamp"/>
+            <field reporter:label="Result Code" name="res_code" reporter:datatype="int"/>
+            <field reporter:label="Result Text" name="res_text" reporter:datatype="text"/>
+			<field reporter:label="Redirected To" name="redirect_to" reporter:datatype="link"/>
+        </fields>
+
+        <links>
+            <link field="url" reltype="has_a" key="id" map="" class="uvu"/>
+            <link field="attempt" reltype="has_a" key="id" map="" class="uvva"/>
+            <link field="redirect_to" reltype="has_a" key="id" map="" class="uvu"/>
+        </links>
+
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_URL_VERIFY">
+                    <context link="attempt session" field="owning_lib"/>
+                </create>
+                <retrieve permission="ADMIN_URL_VERIFY">
+                    <context link="attempt session" field="owning_lib"/>
+                </retrieve>
+                <update permission="ADMIN_URL_VERIFY">
+                    <context link="attempt session" field="owning_lib"/>
+                </update>
+                <delete permission="ADMIN_URL_VERIFY">
+                    <context link="attempt session" field="owning_lib"/>
+                </delete>
+            </actions>
+        </permacrud>
+
+    </class>
+
+    <class
+        id="uvfs"
+        controller="open-ils.cstore open-ils.pcrud"
+        oils_obj:fieldmapper="url_verify::filter_set"
+        oils_persist:tablename="url_verify.filter_set"
+        reporter:label="URL Verification Filter Set"
+    >
+        <fields oils_persist:primary="id" oils_persist:sequence="url_verify.url_verification_id_seq">
+            <field reporter:label="ID" name="id" reporter:datatype="id"/>
+            <field reporter:label="Name" name="name" reporter:datatype="text"/>
+			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Creator" name="creator" reporter:datatype="link"/>
+            <field reporter:label="Create Time" name="create_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Filter" name="filter" reporter:datatype="text"/>
+        </fields>
+
+        <links>
+            <link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
+            <link field="creator" reltype="has_a" key="id" map="" class="au"/>
+        </links>
+
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_URL_VERIFY" context_field="owning_lib"/>
+                <retrieve permission="ADMIN_URL_VERIFY" context_field="owning_lib"/>
+                <update permission="ADMIN_URL_VERIFY" context_field="owning_lib"/>
+                <delete permission="ADMIN_URL_VERIFY" context_field="owning_lib"/>
+            </actions>
+        </permacrud>
+
+    </class>
 
 	<class id="cmrtm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::marc21_rec_type_map" oils_persist:tablename="config.marc21_rec_type_map" reporter:label="MARC21 Record Type Map" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
