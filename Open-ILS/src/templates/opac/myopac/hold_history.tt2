@@ -107,4 +107,5 @@
         </table>
         [% END %]
     </div>
+</div>
 [% END %]
