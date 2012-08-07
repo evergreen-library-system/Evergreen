@@ -126,7 +126,7 @@ function gen_handle_apply(params) {
                 dp_date.setHours( tp_date.getHours() );
                 dp_date.setMinutes( tp_date.getMinutes() );
 
-                xulG.timestampe = util.date.formatted_date(dp_date,'%{iso8601}');
+                xulG.timestamp = util.date.formatted_date(dp_date,'%{iso8601}');
                 xulG.complete = 1;
                 window.close();
             }
