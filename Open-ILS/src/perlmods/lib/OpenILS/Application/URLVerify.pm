@@ -1,0 +1,587 @@
+package OpenILS::Application::URLVerify;
+use base qw/OpenILS::Application/;
+use strict; use warnings;
+use OpenSRF::Utils::Logger qw(:logger);
+use OpenSRF::MultiSession;
+use OpenILS::Utils::Fieldmapper;
+use OpenILS::Utils::CStoreEditor q/:funcs/;
+use OpenILS::Application::AppUtils;
+use LWP::UserAgent;
+
+my $U = 'OpenILS::Application::AppUtils';
+
+
+__PACKAGE__->register_method(
+    method => 'validate_session',
+    api_name => 'open-ils.url_verify.session.validate',
+    stream => 1,
+    signature => {
+        desc => q/
+            Performs verification on all (or a subset of the) URLs within the requested session.
+        /,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Session ID (url_verify.session.id)', type => 'number'},
+            {desc => 'URL ID list (optional).  An empty list will result in no URLs being processed', type => 'array'},
+            {
+                desc => q/
+                    Options (optional).
+                        report_all => bypass response throttling and return all URL sub-process
+                            responses to the caller.  Not recommened for remote (web, etc.) clients,
+                            because it can be a lot of data.
+                        resume_attempt => atttempt_id.  Resume verification after a failure.
+                        resume_with_new_attempt => If true, resume from resume_attempt, but
+                            create a new attempt to track the resumption.
+                    /,
+                type => 'hash'
+            }
+        ],
+        return => {desc => q/
+            Stream of objects containing the number of URLs to be processed (url_count),
+            the number processed thus far including redirects (total_processed),
+            and the current url_verification object (current_verification).
+
+            Note that total_processed may ultimately exceed url_count, since it
+            includes non-anticipate-able redirects.
+
+            The final response contains url_count, total_processed, and the
+            verification_attempt object (attempt).
+            /
+        }
+    }
+);
+
+sub validate_session {
+    my ($self, $client, $auth, $session_id, $url_ids, $options) = @_;
+    $options ||= {};
+
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed('VERIFY_URL');
+
+    my $session = $e->retrieve_url_verify_session($session_id)
+        or return $e->die_event;
+
+    my $attempt_id = $options->{resume_attempt};
+
+    if (!$url_ids) {
+
+        # No URLs provided, load all URLs for the requested session
+
+        my $query = {
+            select => {uvu => ['id']},
+            from => {
+                uvu => { # url
+                    cbrebi => { # bucket item
+                        join => { cbreb => { # bucket
+                            join => { uvs => { # session
+                                filter => {id => $session_id}
+                            }}
+                        }}
+                    }
+                }
+            }
+        };
+
+        if ($attempt_id) {
+
+            # when resuming an existing attempt (that presumably failed
+            # mid-processing), we only want to process URLs that either
+            # have no linked url_verification or have an un-completed
+            # url_verification.
+
+            $logger->info("url: resuming attempt $attempt_id");
+
+            $query->{from}->{uvu}->{uvuv} = {
+                type => 'left',
+                filter => {attempt => $attempt_id}
+            };
+
+            $query->{where} = {
+                '+uvuv' => {
+                    '-or' => [
+                        {id => undef}, # no verification started
+                        {res_code => undef} # verification started but did no complete
+                    ]
+                }
+            };
+
+        } else {
+
+            # this is a new attempt, so we only want to process URLs that
+            # originated from the source records and not from redirects.
+
+            $query->{where} = {
+                '+uvu' => {redirect_from => undef}
+            };
+        }
+
+        my $ids = $e->json_query($query);
+        $url_ids = [ map {$_->{id}} @$ids ];
+    }
+
+    my $url_count = scalar(@$url_ids);
+    $logger->info("url: processing $url_count URLs");
+
+    my $attempt;
+    if ($attempt_id and !$options->{resume_with_new_attempt}) {
+
+        $attempt = $e->retrieve_url_verification_attempt($attempt_id)
+            or return $e->die_event;
+
+        # no data was written
+        $e->rollback;
+
+    } else {
+
+        $attempt = Fieldmapper::url_verify::verification_attempt->new;
+        $attempt->session($session_id);
+        $attempt->usr($e->requestor->id);
+        $attempt->start_time('now');
+
+        $e->create_url_verify_verification_attempt($attempt)
+            or return $e->die_event;
+
+        $e->commit;
+    }
+
+    # END DB TRANSACTION
+
+    # Now cycle through the URLs in batches.
+
+    my $batch_size = $U->ou_ancestor_setting_value(
+        $session->owning_lib,
+        'url_verify.verification_batch_size', $e) || 5;
+
+    my $num_processed = 0; # total number processed, including redirects
+    my $resp_window = 1;
+
+    # before we start the real work, let the caller know
+    # the attempt (id) so recovery is possible.
+
+    $client->respond({
+        url_count => $url_count,
+        total_processed => $num_processed,
+        attempt => $attempt
+    });
+
+    my $multises = OpenSRF::MultiSession->new(
+
+        app => 'open-ils.url_verify', # hey, that's us!
+        cap => $batch_size,
+
+        success_handler => sub {
+            my ($self, $req) = @_;
+
+            # API call streams fleshed url_verification objects.  We wrap
+            # those up with some extra info and pass them on to the caller.
+
+            for my $resp (@{$req->{response}}) {
+                my $content = $resp->content;
+
+                if ($content) {
+
+                    $num_processed++;
+
+                    if ($options->{report_all} or ($num_processed % $resp_window == 0)) {
+                        $client->respond({
+                            url_count => $url_count,
+                            current_verification => $content,
+                            total_processed => $num_processed
+                        });
+                    }
+
+                    # start off responding quickly, then throttle
+                    # back to only relaying every 256 messages.
+                    $resp_window *= 2 unless $resp_window == 256;
+                }
+            }
+        },
+
+        failure_handler => sub {
+            my ($self, $req) = @_;
+
+            # {error} should be an Error w/ a toString
+            $logger->error("url: error processing URL: " . $req->{error});
+        }
+    );
+
+    sort_and_fire_domains($e, $auth, $attempt, $url_ids, $multises);
+
+    # Wait for all requests to be completed
+    $multises->session_wait(1);
+
+    # All done.  Let's wrap up the attempt.
+    $attempt->finish_time('now');
+
+    $e->xact_begin;
+    $e->update_url_verify_verification_attempt($attempt) or return $e->die_event;
+    $e->xact_commit;
+
+    return {
+        url_count => $url_count,
+        total_processed => $num_processed,
+        attempt => $attempt
+    };
+}
+
+# retrieves the URL domains and sorts them into buckets
+# Iterates over the buckets and fires the multi-session call
+# the main drawback to this domain sorting approach is that
+# any domain used a lot more than the others will be the
+# only domain standing after the others are exhausted, which
+# means it will take a beating at the end of the batch.
+sub sort_and_fire_domains {
+    my ($e, $auth, $attempt, $url_ids, $multises) = @_;
+
+    # there is potential here for data sets to be too large
+    # for delivery, but it's not likely, since we're only
+    # fetching ID and domain.
+    my $urls = $e->json_query(
+        {
+            select => {uvu => ['id', 'domain']},
+            from => 'uvu',
+            where => {id => $url_ids}
+        },
+        # {substream => 1} only if needed
+    );
+
+    # sort them into buckets based on domain name
+    my %domains;
+    for my $url (@$urls) {
+        $domains{$url->{domain}} = [] unless $domains{$url->{domain}};
+        push(@{$domains{$url->{domain}}}, $url->{id});
+    }
+
+    # loop through the domains and fire the verification call
+    while (keys %domains) {
+        for my $domain (keys %domains) {
+
+            my $url_id = pop(@{$domains{$domain}});
+            delete $domains{$domain} unless @{$domains{$domain}};
+
+            $multises->request(
+                'open-ils.url_verify.verify_url',
+                $auth, $attempt->id, $url_id);
+        }
+    }
+}
+
+
+__PACKAGE__->register_method(
+    method => 'verify_url',
+    api_name => 'open-ils.url_verify.verify_url',
+    stream => 1,
+    signature => {
+        desc => q/
+            Performs verification of a single URL.  When a redirect is detected,
+            a new URL is created to model the redirect and the redirected URL
+            is then tested, up to max-redirects or a loop is detected.
+        /,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Verification attempt ID (url_verify.verification_attempt.id)', type => 'number'},
+            {desc => 'URL id (url_verify.url.id)', type => 'number'},
+        ],
+        return => {desc => q/Stream of url_verification objects, one per URL tested/}
+    }
+);
+
+=head comment
+
+verification.res_code:
+
+999 bad hostname, etc. (IO::Socket::Inet errors)
+998 in-flight errors (e.g connection closed prematurely)
+997 timeout
+996 redirect loop
+995 max redirects
+
+verification.res_text:
+
+$@ or custom message "Redirect Loop"
+
+=cut
+
+sub verify_url {
+    my ($self, $client, $auth, $attempt_id, $url_id) = @_;
+    my %seen_urls;
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    my $url = $e->retrieve_url_verify_url($url_id) or return $e->event;
+
+    my ($attempt, $delay, $max_redirects, $timeout) =
+        collect_verify_attempt_and_settings($e, $attempt_id);
+
+    return $e->event unless $e->allowed(
+        'VERIFY_URL', $attempt->session->owning_lib);
+
+    my $cur_url = $url;
+    my $loop_detected = 0;
+    my $redir_count = 0;
+
+    while ($redir_count++ < $max_redirects) {
+
+        if ($seen_urls{$cur_url->full_url}) {
+            $loop_detected = 1;
+            last;
+        }
+
+        $seen_urls{$cur_url->full_url} = $cur_url;
+
+        my $url_resp = verify_one_url($e, $attempt, $cur_url, $timeout);
+
+        # something tragic happened
+        return $url_resp if $U->is_event($url_resp);
+
+        # flesh and respond to the caller
+        $url_resp->{verification}->url($cur_url);
+        $client->respond($url_resp->{verification});
+
+        $cur_url = $url_resp->{redirect_url} or last;
+    }
+
+    if ($loop_detected or $redir_count > $max_redirects) {
+
+        my $vcation = Fieldmapper::url_verify::url_verification->new;
+        $vcation->url($cur_url->id);
+        $vcation->attempt($attempt->id);
+        $vcation->req_time('now');
+
+        if ($loop_detected) {
+            $logger->info("url: redirect loop detected at " . $cur_url->full_url);
+            $vcation->res_code('996');
+            $vcation->res_text('Redirect Loop');
+
+        } else {
+            $logger->info("url: max redirects reached for source URL " . $url->full_url);
+            $vcation->res_code('995');
+            $vcation->res_text('Max Redirects');
+        }
+
+        $e->xact_begin;
+        $e->create_url_verify_url_verification($vcation) or return $e->die_event;
+        $e->xact_commit;
+    }
+
+    # The calling code is likely not multi-threaded, so a
+    # per-URL (i.e. per-thread) delay would not be possible.
+    # Applying the delay here allows the caller to process
+    # batches of URLs without having to worry about the delay.
+    sleep $delay;
+
+    return undef;
+}
+
+# temporarily cache some data to avoid a pile
+# of data lookups on every URL processed.
+my %cache;
+sub collect_verify_attempt_and_settings {
+    my ($e, $attempt_id) = @_;
+    my $attempt;
+
+    if (!(keys %cache) or $cache{age} > 20) { # configurable?
+        %cache = (
+            age => 0,
+            attempt => {},
+            delay => {},
+            redirects => {},
+            timeout => {},
+        );
+    }
+
+    if ( !($attempt = $cache{attempt}{$attempt_id}) ) {
+
+        # attempt may have just been created, so
+        # we need to guarantee a write-DB read.
+        $e->xact_begin;
+
+        $attempt =
+            $e->retrieve_url_verify_verification_attempt([
+                $attempt_id, {
+                    flesh => 1,
+                    flesh_fields => {uvva => ['session']}
+                }
+            ]) or return $e->die_event;
+
+        $e->rollback;
+
+        $cache{attempt}{$attempt_id} = $attempt;
+    }
+
+    my $org = $attempt->session->owning_lib;
+
+    if (!$cache{timeout}{$org}) {
+
+        $cache{delay}{$org} = $U->ou_ancestor_setting_value(
+            $org, 'url_verify.url_verification_delay', $e);
+
+        # 0 is a valid delay
+        $cache{delay}{$org} = 2 unless defined $cache{delay}{$org};
+
+        $cache{redirects}{$org} = $U->ou_ancestor_setting_value(
+            $org, 'url_verify.url_verification_max_redirects', $e) || 20;
+
+        $cache{timeout}{$org} = $U->ou_ancestor_setting_value(
+            $org, 'url_verify.url_verification_max_wait', $e) || 5;
+
+        $logger->info(
+            sprintf("url: loaded settings delay=%s; max_redirects=%s; timeout=%s",
+                $cache{delay}{$org}, $cache{redirects}{$org}, $cache{timeout}{$org}));
+    }
+
+    $cache{age}++;
+
+
+    return (
+        $cache{attempt}{$attempt_id},
+        $cache{delay}{$org},
+        $cache{redirects}{$org},
+        $cache{timeout}{$org}
+    );
+}
+
+
+# searches for a completed url_verfication for any url processed
+# within this verification attempt whose full_url matches the
+# full_url of the provided URL.
+sub find_matching_url_for_attempt {
+    my ($e, $attempt, $url) = @_;
+
+    my $match = $e->json_query({
+        select => {uvuv => ['id']},
+        from => {
+            uvuv => {
+                uvva => { # attempt
+                    filter => {id => $attempt->id}
+                },
+                uvu => {} # url
+            }
+        },
+        where => {
+            '+uvu' => {
+                id => {'!=' => $url->id},
+                full_url => $url->full_url
+            },
+
+            # There could be multiple verifications for matching URLs
+            # We only want a verification that completed.
+            # Note also that 2 identical URLs processed within the same
+            # sub-batch will have to each be fully processed in their own
+            # right, since neither knows how the other will ultimately fare.
+            '+uvuv' => {
+                res_time => {'!=' => undef}
+            }
+        }
+    })->[0];
+
+    return $e->retrieve_url_verify_url_verification($match->{id}) if $match;
+    return undef;
+}
+
+
+=head comment
+
+1. create the verification object and commit.
+2. test the URL
+3. update the verification object to capture the results of the test
+4. Return redirect_url object if this is a redirect, otherwise undef.
+
+=cut
+
+sub verify_one_url {
+    my ($e, $attempt, $url, $timeout) = @_;
+
+    my $url_text = $url->full_url;
+    my $redir_url;
+
+    # first, create the verification object so we can a) indicate that
+    # we're working on this URL and b) get the DB to set the req_time.
+
+    my $vcation = Fieldmapper::url_verify::url_verification->new;
+    $vcation->url($url->id);
+    $vcation->attempt($attempt->id);
+    $vcation->req_time('now');
+
+    # begin phase-I DB communication
+
+    $e->xact_begin;
+
+    my $match_vcation = find_matching_url_for_attempt($e, $attempt, $url);
+
+    if ($match_vcation) {
+        $logger->info("url: found matching URL in verification attempt [$url_text]");
+        $vcation->res_code($match_vcation->res_code);
+        $vcation->res_text($match_vcation->res_text);
+        $vcation->redirect_to($match_vcation->redirect_to);
+    }
+
+    $e->create_url_verify_url_verification($vcation) or return $e->die_event;
+    $e->xact_commit;
+
+    # found a matching URL, no need to re-process
+    return {verification => $vcation} if $match_vcation;
+
+    # End phase-I DB communication
+    # No active DB xact means no cstore timeout concerns.
+
+    # Now test the URL.
+
+    $ENV{FTP_PASSIVE} = 1; # TODO: setting?
+
+    my $ua = LWP::UserAgent->new(ssl_opts => {verify_hostname => 0}); # TODO: verify_hostname setting?
+    $ua->timeout($timeout);
+
+    my $req = HTTP::Request->new(HEAD => $url->full_url);
+
+    # simple_request avoids LWP's auto-redirect magic
+    my $res = $ua->simple_request($req);
+
+    $logger->info(sprintf(
+        "url: received HTTP '%s' / '%s' [%s]",
+        $res->code,
+        $res->message,
+        $url_text
+    ));
+
+    $vcation->res_code($res->code);
+    $vcation->res_text($res->message);
+
+    # is this a redirect?
+    if ($res->code =~ /^3/) {
+
+        if (my $loc = $res->headers->{location}) {
+            $redir_url = Fieldmapper::url_verify::url->new;
+            $redir_url->redirect_from($url->id);
+            $redir_url->full_url($loc);
+
+            $logger->info("url: redirect found $url_text => $loc");
+
+        } else {
+            $logger->info("url: server returned 3XX but no 'Location' header for url $url_text");
+        }
+    }
+
+    # Begin phase-II DB communication
+
+    $e->xact_begin;
+
+    if ($redir_url) {
+        $redir_url = $e->create_url_verify_url($redir_url) or return $e->die_event;
+        $vcation->redirect_to($redir_url->id);
+    }
+
+    $vcation->res_time('now');
+    $e->update_url_verify_url_verification($vcation) or return $e->die_event;
+    $e->commit;
+
+    return {
+        verification => $vcation,
+        redirect_url => $redir_url
+    };
+}
+
+
+1;

@@ -28,7 +28,7 @@ CREATE TABLE url_verify.session (
     container   INT                         NOT NULL REFERENCES container.biblio_record_entry_bucket (id) DEFERRABLE INITIALLY DEFERRED,
     create_time TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT NOW(),
     search      TEXT                        NOT NULL,
-    CONSTRAINT name_once_per_lib UNIQUE (name, owning_lib)
+    CONSTRAINT uvs_name_once_per_lib UNIQUE (name, owning_lib)
 );
 
 CREATE TABLE url_verify.url_selector (
@@ -41,11 +41,11 @@ CREATE TABLE url_verify.url_selector (
 CREATE TABLE url_verify.url (
     id              SERIAL  PRIMARY KEY,
     redirect_from   INT     REFERENCES url_verify.url(id) DEFERRABLE INITIALLY DEFERRED,
-    item            INT     NOT NULL REFERENCES container.biblio_record_entry_bucket_item (id) DEFERRABLE INITIALLY DEFERRED,
-    url_selector    INT     NOT NULL REFERENCES url_verify.url_selector (id) DEFERRABLE INITIALLY DEFERRED,
-    tag             TEXT    NOT NULL,
-    subfield        TEXT    NOT NULL,
-    ord             INT     NOT NULL, -- ordinal position of this url within the record as found by url_selector, for later update
+    item            INT     REFERENCES container.biblio_record_entry_bucket_item (id) DEFERRABLE INITIALLY DEFERRED,
+    url_selector    INT     REFERENCES url_verify.url_selector (id) DEFERRABLE INITIALLY DEFERRED,
+    tag             TEXT,    
+    subfield        TEXT,    
+    ord             INT,    -- ordinal position of this url within the record as found by url_selector, for later update
     full_url        TEXT    NOT NULL,
     scheme          TEXT,
     username        TEXT,
@@ -83,7 +83,7 @@ CREATE TABLE url_verify.url_verification (
     attempt     INT                         NOT NULL REFERENCES url_verify.verification_attempt (id) DEFERRABLE INITIALLY DEFERRED,
     req_time    TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT NOW(),
     res_time    TIMESTAMP WITH TIME ZONE, 
-    res_code    INT                         CHECK (res_code BETWEEN 100 AND 599),
+    res_code    INT                         CHECK (res_code BETWEEN 100 AND 999), -- we know > 599 will never be valid HTTP code, but we use 9XX for other stuff
     res_text    TEXT, 
     redirect_to INT                         REFERENCES url_verify.url (id) DEFERRABLE INITIALLY DEFERRED -- if redirected
 );
@@ -95,7 +95,7 @@ CREATE TABLE url_verify.filter_set (
     creator     INT                         NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
     create_time TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT NOW(),
     filter      TEXT                        NOT NULL,
-    CONSTRAINT name_once_per_lib UNIQUE (name, owning_lib)
+    CONSTRAINT uvfs_name_once_per_lib UNIQUE (name, owning_lib)
 );
  
 COMMIT;

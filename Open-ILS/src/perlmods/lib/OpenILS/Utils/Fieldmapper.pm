@@ -1,7 +1,6 @@
 package Fieldmapper;
 use OpenSRF::Utils::JSON;
 use Data::Dumper;
-use base 'OpenSRF::Application';
 use OpenSRF::Utils::Logger;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::System;
@@ -11,19 +10,6 @@ use Scalar::Util 'blessed';
 my $log = 'OpenSRF::Utils::Logger';
 
 use vars qw/$fieldmap $VERSION/;
-
-sub publish_fieldmapper {
-	my ($self,$client,$class) = @_;
-
-	return $fieldmap unless (defined $class);
-	return undef unless (exists($$fieldmap{$class}));
-	return {$class => $$fieldmap{$class}};
-}
-__PACKAGE__->register_method(
-	api_name	=> 'opensrf.open-ils.system.fieldmapper',
-	api_level	=> 1,
-	method		=> 'publish_fieldmapper',
-);
 
 #
 # To dump the Javascript version of the fieldmapper struct use the command:

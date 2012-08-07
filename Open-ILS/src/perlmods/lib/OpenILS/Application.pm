@@ -2,6 +2,7 @@ package OpenILS::Application;
 use OpenSRF::Application;
 use UNIVERSAL::require;
 use base qw/OpenSRF::Application/;
+use OpenILS::Utils::Fieldmapper;
 
 sub ils_version {
     # version format is "x-y-z", for example "2-0-0" for Evergreen 2.0.0
@@ -24,6 +25,19 @@ sub get_idl_file {
     use OpenSRF::Utils::SettingsClient;
     return OpenSRF::Utils::SettingsClient->new->config_value('IDL');
 }
+
+sub publish_fieldmapper {
+	my ($self,$client,$class) = @_;
+
+	return $Fieldmapper::fieldmap unless (defined $class);
+	return undef unless (exists($$Fieldmapper::fieldmap{$class}));
+	return {$class => $$Fieldmapper::fieldmap{$class}};
+}
+__PACKAGE__->register_method(
+	api_name	=> 'opensrf.open-ils.system.fieldmapper',
+	api_level	=> 1,
+	method		=> 'publish_fieldmapper',
+);
 
 sub register_method {
     my $class = shift;

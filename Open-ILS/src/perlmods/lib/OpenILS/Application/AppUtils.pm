@@ -140,8 +140,20 @@ sub rollback_db_session {
 # returns the event code otherwise
 sub event_code {
 	my( $self, $evt ) = @_;
-	return $evt->{ilsevent} if( ref($evt) eq 'HASH' and defined($evt->{ilsevent})) ;
+	return $evt->{ilsevent} if $self->is_event($evt);
 	return undef;
+}
+
+# some events, in particular auto-generated events, don't have an 
+# ilsevent key.  treat hashes with a 'textcode' key as events.
+sub is_event {
+	my ($self, $evt) = @_;
+	return (
+		ref($evt) eq 'HASH' and (
+			defined $evt->{ilsevent} or
+			defined $evt->{textcode}
+		)
+	);
 }
 
 # ---------------------------------------------------------------------------

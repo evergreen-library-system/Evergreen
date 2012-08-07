@@ -24,6 +24,8 @@ FTS_CONFIG_FILE
 030.schema.metabib.sql
 040.schema.asset.sql
 070.schema.container.sql
+075.schema.url_verify.sql
+076.functions.url_verify.sql
 080.schema.money.sql
 090.schema.action.sql
 095.schema.booking.sql
