@@ -36,8 +36,6 @@
     <![CDATA[
         function $(id) { return document.getElementById(id); }
 
-        var xulG = {};
-
         function my_init() {
             try {
                 if (typeof JSAN == 'undefined') { 

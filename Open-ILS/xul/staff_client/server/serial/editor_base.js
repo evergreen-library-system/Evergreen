@@ -583,7 +583,6 @@ serial.editor_base = {
             } else if (xul_param('in_modal')) {
                 // TODO: this is to perhaps allow this editor to be called
                 // in a modal window, but is unfinished functionality
-                var xulG = {};
                 xulG[fm_type_plural] = obj[fm_type_plural];
             } else {
                 obj.data['temp_' + fm_type_plural] = js2JSON( obj[fm_type_plural] );
