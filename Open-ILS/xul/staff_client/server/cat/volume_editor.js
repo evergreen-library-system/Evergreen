@@ -3,8 +3,6 @@ const rel_vert_pos_call_number_prefix = 2;
 const rel_vert_pos_call_number = 3;
 const rel_vert_pos_call_number_suffix = 4;
 
-var xulG = {};
-
 function my_init() {
     try {
         if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }

@@ -1,4 +1,3 @@
-var xulG = {};
 var widget;
 
 function my_init() {
