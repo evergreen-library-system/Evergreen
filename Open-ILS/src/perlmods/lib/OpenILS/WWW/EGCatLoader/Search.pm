@@ -514,8 +514,8 @@ sub check_1hit_redirect {
 
     my $base_url = sprintf(
         '%s://%s%s/record/%s',
-        ($ctx->{is_staff} ? 'oils' : $ctx->{proto}),
-        ($ctx->{is_staff} ? 'remote' : $self->apache->hostname),
+        $self->ctx->{proto},
+        $self->ctx->{hostname},
         $self->ctx->{opac_root},
         $$rec_ids[0],
     );
@@ -683,9 +683,9 @@ sub call_number_browse_standalone {
 
     if (my $cnfrag = $self->cgi->param("query")) {
         my $url = sprintf(
-            'http%s://%s%s/cnbrowse?cn=%s',
-            $self->cgi->https ? "s" : "",
-            $self->apache->hostname,
+            '%s://%s%s/cnbrowse?cn=%s',
+            $self->ctx->{proto},
+            $self->ctx->{hostname},
             $self->ctx->{opac_root},
             $cnfrag # XXX some kind of escaping needed here?
         );

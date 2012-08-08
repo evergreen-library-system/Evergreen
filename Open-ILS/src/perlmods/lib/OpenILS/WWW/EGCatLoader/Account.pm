@@ -592,7 +592,7 @@ sub handle_hold_update {
             'open-ils.circ.hold.update.batch.atomic',
             $e->authtoken, undef, \@vals
         )->gather(1);   # LFW XXX test for failure
-        $url = 'https://' . $self->apache->hostname . $self->ctx->{opac_root} . '/myopac/holds';
+        $url = $self->ctx->{proto} . '://' . $self->ctx->{hostname} . $self->ctx->{opac_root} . '/myopac/holds';
         foreach my $param (('loc', 'qtype', 'query')) {
             if ($self->cgi->param($param)) {
                 $url .= ";$param=" . uri_escape($self->cgi->param($param));
@@ -1806,7 +1806,7 @@ sub load_myopac_bookbag_update {
     # This url intentionally leaves off the edit_notes parameter, but
     # may need to add some back in for paging.
 
-    my $url = "https://" . $self->apache->hostname .
+    my $url = $self->ctx->{proto} . "://" . $self->ctx->{hostname} .
         $self->ctx->{opac_root} . "/myopac/lists?";
 
     foreach my $param (('loc', 'qtype', 'query', 'sort')) {
