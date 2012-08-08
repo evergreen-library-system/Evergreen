@@ -241,7 +241,7 @@ sub load_kpac_config {
     $ctx->{kpac_layout} = $layout;
     $ctx->{kpac_config} = $kpac_config;
     $ctx->{kpac_root} = $ctx->{base_path} . "/kpac"; 
-    $ctx->{home_page} = 'http://' . $self->apache->hostname . $ctx->{kpac_root} . "/home";
+    $ctx->{home_page} = $ctx->{proto} . '://' . $ctx->{hostname} . $ctx->{kpac_root} . "/home";
     $ctx->{global_search_filter} = $kpac_config->{global_filter};
 }
 

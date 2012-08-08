@@ -170,8 +170,8 @@ sub mylist_warning_redirect {
 
     my $base_url = sprintf(
         "%s://%s%s/temp_warn",
-        $self->cgi->https ? 'https' : 'http',
-        $self->apache->hostname,
+        $self->ctx->{proto},
+        $self->ctx->{hostname},
         $self->ctx->{opac_root}
     );
 
