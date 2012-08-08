@@ -1142,7 +1142,7 @@ a.opac-button:hover, .results_header_btns a:hover, #simple-detail-view-links a:h
     text-decoration: none;
 }
 
-a.opac-button {
+a.opac-button, input.opac-button {
     margin: 10px;
     padding: 5px 10px 5px 10px;
 }

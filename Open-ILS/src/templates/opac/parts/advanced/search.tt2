@@ -1,3 +1,7 @@
+[% 
+    PROCESS "opac/parts/misc_util.tt2";
+    PROCESS get_library;
+%]
 <form action="[% ctx.opac_root %]/results" method="GET">
 <table id='adv_global_search' class='data_grid data_grid_center' width='100%'>
     <tr style='border-bottom: none;'>
@@ -95,17 +99,9 @@
             </table>
         </td>
     </tr>
-    <tr class='border_4_2'>
-        <td align="left" colspan='2'>
-            <input type="submit"
-                value="[% l('Search') %]"
-                class='pointer opac-button' />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="reset"
-                value="[% l('Reset form') %]"
-                class="opac-button" />
-        </td>
-    </tr>
 </table>
 <input type="hidden" name="_adv" value="1" />
+<input type="submit" value="[% l('Search') %]" class='pointer opac-button' />
+<a href="[% mkurl(ctx.opac_root _ '/advanced', {$loc_name => loc_value}, 1) %]"
+    class="pointer opac-button">[% l('Reset form') %]</a>
 </form>
