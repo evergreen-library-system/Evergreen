@@ -196,7 +196,7 @@ client.
 Acquisitions
 ===========
 
- include::acquisitions/introduction.txt[]
+include::acquisitions/introduction.txt[]
 
 // include::acquisitions/selection_lists_po.txt[]
 
