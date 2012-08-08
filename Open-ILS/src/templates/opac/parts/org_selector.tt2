@@ -6,19 +6,18 @@
 # NOTE: DO NOT USE PROCESS
 # Use of PROCESS results in internal variables, such as value or org_unit, to "leak" out
 
+PROCESS "opac/parts/misc_util.tt2";
+PROCESS get_library;
+
 BLOCK build_org_selector;
     node_stack = [{org => org_unit || ctx.aouct_tree || ctx.aou_tree}];
     inherited_vis = ctx.get_cgf('opac.org_unit.non_inherited_visibility').enabled == 'f';
 
     IF !name; 
-        name = 'loc';
-        IF show_loc_groups; name = 'locg'; END;
+        name = loc_name;
     END;
     IF !value;
-        value = ctx.search_ou;
-        IF show_loc_groups; 
-            value = CGI.param('locg') || ctx.search_ou;
-        END;
+        value = loc_value;
     END;
     %]
 

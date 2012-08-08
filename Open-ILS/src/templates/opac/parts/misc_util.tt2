@@ -269,4 +269,19 @@
         END;
 
     END;
+
+    # Get the library or location group
+    # get_library()
+    BLOCK get_library;
+        IF !loc_name; 
+            loc_name = 'loc';
+            IF show_loc_groups; loc_name = 'locg'; END;
+        END;
+        IF !loc_value;
+            loc_value = CGI.param('loc') || ctx.search_ou;
+            IF show_loc_groups; 
+                loc_value = CGI.param('locg') || ctx.search_ou;
+            END;
+        END;
+    END;
 %]

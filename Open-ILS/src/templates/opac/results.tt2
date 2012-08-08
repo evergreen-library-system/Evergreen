@@ -13,6 +13,9 @@
     page = page.match('^\d+$') ? page : 0; # verify page is a sane value
 
     page_count = ctx.page_size == 0 ? 1 : POSIX.ceil(ctx.hit_count / ctx.page_size);
+
+    PROCESS "opac/parts/misc_util.tt2";
+    PROCESS get_library;
 %]
     <form action="[% ctx.opac_root %]/results" method="GET">
     [% IF CGI.param('facet') %]
@@ -25,7 +28,7 @@
         <div id="results_header_bar">
             <div id="results_header_inner">
                 <div class="results_header_btns">
-                    <a href="[% mkurl(ctx.opac_root _ '/home') %]">[% l('Another Search') %]</a>
+                    <a href="[% mkurl(ctx.opac_root _ '/home', {$loc_name => loc_value}, 1) %]">[% l('Another Search') %]</a>
                 </div>
                 <div class="results_header_btns">
                     <a href="[% mkurl(ctx.opac_root _ '/advanced') %]">[% l('Advanced Search') %]</a>
