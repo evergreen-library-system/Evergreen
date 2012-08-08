@@ -5031,7 +5031,7 @@ SELECT  usr,
 		<oils_persist:source_definition><![CDATA[
 		SELECT
 			ahr.*,
-			COALESCE(acplo.position, 999) AS
+			COALESCE(acplo.position, acpl_ordered.fallback_position) AS
 				copy_location_order_position,
 			CASE WHEN au.alias IS NOT NULL THEN
 				au.alias
@@ -5055,6 +5055,10 @@ SELECT  usr,
 		JOIN asset.call_number_prefix acnp ON (acn.prefix = acnp.id)
 		JOIN asset.call_number_suffix acns ON (acn.suffix = acns.id)
 		JOIN actor.usr au ON (au.id = ahr.usr)
+		JOIN (
+			SELECT *, (ROW_NUMBER() OVER (ORDER BY name) + 1000000) AS fallback_position
+			FROM asset.copy_location
+		) acpl_ordered ON (acpl_ordered.id = acp.location)
 		LEFT JOIN actor.usr_standing_penalty ausp 
 			ON (ahr.usr = ausp.usr AND (ausp.stop_date IS NULL OR ausp.stop_date > NOW()))
 		LEFT JOIN config.standing_penalty csp

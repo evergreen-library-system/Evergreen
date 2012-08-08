@@ -13,6 +13,10 @@ use OpenSRF::Utils::Logger qw/:logger/;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenSRF::Utils::JSON;
 
+use Data::Dumper;
+
+$Data::Dumper::Indent = 0;
+
 sub _fm_link_from_class {
     my ($class, $field) = @_;
 
@@ -255,6 +259,11 @@ sub process_map {
         join => {}
     };
 
+    # Here's a hash where we'll keep track of whether we've already provided
+    # a join to cover a given hash.  It seems that without this we build
+    # redundant joins.
+    my $join_coverage = {};
+
     foreach my $k (keys %$map) {
         my $column = $map->{$k} =
             _flattened_search_normalize_map_column($map->{$k});
@@ -269,8 +278,23 @@ sub process_map {
 
         # For filter or sort columns, we'll need joining.
         if ($column->{filter} or $column->{sort}) {
-            my ($clause, $last_join_alias) =
-                _flattened_search_single_join_clause($k,$hint,$column->{path});
+            my @path = @{ $column->{path} };
+            pop @path; # discard last part (field)
+            my $joinkey = join(",", @path);
+
+            my ($clause, $last_join_alias);
+
+            # Skip joins that are already covered. We shouldn't need more than
+            # one join for the same path
+            if ($join_coverage->{$joinkey}) {
+                ($clause, $last_join_alias) = @{ $join_coverage->{$joinkey} };
+            } else {
+                ($clause, $last_join_alias) =
+                    _flattened_search_single_join_clause(
+                        $k, $hint, $column->{path}
+                    );
+                $join_coverage->{$joinkey} = [$clause, $last_join_alias];
+            }
 
             $map->{$k}{last_join_alias} = $last_join_alias;
             _flattened_search_merge_join_clause($jffolo->{join}, $clause);
@@ -334,6 +358,7 @@ sub finish_jffolo {
 
         if ($map->{$key}) {
             my $class = $map->{$key}{last_join_alias} || $core_hint;
+
             push @{ $jffolo->{order_by} }, {
                 class => $class,
                 field => $map->{$key}{path}[-1],
@@ -355,7 +380,7 @@ sub process_result {
 
     if (not ref $fmobj) {
         throw OpenSRF::EX::ERROR(
-            "process_result() was passed an inappropriate second argument"
+            "process_result() was passed an inappropriate second argument ($fmobj)"
         );
     }
 

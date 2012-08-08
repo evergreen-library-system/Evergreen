@@ -71,9 +71,9 @@
         editStyle="pane"
         showLoadFilter="true"
         fmClass="'ahopl'"
-        defaultSort="['copy_location_sort_order','call_number_sort_key']"
+        defaultSort="['copy_location_order_position','call_number_sort_key']"
         mapExtras="map_extras"
-        sortFieldReMap="{call_number_label: 'call_number_sort_key'}"
+        sortFieldReMap="{call_number_label:'call_number_sort_key',shelving_loc:'copy_location_order_position'}"
         fetchLock="true"
         query="{}">
         <thead>

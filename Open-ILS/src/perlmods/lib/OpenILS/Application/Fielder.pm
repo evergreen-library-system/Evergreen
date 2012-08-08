@@ -24,6 +24,9 @@ use XML::LibXML::XPathContext;
 use XML::LibXSLT;
 
 use OpenILS::Application::Flattener;
+use Data::Dumper;
+
+$Data::Dumper::Indent = 0;
 
 our %namespace_map = (
     oils_persist=> {ns => 'http://open-ils.org/spec/opensrf/IDL/persistence/v1'},
