@@ -736,7 +736,11 @@ function open_mfhd_editor(sre_id) {
 }
 
 function open_marc_editor(rec, label) {
-    win = window.open( xulG.url_prefix('XUL_MARC_EDIT'), '', 'chrome' );
+    /* Prevent the spawned MARC editor from making its title bar inaccessible */
+    var initHeight = self.outerHeight - 40;
+    /* Setting an explicit height results in a super skinny window, so fix that up */
+    var initWidth = self.outerWidth / 2;
+    win = window.open( xulG.url_prefix('XUL_MARC_EDIT'), '', 'chrome,resizable,height=' + initHeight + ',width=' + initWidth );
 
     win.xulG = {
         record : {marc : rec.marc()},
