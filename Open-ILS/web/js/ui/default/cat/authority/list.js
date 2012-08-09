@@ -75,8 +75,8 @@ function displayAuthorities(data) {
 
         
         // Grab the ID of the authority record
-        dojo.query("datafield[tag='901'] subfield[code='c']", node).forEach(function(dfNode) {
-            auth.id = dojox.xml.parser.textContent(dfNode); 
+        dojo.query("datafield[tag='901']", node).query("subfield[code='c']").forEach(function(dfNode) {
+            auth.id = dojox.xml.parser.textContent(dfNode);
         });
 
         /* I wrap this in try/catch only because:
@@ -98,7 +98,8 @@ function displayAuthorities(data) {
         // Create the authority record listing entry. XXX i18n
         dojo.place(
             '<div class="authEntry" id="auth' + auth.id + '">' +
-            '<div class="text" id="authLabel' + auth.id + '">' + auth.text + '</div>' +
+            '<div class="text" id="authLabel' + auth.id + '">' +
+            '<span class="text">' + auth.text + '</span></div>' +
             '<div class="authority-control-set">Control Set: <span class="acs-name">' +
             fetch_control_set(auth.thesaurus).name() +
             '</span> <span class="acs-id">(#' +
@@ -120,7 +121,7 @@ function displayAuthorities(data) {
         // "Merge" menu item
         new dijit.MenuItem({"id": "merge_" + auth.id, "onClick":function(){
             auth.text = '';
-            dojo.query('#auth' + auth.id + ' span.text').forEach(function(node) {
+            dojo.query('#auth' + auth.id).query('span.text').forEach(function(node) {
                 auth.text += dojox.xml.parser.textContent(node); 
             });
 
@@ -153,7 +154,7 @@ function displayAuthorities(data) {
 
                 var delDlg = dijit.byId("delDialog_" + auth.id);
 
-                dojo.query('#auth' + auth.id + ' span.text').forEach(function(node) {
+                dojo.query('#auth' + auth.id).query('span.text').forEach(function(node) {
                     auth.text += dojo.trim(dojox.xml.parser.textContent(node)); 
                 });
 
@@ -277,12 +278,19 @@ function showBibCount(authIds) {
 }
 
 function loadMarcEditor(pcrud, rec) {
+
+    /* Prevent the spawned MARC editor from making its title bar inaccessible */
+    var initHeight = self.outerHeight - 40;
+    /* Setting an explicit height results in a super skinny window, so fix that up */
+    var initWidth = self.outerWidth / 2;
+
     /*
        To run in Firefox directly, must set signed.applets.codebase_principal_support
        to true in about:config
      */
     netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-    win = window.open('/xul/server/cat/marcedit.xul'); // XXX version?
+    win = window.open('/xul/server/cat/marcedit.xul','',    // XXX version?
+        'chrome,resizable=yes,height=' + initHeight + ',width=' + initWidth);
 
     win.xulG = {
         "record": {"marc": rec.marc(), "rtype": "are"},
@@ -366,7 +374,7 @@ function displayRecords(parms) {
     var widgets = dijit.findWidgets(dojo.byId('authlist-div'));
     dojo.forEach(widgets, function(w) { w.destroyRecursive(true); });
 
-    dojo.query("#authlist-div div").orphan();
+    dojo.query("#authlist-div").query("div").orphan();
 
     var url = '/opac/extras/browse/marcxml/authority.'
         + dijit.byId('authAxis').attr('value')
