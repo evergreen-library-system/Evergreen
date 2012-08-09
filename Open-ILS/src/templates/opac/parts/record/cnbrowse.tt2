@@ -5,10 +5,9 @@
 
 <div id='cn_browse' class='cn_browser'>
     <div id='cn_browse_div'> 
-        <div class='color_4'>
-            <span>[% l("You are now browsing") %]</span>
-            <strong>[% ctx.browsing_ou.name | html %]</strong>
-        </div>
+        <p class='color_4'>
+            [% l("You are now browsing [_1]", ctx.browsing_ou.name) | html %]
+        </p>
         <table class='data_grid bookshelf' width='100%'>
             <thead>
                 <tr>
