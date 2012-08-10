@@ -1347,6 +1347,43 @@ sub process_fiscal_rollover {
     return undef;
 }
 
+__PACKAGE__->register_method(
+	method => 'org_fiscal_year',
+	api_name	=> 'open-ils.acq.org_unit.current_fiscal_year',
+	signature => {
+        desc => q/
+            Returns the current fiscal year for the given org unit.
+            If no fiscal year is configured, the current calendar
+            year is returned.
+        /,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Org unit ID', type => 'number'}
+        ],
+        return => {desc => 'Year as a string (e.g. "2012")'}
+    }
+);
+
+sub org_fiscal_year {
+    my($self, $conn, $auth, $org_id) = @_;
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    my $year = $e->json_query({
+        select => {acqfy => ['year']},
+        from => {acqfy => {acqfc => {join => 'aou'}}},
+        where => {
+            '+acqfy' => {
+                year_begin => {'<=' => 'now'},
+                year_end => {'>=' => 'now'},
+            },
+            '+aou' => {id => $org_id}
+        }
+    })->[0];
+
+    return $year ? $year->{year} : DateTime->now->year;
+}
 
 1;
 
