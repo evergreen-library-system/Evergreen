@@ -32,6 +32,16 @@
                     <select jsId='acqPlUploadPlSelector' dojoType='dijit.form.ComboBox'></select>
                 </td>
             </tr>
+            <tr id='acq-pl-upload-year'>
+                <td>[% l('Fiscal Year') %]</td>
+                <td>
+                    <select dojoType="dijit.form.FilteringSelect"
+                        jsId="acqUploadYearSelector"
+                        labelAttr="year"
+                        searchAttr="year">
+                    </select>
+                </td>
+            </tr>
 
             <tr><td colspan='2'><hr/></td></tr>
             [% PROCESS vlagent_form vl_show_copy_option=1 %]

@@ -1324,6 +1324,7 @@ sub upload_records {
     my $activate_po     = $args->{activate_po};
     my $vandelay        = $args->{vandelay};
     my $ordering_agency = $args->{ordering_agency} || $e->requestor->ws_ou;
+    my $fiscal_year     = $args->{fiscal_year} || DateTime->now->year;
     my $po;
     my $evt;
 
@@ -1403,7 +1404,8 @@ sub upload_records {
         $mgr->respond;
         $li->provider($provider); # flesh it, we'll need it later
 
-        import_lineitem_details($mgr, $ordering_agency, $li) or return $mgr->editor->die_event;
+        import_lineitem_details($mgr, $ordering_agency, $li, $fiscal_year) 
+            or return $mgr->editor->die_event;
         $mgr->respond;
 
         push(@li_list, $li->id);
@@ -1428,7 +1430,7 @@ sub upload_records {
 }
 
 sub import_lineitem_details {
-    my($mgr, $ordering_agency, $li) = @_;
+    my($mgr, $ordering_agency, $li, $fiscal_year) = @_;
 
     my $holdings = $mgr->editor->json_query({from => ['acq.extract_provider_holding_data', $li->id]});
     return 1 unless @$holdings;
@@ -1441,7 +1443,7 @@ sub import_lineitem_details {
     while(1) {
         # create a lineitem detail for each copy in the data
 
-        my $compiled = extract_lineitem_detail_data($mgr, $org_path, $holdings, $idx);
+        my $compiled = extract_lineitem_detail_data($mgr, $org_path, $holdings, $idx, $fiscal_year);
         last unless defined $compiled;
         return 0 unless $compiled;
 
@@ -1477,7 +1479,7 @@ sub import_lineitem_details {
 
 # return hash on success, 0 on error, undef on no more holdings
 sub extract_lineitem_detail_data {
-    my($mgr, $org_path, $holdings, $index) = @_;
+    my($mgr, $org_path, $holdings, $index, $fiscal_year) = @_;
 
     my @data_list = grep { $_->{holding} eq $index } @$holdings;
     return undef unless @data_list;
@@ -1503,7 +1505,7 @@ sub extract_lineitem_detail_data {
             # search up the org tree for the most appropriate fund
             for my $org (@$org_path) {
                 $fund = $mgr->editor->search_acq_fund(
-                    {org => $org, code => $code, year => DateTime->now->year}, {idlist => 1})->[0];
+                    {org => $org, code => $code, year => $fiscal_year}, {idlist => 1})->[0];
                 last if $fund;
             }
         }
