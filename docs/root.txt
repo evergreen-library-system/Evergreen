@@ -287,6 +287,8 @@ Use this part for information about searching the Evergreen public access catalo
 
 include::opac/my_lists.txt[]
 
+include::opac/kids_opac.txt[]
+
 Developer Resources
 ===================
 
