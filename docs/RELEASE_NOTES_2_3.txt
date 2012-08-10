@@ -6,6 +6,8 @@ Release notes
 Upgrade notes
 -------------
 
+Coming Soon.
+
 New features
 ------------
 
