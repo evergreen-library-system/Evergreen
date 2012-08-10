@@ -24,7 +24,7 @@ if (!dojo._hasResource["openils.widget.FlattenerFilterPane"]) {
                         if (self.suppressFilterFields &&
                             dojo.indexOf(
                                 self.suppressFilterFields, o.simple_name
-                            ) >= -1
+                            ) > -1
                         ) {
                             return false;
                         }

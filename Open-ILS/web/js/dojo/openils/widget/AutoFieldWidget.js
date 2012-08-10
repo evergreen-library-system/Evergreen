@@ -557,9 +557,17 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                         oncomplete(openils.Util.readResponse(r, false, true));
                     };
 
+                    /* XXX LFW: I want to uncomment the following three lines that refer to ob, but haven't had the time to properly test. */
+
+                    //var ob = {};
+                    //ob[linkClass] = vfield.selector || vfield.name;
+
                     this.searchOptions = dojo.mixin(
-                        {async : !this.forceSync, oncomplete : _cb},
-                        this.searchOptions
+                        {
+                            async : !this.forceSync,
+                            oncomplete : _cb
+                            //order_by : ob
+                        }, this.searchOptions
                     );
 
                     if (this.searchFilter) {
@@ -705,6 +713,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             var self = this;
             new openils.PermaCrud().search('acpl', {owning_lib : orgs}, {
                 async : !this.forceSync,
+                order_by : {"acpl": "name"},
                 oncomplete : function(r) {
                     var list = openils.Util.readResponse(r, false, true);
                     if(!list) return;

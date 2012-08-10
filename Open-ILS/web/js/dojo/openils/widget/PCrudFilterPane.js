@@ -147,6 +147,8 @@ if (!dojo._hasResource['openils.widget.PCrudFilterPane']) {
      * the right place. */
     function _clause_was_negative(clause) {
         /* clause objects really only ever have one property */
+        if (clause === null) return false; /* early out for special operator */
+
         var ops = openils.Util.objectProperties(clause);
         var op = ops.pop();
         var matches = op.match(/^not (\w+)$/);
@@ -474,7 +476,7 @@ if (!dojo._hasResource['openils.widget.PCrudFilterPane']) {
             }
         };
 
-        /* for ugly special cases in compliation */
+        /* for ugly special cases in compilation */
         this._null_clause = function() {
             var opname = this.get_selected_operator_name();
             if (opname == "not null")
@@ -593,6 +595,7 @@ if (!dojo._hasResource['openils.widget.PCrudFilterPane']) {
             "initializers": null,
             "compact": false,
             "widgetBuilders": null,
+            "suppressFilterFields": null,
 
             "constructor": function(args) {
                 for(var k in args)

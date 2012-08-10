@@ -46,6 +46,7 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
             "editStyle": "dialog",      /* "dialog" or "pane" */
             "requiredFields": null,     /* affects create/edit dialogs */
             "suppressEditFields": null, /* affects create/edit dialogs */
+            "suppressFilterFields": null, /* affects filter dialog */
 
             /* _generateMap() lives to interpret the attributes of the
              * FlattenerGrid dijit itself plus those definined in
@@ -495,7 +496,8 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                             "useDiv": this.filterAlwaysInDiv,
                             "compact": true,
                             "initializers": this.filterInitializers,
-                            "widgetBuilders": this.filterWidgetBuilders
+                            "widgetBuilders": this.filterWidgetBuilders,
+                            "suppressFilterFields": this.suppressFilterFields
                         });
 
                     this.filterUi.onApply = dojo.hitch(
