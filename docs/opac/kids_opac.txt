@@ -1,0 +1,201 @@
+Kids OPAC
+---------
+
+The Kids OPAC (KPAC) is a public catalog search that was designed for children 
+and teens.  Colorful menu items,large buttons, and simple navigation make this 
+an appealing search interface for kids.  Librarians will appreciate the flexible 
+configuration of the KPAC.  Librarians can create links to canned search results 
+for kids and can apply these links by branch.  The KPAC uses the same infrastructure 
+as the Template Toolkit OPAC (TPAC), the adult catalog search, so you can easily 
+extend the KPAC using the code that already exists in the TPAC.  Finally, third 
+party content, such as reader reviews, can be integrated into the KPAC.
+
+Choose a Skin
+~~~~~~~~~~~~~
+
+Two skins, or design interfaces, have been created for the KPAC.  The KPAC was 
+designed to run multiple skins on a single web server.  A consortium, then, could 
+allow each library system to choose a skin for their patrons.
+
+
+*Monster Skin:*
+
+
+In this skin, the search bar shares the top panel with a playful monster.  The 
+search grid appears beneath the search bar.  Help and Login links appear in bold 
+colors at the top right of the interface although you can customize these with CSS.  
+After you login, the Login button disappears.
+
+image::media/Kids_OPAC2.jpg[Kids_OPAC2]
+
+
+*Alternate Skin:*
+
+In this skin, the search bar is the focal point of the top panel and is centered 
+on the screen.  The search grid appears beneath the search bar.  Help and Login 
+links appear at the top right of the interface. You can customize the appearance 
+and position of these links with CSS.  After you login, the user name is displayed 
+in the top right corner, and the Login link becomes an option to Logout.
+
+image::media/Kids_OPAC1.jpg[Kids_OPAC1]
+
+
+Search the Catalog
+~~~~~~~~~~~~~~~~~~
+
+You can search the catalog using only the search bar, the search grid, or the search 
+bar and the collection drop down menu.
+
+
+*Search using the Search Bar*
+
+To search the catalog from the home page, enter text into the search bar in the 
+center of the main page, or enter text into the search bar to the right of the 
+results on a results page.  Search indices are configurable, but the default search 
+indices include author, title and (key)word.
+
+You can use this search bar to search the entire catalog, or, using the configuration 
+files, you can apply a filter so that search queries entered here retrieve records 
+that meet specific criteria, such as child-friendly copy locations or MARC audience 
+codes. 
+
+
+*Search using the Grid*
+
+From the home page, you can search the catalog by clicking on the grid of icons.  
+An icon search can link to an external web link or to a canned search.  For example, 
+the icon, Musical Instruments, could link to the results of a catalog search on 
+the subject heading, Musical instruments.  
+
+The labels on the grid of icons and the content that they search are configurable 
+by branch.  You can use the grid to search the entire catalog, or, using the 
+configuration files, you can apply a filter so that search queries entered here 
+retrieve records associated with specific criteria, such as child-friendly copy 
+locations or MARC audience codes.
+
+
+image::media/Kids_OPAC4.jpg[Kids_OPAC4]
+
+
+You can add multiple layers of icons and searches to your grid:
+
+
+image::media/Kids_OPAC5.jpg[Kids_OPAC5]
+
+
+
+*Search using the Search Bar and the _Collection_ Drop Down Menu*
+
+On the search results page, a search bar and drop down menu appear on the right 
+side of the screen.  You can enter a search term and into the search bar and select 
+a collection from the drop down menu to search these configured collections.  
+Configured collections might provide more targeted searching for your audience 
+than a general catalog search.  For example, you could create collections by shelving 
+location or by MARC audience code.  
+
+
+image::media/Kids_OPAC17.jpg[Kids_OPAC17]
+
+
+Using any search method, the search results display in the center of the screen.  
+Brief information displays beneath each title in the initial search result.  The 
+brief information that displays, such as title, author, or publication information, 
+is configurable.
+
+
+image::media/Kids_OPAC6.jpg[Kids_OPAC6]
+
+
+For full details on a title, click *More Info*.  The full details displays the 
+configured fields from the title record and copy information.  Click *Show more 
+copies* to display up to fifty results.  Use the breadcrumbs at the top to trace 
+your search history.
+
+
+image::media/Kids_OPAC7.jpg[Kids_OPAC7]
+
+
+
+Place a Hold
+~~~~~~~~~~~~
+
+From the search results, click the *Get it!* link to place a hold.
+
+
+image::media/Kids_OPAC11.jpg[Kids_OPAC11]
+
+
+The brief information about the title appears, and, if you have not yet logged in, 
+the *Get It!* panel appears with fields for username and password.  Enter the username 
+and password, and select the pick up library. Then click *Submit*.  If you have 
+already logged into your account, you need only to select the pick up location, 
+and click *Submit*.
+
+
+image::media/Kids_OPAC12.jpg[Kids_OPAC12]
+
+
+A confirmation of hold placement appears.  You can return to the previous record 
+or to your search results.
+
+
+image::media/Kids_OPAC13.jpg[Kids_OPAC13]
+
+
+
+Save Items to a List
+~~~~~~~~~~~~~~~~~~~~
+
+You can save items to a temporary list, or, if you are logged in, you can save to 
+a list of your own creation.  To save items to a list, click the *Get it* button 
+on the Search Results page.
+
+
+image::media/Kids_OPAC14.jpg[Kids_OPAC14]
+
+
+Select a list in the *Save It!* panel beneath the brief information, and click *Submit*.
+
+
+image::media/Kids_OPAC16.jpg[Kids_OPAC16]
+
+
+A confirmation of the saved item appears. To save the item to a list or to manage 
+the lists, click the *My Lists* link to return to the list management feature in 
+the TPAC. 
+
+
+image::media/Kids_OPAC15.jpg[Kids_OPAC15]
+
+
+
+Third Party Content
+~~~~~~~~~~~~~~~~~~~
+
+Third party content, such as reader reviews, can be viewed in the Kids OPAC. The 
+reviews link appears adjacent to the brief information.
+
+image::media/Kids_OPAC8.jpg[Kids_OPAC8]
+
+
+Click the Reviews link to view reader reviews from a third party source. The reader 
+reviews open beneath the brief information.
+
+
+image::media/Kids_OPAC9.jpg[Kids_OPAC9]
+
+
+Summaries and reviews from other publications appear in separate tabs beneath the 
+copy information.
+
+
+image::media/Kids_OPAC10.jpg[Kids_OPAC10]
+
+Configuration Files
+~~~~~~~~~~~~~~~~~~~
+
+Configuration files allow you to define labels for canned searches in the icon 
+grid, determine how icons lead users to new pages, and define whether those icons 
+are canned searches or links to external resources.  Documentation describing how 
+to use the configruation files is available in the Evergreen respository.
+
