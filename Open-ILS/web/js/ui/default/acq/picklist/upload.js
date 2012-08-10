@@ -39,7 +39,10 @@ function init() {
         orgLimitPerms : ['CREATE_PICKLIST', 'CREATE_PURCHASE_ORDER'],
         parentNode : dojo.byId('acq-pl-upload-agency'),
     }).build(
-        function(w) { orderAgencyWidget = w }
+        function(w) { 
+            orderAgencyWidget = w 
+            dojo.connect(orderAgencyWidget, 'onChange', setDefaultFiscalYear);
+        }
     );
 
     vlAgent = new VLAgent();
@@ -56,6 +59,24 @@ function init() {
             }
         }
     );
+}
+
+function setDefaultFiscalYear(org) {
+    org = org || orderAgencyWidget.attr('value');
+
+    if (org) {
+
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.org_unit.current_fiscal_year'],
+            {   params : [openils.User.authtoken, org],
+                async : true,
+                oncomplete : function(r) {
+                    var year = openils.Util.readResponse(r);
+                    acqUploadYearSelector.attr('value', year);
+                }
+            }
+        );
+    }
 }
 
 function acqUploadRecords() {
@@ -180,9 +201,9 @@ function loadYearSelector() {
                 yearStore.items = yearStore.items.sort().reverse();
                 acqUploadYearSelector.store = new dojo.data.ItemFileReadStore({data:yearStore});
 
-                // default to this year
-                // TODO: current fiscal year
-                acqUploadYearSelector.setValue(new Date().getFullYear().toString());
+                // until an ordering agency is selected, default to the 
+                // fiscal year of the workstation
+                setDefaultFiscalYear(new openils.User().user.ws_ou());
             }
         }
     );
