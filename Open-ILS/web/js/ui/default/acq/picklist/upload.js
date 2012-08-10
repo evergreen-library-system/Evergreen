@@ -22,6 +22,8 @@ var usingNewPl = false;
 function init() {
     dojo.byId('acq-pl-upload-ses').value = openils.User.authtoken;
 
+    loadYearSelector();
+
     new openils.widget.AutoFieldWidget({
         fmClass : 'acqpo',
         fmField : 'provider',
@@ -104,7 +106,8 @@ function acqHandlePostUpload(key, plId) {
         ordering_agency : orderAgencyWidget.attr('value'),
         create_po : acqPlUploadCreatePo.attr('value'),
         activate_po : acqPlUploadActivatePo.attr('value'),
-        vandelay : vlAgent.values()
+        vandelay : vlAgent.values(),
+        fiscal_year : acqUploadYearSelector.attr('value')
     };
 
     fieldmapper.standardRequest(
@@ -160,6 +163,31 @@ function acqHandlePostUpload(key, plId) {
         }
     );
 }
+
+function loadYearSelector() {
+
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.fund.org.years.retrieve'],
+        {   async : true,
+            params : [openils.User.authtoken, {}, {limit_perm : 'VIEW_FUND'}],
+            oncomplete : function(r) {
+
+                var yearList = openils.Util.readResponse(r);
+                if(!yearList) return;
+                yearList = yearList.map(function(year){return {year:year+''};}); // dojo wants strings
+
+                var yearStore = {identifier:'year', name:'year', items:yearList};
+                yearStore.items = yearStore.items.sort().reverse();
+                acqUploadYearSelector.store = new dojo.data.ItemFileReadStore({data:yearStore});
+
+                // default to this year
+                // TODO: current fiscal year
+                acqUploadYearSelector.setValue(new Date().getFullYear().toString());
+            }
+        }
+    );
+}
+
 
 
 openils.Util.addOnLoad(init);
