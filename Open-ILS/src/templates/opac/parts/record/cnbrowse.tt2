@@ -1,6 +1,6 @@
 [% 
     cnoffset = CGI.param('cnoffset');
-    cnoffset = cnoffset.match('^\d+$') ? cnoffset : 0; # verify cnoffset is a sane value
+    cnoffset = cnoffset.match('^-?\d+$') ? cnoffset : 0; # verify cnoffset is a sane value
 %]
 
 <div id='cn_browse' class='cn_browser'>
