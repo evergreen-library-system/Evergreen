@@ -662,6 +662,7 @@ sub call_number_browse_standalone {
             $self->ctx->{opac_root},
             $cnfrag # XXX some kind of escaping needed here?
         );
+        $url .= '&locg=' . $self->_get_search_lib() if ($self->_get_search_lib());
         return $self->generic_redirect($url);
     } else {
         return $self->generic_redirect; # return to search page

@@ -332,7 +332,7 @@ sub prepare_browse_call_numbers {
     my $cn = ($self->cgi->param("cn") || $self->any_call_number_label) or
         return [];
 
-    my $org_unit = $self->ctx->{get_aou}->($self->cgi->param('loc')) ||
+    my $org_unit = $self->ctx->{get_aou}->($self->_get_search_lib()) ||
         $self->ctx->{aou_tree}->();
 
     my $supercat = create OpenSRF::AppSession("open-ils.supercat");
