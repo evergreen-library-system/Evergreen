@@ -1,0 +1,11 @@
+[%-
+    css_fonts = {
+        size_base = "12px",
+        size_small = "92%", # 11px
+        size_smaller = "83%", # 10px
+        size_smallest = "75%", # 9px
+        size_big = "110%", # 13.2px
+        size_bigger = "125%",
+        size_biggest = "150%"
+    }
+%]
