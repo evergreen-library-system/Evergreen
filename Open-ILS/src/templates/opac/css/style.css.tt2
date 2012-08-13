@@ -1,9 +1,12 @@
-[%- PROCESS "opac/parts/css/colors.tt2" %]
+[%-
+    PROCESS "opac/parts/css/colors.tt2";
+    PROCESS "opac/parts/css/fonts.tt2";
+%]
 
 body {
     margin:0;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
+    font-size: [% css_fonts.size_base %];
     background: [% css_colors.primary %];
 }
 
@@ -50,18 +53,17 @@ a {
     padding:0;
     margin:0;
     height:18px;
-    font-size: 12px;
 }
 */
 h1 {
     margin:0;
     margin-bottom: 5px;
-    font-size: 20px;
+    font-size: [% css_fonts.size_biggest %];
     font-weight:normal;
 }
 
 h2 {
-    font-size: 16px;
+    font-size: [% css_fonts.size_bigger %];
     font-weight:bold;
 }
 
@@ -139,7 +141,7 @@ span.dash_divider {
     color: [% css_colors.background %];
     padding-top: 26px;
     margin-left: 1em;
-    font-size:11px;
+    font-size: [% css_fonts.size_small %];
 }
 
 #header a {
@@ -153,7 +155,7 @@ span.dash_divider {
 
 #header-links {
     color: [% css_colors.text_invert %];
-    font-size: 11px;
+    font-size: [% css_fonts.size_small %];
     font-weight: bold;
     position: relative;
     top:4px;
@@ -226,7 +228,7 @@ span.dash_divider {
 
 #search-wrapper #breadcrumb {
     margin-top:0px;
-    font-size: 10px;
+    font-size: [% css_fonts.size_smaller %];
     float:left;
 }
 
@@ -242,7 +244,7 @@ span.dash_divider {
 }
 
 #search-wrapper #search_frm label {
-    font-size: 10px;
+    font-size: [% css_fonts.size_smaller %];
 }
 
 #search-wrapper #search-box {
@@ -301,7 +303,7 @@ span.dash_divider {
 
 #acct_checked_tabs a, #acct_holds_tabs a, #acct_prefs_tabs a {
     margin-top: 0px;
-    font-size: 10px;
+    font-size: [% css_fonts.size_smaller %];
     color: [% css_colors.accent_darker %];
     padding: 10px 10px 10px 10px;
 }
@@ -325,7 +327,7 @@ span.dash_divider {
 .rdetail_results a {
     color:[% css_colors.primary_fade %];
     font-weight:bold;
-    font-size: 1.2em;
+    font-size: [% css_fonts.size_bigger %];
 }
 
 .rdetail_result_count {
@@ -444,7 +446,7 @@ div.format_icon {
 #rdetails_status thead th {
     background-color: [% css_colors.accent_lighter2 %];
     padding: 13px 0px 13px 13px;
-    font-size: 10px;
+    font-size: [% css_fonts.size_smaller %];
     text-transform: uppercase;
     font-weight: bold;
     text-align: left;
@@ -474,7 +476,7 @@ div.format_icon {
 .rdetail_extras_link {
     padding-top: 4px;
     padding-left: 12px;
-    font-size: 10px;
+    font-size: [% css_fonts.size_smaller %];
     text-transform: uppercase;
     font-weight: bold;
 }
@@ -541,7 +543,7 @@ div.format_icon {
 
 #main-content .login_boxes h1 {
     font-weight: normal;
-    font-size: 25px;
+    font-size: [% css_fonts.size_biggest %];
     margin:0;
 }
 
@@ -556,7 +558,7 @@ div.format_icon {
     margin:0;
     padding:0;
     background: none;
-    font-size: 15px;
+    font-size: [% css_fonts.size_bigger %];
     color: [% css_colors.accent_medium %];
 }
 
@@ -568,7 +570,7 @@ div.format_icon {
 }
 
 #login-failed-message {
-    font-size: 125%;
+    font-size: [% css_fonts.size_bigger %];
     font-weight: bold;
     color: [% css_colors.text_alert %];
     padding-top: 1em;
@@ -606,7 +608,7 @@ div.format_icon {
 .results_header_lbl {
     font-weight: bold;
     float: left;
-    font-size: 11px;
+    font-size: [% css_fonts.size_small %];
     color: [% css_colors.text %];
     background: [% css_colors.accent_medium %];
     margin-right: 6px;
@@ -624,13 +626,13 @@ div.format_icon {
 }
 
 .results_header_nav1 .h1 {
-    font-size:14px;
+    font-size: [% css_fonts.size_bigger %];
     font-weight:bold;
     color:[% css_colors.primary_fade %];
 }
 
 .start_end_links_span {
-    font-size: 11px;
+    font-size: [% css_fonts.size_small %];
 }
 
 #result_table_div {
@@ -654,7 +656,7 @@ tr.result_table_row > td.result_table_pic_header {
 }
 
 .result_numbers {
-    font-size: 11px; padding-left:15px; white-space: nowrap; width: 320px;
+    font-size: [% css_fonts.size_small %]; padding-left:15px; white-space: nowrap; width: 320px;
 }
 
 .result_table_subtable {
@@ -735,7 +737,7 @@ div.result_place_hold {
 
 .header_middle {
     height:22px;
-    font-size:14px;
+    font-size: [% css_fonts.size_bigger %];
     font-weight:bold;
     color:[% css_colors.primary_fade %];
     padding: 0px 7px 0px 0px;
@@ -743,7 +745,6 @@ div.result_place_hold {
 }
 
 .header_middle a {
-    font-size: 12px;
     font-weight: normal;
 }
 
@@ -751,21 +752,19 @@ div.result_place_hold {
     padding: 7px 15px;
     background: [% css_colors.accent_ultralight %];
     margin-bottom: 2px;
-    font-size: 10px;
+    font-size: [% css_fonts.size_smaller %];
     font-weight: bold;
     text-transform: uppercase;
 }
 
 .acct_sum_row a {
     text-transform: none;
-    font-size: 12px;
     position:relative;
     top:-1px;
 }
 
 .acct_sum_row .view_link {
     font-weight: normal;
-    font-size:12px;
 }
 
 table.acct_notes {
@@ -804,7 +803,7 @@ table.acct_notes th {
 #acct_checked_main_header, #acct_holds_main_header, #acct_checked_hist_header, #acct_list_header, #acct_list_header_anon, #temp_list_holds {
     font-weight:bold;
     text-transform:uppercase;
-    font-size: 10px;
+    font-size: [% css_fonts.size_smaller %];
 }
 
 #acct_checked_main_header td, #acct_holds_main_header td, #acct_checked_hist_header td, #acct_list_header td, #acct_list_header_anon td, #temp_list_holds td {
@@ -819,26 +818,26 @@ table.acct_notes th {
 
 #acct_holds_activates_table label {
     font-weight: bold;
-    font-size: 11px;
+    font-size: [% css_fonts.size_small %];
     text-transform:uppercase;
     padding-right: 5px;
 }
 
 .adv_search_font {
-    font-size: 10px;
+    font-size: [% css_fonts.size_smaller %];
 }
 
 .search_catalog_lbl {
-    font-size: 14px;
+    font-size: [% css_fonts.size_bigger %];
 }
 
 .lbl1 {
-    font-size:14px;
+    font-size: [% css_fonts.size_bigger %];
     font-weight:bold;
 }
 
 .lbl2 {
-    font-size:10px;
+    font-size: [% css_fonts.size_smaller %];
     font-weight:normal;
     position:relative;
     top:3px;
@@ -870,7 +869,7 @@ table.acct_notes th {
 .payment-processing {
     font-weight: bold;
     color: [% css_colors.text_greatnews %];
-    font-size: 120%;
+    font-size: [% css_fonts.size_bigger %];
     padding: 10px; border: 1px solid [% css_colors.accent_medium_dark %];
     text-align: center;
 }
@@ -883,7 +882,7 @@ table.acct_notes th {
     width:100%;
     text-align:center;
     padding-top:20px;
-    font-size:16px;
+    font-size: [% css_fonts.size-bigger %];
     font-weight:bold;
 }
 
@@ -1007,7 +1006,7 @@ div.facet_sidebar {
     padding-top:5px;
     padding-bottom: 10px;
     margin-left: 1em;
-    font-size: 11px;
+    font-size: [% css_fonts.size_small %];
 }
 
 #footer a {
@@ -1023,19 +1022,22 @@ div.facet_sidebar {
 .color_4 {
     text-transform: uppercase;
     font-weight: bold;
-    font-size: 10px;
+    font-size: [% css_fonts.size_smaller %];
 }
 
 .advanced_div { padding-top: 15px; }
 #adv_global_search select { width: 13em; }
 #adv_global_input_table select { width: 7em; }
-.adv_adv_link { font-size: 8pt; color: [% css_colors.text_alert %]; }
+.adv_adv_link {
+    font-size: [% css_fonts.size_smaller %];
+    color: [% css_colors.text_alert %];
+}
 #acct_prefs_header { float: left; }
 .search_page_nav_link { cursor: pointer; }
 #opac.result.sort { width: 160px; }
-.renew-summary { font-size: 125%; font-style: italic; margin: 0.5ex 0; }
+.renew-summary { font-size: [% css_fonts.size_bigger %]; font-style: italic; margin: 0.5ex 0; }
 .failure-text { margin-left: 4em; font-style: italic; color: [% css_colors.text_alert %]; }
-.refine-controls { font-size: 125%; padding: 0.5ex 0; }
+.refine-controls { font-size: [% css_fonts.size_bigger %]; padding: 0.5ex 0; }
 #adv_search_refine input[type=text] { border: 1px inset [% css_colors.accent_light %] !important; }
 #adv_search_refine select { border: 1px inset [% css_colors.accent_light %] !important; }
 #adv_search_refine {
@@ -1045,7 +1047,6 @@ div.facet_sidebar {
 .subtle-button {
     background-color: [% css_colors.background %];
     color: [% css_colors.primary %]; text-decoration: none;
-    font-size: 12px;
     padding: 0; border: 0; margin: 0;
     vertical-align: middle;
 }
@@ -1055,7 +1056,7 @@ div.facet_sidebar {
 
 #account-update-email table { text-align: center; padding: 20px; margin-top: 30px; border-collapse: collapse; }
 #account-update-email table td { padding: 5px 15px 5px 15px; border-bottom: 1px solid [% css_colors.accent_lighter %]; text-align: left;}
-#account-update-email-error { font-size: 1.5em; padding: 10px; border:1px solid [% css_colors.border_standard %];}
+#account-update-email-error { font-size: [% css_fonts.size_biggest %]; padding: 10px; border:1px solid [% css_colors.border_standard %];}
 a.dash-link:hover { text-decoration: underline !important; }
 #list_create_table td { vertical-align: middle; padding: 0 8px; }
 #list_create_table {
@@ -1067,8 +1068,8 @@ a.dash-link:hover { text-decoration: underline !important; }
 .list-create-table-buttons input[type=image] { margin-top: 2px; }
 .result_table_format_cell { padding: 0px 10px; text-align: center; }
 .results_row_count { font-weight: bold; }
-#hold_editor h1 { font-size: 120%; font-weight: bold; }
-#hold_editor h2 { font-size: 111%; font-weight: normal; text-indent: 2em; font-style: italic; }
+#hold_editor h1 { font-size: [% css_fonts.size_bigger %]; font-weight: bold; }
+#hold_editor h2 { font-size: [% css_fonts.size_big %]; font-weight: normal; text-indent: 2em; font-style: italic; }
 #hold_editor h1, #hold_editor h2 { margin: 2px 0; }
 #hold_editor_table { background-color: [% css_colors.accent_lighter %]; padding: 0.5em; }
 #hold_editor_table th { text-align: right; padding-right: 1em; }
@@ -1096,10 +1097,10 @@ a.dash-link:hover { text-decoration: underline !important; }
 .inactive-hold { background: [% css_colors.accent_lightest %]; }
 
 #hold-items-list td { padding: 5px; margin-bottom: 20px; }
-.hold-items-list-title { font-size: 120%; }
+.hold-items-list-title { font-size: [% css_fonts.size_bigger %]; }
 .hold-items-list-problem { color: [% css_colors.text_alert %]; }
 
-.big-strong {font-weight: bold; font-size: 120%; }
+.big-strong {font-weight: bold; font-size: [% css_fonts.size_bigger %]; }
 
 .results_header_btns, .results_header_sel {
     float:left;
@@ -1255,7 +1256,7 @@ table.bookbag-specific {
     padding: 8px 0px 6px 0px;
     width: 100%;
     border: 0;
-    font-size: 120%;
+    font-size: [% css_fonts.size_bigger %];
     text-align: center;
     font-style: italic;
 }
@@ -1286,10 +1287,10 @@ table.bookbag-specific {
 .float-left { float: left; }
 .float-right { float: right; }
 
-.saved-searches-header { width: 100%; font-weight: bold; font-size: 120%; }
+.saved-searches-header { width: 100%; font-weight: bold; font-size: [% css_fonts.size_bigger %]; }
 .saved-searches-header .button { float: right; width: 28px; }
 .saved-searches-header .text { float: left; padding-right: 1em; margin: 0.5ex 0;}
-.saved-searches-header {font-weight: bold; font-size: 120%; }
+.saved-searches-header {font-weight: bold; font-size: [% css_fonts.size_bigger %]; }
 .saved-searches { border-bottom: 1px solid [% css_colors.accent_medium %]; padding-right: 1em; }
 #staff-saved-search { /* wraps .saved-searches-header and .saved-searches on the record page */
     border-right: 1px solid [% css_colors.accent_darker %];
@@ -1307,14 +1308,14 @@ table.bookbag-specific {
 #search-only-bookbag-container { margin: 2ex 0; font-weight: bold; }
 #result-bookbag-heading { text-align: center; margin: 2ex; }
 
-.result-bookbag-name { font-size: 140%; font-weight: bold; }
-.result-bookbag-description { font-size: 120%; font-style: italic; }
+.result-bookbag-name { font-size: [% css_fonts.size_bigger %]; font-weight: bold; }
+.result-bookbag-description { font-size: [% css_fonts.size_bigger %]; font-style: italic; }
 .result-bookbag-item-note { font-style: italic; }
 .lowhits-bookbag-name { font-weight: bold; }
 .oils_AS { font-weight: bold; color: [% css_colors.text_match %]; }
 .oils_AS_match_term { text-align: left; color: [% css_colors.text %]; }
 .oils_AS_match_field {
-    font-size: 75%; padding: 0.65em 0;
+    font-size: [% css_fonts.size_smallest %]; padding: 0.65em 0;
     text-align: right; color: [% css_colors.accent_medium %];
 }
 table.result_holdings_table {
@@ -1332,7 +1333,7 @@ span.preflib {
 }
 a.preflib_change {
   vertical-align: super;
-  font-size: smaller;
+  font-size: [% css_fonts.size_smaller %];
   line-height: normal;
   text-decoration: none;
 }
@@ -1347,7 +1348,7 @@ a.preflib_change {
 }
 
 #ac_tab_wrapper { width : 100%; }
-.ac_tab { float: left; padding-right: 10px; font-size: 110%; padding: 5px; border: 1px solid [% css_colors.primary_offset %]; }
+.ac_tab { float: left; padding-right: 10px; font-size: [% css_fonts.size_big %]; padding: 5px; border: 1px solid [% css_colors.primary_offset %]; }
 .ac_tab_selected { background-color: [% css_colors.primary_offset %]; }
 .ac_tab_selected a { color: [% css_colors.text_invert %]; }
 #ac_content { clear: both; width: 100%; margin-top: 10px; }
@@ -1433,5 +1434,4 @@ a.preflib_change {
     margin: 0;
     padding: 0;
     vertical-align: middle;
-    font-size: 1em;
 }
