@@ -74,6 +74,12 @@ allow_phone_notifications = 'true';
 ##############################################################################
 # Misc. UI Settings
 ##############################################################################
+# Option for full details as a default, esp. impt. for e-content
+# that uses resolver plumbing. Valid values are 'true', 'false' and 'hide'.
+# Setting this to 'true' shows full details by default but allows the link
+# to appear for 'Show Fewer Details'. The 'hide' option shows full details
+# and also suppresses the link from displaying at all.
+show_more_details.default = 'false';
 
 ##############################################################################
 # Size of the jacket image to display on the record detail summary.
