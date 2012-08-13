@@ -16,7 +16,8 @@ if (!dojo._hasResource["openils.FlattenerStore"]) {
     dojo.declare(
         "openils.FlattenerStore", null, {
 
-        "_last_fetch": null,        /* used internally */
+        "_last_fetch": null,        /* timestamp. used internally */
+        "_last_fetch_sort": null,   /* dijit sort object. used internally */
         "_flattener_url": "/opac/extras/flattener",
 
         /* Everything between here and the constructor can be specified in
@@ -171,6 +172,12 @@ if (!dojo._hasResource["openils.FlattenerStore"]) {
         "_fetch_prepare": function(req) {
             req.queryOptions = req.queryOptions || {};
             req.abort = function() { console.warn("[unimplemented] abort()"); };
+
+            /* If we were asked to fetch without any sort order specified (as
+             * will happen when coming from fetchToPrint(), try to use the
+             * last cached sort order, if any. */
+            req.sort = req.sort || this._last_fetch_sort;
+            this._last_fetch_sort = req.sort;
 
             if (!this.mapKey)
                 this._get_map_key();
