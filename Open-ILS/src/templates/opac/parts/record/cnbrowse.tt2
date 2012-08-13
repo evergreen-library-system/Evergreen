@@ -23,8 +23,10 @@
                 </tr>
             </thead>
             <tbody>
-            [% tr_open = 0; FOR cn IN ctx.browsed_call_numbers %]
-                [%- IF loop.index % 3 == 0; tr_open = 1 %]
+            [%- tr_open = 0;
+                PROCESS get_library;
+                FOR cn IN ctx.browsed_call_numbers;
+                  IF loop.index % 3 == 0; tr_open = 1 %]
                 <tr class='cn_browse_row'>
                 [% END -%]
                     <td class='cn_browse_item' width='25%' valign='top'>
@@ -32,20 +34,20 @@
                             PROCESS get_marc_attrs args=rec_attrs;
                             ident = rec_attrs.isbn_clean || rec_attrs.upc;
                             IF ident %]
-                        <a href="[% mkurl(ctx.opac_root _ '/record/' _ cn.record.id, {}, 1) %]"><img height='60' width='50' 
+                        <a href="[% mkurl(ctx.opac_root _ '/record/' _ cn.record.id, {$loc_name => loc_value}, 1) %]"><img height='60' width='50' 
                             class='cn_browse_info' name='cn_browse_pic' border='0'
                             src="[% ctx.media_prefix %]/opac/extras/ac/jacket/small/[% ident | uri %]" /></a>
                         [% END %]
                         <div class='cn_browse_info bold' name='cn_browse_cn'>[% cn.label | html %]</div>
                         <div class='cn_browse_info'>
                             <a name='cn_browse_title' class='classic_link' 
-                                href="[% mkurl(ctx.opac_root _ '/record/' _ cn.record.id, {}, 1) %]">[% rec_attrs.title | html %]</a>
+                                href="[% mkurl(ctx.opac_root _ '/record/' _ cn.record.id, {$loc_name => loc_value}, 1) %]">[% rec_attrs.title | html %]</a>
                         </div>
                         [% IF rec_attrs.author %]<div class='cn_browse_info'>
                             <a name='cn_browse_author' class='classic_link'
                                 href="[%-
                                     authorquery = rec_attrs.author | replace('[,\.:;]', '');
-                                    mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, 1)
+                                    mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery, $loc_name => loc_value}, 1)
                                     -%]">[% rec_attrs.author | html %]</a>
                         </div>[% END %]
                         <div class='cn_browse_info' name='cn_browse_lib'>[% cn.owning_lib.name | html %]</div>
