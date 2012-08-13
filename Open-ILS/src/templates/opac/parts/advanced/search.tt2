@@ -103,5 +103,5 @@
 <input type="hidden" name="_adv" value="1" />
 <input type="submit" value="[% l('Search') %]" class='pointer opac-button' />
 <a href="[% mkurl(ctx.opac_root _ '/advanced', {$loc_name => loc_value}, 1) %]"
-    class="pointer opac-button">[% l('Reset form') %]</a>
+    class="pointer opac-button">[% l('Clear Form') %]</a>
 </form>
