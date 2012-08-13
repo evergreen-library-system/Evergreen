@@ -1,3 +1,7 @@
+BEGIN;
+
+INSERT INTO container.biblio_record_entry_bucket_type (code, label) VALUES ('url_verify', 'URL Verification Queue');
+
 DROP SCHEMA IF EXISTS url_verify CASCADE;
 
 CREATE SCHEMA url_verify;
@@ -80,3 +84,4 @@ CREATE TABLE url_verify.filter_set (
     CONSTRAINT uvfs_name_once_per_lib UNIQUE (name, owning_lib)
 );
  
+COMMIT;
