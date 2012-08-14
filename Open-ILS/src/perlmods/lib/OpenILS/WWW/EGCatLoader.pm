@@ -310,8 +310,11 @@ sub staff_saved_searches_set_expansion_state {
 
 # physical_loc (i.e. "original location") passed in as a URL 
 # param will replace any existing physical_loc stored as a cookie.
+# If specified via ENV that rules over all and we don't set cookies.
 sub get_physical_loc {
     my $self = shift;
+
+    return $ENV{physical_loc} if($ENV{physical_loc});
 
     if(my $physical_loc = $self->cgi->param('physical_loc')) {
         $self->apache->headers_out->add(
