@@ -859,10 +859,10 @@
 		<desc xml:lang="en-US"> The requested copy has an alert message attached </desc>
 	</event>
 	<event code='7011' textcode='COPY_STATUS_LOST'>
-		<desc xml:lang="en-US">Copy has is marked as lost</desc>
+		<desc xml:lang="en-US">Copy is marked as lost</desc>
 	</event>
 	<event code='7012' textcode='COPY_STATUS_MISSING'>
-		<desc xml:lang="en-US">Copy has is marked as missing</desc>
+		<desc xml:lang="en-US">Copy is marked as missing</desc>
 	</event>
 	<event code='7013' textcode='PATRON_EXCEEDS_FINES'>
 		<desc xml:lang="en-US">The patron in question has reached the maximum fine amount</desc>
