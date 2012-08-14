@@ -13,15 +13,17 @@ my ${spc} = ' ' x 2;
 sub subquery_callback {
     my ($invocant, $self, $struct, $filter, $params, $negate) = @_;
 
-    return join(
-        ' ',
-        map {
-            $_->query_text
-        } @{
-            OpenILS::Utils::CStoreEditor
-                ->new
-                ->search_actor_search_query({ id => $params })
-        }
+    return sprintf(' ((%s)) ',
+        join(
+            ') || (',
+            map {
+                $_->query_text
+            } @{
+                OpenILS::Utils::CStoreEditor
+                    ->new
+                    ->search_actor_search_query({ id => $params })
+            }
+        )
     );
 }
 
