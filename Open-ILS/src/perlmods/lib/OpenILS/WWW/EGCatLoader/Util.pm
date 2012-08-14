@@ -389,8 +389,8 @@ sub _get_pref_lib {
         return $ctx->{user}->home_ou;
     }
 
-    if ($self->cgi->param('physical_loc')) {
-        return $self->cgi->param('physical_loc');
+    if ($ctx->{physical_loc}) {
+        return $ctx->{physical_loc};
     }
 
 }
