@@ -1,4 +1,4 @@
-[%
+[%-
     # Default to the root of the org unit tree in the absence of a specific library
     loc = ctx.search_ou;
 
@@ -15,6 +15,6 @@
         '/opac/extras/supercat/marctxt/record/' _ 
         ctx.bre_id;
 %]
-<div class="rdetail_refworks">
-    <a href="[% rw_uri %]">[% l('Export to RefWorks') %]</a>
+<div class="rdetail_aux_utils rdetail_refworks">
+    <a href="[% rw_uri %]"><img src="/images/starz.png" alt="" />[% l('Export to RefWorks') %]</a>
 </div>
