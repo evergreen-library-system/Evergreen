@@ -5,10 +5,6 @@
 <!-- ****************** rdetail_summary.xml ***************************** -->
 <abbr class="unapi-id" title='tag:[% ctx.hostname %],[% date.format(date.now, '%Y') %]:biblio-record_entry/[% ctx.bre_id %]'></abbr>
 
-[%- IF ctx.refworks.enabled == 'true' %]
-    [% INCLUDE 'opac/parts/record/refworks.tt2' %]
-[%- END %]
-
 <hr />
 
 [%-# This holds the record summary information %]
@@ -55,6 +51,9 @@
             <a href="[% mkurl(ctx.opac_root _ '/record/print/' _ ctx.bre_id) %]" class="no-dec">[% l('Print') %]</a> /
             <a href="[% mkurl(ctx.opac_root _ '/record/email/' _ ctx.bre_id) %]" class="no-dec">[% l('Email') %]</a>
         </div>
+        [%- IF ctx.refworks.enabled == 'true' %]
+            [%- INCLUDE 'opac/parts/record/refworks.tt2' %]
+        [%- END %]
     </div>
     <div id='rdetail_title_div'>
         [%- IF attrs.format_icon %]
