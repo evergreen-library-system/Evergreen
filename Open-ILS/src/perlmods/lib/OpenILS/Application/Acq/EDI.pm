@@ -486,7 +486,7 @@ sub process_jedi {
                     new OpenILS::Utils::LooseEDI::Message($part->{$key});
                 push @messages, $invoice_message if
                     $class->create_acq_invoice_from_edi(
-                        $e, $invoice_message, $remote->provider
+                        $e, $invoice_message, $remote->provider, $message
                     );
                 next;
             }
@@ -661,7 +661,7 @@ sub create_acq_invoice_from_edi {
         $logger->error(
             $log_prefix . "no invoice ID # in INVOIC message; " . shift
         );
-    }
+    };
     return 0 unless $eg_inv->inv_ident;
 
     my @eg_inv_entries;
