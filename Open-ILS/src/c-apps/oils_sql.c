@@ -4910,12 +4910,16 @@ char* SELECT (
 
 	if( limit ){
 		const char* str = jsonObjectGetString( limit );
-		buffer_fadd( sql_buf, " LIMIT %d", atoi( str ));
+		if (str) { // limit could be JSON_NULL, etc.
+			buffer_fadd( sql_buf, " LIMIT %d", atoi( str ));
+		}
 	}
 
 	if( offset ) {
 		const char* str = jsonObjectGetString( offset );
-		buffer_fadd( sql_buf, " OFFSET %d", atoi( str ));
+		if (str) {
+			buffer_fadd( sql_buf, " OFFSET %d", atoi( str ));
+		}
 	}
 
 	if( !(flags & SUBSELECT) )
@@ -5453,21 +5457,25 @@ static char* buildSELECT ( const jsonObject* search_hash, jsonObject* rest_of_qu
 		const jsonObject* limit = jsonObjectGetKeyConst( rest_of_query, "limit" );
 		if( limit ) {
 			const char* str = jsonObjectGetString( limit );
-			buffer_fadd(
-				sql_buf,
-				" LIMIT %d",
-				atoi(str)
-			);
+			if (str) {
+				buffer_fadd(
+					sql_buf,
+					" LIMIT %d",
+					atoi(str)
+				);
+			}
 		}
 
 		const jsonObject* offset = jsonObjectGetKeyConst( rest_of_query, "offset" );
 		if( offset ) {
 			const char* str = jsonObjectGetString( offset );
-			buffer_fadd(
-				sql_buf,
-				" OFFSET %d",
-				atoi( str )
-			);
+			if (str) {
+				buffer_fadd(
+					sql_buf,
+					" OFFSET %d",
+					atoi( str )
+				);
+			}
 		}
 	}
 
