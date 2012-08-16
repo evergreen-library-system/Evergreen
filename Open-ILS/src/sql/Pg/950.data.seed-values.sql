@@ -1565,7 +1565,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 537, 'ADMIN_SEARCH_FILTER_GROUP', oils_i18n_gettext( 537,
     'Allows staff to manage search filter groups and entries', 'ppl', 'description' )),
  ( 538, 'VIEW_SEARCH_FILTER_GROUP', oils_i18n_gettext( 538,
-    'Allows staff to view search filter groups and entries', 'ppl', 'description' ))
+    'Allows staff to view search filter groups and entries', 'ppl', 'description' )),
+ ( 539, 'UPDATE_ui.hide_copy_editor_fields', oils_i18n_gettext( 539,
+    'Allows staff to edit displayed copy editor fields', 'ppl', 'description' ))
 ;
 
 
@@ -11668,7 +11670,7 @@ INSERT INTO config.global_flag (name, enabled, label)
         )
     );
 
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, grp )
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, grp, update_perm )
     VALUES (
         'ui.hide_copy_editor_fields',
         oils_i18n_gettext(
@@ -11686,7 +11688,8 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, g
             'description'
         ),
         'array',
-        'gui'
+        'gui',
+        539
     );
 
 INSERT into config.org_unit_setting_type 
