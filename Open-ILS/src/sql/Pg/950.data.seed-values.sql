@@ -1557,7 +1557,10 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 533, 'ADMIN_COPY_LOCATION_GROUP', oils_i18n_gettext( 533,
     'Allows a user to create/retrieve/update/delete copy location groups', 'ppl', 'description' )), 
  ( 534, 'ADMIN_USER_ACTIVITY_TYPE', oils_i18n_gettext( 534,
-    'Allows a user to create/retrieve/update/delete user activity types', 'ppl', 'description' ));
+    'Allows a user to create/retrieve/update/delete user activity types', 'ppl', 'description' )),
+ ( 539, 'UPDATE_ui.hide_copy_editor_fields', oils_i18n_gettext( 539,
+    'Allows staff to edit displayed copy editor fields', 'ppl', 'description' ))
+;
 
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -11571,7 +11574,7 @@ INSERT INTO config.global_flag (name, enabled, label)
         )
     );
 
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, grp )
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, grp, update_perm )
     VALUES (
         'ui.hide_copy_editor_fields',
         oils_i18n_gettext(
@@ -11589,7 +11592,8 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, g
             'description'
         ),
         'array',
-        'gui'
+        'gui',
+        539
     );
 
 
