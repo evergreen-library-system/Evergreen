@@ -1,8 +1,8 @@
 Receipt Template Editor
-=======================
+-----------------------
 
 Print Holds Slip with Landscape Layout
---------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This feature enables you to use Mozilla-specific CSS to print holds with a
 landscape layout. To use the landscape layout:

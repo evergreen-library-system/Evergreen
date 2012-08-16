@@ -1,0 +1,72 @@
+Triggered Events and Notices
+----------------------------
+
+Improvements to the Triggered Events interface enables you to easily filter,
+sort, and print triggered events from the patron's account or an item's details.
+This feature is especially useful when tracking notice completion from a
+patron's account.
+
+Access and View
+~~~~~~~~~~~~~~~
+
+You can access *Triggered Events* from two Evergreen interfaces: a patron's
+account or an item's details.  
+
+To access this interface in the patron's account, open the patron's record and
+click *Other* -> *Triggered Events*.
+
+To access this interface from the item's details, enter the item barcode into
+the *Item Status* screen, and click *Actions for Selected Items* -> *Triggered
+Events*.
+
+Information about the patron, the item, and the triggered event appear in the
+center of the screen.  Add or delete columns to the display by right clicking on
+any column. The *Column Picker* appears in a pop up box and enables you to
+select the columns that you want to display.
+
+image::media/Triggered_Events_and_Notices1.jpg[Triggered_Events_and_Notices1]
+
+Filter
+~~~~~~
+
+The triggered events that display are controlled by the filters on the right
+side of the screen.  By default, Evergreen displays completed circulation
+events.  Notice that the default filters display *Event State is Complete* and
+*Core Type is Circ*.  
+
+To view completed hold-related events, such as hold capture or hold notice
+completion, choose *Event State is Complete* and *Core Type is Hold* from the
+drop down menu.
+
+You can also use the *Event State* filter to view circs and holds that are
+*pending* or have an *error*.
+
+Add and delete filters to customize the list of triggered events that displays.
+To add another filter, click *Add Row*.  To delete a filter, click the red _X_
+adjacent to a row.
+
+image::media/Triggered_Events_and_Notices2.jpg[Triggered_Events_and_Notices2]
+
+Sort
+~~~~
+
+You can sort your results by clicking the column name.
+
+image::media/Triggered_Events_and_Notices3.jpg[Triggered_Events_and_Notices3]
+
+
+Print
+~~~~~
+
+You can select the events that you want to print, or you can print all events.
+To print selected events, check the boxes adjacent to the events that you want
+to print, and click *Print Selected Events*.  To print all events, simply click
+*Print All Events*.
+
+Reset
+~~~~~
+
+If the triggered event does not complete or the notice is not sent and the
+trigger needs to be run again, then select the event, and click *Reset Selected
+Events*.
+

@@ -1,0 +1,28 @@
+Holds Management
+----------------
+
+Display Hold Types on Pull Lists
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This feature ensures that the hold type can be displayed on all hold interfaces.    
+
+You will find the following changes to the hold type indicator:
+
+. The hold type indicator will display by default on all XUL-based hold
+interfaces. XUL-based hold interfaces are those that number the items on the
+interface.  This can be overridden by saving column configurations that remove
+the column, *Type*.  
+. The hold type indicator will display by default on the HTML-based pull list.
+To access, click *Circulation* -> *Pull List for Hold Requests* -> *Print Full
+Pull List (Alternate Strategy)*.
+. The hold type indicator can be added to the Simplified Pull List.  To access,
+click Circulation* -> *Pull List for Hold Requests* -> *Simplified Pull List
+Interface*.
+
+To add the hold type indicator to the simplified pull list, click *Simplified
+Pull List Interface*, and right click on any of the column headers.  The Column
+Picker appears in a pop up window.  Click the box adjacent to *Hold Type*, and
+Click *Save*. The *Simplified Pull List Interface* will now include the hold
+type each time that you log into the staff client.
+
+image::media/Display_Hold_Types_on_Pull_Lists1.jpg[Display_Hold_Types_on_Pull_Lists1]
