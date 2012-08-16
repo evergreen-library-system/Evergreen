@@ -1566,7 +1566,7 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
     'Allows staff to manage search filter groups and entries', 'ppl', 'description' )),
  ( 538, 'VIEW_SEARCH_FILTER_GROUP', oils_i18n_gettext( 538,
     'Allows staff to view search filter groups and entries', 'ppl', 'description' )),
- ( 539, 'UPDATE_ui.hide_copy_editor_fields', oils_i18n_gettext( 539,
+ ( 539, 'UPDATE_ORG_UNIT_SETTING.ui.hide_copy_editor_fields', oils_i18n_gettext( 539,
     'Allows staff to edit displayed copy editor fields', 'ppl', 'description' ))
 ;
 
