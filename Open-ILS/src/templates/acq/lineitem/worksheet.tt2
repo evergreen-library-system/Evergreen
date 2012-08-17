@@ -3,9 +3,10 @@
 <script type="text/javascript">
     var liId = "[% ctx.page_args.0 %]";
     dojo.require('openils.CGI');
-    var cgi = new openils.CGI({url : document.referrer});
-    cgi.param('focus_li', liId);
-    var returnRef = cgi.url();
+    var cgi = new openils.CGI();
+    var newCgi = new openils.CGI({url : cgi.param('source')});
+    newCgi.param('focus_li', liId);
+    var returnRef = newCgi.url();
 </script>
 <h1>Lineitem Worksheet</h1>
 <div dojoType='dijit.form.Button' scrollOnFocus='false' onClick='location.href = returnRef'>&#x2196; Return</div>

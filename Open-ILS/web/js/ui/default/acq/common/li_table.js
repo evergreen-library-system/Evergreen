@@ -423,10 +423,12 @@ function AcqLiTable() {
         }
 
         nodeByName("worksheet_link", row).href =
-            oilsBasePath + "/acq/lineitem/worksheet/" + li.id();
+            oilsBasePath + "/acq/lineitem/worksheet/" + li.id() + 
+            '?source=' + encodeURIComponent(location.pathname + location.search)
 
         nodeByName("show_requests_link", row).href =
-            oilsBasePath + "/acq/picklist/user_request?lineitem=" + li.id();
+            oilsBasePath + "/acq/picklist/user_request?lineitem=" + li.id() + 
+            '?source=' + encodeURIComponent(location.pathname + location.search)
 
         dojo.query('[attr=title]', row)[0].onclick = function() {self.drawInfo(li.id())};
         dojo.query('[name=copieslink]', row)[0].onclick = function() {self.drawCopies(li.id())};
@@ -459,7 +461,11 @@ function AcqLiTable() {
             if(po && !this.isMeta) {
                 openils.Util.show(nodeByName('po', row), 'inline');
                 var link = nodeByName('po_link', row);
-                link.setAttribute('href', oilsBasePath + '/acq/po/view/' + li.purchase_order() + '?focus_li=' + li.id());
+                link.setAttribute('href', oilsBasePath +
+                    '/acq/po/view/' + li.purchase_order() +
+                    '?focus_li=' + li.id() +
+                    '&source=' + encodeURIComponent(location.pathname + location.search)
+                );
                 link.innerHTML += po.name();
 
                 openils.Util.show(nodeByName('pro', row), 'inline');
@@ -485,7 +491,11 @@ function AcqLiTable() {
 
                     openils.Util.show(nodeByName('pl', row), 'inline');
                     var link = nodeByName('pl_link', row);
-                    link.setAttribute('href', oilsBasePath + '/acq/picklist/view/' + li.picklist() + '?focus_li=' + li.id());
+                    link.setAttribute('href', oilsBasePath +
+                        '/acq/picklist/view/' + li.picklist() +
+                        '?focus_li=' + li.id() +
+                        '&source=' + encodeURIComponent(location.pathname + location.search)
+                    );
                     link.innerHTML += pl.name();
                 }
             }
@@ -1121,9 +1131,11 @@ function AcqLiTable() {
         if (typeof force_fetch == "undefined")
             force_fetch = false;
 
-        if (document.referrer.match(/invoice/)) {
+        var cgi = new openils.CGI();
+        var source = cgi.param('source');
+        if (source && source.match(/invoice/)) {
             // got here from the invoice page, show the 'return-to-invoice' button
-            var cgi = new openils.CGI({url : document.referrer});
+            var cgi = new openils.CGI({url : source});
             cgi.param('focus_li', liId);
             openils.Util.show(dojo.byId('acq-lit-copies-back-to-invoice-button-wrapper'), 'inline');
             var button = dojo.byId('acq-lit-copies-back-to-invoice-button');
