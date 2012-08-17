@@ -74,4 +74,6 @@ out. The patron permission group contains the permission,
 _HOLD_ITEM_CHECKED_OUT.override_. In versions prior to 2.3, a hold
 failure message appears, and the patron must click _Submit_ to override the hold. 
 
-
+In version 2.3, with the appropriate org unit setting enabled, the hold success
+message appears automatically, and the patron is not required to take further
+action.
