@@ -170,9 +170,8 @@ sub load_context {
         $cgi->cookie(OILS_HTTP_COOKIE_LOCALE) || 
         parse_accept_lang($r->headers_in->get('Accept-Language')) || 'en_us';
 
-
     # set the editor default locale for each page load
-    $OpenILS::Utils::CStoreEditor::default_locale = $ctx->{locale};
+    $OpenILS::Utils::CStoreEditor::default_locale = parse_eg_locale($ctx->{locale});
 
     my $mprefix = $ctx->{media_prefix};
     if($mprefix and $mprefix !~ /^http/ and $mprefix !~ /^\//) {
@@ -183,7 +182,7 @@ sub load_context {
     return $ctx;
 }
 
-# turn Accept-Language into sometihng EG can understand
+# turn Accept-Language into something EG can understand
 # TODO: try all langs, not just the first
 sub parse_accept_lang {
     my $al = shift;
@@ -193,6 +192,18 @@ sub parse_accept_lang {
     return undef unless $locale;
     $locale =~ s/-/_/og;
     return $locale;
+}
+
+# Accept-Language uses locales like 'en', 'fr', 'fr_fr', while Evergreen
+# internally uses 'en-US', 'fr-CA', 'fr-FR' (always with the 2 lowercase,
+# hyphen, 2 uppercase convention)
+sub parse_eg_locale {
+    my $ua_locale = shift || 'en_us';
+
+    $ua_locale =~ m/^(..).?(..)?$/;
+    my $lang_code = lc($1);
+    my $region_code = $2 ? uc($2) : uc($1);
+    return "$lang_code-$region_code";
 }
 
 # Given a URI, finds the configured template and any extra page 
