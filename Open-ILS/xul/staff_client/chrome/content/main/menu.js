@@ -2624,7 +2624,7 @@ commands:
         }
         if(!settings['opac.default_phone'] && user.day_phone()) settings['opac.default_phone'] = user.day_phone();
         if(!settings['opac.hold_notify'] && settings['opac.hold_notify'] !== '') settings['opac.hold_notify'] = 'email:phone';
-        return {"barcode": barcode, "settings" : settings};
+        return {"barcode": barcode, "settings" : settings, "user_email" : user.email()};
     },
 
     'sort_menu' : function(menu, recurse) {

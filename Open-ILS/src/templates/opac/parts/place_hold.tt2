@@ -75,8 +75,11 @@
             [% l('Notify when hold is ready for pickup?') %]
             <blockquote>
                 <input type="checkbox" name="email_notify" value="t"
-                    [% IF ctx.default_email_notify %]checked="checked"[% END %]/>
+                    [% IF !ctx.user.email %]disabled="true"[% ELSIF ctx.default_email_notify %]checked="checked"[% END %]/>
                     [% l('Yes, by Email') %]<br/>
+                <blockquote>
+                    [% l('Email Address:') %] <span name="email_address">[% ctx.user.email %]</span>
+                </blockquote>
                 <input type="checkbox" name="phone_notify_checkbox"
                     [% IF ctx.default_phone_notify %]checked="checked"[% END %]/>
                     [% l('Yes, by Phone') %]<br/>
