@@ -170,6 +170,10 @@ sub load_context {
         $cgi->cookie(OILS_HTTP_COOKIE_LOCALE) || 
         parse_accept_lang($r->headers_in->get('Accept-Language')) || 'en_us';
 
+
+    # set the editor default locale for each page load
+    $OpenILS::Utils::CStoreEditor::default_locale = $ctx->{locale};
+
     my $mprefix = $ctx->{media_prefix};
     if($mprefix and $mprefix !~ /^http/ and $mprefix !~ /^\//) {
         # if a hostname is provided /w no protocol, match the protocol to the current page
