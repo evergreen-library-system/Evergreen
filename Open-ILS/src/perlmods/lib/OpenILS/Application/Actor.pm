@@ -3123,8 +3123,11 @@ sub create_user_opt_in_at_org {
         # get the org unit at that depth
         my $org = $e->json_query({ 
             from => [ 'actor.org_unit_ancestor_at_depth', $wsou, $opt_depth ]})->[0];
-
-	$org_id = $org->{id};
+        $org_id = $org->{id};
+    } 
+    if (!$org_id) {
+        # fall back to the workstation OU, the pre-opt-in-boundary way
+        $org_id = $e->requestor->ws_ou;
     }
 
     my $user = $e->retrieve_actor_user($user_id) or return $e->die_event;
