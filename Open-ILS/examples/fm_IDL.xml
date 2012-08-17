@@ -5212,6 +5212,17 @@ SELECT  usr,
 			CASE WHEN au.alias IS NOT NULL THEN
 				au.alias
 			ELSE
+				au.first_given_name
+			END AS usr_alias_or_first_given_name,
+			au.first_given_name AS usr_first_given_name,
+			au.second_given_name AS usr_second_given_name,
+			au.family_name AS usr_family_name,
+			au.prefix AS usr_prefix,
+			au.suffix AS usr_suffix,
+			au.alias AS usr_alias,
+			CASE WHEN au.alias IS NOT NULL THEN
+				au.alias
+			ELSE
 				REGEXP_REPLACE(ARRAY_TO_STRING(ARRAY[
 					COALESCE(au.family_name, ''),
 					COALESCE(au.suffix, ''),
@@ -5220,7 +5231,15 @@ SELECT  usr,
 					COALESCE(au.first_given_name, ''),
 					COALESCE(au.second_given_name, '')
 				], ' '), E'\\s+,', ',')
-			END AS usr_display_name,
+			END AS usr_alias_or_display_name,
+			REGEXP_REPLACE(ARRAY_TO_STRING(ARRAY[
+				COALESCE(au.family_name, ''),
+				COALESCE(au.suffix, ''),
+				', ',
+				COALESCE(au.prefix, ''),
+				COALESCE(au.first_given_name, ''),
+				COALESCE(au.second_given_name, '')
+			], ' '), E'\\s+,', ',') AS usr_display_name,
 			TRIM(acnp.label || ' ' || acn.label || ' ' || acns.label)
 				AS call_number_label,
 			siss.label AS issuance_label,
@@ -5306,7 +5325,15 @@ SELECT  usr,
 			<field reporter:label="Notes" name="notes" reporter:datatype="link" oils_persist:virtual="true"/>
 			<field reporter:label="Current Shelf Lib" name="current_shelf_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Copy Location Sort Order" name="copy_location_order_position" reporter:datatype="int" />
+			<field reporter:label="User First Given Name" name="usr_first_given_name" reporter:datatype="text" />
+			<field reporter:label="User Second Given Name" name="usr_second_given_name" reporter:datatype="text" />
+			<field reporter:label="User Family Name" name="usr_family_name" reporter:datatype="text" />
+			<field reporter:label="User Prefix" name="usr_prefix" reporter:datatype="text" />
+			<field reporter:label="User Suffix" name="usr_suffix" reporter:datatype="text" />
+			<field reporter:label="User Alias or First Given Name" name="usr_alias_or_first_given_name" reporter:datatype="text" />
 			<field reporter:label="User Display Name" name="usr_display_name" reporter:datatype="text" />
+			<field reporter:label="User Alias or Display Name" name="usr_alias_or_display_name" reporter:datatype="text" />
+			<field reporter:label="User Alias" name="usr_alias" reporter:datatype="text" />
 			<field reporter:label="Call Number Label" name="call_number_label" reporter:datatype="text" />
 			<field reporter:label="Issuance Label" name="issuance_label" reporter:datatype="text" />
 			<field reporter:label="Is Staff Hold?" name="is_staff_hold" reporter:datatype="bool" />
