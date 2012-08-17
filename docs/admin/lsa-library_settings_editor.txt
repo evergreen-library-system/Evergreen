@@ -4,11 +4,14 @@ Library Settings Editor
 Fine Accrual on Closed Dates
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-By default, fines accrue only on dates that the library is open.  This feature enables you to charge patrons fines on dates the library is closed. Fines accrue during scheduled closings as well as during normal weekly closed dates.
+By default, fines accrue only on dates that the library is open.  This feature
+enables you to charge patrons fines on dates the library is closed. Fines accrue
+during scheduled closings as well as during normal weekly closed dates.
 
 To enable this feature:
 
-. Click *Admin* -> *Local Administration* -> *Library Settings* -> *Charge fines on overdue circulations when closed*
+. Click *Admin* -> *Local Administration* -> *Library Settings* -> *Charge fines
+on overdue circulations when closed*
 . Click *Edit*.
 . Set the value to *True*.
 . Click *Update Setting*.   
@@ -17,22 +20,58 @@ To enable this feature:
 Target Copies for Holds at Closed Libraries
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-By default, when a patron places a hold on a title, the hold targeter will search for copies to fill the hold only at circulating libraries that are open.  Copies at closed libraries 
-are not targeted to fill holds. When turned on, this feature enables Evergreen to target copies that have closed circulating libraries to fill holds. Two new org unit settings control this feature.
+By default, when a patron places a hold on a title, the hold targeter will
+search for copies to fill the hold only at circulating libraries that are open.
+Copies at closed libraries are not targeted to fill holds. When turned on, this
+feature enables Evergreen to target copies that have closed circulating
+libraries to fill holds. Two new org unit settings control this feature.
 
 Use the following setting to target copies for holds at closed circulating libraries:
 
-. Click *Admin* -> *Local Administration* -> *Library Settings Editor* -> *Target copies for a hold even if copy's circ lib is closed*
-. Set the value to *True* if you want to target copies for holds at closed circulating libraries. Set the value to *False*, or leave it unset, if you do not want to enable this feature.
+. Click *Admin* -> *Local Administration* -> *Library Settings Editor* ->
+*Target copies for a hold even if copy's circ lib is closed* . Set the value to
+*True* if you want to target copies for holds at closed circulating libraries.
+Set the value to *False*, or leave it unset, if you do not want to enable this
+feature.
 . Click *Update Setting*.
 
 image::media/Target_Pickup_Lib1.jpg[Target_Pickup_Lib1]
 
-Use the following setting to target copies for holds IF AND ONLY IF the circulating library is the hold's pickup library.
+Use the following setting to target copies for holds IF AND ONLY IF the
+circulating library is the hold's pickup library.
 
-. Click *Admin* -> *Local Administration* -> *Library Settings Editor* ->  *Target copies for a hold even if copy's circ lib is closed IF the circ lib is the hold's pickup lib*
-. Set the value to *True* if you want to target copies for holds at closed circulating libraries when the circulating library of the item and the pickup library of the hold are 
+. Click *Admin* -> *Local Administration* -> *Library Settings Editor* ->
+*Target copies for a hold even if copy's circ lib is closed IF the circ lib is
+the hold's pickup lib* . Set the value to *True* if you want to target copies
+for holds at closed circulating libraries when the circulating library of the
+item and the pickup library of the hold are 
 the same. Set the value to *False*, or leave it unset, if you do not want to enable this feature.
 . Click *Update Setting*.
 
 image::media/Target_Pickup_Lib2.jpg[Target_Pickup_Lib2]
+
+Auto Override Patron Hold Events
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In previous versions of Evergreen, you can  assign patrons a permission that
+enables them to manually override a failed hold.   In version 2.3, when a patron
+places a hold in the OPAC that fails, and the patron has the permission to
+override the failed hold, a new org unit setting automatically overrides the
+failed hold rather than requiring the patron to manually override the hold.
+
+In version 2.3, a new org unit setting exists so that the hold override occurs
+automatically, and the patron does not have to choose to override it. To enable
+this org unit setting:
+
+. Click *Admin -> Local Administration ->Library Settings Editor*.
+. Scroll or search to find _Auto-Override Permitted Hold Blocks (Patrons)_.
+. Set the value to _True_.
+
+*Use Case*
+
+A patron has placed a hold in the OPAC on a title that he has currently checked
+out. The patron permission group contains the permission,
+_HOLD_ITEM_CHECKED_OUT.override_. In versions prior to 2.3, a hold
+failure message appears, and the patron must click _Submit_ to override the hold. 
+
+
