@@ -29,15 +29,17 @@ function load() {
     /* if we got here from the search/invoice page with a focused LI,
      * return to the previous page with the same LI focused */
     var cgi = new openils.CGI();
-    if (cgi.param('focus_li')) {
+    var source = cgi.param('source');
+    var focus_li = cgi.param('focus_li');
+    if (source && focus_li) {
         dojo.forEach(
             ['search', 'invoice'], // perhaps a wee bit too loose
-            function(source) {
-                if (document.referrer.match(new RegExp(source))) {
-                    openils.Util.show('acq-pl-return-to-' + source);
-                    var newCgi = new openils.CGI({url : document.referrer});
+            function(srcType) {
+                if (source.match(new RegExp(srcType))) {
+                    openils.Util.show('acq-pl-return-to-' + srcType);
+                    var newCgi = new openils.CGI({url : source});
                     newCgi.param('focus_li', cgi.param('focus_li'));
-                    dojo.byId('acq-pl-return-to-' + source + '-button').onclick = function() {
+                    dojo.byId('acq-pl-return-to-' + srcType + '-button').onclick = function() {
                         location.href = newCgi.url();
                     }
                 }
