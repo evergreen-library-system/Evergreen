@@ -11,12 +11,14 @@ my $U = 'OpenILS::Application::AppUtils';
 
 my $ro_object_subs; # cached subs
 our %cache = ( # cached data
-    map => {aou => {}}, # others added dynamically as needed
-    list => {},
-    search => {},
-    org_settings => {},
-    eg_cache_hash => undef,
-    search_filter_groups => {}
+    map => {en_us => {}},
+    list => {en_us => {}},
+    search => {en_us => {}},
+    org_settings => {en_us => {}},
+    search_filter_groups => {en_us => {}},
+    aou_tree => {en_us => undef},
+    aouct_tree => {},
+    eg_cache_hash => undef
 );
 
 sub init_ro_object_cache {
@@ -24,7 +26,7 @@ sub init_ro_object_cache {
     my $e = $self->editor;
     my $ctx = $self->ctx;
 
-    # reset org unit setting cache on each page load to avoid the 
+    # reset org unit setting cache on each page load to avoid the
     # requirement of reloading apache with each org-setting change
     $cache{org_settings} = {};
 
@@ -55,17 +57,17 @@ sub init_ro_object_cache {
         # Retrieve the full set of objects with class $hint
         $ro_object_subs->{$list_key} = sub {
             my $method = "retrieve_all_$eclass";
-            $cache{list}{$hint} = $e->$method() unless $cache{list}{$hint};
-            return $cache{list}{$hint};
+            $cache{list}{$ctx->{locale}}{$hint} = $e->$method() unless $cache{list}{$ctx->{locale}}{$hint};
+            return $cache{list}{$ctx->{locale}}{$hint};
         };
-    
+
         # locate object of class $hint with Ident field $id
         $cache{map}{$hint} = {};
         $ro_object_subs->{$get_key} = sub {
             my $id = shift;
-            return $cache{map}{$hint}{$id} if $cache{map}{$hint}{$id}; 
-            ($cache{map}{$hint}{$id}) = grep { $_->$ident_field eq $id } @{$ro_object_subs->{$list_key}->()};
-            return $cache{map}{$hint}{$id};
+            return $cache{map}{$ctx->{locale}}{$hint}{$id} if $cache{map}{$ctx->{locale}}{$hint}{$id};
+            ($cache{map}{$ctx->{locale}}{$hint}{$id}) = grep { $_->$ident_field eq $id } @{$ro_object_subs->{$list_key}->()};
+            return $cache{map}{$ctx->{locale}}{$hint}{$id};
         };
 
         # search for objects of class $hint where field=value
@@ -76,7 +78,7 @@ sub init_ro_object_cache {
             my $cacheval = $val;
             if (ref $val) {
                 $val = [sort(@$val)] if ref $val eq 'ARRAY';
-                $cacheval = OpenSRF::Utils::JSON->perl2JSON($val); 
+                $cacheval = OpenSRF::Utils::JSON->perl2JSON($val);
                 #$self->apache->log->info("cacheval : $cacheval");
             }
             my $search_obj = {$field => $val};
@@ -84,17 +86,17 @@ sub init_ro_object_cache {
                 $search_obj->{$filterfield} = $filterval;
                 $cacheval .= ':' . $filterfield . ':' . $filterval;
             }
-            $cache{search}{$hint}{$field} = {} unless $cache{search}{$hint}{$field};
-            $cache{search}{$hint}{$field}{$cacheval} = $e->$method($search_obj) 
-                unless $cache{search}{$hint}{$field}{$cacheval};
-            return $cache{search}{$hint}{$field}{$cacheval};
+            #$cache{search}{$ctx->{locale}}{$hint}{$field} = {} unless $cache{search}{$ctx->{locale}}{$hint}{$field};
+            $cache{search}{$ctx->{locale}}{$hint}{$field}{$cacheval} = $e->$method($search_obj)
+                unless $cache{search}{$ctx->{locale}}{$hint}{$field}{$cacheval};
+            return $cache{search}{$ctx->{locale}}{$hint}{$field}{$cacheval};
         };
     }
 
     $ro_object_subs->{aou_tree} = sub {
 
         # fetch the org unit tree
-        unless($cache{aou_tree}) {
+        unless($cache{aou_tree}{$ctx->{locale}}) {
             my $tree = $e->search_actor_org_unit([
 			    {   parent_ou => undef},
 			    {   flesh            => -1,
@@ -108,16 +110,17 @@ sub init_ro_object_cache {
             sub flesh_aout {
                 my $node = shift;
                 my $ro_object_subs = shift;
+                my $ctx = shift;
                 $node->ou_type( $ro_object_subs->{get_aout}->($node->ou_type) );
-                $cache{map}{aou}{$node->id} = $node;
-                flesh_aout($_, $ro_object_subs) foreach @{$node->children};
+                $cache{map}{$ctx->{locale}}{aou}{$node->id} = $node;
+                flesh_aout($_, $ro_object_subs, $ctx) foreach @{$node->children};
             };
-            flesh_aout($tree, $ro_object_subs);
+            flesh_aout($tree, $ro_object_subs, $ctx);
 
-            $cache{aou_tree} = $tree;
+            $cache{aou_tree}{$ctx->{locale}} = $tree;
         }
 
-        return $cache{aou_tree};
+        return $cache{aou_tree}{$ctx->{locale}};
     };
 
     # Add a special handler for the tree-shaped org unit cache
@@ -125,20 +128,20 @@ sub init_ro_object_cache {
         my $org_id = shift;
         return undef unless defined $org_id;
         $ro_object_subs->{aou_tree}->(); # force the org tree to load
-        return $cache{map}{aou}{$org_id};
+        return $cache{map}{$ctx->{locale}}{aou}{$org_id};
     };
 
     # Returns a flat list of aou objects.  often easier to manage than a tree.
     $ro_object_subs->{aou_list} = sub {
         $ro_object_subs->{aou_tree}->(); # force the org tree to load
-        return [ values %{$cache{map}{aou}} ];
+        return [ values %{$cache{map}{$ctx->{locale}}{aou}} ];
     };
 
     $ro_object_subs->{aouct_tree} = sub {
 
         # fetch the org unit tree
-        unless(exists $cache{aouct_tree}) {
-            $cache{aouct_tree} = undef;
+        unless(exists $cache{aouct_tree}{$ctx->{locale}}) {
+            $cache{aouct_tree}{$ctx->{locale}} = undef;
 
             my $tree_id = $e->search_actor_org_unit_custom_tree(
                 {purpose => 'opac', active => 't'},
@@ -169,11 +172,11 @@ sub init_ro_object_cache {
                     }
                 }
 
-                $cache{aouct_tree} = $node_tree->org_unit;
+                $cache{aouct_tree}{$ctx->{locale}} = $node_tree->org_unit;
             }
         }
 
-        return $cache{aouct_tree};
+        return $cache{aouct_tree}{$ctx->{locale}};
     };
 
     # turns an ISO date into something TT can understand
@@ -195,14 +198,11 @@ sub init_ro_object_cache {
     $ro_object_subs->{get_org_setting} = sub {
         my($org_id, $setting) = @_;
 
-        $cache{org_settings}{$org_id} = {} 
-            unless $cache{org_settings}{$org_id};
-
-        $cache{org_settings}{$org_id}{$setting} = 
+        $cache{org_settings}{$ctx->{locale}}{$org_id}{$setting} =
             $U->ou_ancestor_setting_value($org_id, $setting)
-                unless exists $cache{org_settings}{$org_id}{$setting};
+                unless exists $cache{org_settings}{$ctx->{locale}}{$org_id}{$setting};
 
-        return $cache{org_settings}{$org_id}{$setting};
+        return $cache{org_settings}{$ctx->{locale}}{$org_id}{$setting};
     };
 
     $ctx->{$_} = $ro_object_subs->{$_} for keys %$ro_object_subs;
