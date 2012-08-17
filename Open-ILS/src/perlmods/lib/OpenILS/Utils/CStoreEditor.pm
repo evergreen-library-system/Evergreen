@@ -13,6 +13,10 @@ my %PERMS;
 my $cache;
 my %xact_ed_cache;
 
+# if set, we will use this locale for all new sessions
+# if unset, we rely on the existing opensrf locale propagation
+our $default_locale;
+
 our $always_xact = 0;
 our $_loaded = 1;
 
@@ -207,8 +211,17 @@ sub session {
 	my( $self, $session ) = @_;
 	$self->{session} = $session if $session;
 
+	# sessions can stick around longer than a single request/transaction.
+	# kill it if our default locale was altered since the last request
+	# and it does not match the locale of the existing session.
+	delete $self->{session} if
+		$default_locale and
+		$self->{session} and
+		$self->{session}->session_locale ne $default_locale;
+
 	if(!$self->{session}) {
 		$self->{session} = OpenSRF::AppSession->create($self->app);
+		$self->{session}->session_locale($default_locale) if $default_locale;
 
 		if( ! $self->{session} ) {
 			my $str = "Error creating cstore session with OpenSRF::AppSession->create()!";
