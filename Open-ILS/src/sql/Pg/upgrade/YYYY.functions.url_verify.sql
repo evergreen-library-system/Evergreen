@@ -58,23 +58,23 @@ BEGIN
     FOR current_selector IN SELECT * FROM url_verify.url_selector s WHERE s.session = session_id LOOP
         current_url_pos := 1;
         LOOP
-            SELECT  (XPATH(current_selector.xpath || '/text()', b.marc))[current_url_pos]::TEXT INTO current_url
+            SELECT  (XPATH(current_selector.xpath || '/text()', b.marc::XML))[current_url_pos]::TEXT INTO current_url
               FROM  biblio.record_entry b
                     JOIN container.biblio_record_entry_bucket_item c ON (c.target_biblio_record_entry = b.id)
               WHERE c.id = item_id;
-    
+
             EXIT WHEN current_url IS NULL;
-    
-            SELECT  (XPATH(current_selector.xpath || '/../@tag', b.marc))[current_url_pos]::TEXT INTO current_tag
+
+            SELECT  (XPATH(current_selector.xpath || '/../@tag', b.marc::XML))[current_url_pos]::TEXT INTO current_tag
               FROM  biblio.record_entry b
                     JOIN container.biblio_record_entry_bucket_item c ON (c.target_biblio_record_entry = b.id)
               WHERE c.id = item_id;
-    
-            SELECT  (XPATH(current_selector.xpath || '/@subfield', b.marc))[current_url_pos]::TEXT INTO current_sf
+
+            SELECT  (XPATH(current_selector.xpath || '/@code', b.marc::XML))[current_url_pos]::TEXT INTO current_sf
               FROM  biblio.record_entry b
                     JOIN container.biblio_record_entry_bucket_item c ON (c.target_biblio_record_entry = b.id)
               WHERE c.id = item_id;
-    
+
             INSERT INTO url_verify.url (item, url_selector, tag, subfield, ord, full_url)
               VALUES ( item_id, current_selector.id, current_tag, current_sf, current_ord, current_url);
 

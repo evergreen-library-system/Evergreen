@@ -1,0 +1,130 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = "Link Checker - Create Session" %]
+<script type="text/javascript">
+    dojo.require("dijit.form.Button");
+    dojo.require("dijit.form.CheckBox");
+    dojo.require("dijit.form.TextBox");
+    dojo.require("openils.Util");
+    dojo.require("openils.widget.ProgressDialog");
+    dojo.require("openils.URLVerify.CreateSession");
+
+    var module;
+
+    openils.Util.addOnLoad(
+        function() {
+            module = openils.URLVerify.CreateSession;
+            module.setup("saved-searches", "org-selector", progress_dialog);
+        }
+    );
+</script>
+<style type="text/css">
+    #uv-search { width: 20em; }
+    .note { font-style: italic; background-color: #eee; }
+    #uv-tags-and-subfields { background-color: #ddd; }
+    table.create-session-form th { text-align: right; padding-right: 1em; }
+    table.create-session-form {
+        border-collapse: separate;
+        border-spacing: 0.5ex;
+    }
+</style>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane"
+         layoutAlign="top" class="oils-header-panel">
+        <div> [% ctx.page_title %] </div>
+        <div> <!-- buttons could go here --></div>
+    </div>
+    <div>
+        <table class="create-session-form">
+            <tr>
+                <th>
+                    <label for="uv-session-name">[% l("Sesssion name:") %]</label>
+                </th>
+                <td>
+                    <input dojoType="dijit.form.TextBox"
+                        id="uv-session-name" jsId="uv_session_name" />
+                </td>
+                <td class="note">
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    <label for="org-selector">[% l('Search scope:') %]</label>
+                </th>
+                <td>
+                    <div id="org-selector"></div>
+                </td>
+                <td class="note">
+                    [% l("This will only be used if your search doesn't contain a hand-entered filter such as site(BR1)") %]
+                </td>
+            </tr>
+
+            <!-- XXX TODO I bet we want a depth selector here too -->
+
+            <tr>
+                <th>
+                    <label for="uv-search">[% l('Search:') %]</label>
+                </th>
+                <td>
+                    <input dojoType="dijit.form.TextBox" id="uv-search"
+                        jsId="uv_search" />
+                </td>
+                <td class="note">
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    <label for="saved-searches">[% l("Saved searches:") %]</label>
+                </th>
+                <td><!-- XXX we're just assuming this list won't grow so
+                    large as to be unrepresentable in a multiselect?  We
+                    could switch to a PCrudAutocompleteBox if needed for
+                    constant load time regardless of dataset size. -->
+                    <select id="saved-searches" multiple="true" size="6"></select>
+                </td>
+                <td class="note">[% l("Optionally select one or more to combine with 'Search' field above.") %]
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    <label for="no-url-selection">[% l('Process immediately?') %]</label>
+                </th>
+                <td>
+                    <input dojoType="dijit.form.CheckBox" id="no-url-selection"
+                        jsId="no_url_selection" />
+                </td>
+                <td class="note">
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    [% l('Tags and subfields possibly containing URLs:') %]
+                </th>
+                <td>
+                    <div id="uv-tags-and-subfields">
+                    </div>
+                    <div class="tag-and-subfield-add-another">
+                        [% l("Tag") %]
+                        <input type="text" size="4" maxlength="3" />
+                        [% l("Subfield(s)") %]
+                        <input type="text" size="15" />
+                        <a href="javascript:module.tag_and_subfields.add();">[% l('Add') %]</a>
+                    </div>
+                </td>
+                <td class="note">
+                </td>
+            </tr>
+        </table>
+
+        <div>
+            <button dojoType="dijit.form.Button"
+                onClick="module.begin();">[% l("Begin") %]</button>
+
+        </div>
+    </div>
+</div>
+<div dojoType="openils.widget.ProgressDialog" jsId="progress_dialog"></div>
+[% END %]

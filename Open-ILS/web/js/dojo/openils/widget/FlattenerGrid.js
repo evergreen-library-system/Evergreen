@@ -17,6 +17,7 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
             "columnReordering": true,
             "columnPersistKey": null,
             "autoCoreFields": false,
+            "autoCoreFieldsUnsorted": false,
             "autoFieldFields": null,
             "showLoadFilter": false,    /* use FlattenerFilter(Dialog|Pane) */
             "filterAlwaysInDiv": null,  /* use FlattenerFilterPane and put its
@@ -304,9 +305,13 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                 var cell_list = this.structure[0].cells[0];
                 var fields = dojo.clone(
                     fieldmapper.IDL.fmclasses[this.fmClass].fields
-                ).sort(
-                    function(a, b) { return a.label > b.label ? 1 : -1; }
                 );
+
+                if (!this.autoCoreFieldsUnsorted) {
+                    fields = fields.sort(
+                        function(a, b) { return a.label > b.label ? 1 : -1; }
+                    );
+                }
 
                 dojo.forEach(
                     fields, function(f) {
@@ -324,8 +329,8 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                         cell_list.push({
                             "field": f.name,
                             "name": f.label,
-                            "fsort": true,
-                            "_visible": false
+                            "fsort": true /*,
+                            "_visible": false */
                         });
                     }
                 );
@@ -867,6 +872,21 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                         function(item) { return this.store.getIdentity(item); }
                     )
                 );
+            },
+
+            /* Return true if every row known to the grid is selected. Code
+             * that calls this function will do so when it thinks the user
+             * might actually mean "select everything this grid could show"
+             * even though we don't necessarily know (and the user hasn't
+             * necessarily noticed) whether the grid has been scrolled as far
+             * down as possible and all the possible results have been
+             * fetched by the grid's store. */
+            "everythingSeemsSelected": function() {
+                return dojo.query(
+                    "[name=autogrid.selector]", this.domNode
+                ).filter(
+                    function(c) { return (!c.disabled && !c.checked) }
+                ).length == 0;
             },
 
             /* Print the same data that the Flattener is feeding to the

@@ -9366,13 +9366,41 @@ SELECT  usr,
 
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="ADMIN_URL_VERIFY" context_field="owning_lib"/>
-                <retrieve permission="ADMIN_URL_VERIFY" context_field="owning_lib"/>
-                <update permission="ADMIN_URL_VERIFY" context_field="owning_lib"/>
-                <delete permission="ADMIN_URL_VERIFY" context_field="owning_lib"/>
+                <retrieve permission="URL_VERIFY" context_field="owning_lib"/>
             </actions>
         </permacrud>
 
+    </class>
+
+    <class id="uvsbrem" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="url_verify::session_biblio_record_entry_map" oils_persist:readonly="true" reporter:label="URL Verify Session Biblio Record Entry Map">
+        <oils_persist:source_definition>
+            SELECT
+                cbrebi.id AS id,  -- so we can have a pkey in our view
+                uvs.id AS session,
+                uvs.owning_lib,
+                cbrebi.target_biblio_record_entry
+            FROM url_verify.session uvs
+            JOIN container.biblio_record_entry_bucket cbreb
+                ON (uvs.container = cbreb.id)
+            JOIN container.biblio_record_entry_bucket_item cbrebi
+                ON (cbrebi.bucket = cbreb.id)
+        </oils_persist:source_definition>
+        <fields oils_persist:primary="id" oils_persist:sequence="container.biblio_record_entry_bucket_item_id_seq">
+            <field reporter:label="Bucket Item ID" name="id" reporter:datatype="id" />
+            <field reporter:label="Session" name="session" reporter:datatype="link" />
+            <field reporter:label="Owning Library" name="owning_lib" reporter:datatype="org_unit" />
+            <field reporter:label="Target Biblio Record Entry" name="target_biblio_record_entry" reporter:datatype="link" />
+        </fields>
+        <links>
+            <link field="target_biblio_record_entry" reltype="has_a" key="id" map="" class="bre" />
+            <link field="session" reltype="has_a" key="id" map="" class="uvs" />
+            <link field="owning_lib" reltype="has_a" key="id" map="" class="aou" />
+        </links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="URL_VERIFY" context_field="owning_lib" />
+            </actions>
+        </permacrud>
     </class>
 
     <class
@@ -9396,16 +9424,16 @@ SELECT  usr,
 
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="ADMIN_URL_VERIFY">
+                <create permission="URL_VERIFY">
                     <context link="session" field="owning_lib"/>
                 </create>
-                <retrieve permission="ADMIN_URL_VERIFY">
+                <retrieve permission="URL_VERIFY">
                     <context link="session" field="owning_lib"/>
                 </retrieve>
-                <update permission="ADMIN_URL_VERIFY">
+                <update permission="URL_VERIFY">
                     <context link="session" field="owning_lib"/>
                 </update>
-                <delete permission="ADMIN_URL_VERIFY">
+                <delete permission="URL_VERIFY">
                     <context link="session" field="owning_lib"/>
                 </delete>
             </actions>
@@ -9441,23 +9469,23 @@ SELECT  usr,
 
         <links>
             <link field="redirect_from" reltype="has_a" key="id" map="" class="uvu"/>
-            <link field="item" reltype="has_a" key="id" map="" class="cbrebi"/>
+            <link field="item" reltype="has_a" key="id" map="" class="uvsbrem" /><!-- surprise! -->
             <link field="url_selector" reltype="has_a" key="id" map="" class="uvus"/>
         </links>
 
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="ADMIN_URL_VERIFY">
-                    <context link="url_selector session" field="owning_lib"/>
+                <create permission="URL_VERIFY">
+                    <context link="url_selector" jump="session" field="owning_lib"/>
                 </create>
-                <retrieve permission="ADMIN_URL_VERIFY">
-                    <context link="url_selector session" field="owning_lib"/>
+                <retrieve permission="URL_VERIFY">
+                    <context link="url_selector" jump="session" field="owning_lib"/>
                 </retrieve>
-                <update permission="ADMIN_URL_VERIFY">
-                    <context link="url_selector session" field="owning_lib"/>
+                <update permission="URL_VERIFY">
+                    <context link="url_selector" jump="session" field="owning_lib"/>
                 </update>
-                <delete permission="ADMIN_URL_VERIFY">
-                    <context link="url_selector session" field="owning_lib"/>
+                <delete permission="URL_VERIFY">
+                    <context link="url_selector" jump="session" field="owning_lib"/>
                 </delete>
             </actions>
         </permacrud>
@@ -9486,16 +9514,16 @@ SELECT  usr,
 
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="ADMIN_URL_VERIFY">
+                <create permission="URL_VERIFY">
                     <context link="session" field="owning_lib"/>
                 </create>
-                <retrieve permission="ADMIN_URL_VERIFY">
+                <retrieve permission="URL_VERIFY">
                     <context link="session" field="owning_lib"/>
                 </retrieve>
-                <update permission="ADMIN_URL_VERIFY">
+                <update permission="URL_VERIFY">
                     <context link="session" field="owning_lib"/>
                 </update>
-                <delete permission="ADMIN_URL_VERIFY">
+                <delete permission="URL_VERIFY">
                     <context link="session" field="owning_lib"/>
                 </delete>
             </actions>
@@ -9529,17 +9557,17 @@ SELECT  usr,
 
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="ADMIN_URL_VERIFY">
-                    <context link="attempt session" field="owning_lib"/>
+                <create permission="URL_VERIFY">
+                    <context link="attempt" jump="session" field="owning_lib"/>
                 </create>
-                <retrieve permission="ADMIN_URL_VERIFY">
-                    <context link="attempt session" field="owning_lib"/>
+                <retrieve permission="URL_VERIFY">
+                    <context link="attempt" jump="session" field="owning_lib"/>
                 </retrieve>
-                <update permission="ADMIN_URL_VERIFY">
-                    <context link="attempt session" field="owning_lib"/>
+                <update permission="URL_VERIFY">
+                    <context link="attempt" jump="session" field="owning_lib"/>
                 </update>
-                <delete permission="ADMIN_URL_VERIFY">
-                    <context link="attempt session" field="owning_lib"/>
+                <delete permission="URL_VERIFY">
+                    <context link="attempt" jump="session" field="owning_lib"/>
                 </delete>
             </actions>
         </permacrud>
@@ -9569,10 +9597,10 @@ SELECT  usr,
 
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="ADMIN_URL_VERIFY" context_field="owning_lib"/>
-                <retrieve permission="ADMIN_URL_VERIFY" context_field="owning_lib"/>
-                <update permission="ADMIN_URL_VERIFY" context_field="owning_lib"/>
-                <delete permission="ADMIN_URL_VERIFY" context_field="owning_lib"/>
+                <create permission="URL_VERIFY" context_field="owning_lib"/>
+                <retrieve permission="URL_VERIFY" context_field="owning_lib"/>
+                <update permission="URL_VERIFY" context_field="owning_lib"/>
+                <delete permission="URL_VERIFY" context_field="owning_lib"/>
             </actions>
         </permacrud>
 

@@ -16,6 +16,7 @@ tree1.startup();
 if(!dojo._hasResource["openils.widget.FilteringTreeSelect"]){
     dojo.provide("openils.widget.FilteringTreeSelect");
     dojo.require("dijit.form.FilteringSelect");
+    dojo.require("dojo.data.ItemFileWriteStore");
 
     dojo.declare(
         "openils.widget.FilteringTreeSelect", [dijit.form.FilteringSelect], {

@@ -1,0 +1,66 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = "Link Checker - Select URLs" %]
+<script type="text/javascript">
+    dojo.require("dijit.form.Button");
+    dojo.require("openils.widget.FlattenerGrid");
+    dojo.require("openils.widget.ProgressDialog");
+    dojo.require("openils.Util");
+    dojo.require("openils.CGI");
+    dojo.require("openils.URLVerify.SelectURLs");
+
+    /* Minimize namespace pollution, but save us some typing later. */
+    var module = openils.URLVerify.SelectURLs;
+
+    openils.Util.addOnLoad(
+        function() {
+            module.setup(grid, progress_dialog);
+        }
+    );
+</script>
+<style type="text/css">
+    .url-verify-attempt-info { font-style: italic; }
+</style>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane"
+         layoutAlign="top" class="oils-header-panel">
+        <div>[% ctx.page_title %]</div>
+        <div>
+            <button dojoType="dijit.form.Button"
+                onClick="module.verify_selected();">[%
+                l("Verify Selected URLs")
+            %]</button>
+        </div>
+    </div>
+    <div class="oils-acq-basic-roomy url-verify-attempt-info">
+        <div id="url-verify-attempt-id"></div>
+        <div id="url-verify-attempt-start"></div>
+        <div id="url-verify-attempt-finish"></div>
+    </div>
+    <table
+        jsid="grid"
+        dojoType="openils.widget.FlattenerGrid"
+        columnPersistKey='"url_verify.select_url"'
+        autoHeight="10"
+        editOnEnter="false"
+        autoFieldFields="null"
+        autoCoreFields="true"
+        autoCoreFieldsUnsorted="true"
+        fetchLock="true"
+        mapExtras="{session_id: {path: 'item.session.id', filter: true}}"
+        showLoadFilter="true"
+        fmClass="'uvu'">
+        <thead>
+            <tr>
+                <th field="title" fpath="item.target_biblio_record_entry.simple_record.title"></th>
+                <th field="author" fpath="item.target_biblio_record_entry.simple_record.author"></th>
+                <th field="isbn" fpath="item.target_biblio_record_entry.simple_record.isbn" _visible="false"></th>
+                <th field="issn" fpath="item.target_biblio_record_entry.simple_record.issn" _visible="false"></th>
+                <th field="bib_id" fpath="item.target_biblio_record_entry.id" _visible="false"></th>
+            </tr>
+        </thead>
+    </table>
+</div>
+<div class="hidden">
+    <div dojoType="openils.widget.ProgressDialog" jsId="progress_dialog"></div>
+</div>
+[% END %]

@@ -484,8 +484,8 @@ sub _fm_class_by_hint {
     my $hint = shift;
 
     my ($class) = grep {
-        Fieldmapper->publish_fieldmapper->{$_}->{hint} eq $hint
-    } keys %{ Fieldmapper->publish_fieldmapper };
+        OpenILS::Application->publish_fieldmapper->{$_}->{hint} eq $hint
+    } keys %{ OpenILS::Application->publish_fieldmapper };
 
     return $class;
 }
@@ -530,15 +530,15 @@ sub _object_by_path {
 
     my $step = shift(@$path);
 
-    my $fhint = Fieldmapper->publish_fieldmapper->{$context->class_name}{links}{$step}{class};
+    my $fhint = OpenILS::Application->publish_fieldmapper->{$context->class_name}{links}{$step}{class};
     my $fclass = $self->_fm_class_by_hint( $fhint );
 
     OpenSRF::EX::ERROR->throw(
         "$step is not a field on ".$context->class_name."  Please repair the environment.")
         unless $fhint;
 
-    my $ffield = Fieldmapper->publish_fieldmapper->{$context->class_name}{links}{$step}{key};
-    my $rtype = Fieldmapper->publish_fieldmapper->{$context->class_name}{links}{$step}{reltype};
+    my $ffield = OpenILS::Application->publish_fieldmapper->{$context->class_name}{links}{$step}{key};
+    my $rtype = OpenILS::Application->publish_fieldmapper->{$context->class_name}{links}{$step}{reltype};
 
     my $meth = 'retrieve_';
     my $multi = 0;
@@ -572,7 +572,7 @@ sub _object_by_path {
             $obj = $_object_by_path_cache{$def_id}{$str_path}{$step}{$ffield}{$lval} ||
                 (
                     (grep /cstore/, @{
-                        Fieldmapper->publish_fieldmapper->{$fclass}{controller}
+                        OpenILS::Application->publish_fieldmapper->{$fclass}{controller}
                     }) ? $ed : ($red ||= new_rstore_editor(xact=>1))
                 )->$meth( ($multi) ? { $ffield => $lval } : $lval);
 

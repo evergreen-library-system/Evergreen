@@ -369,15 +369,15 @@ __PACKAGE__->register_method(
  
 sub _fm_hint_by_class {
     my $class = shift;
-    return Fieldmapper->publish_fieldmapper->{$class}->{hint};
+    return OpenILS::Application->publish_fieldmapper->{$class}->{hint};
 }
 
 sub _fm_class_by_hint {
     my $hint = shift;
 
     my ($class) = grep {
-        Fieldmapper->publish_fieldmapper->{$_}->{hint} eq $hint
-    } keys %{ Fieldmapper->publish_fieldmapper };
+        OpenILS::Application->publish_fieldmapper->{$_}->{hint} eq $hint
+    } keys %{ OpenILS::Application->publish_fieldmapper };
 
     return $class;
 }

@@ -34,6 +34,7 @@ Example OpenSRF bootstrap configuration file for Evergreen
           <service>open-ils.resolver</service>
           <service>open-ils.search</service>
           <service>open-ils.supercat</service>
+          <service>open-ils.url_verify</service>
           <service>open-ils.vandelay</service>
           <service>open-ils.serial</service>
         </services>

@@ -753,6 +753,13 @@
 		<desc xml:lang="en-US">Attempt to suspend a hold after it has been captured.</desc>
 	</event>
 
+	<event code='1900' textcode='URL_VERIFY_NOT_SESSION_CREATOR'>
+		<desc xml:lang="en-US">You did not create this URL Verify session, so you cannot change it.  You may be able to clone it.</desc>
+	</event>
+
+	<event code='1901' textcode='URL_VERIFY_SESSION_ALREADY_SEARCHED'>
+		<desc xml:lang="en-US">This session has already been searched.</desc>
+	</event>
 
 	<event code='2000' textcode='BAD_PARAMS'>
 		<desc xml:lang="en-US">Invalid parameters were encountered in a method</desc>

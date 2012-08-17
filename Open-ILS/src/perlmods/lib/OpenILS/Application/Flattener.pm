@@ -20,7 +20,7 @@ $Data::Dumper::Indent = 0;
 sub _fm_link_from_class {
     my ($class, $field) = @_;
 
-    return Fieldmapper->publish_fieldmapper->{$class}{links}{$field};
+    return OpenILS::Application->publish_fieldmapper->{$class}{links}{$field};
 }
 
 sub _flattened_search_single_flesh_wad {
