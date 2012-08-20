@@ -301,7 +301,7 @@ sub load_rresults {
         return $self->marc_expert_search(%args) if scalar($cgi->param("tag"));
         $self->timelog("Calling item barcode search");
         return $self->item_barcode_shortcut if (
-            $cgi->param("qtype") and ($cgi->param("qtype") eq "item_barcode")
+            $cgi->param("qtype") and ($cgi->param("qtype") eq "item_barcode") and not $internal
         );
         $self->timelog("Calling call number browse");
         return $self->call_number_browse_standalone if (
@@ -548,6 +548,9 @@ sub item_barcode_shortcut {
             $rec_ids, undef, {flesh => "{holdings_xml,mra,acnp,acns,bmp}"}
         );
         $self->timelog("Returned from calling get_records_and_facets() for item_barcode");
+
+        my $stat = $self->check_1hit_redirect($rec_ids);
+        return $stat if $stat;
 
         $self->ctx->{records} = [@data];
         $self->ctx->{search_facets} = {};
