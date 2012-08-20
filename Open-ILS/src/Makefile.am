@@ -152,6 +152,7 @@ data_DATA = $(core_data) $(reporter_data)
 SUBDIRS = $(OILSCORE_DIRS) $(OILSWEB_DIR) $(OILSPYTHON_DIR) $(OILSJAVA_DIR)
 
 EXTRA_DIST = @srcdir@/perlmods \
+	@srcdir@/data \
 	@srcdir@/templates \
 	@top_srcdir@/Open-ILS/xsl \
 	@srcdir@/cgi-bin \
@@ -217,6 +218,9 @@ ilscore-install:
 	$(MKDIR_P) $(DESTDIR)$(TEMPLATEDIR)
 	@echo "Installing templates to $(DESTDIR)$(TEMPLATEDIR)"
 	cp -r @srcdir@/templates/* $(DESTDIR)$(TEMPLATEDIR)
+	$(MKDIR_P) $(DESTDIR)$(datadir)/locale/
+	@echo "Installing template data files to $(datadir)/locale/"
+	cp @srcdir@/data/locale/* $(datadir)/locale/
 	$(MKDIR_P) $(DESTDIR)$(datadir)/overdue/
 	sed -i 's|LOCALSTATEDIR|@localstatedir@|g' '$(DESTDIR)@sysconfdir@/oils_sip.xml.example'
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@sysconfdir@/oils_sip.xml.example'
