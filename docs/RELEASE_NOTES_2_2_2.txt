@@ -1,0 +1,37 @@
+Release Notes for Evergreen 2.2.2
+=================================
+
+This release contains a SECURITY FIX and other bugfixes improving on
+Evergreen 2.2.1.
+
+Significant changes since 2.2.1 are mentioned below, roughly grouped by area
+affected.  For more information on a given change, see the 
+http://open-ils.org/downloads/ChangeLog-2.2.1-2.2.2[technical changelog].
+
+Thanks everyone!
+
+Changes
+-------
+ * SECURITY FIX: Sanitize NULL out of cstore limit/offset param values
+ * TPAC: Standardize i18n file installation
+ * TPAC: Prevent JS error from Autosuggest focus()
+ * TPAC: use POST instead of GET for locale picker
+ * TPAC: Fix footer on hold history page
+ * TPAC: fix pickup locations for edit holds
+ * TPAC: add library scoping to shelf browser
+ * TPAC: Remember facet when sorting, etc., on results page
+ * TPAC: fix alignment of "You are now browsing..." in shelf browser
+ * TPAC: Fix shelf browser's previous link
+ * TPAC: Physical Location Fixes/Enhancements
+ * ACQ: Default to current fiscal year in ACQ order upload
+ * ACQ: Enable pcrud access to fiscal year / fiscal calendar
+ * ACQ: Fiscal year selector in ACQ order record upload
+ * Staff client: avoid popup caused while saving patron messages
+ * Documentation: Fix typos and include references in root.txt.
+ * Documentation: Update upgrade instructions for 2.2.2 release.
+ * Authorities: Fix broken UI due to new XUL/Dojo/regressions
+ * Provide permission for copy editor field hiding
+ * Hide OPAC-invisible holdings from SRU/Z39.50
+ * Check for filled hold on transit checkin
+ * SuperCat fixes - Child Init
+ * Change grammar for lost and missing failure messages
