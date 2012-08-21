@@ -219,9 +219,11 @@ ilscore-install:
 	$(MKDIR_P) $(DESTDIR)$(TEMPLATEDIR)
 	@echo "Installing templates to $(DESTDIR)$(TEMPLATEDIR)"
 	cp -r @srcdir@/templates/* $(DESTDIR)$(TEMPLATEDIR)
-	$(MKDIR_P) $(DESTDIR)$(datadir)/locale/
-	@echo "Installing template data files to $(datadir)/locale/"
-	cp @srcdir@/data/locale/* $(datadir)/locale/
+	-@if test -d @srcdir@/data/locale; then \
+		$(MKDIR_P) $(DESTDIR)$(datadir)/locale/ && \
+		echo "Installing template data files to $(datadir)/locale/" && \
+		cp @srcdir@/data/locale/* $(datadir)/locale/ ;\
+	fi;
 	$(MKDIR_P) $(DESTDIR)$(datadir)/overdue/
 	sed -i 's|LOCALSTATEDIR|@localstatedir@|g' '$(DESTDIR)@sysconfdir@/oils_sip.xml.example'
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@sysconfdir@/oils_sip.xml.example'
