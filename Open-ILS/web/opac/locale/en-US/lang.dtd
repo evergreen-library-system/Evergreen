@@ -1065,7 +1065,7 @@
 <!ENTITY staff.main.menu.circ.hold_browse.accesskey "B">
 <!ENTITY staff.main.menu.circ.hold_browse.label "Browse Holds Shelf">
 <!ENTITY staff.main.menu.circ.hold_clear.accesskey "">
-<!ENTITY staff.main.menu.circ.hold_clear.label "Clear Shelf-Expired Holds">
+<!ENTITY staff.main.menu.circ.hold_clear.label "Clear Holds Shelf">
 <!ENTITY staff.main.menu.circ.hold_capture.accesskey "H">
 <!ENTITY staff.main.menu.circ.hold_capture.label "Capture Holds">
 <!ENTITY staff.main.menu.circ.hold_pull.accesskey "S">
@@ -2476,7 +2476,7 @@
 <!ENTITY staff.circ.checkin_overlay.checkin_auto_print_slips.accesskey "P">
 <!ENTITY staff.circ.checkin_overlay.checkin_modifiers_btn.label "Checkin Modifiers">
 <!ENTITY staff.circ.checkin_overlay.checkin_modifiers_btn.accesskey "M">
-<!ENTITY staff.circ.checkin_overlay.checkin_clear_shelf_expired.label "Clear Shelf-Expired Holds">
+<!ENTITY staff.circ.checkin_overlay.checkin_clear_shelf_expired.label "Clear Holds Shelf">
 <!ENTITY staff.circ.checkin_overlay.checkin_clear_shelf_expired.accesskey "C">
 <!ENTITY staff.circ.checkin_overlay.checkin_auto_retarget.label "Retarget Local Holds">
 <!ENTITY staff.circ.checkin_overlay.checkin_auto_retarget.accesskey "R">

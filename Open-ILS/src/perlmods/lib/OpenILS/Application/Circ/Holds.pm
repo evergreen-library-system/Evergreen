@@ -3541,7 +3541,8 @@ sub clear_shelf_process {
         my %cache_data = (
             hold => [],
             transit => [],
-            shelf => []
+            shelf => [],
+            pl_changed => pickup_lib_changed_on_shelf_holds($e, $org_id, \@hold_ids)
         );
 
         for my $hold (@holds) {
@@ -3588,6 +3589,42 @@ sub clear_shelf_process {
         # tell the client we're done
         $client->respond_complete;
     }
+}
+
+# returns IDs for holds that are on the holds shelf but 
+# have had their pickup_libs change while on the shelf.
+sub pickup_lib_changed_on_shelf_holds {
+    my $e = shift;
+    my $org_id = shift;
+    my $ignore_holds = shift;
+    $ignore_holds = [$ignore_holds] if !ref($ignore_holds);
+
+    my $query = {
+        select => { alhr => ['id'] },
+        from   => {
+            alhr => {
+                acp => {
+                    field => 'id',
+                    fkey  => 'current_copy'
+                },
+            }
+        },
+        where => {
+            '+acp' => { status => OILS_COPY_STATUS_ON_HOLDS_SHELF },
+            '+alhr' => {
+                capture_time     => { "!=" => undef },
+                fulfillment_time => undef,
+                current_shelf_lib => $org_id,
+                pickup_lib => {'!='  => {'+alhr' => 'current_shelf_lib'}}
+            }
+        }
+    };
+
+    $query->{where}->{'+alhr'}->{id} =
+        {'not in' => $ignore_holds} if @$ignore_holds;
+
+    my $hold_ids = $e->json_query($query);
+    return [ map { $_->{id} } @$hold_ids ];
 }
 
 __PACKAGE__->register_method(
