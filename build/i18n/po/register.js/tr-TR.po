@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-04-28 14:18-0400\n"
+"POT-Creation-Date: 2012-08-03 10:01-0400\n"
 "PO-Revision-Date: 2012-07-16 09:59+0000\n"
 "Last-Translator: Irmak Bıçakçıgil <Unknown>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-07-17 04:50+0000\n"
-"X-Generator: Launchpad (build 15627)\n"
+"X-Launchpad-Export-Date: 2012-08-04 05:16+0000\n"
+"X-Generator: Launchpad (build 15742)\n"
 
 #: register.js:USER_SETTINGS
 msgid "User Settings"
@@ -37,9 +37,13 @@ msgstr "Ücretlendirme"
 msgid "This address is owned by another user: "
 msgstr "Bu adres başka bir kullanıcıya ait: "
 
-#: register.js:ADDRESS_NEW
-msgid "New Address"
-msgstr "Yeni Adres"
+#: register.js:ALL_CARDS_PRIMARY
+msgid "Primary"
+msgstr "Birincil"
+
+#: register.js:ALL_CARDS_BARCODE
+msgid "Barcode"
+msgstr "Barkod"
 
 #: register.js:REPLACED_ADDRESS
 msgid ""
@@ -73,10 +77,6 @@ msgstr "Barkodu Yenile"
 #: register.js:NEED_ADDRESS
 msgid "An address is required during registration."
 msgstr ""
-
-#: register.js:ALL_CARDS_PRIMARY
-msgid "Primary"
-msgstr "Birincil"
 
 #: register.js:BARCODE_IN_USE
 msgid "Barcode is already in use"
@@ -158,9 +158,9 @@ msgstr ""
 msgid "Statistical Categories"
 msgstr "İstatistiksel Kategoriler"
 
-#: register.js:ALL_CARDS_BARCODE
-msgid "Barcode"
-msgstr "Barkod"
+#: register.js:ADDRESS_NEW
+msgid "New Address"
+msgstr "Yeni Adres"
 
 #: register.js:RESET_PASSWORD
 msgid "Reset Password"

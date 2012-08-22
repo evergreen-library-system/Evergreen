@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-28 14:17-0400\n"
-"PO-Revision-Date: 2011-05-24 12:10+0000\n"
-"Last-Translator: Serj Safarian <serjsafarian@gmail.com>\n"
+"POT-Creation-Date: 2012-08-03 10:01-0400\n"
+"PO-Revision-Date: 2012-08-14 10:15+0000\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-30 04:49+0000\n"
-"X-Generator: Launchpad (build 15171)\n"
+"X-Launchpad-Export-Date: 2012-08-15 04:41+0000\n"
+"X-Generator: Launchpad (build 15801)\n"
 "X-Accelerator-Marker: &\n"
 
 #: common.cancel.label
@@ -128,7 +128,7 @@ msgstr "Մատ գրաժում: %1$s"
 
 #: serial.delete_record.confirm
 msgid "Are you sure you want to delete MFHD record #%1$s?"
-msgstr ""
+msgstr "Դու վստա՞հ ես որ ցանկանում ես ջնջել MFHD գրառումը #%1$s?"
 
 #: cat.opac.delete_record.confirm
 msgid "Are you sure you want to delete title record #%1$s from the catalog?"
@@ -493,11 +493,11 @@ msgstr "Մատ ID դիտում"
 
 #: menu.cmd_search_usr_id.tab
 msgid "What is the internal database ID for the patron account?"
-msgstr ""
+msgstr "Ո՞րն է հաճախորդի հաշվի շտեմարանի ներքին ID-ն։"
 
 #: menu.cmd_search_usr_id.prompt
 msgid "Patron ID Lookup"
-msgstr ""
+msgstr "Ընթերցողի ID-ի որոնում"
 
 #: menu.cmd_search_tcn.tab
 msgid "What is the TCN or accession ID for the record?"
@@ -527,6 +527,11 @@ msgstr "Գրանցիր ընթերցողին"
 #: staff.circ.work_log_patron_registration.message
 msgid "%1$s registered %3$s (%2$s)"
 msgstr "%1$s գրանցված է %3$s (%2$s)"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Hold ID  5 - Hold Type
+#: staff.circ.work_log_hold_placed.message
+msgid "%1$s placed hold %4$s (%5$s) for %3$s (%2$s)"
+msgstr "%1$s պահում է դրված %4$s (%5$s) համար %3$s (%2$s)"
 
 #: menu.cmd_browse_holds.tab
 msgid "Hold Browser"
@@ -1050,7 +1055,7 @@ msgstr "=-=-="
 
 #: list.line_number
 msgid "#"
-msgstr ""
+msgstr "#"
 
 #: menu.cmd_survey_wizard.inadequate_perm
 msgid ""
@@ -1173,11 +1178,11 @@ msgstr "Բացվող ցուցակի որսում"
 
 #: menu.cmd_authority_manage.tab
 msgid "Manage Authorities"
-msgstr ""
+msgstr "Կառավարի Հեղինակավորները"
 
 #: menu.local_admin.barcode_completion.tab
 msgid "Barcode Completion"
-msgstr ""
+msgstr "Շտրիխ կոդի ավարտում"
 
 #: menu.local_admin.circ_matrix_matchpoint.tab
 msgid "Circulation Policies"
@@ -1292,7 +1297,7 @@ msgstr "Ստեղծիր կամ նորից շտրիխ կոդ տուր նյութի
 
 #: staff.cat.bib_source.can_have_copies.false
 msgid "Records from %1$s cannot have copies."
-msgstr ""
+msgstr "Այստեղից գրառումը %1$s չի կարող ունենալ պատճեններ։"
 
 #: printing.nothing_to_reprint
 msgid "Nothing to re-print"
@@ -1367,6 +1372,8 @@ msgid ""
 "This action may cause you to lose unsaved information in the current "
 "interface. Continue anyway?"
 msgstr ""
+"Այս գործողությունը կարող է հանգեցնել որ ընթացիկ միջերեսում դու կկորցնես "
+"չհիշված տեղեկատվությունը։ Շարունակե՞լ։"
 
 #: browser.reload.unsaved_data_warning
 msgid "This page may have unsaved data. Reload it anyway?"
@@ -1396,104 +1403,114 @@ msgstr ""
 
 #: hotkeys.Default
 msgid "Default"
-msgstr ""
+msgstr "Լռելյայն"
 
 #: hotkeys.None
 msgid "No Hotkeys"
-msgstr ""
+msgstr "Չկան տաք ստեղներ"
 
 #: barcode_choice.join_barcodes
 msgid "%1$s / %2$s"
-msgstr ""
+msgstr "%1$s / %2$s"
 
 #: barcode_choice.actor
 msgid "%1$s : %2$s, %3$s from %4$s (%5$s)"
-msgstr ""
+msgstr "%1$s : %2$s, %3$s սկսած %4$s (%5$s)"
 
 #: barcode_choice.asset
 msgid "%1$s : %2$s from %3$s (%4$s)"
-msgstr ""
+msgstr "%1$s : %2$s սկսած %3$s (%4$s)"
 
 #: barcode_choice.none
 msgid "None of the above"
-msgstr ""
+msgstr "Վերիններից ոչ մեկը"
 
 #: barcode_choice.prompt
 msgid ""
 "After auto completion multiple barcodes may match your input. Please choose "
 "the barcode you intended below."
 msgstr ""
+"Ավատրից հետո բազմակի շտրիխ կոդեր կհամընկնեն քո մուտքին։ ներքռից ընտրի քո "
+"համար նախատեսված շտրիխ կոդը։"
 
 #: barcode_choice.errors_found
 msgid ""
 "In addition to the options below, one or more errors were encountered on "
 "items not shown."
 msgstr ""
+"Որպես հավելում ստորև բերված ընտրություններին, չցուցադրված նյութերի համար "
+"առկա են մեկ կամ ավել սխալներ։"
 
 #: barcode_choice.title
 msgid "Barcode Choice"
-msgstr ""
+msgstr "Շտրիխ կոդի ընտրություն"
 
 #: barcode_choice.choice_label
 msgid "Found Barcodes:"
-msgstr ""
+msgstr "Գտնվել է շտրիխ կոդ"
 
 #: barcode_choice.actor_label
 msgid "Patron : %1$s"
-msgstr ""
+msgstr "Հաճախորդ : %1$s"
 
 #: barcode_choice.asset_label
 msgid "Item : %1$s"
-msgstr ""
+msgstr "Նյութ : %1$s"
 
 #: barcode_choice.serial_label
 msgid "Serial : %1$s"
-msgstr ""
+msgstr "Պարբերական : %1$s"
 
 #: barcode_choice.booking_label
 msgid "Booking : %1$s"
-msgstr ""
+msgstr "Ամրագրում : %1$s"
 
 #: staff.main.button_bar.none
 msgid "None"
-msgstr ""
+msgstr "Ոչ մեկը"
 
 #: util.hide_elements.title
 msgid "Hide UI Elements"
-msgstr ""
+msgstr "Թաքցրու UI տարրերը"
 
 #: util.hide_elements.desc
 msgid ""
 "This is a list of hideable elements for this interface.  Check the ones that "
 "you want hidden and the library (and descendants) you want to affect:"
 msgstr ""
+"Սա այս միջերեսի համար թաքցվող տարրերի ցուցակն է։ Ընտրի նրանք որոնք ցանկանում "
+"ես որ թաքնված լինեն և գրադարանը (և հետնորդներին) որի վրա ցանկանում ես ազդել։"
 
 #: util.hide_elements.current_setting_preamble
 msgid ""
 "Workstation library %1$s is currently hiding these elements based on a "
 "setting inherited from %2$s:"
 msgstr ""
+"Գրադարանի աշխատանքային կայանը %1$s այս պահին հիմնված %2$s ժառանգած "
+"կարգաբերումների վրա թաքցնում է այս տարրերը։"
 
 #: util.hide_elements.current_setting_nonexistent
 msgid ""
 "Workstation library %1$s is not currently hiding any of these elements."
 msgstr ""
+"Գրադարանի աշխատանքային կայանը %1$s այս պահին չի թաքցնում տվյալ տարրերից և ոչ "
+"մեկը։"
 
 #: util.hide_elements.update_setting.update_success
 msgid "Successfully updated the setting."
-msgstr ""
+msgstr "Հաջողությամբ թարմացրել է կարգաբերումները։"
 
 #: util.hide_elements.update_setting.delete_success
 msgid "Successfully deleted the setting."
-msgstr ""
+msgstr "Հաջողությամբ ջնջելվէ կարգաբերումները։"
 
 #: util.hide_elements.update_setting.failure
 msgid "Setting not changed."
-msgstr ""
+msgstr "Կարգաբերումը անփոփոխ է։"
 
 #: util.hide_elements.missing_permission
 msgid "Missing permission %1$s"
-msgstr ""
+msgstr "Բացակա թույլատվություն %1$s"
 
 #~ msgid "Ok"
 #~ msgstr "Լավ"

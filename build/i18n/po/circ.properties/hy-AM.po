@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-04 18:06-0400\n"
-"PO-Revision-Date: 2011-04-26 11:07+0000\n"
+"POT-Creation-Date: 2012-08-03 10:01-0400\n"
+"PO-Revision-Date: 2012-08-13 19:11+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-06-08 04:41+0000\n"
-"X-Generator: Launchpad (build 15376)\n"
+"X-Launchpad-Export-Date: 2012-08-14 04:47+0000\n"
+"X-Generator: Launchpad (build 15791)\n"
 "X-Accelerator-Marker: &\n"
 
 #: staff.circ.alert
@@ -242,6 +242,8 @@ msgid ""
 "If overriden now, subsequent checkouts during this patron's session will "
 "auto-override this event."
 msgstr ""
+"Եթե հիմա վերաբաշխված է, այս հաճախորդի կապի ընթացքում հաջորդող դուրս "
+"տրումները ավտոմատ կվերաբշխեն այս իրադարձությունը։"
 
 #: staff.circ.checkout.not_cataloged.confirm
 msgid "Mis-scan or non-cataloged item.  Checkout as a pre-cataloged item?"
@@ -586,14 +588,15 @@ msgid ""
 "You must delete all the items on the volume before you may delete the volume "
 "itself."
 msgstr ""
+"Մինչ հատորը ամբողջությամբ ջնջելը դու պետք է ջնջես այդ հատորի բոլոր մասերը։"
 
 #: staff.circ.copy_status.delete_volumes.delete_copies.confirm
 msgid "Delete Volume and Items"
-msgstr ""
+msgstr "Ջնջիր Հատորը և մասերը"
 
 #: staff.circ.copy_status.delete_volumes.delete_copies.cancel
 msgid "Cancel Delete"
-msgstr ""
+msgstr "Չեղյալ արա Ջնջելը"
 
 #: staff.circ.copy_status.mark_volume.status
 msgid "Volume marked as Item Transfer Destination"
@@ -1023,11 +1026,11 @@ msgstr "Սէփականատեր գրադարան"
 
 #: staff.circ.utils.prefix
 msgid "CN Prefix"
-msgstr ""
+msgstr "CN նախածանց"
 
 #: staff.circ.utils.suffix
 msgid "CN Suffix"
-msgstr ""
+msgstr "CN վերջածանց"
 
 #: staff.circ.utils.label_class
 msgid "Classification"
@@ -1077,11 +1080,11 @@ msgstr "Սահո՞ղ"
 
 #: staff.circ.utils.hold_note
 msgid "Hold Note(s) Count"
-msgstr ""
+msgstr "Պահման նշում(ներ)ի հաշվիչ"
 
 #: staff.circ.utils.hold_note_text
 msgid "Hold Note(s) Text"
-msgstr ""
+msgstr "Պահման նշում(ներ)ի տեքստ"
 
 #: staff.circ.utils.staff_hold
 msgid "Staff Hold?"
@@ -1335,11 +1338,11 @@ msgstr "Չեղյալ անել"
 
 #: staff.circ.utils.hold_status.7
 msgid "Suspended"
-msgstr ""
+msgstr "Կասեցված"
 
 #: staff.circ.utils.hold_status.8
 msgid "Wrong Shelf"
-msgstr ""
+msgstr "Սխալ դարակ"
 
 #: staff.circ.utils.hold_post_clear_shelf_action.label
 msgid "Post-Clear"
@@ -1504,7 +1507,7 @@ msgstr "Հիշեցում հեռախոսով: %1$s"
 
 #: staff.circ.utils.payload.hold.sms_notify
 msgid "Notify by text: %1$s"
-msgstr ""
+msgstr "Զգուշացրու տեքստով։ %1$s"
 
 #: staff.circ.utils.payload.hold.email_notify
 msgid "Notify by email: %1$s"
@@ -1773,6 +1776,22 @@ msgid ""
 msgstr ""
 "%1$s փորձ է արել ընդունել սրանք %4$s, որը չի գտնվել, և այսպիսով ուղարկվել է "
 "Քարտագրման: Ուղարկիր = %5$s"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Original Balance  5 - Voided Balance  6 - Payment Received  7 - Payment Applied
+#. # 8 - Change Given  9 - Credit Given  10 - New Balance  11 - Payment Type  12 - Note  13 - API call result
+#: staff.circ.work_log_payment_attempt.success.message
+msgid "%1$s received %6$s (%11$s) for %3$s (%2$s)."
+msgstr "%1$s ստացված %6$s (%11$s) համար %3$s (%2$s)."
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Original Balance  5 - Voided Balance  6 - Payment Received  7 - Payment Applied
+#. # 8 - Change Given  9 - Credit Given  10 - New Balance  11 - Payment Type  12 - Note  13 - API call result
+#: staff.circ.work_log_payment_attempt.failure.message
+msgid ""
+"%1$s attempted receipt of %6$s (%11$s) for %3$s (%2$s), which failed for "
+"this reason: %13$s"
+msgstr ""
+"%1$s փորձ արած ստացականներ ընդամենը %6$s (%11$s) for %3$s (%2$s), որոնք "
+"ձախողվել են այս պատճառով: %13$s"
 
 #: staff.circ.checkin.hold_capture
 msgid "Hold Capture"

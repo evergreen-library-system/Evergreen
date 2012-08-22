@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-04-28 14:18-0400\n"
+"POT-Creation-Date: 2012-08-03 10:01-0400\n"
 "PO-Revision-Date: 2011-11-17 21:38+0000\n"
 "Last-Translator: George Duimovich <George.Duimovich@nrcan-rncan.gc.ca>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-30 04:51+0000\n"
-"X-Generator: Launchpad (build 15171)\n"
+"X-Launchpad-Export-Date: 2012-08-04 05:16+0000\n"
+"X-Generator: Launchpad (build 15742)\n"
 
 #: register.js:USER_SETTINGS
 msgid "User Settings"
@@ -37,9 +37,13 @@ msgstr "Facturation"
 msgid "This address is owned by another user: "
 msgstr "Cette adresse appartient à un autre utilisateur : "
 
-#: register.js:ADDRESS_NEW
-msgid "New Address"
-msgstr "Nouvelle adresse"
+#: register.js:ALL_CARDS_PRIMARY
+msgid "Primary"
+msgstr ""
+
+#: register.js:ALL_CARDS_BARCODE
+msgid "Barcode"
+msgstr ""
 
 #: register.js:REPLACED_ADDRESS
 msgid ""
@@ -74,10 +78,6 @@ msgstr "Remplacer le code à barres"
 #: register.js:NEED_ADDRESS
 msgid "An address is required during registration."
 msgstr "Une adresse est requise lors de l'inscription."
-
-#: register.js:ALL_CARDS_PRIMARY
-msgid "Primary"
-msgstr ""
 
 #: register.js:BARCODE_IN_USE
 msgid "Barcode is already in use"
@@ -160,9 +160,9 @@ msgstr "Sauvegarder &amp; Cloner"
 msgid "Statistical Categories"
 msgstr "Catégories statistiques"
 
-#: register.js:ALL_CARDS_BARCODE
-msgid "Barcode"
-msgstr ""
+#: register.js:ADDRESS_NEW
+msgid "New Address"
+msgstr "Nouvelle adresse"
 
 #: register.js:RESET_PASSWORD
 msgid "Reset Password"

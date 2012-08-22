@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-28 14:16-0400\n"
+"POT-Creation-Date: 2012-08-03 10:01-0400\n"
 "PO-Revision-Date: 2012-05-29 12:02+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-05-30 05:23+0000\n"
-"X-Generator: Launchpad (build 15316)\n"
+"X-Launchpad-Export-Date: 2012-08-04 05:12+0000\n"
+"X-Generator: Launchpad (build 15742)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -995,6 +995,30 @@ msgstr "&Ověřit"
 #: staff.auth.verify.retrieve.accesskey
 msgid "&Retrieve"
 msgstr "&Získat"
+
+#: staff.auth.change_type.label
+#: staff.auth.change_type.accesskey
+msgid "&New Login Type:"
+msgstr ""
+
+#: staff.auth.change_type_description
+msgid ""
+"Temporary logins expire with a few minutes of inactivity. Staff logins are "
+"the same as the initial login into the staff client. Permanent will discard "
+"the existing login session and replace it with the new one."
+msgstr ""
+
+#: staff.auth.change_type_staff
+msgid "Staff"
+msgstr ""
+
+#: staff.auth.change_type_temporary
+msgid "Temporary"
+msgstr ""
+
+#: staff.auth.change_type_permanent
+msgid "Permanent"
+msgstr ""
 
 #: staff.bills_current_payment_label
 msgid "Current Payment"
@@ -2246,9 +2270,8 @@ msgid "Adult"
 msgstr "Dospělí"
 
 #: staff.copy.attr.stat.audience.example2
-msgctxt "staff.copy.attr.stat.audience.example2"
 msgid "Juvenile"
-msgstr "Mládež"
+msgstr ""
 
 #: staff.copy.attr.stat.audience.example3
 msgid "Preschool"
@@ -2858,6 +2881,10 @@ msgstr "Sady výpůjčních limitů"
 msgid "Copy Location Groups"
 msgstr "Skupiny umístění"
 
+#: staff.main.menu.admin.local_admin.search_filter_group.label
+msgid "Search Filter Groups"
+msgstr ""
+
 #: staff.main.menu.admin.server_admin.label
 msgid "Server Administration"
 msgstr "Administrace serveru"
@@ -2875,8 +2902,9 @@ msgid "Permission Groups"
 msgstr "Skupiny oprávnění"
 
 #: staff.main.menu.admin.server_admin.conify.perm_list.label
+msgctxt "staff.main.menu.admin.server_admin.conify.perm_list.label"
 msgid "Permissions"
-msgstr "Oprávnění"
+msgstr ""
 
 #: staff.main.menu.admin.server_admin.conify.copy_status.label
 msgid "Copy Statuses"
@@ -3675,6 +3703,10 @@ msgstr "Označit jako nalezené"
 #: staff.main.menu.circ.hold_browse.accesskey
 msgid "&Browse Holds Shelf"
 msgstr "Prohlížet poli&ci s rezervacemi"
+
+#: staff.main.menu.circ.hold_clear.label
+msgid "Clear Shelf-Expired Holds"
+msgstr ""
 
 #: staff.main.menu.circ.hold_capture.label
 #: staff.main.menu.circ.hold_capture.accesskey
@@ -5742,14 +5774,12 @@ msgid "Print"
 msgstr "Tisknout"
 
 #: staff.patron_display.radio.mailing_address.label
-msgctxt "staff.patron_display.radio.mailing_address.label"
 msgid "Mailing"
-msgstr "Kontaktní adresa"
+msgstr ""
 
 #: staff.patron_display.radio.physical_address.label
-msgctxt "staff.patron_display.radio.physical_address.label"
 msgid "Billing"
-msgstr "Adresa trvalého bydliště"
+msgstr ""
 
 #: staff.patron_display.name.label
 msgctxt "staff.patron_display.name.label"
@@ -7342,9 +7372,8 @@ msgid "Start Date:"
 msgstr "Datum začátku:"
 
 #: staff.server.admin.cash.date.select
-msgctxt "staff.server.admin.cash.date.select"
 msgid "Date selector"
-msgstr "Výběr data"
+msgstr ""
 
 #: staff.server.admin.cash.end_date
 msgctxt "staff.server.admin.cash.end_date"
@@ -7783,8 +7812,9 @@ msgid "Create"
 msgstr "Vytvořit"
 
 #: staff.server.admin.non_cat_types.name
+msgctxt "staff.server.admin.non_cat_types.name"
 msgid "Name"
-msgstr "Název"
+msgstr ""
 
 #: staff.server.admin.non_cat_types.owning_location
 msgid "Owning Location"
@@ -12363,6 +12393,11 @@ msgid "Print Full Pull List (Alternate strateg&y)"
 msgstr ""
 "Vytiskni úplný seznam pořadavků na rezervace (alternativní strate&gie)"
 
+#: staff.patron.holds_overlay.simplified_pull_list.label
+#: staff.patron.holds_overlay.simplified_pull_list.accesskey
+msgid "Simplified Pull List &Interface"
+msgstr ""
+
 #: staff.patron.holds_overlay.place_hold.label
 #: staff.patron.holds_overlay.place_hold.accesskey
 msgctxt ""
@@ -12537,6 +12572,10 @@ msgctxt "staff.patron.user_edit.title"
 msgid "Evergreen User Editor"
 msgstr "Uživatelský editor Evergreenu"
 
+#: staff.patron.user_edit.user_info.label
+msgid "User Information"
+msgstr ""
+
 #: staff.patron.user_edit.user_name.label
 msgid "User Name:"
 msgstr "Jméno uživatele"
@@ -12564,6 +12603,24 @@ msgstr "Příjmení:"
 #: staff.patron.user_edit.working_location.label
 msgid "Working Location"
 msgstr "Pracovní organizační jednotka"
+
+#: staff.patron.user_edit.working_shortname.label
+msgid "Shortname"
+msgstr ""
+
+#: staff.patron.user_edit.working_name.label
+msgctxt "staff.patron.user_edit.working_name.label"
+msgid "Name"
+msgstr ""
+
+#: staff.patron.user_edit.working_ou.label
+msgid "Work OU?"
+msgstr ""
+
+#: staff.patron.user_edit.permission_list.label
+msgctxt "staff.patron.user_edit.permission_list.label"
+msgid "Permissions"
+msgstr ""
 
 #: staff.patron.user_edit.permission.label
 msgid "Permission"
@@ -12605,44 +12662,36 @@ msgstr ""
 "bottom: 2px solid red;'>označena barevně</span>"
 
 #: staff.patron.ue.view_errors.label
-msgctxt "staff.patron.ue.view_errors.label"
 msgid "View Errors"
-msgstr "Zobrazit chyby"
+msgstr ""
 
 #: staff.patron.ue.nav.user_id.label
-msgctxt "staff.patron.ue.nav.user_id.label"
 msgid "1. User Identification"
-msgstr "1. Identifikace uživatele"
+msgstr ""
 
 #: staff.patron.ue.nav.contact_info.label
-msgctxt "staff.patron.ue.nav.contact_info.label"
 msgid "2. Contact Info"
-msgstr "2. Kontaktní informace"
+msgstr ""
 
 #: staff.patron.ue.nav.addresses.label
-msgctxt "staff.patron.ue.nav.addresses.label"
 msgid "3. Addresses"
-msgstr "3. Adresy"
+msgstr ""
 
 #: staff.patron.ue.nav.groups_permissions.label
-msgctxt "staff.patron.ue.nav.groups_permissions.label"
 msgid "4. Groups and Permissions"
-msgstr "4. Skupiny a oprávnění"
+msgstr ""
 
 #: staff.patron.ue.nav.stat_categories.label
-msgctxt "staff.patron.ue.nav.stat_categories.label"
 msgid "5. Statistical Categories"
-msgstr "5. Statistické kategorie"
+msgstr ""
 
 #: staff.patron.ue.nav.surveys.label
-msgctxt "staff.patron.ue.nav.surveys.label"
 msgid "6. Surveys"
-msgstr "6. Průzkumy"
+msgstr ""
 
 #: staff.patron.ue.nav.finish.label
-msgctxt "staff.patron.ue.nav.finish.label"
 msgid "7. Finish"
-msgstr "7. Dokončit"
+msgstr ""
 
 #: staff.patron.ue.loading_data.label
 msgctxt "staff.patron.ue.loading_data.label"
@@ -12650,9 +12699,8 @@ msgid "Loading data..."
 msgstr "Nahrávání dat..."
 
 #: staff.patron.ue.found_duplicate_patron.label
-msgctxt "staff.patron.ue.found_duplicate_patron.label"
 msgid "Number of possible duplicate patron(s):"
-msgstr "Počet možných duplicitních čtenářů:"
+msgstr ""
 
 #: staff.patron.ue.mark_lost.label
 msgctxt "staff.patron.ue.mark_lost.label"
@@ -12670,19 +12718,16 @@ msgid "Password"
 msgstr "Heslo"
 
 #: staff.patron.ue.reset.label
-msgctxt "staff.patron.ue.reset.label"
 msgid "Reset"
-msgstr "Znovu nastavit"
+msgstr ""
 
 #: staff.patron.ue.re_password.label
-msgctxt "staff.patron.ue.re_password.label"
 msgid "Password: "
-msgstr "Heslo: "
+msgstr ""
 
 #: staff.patron.ue.verify_password.label
-msgctxt "staff.patron.ue.verify_password.label"
 msgid "Verify Password"
-msgstr "Verifikace hesla"
+msgstr ""
 
 #: staff.patron.ue.first_name.label
 msgctxt "staff.patron.ue.first_name.label"
@@ -12695,9 +12740,8 @@ msgid "Middle Name"
 msgstr "Prostřední jméno"
 
 #: staff.patron.ue.last_name.label
-msgctxt "staff.patron.ue.last_name.label"
 msgid "Last Name"
-msgstr "Příjmení"
+msgstr ""
 
 #: staff.patron.ue.suffix.label
 msgctxt "staff.patron.ue.suffix.label"
@@ -12706,9 +12750,8 @@ msgstr "Titul za jménem"
 
 #. Used in a selection list, the '-' at the start and end draws attention to the entry
 #: staff.patron.ue.choose.label
-msgctxt "staff.patron.ue.choose.label"
 msgid "- Pick -"
-msgstr "- Výběr -"
+msgstr ""
 
 #: staff.patron.ue.dob.label
 msgctxt "staff.patron.ue.dob.label"
@@ -12716,51 +12759,42 @@ msgid "Date of Birth"
 msgstr "Datum narození"
 
 #: staff.patron.ue.primary_id_type.label
-msgctxt "staff.patron.ue.primary_id_type.label"
 msgid "Primary Identification Type"
-msgstr "Primární identifikační doklad"
+msgstr ""
 
 #. Used in a selection list, the '-' at the start and end draws attention to the entry
 #: staff.patron.ue.required.label
-msgctxt "staff.patron.ue.required.label"
 msgid " -- Required -- "
-msgstr " -- Povinné -- "
+msgstr ""
 
 #: staff.patron.ue.primary_id.label
-msgctxt "staff.patron.ue.primary_id.label"
 msgid "Primary Identification"
-msgstr "Číslo primárního dokladu"
+msgstr ""
 
 #: staff.patron.ue.secondary_id_type.label
-msgctxt "staff.patron.ue.secondary_id_type.label"
 msgid "Secondary Identification Type"
-msgstr "Sekundární indentifikační doklad"
+msgstr ""
 
 #. Used in a selection list, the '-' at the start and end draws attention to the entry
 #: staff.patron.ue.none_selected.label
-msgctxt "staff.patron.ue.none_selected.label"
 msgid " -- None Selected -- "
-msgstr " -- Nic nevybráno -- "
+msgstr ""
 
 #: staff.patron.ue.secondary_id.label
-msgctxt "staff.patron.ue.secondary_id.label"
 msgid "Secondary Identification"
-msgstr "Číslo sekundárního dokladu"
+msgstr ""
 
 #: staff.patron.ue.parent_guardian.label
-msgctxt "staff.patron.ue.parent_guardian.label"
 msgid "Parent or Guardian"
-msgstr "Rodič nebo zákonný zástupce"
+msgstr ""
 
 #: staff.patron.ue.email_address.label
-msgctxt "staff.patron.ue.email_address.label"
 msgid "Email Address"
-msgstr "E-mailová adresa"
+msgstr ""
 
 #: staff.patron.ue.day_phone.label
-msgctxt "staff.patron.ue.day_phone.label"
 msgid "Daytime Phone"
-msgstr "Telefon během dne"
+msgstr ""
 
 #: staff.patron.ue.evening_phone.label
 msgctxt "staff.patron.ue.evening_phone.label"
@@ -12783,14 +12817,12 @@ msgid "Address"
 msgstr "Adresa"
 
 #: staff.patron.ue.in_city_limits.label
-msgctxt "staff.patron.ue.in_city_limits.label"
 msgid "Within City Limits"
 msgstr ""
 
 #: staff.patron.ue.valid.label
-msgctxt "staff.patron.ue.valid.label"
 msgid "Valid"
-msgstr "V platnosti"
+msgstr ""
 
 #: staff.patron.ue.mailing_address.label
 msgctxt "staff.patron.ue.mailing_address.label"
@@ -12803,9 +12835,8 @@ msgid "Physical Address"
 msgstr "Fyzická adresa"
 
 #: staff.patron.ue.owned_address.label
-msgctxt "staff.patron.ue.owned_address.label"
 msgid "Address is owned by"
-msgstr "Vlastník adresy"
+msgstr ""
 
 #: staff.patron.ue.edit.label
 msgctxt "staff.patron.ue.edit.label"
@@ -12822,14 +12853,12 @@ msgid "Zip Code"
 msgstr "PSČ"
 
 #: staff.patron.ue.street_1.label
-msgctxt "staff.patron.ue.street_1.label"
 msgid "Street 1"
-msgstr "Ulice 1"
+msgstr ""
 
 #: staff.patron.ue.street_2.label
-msgctxt "staff.patron.ue.street_2.label"
 msgid "Street 2"
-msgstr "Ulice 2"
+msgstr ""
 
 #: staff.patron.ue.city.label
 msgctxt "staff.patron.ue.city.label"
@@ -12837,9 +12866,8 @@ msgid "City"
 msgstr "Město / obec"
 
 #: staff.patron.ue.county.label
-msgctxt "staff.patron.ue.county.label"
 msgid "County"
-msgstr "Kraj"
+msgstr ""
 
 #: staff.patron.ue.state.label
 msgctxt "staff.patron.ue.state.label"
@@ -12852,33 +12880,28 @@ msgid "Country"
 msgstr "Země"
 
 #: staff.patron.ue.delete_this_address.label
-msgctxt "staff.patron.ue.delete_this_address.label"
 msgid "Delete this Address"
-msgstr "Smazat tuto adresu"
+msgstr ""
 
 #: staff.patron.ue.detach_this_address.label
-msgctxt "staff.patron.ue.detach_this_address.label"
 msgid "Detach this Address"
-msgstr "Odpojit tuto adresu"
+msgstr ""
 
 #: staff.patron.ue.create_address.label
 msgid "Create a New Address"
 msgstr "Vytvořit novou adresu"
 
 #: staff.patron.ue.profile_group.label
-msgctxt "staff.patron.ue.profile_group.label"
 msgid "Profile Group"
-msgstr "Skupina oprávnění"
+msgstr ""
 
 #: staff.patron.ue.accoutn_expire_date.label
-msgctxt "staff.patron.ue.accoutn_expire_date.label"
 msgid "Account Expiration Date"
-msgstr "Platnost registrace do"
+msgstr ""
 
 #: staff.patron.ue.internet_access_level.label
-msgctxt "staff.patron.ue.internet_access_level.label"
 msgid "Internet Access Level"
-msgstr "Přístup k internetu"
+msgstr ""
 
 #: staff.patron.ue.active.label
 msgctxt "staff.patron.ue.active.label"
@@ -12886,14 +12909,12 @@ msgid "Active"
 msgstr "Aktivní"
 
 #: staff.patron.ue.barred.label
-msgctxt "staff.patron.ue.barred.label"
 msgid "Barred"
-msgstr "Omezení transakcí"
+msgstr ""
 
 #: staff.patron.ue.set_lead_account.label
-msgctxt "staff.patron.ue.set_lead_account.label"
 msgid "Set as Family or Group Lead Account"
-msgstr "Nastavit jako vedoucí účet skupiny nebo rodiny"
+msgstr ""
 
 #: staff.patron.ue.claims_returned_count.label
 msgctxt "staff.patron.ue.claims_returned_count.label"
@@ -12911,9 +12932,8 @@ msgid "Statistical Category Name"
 msgstr "Název statistické kategorie"
 
 #: staff.patron.ue.owner.label
-msgctxt "staff.patron.ue.owner.label"
 msgid "Owner"
-msgstr "Vlastník"
+msgstr ""
 
 #: staff.patron.ue.value.label
 msgctxt "staff.patron.ue.value.label"
@@ -12921,9 +12941,8 @@ msgid "Value"
 msgstr "Hodnota"
 
 #: staff.patron.ue.no_surveys_for_location.label
-msgctxt "staff.patron.ue.no_surveys_for_location.label"
 msgid "No surveys have been created for this location."
-msgstr "Pro tuto organizační jednotku nebyly vytvořeny žádné průzkumy."
+msgstr ""
 
 #: staff.patron.ue.message1.label
 msgid "You are now ready to save the user to the database."
@@ -12944,14 +12963,12 @@ msgid "View Summary"
 msgstr "Zobrazit přehled"
 
 #: staff.patron.ue.back.label
-msgctxt "staff.patron.ue.back.label"
 msgid "Back"
-msgstr "Zpět"
+msgstr ""
 
 #: staff.patron.ue.forward.label
-msgctxt "staff.patron.ue.forward.label"
 msgid "Forward"
-msgstr "Vpřed"
+msgstr ""
 
 #: staff.patron.ue.user_summary.label
 msgid ""
@@ -12972,9 +12989,8 @@ msgid "Addresses"
 msgstr "Adresy"
 
 #: staff.patron.ue.address_label.label
-msgctxt "staff.patron.ue.address_label.label"
 msgid "Address Label"
-msgstr "Označení adresy"
+msgstr ""
 
 #: staff.patron.ue.billing_address.label
 msgctxt "staff.patron.ue.billing_address.label"
@@ -12992,29 +13008,24 @@ msgid "Expire Date"
 msgstr "Datum expirace"
 
 #: staff.patron.ue.family_lead_account.label
-msgctxt "staff.patron.ue.family_lead_account.label"
 msgid "Family Lead Account"
-msgstr "Hlavní účet rodiny"
+msgstr ""
 
 #: staff.patron.ue.stat_categories.label
-msgctxt "staff.patron.ue.stat_categories.label"
 msgid "Statistical Categories"
-msgstr "Statistické kategorie"
+msgstr ""
 
 #: staff.patron.ue.survey.label
-msgctxt "staff.patron.ue.survey.label"
 msgid "Survey"
-msgstr "Průzkum"
+msgstr ""
 
 #: staff.patron.ue.question.label
-msgctxt "staff.patron.ue.question.label"
 msgid "Question"
-msgstr "Otázka"
+msgstr ""
 
 #: staff.patron.ue.answer.label
-msgctxt "staff.patron.ue.answer.label"
 msgid "Answer"
-msgstr "Odpověď"
+msgstr ""
 
 #: staff.patron.ue.bad_dob.label
 msgid ""
@@ -13082,9 +13093,8 @@ msgid "An invalid phone number was entered"
 msgstr "Nebylo správně zadáno telefonní číslo"
 
 #: staff.patron.ue.no_profile.label
-msgctxt "staff.patron.ue.no_profile.label"
 msgid "A profile group must be selected"
-msgstr "Je nutné vybrat profil skupiny"
+msgstr ""
 
 #: staff.patron.ue.bad_expire.label
 msgid "The user expiration date is invalid.  We are expecting YYYY-MM-DD"
@@ -13351,500 +13361,6 @@ msgstr "Uložit seznam CSV do souboru"
 #: staff.generic.list_actions.save_columns.accesskey
 msgid "&Save List Configuration"
 msgstr "Uložit na&stavení seznamu"
-
-#: ev.staff.patron.ue_xhtml.ev_user_editor.label
-msgctxt "ev.staff.patron.ue_xhtml.ev_user_editor.label"
-msgid "Evergreen User Editor"
-msgstr "Uživatelský editor Evergreenu"
-
-#: ev.staff.patron.ue_xhtml.welcome.label
-msgctxt "ev.staff.patron.ue_xhtml.welcome.label"
-msgid "Welcome "
-msgstr "Vítejte "
-
-#: ev.staff.patron.ue_xhtml.view_errors.label
-msgctxt "ev.staff.patron.ue_xhtml.view_errors.label"
-msgid "View Errors"
-msgstr "Zobrazit chyby"
-
-#: ev.staff.patron.ue_xhtml.user_id.label
-msgctxt "ev.staff.patron.ue_xhtml.user_id.label"
-msgid "1. User Identification"
-msgstr "1. Identifikace uživatele"
-
-#: ev.staff.patron.ue_xhtml.contact_info.label
-msgctxt "ev.staff.patron.ue_xhtml.contact_info.label"
-msgid "2. Contact Info"
-msgstr "2. Kontaktní informace"
-
-#: ev.staff.patron.ue_xhtml.addresses.label
-msgctxt "ev.staff.patron.ue_xhtml.addresses.label"
-msgid "3. Addresses"
-msgstr "3. Adresy"
-
-#: ev.staff.patron.ue_xhtml.groups_permissions.label
-msgctxt "ev.staff.patron.ue_xhtml.groups_permissions.label"
-msgid "4. Groups and Permissions"
-msgstr "4. Skupiny a oprávnění"
-
-#: ev.staff.patron.ue_xhtml.statistical_categories.label
-msgctxt "ev.staff.patron.ue_xhtml.statistical_categories.label"
-msgid "5. Statistical Categories"
-msgstr "5. Statistické kategorie"
-
-#: ev.staff.patron.ue_xhtml.surveys.label
-msgctxt "ev.staff.patron.ue_xhtml.surveys.label"
-msgid "6. Surveys"
-msgstr "6. Průzkumy"
-
-#: ev.staff.patron.ue_xhtml.finish.label
-msgctxt "ev.staff.patron.ue_xhtml.finish.label"
-msgid "7. Finish"
-msgstr "7. Dokončit"
-
-#: ev.staff.patron.ue_xhtml.loading_data.label
-msgctxt "ev.staff.patron.ue_xhtml.loading_data.label"
-msgid "Loading data..."
-msgstr "Nahrávání dat..."
-
-#: ev.staff.patron.ue_xhtml.found_duplicate_patron.label
-msgctxt "ev.staff.patron.ue_xhtml.found_duplicate_patron.label"
-msgid "Number of possible duplicate patron(s):"
-msgstr "Počet možných duplicitních čtenářů:"
-
-#: ev.staff.patron.ue_xhtml.barcode.label
-msgctxt "ev.staff.patron.ue_xhtml.barcode.label"
-msgid "Barcode"
-msgstr "Čárový kód"
-
-#: ev.staff.patron.ue_xhtml.mark_lost.label
-msgctxt "ev.staff.patron.ue_xhtml.mark_lost.label"
-msgid "Mark Lost"
-msgstr "Označit jako ztracené"
-
-#: ev.staff.patron.ue_xhtml.username.label
-msgctxt "ev.staff.patron.ue_xhtml.username.label"
-msgid "Username"
-msgstr "Uživatelské jméno"
-
-#: ev.staff.patron.ue_xhtml.password.label
-msgctxt "ev.staff.patron.ue_xhtml.password.label"
-msgid "Password"
-msgstr "Heslo"
-
-#: ev.staff.patron.ue_xhtml.reset.label
-msgctxt "ev.staff.patron.ue_xhtml.reset.label"
-msgid "Reset"
-msgstr "Obnovit výchozí nastavení"
-
-#: ev.staff.patron.ue_xhtml.re_password.label
-msgctxt "ev.staff.patron.ue_xhtml.re_password.label"
-msgid "Password: "
-msgstr "Heslo "
-
-#: ev.staff.patron.ue_xhtml.verify_password.label
-msgctxt "ev.staff.patron.ue_xhtml.verify_password.label"
-msgid "Verify Password"
-msgstr "Verifikace hesla"
-
-#: ev.staff.patron.ue_xhtml.first_name.label
-msgctxt "ev.staff.patron.ue_xhtml.first_name.label"
-msgid "First Name"
-msgstr "Křestní jméno"
-
-#: ev.staff.patron.ue_xhtml.middle_name.label
-msgctxt "ev.staff.patron.ue_xhtml.middle_name.label"
-msgid "Middle Name"
-msgstr "Prostřední jméno"
-
-#: ev.staff.patron.ue_xhtml.last_name.label
-msgctxt "ev.staff.patron.ue_xhtml.last_name.label"
-msgid "Last Name"
-msgstr "Příjmení"
-
-#: ev.staff.patron.ue_xhtml.suffix.label
-msgctxt "ev.staff.patron.ue_xhtml.suffix.label"
-msgid "Suffix"
-msgstr "Titul za jménem"
-
-#. Used in a selection list, the '-' at the start and end draws attention to the entry
-#: ev.staff.patron.ue_xhtml.pick_suffix.label
-msgctxt "ev.staff.patron.ue_xhtml.pick_suffix.label"
-msgid "- Pick -"
-msgstr "- Výběr -"
-
-#: ev.staff.patron.ue_xhtml.dob.label
-msgctxt "ev.staff.patron.ue_xhtml.dob.label"
-msgid "Date of Birth"
-msgstr "Datum narození"
-
-#: ev.staff.patron.ue_xhtml.primary_id_type.label
-msgctxt "ev.staff.patron.ue_xhtml.primary_id_type.label"
-msgid "Primary Identification Type"
-msgstr "Primární identifikační doklad"
-
-#: ev.staff.patron.ue_xhtml.primary_id.label
-msgctxt "ev.staff.patron.ue_xhtml.primary_id.label"
-msgid "Primary Identification"
-msgstr "Číslo primárního dokladu"
-
-#: ev.staff.patron.ue_xhtml.parent_guardian.label
-msgctxt "ev.staff.patron.ue_xhtml.parent_guardian.label"
-msgid "Parent or Guardian"
-msgstr "Rodič nebo zákonný zástupce"
-
-#: ev.staff.patron.ue_xhtml.email_address.label
-msgctxt "ev.staff.patron.ue_xhtml.email_address.label"
-msgid "Email Address"
-msgstr "E-mailová adresa"
-
-#: ev.staff.patron.ue_xhtml.phone_example
-msgid "Example: 123-456-7890 or 123-456-7890 ex123"
-msgstr "Příklad: 123-456-7890 nebo 123-456-7890 ex123"
-
-#: ev.staff.patron.ue_xhtml.daytime_phone.label
-msgctxt "ev.staff.patron.ue_xhtml.daytime_phone.label"
-msgid "Daytime Phone"
-msgstr "Telefon během dne"
-
-#: ev.staff.patron.ue_xhtml.evening_phone.label
-msgctxt "ev.staff.patron.ue_xhtml.evening_phone.label"
-msgid "Evening Phone"
-msgstr "Telefonní číslo večer"
-
-#: ev.staff.patron.ue_xhtml.other_phone.label
-msgid "Other (Cell Phone)"
-msgstr "Další telefon"
-
-#: ev.staff.patron.ue_xhtml.home_library.label
-msgctxt "ev.staff.patron.ue_xhtml.home_library.label"
-msgid "Home Library"
-msgstr "Domovská knihovna"
-
-#: ev.staff.patron.ue_xhtml.address.label
-msgctxt "ev.staff.patron.ue_xhtml.address.label"
-msgid "Address"
-msgstr "Adresa"
-
-#: ev.staff.patron.ue_xhtml.in_city_limits.label
-msgctxt "ev.staff.patron.ue_xhtml.in_city_limits.label"
-msgid "Within City Limits"
-msgstr ""
-
-#: ev.staff.patron.ue_xhtml.county.label
-msgctxt "ev.staff.patron.ue_xhtml.county.label"
-msgid "County"
-msgstr "Kraj"
-
-#: ev.staff.patron.ue_xhtml.valid.label
-msgctxt "ev.staff.patron.ue_xhtml.valid.label"
-msgid "Valid"
-msgstr "V platnosti"
-
-#: ev.staff.patron.ue_xhtml.mailing_address.label
-msgctxt "ev.staff.patron.ue_xhtml.mailing_address.label"
-msgid "Mailing Address"
-msgstr "Kontaktní adresa"
-
-#: ev.staff.patron.ue_xhtml.physical_address.label
-msgctxt "ev.staff.patron.ue_xhtml.physical_address.label"
-msgid "Physical Address"
-msgstr "Fyzická adresa"
-
-#: ev.staff.patron.ue_xhtml.address_owned_by.label
-msgctxt "ev.staff.patron.ue_xhtml.address_owned_by.label"
-msgid "Address is owned by"
-msgstr "Vlastník adresy"
-
-#: ev.staff.patron.ue_xhtml.label.label
-msgctxt "ev.staff.patron.ue_xhtml.label.label"
-msgid "Label"
-msgstr "Označení"
-
-#: ev.staff.patron.ue_xhtml.zip.label
-msgid "Zip"
-msgstr "PSČ"
-
-#: ev.staff.patron.ue_xhtml.street1.label
-msgctxt "ev.staff.patron.ue_xhtml.street1.label"
-msgid "Street 1"
-msgstr "Ulice 1"
-
-#: ev.staff.patron.ue_xhtml.street2.label
-msgctxt "ev.staff.patron.ue_xhtml.street2.label"
-msgid "Street 2"
-msgstr "Ulice 2"
-
-#: ev.staff.patron.ue_xhtml.city.label
-msgctxt "ev.staff.patron.ue_xhtml.city.label"
-msgid "City"
-msgstr "Město / obec"
-
-#: ev.staff.patron.ue_xhtml.conuty.label
-msgctxt "ev.staff.patron.ue_xhtml.conuty.label"
-msgid "County"
-msgstr "Kraj"
-
-#: ev.staff.patron.ue_xhtml.state.label
-msgctxt "ev.staff.patron.ue_xhtml.state.label"
-msgid "State"
-msgstr "Stát"
-
-#: ev.staff.patron.ue_xhtml.country.label
-msgctxt "ev.staff.patron.ue_xhtml.country.label"
-msgid "Country"
-msgstr "Země"
-
-#: ev.staff.patron.ue_xhtml.profile_group.label
-msgctxt "ev.staff.patron.ue_xhtml.profile_group.label"
-msgid "Profile Group"
-msgstr "Skupina oprávnění"
-
-#: ev.staff.patron.ue_xhtml.ue_addr_delete.label
-msgctxt "ev.staff.patron.ue_xhtml.ue_addr_delete.label"
-msgid "Delete this Address"
-msgstr "Smazat tuto adresu"
-
-#: ev.staff.patron.ue_xhtml.ue_addr_detach.label
-msgctxt "ev.staff.patron.ue_xhtml.ue_addr_detach.label"
-msgid "Detach this Address"
-msgstr "Odpojit tuto adresu"
-
-#: ev.staff.patron.ue_xhtml.ue_addr_approve.label
-msgid "Approve Pending Address"
-msgstr "Potvrdit nevyřízenou adresu"
-
-#: ev.staff.patron.ue_xhtml.ue_addr_approve_confirm.label
-msgid "Approve pending address?  This operation will be be instantaneous."
-msgstr "Potvrdit nevyřízenou adresu? Tato operace bude okamžitá."
-
-#: ev.staff.patron.ue_xhtml.primary_ident_ssn_help.label
-msgid "(XXX-YY-ZZZZ)"
-msgstr "(XXX-YY-ZZZZ)"
-
-#: ev.staff.patron.ue_xhtml.primary_ident_dl_help.label
-msgid "(GA-123456789)"
-msgstr "(GA-123456789)"
-
-#: ev.staff.patron.ue_xhtml.edit.label
-msgctxt "ev.staff.patron.ue_xhtml.edit.label"
-msgid "Edit"
-msgstr "Editovat"
-
-#. Used in a selection list, the '-' at the start and end draws attention to the entry
-#: ev.staff.patron.ue_xhtml.required.label
-msgctxt "ev.staff.patron.ue_xhtml.required.label"
-msgid " -- Required -- "
-msgstr " -- Povinné -- "
-
-#: ev.staff.patron.ue_xhtml.account_expiration_date.label
-msgctxt "ev.staff.patron.ue_xhtml.account_expiration_date.label"
-msgid "Account Expiration Date"
-msgstr "Platnost registrace do"
-
-#: ev.staff.patron.ue_xhtml.net_access_level.label
-msgctxt "ev.staff.patron.ue_xhtml.net_access_level.label"
-msgid "Internet Access Level"
-msgstr "Přístup k internetu"
-
-#: ev.staff.patron.ue_xhtml.active.label
-msgctxt "ev.staff.patron.ue_xhtml.active.label"
-msgid "Active"
-msgstr "Aktivní"
-
-#: ev.staff.patron.ue_xhtml.barred.label
-msgctxt "ev.staff.patron.ue_xhtml.barred.label"
-msgid "Barred"
-msgstr "Omezení transakcí"
-
-#: ev.staff.patron.ue_xhtml.juvenile.label
-msgctxt "ev.staff.patron.ue_xhtml.juvenile.label"
-msgid "Juvenile"
-msgstr "Nezletilí"
-
-#: ev.staff.patron.ue_xhtml.set_family_group_lead_account.label
-msgctxt "ev.staff.patron.ue_xhtml.set_family_group_lead_account.label"
-msgid "Set as Family or Group Lead Account"
-msgstr "Nastavit jako vedoucí účet skupiny nebo rodiny"
-
-#: ev.staff.patron.ue_xhtml.claims_returned_count.label
-msgctxt "ev.staff.patron.ue_xhtml.claims_returned_count.label"
-msgid "Claims Returned Count"
-msgstr "Počet údajně vrácených"
-
-#: ev.staff.patron.ue_xhtml.alert_message.label
-msgctxt "ev.staff.patron.ue_xhtml.alert_message.label"
-msgid "Alert Message"
-msgstr "Upozornění"
-
-#: ev.staff.patron.ue_xhtml.stat_cat_name.label
-msgctxt "ev.staff.patron.ue_xhtml.stat_cat_name.label"
-msgid "Statistical Category Name"
-msgstr "Název statistické kategorie"
-
-#: ev.staff.patron.ue_xhtml.owner.label
-msgctxt "ev.staff.patron.ue_xhtml.owner.label"
-msgid "Owner"
-msgstr "Vlastník"
-
-#: ev.staff.patron.ue_xhtml.value.label
-msgctxt "ev.staff.patron.ue_xhtml.value.label"
-msgid "Value"
-msgstr "Hodnota"
-
-#. Used in a selection list, the '-' at the start and end draws attention to the entry
-#: ev.staff.patron.ue_xhtml.none_selected.label
-msgctxt "ev.staff.patron.ue_xhtml.none_selected.label"
-msgid " -- None Selected -- "
-msgstr " -- Nic nevybráno -- "
-
-#: ev.staff.patron.ue_xhtml.no_surveys_for_location.label
-msgctxt "ev.staff.patron.ue_xhtml.no_surveys_for_location.label"
-msgid "No surveys have been created for this location."
-msgstr "Pro tuto organizační jednotku nebyly vytvořeny žádné průzkumy."
-
-#: ev.staff.patron.ue_xhtml.finishing_message.label
-msgid ""
-"You are now ready to save the user to the database.<br/>To view or print a "
-"summary of the changes, click on the 'View Summary' link.<br/>To save the "
-"user, click on the 'Save User' button."
-msgstr ""
-"Nyní můžete uložit uživatele do databáze. <br/> Pro zobrazení nebo tisk "
-"provedných změn klikněnte na odkaz \"Zobrazit přehled. <br/> Pro uložení "
-"uživatele klikněte na tlačítko \"Uložit uživatele\""
-
-#: ev.staff.patron.ue_xhtml.back.label
-msgctxt "ev.staff.patron.ue_xhtml.back.label"
-msgid "Back"
-msgstr "Zpět"
-
-#: ev.staff.patron.ue_xhtml.forward.label
-msgctxt "ev.staff.patron.ue_xhtml.forward.label"
-msgid "Forward"
-msgstr "Vpřed"
-
-#: ev.staff.patron.ue_xhtml.secondary_id_type.label
-msgctxt "ev.staff.patron.ue_xhtml.secondary_id_type.label"
-msgid "Secondary Identification Type"
-msgstr "Sekundární indentifikační doklad"
-
-#: ev.staff.patron.ue_xhtml.secondary_id.label
-msgctxt "ev.staff.patron.ue_xhtml.secondary_id.label"
-msgid "Secondary Identification"
-msgstr "Číslo sekundárního dokladu"
-
-#: ev.staff.patron.ue_xhtml.address_label.label
-msgctxt "ev.staff.patron.ue_xhtml.address_label.label"
-msgid "Address Label"
-msgstr "Označení adresy"
-
-#: ev.staff.patron.ue_xhtml.mailing.label
-msgctxt "ev.staff.patron.ue_xhtml.mailing.label"
-msgid "Mailing"
-msgstr "Kontaktní adresa"
-
-#: ev.staff.patron.ue_xhtml.billing.label
-msgctxt "ev.staff.patron.ue_xhtml.billing.label"
-msgid "Billing"
-msgstr "Adresa trvalého bydliště"
-
-#: ev.staff.patron.ue_xhtml.profile.label
-msgctxt "ev.staff.patron.ue_xhtml.profile.label"
-msgid "Profile"
-msgstr "Profil"
-
-#: ev.staff.patron.ue_xhtml.expire_date.label
-msgctxt "ev.staff.patron.ue_xhtml.expire_date.label"
-msgid "Expire Date"
-msgstr "Registrace vyprší"
-
-#: ev.staff.patron.ue_xhtml.family_lead_account.label
-msgctxt "ev.staff.patron.ue_xhtml.family_lead_account.label"
-msgid "Family Lead Account"
-msgstr "Vedoucí účet rodiny"
-
-#: ev.staff.patron.ue_xhtml.stat_categories.label
-msgctxt "ev.staff.patron.ue_xhtml.stat_categories.label"
-msgid "Statistical Categories"
-msgstr "Statistické kategorie"
-
-#: ev.staff.patron.ue_xhtml.survey.label
-msgctxt "ev.staff.patron.ue_xhtml.survey.label"
-msgid "Survey"
-msgstr "Průzkum"
-
-#: ev.staff.patron.ue_xhtml.question.label
-msgctxt "ev.staff.patron.ue_xhtml.question.label"
-msgid "Question"
-msgstr "Otázka"
-
-#: ev.staff.patron.ue_xhtml.answer.label
-msgctxt "ev.staff.patron.ue_xhtml.answer.label"
-msgid "Answer"
-msgstr "Odpověď"
-
-#: ev.staff.patron.ue_xhtml.claims_return_confirm.label
-msgid ""
-"This will reset the claims returned count for this user. Are you sure you "
-"wish to perform this action?"
-msgstr ""
-"Tímto bude přenastaven na výchozí hodnotu počet knihovních jednotek  "
-"\"údajně vrácených\". Opravdu chcete pokračovat?"
-
-#: ev.staff.patron.ue_xhtml.unsaved_changes.label
-msgid "You have unsaved changes."
-msgstr "Neuložili jste změny."
-
-#: ev.staff.patron.ue_xhtml.xact_collision.label
-msgid ""
-"It appears that someone else was also editing this user. Saving the user now "
-"will destroy their changes.  Click 'OK' to refresh the user and continue "
-"editing. Click 'Cancel' to do nothing. Note that you will not be able to "
-"save the user until this page has been refreshed."
-msgstr ""
-"Zdá se, že údaje o uživateli editoval i někdo jiný. Pokud teď údaje uložíte, "
-"zrušíte jeho změny. Chcete-li obnovit údaje a pokračovat v editaci, klikněte "
-"na tlačítko OK. Pokud nechcete udělat nic, zvolte Storno. Pozor, nebudete "
-"moci uložit údaje uživatele dokud tato stránka nebude obnovena."
-
-#: ev.staff.patron.ue_xhtml.no_profile.label
-msgctxt "ev.staff.patron.ue_xhtml.no_profile.label"
-msgid "A profile group must be selected"
-msgstr "Je nutné vybrat profil skupiny"
-
-#: ev.staff.patron.ue_xhtml.print_page.label
-msgid "Print Page"
-msgstr "Tisk stránky"
-
-#: ev.staff.patron.ue_xhtml.return_to_editor.label
-msgid "Return to Editor"
-msgstr "Návrat do editoru"
-
-#: ev.staff.patron.ue_xhtml.save_user.value
-msgid "Save User"
-msgstr "Uložit údaje o uživateli"
-
-#: ev.staff.patron.ue_xhtml.save_clone_user.value
-msgid "Save and Clone User"
-msgstr "Uložit a \"klonovat\" uživatele"
-
-#: ev.staff.patron.ue_xhtml.cancel.value
-msgctxt "ev.staff.patron.ue_xhtml.cancel.value"
-msgid "Cancel"
-msgstr "Storno"
-
-#: ev.staff.patron.ue_xhtml.alert_message_reset.value
-msgid "Clear"
-msgstr "Smazat"
-
-#: ev.staff.patron.ue_xhtml.date_selector.label
-msgctxt "ev.staff.patron.ue_xhtml.date_selector.label"
-msgid "Date selector"
-msgstr "Výběr data"
-
-#: ev.staff.patron.ue_xhtml.alias.label
-msgid "Alias"
-msgstr "Alias"
 
 #: ui.circ.patron_summary.horizontal
 msgid "GUI: Alternative Horizontal Patron Summary Panel"
@@ -14271,25 +13787,12 @@ msgid ""
 "However, if using a plain text print strategy with HTML markup, you may "
 "include special character codes in 2-digit hexadecimal in a &quot;hex&quot; "
 "attribute for any given element.  Such codes will be converted to actual "
-"characters and inserted at the place of the tag.  For example, &amp;lt;p "
-"hex=&amp;quot;0C&amp;quot;&amp;gt;Hello World&amp;lt;/p&amp;gt; will "
-"translate to form feed control character + Hello World. "
-"&amp;lt;p&amp;gt;Hello World&amp;lt;/p hex=&amp;quot;0C&amp;quot;&amp;gt; "
-"will translate to Hello World + form feed control character."
+"characters and inserted at the place of the tag.  For example, &lt;p "
+"hex=&quot;0C&quot;&gt;Hello World&lt;/p&gt; will translate to form feed "
+"control character + Hello World. &lt;p&gt;Hello World&lt;/p "
+"hex=&quot;0C&quot;&gt; will translate to Hello World + form feed control "
+"character."
 msgstr ""
-"Pokud používáte šablony stvrzenek s použím strategie tisku DOS LPT1 nebo "
-"uživatelskou / externí tiskovu strategii (s využitím souboru "
-"&quot;receipt.txt&quot;), služební klient se pokusí přeložit jakékoliv HTML "
-"značky do textu, ale tento proces nebude dokonaly. Pokud tedy používáte "
-"strategii tisku v textovém režimu, pro zachování maximální věrnosti by bylo "
-"vhodné přepracovat šablony do prostého textu. Nicméně pokud používáte "
-"strategii tisku v textovém režimu s HTML značkami, můžete v atributech "
-"&quot;hex&quot; zahrnout speciální dvoučíselné hexadecimální kódy znaků pro "
-"každý daný prvek. Tyto kódy budou převedeny na aktuální znaky a vloženy na "
-"místo tagu. Například &amp;lt;p hex=&amp;quot;0C&amp;quot;&amp;gt;Ahoj "
-"světe&amp;lt;/p&amp;gt; bude převedeno na znak nové stránky + Ahoj světe. "
-"&amp;lt;p&amp;gt;Ahoj světe&amp;lt;/p hex=&amp;quot;0C&amp;quot;&amp;gt; "
-"bude převedeno na Ahoj světe znak nové stránky."
 
 #: staff.client.portal.title
 msgid "Evergreen Staff Client Portal"
@@ -14460,6 +13963,10 @@ msgstr "Uvedená nastavení se mohla změnit kvůli zpětným voláním a přeps
 #~ msgid "Date of Birth:"
 #~ msgstr "Datum narození:"
 
+#~ msgctxt "staff.copy.attr.stat.audience.example2"
+#~ msgid "Juvenile"
+#~ msgstr "Mládež"
+
 #~ msgid "Available"
 #~ msgstr "Dostupný"
 
@@ -14516,14 +14023,499 @@ msgstr "Uvedená nastavení se mohla změnit kvůli zpětným voláním a přeps
 #~ msgid "MARC Editor for &Import"
 #~ msgstr "MARC Editor pro &Import"
 
+#~ msgctxt "staff.patron.ue.re_password.label"
+#~ msgid "Password: "
+#~ msgstr "Heslo: "
+
+#~ msgctxt "staff.patron.ue.verify_password.label"
+#~ msgid "Verify Password"
+#~ msgstr "Verifikace hesla"
+
+#~ msgctxt "staff.patron.ue.email_address.label"
+#~ msgid "Email Address"
+#~ msgstr "E-mailová adresa"
+
+#~ msgctxt "staff.patron.ue.street_1.label"
+#~ msgid "Street 1"
+#~ msgstr "Ulice 1"
+
+#~ msgctxt "staff.patron.ue.street_2.label"
+#~ msgid "Street 2"
+#~ msgstr "Ulice 2"
+
+#~ msgctxt "staff.patron.ue.owner.label"
+#~ msgid "Owner"
+#~ msgstr "Vlastník"
+
+#~ msgctxt "staff.patron.ue.question.label"
+#~ msgid "Question"
+#~ msgstr "Otázka"
+
+#~ msgctxt "staff.patron.ue.answer.label"
+#~ msgid "Answer"
+#~ msgstr "Odpověď"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.ev_user_editor.label"
+#~ msgid "Evergreen User Editor"
+#~ msgstr "Uživatelský editor Evergreenu"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.welcome.label"
+#~ msgid "Welcome "
+#~ msgstr "Vítejte "
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.loading_data.label"
+#~ msgid "Loading data..."
+#~ msgstr "Nahrávání dat..."
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.barcode.label"
+#~ msgid "Barcode"
+#~ msgstr "Čárový kód"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.mark_lost.label"
+#~ msgid "Mark Lost"
+#~ msgstr "Označit jako ztracené"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.username.label"
+#~ msgid "Username"
+#~ msgstr "Uživatelské jméno"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.password.label"
+#~ msgid "Password"
+#~ msgstr "Heslo"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.re_password.label"
+#~ msgid "Password: "
+#~ msgstr "Heslo "
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.verify_password.label"
+#~ msgid "Verify Password"
+#~ msgstr "Verifikace hesla"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.first_name.label"
+#~ msgid "First Name"
+#~ msgstr "Křestní jméno"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.middle_name.label"
+#~ msgid "Middle Name"
+#~ msgstr "Prostřední jméno"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.dob.label"
+#~ msgid "Date of Birth"
+#~ msgstr "Datum narození"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.email_address.label"
+#~ msgid "Email Address"
+#~ msgstr "E-mailová adresa"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.address.label"
+#~ msgid "Address"
+#~ msgstr "Adresa"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.physical_address.label"
+#~ msgid "Physical Address"
+#~ msgstr "Fyzická adresa"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.street1.label"
+#~ msgid "Street 1"
+#~ msgstr "Ulice 1"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.street2.label"
+#~ msgid "Street 2"
+#~ msgstr "Ulice 2"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.state.label"
+#~ msgid "State"
+#~ msgstr "Stát"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.country.label"
+#~ msgid "Country"
+#~ msgstr "Země"
+
+#~ msgid "(XXX-YY-ZZZZ)"
+#~ msgstr "(XXX-YY-ZZZZ)"
+
+#~ msgid "(GA-123456789)"
+#~ msgstr "(GA-123456789)"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.edit.label"
+#~ msgid "Edit"
+#~ msgstr "Editovat"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.active.label"
+#~ msgid "Active"
+#~ msgstr "Aktivní"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.owner.label"
+#~ msgid "Owner"
+#~ msgstr "Vlastník"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.value.label"
+#~ msgid "Value"
+#~ msgstr "Hodnota"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.profile.label"
+#~ msgid "Profile"
+#~ msgstr "Profil"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.question.label"
+#~ msgid "Question"
+#~ msgstr "Otázka"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.answer.label"
+#~ msgid "Answer"
+#~ msgstr "Odpověď"
+
+#~ msgid "Return to Editor"
+#~ msgstr "Návrat do editoru"
+
+#~ msgid "Permissions"
+#~ msgstr "Oprávnění"
+
 #~ msgid "MARC Codes"
 #~ msgstr "Kódy MARC"
+
+#~ msgid ""
+#~ "You are now ready to save the user to the database.<br/>To view or print a "
+#~ "summary of the changes, click on the 'View Summary' link.<br/>To save the "
+#~ "user, click on the 'Save User' button."
+#~ msgstr ""
+#~ "Nyní můžete uložit uživatele do databáze. <br/> Pro zobrazení nebo tisk "
+#~ "provedných změn klikněnte na odkaz \"Zobrazit přehled. <br/> Pro uložení "
+#~ "uživatele klikněte na tlačítko \"Uložit uživatele\""
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.no_surveys_for_location.label"
+#~ msgid "No surveys have been created for this location."
+#~ msgstr "Pro tuto organizační jednotku nebyly vytvořeny žádné průzkumy."
+
+#~ msgctxt "staff.patron.ue.no_surveys_for_location.label"
+#~ msgid "No surveys have been created for this location."
+#~ msgstr "Pro tuto organizační jednotku nebyly vytvořeny žádné průzkumy."
 
 #~ msgid "Group"
 #~ msgstr "Skupina"
 
+#~ msgctxt "staff.patron_display.radio.mailing_address.label"
+#~ msgid "Mailing"
+#~ msgstr "Kontaktní adresa"
+
+#~ msgid "Name"
+#~ msgstr "Název"
+
 #~ msgid "Record ID:"
 #~ msgstr "ID záznamu:"
+
+#~ msgctxt "staff.patron.ue.nav.stat_categories.label"
+#~ msgid "5. Statistical Categories"
+#~ msgstr "5. Statistické kategorie"
+
+#~ msgctxt "staff.patron.ue.nav.contact_info.label"
+#~ msgid "2. Contact Info"
+#~ msgstr "2. Kontaktní informace"
+
+#~ msgctxt "staff.patron.ue.nav.user_id.label"
+#~ msgid "1. User Identification"
+#~ msgstr "1. Identifikace uživatele"
+
+#~ msgctxt "staff.patron.ue.nav.groups_permissions.label"
+#~ msgid "4. Groups and Permissions"
+#~ msgstr "4. Skupiny a oprávnění"
+
+#~ msgctxt "staff.patron.ue.nav.addresses.label"
+#~ msgid "3. Addresses"
+#~ msgstr "3. Adresy"
+
+#~ msgctxt "staff.patron.ue.view_errors.label"
+#~ msgid "View Errors"
+#~ msgstr "Zobrazit chyby"
+
+#~ msgctxt "staff.patron.ue.nav.surveys.label"
+#~ msgid "6. Surveys"
+#~ msgstr "6. Průzkumy"
+
+#~ msgctxt "staff.patron.ue.nav.finish.label"
+#~ msgid "7. Finish"
+#~ msgstr "7. Dokončit"
+
+#~ msgctxt "staff.patron.ue.required.label"
+#~ msgid " -- Required -- "
+#~ msgstr " -- Povinné -- "
+
+#~ msgctxt "staff.patron.ue.last_name.label"
+#~ msgid "Last Name"
+#~ msgstr "Příjmení"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.required.label"
+#~ msgid " -- Required -- "
+#~ msgstr " -- Povinné -- "
+
+#~ msgctxt "staff.patron.ue.county.label"
+#~ msgid "County"
+#~ msgstr "Kraj"
+
+#~ msgctxt "staff.patron.ue.secondary_id.label"
+#~ msgid "Secondary Identification"
+#~ msgstr "Číslo sekundárního dokladu"
+
+#~ msgctxt "staff.patron.ue.none_selected.label"
+#~ msgid " -- None Selected -- "
+#~ msgstr " -- Nic nevybráno -- "
+
+#~ msgctxt "staff.patron.ue.owned_address.label"
+#~ msgid "Address is owned by"
+#~ msgstr "Vlastník adresy"
+
+#~ msgctxt "staff.patron.ue.detach_this_address.label"
+#~ msgid "Detach this Address"
+#~ msgstr "Odpojit tuto adresu"
+
+#~ msgctxt "staff.patron.ue.forward.label"
+#~ msgid "Forward"
+#~ msgstr "Vpřed"
+
+#~ msgctxt "staff.patron.ue.back.label"
+#~ msgid "Back"
+#~ msgstr "Zpět"
+
+#~ msgctxt "staff.patron.ue.accoutn_expire_date.label"
+#~ msgid "Account Expiration Date"
+#~ msgstr "Platnost registrace do"
+
+#~ msgctxt "staff.patron.ue.internet_access_level.label"
+#~ msgid "Internet Access Level"
+#~ msgstr "Přístup k internetu"
+
+#~ msgctxt "staff.patron.ue.profile_group.label"
+#~ msgid "Profile Group"
+#~ msgstr "Skupina oprávnění"
+
+#~ msgctxt "staff.patron.ue.set_lead_account.label"
+#~ msgid "Set as Family or Group Lead Account"
+#~ msgstr "Nastavit jako vedoucí účet skupiny nebo rodiny"
+
+#~ msgctxt "staff.patron.ue.family_lead_account.label"
+#~ msgid "Family Lead Account"
+#~ msgstr "Hlavní účet rodiny"
+
+#~ msgctxt "staff.patron.ue.survey.label"
+#~ msgid "Survey"
+#~ msgstr "Průzkum"
+
+#~ msgctxt "staff.patron.ue.no_profile.label"
+#~ msgid "A profile group must be selected"
+#~ msgstr "Je nutné vybrat profil skupiny"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.view_errors.label"
+#~ msgid "View Errors"
+#~ msgstr "Zobrazit chyby"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.user_id.label"
+#~ msgid "1. User Identification"
+#~ msgstr "1. Identifikace uživatele"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.contact_info.label"
+#~ msgid "2. Contact Info"
+#~ msgstr "2. Kontaktní informace"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.addresses.label"
+#~ msgid "3. Addresses"
+#~ msgstr "3. Adresy"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.groups_permissions.label"
+#~ msgid "4. Groups and Permissions"
+#~ msgstr "4. Skupiny a oprávnění"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.finish.label"
+#~ msgid "7. Finish"
+#~ msgstr "7. Dokončit"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.surveys.label"
+#~ msgid "6. Surveys"
+#~ msgstr "6. Průzkumy"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.statistical_categories.label"
+#~ msgid "5. Statistical Categories"
+#~ msgstr "5. Statistické kategorie"
+
+#~ msgctxt "staff.patron.ue.reset.label"
+#~ msgid "Reset"
+#~ msgstr "Znovu nastavit"
+
+#~ msgctxt "staff.patron.ue.parent_guardian.label"
+#~ msgid "Parent or Guardian"
+#~ msgstr "Rodič nebo zákonný zástupce"
+
+#~ msgid "Other (Cell Phone)"
+#~ msgstr "Další telefon"
+
+#~ msgid "Example: 123-456-7890 or 123-456-7890 ex123"
+#~ msgstr "Příklad: 123-456-7890 nebo 123-456-7890 ex123"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.parent_guardian.label"
+#~ msgid "Parent or Guardian"
+#~ msgstr "Rodič nebo zákonný zástupce"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.last_name.label"
+#~ msgid "Last Name"
+#~ msgstr "Příjmení"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.county.label"
+#~ msgid "County"
+#~ msgstr "Kraj"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.profile_group.label"
+#~ msgid "Profile Group"
+#~ msgstr "Skupina oprávnění"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.ue_addr_detach.label"
+#~ msgid "Detach this Address"
+#~ msgstr "Odpojit tuto adresu"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.conuty.label"
+#~ msgid "County"
+#~ msgstr "Kraj"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.address_owned_by.label"
+#~ msgid "Address is owned by"
+#~ msgstr "Vlastník adresy"
+
+#~ msgid "Zip"
+#~ msgstr "PSČ"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.net_access_level.label"
+#~ msgid "Internet Access Level"
+#~ msgstr "Přístup k internetu"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.none_selected.label"
+#~ msgid " -- None Selected -- "
+#~ msgstr " -- Nic nevybráno -- "
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.back.label"
+#~ msgid "Back"
+#~ msgstr "Zpět"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.forward.label"
+#~ msgid "Forward"
+#~ msgstr "Vpřed"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.secondary_id.label"
+#~ msgid "Secondary Identification"
+#~ msgstr "Číslo sekundárního dokladu"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.set_family_group_lead_account.label"
+#~ msgid "Set as Family or Group Lead Account"
+#~ msgstr "Nastavit jako vedoucí účet skupiny nebo rodiny"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.account_expiration_date.label"
+#~ msgid "Account Expiration Date"
+#~ msgstr "Platnost registrace do"
+
+#~ msgctxt "staff.patron_display.radio.physical_address.label"
+#~ msgid "Billing"
+#~ msgstr "Adresa trvalého bydliště"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.mailing.label"
+#~ msgid "Mailing"
+#~ msgstr "Kontaktní adresa"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.billing.label"
+#~ msgid "Billing"
+#~ msgstr "Adresa trvalého bydliště"
+
+#~ msgid "Save User"
+#~ msgstr "Uložit údaje o uživateli"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.no_profile.label"
+#~ msgid "A profile group must be selected"
+#~ msgstr "Je nutné vybrat profil skupiny"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.address_label.label"
+#~ msgid "Address Label"
+#~ msgstr "Označení adresy"
+
+#~ msgid "You have unsaved changes."
+#~ msgstr "Neuložili jste změny."
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.survey.label"
+#~ msgid "Survey"
+#~ msgstr "Průzkum"
+
+#~ msgid "Save and Clone User"
+#~ msgstr "Uložit a \"klonovat\" uživatele"
+
+#~ msgid "Clear"
+#~ msgstr "Smazat"
+
+#~ msgid "Alias"
+#~ msgstr "Alias"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.pick_suffix.label"
+#~ msgid "- Pick -"
+#~ msgstr "- Výběr -"
+
+#~ msgctxt "staff.patron.ue.address_label.label"
+#~ msgid "Address Label"
+#~ msgstr "Označení adresy"
+
+#~ msgctxt "staff.patron.ue.choose.label"
+#~ msgid "- Pick -"
+#~ msgstr "- Výběr -"
+
+#~ msgid ""
+#~ "If using Receipt Templates with either the DOS LPT1 Print strategy or the "
+#~ "Custom/External Print strategy (with &quot;receipt.txt&quot;), the client "
+#~ "will try to translate any HTML markup to text, but this process may be "
+#~ "imperfect, and for the best fidelity you should consider reworking your "
+#~ "templates to be plain text if you are using a plain text print strategy.  "
+#~ "However, if using a plain text print strategy with HTML markup, you may "
+#~ "include special character codes in 2-digit hexadecimal in a &quot;hex&quot; "
+#~ "attribute for any given element.  Such codes will be converted to actual "
+#~ "characters and inserted at the place of the tag.  For example, &amp;lt;p "
+#~ "hex=&amp;quot;0C&amp;quot;&amp;gt;Hello World&amp;lt;/p&amp;gt; will "
+#~ "translate to form feed control character + Hello World. "
+#~ "&amp;lt;p&amp;gt;Hello World&amp;lt;/p hex=&amp;quot;0C&amp;quot;&amp;gt; "
+#~ "will translate to Hello World + form feed control character."
+#~ msgstr ""
+#~ "Pokud používáte šablony stvrzenek s použím strategie tisku DOS LPT1 nebo "
+#~ "uživatelskou / externí tiskovu strategii (s využitím souboru "
+#~ "&quot;receipt.txt&quot;), služební klient se pokusí přeložit jakékoliv HTML "
+#~ "značky do textu, ale tento proces nebude dokonaly. Pokud tedy používáte "
+#~ "strategii tisku v textovém režimu, pro zachování maximální věrnosti by bylo "
+#~ "vhodné přepracovat šablony do prostého textu. Nicméně pokud používáte "
+#~ "strategii tisku v textovém režimu s HTML značkami, můžete v atributech "
+#~ "&quot;hex&quot; zahrnout speciální dvoučíselné hexadecimální kódy znaků pro "
+#~ "každý daný prvek. Tyto kódy budou převedeny na aktuální znaky a vloženy na "
+#~ "místo tagu. Například &amp;lt;p hex=&amp;quot;0C&amp;quot;&amp;gt;Ahoj "
+#~ "světe&amp;lt;/p&amp;gt; bude převedeno na znak nové stránky + Ahoj světe. "
+#~ "&amp;lt;p&amp;gt;Ahoj světe&amp;lt;/p hex=&amp;quot;0C&amp;quot;&amp;gt; "
+#~ "bude převedeno na Ahoj světe znak nové stránky."
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.valid.label"
+#~ msgid "Valid"
+#~ msgstr "V platnosti"
+
+#~ msgctxt "staff.patron.ue.found_duplicate_patron.label"
+#~ msgid "Number of possible duplicate patron(s):"
+#~ msgstr "Počet možných duplicitních čtenářů:"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.found_duplicate_patron.label"
+#~ msgid "Number of possible duplicate patron(s):"
+#~ msgstr "Počet možných duplicitních čtenářů:"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.cancel.value"
+#~ msgid "Cancel"
+#~ msgstr "Storno"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.family_lead_account.label"
+#~ msgid "Family Lead Account"
+#~ msgstr "Vedoucí účet rodiny"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.barred.label"
+#~ msgid "Barred"
+#~ msgstr "Omezení transakcí"
+
+#~ msgctxt "staff.patron.ue.barred.label"
+#~ msgid "Barred"
+#~ msgstr "Omezení transakcí"
 
 #~ msgid "&Browse Unfulfilled Holds for this Pickup Lib"
 #~ msgstr "&Prohlížet nesplněné rezervace k vyzvednutí v této knihovně"
@@ -14549,12 +14541,141 @@ msgstr "Uvedená nastavení se mohla změnit kvůli zpětným voláním a přeps
 #~ msgid "Import"
 #~ msgstr "Importovat"
 
+#~ msgctxt "staff.patron.ue.day_phone.label"
+#~ msgid "Daytime Phone"
+#~ msgstr "Telefon během dne"
+
+#~ msgctxt "staff.patron.ue.valid.label"
+#~ msgid "Valid"
+#~ msgstr "V platnosti"
+
+#~ msgctxt "staff.patron.ue.delete_this_address.label"
+#~ msgid "Delete this Address"
+#~ msgstr "Smazat tuto adresu"
+
+#~ msgctxt "staff.patron.ue.stat_categories.label"
+#~ msgid "Statistical Categories"
+#~ msgstr "Statistické kategorie"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.reset.label"
+#~ msgid "Reset"
+#~ msgstr "Obnovit výchozí nastavení"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.suffix.label"
+#~ msgid "Suffix"
+#~ msgstr "Titul za jménem"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.evening_phone.label"
+#~ msgid "Evening Phone"
+#~ msgstr "Telefonní číslo večer"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.home_library.label"
+#~ msgid "Home Library"
+#~ msgstr "Domovská knihovna"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.daytime_phone.label"
+#~ msgid "Daytime Phone"
+#~ msgstr "Telefon během dne"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.mailing_address.label"
+#~ msgid "Mailing Address"
+#~ msgstr "Kontaktní adresa"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.label.label"
+#~ msgid "Label"
+#~ msgstr "Označení"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.ue_addr_delete.label"
+#~ msgid "Delete this Address"
+#~ msgstr "Smazat tuto adresu"
+
 #~ msgid "Approve pending address?  This operation will be be instantenous."
 #~ msgstr ""
 #~ "Potvrdit tuto nevyřízenou adresu. Tato operace bude mít okamžitý účinek."
 
+#~ msgid "Approve Pending Address"
+#~ msgstr "Potvrdit nevyřízenou adresu"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.stat_cat_name.label"
+#~ msgid "Statistical Category Name"
+#~ msgstr "Název statistické kategorie"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.alert_message.label"
+#~ msgid "Alert Message"
+#~ msgstr "Upozornění"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.juvenile.label"
+#~ msgid "Juvenile"
+#~ msgstr "Nezletilí"
+
+#~ msgid ""
+#~ "It appears that someone else was also editing this user. Saving the user now "
+#~ "will destroy their changes.  Click 'OK' to refresh the user and continue "
+#~ "editing. Click 'Cancel' to do nothing. Note that you will not be able to "
+#~ "save the user until this page has been refreshed."
+#~ msgstr ""
+#~ "Zdá se, že údaje o uživateli editoval i někdo jiný. Pokud teď údaje uložíte, "
+#~ "zrušíte jeho změny. Chcete-li obnovit údaje a pokračovat v editaci, klikněte "
+#~ "na tlačítko OK. Pokud nechcete udělat nic, zvolte Storno. Pozor, nebudete "
+#~ "moci uložit údaje uživatele dokud tato stránka nebude obnovena."
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.stat_categories.label"
+#~ msgid "Statistical Categories"
+#~ msgstr "Statistické kategorie"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.expire_date.label"
+#~ msgid "Expire Date"
+#~ msgstr "Registrace vyprší"
+
+#~ msgctxt "staff.server.admin.cash.date.select"
+#~ msgid "Date selector"
+#~ msgstr "Výběr data"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.date_selector.label"
+#~ msgid "Date selector"
+#~ msgstr "Výběr data"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.city.label"
+#~ msgid "City"
+#~ msgstr "Město / obec"
+
 #~ msgid "Mark as \"Claimed Returned\""
 #~ msgstr "Označit jako \"údajně vrácené\""
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.claims_returned_count.label"
+#~ msgid "Claims Returned Count"
+#~ msgstr "Počet údajně vrácených"
+
+#~ msgid ""
+#~ "This will reset the claims returned count for this user. Are you sure you "
+#~ "wish to perform this action?"
+#~ msgstr ""
+#~ "Tímto bude přenastaven na výchozí hodnotu počet knihovních jednotek  "
+#~ "\"údajně vrácených\". Opravdu chcete pokračovat?"
+
+#~ msgctxt "staff.patron.ue.primary_id_type.label"
+#~ msgid "Primary Identification Type"
+#~ msgstr "Primární identifikační doklad"
+
+#~ msgctxt "staff.patron.ue.primary_id.label"
+#~ msgid "Primary Identification"
+#~ msgstr "Číslo primárního dokladu"
+
+#~ msgctxt "staff.patron.ue.secondary_id_type.label"
+#~ msgid "Secondary Identification Type"
+#~ msgstr "Sekundární indentifikační doklad"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.secondary_id_type.label"
+#~ msgid "Secondary Identification Type"
+#~ msgstr "Sekundární indentifikační doklad"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.primary_id.label"
+#~ msgid "Primary Identification"
+#~ msgstr "Číslo primárního dokladu"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.primary_id_type.label"
+#~ msgid "Primary Identification Type"
+#~ msgstr "Primární identifikační doklad"
 
 #~ msgid ""
 #~ "This is the Evergreen staff client portal page. You can customize this with "
@@ -14569,3 +14690,6 @@ msgstr "Uvedená nastavení se mohla změnit kvůli zpětným voláním a přeps
 
 #~ msgid "Evergreen Staff Client Portal Page"
 #~ msgstr "Vstupní stránka pracovního klienta Evergreenu"
+
+#~ msgid "Print Page"
+#~ msgstr "Tisk stránky"

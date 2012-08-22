@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2012-04-28 14:17-0400\n"
-"PO-Revision-Date: 2009-12-21 08:22+0000\n"
+"POT-Creation-Date: 2012-08-03 10:01-0400\n"
+"PO-Revision-Date: 2012-08-13 18:25+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-30 04:46+0000\n"
-"X-Generator: Launchpad (build 15171)\n"
+"X-Launchpad-Export-Date: 2012-08-14 04:47+0000\n"
+"X-Generator: Launchpad (build 15791)\n"
 
 #: 1208.TITLE_LAST_COPY:71
 msgid "The last copy attached to a title is being removed or deleted"
@@ -87,6 +87,10 @@ msgstr "Առաջարկվող acq.funding_source_dedit չի գտնվել"
 #: 1641.ACTION_OPEN_CIRC_COUNT_BY_CIRC_MOD_NOT_FOUND:572
 msgid "The requested action_open_circ_count_by_circ_mod was not found"
 msgstr "Հարցվող action_open_circ_count_by_circ_mod չի գտնված"
+
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:967
+msgid "The lineitem detail has no owning_lib"
+msgstr "Տողի նյութի մանրամասը չունի owning_lib"
 
 #: 1608.METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND:473
 msgid "The requested metabib_subject_field_entry was not found"
@@ -297,10 +301,6 @@ msgstr "Հարցվող money_collections_tracker չի գտնված"
 msgid "An authority record already exists with the requested ARN"
 msgstr "Հեղինակավոր գրառումը արդեն գոյություն ունի պահանջվող ARN-ով"
 
-#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:990
-msgid "The caption/pattern still has dependent issuances"
-msgstr "Ձևը դեռ ունի կախված տրումներ"
-
 #: 5000.PERM_FAILURE:804
 msgid "Permission Denied"
 msgstr "Արտոնություն չկա"
@@ -436,6 +436,8 @@ msgstr "Հարցվող actor_org_address չի գտնված"
 #: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1002
 msgid "Checkin attempted on item during minimum transit checkin interval."
 msgstr ""
+"Նյութի փորձ է արվել հետ ընդունել տրանզիտ հետ ընդունումների նվազագույն "
+"միջակայքում"
 
 #: 1501.BIBLIO_RECORD_ENTRY_NOT_FOUND:184
 msgid "The requested biblio_record_entry was not found"
@@ -471,7 +473,7 @@ msgstr "Հարցվող metabib_metarecord_source_map չի գտնված"
 
 #: 4.CACHE_MISS:24
 msgid "A cached object could not be retrieved by the given reference."
-msgstr ""
+msgstr "Քեշավորված օբյեկտը հնարավոր չէ հետ կանչել տրված տեղեկատուի կողմից"
 
 #: 1612.CONFIG_RULES_MAX_FINE_NOT_FOUND:485
 msgid "The requested config_rules_max_fine was not found"
@@ -627,7 +629,7 @@ msgstr ""
 
 #: 1611.ACTOR_STAT_CAT_ENTRY_DEFAULT_NOT_FOUND:482
 msgid "The requested actor_stat_cat_entry_default was not found"
-msgstr ""
+msgstr "Առաջարկվող actor_stat_cat_entry_default չի գտնված"
 
 #: 1535.METABIB_AUTHOR_FIELD_ENTRY_NOT_FOUND:262
 msgid "The requested metabib_author_field_entry was not found"
@@ -864,6 +866,8 @@ msgstr "Հարցվող action_hold_request չի գտնված"
 #: 8011.SKIP_ASSET_CHANGED:946
 msgid "Asset status was changed since the offline transaction was recorded"
 msgstr ""
+"Ակտիվների վճակը փոխվել է սկսած այն պահից երբ ցանցից անջատված տրանզակցիա է "
+"գրանցվել"
 
 #: 1212.PATRON_EXCEEDS_OVERDUE_COUNT:84
 msgid "The patron has too many overdue items"
@@ -933,6 +937,8 @@ msgid ""
 "While you were trying to make payments, this account's transaction history "
 "changed.  Please go back and try again."
 msgstr ""
+"Քանի դեռ դու փորձ էիր անում կատարել վճարումներ, այս հաշվի տրանզակցիայի "
+"պատմությունը փոխվել է։ Գնա հետ և նորից փորձի։"
 
 #: 1568.CONFIG_COPY_STATUS_NOT_FOUND:356
 msgid "The requested config_copy_status was not found"
@@ -953,6 +959,14 @@ msgstr "Օգտվողը փորձ է արել գրել գաղտնաբառ թույ
 #: 9001.REPORT_REPORT_EXISTS:954
 msgid "A report with the given name and folder already exists"
 msgstr "Տրված անունով և թղթապանակով հաշվետվությունը արդեն գոյություն ունի"
+
+#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1007
+msgid ""
+"A serial pattern code has been configured that fails to conform to MFHD "
+"standards for fields 853-855."
+msgstr ""
+"Պարբերականի ձևանմուշի կոդը կարգաբերվել է որ չկարողանա նմանեցել MFHD "
+"ստանդարտները 853-855 դաշտերի համար։"
 
 #: 1705.VOLUME_LABEL_EXISTS:723
 msgid "A volume with the same label, title and owning library exists"
@@ -1017,6 +1031,10 @@ msgstr "Հարցվող container_biblio_record_entry_bucket_item չի գտնվա
 #: 1000.LOGIN_FAILED:28
 msgid "User login failed"
 msgstr "Օգտվողի գրանցումը ձախողվեգ"
+
+#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:990
+msgid "The caption/pattern still has dependent issuances"
+msgstr "Ձևը դեռ ունի կախված տրումներ"
 
 #: 1873.ACQ_CURRENCY_TYPE_NOT_FOUND:682
 msgid "The requested acq.currency_type was not found"
@@ -1100,7 +1118,7 @@ msgstr "Պահանջվող acq.lineitem_attr չի գտնվել"
 
 #: 1715.HOLD_SUSPEND_AFTER_CAPTURE:753
 msgid "Attempt to suspend a hold after it has been captured."
-msgstr ""
+msgstr "Պահումը կասեցնելու փորձ այն բանից հետո երբ այն բռնվել է։"
 
 #: 1708.MONEY_COLLECTIONS_TRACKER_EXISTS:732
 msgid ""
@@ -1125,6 +1143,8 @@ msgid ""
 "The user you have attempted to delete cannot be deleted because it has open "
 "circulations and/or unpaid bills."
 msgstr ""
+"Օգտվողին ում փոերձում ես ջնջել հնարավոր չէ ջնջել քանի որ այն ունի բաց տացքեր "
+"և/կամ չվճարված հաշիվներ։"
 
 #: 1845.ACQ_PROVIDER_NOT_FOUND:616
 msgid "The requested acq.provider was not found"
@@ -1186,10 +1206,6 @@ msgstr "Հարցվող actor_org_unit չի գտնված"
 msgid "The requested container_call_number_bucket_item was not found"
 msgstr "Հարցվող container_call_number_bucket_item չի գտնված"
 
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:967
-msgid "The lineitem detail has no owning_lib"
-msgstr "Տողի նյութի մանրամասը չունի owning_lib"
-
 #: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:994
 msgid ""
 "Units cannot be created for the given item because its associated "
@@ -1233,12 +1249,6 @@ msgstr "Հարցվող container_user_bucket_item չի գտնված"
 #: 1615.ACTION_NON_CATALOGED_CIRCULATION_NOT_FOUND:494
 msgid "The requested action_non_cataloged_circulation was not found"
 msgstr "Հարցվող action_non_cataloged_circulation չի գտնված"
-
-#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1007
-msgid ""
-"A serial pattern code has been configured that fails to conform to MFHD "
-"standards for fields 853-855."
-msgstr ""
 
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:461
 msgid "The requested money_user_summary was not found"
