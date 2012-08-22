@@ -1,3 +1,513 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit b69c3b2967209e6f206f6309c97504af1f3a509b
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Tue Aug 21 15:45:31 2012 -0400
+
+    Documentation: 2.2.2 release notes; adjust upgrade instructions for 2.2.2
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+0	72	docs/RELEASE_NOTES_2_2_1.txt
+37	0	docs/RELEASE_NOTES_2_2_2.txt
+12	12	docs/installation/server_upgrade.txt
+ delete mode 100644 docs/RELEASE_NOTES_2_2_1.txt
+ create mode 100644 docs/RELEASE_NOTES_2_2_2.txt
+
+commit 7a120b12eab6fe618b15c12f8d00b168f33f9f7b
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Aug 16 15:40:58 2012 -0400
+
+    Sanity check cstore limit/offset param values
+    
+    Certain cstore calls (direct / json_query) that support limit/offset
+    params called with a non-string / non-numeric value
+    
+    e.g. { "limit": null }
+    
+    result in a cstore segfault as it tries to call atoi(NULL) under the
+    covers.  This patch prevents this by verifying that the limit/offset
+    values are actual strings or numbers (i.e. return a value from
+    jsonObjectGetString) and not JSON_NULL, etc.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+20	12	Open-ILS/src/c-apps/oils_sql.c
+
+commit 53cbfd2242c3be791ae1ba4d68ccdc2bc8557f73
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Aug 21 17:23:26 2012 -0400
+
+    Protect against installs with no locales
+    
+    Installs from source outside of tarballs may not have a built locale,
+    which would result in a make error and an aborted install. Protect
+    against that by checking for the existence of the locale install
+    directory before trying to copy the files into place.
+    
+    In the weird case that Open-ILS/src/data/locale has been generated but
+    there are no files in it, protect against erroring out via the judicious
+    application of the - flag.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+5	3	Open-ILS/src/Makefile.am
+
+commit e0337805221d7465aa3cbf20f36548155e4fa099
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Aug 20 14:11:50 2012 -0400
+
+    TPAC: Standardize i18n file installation
+    
+    Make TPAC i18n files act like any other i18n file. In short:
+    
+    1. When in build/i18n, a 'make LOCALE=fr-CA install' will copy
+       the i18n file into the Open-ILS/src/data/locale directory.
+    2. In the build root, a 'make install' will copy all files from
+       Open-ILS/src/data/locale into (by default) the
+       /openils/var/data/locale directory.
+    
+    This also means that when tarballs are created, all of the locales will
+    get packaged appropriately.
+    
+    This commit also updates eg_vhost.conf to provide working out-of-the-box
+    examples for any installed locales, by using the names of the actual
+    PO files, and adds some contextual comments to explain how the
+    configuration directives work.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+12	3	Open-ILS/examples/apache/eg_vhost.conf
+4	0	Open-ILS/src/Makefile.am
+3	0	build/i18n/Makefile
+
+commit a575bb9675b33635a15a871cb5538794bf1e64cc
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Jul 30 11:30:50 2012 -0400
+
+    TPAC: Autosuggest focus() throws a JS error
+    
+    On page load, the Dojo autosuggest code tries to set focus to the
+    element with the ID "search_box" - which is fine, except when the page
+    does not have said ID. Therefore, test for the existence of the ID
+    before setting focus to it.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Art Rhyno <art632000@yahoo.ca>
+
+9	6	Open-ILS/src/templates/opac/parts/js.tt2
+
+commit a907bc50f586c99624c8781ba0bcf15383d5c38a
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Sat Aug 4 10:26:25 2012 -0400
+
+    TPAC locale picker: use POST instead of GET
+    
+    Users could (deliberately or not) change another's language
+    preferences by sharing links with the "set_eg_locale" GET param given
+    the locale picker's current behaviour. By switching to a POST param, we
+    prevent this result from accidentally occurring.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Art Rhyno <art632000@yahoo.ca>
+
+1	1	Open-ILS/src/templates/opac/parts/locale_picker.tt2
+
+commit cc38fdc351e545f29ef783a3a194d5f000826485
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Aug 16 15:11:29 2012 -0400
+
+    Stamping upgrade script for copy editor field hiding permission
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+11	0	Open-ILS/src/sql/Pg/upgrade/0736.data.copy_editor_perms.sql
+0	6	Open-ILS/src/sql/Pg/upgrade/XXXX.data.copy_editor_perms.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0736.data.copy_editor_perms.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.copy_editor_perms.sql
+
+commit 1b6f161984ed82d0a14cc74d303806975099b3b8
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Thu Aug 16 14:58:01 2012 -0400
+
+    Update permission name to match existing ones
+    
+    To be consistent with our previous naming scheme for these.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/XXXX.data.copy_editor_perms.sql
+
+commit 89f3acd5984b0391fc7e30b9d602ea63b0c654a6
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Aug 16 13:45:23 2012 -0400
+
+    Provide permission for copy editor field hiding
+    
+    We can adjust what fields are available in the copy editor in 2.2+, but that
+    requires the general UPDATE_ORG_SETTING permission.  The YAOUS-specific
+    permission here allows more granular control, so that staff can be given the
+    ability to adjust only that one OU setting.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+7	3	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+6	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.copy_editor_perms.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.copy_editor_perms.sql
+
+commit 7e325cde9138b6cac08ee11eaa80ccf70a9c14ed
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Jul 16 13:27:54 2012 -0400
+
+    Hide OPAC-invisible holdings from SRU/Z39.50
+    
+    The basic_holdings Supercat method filtered out deleted call numbers and
+    copies, but didn't filter out copies based on the OPAC visibility status
+    of copy location / status / the copy itself. This has undesired results
+    when third-party services request copies via SRU or Z39.50 and expose
+    copies that should not be visible to the public.
+    
+    We wrap all of the visibility and deletedness checks for a given copy up
+    into a subroutine so that we can avoid repeating ourselves in the
+    basic_holdings logic. Also, if we missed a test, we can add it in one
+    handy place :)
+    
+    (Thanks to Galen Charlton for finding two missing tests: circ lib
+    visibility and owning lib visibility!)
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Art Rhyno <art632000@yahoo.ca>
+
+20	2	Open-ILS/src/perlmods/lib/OpenILS/Application/SuperCat.pm
+
+commit 42a3ff59cc82ee95a842fbfa1181054bd7d63d5e
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Thu Jul 26 16:45:24 2012 -0400
+
+    Trying to update patron CSS color fails here, so don't try
+    
+    After modifying user standing penalties ("messages" in the staff client
+    patron interface), you could get this error message in an alert() dialog:
+        TypeError: patron.display is undefined.
+    
+    We were apparently trying to use patron.util.set_patron_css() wrongly,
+    so the commented out changed verison of the call got farther, but stopped at
+        ...penalties[i].standing_penalty().name is not a function.
+    
+    Which probably has something to do with unfleshed data.  Somebody can
+    get to the bottom of this if they want, but for now it's easier just not
+    to try to do this and make the alert() dialog go away.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+3	3	Open-ILS/xul/staff_client/server/patron/standing_penalties.js
+
+commit 5669ab7e55d23303bfb7689e6c05c0fa5be1be9a
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Tue Jul 31 15:35:21 2012 -0400
+
+    Check for filled hold on transit checkin
+    
+    "Fill related hold" can grab a hold out from under a transit, so check for
+    filled holds in addition to canceled ones.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit 97d89ddf5022b415d91a2fe2e1e6c54f3a2f4d79
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Tue Apr 10 09:10:46 2012 -0400
+
+    SuperCat fixes - Child Init
+    
+    Sometimes it seems that child_init has not run properly for supercat.
+    
+    This attempts to fix that by checking for the global appsession objects. If
+    they are not there we run child_init. The function that does this is being
+    called from all handler entry functions.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+28	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/SuperCat.pm
+
+commit 13869d72c78dae42b9a43beeed40a557f0513e13
+Author: Ben Shum <bshum@biblio.org>
+Date:   Mon Aug 6 11:11:54 2012 -0400
+
+    TPAC - Fix footer on hold history page
+    
+    The hold history page was missing an ending div tag to complete the
+    block which leads to the footer being generated incorrectly on that
+    page.
+    
+    Adding the ending tag repairs the display of the footer to match all
+    the other pages.
+    
+    Credit to Melissa Lefebvre for noticing this discrepancy.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	0	Open-ILS/src/templates/opac/myopac/hold_history.tt2
+
+commit 0d896279df3649f44a1622cb990788aa6023a69b
+Author: Melissa Lefebvre <mlefebvre@biblio.org>
+Date:   Tue Aug 14 12:58:18 2012 -0400
+
+    Change grammar for lost and missing failure messages
+    
+    Update to the lost and missing failure wording to make it
+    gramatically correct.  Removed the word "has" from both
+    messages.
+    
+    Signed-off-by: Melissa Lefebvre <mlefebvre@biblio.org>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2	2	Open-ILS/src/extras/ils_events.xml
+
+commit 3c4ae14df412d70c445027eff74d4c144418670c
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Tue Aug 14 10:50:11 2012 -0400
+
+    Physical Location Fixes/Enhancements
+    
+    Teach the physical location retrieval function about using an ENV var.
+    
+    This allows a subdomain to force a specific physical location, say by adding
+    to their apache config:
+    
+    SetEnv physical_loc 4
+    
+    Rewriterules could also be used for more dynamic configuration.
+    
+    Also, as a fix:
+    
+    Have preferred library use the stored physical location instead of assuming
+    that CGI has the setting all the time.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+
+3	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader.pm
+2	2	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Util.pm
+
+commit 077cb9a1dc65d361450f21430c8f1b5eaaed17e1
+Author: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+Date:   Wed Aug 15 09:57:59 2012 -0400
+
+    Documentation: Fix typos and include references in root.txt.
+    
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+2	2	docs/root.txt
+
+commit eca49e528ea2987130130d87670c6283861b19bf
+Author: Ben Shum <bshum@biblio.org>
+Date:   Tue Aug 7 13:48:31 2012 -0400
+
+    TPAC - fix pickup locations for edit holds
+    
+    When a patron goes to edit a hold in TPAC, they have the option to
+    choose a different pickup location. Unfortunately, it looks like that
+    dropdown does not prevent them from selecting locations that aren't
+    normally allowed for pickups, such as system groups or consortium
+    itself.
+    
+    This patch adds a check for 'can_have_vols_only' to the edit holds
+    screen.
+    
+    Credit to Melissa Lefebvre for finally nailing down the source of
+    the issue.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+1	1	Open-ILS/src/templates/opac/myopac/holds/edit.tt2
+
+commit addef21ade78b1abc52e8ced611b1c162c7c2d65
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Aug 10 14:59:50 2012 -0400
+
+    Default to current fiscal year in ACQ order upload
+    
+    * Adds a new API call to determine the current fiscal year for a given
+      org unit:  open-ils.acq.org_unit.current_fiscal_year
+    
+    * Use open-ils.acq.org_unit.current_fiscal_year to populate the correct
+      fiscal year in the ACQ order upload selector.
+    
+    This addresses part 2 of LP 1031927
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+37	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Financials.pm
+25	4	Open-ILS/web/js/ui/default/acq/picklist/upload.js
+
+commit a242871dcb6d4c9e7c4630305a40ffb1be218cc3
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Aug 10 14:59:29 2012 -0400
+
+    Enable pcrud access to fiscal year / fiscal calendar
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+4	12	Open-ILS/examples/fm_IDL.xml
+
+commit c997cba9081b07db3779c84ab6b11baae789cfff
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Aug 10 14:06:36 2012 -0400
+
+    Fiscal year selector in ACQ order record upload
+    
+    * Support a 'fiscal_year' parameter to ACQ order record upload API.
+    * Adds a new "Fiscal Year" selector to the upload form to facilitate
+      uploading orders to different fiscal years.
+    
+    This partially resolves LP 1031927 by allowing manual selection of the
+    correct fiscal year.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+7	5	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Order.pm
+10	0	Open-ILS/src/templates/acq/picklist/upload.tt2
+29	1	Open-ILS/web/js/ui/default/acq/picklist/upload.js
+
+commit 8ab1bd5f05da9dd91a94ad3c1b7f1acf9303496e
+Author: Ben Shum <bshum@biblio.org>
+Date:   Sun Aug 12 03:25:49 2012 -0400
+
+    TPAC - add library scoping to shelf browser
+    
+    The shelf browser currently uses the 'loc' variable to define scoping and
+    limit browsing to specific org units. However, since much of the scoping
+    actually uses 'locg', the scoping was broken for the shelf browser.
+    
+    Additionally, under Advanced Search's Numeric Search, the option for
+    'Call Number (Shelf Browse)' only applies the 'cn' variable to searches
+    and never adds the search scope, despite the search library now being
+    an available filter choice.
+    
+    Based on suggestion by Dan Scott in IRC, this patch uses the function for
+    _get_search_lib() to retrieve the search library and add it to both parts
+    of the shelf browser.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Record.pm
+1	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+
+commit 4070d823f4f073fc3ae54891fa005a69d1a54a5f
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Wed Jul 25 13:43:38 2012 -0400
+
+    Make opac/results.tt2 remember facet when sorting, etc.
+    
+    Add a hidden field in the search form and set its value to the value
+    of the CGI 'facet' param if the facet parameter is set.  This appears
+    to work for multiple facets.  Clearing a facet is as simple as clicking
+    on the gray-backgounded facet name.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+3	0	Open-ILS/src/templates/opac/results.tt2
+
+commit eff0427eb257bf01d258391aa9fd3a396cfa285d
+Author: Ben Shum <bshum@biblio.org>
+Date:   Thu Aug 9 12:27:57 2012 -0400
+
+    TPAC - fix alignment of "You are now browsing..." in shelf browser
+    
+    The "You are now browsing..." message does not align to the center of the
+    page. Changing the <div> to a <p> seems to properly align the text.
+    
+    Along the way, we should remove the extra <span> and <strong> (the strong
+    is redundant with the css being inherited by color_4 class) and make the
+    new single line message more i18n-friendly for future translations.
+    
+    Credit to Michael Peters for noticing the problem and thanks to Dan Scott,
+    Lebbeous Fogle-Weekley, and Thomas Berezansky for help via IRC for the
+    i18n-bits.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+3	4	Open-ILS/src/templates/opac/parts/record/cnbrowse.tt2
+
+commit 6d6bb833d35a39a3b809cd7a48ec4f4c933a09d7
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Sun Aug 12 15:16:01 2012 -0400
+
+    Fix TPAC shelf browser's previous link
+    
+    Line fix suggested by Thomas Berezansky.
+    
+    The cnoffset was strictly checking for values that start with a digit.
+    But negative numbers start with a "-" instead. Once this check was
+    changed, the previous link will continue to move further into negative
+    offsets.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	1	Open-ILS/src/templates/opac/parts/record/cnbrowse.tt2
+
+commit e4a2048d4e5840d2e589532ad014374b5598c365
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Aug 9 18:25:00 2012 -0400
+
+    Authorities: Fix broken UI due to new XUL/Dojo/regressions
+    
+    New versions of XUL, since Firefox 10, hate dojo.query("foo bar"), so we
+    have to refactor it to use dojo.query("foo").query("bar") instead. At
+    least until we upgrade to a new version of Dojo.
+    
+    In addition, 522d8d82 introduced a regression meaning that the text of
+    the authorities was no longer wrapped in a SPAN element with a class of
+    "text". That in turn meant that the Dojo queries weren't picking up the
+    labels for the merge box, leaving no visual indication to the user as to
+    what authorities exactly were being merged. So, repair that.
+    
+    Also, similar to a fix for the MFHD editor, set the initial height of
+    the spawned MARC Editor for an authority record to something reasonable.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    
+    Conflicts:
+    	Open-ILS/web/js/ui/default/cat/authority/list.js
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+15	7	Open-ILS/web/js/ui/default/cat/authority/list.js
+
+commit 796a3e95acb558d319c35f46dde3f888ca60fdfe
+Author: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+Date:   Thu Aug 9 14:53:32 2012 -0400
+
+    Documentation: Update upgrade instructions for 2.2.1 release.
+    
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+11	10	docs/installation/server_upgrade.txt
