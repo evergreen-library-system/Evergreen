@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2012-04-28 14:17-0400\n"
+"POT-Creation-Date: 2012-08-03 10:01-0400\n"
 "PO-Revision-Date: 2012-05-01 13:55+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <PetrKubiska@seznam.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-05-02 05:27+0000\n"
-"X-Generator: Launchpad (build 15177)\n"
+"X-Launchpad-Export-Date: 2012-08-04 05:11+0000\n"
+"X-Generator: Launchpad (build 15742)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -90,6 +90,10 @@ msgstr "Požadovaný acq.funding_source_dedit  nebyl nalezen"
 #: 1641.ACTION_OPEN_CIRC_COUNT_BY_CIRC_MOD_NOT_FOUND:572
 msgid "The requested action_open_circ_count_by_circ_mod was not found"
 msgstr "Požadovaný action_open_circ_count_by_circ_mod nebyl nalezen"
+
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:967
+msgid "The lineitem detail has no owning_lib"
+msgstr "Detail položky neobsahuje owning_lib"
 
 #: 1608.METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND:473
 msgid "The requested metabib_subject_field_entry was not found"
@@ -299,10 +303,6 @@ msgstr "Požadovaný money_collections_tracker nebyl nalezen"
 #: 1651.AUTHORITY_RECORD_NUMBER_EXISTS:602
 msgid "An authority record already exists with the requested ARN"
 msgstr "Záznam s požadovaným ARN (číslem autoritního záznamu) již existuje"
-
-#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:990
-msgid "The caption/pattern still has dependent issuances"
-msgstr "Označení /schéma dosud obsahuje závislé chronologie /číslování"
 
 #: 5000.PERM_FAILURE:804
 msgid "Permission Denied"
@@ -960,6 +960,13 @@ msgstr "Uživatel se pokusil o nastavení \"slabého\" hesla."
 msgid "A report with the given name and folder already exists"
 msgstr "Zpráva s uvedeným jménem a složka již existují"
 
+#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1007
+msgid ""
+"A serial pattern code has been configured that fails to conform to MFHD "
+"standards for fields 853-855."
+msgstr ""
+"Nastavené schéma seriálu neodpovídá standardům MFHD pro pole 853-855."
+
 #: 1705.VOLUME_LABEL_EXISTS:723
 msgid "A volume with the same label, title and owning library exists"
 msgstr "Svazek s touto značkou, názvem a vlastnickou knihovnou již existuje"
@@ -1024,6 +1031,10 @@ msgstr "Požadovaný container_biblio_record_entry_bucket_item nebyl nalezen"
 #: 1000.LOGIN_FAILED:28
 msgid "User login failed"
 msgstr "Přihlášení se nezdařilo"
+
+#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:990
+msgid "The caption/pattern still has dependent issuances"
+msgstr "Označení /schéma dosud obsahuje závislé chronologie /číslování"
 
 #: 1873.ACQ_CURRENCY_TYPE_NOT_FOUND:682
 msgid "The requested acq.currency_type was not found"
@@ -1196,10 +1207,6 @@ msgstr "Požadovaný actor_org_unit wa nebyl nalezen"
 msgid "The requested container_call_number_bucket_item was not found"
 msgstr "Požadovaný container_call_number_bucket_item nebyl nalezen"
 
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:967
-msgid "The lineitem detail has no owning_lib"
-msgstr "Detail položky neobsahuje owning_lib"
-
 #: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:994
 msgid ""
 "Units cannot be created for the given item because its associated "
@@ -1243,13 +1250,6 @@ msgstr "Požadovaný container_user_bucket_item nebyl nalezen"
 #: 1615.ACTION_NON_CATALOGED_CIRCULATION_NOT_FOUND:494
 msgid "The requested action_non_cataloged_circulation was not found"
 msgstr "Požadovaný action_non_cataloged_circulation nebyl nalezen"
-
-#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1007
-msgid ""
-"A serial pattern code has been configured that fails to conform to MFHD "
-"standards for fields 853-855."
-msgstr ""
-"Nastavené schéma seriálu neodpovídá standardům MFHD pro pole 853-855."
 
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:461
 msgid "The requested money_user_summary was not found"

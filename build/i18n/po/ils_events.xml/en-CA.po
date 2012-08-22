@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > ils_events.xml.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2012-04-28 14:17-0400\n"
+"POT-Creation-Date: 2012-08-03 10:01-0400\n"
 "PO-Revision-Date: 2012-05-01 20:03+0000\n"
 "Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-05-02 05:27+0000\n"
-"X-Generator: Launchpad (build 15177)\n"
+"X-Launchpad-Export-Date: 2012-08-04 05:12+0000\n"
+"X-Generator: Launchpad (build 15742)\n"
 "X-Poedit-Country: CANADA\n"
 "X-Poedit-Language: English\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -90,6 +90,10 @@ msgstr "The requested acq.funding_source_dedit was not found"
 #: 1641.ACTION_OPEN_CIRC_COUNT_BY_CIRC_MOD_NOT_FOUND:572
 msgid "The requested action_open_circ_count_by_circ_mod was not found"
 msgstr "The requested action_open_circ_count_by_circ_mod was not found"
+
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:967
+msgid "The lineitem detail has no owning_lib"
+msgstr "The lineitem detail has no owning_lib"
 
 #: 1608.METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND:473
 msgid "The requested metabib_subject_field_entry was not found"
@@ -303,10 +307,6 @@ msgstr "The requested money_collections_tracker was not found"
 #: 1651.AUTHORITY_RECORD_NUMBER_EXISTS:602
 msgid "An authority record already exists with the requested ARN"
 msgstr "An authority record already exists with the requested ARN"
-
-#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:990
-msgid "The caption/pattern still has dependent issuances"
-msgstr "The caption/pattern still has dependent issuances"
 
 #: 5000.PERM_FAILURE:804
 msgid "Permission Denied"
@@ -966,6 +966,14 @@ msgstr "The user attempted to set their password to a weak value."
 msgid "A report with the given name and folder already exists"
 msgstr "A report with the given name and folder already exists"
 
+#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1007
+msgid ""
+"A serial pattern code has been configured that fails to conform to MFHD "
+"standards for fields 853-855."
+msgstr ""
+"A serial pattern code has been configured that fails to conform to MFHD "
+"standards for fields 853-855."
+
 #: 1705.VOLUME_LABEL_EXISTS:723
 msgid "A volume with the same label, title and owning library exists"
 msgstr "A volume with the same label, title and owning library exists"
@@ -1030,6 +1038,10 @@ msgstr ""
 #: 1000.LOGIN_FAILED:28
 msgid "User login failed"
 msgstr "User login failed"
+
+#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:990
+msgid "The caption/pattern still has dependent issuances"
+msgstr "The caption/pattern still has dependent issuances"
 
 #: 1873.ACQ_CURRENCY_TYPE_NOT_FOUND:682
 msgid "The requested acq.currency_type was not found"
@@ -1203,10 +1215,6 @@ msgstr "The requested actor_org_unit was not found"
 msgid "The requested container_call_number_bucket_item was not found"
 msgstr "The requested container_call_number_bucket_item was not found"
 
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:967
-msgid "The lineitem detail has no owning_lib"
-msgstr "The lineitem detail has no owning_lib"
-
 #: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:994
 msgid ""
 "Units cannot be created for the given item because its associated "
@@ -1250,14 +1258,6 @@ msgstr "The requested container_user_bucket_item was not found"
 #: 1615.ACTION_NON_CATALOGED_CIRCULATION_NOT_FOUND:494
 msgid "The requested action_non_cataloged_circulation was not found"
 msgstr "The requested action_non_cataloged_circulation was not found"
-
-#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1007
-msgid ""
-"A serial pattern code has been configured that fails to conform to MFHD "
-"standards for fields 853-855."
-msgstr ""
-"A serial pattern code has been configured that fails to conform to MFHD "
-"standards for fields 853-855."
 
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:461
 msgid "The requested money_user_summary was not found"

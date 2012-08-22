@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-04-28 14:17-0400\n"
+"POT-Creation-Date: 2012-08-03 10:01-0400\n"
 "PO-Revision-Date: 2012-05-25 22:58+0000\n"
 "Last-Translator: Tomas Abril <Unknown>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-05-26 05:09+0000\n"
-"X-Generator: Launchpad (build 15288)\n"
+"X-Launchpad-Export-Date: 2012-08-04 05:12+0000\n"
+"X-Generator: Launchpad (build 15742)\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -97,6 +97,10 @@ msgstr "O objeto \"funding_source_dedit\" solicitado não foi encontrado"
 msgid "The requested action_open_circ_count_by_circ_mod was not found"
 msgstr ""
 "O objeto \"action_open_circ_count_by_circ_mod\" solicitado não foi encontrado"
+
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:967
+msgid "The lineitem detail has no owning_lib"
+msgstr "O detalhe do item-de-linha não possui bib proprietária"
 
 #: 1608.METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND:473
 msgid "The requested metabib_subject_field_entry was not found"
@@ -316,10 +320,6 @@ msgstr "O objeto \"money_collections_tracker\" solicitado não foi encontrado"
 #: 1651.AUTHORITY_RECORD_NUMBER_EXISTS:602
 msgid "An authority record already exists with the requested ARN"
 msgstr "Um registro de autoridade já existe com o ARN solicitado"
-
-#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:990
-msgid "The caption/pattern still has dependent issuances"
-msgstr ""
 
 #: 5000.PERM_FAILURE:804
 msgid "Permission Denied"
@@ -970,6 +970,12 @@ msgstr ""
 msgid "A report with the given name and folder already exists"
 msgstr ""
 
+#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1007
+msgid ""
+"A serial pattern code has been configured that fails to conform to MFHD "
+"standards for fields 853-855."
+msgstr ""
+
 #: 1705.VOLUME_LABEL_EXISTS:723
 msgid "A volume with the same label, title and owning library exists"
 msgstr ""
@@ -1036,6 +1042,10 @@ msgstr ""
 #: 1000.LOGIN_FAILED:28
 msgid "User login failed"
 msgstr "O login de usuário falhou"
+
+#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:990
+msgid "The caption/pattern still has dependent issuances"
+msgstr ""
 
 #: 1873.ACQ_CURRENCY_TYPE_NOT_FOUND:682
 msgid "The requested acq.currency_type was not found"
@@ -1209,10 +1219,6 @@ msgid "The requested container_call_number_bucket_item was not found"
 msgstr ""
 "O objeto \"container_call_number_bucket_item\" solicitado não foi encontrado"
 
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:967
-msgid "The lineitem detail has no owning_lib"
-msgstr "O detalhe do item-de-linha não possui bib proprietária"
-
 #: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:994
 msgid ""
 "Units cannot be created for the given item because its associated "
@@ -1256,12 +1262,6 @@ msgstr ""
 msgid "The requested action_non_cataloged_circulation was not found"
 msgstr ""
 "O objeto \"action_non_cataloged_circulation\" solicitado não foi encontrado"
-
-#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1007
-msgid ""
-"A serial pattern code has been configured that fails to conform to MFHD "
-"standards for fields 853-855."
-msgstr ""
 
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:461
 msgid "The requested money_user_summary was not found"

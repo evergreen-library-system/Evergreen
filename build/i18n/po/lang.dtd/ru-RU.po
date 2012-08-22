@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-28 14:16-0400\n"
+"POT-Creation-Date: 2012-08-03 10:01-0400\n"
 "PO-Revision-Date: 2011-10-05 03:10+0000\n"
 "Last-Translator: Dan Scott <dan@coffeecode.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-30 04:48+0000\n"
-"X-Generator: Launchpad (build 15171)\n"
+"X-Launchpad-Export-Date: 2012-08-04 05:14+0000\n"
+"X-Generator: Launchpad (build 15742)\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Bookmarks: 1332,1333,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
@@ -991,6 +991,30 @@ msgstr "&Проверить"
 #: staff.auth.verify.retrieve.accesskey
 msgid "&Retrieve"
 msgstr "&Получить"
+
+#: staff.auth.change_type.label
+#: staff.auth.change_type.accesskey
+msgid "&New Login Type:"
+msgstr ""
+
+#: staff.auth.change_type_description
+msgid ""
+"Temporary logins expire with a few minutes of inactivity. Staff logins are "
+"the same as the initial login into the staff client. Permanent will discard "
+"the existing login session and replace it with the new one."
+msgstr ""
+
+#: staff.auth.change_type_staff
+msgid "Staff"
+msgstr ""
+
+#: staff.auth.change_type_temporary
+msgid "Temporary"
+msgstr ""
+
+#: staff.auth.change_type_permanent
+msgid "Permanent"
+msgstr ""
 
 #: staff.bills_current_payment_label
 msgid "Current Payment"
@@ -2240,9 +2264,8 @@ msgid "Adult"
 msgstr "Взрослый"
 
 #: staff.copy.attr.stat.audience.example2
-msgctxt "staff.copy.attr.stat.audience.example2"
 msgid "Juvenile"
-msgstr "Молодой"
+msgstr ""
 
 #: staff.copy.attr.stat.audience.example3
 msgid "Preschool"
@@ -2852,6 +2875,10 @@ msgstr ""
 msgid "Copy Location Groups"
 msgstr ""
 
+#: staff.main.menu.admin.local_admin.search_filter_group.label
+msgid "Search Filter Groups"
+msgstr ""
+
 #: staff.main.menu.admin.server_admin.label
 msgid "Server Administration"
 msgstr "Управление сервером"
@@ -2869,8 +2896,9 @@ msgid "Permission Groups"
 msgstr "Группы Полномочий"
 
 #: staff.main.menu.admin.server_admin.conify.perm_list.label
+msgctxt "staff.main.menu.admin.server_admin.conify.perm_list.label"
 msgid "Permissions"
-msgstr "Полномочия"
+msgstr ""
 
 #: staff.main.menu.admin.server_admin.conify.copy_status.label
 msgid "Copy Statuses"
@@ -3669,6 +3697,10 @@ msgstr "Отметиьт как найденнный"
 #: staff.main.menu.circ.hold_browse.accesskey
 msgid "&Browse Holds Shelf"
 msgstr "&Пролистай полку хранений"
+
+#: staff.main.menu.circ.hold_clear.label
+msgid "Clear Shelf-Expired Holds"
+msgstr ""
 
 #: staff.main.menu.circ.hold_capture.label
 #: staff.main.menu.circ.hold_capture.accesskey
@@ -5736,12 +5768,10 @@ msgid "Print"
 msgstr ""
 
 #: staff.patron_display.radio.mailing_address.label
-msgctxt "staff.patron_display.radio.mailing_address.label"
 msgid "Mailing"
 msgstr ""
 
 #: staff.patron_display.radio.physical_address.label
-msgctxt "staff.patron_display.radio.physical_address.label"
 msgid "Billing"
 msgstr ""
 
@@ -7346,9 +7376,8 @@ msgid "Start Date:"
 msgstr "Дата начала:"
 
 #: staff.server.admin.cash.date.select
-msgctxt "staff.server.admin.cash.date.select"
 msgid "Date selector"
-msgstr "Дата селектора"
+msgstr ""
 
 #: staff.server.admin.cash.end_date
 msgctxt "staff.server.admin.cash.end_date"
@@ -7788,8 +7817,9 @@ msgid "Create"
 msgstr "Создать"
 
 #: staff.server.admin.non_cat_types.name
+msgctxt "staff.server.admin.non_cat_types.name"
 msgid "Name"
-msgstr "Имя"
+msgstr ""
 
 #: staff.server.admin.non_cat_types.owning_location
 msgid "Owning Location"
@@ -12347,6 +12377,11 @@ msgstr ""
 msgid "Print Full Pull List (Alternate strateg&y)"
 msgstr ""
 
+#: staff.patron.holds_overlay.simplified_pull_list.label
+#: staff.patron.holds_overlay.simplified_pull_list.accesskey
+msgid "Simplified Pull List &Interface"
+msgstr ""
+
 #: staff.patron.holds_overlay.place_hold.label
 #: staff.patron.holds_overlay.place_hold.accesskey
 msgctxt ""
@@ -12521,6 +12556,10 @@ msgctxt "staff.patron.user_edit.title"
 msgid "Evergreen User Editor"
 msgstr "Evergreen пользователь редактор"
 
+#: staff.patron.user_edit.user_info.label
+msgid "User Information"
+msgstr ""
+
 #: staff.patron.user_edit.user_name.label
 msgid "User Name:"
 msgstr "Имя пользователя:"
@@ -12548,6 +12587,24 @@ msgstr "Фамилия:"
 #: staff.patron.user_edit.working_location.label
 msgid "Working Location"
 msgstr "Рабочее местоположение"
+
+#: staff.patron.user_edit.working_shortname.label
+msgid "Shortname"
+msgstr ""
+
+#: staff.patron.user_edit.working_name.label
+msgctxt "staff.patron.user_edit.working_name.label"
+msgid "Name"
+msgstr ""
+
+#: staff.patron.user_edit.working_ou.label
+msgid "Work OU?"
+msgstr ""
+
+#: staff.patron.user_edit.permission_list.label
+msgctxt "staff.patron.user_edit.permission_list.label"
+msgid "Permissions"
+msgstr ""
 
 #: staff.patron.user_edit.permission.label
 msgid "Permission"
@@ -12589,44 +12646,36 @@ msgstr ""
 "bottom: 2px solid red;'>отмеченные цветом</span>"
 
 #: staff.patron.ue.view_errors.label
-msgctxt "staff.patron.ue.view_errors.label"
 msgid "View Errors"
-msgstr "Просмотр ошибок"
+msgstr ""
 
 #: staff.patron.ue.nav.user_id.label
-msgctxt "staff.patron.ue.nav.user_id.label"
 msgid "1. User Identification"
-msgstr "1. Пользователь Определения"
+msgstr ""
 
 #: staff.patron.ue.nav.contact_info.label
-msgctxt "staff.patron.ue.nav.contact_info.label"
 msgid "2. Contact Info"
-msgstr "2.Контактная информация"
+msgstr ""
 
 #: staff.patron.ue.nav.addresses.label
-msgctxt "staff.patron.ue.nav.addresses.label"
 msgid "3. Addresses"
-msgstr "3. Адреса"
+msgstr ""
 
 #: staff.patron.ue.nav.groups_permissions.label
-msgctxt "staff.patron.ue.nav.groups_permissions.label"
 msgid "4. Groups and Permissions"
-msgstr "4. Группы и Полномочии"
+msgstr ""
 
 #: staff.patron.ue.nav.stat_categories.label
-msgctxt "staff.patron.ue.nav.stat_categories.label"
 msgid "5. Statistical Categories"
-msgstr "5. Статистические категории"
+msgstr ""
 
 #: staff.patron.ue.nav.surveys.label
-msgctxt "staff.patron.ue.nav.surveys.label"
 msgid "6. Surveys"
-msgstr "6. Опросы"
+msgstr ""
 
 #: staff.patron.ue.nav.finish.label
-msgctxt "staff.patron.ue.nav.finish.label"
 msgid "7. Finish"
-msgstr "7. Конец"
+msgstr ""
 
 #: staff.patron.ue.loading_data.label
 msgctxt "staff.patron.ue.loading_data.label"
@@ -12634,9 +12683,8 @@ msgid "Loading data..."
 msgstr "Загрузка даты..."
 
 #: staff.patron.ue.found_duplicate_patron.label
-msgctxt "staff.patron.ue.found_duplicate_patron.label"
 msgid "Number of possible duplicate patron(s):"
-msgstr "Число возможных совпадающих патрон(ов)"
+msgstr ""
 
 #: staff.patron.ue.mark_lost.label
 msgctxt "staff.patron.ue.mark_lost.label"
@@ -12654,19 +12702,16 @@ msgid "Password"
 msgstr "Пароль"
 
 #: staff.patron.ue.reset.label
-msgctxt "staff.patron.ue.reset.label"
 msgid "Reset"
-msgstr "Переустановить"
+msgstr ""
 
 #: staff.patron.ue.re_password.label
-msgctxt "staff.patron.ue.re_password.label"
 msgid "Password: "
-msgstr "Пароль: "
+msgstr ""
 
 #: staff.patron.ue.verify_password.label
-msgctxt "staff.patron.ue.verify_password.label"
 msgid "Verify Password"
-msgstr "Проверять Пароль"
+msgstr ""
 
 #: staff.patron.ue.first_name.label
 msgctxt "staff.patron.ue.first_name.label"
@@ -12679,9 +12724,8 @@ msgid "Middle Name"
 msgstr "Отчество"
 
 #: staff.patron.ue.last_name.label
-msgctxt "staff.patron.ue.last_name.label"
 msgid "Last Name"
-msgstr "Фамилия"
+msgstr ""
 
 #: staff.patron.ue.suffix.label
 msgctxt "staff.patron.ue.suffix.label"
@@ -12690,9 +12734,8 @@ msgstr "Суффикс"
 
 #. Used in a selection list, the '-' at the start and end draws attention to the entry
 #: staff.patron.ue.choose.label
-msgctxt "staff.patron.ue.choose.label"
 msgid "- Pick -"
-msgstr "- Взять -"
+msgstr ""
 
 #: staff.patron.ue.dob.label
 msgctxt "staff.patron.ue.dob.label"
@@ -12700,53 +12743,42 @@ msgid "Date of Birth"
 msgstr "Дата рождения"
 
 #: staff.patron.ue.primary_id_type.label
-msgctxt "staff.patron.ue.primary_id_type.label"
 msgid "Primary Identification Type"
-msgstr "Основной Тип Определения"
+msgstr ""
 
-# Используется в спискае выбора, '-' в начале и конце обращает внимание к точке входа
 #. Used in a selection list, the '-' at the start and end draws attention to the entry
 #: staff.patron.ue.required.label
-msgctxt "staff.patron.ue.required.label"
 msgid " -- Required -- "
-msgstr " -- Требуемый -- "
+msgstr ""
 
 #: staff.patron.ue.primary_id.label
-msgctxt "staff.patron.ue.primary_id.label"
 msgid "Primary Identification"
-msgstr "Основное определение"
+msgstr ""
 
 #: staff.patron.ue.secondary_id_type.label
-msgctxt "staff.patron.ue.secondary_id_type.label"
 msgid "Secondary Identification Type"
-msgstr "Вторичный Тип Определения"
+msgstr ""
 
-# Используется в спискае выбора, '-' в начале и конце обращает внимание к точке входа
 #. Used in a selection list, the '-' at the start and end draws attention to the entry
 #: staff.patron.ue.none_selected.label
-msgctxt "staff.patron.ue.none_selected.label"
 msgid " -- None Selected -- "
-msgstr " -- Не выбранный -- "
+msgstr ""
 
 #: staff.patron.ue.secondary_id.label
-msgctxt "staff.patron.ue.secondary_id.label"
 msgid "Secondary Identification"
-msgstr "Вторичное Определение"
+msgstr ""
 
 #: staff.patron.ue.parent_guardian.label
-msgctxt "staff.patron.ue.parent_guardian.label"
 msgid "Parent or Guardian"
-msgstr "Родитель или гарант"
+msgstr ""
 
 #: staff.patron.ue.email_address.label
-msgctxt "staff.patron.ue.email_address.label"
 msgid "Email Address"
-msgstr "Адрес эл. почты"
+msgstr ""
 
 #: staff.patron.ue.day_phone.label
-msgctxt "staff.patron.ue.day_phone.label"
 msgid "Daytime Phone"
-msgstr "Дневной телефон"
+msgstr ""
 
 #: staff.patron.ue.evening_phone.label
 msgctxt "staff.patron.ue.evening_phone.label"
@@ -12769,14 +12801,12 @@ msgid "Address"
 msgstr "Адрес"
 
 #: staff.patron.ue.in_city_limits.label
-msgctxt "staff.patron.ue.in_city_limits.label"
 msgid "Within City Limits"
-msgstr "В пределах города"
+msgstr ""
 
 #: staff.patron.ue.valid.label
-msgctxt "staff.patron.ue.valid.label"
 msgid "Valid"
-msgstr "Допустимый"
+msgstr ""
 
 #: staff.patron.ue.mailing_address.label
 msgctxt "staff.patron.ue.mailing_address.label"
@@ -12789,9 +12819,8 @@ msgid "Physical Address"
 msgstr "Физический адрес"
 
 #: staff.patron.ue.owned_address.label
-msgctxt "staff.patron.ue.owned_address.label"
 msgid "Address is owned by"
-msgstr "Владельцем адреса является"
+msgstr ""
 
 #: staff.patron.ue.edit.label
 msgctxt "staff.patron.ue.edit.label"
@@ -12808,14 +12837,12 @@ msgid "Zip Code"
 msgstr "Индекс"
 
 #: staff.patron.ue.street_1.label
-msgctxt "staff.patron.ue.street_1.label"
 msgid "Street 1"
-msgstr "Улица 1"
+msgstr ""
 
 #: staff.patron.ue.street_2.label
-msgctxt "staff.patron.ue.street_2.label"
 msgid "Street 2"
-msgstr "Улица 2"
+msgstr ""
 
 #: staff.patron.ue.city.label
 msgctxt "staff.patron.ue.city.label"
@@ -12823,9 +12850,8 @@ msgid "City"
 msgstr "Город"
 
 #: staff.patron.ue.county.label
-msgctxt "staff.patron.ue.county.label"
 msgid "County"
-msgstr "Округ"
+msgstr ""
 
 #: staff.patron.ue.state.label
 msgctxt "staff.patron.ue.state.label"
@@ -12838,33 +12864,28 @@ msgid "Country"
 msgstr "Страна"
 
 #: staff.patron.ue.delete_this_address.label
-msgctxt "staff.patron.ue.delete_this_address.label"
 msgid "Delete this Address"
-msgstr "Удалите этот адрес"
+msgstr ""
 
 #: staff.patron.ue.detach_this_address.label
-msgctxt "staff.patron.ue.detach_this_address.label"
 msgid "Detach this Address"
-msgstr "Разъединяйте этот адрес"
+msgstr ""
 
 #: staff.patron.ue.create_address.label
 msgid "Create a New Address"
 msgstr "Создайте новый адрес"
 
 #: staff.patron.ue.profile_group.label
-msgctxt "staff.patron.ue.profile_group.label"
 msgid "Profile Group"
-msgstr "Группа профайла"
+msgstr ""
 
 #: staff.patron.ue.accoutn_expire_date.label
-msgctxt "staff.patron.ue.accoutn_expire_date.label"
 msgid "Account Expiration Date"
-msgstr "Дата просрочки счета"
+msgstr ""
 
 #: staff.patron.ue.internet_access_level.label
-msgctxt "staff.patron.ue.internet_access_level.label"
 msgid "Internet Access Level"
-msgstr "Уровень Интернет доступа"
+msgstr ""
 
 #: staff.patron.ue.active.label
 msgctxt "staff.patron.ue.active.label"
@@ -12872,14 +12893,12 @@ msgid "Active"
 msgstr "Активный"
 
 #: staff.patron.ue.barred.label
-msgctxt "staff.patron.ue.barred.label"
 msgid "Barred"
-msgstr "Закрытый"
+msgstr ""
 
 #: staff.patron.ue.set_lead_account.label
-msgctxt "staff.patron.ue.set_lead_account.label"
 msgid "Set as Family or Group Lead Account"
-msgstr "Установите Групповой или Семейный счет"
+msgstr ""
 
 #: staff.patron.ue.claims_returned_count.label
 msgctxt "staff.patron.ue.claims_returned_count.label"
@@ -12897,9 +12916,8 @@ msgid "Statistical Category Name"
 msgstr "Имя стат категории"
 
 #: staff.patron.ue.owner.label
-msgctxt "staff.patron.ue.owner.label"
 msgid "Owner"
-msgstr "Владелец"
+msgstr ""
 
 #: staff.patron.ue.value.label
 msgctxt "staff.patron.ue.value.label"
@@ -12907,9 +12925,8 @@ msgid "Value"
 msgstr "Значение"
 
 #: staff.patron.ue.no_surveys_for_location.label
-msgctxt "staff.patron.ue.no_surveys_for_location.label"
 msgid "No surveys have been created for this location."
-msgstr "Для этого местоположения нету созданных опросников"
+msgstr ""
 
 #: staff.patron.ue.message1.label
 msgid "You are now ready to save the user to the database."
@@ -12932,14 +12949,12 @@ msgid "View Summary"
 msgstr "Просмотр Краткого изложения"
 
 #: staff.patron.ue.back.label
-msgctxt "staff.patron.ue.back.label"
 msgid "Back"
-msgstr "Назад"
+msgstr ""
 
 #: staff.patron.ue.forward.label
-msgctxt "staff.patron.ue.forward.label"
 msgid "Forward"
-msgstr "Вперед"
+msgstr ""
 
 #: staff.patron.ue.user_summary.label
 msgid ""
@@ -12960,9 +12975,8 @@ msgid "Addresses"
 msgstr "Адреса"
 
 #: staff.patron.ue.address_label.label
-msgctxt "staff.patron.ue.address_label.label"
 msgid "Address Label"
-msgstr "Ярлык адреса"
+msgstr ""
 
 #: staff.patron.ue.billing_address.label
 msgctxt "staff.patron.ue.billing_address.label"
@@ -12980,29 +12994,24 @@ msgid "Expire Date"
 msgstr "Дата просрочки"
 
 #: staff.patron.ue.family_lead_account.label
-msgctxt "staff.patron.ue.family_lead_account.label"
 msgid "Family Lead Account"
-msgstr "Семейный лидер счета"
+msgstr ""
 
 #: staff.patron.ue.stat_categories.label
-msgctxt "staff.patron.ue.stat_categories.label"
 msgid "Statistical Categories"
-msgstr "Статистические категории"
+msgstr ""
 
 #: staff.patron.ue.survey.label
-msgctxt "staff.patron.ue.survey.label"
 msgid "Survey"
-msgstr "Опрос"
+msgstr ""
 
 #: staff.patron.ue.question.label
-msgctxt "staff.patron.ue.question.label"
 msgid "Question"
-msgstr "Вопрос"
+msgstr ""
 
 #: staff.patron.ue.answer.label
-msgctxt "staff.patron.ue.answer.label"
 msgid "Answer"
-msgstr "Ответ"
+msgstr ""
 
 #: staff.patron.ue.bad_dob.label
 msgid ""
@@ -13069,9 +13078,8 @@ msgid "An invalid phone number was entered"
 msgstr "Был введен неверный номер телефона"
 
 #: staff.patron.ue.no_profile.label
-msgctxt "staff.patron.ue.no_profile.label"
 msgid "A profile group must be selected"
-msgstr "Группа профайла должна быть выбрана"
+msgstr ""
 
 #: staff.patron.ue.bad_expire.label
 msgid "The user expiration date is invalid.  We are expecting YYYY-MM-DD"
@@ -13337,501 +13345,6 @@ msgstr "Сохранить Список CSV to &документ"
 #: staff.generic.list_actions.save_columns.accesskey
 msgid "&Save List Configuration"
 msgstr "&Сохранить Список Конфигурации"
-
-#: ev.staff.patron.ue_xhtml.ev_user_editor.label
-msgctxt "ev.staff.patron.ue_xhtml.ev_user_editor.label"
-msgid "Evergreen User Editor"
-msgstr "Evergreen пользователь редактор"
-
-#: ev.staff.patron.ue_xhtml.welcome.label
-msgctxt "ev.staff.patron.ue_xhtml.welcome.label"
-msgid "Welcome "
-msgstr "Добро пожаловать "
-
-#: ev.staff.patron.ue_xhtml.view_errors.label
-msgctxt "ev.staff.patron.ue_xhtml.view_errors.label"
-msgid "View Errors"
-msgstr "Просмотр ошибок"
-
-#: ev.staff.patron.ue_xhtml.user_id.label
-msgctxt "ev.staff.patron.ue_xhtml.user_id.label"
-msgid "1. User Identification"
-msgstr "1.Идентификация пользователя"
-
-#: ev.staff.patron.ue_xhtml.contact_info.label
-msgctxt "ev.staff.patron.ue_xhtml.contact_info.label"
-msgid "2. Contact Info"
-msgstr "2. Контактная информация"
-
-#: ev.staff.patron.ue_xhtml.addresses.label
-msgctxt "ev.staff.patron.ue_xhtml.addresses.label"
-msgid "3. Addresses"
-msgstr "3.Адреса"
-
-#: ev.staff.patron.ue_xhtml.groups_permissions.label
-msgctxt "ev.staff.patron.ue_xhtml.groups_permissions.label"
-msgid "4. Groups and Permissions"
-msgstr "4. Группы и Полномочии"
-
-#: ev.staff.patron.ue_xhtml.statistical_categories.label
-msgctxt "ev.staff.patron.ue_xhtml.statistical_categories.label"
-msgid "5. Statistical Categories"
-msgstr "5. Статистические категории"
-
-#: ev.staff.patron.ue_xhtml.surveys.label
-msgctxt "ev.staff.patron.ue_xhtml.surveys.label"
-msgid "6. Surveys"
-msgstr "6. Опросы"
-
-#: ev.staff.patron.ue_xhtml.finish.label
-msgctxt "ev.staff.patron.ue_xhtml.finish.label"
-msgid "7. Finish"
-msgstr "7. Конец"
-
-#: ev.staff.patron.ue_xhtml.loading_data.label
-msgctxt "ev.staff.patron.ue_xhtml.loading_data.label"
-msgid "Loading data..."
-msgstr "Загрузка даты..."
-
-#: ev.staff.patron.ue_xhtml.found_duplicate_patron.label
-msgctxt "ev.staff.patron.ue_xhtml.found_duplicate_patron.label"
-msgid "Number of possible duplicate patron(s):"
-msgstr "Количество возможных копий пользователя(лей) :"
-
-#: ev.staff.patron.ue_xhtml.barcode.label
-msgctxt "ev.staff.patron.ue_xhtml.barcode.label"
-msgid "Barcode"
-msgstr "Штрих-код"
-
-#: ev.staff.patron.ue_xhtml.mark_lost.label
-msgctxt "ev.staff.patron.ue_xhtml.mark_lost.label"
-msgid "Mark Lost"
-msgstr "Mark не сохранен"
-
-#: ev.staff.patron.ue_xhtml.username.label
-msgctxt "ev.staff.patron.ue_xhtml.username.label"
-msgid "Username"
-msgstr "Имя пользователя"
-
-#: ev.staff.patron.ue_xhtml.password.label
-msgctxt "ev.staff.patron.ue_xhtml.password.label"
-msgid "Password"
-msgstr "Пароль"
-
-#: ev.staff.patron.ue_xhtml.reset.label
-msgctxt "ev.staff.patron.ue_xhtml.reset.label"
-msgid "Reset"
-msgstr "Восстановить"
-
-#: ev.staff.patron.ue_xhtml.re_password.label
-msgctxt "ev.staff.patron.ue_xhtml.re_password.label"
-msgid "Password: "
-msgstr "Пароль: "
-
-#: ev.staff.patron.ue_xhtml.verify_password.label
-msgctxt "ev.staff.patron.ue_xhtml.verify_password.label"
-msgid "Verify Password"
-msgstr "Проверить пароль"
-
-#: ev.staff.patron.ue_xhtml.first_name.label
-msgctxt "ev.staff.patron.ue_xhtml.first_name.label"
-msgid "First Name"
-msgstr "Имя"
-
-#: ev.staff.patron.ue_xhtml.middle_name.label
-msgctxt "ev.staff.patron.ue_xhtml.middle_name.label"
-msgid "Middle Name"
-msgstr "Отчество"
-
-#: ev.staff.patron.ue_xhtml.last_name.label
-msgctxt "ev.staff.patron.ue_xhtml.last_name.label"
-msgid "Last Name"
-msgstr "Фамилия"
-
-#: ev.staff.patron.ue_xhtml.suffix.label
-msgctxt "ev.staff.patron.ue_xhtml.suffix.label"
-msgid "Suffix"
-msgstr "Суффикс"
-
-#. Used in a selection list, the '-' at the start and end draws attention to the entry
-#: ev.staff.patron.ue_xhtml.pick_suffix.label
-msgctxt "ev.staff.patron.ue_xhtml.pick_suffix.label"
-msgid "- Pick -"
-msgstr "- Pick -"
-
-#: ev.staff.patron.ue_xhtml.dob.label
-msgctxt "ev.staff.patron.ue_xhtml.dob.label"
-msgid "Date of Birth"
-msgstr "Дата рождения"
-
-#: ev.staff.patron.ue_xhtml.primary_id_type.label
-msgctxt "ev.staff.patron.ue_xhtml.primary_id_type.label"
-msgid "Primary Identification Type"
-msgstr "Тип основной идентификации"
-
-#: ev.staff.patron.ue_xhtml.primary_id.label
-msgctxt "ev.staff.patron.ue_xhtml.primary_id.label"
-msgid "Primary Identification"
-msgstr "Основная идентификация"
-
-#: ev.staff.patron.ue_xhtml.parent_guardian.label
-msgctxt "ev.staff.patron.ue_xhtml.parent_guardian.label"
-msgid "Parent or Guardian"
-msgstr "Родитель или опекун"
-
-#: ev.staff.patron.ue_xhtml.email_address.label
-msgctxt "ev.staff.patron.ue_xhtml.email_address.label"
-msgid "Email Address"
-msgstr "Электронный адрес"
-
-#: ev.staff.patron.ue_xhtml.phone_example
-msgid "Example: 123-456-7890 or 123-456-7890 ex123"
-msgstr "Например: 123-456-7890 или r 123-456-7890 ex123"
-
-#: ev.staff.patron.ue_xhtml.daytime_phone.label
-msgctxt "ev.staff.patron.ue_xhtml.daytime_phone.label"
-msgid "Daytime Phone"
-msgstr "Дневной телефон"
-
-#: ev.staff.patron.ue_xhtml.evening_phone.label
-msgctxt "ev.staff.patron.ue_xhtml.evening_phone.label"
-msgid "Evening Phone"
-msgstr "Вечерний телефон"
-
-#: ev.staff.patron.ue_xhtml.other_phone.label
-msgid "Other (Cell Phone)"
-msgstr "Другое (сотовый телефон)"
-
-#: ev.staff.patron.ue_xhtml.home_library.label
-msgctxt "ev.staff.patron.ue_xhtml.home_library.label"
-msgid "Home Library"
-msgstr "Домашняя библиотека"
-
-#: ev.staff.patron.ue_xhtml.address.label
-msgctxt "ev.staff.patron.ue_xhtml.address.label"
-msgid "Address"
-msgstr "Адрес"
-
-#: ev.staff.patron.ue_xhtml.in_city_limits.label
-msgctxt "ev.staff.patron.ue_xhtml.in_city_limits.label"
-msgid "Within City Limits"
-msgstr "В пределах.."
-
-#: ev.staff.patron.ue_xhtml.county.label
-msgctxt "ev.staff.patron.ue_xhtml.county.label"
-msgid "County"
-msgstr "Страны"
-
-#: ev.staff.patron.ue_xhtml.valid.label
-msgctxt "ev.staff.patron.ue_xhtml.valid.label"
-msgid "Valid"
-msgstr "Действиетльный"
-
-#: ev.staff.patron.ue_xhtml.mailing_address.label
-msgctxt "ev.staff.patron.ue_xhtml.mailing_address.label"
-msgid "Mailing Address"
-msgstr "Почтовый адрес"
-
-#: ev.staff.patron.ue_xhtml.physical_address.label
-msgctxt "ev.staff.patron.ue_xhtml.physical_address.label"
-msgid "Physical Address"
-msgstr "Физический адрес"
-
-#: ev.staff.patron.ue_xhtml.address_owned_by.label
-msgctxt "ev.staff.patron.ue_xhtml.address_owned_by.label"
-msgid "Address is owned by"
-msgstr "Адрес принадлежит"
-
-#: ev.staff.patron.ue_xhtml.label.label
-msgctxt "ev.staff.patron.ue_xhtml.label.label"
-msgid "Label"
-msgstr "Метка"
-
-#: ev.staff.patron.ue_xhtml.zip.label
-msgid "Zip"
-msgstr "Zip"
-
-#: ev.staff.patron.ue_xhtml.street1.label
-msgctxt "ev.staff.patron.ue_xhtml.street1.label"
-msgid "Street 1"
-msgstr "Улица1"
-
-#: ev.staff.patron.ue_xhtml.street2.label
-msgctxt "ev.staff.patron.ue_xhtml.street2.label"
-msgid "Street 2"
-msgstr "Улица2"
-
-#: ev.staff.patron.ue_xhtml.city.label
-msgctxt "ev.staff.patron.ue_xhtml.city.label"
-msgid "City"
-msgstr "Город"
-
-#: ev.staff.patron.ue_xhtml.conuty.label
-msgctxt "ev.staff.patron.ue_xhtml.conuty.label"
-msgid "County"
-msgstr "Графство"
-
-#: ev.staff.patron.ue_xhtml.state.label
-msgctxt "ev.staff.patron.ue_xhtml.state.label"
-msgid "State"
-msgstr "Штат"
-
-#: ev.staff.patron.ue_xhtml.country.label
-msgctxt "ev.staff.patron.ue_xhtml.country.label"
-msgid "Country"
-msgstr "Страна"
-
-#: ev.staff.patron.ue_xhtml.profile_group.label
-msgctxt "ev.staff.patron.ue_xhtml.profile_group.label"
-msgid "Profile Group"
-msgstr "Профиль группы"
-
-#: ev.staff.patron.ue_xhtml.ue_addr_delete.label
-msgctxt "ev.staff.patron.ue_xhtml.ue_addr_delete.label"
-msgid "Delete this Address"
-msgstr "Отделить этот адрес"
-
-#: ev.staff.patron.ue_xhtml.ue_addr_detach.label
-msgctxt "ev.staff.patron.ue_xhtml.ue_addr_detach.label"
-msgid "Detach this Address"
-msgstr "Отделить этот адрес"
-
-#: ev.staff.patron.ue_xhtml.ue_addr_approve.label
-msgid "Approve Pending Address"
-msgstr "Одобрить недоконченный адрес"
-
-#: ev.staff.patron.ue_xhtml.ue_addr_approve_confirm.label
-msgid "Approve pending address?  This operation will be be instantaneous."
-msgstr ""
-
-#: ev.staff.patron.ue_xhtml.primary_ident_ssn_help.label
-msgid "(XXX-YY-ZZZZ)"
-msgstr "(XXX-YY-ZZZZ)"
-
-#: ev.staff.patron.ue_xhtml.primary_ident_dl_help.label
-msgid "(GA-123456789)"
-msgstr "(GA-123456789)"
-
-#: ev.staff.patron.ue_xhtml.edit.label
-msgctxt "ev.staff.patron.ue_xhtml.edit.label"
-msgid "Edit"
-msgstr "Редактировать"
-
-#. Used in a selection list, the '-' at the start and end draws attention to the entry
-#: ev.staff.patron.ue_xhtml.required.label
-msgctxt "ev.staff.patron.ue_xhtml.required.label"
-msgid " -- Required -- "
-msgstr " Необходимый "
-
-#: ev.staff.patron.ue_xhtml.account_expiration_date.label
-msgctxt "ev.staff.patron.ue_xhtml.account_expiration_date.label"
-msgid "Account Expiration Date"
-msgstr "Срок действия счета"
-
-#: ev.staff.patron.ue_xhtml.net_access_level.label
-msgctxt "ev.staff.patron.ue_xhtml.net_access_level.label"
-msgid "Internet Access Level"
-msgstr "Уровень доступа Internet"
-
-#: ev.staff.patron.ue_xhtml.active.label
-msgctxt "ev.staff.patron.ue_xhtml.active.label"
-msgid "Active"
-msgstr "Активный"
-
-#: ev.staff.patron.ue_xhtml.barred.label
-msgctxt "ev.staff.patron.ue_xhtml.barred.label"
-msgid "Barred"
-msgstr "Закрытый"
-
-#: ev.staff.patron.ue_xhtml.juvenile.label
-msgctxt "ev.staff.patron.ue_xhtml.juvenile.label"
-msgid "Juvenile"
-msgstr "Молодой"
-
-#: ev.staff.patron.ue_xhtml.set_family_group_lead_account.label
-msgctxt "ev.staff.patron.ue_xhtml.set_family_group_lead_account.label"
-msgid "Set as Family or Group Lead Account"
-msgstr "Установить как Семейный или Групповой Лидер счета"
-
-#: ev.staff.patron.ue_xhtml.claims_returned_count.label
-msgctxt "ev.staff.patron.ue_xhtml.claims_returned_count.label"
-msgid "Claims Returned Count"
-msgstr "Счетчик Возвращенных рекламаций"
-
-#: ev.staff.patron.ue_xhtml.alert_message.label
-msgctxt "ev.staff.patron.ue_xhtml.alert_message.label"
-msgid "Alert Message"
-msgstr "Сигнал извещения"
-
-#: ev.staff.patron.ue_xhtml.stat_cat_name.label
-msgctxt "ev.staff.patron.ue_xhtml.stat_cat_name.label"
-msgid "Statistical Category Name"
-msgstr "Имя статистической категории"
-
-#: ev.staff.patron.ue_xhtml.owner.label
-msgctxt "ev.staff.patron.ue_xhtml.owner.label"
-msgid "Owner"
-msgstr "Хозяин"
-
-#: ev.staff.patron.ue_xhtml.value.label
-msgctxt "ev.staff.patron.ue_xhtml.value.label"
-msgid "Value"
-msgstr "Значение"
-
-#. Used in a selection list, the '-' at the start and end draws attention to the entry
-#: ev.staff.patron.ue_xhtml.none_selected.label
-msgctxt "ev.staff.patron.ue_xhtml.none_selected.label"
-msgid " -- None Selected -- "
-msgstr " -- Ничего не выбрано -- "
-
-#: ev.staff.patron.ue_xhtml.no_surveys_for_location.label
-msgctxt "ev.staff.patron.ue_xhtml.no_surveys_for_location.label"
-msgid "No surveys have been created for this location."
-msgstr "Нет созданных опросов для этого места"
-
-#: ev.staff.patron.ue_xhtml.finishing_message.label
-msgid ""
-"You are now ready to save the user to the database.<br/>To view or print a "
-"summary of the changes, click on the 'View Summary' link.<br/>To save the "
-"user, click on the 'Save User' button."
-msgstr ""
-"Теперь можно сохранить пользователя в базу данных. <br/> Чтобы просмотреть "
-"или распечатать сводку  изменений, нажмите 'View Summary' link.<br/> Чтобы "
-"сохранить пользователя, нажмите на  'Save User' кнопку."
-
-#: ev.staff.patron.ue_xhtml.back.label
-msgctxt "ev.staff.patron.ue_xhtml.back.label"
-msgid "Back"
-msgstr "Обратный"
-
-#: ev.staff.patron.ue_xhtml.forward.label
-msgctxt "ev.staff.patron.ue_xhtml.forward.label"
-msgid "Forward"
-msgstr "Передний"
-
-#: ev.staff.patron.ue_xhtml.secondary_id_type.label
-msgctxt "ev.staff.patron.ue_xhtml.secondary_id_type.label"
-msgid "Secondary Identification Type"
-msgstr "Вид Вторичной идентификации"
-
-#: ev.staff.patron.ue_xhtml.secondary_id.label
-msgctxt "ev.staff.patron.ue_xhtml.secondary_id.label"
-msgid "Secondary Identification"
-msgstr "Вторичная  идентификация"
-
-#: ev.staff.patron.ue_xhtml.address_label.label
-msgctxt "ev.staff.patron.ue_xhtml.address_label.label"
-msgid "Address Label"
-msgstr "Ярлык адреса"
-
-#: ev.staff.patron.ue_xhtml.mailing.label
-msgctxt "ev.staff.patron.ue_xhtml.mailing.label"
-msgid "Mailing"
-msgstr ""
-
-#: ev.staff.patron.ue_xhtml.billing.label
-msgctxt "ev.staff.patron.ue_xhtml.billing.label"
-msgid "Billing"
-msgstr ""
-
-#: ev.staff.patron.ue_xhtml.profile.label
-msgctxt "ev.staff.patron.ue_xhtml.profile.label"
-msgid "Profile"
-msgstr "Профиль"
-
-#: ev.staff.patron.ue_xhtml.expire_date.label
-msgctxt "ev.staff.patron.ue_xhtml.expire_date.label"
-msgid "Expire Date"
-msgstr "Истечение срока"
-
-#: ev.staff.patron.ue_xhtml.family_lead_account.label
-msgctxt "ev.staff.patron.ue_xhtml.family_lead_account.label"
-msgid "Family Lead Account"
-msgstr "Рассчетный счет семьи"
-
-#: ev.staff.patron.ue_xhtml.stat_categories.label
-msgctxt "ev.staff.patron.ue_xhtml.stat_categories.label"
-msgid "Statistical Categories"
-msgstr "Статистические категории"
-
-#: ev.staff.patron.ue_xhtml.survey.label
-msgctxt "ev.staff.patron.ue_xhtml.survey.label"
-msgid "Survey"
-msgstr "Опрос"
-
-#: ev.staff.patron.ue_xhtml.question.label
-msgctxt "ev.staff.patron.ue_xhtml.question.label"
-msgid "Question"
-msgstr "Вопрос"
-
-#: ev.staff.patron.ue_xhtml.answer.label
-msgctxt "ev.staff.patron.ue_xhtml.answer.label"
-msgid "Answer"
-msgstr "Ответ"
-
-#: ev.staff.patron.ue_xhtml.claims_return_confirm.label
-msgid ""
-"This will reset the claims returned count for this user. Are you sure you "
-"wish to perform this action?"
-msgstr ""
-"Это переустановит Счетчик Возвращенных рекламаций для этого пользователя. Вы "
-"уверены что хотите выполнить это действие?"
-
-#: ev.staff.patron.ue_xhtml.unsaved_changes.label
-msgid "You have unsaved changes."
-msgstr "Есть не сохраненые изменения"
-
-#: ev.staff.patron.ue_xhtml.xact_collision.label
-msgid ""
-"It appears that someone else was also editing this user. Saving the user now "
-"will destroy their changes.  Click 'OK' to refresh the user and continue "
-"editing. Click 'Cancel' to do nothing. Note that you will not be able to "
-"save the user until this page has been refreshed."
-msgstr ""
-"Похоже, что кто-то еще редактирует данного пользователя.. Сохранения данного "
-"пользователя  будут уничтожать  их изменения. Нажмите кнопку \"ОК\", чтобы "
-"обновить пользователя и продолжить редактирование. Нажмите кнопку "
-"\"Cancel\", чтобы ничего не делать. Заметьте, что вы не сможете сохранить "
-"пользователя до тех пор, пока эта страница  не будет обновлена."
-
-#: ev.staff.patron.ue_xhtml.no_profile.label
-msgctxt "ev.staff.patron.ue_xhtml.no_profile.label"
-msgid "A profile group must be selected"
-msgstr "Профиль группы должен быть выбран"
-
-#: ev.staff.patron.ue_xhtml.print_page.label
-msgid "Print Page"
-msgstr "Распечатка страницы"
-
-#: ev.staff.patron.ue_xhtml.return_to_editor.label
-msgid "Return to Editor"
-msgstr "Вернуться к редактированию"
-
-#: ev.staff.patron.ue_xhtml.save_user.value
-msgid "Save User"
-msgstr "Сохранить пользователя"
-
-#: ev.staff.patron.ue_xhtml.save_clone_user.value
-msgid "Save and Clone User"
-msgstr "Сохранить"
-
-#: ev.staff.patron.ue_xhtml.cancel.value
-msgctxt "ev.staff.patron.ue_xhtml.cancel.value"
-msgid "Cancel"
-msgstr "Отменить"
-
-#: ev.staff.patron.ue_xhtml.alert_message_reset.value
-msgid "Clear"
-msgstr "Очистить"
-
-#: ev.staff.patron.ue_xhtml.date_selector.label
-msgctxt "ev.staff.patron.ue_xhtml.date_selector.label"
-msgid "Date selector"
-msgstr "Селектор даты"
-
-#: ev.staff.patron.ue_xhtml.alias.label
-msgid "Alias"
-msgstr "Псевдоним"
 
 #: ui.circ.patron_summary.horizontal
 msgid "GUI: Alternative Horizontal Patron Summary Panel"
@@ -14242,11 +13755,11 @@ msgid ""
 "However, if using a plain text print strategy with HTML markup, you may "
 "include special character codes in 2-digit hexadecimal in a &quot;hex&quot; "
 "attribute for any given element.  Such codes will be converted to actual "
-"characters and inserted at the place of the tag.  For example, &amp;lt;p "
-"hex=&amp;quot;0C&amp;quot;&amp;gt;Hello World&amp;lt;/p&amp;gt; will "
-"translate to form feed control character + Hello World. "
-"&amp;lt;p&amp;gt;Hello World&amp;lt;/p hex=&amp;quot;0C&amp;quot;&amp;gt; "
-"will translate to Hello World + form feed control character."
+"characters and inserted at the place of the tag.  For example, &lt;p "
+"hex=&quot;0C&quot;&gt;Hello World&lt;/p&gt; will translate to form feed "
+"control character + Hello World. &lt;p&gt;Hello World&lt;/p "
+"hex=&quot;0C&quot;&gt; will translate to Hello World + form feed control "
+"character."
 msgstr ""
 
 #: staff.client.portal.title
@@ -14413,6 +13926,10 @@ msgstr ""
 #~ msgid "Date of Birth:"
 #~ msgstr "Дата рождения:"
 
+#~ msgctxt "staff.copy.attr.stat.audience.example2"
+#~ msgid "Juvenile"
+#~ msgstr "Молодой"
+
 #~ msgid "Available"
 #~ msgstr "Доступный"
 
@@ -14448,8 +13965,15 @@ msgstr ""
 #~ msgid "Large"
 #~ msgstr "Большой"
 
+#~ msgctxt "staff.server.admin.cash.date.select"
+#~ msgid "Date selector"
+#~ msgstr "Дата селектора"
+
 #~ msgid "Copy Hold"
 #~ msgstr "Копия хранения"
+
+#~ msgid "Name"
+#~ msgstr "Имя"
 
 #~ msgid "Pull List for Hold Requests"
 #~ msgstr "Выдвигающий лист для запросов на Хранение"
@@ -14493,6 +14017,569 @@ msgstr ""
 #~ msgid "MARC Editor for &Import"
 #~ msgstr "MARC Редактор для &Импорта"
 
+#~ msgctxt "staff.patron.ue.view_errors.label"
+#~ msgid "View Errors"
+#~ msgstr "Просмотр ошибок"
+
+#~ msgctxt "staff.patron.ue.nav.user_id.label"
+#~ msgid "1. User Identification"
+#~ msgstr "1. Пользователь Определения"
+
+#~ msgctxt "staff.patron.ue.nav.contact_info.label"
+#~ msgid "2. Contact Info"
+#~ msgstr "2.Контактная информация"
+
+#~ msgctxt "staff.patron.ue.nav.addresses.label"
+#~ msgid "3. Addresses"
+#~ msgstr "3. Адреса"
+
+#~ msgctxt "staff.patron.ue.nav.groups_permissions.label"
+#~ msgid "4. Groups and Permissions"
+#~ msgstr "4. Группы и Полномочии"
+
+#~ msgctxt "staff.patron.ue.nav.stat_categories.label"
+#~ msgid "5. Statistical Categories"
+#~ msgstr "5. Статистические категории"
+
+#~ msgctxt "staff.patron.ue.nav.surveys.label"
+#~ msgid "6. Surveys"
+#~ msgstr "6. Опросы"
+
+#~ msgctxt "staff.patron.ue.nav.finish.label"
+#~ msgid "7. Finish"
+#~ msgstr "7. Конец"
+
+#~ msgctxt "staff.patron.ue.found_duplicate_patron.label"
+#~ msgid "Number of possible duplicate patron(s):"
+#~ msgstr "Число возможных совпадающих патрон(ов)"
+
+#~ msgctxt "staff.patron.ue.reset.label"
+#~ msgid "Reset"
+#~ msgstr "Переустановить"
+
+#~ msgctxt "staff.patron.ue.re_password.label"
+#~ msgid "Password: "
+#~ msgstr "Пароль: "
+
+#~ msgctxt "staff.patron.ue.verify_password.label"
+#~ msgid "Verify Password"
+#~ msgstr "Проверять Пароль"
+
+#~ msgctxt "staff.patron.ue.last_name.label"
+#~ msgid "Last Name"
+#~ msgstr "Фамилия"
+
+#~ msgctxt "staff.patron.ue.choose.label"
+#~ msgid "- Pick -"
+#~ msgstr "- Взять -"
+
+#~ msgctxt "staff.patron.ue.primary_id_type.label"
+#~ msgid "Primary Identification Type"
+#~ msgstr "Основной Тип Определения"
+
+# Используется в спискае выбора, '-' в начале и конце обращает внимание к точке входа
+#~ msgctxt "staff.patron.ue.required.label"
+#~ msgid " -- Required -- "
+#~ msgstr " -- Требуемый -- "
+
+#~ msgctxt "staff.patron.ue.primary_id.label"
+#~ msgid "Primary Identification"
+#~ msgstr "Основное определение"
+
+#~ msgctxt "staff.patron.ue.secondary_id_type.label"
+#~ msgid "Secondary Identification Type"
+#~ msgstr "Вторичный Тип Определения"
+
+# Используется в спискае выбора, '-' в начале и конце обращает внимание к точке входа
+#~ msgctxt "staff.patron.ue.none_selected.label"
+#~ msgid " -- None Selected -- "
+#~ msgstr " -- Не выбранный -- "
+
+#~ msgctxt "staff.patron.ue.secondary_id.label"
+#~ msgid "Secondary Identification"
+#~ msgstr "Вторичное Определение"
+
+#~ msgctxt "staff.patron.ue.parent_guardian.label"
+#~ msgid "Parent or Guardian"
+#~ msgstr "Родитель или гарант"
+
+#~ msgctxt "staff.patron.ue.email_address.label"
+#~ msgid "Email Address"
+#~ msgstr "Адрес эл. почты"
+
+#~ msgctxt "staff.patron.ue.day_phone.label"
+#~ msgid "Daytime Phone"
+#~ msgstr "Дневной телефон"
+
+#~ msgctxt "staff.patron.ue.in_city_limits.label"
+#~ msgid "Within City Limits"
+#~ msgstr "В пределах города"
+
+#~ msgctxt "staff.patron.ue.valid.label"
+#~ msgid "Valid"
+#~ msgstr "Допустимый"
+
+#~ msgctxt "staff.patron.ue.owned_address.label"
+#~ msgid "Address is owned by"
+#~ msgstr "Владельцем адреса является"
+
+#~ msgctxt "staff.patron.ue.street_1.label"
+#~ msgid "Street 1"
+#~ msgstr "Улица 1"
+
+#~ msgctxt "staff.patron.ue.street_2.label"
+#~ msgid "Street 2"
+#~ msgstr "Улица 2"
+
+#~ msgctxt "staff.patron.ue.county.label"
+#~ msgid "County"
+#~ msgstr "Округ"
+
+#~ msgctxt "staff.patron.ue.delete_this_address.label"
+#~ msgid "Delete this Address"
+#~ msgstr "Удалите этот адрес"
+
+#~ msgctxt "staff.patron.ue.detach_this_address.label"
+#~ msgid "Detach this Address"
+#~ msgstr "Разъединяйте этот адрес"
+
+#~ msgctxt "staff.patron.ue.profile_group.label"
+#~ msgid "Profile Group"
+#~ msgstr "Группа профайла"
+
+#~ msgctxt "staff.patron.ue.accoutn_expire_date.label"
+#~ msgid "Account Expiration Date"
+#~ msgstr "Дата просрочки счета"
+
+#~ msgctxt "staff.patron.ue.internet_access_level.label"
+#~ msgid "Internet Access Level"
+#~ msgstr "Уровень Интернет доступа"
+
+#~ msgctxt "staff.patron.ue.barred.label"
+#~ msgid "Barred"
+#~ msgstr "Закрытый"
+
+#~ msgctxt "staff.patron.ue.set_lead_account.label"
+#~ msgid "Set as Family or Group Lead Account"
+#~ msgstr "Установите Групповой или Семейный счет"
+
+#~ msgctxt "staff.patron.ue.owner.label"
+#~ msgid "Owner"
+#~ msgstr "Владелец"
+
+#~ msgctxt "staff.patron.ue.no_surveys_for_location.label"
+#~ msgid "No surveys have been created for this location."
+#~ msgstr "Для этого местоположения нету созданных опросников"
+
+#~ msgctxt "staff.patron.ue.back.label"
+#~ msgid "Back"
+#~ msgstr "Назад"
+
+#~ msgctxt "staff.patron.ue.forward.label"
+#~ msgid "Forward"
+#~ msgstr "Вперед"
+
+#~ msgctxt "staff.patron.ue.address_label.label"
+#~ msgid "Address Label"
+#~ msgstr "Ярлык адреса"
+
+#~ msgctxt "staff.patron.ue.family_lead_account.label"
+#~ msgid "Family Lead Account"
+#~ msgstr "Семейный лидер счета"
+
+#~ msgctxt "staff.patron.ue.stat_categories.label"
+#~ msgid "Statistical Categories"
+#~ msgstr "Статистические категории"
+
+#~ msgctxt "staff.patron.ue.survey.label"
+#~ msgid "Survey"
+#~ msgstr "Опрос"
+
+#~ msgctxt "staff.patron.ue.question.label"
+#~ msgid "Question"
+#~ msgstr "Вопрос"
+
+#~ msgctxt "staff.patron.ue.answer.label"
+#~ msgid "Answer"
+#~ msgstr "Ответ"
+
+#~ msgctxt "staff.patron.ue.no_profile.label"
+#~ msgid "A profile group must be selected"
+#~ msgstr "Группа профайла должна быть выбрана"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.ev_user_editor.label"
+#~ msgid "Evergreen User Editor"
+#~ msgstr "Evergreen пользователь редактор"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.welcome.label"
+#~ msgid "Welcome "
+#~ msgstr "Добро пожаловать "
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.view_errors.label"
+#~ msgid "View Errors"
+#~ msgstr "Просмотр ошибок"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.user_id.label"
+#~ msgid "1. User Identification"
+#~ msgstr "1.Идентификация пользователя"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.contact_info.label"
+#~ msgid "2. Contact Info"
+#~ msgstr "2. Контактная информация"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.addresses.label"
+#~ msgid "3. Addresses"
+#~ msgstr "3.Адреса"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.groups_permissions.label"
+#~ msgid "4. Groups and Permissions"
+#~ msgstr "4. Группы и Полномочии"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.statistical_categories.label"
+#~ msgid "5. Statistical Categories"
+#~ msgstr "5. Статистические категории"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.surveys.label"
+#~ msgid "6. Surveys"
+#~ msgstr "6. Опросы"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.finish.label"
+#~ msgid "7. Finish"
+#~ msgstr "7. Конец"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.loading_data.label"
+#~ msgid "Loading data..."
+#~ msgstr "Загрузка даты..."
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.found_duplicate_patron.label"
+#~ msgid "Number of possible duplicate patron(s):"
+#~ msgstr "Количество возможных копий пользователя(лей) :"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.barcode.label"
+#~ msgid "Barcode"
+#~ msgstr "Штрих-код"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.mark_lost.label"
+#~ msgid "Mark Lost"
+#~ msgstr "Mark не сохранен"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.username.label"
+#~ msgid "Username"
+#~ msgstr "Имя пользователя"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.password.label"
+#~ msgid "Password"
+#~ msgstr "Пароль"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.reset.label"
+#~ msgid "Reset"
+#~ msgstr "Восстановить"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.re_password.label"
+#~ msgid "Password: "
+#~ msgstr "Пароль: "
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.verify_password.label"
+#~ msgid "Verify Password"
+#~ msgstr "Проверить пароль"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.first_name.label"
+#~ msgid "First Name"
+#~ msgstr "Имя"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.middle_name.label"
+#~ msgid "Middle Name"
+#~ msgstr "Отчество"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.last_name.label"
+#~ msgid "Last Name"
+#~ msgstr "Фамилия"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.suffix.label"
+#~ msgid "Suffix"
+#~ msgstr "Суффикс"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.pick_suffix.label"
+#~ msgid "- Pick -"
+#~ msgstr "- Pick -"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.dob.label"
+#~ msgid "Date of Birth"
+#~ msgstr "Дата рождения"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.primary_id_type.label"
+#~ msgid "Primary Identification Type"
+#~ msgstr "Тип основной идентификации"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.primary_id.label"
+#~ msgid "Primary Identification"
+#~ msgstr "Основная идентификация"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.parent_guardian.label"
+#~ msgid "Parent or Guardian"
+#~ msgstr "Родитель или опекун"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.email_address.label"
+#~ msgid "Email Address"
+#~ msgstr "Электронный адрес"
+
+#~ msgid "Example: 123-456-7890 or 123-456-7890 ex123"
+#~ msgstr "Например: 123-456-7890 или r 123-456-7890 ex123"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.daytime_phone.label"
+#~ msgid "Daytime Phone"
+#~ msgstr "Дневной телефон"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.evening_phone.label"
+#~ msgid "Evening Phone"
+#~ msgstr "Вечерний телефон"
+
+#~ msgid "Other (Cell Phone)"
+#~ msgstr "Другое (сотовый телефон)"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.home_library.label"
+#~ msgid "Home Library"
+#~ msgstr "Домашняя библиотека"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.address.label"
+#~ msgid "Address"
+#~ msgstr "Адрес"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.in_city_limits.label"
+#~ msgid "Within City Limits"
+#~ msgstr "В пределах.."
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.county.label"
+#~ msgid "County"
+#~ msgstr "Страны"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.valid.label"
+#~ msgid "Valid"
+#~ msgstr "Действиетльный"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.mailing_address.label"
+#~ msgid "Mailing Address"
+#~ msgstr "Почтовый адрес"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.physical_address.label"
+#~ msgid "Physical Address"
+#~ msgstr "Физический адрес"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.address_owned_by.label"
+#~ msgid "Address is owned by"
+#~ msgstr "Адрес принадлежит"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.label.label"
+#~ msgid "Label"
+#~ msgstr "Метка"
+
+#~ msgid "Zip"
+#~ msgstr "Zip"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.street1.label"
+#~ msgid "Street 1"
+#~ msgstr "Улица1"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.street2.label"
+#~ msgid "Street 2"
+#~ msgstr "Улица2"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.city.label"
+#~ msgid "City"
+#~ msgstr "Город"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.conuty.label"
+#~ msgid "County"
+#~ msgstr "Графство"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.state.label"
+#~ msgid "State"
+#~ msgstr "Штат"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.country.label"
+#~ msgid "Country"
+#~ msgstr "Страна"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.profile_group.label"
+#~ msgid "Profile Group"
+#~ msgstr "Профиль группы"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.ue_addr_delete.label"
+#~ msgid "Delete this Address"
+#~ msgstr "Отделить этот адрес"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.ue_addr_detach.label"
+#~ msgid "Detach this Address"
+#~ msgstr "Отделить этот адрес"
+
+#~ msgid "(XXX-YY-ZZZZ)"
+#~ msgstr "(XXX-YY-ZZZZ)"
+
+#~ msgid "(GA-123456789)"
+#~ msgstr "(GA-123456789)"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.edit.label"
+#~ msgid "Edit"
+#~ msgstr "Редактировать"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.required.label"
+#~ msgid " -- Required -- "
+#~ msgstr " Необходимый "
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.account_expiration_date.label"
+#~ msgid "Account Expiration Date"
+#~ msgstr "Срок действия счета"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.net_access_level.label"
+#~ msgid "Internet Access Level"
+#~ msgstr "Уровень доступа Internet"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.active.label"
+#~ msgid "Active"
+#~ msgstr "Активный"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.barred.label"
+#~ msgid "Barred"
+#~ msgstr "Закрытый"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.juvenile.label"
+#~ msgid "Juvenile"
+#~ msgstr "Молодой"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.set_family_group_lead_account.label"
+#~ msgid "Set as Family or Group Lead Account"
+#~ msgstr "Установить как Семейный или Групповой Лидер счета"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.claims_returned_count.label"
+#~ msgid "Claims Returned Count"
+#~ msgstr "Счетчик Возвращенных рекламаций"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.alert_message.label"
+#~ msgid "Alert Message"
+#~ msgstr "Сигнал извещения"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.stat_cat_name.label"
+#~ msgid "Statistical Category Name"
+#~ msgstr "Имя статистической категории"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.owner.label"
+#~ msgid "Owner"
+#~ msgstr "Хозяин"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.value.label"
+#~ msgid "Value"
+#~ msgstr "Значение"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.no_surveys_for_location.label"
+#~ msgid "No surveys have been created for this location."
+#~ msgstr "Нет созданных опросов для этого места"
+
+#~ msgid ""
+#~ "You are now ready to save the user to the database.<br/>To view or print a "
+#~ "summary of the changes, click on the 'View Summary' link.<br/>To save the "
+#~ "user, click on the 'Save User' button."
+#~ msgstr ""
+#~ "Теперь можно сохранить пользователя в базу данных. <br/> Чтобы просмотреть "
+#~ "или распечатать сводку  изменений, нажмите 'View Summary' link.<br/> Чтобы "
+#~ "сохранить пользователя, нажмите на  'Save User' кнопку."
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.back.label"
+#~ msgid "Back"
+#~ msgstr "Обратный"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.forward.label"
+#~ msgid "Forward"
+#~ msgstr "Передний"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.secondary_id_type.label"
+#~ msgid "Secondary Identification Type"
+#~ msgstr "Вид Вторичной идентификации"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.secondary_id.label"
+#~ msgid "Secondary Identification"
+#~ msgstr "Вторичная  идентификация"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.address_label.label"
+#~ msgid "Address Label"
+#~ msgstr "Ярлык адреса"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.profile.label"
+#~ msgid "Profile"
+#~ msgstr "Профиль"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.expire_date.label"
+#~ msgid "Expire Date"
+#~ msgstr "Истечение срока"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.family_lead_account.label"
+#~ msgid "Family Lead Account"
+#~ msgstr "Рассчетный счет семьи"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.stat_categories.label"
+#~ msgid "Statistical Categories"
+#~ msgstr "Статистические категории"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.survey.label"
+#~ msgid "Survey"
+#~ msgstr "Опрос"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.question.label"
+#~ msgid "Question"
+#~ msgstr "Вопрос"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.answer.label"
+#~ msgid "Answer"
+#~ msgstr "Ответ"
+
+#~ msgid ""
+#~ "This will reset the claims returned count for this user. Are you sure you "
+#~ "wish to perform this action?"
+#~ msgstr ""
+#~ "Это переустановит Счетчик Возвращенных рекламаций для этого пользователя. Вы "
+#~ "уверены что хотите выполнить это действие?"
+
+#~ msgid "You have unsaved changes."
+#~ msgstr "Есть не сохраненые изменения"
+
+#~ msgid ""
+#~ "It appears that someone else was also editing this user. Saving the user now "
+#~ "will destroy their changes.  Click 'OK' to refresh the user and continue "
+#~ "editing. Click 'Cancel' to do nothing. Note that you will not be able to "
+#~ "save the user until this page has been refreshed."
+#~ msgstr ""
+#~ "Похоже, что кто-то еще редактирует данного пользователя.. Сохранения данного "
+#~ "пользователя  будут уничтожать  их изменения. Нажмите кнопку \"ОК\", чтобы "
+#~ "обновить пользователя и продолжить редактирование. Нажмите кнопку "
+#~ "\"Cancel\", чтобы ничего не делать. Заметьте, что вы не сможете сохранить "
+#~ "пользователя до тех пор, пока эта страница  не будет обновлена."
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.no_profile.label"
+#~ msgid "A profile group must be selected"
+#~ msgstr "Профиль группы должен быть выбран"
+
+#~ msgid "Print Page"
+#~ msgstr "Распечатка страницы"
+
+#~ msgid "Return to Editor"
+#~ msgstr "Вернуться к редактированию"
+
+#~ msgid "Save User"
+#~ msgstr "Сохранить пользователя"
+
+#~ msgid "Save and Clone User"
+#~ msgstr "Сохранить"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.cancel.value"
+#~ msgid "Cancel"
+#~ msgstr "Отменить"
+
+#~ msgid "Clear"
+#~ msgstr "Очистить"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.date_selector.label"
+#~ msgid "Date selector"
+#~ msgstr "Селектор даты"
+
 #~ msgid "Evergreen Staff Client Portal Page"
 #~ msgstr "Главная страница персонала Evergreen"
 
@@ -14506,8 +14593,21 @@ msgstr ""
 #~ "информации или функций вашей организации чтобы поддержать эти операции. "
 #~ "Например, можете добавить связи чтобы произвести документы."
 
+#~ msgid "Alias"
+#~ msgstr "Псевдоним"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.none_selected.label"
+#~ msgid " -- None Selected -- "
+#~ msgstr " -- Ничего не выбрано -- "
+
 #~ msgid "Approve pending address?  This operation will be be instantenous."
 #~ msgstr "Одобрить недоконченный адрес ? Эта операция будет моментальной"
+
+#~ msgid "Approve Pending Address"
+#~ msgstr "Одобрить недоконченный адрес"
+
+#~ msgid "Permissions"
+#~ msgstr "Полномочия"
 
 #~ msgid "MARC Codes"
 #~ msgstr "MARC коды"

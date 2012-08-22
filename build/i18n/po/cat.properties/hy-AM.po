@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-04-28 14:17-0400\n"
-"PO-Revision-Date: 2011-04-26 11:17+0000\n"
+"PO-Revision-Date: 2012-08-14 10:27+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-30 04:43+0000\n"
-"X-Generator: Launchpad (build 15171)\n"
+"X-Launchpad-Export-Date: 2012-08-15 04:41+0000\n"
+"X-Generator: Launchpad (build 15801)\n"
 "X-Accelerator-Marker: &\n"
 
 #: bib.no_marc
@@ -40,7 +40,7 @@ msgstr "Վերադարձրել է  %1$s արդյունք"
 
 #: staff.cat.bib_brief.record_id
 msgid "Database ID = %1$s"
-msgstr ""
+msgstr "Շտեմարանի ID = %1$s"
 
 #: staff.cat.bib_brief.deleted
 msgid "(Deleted)"
@@ -61,7 +61,7 @@ msgstr "Նյութը քարտագրված չէ:"
 #. # %1$s = Bib Record Database ID
 #: staff.cat.manage_multi_bib_items.tab_name
 msgid "Manage Conjoined Items for Bib with DB ID %1$s"
-msgstr ""
+msgstr "Կառավարի հետևյալ Bib-ի միացված նյութերը ըստ DB ID %1$s"
 
 #: staff.cat.manage_multi_bib_items.result.column.value.error
 msgid "Error"
@@ -94,12 +94,12 @@ msgstr "Փոխիր զույգի տեսակը"
 #. # %1$s = Bib Record Database ID
 #: staff.cat.manage_multi_bib_items.prompt.confirm.unlink_item_from_bib.singular
 msgid "Unlink selected item from Bib with DB ID %1$s"
-msgstr ""
+msgstr "Քանդիր ընտրված նյութի կապը Bib-ից ըստ DB ID %1$s"
 
 #. # %1$s = Bib Record Database ID, %2$s = Number of selected items
 #: staff.cat.manage_multi_bib_items.prompt.confirm.unlink_item_from_bib.plural
 msgid "Unlink %2$s selected items from Bib with DB ID %1$s"
-msgstr ""
+msgstr "Քանդիր կապը %2$s ընտրված նյութերի Bibժից ըստ DB ID %1$s"
 
 #: staff.cat.copy_browser.add_item.title
 msgid "Add Item"
@@ -226,7 +226,7 @@ msgstr "%1$s"
 
 #: staff.cat.copy_browser.can_have_copies.false
 msgid "Records from %1$s cannot have copies."
-msgstr ""
+msgstr "Գրառումները այստեղից %1$s չեն կարող ունենալ պատճեններ։"
 
 #: staff.cat.copy_browser.delete_volume.prompt
 msgid "Are you sure you would like to delete this volume?"
@@ -260,14 +260,15 @@ msgid ""
 "You must delete all the items on the volume before you may delete the volume "
 "itself."
 msgstr ""
+"Մինչ հատորը ամբողջությամբ ջնջելը դու պետք է ջնջես այդ հատորի բոլոր մասերը։"
 
 #: staff.cat.copy_browser.delete_volume.copies_remain.confirm
 msgid "Delete Volume and Items"
-msgstr ""
+msgstr "Ջնջիր Հատորը և մասերը"
 
 #: staff.cat.copy_browser.delete_volume.copies_remain.cancel
 msgid "Cancel Delete"
-msgstr ""
+msgstr "Չեղյալ արա Ջնջելը"
 
 #: staff.cat.copy_browser.delete_volume.exception
 msgid "copy browser -> delete volumes"
@@ -364,6 +365,7 @@ msgstr "Ցանկալի չէ բոլոր օրինակների տեղափոխում
 msgid ""
 "Please Mark a bib record as a Target for Conjoined Items and try this again."
 msgstr ""
+"Նշիր մատեն գրառումը որպես թիրախ միացված նյութերի համար և փորձիր սա նորից։"
 
 #: staff.cat.copy_browser.missing_library
 msgid "Missing library list."
@@ -681,7 +683,7 @@ msgstr "Սխալ ձևանմուշները ներմուծելիս:"
 #: staff.cat.copy_editor.apply_unsafe_field
 msgid ""
 "Template tried to change field '%1$s', which is not allowed currently."
-msgstr ""
+msgstr "Ձևանմուշը փորձեց փոխել դաշտը '%1$s', որը այս պահին արգելված է։"
 
 #: staff.cat.copy_editor.apply_owning_lib.undefined_volume.error
 msgid ""
@@ -773,7 +775,7 @@ msgstr "Ստեղծման ամսաթիվ"
 
 #: staff.cat.copy_editor.field.active_date.label
 msgid "Active Date"
-msgstr ""
+msgstr "Ակտիվ ամսաթիվ"
 
 #: staff.cat.copy_editor.field.last_edit_date.label
 msgid "Last Edit Date"
@@ -1221,11 +1223,11 @@ msgstr "MARC ձևաչափի %1$s բեռնավորման սխալ"
 
 #: staff.cat.marc_new.set_default.error
 msgid "Error setting default MARC template: %1$s"
-msgstr ""
+msgstr "Սխալ լռակյաց ՄԵԸՔ ձևանմուշի կարգաբերման ժամանակ: %1$s"
 
 #: staff.cat.marc_new.set_default.success
 msgid "Default template set to %1$s"
-msgstr ""
+msgstr "Լռակյաց ձևանմուշը կարգաբերված է որպես %1$s"
 
 #: staff.cat.opac.set_marc_edit.alert
 msgid "Record successfully saved."
@@ -1241,7 +1243,7 @@ msgstr "Դեռ չի ներդրված: Ընտրիր Պատճենել New Tab ըն
 
 #: staff.cat.opac.set_tab_name
 msgid "Record DB ID: %1$s"
-msgstr ""
+msgstr "Գրառման DB ID: %1$s"
 
 #: staff.cat.opac.title_for_hold_transfer.destination_needed.label
 msgid "Need to mark a record as a Title Hold Transfer Destination first."
@@ -1260,6 +1262,8 @@ msgstr "Պահումները փոխանցված չեն"
 msgid ""
 "WARNING: Move selected holds from multiple bibs to single targeted bib?"
 msgstr ""
+"ԶԳՈՒՇԱՑՈՒՄ։ Տեղափոխե՞լ ընտրված պահումները բազմակի մատեններից դեպի թիրախային "
+"մեկ մատեն։"
 
 #: staff.cat.record_buckets.tab_name
 msgid "Record Buckets"
@@ -1709,7 +1713,7 @@ msgstr "Փոխել գումարը "
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.cancel_label
 msgid "No Charge"
-msgstr ""
+msgstr "Գանձում չկա։"
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.confirm_action
 msgid "Check here to confirm this action "
@@ -1832,11 +1836,11 @@ msgstr ""
 #: staff.cat.util.show_in_opac.retrieving_title
 msgctxt "staff.cat.util.show_in_opac.retrieving_title"
 msgid "Retrieving title..."
-msgstr ""
+msgstr "Վերնագրի կանչում..."
 
 #: staff.cat.util.add_titles_to_bucket.number_of_precats_skipped
 msgid "Skipping %1$s pre-cat records..."
-msgstr ""
+msgstr "Բաց է թողնվում %1$s նախն. քարտագրամն գրառումներ..."
 
 #: staff.cat.volume_buckets.window_tab_name
 msgid "Volume Buckets"
@@ -1923,7 +1927,7 @@ msgstr "Նախածանց"
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.call_nums
 msgid "Call Number"
-msgstr ""
+msgstr "Դասիչ"
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.suffix
 msgid "Suffix"
@@ -1935,7 +1939,7 @@ msgstr "Օրինակների #"
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.barcodes_and_parts
 msgid "Barcode / Part Designation"
-msgstr ""
+msgstr "Շտրիխ կոդ/Մասի նշանակում"
 
 #: staff.cat.volume_copy_creator.render_barcode_entry.alert_message
 msgid "\"%1$s\" is an invalid barcode."
@@ -2318,67 +2322,67 @@ msgstr "Պրոբլեմ z39.50 կրեդենտալները հիշելիս:"
 
 #: staff.cat.bib_brief.title.label
 msgid "Title:"
-msgstr ""
+msgstr "Վերնագիր։"
 
 #: staff.cat.bib_brief.author.label
 msgid "Author:"
-msgstr ""
+msgstr "Հեղինակ:"
 
 #: staff.cat.bib_brief.edition.label
 msgid "Edition:"
-msgstr ""
+msgstr "Հրատարակություն։"
 
 #: staff.cat.bib_brief.pubdate.label
 msgid "Pub Date:"
-msgstr ""
+msgstr "Հրատարակման ամսաթիվ։"
 
 #: staff.cat.bib_brief.bib_call_number.label
 msgid "Bib Call #:"
-msgstr ""
+msgstr "Bib Call #:"
 
 #: staff.cat.bib_brief.call_number.label
 msgid "Item Call #:"
-msgstr ""
+msgstr "Նյութի դասիչ #:"
 
 #: staff.cat.bib_brief.tcn.label
 msgid "TCN:"
-msgstr ""
+msgstr "TCN:"
 
 #: staff.cat.bib_brief.mvr_doc_id.label
 msgid "Bib DB ID:"
-msgstr ""
+msgstr "մատեն DB ID:"
 
 #: staff.cat.bib_brief.owner.label
 msgid "Record Owner:"
-msgstr ""
+msgstr "Գրառման տեր։"
 
 #: staff.cat.bib_brief.creator.label
 msgid "Created By:"
-msgstr ""
+msgstr "Ստեղծված է։"
 
 #: staff.cat.bib_brief.create_date.label
 msgid "Created On:"
-msgstr ""
+msgstr "Ստեղծվել է։"
 
 #: staff.cat.bib_brief.editor.label
 msgid "Last Edited By:"
-msgstr ""
+msgstr "Վերջինը խմբագրված է՝"
 
 #: staff.cat.bib_brief.edit_date.label
 msgid "Last Edited On:"
-msgstr ""
+msgstr "Վերջինը խմբագրվել է՝"
 
 #: staff.cat.bib_brief.holds.label
 msgid "Holds:"
-msgstr ""
+msgstr "Պահումներ"
 
 #: staff.cat.bib_brief.items.label
 msgid "Items:"
-msgstr ""
+msgstr "Նյութեր։"
 
 #: staff.cat.bib_brief.items.available.tooltip
 msgid "%1$s available"
-msgstr ""
+msgstr "%1$sմատչելի"
 
 #~ msgid "Record ID = %1$s"
 #~ msgstr "Գրառման ID = %1$s"

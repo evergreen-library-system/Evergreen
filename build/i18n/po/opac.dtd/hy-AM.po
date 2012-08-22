@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-28 14:16-0400\n"
-"PO-Revision-Date: 2011-07-15 17:50+0000\n"
+"POT-Creation-Date: 2012-08-03 10:01-0400\n"
+"PO-Revision-Date: 2012-08-13 16:56+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-30 04:50+0000\n"
-"X-Generator: Launchpad (build 15171)\n"
+"X-Launchpad-Export-Date: 2012-08-14 04:47+0000\n"
+"X-Generator: Launchpad (build 15791)\n"
 "X-Accelerator-Marker: &\n"
 
 #: common.keyword
@@ -470,19 +470,18 @@ msgid ""
 "browser options, then \n"
 "<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
 "\n"
-"<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
-"<a style='color: blue; text-decoration: underline;' "
-"href='/opac/extras/slimpac/start.html'>here</a>."
+"<br/><br/>Alternatively, you can use the basic HTML-only catalog: "
 msgstr ""
-"JavaScript-ը պետք է թույլատրված լինի որպեսզի կարողանաս օգտագործել Evergreen-"
-"ի սովորական քարտարանը։ \n"
-"Համենայնդեպս թվում է որ JavaScript-ը արգելափակված է կամ քո դիտակի ւողմից չի "
-"աջակցվում։ \n"
-"Evergreen-ի սովորական քարտարանի օգտագործման համար թույլատրիր JavaScript-ը "
-"փոխելով քո դիտակի ընտրությունները, ապա \n"
+"JavaScript պետք է թույլատրված լինի որպեսզի կարողանաս օգտագործել կանոնավոր "
+"քարտարանը։ \n"
+"Համենայնդեպս թվում է որ JavaScript is կամ արգելափակված է կամ չի աջակցվում քո "
+"դիտակի կողմից։ \n"
+"Կանոնավոր քարտարանը օգտագործեկու համար թույլատրի JavaScript-ը փոխելով քո "
+"դիտալի կարգաբերումները, ապա \n"
 "<a style='color: blue; text-decoration: underline;' href='/'>փորձիր "
-"նորից</a>.\n"
-"<br/><br/>Որպես այլընտրանք կարող ես օգտագործել հիմնական միայն HTML-քարտարանը։"
+"նորից</a>. \n"
+"<br/><br/>Որպես այլընտրանք դու կարող ես օգտագործել հիմնական HTML-միայն "
+"քարտարանը: "
 
 #. =================================================================
 #. MyOPAC bookbag page
@@ -808,7 +807,7 @@ msgstr "Վերցնելու համար պատրաստ է"
 
 #: myopac.holds.status.suspended
 msgid "Suspended"
-msgstr ""
+msgstr "Կասեցված"
 
 #: myopac.holds.cancel
 msgctxt "myopac.holds.cancel"
@@ -1127,6 +1126,8 @@ msgid ""
 "Username cannot contain spaces or have the same format as a barcode, and may "
 "be restricted by policy"
 msgstr ""
+"Օգտվողի անունը չի կարեող պարունակել բացատներ կամ ունենալ նույն ձևաչափը ինչ "
+"որ շտրիխ կոդինն է,  և կարող է արգելված լինել համաձայն քաղաքականության։"
 
 #: myopac.summary.email.error
 msgid "Please enter a valid email address"
@@ -1459,6 +1460,7 @@ msgstr "GALILEO"
 #: footer.copyright
 msgid "Copyright &#xA9; 2006-2012 Georgia Public Library Service, and others"
 msgstr ""
+"Արտոնագիր &#xA9; 2006-2012 Գեորգիայի հանրային գրադարանի ծառայություն, և այլոք"
 
 # Introduces the logo for the project
 #. Introduces the logo for the project
@@ -1525,7 +1527,7 @@ msgstr "Արագ փնտրում"
 
 #: sidebar.authority.browse
 msgid "Authority Browse"
-msgstr ""
+msgstr "Դիտում ըստ Հեղինակավորի"
 
 #: sidebar.copy.not.found
 msgid "No copy with the requested barcode was found"
@@ -1533,7 +1535,7 @@ msgstr "Պահանջվող շտրիխ կոդով պատճեներ չեն գտն�
 
 #: sidebar.copy.not.cataloged
 msgid "The copy with the requested barcode is not cataloged"
-msgstr ""
+msgstr "Պատճեն պահանջված շտրիխ կոդով մուտքագրված չէ"
 
 # =================================================================
 # Search formats
@@ -1611,7 +1613,7 @@ msgstr "Evergreen դասիչի դիտում"
 
 #: opac.title.authbrowse
 msgid "Evergreen Authority Record Browse"
-msgstr ""
+msgstr "Էվերգրինի Հեղինակավոր գրառման դիտում"
 
 #: opac.holds.forMe
 msgid "Place this hold for myself"
@@ -1660,6 +1662,9 @@ msgid ""
 "The system was not able to place the requested hold.  The item requested has "
 "multiple parts to choose from.  Try selecting a specific part for the hold."
 msgstr ""
+"Համակարգը չկարողացավ տեղադրել պահանջվող պահումը։ Պահանջված նյութը ունի "
+"բազմակի մասեր որոնցից հարկ է կատարել ընտրություն։ Փորձիր պահման համար ընտրել "
+"որոշակի մաս։"
 
 # =================================================================
 # Advanced
@@ -1822,7 +1827,7 @@ msgstr "Ստեղծիր ամսաթիվ"
 
 #: rdetail.cn.active
 msgid "Active Date"
-msgstr ""
+msgstr "Ակտիվ ամսաթիվ"
 
 #: rdetail.cn.holdable
 msgid "Holdable"
@@ -2305,6 +2310,8 @@ msgid ""
 "This hold may take extra time to fill due to library policies. Would you "
 "like to create the hold anyway?"
 msgstr ""
+"Այս պահումը կախված գրադարանի քաղաքականությունից կարող է պահանջել լրացուցիչ "
+"ժամանակ լրացման համար։ Կցանկանա՞ս այնուամենայնիվ ստեղծել պահում։"
 
 #: common.hold.place_unfillable.override
 msgid ""
@@ -2312,6 +2319,9 @@ msgid ""
 "the hold regardless, but should only do so if you believe the hold will "
 "eventually be filled. Would you like to create the hold anyway?"
 msgstr ""
+"Պահանջվող պահումը չի կարող այս պահին կատարվել։ Դու ունես իրավունք դնելու "
+"պահում անկախ ամեն ինչից, բայց կարող ես այդ անել եթե հավատում ես որ ի վերջո "
+"պահումը կկատարվի։ Կցանկանա՞ս դնել նախնական պահում։"
 
 #: common.hold.barred
 msgid ""
@@ -2764,6 +2774,29 @@ msgstr "Համակարգը չի կարող գտնել այս ընթերցողի�
 #: circ.fail_part.transit_range
 msgid "The item cannot transit this far"
 msgstr "Նյութը չի կարել դնել տրանզիտ"
+
+#~ msgid ""
+#~ "JavaScript must be enabled in order for you to use the regular Evergreen "
+#~ "Catalog. \n"
+#~ "However, it seems JavaScript is either disabled or not supported by your "
+#~ "browser. \n"
+#~ "To use the regular Evergreen Catalog, enable JavaScript by changing your "
+#~ "browser options, then \n"
+#~ "<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
+#~ "\n"
+#~ "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
+#~ "<a style='color: blue; text-decoration: underline;' "
+#~ "href='/opac/extras/slimpac/start.html'>here</a>."
+#~ msgstr ""
+#~ "JavaScript-ը պետք է թույլատրված լինի որպեսզի կարողանաս օգտագործել Evergreen-"
+#~ "ի սովորական քարտարանը։ \n"
+#~ "Համենայնդեպս թվում է որ JavaScript-ը արգելափակված է կամ քո դիտակի ւողմից չի "
+#~ "աջակցվում։ \n"
+#~ "Evergreen-ի սովորական քարտարանի օգտագործման համար թույլատրիր JavaScript-ը "
+#~ "փոխելով քո դիտակի ընտրությունները, ապա \n"
+#~ "<a style='color: blue; text-decoration: underline;' href='/'>փորձիր "
+#~ "նորից</a>.\n"
+#~ "<br/><br/>Որպես այլընտրանք կարող ես օգտագործել հիմնական միայն HTML-քարտարանը։"
 
 #~ msgid "Username cannot contain spaces or have the same format as a barcode"
 #~ msgstr ""

@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-04-28 14:16-0400\n"
+"POT-Creation-Date: 2012-08-03 10:01-0400\n"
 "PO-Revision-Date: 2011-11-29 15:16+0000\n"
 "Last-Translator: Jonathan Field <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-30 04:49+0000\n"
-"X-Generator: Launchpad (build 15171)\n"
+"X-Launchpad-Export-Date: 2012-08-04 05:14+0000\n"
+"X-Generator: Launchpad (build 15742)\n"
 
 #: lang.version
 msgid "remote v1"
@@ -993,6 +993,30 @@ msgstr "&Verify"
 #: staff.auth.verify.retrieve.accesskey
 msgid "&Retrieve"
 msgstr "&Retrieve"
+
+#: staff.auth.change_type.label
+#: staff.auth.change_type.accesskey
+msgid "&New Login Type:"
+msgstr ""
+
+#: staff.auth.change_type_description
+msgid ""
+"Temporary logins expire with a few minutes of inactivity. Staff logins are "
+"the same as the initial login into the staff client. Permanent will discard "
+"the existing login session and replace it with the new one."
+msgstr ""
+
+#: staff.auth.change_type_staff
+msgid "Staff"
+msgstr ""
+
+#: staff.auth.change_type_temporary
+msgid "Temporary"
+msgstr ""
+
+#: staff.auth.change_type_permanent
+msgid "Permanent"
+msgstr ""
 
 #: staff.bills_current_payment_label
 msgid "Current Payment"
@@ -2242,9 +2266,8 @@ msgid "Adult"
 msgstr "Adult"
 
 #: staff.copy.attr.stat.audience.example2
-msgctxt "staff.copy.attr.stat.audience.example2"
 msgid "Juvenile"
-msgstr "Juvenile"
+msgstr ""
 
 #: staff.copy.attr.stat.audience.example3
 msgid "Preschool"
@@ -2854,6 +2877,10 @@ msgstr ""
 msgid "Copy Location Groups"
 msgstr ""
 
+#: staff.main.menu.admin.local_admin.search_filter_group.label
+msgid "Search Filter Groups"
+msgstr ""
+
 #: staff.main.menu.admin.server_admin.label
 msgid "Server Administration"
 msgstr "Server Administration"
@@ -2871,8 +2898,9 @@ msgid "Permission Groups"
 msgstr "Permission Groups"
 
 #: staff.main.menu.admin.server_admin.conify.perm_list.label
+msgctxt "staff.main.menu.admin.server_admin.conify.perm_list.label"
 msgid "Permissions"
-msgstr "Permissions"
+msgstr ""
 
 #: staff.main.menu.admin.server_admin.conify.copy_status.label
 msgid "Copy Statuses"
@@ -3671,6 +3699,10 @@ msgstr "Mark Found"
 #: staff.main.menu.circ.hold_browse.accesskey
 msgid "&Browse Holds Shelf"
 msgstr "&Browse Holds Shelf"
+
+#: staff.main.menu.circ.hold_clear.label
+msgid "Clear Shelf-Expired Holds"
+msgstr ""
 
 #: staff.main.menu.circ.hold_capture.label
 #: staff.main.menu.circ.hold_capture.accesskey
@@ -5738,14 +5770,12 @@ msgid "Print"
 msgstr "Print"
 
 #: staff.patron_display.radio.mailing_address.label
-msgctxt "staff.patron_display.radio.mailing_address.label"
 msgid "Mailing"
-msgstr "Mailing"
+msgstr ""
 
 #: staff.patron_display.radio.physical_address.label
-msgctxt "staff.patron_display.radio.physical_address.label"
 msgid "Billing"
-msgstr "Billing"
+msgstr ""
 
 #: staff.patron_display.name.label
 msgctxt "staff.patron_display.name.label"
@@ -7334,9 +7364,8 @@ msgid "Start Date:"
 msgstr "Start Date:"
 
 #: staff.server.admin.cash.date.select
-msgctxt "staff.server.admin.cash.date.select"
 msgid "Date selector"
-msgstr "Date selector"
+msgstr ""
 
 #: staff.server.admin.cash.end_date
 msgctxt "staff.server.admin.cash.end_date"
@@ -7775,8 +7804,9 @@ msgid "Create"
 msgstr "Create"
 
 #: staff.server.admin.non_cat_types.name
+msgctxt "staff.server.admin.non_cat_types.name"
 msgid "Name"
-msgstr "Name"
+msgstr ""
 
 #: staff.server.admin.non_cat_types.owning_location
 msgid "Owning Location"
@@ -12328,6 +12358,11 @@ msgstr "Print F&ull Pull List"
 msgid "Print Full Pull List (Alternate strateg&y)"
 msgstr "Print Full Pull List (Alternate strateg&y)"
 
+#: staff.patron.holds_overlay.simplified_pull_list.label
+#: staff.patron.holds_overlay.simplified_pull_list.accesskey
+msgid "Simplified Pull List &Interface"
+msgstr ""
+
 #: staff.patron.holds_overlay.place_hold.label
 #: staff.patron.holds_overlay.place_hold.accesskey
 msgctxt ""
@@ -12500,6 +12535,10 @@ msgctxt "staff.patron.user_edit.title"
 msgid "Evergreen User Editor"
 msgstr "Evergreen User Editor"
 
+#: staff.patron.user_edit.user_info.label
+msgid "User Information"
+msgstr ""
+
 #: staff.patron.user_edit.user_name.label
 msgid "User Name:"
 msgstr "User Name:"
@@ -12527,6 +12566,24 @@ msgstr "Last Name:"
 #: staff.patron.user_edit.working_location.label
 msgid "Working Location"
 msgstr "Working Location"
+
+#: staff.patron.user_edit.working_shortname.label
+msgid "Shortname"
+msgstr ""
+
+#: staff.patron.user_edit.working_name.label
+msgctxt "staff.patron.user_edit.working_name.label"
+msgid "Name"
+msgstr ""
+
+#: staff.patron.user_edit.working_ou.label
+msgid "Work OU?"
+msgstr ""
+
+#: staff.patron.user_edit.permission_list.label
+msgctxt "staff.patron.user_edit.permission_list.label"
+msgid "Permissions"
+msgstr ""
 
 #: staff.patron.user_edit.permission.label
 msgid "Permission"
@@ -12568,44 +12625,36 @@ msgstr ""
 "red;'>marked with color</span>"
 
 #: staff.patron.ue.view_errors.label
-msgctxt "staff.patron.ue.view_errors.label"
 msgid "View Errors"
-msgstr "View Errors"
+msgstr ""
 
 #: staff.patron.ue.nav.user_id.label
-msgctxt "staff.patron.ue.nav.user_id.label"
 msgid "1. User Identification"
-msgstr "1. User Identification"
+msgstr ""
 
 #: staff.patron.ue.nav.contact_info.label
-msgctxt "staff.patron.ue.nav.contact_info.label"
 msgid "2. Contact Info"
-msgstr "2. Contact Info"
+msgstr ""
 
 #: staff.patron.ue.nav.addresses.label
-msgctxt "staff.patron.ue.nav.addresses.label"
 msgid "3. Addresses"
-msgstr "3. Addresses"
+msgstr ""
 
 #: staff.patron.ue.nav.groups_permissions.label
-msgctxt "staff.patron.ue.nav.groups_permissions.label"
 msgid "4. Groups and Permissions"
-msgstr "4. Groups and Permissions"
+msgstr ""
 
 #: staff.patron.ue.nav.stat_categories.label
-msgctxt "staff.patron.ue.nav.stat_categories.label"
 msgid "5. Statistical Categories"
-msgstr "5. Statistical Categories"
+msgstr ""
 
 #: staff.patron.ue.nav.surveys.label
-msgctxt "staff.patron.ue.nav.surveys.label"
 msgid "6. Surveys"
-msgstr "6. Surveys"
+msgstr ""
 
 #: staff.patron.ue.nav.finish.label
-msgctxt "staff.patron.ue.nav.finish.label"
 msgid "7. Finish"
-msgstr "7. Finish"
+msgstr ""
 
 #: staff.patron.ue.loading_data.label
 msgctxt "staff.patron.ue.loading_data.label"
@@ -12613,9 +12662,8 @@ msgid "Loading data..."
 msgstr "Loading data..."
 
 #: staff.patron.ue.found_duplicate_patron.label
-msgctxt "staff.patron.ue.found_duplicate_patron.label"
 msgid "Number of possible duplicate patron(s):"
-msgstr "Number of possible duplicate patron(s):"
+msgstr ""
 
 #: staff.patron.ue.mark_lost.label
 msgctxt "staff.patron.ue.mark_lost.label"
@@ -12633,19 +12681,16 @@ msgid "Password"
 msgstr "Password"
 
 #: staff.patron.ue.reset.label
-msgctxt "staff.patron.ue.reset.label"
 msgid "Reset"
-msgstr "Reset"
+msgstr ""
 
 #: staff.patron.ue.re_password.label
-msgctxt "staff.patron.ue.re_password.label"
 msgid "Password: "
-msgstr "Password: "
+msgstr ""
 
 #: staff.patron.ue.verify_password.label
-msgctxt "staff.patron.ue.verify_password.label"
 msgid "Verify Password"
-msgstr "Verify Password"
+msgstr ""
 
 #: staff.patron.ue.first_name.label
 msgctxt "staff.patron.ue.first_name.label"
@@ -12658,9 +12703,8 @@ msgid "Middle Name"
 msgstr "Middle Name"
 
 #: staff.patron.ue.last_name.label
-msgctxt "staff.patron.ue.last_name.label"
 msgid "Last Name"
-msgstr "Last Name"
+msgstr ""
 
 #: staff.patron.ue.suffix.label
 msgctxt "staff.patron.ue.suffix.label"
@@ -12669,9 +12713,8 @@ msgstr "Suffix"
 
 #. Used in a selection list, the '-' at the start and end draws attention to the entry
 #: staff.patron.ue.choose.label
-msgctxt "staff.patron.ue.choose.label"
 msgid "- Pick -"
-msgstr "- Pick -"
+msgstr ""
 
 #: staff.patron.ue.dob.label
 msgctxt "staff.patron.ue.dob.label"
@@ -12679,51 +12722,42 @@ msgid "Date of Birth"
 msgstr "Date of Birth"
 
 #: staff.patron.ue.primary_id_type.label
-msgctxt "staff.patron.ue.primary_id_type.label"
 msgid "Primary Identification Type"
-msgstr "Primary Identification Type"
+msgstr ""
 
 #. Used in a selection list, the '-' at the start and end draws attention to the entry
 #: staff.patron.ue.required.label
-msgctxt "staff.patron.ue.required.label"
 msgid " -- Required -- "
-msgstr " -- Required -- "
+msgstr ""
 
 #: staff.patron.ue.primary_id.label
-msgctxt "staff.patron.ue.primary_id.label"
 msgid "Primary Identification"
-msgstr "Primary Identification"
+msgstr ""
 
 #: staff.patron.ue.secondary_id_type.label
-msgctxt "staff.patron.ue.secondary_id_type.label"
 msgid "Secondary Identification Type"
-msgstr "Secondary Identification Type"
+msgstr ""
 
 #. Used in a selection list, the '-' at the start and end draws attention to the entry
 #: staff.patron.ue.none_selected.label
-msgctxt "staff.patron.ue.none_selected.label"
 msgid " -- None Selected -- "
-msgstr " -- None Selected -- "
+msgstr ""
 
 #: staff.patron.ue.secondary_id.label
-msgctxt "staff.patron.ue.secondary_id.label"
 msgid "Secondary Identification"
-msgstr "Secondary Identification"
+msgstr ""
 
 #: staff.patron.ue.parent_guardian.label
-msgctxt "staff.patron.ue.parent_guardian.label"
 msgid "Parent or Guardian"
-msgstr "Parent or Guardian"
+msgstr ""
 
 #: staff.patron.ue.email_address.label
-msgctxt "staff.patron.ue.email_address.label"
 msgid "Email Address"
-msgstr "Email Address"
+msgstr ""
 
 #: staff.patron.ue.day_phone.label
-msgctxt "staff.patron.ue.day_phone.label"
 msgid "Daytime Phone"
-msgstr "Daytime Phone"
+msgstr ""
 
 #: staff.patron.ue.evening_phone.label
 msgctxt "staff.patron.ue.evening_phone.label"
@@ -12746,14 +12780,12 @@ msgid "Address"
 msgstr "Address"
 
 #: staff.patron.ue.in_city_limits.label
-msgctxt "staff.patron.ue.in_city_limits.label"
 msgid "Within City Limits"
-msgstr "Within City Limits"
+msgstr ""
 
 #: staff.patron.ue.valid.label
-msgctxt "staff.patron.ue.valid.label"
 msgid "Valid"
-msgstr "Valid"
+msgstr ""
 
 #: staff.patron.ue.mailing_address.label
 msgctxt "staff.patron.ue.mailing_address.label"
@@ -12766,9 +12798,8 @@ msgid "Physical Address"
 msgstr "Physical Address"
 
 #: staff.patron.ue.owned_address.label
-msgctxt "staff.patron.ue.owned_address.label"
 msgid "Address is owned by"
-msgstr "Address is owned by"
+msgstr ""
 
 #: staff.patron.ue.edit.label
 msgctxt "staff.patron.ue.edit.label"
@@ -12785,14 +12816,12 @@ msgid "Zip Code"
 msgstr "Post Code"
 
 #: staff.patron.ue.street_1.label
-msgctxt "staff.patron.ue.street_1.label"
 msgid "Street 1"
-msgstr "Street 1"
+msgstr ""
 
 #: staff.patron.ue.street_2.label
-msgctxt "staff.patron.ue.street_2.label"
 msgid "Street 2"
-msgstr "Street 2"
+msgstr ""
 
 #: staff.patron.ue.city.label
 msgctxt "staff.patron.ue.city.label"
@@ -12800,9 +12829,8 @@ msgid "City"
 msgstr "City"
 
 #: staff.patron.ue.county.label
-msgctxt "staff.patron.ue.county.label"
 msgid "County"
-msgstr "County"
+msgstr ""
 
 #: staff.patron.ue.state.label
 msgctxt "staff.patron.ue.state.label"
@@ -12815,33 +12843,28 @@ msgid "Country"
 msgstr "Country"
 
 #: staff.patron.ue.delete_this_address.label
-msgctxt "staff.patron.ue.delete_this_address.label"
 msgid "Delete this Address"
-msgstr "Delete this Address"
+msgstr ""
 
 #: staff.patron.ue.detach_this_address.label
-msgctxt "staff.patron.ue.detach_this_address.label"
 msgid "Detach this Address"
-msgstr "Detach this Address"
+msgstr ""
 
 #: staff.patron.ue.create_address.label
 msgid "Create a New Address"
 msgstr "Create a New Address"
 
 #: staff.patron.ue.profile_group.label
-msgctxt "staff.patron.ue.profile_group.label"
 msgid "Profile Group"
-msgstr "Profile Group"
+msgstr ""
 
 #: staff.patron.ue.accoutn_expire_date.label
-msgctxt "staff.patron.ue.accoutn_expire_date.label"
 msgid "Account Expiration Date"
-msgstr "Account Expiration Date"
+msgstr ""
 
 #: staff.patron.ue.internet_access_level.label
-msgctxt "staff.patron.ue.internet_access_level.label"
 msgid "Internet Access Level"
-msgstr "Internet Access Level"
+msgstr ""
 
 #: staff.patron.ue.active.label
 msgctxt "staff.patron.ue.active.label"
@@ -12849,14 +12872,12 @@ msgid "Active"
 msgstr "Active"
 
 #: staff.patron.ue.barred.label
-msgctxt "staff.patron.ue.barred.label"
 msgid "Barred"
-msgstr "Barred"
+msgstr ""
 
 #: staff.patron.ue.set_lead_account.label
-msgctxt "staff.patron.ue.set_lead_account.label"
 msgid "Set as Family or Group Lead Account"
-msgstr "Set as Family or Group Lead Account"
+msgstr ""
 
 #: staff.patron.ue.claims_returned_count.label
 msgctxt "staff.patron.ue.claims_returned_count.label"
@@ -12874,9 +12895,8 @@ msgid "Statistical Category Name"
 msgstr "Statistical Category Name"
 
 #: staff.patron.ue.owner.label
-msgctxt "staff.patron.ue.owner.label"
 msgid "Owner"
-msgstr "Owner"
+msgstr ""
 
 #: staff.patron.ue.value.label
 msgctxt "staff.patron.ue.value.label"
@@ -12884,9 +12904,8 @@ msgid "Value"
 msgstr "Value"
 
 #: staff.patron.ue.no_surveys_for_location.label
-msgctxt "staff.patron.ue.no_surveys_for_location.label"
 msgid "No surveys have been created for this location."
-msgstr "No surveys have been created for this location."
+msgstr ""
 
 #: staff.patron.ue.message1.label
 msgid "You are now ready to save the user to the database."
@@ -12907,14 +12926,12 @@ msgid "View Summary"
 msgstr "View Summary"
 
 #: staff.patron.ue.back.label
-msgctxt "staff.patron.ue.back.label"
 msgid "Back"
-msgstr "Back"
+msgstr ""
 
 #: staff.patron.ue.forward.label
-msgctxt "staff.patron.ue.forward.label"
 msgid "Forward"
-msgstr "Forward"
+msgstr ""
 
 #: staff.patron.ue.user_summary.label
 msgid ""
@@ -12935,9 +12952,8 @@ msgid "Addresses"
 msgstr "Addresses"
 
 #: staff.patron.ue.address_label.label
-msgctxt "staff.patron.ue.address_label.label"
 msgid "Address Label"
-msgstr "Address Label"
+msgstr ""
 
 #: staff.patron.ue.billing_address.label
 msgctxt "staff.patron.ue.billing_address.label"
@@ -12955,29 +12971,24 @@ msgid "Expire Date"
 msgstr "Expire Date"
 
 #: staff.patron.ue.family_lead_account.label
-msgctxt "staff.patron.ue.family_lead_account.label"
 msgid "Family Lead Account"
-msgstr "Family Lead Account"
+msgstr ""
 
 #: staff.patron.ue.stat_categories.label
-msgctxt "staff.patron.ue.stat_categories.label"
 msgid "Statistical Categories"
-msgstr "Statistical Categories"
+msgstr ""
 
 #: staff.patron.ue.survey.label
-msgctxt "staff.patron.ue.survey.label"
 msgid "Survey"
-msgstr "Survey"
+msgstr ""
 
 #: staff.patron.ue.question.label
-msgctxt "staff.patron.ue.question.label"
 msgid "Question"
-msgstr "Question"
+msgstr ""
 
 #: staff.patron.ue.answer.label
-msgctxt "staff.patron.ue.answer.label"
 msgid "Answer"
-msgstr "Answer"
+msgstr ""
 
 #: staff.patron.ue.bad_dob.label
 msgid ""
@@ -13044,9 +13055,8 @@ msgid "An invalid phone number was entered"
 msgstr "An invalid phone number was entered"
 
 #: staff.patron.ue.no_profile.label
-msgctxt "staff.patron.ue.no_profile.label"
 msgid "A profile group must be selected"
-msgstr "A profile group must be selected"
+msgstr ""
 
 #: staff.patron.ue.bad_expire.label
 msgid "The user expiration date is invalid.  We are expecting YYYY-MM-DD"
@@ -13315,500 +13325,6 @@ msgstr "Save List CSV to &File"
 #: staff.generic.list_actions.save_columns.accesskey
 msgid "&Save List Configuration"
 msgstr "&Save List Configuration"
-
-#: ev.staff.patron.ue_xhtml.ev_user_editor.label
-msgctxt "ev.staff.patron.ue_xhtml.ev_user_editor.label"
-msgid "Evergreen User Editor"
-msgstr "Evergreen User Editor"
-
-#: ev.staff.patron.ue_xhtml.welcome.label
-msgctxt "ev.staff.patron.ue_xhtml.welcome.label"
-msgid "Welcome "
-msgstr "Welcome "
-
-#: ev.staff.patron.ue_xhtml.view_errors.label
-msgctxt "ev.staff.patron.ue_xhtml.view_errors.label"
-msgid "View Errors"
-msgstr "View Errors"
-
-#: ev.staff.patron.ue_xhtml.user_id.label
-msgctxt "ev.staff.patron.ue_xhtml.user_id.label"
-msgid "1. User Identification"
-msgstr "1. User Identification"
-
-#: ev.staff.patron.ue_xhtml.contact_info.label
-msgctxt "ev.staff.patron.ue_xhtml.contact_info.label"
-msgid "2. Contact Info"
-msgstr "2. Contact Info"
-
-#: ev.staff.patron.ue_xhtml.addresses.label
-msgctxt "ev.staff.patron.ue_xhtml.addresses.label"
-msgid "3. Addresses"
-msgstr "3. Addresses"
-
-#: ev.staff.patron.ue_xhtml.groups_permissions.label
-msgctxt "ev.staff.patron.ue_xhtml.groups_permissions.label"
-msgid "4. Groups and Permissions"
-msgstr "4. Groups and Permissions"
-
-#: ev.staff.patron.ue_xhtml.statistical_categories.label
-msgctxt "ev.staff.patron.ue_xhtml.statistical_categories.label"
-msgid "5. Statistical Categories"
-msgstr "5. Statistical Categories"
-
-#: ev.staff.patron.ue_xhtml.surveys.label
-msgctxt "ev.staff.patron.ue_xhtml.surveys.label"
-msgid "6. Surveys"
-msgstr "6. Surveys"
-
-#: ev.staff.patron.ue_xhtml.finish.label
-msgctxt "ev.staff.patron.ue_xhtml.finish.label"
-msgid "7. Finish"
-msgstr "7. Finish"
-
-#: ev.staff.patron.ue_xhtml.loading_data.label
-msgctxt "ev.staff.patron.ue_xhtml.loading_data.label"
-msgid "Loading data..."
-msgstr "Loading data..."
-
-#: ev.staff.patron.ue_xhtml.found_duplicate_patron.label
-msgctxt "ev.staff.patron.ue_xhtml.found_duplicate_patron.label"
-msgid "Number of possible duplicate patron(s):"
-msgstr "Number of possible duplicate patron(s):"
-
-#: ev.staff.patron.ue_xhtml.barcode.label
-msgctxt "ev.staff.patron.ue_xhtml.barcode.label"
-msgid "Barcode"
-msgstr "Barcode"
-
-#: ev.staff.patron.ue_xhtml.mark_lost.label
-msgctxt "ev.staff.patron.ue_xhtml.mark_lost.label"
-msgid "Mark Lost"
-msgstr "Mark Lost"
-
-#: ev.staff.patron.ue_xhtml.username.label
-msgctxt "ev.staff.patron.ue_xhtml.username.label"
-msgid "Username"
-msgstr "Username"
-
-#: ev.staff.patron.ue_xhtml.password.label
-msgctxt "ev.staff.patron.ue_xhtml.password.label"
-msgid "Password"
-msgstr "Password"
-
-#: ev.staff.patron.ue_xhtml.reset.label
-msgctxt "ev.staff.patron.ue_xhtml.reset.label"
-msgid "Reset"
-msgstr "Reset"
-
-#: ev.staff.patron.ue_xhtml.re_password.label
-msgctxt "ev.staff.patron.ue_xhtml.re_password.label"
-msgid "Password: "
-msgstr "Password: "
-
-#: ev.staff.patron.ue_xhtml.verify_password.label
-msgctxt "ev.staff.patron.ue_xhtml.verify_password.label"
-msgid "Verify Password"
-msgstr "Verify Password"
-
-#: ev.staff.patron.ue_xhtml.first_name.label
-msgctxt "ev.staff.patron.ue_xhtml.first_name.label"
-msgid "First Name"
-msgstr "First Name"
-
-#: ev.staff.patron.ue_xhtml.middle_name.label
-msgctxt "ev.staff.patron.ue_xhtml.middle_name.label"
-msgid "Middle Name"
-msgstr "Middle Name"
-
-#: ev.staff.patron.ue_xhtml.last_name.label
-msgctxt "ev.staff.patron.ue_xhtml.last_name.label"
-msgid "Last Name"
-msgstr "Last Name"
-
-#: ev.staff.patron.ue_xhtml.suffix.label
-msgctxt "ev.staff.patron.ue_xhtml.suffix.label"
-msgid "Suffix"
-msgstr "Suffix"
-
-#. Used in a selection list, the '-' at the start and end draws attention to the entry
-#: ev.staff.patron.ue_xhtml.pick_suffix.label
-msgctxt "ev.staff.patron.ue_xhtml.pick_suffix.label"
-msgid "- Pick -"
-msgstr "- Pick -"
-
-#: ev.staff.patron.ue_xhtml.dob.label
-msgctxt "ev.staff.patron.ue_xhtml.dob.label"
-msgid "Date of Birth"
-msgstr "Date of Birth"
-
-#: ev.staff.patron.ue_xhtml.primary_id_type.label
-msgctxt "ev.staff.patron.ue_xhtml.primary_id_type.label"
-msgid "Primary Identification Type"
-msgstr "Primary Identification Type"
-
-#: ev.staff.patron.ue_xhtml.primary_id.label
-msgctxt "ev.staff.patron.ue_xhtml.primary_id.label"
-msgid "Primary Identification"
-msgstr "Primary Identification"
-
-#: ev.staff.patron.ue_xhtml.parent_guardian.label
-msgctxt "ev.staff.patron.ue_xhtml.parent_guardian.label"
-msgid "Parent or Guardian"
-msgstr "Parent or Guardian"
-
-#: ev.staff.patron.ue_xhtml.email_address.label
-msgctxt "ev.staff.patron.ue_xhtml.email_address.label"
-msgid "Email Address"
-msgstr "Email Address"
-
-#: ev.staff.patron.ue_xhtml.phone_example
-msgid "Example: 123-456-7890 or 123-456-7890 ex123"
-msgstr "Example: 123-456-7890 or 123-456-7890 ex123"
-
-#: ev.staff.patron.ue_xhtml.daytime_phone.label
-msgctxt "ev.staff.patron.ue_xhtml.daytime_phone.label"
-msgid "Daytime Phone"
-msgstr "Daytime Phone"
-
-#: ev.staff.patron.ue_xhtml.evening_phone.label
-msgctxt "ev.staff.patron.ue_xhtml.evening_phone.label"
-msgid "Evening Phone"
-msgstr "Evening Phone"
-
-#: ev.staff.patron.ue_xhtml.other_phone.label
-msgid "Other (Cell Phone)"
-msgstr "Other (Mobile Phone)"
-
-#: ev.staff.patron.ue_xhtml.home_library.label
-msgctxt "ev.staff.patron.ue_xhtml.home_library.label"
-msgid "Home Library"
-msgstr "Home Library"
-
-#: ev.staff.patron.ue_xhtml.address.label
-msgctxt "ev.staff.patron.ue_xhtml.address.label"
-msgid "Address"
-msgstr "Address"
-
-#: ev.staff.patron.ue_xhtml.in_city_limits.label
-msgctxt "ev.staff.patron.ue_xhtml.in_city_limits.label"
-msgid "Within City Limits"
-msgstr "Within City Limits"
-
-#: ev.staff.patron.ue_xhtml.county.label
-msgctxt "ev.staff.patron.ue_xhtml.county.label"
-msgid "County"
-msgstr "County"
-
-#: ev.staff.patron.ue_xhtml.valid.label
-msgctxt "ev.staff.patron.ue_xhtml.valid.label"
-msgid "Valid"
-msgstr "Valid"
-
-#: ev.staff.patron.ue_xhtml.mailing_address.label
-msgctxt "ev.staff.patron.ue_xhtml.mailing_address.label"
-msgid "Mailing Address"
-msgstr "Mailing Address"
-
-#: ev.staff.patron.ue_xhtml.physical_address.label
-msgctxt "ev.staff.patron.ue_xhtml.physical_address.label"
-msgid "Physical Address"
-msgstr "Physical Address"
-
-#: ev.staff.patron.ue_xhtml.address_owned_by.label
-msgctxt "ev.staff.patron.ue_xhtml.address_owned_by.label"
-msgid "Address is owned by"
-msgstr "Address is owned by"
-
-#: ev.staff.patron.ue_xhtml.label.label
-msgctxt "ev.staff.patron.ue_xhtml.label.label"
-msgid "Label"
-msgstr "Label"
-
-#: ev.staff.patron.ue_xhtml.zip.label
-msgid "Zip"
-msgstr "Postcode"
-
-#: ev.staff.patron.ue_xhtml.street1.label
-msgctxt "ev.staff.patron.ue_xhtml.street1.label"
-msgid "Street 1"
-msgstr "Street 1"
-
-#: ev.staff.patron.ue_xhtml.street2.label
-msgctxt "ev.staff.patron.ue_xhtml.street2.label"
-msgid "Street 2"
-msgstr "Street 2"
-
-#: ev.staff.patron.ue_xhtml.city.label
-msgctxt "ev.staff.patron.ue_xhtml.city.label"
-msgid "City"
-msgstr "City"
-
-#: ev.staff.patron.ue_xhtml.conuty.label
-msgctxt "ev.staff.patron.ue_xhtml.conuty.label"
-msgid "County"
-msgstr "County"
-
-#: ev.staff.patron.ue_xhtml.state.label
-msgctxt "ev.staff.patron.ue_xhtml.state.label"
-msgid "State"
-msgstr "County"
-
-#: ev.staff.patron.ue_xhtml.country.label
-msgctxt "ev.staff.patron.ue_xhtml.country.label"
-msgid "Country"
-msgstr "Country"
-
-#: ev.staff.patron.ue_xhtml.profile_group.label
-msgctxt "ev.staff.patron.ue_xhtml.profile_group.label"
-msgid "Profile Group"
-msgstr "Profile Group"
-
-#: ev.staff.patron.ue_xhtml.ue_addr_delete.label
-msgctxt "ev.staff.patron.ue_xhtml.ue_addr_delete.label"
-msgid "Delete this Address"
-msgstr "Delete this Address"
-
-#: ev.staff.patron.ue_xhtml.ue_addr_detach.label
-msgctxt "ev.staff.patron.ue_xhtml.ue_addr_detach.label"
-msgid "Detach this Address"
-msgstr "Detach this Address"
-
-#: ev.staff.patron.ue_xhtml.ue_addr_approve.label
-msgid "Approve Pending Address"
-msgstr "Approve Pending Address"
-
-#: ev.staff.patron.ue_xhtml.ue_addr_approve_confirm.label
-msgid "Approve pending address?  This operation will be be instantaneous."
-msgstr ""
-
-#: ev.staff.patron.ue_xhtml.primary_ident_ssn_help.label
-msgid "(XXX-YY-ZZZZ)"
-msgstr "(XXX-YY-ZZZZ)"
-
-#: ev.staff.patron.ue_xhtml.primary_ident_dl_help.label
-msgid "(GA-123456789)"
-msgstr "(GA-123456789)"
-
-#: ev.staff.patron.ue_xhtml.edit.label
-msgctxt "ev.staff.patron.ue_xhtml.edit.label"
-msgid "Edit"
-msgstr "Edit"
-
-#. Used in a selection list, the '-' at the start and end draws attention to the entry
-#: ev.staff.patron.ue_xhtml.required.label
-msgctxt "ev.staff.patron.ue_xhtml.required.label"
-msgid " -- Required -- "
-msgstr " -- Required -- "
-
-#: ev.staff.patron.ue_xhtml.account_expiration_date.label
-msgctxt "ev.staff.patron.ue_xhtml.account_expiration_date.label"
-msgid "Account Expiration Date"
-msgstr "Account Expiration Date"
-
-#: ev.staff.patron.ue_xhtml.net_access_level.label
-msgctxt "ev.staff.patron.ue_xhtml.net_access_level.label"
-msgid "Internet Access Level"
-msgstr "Internet Access Level"
-
-#: ev.staff.patron.ue_xhtml.active.label
-msgctxt "ev.staff.patron.ue_xhtml.active.label"
-msgid "Active"
-msgstr "Active"
-
-#: ev.staff.patron.ue_xhtml.barred.label
-msgctxt "ev.staff.patron.ue_xhtml.barred.label"
-msgid "Barred"
-msgstr "Barred"
-
-#: ev.staff.patron.ue_xhtml.juvenile.label
-msgctxt "ev.staff.patron.ue_xhtml.juvenile.label"
-msgid "Juvenile"
-msgstr "Juvenile"
-
-#: ev.staff.patron.ue_xhtml.set_family_group_lead_account.label
-msgctxt "ev.staff.patron.ue_xhtml.set_family_group_lead_account.label"
-msgid "Set as Family or Group Lead Account"
-msgstr "Set as Family or Group Lead Account"
-
-#: ev.staff.patron.ue_xhtml.claims_returned_count.label
-msgctxt "ev.staff.patron.ue_xhtml.claims_returned_count.label"
-msgid "Claims Returned Count"
-msgstr "Claims Returned Count"
-
-#: ev.staff.patron.ue_xhtml.alert_message.label
-msgctxt "ev.staff.patron.ue_xhtml.alert_message.label"
-msgid "Alert Message"
-msgstr "Alert Message"
-
-#: ev.staff.patron.ue_xhtml.stat_cat_name.label
-msgctxt "ev.staff.patron.ue_xhtml.stat_cat_name.label"
-msgid "Statistical Category Name"
-msgstr "Statistical Category Name"
-
-#: ev.staff.patron.ue_xhtml.owner.label
-msgctxt "ev.staff.patron.ue_xhtml.owner.label"
-msgid "Owner"
-msgstr "Owner"
-
-#: ev.staff.patron.ue_xhtml.value.label
-msgctxt "ev.staff.patron.ue_xhtml.value.label"
-msgid "Value"
-msgstr "Value"
-
-#. Used in a selection list, the '-' at the start and end draws attention to the entry
-#: ev.staff.patron.ue_xhtml.none_selected.label
-msgctxt "ev.staff.patron.ue_xhtml.none_selected.label"
-msgid " -- None Selected -- "
-msgstr " -- None Selected -- "
-
-#: ev.staff.patron.ue_xhtml.no_surveys_for_location.label
-msgctxt "ev.staff.patron.ue_xhtml.no_surveys_for_location.label"
-msgid "No surveys have been created for this location."
-msgstr "No surveys have been created for this location."
-
-#: ev.staff.patron.ue_xhtml.finishing_message.label
-msgid ""
-"You are now ready to save the user to the database.<br/>To view or print a "
-"summary of the changes, click on the 'View Summary' link.<br/>To save the "
-"user, click on the 'Save User' button."
-msgstr ""
-"You are now ready to save the user to the database.<br/>To view or print a "
-"summary of the changes, click on the 'View Summary' link.<br/>To save the "
-"user, click on the 'Save User' button."
-
-#: ev.staff.patron.ue_xhtml.back.label
-msgctxt "ev.staff.patron.ue_xhtml.back.label"
-msgid "Back"
-msgstr "Back"
-
-#: ev.staff.patron.ue_xhtml.forward.label
-msgctxt "ev.staff.patron.ue_xhtml.forward.label"
-msgid "Forward"
-msgstr "Forward"
-
-#: ev.staff.patron.ue_xhtml.secondary_id_type.label
-msgctxt "ev.staff.patron.ue_xhtml.secondary_id_type.label"
-msgid "Secondary Identification Type"
-msgstr "Secondary Identification Type"
-
-#: ev.staff.patron.ue_xhtml.secondary_id.label
-msgctxt "ev.staff.patron.ue_xhtml.secondary_id.label"
-msgid "Secondary Identification"
-msgstr "Secondary Identification"
-
-#: ev.staff.patron.ue_xhtml.address_label.label
-msgctxt "ev.staff.patron.ue_xhtml.address_label.label"
-msgid "Address Label"
-msgstr "Address Label"
-
-#: ev.staff.patron.ue_xhtml.mailing.label
-msgctxt "ev.staff.patron.ue_xhtml.mailing.label"
-msgid "Mailing"
-msgstr "Mailing"
-
-#: ev.staff.patron.ue_xhtml.billing.label
-msgctxt "ev.staff.patron.ue_xhtml.billing.label"
-msgid "Billing"
-msgstr "Billing"
-
-#: ev.staff.patron.ue_xhtml.profile.label
-msgctxt "ev.staff.patron.ue_xhtml.profile.label"
-msgid "Profile"
-msgstr "Profile"
-
-#: ev.staff.patron.ue_xhtml.expire_date.label
-msgctxt "ev.staff.patron.ue_xhtml.expire_date.label"
-msgid "Expire Date"
-msgstr "Expire Date"
-
-#: ev.staff.patron.ue_xhtml.family_lead_account.label
-msgctxt "ev.staff.patron.ue_xhtml.family_lead_account.label"
-msgid "Family Lead Account"
-msgstr "Family Lead Account"
-
-#: ev.staff.patron.ue_xhtml.stat_categories.label
-msgctxt "ev.staff.patron.ue_xhtml.stat_categories.label"
-msgid "Statistical Categories"
-msgstr "Statistical Categories"
-
-#: ev.staff.patron.ue_xhtml.survey.label
-msgctxt "ev.staff.patron.ue_xhtml.survey.label"
-msgid "Survey"
-msgstr "Survey"
-
-#: ev.staff.patron.ue_xhtml.question.label
-msgctxt "ev.staff.patron.ue_xhtml.question.label"
-msgid "Question"
-msgstr "Question"
-
-#: ev.staff.patron.ue_xhtml.answer.label
-msgctxt "ev.staff.patron.ue_xhtml.answer.label"
-msgid "Answer"
-msgstr "Answer"
-
-#: ev.staff.patron.ue_xhtml.claims_return_confirm.label
-msgid ""
-"This will reset the claims returned count for this user. Are you sure you "
-"wish to perform this action?"
-msgstr ""
-"This will reset the claims returned count for this user. Are you sure you "
-"wish to perform this action?"
-
-#: ev.staff.patron.ue_xhtml.unsaved_changes.label
-msgid "You have unsaved changes."
-msgstr "You have unsaved changes."
-
-#: ev.staff.patron.ue_xhtml.xact_collision.label
-msgid ""
-"It appears that someone else was also editing this user. Saving the user now "
-"will destroy their changes.  Click 'OK' to refresh the user and continue "
-"editing. Click 'Cancel' to do nothing. Note that you will not be able to "
-"save the user until this page has been refreshed."
-msgstr ""
-"It appears that someone else was also editing this user. Saving the user now "
-"will destroy their changes.  Click 'OK' to refresh the user and continue "
-"editing. Click 'Cancel' to do nothing. Note that you will not be able to "
-"save the user until this page has been refreshed."
-
-#: ev.staff.patron.ue_xhtml.no_profile.label
-msgctxt "ev.staff.patron.ue_xhtml.no_profile.label"
-msgid "A profile group must be selected"
-msgstr "A profile group must be selected"
-
-#: ev.staff.patron.ue_xhtml.print_page.label
-msgid "Print Page"
-msgstr "Print Page"
-
-#: ev.staff.patron.ue_xhtml.return_to_editor.label
-msgid "Return to Editor"
-msgstr "Return to Editor"
-
-#: ev.staff.patron.ue_xhtml.save_user.value
-msgid "Save User"
-msgstr "Save User"
-
-#: ev.staff.patron.ue_xhtml.save_clone_user.value
-msgid "Save and Clone User"
-msgstr "Save and Clone User"
-
-#: ev.staff.patron.ue_xhtml.cancel.value
-msgctxt "ev.staff.patron.ue_xhtml.cancel.value"
-msgid "Cancel"
-msgstr "Cancel"
-
-#: ev.staff.patron.ue_xhtml.alert_message_reset.value
-msgid "Clear"
-msgstr "Clear"
-
-#: ev.staff.patron.ue_xhtml.date_selector.label
-msgctxt "ev.staff.patron.ue_xhtml.date_selector.label"
-msgid "Date selector"
-msgstr "Date selector"
-
-#: ev.staff.patron.ue_xhtml.alias.label
-msgid "Alias"
-msgstr "Alias"
 
 #: ui.circ.patron_summary.horizontal
 msgid "GUI: Alternative Horizontal Patron Summary Panel"
@@ -14234,25 +13750,12 @@ msgid ""
 "However, if using a plain text print strategy with HTML markup, you may "
 "include special character codes in 2-digit hexadecimal in a &quot;hex&quot; "
 "attribute for any given element.  Such codes will be converted to actual "
-"characters and inserted at the place of the tag.  For example, &amp;lt;p "
-"hex=&amp;quot;0C&amp;quot;&amp;gt;Hello World&amp;lt;/p&amp;gt; will "
-"translate to form feed control character + Hello World. "
-"&amp;lt;p&amp;gt;Hello World&amp;lt;/p hex=&amp;quot;0C&amp;quot;&amp;gt; "
-"will translate to Hello World + form feed control character."
+"characters and inserted at the place of the tag.  For example, &lt;p "
+"hex=&quot;0C&quot;&gt;Hello World&lt;/p&gt; will translate to form feed "
+"control character + Hello World. &lt;p&gt;Hello World&lt;/p "
+"hex=&quot;0C&quot;&gt; will translate to Hello World + form feed control "
+"character."
 msgstr ""
-"If using Receipt Templates with either the DOS LPT1 Print strategy or the "
-"Custom/External Print strategy (with &quot;receipt.txt&quot;), the client "
-"will try to translate any HTML markup to text, but this process may be "
-"imperfect, and for the best fidelity you should consider reworking your "
-"templates to be plain text if you are using a plain text print strategy.  "
-"However, if using a plain text print strategy with HTML markup, you may "
-"include special character codes in 2-digit hexadecimal in a &quot;hex&quot; "
-"attribute for any given element.  Such codes will be converted to actual "
-"characters and inserted at the place of the tag.  For example, &amp;lt;p "
-"hex=&amp;quot;0C&amp;quot;&amp;gt;Hello World&amp;lt;/p&amp;gt; will "
-"translate to form feed control character + Hello World. "
-"&amp;lt;p&amp;gt;Hello World&amp;lt;/p hex=&amp;quot;0C&amp;quot;&amp;gt; "
-"will translate to Hello World + form feed control character."
 
 #: staff.client.portal.title
 msgid "Evergreen Staff Client Portal"
@@ -14418,11 +13921,18 @@ msgstr ""
 #~ msgid "Date of Birth:"
 #~ msgstr "Date of Birth:"
 
+#~ msgctxt "staff.copy.attr.stat.audience.example2"
+#~ msgid "Juvenile"
+#~ msgstr "Juvenile"
+
 #~ msgid "Available"
 #~ msgstr "Available"
 
 #~ msgid "&Browse Unfulfilled Holds for this Pickup Lib"
 #~ msgstr "&Browse Unfulfilled Holds for this Pickup Lib"
+
+#~ msgid "Permissions"
+#~ msgstr "Permissions"
 
 #~ msgid "MARC Codes"
 #~ msgstr "MARC Codes"
@@ -14459,8 +13969,15 @@ msgstr ""
 #~ msgid "Large"
 #~ msgstr "Large"
 
+#~ msgctxt "staff.server.admin.cash.date.select"
+#~ msgid "Date selector"
+#~ msgstr "Date selector"
+
 #~ msgid "Copy Hold"
 #~ msgstr "Copy Hold"
+
+#~ msgid "Name"
+#~ msgstr "Name"
 
 #~ msgid "Pull List for Hold Requests"
 #~ msgstr "Pull List for Hold Requests"
@@ -14504,8 +14021,574 @@ msgstr ""
 #~ msgid "MARC Editor for &Import"
 #~ msgstr "MARC Editor for &Import"
 
+#~ msgctxt "staff.patron.ue.view_errors.label"
+#~ msgid "View Errors"
+#~ msgstr "View Errors"
+
+#~ msgctxt "staff.patron.ue.nav.user_id.label"
+#~ msgid "1. User Identification"
+#~ msgstr "1. User Identification"
+
+#~ msgctxt "staff.patron.ue.nav.contact_info.label"
+#~ msgid "2. Contact Info"
+#~ msgstr "2. Contact Info"
+
+#~ msgctxt "staff.patron.ue.nav.addresses.label"
+#~ msgid "3. Addresses"
+#~ msgstr "3. Addresses"
+
+#~ msgctxt "staff.patron.ue.nav.groups_permissions.label"
+#~ msgid "4. Groups and Permissions"
+#~ msgstr "4. Groups and Permissions"
+
+#~ msgctxt "staff.patron.ue.nav.stat_categories.label"
+#~ msgid "5. Statistical Categories"
+#~ msgstr "5. Statistical Categories"
+
+#~ msgctxt "staff.patron.ue.nav.surveys.label"
+#~ msgid "6. Surveys"
+#~ msgstr "6. Surveys"
+
+#~ msgctxt "staff.patron.ue.nav.finish.label"
+#~ msgid "7. Finish"
+#~ msgstr "7. Finish"
+
+#~ msgctxt "staff.patron.ue.found_duplicate_patron.label"
+#~ msgid "Number of possible duplicate patron(s):"
+#~ msgstr "Number of possible duplicate patron(s):"
+
+#~ msgctxt "staff.patron.ue.reset.label"
+#~ msgid "Reset"
+#~ msgstr "Reset"
+
+#~ msgctxt "staff.patron.ue.re_password.label"
+#~ msgid "Password: "
+#~ msgstr "Password: "
+
+#~ msgctxt "staff.patron.ue.verify_password.label"
+#~ msgid "Verify Password"
+#~ msgstr "Verify Password"
+
+#~ msgctxt "staff.patron.ue.last_name.label"
+#~ msgid "Last Name"
+#~ msgstr "Last Name"
+
+#~ msgctxt "staff.patron.ue.choose.label"
+#~ msgid "- Pick -"
+#~ msgstr "- Pick -"
+
+#~ msgctxt "staff.patron.ue.primary_id_type.label"
+#~ msgid "Primary Identification Type"
+#~ msgstr "Primary Identification Type"
+
+#~ msgctxt "staff.patron.ue.required.label"
+#~ msgid " -- Required -- "
+#~ msgstr " -- Required -- "
+
+#~ msgctxt "staff.patron.ue.primary_id.label"
+#~ msgid "Primary Identification"
+#~ msgstr "Primary Identification"
+
+#~ msgctxt "staff.patron.ue.secondary_id_type.label"
+#~ msgid "Secondary Identification Type"
+#~ msgstr "Secondary Identification Type"
+
+#~ msgctxt "staff.patron.ue.none_selected.label"
+#~ msgid " -- None Selected -- "
+#~ msgstr " -- None Selected -- "
+
+#~ msgctxt "staff.patron.ue.secondary_id.label"
+#~ msgid "Secondary Identification"
+#~ msgstr "Secondary Identification"
+
+#~ msgctxt "staff.patron.ue.parent_guardian.label"
+#~ msgid "Parent or Guardian"
+#~ msgstr "Parent or Guardian"
+
+#~ msgctxt "staff.patron.ue.email_address.label"
+#~ msgid "Email Address"
+#~ msgstr "Email Address"
+
+#~ msgctxt "staff.patron.ue.day_phone.label"
+#~ msgid "Daytime Phone"
+#~ msgstr "Daytime Phone"
+
+#~ msgctxt "staff.patron.ue.in_city_limits.label"
+#~ msgid "Within City Limits"
+#~ msgstr "Within City Limits"
+
+#~ msgctxt "staff.patron.ue.valid.label"
+#~ msgid "Valid"
+#~ msgstr "Valid"
+
+#~ msgctxt "staff.patron.ue.owned_address.label"
+#~ msgid "Address is owned by"
+#~ msgstr "Address is owned by"
+
+#~ msgctxt "staff.patron.ue.street_1.label"
+#~ msgid "Street 1"
+#~ msgstr "Street 1"
+
+#~ msgctxt "staff.patron.ue.street_2.label"
+#~ msgid "Street 2"
+#~ msgstr "Street 2"
+
+#~ msgctxt "staff.patron.ue.county.label"
+#~ msgid "County"
+#~ msgstr "County"
+
+#~ msgctxt "staff.patron.ue.delete_this_address.label"
+#~ msgid "Delete this Address"
+#~ msgstr "Delete this Address"
+
+#~ msgctxt "staff.patron.ue.detach_this_address.label"
+#~ msgid "Detach this Address"
+#~ msgstr "Detach this Address"
+
+#~ msgctxt "staff.patron.ue.profile_group.label"
+#~ msgid "Profile Group"
+#~ msgstr "Profile Group"
+
+#~ msgctxt "staff.patron.ue.accoutn_expire_date.label"
+#~ msgid "Account Expiration Date"
+#~ msgstr "Account Expiration Date"
+
+#~ msgctxt "staff.patron.ue.internet_access_level.label"
+#~ msgid "Internet Access Level"
+#~ msgstr "Internet Access Level"
+
+#~ msgctxt "staff.patron.ue.barred.label"
+#~ msgid "Barred"
+#~ msgstr "Barred"
+
+#~ msgctxt "staff.patron.ue.set_lead_account.label"
+#~ msgid "Set as Family or Group Lead Account"
+#~ msgstr "Set as Family or Group Lead Account"
+
+#~ msgctxt "staff.patron.ue.owner.label"
+#~ msgid "Owner"
+#~ msgstr "Owner"
+
+#~ msgctxt "staff.patron.ue.no_surveys_for_location.label"
+#~ msgid "No surveys have been created for this location."
+#~ msgstr "No surveys have been created for this location."
+
+#~ msgctxt "staff.patron.ue.back.label"
+#~ msgid "Back"
+#~ msgstr "Back"
+
+#~ msgctxt "staff.patron.ue.forward.label"
+#~ msgid "Forward"
+#~ msgstr "Forward"
+
+#~ msgctxt "staff.patron.ue.address_label.label"
+#~ msgid "Address Label"
+#~ msgstr "Address Label"
+
+#~ msgctxt "staff.patron.ue.family_lead_account.label"
+#~ msgid "Family Lead Account"
+#~ msgstr "Family Lead Account"
+
+#~ msgctxt "staff.patron.ue.stat_categories.label"
+#~ msgid "Statistical Categories"
+#~ msgstr "Statistical Categories"
+
+#~ msgctxt "staff.patron.ue.survey.label"
+#~ msgid "Survey"
+#~ msgstr "Survey"
+
+#~ msgctxt "staff.patron.ue.question.label"
+#~ msgid "Question"
+#~ msgstr "Question"
+
+#~ msgctxt "staff.patron.ue.answer.label"
+#~ msgid "Answer"
+#~ msgstr "Answer"
+
+#~ msgctxt "staff.patron.ue.no_profile.label"
+#~ msgid "A profile group must be selected"
+#~ msgstr "A profile group must be selected"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.ev_user_editor.label"
+#~ msgid "Evergreen User Editor"
+#~ msgstr "Evergreen User Editor"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.welcome.label"
+#~ msgid "Welcome "
+#~ msgstr "Welcome "
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.view_errors.label"
+#~ msgid "View Errors"
+#~ msgstr "View Errors"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.user_id.label"
+#~ msgid "1. User Identification"
+#~ msgstr "1. User Identification"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.contact_info.label"
+#~ msgid "2. Contact Info"
+#~ msgstr "2. Contact Info"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.addresses.label"
+#~ msgid "3. Addresses"
+#~ msgstr "3. Addresses"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.groups_permissions.label"
+#~ msgid "4. Groups and Permissions"
+#~ msgstr "4. Groups and Permissions"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.statistical_categories.label"
+#~ msgid "5. Statistical Categories"
+#~ msgstr "5. Statistical Categories"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.surveys.label"
+#~ msgid "6. Surveys"
+#~ msgstr "6. Surveys"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.finish.label"
+#~ msgid "7. Finish"
+#~ msgstr "7. Finish"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.loading_data.label"
+#~ msgid "Loading data..."
+#~ msgstr "Loading data..."
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.found_duplicate_patron.label"
+#~ msgid "Number of possible duplicate patron(s):"
+#~ msgstr "Number of possible duplicate patron(s):"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.barcode.label"
+#~ msgid "Barcode"
+#~ msgstr "Barcode"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.mark_lost.label"
+#~ msgid "Mark Lost"
+#~ msgstr "Mark Lost"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.username.label"
+#~ msgid "Username"
+#~ msgstr "Username"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.password.label"
+#~ msgid "Password"
+#~ msgstr "Password"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.reset.label"
+#~ msgid "Reset"
+#~ msgstr "Reset"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.re_password.label"
+#~ msgid "Password: "
+#~ msgstr "Password: "
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.verify_password.label"
+#~ msgid "Verify Password"
+#~ msgstr "Verify Password"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.first_name.label"
+#~ msgid "First Name"
+#~ msgstr "First Name"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.middle_name.label"
+#~ msgid "Middle Name"
+#~ msgstr "Middle Name"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.last_name.label"
+#~ msgid "Last Name"
+#~ msgstr "Last Name"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.suffix.label"
+#~ msgid "Suffix"
+#~ msgstr "Suffix"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.pick_suffix.label"
+#~ msgid "- Pick -"
+#~ msgstr "- Pick -"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.dob.label"
+#~ msgid "Date of Birth"
+#~ msgstr "Date of Birth"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.primary_id_type.label"
+#~ msgid "Primary Identification Type"
+#~ msgstr "Primary Identification Type"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.primary_id.label"
+#~ msgid "Primary Identification"
+#~ msgstr "Primary Identification"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.parent_guardian.label"
+#~ msgid "Parent or Guardian"
+#~ msgstr "Parent or Guardian"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.email_address.label"
+#~ msgid "Email Address"
+#~ msgstr "Email Address"
+
+#~ msgid "Example: 123-456-7890 or 123-456-7890 ex123"
+#~ msgstr "Example: 123-456-7890 or 123-456-7890 ex123"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.daytime_phone.label"
+#~ msgid "Daytime Phone"
+#~ msgstr "Daytime Phone"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.evening_phone.label"
+#~ msgid "Evening Phone"
+#~ msgstr "Evening Phone"
+
+#~ msgid "Other (Cell Phone)"
+#~ msgstr "Other (Mobile Phone)"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.home_library.label"
+#~ msgid "Home Library"
+#~ msgstr "Home Library"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.address.label"
+#~ msgid "Address"
+#~ msgstr "Address"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.in_city_limits.label"
+#~ msgid "Within City Limits"
+#~ msgstr "Within City Limits"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.county.label"
+#~ msgid "County"
+#~ msgstr "County"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.valid.label"
+#~ msgid "Valid"
+#~ msgstr "Valid"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.mailing_address.label"
+#~ msgid "Mailing Address"
+#~ msgstr "Mailing Address"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.physical_address.label"
+#~ msgid "Physical Address"
+#~ msgstr "Physical Address"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.address_owned_by.label"
+#~ msgid "Address is owned by"
+#~ msgstr "Address is owned by"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.label.label"
+#~ msgid "Label"
+#~ msgstr "Label"
+
+#~ msgid "Zip"
+#~ msgstr "Postcode"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.street1.label"
+#~ msgid "Street 1"
+#~ msgstr "Street 1"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.street2.label"
+#~ msgid "Street 2"
+#~ msgstr "Street 2"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.city.label"
+#~ msgid "City"
+#~ msgstr "City"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.conuty.label"
+#~ msgid "County"
+#~ msgstr "County"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.country.label"
+#~ msgid "Country"
+#~ msgstr "Country"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.profile_group.label"
+#~ msgid "Profile Group"
+#~ msgstr "Profile Group"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.ue_addr_delete.label"
+#~ msgid "Delete this Address"
+#~ msgstr "Delete this Address"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.ue_addr_detach.label"
+#~ msgid "Detach this Address"
+#~ msgstr "Detach this Address"
+
+#~ msgid "Approve Pending Address"
+#~ msgstr "Approve Pending Address"
+
 #~ msgid "Approve pending address?  This operation will be be instantenous."
 #~ msgstr "Approve pending address?  This operation will be be instantenous."
+
+#~ msgid "(XXX-YY-ZZZZ)"
+#~ msgstr "(XXX-YY-ZZZZ)"
+
+#~ msgid "(GA-123456789)"
+#~ msgstr "(GA-123456789)"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.edit.label"
+#~ msgid "Edit"
+#~ msgstr "Edit"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.required.label"
+#~ msgid " -- Required -- "
+#~ msgstr " -- Required -- "
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.account_expiration_date.label"
+#~ msgid "Account Expiration Date"
+#~ msgstr "Account Expiration Date"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.net_access_level.label"
+#~ msgid "Internet Access Level"
+#~ msgstr "Internet Access Level"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.active.label"
+#~ msgid "Active"
+#~ msgstr "Active"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.barred.label"
+#~ msgid "Barred"
+#~ msgstr "Barred"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.juvenile.label"
+#~ msgid "Juvenile"
+#~ msgstr "Juvenile"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.set_family_group_lead_account.label"
+#~ msgid "Set as Family or Group Lead Account"
+#~ msgstr "Set as Family or Group Lead Account"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.claims_returned_count.label"
+#~ msgid "Claims Returned Count"
+#~ msgstr "Claims Returned Count"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.alert_message.label"
+#~ msgid "Alert Message"
+#~ msgstr "Alert Message"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.stat_cat_name.label"
+#~ msgid "Statistical Category Name"
+#~ msgstr "Statistical Category Name"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.owner.label"
+#~ msgid "Owner"
+#~ msgstr "Owner"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.value.label"
+#~ msgid "Value"
+#~ msgstr "Value"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.none_selected.label"
+#~ msgid " -- None Selected -- "
+#~ msgstr " -- None Selected -- "
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.no_surveys_for_location.label"
+#~ msgid "No surveys have been created for this location."
+#~ msgstr "No surveys have been created for this location."
+
+#~ msgid ""
+#~ "You are now ready to save the user to the database.<br/>To view or print a "
+#~ "summary of the changes, click on the 'View Summary' link.<br/>To save the "
+#~ "user, click on the 'Save User' button."
+#~ msgstr ""
+#~ "You are now ready to save the user to the database.<br/>To view or print a "
+#~ "summary of the changes, click on the 'View Summary' link.<br/>To save the "
+#~ "user, click on the 'Save User' button."
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.back.label"
+#~ msgid "Back"
+#~ msgstr "Back"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.forward.label"
+#~ msgid "Forward"
+#~ msgstr "Forward"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.secondary_id_type.label"
+#~ msgid "Secondary Identification Type"
+#~ msgstr "Secondary Identification Type"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.secondary_id.label"
+#~ msgid "Secondary Identification"
+#~ msgstr "Secondary Identification"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.address_label.label"
+#~ msgid "Address Label"
+#~ msgstr "Address Label"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.profile.label"
+#~ msgid "Profile"
+#~ msgstr "Profile"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.expire_date.label"
+#~ msgid "Expire Date"
+#~ msgstr "Expire Date"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.family_lead_account.label"
+#~ msgid "Family Lead Account"
+#~ msgstr "Family Lead Account"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.stat_categories.label"
+#~ msgid "Statistical Categories"
+#~ msgstr "Statistical Categories"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.survey.label"
+#~ msgid "Survey"
+#~ msgstr "Survey"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.question.label"
+#~ msgid "Question"
+#~ msgstr "Question"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.answer.label"
+#~ msgid "Answer"
+#~ msgstr "Answer"
+
+#~ msgid ""
+#~ "This will reset the claims returned count for this user. Are you sure you "
+#~ "wish to perform this action?"
+#~ msgstr ""
+#~ "This will reset the claims returned count for this user. Are you sure you "
+#~ "wish to perform this action?"
+
+#~ msgid "You have unsaved changes."
+#~ msgstr "You have unsaved changes."
+
+#~ msgid ""
+#~ "It appears that someone else was also editing this user. Saving the user now "
+#~ "will destroy their changes.  Click 'OK' to refresh the user and continue "
+#~ "editing. Click 'Cancel' to do nothing. Note that you will not be able to "
+#~ "save the user until this page has been refreshed."
+#~ msgstr ""
+#~ "It appears that someone else was also editing this user. Saving the user now "
+#~ "will destroy their changes.  Click 'OK' to refresh the user and continue "
+#~ "editing. Click 'Cancel' to do nothing. Note that you will not be able to "
+#~ "save the user until this page has been refreshed."
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.no_profile.label"
+#~ msgid "A profile group must be selected"
+#~ msgstr "A profile group must be selected"
+
+#~ msgid "Print Page"
+#~ msgstr "Print Page"
+
+#~ msgid "Return to Editor"
+#~ msgstr "Return to Editor"
+
+#~ msgid "Save User"
+#~ msgstr "Save User"
+
+#~ msgid "Save and Clone User"
+#~ msgstr "Save and Clone User"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.cancel.value"
+#~ msgid "Cancel"
+#~ msgstr "Cancel"
+
+#~ msgid "Clear"
+#~ msgstr "Clear"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.date_selector.label"
+#~ msgid "Date selector"
+#~ msgstr "Date selector"
+
+#~ msgid "Alias"
+#~ msgstr "Alias"
 
 #~ msgid "Evergreen Staff Client Portal Page"
 #~ msgstr "Evergreen Staff Client Portal Page"
@@ -14524,5 +14607,54 @@ msgstr ""
 #~ msgid "Group"
 #~ msgstr "Group"
 
+#~ msgctxt "staff.patron_display.radio.mailing_address.label"
+#~ msgid "Mailing"
+#~ msgstr "Mailing"
+
+#~ msgctxt "staff.patron_display.radio.physical_address.label"
+#~ msgid "Billing"
+#~ msgstr "Billing"
+
 #~ msgid "Record ID:"
 #~ msgstr "Record ID:"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.mailing.label"
+#~ msgid "Mailing"
+#~ msgstr "Mailing"
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.billing.label"
+#~ msgid "Billing"
+#~ msgstr "Billing"
+
+#~ msgid ""
+#~ "If using Receipt Templates with either the DOS LPT1 Print strategy or the "
+#~ "Custom/External Print strategy (with &quot;receipt.txt&quot;), the client "
+#~ "will try to translate any HTML markup to text, but this process may be "
+#~ "imperfect, and for the best fidelity you should consider reworking your "
+#~ "templates to be plain text if you are using a plain text print strategy.  "
+#~ "However, if using a plain text print strategy with HTML markup, you may "
+#~ "include special character codes in 2-digit hexadecimal in a &quot;hex&quot; "
+#~ "attribute for any given element.  Such codes will be converted to actual "
+#~ "characters and inserted at the place of the tag.  For example, &amp;lt;p "
+#~ "hex=&amp;quot;0C&amp;quot;&amp;gt;Hello World&amp;lt;/p&amp;gt; will "
+#~ "translate to form feed control character + Hello World. "
+#~ "&amp;lt;p&amp;gt;Hello World&amp;lt;/p hex=&amp;quot;0C&amp;quot;&amp;gt; "
+#~ "will translate to Hello World + form feed control character."
+#~ msgstr ""
+#~ "If using Receipt Templates with either the DOS LPT1 Print strategy or the "
+#~ "Custom/External Print strategy (with &quot;receipt.txt&quot;), the client "
+#~ "will try to translate any HTML markup to text, but this process may be "
+#~ "imperfect, and for the best fidelity you should consider reworking your "
+#~ "templates to be plain text if you are using a plain text print strategy.  "
+#~ "However, if using a plain text print strategy with HTML markup, you may "
+#~ "include special character codes in 2-digit hexadecimal in a &quot;hex&quot; "
+#~ "attribute for any given element.  Such codes will be converted to actual "
+#~ "characters and inserted at the place of the tag.  For example, &amp;lt;p "
+#~ "hex=&amp;quot;0C&amp;quot;&amp;gt;Hello World&amp;lt;/p&amp;gt; will "
+#~ "translate to form feed control character + Hello World. "
+#~ "&amp;lt;p&amp;gt;Hello World&amp;lt;/p hex=&amp;quot;0C&amp;quot;&amp;gt; "
+#~ "will translate to Hello World + form feed control character."
+
+#~ msgctxt "ev.staff.patron.ue_xhtml.state.label"
+#~ msgid "State"
+#~ msgstr "County"

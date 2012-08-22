@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-04-28 14:17-0400\n"
+"POT-Creation-Date: 2012-08-03 10:01-0400\n"
 "PO-Revision-Date: 2011-05-14 05:59+0000\n"
 "Last-Translator: Julian Lamus <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-30 04:46+0000\n"
-"X-Generator: Launchpad (build 15171)\n"
+"X-Launchpad-Export-Date: 2012-08-04 05:12+0000\n"
+"X-Generator: Launchpad (build 15742)\n"
 
 #: 1621.CONTAINER_COPY_BUCKET_NOT_FOUND:512
 msgid "The requested container_copy_bucket was not found"
@@ -91,6 +91,10 @@ msgstr "el acq.funding_source_dedit requerido no ha sido encontrado"
 
 #: 1641.ACTION_OPEN_CIRC_COUNT_BY_CIRC_MOD_NOT_FOUND:572
 msgid "The requested action_open_circ_count_by_circ_mod was not found"
+msgstr ""
+
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:967
+msgid "The lineitem detail has no owning_lib"
 msgstr ""
 
 #: 1608.METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND:473
@@ -295,10 +299,6 @@ msgstr ""
 
 #: 1651.AUTHORITY_RECORD_NUMBER_EXISTS:602
 msgid "An authority record already exists with the requested ARN"
-msgstr ""
-
-#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:990
-msgid "The caption/pattern still has dependent issuances"
 msgstr ""
 
 #: 5000.PERM_FAILURE:804
@@ -924,6 +924,12 @@ msgstr ""
 msgid "A report with the given name and folder already exists"
 msgstr ""
 
+#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1007
+msgid ""
+"A serial pattern code has been configured that fails to conform to MFHD "
+"standards for fields 853-855."
+msgstr ""
+
 #: 1705.VOLUME_LABEL_EXISTS:723
 msgid "A volume with the same label, title and owning library exists"
 msgstr ""
@@ -984,6 +990,10 @@ msgstr ""
 
 #: 1000.LOGIN_FAILED:28
 msgid "User login failed"
+msgstr ""
+
+#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:990
+msgid "The caption/pattern still has dependent issuances"
 msgstr ""
 
 #: 1873.ACQ_CURRENCY_TYPE_NOT_FOUND:682
@@ -1152,10 +1162,6 @@ msgstr ""
 msgid "The requested container_call_number_bucket_item was not found"
 msgstr ""
 
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:967
-msgid "The lineitem detail has no owning_lib"
-msgstr ""
-
 #: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:994
 msgid ""
 "Units cannot be created for the given item because its associated "
@@ -1196,12 +1202,6 @@ msgstr ""
 
 #: 1615.ACTION_NON_CATALOGED_CIRCULATION_NOT_FOUND:494
 msgid "The requested action_non_cataloged_circulation was not found"
-msgstr ""
-
-#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1007
-msgid ""
-"A serial pattern code has been configured that fails to conform to MFHD "
-"standards for fields 853-855."
 msgstr ""
 
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:461
