@@ -58,6 +58,7 @@ CREATE TABLE config.upgrade_log (
 );
 
 INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0726', :eg_version); -- denials
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('2.1.3', :eg_version);
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
