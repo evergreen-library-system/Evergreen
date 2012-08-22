@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2012-08-03 10:01:34-0400\n"
+"POT-Creation-Date: 2012-08-22 08:46:36-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -218,6 +218,10 @@ msgid ""
 "found"
 msgstr ""
 
+#: 7011.COPY_STATUS_LOST:862
+msgid "Copy is marked as lost"
+msgstr ""
+
 #: 7010.COPY_ALERT_MESSAGE:859
 msgid "The requested copy has an alert message attached"
 msgstr ""
@@ -268,10 +272,6 @@ msgstr ""
 
 #: 1541.AUTHORITY_RECORD_DESCRIPTOR_NOT_FOUND:279
 msgid "The requested authority_record_descriptor was not found"
-msgstr ""
-
-#: 7011.COPY_STATUS_LOST:862
-msgid "Copy has is marked as lost"
 msgstr ""
 
 #: 1587.CONTAINER_CALL_NUMBER_BUCKET_NOT_FOUND:410
@@ -552,8 +552,8 @@ msgstr ""
 msgid "The object is not in a cancelable state."
 msgstr ""
 
-#: 9000.REPORT_TEMPLATE_EXISTS:950
-msgid "A report template with the given name and folder already exists"
+#: 7012.COPY_STATUS_MISSING:865
+msgid "Copy is marked as missing"
 msgstr ""
 
 #: 1500.ACTION_CIRCULATION_NOT_FOUND:181
@@ -883,6 +883,10 @@ msgstr ""
 msgid "Hold capture was delayed for this item"
 msgstr ""
 
+#: 9000.REPORT_TEMPLATE_EXISTS:950
+msgid "A report template with the given name and folder already exists"
+msgstr ""
+
 #: 1502.ASSET_COPY_NOT_FOUND:190
 msgid ""
 "Someone attempted to retrieve a copy object from the system and the object "
@@ -1001,10 +1005,6 @@ msgstr ""
 
 #: 8009.OFFLINE_NO_ORG:940 8010.OFFLINE_SESSION_COMPLETE:943
 msgid "No org id was provided"
-msgstr ""
-
-#: 7012.COPY_STATUS_MISSING:865
-msgid "Copy has is marked as missing"
 msgstr ""
 
 #: 1532.MONEY_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND:253

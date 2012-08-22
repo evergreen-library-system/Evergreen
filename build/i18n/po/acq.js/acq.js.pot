@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2012-08-03 10:01:36-0400\n"
+"POT-Creation-Date: 2012-08-22 08:46:38-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -199,6 +199,17 @@ msgstr ""
 
 #: acq.js:VENDOR_PUBLIC
 msgid "VENDOR PUBLIC"
+msgstr ""
+
+#: acq.js:LINEITEM_SUMMARY
+msgid ""
+"<div class='acq-lineitem-summary'><a href='${19}?focus_li=${10}&source=${22}'>${0}</a>, by ${1} (${2})</div>\n"
+"<div class='acq-lineitem-summary-extra'>\n"
+"${3} Ordered, ${4} Received, ${7} Invoiced, ${8} Claimed, ${9} Cancelled</div>\n"
+"<div class='acq-lineitem-summary-extra'>Estimated $${6}, Encumbered $${16}, Paid $${17}</div>\n"
+"<div class='acq-lineitem-summary-extra'>\n"
+"# ${10} <a style='padding-right: 10px;' class='hidden${20}'  href='${11}/acq/po/view/${12}?focus_li=${10}&source=${22}'>&#x2318; ${13} ${18}</a>\n"
+"<a style='padding-right: 10px;' class='hidden${21}' href='${11}/acq/picklist/view/${14}?focus_li=${10}&source=${22}'>&#x2756; ${15}</a></div>"
 msgstr ""
 
 #: acq.js:VENDOR_SAYS_PREPAY_NEEDED
@@ -398,17 +409,6 @@ msgstr ""
 
 #: acq.js:INVOICE_COPY_COUNT_INFO
 msgid "Copies received on this invoice: ${0} out of ${1}."
-msgstr ""
-
-#: acq.js:LINEITEM_SUMMARY
-msgid ""
-"<div class='acq-lineitem-summary'><a href='${19}?focus_li=${10}'>${0}</a>, by ${1} (${2})</div>\n"
-"<div class='acq-lineitem-summary-extra'>\n"
-"${3} Ordered, ${4} Received, ${7} Invoiced, ${8} Claimed, ${9} Cancelled</div>\n"
-"<div class='acq-lineitem-summary-extra'>Estimated $${6}, Encumbered $${16}, Paid $${17}</div>\n"
-"<div class='acq-lineitem-summary-extra'>\n"
-"# ${10} <a style='padding-right: 10px;' class='hidden${20}'  href='${11}/acq/po/view/${12}?focus_li=${10}'>&#x2318; ${13} ${18}</a>\n"
-"<a style='padding-right: 10px;' class='hidden${21}' href='${11}/acq/picklist/view/${14}?focus_li=${10}'>&#x2756; ${15}</a></div>"
 msgstr ""
 
 #: acq.js:EXPORT_EMPTY_LIST
