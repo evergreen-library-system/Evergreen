@@ -148,6 +148,8 @@ include::admin/authorities.txt[]
 
 include::admin/cn_prefixes_and_suffixes.txt[]
 
+include::admin/circulation_limit_groups.txt[]
+
 include::admin/restrict_Z39.50_sources_by_perm_group.txt[]
 
 include::admin/booking-admin.txt[]
