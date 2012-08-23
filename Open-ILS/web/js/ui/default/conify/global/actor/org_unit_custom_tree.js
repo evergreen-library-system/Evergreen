@@ -162,12 +162,19 @@ function applyChanges() {
 }
 
 function applyChanges2() {
+
+    // pcrud.disconnect() exits before disconnecting the session.
+    // Clean up the session here.  TODO: fix pcrud
+    pcrud.session.disconnect();
+    pcrud.session.cleanup();
+
     ctNodes = [];
     var newCtNodes = [];
     var nodeList = [];
     var sorder = 0;
     var prevTn;
     var progress = 0;
+    var session = new OpenSRF.ClientSession('open-ils.pcrud');
 
     // flatten child nodes into a level-order (by parent) list
     var nodeList = [magicTree.rootNode];
@@ -177,6 +184,19 @@ function applyChanges2() {
         dojo.forEach(kids, flatten);
     }
     flatten(magicTree.rootNode);
+
+    // called after all nodes are processed
+    function finishUp() {
+        // commit the transaction
+        session.request({
+            method : 'open-ils.pcrud.transaction.commit',
+            params : [ openils.User.authtoken ],
+            oncomplete : function (r) {
+                session.disconnect();
+                location.href = location.href;
+            }
+        }).send();
+    }
 
     // traverse the nodes, creating new aoucnt's as we go
     function traverseAndCreate(node) {
@@ -199,25 +219,36 @@ function applyChanges2() {
             tn.sibling_order(++sorder);
         } else { sorder = 0; }
 
-        console.log("Creating new node for org unit " + tn.org_unit());
-
-        // create the new node, then process the children
-        pcrud.create(tn, {
-            oncomplete : function(r, objs) {
-                var newTn = objs[0];
+        // create the new node, then process the children (async)
+        session.request({
+            method : 'open-ils.pcrud.create.aouctn',
+            params : [ openils.User.authtoken, tn ],
+            oncomplete : function (r) {
+                var newTn = openils.Util.readResponse(r);
+                console.log("Created new node for org " + newTn.org_unit() + " => " + newTn.id());
                 ctNodes.push(newTn);
                 prevTn = newTn;
                 if (nodeList.length == 0) {
-                    progressDialog.hide();
-                    location.href = location.href;
+                    finishUp();
                 } else {
                     progressDialog.update({maximum : nodeList.length, progress : ++progress});
                     traverseAndCreate(nodeList.shift());
                 }
             }
-        });
+        }).send();
     }
-    traverseAndCreate(nodeList.shift());
+
+    // kick things off...
+    session.connect();
+
+    // start the transaction
+    session.request({
+        method : 'open-ils.pcrud.transaction.begin',
+        params : [ openils.User.authtoken ],
+        oncomplete : function (r) {
+            traverseAndCreate(nodeList.shift());
+        }
+    }).send();
 }
 
 function deleteSelected() {
