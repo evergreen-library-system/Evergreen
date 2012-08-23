@@ -1,0 +1,22 @@
+Patron Border Color Enhancement
+------------------------------
+
+This feature gives librarians new choices for color coding patron penalties.  
+
+In version 2.3, if the staff_alert column on the Standing Penalty Type is set to
+True and no other more serious penalty (as defined by the CSS) trumps it, then,
+when a patron incurs a penalty, a blue border will appear around the patron's
+name.
+
+For example, by default, the standing penalty type, ALERT_NOTE, has the
+staff_alert value set to TRUE.  If I apply an alert to a user's account, and no
+other penalty color takes precedence over it, then a blue border will appear
+around the patron's name.
+
+image::media/Patron_Border_Color_Enhancements2.jpg[Patron_Border_Color_Enhancements2]
+
+In addition, librarians now can customize the color coding on custom penalty
+types. For example, librarians can create a penalty type and, using the CSS
+classname PATRON_HAS_CUSTOM_PENALTY, apply a custom color box to the patron's
+record.
+
