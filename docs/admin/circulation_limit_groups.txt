@@ -1,0 +1,47 @@
+Circulation Limit Sets
+----------------------
+
+Maximum Checkout by Copy Location
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This feature enables you to specify the maximum number of checkouts of items by
+copy location and is an addition to the circulation limit sets.  Circulation
+limit sets refine circulation policies by limiting the number of items that
+users can check out.  Circulation limit sets are linked by name to circulation
+policies.
+
+To limit checkouts by copy location:
+
+. Click *Admin -> Local Administration -> Circulation Limit Sets*.
+. Click *New* to create a new circulation limit set.
+. In the *Owning Library* field, select the library that can create and edit
+this limit set.
+. Enter a *Name* for the circulation set.  You will select the *Name* to link
+the circulation limit set to a circulation policy.
+. Enter the number of *Items Out* that a user can take from this copy location.
+. Enter the *Min Depth*, or the minimum depth in the org tree that Evergreen
+will consider as valid circulation libraries for counting items out.  The min
+depth is based on org unit type depths.  For example, if you want the items in
+all of the circulating libraries in your consortium to be eligible for
+restriction by this limit set when it is applied to a circulation policy, then
+enter a zero (0) in this field.  
+. Check the box adjacent to *Global Flag* if you want all of the org units in
+your consortium to be restricted by this limit set when it is applied to a
+circulation policy.  Otherwise, Evergreen will only appy the limit to the direct
+ancestors and descendants of the owning library.
+. Enter a brief *Description* of the circulation limit set.
+. Click *Save*.
+
+image::media/Maximum_Checkout_by_Copy_Location1.jpg[Maximum_Checkout_by_Copy_Location1]
+
+To link the circulation limit set to a circulation policy:
+ 
+. Click *Admin* -> *Local Administration* -> *Circulation Policies*
+. Select an existing circulation policy, or create a new one.
+. Scroll down to the *Linked Limit Sets*.  
+. Select the *Name* of the limit set that you want to add to the circulation
+policy.
+. Click *Add*.
+. Click *Save*.
+
+image::media/Maximum_Checkout_by_Copy_Location2.jpg[Maximum_Checkout_by_Copy_Location2]
