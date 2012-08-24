@@ -278,7 +278,8 @@ admin.transit_list.prototype = {
                                     var r_ahr = req3.getResultObject();
                                     if (typeof r_ahr.ilsevent != 'undefined') throw(r_ahr);
                                     if (r_ahr.length == 0) {
-                                        try { obj.error.standard_unexpected_error_alert(document.getElementById('adminStrings').getString('staff.admin.transit_list.empty_array.error') + document.getElementById('adminStrings').getFormattedString('staff.admin.transit_list.empty_array.error', [r_atc.hold(), transit_id]),E); } catch(F) { alert(E); }
+                                        // This can apparently happen under normal operating conditions when "checkout fills related hold" is active.
+                                        // So don't throw an error, just pretend that it wasn't a hold transit.
                                         do_this(r_atc,null);
                                     } else {
                                         if (instanceOf(r_ahr[0],ahr)) {
