@@ -40,6 +40,7 @@ could do a count on the Patron link data.
 |money	|Number (in dollars)	 
 |=====================================
 
+[[field_transforms]]
 Field Transforms
 ~~~~~~~~~~~~~~~~
 
