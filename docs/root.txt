@@ -302,6 +302,15 @@ include::opac/my_lists.txt[]
 
 include::opac/kids_opac.txt[]
 
+// Push titles down one level.
+:leveloffset: 1
+
+include::opac/search_form.txt[]
+
+// Return to normal title levels.
+:leveloffset: 0
+
+
 Developer Resources
 ===================
 

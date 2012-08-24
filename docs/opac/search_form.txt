@@ -1,0 +1,28 @@
+Adding an Evergreen search form to a web page
+=============================================
+
+To enable users to quickly search your Evergreen catalog, you can add a
+simple search form to any HTML page. The following code demonstrates
+how to create a quick search box suitable for the header of your web
+site:
+
+.Sample search form
+[source,html]
+------------------------------------------------------------------------------
+<form action="http://example.com/eg/opac/results" method="get">    <!-- <1> -->
+    <input type="search" alt="Catalog Search" maxlength="200"
+            size="20" name="query"
+            placeholder="Search catalog for..." />
+    <input type="hidden" name="qtype" value="keyword" />           <!-- <2> -->
+    <input type="hidden" name="locg" value="4" />                  <!-- <3> -->
+    <input type="submit" value="Search" />
+</form>
+------------------------------------------------------------------------------
+<1> Replace ''example.com'' with the hostname for your catalog. To link to
+    the Kid's OPAC instead of the TPAC, replace ''opac'' with ''tpac''.
+<2> Replace ''keyword'' with ''title'', ''author'', ''subject'', or ''series''
+    if you want to provide more specific searches. You can even specify
+    ''identifier|isbn'' for an ISBN search.
+<3> Replace ''4'' with the ID number of the organizational unit at which you
+    wish to anchor your search. This is the value of the ''locg'' parameter in
+    your normal search.
