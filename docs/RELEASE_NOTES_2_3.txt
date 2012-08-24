@@ -172,6 +172,18 @@ The user may also set a preference in their search preferences to
 disable this warning.  The setting only works when a user is logged
 in, of course.
 
+Kid's OPAC
+^^^^^^^^^^
+
+The Kids OPAC (KPAC) is a public catalog search that was designed for children
+and teens.  Colorful menu items,large buttons, and simple navigation make this
+an appealing search interface for kids.  Librarians will appreciate the flexible
+configuration of the KPAC.  Librarians can create links to canned search results
+for kids and can apply these links by branch.  The KPAC uses the same infrastructure
+as the Template Toolkit OPAC (TPAC), the adult catalog search, so you can easily
+extend the KPAC using the code that already exists in the TPAC.  Finally, third
+party content, such as reader reviews, can be integrated into the KPAC.
+
 
 Cataloging
 ~~~~~~~~~~
