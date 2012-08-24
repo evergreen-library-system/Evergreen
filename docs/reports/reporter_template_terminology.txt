@@ -9,9 +9,7 @@ indexterm:[reports, data types]
 The central column of the _Database Source Browser_ lists _Field Name_ and _Data 
 Type_ for the selected database table.
 
-+
 image::media/view-output-2.png[view-output-2]
-+
 
 Each data type has its own characteristics and uses:
 
