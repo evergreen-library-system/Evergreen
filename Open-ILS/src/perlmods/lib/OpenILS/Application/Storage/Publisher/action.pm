@@ -814,7 +814,7 @@ sub generate_fines {
         #TODO: reservation grace periods
         my $grace_period = ($is_reservation ? 0 : interval_to_seconds($c->grace_period));
 
-		try {
+		eval {
 			if ($self->method_lookup('open-ils.storage.transaction.current')->run) {
 				$log->debug("Cleaning up after previous transaction\n");
 				$self->method_lookup('open-ils.storage.transaction.rollback')->run;
@@ -989,13 +989,15 @@ sub generate_fines {
 			    )->gather(1);
 			}
 
-		} catch Error with {
-			my $e = shift;
+		};
+
+		if ($@) {
+			my $e = $@;
 			$client->respond( "Error processing overdue $ctype [".$c->id."]:\n\n$e\n" );
 			$log->error("Error processing overdue $ctype [".$c->id."]:\n$e\n");
 			$self->method_lookup('open-ils.storage.transaction.rollback')->run;
-			throw $e if ($e =~ /IS NOT CONNECTED TO THE NETWORK/o);
-		};
+			last if ($e =~ /IS NOT CONNECTED TO THE NETWORK/o);
+		}
 	}
 }
 __PACKAGE__->register_method(
