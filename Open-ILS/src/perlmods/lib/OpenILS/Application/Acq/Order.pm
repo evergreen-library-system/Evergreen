@@ -3467,6 +3467,7 @@ sub add_li_to_po {
         return {success => 0, li => $li, error => 'bad-li-state'};
     }
 
+    $li->provider($po->provider);
     $li->purchase_order($po_id);
     $li->state('pending-order');
     update_lineitem($mgr, $li) or return $e->die_event;
