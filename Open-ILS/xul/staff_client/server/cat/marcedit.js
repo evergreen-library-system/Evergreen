@@ -472,7 +472,7 @@ function setFocusToNextTag (row, direction) {
     var keep_looking = true;
     while (keep_looking && (direction == 'up' ? row = row.previousSibling : row = row.nextSibling)) {
         // Is it a datafield?
-        dojo.query('hbox hbox textbox', row).forEach(function(node, index, arr) {
+        dojo.query('hbox', row).query('hbox').query('textbox').forEach(function(node, index, arr) {
             node.focus();
             keep_looking = false;
         });
@@ -777,7 +777,7 @@ function changeFFEditor (type) {
     // Hide FFEditor rows that we don't need for our current type
     // If all of the labels for a given row do not include our
     // desired type in their set attribute, we can hide that row
-    dojo.query('rows row', grid).forEach(function(node, index, arr) {
+    dojo.query('rows', grid).query('row').forEach(function(node, index, arr) {
         if (dojo.query('label[set~=' + type + ']', node).length == 0) {
             node.hidden = true;
         }
@@ -1767,7 +1767,7 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
             var main_text = '';
             var see_from = [];
             var see_also = [];
-            var auth_id = dojox.xml.parser.textContent(dojo.query('datafield[tag="901"] subfield[code="c"]', record)[0]);
+            var auth_id = dojox.xml.parser.textContent(dojo.query('datafield[tag="901"]', record).query('subfield[code="c"]')[0]);
             var auth_org = dojox.xml.parser.textContent(dojo.query('controlfield[tag="003"]', record)[0]);
 
             // Grab the fields with tags beginning with 1 (main entries) and iterate through the subfields
