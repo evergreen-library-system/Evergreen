@@ -129,7 +129,13 @@ function TermSelectorFactory(terms) {
         ) {
             var term = this.getTerm();
             var widgetKey = this.uniq;
-            var target = termManager.getLinkTarget(term);
+            var target;
+            try {
+                target = termManager.getLinkTarget(term);
+            } catch (E) {
+                void(0); /* ok for this to fail (it doesn't handle acqlia right,
+                            but we don't need it to in this case). */
+            };
 
             if (matchHow.getValue() == "__in") {
                 new openils.widget.XULTermLoader({
