@@ -4,6 +4,8 @@ Acquisitions Administration
 Acquisitions Permissions in the Admin module
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+indexterm:[acquisitions,permissions]
+
 Several setting in the Library Settings area of the Admin module pertain to functions in the Acquisitions module. You can access these settings by clicking _Admin -> Local Administration ->Library Settings Editor_.
 
 * CAT: Delete bib if all copies are deleted via Acquisitions lineitem cancellation - If you cancel a line item, then all of the on order copies in the catalog are deleted. If, when you cancel a line item, you also want to delete the bib record, then set this setting to TRUE.
@@ -16,6 +18,9 @@ Several setting in the Library Settings area of the Admin module pertain to func
 
 Cancel/Suspend reasons
 ~~~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[acquisitions,purchase order,cancellation]
+indexterm:[acquisitions,line item,cancellation]
 
 The Cancel reasons link enables you to predefine the reasons for which a line item or a PO can be cancelled. A default list of reasons appears, but you can add custom reasons to this list. Applying the cancel reason will prevent the item from appearing in a claims list and will allow you to cancel debits associated with the purchase. Cancel reasons also enable you to suspend or delay a purchase. For example, you could create a cancel reason of 'back ordered,' and you could choose to keep the debits associated with the purchase.
 
@@ -38,6 +43,9 @@ Create a cancel/suspend reason
 
 Claiming
 ~~~~~~~~
+
+indexterm:[acquisitions,claiming]
+
 Currently, all claiming is manual, but the admin module enables you to build claim policies and specify the action(s) that users should take to claim items.
 
 Create a claim policy
@@ -111,6 +119,8 @@ You can create claim cycles by adding multiple claim policy actions to a claim p
 Currency Types
 ~~~~~~~~~~~~~~
 
+indexterm:[acquisitions,currency types]
+
 Currency types can be created and applied to funds in the administrative module. When a fund is applied to a copy or line item for purchase, the item will be purchased in the currency associated with that fund.
 
 Create a currency type
@@ -138,6 +148,8 @@ From the currency types interface, you can delete currencies that have never bee
 
 Distribution Formulas
 ~~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[acquisitions,distribution formulas]
 
 Distribution formulas allow you to specify the number of copies that should be distributed to specific branches. You can create and reuse formulas as needed.
 
@@ -181,6 +193,9 @@ host, username, password, path, and incoming directory.
 EDI Accounts
 ^^^^^^^^^^^^
 
+indexterm:[acquisitions,EDI,accounts]
+indexterm:[EDI,accounts]
+
 Create EDI Accounts to communicate electronically with providers.
 
 . Create a label. The label allows you to differentiate between accounts for the same provider. No limits exist on the number of characters that can be entered in this field.
@@ -204,10 +219,16 @@ The rule of parental inheritance applies to this list.
 EDI Messages
 ^^^^^^^^^^^^
 
+indexterm:[EDI,messages]
+indexterm:[acquisitions,EDI,messages]
+
+
 The EDI messages screen displays all incoming and outgoing messages between the library and the vendor.
 
 Exchange Rates
 ~~~~~~~~~~~~~~
+
+indexterm:[acquisitions,exchange rates]
 
 Exchange rates define the rate of exchange between currencies. Evergreen will automatically calculate exchange rates for purchases. Evergreen assumes that the currency of the purchasing fund is identical to the currency of the provider, but it provides for two unique situations: If the currency of the fund that is used for the purchase is different from the currency of the provider as listed in the provider profile, then Evergreen will use the exchange rate to calculate the price of the item in the currency of the fund and debit the fund accordingly. When money is transferred between funds that use different currency types, Evergreen will automatically use the exchange rate to convert the money to the currency of the receiving fund. During such transfers, however, staff can override the automatic conversion by providing an explicit amount to credit to the receiving fund.
 
@@ -234,6 +255,9 @@ Edit an exchange rate just as you would edit a currency type.
 MARC Federated Search
 ~~~~~~~~~~~~~~~~~~~~~
 
+
+indexterm:[acquisitions,MARC federated search]
+
 The MARC Federated Search enables you to import bibliographic records into a selection list or purchase order from a Z39.50 source.
 
 . Click _Acquisitions -> MARC Federated Search_.
@@ -251,6 +275,8 @@ image::media/acq_marc_search-2.png[line item]
 Fund Tags
 ~~~~~~~~~
 
+indexterm:[acquisitions,funds,tags]
+
 You can apply tags to funds so that you can group funds for easy reporting. For example, you have three funds for children's materials: Children's Board Books, Children's DVDs, and Children's CDs. Assign a fund tag of 'children's' to each fund. When you need to report on the amount that has been spent on all children's materials, you can run a report on the fund tag to find total expenditures on children's materials rather than reporting on each individual fund.
 
 Create a Fund Tag
@@ -267,6 +293,8 @@ The rule of parental inheritance applies to this list.
 
 Funding Sources
 ~~~~~~~~~~~~~~~
+
+indexterm:[acquisitions,funding sources]
 
 Funding sources allow you to specify the sources that contribute monies to your fund(s). You can create as few or as many funding sources as you need.   These can be used to track exact amounts for accounts in your general ledger.  You can then use funds to track spending and purchases for specific collections.
 
@@ -321,6 +349,8 @@ You can track credits to and allocations from each funding source. These amounts
 
 Funds
 ~~~~~
+
+indexterm:[acquisitions,funds]
 
 Funds allow you to allocate credits toward specific purchases. In the funds interface, you can create funds; allocate credits from funding sources to funds; transfer money between funds; and apply fund tags to funds. Funds are created for a specific year, either fiscal or calendar. These funds are owned by org units. At the top of the funds interface, you can set a contextual org unit and year. The drop down menu at the top of the screen enables you to focus on funds that are owned by specific organizational units during specific years.
 
@@ -398,6 +428,23 @@ The Fund Details allows you to track the fund's balance, encumbrances, and amoun
 . Total Spent - The total spent is calculated by adding the cost of items that have been invoiced. It does not include encumbrances.
 . Total Encumbered - The total encumbered is calculated by adding all encumbrances.
 
+
+Core Source Added for Fund Reporting
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+indexterm:[aquisitions,funds,reports]
+indexterm:[reports,funds]
+
+A new core source, Fund Summary, has been added to the reports interface.  This
+core source enables librarians to run easily a report on fund activity.  Fields
+that are accessible in this interface include Remaining Balance, Total
+Allocated, Total Encumbered, and Total Spent.
+
+
+image::/esi/docs/wp-content/uploads/2012/08/Core_Source_1.jpg[Core_Source1]
+
+
+
 Edit a Fund
 ^^^^^^^^^^^
 
@@ -405,6 +452,8 @@ Edit a fund just as you would edit a currency type.
 
 Perform Year End Closeout Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+indexterm:[aquisitions,funds,fiscal rollover]
 
 The Year End Closeout Operation allows you to deactivate funds for the current year and create analogous funds for the next year. It transfers encumbrances to the analogous funds, and it rolls over any remaining funds if you checked the rollover box when creating the fund.
 
@@ -424,8 +473,36 @@ The Year End Closeout Operation allows you to deactivate funds for the current y
 
 . Evergreen will begin the propagation process. Evergreen will make a clone of each fund, but it will increment the year by .
 
+Enhancements to Fiscal Rollover
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[aquisitions,funds,fiscal rollover]
+
+An enhancement to the fiscal rollover process enables you to move a fund's
+encumbrances from one year to the next without moving unspent money.  Unused
+money is not added to the next year's fund and is not available for use.
+
+To enable this enhancement, you must configure a new org unit setting:
+
+. Click *Administration* -> *Local Administration* -> *Library Settings
+Editor*.
+. Search for the setting, *Allow funds to be rolled over without bringing the
+money along*.
+. Click *Edit*.
+. Set the value to *True*.
+. Click *Update Setting*.
+
+Enabling this setting will display a new check box in the *Fund Propagation &
+Rollover* drop down menu.  To use this feature during the fiscal rollover
+process, click the check box adjacent to *Limit Fiscal Year Close-out Operation
+to Encumbrances*. 
+
+image::media/Fiscal_Rollover1.jpg[Fiscal_Rollover1]
+
 Invoice menus
 ~~~~~~~~~~~~~
+
+indexterm:[acquisitions,invoices]
 
 Invoice menus allow you to create drop down menus that appear on invoices. You can create an invoice item type or invoice payment method.
 
@@ -465,6 +542,9 @@ Payment methods can be deleted from this screen.
 
 Line item features
 ~~~~~~~~~~~~~~~~~~
+
+
+indexterm:[acquisitions,line items]
 
 Line item alerts are predefined text that can be added to line items that are on selection lists or purchase orders. You can define the alerts from which staff can choose. Line item alerts appear in a pop up box when the line item, or any of its copies, are marked as received.
 

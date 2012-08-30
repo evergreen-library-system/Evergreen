@@ -1,0 +1,86 @@
+Invoices
+--------
+
+
+indexterm:[acquisitions,invoices]
+
+Electronic Invoicing
+~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[acquisitions,invoices,electronic]
+
+Evergreen can receive electronic invoices from providers.  To
+access an electronic invoice, you must:
+
+. Configure EDI for your provider. 
+. Evergreen will receive invoices electronically from the provider.
+. Click *Acquisitions* -> *Open Invoices* to view a list of open invoices, or
+use the *General Search* to retrieve invoices.  Click a hyperlinked invoice
+number to view the invoice.
+
+image::media/Electronic_invoicing1.jpg[Electronic_invoicing1]
+
+
+Search for Line Items from an Invoice
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[acquisitions,lineitems,searching for]
+indexterm:[acquisitions,invoices,searching for lineitems]
+
+You can open an invoice, search for line items from
+the invoice, and add your search results to a new or existing invoice.  This
+feature is especially useful when you want to populate an invoice with line
+items from multiple purchase orders.
+
+In this example, we'll add line items to a new invoice:
+
+indexterm:[acquisitions,lineitems,adding]
+
+. Click *Acquisitions* -> *Create Invoice*.
+. An invoice summary appears at the top of the invoice and includes the number
+of line items on the invoice and the expected cost of the items.  This number
+will change as we add line items to the invoice.
+. Enter the invoice details (optional).  If you do not enter the invoice
+details, then Evergreen will populate the *Provider* and *Receiver* fields with
+information from the line items.  
++
+[NOTE]
+----------------
+If you do not want to display the details, click *Hide Details*.
+---------------
++
+image::media/Search_for_line_items_from_an_invoice1.jpg[Search_for_line_items_from_an_invoice1]
++
+. Click the *Search* tab to add line items to an invoice.
+. Select your search criteria from the drop down menu.  
+. On the right side of the screen, *Limit to Invoiceable Items* is checked by
+default.  Invoiceable items are those that are on order, have not been
+cancelled, and have not yet been invoiced.  Evergreen also filters out items
+that have already been added to an invoice.  Finally, if this box is checked,
+and if your entered the invoice details at the top of the screen, then Evergreen
+will filter your search for items that have the same provider as the one that
+you entered.  If you have not entered the invoice details, then Evergreen
+removes this limit.  
+. Sort by title (optional).  By default, results are listed by line item
+number.  Check this box to sort by ascending title.
+. Click *Search*.
++    
+image::media/Search_for_line_items_from_an_invoice2.jpg[Search_for_line_items_from_an_invoice2]
++
+. Use the *Next* button to page through results, or select a line item(s), and
+click *Add Selected Items to Invoice*.
++
+.The rows that you selected are highlighted, and the invoice summary at the
+top of the screen updates.
++
+image::media/Search_for_line_items_from_an_invoice3.jpg[Search_for_line_items_from_an_invoice3]
++
+. Click the *Invoice* tab to see the updated invoice.
+. Enter the number of copies for which you were invoiced, the amount that was
+billed, and the amount that was paid.  The *Per Copy* field calculates the cost
+of each copy by dividing the amount that was billed by the number of copies for
+which the library paid.
+. Save the invoice.  A new option, *Save and Clear*, saves the current invoice
+and replaces it with a new invoice so that you can continue invoicing items.
+
+image::media/Search_for_line_items_from_an_invoice5.jpg[Search_for_line_items_from_an_invoice5]

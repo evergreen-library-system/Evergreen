@@ -89,6 +89,25 @@ Use the Actions menu to convert a selection list to a purchase order.
 . Check the box if you want to Import Bibs and Create Copies in the catalog.
 . Click Submit.
 
+
+Purchase Orders
+~~~~~~~~~~~~~~~
+
+Activate Purchase Order with Zero Copies
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In previous versions, by default, a purchase order could be activated with or
+without copies attached to line items.
+
+In versions 2.3 and above, by default, a purchase order cannot be activated if a line item
+on the purchase order has zero copies.  A new feature enables you to activate a
+purchase order that lacks copies.
+
+To activate a purchase order with line items that have zero copies, check the
+box *Allow activation with zero-copy lineitems*.  
+
+image::media/Zero_Copies1.jpg[Zero_Copies1]
+
 Brief Records
 ~~~~~~~~~~~~~
 
@@ -134,3 +153,45 @@ image::media/acq_marc_search.png[search form]
 . You can save the line item(s) to a selection list by checking the box on the line item and clicking Actions -> Save Items to Selection List. You can also create a purchase order from the line item(s) by checking the box on the line item and clicking Actions ~> Create Purchase Order.
 
 image::media/acq_marc_search-2.png[line item]
+
+Line Items
+~~~~~~~~~~
+
+Return to Line Item
+^^^^^^^^^^^^^^^^^^^
+
+This feature enables you to return to a specific line item on a selection list,
+purchase order, or invoice after you have naviagted away from the page that
+contained the line item.  This feature is especially useful when you must
+identify a line item in a long list. After working with a line item, you can
+return to your place in the search results or the list of line items.
+
+To use this feature, select a line item, and then, depending on the location of
+the line item, click *Return* or *Return to search*.  Evergreen will take you
+back to the specific line item in your search and highlight the line item with a
+colored box.
+
+For example, you retrieve a selection list, find a line item to examine, and
+click the *Copies* link.  After editing the copies, you click *Return*.
+Evergreen takes you back to your selection list and highlights the line item
+that you viewed. 
+
+image::media/Return_to_line_item1.jpg[Return_to_line_item1]
+
+This feature is available in _General Search Results_, _Purchase Orders_, and
+_Selection Lists_, whenever any of the following links are available: 
+
+* Selection List
+* Purchase Order
+* Copies
+* Notes
+* Worksheet
+
+This feature is available in Invoices whenever any of the following links are
+available:
+
+* Title
+* Selection List
+* Purchase Order
+
+
