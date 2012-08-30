@@ -157,7 +157,6 @@ function TermSelectorFactory(terms) {
                 );
             } else if (term.hint == "acqlia" ||
                 (term.hint == "jub" && term.field == "eg_bib_id") ||
-                term.datatype == "org_unit" ||
                 (term.datatype == "link" && target == "au")) {
                 /* The test for jub.eg_bib_id is a special case to prevent
                  * AutoFieldWidget from trying to render a ridiculous dropdown
