@@ -7230,9 +7230,9 @@ int writeAuditInfo( osrfMethodContext* ctx, const char* user_id, const char* ws_
 			return -1;
 		} else {
 			dbi_result_free( result );
-			return 0;
 		}
 	}
+	return 0;
 }
 
 /*@}*/
