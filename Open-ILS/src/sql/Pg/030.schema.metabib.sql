@@ -263,6 +263,20 @@ CREATE INDEX metabib_full_rec_index_vector_idx ON metabib.real_full_rec USING GI
 CREATE INDEX metabib_full_rec_isxn_caseless_idx
     ON metabib.real_full_rec (LOWER(value))
     WHERE tag IN ('020', '022', '024');
+-- This next index might fully supplant the one above, but leaving both for now.
+-- (they are not too large)
+-- The reason we need this index is to ensure that the query parser always
+-- prefers this index over the simpler tag/subfield index, as this greatly
+-- increases Vandelay overlay speed for these identifiers, especially when
+-- a record has many of these fields (around > 4-6 seems like the cutoff
+-- on at least one PG9.1 system)
+-- A similar index could be added for other fields (e.g. 010), but one should
+-- leave out the LOWER() in all other cases.
+-- TODO: verify whether we can discard the non tag/subfield/substring version
+-- above (metabib_full_rec_isxn_caseless_idx)
+CREATE INDEX metabib_full_rec_02x_tag_subfield_lower_substring
+    ON metabib.real_full_rec (tag, subfield, LOWER(substring(value, 1, 1024)))
+    WHERE tag IN ('020', '022', '024');
 
 
 CREATE TRIGGER metabib_full_rec_fti_trigger
