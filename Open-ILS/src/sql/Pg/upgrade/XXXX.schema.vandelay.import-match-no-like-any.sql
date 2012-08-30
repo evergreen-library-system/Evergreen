@@ -27,7 +27,7 @@ BEGIN
     -- a side-effect, populate the _vandelay_tmp_[qj]rows tables.
     wq := vandelay.get_expr_from_match_set(match_set_id, tags_rstore);
 
-    query_ := 'SELECT DISTINCT(bre.id) AS record, ';
+    query_ := 'SELECT DISTINCT(record), ';
 
     -- qrows table is for the quality bits we add to the SELECT clause
     SELECT ARRAY_TO_STRING(
@@ -36,18 +36,16 @@ BEGIN
 
     -- our query string so far is the SELECT clause and the inital FROM.
     -- no JOINs yet nor the WHERE clause
-    query_ := query_ || coal || ' AS quality ' || E'\n' ||
-        'FROM biblio.record_entry bre ';
+    query_ := query_ || coal || ' AS quality ' || E'\n';
 
     -- jrows table is for the joins we must make (and the real text conditions)
     SELECT ARRAY_TO_STRING(ARRAY_ACCUM(j), E'\n') INTO joins
         FROM _vandelay_tmp_jrows;
 
     -- add those joins and the where clause to our query.
-    query_ := query_ || joins || E'\n' || 'WHERE ' || wq || ' AND not bre.deleted';
+    query_ := query_ || joins || E'\n' || 'JOIN biblio.record_entry bre ON (bre.id = record) ' || 'WHERE ' || wq || ' AND not bre.deleted';
 
     -- this will return rows of record,quality
-    RAISE WARNING '%', query_;
     FOR rec IN EXECUTE query_ USING tags_rstore, svf_rstore LOOP
         RETURN NEXT rec;
     END LOOP;
@@ -122,10 +120,21 @@ DECLARE
     op          TEXT;
     tagkey      TEXT;
     caseless    BOOL;
+    jrow_count  INT;
+    my_using    TEXT;
+    my_join     TEXT;
 BEGIN
     -- remember $1 is tags_rstore, and $2 is svf_rstore
 
     caseless := FALSE;
+    SELECT COUNT(*) INTO jrow_count FROM _vandelay_tmp_jrows;
+    IF jrow_count > 0 THEN
+        my_using := ' USING (record)';
+        my_join := 'FULL OUTER JOIN';
+    ELSE
+        my_using := '';
+        my_join := 'FROM';
+    END IF;
 
     IF node.tag IS NOT NULL THEN
         caseless := (node.tag IN ('020', '022', '024'));
@@ -151,25 +160,23 @@ BEGIN
 
     my_alias := 'n' || node.id::TEXT;
 
-    jrow := 'LEFT JOIN (SELECT *, ' || node.quality ||
-        ' AS quality FROM metabib.';
+    jrow := my_join || ' (SELECT *, ';
     IF node.tag IS NOT NULL THEN
-        jrow := jrow || 'full_rec) ' || my_alias || ' ON (' ||
-            my_alias || '.record = bre.id AND ' || my_alias || '.tag = ''' ||
+        jrow := jrow  || node.quality ||
+            ' AS quality FROM metabib.full_rec mfr WHERE mfr.tag = ''' ||
             node.tag || '''';
         IF node.subfield IS NOT NULL THEN
-            jrow := jrow || ' AND ' || my_alias || '.subfield = ''' ||
+            jrow := jrow || ' AND mfr.subfield = ''' ||
                 node.subfield || '''';
         END IF;
         jrow := jrow || ' AND (';
-
-        jrow := jrow || vandelay._node_tag_comparisons(caseless, my_alias, op, tags_rstore, tagkey);
-        jrow := jrow || '))';
+        jrow := jrow || vandelay._node_tag_comparisons(caseless, op, tags_rstore, tagkey);
+        jrow := jrow || ')) ' || my_alias || my_using || E'\n';
     ELSE    -- svf
-        jrow := jrow || 'record_attr) ' || my_alias || ' ON (' ||
-            my_alias || '.id = bre.id AND (' ||
-            my_alias || '.attrs->''' || node.svf ||
-            ''' ' || op || ' $2->''' || node.svf || '''))';
+        jrow := jrow || 'id AS record, ' || node.quality ||
+            ' AS quality FROM metabib.record_attr mra WHERE mra.attrs->''' ||
+            node.svf || ''' ' || op || ' $2->''' || node.svf || ''') ' ||
+            my_alias || my_using || E'\n';
     END IF;
     INSERT INTO _vandelay_tmp_jrows (j) VALUES (jrow);
 END;
@@ -177,7 +184,6 @@ $$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION vandelay._node_tag_comparisons(
     caseless BOOLEAN,
-    my_alias TEXT,
     op TEXT,
     tags_rstore HSTORE,
     tagkey TEXT
@@ -201,9 +207,9 @@ BEGIN
         END IF;
 
         IF caseless THEN
-            result := result || 'LOWER(' || my_alias || '.value) ' || op;
+            result := result || 'LOWER(mfr.value) ' || op;
         ELSE
-            result := result || my_alias || '.value ' || op;
+            result := result || 'mfr.value ' || op;
         END IF;
 
         result := result || ' ' || COALESCE('''' || vals[i] || '''', 'NULL');
@@ -223,6 +229,21 @@ $$ LANGUAGE PLPGSQL;
 DROP FUNCTION vandelay.get_expr_from_match_set( INTEGER );
 DROP FUNCTION vandelay.get_expr_from_match_set_point( vandelay.match_set_point );
 DROP FUNCTION vandelay._get_expr_push_jrow( vandelay.match_set_point );
+
+-- This next index might fully supplant an existing one but leaving both for now
+-- (they are not too large)
+-- The reason we need this index is to ensure that the query parser always
+-- prefers this index over the simpler tag/subfield index, as this greatly
+-- increases Vandelay overlay speed for these identifiers, especially when
+-- a record has many of these fields (around > 4-6 seems like the cutoff
+-- on at least one PG9.1 system)
+-- A similar index could be added for other fields (e.g. 010), but one should
+-- leave out the LOWER() in all other cases.
+-- TODO: verify whether we can discard the non tag/subfield/substring version
+-- (metabib_full_rec_isxn_caseless_idx)
+CREATE INDEX metabib_full_rec_02x_tag_subfield_lower_substring
+    ON metabib.real_full_rec (tag, subfield, LOWER(substring(value, 1, 1024)))
+    WHERE tag IN ('020', '022', '024');
 
 COMMIT;
 
