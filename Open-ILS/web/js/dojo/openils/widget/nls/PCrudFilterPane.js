@@ -7,6 +7,8 @@
     "OPERATOR_GT": "is greater than",
     "OPERATOR_LTE": "is less than or equal to",
     "OPERATOR_GTE": "is greater than or equal to",
+    "OPERATOR_IN": "is in the set",
+    "OPERATOR_NOT_IN": "is not in the set",
     "OPERATOR_BETWEEN": "is between",
     "OPERATOR_NOT_BETWEEN": "is not between",
     "OPERATOR_LIKE": "is like",
@@ -16,5 +18,11 @@
     "DEFAULT_DIALOG_TITLE": "Filter Results",
     "ADD_ROW": "Add Row",
     "APPLY": "Apply",
-    "CANCEL": "Cancel"
+    "CANCEL": "Cancel",
+    "LOAD_FILTERS": "Load Filters",
+    "SAVE_FILTERS": "Save Filters",
+    "CHOOSE_FILTER_TO_LOAD": "Choose filter sets to load",
+    "NAME_SAVED_FILTER_SET": "Enter a name for your saved filter set:",
+    "NEED_NAME": "You must enter a name for the saved filters.",
+    "EMPTY_LIST": "Cannot compile search filter.  Empty lists not allowed."
 }

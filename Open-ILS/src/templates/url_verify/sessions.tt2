@@ -1,0 +1,51 @@
+[% WRAPPER base.tt2 no_content_pane=1 %]
+[% ctx.page_title = "Link Checker" %]
+<script type="text/javascript">
+    dojo.require("dijit.form.Button");
+    dojo.require("openils.widget.FlattenerGrid");
+    dojo.require("openils.widget.OrgUnitFilteringSelect")
+    dojo.require("openils.URLVerify.Sessions");
+
+    /* Minimize namespace pollution, but save us some typing later. */
+    var module = openils.URLVerify.Sessions;
+
+    openils.Util.addOnLoad(
+        function() {
+            module.setup(grid, org_selector);
+        }
+    );
+</script>
+<div class="oils-header-panel" dojoType="dijit.layout.ContentPane" layoutAlign="top">
+    <div>[% ctx.page_title %]</div>
+    <div>
+        <strong><a href="create_session">[% l("New Link Checker Session") %]</a></strong>
+    </div>
+</div>
+<div class="oils-acq-basic-roomy" dojoType="dijit.layout.ContentPane" layoutAlign="top">
+    <label for="org_selector">[% l("View existing sessions started at:") %]</label>
+    <select id="org_selector" jsId="org_selector"
+        dojoType="openils.widget.OrgUnitFilteringSelect"
+        searchAttr="name" labelAttr="name">
+    </select>
+</div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="bottom" style="height: 85%;">
+    <table jsid="grid"
+        dojoType="openils.widget.FlattenerGrid"
+        editOnEnter="false"
+        hideSelector="true"
+        fetchLock="true"
+        fmClass="'uvs'">
+        <thead>
+            <tr>
+                <th field="id" fpath="id" formatter="module.format_id"></th>
+                <th field="name" fpath="name" width="auto"></th>
+                <th field="attempts" fpath="attempts.id" formatter="module.format_attempts" width="auto">[% l("Verification Attempts") %]</th>
+                <th field="creator" fpath="creator.usrname">[% l("Creator ") %]</th>
+                <th field="create_time" fpath="create_time" width="auto"></th>
+                <th field="search" fpath="search" width="auto"></th>
+                <th field="selectors" fpath="selectors.xpath" width="auto">[% l("URL Selectors") %]</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+[% END %]

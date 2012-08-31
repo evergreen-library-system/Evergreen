@@ -181,7 +181,7 @@ main.menu.prototype = {
         }
 
 
-        function open_eg_web_page(path, labelKey, event) {
+        function open_eg_web_page(path, labelKey, event, content_params) {
             
             // tab label
             labelKey = labelKey || 'menu.cmd_open_conify.tab';
@@ -190,11 +190,14 @@ main.menu.prototype = {
             // URL
             var loc = urls.XUL_BROWSER + '?url=' + window.escape(obj.url_prefix('EG_WEB_BASE/') + path);
 
+            content_params = content_params || {
+                'no_xulG': false,
+                'show_print_button': true,
+                'show_nav_buttons': true 
+            };
+
             obj.command_tab(
-                event,
-                loc, 
-                {tab_name : label, browser : false }, 
-                {no_xulG : false, show_print_button : true, show_nav_buttons : true }
+                event, loc, {tab_name: label, browser: false}, content_params
             );
         }
 
@@ -1191,6 +1194,21 @@ main.menu.prototype = {
                     var horizontal_interface = String( obj.data.hash.aous['ui.circ.patron_summary.horizontal'] ) == 'true';
                     var url = obj.url_prefix( horizontal_interface ? 'XUL_PATRON_HORIZ_DISPLAY' : 'XUL_PATRON_DISPLAY' );
                     obj.command_tab( event, url, {}, { 'id' : obj.data.last_patron } );
+                }
+            ],
+
+            'cmd_url_verify' : [
+                ['oncommand'],
+                function(event) {
+                    open_eg_web_page(
+                        "/eg/url_verify/sessions",
+                        "menu.cmd_url_verify.tab",
+                        event, {
+                            'no_xulG': false,
+                            'show_print_button': false,
+                            'show_nav_buttons': true 
+                        }
+                    );
                 }
             ],
             

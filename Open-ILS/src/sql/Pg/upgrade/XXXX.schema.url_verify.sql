@@ -29,6 +29,7 @@ CREATE TABLE url_verify.url (
     redirect_from   INT     REFERENCES url_verify.url(id) DEFERRABLE INITIALLY DEFERRED,
     item            INT     REFERENCES container.biblio_record_entry_bucket_item (id) DEFERRABLE INITIALLY DEFERRED,
     url_selector    INT     REFERENCES url_verify.url_selector (id) DEFERRABLE INITIALLY DEFERRED,
+    session         INT     REFERENCES url_verify.session (id) DEFERRABLE INITIALLY DEFERRED,
     tag             TEXT,
     subfield        TEXT,
     ord             INT,
@@ -74,14 +75,20 @@ CREATE TABLE url_verify.url_verification (
     redirect_to INT                         REFERENCES url_verify.url (id) DEFERRABLE INITIALLY DEFERRED -- if redirected
 );
 
-CREATE TABLE url_verify.filter_set (
+CREATE TABLE config.filter_dialog_interface (
+    key         TEXT                        PRIMARY KEY,
+    description TEXT
+);
+
+CREATE TABLE config.filter_dialog_filter_set (
     id          SERIAL                      PRIMARY KEY,
     name        TEXT                        NOT NULL,
     owning_lib  INT                         NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
     creator     INT                         NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
     create_time TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT NOW(),
-    filter      TEXT                        NOT NULL,
-    CONSTRAINT uvfs_name_once_per_lib UNIQUE (name, owning_lib)
+    interface   TEXT                        NOT NULL REFERENCES config.filter_dialog_interface (key) DEFERRABLE INITIALLY DEFERRED,
+    filters     TEXT                        NOT NULL CHECK (evergreen.is_json(filters)),
+    CONSTRAINT cfdfs_name_once_per_lib UNIQUE (name, owning_lib)
 );
  
 COMMIT;

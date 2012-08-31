@@ -1577,7 +1577,11 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 543, 'URL_VERIFY', oils_i18n_gettext( 543, 
     'Allows a user to process and verify ULSs', 'ppl', 'description')),
  ( 544, 'URL_VERIFY_UPDATE_SETTINGS', oils_i18n_gettext( 544, 
-    'Allows a user to configure URL verification org unit settings', 'ppl', 'description'))
+    'Allows a user to configure URL verification org unit settings', 'ppl', 'description')),
+ ( 545, 'SAVED_FILTER_DIALOG_FILTERS', oils_i18n_gettext( 545,
+    'Allows users to save and load sets of filters for filter dialogs, available in certain staff interfaces', 'ppl', 'description'))
+
+
 ;
 
 
@@ -11937,9 +11941,7 @@ INSERT INTO actor.search_filter_group_entry (grp, query, pos)
         (SELECT id FROM actor.search_filter_group WHERE code = 'kpac_main'),
         (SELECT id FROM actor.search_query WHERE label = 'Children''s Materials'),
         0
-    );
-INSERT INTO actor.search_filter_group_entry (grp, query, pos) 
-    VALUES (
+    ); INSERT INTO actor.search_filter_group_entry (grp, query, pos) VALUES (
         (SELECT id FROM actor.search_filter_group WHERE code = 'kpac_main'),
         (SELECT id FROM actor.search_query WHERE label = 'Young Adult Materials'),
         1
@@ -12080,6 +12082,53 @@ INSERT INTO config.org_unit_setting_type
         544
     );
 
+INSERT INTO config.filter_dialog_interface (key, description) VALUES (
+    'url_verify',
+    oils_i18n_gettext(
+        'url_verify',
+        'All Link Checker filter dialogs',
+        'cfdi',
+        'description'
+    )
+);
+
+INSERT INTO config.usr_setting_type (name,grp,opac_visible,label,description,datatype) VALUES (
+    'url_verify.select_urls',
+    'url_verify',
+    FALSE,
+    oils_i18n_gettext(
+        'url_verify.select_urls',
+        'Link Checker''s URL Selection interface''s saved columns',
+        'cust',
+        'label'
+    ),
+    oils_i18n_gettext(
+        'url_verify.select_urls',
+        'Link Checker''s URL Selection interface''s saved columns',
+        'cust',
+        'description'
+    ),
+    'string'
+);
+
+INSERT INTO config.usr_setting_type (name,grp,opac_visible,label,description,datatype) VALUES (
+    'url_verify.review_attempt',
+    'url_verify',
+    FALSE,
+    oils_i18n_gettext(
+        'url_verify.review_attempt',
+        'Link Checker''s Review Attempt interface''s saved columns',
+        'cust',
+        'label'
+    ),
+    oils_i18n_gettext(
+        'url_verify.review_attempt',
+        'Link Checker''s Review Attempt interface''s saved columns',
+        'cust',
+        'description'
+    ),
+    'string'
+);
 
 INSERT INTO config.org_unit_setting_type
     (name, grp, label, description, datatype, update_perm)

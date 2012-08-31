@@ -1,0 +1,78 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = "Link Checker - Review Verification Attempt" %]
+<script type="text/javascript">
+    dojo.require("dijit.form.Button");
+    dojo.require("openils.widget.FlattenerGrid");
+    dojo.require("openils.widget.ProgressDialog");
+    dojo.require("openils.Util");
+    dojo.require("openils.CGI");
+    dojo.require("openils.URLVerify.ReviewAttempt");
+
+    /* Minimize namespace pollution, but save us some typing later. */
+    var module = openils.URLVerify.ReviewAttempt;
+
+    openils.Util.addOnLoad(
+        function() {
+            module.setup(grid, progress_dialog);
+        }
+    );
+</script>
+<style type="text/css">
+    .url-verify-attempt-info { font-style: italic; }
+    #session-link-here { font-weight: normal; font-size: 90%; }
+</style>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane"
+         layoutAlign="top" class="oils-header-panel">
+        <div>[% ctx.page_title %] - <span id="session-link-here"></span></div>
+        <div>
+            <button dojoType="dijit.form.Button" onClick="grid.print();">
+                [% l("Print verification results") %]
+            </button>
+        </div>
+    </div>
+    <div class="oils-acq-basic-roomy">
+        <!-- any blurb to precede grid can go here -->
+    </div>
+    <table
+        jsid="grid"
+        dojoType="openils.widget.FlattenerGrid"
+        columnPersistKey='"url_verify.review_attempt"'
+        autoHeight="10"
+        editOnEnter="false"
+        autoCoreFields="true"
+        autoCoreFieldsFilter="true"
+        autoCoreFieldsUnsorted="true"
+        savedFiltersInterface="'url_verify'"
+        fetchLock="true"
+        mapExtras="{attempt_id:{path:'attempt.id',filter:true,_label:'[% l("Attempt ID") %]'}}"
+        showLoadFilter="true"
+        fmClass="'uvuv'">
+        <thead>
+            <tr>
+                <th field="redirect_from" fpath="url.redirect_from"></th><!-- From here through fragment, these are fields from uvu.  We could have just used autoFieldFields on the FlattenerGrid, but by naming them explicitly we use the same field names that we use in the URL selection interface, allowing the two interfaces to use common saved filter sets. -->
+                <th field="tag" fpath="url.tag" ffilter="true"></th>
+                <th field="subfield" fpath="url.subfield" ffilter="true"></th>
+                <th field="ord" fpath="url.ord" ffilter="true"></th>
+                <th field="full_url" fpath="url.full_url" ffilter="true"></th>
+                <th field="scheme" fpath="url.scheme" _visible="false" ffilter="true"></th>
+                <th field="host" fpath="url.host" _visible="false" ffilter="true"></th>
+                <th field="domain" fpath="url.domain" _visible="false" ffilter="true"></th>
+                <th field="tld" fpath="url.tld" _visible="false" ffilter="true"></th>
+                <th field="path" fpath="url.path" _visible="false" ffilter="true"></th>
+                <th field="page" fpath="url.page" _visible="false" ffilter="true"></th>
+                <th field="query" fpath="url.query" _visible="false" ffilter="true"></th>
+                <th field="fragment" fpath="url.fragment" _visible="false" ffilter="true"></th>
+                <th field="title" fpath="url.item.target_biblio_record_entry.simple_record.title"></th>
+                <th field="author" fpath="url.item.target_biblio_record_entry.simple_record.author"></th>
+                <th field="isbn" fpath="url.item.target_biblio_record_entry.simple_record.isbn" _visible="false"></th>
+                <th field="issn" fpath="url.item.target_biblio_record_entry.simple_record.issn" _visible="false"></th>
+                <th field="bib_id" fpath="url.item.target_biblio_record_entry.id" _visible="false"></th>
+            </tr>
+        </thead>
+    </table>
+</div>
+<div class="hidden">
+    <div dojoType="openils.widget.ProgressDialog" jsId="progress_dialog"></div>
+</div>
+[% END %]

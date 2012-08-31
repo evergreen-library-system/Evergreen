@@ -18,7 +18,9 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
             "columnPersistKey": null,
             "autoCoreFields": false,
             "autoCoreFieldsUnsorted": false,
+            "autoCoreFieldsFilter": false,
             "autoFieldFields": null,
+            "autoFieldFieldsUnsorted": null, /* array, subset of autoFieldFields */
             "showLoadFilter": false,    /* use FlattenerFilter(Dialog|Pane) */
             "filterAlwaysInDiv": null,  /* use FlattenerFilterPane and put its
                                            content in this HTML element */
@@ -31,6 +33,7 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                                    OU selectors so that it should get mixed
                                    correctly with the generated query from the
                                    filter dialog. */
+            "savedFiltersInterface": null,
 
             /* These potential constructor arguments may be useful to
              * FlattenerGrid in their own right, and are passed to
@@ -286,16 +289,23 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                 return {"labels": labels, "columns": columns};
             },
 
-            "_getAutoFieldFields": function(fmclass) {
-                return dojo.clone(
+            "_getAutoFieldFields": function(fmclass, path) {
+                var field_list = dojo.clone(
                     fieldmapper.IDL.fmclasses[fmclass].fields)
                 .filter(
-                    function(field) {
-                        return !field.virtual && field.datatype != "link";
-                    }
-                ).sort(
-                    function(a, b) { return a.label > b.label ? 1 : -1; }
+                    function(f) { return !f.virtual && f.datatype != "link"; }
                 );
+                
+                /* Sort fields unless the path is named in grid property
+                 * 'autoFieldFieldsUnsorted' (array). */
+                if (!dojo.isArray(this.autoFieldFieldsUnsorted) ||
+                        this.autoFieldFieldsUnsorted.indexOf(path) == -1) {
+                    field_list = field_list.sort(
+                        function(a, b) { return a.label > b.label ? 1 : -1; }
+                    );
+                }
+
+                return field_list;
             },
 
             /* Take our core class (this.fmClass) and add table columns for
@@ -314,7 +324,7 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                 }
 
                 dojo.forEach(
-                    fields, function(f) {
+                    fields, dojo.hitch(this, function(f) {
                         if (f.datatype == "link" || f.virtual)
                             return;
 
@@ -329,10 +339,10 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                         cell_list.push({
                             "field": f.name,
                             "name": f.label,
-                            "fsort": true /*,
-                            "_visible": false */
+                            "fsort": true,
+                            "ffilter": this.autoCoreFieldsFilter
                         });
-                    }
+                    })
                 );
             },
 
@@ -350,7 +360,9 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                             return;
                         } else {
                             dojo.forEach(
-                                self._getAutoFieldFields(beginning.fmClass),
+                                self._getAutoFieldFields(
+                                    beginning.fmClass, path
+                                ),
                                 function(field) {
                                     var would_be_path =
                                         path + "." + field.name;
@@ -506,10 +518,10 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                             "fmClass": this.fmClass,
                             "mapTerminii": this.mapTerminii,
                             "useDiv": this.filterAlwaysInDiv,
-                            "compact": true,
                             "initializers": this.filterInitializers,
                             "widgetBuilders": this.filterWidgetBuilders,
-                            "suppressFilterFields": this.suppressFilterFields
+                            "suppressFilterFields": this.suppressFilterFields,
+                            "savedFiltersInterface": this.savedFiltersInterface
                         });
 
                     this.filterUi.onApply = dojo.hitch(
@@ -922,6 +934,13 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                     this.getSelectedIDs();
 
                 this.print(null, null, id_blob);
+            },
+
+            "setBaseQuery": function(query) {   /* sets a persistent query
+                                                   that always gets mixed in
+                                                   with whatever you do in the
+                                                   filter dialog */
+                this._baseQuery = dojo.clone(this.query = query);
             }
         }
     );

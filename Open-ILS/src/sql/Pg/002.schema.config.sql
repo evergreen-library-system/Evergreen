@@ -1002,4 +1002,21 @@ CREATE UNIQUE INDEX unique_wwh ON config.usr_activity_type
     (COALESCE(ewho,''), COALESCE (ewhat,''), COALESCE(ehow,''));
 
 
+CREATE TABLE config.filter_dialog_interface (
+    key         TEXT                        PRIMARY KEY,
+    description TEXT
+);  
+
+CREATE TABLE config.filter_dialog_filter_set (
+    id          SERIAL                      PRIMARY KEY,
+    name        TEXT                        NOT NULL,
+    owning_lib  INT                         NOT NULL, -- REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+    creator     INT                         NOT NULL, -- REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+    create_time TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT NOW(),
+    interface   TEXT                        NOT NULL REFERENCES config.filter_dialog_interface (key) DEFERRABLE INITIALLY DEFERRED,
+    filters     TEXT                        NOT NULL, -- CHECK (evergreen.is_json(filters))
+    CONSTRAINT cfdfs_name_once_per_lib UNIQUE (name, owning_lib)
+);
+
+
 COMMIT;

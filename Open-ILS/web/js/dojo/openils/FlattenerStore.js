@@ -182,7 +182,9 @@ if (!dojo._hasResource["openils.FlattenerStore"]) {
             if (!this.mapKey)
                 this._get_map_key();
 
-            return this._build_flattener_params(req);
+            var p = this._build_flattener_params(req);
+            console.debug("_fetch_prepare() returning " + dojo.toJson(p));
+            return p;
         },
 
         "_fetch_execute": function(params,handle_as,mime_type,onload,onerror) {
@@ -390,9 +392,17 @@ if (!dojo._hasResource["openils.FlattenerStore"]) {
                     else
                         might_be_a_lie += obj.length;
 
+                    console.debug(
+                        "process_fetch() calling onBegin with " +
+                        might_be_a_lie + ", " + dojo.toJson(req)
+                    );
                     req.onBegin.call(callback_scope, might_be_a_lie, req);
                 }
 
+                console.debug(
+                    "about to call onItem for " + obj.length +
+                    " elements in the obj array"
+                );
                 dojo.forEach(
                     obj,
                     function(item) {

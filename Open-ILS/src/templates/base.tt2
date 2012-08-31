@@ -26,9 +26,13 @@
                 </div>
             </div>
             <div id="oils-base-main-block" dojoType="dijit.layout.LayoutContainer" layoutAlign="client">
+                [% IF no_content_pane %]
+                [% content %]
+                [% ELSE %]
                 <div id="oils-base-content-block" dojoType="dijit.layout.ContentPane" layoutAlign="client">
                     [% content %]
                 </div>
+                [% END %]
             </div>
         </div>
     </body>

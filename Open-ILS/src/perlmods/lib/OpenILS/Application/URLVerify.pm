@@ -83,12 +83,8 @@ sub verify_session {
             select => {uvu => ['id']},
             from => {
                 uvu => { # url
-                    cbrebi => { # bucket item
-                        join => { cbreb => { # bucket
-                            join => { uvs => { # session
-                                filter => {id => $session_id}
-                            }}
-                        }}
+                    uvs => { # session
+                        filter => {id => $session_id}
                     }
                 }
             }
@@ -589,6 +585,7 @@ sub verify_one_url {
 
         if (my $loc = $res->headers->{location}) {
             $redir_url = Fieldmapper::url_verify::url->new;
+            $redir_url->session($attempt->session);
             $redir_url->redirect_from($url->id);
             $redir_url->full_url($loc);
 

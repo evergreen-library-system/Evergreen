@@ -75,8 +75,8 @@ BEGIN
                     JOIN container.biblio_record_entry_bucket_item c ON (c.target_biblio_record_entry = b.id)
               WHERE c.id = item_id;
 
-            INSERT INTO url_verify.url (item, url_selector, tag, subfield, ord, full_url)
-              VALUES ( item_id, current_selector.id, current_tag, current_sf, current_ord, current_url);
+            INSERT INTO url_verify.url (session, item, url_selector, tag, subfield, ord, full_url)
+              VALUES ( session_id, item_id, current_selector.id, current_tag, current_sf, current_ord, current_url);
 
             current_url_pos := current_url_pos + 1;
             current_ord := current_ord + 1;

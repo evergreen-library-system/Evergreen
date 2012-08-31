@@ -1,4 +1,4 @@
-[% WRAPPER base.tt2 %]
+[% WRAPPER base.tt2 no_content_pane=1 %]
 [% ctx.page_title = "Link Checker - Select URLs" %]
 <script type="text/javascript">
     dojo.require("dijit.form.Button");
@@ -19,34 +19,32 @@
 </script>
 <style type="text/css">
     .url-verify-attempt-info { font-style: italic; }
+    #session-name-here { font-weight: normal; font-size: 90%; }
 </style>
-<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-    <div dojoType="dijit.layout.ContentPane"
-         layoutAlign="top" class="oils-header-panel">
-        <div>[% ctx.page_title %]</div>
-        <div>
-            <button dojoType="dijit.form.Button"
-                onClick="module.verify_selected();">[%
-                l("Verify Selected URLs")
-            %]</button>
-        </div>
+<div class="oils-header-panel" dojoType="dijit.layout.ContentPane" layoutAlign="top">
+    <div>[% ctx.page_title %] - <span id="session-name-here"></span></div>
+    <div class="url-verify-button">
+        <button dojoType="dijit.form.Button"
+            onClick="grid.print();">[%
+            l("Print URLs")
+        %]</button>
+        <button dojoType="dijit.form.Button"
+            onClick="module.verify_selected();">[%
+            l("Verify Selected URLs")
+        %]</button>
     </div>
-    <div class="oils-acq-basic-roomy url-verify-attempt-info">
-        <div id="url-verify-attempt-id"></div>
-        <div id="url-verify-attempt-start"></div>
-        <div id="url-verify-attempt-finish"></div>
-    </div>
-    <table
-        jsid="grid"
+</div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="bottom" style="height: 85%;">
+    <table jsid="grid"
         dojoType="openils.widget.FlattenerGrid"
-        columnPersistKey='"url_verify.select_url"'
-        autoHeight="10"
+        columnPersistKey="'url_verify.select_urls'"
         editOnEnter="false"
-        autoFieldFields="null"
         autoCoreFields="true"
+        autoCoreFieldsFilter="true"
         autoCoreFieldsUnsorted="true"
+        savedFiltersInterface="'url_verify'"
         fetchLock="true"
-        mapExtras="{session_id: {path: 'item.session.id', filter: true}}"
+        mapExtras="{session_id: {path: 'session.id', filter: true}}"
         showLoadFilter="true"
         fmClass="'uvu'">
         <thead>
@@ -56,6 +54,13 @@
                 <th field="isbn" fpath="item.target_biblio_record_entry.simple_record.isbn" _visible="false"></th>
                 <th field="issn" fpath="item.target_biblio_record_entry.simple_record.issn" _visible="false"></th>
                 <th field="bib_id" fpath="item.target_biblio_record_entry.id" _visible="false"></th>
+                <!-- You do NOT want to add the "verifications" column to this
+                table with ffilter="true".  That introduces a left join to a
+                table linked to the core table in has-many relationship.  When
+                PCRUD tries a query like that, it can return fewer objects than
+                its LIMIT clause called for, even when there are more objects
+                left.  This may need to be a bug report against flattener or
+                cstore/pcrud(?) but I'm not sure I understand the expectations. -->
             </tr>
         </thead>
     </table>

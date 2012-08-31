@@ -35,6 +35,8 @@ if (!dojo._hasResource['openils.widget.PCrudFilterPane']) {
     dojo.require('openils.widget.AutoFieldWidget');
     dojo.require('dijit.form.FilteringSelect');
     dojo.require('dijit.form.Button');
+    dojo.require('dijit.form.DropDownButton');
+    dojo.require('dijit.TooltipDialog');
     dojo.require('dojo.data.ItemFileReadStore');
     dojo.require('openils.Util');
 
@@ -99,6 +101,18 @@ if (!dojo._hasResource['openils.widget.PCrudFilterPane']) {
                         "param_count": 1,
                         "strict": true
                     }, {
+                        "name": "in",
+                        "label": pcFilterLocaleStrings.OPERATOR_IN,
+                        "param_count": null,    /* arbitrary number, special */
+                        "strict": true,
+                        "minimal": true
+                    }, {
+                        "name": "not in",
+                        "label": pcFilterLocaleStrings.OPERATOR_NOT_IN,
+                        "param_count": null,    /* arbitrary number, special */
+                        "strict": true,
+                        "minimal": true
+                    }, {
                         "name": "between",
                         "label": pcFilterLocaleStrings.OPERATOR_BETWEEN,
                         "param_count": 2,
@@ -151,13 +165,37 @@ if (!dojo._hasResource['openils.widget.PCrudFilterPane']) {
 
         var ops = openils.Util.objectProperties(clause);
         var op = ops.pop();
-        var matches = op.match(/^not (\w+)$/);
+        var matches = op.match(/^not [lb].+$/); /* "not in" needs no change */
         if (matches) {
             clause[matches[1]] = clause[op];
             delete clause[op];
             return true;
         }
         return false;
+    }
+
+    /* Given a value, add it to selector options if it's not already there,
+     * and select it. */
+    function _add_or_at_least_select(value, selector) {
+        var found = false;
+
+        for (var i = 0; i < selector.options.length; i++) {
+            var option = selector.options[i];
+            if (option.value == value) {
+                found = true;
+                option.selected = true;
+            }
+        }
+
+        if (!found) {
+            dojo.create(
+                "option", {
+                    "innerHTML": value,
+                    "value": value,
+                    "selected": "selected"
+                }, selector
+            );
+        }
     }
 
     /* This is not the dijit per se. Search further in this file for
@@ -249,20 +287,58 @@ if (!dojo._hasResource['openils.widget.PCrudFilterPane']) {
             return result;
         };
 
-        this.add_row = function(initializer) {
+        this._validate_initializer = function(initializer, onsuccess) {
+            this.field_store.fetchItemByIdentity({
+                "identity": initializer.field,
+                "onItem": dojo.hitch(this, function(item) {
+                    if (item) {
+                        onsuccess();
+                    } else {
+                        console.debug(
+                            "skipping initializer for field " +
+                            initializer.field + " not present here"
+                        );
+                    }
+                })
+            });
+        };
+
+        this._proceed_add_row = function(initializer) {
+            var row_id_list = openils.Util.objectProperties(this.rows);
+
+            /* Kill initial empty row when adding pre-initialized rows. */
+            if (row_id_list.length == 1 && initializer) {
+                var existing_row_id = row_id_list.shift();
+                if (this.rows[existing_row_id].is_unset())
+                    this.remove_row(existing_row_id, true /* no_apply */);
+            }
+
             this.hide_empty_placeholder();
             var row_id = this.row_index++;
             this.rows[row_id] = new PCrudFilterRow(this, row_id, initializer);
         };
 
-        this.remove_row = function(row_id) {
+        this.add_row = function(initializer) {
+            if (initializer) {
+                this._validate_initializer(
+                    initializer,
+                    dojo.hitch(this, function() {
+                        this._proceed_add_row(initializer);
+                    })
+                );
+            } else {
+                this._proceed_add_row(initializer);
+            }
+        };
+
+        this.remove_row = function(row_id, no_apply) {
             this.rows[row_id].destroy();
             delete this.rows[row_id];
 
             if (openils.Util.objectProperties(this.rows).length < 1)
                 this.show_empty_placeholder();
 
-            if (this.compact)
+            if (this.compact && !no_apply)
                 this.do_apply();
         };
 
@@ -318,6 +394,20 @@ if (!dojo._hasResource['openils.widget.PCrudFilterPane']) {
             } else {
                 return this._compile_second_pass(first_pass);
             }
+        };
+
+        /* This is for generating a data structure so that we can store
+         * a representation of the state of the filter rows.  Not for
+         * generating a query to be used in search.  You want compile() for
+         * that. */
+        this.serialize = function() {
+            var serialized = [];
+            for (var rowkey in this.rows) { /* row order doesn't matter */
+                var row_ser = this.rows[rowkey].serialize();
+                if (row_ser)
+                    serialized.push(row_ser);
+            }
+            return dojo.toJson(serialized);
         };
 
         this._init.apply(this, arguments);
@@ -383,6 +473,11 @@ if (!dojo._hasResource['openils.widget.PCrudFilterPane']) {
                     "scrollOnFocus": false,
                     "onChange": function(value) {
                         self.update_selected_field(value);
+                        if (this.and_then) {    /* ugh. also, self != this. */
+                            var once = this.and_then;
+                            delete this.and_then;
+                            once();
+                        }
                     },
                     "store": this.filter_row_manager.field_store
                 }, dojo.create("span", {}, td)
@@ -413,12 +508,12 @@ if (!dojo._hasResource['openils.widget.PCrudFilterPane']) {
         };
 
         this._create_value_slot = function(use_element) {
+            var how = {"innerHTML": "-"};
+
             if (use_element)
-                this.value_slot = dojo.create(
-                    "span", {"innerHTML": "-"}, use_element
-                );
+                this.value_slot = dojo.create("span", how, use_element);
             else
-                this.value_slot = dojo.create("td",{"innerHTML":"-"},this.tr);
+                this.value_slot = dojo.create("td", how, this.tr);
         };
 
         this._create_remover = function(use_element) {
@@ -438,7 +533,10 @@ if (!dojo._hasResource['openils.widget.PCrudFilterPane']) {
         this._clear_value_slot = function() {
             if (this.value_widgets) {
                 this.value_widgets.forEach(
-                    function(autowidg) { autowidg.widget.destroy(); }
+                    function(autowidg) {
+                        if (autowidg.widget)
+                            autowidg.widget.destroy();
+                    }
                 );
                 delete this.value_widgets;
             }
@@ -454,27 +552,111 @@ if (!dojo._hasResource['openils.widget.PCrudFilterPane']) {
 
             this.value_widgets = [];
 
-            var param_count = this.operator_selector.item.param_count;
-
-            /* This is where find and deploy custom widget builders. */
+            /* This is where find custom widget builders to deploy shortly. */
             var widget_builder_key = this.selected_field_fm_class + ":" +
                 this.selected_field_fm_field;
             var constr =
                 this.filter_row_manager.widget_builders[widget_builder_key] ||
                 openils.widget.AutoFieldWidget;
 
-            for (var i = 0; i < param_count; i++) {
-                var widg = new constr({
-                    "fmClass": this.selected_field_fm_class,
-                    "fmField": this.selected_field_fm_field,
-                    "parentNode": dojo.create("span", {}, this.value_slot),
-                    "dijitArgs": {"scrollOnFocus": false}
-                });
+            /* How many value widgets do we need for this operator? */
+            var param_count =
+                this.operator_selector.store.getValue(
+                    this.operator_selector.item, "param_count"
+                );
 
-                widg.build();
-                this.value_widgets.push(widg);
+            if (param_count === null) {
+                /* When param_count is null, we invoke the special case of
+                 * preparing widgets for building a dynamic set of values.
+                 * All other cases are handled by the else branch. */
+                this._build_set_value_widgets(constr);
+            } else {
+                for (var i = 0; i < param_count; i++) {
+                    this.value_widgets.push(
+                        this._build_one_value_widget(constr)
+                    );
+                }
             }
         };
+
+        this._build_set_value_widgets = function(constr) {
+            var value_widget = dojo.create(
+                "select", {
+                    "multiple": "multiple",
+                    "size": 4,
+                    "style": {
+                        "width": "6em",
+                        "verticalAlign": "middle",
+                        "margin": "0 0.75em"
+                    }
+                },
+                this.value_slot
+            );
+            var entry_widget = this._build_one_value_widget(constr);
+            var adder = dojo.create(
+                "a", {
+                    "href": "javascript:void(0);",
+                    "style": {"verticalAlign": "middle", "margin": "0 0.75em"},
+                    "innerHTML": "[+]", /* XXX i18n? */
+                    "onclick": dojo.hitch(this, function() {
+                        _add_or_at_least_select(
+                            this._value_for_compile(entry_widget),
+                            value_widget
+                        );
+                        entry_widget.widget.attr("value", ""); /* clear */
+                    })
+                }, this.value_slot
+            );
+            this.value_widgets.push(value_widget);
+        };
+
+
+        /* Create just one value widget (used by higher-level functions
+         * that worry about how many are needed). */
+        this._build_one_value_widget = function(constr) {
+            var widg = new constr({
+                "fmClass": this.selected_field_fm_class,
+                "fmField": this.selected_field_fm_field,
+                "noDisablePkey": true,
+                "parentNode": dojo.create(
+                    "span", {
+                        "style": {"verticalAlign": "middle"}
+                    }, this.value_slot
+                ),
+                "dijitArgs": {"scrollOnFocus": false}
+            });
+
+            widg.build();
+            return widg;
+        };
+
+        this._value_for_serialize = function(widg) {
+            if (!widg.widget)   /* widg is <select> */
+                return dojo.filter(
+                    widg.options,
+                    function(o) { return o.selected; }
+                ).map(
+                    function(o) { return o.value; }
+                );
+            else
+                return widg.widget.attr("value");
+        };
+
+        this._value_for_compile = function(widg) {
+            if (!widg.widget)   /* widg is <select> */
+                return dojo.filter(
+                    widg.options,
+                    function(o) { return o.selected; }
+                ).map(
+                    function(o) { return o.value; }
+                );
+            else if (widg.useCorrectly)
+                return widg.widget.attr("value");
+            else if (this.selected_field_is_indirect)
+                return widg.widget.attr("displayedValue");
+            else
+                return widg.getFormattedValue();
+        }
 
         /* for ugly special cases in compilation */
         this._null_clause = function() {
@@ -498,8 +680,15 @@ if (!dojo._hasResource['openils.widget.PCrudFilterPane']) {
         };
 
         this.get_selected_operator_name = function() {
-            var op = this.get_selected_operator();
-            return op ? op.name : null;
+            var item = this.get_selected_operator();
+            if (item) {
+                return this.operator_selector.store.getValue(item, "name");
+            } else {
+                console.warn(
+                    "Could not determine selected operator. " +
+                    "Something is about to break."
+                );
+            }
         };
 
         this.update_selected_operator = function(value) {
@@ -526,17 +715,46 @@ if (!dojo._hasResource['openils.widget.PCrudFilterPane']) {
             }
         };
 
+        this.serialize = function() {
+            if (!this.selected_field)
+                return;
+
+            var serialized = {
+                "field": this.selected_field,
+                "operator": this.get_selected_operator_name()
+            };
+
+            var values;
+
+            if (this.value_widgets) {
+                values = this.value_widgets.map(
+                    dojo.hitch(
+                        this, function(w) {
+                            return this._value_for_serialize(w);
+                        }
+                    )
+                );
+            }
+
+            /* The following grew organically to be very silly and confusing.
+             * Could use a rethink (PCrudFilterRow.initialize() would also need
+             * matching changes). */
+            if (values.length == 1) {
+                if (dojo.isArray(values[0]))
+                    serialized.values = values[0];
+                else
+                    serialized.value = values[0];
+            } else if (values.length > 1) {
+                serialized.values = values;
+            }
+
+            return serialized;
+        };
+
         this.compile = function() {
             if (this.value_widgets) {
                 var values = this.value_widgets.map(
-                    function(widg) {
-                        if (widg.useCorrectly)
-                            return widg.widget.attr("value");
-                        else if (self.selected_field_is_indirect)
-                            return widg.widget.attr("displayedValue");
-                        else
-                            return widg.getFormattedValue();
-                    }
+                    dojo.hitch(this, this._value_for_compile)
                 );
 
                 if (!values.length) {
@@ -545,7 +763,13 @@ if (!dojo._hasResource['openils.widget.PCrudFilterPane']) {
                     var clause = {};
                     var op = this.get_selected_operator_name();
 
-                    var prep_function = function(o) { return o; /* no-op */ };
+                    var prep_function = function(o) {
+                        if (dojo.isArray(o) && !o.length)
+                            throw new Error(pcFilterLocaleStrings.EMPTY_LIST);
+
+                        return o;
+                    };
+
                     if (String(op).match(/like/))
                         prep_function = this._add_like_wildcards;
 
@@ -570,19 +794,43 @@ if (!dojo._hasResource['openils.widget.PCrudFilterPane']) {
         };
 
         this.initialize = function(initializer) {
+            /* and_then is a nasty kludge callback called once at onChange */
+            this.field_selector.and_then = dojo.hitch(
+                this, function() {
+                    this.operator_selector.attr("value", initializer.operator);
+
+                    /* Caller supplies value for one value, values (array) for
+                     * multiple. */
+                    if (typeof initializer.value !== "undefined" &&
+                            !initializer.values) {
+                        initializer.values = [initializer.value];
+                    }
+                    initializer.values = initializer.values || [];
+
+                    if (initializer.operator.match(/^(not ?)in$/)) {
+                        /* "in" and "not in" need special treatement */
+                        dojo.forEach(
+                            initializer.values, dojo.hitch(this, function(v) {
+                                _add_or_at_least_select(
+                                    v, this.value_widgets[0]
+                                );
+                            })
+                        );
+                    } else {
+                        /* other operators work this way: */
+                        for (var i = 0; i < initializer.values.length; i++) {
+                            this.value_widgets[i].widget.attr(
+                                "value", initializer.values[i]
+                            );
+                        }
+                    }
+                }
+            );
             this.field_selector.attr("value", initializer.field);
-            this.operator_selector.attr("value", initializer.operator);
+        };
 
-            /* Caller supplies value for one value, values (array) for
-             * multiple. */
-            if (!initializer.values || !dojo.isArray(initializer.values))
-                initializer.values = [initializer.values || initializer.value];
-
-            for (var i = 0; i < initializer.values.length; i++) {
-                this.value_widgets[i].widget.attr(
-                    "value", initializer.values[i]
-                );
-            }
+        this.is_unset = function() {
+            return !Boolean(this.field_selector.attr("value"));
         };
 
         this._init.apply(this, arguments);
@@ -593,20 +841,139 @@ if (!dojo._hasResource['openils.widget.PCrudFilterPane']) {
         {
             "useDiv": null, /* should always be null for subclass dialogs */
             "initializers": null,
-            "compact": false,
             "widgetBuilders": null,
             "suppressFilterFields": null,
+            "savedFiltersInterface": null,
 
             "constructor": function(args) {
                 for(var k in args)
                     this[k] = args[k];
                 this.widgetIndex = 0;
                 this.widgetCache = {};
+                this.compact = Boolean(this.useDiv);
 
                 /* Meaningless in a pane, but better here than in
                  * PCrudFilterDialog so that we don't need to load i18n
                  * strings there: */
                 this.title = this.title || pcFilterLocaleStrings.DEFAULT_DIALOG_TITLE;
+            },
+
+            "_buildSavedFilterControlsIfPerms": function(holder) {
+                (new openils.User()).getPermOrgList(
+                    "SAVED_FILTER_DIALOG_FILTERS",
+                    dojo.hitch(this, function(id_list) {
+                        this._buildSavedFilterControls(id_list, holder);
+                    }),
+                    true, true
+                );
+            },
+
+            "_buildSavedFilterControls": function(id_list, holder) {
+                if (!id_list || !id_list.length) {
+                    console.info("Not showing saved filter controls; no perm");
+                    return;
+                }
+
+                var fs_list = (new openils.PermaCrud()).search(
+                    "cfdfs", {
+                        "owning_lib": id_list,
+                        "interface": this.savedFiltersInterface
+                    }, {
+                        "order_by": [
+                            {"class": "cfdfs", "field": "owning_lib"},
+                            {"class": "cfdfs", "field": "name"}
+                        ],
+                        "async": true,
+                        "oncomplete": dojo.hitch(this, function(r) {
+                            if (r = openils.Util.readResponse(r)) {
+                                this._buildSavedFilterLoader(r, holder);
+                            }
+                        })
+                    }
+                );
+
+                this._buildSavedFilterSaver(holder);
+            },
+
+            "_buildSavedFilterLoader": function(fs_list, holder) {
+                var self = this;
+                var load_content = dojo.create(
+                    "div", {
+                        "innerHTML": pcFilterLocaleStrings.CHOOSE_FILTER_TO_LOAD
+                    }
+                );
+
+                var selector = dojo.create(
+                    "select", {
+                        "multiple": "multiple",
+                        "size": 4,
+                        "style": {
+                            "verticalAlign": "middle", "margin": "0 0.75em"
+                        }
+                    }, load_content, "last"
+                );
+
+                dojo.forEach(
+                    fs_list, function(fs) {
+                        dojo.create(
+                            "option", {
+                                "innerHTML": fs.name(),
+                                "value": dojo.toJson([fs.id(),
+                                    dojo.fromJson(fs.filters())])
+                            }, selector
+                        );
+                    }
+                );
+
+                var applicator = dojo.create(
+                    "a", {
+                        "href": "javascript:void(0);",
+                        "onclick": function() {
+                            dojo.filter(
+                                selector.options,
+                                function(o){return o.selected;}
+                            ).map(
+                                function(o){return dojo.fromJson(o.value)[1];}
+                            ).forEach(
+                                function(o){
+                                    o.forEach(
+                                        function(p) {
+                                            self.filter_row_manager.add_row(p);
+                                        }
+                                    );
+                                }
+                            );
+                            dijit.popup.close(self.filter_set_loader.dropDown);
+                        },
+                        "innerHTML": pcFilterLocaleStrings.APPLY
+                    }, load_content, "last"
+                );
+
+                this.filter_set_loader = new dijit.form.DropDownButton({
+                    "dropDown": new dijit.TooltipDialog({
+                        "content": load_content
+                    }),
+                    "label": pcFilterLocaleStrings.LOAD_FILTERS
+                }, dojo.create("span", {}, holder));
+            },
+
+            "_buildSavedFilterSaver": function(holder) {
+                this.filter_set_loader = new dijit.form.Button({
+                    "onClick": dojo.hitch(
+                        this, function() {
+                            this.saveFilters(
+                                /* XXX I know some find prompt() objectionable
+                                 * somehow, but I can't seem to type into any
+                                 * text inputs that I put inside TooltipDialog
+                                 * instances, so meh. */
+                                prompt(
+                                    pcFilterLocaleStrings.NAME_SAVED_FILTER_SET
+                                )
+                            );
+                        }
+                    ),
+                    "label": pcFilterLocaleStrings.SAVE_FILTERS
+                }, dojo.create("span", {}, holder));
             },
 
             "_buildButtons": function() {
@@ -649,6 +1016,9 @@ if (!dojo._hasResource['openils.widget.PCrudFilterPane']) {
                         }, dojo.create("span", {}, button_holder)
                     );
                 }
+
+                if (this.savedFiltersInterface)
+                    this._buildSavedFilterControlsIfPerms(button_holder);
             },
 
             "_buildFieldStore": function() {
@@ -690,6 +1060,35 @@ if (!dojo._hasResource['openils.widget.PCrudFilterPane']) {
                         )
                     }
                 });
+            },
+
+            "saveFilters": function(name, oncomplete) {
+                var filters_value = this.filter_row_manager.serialize();
+                var filter_set = new cfdfs();
+                filter_set.name(name);
+                filter_set.interface(this.savedFiltersInterface);
+                filter_set.owning_lib(openils.User.user.ws_ou());
+                filter_set.creator(openils.User.user.id()); /* not reliable */
+                filter_set.filters(filters_value);
+
+                (new openils.PermaCrud()).create(
+                    filter_set, {
+                        "oncomplete": dojo.hitch(this, function() {
+                            var selector = dojo.query(
+                                "select[multiple]",
+                                this.filter_set_loader.dropDown.domNode
+                            )[0];
+                            dojo.create(
+                                "option", {
+                                    "innerHTML": name,
+                                    "value": dojo.toJson([-1,
+                                        dojo.fromJson(filters_value)])
+                                }, selector
+                            );
+                            if (oncomplete) oncomplete();
+                        })
+                    }
+                );
             },
 
             "hide": function() {

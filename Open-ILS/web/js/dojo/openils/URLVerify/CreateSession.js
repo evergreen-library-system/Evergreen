@@ -3,8 +3,10 @@ if (!dojo._hasResource["openils.URLVerify.CreateSession"]) {
     dojo.require("dojox.jsonPath");
     dojo.require("fieldmapper.OrgUtils");
     dojo.require("openils.Util");
+    dojo.require("openils.CGI");
     dojo.require("openils.PermaCrud");
     dojo.require("openils.widget.FilteringTreeSelect");
+    dojo.require("openils.URLVerify.Verify");
 
     dojo.requireLocalization("openils.URLVerify", "URLVerify");
 
@@ -87,7 +89,7 @@ if (!dojo._hasResource["openils.URLVerify.CreateSession"]) {
         );
     };
 
-    /* 2) save the tag/subfield sets for URL extraction, */
+    /* 2a) save the tag/subfield sets for URL extraction, */
     module.save_tags = function() {
         module.progress_dialog.attr("title", localeStrings.SAVING_TAGS);
         module.progress_dialog.show(); /* sic */
@@ -95,7 +97,8 @@ if (!dojo._hasResource["openils.URLVerify.CreateSession"]) {
         uvus_progress = 0;
 
         /* Note we're not using openils.PermaCrud, which is inadequate
-         * when you want transactions. Thanks for figuring it out, Bill. */
+         * when you need one big transaction. Thanks for figuring it
+         * out Bill. */
         var pcrud_raw = new OpenSRF.ClientSession("open-ils.pcrud");
 
         pcrud_raw.connect();
@@ -106,9 +109,7 @@ if (!dojo._hasResource["openils.URLVerify.CreateSession"]) {
             "oncomplete": function(r) {
                 module._create_uvus_one_at_a_time(
                     pcrud_raw,
-                    module.tag_and_subfields.generate_uvus(
-                        module.session_id
-                    )
+                    module.tag_and_subfields.generate_uvus(module.session_id)
                 );
             }
         }).send();
@@ -125,7 +126,7 @@ if (!dojo._hasResource["openils.URLVerify.CreateSession"]) {
                     {"maximum": uvus_list.length, "progress": ++uvus_progress}
                 );
 
-                uvus_list.shift();  /* /now/ actually shorten the list */
+                uvus_list.shift();  /* /now/ actually shorten working list */
 
                 if (uvus_list.length < 1) {
                     pcrud_raw.request({
@@ -147,8 +148,9 @@ if (!dojo._hasResource["openils.URLVerify.CreateSession"]) {
     };
 
     /* 3) search and populate the container (API call). */
-    var search_result_count = 0;
     module.perform_search = function() {
+        var search_result_count = 0;
+
         module.progress_dialog.attr("title", localeStrings.PERFORMING_SEARCH);
         module.progress_dialog.show(true);
 
@@ -180,11 +182,13 @@ if (!dojo._hasResource["openils.URLVerify.CreateSession"]) {
                     module.progress_dialog.show(true);
 
                     if (no_url_selection.checked) {
-                        location.href = oilsBasePath +
-                            "/url_verify/validation_review?" +
-                            "session_id=" + module.session_id +
-                            "&validate=1";
+                        /* verify URLs and ultimately redirect to review page */
+                        openils.URLVerify.Verify.go(
+                            module.session_id, null, module.progress_dialog
+                        );
                     } else {
+                        /* go to the URL selection page, allowing users to
+                         * selectively verify URLs */
                         location.href = oilsBasePath +
                             "/url_verify/select_urls?session_id=" +
                             module.session_id;
@@ -200,14 +204,12 @@ if (!dojo._hasResource["openils.URLVerify.CreateSession"]) {
      * fewer moving parts that can go haywire anyway.
      */
     module._populate_saved_searches = function(node) {
-        var pcrud = new openils.PermaCrud();
-        var list = pcrud.retrieveAll(
+        var list = module.pcrud.retrieveAll(
             "asq", {"order_by": {"asq": "label"}}
         );
 
         dojo.forEach(
-            list,
-            function(o) {
+            list, function(o) {
                 dojo.create(
                     "option", {
                         "innerHTML": o.label(),
@@ -217,8 +219,6 @@ if (!dojo._hasResource["openils.URLVerify.CreateSession"]) {
                 );
             }
         );
-
-        pcrud.disconnect();
     };
 
     /* set up an all-org-units-in-the-tree selector */
@@ -234,7 +234,34 @@ if (!dojo._hasResource["openils.URLVerify.CreateSession"]) {
         module.org_selector = widget;
     };
 
+    /* Can only be called by setup() */
+    module._clone = function(id) {
+        module.progress_dialog.attr("title", localeStrings.CLONING);
+        var old_session = module.pcrud.retrieve(
+            "uvs", id, {"flesh": 1, "flesh_fields": {"uvs": ["selectors"]}}
+        );
+
+        /* Set name to "Copy of [old name]" */
+        uv_session_name.attr(
+            "value", dojo.string.substitute(
+                localeStrings.CLONE_SESSION_NAME, [old_session.name()]
+            )
+        );
+
+        /* Set search field. */
+        uv_search.attr("value", old_session.search());
+
+        /* Explain to user why we don't affect the saved searches picker. */
+        if (old_session.search().match(/saved_query/))
+            openils.Util.show("clone-saved-search-warning");
+
+        /* Add related xpaths (URL selectors) to TagAndSubfieldsMgr. */
+        module.tag_and_subfields.add_xpaths(old_session.selectors());
+    };
+
     module.setup = function(saved_search_id, org_selector_id, progress_dialog) {
+        module.pcrud = new openils.PermaCrud(); /* only used for setup */
+
         module.progress_dialog = progress_dialog;
 
         module.progress_dialog.attr("title", localeStrings.INTERFACE_SETUP);
@@ -242,6 +269,12 @@ if (!dojo._hasResource["openils.URLVerify.CreateSession"]) {
 
         module._populate_saved_searches(dojo.byId(saved_search_id));
         module._prepare_org_selector(dojo.byId(org_selector_id));
+
+        var cgi = new openils.CGI();
+        if (cgi.param("clone"))
+            module._clone(cgi.param("clone"));
+
+        module.pcrud.disconnect();
 
         module.progress_dialog.hide();
     };
@@ -286,8 +319,37 @@ if (!dojo._hasResource["openils.URLVerify.CreateSession"]) {
                     "innerHTML": "[X]" /* XXX i18n */
                 }, div, "last"
             );
+        };
 
-            this.counter++;
+        this.add_xpaths = function(xpaths) {
+            if (!dojo.isArray(xpaths)) {
+                console.info("No xpaths to add");
+                return;
+            }
+
+            dojo.forEach(
+                xpaths, dojo.hitch(this, function(xpath) {
+                    var newid = "t-and-s-row-" + String(this.counter++);
+                    var div = dojo.create(
+                        "div", {
+                            "id": newid,
+                            "innerHTML": localeStrings.XPATH +
+                                " <span class='t-and-s-xpath'>" +
+                                xpath.xpath() + "</span>"
+                        }, this.container_id, "last"
+                    );
+                    dojo.create(
+                        "a", {
+                            "href": "javascript:void(0);",
+                            "onclick": function() {
+                                var me = dojo.byId(newid);
+                                me.parentNode.removeChild(me);
+                            },
+                            "innerHTML": "[X]" /* XXX i18n */
+                        }, div, "last"
+                    );
+                })
+            );
         };
 
         /* return a boolean indicating whether or not we have any rows */
@@ -307,27 +369,52 @@ if (!dojo._hasResource["openils.URLVerify.CreateSession"]) {
                 '[id^="t-and-s-row-"]', dojo.byId(this.container_id)
             ).forEach(
                 function(row) {
-                    var tag = dojo.query(".t-and-s-tag", row)[0].innerHTML;
-                    var subfield = dojo.query(".t-and-s-subfields", row)[0].innerHTML;
-
-                    var existing;
-                    if ((existing = uniquely_grouped[tag])) { /* sic, assignment */
-                        existing = openils.Util.uniqueElements(
-                            (existing + subfield).split("")
-                        ).sort().join("");
+                    var holds_xpath = dojo.query(".t-and-s-xpath", row);
+                    if (holds_xpath.length) {
+                        uniquely_grouped.xpath = uniquely_grouped.xpath || [];
+                        uniquely_grouped.xpath.push(holds_xpath[0].innerHTML);
                     } else {
-                        uniquely_grouped[tag] = subfield;
+                        var tag = dojo.query(".t-and-s-tag", row)[0].innerHTML;
+                        var subfield =
+                            dojo.query(".t-and-s-subfields", row)[0].innerHTML;
+
+                        var existing;
+                        if ((existing = uniquely_grouped[tag])) { // assignment
+                            existing = openils.Util.uniqueElements(
+                                (existing + subfield).split("")
+                            ).sort().join("");
+                        } else {
+                            uniquely_grouped[tag] = subfield;
+                        }
                     }
                 }
             );
 
             var uvus_list = [];
+            /* Handle things that are already in XPath form first (these
+             * come from cloning link checker sessions. */
+            if (uniquely_grouped.xpath) {
+                dojo.forEach(
+                    uniquely_grouped.xpath,
+                    function(xpath) {
+                        var obj = new uvus();
+
+                        obj.session(session_id);
+                        obj.xpath(xpath);
+                        uvus_list.push(obj);
+                    }
+                );
+                delete uniquely_grouped.xpath;
+            }
+
+            /* Now handle anything entered by hand. */
             for (var tag in uniquely_grouped) {
                 var obj = new uvus();
 
                 obj.session(session_id);
 
-                /* XXX TODO handle control fields (no subfields) */
+                /* XXX TODO Handle control fields (No subfields. but would
+                 * control fields ever contain URLs? Don't know.) */
                 obj.xpath(
                     "//*[@tag='" + tag + "']/*[" +
                     uniquely_grouped[tag].split("").map(

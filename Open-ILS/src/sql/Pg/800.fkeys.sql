@@ -126,4 +126,17 @@ ALTER TABLE config.z3950_source ADD CONSTRAINT use_perm_fkey FOREIGN KEY (use_pe
 
 ALTER TABLE config.org_unit_setting_type_log ADD CONSTRAINT config_org_unit_setting_type_log_fkey FOREIGN KEY (org) REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
+ALTER TABLE config.filter_dialog_filter_set
+    ADD CONSTRAINT config_filter_dialog_filter_set_owning_lib_fkey
+    FOREIGN KEY (owning_lib) REFERENCES actor.org_unit (id)
+    ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
+ALTER TABLE config.filter_dialog_filter_set
+    ADD CONSTRAINT config_filter_dialog_filter_set_creator_fkey
+    FOREIGN KEY (creator) REFERENCES actor.usr (id)
+    ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
+ALTER TABLE config.filter_dialog_filter_set
+    ADD CONSTRAINT config_filter_dialog_filter_set_filters_check
+    CHECK (evergreen.is_json(filters))
 COMMIT;

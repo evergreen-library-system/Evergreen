@@ -964,6 +964,8 @@
 <!ENTITY staff.main.menu.cat.vandelay.label "MARC Batch Import/Export">
 <!ENTITY staff.main.menu.cat.z39_50_import.accesskey "Z">
 <!ENTITY staff.main.menu.cat.z39_50_import.label "Import Record from Z39.50">
+<!ENTITY staff.main.menu.cat.url_verify.label "Link Checker">
+<!ENTITY staff.main.menu.cat.url_verify.accesskey "K">
 
 <!ENTITY staff.main.menu.acq.label "Acquisitions">
 <!ENTITY staff.main.menu.acq.accesskey "A">
