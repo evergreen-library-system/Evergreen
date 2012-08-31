@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2012-08-03 10:01-0400\n"
-"PO-Revision-Date: 2012-05-01 13:55+0000\n"
+"POT-Creation-Date: 2012-08-22 08:46-0400\n"
+"PO-Revision-Date: 2012-08-24 21:57+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <PetrKubiska@seznam.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-08-04 05:11+0000\n"
-"X-Generator: Launchpad (build 15742)\n"
+"X-Launchpad-Export-Date: 2012-08-28 06:49+0000\n"
+"X-Generator: Launchpad (build 15864)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -226,6 +226,10 @@ msgid ""
 msgstr ""
 "Někdo se pokusil získat uživatele ze systému a uživatel nebyl nalezen"
 
+#: 7011.COPY_STATUS_LOST:862
+msgid "Copy is marked as lost"
+msgstr "Exemplář byl označen jako ztracený"
+
 #: 7010.COPY_ALERT_MESSAGE:859
 msgid "The requested copy has an alert message attached"
 msgstr "K požadovanému exempláři je připojeno upozornění"
@@ -277,10 +281,6 @@ msgstr "Požadovaný action_survey_question nebyl nalezen"
 #: 1541.AUTHORITY_RECORD_DESCRIPTOR_NOT_FOUND:279
 msgid "The requested authority_record_descriptor was not found"
 msgstr "Požadovaný authority_record_descriptor nebyl nalezen"
-
-#: 7011.COPY_STATUS_LOST:862
-msgid "Copy has is marked as lost"
-msgstr "Exemplář byl označen jako ztracený"
 
 #: 1587.CONTAINER_CALL_NUMBER_BUCKET_NOT_FOUND:410
 msgid "The requested container_call_number_bucket was not found"
@@ -574,9 +574,9 @@ msgstr "Požadovaný metabib_record_descriptor nebyl nalezen"
 msgid "The object is not in a cancelable state."
 msgstr "Objekt není ve stavu, aby bylo možné jej zrušit"
 
-#: 9000.REPORT_TEMPLATE_EXISTS:950
-msgid "A report template with the given name and folder already exists"
-msgstr "Šablona zpráv s uvedeným jménem a složka již existují"
+#: 7012.COPY_STATUS_MISSING:865
+msgid "Copy is marked as missing"
+msgstr "Exemplář byl označen jako posrtádaný"
 
 #: 1500.ACTION_CIRCULATION_NOT_FOUND:181
 msgid ""
@@ -921,6 +921,10 @@ msgstr "Požadovaný ex nebyl nalezen"
 msgid "Hold capture was delayed for this item"
 msgstr "Zachycení rezervaci pro tento exemplář se zpozdilo"
 
+#: 9000.REPORT_TEMPLATE_EXISTS:950
+msgid "A report template with the given name and folder already exists"
+msgstr "Šablona zpráv s uvedeným jménem a složka již existují"
+
 #: 1502.ASSET_COPY_NOT_FOUND:190
 msgid ""
 "Someone attempted to retrieve a copy object from the system and the object "
@@ -1047,10 +1051,6 @@ msgstr "Požadovaný money_grocery nebyl nalezen"
 #: 8009.OFFLINE_NO_ORG:940 8010.OFFLINE_SESSION_COMPLETE:943
 msgid "No org id was provided"
 msgstr "Nebylo poskytnuto ID organizace"
-
-#: 7012.COPY_STATUS_MISSING:865
-msgid "Copy has is marked as missing"
-msgstr "Exemplář byl označen jako nezvěstný"
 
 #: 1532.MONEY_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND:253
 msgid "The requested money_billable_transaction_summary was not found"
@@ -1254,3 +1254,9 @@ msgstr "Požadovaný action_non_cataloged_circulation nebyl nalezen"
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:461
 msgid "The requested money_user_summary was not found"
 msgstr "Požadovaný money_user_summary nebyl nalezen"
+
+#~ msgid "Copy has is marked as lost"
+#~ msgstr "Exemplář byl označen jako ztracený"
+
+#~ msgid "Copy has is marked as missing"
+#~ msgstr "Exemplář byl označen jako nezvěstný"

@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-08-03 10:01-0400\n"
-"PO-Revision-Date: 2012-05-01 13:26+0000\n"
+"PO-Revision-Date: 2012-08-24 21:54+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <petrkubiska@seznam.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-08-04 05:09+0000\n"
-"X-Generator: Launchpad (build 15742)\n"
+"X-Launchpad-Export-Date: 2012-08-28 06:47+0000\n"
+"X-Generator: Launchpad (build 15864)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -1788,7 +1788,7 @@ msgstr ""
 #. # 8 - Change Given  9 - Credit Given  10 - New Balance  11 - Payment Type  12 - Note  13 - API call result
 #: staff.circ.work_log_payment_attempt.success.message
 msgid "%1$s received %6$s (%11$s) for %3$s (%2$s)."
-msgstr ""
+msgstr "%1$s přijal(a) %6$s (%11$s) za %3$s (%2$s)."
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Original Balance  5 - Voided Balance  6 - Payment Received  7 - Payment Applied
 #. # 8 - Change Given  9 - Credit Given  10 - New Balance  11 - Payment Type  12 - Note  13 - API call result
@@ -1797,6 +1797,8 @@ msgid ""
 "%1$s attempted receipt of %6$s (%11$s) for %3$s (%2$s), which failed for "
 "this reason: %13$s"
 msgstr ""
+"%1$s se pokusil(a) vytisknout potvrzení na %6$s (%11$s) pro %3$s (%2$s), což "
+"se nezdařilo z tohoto důvodu: %13$s"
 
 #: staff.circ.checkin.hold_capture
 msgid "Hold Capture"

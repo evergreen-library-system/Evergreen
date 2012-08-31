@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-08-03 10:01-0400\n"
-"PO-Revision-Date: 2012-08-16 17:42+0000\n"
+"PO-Revision-Date: 2012-08-17 09:33+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-08-17 04:40+0000\n"
-"X-Generator: Launchpad (build 15810)\n"
+"X-Launchpad-Export-Date: 2012-08-28 06:49+0000\n"
+"X-Generator: Launchpad (build 15864)\n"
 "X-Accelerator-Marker: &\n"
 
 #: common.logout
@@ -54,11 +54,6 @@ msgstr "Վերարկել"
 #: staff.main.menu.edit.undo.label
 msgid "Undo"
 msgstr "Ետարկել"
-
-#: staff.main.menu.file.close_tab.label
-#: staff.main.menu.file.close_tab.accesskey
-msgid "&Close Tab"
-msgstr ""
 
 #: staff.main.menu.file.label
 #: staff.main.menu.file.accesskey
@@ -4052,6 +4047,11 @@ msgctxt "staff.main.menu.file.close.key"
 msgid "C"
 msgstr "C"
 
+#: staff.main.menu.file.close_tab.label
+#: staff.main.menu.file.close_tab.accesskey
+msgid "&Close Tab"
+msgstr "&Փակել ներդիրը"
+
 #: staff.main.menu.file.new.label
 #: staff.main.menu.file.new.accesskey
 msgid "&New Window"
@@ -4060,7 +4060,7 @@ msgstr "&Նոր պատուհան"
 #: staff.main.menu.file.portal.label
 #: staff.main.menu.file.portal.accesskey
 msgid "&Home"
-msgstr ""
+msgstr "&Տուն"
 
 #: staff.main.menu.file.join_tabs_horizontal.label
 #: staff.main.menu.file.join_tabs_horizontal.accesskey
@@ -4147,7 +4147,7 @@ msgstr "Որոնիր ընթերցող &ին ըստ շտրիխ կոդի"
 
 #: staff.main.menu.search.patron_db_id.label
 msgid "Retrieve patron via Database ID"
-msgstr ""
+msgstr "Հետ բեր ընթերցողին Շտեմարանի ID-ի օգնությամբ"
 
 #: staff.main.menu.search.record.label
 #: staff.main.menu.search.record.accesskey
@@ -4160,7 +4160,7 @@ msgctxt ""
 "staff.main.menu.search.record_via_id.label "
 "staff.main.menu.search.record_via_id.accesskey"
 msgid "Retrieve title via &Database ID"
-msgstr ""
+msgstr "Կանչիր վերնագիրը ըստ &Շտեմարանի ID"
 
 #: staff.main.menu.serials.key
 msgid "l"
@@ -5664,7 +5664,7 @@ msgstr "Բնութագրում"
 #: staff.patron_display.tab.group.label
 msgctxt "staff.patron_display.tab.group.label"
 msgid "Group"
-msgstr ""
+msgstr "Խումբ"
 
 #: staff.patron_display.tab.stat_cats.label
 msgid "Stat Cats"
@@ -5676,7 +5676,7 @@ msgstr "Կրեդիտ"
 
 #: staff.patron_display.date_of_birth.label
 msgid "Date of Birth:"
-msgstr ""
+msgstr "Ծննդյան տարեթիվ"
 
 #: staff.patron_display.day_phone.label
 msgid "Day Phone:"
@@ -5801,11 +5801,11 @@ msgstr "Տպել"
 
 #: staff.patron_display.radio.mailing_address.label
 msgid "Mailing"
-msgstr ""
+msgstr "Փոստային"
 
 #: staff.patron_display.radio.physical_address.label
 msgid "Billing"
-msgstr ""
+msgstr "Հաշիվ"
 
 #: staff.patron_display.name.label
 msgctxt "staff.patron_display.name.label"
@@ -6526,12 +6526,12 @@ msgctxt ""
 "staff.serial.manage_items.actions.cmd_edit_items.label "
 "staff.serial.manage_items.actions.cmd_edit_items.accesskey"
 msgid "&Edit Item Attributes"
-msgstr ""
+msgstr "&Խմբագրի նյութի բաղկացուցիչները"
 
 #: staff.serial.manage_items.actions.cmd_delete_items.label
 #: staff.serial.manage_items.actions.cmd_delete_items.accesskey
 msgid "&Delete Items"
-msgstr ""
+msgstr "&Ջնջիր նյութերը"
 
 #: staff.serial.manage_items.actions.cmd_reset_items.label
 msgid "Reset Items to Expected"
@@ -6540,17 +6540,17 @@ msgstr "Վերագրի նյութերը սպասվածներին"
 #: staff.serial.manage_items.actions.cmd_view_sdist_notes.label
 #: staff.serial.manage_items.actions.cmd_view_sdist_notes.accesskey
 msgid "View Dis&t. Notes"
-msgstr ""
+msgstr "Դիտիր տարածմա&ն նշումները"
 
 #: staff.serial.manage_items.actions.cmd_view_sitem_notes.label
 #: staff.serial.manage_items.actions.cmd_view_sitem_notes.accesskey
 msgid "View &Item Notes"
-msgstr ""
+msgstr "Դիտիր &Նյութի նշումները"
 
 #: staff.serial.manage_items.actions.cmd_view_ssub_notes.label
 #: staff.serial.manage_items.actions.cmd_view_ssub_notes.accesskey
 msgid "View &Sub. Notes"
-msgstr ""
+msgstr "Դիտիր &Ենթա. նշումները"
 
 #: staff.serial.manage_items.workarea_showing
 msgid "Showing: "
@@ -6578,7 +6578,7 @@ msgstr "Ստանալ"
 
 #: staff.serial.manage_items.advanced_receive.label
 msgid "Adv. Receive"
-msgstr ""
+msgstr "Adv. ստացվախ է"
 
 #: staff.serial.manage_items.show_all.label
 msgid "Show All"
@@ -6602,7 +6602,7 @@ msgstr "Նոր միավոր"
 
 #: staff.serial.manage_items.no_unit.label
 msgid "No Unit"
-msgstr ""
+msgstr "Չկա միւավոր"
 
 #: staff.serial.manage_items.recent.label
 msgid "Recent"
@@ -6614,7 +6614,7 @@ msgstr "Այլ..."
 
 #: staff.serial.manage_items.context.label
 msgid "Context:"
-msgstr ""
+msgstr "բովանդակություն"
 
 #: staff.serial.batch_receive
 msgid "Batch Receive"
@@ -6943,107 +6943,111 @@ msgstr "Թարմացրու կարգաբերումները"
 
 #: staff.server.admin.org_unit_settings.processing
 msgid "Processing..."
-msgstr ""
+msgstr "Իրականացում..."
 
 #: staff.server.admin.org_unit_settings.filter
 msgid "Filter"
-msgstr ""
+msgstr "Զտիչ"
 
 #: staff.server.admin.org_unit_settings.clear_filter
 msgid "Clear Filter"
-msgstr ""
+msgstr "Մաքրի զտիչը"
 
 #: staff.server.admin.org_unit_settings.no_results
 msgid "There are no results for your filter."
-msgstr ""
+msgstr "Քո զտիչից արդյունքներ չկան"
 
 #: staff.server.admin.org_unit_settings.group
 msgctxt "staff.server.admin.org_unit_settings.group"
 msgid "Group"
-msgstr ""
+msgstr "Խումբ"
 
 #: staff.server.admin.org_unit_settings.setting
 msgid "Setting"
-msgstr ""
+msgstr "Կառգաբերում"
 
 #: staff.server.admin.org_unit_settings.context
 msgid "Context"
-msgstr ""
+msgstr "Կոնտեքստ"
 
 #: staff.server.admin.org_unit_settings.value
 msgctxt "staff.server.admin.org_unit_settings.value"
 msgid "Value"
-msgstr ""
+msgstr "Արժեք"
 
 #: staff.server.admin.org_unit_settings.edit
 msgctxt "staff.server.admin.org_unit_settings.edit"
 msgid "Edit"
-msgstr ""
+msgstr "Խմբագրել"
 
 #: staff.server.admin.org_unit_settings.export
 msgctxt "staff.server.admin.org_unit_settings.export"
 msgid "Export"
-msgstr ""
+msgstr "Արտահանել"
 
 #: staff.server.admin.org_unit_settings.import
 msgctxt "staff.server.admin.org_unit_settings.import"
 msgid "Import"
-msgstr ""
+msgstr "Ներմուծել"
 
 #: staff.server.admin.org_unit_settings.export_copy_label
 msgid ""
 "Copy this to your clipboard and save it to a file to export the settings."
 msgstr ""
+"Պատճենիր սա քո հիշողության մեջ և հիշիր ֆայլում որպեսզի արտահանես "
+"կարգաբերումները։"
 
 #: staff.server.admin.org_unit_settings.import_paste_label
 msgid "Paste in your exported settings."
-msgstr ""
+msgstr "Հետ գրի քո արտահանած կարգաբերումները"
 
 #: staff.server.admin.org_unit_settings.submit
 msgctxt "staff.server.admin.org_unit_settings.submit"
 msgid "Submit"
-msgstr ""
+msgstr "Հաստատել"
 
 #: staff.server.admin.org_unit_settings.copy
 msgctxt "staff.server.admin.org_unit_settings.copy"
 msgid "Copy"
-msgstr ""
+msgstr "Պատճենել"
 
 #: staff.server.admin.org_unit_settings.paste
 msgctxt "staff.server.admin.org_unit_settings.paste"
 msgid "Paste"
-msgstr ""
+msgstr "Տեղադրել"
 
 #: staff.server.admin.org_unit_settings.history
 msgid "History"
-msgstr ""
+msgstr "Պատմություն"
 
 #: staff.server.admin.org_unit_settings.history_unit
 msgctxt "staff.server.admin.org_unit_settings.history_unit"
 msgid "Location"
-msgstr ""
+msgstr "Տեղադրություն"
 
 #: staff.server.admin.org_unit_settings.history_date
 msgid "Date Changed"
-msgstr ""
+msgstr "Ամսաթիվը փոխված է"
 
 #: staff.server.admin.org_unit_settings.history_orig
 msgid "Original Value"
-msgstr ""
+msgstr "Իրական արժեք"
 
 #: staff.server.admin.org_unit_settings.history_new
 msgid "New Value"
-msgstr ""
+msgstr "Նոր արժեք"
 
 #: staff.server.admin.org_unit_settings.history_revert
 msgid "Revert"
-msgstr ""
+msgstr "Ետ բերել"
 
 #: staff.server.admin.org_unit_settings.not_chosen
 msgid ""
 "The setting you edited is not the currently chosen org unit, therefore the "
 "changes you made are not visible."
 msgstr ""
+"Քո կարգաբերած արժեքները այս պահին ընտրված կազմ միավոր չէ, հետևաբար քո արած "
+"փոփոխությունները տեսանելի չեն։"
 
 #: staff.server.admin.offline.xacts.caption
 msgid "Offline Sessions"
@@ -7160,7 +7164,7 @@ msgstr "X-փոքր"
 #: staff.server.admin.font.small
 msgctxt "staff.server.admin.font.small"
 msgid "Small"
-msgstr ""
+msgstr "Փոքր"
 
 #: staff.server.admin.font.medium
 msgid "Medium"
@@ -7169,7 +7173,7 @@ msgstr "Միջին"
 #: staff.server.admin.font.large
 msgctxt "staff.server.admin.font.large"
 msgid "Large"
-msgstr ""
+msgstr "Լայն"
 
 #: staff.server.admin.font.xlarge
 msgid "X-Large"
@@ -7394,7 +7398,7 @@ msgstr "Սկսման ամսաթիվ"
 
 #: staff.server.admin.cash.date.select
 msgid "Date selector"
-msgstr ""
+msgstr "Ամսաթվի ընտրիչ"
 
 #: staff.server.admin.cash.end_date
 msgctxt "staff.server.admin.cash.end_date"
@@ -7647,11 +7651,11 @@ msgstr "Պիտակի վերջածանց"
 
 #: staff.server.admin.copy_locations.editor.prefix.label
 msgid "Label prefix: "
-msgstr ""
+msgstr "Պիտակի նախածանց "
 
 #: staff.server.admin.copy_locations.editor.suffix.label
 msgid "Label suffix: "
-msgstr ""
+msgstr "Պիտակի վերջածանց "
 
 #: staff.server.admin.copy_locations.editor.welcome
 msgid "Welcome"
@@ -7659,11 +7663,11 @@ msgstr "Բարի գալուստ"
 
 #: staff.server.admin.copy_locations.editor.checkin_alert.label
 msgid "Checkin Alert: "
-msgstr ""
+msgstr "Հետ ընդունման ահազանգ "
 
 #: staff.server.admin.copy_locations.editor.checkin_alert
 msgid "Checkin Alert"
-msgstr ""
+msgstr "Հետ ընդունման ահազանգ"
 
 #: staff.server.admin.copy_locations.submit
 msgctxt "staff.server.admin.copy_locations.submit"
@@ -7773,7 +7777,7 @@ msgstr "Էլեկտրոնային պաղար"
 #: staff.server.admin.hold_pull.copy_hold
 msgctxt "staff.server.admin.hold_pull.copy_hold"
 msgid "Copy Hold"
-msgstr ""
+msgstr "Պատճենի պահում"
 
 #: staff.server.admin.hold_pull.volume_hold
 msgid "Volume Hold"
@@ -7838,7 +7842,7 @@ msgstr "Ստեղծել"
 #: staff.server.admin.non_cat_types.name
 msgctxt "staff.server.admin.non_cat_types.name"
 msgid "Name"
-msgstr ""
+msgstr "Անուն"
 
 #: staff.server.admin.non_cat_types.owning_location
 msgid "Owning Location"
@@ -8459,7 +8463,7 @@ msgstr "պահանջված: "
 
 #: staff.server.admin.stat_cat.allow_freetext
 msgid "Allow Free Text: "
-msgstr ""
+msgstr "Թույլատրի ազատ տեքստը "
 
 #: staff.server.admin.stat_cat.usr_summary
 msgid "Show in Summary: "
@@ -8513,6 +8517,8 @@ msgid ""
 "** Some sip fields may only be valid on one stat cat. Entries using them may "
 "not save."
 msgstr ""
+"** Որոշ sip դաշտեր կարող են թույլատրված լինել մեկ վիճակագր. դասի վրա։ Դրանց "
+"օգտագործող մուտքերը կարող են չհիշել։"
 
 #: staff.server.admin.stat_cat.none_defined
 msgid "No statistical categories are defined"
@@ -8538,7 +8544,7 @@ msgstr "Պահանջված"
 
 #: staff.server.admin.stat_cat.allow_freetext.label
 msgid "Allow Free Text"
-msgstr ""
+msgstr "Թույլատրի ազատ տեքստը"
 
 #: staff.server.admin.stat_cat.usr_summary.label
 msgid "Show in Summary"
@@ -8554,7 +8560,7 @@ msgstr "Ավելացրու Մուտքեր"
 
 #: staff.server.admin.stat_cat.set_default_entry
 msgid "Default entry for"
-msgstr ""
+msgstr "Լռակյաց մուտք"
 
 #: staff.server.admin.stat_cat.edit
 msgctxt "staff.server.admin.stat_cat.edit"
@@ -8624,35 +8630,35 @@ msgstr "Թարմացումը հաջողվեց"
 
 #: staff.server.admin.stat_cat.sip_field
 msgid "SIP Field: "
-msgstr ""
+msgstr "SIP դաշտ: "
 
 #: staff.server.admin.stat_cat.sip_field.none
 msgid "No SIP Export"
-msgstr ""
+msgstr "Չկա SIP արտահանում"
 
 #: staff.server.admin.stat_cat.sip_format
 msgid "SIP Format: "
-msgstr ""
+msgstr "SIP ձևաչափ: "
 
 #: staff.server.admin.stat_cat.sip_field.label
 msgid "SIP Field"
-msgstr ""
+msgstr "SIP դաշտ"
 
 #: staff.server.admin.stat_cat.sip_format.label
 msgid "SIP Format"
-msgstr ""
+msgstr "SIP ձևաչափ"
 
 #: staff.server.admin.stat_cat.sip_field.none.label
 msgid "No SIP"
-msgstr ""
+msgstr "SIP չկա"
 
 #: staff.server.admin.stat_cat.checkout_archive
 msgid "Archive with Circs"
-msgstr ""
+msgstr "Հասիր տացքերի միջոցով"
 
 #: staff.server.admin.stat_cat.checkout_archive.label
 msgid "Circ Archive"
-msgstr ""
+msgstr "Տացքի արխիվ"
 
 #: staff.server.admin.upload_xacts.title
 msgid "Upload Offline Transactions"
@@ -8783,7 +8789,7 @@ msgstr "Արտահանել"
 
 #: staff.circ.checkin_overlay.printer_prompt.label
 msgid "Printer Prompt"
-msgstr ""
+msgstr "Տպիչի հուշում"
 
 #: staff.circ.checkin_overlay.trim_list.label
 msgctxt "staff.circ.checkin_overlay.trim_list.label"
@@ -8827,26 +8833,26 @@ msgstr "Հետ ընդունման &Ձևափոխիչներ"
 #: staff.circ.checkin_overlay.checkin_clear_shelf_expired.label
 #: staff.circ.checkin_overlay.checkin_clear_shelf_expired.accesskey
 msgid "&Clear Shelf-Expired Holds"
-msgstr ""
+msgstr "&Մաքրի դարակի վրա ժամկետանց պահումները"
 
 #: staff.circ.checkin_overlay.checkin_auto_retarget.label
 #: staff.circ.checkin_overlay.checkin_auto_retarget.accesskey
 msgid "&Retarget Local Holds"
-msgstr ""
+msgstr "&Վերաթիրախավորի տեղային պահումները"
 
 #: staff.circ.checkin_overlay.checkin_auto_retarget_all.label
 #: staff.circ.checkin_overlay.checkin_auto_retarget_all.accesskey
 msgid "R&etarget All Statuses"
-msgstr ""
+msgstr "Վ&երաթիրախավորի բոլոր վիճակները"
 
 #: staff.circ.checkin_overlay.checkin_auto_retarget_all_ind.label
 msgid "Always Retarget Local Holds"
-msgstr ""
+msgstr "Միշտ Վերաթիրախավորի տեղային պահումները"
 
 #: staff.circ.checkin_overlay.checkin_local_hold_as_transit.label
 #: staff.circ.checkin_overlay.checkin_local_hold_as_transit.accesskey
 msgid "Capture &Local Holds as Transits"
-msgstr ""
+msgstr "Որսա &տեղային պահումները որպես տրանզիտ"
 
 #: staff.circ.renew_overlay.background_text
 msgid "Renew Item"
@@ -9172,7 +9178,7 @@ msgctxt ""
 "staff.circ.copy_status_overlay.cmd_request_items.label "
 "staff.circ.copy_status_overlay.cmd_request_items.accesskey"
 msgid "&Request Item"
-msgstr ""
+msgstr "&Պահանջիր նյութ"
 
 #: staff.circ.copy_status_overlay.cmd_create_brt.label
 #: staff.circ.copy_status_overlay.cmd_create_brt.accesskey
@@ -9198,7 +9204,7 @@ msgstr "&Խմբագրիր նյութի հատկանիշները"
 #: staff.circ.copy_status_overlay.sel_vol_copy_edit.label
 #: staff.circ.copy_status_overlay.sel_vol_copy_edit.accesskey
 msgid "Edit Items/&Volumes Per Bib"
-msgstr ""
+msgstr "Խմբագրի նյութերը/&հատորները ըստ գրադարանի"
 
 #: staff.circ.copy_status_overlay.sel_mark_items_damaged.label
 #: staff.circ.copy_status_overlay.sel_mark_items_damaged.accesskey
@@ -9542,7 +9548,7 @@ msgstr "Տեսակ"
 
 #: staff.circ.print_list.top_ui.context.label
 msgid "Force Printer Context"
-msgstr ""
+msgstr "Ուժեղացրու տպելու բովանդակությունը"
 
 #: staff.circ.print_list.top_ui.actions.label
 msgid "Actions"
@@ -9673,7 +9679,7 @@ msgstr "TCN:"
 
 #: staff.cat.bib_brief.biblio_record_entry_id.label
 msgid "Database ID:"
-msgstr ""
+msgstr "Շտեմարանի ID:"
 
 #: staff.cat.bib_brief.biblio_record_entry_owner.label
 msgid "Record Owner:"
@@ -9750,7 +9756,7 @@ msgstr "L"
 
 #: staff.circ.holds.edit_phone_notification
 msgid "Edit Phone Number"
-msgstr ""
+msgstr "Խմբագրի հեռախոսի համարը"
 
 #: staff.circ.holds.edit_phone_notification.accesskey
 msgctxt "staff.circ.holds.edit_phone_notification.accesskey"
@@ -9759,21 +9765,21 @@ msgstr "P"
 
 #: staff.circ.holds.edit_sms_notification
 msgid "Edit Mobile/Text Number"
-msgstr ""
+msgstr "Խմբագրի բջջայինի/տեքստի համարը"
 
 #: staff.circ.holds.edit_sms_notification.accesskey
 msgctxt "staff.circ.holds.edit_sms_notification.accesskey"
 msgid "T"
-msgstr ""
+msgstr "T"
 
 #: staff.circ.holds.edit_sms_carrier_notification
 msgid "Edit Mobile/Text Carrier"
-msgstr ""
+msgstr "Խմբագրի բջջայինի/տեքստի կրիչին"
 
 #: staff.circ.holds.edit_sms_carrier_notification.accesskey
 msgctxt "staff.circ.holds.edit_sms_carrier_notification.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.circ.holds.set_email_notification
 msgid "Set Email Notification"
@@ -9969,7 +9975,7 @@ msgstr "&Կիրառել"
 
 #: staff.cat.manage_multi_bib_items.caption
 msgid "Manage Conjoined Items"
-msgstr ""
+msgstr "Կառավարի համատեղ նյութերը"
 
 #: staff.cat.manage_multi_bib_items.actions.menu.label
 #: staff.cat.manage_multi_bib_items.actions.menu.accesskey
@@ -10066,7 +10072,7 @@ msgctxt ""
 "staff.cat.copy_browser.actions.cmd_edit_items.label "
 "staff.cat.copy_browser.actions.cmd_edit_items.accesskey"
 msgid "&Edit Items"
-msgstr ""
+msgstr "&Խմբագրի նյութերը"
 
 #: staff.cat.copy_browser.actions.cmd_transfer_items.label
 #: staff.cat.copy_browser.actions.cmd_transfer_items.accesskey
@@ -10079,7 +10085,7 @@ msgstr "&Տեղափոխիր նյութերը Նախապես նշված հատո�
 #: staff.cat.copy_browser.actions.cmd_link_as_multi_bib.label
 #: staff.cat.copy_browser.actions.cmd_link_as_multi_bib.accesskey
 msgid "Link as &Conjoined Items to Previously Marked Bib Record"
-msgstr ""
+msgstr "Կապիր որպես &համատեղ նյութեր նախապես նշված մատեն. գրառմանը"
 
 #: staff.cat.copy_browser.actions.cmd_add_volumes.label
 #: staff.cat.copy_browser.actions.cmd_add_volumes.accesskey
@@ -10145,7 +10151,7 @@ msgctxt ""
 "staff.cat.copy_browser.actions.cmd_request_items.label "
 "staff.cat.copy_browser.actions.cmd_request_items.accesskey"
 msgid "&Request Item"
-msgstr ""
+msgstr "&Պահանջիր նյութ"
 
 #: staff.cat.copy_browser.actions.sel_mark_items_damaged.label
 #: staff.cat.copy_browser.actions.sel_mark_items_damaged.accesskey
@@ -10217,7 +10223,7 @@ msgstr "Ցույց տուր նյութերը"
 
 #: staff.cat.copy_browser.holdings_maintenance.hide_aous
 msgid "Hide Empty Libs"
-msgstr ""
+msgstr "Թաքցրու դատարկ գրադարանները"
 
 #: staff.cat.copy_browser.holdings_maintenance.refresh_button.label
 msgctxt "staff.cat.copy_browser.holdings_maintenance.refresh_button.label"
@@ -10275,7 +10281,7 @@ msgctxt ""
 "staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.label "
 "staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.accesskey"
 msgid "&Edit Items"
-msgstr ""
+msgstr "&Խմբագրի նյութերը"
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.label
 #: staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.accesskey
@@ -10371,7 +10377,7 @@ msgstr "&Տպիր նյութի կողային պիտակները"
 #: staff.cat.copy_browser.holdings_maintenance.cmd_replace_barcode.label
 #: staff.cat.copy_browser.holdings_maintenance.cmd_replace_barcode.accesskey
 msgid "&Replace Barcode"
-msgstr ""
+msgstr "&Փոխարինի շտրիխ կոդը"
 
 #: staff.cat.copy_browser.holdings_maintenance.save_columns.label
 msgctxt "staff.cat.copy_browser.holdings_maintenance.save_columns.label"
@@ -10392,7 +10398,7 @@ msgctxt ""
 "staff.cat.copy_browser.holdings_maintenance.print.label "
 "staff.cat.copy_browser.holdings_maintenance.print.accesskey"
 msgid "&Print"
-msgstr ""
+msgstr "&Տպել"
 
 #: staff.cat.copy_buckets.window_title
 msgctxt "staff.cat.copy_buckets.window_title"
@@ -10515,7 +10521,7 @@ msgstr "Ցույց տուր վիճակը"
 #: staff.cat.copy_buckets_overlay.copy_buckets.cmd_request_items.label
 #: staff.cat.copy_buckets_overlay.copy_buckets.cmd_request_items.accesskey
 msgid "&Request Items"
-msgstr ""
+msgstr "&Պահանջիր նյութեր"
 
 #: staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_transfer_to_volume.label
 msgid "Transfer to Specific Volume"
@@ -10588,7 +10594,7 @@ msgstr "Ջնջիր"
 #: staff.cat.copy_editor.templates.import_template.label
 msgctxt "staff.cat.copy_editor.templates.import_template.label"
 msgid "Import"
-msgstr ""
+msgstr "Ներմուծում"
 
 #: staff.cat.copy_editor.templates.export_template.label
 msgctxt "staff.cat.copy_editor.templates.export_template.label"
@@ -10664,7 +10670,7 @@ msgstr "&Փակիր"
 
 #: staff.cat.copy_editor.hide_fields.label
 msgid "Hide Fields"
-msgstr ""
+msgstr "Թաքցրու դաշտերը"
 
 #: staff.cat.copy_summary.label
 msgid "Item Summary"
@@ -10718,7 +10724,7 @@ msgstr "Տարիքով պաշտպանված"
 
 #: staff.cat.copy_summary.active_date.label
 msgid "Active Date:"
-msgstr ""
+msgstr "Ակտիվ ամսաթիվ"
 
 #: staff.cat.copy_summary.total_circs.label
 msgid "Total Circulations:"
@@ -10804,7 +10810,7 @@ msgstr "&Բեռնավորել"
 #: staff.cat.marc_new.set_default.label
 #: staff.cat.marc_new.set_default.accesskey
 msgid "&Set Workstation Default"
-msgstr ""
+msgstr "&Կարգաբերի աշխատանքային կայանի լռակյացը"
 
 #: staff.cat.marc_view.title
 msgid "MARC View"
@@ -11321,7 +11327,7 @@ msgstr "Նախածանց"
 #: staff.cat.volume_copy_creator.batch_bar.call_number.label.label
 #: staff.cat.volume_copy_creator.batch_bar.call_number.label.accesskey
 msgid "Ca&ll Number:"
-msgstr ""
+msgstr "Դա&սիչ"
 
 #: staff.cat.volume_copy_creator.batch_bar.call_number.suffix
 msgid "Suffix:"
@@ -11361,6 +11367,10 @@ msgid ""
 "same call number label (and prefix/suffix), then merge them (including items "
 "they contain) into a single volume if checked.  Otherwise, report an error."
 msgstr ""
+"Եթե նույն մատեն գրառման համար երկու կամ ավել հատորների տրված է նունը դասիչը "
+"(և նախածանց/վերջածանց), ապա ձուլիր դրանք (ներառելով դրանց պարունակած "
+"նյութերը) մեկ հատորում եթե ընտրված է։ Հակառակ պարագայում զեկուցիր սխալի "
+"մասին։"
 
 #: staff.cat.volume_editor.owning_lib
 msgid "Owning lib"
@@ -11480,7 +11490,7 @@ msgstr "&Գործողությունների ցուցակ"
 
 #: staff.cat.z3950.mark_overlay.label
 msgid "Mark Local Result as Overlay Target"
-msgstr ""
+msgstr "Նշիր տեղային արդյունքը որպես վերադրվող թիրախ"
 
 #: staff.cat.z3950.menuitem.csv_to_clipboard.label
 msgctxt "staff.cat.z3950.menuitem.csv_to_clipboard.label"
@@ -11812,7 +11822,7 @@ msgstr "&Բեր տրանզակցիաները"
 
 #: staff.patron.bill_interface.caption.label
 msgid "Current Bills"
-msgstr ""
+msgstr "Ընթացիկ հաշիվներ"
 
 #: staff.patron.bill_interface.total_owed
 msgid "Total Owed:"
@@ -12242,11 +12252,11 @@ msgstr "(Սխալ հասցե)"
 
 #: staff.patron.display_overlay.invalid_email.value
 msgid "(Invalid Email - See Messages)"
-msgstr ""
+msgstr "(Ոչ իրական էլ. փոստ - տես հաղորդագրությունները)"
 
 #: staff.patron.display_overlay.invalid_phone.value
 msgid "(Invalid Phone - See Messages)"
-msgstr ""
+msgstr "(Ոչ իրական հեռախոս - տես հաղորդագրությունները)"
 
 #: staff.patron.display_overlay.exit.label
 #: staff.patron.display_overlay.exit.accesskey
@@ -12384,7 +12394,7 @@ msgstr "Տպիր Լրիվ բացվող ցուցակը (այլընտրանքայ�
 #: staff.patron.holds_overlay.simplified_pull_list.label
 #: staff.patron.holds_overlay.simplified_pull_list.accesskey
 msgid "Simplified Pull List &Interface"
-msgstr ""
+msgstr "Պարզեցված բացվող ցուցակի &միջերես"
 
 #: staff.patron.holds_overlay.place_hold.label
 #: staff.patron.holds_overlay.place_hold.accesskey
@@ -12475,7 +12485,7 @@ msgstr "Հարցախույզ&ներ"
 #: staff.patron.info.acq_requests.label
 #: staff.patron.info.acq_requests.accesskey
 msgid "Ac&quisition Requests"
-msgstr ""
+msgstr "Հա&մալրման հարցումներ"
 
 #: staff.patron.info.group.label
 #: staff.patron.info.group.accesskey
@@ -12560,7 +12570,7 @@ msgstr "Evergreen օգտվողի խմբագրիչ"
 
 #: staff.patron.user_edit.user_info.label
 msgid "User Information"
-msgstr ""
+msgstr "Օգտվողի տեղեկատվություն"
 
 #: staff.patron.user_edit.user_name.label
 msgid "User Name:"
@@ -12592,21 +12602,21 @@ msgstr "Աշխատանքային տեղաբաշխում"
 
 #: staff.patron.user_edit.working_shortname.label
 msgid "Shortname"
-msgstr ""
+msgstr "Կրճատ անուն"
 
 #: staff.patron.user_edit.working_name.label
 msgctxt "staff.patron.user_edit.working_name.label"
 msgid "Name"
-msgstr ""
+msgstr "Անուն"
 
 #: staff.patron.user_edit.working_ou.label
 msgid "Work OU?"
-msgstr ""
+msgstr "Աշխատեցնե՞լ OU"
 
 #: staff.patron.user_edit.permission_list.label
 msgctxt "staff.patron.user_edit.permission_list.label"
 msgid "Permissions"
-msgstr ""
+msgstr "Թույլտվություններ"
 
 #: staff.patron.user_edit.permission.label
 msgid "Permission"
@@ -12649,35 +12659,35 @@ msgstr ""
 
 #: staff.patron.ue.view_errors.label
 msgid "View Errors"
-msgstr ""
+msgstr "Դիտիր սխալները"
 
 #: staff.patron.ue.nav.user_id.label
 msgid "1. User Identification"
-msgstr ""
+msgstr "1. Օգտվողի ճանաչում"
 
 #: staff.patron.ue.nav.contact_info.label
 msgid "2. Contact Info"
-msgstr ""
+msgstr "2. Կոնտակտ ինֆո"
 
 #: staff.patron.ue.nav.addresses.label
 msgid "3. Addresses"
-msgstr ""
+msgstr "3. Հասցեներ"
 
 #: staff.patron.ue.nav.groups_permissions.label
 msgid "4. Groups and Permissions"
-msgstr ""
+msgstr "4. Խմբեր և իրավասություններ"
 
 #: staff.patron.ue.nav.stat_categories.label
 msgid "5. Statistical Categories"
-msgstr ""
+msgstr "5. Վիճակագրական դասեր"
 
 #: staff.patron.ue.nav.surveys.label
 msgid "6. Surveys"
-msgstr ""
+msgstr "6. Հարցախույզներ"
 
 #: staff.patron.ue.nav.finish.label
 msgid "7. Finish"
-msgstr ""
+msgstr "7. Ավարտ"
 
 #: staff.patron.ue.loading_data.label
 msgctxt "staff.patron.ue.loading_data.label"
@@ -12686,7 +12696,7 @@ msgstr "Տվյալների բեռնավորում"
 
 #: staff.patron.ue.found_duplicate_patron.label
 msgid "Number of possible duplicate patron(s):"
-msgstr ""
+msgstr "Հնարավոր կրկնվող օգտվողների քանակ"
 
 #: staff.patron.ue.mark_lost.label
 msgctxt "staff.patron.ue.mark_lost.label"
@@ -12705,15 +12715,15 @@ msgstr "Գաղտնաբառ"
 
 #: staff.patron.ue.reset.label
 msgid "Reset"
-msgstr ""
+msgstr "Ետ բերել"
 
 #: staff.patron.ue.re_password.label
 msgid "Password: "
-msgstr ""
+msgstr "Գաղտնաբառ: "
 
 #: staff.patron.ue.verify_password.label
 msgid "Verify Password"
-msgstr ""
+msgstr "Համադրի Գաղտնաբառը"
 
 #: staff.patron.ue.first_name.label
 msgctxt "staff.patron.ue.first_name.label"
@@ -12727,7 +12737,7 @@ msgstr "Միջին Անուն"
 
 #: staff.patron.ue.last_name.label
 msgid "Last Name"
-msgstr ""
+msgstr "Ազգանուն"
 
 #: staff.patron.ue.suffix.label
 msgctxt "staff.patron.ue.suffix.label"
@@ -12737,7 +12747,7 @@ msgstr "Վերջածանց"
 #. Used in a selection list, the '-' at the start and end draws attention to the entry
 #: staff.patron.ue.choose.label
 msgid "- Pick -"
-msgstr ""
+msgstr "- Վերցրու -"
 
 #: staff.patron.ue.dob.label
 msgctxt "staff.patron.ue.dob.label"
@@ -12746,41 +12756,41 @@ msgstr "Ծննդյան ամսաթիվ"
 
 #: staff.patron.ue.primary_id_type.label
 msgid "Primary Identification Type"
-msgstr ""
+msgstr "Նախնական ճանաչման տեսակ"
 
 #. Used in a selection list, the '-' at the start and end draws attention to the entry
 #: staff.patron.ue.required.label
 msgid " -- Required -- "
-msgstr ""
+msgstr " -- Պահանջվող -- "
 
 #: staff.patron.ue.primary_id.label
 msgid "Primary Identification"
-msgstr ""
+msgstr "Նախնական ճանաչում"
 
 #: staff.patron.ue.secondary_id_type.label
 msgid "Secondary Identification Type"
-msgstr ""
+msgstr "Երկրորդային ճանաչման տեսակ"
 
 #. Used in a selection list, the '-' at the start and end draws attention to the entry
 #: staff.patron.ue.none_selected.label
 msgid " -- None Selected -- "
-msgstr ""
+msgstr " -- Ոչ մեկը չի ընտրված -- "
 
 #: staff.patron.ue.secondary_id.label
 msgid "Secondary Identification"
-msgstr ""
+msgstr "Երկրորդային ճանաչում"
 
 #: staff.patron.ue.parent_guardian.label
 msgid "Parent or Guardian"
-msgstr ""
+msgstr "Ծնող կամ երաշխավոր"
 
 #: staff.patron.ue.email_address.label
 msgid "Email Address"
-msgstr ""
+msgstr "էլ փոստի հասցե"
 
 #: staff.patron.ue.day_phone.label
 msgid "Daytime Phone"
-msgstr ""
+msgstr "Ցերեկային հեռախոս"
 
 #: staff.patron.ue.evening_phone.label
 msgctxt "staff.patron.ue.evening_phone.label"
@@ -12804,11 +12814,11 @@ msgstr "Հասցե"
 
 #: staff.patron.ue.in_city_limits.label
 msgid "Within City Limits"
-msgstr ""
+msgstr "Քաղաքի սահմաններում"
 
 #: staff.patron.ue.valid.label
 msgid "Valid"
-msgstr ""
+msgstr "Հավաստի"
 
 #: staff.patron.ue.mailing_address.label
 msgctxt "staff.patron.ue.mailing_address.label"
@@ -12822,7 +12832,7 @@ msgstr "Ֆիզիկական հասցե"
 
 #: staff.patron.ue.owned_address.label
 msgid "Address is owned by"
-msgstr ""
+msgstr "Հասցեն տնօրինվում է"
 
 #: staff.patron.ue.edit.label
 msgctxt "staff.patron.ue.edit.label"
@@ -12840,11 +12850,11 @@ msgstr "Zip Code"
 
 #: staff.patron.ue.street_1.label
 msgid "Street 1"
-msgstr ""
+msgstr "Փողոց 1"
 
 #: staff.patron.ue.street_2.label
 msgid "Street 2"
-msgstr ""
+msgstr "Փողոց 2"
 
 #: staff.patron.ue.city.label
 msgctxt "staff.patron.ue.city.label"
@@ -12853,7 +12863,7 @@ msgstr "Քաղաք"
 
 #: staff.patron.ue.county.label
 msgid "County"
-msgstr ""
+msgstr "Համայնք"
 
 #: staff.patron.ue.state.label
 msgctxt "staff.patron.ue.state.label"
@@ -12867,11 +12877,11 @@ msgstr "Երկիր"
 
 #: staff.patron.ue.delete_this_address.label
 msgid "Delete this Address"
-msgstr ""
+msgstr "Ջնջիր այս հասցեն"
 
 #: staff.patron.ue.detach_this_address.label
 msgid "Detach this Address"
-msgstr ""
+msgstr "Անջատիր այս հասցեն"
 
 #: staff.patron.ue.create_address.label
 msgid "Create a New Address"
@@ -12879,15 +12889,15 @@ msgstr "Ստեղծիր նոր հասցե"
 
 #: staff.patron.ue.profile_group.label
 msgid "Profile Group"
-msgstr ""
+msgstr "Պրոֆայլ խումբ"
 
 #: staff.patron.ue.accoutn_expire_date.label
 msgid "Account Expiration Date"
-msgstr ""
+msgstr "Հաշվի ժամկետի լրանալու ամսաթիվ"
 
 #: staff.patron.ue.internet_access_level.label
 msgid "Internet Access Level"
-msgstr ""
+msgstr "Ինտերնետ հասանելիության մակարդակ"
 
 #: staff.patron.ue.active.label
 msgctxt "staff.patron.ue.active.label"
@@ -12896,11 +12906,11 @@ msgstr "Ակտիվ"
 
 #: staff.patron.ue.barred.label
 msgid "Barred"
-msgstr ""
+msgstr "Կասեցված"
 
 #: staff.patron.ue.set_lead_account.label
 msgid "Set as Family or Group Lead Account"
-msgstr ""
+msgstr "Դիր որպես Ընտանիքի կամ խմբի հաշիվ"
 
 #: staff.patron.ue.claims_returned_count.label
 msgctxt "staff.patron.ue.claims_returned_count.label"
@@ -12919,7 +12929,7 @@ msgstr "Վիճակագրական դասի անուն"
 
 #: staff.patron.ue.owner.label
 msgid "Owner"
-msgstr ""
+msgstr "Տնօրինող"
 
 #: staff.patron.ue.value.label
 msgctxt "staff.patron.ue.value.label"
@@ -12928,7 +12938,7 @@ msgstr "Արժեք"
 
 #: staff.patron.ue.no_surveys_for_location.label
 msgid "No surveys have been created for this location."
-msgstr ""
+msgstr "Այս տեղաբաշխման համար հարցախույզներ չեն ստեղծվել"
 
 #: staff.patron.ue.message1.label
 msgid "You are now ready to save the user to the database."
@@ -12951,11 +12961,11 @@ msgstr "Դիտիր ամփոփումը"
 
 #: staff.patron.ue.back.label
 msgid "Back"
-msgstr ""
+msgstr "Հետ"
 
 #: staff.patron.ue.forward.label
 msgid "Forward"
-msgstr ""
+msgstr "Առաջ"
 
 #: staff.patron.ue.user_summary.label
 msgid ""
@@ -12977,7 +12987,7 @@ msgstr "Հասցեներ"
 
 #: staff.patron.ue.address_label.label
 msgid "Address Label"
-msgstr ""
+msgstr "Հասցեի պիտակ"
 
 #: staff.patron.ue.billing_address.label
 msgctxt "staff.patron.ue.billing_address.label"
@@ -12996,23 +13006,23 @@ msgstr "Ժամկետը լրանալու ամսաթիվ"
 
 #: staff.patron.ue.family_lead_account.label
 msgid "Family Lead Account"
-msgstr ""
+msgstr "Ընտանիքի հաշվի գրանցիչ"
 
 #: staff.patron.ue.stat_categories.label
 msgid "Statistical Categories"
-msgstr ""
+msgstr "Վիճակագրական դասեր"
 
 #: staff.patron.ue.survey.label
 msgid "Survey"
-msgstr ""
+msgstr "Հարցախույզ"
 
 #: staff.patron.ue.question.label
 msgid "Question"
-msgstr ""
+msgstr "Հարց"
 
 #: staff.patron.ue.answer.label
 msgid "Answer"
-msgstr ""
+msgstr "Պատասխան"
 
 #: staff.patron.ue.bad_dob.label
 msgid ""
@@ -13079,7 +13089,7 @@ msgstr "Մուտք է արված սխալ հեռախոսահամար"
 
 #: staff.patron.ue.no_profile.label
 msgid "A profile group must be selected"
-msgstr ""
+msgstr "Պրոֆայլ խումբը պետք է ընտրված լինի"
 
 #: staff.patron.ue.bad_expire.label
 msgid "The user expiration date is invalid.  We are expecting YYYY-MM-DD"
@@ -13261,7 +13271,7 @@ msgstr "Նշիր խարանված վերադարձները"
 
 #: staff.patron.items_overlay.items_claimed_never_checked_out.label
 msgid "Mark Claimed Never Checked Out"
-msgstr ""
+msgstr "Նշիր պիտակավորվածները որպես երբեք դուրս չտըրված"
 
 #: staff.patron.items_overlay.items_renew.label
 msgctxt "staff.patron.items_overlay.items_renew.label"
@@ -13453,7 +13463,7 @@ msgstr "Ստեղծման ամսաթիվ"
 
 #: staff.circ.alternate_copy_summary.Date_Active.label
 msgid "Date Active"
-msgstr ""
+msgstr "Ակտիվ ամսաթիվ"
 
 #: staff.circ.alternate_copy_summary.Status_Changed_Time.label
 msgid "Status Changed"
@@ -13775,6 +13785,18 @@ msgid ""
 "hex=&quot;0C&quot;&gt; will translate to Hello World + form feed control "
 "character."
 msgstr ""
+"Երբ օգտագործվում է ստացման ձևանմուշները կամ DOS LPT1 տպելու ստրատեգիայով կամ "
+"Հաճախորդ/Արտաքին տպում ստրատեգիայով (ըստ &quot;receipt.txt&quot;), հաճախորդը "
+"կփորձի թարգամանել որևէ HTML նշագրում տեքստի, բայց այս գործողությունը կարող է "
+"լինել ոչ կատարյալ, և լավագույն ճշգրտության համար դու պետք է վերանայես քո "
+"ձևանմուշները որ լինեն ազատ տեքստ եթե օգտագործում ես ազատ տեքստային "
+"ստարտեգիան։ Ինչևէ, եթե օգտագործում ես ազատ տեքստային ստարատեգիան HTML "
+"նշագրման հետ միասին, դու կարող ես ներառել հատուկ 2-նիշանի տասնվեցական կոդեր "
+"&quot;hex&quot; որպես բաղադրիչ ցանկացած տարրի համար։ Նման կոդերը կձևափոխվեն "
+"իրական նիշերի և կներդրվեն ցուցիչի տեղում։ Օրինակ՝ &lt;p "
+"hex=&quot;0C&quot;&gt;Hello World&lt;/p&gt; կթարգմանվի ձևի վերահսկման կոդի + "
+"Hello World. &lt;p&gt;Hello World&lt;/p hex=&quot;0C&quot;&gt; կթարգմանվի "
+"Hello World + ձևի վերահսկման կոդի։"
 
 #: staff.client.portal.title
 msgid "Evergreen Staff Client Portal"
@@ -13863,6 +13885,8 @@ msgstr "Խմբագրի ստացման ձևանմուշները"
 #: staff.client.portal.copyright
 msgid "Copyright &copy; 2006-2012 Georgia Public Library Service, and others"
 msgstr ""
+"Հեղինակային իրավունքt &copy; 2006-2012 Գեորգիայի հանրային գրադարանի "
+"ծառայություն, և այլոք"
 
 #: staff.client.portal.poweredby
 msgid "Powered by"
@@ -13870,56 +13894,60 @@ msgstr "Ուժեղացված"
 
 #: staff.client.portal.toggle_tpac
 msgid "Toggle Template Toolkit OPAC Use"
-msgstr ""
+msgstr "Անցում կատարի ձևանմուշի գործիքաշարի ՀՕԱՔ օգտագործումը"
 
 #: staff.client.portal.toggle_tpac.message_on
 msgid ""
 "The use of the Template Toolkit OPAC has been enabled. You may need to "
 "restart the staff client for this to take effect."
 msgstr ""
+"Ձևանմուշի գործիքաշարի ՀՕԱՔ օգտագործումը թույլատրվախ է։ Քեզ հարկ է "
+"վերագործարկել աշխատակազմի հաճախորդին արդյունքները տեսնելու համար։"
 
 #: staff.client.portal.toggle_tpac.message_off
 msgid ""
 "The use of the Template Toolkit OPAC has been disabled. You may need to "
 "restart the staff client for this to take effect."
 msgstr ""
+"ևանմուշի գործիքաշարի ՀՕԱՔ օգտագործումը կասեցվել է։ Քեզ հարկ է վերագործարկել "
+"աշխատակազմի հաճախորդին արդյունքները տեսնելու համար։"
 
 #: staff.item.batch.hold.groupbox_caption
 msgid "Request Details"
-msgstr ""
+msgstr "Պահանջիր մանրամասներ"
 
 #: staff.item.batch.hold.hold_type_menu.label
 #: staff.item.batch.hold.hold_type_menu.accesskey
 msgid "Hold &Type"
-msgstr ""
+msgstr "Պահման &տեսակ"
 
 #: staff.item.batch.hold.hold_type_menuentry.copy_hold
 msgctxt "staff.item.batch.hold.hold_type_menuentry.copy_hold"
 msgid "Copy Hold"
-msgstr ""
+msgstr "Պատճենի պահում"
 
 #: staff.item.batch.hold.hold_type_menuentry.recall_hold
 msgid "Recall Hold"
-msgstr ""
+msgstr "Պահման հետ կանչում"
 
 #: staff.item.batch.hold.hold_type_menuentry.force_hold
 msgid "Force Hold"
-msgstr ""
+msgstr "Աջակցիր պահմանը"
 
 #: staff.item.batch.hold.pick_up_lib_menu.label
 #: staff.item.batch.hold.pick_up_lib_menu.accesskey
 msgid "&Pickup Library"
-msgstr ""
+msgstr "&Վերցնելու գրադարան"
 
 #: staff.item.batch.hold.hold_usr.label
 #: staff.item.batch.hold.hold_usr.accesskey
 msgid "Hold &User Barcode"
-msgstr ""
+msgstr "Պահիր &Օգտվողի շտրիխ կոդըUser Barcode"
 
 #: staff.item.batch.hold.request_btn.label
 #: staff.item.batch.hold.request_btn.accesskey
 msgid "&Make Request"
-msgstr ""
+msgstr "&Կատարի հարցում"
 
 #: staff.item.batch.hold.cancel_btn.label
 #: staff.item.batch.hold.cancel_btn.accesskey
@@ -13927,11 +13955,11 @@ msgctxt ""
 "staff.item.batch.hold.cancel_btn.label "
 "staff.item.batch.hold.cancel_btn.accesskey"
 msgid "&Cancel"
-msgstr ""
+msgstr "&Չեղյալ անել"
 
 #: staff.item.batch.hold.failures_and_settings
 msgid "The settings above may be changed for retries and overrides."
-msgstr ""
+msgstr "Վերևի կարգաբերումները կարելի է փոխել վերադրւմների համար։"
 
 #~ msgid "Record ID"
 #~ msgstr "Գրառման ID"
