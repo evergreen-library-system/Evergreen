@@ -2,23 +2,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2012-08-03 10:01-0400\n"
+"POT-Creation-Date: 2012-08-22 08:46-0400\n"
 "PO-Revision-Date: 2010-05-22 10:11+0000\n"
 "Last-Translator: Sergey Basalaev <SBasalaev@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-08-04 05:10+0000\n"
-"X-Generator: Launchpad (build 15742)\n"
+"X-Launchpad-Export-Date: 2012-08-28 06:47+0000\n"
+"X-Generator: Launchpad (build 15864)\n"
 
 # id::vqbrad.description__11
-#: 950.data.seed-values.sql:170 950.data.seed-values.sql:4792
+#: 950.data.seed-values.sql:170 950.data.seed-values.sql:4794
 msgid "Internal ID"
 msgstr "Внутренний ID"
 
 # id::clm.value__vai
-#: 950.data.seed-values.sql:6273
+#: 950.data.seed-values.sql:6275
 msgid "Vai"
 msgstr "Vai"
 
@@ -33,7 +33,7 @@ msgid "Series Title"
 msgstr ""
 
 # id::clfm.value__p
-#: 950.data.seed-values.sql:6338
+#: 950.data.seed-values.sql:6340
 msgid "Poetry"
 msgstr "Поэзия"
 
@@ -43,7 +43,7 @@ msgid "In transit"
 msgstr "В транзите"
 
 # id::clm.value__pau
-#: 950.data.seed-values.sql:6151
+#: 950.data.seed-values.sql:6153
 msgid "Palauan"
 msgstr "Палауанский"
 
@@ -52,29 +52,29 @@ msgid "On reservation shelf"
 msgstr ""
 
 # id::clm.value__kir
-#: 950.data.seed-values.sql:6038
+#: 950.data.seed-values.sql:6040
 msgid "Kyrgyz"
 msgstr "Киргизский"
 
-#: 950.data.seed-values.sql:6377
+#: 950.data.seed-values.sql:6379
 msgid "Blu-ray disc"
 msgstr ""
 
-#: 950.data.seed-values.sql:6354
+#: 950.data.seed-values.sql:6356
 msgid "Serial component part"
 msgstr "Составная часть сериала"
 
 # id::clm.value__niu
-#: 950.data.seed-values.sql:6124
+#: 950.data.seed-values.sql:6126
 msgid "Niuean"
 msgstr "Нуеанский"
 
 # id::clm.value__fat
-#: 950.data.seed-values.sql:5943
+#: 950.data.seed-values.sql:5945
 msgid "Fanti"
 msgstr "Фантийский"
 
-#: 950.data.seed-values.sql:2486
+#: 950.data.seed-values.sql:2488
 msgid "OPAC"
 msgstr ""
 
@@ -90,22 +90,22 @@ msgid "LCCN"
 msgstr "LCCN"
 
 # id::clm.value__mas
-#: 950.data.seed-values.sql:6086
+#: 950.data.seed-values.sql:6088
 msgid "Masai"
 msgstr "Массайский"
 
 # id::clm.value__bam
-#: 950.data.seed-values.sql:5852
+#: 950.data.seed-values.sql:5854
 msgid "Bambara"
 msgstr "Бамбарский"
 
 # id::clm.value__snd
-#: 950.data.seed-values.sql:6207
+#: 950.data.seed-values.sql:6209
 msgid "Sindhi"
 msgstr "Синдхи"
 
 # id::clm.value__lug
-#: 950.data.seed-values.sql:6070
+#: 950.data.seed-values.sql:6072
 msgid "Ganda"
 msgstr "Ганда"
 
@@ -114,12 +114,12 @@ msgid "Alerting block on Circ"
 msgstr ""
 
 # id::clm.value__sat
-#: 950.data.seed-values.sql:6182
+#: 950.data.seed-values.sql:6184
 msgid "Santali"
 msgstr "Сантали"
 
 # id::clm.value__dua
-#: 950.data.seed-values.sql:5922
+#: 950.data.seed-values.sql:5924
 msgid "Duala"
 msgstr "Дуала"
 
@@ -128,16 +128,16 @@ msgid "ISMN"
 msgstr ""
 
 # id::clm.value__vot
-#: 950.data.seed-values.sql:6277
+#: 950.data.seed-values.sql:6279
 msgid "Votic"
 msgstr "Votic"
 
 # id::clfm.value__u
-#: 950.data.seed-values.sql:6340 950.data.seed-values.sql:6378
+#: 950.data.seed-values.sql:6342 950.data.seed-values.sql:6380
 msgid "Unknown"
 msgstr "Неизвестный"
 
-#: 950.data.seed-values.sql:4864
+#: 950.data.seed-values.sql:4866
 msgid "View Circulations"
 msgstr "Просмотр циркуляций"
 
@@ -147,21 +147,21 @@ msgid "Example Branch 2"
 msgstr "Модель подразделение 2"
 
 # id::clm.value__tso
-#: 950.data.seed-values.sql:6255
+#: 950.data.seed-values.sql:6257
 msgid "Tsonga"
 msgstr "Тсонга"
 
-#: 950.data.seed-values.sql:1585 950.data.seed-values.sql:2477
+#: 950.data.seed-values.sql:1587 950.data.seed-values.sql:2479
 msgid "Acquisitions"
 msgstr "Приобретения"
 
 # id::clm.value__kau
-#: 950.data.seed-values.sql:6028
+#: 950.data.seed-values.sql:6030
 msgid "Kanuri"
 msgstr "Канури"
 
 # id::clm.value__umb
-#: 950.data.seed-values.sql:6269
+#: 950.data.seed-values.sql:6271
 msgid "Umbundu"
 msgstr "Умбунду"
 
@@ -174,20 +174,20 @@ msgstr "10_cent_per_day"
 msgid "Keyword"
 msgstr ""
 
-#: 950.data.seed-values.sql:4865
+#: 950.data.seed-values.sql:4867
 msgid "Renew Circulations"
 msgstr "Обновить  циркуляцию"
 
-#: 950.data.seed-values.sql:10063
+#: 950.data.seed-values.sql:10065
 msgid "See Also Tracing -- Chronological Subdivision"
 msgstr ""
 
-#: 950.data.seed-values.sql:9314
+#: 950.data.seed-values.sql:9316
 msgid "Overlay failed due to missing system id"
 msgstr ""
 
 # id::clm.value__cel
-#: 950.data.seed-values.sql:5884
+#: 950.data.seed-values.sql:5886
 msgid "Celtic (Other)"
 msgstr "Кельтский (другой)"
 
@@ -197,16 +197,16 @@ msgid "Barred"
 msgstr "Запрещённый"
 
 # id::clm.value__hil
-#: 950.data.seed-values.sql:5988
+#: 950.data.seed-values.sql:5990
 msgid "Hiligaynon"
 msgstr "Hiligaynon"
 
 # id::clm.value__kac
-#: 950.data.seed-values.sql:6022
+#: 950.data.seed-values.sql:6024
 msgid "Kachin"
 msgstr "Kachin"
 
-#: 950.data.seed-values.sql:10018
+#: 950.data.seed-values.sql:10020
 msgid "Heading -- Meeting Name"
 msgstr ""
 
@@ -215,77 +215,77 @@ msgstr ""
 msgid "overdue_max"
 msgstr "overdue_max"
 
-#: 950.data.seed-values.sql:2492
+#: 950.data.seed-values.sql:2494
 msgid "Recalls"
 msgstr ""
 
-#: 950.data.seed-values.sql:1607
+#: 950.data.seed-values.sql:1609
 msgid "Volunteers"
 msgstr ""
 
 # id::clfm.value__j
-#: 950.data.seed-values.sql:6336
+#: 950.data.seed-values.sql:6338
 msgid "Short stories"
 msgstr "Короткие рассказы"
 
 # id::clm.value__pag
-#: 950.data.seed-values.sql:6146
+#: 950.data.seed-values.sql:6148
 msgid "Pangasinan"
 msgstr "Пангасинан"
 
-#: 950.data.seed-values.sql:8816 950.data.seed-values.sql:8866
-#: 950.data.seed-values.sql:8867
+#: 950.data.seed-values.sql:8818 950.data.seed-values.sql:8868
+#: 950.data.seed-values.sql:8869
 msgid "Historical Circulation Retention Age"
 msgstr ""
 
-#: 950.data.seed-values.sql:10135
+#: 950.data.seed-values.sql:10137
 msgid "LC subject headings for children's literature"
 msgstr ""
 
-#: 950.data.seed-values.sql:2488
+#: 950.data.seed-values.sql:2490
 msgid "Global"
 msgstr ""
 
-#: 950.data.seed-values.sql:8723
+#: 950.data.seed-values.sql:8725
 msgid "Tax"
 msgstr ""
 
 # id::clm.value__pam
-#: 950.data.seed-values.sql:6148
+#: 950.data.seed-values.sql:6150
 msgid "Pampanga"
 msgstr "Пампанга"
 
 # id::clm.value__nah
-#: 950.data.seed-values.sql:6111
+#: 950.data.seed-values.sql:6113
 msgid "Nahuatl"
 msgstr "Науатль"
 
 # id::clm.value__yid
-#: 950.data.seed-values.sql:6290
+#: 950.data.seed-values.sql:6292
 msgid "Yiddish"
 msgstr "Идиш"
 
 # id::clm.value__cpp
-#: 950.data.seed-values.sql:5905
+#: 950.data.seed-values.sql:5907
 msgid "Creoles and Pidgins, Portuguese-based (Other)"
 msgstr "Креольский и Пидгинский, на Португальской основе  (другой)"
 
 # id::clm.value__ton
-#: 950.data.seed-values.sql:6250
+#: 950.data.seed-values.sql:6252
 msgid "Tongan"
 msgstr "Тонганский"
 
 # id::clm.value__ijo
-#: 950.data.seed-values.sql:6001
+#: 950.data.seed-values.sql:6003
 msgid "Ijo"
 msgstr "Ijo"
 
-#: 950.data.seed-values.sql:8727
+#: 950.data.seed-values.sql:8729
 msgid "Non-library Item"
 msgstr ""
 
 # id::clm.value__gil
-#: 950.data.seed-values.sql:5965
+#: 950.data.seed-values.sql:5967
 msgid "Gilbertese"
 msgstr "Gilbertese"
 
@@ -294,7 +294,7 @@ msgstr "Gilbertese"
 msgid "Damaged"
 msgstr "Поврежденный"
 
-#: 950.data.seed-values.sql:8887 950.data.seed-values.sql:8888
+#: 950.data.seed-values.sql:8889 950.data.seed-values.sql:8890
 msgid "Historical Hold Retention Start Date"
 msgstr ""
 
@@ -304,35 +304,35 @@ msgid "Bookmobile"
 msgstr "Передвижная библиотека"
 
 # id::clm.value__kaw
-#: 950.data.seed-values.sql:6029
+#: 950.data.seed-values.sql:6031
 msgid "Kawi"
 msgstr "Кави"
 
-#: 950.data.seed-values.sql:10137
+#: 950.data.seed-values.sql:10139
 msgid "National Agricultural Library subject authority file"
 msgstr ""
 
-#: 950.data.seed-values.sql:2479
+#: 950.data.seed-values.sql:2481
 msgid "GUI"
 msgstr ""
 
 # id::clm.value__kok
-#: 950.data.seed-values.sql:6040
+#: 950.data.seed-values.sql:6042
 msgid "Konkani"
 msgstr "Конкани"
 
 # id::clm.value__nau
-#: 950.data.seed-values.sql:6114
+#: 950.data.seed-values.sql:6116
 msgid "Nauru"
 msgstr "Науру"
 
 # id::cam.value__g
-#: 950.data.seed-values.sql:6308
+#: 950.data.seed-values.sql:6310
 msgid "General"
 msgstr "Общий"
 
 # id::clm.value__sas
-#: 950.data.seed-values.sql:6181
+#: 950.data.seed-values.sql:6183
 msgid "Sasak"
 msgstr "Сасакский"
 
@@ -347,58 +347,58 @@ msgid "35_days_1_renew"
 msgstr "35_days_1_renew"
 
 # id::clm.value__lat
-#: 950.data.seed-values.sql:6059
+#: 950.data.seed-values.sql:6061
 msgid "Latin"
 msgstr "Латинский"
 
 # id::clm.value__zul
-#: 950.data.seed-values.sql:6297
+#: 950.data.seed-values.sql:6299
 msgid "Zulu"
 msgstr "Зулу"
 
-#: 950.data.seed-values.sql:6367
+#: 950.data.seed-values.sql:6369
 msgid "Quadruplex"
 msgstr ""
 
 # id::clm.value__geo
-#: 950.data.seed-values.sql:5962
+#: 950.data.seed-values.sql:5964
 msgid "Georgian"
 msgstr "Грузинский"
 
 # id::clm.value__ilo
-#: 950.data.seed-values.sql:6004
+#: 950.data.seed-values.sql:6006
 msgid "Iloko"
 msgstr "Iloko"
 
 # id::clm.value__arc
-#: 950.data.seed-values.sql:5832
+#: 950.data.seed-values.sql:5834
 msgid "Aramaic"
 msgstr "Арамейский"
 
 # id::clm.value__tir
-#: 950.data.seed-values.sql:6244
+#: 950.data.seed-values.sql:6246
 msgid "Tigrinya"
 msgstr "Тынгиня"
 
 # id::clm.value__chk id::clm.value__-tru
-#: 950.data.seed-values.sql:5890 950.data.seed-values.sql:6252
+#: 950.data.seed-values.sql:5892 950.data.seed-values.sql:6254
 msgid "Truk"
 msgstr "Трук"
 
 # id::clm.value__tib
-#: 950.data.seed-values.sql:6242
+#: 950.data.seed-values.sql:6244
 msgid "Tibetan"
 msgstr "Тибетский"
 
 # id::cza.label__7 id::cza.label__16 id::cza.label__25
 # id::vqbrad.description__12
 #: 950.data.seed-values.sql:372 950.data.seed-values.sql:393
-#: 950.data.seed-values.sql:412 950.data.seed-values.sql:4793
+#: 950.data.seed-values.sql:412 950.data.seed-values.sql:4795
 msgid "Publisher"
 msgstr "Издатель"
 
 # id::clm.value__inh
-#: 950.data.seed-values.sql:6009
+#: 950.data.seed-values.sql:6011
 msgid "Ingush"
 msgstr "Ингушский"
 
@@ -407,32 +407,32 @@ msgid "Alerting Note, no blocks"
 msgstr ""
 
 # id::clm.value__dzo
-#: 950.data.seed-values.sql:5926
+#: 950.data.seed-values.sql:5928
 msgid "Dzongkha"
 msgstr "Дзонгкха"
 
 # id::clm.value__grn id::clm.value__-gua
-#: 950.data.seed-values.sql:5978 950.data.seed-values.sql:5979
+#: 950.data.seed-values.sql:5980 950.data.seed-values.sql:5981
 msgid "Guarani"
 msgstr "Гуаранский"
 
 # id::clm.value__iii
-#: 950.data.seed-values.sql:6000
+#: 950.data.seed-values.sql:6002
 msgid "Sichuan Yi"
 msgstr "Sichuan Yi"
 
 # id::clm.value__btk
-#: 950.data.seed-values.sql:5872
+#: 950.data.seed-values.sql:5874
 msgid "Batak"
 msgstr "Батак"
 
 # id::clm.value__div
-#: 950.data.seed-values.sql:5919
+#: 950.data.seed-values.sql:5921
 msgid "Divehi"
 msgstr "Дивеги"
 
 # id::clm.value__sga
-#: 950.data.seed-values.sql:6188
+#: 950.data.seed-values.sql:6190
 msgid "Irish, Old (to 1100)"
 msgstr "Старый Ирландский (до 1100)"
 
@@ -441,11 +441,11 @@ msgid "Lost Materials Processing Fee"
 msgstr "Плата за обработку потерянных материалов"
 
 # id::clm.value__her
-#: 950.data.seed-values.sql:5987
+#: 950.data.seed-values.sql:5989
 msgid "Herero"
 msgstr "Herero"
 
-#: 950.data.seed-values.sql:1605
+#: 950.data.seed-values.sql:1607
 msgid "Data Review"
 msgstr ""
 
@@ -454,112 +454,112 @@ msgstr ""
 msgid "3_months_0_renew"
 msgstr "3_months_0_renew"
 
-#: 950.data.seed-values.sql:10022
+#: 950.data.seed-values.sql:10024
 msgid "Heading -- General Subdivision"
 msgstr ""
 
-#: 950.data.seed-values.sql:1599
+#: 950.data.seed-values.sql:1601
 msgid "System Administrator"
 msgstr ""
 
 # id::clm.value__lav
-#: 950.data.seed-values.sql:6060
+#: 950.data.seed-values.sql:6062
 msgid "Latvian"
 msgstr "Латышский"
 
 # id::clm.value__eng
-#: 950.data.seed-values.sql:5931
+#: 950.data.seed-values.sql:5933
 msgid "English"
 msgstr "Английский"
 
 # id::cam.value__
-#: 950.data.seed-values.sql:6301
+#: 950.data.seed-values.sql:6303
 msgid "Unknown or unspecified"
 msgstr "Неизвестный или неустановленный"
 
-#: 950.data.seed-values.sql:2496
+#: 950.data.seed-values.sql:2498
 msgid "SMS Text Messages"
 msgstr ""
 
 # id::cam.value__j
-#: 950.data.seed-values.sql:6309
+#: 950.data.seed-values.sql:6311
 msgid "Juvenile"
 msgstr "Юношеский"
 
 # id::clm.value__chi
-#: 950.data.seed-values.sql:5889
+#: 950.data.seed-values.sql:5891
 msgid "Chinese"
 msgstr "Китайский"
 
-#: 950.data.seed-values.sql:10140
+#: 950.data.seed-values.sql:10142
 msgid "Art and Architecture Thesaurus"
 msgstr ""
 
 # id::clm.value__iku
-#: 950.data.seed-values.sql:6002
+#: 950.data.seed-values.sql:6004
 msgid "Inuktitut"
 msgstr "Инуитский"
 
 # id::clm.value__mun
-#: 950.data.seed-values.sql:6107
+#: 950.data.seed-values.sql:6109
 msgid "Munda (Other)"
 msgstr "Мунда (другой)"
 
 # id::clm.value__pli
-#: 950.data.seed-values.sql:6156
+#: 950.data.seed-values.sql:6158
 msgid "Pali"
 msgstr "Пали"
 
 # id::clm.value__gaa
-#: 950.data.seed-values.sql:5955
+#: 950.data.seed-values.sql:5957
 msgid "Gã"
 msgstr "Gã"
 
 # id::clm.value__yap
-#: 950.data.seed-values.sql:6289
+#: 950.data.seed-values.sql:6291
 msgid "Yapese"
 msgstr "Yapese"
 
 # id::clm.value__ara
-#: 950.data.seed-values.sql:5831
+#: 950.data.seed-values.sql:5833
 msgid "Arabic"
 msgstr "Арабский"
 
 # id::clm.value__ven
-#: 950.data.seed-values.sql:6274
+#: 950.data.seed-values.sql:6276
 msgid "Venda"
 msgstr "Венда"
 
-#: 950.data.seed-values.sql:6375
+#: 950.data.seed-values.sql:6377
 msgid "8 mm."
 msgstr ""
 
 # id::pgt.name__3
-#: 950.data.seed-values.sql:1579
+#: 950.data.seed-values.sql:1581
 msgid "Staff"
 msgstr "Персонал"
 
 # id::clm.value''in__gwi
-#: 950.data.seed-values.sql:5981
+#: 950.data.seed-values.sql:5983
 msgid "Gwich"
 msgstr "Gwich"
 
 # id::clm.value__iro
-#: 950.data.seed-values.sql:6014
+#: 950.data.seed-values.sql:6016
 msgid "Iroquoian (Other)"
 msgstr "Ирокезская (другой)"
 
 # id::clm.value__kut
-#: 950.data.seed-values.sql:6052
+#: 950.data.seed-values.sql:6054
 msgid "Kutenai"
 msgstr "Kutenai"
 
 # id::clm.value__ori
-#: 950.data.seed-values.sql:6139
+#: 950.data.seed-values.sql:6141
 msgid "Oriya"
 msgstr "Ория"
 
-#: 950.data.seed-values.sql:11545
+#: 950.data.seed-values.sql:11547
 msgid "Verification via opensrf"
 msgstr ""
 
@@ -568,15 +568,15 @@ msgid "Abbreviated Title"
 msgstr ""
 
 # id::clm.value__nyn
-#: 950.data.seed-values.sql:6134
+#: 950.data.seed-values.sql:6136
 msgid "Nyankole"
 msgstr "Nyankole"
 
-#: 950.data.seed-values.sql:10024
+#: 950.data.seed-values.sql:10026
 msgid "Heading -- Chronological Subdivision"
 msgstr ""
 
-#: 950.data.seed-values.sql:2495
+#: 950.data.seed-values.sql:2497
 msgid "Receipt Template"
 msgstr ""
 
@@ -586,12 +586,12 @@ msgid "English (Canada)"
 msgstr "Английский (Канада)"
 
 # id::clm.value__hin
-#: 950.data.seed-values.sql:5990
+#: 950.data.seed-values.sql:5992
 msgid "Hindi"
 msgstr "Хинди"
 
 # id::clm.value__ewo
-#: 950.data.seed-values.sql:5939
+#: 950.data.seed-values.sql:5941
 msgid "Ewondo"
 msgstr "Эвондо"
 
@@ -600,12 +600,12 @@ msgstr "Эвондо"
 msgid "Mexican Spanish"
 msgstr "Мексиканский Испанский"
 
-#: 950.data.seed-values.sql:10025
+#: 950.data.seed-values.sql:10027
 msgid "Heading -- Form Subdivision"
 msgstr ""
 
 # id::clm.value__abk
-#: 950.data.seed-values.sql:5814
+#: 950.data.seed-values.sql:5816
 msgid "Abkhaz"
 msgstr "Абхазский"
 
@@ -614,32 +614,32 @@ msgid "Alternate Title"
 msgstr ""
 
 # id::clm.value__cmc
-#: 950.data.seed-values.sql:5899
+#: 950.data.seed-values.sql:5901
 msgid "Chamic languages"
 msgstr "Chamic languages"
 
 # id::clfm.value__f
-#: 950.data.seed-values.sql:6333
+#: 950.data.seed-values.sql:6335
 msgid "Novels"
 msgstr "Романы"
 
 # id::clm.value__wol
-#: 950.data.seed-values.sql:6285
+#: 950.data.seed-values.sql:6287
 msgid "Wolof"
 msgstr "Волоф"
 
 # id::clm.value__bos
-#: 950.data.seed-values.sql:5869
+#: 950.data.seed-values.sql:5871
 msgid "Bosnian"
 msgstr "Боснийский"
 
 # id::clm.value__rom
-#: 950.data.seed-values.sql:6169
+#: 950.data.seed-values.sql:6171
 msgid "Romani"
 msgstr "Цыганский"
 
 # id::clm.value__vie
-#: 950.data.seed-values.sql:6275
+#: 950.data.seed-values.sql:6277
 msgid "Vietnamese"
 msgstr "Вьетнамский"
 
@@ -649,7 +649,7 @@ msgid "This Specialized Library"
 msgstr "Специализированная библиотека"
 
 # id::clm.value__mnc
-#: 950.data.seed-values.sql:6099
+#: 950.data.seed-values.sql:6101
 msgid "Manchu"
 msgstr "Манчу"
 
@@ -665,40 +665,40 @@ msgstr "Модель Консорциум"
 # id::clm.value__rus id::i18n_l.name__ru-RU id::i18n_l.description__ru-RU
 # id::clm.value__rus
 #: 950.data.seed-values.sql:347 950.data.seed-values.sql:348
-#: 950.data.seed-values.sql:6172
+#: 950.data.seed-values.sql:6174
 msgid "Russian"
 msgstr "Русский"
 
-#: 950.data.seed-values.sql:6368
+#: 950.data.seed-values.sql:6370
 msgid "Laserdisc"
 msgstr ""
 
 # id::clm.value__gba
-#: 950.data.seed-values.sql:5960
+#: 950.data.seed-values.sql:5962
 msgid "Gbaya"
 msgstr "Гбая"
 
 # id::clm.value__kaz
-#: 950.data.seed-values.sql:6030
+#: 950.data.seed-values.sql:6032
 msgid "Kazakh"
 msgstr "Казахский"
 
 # id::clm.value__tiv
-#: 950.data.seed-values.sql:6245
+#: 950.data.seed-values.sql:6247
 msgid "Tiv"
 msgstr "Тив"
 
 # id::clm.value__und
-#: 950.data.seed-values.sql:6270
+#: 950.data.seed-values.sql:6272
 msgid "Undetermined"
 msgstr "Неопределен"
 
 # id::clm.value__hmo
-#: 950.data.seed-values.sql:5993
+#: 950.data.seed-values.sql:5995
 msgid "Hiri Motu"
 msgstr "Hiri Motu"
 
-#: 950.data.seed-values.sql:2483
+#: 950.data.seed-values.sql:2485
 msgid "Holds"
 msgstr ""
 
@@ -712,81 +712,81 @@ msgstr "Нету доступа"
 msgid "Canadian English"
 msgstr "Канадский Английский"
 
-#: 950.data.seed-values.sql:8728
+#: 950.data.seed-values.sql:8730
 msgid "Serial Subscription"
 msgstr ""
 
 # id::clm.value__bra
-#: 950.data.seed-values.sql:5870
+#: 950.data.seed-values.sql:5872
 msgid "Braj"
 msgstr "Брадж"
 
 # id::clm.value__bat
-#: 950.data.seed-values.sql:5856
+#: 950.data.seed-values.sql:5858
 msgid "Baltic (Other)"
 msgstr "Болтик (другой)"
 
-#: 950.data.seed-values.sql:9325
+#: 950.data.seed-values.sql:9327
 msgid "Invalid value for \"deposit_amount\""
 msgstr ""
 
 # id::clfm.value__h
-#: 950.data.seed-values.sql:6334
+#: 950.data.seed-values.sql:6336
 msgid "Humor, satires, etc."
 msgstr "Юмор, сатира, итд."
 
-#: 950.data.seed-values.sql:11542
+#: 950.data.seed-values.sql:11544
 msgid "SIP2 Proxy Login"
 msgstr ""
 
 # id::citm.value__m
-#: 950.data.seed-values.sql:6325
+#: 950.data.seed-values.sql:6327
 msgid "Computer file"
 msgstr "Компьютерный файл"
 
 # id::clm.value__phi
-#: 950.data.seed-values.sql:6154
+#: 950.data.seed-values.sql:6156
 msgid "Philippine (Other)"
 msgstr "Филиппинский (другой)"
 
-#: 950.data.seed-values.sql:10051
+#: 950.data.seed-values.sql:10053
 msgid "Subdivision Linking Entry -- Form Subdivision"
 msgstr ""
 
 # id::clm.value__ger
-#: 950.data.seed-values.sql:5963
+#: 950.data.seed-values.sql:5965
 msgid "German"
 msgstr "Немецкий"
 
-#: 950.data.seed-values.sql:8730
+#: 950.data.seed-values.sql:8732
 msgid "EDI"
 msgstr ""
 
-#: 950.data.seed-values.sql:9309
+#: 950.data.seed-values.sql:9311
 msgid "Import failed due to barcode collision"
 msgstr ""
 
-#: 950.data.seed-values.sql:2480
+#: 950.data.seed-values.sql:2482
 msgid "Library"
 msgstr ""
 
 # id::clm.value__sla
-#: 950.data.seed-values.sql:6196
+#: 950.data.seed-values.sql:6198
 msgid "Slavic (Other)"
 msgstr "Славянский (другой)"
 
 # id::clm.value__baq
-#: 950.data.seed-values.sql:5854
+#: 950.data.seed-values.sql:5856
 msgid "Basque"
 msgstr "Баскский"
 
 # id::clm.value__tum
-#: 950.data.seed-values.sql:6258
+#: 950.data.seed-values.sql:6260
 msgid "Tumbuka"
 msgstr "Тумбука"
 
 # id::cifm.value__d
-#: 950.data.seed-values.sql:6347
+#: 950.data.seed-values.sql:6349
 msgid "Large print"
 msgstr "Широкий печать"
 
@@ -795,72 +795,72 @@ msgstr "Широкий печать"
 msgid "oclc"
 msgstr "oclc"
 
-#: 950.data.seed-values.sql:1596 950.data.seed-values.sql:2491
+#: 950.data.seed-values.sql:1598 950.data.seed-values.sql:2493
 msgid "Serials"
 msgstr ""
 
 # id::clm.value__bnt
-#: 950.data.seed-values.sql:5868
+#: 950.data.seed-values.sql:5870
 msgid "Bantu (Other)"
 msgstr "Банту (другой)"
 
-#: 950.data.seed-values.sql:10016
+#: 950.data.seed-values.sql:10018
 msgid "Heading -- Personal Name"
 msgstr ""
 
-#: 950.data.seed-values.sql:10044
+#: 950.data.seed-values.sql:10046
 msgid "Established Heading Linking Entry -- Meeting Name"
 msgstr ""
 
 # id::clm.value__mdr
-#: 950.data.seed-values.sql:6089
+#: 950.data.seed-values.sql:6091
 msgid "Mandar"
 msgstr "Мандарский"
 
-#: 950.data.seed-values.sql:6353
+#: 950.data.seed-values.sql:6355
 msgid "Monographic component part"
 msgstr "Составная часть монографии"
 
-#: 950.data.seed-values.sql:6374
+#: 950.data.seed-values.sql:6376
 msgid "D-2"
 msgstr ""
 
 # id::citm.value__t
-#: 950.data.seed-values.sql:6313
+#: 950.data.seed-values.sql:6315
 msgid "Manuscript language material"
 msgstr "Рукописный языковой материал"
 
 # id::clm.value__che
-#: 950.data.seed-values.sql:5887
+#: 950.data.seed-values.sql:5889
 msgid "Chechen"
 msgstr "Чеченский"
 
 # id::clm.value__nzi
-#: 950.data.seed-values.sql:6136
+#: 950.data.seed-values.sql:6138
 msgid "Nzima"
 msgstr "Нзима"
 
 # id::clm.value__dut
-#: 950.data.seed-values.sql:5924
+#: 950.data.seed-values.sql:5926
 msgid "Dutch"
 msgstr "Голландский"
 
 # id::clm.value__kos id::clm.value__-kus
-#: 950.data.seed-values.sql:6044 950.data.seed-values.sql:6051
+#: 950.data.seed-values.sql:6046 950.data.seed-values.sql:6053
 msgid "Kusaie"
 msgstr "Kusaie"
 
 # id::clm.value__eka
-#: 950.data.seed-values.sql:5929
+#: 950.data.seed-values.sql:5931
 msgid "Ekajuk"
 msgstr "Ekajuk"
 
 # id::clm.value__grb
-#: 950.data.seed-values.sql:5975
+#: 950.data.seed-values.sql:5977
 msgid "Grebo"
 msgstr "Grebo"
 
-#: 950.data.seed-values.sql:2489
+#: 950.data.seed-values.sql:2491
 msgid "Finances"
 msgstr ""
 
@@ -870,32 +870,32 @@ msgid "28_days_2_renew"
 msgstr "28_days_2_renew"
 
 # id::clm.value__nep
-#: 950.data.seed-values.sql:6120
+#: 950.data.seed-values.sql:6122
 msgid "Nepali"
 msgstr "Непалский"
 
 # id::clm.value__sms
-#: 950.data.seed-values.sql:6205
+#: 950.data.seed-values.sql:6207
 msgid "Skolt Sami"
 msgstr "Skolt Sami"
 
 # id::clm.value__fin
-#: 950.data.seed-values.sql:5945
+#: 950.data.seed-values.sql:5947
 msgid "Finnish"
 msgstr "Финляндский"
 
 # id::clm.value__bih
-#: 950.data.seed-values.sql:5863
+#: 950.data.seed-values.sql:5865
 msgid "Bihari"
 msgstr "Bihari"
 
 # id::clm.value__wel
-#: 950.data.seed-values.sql:6282
+#: 950.data.seed-values.sql:6284
 msgid "Welsh"
 msgstr "Валлийский"
 
 # id::clm.value__ota
-#: 950.data.seed-values.sql:6143
+#: 950.data.seed-values.sql:6145
 msgid "Turkish, Ottoman"
 msgstr "Турецкий, Оттоманский"
 
@@ -903,35 +903,35 @@ msgstr "Турецкий, Оттоманский"
 # id::vqbrad.description__6
 #: 950.data.seed-values.sql:154 950.data.seed-values.sql:370
 #: 950.data.seed-values.sql:391 950.data.seed-values.sql:410
-#: 950.data.seed-values.sql:4787
+#: 950.data.seed-values.sql:4789
 msgid "ISSN"
 msgstr "ISSN"
 
 # id::clm.value__kro
-#: 950.data.seed-values.sql:6046
+#: 950.data.seed-values.sql:6048
 msgid "Kru"
 msgstr "Kru"
 
-#: 950.data.seed-values.sql:2493
+#: 950.data.seed-values.sql:2495
 msgid "Booking"
 msgstr ""
 
 # id::clm.value__goh
-#: 950.data.seed-values.sql:5971
+#: 950.data.seed-values.sql:5973
 msgid "German, Old High (ca. 750-1050)"
 msgstr "Немецкий, очень старый (пр. 750-1050)"
 
 # id::clm.value__tem
-#: 950.data.seed-values.sql:6236
+#: 950.data.seed-values.sql:6238
 msgid "Temne"
 msgstr "Темнейский"
 
 # id::clm.value__jpr
-#: 950.data.seed-values.sql:6018
+#: 950.data.seed-values.sql:6020
 msgid "Judeo-Persian"
 msgstr "Иудо-персидский"
 
-#: 950.data.seed-values.sql:4861
+#: 950.data.seed-values.sql:4863
 msgid "Friends"
 msgstr "Друзья"
 
@@ -940,27 +940,27 @@ msgid "Patron exceeds fine threshold"
 msgstr ""
 
 # id::clm.value__day
-#: 950.data.seed-values.sql:5914
+#: 950.data.seed-values.sql:5916
 msgid "Dayak"
 msgstr "Dayak"
 
 # id::clm.value__gon
-#: 950.data.seed-values.sql:5972
+#: 950.data.seed-values.sql:5974
 msgid "Gondi"
 msgstr "Gondi"
 
 # id::clm.value__hun
-#: 950.data.seed-values.sql:5994
+#: 950.data.seed-values.sql:5996
 msgid "Hungarian"
 msgstr "Венгерский"
 
 # id::clm.value__bak
-#: 950.data.seed-values.sql:5850
+#: 950.data.seed-values.sql:5852
 msgid "Bashkir"
 msgstr "Башкирский"
 
 # id::clm.value__kam
-#: 950.data.seed-values.sql:6024
+#: 950.data.seed-values.sql:6026
 msgid "Kamba"
 msgstr "Kamba"
 
@@ -970,21 +970,21 @@ msgid "Spanish (Mexico)"
 msgstr "Испанский  (Мексика)"
 
 # id::citm.value__i
-#: 950.data.seed-values.sql:6323
+#: 950.data.seed-values.sql:6325
 msgid "Nonmusical sound recording"
 msgstr "Немузыкалный звукозапись"
 
 # id::pgt.name__2
-#: 950.data.seed-values.sql:1577
+#: 950.data.seed-values.sql:1579
 msgid "Patrons"
 msgstr "Пользователи"
 
-#: 950.data.seed-values.sql:8725
+#: 950.data.seed-values.sql:8727
 msgid "Shipping Charge"
 msgstr ""
 
 # id::clm.value__nbl
-#: 950.data.seed-values.sql:6116
+#: 950.data.seed-values.sql:6118
 msgid "Ndebele (South Africa)"
 msgstr "Ndebele (Южняя Африка)"
 
@@ -994,12 +994,12 @@ msgid "1_hour_2_renew"
 msgstr "1_hour_2_renew"
 
 # id::clfm.value__i
-#: 950.data.seed-values.sql:6335
+#: 950.data.seed-values.sql:6337
 msgid "Letters"
 msgstr "Письма"
 
 # id::clm.value__mak
-#: 950.data.seed-values.sql:6080
+#: 950.data.seed-values.sql:6082
 msgid "Makasar"
 msgstr "Makasar"
 
@@ -1008,7 +1008,7 @@ msgid "Series"
 msgstr ""
 
 # id::clm.value__afa
-#: 950.data.seed-values.sql:5819
+#: 950.data.seed-values.sql:5821
 msgid "Afroasiatic (Other)"
 msgstr "Афроазиатик (другой)"
 
@@ -1018,21 +1018,21 @@ msgid "Missing"
 msgstr "Отсутствующий"
 
 # id::clm.value__bin
-#: 950.data.seed-values.sql:5865
+#: 950.data.seed-values.sql:5867
 msgid "Edo"
 msgstr "Edo"
 
 # id::clm.value__kin
-#: 950.data.seed-values.sql:6037
+#: 950.data.seed-values.sql:6039
 msgid "Kinyarwanda"
 msgstr "Kinyarwanda"
 
 # id::clm.value__ile
-#: 950.data.seed-values.sql:6003
+#: 950.data.seed-values.sql:6005
 msgid "Interlingue"
 msgstr "Межъязыковой"
 
-#: 950.data.seed-values.sql:11563
+#: 950.data.seed-values.sql:11565
 msgid "EZProxy Verification"
 msgstr ""
 
@@ -1042,41 +1042,41 @@ msgid "Reserves"
 msgstr "Резервы"
 
 # id::clm.value__heb
-#: 950.data.seed-values.sql:5986
+#: 950.data.seed-values.sql:5988
 msgid "Hebrew"
 msgstr "Иврит"
 
 # id::clm.value__epo id::clm.value__-esp
-#: 950.data.seed-values.sql:5933 950.data.seed-values.sql:5935
+#: 950.data.seed-values.sql:5935 950.data.seed-values.sql:5937
 msgid "Esperanto"
 msgstr "Эсперанто"
 
-#: 950.data.seed-values.sql:9323
+#: 950.data.seed-values.sql:9325
 msgid "Invalid value for \"price\""
 msgstr ""
 
 # id::clm.value__cpf
-#: 950.data.seed-values.sql:5904
+#: 950.data.seed-values.sql:5906
 msgid "Creoles and Pidgins, French-based (Other)"
 msgstr "Креольский и Пидгинский, на Французской основе  (другой)"
 
 # id::clm.value__ssw id::clm.value__-swz
-#: 950.data.seed-values.sql:6219 950.data.seed-values.sql:6226
+#: 950.data.seed-values.sql:6221 950.data.seed-values.sql:6228
 msgid "Swazi"
 msgstr "Свази"
 
 # id::clm.value__-lap id::clm.value__smi
-#: 950.data.seed-values.sql:6058 950.data.seed-values.sql:6201
+#: 950.data.seed-values.sql:6060 950.data.seed-values.sql:6203
 msgid "Sami"
 msgstr "Самийский"
 
 # id::clm.value__inc
-#: 950.data.seed-values.sql:6006
+#: 950.data.seed-values.sql:6008
 msgid "Indic (Other)"
 msgstr "Индик (другой)"
 
 # id::clm.value__tel
-#: 950.data.seed-values.sql:6235
+#: 950.data.seed-values.sql:6237
 msgid "Telugu"
 msgstr "Телугу"
 
@@ -1091,17 +1091,17 @@ msgstr "Автор"
 msgid "System Local"
 msgstr "Локал системы"
 
-#: 950.data.seed-values.sql:11549
+#: 950.data.seed-values.sql:11551
 msgid "Verification via xmlrpc"
 msgstr ""
 
 # id::clm.value__new
-#: 950.data.seed-values.sql:6121
+#: 950.data.seed-values.sql:6123
 msgid "Newari"
 msgstr "Newari"
 
 # id::clm.value__sam
-#: 950.data.seed-values.sql:6178
+#: 950.data.seed-values.sql:6180
 msgid "Samaritan Aramaic"
 msgstr "Samaritan Aramaic"
 
@@ -1115,7 +1115,7 @@ msgstr "2_months_2_renew"
 msgid "Unfiltered"
 msgstr "Нефильтрированный"
 
-#: 950.data.seed-values.sql:10056
+#: 950.data.seed-values.sql:10058
 msgid "See Also Tracing -- Corporate Name"
 msgstr ""
 
@@ -1124,32 +1124,32 @@ msgid "Patron has been referred to a collections agency"
 msgstr ""
 
 # id::clm.value__tah
-#: 950.data.seed-values.sql:6229
+#: 950.data.seed-values.sql:6231
 msgid "Tahitian"
 msgstr "Таитянский"
 
 # id::clm.value__ful
-#: 950.data.seed-values.sql:5953
+#: 950.data.seed-values.sql:5955
 msgid "Fula"
 msgstr "Fula"
 
 # id::cifm.value__a
-#: 950.data.seed-values.sql:6344
+#: 950.data.seed-values.sql:6346
 msgid "Microfilm"
 msgstr "Микрофильм"
 
-#: 950.data.seed-values.sql:10021
+#: 950.data.seed-values.sql:10023
 msgid "Heading -- Genre/Form Term"
 msgstr ""
 
 # id::clm.value__nub
-#: 950.data.seed-values.sql:6131
+#: 950.data.seed-values.sql:6133
 msgid "Nubian languages"
 msgstr "Нубийские языки"
 
 # id::clm.value__arm id::i18n_l.name__hy-AM id::i18n_l.description__hy-AM
 #: 950.data.seed-values.sql:338 950.data.seed-values.sql:339
-#: 950.data.seed-values.sql:5834
+#: 950.data.seed-values.sql:5836
 msgid "Armenian"
 msgstr "Армянский"
 
@@ -1164,51 +1164,51 @@ msgid "Example System 2"
 msgstr "Модель система 2"
 
 # id::clm.value__tam
-#: 950.data.seed-values.sql:6232
+#: 950.data.seed-values.sql:6234
 msgid "Tamil"
 msgstr "Тамилский"
 
 # id::clm.value__aus
-#: 950.data.seed-values.sql:5842
+#: 950.data.seed-values.sql:5844
 msgid "Australian languages"
 msgstr "Австралийские языки"
 
 # id::clm.value__roh
-#: 950.data.seed-values.sql:6168
+#: 950.data.seed-values.sql:6170
 msgid "Raeto-Romance"
 msgstr "Raeto-Romance"
 
 # id::cblvl.value__m
-#: 950.data.seed-values.sql:6358
+#: 950.data.seed-values.sql:6360
 msgid "Monograph/Item"
 msgstr "Монограф/Единица"
 
 # id::clm.value__pus
-#: 950.data.seed-values.sql:6162
+#: 950.data.seed-values.sql:6164
 msgid "Pushto"
 msgstr "Пуштийский"
 
-#: 950.data.seed-values.sql:10049
+#: 950.data.seed-values.sql:10051
 msgid "Subdivision Linking Entry -- Geographic Subdivision"
 msgstr ""
 
 # id::cifm.value__b
-#: 950.data.seed-values.sql:6345
+#: 950.data.seed-values.sql:6347
 msgid "Microfiche"
 msgstr "Микрофиш"
 
 # id::clm.value__wln
-#: 950.data.seed-values.sql:6284
+#: 950.data.seed-values.sql:6286
 msgid "Walloon"
 msgstr "Валлонский"
 
 # id::clm.value__din
-#: 950.data.seed-values.sql:5918
+#: 950.data.seed-values.sql:5920
 msgid "Dinka"
 msgstr "Dinka"
 
 # id::clm.value__chu
-#: 950.data.seed-values.sql:5896
+#: 950.data.seed-values.sql:5898
 msgid "Church Slavic"
 msgstr "Церковный славянский"
 
@@ -1217,16 +1217,16 @@ msgid "‡biblios.net"
 msgstr "‡biblios.net"
 
 # id::clm.value__lam
-#: 950.data.seed-values.sql:6055
+#: 950.data.seed-values.sql:6057
 msgid "Lamba"
 msgstr "Lamba"
 
-#: 950.data.seed-values.sql:6371
+#: 950.data.seed-values.sql:6373
 msgid "Betacam SP"
 msgstr ""
 
 # id::clm.value__mic
-#: 950.data.seed-values.sql:6092
+#: 950.data.seed-values.sql:6094
 msgid "Micmac"
 msgstr "Micmac"
 
@@ -1235,40 +1235,40 @@ msgid "Personal Author"
 msgstr ""
 
 # id::clm.value__-gag id::clm.value__glg
-#: 950.data.seed-values.sql:5957 950.data.seed-values.sql:5968
+#: 950.data.seed-values.sql:5959 950.data.seed-values.sql:5970
 msgid "Galician"
 msgstr "Галисийский"
 
-#: 950.data.seed-values.sql:11554
+#: 950.data.seed-values.sql:11556
 msgid "OPAC Login (jspac)"
 msgstr ""
 
 # id::clm.value__mad
-#: 950.data.seed-values.sql:6076
+#: 950.data.seed-values.sql:6078
 msgid "Madurese"
 msgstr "Madurese"
 
 # id::clm.value__kmb
-#: 950.data.seed-values.sql:6039
+#: 950.data.seed-values.sql:6041
 msgid "Kimbundu"
 msgstr "Kimbundu"
 
 # id::clm.value__ssa
-#: 950.data.seed-values.sql:6217
+#: 950.data.seed-values.sql:6219
 msgid "Nilo-Saharan (Other)"
 msgstr "Ниль-Сахарский (другой)"
 
 # id::clm.value__sag
-#: 950.data.seed-values.sql:6174
+#: 950.data.seed-values.sql:6176
 msgid "Sango (Ubangi Creole)"
 msgstr "Sango (Ubangi Creole)"
 
 # id::clm.value__kha
-#: 950.data.seed-values.sql:6032
+#: 950.data.seed-values.sql:6034
 msgid "Khasi"
 msgstr "Khasi"
 
-#: 950.data.seed-values.sql:9333
+#: 950.data.seed-values.sql:9335
 msgid "Invalid value for \"circ_as_type\""
 msgstr ""
 
@@ -1277,52 +1277,52 @@ msgid "Subject"
 msgstr ""
 
 # id::clm.value__mah
-#: 950.data.seed-values.sql:6078
+#: 950.data.seed-values.sql:6080
 msgid "Marshallese"
 msgstr "Marshallese"
 
 # id::clm.value__yao
-#: 950.data.seed-values.sql:6288
+#: 950.data.seed-values.sql:6290
 msgid "Yao (Africa)"
 msgstr "Яо (Африка)"
 
-#: 950.data.seed-values.sql:10065
+#: 950.data.seed-values.sql:10067
 msgid "See Also Tracing -- Chronological Term"
 msgstr ""
 
 # id::clm.value__mar
-#: 950.data.seed-values.sql:6085
+#: 950.data.seed-values.sql:6087
 msgid "Marathi"
 msgstr "Марахи"
 
 # id::clm.value__slv
-#: 950.data.seed-values.sql:6198
+#: 950.data.seed-values.sql:6200
 msgid "Slovenian"
 msgstr "Словенский"
 
-#: 950.data.seed-values.sql:9312 950.data.seed-values.sql:9313
+#: 950.data.seed-values.sql:9314 950.data.seed-values.sql:9315
 msgid "Import failed due to system id collision"
 msgstr ""
 
 # id::clm.value__sal
-#: 950.data.seed-values.sql:6177
+#: 950.data.seed-values.sql:6179
 msgid "Salishan languages"
 msgstr "Салышанские языки"
 
-#: 950.data.seed-values.sql:11562
+#: 950.data.seed-values.sql:11564
 msgid "Self-Check User Verification"
 msgstr ""
 
-#: 950.data.seed-values.sql:10020
+#: 950.data.seed-values.sql:10022
 msgid "Heading -- Geographic Name"
 msgstr ""
 
 # id::clm.value__san
-#: 950.data.seed-values.sql:6179
+#: 950.data.seed-values.sql:6181
 msgid "Sanskrit"
 msgstr "Санскрит"
 
-#: 950.data.seed-values.sql:6372
+#: 950.data.seed-values.sql:6374
 msgid "Super-VHS"
 msgstr ""
 
@@ -1332,7 +1332,7 @@ msgid "On order"
 msgstr "На заказе"
 
 # id::clfm.value__e
-#: 950.data.seed-values.sql:6332
+#: 950.data.seed-values.sql:6334
 msgid "Essays"
 msgstr "Эссе"
 
@@ -1342,27 +1342,27 @@ msgid "Local Library System"
 msgstr "Местная библиотечная система"
 
 # id::cifm.value__r
-#: 950.data.seed-values.sql:6349
+#: 950.data.seed-values.sql:6351
 msgid "Regular print reproduction"
 msgstr "Нормальные печатные репродукции"
 
 # id::clm.value__elx
-#: 950.data.seed-values.sql:5930
+#: 950.data.seed-values.sql:5932
 msgid "Elamite"
 msgstr "Elamite"
 
 # id::clm.value__ady
-#: 950.data.seed-values.sql:5818
+#: 950.data.seed-values.sql:5820
 msgid "Adygei"
 msgstr "Адыгейский"
 
-#: 950.data.seed-values.sql:4850 950.data.seed-values.sql:4853
-#: 950.data.seed-values.sql:4854 950.data.seed-values.sql:4860
+#: 950.data.seed-values.sql:4852 950.data.seed-values.sql:4855
+#: 950.data.seed-values.sql:4856 950.data.seed-values.sql:4862
 msgid "Miscellaneous"
 msgstr "Прочие"
 
 # id::clm.value__nor
-#: 950.data.seed-values.sql:6129
+#: 950.data.seed-values.sql:6131
 msgid "Norwegian"
 msgstr "Норвежский"
 
@@ -1387,39 +1387,39 @@ msgid "Example Branch 1"
 msgstr "Модель подразделение 1"
 
 # id::clm.value__kom
-#: 950.data.seed-values.sql:6041
+#: 950.data.seed-values.sql:6043
 msgid "Komi"
 msgstr "Komi"
 
-#: 950.data.seed-values.sql:10003
+#: 950.data.seed-values.sql:10005
 msgid "Library of Congress standard authority record control semantics"
 msgstr ""
 
 # id::clm.value__hit
-#: 950.data.seed-values.sql:5991
+#: 950.data.seed-values.sql:5993
 msgid "Hittite"
 msgstr "Hittite"
 
 # id::clm.value__tuk
-#: 950.data.seed-values.sql:6257
+#: 950.data.seed-values.sql:6259
 msgid "Turkmen"
 msgstr "Туркменский"
 
-#: 950.data.seed-values.sql:10058
+#: 950.data.seed-values.sql:10060
 msgid "See Also Tracing -- Topical Term"
 msgstr ""
 
 # id::clm.value__suk
-#: 950.data.seed-values.sql:6220
+#: 950.data.seed-values.sql:6222
 msgid "Sukuma"
 msgstr "Sukuma"
 
 # id::citm.value__p
-#: 950.data.seed-values.sql:6318
+#: 950.data.seed-values.sql:6320
 msgid "Mixed materials"
 msgstr "Смешанные материалы"
 
-#: 950.data.seed-values.sql:2481
+#: 950.data.seed-values.sql:2483
 msgid "Security"
 msgstr ""
 
@@ -1428,36 +1428,36 @@ msgstr ""
 msgid "On holds shelf"
 msgstr "На полке для хранения"
 
-#: 950.data.seed-values.sql:11546
+#: 950.data.seed-values.sql:11548
 msgid "Verification via srfsh"
 msgstr ""
 
 # id::clm.value__ypk
-#: 950.data.seed-values.sql:6292
+#: 950.data.seed-values.sql:6294
 msgid "Yupik languages"
 msgstr "руппа языков юпик"
 
 # id::clm.value__tvl
-#: 950.data.seed-values.sql:6262
+#: 950.data.seed-values.sql:6264
 msgid "Tuvaluan"
 msgstr "Тувалуйский"
 
-#: 950.data.seed-values.sql:10144
+#: 950.data.seed-values.sql:10146
 msgid "No attempt to code"
 msgstr ""
 
 # id::clm.value__nso
-#: 950.data.seed-values.sql:6130
+#: 950.data.seed-values.sql:6132
 msgid "Northern Sotho"
 msgstr "Северняя Сото"
 
 # id::clm.value__bej
-#: 950.data.seed-values.sql:5857
+#: 950.data.seed-values.sql:5859
 msgid "Beja"
 msgstr "Beja"
 
 # id::clm.value__gem
-#: 950.data.seed-values.sql:5961
+#: 950.data.seed-values.sql:5963
 msgid "Germanic (Other)"
 msgstr "Немецкий (другой)"
 
@@ -1467,12 +1467,12 @@ msgstr "Немецкий (другой)"
 msgid "Item Type"
 msgstr "Тип единицы"
 
-#: 950.data.seed-values.sql:9335
+#: 950.data.seed-values.sql:9337
 msgid "Perm failure creating a record"
 msgstr ""
 
 # id::clm.value__kab
-#: 950.data.seed-values.sql:6021
+#: 950.data.seed-values.sql:6023
 msgid "Kabyle"
 msgstr "Kabyle"
 
@@ -1487,27 +1487,27 @@ msgid "SSN"
 msgstr "SSN"
 
 # id::clm.value__got
-#: 950.data.seed-values.sql:5974
+#: 950.data.seed-values.sql:5976
 msgid "Gothic"
 msgstr "Готский"
 
 # id::clm.value__tmh
-#: 950.data.seed-values.sql:6248
+#: 950.data.seed-values.sql:6250
 msgid "Tamashek"
 msgstr "Tamashek"
 
 # id::clm.value__kaa
-#: 950.data.seed-values.sql:6020
+#: 950.data.seed-values.sql:6022
 msgid "Kara-Kalpak"
 msgstr "Каракалпакский"
 
 # id::clm.value__swa
-#: 950.data.seed-values.sql:6224
+#: 950.data.seed-values.sql:6226
 msgid "Swahili"
 msgstr "Суахили"
 
 # id::clm.value__car
-#: 950.data.seed-values.sql:5880
+#: 950.data.seed-values.sql:5882
 msgid "Carib"
 msgstr "Carib"
 
@@ -1517,11 +1517,11 @@ msgid "Sub-library"
 msgstr "Под библиотека"
 
 # id::clm.value__chr
-#: 950.data.seed-values.sql:5895
+#: 950.data.seed-values.sql:5897
 msgid "Cherokee"
 msgstr "Cherokee"
 
-#: 950.data.seed-values.sql:10023
+#: 950.data.seed-values.sql:10025
 msgid "Heading -- Geographic Subdivision"
 msgstr ""
 
@@ -1534,186 +1534,186 @@ msgstr "В процессе"
 msgid "Alerting block on Circ and Renew"
 msgstr ""
 
-#: 950.data.seed-values.sql:2487
+#: 950.data.seed-values.sql:2489
 msgid "Program"
 msgstr ""
 
-#: 950.data.seed-values.sql:8893 950.data.seed-values.sql:8894
+#: 950.data.seed-values.sql:8895 950.data.seed-values.sql:8896
 msgid "Historical Hold Retention Count"
 msgstr ""
 
 # id::clm.value__mag
-#: 950.data.seed-values.sql:6077
+#: 950.data.seed-values.sql:6079
 msgid "Magahi"
 msgstr "Magahi"
 
 # id::clm.value__paa
-#: 950.data.seed-values.sql:6145
+#: 950.data.seed-values.sql:6147
 msgid "Papuan (Other)"
 msgstr "Papuan (другой)"
 
 # id::clm.value__jrb
-#: 950.data.seed-values.sql:6019
+#: 950.data.seed-values.sql:6021
 msgid "Judeo-Arabic"
 msgstr "Иудо-Арабский"
 
-#: 950.data.seed-values.sql:6373
+#: 950.data.seed-values.sql:6375
 msgid "M-II"
 msgstr ""
 
 # id::clm.value__-mla id::clm.value__mlg
-#: 950.data.seed-values.sql:6096 950.data.seed-values.sql:6097
+#: 950.data.seed-values.sql:6098 950.data.seed-values.sql:6099
 msgid "Malagasy"
 msgstr "Malagasy"
 
 # id::clm.value__tli
-#: 950.data.seed-values.sql:6247
+#: 950.data.seed-values.sql:6249
 msgid "Tlingit"
 msgstr "Tlingit"
 
-#: 950.data.seed-values.sql:10060
+#: 950.data.seed-values.sql:10062
 msgid "See Also Tracing -- Genre/Form Term"
 msgstr ""
 
-#: 950.data.seed-values.sql:10009
+#: 950.data.seed-values.sql:10011
 msgid "See Also From Tracing -- Uniform Title"
 msgstr ""
 
 # id::clm.value__mao
-#: 950.data.seed-values.sql:6083
+#: 950.data.seed-values.sql:6085
 msgid "Maori"
 msgstr "Маорийский"
 
 # id::clm.value__frm
-#: 950.data.seed-values.sql:5950
+#: 950.data.seed-values.sql:5952
 msgid "French, Middle (ca. 1400-1600)"
 msgstr "Средний французский (пр. 1400-1600)"
 
 # id::clm.value__bai
-#: 950.data.seed-values.sql:5849
+#: 950.data.seed-values.sql:5851
 msgid "Bamileke languages"
 msgstr "Бамилейские языки"
 
 # id::clm.value__ibo
-#: 950.data.seed-values.sql:5997
+#: 950.data.seed-values.sql:5999
 msgid "Igbo"
 msgstr "Igbo"
 
-#: 950.data.seed-values.sql:11556
+#: 950.data.seed-values.sql:11558
 msgid "Staff Client Login"
 msgstr ""
 
 # id::clm.value__lad
-#: 950.data.seed-values.sql:6053
+#: 950.data.seed-values.sql:6055
 msgid "Ladino"
 msgstr "Ladino"
 
 # id::clm.value__cat
-#: 950.data.seed-values.sql:5881
+#: 950.data.seed-values.sql:5883
 msgid "Catalan"
 msgstr "Каталанский"
 
 # id::clm.value__srr
-#: 950.data.seed-values.sql:6216
+#: 950.data.seed-values.sql:6218
 msgid "Serer"
 msgstr "Serer"
 
 # id::cam.value__e
-#: 950.data.seed-values.sql:6306
+#: 950.data.seed-values.sql:6308
 msgid "Adult"
 msgstr "Взрослый"
 
-#: 950.data.seed-values.sql:6365
+#: 950.data.seed-values.sql:6367
 msgid "EIAJ"
 msgstr ""
 
 # id::clm.value__phn
-#: 950.data.seed-values.sql:6155
+#: 950.data.seed-values.sql:6157
 msgid "Phoenician"
 msgstr "Финикийский"
 
 # id::clm.value__wen
-#: 950.data.seed-values.sql:6283
+#: 950.data.seed-values.sql:6285
 msgid "Sorbian languages"
 msgstr "Лужицкий язык"
 
-#: 950.data.seed-values.sql:10030
+#: 950.data.seed-values.sql:10032
 msgid "See Also From Tracing -- Corporate Name"
 msgstr ""
 
-#: 950.data.seed-values.sql:9310
+#: 950.data.seed-values.sql:9312
 msgid "Import failed due to invalid circulation modifier"
 msgstr ""
 
 # id::cam.value__a
-#: 950.data.seed-values.sql:6302
+#: 950.data.seed-values.sql:6304
 msgid "Preschool"
 msgstr "Дошкольное"
 
 # id::clm.value__sel
-#: 950.data.seed-values.sql:6186
+#: 950.data.seed-values.sql:6188
 msgid "Selkup"
 msgstr "Selkup"
 
 # id::clm.value__nob
-#: 950.data.seed-values.sql:6126
+#: 950.data.seed-values.sql:6128
 msgid "Norwegian (Bokmål)"
 msgstr "Норвежский (Bokmål)"
 
-#: 950.data.seed-values.sql:2484
+#: 950.data.seed-values.sql:2486
 msgid "Circulation"
 msgstr ""
 
 # id::clm.value__bal
-#: 950.data.seed-values.sql:5851
+#: 950.data.seed-values.sql:5853
 msgid "Baluchi"
 msgstr "Baluchi"
 
-#: 950.data.seed-values.sql:6369
+#: 950.data.seed-values.sql:6371
 msgid "CED videodisc"
 msgstr ""
 
 # id::clm.value__pan
-#: 950.data.seed-values.sql:6149
+#: 950.data.seed-values.sql:6151
 msgid "Panjabi"
 msgstr "Пунджабский"
 
 # id::clm.value__oss
-#: 950.data.seed-values.sql:6142
+#: 950.data.seed-values.sql:6144
 msgid "Ossetic"
 msgstr "Осетинский"
 
 # id::clm.value__khi
-#: 950.data.seed-values.sql:6033
+#: 950.data.seed-values.sql:6035
 msgid "Khoisan (Other)"
 msgstr "Khoisan  (другой)"
 
 # id::clm.value__raj
-#: 950.data.seed-values.sql:6164
+#: 950.data.seed-values.sql:6166
 msgid "Rajasthani"
 msgstr "Rajasthani"
 
 # id::clm.value__non
-#: 950.data.seed-values.sql:6128
+#: 950.data.seed-values.sql:6130
 msgid "Old Norse"
 msgstr "Старый норвежский"
 
 # id::acpl.name__1
-#: 950.data.seed-values.sql:2418
+#: 950.data.seed-values.sql:2420
 msgid "Stacks"
 msgstr "Наборы"
 
 # id::clm.value__hau
-#: 950.data.seed-values.sql:5984
+#: 950.data.seed-values.sql:5986
 msgid "Hausa"
 msgstr "Hausa"
 
-#: 950.data.seed-values.sql:4868
+#: 950.data.seed-values.sql:4870
 msgid "Cancel Holds"
 msgstr "Отменить хранения"
 
 # id::clm.value__arn
-#: 950.data.seed-values.sql:5835
+#: 950.data.seed-values.sql:5837
 msgid "Mapuche"
 msgstr "Mapuche"
 
@@ -1722,15 +1722,15 @@ msgid "Set"
 msgstr ""
 
 # id::clm.value__mol
-#: 950.data.seed-values.sql:6103
+#: 950.data.seed-values.sql:6105
 msgid "Moldavian"
 msgstr "Молдовский"
 
-#: 950.data.seed-values.sql:10045
+#: 950.data.seed-values.sql:10047
 msgid "Established Heading Linking Entry -- Topical Term"
 msgstr ""
 
-#: 950.data.seed-values.sql:6364
+#: 950.data.seed-values.sql:6366
 msgid "U-matic"
 msgstr ""
 
@@ -1739,12 +1739,12 @@ msgid "Translated Title"
 msgstr ""
 
 # id::clm.value__kum
-#: 950.data.seed-values.sql:6049
+#: 950.data.seed-values.sql:6051
 msgid "Kumyk"
 msgstr "Kumyk"
 
 # id::vqbrad.description__14
-#: 950.data.seed-values.sql:4795
+#: 950.data.seed-values.sql:4797
 msgid "Edition"
 msgstr "Редакция"
 
@@ -1757,7 +1757,7 @@ msgid "Patron has an invalid address"
 msgstr ""
 
 # id::clm.value__ava
-#: 950.data.seed-values.sql:5843
+#: 950.data.seed-values.sql:5845
 msgid "Avaric"
 msgstr "Avaric"
 
@@ -1766,7 +1766,7 @@ msgid "Patron exceeds max checked out item threshold"
 msgstr ""
 
 # id::clm.value__uig
-#: 950.data.seed-values.sql:6267
+#: 950.data.seed-values.sql:6269
 msgid "Uighur"
 msgstr "Уйгурский"
 
@@ -1774,16 +1774,16 @@ msgstr "Уйгурский"
 msgid "LC Control Number"
 msgstr ""
 
-#: 950.data.seed-values.sql:1594
+#: 950.data.seed-values.sql:1596
 msgid "Can do anything at the Branch level"
 msgstr ""
 
-#: 950.data.seed-values.sql:11538
+#: 950.data.seed-values.sql:11540
 msgid "Login via gateway-v1"
 msgstr ""
 
 # id::clm.value__gmh
-#: 950.data.seed-values.sql:5970
+#: 950.data.seed-values.sql:5972
 msgid "German, Middle High (ca. 1050-1500)"
 msgstr "Немецкий, выше среднего (пр. 1050-1500)"
 
@@ -1791,36 +1791,36 @@ msgstr "Немецкий, выше среднего (пр. 1050-1500)"
 # id::vqbrad.description__5
 #: 950.data.seed-values.sql:152 950.data.seed-values.sql:362
 #: 950.data.seed-values.sql:383 950.data.seed-values.sql:402
-#: 950.data.seed-values.sql:4786
+#: 950.data.seed-values.sql:4788
 msgid "ISBN"
 msgstr "ISBN"
 
 # id::clm.value__mai
-#: 950.data.seed-values.sql:6079
+#: 950.data.seed-values.sql:6081
 msgid "Maithili"
 msgstr "Maithili"
 
 # id::pgt.name__5
-#: 950.data.seed-values.sql:1583
+#: 950.data.seed-values.sql:1585
 msgid "Circulators"
 msgstr "Циркуляторы"
 
-#: 950.data.seed-values.sql:10026
+#: 950.data.seed-values.sql:10028
 msgid "Heading -- Chronological Term"
 msgstr ""
 
 # id::clm.value__tai
-#: 950.data.seed-values.sql:6230
+#: 950.data.seed-values.sql:6232
 msgid "Tai (Other)"
 msgstr "Тайский (другой)"
 
 # id::clm.value__tpi
-#: 950.data.seed-values.sql:6251
+#: 950.data.seed-values.sql:6253
 msgid "Tok Pisin"
 msgstr "Tok Pisin"
 
 # id::clm.value__jpn
-#: 950.data.seed-values.sql:6017
+#: 950.data.seed-values.sql:6019
 msgid "Japanese"
 msgstr "Японский"
 
@@ -1828,7 +1828,7 @@ msgstr "Японский"
 msgid "Topic Subject"
 msgstr ""
 
-#: 950.data.seed-values.sql:10142
+#: 950.data.seed-values.sql:10144
 msgid "Repertoire de vedettes-matiere"
 msgstr ""
 
@@ -1837,107 +1837,107 @@ msgid "Patron exceeds max overdue item threshold"
 msgstr ""
 
 # id::cit.name__3
-#: 950.data.seed-values.sql:240 950.data.seed-values.sql:6380
-#: 950.data.seed-values.sql:10143
+#: 950.data.seed-values.sql:240 950.data.seed-values.sql:6382
+#: 950.data.seed-values.sql:10145
 msgid "Other"
 msgstr "Другой"
 
 # id::clm.value__peo
-#: 950.data.seed-values.sql:6152
+#: 950.data.seed-values.sql:6154
 msgid "Old Persian (ca. 600-400 B.C.)"
 msgstr "Старый персидский (пр. 600-400 B.C.)"
 
-#: 950.data.seed-values.sql:10039
+#: 950.data.seed-values.sql:10041
 msgid "See Also From Tracing -- Chronological Term"
 msgstr ""
 
 # id::citm.value__k
-#: 950.data.seed-values.sql:6315
+#: 950.data.seed-values.sql:6317
 msgid "Two-dimensional nonprojectable graphic"
 msgstr "Двух размерная непроекцируемая графика"
 
 # id::clm.value__ban
-#: 950.data.seed-values.sql:5853
+#: 950.data.seed-values.sql:5855
 msgid "Balinese"
 msgstr "Balinese"
 
-#: 950.data.seed-values.sql:8872 950.data.seed-values.sql:8873
+#: 950.data.seed-values.sql:8874 950.data.seed-values.sql:8875
 msgid "Historical Circulation Retention Start Date"
 msgstr ""
 
 # id::clm.value__tkl
-#: 950.data.seed-values.sql:6246
+#: 950.data.seed-values.sql:6248
 msgid "Tokelauan"
 msgstr "Tokelauan"
 
 # id::clm.value__doi
-#: 950.data.seed-values.sql:5920
+#: 950.data.seed-values.sql:5922
 msgid "Dogri"
 msgstr "Dogri"
 
 # id::pgt.name__1
-#: 950.data.seed-values.sql:1575
+#: 950.data.seed-values.sql:1577
 msgid "Users"
 msgstr "Пользователи"
 
 # id::clm.value__lim
-#: 950.data.seed-values.sql:6062
+#: 950.data.seed-values.sql:6064
 msgid "Limburgish"
 msgstr "Limburgish"
 
 # id::clm.value__egy
-#: 950.data.seed-values.sql:5928
+#: 950.data.seed-values.sql:5930
 msgid "Egyptian"
 msgstr "Египетский"
 
-#: 950.data.seed-values.sql:1602
+#: 950.data.seed-values.sql:1604
 msgid "Global Administrator"
 msgstr ""
 
 # id::clm.value__tyv
-#: 950.data.seed-values.sql:6264
+#: 950.data.seed-values.sql:6266
 msgid "Tuvinian"
 msgstr "Tuvinian"
 
-#: 950.data.seed-values.sql:2490
+#: 950.data.seed-values.sql:2492
 msgid "Credit Card Processing"
 msgstr ""
 
 # id::citm.value__o
-#: 950.data.seed-values.sql:6317
+#: 950.data.seed-values.sql:6319
 msgid "Kit"
 msgstr "Комплект"
 
-#: 950.data.seed-values.sql:8724
+#: 950.data.seed-values.sql:8726
 msgid "Processing Fee"
 msgstr ""
 
 # id::clm.value__mul
-#: 950.data.seed-values.sql:6106
+#: 950.data.seed-values.sql:6108
 msgid "Multiple languages"
 msgstr "Составные языки"
 
 # id::clm.value__mlt
-#: 950.data.seed-values.sql:6098
+#: 950.data.seed-values.sql:6100
 msgid "Maltese"
 msgstr "Мальтийский"
 
 # id::clm.value__asm
-#: 950.data.seed-values.sql:5839
+#: 950.data.seed-values.sql:5841
 msgid "Assamese"
 msgstr "Assamese"
 
-#: 950.data.seed-values.sql:9315
+#: 950.data.seed-values.sql:9317
 msgid "Import failed due to Accession Number collision"
 msgstr ""
 
 # id::citm.value__r
-#: 950.data.seed-values.sql:6316
+#: 950.data.seed-values.sql:6318
 msgid "Three-dimensional artifact or naturally occurring object"
 msgstr "Трехразмерный искусственный объект или объект от природы"
 
 # id::vqbrad.description__8
-#: 950.data.seed-values.sql:150 950.data.seed-values.sql:4789
+#: 950.data.seed-values.sql:150 950.data.seed-values.sql:4791
 msgid "Accession Number"
 msgstr "Инвентарный номер"
 
@@ -1946,7 +1946,7 @@ msgid "All Subjects"
 msgstr ""
 
 # id::clm.value__tsn id::clm.value__-tsw
-#: 950.data.seed-values.sql:6254 950.data.seed-values.sql:6256
+#: 950.data.seed-values.sql:6256 950.data.seed-values.sql:6258
 msgid "Tswana"
 msgstr "Tswana"
 
@@ -1956,7 +1956,7 @@ msgid "overdue_equip_mid"
 msgstr "overdue_equip_mid"
 
 # id::clm.value__cop
-#: 950.data.seed-values.sql:5900
+#: 950.data.seed-values.sql:5902
 msgid "Coptic"
 msgstr "Коптский"
 
@@ -1966,27 +1966,27 @@ msgid "overdue_equip_min"
 msgstr "overdue_equip_min"
 
 # id::clm.value__ltz
-#: 950.data.seed-values.sql:6067
+#: 950.data.seed-values.sql:6069
 msgid "Letzeburgesch"
 msgstr "Letzeburgesch"
 
 # id::clm.value__-fri id::clm.value__fry
-#: 950.data.seed-values.sql:5949 950.data.seed-values.sql:5952
+#: 950.data.seed-values.sql:5951 950.data.seed-values.sql:5954
 msgid "Frisian"
 msgstr "Фризский"
 
 # id::clm.value__myn
-#: 950.data.seed-values.sql:6110
+#: 950.data.seed-values.sql:6112
 msgid "Mayan languages"
 msgstr "Языки майа"
 
 # id::clm.value__por
-#: 950.data.seed-values.sql:6159
+#: 950.data.seed-values.sql:6161
 msgid "Portuguese"
 msgstr "Португальский"
 
 # id::clm.value__ace
-#: 950.data.seed-values.sql:5815
+#: 950.data.seed-values.sql:5817
 msgid "Achinese"
 msgstr "Achinese"
 
@@ -1995,17 +1995,17 @@ msgstr "Achinese"
 msgid "Drivers License"
 msgstr "Водительское удостоверение"
 
-#: 950.data.seed-values.sql:10048
+#: 950.data.seed-values.sql:10050
 msgid "Subdivision Linking Entry -- General Subdivision"
 msgstr ""
 
 # id::clm.value__ter
-#: 950.data.seed-values.sql:6237
+#: 950.data.seed-values.sql:6239
 msgid "Terena"
 msgstr "Terena"
 
 # id::clm.value__ave
-#: 950.data.seed-values.sql:5844
+#: 950.data.seed-values.sql:5846
 msgid "Avestan"
 msgstr "Avestan"
 
@@ -2014,40 +2014,40 @@ msgid "SICI"
 msgstr ""
 
 # id::clm.value__min
-#: 950.data.seed-values.sql:6093
+#: 950.data.seed-values.sql:6095
 msgid "Minangkabau"
 msgstr "Minangkabau"
 
-#: 950.data.seed-values.sql:6366
+#: 950.data.seed-values.sql:6368
 msgid "Type C"
 msgstr ""
 
 # id::clm.value__him
-#: 950.data.seed-values.sql:5989
+#: 950.data.seed-values.sql:5991
 msgid "Himachali"
 msgstr "Himachali"
 
-#: 950.data.seed-values.sql:11557
+#: 950.data.seed-values.sql:11559
 msgid "Self-Check Proxy Login"
 msgstr ""
 
 # id::cblvl.value__i
-#: 950.data.seed-values.sql:6357
+#: 950.data.seed-values.sql:6359
 msgid "Integrating resource"
 msgstr "Интеграция ресурсов"
 
 # id::clm.value__znd
-#: 950.data.seed-values.sql:6296
+#: 950.data.seed-values.sql:6298
 msgid "Zande"
 msgstr "Zande"
 
 # id::clm.value__fro
-#: 950.data.seed-values.sql:5951
+#: 950.data.seed-values.sql:5953
 msgid "French, Old (ca. 842-1400)"
 msgstr "Французский, старый (пр. 842-1400)"
 
 # id::clm.value__sit
-#: 950.data.seed-values.sql:6195
+#: 950.data.seed-values.sql:6197
 msgid "Sino-Tibetan (Other)"
 msgstr "Sino-Tibetan (другой)"
 
@@ -2056,16 +2056,16 @@ msgid "Bound Volume"
 msgstr ""
 
 # id::clm.value__-eth id::clm.value__gez
-#: 950.data.seed-values.sql:5937 950.data.seed-values.sql:5964
+#: 950.data.seed-values.sql:5939 950.data.seed-values.sql:5966
 msgid "Ethiopic"
 msgstr "Эфиопский"
 
-#: 950.data.seed-values.sql:10008
+#: 950.data.seed-values.sql:10010
 msgid "Heading -- Uniform Title"
 msgstr ""
 
 # id::clm.value__sma
-#: 950.data.seed-values.sql:6199
+#: 950.data.seed-values.sql:6201
 msgid "Southern Sami"
 msgstr "Южняя Сами"
 
@@ -2074,32 +2074,32 @@ msgstr "Южняя Сами"
 msgid "Discard/Weed"
 msgstr "Сбрасывать/избавлять"
 
-#: 950.data.seed-values.sql:2485
+#: 950.data.seed-values.sql:2487
 msgid "Self Check"
 msgstr ""
 
 # id::clm.value__cor
-#: 950.data.seed-values.sql:5901
+#: 950.data.seed-values.sql:5903
 msgid "Cornish"
 msgstr "Cornish"
 
 # id::clm.value__bul
-#: 950.data.seed-values.sql:5875
+#: 950.data.seed-values.sql:5877
 msgid "Bulgarian"
 msgstr "Болгарский"
 
 # id::clm.value__roa
-#: 950.data.seed-values.sql:6167
+#: 950.data.seed-values.sql:6169
 msgid "Romance (Other)"
 msgstr "Цыганский (другой)"
 
 # id::clm.value__yor
-#: 950.data.seed-values.sql:6291
+#: 950.data.seed-values.sql:6293
 msgid "Yoruba"
 msgstr "Yoruba"
 
 # id::clm.value__arw
-#: 950.data.seed-values.sql:5838
+#: 950.data.seed-values.sql:5840
 msgid "Arawak"
 msgstr "Arawak"
 
@@ -2108,35 +2108,35 @@ msgid "Long Overdue Collection Fee"
 msgstr "Денежный сбор за просроченный срок"
 
 # id::clm.value__fre
-#: 950.data.seed-values.sql:5948
+#: 950.data.seed-values.sql:5950
 msgid "French"
 msgstr "Французский"
 
 # id::clm.value__tog
-#: 950.data.seed-values.sql:6249
+#: 950.data.seed-values.sql:6251
 msgid "Tonga (Nyasa)"
 msgstr "Tonga (Nyasa)"
 
 # id::clm.value__ben
-#: 950.data.seed-values.sql:5860
+#: 950.data.seed-values.sql:5862
 msgid "Bengali"
 msgstr "Бенгальский"
 
-#: 950.data.seed-values.sql:6376
+#: 950.data.seed-values.sql:6378
 msgid "Hi-8 mm."
 msgstr ""
 
 # id::clm.value__bas
-#: 950.data.seed-values.sql:5855
+#: 950.data.seed-values.sql:5857
 msgid "Basa"
 msgstr "Basa"
 
 # id::clfm.value__s
-#: 950.data.seed-values.sql:6339
+#: 950.data.seed-values.sql:6341
 msgid "Speeches"
 msgstr "Выступления"
 
-#: 950.data.seed-values.sql:10047
+#: 950.data.seed-values.sql:10049
 msgid "Established Heading Linking Entry -- Genre/Form Term"
 msgstr ""
 
@@ -2146,39 +2146,39 @@ msgid "Paperback Book"
 msgstr "Книга в мягкой обложке"
 
 # id::clm.value__nap
-#: 950.data.seed-values.sql:6113
+#: 950.data.seed-values.sql:6115
 msgid "Neapolitan Italian"
 msgstr "Неаполитанский итальянский"
 
-#: 950.data.seed-values.sql:1597
+#: 950.data.seed-values.sql:1599
 msgid "Serials (includes admin features)"
 msgstr ""
 
-#: 950.data.seed-values.sql:10031
+#: 950.data.seed-values.sql:10033
 msgid "See Also From Tracing -- Meeting Name"
 msgstr ""
 
 # id::clm.value__sun
-#: 950.data.seed-values.sql:6221
+#: 950.data.seed-values.sql:6223
 msgid "Sundanese"
 msgstr "Суданский"
 
 # id::clm.value__alb
-#: 950.data.seed-values.sql:5825
+#: 950.data.seed-values.sql:5827
 msgid "Albanian"
 msgstr "Албанский"
 
-#: 950.data.seed-values.sql:4867
+#: 950.data.seed-values.sql:4869
 msgid "View Holds"
 msgstr "Просмотреть хранения"
 
 # id::clm.value__osa
-#: 950.data.seed-values.sql:6141
+#: 950.data.seed-values.sql:6143
 msgid "Osage"
 msgstr "Osage"
 
 # id::vqbrad.description__10
-#: 950.data.seed-values.sql:4791
+#: 950.data.seed-values.sql:4793
 msgid "TCN Source"
 msgstr "TCN источник"
 
@@ -2187,40 +2187,40 @@ msgid "Temporal Subject"
 msgstr ""
 
 # id::clm.value__-tag id::clm.value__tgl
-#: 950.data.seed-values.sql:6228 950.data.seed-values.sql:6240
+#: 950.data.seed-values.sql:6230 950.data.seed-values.sql:6242
 msgid "Tagalog"
 msgstr "Tagalog"
 
 # id::clm.value__scc
-#: 950.data.seed-values.sql:6183
+#: 950.data.seed-values.sql:6185
 msgid "Serbian"
 msgstr "Сербский"
 
-#: 950.data.seed-values.sql:10064
+#: 950.data.seed-values.sql:10066
 msgid "See Also Tracing -- Form Subdivision"
 msgstr ""
 
 # id::clm.value__ast
-#: 950.data.seed-values.sql:5840
+#: 950.data.seed-values.sql:5842
 msgid "Bable"
 msgstr "Bable"
 
 # id::cblvl.value__d
-#: 950.data.seed-values.sql:6356
+#: 950.data.seed-values.sql:6358
 msgid "Subunit"
 msgstr "Подразделение"
 
 # id::clm.value__ita
-#: 950.data.seed-values.sql:6015
+#: 950.data.seed-values.sql:6017
 msgid "Italian"
 msgstr "Итальянский"
 
-#: 950.data.seed-values.sql:11560
+#: 950.data.seed-values.sql:11562
 msgid "LibraryElf Login"
 msgstr ""
 
 # id::clm.value__chb
-#: 950.data.seed-values.sql:5886
+#: 950.data.seed-values.sql:5888
 msgid "Chibcha"
 msgstr "Chibcha"
 
@@ -2230,37 +2230,37 @@ msgid "Example Sub-library 1"
 msgstr "Модель под библиотека 1"
 
 # id::clm.value__nav
-#: 950.data.seed-values.sql:6115
+#: 950.data.seed-values.sql:6117
 msgid "Navajo"
 msgstr "Навахо"
 
 # id::clm.value__mno
-#: 950.data.seed-values.sql:6101
+#: 950.data.seed-values.sql:6103
 msgid "Manobo languages"
 msgstr "Manobo languages"
 
 # id::clm.value__cha
-#: 950.data.seed-values.sql:5885
+#: 950.data.seed-values.sql:5887
 msgid "Chamorro"
 msgstr "Chamorro"
 
 # id::clm.value__lua
-#: 950.data.seed-values.sql:6068
+#: 950.data.seed-values.sql:6070
 msgid "Luba-Lulua"
 msgstr "Luba-Lulua"
 
 # id::pgt.name__4
-#: 950.data.seed-values.sql:1581
+#: 950.data.seed-values.sql:1583
 msgid "Catalogers"
 msgstr "Каталогизаторы"
 
 # id::clm.value__wak
-#: 950.data.seed-values.sql:6278
+#: 950.data.seed-values.sql:6280
 msgid "Wakashan languages"
 msgstr "Вакашский язык"
 
 # id::clm.value__amh
-#: 950.data.seed-values.sql:5828
+#: 950.data.seed-values.sql:5830
 msgid "Amharic"
 msgstr "Amharic"
 
@@ -2275,48 +2275,48 @@ msgid "Overdue Materials"
 msgstr "Просроченные Материалы"
 
 # id::clm.value__-taj id::clm.value__tgk
-#: 950.data.seed-values.sql:6231 950.data.seed-values.sql:6239
+#: 950.data.seed-values.sql:6233 950.data.seed-values.sql:6241
 msgid "Tajik"
 msgstr "Таджикский"
 
 # id::clm.value__rap
-#: 950.data.seed-values.sql:6165
+#: 950.data.seed-values.sql:6167
 msgid "Rapanui"
 msgstr "Rapanui"
 
 # id::clm.value__urd
-#: 950.data.seed-values.sql:6271
+#: 950.data.seed-values.sql:6273
 msgid "Urdu"
 msgstr "язык урду"
 
-#: 950.data.seed-values.sql:9329
+#: 950.data.seed-values.sql:9331
 msgid "Invalid value for \"circ_lib\""
 msgstr ""
 
-#: 950.data.seed-values.sql:10134
+#: 950.data.seed-values.sql:10136
 msgid "Library of Congress Subject Headings"
 msgstr ""
 
 # id::clm.value__loz
-#: 950.data.seed-values.sql:6066
+#: 950.data.seed-values.sql:6068
 msgid "Lozi"
 msgstr "Lozi"
 
-#: 950.data.seed-values.sql:10037
+#: 950.data.seed-values.sql:10039
 msgid "See Also From Tracing -- Chronological Subdivision"
 msgstr ""
 
 # id::clm.value__gor
-#: 950.data.seed-values.sql:5973
+#: 950.data.seed-values.sql:5975
 msgid "Gorontalo"
 msgstr "Gorontalo"
 
-#: 950.data.seed-values.sql:10017
+#: 950.data.seed-values.sql:10019
 msgid "Heading -- Corporate Name"
 msgstr ""
 
 # id::clm.value__chg
-#: 950.data.seed-values.sql:5888
+#: 950.data.seed-values.sql:5890
 msgid "Chagatai"
 msgstr "Chagatai"
 
@@ -2326,7 +2326,7 @@ msgid "28_days_0_renew"
 msgstr "28_days_0_renew"
 
 # id::ccs.name__11
-#: 950.data.seed-values.sql:308 950.data.seed-values.sql:2482
+#: 950.data.seed-values.sql:308 950.data.seed-values.sql:2484
 msgid "Cataloging"
 msgstr "Каталогизация"
 
@@ -2336,12 +2336,12 @@ msgid "3_days_1_renew"
 msgstr "3_days_1_renew"
 
 # id::clm.value__art
-#: 950.data.seed-values.sql:5837
+#: 950.data.seed-values.sql:5839
 msgid "Artificial (Other)"
 msgstr "Искусственныйl (другой)"
 
 # id::clm.value__nia
-#: 950.data.seed-values.sql:6122
+#: 950.data.seed-values.sql:6124
 msgid "Nias"
 msgstr "Nias"
 
@@ -2350,7 +2350,7 @@ msgid "Damaged Item Processing Fee"
 msgstr "Плата за обработку испорченной  единицы"
 
 # id::vqbrad.description__9
-#: 950.data.seed-values.sql:4790
+#: 950.data.seed-values.sql:4792
 msgid "TCN Value"
 msgstr "TCN значение"
 
@@ -2359,7 +2359,7 @@ msgid "Patron exceeds pre-collections warning fine threshold"
 msgstr ""
 
 # id::clm.value__chy
-#: 950.data.seed-values.sql:5898
+#: 950.data.seed-values.sql:5900
 msgid "Cheyenne"
 msgstr "Cheyenne"
 
@@ -2368,32 +2368,32 @@ msgid "Bilingual"
 msgstr ""
 
 # id::clm.value__fon
-#: 950.data.seed-values.sql:5947
+#: 950.data.seed-values.sql:5949
 msgid "Fon"
 msgstr "Fon"
 
 # id::clm.value__awa
-#: 950.data.seed-values.sql:5845
+#: 950.data.seed-values.sql:5847
 msgid "Awadhi"
 msgstr "Awadhi"
 
 # id::clm.value__cre
-#: 950.data.seed-values.sql:5906
+#: 950.data.seed-values.sql:5908
 msgid "Cree"
 msgstr "Cree"
 
 # id::clm.value__oto
-#: 950.data.seed-values.sql:6144
+#: 950.data.seed-values.sql:6146
 msgid "Otomian languages"
 msgstr "Otomian языки"
 
 # id::clm.value__nym
-#: 950.data.seed-values.sql:6133
+#: 950.data.seed-values.sql:6135
 msgid "Nyamwezi"
 msgstr "Nyamwezi"
 
 # id::clm.value__ind
-#: 950.data.seed-values.sql:6007
+#: 950.data.seed-values.sql:6009
 msgid "Indonesian"
 msgstr "Индонезийский"
 
@@ -2403,70 +2403,70 @@ msgid "Good"
 msgstr "Хорошо"
 
 # id::clm.value__den
-#: 950.data.seed-values.sql:5916
+#: 950.data.seed-values.sql:5918
 msgid "Slave"
 msgstr "Раб"
 
 # id::clm.value__uga
-#: 950.data.seed-values.sql:6266
+#: 950.data.seed-values.sql:6268
 msgid "Ugaritic"
 msgstr "Ugaritic"
 
 # id::clm.value__haw
-#: 950.data.seed-values.sql:5985
+#: 950.data.seed-values.sql:5987
 msgid "Hawaiian"
 msgstr "Гавайский"
 
 # id::clm.value__mac
-#: 950.data.seed-values.sql:6075
+#: 950.data.seed-values.sql:6077
 msgid "Macedonian"
 msgstr "Македонский"
 
 # id::clm.value__sid
-#: 950.data.seed-values.sql:6192
+#: 950.data.seed-values.sql:6194
 msgid "Sidamo"
 msgstr "Sidamo"
 
 # id::clm.value__pro
-#: 950.data.seed-values.sql:6161
+#: 950.data.seed-values.sql:6163
 msgid "Provençal (to 1500)"
 msgstr "Provençal (до 1500)"
 
-#: 950.data.seed-values.sql:4862
+#: 950.data.seed-values.sql:4864
 msgid "List Published Book Bags"
 msgstr "Опубликованный список  Book Bags"
 
 # id::clm.value__sin id::clm.value__-snh
-#: 950.data.seed-values.sql:6193 950.data.seed-values.sql:6208
+#: 950.data.seed-values.sql:6195 950.data.seed-values.sql:6210
 msgid "Sinhalese"
 msgstr "Sinhalese"
 
 # id::clm.value__ada
-#: 950.data.seed-values.sql:5817
+#: 950.data.seed-values.sql:5819
 msgid "Adangme"
 msgstr "Adangme"
 
 # id::clm.value__tha
-#: 950.data.seed-values.sql:6241
+#: 950.data.seed-values.sql:6243
 msgid "Thai"
 msgstr "Тайский"
 
 # id::clm.value__afr
-#: 950.data.seed-values.sql:5821
+#: 950.data.seed-values.sql:5823
 msgid "Afrikaans"
 msgstr "Африканский"
 
-#: 950.data.seed-values.sql:10042
+#: 950.data.seed-values.sql:10044
 msgid "Established Heading Linking Entry -- Personal Name"
 msgstr ""
 
 # id::citm.value__a
-#: 950.data.seed-values.sql:6312
+#: 950.data.seed-values.sql:6314
 msgid "Language material"
 msgstr "Языковой материал"
 
 # id::vqbrad.description__4
-#: 950.data.seed-values.sql:4785
+#: 950.data.seed-values.sql:4787
 msgid "Pagination"
 msgstr "Нумерация страниц"
 
@@ -2475,27 +2475,27 @@ msgid "Damaged Item"
 msgstr "Испорченные единицы"
 
 # id::clm.value__uzb
-#: 950.data.seed-values.sql:6272
+#: 950.data.seed-values.sql:6274
 msgid "Uzbek"
 msgstr "Узбекский"
 
 # id::clm.value__kru
-#: 950.data.seed-values.sql:6047
+#: 950.data.seed-values.sql:6049
 msgid "Kurukh"
 msgstr "Kurukh"
 
 # id::clm.value__ira
-#: 950.data.seed-values.sql:6012
+#: 950.data.seed-values.sql:6014
 msgid "Iranian (Other)"
 msgstr "Иранский  (другой)"
 
 # id::clm.value__zen
-#: 950.data.seed-values.sql:6294
+#: 950.data.seed-values.sql:6296
 msgid "Zenaga"
 msgstr "Zenaga"
 
 # id::clm.value__bug
-#: 950.data.seed-values.sql:5874
+#: 950.data.seed-values.sql:5876
 msgid "Bugis"
 msgstr "Bugis"
 
@@ -2505,12 +2505,12 @@ msgid "Reshelving"
 msgstr "Переразмещение на полках"
 
 # id::clm.value__bur
-#: 950.data.seed-values.sql:5876
+#: 950.data.seed-values.sql:5878
 msgid "Burmese"
 msgstr "Burmese"
 
 # id::clm.value__ale
-#: 950.data.seed-values.sql:5826
+#: 950.data.seed-values.sql:5828
 msgid "Aleut"
 msgstr "Алеутский"
 
@@ -2519,16 +2519,16 @@ msgid "e-Reader Preload"
 msgstr ""
 
 # id::vqarad.description__1
-#: 950.data.seed-values.sql:95 950.data.seed-values.sql:4846
+#: 950.data.seed-values.sql:95 950.data.seed-values.sql:4848
 msgid "Identifier"
 msgstr "Метка"
 
-#: 950.data.seed-values.sql:11547
+#: 950.data.seed-values.sql:11549
 msgid "Verification via gateway-v1"
 msgstr ""
 
 # id::clm.value__lin
-#: 950.data.seed-values.sql:6063
+#: 950.data.seed-values.sql:6065
 msgid "Lingala"
 msgstr "Lingala"
 
@@ -2536,7 +2536,7 @@ msgstr "Lingala"
 msgid "System: Rental"
 msgstr "Система: Арендная плата"
 
-#: 950.data.seed-values.sql:11543
+#: 950.data.seed-values.sql:11545
 msgid "Login via Apache module"
 msgstr ""
 
@@ -2546,84 +2546,84 @@ msgid "Checked out"
 msgstr "Выдан"
 
 # id::clm.value__lun
-#: 950.data.seed-values.sql:6072
+#: 950.data.seed-values.sql:6074
 msgid "Lunda"
 msgstr "Lunda"
 
 # id::clm.value__mos
-#: 950.data.seed-values.sql:6105
+#: 950.data.seed-values.sql:6107
 msgid "Mooré"
 msgstr "Mooré"
 
 # id::clm.value__arg
-#: 950.data.seed-values.sql:5833
+#: 950.data.seed-values.sql:5835
 msgid "Aragonese Spanish"
 msgstr "Aragonese Spanish"
 
 # id::cam.value__b
-#: 950.data.seed-values.sql:6303
+#: 950.data.seed-values.sql:6305
 msgid "Primary"
 msgstr "Основной"
 
 # id::clm.value__mis
-#: 950.data.seed-values.sql:6094
+#: 950.data.seed-values.sql:6096
 msgid "Miscellaneous languages"
 msgstr "Разные языки"
 
 # id::clm.value__lui
-#: 950.data.seed-values.sql:6071
+#: 950.data.seed-values.sql:6073
 msgid "Luiseño"
 msgstr "Luiseño"
 
 # id::clm.value__syr
-#: 950.data.seed-values.sql:6227
+#: 950.data.seed-values.sql:6229
 msgid "Syriac"
 msgstr "Syriac"
 
 # id::clm.value__kar
-#: 950.data.seed-values.sql:6026
+#: 950.data.seed-values.sql:6028
 msgid "Karen"
 msgstr "Karen"
 
 # id::clm.value__grc
-#: 950.data.seed-values.sql:5976
+#: 950.data.seed-values.sql:5978
 msgid "Greek, Ancient (to 1453)"
 msgstr "Греческий, Старый (до 1453)"
 
 # id::clm.value__fur
-#: 950.data.seed-values.sql:5954
+#: 950.data.seed-values.sql:5956
 msgid "Friulian"
 msgstr "Friulian"
 
 # id::clm.value__nyo
-#: 950.data.seed-values.sql:6135
+#: 950.data.seed-values.sql:6137
 msgid "Nyoro"
 msgstr "Nyoro"
 
-#: 950.data.seed-values.sql:4858
+#: 950.data.seed-values.sql:4860
 msgid "Template Merge Container"
 msgstr ""
 
 # id::clm.value__bre
-#: 950.data.seed-values.sql:5871
+#: 950.data.seed-values.sql:5873
 msgid "Breton"
 msgstr "Бретонский"
 
-#: 950.data.seed-values.sql:10033
+#: 950.data.seed-values.sql:10035
 msgid "See Also From Tracing -- Geographic Name"
 msgstr ""
 
 # id::clm.value__-gae id::clm.value__gla
-#: 950.data.seed-values.sql:5956 950.data.seed-values.sql:5966
+#: 950.data.seed-values.sql:5958 950.data.seed-values.sql:5968
 msgid "Scottish Gaelic"
 msgstr "Scottish Gaelic"
 
 # id::clm.value__tur
-#: 950.data.seed-values.sql:6260
+#: 950.data.seed-values.sql:6262
 msgid "Turkish"
 msgstr "Турецкий"
 
-#: 950.data.seed-values.sql:6379
+#: 950.data.seed-values.sql:6381
 msgid "DVD"
 msgstr ""
 
@@ -2633,12 +2633,12 @@ msgid "ILL"
 msgstr "МБА"
 
 # id::clm.value__del
-#: 950.data.seed-values.sql:5915
+#: 950.data.seed-values.sql:5917
 msgid "Delaware"
 msgstr "Делавэр"
 
 # id::clm.value__war
-#: 950.data.seed-values.sql:6280
+#: 950.data.seed-values.sql:6282
 msgid "Waray"
 msgstr "Waray"
 
@@ -2652,44 +2652,44 @@ msgid "Alerting block on Circ, Hold and Renew"
 msgstr ""
 
 # id::clm.value__snk
-#: 950.data.seed-values.sql:6209
+#: 950.data.seed-values.sql:6211
 msgid "Soninke"
 msgstr "Soninke"
 
-#: 950.data.seed-values.sql:10032
+#: 950.data.seed-values.sql:10034
 msgid "See Also From Tracing -- Topical Term"
 msgstr ""
 
 # id::clm.value__zap
-#: 950.data.seed-values.sql:6293
+#: 950.data.seed-values.sql:6295
 msgid "Zapotec"
 msgstr "Сапотекский язык"
 
 # id::clm.value__hmn
-#: 950.data.seed-values.sql:5992
+#: 950.data.seed-values.sql:5994
 msgid "Hmong"
 msgstr "Hmong"
 
-#: 950.data.seed-values.sql:6381
+#: 950.data.seed-values.sql:6383
 msgid "Unspecified"
 msgstr ""
 
-#: 950.data.seed-values.sql:10002
+#: 950.data.seed-values.sql:10004
 msgid "LoC"
 msgstr ""
 
 # id::clm.value__-cam id::clm.value__khm
-#: 950.data.seed-values.sql:5879 950.data.seed-values.sql:6034
+#: 950.data.seed-values.sql:5881 950.data.seed-values.sql:6036
 msgid "Khmer"
 msgstr "Кхмерский"
 
 # id::clm.value__chv
-#: 950.data.seed-values.sql:5897
+#: 950.data.seed-values.sql:5899
 msgid "Chuvash"
 msgstr "Чувашский"
 
 # id::clm.value__ine
-#: 950.data.seed-values.sql:6008
+#: 950.data.seed-values.sql:6010
 msgid "Indo-European (Other)"
 msgstr "Индо-Европейский (другой)"
 
@@ -2702,27 +2702,27 @@ msgid "Lost Materials"
 msgstr "Утерянные материалы"
 
 # id::clm.value__lit
-#: 950.data.seed-values.sql:6064
+#: 950.data.seed-values.sql:6066
 msgid "Lithuanian"
 msgstr "Литовский"
 
 # id::clm.value__may
-#: 950.data.seed-values.sql:6088
+#: 950.data.seed-values.sql:6090
 msgid "Malay"
 msgstr "Малайский"
 
 # id::clm.value__kal
-#: 950.data.seed-values.sql:6023
+#: 950.data.seed-values.sql:6025
 msgid "Kalâtdlisut"
 msgstr "Kalâtdlisut"
 
 # id::clm.value__zun
-#: 950.data.seed-values.sql:6298
+#: 950.data.seed-values.sql:6300
 msgid "Zuni"
 msgstr "Zuni"
 
 # id::citm.value__f
-#: 950.data.seed-values.sql:6320
+#: 950.data.seed-values.sql:6322
 msgid "Manuscript cartographic material"
 msgstr "Рукописный картографический материал"
 
@@ -2731,7 +2731,7 @@ msgid "Geographic Subject"
 msgstr ""
 
 # id::clm.value__iba
-#: 950.data.seed-values.sql:5996
+#: 950.data.seed-values.sql:5998
 msgid "Iban"
 msgstr "Iban"
 
@@ -2745,54 +2745,54 @@ msgid "Notification Fee"
 msgstr "Плата за извещение по  почте"
 
 # id::clm.value__scr
-#: 950.data.seed-values.sql:6185
+#: 950.data.seed-values.sql:6187
 msgid "Croatian"
 msgstr "Хорватский"
 
 # id::clm.value__ceb
-#: 950.data.seed-values.sql:5883
+#: 950.data.seed-values.sql:5885
 msgid "Cebuano"
 msgstr "Cebuano"
 
-#: 950.data.seed-values.sql:1600
+#: 950.data.seed-values.sql:1602
 msgid "Can do anything at the System level"
 msgstr ""
 
 # id::clm.value__moh
-#: 950.data.seed-values.sql:6102
+#: 950.data.seed-values.sql:6104
 msgid "Mohawk"
 msgstr "Mohawk"
 
 # id::clm.value__dgr
-#: 950.data.seed-values.sql:5917
+#: 950.data.seed-values.sql:5919
 msgid "Dogrib"
 msgstr "Dogrib"
 
 # id::clm.value__vol
-#: 950.data.seed-values.sql:6276
+#: 950.data.seed-values.sql:6278
 msgid "Volapük"
 msgstr "Volapük"
 
-#: 950.data.seed-values.sql:11548
+#: 950.data.seed-values.sql:11550
 msgid "Verification via translator-v1"
 msgstr ""
 
 # id::clm.value__mga
-#: 950.data.seed-values.sql:6091
+#: 950.data.seed-values.sql:6093
 msgid "Irish, Middle (ca. 1100-1550)"
 msgstr "Ирландский, Средний (пр. 1100-1550)"
 
-#: 950.data.seed-values.sql:6324
+#: 950.data.seed-values.sql:6326
 msgid "Musical sound recording"
 msgstr "Музыкальная звукозапись"
 
 # id::clm.value__ukr
-#: 950.data.seed-values.sql:6268
+#: 950.data.seed-values.sql:6270
 msgid "Ukrainian"
 msgstr "Украинский"
 
 # id::clm.value__sad
-#: 950.data.seed-values.sql:6173
+#: 950.data.seed-values.sql:6175
 msgid "Sandawe"
 msgstr "Sandawe"
 
@@ -2802,17 +2802,17 @@ msgid "OCLC"
 msgstr "OCLC"
 
 # id::clm.value__jav
-#: 950.data.seed-values.sql:6016
+#: 950.data.seed-values.sql:6018
 msgid "Javanese"
 msgstr "Яванский"
 
 # id::clm.value__bad
-#: 950.data.seed-values.sql:5848
+#: 950.data.seed-values.sql:5850
 msgid "Banda"
 msgstr "Banda"
 
 # id::vqbrad.description__2
-#: 950.data.seed-values.sql:4783
+#: 950.data.seed-values.sql:4785
 msgid "Author of work"
 msgstr "Автор работы"
 
@@ -2821,50 +2821,50 @@ msgid "Misc"
 msgstr "Другое"
 
 # id::clm.value__tut
-#: 950.data.seed-values.sql:6261
+#: 950.data.seed-values.sql:6263
 msgid "Altaic (Other)"
 msgstr "Altaic (другой)"
 
 # id::clm.value__kan
-#: 950.data.seed-values.sql:6025
+#: 950.data.seed-values.sql:6027
 msgid "Kannada"
 msgstr "Kannada"
 
 # id::clm.value__dum
-#: 950.data.seed-values.sql:5923
+#: 950.data.seed-values.sql:5925
 msgid "Dutch, Middle (ca. 1050-1350)"
 msgstr "Голландский, Средний (пр. 1050-1350)"
 
 # id::clm.value__per
-#: 950.data.seed-values.sql:6153
+#: 950.data.seed-values.sql:6155
 msgid "Persian"
 msgstr "Персидский"
 
-#: 950.data.seed-values.sql:11559
+#: 950.data.seed-values.sql:11561
 msgid "Apache Auth Proxy Login"
 msgstr ""
 
 # id::clm.value__mon
-#: 950.data.seed-values.sql:6104
+#: 950.data.seed-values.sql:6106
 msgid "Mongolian"
 msgstr "Монгольский"
 
 # id::clm.value__cho
-#: 950.data.seed-values.sql:5893
+#: 950.data.seed-values.sql:5895
 msgid "Choctaw"
 msgstr "Choctaw"
 
 # id::clm.value__aym
-#: 950.data.seed-values.sql:5846
+#: 950.data.seed-values.sql:5848
 msgid "Aymara"
 msgstr "Aymara"
 
 # id::clm.value__sai
-#: 950.data.seed-values.sql:6176
+#: 950.data.seed-values.sql:6178
 msgid "South American Indian (Other)"
 msgstr "Южно Американский индейский (другой)"
 
-#: 950.data.seed-values.sql:10061
+#: 950.data.seed-values.sql:10063
 msgid "See Also Tracing -- General Subdivision"
 msgstr ""
 
@@ -2875,65 +2875,65 @@ msgid "Title Control Number"
 msgstr "Расстановочный шифр заглавия"
 
 # id::clm.value__-sho id::clm.value__sna
-#: 950.data.seed-values.sql:6191 950.data.seed-values.sql:6206
+#: 950.data.seed-values.sql:6193 950.data.seed-values.sql:6208
 msgid "Shona"
 msgstr "Shona"
 
 # id::clm.value__chp
-#: 950.data.seed-values.sql:5894
+#: 950.data.seed-values.sql:5896
 msgid "Chipewyan"
 msgstr "Chipewyan"
 
 # id::clm.value__cos
-#: 950.data.seed-values.sql:5902
+#: 950.data.seed-values.sql:5904
 msgid "Corsican"
 msgstr "Корсиканский"
 
-#: 950.data.seed-values.sql:9311
+#: 950.data.seed-values.sql:9313
 msgid "Import failed due to invalid copy location"
 msgstr ""
 
 # id::clm.value__kpe
-#: 950.data.seed-values.sql:6045
+#: 950.data.seed-values.sql:6047
 msgid "Kpelle"
 msgstr "Kpelle"
 
-#: 950.data.seed-values.sql:11551
+#: 950.data.seed-values.sql:11553
 msgid "SIP2 User Verification"
 msgstr ""
 
 # id::cifm.value__c
-#: 950.data.seed-values.sql:6346
+#: 950.data.seed-values.sql:6348
 msgid "Microopaque"
 msgstr "Microopaque"
 
 # id::clm.value__som
-#: 950.data.seed-values.sql:6211
+#: 950.data.seed-values.sql:6213
 msgid "Somali"
 msgstr "Сомалийский"
 
 # id::clm.value__arp
-#: 950.data.seed-values.sql:5836
+#: 950.data.seed-values.sql:5838
 msgid "Arapaho"
 msgstr "Arapaho"
 
 # id::clm.value__ber
-#: 950.data.seed-values.sql:5861
+#: 950.data.seed-values.sql:5863
 msgid "Berber (Other)"
 msgstr "Berber (другой)"
 
 # id::clm.value__chn
-#: 950.data.seed-values.sql:5892
+#: 950.data.seed-values.sql:5894
 msgid "Chinook jargon"
 msgstr "Жаргон чинуки"
 
 # id::clm.value__aka
-#: 950.data.seed-values.sql:5823
+#: 950.data.seed-values.sql:5825
 msgid "Akan"
 msgstr "Akan"
 
 # id::clm.value__lus
-#: 950.data.seed-values.sql:6074
+#: 950.data.seed-values.sql:6076
 msgid "Lushai"
 msgstr "Lushai"
 
@@ -2943,70 +2943,70 @@ msgid "English (US)"
 msgstr "Английский (США)"
 
 # id::clm.value__pon
-#: 950.data.seed-values.sql:6158
+#: 950.data.seed-values.sql:6160
 msgid "Ponape"
 msgstr "Ponape"
 
-#: 950.data.seed-values.sql:1589
+#: 950.data.seed-values.sql:1591
 msgid "Cataloging Administrator"
 msgstr ""
 
 # id::clm.value__bla
-#: 950.data.seed-values.sql:5867
+#: 950.data.seed-values.sql:5869
 msgid "Siksika"
 msgstr "Siksika"
 
 # id::clm.value__nds
-#: 950.data.seed-values.sql:6119
+#: 950.data.seed-values.sql:6121
 msgid "Low German"
 msgstr "Нижняя Германия"
 
 # id::clm.value__dar
-#: 950.data.seed-values.sql:5913
+#: 950.data.seed-values.sql:5915
 msgid "Dargwa"
 msgstr "Dargwa"
 
 # id::clfm.value__m
-#: 950.data.seed-values.sql:6337
+#: 950.data.seed-values.sql:6339
 msgid "Mixed forms"
 msgstr "Смешанная форма"
 
 # id::clm.value__sog
-#: 950.data.seed-values.sql:6210
+#: 950.data.seed-values.sql:6212
 msgid "Sogdian"
 msgstr "Sogdian"
 
 # id::clm.value__pra
-#: 950.data.seed-values.sql:6160
+#: 950.data.seed-values.sql:6162
 msgid "Prakrit languages"
 msgstr "Prakrit язык"
 
 # id::clm.value__gay
-#: 950.data.seed-values.sql:5959
+#: 950.data.seed-values.sql:5961
 msgid "Gayo"
 msgstr "Gayo"
 
-#: 950.data.seed-values.sql:10035
+#: 950.data.seed-values.sql:10037
 msgid "See Also From Tracing -- General Subdivision"
 msgstr ""
 
 # id::clfm.value__0
-#: 950.data.seed-values.sql:6328
+#: 950.data.seed-values.sql:6330
 msgid "Not fiction (not further specified)"
 msgstr "Не художественный (не определен)"
 
 # id::clm.value__kua
-#: 950.data.seed-values.sql:6048
+#: 950.data.seed-values.sql:6050
 msgid "Kuanyama"
 msgstr "Kuanyama"
 
 # id::clm.value__-tar id::clm.value__tat
-#: 950.data.seed-values.sql:6233 950.data.seed-values.sql:6234
+#: 950.data.seed-values.sql:6235 950.data.seed-values.sql:6236
 msgid "Tatar"
 msgstr "Татарский"
 
 # id::citm.value__c
-#: 950.data.seed-values.sql:6321
+#: 950.data.seed-values.sql:6323
 msgid "Notated music"
 msgstr "Музыка с примечанияи"
 
@@ -3024,26 +3024,26 @@ msgid "System Control Number"
 msgstr ""
 
 # id::clm.value__-gal id::clm.value__orm
-#: 950.data.seed-values.sql:5958 950.data.seed-values.sql:6140
+#: 950.data.seed-values.sql:5960 950.data.seed-values.sql:6142
 msgid "Oromo"
 msgstr "Oromo"
 
 # id::cblvl.value__s
-#: 950.data.seed-values.sql:6359
+#: 950.data.seed-values.sql:6361
 msgid "Serial"
 msgstr "Серия"
 
-#: 950.data.seed-values.sql:4857
+#: 950.data.seed-values.sql:4859
 msgid "Reading List"
 msgstr "Чтение списка"
 
 # id::citm.value__e
-#: 950.data.seed-values.sql:6319
+#: 950.data.seed-values.sql:6321
 msgid "Cartographic material"
 msgstr "Картографический материал"
 
 # id::clm.value__sem
-#: 950.data.seed-values.sql:6187
+#: 950.data.seed-values.sql:6189
 msgid "Semitic (Other)"
 msgstr "Semitic (другой)"
 
@@ -3052,74 +3052,74 @@ msgid "General Keywords"
 msgstr ""
 
 # id::clm.value__kho
-#: 950.data.seed-values.sql:6035
+#: 950.data.seed-values.sql:6037
 msgid "Khotanese"
 msgstr "Khotanese"
 
 # id::clm.value__bem
-#: 950.data.seed-values.sql:5859
+#: 950.data.seed-values.sql:5861
 msgid "Bemba"
 msgstr "Bemba"
 
 # id::vqbrad.description__1
-#: 950.data.seed-values.sql:4782
+#: 950.data.seed-values.sql:4784
 msgid "Title of work"
 msgstr "Заглавие работы"
 
 # id::clm.value__que
-#: 950.data.seed-values.sql:6163
+#: 950.data.seed-values.sql:6165
 msgid "Quechua"
 msgstr "Quechua"
 
-#: 950.data.seed-values.sql:10062
+#: 950.data.seed-values.sql:10064
 msgid "See Also Tracing -- Geographic Subdivision"
 msgstr ""
 
 # id::vqbrad.description__7
-#: 950.data.seed-values.sql:4788
+#: 950.data.seed-values.sql:4790
 msgid "Price"
 msgstr "Цена"
 
 # id::clm.value__crp
-#: 950.data.seed-values.sql:5908
+#: 950.data.seed-values.sql:5910
 msgid "Creoles and Pidgins (Other)"
 msgstr "Креольский и Пидгинский,  (другой)"
 
 # id::clm.value__nic
-#: 950.data.seed-values.sql:6123
+#: 950.data.seed-values.sql:6125
 msgid "Niger-Kordofanian (Other)"
 msgstr "Niger-Kordofanian (другой)"
 
 # id::clm.value__est
-#: 950.data.seed-values.sql:5936
+#: 950.data.seed-values.sql:5938
 msgid "Estonian"
 msgstr "Эстонский"
 
 # id::clm.value__fan
-#: 950.data.seed-values.sql:5940
+#: 950.data.seed-values.sql:5942
 msgid "Fang"
 msgstr "Захват"
 
 # id::clm.value__lol
-#: 950.data.seed-values.sql:6065
+#: 950.data.seed-values.sql:6067
 msgid "Mongo-Nkundu"
 msgstr "Mongo-Nkundu"
 
-#: 950.data.seed-values.sql:9308
+#: 950.data.seed-values.sql:9310
 msgid "Import or Overlay failed"
 msgstr ""
 
 # id::clm.value__mal
-#: 950.data.seed-values.sql:6081
+#: 950.data.seed-values.sql:6083
 msgid "Malayalam"
 msgstr "Malayalam"
 
-#: 950.data.seed-values.sql:11558
+#: 950.data.seed-values.sql:11560
 msgid "Unique Mgt Login"
 msgstr ""
 
 # id::clm.value__smn
-#: 950.data.seed-values.sql:6203
+#: 950.data.seed-values.sql:6205
 msgid "Inari Sami"
 msgstr "Inari Sami"
 
@@ -3138,16 +3138,16 @@ msgid "Branch"
 msgstr "Подразделение"
 
 # id::clm.value__afh
-#: 950.data.seed-values.sql:5820
+#: 950.data.seed-values.sql:5822
 msgid "Afrihili (Artificial language)"
 msgstr "Afrihili (искусственный язык)"
 
 # id::vqbrad.description__15
-#: 950.data.seed-values.sql:4796
+#: 950.data.seed-values.sql:4798
 msgid "Item Barcode"
 msgstr "Штрих код единицы"
 
-#: 950.data.seed-values.sql:9317
+#: 950.data.seed-values.sql:9319
 msgid "Malformed record cause Overlay failure"
 msgstr ""
 
@@ -3162,16 +3162,16 @@ msgid "Example Bookmobile 1"
 msgstr "Модель книжный автобус 1"
 
 # id::cam.value__f
-#: 950.data.seed-values.sql:6307
+#: 950.data.seed-values.sql:6309
 msgid "Specialized"
 msgstr "Специализированный"
 
 # id::clm.value__fij
-#: 950.data.seed-values.sql:5944
+#: 950.data.seed-values.sql:5946
 msgid "Fijian"
 msgstr "Fijian"
 
-#: 950.data.seed-values.sql:10046
+#: 950.data.seed-values.sql:10048
 msgid "Established Heading Linking Entry -- Geographic Name"
 msgstr ""
 
@@ -3184,52 +3184,52 @@ msgstr "Американский Английский"
 msgid "Authority Record ID"
 msgstr ""
 
-#: 950.data.seed-values.sql:10052
+#: 950.data.seed-values.sql:10054
 msgid "Established Heading Linking Entry -- Chronological Term"
 msgstr ""
 
-#: 950.data.seed-values.sql:8881 950.data.seed-values.sql:8882
+#: 950.data.seed-values.sql:8883 950.data.seed-values.sql:8884
 msgid "Historical Hold Retention Age"
 msgstr ""
 
 # id::clm.value__nno
-#: 950.data.seed-values.sql:6125
+#: 950.data.seed-values.sql:6127
 msgid "Norwegian (Nynorsk)"
 msgstr "Норвежский (Нью Норскk)"
 
 # id::clm.value__tig
-#: 950.data.seed-values.sql:6243
+#: 950.data.seed-values.sql:6245
 msgid "Tigré"
 msgstr "Тигрейский"
 
 # id::clm.value__-sao id::clm.value__smo
-#: 950.data.seed-values.sql:6180 950.data.seed-values.sql:6204
+#: 950.data.seed-values.sql:6182 950.data.seed-values.sql:6206
 msgid "Samoan"
 msgstr "Samoan"
 
-#: 950.data.seed-values.sql:4851 950.data.seed-values.sql:4855
+#: 950.data.seed-values.sql:4853 950.data.seed-values.sql:4857
 msgid "General Staff Client container"
 msgstr "Контейнер (данных) всех сотрудников"
 
-#: 950.data.seed-values.sql:1591
+#: 950.data.seed-values.sql:1593
 msgid "Circulation Administrator"
 msgstr ""
 
 # id::clm.value__glv id::clm.value__-max
-#: 950.data.seed-values.sql:5969 950.data.seed-values.sql:6087
+#: 950.data.seed-values.sql:5971 950.data.seed-values.sql:6089
 msgid "Manx"
 msgstr "Manx"
 
 # id::clm.value__rar
-#: 950.data.seed-values.sql:6166
+#: 950.data.seed-values.sql:6168
 msgid "Rarotongan"
 msgstr "Rarotongan"
 
-#: 950.data.seed-values.sql:10050
+#: 950.data.seed-values.sql:10052
 msgid "Subdivision Linking Entry -- Chronological Subdivision"
 msgstr ""
 
-#: 950.data.seed-values.sql:10141
+#: 950.data.seed-values.sql:10143
 msgid "Sears List of Subject Headings"
 msgstr ""
 
@@ -3239,22 +3239,22 @@ msgid "50_cent_per_day"
 msgstr "50_cent_per_day"
 
 # id::clm.value__dyu
-#: 950.data.seed-values.sql:5925
+#: 950.data.seed-values.sql:5927
 msgid "Dyula"
 msgstr "Dyula"
 
 # id::clm.value__ipk
-#: 950.data.seed-values.sql:6011
+#: 950.data.seed-values.sql:6013
 msgid "Inupiaq"
 msgstr "Inupiaq"
 
 # id::clm.value__gre
-#: 950.data.seed-values.sql:5977
+#: 950.data.seed-values.sql:5979
 msgid "Greek, Modern (1453- )"
 msgstr "Греческий, современный (1453- )"
 
 # id::clm.value__efi
-#: 950.data.seed-values.sql:5927
+#: 950.data.seed-values.sql:5929
 msgid "Efik"
 msgstr "Efik"
 
@@ -3263,59 +3263,59 @@ msgid "Corporate Author"
 msgstr ""
 
 # id::clm.value__mus
-#: 950.data.seed-values.sql:6108
+#: 950.data.seed-values.sql:6110
 msgid "Creek"
 msgstr "Creek"
 
 # id::cam.value__c
-#: 950.data.seed-values.sql:6304
+#: 950.data.seed-values.sql:6306
 msgid "Pre-adolescent"
 msgstr "пре подросток"
 
 # id::clm.value__smj
-#: 950.data.seed-values.sql:6202
+#: 950.data.seed-values.sql:6204
 msgid "Lule Sami"
 msgstr "Lule Sami"
 
 # id::clm.value__bis
-#: 950.data.seed-values.sql:5866
+#: 950.data.seed-values.sql:5868
 msgid "Bislama"
 msgstr "Bislama"
 
 # id::clm.value__kon
-#: 950.data.seed-values.sql:6042
+#: 950.data.seed-values.sql:6044
 msgid "Kongo"
 msgstr "Kongo"
 
-#: 950.data.seed-values.sql:9327
+#: 950.data.seed-values.sql:9329
 msgid "Invalid value for \"owning_lib\""
 msgstr ""
 
-#: 950.data.seed-values.sql:11537
+#: 950.data.seed-values.sql:11539
 msgid "Login via srfsh"
 msgstr ""
 
 # id::clm.value__ach
-#: 950.data.seed-values.sql:5816
+#: 950.data.seed-values.sql:5818
 msgid "Acoli"
 msgstr "Acoli"
 
 # id::clm.value__mkh
-#: 950.data.seed-values.sql:6095
+#: 950.data.seed-values.sql:6097
 msgid "Mon-Khmer (Other)"
 msgstr "Mon-Khmer (другой)"
 
-#: 950.data.seed-values.sql:10029
+#: 950.data.seed-values.sql:10031
 msgid "See Also From Tracing -- Personal Name"
 msgstr ""
 
 # id::clm.value__pap
-#: 950.data.seed-values.sql:6150
+#: 950.data.seed-values.sql:6152
 msgid "Papiamento"
 msgstr "Papiamento"
 
 # id::clm.value__mwr
-#: 950.data.seed-values.sql:6109
+#: 950.data.seed-values.sql:6111
 msgid "Marwari"
 msgstr "Marwari"
 
@@ -3325,11 +3325,11 @@ msgid "overdue_min"
 msgstr "overdue_min"
 
 # id::clm.value__dak
-#: 950.data.seed-values.sql:5911
+#: 950.data.seed-values.sql:5913
 msgid "Dakota"
 msgstr "Дакота"
 
-#: 950.data.seed-values.sql:1593
+#: 950.data.seed-values.sql:1595
 msgid "Local Administrator"
 msgstr ""
 
@@ -3339,51 +3339,51 @@ msgid "overdue_mid"
 msgstr "overdue_mid"
 
 # id::clm.value__hat
-#: 950.data.seed-values.sql:5983
+#: 950.data.seed-values.sql:5985
 msgid "Haitian French Creole"
 msgstr "Haitian French Creole"
 
 # id::clm.value__bik
-#: 950.data.seed-values.sql:5864
+#: 950.data.seed-values.sql:5866
 msgid "Bikol"
 msgstr "Bikol"
 
 # id::clm.value__swe
-#: 950.data.seed-values.sql:6225
+#: 950.data.seed-values.sql:6227
 msgid "Swedish"
 msgstr "Шведский"
 
-#: 950.data.seed-values.sql:9331
+#: 950.data.seed-values.sql:9333
 msgid "Invalid value for \"copy_number\""
 msgstr ""
 
 # id::clm.value__sgn
-#: 950.data.seed-values.sql:6189
+#: 950.data.seed-values.sql:6191
 msgid "Sign languages"
 msgstr "Обозначение языков"
 
 # id::clm.value__chm
-#: 950.data.seed-values.sql:5891
+#: 950.data.seed-values.sql:5893
 msgid "Mari"
 msgstr "Mari"
 
 # id::clm.value__ewe
-#: 950.data.seed-values.sql:5938
+#: 950.data.seed-values.sql:5940
 msgid "Ewe"
 msgstr "Ewe"
 
 # id::clm.value__tup
-#: 950.data.seed-values.sql:6259
+#: 950.data.seed-values.sql:6261
 msgid "Tupi languages"
 msgstr "Языки тупи"
 
 # id::clm.value__alg
-#: 950.data.seed-values.sql:5827
+#: 950.data.seed-values.sql:5829
 msgid "Algonquian (Other)"
 msgstr "Algonquian (другой)"
 
 # id::clm.value__fao id::clm.value__-far
-#: 950.data.seed-values.sql:5941 950.data.seed-values.sql:5942
+#: 950.data.seed-values.sql:5943 950.data.seed-values.sql:5944
 msgid "Faroese"
 msgstr "Faroese"
 
@@ -3392,16 +3392,16 @@ msgid "Alerting block on Circ and Hold"
 msgstr ""
 
 # id::clm.value__dan
-#: 950.data.seed-values.sql:5912
+#: 950.data.seed-values.sql:5914
 msgid "Danish"
 msgstr "Датский"
 
 # id::clm.value__dra
-#: 950.data.seed-values.sql:5921
+#: 950.data.seed-values.sql:5923
 msgid "Dravidian (Other)"
 msgstr "Dravidian  (другой)"
 
-#: 950.data.seed-values.sql:10043
+#: 950.data.seed-values.sql:10045
 msgid "Established Heading Linking Entry -- Corporate Name"
 msgstr ""
 
@@ -3411,56 +3411,56 @@ msgid "Lost"
 msgstr "Потерянный"
 
 # id::clm.value__cpe
-#: 950.data.seed-values.sql:5903
+#: 950.data.seed-values.sql:5905
 msgid "Creoles and Pidgins, English-based (Other)"
 msgstr "Креольский и Пидгинский, на Английской основе  (другой)"
 
 # id::clm.value__cus
-#: 950.data.seed-values.sql:5909
+#: 950.data.seed-values.sql:5911
 msgid "Cushitic (Other)"
 msgstr "Cushitic  (другой)"
 
 # id::clm.value__tet
-#: 950.data.seed-values.sql:6238
+#: 950.data.seed-values.sql:6240
 msgid "Tetum"
 msgstr "Tetum"
 
 # id::clm.value__pal
-#: 950.data.seed-values.sql:6147
+#: 950.data.seed-values.sql:6149
 msgid "Pahlavi"
 msgstr "Pahlavi"
 
-#: 950.data.seed-values.sql:4863
+#: 950.data.seed-values.sql:4865
 msgid "Add to Published Book Bags"
 msgstr "Добавь в сумку для книг  Изданные"
 
-#: 950.data.seed-values.sql:9321
+#: 950.data.seed-values.sql:9323
 msgid "Invalid value for \"status\""
 msgstr ""
 
-#: 950.data.seed-values.sql:10055
+#: 950.data.seed-values.sql:10057
 msgid "See Also Tracing -- Personal Name"
 msgstr ""
 
-#: 950.data.seed-values.sql:6197
+#: 950.data.seed-values.sql:6199
 msgid "Slovak"
 msgstr "Словацкий"
 
-#: 950.data.seed-values.sql:10139
+#: 950.data.seed-values.sql:10141
 msgid "Not applicable"
 msgstr ""
 
 # id::clm.value__cai
-#: 950.data.seed-values.sql:5878
+#: 950.data.seed-values.sql:5880
 msgid "Central American Indian (Other)"
 msgstr "Центрально Американский Индийский  (другой)"
 
 # id::clm.value__kik
-#: 950.data.seed-values.sql:6036
+#: 950.data.seed-values.sql:6038
 msgid "Kikuyu"
 msgstr "Kikuyu"
 
-#: 950.data.seed-values.sql:6370
+#: 950.data.seed-values.sql:6372
 msgid "Betacam"
 msgstr ""
 
@@ -3469,7 +3469,7 @@ msgstr ""
 msgid "6month"
 msgstr "6month"
 
-#: 950.data.seed-values.sql:8820
+#: 950.data.seed-values.sql:8822
 msgid "Historical Circulations per Copy"
 msgstr ""
 
@@ -3477,53 +3477,53 @@ msgstr ""
 msgid "UPC"
 msgstr ""
 
-#: 950.data.seed-values.sql:8726
+#: 950.data.seed-values.sql:8728
 msgid "Handling Charge"
 msgstr ""
 
-#: 950.data.seed-values.sql:10138
+#: 950.data.seed-values.sql:10140
 msgid "Canadian Subject Headings"
 msgstr ""
 
 # id::clm.value__ang
-#: 950.data.seed-values.sql:5829
+#: 950.data.seed-values.sql:5831
 msgid "English, Old (ca. 450-1100)"
 msgstr "Английский, старый (пр. 450-1100)"
 
 # id::clm.value__nai
-#: 950.data.seed-values.sql:6112
+#: 950.data.seed-values.sql:6114
 msgid "North American Indian (Other)"
 msgstr "North American Indian (другой)"
 
 # id::clm.value__pol
-#: 950.data.seed-values.sql:6157
+#: 950.data.seed-values.sql:6159
 msgid "Polish"
 msgstr "Польский"
 
-#: 950.data.seed-values.sql:10019
+#: 950.data.seed-values.sql:10021
 msgid "Heading -- Topical Term"
 msgstr ""
 
 # id::clm.value__crh
-#: 950.data.seed-values.sql:5907
+#: 950.data.seed-values.sql:5909
 msgid "Crimean Tatar"
 msgstr "Крымские татары"
 
-#: 950.data.seed-values.sql:4856
+#: 950.data.seed-values.sql:4858
 msgid "Book Bag"
 msgstr "Сумка для книг"
 
-#: 950.data.seed-values.sql:10057
+#: 950.data.seed-values.sql:10059
 msgid "See Also Tracing -- Meeting Name"
 msgstr ""
 
 # id::clm.value__bho
-#: 950.data.seed-values.sql:5862
+#: 950.data.seed-values.sql:5864
 msgid "Bhojpuri"
 msgstr "Bhojpuri"
 
 # id::clm.value__tsi
-#: 950.data.seed-values.sql:6253
+#: 950.data.seed-values.sql:6255
 msgid "Tsimshian"
 msgstr "Tsimshian"
 
@@ -3533,94 +3533,94 @@ msgid "Your Bookmobile"
 msgstr "Твой передвижной автобус"
 
 # id::clm.value__nog
-#: 950.data.seed-values.sql:6127
+#: 950.data.seed-values.sql:6129
 msgid "Nogai"
 msgstr "Nogai"
 
-#: 950.data.seed-values.sql:11550
+#: 950.data.seed-values.sql:11552
 msgid "Verification via remoteauth"
 msgstr ""
 
 # id::clm.value__enm
-#: 950.data.seed-values.sql:5932
+#: 950.data.seed-values.sql:5934
 msgid "English, Middle (1100-1500)"
 msgstr "Английский, Средний (1100-1500)"
 
 # id::clm.value__sah
-#: 950.data.seed-values.sql:6175
+#: 950.data.seed-values.sql:6177
 msgid "Yakut"
 msgstr "Якутский"
 
 # id::clm.value__sux
-#: 950.data.seed-values.sql:6223
+#: 950.data.seed-values.sql:6225
 msgid "Sumerian"
 msgstr "Шумерский"
 
-#: 950.data.seed-values.sql:8731
+#: 950.data.seed-values.sql:8733
 msgid "Paper"
 msgstr ""
 
 # id::clm.value__xho
-#: 950.data.seed-values.sql:6287
+#: 950.data.seed-values.sql:6289
 msgid "Xhosa"
 msgstr "Xhosa"
 
 # id::clm.value__mni
-#: 950.data.seed-values.sql:6100
+#: 950.data.seed-values.sql:6102
 msgid "Manipuri"
 msgstr "Manipuri"
 
 # id::clm.value__bua
-#: 950.data.seed-values.sql:5873
+#: 950.data.seed-values.sql:5875
 msgid "Buriat"
 msgstr "Бурятский"
 
 # id::clm.value__man
-#: 950.data.seed-values.sql:6082
+#: 950.data.seed-values.sql:6084
 msgid "Mandingo"
 msgstr "Mandingo"
 
 # id::clm.value__hup
-#: 950.data.seed-values.sql:5995
+#: 950.data.seed-values.sql:5997
 msgid "Hupa"
 msgstr "Hupa"
 
 # id::clm.value__ina id::clm.value__-int
-#: 950.data.seed-values.sql:6005 950.data.seed-values.sql:6010
+#: 950.data.seed-values.sql:6007 950.data.seed-values.sql:6012
 msgid "Interlingua (International Auxiliary Language Association)"
 msgstr "Interlingua (International Auxiliary Language Association)"
 
 # id::clm.value__ice
-#: 950.data.seed-values.sql:5998
+#: 950.data.seed-values.sql:6000
 msgid "Icelandic"
 msgstr "Исландский"
 
-#: 950.data.seed-values.sql:10034
+#: 950.data.seed-values.sql:10036
 msgid "See Also From Tracing -- Genre/Form Term"
 msgstr ""
 
 # id::clm.value__twi
-#: 950.data.seed-values.sql:6263
+#: 950.data.seed-values.sql:6265
 msgid "Twi"
 msgstr "Twi"
 
 # id::clm.value__guj
-#: 950.data.seed-values.sql:5980
+#: 950.data.seed-values.sql:5982
 msgid "Gujarati"
 msgstr "Gujarati"
 
 # id::clfm.value__1
-#: 950.data.seed-values.sql:6329
+#: 950.data.seed-values.sql:6331
 msgid "Fiction (not further specified)"
 msgstr "Художественная литература (более не детализирован)"
 
 # id::clm.value__map
-#: 950.data.seed-values.sql:6084
+#: 950.data.seed-values.sql:6086
 msgid "Austronesian (Other)"
 msgstr "Austronesian (другой)"
 
 # id::clm.value__akk
-#: 950.data.seed-values.sql:5824
+#: 950.data.seed-values.sql:5826
 msgid "Akkadian"
 msgstr "Akkadian"
 
@@ -3630,67 +3630,67 @@ msgid "Filtered"
 msgstr "Фильтрированный"
 
 # id::clm.value__kor
-#: 950.data.seed-values.sql:6043
+#: 950.data.seed-values.sql:6045
 msgid "Korean"
 msgstr "Корейский"
 
 # id::clm.value__shn
-#: 950.data.seed-values.sql:6190
+#: 950.data.seed-values.sql:6192
 msgid "Shan"
 msgstr "Shan"
 
-#: 950.data.seed-values.sql:9318
+#: 950.data.seed-values.sql:9320
 msgid "New record had insufficient quality"
 msgstr ""
 
 # id::citm.value__d
-#: 950.data.seed-values.sql:6322
+#: 950.data.seed-values.sql:6324
 msgid "Manuscript notated music"
 msgstr "Музыкальный рукопись с заметками"
 
-#: 950.data.seed-values.sql:10010
+#: 950.data.seed-values.sql:10012
 msgid "Established Heading Linking Entry -- Uniform Title"
 msgstr ""
 
-#: 950.data.seed-values.sql:6362
+#: 950.data.seed-values.sql:6364
 msgid "Beta"
 msgstr ""
 
 # id::cblvl.value__c
-#: 950.data.seed-values.sql:6355
+#: 950.data.seed-values.sql:6357
 msgid "Collection"
 msgstr "Коллекция"
 
 # id::clm.value__nya
-#: 950.data.seed-values.sql:6132
+#: 950.data.seed-values.sql:6134
 msgid "Nyanja"
 msgstr "Nyanja"
 
-#: 950.data.seed-values.sql:10059
+#: 950.data.seed-values.sql:10061
 msgid "See Also Tracing -- Geographic Name"
 msgstr ""
 
-#: 950.data.seed-values.sql:1603
+#: 950.data.seed-values.sql:1605
 msgid "Can do anything at the Consortium level"
 msgstr ""
 
 # id::clm.value__cad
-#: 950.data.seed-values.sql:5877
+#: 950.data.seed-values.sql:5879
 msgid "Caddo"
 msgstr "Caddo"
 
 # id::clm.value__lez
-#: 950.data.seed-values.sql:6061
+#: 950.data.seed-values.sql:6063
 msgid "Lezgian"
 msgstr "Лезгинский"
 
 # id::clm.value__kas
-#: 950.data.seed-values.sql:6027
+#: 950.data.seed-values.sql:6029
 msgid "Kashmiri"
 msgstr "Kashmiri"
 
 # id::clm.value__hai
-#: 950.data.seed-values.sql:5982
+#: 950.data.seed-values.sql:5984
 msgid "Haida"
 msgstr "Haida"
 
@@ -3699,16 +3699,16 @@ msgid "Local Free-Text Call Number"
 msgstr ""
 
 # id::clm.value__-lan id::clm.value__oci
-#: 950.data.seed-values.sql:6056 950.data.seed-values.sql:6137
+#: 950.data.seed-values.sql:6058 950.data.seed-values.sql:6139
 msgid "Occitan (post-1500)"
 msgstr "Occitan (post-1500)"
 
-#: 950.data.seed-values.sql:9316
+#: 950.data.seed-values.sql:9318
 msgid "Malformed record cause Import failure"
 msgstr ""
 
 # id::clm.value__son
-#: 950.data.seed-values.sql:6212
+#: 950.data.seed-values.sql:6214
 msgid "Songhai"
 msgstr "Songhai"
 
@@ -3723,25 +3723,25 @@ msgid "Bindery"
 msgstr "Переплёт"
 
 # id::aout.name__2
-#: 950.data.seed-values.sql:429 950.data.seed-values.sql:2478
+#: 950.data.seed-values.sql:429 950.data.seed-values.sql:2480
 msgid "System"
 msgstr "Система"
 
-#: 950.data.seed-values.sql:1587
+#: 950.data.seed-values.sql:1589
 msgid "Acquisitions Administrator"
 msgstr "Управляющий комплектованием"
 
-#: 950.data.seed-values.sql:10160
+#: 950.data.seed-values.sql:10162
 msgid "Vandelay Queue"
 msgstr ""
 
 # id::vqbrad.description__3
-#: 950.data.seed-values.sql:4784
+#: 950.data.seed-values.sql:4786
 msgid "Language of work"
 msgstr "Язык работы"
 
 # id::clm.value__aar
-#: 950.data.seed-values.sql:5813
+#: 950.data.seed-values.sql:5815
 msgid "Afar"
 msgstr "Afar"
 
@@ -3753,48 +3753,48 @@ msgstr "3month"
 # id::cza.label__8 id::cza.label__17 id::cza.label__26
 # id::vqbrad.description__13
 #: 950.data.seed-values.sql:374 950.data.seed-values.sql:395
-#: 950.data.seed-values.sql:414 950.data.seed-values.sql:4794
+#: 950.data.seed-values.sql:414 950.data.seed-values.sql:4796
 msgid "Publication Date"
 msgstr "Дата публикации"
 
 # id::clm.value__udm
-#: 950.data.seed-values.sql:6265
+#: 950.data.seed-values.sql:6267
 msgid "Udmurt"
 msgstr "Удмуртский"
 
 # id::clm.value__gle id::clm.value__-iri
-#: 950.data.seed-values.sql:5967 950.data.seed-values.sql:6013
+#: 950.data.seed-values.sql:5969 950.data.seed-values.sql:6015
 msgid "Irish"
 msgstr "Ирландский"
 
-#: 950.data.seed-values.sql:10011
+#: 950.data.seed-values.sql:10013
 msgid "See Also Tracing -- Uniform Title"
 msgstr ""
 
 # id::clm.value__cze id::i18n_l.name__cs-CZ id::i18n_l.description__cs-CZ
 # id::clm.value__cze
 #: 950.data.seed-values.sql:329 950.data.seed-values.sql:330
-#: 950.data.seed-values.sql:5910
+#: 950.data.seed-values.sql:5912
 msgid "Czech"
 msgstr "Чешский"
 
 # id::clm.value__luo
-#: 950.data.seed-values.sql:6073
+#: 950.data.seed-values.sql:6075
 msgid "Luo (Kenya and Tanzania)"
 msgstr "Луо (Кения и Танзания)"
 
 # id::clm.value__kbd
-#: 950.data.seed-values.sql:6031
+#: 950.data.seed-values.sql:6033
 msgid "Kabardian"
 msgstr "Кабардинский"
 
 # id::clm.value__lah
-#: 950.data.seed-values.sql:6054
+#: 950.data.seed-values.sql:6056
 msgid "Lahnda"
 msgstr "Lahnda"
 
 # id::clm.value__bel
-#: 950.data.seed-values.sql:5858
+#: 950.data.seed-values.sql:5860
 msgid "Belarusian"
 msgstr "Белорусский"
 
@@ -3803,12 +3803,12 @@ msgstr "Белорусский"
 msgid "Library of Congress"
 msgstr "Библиотека Конгресса"
 
-#: 950.data.seed-values.sql:11536
+#: 950.data.seed-values.sql:11538
 msgid "Login via opensrf"
 msgstr ""
 
 # id::clm.value__-ajm
-#: 950.data.seed-values.sql:5822
+#: 950.data.seed-values.sql:5824
 msgid "Aljamía"
 msgstr "Aljamía"
 
@@ -3817,12 +3817,12 @@ msgid "Name Subject"
 msgstr ""
 
 # id::clm.value__sme
-#: 950.data.seed-values.sql:6200
+#: 950.data.seed-values.sql:6202
 msgid "Northern Sami"
 msgstr "Northern Sami"
 
 # id::clm.value__xal
-#: 950.data.seed-values.sql:6286
+#: 950.data.seed-values.sql:6288
 msgid "Kalmyk"
 msgstr "Калмыцкий"
 
@@ -3830,31 +3830,31 @@ msgstr "Калмыцкий"
 msgid "Title Proper"
 msgstr ""
 
-#: 950.data.seed-values.sql:11555
+#: 950.data.seed-values.sql:11557
 msgid "OPAC Login (tpac)"
 msgstr ""
 
 # id::cam.value__d
-#: 950.data.seed-values.sql:6305
+#: 950.data.seed-values.sql:6307
 msgid "Adolescent"
 msgstr "Молодой"
 
 # id::clm.value__rum
-#: 950.data.seed-values.sql:6170
+#: 950.data.seed-values.sql:6172
 msgid "Romanian"
 msgstr "Румынский"
 
 # id::clm.value__aze
-#: 950.data.seed-values.sql:5847
+#: 950.data.seed-values.sql:5849
 msgid "Azerbaijani"
 msgstr "Азербайджанский"
 
 # id::clm.value__srd
-#: 950.data.seed-values.sql:6215
+#: 950.data.seed-values.sql:6217
 msgid "Sardinian"
 msgstr "Sardinian"
 
-#: 950.data.seed-values.sql:6363
+#: 950.data.seed-values.sql:6365
 msgid "VHS"
 msgstr ""
 
@@ -3862,25 +3862,25 @@ msgstr ""
 msgid "System: Deposit"
 msgstr "Система: Депозит"
 
-#: 950.data.seed-values.sql:10136
+#: 950.data.seed-values.sql:10138
 msgid "Medical Subject Headings"
 msgstr ""
 
-#: 950.data.seed-values.sql:11539
+#: 950.data.seed-values.sql:11541
 msgid "Login via translator-v1"
 msgstr ""
 
 # id::citm.value__g
-#: 950.data.seed-values.sql:6314
+#: 950.data.seed-values.sql:6316
 msgid "Projected medium"
 msgstr "Проецируемое средство"
 
-#: 950.data.seed-values.sql:2494
+#: 950.data.seed-values.sql:2496
 msgid "Offline"
 msgstr ""
 
 # id::clm.value__lao
-#: 950.data.seed-values.sql:6057
+#: 950.data.seed-values.sql:6059
 msgid "Lao"
 msgstr "Lao"
 
@@ -3888,51 +3888,51 @@ msgstr "Lao"
 msgid "EAN"
 msgstr ""
 
-#: 950.data.seed-values.sql:11541
+#: 950.data.seed-values.sql:11543
 msgid "Login via remoteauth"
 msgstr ""
 
 # id::clm.value__sio
-#: 950.data.seed-values.sql:6194
+#: 950.data.seed-values.sql:6196
 msgid "Siouan (Other)"
 msgstr "Siouan (другой)"
 
 # id::clm.value__sco
-#: 950.data.seed-values.sql:6184
+#: 950.data.seed-values.sql:6186
 msgid "Scots"
 msgstr "Scots"
 
 # id::clm.value__men
-#: 950.data.seed-values.sql:6090
+#: 950.data.seed-values.sql:6092
 msgid "Mende"
 msgstr "Mende"
 
 # id::clm.value__oji
-#: 950.data.seed-values.sql:6138
+#: 950.data.seed-values.sql:6140
 msgid "Ojibwa"
 msgstr "Ojibwa"
 
 # id::clm.value__sus
-#: 950.data.seed-values.sql:6222
+#: 950.data.seed-values.sql:6224
 msgid "Susu"
 msgstr "Susu"
 
 # id::clm.value__cau
-#: 950.data.seed-values.sql:5882
+#: 950.data.seed-values.sql:5884
 msgid "Caucasian (Other)"
 msgstr "Кавказский (другой)"
 
 # id::clm.value__kur
-#: 950.data.seed-values.sql:6050
+#: 950.data.seed-values.sql:6052
 msgid "Kurdish"
 msgstr "Курдский"
 
 # id::clm.value__wal
-#: 950.data.seed-values.sql:6279
+#: 950.data.seed-values.sql:6281
 msgid "Walamo"
 msgstr "Walamo"
 
-#: 950.data.seed-values.sql:11540
+#: 950.data.seed-values.sql:11542
 msgid "Login via xmlrpc"
 msgstr ""
 
@@ -3942,42 +3942,42 @@ msgid "American Spanish"
 msgstr "Американский испанский"
 
 # id::clm.value__nde
-#: 950.data.seed-values.sql:6117
+#: 950.data.seed-values.sql:6119
 msgid "Ndebele (Zimbabwe)  "
 msgstr "Ndebele (Зимбабве)  "
 
 # id::clm.value__lub
-#: 950.data.seed-values.sql:6069
+#: 950.data.seed-values.sql:6071
 msgid "Luba-Katanga"
 msgstr "Luba-Katanga"
 
 # id::cifm.value__s
-#: 950.data.seed-values.sql:6350
+#: 950.data.seed-values.sql:6352
 msgid "Electronic"
 msgstr "Электронный"
 
 # id::clfm.value__d
-#: 950.data.seed-values.sql:6331
+#: 950.data.seed-values.sql:6333
 msgid "Dramas"
 msgstr "Драмы"
 
 # id::clm.value__zha
-#: 950.data.seed-values.sql:6295
+#: 950.data.seed-values.sql:6297
 msgid "Zhuang"
 msgstr "Zhuang"
 
 # id::cifm.value__f
-#: 950.data.seed-values.sql:6348
+#: 950.data.seed-values.sql:6350
 msgid "Braille"
 msgstr "Брайлевская"
 
 # id::clfm.value__c
-#: 950.data.seed-values.sql:6330
+#: 950.data.seed-values.sql:6332
 msgid "Comic strips"
 msgstr "Комические ленты"
 
 # id::clm.value__ido
-#: 950.data.seed-values.sql:5999
+#: 950.data.seed-values.sql:6001
 msgid "Ido"
 msgstr "Ido"
 
@@ -3991,12 +3991,12 @@ msgid "ISRC"
 msgstr ""
 
 # id::clm.value__fiu
-#: 950.data.seed-values.sql:5946
+#: 950.data.seed-values.sql:5948
 msgid "Finno-Ugrian (Other)"
 msgstr "Финно-угорская (другой)"
 
 # id::clm.value__apa
-#: 950.data.seed-values.sql:5830
+#: 950.data.seed-values.sql:5832
 msgid "Apache languages"
 msgstr "Апачский язык"
 
@@ -4005,7 +4005,7 @@ msgid "Alerting block on Hold"
 msgstr ""
 
 # id::clm.value__run
-#: 950.data.seed-values.sql:6171
+#: 950.data.seed-values.sql:6173
 msgid "Rundi"
 msgstr "Rundi"
 
@@ -4015,11 +4015,11 @@ msgid "7_days_2_renew"
 msgstr "7_days_2_renew"
 
 # id::clm.value__-esk
-#: 950.data.seed-values.sql:5934
+#: 950.data.seed-values.sql:5936
 msgid "Eskimo languages"
 msgstr "Эскимосский язык"
 
-#: 950.data.seed-values.sql:4866
+#: 950.data.seed-values.sql:4868
 msgid "Checkout Items"
 msgstr "Выданные единицы"
 
@@ -4027,12 +4027,12 @@ msgstr "Выданные единицы"
 msgid "Other Author"
 msgstr ""
 
-#: 950.data.seed-values.sql:5841
+#: 950.data.seed-values.sql:5843
 msgid "Athapascan (Other)"
 msgstr "Атапаскский  (другой)"
 
 # id::clm.value__ndo
-#: 950.data.seed-values.sql:6118
+#: 950.data.seed-values.sql:6120
 msgid "Ndonga"
 msgstr "Ndonga"
 
@@ -4041,25 +4041,25 @@ msgid "Alerting block on Hold and Renew"
 msgstr ""
 
 # id::clm.value__sot id::clm.value__-sso
-#: 950.data.seed-values.sql:6213 950.data.seed-values.sql:6218
+#: 950.data.seed-values.sql:6215 950.data.seed-values.sql:6220
 msgid "Sotho"
 msgstr "Sotho"
 
 # id::clm.value__was
-#: 950.data.seed-values.sql:6281
+#: 950.data.seed-values.sql:6283
 msgid "Washo"
 msgstr "Washo"
 
 # id::clm.value__spa
-#: 950.data.seed-values.sql:6214
+#: 950.data.seed-values.sql:6216
 msgid "Spanish"
 msgstr "Испанский"
 
-#: 950.data.seed-values.sql:10038
+#: 950.data.seed-values.sql:10040
 msgid "See Also From Tracing -- Form Subdivision"
 msgstr ""
 
-#: 950.data.seed-values.sql:10036
+#: 950.data.seed-values.sql:10038
 msgid "See Also From Tracing -- Geographic Subdivision"
 msgstr ""
 

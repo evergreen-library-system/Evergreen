@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2012-08-03 10:01-0400\n"
-"PO-Revision-Date: 2011-12-12 10:17+0000\n"
+"PO-Revision-Date: 2012-08-26 11:18+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-08-04 05:09+0000\n"
-"X-Generator: Launchpad (build 15742)\n"
+"X-Launchpad-Export-Date: 2012-08-28 06:47+0000\n"
+"X-Generator: Launchpad (build 15864)\n"
 
 #: staff.circ.alert
 msgid "Alert"
@@ -876,19 +876,19 @@ msgstr "Para tipo: %1$s"
 
 #: staff.circ.print_list_template.window.close
 msgid "Close Window"
-msgstr "Cerrar Ventana"
+msgstr "Cerrar la ventana"
 
 #: staff.circ.print_list_template.preview
 msgid "preview: "
-msgstr ""
+msgstr "previsualización: "
 
 #: staff.circ.print_list_template.save
 msgid "Template Saved"
-msgstr "Plantilla Guardada"
+msgstr "Plantilla guardada"
 
 #: staff.circ.print_list_template.save_as
 msgid "Save Templates File As"
-msgstr "Guardar Archivo De Plantilla Como"
+msgstr "Guardar archivo de plantillas como"
 
 #: staff.circ.print_list_template.export.error
 msgctxt "staff.circ.print_list_template.export.error"

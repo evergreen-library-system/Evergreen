@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > ils_events.xml.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2012-08-03 10:01-0400\n"
+"POT-Creation-Date: 2012-08-22 08:46-0400\n"
 "PO-Revision-Date: 2009-12-10 21:46+0000\n"
 "Last-Translator: Solarus <Unknown>\n"
 "Language-Team: NRCan Library <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-08-04 05:11+0000\n"
-"X-Generator: Launchpad (build 15742)\n"
+"X-Launchpad-Export-Date: 2012-08-28 06:49+0000\n"
+"X-Generator: Launchpad (build 15864)\n"
 "X-Poedit-Country: CANADA\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -245,6 +245,10 @@ msgstr ""
 "Une personne a tenté de récupérer un utilisateur du système et l’utilisateur "
 "n’a pu être trouvé"
 
+#: 7011.COPY_STATUS_LOST:862
+msgid "Copy is marked as lost"
+msgstr ""
+
 #: 7010.COPY_ALERT_MESSAGE:859
 msgid "The requested copy has an alert message attached"
 msgstr "Un message d’alerte est joint à l’exemplaire demandé"
@@ -298,10 +302,6 @@ msgstr "L’élément demandé appelé action_survey_question n’a pas été tr
 msgid "The requested authority_record_descriptor was not found"
 msgstr ""
 "L’élément demandé appelé authority_record_descriptor n’a pas été trouvé"
-
-#: 7011.COPY_STATUS_LOST:862
-msgid "Copy has is marked as lost"
-msgstr "Cette copie indique qu’elle est perdue"
 
 #: 1587.CONTAINER_CALL_NUMBER_BUCKET_NOT_FOUND:410
 msgid "The requested container_call_number_bucket was not found"
@@ -608,9 +608,9 @@ msgstr ""
 msgid "The object is not in a cancelable state."
 msgstr "L’objet ne peut pas être annulé dans son état actuel"
 
-#: 9000.REPORT_TEMPLATE_EXISTS:950
-msgid "A report template with the given name and folder already exists"
-msgstr "Un modèle de rapport avec le nom et le dossier donnés existe déjà"
+#: 7012.COPY_STATUS_MISSING:865
+msgid "Copy is marked as missing"
+msgstr ""
 
 #: 1500.ACTION_CIRCULATION_NOT_FOUND:181
 msgid ""
@@ -979,6 +979,10 @@ msgstr "L’ex demandé n’a pas été trouvé"
 msgid "Hold capture was delayed for this item"
 msgstr "Délai de la saisie de cet article mis en réserve"
 
+#: 9000.REPORT_TEMPLATE_EXISTS:950
+msgid "A report template with the given name and folder already exists"
+msgstr "Un modèle de rapport avec le nom et le dossier donnés existe déjà"
+
 #: 1502.ASSET_COPY_NOT_FOUND:190
 msgid ""
 "Someone attempted to retrieve a copy object from the system and the object "
@@ -1110,10 +1114,6 @@ msgstr "L’élément demandé appelé money_grocery n’a pas été trouvé"
 #: 8009.OFFLINE_NO_ORG:940 8010.OFFLINE_SESSION_COMPLETE:943
 msgid "No org id was provided"
 msgstr "Aucune identification d’organisation n’a été fournie"
-
-#: 7012.COPY_STATUS_MISSING:865
-msgid "Copy has is marked as missing"
-msgstr "La copie indique qu’elle est manquante"
 
 #: 1532.MONEY_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND:253
 msgid "The requested money_billable_transaction_summary was not found"
@@ -1332,3 +1332,9 @@ msgstr ""
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:461
 msgid "The requested money_user_summary was not found"
 msgstr "L’élément demandé appelé money_user_summary n’a pas été trouvé"
+
+#~ msgid "Copy has is marked as lost"
+#~ msgstr "Cette copie indique qu’elle est perdue"
+
+#~ msgid "Copy has is marked as missing"
+#~ msgstr "La copie indique qu’elle est manquante"
