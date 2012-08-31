@@ -22,6 +22,7 @@ __PACKAGE__->register_method(
     method => 'verify_session',
     api_name => 'open-ils.url_verify.session.verify',
     stream => 1,
+    max_chunk_size => 0,
     signature => {
         desc => q/
             Performs verification on all (or a subset of the) URLs within the requested session.
@@ -197,17 +198,18 @@ sub verify_session {
                     $total_processed++;
 
                     if ($options->{report_all} or ($total_processed % $resp_window == 0)) {
+
                         $client->respond({
                             url_count => $url_count,
                             current_verification => $content,
                             total_excluding_redirects => $total_excluding_redirects,
                             total_processed => $total_processed
                         });
-                    }
 
-                    # start off responding quickly, then throttle
-                    # back to only relaying every 256 messages.
-                    $resp_window *= 2 unless $resp_window >= 256;
+                        # start off responding quickly, then throttle
+                        # back to only relaying every 256 messages.
+                        $resp_window *= 2 unless $resp_window >= 256;
+                    }
                 }
             }
         },
