@@ -52,6 +52,7 @@ sub _prepare_biblio_search {
     my ($cgi, $ctx) = @_;
 
     my $query = _prepare_biblio_search_basics($cgi) || '';
+    $query = "($query)";
 
     foreach ($cgi->param('modifier')) {
         # The unless bit is to avoid stacking modifiers.
