@@ -1,6 +1,6 @@
 BEGIN;
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0737', :eg_version);
 
 UPDATE action_trigger.event_definition
 SET template =
@@ -28,6 +28,6 @@ FOR item IN items;
     helpers.csv_datum(title) %],[% helpers.csv_datum(author) %],[% helpers.csv_datum(pub_date) %],[% helpers.csv_datum(item_type) %],[% FOR note IN item.notes; helpers.csv_datum(note.note); ","; END; "\n";
 END -%]
 $$
-WHERE id = 48;
+WHERE name = 'Bookbag CSV';
 
 COMMIT;
