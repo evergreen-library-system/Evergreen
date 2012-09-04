@@ -651,7 +651,7 @@ cat.record_buckets.prototype = {
                                 );
 
                                 xulG.new_tab(
-                                    '/xul/server/cat/bibs_abreast.xul',{
+                                    'oils://remote/xul/server/cat/bibs_abreast.xul',{
                                         'tab_name' : $("catStrings").getString('staff.cat.record_buckets.merge_records.fancy_prompt_title')
                                     },{
                                         'merge' : true,
