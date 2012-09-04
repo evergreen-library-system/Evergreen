@@ -1,8 +1,8 @@
 BEGIN;
 
--- XXXX.schema.vandelay.import-match-no-like-any.sql
+-- 0738.schema.vandelay.import-match-no-like-any.sql
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0738', :eg_version);
 
 CREATE OR REPLACE FUNCTION vandelay.match_set_test_marcxml(
     match_set_id INTEGER, record_xml TEXT
