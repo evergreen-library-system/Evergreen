@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-28 14:17-0400\n"
+"POT-Creation-Date: 2012-09-04 13:44-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -218,6 +218,10 @@ msgstr ""
 
 #: staff.cat.edit_volumes.label_exists.details
 msgid "%1$s"
+msgstr ""
+
+#: staff.cat.edit_volume.exception
+msgid "An error occurred while you were trying to edit these volumes."
 msgstr ""
 
 #: staff.cat.copy_browser.can_have_copies.false
@@ -1319,6 +1323,10 @@ msgstr ""
 
 #: staff.cat.record_buckets.merge_records.fancy_prompt_title
 msgid "Record Merging"
+msgstr ""
+
+#: staff.cat.record_buckets.merge_records.catch.std_unex_err
+msgid "Records were not likely merged."
 msgstr ""
 
 #: staff.cat.record_buckets.delete_records.xml1
