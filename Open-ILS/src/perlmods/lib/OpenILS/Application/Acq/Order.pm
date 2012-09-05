@@ -1364,7 +1364,17 @@ sub upload_records {
     my $activate_po     = $args->{activate_po};
     my $vandelay        = $args->{vandelay};
     my $ordering_agency = $args->{ordering_agency} || $e->requestor->ws_ou;
-    my $fiscal_year     = $args->{fiscal_year} || DateTime->now->year;
+    my $fiscal_year     = $args->{fiscal_year};
+
+    # if the user provides no fiscal year, find the
+    # current fiscal year for the ordering agency.
+    $fiscal_year ||= $U->simplereq(
+        'open-ils.acq',
+        'open-ils.acq.org_unit.current_fiscal_year',
+        $auth,
+        $ordering_agency
+    );
+
     my $po;
     my $evt;
 
