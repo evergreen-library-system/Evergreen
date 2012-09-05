@@ -1,0 +1,72 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+use XML::LibXML;
+use XML::LibXML::Reader;
+use LWP::Simple;
+use Data::Dumper;
+
+my %relator;
+my $code = 0;
+my $fullname = 0;
+my $code_v;
+
+my $content = get('http://www.loc.gov/marc/relators/relacode.html');
+
+$content =~ s{^<!DOCTYPE.*?>}{}s;
+$content =~ s{<head>.+?</head>}{}s;
+$content =~ s{<table .+?<table }{<table }s;
+$content =~ s{&raquo;}{}gs;
+$content =~ s{</table>.+?</table>}{</table>}s;
+
+my $reader = XML::LibXML::Reader->new(
+    string => $content,
+    recover => 2,
+    load_ext_dtd => 0
+);
+
+$reader->nextElement('table');
+$reader->nextElement('tr');
+while($reader->read) {
+    processNode($reader);
+}
+
+#print Dumper(\%relator);
+generateRelatorMap();
+
+sub processNode {
+    my $reader = shift;
+    if ($reader->nodeType == XML_READER_TYPE_ELEMENT && $reader->name eq 'td') {
+        if ($reader->getAttribute('class') && $reader->getAttribute('class') eq 'code') {
+            $code = 1;
+        } else {
+            $fullname = 1;
+        }
+    }
+    if ($reader->nodeType == XML_READER_TYPE_TEXT) {
+        if ($code) {
+            $code_v = $reader->value();
+
+            # Treat deprecated codes as valid
+            $code_v =~ s/^-//;
+            $code = 0;
+        } elsif ($fullname) {
+            $relator{$code_v} = $reader->value();
+            $fullname = 0;
+        }
+    }
+}
+
+sub generateRelatorMap {
+    print <<"HEAD";
+[%-  
+# Generated from http://www.loc.gov/marc/relators/relacode.html
+# using the build/tools/relator_map script
+HEAD
+    print 'relators = {' . "\n";
+    foreach (sort keys %relator) {
+        print "    '$_' => l('$relator{$_}'),\n";
+    }
+    print '} -%]';
+}

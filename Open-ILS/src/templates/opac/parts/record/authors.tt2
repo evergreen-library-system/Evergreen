@@ -1,5 +1,7 @@
 [%-  
 
+PROCESS "opac/parts/relators.tt2";
+
 authors = [
     {
         type => 'author', 
@@ -9,10 +11,6 @@ authors = [
         type => 'added', 
         label => l('Added Author'),
         xpath => '//*[@tag="700"]|//*[@tag="710"]|//*[@tag="711"]'
-    }, {
-        type => 'credits', 
-        label => l('Credited'),
-        xpath => '//*[@tag="100"]|//*[@tag="110"]|//*[@tag="111"]'
     }, {
         type => 'cast', 
         label => l('Cast'),
@@ -29,9 +27,14 @@ BLOCK build_author_links;
         term = '';
         qterm = '';
         iprop = '';
+        tlabel = '';
         FOR subfield IN node.childNodes;
             NEXT UNLESS subfield.nodeName == "subfield";
             code = subfield.getAttribute('code');
+            IF code == '4';
+                relcode = subfield.textContent.substr(0,3);
+                tlabel = relators.$relcode || label;
+            END;
             NEXT UNLESS code.match('[a-z]');
             sf_raw = subfield.textContent;
             sf = subfield.textContent | html;
@@ -39,7 +42,7 @@ BLOCK build_author_links;
             qterm = qterm _ ' ' _ sf_raw;
         END;
         url = mkurl(ctx.opac_root _ '/results', {query => qterm, qtype => 'author'}, ['page', 'expand']);
-        author_type = label | html;
+        author_type = (tlabel || label) | html;
         
         # schema.org changes
         IF type == 'author';
