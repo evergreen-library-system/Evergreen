@@ -23,7 +23,7 @@
                 [% FOR summary IN ctx.mfhd_summaries %]
                 {
                     'id' : '[% summary.sre_id %]', 
-                    'label' : '[% summary.location %]',
+                    'label' : '[% summary.location | replace("'", "\\'") %]',
                     'entryNum' : '[% loop.index %]',
                     'owning_lib' : '[% summary.owning_lib %]'
                 },
