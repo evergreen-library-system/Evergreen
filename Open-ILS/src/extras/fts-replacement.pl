@@ -35,7 +35,6 @@ GetOptions(
     'runs=i' => \$runs
 );
 
-print "Original query: $query\n";
 
 my $start = time();
 OpenILS::Application::Storage::Driver::Pg::QueryParser->new( superpage_size => $superpage_size, superpage => $superpage, core_limit => $core_limit, debug => $debug, query => $query )->parse->parse_tree for (1 .. $runs);
@@ -49,8 +48,10 @@ my $sql = $plan->toSQL;
 $sql =~ s/^\s*$//gm;
 print "SQL:\n$sql\n\n" if (!$quiet);
 
-my $abstract_query = $plan->parse_tree->to_abstract_query(with_config => 1);
+my $abstract_query = $plan->parse_tree->to_abstract_query(with_config => 0);
 print "abstract_query: " . Dumper($abstract_query) . "\n";
+print "Original query: $query\n";
+print "Canonicalized query: ".$plan->canonicalize()."\n";
 print "Simple plan: " . ($plan->simple_plan ? 'yes' : 'no') . "\n"; 
 print "Total parse time, $runs runs: " . ($end - $start) . "s\n";
 print "Average parse time, $runs runs: " . sprintf('%0.3f',(($end - $start) / $runs) * 1000) . "ms\n";

@@ -19,6 +19,14 @@ our %parser_config = (
     }
 );
 
+sub canonicalize {
+    my $self = shift;
+    return QueryParser::Canonicalize::abstract_query2str_impl(
+        $self->parse_tree->to_abstract_query(@_)
+    );
+}
+
+
 sub facet_class_count {
     my $self = shift;
     return @{$self->facet_classes};
@@ -647,7 +655,7 @@ sub decompose {
             warn "Encountered AND\n" if $self->debug;
 
             my $LHS = $struct;
-            my ($RHS, $subremainder) = $self->decompose( $_, $current_class, $recursing + 1 );
+            my ($RHS, $subremainder) = $self->decompose( '('.$_.')', $current_class, $recursing + 1 );
             $_ = $subremainder;
 
             $struct = $self->new_plan( level => $recursing, joiner => '&' );
@@ -661,7 +669,7 @@ sub decompose {
             warn "Encountered OR\n" if $self->debug;
 
             my $LHS = $struct;
-            my ($RHS, $subremainder) = $self->decompose( $_, $current_class, $recursing + 1 );
+            my ($RHS, $subremainder) = $self->decompose( '('.$_.')', $current_class, $recursing + 1 );
             $_ = $subremainder;
 
             $struct = $self->new_plan( level => $recursing, joiner => '|' );
@@ -836,12 +844,14 @@ sub compare_abstract_atoms {
 }
 
 sub fake_abstract_atom_from_phrase {
-    my ($phrase, $neg) = @_;
+    my $phrase = shift;
+    my $neg = shift;
+    my $qp_class = shift || 'QueryParser';
 
     my $prefix = '"';
     if ($neg) {
         $prefix =
-            $QueryParser::parser_config{QueryParser}{operators}{disallowed} .
+            $QueryParser::parser_config{$qp_class}{operators}{disallowed} .
             $prefix;
     }
 
@@ -872,10 +882,11 @@ package QueryParser::Canonicalize;  # not OO
 
 sub _abstract_query2str_filter {
     my $f = shift;
-    my $qpconfig = $parser_config{QueryParser};
+    my $qp_class = shift || 'QueryParser';
+    my $qpconfig = $QueryParser::parser_config{$qp_class};
 
     return sprintf(
-        "%s%s(%s)",
+        '%s%s(%s)',
         $f->{negate} ? $qpconfig->{operators}{disallowed} : "",
         $f->{name},
         join(",", @{$f->{args}})
@@ -884,7 +895,8 @@ sub _abstract_query2str_filter {
 
 sub _abstract_query2str_modifier {
     my $f = shift;
-    my $qpconfig = $parser_config{QueryParser};
+    my $qp_class = shift || 'QueryParser';
+    my $qpconfig = $QueryParser::parser_config{$qp_class};
 
     return $qpconfig->{operators}{modifier} . $f;
 }
@@ -892,26 +904,31 @@ sub _abstract_query2str_modifier {
 # This should produce an equivalent query to the original, given an
 # abstract_query.
 sub abstract_query2str_impl {
-    my ($abstract_query, $depth) = @_;
+    my $abstract_query  = shift;
+    my $depth = shift || 0;
 
-    my $qpconfig = $parser_config{QueryParser};
+    my $qp_class ||= shift || 'QueryParser';
+    my $qpconfig = $QueryParser::parser_config{$qp_class};
 
     my $gs = $qpconfig->{operators}{group_start};
     my $ge = $qpconfig->{operators}{group_end};
     my $and = $qpconfig->{operators}{and};
     my $or = $qpconfig->{operators}{or};
 
+    my $needs_group = 0;
     my $q = "";
-    $q .= $gs if $abstract_query->{type} and $abstract_query->{type} eq "query_plan" and $depth;
 
     if (exists $abstract_query->{type}) {
         if ($abstract_query->{type} eq 'query_plan') {
-            $q .= join(" ", map { _abstract_query2str_filter($_) } @{$abstract_query->{filters}}) if
+            $q .= join(" ", map { _abstract_query2str_filter($_, $qp_class) } @{$abstract_query->{filters}}) if
                 exists $abstract_query->{filters};
+            $needs_group += scalar(@{$abstract_query->{filters}}) if exists $abstract_query->{filters};
+
             $q .= " ";
 
-            $q .= join(" ", map { _abstract_query2str_modifier($_) } @{$abstract_query->{modifiers}}) if
+            $q .= join(" ", map { _abstract_query2str_modifier($_, $qp_class) } @{$abstract_query->{modifiers}}) if
                 exists $abstract_query->{modifiers};
+            $needs_group += scalar(@{$abstract_query->{modifiers}}) if exists $abstract_query->{modifiers};
         } elsif ($abstract_query->{type} eq 'node') {
             if ($abstract_query->{alias}) {
                 $q .= " " . $abstract_query->{alias};
@@ -927,34 +944,38 @@ sub abstract_query2str_impl {
             $q .= $prefix .
                 ($abstract_query->{content} || '') .
                 ($abstract_query->{suffix} || '');
+            $needs_group += 1;
         } elsif ($abstract_query->{type} eq 'facet') {
             # facet syntax [ # ] is hardcoded I guess?
             my $prefix = $abstract_query->{negate} ? $qpconfig->{operators}{disallowed} : '';
             $q .= $prefix . $abstract_query->{name} . "[" .
                 join(" # ", @{$abstract_query->{values}}) . "]";
+            $needs_group += 1;
         }
     }
 
     if (exists $abstract_query->{children}) {
         my $op = (keys(%{$abstract_query->{children}}))[0];
         $q .= join(
-            " " . ($op eq '&' ? $and : $or) . " ",
+            " " . ($op eq '&' ? '' : $or) . " ",
             map {
-                abstract_query2str_impl($_, $depth + 1)
+                abstract_query2str_impl($_, $depth + 1, $qp_class)
             } @{$abstract_query->{children}{$op}}
         );
+        $needs_group += scalar(@{$abstract_query->{children}{$op}});
     } elsif ($abstract_query->{'&'} or $abstract_query->{'|'}) {
         my $op = (keys(%{$abstract_query}))[0];
         $q .= join(
             " " . ($op eq '&' ? $and : $or) . " ",
             map {
-                abstract_query2str_impl($_, $depth + 1)
+                abstract_query2str_impl($_, $depth + 1, $qp_class)
             } @{$abstract_query->{$op}}
         );
+        $needs_group += scalar(@{$abstract_query->{$op}});
     }
     $q .= " ";
 
-    $q .= $ge if $abstract_query->{type} and $abstract_query->{type} eq "query_plan" and $depth;
+    $q = $gs . $q . $ge if ($needs_group > 1 and $depth);
 
     return $q;
 }
@@ -1530,7 +1551,7 @@ sub to_abstract_query {
                         last if $self->replace_phrase_in_abstract_query(
                             $tmplist,
                             $_,
-                            QueryParser::_util::fake_abstract_atom_from_phrase($phrase)
+                            QueryParser::_util::fake_abstract_atom_from_phrase($phrase, undef, $pkg)
                         );
                     }
                 }
@@ -1563,7 +1584,7 @@ sub to_abstract_query {
                         last if $self->replace_phrase_in_abstract_query(
                             $tmplist,
                             $_,
-                            QueryParser::_util::fake_abstract_atom_from_phrase($phrase, 1)
+                            QueryParser::_util::fake_abstract_atom_from_phrase($phrase, 1, $pkg)
                         );
                     }
                 }
