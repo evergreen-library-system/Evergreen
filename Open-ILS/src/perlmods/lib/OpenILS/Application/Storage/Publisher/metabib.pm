@@ -2929,7 +2929,7 @@ sub query_parser_fts {
 
 
     # parse the query and supply any query-level %arg-based defaults
-    # we expect, and make use of, query, superpage, superpage_size, debug and core_limit args
+    # we expect, and make use of, query, debug and core_limit args
     my $query = $parser->new( %args )->parse;
 
     my $config = OpenSRF::Utils::SettingsClient->new();
@@ -2973,194 +2973,15 @@ sub query_parser_fts {
         }
     }
 
-    # gather the site, if one is specified, defaulting to the in-query version
-	my $ou = $args{org_unit};
-	if (my ($filter) = $query->parse_tree->find_filter('site')) {
-            $ou = $filter->args->[0] if (@{$filter->args});
-    }
-    $ou = actor::org_unit->search( { shortname => $ou } )->next->id if ($ou and $ou !~ /^(-)?\d+$/);
-
-    # gather lasso, as with $ou
-	my $lasso = $args{lasso};
-	if (my ($filter) = $query->parse_tree->find_filter('lasso')) {
-            $lasso = $filter->args->[0] if (@{$filter->args});
-    }
-	$lasso = actor::org_lasso->search( { name => $lasso } )->next->id if ($lasso and $lasso !~ /^\d+$/);
-    $lasso = -$lasso if ($lasso);
-
-
-#    # XXX once we have org_unit containers, we can make user-defined lassos .. WHEEE
-#    # gather user lasso, as with $ou and lasso
-#    my $mylasso = $args{my_lasso};
-#    if (my ($filter) = $query->parse_tree->find_filter('my_lasso')) {
-#            $mylasso = $filter->args->[0] if (@{$filter->args});
-#    }
-#    $mylasso = actor::org_unit->search( { name => $mylasso } )->next->id if ($mylasso and $mylasso !~ /^\d+$/);
-
-
-    # if we have a lasso, go with that, otherwise ... ou
-    $ou = $lasso if ($lasso);
-
-    # gather the preferred OU, if one is specified, as with $ou
-    my $pref_ou = $args{pref_ou};
-	$log->info("pref_ou = $pref_ou");
-	if (my ($filter) = $query->parse_tree->find_filter('pref_ou')) {
-            $pref_ou = $filter->args->[0] if (@{$filter->args});
-    }
-    $pref_ou = actor::org_unit->search( { shortname => $pref_ou } )->next->id if ($pref_ou and $pref_ou !~ /^(-)?\d+$/);
-
-    # get the default $ou if we have nothing
-	$ou = actor::org_unit->search( { parent_ou => undef } )->next->id if (!$ou and !$lasso and !$mylasso);
-
-
-    # XXX when user lassos are here, check to make sure we don't have one -- it'll be passed in the depth, with an ou of 0
-    # gather the depth, if one is specified, defaulting to the in-query version
-	my $depth = $args{depth};
-	if (my ($filter) = $query->parse_tree->find_filter('depth')) {
-            $depth = $filter->args->[0] if (@{$filter->args});
-    }
-	$depth = actor::org_unit->search_where( [{ name => $depth },{ opac_label => $depth }], {limit => 1} )->next->id if ($depth and $depth !~ /^\d+$/);
-
-
-    # gather the limit or default to 10
-	my $limit = $args{check_limit} || 'NULL';
-	if (my ($filter) = $query->parse_tree->find_filter('limit')) {
-            $limit = $filter->args->[0] if (@{$filter->args});
-    }
-	if (my ($filter) = $query->parse_tree->find_filter('check_limit')) {
-            $limit = $filter->args->[0] if (@{$filter->args});
-    }
-
-
-    # gather the offset or default to 0
-	my $offset = $args{skip_check} || $args{offset} || 0;
-	if (my ($filter) = $query->parse_tree->find_filter('offset')) {
-            $offset = $filter->args->[0] if (@{$filter->args});
-    }
-	if (my ($filter) = $query->parse_tree->find_filter('skip_check')) {
-            $offset = $filter->args->[0] if (@{$filter->args});
-    }
-
-
-    # gather the estimation strategy or default to inclusion
-    my $estimation_strategy = $args{estimation_strategy} || 'inclusion';
-	if (my ($filter) = $query->parse_tree->find_filter('estimation_strategy')) {
-            $estimation_strategy = $filter->args->[0] if (@{$filter->args});
-    }
-
-
-    # gather the estimation strategy or default to inclusion
-    my $core_limit = $args{core_limit};
-	if (my ($filter) = $query->parse_tree->find_filter('core_limit')) {
-            $core_limit = $filter->args->[0] if (@{$filter->args});
-    }
-
-
-    # gather statuses, and then forget those if we have an #available modifier
-    my @statuses;
-    if (my ($filter) = $query->parse_tree->find_filter('statuses')) {
-        @statuses = @{$filter->args} if (@{$filter->args});
-    }
-    @statuses = (0,7,12) if ($query->parse_tree->find_modifier('available'));
-
-
-    # gather locations
-    my @location;
-    if (my ($filter) = $query->parse_tree->find_filter('locations')) {
-        @location = @{$filter->args} if (@{$filter->args});
-    }
-
-    # gather location_groups
-    if (my ($filter) = $query->parse_tree->find_filter('location_groups')) {
-        my @loc_groups = @{$filter->args} if (@{$filter->args});
-        
-        # collect the mapped locations and add them to the locations() filter
-        if (@loc_groups) {
-
-            my $cstore = OpenSRF::AppSession->create( 'open-ils.cstore' );
-            my $maps = $cstore->request(
-                'open-ils.cstore.direct.asset.copy_location_group_map.search.atomic',
-                {lgroup => \@loc_groups})->gather(1);
-
-            push(@location, $_->location) for @$maps;
-        }
-    }
-
-
-    my $param_check = $limit || $query->superpage_size || 'NULL';
-    my $param_offset = $offset || 'NULL';
-    my $param_limit = $core_limit || 'NULL';
-
-    my $sp = $query->superpage || 1;
-    if ($sp > 1) {
-        $param_offset = ($sp - 1) * $sp_size;
-    }
-
-	my $param_search_ou = $ou;
-	my $param_depth = $depth; $param_depth = 'NULL' unless (defined($depth) and length($depth) > 0 );
-	my $param_core_query = "\$core_query_$$\$" . $query->parse_tree->toSQL . "\$core_query_$$\$";
-	my $param_statuses = '$${' . join(',', map { s/\$//go; "\"$_\""} @statuses) . '}$$';
-	my $param_locations = '$${' . join(',', map { s/\$//go; "\"$_\""} @location) . '}$$';
-	my $staff = ($self->api_name =~ /staff/ or $query->parse_tree->find_modifier('staff')) ? "'t'" : "'f'";
-	my $metarecord = ($self->api_name =~ /metabib/ or $query->parse_tree->find_modifier('metabib') or $query->parse_tree->find_modifier('metarecord')) ? "'t'" : "'f'";
-	my $param_pref_ou = $pref_ou || 'NULL';
-
-	my $sth = metabib::metarecord_source_map->db_Main->prepare(<<"    SQL");
-        SELECT  * -- bib search: $args{query}
-          FROM  search.query_parser_fts(
-                    $param_search_ou\:\:INT,
-                    $param_depth\:\:INT,
-                    $param_core_query\:\:TEXT,
-                    $param_statuses\:\:INT[],
-                    $param_locations\:\:INT[],
-                    $param_offset\:\:INT,
-                    $param_check\:\:INT,
-                    $param_limit\:\:INT,
-                    $metarecord\:\:BOOL,
-                    $staff\:\:BOOL,
-                    $param_pref_ou\:\:INT
-                );
-    SQL
-
+	my $sth = metabib::metarecord_source_map->db_Main->prepare($query->parse_tree->toSQL);
     $sth->execute;
 
     my $recs = $sth->fetchall_arrayref({});
-    my $summary_row = pop @$recs;
+	$log->debug("Search yielded ".scalar(@$recs)." checked, visible results.",DEBUG);
 
-    my $total    = $$summary_row{total};
-    my $checked  = $$summary_row{checked};
-    my $visible  = $$summary_row{visible};
-    my $deleted  = $$summary_row{deleted};
-    my $excluded = $$summary_row{excluded};
-
-    my $estimate = $visible;
-    if ( $total > $checked && $checked ) {
-
-        $$summary_row{hit_estimate} = FTS_paging_estimate($self, $client, $checked, $visible, $excluded, $deleted, $total);
-        $estimate = $$summary_row{estimated_hit_count} = $$summary_row{hit_estimate}{$estimation_strategy};
-
-    }
-
-    delete $$summary_row{id};
-    delete $$summary_row{rel};
-    delete $$summary_row{record};
-
-    if (defined($simple_plan)) {
-        $$summary_row{complex_query} = $simple_plan ? 0 : 1;
-    } else {
-        $$summary_row{complex_query} = $query->simple_plan ? 0 : 1;
-    }
-
-    $client->respond( $summary_row );
-
-	$log->debug("Search yielded ".scalar(@$recs)." checked, visible results with an approximate visible total of $estimate.",DEBUG);
+    $client->respond({visible => scalar(@$recs)});
 
 	for my $rec (@$recs) {
-        delete $$rec{checked};
-        delete $$rec{visible};
-        delete $$rec{excluded};
-        delete $$rec{deleted};
-        delete $$rec{total};
         $$rec{rel} = sprintf('%0.3f',$$rec{rel});
 
 		$client->respond( $rec );

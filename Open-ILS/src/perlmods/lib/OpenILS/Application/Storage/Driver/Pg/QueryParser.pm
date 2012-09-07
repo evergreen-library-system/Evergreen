@@ -45,6 +45,24 @@ sub filter_group_entry_callback {
     );
 }
 
+sub location_groups_callback {
+    my ($invocant, $self, $struct, $filter, $params, $negate) = @_;
+
+    return sprintf(' %slocations(%s)',
+        $negate ? '-' : '',
+        join(
+            ',',
+            map {
+                $_->location
+            } @{
+                OpenILS::Utils::CStoreEditor
+                    ->new
+                    ->search_asset_copy_location_group_map({ lgroup => $params })
+            }
+        )
+    );
+}
+
 sub format_callback {
     my ($invocant, $self, $struct, $filter, $params, $negate) = @_;
 
@@ -477,10 +495,10 @@ __PACKAGE__->add_search_filter( 'after' );
 __PACKAGE__->add_search_filter( 'between' );
 __PACKAGE__->add_search_filter( 'during' );
 
-# used by layers above this
+# various filters for limiting in various ways
 __PACKAGE__->add_search_filter( 'statuses' );
 __PACKAGE__->add_search_filter( 'locations' );
-__PACKAGE__->add_search_filter( 'location_groups' );
+__PACKAGE__->add_search_filter( 'location_groups', sub { return __PACKAGE__->location_groups_callback(@_) } );
 __PACKAGE__->add_search_filter( 'site' );
 __PACKAGE__->add_search_filter( 'pref_ou' );
 __PACKAGE__->add_search_filter( 'lasso' );
@@ -527,8 +545,9 @@ use base 'QueryParser::query_plan';
 use OpenSRF::Utils::Logger qw($logger);
 use Data::Dumper;
 use OpenILS::Application::AppUtils;
+use OpenILS::Utils::CStoreEditor;
 my $apputils = "OpenILS::Application::AppUtils";
-
+my $editor = OpenILS::Utils::CStoreEditor->new;
 
 sub toSQL {
     my $self = shift;
@@ -543,6 +562,7 @@ sub toSQL {
             $filters{$col} = $filter->args->[0];
         }
     }
+    $self->new_filter( statuses => [0,7,12] ) if ($self->find_modifier('available'));
 
     $self->QueryParser->superpage($filters{superpage}) if ($filters{superpage});
     $self->QueryParser->superpage_size($filters{superpage_size}) if ($filters{superpage_size});
@@ -553,7 +573,8 @@ sub toSQL {
     my $flat_plan = $self->flatten;
 
     # generate the relevance ranking
-    my $rel = "AVG(\n${spc}${spc}${spc}${spc}${spc}(" . join(")\n${spc}${spc}${spc}${spc}${spc}+ (", @{$$flat_plan{rank_list}}) . ")\n${spc}${spc}${spc}${spc})+1";
+    my $rel = '1'; # Default to something simple in case rank_list is empty.
+    $rel = "AVG(\n${spc}${spc}${spc}${spc}${spc}(" . join(")\n${spc}${spc}${spc}${spc}${spc}+ (", @{$$flat_plan{rank_list}}) . ")\n${spc}${spc}${spc}${spc})+1" if (@{$$flat_plan{rank_list}});
 
     # find any supplied sort option
     my ($sort_filter) = $self->find_filter('sort');
@@ -570,8 +591,6 @@ sub toSQL {
     }
     $rel = "1.0/($rel)::NUMERIC";
 
-    my $mra_join = 'INNER JOIN metabib.record_attr mrd ON m.source = mrd.id';
-    
     my $rank = $rel;
 
     my $desc = 'ASC';
@@ -594,6 +613,7 @@ sub toSQL {
     my $key = 'm.source';
     $key = 'm.metarecord' if (grep {$_->name eq 'metarecord' or $_->name eq 'metabib'} @{$self->modifiers});
 
+    #TODO: Examine how we want to do limits. And offsets. And other annoying crap like that.
     my $core_limit = $self->QueryParser->core_limit || 25000;
 
     my $flat_where = $$flat_plan{where};
@@ -602,29 +622,194 @@ sub toSQL {
     } else {
         $flat_where = "AND $flat_where";
     }
-    my $with = $$flat_plan{with};
-    $with= "\nWITH $with" if $with;
 
-    # Need an array for query parser db function; this gives a better plan
-    # than the ARRAY_AGG(DISTINCT m.source) option as of PostgreSQL 9.1
-    my $agg_records = 'ARRAY[m.source] AS records';
+    my $site = $self->find_filter('site');
+    if ($site && $site->args) {
+        $site = $site->args->[0];
+        if ($site && $site !~ /^(-)?\d+$/) {
+            my $search = $editor->search_actor_org_unit({ shortname => $site });
+            $site = @$search[0]->id if($search && @$search);
+            $site = undef unless ($search);
+        }
+    } else {
+        $site = undef;
+    }
+    my $lasso = $self->find_filter('lasso');
+    if ($lasso && $lasso->args) {
+        $lasso = $lasso->args->[0];
+        if ($lasso && $lasso !~ /^\d+$/) {
+            my $search = $editor->search_actor_org_lasso({ name => $lasso });
+            $lasso = @$search[0]->id if($search && @$search);
+            $lasso = undef unless ($search);
+        }
+    } else {
+        $lasso = undef;
+    }
+    my $depth = $self->find_filter('depth');
+    if ($depth && $depth->args) {
+        $depth = $depth->args->[0];
+        if ($depth && $depth !~ /^\d+$/) {
+            # This *is* what metabib.pm has been doing....but it makes no sense to me. :/
+            # Should this be looking up the depth of the OU type on the OU in question?
+            my $search = $editor->search_actor_org_unit([{ name => $depth },{ opac_label => $depth }]);
+            $depth = @$search[0]->id if($search && @$search);
+            $depth = undef unless($search);
+        }
+    } else {
+        $depth = undef;
+    }
+    my $pref_ou = $self->find_filter('pref_ou');
+    if ($pref_ou && $pref_ou->args) {
+        $pref_ou = $pref_ou->args->[0];
+        if ($pref_ou && $pref_ou !~ /^(-)?\d+$/) {
+            my $search = $editor->search_actor_org_unit({ shortname => $pref_ou });
+            $pref_ou = @$search[0]->id if($search && @$search);
+            $pref_ou = undef unless ($search);
+        }
+    } else {
+        $pref_ou = undef;
+    }
+
+    # Supposedly at some point a site of 0 and a depth will equal user lasso id.
+    # We need OU buckets before that happens. 'my_lasso' is, I believe, the target filter for it.
+
+    $site = -$lasso if ($lasso);
+
+    # Default to the top of the org tree if we have nothing else. This would need tweaking for the user lasso bit.
+    if (!$site) {
+        my $search = $editor->search_actor_org_unit({ parent_ou => undef });
+        $site = @$search[0]->id if ($search);
+    }
+
+    my $depth_check = '';
+    $depth_check = ", $depth" if ($depth);
+
+    my $with = '';
+    $with .= "     search_org_list AS (\n";
+    if ($site < 0) {
+        # Lasso!
+        $lasso = -$site;
+        $with .= "       SELECT DISTINCT org_unit from actor.org_lasso_map WHERE lasso = $lasso\n";
+    } elsif ($site > 0) {
+        $with .= "       SELECT DISTINCT id FROM actor.org_unit_descendants($site$depth_check)\n";
+    } else {
+        # Placeholder for user lasso stuff.
+    }
+    $with .= "     ),\n";
+    $with .= "     luri_org_list AS (\n";
+    if ($site < 0) {
+        # We can re-use the lasso var, we already updated it above.
+        $with .= "       SELECT DISTINCT (actor.org_unit_ancestors(org_unit)).id from actor.org_lasso_map WHERE lasso = $lasso\n";
+    } elsif ($site > 0) {
+        $with .= "       SELECT DISTINCT id FROM actor.org_unit_ancestors($site)\n";
+    } else {
+        # Placeholder for user lasso stuff.
+    }
+    if ($pref_ou) {
+        $with .= "       UNION\n";
+        $with .= "       SELECT DISTINCT id FROM actor.org_unit_ancestors($pref_ou)\n";
+    }
+    $with .= "     )";
+    $with .= ",\n     " . $$flat_plan{with} if ($$flat_plan{with});
+
+    # Limit stuff
+    my $limit_where = <<"    SQL";
+-- Filter records based on visibility
+        AND (
+            cbs.transcendant IS TRUE
+            OR
+            EXISTS(
+                SELECT 1 FROM asset.call_number acn
+                    JOIN asset.uri_call_number_map aucnm ON acn.id = aucnm.call_number
+                    JOIN asset.uri uri ON aucnm.uri = uri.id
+                WHERE NOT acn.deleted AND uri.active AND acn.record = m.source AND acn.owning_lib IN (
+                    SELECT * FROM luri_org_list
+                )
+                LIMIT 1
+            )
+            OR
+    SQL
+    if ($self->find_modifier('staff')) {
+        $limit_where .= <<"        SQL";
+            EXISTS(
+                SELECT 1 FROM asset.call_number cn
+                    JOIN asset.copy cp ON (cp.call_number = cn.id)
+                WHERE NOT cn.deleted
+                    AND NOT cp.deleted
+                    AND cp.circ_lib IN ( SELECT * FROM search_org_list )
+                    AND cn.record = m.source
+                LIMIT 1
+            )
+            OR
+            EXISTS(
+                SELECT 1 FROM biblio.peer_bib_copy_map pr
+                    JOIN asset.copy cp ON (cp.id = pr.target_copy)
+                WHERE NOT cp.deleted
+                    AND cp.circ_lib IN ( SELECT * FROM search_org_list )
+                    AND pr.peer_record = m.source
+                LIMIT 1
+            )
+            OR (
+                NOT EXISTS(
+                    SELECT 1 FROM asset.call_number cn
+                        JOIN asset.copy cp ON (cp.call_number = cn.id)
+                    WHERE cn.record = m.source
+                        AND NOT cp.deleted
+                    LIMIT 1
+                )
+                AND
+                NOT EXISTS(
+                    SELECT 1 FROM biblio.peer_bib_copy_map pr
+                        JOIN asset.copy cp ON (cp.id = pr.target_copy)
+                    WHERE NOT cp.deleted
+                        AND pr.peer_record = m.source
+                    LIMIT 1
+                )
+            )
+        SQL
+    } else {
+        $limit_where .= <<"        SQL";
+            EXISTS(
+                SELECT 1 FROM asset.opac_visible_copies
+                WHERE circ_lib IN ( SELECT * FROM search_org_list )
+                    AND record = m.source
+                LIMIT 1
+            )
+            OR
+            EXISTS(
+                SELECT 1 FROM biblio.peer_bib_copy_map pr
+                    JOIN asset.opac_visible_copies cp ON (cp.copy_id = pr.target_copy)
+                WHERE cp.circ_lib IN ( SELECT * FROM search_org_list )
+                    AND pr.peer_record = m.source
+                LIMIT 1
+            )
+        SQL
+    }
+    $limit_where .= "        )";
+
+    # For single records we want the record id
+    # For metarecords we want NULL or the only record ID.
+    my $agg_record = 'm.source AS record';
     if ($key =~ /metarecord/) {
-        # metarecord searches still require the ARRAY_AGG approach
-        $agg_records = 'ARRAY_AGG(DISTINCT m.source) AS records';
+        $agg_record = 'CASE WHEN COUNT(DISTINCT m.source) = 1 THEN FIRST(m.source) ELSE NULL END AS record';
     }
 
     my $sql = <<SQL;
+WITH
 $with
 SELECT  $key AS id,
-        $agg_records,
+        $agg_record,
         $rel AS rel,
         $rank AS rank, 
         FIRST(mrd.attrs->'date1') AS tie_break
   FROM  metabib.metarecord_source_map m
         $$flat_plan{from}
-        $mra_join
+        INNER JOIN metabib.record_attr mrd ON m.source = mrd.id
+        INNER JOIN biblio.record_entry bre ON m.source = bre.id
+        LEFT JOIN config.bib_source cbs ON bre.source = cbs.id
   WHERE 1=1
         $flat_where
+        $limit_where
   GROUP BY 1
   ORDER BY 4 $desc $nullpos, 5 DESC $nullpos, 3 DESC
   LIMIT $core_limit
@@ -758,9 +943,12 @@ sub flatten {
                          "AND SUBSTRING(${talias}.value,1,1024) IN (" . join(",", map { $self->QueryParser->quote_value($_) } @{$node->values}) . ")\n${spc}${spc}".
                          "AND ${talias}.field IN (". join(',', @field_ids) . ")\n${spc})";
 
-                if ($join_type != 'INNER') {
+                if ($join_type ne 'INNER') {
                     my $NOT = $node->negate ? '' : ' NOT';
                     $where .= "${talias}.id IS$NOT NULL";
+                } elsif ($where ne '(') {
+                    # Strip extra joiner
+                    $where =~ s/\s(AND|OR)\s$//;
                 }
 
             } else {
@@ -872,7 +1060,12 @@ sub flatten {
                             my ($u,$e) = $apputils->checksesperm($token) if ($token);
                             $perm_join = ' OR c.owner = ' . $u->id if ($u && !$e);
                             $where .= $joiner if $where ne '(';
-                            $where .= "${NOT}EXISTS(SELECT 1 FROM container.${class}_bucket_item ci JOIN container.${class}_bucket c ON (c.id = ci.bucket) $rec_join WHERE c.btype = " . $self->QueryParser->quote_value($ctype) . " AND c.id = " . $self->QueryParser->quote_value($cid) . " AND (c.pub IS TRUE$perm_join) AND $rec_field = m.source LIMIT 1)"
+                            $where .= '(' if $class eq 'copy';
+                            $where .= "${NOT}EXISTS(SELECT 1 FROM container.${class}_bucket_item ci JOIN container.${class}_bucket c ON (c.id = ci.bucket) $rec_join WHERE c.btype = " . $self->QueryParser->quote_value($ctype) . " AND c.id = " . $self->QueryParser->quote_value($cid) . " AND (c.pub IS TRUE$perm_join) AND $rec_field = m.source LIMIT 1)";
+                        }
+                        if ($class eq 'copy') {
+                            my $subjoiner = $filter->negate ? ' AND ' : ' OR ';
+                            $where .= "$subjoiner${NOT}EXISTS(SELECT 1 FROM container.copy_bucket_item ci JOIN container.copy_bucket c ON (c.id = ci.bucket) JOIN biblio.peer_bib_copy_map pr ON ci.target_copy = pr.target_copy WHERE c.btype = " . $self->QueryParser->quote_value($cid) . " AND (c.pub IS TRUE$perm_join) AND pr.peer_record = m.source LIMIT 1))";
                         }
                     }
                 }
@@ -881,9 +1074,22 @@ sub flatten {
                         my $key = 'm.source';
                         $key = 'm.metarecord' if (grep {$_->name eq 'metarecord' or $_->name eq 'metabib'} @{$self->QueryParser->parse_tree->modifiers});
                         $where .= $joiner if $where ne '(';
-                        $where .= 'NOT ' if $filter->negate;
-                        $where .= "$key ${NOT}IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args}) . ')';
+                        $where .= "$key ${NOT}IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{$filter->args}) . ')';
                     }
+                }
+                case 'locations' {
+                    if (@{$filter->args} > 0) {
+                        $where .= $joiner if $where ne '(';
+                        $where .= "(${NOT}EXISTS(SELECT 1 FROM asset.call_number acn JOIN asset.copy acp ON acn.id = acp.call_number WHERE m.source = acn.record AND acp.circ_lib IN (SELECT * FROM search_org_list) AND NOT acn.deleted AND NOT acp.deleted AND acp.location IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ") LIMIT 1)";
+                        $where .= $filter->negate ? ' AND ' : ' OR ';
+                        $where .= "${NOT}EXISTS(SELECT 1 FROM biblio.peer_bib_copy_map pr JOIN asset.copy acp ON pr.target_copy = acp.id WHERE m.source = pr.peer_record AND acp.circ_lib IN (SELECT * FROM search_org_list) AND NOT acp.deleted AND acp.location IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ") LIMIT 1))";
+                    }
+                }
+                case 'statuses' {
+                        $where .= $joiner if $where ne '(';
+                        $where .= "(${NOT}EXISTS(SELECT 1 FROM asset.call_number acn JOIN asset.copy acp ON acn.id = acp.call_number WHERE m.source = acn.record AND acp.circ_lib IN (SELECT * FROM search_org_list) AND NOT acn.deleted AND NOT acp.deleted AND acp.status IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ") LIMIT 1)";
+                        $where .= $filter->negate ? ' AND ' : ' OR ';
+                        $where .= "${NOT}EXISTS(SELECT 1 FROM biblio.peer_bib_copy_map pr JOIN asset.copy acp ON pr.target_copy = acp.id WHERE m.source = pr.peer_record AND acp.circ_lib IN (SELECT * FROM search_org_list) AND NOT acp.deleted AND acp.status IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ") LIMIT 1))";
                 }
             }
         }
