@@ -543,7 +543,7 @@ sub toSQL {
     my $flat_plan = $self->flatten;
 
     # generate the relevance ranking
-    my $rel = "AVG(\n${spc}${spc}(" . join(")+\n${spc}${spc}(", @{$$flat_plan{rank_list}}) . ")\n${spc})+1";
+    my $rel = "AVG(\n${spc}${spc}${spc}${spc}${spc}(" . join(")\n${spc}${spc}${spc}${spc}${spc}+ (", @{$$flat_plan{rank_list}}) . ")\n${spc}${spc}${spc}${spc})+1";
 
     # find any supplied sort option
     my ($sort_filter) = $self->find_filter('sort');
@@ -721,12 +721,12 @@ sub rel_bump {
     return '' if (!@$only_atoms);
 
     if ($bump eq 'first_word') {
-        return " /* first_word */ COALESCE(NULLIF( (search_normalize(".$node->table_alias.".value) ~ ('^'||search_normalize(".$self->QueryParser->quote_phrase_value($only_atoms->[0]->content)."))), FALSE )::INT * $multiplier, 1)";
+        return "/* first_word */ COALESCE(NULLIF( (search_normalize(".$node->table_alias.".value) ~ ('^'||search_normalize(".$self->QueryParser->quote_phrase_value($only_atoms->[0]->content)."))), FALSE )::INT * $multiplier, 1)";
     } elsif ($bump eq 'full_match') {
-        return " /* full_match */ COALESCE(NULLIF( (search_normalize(".$node->table_alias.".value) ~ ('^'||".
+        return "/* full_match */ COALESCE(NULLIF( (search_normalize(".$node->table_alias.".value) ~ ('^'||".
                     join( "||' '||", map { "search_normalize(".$self->QueryParser->quote_phrase_value($_->content).")" } @$only_atoms )."||'\$')), FALSE )::INT * $multiplier, 1)";
     } elsif ($bump eq 'word_order') {
-        return " /* word_order */ COALESCE(NULLIF( (search_normalize(".$node->table_alias.".value) ~ (".
+        return "/* word_order */ COALESCE(NULLIF( (search_normalize(".$node->table_alias.".value) ~ (".
                     join( "||'.*'||", map { "search_normalize(".$self->QueryParser->quote_phrase_value($_->content).")" } @$only_atoms ).")), FALSE )::INT * $multiplier, 1)";
     }
 
@@ -766,15 +766,15 @@ sub flatten {
                 my $node_rank = 'COALESCE(' . $node->rank . " * ${talias}.weight, 0.0)";
 
                 my $core_limit = $self->QueryParser->core_limit || 25000;
-                $from .= "\n${spc}LEFT JOIN (\n${spc}${spc}SELECT fe.*, fe_weight.weight, ${talias}_xq.tsq /* search */\n${spc}${spc}  FROM  $table AS fe";
-                $from .= "\n${spc}${spc}${spc}JOIN config.metabib_field AS fe_weight ON (fe_weight.id = fe.field)";
+                $from .= "\n${spc}${spc}${spc}${spc}LEFT JOIN (\n${spc}${spc}${spc}${spc}${spc}SELECT fe.*, fe_weight.weight, ${talias}_xq.tsq /* search */\n${spc}${spc}${spc}${spc}${spc}  FROM  $table AS fe";
+                $from .= "\n${spc}${spc}${spc}${spc}${spc}${spc}JOIN config.metabib_field AS fe_weight ON (fe_weight.id = fe.field)";
 
                 if ($node->dummy_count < @{$node->only_atoms} ) {
-                    $with .= ",\n" if $with;
+                    $with .= ",\n     " if $with;
                     $with .= "${talias}_xq AS (SELECT ". $node->tsquery ." AS tsq )";
-                    $from .= "\n${spc}${spc}${spc}JOIN ${talias}_xq ON (fe.index_vector @@ ${talias}_xq.tsq)";
+                    $from .= "\n${spc}${spc}${spc}${spc}${spc}${spc}JOIN ${talias}_xq ON (fe.index_vector @@ ${talias}_xq.tsq)";
                 } else {
-                    $from .= "\n${spc}${spc}${spc}, (SELECT NULL::tsquery AS tsq ) AS x";
+                    $from .= "\n${spc}${spc}${spc}${spc}${spc}${spc}, (SELECT NULL::tsquery AS tsq ) AS x";
                 }
 
                 my @bump_fields;
@@ -789,7 +789,7 @@ sub flatten {
                         } @bump_fields
                     );
                     if (@field_ids) {
-                        $from .= "\n${spc}${spc}${spc}WHERE fe_weight.id IN  (" .
+                        $from .= "\n${spc}${spc}${spc}${spc}${spc}${spc}WHERE fe_weight.id IN  (" .
                             join(',', @field_ids) . ")";
                     }
 
@@ -798,7 +798,7 @@ sub flatten {
                 }
 
                 ###$from .= "\n${spc}${spc}LIMIT $core_limit";
-                $from .= "\n${spc}) AS $talias ON (m.source = ${talias}.source)";
+                $from .= "\n${spc}${spc}${spc}${spc}) AS $talias ON (m.source = ${talias}.source)";
 
 
                 my %used_bumps;
@@ -812,7 +812,7 @@ sub flatten {
                         next if ($$bumps{$b}{multiplier} == 1); # optimization to remove unneeded bumps
 
                         my $bump_case = $self->rel_bump( $node, $b, $$bumps{$b}{multiplier} );
-                        $node_rank .= "\n${spc}${spc}${spc}${spc} * " . $bump_case if ($bump_case);
+                        $node_rank .= "\n${spc}${spc}${spc}${spc}${spc}* " . $bump_case if ($bump_case);
                     }
                 }
 
@@ -875,8 +875,8 @@ sub flatten {
                 $fwhere .= "($$subnode{fwhere})" if $$subnode{fwhere};
 
                 if ($$subnode{with}) {
-                    $with .= ', ' if $with;
-                    $with .= " " . $$subnode{with};
+                    $with .= ",\n     " if $with;
+                    $with .= $$subnode{with};
                 }
             }
         } else {
