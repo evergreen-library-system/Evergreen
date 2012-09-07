@@ -7,6 +7,7 @@ use base 'QueryParser';
 use OpenSRF::Utils::JSON;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::CStoreEditor;
+use Switch;
 my $U = 'OpenILS::Application::AppUtils';
 
 my ${spc} = ' ' x 2;
@@ -42,6 +43,21 @@ sub filter_group_entry_callback {
             }
         )
     );
+}
+
+sub format_callback {
+    my ($invocant, $self, $struct, $filter, $params, $negate) = @_;
+
+    my $return = '';
+    my $negate_flag = ($negate ? '-' : '');
+    if(@$params[0]) {
+        my ($t,$f) = split('-', @$params[0]);
+        $return .= $negate_flag .'item_type(' . join(',',split('', $t)) . ')' if ($t);
+        $return .= ' ' if ($t and $f);
+        $return .= $negate_flag .'item_form(' . join(',',split('', $f)) . ')' if ($f);
+        $return = '(' . $return . ')' if ($t and $f);
+    }
+    return $return;
 }
 
 sub quote_value {
@@ -453,7 +469,7 @@ __PACKAGE__->add_search_filter( 'saved_query', sub { return __PACKAGE__->subquer
 __PACKAGE__->add_search_filter( 'filter_group_entry', sub { return __PACKAGE__->filter_group_entry_callback(@_) } );
 
 # will be retained simply for back-compat
-__PACKAGE__->add_search_filter( 'format' );
+__PACKAGE__->add_search_filter( 'format', sub { return __PACKAGE__->format_callback(@_) } );
 
 # grumble grumble, special cases against date1 and date2
 __PACKAGE__->add_search_filter( 'before' );
@@ -518,12 +534,6 @@ sub toSQL {
     my $self = shift;
 
     my %filters;
-    my ($format) = $self->find_filter('format');
-    if ($format) {
-        my ($t,$f) = split('-', $format->args->[0]);
-        $self->new_filter( item_type => [ split '', $t ] ) if ($t);
-        $self->new_filter( item_form => [ split '', $f ] ) if ($f);
-    }
 
     for my $f ( qw/preferred_language preferred_language_multiplier preferred_language_weight core_limit check_limit skip_check superpage superpage_size/ ) {
         my $col = $f;
@@ -560,9 +570,7 @@ sub toSQL {
     }
     $rel = "1.0/($rel)::NUMERIC";
 
-    my $mra_join = 'INNER JOIN metabib.record_attr mrd ON (m.source = mrd.id';
-    $mra_join .= ' AND '. $flat_plan->{fwhere} if $flat_plan->{fwhere};
-    $mra_join .= ')';
+    my $mra_join = 'INNER JOIN metabib.record_attr mrd ON m.source = mrd.id';
     
     my $rank = $rel;
 
@@ -585,83 +593,6 @@ sub toSQL {
 
     my $key = 'm.source';
     $key = 'm.metarecord' if (grep {$_->name eq 'metarecord' or $_->name eq 'metabib'} @{$self->modifiers});
-
-    my ($before) = $self->find_filter('before');
-    my ($after) = $self->find_filter('after');
-    my ($during) = $self->find_filter('during');
-    my ($between) = $self->find_filter('between');
-    my ($container) = $self->find_filter('container');
-    my ($record_list) = $self->find_filter('record_list');
-
-    if ($before and @{$before->args} == 1) {
-        $before = "AND (mrd.attrs->'date1') <= " . $self->QueryParser->quote_value($before->args->[0]);
-    } else {
-        $before = '';
-    }
-
-    if ($after and @{$after->args} == 1) {
-        $after = "AND (mrd.attrs->'date1') >= " . $self->QueryParser->quote_value($after->args->[0]);
-    } else {
-        $after = '';
-    }
-
-    if ($during and @{$during->args} == 1) {
-        $during = "AND " . $self->QueryParser->quote_value($during->args->[0]) . " BETWEEN (mrd.attrs->'date1') AND (mrd.attrs->'date2')";
-    } else {
-        $during = '';
-    }
-
-    if ($between and @{$between->args} == 2) {
-        $between = "AND (mrd.attrs->'date1') BETWEEN " . $self->QueryParser->quote_value($between->args->[0]) . " AND " . $self->QueryParser->quote_value($between->args->[1]);
-    } else {
-        $between = '';
-    }
-
-    if ($container and @{$container->args} >= 3) {
-        my ($class, $ctype, $cid, $token) = @{ $container->args };
-
-        my $perm_join = '';
-        my $rec_join = '';
-        my $rec_field = 'ci.target_biblio_record_entry';
-
-        if ($class eq 'bre') {
-            $class = 'biblio_record_entry';
-        } elsif ($class eq 'acn') {
-            $class = 'call_number';
-            $rec_field = 'cn.record';
-            $rec_join = 'JOIN asset.call_number cn ON (ci.target_call_number = cn.id)';
-        } elsif ($class eq 'acp') {
-            $class = 'copy';
-            $rec_field = 'cn.record';
-            $rec_join = 'JOIN asset.copy cp ON (ci.target_copy = cp.id) JOIN asset.call_number cn ON (cp.call_number = cn.id)';
-#        } elsif ($class eq 'au') {
-#            $class = 'user';
-#            $rec_field = 'cn.record';
-#            $rec_join = 'JOIN asset.call_number cn ON ci.target_call_number = cn.id';
-        } else { $class = undef };
-
-        if ($class) {
-            my ($u,$e) = $apputils->checksesperm($token) if ($token);
-            $perm_join = 'OR c.owner = ' . $u->id if ($u && !$e);
-
-            $container = qq<
-        JOIN ( SELECT $rec_field AS container_item
-                FROM  container.${class}_bucket_item ci
-                      JOIN container.${class}_bucket c ON (c.id = ci.bucket)
-                      $rec_join
-                WHERE c.btype = > . $self->QueryParser->quote_value($ctype) .
-                    qq< AND c.id = > . $self->QueryParser->quote_value($cid) .
-                    qq< AND (c.pub IS TRUE $perm_join)) container ON (container.container_item = m.source) >;
-        } else {$container = ''};
-    } else {
-        $container = '';
-    }
-
-    if ($record_list and @{$record_list->args} > 0) {
-        $record_list = 'JOIN (VALUES (' . join('),(', map  { $self->QueryParser->quote_value($_) } @{ $record_list->args}) . ")) record_list(id) ON (record_list.id::BIGINT = $key)"
-    } else {
-        $record_list = '';
-    }
 
     my $core_limit = $self->QueryParser->core_limit || 25000;
 
@@ -690,15 +621,9 @@ SELECT  $key AS id,
         $rank AS rank, 
         FIRST(mrd.attrs->'date1') AS tie_break
   FROM  metabib.metarecord_source_map m
-        $container
-        $record_list
         $$flat_plan{from}
         $mra_join
   WHERE 1=1
-        $before
-        $after
-        $during
-        $between
         $flat_where
   GROUP BY 1
   ORDER BY 4 $desc $nullpos, 5 DESC $nullpos, 3 DESC
@@ -739,14 +664,6 @@ sub flatten {
     my $from = shift || '';
     my $where = shift || '(';
     my $with = '';
-    my $fwhere = shift || ''; # for joining dynamic filters (mra)
-
-    my @dyn_filters;
-    for my $filter (@{$self->filters}) {
-        push(@dyn_filters, $filter) if 
-            grep { $_ eq $filter->name } 
-                @{ $self->QueryParser->dynamic_filters };
-    };
 
     my @rank_list;
     for my $node ( @{$self->query_nodes} ) {
@@ -817,18 +734,10 @@ sub flatten {
                 }
 
 
-                my $twhere .= '(' . $talias . ".id IS NOT NULL";
-                $twhere .= ' AND ' . join(' AND ', map {"${talias}.value ~* ".$self->QueryParser->quote_phrase_value($_)} @{$node->phrases}) if (@{$node->phrases});
-                $twhere .= ' AND ' . join(' AND ', map {"${talias}.value !~* ".$self->QueryParser->quote_phrase_value($_)} @{$node->unphrases}) if (@{$node->unphrases});
-                $twhere .= ')';
-
-                if (@dyn_filters or !$self->top_plan) {
-                    # if this WHERE is represented within the dynamic 
-                    # filter's ON clause, it's not also needed in the main WHERE.
-                    $fwhere .= $twhere;
-                } else {
-                    $where .= $twhere;
-                }
+                $where .= '(' . $talias . ".id IS NOT NULL";
+                $where .= ' AND ' . join(' AND ', map {"${talias}.value ~* ".$self->QueryParser->quote_phrase_value($_)} @{$node->phrases}) if (@{$node->phrases});
+                $where .= ' AND ' . join(' AND ', map {"${talias}.value !~* ".$self->QueryParser->quote_phrase_value($_)} @{$node->unphrases}) if (@{$node->unphrases});
+                $where .= ')';
 
                 push @rank_list, $node_rank;
 
@@ -844,35 +753,29 @@ sub flatten {
                     @field_ids = @{ $self->QueryParser->facet_field_ids_by_class( $node->classname ) };
                 }
 
-                my $join_type = ($node->negate or @dyn_filters or !$self->top_plan) ? 'LEFT' : 'INNER';
+                my $join_type = ($node->negate or !$self->top_plan) ? 'LEFT' : 'INNER';
                 $from .= "\n${spc}$join_type JOIN /* facet */ metabib.facet_entry $talias ON (\n${spc}${spc}m.source = ${talias}.source\n${spc}${spc}".
                          "AND SUBSTRING(${talias}.value,1,1024) IN (" . join(",", map { $self->QueryParser->quote_value($_) } @{$node->values}) . ")\n${spc}${spc}".
                          "AND ${talias}.field IN (". join(',', @field_ids) . ")\n${spc})";
 
-                if (@dyn_filters or !$self->top_plan) {
+                if ($join_type != 'INNER') {
                     my $NOT = $node->negate ? '' : ' NOT';
-                    $fwhere .= "${talias}.id IS$NOT NULL";
-                } else {
-                    $where .= $node->negate ? "${talias}.id IS NULL" : 'TRUE';
+                    $where .= "${talias}.id IS$NOT NULL";
                 }
 
             } else {
                 my $subnode = $node->flatten;
 
                 # strip the trailing bool from the previous loop if there is 
-                # nothing to add to the where/fwhere within this loop.
+                # nothing to add to the where within this loop.
                 if ($$subnode{where} eq '()') {
                     $where =~ s/\s(AND|OR)\s$//;
-
-                } elsif ($$subnode{fwhere} eq '') {
-                    $fwhere =~ s/\s(AND|OR)\s$//;
                 }
 
                 push(@rank_list, @{$$subnode{rank_list}});
                 $from .= $$subnode{from};
 
-                $where .= "($$subnode{where})" unless $$subnode{where} eq '()';
-                $fwhere .= "($$subnode{fwhere})" if $$subnode{fwhere};
+                $where .= "$$subnode{where}" unless $$subnode{where} eq '()';
 
                 if ($$subnode{with}) {
                     $with .= ",\n     " if $with;
@@ -883,44 +786,111 @@ sub flatten {
 
             warn "flatten(): appending WHERE bool to: $where\n" if $self->QueryParser->debug;
 
-            if ($fwhere) {
-                # bool joiner for inter-plan filters
-                $fwhere .= ' AND ' if ($node eq '&');
-                $fwhere .= ' OR ' if ($node eq '|');
-
-            } elsif ($where ne '(') {
-
+            if ($where ne '(') {
                 $where .= ' AND ' if ($node eq '&');
                 $where .= ' OR ' if ($node eq '|');
             }
         }
     }
 
-    # for each dynamic filter, build the ON clause for the JOIN
-    for my $filter (@dyn_filters) {
-        
-        warn "flatten(): processing dynamic filter ". $filter->name ."\n"
-            if $self->QueryParser->debug;
+    my $joiner = sprintf(" %s ", ($self->joiner eq '&' ? 'AND' : 'OR'));
+    # for each dynamic filter, build more of the WHERE clause
+    for my $filter (@{$self->filters}) {
+        if (grep { $_ eq $filter->name } @{ $self->QueryParser->dynamic_filters }) {
 
-        # bool joiner for intra-plan nodes/filters
-        $fwhere .= sprintf(" %s ", ($self->joiner eq '&' ? 'AND' : 'OR')) if $fwhere;
+            warn "flatten(): processing dynamic filter ". $filter->name ."\n"
+                if $self->QueryParser->debug;
 
-        my @fargs = @{$filter->args};
-        my $NOT = $filter->negate ? ' NOT' : '';
-        my $fname = $filter->name;
-        $fname = 'item_lang' if $fname eq 'language'; #XXX filter aliases 
+            # bool joiner for intra-plan nodes/filters
+            $where .= $joiner if $where ne '(';
 
-        $fwhere .= sprintf(
-            "attrs->'%s'$NOT IN (%s)", $fname, 
-            join(',', map { $self->QueryParser->quote_value($_) } @fargs)
-        );
+            my @fargs = @{$filter->args};
+            my $NOT = $filter->negate ? ' NOT' : '';
+            my $fname = $filter->name;
+            $fname = 'item_lang' if $fname eq 'language'; #XXX filter aliases 
 
-        warn "flatten(): filter where => $fwhere\n"
-            if $self->QueryParser->debug;
+            $where .= sprintf(
+                "attrs->'%s'$NOT IN (%s)", $fname, 
+                join(',', map { $self->QueryParser->quote_value($_) } @fargs)
+            );
+
+            warn "flatten(): filter where => $where\n"
+                if $self->QueryParser->debug;
+        } else {
+            my $NOT = $filter->negate ? 'NOT ' : '';
+            switch ($filter->name) {
+                case 'before' {
+                    if (@{$filter->args} == 1) {
+                        $where .= $joiner if $where ne '(';
+                        $where .= "$NOT(mrd.attrs->'date1') <= " . $self->QueryParser->quote_value($filter->args->[0]);
+                    }
+                }
+                case 'after' {
+                    if (@{$filter->args} == 1) {
+                        $where .= $joiner if $where ne '(';
+                        $where .= "$NOT(mrd.attrs->'date1') >= " . $self->QueryParser->quote_value($filter->args->[0]);
+                    }
+                }
+                case 'during' {
+                    if (@{$filter->args} == 1) {
+                        $where .= $joiner if $where ne '(';
+                        $where .= $self->QueryParser->quote_value($filter->args->[0]) . " ${NOT}BETWEEN (mrd.attrs->'date1') AND (mrd.attrs->'date2')";
+                    }
+                }
+                case 'between' {
+                    if (@{$filter->args} == 2) {
+                        $where .= $joiner if $where ne '(';
+                        $where .= "(mrd.attrs->'date1') ${NOT}BETWEEN " . $self->QueryParser->quote_value($filter->args->[0]) . " AND " . $self->QueryParser->quote_value($filter->args->[1]);
+                    }
+                }
+                case 'container' {
+                    if (@{$filter->args} >= 3) {
+                        my ($class, $ctype, $cid, $token) = @{$filter->args};
+                        my $perm_join = '';
+                        my $rec_join = '';
+                        my $rec_field = 'ci.target_biblio_record_entry';
+                        switch($class) {
+                            case 'bre' {
+                                $class = 'biblio_record_entry';
+                            }
+                            case 'acn' {
+                                $class = 'call_number';
+                                $rec_field = 'cn.record';
+                                $rec_join = 'JOIN asset.call_number cn ON (ci.target_call_number = cn.id)';
+                            }
+                            case 'acp' {
+                                $class = 'copy';
+                                $rec_field = 'cn.record';
+                                $rec_join = 'JOIN asset.copy cp ON (ci.target_copy = cp.id) JOIN asset.call_number cn ON (cp.call_number = cn.id)';
+                            }
+                            else {
+                                $class = undef;
+                            }
+                        }
+
+                        if ($class) {
+                            my ($u,$e) = $apputils->checksesperm($token) if ($token);
+                            $perm_join = ' OR c.owner = ' . $u->id if ($u && !$e);
+                            $where .= $joiner if $where ne '(';
+                            $where .= "${NOT}EXISTS(SELECT 1 FROM container.${class}_bucket_item ci JOIN container.${class}_bucket c ON (c.id = ci.bucket) $rec_join WHERE c.btype = " . $self->QueryParser->quote_value($ctype) . " AND c.id = " . $self->QueryParser->quote_value($cid) . " AND (c.pub IS TRUE$perm_join) AND $rec_field = m.source LIMIT 1)"
+                        }
+                    }
+                }
+                case 'record_list' {
+                    if (@{$filter->args} > 0) {
+                        my $key = 'm.source';
+                        $key = 'm.metarecord' if (grep {$_->name eq 'metarecord' or $_->name eq 'metabib'} @{$self->QueryParser->parse_tree->modifiers});
+                        $where .= $joiner if $where ne '(';
+                        $where .= 'NOT ' if $filter->negate;
+                        $where .= "$key ${NOT}IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args}) . ')';
+                    }
+                }
+            }
+        }
     }
-    warn "flatten(): full filter where => $fwhere\n" if $self->QueryParser->debug;
+    warn "flatten(): full filter where => $where\n" if $self->QueryParser->debug;
 
-    return { rank_list => \@rank_list, from => $from, where => $where.')',  with => $with, fwhere => $fwhere };
+    return { rank_list => \@rank_list, from => $from, where => $where.')',  with => $with };
 }
 
 
