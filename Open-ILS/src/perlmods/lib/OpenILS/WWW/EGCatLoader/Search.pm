@@ -26,8 +26,7 @@ sub _prepare_biblio_search_basics {
         next unless $query =~ /\S/;
 
         # Hack for journal title
-        my $q = $qtype;
-        if ($q eq 'jtitle') {
+        if ($qtype eq 'jtitle') {
             $qtype = 'title';
         }
 
