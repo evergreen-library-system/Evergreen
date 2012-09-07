@@ -58,7 +58,6 @@ sub _prepare_biblio_search {
     my ($cgi, $ctx) = @_;
 
     my $query = _prepare_biblio_search_basics($cgi) || '';
-    $query = "($query)";
 
     $query .= ' ' . $ctx->{global_search_filter} if $ctx->{global_search_filter};
 
