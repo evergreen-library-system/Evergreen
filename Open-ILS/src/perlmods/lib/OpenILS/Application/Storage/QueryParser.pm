@@ -646,7 +646,12 @@ sub decompose {
             next if ($last_type eq 'OR');
             warn "Encountered AND\n" if $self->debug;
 
-            $struct->joiner( '&' );
+            my $LHS = $struct;
+            my ($RHS, $subremainder) = $self->decompose( $_, $current_class, $recursing + 1 );
+            $_ = $subremainder;
+
+            $struct = $self->new_plan( level => $recursing, joiner => '&' );
+            $struct->add_node($_) for ($LHS, $RHS);
 
             $last_type = 'AND';
         } elsif (/$or_re/) { # ORed expression
@@ -655,7 +660,12 @@ sub decompose {
             next if ($last_type eq 'OR');
             warn "Encountered OR\n" if $self->debug;
 
-            $struct->joiner( '|' );
+            my $LHS = $struct;
+            my ($RHS, $subremainder) = $self->decompose( $_, $current_class, $recursing + 1 );
+            $_ = $subremainder;
+
+            $struct = $self->new_plan( level => $recursing, joiner => '|' );
+            $struct->add_node($_) for ($LHS, $RHS);
 
             $last_type = 'OR';
         } elsif ($self->facet_class_count && /$facet_re/) { # changing current class
