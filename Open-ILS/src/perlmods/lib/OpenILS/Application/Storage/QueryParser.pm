@@ -3,6 +3,25 @@ use warnings;
 
 package QueryParser;
 use OpenSRF::Utils::JSON;
+
+=head1 NAME
+
+QueryParser - basic QueryParser class
+
+=head1 SYNOPSIS
+
+use QueryParser;
+my $QParser = QueryParser->new(%args);
+
+=head1 DESCRIPTION
+
+Main entrypoint into the QueryParser functionality.
+
+=head1 FUNCTIONS
+
+=cut
+
+# Note that the first key must match the name of the package.
 our %parser_config = (
     QueryParser => {
         filters => [],
@@ -29,25 +48,50 @@ sub canonicalize {
 }
 
 
+=head2 facet_class_count
+
+    $count = $QParser->facet_class_count();
+=cut
+
 sub facet_class_count {
     my $self = shift;
     return @{$self->facet_classes};
 }
+
+=head2 search_class_count
+
+    $count = $QParser->search_class_count();
+=cut
 
 sub search_class_count {
     my $self = shift;
     return @{$self->search_classes};
 }
 
+=head2 filter_count
+
+    $count = $QParser->filter_count();
+=cut
+
 sub filter_count {
     my $self = shift;
     return @{$self->filters};
 }
 
+=head2 modifier_count
+
+    $count = $QParser->modifier_count();
+=cut
+
 sub modifier_count {
     my $self = shift;
     return @{$self->modifiers};
 }
+
+=head2 custom_data
+
+    $data = $QParser->custom_data($class);
+=cut
 
 sub custom_data {
     my $class = shift;
@@ -56,6 +100,13 @@ sub custom_data {
     $parser_config{$class}{custom_data} ||= {};
     return $parser_config{$class}{custom_data};
 }
+
+=head2 operators
+
+    $operators = $QParser->operators();
+
+Returns hashref of the configured operators.
+=cut
 
 sub operators {
     my $class = shift;
@@ -74,6 +125,13 @@ sub allow_nested_modifiers {
     return $parser_config{$class}{allow_nested_modifiers};
 }
 
+=head2 filters
+
+    $filters = $QParser->filters();
+
+Returns arrayref of the configured filters.
+=cut
+
 sub filters {
     my $class = shift;
     $class = ref($class) || $class;
@@ -81,6 +139,13 @@ sub filters {
     $parser_config{$class}{filters} ||= [];
     return $parser_config{$class}{filters};
 }
+
+=head2 filter_callbacks
+
+    $filter_callbacks = $QParser->filter_callbacks();
+
+Returns hashref of the configured filter callbacks.
+=cut
 
 sub filter_callbacks {
     my $class = shift;
@@ -90,6 +155,13 @@ sub filter_callbacks {
     return $parser_config{$class}{filter_callbacks};
 }
 
+=head2 modifiers
+
+    $modifiers = $QParser->modifiers();
+
+Returns arrayref of the configured modifiers.
+=cut
+
 sub modifiers {
     my $class = shift;
     $class = ref($class) || $class;
@@ -97,6 +169,13 @@ sub modifiers {
     $parser_config{$class}{modifiers} ||= [];
     return $parser_config{$class}{modifiers};
 }
+
+=head2 new
+
+    $QParser = QueryParser->new(%args);
+
+Creates a new QueryParser object.
+=cut
 
 sub new {
     my $class = shift;
@@ -117,11 +196,26 @@ sub new {
     return $self;
 }
 
+=head2 new_plan
+
+    $query_plan = $QParser->new_plan();
+
+Create a new query plan.
+=cut
+
 sub new_plan {
     my $self = shift;
     my $pkg = ref($self) || $self;
     return do{$pkg.'::query_plan'}->new( QueryParser => $self, @_ );
 }
+
+=head2 add_search_filter
+
+    $QParser->add_search_filter($filter, [$callback]);
+
+Adds a filter with the specified name and an optional callback to the
+QueryParser configuration.
+=cut
 
 sub add_search_filter {
     my $pkg = shift;
@@ -135,6 +229,13 @@ sub add_search_filter {
     return $filter;
 }
 
+=head2 add_search_modifier
+
+    $QParser->add_search_modifier($modifier);
+
+Adds a modifier with the specified name to the QueryParser configuration.
+=cut
+
 sub add_search_modifier {
     my $pkg = shift;
     $pkg = ref($pkg) || $pkg;
@@ -144,6 +245,13 @@ sub add_search_modifier {
     push @{$pkg->modifiers}, $modifier;
     return $modifier;
 }
+
+=head2 add_facet_class
+
+    $QParser->add_facet_class($facet_class);
+
+Adds a facet class with the specified name to the QueryParser configuration.
+=cut
 
 sub add_facet_class {
     my $pkg = shift;
@@ -157,6 +265,13 @@ sub add_facet_class {
 
     return $class;
 }
+
+=head2 add_search_class
+
+    $QParser->add_search_class($class);
+
+Adds a search class with the specified name to the QueryParser configuration.
+=cut
 
 sub add_search_class {
     my $pkg = shift;
@@ -172,6 +287,33 @@ sub add_search_class {
     return $class;
 }
 
+=head2 add_search_modifier
+
+    $op = $QParser->operator($operator, [$newvalue]);
+
+Retrieves or sets value for the specified operator. Valid operators and
+their defaults are as follows:
+
+=over 4
+
+=item * and => &&
+
+=item * or => ||
+
+=item * group_start => (
+
+=item * group_end => )
+
+=item * required => +
+
+=item * disallowed => -
+
+=item * modifier => #
+
+=back
+
+=cut
+
 sub operator {
     my $class = shift;
     $class = ref($class) || $class;
@@ -186,6 +328,14 @@ sub operator {
     return $parser_config{$class}{operators}{$opname};
 }
 
+=head2 facet_classes
+
+    $classes = $QParser->facet_classes([\@newclasses]);
+
+Returns arrayref of all configured facet classes after optionally
+replacing configuration.
+=cut
+
 sub facet_classes {
     my $class = shift;
     $class = ref($class) || $class;
@@ -196,6 +346,14 @@ sub facet_classes {
     return $parser_config{$class}{facet_classes};
 }
 
+=head2 search_classes
+
+    $classes = $QParser->search_classes([\@newclasses]);
+
+Returns arrayref of all configured search classes after optionally
+replacing the previous configuration.
+=cut
+
 sub search_classes {
     my $class = shift;
     $class = ref($class) || $class;
@@ -205,6 +363,12 @@ sub search_classes {
     $parser_config{$class}{classes} = $classes if (ref($classes) && @$classes);
     return $parser_config{$class}{classes};
 }
+
+=head2 add_query_normalizer
+
+    $function = $QParser->add_query_normalizer($class, $field, $func, [\@params]);
+
+=cut
 
 sub add_query_normalizer {
     my $pkg = shift;
@@ -224,6 +388,14 @@ sub add_query_normalizer {
 
     return $func;
 }
+
+=head2 query_normalizers
+
+    $normalizers = $QParser->query_normalizers($class, $field);
+
+Returns a list of normalizers associated with the specified search class
+and field
+=cut
 
 sub query_normalizers {
     my $pkg = shift;
@@ -245,6 +417,13 @@ sub query_normalizers {
     return $parser_config{$pkg}{normalizers};
 }
 
+=head2 add_filter_normalizer
+
+    $normalizer = $QParser->add_filter_normalizer($filter, $func, [\@params]);
+
+Adds a normalizer function to the specified filter.
+=cut
+
 sub add_filter_normalizer {
     my $pkg = shift;
     $pkg = ref($pkg) || $pkg;
@@ -258,6 +437,13 @@ sub add_filter_normalizer {
 
     return $func;
 }
+
+=head2 filter_normalizers
+
+    $normalizers = $QParser->filter_normalizers($filter);
+
+Return arrayref of normalizer functions associated with the specified filter.
+=cut
 
 sub filter_normalizers {
     my $pkg = shift;
@@ -274,6 +460,13 @@ sub filter_normalizers {
     return $parser_config{$pkg}{filter_normalizers};
 }
 
+=head2 default_search_class
+
+    $default_class = $QParser->default_search_class([$class]);
+
+Set or return the default search class.
+=cut
+
 sub default_search_class {
     my $pkg = shift;
     $pkg = ref($pkg) || $pkg;
@@ -282,6 +475,13 @@ sub default_search_class {
 
     return $QueryParser::parser_config{$pkg}{default_class};
 }
+
+=head2 remove_facet_class
+
+    $QParser->remove_facet_class($class);
+
+Remove the specified facet class from the configuration.
+=cut
 
 sub remove_facet_class {
     my $pkg = shift;
@@ -296,6 +496,13 @@ sub remove_facet_class {
     return $class;
 }
 
+=head2 remove_search_class
+
+    $QParser->remove_search_class($class);
+
+Remove the specified search class from the configuration.
+=cut
+
 sub remove_search_class {
     my $pkg = shift;
     $pkg = ref($pkg) || $pkg;
@@ -308,6 +515,14 @@ sub remove_search_class {
 
     return $class;
 }
+
+=head2 add_facet_field
+
+    $QParser->add_facet_field($class, $field);
+
+Adds the specified field (and facet class if it doesn't already exist)
+to the configuration.
+=cut
 
 sub add_facet_field {
     my $pkg = shift;
@@ -324,6 +539,13 @@ sub add_facet_field {
     return { $class => $field };
 }
 
+=head2 facet_fields
+
+    $fields = $QParser->facet_fields($class);
+
+Returns arrayref with list of fields for specified facet class.
+=cut
+
 sub facet_fields {
     my $class = shift;
     $class = ref($class) || $class;
@@ -331,6 +553,14 @@ sub facet_fields {
     $parser_config{$class}{facet_fields} ||= {};
     return $parser_config{$class}{facet_fields};
 }
+
+=head2 add_search_field
+
+    $QParser->add_search_field($class, $field);
+
+Adds the specified field (and facet class if it doesn't already exist)
+to the configuration.
+=cut
 
 sub add_search_field {
     my $pkg = shift;
@@ -347,6 +577,13 @@ sub add_search_field {
     return { $class => $field };
 }
 
+=head2 search_fields
+
+    $fields = $QParser->search_fields();
+
+Returns arrayref with list of configured search fields.
+=cut
+
 sub search_fields {
     my $class = shift;
     $class = ref($class) || $class;
@@ -354,6 +591,11 @@ sub search_fields {
     $parser_config{$class}{fields} ||= {};
     return $parser_config{$class}{fields};
 }
+
+=head2 add_search_class_alias
+
+    $QParser->add_search_class_alias($class, $alias);
+=cut
 
 sub add_search_class_alias {
     my $pkg = shift;
@@ -370,6 +612,11 @@ sub add_search_class_alias {
     return { $class => $alias };
 }
 
+=head2 search_class_aliases
+
+    $aliases = $QParser->search_class_aliases($class);
+=cut
+
 sub search_class_aliases {
     my $class = shift;
     $class = ref($class) || $class;
@@ -377,6 +624,11 @@ sub search_class_aliases {
     $parser_config{$class}{class_map} ||= {};
     return $parser_config{$class}{class_map};
 }
+
+=head2 add_search_field_alias
+
+    $QParser->add_search_field_alias($class, $field, $alias);
+=cut
 
 sub add_search_field_alias {
     my $pkg = shift;
@@ -392,6 +644,11 @@ sub add_search_field_alias {
     return { $class => { $field => $alias } };
 }
 
+=head2 search_field_aliases
+
+    $aliases = $QParser->search_field_aliases();
+=cut
+
 sub search_field_aliases {
     my $class = shift;
     $class = ref($class) || $class;
@@ -399,6 +656,11 @@ sub search_field_aliases {
     $parser_config{$class}{field_alias_map} ||= {};
     return $parser_config{$class}{field_alias_map};
 }
+
+=head2 remove_facet_field
+
+    $QParser->remove_facet_field($class, $field);
+=cut
 
 sub remove_facet_field {
     my $pkg = shift;
@@ -413,6 +675,11 @@ sub remove_facet_field {
     return { $class => $field };
 }
 
+=head2 remove_search_field
+
+    $QParser->remove_search_field($class, $field);
+=cut
+
 sub remove_search_field {
     my $pkg = shift;
     $pkg = ref($pkg) || $pkg;
@@ -425,6 +692,11 @@ sub remove_search_field {
 
     return { $class => $field };
 }
+
+=head2 remove_search_field_alias
+
+    $QParser->remove_search_field_alias($class, $field, $alias);
+=cut
 
 sub remove_search_field_alias {
     my $pkg = shift;
@@ -440,6 +712,11 @@ sub remove_search_field_alias {
     return { $class => { $field => $alias } };
 }
 
+=head2 remove_search_class_alias
+
+    $QParser->remove_search_class_alias($class, $alias);
+=cut
+
 sub remove_search_class_alias {
     my $pkg = shift;
     $pkg = ref($pkg) || $pkg;
@@ -453,6 +730,13 @@ sub remove_search_class_alias {
     return { $class => $alias };
 }
 
+=head2 debug
+
+    $debug = $QParser->debug([$debug]);
+
+Return or set whether debugging output is enabled.
+=cut
+
 sub debug {
     my $self = shift;
     my $q = shift;
@@ -460,12 +744,26 @@ sub debug {
     return $self->{_debug};
 }
 
+=head2 query
+
+    $query = $QParser->query([$query]);
+
+Return or set the query.
+=cut
+
 sub query {
     my $self = shift;
     my $q = shift;
     $self->{_query} = " $q " if (defined $q);
     return $self->{_query};
 }
+
+=head2 parse_tree
+
+    $parse_tree = $QParser->parse_tree([$parse_tree]);
+
+Return or set the parse tree associated with the QueryParser.
+=cut
 
 sub parse_tree {
     my $self = shift;
@@ -480,6 +778,14 @@ sub floating_plan {
     $self->{_top} = $q if (defined $q);
     return $self->{_top};
 }
+
+=head2 parse
+
+    $QParser->parse([$query]);
+
+Parse the specified query, or the query already associated with the QueryParser
+object.
+=cut
 
 sub parse {
     my $self = shift;
@@ -499,6 +805,15 @@ sub parse {
     }
     return $self;
 }
+
+=head2 decompose
+
+    ($struct, $remainder) = $QParser->decompose($querystring, [$current_class], [$recursing], [$phrase_helper]);
+
+This routine does the heavy work of parsing the query string recursively.
+Returns the top level query plan, or the query plan from a lower level plus
+the portion of the query string that needs to be processed at a higher level.
+=cut
 
 sub decompose {
     my $self = shift;
@@ -836,6 +1151,11 @@ sub decompose {
     return ($struct, $remainder);
 }
 
+=head2 find_class_index
+
+    $index = $QParser->find_class_index($class, $query);
+=cut
+
 sub find_class_index {
     my $class = shift;
     my $query = shift;
@@ -852,6 +1172,13 @@ sub find_class_index {
     return -1;
 }
 
+=head2 core_limit
+
+    $limit = $QParser->core_limit([$limit]);
+
+Return and/or set the core_limit.
+=cut
+
 sub core_limit {
     my $self = shift;
     my $l = shift;
@@ -859,12 +1186,26 @@ sub core_limit {
     return $self->{core_limit};
 }
 
+=head2 superpage
+
+    $superpage = $QParser->superpage([$superpage]);
+
+Return and/or set the superpage.
+=cut
+
 sub superpage {
     my $self = shift;
     my $l = shift;
     $self->{superpage} = $l if ($l);
     return $self->{superpage};
 }
+
+=head2 superpage_size
+
+    $size = $QParser->superpage_size([$size]);
+
+Return and/or set the superpage size.
+=cut
 
 sub superpage_size {
     my $self = shift;
