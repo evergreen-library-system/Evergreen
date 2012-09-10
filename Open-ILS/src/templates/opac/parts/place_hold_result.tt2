@@ -116,7 +116,7 @@
             <br/>
             <hr/>
             <div class='big-strong'>
-                [% |l %]You have permission to override some of the failed holds.<br/>  Click Submit to override and place your hold on the selected items.[% END %]
+                [% |l %]You have permission to override some of the failed holds. Click Submit to override and place your hold on the selected items.[% END %]
             </div>
             <span style='padding-right: 10px;'>
                 <input type="submit" name="submit" value="[% l('Submit') %]"

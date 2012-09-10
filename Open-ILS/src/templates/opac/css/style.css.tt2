@@ -285,6 +285,11 @@ span.dash_divider {
     text-decoration: none;
 }
 
+.checkbox_col {
+    width: 1%;
+    padding-left: 10px !important;
+}
+
 #adv_search.on, #num_search.on, #expert_search.on {
     color: [% css_colors.accent_darker %];
     background: [% css_colors.background %];
@@ -584,6 +589,17 @@ div.format_icon {
     margin:0;
 }
 
+#holds_temp_parent tr td div {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#holds_temp_parent tr td div.format_icon {
+    margin-top: 6px;
+    margin-bottom: 6px;
+    float: none;
+}
+
 #results_header_bar {
     background: [% css_colors.accent_medium %];
     border-top:1px solid [% css_colors.accent_mediumdark %];
@@ -804,11 +820,17 @@ table.acct_notes th {
     font-weight:bold;
     text-transform:uppercase;
     font-size: [% css_fonts.size_smaller %];
+    border-collapse: collapse;
 }
 
 #acct_checked_main_header td, #acct_holds_main_header td, #acct_checked_hist_header td, #acct_list_header td, #acct_list_header_anon td, #temp_list_holds td {
     background: [% css_colors.accent_lighter2 %];
-    padding: 8px 0px 7px 0px;
+    padding: 10px;
+}
+
+#acct_checked_main_header th, #acct_holds_main_header th, #acct_checked_hist_header th, #acct_list_header th, #acct_list_header_anon th, #temp_list_holds th {
+    text-align: left;
+    padding: 0px 10px 0px 10px;
 }
 
 #acct_list_header select, #acct_list_header_anon select {

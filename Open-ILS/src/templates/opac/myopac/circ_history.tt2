@@ -39,34 +39,19 @@
     <div class="clear-both"></div>
 
     [% IF ctx.circs.size < 1 %]
-    <div class="warning_box">
-        <big><strong>[% l('There are no items in your circulation history.') %]</strong></big>
-    </div>
+    <div class="warning_box">[% l('There are no items in your circulation history.') %]</div>
     [% ELSE %]
 
     <div id='checked_main'>
-        <table style='border-collapse:collapse;'>
-            <thead id="acct_checked_main_header">
+        <table id="acct_checked_main_header">
+            <thead>
                 <tr>
-                    <td width="32%" style="padding-left:5px;">
-                        <span title="Click to sort" class='pointer'>[% l('Title') %]</span> /
-                        <span title="Click to sort" class='pointer'>[% l('Author') %]</span>
-                    </td>
-                    <td width="10%" style="padding-left:5px;">
-                        <span title="Click to sort" class='pointer'>[% l('Checkout Date') %]</span>
-                    </td>
-                    <td width="10%" style="padding-left:5px;">
-                        <span title="Click to sort" class='pointer'>[% l('Due Date') %]</span>
-                    </td>
-                    <td width="10%" style="padding-left:5px;">
-                        <span title="Click to sort" class='pointer'>[% l('Date Returned') %]</span>
-                    </td>
-                    <td width="16%">
-                        <span title="Click to sort" class='pointer'>[% l('Barcode') %]</span>
-                    </td>
-                    <td width="22%">
-                        <span title="Click to sort" class='pointer'>[% l('Call Number') %]</span>
-                    </td>
+                    <th>[% l('Title / Author') %]</th>
+                    <th>[% l('Checkout Date') %]</th>
+                    <th>[% l('Due Date') %]</th>
+                    <th>[% l('Date Returned') %]</th>
+                    <th>[% l('Barcode') %]</th>
+                    <th>[% l('Call Number') %]</th>
                 </tr>
             </thead>
             <tbody>
@@ -74,7 +59,7 @@
                     attrs = {marc_xml => circ.marc_xml};
                     PROCESS get_marc_attrs args=attrs; %]
                     <tr>
-                        <td style="padding-left:5px;padding-bottom:10px;">
+                        <td>
                             <a href="[% mkurl(ctx.opac_root _ '/record/' _ circ.circ.target_copy.call_number.record.id) %]" 
                                 name="[% l('Catalog record') %]">[% attrs.title | html %]</a>
                             [% IF attrs.author %] /
@@ -83,13 +68,13 @@
                             )%]">[% attrs.author | html %]</a>
                             [% END %]
                         </td>
-                        <td style="padding-left:5px;">
+                        <td>
                             [% date.format(ctx.parse_datetime(circ.circ.xact_start),DATE_FORMAT); %]
                         </td>
-                        <td style="padding-left:5px;">
+                        <td>
                             [% date.format(ctx.parse_datetime(circ.circ.due_date),DATE_FORMAT); %]
                         </td>
-                        <td style="padding-left:5px;">
+                        <td>
                             [% 
                                 IF circ.circ.checkin_time; 
                                     date.format(ctx.parse_datetime(circ.circ.checkin_time),DATE_FORMAT); 

@@ -24,7 +24,7 @@
             %]
         </span>
         <span style="float:right;">
-            <a class="hide_me" href="#">Export List</a>
+            <a class="hide_me" href="#">[% l('Export List') %]</a>
         </span>
     </div>
     <div class="clear-both"></div>
@@ -50,77 +50,55 @@
                 </td>
                 <td width="1" style="padding-left:5px;">
                     <a href="#"><img
-                        alt="Holds Help"
+                        alt="[% l('Holds Help') %]"
                         src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
                 </td>
                 <td style="padding-left:5px;" class='error'>
                     [%  IF ctx.hold_suspend_post_capture;
-                            l('One or more holds could not be suspended because<br/>the item is at (or en route to) the pickup library.');
+                            l('One or more holds could not be suspended because the item is at (or en route to) the pickup library.');
                         END;
                     %]
                 </td>
                 <td align="right">
-                    [% l("Show") %] &nbsp; &nbsp;
                     [% IF CGI.param("available") %]
-                    <a href="[% mkurl('holds', {}, ['available']) %]">[% l('all') %]</a> |
-                    <strong>[% l("only available") %]</strong>
+                    <a href="[% mkurl('holds', {}, ['available']) %]">[% l('Show all') %]</a> |
+                    <strong>[% l("Show only available") %]</strong>
                     [% ELSE %]
-                    <strong>[% l("all") %]</strong> |
-                    <a href="[% mkurl('holds', {available => 1}) %]">[% l("only available") %]</a>
+                    <strong>[% l("Show all") %]</strong> |
+                    <a href="[% mkurl('holds', {available => 1}) %]">[% l("Show only available") %]</a>
                     [% END %] &nbsp; &nbsp;
                     [% l("holds") %]
                     <select class="hide_me" id="holds_sort">
-                        <option value="">-- Sort By --</option>
-                        <option value="title">Title</option>
-                        <option value="pickup">PickUp Location</option>
-                        <option value="status">Status</option>
+                        <option value="">[% l('-- Sort By --') %]</option>
+                        <option value="title">[% l('Title') %]</option>
+                        <option value="pickup">[% l('PickUp Location') %]</option>
+                        <option value="status">[% l('Status') %]</option>
                     </select>
                 </td>
             </tr>
         </table>
         [% IF ctx.holds.size < 1 %]
-        <div class="warning_box">
-            <big><strong>[% l('No holds found.') %]</strong></big>
-        </div>
+        <div class="warning_box">[% l('No holds found.') %]</div>
         [% ELSE %]
-        <table id="acct_holds_main_header" cellpadding='0' cellspacing='0'
-            border='0' width="100%">
-            <tr>
-                <td width="36" align="center">
-                    <input type="checkbox" onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'hold_id' && !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
-                </td>
-                <td width="138">
-                    <span title="Click to sort"
-                        style="cursor:pointer;">
-                        Title
-                    </span>
-                </td>
-                <td width="123">
-                    <span title="Click to sort" style="cursor:pointer;">Author</span>
-                </td>
-                <td width="64">
-                    <span title="Click to sort"
-                        style="cursor:pointer;">Format</span>
-                </td>
-                <td width="136">
-                    <span title="Click to sort"
-                        style="cursor:pointer;">Pickup Location</span>
-                </td>
-                <td width="104">Activate</td>
-                <td width="106">Cancel if not<br />filled by</td>
-                <td width="95">Active</td>
-                <td width="172">
-                    <span title="Click to sort"
-                        style="cursor:pointer;">Status</span>
-                </td>
-            </tr>
-        </table>
         <div class="hide_me">
-            <select id="hold_pickup_lib_temp" name="hold_pickup_lib_sel"
-                class="hide_me" style="width:125px;height:21px;"></select>
+            <select id="hold_pickup_lib_temp" name="hold_pickup_lib_sel" class="hide_me"></select>
         </div>
-
-        <table cellpadding='0' cellspacing='0' border='0' width="100%">
+        <table id="acct_holds_main_header" cellpadding='0' cellspacing='0' border='0'>
+            <thead>
+            <tr>
+                <th align="center">
+                    <input type="checkbox" onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'hold_id' && !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
+                </th>
+                <th>[% l('Title') %]</th>
+                <th>[% l('Author') %]</th>
+                <th>[% l('Format') %]</th>
+                <th>[% l('Pickup Location') %]</th>
+                <th>[% l('Activate') %]</th>
+                <th>[% l('Cancel if not filled by') %]</th>
+                <th>[% l('Active') %]</th>
+                <th>[% l('Status') %]</th>
+            </tr>
+            </thead>
             <tbody id="holds_temp_parent">
                 [% FOR hold IN ctx.holds;
                     attrs = {marc_xml => hold.marc_xml};
@@ -128,11 +106,11 @@
                     ahr = hold.hold.hold %]
                 <tr id="acct_holds_temp" name="acct_holds_temp"
                     class="acct_holds_temp[% ahr.frozen == 't' ? ' inactive-hold' : '' %]">
-                    <td width="36" align="center" style="text-align:center;">
+                    <td align="center" style="text-align:center;">
                         <input type="checkbox" name="hold_id" value="[% ahr.id %]" />
                     </td>
-                    <td width="138">
-                        <div style="margin-top:10px;margin-bottom:10px;">
+                    <td>
+                        <div>
                             [% 
                                 title = attrs.title;
                                 IF ahr.hold_type == 'P';
@@ -142,52 +120,38 @@
                             <a href="[% mkurl(ctx.opac_root _ '/record/' _ hold.hold.bre_id) %]">[% title | html %]</a>
                         </div>
                     </td>
-                    <td width="123">
-                        <div style="margin-top:10px;margin-bottom:10px;">
+                    <td>
+                        <div>
                             <a href="[% mkurl(ctx.opac_root _ '/results',
                                 {qtype => 'author', query => attrs.author.replace('[,\.:;]', '')}
                             ) %]">[% attrs.author | html %]</a>
                         </div>
                     </td>
-                    <td width="64">
-                        <div style="width:26px;height:23px;margin-top:6px;margin-bottom:6px;">
+                    <td>
+                        <div class="format_icon">
                             [% IF attrs.format_icon %]
                             <img title="[% attrs.format_label | html %]" alt="[% attrs.format_label | html %]" src="[% attrs.format_icon %]" />
                             [% END %]
                         </div>
                     </td>
-                    <td width="136">
+                    <td>
                         [% ctx.get_aou(ahr.pickup_lib).name | html %]
                     </td>
-                    <td width="104">
-                        <!-- <input
-                            title="Enter a date (e.g. 10/21/2010)"
-                            class="hide_me" style="width:91px;"
-                            name="activate_box" type="text" /> -->
-                        [% IF ahr.frozen == 't' AND
-                                ahr.thaw_date;
+                    <td>
+                        [% IF ahr.frozen == 't' AND ahr.thaw_date;
                             date.format(ctx.parse_datetime(ahr.thaw_date), DATE_FORMAT);
                         END %]
                     </td>
-                    <td width="106">
-                        <!-- <input title="[% l('Enter a date (e.g. 10/21/2010)') %]"
-                            class="hide_me" style="width:91px;"
-                            name="hold_expires_box" type="text" />-->
+                    <td>
                         [% IF ahr.expire_time;
                             date.format(ctx.parse_datetime(ahr.expire_time), DATE_FORMAT);
                         END %]
                     </td>
-                    <td width="95">
-                        <!-- <select name="hold_active_sel"
-                            style="width:90px;" class="hide_me">
-                            <option value="f">Active</option>
-                            <option value="t">Suspended</option>
-                        </select> -->
+                    <td>
                         [% l(ahr.frozen == 'f' ? 'Active' : 'Suspended') %]
                     </td>
-                    <td width="110">
-                        <div name="acct_holds_status"
-                            style="margin-top:10px;margin-bottom:10px;">
+                    <td>
+                        <div name="acct_holds_status">
                             [% PROCESS get_hold_status hold=hold; %]
                         </div>
                     </td>
@@ -201,31 +165,5 @@
         [% END %]
         </form>
     </div>
-
-    <span id='myopac.holds.cancel.confirm' class='hide_me'>[% l("Are you sure you wish to cancel the selected holds?") %]</span>
-    <span id='myopac.holds.freeze.confirm' class='hide_me'>[% l("Are you sure you wish to suspend the selected holds?  If an item has already been selected to fulfill the hold, it will not be suspended") %]</span>
-    <span id='myopac.holds.thaw.confirm' class='hide_me'>[% l("Are you sure you wish to activate the selected holds?") %]</span>
-    <span id='myopac.holds.thaw_date.confirm' class='hide_me'>[% l("Are you sure you wish to change the activate date for the selected holds?") %]</span>
-    <span id='myopac.holds.freeze.select_thaw' class='hide_me'>[% l("Select an automatic activation date.  If no date is chosen, the holds will remain suspended until they are manually activated.") %]</span>
-
-    <table width='100%' id='myopac_holds_processing' class='hide_me'>
-        <tr><td>[% l("Processing holds... This may take a moment.") %]</td></tr>
-    </table>
-   
-    <span class='hide_me' id='myopac_holds_cancel_verify'>
-    	[% l("If you wish to cancel the selected hold, click OK, otherwise click Cancel.") %]
-    </span>
-</div>
-<div id='myopac_holds_thaw_date_form' class='hide_me'>
-    <div id='myopac_holds_freeze_select_thaw'>
-        [% l("Select an automatic activation date.  If no date is chosen, the holds will remain suspended until they are manually activated.") %]
-    </div>
-    <p>
-        <input size='10' maxlength='10'
-            type='text' id='myopac_holds_thaw_date_input' />
-    </p>
-    <p>
-        <button>[% l("Submit") %]</button>
-    </p>
 </div>
 [% END %]

@@ -5,7 +5,11 @@
 .very-big-height { height: 30px; }
 .big-block { margin: auto; width: 974px; height: 0px; }
 .qtype_selector_margin { margin-right: 7px; }
-.warning_box { margin-top: 10px; }
+.warning_box {
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: larger;
+}
 .pad-bottom-five { padding: 5px; }
 .item_list_padding { padding: 8px 0px 6px 0px; border: 0; }
 .opac-auto-102 { padding-bottom: 7px; }
