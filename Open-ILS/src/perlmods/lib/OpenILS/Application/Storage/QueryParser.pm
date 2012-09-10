@@ -65,6 +65,15 @@ sub operators {
     return $parser_config{$class}{operators};
 }
 
+sub allow_nested_modifiers {
+    my $class = shift;
+    my $v = shift;
+    $class = ref($class) || $class;
+
+    $parser_config{$class}{allow_nested_modifiers} = $v if (defined $v);
+    return $parser_config{$class}{allow_nested_modifiers};
+}
+
 sub filters {
     my $class = shift;
     $class = ref($class) || $class;
@@ -650,7 +659,7 @@ sub decompose {
             warn "Encountered search modifier: $1\n" if $self->debug;
 
             $_ = $';
-            if (!($struct->top_plan || $parser_config{QueryParser}->{allow_nested_modifiers})) {
+            if (!($struct->top_plan || $parser_config{$pkg}->{allow_nested_modifiers})) {
                 warn "  Search modifiers only allowed at the top level of the query\n" if $self->debug;
             } else {
                 $struct->new_modifier($1);
@@ -663,7 +672,7 @@ sub decompose {
             my $mod = $1;
 
             $_ = $';
-            if (!($struct->top_plan || $parser_config{QueryParser}->{allow_nested_modifiers})) {
+            if (!($struct->top_plan || $parser_config{$pkg}->{allow_nested_modifiers})) {
                 warn "  Search modifiers only allowed at the top level of the query\n" if $self->debug;
             } elsif ($2 =~ /^[ty1]/i) {
                 $struct->new_modifier($mod);

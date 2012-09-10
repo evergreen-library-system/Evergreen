@@ -380,6 +380,8 @@ sub initialize {
 
 sub TEST_SETUP {
     
+    __PACKAGE__->allow_nested_modifiers(1);
+
     __PACKAGE__->add_search_field_id_map( series => seriestitle => 1 => 1 );
 
     __PACKAGE__->add_search_field_id_map( series => seriestitle => 1 => 1 );
