@@ -15,15 +15,10 @@
 
     <div class="header_middle">
         <span class="float-left">[% l('Current Items Checked Out') %]</span>
-        <span class="float-right">
-            <a class="hide_me" href="#">[% l('Export List') %]</a>
-        </span>
     </div>
     <div class="clear-both"></div>
     [% IF ctx.circs.size < 1 %]
-    <div class="warning_box">
-        <big><strong>[% l('You have no items checked out.') %]</strong></big>
-    </div>
+    <div class="warning_box">[% l('You have no items checked out.') %]</div>
     [% ELSE %]
     [% IF ctx.success_renewals %]
     <div class="renew-summary">
@@ -52,59 +47,37 @@
                         class="opac-button" />
                 </td>
                 <td style="padding-left:5px;">
-                    <a href="#"><img alt="Renewing Help"
+                    <a href="#"><img alt="[% l('Renewing Help') %]"
                         src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
                 </td>
             </tr>
         </table>
-        <table id="acct_checked_main_header" cellpadding='0' cellspacing='0'
-            border='0'>
+        <table id="acct_checked_main_header" cellpadding='0' cellspacing='0' border='0'>
+            <thead>
             <tr>
-                <td width="1%" style="padding-left:10px;">
+                <th class="checkbox_column">
                     <input type="checkbox" id="check_all_checked"
                         onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'circ' && !inputs[i].disabled) inputs[i].checked = this.checked;}"
                     />
-                </td>
-                <td width="40%" style="padding-left:5px;">
-                    <span title="Click to sort" class='pointer'>
-                        Title
-                    </span> /
-                    <span title="Click to sort" class='pointer'>
-                        Author
-                    </span>
-                </td>
-                <td width="8%" style="padding-right:5px;" align="center">
-                    <span title="Click to sort" class='pointer'>Renews<br />Left
-                    </span>
-                </td>
-                <td width="13%" style="padding-left:5px;">
-                    <span title="Click to sort" class='pointer'>Due Date</span>
-                </td>
-                <td width="16%">
-                    <span title="Click to sort" class='pointer'>barcode</span>
-                </td>
-                <td width="22%">
-                    <span title="Click to sort" class='pointer'>call number</span>
-                </td>
+                </th>
+                <th>[% l('Title / Author') %]</th>
+                <th>[% l('Renewals Left') %]</th>
+                <th>[% l('Due Date') %]</th>
+                <th>[% l('Barcode') %]</th>
+                <th>[% l('Call number') %]</th>
             </tr>
-        </table>
-   
-        <div id="checked_temp_parent">
-            <div id="acct_checked_temp">
-                <table cellpadding='0' cellspacing='0' border='0'
-                    style="margin-top:5px;">
+            </thead>
+            <tbody>
                     [% FOR circ IN ctx.circs;
                         attrs = {marc_xml => circ.marc_xml};
                         PROCESS get_marc_attrs args=attrs; %]
                     <tr>
-                        <td width="1%" style="padding-left:10px;" valign="top">
+                        <td class="checkbox_column" valign="top">
                             <input type="checkbox" name="circ"
                                 [% IF circ.circ.renewal_remaining < 1 %] disabled="disabled" [% END %]
                                 value="[% circ.circ.id %]" />
                         </td>
-                        <td width="40%"
-                            style="padding-left:5px;padding-bottom:10px;"
-                            name="author">
+                        <td name="author">
                             <a href="[% mkurl(ctx.opac_root _ '/record/' _ 
                                 circ.circ.target_copy.call_number.record.id) %]"
                                 name="[% l('Catalog record') %]">[% attrs.title | html %]</a>
@@ -114,20 +87,20 @@
                             ) %]">[% attrs.author | html %]</a>
                             [% END %]
                         </td>
-                        <td width="8%" name="renewals" align="center">
+                        <td name="renewals" align="center">
                             [% circ.circ.renewal_remaining %]
                         </td>
                         [%
                             due_date = ctx.parse_datetime(circ.circ.due_date);
                             due_class = (date.now > date.format(due_date, '%s')) ? 'error' : '';
                         %]
-                        <td width="13%" style="padding-left:5px;" name="due_date" class='[% due_class %]'>
+                        <td name="due_date" class='[% due_class %]'>
                             [% date.format(due_date, DATE_FORMAT) %]
                         </td>
-                        <td width="16%" name="barcode">
+                        <td name="barcode">
                             [% circ.circ.target_copy.barcode | html %]
                         </td>
-                        <td width="22%" name="call_number">
+                        <td name="call_number">
                             [% circ.circ.target_copy.call_number.label | html %]
                         </td>
                     </tr>
@@ -148,25 +121,5 @@
         </form>
     </div>
     [% END %]
-    <div id='non_cat_circs_div' class='hide_me'>
-        <br/>
-        <div style='text-align: center'><b>[% l("Other Circulations") %]</b></div>
-        <table class='data_grid' width='100%'>
-            <thead>
-                <tr>
-                    <td>[% l("Circulating Library") %]</td>
-                    <td>[% l("Circulation Type") %]</td>
-                    <td>[% l("Please return by ...") %]</td>
-                </tr>
-            </thead>
-            <tbody id='non_cat_circs_tbody'>
-                <tr id='non_cat_circs_row'>
-                    <td name='circ_lib'/>
-                    <td name='item_type'/>
-                    <td name='circ_time'/>
-                </tr>
-            </tbody>
-        </table>
-    </div>
 </div>
 [% END %]
