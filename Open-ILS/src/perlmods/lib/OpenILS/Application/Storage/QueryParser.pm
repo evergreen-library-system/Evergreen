@@ -10,6 +10,8 @@ our %parser_config = (
         operators => { 
             'and' => '&&',
             'or' => '||',
+            float_start => '{{',
+            float_end => '}}',
             group_start => '(',
             group_end => ')',
             required => '+',
@@ -463,16 +465,29 @@ sub parse_tree {
     return $self->{_parse_tree};
 }
 
+sub floating_plan {
+    my $self = shift;
+    my $q = shift;
+    $self->{_top} = $q if (defined $q);
+    return $self->{_top};
+}
+
 sub parse {
     my $self = shift;
     my $pkg = ref($self) || $self;
     warn " ** parse package is $pkg\n" if $self->debug;
-    $self->parse_tree(
-        $self->decompose(
-            $self->query( shift() )
-        )
-    );
+#    $self->parse_tree(
+#        $self->decompose(
+#            $self->query( shift() )
+#        )
+#    );
 
+    $self->decompose( $self->query( shift() ) );
+
+    if ($self->floating_plan) {
+        $self->floating_plan->add_node( $self->parse_tree );
+        $self->parse_tree( $self->floating_plan );
+    }
     return $self;
 }
 
@@ -547,11 +562,17 @@ sub decompose {
     my $or_re = $pkg->operator('or');
     $or_re = qr/^\s*\Q$or_re\E/;
 
-    my $group_start_re = $pkg->operator('group_start');
-    $group_start_re = qr/^\s*\Q$group_start_re\E/;
+    my $group_start = $pkg->operator('group_start');
+    my $group_start_re = qr/^\s*\Q$group_start\E/;
 
     my $group_end = $pkg->operator('group_end');
     my $group_end_re = qr/^\s*\Q$group_end\E/;
+
+    my $float_start = $pkg->operator('float_start');
+    my $float_start_re = qr/^\s*\Q$float_start\E/;
+
+    my $float_end = $pkg->operator('float_end');
+    my $float_end_re = qr/^\s*\Q$float_end\E/;
 
     my $modifier_tag_re = $pkg->operator('modifier');
     $modifier_tag_re = qr/^\s*\Q$modifier_tag_re\E/;
@@ -567,13 +588,22 @@ sub decompose {
     my $modifier_re = '^\s*'.$modifier_tag_re.'(' . join( '|', @{$pkg->modifiers}) . ')\b';
     my $modifier_as_class_re = '^\s*(' . join( '|', @{$pkg->modifiers}) . '):\s*(\S+)';
 
-    my $struct = $self->new_plan( level => $recursing );
+    my $struct = shift || $self->new_plan( level => $recursing );
+    $self->parse_tree( $struct ) if (!$self->parse_tree);
+
     my $remainder = '';
 
     my $last_type = '';
     while (!$remainder) {
         if (/^\s*$/) { # end of an explicit group
             last;
+        } elsif (/$float_end_re/) { # end of an explicit group
+            warn "Encountered explicit float end\n" if $self->debug;
+
+            $remainder = $';
+            $_ = '';
+
+            $last_type = '';
         } elsif (/$group_end_re/) { # end of an explicit group
             warn "Encountered explicit group end\n" if $self->debug;
 
@@ -640,6 +670,15 @@ sub decompose {
             }
 
             $last_type = '';
+        } elsif (/$float_start_re/) { # start of an explicit float
+            warn "Encountered explicit float start\n" if $self->debug;
+
+            $self->floating_plan( $self->new_plan( floating => 1 ) ) if (!$self->floating_plan);
+            # pass the floating_plan struct to be modified by the float'ed chunk
+            my ($floating_plan, $subremainder) = $self->new->decompose( $', undef, undef, undef,  $self->floating_plan);
+            $_ = $subremainder;
+
+            $last_type = '';
         } elsif (/$group_start_re/) { # start of an explicit group
             warn "Encountered explicit group start\n" if $self->debug;
 
@@ -655,11 +694,13 @@ sub decompose {
             warn "Encountered AND\n" if $self->debug;
 
             my $LHS = $struct;
-            my ($RHS, $subremainder) = $self->decompose( '('.$_.')', $current_class, $recursing + 1 );
+            my ($RHS, $subremainder) = $self->decompose( $group_start.$_.$group_end, $current_class, $recursing + 1 );
             $_ = $subremainder;
 
             $struct = $self->new_plan( level => $recursing, joiner => '&' );
             $struct->add_node($_) for ($LHS, $RHS);
+
+            $self->parse_tree( $struct ) if ($self->parse_tree == $LHS);
 
             $last_type = 'AND';
         } elsif (/$or_re/) { # ORed expression
@@ -669,11 +710,13 @@ sub decompose {
             warn "Encountered OR\n" if $self->debug;
 
             my $LHS = $struct;
-            my ($RHS, $subremainder) = $self->decompose( '('.$_.')', $current_class, $recursing + 1 );
+            my ($RHS, $subremainder) = $self->decompose( $group_start.$_.$group_end, $current_class, $recursing + 1 );
             $_ = $subremainder;
 
             $struct = $self->new_plan( level => $recursing, joiner => '|' );
             $struct->add_node($_) for ($LHS, $RHS);
+
+            $self->parse_tree( $struct ) if ($self->parse_tree == $LHS);
 
             $last_type = 'OR';
         } elsif ($self->facet_class_count && /$facet_re/) { # changing current class
@@ -742,7 +785,7 @@ sub decompose {
 #            $struct->joiner( '&' );
 #
 #            $last_type = '';
-        } elsif (/^\s*([^$group_end\s]+)/o) { # atom
+        } elsif (/^\s*([^$group_end\s]+)/o && /^\s*([^$float_end\s]+)/o) { # atom
             warn "Encountered atom: $1\n" if $self->debug;
             warn "Remainder: $'\n" if $self->debug;
 
@@ -910,6 +953,8 @@ sub abstract_query2str_impl {
     my $qp_class ||= shift || 'QueryParser';
     my $qpconfig = $QueryParser::parser_config{$qp_class};
 
+    my $fs = $qpconfig->{operators}{float_start};
+    my $fe = $qpconfig->{operators}{float_end};
     my $gs = $qpconfig->{operators}{group_start};
     my $ge = $qpconfig->{operators}{group_end};
     my $and = $qpconfig->{operators}{and};
@@ -955,18 +1000,32 @@ sub abstract_query2str_impl {
     }
 
     if (exists $abstract_query->{children}) {
+
         my $op = (keys(%{$abstract_query->{children}}))[0];
-        $q .= join(
-            " " . ($op eq '&' ? '' : $or) . " ",
-            map {
-                abstract_query2str_impl($_, $depth + 1, $qp_class)
-            } @{$abstract_query->{children}{$op}}
-        );
-        $needs_group += scalar(@{$abstract_query->{children}{$op}});
+
+        if ($abstract_query->{floating}) { # always the top node!
+            my $sub_node = pop @{$abstract_query->{children}{$op}};
+
+            $abstract_query->{floating} = 0;
+            $q = $fs.abstract_query2str_impl($abstract_query,0,$qp_class).$fe;
+
+            $abstract_query = $sub_node;
+        }
+
+        if ($abstract_query && exists $abstract_query->{children}) {
+            $op = (keys(%{$abstract_query->{children}}))[0];
+            $q .= join(
+                " " . ($op eq '&' ? '' : $or) . " ",
+                map {
+                    abstract_query2str_impl($_, $depth + 1, $qp_class)
+                } @{$abstract_query->{children}{$op}}
+            );
+            $needs_group += scalar(@{$abstract_query->{children}{$op}});
+        }
     } elsif ($abstract_query->{'&'} or $abstract_query->{'|'}) {
         my $op = (keys(%{$abstract_query}))[0];
         $q .= join(
-            " " . ($op eq '&' ? $and : $or) . " ",
+            " " . ($op eq '&' ? '' : $or) . " ",
             map {
                 abstract_query2str_impl($_, $depth + 1, $qp_class)
             } @{$abstract_query->{$op}}
@@ -1259,6 +1318,7 @@ sub to_abstract_query {
 
     my $abstract_query = {
         type => "query_plan",
+        floating => $self->{floating},
         filters => [map { $_->to_abstract_query } @{$self->filters}],
         modifiers => [map { $_->to_abstract_query } @{$self->modifiers}]
     };
