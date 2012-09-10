@@ -399,7 +399,7 @@ patron.holds.prototype = {
                                     "authtime": ses("authtime"),
                                     "no_xulG": false,
                                     "show_nav_buttons": true,
-                                    "show_print_button": true
+                                    "show_print_button": false
                                 };
                                 ["url_prefix", "new_tab", "set_tab",
                                     "close_tab", "new_patron_tab",
