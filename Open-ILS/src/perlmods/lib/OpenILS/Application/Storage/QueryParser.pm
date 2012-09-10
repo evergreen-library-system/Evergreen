@@ -454,7 +454,7 @@ sub debug {
 sub query {
     my $self = shift;
     my $q = shift;
-    $self->{_query} = $q if (defined $q);
+    $self->{_query} = " $q " if (defined $q);
     return $self->{_query};
 }
 
@@ -694,10 +694,15 @@ sub decompose {
             warn "Encountered AND\n" if $self->debug;
 
             my $LHS = $struct;
-            my ($RHS, $subremainder) = $self->decompose( $group_start.$_.$group_end, $current_class, $recursing + 1 );
+            my ($RHS, $subremainder) = $self->decompose( "$group_start $_ $group_end", $current_class, $recursing + 1 );
             $_ = $subremainder;
 
-            $struct = $self->new_plan( level => $recursing, joiner => '&' );
+            $struct = $self->new_plan( level => $recursing, joiner => '&', floating => $LHS->floating );
+            if ($LHS->floating) {
+                $self->floating_plan($struct);
+                $LHS->floating(0);
+            }
+
             $struct->add_node($_) for ($LHS, $RHS);
 
             $self->parse_tree( $struct ) if ($self->parse_tree == $LHS);
@@ -710,7 +715,7 @@ sub decompose {
             warn "Encountered OR\n" if $self->debug;
 
             my $LHS = $struct;
-            my ($RHS, $subremainder) = $self->decompose( $group_start.$_.$group_end, $current_class, $recursing + 1 );
+            my ($RHS, $subremainder) = $self->decompose( "$group_start $_ $group_end", $current_class, $recursing + 1 );
             $_ = $subremainder;
 
             $struct = $self->new_plan( level => $recursing, joiner => '|' );
@@ -785,7 +790,7 @@ sub decompose {
 #            $struct->joiner( '&' );
 #
 #            $last_type = '';
-        } elsif (/^\s*([^$group_end\s]+)/o && /^\s*([^$float_end\s]+)/o) { # atom
+        } elsif (/^\s*([^${group_end}${float_end}\s]+)/o) { # atom
             warn "Encountered atom: $1\n" if $self->debug;
             warn "Remainder: $'\n" if $self->debug;
 
@@ -944,6 +949,12 @@ sub _abstract_query2str_modifier {
     return $qpconfig->{operators}{modifier} . $f;
 }
 
+sub _kid_list {
+    my $children = shift;
+    my $op = (keys %$children)[0];
+    return @{$$children{$op}};
+}
+
 # This should produce an equivalent query to the original, given an
 # abstract_query.
 sub abstract_query2str_impl {
@@ -960,42 +971,39 @@ sub abstract_query2str_impl {
     my $and = $qpconfig->{operators}{and};
     my $or = $qpconfig->{operators}{or};
 
-    my $needs_group = 0;
+    my $isnode = 0;
     my $q = "";
 
     if (exists $abstract_query->{type}) {
         if ($abstract_query->{type} eq 'query_plan') {
             $q .= join(" ", map { _abstract_query2str_filter($_, $qp_class) } @{$abstract_query->{filters}}) if
                 exists $abstract_query->{filters};
-            $needs_group += scalar(@{$abstract_query->{filters}}) if exists $abstract_query->{filters};
 
-            $q .= " ";
-
-            $q .= join(" ", map { _abstract_query2str_modifier($_, $qp_class) } @{$abstract_query->{modifiers}}) if
+            $q .= ($q ? ' ' : '') . join(" ", map { _abstract_query2str_modifier($_, $qp_class) } @{$abstract_query->{modifiers}}) if
                 exists $abstract_query->{modifiers};
-            $needs_group += scalar(@{$abstract_query->{modifiers}}) if exists $abstract_query->{modifiers};
+            $isnode = 1
+                if (!$abstract_query->{floating} && exists $abstract_query->{children} && _kid_list($abstract_query->{children}) > 1);
         } elsif ($abstract_query->{type} eq 'node') {
             if ($abstract_query->{alias}) {
-                $q .= " " . $abstract_query->{alias};
+                $q .= ($q ? ' ' : '') . $abstract_query->{alias};
                 $q .= "|$_" foreach @{$abstract_query->{alias_fields}};
             } else {
-                $q .= " " . $abstract_query->{class};
+                $q .= ($q ? ' ' : '') . $abstract_query->{class};
                 $q .= "|$_" foreach @{$abstract_query->{fields}};
             }
             $q .= ":";
+            $isnode = 1;
         } elsif ($abstract_query->{type} eq 'atom') {
             my $prefix = $abstract_query->{prefix} || '';
             $prefix = $qpconfig->{operators}{disallowed} if $prefix eq '!';
-            $q .= $prefix .
+            $q .= ($q ? ' ' : '') . $prefix .
                 ($abstract_query->{content} || '') .
                 ($abstract_query->{suffix} || '');
-            $needs_group += 1;
         } elsif ($abstract_query->{type} eq 'facet') {
             # facet syntax [ # ] is hardcoded I guess?
             my $prefix = $abstract_query->{negate} ? $qpconfig->{operators}{disallowed} : '';
-            $q .= $prefix . $abstract_query->{name} . "[" .
+            $q .= ($q ? ' ' : '') . $prefix . $abstract_query->{name} . "[" .
                 join(" # ", @{$abstract_query->{values}}) . "]";
-            $needs_group += 1;
         }
     }
 
@@ -1007,34 +1015,31 @@ sub abstract_query2str_impl {
             my $sub_node = pop @{$abstract_query->{children}{$op}};
 
             $abstract_query->{floating} = 0;
-            $q = $fs.abstract_query2str_impl($abstract_query,0,$qp_class).$fe;
+            $q = $fs . " " . abstract_query2str_impl($abstract_query,0,$qp_class) . $fe. " ";
 
             $abstract_query = $sub_node;
         }
 
         if ($abstract_query && exists $abstract_query->{children}) {
             $op = (keys(%{$abstract_query->{children}}))[0];
-            $q .= join(
-                " " . ($op eq '&' ? '' : $or) . " ",
+            $q .= ($q ? ' ' : '') . join(
+                ($op eq '&' ? ' ' : " $or "),
                 map {
-                    abstract_query2str_impl($_, $depth + 1, $qp_class)
+                    my $x = abstract_query2str_impl($_, $depth + 1, $qp_class); $x =~ s/^\s+//; $x =~ s/\s+$//; $x;
                 } @{$abstract_query->{children}{$op}}
             );
-            $needs_group += scalar(@{$abstract_query->{children}{$op}});
         }
     } elsif ($abstract_query->{'&'} or $abstract_query->{'|'}) {
         my $op = (keys(%{$abstract_query}))[0];
-        $q .= join(
-            " " . ($op eq '&' ? '' : $or) . " ",
+        $q .= ($q ? ' ' : '') . join(
+            ($op eq '&' ? ' ' : " $or "),
             map {
-                abstract_query2str_impl($_, $depth + 1, $qp_class)
+                    my $x = abstract_query2str_impl($_, $depth + 1, $qp_class); $x =~ s/^\s+//; $x =~ s/\s+$//; $x;
             } @{$abstract_query->{$op}}
         );
-        $needs_group += scalar(@{$abstract_query->{$op}});
     }
-    $q .= " ";
 
-    $q = $gs . $q . $ge if ($needs_group > 1 and $depth);
+    $q = "$gs$q$ge" if ($isnode);
 
     return $q;
 }
@@ -1220,6 +1225,13 @@ sub query_nodes {
     return $self->{query};
 }
 
+sub floating {
+    my $self = shift;
+    my $f = shift;
+    $self->{floating} = $f if (defined $f);
+    return $self->{floating};
+}
+
 sub add_node {
     my $self = shift;
     my $node = shift;
@@ -1318,7 +1330,7 @@ sub to_abstract_query {
 
     my $abstract_query = {
         type => "query_plan",
-        floating => $self->{floating},
+        floating => $self->floating,
         filters => [map { $_->to_abstract_query } @{$self->filters}],
         modifiers => [map { $_->to_abstract_query } @{$self->modifiers}]
     };
