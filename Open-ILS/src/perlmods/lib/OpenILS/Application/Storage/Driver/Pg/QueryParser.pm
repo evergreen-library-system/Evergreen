@@ -613,7 +613,6 @@ sub toSQL {
     my $key = 'm.source';
     $key = 'm.metarecord' if (grep {$_->name eq 'metarecord' or $_->name eq 'metabib'} @{$self->modifiers});
 
-    #TODO: Examine how we want to do limits. And offsets. And other annoying crap like that.
     my $core_limit = $self->QueryParser->core_limit || 25000;
 
     my $flat_where = $$flat_plan{where};
@@ -1086,10 +1085,12 @@ sub flatten {
                     }
                 }
                 case 'statuses' {
+                    if (@{$filter->args} > 0) {
                         $where .= $joiner if $where ne '(';
                         $where .= "(${NOT}EXISTS(SELECT 1 FROM asset.call_number acn JOIN asset.copy acp ON acn.id = acp.call_number WHERE m.source = acn.record AND acp.circ_lib IN (SELECT * FROM search_org_list) AND NOT acn.deleted AND NOT acp.deleted AND acp.status IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ") LIMIT 1)";
                         $where .= $filter->negate ? ' AND ' : ' OR ';
                         $where .= "${NOT}EXISTS(SELECT 1 FROM biblio.peer_bib_copy_map pr JOIN asset.copy acp ON pr.target_copy = acp.id WHERE m.source = pr.peer_record AND acp.circ_lib IN (SELECT * FROM search_org_list) AND NOT acp.deleted AND acp.status IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ") LIMIT 1))";
+                    }
                 }
             }
         }

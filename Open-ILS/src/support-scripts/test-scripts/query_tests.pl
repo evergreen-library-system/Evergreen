@@ -26,6 +26,7 @@ my @default_queries = (
     '-"keyword1"',
     'keyword:"keyword1"',
     'keyword:"keyword1" title:"keyword2"',
+    'keyword locations() statuses()',
 # A small set of searches that errored out in a production install
     'keyword: subject:Graphical user interfaces (Computer systems) depth(0) subject|topic[Authoring programs]',
     'keyword: subject:Assassins New York (State) depth(0) subject|geographic[Buffalo (N.Y.)]',
