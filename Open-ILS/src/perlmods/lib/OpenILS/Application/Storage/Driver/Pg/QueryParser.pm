@@ -499,6 +499,7 @@ __PACKAGE__->add_search_filter( 'during' );
 __PACKAGE__->add_search_filter( 'statuses' );
 __PACKAGE__->add_search_filter( 'locations' );
 __PACKAGE__->add_search_filter( 'location_groups', sub { return __PACKAGE__->location_groups_callback(@_) } );
+__PACKAGE__->add_search_filter( 'bib_source' );
 __PACKAGE__->add_search_filter( 'site' );
 __PACKAGE__->add_search_filter( 'pref_ou' );
 __PACKAGE__->add_search_filter( 'lasso' );
@@ -1090,6 +1091,12 @@ sub flatten {
                         $where .= "(${NOT}EXISTS(SELECT 1 FROM asset.call_number acn JOIN asset.copy acp ON acn.id = acp.call_number WHERE m.source = acn.record AND acp.circ_lib IN (SELECT * FROM search_org_list) AND NOT acn.deleted AND NOT acp.deleted AND acp.status IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ") LIMIT 1)";
                         $where .= $filter->negate ? ' AND ' : ' OR ';
                         $where .= "${NOT}EXISTS(SELECT 1 FROM biblio.peer_bib_copy_map pr JOIN asset.copy acp ON pr.target_copy = acp.id WHERE m.source = pr.peer_record AND acp.circ_lib IN (SELECT * FROM search_org_list) AND NOT acp.deleted AND acp.status IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ") LIMIT 1))";
+                    }
+                }
+                case 'bib_source' {
+                    if (@{$filter->args} > 0) {
+                        $where .= $joiner if $where ne '(';
+                        $where .= "bre.source IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ")";
                     }
                 }
             }
