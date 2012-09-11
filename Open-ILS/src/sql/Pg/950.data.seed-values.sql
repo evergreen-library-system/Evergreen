@@ -7994,41 +7994,98 @@ INSERT INTO action_trigger.reactor (module, description)
 
 INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, cleanup_success, cleanup_failure, delay, delay_field, group_field, template) 
     VALUES (23, true, 1, 'PO JEDI', 'acqpo.activated', 'Acq::PurchaseOrderEDIRequired', 'GeneratePurchaseOrderJEDI', NULL, NULL, '00:00:00', NULL, NULL,
-$$[%- USE date -%]
-[%# start JEDI document 
-  # Vendor specific kludges:
-  # BT      - vendcode goes to NAD/BY *suffix*  w/ 91 qualifier
-  # INGRAM  - vendcode goes to NAD/BY *segment* w/ 91 qualifier (separately)
-  # BRODART - vendcode goes to FTX segment (lineitem level)
--%]
-[%- 
-IF target.provider.edi_default.vendcode && target.provider.code == 'BRODART';
-    xtra_ftx = target.provider.edi_default.vendcode;
-END;
+$$
+[%- USE date -%]
+[%
+    # extract some commonly used variables
+
+    VENDOR_SAN = target.provider.san;
+    VENDCODE = target.provider.edi_default.vendcode;
+    VENDACCT = target.provider.edi_default.vendacct;
+    ORG_UNIT_SAN = target.ordering_agency.mailing_address.san;
+
+    # set the vendor / provider
+
+    VENDOR_BT      = 0; # Baker & Taylor
+    VENDOR_INGRAM  = 0;
+    VENDOR_BRODART = 0;
+    VENDOR_MW_TAPE = 0; # Midwest Tape
+    VENDOR_RB      = 0; # Recorded Books
+    VENDOR_ULS     = 0; # ULS
+
+    IF    VENDOR_SAN == '1556150'; VENDOR_BT = 1;
+    ELSIF VENDOR_SAN == '1697684'; VENDOR_BRODART = 1;
+    ELSIF VENDOR_SAN == '1697978'; VENDOR_INGRAM = 1;
+    ELSIF VENDOR_SAN == '2549913'; VENDOR_MW_TAPE = 1;
+    ELSIF VENDOR_SAN == '1113984'; VENDOR_RB = 1;
+    ELSIF VENDOR_SAN == '1699342'; VENDOR_ULS = 1;
+    END;
+
+    # if true, pass the PO name as a secondary identifier
+    # RFF+LI:<name>/li_id
+    INC_PO_NAME = 0;
+    IF VENDOR_INGRAM;
+        INC_PO_NAME = 1;
+    END;
+
+    # GIR configuration --------------------------------------
+
+    INC_COPIES = 1; # copies on/off switch
+    INC_FUND = 0;
+    INC_CALLNUMBER = 0;
+    INC_ITEM_TYPE = 1;
+    INC_LOCATION = 0;
+    INC_COLLECTION_CODE = 1;
+    INC_OWNING_LIB = 1;
+    INC_QUANTITY = 1;
+    INC_COPY_ID = 0;
+
+    IF VENDOR_BT;
+        INC_CALLNUMBER = 1;
+    END;
+
+    IF VENDOR_BRODART;
+        INC_FUND = 1;
+    END;
+
+    IF VENDOR_MW_TAPE;
+        INC_FUND = 1;
+        INC_COLLECTION_CODE = 0;
+        INC_ITEM_TYPE = 0;
+    END;
+
+    # END GIR configuration ---------------------------------
+
 -%]
 [%- BLOCK big_block -%]
 {
-   "recipient":"[% target.provider.san %]",
-   "sender":"[% target.ordering_agency.mailing_address.san %]",
+   "recipient":"[% VENDOR_SAN %]",
+   "sender":"[% ORG_UNIT_SAN %]",
    "body": [{
      "ORDERS":[ "order", {
+
         "po_number":[% target.id %],
+
+        [% IF INC_PO_NAME %]
+        "po_name":"[% target.name | replace('\/', ' ') | replace('"', '\"') %]",
+        [% END %]
+
         "date":"[% date.format(date.now, '%Y%m%d') %]",
+
         "buyer":[
-            [%   IF   target.provider.edi_default.vendcode && (target.provider.code == 'BT' || target.provider.name.match('(?i)^BAKER & TAYLOR'))  -%]
-                {"id-qualifier": 91, "id":"[% target.ordering_agency.mailing_address.san _ ' ' _ target.provider.edi_default.vendcode %]"}
-            [%- ELSIF target.provider.edi_default.vendcode && target.provider.code == 'INGRAM' -%]
-                {"id":"[% target.ordering_agency.mailing_address.san %]"},
-                {"id-qualifier": 91, "id":"[% target.provider.edi_default.vendcode %]"}
-            [%- ELSE -%]
-                {"id":"[% target.ordering_agency.mailing_address.san %]"}
-            [%- END -%]
+            [% IF VENDOR_BT %]
+                {"id-qualifier": 91, "id":"[% ORG_UNIT_SAN %] [% VENDCODE %]"}
+            [% ELSE %]
+                {"id":"[% ORG_UNIT_SAN %]"},
+                {"id-qualifier": 91, "id":"[% VENDACCT %]"}
+            [% END %]
         ],
+
         "vendor":[
-            [%- # target.provider.name (target.provider.id) -%]
-            "[% target.provider.san %]",
+            "[% VENDOR_SAN %]",
             {"id-qualifier": 92, "id":"[% target.provider.id %]"}
         ],
+
         "currency":"[% target.provider.currency_type %]",
                 
         "items":[
@@ -8050,29 +8107,50 @@ END;
                 {"BTI":"[% helpers.get_li_attr_jedi('title',     '', li.attributes) %]"},
                 {"BPU":"[% helpers.get_li_attr_jedi('publisher', '', li.attributes) %]"},
                 {"BPD":"[% helpers.get_li_attr_jedi('pubdate',   '', li.attributes) %]"},
+                [% IF VENDOR_ULS -%]
+                {"BEN":"[% helpers.get_li_attr_jedi('edition',   '', li.attributes) %]"},
+                {"BAU":"[% helpers.get_li_attr_jedi('author',    '', li.attributes) %]"}
+                [%- ELSE -%]
                 {"BPH":"[% helpers.get_li_attr_jedi('pagination','', li.attributes) %]"}
+                [%- END %]
             ],
             [%- ftx_vals = []; 
-                FOR note IN li.lineitem_notes; 
+                FOR note IN li.lineitem_notes;
                     NEXT UNLESS note.vendor_public == 't'; 
                     ftx_vals.push(note.value); 
                 END; 
+                IF VENDOR_BRODART; # look for copy-level spec code
+                    FOR lid IN li.lineitem_details;
+                        IF lid.note;
+                            spec_note = lid.note.match('spec code ([a-zA-Z0-9_])');
+                            IF spec_note.0; ftx_vals.push(spec_note.0); END;
+                        END;
+                    END;
+                END; 
                 IF xtra_ftx;           ftx_vals.unshift(xtra_ftx); END; 
-                IF ftx_vals.size == 0; ftx_vals.unshift('');       END;  # BT needs FTX+LIN for every LI, even if it is an empty one
+
+                # BT & ULS want FTX+LIN for every LI, even if empty
+                IF ((VENDOR_BT OR VENDOR_ULS) AND ftx_vals.size == 0);
+                    ftx_vals.unshift('');
+                END;  
             -%]
 
             "free-text":[ 
                 [% FOR note IN ftx_vals -%] "[% note %]"[% UNLESS loop.last %], [% END %][% END %] 
             ],            
+
             "quantity":[% li.lineitem_details.size %],
+
+            [%- IF INC_COPIES -%]
             "copies" : [
-                [%- IF 1 -%]
-                [%- FOR lid IN li.lineitem_details;
+                [%- compressed_copies = [];
+                    FOR lid IN li.lineitem_details;
                         fund = lid.fund.code;
                         item_type = lid.circ_modifier;
                         callnumber = lid.cn_label;
                         owning_lib = lid.owning_lib.shortname;
                         location = lid.location;
+                        collection_code = lid.collection_code;
     
                         # when we have real copy data, treat it as authoritative for some fields
                         acp = lid.eg_copy_id;
@@ -8080,19 +8158,65 @@ END;
                             item_type = acp.circ_modifier;
                             callnumber = acp.call_number.label;
                             location = acp.location.name;
-                        END -%]
-                {   [%- IF fund %] "fund" : "[% fund %]",[% END -%]
-                    [%- IF callnumber %] "call_number" : "[% callnumber %]", [% END -%]
-                    [%- IF item_type %] "item_type" : "[% item_type %]", [% END -%]
-                    [%- IF location %] "copy_location" : "[% location %]", [% END -%]
-                    [%- IF owning_lib %] "owning_lib" : "[% owning_lib %]", [% END -%]
-                    [%- #chomp %]"copy_id" : "[% lid.id %]" }[% ',' UNLESS loop.last %]
-                [% END -%]
-                [%- END -%]
-             ]
-        }[% UNLESS loop.last %],[% END %]
-        [%-# TODO: lineitem details (later) -%]
-        [% END %]
+                        END ;
+
+
+                        # collapse like copies into groups w/ quantity
+
+                        found_match = 0;
+                        IF !INC_COPY_ID; # INC_COPY_ID implies 1 copy per GIR
+                            FOR copy IN compressed_copies;
+                                IF  (fund == copy.fund OR (!fund AND !copy.fund)) AND
+                                    (item_type == copy.item_type OR (!item_type AND !copy.item_type)) AND
+                                    (callnumber == copy.callnumber OR (!callnumber AND !copy.callnumber)) AND
+                                    (owning_lib == copy.owning_lib OR (!owning_lib AND !copy.owning_lib)) AND
+                                    (location == copy.location OR (!location AND !copy.location)) AND
+                                    (collection_code == copy.collection_code OR (!collection_code AND !copy.collection_code));
+
+                                    copy.quantity = copy.quantity + 1;
+                                    found_match = 1;
+                                END;
+                            END;
+                        END;
+
+                        IF !found_match;
+                            compressed_copies.push({
+                                fund => fund,
+                                item_type => item_type,
+                                callnumber => callnumber,
+                                owning_lib => owning_lib,
+                                location => location,
+                                collection_code => collection_code,
+                                copy_id => lid.id, # for INC_COPY_ID
+                                quantity => 1
+                            });
+                        END;
+                    END;
+                    FOR copy IN compressed_copies;
+
+                    # If we assume owning_lib is required and set, 
+                    # it is safe to prepend each following copy field w/ a ","
+
+                    # B&T EDI requires expected GIR fields to be 
+                    # present regardless of whether a value exists.  
+                    # some fields are required to have a value in ACQ, 
+                    # though, so they are not forced into place below.
+
+                 %]{[%- IF INC_OWNING_LIB AND copy.owning_lib %] "owning_lib":"[% copy.owning_lib %]"[% END -%]
+                    [%- IF INC_FUND AND copy.fund %],"fund":"[% copy.fund %]"[% END -%]
+                    [%- IF INC_CALLNUMBER AND (VENDOR_BT OR copy.callnumber) %],"call_number":"[% copy.callnumber %]"[% END -%]
+                    [%- IF INC_ITEM_TYPE AND (VENDOR_BT OR copy.item_type) %],"item_type":"[% copy.item_type %]"[% END -%]
+                    [%- IF INC_LOCATION AND copy.location %],"copy_location":"[% copy.location %]"[% END -%]
+                    [%- IF INC_COLLECTION_CODE AND (VENDOR_BT OR copy.collection_code) %],"collection_code":"[% copy.collection_code %]"[% END -%]
+                    [%- IF INC_QUANTITY %],"quantity":"[% copy.quantity %]"[% END -%]
+                    [%- IF INC_COPY_ID %],"copy_id":"[% copy.copy_id %]" [% END %]}[% ',' UNLESS loop.last -%]
+                [%- END -%] [%# FOR compressed_copies -%]
+            ]
+            [%- END -%] [%# IF INC_COPIES %]
+
+        }[% UNLESS loop.last %],[% END -%]
+
+        [% END %] [%# END lineitems %]
         ],
         "line_items":[% target.lineitems.size %]
      }]  [%# close ORDERS array %]
