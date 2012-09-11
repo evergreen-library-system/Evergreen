@@ -22,6 +22,10 @@ my @default_queries = (
     '(item_type(a)) keyword1 title:keyword2',
     'concerto',
     'concerto (violin || piano)',
+    '-keyword1',
+    '-"keyword1"',
+    'keyword:"keyword1"',
+    'keyword:"keyword1" title:"keyword2"',
 # A small set of searches that errored out in a production install
     'keyword: subject:Graphical user interfaces (Computer systems) depth(0) subject|topic[Authoring programs]',
     'keyword: subject:Assassins New York (State) depth(0) subject|geographic[Buffalo (N.Y.)]',
