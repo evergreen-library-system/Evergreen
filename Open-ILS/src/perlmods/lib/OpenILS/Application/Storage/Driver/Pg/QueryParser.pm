@@ -876,7 +876,7 @@ sub flatten {
                     $with .= "${talias}_xq AS (SELECT ". $node->tsquery ." AS tsq )";
                     $from .= "\n${spc}${spc}${spc}${spc}${spc}${spc}JOIN ${talias}_xq ON (fe.index_vector @@ ${talias}_xq.tsq)";
                 } else {
-                    $from .= "\n${spc}${spc}${spc}${spc}${spc}${spc}, (SELECT NULL::tsquery AS tsq ) AS x";
+                    $from .= "\n${spc}${spc}${spc}${spc}${spc}${spc}, (SELECT NULL::tsquery AS tsq ) AS ${talias}_xq";
                 }
 
                 my @bump_fields;
