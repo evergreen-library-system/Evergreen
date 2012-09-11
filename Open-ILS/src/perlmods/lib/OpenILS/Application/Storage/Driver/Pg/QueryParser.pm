@@ -984,6 +984,7 @@ sub flatten {
     my $joiner = sprintf(" %s ", ($self->joiner eq '&' ? 'AND' : 'OR'));
     # for each dynamic filter, build more of the WHERE clause
     for my $filter (@{$self->filters}) {
+        my $NOT = $filter->negate ? 'NOT ' : '';
         if (grep { $_ eq $filter->name } @{ $self->QueryParser->dynamic_filters }) {
 
             warn "flatten(): processing dynamic filter ". $filter->name ."\n"
@@ -993,42 +994,40 @@ sub flatten {
             $where .= $joiner if $where ne '(';
 
             my @fargs = @{$filter->args};
-            my $NOT = $filter->negate ? ' NOT' : '';
             my $fname = $filter->name;
             $fname = 'item_lang' if $fname eq 'language'; #XXX filter aliases 
 
             $where .= sprintf(
-                "attrs->'%s'$NOT IN (%s)", $fname, 
+                "${NOT}COALESCE((mrd.attrs->'%s') IN (%s), false)", $fname, 
                 join(',', map { $self->QueryParser->quote_value($_) } @fargs)
             );
 
             warn "flatten(): filter where => $where\n"
                 if $self->QueryParser->debug;
         } else {
-            my $NOT = $filter->negate ? 'NOT ' : '';
             switch ($filter->name) {
                 case 'before' {
                     if (@{$filter->args} == 1) {
                         $where .= $joiner if $where ne '(';
-                        $where .= "$NOT(mrd.attrs->'date1') <= " . $self->QueryParser->quote_value($filter->args->[0]);
+                        $where .= "${NOT}COALESCE((mrd.attrs->'date1') <= " . $self->QueryParser->quote_value($filter->args->[0]) . ", false)";
                     }
                 }
                 case 'after' {
                     if (@{$filter->args} == 1) {
                         $where .= $joiner if $where ne '(';
-                        $where .= "$NOT(mrd.attrs->'date1') >= " . $self->QueryParser->quote_value($filter->args->[0]);
+                        $where .= "${NOT}COALESCE((mrd.attrs->'date1') >= " . $self->QueryParser->quote_value($filter->args->[0]) . ", false)";
                     }
                 }
                 case 'during' {
                     if (@{$filter->args} == 1) {
                         $where .= $joiner if $where ne '(';
-                        $where .= $self->QueryParser->quote_value($filter->args->[0]) . " ${NOT}BETWEEN (mrd.attrs->'date1') AND (mrd.attrs->'date2')";
+                        $where .= "${NOT}COALESCE(" . $self->QueryParser->quote_value($filter->args->[0]) . " BETWEEN (mrd.attrs->'date1') AND (mrd.attrs->'date2'), false)";
                     }
                 }
                 case 'between' {
                     if (@{$filter->args} == 2) {
                         $where .= $joiner if $where ne '(';
-                        $where .= "(mrd.attrs->'date1') ${NOT}BETWEEN " . $self->QueryParser->quote_value($filter->args->[0]) . " AND " . $self->QueryParser->quote_value($filter->args->[1]);
+                        $where .= "${NOT}COALESCE((mrd.attrs->'date1') BETWEEN " . $self->QueryParser->quote_value($filter->args->[0]) . " AND " . $self->QueryParser->quote_value($filter->args->[1]) . ", false)";
                     }
                 }
                 case 'container' {
@@ -1096,7 +1095,7 @@ sub flatten {
                 case 'bib_source' {
                     if (@{$filter->args} > 0) {
                         $where .= $joiner if $where ne '(';
-                        $where .= "bre.source IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ")";
+                        $where .= "${NOT}COALESCE(bre.source IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . "), false)";
                     }
                 }
             }
