@@ -827,7 +827,7 @@ sub rel_bump {
     my $bump = shift;
     my $multiplier = shift;
 
-    my $only_atoms = $node->only_atoms;
+    my $only_atoms = $node->only_real_atoms;
     return '' if (!@$only_atoms);
 
     if ($bump eq 'first_word') {
@@ -922,6 +922,10 @@ sub flatten {
                 $where .= '(' . $talias . ".id IS NOT NULL";
                 $where .= ' AND ' . join(' AND ', map {"${talias}.value ~* ".$self->QueryParser->quote_phrase_value($_)} @{$node->phrases}) if (@{$node->phrases});
                 $where .= ' AND ' . join(' AND ', map {"${talias}.value !~* ".$self->QueryParser->quote_phrase_value($_)} @{$node->unphrases}) if (@{$node->unphrases});
+                for my $atom (@{$node->only_real_atoms}) {
+                    next unless $atom->{content} && $atom->{content} =~ /(^\^|\$$)/;
+                    $where .= " AND ${talias}.value ~* ".$self->QueryParser->quote_phrase_value($atom->{content});
+                }
                 $where .= ')';
 
                 push @rank_list, $node_rank;
@@ -1228,6 +1232,18 @@ sub only_atoms {
     }
 
     return \@only_atoms;
+}
+
+sub only_real_atoms {
+    my $self = shift;
+
+    my $atoms = $self->query_atoms;
+    my @only_real_atoms;
+    for my $a (@$atoms) {
+        push(@only_real_atoms, $a) if (ref($a) && $a->isa('QueryParser::query_plan::node::atom') && !($a->{dummy}));
+    }
+
+    return \@only_real_atoms;
 }
 
 sub dummy_count {
