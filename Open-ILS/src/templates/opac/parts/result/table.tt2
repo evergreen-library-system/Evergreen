@@ -62,6 +62,11 @@
                                                                     authorquery = attrs.author | replace('[,\.:;]', '');
                                                                     mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, ['page'])
                                                                     -%]">[% attrs.author | html %]</a></em>
+                                                                    [%- UNLESS CGI.param('detail_record_view')
+                                                                        OR (show_more_details.default == 'true'
+                                                                        OR show_more_details.default == 'hide')
+                                                                    %] [% attrs.pubdate | html %]
+                                                                    [%- END -%]
                                                     </div>
                                                     <table cellpadding="0" cellspacing="0" border="0"
                                                         class="results_info_table">
