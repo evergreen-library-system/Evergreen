@@ -151,12 +151,15 @@ IF num_uris > 0;
     [%- IF attrs.publisher %]
     <li id='rdetail_publisher'>
         <strong class='rdetail_label'>[% l("Publisher:") %]</strong>
-        <span class='rdetail_value' itemprop="publisher">[%
-            attrs.publisher | html;
-        %]</span>
-        [% IF attrs.pubdate; %]
-        <span itemprop="datePublished">[% attrs.pubdate | html; %]</span>
-        [% END; %]
+        <span class='rdetail_value' itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+        [%- IF attrs.pubplace; %]
+            <span itemprop="location">[% attrs.pubplace | html; %]</span>
+        [%- END; %]
+            <span itemprop="name">[% attrs.publisher | html; %]</span>
+        </span>
+        [%- IF attrs.pubdate; %]
+            <span itemprop="datePublished">[% attrs.pubdate | html; %]</span>
+        [%- END; %]
     </li>
     [%- END %]
 </ul>

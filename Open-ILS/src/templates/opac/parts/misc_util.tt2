@@ -47,6 +47,12 @@
             FOR sub IN titsubs; titsubs_content.push(sub.textContent); END;
         args.title_extended = titsubs_content.join(" ");
 
+        args.pubplaces = [];
+        FOR sub IN xml.findnodes('//*[@tag="260"]/*[@code="a"]');
+            args.pubplaces.push(sub.textContent);
+        END;
+        args.pubplace = (args.pubplaces.size) ? args.pubplaces.0 : '';
+
         args.publishers = [];
         FOR sub IN xml.findnodes('//*[@tag="260"]/*[@code="b"]');
             args.publishers.push(sub.textContent);
@@ -58,6 +64,9 @@
             args.pubdates.push(sub.textContent);
         END;
         args.pubdate = (args.pubdates.size) ? args.pubdates.0 : '';
+
+        # Full publisher info
+        args.pubinfo = "$args.pubplace $args.publisher $args.pubdate";
 
         args.summaries = [];
         FOR sub IN xml.findnodes('//*[@tag="520"]/*[@code="a"]');
