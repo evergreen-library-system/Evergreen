@@ -62,8 +62,6 @@
                                                                     authorquery = attrs.author | replace('[,\.:;]', '');
                                                                     mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, ['page'])
                                                                     -%]">[% attrs.author | html %]</a></em>
-                                                        &nbsp;&nbsp;
-                                                        [% attrs.pubdate | html %]
                                                     </div>
                                                     <table cellpadding="0" cellspacing="0" border="0"
                                                         class="results_info_table">
@@ -79,12 +77,12 @@
                                                         [% IF CGI.param('detail_record_view') %]
                                                         <!-- These fields are visible when viewing the results page in 'detailed' mode -->
 
-                                                        [% IF attrs.publisher %]
+                                                        [% IF attrs.pubinfo %]
                                                             <tr name="results_pub_tr">
                                                                 <td valign="top">
                                                                     <strong>[% l('Publisher:') %]</strong>
                                                                 </td>
-                                                                <td>[% attrs.publisher | html %]</td>
+                                                                <td>[% attrs.pubinfo | html %]</td>
                                                             </tr>
                                                         [% END %]
                                                         [% IF attrs.isbns.size > 0 %]
