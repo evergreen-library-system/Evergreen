@@ -98,6 +98,14 @@
                                                                 <td>[% attrs.isbns.0 | html %]</td>
                                                             </tr>
                                                         [% END %]
+                                                        [%- IF attrs.issns.size > 0 %]
+                                                            <tr name="results_issn_tr">
+                                                                <td valign="top">
+                                                                    <strong>[% l('ISSN:') %]</strong>
+                                                                </td>
+                                                                <td>[% attrs.issns.0 | html %]</td>
+                                                            </tr>
+                                                        [%- END %]
                                                         [%- IF openurl.enabled == 'true';
                                                             FOREACH issn IN args.issns;
                                                                 NEXT IF issn == '';
