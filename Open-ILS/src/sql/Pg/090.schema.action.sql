@@ -393,7 +393,7 @@ CREATE TABLE action.hold_request (
 	hold_type		TEXT				NOT NULL, -- CHECK (hold_type IN ('M','T','V','C')),  -- XXX constraint too constraining...
 	holdable_formats	TEXT,
 	phone_notify		TEXT,
-	email_notify		BOOL				NOT NULL DEFAULT TRUE,
+	email_notify		BOOL				NOT NULL DEFAULT FALSE,
 	sms_notify		TEXT,
 	sms_carrier		INT REFERENCES config.sms_carrier (id),
 	frozen			BOOL				NOT NULL DEFAULT FALSE,
