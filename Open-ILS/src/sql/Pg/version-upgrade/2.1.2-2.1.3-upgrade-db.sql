@@ -1,6 +1,6 @@
 --Upgrade Script for 2.1.2 to 2.1.3
 BEGIN;
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('2.1.3', :eg_version);
+INSERT INTO config.upgrade_log (version) VALUES ('2.1.3');
 -- Evergreen DB patch 0722.schema.acq-po-state-constraint.sql
 --
 
@@ -10,8 +10,8 @@ ALTER TABLE acq.purchase_order ADD CONSTRAINT valid_po_state
     CHECK (state IN ('new','pending','on-order','received','cancelled'));
 
 
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0725', :eg_version); -- gmcharlt/denials
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0726', :eg_version); -- denials
+INSERT INTO config.upgrade_log (version) VALUES ('0725'); -- gmcharlt/denials
+INSERT INTO config.upgrade_log (version) VALUES ('0726'); -- denials
 
 CREATE OR REPLACE FUNCTION evergreen.maintain_901 () RETURNS TRIGGER AS $func$
 use strict;
