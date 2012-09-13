@@ -57,8 +57,8 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0726', :eg_version); -- denials
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('2.1.3', :eg_version);
+INSERT INTO config.upgrade_log (version) VALUES ('0726'); -- denials
+INSERT INTO config.upgrade_log (version) VALUES ('2.1.3');
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,

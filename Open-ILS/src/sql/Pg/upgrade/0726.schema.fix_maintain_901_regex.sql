@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0726', :eg_version); -- denials
+INSERT INTO config.upgrade_log (version) VALUES ('0726'); -- denials
 
 CREATE OR REPLACE FUNCTION evergreen.maintain_901 () RETURNS TRIGGER AS $func$
 use strict;
