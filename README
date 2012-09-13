@@ -1,5 +1,5 @@
-README for Evergreen 2.1.3
-==========================
+README for Evergreen 2.1.3a
+===========================
 
 Preamble: referenced user accounts
 ----------------------------------
@@ -38,8 +38,8 @@ the following commands as the *user* Linux account:
 
 [source, bash]
 ------------------------------------------------------------------------------
-wget -c http://evergreen-ils.org/downloads/Evergreen-ILS-2.1.3.tar.gz
-tar xzf Evergreen-ILS-2.1.3.tar.gz
+wget -c http://evergreen-ils.org/downloads/Evergreen-ILS-2.1.3a.tar.gz
+tar xzf Evergreen-ILS-2.1.3a.tar.gz
 ------------------------------------------------------------------------------
 
 Preamble: Developer instructions
