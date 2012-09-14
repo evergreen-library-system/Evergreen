@@ -574,7 +574,13 @@ sub toSQL {
 
     # generate the relevance ranking
     my $rel = '1'; # Default to something simple in case rank_list is empty.
-    $rel = "AVG(\n${spc}${spc}${spc}${spc}${spc}(" . join(")\n${spc}${spc}${spc}${spc}${spc}+ (", @{$$flat_plan{rank_list}}) . ")\n${spc}${spc}${spc}${spc})+1" if (@{$$flat_plan{rank_list}});
+    if (@{$$flat_plan{rank_list}}) {
+        $rel = "AVG(\n"
+             . ${spc} x 5 ."("
+             . join(")\n" . ${spc} x 5 . "+ (", @{$$flat_plan{rank_list}})
+             . ")\n"
+             . ${spc} x 4 . ")+1";
+    }
 
     # find any supplied sort option
     my ($sort_filter) = $self->find_filter('sort');
@@ -616,10 +622,8 @@ sub toSQL {
     my $core_limit = $self->QueryParser->core_limit || 25000;
 
     my $flat_where = $$flat_plan{where};
-    if ($flat_where eq '()') {
-        $flat_where = '';
-    } else {
-        $flat_where = "AND $flat_where";
+    if ($flat_where ne '') {
+        $flat_where = "AND (\n" . ${spc} x 5 . $flat_where . "\n" . ${spc} x 4 . ")";
     }
 
     my $site = $self->find_filter('site');
@@ -846,7 +850,7 @@ sub flatten {
     my $self = shift;
 
     my $from = shift || '';
-    my $where = shift || '(';
+    my $where = shift || '';
     my $with = '';
 
     my @rank_list;
@@ -866,16 +870,17 @@ sub flatten {
 
                 my $node_rank = 'COALESCE(' . $node->rank . " * ${talias}.weight, 0.0)";
 
-                my $core_limit = $self->QueryParser->core_limit || 25000;
-                $from .= "\n${spc}${spc}${spc}${spc}LEFT JOIN (\n${spc}${spc}${spc}${spc}${spc}SELECT fe.*, fe_weight.weight, ${talias}_xq.tsq /* search */\n${spc}${spc}${spc}${spc}${spc}  FROM  $table AS fe";
-                $from .= "\n${spc}${spc}${spc}${spc}${spc}${spc}JOIN config.metabib_field AS fe_weight ON (fe_weight.id = fe.field)";
+                $from .= "\n" . ${spc} x 4 ."LEFT JOIN (\n"
+                      . ${spc} x 5 . "SELECT fe.*, fe_weight.weight, ${talias}_xq.tsq /* search */\n"
+                      . ${spc} x 6 . "FROM  $table AS fe";
+                $from .= "\n" . ${spc} x 7 . "JOIN config.metabib_field AS fe_weight ON (fe_weight.id = fe.field)";
 
                 if ($node->dummy_count < @{$node->only_atoms} ) {
                     $with .= ",\n     " if $with;
                     $with .= "${talias}_xq AS (SELECT ". $node->tsquery ." AS tsq )";
-                    $from .= "\n${spc}${spc}${spc}${spc}${spc}${spc}JOIN ${talias}_xq ON (fe.index_vector @@ ${talias}_xq.tsq)";
+                    $from .= "\n" . ${spc} x 6 . "JOIN ${talias}_xq ON (fe.index_vector @@ ${talias}_xq.tsq)";
                 } else {
-                    $from .= "\n${spc}${spc}${spc}${spc}${spc}${spc}, (SELECT NULL::tsquery AS tsq ) AS ${talias}_xq";
+                    $from .= "\n" . ${spc} x 6 . ", (SELECT NULL::tsquery AS tsq ) AS ${talias}_xq";
                 }
 
                 my @bump_fields;
@@ -890,7 +895,7 @@ sub flatten {
                         } @bump_fields
                     );
                     if (@field_ids) {
-                        $from .= "\n${spc}${spc}${spc}${spc}${spc}${spc}WHERE fe_weight.id IN  (" .
+                        $from .= "\n" . ${spc} x 6 . "WHERE fe_weight.id IN  (" .
                             join(',', @field_ids) . ")";
                     }
 
@@ -898,8 +903,7 @@ sub flatten {
                     @bump_fields = @{$self->QueryParser->search_fields->{$node->classname}};
                 }
 
-                ###$from .= "\n${spc}${spc}LIMIT $core_limit";
-                $from .= "\n${spc}${spc}${spc}${spc}) AS $talias ON (m.source = ${talias}.source)";
+                $from .= "\n" . ${spc} x 4 . ") AS $talias ON (m.source = ${talias}.source)";
 
 
                 my %used_bumps;
@@ -913,14 +917,22 @@ sub flatten {
                         next if ($$bumps{$b}{multiplier} == 1); # optimization to remove unneeded bumps
 
                         my $bump_case = $self->rel_bump( $node, $b, $$bumps{$b}{multiplier} );
-                        $node_rank .= "\n${spc}${spc}${spc}${spc}${spc}* " . $bump_case if ($bump_case);
+                        $node_rank .= "\n" . ${spc} x 5 . "* " . $bump_case if ($bump_case);
                     }
                 }
 
 
                 $where .= '(' . $talias . ".id IS NOT NULL";
-                $where .= ' AND ' . join(' AND ', map {"${talias}.value ~* ".$self->QueryParser->quote_phrase_value($_)} @{$node->phrases}) if (@{$node->phrases});
-                $where .= ' AND ' . join(' AND ', map {"${talias}.value !~* ".$self->QueryParser->quote_phrase_value($_)} @{$node->unphrases}) if (@{$node->unphrases});
+                if (@{$node->phrases}) {
+                    $where .= ' AND ' . join(' AND ', map {
+                        "${talias}.value ~* ".$self->QueryParser->quote_phrase_value($_)
+                    } @{$node->phrases});
+                }
+                if (@{$node->unphrases}) {
+                    $where .= ' AND ' . join(' AND ', map {
+                        "${talias}.value !~* ".$self->QueryParser->quote_phrase_value($_)
+                    } @{$node->unphrases});
+                }
                 for my $atom (@{$node->only_real_atoms}) {
                     next unless $atom->{content} && $atom->{content} =~ /(^\^|\$$)/;
                     $where .= " AND ${talias}.value ~* ".$self->QueryParser->quote_phrase_value($atom->{content});
@@ -942,16 +954,19 @@ sub flatten {
                 }
 
                 my $join_type = ($node->negate or !$self->top_plan) ? 'LEFT' : 'INNER';
-                $from .= "\n${spc}$join_type JOIN /* facet */ metabib.facet_entry $talias ON (\n${spc}${spc}m.source = ${talias}.source\n${spc}${spc}".
-                         "AND SUBSTRING(${talias}.value,1,1024) IN (" . join(",", map { $self->QueryParser->quote_value($_) } @{$node->values}) . ")\n${spc}${spc}".
-                         "AND ${talias}.field IN (". join(',', @field_ids) . ")\n${spc})";
+                $from .= "\n${spc}$join_type JOIN /* facet */ metabib.facet_entry $talias ON (\n"
+                      . ${spc} x 2 . "m.source = ${talias}.source\n"
+                      . ${spc} x 2 . "AND SUBSTRING(${talias}.value,1,1024) IN ("
+                      . join(",", map { $self->QueryParser->quote_value($_) } @{$node->values}) . ")\n"
+                      . ${spc} x 2 ."AND ${talias}.field IN (". join(',', @field_ids) . ")\n"
+                      . "${spc})";
 
                 if ($join_type ne 'INNER') {
                     my $NOT = $node->negate ? '' : ' NOT';
                     $where .= "${talias}.id IS$NOT NULL";
-                } elsif ($where ne '(') {
+                } elsif ($where ne '') {
                     # Strip extra joiner
-                    $where =~ s/\s(AND|OR)\s$//;
+                    $where =~ s/(\s|\n)+(AND|OR)\s$//;
                 }
 
             } else {
@@ -959,14 +974,18 @@ sub flatten {
 
                 # strip the trailing bool from the previous loop if there is 
                 # nothing to add to the where within this loop.
-                if ($$subnode{where} eq '()') {
-                    $where =~ s/\s(AND|OR)\s$//;
+                if ($$subnode{where} eq '') {
+                    $where =~ s/(\s|\n)+(AND|OR)\s$//;
                 }
 
                 push(@rank_list, @{$$subnode{rank_list}});
                 $from .= $$subnode{from};
 
-                $where .= "$$subnode{where}" unless $$subnode{where} eq '()';
+                if ($$subnode{where} ne '') {
+                    $where .= "(\n"
+                           . ${spc} x ($self->plan_level + 6) . $$subnode{where} . "\n"
+                           . ${spc} x ($self->plan_level + 5) . ')';
+                }
 
                 if ($$subnode{with}) {
                     $with .= ",\n     " if $with;
@@ -977,14 +996,14 @@ sub flatten {
 
             warn "flatten(): appending WHERE bool to: $where\n" if $self->QueryParser->debug;
 
-            if ($where ne '(') {
-                $where .= ' AND ' if ($node eq '&');
-                $where .= ' OR ' if ($node eq '|');
+            if ($where ne '') {
+                $where .= "\n" . ${spc} x ( $self->plan_level + 5 ) . 'AND ' if ($node eq '&');
+                $where .= "\n" . ${spc} x ( $self->plan_level + 5 ) . 'OR ' if ($node eq '|');
             }
         }
     }
 
-    my $joiner = sprintf(" %s ", ($self->joiner eq '&' ? 'AND' : 'OR'));
+    my $joiner = "\n" . ${spc} x ( $self->plan_level + 5 ) . ($self->joiner eq '&' ? 'AND ' : 'OR ');
     # for each dynamic filter, build more of the WHERE clause
     for my $filter (@{$self->filters}) {
         my $NOT = $filter->negate ? 'NOT ' : '';
@@ -994,7 +1013,7 @@ sub flatten {
                 if $self->QueryParser->debug;
 
             # bool joiner for intra-plan nodes/filters
-            $where .= $joiner if $where ne '(';
+            $where .= $joiner if $where ne '';
 
             my @fargs = @{$filter->args};
             my $fname = $filter->name;
@@ -1010,23 +1029,33 @@ sub flatten {
         } else {
             if ($filter->name eq 'before') {
                 if (@{$filter->args} == 1) {
-                    $where .= $joiner if $where ne '(';
-                    $where .= "${NOT}COALESCE((mrd.attrs->'date1') <= " . $self->QueryParser->quote_value($filter->args->[0]) . ", false)";
+                    $where .= $joiner if $where ne '';
+                    $where .= "${NOT}COALESCE((mrd.attrs->'date1') <= "
+                           . $self->QueryParser->quote_value($filter->args->[0])
+                           . ", false)";
                 }
             } elsif ($filter->name eq 'after') {
                 if (@{$filter->args} == 1) {
-                    $where .= $joiner if $where ne '(';
-                    $where .= "${NOT}COALESCE((mrd.attrs->'date1') >= " . $self->QueryParser->quote_value($filter->args->[0]) . ", false)";
+                    $where .= $joiner if $where ne '';
+                    $where .= "${NOT}COALESCE((mrd.attrs->'date1') >= "
+                           . $self->QueryParser->quote_value($filter->args->[0])
+                           . ", false)";
                 }
             } elsif ($filter->name eq 'during') {
                 if (@{$filter->args} == 1) {
-                    $where .= $joiner if $where ne '(';
-                    $where .= "${NOT}COALESCE(" . $self->QueryParser->quote_value($filter->args->[0]) . " BETWEEN (mrd.attrs->'date1') AND (mrd.attrs->'date2'), false)";
+                    $where .= $joiner if $where ne '';
+                    $where .= "${NOT}COALESCE("
+                           . $self->QueryParser->quote_value($filter->args->[0])
+                           . " BETWEEN (mrd.attrs->'date1') AND (mrd.attrs->'date2'), false)";
                 }
             } elsif ($filter->name eq 'between') {
                 if (@{$filter->args} == 2) {
-                    $where .= $joiner if $where ne '(';
-                    $where .= "${NOT}COALESCE((mrd.attrs->'date1') BETWEEN " . $self->QueryParser->quote_value($filter->args->[0]) . " AND " . $self->QueryParser->quote_value($filter->args->[1]) . ", false)";
+                    $where .= $joiner if $where ne '';
+                    $where .= "${NOT}COALESCE((mrd.attrs->'date1') BETWEEN "
+                           . $self->QueryParser->quote_value($filter->args->[0])
+                           . " AND "
+                           . $self->QueryParser->quote_value($filter->args->[1])
+                           . ", false)";
                 }
             } elsif ($filter->name eq 'container') {
                 if (@{$filter->args} >= 3) {
@@ -1051,47 +1080,112 @@ sub flatten {
                     if ($class) {
                         my ($u,$e) = $apputils->checksesperm($token) if ($token);
                         $perm_join = ' OR c.owner = ' . $u->id if ($u && !$e);
-                        $where .= $joiner if $where ne '(';
-                        $where .= '(' if $class eq 'copy';
-                        $where .= "${NOT}EXISTS(SELECT 1 FROM container.${class}_bucket_item ci JOIN container.${class}_bucket c ON (c.id = ci.bucket) $rec_join WHERE c.btype = " . $self->QueryParser->quote_value($ctype) . " AND c.id = " . $self->QueryParser->quote_value($cid) . " AND (c.pub IS TRUE$perm_join) AND $rec_field = m.source LIMIT 1)";
-                    }
-                    if ($class eq 'copy') {
-                        my $subjoiner = $filter->negate ? ' AND ' : ' OR ';
-                        $where .= "$subjoiner${NOT}EXISTS(SELECT 1 FROM container.copy_bucket_item ci JOIN container.copy_bucket c ON (c.id = ci.bucket) JOIN biblio.peer_bib_copy_map pr ON ci.target_copy = pr.target_copy WHERE c.btype = " . $self->QueryParser->quote_value($cid) . " AND (c.pub IS TRUE$perm_join) AND pr.peer_record = m.source LIMIT 1))";
+                        $where .= $joiner if $where ne '';
+                        my $spcdepth = $self->plan_level + 5;
+                        if($class eq 'copy') {
+                            $spcdepth += 1;
+                            $where .= "(\n" . ${spc} x $spcdepth;
+                        }
+                        $where .= "${NOT}EXISTS(\n"
+                               . ${spc} x ($spcdepth + 1) . "SELECT 1 FROM container.${class}_bucket_item ci\n"
+                               . ${spc} x ($spcdepth + 4) . "JOIN container.${class}_bucket c ON (c.id = ci.bucket) $rec_join\n"
+                               . ${spc} x ($spcdepth + 1) . "WHERE c.btype = " . $self->QueryParser->quote_value($ctype) . "\n"
+                               . ${spc} x ($spcdepth + 4) . "AND c.id = " . $self->QueryParser->quote_value($cid) . "\n"
+                               . ${spc} x ($spcdepth + 4) . "AND (c.pub IS TRUE$perm_join)\n"
+                               . ${spc} x ($spcdepth + 4) . "AND $rec_field = m.source\n"
+                               . ${spc} x ($spcdepth + 1) . "LIMIT 1\n"
+                               . ${spc} x $spcdepth . ")";
+                        if ($class eq 'copy') {
+                            my $subjoiner = $filter->negate ? 'AND' : 'OR';
+                            $where .= "\n"
+                                   . ${spc} x ($spcdepth) . $subjoiner . "\n"
+                                   . ${spc} x ($spcdepth) . "${NOT}EXISTS(\n"
+                                   . ${spc} x ($spcdepth + 1) . "SELECT 1 FROM container.copy_bucket_item ci\n"
+                                   . ${spc} x ($spcdepth + 4) . "JOIN container.copy_bucket c ON (c.id = ci.bucket)\n"
+                                   . ${spc} x ($spcdepth + 4) . "JOIN biblio.peer_bib_copy_map pr ON ci.target_copy = pr.target_copy\n"
+                                   . ${spc} x ($spcdepth + 1) . "WHERE c.btype = " . $self->QueryParser->quote_value($cid) . "\n"
+                                   . ${spc} x ($spcdepth + 4) . "AND (c.pub IS TRUE$perm_join)\n"
+                                   . ${spc} x ($spcdepth + 4) . "AND pr.peer_record = m.source\n"
+                                   . ${spc} x ($spcdepth + 1) . "LIMIT 1\n"
+                                   . ${spc} x $spcdepth . ")\n"
+                                   . ${spc} x ($spcdepth - 1) . ")";
+                        }
                     }
                 }
             } elsif ($filter->name eq 'record_list') {
                 if (@{$filter->args} > 0) {
                     my $key = 'm.source';
                     $key = 'm.metarecord' if (grep {$_->name eq 'metarecord' or $_->name eq 'metabib'} @{$self->QueryParser->parse_tree->modifiers});
-                    $where .= $joiner if $where ne '(';
+                    $where .= $joiner if $where ne '';
                     $where .= "$key ${NOT}IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{$filter->args}) . ')';
                 }
             } elsif ($filter->name eq 'locations') {
                 if (@{$filter->args} > 0) {
-                    $where .= $joiner if $where ne '(';
-                    $where .= "(${NOT}EXISTS(SELECT 1 FROM asset.call_number acn JOIN asset.copy acp ON acn.id = acp.call_number WHERE m.source = acn.record AND acp.circ_lib IN (SELECT * FROM search_org_list) AND NOT acn.deleted AND NOT acp.deleted AND acp.location IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ") LIMIT 1)";
-                    $where .= $filter->negate ? ' AND ' : ' OR ';
-                    $where .= "${NOT}EXISTS(SELECT 1 FROM biblio.peer_bib_copy_map pr JOIN asset.copy acp ON pr.target_copy = acp.id WHERE m.source = pr.peer_record AND acp.circ_lib IN (SELECT * FROM search_org_list) AND NOT acp.deleted AND acp.location IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ") LIMIT 1))";
+                    my $spcdepth = $self->plan_level + 5;
+                    $where .= $joiner if $where ne '';
+                    $where .= "(\n"
+                           . ${spc} x ($spcdepth + 1) . "${NOT}EXISTS(\n"
+                           . ${spc} x ($spcdepth + 2) . "SELECT 1 FROM asset.call_number acn\n"
+                           . ${spc} x ($spcdepth + 5) . "JOIN asset.copy acp ON acn.id = acp.call_number\n"
+                           . ${spc} x ($spcdepth + 2) . "WHERE m.source = acn.record\n"
+                           . ${spc} x ($spcdepth + 5) . "AND acp.circ_lib IN (SELECT * FROM search_org_list)\n"
+                           . ${spc} x ($spcdepth + 5) . "AND NOT acn.deleted\n"
+                           . ${spc} x ($spcdepth + 5) . "AND NOT acp.deleted\n"
+                           . ${spc} x ($spcdepth + 5) . "AND acp.location IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ")\n"
+                           . ${spc} x ($spcdepth + 2) . "LIMIT 1\n"
+                           . ${spc} x ($spcdepth + 1) . ")\n"
+                           . ${spc} x ($spcdepth + 1) . ($filter->negate ? 'AND' : 'OR') . "\n"
+                           . ${spc} x ($spcdepth + 1) . "${NOT}EXISTS(\n"
+                           . ${spc} x ($spcdepth + 2) . "SELECT 1 FROM biblio.peer_bib_copy_map pr\n"
+                           . ${spc} x ($spcdepth + 5) . "JOIN asset.copy acp ON pr.target_copy = acp.id\n"
+                           . ${spc} x ($spcdepth + 2) . "WHERE m.source = pr.peer_record\n"
+                           . ${spc} x ($spcdepth + 5) . "AND acp.circ_lib IN (SELECT * FROM search_org_list)\n"
+                           . ${spc} x ($spcdepth + 5) . "AND NOT acp.deleted\n"
+                           . ${spc} x ($spcdepth + 5) . "AND acp.location IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ")\n"
+                           . ${spc} x ($spcdepth + 2) . "LIMIT 1\n"
+                           . ${spc} x ($spcdepth + 1) . ")\n"
+                           . ${spc} x $spcdepth . ")";
                 }
             } elsif ($filter->name eq 'statuses') {
                 if (@{$filter->args} > 0) {
-                    $where .= $joiner if $where ne '(';
-                    $where .= "(${NOT}EXISTS(SELECT 1 FROM asset.call_number acn JOIN asset.copy acp ON acn.id = acp.call_number WHERE m.source = acn.record AND acp.circ_lib IN (SELECT * FROM search_org_list) AND NOT acn.deleted AND NOT acp.deleted AND acp.status IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ") LIMIT 1)";
-                    $where .= $filter->negate ? ' AND ' : ' OR ';
-                    $where .= "${NOT}EXISTS(SELECT 1 FROM biblio.peer_bib_copy_map pr JOIN asset.copy acp ON pr.target_copy = acp.id WHERE m.source = pr.peer_record AND acp.circ_lib IN (SELECT * FROM search_org_list) AND NOT acp.deleted AND acp.status IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ") LIMIT 1))";
+                    my $spcdepth = $self->plan_level + 5;
+                    $where .= $joiner if $where ne '';
+                    $where .= "(\n"
+                           . ${spc} x ($spcdepth + 1) . "${NOT}EXISTS(\n"
+                           . ${spc} x ($spcdepth + 2) . "SELECT 1 FROM asset.call_number acn\n"
+                           . ${spc} x ($spcdepth + 5) . "JOIN asset.copy acp ON acn.id = acp.call_number\n"
+                           . ${spc} x ($spcdepth + 2) . "WHERE m.source = acn.record\n"
+                           . ${spc} x ($spcdepth + 5) . "AND acp.circ_lib IN (SELECT * FROM search_org_list)\n"
+                           . ${spc} x ($spcdepth + 5) . "AND NOT acn.deleted\n"
+                           . ${spc} x ($spcdepth + 5) . "AND NOT acp.deleted\n"
+                           . ${spc} x ($spcdepth + 5) . "AND acp.status IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ")\n"
+                           . ${spc} x ($spcdepth + 2) . "LIMIT 1\n"
+                           . ${spc} x ($spcdepth + 1) . ")\n"
+                           . ${spc} x ($spcdepth + 1) . ($filter->negate ? 'AND' : 'OR') . "\n"
+                           . ${spc} x ($spcdepth + 1) . "${NOT}EXISTS(\n"
+                           . ${spc} x ($spcdepth + 2) . "SELECT 1 FROM biblio.peer_bib_copy_map pr\n"
+                           . ${spc} x ($spcdepth + 5) . "JOIN asset.copy acp ON pr.target_copy = acp.id\n"
+                           . ${spc} x ($spcdepth + 2) . "WHERE m.source = pr.peer_record\n"
+                           . ${spc} x ($spcdepth + 5) . "AND acp.circ_lib IN (SELECT * FROM search_org_list)\n"
+                           . ${spc} x ($spcdepth + 5) . "AND NOT acp.deleted\n"
+                           . ${spc} x ($spcdepth + 5) . "AND acp.status IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ")\n"
+                           . ${spc} x ($spcdepth + 2) . "LIMIT 1\n"
+                           . ${spc} x ($spcdepth + 1) . ")\n"
+                           . ${spc} x $spcdepth . ")";
                 }
             } elsif ($filter->name eq 'bib_source') {
                 if (@{$filter->args} > 0) {
-                    $where .= $joiner if $where ne '(';
-                    $where .= "${NOT}COALESCE(bre.source IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . "), false)";
+                    $where .= $joiner if $where ne '';
+                    $where .= "${NOT}COALESCE(bre.source IN ("
+                           . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args })
+                           . "), false)";
                 }
             }
         }
     }
     warn "flatten(): full filter where => $where\n" if $self->QueryParser->debug;
 
-    return { rank_list => \@rank_list, from => $from, where => $where.')',  with => $with };
+    return { rank_list => \@rank_list, from => $from, where => $where,  with => $with };
 }
 
 
@@ -1263,7 +1357,7 @@ sub tsquery {
 
     for my $atom (@{$self->query_atoms}) {
         if (ref($atom)) {
-            $self->{tsquery} .= "\n${spc}${spc}${spc}" .$atom->sql;
+            $self->{tsquery} .= "\n" . ${spc} x 3 . $atom->sql;
         } else {
             $self->{tsquery} .= $atom x 2;
         }
