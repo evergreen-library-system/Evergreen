@@ -7,7 +7,6 @@ use base 'QueryParser';
 use OpenSRF::Utils::JSON;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::CStoreEditor;
-use Switch;
 my $U = 'OpenILS::Application::AppUtils';
 
 my ${spc} = ' ' x 2;
@@ -1009,98 +1008,83 @@ sub flatten {
             warn "flatten(): filter where => $where\n"
                 if $self->QueryParser->debug;
         } else {
-            switch ($filter->name) {
-                case 'before' {
-                    if (@{$filter->args} == 1) {
-                        $where .= $joiner if $where ne '(';
-                        $where .= "${NOT}COALESCE((mrd.attrs->'date1') <= " . $self->QueryParser->quote_value($filter->args->[0]) . ", false)";
-                    }
+            if ($filter->name eq 'before') {
+                if (@{$filter->args} == 1) {
+                    $where .= $joiner if $where ne '(';
+                    $where .= "${NOT}COALESCE((mrd.attrs->'date1') <= " . $self->QueryParser->quote_value($filter->args->[0]) . ", false)";
                 }
-                case 'after' {
-                    if (@{$filter->args} == 1) {
-                        $where .= $joiner if $where ne '(';
-                        $where .= "${NOT}COALESCE((mrd.attrs->'date1') >= " . $self->QueryParser->quote_value($filter->args->[0]) . ", false)";
-                    }
+            } elsif ($filter->name eq 'after') {
+                if (@{$filter->args} == 1) {
+                    $where .= $joiner if $where ne '(';
+                    $where .= "${NOT}COALESCE((mrd.attrs->'date1') >= " . $self->QueryParser->quote_value($filter->args->[0]) . ", false)";
                 }
-                case 'during' {
-                    if (@{$filter->args} == 1) {
-                        $where .= $joiner if $where ne '(';
-                        $where .= "${NOT}COALESCE(" . $self->QueryParser->quote_value($filter->args->[0]) . " BETWEEN (mrd.attrs->'date1') AND (mrd.attrs->'date2'), false)";
-                    }
+            } elsif ($filter->name eq 'during') {
+                if (@{$filter->args} == 1) {
+                    $where .= $joiner if $where ne '(';
+                    $where .= "${NOT}COALESCE(" . $self->QueryParser->quote_value($filter->args->[0]) . " BETWEEN (mrd.attrs->'date1') AND (mrd.attrs->'date2'), false)";
                 }
-                case 'between' {
-                    if (@{$filter->args} == 2) {
-                        $where .= $joiner if $where ne '(';
-                        $where .= "${NOT}COALESCE((mrd.attrs->'date1') BETWEEN " . $self->QueryParser->quote_value($filter->args->[0]) . " AND " . $self->QueryParser->quote_value($filter->args->[1]) . ", false)";
-                    }
+            } elsif ($filter->name eq 'between') {
+                if (@{$filter->args} == 2) {
+                    $where .= $joiner if $where ne '(';
+                    $where .= "${NOT}COALESCE((mrd.attrs->'date1') BETWEEN " . $self->QueryParser->quote_value($filter->args->[0]) . " AND " . $self->QueryParser->quote_value($filter->args->[1]) . ", false)";
                 }
-                case 'container' {
-                    if (@{$filter->args} >= 3) {
-                        my ($class, $ctype, $cid, $token) = @{$filter->args};
-                        my $perm_join = '';
-                        my $rec_join = '';
-                        my $rec_field = 'ci.target_biblio_record_entry';
-                        switch($class) {
-                            case 'bre' {
-                                $class = 'biblio_record_entry';
-                            }
-                            case 'acn' {
-                                $class = 'call_number';
-                                $rec_field = 'cn.record';
-                                $rec_join = 'JOIN asset.call_number cn ON (ci.target_call_number = cn.id)';
-                            }
-                            case 'acp' {
-                                $class = 'copy';
-                                $rec_field = 'cn.record';
-                                $rec_join = 'JOIN asset.copy cp ON (ci.target_copy = cp.id) JOIN asset.call_number cn ON (cp.call_number = cn.id)';
-                            }
-                            else {
-                                $class = undef;
-                            }
-                        }
+            } elsif ($filter->name eq 'container') {
+                if (@{$filter->args} >= 3) {
+                    my ($class, $ctype, $cid, $token) = @{$filter->args};
+                    my $perm_join = '';
+                    my $rec_join = '';
+                    my $rec_field = 'ci.target_biblio_record_entry';
+                    if ($class eq 'bre') {
+                        $class = 'biblio_record_entry';
+                    } elsif ($class eq 'acn') {
+                        $class = 'call_number';
+                        $rec_field = 'cn.record';
+                        $rec_join = 'JOIN asset.call_number cn ON (ci.target_call_number = cn.id)';
+                    } elsif ($class eq 'acp') {
+                        $class = 'copy';
+                        $rec_field = 'cn.record';
+                        $rec_join = 'JOIN asset.copy cp ON (ci.target_copy = cp.id) JOIN asset.call_number cn ON (cp.call_number = cn.id)';
+                    } else {
+                        $class = undef;
+                    }
 
-                        if ($class) {
-                            my ($u,$e) = $apputils->checksesperm($token) if ($token);
-                            $perm_join = ' OR c.owner = ' . $u->id if ($u && !$e);
-                            $where .= $joiner if $where ne '(';
-                            $where .= '(' if $class eq 'copy';
-                            $where .= "${NOT}EXISTS(SELECT 1 FROM container.${class}_bucket_item ci JOIN container.${class}_bucket c ON (c.id = ci.bucket) $rec_join WHERE c.btype = " . $self->QueryParser->quote_value($ctype) . " AND c.id = " . $self->QueryParser->quote_value($cid) . " AND (c.pub IS TRUE$perm_join) AND $rec_field = m.source LIMIT 1)";
-                        }
-                        if ($class eq 'copy') {
-                            my $subjoiner = $filter->negate ? ' AND ' : ' OR ';
-                            $where .= "$subjoiner${NOT}EXISTS(SELECT 1 FROM container.copy_bucket_item ci JOIN container.copy_bucket c ON (c.id = ci.bucket) JOIN biblio.peer_bib_copy_map pr ON ci.target_copy = pr.target_copy WHERE c.btype = " . $self->QueryParser->quote_value($cid) . " AND (c.pub IS TRUE$perm_join) AND pr.peer_record = m.source LIMIT 1))";
-                        }
+                    if ($class) {
+                        my ($u,$e) = $apputils->checksesperm($token) if ($token);
+                        $perm_join = ' OR c.owner = ' . $u->id if ($u && !$e);
+                        $where .= $joiner if $where ne '(';
+                        $where .= '(' if $class eq 'copy';
+                        $where .= "${NOT}EXISTS(SELECT 1 FROM container.${class}_bucket_item ci JOIN container.${class}_bucket c ON (c.id = ci.bucket) $rec_join WHERE c.btype = " . $self->QueryParser->quote_value($ctype) . " AND c.id = " . $self->QueryParser->quote_value($cid) . " AND (c.pub IS TRUE$perm_join) AND $rec_field = m.source LIMIT 1)";
+                    }
+                    if ($class eq 'copy') {
+                        my $subjoiner = $filter->negate ? ' AND ' : ' OR ';
+                        $where .= "$subjoiner${NOT}EXISTS(SELECT 1 FROM container.copy_bucket_item ci JOIN container.copy_bucket c ON (c.id = ci.bucket) JOIN biblio.peer_bib_copy_map pr ON ci.target_copy = pr.target_copy WHERE c.btype = " . $self->QueryParser->quote_value($cid) . " AND (c.pub IS TRUE$perm_join) AND pr.peer_record = m.source LIMIT 1))";
                     }
                 }
-                case 'record_list' {
-                    if (@{$filter->args} > 0) {
-                        my $key = 'm.source';
-                        $key = 'm.metarecord' if (grep {$_->name eq 'metarecord' or $_->name eq 'metabib'} @{$self->QueryParser->parse_tree->modifiers});
-                        $where .= $joiner if $where ne '(';
-                        $where .= "$key ${NOT}IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{$filter->args}) . ')';
-                    }
+            } elsif ($filter->name eq 'record_list') {
+                if (@{$filter->args} > 0) {
+                    my $key = 'm.source';
+                    $key = 'm.metarecord' if (grep {$_->name eq 'metarecord' or $_->name eq 'metabib'} @{$self->QueryParser->parse_tree->modifiers});
+                    $where .= $joiner if $where ne '(';
+                    $where .= "$key ${NOT}IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{$filter->args}) . ')';
                 }
-                case 'locations' {
-                    if (@{$filter->args} > 0) {
-                        $where .= $joiner if $where ne '(';
-                        $where .= "(${NOT}EXISTS(SELECT 1 FROM asset.call_number acn JOIN asset.copy acp ON acn.id = acp.call_number WHERE m.source = acn.record AND acp.circ_lib IN (SELECT * FROM search_org_list) AND NOT acn.deleted AND NOT acp.deleted AND acp.location IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ") LIMIT 1)";
-                        $where .= $filter->negate ? ' AND ' : ' OR ';
-                        $where .= "${NOT}EXISTS(SELECT 1 FROM biblio.peer_bib_copy_map pr JOIN asset.copy acp ON pr.target_copy = acp.id WHERE m.source = pr.peer_record AND acp.circ_lib IN (SELECT * FROM search_org_list) AND NOT acp.deleted AND acp.location IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ") LIMIT 1))";
-                    }
+            } elsif ($filter->name eq 'locations') {
+                if (@{$filter->args} > 0) {
+                    $where .= $joiner if $where ne '(';
+                    $where .= "(${NOT}EXISTS(SELECT 1 FROM asset.call_number acn JOIN asset.copy acp ON acn.id = acp.call_number WHERE m.source = acn.record AND acp.circ_lib IN (SELECT * FROM search_org_list) AND NOT acn.deleted AND NOT acp.deleted AND acp.location IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ") LIMIT 1)";
+                    $where .= $filter->negate ? ' AND ' : ' OR ';
+                    $where .= "${NOT}EXISTS(SELECT 1 FROM biblio.peer_bib_copy_map pr JOIN asset.copy acp ON pr.target_copy = acp.id WHERE m.source = pr.peer_record AND acp.circ_lib IN (SELECT * FROM search_org_list) AND NOT acp.deleted AND acp.location IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ") LIMIT 1))";
                 }
-                case 'statuses' {
-                    if (@{$filter->args} > 0) {
-                        $where .= $joiner if $where ne '(';
-                        $where .= "(${NOT}EXISTS(SELECT 1 FROM asset.call_number acn JOIN asset.copy acp ON acn.id = acp.call_number WHERE m.source = acn.record AND acp.circ_lib IN (SELECT * FROM search_org_list) AND NOT acn.deleted AND NOT acp.deleted AND acp.status IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ") LIMIT 1)";
-                        $where .= $filter->negate ? ' AND ' : ' OR ';
-                        $where .= "${NOT}EXISTS(SELECT 1 FROM biblio.peer_bib_copy_map pr JOIN asset.copy acp ON pr.target_copy = acp.id WHERE m.source = pr.peer_record AND acp.circ_lib IN (SELECT * FROM search_org_list) AND NOT acp.deleted AND acp.status IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ") LIMIT 1))";
-                    }
+            } elsif ($filter->name eq 'statuses') {
+                if (@{$filter->args} > 0) {
+                    $where .= $joiner if $where ne '(';
+                    $where .= "(${NOT}EXISTS(SELECT 1 FROM asset.call_number acn JOIN asset.copy acp ON acn.id = acp.call_number WHERE m.source = acn.record AND acp.circ_lib IN (SELECT * FROM search_org_list) AND NOT acn.deleted AND NOT acp.deleted AND acp.status IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ") LIMIT 1)";
+                    $where .= $filter->negate ? ' AND ' : ' OR ';
+                    $where .= "${NOT}EXISTS(SELECT 1 FROM biblio.peer_bib_copy_map pr JOIN asset.copy acp ON pr.target_copy = acp.id WHERE m.source = pr.peer_record AND acp.circ_lib IN (SELECT * FROM search_org_list) AND NOT acp.deleted AND acp.status IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . ") LIMIT 1))";
                 }
-                case 'bib_source' {
-                    if (@{$filter->args} > 0) {
-                        $where .= $joiner if $where ne '(';
-                        $where .= "${NOT}COALESCE(bre.source IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . "), false)";
-                    }
+            } elsif ($filter->name eq 'bib_source') {
+                if (@{$filter->args} > 0) {
+                    $where .= $joiner if $where ne '(';
+                    $where .= "${NOT}COALESCE(bre.source IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args }) . "), false)";
                 }
             }
         }
