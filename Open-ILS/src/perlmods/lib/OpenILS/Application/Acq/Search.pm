@@ -472,14 +472,10 @@ q/order_by clause must be of the long form, like:
     my $results = $e->json_query($query) or return $e->die_event;
     my @id_list = map { $_->{"id"} } (grep { $_->{"id"} } @$results);
 
-    if ($options->{"id_list"}) {
-        $conn->respond($_) foreach @id_list;
-    } else {
-        foreach(@id_list){
-            my $resp = $retriever->($e, $_, $options);
-            next if(ref($resp) ne "Fieldmapper::acq::$ret_type");
-            $conn->respond($resp);
-        }
+    foreach(@id_list){
+        my $resp = $retriever->($e, $_, $options);
+        next if(ref($resp) ne "Fieldmapper::acq::$ret_type");
+        $conn->respond($options->{"id_list"} ? $_ : $resp);
     }
 
     $e->disconnect;
