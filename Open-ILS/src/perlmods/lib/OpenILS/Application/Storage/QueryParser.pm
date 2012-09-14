@@ -1165,10 +1165,10 @@ sub decompose {
 
             local $last_type = '';
 
-        } elsif (/^\s*$required_re([^${group_end}${float_end}\s"]+)/) { # phrase, always anded
+        } elsif (/^\s*($required_re|$disallowed_re)([^${group_end}${float_end}\s"]+)/) { # convert require/disallow word to {un}phrase
             warn '  'x$recursing."Encountered required atom (mini phrase), transforming for phrase parse: $1\n" if $self->debug;
 
-            $_ = '"' . $1 . '"' . $';
+            $_ = $1 . '"' . $2 . '"' . $';
 
             local $last_type = '';
         } elsif (/^\s*([^${group_end}${float_end}\s]+)/o) { # atom
