@@ -1154,14 +1154,10 @@ sub decompose {
 
                 my $class_node = $struct->classed_node($current_class);
 
-                if ($req_ness eq $pkg->operator('disallowed')) {
-                    $class_node->add_dummy_atom( node => $class_node );
-                    $class_node->add_unphrase( $phrase );
-                    $phrase = '';
-                    #$phrase =~ s/(^|\s)\b/$1-/g;
-                } else { 
-                    $class_node->add_phrase( $phrase );
+                if ($req_ness eq $disallowed_op) {
+                    $class_node->negate(1);
                 }
+                $class_node->add_phrase( $phrase );
 
                 # Cleanup the phrase to make it so that we don't parse things in it as anything other than atoms
                 $phrase =~ s/$phrase_cleanup_re/ /g;
@@ -1195,7 +1191,6 @@ sub decompose {
 
             if ($atom ne '' and !grep { $atom =~ /^\Q$_\E+$/ } ('&','|')) { # throw away & and |, not allowed in tsquery, and not really useful anyway
 #                $class_node->add_phrase( $atom ) if ($atom =~ s/^$required_re//o);
-#                $class_node->add_unphrase( $atom ) if ($prefix eq '!');
 
                 $class_node->add_fts_atom( $atom, suffix => $truncate, prefix => $prefix, node => $class_node );
                 $struct->joiner( '&' );
@@ -1750,7 +1745,7 @@ sub add_filter {
 
 # %opts supports two options at this time:
 #   no_phrases :
-#       If true, do not do anything to the phrases and unphrases
+#       If true, do not do anything to the phrases
 #       fields on any discovered nodes.
 #   with_config :
 #       If true, also return the query parser config as part of the blob.
@@ -1899,15 +1894,6 @@ sub phrases {
     return $self->{phrases};
 }
 
-sub unphrases {
-    my $self = shift;
-    my @phrases = @_;
-
-    $self->{unphrases} ||= [];
-    $self->{unphrases} = \@phrases if (@phrases);
-    return $self->{unphrases};
-}
-
 sub add_phrase {
     my $self = shift;
     my $phrase = shift;
@@ -1917,13 +1903,13 @@ sub add_phrase {
     return $self;
 }
 
-sub add_unphrase {
+sub negate {
     my $self = shift;
-    my $phrase = shift;
+    my $negate = shift;
 
-    push(@{$self->unphrases}, $phrase);
+    $self->{negate} = $negate if (defined $negate);
 
-    return $self;
+    return $self->{negate};
 }
 
 sub query_atoms {
@@ -2037,7 +2023,10 @@ sub to_abstract_query {
             # break them into atoms as QP would, and remove any matching
             # sequences of atoms from our abstract query.
 
-            my $tmptree = $self->{plan}->{QueryParser}->new(query => '"'.$phrase.'"')->parse->parse_tree;
+            my $tmp_prefix = '';
+            $tmp_prefix = $QueryParser::parser_config{$pkg}{operators}{disallowed} if ($self->{negate});
+
+            my $tmptree = $self->{plan}->{QueryParser}->new(query => $tmp_prefix.'"'.$phrase.'"')->parse->parse_tree;
             if ($tmptree) {
                 # For a well-behaved phrase, we should now have only one node
                 # in the $tmptree query plan, and that node should have an
@@ -2059,40 +2048,7 @@ sub to_abstract_query {
                         last if $self->replace_phrase_in_abstract_query(
                             $tmplist,
                             $_,
-                            QueryParser::_util::fake_abstract_atom_from_phrase($phrase, undef, $pkg)
-                        );
-                    }
-                }
-            }
-        }
-    }
-
-    # Do the same as the preceding block for unphrases (negated phrases).
-    if ($self->{unphrases} and not $opts{no_phrases}) {
-        for my $phrase (@{$self->{unphrases}}) {
-            my $tmptree = $self->{plan}->{QueryParser}->new(
-                query => $QueryParser::parser_config{$pkg}{operators}{disallowed}.
-                    '"' . $phrase . '"'
-            )->parse->parse_tree;
-
-            if ($tmptree) {
-                if ($tmptree->{query} and scalar(@{$tmptree->{query}}) == 1) {
-                    my $tmplist;
-
-                    eval {
-                        $tmplist = $tmptree->{query}->[0]->to_abstract_query(
-                            no_phrases => 1
-                        )->{children}->{'&'}->[0]->{children}->{'&'};
-                    };
-                    next if $@;
-
-                    foreach (
-                        QueryParser::_util::find_arrays_in_abstract($abstract_query->{children})
-                    ) {
-                        last if $self->replace_phrase_in_abstract_query(
-                            $tmplist,
-                            $_,
-                            QueryParser::_util::fake_abstract_atom_from_phrase($phrase, 1, $pkg)
+                            QueryParser::_util::fake_abstract_atom_from_phrase($phrase, $self->{negate}, $pkg)
                         );
                     }
                 }
