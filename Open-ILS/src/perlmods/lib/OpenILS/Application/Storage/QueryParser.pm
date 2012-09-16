@@ -890,6 +890,9 @@ sub decompose {
     my $disallowed_op = $pkg->operator('disallowed');
     my $disallowed_re = qr/\Q$disallowed_op\E/;
 
+    my $negated_op = $pkg->operator('negated');
+    my $negated_re = qr/\Q$negated_op\E/;
+
     my $and_op = $pkg->operator('and');
     my $and_re = qr/^\s*\Q$and_op\E/;
 
@@ -897,7 +900,7 @@ sub decompose {
     my $or_re = qr/^\s*\Q$or_op\E/;
 
     my $group_start = $pkg->operator('group_start');
-    my $group_start_re = qr/^\s*\Q$group_start\E/;
+    my $group_start_re = qr/^\s*($negated_re|$disallowed_re)?\Q$group_start\E/;
 
     my $group_end = $pkg->operator('group_end');
     my $group_end_re = qr/^\s*\Q$group_end\E/;
@@ -910,9 +913,6 @@ sub decompose {
 
     my $modifier_tag = $pkg->operator('modifier');
     my $modifier_tag_re = qr/^\s*\Q$modifier_tag\E/;
-
-    my $negated_op = $pkg->operator('negated');
-    my $negated_re = qr/\Q$negated_op\E/;
 
     # Group start/end normally are ( and ), but can be overridden.
     # We thus include ( and ) specifically due to filters, as well as : for classes.
@@ -1041,8 +1041,9 @@ sub decompose {
             $last_type = '';
         } elsif (/$group_start_re/) { # start of an explicit group
             warn '  'x$recursing."Encountered explicit group start\n" if $self->debug;
-
+            my $negate = $1;
             my ($substruct, $subremainder) = $self->decompose( $', $current_class, $recursing + 1 );
+            $substruct->negate(1) if ($substruct && $negate);
             $struct->add_node( $substruct ) if ($substruct);
             $_ = $subremainder;
             warn '  'x$recursing."Query remainder after bool group: $_\n" if $self->debug;
@@ -1140,10 +1141,11 @@ sub decompose {
             $_ = $';
 
             local $last_type = 'CLASS';
-        } elsif (/^\s*($required_re|$disallowed_re)?"([^"]+)"/) { # phrase, always anded
+        } elsif (/^\s*($required_re|$disallowed_re|$negated_re)?"([^"]+)"/) { # phrase, always anded
             warn '  'x$recursing.'Encountered' . ($1 ? " ['$1' modified]" : '') . " phrase: $2\n" if $self->debug;
 
             my $req_ness = $1 || '';
+            $req_ness = $disallowed_op if ($req_ness eq $negated_op);
             my $phrase = $2;
 
             if (!$phrase_helper) {
@@ -1163,10 +1165,13 @@ sub decompose {
                 }
                 $class_node->add_phrase( $phrase );
 
+                # Save $' before we clean up $phrase
+                my $temp_val = $';
+
                 # Cleanup the phrase to make it so that we don't parse things in it as anything other than atoms
                 $phrase =~ s/$phrase_cleanup_re/ /g;
 
-                $_ = $phrase . $';
+                $_ = $phrase . $temp_val;
 
             }
 
@@ -1388,8 +1393,10 @@ sub abstract_query2str_impl {
     my $ge = $qpconfig->{operators}{group_end};
     my $and = $qpconfig->{operators}{and};
     my $or = $qpconfig->{operators}{or};
+    my $ng = $qpconfig->{operators}{negated};
 
     my $isnode = 0;
+    my $negate = '';
     my $size = 0;
     my $q = "";
 
@@ -1402,6 +1409,10 @@ sub abstract_query2str_impl {
                 exists $abstract_query->{modifiers};
 
             $size = _kid_list($abstract_query->{children});
+            if ($abstract_query->{negate}) {
+                $isnode = 1;
+                $negate = $ng;
+            }
             $isnode = 1 if ($size > 1 and ($force_qp_node or $depth));
             #warn "size: $size, depth: $depth, isnode: $isnode, AQ: ".Dumper($abstract_query);
         } elsif ($abstract_query->{type} eq 'node') {
@@ -1463,6 +1474,7 @@ sub abstract_query2str_impl {
     }
 
     $q = "$gs$q$ge" if ($isnode);
+    $q = $negate . $q if ($q);;
 
     return $q;
 }
@@ -1747,6 +1759,15 @@ sub add_filter {
     return $self;
 }
 
+sub negate {
+    my $self = shift;
+    my $negate = shift;
+
+    $self->{negate} = $negate if (defined $negate);
+
+    return $self->{negate};
+}
+
 # %opts supports two options at this time:
 #   no_phrases :
 #       If true, do not do anything to the phrases
@@ -1765,7 +1786,8 @@ sub to_abstract_query {
         floating => $self->floating,
         level => $self->plan_level,
         filters => [map { $_->to_abstract_query } @{$self->filters}],
-        modifiers => [map { $_->to_abstract_query } @{$self->modifiers}]
+        modifiers => [map { $_->to_abstract_query } @{$self->modifiers}],
+        negate => $self->negate
     };
 
     if ($opts{with_config}) {
