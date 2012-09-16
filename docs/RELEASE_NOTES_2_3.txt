@@ -17,7 +17,10 @@ Acquisitions
 ACQ Invoice Inline Lineitem Search and Add
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Invoice UI is how composed of two tabs, the main invoice tab and a new Search tab.  The search tab consists of a subset of the Acquisitions unified search interface.  The goal is to allow users to search for lineitems to invoice.  Search results may be added directly to the growing invoice.  A number of small usability features are included.
+The Invoice UI is how composed of two tabs, the main invoice tab and a new
+Search tab.  The search tab consists of a subset of the Acquisitions unified
+search interface.  The goal is to allow users to search for lineitems to
+invoice.  Search results may be added directly to the growing invoice.  A number of small usability features are included.
 
 Features
 ++++++++
@@ -52,9 +55,26 @@ EDI message if that lineitem can be linked to a known Evergreen lineitem in
 your system.  An Evergreen invoice item will be created for a whole-invoice
 tax.
 
+Enriched EDI
+^^^^^^^^^^^^
+
+Support for Enriched EDI with copy-level data via EDI in ORDER messages.
+
+Encumbrance-only Rollover
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A new Library Setting allows the year-end close-out operation to roll over
+encumbrances while dumping any unspent money.
+
+Fund Report
+^^^^^^^^^^^
+
+A new IDL reporter view that provides summary information for funds for
+reporting. The resulting table looks like a fund with four additional fields:
+allocated_total, spent_total, encumbrance_total, and combined_balance.
+
 OPAC
 ~~~~
-
 
 TPAC: Simplified CSS Color Customization
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -185,6 +205,46 @@ extend the KPAC using the code that already exists in the TPAC.  Finally, third
 party content, such as reader reviews, can be integrated into the KPAC.
 
 
+Locale picker
+^^^^^^^^^^^^^
+
+In situations in which more than a single locale is configured, the TPAC header
+will display a locale picker based on the registered locales. 
+
+Hidden Place Hold Links
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The title-level 'Place Hold' link in TPAC will be hidden on the search result
+and record summary screens when there are no holdable copies on the bib. This
+is based on the copy, status and location holdable flags.
+
+When enabled in config.tt2, the 'Place Holds' link in TPAC will also be hidden
+if copies are available in the search location. 
+
+Library Selectors in Advanced Searches
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The library selector is now available on the numeric and expert search pages.
+
+Journal Title Search
+^^^^^^^^^^^^^^^^^^^^
+
+A journal title search is now available as a stock TPAC filter.
+
+Public Patron Notes
+^^^^^^^^^^^^^^^^^^^
+
+Public patron notes are now visible in the 'Account Summary' box of 'My
+Account'.
+
+Auto-Override Permissable Patron Hold Fail Events
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A new Library Setting is available that tells TPAC to automatically override
+hold placement failure events in cases where the patron has the permission to
+do so. The goal is to skip the confirmation step previously required by patrons
+when overriding a TPAC hold.
+
 Cataloging
 ~~~~~~~~~~
 
@@ -306,7 +366,7 @@ Using the filter in a template
 
 [source, html]
 ---------------------------------------------------
-<span>[% ctx.filter_groups.reading_level.label %]<span>
+<span>[% ctx.filter_groups.reading_level.label %]</span>
 <span>
 [%
     INCLUDE 'opac/parts/filter_group_selector.tt2'
@@ -314,8 +374,30 @@ Using the filter in a template
     none_ok=1
     none_label=l('All')
 %]
-<span>
+</span>
 ---------------------------------------------------
+
+Standing Penalty CAPTURE and FULFILL Blocks
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This feature adds two additional types of standing penalty blocks to manage
+holds. 
+
+When a user has a standing penalty containing 'CAPTURE' in the block list, the
+user can place holds (pending no 'HOLD' block), but no holds for the user will
+be captured. This is effectively a policy-based freeze of the hold.
+
+Users that have penalties with 'FULFILL' in the block list will be able to
+place holds and have their holds captured (i.e. delivered) but will not be able
+to check out the captured holds. This is basically a way to get patrons in to
+pay outstanding balances.
+
+Copy Location Additions to Circulation Policies
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Similar to circulation modifiers, circ policies can now be based on copy
+location. This also adds copy location to the circ matrix weights and to circ
+limit sets.
 
 Staff Client
 ~~~~~~~~~~~~
@@ -380,3 +462,29 @@ The pipe is intended for cases where the urls entry may or may not already
 contain a query string, say for differences between OPACs where one requires
 that something be passed into the query string, but the other uses a path
 component instead.
+
+New Operator Change Features
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The operator change dialog has a new dropdown allowing the selection of a
+Temporary, Staff, or Permanent authtoken. The first option provides a temporary
+operator change as has typically been done through this menu item. 'Staff' uses
+a normal staff login authtoken for a multi-hour timeout. 'Permanent' is a staff
+change that disregards the previous login instead of allowing it to be
+recovered by using the menu item again.
+
+Additional Work Log Entries
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Entries for bill payment and hold placement are now available in the 'Work Log'.
+
+SIP
+~~~
+
+Support for credit card payment type and fine items details
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Support is now available to create a credit card payment type in the SIP Fee
+Paid message. There is also now support for SIP clients to retrieve and
+display a detailed/itemized list of billings to the patron.
+
