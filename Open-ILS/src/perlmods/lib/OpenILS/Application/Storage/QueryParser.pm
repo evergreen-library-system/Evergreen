@@ -883,17 +883,17 @@ sub decompose {
     warn '  'x$recursing." ** Rewritten query: $_\n" if $self->debug;
     warn '  'x$recursing." ** Search class RE: $search_class_re\n" if $self->debug;
 
-    my $required_re = $pkg->operator('required');
-    $required_re = qr/\Q$required_re\E/;
+    my $required_op = $pkg->operator('required');
+    my $required_re = qr/\Q$required_op\E/;
 
-    my $disallowed_re = $pkg->operator('disallowed');
-    $disallowed_re = qr/\Q$disallowed_re\E/;
+    my $disallowed_op = $pkg->operator('disallowed');
+    my $disallowed_re = qr/\Q$disallowed_op\E/;
 
-    my $and_re = $pkg->operator('and');
-    $and_re = qr/^\s*\Q$and_re\E/;
+    my $and_op = $pkg->operator('and');
+    my $and_re = qr/^\s*\Q$and_op\E/;
 
-    my $or_re = $pkg->operator('or');
-    $or_re = qr/^\s*\Q$or_re\E/;
+    my $or_op = $pkg->operator('or');
+    my $or_re = qr/^\s*\Q$or_op\E/;
 
     my $group_start = $pkg->operator('group_start');
     my $group_start_re = qr/^\s*\Q$group_start\E/;
@@ -907,9 +907,12 @@ sub decompose {
     my $float_end = $pkg->operator('float_end');
     my $float_end_re = qr/^\s*\Q$float_end\E/;
 
-    my $modifier_tag_re = $pkg->operator('modifier');
-    $modifier_tag_re = qr/^\s*\Q$modifier_tag_re\E/;
+    my $modifier_tag = $pkg->operator('modifier');
+    my $modifier_tag_re = qr/^\s*\Q$modifier_tag\E/;
 
+    # Group start/end normally are ( and ), but can be overridden.
+    # We thus include ( and ) specifically due to filters, as well as : for classes.
+    my $phrase_cleanup_re = qr/\s*(\Q$required_op\E|\Q$disallowed_op\E|\Q$and_op\E|\Q$or_op\E|\Q$group_start\E|\Q$group_end\E|\Q$float_start\E|\Q$float_end\E|\Q$modifier_tag\E|:|\(|\))/;
 
     # Build the filter and modifier uber-regexps
     my $facet_re = '^\s*(-?)((?:' . join( '|', @{$pkg->facet_classes}) . ')(?:\|\w+)*)\[(.+?)\]';
@@ -1159,6 +1162,10 @@ sub decompose {
                 } else { 
                     $class_node->add_phrase( $phrase );
                 }
+
+                # Cleanup the phrase to make it so that we don't parse things in it as anything other than atoms
+                $phrase =~ s/$phrase_cleanup_re/ /g;
+
                 $_ = $phrase . $';
 
             }
