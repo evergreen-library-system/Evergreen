@@ -35,7 +35,8 @@ our %parser_config = (
             group_end => ')',
             required => '+',
             disallowed => '-',
-            modifier => '#'
+            modifier => '#',
+            negated => '!'
         }
     }
 );
@@ -910,9 +911,12 @@ sub decompose {
     my $modifier_tag = $pkg->operator('modifier');
     my $modifier_tag_re = qr/^\s*\Q$modifier_tag\E/;
 
+    my $negated_op = $pkg->operator('negated');
+    my $negated_re = qr/\Q$negated_op\E/;
+
     # Group start/end normally are ( and ), but can be overridden.
     # We thus include ( and ) specifically due to filters, as well as : for classes.
-    my $phrase_cleanup_re = qr/\s*(\Q$required_op\E|\Q$disallowed_op\E|\Q$and_op\E|\Q$or_op\E|\Q$group_start\E|\Q$group_end\E|\Q$float_start\E|\Q$float_end\E|\Q$modifier_tag\E|:|\(|\))/;
+    my $phrase_cleanup_re = qr/\s*(\Q$required_op\E|\Q$disallowed_op\E|\Q$and_op\E|\Q$or_op\E|\Q$group_start\E|\Q$group_end\E|\Q$float_start\E|\Q$float_end\E|\Q$modifier_tag\E|\Q$negated_op\E|:|\(|\))/;
 
     # Build the filter and modifier uber-regexps
     my $facet_re = '^\s*(-?)((?:' . join( '|', @{$pkg->facet_classes}) . ')(?:\|\w+)*)\[(.+?)\]';
@@ -1186,7 +1190,7 @@ sub decompose {
 
             my $class_node = $struct->classed_node($current_class);
 
-            my $prefix = ($atom =~ s/^$disallowed_re//o) ? '!' : '';
+            my $prefix = ($atom =~ s/^$negated_re//o) ? '!' : '';
             my $truncate = ($atom =~ s/\*$//o) ? '*' : '';
 
             if ($atom ne '' and !grep { $atom =~ /^\Q$_\E+$/ } ('&','|')) { # throw away & and |, not allowed in tsquery, and not really useful anyway
@@ -1412,7 +1416,7 @@ sub abstract_query2str_impl {
             $isnode = 1;
         } elsif ($abstract_query->{type} eq 'atom') {
             my $prefix = $abstract_query->{prefix} || '';
-            $prefix = $qpconfig->{operators}{disallowed} if $prefix eq '!';
+            $prefix = $qpconfig->{operators}{negated} if $prefix eq '!';
             $q .= ($q ? ' ' : '') . $prefix .
                 ($abstract_query->{content} || '') .
                 ($abstract_query->{suffix} || '');
