@@ -162,8 +162,10 @@ sub check_age_protect {
 		{ order_by => 'age' }
 	);
 
+    # circ_lib may be fleshed
+    my $context_org = ref $copy->circ_lib ? $copy->circ_lib->id : $copy->circ_lib;
     my $age_protect_date = $copy->create_date;
-    $age_protect_date = $copy->active_date if($U->ou_ancestor_setting_value($copy->circ_lib, 'circ.holds.age_protect.active_date'));
+    $age_protect_date = $copy->active_date if($U->ou_ancestor_setting_value($context_org, 'circ.holds.age_protect.active_date'));
 
     my $age = 0;
     my $age_protect_parsed;
