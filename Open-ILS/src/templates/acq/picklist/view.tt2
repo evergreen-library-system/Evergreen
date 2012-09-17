@@ -2,6 +2,7 @@
 [% ctx.page_title = 'Selection List' %]
 <div dojoType="dijit.layout.ContentPane" style="height:100%">
     <div class='container'>
+        <div id='oils-scroll-to-top'></div>
         <div id='oils-acq-picklist-header'>
             Selection list <span id='oils-acq-picklist-name'> </span>
             <div class='oils-acq-picklist-attributes'>

@@ -1,6 +1,7 @@
 [% WRAPPER 'base.tt2' %]
 [% ctx.page_title = "Purchase Order" %]
 <div dojoType="dijit.layout.ContentPane" style="height:100%">
+    <div id='oils-scroll-to-top'></div>
     <div>
         <div id='oils-acq-picklist-header'>
             <big>
