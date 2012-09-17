@@ -6,6 +6,7 @@
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/search/picklist.js"></script>
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/search/purchase_order.js"></script>
 <div id="acq-unified-body" class="hidden">
+    <div id='oils-scroll-to-top'></div>
     <div id="acq-unified-heading">
         <span id="acq-unified-heading-actual">Acquisitions Search</span>
         <span id="acq-unified-heading-controls">

@@ -1089,6 +1089,9 @@ function AcqLiTable() {
                 oilsBasePath + "/acq/lineitem/related/" + li.id();
         }
 
+        // if a top scroll point is defined, jump up to it here
+        var node = dojo.byId('oils-scroll-to-top');
+        if (node) dijit.scrollIntoView(node);
     };
 
     this.generateMakeRecTab = function(bib_id,default_view, row) {
