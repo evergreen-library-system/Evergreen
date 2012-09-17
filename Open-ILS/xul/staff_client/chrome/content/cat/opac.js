@@ -604,17 +604,10 @@ function set_opac() {
         content_params.get_barcode = xulG.get_barcode;
         content_params.get_barcode_and_settings = xulG.get_barcode_and_settings;
 
-        var secure_opac = true; // default to secure
-        var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
-        if (prefs.prefHasUserValue('oils.secure_opac')) {
-            secure_opac = prefs.getBoolPref('oils.secure_opac');
-        }
-        dump('secure_opac = ' + secure_opac + '\n');
-
         if (opac_url) {
-            content_params.url = xulG.url_prefix( opac_url, secure_opac );
+            content_params.url = xulG.url_prefix( opac_url, true );
         } else {
-            content_params.url = xulG.url_prefix( 'browser', secure_opac );
+            content_params.url = xulG.url_prefix( 'browser', true );
         }
         if (g.data.adv_pane) {
             // For fun, we can have no extra params, extra params with &, or extra params with ;.

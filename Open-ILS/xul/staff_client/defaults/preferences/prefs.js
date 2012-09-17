@@ -27,9 +27,6 @@ pref("open-ils.menu.toolbar.mode", "");
 pref("open-ils.menu.toolbar.labelbelow", false);
 pref("open-ils.toolbar.defaultnewtab", false);
 
-// Template Toolkit Opac Enabled in Staff Client
-pref("oils.use_tpac", false);
-
 // Copy location name first in copy editor
 pref("oils.copy_editor.copy_location_name_first", false);
 

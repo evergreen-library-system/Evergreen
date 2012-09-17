@@ -25,13 +25,6 @@ if (!LOCALE) {
     LOCALE = 'en-US';
 }
 
-var use_tpac = false;
-try {
-    use_tpac = pref.getBoolPref('oils.use_tpac');
-} catch (E) {
-    dump("Failed to get TPac preference: " + E + "\n");
-}
-
 const MODE_RDONLY   = 0x01;
 const MODE_WRONLY   = 0x02;
 const MODE_CREATE   = 0x08;
@@ -379,12 +372,12 @@ var api = {
 
 var urls = {
 
-    'opac' : 'oils://remote/opac/' + LOCALE + '/skin/default/xml/advanced.xml?nps=1',
-    'opac_rdetail' : 'oils://remote/opac/' + LOCALE + '/skin/default/xml/rdetail.xml?r=',
-    'opac_rresult' : 'oils://remote/opac/' + LOCALE + '/skin/default/xml/rresult.xml',
-    'opac_rresult_metarecord' : 'oils://remote/opac/' + LOCALE + '/skin/default/xml/rresult.xml?m=',
+    'opac' : 'oils://remote/eg/opac/advanced',
+    'opac_rdetail' : 'oils://remote/eg/opac/record/',
+    'opac_rresult' : 'oils://remote/eg/opac/results',
+    'opac_rresult_metarecord' : 'oils://remote/eg/opac/results?metarecord=',
     'org_tree' : '/opac/common/js/' + LOCALE + '/OrgTree.js',
-    'browser' : 'oils://remote/opac/' + LOCALE + '/skin/default/xml/advanced.xml?nps=1',
+    'browser' : 'oils://remote/eg/opac/advanced',
     'fieldmapper' : '/opac/common/js/fmall.js',
     'xsl_marc2html' : '/opac/extras/xsl/oilsMARC21slim2HTML.xsl',
     'ac_jacket_small' : '/opac/extras/ac/jacket/small/',
@@ -524,13 +517,4 @@ var urls = {
     'XUL_SERIAL_BATCH_RECEIVE': 'oils://remote/xul/server/serial/batch_receive.xul',
     'EG_TRIGGER_EVENTS' : 'oils://remote/eg/actor/user/event_log',
     'XUL_SEARCH_PREFS' : 'chrome://open_ils_staff_client/content/main/search_prefs.xul'
-}
-
-if(use_tpac) {
-    urls['opac'] = 'oils://remote/eg/opac/advanced';
-    urls['opac_rdetail'] = 'oils://remote/eg/opac/record/';
-    urls['opac_rresult'] = 'oils://remote/eg/opac/results';
-    urls['opac_rresult_metarecord'] = 'oils://remote/eg/opac/results?metarecord=';
-    urls['browser'] = urls.opac;
-    pref.setBoolPref('oils.secure_opac',true);
 }
