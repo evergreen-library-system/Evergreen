@@ -67,13 +67,19 @@ sub format_callback {
 
     my $return = '';
     my $negate_flag = ($negate ? '-' : '');
-    if(@$params[0]) {
-        my ($t,$f) = split('-', @$params[0]);
-        $return .= $negate_flag .'item_type(' . join(',',split('', $t)) . ')' if ($t);
-        $return .= ' ' if ($t and $f);
-        $return .= $negate_flag .'item_form(' . join(',',split('', $f)) . ')' if ($f);
-        $return = '(' . $return . ')' if ($t and $f);
+    my @returns;
+    for my $param (@$params) {
+        my ($t,$f) = split('-', $param);
+        my $treturn = '';
+        $treturn .= 'item_type(' . join(',',split('', $t)) . ')' if ($t);
+        $treturn .= ' ' if ($t and $f);
+        $treturn .= 'item_form(' . join(',',split('', $f)) . ')' if ($f);
+        $treturn = '(' . $treturn . ')' if ($t and $f);
+        push(@returns, $treturn) if $treturn;
     }
+    $return = join(' || ', @returns);
+    $return = '(' . $return . ')' if(@returns > 1);
+    $return = $negate_flag.$return if($return);
     return $return;
 }
 
