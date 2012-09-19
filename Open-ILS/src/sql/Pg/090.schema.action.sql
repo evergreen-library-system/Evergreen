@@ -1070,6 +1070,8 @@ BEGIN
 
         END LOOP;
     END LOOP;
+
+    return count_purged;
 END;
 $func$ LANGUAGE PLPGSQL;
 
