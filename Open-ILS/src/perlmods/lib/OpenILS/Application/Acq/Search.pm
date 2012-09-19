@@ -234,6 +234,7 @@ sub prepare_terms {
 
         $outer_clause->{$conj} = [] unless $outer_clause->{$conj};
         foreach my $unit (@{$terms->{$class}}) {
+            my $special_clause;
             my ($k, $v, $fuzzy, $between, $not, $castdate, $gte, $lte) =
                 breakdown_term($unit);
 
@@ -248,15 +249,29 @@ sub prepare_terms {
                 } elsif ($gte or $lte) {
                     my $op = $gte ? '>=' : '<=';
                     $v = {$op => $v};
+                } elsif (not ref $v and $not) {
+                    # the old way, NOT (blah.id = $v) needs to be
+                    # (blah.id <> $x OR blah.id IS NULL)
+                    $not = 0;   # avoid the regular negative transformation
+                    $special_clause = {
+                        "-or" => [
+                            {"+$class" => {$k => {"!=" => $v}}},
+                            {"+$class" => {$k => undef}}
+                        ]
+                    };
                 }
                 $term_clause = {$k => $v};
             } else {
                 next;
             }
 
-            my $clause = {"+" . $class => $term_clause};
-            $clause = {"-not" => $clause} if $not;
-            push @{$outer_clause->{$conj}}, $clause;
+            if ($special_clause) {
+                push @{$outer_clause->{$conj}}, $special_clause;
+            } else {
+                my $clause = {"+" . $class => $term_clause};
+                $clause = {"-not" => $clause} if $not;
+                push @{$outer_clause->{$conj}}, $clause;
+            }
         }
     }
 
@@ -340,7 +355,7 @@ sub build_from_clause_and_joins {
         } elsif ($class eq 'acqinv' or $core eq 'acqinv') {
             $graft_map{$class} =
                 $query->{from}{$core}{acqmapinv}{join}{$class} ||= {};
-            $graft_map{$class}{type} = $join_type;
+            $graft_map{$class}{type} = "left"; # $join_type
         } else {
             $graft_map{$class} = $query->{from}{$core}{$class} ||= {};
             $graft_map{$class}{type} = $join_type;
@@ -487,6 +502,11 @@ q/order_by clause must be of the long form, like:
 
     my $offset = add_au_joins($graft_map, $hint, prepare_au_terms($and_terms));
     add_au_joins($graft_map, $hint, prepare_au_terms($or_terms, $offset));
+
+    # The join to acqmapinv needs to be a left join when present.
+    if ($query->{from}{$hint}{acqmapinv}) {
+        $query->{from}{$hint}{acqmapinv}{type} = "left";
+    }
 
     if ($and_terms and $or_terms) {
         $query->{"where"} = {
