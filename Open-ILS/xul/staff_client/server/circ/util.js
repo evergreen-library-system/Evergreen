@@ -2937,6 +2937,8 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             'notify_by_phone_msg' : '',
             'notify_by_email' : '',
             'notify_by_email_msg' : '',
+            'notify_by_text' : '',
+            'notify_by_text_msg' : '',
             'request_date' : '',
             'request_date_msg' : '',
             'shelf_expire_time' : '',
