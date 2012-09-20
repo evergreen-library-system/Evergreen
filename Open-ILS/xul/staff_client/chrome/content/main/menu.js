@@ -1664,6 +1664,16 @@ main.menu.prototype = {
                     xulG.pref.setBoolPref('oils.copy_editor.copy_location_name_first', !curvalue);
                 }
             ],
+            'cmd_search_prefs' : [
+                ['oncommand'],
+                function() {
+                    try {
+                        obj.set_tab(obj.url_prefix('XUL_SEARCH_PREFS'));
+                    } catch(E) {
+                        alert(E)
+                    }
+                }
+            ],
         };
 
         JSAN.use('util.controller');

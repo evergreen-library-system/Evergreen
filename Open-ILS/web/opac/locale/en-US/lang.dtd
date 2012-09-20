@@ -874,6 +874,7 @@
 <!ENTITY staff.main.menu.admin.client.hotkeys.setworkstation.accesskey "">
 <!ENTITY staff.main.menu.admin.client.hotkeys.clearworkstation.label "Clear Workstation Default">
 <!ENTITY staff.main.menu.admin.client.hotkeys.clearworkstation.accesskey "">
+<!ENTITY staff.main.menu.admin.client.search_prefs.label "Set Search Preferences">
 <!ENTITY staff.main.menu.admin.client.toolbars "Toolbars">
 <!ENTITY staff.main.menu.admin.client.toolbars.current "Current">
 <!ENTITY staff.main.menu.admin.client.toolbars.config.label "Configure Toolbars">
@@ -3633,3 +3634,10 @@
 <!ENTITY staff.item.batch.hold.cancel_btn.label "Cancel">
 <!ENTITY staff.item.batch.hold.cancel_btn.accesskey "C">
 <!ENTITY staff.item.batch.hold.failures_and_settings "The settings above may be changed for retries and overrides.">
+<!ENTITY staff.search_prefs.search_lib.caption "Default Search Library">
+<!ENTITY staff.search_prefs.search_lib.description "The default search library setting determines what library is searched from the advanced search screen and portal page by default. Manual selection of a search library will override it. One recommendation is to set the search library to the highest point you would normally want to search.">
+<!ENTITY staff.search_prefs.pref_lib.caption "Preferred Library">
+<!ENTITY staff.search_prefs.pref_lib.description "The preferred library is used to show copies and URIs regardless of the library searched. One recommendation is to set this to your workstation library so that local copies show up first in search results.">
+<!ENTITY staff.search_prefs.save.label "Save">
+<!ENTITY staff.search_prefs.save.accesskey "S">
+<!ENTITY staff.search_prefs.saved_message "Preferences saved">

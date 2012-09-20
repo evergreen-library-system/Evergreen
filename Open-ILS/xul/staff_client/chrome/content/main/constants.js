@@ -522,7 +522,8 @@ var urls = {
     'ALT_HOLDS_PRINT' : 'oils://remote/opac/extras/circ/alt_holds_print.html',
     'SERIAL_PRINT_ROUTING_LIST_USERS' : 'oils://remote/eg/serial/print_routing_list_users',
     'XUL_SERIAL_BATCH_RECEIVE': 'oils://remote/xul/server/serial/batch_receive.xul',
-    'EG_TRIGGER_EVENTS' : 'oils://remote/eg/actor/user/event_log'
+    'EG_TRIGGER_EVENTS' : 'oils://remote/eg/actor/user/event_log',
+    'XUL_SEARCH_PREFS' : 'chrome://open_ils_staff_client/content/main/search_prefs.xul'
 }
 
 if(use_tpac) {

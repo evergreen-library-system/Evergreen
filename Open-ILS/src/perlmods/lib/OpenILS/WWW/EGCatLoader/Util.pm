@@ -378,6 +378,10 @@ sub _get_search_lib {
     $loc = $self->cgi->param('loc');
     return $loc if $loc;
 
+    if ($self->apache->headers_in->get('OILS-Search-Lib')) {
+        return $self->apache->headers_in->get('OILS-Search-Lib');
+    }
+
     my $pref_lib = $self->_get_pref_lib();
     return $pref_lib if $pref_lib;
 
@@ -391,6 +395,10 @@ sub _get_pref_lib {
     # plib param takes precedence
     my $plib = $self->cgi->param('plib');
     return $plib if $plib;
+
+    if ($self->apache->headers_in->get('OILS-Pref-Lib')) {
+        return $self->apache->headers_in->get('OILS-Pref-Lib');
+    }
 
     if ($ctx->{user}) {
         # See if the user has a search library preference

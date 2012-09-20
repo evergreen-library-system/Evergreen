@@ -192,9 +192,9 @@ oilsProtocol.prototype = {
     newChannel: function(aURI) {
         var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
         var host;
+        var data_cache = Components.classes["@open-ils.org/openils_data_cache;1"].getService().wrappedJSObject.data;
         switch(aURI.host) {
             case 'remote':
-                var data_cache = Components.classes["@open-ils.org/openils_data_cache;1"].getService().wrappedJSObject.data;
                 host = data_cache.server_unadorned;
                 break;
             case 'selfcheck':
@@ -208,7 +208,12 @@ oilsProtocol.prototype = {
             return ios.newChannel("about:blank", null, null); // Bad input. Not really sure what to do. Returning a dummy channel does prevent a crash, though!
         var chunk = aURI.spec.replace(/^oils:\/\/[^\/]*\//,'');
         var channel = ios.newChannel("https://" + host + "/" + chunk, null, null).QueryInterface(Components.interfaces.nsIHttpChannel);
-        channel.QueryInterface(Components.interfaces.nsIHttpChannel).setRequestHeader("OILS-Wrapper", "true", false);
+        channel.setRequestHeader("OILS-Wrapper", "true", false);
+        // If we have a search/pref lib, set them too!
+        if (data_cache.search_lib && data_cache.search_lib != null)
+            channel.setRequestHeader("OILS-Search-Lib", data_cache.search_lib, false);
+        if (data_cache.pref_lib && data_cache.pref_lib != null)
+            channel.setRequestHeader("OILS-Pref-Lib", data_cache.pref_lib, false);
         if(this._system_principal == null) {
             // We don't have the owner?
             var chrome_service = Components.classesByID['{61ba33c0-3031-11d3-8cd0-0060b0fc14a3}'].getService().QueryInterface(Components.interfaces.nsIProtocolHandler);

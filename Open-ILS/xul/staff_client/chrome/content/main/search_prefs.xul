@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Workstation level search preferences -->
+<!--
+ vim:noet:sw=4:ts=4:
+-->
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+
+<!DOCTYPE window SYSTEM "chrome://open_ils_staff_client/locale/lang.dtd">
+
+<?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay_chrome.xul"?>
+
+<window id="search_prefs_diag" 
+    onload="try { my_init(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <script type="text/javascript">
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true;
+    </script>
+    <scripts id="openils_util_scripts"/>
+    <script type="text/javascript" src="JSAN.js"/>
+
+    <script>
+    <![CDATA[
+        var g = {};
+        var search_lib_box;
+        var pref_lib_box;
+        var prefSvc;
+        var data;
+        var saved_message;
+        function my_init() {
+            JSAN.use('OpenILS.data');
+            data = new OpenILS.data();
+            data.init({'via':'stash'});
+            search_lib_box = document.getElementById('search_lib');
+            pref_lib_box = document.getElementById('pref_lib');
+            // NOTE: If this ever deals with custom trees, this is where you likely want to mess with things.
+            add_aou(data.tree.aou, '');
+            prefSvc = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch).QueryInterface(Components.interfaces.nsIPrefBranch2);
+            saved_message = document.getElementById('saved_message').textContent;
+            if (data.search_lib) {
+                search_lib_box.value = data.search_lib;
+                pref_lib_box.value = data.pref_lib;
+            } else {
+                search_lib_box.selectedIndex = 0;
+                pref_lib_box.selectedIndex = 0;;
+            }
+        }
+        function add_aou(aou, depth) {
+            search_lib_box.appendItem(depth + aou.name(), aou.id(), '');
+            pref_lib_box.appendItem(depth + aou.name(), aou.id(), '');
+            for(var i = 0; i < aou.children().length; i++)
+                add_aou(aou.children()[i], depth + '  ');
+        }
+        function update_prefs() {
+            prefSvc.setIntPref('open-ils.' + data.server_unadorned + '.search_lib', search_lib_box.value);
+            prefSvc.setIntPref('open-ils.' + data.server_unadorned + '.pref_lib', pref_lib_box.value);
+            data.search_lib = search_lib_box.value;
+            data.pref_lib = pref_lib_box.value;
+            data.stash('search_lib');
+            data.stash('pref_lib');
+            alert(saved_message);
+        }
+    ]]>
+    </script>
+    <commandset id="search_prefs_cmds">
+        <command id="save_search_prefs" oncommand="update_prefs()" />
+    </commandset>
+    <vbox id="search_prefs_main">
+        <groupbox>
+            <caption label="&staff.search_prefs.search_lib.caption;"/>
+            <description>&staff.search_prefs.search_lib.description;</description>
+            <menulist id="search_lib">
+                <menupopup>
+                </menupopup>
+            </menulist>
+        </groupbox>
+        <groupbox>
+            <caption label="&staff.search_prefs.pref_lib.caption;"/>
+            <description>&staff.search_prefs.pref_lib.description;</description>
+            <menulist id="pref_lib">
+                <menupopup>
+                </menupopup>
+            </menulist>
+        </groupbox>
+        <button id="save_button" command="save_search_prefs" label="&staff.search_prefs.save.label;" accesskey="&staff.search_prefs.save.accesskey;"/>
+    </vbox>
+    <description id="saved_message" style="display:none">&staff.search_prefs.saved_message;</description>
+</window>
