@@ -19,6 +19,13 @@ function staff_hold_usr_input_disabler(input) {
         Boolean(Number(input.value));
     staff_hold_usr_barcode_changed();
 }
+function no_hold_submit(event) {
+    if (event.which == 13) {
+        staff_hold_usr_barcode_changed();
+        return false;
+    }
+    return true;
+}
 var cur_hold_barcode = undefined;
 function staff_hold_usr_barcode_changed(isload) {
     if(typeof xulG != 'undefined' && xulG.get_barcode_and_settings) {
