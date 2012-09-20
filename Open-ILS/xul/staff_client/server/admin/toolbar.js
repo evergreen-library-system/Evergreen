@@ -56,8 +56,41 @@ function my_init() {
         $('context_usr').setAttribute('label', fieldmapper.IDL.fmclasses.atb.field_map.usr.label);
         $('context_ws').setAttribute('label', fieldmapper.IDL.fmclasses.atb.field_map.ws.label);
 
+
+        var perms_not_had = perm_check();
+        if (perms_not_had.length == 3) { // has none of those perms
+            $('New').disabled = true;
+        }
+
     } catch(E) {
         try { g.error.standard_unexpected_error_alert('admin/toolbar.xul',E); } catch(F) { alert(E); }
+    }
+}
+
+function perm_check(use_this_org, use_these_perms) {
+    try {
+        // poor man's perm check - just a screen door to keep the honest folk out
+
+        var context_org = use_this_org || ses('ws_ou');
+        var perms_to_check = use_these_perms || [ 'ADMIN_TOOLBAR_FOR_ORG', 'ADMIN_TOOLBAR_FOR_WORKSTATION', 'ADMIN_TOOLBAR_FOR_USER' ];
+
+        JSAN.use('util.network');
+        var net = new util.network();
+        var robj = net.simple_request(
+            'PERM_CHECK',[
+                ses(),
+                ses('staff_id'),
+                context_org,
+                perms_to_check
+            ]
+        );
+        if (typeof robj.ilsevent != 'undefined') {
+            throw(robj);
+        }
+        return robj;
+    } catch(E) {
+        try { g.error.standard_unexpected_error_alert('admin/toolbar.xul',E); } catch(F) { alert(E); }
+        return perms_to_check; // assume failure so return the perms
     }
 }
 
@@ -140,6 +173,53 @@ function handle_list1_selection(ev) {
         g.layout = JSON2js(g.selected_atb.layout());
         populate_list2_list3();
         xulG.render_toolbar_layout(g.layout);
+
+        // permission checks
+
+        var perms_not_had = perm_check( g.selected_atb.org() );
+        var disable_editing = false;
+        for (var i = 0; i < perms_not_had.length; i++) {
+            if (perms_not_had[i] == 'ADMIN_TOOLBAR_FOR_ORG' && g.selected_atb.org()) {
+                disable_editing = true;
+            }
+            if (perms_not_had[i] == 'ADMIN_TOOLBAR_FOR_WORKSTATION' && g.selected_atb.ws()) {
+                disable_editing = true;
+            }
+            if (perms_not_had[i] == 'ADMIN_TOOLBAR_FOR_USER' && g.selected_atb.usr()) {
+                disable_editing = true;
+            }
+        }
+        if (g.selected_atb.usr() && ( g.selected_atb.usr() != ses('staff_id') ) ) {
+            disable_editing = true; // if a user toolbar, only allow editing of your own toolbars (just in case)
+        }
+
+        if (disable_editing) {
+            ['Add','Remove','Up','Down','Delete','Save','context_org','context_ws','context_usr'].forEach(
+                function(e,i,a) {
+                    $(e).disabled = true;
+                }
+            );
+        } else {
+            ['Add','Remove','Up','Down','Delete','Save','context_org','context_ws','context_usr'].forEach(
+                function(e,i,a) {
+                    $(e).disabled = false;
+                }
+            );
+        }
+
+        // don't allow changing ownership axis without perm
+        for (var i = 0; i < perms_not_had.length; i++) {
+            if (perms_not_had[i] == 'ADMIN_TOOLBAR_FOR_ORG') {
+                $('context_org').disabled = true;
+            }
+            if (perms_not_had[i] == 'ADMIN_TOOLBAR_FOR_WORKSTATION') {
+                $('context_ws').disabled = true;
+            }
+            if (perms_not_had[i] == 'ADMIN_TOOLBAR_FOR_USER') {
+                $('context_usr').disabled = true;
+            }
+        }
+
     } catch(E) {
         alert('Error in toolbar.js, handle_list1_selection(): ' + E);
     }
@@ -500,6 +580,11 @@ function Delete(ev) {
 
 function New(ev) {
     try {
+        var perms_not_had = perm_check();
+        if (perms_not_had.length == 3) {
+            return; // we do disable the New button, but Operator Change can get around that
+        }
+
         var name = window.prompt('Enter label for toolbar:');
         if (!name) { return; }
 
@@ -507,7 +592,13 @@ function New(ev) {
         new_atb.isnew('1');
         new_atb.label(name);
         new_atb.layout('[]');
-        new_atb.usr(ses('staff_id'));
+        if (perms_not_had.indexOf('ADMIN_TOOLBAR_FOR_USER') == -1) {
+            new_atb.usr(ses('staff_id'));
+        } else if (perms_not_had.indexOf('ADMIN_TOOLBAR_FOR_WORKSTATION') == -1) {
+            new_atb.ws(ses('ws_id'));
+        } else if (perms_not_had.indexOf('ADMIN_TOOLBAR_FOR_ORG') == -1) {
+            new_atb.org($('lib_menu').value);
+        }
 
         var rdata = g.list1.append({
             'row' : {
