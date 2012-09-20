@@ -22,7 +22,7 @@
             <label for="hold_usr_is_requestor_not">
                 [% l("Place hold for patron by barcode:") %]
             </label>
-            <input type="text" name="hold_usr" id="hold_usr_input" onchange="staff_hold_usr_barcode_changed();" /><br />
+            <input type="text" name="hold_usr" id="hold_usr_input" onchange="staff_hold_usr_barcode_changed();" onkeypress="return no_hold_submit(event)" /><br />
             <input type="hidden" id="staff_barcode" value="[% ctx.staff_recipient.card.barcode | html %]"/>
             <span>
                 <input type="radio" id="hold_usr_is_requestor"
