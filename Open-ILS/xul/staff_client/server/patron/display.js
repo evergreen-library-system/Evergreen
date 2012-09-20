@@ -217,7 +217,9 @@ patron.display.prototype = {
                                         obj.summary_window.g.summary.controller.render('patron_checkouts');
                                         obj.summary_window.g.summary.controller.render('patron_standing_penalties');
                                         obj.summary_window.g.summary.controller.render('patron_bill');
-                                        obj.bill_window.g.bills.refresh(true);
+                                        if (obj.bill_window) {
+                                            obj.bill_window.refresh(true);
+                                        }
                                     },
                                     'url_prefix' : function(url,secure) { return xulG.url_prefix(url,secure); },
                                     'get_new_session' : function(a) { return xulG.get_new_session(a); },
@@ -520,6 +522,8 @@ patron.display.prototype = {
                                     'get_new_session' : function(a) { return xulG.get_new_session(a); },
                                     'new_tab' : function(a,b,c) { return xulG.new_tab(a,b,c); },
                                     'on_money_change' : function(b) {
+                                        obj.summary_window.g.summary.controller.render('patron_standing_penalties');
+                                        obj.summary_window.g.summary.controller.render('patron_bill');
                                         obj.summary_window.refresh();
                                     }
                                 }

@@ -146,7 +146,10 @@ function event_listeners() {
                     'chrome,resizable,modal',
                     { 'patron_id' : g.patron_id }
                 );
-                if (my_xulG.xact_id) { g.funcs.push( gen_list_append_func( my_xulG.xact_id ) ); /* FIXME: do something to update summary sidebar */ }
+                if (my_xulG.xact_id) {
+                    g.funcs.push( gen_list_append_func( my_xulG.xact_id ) );
+                    if (typeof window.xulG == 'object' && typeof window.xulG.on_money_change == 'function') window.xulG.on_money_change();
+                }
             },
             false
         );

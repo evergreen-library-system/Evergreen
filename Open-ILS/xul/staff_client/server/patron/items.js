@@ -156,12 +156,12 @@ patron.items.prototype = {
                     'cmd_items_renew_all' : [ ['command'], function() { obj.items_renew_all({which_list:1}); } ],
                     'cmd_items_renew2' : [ ['command'], function() { obj.items_renew({which_list:2}); } ],
                     'cmd_items_renew_with_date2' : [ ['command'], function() { obj.items_renew({which_list:2,skip_prompt:true,get_date:true}); } ],
-                    'cmd_items_edit' : [ ['command'], function() { obj.items_edit(1);  /*obj.retrieve();*/ } ],
-                    'cmd_items_edit2' : [ ['command'], function() { obj.items_edit(2);  /*obj.retrieve();*/ } ],
-                    'cmd_items_mark_lost' : [ ['command'], function() { obj.items_mark_lost(1);  /*obj.retrieve();*/ } ],
-                    'cmd_items_mark_lost2' : [ ['command'], function() { obj.items_mark_lost(2);  /*obj.retrieve();*/ } ],
-                    'cmd_items_claimed_returned' : [ ['command'], function() { obj.items_claimed_returned(1);  /*obj.retrieve();*/ } ],
-                    'cmd_items_claimed_returned2' : [ ['command'], function() { obj.items_claimed_returned(2);  /*obj.retrieve();*/ } ],
+                    'cmd_items_edit' : [ ['command'], function() { obj.items_edit(1);  obj.refresh_outer_interfaces(); } ],
+                    'cmd_items_edit2' : [ ['command'], function() { obj.items_edit(2);  obj.refresh_outer_interfaces(); } ],
+                    'cmd_items_mark_lost' : [ ['command'], function() { obj.items_mark_lost(1);  obj.refresh_outer_interfaces(); } ],
+                    'cmd_items_mark_lost2' : [ ['command'], function() { obj.items_mark_lost(2);  obj.refresh_outer_interfaces(); } ],
+                    'cmd_items_claimed_returned' : [ ['command'], function() { obj.items_claimed_returned(1);  obj.refresh_outer_interfaces(); } ],
+                    'cmd_items_claimed_returned2' : [ ['command'], function() { obj.items_claimed_returned(2);  obj.refresh_outer_interfaces(); } ],
                     'cmd_items_claimed_never_checked_out' : [
                         ['command'],
                         function() {
@@ -178,12 +178,12 @@ patron.items.prototype = {
                             );
                         }
                     ],
-                    'cmd_items_checkin' : [ ['command'], function() { obj.items_checkin(1);  /*obj.retrieve();*/ } ],
-                    'cmd_items_checkin2' : [ ['command'], function() { obj.items_checkin(2);  /*obj.retrieve();*/ } ],
+                    'cmd_items_checkin' : [ ['command'], function() { obj.items_checkin(1);  obj.refresh_outer_interfaces(); } ],
+                    'cmd_items_checkin2' : [ ['command'], function() { obj.items_checkin(2);  obj.refresh_outer_interfaces(); } ],
                     'cmd_show_catalog' : [ ['command'], function() { obj.show_catalog(1); } ],
                     'cmd_show_catalog2' : [ ['command'], function() { obj.show_catalog(2); } ],
-                    'cmd_add_billing' : [ ['command'], function() { obj.add_billing(1);  /*obj.retrieve();*/ } ],
-                    'cmd_add_billing2' : [ ['command'], function() { obj.add_billing(2);  /*obj.retrieve();*/ } ],
+                    'cmd_add_billing' : [ ['command'], function() { obj.add_billing(1);  obj.refresh_outer_interfaces(); } ],
+                    'cmd_add_billing2' : [ ['command'], function() { obj.add_billing(2);  obj.refresh_outer_interfaces(); } ],
                     'cmd_show_noncats' : [ ['command'], function() { obj.show_noncats(); } ]
                 }
             }
@@ -933,9 +933,14 @@ patron.items.prototype = {
         }
         exec.chain( rows );
         if (!dont_show_me_the_list_change) {
-            if (window.xulG && typeof window.xulG.on_list_change == 'function') {
-                try { window.xulG.on_list_change(obj.checkouts); } catch(E) { this.error.sdump('D_ERROR',E); }
-            }
+            obj.refresh_outer_interfaces();
+        }
+    },
+
+    'refresh_outer_interfaces' : function() {
+        var obj = this;
+        if (window.xulG && typeof window.xulG.on_list_change == 'function') {
+            try { window.xulG.on_list_change(obj.checkouts); } catch(E) { this.error.sdump('D_ERROR',E); }
         }
     },
 
