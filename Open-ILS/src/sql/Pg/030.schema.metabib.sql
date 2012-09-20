@@ -1393,6 +1393,7 @@ BEGIN
     query := TO_TSQUERY('keyword', prepared_query_texts[1]);
     plain_query := TO_TSQUERY('keyword', prepared_query_texts[2]);
 
+    visibility_org := NULLIF(visibility_org,-1);
     IF visibility_org IS NOT NULL THEN
         opac_visibility_join := '
     JOIN asset.opac_visible_copies aovc ON (
