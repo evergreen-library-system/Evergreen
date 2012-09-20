@@ -1668,7 +1668,7 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() {
                     try {
-                        obj.set_tab(obj.url_prefix('XUL_SEARCH_PREFS'));
+                        obj.set_tab(obj.url_prefix('XUL_SEARCH_PREFS'),{'tab_name' : offlineStrings.getString('menu.cmd_search_prefs.tab'), 'browser' : false});
                     } catch(E) {
                         alert(E)
                     }
