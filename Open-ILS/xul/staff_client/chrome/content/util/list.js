@@ -1574,8 +1574,8 @@ util.list.prototype = {
                 params.staff = data.list.au[0];
             }
             if (!params.lib && data.list.au && data.list.au[0] && data.list.au[0].ws_ou() && data.hash.aou && data.hash.aou[ data.list.au[0].ws_ou() ]) {
-                params.lib = data.hash.aou[ data.list.au[0].ws_ou() ];
-                params.lib.children(null);
+                params.lib = JSON2js( js2JSON( data.hash.aou[ data.list.au[0].ws_ou() ] ) ); // clone this sucker
+                params.lib.children(null); // since we're modifying it
             }
             if (params.template && data.print_list_templates[ params.template ]) {
                 var template = data.print_list_templates[ params.template ];
