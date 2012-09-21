@@ -104,7 +104,12 @@
     </tr>
 </table>
 <input type="hidden" name="_adv" value="1" />
-<input type="submit" value="[% l('Search') %]" class='pointer opac-button' />
+           <span>
+            <input id='search-submit-go' type="submit" value="[% l('Search') %]" alt="[% l('Search') %]" class="opac-button"
+                onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"}, 2000)'/>
+            <img id='search-submit-spinner' src='/opac/images/progressbar_green.gif' style='height:16px;width:16px;' class='hidden' alt=''/>
+          </span>
+
 <a href="[% mkurl(ctx.opac_root _ '/advanced', {$loc_name => loc_value}, 1) %]"
     class="pointer opac-button">[% l('Clear Form') %]</a>
 </form>
