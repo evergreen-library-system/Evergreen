@@ -1,0 +1,20 @@
+TPAC Org Unit Hiding
+====================
+
+Adds support for the opac.org_unit_hiding.depth org unit setting to
+TPAC, which makes out-of-scope org units disappear (except when
+explicitly requested).
+
+Org unit hiding is based on the physical_loc (Physical Location) param /
+cookie, which is the closest analog to 'ol' (original location), from
+which it was based in the JSPAC.
+
+UI Changes
+----------
+
+ * All search org unit selectors
+ * Holds pickup lib selector
+ * Copy summary in search results page
+ * Copy list in search results page
+ * Copy summary in record detail page (which controls the copy grid).
+ * Hold summary in record detail page

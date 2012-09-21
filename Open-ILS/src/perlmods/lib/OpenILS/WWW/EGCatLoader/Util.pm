@@ -595,4 +595,83 @@ sub check_for_temp_list_warning {
     return $warn;
 }
 
+sub load_org_util_funcs {
+    my $self = shift;
+    my $ctx = $self->ctx;
+
+    # evaluates to true if test_ou is within the same depth-
+    # scoped tree as ctx_ou. both ou's are org unit objects.
+    $ctx->{org_within_scope} = sub {
+        my ($ctx_ou, $test_ou, $depth) = @_;
+
+        return 1 if $ctx_ou->id == $test_ou->id;
+
+        if ($depth) {
+
+            # find the top-most ctx-org ancestor at the provided depth
+            while ($depth < $ctx_ou->ou_type->depth 
+                    and $ctx_ou->id != $test_ou->id) {
+                $ctx_ou = $ctx->{get_aou}->($ctx_ou->parent_ou);
+            }
+
+            # the preceeding loop may have landed on our org
+            return 1 if $ctx_ou->id == $test_ou->id;
+
+        } else {
+
+            return 1 if defined $depth; # $depth == 0;
+        }
+
+        for my $child (@{$ctx_ou->children}) {
+            return 1 if $ctx->{org_within_scope}->($child, $test_ou);
+        }
+
+        return 0;
+    };
+
+    # Returns true if the provided org unit is within the same 
+    # org unit hiding depth-scoped tree as the physical location.
+    # Org unit hiding is based on the immutable physical_loc
+    # and is not meant to change as search/pref/etc libs change
+    $ctx->{org_within_hiding_scope} = sub {
+        my $org_id = shift;
+        my $ploc = $ctx->{physical_loc} or return 1;
+
+        my $depth = $ctx->{get_org_setting}->(
+            $ploc, 'opac.org_unit_hiding.depth');
+
+        return 1 unless $depth; # 0 or undef
+
+        return $ctx->{org_within_scope}->( 
+            $ctx->{get_aou}->($ploc), 
+            $ctx->{get_aou}->($org_id), $depth);
+ 
+    };
+
+    # Evaluates to true if the context org (defaults to get_library) 
+    # is not within the hiding scope.  Also evaluates to true if the 
+    # user's pref_ou is set and it's out of hiding scope.
+    # Always evaluates to true when ctx.is_staff
+    $ctx->{org_hiding_disabled} = sub {
+        my $ctx_org = shift || $ctx->{search_ou};
+
+        return 1 if $ctx->{is_staff};
+
+        # beware locg values formatted as org:loc
+        $ctx_org =~ s/:.*//g;
+
+        return 1 if !$ctx->{org_within_hiding_scope}->($ctx_org);
+
+        return 1 if $ctx->{pref_ou} and $ctx->{pref_ou} != $ctx_org 
+            and !$ctx->{org_within_hiding_scope}->($ctx->{pref_ou});
+
+        return 0;
+    };
+
+}
+
+
+    
+
+
 1;

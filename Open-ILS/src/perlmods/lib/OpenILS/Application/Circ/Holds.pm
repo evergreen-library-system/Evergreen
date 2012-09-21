@@ -3922,6 +3922,11 @@ __PACKAGE__->register_method(
             selected bib record or its associated copies and call_numbers/,
         params => [
             { desc => 'Bib ID', type => 'number' },
+            { desc => q/Optional arguments.  Supported arguments include:
+                "pickup_lib_descendant" -> limit holds to those whose pickup
+                library is equal to or is a child of the provided org unit/,
+                type => 'object'
+            }
         ],
         return => {desc => 'Hold count', type => 'number'}
     }
@@ -3942,8 +3947,8 @@ __PACKAGE__->register_method(
 
 # XXX Need to add type I (and, soon, type P) holds to these counts
 sub rec_hold_count {
-    my($self, $conn, $target_id) = @_;
-
+    my($self, $conn, $target_id, $args) = @_;
+    $args ||= {};
 
     my $mmr_join = {
         mmrsm => {
@@ -4032,6 +4037,21 @@ sub rec_hold_count {
             '-and' => {
                 hold_type => 'M',
                 target => $target_id
+            }
+        };
+    }
+
+
+    if (my $pld = $args->{pickup_lib_descendant}) {
+        $query->{where}->{'+ahr'}->{pickup_lib} = {
+            in => {
+                select  => {aou => [{ 
+                    column => 'id', 
+                    transform => 'actor.org_unit_descendants', 
+                    result_field => 'id' 
+                }]},
+                from    => 'aou',
+                where   => {id => $pld}
             }
         };
     }

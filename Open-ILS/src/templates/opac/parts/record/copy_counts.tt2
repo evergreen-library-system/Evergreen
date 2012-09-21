@@ -4,11 +4,13 @@
     [%- depths = ctx.copy_summary.size;
         depth = 0;
         displayed_ous = {};
+        ou_hiding_disabled = org_hiding_disabled();
         WHILE depth < depths;
             ou_avail = ctx.copy_summary.$depth.available;
             ou_id = ctx.copy_summary.$depth.org_unit;
             cp_org_unit = ctx.get_aou(ou_id);
-            IF cp_org_unit.opac_visible == 'f' AND !ctx.is_staff;
+            skip_me = !ou_hiding_disabled AND !ctx.org_within_hiding_scope(ou_id);
+            IF (cp_org_unit.opac_visible == 'f' AND !ctx.is_staff) OR skip_me;
                 depth = depth + 1;
                 NEXT;
             END;

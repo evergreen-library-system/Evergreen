@@ -276,6 +276,8 @@
             );
         END;
 
+        ou_hiding_disabled = ctx.org_hiding_disabled();
+
         FOR volume IN xml.findnodes('//*[local-name()="volumes"]/*[local-name()="volume"]');
 
             # Check volume visibility - could push this into XPath
@@ -339,6 +341,13 @@
 
                     status = copy.findnodes('./*[local-name()="status"]');
                     NEXT IF status.getAttribute('opac_visible') == 'false';
+
+                    UNLESS ou_hiding_disabled;
+                        # extract the circ_lib id from the circ_lib node
+                        circ_lib = copy.findnodes('./*[local-name()="circ_lib"]');
+                        circ_lib_id = circ_lib.getAttribute('id').replace('.*/', '');
+                        NEXT UNLESS ctx.org_within_hiding_scope(circ_lib_id);
+                    END;
 
                     holding = {
                         label => vol.label,

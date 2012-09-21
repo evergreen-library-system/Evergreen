@@ -1,10 +1,13 @@
 [%- depths = attrs.copy_counts.size;
     depth = 0;
     displayed_ous = {};
+    hiding_disabled = ctx.org_hiding_disabled();
     WHILE depth < depths;
-        ou_name = ctx.get_aou(attrs.copy_counts.$depth.org_unit).name;
+        org_unit = ctx.get_aou(attrs.copy_counts.$depth.org_unit);
+        ou_name = org_unit.name;
         displayed_ous.$ou_name = 1;
-        IF attrs.copy_counts.$depth.count > 0;
+        IF attrs.copy_counts.$depth.count > 0 AND (
+            hiding_disabled OR ctx.org_within_hiding_scope(org_unit.id));
 %]
 <div class="result_count">
 [% IF ctx.get_aou(attrs.copy_counts.$depth.org_unit).opac_visible == 't' %]
@@ -20,11 +23,13 @@
     END;
 
     depth = attrs.plib_copy_counts.size - 1;
-    ou_name = ctx.get_aou(attrs.plib_copy_counts.$depth.org_unit).name;
+    org_unit = ctx.get_aou(attrs.plib_copy_counts.$depth.org_unit);
+    ou_name = org_unit.name;
     UNLESS displayed_ous.exists(ou_name);
     
 %]
-[%- IF attrs.plib_copy_counts.$depth.count > 0; %]
+[%- IF attrs.plib_copy_counts.$depth.count > 0 AND (
+        hiding_disabled OR ctx.org_within_hiding_scope(org_unit.id)) %]
 <div class="result_count preferred">[%
      l('[_1] of [quant,_2,copy,copies] available at [_3].',
         attrs.plib_copy_counts.$depth.available,

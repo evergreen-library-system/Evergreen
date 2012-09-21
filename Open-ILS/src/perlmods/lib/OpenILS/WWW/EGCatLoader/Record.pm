@@ -378,13 +378,23 @@ sub prepare_browse_call_numbers {
 
 sub get_hold_copy_summary {
     my ($self, $rec_id, $org) = @_;
+    my $ctx = $self->ctx;
     
     my $search = OpenSRF::AppSession->create('open-ils.search');
     my $req1 = $search->request(
         'open-ils.search.biblio.record.copy_count', $org, $rec_id); 
 
+    # if org unit hiding applies, limit the hold count to holds
+    # whose pickup library is within our depth-scoped tree
+    my $count_args = {};
+    while ($org and $ctx->{org_within_hiding_scope}->($org)) {
+        $count_args->{pickup_lib_descendant} = $org;
+        $org = $ctx->{get_aou}->($org)->parent_ou;
+    }
+
     $self->ctx->{record_hold_count} = $U->simplereq(
-        'open-ils.circ', 'open-ils.circ.bre.holds.count', $rec_id);
+        'open-ils.circ', 'open-ils.circ.bre.holds.count', 
+        $rec_id, $count_args);
 
     $self->ctx->{copy_summary} = $req1->recv->content;
 

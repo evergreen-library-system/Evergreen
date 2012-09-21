@@ -19,6 +19,11 @@ BLOCK build_org_selector;
     IF !value;
         value = loc_value;
     END;
+
+    # if the selected org unit is out of hiding scope, 
+    # disable the ou-hide scoping altogether.
+    hiding_disabled = ctx.org_hiding_disabled(value);
+
     %]
 
     <select [% IF id %] id='[% id %]' [% END %] name='[% name %]'>
@@ -63,8 +68,11 @@ BLOCK build_org_selector;
 
             END;
 
-            # This org unit is not publicly visible (though its children may be).
+            # org is not publicly visible (though its children may be).
             NEXT UNLESS ctx.is_staff OR visible;
+            
+            # org is not within hiding scope (though its children may be).
+            NEXT UNLESS hiding_disabled OR ctx.org_within_hiding_scope(ou_id);
 
             node_value = ou_id;
             IF loc_grp;
