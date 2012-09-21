@@ -281,16 +281,10 @@
 
     # Get the library or location group
     # get_library()
+    # magically upgrades any use of 'loc' to 'locg', 
+    # which is a superset of 'loc'.
     BLOCK get_library;
-        IF !loc_name; 
-            loc_name = 'loc';
-            IF show_loc_groups; loc_name = 'locg'; END;
-        END;
-        IF !loc_value;
-            loc_value = CGI.param('loc') || ctx.search_ou;
-            IF show_loc_groups; 
-                loc_value = CGI.param('locg') || ctx.search_ou;
-            END;
-        END;
+        loc_name = 'locg';
+        loc_value = CGI.param(loc_name) || CGI.param('loc') || ctx.search_ou;
     END;
 %]
