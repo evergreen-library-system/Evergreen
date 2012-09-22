@@ -22,8 +22,6 @@ CREATE LANGUAGE plperlu;
 -- So we \set to a single variable, then use that single variable with \i
 \set load_file :contrib_dir/tablefunc.sql
 \i :load_file
-\set load_file :contrib_dir/tsearch2.sql
-\i :load_file
 \set load_file :contrib_dir/pgxml.sql
 \i :load_file
 \set load_file :contrib_dir/hstore.sql
