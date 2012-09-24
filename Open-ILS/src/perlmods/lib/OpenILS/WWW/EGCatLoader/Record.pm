@@ -441,10 +441,20 @@ sub added_content_stage1 {
         if ($key) {
             $logger->debug("tpac: starting added content request for $key => $type");
 
-            my $req = Net::HTTP::NB->new(Host => $self->apache->hostname);
+            # Net::HTTP::NB is non-blocking /after/ the initial connect()
+            # Passing Timeout=>1 ensures we wait no longer than 1 second to 
+            # connect to the local Evergreen instance (i.e. ourself).  
+            # Connecting to oneself should either be very fast (normal) 
+            # or very slow (routing problems).
+            my $req = Net::HTTP::NB->new(
+                Host => $self->apache->hostname,
+                Timeout => 1
+            );
 
             if (!$req) {
-                $logger->warn("Unable to fetch added content from " . $self->apache->hostname . ": $@");
+                $logger->warn("Unable to connect to " . 
+                    $self->apache->hostname . 
+                    " for added content lookup for $key: $@");
                 next;
             }
 
