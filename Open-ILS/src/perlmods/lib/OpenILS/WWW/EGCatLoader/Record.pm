@@ -433,6 +433,15 @@ sub added_content_stage1 {
     my $key = $self->get_ac_key($rec_id);
     ($key = $key->{value}) =~ s/^\s+//g if $key;
 
+    # Connect to this machine's IP address, using the same 
+    # Host with which our caller used to connect to us.
+    # This avoids us having to route out of the cluster 
+    # and back in to reach the top-level virtualhost.
+    my $ac_addr = $ENV{SERVER_ADDR};
+    my $ac_host = $self->apache->hostname;
+
+    $logger->info("tpac: added content connecting to $ac_addr / $ac_host");
+
     $ctx->{added_content} = {};
     for my $type (@$ac_types) {
         $ctx->{added_content}->{$type} = {content => ''};
@@ -446,14 +455,12 @@ sub added_content_stage1 {
             # connect to the local Evergreen instance (i.e. ourself).  
             # Connecting to oneself should either be very fast (normal) 
             # or very slow (routing problems).
-            my $req = Net::HTTP::NB->new(
-                Host => $self->apache->hostname,
-                Timeout => 1
-            );
+
+            my $req = Net::HTTP::NB->new(Host => $ac_addr, Timeout => 1);
+            $req->host($self->apache->hostname);
 
             if (!$req) {
-                $logger->warn("Unable to connect to " . 
-                    $self->apache->hostname . 
+                $logger->warn("Unable to connect to $ac_addr / $ac_host".
                     " for added content lookup for $key: $@");
                 next;
             }
