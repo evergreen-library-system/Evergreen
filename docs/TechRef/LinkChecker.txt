@@ -1,0 +1,113 @@
+URL Verification
+================
+
+Evergreen now has ability to verify URLs, which it is hoped, will be of
+particular benefit to locations with large electronic resource collections.  
+
+Overview
+--------
+
+In order to support verification of URLs, Evergreen now has several new
+capabilities, and extensions to some existing features.
+
+A wizard-style interface that walks a staff member through the process of collecting records and URLs to verify, verifying and reviewing the URLs.
+
+URL validation sessions are built as a whole to support immediate and
+future review of any URLs.  Each session carries a name, an owner, a set
+of record search criteria, a set of tag and subfield combinations describing
+the location of URLs to validate, a record container for tracking individual
+records to verify, and a set of state and data tables for managing the
+processing of individual URLs.
+
+A set of middle-layer methods provide the business logic required to collect
+records, extract, parse and test the validity of the URLs.
+
+Workflow
+--------
+
+URL verification and update are be performed as a series of coordinated phases.
+
+    * Phase 1 - Select or Create a session
+        ** Collect the owner and name of the session, providing appropriate defaults
+        ** Collect a set of saved and immediately-entered searches for the purpose of targeting records, and store a single derived search
+        ** Collect a set of tag and subfield combinations describing the locations of interest that contain URLs within records found by the above search. Store these as xpath.
+        ** Offer a "Process immediately" option to skip Phase 4 (not skip to Phase 4, but skip Phase 4 itself) -- See below for details.
+    * Phase 2 - Search for and collect records of interest
+        ** Create a new bib record container of type "url-validate" and link this to the session record created in Phase 1
+        ** Run the search, and store the full set of record IDs in the "url-validate" container
+    * Phase 3 - Extract URLs from collected records
+        ** Inspect each record that we just placed into the container, and use the tag/subfield XPath expressions to extract any URLs
+        ** Extract any relevant data and store
+            *** Container entry pointing to the record from which it came
+            *** Tag and subfield from which it came
+            *** The full content
+            *** Scheme
+            *** Host
+            *** Domain
+            *** TLD
+            *** Path
+            *** Page (last component of Path)
+            *** Query
+            *** Fragment
+    * Phase 4 - Search/Filter/Sort URLs
+        ** Skip this step if "Process immediately" was selected during session setup in Phase 1
+        ** Else, display an interface for selecting which URLs and records to process based on any component extracted and stored during Phase 3.
+    * Phase 5 - Validate Selected/All URLs
+        ** Accept a list of extracted URL IDs from the previous step, or if no filtering done, all URLs
+        ** For each unique URL in the set, make a HTTP HEAD request to test validity 
+            *** YAOUS for timeout value
+            *** YAOUS for sleep period between each URL test
+            *** For duplicated URLs, test only once and share the result across all instances
+            *** Avoid testing URLs having the same domain sequentially
+        ** Store HTTP response code
+        ** IFF 3XX (redirect) code is returned
+            *** Parse the new target URL, linking to the original
+            *** Repeat as necessary, up to a sanity limit on redirect depth (YAOUS)
+            *** Use a lookup table of hashes of URLs already redirected to (for the given original URL), to avoid loops
+    *  Phase 6 - Validation Status Report
+        ** Display a summary breakdown of HTTP statuses and overall completion
+        ** Offer an interface to Search/Filter/Sort URLs for inspection based on any component extracted and stored during Phase 3 as well as HTTP status of the originally extracted URL.  Included in this display should be the endpoint of any HTTP redirection the server requested.
+
+Development Breakdown
+---------------------
+
+    * Database -- The database has been augmented with new tables to store and process bibliographic records as they are collected for URL verification
+        ** Session state
+        ** Session configuration
+        ** Container type
+        ** URL data and state storage
+    * Middle Layer -- Several new API calls, culminating in a new OpenSRF service created to implement the required business logic.
+        ** Session and Configuration management
+        ** Session selection
+        ** Record discovery
+        ** Progress calculation
+    * User Interface -- Several new interface components have been created to drive the use of the new OpenSRF APIs
+        ** Session management
+        ** Configuration management
+        ** Extracted URL display (Search/Filter/Sort)
+        ** Summary status display
+
+User Interface
+--------------
+The user interface embodies the workflow section above.  Displays of URLs for verification and then post-verification review make use of openils.widget.FlattenerGrid.
+
+First Change to FlattenerFilterDialog
+-------------------------------------
+
+FlattenerFilterDialog has gained the ability to save a set of filter conditions via a Save button (optionally displayed) which calls a callback at onClick. 
+
+FlattenerFilterDialog now has a clean way to load a saved set of filter conditions (this part should be largely there already, see Trigger Event Log for similar).
+
+The mechanism to which this instance of FlattenerFilterDialog saves sets of conditions (and from which it will load them) uses a dialog that allows a user to choose sets of conditions to load and uses a DB table to store them in.
+
+Second Change to FlattenerFilterDialog
+--------------------------------------
+
+We also now support IN and NOT IN operators.  The operand widget is be the same as if for a typical unary operator (any of them but 'between') plus an adder (label probably '[+]') and a multiselect, the valueset of which is augmented with every click of the adder.
+
+Here's why this is needed.  Imagine needing to filter URLs in this way: say you want urls only from the "http" scheme and matching neither the domain example.com nor example.net.  If you did this with FlattenerFilterDialog today, the result of setting up three conditions as described above would be (scheme = 'http' and (domain <> 'example.com' or domain <> 'example.net')) which is effectively the same as having no filter on domain at all.
+
+It worked that way before because until now it was only designed for equalities, not inequalities (compare to the situation where your three conditions are scheme is http, domain IS either example.com, example.net).
+
+The multiselect scheme described above allows clauses in the WHERE constraint that look like (domain not in ('example.com','example.net')).
+
