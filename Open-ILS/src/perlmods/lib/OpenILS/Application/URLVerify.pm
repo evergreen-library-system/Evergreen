@@ -6,6 +6,7 @@ use base qw/OpenILS::Application/;
 use strict; use warnings;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenSRF::MultiSession;
+use OpenSRF::Utils::SettingsClient;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Application::AppUtils;
@@ -17,6 +18,18 @@ $Data::Dumper::Indent = 0;
 
 my $U = 'OpenILS::Application::AppUtils';
 
+my $user_agent_string;
+
+sub initialize {
+    my $conf = new OpenSRF::Utils::SettingsClient;
+
+    my @confpath = qw/apps open-ils.url_verify app_settings user_agent/;
+
+    $user_agent_string =
+        sprintf($conf->config_value(@confpath), __PACKAGE__->ils_version);
+
+    $logger->info("using '$user_agent_string' as User Agent string");
+}
 
 __PACKAGE__->register_method(
     method => 'verify_session',
@@ -562,7 +575,11 @@ sub verify_one_url {
 
     $ENV{FTP_PASSIVE} = 1; # TODO: setting?
 
-    my $ua = LWP::UserAgent->new(ssl_opts => {verify_hostname => 0}); # TODO: verify_hostname setting?
+    my $ua = LWP::UserAgent->new(
+        ssl_opts => {verify_hostname => 0}, # TODO: verify_hostname setting?
+        agent => $user_agent_string
+    );
+
     $ua->timeout($timeout);
 
     my $req = HTTP::Request->new(HEAD => $url->full_url);

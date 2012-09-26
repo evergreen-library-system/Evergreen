@@ -717,6 +717,7 @@ vim:et:ts=4:sw=4:
                     <max_spare_children>5</max_spare_children>
                 </unix_config>
                 <app_settings>
+                    <user_agent>Evergreen %s Link Checker</user_agent>
                 </app_settings>
             </open-ils.url_verify>
 
