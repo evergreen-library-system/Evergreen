@@ -342,6 +342,8 @@ util.print.prototype = {
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
             try{b = s; s = s.replace(/%STAFF_FIRSTNAME%/g,this.escape_html(params.staff.first_given_name()));}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+            try{b = s; s = s.replace(/%STAFF_MIDDLENAME%/g,this.escape_html(params.staff.second_given_name() || ''));}
+                catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
             try{b = s; s = s.replace(/%STAFF_LASTNAME%/g,this.escape_html(params.staff.family_name()));}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
             try{b = s; s = s.replace(/%STAFF_BARCODE%/g,this.escape_html(params.staff.barcode)); }
@@ -354,9 +356,15 @@ util.print.prototype = {
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
             try{b = s; s = s.replace(/%PATRON_FIRSTNAME%/g,this.escape_html(params.patron.first_given_name()));}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+            try{b = s; s = s.replace(/%PATRON_MIDDLENAME%/g,this.escape_html(params.patron.second_given_name() || ''));}
+                catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
             try{b = s; s = s.replace(/%PATRON_LASTNAME%/g,this.escape_html(params.patron.family_name()));}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
             try{b = s; s = s.replace(/%PATRON_BARCODE%/g,this.escape_html(typeof params.patron.card() == 'object' ? params.patron.card().barcode() : util.functional.find_id_object_in_list( params.patron.cards(), params.patron.card() ).barcode() )) ;}
+                catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+            try{b = s; s = s.replace(/%PATRON_EXPIRE_DATE%/g,this.escape_html(params.patron.expire_date()));}
+                catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+            try{b = s; s = s.replace(/%PATRON_EXPIRE_DATE_YMD%/g,util.date.formatted_date(params.patron.expire_date()), '%Y-%m-%d');}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 
             try{b = s; s=s.replace(/%TODAY%/g,(new Date()));}
