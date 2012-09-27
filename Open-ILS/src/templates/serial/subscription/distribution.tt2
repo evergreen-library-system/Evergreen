@@ -22,7 +22,6 @@
         fieldOrder="['subscription','label','holding_lib']"
         suppressFields="['record_entry','subscription','receive_call_number','bind_call_number','bind_unit_template']"
         suppressEditFields="['record_entry','receive_call_number','bind_call_number','bind_unit_template']"
-        requiredFields="['receive_unit_template']"
         onPostSubmit="attempt_reload_opac"
         fmClass="sdist"
         query="{id: '*'}"
