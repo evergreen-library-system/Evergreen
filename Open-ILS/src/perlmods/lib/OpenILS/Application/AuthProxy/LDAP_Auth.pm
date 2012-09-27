@@ -40,14 +40,14 @@ sub authenticate {
         $hostname_is_ldap = 1;
         if ( $ldap->bind( $authid, password => $authid_pass )->code == 0 ) {
             $reached_ldap = 1;
-            # verify username
-            if ( $ldap
-                ->search( base => $basedn, filter => "($id_attr=$username)" )
-                ->count != 0 ) {
+            # verify username and lookup user's DN
+            my $ldap_search = $ldap->search( base => $basedn,
+                                             filter => "($id_attr=$username)" );
+            if ( $ldap_search->count != 0 ) {
                 $user_in_ldap = 1;
 
                 # verify password (bind check)
-                my $binddn = "$id_attr=$username,$basedn";
+                my $binddn = $ldap_search->entry(0)->dn();
                 if ( $ldap->bind( $binddn, password => $password )
                     ->code == 0 ) {
                     $login_succeeded = 1;
