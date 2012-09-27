@@ -1,4 +1,7 @@
 --Upgrade Script for 2.2 to 2.3.0
+
+\set eg_version '''2.3.0'''
+
 BEGIN;
 INSERT INTO config.upgrade_log (version, applied_to) VALUES ('2.3.0', :eg_version);
 -- Evergreen DB patch 0703.tpac_value_maps.sql
