@@ -2,6 +2,20 @@
 
 \set eg_version '''2.3.0'''
 
+\qecho The following statement might fail, and that is okay; we are
+\qecho ensuring that an upgrade that should have been applied during
+\qecho the 2.2 upgrade is actually applied now.
+
+-- 0715.data.add_acq_config_group
+INSERT INTO config.settings_group (name, label) VALUES
+('acq', oils_i18n_gettext('config.settings_group.system', 'Acquisitions', 'coust', 'label'));
+
+UPDATE config.org_unit_setting_type
+    SET grp = 'acq'
+    WHERE name LIKE 'acq%';
+
+\qecho The real upgrade begins now.
+
 BEGIN;
 INSERT INTO config.upgrade_log (version, applied_to) VALUES ('2.3.0', :eg_version);
 -- Evergreen DB patch 0703.tpac_value_maps.sql
