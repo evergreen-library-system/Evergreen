@@ -1,4 +1,5 @@
 --Upgrade Script for 2.2.1 to 2.2.2
+\set eg_version '''2.2.2'''
 BEGIN;
 INSERT INTO config.upgrade_log (version, applied_to) VALUES ('2.2.2', :eg_version);
 

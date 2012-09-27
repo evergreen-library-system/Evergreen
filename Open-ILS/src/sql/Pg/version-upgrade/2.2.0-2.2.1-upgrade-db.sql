@@ -1,4 +1,5 @@
 --Upgrade Script for 2.2.0 to 2.2.1
+\set eg_version '''2.2.1'''
 BEGIN;
 INSERT INTO config.upgrade_log (version, applied_to) VALUES ('2.2.1', :eg_version);
 -- Evergreen DB patch 0722.schema.acq-po-state-constraint.sql
