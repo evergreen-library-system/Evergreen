@@ -520,6 +520,7 @@ __PACKAGE__->add_search_filter( 'superpage_size' );
 __PACKAGE__->add_search_filter( 'estimation_strategy' );
 __PACKAGE__->add_search_modifier( 'available' );
 __PACKAGE__->add_search_modifier( 'staff' );
+__PACKAGE__->add_search_modifier( 'lucky' );
 
 # Start from container data (bre, acn, acp): container(bre,bookbag,123,deadb33fdeadb33fdeadb33fdeadb33f)
 __PACKAGE__->add_search_filter( 'container' );
@@ -626,6 +627,7 @@ sub toSQL {
     $key = 'm.metarecord' if (grep {$_->name eq 'metarecord' or $_->name eq 'metabib'} @{$self->modifiers});
 
     my $core_limit = $self->QueryParser->core_limit || 25000;
+    $core_limit = 1 if($self->find_modifier('lucky'));
 
     my $flat_where = $$flat_plan{where};
     if ($flat_where ne '') {
