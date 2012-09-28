@@ -1,3 +1,9 @@
+dojo.require('dijit.form._FormWidget');
+
+/* scrollOnFocus is usually terrible, and causes lots of buttons and the like
+ * to require a second click. */
+dijit.form._FormWidget.prototype.scrollOnFocus = false;
+
 dojo.require('dijit.Dialog');
 dojo.require('dojo.cookie');
 dojo.require('fieldmapper.AutoIDL');  // make conditional.  TT variable sets JS var to enable/disable?
@@ -6,7 +12,6 @@ dojo.require('openils.CGI');
 dojo.require('openils.Event');
 dojo.require('openils.Util');
 dojo.require('openils.XUL');
-
 var cgi = new openils.CGI();
 
 function oilsSetupUser() {
