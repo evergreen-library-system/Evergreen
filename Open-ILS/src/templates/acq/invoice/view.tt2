@@ -44,11 +44,13 @@
         </div>
     </div>
 
+    <!--
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    -->
 
-        <div dojoType="dijit.layout.TabContainer" style="width: 96%; height: 100%;">
+        <div dojoType="dijit.layout.TabContainer" style="width: 96%; height: 100%;" doLayout='false'>
             <div dojoType="dijit.layout.ContentPane" 
-                class='oils-acq-detail-content-pane' title="Invoice" selected='true' style='height:600px'>
+                class='oils-acq-detail-content-pane' title="Invoice" selected='true'>
 
                 <script type='dojo/connect' event='onShow'>
                     // the table is left at display=none on subsequent tab views
@@ -302,7 +304,7 @@
                 </div>
             </div> <!-- tab 2 -->
         </div> <!-- end tabcontainer -->
-    </div> <!-- end contentpane -->
+    <!--</div>--> <!-- end contentpane -->
 </div>
 <div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'></div>
 <div jsId='extraItemsDialog' dojoType="dijit.Dialog" title="Extra Items">
