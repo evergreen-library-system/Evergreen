@@ -1,5 +1,6 @@
 Creating a New Skin: the Bare Minimum
 =====================================
+
 When you adopt the TPAC as your catalog, you must create a new skin. This
 involves a combination of overriding template files and setting Apache
 directives to control the look and feel of your customized TPAC.
