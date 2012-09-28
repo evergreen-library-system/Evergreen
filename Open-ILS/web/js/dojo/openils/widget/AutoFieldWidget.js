@@ -697,26 +697,74 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             this.widget = new dijit.form.FilteringSelect(this.dijitArgs, this.parentNode);
             this.widget.searchAttr = this.widget.labalAttr = 'name';
             this.widget.valueAttr = 'id';
-
-            if(this.cache.copyLocStore) {
-                this.widget.store = this.cache.copyLocStore;
-                this.widget.startup();
-                this.async = false;
-                return true;
-            } 
-
+            
             // my orgs
             var ws_ou = openils.User.user.ws_ou();
             var orgs = fieldmapper.aou.findOrgUnit(ws_ou).orgNodeTrail().map(function (i) { return i.id() });
             orgs = orgs.concat(fieldmapper.aou.descendantNodeList(ws_ou).map(function (i) { return i.id() }));
 
             var self = this;
-            new openils.PermaCrud().search('acpl', {owning_lib : orgs}, {
+            var search = {owning_lib : orgs};
+
+            if(this.cache.copyLocStore) {
+                var store = this.cache.copyLocStore;
+                var allGood = false;
+                var locIds = [];
+
+                // make sure the copy location the caller cares 
+                // about (our value) is present in the cache.
+                // if not, fetch the list, adding our value to
+                // the set of locations to fetch.
+
+                var allGood = false;
+                if (this.widgetValue) {
+                
+                    store.fetch({
+                        onComplete : function(list) {
+                            dojo.forEach(list, function(item) {
+                                var id = store.getValue(item, 'id');
+                                if (id == self.widgetValue)
+                                    allGood = true;
+                                locIds.push(id);
+                            });
+                        }
+                    });
+
+                } else {
+                    allGood = true;
+                }
+
+                if (allGood) {
+                    this.widget.store = this.cache.copyLocStore;
+                    this.widget.startup();
+                    this.async = false;
+                    return true;
+
+                } else {
+                    // cached IDs plus id of this.widgetValue;
+                    locIds.push(this.widgetValue);
+                    search = {id : locIds};
+                }
+            } 
+
+
+            new openils.PermaCrud().search('acpl', search, {
                 async : !this.forceSync,
                 order_by : {"acpl": "name"},
                 oncomplete : function(r) {
                     var list = openils.Util.readResponse(r, false, true);
                     if(!list) return;
+
+                    // if we are including any copy locations outside our org
+                    // unit scope, tag them with a context org unit to prevent
+                    // confusion caused by having multiple like-named entries
+                    dojo.forEach(list, function(loc) {
+                        if (orgs.indexOf(loc.owning_lib()) < 0) {
+                            loc.name(loc.name() + ' (' + 
+                                fieldmapper.aou.findOrgUnit(loc.owning_lib()).shortname() + ')');
+                        }
+                    });
+
                     self.widget.store = 
                         new self.storeConstructor({data:fieldmapper.acpl.toStoreData(list)});
                     self.cache.copyLocStore = self.widget.store;
