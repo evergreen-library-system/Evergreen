@@ -411,9 +411,17 @@ function addSelectedToInvoice() {
     doAttachLi(true);
 }
 
+allResSelected = false;
 function clearSearchResTable() {
+    allResSelected = false;
     while (resultsTbody.childNodes[0])
         resultsTbody.removeChild(resultsTbody.childNodes[0]);
+}
+
+function selectSearchResults() {
+    allResSelected = !allResSelected;
+    dojo.query('[name=search-results-checkbox]').forEach(
+        function(input) { input.checked = allResSelected });
 }
 
 function updateTotalCost() {
