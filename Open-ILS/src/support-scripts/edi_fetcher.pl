@@ -122,8 +122,7 @@ if (@ARGV) {
             $content,
             "localhost:" . File::Spec->rel2abs($_),
             OpenILS::Application::Acq::EDI->remote_account($acct),
-            $acct,
-            $e
+            $acct
         );
     }
     exit;

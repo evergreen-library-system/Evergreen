@@ -215,7 +215,6 @@ DEB_APACHE_DISMODS = \
 
 # Chronically unpackaged CPAN modules
 CPAN_MODULES = \
-	Business::EDI \
 	Business::OnlinePayment::PayPal \
 	Library::CallNumber::LC \
 	Net::Z3950::Simple2ZOOM \
