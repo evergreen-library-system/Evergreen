@@ -261,6 +261,9 @@
                             </td>
                         </tr></table>
                     </div> <!-- end search form -->
+                    <div style='border-bottom:1px solid #888;'>
+                        <input type='checkbox' onclick='selectSearchResults()'>&nbsp;[% l('Select All') %]</input>
+                    </div>
                     <div id='acq-unified-results-no_results'>
                         <b>[% l('No Results') %]</b>
                     </div>
