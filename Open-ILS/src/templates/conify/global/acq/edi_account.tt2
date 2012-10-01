@@ -41,6 +41,7 @@
         </table>
     </div>
     <div class="footer_notes">
+        <b>Host</b> is the full FTP/SSH hostname, including the protocol, e.g. ftp://ftp1.somevendor.com<br />  
         <b>Username</b>, <b>Password</b> and <b>Account</b> are (s)FTP/SSH parameters.<br />
         <b>Account</b> is unlikely to be used by modern systems and should typically be empty.<br />
         <b>Vendor Account Number</b> (VAN) is vendor-assigned, only needed if different than the org_unit SAN.<br />
