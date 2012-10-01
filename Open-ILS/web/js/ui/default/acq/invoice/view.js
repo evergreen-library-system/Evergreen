@@ -13,6 +13,7 @@ dojo.require('openils.widget.EditPane');
 dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('openils.widget.ProgressDialog');
 dojo.require('openils.acq.Lineitem');
+dojo.require('openils.XUL');
 
 dojo.requireLocalization('openils.acq', 'acq');
 var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
@@ -250,13 +251,29 @@ function doAttachPo(idx) {
     );
 }
 
+// XUL cookie bits
+var cookieUriSSL, cookieSvc, cookieMgr;
+
 function performSearch(pageDir, clearFirst) {
     if (clearFirst)
         clearSearchResTable(); 
 
     var searchObject = termManager.buildSearchObject();
-    dojo.cookie('invs', base64Encode(searchObject));
-    dojo.cookie('invc', dojo.byId("acq-unified-conjunction").getValue());
+
+    if (openils.XUL.isXUL()) {
+
+        cookieSvc.setCookieString(cookieUriSSL, null, 
+            "invs=" + base64Encode(searchObject) + ';max-age=2592000', null);
+
+        cookieSvc.setCookieString(cookieUriSSL, null, 
+            "invc=" + dojo.byId("acq-unified-conjunction").getValue() + 
+                ';max-age=2592000', null);
+
+    } else {
+
+        dojo.cookie('invs', base64Encode(searchObject));
+        dojo.cookie('invc', dojo.byId("acq-unified-conjunction").getValue());
+    }
 
     if (pageDir == 0) { // new search
         resultsLoader.displayOffset = 0;
@@ -339,12 +356,48 @@ function renderUnifiedSearch() {
         resultManager.no_results_popup = true;
         resultManager.submitter = smartSearchSubmitter;
 
-        var searchObject = dojo.cookie('invs');
-        console.log('loaded ' + searchObject);
+        var searchObject, searchConjunction;
+
+        if (openils.XUL.isXUL()) {
+    
+            if (!cookieSvc) {
+
+                var ios = Components.classes["@mozilla.org/network/io-service;1"]
+                    .getService(Components.interfaces.nsIIOService);
+
+                cookieUriSSL = ios.newURI("https://" + location.hostname, null, null);
+    
+                cookieSvc = Components.classes["@mozilla.org/cookieService;1"]
+                    .getService(Components.interfaces.nsICookieService);
+
+
+                cookieManager = Components.classes["@mozilla.org/cookiemanager;1"]
+                    .getService(Components.interfaces.nsICookieManager);
+            }
+
+            var iter = cookieManager.enumerator;
+            while (iter.hasMoreElements()) {
+                var cookie = iter.getNext();
+                if (cookie instanceof Components.interfaces.nsICookie) {
+                    if (cookie.name == 'invs')
+                        searchObject = cookie.value;
+                    if (cookie.name == 'invc')
+                        searchConjunction = cookie.value;
+                }
+            }
+
+        } else {
+            // useful for web-based testing
+            searchObject = dojo.cookie('invs');
+            searchConjunction = dojo.cookie('invc');
+        }
+
         if (searchObject) {
+
             // if there is a search object cookie, populate the search form
             termManager.reflect(base64Decode(searchObject));
-            dojo.byId("acq-unified-conjunction").setValue(dojo.cookie('invc'));
+            dojo.byId("acq-unified-conjunction").setValue(searchConjunction);
+
         } else {
             console.log('adding row');
             termManager.addRow();
