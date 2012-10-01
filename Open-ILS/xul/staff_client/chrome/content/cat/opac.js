@@ -616,6 +616,16 @@ function set_opac() {
         } else {
             content_params.url = xulG.url_prefix( 'browser', secure_opac );
         }
+        if (g.data.adv_pane) {
+            // For fun, we can have no extra params, extra params with &, or extra params with ;.
+            if (content_params.url.indexOf('?') < 0)
+                content_params.url += '?';
+            else if (content_params.url.indexOf('&') >= 0)
+                content_params.url += '&';
+            else
+                content_params.url += ';';
+            content_params.url += 'pane=' + g.data.adv_pane;
+        }
         browser_frame = bottom_pane.set_iframe( xulG.url_prefix('XUL_BROWSER?name=Catalog'), {}, content_params);
         /* // Remember to use the REMOTE_BROWSER if we ever try to move this to remote xul again
         browser_frame = bottom_pane.set_iframe( xulG.url_prefix('XUL_REMOTE_BROWSER?name=Catalog'), {}, content_params);

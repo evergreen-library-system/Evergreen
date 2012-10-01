@@ -26,25 +26,37 @@
         var g = {};
         var search_lib_box;
         var pref_lib_box;
+        var adv_pane_box;
         var prefSvc;
         var data;
         var saved_message;
+        var cleared_message;
         function my_init() {
             JSAN.use('OpenILS.data');
             data = new OpenILS.data();
             data.init({'via':'stash'});
             search_lib_box = document.getElementById('search_lib');
             pref_lib_box = document.getElementById('pref_lib');
+            adv_pane_box = document.getElementById('adv_pane');
             // NOTE: If this ever deals with custom trees, this is where you likely want to mess with things.
             add_aou(data.tree.aou, '');
             prefSvc = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch).QueryInterface(Components.interfaces.nsIPrefBranch2);
             saved_message = document.getElementById('saved_message').textContent;
+            cleared_message = document.getElementById('cleared_message').textContent;
             if (data.search_lib) {
                 search_lib_box.value = data.search_lib;
-                pref_lib_box.value = data.pref_lib;
             } else {
                 search_lib_box.selectedIndex = 0;
+            }
+            if (data.pref_lib) {
+                pref_lib_box.value = data.pref_lib;
+            } else {
                 pref_lib_box.selectedIndex = 0;;
+            }
+            if (data.adv_pane) {
+                adv_pane_box.value = data.adv_pane;
+            } else {
+                adv_pane_box.selectedIndex = 0;
             }
         }
         function add_aou(aou, depth) {
@@ -56,16 +68,32 @@
         function update_prefs() {
             prefSvc.setIntPref('open-ils.' + data.server_unadorned + '.search_lib', search_lib_box.value);
             prefSvc.setIntPref('open-ils.' + data.server_unadorned + '.pref_lib', pref_lib_box.value);
+            prefSvc.setCharPref('open-ils.' + data.server_unadorned + '.adv_pane', adv_pane_box.value);
             data.search_lib = search_lib_box.value;
             data.pref_lib = pref_lib_box.value;
+            data.adv_pane = adv_pane_box.value;
             data.stash('search_lib');
             data.stash('pref_lib');
+            data.stash('adv_pane');
             alert(saved_message);
+        }
+        function clear_prefs() {
+            prefSvc.clearUserPref('open-ils.' + data.server_unadorned + '.search_lib');
+            prefSvc.clearUserPref('open-ils.' + data.server_unadorned + '.pref_lib');
+            prefSvc.clearUserPref('open-ils.' + data.server_unadorned + '.adv_pane');
+            data.search_lib = null;
+            data.pref_lib = null;
+            data.adv_pane = null;
+            data.stash('search_lib');
+            data.stash('pref_lib');
+            data.stash('adv_pane');
+            alert(cleared_message);
         }
     ]]>
     </script>
     <commandset id="search_prefs_cmds">
         <command id="save_search_prefs" oncommand="update_prefs()" />
+        <command id="clear_search_prefs" oncommand="clear_prefs()" />
     </commandset>
     <vbox id="search_prefs_main">
         <groupbox>
@@ -84,7 +112,20 @@
                 </menupopup>
             </menulist>
         </groupbox>
+        <groupbox>
+            <caption label="&staff.search_prefs.adv_pane.caption;"/>
+            <description>&staff.search_prefs.adv_pane.description;</description>
+            <menulist id="adv_pane">
+                <menupopup>
+                    <menuitem label="&staff.search_prefs.adv_pane.advanced;" value="advanced" />
+                    <menuitem label="&staff.search_prefs.adv_pane.numeric;" value="numeric" />
+                    <menuitem label="&staff.search_prefs.adv_pane.expert;" value="expert" />
+                </menupopup>
+            </menulist>
+        </groupbox>
         <button id="save_button" command="save_search_prefs" label="&staff.search_prefs.save.label;" accesskey="&staff.search_prefs.save.accesskey;"/>
+        <button id="clear_button" command="clear_search_prefs" label="&staff.search_prefs.clear.label;" accesskey="&staff.search_prefs.clear.accesskey;"/>
     </vbox>
     <description id="saved_message" style="display:none">&staff.search_prefs.saved_message;</description>
+    <description id="cleared_message" style="display:none">&staff.search_prefs.cleared_message;</description>
 </window>
