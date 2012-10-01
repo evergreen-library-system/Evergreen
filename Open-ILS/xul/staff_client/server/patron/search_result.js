@@ -37,7 +37,7 @@ patron.search_result.prototype = {
 
         JSAN.use('patron.util');
         var columns = obj.list.fm_columns('au',{
-            '*' : { 'remove_virtual' : true, 'expanded_label' : false, 'hidden' : true },
+            '*' : { 'remove_virtual' : true, 'expanded_label' : false, 'hidden' : true, 'sort_headers' : true },
             'au_barcode' : { 'hidden' : false },
             'au_barred' : { 'hidden' : false },
             'au_family_name' : { 'hidden' : false },
@@ -47,6 +47,8 @@ patron.search_result.prototype = {
             'au_profile' : { 'fleshed_display_field' : 'name' },
             'au_ident_type' : { 'fleshed_display_field' : 'name' },
             'au_ident_type2' : { 'fleshed_display_field' : 'name' },
+            'au_mailing_address' : { 'remove_me' : true },
+            'au_billing_address' : { 'remove_me' : true },
             'au_net_access_level' : { 'fleshed_display_field' : 'name' }
         }).concat(
             obj.list.fm_columns('ac',{
