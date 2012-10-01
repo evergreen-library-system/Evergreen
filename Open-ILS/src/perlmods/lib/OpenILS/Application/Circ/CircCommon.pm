@@ -72,6 +72,35 @@ sub void_overdues {
     return undef;
 }
 
+# ------------------------------------------------------------------
+# remove charge from patron's account if lost item is returned
+# ------------------------------------------------------------------
+sub void_lost {
+    my ($class, $e, $circ, $btype) = @_;
+
+    my $bills = $e->search_money_billing(
+        {
+            xact => $circ->id,
+            btype => $btype
+        }
+    );
+
+    $logger->debug("voiding lost item charge of  ".scalar(@$bills));
+    for my $bill (@$bills) {
+        if( !$U->is_true($bill->voided) ) {
+            $logger->info("lost item returned - voiding bill ".$bill->id);
+            $bill->voided('t');
+            $bill->void_time('now');
+            $bill->voider($e->requestor->id);
+            my $note = ($bill->note) ? $bill->note . "\n" : '';
+            $bill->note("${note}System: VOIDED FOR LOST ITEM RETURNED");
+
+            return $e->die_event
+                unless $e->update_money_billing($bill);
+        }
+    }
+    return undef;
+}
 
 sub reopen_xact {
     my($class, $e, $xactid) = @_;

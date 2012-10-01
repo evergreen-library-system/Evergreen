@@ -475,6 +475,17 @@ sub set_circ_claims_returned {
         $e->update_asset_copy($copy) or return $e->die_event;
     }
 
+    # Check if the copy circ lib wants lost fees voided on claims
+    # returned.
+    if ($U->is_true($U->ou_ancestor_setting_value($copy->circ_lib, 'circ.void_lost_on_claimsreturned', $e))) {
+        my $result = OpenILS::Application::Circ::CircCommon->void_lost(
+            $e,
+            $circ,
+            3
+        );
+        return $result if ($result);
+    }
+
     $e->commit;
     return 1;
 }

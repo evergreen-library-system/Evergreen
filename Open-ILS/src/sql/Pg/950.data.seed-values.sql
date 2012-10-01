@@ -14134,5 +14134,15 @@ INSERT INTO config.global_flag (name, label, value, enabled) VALUES (
     TRUE
 );
 
-
-
+INSERT INTO config.org_unit_setting_type
+    (name, grp, label, description, datatype)
+    VALUES
+        ('circ.void_lost_on_claimsreturned',
+         'circ',
+         oils_i18n_gettext('circ.void_lost_on_claimsreturned',
+             'Void lost item billing when claims returned',
+             'coust', 'label'),
+         oils_i18n_gettext('circ.void_lost_on_claimsreturned',
+             'Void lost item billing when claims returned',
+             'coust', 'description'),
+         'bool');
