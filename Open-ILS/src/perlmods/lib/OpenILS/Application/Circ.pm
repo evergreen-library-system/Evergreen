@@ -486,6 +486,17 @@ sub set_circ_claims_returned {
         return $result if ($result);
     }
 
+    # Check if the copy circ lib wants lost processing fees voided on
+    # claims returned.
+    if ($U->is_true($U->ou_ancestor_setting_value($copy->circ_lib, 'circ.void_lost_proc_fee_on_claimsreturned', $e))) {
+        my $result = OpenILS::Application::Circ::CircCommon->void_lost(
+            $e,
+            $circ,
+            4
+        );
+        return $result if ($result);
+    }
+
     $e->commit;
     return 1;
 }

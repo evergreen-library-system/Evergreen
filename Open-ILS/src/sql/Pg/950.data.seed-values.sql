@@ -14145,4 +14145,13 @@ INSERT INTO config.org_unit_setting_type
          oils_i18n_gettext('circ.void_lost_on_claimsreturned',
              'Void lost item billing when claims returned',
              'coust', 'description'),
+         'bool'),
+        ('circ.void_lost_proc_fee_on_claimsreturned',
+         'circ',
+         oils_i18n_gettext('circ.void_lost_proc_fee_on_claimsreturned',
+             'Void lost item processing fee when claims returned',
+             'coust', 'label'),
+         oils_i18n_gettext('circ.void_lost_proc_fee_on_claimsreturned',
+             'Void lost item processing fee when claims returned',
+             'coust', 'description'),
          'bool');

@@ -95,7 +95,7 @@ sub void_lost {
             my $note = ($bill->note) ? $bill->note . "\n" : '';
             $bill->note("${note}System: VOIDED FOR LOST ITEM RETURNED");
 
-            return $e->die_event
+            return $e->event
                 unless $e->update_money_billing($bill);
         }
     }
