@@ -1022,6 +1022,134 @@ function storeExtraCopies(entry, numExtra) {
     extraItemsDialog.show();
 }
 
+function validateInvIdent(inv_ident, provider, receiver) {
+    if (!(inv_ident && provider && receiver)) {
+        console.info("not enough information to pre-validate inv_ident");
+        return;
+    }
+
+    openils.Util.show("ident-validation-spinner", "inline");
+    var pcrud = new openils.PermaCrud();
+    pcrud.search(
+        "acqinv", {"inv_ident": inv_ident, "provider": provider}, {
+            "oncomplete": function(r) {
+                openils.Util.hide("ident-validation-spinner");
+
+                /* This could throw an event about the user not having perms,
+                 * but in such a case the whole interface is already busted
+                 * anyway. */
+                r = openils.Util.readResponse(r);
+
+                var w = invoicePane.getFieldWidget("inv_ident").widget;
+                if (r.length) {
+                    alert(localeStrings.INVOICE_IDENT_COLLIDE);
+                    w.validator = function() { return false; };
+                    w.validate();
+                } else {
+                    w.validator = function() { return true; };
+                    w.validate();
+                }
+                w.focus();
+                pcrud.disconnect();
+            }
+        }
+    );
+}
+
+function drawInvoicePane(parentNode, inv, args) {
+    args = args || {};
+    var pane;
+
+    var override = {};
+    if(!inv) {
+        override = {
+            recv_date : {widgetValue : dojo.date.stamp.toISOString(new Date())},
+            //receiver : {widgetValue : openils.User.user.ws_ou()},
+            receiver : {
+                "dijitArgs": {
+                    "onChange": function(val) {
+                        validateInvIdent(
+                            invoicePane && invoicePane.getFieldValue("inv_ident"),
+                            invoicePane && invoicePane.getFieldValue("provider"),
+                            val
+                        );
+                    }
+                }
+            },
+            recv_method : {widgetValue : 'PPR'}
+        };
+    }
+
+    dojo.mixin(override, {
+        provider : { 
+            dijitArgs : { 
+                store_options : { base_filter : { active :"t" } },
+                onChange : function(val) {
+                    pane.setFieldValue('shipper', val);
+                    validateInvIdent(
+                        invoicePane && invoicePane.getFieldValue("inv_ident"),
+                        val,
+                        invoicePane && invoicePane.getFieldValue("receiver")
+                    );
+                }
+            } 
+        },
+        shipper  : { dijitArgs : { store_options : { base_filter : { active :"t" } } } }
+    });
+
+    for(var field in args) {
+        override[field] = {widgetValue : args[field]};
+    }
+
+    // push the name of the invoice into the name display field after update
+    override.inv_ident = dojo.mixin(
+        override.inv_ident,
+        {dijitArgs : {onChange :
+            function(newVal) {
+                validateInvIdent(
+                    newVal,
+                    invoicePane && invoicePane.getFieldValue("provider"),
+                    invoicePane && invoicePane.getFieldValue("receiver")
+                );
+
+                if (dojo.byId('acq-invoice-summary-name'))
+                    dojo.byId('acq-invoice-summary-name').innerHTML = newVal;
+            }
+        }}
+    );
+
+
+    pane = new openils.widget.EditPane({
+        fmObject : inv,
+        paneStackCount : 2,
+        fmClass : 'acqinv',
+        mode : (inv) ? 'edit' : 'create',
+        hideActionButtons : true,
+        overrideWidgetArgs : override,
+        readOnly : (inv) && openils.Util.isTrue(inv.complete()),
+        requiredFields : [
+            'inv_ident', 
+            'recv_date', 
+            'provider', 
+            'shipper'
+        ],
+        fieldOrder : [
+            'inv_ident', 
+            'recv_date', 
+            'recv_method', 
+            'inv_type', 
+            'provider', 
+            'shipper'
+        ],
+        suppressFields : ['id', 'complete']
+    });
+
+    pane.startup();
+    parentNode.appendChild(pane.domNode);
+    return pane;
+}
+
+
 function createExtraCopies(oncomplete) {
 
     var lids = [];

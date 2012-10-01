@@ -237,6 +237,12 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 }
             },
 
+            getFieldWidget : function(field) {
+                for (var i in this.fieldList)
+                    if (field == this.fieldList[i].name)
+                        return this.fieldList[i].widget;
+            },
+
             setFieldValue : function(field, val) {
                 for(var i in this.fieldList) {
                     if(field == this.fieldList[i].name) {

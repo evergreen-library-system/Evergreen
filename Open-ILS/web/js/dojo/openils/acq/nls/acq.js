@@ -86,5 +86,6 @@
     "INVOICE_NUMBER": "Invoice #${0}",
     "COPIES_TO_RECEIVE": "Number of copies to receive: ",
     "CREATE_PO_INVALID": "A purchase order must have an ordering agency and a provider.",
-    "INVOICE_COPY_COUNT_INFO": "Copies received on this invoice: ${0} out of ${1}."
+    "INVOICE_COPY_COUNT_INFO": "Copies received on this invoice: ${0} out of ${1}.",
+    "INVOICE_IDENT_COLLIDE": "There is already an invoice in the system with the given combination of 'Vendor Invoice ID' and 'Provider,' which is not allowed."
 }

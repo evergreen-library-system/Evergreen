@@ -34,6 +34,7 @@
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
         <div id='acq-invoice-summary'>
             <button id='acq-invoice-summary-toggle-off'>[% l('Hide Details') %]</button>
+            <span class="hidden" id="ident-validation-spinner"><img src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif" style="height: 16px; width: 16px" /></span>
             <div id='acq-view-invoice-div'></div>
         </div>
         <div id='acq-invoice-summary-small'>
@@ -326,6 +327,5 @@
 </script>
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/common/base64.js"></script>
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/search/unified.js"></script>
-<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/invoice/common.js'> </script>
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/invoice/view.js'> </script>
 [% END %]
