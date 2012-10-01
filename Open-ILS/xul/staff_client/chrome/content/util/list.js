@@ -2059,6 +2059,7 @@ util.list.prototype = {
         var obj = this;
         var columns = [];
         if (!prefix) { prefix = ''; }
+        var sort_headers = false;
         try {
             // requires the dojo library fieldmapper.autoIDL
             if (typeof fieldmapper == 'undefined') { throw 'fieldmapper undefined'; }
@@ -2164,6 +2165,9 @@ util.list.prototype = {
                                 def.remove_me = true;
                             }
                         }
+                        if (column_extras['*']['sort_headers']) {
+                            sort_headers = true;
+                        }
                     }
                     if (column_extras[col_id]) {
                         for (var attr in column_extras[col_id]) {
@@ -2171,6 +2175,9 @@ util.list.prototype = {
                         }
                         if (column_extras[col_id]['keep_me']) {
                             def.remove_me = false;
+                        }
+                        if (column_extras[col_id]['remove_me']) {
+                            def.remove_me = true;
                         }
                         if (column_extras[col_id]['label_prefix']) {
                             def.label = column_extras[col_id]['label_prefix'] + def.label;
@@ -2192,6 +2199,16 @@ util.list.prototype = {
                 if (def) {
                     columns.push( def );
                 }
+            }
+
+            if (sort_headers) {
+                columns.sort(
+                    function(a,b) {
+                        if (a.label > b.label) { return 1; }
+                        if (a.label < b.label) { return -1; }
+                        return 0;
+                    }
+                );
             }
 
         } catch(E) {
