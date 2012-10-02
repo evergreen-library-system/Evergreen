@@ -338,6 +338,12 @@ $_TT_helpers = {
         };
         my $carriers = new_editor()->json_query($query);
 
+        # If this looks like a pretty-formatted number drop the pretty-formatting
+        # Otherwise assume it may be a literal alias instead of a real number
+        if ($sms_notify =~ m/^[- ()0-9]*$/) {
+            $sms_notify =~ s/[- ()]//g;
+        }
+
         my @addresses = ();
         foreach my $carrier ( @{ $carriers } ) {
             my $address = $carrier->{email_gateway};
