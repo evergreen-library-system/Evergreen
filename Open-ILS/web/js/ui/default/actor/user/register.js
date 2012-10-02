@@ -672,6 +672,14 @@ function uEditFetchUserSettings(userId) {
         userSettings = fieldmapper.standardRequest(
             ['open-ils.actor', 'open-ils.actor.patron.settings.retrieve.authoritative'],
             {params : [openils.User.authtoken, userId, names]});
+    } else {
+        // Defaults!
+        userSettingTypes.forEach(function(setting, index, array) {
+            if(setting.reg_default() != undefined) {
+                userSettings[setting.name()] = setting.reg_default();
+                userSettingsToUpdate[setting.name()] = setting.reg_default();
+            }
+        });
     }
 }
 

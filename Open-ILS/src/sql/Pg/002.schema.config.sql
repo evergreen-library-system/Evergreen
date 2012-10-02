@@ -614,6 +614,7 @@ CREATE TABLE config.usr_setting_type (
     grp             TEXT    REFERENCES config.settings_group (name),
     datatype TEXT NOT NULL DEFAULT 'string',
     fm_class TEXT,
+    reg_default TEXT,
 
     --
     -- define valid datatypes
