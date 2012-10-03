@@ -626,6 +626,13 @@ patron.display.prototype = {
                 try { window.xulG.set_tab_name($("patronStrings").getString('staff.patron.display.init.retrieving_patron')); } catch(E) { alert(E); }
             }
 
+            var displayClickies = document.getElementById("pdm2hb1a").getElementsByTagName("label");
+            for (var i = 0; i < displayClickies.length; i++) {
+                if (displayClickies[i].getAttribute('command')) {
+                    displayClickies[i].setAttribute('onclick', 'this.doCommand();');
+                }
+            }
+
             obj.controller.view.PatronNavBar.selectedIndex = 1;
             JSAN.use('util.widgets'); 
             util.widgets.enable_accesskeys_in_node_and_children(
