@@ -748,7 +748,7 @@ circ.checkout.prototype = {
                 if (test_event(permit,1202 /* ITEM_NOT_CATALOGED */)) {
 
                     if ( 1 == obj.error.yns_alert(
-                        document.getElementById('circStrings').getString('staff.circ.checkout.not_cataloged.confirm'),
+                        document.getElementById('circStrings').getFormattedString('staff.circ.checkout.not_cataloged.confirm', [params.barcode]),
                         document.getElementById('circStrings').getString('staff.circ.alert'),
                         document.getElementById('circStrings').getString('staff.circ.cancel'),
                         document.getElementById('circStrings').getString('staff.circ.pre_cataloged'),
