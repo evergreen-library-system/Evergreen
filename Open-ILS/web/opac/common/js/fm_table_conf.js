@@ -98,7 +98,8 @@ var FM_TABLE_DISPLAY = {
 			'recur',
 			'recurrence',
 			'owner',
-		]
+		],
+		sortdata : [ 'name', 1 ]
 	},
 	'rt' : {
 		name : 'name',
@@ -107,7 +108,8 @@ var FM_TABLE_DISPLAY = {
 			'description',
 			'create_time',
 			'owner',
-		]
+		],
+		sortdata : [ 'name', 1 ]
 	},
 	'rs' : {
 		fields : [
@@ -124,6 +126,7 @@ var FM_TABLE_DISPLAY = {
 		],
 		bold : [
 			'error_text',
-		]
+		],
+		sortdata : [ 'run_time', -1 ]
 	}
 }

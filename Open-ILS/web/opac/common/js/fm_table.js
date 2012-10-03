@@ -106,6 +106,19 @@ FMObjectBuilder.prototype.build = function() {
 
 		for( var i = 0; i < this.keys.length; i++ ) 
 			this.thead_tr.appendChild(elem('td',null,this.keys[i]));
+
+		if ( this.sortdata ) {
+			var sortdata = this.sortdata;
+			this.obj.sort(function(a, b){
+				var ret = 1;
+				var left = a[sortdata[0]]().toLowerCase();
+				var right = b[sortdata[0]]().toLowerCase();
+				if (left == right) return 0;
+				if (left < right)
+					ret = -1;
+				return ret * sortdata[1];
+			});
+		}
 	
 		for( var i = 0; i < this.obj.length; i++ ) 
 			this.buildObjectRow(this.obj[i]);
@@ -137,6 +150,7 @@ FMObjectBuilder.prototype.setKeys = function(o) {
 		this.keys = this.display[o.classname].fields;
 		this.bold = this.display[o.classname].bold;
 		this.money = this.display[o.classname].money;
+		this.sortdata = this.display[o.classname].sortdata;
 	}
 
 	if(!this.keys && FM_TABLE_DISPLAY[o.classname])
@@ -147,6 +161,9 @@ FMObjectBuilder.prototype.setKeys = function(o) {
 
 	if(!this.money && FM_TABLE_DISPLAY[o.classname])
 		this.money = FM_TABLE_DISPLAY[o.classname].money;
+
+	if(!this.sortdata && FM_TABLE_DISPLAY[o.classname])
+		this.sortdata = FM_TABLE_DISPLAY[o.classname].sortdata;
 
 	if(!this.keys) {
 		this.keys = fmclasses[o.classname];
