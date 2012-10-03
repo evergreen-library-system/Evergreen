@@ -523,6 +523,14 @@ oilsRptRemoteWidget.prototype.draw = function() {
 }
 
 oilsRptRemoteWidget.prototype.render = function(objs) {
+	var selector = this.field.selector;
+	objs.sort(
+		function(a,b){
+			if (a[selector]() > b[selector]())
+				return 1;
+			else
+				return -1;
+		});
 	for( var i = 0; i < objs.length; i++ ) {
 		var obj = objs[i];
 		var label = obj[this.field.selector]();
