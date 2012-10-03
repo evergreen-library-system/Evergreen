@@ -1770,9 +1770,12 @@ sub load_myopac_bookbags {
     # or "See all" popmenu items.
     if (my $add_rec = $self->cgi->param('add_rec')) {
         $self->ctx->{add_rec} = $add_rec;
-        $self->ctx->{where_from} = $self->ctx->{referer};
-        if ( my $anchor = $self->cgi->param('anchor') ) {
-            $self->ctx->{where_from} =~ s/#.*|$/#$anchor/;
+        # But not in the staff client, 'cause that breaks things.
+        unless ($self->ctx->{is_staff}) {
+            $self->ctx->{where_from} = $self->ctx->{referer};
+            if ( my $anchor = $self->cgi->param('anchor') ) {
+                $self->ctx->{where_from} =~ s/#.*|$/#$anchor/;
+            }
         }
     }
 
@@ -1915,7 +1918,7 @@ sub load_myopac_bookbag_update {
             last unless $success;
         }
         # Redirect back where we came from if we have an anchor parameter:
-        if ( my $anchor = $cgi->param('anchor') ) {
+        if ( my $anchor = $cgi->param('anchor') && !$self->ctx->{is_staff}) {
             $url = $self->ctx->{referer};
             $url =~ s/#.*|$/#$anchor/;
         } elsif ($cgi->param('where_from')) {

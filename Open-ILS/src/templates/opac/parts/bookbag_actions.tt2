@@ -2,6 +2,16 @@
     dsetting = "opac.default_list";
     tclass = "temporary divider";
 
+    # Wrap a url to open in a new tab in staff client.
+    MACRO opac_wrap(url) BLOCK;
+    	  IF ctx.is_staff;
+              # void(0) to return false and not go to new page in current tab.
+              "javascript:xulG.new_tab(xulG.urls.XUL_OPAC_WRAPPER, {}, {'opac_url' : 'oils://remote" _ url _ "'});void(0);";
+          ELSE;
+              url;
+          END;
+    END;
+
     IF rec.id;
         # Results table context
         ctx.bre_id = rec.id;
@@ -20,9 +30,9 @@
         tclass = "temporary";
     END;
 
-    href = mkurl(ctx.opac_root _ '/mylist/add', {
+    href = opac_wrap(mkurl(ctx.opac_root _ '/mylist/add', {
         record => ctx.bre_id, anchor => rec_anchor
-    }, stop_parms);
+    }, stop_parms));
 %]
 <ul class="popmenu">
     <li><a href="#" class="no-dec">
@@ -36,20 +46,20 @@
     [% IF default_list;
        label = (ctx.default_bookbag) ? ctx.default_bookbag : l('Default List');
        class = (ctx.bookbags.size) ? "default divider" : "default";
-       href = mkurl(ctx.opac_root _ '/myopac/list/update', {
+       href = opac_wrap(mkurl(ctx.opac_root _ '/myopac/list/update', {
             action => 'add_rec', list => default_list,
             record => ctx.bre_id, anchor => rec_anchor
-        }, stop_parms);
+        }, stop_parms));
     %]
     <li class="[% class %]"><a href="[% href %]">[% label %]</a></li>
     [% END %]
     [% IF ctx.bookbags.size;
        i = 0;
        FOREACH bag IN ctx.bookbags;
-           href = mkurl(ctx.opac_root _ '/myopac/list/update', {
+           href = opac_wrap(mkurl(ctx.opac_root _ '/myopac/list/update', {
                 action => 'add_rec', list => bag.id, record => ctx.bre_id,
                 anchor => rec_anchor
-           }, stop_parms);
+           }, stop_parms));
            i = i + 1;
            IF i == ctx.bookbags.size;
     %]
@@ -64,17 +74,17 @@
        END
     %]
     <li>
-        <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {
+        <a href="[% opac_wrap(mkurl(ctx.opac_root _ '/myopac/lists', {
             limit => ctx.bookbag_count, add_rec => ctx.bre_id,
             anchor => rec_anchor
-        }) %]">
+        })) %]">
         [% l('See All') %]
         </a>
     </li>
     <li class="new">
-    <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {
+    <a href="[% opac_wrap(mkurl(ctx.opac_root _ '/myopac/lists', {
         add_rec => ctx.bre_id, anchor => rec_anchor
-    }, stop_parms) %]">
+    }, stop_parms)) %]">
     [% l('Add to new list') %]
     </a>
     </li>
