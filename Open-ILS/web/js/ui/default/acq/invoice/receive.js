@@ -265,28 +265,38 @@ function ReceivableCopyTable() {
             this._set_invoice_header();
         }
 
-        this.pcrud.search("acqie", {"invoice": this.inv_id}).forEach(
+        var entries = this.pcrud.search("acqie", {"invoice": this.inv_id});
+        var fetched = 0;
+        var self = this;
+
+        entries.forEach(
             function(entry) {
                 if (entry.lineitem()) {
                     openils.acq.Lineitem.fetchAndRender(
                         entry.lineitem(),
                         {"flesh_li_details": true, "flesh_notes": true},
-                        function(li, str) { self.add_lineitem(entry, li, str); }
+                        function(li, str) { 
+                            self.add_lineitem(entry, li, str); 
+
+                            fetched++;
+                            if (fetched == entries.length) {
+                                self._render_copy_count_info();
+
+                                if (openils.Util.objectProperties(self.li_by_lid).length) {
+                                    openils.Util.show("non-empty");
+                                    openils.Util.hide("empty");
+                                } else {
+                                    openils.Util.hide("non-empty");
+                                    openils.Util.show("empty");
+                                }
+
+                                progress_dialog.hide();
+                            }
+                        }
                     );
                 }
             }
         );
-
-        this._render_copy_count_info();
-
-        if (openils.Util.objectProperties(this.li_by_lid).length) {
-            openils.Util.show("non-empty");
-            openils.Util.hide("empty");
-        } else {
-            openils.Util.hide("non-empty");
-            openils.Util.show("empty");
-        }
-        progress_dialog.hide();
     };
 
     /* returns an array of lineitem_detail IDs */
