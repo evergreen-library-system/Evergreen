@@ -2056,7 +2056,7 @@ sub fetch_captured_holds {
             }
         },
         where => {
-            '+acp' => { status => OILS_COPY_STATUS_ON_HOLDS_SHELF },
+            '+acp' => { status => OILS_COPY_STATUS_ON_HOLDS_SHELF, deleted => 'f' },
             '+alhr' => {
                 capture_time      => { "!=" => undef },
                 current_copy      => $current_copy,
