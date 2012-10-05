@@ -175,7 +175,7 @@ function TermSelectorFactory(terms) {
                 dojo.connect(wStore[widgetKey], 'onkeyup',
                     function(e) {
                         if(e.keyCode == dojo.keys.ENTER) {
-                            resultManager.go(termManager.buildSearchObject());
+                            resultManager.submitter();
                         }
                     }
                 );
@@ -204,7 +204,7 @@ function TermSelectorFactory(terms) {
                         dojo.connect(w.domNode, 'onkeyup',
                             function(e) {
                                 if(e.keyCode == dojo.keys.ENTER) {
-                                    resultManager.go(termManager.buildSearchObject());
+                                    resultManager.submitter();
                                 }
                             }
                         );
@@ -807,8 +807,12 @@ function ResultManager(liPager, poGrid, plGrid, invGrid) {
                 this.liPager.focusLi();
         }
 
-        if (!this.count_results)
-            this.show("no_results");
+        if (!this.count_results) {
+            if (this.no_results_popup)
+                alert(localeStrings.NO_RESULTS);
+            else
+                this.show("no_results");
+        }
         else this.finish(this.result_type);
     };
 
@@ -978,6 +982,10 @@ openils.Util.addOnLoad(
             dijit.byId("acq-unified-pl-grid"),
             dijit.byId("acq-unified-inv-grid")
         );
+
+        resultManager.submitter = function() {
+            resultManager.go(termManager.buildSearchObject());
+        };
 
         uriManager = new URIManager();
         if (uriManager.search_object) {

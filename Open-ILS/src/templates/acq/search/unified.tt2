@@ -83,8 +83,7 @@
             <button onclick="termManager.addRow()">Add Search Term</button>
         </div>
         <div>
-            <button
-                onclick="resultManager.go(termManager.buildSearchObject())">
+            <button onclick="resultManager.submitter();">
                 Search
             </button>
         </div>

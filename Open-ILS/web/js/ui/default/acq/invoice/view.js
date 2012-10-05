@@ -250,8 +250,10 @@ function doAttachPo(idx) {
     );
 }
 
-function performSearch(pageDir) {
-    clearSearchResTable(); 
+function performSearch(pageDir, clearFirst) {
+    if (clearFirst)
+        clearSearchResTable(); 
+
     var searchObject = termManager.buildSearchObject();
     dojo.cookie('invs', base64Encode(searchObject));
     dojo.cookie('invc', dojo.byId("acq-unified-conjunction").getValue());
@@ -331,7 +333,11 @@ function renderUnifiedSearch() {
             "no_results": {
                 "revealer": function() { }
             }
+
         };
+
+        resultManager.no_results_popup = true;
+        resultManager.submitter = smartSearchSubmitter;
 
         var searchObject = dojo.cookie('invs');
         console.log('loaded ' + searchObject);
@@ -1179,6 +1185,10 @@ function createExtraCopies(oncomplete) {
         }
     );
 
+}
+
+function smartSearchSubmitter() {
+    performSearch(0, !dojo.byId('acq-unified-build-progressively').checked);
 }
 
 

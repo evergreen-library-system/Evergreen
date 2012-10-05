@@ -198,8 +198,14 @@
                                 <option value="or">any</option>
                             </select>
                             <label for="acq-unified-conjunction">
-                                of the following terms:
-                            </label>
+                                of the following terms
+                            </label> (
+                            <input type="checkbox" id="acq-unified-build-progressively" />
+                            <label for="acq-unified-build-progressively">
+                                building the results list progressively
+                            </label> )
+
+
                         </div>
                         <div id="acq-unified-terms">
                             <table id="acq-unified-terms-table">
@@ -244,15 +250,15 @@
                         </div>
                         <table width='100%'><tr>
                             <td align='left'>
-                                <button onclick="performSearch(0)">[% l('Search') %]</button>
+                                <button onclick="smartSearchSubmitter()">[% l('Search') %]</button>
                                 <button onclick='addSelectedToInvoice()'>
                                     [% l('Add Selected Items to Invoice') %]
                                 </button>
                                 <span id='acq-inv-search-prev'>
-                                    <a href='javascript:performSearch(-1)'>[% l('Previous') %]</a>
+                                    <a href='javascript:performSearch(-1, true)'>[% l('Previous') %]</a>
                                 </span>
                                 <span>
-                                    <a href='javascript:performSearch(1)'>[% l('Next') %]</a>
+                                    <a href='javascript:performSearch(1, true)'>[% l('Next') %]</a>
                                 </span>
                             </td>
                             <td align='right'>
