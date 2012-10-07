@@ -241,10 +241,11 @@ cat.util.spawn_spine_editor = function(selection_list) {
     }
 }
 
-cat.util.show_in_opac = function(selection_list) {
+cat.util.show_in_opac = function(selection_list, params) {
     JSAN.use('util.error'); var error = new util.error();
     JSAN.use('util.network'); var network = new util.network();
     var doc_id; var seen = {};
+    if(!params) params = {};
     try {
         for (var i = 0; i < selection_list.length; i++) {
             doc_id = selection_list[i].doc_id;
@@ -264,11 +265,11 @@ cat.util.show_in_opac = function(selection_list) {
             }
             seen[doc_id] = true;
             var opac_url = xulG.url_prefix('opac_rdetail') + doc_id;
-            var content_params = { 
-                'session' : ses(),
-                'authtime' : ses('authtime'),
-                'opac_url' : opac_url,
-            };
+            var content_params = {};
+            for (var value in params) content_params[value] = params[value];
+            content_params['session'] = ses();
+            content_params['authtime'] = ses('authtime');
+            content_params['opac_url'] = opac_url;
             xulG.new_tab(
                 xulG.url_prefix('XUL_OPAC_WRAPPER'), 
                 {'tab_name':$('catStrings').getString('staff.cat.util.show_in_opac.retrieving_title')}, 
