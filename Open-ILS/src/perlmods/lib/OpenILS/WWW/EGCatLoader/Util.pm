@@ -182,7 +182,22 @@ sub init_ro_object_cache {
     # turns an ISO date into something TT can understand
     $ro_object_subs->{parse_datetime} = sub {
         my $date = shift;
-        $date = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($date));
+
+        # Probably an accidental entry like '0212' instead of '2012',
+        # but 1) the leading 0 gets stripped in CStoreEditor and
+        # 2) DateTime::Format::ISO8601 returns an error as years
+        # must be 2 or 4 digits
+        if ($date =~ m/^\d{3}-/) {
+            $logger->warn("Invalid date had a 3-digit year: $date");
+            $date = '0' . $date;
+        } elsif ($date =~ m/^\d{1}-/) {
+            $logger->warn("Invalid date had a 1-digit year: $date");
+            $date = '000' . $date;
+        }
+
+        my $cleansed_date = cleanse_ISO8601($date);
+
+        $date = DateTime::Format::ISO8601->new->parse_datetime($cleansed_date);
         return sprintf(
             "%0.2d:%0.2d:%0.2d %0.2d-%0.2d-%0.4d",
             $date->hour,
