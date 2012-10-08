@@ -6436,10 +6436,10 @@ static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* m
 						strftime( dt_string, sizeof( dt_string ), "%T", &gmdt );
 					} else if( !( attr & DBI_DATETIME_TIME )) {
 						localtime_r( &_tmp_dt, &gmdt );
-						strftime( dt_string, sizeof( dt_string ), "%F", &gmdt );
+						strftime( dt_string, sizeof( dt_string ), "%04Y-%m-%d", &gmdt );
 					} else {
 						localtime_r( &_tmp_dt, &gmdt );
-						strftime( dt_string, sizeof( dt_string ), "%FT%T%z", &gmdt );
+						strftime( dt_string, sizeof( dt_string ), "%04Y-%m-%dT%T%z", &gmdt );
 					}
 
 					jsonObjectSetIndex( object, fmIndex, jsonNewObject( dt_string ));
@@ -6522,10 +6522,10 @@ static jsonObject* oilsMakeJSONFromResult( dbi_result result ) {
 						strftime( dt_string, sizeof( dt_string ), "%T", &gmdt );
 					} else if( !( attr & DBI_DATETIME_TIME )) {
 						localtime_r( &_tmp_dt, &gmdt );
-						strftime( dt_string, sizeof( dt_string ), "%F", &gmdt );
+						strftime( dt_string, sizeof( dt_string ), "%04Y-%m-%d", &gmdt );
 					} else {
 						localtime_r( &_tmp_dt, &gmdt );
-						strftime( dt_string, sizeof( dt_string ), "%FT%T%z", &gmdt );
+						strftime( dt_string, sizeof( dt_string ), "%04Y-%m-%dT%T%z", &gmdt );
 					}
 
 					jsonObjectSetKey( object, columnName, jsonNewObject( dt_string ));
