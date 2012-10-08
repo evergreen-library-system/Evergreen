@@ -120,7 +120,7 @@ circ.checkout.prototype = {
                         ['change'],
                         function(ev) { 
                             try {
-				document.getElementById('checkout_duedate_checkbox').checked = true;
+                                document.getElementById('checkout_duedate_checkbox').checked = true;
                                 if (obj.check_date(ev.target)) {
                                     ev.target.parentNode.setAttribute('style','');
                                 } else {
@@ -349,10 +349,17 @@ circ.checkout.prototype = {
             obj.controller.view.checkout_barcode_entry_textbox.disabled = false;
             obj.controller.view.cmd_checkout_submit.setAttribute('disabled','false');
             obj.controller.view.cmd_checkout_submit.disabled = false;
-            if (util.date.check_past('YYYY-MM-DD',node.value) ) {
-                obj.controller.view.checkout_barcode_entry_textbox.setAttribute('disabled','true');
-                obj.controller.view.cmd_checkout_submit.setAttribute('disabled','true');
-                return false;
+            try {
+                if (util.date.check_past('YYYY-MM-DD',node.value) ) {
+                    obj.controller.view.checkout_barcode_entry_textbox.setAttribute('disabled','true');
+                    obj.controller.view.cmd_checkout_submit.setAttribute('disabled','true');
+                    return false;
+                }
+            }
+            catch (E) {
+                    obj.controller.view.checkout_barcode_entry_textbox.setAttribute('disabled','true');
+                    obj.controller.view.cmd_checkout_submit.setAttribute('disabled','true');
+                    return false;
             }
             return true;
         } catch(E) {

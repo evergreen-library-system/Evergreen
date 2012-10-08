@@ -24,8 +24,16 @@ util.date.check = function(format,date) {
 
 util.date.check_past = function(format,date) {
     if (format != 'YYYY-MM-DD') { throw('I only understand YYYY-MM-DD.  Fix me if you want.'); }
-    var yyyy = date.substr(0,4); var mm = date.substr(5,2); var dd = date.substr(8,2);
+    var yyyy = date.substr(0,4);
+    var mm = date.substr(5,2);
+    var dd = date.substr(8,2);
     var test_date = new Date( yyyy, mm - 1, dd );
+
+    /* Ensure our date is valid */
+    if (isNaN(test_date.getTime())) {
+        throw('The date "' + date + '" is not valid.');
+    }
+
     date = util.date.formatted_date(new Date(),'%F');
     yyyy = date.substr(0,4); mm = date.substr(5,2); dd = date.substr(8,2);
     var today = new Date( yyyy, mm - 1, dd );
