@@ -184,7 +184,7 @@ sub init_ro_object_cache {
         my $date = shift;
 
         # Probably an accidental entry like '0212' instead of '2012',
-        # but 1) the leading 0 gets stripped in CStoreEditor and
+        # but 1) the leading 0 may get stripped in cstore and
         # 2) DateTime::Format::ISO8601 returns an error as years
         # must be 2 or 4 digits
         if ($date =~ m/^\d{3}-/) {
