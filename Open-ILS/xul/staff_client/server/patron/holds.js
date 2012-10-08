@@ -182,6 +182,7 @@ patron.holds.prototype = {
                         obj.controller.view.cmd_holds_cancel.setAttribute('disabled','false');
                         obj.controller.view.cmd_holds_uncancel.setAttribute('disabled','false');
                         obj.controller.view.cmd_show_catalog.setAttribute('disabled','false');
+                        obj.controller.view.cmd_show_catalog_holds.setAttribute('disabled','false');
                     } else {
                         obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','true');
                         obj.controller.view.sel_mark_items_missing.setAttribute('disabled','true');
@@ -205,6 +206,7 @@ patron.holds.prototype = {
                         obj.controller.view.cmd_holds_cancel.setAttribute('disabled','true');
                         obj.controller.view.cmd_holds_uncancel.setAttribute('disabled','true');
                         obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
+                        obj.controller.view.cmd_show_catalog_holds.setAttribute('disabled','true');
                     }
                 }
             }
@@ -1321,62 +1323,13 @@ patron.holds.prototype = {
                     'cmd_show_catalog' : [
                         ['command'],
                         function() {
-                            try {
-                                for (var i = 0; i < obj.retrieve_ids.length; i++) {
-                                    var htarget = obj.retrieve_ids[i].target;
-                                    var htype = obj.retrieve_ids[i].type;
-                                    var opac_url;
-                                    switch(htype) {
-                                        case 'M' :
-                                            opac_url = xulG.url_prefix('opac_rresult_metarecord') + htarget;
-                                        break;
-                                        case 'T' :
-                                            opac_url = xulG.url_prefix('opac_rdetail') + htarget;
-                                        break;
-                                        case 'P' :
-                                            opac_url = xulG.url_prefix('opac_rdetail')
-                                            + obj.hold_part_map[ obj.retrieve_ids[i].id ].record();
-                                        break;
-                                        case 'I' :
-                                            opac_url = xulG.url_prefix('opac_rdetail')
-                                            + obj.hold_subscription_map[ obj.retrieve_ids[i].id ].record_entry();
-                                        break;
-                                        case 'V' :
-                                            var my_acn = obj.network.simple_request( 'FM_ACN_RETRIEVE.authoritative', [ htarget ]);
-                                            opac_url = xulG.url_prefix('opac_rdetail') + my_acn.record();
-                                        break;
-                                        case 'C' :
-                                        case 'R' :
-                                        case 'F' :
-                                            var my_acp = obj.network.simple_request( 'FM_ACP_RETRIEVE', [ htarget ]);
-                                            var my_acn;
-                                            if (typeof my_acp.call_number() == 'object') {
-                                                my_acn = my.acp.call_number();
-                                            } else {
-                                                my_acn = obj.network.simple_request( 'FM_ACN_RETRIEVE.authoritative',
-                                                    [ my_acp.call_number() ]);
-                                            }
-                                            opac_url = xulG.url_prefix('opac_rdetail') + my_acn.record();
-                                        break;
-                                        default:
-                                            obj.error.standard_unexpected_error_alert($("patronStrings").getFormattedString('staff.patron.holds.show_catalog.unknown_htype', [htype]), obj.retrieve_ids[i]);
-                                            continue;
-                                        break;
-                                    }
-                                    var content_params = {
-                                        'session' : ses(),
-                                        'authtime' : ses('authtime'),
-                                        'opac_url' : opac_url
-                                    };
-                                    xulG.new_tab(
-                                        xulG.url_prefix('XUL_OPAC_WRAPPER'),
-                                        {'tab_name': htype == 'M' ? 'Catalog' : $("patronStrings").getString('staff.patron.holds.show_catalog.retrieving_title') },
-                                        content_params
-                                    );
-                                }
-                            } catch(E) {
-                                obj.error.standard_unexpected_error_alert('',E);
-                            }
+                            obj.show_catalog_impl();
+                        }
+                    ],
+                    'cmd_show_catalog_holds' : [
+                        ['command'],
+                        function() {
+                            obj.show_catalog_impl('hold_browser');
                         }
                     ],
                     'cmd_holds_title_transfer' : [
@@ -1608,6 +1561,7 @@ patron.holds.prototype = {
                 obj.controller.view.cmd_holds_cancel.setAttribute('disabled','true');
                 obj.controller.view.cmd_holds_uncancel.setAttribute('disabled','true');
                 obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
+                obj.controller.view.cmd_show_catalog_holds.setAttribute('disabled','true');
             }, 0
         );
 
@@ -1653,6 +1607,73 @@ patron.holds.prototype = {
             obj.hold_interface_type = 'shelf';
         } else { /*************************************************** PULL ******************************/
             obj.hold_interface_type = 'pull';
+        }
+        if(obj.hold_interface_type != 'patron') {
+            var disableItems = document.getElementsByAttribute('command','cmd_show_catalog_holds');
+            for(var i = 0; i < disableItems.length; i++)
+                disableItems.item(i).style.display='none';
+        }
+    },
+
+    'show_catalog_impl' : function(default_view) {
+        var obj = this;
+        try {
+            for (var i = 0; i < obj.retrieve_ids.length; i++) {
+                var htarget = obj.retrieve_ids[i].target;
+                var htype = obj.retrieve_ids[i].type;
+                var opac_url;
+                switch(htype) {
+                    case 'M' :
+                        opac_url = xulG.url_prefix('opac_rresult_metarecord') + htarget;
+                    break;
+                    case 'T' :
+                        opac_url = xulG.url_prefix('opac_rdetail') + htarget;
+                    break;
+                    case 'P' :
+                        opac_url = xulG.url_prefix('opac_rdetail')
+                        + obj.hold_part_map[ obj.retrieve_ids[i].id ].record();
+                    break;
+                    case 'I' :
+                        opac_url = xulG.url_prefix('opac_rdetail')
+                        + obj.hold_subscription_map[ obj.retrieve_ids[i].id ].record_entry();
+                    break;
+                    case 'V' :
+                        var my_acn = obj.network.simple_request( 'FM_ACN_RETRIEVE.authoritative', [ htarget ]);
+                        opac_url = xulG.url_prefix('opac_rdetail') + my_acn.record();
+                    break;
+                    case 'C' :
+                    case 'R' :
+                    case 'F' :
+                        var my_acp = obj.network.simple_request( 'FM_ACP_RETRIEVE', [ htarget ]);
+                        var my_acn;
+                        if (typeof my_acp.call_number() == 'object') {
+                            my_acn = my.acp.call_number();
+                        } else {
+                            my_acn = obj.network.simple_request( 'FM_ACN_RETRIEVE.authoritative',
+                                [ my_acp.call_number() ]);
+                        }
+                        opac_url = xulG.url_prefix('opac_rdetail') + my_acn.record();
+                    break;
+                    default:
+                        obj.error.standard_unexpected_error_alert($("patronStrings").getFormattedString('staff.patron.holds.show_catalog.unknown_htype', [htype]), obj.retrieve_ids[i]);
+                        continue;
+                    break;
+                }
+                var content_params = {
+                    'session' : ses(),
+                    'authtime' : ses('authtime'),
+                    'opac_url' : opac_url
+                };
+                if(default_view)
+                    content_params['default_view'] = default_view;
+                xulG.new_tab(
+                    xulG.url_prefix('XUL_OPAC_WRAPPER'),
+                    {'tab_name': htype == 'M' ? 'Catalog' : $("patronStrings").getString('staff.patron.holds.show_catalog.retrieving_title') },
+                    content_params
+                );
+            }
+        } catch(E) {
+            obj.error.standard_unexpected_error_alert('',E);
         }
     },
 

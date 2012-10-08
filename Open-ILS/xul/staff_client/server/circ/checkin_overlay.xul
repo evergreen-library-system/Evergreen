@@ -22,6 +22,7 @@
     <command id="sel_edit" disabled="true"/>
     <command id="sel_backdate" disabled="true"/>
     <command id="sel_opac" disabled="true"/>
+    <command id="sel_opac_holds" disabled="true"/>
     <command id="sel_patron" disabled="true"/>
     <command id="sel_last_patron" disabled="true"/>
     <command id="sel_copy_details" disabled="true"/>
@@ -46,6 +47,7 @@
         <menuitem command="sel_clip" label="&staff.circ.checkin_overlay.sel_clip.label;" accesskey="&staff.circ.checkin_overlay.sel_clip.accesskey;" />
         <menuitem command="sel_bucket" label="&staff.circ.checkin_overlay.sel_bucket.label;" accesskey="&staff.circ.checkin_overlay.sel_bucket.accesskey;"/>
         <menuitem command="sel_opac" label="&staff.circ.checkin_overlay.sel_opac.label;" accesskey="&staff.circ.checkin_overlay.sel_opac.accesskey;" />
+        <menuitem command="sel_opac_holds" label="&staff.circ.checkin_overlay.sel_opac_holds.label;" accesskey="&staff.circ.checkin_overlay.sel_opac_holds.accesskey;" />
         <menuitem command="sel_copy_details" label="&staff.circ.checkin_overlay.sel_copy_details.label;" accesskey="&staff.circ.checkin_overlay.sel_copy_details.accesskey;" />
         <menuitem command="sel_patron" label="&staff.circ.checkin_overlay.sel_patron.label;" accesskey="&staff.circ.checkin_overlay.sel_patron.accesskey;"/>
         <menuitem command="sel_last_patron" label="&staff.circ.checkin_overlay.sel_last_patron.label;" accesskey="&staff.circ.checkin_overlay.sel_last_patron.accesskey;"/>
@@ -121,6 +123,7 @@
                     <menuitem command="sel_clip" label="&staff.circ.checkin_overlay.sel_clip.label;" accesskey="&staff.circ.checkin_overlay.sel_clip.accesskey;" />
                     <menuitem command="sel_bucket" label="&staff.circ.checkin_overlay.sel_bucket.label;" accesskey="&staff.circ.checkin_overlay.sel_bucket.accesskey;"/>
                     <menuitem command="sel_opac" label="&staff.circ.checkin_overlay.sel_opac.label;" accesskey="&staff.circ.checkin_overlay.sel_opac.accesskey;" />
+                    <menuitem command="sel_opac_holds" label="&staff.circ.checkin_overlay.sel_opac_holds.label;" accesskey="&staff.circ.checkin_overlay.sel_opac_holds.accesskey;" />
                     <menuitem command="sel_copy_details" label="&staff.circ.checkin_overlay.sel_copy_details.label;" accesskey="&staff.circ.checkin_overlay.sel_copy_details.accesskey;" />
                     <menuitem command="sel_patron" label="&staff.circ.checkin_overlay.sel_patron.label;" accesskey="&staff.circ.checkin_overlay.sel_patron.accesskey;"/>
                     <menuitem command="sel_last_patron" label="&staff.circ.checkin_overlay.sel_last_patron.label;" accesskey="&staff.circ.checkin_overlay.sel_last_patron.accesskey;"/>

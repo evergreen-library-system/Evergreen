@@ -2275,6 +2275,8 @@
 <!ENTITY staff.circ.checkin_overlay.sel_bucket.accesskey "A">
 <!ENTITY staff.circ.checkin_overlay.sel_opac.label "Show in Catalog">
 <!ENTITY staff.circ.checkin_overlay.sel_opac.accesskey "S">
+<!ENTITY staff.circ.checkin_overlay.sel_opac_holds.label "Show Holds on Bib">
+<!ENTITY staff.circ.checkin_overlay.sel_opac_holds.accesskey "H">
 <!ENTITY staff.circ.checkin_overlay.sel_copy_details.label "Show Item Details">
 <!ENTITY staff.circ.checkin_overlay.sel_copy_details.accesskey "I">
 <!ENTITY staff.circ.checkin_overlay.sel_patron.label "Show Last Few Circulations">
@@ -2329,6 +2331,8 @@
 <!ENTITY staff.circ.renew_overlay.sel_bucket.accesskey "A">
 <!ENTITY staff.circ.renew_overlay.sel_opac.label "Show in Catalog">
 <!ENTITY staff.circ.renew_overlay.sel_opac.accesskey "S">
+<!ENTITY staff.circ.renew_overlay.sel_opac_holds.label "Show Holds on Bib">
+<!ENTITY staff.circ.renew_overlay.sel_opac_holds.accesskey "H">
 <!ENTITY staff.circ.renew_overlay.sel_copy_details.label "Show Item Details">
 <!ENTITY staff.circ.renew_overlay.sel_copy_details.accesskey "I">
 <!ENTITY staff.circ.renew_overlay.sel_patron.label "Show Last Few Circulations">
@@ -2394,6 +2398,8 @@
 <!ENTITY staff.circ.copy_status_overlay.sel_record_bucket.accesskey "">
 <!ENTITY staff.circ.copy_status_overlay.sel_opac.label "Show in Catalog">
 <!ENTITY staff.circ.copy_status_overlay.sel_opac.accesskey "S">
+<!ENTITY staff.circ.copy_status_overlay.sel_opac_holds.label "Show Holds on Bib">
+<!ENTITY staff.circ.copy_status_overlay.sel_opac_holds.accesskey "H">
 <!ENTITY staff.circ.copy_status_overlay.sel_copy_details.label "Show Item Details">
 <!ENTITY staff.circ.copy_status_overlay.sel_copy_details.accesskey "I">
 <!ENTITY staff.circ.copy_status_overlay.sel_patron.label "Show Last Few Circulations">
@@ -2571,6 +2577,8 @@
 <!ENTITY staff.circ.holds.copy_to_clipboard.accesskey "C">
 <!ENTITY staff.circ.holds.show_in_catalog "Show in Catalog">
 <!ENTITY staff.circ.holds.show_in_catalog.accesskey "S">
+<!ENTITY staff.circ.holds.show_in_catalog_holds "Show Holds on Bib">
+<!ENTITY staff.circ.holds.show_in_catalog_holds.accesskey "H">
 <!ENTITY staff.circ.holds.show_item_details "Show Item Details">
 <!ENTITY staff.circ.holds.show_item_details.accesskey "I">
 <!ENTITY staff.circ.holds.show_last_few_circulations "Show Last Few Circulations">

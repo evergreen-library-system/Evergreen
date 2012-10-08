@@ -60,6 +60,7 @@ circ.copy_status.prototype = {
                             obj.controller.view.sel_edit.setAttribute('disabled','true');
                             obj.controller.view.sel_vol_copy_edit.setAttribute('disabled','true');
                             obj.controller.view.sel_opac.setAttribute('disabled','true');
+                            obj.controller.view.sel_opac_holds.setAttribute('disabled','true');
                             obj.controller.view.sel_bucket.setAttribute('disabled','true');
                             obj.controller.view.sel_record_bucket.setAttribute('disabled','true');
                             obj.controller.view.sel_copy_details.setAttribute('disabled','true');
@@ -90,6 +91,7 @@ circ.copy_status.prototype = {
                             obj.controller.view.sel_edit.setAttribute('disabled','false');
                             obj.controller.view.sel_vol_copy_edit.setAttribute('disabled','false');
                             obj.controller.view.sel_opac.setAttribute('disabled','false');
+                            obj.controller.view.sel_opac_holds.setAttribute('disabled','false');
                             obj.controller.view.sel_patron.setAttribute('disabled','false');
                             obj.controller.view.cmd_triggered_events.setAttribute('disabled','false');
                             obj.controller.view.sel_bucket.setAttribute('disabled','false');
@@ -334,6 +336,13 @@ circ.copy_status.prototype = {
                         function() {
                             JSAN.use('cat.util');
                             cat.util.show_in_opac(obj.selection_list);
+                        }
+                    ],
+                    'sel_opac_holds' : [
+                        ['command'],
+                        function() {
+                            JSAN.use('cat.util');
+                            cat.util.show_in_opac(obj.selection_list,{default_view:'hold_browser'});
                         }
                     ],
                     'sel_transit_abort' : [

@@ -22,6 +22,7 @@
         <command id="cmd_holds_print_alt" />
         <command id="cmd_simplified_pull_list" />
         <command id="cmd_show_catalog" />
+        <command id="cmd_show_catalog_holds" />
         <command id="cmd_retrieve_patron" />
         <command id="cmd_holds_edit_desire_mint_condition" />
         <command id="cmd_holds_edit_pickup_lib" />
@@ -65,6 +66,7 @@
         <menupopup id="holds_actions" position="at_pointer"> 
             <menuitem command="sel_clip" label="&staff.circ.holds.copy_to_clipboard;" accesskey="&staff.circ.holds.copy_to_clipboard.accesskey;" />
             <menuitem label="&staff.circ.holds.show_in_catalog;" command="cmd_show_catalog" accesskey="&staff.circ.holds.show_in_catalog.accesskey;"/>
+            <menuitem label="&staff.circ.holds.show_in_catalog_holds;" command="cmd_show_catalog_holds" accesskey="&staff.circ.holds.show_in_catalog_holds.accesskey;"/>
             <menuitem command="sel_copy_details" label="&staff.circ.holds.show_item_details;" accesskey="&staff.circ.holds.show_item_details.accesskey;" />
             <menuitem command="sel_patron" label="&staff.circ.holds.show_last_few_circulations;" accesskey="&staff.circ.holds.show_last_few_circulations.accesskey;"/>
             <menuseparator />
@@ -150,6 +152,7 @@
                 <menupopup>
                     <menuitem command="sel_clip" label="&staff.circ.holds.copy_to_clipboard;" accesskey="&staff.circ.holds.copy_to_clipboard.accesskey;" />
                     <menuitem label="&staff.circ.holds.show_in_catalog;" command="cmd_show_catalog" accesskey="&staff.circ.holds.show_in_catalog.accesskey;"/>
+                    <menuitem label="&staff.circ.holds.show_in_catalog_holds;" command="cmd_show_catalog_holds" accesskey="&staff.circ.holds.show_in_catalog_holds.accesskey;"/>
                     <menuitem command="sel_copy_details" label="&staff.circ.holds.show_item_details;" accesskey="&staff.circ.holds.show_item_details.accesskey;" />
                     <menuitem command="sel_patron" label="&staff.circ.holds.show_last_few_circulations;" accesskey="&staff.circ.holds.show_last_few_circulations.accesskey;"/>
                     <menuseparator />

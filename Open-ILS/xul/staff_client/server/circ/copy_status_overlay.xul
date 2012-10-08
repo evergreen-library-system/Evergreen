@@ -15,6 +15,7 @@
         <menuitem command="sel_bucket" label="&staff.circ.copy_status_overlay.sel_bucket.label;" accesskey="&staff.circ.copy_status_overlay.sel_bucket.accesskey;"/>
         <menuitem command="sel_record_bucket" />
         <menuitem command="sel_opac" label="&staff.circ.copy_status_overlay.sel_opac.label;" accesskey="&staff.circ.copy_status_overlay.sel_opac.accesskey;" />
+        <menuitem command="sel_opac_holds" label="&staff.circ.copy_status_overlay.sel_opac_holds.label;" accesskey="&staff.circ.copy_status_overlay.sel_opac_holds.accesskey;" />
         <menuitem command="sel_copy_details" label="&staff.circ.copy_status_overlay.sel_copy_details.label;" accesskey="&staff.circ.copy_status_overlay.sel_copy_details.accesskey;" />
         <menuitem command="sel_patron" label="&staff.circ.copy_status_overlay.sel_patron.label;" accesskey="&staff.circ.copy_status_overlay.sel_patron.accesskey;"/>
         <menuseparator/>
@@ -49,6 +50,7 @@
         <menuitem command="sel_bucket" label="&staff.circ.copy_status_overlay.sel_bucket.label;" accesskey="&staff.circ.copy_status_overlay.sel_bucket.accesskey;"/>
         <menuitem command="sel_record_bucket" />
         <menuitem command="sel_opac" label="&staff.circ.copy_status_overlay.sel_opac.label;" accesskey="&staff.circ.copy_status_overlay.sel_opac.accesskey;" />
+        <menuitem command="sel_opac_holds" label="&staff.circ.copy_status_overlay.sel_opac_holds.label;" accesskey="&staff.circ.copy_status_overlay.sel_opac_holds.accesskey;" />
         <menuitem command="sel_copy_details" label="&staff.circ.copy_status_overlay.sel_copy_details.label;" accesskey="&staff.circ.copy_status_overlay.sel_copy_details.accesskey;" />
         <menuitem command="sel_patron" label="&staff.circ.copy_status_overlay.sel_patron.label;" accesskey="&staff.circ.copy_status_overlay.sel_patron.accesskey;"/>
         <menuseparator/>
@@ -126,6 +128,7 @@
             <menuitem command="sel_bucket" label="&staff.circ.copy_status_overlay.sel_bucket.label;" accesskey="&staff.circ.copy_status_overlay.sel_bucket.accesskey;"/>
             <menuitem command="sel_record_bucket" />
             <menuitem command="sel_opac" label="&staff.circ.copy_status_overlay.sel_opac.label;" accesskey="&staff.circ.copy_status_overlay.sel_opac.accesskey;" />
+            <menuitem command="sel_opac_holds" label="&staff.circ.copy_status_overlay.sel_opac_holds.label;" accesskey="&staff.circ.copy_status_overlay.sel_opac_holds.accesskey;" />
             <menuitem command="sel_copy_details" label="&staff.circ.copy_status_overlay.sel_copy_details.label;" accesskey="&staff.circ.copy_status_overlay.sel_copy_details.accesskey;" />
             <menuitem command="sel_patron" label="&staff.circ.copy_status_overlay.sel_patron.label;" accesskey="&staff.circ.copy_status_overlay.sel_patron.accesskey;"/>
             <menuitem command="cmd_triggered_events" label="&staff.circ.copy_status_overlay.cmd_triggered_events.label;" accesskey="&staff.circ.copy_status_overlay.cmd_triggered_events.accesskey;"/>
@@ -159,6 +162,7 @@
             <menuitem command="sel_bucket" label="&staff.circ.copy_status_overlay.sel_bucket.label;" accesskey="&staff.circ.copy_status_overlay.sel_bucket.accesskey;"/>
             <menuitem command="sel_record_bucket" />
             <menuitem command="sel_opac" label="&staff.circ.copy_status_overlay.sel_opac.label;" accesskey="&staff.circ.copy_status_overlay.sel_opac.accesskey;" />
+            <menuitem command="sel_opac_holds" label="&staff.circ.copy_status_overlay.sel_opac_holds.label;" accesskey="&staff.circ.copy_status_overlay.sel_opac_holds.accesskey;" />
             <menuitem command="sel_copy_details" label="&staff.circ.copy_status_overlay.sel_copy_details.label;" accesskey="&staff.circ.copy_status_overlay.sel_copy_details.accesskey;" />
             <menuitem command="sel_patron" label="&staff.circ.copy_status_overlay.sel_patron.label;" accesskey="&staff.circ.copy_status_overlay.sel_patron.accesskey;"/>
             <menuitem command="cmd_triggered_events" label="&staff.circ.copy_status_overlay.cmd_triggered_events.label;" accesskey="&staff.circ.copy_status_overlay.cmd_triggered_events.accesskey;"/>

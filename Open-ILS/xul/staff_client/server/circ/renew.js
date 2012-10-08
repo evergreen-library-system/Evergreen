@@ -59,6 +59,7 @@ circ.renew.prototype = {
                         if (obj.selection_list.length == 0) {
                             obj.controller.view.sel_edit.setAttribute('disabled','true');
                             obj.controller.view.sel_opac.setAttribute('disabled','true');
+                            obj.controller.view.sel_opac_holds.setAttribute('disabled','true');
                             obj.controller.view.sel_patron.setAttribute('disabled','true');
                             obj.controller.view.sel_last_patron.setAttribute('disabled','true');
                             obj.controller.view.sel_copy_details.setAttribute('disabled','true');
@@ -70,6 +71,7 @@ circ.renew.prototype = {
                         } else {
                             obj.controller.view.sel_edit.setAttribute('disabled','false');
                             obj.controller.view.sel_opac.setAttribute('disabled','false');
+                            obj.controller.view.sel_opac_holds.setAttribute('disabled','false');
                             obj.controller.view.sel_patron.setAttribute('disabled','false');
                             obj.controller.view.sel_last_patron.setAttribute('disabled','false');
                             obj.controller.view.sel_copy_details.setAttribute('disabled','false');
@@ -120,6 +122,13 @@ circ.renew.prototype = {
                         function() {
                             JSAN.use('cat.util');
                             cat.util.show_in_opac(obj.selection_list);
+                        }
+                    ],
+                    'sel_opac_holds' : [
+                        ['command'],
+                        function() {
+                            JSAN.use('cat.util');
+                            cat.util.show_in_opac(obj.selection_list,{default_view:'hold_browser'});
                         }
                     ],
                     'sel_transit_abort' : [
