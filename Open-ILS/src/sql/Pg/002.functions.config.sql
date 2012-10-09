@@ -597,8 +597,8 @@ foreach my $id_field ('001', '003') {
 
 my $cn = $record->field('001')->data();
 # Special handling of OCLC numbers, often found in records that lack 003
-if ($cn =~ /^oc[nm]/) {
-    $cn =~ s/^oc[nm]0*(\d+)/$1/;
+if ($cn =~ /^o(c[nm]|n)\d/) {
+    $cn =~ s/^o(c[nm]|n)0*(\d+)/$2/;
     $record->field('003')->data('OCoLC');
     $create = 0;
 }
