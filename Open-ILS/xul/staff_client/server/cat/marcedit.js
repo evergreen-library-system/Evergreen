@@ -1853,7 +1853,13 @@ function buildAuthorityPopup (entry_text, record, auth_org, auth_id, sf_popup, t
     }
     submenu.appendChild(popup);
 
-    dojo.query('datafield[tag^="1"], datafield[tag^="4"], datafield[tag^="5"]', record).forEach(function(field) {
+    dojo.query('datafield[tag^="1"]', record).forEach(function(field) {
+        buildAuthorityPopupSelector(field, grid, auth_org, auth_id);
+    });
+    dojo.query('datafield[tag^="4"]', record).forEach(function(field) {
+        buildAuthorityPopupSelector(field, grid, auth_org, auth_id);
+    });
+    dojo.query('datafield[tag^="5"]', record).forEach(function(field) {
         buildAuthorityPopupSelector(field, grid, auth_org, auth_id);
     });
 
