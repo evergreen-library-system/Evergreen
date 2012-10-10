@@ -257,6 +257,10 @@ sub _do_login {
             "open-ils.cstore.direct.actor.user.search.atomic",
             { usrname => $args->{'username'} }
         );
+        if (!$user->[0]) {
+            $logger->debug("Authenticated username '" . $args->{'username'} . "' has no Evergreen account, aborting");
+            return OpenILS::Event->new( 'LOGIN_FAILED' );
+        }
         $args->{'password'} = md5_hex( $seed . $user->[0]->passwd );
     } else {
         $args->{'password'} = md5_hex( $seed . md5_hex($real_password) );
