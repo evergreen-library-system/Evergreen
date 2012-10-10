@@ -312,7 +312,7 @@ function my_init() {
                 { label : $('catStrings').getString('staff.cat.marcedit.replace_006.label'),
                   oncommand : 
                     'var e = document.createEvent("KeyEvents");' +
-                    'e.initKeyEvent("keypress",1,1,null,1,0,0,0,64,0);' +
+                    'e.initKeyEvent("keypress",1,1,null,1,0,0,0,117,0);' +
                     'current_focus.inputField.dispatchEvent(e);'
                  }
             )
@@ -323,7 +323,7 @@ function my_init() {
                 { label : $('catStrings').getString('staff.cat.marcedit.replace_007.label'),
                   oncommand : 
                     'var e = document.createEvent("KeyEvents");' +
-                    'e.initKeyEvent("keypress",1,1,null,1,0,0,0,65,0);' +
+                    'e.initKeyEvent("keypress",1,1,null,1,0,0,0,118,0);' +
                     'current_focus.inputField.dispatchEvent(e);'
                 }
             )
@@ -334,7 +334,7 @@ function my_init() {
                 { label : $('catStrings').getString('staff.cat.marcedit.replace_008.label'),
                   oncommand : 
                     'var e = document.createEvent("KeyEvents");' +
-                    'e.initKeyEvent("keypress",1,1,null,1,0,0,0,66,0);' +
+                    'e.initKeyEvent("keypress",1,1,null,1,0,0,0,119,0);' +
                     'current_focus.inputField.dispatchEvent(e);'
                 }
             )
@@ -686,13 +686,13 @@ function createMARCTextbox (element,attrs) {
                     event.preventDefault();
                     return false;
                 }
-            } else if (event.keyCode == 64 && event.ctrlKey) { // ctrl + F6
+            } else if (event.keyCode == 117 && event.ctrlKey) { // ctrl + F6
                 createControlField('006','                                        ');
                 loadRecord();
-            } else if (event.keyCode == 65 && event.ctrlKey) { // ctrl + F7
+            } else if (event.keyCode == 118 && event.ctrlKey) { // ctrl + F7
                 createControlField('007','                                        ');
                 loadRecord();
-            } else if (event.keyCode == 66 && event.ctrlKey) { // ctrl + F8
+            } else if (event.keyCode == 119 && event.ctrlKey) { // ctrl + F8
                 createControlField('008','                                        ');
                 loadRecord();
             }
