@@ -2686,7 +2686,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Is Group Lead Account" name="master_account" reporter:datatype="bool"/>
 			<field reporter:label="Internet Access Level" name="net_access_level" reporter:datatype="link"/>
 			<field reporter:label="Other Phone" name="other_phone"  reporter:datatype="text"/>
-			<field reporter:label="Password" name="passwd"  reporter:datatype="text"/>
+			<field reporter:label="Password" name="passwd" suppress_controller="open-ils.pcrud open-ils.reporter-store" reporter:datatype="text"/>
 			<field reporter:label="Photo URL" name="photo_url"  reporter:datatype="text"/>
 			<field reporter:label="Prefix/Title" name="prefix"  reporter:datatype="text"/>
 			<field reporter:label="Main (Profile) Permission Group" name="profile" reporter:datatype="link"/>
