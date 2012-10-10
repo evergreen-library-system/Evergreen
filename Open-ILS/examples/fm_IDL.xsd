@@ -51,6 +51,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
    <xs:element ref="idl:description" minOccurs="0" maxOccurs="1"/>
   </xs:sequence>
   <xs:attribute name="name"/>
+  <xs:attribute name="suppress_controller"/>
   <xs:attribute ref="oils_obj:array_position"/>
   <xs:attribute ref="oils_obj:required"/>
   <xs:attribute ref="oils_obj:validate"/>

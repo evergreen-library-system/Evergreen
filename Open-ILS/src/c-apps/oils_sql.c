@@ -4203,7 +4203,16 @@ char* SELECT (
 
 					// Look up the field in the IDL
 					const char* col_name = jsonObjectGetString( selfield );
-					osrfHash* field_def = osrfHashGet( class_field_set, col_name );
+					osrfHash* field_def;
+
+					if (!osrfStringArrayContains(
+							osrfHashGet(
+								osrfHashGet( class_field_set, col_name ),
+								"suppress_controller"),
+							modulename
+					))
+						field_def = osrfHashGet( class_field_set, col_name );
+
 					if( !field_def ) {
 						// No such field in current class
 						osrfLogError(
@@ -4282,7 +4291,16 @@ char* SELECT (
 							jsonObjectGetKeyConst( selfield, "column" ) );
 
 					// Get the field definition from the IDL
-					osrfHash* field_def = osrfHashGet( class_field_set, col_name );
+					osrfHash* field_def;
+					if (!osrfStringArrayContains(
+							osrfHashGet(
+								osrfHashGet( class_field_set, col_name ),
+								"suppress_controller"),
+							modulename
+					))
+						field_def = osrfHashGet( class_field_set, col_name );
+
+
 					if( !field_def ) {
 						// No such field in current class
 						osrfLogError(
@@ -5202,6 +5220,9 @@ static char* buildSELECT ( const jsonObject* search_hash, jsonObject* rest_of_qu
 			if( !field )
 				continue;
 
+			if (osrfStringArrayContains( osrfHashGet(field, "suppress_controller"), modulename ))
+				continue;
+
 			if( first ) {
 				first = 0;
 			} else {
@@ -6055,6 +6076,10 @@ int doUpdate( osrfMethodContext* ctx ) {
 		// Skip virtual fields, and the primary key
 		if( str_is_true( osrfHashGet( field_def, "virtual") ) )
 			continue;
+
+		if (osrfStringArrayContains( osrfHashGet(field_def, "suppress_controller"), modulename ))
+			continue;
+
 
 		const char* field_name = osrfHashIteratorKey( field_itr );
 		if( ! strcmp( field_name, pkey ) )
