@@ -929,17 +929,14 @@ sub flatten {
                     }
                 }
 
+                my $NOT = '';
+                $NOT = 'NOT ' if $node->negate;
 
-                $where .= '(' . $talias . ".id IS NOT NULL";
+                $where .= "$NOT(" . $talias . ".id IS NOT NULL";
                 if (@{$node->phrases}) {
                     $where .= ' AND ' . join(' AND ', map {
                         "${talias}.value ~* ".$self->QueryParser->quote_phrase_value($_)
                     } @{$node->phrases});
-                }
-                if (@{$node->unphrases}) {
-                    $where .= ' AND ' . join(' AND ', map {
-                        "${talias}.value !~* ".$self->QueryParser->quote_phrase_value($_)
-                    } @{$node->unphrases});
                 }
                 for my $atom (@{$node->only_real_atoms}) {
                     next unless $atom->{content} && $atom->{content} =~ /(^\^|\$$)/;
@@ -989,8 +986,11 @@ sub flatten {
                 push(@rank_list, @{$$subnode{rank_list}});
                 $from .= $$subnode{from};
 
+                my $NOT = '';
+                $NOT = 'NOT ' if $node->negate;
+
                 if ($$subnode{where} ne '') {
-                    $where .= "(\n"
+                    $where .= "$NOT(\n"
                            . ${spc} x ($self->plan_level + 6) . $$subnode{where} . "\n"
                            . ${spc} x ($self->plan_level + 5) . ')';
                 }
