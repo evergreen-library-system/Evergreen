@@ -134,19 +134,25 @@
         args.title_extended = (args.titles.size) ? args.titles.0 : '';
 
         args.pubplaces = [];
-        FOR sub IN xml.findnodes('//*[@tag="260"]/*[@code="a"]');
+        pubplace_hunt = xml.findnodes('//*[@tag="260"]/*[@code="a"]') ||
+            xml.findnodes('//*[@tag="264" and @ind2="1"]/*[@code="a"]');
+        FOR sub IN pubplace_hunt;
             args.pubplaces.push(sub.textContent);
         END;
         args.pubplace = (args.pubplaces.size) ? args.pubplaces.0 : '';
 
         args.publishers = [];
-        FOR sub IN xml.findnodes('//*[@tag="260"]/*[@code="b"]');
+        publishers_hunt = xml.findnodes('//*[@tag="260"]/*[@code="b"]') ||
+            xml.findnodes('//*[@tag="264" and @ind2="1"]/*[@code="b"]');
+        FOR sub IN publishers_hunt;
             args.publishers.push(sub.textContent);
         END;
         args.publisher = (args.publishers.size) ? args.publishers.0 : '';
 
         args.pubdates = [];
-        FOR sub IN xml.findnodes('//*[@tag="260"]/*[@code="c"]');
+        pubdates_hunt = xml.findnodes('//*[@tag="260"]/*[@code="c"]') || 
+            xml.findnodes('//*[@tag="264" and @ind2="1"]/*[@code="c"]');
+        FOR sub IN pubdates_hunt;
             args.pubdates.push(sub.textContent);
         END;
         args.pubdate = (args.pubdates.size) ? args.pubdates.0 : '';
