@@ -919,7 +919,7 @@ sub decompose {
     my $phrase_cleanup_re = qr/\s*(\Q$required_op\E|\Q$disallowed_op\E|\Q$and_op\E|\Q$or_op\E|\Q$group_start\E|\Q$group_end\E|\Q$float_start\E|\Q$float_end\E|\Q$modifier_tag\E|\Q$negated_op\E|:|\(|\))/;
 
     # Build the filter and modifier uber-regexps
-    my $facet_re = '^\s*(-?)((?:' . join( '|', @{$pkg->facet_classes}) . ')(?:\|\w+)*)\[(.+?)\]';
+    my $facet_re = '^\s*(-?)((?:' . join( '|', @{$pkg->facet_classes}) . ')(?:\|\w+)*)\[(.+?)\](?!\[)';
     warn '  'x$recursing." ** Facet RE: $facet_re\n" if $self->debug;
 
     my $filter_re = '^\s*(-?)(' . join( '|', @{$pkg->filters}) . ')\(([^()]+)\)';
@@ -1123,7 +1123,7 @@ sub decompose {
 
             my $negate = ($1 eq $pkg->operator('disallowed')) ? 1 : 0;
             my $facet = $2;
-            my $facet_value = [ split '\s*#\s*', $3 ];
+            my $facet_value = [ split '\s*\]\[\s*', $3 ];
             $struct->new_facet( $facet => $facet_value, $negate );
             $_ = $';
 
