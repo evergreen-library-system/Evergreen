@@ -7,7 +7,7 @@
     results = [];
     FOR tag IN series_tags;
         FOR node IN ctx.marc_xml.findnodes('//*[@tag="' _ tag _ '"]/*');
-            node_uri = node.textContent | uri;
+            node_uri = node.textContent.replace('[#"^$\+\-,\.:;&|\[\]()]', '') | uri;
             node_html = node.textContent | html;
             IF !loop.first;
                 results.last = result.last _ '<span>&mdash;</span>';
@@ -18,6 +18,10 @@
             );
         END;
     END; 
+    FOR entry IN results;
+    -%]
+    <li class='rdetail_series_value'>[% entry %]</li>
+    [%- END;
 END;
 %]
 
@@ -25,8 +29,6 @@ END;
     IF series_anchors.length > 0; %]
 <h2 class='rdetail_related_series'>[% l('Search for related items by series') %]</h2>
 <ul>
-    [%- FOR entry IN series_anchors %]
-    <li class='rdetail_series_value'>[% entry %]</li>
-    [% END %]
+    [% series_anchors %]
 </ul>
 [%- END %]
