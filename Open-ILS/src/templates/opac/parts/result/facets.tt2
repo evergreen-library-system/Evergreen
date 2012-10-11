@@ -1,11 +1,14 @@
 <div class="facet_box_wrapper">
 [% 
 
-close_facets = CGI.param('close_facet') || [];
+long_facets = CGI.param('long_facet') || [];
 selected_facets = CGI.param('facet') || [];
 
 # sorted list of search facets
 sorted_facets = [];
+
+# we'll clobber the facet. "namespace" later
+DEFAULT_DISPLAY_COUNT = facet.default_display_count;
 
 IF facet.display;
 
@@ -37,46 +40,38 @@ ELSE;
         labels.push(facet.cmf.label);
     END;
     
-    FOR facet_label IN labels.sort;
-        FOR facet IN ctx.search_facets.values;
-            IF facet.cmf.label == facet_label;
-                sorted_facets.push(facet);
-            END;
-        END;
-    END;
+    # We used to do a sort here, but now that's handled in EGCatLoader.
+    sorted_facets = ctx.search_facets.values;
 END;
+
+display_count_by_cmf = {};
 
 FOR facet IN sorted_facets;
     fclass = facet.cmf.field_class;
     fname = facet.cmf.name;
-    close_key = fclass _ fname %]
+    fid = facet.cmf.id;
+    long_key = fclass _ fname %]
 
     <div class="facet_box_temp">
         <div class="header">
-            <span class="button">
-
-                [% IF close_facets.grep(close_key).0;
-                    new_close = [];
-                    FOR fct IN close_facets;
-                        IF fct != close_key;
-                            new_close.push(fct);
+                [% IF long_facets.grep(long_key).0;
+                    new_long = [];
+                    FOR fct IN long_facets;
+                        IF fct != long_key;
+                            new_long.push(fct);
                         END;
                     END;
-                    expand_url = mkurl('', {close_facet => new_close});
-                    IF new_close.size == 0;
-                        expand_url  = mkurl('', {}, ['close_facet']);
+                    expand_url = mkurl('', {long_facet => new_long});
+                    IF new_long.size == 0;
+                        expand_url  = mkurl('', {}, ['long_facet']);
                     END;
                 %]
-                    <a href="[% expand_url %]"><img 
-                        src="[% ctx.media_prefix %]/images/adv_search_plus_btn.png" alt="[% l('Expand') %]" /></a>
-                [% ELSE %]
-                    <a href="[% mkurl('', {close_facet => close_facets.merge([close_key])}) %]"><img 
-                        src="[% ctx.media_prefix %]/images/adv_search_minus_btn.png" alt="[% l('Collapse') %]" /></a>
+                    <a class="button" href="[% expand_url %]">[% l("Fewer") %]</a>
+                [% ELSIF facet.data.size > DEFAULT_DISPLAY_COUNT %]
+                    <a class="button" href="[% mkurl('', {long_facet => long_facets.merge([long_key])}) %]">[% l("More") %]</a>
                 [% END %]
-            </span>
             <div class="title">[% facet.cmf.label %]</div>
         </div>
-        [% IF !close_facets.grep(close_key).0 %]
         <div class="box_wrapper">
             <div class="box">
             [% FOR facet_data IN facet.data;
@@ -91,6 +86,16 @@ FOR facet IN sorted_facets;
                         new_facets.push(selected);
                     END;
                 END;
+
+                display_count_by_cmf.$fid = display_count_by_cmf.$fid || 0;
+
+                NEXT UNLESS long_facets.grep(long_key).0 OR
+                    display_count_by_cmf.$fid < DEFAULT_DISPLAY_COUNT;
+
+                # fix syntax highlighting: >
+
+                display_count_by_cmf.$fid = display_count_by_cmf.$fid + 1;
+
                 IF this_selected;
                     # This facet is already selected by the user. 
                     # Link removes the facet from the set of selected facets.
@@ -122,7 +127,6 @@ FOR facet IN sorted_facets;
             [% END %]
             </div>
         </div> <!-- box_wrapper -->
-        [% END %]
     </div> <!-- facet_box_temp -->
 [% END %]
 </div> <!-- facet_box_wrapper -->

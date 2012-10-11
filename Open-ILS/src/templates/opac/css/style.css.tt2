@@ -970,9 +970,11 @@ div.facet_sidebar {
     overflow:hidden;
 }
 
-.facet_box_temp .header .button {
+.facet_box_temp .header a.button {
     float:right;
+    padding-top:6px;
     padding-right:6px;
+    color:[% css_colors.text_invert %];
 }
 
 .facet_box_wrapper .box_wrapper {
