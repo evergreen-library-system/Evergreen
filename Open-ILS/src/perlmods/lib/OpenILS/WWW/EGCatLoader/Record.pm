@@ -439,11 +439,13 @@ sub added_content_stage1 {
     # and back in to reach the top-level virtualhost.
     my $ac_addr = $ENV{SERVER_ADDR};
     my $ac_host = $self->apache->hostname;
+    my $ac_failed = 0;
 
     $logger->info("tpac: added content connecting to $ac_addr / $ac_host");
 
     $ctx->{added_content} = {};
     for my $type (@$ac_types) {
+        last if $ac_failed;
         $ctx->{added_content}->{$type} = {content => ''};
         $ctx->{added_content}->{$type}->{status} = $key ? 3 : 2;
 
@@ -457,13 +459,14 @@ sub added_content_stage1 {
             # or very slow (routing problems).
 
             my $req = Net::HTTP::NB->new(Host => $ac_addr, Timeout => 1);
-            $req->host($self->apache->hostname);
-
             if (!$req) {
                 $logger->warn("Unable to connect to $ac_addr / $ac_host".
                     " for added content lookup for $key: $@");
+                $ac_failed = 1;
                 next;
             }
+
+            $req->host($self->apache->hostname);
 
             my $http_type = ($type eq $sel_type) ? 'GET' : 'HEAD';
             $req->write_request($http_type => "/opac/extras/ac/$type/html/" . uri_escape($key));
