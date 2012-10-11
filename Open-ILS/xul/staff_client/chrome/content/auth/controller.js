@@ -147,10 +147,15 @@ auth.controller.prototype = {
                         ['render'],
                         function(e) {
                             return function() {
+                                var list = [];
                                 for (var s in obj.data.ws_info) {
+                                    list.push(s);
+                                }
+                                list.sort();
+                                for (var i = 0; i < list.length; i++) {
                                     var mi = document.createElement('menuitem');
-                                    mi.setAttribute('label',s);
-                                    mi.setAttribute('value',s);
+                                    mi.setAttribute('label',list[i]);
+                                    mi.setAttribute('value',list[i]);
                                     e.appendChild(mi);
                                 }
                             };
