@@ -692,14 +692,12 @@ patron.display.prototype = {
                 this.skip_hide_summary = false;
                 dont_hide_summary = true;
             }
-            this.controller.view.cmd_patron_checkout.setAttribute('style','');
-            this.controller.view.cmd_patron_items.setAttribute('style','');
-            this.controller.view.cmd_patron_edit.setAttribute('style','');
-            this.controller.view.cmd_patron_other.setAttribute('style','');
-            this.controller.view.cmd_patron_holds.setAttribute('style','');
-            this.controller.view.cmd_patron_bills.setAttribute('style','');
-            this.controller.view.cmd_standing_penalties.setAttribute('style','');
-            this.controller.view[ btn ].setAttribute('style','background: blue; color: white;');
+            var buttons = document.getElementsByTagName('button');
+            for(var i = 0; i < buttons.length; i++) {
+                var command = buttons[i].getAttribute('command');
+                if(command == btn) buttons[i].setAttribute('style','background: blue; color: white;');
+                else buttons[i].setAttribute('style','');
+            }
             var auto_hide_patron_sidebar = String( this.OpenILS.data.hash.aous['circ.auto_hide_patron_summary'] ) == 'true';
             var x = document.getElementById('splitter_grippy'); 
             if (x && auto_hide_patron_sidebar && ! dont_hide_summary) {
