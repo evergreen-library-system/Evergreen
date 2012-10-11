@@ -98,14 +98,19 @@ sub quote_value {
 sub quote_phrase_value {
     my $self = shift;
     my $value = shift;
+    my $wb = shift;
 
-    my $left_anchored  = $value =~ m/^\^/;
-    my $right_anchored = $value =~ m/\$$/;
-    $value =~ s/\^//   if $left_anchored;
-    $value =~ s/\$$//  if $right_anchored;
+    my $left_anchored = '';
+    my $right_anchored = '';
+    $left_anchored  = $1 if $value =~ m/^([*\^])/;
+    $right_anchored = $1 if $value =~ m/([*\$])$/;
+    $value =~ s/^[*\^]//   if $left_anchored;
+    $value =~ s/[*\$]$//  if $right_anchored;
     $value = quotemeta($value);
-    $value = '^' . $value if $left_anchored;
-    $value = "$value\$"   if $right_anchored;
+    $value = '^' . $value if $left_anchored eq '^';
+    $value = "$value\$"   if $right_anchored eq '$';
+    $value = '[[:<:]]' . $value if $wb && !$left_anchored;
+    $value .= '[[:>:]]' if $wb && !$right_anchored;
     return $self->quote_value($value);
 }
 
@@ -297,6 +302,78 @@ sub add_relevance_bump {
     return { $class => { $field => { $type => { multiplier => $multiplier, active => $active } } } };
 }
 
+sub search_class_weights {
+    my $self = shift;
+    my $class = shift;
+    my $a_weight = shift;
+    my $b_weight = shift;
+    my $c_weight = shift;
+    my $d_weight = shift;
+
+    $self->custom_data->{class_weights} ||= {};
+    # Note: This reverses the A-D order, putting D first, because that is how the call actually works in PG
+    $self->custom_data->{class_weights}->{$class} ||= [0.1, 0.2, 0.4, 1.0];
+    $self->custom_data->{class_weights}->{$class} = [$d_weight, $c_weight, $b_weight, $a_weight] if $a_weight;
+    return $self->custom_data->{class_weights}->{$class};
+}
+
+sub class_ts_config {
+    my $self = shift;
+    my $class = shift;
+    my $lang = shift || 'DEFAULT';
+    my $always = shift;
+    my $ts_config = shift;
+
+    $self->custom_data->{class_ts_config} ||= {};
+    $self->custom_data->{class_ts_config}->{$class} ||= {};
+    $self->custom_data->{class_ts_config}->{$class}->{$lang} ||= {};
+    $self->custom_data->{class_ts_config}->{$class}->{$lang}->{normal} ||= [];
+    $self->custom_data->{class_ts_config}->{$class}->{$lang}->{always} ||= [];
+    $self->custom_data->{class_ts_config}->{$class}->{'DEFAULT'} ||= {};
+    $self->custom_data->{class_ts_config}->{$class}->{'DEFAULT'}->{normal} ||= [];
+    $self->custom_data->{class_ts_config}->{$class}->{'DEFAULT'}->{always} ||= [];
+
+    if ($ts_config) {
+        push @{$self->custom_data->{class_ts_config}->{$class}->{$lang}->{normal}}, $ts_config unless $always;
+        push @{$self->custom_data->{class_ts_config}->{$class}->{$lang}->{always}}, $ts_config if $always;
+    }
+
+    my $return = [];
+    push @$return, @{$self->custom_data->{class_ts_config}->{$class}->{$lang}->{always}};
+    push @$return, @{$self->custom_data->{class_ts_config}->{$class}->{$lang}->{normal}} unless $always;
+    if($lang ne 'DEFAULT') {
+        push @$return, @{$self->custom_data->{class_ts_config}->{$class}->{'DEFAULT'}->{always}};
+        push @$return, @{$self->custom_data->{class_ts_config}->{$class}->{'DEFAULT'}->{normal}} unless $always;
+    }
+    return $return;
+}
+
+sub field_ts_config {
+    my $self = shift;
+    my $class = shift;
+    my $field = shift;
+    my $lang = shift || 'DEFAULT';
+    my $ts_config = shift;
+
+    $self->custom_data->{field_ts_config} ||= {};
+    $self->custom_data->{field_ts_config}->{$class} ||= {};
+    $self->custom_data->{field_ts_config}->{$class}->{$field} ||= {};
+    $self->custom_data->{field_ts_config}->{$class}->{$field}->{$lang} ||= [];
+    $self->custom_data->{field_ts_config}->{$class}->{$field}->{'DEFAULT'} ||= [];
+
+    if ($ts_config) {
+        push @{$self->custom_data->{field_ts_config}->{$class}->{$field}->{$lang}}, $ts_config;
+    }
+
+    my $return = [];
+    push @$return, @{$self->custom_data->{field_ts_config}->{$class}->{$field}->{$lang}};
+    if($lang ne 'DEFAULT') {
+        push @$return, @{$self->custom_data->{field_ts_config}->{$class}->{$field}->{'DEFAULT'}};
+    }
+    # Make it easy on us: Grab any "always" for the class here. If we have none we grab them all.
+    push @$return, @{$self->class_ts_config($class, $lang, scalar(@$return))};
+    return $return;
+}
 
 sub initialize_search_field_id_map {
     my $self = shift;
@@ -365,6 +442,36 @@ sub initialize_filter_normalizers {
     }
 }
 
+sub initialize_class_weights {
+    my $self = shift;
+    my $classes = shift;
+
+    for my $search_class (@$classes) {
+        __PACKAGE__->search_class_weights( $search_class->name, $search_class->a_weight, $search_class->b_weight, $search_class->c_weight, $search_class->d_weight );
+    }
+}
+
+sub initialize_class_ts_config {
+    my $self = shift;
+    my $class_entries = shift;
+
+    for my $search_class_entry (@$class_entries) {
+        __PACKAGE__->class_ts_config($search_class_entry->field_class,$search_class_entry->search_lang,$U->is_true($search_class_entry->always),$search_class_entry->ts_config);
+    }
+}
+
+sub initialize_field_ts_config {
+    my $self = shift;
+    my $field_entries = shift;
+    my $field_objects = shift;
+    my %field_hash = map { $_->id => $_ } @$field_objects;
+
+    for my $search_field_entry (@$field_entries) {
+        my $field_object = $field_hash{$search_field_entry->metabib_field};
+        __PACKAGE__->field_ts_config($field_object->field_class,$field_object->name,$search_field_entry->search_lang,$search_field_entry->ts_config);
+    }
+}
+
 our $_complete = 0;
 sub initialization_complete {
     return $_complete;
@@ -405,6 +512,15 @@ sub initialize {
 
     $self->initialize_filter_normalizers( $args{config_record_attr_index_norm_map} )
         if ($args{config_record_attr_index_norm_map});
+
+    $self->initialize_search_class_weights( $args{config_metabib_class} )
+        if ($args{config_metabib_class});
+
+    $self->initialize_class_ts_config( $args{config_metabib_class_ts_map} )
+        if ($args{config_metabib_class_ts_map});
+
+    $self->initialize_field_ts_config( $args{config_metabib_field_ts_map}, $args{config_metabib_field} )
+        if ($args{config_metabib_field_ts_map} && $args{config_metabib_field});
 
     $_complete = 1 if (
         $args{config_metabib_field_index_norm_map} &&
@@ -467,6 +583,27 @@ sub TEST_SETUP {
     __PACKAGE__->add_relevance_bump( keyword => keyword => first_word => 1 );
     __PACKAGE__->add_relevance_bump( keyword => keyword => full_match => 1 );
     
+    __PACKAGE__->class_ts_config( 'series', undef, 1, 'english_nostop' );
+    __PACKAGE__->class_ts_config( 'title', undef, 1, 'english_nostop' );
+    __PACKAGE__->class_ts_config( 'author', undef, 1, 'english_nostop' );
+    __PACKAGE__->class_ts_config( 'subject', undef, 1, 'english_nostop' );
+    __PACKAGE__->class_ts_config( 'keyword', undef, 1, 'english_nostop' );
+    __PACKAGE__->class_ts_config( 'series', undef, 1, 'simple' );
+    __PACKAGE__->class_ts_config( 'title', undef, 1, 'simple' );
+    __PACKAGE__->class_ts_config( 'author', undef, 1, 'simple' );
+    __PACKAGE__->class_ts_config( 'subject', undef, 1, 'simple' );
+    __PACKAGE__->class_ts_config( 'keyword', undef, 1, 'simple' );
+
+    # French! To test language limiters
+    __PACKAGE__->class_ts_config( 'series', 'fre', 1, 'french_nostop' );
+    __PACKAGE__->class_ts_config( 'title', 'fre', 1, 'french_nostop' );
+    __PACKAGE__->class_ts_config( 'author', 'fre', 1, 'french_nostop' );
+    __PACKAGE__->class_ts_config( 'subject', 'fre', 1, 'french_nostop' );
+    __PACKAGE__->class_ts_config( 'keyword', 'fre', 1, 'french_nostop' );
+
+    # Not a default config by any means, but good for some testing
+    __PACKAGE__->field_ts_config( 'author', 'personal', 'eng', 'english' );
+    __PACKAGE__->field_ts_config( 'author', 'personal', 'fre', 'french' );
     
     __PACKAGE__->add_search_class_alias( keyword => 'kw' );
     __PACKAGE__->add_search_class_alias( title => 'ti' );
@@ -831,29 +968,6 @@ SQL
 
 }
 
-
-sub rel_bump {
-    my $self = shift;
-    my $node = shift;
-    my $bump = shift;
-    my $multiplier = shift;
-
-    my $only_atoms = $node->only_real_atoms;
-    return '' if (!@$only_atoms);
-
-    if ($bump eq 'first_word') {
-        return "/* first_word */ COALESCE(NULLIF( (search_normalize(".$node->table_alias.".value) ~ ('^'||search_normalize(".$self->QueryParser->quote_phrase_value($only_atoms->[0]->content)."))), FALSE )::INT * $multiplier, 1)";
-    } elsif ($bump eq 'full_match') {
-        return "/* full_match */ COALESCE(NULLIF( (search_normalize(".$node->table_alias.".value) ~ ('^'||".
-                    join( "||' '||", map { "search_normalize(".$self->QueryParser->quote_phrase_value($_->content).")" } @$only_atoms )."||'\$')), FALSE )::INT * $multiplier, 1)";
-    } elsif ($bump eq 'word_order') {
-        return "/* word_order */ COALESCE(NULLIF( (search_normalize(".$node->table_alias.".value) ~ (".
-                    join( "||'.*'||", map { "search_normalize(".$self->QueryParser->quote_phrase_value($_->content).")" } @$only_atoms ).")), FALSE )::INT * $multiplier, 1)";
-    }
-
-    return '';
-}
-
 sub flatten {
     my $self = shift;
 
@@ -874,21 +988,27 @@ sub flatten {
                 }
 
                 my $table = $node->table;
+                my $ctable = $node->combined_table;
                 my $talias = $node->table_alias;
 
                 my $node_rank = 'COALESCE(' . $node->rank . " * ${talias}.weight, 0.0)";
 
                 $from .= "\n" . ${spc} x 4 ."LEFT JOIN (\n"
-                      . ${spc} x 5 . "SELECT fe.*, fe_weight.weight, ${talias}_xq.tsq /* search */\n"
+                      . ${spc} x 5 . "SELECT fe.*, fe_weight.weight, ${talias}_xq.tsq, ${talias}_xq.tsq_rank /* search */\n"
                       . ${spc} x 6 . "FROM  $table AS fe";
                 $from .= "\n" . ${spc} x 7 . "JOIN config.metabib_field AS fe_weight ON (fe_weight.id = fe.field)";
 
                 if ($node->dummy_count < @{$node->only_atoms} ) {
                     $with .= ",\n     " if $with;
-                    $with .= "${talias}_xq AS (SELECT ". $node->tsquery ." AS tsq )";
-                    $from .= "\n" . ${spc} x 6 . "JOIN ${talias}_xq ON (fe.index_vector @@ ${talias}_xq.tsq)";
+                    $with .= "${talias}_xq AS (SELECT ". $node->tsquery ." AS tsq,". $node->tsquery_rank ." AS tsq_rank )";
+                    $from .= "\n" . ${spc} x 6 . "JOIN $ctable AS com ON (com.record = fe.source)";
+                    if (@{$node->fields} > 0) {
+                        $from .= "\n" . ${spc} x 6 . "JOIN ${talias}_xq ON (com.index_vector @@ ${talias}_xq.tsq_rank AND fe.index_vector @@ ${talias}_xq.tsq)";
+                    } else {
+                        $from .= "\n" . ${spc} x 6 . "JOIN ${talias}_xq ON (com.index_vector @@ ${talias}_xq.tsq)";
+                    }
                 } else {
-                    $from .= "\n" . ${spc} x 6 . ", (SELECT NULL::tsquery AS tsq ) AS ${talias}_xq";
+                    $from .= "\n" . ${spc} x 6 . ", (SELECT NULL::tsquery AS tsq, NULL:tsquery AS tsq_rank ) AS ${talias}_xq";
                 }
 
                 my @bump_fields;
@@ -915,6 +1035,8 @@ sub flatten {
 
 
                 my %used_bumps;
+                my @bumps;
+                my @bumpmults;
                 for my $field ( @bump_fields ) {
                     my $bumps = $self->QueryParser->find_relevance_bumps( $node->classname => $field );
                     for my $b (keys %$bumps) {
@@ -923,10 +1045,16 @@ sub flatten {
                         $used_bumps{$b} = 1;
 
                         next if ($$bumps{$b}{multiplier} == 1); # optimization to remove unneeded bumps
-
-                        my $bump_case = $self->rel_bump( $node, $b, $$bumps{$b}{multiplier} );
-                        $node_rank .= "\n" . ${spc} x 5 . "* " . $bump_case if ($bump_case);
+                        push @bumps, $b;
+                        push @bumpmults, $$bumps{$b}{multiplier};
                     }
+                }
+
+                if(scalar @bumps > 0 && scalar @{$node->only_positive_atoms} > 0) {
+                    # Note: Previous rank function used search_normalize outright. Duplicating that here.
+                    $node_rank .= "\n" . ${spc} x 5 . "* evergreen.rel_bump(('{' || search_normalize(";
+                    $node_rank .= join(") || ',' || search_normalize(",map { $self->QueryParser->quote_phrase_value($_->content) } @{$node->only_positive_atoms});
+                    $node_rank .= ") || '}')::TEXT[], " . $node->table_alias . ".value, '{" . join(",",@bumps) . "}'::TEXT[], '{" . join(",",@bumpmults) . "}'::NUMERIC[])";
                 }
 
                 my $NOT = '';
@@ -935,12 +1063,13 @@ sub flatten {
                 $where .= "$NOT(" . $talias . ".id IS NOT NULL";
                 if (@{$node->phrases}) {
                     $where .= ' AND ' . join(' AND ', map {
-                        "${talias}.value ~* ".$self->QueryParser->quote_phrase_value($_)
+                        "${talias}.value ~* ".$self->QueryParser->quote_phrase_value($_, 1)
                     } @{$node->phrases});
-                }
-                for my $atom (@{$node->only_real_atoms}) {
-                    next unless $atom->{content} && $atom->{content} =~ /(^\^|\$$)/;
-                    $where .= " AND ${talias}.value ~* ".$self->QueryParser->quote_phrase_value($atom->{content});
+                } else {
+                    for my $atom (@{$node->only_real_atoms}) {
+                        next unless $atom->{content} && $atom->{content} =~ /(^\^|\$$)/;
+                        $where .= " AND ${talias}.value ~* ".$self->QueryParser->quote_phrase_value($atom->{content});
+                    }
                 }
                 $where .= ')';
 
@@ -948,7 +1077,6 @@ sub flatten {
 
             } elsif ($node->isa( 'QueryParser::query_plan::facet' )) {
 
-                my $table = $node->table;
                 my $talias = $node->table_alias;
 
                 my @field_ids;
@@ -1211,11 +1339,6 @@ sub classname {
     return $classname;
 }
 
-sub table {
-    my $self = shift;
-    return 'metabib.' . $self->classname . '_field_entry';
-}
-
 sub fields {
     my $self = shift;
     my ($classname,@fields) = split '\|', $self->name;
@@ -1262,6 +1385,30 @@ sub buildSQL {
     my $normalizers = $self->node->plan->QueryParser->query_normalizers( $classname );
     my $fields = $self->node->fields;
 
+    my $lang;
+    my $filter = $self->node->plan->find_filter('preferred_language');
+    $lang ||= $filter->args->[0] if ($filter && $filter->args);
+    $lang ||= $self->node->plan->QueryParser->default_preferred_language;
+    my $ts_configs = [];
+
+    if (@{$self->node->phrases}) {
+        # We assume we want 'simple' for phrases. Gives us less to match against later.
+        $ts_configs = ['simple'];
+    } else {
+        if (!@$fields) {
+            $ts_configs = $self->node->plan->QueryParser->class_ts_config($classname, $lang);
+        } else {
+            for my $field (@$fields) {
+                push @$ts_configs, @{$self->node->plan->QueryParser->field_ts_config($classname, $field, $lang)};
+            }
+        }
+        $ts_configs = [keys %{{map { $_ => 1 } @$ts_configs}}];
+    }
+
+    # Assume we want exact if none otherwise provided.
+    # Because we can reasonably expect this to exist
+    $ts_configs = ['simple'] unless (scalar @$ts_configs);
+
     $fields = $self->node->plan->QueryParser->search_fields->{$classname} if (!@$fields);
 
     my %norms;
@@ -1288,6 +1435,8 @@ sub buildSQL {
 
     my $prefix = $self->prefix || '';
     my $suffix = $self->suffix || '';
+    my $joiner = ' || ';
+    $joiner = ' && ' if $self->prefix eq '!'; # Negative atoms should be "none of the variants" instead of "any of the variants"
 
     $prefix = "'$prefix' ||" if $prefix;
     my $suffix_op = '';
@@ -1296,7 +1445,13 @@ sub buildSQL {
     $suffix_op = ":$suffix" if $suffix;
     $suffix_after = "|| '$suffix_op'" if $suffix;
 
-    $sql = "to_tsquery('$classname', COALESCE(NULLIF($prefix '(' || btrim(regexp_replace($sql,E'(?:\\\\s+|:)','$suffix_op&','g'),'&|') $suffix_after || ')', '()'), ''))";
+    my @sql_set = ();
+    for my $ts_config (@$ts_configs) {
+        push @sql_set, "to_tsquery('$ts_config', COALESCE(NULLIF($prefix '(' || btrim(regexp_replace($sql,E'(?:\\\\s+|:)','$suffix_op&','g'),'&|') $suffix_after || ')', '()'), ''))";
+    }
+
+    $sql = join($joiner, @sql_set);
+    $sql = '(' . $sql . ')' if (scalar(@$ts_configs) > 1);
 
     return $self->sql($sql);
 }
@@ -1332,6 +1487,18 @@ sub only_real_atoms {
     return \@only_real_atoms;
 }
 
+sub only_positive_atoms {
+    my $self = shift;
+
+    my $atoms = $self->query_atoms;
+    my @only_positive_atoms;
+    for my $a (@$atoms) {
+        push(@only_positive_atoms, $a) if (ref($a) && $a->isa('QueryParser::query_plan::node::atom') && !($a->{dummy}) && ($a->{prefix} ne '!'));
+    }
+
+    return \@only_positive_atoms;
+}
+
 sub dummy_count {
     my $self = shift;
     return $self->{dummy_count};
@@ -1343,6 +1510,14 @@ sub table {
     $self->{table} = $table if ($table);
     return $self->{table} if $self->{table};
     return $self->table( 'metabib.' . $self->classname . '_field_entry' );
+}
+
+sub combined_table {
+    my $self = shift;
+    my $ctable = shift;
+    $self->{ctable} = $ctable if ($ctable);
+    return $self->{ctable} if $self->{ctable};
+    return $self->combined_table( 'metabib.combined_' . $self->classname . '_field_entry' );
 }
 
 sub table_alias {
@@ -1374,8 +1549,21 @@ sub tsquery {
     return $self->{tsquery};
 }
 
+sub tsquery_rank {
+    my $self = shift;
+    return $self->{tsquery_rank} if ($self->{tsquery_rank});
+    my @atomlines;
+
+    for my $atom (@{$self->only_positive_atoms}) {
+        push @atomlines, "\n" . ${spc} x 3 . $atom->sql;
+    }
+    $self->{tsquery_rank} = join(' ||', @atomlines);
+    return $self->{tsquery_rank};
+}
+
 sub rank {
     my $self = shift;
+    return $self->{rank} if ($self->{rank});
 
     my $rank_norm_map = $self->plan->QueryParser->custom_data->{rank_cd_weight_map};
 
@@ -1384,8 +1572,9 @@ sub rank {
         $cover_density += $$rank_norm_map{$norm} if ($self->plan->find_modifier($norm));
     }
 
-    return $self->{rank} if ($self->{rank});
-    return $self->{rank} = 'ts_rank_cd(' . $self->table_alias . '.index_vector, ' . $self->table_alias . ".tsq, $cover_density)";
+    my $weights = join(', ', @{$self->plan->QueryParser->search_class_weights($self->classname)});
+
+    return $self->{rank} = "ts_rank_cd('{" . $weights . "}', " . $self->table_alias . '.index_vector, ' . $self->table_alias . ".tsq_rank, $cover_density)";
 }
 
 

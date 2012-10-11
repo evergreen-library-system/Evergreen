@@ -44,6 +44,14 @@ CREATE INDEX metabib_identifier_field_entry_index_vector_idx ON metabib.identifi
 CREATE INDEX metabib_identifier_field_entry_value_idx ON metabib.identifier_field_entry (SUBSTRING(value,1,1024)) WHERE index_vector = ''::TSVECTOR;
 CREATE INDEX metabib_identifier_field_entry_source_idx ON metabib.identifier_field_entry (source);
 
+CREATE TABLE metabib.combined_identifier_field_entry (
+	record		BIGINT		NOT NULL,
+	metabib_field		INT		NULL,
+	index_vector	tsvector	NOT NULL
+);
+CREATE UNIQUE INDEX metabib_combined_identifier_field_entry_fakepk_idx ON metabib.combined_identifier_field_entry (record, COALESCE(metabib_field::TEXT,''));
+CREATE INDEX metabib_combined_identifier_field_entry_index_vector_idx ON metabib.combined_identifier_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_combined_identifier_field_source_idx ON metabib.combined_identifier_field_entry (metabib_field);
 
 CREATE TABLE metabib.title_field_entry (
 	id		BIGSERIAL	PRIMARY KEY,
@@ -60,6 +68,14 @@ CREATE INDEX metabib_title_field_entry_index_vector_idx ON metabib.title_field_e
 CREATE INDEX metabib_title_field_entry_value_idx ON metabib.title_field_entry (SUBSTRING(value,1,1024)) WHERE index_vector = ''::TSVECTOR;
 CREATE INDEX metabib_title_field_entry_source_idx ON metabib.title_field_entry (source);
 
+CREATE TABLE metabib.combined_title_field_entry (
+	record		BIGINT		NOT NULL,
+	metabib_field		INT		NULL,
+	index_vector	tsvector	NOT NULL
+);
+CREATE UNIQUE INDEX metabib_combined_title_field_entry_fakepk_idx ON metabib.combined_title_field_entry (record, COALESCE(metabib_field::TEXT,''));
+CREATE INDEX metabib_combined_title_field_entry_index_vector_idx ON metabib.combined_title_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_combined_title_field_source_idx ON metabib.combined_title_field_entry (metabib_field);
 
 CREATE TABLE metabib.author_field_entry (
 	id		BIGSERIAL	PRIMARY KEY,
@@ -76,6 +92,14 @@ CREATE INDEX metabib_author_field_entry_index_vector_idx ON metabib.author_field
 CREATE INDEX metabib_author_field_entry_value_idx ON metabib.author_field_entry (SUBSTRING(value,1,1024)) WHERE index_vector = ''::TSVECTOR;
 CREATE INDEX metabib_author_field_entry_source_idx ON metabib.author_field_entry (source);
 
+CREATE TABLE metabib.combined_author_field_entry (
+	record		BIGINT		NOT NULL,
+	metabib_field		INT		NULL,
+	index_vector	tsvector	NOT NULL
+);
+CREATE UNIQUE INDEX metabib_combined_author_field_entry_fakepk_idx ON metabib.combined_author_field_entry (record, COALESCE(metabib_field::TEXT,''));
+CREATE INDEX metabib_combined_author_field_entry_index_vector_idx ON metabib.combined_author_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_combined_author_field_source_idx ON metabib.combined_author_field_entry (metabib_field);
 
 CREATE TABLE metabib.subject_field_entry (
 	id		BIGSERIAL	PRIMARY KEY,
@@ -92,6 +116,14 @@ CREATE INDEX metabib_subject_field_entry_index_vector_idx ON metabib.subject_fie
 CREATE INDEX metabib_subject_field_entry_value_idx ON metabib.subject_field_entry (SUBSTRING(value,1,1024)) WHERE index_vector = ''::TSVECTOR;
 CREATE INDEX metabib_subject_field_entry_source_idx ON metabib.subject_field_entry (source);
 
+CREATE TABLE metabib.combined_subject_field_entry (
+	record		BIGINT		NOT NULL,
+	metabib_field		INT		NULL,
+	index_vector	tsvector	NOT NULL
+);
+CREATE UNIQUE INDEX metabib_combined_subject_field_entry_fakepk_idx ON metabib.combined_subject_field_entry (record, COALESCE(metabib_field::TEXT,''));
+CREATE INDEX metabib_combined_subject_field_entry_index_vector_idx ON metabib.combined_subject_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_combined_subject_field_source_idx ON metabib.combined_subject_field_entry (metabib_field);
 
 CREATE TABLE metabib.keyword_field_entry (
 	id		BIGSERIAL	PRIMARY KEY,
@@ -108,6 +140,14 @@ CREATE INDEX metabib_keyword_field_entry_index_vector_idx ON metabib.keyword_fie
 CREATE INDEX metabib_keyword_field_entry_value_idx ON metabib.keyword_field_entry (SUBSTRING(value,1,1024)) WHERE index_vector = ''::TSVECTOR;
 CREATE INDEX metabib_keyword_field_entry_source_idx ON metabib.keyword_field_entry (source);
 
+CREATE TABLE metabib.combined_keyword_field_entry (
+	record		BIGINT		NOT NULL,
+	metabib_field		INT		NULL,
+	index_vector	tsvector	NOT NULL
+);
+CREATE UNIQUE INDEX metabib_combined_keyword_field_entry_fakepk_idx ON metabib.combined_keyword_field_entry (record, COALESCE(metabib_field::TEXT,''));
+CREATE INDEX metabib_combined_keyword_field_entry_index_vector_idx ON metabib.combined_keyword_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_combined_keyword_field_source_idx ON metabib.combined_keyword_field_entry (metabib_field);
 
 CREATE TABLE metabib.series_field_entry (
 	id		BIGSERIAL	PRIMARY KEY,
@@ -124,6 +164,14 @@ CREATE INDEX metabib_series_field_entry_index_vector_idx ON metabib.series_field
 CREATE INDEX metabib_series_field_entry_value_idx ON metabib.series_field_entry (SUBSTRING(value,1,1024)) WHERE index_vector = ''::TSVECTOR;
 CREATE INDEX metabib_series_field_entry_source_idx ON metabib.series_field_entry (source);
 
+CREATE TABLE metabib.combined_series_field_entry (
+	record		BIGINT		NOT NULL,
+	metabib_field		INT		NULL,
+	index_vector	tsvector	NOT NULL
+);
+CREATE UNIQUE INDEX metabib_combined_series_field_entry_fakepk_idx ON metabib.combined_series_field_entry (record, COALESCE(metabib_field::TEXT,''));
+CREATE INDEX metabib_combined_series_field_entry_index_vector_idx ON metabib.combined_series_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_combined_series_field_source_idx ON metabib.combined_series_field_entry (metabib_field);
 
 CREATE TABLE metabib.facet_entry (
 	id		BIGSERIAL	PRIMARY KEY,
@@ -473,6 +521,59 @@ END;
 
 $func$ LANGUAGE PLPGSQL;
 
+CREATE OR REPLACE FUNCTION metabib.update_combined_index_vectors(bib_id BIGINT) RETURNS VOID AS $func$
+BEGIN
+    DELETE FROM metabib.combined_keyword_field_entry WHERE record = bib_id;
+    INSERT INTO metabib.combined_keyword_field_entry(record, metabib_field, index_vector)
+        SELECT bib_id, field, strip(COALESCE(string_agg(index_vector::TEXT,' '),'')::tsvector)
+        FROM metabib.keyword_field_entry WHERE source = bib_id GROUP BY field;
+    INSERT INTO metabib.combined_keyword_field_entry(record, metabib_field, index_vector)
+        SELECT bib_id, NULL, strip(COALESCE(string_agg(index_vector::TEXT,' '),'')::tsvector)
+        FROM metabib.keyword_field_entry WHERE source = bib_id;
+
+    DELETE FROM metabib.combined_title_field_entry WHERE record = bib_id;
+    INSERT INTO metabib.combined_title_field_entry(record, metabib_field, index_vector)
+        SELECT bib_id, field, strip(COALESCE(string_agg(index_vector::TEXT,' '),'')::tsvector)
+        FROM metabib.title_field_entry WHERE source = bib_id GROUP BY field;
+    INSERT INTO metabib.combined_title_field_entry(record, metabib_field, index_vector)
+        SELECT bib_id, NULL, strip(COALESCE(string_agg(index_vector::TEXT,' '),'')::tsvector)
+        FROM metabib.title_field_entry WHERE source = bib_id;
+
+    DELETE FROM metabib.combined_author_field_entry WHERE record = bib_id;
+    INSERT INTO metabib.combined_author_field_entry(record, metabib_field, index_vector)
+        SELECT bib_id, field, strip(COALESCE(string_agg(index_vector::TEXT,' '),'')::tsvector)
+        FROM metabib.author_field_entry WHERE source = bib_id GROUP BY field;
+    INSERT INTO metabib.combined_author_field_entry(record, metabib_field, index_vector)
+        SELECT bib_id, NULL, strip(COALESCE(string_agg(index_vector::TEXT,' '),'')::tsvector)
+        FROM metabib.author_field_entry WHERE source = bib_id;
+
+    DELETE FROM metabib.combined_subject_field_entry WHERE record = bib_id;
+    INSERT INTO metabib.combined_subject_field_entry(record, metabib_field, index_vector)
+        SELECT bib_id, field, strip(COALESCE(string_agg(index_vector::TEXT,' '),'')::tsvector)
+        FROM metabib.subject_field_entry WHERE source = bib_id GROUP BY field;
+    INSERT INTO metabib.combined_subject_field_entry(record, metabib_field, index_vector)
+        SELECT bib_id, NULL, strip(COALESCE(string_agg(index_vector::TEXT,' '),'')::tsvector)
+        FROM metabib.subject_field_entry WHERE source = bib_id;
+
+    DELETE FROM metabib.combined_series_field_entry WHERE record = bib_id;
+    INSERT INTO metabib.combined_series_field_entry(record, metabib_field, index_vector)
+        SELECT bib_id, field, strip(COALESCE(string_agg(index_vector::TEXT,' '),'')::tsvector)
+        FROM metabib.series_field_entry WHERE source = bib_id GROUP BY field;
+    INSERT INTO metabib.combined_series_field_entry(record, metabib_field, index_vector)
+        SELECT bib_id, NULL, strip(COALESCE(string_agg(index_vector::TEXT,' '),'')::tsvector)
+        FROM metabib.series_field_entry WHERE source = bib_id;
+
+    DELETE FROM metabib.combined_identifier_field_entry WHERE record = bib_id;
+    INSERT INTO metabib.combined_identifier_field_entry(record, metabib_field, index_vector)
+        SELECT bib_id, field, strip(COALESCE(string_agg(index_vector::TEXT,' '),'')::tsvector)
+        FROM metabib.identifier_field_entry WHERE source = bib_id GROUP BY field;
+    INSERT INTO metabib.combined_identifier_field_entry(record, metabib_field, index_vector)
+        SELECT bib_id, NULL, strip(COALESCE(string_agg(index_vector::TEXT,' '),'')::tsvector)
+        FROM metabib.identifier_field_entry WHERE source = bib_id;
+
+END;
+$func$ LANGUAGE PLPGSQL;
+
 CREATE OR REPLACE FUNCTION metabib.reingest_metabib_field_entries( bib_id BIGINT, skip_facet BOOL DEFAULT FALSE, skip_browse BOOL DEFAULT FALSE, skip_search BOOL DEFAULT FALSE ) RETURNS VOID AS $func$
 DECLARE
     fclass          RECORD;
@@ -537,6 +638,10 @@ BEGIN
         END IF;
 
     END LOOP;
+
+    IF NOT skip_search THEN
+        PERFORM metabib.update_combined_index_vectors(bib_id);
+    END IF;
 
     RETURN;
 END;
@@ -1490,5 +1595,75 @@ SELECT  DISTINCT
 
 END;
 $func$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION public.oils_tsearch2 () RETURNS TRIGGER AS $$
+DECLARE
+    normalizer      RECORD;
+    value           TEXT := '';
+    temp_vector     TEXT := '';
+    ts_rec          RECORD;
+    cur_weight      "char";
+BEGIN
+
+    value := NEW.value;
+    NEW.index_vector = ''::tsvector;
+
+    IF TG_TABLE_NAME::TEXT ~ 'field_entry$' THEN
+        FOR normalizer IN
+            SELECT  n.func AS func,
+                    n.param_count AS param_count,
+                    m.params AS params
+              FROM  config.index_normalizer n
+                    JOIN config.metabib_field_index_norm_map m ON (m.norm = n.id)
+              WHERE field = NEW.field
+              ORDER BY m.pos LOOP
+                EXECUTE 'SELECT ' || normalizer.func || '(' ||
+                    quote_literal( value ) ||
+                    CASE
+                        WHEN normalizer.param_count > 0
+                            THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
+                            ELSE ''
+                        END ||
+                    ')' INTO value;
+
+        END LOOP;
+        NEW.value = value;
+    END IF;
+
+    IF TG_TABLE_NAME::TEXT ~ 'browse_entry$' THEN
+        value :=  ARRAY_TO_STRING(
+            evergreen.regexp_split_to_array(value, E'\\W+'), ' '
+        );
+        value := public.search_normalize(value);
+        NEW.index_vector = to_tsvector(TG_ARGV[0]::regconfig, value);
+    ELSIF TG_TABLE_NAME::TEXT ~ 'field_entry$' THEN
+        FOR ts_rec IN
+            SELECT ts_config, index_weight
+            FROM config.metabib_class_ts_map
+            WHERE field_class = TG_ARGV[0]
+                AND index_lang IS NULL OR EXISTS (SELECT 1 FROM metabib.record_attr WHERE id = NEW.source AND index_lang IN(attrs->'item_lang',attrs->'language'))
+                AND always OR NOT EXISTS (SELECT 1 FROM config.metabib_field_ts_map WHERE metabib_field = NEW.field)
+            UNION
+            SELECT ts_config, index_weight
+            FROM config.metabib_field_ts_map
+            WHERE metabib_field = NEW.field
+               AND index_lang IS NULL OR EXISTS (SELECT 1 FROM metabib.record_attr WHERE id = NEW.source AND index_lang IN(attrs->'item_lang',attrs->'language'))
+            ORDER BY index_weight ASC
+        LOOP
+            IF cur_weight IS NOT NULL AND cur_weight != ts_rec.index_weight THEN
+                NEW.index_vector = NEW.index_vector || setweight(temp_vector::tsvector,cur_weight);
+                temp_vector = '';
+            END IF;
+            cur_weight = ts_rec.index_weight;
+            SELECT INTO temp_vector temp_vector || ' ' || to_tsvector(ts_rec.ts_config::regconfig, value)::TEXT;
+        END LOOP;
+        NEW.index_vector = NEW.index_vector || setweight(temp_vector::tsvector,cur_weight);
+    ELSE
+        NEW.index_vector = to_tsvector(TG_ARGV[0]::regconfig, value);
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
 
 COMMIT;

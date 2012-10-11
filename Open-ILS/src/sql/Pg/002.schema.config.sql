@@ -169,7 +169,11 @@ CREATE TABLE config.metabib_class (
     name     TEXT    PRIMARY KEY,
     label    TEXT    NOT NULL UNIQUE,
     buoyant  BOOL    DEFAULT FALSE NOT NULL,
-    restrict BOOL    DEFAULT FALSE NOT NULL
+    restrict BOOL    DEFAULT FALSE NOT NULL,
+    a_weight NUMERIC  DEFAULT 1.0 NOT NULL,
+    b_weight NUMERIC  DEFAULT 0.4 NOT NULL,
+    c_weight NUMERIC  DEFAULT 0.2 NOT NULL,
+    d_weight NUMERIC  DEFAULT 0.1 NOT NULL
 );
 
 CREATE TABLE config.metabib_field (
@@ -197,6 +201,49 @@ or identifier.
 $$;
 
 CREATE UNIQUE INDEX config_metabib_field_class_name_idx ON config.metabib_field (field_class, name);
+
+CREATE TABLE config.ts_config_list (
+	id			TEXT PRIMARY KEY,
+	name		TEXT NOT NULL
+);
+COMMENT ON TABLE config.ts_config_list IS $$
+Full Text Configs
+
+A list of full text configs with names and descriptions.
+$$;
+
+CREATE TABLE config.metabib_class_ts_map (
+	id				SERIAL PRIMARY KEY,
+	field_class		TEXT NOT NULL REFERENCES config.metabib_class (name),
+	ts_config		TEXT NOT NULL REFERENCES config.ts_config_list (id),
+	active			BOOL NOT NULL DEFAULT TRUE,
+	index_weight	CHAR(1) NOT NULL DEFAULT 'C' CHECK (index_weight IN ('A','B','C','D')),
+	index_lang		TEXT NULL,
+	search_lang		TEXT NULL,
+	always			BOOL NOT NULL DEFAULT true
+);
+COMMENT ON TABLE config.metabib_class_ts_map IS $$
+Text Search Configs for metabib class indexing
+
+This table contains text search config definitions for
+storing index_vector values.
+$$;
+
+CREATE TABLE config.metabib_field_ts_map (
+	id				SERIAL PRIMARY KEY,
+	metabib_field	INT NOT NULL REFERENCES config.metabib_field (id),
+	ts_config		TEXT NOT NULL REFERENCES config.ts_config_list (id),
+	active			BOOL NOT NULL DEFAULT TRUE,
+	index_weight	CHAR(1) NOT NULL DEFAULT 'C' CHECK (index_weight IN ('A','B','C','D')),
+	index_lang		TEXT NULL,
+	search_lang		TEXT NULL
+);
+COMMENT ON TABLE config.metabib_field_ts_map IS $$
+Text Search Configs for metabib field indexing
+
+This table contains text search config definitions for
+storing index_vector values.
+$$;
 
 CREATE TABLE config.metabib_search_alias (
     alias       TEXT    PRIMARY KEY,
@@ -783,75 +830,6 @@ BEGIN
     END IF;
 END;
 $f$ LANGUAGE PLPGSQL;
-
-CREATE OR REPLACE FUNCTION oils_tsearch2 () RETURNS TRIGGER AS $$
-DECLARE
-    normalizer      RECORD;
-    value           TEXT := '';
-BEGIN
-
-    value := NEW.value;
-
-    IF TG_TABLE_NAME::TEXT ~ 'field_entry$' THEN
-        FOR normalizer IN
-            SELECT  n.func AS func,
-                    n.param_count AS param_count,
-                    m.params AS params
-              FROM  config.index_normalizer n
-                    JOIN config.metabib_field_index_norm_map m ON (m.norm = n.id)
-              WHERE field = NEW.field AND m.pos < 0
-              ORDER BY m.pos LOOP
-                EXECUTE 'SELECT ' || normalizer.func || '(' ||
-                    quote_literal( value ) ||
-                    CASE
-                        WHEN normalizer.param_count > 0
-                            THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
-                            ELSE ''
-                        END ||
-                    ')' INTO value;
-
-        END LOOP;
-
-        NEW.value := value;
-    END IF;
-
-    IF NEW.index_vector = ''::tsvector THEN
-        RETURN NEW;
-    END IF;
-
-    IF TG_TABLE_NAME::TEXT ~ 'field_entry$' THEN
-        FOR normalizer IN
-            SELECT  n.func AS func,
-                    n.param_count AS param_count,
-                    m.params AS params
-              FROM  config.index_normalizer n
-                    JOIN config.metabib_field_index_norm_map m ON (m.norm = n.id)
-              WHERE field = NEW.field AND m.pos >= 0
-              ORDER BY m.pos LOOP
-                EXECUTE 'SELECT ' || normalizer.func || '(' ||
-                    quote_literal( value ) ||
-                    CASE
-                        WHEN normalizer.param_count > 0
-                            THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
-                            ELSE ''
-                        END ||
-                    ')' INTO value;
-
-        END LOOP;
-    END IF;
-
-    IF TG_TABLE_NAME::TEXT ~ 'browse_entry$' THEN
-        value :=  ARRAY_TO_STRING(
-            evergreen.regexp_split_to_array(value, E'\\W+'), ' '
-        );
-        value := public.search_normalize(value);
-    END IF;
-
-    NEW.index_vector = to_tsvector((TG_ARGV[0])::regconfig, value);
-
-    RETURN NEW;
-END;
-$$ LANGUAGE PLPGSQL;
 
 -- List applied db patches that are deprecated by (and block the application of) my_db_patch
 CREATE OR REPLACE FUNCTION evergreen.upgrade_list_applied_deprecates ( my_db_patch TEXT ) RETURNS SETOF evergreen.patch AS $$

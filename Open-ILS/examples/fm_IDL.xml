@@ -2311,6 +2311,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Label" name="label" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="Buoyant?" name="buoyant" reporter:datatype="bool" />
 			<field reporter:label="Restrict?" name="restrict" reporter:datatype="bool" />
+			<field reporter:label="A Weight" name="a_weight" reporter:datatype="float" />
+			<field reporter:label="B Weight" name="b_weight" reporter:datatype="float" />
+			<field reporter:label="C Weight" name="c_weight" reporter:datatype="float" />
+			<field reporter:label="D Weight" name="d_weight" reporter:datatype="float" />
 			<field reporter:label="Fields" name="fields" reporter:datatype="link" oils_persist:virtual="true"/>
 		</fields>
 		<links>
@@ -9820,6 +9824,68 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
+
+	<class id="ctcl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::ts_config_list" oils_persist:tablename="config.ts_config_list" reporter:label="Text Search Configs">
+		<fields oils_persist:primary="id">
+			<field reporter:label="Text Search Config" reporter:selector="name" reporter:datatype="text" name="id"/>
+			<field reporter:label="Text Search Config Name" reporter:datatype="text" name="name"/>
+		</fields>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="cmcts" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::metabib_class_ts_map" oils_persist:tablename="config.metabib_class_ts_map" reporter:label="Metabib Class TS Map">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.metabib_class_ts_map_id_seq">
+			<field reporter:label="Map ID" reporter:datatype="id" name="id"/>
+			<field reporter:label="Metabib Class" reporter:datatype="text" name="field_class"/>
+			<field reporter:label="Text Search Config" reporter:datatype="text" name="ts_config"/>
+			<field reporter:label="Active?" reporter:datatype="bool" name="active"/>
+			<field reporter:label="Index Weight" reporter:datatype="text" name="index_weight"/>
+			<field reporter:label="Index Language" reporter:datatype="text" name="index_lang"/>
+			<field reporter:label="Search Language" reporter:datatype="text" name="search_lang"/>
+			<field reporter:label="Always Apply?" reporter:datatype="bool" name="always"/>
+		</fields>
+		<links>
+			<link field="field_class" reltype="has_a" key="name" map="" class="cmc"/>
+			<link field="ts_config" reltype="has_a" key="id" map="" class="ctcl"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_INDEX_NORMALIZER" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_INDEX_NORMALIZER" global_required="true"/>
+				<delete permission="ADMIN_INDEX_NORMALIZER" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="cmfts" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::metabib_field_ts_map" oils_persist:tablename="config.metabib_field_ts_map" reporter:label="Metabib Field TS Map">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.metabib_field_ts_map_id_seq">
+			<field reporter:label="Map ID" reporter:datatype="id" name="id"/>
+			<field reporter:label="Metabib Field" reporter:datatype="text" name="metabib_field"/>
+			<field reporter:label="Text Search Config" reporter:datatype="text" name="ts_config"/>
+			<field reporter:label="Active?" reporter:datatype="bool" name="active"/>
+			<field reporter:label="Index Weight" reporter:datatype="text" name="index_weight"/>
+			<field reporter:label="Index Language" reporter:datatype="text" name="index_lang"/>
+			<field reporter:label="Search Language" reporter:datatype="text" name="search_lang"/>
+		</fields>
+		<links>
+			<link field="metabib_field" reltype="has_a" key="id" map="" class="cmf"/>
+			<link field="ts_config" reltype="has_a" key="id" map="" class="ctcl"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_INDEX_NORMALIZER" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_INDEX_NORMALIZER" global_required="true"/>
+				<delete permission="ADMIN_INDEX_NORMALIZER" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
 
 	<!-- ********************************************************************************************************************* -->
 	<!-- What follows is a set of example extensions that are useful for PINES.  Comment out or remove if you don't want them. -->

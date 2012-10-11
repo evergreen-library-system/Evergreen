@@ -53,6 +53,21 @@ sub _initialize_parser {
                 'open-ils.cstore.direct.config.record_attr_definition.search.atomic',
                 { name => { "!=" => undef } }
             )->gather(1),
+        config_metabib_class_ts_map         =>
+            $cstore->request(
+                'open-ils.cstore.direct.config.metabib_class_ts_map.search.atomic',
+                { active => "t" }
+            )->gather(1),
+        config_metabib_field_ts_map         =>
+            $cstore->request(
+                'open-ils.cstore.direct.config.metabib_field_ts_map.search.atomic',
+                { active => "t" }
+            )->gather(1),
+        config_metabib_class                =>
+            $cstore->request(
+                'open-ils.cstore.direct.config.metabib_class.search.atomic',
+                { name => { "!=" => undef } }
+            )->gather(1),
     );
 
     $cstore->disconnect;

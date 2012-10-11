@@ -2165,4 +2165,25 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION evergreen.rel_bump(terms TEXT[], value TEXT, bumps TEXT[], mults NUMERIC[]) RETURNS NUMERIC AS
+$BODY$
+use strict;
+my ($terms,$value,$bumps,$mults) = @_;
+
+my $retval = 1;
+
+for (my $id = 0; $id < @$bumps; $id++) {
+        if ($bumps->[$id] eq 'first_word') {
+                $retval *= $mults->[$id] if ($value =~ /^$terms->[0]/);
+        } elsif ($bumps->[$id] eq 'full_match') {
+                my $fullmatch = join(' ', @$terms);
+                $retval *= $mults->[$id] if ($value =~ /^$fullmatch$/);
+        } elsif ($bumps->[$id] eq 'word_order') {
+                my $wordorder = join('.*', @$terms);
+                $retval *= $mults->[$id] if ($value =~ /$wordorder/);
+        }
+}
+return $retval;
+$BODY$ LANGUAGE plperlu IMMUTABLE STRICT COST 100;
+
 -- user activity functions --

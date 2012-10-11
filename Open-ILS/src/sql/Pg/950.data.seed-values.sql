@@ -12362,3 +12362,35 @@ VALUES (
     'bool',
     NULL
 );
+
+
+INSERT INTO config.ts_config_list(id, name) VALUES
+    ('simple','Non-Stemmed Simple'),
+    ('danish_nostop','Danish Stemmed'),
+    ('dutch_nostop','Dutch Stemmed'),
+    ('english_nostop','English Stemmed'),
+    ('finnish_nostop','Finnish Stemmed'),
+    ('french_nostop','French Stemmed'),
+    ('german_nostop','German Stemmed'),
+    ('hungarian_nostop','Hungarian Stemmed'),
+    ('italian_nostop','Italian Stemmed'),
+    ('norwegian_nostop','Norwegian Stemmed'),
+    ('portuguese_nostop','Portuguese Stemmed'),
+    ('romanian_nostop','Romanian Stemmed'),
+    ('russian_nostop','Russian Stemmed'),
+    ('spanish_nostop','Spanish Stemmed'),
+    ('swedish_nostop','Swedish Stemmed'),
+    ('turkish_nostop','Turkish Stemmed');
+
+INSERT INTO config.metabib_class_ts_map(field_class, ts_config, index_weight, always) VALUES
+    ('keyword','simple','A',true),
+    ('keyword','english_nostop','C',true),
+    ('title','simple','A',true),
+    ('title','english_nostop','C',true),
+    ('author','simple','A',true),
+    ('author','english_nostop','C',true),
+    ('series','simple','A',true),
+    ('series','english_nostop','C',true),
+    ('subject','simple','A',true),
+    ('subject','english_nostop','C',true),
+    ('identifier','simple','A',true);
