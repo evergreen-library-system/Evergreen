@@ -126,23 +126,47 @@
     <command id="cmd_local_admin_closed_dates"
              perm="actor.org_unit.closed_date.update actor.org_unit.closed_date.create actor.org_unit.closed_date.delete" 
              />
-    <command id="cmd_local_admin_copy_locations" />
+    <command id="cmd_local_admin_copy_locations" 
+             perm="CREATE_COPY_LOCATION UPDATE_COPY_LOCATION DELETE_COPY_LOCATION"
+             />
     <command id="cmd_local_admin_lib_settings" />
-    <command id="cmd_local_admin_non_cat_types" />
-    <command id="cmd_local_admin_stat_cats" />
-    <command id="cmd_local_admin_standing_penalty" />
-    <command id="cmd_local_admin_grp_penalty_threshold" />
-    <command id="cmd_local_admin_copy_location_order" />
+    <command id="cmd_local_admin_non_cat_types" 
+             perm="CREATE_NON_CAT_TYPE UPDATE_NON_CAT_TYPE DELETE_NON_CAT_TYPE"
+             />
+    <command id="cmd_local_admin_stat_cats" 
+             perm="CREATE_PATRON_STAT_CAT CREATE_COPY_STAT_CAT UPDATE_PATRON_STAT_CAT UPDATE_COPY_STAT_CAT DELETE_PATRON_STAT_CAT DELETE_COPY_STAT_CAT"
+             />
+    <command id="cmd_local_admin_standing_penalty" 
+             perm="ADMIN_STANDING_PENALTY" 
+             />
+    <command id="cmd_local_admin_grp_penalty_threshold" 
+             perm="ADMIN_GROUP_PENALTY_THRESHOLD" 
+             />
+    <command id="cmd_local_admin_copy_location_order" 
+             perm="ADMIN_COPY_LOCATION_ORDER" 
+             />
     <command id="cmd_local_admin_external_text_editor" />
-    <command id="cmd_local_admin_idl_field_doc" />
-    <command id="cmd_local_admin_action_trigger" />
-    <command id="cmd_local_admin_survey" />
-    <command id="cmd_local_admin_reports" />
-    <command id="cmd_local_admin_age_overdue_circulations_to_lost" />
+    <command id="cmd_local_admin_idl_field_doc" 
+             perm="ADMIN_FIELD_DOC" 
+             />
+    <!-- more A/T perms may need to be added -->
+    <command id="cmd_local_admin_action_trigger" 
+             perm="ADMIN_TRIGGER_EVENT_DEF CREATE_TRIGGER_EVENT_DEF DELETE_TRIGGER_EVENT_DEF UPDATE_TRIGGER_EVENT_DEF"
+             />
+    <command id="cmd_local_admin_survey" 
+             perm="ADMIN_SURVEY CREATE_SURVEY DELETE_SURVEY UPDATE_SURVEY"
+             />
+    <command id="cmd_local_admin_reports" 
+             perm="RUN_REPORTS"
+             />
+    <command id="cmd_local_admin_age_overdue_circulations_to_lost" 
+             perm="SET_CIRC_LOST"
+             />
     <command id="cmd_local_admin_cash_reports" />
     <command id="cmd_local_admin_transit_list" />
     <command id="cmd_local_admin_barcode_completion"
-             perm="UPDATE_ORG_UNIT_SETTING_ALL" />
+             perm="UPDATE_ORG_UNIT_SETTING_ALL"
+             />
     <command id="cmd_local_admin_circ_matrix_matchpoint"
              perm="ADMIN_CIRC_MATRIX_MATCHPOINT VIEW_CIRC_MATRIX_MATCHPOINT"
              />
@@ -151,17 +175,22 @@
              />
     <command id="cmd_local_admin_work_log" />
     <command id="cmd_local_admin_patrons_due_refunds" />
-    <command id="cmd_local_admin_copy_template" />
+    <command id="cmd_local_admin_copy_template" 
+             perm="ADMIN_ASSET_COPY_TEMPLATE"
+             />
     <command id="cmd_local_admin_item_attribute_editor" />
     <command id="cmd_local_admin_address_alert"
-             perm="ADMIN_ADDRESS_ALERT VIEW_ADDRESS_ALERT" />
+             perm="ADMIN_ADDRESS_ALERT VIEW_ADDRESS_ALERT"
+             />
     <command id="cmd_local_admin_circ_limit_set"
              perm="ADMIN_CIRC_MATRIX_MATCHPOINT VIEW_CIRC_MATRIX_MATCHPOINT"
              />
     <command id="cmd_local_admin_copy_location_group"
-             perm="ADMIN_COPY_LOCATION_GROUP VIEW_COPY_LOCATION_GROUP" />
+             perm="ADMIN_COPY_LOCATION_GROUP VIEW_COPY_LOCATION_GROUP"
+             />
     <command id="cmd_local_admin_search_filter_group"
-             perm="ADMIN_SEARCH_FILTER_GROUP VIEW_SEARCH_FILTER_GROUP" />
+             perm="ADMIN_SEARCH_FILTER_GROUP VIEW_SEARCH_FILTER_GROUP"
+             />
 
     <!-- server admin menu commands -->
     <command id="cmd_server_admin_org_type"
@@ -170,19 +199,33 @@
     <command id="cmd_server_admin_org_unit"
              perm="CREATE_ORG_UNIT DELETE_ORG_UNIT UPDATE_ORG_UNIT"
              />
-    <command id="cmd_server_admin_grp_tree" />
+    <command id="cmd_server_admin_grp_tree" 
+             perm="CREATE_PERM DELETE_PERM UPDATE_PERM ASSIGN_GROUP_PERM REMOVE_GROUP_PERM UPDATE_GROUP_PERM"
+             />
     <command id="cmd_server_admin_perm_list"
              perm="CREATE_PERM DELETE_PERM UPDATE_PERM"
              />
     <command id="cmd_server_admin_copy_status"
              perm="CREATE_COPY_STATUS DELETE_COPY_STATUS UPDATE_COPY_STATUS"
              />
-    <command id="cmd_server_admin_marc_code" />
-    <command id="cmd_server_admin_coded_value_map" />
-    <command id="cmd_server_admin_metabib_field" />
-    <command id="cmd_server_admin_billing_type" />
-    <command id="cmd_server_admin_acn_prefix" />
-    <command id="cmd_server_admin_acn_suffix" />
+    <command id="cmd_server_admin_marc_code" 
+             perm="ADMIN_MARC_CODE CREATE_MARC_CODE DELETE_MARC_CODE UPDATE_MARC_CODE"
+             />
+    <command id="cmd_server_admin_coded_value_map" 
+             perm="ADMIN_CODED_VALUE"
+             />
+    <command id="cmd_server_admin_metabib_field" 
+             perm="CREATE_METABIB_FIELD DELETE_METABIB_FIELD UPDATE_METABIB_FIELD"
+             />
+    <command id="cmd_server_admin_billing_type" 
+             perm="CREATE_BILLING_TYPE DELETE_BILLING_TYPE UPDATE_BILLING_TYPE"
+             />
+    <command id="cmd_server_admin_acn_prefix" 
+             perm="CREATE_VOLUME_PREFIX DELETE_VOLUME_PREFIX UPDATE_VOLUME_PREFIX"
+             />
+    <command id="cmd_server_admin_acn_suffix" 
+             perm="CREATE_VOLUME_SUFFIX DELETE_VOLUME_SUFFIX UPDATE_VOLUME_SUFFIX"
+             />
     <command id="cmd_server_admin_acq_invoice_item_type" />
     <command id="cmd_server_admin_acq_invoice_payment_method" />
     <command id="cmd_server_admin_acq_cancel_reason" />
@@ -201,8 +244,12 @@
     <command id="cmd_server_admin_acq_currency_type" />
     <command id="cmd_server_admin_acq_exchange_rate" />
     <command id="cmd_server_admin_acq_distrib_formula" />
-    <command id="cmd_server_admin_sms_carrier" />
-    <command id="cmd_server_admin_z39_source" />
+    <command id="cmd_server_admin_sms_carrier" 
+             perm="ADMIN_SMS_CARRIER"
+             />
+    <command id="cmd_server_admin_z39_source" 
+             perm="ADMIN_Z3950_SOURCE"
+             />
     <command id="cmd_server_admin_circ_mod" 
              perm="CREATE_CIRC_MOD DELETE_CIRC_MOD UPDATE_CIRC_MOD ADMIN_CIRC_MOD"
              />
@@ -212,9 +259,15 @@
     <command id="cmd_server_admin_global_flag"
              perm="ADMIN_GLOBAL_FLAG"
              />
-    <command id="cmd_server_admin_org_unit_setting_type" />
-    <command id="cmd_server_admin_import_match_set" />
-    <command id="cmd_server_admin_usr_setting_type" />
+    <command id="cmd_server_admin_org_unit_setting_type" 
+             perm="ADMIN_ORG_UNIT_SETTING_TYPE"
+             />
+    <command id="cmd_server_admin_import_match_set" 
+             perm="ADMIN_IMPORT_MATCH_SET"
+             />
+    <command id="cmd_server_admin_usr_setting_type" 
+             perm="ADMIN_USER_SETTING_TYPE"
+             />
     <command id="cmd_server_admin_config_hard_due_date"
              perm="CREATE_CIRC_DURATION DELETE_CIRC_DURATION UPDATE_CIRC_DURATION"
              />
