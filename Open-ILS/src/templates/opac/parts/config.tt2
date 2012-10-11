@@ -68,5 +68,6 @@ facet.display = [
     {facet_class => 'series',  facet_order => ['seriestitle']},
     {facet_class => 'subject', facet_order => ['name', 'geographic']}
 ];
+facet.default_display_count = 5;
 
 %]

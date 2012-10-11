@@ -287,7 +287,7 @@ sub get_records_and_facets {
     # collect the facet data
     my $search = OpenSRF::AppSession->create('open-ils.search');
     my $facet_req = $search->request(
-        'open-ils.search.facet_cache.retrieve', $facet_key, 10
+        'open-ils.search.facet_cache.retrieve', $facet_key
     ) if $facet_key;
 
     # gather up the unapi recs
@@ -306,7 +306,13 @@ sub get_records_and_facets {
             for my $ent (keys %$entries) {
                 push(@entries, {value => $ent, count => $$entries{$ent}});
             };
-            @entries = sort { $b->{count} <=> $a->{count} } @entries;
+
+            # Sort facet entries by 1) count descending, 2) text ascending
+            @entries = sort {
+                $b->{count} <=> $a->{count} ||
+                $a->{value} cmp $b->{value}
+            } @entries;
+
             $facets->{$cmf_id} = {
                 cmf => $self->ctx->{get_cmf}->($cmf_id),
                 data => \@entries

@@ -1049,9 +1049,12 @@ div.facet_sidebar {
 	overflow:hidden;
 }
 
-.facet_box_temp .header .button {
-	float:right;
-	padding-right:6px;
+
+.facet_box_temp .header a.button {
+    float:right;
+    padding-top:6px;
+    padding-right:6px;
+    color:#fffffF;
 }
 
 .facet_box_wrapper .box_wrapper {
