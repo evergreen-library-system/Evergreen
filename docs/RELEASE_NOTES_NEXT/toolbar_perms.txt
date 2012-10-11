@@ -1,0 +1,12 @@
+Upgrade Notes
+-------------
+Custom toolbar permissions
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+With the addition of more granular permissions for configuring a custom
+toolbars, the ADMIN_TOOLBAR permission alone will not allow users to 
+configure a custom toolbar. This permission must now be used in conjunction
+with one or more of the following permissions:
+
+* ADMIN_TOOLBAR_FOR_ORG
+* ADMIN_TOOLBAR_FOR_USER
+* ADMIN_TOOLBAR_FOR_WORKSTATION
