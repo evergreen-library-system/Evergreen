@@ -38,7 +38,7 @@
                 IF code.match('[vxyz]'); " &gt; "; END;
                 # at this point, we actually have a partial term to use.
                 single_term = subfield.textContent | html;
-                all_terms.push(subfield.textContent);
+                all_terms.push(subfield.textContent.replace('[#"^$\+\-,\.:;&|\[\]()]', ''));
                 total_term = all_terms.join(" ").replace('\s+$', '');
             %]
 <a href="[% mkurl(ctx.opac_root _ '/results', {qtype=>'subject', query=>total_term}, stop_parms); %]">[% single_term %]</a>
