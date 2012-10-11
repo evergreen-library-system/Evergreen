@@ -48,7 +48,24 @@
                         });
                     });
                 [% END; # IF status unknown
-            END; 
-        END; # IF ident
+            END  %] 
+
+            /* Load novelist content */
+            novSelect.loadContentForQuery(
+                {
+                    ClientIdentifier : '[% ident %]',
+                    ISBN : '[% ident %]',
+                    version : '2.1'
+                }, 
+                '[% ENV.OILS_NOVELIST_PROFILE %]',
+                '[% ENV.OILS_NOVELIST_PASSWORD %]',
+                function(d){
+                    // note if d.length == 0, there is no content to display
+                    // hide the Loading... text
+                    dojo.byId('novelist-loading').innerHTML = '';
+                }
+            );
+
+        [% END; # IF ident
     %]
 </script>
