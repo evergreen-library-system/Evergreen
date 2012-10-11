@@ -212,8 +212,13 @@
                     NEXT IF cp.visible == 'false';
                     
                     loc = copy.findnodes('./*[local-name()="location"]');
+                    NEXT IF loc.getAttribute('opac_visible') == 'false';
+
                     circlib = copy.findnodes('./*[local-name()="circlib"]');
+                    NEXT IF circlib.getAttribute('opac_visible') == 'false';
+
                     status = copy.findnodes('./*[local-name()="status"]');
+                    NEXT IF status.getAttribute('opac_visible') == 'false';
 
                     holding = {
                         label => vol.label,
