@@ -32,7 +32,8 @@ sub juv_to_adult {
 	my $sql = <<"	SQL";
             UPDATE  actor.usr
               SET   juvenile = FALSE
-              WHERE AGE(dob) > ?::INTERVAL;
+              WHERE AGE(dob) > ?::INTERVAL
+	      AND juvenile IS TRUE;
 	SQL
 
     my $sth = actor::user->db_Main->prepare_cached($sql);
