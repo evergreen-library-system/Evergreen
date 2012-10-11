@@ -383,12 +383,12 @@ sub add_bib_holdings {
     my $bib = shift;
     my $r = shift;
 
-    my $cn_list = $bib->call_numbers;
+    my $cn_list = [ grep { $_->deleted eq 'f' } @{ $bib->call_numbers } ];
     if ($cn_list && @$cn_list) {
 
         $count{cn} += @$cn_list;
-    
-        my $cp_list = [ map { @{ $_->copies } } @$cn_list ];
+
+        my $cp_list = [ grep { $_->deleted eq 'f' } map { @{ $_->copies } } @$cn_list ];
         if ($cp_list && @$cp_list) {
 
             my %cn_map;
