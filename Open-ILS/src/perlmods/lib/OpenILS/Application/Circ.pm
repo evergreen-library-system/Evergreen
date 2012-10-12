@@ -259,6 +259,9 @@ __PACKAGE__->register_method(
 
 sub staff_age_to_lost {
     my( $self, $conn, $auth, $args ) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    return $e->event unless $e->allowed('SET_CIRC_LOST', $args->{'circ_lib'});
 
     my $orgs = $U->get_org_descendants($args->{'circ_lib'});
     my $profiles = $U->fetch_permission_group_descendants($args->{'user_profile'});
