@@ -38,7 +38,7 @@
         [%# for the origin of these hard coded options, see the definition
         of vandelay.match_set.mtype in 012.schema.vandelay.sql %]
         <option value="biblio">biblio</option>
-        <option value="authority">authority</option>
+        <!-- XXX: nah <option value="authority">authority</option> -->
         <!-- XXX: nah <option value="mfhd">mfhd</option> -->
     </select>
 </div>
