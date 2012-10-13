@@ -580,19 +580,27 @@ DECLARE
     ind_data        metabib.field_entry_template%ROWTYPE;
     mbe_row         metabib.browse_entry%ROWTYPE;
     mbe_id          BIGINT;
+    b_skip_facet    BOOL;
+    b_skip_browse   BOOL;
+    b_skip_search   BOOL;
 BEGIN
+
+    SELECT COALESCE(NULLIF(skip_facet, FALSE), enabled) INTO b_skip_facet FROM config.internal_flag WHERE name = 'ingest.skip_facet_indexing';
+    SELECT COALESCE(NULLIF(skip_browse, FALSE), enabled) INTO b_skip_browse FROM config.internal_flag WHERE name = 'ingest.skip_browse_indexing';
+    SELECT COALESCE(NULLIF(skip_search, FALSE), enabled) INTO b_skip_search FROM config.internal_flag WHERE name = 'ingest.skip_search_indexing';
+
     PERFORM * FROM config.internal_flag WHERE name = 'ingest.assume_inserts_only' AND enabled;
     IF NOT FOUND THEN
-        IF NOT skip_search THEN
+        IF NOT b_skip_search THEN
             FOR fclass IN SELECT * FROM config.metabib_class LOOP
                 -- RAISE NOTICE 'Emptying out %', fclass.name;
                 EXECUTE $$DELETE FROM metabib.$$ || fclass.name || $$_field_entry WHERE source = $$ || bib_id;
             END LOOP;
         END IF;
-        IF NOT skip_facet THEN
+        IF NOT b_skip_facet THEN
             DELETE FROM metabib.facet_entry WHERE source = bib_id;
         END IF;
-        IF NOT skip_browse THEN
+        IF NOT b_skip_browse THEN
             DELETE FROM metabib.browse_entry_def_map WHERE source = bib_id;
         END IF;
     END IF;
@@ -602,12 +610,12 @@ BEGIN
             ind_data.field = -1 * ind_data.field;
         END IF;
 
-        IF ind_data.facet_field AND NOT skip_facet THEN
+        IF ind_data.facet_field AND NOT b_skip_facet THEN
             INSERT INTO metabib.facet_entry (field, source, value)
                 VALUES (ind_data.field, ind_data.source, ind_data.value);
         END IF;
 
-        IF ind_data.browse_field AND NOT skip_browse THEN
+        IF ind_data.browse_field AND NOT b_skip_browse THEN
             -- A caveat about this SELECT: this should take care of replacing
             -- old mbe rows when data changes, but not if normalization (by
             -- which I mean specifically the output of
@@ -627,7 +635,7 @@ BEGIN
                 VALUES (mbe_id, ind_data.field, ind_data.source);
         END IF;
 
-        IF ind_data.search_field AND NOT skip_search THEN
+        IF ind_data.search_field AND NOT b_skip_search THEN
             EXECUTE $$
                 INSERT INTO metabib.$$ || ind_data.field_class || $$_field_entry (field, source, value)
                     VALUES ($$ ||

@@ -8929,6 +8929,39 @@ INSERT INTO config.global_flag (name, label, enabled)
 
 INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
     VALUES (
+        'ingest.skip_browse_indexing',
+        oils_i18n_gettext(
+            'ingest.skip_browse_indexing',
+            'Bibliographic Record Ingest: Disable extraction and indexing of browse data',
+            'cgf', 
+            'label'
+        )
+    );
+
+INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
+    VALUES (
+        'ingest.skip_search_indexing',
+        oils_i18n_gettext(
+            'ingest.skip_search_indexing',
+            'Bibliographic Record Ingest: Disable extraction and indexing of search data',
+            'cgf', 
+            'label'
+        )
+    );
+
+INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
+    VALUES (
+        'ingest.skip_facet_indexing',
+        oils_i18n_gettext(
+            'ingest.skip_facet_indexing',
+            'Bibliographic Record Ingest: Disable extraction and indexing of facet data',
+            'cgf', 
+            'label'
+        )
+    );
+
+INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
+    VALUES (
         'ingest.disable_authority_linking',
         oils_i18n_gettext(
             'ingest.disable_authority_linking',
