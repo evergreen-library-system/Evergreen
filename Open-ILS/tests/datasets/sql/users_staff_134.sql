@@ -1,9 +1,7 @@
-BEGIN;
-
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (13, 3, 'sforbes', 6, 'Forbes', 'samuelf1234', 
-        'Samuel', 'Eugene', '2009-01-16', '1975-06-26', '');
+        'Samuel', 'Eugene', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -30,7 +28,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (13, 1, 'vcampbell', 4, 'Campbell', 'vincentc1234', 
-        'Vincent', 'Lawrence', '2014-03-03', '1998-10-17', '');
+        'Vincent', 'Lawrence', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -57,7 +55,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (15, 3, 'afrey', 9, 'Frey', 'annief1234', 
-        'Annie', 'Jessica', '2010-02-07', '1997-12-07', '');
+        'Annie', 'Jessica', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -84,7 +82,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (15, 3, 'msalinas', 9, 'Salinas', 'marks1234', 
-        'Mark', 'Christopher', '2007-06-08', '1999-06-13', 'II');
+        'Mark', 'Christopher', NOW() + '3 years'::INTERVAL, '1999-06-13', 'II');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -111,7 +109,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (15, 1, 'klindsey', 8, 'Lindsey', 'kennethl1234', 
-        'Kenneth', 'Jesse', '2014-12-27', '1964-10-19', '');
+        'Kenneth', 'Jesse', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -138,7 +136,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (15, 3, 'mdavis', 8, 'Davis', 'marthad1234', 
-        'Martha', '', '2008-10-27', '1983-05-13', '');
+        'Martha', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -165,7 +163,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (15, 3, 'vfreeman', 7, 'Freeman', 'virginiaf1234', 
-        'Virginia', 'Johanna', '2009-10-05', '1967-07-23', 'Jr');
+        'Virginia', 'Johanna', NOW() + '3 years'::INTERVAL, '1967-07-23', 'Jr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -192,7 +190,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (15, 3, 'lmartinez', 7, 'Martinez', 'leroym1234', 
-        'Leroy', 'Brian', '2013-05-19', '1968-03-11', '');
+        'Leroy', 'Brian', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -219,7 +217,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (15, 1, 'warmstrong', 6, 'Armstrong', 'williama1234', 
-        'William', 'William', '2014-05-28', '1980-08-13', '');
+        'William', 'William', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -246,7 +244,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (15, 3, 'acotton', 6, 'Cotton', 'amyc1234', 
-        'Amy', 'Ada', '2012-08-01', '1984-12-16', '');
+        'Amy', 'Ada', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -273,7 +271,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (15, 1, 'sbarton', 5, 'Barton', 'sarahb1234', 
-        'Sarah', 'Valerie', '2015-07-08', '1984-03-06', '');
+        'Sarah', 'Valerie', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -300,7 +298,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (15, 1, 'jhammond', 5, 'Hammond', 'jamesh1234', 
-        'James', 'Michael', '2007-11-13', '1988-02-17', '');
+        'James', 'Michael', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -327,7 +325,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (15, 3, 'ajoseph', 4, 'Joseph', 'alexj1234', 
-        'Alex', 'Edward', '2008-05-19', '1968-02-14', '');
+        'Alex', 'Edward', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -354,7 +352,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (15, 3, 'imccoy', 4, 'Mccoy', 'idam1234', 
-        'Ida', 'Gloria', '2015-09-12', '1963-08-19', '');
+        'Ida', 'Gloria', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -381,7 +379,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (14, 3, 'dwright', 9, 'Wright', 'dennisw1234', 
-        'Dennis', 'Ernest', '2010-01-06', '1998-07-28', '');
+        'Dennis', 'Ernest', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -408,7 +406,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (14, 1, 'alynch', 9, 'Lynch', 'armandol1234', 
-        'Armando', '', '2015-05-16', '1967-08-16', '');
+        'Armando', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -435,7 +433,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (14, 3, 'rgraham', 8, 'Graham', 'robertg1234', 
-        'Robert', '', '2007-12-28', '1987-03-12', '');
+        'Robert', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -462,7 +460,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (14, 1, 'sthompson', 8, 'Thompson', 'sherrit1234', 
-        'Sherri', '', '2010-12-25', '1964-01-16', '');
+        'Sherri', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -489,7 +487,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (14, 1, 'ngarcia', 7, 'Garcia', 'nanetteg1234', 
-        'Nanette', 'Helen', '2007-12-02', '1972-12-01', '');
+        'Nanette', 'Helen', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -516,7 +514,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (14, 3, 'rcook', 7, 'Cook', 'raymondc1234', 
-        'Raymond', 'Boyd', '2008-11-11', '1968-12-05', '');
+        'Raymond', 'Boyd', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -543,7 +541,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (14, 3, 'kbrewer', 6, 'Brewer', 'katherineb1234', 
-        'Katherine', '', '2006-01-16', '1980-12-04', '');
+        'Katherine', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -570,7 +568,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (14, 1, 'cwashington', 6, 'Washington', 'christopherw1234', 
-        'Christopher', '', '2006-06-25', '1998-08-05', '');
+        'Christopher', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -597,7 +595,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (14, 3, 'dmurray', 5, 'Murray', 'dawnm1234', 
-        'Dawn', 'Katherine', '2007-09-05', '1973-05-16', '');
+        'Dawn', 'Katherine', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -624,7 +622,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (14, 1, 'bwatts', 5, 'Watts', 'barbaraw1234', 
-        'Barbara', 'Gloria', '2006-07-07', '1973-02-08', '');
+        'Barbara', 'Gloria', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -651,7 +649,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (14, 3, 'mmartin', 4, 'Martin', 'marym1234', 
-        'Mary', 'Shannon', '2013-11-16', '1974-06-10', 'Sr');
+        'Mary', 'Shannon', NOW() + '3 years'::INTERVAL, NULL, 'Sr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -678,7 +676,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (14, 3, 'vford', 4, 'Ford', 'vivianf1234', 
-        'Vivian', 'Darlene', '2011-02-28', '1971-08-03', '');
+        'Vivian', 'Darlene', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -705,7 +703,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (12, 1, 'gsuarez', 9, 'Suarez', 'garys1234', 
-        'Gary', 'Joel', '2007-10-23', '1971-07-05', 'Sr');
+        'Gary', 'Joel', NOW() + '3 years'::INTERVAL, NULL, 'Sr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -732,7 +730,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (12, 1, 'eellis', 9, 'Ellis', 'edwarde1234', 
-        'Edward', 'David', '2010-10-23', '1998-05-05', '');
+        'Edward', 'David', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -759,7 +757,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (12, 1, 'nward', 8, 'Ward', 'naomiw1234', 
-        'Naomi', 'Angela', '2010-10-07', '1987-02-23', 'Sr');
+        'Naomi', 'Angela', NOW() + '3 years'::INTERVAL, NULL, 'Sr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -786,7 +784,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (12, 1, 'jrichards', 8, 'Richards', 'josephr1234', 
-        'Joseph', 'Thomas', '2008-04-15', '1976-03-11', '');
+        'Joseph', 'Thomas', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -813,7 +811,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (12, 3, 'rsanders', 7, 'Sanders', 'roslyns1234', 
-        'Roslyn', '', '2007-08-15', '1995-05-22', '');
+        'Roslyn', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -840,7 +838,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (12, 1, 'nrivera', 7, 'Rivera', 'nancyr1234', 
-        'Nancy', 'Anita', '2007-12-15', '1990-03-22', 'Sr');
+        'Nancy', 'Anita', NOW() + '3 years'::INTERVAL, NULL, 'Sr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -867,7 +865,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (12, 1, 'cmartin', 6, 'Martin', 'carlm1234', 
-        'Carl', 'Charles', '2007-12-09', '1976-09-01', '');
+        'Carl', 'Charles', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -894,7 +892,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (12, 1, 'telliott', 6, 'Elliott', 'thomase1234', 
-        'Thomas', 'Marcus', '2010-09-07', '1973-05-25', '');
+        'Thomas', 'Marcus', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -921,7 +919,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (12, 3, 'ocherry', 5, 'Cherry', 'olgac1234', 
-        'Olga', 'Marie', '2008-01-12', '1976-05-25', '');
+        'Olga', 'Marie', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -948,7 +946,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (12, 1, 'gdavenport', 5, 'Davenport', 'gwendolynd1234', 
-        'Gwendolyn', '', '2011-11-26', '1974-06-28', 'Jr');
+        'Gwendolyn', '', NOW() + '3 years'::INTERVAL, NULL, 'Jr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -975,7 +973,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (12, 3, 'sbrock', 4, 'Brock', 'scottb1234', 
-        'Scott', 'George', '2013-08-01', '1994-07-12', '');
+        'Scott', 'George', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1002,7 +1000,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (12, 3, 'rjackson', 4, 'Jackson', 'ronaldj1234', 
-        'Ronald', 'Robert', '2011-08-21', '1998-12-07', 'Jr');
+        'Ronald', 'Robert', NOW() + '3 years'::INTERVAL, NULL, 'Jr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1029,7 +1027,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (11, 1, 'wjames', 9, 'James', 'waynej1234', 
-        'Wayne', 'George', '2013-04-20', '1976-01-17', '');
+        'Wayne', 'George', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1056,7 +1054,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (11, 1, 'shernandez', 9, 'Hernandez', 'sarahh1234', 
-        'Sarah', 'Elaine', '2014-06-09', '1986-06-27', '');
+        'Sarah', 'Elaine', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1083,7 +1081,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (11, 3, 'latkins', 8, 'Atkins', 'louisa1234', 
-        'Louis', 'Edward', '2009-02-26', '1995-02-10', '');
+        'Louis', 'Edward', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1110,7 +1108,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (11, 3, 'wneal', 8, 'Neal', 'waynen1234', 
-        'Wayne', '', '2011-03-15', '1977-06-05', 'Jr');
+        'Wayne', '', NOW() + '3 years'::INTERVAL, '1977-06-05', 'Jr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1137,7 +1135,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (11, 3, 'mharrison', 7, 'Harrison', 'michelleh1234', 
-        'Michelle', 'Patricia', '2015-12-05', '1979-12-11', '');
+        'Michelle', 'Patricia', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1164,7 +1162,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (11, 3, 'hwomack', 7, 'Womack', 'howardw1234', 
-        'Howard', '', '2012-06-12', '1963-03-20', '');
+        'Howard', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1191,7 +1189,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (11, 3, 'vbacon', 6, 'Bacon', 'virginiab1234', 
-        'Virginia', 'Celia', '2010-08-13', '1992-11-20', '');
+        'Virginia', 'Celia', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1218,7 +1216,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (11, 1, 'lbrooks', 6, 'Brooks', 'lonnieb1234', 
-        'Lonnie', 'William', '2010-08-22', '1981-03-24', '');
+        'Lonnie', 'William', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1245,7 +1243,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (11, 3, 'mgonzales', 5, 'Gonzales', 'maryg1234', 
-        'Mary', 'Jessica', '2006-12-21', '1988-03-17', '');
+        'Mary', 'Jessica', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1272,7 +1270,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (11, 1, 'mterry', 5, 'Terry', 'michellet1234', 
-        'Michelle', 'Kristy', '2006-05-05', '1972-03-26', '');
+        'Michelle', 'Kristy', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1299,7 +1297,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (11, 3, 'mmeeks', 4, 'Meeks', 'michellem1234', 
-        'Michelle', 'Myra', '2011-08-21', '1966-01-23', 'III');
+        'Michelle', 'Myra', NOW() + '3 years'::INTERVAL, '1966-01-23', 'III');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1326,7 +1324,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (11, 3, 'epalmer', 4, 'Palmer', 'elvap1234', 
-        'Elva', 'Tiffany', '2009-05-01', '1987-08-21', 'Jr');
+        'Elva', 'Tiffany', NOW() + '3 years'::INTERVAL, '1987-08-21', 'Jr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1353,7 +1351,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (10, 3, 'mwilliams', 9, 'Williams', 'mattheww1234', 
-        'Matthew', '', '2007-01-20', '1977-10-25', '');
+        'Matthew', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1380,7 +1378,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (10, 1, 'nperez', 9, 'Perez', 'nicholasp1234', 
-        'Nicholas', 'Joseph', '2008-01-11', '1990-09-27', '');
+        'Nicholas', 'Joseph', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1407,7 +1405,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (10, 3, 'bfisher', 8, 'Fisher', 'barbaraf1234', 
-        'Barbara', '', '2008-02-03', '1960-10-04', '');
+        'Barbara', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1434,7 +1432,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (10, 3, 'mmendoza', 8, 'Mendoza', 'miguelm1234', 
-        'Miguel', '', '2015-04-15', '1980-05-28', '');
+        'Miguel', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1461,7 +1459,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (10, 1, 'ldickinson', 7, 'Dickinson', 'leed1234', 
-        'Lee', 'Annie', '2014-07-19', '1986-02-08', '');
+        'Lee', 'Annie', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1488,7 +1486,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (10, 1, 'awilliams', 7, 'Williams', 'angelinaw1234', 
-        'Angelina', 'Joan', '2012-06-28', '1995-08-01', '');
+        'Angelina', 'Joan', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1515,7 +1513,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (10, 1, 'bsanchez', 6, 'Sanchez', 'beths1234', 
-        'Beth', 'Deborah', '2015-08-21', '1974-10-23', '');
+        'Beth', 'Deborah', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1542,7 +1540,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (10, 3, 'ethompson', 6, 'Thompson', 'elvint1234', 
-        'Elvin', '', '2009-08-26', '1968-06-21', '');
+        'Elvin', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1569,7 +1567,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (10, 1, 'dlawson', 5, 'Lawson', 'doral1234', 
-        'Dora', '', '2009-08-26', '1978-05-23', '');
+        'Dora', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1596,7 +1594,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (10, 1, 'lvargas', 5, 'Vargas', 'laurav1234', 
-        'Laura', 'Mildred', '2013-04-01', '1989-07-04', 'III');
+        'Laura', 'Mildred', NOW() + '3 years'::INTERVAL, '1989-07-04', 'III');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1623,7 +1621,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (10, 3, 'wrandall', 4, 'Randall', 'williamr1234', 
-        'William', 'James', '2015-04-25', '1976-10-06', '');
+        'William', 'James', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1650,7 +1648,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (10, 1, 'csmith', 4, 'Smith', 'cathys1234', 
-        'Cathy', 'Cheryl', '2014-07-22', '1989-02-17', '');
+        'Cathy', 'Cheryl', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1677,7 +1675,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (9, 1, 'alopez', 9, 'Lopez', 'arlinel1234', 
-        'Arline', 'Amber', '2013-03-28', '1985-05-05', 'III');
+        'Arline', 'Amber', NOW() + '3 years'::INTERVAL, '1985-05-05', 'III');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1704,7 +1702,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (9, 1, 'epeterson', 9, 'Peterson', 'emmap1234', 
-        'Emma', '', '2015-06-11', '1962-09-24', '');
+        'Emma', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1731,7 +1729,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (9, 1, 'okelly', 8, 'Kelly', 'opalk1234', 
-        'Opal', 'Sara', '2008-05-25', '1975-01-18', 'III');
+        'Opal', 'Sara', NOW() + '3 years'::INTERVAL, '1975-01-18', 'III');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1758,7 +1756,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (9, 1, 'cdonovan', 8, 'Donovan', 'charlied1234', 
-        'Charlie', 'David', '2009-06-18', '1981-09-17', '');
+        'Charlie', 'David', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1785,7 +1783,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (9, 3, 'msmith', 7, 'Smith', 'marthas1234', 
-        'Martha', 'Raquel', '2014-12-24', '1962-06-21', '');
+        'Martha', 'Raquel', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1812,7 +1810,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (9, 3, 'chouston', 7, 'Houston', 'cherylh1234', 
-        'Cheryl', '', '2014-09-18', '1975-12-15', '');
+        'Cheryl', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1839,7 +1837,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (9, 1, 'kwright', 6, 'Wright', 'kayw1234', 
-        'Kay', 'Anna', '2015-01-23', '1965-05-23', '');
+        'Kay', 'Anna', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1866,7 +1864,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (9, 3, 'mlane', 6, 'Lane', 'michellel1234', 
-        'Michelle', 'Andrea', '2006-12-28', '1963-06-14', 'Sr');
+        'Michelle', 'Andrea', NOW() + '3 years'::INTERVAL, '1963-06-14', 'Sr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1893,7 +1891,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (9, 1, 'rsmith', 5, 'Smith', 'roberts1234', 
-        'Robert', '', '2006-05-01', '1987-06-24', '');
+        'Robert', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1920,7 +1918,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (9, 1, 'cdodson', 5, 'Dodson', 'cleod1234', 
-        'Cleo', '', '2007-02-09', '1974-11-14', '');
+        'Cleo', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1947,7 +1945,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (9, 1, 'mneal', 4, 'Neal', 'melvinn1234', 
-        'Melvin', 'Richard', '2007-03-14', '1993-08-16', '');
+        'Melvin', 'Richard', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1974,7 +1972,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (9, 3, 'awilliams', 4, 'Williams', 'annaw1234', 
-        'Anna', 'Justine', '2010-12-27', '1990-11-09', '');
+        'Anna', 'Justine', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2001,7 +1999,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (8, 1, 'emiller', 9, 'Miller', 'edmondm1234', 
-        'Edmond', 'Vance', '2008-05-04', '1993-05-16', '');
+        'Edmond', 'Vance', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2028,7 +2026,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (8, 3, 'vlogan', 9, 'Logan', 'vanessal1234', 
-        'Vanessa', 'Cassandra', '2009-05-17', '1991-02-01', '');
+        'Vanessa', 'Cassandra', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2055,7 +2053,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (8, 1, 'lthompson', 8, 'Thompson', 'lisat1234', 
-        'Lisa', 'Shirley', '2011-05-19', '1972-05-11', '');
+        'Lisa', 'Shirley', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2082,7 +2080,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (8, 1, 'oshaffer', 8, 'Shaffer', 'ollies1234', 
-        'Ollie', 'Monica', '2006-05-16', '1977-01-17', '');
+        'Ollie', 'Monica', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2109,7 +2107,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (8, 1, 'randrews', 7, 'Andrews', 'raymonda1234', 
-        'Raymond', 'Willie', '2013-02-17', '1996-11-25', '');
+        'Raymond', 'Willie', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2136,7 +2134,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (8, 3, 'emartinez', 7, 'Martinez', 'ednam1234', 
-        'Edna', 'Judith', '2007-04-22', '1990-04-23', '');
+        'Edna', 'Judith', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2163,7 +2161,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (8, 3, 'jdavis', 6, 'Davis', 'jamesd1234', 
-        'James', 'Jerry', '2009-02-26', '1970-06-11', 'III');
+        'James', 'Jerry', NOW() + '3 years'::INTERVAL, '1970-06-11', 'III');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2190,7 +2188,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (8, 1, 'droberts', 6, 'Roberts', 'dianer1234', 
-        'Diane', 'Teresa', '2006-12-18', '1969-02-18', '');
+        'Diane', 'Teresa', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2217,7 +2215,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (8, 1, 'psantiago', 5, 'Santiago', 'paiges1234', 
-        'Paige', 'Helen', '2011-06-07', '1979-08-23', 'Sr');
+        'Paige', 'Helen', NOW() + '3 years'::INTERVAL, '1979-08-23', 'Sr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2244,7 +2242,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (8, 1, 'awright', 5, 'Wright', 'alyssaw1234', 
-        'Alyssa', 'Christine', '2008-10-19', '1994-05-23', '');
+        'Alyssa', 'Christine', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2271,7 +2269,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (8, 3, 'dbeck', 4, 'Beck', 'dianab1234', 
-        'Diana', 'Wilma', '2010-08-09', '1971-04-22', '');
+        'Diana', 'Wilma', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2298,7 +2296,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (8, 1, 'mclark', 4, 'Clark', 'montyc1234', 
-        'Monty', 'Daniel', '2006-09-13', '1984-05-19', 'II');
+        'Monty', 'Daniel', NOW() + '3 years'::INTERVAL, '1984-05-19', 'II');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2325,7 +2323,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (7, 3, 'hstone', 9, 'Stone', 'hazels1234', 
-        'Hazel', 'Sylvia', '2009-07-08', '1980-12-09', '');
+        'Hazel', 'Sylvia', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2352,7 +2350,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (7, 1, 'dgarza', 9, 'Garza', 'davidg1234', 
-        'David', 'Steven', '2014-04-28', '1969-03-28', '');
+        'David', 'Steven', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2379,7 +2377,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (7, 3, 'jevans', 8, 'Evans', 'johne1234', 
-        'John', 'Timothy', '2006-01-16', '1973-09-26', '');
+        'John', 'Timothy', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2406,7 +2404,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (7, 3, 'rpayton', 8, 'Payton', 'robertp1234', 
-        'Robert', 'Steven', '2006-05-21', '1994-05-07', 'Jr');
+        'Robert', 'Steven', NOW() + '3 years'::INTERVAL, '1994-05-07', 'Jr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2433,7 +2431,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (7, 3, 'ddavis', 7, 'Davis', 'donaldd1234', 
-        'Donald', 'Gene', '2009-09-15', '1999-11-24', '');
+        'Donald', 'Gene', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2460,7 +2458,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (7, 1, 'gadams', 7, 'Adams', 'genea1234', 
-        'Gene', '', '2007-03-24', '1974-02-18', 'III');
+        'Gene', '', NOW() + '3 years'::INTERVAL, '1974-02-18', 'III');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2487,7 +2485,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (7, 1, 'hwhite', 6, 'White', 'humbertow1234', 
-        'Humberto', 'Kevin', '2011-07-06', '1997-09-08', 'Jr');
+        'Humberto', 'Kevin', NOW() + '3 years'::INTERVAL, '1997-09-08', 'Jr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2514,7 +2512,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (7, 3, 'asnyder', 6, 'Snyder', 'anas1234', 
-        'Ana', '', '2007-12-19', '1991-05-23', 'III');
+        'Ana', '', NOW() + '3 years'::INTERVAL, '1991-05-23', 'III');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2541,7 +2539,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (7, 1, 'jroberts', 5, 'Roberts', 'johnr1234', 
-        'John', 'Theodore', '2015-08-16', '1960-09-10', '');
+        'John', 'Theodore', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2568,7 +2566,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (7, 3, 'sheath', 5, 'Heath', 'stevenh1234', 
-        'Steven', 'Luke', '2013-01-18', '1988-11-15', '');
+        'Steven', 'Luke', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2595,7 +2593,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (7, 1, 'krush', 4, 'Rush', 'keithr1234', 
-        'Keith', '', '2009-08-26', '1978-01-18', '');
+        'Keith', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2622,7 +2620,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (7, 3, 'lfarrell', 4, 'Farrell', 'lindaf1234', 
-        'Linda', 'Linda', '2013-12-28', '1996-12-05', '');
+        'Linda', 'Linda', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2649,7 +2647,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (6, 3, 'rharrison', 9, 'Harrison', 'richardh1234', 
-        'Richard', 'Melvin', '2007-04-07', '1974-01-17', '');
+        'Richard', 'Melvin', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2676,7 +2674,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (6, 1, 'ksmith', 9, 'Smith', 'kevins1234', 
-        'Kevin', 'Timothy', '2012-01-16', '1965-12-28', '');
+        'Kevin', 'Timothy', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2703,7 +2701,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (6, 1, 'fmoore', 8, 'Moore', 'florencem1234', 
-        'Florence', 'Michelle', '2010-07-20', '1977-02-07', 'Jr');
+        'Florence', 'Michelle', NOW() + '3 years'::INTERVAL, '1977-02-07', 'Jr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2730,7 +2728,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (6, 1, 'bcruz', 8, 'Cruz', 'bettyc1234', 
-        'Betty', 'Shirley', '2015-04-26', '1993-08-10', 'Sr');
+        'Betty', 'Shirley', NOW() + '3 years'::INTERVAL, '1993-08-10', 'Sr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2757,7 +2755,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (6, 1, 'jjohnson', 7, 'Johnson', 'joelj1234', 
-        'Joel', 'Allen', '2009-09-06', '1991-07-02', '');
+        'Joel', 'Allen', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2784,7 +2782,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (6, 1, 'kburton', 7, 'Burton', 'kristenb1234', 
-        'Kristen', 'Dena', '2011-08-07', '1986-08-22', '');
+        'Kristen', 'Dena', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2811,7 +2809,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (6, 1, 'rpineda', 6, 'Pineda', 'robertp1234', 
-        'Robert', 'Gordon', '2011-06-14', '1985-09-10', '');
+        'Robert', 'Gordon', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2838,7 +2836,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (6, 1, 'avaldez', 6, 'Valdez', 'alissav1234', 
-        'Alissa', 'Gladys', '2013-05-24', '1994-03-25', 'Jr');
+        'Alissa', 'Gladys', NOW() + '3 years'::INTERVAL, '1994-03-25', 'Jr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2865,7 +2863,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (6, 3, 'krowland', 5, 'Rowland', 'kennethr1234', 
-        'Kenneth', 'Ernest', '2006-05-03', '1978-10-08', '');
+        'Kenneth', 'Ernest', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2892,7 +2890,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (6, 1, 'thansen', 5, 'Hansen', 'terranceh1234', 
-        'Terrance', '', '2008-02-17', '1969-10-10', '');
+        'Terrance', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2919,7 +2917,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (6, 3, 'breid', 4, 'Reid', 'barbarar1234', 
-        'Barbara', 'Amanda', '2014-06-15', '1992-07-12', '');
+        'Barbara', 'Amanda', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2946,7 +2944,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (6, 1, 'mroberts', 4, 'Roberts', 'michaelr1234', 
-        'Michael', 'Stephen', '2007-08-12', '1994-10-06', '');
+        'Michael', 'Stephen', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2973,7 +2971,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (5, 3, 'rkaufman', 9, 'Kaufman', 'rachelk1234', 
-        'Rachel', 'Vickie', '2008-04-24', '1962-01-23', '');
+        'Rachel', 'Vickie', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -3000,7 +2998,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (5, 3, 'csims', 9, 'Sims', 'christophers1234', 
-        'Christopher', 'John', '2015-10-05', '1991-01-07', '');
+        'Christopher', 'John', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -3027,7 +3025,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (5, 1, 'srobinson', 8, 'Robinson', 'sarahr1234', 
-        'Sarah', '', '2006-03-04', '1996-01-28', 'II');
+        'Sarah', '', NOW() + '3 years'::INTERVAL, '1996-01-28', 'II');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -3054,7 +3052,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (5, 3, 'jpayton', 8, 'Payton', 'johnnyp1234', 
-        'Johnny', 'Vincent', '2008-10-19', '1965-09-23', '');
+        'Johnny', 'Vincent', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -3081,7 +3079,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (5, 3, 'djamison', 7, 'Jamison', 'davidj1234', 
-        'David', 'Eric', '2009-07-04', '1993-08-11', '');
+        'David', 'Eric', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -3108,7 +3106,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (5, 3, 'jford', 7, 'Ford', 'jamief1234', 
-        'Jamie', '', '2014-06-22', '1974-08-23', '');
+        'Jamie', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -3135,7 +3133,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (5, 1, 'gwatson', 6, 'Watson', 'geraldw1234', 
-        'Gerald', 'Larry', '2006-10-09', '1967-11-15', '');
+        'Gerald', 'Larry', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -3162,7 +3160,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (5, 1, 'clambert', 6, 'Lambert', 'charlesl1234', 
-        'Charles', 'William', '2013-06-14', '1995-09-22', 'Jr');
+        'Charles', 'William', NOW() + '3 years'::INTERVAL, '1995-09-22', 'Jr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -3189,7 +3187,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (5, 1, 'mbarber', 5, 'Barber', 'michealb1234', 
-        'Micheal', 'Ramon', '2010-10-04', '1988-11-26', '');
+        'Micheal', 'Ramon', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -3216,7 +3214,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (5, 3, 'tcruz', 5, 'Cruz', 'tomc1234', 
-        'Tom', 'Eugene', '2013-09-11', '1970-09-08', '');
+        'Tom', 'Eugene', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -3243,7 +3241,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (5, 1, 'iwalton', 4, 'Walton', 'inezw1234', 
-        'Inez', 'Amanda', '2011-05-19', '1986-10-16', '');
+        'Inez', 'Amanda', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -3270,7 +3268,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (5, 3, 'mtownsend', 4, 'Townsend', 'maryt1234', 
-        'Mary', '', '2015-04-06', '1995-03-03', 'Jr');
+        'Mary', '', NOW() + '3 years'::INTERVAL, '1995-03-03', 'Jr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -3297,7 +3295,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (4, 3, 'cmartinez', 9, 'Martinez', 'carolynm1234', 
-        'Carolyn', 'Sandra', '2007-04-03', '1988-07-18', '');
+        'Carolyn', 'Sandra', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -3324,7 +3322,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (4, 1, 'jjohnson', 9, 'Johnson', 'jeremyj1234', 
-        'Jeremy', 'Mark', '2014-09-01', '1970-03-14', 'II');
+        'Jeremy', 'Mark', NOW() + '3 years'::INTERVAL, '1970-03-14', 'II');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -3351,7 +3349,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (4, 1, 'mscott', 8, 'Scott', 'maes1234', 
-        'Mae', 'Sue', '2011-10-01', '1964-12-02', '');
+        'Mae', 'Sue', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -3378,7 +3376,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (4, 3, 'rstevens', 8, 'Stevens', 'russells1234', 
-        'Russell', 'Daniel', '2011-08-15', '1973-08-15', 'Jr');
+        'Russell', 'Daniel', NOW() + '3 years'::INTERVAL, '1973-08-15', 'Jr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -3405,7 +3403,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (4, 3, 'therrera', 7, 'Herrera', 'tracih1234', 
-        'Traci', 'Edith', '2009-10-13', '1994-07-07', 'Jr');
+        'Traci', 'Edith', NOW() + '3 years'::INTERVAL, '1994-07-07', 'Jr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -3432,7 +3430,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (4, 3, 'vgrimes', 7, 'Grimes', 'virginiag1234', 
-        'Virginia', 'Jennifer', '2012-07-27', '1984-03-12', '');
+        'Virginia', 'Jennifer', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -3459,7 +3457,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (4, 1, 'pward', 6, 'Ward', 'paulw1234', 
-        'Paul', '', '2006-09-02', '1985-05-06', '');
+        'Paul', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -3486,7 +3484,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (4, 3, 'bgreen', 6, 'Green', 'beatriceg1234', 
-        'Beatrice', 'Janette', '2014-12-09', '1964-12-06', '');
+        'Beatrice', 'Janette', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -3513,7 +3511,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (4, 1, 'sschmidt', 5, 'Schmidt', 'scotts1234', 
-        'Scott', 'Kyle', '2006-04-02', '1987-07-07', 'Sr');
+        'Scott', 'Kyle', NOW() + '3 years'::INTERVAL, NULL, 'Sr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -3540,7 +3538,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (4, 3, 'jclark', 5, 'Clark', 'joannec1234', 
-        'Joanne', 'Andrea', '2009-10-21', '1985-03-16', '');
+        'Joanne', 'Andrea', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -3567,7 +3565,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (4, 1, 'bbrown', 4, 'Brown', 'beverlyb1234', 
-        'Beverly', 'Florence', '2011-06-27', '1961-07-24', '');
+        'Beverly', 'Florence', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -3594,7 +3592,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (4, 3, 'jmcginnis', 4, 'Mcginnis', 'josem1234', 
-        'Jose', 'David', '2015-10-22', '1976-01-24', '');
+        'Jose', 'David', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -3617,5 +3615,3 @@ INSERT INTO permission.usr_work_ou_map (usr, work_ou)
 UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname 
     FROM actor.org_unit aou 
     WHERE usr.id = CURRVAL('actor.usr_id_seq') AND aou.id = 4;
-
-COMMIT;

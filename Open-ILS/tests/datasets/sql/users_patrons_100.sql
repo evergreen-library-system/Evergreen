@@ -1,10 +1,9 @@
-BEGIN;
 
-
+-- expired patron
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999395390', 9, 'Brooks', 'terrib1234', 
-        'Terri', 'Maria', '2011-05-03', '1973-03-17', '');
+        'Terri', 'Maria', '2008-01-01', NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -22,10 +21,11 @@ UPDATE actor.usr SET
     WHERE id=CURRVAL('actor.usr_id_seq');
 
 
+-- expired patron
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999320945', 5, 'Jackson', 'shannonj1234', 
-        'Shannon', 'Thomas', '2014-04-22', '1981-11-20', '');
+        'Shannon', 'Thomas', '1999-01-01', NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -46,7 +46,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999355250', 5, 'Jones', 'gregoryj1234', 
-        'Gregory', '', '2014-05-07', '1967-05-24', '');
+        'Gregory', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -67,7 +67,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999387993', 9, 'Moran', 'vincentm1234', 
-        'Vincent', 'Kenneth', '2010-12-03', '1996-05-28', '');
+        'Vincent', 'Kenneth', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -88,7 +88,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999335859', 8, 'Jones', 'gregoryj1234', 
-        'Gregory', 'Adam', '2015-07-13', '1987-03-06', '');
+        'Gregory', 'Adam', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -109,7 +109,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999373186', 7, 'Walker', 'brittanyw1234', 
-        'Brittany', 'Geraldine', '2015-10-03', '1995-02-20', '');
+        'Brittany', 'Geraldine', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -130,7 +130,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999384262', 9, 'Miller', 'ernestom1234', 
-        'Ernesto', 'Robert', '2008-07-12', '1997-02-02', 'II');
+        'Ernesto', 'Robert', NOW() + '3 years'::INTERVAL, '1997-02-02', 'II');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -151,7 +151,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999373998', 9, 'Hill', 'roberth1234', 
-        'Robert', 'Louis', '2009-11-13', '1998-05-02', 'III');
+        'Robert', 'Louis', NOW() + '3 years'::INTERVAL, NULL, 'III');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -172,7 +172,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999376669', 7, 'Lopez', 'edwardl1234', 
-        'Edward', 'Robert', '2009-03-11', '1994-08-21', 'II');
+        'Edward', 'Robert', NOW() + '3 years'::INTERVAL, NULL, 'II');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -193,7 +193,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999361076', 8, 'Bell', 'andrewb1234', 
-        'Andrew', 'Alberto', '2006-03-12', '1999-04-16', 'II');
+        'Andrew', 'Alberto', NOW() + '3 years'::INTERVAL, NULL, 'II');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -214,7 +214,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999376988', 9, 'Mitchell', 'jenniferm1234', 
-        'Jennifer', 'Dorothy', '2007-04-07', '1981-08-19', '');
+        'Jennifer', 'Dorothy', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -235,7 +235,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999390791', 7, 'Ortiz', 'richardo1234', 
-        'Richard', '', '2008-05-27', '1978-06-13', '');
+        'Richard', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -256,7 +256,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999378730', 6, 'Wade', 'robertw1234', 
-        'Robert', 'Coy', '2013-08-09', '1985-12-21', '');
+        'Robert', 'Coy', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -277,7 +277,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999360638', 5, 'Wise', 'janetw1234', 
-        'Janet', '', '2010-02-27', '1992-08-12', '');
+        'Janet', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -298,7 +298,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999350419', 4, 'Torres', 'donaldt1234', 
-        'Donald', 'Arnold', '2007-04-02', '1974-06-26', 'II');
+        'Donald', 'Arnold', NOW() + '3 years'::INTERVAL, '1974-06-26', 'II');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -319,7 +319,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999354736', 4, 'Miller', 'jeffm1234', 
-        'Jeff', 'James', '2013-02-19', '1977-03-17', 'Sr');
+        'Jeff', 'James', NOW() + '3 years'::INTERVAL, NULL, 'Sr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -340,7 +340,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999329662', 9, 'Estes', 'leonarde1234', 
-        'Leonard', '', '2012-10-24', '1994-05-07', 'III');
+        'Leonard', '', NOW() + '3 years'::INTERVAL, '1994-05-07', 'III');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -361,7 +361,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999397601', 8, 'Dunn', 'brittneyd1234', 
-        'Brittney', 'Pamela', '2015-07-26', '1998-06-28', '');
+        'Brittney', 'Pamela', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -382,7 +382,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999377594', 4, 'Wiggins', 'jeanw1234', 
-        'Jean', 'Verna', '2009-05-25', '1991-09-25', '');
+        'Jean', 'Verna', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -403,7 +403,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999371252', 9, 'Thomas', 'lelat1234', 
-        'Lela', 'Sarah', '2015-04-14', '1968-04-11', 'Sr');
+        'Lela', 'Sarah', NOW() + '3 years'::INTERVAL, '1968-04-11', 'Sr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -424,7 +424,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999398023', 8, 'Phillips', 'noahp1234', 
-        'Noah', 'Joseph', '2012-02-18', '1993-03-17', 'III');
+        'Noah', 'Joseph', NOW() + '3 years'::INTERVAL, NULL, 'III');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -445,7 +445,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999324566', 5, 'Mitchell', 'carolynm1234', 
-        'Carolyn', 'Patrica', '2015-11-05', '1981-09-03', 'III');
+        'Carolyn', 'Patrica', NOW() + '3 years'::INTERVAL, '1981-09-03', 'III');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -466,7 +466,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999379221', 5, 'Wells', 'kristenw1234', 
-        'Kristen', 'Vivian', '2013-11-20', '1971-01-16', '');
+        'Kristen', 'Vivian', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -487,7 +487,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999373350', 8, 'Lindsey', 'noahl1234', 
-        'Noah', 'Keith', '2007-06-19', '1972-11-08', '');
+        'Noah', 'Keith', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -508,7 +508,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999340920', 4, 'Williams', 'berthaw1234', 
-        'Bertha', 'Katherine', '2010-03-19', '1986-12-08', '');
+        'Bertha', 'Katherine', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -529,7 +529,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999398482', 7, 'Rodriguez', 'jamesr1234', 
-        'James', '', '2008-10-14', '1993-09-22', '');
+        'James', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -550,7 +550,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999394378', 5, 'Byrd', 'matthewb1234', 
-        'Matthew', 'David', '2007-05-02', '1965-12-15', '');
+        'Matthew', 'David', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -571,7 +571,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999382659', 4, 'Kelley', 'sandrak1234', 
-        'Sandra', 'Pearlie', '2011-06-06', '1977-01-18', 'Sr');
+        'Sandra', 'Pearlie', NOW() + '3 years'::INTERVAL, '1977-01-18', 'Sr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -592,7 +592,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999387130', 7, 'Wilson', 'bethw1234', 
-        'Beth', 'Michelle', '2010-06-08', '1966-07-17', '');
+        'Beth', 'Michelle', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -613,7 +613,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999310765', 8, 'Daniels', 'randyd1234', 
-        'Randy', 'Lawrence', '2012-06-01', '1971-03-20', '');
+        'Randy', 'Lawrence', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -634,7 +634,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999335545', 9, 'Simpson', 'steves1234', 
-        'Steve', 'Raymond', '2011-02-09', '1961-07-04', '');
+        'Steve', 'Raymond', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -655,7 +655,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999360529', 5, 'Hoskins', 'jimh1234', 
-        'Jim', 'Michael', '2008-11-15', '1983-08-02', 'III');
+        'Jim', 'Michael', NOW() + '3 years'::INTERVAL, '1983-08-02', 'III');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -676,7 +676,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999357038', 5, 'May', 'michaelm1234', 
-        'Michael', '', '2014-07-25', '1988-03-06', 'II');
+        'Michael', '', NOW() + '3 years'::INTERVAL, '1988-03-06', 'II');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -697,7 +697,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999371688', 8, 'Ellison', 'done1234', 
-        'Don', 'John', '2015-08-09', '1999-10-26', '');
+        'Don', 'John', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -718,7 +718,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999312757', 4, 'Hughes', 'josephh1234', 
-        'Joseph', 'Bryant', '2011-10-13', '1998-05-13', '');
+        'Joseph', 'Bryant', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -739,7 +739,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999399015', 8, 'Turner', 'cristinat1234', 
-        'Cristina', 'Karen', '2008-07-15', '1985-12-10', '');
+        'Cristina', 'Karen', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -760,7 +760,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999313973', 4, 'Langley', 'victorl1234', 
-        'Victor', 'James', '2011-04-02', '1993-01-09', '');
+        'Victor', 'James', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -781,7 +781,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999311521', 6, 'Fields', 'davidf1234', 
-        'David', '', '2013-09-03', '1990-08-11', '');
+        'David', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -802,7 +802,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999388816', 7, 'Hoffman', 'gregoryh1234', 
-        'Gregory', 'Thomas', '2012-11-04', '1999-11-13', 'II');
+        'Gregory', 'Thomas', NOW() + '3 years'::INTERVAL, '1999-11-13', 'II');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -823,7 +823,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999345160', 8, 'Gonzalez', 'natalieg1234', 
-        'Natalie', 'Joan', '2007-10-22', '1991-04-11', '');
+        'Natalie', 'Joan', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -844,7 +844,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999328966', 9, 'Rucker', 'drewr1234', 
-        'Drew', '', '2007-03-23', '1965-12-19', '');
+        'Drew', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -865,7 +865,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999394635', 9, 'Mitchell', 'kimberlym1234', 
-        'Kimberly', '', '2013-01-02', '1971-02-19', '');
+        'Kimberly', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -886,7 +886,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999333308', 7, 'Murray', 'heatherm1234', 
-        'Heather', 'Margaret', '2013-08-18', '1969-05-21', '');
+        'Heather', 'Margaret', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -907,7 +907,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999316647', 7, 'Sosa', 'robertas1234', 
-        'Roberta', 'Norma', '2011-08-18', '1962-09-02', '');
+        'Roberta', 'Norma', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -928,7 +928,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999389066', 4, 'Ramos', 'annetter1234', 
-        'Annette', 'Angela', '2006-05-06', '1967-11-04', 'II');
+        'Annette', 'Angela', NOW() + '3 years'::INTERVAL, '1967-11-04', 'II');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -949,7 +949,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999380162', 8, 'Jackson', 'paulj1234', 
-        'Paul', '', '2015-10-14', '1969-05-16', '');
+        'Paul', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -970,7 +970,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999318240', 7, 'Graham', 'johng1234', 
-        'John', 'Charles', '2007-05-15', '1998-12-23', '');
+        'John', 'Charles', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -991,7 +991,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999347267', 7, 'Michael', 'adamm1234', 
-        'Adam', 'John', '2015-09-03', '1966-09-18', '');
+        'Adam', 'John', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1012,7 +1012,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999344618', 7, 'Thomas', 'helent1234', 
-        'Helen', '', '2006-03-27', '1998-07-15', '');
+        'Helen', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1033,7 +1033,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999301966', 7, 'Rivas', 'meghanr1234', 
-        'Meghan', '', '2007-11-21', '1977-08-22', '');
+        'Meghan', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1054,7 +1054,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999306663', 5, 'Hurst', 'williamh1234', 
-        'William', 'Ian', '2011-10-24', '1995-03-27', '');
+        'William', 'Ian', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1075,7 +1075,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999329410', 8, 'Bridges', 'kimberlyb1234', 
-        'Kimberly', 'Anna', '2014-04-19', '1981-01-13', '');
+        'Kimberly', 'Anna', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1096,7 +1096,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999396820', 6, 'Stewart', 'beatrices1234', 
-        'Beatrice', 'Gloria', '2015-02-04', '1966-12-25', '');
+        'Beatrice', 'Gloria', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1117,7 +1117,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999398998', 7, 'Welsh', 'alejandraw1234', 
-        'Alejandra', 'Christine', '2009-03-24', '1973-11-18', 'III');
+        'Alejandra', 'Christine', NOW() + '3 years'::INTERVAL, '1973-11-18', 'III');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1138,7 +1138,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999308688', 9, 'Osborne', 'leonao1234', 
-        'Leona', '', '2014-01-10', '1999-04-08', '');
+        'Leona', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1159,7 +1159,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999321465', 4, 'Sinclair', 'luellas1234', 
-        'Luella', 'Carole', '2015-04-06', '1993-10-15', 'II');
+        'Luella', 'Carole', NOW() + '3 years'::INTERVAL, '1993-10-15', 'II');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1180,7 +1180,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999399294', 5, 'Jones', 'joej1234', 
-        'Joe', 'Wayne', '2006-09-23', '1963-12-20', '');
+        'Joe', 'Wayne', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1201,7 +1201,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999355645', 6, 'Duncan', 'willied1234', 
-        'Willie', '', '2009-12-11', '1971-09-27', '');
+        'Willie', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1222,7 +1222,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999359616', 6, 'Carney', 'andreac1234', 
-        'Andrea', '', '2008-11-16', '1989-04-18', '');
+        'Andrea', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1243,7 +1243,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999359143', 9, 'Hunt', 'howardh1234', 
-        'Howard', 'Ralph', '2011-06-06', '1971-05-09', 'Jr');
+        'Howard', 'Ralph', NOW() + '3 years'::INTERVAL, '1971-05-09', 'Jr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1264,7 +1264,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999389009', 6, 'Martin', 'eddiem1234', 
-        'Eddie', 'Anthony', '2007-11-07', '1997-12-09', '');
+        'Eddie', 'Anthony', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1285,7 +1285,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999327461', 9, 'Barry', 'paulb1234', 
-        'Paul', 'Richard', '2014-06-04', '1974-04-16', '');
+        'Paul', 'Richard', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1306,7 +1306,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999319193', 7, 'Wright', 'dennisw1234', 
-        'Dennis', 'Jimmie', '2014-12-16', '1992-09-05', 'II');
+        'Dennis', 'Jimmie', NOW() + '3 years'::INTERVAL, '1992-09-05', 'II');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1327,7 +1327,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999378520', 5, 'Saunders', 'rubens1234', 
-        'Ruben', 'Eric', '2011-06-25', '1975-06-22', '');
+        'Ruben', 'Eric', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1348,7 +1348,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999366196', 7, 'Lane', 'jenniferl1234', 
-        'Jennifer', '', '2008-05-23', '1961-10-22', '');
+        'Jennifer', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1369,7 +1369,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999324371', 5, 'Madden', 'jom1234', 
-        'Jo', 'Mae', '2013-02-14', '1976-04-01', '');
+        'Jo', 'Mae', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1390,7 +1390,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999316280', 8, 'Harding', 'naomih1234', 
-        'Naomi', 'Julie', '2006-09-02', '1986-05-21', '');
+        'Naomi', 'Julie', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1411,7 +1411,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999388575', 5, 'Davis', 'blaked1234', 
-        'Blake', 'George', '2009-06-26', '1977-06-17', '');
+        'Blake', 'George', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1432,7 +1432,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999336610', 4, 'Barnes', 'normab1234', 
-        'Norma', 'Gail', '2009-11-01', '1983-01-09', '');
+        'Norma', 'Gail', NOW() + '3 years'::INTERVAL, NOW() + '3 years'::INTERVAL, '');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1453,7 +1453,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999376864', 4, 'Anderson', 'leona1234', 
-        'Leon', '', '2013-05-24', '1986-09-16', '');
+        'Leon', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1474,7 +1474,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999391951', 7, 'Gillespie', 'mistyg1234', 
-        'Misty', 'Margaret', '2008-10-12', '1993-10-19', 'III');
+        'Misty', 'Margaret', NOW() + '3 years'::INTERVAL, '1993-10-19', 'III');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1495,7 +1495,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999368950', 7, 'Santos', 'esthers1234', 
-        'Esther', 'Mary', '2009-11-08', '1961-12-17', 'Sr');
+        'Esther', 'Mary', NOW() + '3 years'::INTERVAL, '1961-12-17', 'Sr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1516,7 +1516,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999343281', 7, 'Bradley', 'rebeccab1234', 
-        'Rebecca', 'Vanessa', '2009-03-06', '1991-04-25', '');
+        'Rebecca', 'Vanessa', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1537,7 +1537,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999394534', 4, 'Hart', 'victorh1234', 
-        'Victor', '', '2006-07-04', '1977-01-10', '');
+        'Victor', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1558,7 +1558,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999323404', 8, 'Riley', 'edwardr1234', 
-        'Edward', 'Lonnie', '2010-10-06', '1992-07-19', '');
+        'Edward', 'Lonnie', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1579,7 +1579,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999375760', 5, 'Jordan', 'michellej1234', 
-        'Michelle', '', '2014-12-09', '1973-05-07', 'III');
+        'Michelle', '', NOW() + '3 years'::INTERVAL, '1973-05-07', 'III');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1600,7 +1600,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999315742', 7, 'Brown', 'maryb1234', 
-        'Mary', 'Jill', '2009-12-19', '1973-11-10', '');
+        'Mary', 'Jill', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1621,7 +1621,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999322514', 7, 'Barber', 'shawnb1234', 
-        'Shawn', 'Thomas', '2013-06-22', '1988-10-21', 'II');
+        'Shawn', 'Thomas', NOW() + '3 years'::INTERVAL, '1988-10-21', 'II');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1642,7 +1642,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999342144', 8, 'Harrison', 'williamh1234', 
-        'William', 'Phillip', '2008-09-15', '1990-04-09', 'II');
+        'William', 'Phillip', NOW() + '3 years'::INTERVAL, '1990-04-09', 'II');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1663,7 +1663,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999320546', 7, 'Porter', 'darlenep1234', 
-        'Darlene', 'Lisa', '2015-07-15', '1987-02-23', 'Jr');
+        'Darlene', 'Lisa', NOW() + '3 years'::INTERVAL, '1987-02-23', 'Jr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1684,7 +1684,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999315474', 8, 'Lopez', 'joycel1234', 
-        'Joyce', 'Donna', '2010-02-06', '1980-06-28', 'Sr');
+        'Joyce', 'Donna', NOW() + '3 years'::INTERVAL, '1980-06-28', 'Sr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1705,7 +1705,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999371586', 9, 'Stevenson', 'larrys1234', 
-        'Larry', '', '2013-04-25', '1990-12-20', 'Sr');
+        'Larry', '', NOW() + '3 years'::INTERVAL, '1990-12-20', 'Sr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1726,7 +1726,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999329832', 4, 'Kinney', 'nicholask1234', 
-        'Nicholas', '', '2009-02-19', '1989-05-24', '');
+        'Nicholas', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1747,7 +1747,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999342948', 5, 'Bernard', 'omarb1234', 
-        'Omar', 'David', '2013-01-04', '1981-08-19', 'Jr');
+        'Omar', 'David', NOW() + '3 years'::INTERVAL, '1981-08-19', 'Jr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1768,7 +1768,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999335091', 9, 'Brown', 'maryb1234', 
-        'Mary', 'Annie', '2006-04-28', '1978-04-02', '');
+        'Mary', 'Annie', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1789,7 +1789,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999303411', 8, 'Smith', 'sarahs1234', 
-        'Sarah', '', '2006-03-23', '1990-01-13', 'II');
+        'Sarah', '', NOW() + '3 years'::INTERVAL, '1990-01-13', 'II');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1810,7 +1810,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999327083', 8, 'Jones', 'coraj1234', 
-        'Cora', '', '2009-09-18', '1968-06-08', '');
+        'Cora', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1831,7 +1831,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999300523', 7, 'Little', 'shawnl1234', 
-        'Shawn', 'Joseph', '2008-11-13', '1991-01-11', '');
+        'Shawn', 'Joseph', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1852,7 +1852,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999328829', 6, 'Thurman', 'luannt1234', 
-        'Luann', 'Donna', '2008-05-19', '1990-08-19', '');
+        'Luann', 'Donna', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1873,7 +1873,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999394673', 6, 'Scott', 'patricias1234', 
-        'Patricia', 'Robin', '2008-11-08', '1998-08-28', '');
+        'Patricia', 'Robin', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1894,7 +1894,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999355318', 5, 'Lamb', 'esperanzal1234', 
-        'Esperanza', 'Beth', '2013-07-17', '1995-06-13', 'III');
+        'Esperanza', 'Beth', NOW() + '3 years'::INTERVAL, '1995-06-13', 'III');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1915,7 +1915,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999377675', 8, 'Brown', 'wendib1234', 
-        'Wendi', 'Mary', '2012-09-21', '1996-10-12', '');
+        'Wendi', 'Mary', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1936,7 +1936,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999363186', 5, 'Clarke', 'lawrencec1234', 
-        'Lawrence', 'Vern', '2015-01-10', '1982-05-20', '');
+        'Lawrence', 'Vern', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1957,7 +1957,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999346314', 8, 'Clark', 'danielc1234', 
-        'Daniel', 'Ricky', '2009-08-24', '1989-08-25', '');
+        'Daniel', 'Ricky', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1978,7 +1978,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999353477', 6, 'Dennis', 'johnd1234', 
-        'John', 'Robert', '2012-04-16', '1986-12-08', '');
+        'John', 'Robert', NOW() + '3 years'::INTERVAL, '1975-03-04', NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -1999,7 +1999,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999312358', 4, 'Copeland', 'janc1234', 
-        'Jan', 'Lindsey', '2015-08-08', '1998-06-14', 'Jr');
+        'Jan', 'Lindsey', NOW() + '3 years'::INTERVAL, '1998-06-14', 'Jr');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2020,7 +2020,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999360839', 8, 'Brooks', 'pennyb1234', 
-        'Penny', 'Martha', '2013-11-28', '1980-03-13', 'II');
+        'Penny', 'Martha', NOW() + '3 years'::INTERVAL, '1980-03-13', 'II');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2041,7 +2041,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999342446', 8, 'Johnson', 'jeannej1234', 
-        'Jeanne', '', '2008-10-16', '1974-12-14', '');
+        'Jeanne', '', NOW() + '3 years'::INTERVAL, '1980-02-03', NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2062,7 +2062,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999358416', 4, 'Sanford', 'elizabeths1234', 
-        'Elizabeth', 'Vanessa', '2011-11-21', '1960-12-04', '');
+        'Elizabeth', 'Vanessa', NOW() + '3 years'::INTERVAL, NULL, '');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2083,7 +2083,7 @@ UPDATE actor.usr SET
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999361389', 9, 'Ramirez', 'alanr1234', 
-        'Alan', 'Claude', '2008-12-02', '1984-10-16', '');
+        'Alan', 'Claude', NOW() + '3 years'::INTERVAL, NULL, '');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -2099,5 +2099,3 @@ UPDATE actor.usr SET
     credit_forward_balance = '0', 
     mailing_address = CURRVAL('actor.usr_address_id_seq') 
     WHERE id=CURRVAL('actor.usr_id_seq');
-
-COMMIT;
