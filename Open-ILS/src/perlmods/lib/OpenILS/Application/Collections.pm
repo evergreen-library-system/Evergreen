@@ -216,6 +216,12 @@ sub users_of_interest_warning_penalty {
                         aus => {
                             type => 'left',
                             filter => {name => 'circ.collections.exempt'}
+                        },
+                        mct => {
+                            type => 'left',
+                            filter => {
+                                location => [ map {$_->{id}} @$org_ids ]
+                            }
                         }
                     }
                 }
@@ -232,7 +238,10 @@ sub users_of_interest_warning_penalty {
             },
             # We are only interested in users that do not have the 
             # circ.collections.exempt setting applied
-            '+aus' => {value => undef}
+            '+aus' => {value => undef},
+            # and we're only interested in users that are not in the
+            # collections tracker table
+            '+mct' => {id => undef}
         }
     };
 
