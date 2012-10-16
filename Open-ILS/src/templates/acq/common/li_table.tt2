@@ -28,8 +28,8 @@
                                             <option mask='po' value='create_assets'>Load Bibs and Items</option>
                                             <option mask='po' value='cancel_lineitems'>Cancel Selected Lineitems</option>
                                             <option mask='po' value='change_claim_policy'>Change Claim Policy</option>
-                                            <option mask='po' value='receive_po'>Mark Purchase Order as Received</option>
-                                            <option mask='po' value='rollback_receive_po'>Un-Receive Purchase Order</option>
+                                            <option mask='po' value='receive_po' id='receive_po' disabled='disabled'>Mark Purchase Order as Received</option>
+                                            <option mask='po' value='rollback_receive_po' id='rollback_receive_po' disabled='disabled'>Un-Receive Purchase Order</option>
                                             <option mask='po' value='print_po'>Print Purchase Order</option>
                                             <option mask='po' value='po_history'>View PO History</option>
                                             <option mask='po' value='batch_create_invoice'>[% l('Create Invoice From Selected Lineitems') %]</option>

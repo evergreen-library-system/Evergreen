@@ -319,7 +319,11 @@ function renderPo() {
                     openils.Util.timeStamp(PO.order_date(), {formatLength:'short'})
                 ]
             );
-
+        if(PO.state() == "on-order") {
+            dojo.removeAttr('receive_po', 'disabled');
+        } else if(PO.state() == "received") {
+            dojo.removeAttr('rollback_receive_po', 'disabled');
+        }
     }
 
     makePrepayWidget(
