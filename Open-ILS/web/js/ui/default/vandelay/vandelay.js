@@ -1036,7 +1036,7 @@ function vlQueueGridNextPage() {
 function vlDeleteQueue(type, queueId, onload) {
     fieldmapper.standardRequest(
         ['open-ils.vandelay', 'open-ils.vandelay.'+type+'_queue.delete'],
-        {   async: true,
+        {   async: false,
             params: [authtoken, queueId],
             oncomplete: function(r) {
                 var resp = r.recv().content();
