@@ -93,6 +93,10 @@ var copyStatusCache = {};
 var copyLocationCache = {};
 var localeStrings;
 
+// org settings
+var orgSettings = {};
+const DEFAULT_MATCH_SET = 'vandelay.default_match_set';
+
 /**
   * Grab initial data
   */
@@ -211,6 +215,13 @@ function vlInit() {
             }
         }
     );
+
+    orgSettings = fieldmapper.aou.fetchOrgSettingBatch(openils.User.user.ws_ou(), [
+        DEFAULT_MATCH_SET
+    ]);
+    for(k in orgSettings)
+        if(orgSettings[k])
+            orgSettings[k] = orgSettings[k].value;
 
     vlAttrEditorInit();
     vlExportInit();
@@ -1435,6 +1446,13 @@ function vlUpdateMatchSetSelector(type) {
     type = (type.match(/bib/)) ? 'biblio' : 'authority';
     vlUploadQueueMatchSet.store = 
         new dojo.data.ItemFileReadStore({data:vms.toStoreData(matchSets[type])});
+    // apply default match set
+    for (var i = 0; i < matchSets[type].length; i++) {
+        if (matchSets[type][i].id() == orgSettings[DEFAULT_MATCH_SET]) {
+            vlUploadQueueMatchSet.setValue(matchSets[type][i].id());
+            break;
+        }
+    }
 }
 
 function vlShowUploadForm() {
