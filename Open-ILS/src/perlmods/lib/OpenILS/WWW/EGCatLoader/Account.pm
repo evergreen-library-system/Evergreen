@@ -1670,6 +1670,11 @@ sub load_myopac_bookbags {
                 }
             }
 
+            # we're done with our CStoreEditor.  Rollback here so 
+            # later calls don't cause a timeout, resulting in a 
+            # transaction rollback under the covers.
+            $e->rollback;
+
             my $query = $self->_prepare_bookbag_container_query(
                 $bookbag->id, $sorter, $modifier
             );
@@ -1684,6 +1689,7 @@ sub load_myopac_bookbags {
             my $items = $U->bib_container_items_via_search($bookbag->id, $query, $args)
                 or return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
 
+
             my (undef, @recs) = $self->get_records_and_facets(
                 [ map {$_->target_biblio_record_entry->id} @$items ],
                 undef, 
@@ -1696,7 +1702,10 @@ sub load_myopac_bookbags {
         }
     }
 
+    # this rollback may be a dupe, but that's OK because 
+    # cstoreditor ignores dupe rollbacks
     $e->rollback;
+
     return Apache2::Const::OK;
 }
 
