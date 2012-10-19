@@ -128,7 +128,7 @@ Copying these configuration files will remove any customizations you have made t
 [source, bash]
 -------------------------------------------------------------------------
 cd /home/opensrf/Evergreen-ILS-2.3.3
-perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config --service all \
+perl Open-ILS/src/support-scripts/eg_db_config --update-config --service all \
 --create-offline --database evergreen --host localhost --user evergreen --password evergreen
 -------------------------------------------------------------------------
 +
@@ -140,11 +140,11 @@ indexterm:[Apache]
 Copying these Apache configuration files will remove any customizations you have made to them. Remember to redo your customizations after copying them.
 For example, if you purchased an SSL certificate, you will need to edit eg.conf to point to the appropriate SSL certificate files.
 +
-.. Update _/etc/apache2/startup.pl_ by copying the example from _Open-ILS/examples/apache/startup.pl_.
+.. Update _/etc/apache2/eg_startup_ by copying the example from _Open-ILS/examples/apache/eg_startup_.
 +
 [source, bash]
 ----------------------------------------------------------
-cp /home/opensrf/Evergreen-ILS-2.3.3/Open-ILS/examples/apache/startup.pl /etc/apache2/startup.pl 
+cp /home/opensrf/Evergreen-ILS-2.3.3/Open-ILS/examples/apache/eg_startup /etc/apache2/eg_startup 
 ----------------------------------------------------------
 +
 .. Update /etc/apache2/eg_vhost.conf by copying the example from Open-ILS/examples/apache/eg_vhost.conf.
@@ -154,7 +154,7 @@ cp /home/opensrf/Evergreen-ILS-2.3.3/Open-ILS/examples/apache/startup.pl /etc/ap
 cp /home/opensrf/Evergreen-ILS-2.3.3/Open-ILS/examples/apache/eg_vhost.conf /etc/apache2/eg_vhost.conf 
 ----------------------------------------------------------
 +
-.. Update /etc/apache2/sites-available/eg.conf by copying the example from Open-ILS/ examples/apache/eg.conf.
+.. Update /etc/apache2/sites-available/eg.conf by copying the example from Open-ILS/examples/apache/eg.conf.
 +
 [source, bash]
 ----------------------------------------------------------

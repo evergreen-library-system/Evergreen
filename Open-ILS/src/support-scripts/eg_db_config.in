@@ -339,7 +339,7 @@ DESCRIPTION
 
 OPTIONS
     --config-file
-        specifies the opensrf.xml file. Defaults to /openils/conf/opensrf.xml
+        specifies the opensrf.xml file. Defaults to @sysconfdir@/opensrf.xml
 
     --build-db-file
         specifies the script that creates the database schema. Defaults to
@@ -347,7 +347,7 @@ OPTIONS
 
     --offline-file
         specifies the offline database settings file required by the offline
-        data uploader. Defaults to /openils/conf/offline-config.pl
+        data uploader. Defaults to @sysconfdir@/offline-config.pl
 
 COMMANDS
     --update-config

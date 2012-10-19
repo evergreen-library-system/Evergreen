@@ -14,7 +14,6 @@
 ## Process this file with automake to generate Makefile.in
 
 
-export INCDIR = "$(INCLUDEDIR)/openils/"
 export STAFF_CLIENT_BUILD_ID = `/bin/cat @top_srcdir@/Open-ILS/xul/staff_client/build/BUILD_ID`
 export DEF_LDFLAGS = -L. -L$(TMP) -L$(OPENSRF_LIBS)
 export DEF_CFLAGS = -D_LARGEFILE64_SOURCE -pipe -g -Wall -O2 -fPIC -I@top_srcdir@/include -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) -I$(APR_HEADERS)  -I$(LIBXML2_HEADERS)/libxml  -I$(TMP) -I$(OPENSRF_HEADERS)
@@ -140,13 +139,21 @@ gen_scripts = \
 	@srcdir@/extras/import/marc2sre.pl \
 	@srcdir@/extras/import/parallel_pg_loader.pl \
 	$(supportscr)/authority_control_fields.pl \
+	$(supportscr)/eg_db_config \
 	$(supportscr)/marc_export
+
+gen_docs = \
+	$(examples)/apache/eg.conf \
+	$(examples)/apache/eg_vhost.conf \
+	$(examples)/apache/eg_startup
 
 bin_SCRIPTS = $(core_scripts) $(gen_scripts) $(reporter_scripts) $(installautojs)
 
 CLEANFILES = $(gen_scripts)
 
 data_DATA = $(core_data) $(reporter_data)
+
+doc_DATA = $(gen_docs)
 
 # Take care of which subdirectories to build, and which extra files to include in a distribution.
 
@@ -158,6 +165,7 @@ EXTRA_DIST = @srcdir@/perlmods \
 	@top_srcdir@/Open-ILS/xsl \
 	@srcdir@/cgi-bin \
 	$(gen_scripts) \
+	$(gen_docs) \
 	@srcdir@/extras/eg_config
 
 do_subst = $(SED) \
@@ -167,6 +175,7 @@ do_subst = $(SED) \
 	-e 's,[@]exec_prefix[@],$(exec_prefix),g' \
 	-e 's,[@]includedir[@],$(includedir),g' \
 	-e 's,[@]libdir[@],$(libdir),g' \
+	-e 's,[@]localstatedir[@],$(localstatedir),g' \
 	-e 's,[@]prefix[@],$(prefix),g' \
 	-e 's,[@]sysconfdir[@],$(sysconfdir),g'
 
@@ -209,9 +218,22 @@ $(supportscr)/authority_control_fields.pl: Makefile $(supportscr)/authority_cont
 	$(do_subst) $(supportscr)/authority_control_fields.pl.in > "$@"
 	chmod 755 "$@"
 
+$(supportscr)/eg_db_config: Makefile $(supportscr)/eg_db_config.in
+	$(do_subst) $(supportscr)/eg_db_config.in > "$@"
+	chmod 755 "$@"
+
 $(supportscr)/marc_export: Makefile $(supportscr)/marc_export.in
 	$(do_subst) $(supportscr)/marc_export.in > "$@"
 	chmod 755 "$@"
+
+$(examples)/apache/eg.conf: Makefile $(examples)/apache/eg.conf.in
+	$(do_subst) $(examples)/apache/eg.conf.in > "$@"
+
+$(examples)/apache/eg_vhost.conf: Makefile $(examples)/apache/eg_vhost.conf.in
+	$(do_subst) $(examples)/apache/eg_vhost.conf.in > "$@"
+
+$(examples)/apache/eg_startup: Makefile $(examples)/apache/eg_startup.in
+	$(do_subst) $(examples)/apache/eg_startup.in > "$@"
 
 #perl-install and string-templates-install	
 ilscore-install:
@@ -251,4 +273,5 @@ reporter-install:
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@bindir@/clark-kent.pl'
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@bindir@/find_orphaned_reports.pl'
 
-
+docs-install: gen_docs
+	$(MKDIR_P) $(DESTDIR)$(docdir)

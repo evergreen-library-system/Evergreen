@@ -35,7 +35,7 @@ RedirectMatch 301 ^/opac/extras/slimpac/advanced.html$ /opac/en-US/extras/slimpa
 # ----------------------------------------------------------------------------------
 # Configure the gateway
 # ----------------------------------------------------------------------------------
-OSRFGatewayConfig /openils/conf/opensrf_core.xml
+OSRFGatewayConfig @sysconfdir@/opensrf_core.xml
 # Translator memcache server.  Default is localhost
 # OSRFTranslatorCacheServer 127.0.0.1:11211
 
@@ -349,7 +349,7 @@ RewriteRule .? - [E=locale:%{HTTP:Accept-Language}]
 # ----------------------------------------------------------------------------------
 # Module for processing staff-client offline scripts lives here
 # ----------------------------------------------------------------------------------
-<Directory "/openils/var/cgi-bin/offline">
+<Directory "@localstatedir@/cgi-bin/offline">
     AddHandler cgi-script .pl
     AllowOverride None
     Options +ExecCGI
@@ -545,7 +545,7 @@ RewriteRule ^/conify/([a-z]{2}-[A-Z]{2})/global/(.*)$ /conify/global/$2 [E=local
 </Location>
 
 # OpenURL 0.1 searching based on OpenSearch
-RewriteMap openurl prg:/openils/bin/openurl_map.pl
+RewriteMap openurl prg:@bindir@/openurl_map.pl
 RewriteCond %{QUERY_STRING} (^.*$)
 RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
 
@@ -560,7 +560,7 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
     allow from all
 
     PerlSetVar OILSWebBasePath "/eg"
-    PerlSetVar OILSWebWebDir "/openils/var/web"
+    PerlSetVar OILSWebWebDir "@localstatedir@/web"
     PerlSetVar OILSWebDefaultTemplateExtension "tt2"
 
     # Enable Template-Toolkit error debugging messages (apache error log)
@@ -583,18 +583,18 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
     # select their preferred locale from a locale picker in the TPAC.
     #
     #PerlAddVar OILSWebLocale "en"
-    #PerlAddVar OILSWebLocale "/openils/var/data/locale/messages.en.po"
+    #PerlAddVar OILSWebLocale "@localstatedir@/data/locale/messages.en.po"
     #PerlAddVar OILSWebLocale "en_ca"
-    #PerlAddVar OILSWebLocale "/openils/var/data/locale/en-CA.po"
+    #PerlAddVar OILSWebLocale "@localstatedir@/data/locale/en-CA.po"
     #PerlAddVar OILSWebLocale "fr_ca"
-    #PerlAddVar OILSWebLocale "/openils/var/data/locale/fr-CA.po"
+    #PerlAddVar OILSWebLocale "@localstatedir@/data/locale/fr-CA.po"
 
     # Set the default locale: defaults to en-US
     #PerlAddVar OILSWebDefaultLocale "fr_ca"
     
     # Templates will be loaded from the following paths in reverse order.
-    PerlAddVar OILSWebTemplatePath "/openils/var/templates"
-    #PerlAddVar OILSWebTemplatePath "/openils/var/templates_localskin"
+    PerlAddVar OILSWebTemplatePath "@localstatedir@/templates"
+    #PerlAddVar OILSWebTemplatePath "@localstatedir@/templates_localskin"
 
     #-------------------------------------------------
     # Added Content Configuration
@@ -647,7 +647,7 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
 </Location>
 <Location /eg/kpac>
     PerlSetVar OILSWebContextLoader "OpenILS::WWW::EGKPacLoader"
-    PerlSetVar KPacConfigFile "/openils/conf/kpac.xml.example"
+    PerlSetVar KPacConfigFile "@sysconfdir@/kpac.xml.example"
     ExpiresActive On
     ExpiresByType text/html "access plus 5 seconds"
 </Location>
