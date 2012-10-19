@@ -24,10 +24,8 @@ AC_INIT(Open-ILS, trunk, open-ils-dev@list.georgialibraries.org)
 AM_INIT_AUTOMAKE([OpenILS], [trunk])
 AC_REVISION($Revision: 0.1 $)
 AC_CONFIG_SRCDIR([configure.ac])
-AC_PREFIX_DEFAULT([/openils/])
 AC_SUBST(prefix)
 AC_SUBST([abs_top_builddir])
-
 #-----------------------------------
 # Checks for programs.
 #-----------------------------------
@@ -185,16 +183,16 @@ AM_CONDITIONAL([BUILDEGPYTHON], [test x$EG_PYTHON_INSTALL = xtrue])
 #-----------------------------------
 
 AC_ARG_WITH([opensrf-headers],
-[  --with-opensrf-headers=path location of the OpenSRF header files (default is /openils/include/)],
+[  --with-opensrf-headers=path location of the OpenSRF header files],
 [OPENSRF_HEADERS=${withval}],
-[OPENSRF_HEADERS=/openils/include/])
+[OPENSRF_HEADERS=`osrf_config --includedir`])
 AC_SUBST([OPENSRF_HEADERS])
 
 # We need this for JavaScript
 AC_ARG_WITH([opensrf-libs],
-[  --with-opensrf-libs=path    location of the OpenSRF libraries (default is /openils/lib/)],
+[  --with-opensrf-libs=path    location of the OpenSRF libraries],
 [OPENSRF_LIBS=${withval}],
-[OPENSRF_LIBS=/openils/lib/])
+[OPENSRF_LIBS=`osrf_config --libdir`])
 AC_SUBST([OPENSRF_LIBS])
 
 AC_ARG_WITH([tmp],
@@ -288,15 +286,6 @@ if test "x$openils_core" = "xtrue"; then
     # Checks for libraries. 
     #------------------------------------
 
-    # Check for the existence of libraries in non-standard locations
-
-    AC_MSG_CHECKING(for -lopensrf)
-    if test -e ${OPENSRF_LIBS}/libopensrf.so; then
-    AC_MSG_RESULT([yes])
-    else
-    AC_MSG_ERROR([*** libopensrf not found (or not in location specified to configure), aborting])
-    fi
-
     # Check for the rest of the libraries
 
     #check for dynamic linking functions
@@ -317,11 +306,11 @@ if test "x$openils_core" = "xtrue"; then
 
     AC_CHECK_LIB([expat], [main], [], AC_MSG_ERROR(*** OpenILS requires libexpat))
     AC_CHECK_LIB([ncurses], [main], [], AC_MSG_ERROR(*** OpenILS requires libncurses))
+    AC_CHECK_LIB([opensrf], [osrfMessageFree], [], AC_MSG_ERROR(*** OpenILS requires libopensrf))
     AC_CHECK_LIB([readline], [main], [], AC_MSG_ERROR(*** OpenILS requires libreadline))
     AC_CHECK_LIB([xml2], [main], [], AC_MSG_ERROR(*** OpenILS requires libxml2))
     AC_CHECK_LIB([xslt], [main], [], AC_MSG_ERROR(*** OpenILS requires libxslt))
     AC_CHECK_LIB([pq], [main], [], AC_MSG_ERROR(*** OpenILS requires libpq))
-
 
     #------------------------------------
     # Checks for header files.
