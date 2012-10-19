@@ -17,5 +17,8 @@
     "CLONE_SESSION_NAME": "Copy of ${0}",
     "XPATH": "XPath",
     "SESSION_NAME": "Session '${0}'",
-    "SELECT_MORE": "Click here to review all session URLs and/or select other URLs to verify"
+    "SELECT_MORE": "Click here to review all session URLs and/or select other URLs to verify",
+    "MARC_EDITOR_LINK": "Click to open MARC Editor for this record",
+    "MARC_EDITOR_TITLE": "Record ID #${0}",
+    "MARC_EDITOR_SAVE_RECORD": "Save Record"
 }
