@@ -52,8 +52,6 @@ function showAll {
 	 echo INCLUDEDIR=@includedir@
 	 echo SYSCONFDIR=@sysconfdir@
 	 echo APXS2=@APXS2@
-	 echo APACHE2_HEADERS=@APACHE2_HEADERS@
-	 echo APR_HEADERS=@APR_HEADERS@
 	 echo LIBXML2_HEADERS=@LIBXML2_HEADERS@
 	 echo 
 	 echo "Installed modules:"
@@ -82,8 +80,6 @@ function showHelp {
 	 echo "--includedir            displays includedir"
 	 echo "--sysconfdir            displays sysconfdir"
 	 echo "--apxs                  displays location of apxs"
-	 echo "--apache                displays location of apache2 headers"
-	 echo "--apr                   displays location of apr headers"
 	 echo "--libxml                displays location of libxml2 headers" 
 	 echo
 }

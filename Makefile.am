@@ -32,8 +32,6 @@ export LOG=@localstatedir@/log
 # Derived from autoconf:
 export TMP = @TMP@
 export APXS2 = @APXS2@
-export APACHE2_HEADERS = @APACHE2_HEADERS@
-export APR_HEADERS = @APR_HEADERS@
 export LIBXML2_HEADERS = @LIBXML2_HEADERS@
 export DBI_LIBS = @DBI_LIBS@
 export OPENSRF_HEADERS = @OPENSRF_HEADERS@

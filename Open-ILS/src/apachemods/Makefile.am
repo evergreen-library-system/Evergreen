@@ -4,7 +4,7 @@
 ## Process this file with automake to generate Makefile.in
 #-------------------------------------------------------------
 
-AM_CFLAGS = -D_LARGEFILE64_SOURCE -Wall -I@abs_top_srcdir@/Open-ILS/include/ -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) -I$(APR_HEADERS) -I$(OPENSRF_HEADERS)
+AM_CFLAGS = -D_LARGEFILE64_SOURCE -Wall -I@abs_top_srcdir@/Open-ILS/include/ -I$(LIBXML2_HEADERS) -I$(OPENSRF_HEADERS)
 AM_LDFLAGS = -L$(LIBDIR) -L$(OPENSRF_LIBS)
 AP_LIBEXECDIR = `$(APXS2) -q LIBEXECDIR`
 

@@ -220,18 +220,6 @@ if ! test -x "$APXS2"; then
 fi
 AC_SUBST([APXS2])
 
-AC_ARG_WITH([apache],
-[  --with-apache=path          location of the Apache headers (default is /usr/include/apache2)],
-[APACHE2_HEADERS=${withval}],
-[APACHE2_HEADERS=/usr/include/apache2])
-AC_SUBST([APACHE2_HEADERS])
-
-AC_ARG_WITH([apr],
-[  --with-apr=path             location of the Apache Portable Runtime (APR) headers (default is /usr/include/apr-1.0/)],
-[APR_HEADERS=${withval}],
-[APR_HEADERS=/usr/include/apr-1.0])
-AC_SUBST([APR_HEADERS])
-
 AC_ARG_WITH([libxml2],
 [  --with-libxml2=path         location of the libxml2 headers (default is /usr/include/libxml2)],
 [LIBXML2_HEADERS=${withval}],
@@ -431,8 +419,6 @@ AC_MSG_RESULT([-------- Installation Directories --------])
 AC_MSG_RESULT(Installation directory prefix:            ${prefix})
 AC_MSG_RESULT(Temporary directory:                      ${TMP})
 AC_MSG_RESULT(APXS2 location:                           ${APXS2})
-AC_MSG_RESULT(Apache headers location:                  ${APACHE2_HEADERS})
-AC_MSG_RESULT(APR headers location:                     ${APR_HEADERS})
 AC_MSG_RESULT(libxml2 headers location:                 ${LIBXML2_HEADERS})
 AC_MSG_RESULT(libdbi location:                          ${DBI_LIBS})
 AC_MSG_RESULT(OpenSRF headers location:                 ${OPENSRF_HEADERS})
