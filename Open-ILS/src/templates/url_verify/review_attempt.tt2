@@ -67,7 +67,7 @@
                 <th field="author" fpath="url.item.target_biblio_record_entry.simple_record.author"></th>
                 <th field="isbn" fpath="url.item.target_biblio_record_entry.simple_record.isbn" _visible="false"></th>
                 <th field="issn" fpath="url.item.target_biblio_record_entry.simple_record.issn" _visible="false"></th>
-                <th field="bib_id" fpath="url.item.target_biblio_record_entry.id" _visible="false" formatter="module.format_bib_id"></th>
+                <th field="bib_id" fpath="url.item.target_biblio_record_entry.id" formatter="module.format_bib_id"></th>
             </tr>
         </thead>
     </table>
