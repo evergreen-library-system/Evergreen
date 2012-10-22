@@ -248,16 +248,14 @@ CPAN_MODULES_FORCE = \
 	Class::DBI::Frozen::301
 
 # Lucid Lynx needs the following additional CPAN modules.
-CPAN_MODULES_LUCID = \
-    RPC::XML::Function
+CPAN_MODULES_LUCID = 
 
 # Precise Pangolin needs the following CPAN modules. All others are
 # avaialalbe as debs.
 CPAN_MODULES_PRECISE = \
     Business::CreditCard::Object \
     Business::OnlinePayment::PayPal \
-    Template::Plugin::POSIX \
-    RPC::XML::Function
+    Template::Plugin::POSIX
 
 # ----------------------------------------------------------------------------
 
