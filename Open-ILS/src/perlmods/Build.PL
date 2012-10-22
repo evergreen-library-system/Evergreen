@@ -68,7 +68,6 @@ my $build = Module::Build->new(
         'POSIX' => '0',
         'RPC::XML' => '0',
         'RPC::XML::Client' => '0',
-        'RPC::XML::Function' => '0',
         'RPC::XML::Method' => '0',
         'RPC::XML::Parser' => '0',
         'RPC::XML::Procedure' => '0',
