@@ -250,7 +250,6 @@ CPAN_MODULES_FORCE = \
 
 # Lucid Lynx needs the following additional CPAN modules.
 CPAN_MODULES_LUCID = \
-    RPC::XML::Function \
     Rose::URI
 
 # Precise Pangolin needs the following CPAN modules. All others are
@@ -259,7 +258,6 @@ CPAN_MODULES_PRECISE = \
     Business::CreditCard::Object \
     Business::OnlinePayment::PayPal \
     Template::Plugin::POSIX \
-    RPC::XML::Function \
     Rose::URI
 
 # ----------------------------------------------------------------------------
