@@ -85,6 +85,11 @@ sub handler {
 sub run_request {
     my( $service, $method, @args ) = @_;
 
+    $method =~ s/__/-/g;    # Our methods have dashes in them, but that's not
+                            # actually a valid character in XML-RPC method
+                            # names, and some clients enforce that restriction
+                            # on their users.
+
     # since multiple Perl clients run within mod_perl, 
     # we must set our ingress before each request.
     OpenSRF::AppSession->ingress('xmlrpc');
