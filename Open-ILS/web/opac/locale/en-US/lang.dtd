@@ -2086,6 +2086,7 @@
 <!ENTITY staff.server.admin.index.library_configuration "Library Configuration">
 <!ENTITY staff.server.admin.index.maintenance_reports "Maintenance Reports">
 <!ENTITY staff.server.admin.index.fonts_and_sounds "Global Font and Sound Settings">
+<!ENTITY staff.server.admin.index.search_templates "Search Templates">
 <!ENTITY staff.server.admin.index.printer "Printer Settings Editor">
 <!ENTITY staff.server.admin.index.do_not_auto_attempt_print_setting.label "'Do Not Attempt Auto-Print' Setting">
 <!ENTITY staff.server.admin.index.do_not_auto_attempt_print_setting.accesskey "">

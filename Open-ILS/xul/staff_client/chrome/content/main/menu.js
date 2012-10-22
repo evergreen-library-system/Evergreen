@@ -703,6 +703,12 @@ main.menu.prototype = {
                 ['oncommand'],
                 function(event) { open_admin_page('font_settings.xul', 'menu.cmd_local_admin_fonts_and_sounds.tab', false, event); }
             ],
+            'cmd_local_admin_search_templates' : [
+                ['oncommand'],
+                function(event) { 
+                    open_eg_web_page('conify/global/config/search_templates', 'menu.cmd_local_admin_search_templates.tab', event); 
+                }
+            ],
             'cmd_local_admin_printer' : [
                 ['oncommand'],
                 function(event) { open_admin_page('printer_settings.xul', 'menu.cmd_local_admin_printer.tab', false, event); }

@@ -515,6 +515,35 @@ OpenILS.data.prototype = {
         }
         file.close();
 
+        JSAN.use('util.file'); var file = new util.file('yesterdays_search_template');
+        if (file._file.exists()) {
+            try {
+                var x = file.get_content();
+                if (x && x != "null") {
+                    obj.current_search_template = JSON.parse(x);
+                    obj.stash('current_search_template');
+                    obj.data_progress('Saved current search template retrieved from file. ');
+                }
+            } catch(E) {
+                alert(E);
+            }
+        }
+        file.close();
+
+        JSAN.use('util.file'); var file = new util.file('search_templates');
+        if (file._file.exists()) {
+            try {
+                var x = file.get_content();
+                if (x) {
+                    obj.search_templates = JSON.parse(x);
+                    obj.stash('search_templates');
+                    obj.data_progress('Saved search templates retrieved from file. ');
+                }
+            } catch(E) {
+                alert(E);
+            }
+        }
+        file.close();
         obj.print_list_defaults();
         obj.data_progress('Default print templates set. ');
         obj.load_saved_print_templates();

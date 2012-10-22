@@ -1,0 +1,252 @@
+[% WRAPPER base.tt2 %]
+[% INCLUDE 'opac/parts/js.tt2' %]
+<script type="text/javascript" src="/xul/server/OpenILS/global_util.js"></script>
+        <script type="text/javascript" src="/xul/server/main/constants.js"></script>
+        <script type="text/javascript" src="/xul/server/main/JSAN.js"></script>
+    <script type="text/javascript" src="/xul/server/util/file.js"></script>
+    <script type="text/javascript" src="/xul/server/util/error.js"></script>
+    <script type="text/javascript" src="/opac/skin/kcls/js/global_row.js"></script>
+    <script type="text/javascript" src="/js/ui/default/conify/global/config/search_templates.js"></script>
+
+<style> #adv_global_tbody input, #adv_global_tbody a {display:none;}
+.ccvmSelect {width:200px;}
+#currentSettings {float:right;  width:500px; height:200px;}
+#options {float:left;}
+#ccvmOptions td, #resultOptions td {padding:.5em;}
+#currentSettings td {padding:.3em;}
+#adv_global_tbody select {max-width:115px;}
+#ssContainer {width:1200px;}
+</style>
+<div id="ssContainer">
+<h1>Search Settings</h1> 
+<br/>
+
+<div id="currentSettings">
+<h2>Current Template</h2>
+<select id="templateListSel" onChange="selectSearchTemplateOrClear(this.value), textIn.value = this.value" style="min-width:150px;">
+    <option value="">--Default--</option>	
+    </select>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<strong>Template Name</strong>
+<br/>
+<table>
+<tr>
+<td>
+<input type="text" id="nameInput" name="nameInput"/>
+</td>
+<td>
+<button id="save" onclick="create_template(textIn.value)">Save Template To Disk</button>
+</td>
+</tr>
+<tr>
+<td/>
+<td>
+<button id="delete" onclick="removeTemplate(templateList,template)">Delete Template</button>
+</td>
+</tr>
+</table>
+</div>
+<div id="options">
+<table width='100%' id='adv_global_input_table'>
+
+                <tbody id='adv_global_tbody' >
+                    [% INCLUDE "opac/parts/advanced/global_row.tt2" %]
+
+                </tbody>
+            </table>
+
+<br/>
+
+<table id="ccvmOptions">
+<tr>
+<td>
+<strong>Item Type</strong>
+<br />
+<select name="type" id="typeSel" multiple="multiple" size="7" class="ccvmSelect">
+</select>
+</td>
+<td>
+<strong>Language</strong>
+<br />
+<select name="lang" id="langSel" multiple="multiple" size="7" class="ccvmSelect">
+</select>
+</td>
+<td>
+<strong>Audience</strong>
+<br />
+<select name="audn" id="audnSel" multiple="multiple" size="7" class="ccvmSelect">
+</select>
+</td>
+
+</tr>
+</table>
+<table id="resultOptions">
+    <tr>
+        <td>
+            <strong>Search Library</strong>
+            <br />
+            <select id="orgSel" name="orgSel"></select>
+        </td>
+    <td>
+            <strong>Publication Date</strong>
+            <br/>
+            <select id="pubdateSel" name="pubdateSel">
+                <option value="is">Is</option>
+                <option value="before">Before</option>
+                <option value="after">After</option>
+                <option value="between">Between</option>
+            </select>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <strong>Search Results</strong>
+            <br/>
+            <select id="sortBySel" name="sortBySel">
+                <option value="">Sort by Relevance</option>
+                <optgroup label="Sort by Title">
+                        <option value="titlesort">Title: A to Z</option>
+                        <option value="titlesort.desc">Title: Z to A</option>
+                </optgroup>
+                <optgroup label="Sort by Author">
+                    <option value="authorsort">Author: A to Z</option>
+                    <option value="authorsort.desc">Author: Z to A</option>
+                </optgroup>
+                <optgroup label="Sort by Publication Date">
+                    <option value="pubdate.desc">Date: Newest to Oldest</option>
+                    <option value="pubdate">Date: Oldest to Newest</option>
+                </optgroup>
+            </select>
+        </td>
+        <td>
+            <strong>Result View</strong>
+            <br/>
+            <select id="resultViewSel">
+                <option value="0">Simple View</option>
+                <option value="1">Detail View</option>
+            </select>
+        </td>
+        <td>
+            <input type="checkbox" name="modifier" id="modifier" value="available" /> 
+            <span>Limit to Available</span>
+        </td>
+       <tr>
+        <td>
+        <button id="clear" onclick="clearOptions(langSel,audnSel,typeSel,pubdateSel,orgSel,sortBySel,resultViewSel,modCheck)">Clear Options</button>
+        </td>
+       </tr>
+    </table>
+
+</div>
+</div>
+
+<!-- /////////////////  -- JAVASCRIPT -- /////////////////////// -->
+
+
+<script type="text/javascript">
+    dojo.require('openils.PermaCrud');	
+    var pcrud;
+    pcrud = new openils.PermaCrud();
+
+    //HTML element handles
+    var templateSel = document.getElementById("templateListSel");	
+    var langSel = document.getElementById("langSel");
+    var audnSel = document.getElementById("audnSel");
+    var typeSel = document.getElementById("typeSel");
+    var pubdateSel = document.getElementById("pubdateSel");
+    var orgSel = document.getElementById("orgSel");
+    var sortBySel = document.getElementById("sortBySel");
+    var resultViewSel = document.getElementById("resultViewSel");
+    var modCheck = document.getElementById("modifier");
+    var textIn = document.getElementById("nameInput");
+    
+
+    //Create coded_value_map select boxes
+    var ccvmList = pcrud.retrieveAll("ccvm", {"order_by" : {"ccvm" : 'value'}});
+    var len = ccvmList.length;
+    var matList = new Array();	
+    var langList = new Array();
+    var itemList = new Array();
+    var audnGrpList = new Array();
+    var audnList = new Array();
+
+    //get g.data cache
+    getSearchStash();
+    populateTemplateOptions(templateList); 
+
+    //populate lists by coded_value_map ctype
+    for(var i=0; i<len; i++)
+    {
+        if(ccvmList[i].ctype() == "mattype")
+        {
+            matList.push(ccvmList[i]);
+            continue;
+        }
+        if(ccvmList[i].ctype() == "item_lang")
+        {
+            langList.push(ccvmList[i]);
+            continue;
+        }
+        if(ccvmList[i].ctype() == "audience_group")
+        {
+            audnGrpList.push(ccvmList[i]);
+            continue;
+        }	
+        if(ccvmList[i].ctype() == "audience")
+        {
+            audnList.push(ccvmList[i]);
+            continue;
+        }
+        if(ccvmList[i].ctype() == "item_type")
+        {
+            itemList.push(ccvmList[i]);
+            continue;
+        }
+    }
+    //Populate Item_type list with same values as 'advanced search' page
+    var typeList;
+    if ( matList.length > 0 )
+    { typeList = matList; }
+    else
+    { typeList = itemList; }
+    //Populate Item_type list with same values as 'advanced search' page
+    var audienceList = ( audnGrpList || audnList );
+    if ( audnGrpList.length > 0 )
+    { audienceList = audnGrpList; }
+    else
+    { audienceList = audnList; }
+    
+    //populate select boxes by ctype lists
+    populateCtypeOptions(langSel, langList);
+    populateCtypeOptions(typeSel, typeList);
+    populateCtypeOptions(audnSel, audienceList);
+    
+    //create org unit dropdown   
+    var orgList;
+    
+    orgList = pcrud.retrieveAll("aou",{"order_by" : [{'class' : "aou", 'field' : 'ou_type'}, {'class' : "aou", 'field' : "name" }]});
+    
+    for(var i=0; i< orgList.length; i++){
+        document.getElementById("orgSel").options[i]= new Option(orgList[i].name(), orgList[i].id());
+    }
+    if (template)
+    {
+        selectOptionValue(templateSel, template.name);
+        textIn.value = template.name;
+        if(template.name != "Default")
+        {
+            populateSearchOptions(template);
+        }
+    }
+    else
+    {
+        setBeginsWithOptions()	
+    }
+</script>
+
+[% END %]
