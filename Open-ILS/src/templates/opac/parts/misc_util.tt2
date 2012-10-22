@@ -420,7 +420,8 @@
     # which is a superset of 'loc'.
     BLOCK get_library;
         loc_name = 'locg';
-        loc_value = CGI.param(loc_name) || CGI.param('loc') || ctx.search_ou;
+        loc_value = ctx.copy_location_group_org ||  # resolved locg
+            CGI.param(loc_name) || CGI.param('loc') || ctx.search_ou;
     END;
 
 %]

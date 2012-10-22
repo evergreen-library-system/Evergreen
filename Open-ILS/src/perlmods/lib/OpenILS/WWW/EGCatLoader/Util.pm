@@ -347,6 +347,30 @@ sub get_records_and_facets {
     return ($facets, @data);
 }
 
+sub _resolve_org_id_or_shortname {
+    my ($self, $str) = @_;
+
+    if (length $str) {
+        # Match on shortname case insensitively, but only if there's exactly
+        # one match.  We wouldn't want the system to arbitrarily interpret
+        # 'foo' as either the org unit with shortname 'FOO' or 'Foo' and fail
+        # to make it clear to the user which one was chosen and why.
+        my $res = $self->editor->search_actor_org_unit({
+            shortname => {
+                '=' => {
+                    transform => 'evergreen.lowercase',
+                    value => lc($str)
+                }
+            }
+        });
+        return $res->[0]->id if $res and @$res == 1;
+    }
+
+    # Note that we don't validate IDs; we only try a shortname lookup and then
+    # assume anything else must be an ID.
+    return int($str); # Wrapping in int() prevents 500 on unmatched string.
+}
+
 sub _get_search_lib {
     my $self = shift;
     my $ctx = $self->ctx;
@@ -358,6 +382,14 @@ sub _get_search_lib {
     return $loc if $loc;
 
     # loc param takes precedence
+    # XXX ^-- over what exactly? We could use clarification here. To me it looks
+    # like locg takes precedence over loc which in turn takes precedence over
+    # request headers which take precedence over pref_lib (which can be
+    # specified a lot of different ways and eventually falls back to
+    # physical_loc) and it all finally defaults to top of the org tree.
+    # To say nothing of all the code that doesn't look to this function at all
+    # but rather accesses some subset of these inputs directly.
+
     $loc = $self->cgi->param('loc');
     return $loc if $loc;
 
@@ -445,7 +477,8 @@ sub extract_copy_location_group_info {
     my $ctx = $self->ctx;
     if (my $clump = $self->cgi->param('locg')) {
         my ($org, $grp) = split(/:/, $clump);
-        $ctx->{copy_location_group_org} = $org;
+        $ctx->{copy_location_group_org} =
+            $self->_resolve_org_id_or_shortname($org);
         $ctx->{copy_location_group} = $grp if $grp;
     }
 }
