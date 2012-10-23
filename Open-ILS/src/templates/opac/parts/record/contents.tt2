@@ -168,20 +168,15 @@ BLOCK render_contents;
     END;
 END 
 %]
-
 [%  BLOCK render_all_contents;
     FOREACH cont IN contents;
         content = PROCESS render_contents(xpath=cont.xpath);
         IF content.match('\S');
-%]
-        <table class='rdetail_content'>
-            <tbody>
-                <tr>
-                    <td class='rdetail_content_type'>[% cont.label %]</td>
-                    <td class='rdetail_content_value' itemprop='keywords'>[% content %]</td>
-                </tr>
-            </tbody>
-        </table>
+-%]
+<tr>
+    <td class='rdetail_content_type'>[% cont.label %]</td>
+    <td class='rdetail_content_value' itemprop='keywords'>[% content %]</td>
+</tr>
         [%- END; %]
     [%- END; %]
 [%- END %]
@@ -190,5 +185,9 @@ END
     IF content_html.length > 0;
 %]
 <h2 class='rdetail_contents'>[% l('Content descriptions') %]</h2>
+<table class='rdetail_content'>
+    <tbody>
 [%- content_html %]
+    </tbody>
+</table>
 [%- END %]
