@@ -596,7 +596,7 @@
         if(base_url) {
             base_url = base_url[0];
             if(urls[base_url])
-                url = url.replace(/^[^?/|]+\|/, urls[base_url]);
+                url = url.replace(/^[^?/|]+\|?/, urls[base_url]);
         }
         if (url.match(/^\//)) url = urls.remote + url;
         if (! url.match(/^(http|https|chrome|oils):\/\//) && ! url.match(/^data:/) ) url = 'http://' + url;
