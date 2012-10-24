@@ -1200,7 +1200,12 @@ a.opac-button, input.opac-button {
     margin-top: 1em;
 }
 
-.rdetail_subject_type {
+.rdetail_content {
+    margin-left: 1.5em;
+    padding-left: 1.5em;
+}
+
+.rdetail_content_type, .rdetail_subject_type {
     vertical-align: top;
     font-weight: bold;
 }
