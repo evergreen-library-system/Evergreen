@@ -300,6 +300,7 @@ function prepareInvoiceFeatures() {
 }
 
 function renderPo() {
+    var po_state = PO.state();
     dojo.byId("acq-po-view-id").innerHTML = PO.id();
     dojo.byId("acq-po-view-name").innerHTML = PO.name();
     makeProviderLink(
@@ -309,7 +310,7 @@ function renderPo() {
     dojo.byId("acq-po-view-total-li").innerHTML = PO.lineitem_count();
     dojo.byId("acq-po-view-total-enc").innerHTML = PO.amount_encumbered().toFixed(2);
     dojo.byId("acq-po-view-total-spent").innerHTML = PO.amount_spent().toFixed(2);
-    dojo.byId("acq-po-view-state").innerHTML = PO.state(); // TODO i18n
+    dojo.byId("acq-po-view-state").innerHTML = po_state; // TODO i18n
 
     if(PO.order_date()) {
         openils.Util.show('acq-po-activated-on', 'inline');
@@ -319,9 +320,9 @@ function renderPo() {
                     openils.Util.timeStamp(PO.order_date(), {formatLength:'short'})
                 ]
             );
-        if(PO.state() == "on-order") {
+        if(po_state == "on-order" || po_state == "cancelled") {
             dojo.removeAttr('receive_po', 'disabled');
-        } else if(PO.state() == "received") {
+        } else if(po_state == "received") {
             dojo.removeAttr('rollback_receive_po', 'disabled');
         }
     }
@@ -337,7 +338,7 @@ function renderPo() {
     // dojo.byId("acq-po-view-notes").innerHTML = PO.notes().length;
     poNoteTable.updatePoNotesCount();
 
-    if (PO.state() == "pending") {
+    if (po_state == "pending") {
         checkCouldActivatePo();
         if (PO.lineitem_count() > 1)
             openils.Util.show("acq-po-split");
