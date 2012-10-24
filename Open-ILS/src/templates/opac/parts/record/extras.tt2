@@ -36,7 +36,6 @@
 
         extras = [
             {name => 'summaryplus',  label => l('Summaries &amp; More'), hide => hide_summary}, 
-            {name => 'contents',  label => l('Contents'), hide => !attrs.contents},
             {name => 'annotation', label => l('Annotation'), hide => 1}, 
             {name => 'awards',  label => l('Awards, Reviews, & Suggested Reads')}, 
             {name => 'excerpt',  label => l('Excerpt'), hide => 1},
@@ -75,8 +74,6 @@
             [%  IF tab_is_active(name);
                     IF name == 'marchtml';
                         ctx.marchtml;
-                    ELSIF name == 'contents';
-                        attrs.contents;
                     ELSE;
                         # Load the template for the selected extra
                         INCLUDE "opac/parts/record/${name}.tt2";
