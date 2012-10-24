@@ -1115,6 +1115,8 @@
 <!ENTITY staff.main.menu.file.label "File">
 <!ENTITY staff.main.menu.file.new.accesskey "N">
 <!ENTITY staff.main.menu.file.new.label "New Window">
+<!ENTITY staff.main.menu.file.open.record.windows.horizontal "Tile MARC Records (Horizontal)">
+<!ENTITY staff.main.menu.file.open.record.windows.vertical "Tile MARC Records (Vertical)">
 <!ENTITY staff.main.menu.file.new_tab.accesskey "T">
 <!ENTITY staff.main.menu.file.new_tab.label "New Tab">
 <!ENTITY staff.main.menu.file.portal.label "Home">

@@ -272,6 +272,34 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { obj.close_all_tabs(); }
             ],
+            'cmd_open_record_windows_horizontal' : [
+                ['oncommand'],
+                function(event) {
+                    var bibURLs = obj.get_opac_record_urls();
+                    if(bibURLs && bibURLs.length > 0)
+                    {
+                    var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].
+                        getService(Components.interfaces.nsIWindowMediator);
+                    wm.getMostRecentWindow('eg_main').tileWindows(bibURLs, false, bibURLs.length, 0, false);
+                    } else {
+                        alert("No Records to Display");
+                    }
+                }
+            ],
+            'cmd_open_record_windows_vertical' : [
+                ['oncommand'],
+                function(event) {
+                    var bibURLs = obj.get_opac_record_urls();
+                    if(bibURLs && bibURLs.length > 0)
+                    {
+                    var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].
+                        getService(Components.interfaces.nsIWindowMediator);
+                    wm.getMostRecentWindow('eg_main').tileWindows(bibURLs, true, bibURLs.length, 0, false);
+                    } else {
+                        alert("No Records to Display");
+                    }
+                }
+            ],
 
             /* Edit Menu */
             'cmd_edit_copy_buckets' : [
@@ -2787,7 +2815,42 @@ commands:
         } catch(E) {
             alert('Error in menu.js, render_toolbar_layout('+layout+'): ' + E);
         }
+    },
+
+    'get_opac_record_urls'  : function() {
+        var bibURLs = [];
+        var panelCount = this.controller.view.panels.childNodes.length;
+        for (var i = 1; i < panelCount; i++) {
+            var panel = this.controller.view.panels.childNodes[ i ];
+            if (panel
+                && panel.firstChild
+                && panel.firstChild.nodeName == 'iframe'
+                && panel.firstChild.contentWindow
+                )
+            {
+                var cw = panel.firstChild.contentWindow;
+                var iframes = cw.document.getElementsByTagName('iframe');
+
+                if(iframes.length > 0)
+                {
+                    for (var y = 0; y < iframes.length; y++) {
+                        if(iframes[y].getAttribute('src').match(/^[https|chrome|oils].*/)
+                            && iframes[y].contentDocument
+                            && iframes[y].contentDocument.getElementsByTagName('browser')[0]
+                            && iframes[y].contentDocument.getElementsByTagName('browser')[0].contentWindow
+                            && iframes[y].contentDocument.getElementsByTagName('browser')[0].contentWindow.location)
+                            {
+                                var opac_url = iframes[y].contentDocument.getElementsByTagName('browser')[0].contentWindow.location;
+                                opac_url = opac_url.toString();
+                                if (opac_url.match(/eg\/opac\/record\/\d+/) || opac_url.match(/\/skin\/default\/xml\/rdetail.xml\?r=\d+/)) {
+                                        bibURLs.push(urls.XUL_OPAC_WRAPPER + '?opac_url=' + window.escape( opac_url ) + '&show_nav_buttons=false,&default_view=marc_edit');
+                                    }
+                            }
+                    }
+                }
+            }
+         }
+         return bibURLs;
     }
 }
-
 dump('exiting main/menu.js\n');

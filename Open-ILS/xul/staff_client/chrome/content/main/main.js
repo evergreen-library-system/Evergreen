@@ -793,4 +793,41 @@ function auto_login(loginInfo) {
     }
 }
 
+function tileWindows(urlList, isVertical, winCount, winIndex, aContinue) {
+    if(aContinue == true && tempWindow.closed == false) {
+        //check if window finished openning
+        if(tempWindow.g == undefined || tempWindow.g.menu == undefined) {
+            setTimeout(
+                function() {
+                    tileWindows(urlList, isVertical, winCount, winIndex, true);
+                }, 500);
+            return null;
+        }
+        tempWindow = null;
+    }
+    var scrWidth = window.screen.width;
+    var scrHeight = window.screen.height;
+    var placement = '';
+    if (urlList.length > 0) {
+        var url = urlList.shift();
+        //stack windows vertically or horizontally
+        if (isVertical) {
+            var winWidth = scrWidth / winCount;
+            placement = 'screenX=' + winWidth * (winIndex) + ',width=' + winWidth+ ',height=' + scrHeight;
+        } else {
+            var winHeight = scrHeight / winCount;
+            placement = 'screenY=' + winHeight * (winIndex) + ',width=' + scrWidth+ ',height=' + winHeight
+        }
+        tempWindow = xulG.window.open(urls.XUL_MENU_FRAME
+            + '?server=' + window.escape(G.data.server) + '&firstURL=' + window.escape(url),
+            '_blank','chrome,resizable,sizemode="normal",' + placement);
+        tempWindow.xulG = xulG;
+        winIndex++;
+        setTimeout(
+            function() {
+                tileWindows(urlList, isVertical, winCount, winIndex, true);
+            }, 500);
+
+    }
+}
 dump('exiting main/main.js\n');

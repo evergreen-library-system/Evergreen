@@ -15,6 +15,8 @@
     <command id="cmd_close_all_tabs" />
     <command id="cmd_shutdown" />
     <command id="cmd_portal" />
+    <command id="cmd_open_record_windows_horizontal" />
+    <command id="cmd_open_record_windows_vertical" />
 
     <command id="cmd_edit_copy_buckets" />
     <command id="cmd_edit_volume_buckets" />
@@ -296,6 +298,8 @@
         <menuitem label="&staff.main.menu.file.close_tab.label;" accesskey="&staff.main.menu.file.close_tab.accesskey;" command="cmd_close_tab"/>
         <menuitem label="&staff.main.menu.tabs.close;" accesskey="&staff.main.menu.tabs.close.accesskey;" command="cmd_close_all_tabs"/>
         <menuitem label="&staff.main.menu.file.close.label;" accesskey="&staff.main.menu.file.close.accesskey;" command="cmd_close_window"/>
+		<menuitem label="&staff.main.menu.file.open.record.windows.vertical;" command="cmd_open_record_windows_vertical"/>
+		<menuitem label="&staff.main.menu.file.open.record.windows.horizontal;" command="cmd_open_record_windows_horizontal"/>
         <menuseparator />
         <menuitem label="&staff.main.menu.quit;" accesskey="&staff.main.menu.quit.accesskey;" command="cmd_shutdown"/>
     </menupopup>
