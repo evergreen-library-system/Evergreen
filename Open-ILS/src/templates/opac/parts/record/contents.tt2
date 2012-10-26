@@ -162,9 +162,10 @@ BLOCK render_contents;
             code = subfield.getAttribute('code');
             NEXT UNLESS code.match('[a-z]');
             all_content.push(subfield.textContent);
-            total_contents = all_content.join(" ").replace('\s+$', '');
-        %] [% total_contents %][%- END;
-        IF all_terms.size; "<br/>"; END;
+        END;
+        total_contents = all_content.join(" ").replace('\s+$', '');
+        %] [% total_contents;
+        IF total_contents.size; "<br/>"; END;
     END;
 END 
 %]
