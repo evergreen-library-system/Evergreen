@@ -469,7 +469,7 @@ sub added_content_stage1 {
             $req->host($self->apache->hostname);
 
             my $http_type = ($type eq $sel_type) ? 'GET' : 'HEAD';
-            $req->write_request($http_type => "/opac/extras/ac/$type/html/" . uri_escape($key));
+            $req->write_request($http_type => "/opac/extras/ac/$type/html/" . uri_escape_utf8($key));
             $ctx->{added_content}->{$type}->{request} = $req;
         }
     }
