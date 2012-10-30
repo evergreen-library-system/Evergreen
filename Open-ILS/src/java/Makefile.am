@@ -4,7 +4,7 @@ JAVA = java -Xmx256m
 OSRF_HOME = ../../../../../OpenSRF/trunk/src/java
 OSRFJAVA = $(OSRF_HOME)/opensrf.jar
 EXT = $(OSRF_HOME)/ext
-JAVA_LIBS = .:$(JAVA_LIBDIR):$(OSRFJAVA):$(EXT)/json-jdk1.5-2007-05-01.jar:$(EXT)/wstx-lgpl-3.2.1.jar:$(EXT)/stax-api-1.0.1.jar:$(EXT)/java_memcached-release_1.5.1.jar
+JAVA_LIBS = .:$(JAVA_LIBDIR):$(OSRFJAVA):$(EXT)/json.jar:$(EXT)/java_memcached-release_2.0.1.jar
 JAVA_SRC = \
 	org/open_ils/*.java\
 	org/open_ils/idl/*.java\
@@ -45,6 +45,5 @@ docs:
 
 clean:
 	rm -r $(JAVA_LIBDIR)
-	
 
 
