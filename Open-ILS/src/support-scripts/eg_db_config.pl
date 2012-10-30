@@ -32,8 +32,8 @@ my $offline_file = '';
 my $prefix = '';
 my $sysconfdir = '';
 my $pg_contribdir = '';
-my $create_db_sql = '';
-my $create_db_sql_9_1 = '';
+my $create_db_sql_contribs = '';
+my $create_db_sql_extensions = '';
 my @services;
 
 my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
@@ -127,7 +127,7 @@ sub get_settings {
 	$settings->{pw} = $settings->{pw} || $opensrf_config->findnodes($pw);
 }
 
-=item create_database() - Creates the database using create_database.sql
+=item create_database() - Creates the database using create_database_contribs.sql
 =cut
 sub create_database {
 	my $settings = shift;
@@ -140,13 +140,13 @@ sub create_database {
 	chomp $temp[0];
 	my $pgversion = $temp[0];
 	my $cmd;
-	# If it looks like it is 9.1 or greater, use create_database_9_1.sql
-	# Otherwise use create_database.sql
+	# If it looks like it is 9.1 or greater, use create_database_extensions.sql
+	# Otherwise use create_database_contribs.sql
 	if($pgversion >= '91') {
-		$cmd = 'psql -vdb_name=' . $settings->{db} . ' -d postgres -f ' . $create_db_sql_9_1;
+		$cmd = 'psql -vdb_name=' . $settings->{db} . ' -d postgres -f ' . $create_db_sql_extensions;
 	} else {
 		$cmd = 'psql -vdb_name=' . $settings->{db} . ' -vcontrib_dir=' . $pg_contribdir .
-			' -d postgres -f ' . $create_db_sql;
+			' -d postgres -f ' . $create_db_sql_contribs;
 	}
 	my @output = `$cmd 2>&1`;
 	if(grep(/(ERROR|No such file or directory)/,@output)) {
@@ -221,8 +221,8 @@ GetOptions("create-schema" => \$cschema,
 		"config-file=s" => \$config_file,
 		"build-db-file=s" => \$build_db_sh,
 		"pg-contrib-dir=s" => \$pg_contribdir,
-		"create-db-sql=s" => \$create_db_sql,
-		"create-db-sql-9-1=s" => \$create_db_sql_9_1,
+		"create-db-sql-contribs=s" => \$create_db_sql_contribs,
+		"create-db-sql-extensions=s" => \$create_db_sql_extensions,
 		"pg-config=s" => \$pgconfig,
 		"admin-user=s" => \$admin_user,
 		"admin-password=s" => \$admin_pw,
@@ -265,12 +265,12 @@ if (!$pg_contribdir) {
 	$pg_contribdir = File::Spec->catdir($temp[0], 'contrib');
 }
 
-if (!$create_db_sql) {
-	$create_db_sql = File::Spec->catfile($script_dir, '../sql/Pg/create_database.sql');
+if (!$create_db_sql_contribs) {
+	$create_db_sql_contribs = File::Spec->catfile($script_dir, '../sql/Pg/create_database_contribs.sql');
 }
 
-if (!$create_db_sql_9_1) {
-	$create_db_sql_9_1 = File::Spec->catfile($script_dir, '../sql/Pg/create_database_9_1.sql');
+if (!$create_db_sql_extensions) {
+	$create_db_sql_extensions = File::Spec->catfile($script_dir, '../sql/Pg/create_database_extensions.sql');
 }
 
 if (!$offline_file) {
