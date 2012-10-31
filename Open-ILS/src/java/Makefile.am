@@ -1,9 +1,9 @@
 JAVA_LIBDIR = .lib
 JAVAC = javac -J-Xmx256m
 JAVA = java -Xmx256m 
-OSRF_HOME = ../../../../../OpenSRF/trunk/src/java
+OSRF_HOME = ../../../../OpenSRF/src/java
 OSRFJAVA = $(OSRF_HOME)/opensrf.jar
-EXT = $(OSRF_HOME)/ext
+EXT = $(OSRF_HOME)/deps
 JAVA_LIBS = .:$(JAVA_LIBDIR):$(OSRFJAVA):$(EXT)/json.jar:$(EXT)/java_memcached-release_2.0.1.jar
 JAVA_SRC = \
 	org/open_ils/*.java\
