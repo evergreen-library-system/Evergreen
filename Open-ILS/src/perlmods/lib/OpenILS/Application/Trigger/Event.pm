@@ -496,16 +496,20 @@ sub ClearObjectCache {
         my $phash = $_object_by_path_cache{$did};
         for my $path ( keys %$phash ) {
             my $shash = $$phash{$path};
-            for my $step ( keys %$shash ) {
-                my $fhash = $$shash{$step};
-                for my $ffield ( keys %$fhash ) {
-                    my $lhash = $$fhash{$ffield};
-                    for my $lfield ( keys %$lhash ) {
-                        delete $$lhash{$lfield};
+            for my $fhint ( keys %$shash ) {
+                my $hhash = $$shash{$fhint};
+                for my $step ( keys %$hhash ) {
+                    my $fhash = $$hhash{$step};
+                    for my $ffield ( keys %$fhash ) {
+                        my $lhash = $$fhash{$ffield};
+                        for my $lfield ( keys %$lhash ) {
+                            delete $$lhash{$lfield};
+                        }
+                        delete $$fhash{$ffield};
                     }
-                    delete $$fhash{$ffield};
+                    delete $$hhash{$step};
                 }
-                delete $$shash{$step};
+                delete $$shash{$fhint};
             }
             delete $$phash{$path};
         }
@@ -569,14 +573,14 @@ sub _object_by_path {
             my $def_id = $self->event->event_def->id;
             my $str_path = join('.', @$path);
 
-            $obj = $_object_by_path_cache{$def_id}{$str_path}{$step}{$ffield}{$lval} ||
+            $obj = $_object_by_path_cache{$def_id}{$str_path}{$fhint}{$step}{$ffield}{$lval} ||
                 (
                     (grep /cstore/, @{
                         Fieldmapper->publish_fieldmapper->{$fclass}{controller}
                     }) ? $ed : ($red ||= new_rstore_editor(xact=>1))
                 )->$meth( ($multi) ? { $ffield => $lval } : $lval);
 
-            $_object_by_path_cache{$def_id}{$str_path}{$step}{$ffield}{$lval} ||= $obj;
+            $_object_by_path_cache{$def_id}{$str_path}{$fhint}{$step}{$ffield}{$lval} ||= $obj;
         }
     }
 
