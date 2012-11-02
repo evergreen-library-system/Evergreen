@@ -20,8 +20,8 @@
 
 export PATH=${PATH}:/usr/sbin
 AC_PREREQ(2.61)
-AC_INIT(Open-ILS, 2.1.3, open-ils-dev@list.georgialibraries.org)
-AM_INIT_AUTOMAKE([OpenILS], [2.1.3])
+AC_INIT(Open-ILS, 2.1.4, open-ils-dev@list.georgialibraries.org)
+AM_INIT_AUTOMAKE([OpenILS], [2.1.4])
 AC_REVISION($Revision: 0.1 $)
 AC_CONFIG_SRCDIR([configure.ac])
 AC_PREFIX_DEFAULT([/openils/])
