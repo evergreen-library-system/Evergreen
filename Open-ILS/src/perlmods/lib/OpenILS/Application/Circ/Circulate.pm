@@ -3500,7 +3500,9 @@ sub checkin_handle_backdate {
     my $bd = cleanse_ISO8601($self->backdate);
     my $original_date = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($self->circ->due_date));
     my $new_date = DateTime::Format::ISO8601->new->parse_datetime($bd);
-    $bd = cleanse_ISO8601($new_date->ymd . 'T' . $original_date->strftime('%T%z'));
+    $new_date->set_hour($original_date->hour());
+    $new_date->set_minute($original_date->minute());
+    $bd = cleanse_ISO8601($new_date->datetime());
 
     $self->backdate($bd);
     return undef;
