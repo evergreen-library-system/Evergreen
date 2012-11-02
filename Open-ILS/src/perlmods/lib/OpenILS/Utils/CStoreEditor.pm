@@ -1,6 +1,7 @@
 use strict; use warnings;
 package OpenILS::Utils::CStoreEditor;
 use OpenILS::Application::AppUtils;
+use OpenSRF::Application;
 use OpenSRF::AppSession;
 use OpenSRF::EX qw(:try);
 use OpenILS::Utils::Fieldmapper;
@@ -637,9 +638,25 @@ sub _checkperm {
 # Logs update actions to the activity log
 # -----------------------------------------------------------------------------
 sub log_activity {
-	my( $self, $type, $action, $arg ) = @_;
+	my( $self, $method, $type, $action, $arg ) = @_;
 	my $str = "$type.$action";
-	$str .= _prop_string($arg);
+
+    if ($arg) {
+
+        my $redact = $OpenSRF::Application::shared_conf->shared->log_protect;
+        if (ref($redact) eq 'ARRAY' and grep { $method =~ /^$_/ } @{$redact}) {
+
+            # when API calls are marked as log-protect, avoid 
+            # dumping the param object to the activity log.
+            $str .= " **DETAILS REDACTED**";
+
+        } else {
+
+            $str .= _prop_string($arg);
+        }
+    }
+
+
 	$self->log(A, $str);
 }
 
@@ -760,7 +777,7 @@ sub runmethod {
 			$logger->error("Attempt to update DB while not in a transaction : $method");
 			throw OpenSRF::EX::ERROR ("Attempt to update DB while not in a transaction : $method");
 		}
-		$self->log_activity($type, $action, $arg);
+		$self->log_activity($method, $type, $action, $arg);
 	}
 
 	if($$options{checkperm}) {
