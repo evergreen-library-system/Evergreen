@@ -1060,7 +1060,8 @@ BEGIN
 		  FROM	asset.call_number
 		  WHERE	label = source_cn.label
 			AND owning_lib = source_cn.owning_lib
-			AND record = target_record;
+			AND record = target_record
+			AND NOT deleted;
 
 		-- ... and if there's a conflicting one on the target ...
 		IF FOUND THEN
