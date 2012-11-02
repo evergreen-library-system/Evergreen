@@ -1,253 +1,112 @@
-commit 3e5d3dac5ea261aa683ff467589f65f8ce72a4c7
+commit 0676b8be7da2684940362f1674851b357fa40956
 Author: Dan Scott <dscott@laurentian.ca>
-Date:   Tue Aug 21 21:36:39 2012 -0400
+Date:   Thu Nov 1 23:33:20 2012 -0400
 
-    Add upgrade script for 2.1.2-2.1.3
+    Bumping version numbers and adding Changelog
     
     Signed-off-by: Dan Scott <dscott@laurentian.ca>
 
-114	0	Open-ILS/src/sql/Pg/version-upgrade/2.1.2-2.1.3-upgrade-db.sql
-4	4	README
- create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.1.2-2.1.3-upgrade-db.sql
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application.pm
+1	0	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/xul/staff_client/chrome/content/main/about.html
+1	1	Open-ILS/xul/staff_client/defaults/preferences/prefs.js
+5	5	README
+2	2	configure.ac
 
-commit 1fe63a158ddedc3eb8f752e629889af0d6d3eb3b
+commit 4ac42d85a4e62fa7208387fee4ac67574b1024f1
 Author: Bill Erickson <berick@esilibrary.com>
-Date:   Thu Aug 16 15:40:58 2012 -0400
+Date:   Fri Nov 2 15:28:27 2012 -0400
 
-    Sanity check cstore limit/offset param values
+    CStoreEditor auto-activity log redaction
     
-    Certain cstore calls (direct / json_query) that support limit/offset
-    params called with a non-string / non-numeric value
-    
-    e.g. { "limit": null }
-    
-    result in a cstore segfault as it tries to call atoi(NULL) under the
-    covers.  This patch prevents this by verifying that the limit/offset
-    values are actual strings or numbers (i.e. return a value from
-    jsonObjectGetString) and not JSON_NULL, etc.
+    CStoreEditor logs all update calls to the activity log as key/value
+    pairs on the updated object.  Avoid loging key/value pairs for objects
+    when the API call being relayed by CStoreEditor is on the list of
+    log-protect API calls.  Instead, log "**DETAILS REDACTED**".
     
     Signed-off-by: Bill Erickson <berick@esilibrary.com>
     Signed-off-by: Dan Scott <dscott@laurentian.ca>
 
-20	12	Open-ILS/src/c-apps/oils_sql.c
+20	3	Open-ILS/src/perlmods/lib/OpenILS/Utils/CStoreEditor.pm
 
-commit a5dd95f0bb2bbc3d4b6ea1e5ddd75f705a6ceadc
+commit 2fbc5777f8edda0ba211db1622b6fbf7d09f5865
 Author: Dan Scott <dscott@laurentian.ca>
-Date:   Mon Jul 16 13:27:54 2012 -0400
+Date:   Tue Nov 6 14:26:53 2012 -0500
 
-    Hide OPAC-invisible holdings from SRU/Z39.50
+    Document log redaction XML for opensrf_core.xml
     
-    The basic_holdings Supercat method filtered out deleted call numbers and
-    copies, but didn't filter out copies based on the OPAC visibility status
-    of copy location / status / the copy itself. This has undesired results
-    when third-party services request copies via SRU or Z39.50 and expose
-    copies that should not be visible to the public.
-    
-    We wrap all of the visibility and deletedness checks for a given copy up
-    into a subroutine so that we can avoid repeating ourselves in the
-    basic_holdings logic. Also, if we missed a test, we can add it in one
-    handy place :)
-    
-    (Thanks to Galen Charlton for finding two missing tests: circ lib
-    visibility and owning lib visibility!)
+    Based on Bill Erickson's original text.
     
     Signed-off-by: Dan Scott <dscott@laurentian.ca>
-    Signed-off-by: Art Rhyno <art632000@yahoo.ca>
 
-20	2	Open-ILS/src/perlmods/lib/OpenILS/Application/SuperCat.pm
+30	0	RELEASE_NOTES.txt
 
-commit c8e6fa563f7e83be28783c81b8d7e13a7b8576aa
-Author: Melissa Lefebvre <mlefebvre@biblio.org>
-Date:   Tue Aug 14 12:58:18 2012 -0400
+commit 97b0c04b74e3a8c3b98c7ea1ee5a3fd8d758705a
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Oct 31 09:00:19 2012 -0400
 
-    Change grammar for lost and missing failure messages
+    Add sample log redaction config to EG opensrf_core
     
-    Update to the lost and missing failure wording to make it
-    gramatically correct.  Removed the word "has" from both
-    messages.
+    Redact parameter logging for the following API calls:
     
-    Signed-off-by: Melissa Lefebvre <mlefebvre@biblio.org>
+    Login:
+    open-ils.auth.authenticate.verify
+    open-ils.auth.authenticate.complete
+    open-ils.auth_proxy.login
+    
+    User updates:
+    open-ils.actor.user.password
+    open-ils.actor.user.username
+    open-ils.actor.user.email
+    open-ils.actor.patron.update
+    open-ils.cstore.direct.actor.user.create
+    open-ils.cstore.direct.actor.user.update
+    open-ils.cstore.direct.actor.user.delete
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
     Signed-off-by: Dan Scott <dscott@laurentian.ca>
 
-2	2	Open-ILS/src/extras/ils_events.xml
+18	0	Open-ILS/examples/opensrf_core.xml.example
 
-commit caa9a9ee35f22c3f6b613bd7210887dc0e3b65f4
-Author: Steven Chan <schan@sitka.bclibraries.ca>
-Date:   Sun Jul 8 11:20:11 2012 -0700
+commit c8ae69700a34ec126b01b58188f150376bd3f91c
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Oct 10 17:36:52 2012 -0400
 
-    Fix LP 829630, Show in Catalogue not working on Bills screen
+    Make it possible to suppress IDL fields
     
-    The page is looking for a messagecatalog XUL element with id
-    'catStrings', but is not finding it, and so we add it to the relevant
-    XUL file.
+    Some clients of external services, particularly pcrud and
+    reporter-store, need to be able to access tables that contain columns
+    we'd rather restrict.  For instance, the passwd field on actor.usr.
     
-    It's odd why it is omitted, because a browse through the repository
-    doesn't show any changes that would explain the error.
+    To effect this feature we provide a blacklist attribute for fields,
+    called suppress_controller, which works in the same way as the class
+    controller attribute but names controllers not allowed to use the field.
+    When the field is explicitly named in a query (fieldmapper select block
+    or json_query) an error is thrown, and suppressed fields are ingored in
+    general fieldmapper search/retreive requests.
     
-    Signed-off-by: James Fournie <jfournie@sitka.bclibraries.ca>
-    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
-
-1	0	Open-ILS/xul/staff_client/server/patron/bill2.xul
-
-commit d66b20e415aebf2b3308f37cb25a6612ac1fcd19
-Author: Dan Scott <dscott@laurentian.ca>
-Date:   Fri Jul 27 16:27:29 2012 -0400
-
-    Use MARC::Field objects to append new fields
-    
-    While the deprecated MARC::Record::add_fields() method allows you to add
-    a list of fields using a list object, append_fields() requires
-    MARC::Field objects.
-    
-    Signed-off-by: Dan Scott <dscott@laurentian.ca>
-    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
-    
-    Conflicts:
-    	Open-ILS/src/sql/Pg/002.schema.config.sql
-
-8	10	Open-ILS/src/sql/Pg/002.functions.config.sql
-1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
-103	0	Open-ILS/src/sql/Pg/upgrade/0726.schema.fix_maintain_901_regex.sql
- create mode 100644 Open-ILS/src/sql/Pg/upgrade/0726.schema.fix_maintain_901_regex.sql
-
-commit 08ad5769028661d8e8acf396443d346a3fe79ffb
-Author: Galen Charlton <gmc@esilibrary.com>
-Date:   Fri Jul 27 11:23:46 2012 -0400
-
-    lp1028514: fix syntax-o in PL/PERLU version of maintain_901()
-    
-    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
-    Signed-off-by: Dan Scott <dscott@laurentian.ca>
-    
-    Conflicts:
-    	Open-ILS/src/sql/Pg/002.schema.config.sql
-
-2	2	Open-ILS/src/sql/Pg/002.functions.config.sql
-1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
-105	0	Open-ILS/src/sql/Pg/upgrade/0725.schema.fix_maintain_901_regex.sql
- create mode 100644 Open-ILS/src/sql/Pg/upgrade/0725.schema.fix_maintain_901_regex.sql
-
-commit e88114f055088b634efd8f0aa3795b71176b1f9a
-Author: Dan Scott <dscott@laurentian.ca>
-Date:   Tue Jul 24 14:14:01 2012 -0400
-
-    Switch to a PLPERLU maintain_901() trigger function
-    
-    We've been burned by regexes that fail to grok XML properly numerous
-    times now. Standardizing on something that actually understands MARC
-    seems like a good idea.
-    
-    Signed-off-by: Dan Scott <dscott@laurentian.ca>
     Signed-off-by: Mike Rylander <mrylander@gmail.com>
-
-94	57	Open-ILS/src/sql/Pg/002.functions.config.sql
-97	66	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_maintain_901_regex.sql
-
-commit b6e19563b0cfb7da2bfb73d3199b86678e5188ab
-Author: Galen Charlton <gmc@esilibrary.com>
-Date:   Tue Jul 24 11:51:52 2012 -0400
-
-    lp1028514: fix regex replace in maintain_901()
-    
-    The regex used to insert the 901 field can put the new
-    field in the wrong location if the MARCXML record being
-    modified uses namespace prefixes.  This patch tightens
-    the regexp to avoid this problem.
-    
-    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
     Signed-off-by: Dan Scott <dscott@laurentian.ca>
 
-4	4	Open-ILS/src/sql/Pg/002.functions.config.sql
-68	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_maintain_901_regex.sql
- create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_maintain_901_regex.sql
+1	1	Open-ILS/examples/fm_IDL.xml
+1	0	Open-ILS/examples/fm_IDL.xsd
+7	0	Open-ILS/src/c-apps/oils_idl-core.c
+27	2	Open-ILS/src/c-apps/oils_sql.c
+3	0	Open-ILS/web/reports/xul/source-browse.js
+3	0	Open-ILS/web/reports/xul/source-setup.js
 
-commit 43dbf993a9a0a01c2a5a7948750accb2a2727541
-Author: Jason Etheridge <jason@esilibrary.com>
-Date:   Mon Jun 18 14:09:51 2012 -0400
+commit 19d53bda570a3eeab65e6d88e4c963b40553986b
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Tue Jun 19 12:23:09 2012 -0400
 
-    patron name border color for Notes
+    Can't use README for version, so use configure.ac
     
-    not Notes specifically, but this catches any non-alert non-blocking penalties
-    and prevents a colorless border from happening
+    Because one good "this works for now" being broken can be replaced with
+    another one easily.
     
-    Colors chosen from mrpeters' patch at
-    https://bugs.launchpad.net/evergreen/+bug/921817
-    
-    Thanks!
-    
-    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
-    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
-    
-    Conflicts:
-    
-    	Open-ILS/xul/staff_client/server/skin/patron_display.css
-
-14	5	Open-ILS/xul/staff_client/server/skin/patron_display.css
-
-commit 1c31d5cab88fc70851e626b577b73c6e995a2c64
-Author: Bill Erickson <berick@esilibrary.com>
-Date:   Wed Nov 23 10:54:51 2011 -0500
-
-    Add constraint to ACQ PO state value
-    
-    Limit 'state' values to
-    
-    'new','pending','on-order','received','cancelled'
-    
-    https://bugs.launchpad.net/evergreen/+bug/893193
-    
-    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
     Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
 
-1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
-2	1	Open-ILS/src/sql/Pg/200.schema.acq.sql
-10	0	Open-ILS/src/sql/Pg/upgrade/0722.schema.acq-po-state-constraint.sql
- create mode 100644 Open-ILS/src/sql/Pg/upgrade/0722.schema.acq-po-state-constraint.sql
-
-commit 192ab45b37d5a37187d37a253a420c3578adf570
-Author: Ben Shum <bshum@biblio.org>
-Date:   Wed Jun 27 14:01:24 2012 -0400
-
-    Move Prefix field ahead of Names in patron editor
-    
-    In earlier versions of Evergreen (1.6 and earlier), the Prefix field
-    was used to enter title information, such as Mr., Mrs., etc. When the
-    field was eventually added to the newer patron registration screens
-    (2.0+), it was added before the patron's last name field. Ideally,
-    the prefix should be listed prior to the patron's first name instead.
-    
-    In addition, address label issues by changing "Suffix/Title" back to
-    only "Suffix" and making "Prefix" into "Prefix/Title".
-    
-    Note: string changes would normally not be allowed in a stable release,
-    however in this case the previous translation (if any) will still get
-    pulled from the IDL for the field in question, so English will not
-    suddenly start showing up in the patron registration form.
-    
-    Signed-off-by: Ben Shum <bshum@biblio.org>
-    Signed-off-by: James Fournie <jfournie@sitka.bclibraries.ca>
-    Signed-off-by: Dan Scott <dscott@laurentian.ca>
-
-2	2	Open-ILS/examples/fm_IDL.xml
-1	0	Open-ILS/web/templates/default/actor/user/register_table.tt2
-
-commit c243355bec838c7914129ed12ebea3b6dac80371
-Author: Bill Erickson <berick@esilibrary.com>
-Date:   Mon Jul 16 16:56:10 2012 -0400
-
-    Squelch uninitialized var warning from hold_copy_targeter
-    
-    open-ils.storage_stderr.log was getting filled with entries like:
-    
-    "Use of uninitialized value in concatenation (.) or string at
-    /usr/local/share/perl/5.10.1/OpenILS/Application/Storage/Publisher/action.pm"
-    
-    ... consuming disk space endlessly. Stop that!
-    
-    (Stealing Lebbeous' footwork and providing a slightly different solution.)
-    
-    Signed-off-by: Bill Erickson <berick@esilibrary.com>
-    Signed-off-by: Ben Shum <bshum@biblio.org>
-    Signed-off-by: Dan Scott <dscott@laurentian.ca>
-
-1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+2	2	Open-ILS/xul/staff_client/Makefile.am
