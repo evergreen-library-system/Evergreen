@@ -209,4 +209,34 @@ sub extend_grace_period {
     return $grace_period;
 }
 
+# check if a circulation transaction can be closed
+# takes a CStoreEditor and a circ transaction.
+# Returns 1 if the circ should be closed, 0 if not.
+sub can_close_circ {
+    my ($class, $e, $circ) = @_;
+    my $can_close = 0;
+
+    my $reason = $circ->stop_fines;
+
+    # We definitely want to close if this circulation was
+    # checked in or renewed.
+    if ($circ->checkin_time) {
+        $can_close = 1;
+    } elsif ($reason eq OILS_STOP_FINES_LOST) {
+        # Check the copy circ_lib to see if they close
+        # transactions when lost are paid.
+        my $copy = $e->retrieve_asset_copy($circ->target_copy);
+        if ($copy) {
+            $can_close = !$U->is_true(
+                $U->ou_ancestor_setting_value(
+                    $copy->circ_lib,
+                    'circ.lost.xact_open_on_zero',
+                    $e
+                )
+            );
+        }
+    }
+    return $can_close;
+}
+
 1;

@@ -333,9 +333,11 @@ sub make_payments {
             $credit += $cred;
             my $circ = $e->retrieve_action_circulation($transid);
 
-            if(!$circ || $circ->stop_fines) {
-                # If this is a circulation, we can't close the transaction
-                # unless stop_fines is set.
+            # Whether or not we close the transaction. We definitely
+            # close is no circulation transaction is present,
+            # otherwise we check if the circulation is in a state that
+            # allows itself to be closed.
+            if (!$circ || OpenILS::Application::Circ::CircCommon->can_close_circ($e, $circ)) {
                 $trans = $e->retrieve_money_billable_transaction($transid);
                 $trans->xact_finish("now");
                 if (!$e->update_money_billable_transaction($trans)) {
