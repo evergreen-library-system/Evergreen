@@ -57,5 +57,5 @@
     <div class="common-no-pad"></div>
 </div>
 </div>
-[% END %]
 [% INCLUDE "opac/parts/topnav_links.tt2" %]
+[% END %]
