@@ -106,6 +106,9 @@ function loadLIs() {
                     liTable.addLineitem(li);
                     liTable.show('list');
                 }
+            }, 
+            oncomplete : function() {
+                    liTable.show('list');
             }
         }
     );
