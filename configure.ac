@@ -106,6 +106,14 @@ AC_ARG_WITH([updateshost],
 [AUTOUPDATE_HOST=])
 AC_SUBST([AUTOUPDATE_HOST])
 
+# Default updates host?
+AC_ARG_WITH([initialhost],
+[  --with-initialhost=hostname    default hostname for staff client (default is blank)],
+[INITIAL_HOST=${withval}],
+[INITIAL_HOST=])
+AC_SUBST([INITIAL_HOST])
+
+
 # install Evergreen Apache modules?
 AC_ARG_ENABLE([apache-modules],
 [  --disable-apache-modules    disables installation of the Evergreen Apache modules ],

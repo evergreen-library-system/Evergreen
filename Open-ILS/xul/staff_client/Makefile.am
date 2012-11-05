@@ -160,6 +160,8 @@ stamp:
 	@if [ -n "${AUTOUPDATE_HOST}" ]; then echo "Applying automatic update host ${AUTOUPDATE_HOST}"; fi
 	@if [ -n "${AUTOUPDATE_HOST}" ]; then sed -i -e "s|::HOSTNAME::|${AUTOUPDATE_HOST}|" -e "s|https\?://\(https\?://\)|\1|" build/defaults/preferences/autoupdate.js; fi
 	@if [ -n "${AUTOUPDATE_HOST}" ]; then sed -i -e "s|::HOSTNAME::|${AUTOUPDATE_HOST}|" -e "s|https\?://\(https\?://\)|\1|" build/install.rdf; fi
+	@if [ -z "${INITIAL_HOST}" ]; then rm -f build/defaults/preferences/initialhost.js; fi
+	@if [ -n "${INITIAL_HOST}" ]; then sed -i -e "s/%INITIAL_HOST%/${INITIAL_HOST}/" build/defaults/preferences/initialhost.js; fi
 	@cp build/STAMP_ID PREV_STAMP_ID
 	@cp build/VERSION PREV_VERSION
 
