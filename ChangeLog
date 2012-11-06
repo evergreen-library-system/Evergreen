@@ -1,3 +1,1143 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 2df098c59ae23e8abba05ec75db446941141c398
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Nov 2 15:28:27 2012 -0400
+
+    CStoreEditor auto-activity log redaction
+    
+    CStoreEditor logs all update calls to the activity log as key/value
+    pairs on the updated object.  Avoid loging key/value pairs for objects
+    when the API call being relayed by CStoreEditor is on the list of
+    log-protect API calls.  Instead, log "**DETAILS REDACTED**".
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+20	3	Open-ILS/src/perlmods/lib/OpenILS/Utils/CStoreEditor.pm
+
+commit f2f53421e3df78639a07a99088ba610f6a5d0731
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Nov 6 15:28:28 2012 -0500
+
+    Move 'initial host' feature docs into 2.3 release notes
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+15	0	docs/RELEASE_NOTES_2_3.txt
+0	12	docs/RELEASE_NOTES_NEXT/initial_host.txt
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/initial_host.txt
+
+commit d5a0f1f5edf78857d5227874998f95daf4ec0f63
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Nov 5 22:14:34 2012 -0500
+
+    Document log redaction XML chunk for opensrf_core.xml
+    
+    Based on Bill Erickson's original version.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+26	1	docs/RELEASE_NOTES_2_3.txt
+
+commit f502344088bac86af1634663de2d7a647987b873
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Oct 31 09:00:19 2012 -0400
+
+    Add sample log redaction config to EG opensrf_core
+    
+    Redact parameter logging for the following API calls:
+    
+    Login:
+    open-ils.auth.authenticate.verify
+    open-ils.auth.authenticate.complete
+    open-ils.auth_proxy.login
+    
+    User updates:
+    open-ils.actor.user.password
+    open-ils.actor.user.username
+    open-ils.actor.user.email
+    open-ils.actor.patron.update
+    open-ils.cstore.direct.actor.user.create
+    open-ils.cstore.direct.actor.user.update
+    open-ils.cstore.direct.actor.user.delete
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+18	0	Open-ILS/examples/opensrf_core.xml.example
+
+commit 5224fcf99db734eed0b9d58fd5e9389b16400d5d
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Oct 10 17:36:52 2012 -0400
+
+    Make it possible to suppress IDL fields
+    
+    Some clients of external services, particularly pcrud and reporter-store,
+    need to be able to access tables that contain columns we'd rather restrict.
+    For instance, the passwd field on actor.usr.
+    
+    To effect this feature we provide a blacklist attribute for fields, called
+    suppress_controller, which works in the same way as the class controller
+    attribute but names controllers not allowed to use the field.  When the field
+    is explicitly named in a query (fieldmapper select block or json_query) an
+    error is thrown, and suppressed fields are ingored in general fieldmapper
+    search/retreive requests.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	1	Open-ILS/examples/fm_IDL.xml
+1	0	Open-ILS/examples/fm_IDL.xsd
+7	0	Open-ILS/src/c-apps/oils_idl-core.c
+27	2	Open-ILS/src/c-apps/oils_sql.c
+3	0	Open-ILS/web/reports/xul/source-browse.js
+3	0	Open-ILS/web/reports/xul/source-setup.js
+
+commit 3977a280bc7cb27e16ac890b02b68ac043c94d13
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Thu Aug 2 13:28:44 2012 -0400
+
+    Staff client initial hostname
+    
+    Add support for an initial staff client hostname.
+    
+    It can be specified during building the staff client or via configure.
+    
+    During making the staff client:
+    
+    make INITIAL_HOST=hostname build
+    
+    During configure:
+    
+    ./configure --with-initialhost=hostname
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	0	Open-ILS/xul/staff_client/Makefile.am
+7	2	Open-ILS/xul/staff_client/chrome/content/auth/controller.js
+30	3	Open-ILS/xul/staff_client/chrome/content/main/main.js
+3	0	Open-ILS/xul/staff_client/defaults/preferences/initialhost.js
+8	0	configure.ac
+12	0	docs/RELEASE_NOTES_NEXT/initial_host.txt
+ create mode 100644 Open-ILS/xul/staff_client/defaults/preferences/initialhost.js
+ create mode 100644 docs/RELEASE_NOTES_NEXT/initial_host.txt
+
+commit 8645f10ad262f5c620345ab14868451ef57ebbb5
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Oct 11 00:56:40 2012 -0400
+
+    TPAC: Address some search syntax leaks in links
+    
+    Expand the list of filtered characters to cover all of the special
+    characters documented for the Evergreen search grammar
+    (http://evergreen-ils.org/dokuwiki/doku.php?id=documentation:technical:search_grammar)
+    when generating links in the TPAC so as to avoid inadvertently launching
+    filtered searches when a user clicks on something that should just be a
+    display value.
+    
+    For example, if a title includes "Presenting a subject: tips for
+    consultants", it should _not_ launch a search for "subject" containing
+    "tips for consultants".
+    
+    This commit addresses most of the link problems in the record
+    display, as well as the author links in the search results table.
+    
+    Still problematic are the facets (which seem to rely on exact matching,
+    such that filtering out the problematic characters is itself
+    problematic) and autocomplete (which requires modifying the Autocomplete
+    Dojo widget).
+    
+    In addition, this commit makes the series code actually display, as it
+    was using a non-standard method to attempt to return the results from
+    the BLOCK (and failing). Also, it makes the links for authors in the
+    record details match the MODS32 definition for personal name parts and
+    only use the "acdq" subfields. This enables a click on the link to
+    actually return results; previously, in the case where the author field
+    included (for example) a subfield "g" value, that value would be
+    included in the generated link and would likely lead to 0 hits.
+    
+    For authors, we substitute with a space rather than just eliding the
+    substituted value. Authors are particularly likely to have dates like
+    1899-1978; "1899 1978" matches, but "18991978" will not.
+    
+    Perhaps we should take the same approach with the others, or break down
+    the search/replace logic a little further (for example, we could remove
+    the "-" only if it is preceded by a space or is at the start of the
+    string and is followed immediately by a character, and preserve it if it
+    is surrounded by digits). But this seems to take us pretty far down the
+    road of less negatively surprising results.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+4	2	Open-ILS/src/templates/opac/parts/record/authors.tt2
+6	4	Open-ILS/src/templates/opac/parts/record/series.tt2
+1	1	Open-ILS/src/templates/opac/parts/record/subjects.tt2
+1	1	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit a97b4ba5f9e085387d7f923e85287d04c34161ec
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Oct 10 23:35:13 2012 -0400
+
+    TPAC: Add search torture tests to concerto record
+    
+    In addition to # signs causing problems in facets, we found that search
+    syntax in general is surfaced directly in most links that are exposed to
+    users in the TPAC. This commit adds several examples to the record with
+    the title "Trombone concerto (1991)":
+    
+    In the title, there is an embedded "subject:" search which will be
+    triggered by autocomplete.
+    
+    In the author (100 field), there is an embedded "author:" search which
+    will be triggered from the record details page. This also includes
+    another usage of the # sign.
+    
+    In the subject fields, there are:
+      * an embedded "subject:" search which will be triggered from the
+        facets, autocomplete, and record details page
+      * an embedded negation operator which will be triggered from the
+        facets, autocomplete, and record details page
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	1	Open-ILS/tests/datasets/concerto.sql
+
+commit 62cb022ce0ca38dc622f1ee88abf15b804d8ab00
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Oct 10 15:50:49 2012 -0400
+
+    Munge concerto to include # signs in series facets
+    
+    Search for "Piano concerto in C major, op. 39" or "Beethoven: concertos
+    and overtures" and you'll get facets with # signs to assist with fixing
+    LP # 856811.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2	2	Open-ILS/tests/datasets/concerto.sql
+
+commit feb74214accc9c710e5d0b18214113b17febb9c8
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Oct 10 17:26:06 2012 -0400
+
+    Sample Apache error syslog captures stderr
+    
+    Not all STDERR output and not all $req->log->foo() output makes it to
+    the Apache error log when using the 'ErrorLog syslog:local7'
+    configuration directive.  This changes the sample config to match the
+    CustomLog config so that all output is captured and redirected to
+    syslog.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	1	Open-ILS/examples/apache/eg.conf
+
+commit fe1e9f77eb422649180e691b836a79f93aa90b08
+Author: Mark Cooper <markchristophercooper@gmail.com>
+Date:   Mon Oct 22 22:01:22 2012 -0700
+
+    LP#1066629: Acq: Receiving an item should not change the status to "In Process" in many cases
+    
+    As suggested, when received, restrict copy status update for lineitem copies to only those that were on-order. Otherwise copies may have the status set to 'In Process' inappropriately.
+    
+    Signed-off-by: Mark Cooper <markchristophercooper@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Order.pm
+
+commit 4bf6dd1c717d56914230285a5d30b5b81a9e5d73
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Tue Oct 23 16:27:00 2012 -0400
+
+    Add missing ? to url_prefix regex check
+    
+    Fixes Barcode Completion and who knows what else.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	1	Open-ILS/xul/staff_client/chrome/content/OpenILS/global_util.js
+
+commit ac5161f3dbab7741a0f8ac06098990d7426465f9
+Author: Mark Cooper <markchristophercooper@gmail.com>
+Date:   Tue Oct 9 21:04:32 2012 -0700
+
+    LP#826917: Marc editor, CTRL+F6, F7, F8 no longer working on 2.0+
+    
+    Updated marcedit.js to recognize F6/7/8 according to codes at:
+    http://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes.
+    Did not modify behavior (so input focus is not adjusted post record load).
+    
+    Signed-off-by: Mark Cooper <markchristophercooper@gmail.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+6	6	Open-ILS/xul/staff_client/server/cat/marcedit.js
+
+commit 9cbd12e03f7107aaa179cd3e1e35c5e66e74a7ce
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Oct 18 14:54:08 2012 -0400
+
+    Rollback cstore transaction before bbag record load
+    
+    To avoid timeouts, which results in transaction rollbacks, preemptively
+    roll back the bookbag fetching cstore transaction before we retrieve
+    what could be a very large list of bookbag records data.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+9	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Account.pm
+
+commit c24e34676132640e5c652383290e4d5a5f705fc3
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Oct 9 16:49:09 2012 -0400
+
+    Authority popups are empty: fix dojo.query() usage
+    
+    When you right-click on a controllable field to display the contents of
+    the matching authority records, the contents of the matching authority
+    records simply appear as empty grey boxes.
+    
+    This is another case of needing to iterate over multiple values
+    separately rather than using one convenient CSS selector.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+7	1	Open-ILS/xul/staff_client/server/cat/marcedit.js
+
+commit f0caffee4f0fa32e897903cf6ad9773b0e6cfbe1
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Oct 8 22:30:32 2012 -0400
+
+    Enable maintain_control_number() to handle new OCLCnums
+    
+    In July 2013, per LP# 1049171, OCLC will begin generating control
+    numbers beginning with the "on" prefix.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    
+    Conflicts:
+    
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+2	2	Open-ILS/src/sql/Pg/002.functions.config.sql
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+137	0	Open-ILS/src/sql/Pg/upgrade/0742.schema.maintain_control_number_oclc.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0742.schema.maintain_control_number_oclc.sql
+
+commit 3fcd13fb8ab41910719ca53a9d1313fd39880767
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Sep 28 13:58:07 2012 -0400
+
+    ACQ invoice tabs scroll improvements
+    
+    Avoid nested scrollbars on tabbed ACQ invoice UI.  This is done by
+    removing a ContentPane layer and setting doLayout='false' on the
+    TabContainer, which allows the individual tabs to control their own
+    height dynamically, which means no more hard-set 600px height on the
+    tabs.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+5	3	Open-ILS/src/templates/acq/invoice/view.tt2
+
+commit af303657985f5d27bd100b14c1630f7c7b3e4524
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Sep 17 14:50:36 2012 -0400
+
+    ACQ scroll back to top of lineitem info page
+    
+    When displaying the lineitem "info" page (li attributes, marc record),
+    be sure to scroll to the top of the page instead of relying on the
+    previous scroll location.  In particular, if you last viewed a LI
+    toward the bottom of the page, returned (causes scroll down), then go
+    back into the info page, the page will be scrolled to the bottom.
+    
+    The solution is a little funkier than I'd hoped.  The scroll-to point
+    has to be a node that is a) within the scrolling dojo div and b). non-
+    visible when scrollIntoView is called.  Since the top-level
+    page div may be different, depending on who is loading li_table, we rely
+    on the caller to place an id=oils-scroll-to-top div in the page for
+    general top-scrolling.  (Note, also, window.scrollTo does not work when
+    it's the div and not the full page that needs scrolling).
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	0	Open-ILS/src/templates/acq/picklist/view.tt2
+1	0	Open-ILS/src/templates/acq/po/view.tt2
+1	0	Open-ILS/src/templates/acq/search/unified.tt2
+3	0	Open-ILS/web/js/ui/default/acq/common/li_table.js
+
+commit 2cb18f20ed1c41d4d24afbcdbcb848e6b57043e0
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Thu Oct 11 16:00:36 2012 -0400
+
+    TPAC: Make facet display work as in JSPAC
+    
+    Namely, this means:
+        - You see five facets per category by default, not ten.
+        - You can click a link to see all the facets in a category
+            (before this it was impossible to display more than ten).
+        - When viewing all the facets in a category, you can click a link
+            to reduce the list back to five.
+        - This number five I'm talking about is configurable in config.tt2.
+        - Alphabetical sorting of facets grouped by the same numbers of
+          results is restored.
+    
+    This addresses LP #1065109.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+8	2	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Util.pm
+3	1	Open-ILS/src/templates/opac/css/style.css.tt2
+1	0	Open-ILS/src/templates/opac/parts/config.tt2
+31	27	Open-ILS/src/templates/opac/parts/result/facets.tt2
+
+commit 8a929d746246b56f2670d1b71adaec3377ba67c8
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Aug 23 17:29:42 2012 -0400
+
+    Improvements to custom org tree UI
+    
+    This replaced the PermaCrud.js create() calls with inline transaction
+    begin, creates, and commit.  We do this to solve a number of problems:
+    
+    * Create all new nodes within the same transaction so that a failure
+    gracefully rolls back.
+    
+    * PermaCrud.js does not currently disconnect opensrf client sessions
+    (though it has a disconnect() method).  We can manage that locally.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+41	10	Open-ILS/web/js/ui/default/conify/global/actor/org_unit_custom_tree.js
+
+commit de412ce69871671af7970abba42b10fc33554b8b
+Author: Steven Callender <stevecallender@esilibrary.com>
+Date:   Mon Oct 15 10:48:28 2012 -0400
+
+    Added a check for the money.collections_tracker table when using the open-ils.collections.users_of_interest.warning_penalty.retrieve API call.
+    
+    Users that are already entered into the money.collections_tracker table should not be recalled from the open-ils.collections.users_of_interest.warning_penalty.retrieve API. This change will check for the existance of the user in the money.colletions_tracker table.
+    
+    Signed-off-by: Steven Callender <stevecallender@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+10	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Collections.pm
+
+commit 3d12351fdf70f702df05dafeff0b860e25a89c34
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Oct 12 15:38:59 2012 -0400
+
+    trivial whitespace cleanup
+    
+    Locally consistent, globally all over the map in this file.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/actor.pm
+
+commit 8b8e973310638da48d9ac92ee636e4ee6a51fe43
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Thu Oct 11 19:33:16 2012 -0400
+
+    Adding a WHERE clause to prevent timeout of juv-to-adult function
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/actor.pm
+
+commit 239e70e2256b52bcb2d4dd32fa310c5e77b98e6e
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Oct 11 01:43:01 2012 -0400
+
+    TPAC: Respect location visibility for result copies
+    
+    Robert Soulliere noted in LP# 1062502 that copies in a location marked
+    "opac_visible = FALSE" were erroneously being displayed in search
+    results. This would occur if at least one copy on a record was in a
+    visible location, but other copies were in an invisible location.
+    
+    This commit prevents copies in hidden locations from being displayed,
+    and also adds guards for the visibility of the copy status and the
+    circulation library.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+5	0	Open-ILS/src/templates/opac/parts/misc_util.tt2
+
+commit b39ac1de1e4b1b598b7ada95872e012f643f8157
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Thu Sep 27 14:51:44 2012 -0400
+
+    Serials: Don't force a Receive Unit Template in Alt Serials Control
+    
+    Mary Llewellyn reported that she used to be able to use serials and
+    perform copy-less receiving without any value in this field.
+    
+    The requirement that a value be set in the Receive Unit Template field
+    of serial distributions was added (by me) in 2.1 to the alternate serials
+    control interface, but is not enforced at lower levels.
+    
+    I now believe that requiring a value here must have been a ham-handed
+    way to avoid a difficult-to-troubleshoot issue in copy-FUL receiving,
+    but copy-LESS serials receiving workflows indeed don't need this, so
+    this commit removes the requirement.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+0	1	Open-ILS/src/templates/serial/subscription/distribution.tt2
+
+commit a8e9d68e93f0a1d4fd1d2202c40180d2247d848b
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Sep 5 14:39:36 2012 -0400
+
+    Use current fiscal year for PO creation (API)
+    
+    When creating a PO, if no fiscal_year is specified by the caller, use
+    the current fiscal year of the ordering agency.  This change primarily
+    affects the Open-ILS/src/support-scripts/acq_order_reader.pl script (and
+    any other direct API callers) which does not offer the user a chance to
+    set the fiscal year manually.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+11	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Order.pm
+
+commit 436fae85993182a81fdd85428949ccc26049ec8e
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Sep 20 15:17:36 2012 -0400
+
+    Fix autosuggest when in no-vis-check mode
+    
+    When autosuggest is configured to avoid visiblity checking, it sends a
+    special org unit id of -1 to the database as a signal.  However, the stored
+    procedure is expecting a NULL instead.  This allows either by transforming
+    -1 to NULL within the stored procedure.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    
+    Conflicts:
+    
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	0	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+134	0	Open-ILS/src/sql/Pg/upgrade/0740.schema.checkless_browse_fix.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0740.schema.checkless_browse_fix.sql
+
+commit 4e9aaf50a1a7e1655183bcfce1ea00255c172d72
+Author: Mark Cooper <markchristophercooper@gmail.com>
+Date:   Tue Oct 9 12:41:44 2012 -0700
+
+    LP#1007020: Using checkout, last activity shows as unset
+    
+    Added usr_activity to $fields for flesh_user function.
+    
+    Signed-off-by: Mark Cooper <markchristophercooper@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor.pm
+
+commit d2bd31086e134610602c3a6a8e17b68de775d98b
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Aug 30 00:21:01 2012 -0400
+
+    Remove C compiler warning for writeAuditInfo
+    
+    The C compiler was throwing the following warning:
+    
+    oils_sql.c: In function 'writeAuditInfo':
+    oils_sql.c:7244:1: warning: control reaches end of non-void function
+    [-Wreturn-type]
+    
+    By shifting the "return 0" to the end of the function, outside of the if
+    statements, we can ensure that we always return an int value.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	1	Open-ILS/src/c-apps/oils_sql.c
+
+commit e30193d1712cbb6f4ebb17d71d00a0b5e1eb3b10
+Author: Michael Peters <mrpeters@library.in.gov>
+Date:   Fri Sep 21 11:47:41 2012 -0400
+
+    TPAC: Add a progress spinner after pressing search on Advanced Search
+    
+    Advanced Search had no indication of progress once you've submitted
+    a search. We should add a "progressbar_green.gif" like the basic search
+    has, so the user knows their search is in progress, and (hopefully)
+    avoids them from hammering submit to get a result.
+    
+    Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+6	1	Open-ILS/src/templates/opac/parts/advanced/search.tt2
+
+commit aedb6254511dbb6656a1dceafe8085c8b4cec010
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Oct 3 15:00:26 2012 -0400
+
+    ACQ invoice receive UI handles async LI retrieval
+    
+    openils.acq.Linetitem.fetchAndRender() now fetches lineitems
+    asynchronously.  This commit causes the invoice receive UI to calculate
+    the copies to be received after all lineitems have been (async) fetched.
+    Without this, it always appears as though there are no copies to receive
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+23	13	Open-ILS/web/js/ui/default/acq/invoice/receive.js
+
+commit 49c9f1214f2663b2a6b12af0ce20a279d095be20
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Oct 10 22:06:32 2012 -0400
+
+    TPAC: Avoid 500 errs on record page due to ipv6 ignorance
+    
+    Net::HTTP does not handle ipv6 addresses properly, and is subject to
+    failing to return a request object if handed one (some systems seem to
+    prefer ipv6). This commit checks the value of the request object before
+    invoking any methods on it, and also short-circuits the AC lookup loop
+    if the host could not be resolved to avoid flooding the logs with
+    multiple "Unable to connect..." warnings.
+    
+    If Net::HTTP grows ipv6 support, this commit can still stay in place and
+    the lookups will just start magically working.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+5	2	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Record.pm
+
+commit 9e6ab63c189c3ac177f8422b532c76270f20cafd
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Sep 10 09:32:17 2012 -0400
+
+    TPAC: Remove noise, misleading text from myopac/holds/circs/circ_history
+    
+    There are many "class='hide_me'" elements that will never be displayed
+    and which are currently just extra bits to ship over the wire. Same for
+    the inline comments.
+    
+    Also move most of the inline styles out to the stylesheet.
+    
+    Also remove the explicit widths on the table cells; if the font size
+    changes or the translated text is wider than the table cells, then the
+    display will become comical.
+    
+    Also remove explicit <br> tags from localized strings; given the
+    likelihood that font sizes and column widths will change, <br> tags
+    inside localized strings make very little sense.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+23	1	Open-ILS/src/templates/opac/css/style.css.tt2
+13	28	Open-ILS/src/templates/opac/myopac/circ_history.tt2
+19	66	Open-ILS/src/templates/opac/myopac/circs.tt2
+42	104	Open-ILS/src/templates/opac/myopac/holds.tt2
+1	3	Open-ILS/src/templates/opac/parts/login/password_hint.tt2
+1	1	Open-ILS/src/templates/opac/parts/place_hold_result.tt2
+5	1	Open-ILS/web/css/skin/default/opac/semiauto.css
+
+commit 63fcae2a0961ee9e0a4b516b678daccf9f7c9fc3
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Oct 8 14:12:49 2012 -0400
+
+    Be more strict about dates we generate
+    
+    ISO-8601 dates must have a 4-character year component, however strftime does
+    not left-pad years to 4 characters when the century is one character long even
+    though the man page for strftime(3) suggests otherwise:
+    
+           %F     Equivalent to %Y-%m-%d (the ISO 8601 date format). (C99)
+    
+    This makes stricter ISO-8601 parsers, such as Perl's DateTime module, unhappy.
+    So, we'll do it ourselves using the glibc extensions available to strftime for
+    specifying a padding character and desired length.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+4	4	Open-ILS/src/c-apps/oils_sql.c
+
+commit 465488439e75bbb9bc9fbbba0e23c0036cf9937d
+Author: Dan Scott <dan@coffeecode.net>
+Date:   Mon Oct 8 15:08:47 2012 -0400
+
+    Checkout: further validation of due date override
+    
+    The check_past() function failed if given a date that was not strictly
+    in YYYY-mm-dd format; interestingly, a common transposition typo such
+    as "0212-10-20" results in "212-10-20" getting passed to check_past(),
+    and therefore generating an invalid date. Throw an exception in
+    check_past() rather than returning true, because we are not in fact
+    stating that the due date is in the past - and catch the exception and
+    flag the due date override box accordingly in the checkout screen.
+    
+    We could bubble the exception up to the user, but hopefully highlighting
+    the checkout box as being in an invalid state will catch the attention
+    of the users.
+    
+    [LFW: Slightly amended a comment in OpenILS/WWW/EGCatLoader/Util.pm]
+    
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Util.pm
+9	1	Open-ILS/xul/staff_client/chrome/content/util/date.js
+12	5	Open-ILS/xul/staff_client/server/circ/checkout.js
+
+commit 2950191dc6d56adbaf11afc5a13126d841b41b1c
+Author: Dan Scott <dan@coffeecode.net>
+Date:   Mon Oct 8 11:25:41 2012 -0400
+
+    TPAC: Invalid due dates cause 500 server error
+    
+    CStore appears to return dates with leading 0s (such as '0212-10-08
+    23:59:59-05:17:32') with the leading 0s stripped off, resulting in
+    cases with 1-digit or 3-digit years for which DateTime::Format::ISO8601
+    returns an error.
+    
+    We can protect against this problem by adding some defensive code to the
+    TPAC utility method to add the 0s back to the start of the year. We can
+    also log the problem when it occurs so that administrators can fix the
+    problem dates in the database.
+    
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+16	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Util.pm
+
+commit 583bf046ad122225c749105b973b1d78293271ec
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Wed Oct 3 12:42:01 2012 -0400
+
+    LP1052941: Internal Server Error when adding to My List in staff client.
+    
+    Don't redirect in EGCatLoader/Account.pm when in staff client context and
+    we're adding to a My List/Bookbag.
+    
+    Add a wrapper macro to bookbag_actions.tt2 to wrap the add to book bag URLs
+    with some javascript that opens a new tab in the staff client. This is to
+    prevent the staff person from losing their search results as they would if
+    the new URL were opened in their current tab.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+7	4	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Account.pm
+20	10	Open-ILS/src/templates/opac/parts/bookbag_actions.tt2
+
+commit c387ad7febf7f3ce9049187e18016fc5aa108e80
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Sep 28 16:53:05 2012 -0400
+
+    "Select All" option in invoice search results
+    
+    Adds a new Select All checkbox along the top of the invoice search
+    results page.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+3	0	Open-ILS/src/templates/acq/invoice/view.tt2
+8	0	Open-ILS/web/js/ui/default/acq/invoice/view.js
+
+commit 33c0f8439f15cb13a0c59adfd8702eb1f68b803f
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Aug 30 11:55:10 2012 -0400
+
+    Slightly saner login form markup
+    
+    Try to provide accessibility via label attributes and move from a
+    table-within-a-table layout to a single table for the form.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+43	124	Open-ILS/src/templates/opac/parts/login/form.tt2
+
+commit 30d325f369744adf9fb8ebc4d2f200de5d0a7ee2
+Author: Steven Chan <schan@sitka.bclibraries.ca>
+Date:   Wed Jul 25 13:45:40 2012 -0700
+
+    Fix LP1029095, Acq: Receive Items on an Invoice does not work with Line Item Alerts
+    
+    1. Item reception was encountering a Javascript exception in the
+    check_lineitem_alerts() helper function, because there was a mismatch
+    between the input parameter name and the variable name actually used.
+    
+    2. Also, took the opportunity to improve the performance of the for loop
+    to scan through alerts.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+6	4	Open-ILS/web/js/ui/default/acq/invoice/receive.js
+
+commit d3e30b106d06159c0edf4f9a59e6df5dfd4bd694
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Aug 28 17:03:28 2012 -0400
+
+    Use CSS selectors that new XUL can live with
+    
+    Just another case of current XUL not liking Dojo 1.3's "dojo.query('foo
+    bar')" and converting it to "dojo.query('foo').query('bar')" instead.
+    
+    This problem manifested as bizarrely large fixed field grids and an
+    absence of working authority context menus.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+3	3	Open-ILS/xul/staff_client/server/cat/marcedit.js
+
+commit c6a1c0432c437c3e84384cfa6cf83b05900e02ca
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Fri Sep 28 15:26:06 2012 -0400
+
+    Make scrollOnFocus default to false for dojo-based/conify interfaces
+    
+    This change is intended to prevent a phenomenon in certain user
+    interfaces wherein clicking on a button or other widget can cause a
+    user's screen to suddenly jump and the user to need to click the widget
+    a second time before the desired function actually happens.
+    
+    Dijits that have the scrollOnFocus property are the ones that tend to
+    exhibit this issue, especially, but not always, within the staff client
+    when the user's xulrunner window is not maximized.
+    
+    There may be cases of interfaces actually relying on scrollOnFocus to do
+    something, but I think those cases should be so rare that this is still
+    worth doing, and exceptions can be applied there as needed.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+6	1	Open-ILS/web/js/ui/base.js
+
+commit 9692199c47cb01782cfd3156a2bfd3669fe446e3
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Tue Jun 19 12:23:09 2012 -0400
+
+    Can't use README for version, so use configure.ac
+    
+    Because one good "this works for now" being broken can be replaced with
+    another one easily.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2	2	Open-ILS/xul/staff_client/Makefile.am
+
+commit e07ffc9987f47d14db6347ab3f7174412af0d626
+Author: Michael Peters <mrpeters@library.in.gov>
+Date:   Mon Oct 1 14:51:31 2012 -0400
+
+    LP#1020261 Better label for "Host" field in acq.edi_account
+    
+    The host field of acq.edi_account is really meant to contain more than just a hostname.
+    It needs a scheme part, so that the whole contents of the field should be URI-ish, like
+    
+    ftp://ftp1.somevendor.com
+    
+    Otherwise Evergreen's EDI mechanism can guess wrongly that we want to use
+    SSH instead of FTP to connect.
+    
+    This also adds a description for the field, in the footer, along with the other
+    "helpers".
+    
+    Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+1	0	Open-ILS/src/templates/conify/global/acq/edi_account.tt2
+
+commit 9e10d38b34a90e98ce4298b7fe7b63bdbed3197b
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Wed Jun 27 18:38:19 2012 -0400
+
+    Add two fields to the new FlattenerGrid-based hold pull list
+    
+    Namely (current) copy status and (number of) potential copies.
+    
+    I believe this implementation has a negligible impact on the efficiency
+    of the hold pull list query overall.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+8	1	Open-ILS/examples/fm_IDL.xml
+1	0	Open-ILS/src/templates/circ/hold_pull_list.tt2
+
+commit 36a51d2b194f6bac647630fbe67d44c2bbb84cf6
+Author: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+Date:   Wed Oct 3 13:21:57 2012 -0400
+
+    Documentation: Update upgrade instructions to 2.3.0.
+    
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+12	12	docs/installation/server_upgrade.txt
+
+commit 719dd030798e6dfec081af9188904f59e37142ff
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Sep 26 23:13:41 2012 -0400
+
+    Teach make_release to set the eg_version var
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+1	0	build/tools/make_release
+
+commit 5c8b83b596f9289a7141d0b566bdccf441319f8c
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Sep 26 22:54:06 2012 -0400
+
+    After upgrade, list records with missing or incorrect 901$c
+    
+    This is a common cause of pain for upgrades. Let's try to identify the
+    problem early (even if it takes forever on a site with 3 million bibs)
+    and offer advice on correcting the problem if it is flagged.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+20	0	Open-ILS/src/sql/Pg/version-upgrade/2.2-2.3.0-upgrade-db.sql
+
+commit 06d54e49c37519409df8dd92cc7624779270d7a3
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Sep 26 22:11:45 2012 -0400
+
+    Apply the 0715 update during the 2.3.0 upgrade
+    
+    Per LP# 1057183, the 0715 update should have been applied during the
+    2.1-2.2 upgrade, but appears not to have been - and that ends up
+    causing problems during the 2.2-2.3 upgrade. Thus we prophylactically
+    attempt to apply it again.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+14	0	Open-ILS/src/sql/Pg/version-upgrade/2.2-2.3.0-upgrade-db.sql
+
+commit 7e565f99e650ddd2a979a53d59416cb424ced8d2
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Sep 26 22:02:17 2012 -0400
+
+    Add an explicit "set eg_version" at start of upgrade script
+    
+    Thanks to Robert Soulliere for raising this issue in LP# 1057113!
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+3	0	Open-ILS/src/sql/Pg/version-upgrade/2.2-2.3.0-upgrade-db.sql
+
+commit 0b0a01d34b16078b71c5ac99804fa2a4692ecf84
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Sep 26 22:00:03 2012 -0400
+
+    Add the 2.2-2.3.0 upgrade script
+    
+    Cloned from b9a480e7f640e7.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2219	0	Open-ILS/src/sql/Pg/version-upgrade/2.2-2.3.0-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.2-2.3.0-upgrade-db.sql
+
+commit aaf94d278b24e59000b705d14965d479576c3e54
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Sep 24 17:12:11 2012 -0400
+
+    TPAC added content lookup uses local server address
+    
+    Use the current Apache server's IP address instead of apache->hostname
+    to determine where to route TPAC added content lookups.  This allows the
+    server to handle the added content lookup locally instead of having to
+    route out and back into the cluster.
+    
+    Continue using apache->hostname as the Host header to ensure the proper
+    virtualhost is used once the request is received.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+
+13	6	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Record.pm
+
+commit 661fe70abe324c082ab9d6d0c1f01c64e2f4c9ef
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Sep 24 12:50:47 2012 -0400
+
+    Added content connect timeout
+    
+    Make tpac server-side added content lookups exit after a brief timeout
+    when the apache module is unable to open a connection to its own
+    top-level hostname (the virtualhost, apache->hostname).
+    
+    As noted in the code comments, even though we are using Net::Server::NB
+    (non-blocking), it's only non-blocking in the sense of content
+    retrieval, not in how it calls connect() under the covers.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+
+12	2	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Record.pm
+
+commit ed4c91efd0b2994f465405a790f308d5e1c36af0
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Mon May 14 14:50:43 2012 -0400
+
+    Copy Location Order Editor: avoid interface failure with blank area
+    
+    Symptom is "ll is undefined" at line 65 of previous version of this
+    file.
+    
+    Reported by George Duimovich and John Jones.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+6	3	Open-ILS/web/js/ui/default/conify/global/asset/copy_location_order.js
+
+commit f3e2ab810f0cf504445ddf166dce0596c421b9a3
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Thu Sep 20 15:45:05 2012 -0400
+
+    TPac: Disable "Enter places hold" for staff
+    
+    This should prevent barcode scanners from auto-submitting on scan.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/templates/opac/parts/place_hold.tt2
+7	0	Open-ILS/web/js/ui/default/opac/staff.js
+
+commit 18966cef95eca990d4fdd39a6bbb6f36f5350367
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Wed Apr 25 02:59:01 2012 -0400
+
+    Syndetic AC: Add more review sources with comments
+    
+    * Add more Syndetic review sources (commented out)
+        Add additional Syndetic review sources, commented out
+        for performance reasons -- each source represents a distinct
+        request from the server to the AC provider, and we currently
+        lack a means of configuring which are on/off, short of
+        commenting / uncommenting.
+    
+    * Add comments for Syndetics review sources
+    * Fix file name for School Library Journal reviews, add New
+        York Times reviews.
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+18	8	Open-ILS/src/perlmods/lib/OpenILS/WWW/AddedContent/Syndetic.pm
+
+commit 8292cb5d1e71715187e1adc6cee602bf65b45877
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Sep 21 17:10:58 2012 -0400
+
+    Copy location group searching repairs
+    
+    In the get_library BLOCK, upgrade any use of 'loc' to 'locg' instead of
+    trying to determine which to use in which situation.  Before this change,
+    'loc' was being used as the loc_name for the main org unit selector,
+    which should always use 'locg'.  For any other cases (related to search
+    params), it's always safe to use 'locg' over 'loc'.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+4	10	Open-ILS/src/templates/opac/parts/misc_util.tt2
+
+commit 4dbef40874c931368c52af413860b47e89565d6b
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Fri Sep 28 01:00:54 2012 -0400
+
+    Docs want a space after the main header
+    
+    Formatting gets messed up if we don't have the expected blank line after
+    the main header. Okay.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	0	docs/opac/new_skin_customizations.txt
+
+commit a6221b4be39335a48f659807467b167860816920
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Sep 27 23:52:14 2012 -0400
+
+    Docs: Minimum list of TPAC templates to customize
+    
+    In an effort to help new sites adopt the TPAC and avoid leaving
+    embarrassing placeholders around, I present... the minimum list!
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+91	0	docs/opac/new_skin_customizations.txt
+9	1	docs/root.txt
+ create mode 100644 docs/opac/new_skin_customizations.txt
+
+commit 2fed63c6e82e6226c56b16ba4b350b30bee58e11
+Author: Ben Shum <bshum@biblio.org>
+Date:   Wed Sep 5 17:02:43 2012 -0400
+
+    Make relator_map script executable
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+0	0	build/tools/relator_map
+ mode change 100644 => 100755 build/tools/relator_map
+
+commit 788dc1ff65856c627e05f7deeb37541dd422edff
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Sep 5 00:27:03 2012 -0400
+
+    TPAC: Fine-grained credits in record details
+    
+    For 7xx fields with $4 subfields containing relator codes, generate a
+    relator code map from http://www.loc.gov/marc/relators/relacode.html
+    that we can use in the record details to provide specific credits,
+    rather than the generic (and often inappropriate) "Added author" label.
+    
+    For example:
+    
+    700 1. ‡aMaley, Desmond, ‡d1954- ‡4prf.
+    
+    This now generates "Maley, Desmond, 1954- (Performer)" in the record
+    details credit section.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+8	5	Open-ILS/src/templates/opac/parts/record/authors.tt2
+228	0	Open-ILS/src/templates/opac/parts/relators.tt2
+72	0	build/tools/relator_map
+ create mode 100644 Open-ILS/src/templates/opac/parts/relators.tt2
+ create mode 100644 build/tools/relator_map
