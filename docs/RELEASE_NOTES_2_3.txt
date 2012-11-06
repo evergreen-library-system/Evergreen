@@ -513,3 +513,18 @@ Support is now available to create a credit card payment type in the SIP Fee
 Paid message. There is also now support for SIP clients to retrieve and
 display a detailed/itemized list of billings to the patron.
 
+Staff Client Initial Hostname
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For fresh installs of the staff client a common issue is people remembering
+what hostname to specify. If you are building your own staff clients you can
+now fill this in automatically.
+
+You can specify this when configuring Evergreen with a new configure option:
+
+--with-initialhost=example.org
+
+It is also possible to specify when building the staff client itself using the
+INITIAL_HOST variable:
+
+make INITIAL_HOST=example.org build
