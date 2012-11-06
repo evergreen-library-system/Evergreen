@@ -6,6 +6,33 @@ Release notes
 Upgrade notes
 -------------
 
+Log Protect (redaction)
+~~~~~~~~~~~~~~~~~~~~~~~
+To prevent sensitive information such as passwords from being logged
+in general activity logs, add the following XML chunk to the bottom of
+`opensrf_core.xml`, just inside the `<config>` section:
+
+[source, xml]
+----------------------------------------------------------------
+  ...
+  </routers>
+  <shared> <!-- new block starts here -->
+    <log_protect>
+      <match_string>open-ils.auth.authenticate.verify</match_string>
+      <match_string>open-ils.auth.authenticate.complete</match_string>
+      <match_string>open-ils.auth_proxy.login</match_string>
+      <match_string>open-ils.actor.user.password</match_string>
+      <match_string>open-ils.actor.user.username</match_string>
+      <match_string>open-ils.actor.user.email</match_string>
+      <match_string>open-ils.actor.patron.update</match_string>
+      <match_string>open-ils.cstore.direct.actor.user.create</match_string>
+      <match_string>open-ils.cstore.direct.actor.user.update</match_string>
+      <match_string>open-ils.cstore.direct.actor.user.delete</match_string>
+    </log_protect>
+  </shared> <!-- new block ends here -->
+</config>
+----------------------------------------------------------------
+
 Z39.50 Server Definitions
 ~~~~~~~~~~~~~~~~~~~~~~~
 Z39.50 server target definitions have been removed from the sample
