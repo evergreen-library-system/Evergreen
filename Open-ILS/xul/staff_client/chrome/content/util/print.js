@@ -175,13 +175,14 @@ util.print.prototype = {
                             my_prefix = xulG.url_prefix(my_prefix);
                         }
                     }
-                    var print_url = 'data:text/html,<html id="top"><head>'
+                    var print_url = '<html id="top"><head>'
                         + '<script src="' + my_prefix + 'util/print_win.js"></script>'
                         + '<script src="' + my_prefix + 'util/print_custom.js"></script>';
                     if(this.data.hash.aous['print.custom_js_file']) {
                         print_url += '<script src="' + this.data.hash.aous['print.custom_js_file'] + '"></script>';
                     }
-                    print_url += '</head><body onload="try{print_init(\'' + params.type + '\');}catch(E){alert(E);}">' + window.escape(msg.replace(/<script[^>]*>.*?<\/script>/gi,'')) + '</body></html>';
+                    print_url += '</head><body onload="try{print_init(\'' + params.type + '\');}catch(E){alert(E);}">' + msg.replace(/<script[^>]*>.*?<\/script>/gi,'') + '</body></html>';
+                    print_url = 'data:text/html;charset=utf-8,' + encodeURIComponent(print_url);
                     obj.win.openDialog(print_url,'receipt_temp','chrome,resizable,modal', { "data" : params.data, "list" : params.list}, function(w) { 
                         try {
                             obj.NSPrint(w, silent, params);
@@ -295,8 +296,8 @@ util.print.prototype = {
         s=s.replace(/onload\s*=\s*'[^']*'/gi,'');
 
         if (params.sample_frame) {
-            var jsrc = 'data:text/javascript,' + window.escape('var params = { "data" : ' + js2JSON(params.data) + ', "list" : ' + js2JSON(params.list) + '};');
-            params.sample_frame.setAttribute('src','data:text/html,<html id="top"><head><script src="' + window.escape(jsrc) + '"></script></head><body>' + window.escape(s) + '</body></html>');
+            var jsrc = 'data:text/javascript,' + encodeURIComponent('var params = { "data" : ' + js2JSON(params.data) + ', "list" : ' + js2JSON(params.list) + '};');
+            params.sample_frame.setAttribute('src','data:text/html;charset=utf-8,' + encodeURIComponent('<html id="top"><head><script src="' + jsrc + '"></script></head><body>' + s + '</body></html>'));
         } else {
             this.simple(s,params);
         }
