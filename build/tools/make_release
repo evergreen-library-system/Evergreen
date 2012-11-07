@@ -220,7 +220,7 @@ if [ $PREV_BRANCH != "PACKAGE" ]; then
         elif [ -n "$UPGRADE_CHECK" ]; then
             echo "Found Upgrade Files! Building Upgrade Script."
             echo "--Upgrade Script for $PREV_VERSION to $VERSION" > $UPGRADE_FILE
-            echo "\set eg_version '''$VERSION'''"
+            echo "\set eg_version '''$VERSION'''" >> $UPGRADE_FILE
             echo "BEGIN;" >> $UPGRADE_FILE
             grep "config.upgrade_log.*$VERSION" Open-ILS/src/sql/Pg/002.schema.config.sql >> $UPGRADE_FILE
             for NUM in $UPGRADE_CHECK; do
