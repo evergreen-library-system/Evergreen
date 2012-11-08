@@ -65,7 +65,6 @@ function verify_init() {
                         )
                     );
 
-
                 } catch(E) {
                     alert(E);
                 }
@@ -74,6 +73,7 @@ function verify_init() {
                 } else {
                     document.getElementById('name_prompt').focus();
                 }
+                document.getElementById('password_prompt').value = '';
             },
             false
         );
@@ -110,6 +110,14 @@ function verify_init() {
         } else {
             document.getElementById('name_prompt').focus();
         }
+
+        document.getElementById('password_prompt').addEventListener('keypress',function(e) {
+            if ( e.keyCode && (e.keyCode == 13 || e.keyCode == 77)) {
+                var x = document.createEvent('Event');
+                x.initEvent('command',true,false);
+                document.getElementById('cmd_verify').dispatchEvent(x);
+            }
+        });
 
     } catch(E) {
         alert(E);
