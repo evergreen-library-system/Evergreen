@@ -556,7 +556,7 @@ sub retrieve_holds {
         if($available) {
             $holds_query->{where}->{shelf_time} = {'!=' => undef};
             # Maybe?
-            $holds_query->{where}->{pickup_lib} = {'+ahr' => 'current_shelf_lib'};
+            $holds_query->{where}->{pickup_lib} = {'=' => 'current_shelf_lib'};
         }
     }
 
