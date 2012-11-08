@@ -973,6 +973,9 @@ patron.display.prototype = {
                 if (patron.expire_date()) {
                     var now = new Date();
                     now = now.getTime()/1000;
+                     var preexpire = new Date();
+                     preexpire.setDate(preexpire.getDate() + 28);
+                     preexpire = preexpire.getTime()/1000;
 
                     var expire_parts = patron.expire_date().substr(0,10).split('-');
                     expire_parts[1] = expire_parts[1] - 1;
@@ -983,7 +986,9 @@ patron.display.prototype = {
 
                     if (expire < now) {
                         msg += $("patronStrings").getString('staff.patron.display.init.network_request.account_expired');
-                    obj.stop_checkouts = true;
+                        obj.stop_checkouts = true;
+                    } else if (expire < preexpire) {
+                         msg += $("patronStrings").getString('staff.patron.display.init.network_request.account_expire_soon');   
                     }
                 }
                 var penalties = patron.standing_penalties();
