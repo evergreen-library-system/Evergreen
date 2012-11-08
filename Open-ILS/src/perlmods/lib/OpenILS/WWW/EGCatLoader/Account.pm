@@ -447,6 +447,7 @@ sub fetch_user_holds {
     my $offset = shift;
 
     my $e = $self->editor;
+    my $all_ids; # to be used below.
 
     if(!$hold_ids) {
         my $circ = OpenSRF::AppSession->create('open-ils.circ');
@@ -458,10 +459,13 @@ sub fetch_user_holds {
             $available
         )->gather(1);
         $circ->kill_me;
-    }
 
-    my $all_ids = $hold_ids;
-    $hold_ids = [ grep { defined $_ } @$hold_ids[$offset..($offset + $limit - 1)] ] if $limit or $offset;
+        $all_ids = $hold_ids;
+        $hold_ids = [ grep { defined $_ } @$hold_ids[$offset..($offset + $limit - 1)] ] if $limit or $offset;
+
+    } else {
+        $all_ids = $hold_ids;
+    }
 
     return { ids => $hold_ids, all_ids => $all_ids } if $ids_only or @$hold_ids == 0;
 
