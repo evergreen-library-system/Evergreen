@@ -8851,7 +8851,7 @@ To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
 Subject: Bibliographic Records
 
-[% FOR cbreb IN target %]
+[% FOR cbreb IN target %][% title = '' %]
 [% FOR item IN cbreb.items;
     bre_id = item.target_biblio_record_entry;
 
@@ -8899,7 +8899,7 @@ $$
 <div>
     <style> li { padding: 8px; margin 5px; }</style>
     <ol>
-    [% FOR cbreb IN target %]
+    [% FOR cbreb IN target %][% title = '' %]
     [% FOR item IN cbreb.items;
         bre_id = item.target_biblio_record_entry;
 
