@@ -15,7 +15,7 @@
     .ccvmSelect {width:200px;}
     #currentSettings {float:right;  width:300px; height:200px;}
     #options {float:left;}
-    #ccvmOptions td, #resultOptions td {padding:.5em;}
+    #searchFilters td {padding:.5em;}
     #currentSettings td {padding:.3em;}
     #adv_global_tbody select {max-width:115px;}
     #ssContainer {width:1200px;}
@@ -63,7 +63,7 @@
 
         <br/>
 
-        <table id="ccvmOptions">
+        <table id="searchFilters">
 [%
     in_row = 0;
     FOR adv_chunk IN search.adv_config;
@@ -86,8 +86,6 @@
             </tr>
         [% END; %]
  [%   END; %]
-        </table>
-        <table id="resultOptions">
             <tr>
                 <td>
                     <strong>Search Library</strong>
@@ -200,19 +198,22 @@
         n++;
 [% END; %]
 
-    var ccvmTable = document.getElementById("ccvmOptions");
-    var attrFilters = ccvmTable.getElementsByTagName("select");
+    var ccvmTable = document.getElementById("searchFilters");
+    var searchFilters = ccvmTable.getElementsByTagName("select");
     
     //TODO check if right filter?
-    for (var f = 0; f < attrFilters.length; f++)
+    for (var f = 0; f < searchFilters.length; f++)
     {
-        attrFilters[f].setAttribute("id", filterList[f].ctype + "_selector");
-        if (filterList[f].codeList.length)
+        if (filterList[f] && filterList[f].ctype)
         {
-            var len = filterList[f].codeList.length;
-            for(var i=0; i<len; i++)
+            searchFilters[f].setAttribute("id", filterList[f].ctype + "_selector");
+            if (filterList[f].codeList.length)
             {
-                    attrFilters[f].options[i]= new Option(filterList[f].codeList[i].value(), filterList[f].codeList[i].code());					
+                var len = filterList[f].codeList.length;
+                for(var i=0; i<len; i++)
+                {    
+                    searchFilters[f].options[i]= new Option(filterList[f].codeList[i].value(), filterList[f].codeList[i].code());					
+                }
             }
         }
     }

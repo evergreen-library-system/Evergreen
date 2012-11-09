@@ -241,9 +241,9 @@ function getGlobalRowValues(){
     
 function getFilterValues()   {
     var filters = [];
-    for (var s = 0; s < attrFilters.length; s++)
+    for (var s = 0; s < searchFilters.length; s++)
     {
-        filters[s] = getSelectedValues(attrFilters[s]);
+        filters[s] = getSelectedValues(searchFilters[s]);
     }
     return filters;
 }//Select the apropriate search options given a search template
@@ -273,12 +273,12 @@ function clearOptions()
     }
     
 function clearSearchFilters() {
-        for (var s = 0; s < attrFilters.length; s++)
+        for (var s = 0; s < searchFilters.length; s++)
         {
-            if (attrFilters[s].multiple)
-            { attrFilters[s].selectedIndex = -1; }
+            if (searchFilters[s].multiple)
+            { searchFilters[s].selectedIndex = -1; }
             else
-            { attrFilters[s].selectedIndex = 0; }
+            { searchFilters[s].selectedIndex = 0; }
         }
     }
 
@@ -337,9 +337,9 @@ function setGlobalRowValues(template){
     }
     
 function setFilterValues(template) {
-    for (var s = 0; s < attrFilters.length; s++)
+    for (var s = 0; s < searchFilters.length; s++)
     {
-        selectOptionValues(attrFilters[s], template.attrFilters[s]);
+        selectOptionValues(searchFilters[s], template.attrFilters[s]);
     }
 }//select the first option in each Select in the "global_row.tt2)
 function clearGlobalRowValues() {

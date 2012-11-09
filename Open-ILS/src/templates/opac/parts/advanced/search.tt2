@@ -32,7 +32,7 @@
     <tr>
         <td align='top'>
           <div style="width:100%;" class="header_middle">[% l('Search Filters') %]</div>
-          <table cellpadding='10' cellspacing='0' border='0' id='ccvmOptions'>
+          <table cellpadding='10' cellspacing='0' border='0' id='filterTable'>
 [%
     in_row = 0;
     FOR adv_chunk IN search.adv_config;
@@ -149,8 +149,8 @@
 	var resultViewSel = document.getElementById("resultViewSel");
 	var modCheck = document.getElementById("opac.result.limit2avail");
 	var templateSel = document.getElementById("templateList"); 
-    var ccvmTable = document.getElementById("ccvmOptions");
-    var attrFilters = ccvmTable.getElementsByTagName("select");
+    var filterTable = document.getElementById("filterTable");
+    var searchFilters = filterTable.getElementsByTagName("select");
 
 		getSearchStash();
 
