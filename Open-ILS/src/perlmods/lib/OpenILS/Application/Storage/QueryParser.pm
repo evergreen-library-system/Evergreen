@@ -94,7 +94,11 @@ sub new {
     for my $opt ( keys %opts) {
         $self->$opt( $opts{$opt} ) if ($self->can($opt));
     }
-
+	
+	if($opts{search_mods}){
+		$self->{search_mods} = $opts{search_mods};
+	}
+	
     return $self;
 }
 
@@ -783,6 +787,14 @@ sub core_limit {
     $self->{core_limit} = $l if ($l);
     return $self->{core_limit};
 }
+
+sub search_mods {
+    my $self = shift;
+    my $l = shift;
+    $self->{search_mods} = $l if ($l);
+    return $self->{search_mods};
+}
+
 
 sub superpage {
     my $self = shift;

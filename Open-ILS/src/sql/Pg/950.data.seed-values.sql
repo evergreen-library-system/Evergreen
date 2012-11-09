@@ -4667,7 +4667,10 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'
     ),
     'bool', null)
-
+,('opac.search_mod', 'opac',
+	'Modifies the way searches perform when using contains phrase, exact match, and searching for entirely blank fields after normalization.',
+	'Changes the way searches perform on contains phrase, exact match, and how searches perform when the search queried is to be entirely normalized.',
+	'bool', null)
 ,( 'sms.enable', 'sms',
     oils_i18n_gettext(
         'sms.enable',

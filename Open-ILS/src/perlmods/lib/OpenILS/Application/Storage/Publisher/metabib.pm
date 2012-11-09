@@ -2928,6 +2928,7 @@ sub query_parser_fts {
     }
 
 
+	$log->debug("OU: ". Dumper($args{ou}));
     # parse the query and supply any query-level %arg-based defaults
     # we expect, and make use of, query, superpage, superpage_size, debug and core_limit args
     my $query = $parser->new( %args )->parse;
@@ -3121,6 +3122,27 @@ sub query_parser_fts {
                     $param_pref_ou\:\:INT
                 );
     SQL
+    
+	my $sql = <<SQL;
+          SELECT  * -- bib search: $args{query}
+          FROM  search.query_parser_fts(
+                    $param_search_ou\:\:INT,
+                    $param_depth\:\:INT,
+                    $param_core_query\:\:TEXT,
+                    $param_statuses\:\:INT[],
+                    $param_locations\:\:INT[],
+                    $param_offset\:\:INT,
+                    $param_check\:\:INT,
+                    $param_limit\:\:INT,
+                    $metarecord\:\:BOOL,
+                    $staff\:\:BOOL,
+                    $param_pref_ou\:\:INT
+                );
+SQL
+
+    open WRITE, '>/home/opensrf/metabibsearchSQL.txt';
+    print WRITE $sql;
+    close WRITE;
 
     $sth->execute;
 
@@ -3308,7 +3330,7 @@ sub query_parser_fts_wrapper {
 
     $log->debug("Full QueryParser query: $query", DEBUG);
 
-    return query_parser_fts($self, $client, query => $query, _simple_plan => $base_plan->simple_plan );
+    return query_parser_fts($self, $client, query => $query, _simple_plan => $base_plan->simple_plan, search_mods => $args{search_mods} );
 }
 __PACKAGE__->register_method(
 	api_name	=> "open-ils.storage.biblio.multiclass.staged.search_fts",

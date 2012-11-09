@@ -1491,4 +1491,363 @@ SELECT  DISTINCT
 END;
 $func$ LANGUAGE PLPGSQL;
 
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- Table: metabib.normalized_identifier_field_entry
+
+-- DROP TABLE metabib.normalized_identifier_field_entry;
+
+DROP TABLE IF EXISTS metabib.normalized_identifier_field_entry;
+
+CREATE TABLE metabib.normalized_identifier_field_entry
+(
+  id bigint NOT NULL,
+  source bigint,
+  value text,
+  CONSTRAINT normalized_identifier_field_entry_pkey PRIMARY KEY (id ),
+  CONSTRAINT "normalized_identifier_to_ identifier_field_entry_FK" FOREIGN KEY (id)
+      REFERENCES metabib.identifier_field_entry (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE metabib.normalized_identifier_field_entry
+  OWNER TO evergreen;
+
+-- Index: metabib."fki_normalized_identifier_to_ identifier_field_entry_FK"
+
+-- DROP INDEX metabib."fki_normalized_identifier_to_ identifier_field_entry_FK";
+
+CREATE INDEX "fki_normalized_identifier_to_ identifier_field_entry_FK"
+  ON metabib.normalized_identifier_field_entry
+  USING btree
+  (id );
+
+---------------------------------------------------------------------------------------------------------
+
+
+-- Table: metabib.normalized_title_field_entry
+
+-- DROP TABLE metabib.normalized_title_field_entry;
+
+DROP TABLE IF EXISTS metabib.normalized_title_field_entry;
+
+CREATE TABLE metabib.normalized_title_field_entry
+(
+  id bigint NOT NULL,
+  source bigint,
+  value text,
+  CONSTRAINT normalized_title_field_entry_pkey PRIMARY KEY (id ),
+  CONSTRAINT "normalized_title_to_ title_field_entry_FK" FOREIGN KEY (id)
+      REFERENCES metabib.title_field_entry (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE metabib.normalized_title_field_entry
+  OWNER TO evergreen;
+
+-- Index: metabib."fki_normalized_title_to_ title_field_entry_FK"
+
+-- DROP INDEX metabib."fki_normalized_title_to_ title_field_entry_FK";
+
+CREATE INDEX "fki_normalized_title_to_ title_field_entry_FK"
+  ON metabib.normalized_title_field_entry
+  USING btree
+  (id );
+
+---------------------------------------------------------------------------------------------------------
+-- Table: metabib.normalized_subject_field_entry
+
+-- DROP TABLE metabib.normalized_subject_field_entry;
+
+DROP TABLE IF EXISTS metabib.normalized_subject_field_entry;
+
+CREATE TABLE metabib.normalized_subject_field_entry
+(
+  id bigint NOT NULL,
+  source bigint,
+  value text,
+  CONSTRAINT normalized_subject_field_entry_pkey PRIMARY KEY (id ),
+  CONSTRAINT "normalized_subject_to_ subject_field_entry_FK" FOREIGN KEY (id)
+      REFERENCES metabib.subject_field_entry (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE metabib.normalized_subject_field_entry
+  OWNER TO evergreen;
+
+-- Index: metabib."fki_normalized_subject_to_ subject_field_entry_FK"
+
+-- DROP INDEX metabib."fki_normalized_subject_to_ subject_field_entry_FK";
+
+CREATE INDEX "fki_normalized_subject_to_ subject_field_entry_FK"
+  ON metabib.normalized_subject_field_entry
+  USING btree
+  (id );
+
+
+
+---------------------------------------------------------------------------------------------------------
+
+-- Table: metabib.normalized_author_field_entry
+
+-- DROP TABLE metabib.normalized_author_field_entry;
+
+DROP TABLE IF EXISTS metabib.normalized_author_field_entry;
+
+CREATE TABLE metabib.normalized_author_field_entry
+(
+  id bigint NOT NULL,
+  source bigint,
+  value text,
+  CONSTRAINT normalized_author_field_entry_pkey PRIMARY KEY (id ),
+  CONSTRAINT "normalized_author_to_ author_field_entry_FK" FOREIGN KEY (id)
+      REFERENCES metabib.author_field_entry (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE metabib.normalized_author_field_entry
+  OWNER TO evergreen;
+
+-- Index: metabib."fki_normalized_author_to_ author_field_entry_FK"
+
+-- DROP INDEX metabib."fki_normalized_author_to_ author_field_entry_FK";
+
+CREATE INDEX "fki_normalized_author_to_ author_field_entry_FK"
+  ON metabib.normalized_author_field_entry
+  USING btree
+  (id );
+
+ 
+ ---------------------------------------------------------------------------------------------------------
+
+-- Table: metabib.normalized_series_field_entry
+
+-- DROP TABLE metabib.normalized_series_field_entry;
+
+DROP TABLE IF EXISTS metabib.normalized_series_field_entry;
+
+CREATE TABLE metabib.normalized_series_field_entry
+(
+  id bigint NOT NULL,
+  source bigint,
+  value text,
+  CONSTRAINT normalized_series_field_entry_pkey PRIMARY KEY (id ),
+  CONSTRAINT "normalized_series_to_ series_field_entry_FK" FOREIGN KEY (id)
+      REFERENCES metabib.series_field_entry (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE metabib.normalized_series_field_entry
+  OWNER TO evergreen;
+
+-- Index: metabib."fki_normalized_series_to_ series_field_entry_FK"
+
+-- DROP INDEX metabib."fki_normalized_series_to_ series_field_entry_FK";
+
+CREATE INDEX "fki_normalized_series_to_ series_field_entry_FK"
+  ON metabib.normalized_series_field_entry
+  USING btree
+  (id );
+
+
+
+---------------------------------------------------------------------------------------------------------
+
+-- Table: metabib.normalized_keyword_field_entry
+
+-- DROP TABLE metabib.normalized_keyword_field_entry;
+
+DROP TABLE IF EXISTS metabib.normalized_keyword_field_entry;
+
+CREATE TABLE metabib.normalized_keyword_field_entry
+(
+  id bigint NOT NULL,
+  source bigint,
+  value text,
+  CONSTRAINT normalized_keyword_field_entry_pkey PRIMARY KEY (id ),
+  CONSTRAINT "normalized_keyword_to_ keyword_field_entry_FK" FOREIGN KEY (id)
+      REFERENCES metabib.keyword_field_entry (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE metabib.normalized_keyword_field_entry
+  OWNER TO evergreen;
+
+-- Index: metabib."fki_normalized_keyword_to_ keyword_field_entry_FK"
+
+-- DROP INDEX metabib."fki_normalized_keyword_to_ keyword_field_entry_FK";
+
+CREATE INDEX "fki_normalized_keyword_to_ keyword_field_entry_FK"
+  ON metabib.normalized_keyword_field_entry
+  USING btree
+  (id );
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------------------------------------
+--Create indexes for normalized_field_entry tables, and get pg_trgm if it is not part of the public schema.--
+--------------------------------------------------------------------------------------------------------------
+
+ CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
+
+------------------------------------------------------------------------------------------------------
+
+
+DROP INDEX IF EXISTS metabib.normalized_identifier_field_entry_gist_trgm;
+
+-- Index: metabib.normalized_series_field_entry_gist_trgm
+
+-- DROP INDEX metabib.normalized_series_field_entry_gist_trgm;
+
+CREATE INDEX normalized_identifier_field_entry_gist_trgm
+  ON metabib.normalized_identifier_field_entry
+  USING gist
+  (value COLLATE pg_catalog."C" gist_trgm_ops);
+
+
+  ------------------------------------------------------------------------------------------------------
+
+DROP INDEX IF EXISTS metabib.normalized_author_field_entry_gist_trgm;
+
+-- Index: metabib.normalized_author_field_entry_gist_trgm
+
+-- DROP INDEX metabib.normalized_author_field_entry_gist_trgm;
+
+CREATE INDEX normalized_author_field_entry_gist_trgm
+  ON metabib.normalized_author_field_entry
+  USING gist
+  (value COLLATE pg_catalog."C" gist_trgm_ops);
+
+
+  ------------------------------------------------------------------------------------------------------
+
+
+DROP INDEX IF EXISTS metabib.normalized_title_field_entry_gist_trgm;
+
+-- Index: metabib.normalized_title_field_entry_gist_trgm
+
+-- DROP INDEX metabib.normalized_title_field_entry_gist_trgm;
+
+CREATE INDEX normalized_title_field_entry_gist_trgm
+  ON metabib.normalized_title_field_entry
+  USING gist
+  (value COLLATE pg_catalog."C" gist_trgm_ops);
+
+  ------------------------------------------------------------------------------------------------------
+
+
+DROP INDEX IF EXISTS metabib.normalized_subject_field_entry_gist_trgm;
+
+-- Index: metabib.normalized_subject_field_entry_gist_trgm
+
+-- DROP INDEX metabib.normalized_subject_field_entry_gist_trgm;
+
+CREATE INDEX normalized_subject_field_entry_gist_trgm
+  ON metabib.normalized_subject_field_entry
+  USING gist
+  (value COLLATE pg_catalog."C" gist_trgm_ops);
+
+  ------------------------------------------------------------------------------------------------------
+
+
+DROP INDEX IF EXISTS metabib.normalized_series_field_entry_gist_trgm;
+
+-- Index: metabib.normalized_series_field_entry_gist_trgm
+
+-- DROP INDEX metabib.normalized_series_field_entry_gist_trgm;
+
+CREATE INDEX normalized_series_field_entry_gist_trgm
+  ON metabib.normalized_series_field_entry
+  USING gist
+  (value COLLATE pg_catalog."C" gist_trgm_ops);
+
+  ------------------------------------------------------------------------------------------------------
+
+-- Function: metabib.normalized_field_entry_view()
+
+-- DROP FUNCTION metabib.normalized_field_entry_view();
+
+CREATE OR REPLACE FUNCTION metabib.normalized_field_entry_view()
+  RETURNS trigger AS
+$BODY$
+
+DECLARE
+	norm_table	text	:= TG_TABLE_SCHEMA || '.normalized_' || TG_TABLE_NAME;
+BEGIN
+
+
+IF(TG_OP = 'UPDATE') THEN
+
+	EXECUTE 'UPDATE '||norm_table||' 
+	SET value = '''||search_normalize(NEW.value)||''', source = '||NEW.source||' WHERE id = '||NEW.id||';';
+	
+ELSIF(TG_OP = 'INSERT') THEN
+
+	EXECUTE 'INSERT INTO '||norm_table||' VALUES ( '||NEW.id||','||NEW.source||', '''||search_normalize(NEW.value)||''');';
+
+END IF;
+
+RETURN NULL;
+
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION metabib.normalized_field_entry_view()
+  OWNER TO evergreen;
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+  
+  DROP TRIGGER IF EXISTS normalize_field_entry ON metabib.identifier_field_entry;
+  
+  CREATE TRIGGER normalize_field_entry
+AFTER INSERT OR UPDATE ON metabib.identifier_field_entry
+    FOR EACH ROW EXECUTE PROCEDURE metabib.normalized_field_entry_view();
+
+  DROP TRIGGER IF EXISTS normalize_field_entry ON metabib.subject_field_entry;
+  
+  CREATE TRIGGER normalize_field_entry
+AFTER INSERT OR UPDATE ON metabib.subject_field_entry
+    FOR EACH ROW EXECUTE PROCEDURE metabib.normalized_field_entry_view();
+  
+  DROP TRIGGER IF EXISTS normalize_field_entry ON metabib.author_field_entry;
+ 	
+CREATE TRIGGER normalize_field_entry
+AFTER INSERT OR UPDATE ON metabib.author_field_entry
+    FOR EACH ROW EXECUTE PROCEDURE metabib.normalized_field_entry_view();
+  
+  DROP TRIGGER IF EXISTS normalize_field_entry ON metabib.title_field_entry;
+ 	
+CREATE TRIGGER normalize_field_entry
+AFTER INSERT OR UPDATE ON metabib.title_field_entry
+    FOR EACH ROW EXECUTE PROCEDURE metabib.normalized_field_entry_view();
+  
+  DROP TRIGGER IF EXISTS normalize_field_entry ON metabib.keyword_field_entry;
+ 	
+CREATE TRIGGER normalize_field_entry
+AFTER INSERT OR UPDATE ON metabib.keyword_field_entry
+    FOR EACH ROW EXECUTE PROCEDURE metabib.normalized_field_entry_view();
+  
+  DROP TRIGGER IF EXISTS normalize_field_entry ON metabib.series_field_entry;
+ 	
+CREATE TRIGGER normalize_field_entry
+AFTER INSERT OR UPDATE ON metabib.series_field_entry
+    FOR EACH ROW EXECUTE PROCEDURE metabib.normalized_field_entry_view();
+
+
 COMMIT;

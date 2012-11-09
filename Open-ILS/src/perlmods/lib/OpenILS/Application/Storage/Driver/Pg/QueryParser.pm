@@ -679,7 +679,7 @@ sub toSQL {
         # metarecord searches still require the ARRAY_AGG approach
         $agg_records = 'ARRAY_AGG(DISTINCT m.source) AS records';
     }
-
+	
     my $sql = <<SQL;
 $with
 SELECT  $key AS id,
@@ -731,6 +731,181 @@ sub rel_bump {
     return '';
 }
 
+sub naco_normalize{
+	my $string = shift;
+	my $query_handle;
+	my @dbh = OpenILS::Application::Storage::Driver::Pg::db_Handles;
+	
+	$query_handle = $dbh[0]->prepare("SELECT search_normalize('" . $string . "') AS value");	
+	$query_handle->execute();
+    $query_handle->bind_columns( \$string );
+
+	$string = '';
+	
+	#Get results of query
+	$query_handle->fetch();
+	
+	return $string;
+	
+}
+
+sub remove_search_characters{
+	my $str = shift;
+	
+	$str =~ s/^[\"\^|\^|\"]//;
+	$str =~ s/[\$|\"]$//;
+	return $str;
+}
+
+sub quote_value {
+	my $string = shift || '';
+	my @string = split(//, $string);
+	$string = '';
+	foreach my $char(@string){
+		if($char ne "'"){
+			$string .= "\\" . $char;
+		}else{
+			$string .= $char . $char;
+		}
+	}
+	
+	$logger->debug("Quoted value: " . $string);
+	
+	return $string;
+	
+}
+sub search_mod{
+	
+	my $self = shift;
+	my $node = shift;
+	my $searchVal = '';
+	my $searchType = '';
+	my @searchTypes = ('exactMatch', 'containsPhrase', 'doesNotContainPhrase', 'startsWith', 'contains');
+	my $normalized = 0;
+	my $join = '';
+	my $where = '';
+	my $joinType = '';
+	my $table = $node->table;
+	$logger->debug("Contents of node table: " . $table);
+	my @temp = split(/\./, $table);
+	$logger->debug("Contents of temp: " . Dumper(\@temp));
+	$table = join('.normalized_', @temp);
+	$logger->debug("Contents of table: " . $table);
+	
+	$logger->debug("Performing search mods.");
+	$logger->debug("Checking for atoms.");
+	  
+	if ( ( @{$node->only_atoms} )[0] ){
+		$logger->debug("Search contains atoms.");  
+		for my $atom ( @{$node->only_atoms} ) {
+			if($searchVal){
+				$searchVal .= " " . $atom->content;
+			}else{
+            	$searchVal = $atom->content;
+			}
+		}
+	}
+
+	#Getting value if it came through in the phrases
+	if(@{$node->phrases}){$searchVal = @{$node->phrases}[0];}
+	if(@{$node->unphrases}){$searchVal = @{$node->unphrases}[0];}
+
+	#No search values found return empty sources
+	if($searchVal eq ''){
+		$logger->debug("No search value found for search mods");
+		return;
+	}
+	
+	$logger->debug("Search value constructed!");
+	$logger->debug("Search value: " . $searchVal);
+	
+	for(my $i = 0; $i < @searchTypes; $i++){
+		my $last = 0;
+		
+		if( $searchTypes[$i] eq 'exactMatch' && $searchVal =~ m/^\^/ && $searchVal =~ m/\$$/ ){ $last = 1;}
+
+		if( $searchTypes[$i] eq 'containsPhrase' && ( ($searchVal =~ m/^\"/ && $searchVal =~ m/\"$/) || @{$node->phrases}) ){ $last = 1; }
+
+		if( $searchTypes[$i] eq 'doesNotContainPhrase' && @{$node->unphrases} ){$last = 1;}
+		
+		if( $searchTypes[$i] eq 'startsWith' && (($searchVal =~ m/^\"\^/ && $searchVal =~ m/\"$/) || ( $searchVal =~ m/^\^/ && @{$node->phrases}) ) ){$last = 1;}
+
+        #If last is true set up search type and escape for
+		if($last){
+			$searchType = $searchTypes[$i];
+			last;
+		}
+	}
+	
+	if(!$searchType){
+		$searchType = 'contains';
+	}	
+	
+	$logger->debug("Search type found: $searchType");
+	
+	$searchVal = remove_search_characters($searchVal);
+	my $nsVal = naco_normalize($searchVal);
+	
+	if($nsVal){
+		$searchVal = $nsVal;
+	}else{
+		$normalized = 1;	
+	}
+	
+	my $queryParam = {searchVal=>$searchVal, 
+					  searchType=>$searchType, 
+					  normalized=>$normalized,
+					  table=>$table};
+					  
+	$logger->debug("Query param: " . Dumper($queryParam));
+	
+	
+	$join .= "\n\t JOIN " . $queryParam->{table} . " AS norm ON (fe.id = norm.id)";
+	$where .= "\n\t WHERE 1 = 1 ";
+	
+	if($normalized){
+		$joinType = 'LEFT';
+		if($queryParam->{searchType} eq 'containsPhrase'){
+			$where .= "\n\t\t AND (fe.value LIKE '% " . quote_value($queryParam->{searchVal}) . "%' OR fe.value LIKE '%" . quote_value($queryParam->{searchVal}) . "%' OR fe.value LIKE '% " . quote_value($queryParam->{searchVal}) . " %')";
+		}elsif($queryParam->{searchType} eq 'doesNotContainPhrase'){
+			$where .= "\n\t\t AND (fe.value NOT LIKE '% " . quote_value($queryParam->{searchVal}) . "%' OR fe.value NOT LIKE '%" . quote_value($queryParam->{searchVal}) . "%' OR fe.value NOT LIKE '% " . quote_value($queryParam->{searchVal}) . " %')";	
+		}elsif($queryParam->{searchType} eq 'exactMatch'){
+			$where .= "\n\t\t AND (fe.value LIKE '" . quote_value($queryParam->{searchVal}) . "')";
+		}elsif($queryParam->{searchType} eq 'startsWith'){
+			$where .= "\n\t\t AND (fe.value LIKE '" . quote_value($queryParam->{searchVal}) . "%')";
+		}elsif($queryParam->{searchType} eq 'contains'){
+			my @contains = split(/ /, $queryParam->{searchVal});
+			$where .= "\n\t\t AND ( ";
+			for(my $i = 0; $i < @contains; $i++){
+				
+				$where .= "fe.value LIKE '%" . quote_value($contains[$i]) . "%'";
+				
+				unless($i == $#contains){
+					$where .= " AND "
+				}	
+			}
+			
+			$where .= ")";
+		}	
+	}else{
+		$joinType = 'RIGHT';
+		if($queryParam->{searchType} eq 'containsPhrase'){
+			$where .= "\n\t\t AND (norm.value LIKE '" . $queryParam->{searchVal} . " %' OR norm.value LIKE '% " . $queryParam->{searchVal} . " %' OR norm.value LIKE '% " . $queryParam->{searchVal} . "')";
+		}elsif($queryParam->{searchType} eq 'doesNotContainPhrase'){
+			$where .= "\n\t\t AND (norm.value NOT LIKE '% " . $queryParam->{searchVal} . "%' OR norm.value NOT LIKE '%" . $queryParam->{searchVal} . "%' OR norm.value NOT LIKE '% " . $queryParam->{searchVal} . " %')";	
+		}elsif($queryParam->{searchType} eq 'exactMatch'){
+			$where .= "\n\t\t AND (norm.value LIKE '" . $queryParam->{searchVal} . "')";
+		}		
+	}
+	
+	my $return = {'join'=>$join, 'where'=>$where, 'joinType'=>$joinType};
+	
+	$logger->debug("Contents of search_mod: " . Dumper($return));
+	
+	return $return;
+	
+}
+
 sub flatten {
     my $self = shift;
 
@@ -757,10 +932,11 @@ sub flatten {
                     $where .= 'TRUE';
                     next;
                 }
-
+				
                 my $table = $node->table;
                 my $talias = $node->table_alias;
-
+				my $search_mods = $self->QueryParser->search_mods ? search_mod($self, $node) : '';
+				my $jt = $search_mods ? $search_mods->{'joinType'} : '';
                 my $node_rank = 'COALESCE(' . $node->rank . " * ${talias}.weight, 0.0)";
 
                 my $core_limit = $self->QueryParser->core_limit || 25000;
@@ -770,11 +946,14 @@ sub flatten {
                 if ($node->dummy_count < @{$node->only_atoms} ) {
                     $with .= ",\n" if $with;
                     $with .= "${talias}_xq AS (SELECT ". $node->tsquery ." AS tsq )";
-                    $from .= "\n${spc}${spc}${spc}JOIN ${talias}_xq ON (fe.index_vector @@ ${talias}_xq.tsq)";
+                    $from .= "\n${spc}${spc}${spc} " . $jt . " JOIN ${talias}_xq ON (fe.index_vector @@ ${talias}_xq.tsq)";
                 } else {
                     $from .= "\n${spc}${spc}${spc}, (SELECT NULL::tsquery AS tsq ) AS x";
                 }
-
+				
+				$from .= $search_mods->{'join'} if $search_mods;
+				
+				my $fieldIds;
                 my @bump_fields;
                 if (@{$node->fields} > 0) {
                     @bump_fields = @{$node->fields};
@@ -789,12 +968,14 @@ sub flatten {
                     if (@field_ids) {
                         $from .= "\n${spc}${spc}${spc}WHERE fe_weight.id IN  (" .
                             join(',', @field_ids) . ")";
+                        $fieldIds = "(" . join(',', @field_ids) . ")";
                     }
 
                 } else {
                     @bump_fields = @{$self->QueryParser->search_fields->{$node->classname}};
                 }
-
+                
+				$from .= $search_mods->{'where'} if $search_mods;
                 ###$from .= "\n${spc}${spc}LIMIT $core_limit";
                 $from .= "\n${spc}) AS $talias ON (m.source = ${talias}.source)";
 
@@ -816,8 +997,10 @@ sub flatten {
 
 
                 my $twhere .= '(' . $talias . ".id IS NOT NULL";
-                $twhere .= ' AND ' . join(' AND ', map {"${talias}.value ~* ".$self->QueryParser->quote_phrase_value($_)} @{$node->phrases}) if (@{$node->phrases});
-                $twhere .= ' AND ' . join(' AND ', map {"${talias}.value !~* ".$self->QueryParser->quote_phrase_value($_)} @{$node->unphrases}) if (@{$node->unphrases});
+                unless($search_mods){
+                	$twhere .= ' AND ' . join(' AND ', map {"${talias}.value ~* ".$self->QueryParser->quote_phrase_value($_)} @{$node->phrases}) if (@{$node->phrases});
+                	$twhere .= ' AND ' . join(' AND ', map {"${talias}.value !~* ".$self->QueryParser->quote_phrase_value($_)} @{$node->unphrases}) if (@{$node->unphrases});
+                }
                 $twhere .= ')';
 
                 if (@dyn_filters or !$self->top_plan) {
@@ -829,7 +1012,8 @@ sub flatten {
                 }
 
                 push @rank_list, $node_rank;
-
+				
+				
             } elsif ($node->isa( 'QueryParser::query_plan::facet' )) {
 
                 my $table = $node->table;

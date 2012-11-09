@@ -294,6 +294,27 @@ sub load_rresults_bookbag_item_notes {
     return;
 }
 
+#Check if user is using search modifications
+sub get_search_mod{
+	
+	my $self = shift;
+	my $ctx = $self->ctx;
+	my $ou = '';
+	my $sname = 'opac.search_mods';
+	
+	#Check if user is staff or patron
+	if($ctx->{is_staff}){
+		$ou = $ctx->{user}->ws_ou;
+	}else{
+		$ou = $self->_get_pref_lib() || $self->_get_search_lib();
+	}
+	
+	#Get settings, set search type
+	my $return = $self->ctx->{get_org_setting}->($ou, $sname) ? 1 : 0;
+
+	$logger->debug("Get Search Mods: " . $return);
+	return $return;
+}
 # context additions: 
 #   page_size
 #   hit_count
@@ -396,9 +417,11 @@ sub load_rresults {
             return $self->generic_redirect;
         }
 
+		my $search_mod = get_search_mod($self);
+		
         # Limit and offset will stay here. Everything else should be part of
         # the query string, not special args.
-        my $args = {'limit' => $limit, 'offset' => $offset};
+        my $args = {'limit' => $limit, 'offset' => $offset, 'search_mods' => $search_mod};
 
         if ($tag_circs) {
             $args->{tag_circulated_records} = 1;
@@ -505,7 +528,6 @@ sub check_1hit_redirect {
     if ($ctx->{is_staff}) {
         $sname = 'opac.staff.jump_to_details_on_single_hit';
         $org = $ctx->{user}->ws_ou;
-
     } else {
         $sname = 'opac.patron.jump_to_details_on_single_hit';
         $org = $self->_get_search_lib();
