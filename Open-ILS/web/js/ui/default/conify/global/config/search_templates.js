@@ -168,7 +168,7 @@ function populateTemplateOptions(templateList)
         templateSel.options.length = 0;
         templateSel.options[0]= new Option(DEFAULT, "");
         var len = templateList.length;
-
+        
         for(var i=1; i<=len; i++)
         {
                 templateSel.options[i]= new Option(templateList[i-1].name, templateList[i-1].name);
@@ -240,15 +240,13 @@ function getGlobalRowValues(){
     }
     
 function getFilterValues()   {
-    var attrFilters = [];
+    var filters = [];
     for (var s = 0; s < attrFilters.length; s++)
     {
-        attrFilters[s] = getSelectedValues(attrFilters[s]);
+        filters[s] = getSelectedValues(attrFilters[s]);
     }
-    return attrFilters;
-}
-
-//Select the apropriate search options given a search template
+    return filters;
+}//Select the apropriate search options given a search template
 function populateSearchOptions(template) {
     setFilterValues(template);
     selectOptionValue(pubdateSel, template.pubdate);
@@ -263,15 +261,10 @@ function populateSearchOptions(template) {
     selectOptionValue(resultViewSel, template.view);
     modCheck.checked = template.modifier;
     setGlobalRowValues(template);
-
 }
 
 function clearOptions()
     {
-        
-        pubdateSel.selectedIndex = 0;
-        orgSel.selectedIndex = 0;
-        sortBySel.selectedIndex = 0;
         resultViewSel.selectedIndex = 0;
         modCheck.checked = false;
         clearGlobalRowValues();
@@ -282,7 +275,10 @@ function clearOptions()
 function clearSearchFilters() {
         for (var s = 0; s < attrFilters.length; s++)
         {
-            attrFilters[s].selectedIndex = -1;
+            if (attrFilters[s].multiple)
+            { attrFilters[s].selectedIndex = -1; }
+            else
+            { attrFilters[s].selectedIndex = 0; }
         }
     }
 
@@ -308,13 +304,13 @@ function selectSearchTemplateOrClear(tName)
             clearOptions(); 
         }		
     }
-    function selectSearchTemplateOrClearAll(tName)
+function selectSearchTemplateOrClearAll(tName)
     {
         selectSearchTemplateOrClear(tName);
         clearGlobalRowInputs();
         clearPubDateInputs();
     }
-    function clearAll() 
+function clearAll() 
     {
         clearOptions();
         clearGlobalRowInputs();
@@ -343,12 +339,9 @@ function setGlobalRowValues(template){
 function setFilterValues(template) {
     for (var s = 0; s < attrFilters.length; s++)
     {
-        
         selectOptionValues(attrFilters[s], template.attrFilters[s]);
     }
-}
-
-//select the first option in each Select in the "global_row.tt2)
+}//select the first option in each Select in the "global_row.tt2)
 function clearGlobalRowValues() {
     var tBody = document.getElementById("adv_global_tbody");
     var rows = tBody.getElementsByTagName("tr");
@@ -380,12 +373,14 @@ function selectOptionValue(elmnt, value) {
 
 function compareTemplates(templateA,templateB) {
     if (templateA.name < templateB.name)
-    { return -1; }
-if (templateA.name > templateB.name)
-    { return 1; }
-else
-    { return 0; }
-}function deleteTemplatefromTemplateList(tName, templateList) {
+        { return -1; }
+    if (templateA.name > templateB.name)
+        { return 1; }
+    else
+        { return 0; }
+}
+
+function deleteTemplatefromTemplateList(tName, templateList) {
         var index = getTemplateIndex(tName, templateList);
         templateList.splice(index,1);
 
@@ -431,9 +426,9 @@ function removeTemplate(templateList, currentTemplate)  {
 
 function saveTemplateList(templateList)
     {
-    //cache templateList	
-    g.data.search_templates = templateList; 
-    g.data.stash('search_templates');
+        //cache templateList	
+        g.data.search_templates = templateList; 
+        g.data.stash('search_templates');
         saveTemplateListToFile(templateList);
 }
 
@@ -441,11 +436,11 @@ function saveCurrentTemplate(template)
     {
         g.data.current_search_template = template; 
         g.data.stash('current_search_template');
-            saveCurrentTemplateToFile(template) 
+        saveCurrentTemplateToFile(template) 
 }
 
 function clearGlobalRowInputs() {
-        var tBody = document.getElementById("adv_global_tbody");
+    var tBody = document.getElementById("adv_global_tbody");
     if(tBody) {	
         var rows = tBody.getElementsByTagName("tr");
         if(rows.length > 0)			
@@ -461,7 +456,7 @@ function clearGlobalRowInputs() {
             }
         }
     }
-    function clearPubDateInputs()
+function clearPubDateInputs()
     {
         document.getElementById("adv_global_pub_date_1").value = '';
         document.getElementById("adv_global_pub_date_2").value = '';

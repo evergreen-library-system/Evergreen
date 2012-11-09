@@ -114,14 +114,14 @@
                         <option value="">Sort by Relevance</option>
                         <optgroup label="Sort by Title">
                             <option value="titlesort">Title: A to Z</option>
-                            <option value="titlesort.desc">Title: Z to A</option>
+                            <option value="titlesort.descending">Title: Z to A</option>
                         </optgroup>
                         <optgroup label="Sort by Author">
                             <option value="authorsort">Author: A to Z</option>
-                            <option value="authorsort.desc">Author: Z to A</option>
+                            <option value="authorsort.descending">Author: Z to A</option>
                         </optgroup>
                         <optgroup label="Sort by Publication Date">
-                            <option value="pubdate.desc">Date: Newest to Oldest</option>
+                            <option value="pubdate.descending">Date: Newest to Oldest</option>
                             <option value="pubdate">Date: Oldest to Newest</option>
                         </optgroup>
                     </select>

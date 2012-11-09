@@ -32,7 +32,7 @@
     <tr>
         <td align='top'>
           <div style="width:100%;" class="header_middle">[% l('Search Filters') %]</div>
-          <table cellpadding='10' cellspacing='0' border='0'>
+          <table cellpadding='10' cellspacing='0' border='0' id='ccvmOptions'>
 [%
     in_row = 0;
     FOR adv_chunk IN search.adv_config;
@@ -49,7 +49,7 @@
             SWITCH adv_chunk.adv_special;
                 CASE "lib_selector";
                     PROCESS "opac/parts/org_selector.tt2";
-                        INCLUDE build_org_selector show_loc_groups=1; %]
+                        INCLUDE build_org_selector show_loc_groups=1 id='org_selector'; %]
                             <div style="position:relative;top:7px;">
                                 <input type='checkbox' name="modifier"
                                     value="available"[% CGI.param('modifier').grep('available').size ? ' checked="checked"' : '' %]
@@ -60,7 +60,7 @@
                             </div>
 [%
                 CASE "pub_year"; %]
-                            <select name='pubdate' onchange='
+                            <select id='adv_global_pub_date_type' name='pubdate' onchange='
                                 if(this.selectedIndex == 3)
                                     unHideMe($("adv_global_pub_date_2_span"));
                                 else
@@ -82,7 +82,7 @@
 [%
                 CASE "sort_selector";
                     INCLUDE "opac/parts/filtersort.tt2"
-                        value=CGI.param('sort') class='results_header_sel';
+                        value=CGI.param('sort') class='results_header_sel' id='opac.result.sort';
             END;
         ELSIF adv_chunk.adv_attr;
             INCLUDE "opac/parts/coded_value_selector.tt2"
@@ -101,6 +101,22 @@
     END; %]
             </table>
         </td>
+        		[% IF ctx.is_staff %]
+			<td valign='top' style="padding-left:50px;">
+                <div style="width:100%;" class="header_middle">[% l('Search Templates') %]</div>
+                <br/>
+				<strong>Select Template</strong>
+				<br/>
+				<select id="templateList" onChange="selectSearchTemplateOrClearAll(this.value);">
+				</select>
+			</td>
+                <td valign="top" class="hide_me">
+			   <select id="resultViewSel" name="detail_record_view" >
+				<option value="0" selected="selected">Simple View</option>
+				<option value="1">Detail View</option>
+			   </select>
+			</td>
+		[% END %]
     </tr>
 </table>
 <input type="hidden" name="_adv" value="1" />
@@ -110,6 +126,40 @@
             <img id='search-submit-spinner' src='/opac/images/progressbar_green.gif' style='height:16px;width:16px;' class='hidden' alt=''/>
           </span>
 
+[% IF ctx.is_staff %]
+<a onclick="clearAll()"
+[% ELSE %]
 <a href="[% mkurl(ctx.opac_root _ '/advanced', {$loc_name => loc_value}, 1) %]"
+[% END %]
     class="pointer opac-button">[% l('Clear Form') %]</a>
 </form>
+
+[% IF ctx.is_staff %]
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/staff.js"></script>
+<script type="text/javascript" src="/xul/server/OpenILS/global_util.js"></script>
+<script type="text/javascript" src="/js/ui/default/opac/simple.js"></script>
+<script type="text/javascript" src="/xul/server/main/constants.js"></script>
+<script type="text/javascript" src="/xul/server/main/JSAN.js"></script>
+<script type="text/javascript" src="/js/ui/default/conify/global/config/search_templates.js"></script>
+<script type="text/javascript">
+
+	var pubdateSel = $("adv_global_pub_date_type"); 
+	var orgSel = document.getElementById("org_selector"); 
+	var sortBySel = document.getElementById("opac.result.sort"); 
+	var resultViewSel = document.getElementById("resultViewSel");
+	var modCheck = document.getElementById("opac.result.limit2avail");
+	var templateSel = document.getElementById("templateList"); 
+    var ccvmTable = document.getElementById("ccvmOptions");
+    var attrFilters = ccvmTable.getElementsByTagName("select");
+
+		getSearchStash();
+
+		populateTemplateOptions(templateList);
+		if (template)
+		{
+			selectOptionValue(templateSel, template.name);
+			populateSearchOptions(template);
+		}
+
+	</script>
+[% END %]
