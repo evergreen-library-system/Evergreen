@@ -127,5 +127,13 @@ search.basic_config = {
     group => ['mattype','item_type'],
     none_label => l("All Formats"),
 };
+##############################################################################
+# This will allow the display and use of a Search Template dropdown that 
+# staff may use to select often used searches. Upon selection of a Template, the 
+# Advanced Search page's Global Rows and Search Filters will populate according
+# to the Template. Templates are configurable at 
+# Admin->WorkStation Administraion->Search Templates 
+
+search.allow_templates = 'true';
 
 %]

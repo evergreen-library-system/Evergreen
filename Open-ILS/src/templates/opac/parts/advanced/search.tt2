@@ -101,7 +101,7 @@
     END; %]
             </table>
         </td>
-        		[% IF ctx.is_staff %]
+        [% IF ctx.is_staff && search.allow_templates == 'true' %]
 			<td valign='top' style="padding-left:50px;">
                 <div style="width:100%;" class="header_middle">[% l('Search Templates') %]</div>
                 <br/>
@@ -126,7 +126,7 @@
             <img id='search-submit-spinner' src='/opac/images/progressbar_green.gif' style='height:16px;width:16px;' class='hidden' alt=''/>
           </span>
 
-[% IF ctx.is_staff %]
+[% IF ctx.is_staff && search.allow_templates == 'true' %]
 <a onclick="clearAll()"
 [% ELSE %]
 <a href="[% mkurl(ctx.opac_root _ '/advanced', {$loc_name => loc_value}, 1) %]"
@@ -134,7 +134,7 @@
     class="pointer opac-button">[% l('Clear Form') %]</a>
 </form>
 
-[% IF ctx.is_staff %]
+[% IF ctx.is_staff && search.allow_templates == 'true' %]
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/staff.js"></script>
 <script type="text/javascript" src="/xul/server/OpenILS/global_util.js"></script>
 <script type="text/javascript" src="/js/ui/default/opac/simple.js"></script>
