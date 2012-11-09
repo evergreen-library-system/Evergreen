@@ -283,7 +283,7 @@ GetOptions("create-schema" => \$cschema,
 );
 
 if (grep(/^all$/, @services)) {
-	@services = qw/reporter open-ils.cstore open-ils.pcrud open-ils.storage open-ils.reporter-store state_store/;
+	@services = qw/reporter open-ils.cstore open-ils.pcrud open-ils.storage open-ils.reporter-store state_store open-ils.qstore/;
 }
 
 my $eg_config = File::Spec->catfile($script_dir, '../extras/eg_config');
