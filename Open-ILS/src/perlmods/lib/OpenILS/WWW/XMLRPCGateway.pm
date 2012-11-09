@@ -20,7 +20,6 @@ use OpenSRF::Utils::SettingsClient;
 
 use RPC::XML qw/smart_encode/;
 use RPC::XML::Parser;
-use RPC::XML::Method;
 use RPC::XML::Procedure;
 
 $RPC::XML::ENCODING = 'utf-8';
