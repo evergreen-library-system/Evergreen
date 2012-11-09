@@ -111,6 +111,11 @@ sub load {
 
     my $path = $self->apache->path_info;
 
+    if ($path =~ m|opac/?$|) {
+        # nowhere specified, just go home
+        return $self->generic_redirect($self->ctx->{home_page});
+    }
+
     (undef, $self->ctx->{mylist}) = $self->fetch_mylist unless
         $path =~ /opac\/my(opac\/lists|list)/;
 
