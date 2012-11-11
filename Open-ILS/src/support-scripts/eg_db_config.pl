@@ -24,8 +24,9 @@ use Getopt::Long;
 use File::Spec;
 use File::Basename;
 use DBI;
+use Cwd qw/abs_path getcwd/;
 
-my ($dbhost, $dbport, $dbname, $dbuser, $dbpw, $help, $admin_user, $admin_pw);
+my ($dbhost, $dbport, $dbname, $dbuser, $dbpw, $help, $admin_user, $admin_pw, $load_all, $load_concerto);
 my $config_file = '';
 my $build_db_sh = '';
 my $offline_file = '';
@@ -38,8 +39,15 @@ my @services;
 
 my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
 
+my $cwd = getcwd();
+
 # Get the directory for this script
-my $script_dir = dirname($0);
+my $script_dir = abs_path(dirname($0));
+
+# Set the location and base file for sample data
+my $_sample_dir = abs_path(File::Spec->catdir($script_dir, '../../tests/datasets/sql/'));
+my $_sample_all = 'load_all.sql';
+my $_sample_concerto = 'load_concerto.sql';
 
 =over
 
@@ -182,6 +190,26 @@ sub create_schema {
 	chdir($script_dir);
 }
 
+=item load_sample_data() - Loads sample bib records, copies, users, and transactions
+=cut
+sub load_sample_data {
+	my $settings = shift;
+
+	my $load_script = $_sample_all;
+	chdir($_sample_dir);
+	if ($load_concerto) {
+		$load_script = $_sample_concerto;
+	}
+	$ENV{'PGUSER'} = $settings->{user};
+	$ENV{'PGPASSWORD'} = $settings->{pw};
+	$ENV{'PGPORT'} = $settings->{port};
+	$ENV{'PGHOST'} = $settings->{host};
+	$ENV{'PGDATABASE'} = $settings->{db};
+	my @output = `psql -f $load_script 2>&1`;
+	print @output;
+	chdir($cwd);
+}
+
 =item set_admin_account() - Sets the administrative user's user name and password
 =cut
 sub set_admin_account {
@@ -216,6 +244,8 @@ my %settings;
 
 GetOptions("create-schema" => \$cschema, 
 		"create-database" => \$cdatabase,
+		"load-all-sample" => \$load_all,
+		"load-concerto-sample" => \$load_concerto,
 		"create-offline" => \$offline,
 		"update-config" => \$uconfig,
 		"config-file=s" => \$config_file,
@@ -290,9 +320,12 @@ if ($cschema) { create_schema(\%settings); }
 if ($admin_user && $admin_pw) {
 	set_admin_account($admin_user, $admin_pw, \%settings);
 }
+if ($load_all || $load_concerto) {
+	load_sample_data(\%settings);
+}
 if ($offline) { create_offline_config($offline_file, \%settings); }
 
-if ((!$cdatabase && !$cschema && !$uconfig && !$offline && !$admin_pw) || $help) {
+if ((!$cdatabase && !$cschema && !$load_all && !$load_concerto && !$uconfig && !$offline && !$admin_pw) || $help) {
 	print <<HERE;
 
 SYNOPSIS
@@ -331,6 +364,14 @@ COMMANDS
     --create-database
         Creates the database itself, provided the user and password options
         represent a superuser.
+
+    --load-all-sample
+		Loads all sample data, including bibliographic records, call numbers,
+		copies, users, and transactions.
+
+    --load-concerto-sample
+		Loads a subset of sample data that includes just 100 bibliographic
+		records, and associated call numbers and copies.
 
 SERVICE OPTIONS
     --service

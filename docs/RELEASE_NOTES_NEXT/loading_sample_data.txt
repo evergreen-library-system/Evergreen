@@ -1,0 +1,24 @@
+New feature: loading sample data
+================================
+One common need for people evaluating Evergreen, as well as for developers,
+writers, and testers, is a set of sample data that can be easily loaded into
+the Evergreen database and provide a consistent set of results for testing
+and training purposes.
+
+This release features sets of sample data consisting of:
+
+* 100 bibliographic records retrievable via a "concerto" keyword search
+* 100 French bibliographic records
+* Associated call numbers, copies, parts, and conjoined items
+* Patron accounts, including some recently expired patrons
+* Circulation transactions, including some holds and some overdue items
+
+To load the sample data into a freshly installed Evergreen database, you can
+pass the following arguments to the `eg_db_config` script (either when you are
+creating the initial database schema, or as a separate call after creating the
+database schema):
+
+* `--load-all-sample`: Loads all sample data, including bibliographic records,
+   call numbers, copies, users, and transactions.
+* `--load-concerto-sample`: Loads a subset of sample data that includes just
+  100 bibliographic records, and associated call numbers and copies.
