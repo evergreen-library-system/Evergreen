@@ -1,57 +1,57 @@
 -- Create call numbers
-SELECT evergreen.populate_call_number(4, 'CONCERTO ', 'IMPORT CONCERTO'); -- BR1
-SELECT evergreen.populate_call_number(5, 'CONCERTO ', 'IMPORT CONCERTO'); -- BR2
-SELECT evergreen.populate_call_number(6, 'CONCERTO ', 'IMPORT CONCERTO'); -- BR3
-SELECT evergreen.populate_call_number(7, 'CONCERTO ', 'IMPORT CONCERTO'); -- BR4
-SELECT evergreen.populate_call_number(9, 'CONCERTO ', 'IMPORT CONCERTO'); -- BM1
-SELECT evergreen.populate_call_number(4, 'PERFORM ',  'IMPORT CONCERTO'); -- BR1
-SELECT evergreen.populate_call_number(5, 'PERFORM ',  'IMPORT CONCERTO'); -- BR2
-SELECT evergreen.populate_call_number(6, 'PERFORM ',  'IMPORT CONCERTO'); -- BR3
-SELECT evergreen.populate_call_number(7, 'PERFORM ',  'IMPORT CONCERTO'); -- BR4
-SELECT evergreen.populate_call_number(9, 'PERFORM ',  'IMPORT CONCERTO'); -- BM1
+SELECT evergreen.populate_call_number(4, 'ML 2533 B34 C', 'IMPORT CONCERTO', 3); -- BR1
+SELECT evergreen.populate_call_number(5, 'ML1263F', 'IMPORT CONCERTO', 3); -- BR2
+SELECT evergreen.populate_call_number(6, 'MT130M8 G', 'IMPORT CONCERTO', 3); -- BR3
+SELECT evergreen.populate_call_number(7, 'ML 60 R', 'IMPORT CONCERTO', 3); -- BR4
+SELECT evergreen.populate_call_number(9, 'MT 125 .H667 C', 'IMPORT CONCERTO', 3); -- BM1
+SELECT evergreen.populate_call_number(4, '780 B',  'IMPORT CONCERTO', 2); -- BR1
+SELECT evergreen.populate_call_number(5, '780 A',  'IMPORT CONCERTO', 2); -- BR2
+SELECT evergreen.populate_call_number(6, '781 D',  'IMPORT CONCERTO', 2); -- BR3
+SELECT evergreen.populate_call_number(7, '781 G',  'IMPORT CONCERTO', 2); -- BR4
+SELECT evergreen.populate_call_number(9, '780 R',  'IMPORT CONCERTO', 2); -- BM1
 
 -- Create copies
-SELECT evergreen.populate_copy(4, 4, 'CONC40000', 'CONCERTO'); -- BR1
-SELECT evergreen.populate_copy(5, 5, 'CONC50000', 'CONCERTO'); -- BR2
-SELECT evergreen.populate_copy(6, 6, 'CONC60000', 'CONCERTO'); -- BR3
-SELECT evergreen.populate_copy(7, 7, 'CONC70000', 'CONCERTO'); -- BR4
-SELECT evergreen.populate_copy(9, 9, 'CONC90000', 'CONCERTO'); -- BM1
+SELECT evergreen.populate_copy(4, 4, 'CONC40000', 'M'); -- BR1
+SELECT evergreen.populate_copy(5, 5, 'CONC50000', 'M'); -- BR2
+SELECT evergreen.populate_copy(6, 6, 'CONC60000', 'M'); -- BR3
+SELECT evergreen.populate_copy(7, 7, 'CONC70000', 'M'); -- BR4
+SELECT evergreen.populate_copy(9, 9, 'CONC90000', 'M'); -- BM1
 
-SELECT evergreen.populate_copy(4, 4, 'CONC41000', 'CONCERTO'); -- BR1
-SELECT evergreen.populate_copy(5, 5, 'CONC51000', 'CONCERTO'); -- BR2
-SELECT evergreen.populate_copy(6, 6, 'CONC61000', 'CONCERTO'); -- BR3
-SELECT evergreen.populate_copy(7, 7, 'CONC71000', 'CONCERTO'); -- BR4
-SELECT evergreen.populate_copy(9, 9, 'CONC91000', 'CONCERTO'); -- BM1
+SELECT evergreen.populate_copy(4, 4, 'CONC41000', 'M'); -- BR1
+SELECT evergreen.populate_copy(5, 5, 'CONC51000', 'M'); -- BR2
+SELECT evergreen.populate_copy(6, 6, 'CONC61000', 'M'); -- BR3
+SELECT evergreen.populate_copy(7, 7, 'CONC71000', 'M'); -- BR4
+SELECT evergreen.populate_copy(9, 9, 'CONC91000', 'M'); -- BM1
 
-SELECT evergreen.populate_copy(4, 4, 'CONC42000', 'CONCERTO'); -- BR1
-SELECT evergreen.populate_copy(5, 5, 'CONC52000', 'CONCERTO'); -- BR2
-SELECT evergreen.populate_copy(6, 6, 'CONC62000', 'CONCERTO'); -- BR3
-SELECT evergreen.populate_copy(7, 7, 'CONC72000', 'CONCERTO'); -- BR4
-SELECT evergreen.populate_copy(9, 9, 'CONC92000', 'CONCERTO'); -- BM1
+SELECT evergreen.populate_copy(4, 4, 'CONC42000', 'M'); -- BR1
+SELECT evergreen.populate_copy(5, 5, 'CONC52000', 'M'); -- BR2
+SELECT evergreen.populate_copy(6, 6, 'CONC62000', 'M'); -- BR3
+SELECT evergreen.populate_copy(7, 7, 'CONC72000', 'M'); -- BR4
+SELECT evergreen.populate_copy(9, 9, 'CONC92000', 'M'); -- BM1
 
-SELECT evergreen.populate_copy(4, 4, 'CONC43000', 'CONCERTO'); -- BR1
-SELECT evergreen.populate_copy(5, 5, 'CONC53000', 'CONCERTO'); -- BR2
-SELECT evergreen.populate_copy(6, 6, 'CONC63000', 'CONCERTO'); -- BR3
-SELECT evergreen.populate_copy(7, 7, 'CONC73000', 'CONCERTO'); -- BR4
-SELECT evergreen.populate_copy(9, 9, 'CONC93000', 'CONCERTO'); -- BM1
+SELECT evergreen.populate_copy(4, 4, 'CONC43000', 'M'); -- BR1
+SELECT evergreen.populate_copy(5, 5, 'CONC53000', 'M'); -- BR2
+SELECT evergreen.populate_copy(6, 6, 'CONC63000', 'M'); -- BR3
+SELECT evergreen.populate_copy(7, 7, 'CONC73000', 'M'); -- BR4
+SELECT evergreen.populate_copy(9, 9, 'CONC93000', 'M'); -- BM1
 
-SELECT evergreen.populate_copy(4, 4, 'CONC44000', 'CONCERTO'); -- BR1
-SELECT evergreen.populate_copy(5, 5, 'CONC54000', 'CONCERTO'); -- BR2
-SELECT evergreen.populate_copy(6, 6, 'CONC64000', 'CONCERTO'); -- BR3
-SELECT evergreen.populate_copy(7, 7, 'CONC74000', 'CONCERTO'); -- BR4
-SELECT evergreen.populate_copy(9, 9, 'CONC94000', 'CONCERTO'); -- BM1
+SELECT evergreen.populate_copy(4, 4, 'CONC44000', 'M'); -- BR1
+SELECT evergreen.populate_copy(5, 5, 'CONC54000', 'M'); -- BR2
+SELECT evergreen.populate_copy(6, 6, 'CONC64000', 'M'); -- BR3
+SELECT evergreen.populate_copy(7, 7, 'CONC74000', 'M'); -- BR4
+SELECT evergreen.populate_copy(9, 9, 'CONC94000', 'M'); -- BM1
 
-SELECT evergreen.populate_copy(4, 4, 'CONC40000', 'PERFORM'); -- BR1
-SELECT evergreen.populate_copy(5, 5, 'CONC50000', 'PERFORM'); -- BR2
-SELECT evergreen.populate_copy(6, 6, 'CONC60000', 'PERFORM'); -- BR3
-SELECT evergreen.populate_copy(7, 7, 'CONC70000', 'PERFORM'); -- BR4
-SELECT evergreen.populate_copy(9, 9, 'CONC90000', 'PERFORM'); -- BM1
+SELECT evergreen.populate_copy(4, 4, 'CONC40000', '780'); -- BR1
+SELECT evergreen.populate_copy(5, 5, 'CONC50000', '780'); -- BR2
+SELECT evergreen.populate_copy(6, 6, 'CONC60000', '780'); -- BR3
+SELECT evergreen.populate_copy(7, 7, 'CONC70000', '780'); -- BR4
+SELECT evergreen.populate_copy(9, 9, 'CONC90000', '780'); -- BM1
 
-SELECT evergreen.populate_copy(4, 4, 'CONC41000', 'PERFORM'); -- BR1
-SELECT evergreen.populate_copy(5, 5, 'CONC51000', 'PERFORM'); -- BR2
-SELECT evergreen.populate_copy(6, 6, 'CONC61000', 'PERFORM'); -- BR3
-SELECT evergreen.populate_copy(7, 7, 'CONC71000', 'PERFORM'); -- BR4
-SELECT evergreen.populate_copy(9, 9, 'CONC91000', 'PERFORM'); -- BM1
+SELECT evergreen.populate_copy(4, 4, 'CONC41000', '780'); -- BR1
+SELECT evergreen.populate_copy(5, 5, 'CONC51000', '780'); -- BR2
+SELECT evergreen.populate_copy(6, 6, 'CONC61000', '780'); -- BR3
+SELECT evergreen.populate_copy(7, 7, 'CONC71000', '780'); -- BR4
+SELECT evergreen.populate_copy(9, 9, 'CONC91000', '780'); -- BM1
 
 -- Delete some copies, call numbers, and bib records
 DELETE FROM biblio.record_entry
@@ -102,12 +102,12 @@ INSERT INTO biblio.monograph_part (record, label) VALUES
 INSERT INTO asset.copy (call_number, circ_lib, creator, editor, loan_duration, fine_level, barcode)
     SELECT id, owning_lib, 1, 1, 1, 1, 'CONC70001' || id::text
     FROM asset.call_number
-    WHERE record IN (53, 84) AND label LIKE 'CONCERTO %' AND owning_lib = 7;
+    WHERE record IN (53, 84) AND label LIKE 'M%' AND owning_lib = 7;
 
 INSERT INTO asset.copy (call_number, circ_lib, creator, editor, loan_duration, fine_level, barcode)
     SELECT id, owning_lib, 1, 1, 1, 1, 'CONC70002' || id::text
     FROM asset.call_number
-    WHERE record IN (53, 84) AND label LIKE 'CONCERTO %' AND owning_lib = 7;
+    WHERE record IN (53, 84) AND label LIKE '78%' AND owning_lib = 7;
 
 -- Assign the copies to the parts
 INSERT INTO asset.copy_part_map (target_copy, part)
@@ -128,7 +128,7 @@ INSERT INTO biblio.peer_type (name)
 INSERT INTO asset.copy (call_number, circ_lib, creator, editor, loan_duration, fine_level, barcode)
     SELECT id, owning_lib, 1, 1, 1, 1, 'PEERBIB' || record::text
     FROM asset.call_number
-    WHERE record = 15 AND label LIKE 'CONCERTO %' AND owning_lib = 4;
+    WHERE record = 15 AND label LIKE 'M%' AND owning_lib = 4;
 
 -- Create the peer bib copy map
 INSERT INTO biblio.peer_bib_copy_map (peer_type, peer_record, target_copy)

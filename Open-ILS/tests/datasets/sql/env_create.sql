@@ -11,18 +11,25 @@ CREATE TABLE marcxml_import (id SERIAL PRIMARY KEY, marc TEXT, tag TEXT);
  * whose last_xact_id matches bib_tag
  */
 CREATE FUNCTION evergreen.populate_call_number 
-    (ownlib INTEGER, label TEXT, bib_tag TEXT)
+    (ownlib INTEGER, label TEXT, bib_tag TEXT, class INTEGER DEFAULT 1)
 RETURNS void AS $$
     INSERT INTO asset.call_number (record, creator, editor, owning_lib, label, label_class)
-        SELECT id, 1, 1, $1, $2 || id::text, 1
+        SELECT id, 1, 1, $1, $2 || id::text, $4
         FROM biblio.record_entry
         WHERE id > 0 AND 
             CASE WHEN $3 IS NULL THEN TRUE 
                 ELSE last_xact_id = $3 END;
 $$ LANGUAGE SQL;
 
+CREATE FUNCTION evergreen.populate_call_number 
+    (ownlib INTEGER, label TEXT, bib_tag TEXT)
+RETURNS void AS $$
+    SELECT evergreen.populate_call_number($1, $2, $3, NULL);
+$$ LANGUAGE SQL;
+
+
 /*
- * create a copy for every callnumber in the database whose label and owninb_lib 
+ * create a copy for every callnumber in the database whose label and owning_lib 
  * matches, appending the callnumber ID to the copy barcode to differentate.
  */
 CREATE FUNCTION evergreen.populate_copy 

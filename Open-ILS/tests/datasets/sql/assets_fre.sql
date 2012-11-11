@@ -1,9 +1,9 @@
 -- Create call numbers
-SELECT evergreen.populate_call_number(4, 'FRE ', 'IMPORT FRE'); -- BR1
-SELECT evergreen.populate_call_number(5, 'FRE ', 'IMPORT FRE'); -- BR2
-SELECT evergreen.populate_call_number(6, 'FRE ', 'IMPORT FRE'); -- BR3
-SELECT evergreen.populate_call_number(7, 'FRE ', 'IMPORT FRE'); -- BR4
-SELECT evergreen.populate_call_number(9, 'FRE ', 'IMPORT FRE'); -- BM1
+SELECT evergreen.populate_call_number(4, 'FRE ', 'IMPORT FRE', NULL); -- BR1
+SELECT evergreen.populate_call_number(5, 'FRE ', 'IMPORT FRE', NULL); -- BR2
+SELECT evergreen.populate_call_number(6, 'FRE ', 'IMPORT FRE', NULL); -- BR3
+SELECT evergreen.populate_call_number(7, 'FRE ', 'IMPORT FRE', NULL); -- BR4
+SELECT evergreen.populate_call_number(9, 'FRE ', 'IMPORT FRE', NULL); -- BM1
 
 -- Create copies
 SELECT evergreen.populate_copy(4, 4, 'FRE40000', 'FRE'); -- BR1
