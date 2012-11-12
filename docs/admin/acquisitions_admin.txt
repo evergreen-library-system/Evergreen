@@ -265,8 +265,8 @@ The MARC Federated Search enables you to import bibliographic records into a sel
 +
 image::media/acq_marc_search.png[search form]
 +
-. A list of results will appear. Click the _Copies_ link to add copy information to the line item. See the link:line_items.txt[section on Line Items] for more information.
-. Click the Notes link to add notes or line item alerts to the line item. See the link:line_items.txt[section on Line Items] for more information.
+. A list of results will appear. Click the _Copies_ link to add copy information to the line item. See <<line_item_features, Line Item Feratures>> for more information.
+. Click the Notes link to add notes or line item alerts to the line item. See <<line_item_features, Line Item Feratures>> for more information.
 . Enter a price in the _Estimated Price_ field.
 . You can save the line item(s) to a selection list by checking the box on the line item and clicking _Actions -> Save Items to Selection List_. You can also create a purchase order from the line item(s) by checking the box on the line item and clicking _Actions -> Create Purchase Order_.
 
@@ -441,7 +441,7 @@ that are accessible in this interface include Remaining Balance, Total
 Allocated, Total Encumbered, and Total Spent.
 
 
-image::/esi/docs/wp-content/uploads/2012/08/Core_Source_1.jpg[Core_Source1]
+image::media/Core_Source_1.jpg[Core_Source1]
 
 
 
@@ -542,7 +542,7 @@ Payment methods can be deleted from this screen.
 
 Line item features
 ~~~~~~~~~~~~~~~~~~
-
+[[line_item_features]]
 
 indexterm:[acquisitions,line items]
 
