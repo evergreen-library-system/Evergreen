@@ -441,7 +441,7 @@ that are accessible in this interface include Remaining Balance, Total
 Allocated, Total Encumbered, and Total Spent.
 
 
-image::/esi/docs/wp-content/uploads/2012/08/Core_Source_1.jpg[Core_Source1]
+image::media/Core_Source_1.jpg[Core_Source1]
 
 
 
