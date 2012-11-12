@@ -1,6 +1,4 @@
 = Easing gently into OpenSRF =
-Dan Scott <dscott@laurentian.ca>
-v0.9, May 2010
 
 == Abstract ==
 The Evergreen open-source library system serves library consortia composed of
