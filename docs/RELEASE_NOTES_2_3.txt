@@ -42,7 +42,7 @@ Acquisitions
 ACQ Invoice Inline Lineitem Search and Add
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Invoice UI is how composed of two tabs, the main invoice tab and a new
+The Invoice UI is now composed of two tabs, the main invoice tab and a new
 Search tab.  The search tab consists of a subset of the Acquisitions unified
 search interface.  The goal is to allow users to search for lineitems to
 invoice.  Search results may be added directly to the growing invoice.  A number of small usability features are included.
