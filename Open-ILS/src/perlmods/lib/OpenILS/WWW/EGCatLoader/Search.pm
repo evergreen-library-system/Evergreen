@@ -300,7 +300,7 @@ sub get_search_mod{
 	my $self = shift;
 	my $ctx = $self->ctx;
 	my $ou = '';
-	my $sname = 'opac.search_mods';
+	my $sname = 'opac.search_mod';
 	
 	#Check if user is staff or patron
 	if($ctx->{is_staff}){
@@ -312,6 +312,7 @@ sub get_search_mod{
 	#Get settings, set search type
 	my $return = $self->ctx->{get_org_setting}->($ou, $sname) ? 1 : 0;
 
+	
 	$logger->debug("Get Search Mods: " . $return);
 	return $return;
 }

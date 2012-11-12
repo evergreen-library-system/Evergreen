@@ -3122,27 +3122,6 @@ sub query_parser_fts {
                     $param_pref_ou\:\:INT
                 );
     SQL
-    
-	my $sql = <<SQL;
-          SELECT  * -- bib search: $args{query}
-          FROM  search.query_parser_fts(
-                    $param_search_ou\:\:INT,
-                    $param_depth\:\:INT,
-                    $param_core_query\:\:TEXT,
-                    $param_statuses\:\:INT[],
-                    $param_locations\:\:INT[],
-                    $param_offset\:\:INT,
-                    $param_check\:\:INT,
-                    $param_limit\:\:INT,
-                    $metarecord\:\:BOOL,
-                    $staff\:\:BOOL,
-                    $param_pref_ou\:\:INT
-                );
-SQL
-
-    open WRITE, '>/home/opensrf/metabibsearchSQL.txt';
-    print WRITE $sql;
-    close WRITE;
 
     $sth->execute;
 

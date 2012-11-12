@@ -643,7 +643,10 @@ sub log_activity {
 
     if ($arg) {
 
-        my $redact = $OpenSRF::Application::shared_conf->shared->log_protect;
+		my $redact;
+		###FIX ME### VALUE shared_conf->shared does not point to a valid method call
+		#Uncomment this code and register a workstation from a clean build to see bug.
+        $redact = $OpenSRF::Application::shared_conf->shared->log_protect;
         if (ref($redact) eq 'ARRAY' and grep { $method =~ /^$_/ } @{$redact}) {
 
             # when API calls are marked as log-protect, avoid 

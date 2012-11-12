@@ -859,16 +859,20 @@ sub search_mod{
 					  
 	$logger->debug("Query param: " . Dumper($queryParam));
 	
-	
-	$join .= "\n\t JOIN " . $queryParam->{table} . " AS norm ON (fe.id = norm.id)";
-	$where .= "\n\t WHERE 1 = 1 ";
-	
+	if($normalized || 
+		$queryParam->{searchType} eq 'containsPhrase' ||
+		$queryParam->{searchType} eq 'exactMatch'){
+			
+		$join .= "\n\t JOIN " . $queryParam->{table} . " AS norm ON (fe.id = norm.id)";
+		$where .= "\n\t WHERE 1 = 1 ";
+		
+	}
 	if($normalized){
 		$joinType = 'LEFT';
 		if($queryParam->{searchType} eq 'containsPhrase'){
-			$where .= "\n\t\t AND (fe.value LIKE '% " . quote_value($queryParam->{searchVal}) . "%' OR fe.value LIKE '%" . quote_value($queryParam->{searchVal}) . "%' OR fe.value LIKE '% " . quote_value($queryParam->{searchVal}) . " %')";
+			$where .= "\n\t\t AND (fe.value LIKE '" . quote_value($queryParam->{searchVal}) . " %' OR fe.value LIKE '% " . quote_value($queryParam->{searchVal}) . " %' OR fe.value LIKE '% " . quote_value($queryParam->{searchVal}) . "')";
 		}elsif($queryParam->{searchType} eq 'doesNotContainPhrase'){
-			$where .= "\n\t\t AND (fe.value NOT LIKE '% " . quote_value($queryParam->{searchVal}) . "%' OR fe.value NOT LIKE '%" . quote_value($queryParam->{searchVal}) . "%' OR fe.value NOT LIKE '% " . quote_value($queryParam->{searchVal}) . " %')";	
+			$where .= "\n\t\t AND (fe.value NOT LIKE '" . quote_value($queryParam->{searchVal}) . " %' OR fe.value NOT LIKE '% " . quote_value($queryParam->{searchVal}) . " %' OR fe.value NOT LIKE '% " . quote_value($queryParam->{searchVal}) . "')";	
 		}elsif($queryParam->{searchType} eq 'exactMatch'){
 			$where .= "\n\t\t AND (fe.value LIKE '" . quote_value($queryParam->{searchVal}) . "')";
 		}elsif($queryParam->{searchType} eq 'startsWith'){
@@ -891,9 +895,12 @@ sub search_mod{
 		$joinType = 'RIGHT';
 		if($queryParam->{searchType} eq 'containsPhrase'){
 			$where .= "\n\t\t AND (norm.value LIKE '" . $queryParam->{searchVal} . " %' OR norm.value LIKE '% " . $queryParam->{searchVal} . " %' OR norm.value LIKE '% " . $queryParam->{searchVal} . "')";
-		}elsif($queryParam->{searchType} eq 'doesNotContainPhrase'){
-			$where .= "\n\t\t AND (norm.value NOT LIKE '% " . $queryParam->{searchVal} . "%' OR norm.value NOT LIKE '%" . $queryParam->{searchVal} . "%' OR norm.value NOT LIKE '% " . $queryParam->{searchVal} . " %')";	
-		}elsif($queryParam->{searchType} eq 'exactMatch'){
+		}
+#Does not contain phrase seems to have an issue outside the scope of this feature		
+#		elsif($queryParam->{searchType} eq 'doesNotContainPhrase'){
+#			$where .= "\n\t\t AND (norm.value NOT LIKE '% " . $queryParam->{searchVal} . "%' OR norm.value NOT LIKE '%" . $queryParam->{searchVal} . "%' OR norm.value NOT LIKE '% " . $queryParam->{searchVal} . " %')";	}
+			
+		elsif($queryParam->{searchType} eq 'exactMatch'){
 			$where .= "\n\t\t AND (norm.value LIKE '" . $queryParam->{searchVal} . "')";
 		}		
 	}
@@ -935,8 +942,10 @@ sub flatten {
 				
                 my $table = $node->table;
                 my $talias = $node->table_alias;
+                
 				my $search_mods = $self->QueryParser->search_mods ? search_mod($self, $node) : '';
 				my $jt = $search_mods ? $search_mods->{'joinType'} : '';
+				
                 my $node_rank = 'COALESCE(' . $node->rank . " * ${talias}.weight, 0.0)";
 
                 my $core_limit = $self->QueryParser->core_limit || 25000;
@@ -951,7 +960,9 @@ sub flatten {
                     $from .= "\n${spc}${spc}${spc}, (SELECT NULL::tsquery AS tsq ) AS x";
                 }
 				
+
 				$from .= $search_mods->{'join'} if $search_mods;
+
 				
 				my $fieldIds;
                 my @bump_fields;
@@ -976,6 +987,7 @@ sub flatten {
                 }
                 
 				$from .= $search_mods->{'where'} if $search_mods;
+                
                 ###$from .= "\n${spc}${spc}LIMIT $core_limit";
                 $from .= "\n${spc}) AS $talias ON (m.source = ${talias}.source)";
 
