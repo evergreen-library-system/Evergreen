@@ -241,8 +241,8 @@ The MARC Federated Search enables you to import bibliographic records into a sel
 +
 image::media/acq_marc_search.png[search form]
 +
-. A list of results will appear. Click the _Copies_ link to add copy information to the line item. See the link:line_items.txt[section on Line Items] for more information.
-. Click the Notes link to add notes or line item alerts to the line item. See the link:line_items.txt[section on Line Items] for more information.
+. A list of results will appear. Click the _Copies_ link to add copy information to the line item. See <<line_item_features, Line Item Feratures>> for more information.
+. Click the Notes link to add notes or line item alerts to the line item. See <<line_item_features, Line Item Feratures>> for more information.
 . Enter a price in the _Estimated Price_ field.
 . You can save the line item(s) to a selection list by checking the box on the line item and clicking _Actions -> Save Items to Selection List_. You can also create a purchase order from the line item(s) by checking the box on the line item and clicking _Actions -> Create Purchase Order_.
 
@@ -465,6 +465,12 @@ Payment methods can be deleted from this screen.
 
 Line item features
 ~~~~~~~~~~~~~~~~~~
+<<<<<<< HEAD
+=======
+[[line_item_features]]
+
+indexterm:[acquisitions,line items]
+>>>>>>> f9e5627... Documentation: Fix some broken links and adjust an image in the
 
 Line item alerts are predefined text that can be added to line items that are on selection lists or purchase orders. You can define the alerts from which staff can choose. Line item alerts appear in a pop up box when the line item, or any of its copies, are marked as received.
 
