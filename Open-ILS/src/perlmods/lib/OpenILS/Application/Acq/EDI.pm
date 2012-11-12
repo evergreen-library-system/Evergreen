@@ -585,30 +585,45 @@ sub create_acq_invoice_from_edi {
                                     # distinguish provider and shipper?
     $eg_inv->recv_method("EDI");
 
-    my $buyer_san = $invoice->{buyer_san};
 
-    if (not $buyer_san) {
-        $logger->error($log_prefix . "could not find buyer SAN in INVOIC");
-        return 0;
+    # some vendors encode the account number as the SAN.
+    # starting with the san value, then the account value, 
+    # treat each as a san, then an acct number until the first success
+    for my $buyer ( ($invoice->{buyer_san}, $invoice->{buyer_acct}) ) {
+        next unless $buyer;
+
+        # some vendors encode the SAN as "$SAN $vendcode"
+        $buyer =~ s/\s.*//g;
+
+        my $addr = $e->search_actor_org_address(
+            {valid => "t", san => $buyer})->[0];
+
+        if ($addr) {
+
+            $eg_inv->receiver($addr->org_unit);
+            last;
+
+        } else {
+
+            my $acct = $e->search_acq_edi_account({vendacct => $buyer})->[0];
+
+            if ($acct) {
+                $eg_inv->receiver($acct->owner);
+                last;
+            }
+        }
     }
 
-    # some vendors encode the SAN as "$SAN $vendcode"
-    $buyer_san =~ s/\s.*//g;
-
-    # Find the matching org unit based on SAN via 'aoa' table.
-    my $addrs =
-        $e->search_actor_org_address({valid => "t", san => $buyer_san});
-
-    if (not $addrs or not @$addrs) {
-        $logger->error(
-            $log_prefix . "couldn't find OU unit matching buyer SAN in INVOIC:".
-            $e->event
+    if (!$eg_inv->receiver) {
+        $logger->error($log_prefix . 
+            sprintf("unable to determine buyer (org unit) in invoice; ".
+                "buyer_san=%s; buyer_acct=%s",
+                ($invoice->{buyer_san} || ''), 
+                ($invoice->{buyer_acct} || '')
+            )
         );
         return 0;
     }
-
-    # XXX Should we verify that this matches PO ordering agency later?
-    $eg_inv->receiver($addrs->[0]->org_unit);
 
     $eg_inv->inv_ident($invoice->{invoice_ident});
 
