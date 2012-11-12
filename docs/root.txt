@@ -333,6 +333,7 @@ communication protocols and standards used in Evergreen.
 // Push titles down one level.
 :leveloffset: 1
 
+include::development/intro_opensrf.txt[]
 include::development/updating_translations_launchpad.txt[]
 
 // Return to normal title levels.
