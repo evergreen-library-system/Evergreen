@@ -9,18 +9,17 @@ function getSearchStash() {
 
         try 
         {
-
-         //   netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-            if (typeof JSAN == 'undefined') 
+         // netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        if (typeof JSAN == 'undefined') 
         { 
             throw( document.getElementById("commonStrings").getString('common.jsan.missing') ); 
         }
 
-                JSAN.errorLevel = "die"; // none, warn, or die
-                JSAN.addRepository('/xul/server/');
-                JSAN.use('util.error'); 
+        JSAN.errorLevel = "die"; // none, warn, or die
+        JSAN.addRepository('/xul/server/');
+        JSAN.use('util.error'); 
         g.error = new util.error();
-                g.error.sdump('D_TRACE','getSearchStash() from search_settings.tt2 or search.tt2');
+        g.error.sdump('D_TRACE','getSearchStash() from search_settings.tt2 or search.tt2');
 
         JSAN.use('OpenILS.data'); 
         g.data = new OpenILS.data();
@@ -50,8 +49,7 @@ function getSearchStash() {
             }
         }
         
-
-//Creates or edits, maybe, a search template based off the currently selected values
+//Creates, or edits, a search template based off the currently selected values
 function create_template(tName) {
     var template;
     if (!tName || tName == DEFAULT)
@@ -70,7 +68,7 @@ function create_template(tName) {
         populateTemplate(template);
         this.template = template;
         templateList.push(template);
-        templateList.sort(compareTemplates)
+        templateList.sort(compareTemplateNames)
     }
     else
     {
@@ -93,18 +91,18 @@ function create_template(tName) {
         populateTemplateOptions(templateList);
         selectOptionValue(templateSel, template.name);
     }
-}//Returns the selected values of of a given element 
+}
+
+//Returns the selected values of of a given element 
 function getSelectedValues(elmnt)
     {
-        
     elmntVals = [];
         var x = 0;
-            for (x=0;x<elmnt.length;x++)
+        for (x=0;x<elmnt.length;x++)
         {
-
             if (elmnt[x].selected)
             {
-            elmntVals.push(elmnt[x].value);	
+                elmntVals.push(elmnt[x].value);	
             }
         }
     return elmntVals;
@@ -112,27 +110,28 @@ function getSelectedValues(elmnt)
 
 //Select options in element whose values are equal to the values submitted
 function selectOptionValues(elmnt, values){
-        elmnt.selectedIndex = -1;
+    elmnt.selectedIndex = -1;
     for(var i=0; i < elmnt.options.length; i++)
-            {
-            for (v in values)
+    {
+        for (v in values)
         {   				
-                if(elmnt.options[i].value == values[v])
+            if(elmnt.options[i].value == values[v])
             {
-                    elmnt.options[i].selected = true;
-                break;
-                }
+            elmnt.options[i].selected = true;
+            break;
+            }
         }
     }
-}//Saves templateList to File in JSON format.
+}
+
+//Saves templateList to File in JSON format.
 function saveTemplateListToFile( templateList ) {
-            try {
-               // netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-                JSAN.use('util.file'); 
-        var file = new util.file('search_templates');
-                file.write_content( 'truncate', String( JSON.stringify(templateList) ) );
-                file.close();
-        alert("Template List has been updated.");
+        try {
+            JSAN.use('util.file'); 
+            var file = new util.file('search_templates');
+            file.write_content( 'truncate', String( JSON.stringify(templateList) ) );
+            file.close();
+            alert("Template List has been updated.");
             } catch(E) {
                 try { g.error.standard_unexpected_error_alert('saving in search_settings.tt2',E); } catch(F) { alert(E); }
             }
@@ -141,26 +140,14 @@ function saveTemplateListToFile( templateList ) {
 //Saves current template name to file
 function saveCurrentTemplateToFile( template ) {
             try {
-                //netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
                 JSAN.use('util.file'); 
-        var file = new util.file('yesterdays_search_template');
+                var file = new util.file('yesterdays_search_template');
                 file.write_content( 'truncate', String( JSON.stringify(template) ) );
                 file.close();
             } catch(E) {
                 try { g.error.standard_unexpected_error_alert('saving in search_settings.tt2',E); } catch(F) { alert(E); }
             }
         }
-
-//Populates dropdown from given ctype list
-function populateCtypeOptions(elmnt, ctypeList)
-    {
-        var len = ctypeList.length;
-        for(var i=0; i<len; i++)
-        {
-                elmnt.options[i]= new Option(ctypeList[i].value(), ctypeList[i].code());					
-        }
-
-    }
 
 //Populates template dropdown from given template list
 function populateTemplateOptions(templateList)
@@ -207,12 +194,12 @@ function getTemplateIndex(templateName, templateList)
         return null;
     }
 
-    
+//Saves selected values to a search template
 function populateTemplate(template)
     {
         template.name = document.getElementById("nameInput").value;
         template.gRows = getGlobalRowValues();
-        template.attrFilters = getFilterValues();
+        template.advFilters = getFilterValues();
         template.pubdate = pubdateSel.value;
         template.org = orgSel.value;
         template.sort = sortBySel.value;
@@ -220,6 +207,7 @@ function populateTemplate(template)
         template.modifier = document.getElementById("modifier").checked;
     }
 
+//returns array containing the selected values of the global rows
 function getGlobalRowValues(){
 
     var tBody = document.getElementById("adv_global_tbody");
@@ -228,8 +216,7 @@ function getGlobalRowValues(){
     for (var i=0; i<rows.length; i++)
         {	
             gRows[i] = {};
-            var tds = rows[i].getElementsByTagName("td");
-            var gSels = tds[0].getElementsByTagName("select");
+            var gSels = rows[i].getElementsByTagName("select");
             for (var s = 0; s<gSels.length; s++)
             {			
                 gRows[i][gSels[s].name] = gSels[s].value; 	
@@ -238,7 +225,8 @@ function getGlobalRowValues(){
         }		
         return gRows;
     }
-    
+
+//returns array containing the selected values of the search filters
 function getFilterValues()   {
     var filters = [];
     for (var s = 0; s < searchFilters.length; s++)
@@ -246,7 +234,9 @@ function getFilterValues()   {
         filters[s] = getSelectedValues(searchFilters[s]);
     }
     return filters;
-}//Select the apropriate search options given a search template
+}
+
+//Select the apropriate search options given a search template
 function populateSearchOptions(template) {
     setFilterValues(template);
     selectOptionValue(pubdateSel, template.pubdate);
@@ -262,7 +252,7 @@ function populateSearchOptions(template) {
     modCheck.checked = template.modifier;
     setGlobalRowValues(template);
 }
-
+//clears all selects and inputs, except the templateList select
 function clearOptions()
     {
         resultViewSel.selectedIndex = 0;
@@ -271,7 +261,7 @@ function clearOptions()
         clearSearchFilters();
         hideMe(document.getElementById("adv_global_pub_date_2_span")); 
     }
-    
+//removes any selections in the searchFilter table
 function clearSearchFilters() {
         for (var s = 0; s < searchFilters.length; s++)
         {
@@ -282,19 +272,11 @@ function clearSearchFilters() {
         }
     }
 
-function selectSearchTemplate(tName)
-    {
-        template = getTemplateByName(tName, templateList);
-
-        saveCurrentTemplate( template );
-            if (template)
-        { populateSearchOptions(template); }	
-    }
-
+//Given a template name, saves template as the current search template if name found in TemplateList
+//Populates options, or not, accordingly
 function selectSearchTemplateOrClear(tName)
     {
         template = getTemplateByName(tName, templateList);
-
         saveCurrentTemplate( template )
         
         if (template)
@@ -304,12 +286,16 @@ function selectSearchTemplateOrClear(tName)
             clearOptions(); 
         }		
     }
+//Given a template name, saves template as the current search template if name found in TemplateList
+//Populates options, or not, accordingly. Then clears search text fields
 function selectSearchTemplateOrClearAll(tName)
     {
         selectSearchTemplateOrClear(tName);
         clearGlobalRowInputs();
         clearPubDateInputs();
     }
+    
+ //Unselects all search options, clears text inputs
 function clearAll() 
     {
         clearOptions();
@@ -335,13 +321,20 @@ function setGlobalRowValues(template){
             }
         }	
     }
-    
+//Sets the values of the adv_attr and adv_filter filters from a template
 function setFilterValues(template) {
+    var t = 0;
     for (var s = 0; s < searchFilters.length; s++)
     {
-        selectOptionValues(searchFilters[s], template.attrFilters[s]);
+        //determining adv_attr or adv_filter by checking if select is multiple, there may be a better way...
+        if(searchFilters[s].multiple)
+        {
+            selectOptionValues(searchFilters[s], template.advFilters[t]);
+            t++;
+        }
     }
-}//select the first option in each Select in the "global_row.tt2)
+}
+//select the first option in each Select in the "global_row.tt2)
 function clearGlobalRowValues() {
     var tBody = document.getElementById("adv_global_tbody");
     var rows = tBody.getElementsByTagName("tr");
@@ -370,8 +363,8 @@ function selectOptionValue(elmnt, value) {
                 }
         }
     }
-
-function compareTemplates(templateA,templateB) {
+//sort comparator for template names
+function compareTemplateNames(templateA,templateB) {
     if (templateA.name < templateB.name)
         { return -1; }
     if (templateA.name > templateB.name)
@@ -380,6 +373,7 @@ function compareTemplates(templateA,templateB) {
         { return 0; }
 }
 
+//removes a template from the templateList object
 function deleteTemplatefromTemplateList(tName, templateList) {
         var index = getTemplateIndex(tName, templateList);
         templateList.splice(index,1);
@@ -389,6 +383,7 @@ function deleteTemplatefromTemplateList(tName, templateList) {
         return templateList;
     }
 
+//Removes template from templateList and saved file if it exists and user wants it deleted
 function removeTemplate(templateList, currentTemplate)  {
         
         var tempTemplate = getTemplateByName(textIn.value, templateList);
@@ -423,15 +418,16 @@ function removeTemplate(templateList, currentTemplate)  {
             alert("Template '" + textIn.value + "' does not exist.");
         }
     }
-
+//caches templateList and saves to file for posterity 
 function saveTemplateList(templateList)
     {
-        //cache templateList	
+        	
         g.data.search_templates = templateList; 
         g.data.stash('search_templates');
         saveTemplateListToFile(templateList);
 }
 
+//caches template currently in use and saves it to file
 function saveCurrentTemplate(template)
     {
         g.data.current_search_template = template; 
@@ -439,6 +435,7 @@ function saveCurrentTemplate(template)
         saveCurrentTemplateToFile(template) 
 }
 
+//clears all global row input fields
 function clearGlobalRowInputs() {
     var tBody = document.getElementById("adv_global_tbody");
     if(tBody) {	
@@ -456,6 +453,7 @@ function clearGlobalRowInputs() {
             }
         }
     }
+//clears input fields associated with the pubdate
 function clearPubDateInputs()
     {
         document.getElementById("adv_global_pub_date_1").value = '';

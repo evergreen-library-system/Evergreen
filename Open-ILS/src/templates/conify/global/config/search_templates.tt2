@@ -73,7 +73,7 @@
             <tr>
 [%
         END; %]
-        [% IF adv_chunk.adv_attr.size; %]
+        [% IF adv_chunk.adv_attr.size || adv_chunk.adv_filter.size; %]
                 <td>
                     <strong>[% adv_chunk.adv_label %]</strong>
                     <br />
@@ -162,21 +162,29 @@
     var resultViewSel = document.getElementById("resultViewSel");
     var modCheck = document.getElementById("modifier");
     var textIn = document.getElementById("nameInput");
+    var ccvmTable = document.getElementById("searchFilters");
+    var searchFilters = ccvmTable.getElementsByTagName("select");
     
 
     var ccvmList = pcrud.retrieveAll("ccvm", {"order_by" : {"ccvm" : 'value'}});
+    var searchfilterList = pcrud.retrieveAll("asfg",{ "flesh":2, "flesh_fields":{"asfg":["entries"],"asfge":["query"]},"order_by" : {"asfg" : 'code'}});
     var ccvmLength = ccvmList.length;
     var filterList = new Array();
     var foundValue = 0;
-    var n = 0;
-    [%  FOR adv_chunk IN search.adv_config; %]
+    var n = 0; //tracks filterList
+    var s = 0; // tracks adv_config
+    [%  FOR adv_chunk IN search.adv_config; 
+        NEXT IF adv_chunk.adv_hide; 
+        IF adv_chunk.adv_special; %]
+        s++;
+        [% NEXT; END; %]
         foundValue = 0;
-
+        filterList[n] = {};
+        filterList[n].label = "[% adv_chunk.adv_label %]";
+        filterList[n].last_in_row = "[% adv_chunk.adv_break %]";
+        filterList[n].codeList = [];
+        filterList[n].groupList = [];
         [% IF adv_chunk.adv_attr.defined; %]
-            filterList[n] = {};
-            filterList[n].label = "[% adv_chunk.adv_label %]";
-            filterList[n].last_in_row = "[% adv_chunk.adv_break %]";
-            filterList[n].codeList = []
             [% FOR attr IN adv_chunk.adv_attr; %]
             if(!foundValue)
             {
@@ -193,44 +201,76 @@
                     foundValue = 1;        
                 }
             }
+            searchFilters[s].setAttribute("id", "[% attr %]" + "_selector");
+            filterList[n].id = "[% attr %]" + "_selector";
            [% END;
-        END; %]
-        n++;
-[% END; %]
-
-    var ccvmTable = document.getElementById("searchFilters");
-    var searchFilters = ccvmTable.getElementsByTagName("select");
-    
-    //TODO check if right filter?
-    for (var f = 0; f < searchFilters.length; f++)
-    {
-        if (filterList[f] && filterList[f].ctype)
-        {
-            searchFilters[f].setAttribute("id", filterList[f].ctype + "_selector");
-            if (filterList[f].codeList.length)
+        ELSIF adv_chunk.adv_filter.defined; %]
+            [% FOR filter IN adv_chunk.adv_filter; %]
+            if(!foundValue)
             {
-                var len = filterList[f].codeList.length;
-                for(var i=0; i<len; i++)
-                {    
-                    searchFilters[f].options[i]= new Option(filterList[f].codeList[i].value(), filterList[f].codeList[i].code());					
+                filterList[n].ctype = "[% filter %]";
+                for ( i= 0; i < searchfilterList.length; i++)
+                { 
+                    if (searchfilterList[i].code() == "[% filter %]")
+                    { 
+                         var len = searchfilterList[i].entries().length;
+                        for (var k = 0; k < len; k++)
+                        {
+                           filterList[n].groupList.push(searchfilterList[i].entries()[k]);
+                        }
+                    }
+                }
+                if (filterList[n].groupList.length )
+                {
+                    foundValue = 1;        
+                }
+            }
+            searchFilters[s].setAttribute("id", "[% filter %]" + "_selector");
+            filterList[n].id = "[% filter %]" + "_selector";
+            [% END; %]
+        [% END; %]
+        n++;
+
+[% END; %]
+    
+    //Add option tags to searchFilters
+    for (var f = 0; f < searchFilters.length; f++)
+    {      
+        if (searchFilters[f].multiple)
+        {
+            if (filterList[f] && filterList[f].id)
+            {
+                if (filterList[f].codeList.length)
+                {
+                    if (filterList[f].codeList.length)
+                    for(var i=0; i<filterList[f].codeList.length; i++)
+                    {    
+                        searchFilters[f].options[i]= new Option(filterList[f].codeList[i].value(), filterList[f].codeList[i].code());					
+                    }
+                }
+                else if (filterList[f].groupList.length)
+                { 
+                    if (filterList[f].groupList.length)
+                    for(var i=0; i<filterList[f].groupList.length; i++)
+                    {    
+                        searchFilters[f].options[i]= new Option(filterList[f].groupList[i].query().label(), filterList[f].groupList[i].id());
+                    }
                 }
             }
         }
     }
 
-
-    //get g.data cache
-    getSearchStash();
-    populateTemplateOptions(templateList);
-
     //create org unit dropdown
     var orgList;
-
     orgList = pcrud.retrieveAll("aou",{"order_by" : [{'class' : "aou", 'field' : 'ou_type'}, {'class' : "aou", 'field' : "name" }]});
-
     for(var i=0; i< orgList.length; i++){
         document.getElementById("orgSel").options[i]= new Option(orgList[i].name(), orgList[i].id());
     }
+    
+    //get g.data cache
+    getSearchStash();
+    populateTemplateOptions(templateList);
+    
     if (template)
     {
         selectOptionValue(templateSel, template.name);

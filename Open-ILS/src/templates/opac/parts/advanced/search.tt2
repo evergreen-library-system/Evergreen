@@ -102,21 +102,21 @@
             </table>
         </td>
         [% IF ctx.is_staff && search.allow_templates == 'true' %]
-			<td valign='top' style="padding-left:50px;">
+            <td valign='top' style="padding-left:50px;">
                 <div style="width:100%;" class="header_middle">[% l('Search Templates') %]</div>
                 <br/>
-				<strong>Select Template</strong>
-				<br/>
-				<select id="templateList" onChange="selectSearchTemplateOrClearAll(this.value);">
-				</select>
-			</td>
+                <strong>Select Template</strong>
+                <br/>
+                <select id="templateList" onChange="selectSearchTemplateOrClearAll(this.value);">
+                </select>
+            </td>
                 <td valign="top" class="hide_me">
-			   <select id="resultViewSel" name="detail_record_view" >
-				<option value="0" selected="selected">Simple View</option>
-				<option value="1">Detail View</option>
-			   </select>
-			</td>
-		[% END %]
+               <select id="resultViewSel" name="detail_record_view" >
+                <option value="0" selected="selected">Simple View</option>
+                <option value="1">Detail View</option>
+               </select>
+            </td>
+        [% END %]
     </tr>
 </table>
 <input type="hidden" name="_adv" value="1" />
@@ -143,23 +143,21 @@
 <script type="text/javascript" src="/js/ui/default/conify/global/config/search_templates.js"></script>
 <script type="text/javascript">
 
-	var pubdateSel = $("adv_global_pub_date_type"); 
-	var orgSel = document.getElementById("org_selector"); 
-	var sortBySel = document.getElementById("opac.result.sort"); 
-	var resultViewSel = document.getElementById("resultViewSel");
-	var modCheck = document.getElementById("opac.result.limit2avail");
-	var templateSel = document.getElementById("templateList"); 
+    var pubdateSel = $("adv_global_pub_date_type"); 
+    var orgSel = document.getElementById("org_selector"); 
+    var sortBySel = document.getElementById("opac.result.sort"); 
+    var resultViewSel = document.getElementById("resultViewSel");
+    var modCheck = document.getElementById("opac.result.limit2avail");
+    var templateSel = document.getElementById("templateList"); 
     var filterTable = document.getElementById("filterTable");
     var searchFilters = filterTable.getElementsByTagName("select");
+    getSearchStash();
 
-		getSearchStash();
-
-		populateTemplateOptions(templateList);
-		if (template)
-		{
-			selectOptionValue(templateSel, template.name);
-			populateSearchOptions(template);
-		}
-
-	</script>
+    populateTemplateOptions(templateList);
+    if (template)
+    {
+        selectOptionValue(templateSel, template.name);
+        populateSearchOptions(template);
+    }
+</script>
 [% END %]
