@@ -15,6 +15,8 @@ use Unicode::Normalize;
 use OpenSRF::Utils::SettingsClient;
 use UUID::Tiny;
 use Encode;
+use DateTime;
+use DateTime::Format::ISO8601;
 
 # ---------------------------------------------------------------------------
 # Pile of utilty methods used accross applications.
@@ -2027,6 +2029,45 @@ sub basic_opac_copy_query {
         offset => $copy_offset
     };
 }
+
+# Compare two dates, date1 and date2. If date2 is not defined, then
+# DateTime->now will be used. Assumes dates are in ISO8601 format as
+# supported by DateTime::Format::ISO8601. (A future enhancement might
+# be to support other formats.)
+#
+# Returns -1 if $date1 < $date2
+# Returns 0 if $date1 == $date2
+# Returns 1 if $date1 > $date2
+sub datecmp {
+    my $self = shift;
+    my $date1 = shift;
+    my $date2 = shift;
+
+    # Check for timezone offsets and limit them to 2 digits:
+    if ($date1 && $date1 =~ /(?:-|\+)\d\d\d\d$/) {
+        $date1 = substr($date1, 0, length($date1) - 2);
+    }
+    if ($date2 && $date2 =~ /(?:-|\+)\d\d\d\d$/) {
+        $date2 = substr($date2, 0, length($date2) - 2);
+    }
+
+    # check date1:
+    unless (UNIVERSAL::isa($date1, "DateTime")) {
+        $date1 = DateTime::Format::ISO8601->parse_datetime($date1);
+    }
+
+    # Check for date2:
+    unless ($date2) {
+        $date2 = DateTime->now;
+    } else {
+        unless (UNIVERSAL::isa($date2, "DateTime")) {
+            $date2 = DateTime::Format::ISO8601->parse_datetime($date2);
+        }
+    }
+
+    return DateTime->compare($date1, $date2);
+}
+
 
 1;
 
