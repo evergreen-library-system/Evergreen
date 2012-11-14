@@ -973,9 +973,6 @@ patron.display.prototype = {
                 if (patron.expire_date()) {
                     var now = new Date();
                     now = now.getTime()/1000;
-                     var preexpire = new Date();
-                     preexpire.setDate(preexpire.getDate() + 28);
-                     preexpire = preexpire.getTime()/1000;
 
                     var expire_parts = patron.expire_date().substr(0,10).split('-');
                     expire_parts[1] = expire_parts[1] - 1;
@@ -984,11 +981,23 @@ patron.display.prototype = {
                     expire.setFullYear(expire_parts[0], expire_parts[1], expire_parts[2]);
                     expire = expire.getTime()/1000
 
+                    var preexpire = new Date();
+                    var preexpire_value;
+                    if (obj.OpenILS.data.hash.aous['circ.prewarn_expire_setting']) {
+                        if (typeof obj.OpenILS.data.hash.aous['circ.prewarn_expire_setting'] == "string") { 
+                            preexpire_value = parseInt(obj.OpenILS.data.hash.aous['circ.prewarn_expire_setting']);  
+                        } else {
+                            preexpire_value = obj.OpenILS.data.hash.aous['circ.prewarn_expire_setting'];
+                        }
+                        preexpire.setDate(preexpire.getDate() + preexpire_value);
+                    }
+                    preexpire = preexpire.getTime()/1000;
+
                     if (expire < now) {
                         msg += $("patronStrings").getString('staff.patron.display.init.network_request.account_expired');
                         obj.stop_checkouts = true;
-                    } else if (expire < preexpire) {
-                         msg += $("patronStrings").getString('staff.patron.display.init.network_request.account_expire_soon');   
+                    } else if (expire < preexpire && obj.OpenILS.data.hash.aous['circ.prewarn_expire_setting']) {
+                        msg += $("patronStrings").getString('staff.patron.display.init.network_request.account_expire_soon');
                     }
                 }
                 var penalties = patron.standing_penalties();
