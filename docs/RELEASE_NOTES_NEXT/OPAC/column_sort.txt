@@ -1,0 +1,21 @@
+Column sorting in circulation screens
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Sorting of selected columns is now available in the *Items Checked Out*, *Check Out History*,
+and *Holds* screen.
+
+* Clicking on the appropriate column heads now sorts the contents from
+``ascending'' to ``descending'' to ``no sort''.  (The ``no sort'' restores the
+original list as presented in the screen.)
+
+* The sort indicator (an up or down arrow) is placed to the right
+of the column head, as appropriate.
+
+* The combined *Title/Author* column in the *Items Checked Out* screen is now separated into two
+independently sortable columns (Title and Author).
+
+* Title sorting is done with the so-called `filing' characters (leading ``the'', ``a'',
+``an'', and other langugage equivalents) removed. The leading articles are rendered in
+a smaller font, so as to keep the main entry prominent.  In
+addition to the filing characters removed for the sort, leading
+non-alphanumeric characters are ignored in the sort.

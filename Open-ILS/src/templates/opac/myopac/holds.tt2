@@ -1,6 +1,7 @@
 [%  PROCESS "opac/parts/header.tt2";
     PROCESS "opac/parts/misc_util.tt2";
     PROCESS "opac/parts/hold_status.tt2";
+    PROCESS "opac/parts/myopac/column_sort_support.tt2";
     WRAPPER "opac/parts/myopac/base.tt2";
     myopac_page = "holds";
     limit = (ctx.holds_limit.defined) ? ctx.holds_limit : 0;
@@ -15,7 +16,7 @@
             <a href='#'>[% l("Items on Hold") %]</a>
         </div>
         <div class="align">
-            <a href='[% mkurl('hold_history', {}, ['limit','offset','available']) %]'>[% l("Holds History") %]</a>
+            <a href='[% mkurl('hold_history', {}, ['limit','offset','available','sort','sort_type']) %]'>[% l("Holds History") %]</a>
         </div>
     </div>
 
@@ -47,9 +48,6 @@
                [% IF count <= limit + offset %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
         </span>
 
-        <span style="float:right;">
-            <a class="hide_me" href="#">[% l('Export List') %]</a>
-        </span>
     </div>
     <div class="clear-both"></div>
     <div id='holds_main'>
@@ -107,9 +105,9 @@
                     <input type="checkbox" title="[% l('Select All Holds') %]"
                       onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'hold_id' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
                 </th>
-                <th>[% l('Title') %]</th>
-                <th>[% l('Author') %]</th>
-                <th>[% l('Format') %]</th>
+                <th>[% sort_head("sort_title", l('Title')) %]</th>
+                <th>[% sort_head("author", l('Author')) %]</th>
+                <th>[% sort_head("format", l('Format')) %]</th>
                 <th>[% l('Pickup Location') %]</th>
                 <th>[% l('Activate') %]</th>
                 <th>[% l('Cancel if not filled by') %]</th>
@@ -119,9 +117,59 @@
             </tr>
             </thead>
             <tbody id="holds_temp_parent">
-                [% FOR hold IN ctx.holds;
-                    attrs = {marc_xml => hold.marc_xml};
-                    PROCESS get_marc_attrs args=attrs;
+
+                [%# Copy the ctx.holds into a local array, then add a SORT field
+                    that contains the value to sort on.  Since we need the item attrs,
+                    invoke it and save the result in ATTRS.
+		%]
+		[% 
+                hold_items = ctx.holds;
+
+                sort_field = CGI.param('sort');
+
+                FOR hold IN hold_items;
+                    hold.ATTRS = {marc_xml => hold.marc_xml};
+                    PROCESS get_marc_attrs args=hold.ATTRS;
+
+                    SWITCH sort_field;
+
+                       CASE "sort_title";
+                          hold.SORTING = hold.ATTRS.sort_title;
+
+                       CASE "author";
+                          hold.SORTING = hold.ATTRS.author;
+
+                       CASE "format";
+                          hold.SORTING = hold.ATTRS.format_label;
+                       
+                       CASE;
+                          sort_field = "";
+                    END; # SWITCH
+                END; #FOR hold
+
+                IF (sort_field != "sort_title");
+                   deemphasize_class = "";
+                ELSE;
+                   deemphasize_class = " class=\"sort_deemphasize\"";
+                END;
+
+                # Apply sorting to hold_items
+	        IF (sort_field != "");
+		    hold_items = hold_items.sort("SORTING");
+                    IF (CGI.param("sort_type") == "desc");
+                        hold_items = hold_items.reverse;
+                    END;
+
+                    # Shorten the hold_items list per offset/limit/count 
+                    hi = offset + limit - 1;
+                    hi = hi > hold_items.max ? hold_items.max : hi;
+
+                    hold_items = hold_items.slice(offset, hi);
+                END;
+
+		# hold_items list is now sorted.  Traverse and dump the information.
+               
+                FOR hold IN hold_items;
                     ahr = hold.hold.hold %]
                 <tr name="acct_holds_temp"
                     class="acct_holds_temp[% ahr.frozen == 't' ? ' inactive-hold' : '' %]">
@@ -131,26 +179,30 @@
                     </td>
                     <td>
                         <div>
-                            [% 
-                                title = attrs.title;
-                                IF ahr.hold_type == 'P';
-                                    title = l('[_1] ([_2])', title, hold.hold.part.label);
-                                END;
-                            %]
-                            <a href="[% mkurl(ctx.opac_root _ '/record/' _ hold.hold.bre_id) %]">[% title | html %]</a>
+                            [% title = hold.ATTRS.title;
+                            IF ahr.hold_type == 'P';
+                    	        title = l('[_1] ([_2])', title, hold.hold.part.label);
+                            END; %]
+
+                            <a href="[% mkurl(ctx.opac_root _ '/record/' _ 
+                                hold.hold.bre_id, {}, 1) %]"
+                                name="[% l('Catalog record') %]"><span[%- deemphasize_class -%]>
+                                [%- title.substr(0,hold.ATTRS.nonfiling_characters) | html %]</span>
+                                [%- title.substr(hold.ATTRS.nonfiling_characters)   | html %]</a>
                         </div>
                     </td>
                     <td>
                         <div>
                             <a href="[% mkurl(ctx.opac_root _ '/results',
-                                {qtype => 'author', query => attrs.author.replace('[,\.:;]', '')}
-                            ) %]">[% attrs.author | html %]</a>
+                                {qtype => 'author', query => hold.ATTRS.author.replace('[,\.:;]', '')},
+                                1
+                            ) %]">[% hold.ATTRS.author | html %]</a>
                         </div>
                     </td>
                     <td>
                         <div class="format_icon">
                           [% 
-                            formats = attrs.all_formats;
+                            formats = hold.ATTRS.all_formats;
                             IF ahr.hold_type == 'M';
                               # only show selected formats for metarecords
                               formats = [];

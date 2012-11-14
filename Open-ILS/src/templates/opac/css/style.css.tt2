@@ -2108,3 +2108,9 @@ label[for*=expert_]
 {
     font-weight: bold;
 }  
+} 
+
+.sort_deemphasize {
+    font-weight: lighter;
+    font-size: 70%;
+}

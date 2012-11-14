@@ -892,7 +892,14 @@ sub load_myopac_holds {
     my $hold_handle_result;
     $hold_handle_result = $self->handle_hold_update($action) if $action;
 
-    my $holds_object = $self->fetch_user_holds($hold_id ? [$hold_id] : undef, 0, 1, $available, $limit, $offset);
+    my $holds_object;
+    if ($self->cgi->param('sort') ne "") {
+        $holds_object = $self->fetch_user_holds($hold_id ? [$hold_id] : undef, 0, 1, $available);
+    }
+    else {
+        $holds_object = $self->fetch_user_holds($hold_id ? [$hold_id] : undef, 0, 1, $available, $limit, $offset);
+    }
+
     if($holds_object->{holds}) {
         $ctx->{holds} = $holds_object->{holds};
     }
@@ -1519,7 +1526,22 @@ sub load_myopac_circ_history {
     $ctx->{circ_history_limit} = $limit;
     $ctx->{circ_history_offset} = $offset;
 
-    my $circ_ids = $e->json_query({
+    my $circ_ids;
+    if ($self->cgi->param('sort') ne "") {		# Defer limitation to circ_history.tt2
+       $circ_ids = $e->json_query({
+        select => {
+            au => [{
+                column => 'id', 
+                transform => 'action.usr_visible_circs', 
+                result_field => 'id'
+            }]
+        },
+        from => 'au',
+        where => {id => $e->requestor->id}  
+        });
+
+    } else {
+       $circ_ids = $e->json_query({
         select => {
             au => [{
                 column => 'id', 
@@ -1531,7 +1553,8 @@ sub load_myopac_circ_history {
         where => {id => $e->requestor->id}, 
         limit => $limit,
         offset => $offset
-    });
+        });
+    }
 
     $ctx->{circs} = $self->fetch_user_circs(1, [map { $_->{id} } @$circ_ids]);
     return Apache2::Const::OK;

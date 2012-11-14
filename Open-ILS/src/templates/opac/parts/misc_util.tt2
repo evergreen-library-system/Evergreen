@@ -207,6 +207,7 @@
         titresults = xml.findnodes('//*[@tag="245"]/*[@code="a" or @code="b" or @code="n" or @code="p"]');
         titresults_content = [];
             FOR sub IN titresults; titresults_content.push(sub.textContent); END;
+
         args.title = titresults_content.join(" ");
         # Avoid ugly trailing syntax on brief titles
         args.title = args.title | replace('[:;/]$', '');
@@ -220,6 +221,23 @@
         END;
         args.title_extended = (args.titles.size) ? args.titles.0 : '';
 
+        # Create a version of the title designed for sorted displays.
+        args.sort_title = args.title | upper;
+
+        # If the title has a "non-filing chaaracters" 
+        # (to logically remove leading "The " for example)
+        # chop the title. Otherwise, chop until the first alphanumeric.
+        # BTW: Template Toolkit folds 1-element arrays to scalars!
+        title_node = xml.findnodes('//*[@tag="245"]');
+
+        args.nonfiling_characters = title_node.findvalue('@ind2');
+      
+        IF (args.nonfiling_characters > 0);
+             args.sort_title = args.sort_title.substr(args.nonfiling_characters); 
+        ELSE;
+             args.sort_title = args.sort_title.replace('^[^A-Z0-9]*','');
+        END;
+      
         args.pubplaces = [];
         pubplace_hunt = xml.findnodes('//*[@tag="260"]/*[@code="a"]') ||
             xml.findnodes('//*[@tag="264" and @ind2="1"]/*[@code="a"]');

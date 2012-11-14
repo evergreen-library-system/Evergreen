@@ -1,5 +1,6 @@
 [%  PROCESS "opac/parts/header.tt2";
     PROCESS "opac/parts/misc_util.tt2";
+    PROCESS "opac/parts/myopac/column_sort_support.tt2";
     WRAPPER "opac/parts/myopac/base.tt2";
     myopac_page = "circs"  %]
 <h3 class="sr-only">[% l('Current Items Checked Out') %]</h3>
@@ -10,7 +11,7 @@
             <a href="#">[% l("Current Items Checked Out") %]</a>
         </div>
         <div class="align">
-            <a href="[% mkurl('circ_history') %]">[% l("Check Out History") %]</a>
+            <a href="[% mkurl('circ_history',{},1) %]">[% l("Check Out History") %]</a>
         </div>
     </div>
 
@@ -65,17 +66,70 @@
                         onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'circ' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"
                     />
                 </th>
-                <th>[% l('Title / Author') %]</th>
-                <th>[% l('Renewals Left') %]</th>
-                <th>[% l('Due Date') %]</th>
-                <th>[% l('Barcode') %]</th>
-                <th>[% l('Call number') %]</th>
+                <th>[% sort_head("sort_title", l("Title")) %]</th>
+                <th>[% sort_head("author", l("Author")) %]</th>
+                <th>[% sort_head("renews", l("Renewals Left")) %]</th>
+                <th>[% sort_head("due", l("Due Date")) %]</th>
+                <th>[% sort_head("barcode", l("Barcode")) %]</th>
+                <th>[% sort_head("callnum", l("Call number")) %]</th>
             </tr>
             </thead>
-                <tbody>
-                    [% FOR circ IN ctx.circs;
-                        attrs = {marc_xml => circ.marc_xml};
-                        PROCESS get_marc_attrs args=attrs; %]
+            <tbody>
+                [%# Copy the ctx.circs into a local array, then add a SORT field
+                    that contains the value to sort on.  Since we need the item attrs,
+                    invoke it and save the result in ATTRS.
+		%]
+		[% 
+                circ_items = ctx.circs;  # Array assignment
+
+                sort_field = CGI.param('sort');  # unless changed below...
+
+                FOR circ IN circ_items;
+                    circ.ATTRS = {marc_xml => circ.marc_xml};
+                    PROCESS get_marc_attrs args=circ.ATTRS;
+		
+                    SWITCH sort_field;
+
+                       CASE "sort_title";
+                          circ.SORTING = circ.ATTRS.sort_title;
+
+                       CASE "author";
+                          circ.SORTING = circ.ATTRS.author;
+
+                       CASE "renews";
+                          circ.SORTING = circ.circ.renewal_remaining;
+                       
+                       CASE "due";
+                          circ.SORTING = circ.circ.due_date;
+                       
+                       CASE "barcode";
+                          circ.SORTING = circ.circ.target_copy.barcode;
+
+                       CASE "callnum";
+                          circ.SORTING = circ.circ.target_copy.call_number.label;
+                       
+                       CASE;
+                          sort_field = "";
+                    END; # SWITCH
+                END; #FOR circ
+
+                IF (sort_field != "sort_title");
+                   deemphasize_class = "";
+                ELSE;
+                   deemphasize_class = " class=\"sort_deemphasize\"";
+                END;
+
+                # Apply sorting to circ_items
+	        IF (sort_field);
+		    circ_items = circ_items.sort("SORTING");
+                    IF (CGI.param("sort_type") == "desc");
+                        circ_items = circ_items.reverse;
+                    END;
+                END;
+
+		# circ_items list is now sorted.  Traverse and dump the information.
+
+                FOR circ IN circ_items; %]
                     <tr>
                         <td class="checkbox_column" valign="top">
                             <input type="checkbox" name="circ"
@@ -83,20 +137,25 @@
                                 [% IF circ.circ.renewal_remaining < 1 %] disabled="disabled" [% END %]
                                 value="[% circ.circ.id %]" />
                         </td>
-                        <td name="author">
+                        <td name="title">
                             [% IF circ.circ.target_copy.call_number.id == -1 %]
                                 [% circ.circ.target_copy.dummy_title | html %]
-                            [% ELSIF attrs.title %]
-                            <a href="[% mkurl(ctx.opac_root _ '/record/' _ 
-                                circ.circ.target_copy.call_number.record.id) %]"
-                                name="[% l('Catalog record') %]">[% attrs.title | html %]</a>
+                            [% ELSIF circ.ATTRS.title %]
+                                <a href="[% mkurl(ctx.opac_root _ '/record/' _ 
+                                    circ.circ.target_copy.call_number.record.id, {}, 1) %]"
+                                    name="[% l('Catalog record') %]"><span[%- deemphasize_class -%]>
+                                    [%- circ.ATTRS.title.substr(0,circ.ATTRS.nonfiling_characters) | html %]</span>
+                                    [%- circ.ATTRS.title.substr(circ.ATTRS.nonfiling_characters) | html %]</a>
                             [% END %]
-                            [% IF circ.circ.target_copy.call_number.id == -1 %] /
+                        </td>
+                        <td name="author">
+                            [% IF circ.circ.target_copy.call_number.id == -1 %]
                                 [% circ.circ.target_copy.dummy_author | html %]
-                            [% ELSIF attrs.author %] /
-                            <a href="[% mkurl(ctx.opac_root _ '/results',
-                                {qtype => 'author', query => attrs.author.replace('[,\.:;]', '')}
-                            ) %]">[% attrs.author | html %]</a>
+                            [% ELSIF circ.ATTRS.author %]
+                                <a href="[% mkurl(ctx.opac_root _ '/results',
+                                    {qtype => 'author', query => circ.ATTRS.author.replace('[,\.:;]', '')},
+                                    1
+                                ) %]">[% circ.ATTRS.author | html %]</a>
                             [% END %]
                         </td>
                         <td name="renewals">
@@ -137,7 +196,8 @@
                             </span>
                         </td>
                     </tr>
-                    [%  END;
+                    [%  END; # FOR
+
                     END %]
                 </tbody>
             </table>

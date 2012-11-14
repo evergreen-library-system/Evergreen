@@ -1,5 +1,6 @@
 [%  PROCESS "opac/parts/header.tt2";
     PROCESS "opac/parts/misc_util.tt2";
+    PROCESS "opac/parts/myopac/column_sort_support.tt2";
     WRAPPER "opac/parts/myopac/base.tt2";
     myopac_page = "circs"
     limit = ctx.circ_history_limit;
@@ -11,12 +12,24 @@
     
     <div id="acct_checked_tabs">
         <div class="align">
-            <a href='[% mkurl('circs') %]'>[% l("Current Items Checked Out") %]</a>
+            <a href='[% mkurl('circs',{},1) %]'>[% l("Current Items Checked Out") %]</a>
         </div>
         <div class="align selected">
             <a href="#">[% l("Check Out History") %]</a>
         </div>
     </div>
+
+    [% 
+    # In the sorting case, the size is the size of ALL the circ items.  In the non-sorting case,
+    # the size is simply the size of the chunk passed in.  See the TODO below for the still-lingering
+    # bug.
+    sort_field = CGI.param('sort');
+    IF (sort_field);
+        no_next = ctx.circs.size - offset <= limit;
+    ELSE;
+        no_next = ctx.circs.size < limit;
+    END;
+    %]
 
     <div class="header_middle">
         <span class="float-left">[% l('Previously Checked Out Items') %]</span>
@@ -25,7 +38,7 @@
                 [% IF offset == 0 %] class='invisible' [% END %]><span class="nav_arrow_fix">&#9668;</span>[% l('Previous') %]</a>
             [%# TODO: get total to prevent paging off then end of the list.. %]
             <a href='[% mkurl('circ_history', {limit => limit, offset => (offset + limit)}) %]'
-               [% IF ctx.circs.size < limit %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
+               [% IF no_next %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
         </span>
         <div class="float-left">
             <form action="[% mkurl(ctx.opac_root _ '/myopac/circ_history/export') %]" method="post">
@@ -50,29 +63,91 @@
             title="[% l('History of Items Checked Out') %]">
             <thead>
                 <tr>
-                    <th>[% l('Title / Author') %]</th>
-                    <th>[% l('Checkout Date') %]</th>
-                    <th>[% l('Due Date') %]</th>
-                    <th>[% l('Date Returned') %]</th>
-                    <th>[% l('Barcode') %]</th>
-                    <th>[% l('Call Number') %]</th>
+                    <th>[% sort_head("sort_title", l("Title")) %]</th>
+                    <th>[% sort_head("author", l("Author")) %]</th>
+                    <th>[% sort_head("checkout", l("Checkout Date")) %]</th>
+                    <th>[% sort_head("due", l("Due Date")) %]</th>
+                    <th>[% sort_head("returned", l("Date Returned")) %]</th>
+                    <th>[% sort_head("barcode", l("Barcode")) %]</th>
+                    <th>[% sort_head("callnum", l("Call Number")) %]</th>
                 </tr>
             </thead>
             <tbody>
-                [% FOR circ IN ctx.circs;
-                    attrs = {marc_xml => circ.marc_xml};
-                    PROCESS get_marc_attrs args=attrs; %]
+                [%# Copy the ctx.circs into a local array, then add a SORT field
+                    that contains the value to sort on.  Since we need the item attrs,
+                    invoke it and save the result in ATTRS.
+		%]
+		[% 
+                circ_items = ctx.circs;  # Array assignment
+
+                FOR circ IN circ_items;
+                    circ.ATTRS = {marc_xml => circ.marc_xml};
+                    PROCESS get_marc_attrs args=circ.ATTRS;
+		
+                    SWITCH sort_field;
+
+                       CASE "sort_title";
+                          circ.SORTING = circ.ATTRS.sort_title;
+
+                       CASE "author";
+                          circ.SORTING = circ.ATTRS.author;
+
+                       CASE "checkout";
+                          circ.SORTING = circ.circ.xact_start;
+
+                       CASE "due";
+                          circ.SORTING = circ.circ.due_date;
+
+                       CASE "returned";
+                          circ.SORTING = circ.circ.checkin_time;
+
+                       CASE "barcode";
+                          circ.SORTING = circ.circ.target_copy.barcode;
+
+                       CASE "callnum";
+                          circ.SORTING = circ.circ.target_copy.call_number.label;
+
+                       CASE;
+                          sort_field = "";
+                    END; # SWITCH
+                END; #FOR circ
+
+                IF (sort_field != "sort_title");
+                   deemphasize_class = "";
+                ELSE;
+                   deemphasize_class = " class=\"sort_deemphasize\"";
+                END;
+                       
+                # Apply sorting to circ_items
+                IF (sort_field);
+                   circ_items = circ_items.sort("SORTING");
+                   IF (CGI.param("sort_type") == "desc");
+                      circ_items = circ_items.reverse;
+                   END;
+
+                   # Shorten the circ_items list per offset/limit/cout
+                   hi = offset + limit - 1;
+                   hi = hi > circ_items.max ? circ_items.max : hi;
+
+                   circ_items = circ_items.slice(offset, hi);
+                END;
+
+                # circ_items list is now sorted.  Traverse and dump the information.
+
+                FOR circ IN circ_items; %]
                     <tr>
                         <td>
-                            <a href="[% mkurl(ctx.opac_root _ '/record/' _ circ.circ.target_copy.call_number.record.id) %]" 
-                                [% html_text_attr('title', l('Catalog record [_1]', attrs.title)) %]>
-                                [% attrs.title | html %]
-                            </a>
-                            [% IF attrs.author %] /
+                            <a href="[% mkurl(ctx.opac_root _ '/record/' _ 
+                                circ.circ.target_copy.call_number.record.id, {}, 1) %]"
+                                name="[% l('Catalog record') %]"><span[%- deemphasize_class -%]>
+                                [%- circ.ATTRS.title.substr(0,circ.ATTRS.nonfiling_characters) | html %]</span>
+                                [%- circ.ATTRS.title.substr(circ.ATTRS.nonfiling_characters) | html %]</a>
+                        </td>
+                        <td>
                             <a href="[% mkurl(ctx.opac_root _ '/results',
-                                {qtype => 'author', query => attrs.author.replace('[,\.:;]', '')}
-                            )%]">[% attrs.author | html %]</a>
-                            [% END %]
+                                {qtype => 'author', query => circ.ATTRS.author.replace('[,\.:;]', '')},
+                                1
+                            ) %]">[% circ.ATTRS.author | html %]</a>
                         </td>
                         <td>
                             [% date.format(ctx.parse_datetime(circ.circ.xact_start),DATE_FORMAT); %]
@@ -81,8 +156,7 @@
                             [% date.format(ctx.parse_datetime(circ.circ.due_date),DATE_FORMAT); %]
                         </td>
                         <td>
-                            [% 
-                                IF circ.circ.checkin_time; 
+                            [% IF circ.circ.checkin_time; 
                                     date.format(ctx.parse_datetime(circ.circ.checkin_time),DATE_FORMAT); 
                                 ELSE; %]
                                 <span style='color:blue;'>*</span><!-- meh -->
