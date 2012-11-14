@@ -74,9 +74,9 @@
                                     [%  END %]
                             </select>    
                             <div style='margin-top:5px;'>
-                                <input name='date1' type='text' size='4' maxlength='4' value="[% CGI.param('date1') | html %]" />
+                                <input name='date1' id='adv_global_pub_date_1_input' type='text' size='4' maxlength='4' value="[% CGI.param('date1') | html %]" />
                                 <span id='adv_global_pub_date_2_span' class='[% CGI.param("pubdate") == "between" ? "" : "hide_me" %]'>
-                                   [% l("and") %] <input name='date2' type='text' size='4' maxlength='4' value="[% CGI.param('date2') | html %]" />
+                                   [% l("and") %] <input name='date2' id='adv_global_pub_date_2_input' type='text' size='4' maxlength='4' value="[% CGI.param('date2') | html %]" />
                                 </span>
                             </div>
 [%
