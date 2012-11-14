@@ -317,11 +317,7 @@ sub create_hold {
 
     # set the configured expire time
     unless($hold->expire_time) {
-        my $interval = $U->ou_ancestor_setting_value($recipient->home_ou, OILS_SETTING_HOLD_EXPIRE);
-        if($interval) {
-            my $date = DateTime->now->add(seconds => OpenSRF::Utils::interval_to_seconds($interval));
-            $hold->expire_time($U->epoch2ISO8601($date->epoch));
-        }
+        $hold->expire_time(calculate_expire_time($recipient->home_ou));
     }
 
     $hold->requestor($e->requestor->id); 
@@ -683,11 +679,7 @@ sub uncancel_hold {
         $hold->request_lib, 'circ.holds.uncancel.reset_request_time', $e)) {
 
         $hold->request_time('now');
-        my $interval = $U->ou_ancestor_setting_value($hold->request_lib, OILS_SETTING_HOLD_EXPIRE);
-        if($interval) {
-            my $date = DateTime->now->add(seconds => OpenSRF::Utils::interval_to_seconds($interval));
-            $hold->expire_time($U->epoch2ISO8601($date->epoch));
-        }
+        $hold->expire_time(calculate_expire_time($hold->request_lib));
     }
 
     $hold->clear_cancel_time;
@@ -3981,9 +3973,19 @@ sub rec_hold_count {
     return new_editor()->json_query($query)->[0]->{count};
 }
 
-
-
-
-
+# A helper function to calculate a hold's expiration time at a given
+# org_unit. Takes the org_unit as an argument and returns either the
+# hold expire time as an ISO8601 string or undef if there is no hold
+# expiration interval set for the subject ou.
+sub calculate_expire_time
+{
+    my $ou = shift;
+    my $interval = $U->ou_ancestor_setting_value($ou, OILS_SETTING_HOLD_EXPIRE);
+    if($interval) {
+        my $date = DateTime->now->add(seconds => OpenSRF::Utils::interval_to_seconds($interval));
+        return $U->epoch2ISO8601($date->epoch);
+    }
+    return undef;
+}
 
 1;
