@@ -1009,12 +1009,21 @@ sub update_hold_impl {
         $logger->info("clearing current_copy and check_time for frozen hold ".$hold->id);
         $hold->clear_current_copy;
         $hold->clear_prev_check_time;
+        # Clear expire_time to prevent frozen holds from expiring.
+        $logger->info("clearing expire_time for frozen hold ".$hold->id);
+        $hold->clear_expire_time;
     }
 
     # If the hold_expire_time is in the past && is not equal to the
     # original expire_time, then reset the expire time to be in the
     # future.
     if ($hold->expire_time && $U->datecmp($hold->expire_time) == -1 && $U->datecmp($hold->expire_time, $orig_hold->expire_time) != 0) {
+        $hold->expire_time(calculate_expire_time($hold->request_lib));
+    }
+
+    # If the hold is reactivated, reset the expire_time.
+    if(!$U->is_true($hold->frozen) && $U->is_true($orig_hold->frozen)) {
+        $logger->info("Reset expire_time on activated hold ".$hold->id);
         $hold->expire_time(calculate_expire_time($hold->request_lib));
     }
 
