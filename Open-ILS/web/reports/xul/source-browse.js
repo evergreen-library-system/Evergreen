@@ -36,6 +36,9 @@ function sourceTreeHandler (ev, dbl) {
 				var name = field.getAttributeNS(rptNS,'label');
 				if (!name) name = field.getAttribute('name');
 
+				var suppress = field.getAttribute('suppress_controller');
+				if (suppress && suppress.indexOf('open-ils.reporter-store') > -1) continue;
+
 				var idlclass = link_fields[i].getAttribute('class');
 				var map = link_fields[i].getAttribute('map');
 				var link = link_fields[i].getAttribute('field');

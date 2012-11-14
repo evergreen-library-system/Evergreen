@@ -312,6 +312,9 @@ function populateDetailTree (tcNode, c, item) {
 		var type = fields[i].getAttributeNS(rptNS, 'datatype');
 		//if (!type) type = 'text';
 
+		var suppress = fields[i].getAttribute('suppress_controller');
+		if (suppress && suppress.indexOf('open-ils.reporter-store') > -1) continue;
+
 		var label = fields[i].getAttributeNS(rptNS, 'label');
 		var name = fields[i].getAttribute('name');
 		if (!label) label = name;

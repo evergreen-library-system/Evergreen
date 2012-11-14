@@ -156,6 +156,13 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 						snprintf( array_pos_buf, sizeof( array_pos_buf ), "%u", array_pos++ );
 						osrfHashSet( field_def_hash, strdup( array_pos_buf ), "array_position" );
 
+						// Tokenize suppress_controller attribute into an osrfStringArray
+						if( (prop_str = (char*)xmlGetProp(_f, BAD_CAST "suppress_controller")) ) {
+							osrfLogDebug(OSRF_LOG_MARK, "Controller suppression list is %s", prop_str );
+							osrfStringArray* controller = osrfStringArrayTokenize( prop_str, ' ' );
+							osrfHashSet( field_def_hash, controller, "suppress_controller");
+						}
+
 						if( (prop_str = (char*)xmlGetNsProp(_f, BAD_CAST "i18n", BAD_CAST PERSIST_NS)) ) {
 							osrfHashSet(
 								field_def_hash,

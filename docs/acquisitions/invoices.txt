@@ -44,10 +44,7 @@ will change as we add line items to the invoice.
 details, then Evergreen will populate the *Provider* and *Receiver* fields with
 information from the line items.  
 +
-[NOTE]
-----------------
-If you do not want to display the details, click *Hide Details*.
----------------
+NOTE: If you do not want to display the details, click *Hide Details*.
 +
 image::media/Search_for_line_items_from_an_invoice1.jpg[Search_for_line_items_from_an_invoice1]
 +
