@@ -6,7 +6,32 @@ Release notes
 Upgrade notes
 -------------
 
-Coming Soon.
+Log Protect (redaction)
+~~~~~~~~~~~~~~~~~~~~~~~
+To prevent sensitive information such as passwords from being logged
+in general activity logs, add the following XML chunk to the bottom of
+`opensrf_core.xml`, just inside the `<config>` section:
+
+[source, xml]
+----------------------------------------------------------------
+  ...
+  </routers>
+  <shared> <!-- new block starts here -->
+    <log_protect>
+      <match_string>open-ils.auth.authenticate.verify</match_string>
+      <match_string>open-ils.auth.authenticate.complete</match_string>
+      <match_string>open-ils.auth_proxy.login</match_string>
+      <match_string>open-ils.actor.user.password</match_string>
+      <match_string>open-ils.actor.user.username</match_string>
+      <match_string>open-ils.actor.user.email</match_string>
+      <match_string>open-ils.actor.patron.update</match_string>
+      <match_string>open-ils.cstore.direct.actor.user.create</match_string>
+      <match_string>open-ils.cstore.direct.actor.user.update</match_string>
+      <match_string>open-ils.cstore.direct.actor.user.delete</match_string>
+    </log_protect>
+  </shared> <!-- new block ends here -->
+</config>
+----------------------------------------------------------------
 
 New features
 ------------
@@ -17,7 +42,7 @@ Acquisitions
 ACQ Invoice Inline Lineitem Search and Add
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Invoice UI is how composed of two tabs, the main invoice tab and a new
+The Invoice UI is now composed of two tabs, the main invoice tab and a new
 Search tab.  The search tab consists of a subset of the Acquisitions unified
 search interface.  The goal is to allow users to search for lineitems to
 invoice.  Search results may be added directly to the growing invoice.  A number of small usability features are included.
@@ -488,3 +513,18 @@ Support is now available to create a credit card payment type in the SIP Fee
 Paid message. There is also now support for SIP clients to retrieve and
 display a detailed/itemized list of billings to the patron.
 
+Staff Client Initial Hostname
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For fresh installs of the staff client a common issue is people remembering
+what hostname to specify. If you are building your own staff clients you can
+now fill this in automatically.
+
+You can specify this when configuring Evergreen with a new configure option:
+
+--with-initialhost=example.org
+
+It is also possible to specify when building the staff client itself using the
+INITIAL_HOST variable:
+
+make INITIAL_HOST=example.org build
