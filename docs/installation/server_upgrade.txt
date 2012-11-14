@@ -46,8 +46,8 @@ the http://evergreen-ils.org/opensrf.php[OpenSRF download page].
 +
 [source, bash]
 -----------------------------------------------
-wget http://www.open-ils.org/downloads/Evergreen-ILS-2.3.0.tar.gz
-tar xzf Evergreen-ILS-2.3.0.tar.gz
+wget http://www.open-ils.org/downloads/Evergreen-ILS-2.3.1.tar.gz
+tar xzf Evergreen-ILS-2.3.1.tar.gz
 -----------------------------------------------
 +
 [NOTE]
@@ -57,7 +57,7 @@ For the latest edition of Evergreen, check the http://evergreen-ils.org/download
 +
 [source, bash]
 ----------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.3.0
+cd /home/opensrf/Evergreen-ILS-2.3.1
 ---------------------------------------------
 +
 On the next command, replace `[distribution]` with one of these values for your
@@ -76,7 +76,7 @@ make -f Open-ILS/src/extras/Makefile.install [distribution]
 +
 [source, bash]
 ------------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.3.0
+cd /home/opensrf/Evergreen-ILS-2.3.1
 ./configure --prefix=/openils --sysconfdir=/openils/conf
 make
 ------------------------------------------------------------
@@ -85,8 +85,8 @@ make
 +
 [source, bash]
 ------------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.3.0
-make STAFF_CLIENT_STAMP_ID=rel_2_3.0 install
+cd /home/opensrf/Evergreen-ILS-2.3.1
+make STAFF_CLIENT_STAMP_ID=rel_2_3.1 install
 ------------------------------------------------------------
 +
 . As the root user, change all files to be owned by the opensrf user and group:
@@ -96,38 +96,36 @@ make STAFF_CLIENT_STAMP_ID=rel_2_3.0 install
 chown -R opensrf:opensrf /openils
 ------------------------------------------------------------
 +
-. As the opensrf user, update the configuration files:
-+
-[source, bash]
------------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.3.0
-
-perl Open-ILS/src/support-scripts/eg_db_config.pl \
---create-offline --user evergreen --password evergreen \
---hostname localhost --port 5432 --database evergreen
-----------------------------------------------------------
-+
 . As the opensrf user, update the server symlink in /openils/var/web/xul/:
 +
 [source, bash]
 -----------------------------------------------------------
 cd /openils/var/web/xul/
 rm server
-ln -s rel_2_3_0/server
+ln -s rel_2_3_1/server
 ----------------------------------------------------------
 +
 . As the opensrf user, update opensrf_core.xml and opensrf.xml by copying the
   new example files (/openils/conf/opensrf_core.xml.example and
-  /openils/conf/opensrf.xml).
+  /openils/conf/opensrf.xml). The _-b_ option creates a backup copy of the old file.
 +
 [source, bash]
 ----------------------------------------------------------
-cp /openils/conf/opensrf_core.xml.example /openils/conf/opensrf_core.xml
-cp /openils/conf/opensrf.xml.example /openils/conf/opensrf.xml
+cp -b /openils/conf/opensrf_core.xml.example /openils/conf/opensrf_core.xml
+cp -b /openils/conf/opensrf.xml.example /openils/conf/opensrf.xml
 ----------------------------------------------------------
 +
 [CAUTION]
 Copying these configuration files will remove any customizations you have made to them. Remember to redo your customizations after copying them.
++
+. As the opensrf user, update the configuration files:
++
+[source, bash]
+-------------------------------------------------------------------------
+cd /home/opensrf/Evergreen-ILS-2.3.1
+perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config --service all \
+--create-offline --database evergreen --host localhost --user evergreen --password evergreen
+-------------------------------------------------------------------------
 +
 . Update Apache files:
 +
@@ -135,24 +133,26 @@ Copying these configuration files will remove any customizations you have made t
 Copying these Apache configuration files will remove any customizations you have made to them. Remember to redo your customizations after copying them.
 For example, if you purchased an SSL certificate, you will need to edit eg.conf to point to the appropriate SSL certificate files.
 +
-.. Update /etc/apache2/startup.pl by copying the example from Open-ILS/examples/apache/startup.pl.
-.. Update /etc/apache2/eg_vhost.conf by copying the example from Open-ILS/examples/apache/eg_vhost.conf.
-.. Update /etc/apache2/sites-available/eg.conf by copying the example from Open-ILS/ examples/apache/eg.conf.
-. Update opensrf.xml with the database connection info:
-+
-As the opensrf user, if you are happy with the default settings in
-opensrf.xml.example, then:
+.. Update _/etc/apache2/startup.pl_ by copying the example from _Open-ILS/examples/apache/startup.pl_.
 +
 [source, bash]
--------------------------------------------------------------------------
-cp -b /openils/conf/opensrf.xml.example /openils/conf/opensrf.xml
-cd /home/opensrf/Evergreen-ILS-2.3.0
-perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config --service all \
---database evergreen --host localhost --user evergreen --password evergreen
--------------------------------------------------------------------------
+----------------------------------------------------------
+cp /home/opensrf/Evergreen-ILS-2.3.1/Open-ILS/examples/apache/startup.pl /etc/apache2/startup.pl 
+----------------------------------------------------------
 +
-Otherwise, compare /openils/conf/opensrf.xml with /openils/conf/opensrf.xml.example and manually copy the new pieces into place in your existing opensrf.xml file
-
+.. Update /etc/apache2/eg_vhost.conf by copying the example from Open-ILS/examples/apache/eg_vhost.conf.
++
+[source, bash]
+----------------------------------------------------------
+cp /home/opensrf/Evergreen-ILS-2.3.1/Open-ILS/examples/apache/eg_vhost.conf /etc/apache2/eg_vhost.conf 
+----------------------------------------------------------
++
+.. Update /etc/apache2/sites-available/eg.conf by copying the example from Open-ILS/ examples/apache/eg.conf.
++
+[source, bash]
+----------------------------------------------------------
+cp /home/opensrf/Evergreen-ILS-2.3.1/Open-ILS/examples/apache/eg.conf /etc/apache2/sites-available/eg.conf 
+----------------------------------------------------------
 
 Upgrade the Evergreen database schema
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -179,8 +179,9 @@ database server connection information:
 
 [source, bash]
 ----------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.3.0/Open-ILS/src/sql/Pg
+cd /home/opensrf/Evergreen-ILS-2.3.1/Open-ILS/src/sql/Pg
 psql -U evergreen -h localhost -f version-upgrade/2.2-2.3.0-upgrade-db.sql evergreen
+psql -U evergreen -h localhost -f version-upgrade/2.3.0-2.3.1-upgrade-db.sql evergreen
 ----------------------------------------------------------
 
 Restart Evergreen and Test
