@@ -127,7 +127,7 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config --service all 
 --create-offline --database evergreen --host localhost --user evergreen --password evergreen
 -------------------------------------------------------------------------
 +
-. As the _root_ user, Update the Apache files:
+. As the _root_ user, update the Apache files:
 +
 [CAUTION]
 Copying these Apache configuration files will remove any customizations you have made to them. Remember to redo your customizations after copying them.
