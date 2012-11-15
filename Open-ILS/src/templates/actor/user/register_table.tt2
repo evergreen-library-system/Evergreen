@@ -91,7 +91,7 @@
     <tr fmclass='aua' fmfield='street2' type='addr-template' required='show'/>
     <tr fmclass='aua' fmfield='city' type='addr-template' required='required'/>
     <tr fmclass='aua' fmfield='county' type='addr-template' required='show'/>
-    <tr fmclass='aua' fmfield='state' type='addr-template' required='required'/>
+    <tr fmclass='aua' fmfield='state' type='addr-template'/>
     <tr fmclass='aua' fmfield='country' type='addr-template' required='required'/>
     <tr fmclass='aua' fmfield='valid' type='addr-template' required='show'/>
     <tr fmclass='aua' fmfield='within_city_limits' type='addr-template' required='show'/>

@@ -189,7 +189,10 @@ function load() {
         'ui.patron.edit.default_suggested',
         'opac.barcode_regex',
         'opac.username_regex',
-        'sms.enable'
+        'sms.enable',
+        'ui.patron.edit.au.state.require',
+        'ui.patron.edit.au.state.suggest',
+        'ui.patron.edit.au.state.show'
     ]);
 
     for(k in orgSettings)

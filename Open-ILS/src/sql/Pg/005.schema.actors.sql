@@ -564,7 +564,7 @@ CREATE TABLE actor.usr_address (
 	street2			TEXT,
 	city			TEXT	NOT NULL,
 	county			TEXT,
-	state			TEXT	NOT NULL,
+	state			TEXT,
 	country			TEXT	NOT NULL,
 	post_code		TEXT	NOT NULL,
     pending         BOOL    NOT NULL DEFAULT FALSE,
