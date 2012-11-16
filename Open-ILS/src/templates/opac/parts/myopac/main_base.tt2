@@ -51,10 +51,12 @@
     <div style="width:662px;">
         <div style="float:left;">
             <div style="padding:10px 0px;">
-		[% IF date.format(ctx.user.expire_date, '%s') < date.format(date.now , '%s') %]
-                <span class="alert">Your library card expired on [% date.format(ctx.user.expire_date, '%B %d, %Y') %]. Please contact a librarian to resolve this issue.</span>
-                [% END %]
-	    </div>
+            [%- IF date.format(ctx.user.expire_date, '%s') < date.format(date.now , '%s');
+               fmt_expire_date = date.format(ctx.user.expire_date, DATE_FORMAT);
+            %]
+            <span class="alert">[% l("Your library card expired on [_1]. Please contact a librarian to resolve this issue.", fmt_expire_date) %]</span>
+            [% END %]
+            </div>
             <div class="acct_sum_row">
                 <table width="100%" cellspacing="0" cellpadding="0">
                     <tr>
