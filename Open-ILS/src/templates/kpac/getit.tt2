@@ -3,7 +3,7 @@
     PROCESS "opac/parts/misc_util.tt2"; # MARC 
     WRAPPER "kpac/parts/subpage.tt2";
     attrs = {marc_xml => ctx.marc_xml};
-    PROCESS get_marc_attrs args=attrs;
+    INCLUDE get_marc_attrs args=attrs;
     ctx.page_title = attrs.title | html 
 %]
 
@@ -70,7 +70,7 @@
                                 <div class="pickup_lib">
                                     [%  def_lib = ctx.default_pickup_lib || ctx.physical_loc;
                                         PROCESS "opac/parts/org_selector.tt2";
-                                        PROCESS build_org_selector name='pickup_lib' 
+                                        INCLUDE build_org_selector name='pickup_lib' 
                                         value=def_lib id='pickup_lib' can_have_vols_only=1 %]
                                 </div>
                             </div>
