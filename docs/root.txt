@@ -272,6 +272,14 @@ include::circulation/circulation_patron_records.txt[]
 
 include::circulation/triggered_events.txt[]
 
+// Push titles down one level.
+:leveloffset: 1
+
+include::circulation/offline_mode.txt[]
+
+// Return to normal title levels.
+:leveloffset: 0
+
 Reports
 =======
 

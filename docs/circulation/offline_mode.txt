@@ -1,0 +1,265 @@
+Offline Transactions
+====================
+
+Evergreen's 'Standalone Interface' / 'Offline Interface' is designed to log
+transactions during network outage, which can be uploaded and processed once
+network operations are restored.
+
+The terms 'Offline Interface' and 'Standalone Interface' mean the same thing:
+a separate program to handle simple circulation tasks while the network is
+down.
+
+To access the *Offline Interface*, navigate to the *Staff Client login screen*
+and click *Standalone Interface*. The *Evergreen Standalone Interface* window
+opens.
+
+Patron Registration
+-------------------
+Patron registration on the 'Evergreen Offline Interface' records the minimum
+patron information necessary to register a new patron.
+
+All of the fields, except for Line 2 of Billing Address, on the *Patron
+Registration* screen are required. If your library does not record information
+for any field, you need to work out a standard fake value for it, for example,
+`1900-01-01` for *Date of Birth*.
+
+The account password is automatically generated. Patrons can access their
+account with the password after the offline transactions are uploaded and
+processed.
+
+To register a patron:
+
+. Click *Register Patron* on the top menu bar. The *Patron Registration*
+  window opens.
+. Fill in the form with patron information, using the drop down list if
+  available.
+. Click *Save patron registration*. A confirmation dialog opens.
+. Click *OK* to finish registering the patron.
+
+Checking Out Items
+------------------
+anchor:standalone_check_out[Checking Out Items]
+
+To circulate items from the *Evergreen standalone interface*:
+
+. Click *Check Out* on the top menu bar. The *Standalone Check Out* screen
+  opens.
+. Ensure that the date on the left-hand side of the menu bar is correct.
+. Enter the patron's library card barcode in the *Enter the patron's barcode*
+  field by scanning or typing the barcode.
+. Ensure that the due date is correct in the *Enter the item due date* field.
+  You may enter a different due date manually, or select a different duration
+  from the dropdown list to select a relative due date based on the loan period.
+. Check out items:
+** For cataloged items, scan each item's barcode in *Enter the item barcode*
+   field. The barcode appears on the right side of the screen.
+** For non-cataloged items:
+... Click *Choose a non-barcode option* to select a non-catalogued category
+    from the drop-down list.
+... Enter the number of items you want to check out, then click OK on the prompt
+    window.
+. Scan all items, changing the due date if necessary.
+. To print a receipt, select the *Print receipt?* checkbox.
+. Click *Save these transactions*.
+
+The default dates are based on your computer settings.
+
+Pre-catalogued item circulation is not available on Offline Interface. If an
+existing pre-cat barcode happens to be used, it is checked out with the
+previous author and title. If a new pre-cat barcode is attempted, an error of
+`ASSET NOT FOUND` (item not found) isreturned upon processing offline
+transactions.
+
+Renew
+-----
+To renew an item, you must know the item's barcode number. The patron's barcode
+is optional.
+
+To renew items from the *Evergreen standalone interface*:
+
+. Click *Renew* on the top menu bar.
++
+NOTE: The *Renew* window is very similar to the *Check Out* window. The
+differences are that a patron's barcode is optional on the *Renew* window, and
+the non-barcoded option is not available on the *Renew* window, as non-barcoded
+items can not be renewed.
++
+. Ensure that the date on the left-hand side of the menu bar is correct.
+. '(Optional)': Enter the patron's library card barcode in the *Enter the
+  patron's barcode* field by scanning or typing the barcode.
+. Ensure that the due date is correct in the *Enter the item due date* field.
+  You may enter a different due date manually, or select a different duration
+  from the dropdown list to select a relative due date based on the loan period.
+. For each item to be renewed, enter the item's barcode in the *Enter the item
+  barcode* field. The barcode appears on the right side of the screen.
+. To print a receipt, select the *Print receipt?* checkbox.
+. Click *Save these transactions*.
+
+In-house Use
+------------
+To record in-house use transactions from the *Evergreen standalone interface*:
+
+. Click *In House Use* on the top menu bar.
+. Ensure the date is correct.
+. Enter the number of uses to record for the item in the *Enter the number of
+  uses of the item* field.
+. Enter the item barcode number in the *Enter the item barcode* field.
+. Repeat the previous 2 steps until all items have been scanned.
+. To print a receipt, select the *Print receipt?* checkbox.
+. Click *Save these transactions*.
+
+Check In
+--------
+To check in items from the *Evergreen standalone interface*:
+
+. Click *Check In* on the top menu bar. The *Check In* screen opens.
+. Ensure the date is correct.
+. For each item you want to check in, enter the item's barcode in the *Enter
+  item barcode* field. The number is displayed on the right side of the screen.
+. To print a receipt, select the *Print receipt?* checkbox.
+. Click *Save these transactions*.
+
+NOTE: Without access to Evergreen database, items on holds or with special
+status will not be captured in offline mode.
+
+Uploading Offline Transactions
+------------------------------
+Once you are able to connect to the server, you need to upload the offline
+transactions. To avoid confusion for patrons and in the system, you should
+upload the offline transactions as soon as possible.
+
+Once you can connect to the server, there are 3 steps to uploading offline
+transactions:
+
+. Create a session: to be done by local system administrators at an
+  administration workstation.
+. Upload transactions to a session: to be done by circulation staff at
+  circulation workstations.
+. Process the uploaded transactions: to be done by local system administrators
+  at an administration workstation.
+
+Once network connectivity has been restored, a local system administrator must
+create an offline transaction session. Then, staff can upload transactions from
+each of the workstations used in offline circulation mode to that session.
+Once all of the branch workstations have uploaded their transactions to the
+session, the manager processes all the transactions from all the workstations
+at once.
+
+Uploading transactions to the session does *not* put the transactions into the
+Evergreen database. The transactions will not be sent to the Evergreen database
+until the manager processes the session.
+
+Creating an Offline Session
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In the Evergreen staff client:
+
+. Log into Evergreen using an account with local system administrator
+  privileges.
+. Select *Admin (-) -> Offline Transaction Management* from the menu. The
+  *Offline Transactions* screen opens. Previously created sessions are listed
+  in the Offline Sessions section.
+. In the upper *Offline Sessions* section, click *Create* to create a new
+  session.
+. Enter a name for the session, like `Internet Down 2012-12-02`.  Click *OK*.
+. In the *Offline Sessions* section, highlight the session you created. An
+  *Uploaded Transactions* section appears in the bottom of the screen.
+  Initially, this section is empty.  
+. Inform library staff that the session has been created and tell them the
+  name of the session.
+
+Uploading Workstation Transactions to a Session
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wait until the local system administrator has created a session and told you
+that it's ready for your upload. There may be several sessions shown on the
+*Offline Transaction Management* screen, so you will need the name of the
+correct session from your local system administrator.
+
+Each workstation used to perform offline circulation during the outage must
+upload its transactions to the offline transaction session.
+
+To upload offline transaction from a workstation to a session, perform
+the following steps in the Evergreen staff client:
+
+. Log into Evergreen with your regular username and password.
+. Select *Admin (-) -> Offline Transaction Management* from the menu. The
+  *Offline Transactions* screen opens. You should see at least one session
+  in the *Offline Sessions* section. You may also see older sessions.
+. In the upper *Offline Sessions* section, highlight the correct session,
+  then click *Upload*. The transactions are transferred to the Evergreen
+  server. 
+. When the transactions have been uploaded, select the session in the *Offline
+  Sessions* section. The value in the *Upload Count* column has increased by 1
+  and your workstation is now listed in the *Uploaded Transactions* section.
+. Inform your local system administrator that your transaction has been
+  uploaded to the session.
+
+Processing the Transactions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+When all of the participating staff workstations have uploaded their
+transactions to the offline session, the workstation names are listed
+in the *Uploaded Transactions* section. To process the offline transactions
+and make them live on the Evergreen server:
+
+. Log into Evergreen using an account with local system administrator
+  privileges.
+. Select *Admin (-) -> Offline Transaction Management* from the menu. The
+  *Offline Transactions* screen opens. Previously created sessions are listed
+  in the Offline Sessions section.
+. Highlight the correct session and, if necessary, click *Refresh* to verify
+  all the participating workstations have uploaded their transactions to your
+  session.
+. Click *Process*. The processing may take some time to complete, depending on
+  how many transactions you have done. Click *Refresh* to see the updated
+  status of the processing step. Processing is complete when the *Processing?*
+  column shows `Completed`.
+
+The number in the *Transactions Processed* column is equal to the number of items
+checked out or checked in.  For example, 5 transactions processed could mean that:
+
+* 5 items were checked out, or
+* 3 items were checked in and 2 items were checked out, or
+* 5 items were checked in.  
+
+Exceptions
+~~~~~~~~~~
+Exceptions are problems that were encountered during processing.  For example,
+a mis-scanned patron barcode, an open circulation, or an item that was not
+checked in before it was checked out to another patron would be listed as an
+exception. Those transactions causing exceptions may not be loaded into
+Evergreen database. Staff should examine the exceptions and take necessary
+action.
+
+These are a few notes about possible exceptions. It is not an all-inclusive
+list.
+
+* Checking out a DVD with the wrong date (leaving due date set at +2 weeks
+  instead of +1 week) does not cause an exception.
+* Overdue books are not flagged as exceptions.
+* Checking out a reference book does not cause an exception.
+* Checking out an item belonging to another library does not cause an
+  exception.
+* The *Standalone Interface* does not recognize books on hold, so no exceptions
+  will be generated when matching items are checked in or checked out.
+* The *Standalone Interface* can recognize blocked, barred, and expired patrons,
+  as well as lost cards, _if_ you have recently run an *Admin (-) -> Download
+  Offline Patron List* action on the workstation on which you are using the
+  *Standalone Interface*. You will get an error message indicating the patron
+  status from within the *Standalone Interface* at check-out time.
+
+Common error messages
+^^^^^^^^^^^^^^^^^^^^^
+* `ROUTE-ITEM` - Indicates the book should be routed to another branch or
+  library system. You'll need to find the book and re-check it in (online) to
+  get the Transit Slip to print.
+* `COPY_STATUS_LOST` - Indicates a book previously marked as lost was found and
+  checked in.
+* `CIRC_CLAIMS_RETURNED` - Indicates a book previously marked as
+  claimed-returned was found and checked in.
+* `ASSET_COPY_NOT_FOUND` - Indicates the item barcode was
+  mis-scanned/mis-typed.
+* `ACTOR_CARD_NOT_FOUND` - Indicates the patron's library barcode was
+  mis-scanned/ mis-typed.
+* `OPEN_CIRCULATION_EXISTS` - Indicates a book was checked out that had never
+  been checked in.
+* `MAX_RENEWALS_REACHED` - Indicates the item has already been renewed the
+  maximum times allowed (or it’s a video/DVD).
