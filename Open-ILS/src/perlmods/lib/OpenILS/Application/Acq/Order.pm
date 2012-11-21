@@ -1789,6 +1789,10 @@ sub create_purchase_order_api {
         }
     }
 
+    # see if we have a PO name encoded in any of our lineitems
+    my $evt = extract_po_name($mgr, $po, $li_ids);
+    return $evt if $evt;
+
     # commit before starting the asset creation
     $e->xact_commit;
 
