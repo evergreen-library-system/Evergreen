@@ -55,7 +55,7 @@
         <td nowrap="nowrap">
             <a class="checkout_res_back" href="[% mkurl(ctx.kpac_root _ '/record/' _ ctx.bre_id, {}, kill_params) %]">
                 [%  title = attrs.title || '';
-                    title = title.substr(18, title.length, '...');
+                    IF title.length > 18; title = title.substr(18, title.length, '...'); END;
                     l('Back to [_1]', title);
                 %]
             </a>
