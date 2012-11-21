@@ -43,10 +43,11 @@ UPDATE actor.usr SET
     WHERE id=CURRVAL('actor.usr_id_seq');
 
 
+-- Soon to expire patron
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 3, '99999355250', 5, 'Jones', 'gregoryj1234', 
-        'Gregory', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
+        'Gregory', '', NOW() + '1 day'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -64,10 +65,11 @@ UPDATE actor.usr SET
     WHERE id=CURRVAL('actor.usr_id_seq');
 
 
+-- Soon to expire patron
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999387993', 9, 'Moran', 'vincentm1234', 
-        'Vincent', 'Kenneth', NOW() + '3 years'::INTERVAL, NULL, NULL);
+        'Vincent', 'Kenneth', NOW() + '1 week'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -85,10 +87,11 @@ UPDATE actor.usr SET
     WHERE id=CURRVAL('actor.usr_id_seq');
 
 
+-- Soon to expire patron
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999335859', 8, 'Jones', 'gregoryj1234', 
-        'Gregory', 'Adam', NOW() + '3 years'::INTERVAL, NULL, NULL);
+        'Gregory', 'Adam', NOW() + '3 weeks'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -106,10 +109,11 @@ UPDATE actor.usr SET
     WHERE id=CURRVAL('actor.usr_id_seq');
 
 
+-- Recently expired patron
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999373186', 7, 'Walker', 'brittanyw1234', 
-        'Brittany', 'Geraldine', NOW() + '3 years'::INTERVAL, NULL, NULL);
+        'Brittany', 'Geraldine', NOW() - '1 week'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
@@ -127,10 +131,11 @@ UPDATE actor.usr SET
     WHERE id=CURRVAL('actor.usr_id_seq');
 
 
+-- Recently expired patron
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (2, 1, '99999384262', 9, 'Miller', 'ernestom1234', 
-        'Ernesto', 'Robert', NOW() + '3 years'::INTERVAL, '1997-02-02', 'II');
+        'Ernesto', 'Robert', NOW() - '3 weeks'::INTERVAL, '1997-02-02', 'II');
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 

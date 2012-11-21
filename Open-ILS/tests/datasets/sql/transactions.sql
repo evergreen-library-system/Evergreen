@@ -39,6 +39,7 @@ BEGIN
 
         FOR recipient IN SELECT * FROM actor.usr 
             WHERE NOT deleted AND profile = grp 
+                AND expire_date > NOW() - '1 month'::interval
                 ORDER BY id LIMIT user_count LOOP
 
             -- find a suitable circulator/requestor for these transactions
@@ -47,6 +48,7 @@ BEGIN
                 WHERE home_ou = recipient.home_ou AND
                       profile = 5 AND -- Circulators
                       NOT deleted
+                      AND expire_date > NOW()
                 ORDER BY id LIMIT 1;
 
             -- regular circs --------------------------------

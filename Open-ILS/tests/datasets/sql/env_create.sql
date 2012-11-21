@@ -72,6 +72,8 @@ RETURNS void AS $$
     DECLARE duration config.rule_circ_duration%ROWTYPE;
     DECLARE recurring config.rule_recurring_fine%ROWTYPE;
     DECLARE max_fine config.rule_max_fine%ROWTYPE;
+    DECLARE patron actor.usr%ROWTYPE;
+    DECLARE xact_base_date TIMESTAMP;
     DECLARE due_date TIMESTAMP;
     DECLARE xact_start TIMESTAMP;
 BEGIN
@@ -79,15 +81,22 @@ BEGIN
     SELECT INTO duration * FROM config.rule_circ_duration WHERE name = duration_rule;
     SELECT INTO recurring * FROM config.rule_recurring_fine WHERE name = recurring_fine_rule;
     SELECT INTO max_fine * FROM config.rule_max_fine WHERE name = max_fine_rule;
+    SELECT INTO patron * FROM actor.usr WHERE id = patron_id;
+
+    IF patron.expire_date < NOW() THEN
+        xact_base_date = patron.expire_date;
+    ELSE
+        xact_base_date = NOW();
+    END IF;
 
     IF overdue THEN
         -- if duration is '7 days', the overdue item was due 7 days ago
-        due_date := NOW() - duration.normal;
+        due_date := xact_base_date - duration.normal;
         -- make overdue circs appear as if they were created two durations ago
-        xact_start := NOW() - duration.normal - duration.normal;
+        xact_start := xact_base_date - duration.normal - duration.normal;
     ELSE
-        due_date := NOW() + duration.normal;
-        xact_start := NOW();
+        due_date := xact_base_date + duration.normal;
+        xact_start := xact_base_date;
     END IF;
 
     IF duration.normal >= '1 day'::INTERVAL THEN
