@@ -11863,17 +11863,17 @@ INSERT INTO config.org_unit_setting_type
 INSERT INTO config.org_unit_setting_type
     (name, grp, label, description, datatype)
     VALUES (
-        'circ.prewarn_expire_setting',
+        'circ.patron_expires_soon_warning',
         'circ',
         oils_i18n_gettext(
-            'circ.prewarn_expire_setting',
-            'Pre-warning for patron expiration',
+            'circ.patron_expires_soon_warning',
+            'Warn when patron account is about to expire',
             'coust',
             'label'
         ),
         oils_i18n_gettext(
-            'circ.prewarn_expire_setting',
-            'Pre-warning for patron expiration. This setting defines the number of days before patron expiration to display a message suggesting it is time to renew the patron account. Value is in number of days, for example: 3 for 3 days.',
+            'circ.patron_expires_soon_warning',
+            'Warn when patron account is about to expire. If set, the staff client displays a warning this many days before the expiry of a patron account. Value is in number of days, for example: 3 for 3 days.',
             'coust',
             'description'
         ),

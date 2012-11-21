@@ -1,0 +1,9 @@
+New feature: "Warn patrons when their account is about to expire"
+=================================================================
+To give staff the ability to warn patrons when their account is about to
+expire, the staff client can display an alert message on the patron information
+window.  A new library setting, `Warn patrons when their account is about to
+expire` in the *Circulation* section of the *Library Settings Editor*,
+determines how many days in advance of a patron's account expiry date the alert
+should be displayed. By default, warnings about upcoming patron account expiry
+dates are not displayed.

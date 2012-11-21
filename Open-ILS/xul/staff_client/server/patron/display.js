@@ -983,11 +983,12 @@ patron.display.prototype = {
 
                     var preexpire = new Date();
                     var preexpire_value;
-                    if (obj.OpenILS.data.hash.aous['circ.prewarn_expire_setting']) {
-                        if (typeof obj.OpenILS.data.hash.aous['circ.prewarn_expire_setting'] == "string") { 
-                            preexpire_value = parseInt(obj.OpenILS.data.hash.aous['circ.prewarn_expire_setting']);  
+                    var preexpire_setting = obj.OpenILS.data.hash.aous['circ.patron_expires_soon_warning'];
+                    if (preexpire_setting) {
+                        if (typeof preexpire_setting == "string") { 
+                            preexpire_value = parseInt(preexpire_setting);  
                         } else {
-                            preexpire_value = obj.OpenILS.data.hash.aous['circ.prewarn_expire_setting'];
+                            preexpire_value = preexpire_setting;
                         }
                         preexpire.setDate(preexpire.getDate() + preexpire_value);
                     }
@@ -996,7 +997,7 @@ patron.display.prototype = {
                     if (expire < now) {
                         msg += $("patronStrings").getString('staff.patron.display.init.network_request.account_expired');
                         obj.stop_checkouts = true;
-                    } else if (expire < preexpire && obj.OpenILS.data.hash.aous['circ.prewarn_expire_setting']) {
+                    } else if (expire < preexpire && preexpire_setting) {
                         msg += $("patronStrings").getString('staff.patron.display.init.network_request.account_expire_soon');
                     }
                 }
