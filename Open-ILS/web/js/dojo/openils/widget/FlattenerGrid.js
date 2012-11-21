@@ -1,6 +1,8 @@
 if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
     dojo.provide("openils.widget.FlattenerGrid");
 
+    dojo.requireLocalization("openils.widget", "FlattenerGrid");
+
     dojo.require("DojoSRF");
     dojo.require("dojox.grid.DataGrid");
     dojo.require("openils.FlattenerStore");
@@ -8,10 +10,18 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
     dojo.require("openils.widget.GridColumnPicker");
     dojo.require("openils.widget.EditDialog");  /* includes EditPane */
     dojo.require("openils.widget._GridHelperColumns");
+    dojo.require("openils.XUL");
 
     dojo.declare(
         "openils.widget.FlattenerGrid",
         [dojox.grid.DataGrid, openils.widget._GridHelperColumns], {
+            /* Later, might think about whether this should really be an
+             * "object" property like this or a "class" one (in dojo speak,
+             * since those terms don't really apply in pure JS)... */
+            "localeStrings": dojo.i18n.getLocalization(
+                "openils.widget", "FlattenerGrid"
+            ),
+
             /* These potential constructor arguments are useful to
              * FlattenerGrid in their own right */
             "columnReordering": true,
@@ -444,6 +454,20 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                 }
 
                 this.inherited(arguments);
+
+                this.focus.focusHeader = function() {
+                    /* This prevents an unwanted automatic scroll of the
+                     * user's browser to the header row of the grid whenever
+                     * you touch the horizontal scrollbar.  The prevented
+                     * behavior was absolutely hateful, since if your grid was
+                     * larger than your window, touching the horizontal scroll-
+                     * bar meant scrolling up so that the same scrollbar was
+                     * now off your screen, and you could not manipulate it.
+                     *
+                     * There may be a more targeted way to fix the problem,
+                     * but this will do.  */
+                    console.log("focusHeader() suppressed");
+                };
             },
 
             "canSort": function(idx, skip_structure /* API abuse */) {
@@ -540,14 +564,14 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                             this.filterSemaphoreCallback();
                     }
                     if (!this.filterAlwaysInDiv) {
-                        dojo.create(
-                            "a", {
-                                "innerHTML": "Filter",  /* XXX i18n */
-                                "href": "javascript:void(0);",
-                                "onclick": dojo.hitch(this, function() {
-                                    this.filterUi.show();
-                                })
-                            }, this.linkHolder.domNode
+                        new dijit.form.Button(
+                            {
+                                "label": "Filter", /* XXX i18n */
+                                "onClick": dojo.hitch(
+                                    this, function() { this.filterUi.show(); }
+                                )
+                            },
+                            dojo.create("span", null, this.linkHolder.domNode)
                         );
                     }
                 }
@@ -901,6 +925,51 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                 ).length == 0;
             },
 
+            "downloadCSV": function(filename_prefix, progress_dialog) {
+                filename_prefix = filename_prefix || "grid";
+                var localeStrings = this.localeStrings;
+
+                var mapkey_for_filename =
+                    this.store.mapKey ? this.store.mapKey.substr(-8, 8) : "X";
+
+                var dispositionArgs = {
+                    "defaultString": filename_prefix + "-" +
+                        mapkey_for_filename + ".csv",
+                    "defaultExtension": ".csv",
+                    "filterName": localeStrings.CSV_FILTER_NAME,
+                    "filterExtension": "*.csv",
+                    "filterAll": true
+                };
+
+                var coal = this._columnOrderingAndLabels();
+                var req = {
+                    "query": this.query,
+                    "queryOptions": {
+                        "columns": coal.columns,
+                        "labels": coal.labels,
+                        "all": true
+                    },
+                    "flattenerOptions": {
+                        "contentType": "text/csv",
+                        "handleAs": "text"
+                    },
+                    "onComplete": function(text) {
+                        if (progress_dialog)
+                            progress_dialog.attr("title", "");
+                            progress_dialog.hide();
+                        openils.XUL.contentToFileSaveDialog(
+                            text, localeStrings.CSV_SAVE_DIALOG, dispositionArgs
+                        );
+                    }
+                };
+
+                if (progress_dialog) {
+                    progress_dialog.attr("title", localeStrings.FETCHING_CSV);
+                    progress_dialog.show(true);
+                }
+                this.store.fetch(req);
+            },
+
             /* Print the same data that the Flattener is feeding to the
              * grid, sorted the same way too. Remove limit and offset (i.e.,
              * print it all) unless those are passed in to the print() method.
@@ -912,6 +981,9 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                     "queryOptions": {
                         "columns": coal.columns,
                         "labels": coal.labels
+                    },
+                    "flattenerOptions": {
+                        "handleAs": "text", "contentType": "text/html"
                     },
                     "onComplete": function(text) {
                         openils.Util.printHtmlString(text);
@@ -925,7 +997,7 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                     req.queryOptions.all = true;
                 }
 
-                this.store.fetchToPrint(req);
+                this.store.fetch(req);
             },
 
             "printSelected": function() {

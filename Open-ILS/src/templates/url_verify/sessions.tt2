@@ -1,5 +1,5 @@
 [% WRAPPER base.tt2 no_content_pane=1 %]
-[% ctx.page_title = "Link Checker" %]
+[% ctx.page_title = l("Link Checker") %]
 <script type="text/javascript">
     dojo.require("dijit.form.Button");
     dojo.require("openils.widget.FlattenerGrid");

@@ -1,5 +1,5 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = "Link Checker - Create Session" %]
+[% ctx.page_title = l("Link Checker - Create Session") %]
 <script type="text/javascript">
     dojo.require("dijit.form.Button");
     dojo.require("dijit.form.CheckBox");

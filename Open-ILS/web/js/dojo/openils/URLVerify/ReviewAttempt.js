@@ -96,10 +96,10 @@ if (!dojo._hasResource["openils.URLVerify.ReviewAttempt"]) {
     module.format_bib_id = function(id) {
         if (!id) return "";
 
-        return "<a title='" + localeStrings.MARC_EDITOR_LINK +
+        return id + " [<a title='" + localeStrings.MARC_EDITOR_LINK +
             "' href='javascript:void(0);' " +
             "onclick='openils.URLVerify.ReviewAttempt.open_marc_editor(" +
-            id + "); return false;'>" + id + "</a>";
+            id + "); return false;'>" + localeStrings.EDIT + "</a>]";
     };
 
 }());

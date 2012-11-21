@@ -12,7 +12,7 @@
     "NOTHING_SELECTED": "No rows are selected, so no action will be taken.",
     "REVIEW_ATTEMPT": "Review this verification attempt",
     "CLONE_SESSION": "Clone",
-    "REREVIEW": "Review / Verify",
+    "REREVIEW": "Open",
     "CLONING": "Cloning existing session ...",
     "CLONE_SESSION_NAME": "Copy of ${0}",
     "XPATH": "XPath",
@@ -20,5 +20,6 @@
     "SELECT_MORE": "Click here to review all session URLs and/or select other URLs to verify",
     "MARC_EDITOR_LINK": "Click to open MARC Editor for this record",
     "MARC_EDITOR_TITLE": "Record ID #${0}",
-    "MARC_EDITOR_SAVE_RECORD": "Save Record"
+    "MARC_EDITOR_SAVE_RECORD": "Save Record",
+    "EDIT": "Edit"
 }

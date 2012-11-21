@@ -152,17 +152,17 @@ INSERT INTO config.filter_dialog_interface (key, description) VALUES (
 
 
 INSERT INTO config.usr_setting_type (name,grp,opac_visible,label,description,datatype) VALUES (
-    'url_verify.select_urls',
-    'url_verify',
+    'ui.grid_columns.url_verify.select_urls',
+    'gui',
     FALSE,
     oils_i18n_gettext(
-        'url_verify.select_urls',
+        'ui.grid_columns.url_verify.select_urls',
         'Link Checker''s URL Selection interface''s saved columns',
         'cust',
         'label'
     ),
     oils_i18n_gettext(
-        'url_verify.select_urls',
+        'ui.grid_columns.url_verify.select_urls',
         'Link Checker''s URL Selection interface''s saved columns',
         'cust',
         'description'
@@ -171,17 +171,17 @@ INSERT INTO config.usr_setting_type (name,grp,opac_visible,label,description,dat
 );
 
 INSERT INTO config.usr_setting_type (name,grp,opac_visible,label,description,datatype) VALUES (
-    'url_verify.review_attempt',
-    'url_verify',
+    'ui.grid_columns.url_verify.review_attempt',
+    'gui',
     FALSE,
     oils_i18n_gettext(
-        'url_verify.review_attempt',
+        'ui.grid_columns.url_verify.review_attempt',
         'Link Checker''s Review Attempt interface''s saved columns',
         'cust',
         'label'
     ),
     oils_i18n_gettext(
-        'url_verify.review_attempt',
+        'ui.grid_columns.url_verify.review_attempt',
         'Link Checker''s Review Attempt interface''s saved columns',
         'cust',
         'description'

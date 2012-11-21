@@ -96,6 +96,10 @@ if(!dojo._hasResource["openils.XUL"]) {
             "iface": Components.interfaces.nsIFileOutputStream,
             "cls": "@mozilla.org/network/file-output-stream;1"
         },
+        "COS": {
+            "iface": Components.interfaces.nsIConverterOutputStream,
+            "cls": "@mozilla.org/intl/converter-output-stream;1"
+        },
         "create": function(key) {
             return Components.classes[this[key].cls].
                 createInstance(this[key].iface);
@@ -158,9 +162,15 @@ if(!dojo._hasResource["openils.XUL"]) {
                     result == api.FP.iface.returnReplace)) {
             if (!picker.file.exists())
                 picker.file.create(0, 0644); /* XXX hardcoded = bad */
+
             var fos = api.create("FOS");
             fos.init(picker.file, 42 /* WRONLY | CREAT | TRUNCATE */, 0644, 0);
-            return fos.write(content, content.length);
+
+            var cos = api.create("COS");
+            cos.init(fos, "UTF-8", 0, 0);   /* It's the 21st century. You don't
+                                                use ISO-8859-*. */
+            cos.writeString(content);
+            return cos.close();
         } else {
             return 0;
         }

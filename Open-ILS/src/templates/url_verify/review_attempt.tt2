@@ -1,5 +1,5 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = "Link Checker - Review Verification Attempt" %]
+[% ctx.page_title = l("Link Checker - Review Verification Attempt") %]
 <script type="text/javascript">
     dojo.require("dijit.form.Button");
     dojo.require("openils.widget.FlattenerGrid");
@@ -29,6 +29,9 @@
             <button dojoType="dijit.form.Button" onClick="grid.print();">
                 [% l("Print verification results") %]
             </button>
+            <button dojoType="dijit.form.Button"
+                onClick="grid.downloadCSV('[% l("link-checker-results") %]',
+                    progress_dialog);">[% l("Download CSV") %]</button>
         </div>
     </div>
     <div class="oils-acq-basic-roomy">

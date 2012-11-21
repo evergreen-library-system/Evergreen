@@ -48,11 +48,11 @@ if (!dojo._hasResource["openils.URLVerify.Sessions"]) {
         if (!str)
             return "";
 
-        return "<a href='select_urls?session_id=" + str + "' title='" +
-            localeStrings.REREVIEW + "'>" + str +
-            "</a> <a href='create_session?clone=" + str + "' title='" +
+        return str + " [<a href='select_urls?session_id=" + str + "' title='" +
+            localeStrings.REREVIEW + "'>" + localeStrings.REREVIEW +
+            "</a>] [<a href='create_session?clone=" + str + "' title='" +
             localeStrings.CLONE_SESSION + "'>" +
-            localeStrings.CLONE_SESSION + "</a>";
+            localeStrings.CLONE_SESSION + "</a>]";
     };
 
     module.format_attempts = function(list) {
@@ -62,11 +62,11 @@ if (!dojo._hasResource["openils.URLVerify.Sessions"]) {
             list, function(id) {
                 if (isNaN(id))
                     return "";
-                return "<a title='" + localeStrings.REVIEW_ATTEMPT +
+                return id + " [<a title='" + localeStrings.REVIEW_ATTEMPT +
                     "' href='review_attempt?attempt_id=" + id + "'>" +
-                    id + "</a>";
+                    localeStrings.REREVIEW + "</a>]";
             }
-        ).join(", ");
+        ).join(" / ");
     };
 
 }());
