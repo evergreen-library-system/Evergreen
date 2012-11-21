@@ -1,6 +1,11 @@
+-- Evergreen DB patch 0745.data.prewarn_expire_setting.sql
+--
+-- Configuration setting to warn staff when an account is about to expire
+--
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0745', :eg_version);
 
 INSERT INTO config.org_unit_setting_type
     (name, grp, label, description, datatype)
