@@ -86,7 +86,7 @@ make
 [source, bash]
 ------------------------------------------------------------
 cd /home/opensrf/Evergreen-ILS-2.3.1
-make STAFF_CLIENT_STAMP_ID=rel_2_3.1 install
+make STAFF_CLIENT_STAMP_ID=rel_2_3_1 install
 ------------------------------------------------------------
 +
 . As the root user, change all files to be owned by the opensrf user and group:
@@ -102,7 +102,7 @@ chown -R opensrf:opensrf /openils
 -----------------------------------------------------------
 cd /openils/var/web/xul/
 rm server
-ln -s rel_2_3_1/server
+ln -sf rel_2_3_1/server server
 ----------------------------------------------------------
 +
 . As the opensrf user, update opensrf_core.xml and opensrf.xml by copying the
