@@ -87,7 +87,7 @@
 					<item name='patron enable' value='false'/>
 					<item name='hold' value='false'/>
 					<item name='renew' value='true'/>
-					<item name='renew all' value='false'/>
+					<item name='renew all' value='true'/>
 				</supports>
 				<options>
 					<!-- msg64, the patron information request can be

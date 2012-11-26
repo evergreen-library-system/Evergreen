@@ -14,6 +14,7 @@ use OpenILS::SIP::Transaction;
 use OpenILS::SIP::Transaction::Checkout;
 use OpenILS::SIP::Transaction::Checkin;
 use OpenILS::SIP::Transaction::Renew;
+use OpenILS::SIP::Transaction::RenewAll;
 use OpenILS::SIP::Transaction::FeePayment;
 
 use OpenSRF::System;
@@ -709,7 +710,29 @@ sub renew {
 }
 
 
+sub renew_all {
+    my ($self, $patron_id, $patron_pwd, $fee_ack) = @_;
 
+    $self->verify_session;
+
+    my $trans = OpenILS::SIP::Transaction::RenewAll->new(authtoken => $self->{authtoken});
+    $trans->patron($self->find_patron($patron_id));
+
+    if(!$trans->patron) {
+        $trans->screen_msg("Invalid patron barcode.");
+        $trans->ok(0);
+        return $trans;
+    }
+
+    if(!$trans->patron->renew_ok) {
+        $trans->screen_msg("Renewals not allowed.");
+        $trans->ok(0);
+        return $trans;
+    }
+
+    $trans->do_renew_all($self);
+    return $trans;
+}
 
 
 #

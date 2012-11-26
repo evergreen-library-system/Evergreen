@@ -52,6 +52,4 @@ sub do_renew {
 }
 
 
-
-
 1;

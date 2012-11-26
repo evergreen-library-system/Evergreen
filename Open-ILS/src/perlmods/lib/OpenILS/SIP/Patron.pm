@@ -593,8 +593,9 @@ sub __circ_to_title {
         $e->retrieve_asset_copy($circ->target_copy) );
 }
 
+# force_bc -- return barcode data regardless of msg64_summary_datatype
 sub charged_items {
-    my ($self, $start, $end) = shift;
+    my ($self, $start, $end, $force_bc) = shift;
 
     $self->__patron_items_info();
 
@@ -612,7 +613,7 @@ sub charged_items {
 
     for my $circid (@charges) {
         next unless $circid;
-        if($return_datatype eq 'barcode') {
+        if($return_datatype eq 'barcode' or $force_bc) {
             push( @c, __circ_to_barcode($self->{editor}, $circid));
         } else {
             push( @c, OpenILS::SIP::clean_text(__circ_to_title($self->{editor}, $circid)));

@@ -104,8 +104,11 @@ sub new {
     my $circ = $e->search_action_circulation([
         {
             target_copy => $copy->id,
-            stop_fines_time => undef, 
-            checkin_time => undef
+            checkin_time => undef,
+            '-or' => [
+                {stop_fines => undef},
+                {stop_fines => ["MAXFINES","LONGOVERDUE"]},
+            ]
         },
         {
             flesh => 2,
