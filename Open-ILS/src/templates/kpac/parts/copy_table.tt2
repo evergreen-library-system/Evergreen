@@ -16,9 +16,9 @@ END;
     <tbody>
         <tr class="header">
             <td class="location">[% l('Location') %]</td>
-            <td class="loc_info">&nbsp;</td>
-            <td class="status">[% l('Status') %]</td>
             <td class="callnumber">[% l('Call Number') %]</td>
+            <td class="shelving_location">[% l('Shelving Location') %]</td>
+            <td class="status">[% l('Status') %]</td>
         </tr>
         [%- 
         FOR copy_info IN ctx.copies;
@@ -37,13 +37,13 @@ END;
         -%]
         <tr>
             <td class="location">[% ctx.get_aou(copy_info.circ_lib).name | html %]</td>
-            <td class="loc_info"><a href="javascript:;">View Library Info</a></td><!-- TODO -->
-            <td class="status">[% copy_info.copy_status | html %]</td>
             [%- IF has_parts == 'true' %]
             <td class="callnumber">[% l('[_1] ([_2])', callnum, copy_info.part_label) | html %]</td>
             [% ELSE %]
             <td class="callnumber">[% callnum | html %]</td>
             [%- END %]
+            <td class="shelving_location">[% copy_info.copy_location | html %]</td>
+            <td class="status">[% copy_info.copy_status | html %]</td>
         </tr>
         [%- END %]
 
