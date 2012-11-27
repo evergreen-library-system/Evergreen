@@ -19,7 +19,7 @@ site:
 </form>
 ------------------------------------------------------------------------------
 <1> Replace ''example.com'' with the hostname for your catalog. To link to
-    the Kid's OPAC instead of the TPAC, replace ''opac'' with ''tpac''.
+    the Kid's OPAC instead of the TPAC, replace ''opac'' with ''kpac''.
 <2> Replace ''keyword'' with ''title'', ''author'', ''subject'', or ''series''
     if you want to provide more specific searches. You can even specify
     ''identifier|isbn'' for an ISBN search.
