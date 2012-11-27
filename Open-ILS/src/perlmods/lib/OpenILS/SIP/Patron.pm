@@ -459,16 +459,157 @@ sub hold_items {
     my ($self, $start, $end) = @_;
     syslog('LOG_DEBUG', 'OILS: Patron->hold_items()');
 
-     my $holds = $self->{editor}->search_action_hold_request(
-        { usr => $self->{user}->id, fulfillment_time => undef, cancel_time => undef }
-     );
+     # all of my open holds
+     my $holds = $self->{editor}->search_action_hold_request({ 
+        usr => $self->{user}->id, 
+        fulfillment_time => undef, 
+        cancel_time => undef 
+    });
 
-    my @holds;
-    push( @holds, OpenILS::SIP::clean_text($self->__hold_to_title($_)) ) for @$holds;
+     return $self->__format_holds($holds, $start, $end);
+}
+
+sub unavail_holds {
+     my ($self, $start, $end) = @_;
+     syslog('LOG_DEBUG', 'OILS: Patron->unavail_holds()');
+
+     my $holds = $self->{editor}->search_action_hold_request({
+        usr => $self->{user}->id,
+        fulfillment_time => undef,
+        cancel_time => undef,
+        '-or' => [
+            {current_shelf_lib => undef},
+            {current_shelf_lib => {'!=' => {'+ahr' => 'pickup_lib'}}}
+        ]
+    });
+
+    return $self->__format_holds($holds, $start, $end);
+}
+
+
+
+sub __format_holds {
+    my ($self, $holds, $start, $end) = @_;
+
+    return [] unless @$holds;
+
+    my $return_datatype = 
+        OpenILS::SIP->get_option_value('msg64_hold_datatype') || '';
+
+    my @response;
+
+    for my $hold (@$holds) {
+
+        if ($return_datatype eq 'barcode') {
+
+            if (my $copy = $self->find_copy_for_hold($hold)) {
+                push(@response, $copy->barcode);
+
+            } else {
+                syslog('LOG_WARNING', 
+                    'OILS: No representative copy found for hold ' . $hold->id);
+            }
+
+        } else {
+            push(@response, 
+                OpenILS::SIP::clean_text($self->__hold_to_title($hold)));
+        }
+    }
 
     return (defined $start and defined $end) ? 
         [ @holds[($start-1)..($end-1)] ] :
         \@holds;
+}
+
+# Finds a representative copy for the given hold.
+# If no copy exists at all, undef is returned.
+# The only limit placed on what constitutes a 
+# "representative" copy is that it cannot be deleted.
+# Otherwise, any copy that allows us to find the hold
+# later is good enough.
+sub find_copy_for_hold {
+    my ($self, $hold) = @_;
+    my $e = $self->{editor};
+
+    return $e->retrieve_asset_copy($hold->current_copy)
+        if $hold->current_copy; 
+
+    return $e->retrieve_asset_copy($hold->target)
+        if $hold->hold_type =~ /C|R|F/;
+
+    return $e->search_asset_copy([
+        {call_number => $hold->target, deleted => 'f'}, 
+        {limit => 1}])->[0] if $hold->hold_type eq 'V';
+
+    my $bre_ids = [$hold->target];
+
+    if ($hold->hold_type eq 'M') {
+        # find all of the bibs that link to the target metarecord
+        my $maps = $e->search_metabib_metarecord_source_map(
+            {metarecord => $hold->target});
+        $bre_ids = [map {$_->record} @$maps];
+    }
+
+    my $vol_ids = $e->search_asset_call_number( 
+        {record => $bre_ids, deleted => 'f'}, 
+        {idlist => 1}
+    );
+
+    return $e->search_asset_copy([
+        {call_number => $vol_ids, deleted => 'f'}, 
+        {limit => 1}
+    ])->[0];
+}
+
+# Given a "representative" copy, finds a matching hold
+sub find_hold_from_copy {
+    my ($self, $barcode) = @_;
+    my $e = $self->{editor};
+    my $hold;
+
+    my $copy = $e->search_asset_copy([
+        {barcode => $barcode, deleted => 'f'},
+        {flesh => 1, flesh_fields => {acp => ['call_number']}}
+    ])->[0];
+
+    return undef unless $copy;
+
+    my $run_hold_query = sub {
+        my %filter = @_;
+        return $e->search_action_hold_request([
+            {   usr => $self->{user}->id,
+                cancel_time => undef,
+                fulfillment_time => undef,
+                %filter
+            }, {
+                limit => 1,
+                order_by => {ahr => 'request_time DESC'}
+            }
+        ])->[0];
+    };
+
+    # first see if there is a match on current_copy
+    return $hold if $hold = 
+        $run_hold_query->(current_copy => $copy->id);
+
+    # next, assume bib-level holds are the most common
+    return $hold if $hold = $run_hold_query->(
+        target => $copy->call_number->record, hold_type => 'T');
+
+    # next try metarecord holds
+    my $map = $e->search_metabib_metarecord_source_map(
+        {source => $copy->call_number->record})->[0];
+
+    return $hold if $hold = $run_hold_query->(
+        target => $map->metarecord, hold_type => 'M');
+
+    # volume holds
+    return $hold if $hold = $run_hold_query->(
+        target => $copy->call_number->id, hold_type => 'V');
+
+    # copy holds
+    return $run_hold_query->(
+        target => $copy->id, hold_type => ['C', 'F', 'R']);
 }
 
 sub __hold_to_title {
@@ -653,38 +794,6 @@ sub fine_items {
 sub recall_items {
     my ($self, $start, $end) = @_;
     return [];
-}
-
-sub unavail_holds {
-     my ($self, $start, $end) = @_;
-     syslog('LOG_DEBUG', 'OILS: Patron->unavail_holds()');
-
-     my $ids = $self->{editor}->json_query({
-        select => {ahr => ['id']},
-        from => 'ahr',
-        where => {
-            usr => $self->{user}->id,
-            fulfillment_time => undef,
-            cancel_time => undef,
-            '-or' => [
-                {current_shelf_lib => undef},
-                {current_shelf_lib => {'!=' => {'+ahr' => 'pickup_lib'}}}
-            ]
-        }
-    });
- 
-     my @holds_sip_output;
-     @holds_sip_output = map {
-        OpenILS::SIP::clean_text($self->__hold_to_title($_))
-     } @{
-        $self->{editor}->search_action_hold_request(
-            {id => [map {$_->{id}} @$ids]}
-        )
-     } if (@$ids > 0);
- 
-     return (defined $start and defined $end) ?
-         [ @holds_sip_output[($start-1)..($end-1)] ] :
-         \@holds_sip_output;
 }
 
 sub block {

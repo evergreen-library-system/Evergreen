@@ -99,6 +99,17 @@
 					  default behaviour in previous versions of Evergreen.
 					-->
 					<option name='msg64_summary_datatype' value='barcode' />
+
+
+                    <!--
+                        When set, holds will be returned to the SIP client as copy
+                        barcodes instead of title strings.  This is useful, in 
+                        particular, for making subsequent calls for hold cancellation.  
+                    -->
+                    <!--
+                    <option name='msg64_hold_datatype' value='barcode' />
+                    -->
+
 					<!--
 						If enabled, the PC field in patron-info requests will return the non-translated profile name
 					<option name='patron_type_uses_code' value='true' />
