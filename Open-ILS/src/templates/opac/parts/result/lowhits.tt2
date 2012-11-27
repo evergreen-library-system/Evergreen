@@ -4,44 +4,51 @@
             [% INCLUDE "opac/parts/staff_saved_searches.tt2" %]
         </div>
         <div class="zero_search_hits_main">
-            <p>[% l('Sorry, no entries were found for') %]
-                [% IF is_advanced OR is_special; l('your search'); ELSE %]
-                <q>[% CGI.param('query') | html %]</q>
-                [% END %]
-                [% IF ctx.bookbag;
-                    l('within') %]
-                    <span class="lowhits-bookbag-name">[% ctx.bookbag.name | html %]</span>.
-                [% END %]
-
+            <p>[% qhtml = CGI.param('query') | html;
+                  IF ctx.bookbag;
+		       wbbag = ctx.bookbag.name | html;
+		       fmt_bookbag = '<span class="lowhits-bookbag-name">' _ wbbag _ '</span>';
+                       IF is_advanced OR is_special;
+		          l('Sorry, no entries were found for your search within [_1].', fmt_bookbag);
+                       ELSE;
+                          l('Sorry, no entries were found for [_1][_2][_3] within [_4].', '<q>', qhtml, '</q>', fmt_bookbag);
+                       END;
+                   ELSE;
+                     IF is_advanced OR is_special;
+                          l('Sorry, no entries were found for your search.');
+                       ELSE;
+                          l('Sorry, no entries were found for [_1][_2][_3].', '<q>', qhtml, '</q>');
+                       END;
+                   END %]
             </p>
         </div>
         <div style="float:right;width:353px;background:#ccc;padding:10px;margin-top:7px;">
             [% INCLUDE "opac/parts/result/lowhits_purchase.tt2" %]
             <p>
-                <strong>Keyword Search Tips</strong><br />
-                Try changing to <strong>Advanced Search</strong>.
+                <strong>[% l('Keyword Search Tips') %]</strong><br />
+                [% l('Try changing to [_1]Advanced Search[_2].', '<strong>', '</strong>') %]
             </p>
             <p>
-                <strong>Adjacency</strong><br />
-                Multiple words are not searched together as a phrase. They will
-                be found in various parts of the record. To search for a phrase, enclose your
-                search terms in quotation marks.<br />
-                (example:  <strong>&quot;garcia marquez&quot;</strong>)
+                <strong>[% l('Adjacency') %]</strong><br />
+                [% l('Multiple words are not searched together as a phrase. They will
+		      be found in various parts of the record. To search for a phrase, enclose your
+		      search terms in quotation marks.') %]<br />
+                [% l('(example:  [_1]&quot;garcia marquez&quot;[_2])', '<strong>', '</strong>') %]
             </p>
             <p>
-                <strong>Truncation</strong><br />
-                Words may be right-hand truncated using an asterisk. Use a single asterisk *
-                to truncate any number of characters.<br />
-                (example: <strong>environment* agency</strong>)
+                <strong>[% l('Truncation') %]</strong><br />
+                [% l('Words may be right-hand truncated using an asterisk. Use a single asterisk *
+		      to truncate any number of characters.') %]<br />
+                [% l('(example: [_1]environment* agency[_2])', '<strong>', '</strong>') %]
             </p>
             <p>
-                <strong>Anchored Searching</strong><br />
-                You may use ^ and $ to indicate "phrase begins with" and
-                "phrase ends with," respectively, within a search phrase
-                enclosed in quotation marks.<br />
-                (examples: <strong>"^harry"</strong> for phrases that begin with
-                the term <em>harry</em>.
-                <strong>"stone$"</strong> for phrases that end in <em>stone</em>.)
+                <strong>[% l('Anchored Searching') %]</strong><br />
+                [% l('You may use ^ and $ to indicate "phrase begins with" and
+		      "phrase ends with," respectively, within a search phrase
+		      enclosed in quotation marks.') %]<br />
+                [% l('(examples: [_1]"^harry"[_2] for phrases that begin with
+		      the term [_3]harry[_4].
+                      [_1]"stone$"[_2] for phrases that end in [_3]stone[_4].)', '<strong>', '</strong>', '<em>', '</em>') %]
             </p>
         </div>
     </div>
