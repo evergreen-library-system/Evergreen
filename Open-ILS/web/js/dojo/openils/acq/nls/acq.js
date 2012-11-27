@@ -57,6 +57,7 @@
     "PO_COULD_ACTIVATE" : "Yes.",
     "PO_WARNING_NO_BLOCK_ACTIVATION" : "Yes; fund ${0} (${1}) would be encumbered beyond its warning level.",
     "PO_STOP_BLOCKS_ACTIVATION" : "No; fund ${0} (${1}) would be encumbered beyond its stop level.",
+    "PO_ALREADY_ACTIVATED" : "Activated",
     "PO_FUND_WARNING_CONFIRM" : "Are you sure? Did you see the warning about over-encumbering a fund?",
     "CONFIRM_FUNDS_AT_STOP" : "One or more of the selected funds has a balance below its stop level.\nYou may not be able to activate purchase orders incorporating these copies.\nContinue?",
     "CONFIRM_FUNDS_AT_WARNING" : "One or more of the selected funds has a balance below its warning level.\nContinue?",

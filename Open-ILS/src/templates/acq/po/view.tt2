@@ -21,7 +21,15 @@
                     <th>[% l('Activatable?') %]</th>
                     <td>
                         <span id="acq-po-activate-checking"></span>
-                        <span class="hidden" id="acq-po-activate-link"><span dojoType="dijit.form.Button" onClick="activatePo()" jsId="activatePoButton">[% l('Activate Order') %]</span></span>
+                        <span class="hidden" id="acq-po-activate-links" style='padding: 5px'>
+                            <span dojoType="dijit.form.Button" onClick="activatePo()" jsId="activatePoButton">
+                                [% l('Activate Order') %]
+                            </span>
+                            <span style='padding: 5px;'> / </span>
+                            <span dojoType="dijit.form.Button" onClick="activatePo(true)" jsId="activatePoNoAssetsButton">
+                                [% l('Activate Without Loading Items') %]
+                            </span>
+                        </span>
                     </td>
                 </tr>
                 <tr>

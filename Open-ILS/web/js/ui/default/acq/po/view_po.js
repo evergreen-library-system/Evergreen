@@ -366,7 +366,11 @@ function renderPo() {
         if (PO.lineitem_count() > 1)
             openils.Util.show("acq-po-split");
     } else {
-        dojo.byId("acq-po-activate-checking").innerHTML = localeStrings.NO;
+        if (PO.order_date()) {
+            dojo.byId("acq-po-activate-checking").innerHTML = localeStrings.PO_ALREADY_ACTIVATED;
+        } else {
+            dojo.byId("acq-po-activate-checking").innerHTML = localeStrings.NO;
+        }
     }
 
     // XXX we probably don't *always* need to do this...
@@ -493,7 +497,7 @@ function init2() {
 
 function checkCouldActivatePo() {
     var d = dojo.byId("acq-po-activate-checking");
-    var a = dojo.byId("acq-po-activate-link");  /* <span> not <a> now, but no diff */
+    var a = dojo.byId("acq-po-activate-links");  /* <span> not <a> now, but no diff */
     d.innerHTML = localeStrings.PO_CHECKING;
     var warnings = [];
     var stops = [];
@@ -579,8 +583,9 @@ function checkCouldActivatePo() {
     );
 }
 
-function activatePo() {
+function activatePo(noAssets) {
     activatePoButton.attr("disabled", true);
+    activatePoNoAssetsButton.attr("disabled", true);
 
     if (openils.Util.isTrue(PO.prepayment_required())) {
         if (!confirm(localeStrings.PREPAYMENT_REQUIRED_REMINDER)) {
@@ -596,10 +601,15 @@ function activatePo() {
         }
     }
 
-    liTable.showAssetCreator(activatePoStage2);
+    if (noAssets) {
+        // no need for AssetCreator when assets are not desired
+        activatePoStage2(true);
+    } else {
+        liTable.showAssetCreator(activatePoStage2);
+    }
 }
 
-function activatePoStage2() {
+function activatePoStage2(noAssets) {
 
     var want_refresh = false;
     progressDialog.show(true);
@@ -610,7 +620,10 @@ function activatePoStage2() {
                 openils.User.authtoken,
                 PO.id(),
                 null,  // vandelay options
-                {zero_copy_activate : dojo.byId('acq-po-activate-zero-copies').checked}
+                {
+                    no_assets : noAssets, // no bibs/volumes/copies required
+                    zero_copy_activate : dojo.byId('acq-po-activate-zero-copies').checked
+                }
             ],
             "onresponse": function(r) {
                 progressDialog.hide();

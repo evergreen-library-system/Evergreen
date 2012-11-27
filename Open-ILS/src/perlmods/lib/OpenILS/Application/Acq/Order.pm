@@ -2599,21 +2599,24 @@ __PACKAGE__->register_method(
 sub activate_purchase_order {
     my($self, $conn, $auth, $po_id, $vandelay, $options) = @_;
     $options ||= {};
+    $$options{dry_run} = ($self->api_name =~ /\.dry_run/) ? 1 : 0;
 
-    my $dry_run = ($self->api_name =~ /\.dry_run/) ? 1 : 0;
     my $e = new_editor(authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
     my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
-    my $die_event = activate_purchase_order_impl($mgr, $po_id, $vandelay, $dry_run, $options);
+    my $die_event = activate_purchase_order_impl($mgr, $po_id, $vandelay, $options);
     return $e->die_event if $die_event;
     $conn->respond_complete(1);
-    $mgr->run_post_response_hooks unless $dry_run;
+    $mgr->run_post_response_hooks unless $$options{dry_run};
     return undef;
 }
 
 # xacts managed within
 sub activate_purchase_order_impl {
-    my ($mgr, $po_id, $vandelay, $dry_run, $options) = @_;
+    my ($mgr, $po_id, $vandelay, $options) = @_;
+    $options ||= {};
+    my $dry_run = $$options{dry_run};
+    my $no_assets = $$options{no_assets};
 
     # read-only until lineitem asset creation
     my $e = $mgr->editor;
@@ -2636,9 +2639,11 @@ sub activate_purchase_order_impl {
 
     my $li_ids = $e->search_acq_lineitem($query, {idlist => 1});
 
-    my $vl_resp; # imported li's and the queue the managing queue
-    if (!$dry_run) {
+    my $vl_resp; # imported li's and the managing queue
+    unless ($dry_run or $no_assets) {
         $e->rollback; # read-only thus far
+
+        # list_assets manages its own transactions
         $vl_resp = create_lineitem_list_assets($mgr, $li_ids, $vandelay)
             or return OpenILS::Event->new('ACQ_LI_IMPORT_FAILED');
         $e->xact_begin;
@@ -2649,7 +2654,7 @@ sub activate_purchase_order_impl {
     for my $li_id (@$li_ids) {
         my $li = $e->retrieve_acq_lineitem($li_id);
         
-        if (!$li->eg_bib_id and !$dry_run) {
+        unless ($li->eg_bib_id or $dry_run or $no_assets) {
             # we encountered a lineitem that was not successfully imported.
             # we cannot continue.  rollback and report.
             $e->rollback;
@@ -2659,7 +2664,7 @@ sub activate_purchase_order_impl {
         $li->state('on-order');
         $li->claim_policy($provider->default_claim_policy)
             if $provider->default_claim_policy and !$li->claim_policy;
-        create_lineitem_debits($mgr, $li, $dry_run, $options) or return $e->die_event;
+        create_lineitem_debits($mgr, $li, $dry_run) or return $e->die_event;
         update_lineitem($mgr, $li) or return $e->die_event;
         $mgr->post_process( sub { create_lineitem_status_events($mgr, $li->id, 'aur.ordered'); });
         $mgr->respond;
