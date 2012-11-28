@@ -9,7 +9,7 @@
         anotes  => l('Author Notes'),
         toc     => l('Table of Contents'),
         excerpt => l('Excerpt'),
-        summary => l('Smmary')
+        summary => l('Summary')
     };
 
     selected_type = CGI.param('ac');
