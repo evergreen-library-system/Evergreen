@@ -192,6 +192,25 @@ sub reviews_json {
 
 # --------------------------------------------------------------------------
 
+sub summary_html {
+    my( $self, $key ) = @_;
+    return $self->send_html(
+        $self->fetch_content('summary.html', $key));
+}
+
+sub summary_xml {
+    my( $self, $key ) = @_;
+    return $self->send_xml(
+        $self->fetch_content('summary.xml', $key));
+}
+
+sub summary_json {
+    my( $self, $key ) = @_;
+    return $self->send_json(
+        $self->fetch_content('summary.xml', $key));
+}
+
+# --------------------------------------------------------------------------
 
 sub data_exists {
     my( $self, $data ) = @_;
