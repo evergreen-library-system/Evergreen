@@ -623,7 +623,7 @@ input[type=text], input[type=password], textarea {
 .item_detail_extras_tabs a {
 	display:block;
 	float:left;
-	padding:14px 35px;
+	padding:14px 27px;
 	background:#b53ea6;
 	color:white;
 	font-size:14px;
