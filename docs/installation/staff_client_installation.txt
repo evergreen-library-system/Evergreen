@@ -1,0 +1,173 @@
+Installing the Staff Client 
+---------------------------
+
+Installing on Windows 
+~~~~~~~~~~~~~~~~~~~~~
+
+anchor:installing_staff_client_on_Windows[]
+
+indexterm:[staff client, installation, Windows]
+
+Official Evergreen releases have corresponding Windows based staff clients ready
+to use.  
+
+. Download the staff client from http://www.open-ils.org/downloads.php.  
++ 
+[NOTE] 
+=============== 
+The version of your staff client will
+need to match the version of your Evergreen server.  If you are unsure about the
+version of your Evergreen server, contact your system administrator.
+=============== 
++ 
+.  Click on the downloaded Evergreen setup file.  
+. Click _Next_ to begin installation: 
++
+image::media/staff_client_installation_0.png[] 
++ 
+. Click _Next_ to accept
+desitnation folder.  
++ 
+image::media/staff_client_installation_1.png[] 
++ 
+. Click _Install_.  
++ 
+image::media/staff_client_installation_2.png[] 
++ 
+. A pop-up should appear indicating that Evergreen has been installed. 
+Click _Finish_ to complete the installation.
+
+image::media/staff_client_installation_3.png[]
+
+When you login to Evergreen from the workstation for the first time,  you will
+also need to <<register_workstation,register your workstation>>. 
+
+Installing on Linux 
+~~~~~~~~~~~~~~~~~~~
+
+Installation instructions for Linux.
+
+
+indexterm:[staff client, installation, Linux]
+
+
+Using Wine and the Windows client 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+indexterm:[staff client, installation, Wine]
+
+One of th easiest ways to run a staff client on a Linux machine is to use the
+Windows client with Wine. 
+
+. Install http://www.winehq.org/download/[Wine] on your Linux machine.  
+. Download the staff client from http://www.open-ils.org/downloads.php.  
+. Right click on the downloaded file and open with _Wine Windows
+Program Loader_.  
+. Follow the same instructions as you would for
+<<installing_staff_client_on_Windows, installing the staff client on windows>>. 
+
+Building and Deploying an Evergreen Staff Client on Linux
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+indexterm:[staff client, building, Linux]
+
+. From the Evergreen *server*, Navigate to the staff_client directory: 
++
+[source, bash]
+-------- 
+cd  /home/opensrf/Evergreen-ILS-2.3.1/Open-ILS/xul/staff_client
+-------- 
++ 
+. _Make_  a linux staff client 
++ 
+[source, bash]
+-------- 
+make linux-client 
+--------
++ 
+This will generate a staff client tarball called
+_evergreen_staff_client.tar.bz2_ 
++ 
+. FTP or SCP the tarball to your staff client
+machine.  
+. From your staff client machine, create a folder with the name of
+your staff client and version.  
+. Extract the tar files into that folder  
+. Within the folder, click on the _evergreen_ file to start the program.  
++ 
+Or, you can run the program from a terminal (command line). For example, if the
+evergreen files were extracted to a directory called  evergreen_client_2.3.1 in
+your home directory, you can run it with: 
++ 
+[source, bash]
+--------
+~/evergreen_client_2.3.1/evergreen 
+--------
+
+Registering a Workstation
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+anchor:register_workstation[]
+
+
+indexterm:[staff client, registering a workstation]
+
+Before you can connect to Evergreen from your staff client, you will need to
+register your workstation when you try to login.
+
+[NOTE]
+===============
+You will need the permissions to add workstations to your network. If you do 
+not have these permissions, ask your system administrator for assistance. 
+===============
+
+. When you login for the first time, a red box will appear around your workstation 
+information on the right side of the screen. 
++
+image::media/staff_client_installation_4.png[]
++
+. Create a unique workstation name or use the default computer name provided.
+. Click _Register_
+. You will now be able to log into the system. 
+
+Removing Staff Client Preferences
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+indexterm:[staff client, removing user preferences]
+indexterm:[staff client, removing user settings]
+
+Windows
+^^^^^^^
+
+When you uninstall the Evergreen staff client code from your system, the staff
+client preferences and cached data are not removed from your system. This can
+be a problem if, for example, you have registered your workstation with the
+wrong library; or if you have chosen a display language (locale) that is broken
+and will not let you start up the client again
+
+On Windows, you can uninstall the Evergreen staff client code using the
+Add/Remove Programs menu.
+
+To remove the staff client preferences and cached data entirely on Windows,
+there are two directories that you must delete completely (where _<profile>_
+represents your user profile name):
+
+* *C:\Documents and Settings\<profile>\Application Data\OpenILS*
+* *C:\Documents and Settings\<profile>\Local Settings\Application Data\OpenILS*
+
+You might need to change the preferences in Windows Explorer to display hidden
+files (Tools -> Folder Options… -> View).
+ 
+Linux
+^^^^^
+
+To remove the staff client preferences and cached data from your user account
+on Linux, there is one directory that you must delete completely: 
+
+[source, bash]
+----------
+rm -fr ~/.openils
+----------
+

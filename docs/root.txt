@@ -86,6 +86,8 @@ include::installation/server_installation.txt[]
 // Return to normal title levels.
 :leveloffset: 0
 
+include::installation/staff_client_installation.txt[]
+
 include::installation/server_upgrade.txt[]
 
 include::installation/edi_setup.txt[]
