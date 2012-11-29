@@ -143,6 +143,8 @@ include::admin/staff_client-recent_searches.txt[]
 
 include::admin/staff_client-return_to_results_from_marc.txt[]
 
+include::admin/workstation_admin.txt[]
+
 System Administration From the Staff Client
 ===========================================
 
