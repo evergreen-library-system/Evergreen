@@ -1,0 +1,57 @@
+Logging in to Evergreen
+-----------------------
+
+indexterm:[staff client, logging in]
+indexterm:[SSL certificate]
+
+. Select the _Locale_ to match your language preference.  
+. Enter the _Hostname_ of the Evergreen server you are connecting.  
+. Click _Test Server_ to ensure that you are able to reach the 
+server.  You should see ``200 : OK'' indicated in green for _Status_ and _Version_.  
++
+[NOTE]
+============
+If _Status_ indicates ``There was an error testing this server'', check for a typo  
+in the _Hostname_ field or ask your administrator for the correct _Hostname_
+to use. 
+
+IF _version_ indicates ``404 Not Found'', the server does not support the version
+of your staff client. You will need to download the correct version or contact
+your system administrator. 
+
+If your server has a self-signed SSL certificate, you may need to click _Add SSL Exception_ 
+in order to login.
+============
++
+. Enter your _Username_ and _Password_  and  click _Login_.
+. If this is the first time you login from the workstation, you will
+need to <<register_workstation,register your workstation>>. 
+
+Standalone Interface
+~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[staff client, standalone interface]
+
+If your connection to Evergreen is lost, click _Standalone
+Interface_ tio circulate items or register patrons while connection is down. 
+
+Logging Out
+~~~~~~~~~~~
+
+indexterm:[staff client, logging out]
+
+There are several ways to end your Evergreen staff client session:
+
+* Click the *Exit Evergreen* button on the bottom of the login page.
+* Click the *x* at the top left of the *login* window.
+* Choose *File -> Quit Program* from the menu of the application window.
+
+[CAUTION]
+============
+Clicking the *x* on the application window (not the login window) will not exit
+Evergreen, but only close the window. 
+
+A new application window can be opened by cicking _Open New Window_ from the
+login window.
+============
+
