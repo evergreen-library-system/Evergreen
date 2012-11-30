@@ -196,6 +196,9 @@ include::admin/recent_staff_searches.txt[]
 
 include::admin/lsa-library_settings_editor.txt[]
 
+=======
+include::admin/lsa-standing_penalties.txt[]
+
 include::admin/lsa-statcat.txt[]
 
 

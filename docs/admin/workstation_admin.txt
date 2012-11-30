@@ -120,3 +120,213 @@ driver is the only one available try one of the alternate print strategies
 instead.
 ====================================
 
+Receipt Template Editor
+~~~~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[receipt template editor]
+indexterm:[receipt template editor, macros]
+indexterm:[receipt template editor, checkout]
+
+There are many default receipt templates included with the Evergreen staff
+client. These templates are saved on invidual workstations. Customization can be
+done workstation by workstation or by exporting the templates to import to other
+workstations.
+
+. Select *Admin -> Workstation Administration -> Receipt Template Editor*.
+. Select the _checkout_ template from the dropdown menu.
++    
+image::media/receipt-2.png[select checkout]
++
+. This is what the default checkout template looks like.  The template preview is
+on the left hand side.  You can edit the _Header_, _Line Item_ or _Footer_ on the 
+right hand side.  
++    
+image::media/receipt-3.jpg[receipt-3]
++
+. In the upper right hand corner you can see the available macros by clicking on
+the *Macros* button.  A macro prints a real value from the database.  In this
+example, the macro _%LIBRARY%_ prints ``Prince Rupert Library''.  The macros that
+are available vary slightly between types of receipt templates (i.e. bills,
+holds, items). 
++
+[TIP]
+===============================
+Receipt templates are marked up with HTML tags. You may use most HTML tags.
+See http://www.w3schools.com/html/ for more information on HTML tags.  
+
+You may insert a link to an image, e.g. your library's logo, that exists on the
+web. For example, to inlcude the white Evergreen logo from this document, enter tag <img
+src=http://docs.evergreen-ils.org/2.3/media/small_logo_white.jpg>. in the
+receipt template.
+
+There are several macros that can carry pre-built contents specific to
+individual libraries. The contents can be set up in local administration. For
+details see <<library_settings_editor, Library Settings>>. Though text can be hard-coded in receipt
+templates, the pre-built contents will be automatically applied to receipts
+printed from all workstations without editing each template.
+
+* %INCLUDE(notice_text)%
+* %INCLUDE(alert_text)%
+* %INCLUDE(event_text)%
+* %INCLUDE(footer_text)%%
+* %INCLUDE(header_text)%
+==============================
++
+. Below are some example edits:
++    
+image::media/receipt-11.jpg[receipt-11]
++
+The above is the default _Line Item_ in Checkout template. The macro _%barcode%_
+prints the item barcodes of the books that were checked out.  The macro
+_%due_date%_ prints the due date for each item that was checked out. You may add a
+line break between them: Barcode: _%barcode%_ </br> Due: _%due_date%_
++
+The receipt preview will look like this:
++    
+image::media/receipt-11a.png[receipt-11a]
++
+[NOTE]
+==========================
+The due date can only be printed in the _YYYY-MM-DD_ format. 
+==========================  
++
+. Once you have the checkout template how you want it, click *Save Locally* to
+save the template to your computer. 
+
+image::media/receipt-15.jpg[receipt-15]
+
+Print Holds Slip with Landscape Layout
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+indexterm:[receipt template editor, holds receipt, layout]
+
+This feature enables you to use Mozilla-specific CSS to print holds with a
+landscape layout. To use the landscape layout:
+
+. Click *Admin* -> *Workstation Administration* -> *Receipt Template Editor*.
+. Select *hold transit slip* from the *Template Name* drop down menu.
+. Enter <div> before and after the block of text that you wish to rotate.
+. Enter the stylesheet text in the <div> bracket that appears before the block
+of text that you wish to rotate:  
++
+[source, html]
+------------------------
+<div style="moz-transform: rotate(90deg);">
+------------------------
++
+. When you click out of this box, notice that the text in the *Preview* box on
+the left side of the screen has rotated 90 degrees.
+. You can further customize the look of the text by adjusting its height and
+width.  The height and width that you specify will be unique to your printer.
+For example, you could add the following height and width to your rotated text:
++
+[source, html]
+------------------------
+<div style="moz-transform: rotate(90deg);height: 300px; width: 200px;">
+------------------------
++
+image::media/Print_Holds_Slip1.jpg[Print_Holds_Slip1]
++
+. The holds slip will print with the configured text in a landscape layout:
++
+image::media/Print_Holds_Slip2.jpg[Print_Holds_Slip2] 
+
+Exporting Templates
+^^^^^^^^^^^^^^^^^^^
+
+indexterm:[receipt template editor, exporting]
+
+As you can only save a template on to the computer you are working on you will
+need to export the template if you have more than one computer that prints out
+receipts (e.g. more than one computers on the circulation desk, or another
+computer in the workroom that you use to checkin items or capture holds with).
+
+. Click on *Export*.
++
+image::media/receipt-17.jpg[receipt-17]
++
+. Select the location to save the template to, name the template, and click
+*Save*.
+. Click *OK* to confirm.
+
+Importing Templates
+^^^^^^^^^^^^^^^^^^^
+
+indexterm:[receipt template editor, importing]
+
+. Send the exported templates file to the workstation to which you want to import
+the templates. You may do it using memory stick or email, etc.
+. On _Receipt Template Editor_, Click *Import*. 
++ 
+image::media/receipt-20.jpg[receipt-20]
++
+. Navigate to and select the template file that you want to import.  Click
+*Open*.
++ 
+image::media/receipt-21.jpg[receipt-21]
++
+. Click *OK* to confirm on the prompt.
++
+. Click *Save Locally*.
+
+image::media/receipt-23.jpg[receipts-23]
+
+[TIP]
+=================
+By default all libraries use shared and hard-coded templates for Hold Slip and
+Transit Slip. Libraries can switch to using their own templates by setting up a
+library setting: Use legacy hardcoded receipts/slips. Details see <<library_settings_editor, Library Settings>>. 
+=================
+
+Button Bar/Toolbar
+~~~~~~~~~~~~~~~~~~
+
+indexterm:[staff client, button bar, customization]
+indexterm:[staff client, toolbar, customization]
+
+There is an optional toolbar with buttons providing quick access to commonly
+used staff client functions. When activated the toolbar appears below the menu
+bar. 
+
+image::media/workstation-button_bar-1.png[button bar]
+
+The look of the buttons can be customized. Use _Mode_, _Label Position_ and _Icon
+Size_ on the _Toolbar_ menu shown on the screen below to select your preference. 
+
+A group of buttons can be selected or activated by default for all workstations
+at a particular library (see <<library_settings_editor, Library Settings>> for details). A different default
+group can be set up on individual workstations by the following steps.
+
+. Go to *Admin -> Workstation Adminitration -> Toolbars -> Current*.
++ 
+image::media/workstation-button_bar-2.png[button bar 2]
++
+. Choose a group from the list. 
+. Go back to the above menu. Select *Set Workstation Default to Current*. The above
+selected toolbar group is set as default for this workstation.
+
+To clear an existing setting click *Clear Workstation Default*.
+
+Circulation and Cataloguing are the default toolbar groups. Local system
+administrators can create new groups for individual accounts, workstations or
+all in a particular library.
+
+. Go to *Admin -> Workstation Adminitration -> Toolbars -> Configure Toolbars. 
+. Click *New Toolbar*
++
+image::media/workstation-button_bar-3.png[button bar 3]
++
+. In the prompt window type in a name for the new group, and then click *OK*.
+. Choose the function buttons you want to add to the new group. Click *`-->(A)`* to
+add. You may select one in the Selected pane, and then click *`<--(R)`* to remove
+it.
+. Check one of the radio buttons: *Owning Org Unit*, *Owning Workstation*, or *Owning
+User* to specify the new group should be availalbe to everyone/workstation in
+your library, or this workstation or yourself only.
+. If you chose _Owning Workstation_ in the above step, click the down-pointed
+arrow at the end of the _Permission Context_ box to select your library in the
+orgnization unit tree.
+. Click *Save Toolbar*.
+. The new toolbar group will be displayed together with Circulation and
+Cataloguing groups when you choose a toolbar group next time.
