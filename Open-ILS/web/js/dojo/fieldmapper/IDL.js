@@ -32,7 +32,7 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                 window._preload_fieldmapper_IDL = null;
             }
 
-            if(!fieldmapper.IDL.fmclasses || (classlist && classlist.length)) {
+            if(!fieldmapper.IDL.fmclasses || !fieldmapper.IDL.fmclasses.length || (classlist && classlist.length)) {
                 var idl_url = this._URL_PATH;
 
                 if (classlist.length && (classlist.length > 1 || classlist[0] != '*')) {
