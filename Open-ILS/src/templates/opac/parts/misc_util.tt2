@@ -42,7 +42,7 @@
         args.title = args.title | replace('[:;/]$', '');
 
         # Provide correct spacing between the subfields
-        titsubs = xml.findnodes('//*[@tag="245"]/*[@code]');
+        titsubs = xml.findnodes('//*[@tag="245"]/*[(@code) and (@code != "6") and (@code != "8")]');
         titsubs_content = [];
             FOR sub IN titsubs; titsubs_content.push(sub.textContent); END;
         args.title_extended = titsubs_content.join(" ");
