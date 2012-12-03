@@ -184,6 +184,10 @@ sub process_retrieval {
         if ($msg_hash->{purchase_order}) {
             $logger->info("EDI: processing message for PO " . $msg_hash->{purchase_order});
             $incoming->purchase_order($msg_hash->{purchase_order});
+            unless ($e->retrieve_acq_purchase_order($incoming->purchase_order)) {
+                $logger->warn("EDI: received order response for nonexistent PO.  Skipping...");
+                next;
+            }
         }
 
         $e->xact_begin;
