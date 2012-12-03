@@ -35,7 +35,11 @@ my %edi_li_fields = (
     amount_billed   => qr/^MOA\+203:(\d+)/,
     net_unit_price  => qr/^PRI\+AAA:(\d+)/,
     gross_unit_price=> qr/^PRI\+AAB:(\d+)/,
-    expected_date   => qr/^DTM\+44:([^:]+)/
+    expected_date   => qr/^DTM\+44:([^:]+)/,
+    avail_status    => qr/^FTX\+LIN\++([^:]+):8B:28/,
+    # "1B" codes are deprecated, but still in use.  
+    # Pretend it's "12B" and it should just work
+    order_status    => qr/^FTX\+LIN\++([^:]+):12?B:28/
 );
 
 my %edi_li_ident_fields = (

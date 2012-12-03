@@ -8742,6 +8742,7 @@ INSERT INTO acq.cancel_reason (keep_debits, id, org_unit, label, description) VA
 ('t',(  3+1000), 1, 'Changed',   'The information is to be or has been changed.'),
 ('t',(  4+1000), 1, 'No action',                  'This line item is not affected by the actual message.'),
 ('t',(  5+1000), 1, 'Accepted without amendment', 'This line item is entirely accepted by the seller.'),
+('f',(  7+1000), 1, 'Not accepted',               'This line item is not accepted by the seller.'),
 ('f',( 10+1000), 1, 'Not found',   'This line item is not found in the referenced message.'),
 ('t',( 24+1000), 1, 'Accepted with amendment, no confirmation required', 'Accepted with changes which require no confirmation.');
 
