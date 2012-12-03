@@ -15,6 +15,8 @@ use OpenILS::Utils::RemoteAccount;
 use OpenILS::Utils::CStoreEditor q/new_editor/;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::Acq::EDI::Translator;
+use OpenILS::Application::AppUtils;
+my $U = 'OpenILS::Application::AppUtils';
 
 use OpenILS::Utils::EDIReader;
 
@@ -442,7 +444,7 @@ sub process_parsed_msg {
         my $li = $e->retrieve_acq_lineitem($li_id);
 
         if (!$li) {
-            $logger->error("EDI: reqest for invalid lineitem ID '$li_id'");
+            $logger->error("EDI: request for invalid lineitem ID '$li_id'");
             $e->rollback;
             next;
         }
@@ -473,18 +475,22 @@ sub process_parsed_msg {
         my $lids = $e->json_query({
             select => {acqlid => ['id']},
             from => 'acqlid',
-            where => { lineitem => $li->id }
+            where => {lineitem => $li->id}
         });
 
         my @lids = map { $_->{id} } @$lids;
         my $lid_count = scalar(@lids);
         my $lids_covered = 0;
-        my $lids_touched = 0;
-
+        my $lids_cancelled = 0;
+        my $order_qty;
+        my $dispatch_qty;
+  
         for my $qty (@{$li_hash->{quantities}}) {
 
-            my $qty_count = $qty->{quantity} or next;
+            my $qty_count = $qty->{quantity};
             my $qty_code = $qty->{code};
+
+            next unless defined $qty_count;
 
             if (!$qty_code) {
                 $logger->warn("EDI: Response for LI $li_id specifies quantity ".
@@ -495,6 +501,7 @@ sub process_parsed_msg {
             $logger->info("EDI: LI $li_id processing quantity count=$qty_count / code=$qty_code");
 
             if ($qty_code eq '21') { # "ordered quantity"
+                $order_qty = $qty_count;
                 $logger->info("EDI: LI $li_id -- vendor confirms $qty_count ordered");
                 $logger->warn("EDI: LI $li_id -- order count $qty_count ".
                     "does not match LID count $lid_count") unless $qty_count == $lid_count;
@@ -504,6 +511,7 @@ sub process_parsed_msg {
             $lids_covered += $qty_count;
 
             if ($qty_code eq '12') {
+                $dispatch_qty = $qty_count;
                 $logger->info("EDI: LI $li_id -- vendor dispatched $qty_count");
                 next;
 
@@ -527,43 +535,144 @@ sub process_parsed_msg {
                 next;
             } 
 
-            my $break = 0;
-            foreach (1 .. $qty_count) {
+            my ($cancel_count, $fatal) = 
+                $class->cancel_lids($e, $eg_reason, $qty_count, $lid_count, \@lids);
 
-                my $lid_id = shift @lids;
-                if (!$lid_id) {
-                    $logger->warn("EDI: Used up all $lid_count LIDs. ".
-                        "Ignoring extra status '" . $eg_reason->label . "'");
-                    last;
+            last if $fatal;
+
+            $lids_cancelled += $cancel_count;
+
+            # if ALL the items have the same cancel_reason, the LI gets it too
+            $li->cancel_reason($eg_reason->id) if $qty_count == $lid_count;
+                
+            $li->edit_time('now'); 
+            unless ($e->update_acq_lineitem($li)) {
+                $logger->error("EDI: update_acq_lineitem failed " . $e->die_event);
+                last;
+            }
+        }
+
+        # in case the provider neglected to echo back the order count
+        $order_qty = $lid_count unless defined $order_qty;
+
+        # it may be necessary to change the logic here to look for lineitem
+        # order status / availability status instead of dispatch_qty and 
+        # assume that dispatch_qty simply equals the number of unaccounted-for copies
+        if (defined $dispatch_qty) {
+            # provider is telling us how may copies were delivered
+
+            # number of copies neither cancelled or delivered
+            my $remaining_lids = $order_qty - ($dispatch_qty + $lids_cancelled);
+
+            if ($remaining_lids > 0) {
+
+                # the vendor did not ship all items and failed to provide cancellation
+                # quantities for some or all of the items to be cancelled.  When this
+                # happens, we cancel the remaining un-delivered copies using the
+                # lineitem order status to determine the cancel reason.
+
+                my $reason_id;
+                my $stat;
+
+                if ($stat = $li_hash->{order_status}) {
+                    $logger->info("EDI: lineitem has order status $stat");
+
+                    if ($stat eq '200') { 
+                        $reason_id = 1007; # not accepted
+
+                    } elsif ($stat eq '400') { 
+                        $reason_id = 1283; # back-order
+                    }
+
+                } elsif ($stat = $li_hash->{avail_status}) {
+                    $logger->info("EDI: lineitem has availability status $stat");
+
+                    if ($stat eq 'NP') {
+                        # not yet published
+                        # TODO: needs cancellation?
+                    } 
                 }
 
-                my $lid = $e->retrieve_acq_lineitem_detail($lid_id);
-                $lid->cancel_reason($eg_reason->id);
-                $e->update_acq_lineitem_detail($lid);
-                $lids_touched++;
+                if ($reason_id) {
+                    my $reason = $e->retrieve_acq_cancel_reason($reason_id);
 
-                # if ALL the items have the same cancel_reason, the LI gets it too
-                $li->cancel_reason($eg_reason->id) if $qty_count == $lid_count;
-                
-                $li->edit_time('now'); 
-                unless ($e->update_acq_lineitem($li)) {
-                    $logger->error("EDI: update_acq_lineitem failed " . $e->die_event);
-                    $break = 1;
-                    last;
+                    my ($cancel_count, $fatal) = 
+                        $class->cancel_lids($e, $reason, $remaining_lids, $lid_count, \@lids);
+
+                    last if $fatal;
+                    $lids_cancelled += $cancel_count;
+
+                    # All LIDs cancelled with same reason, apply 
+                    # the same cancel reason to the lineitem 
+                    $li->cancel_reason($reason->id) if $remaining_lids == $order_qty;
+                        
+                    $li->edit_time('now'); 
+                    unless ($e->update_acq_lineitem($li)) {
+                        $logger->error("EDI: update_acq_lineitem failed " . $e->die_event);
+                        last;
+                    }
+
+                } else {
+                    $logger->warn("EDI: vendor says we ordered $order_qty and cancelled ". 
+                        "$lids_cancelled, but only shipped $dispatch_qty");
                 }
             }
-
-            # non-recoverable transaction error
-            # note in this case the commit below will be a silent no-op
-            last if $break;
         }
 
         # LI and LIDs updated, let's wrap this one up.
+        # this is a no-op if the xact has already been rolled back
         $e->commit;
 
-        $logger->info("EDI LI $li_id -- $lids_covered LIDs mentioned; ".
-            "$lids_touched LIDs had cancel_reason's applied");
+        $logger->info("EDI: LI $li_id -- $order_qty LIDs ordered; ". 
+            "$lids_cancelled LIDs cancelled");
     }
+}
+
+sub cancel_lids {
+    my ($class, $e, $reason, $count, $lid_count, $lid_ids) = @_;
+
+    my $cancel_count = 0;
+
+    foreach (1 .. $count) {
+
+        my $lid_id = shift @$lid_ids;
+
+        if (!$lid_id) {
+            $logger->warn("EDI: Used up all $lid_count LIDs. ".
+                "Ignoring extra status '" . $reason->label . "'");
+            last;
+        }
+
+        my $lid = $e->retrieve_acq_lineitem_detail($lid_id);
+        $lid->cancel_reason($reason->id);
+
+        # item is cancelled.  Remove the fund debit.
+        unless ($U->is_true($reason->keep_debits)) {
+
+            if (my $debit_id = $lid->fund_debit) {
+
+                $lid->clear_fund_debit;
+                my $debit = $e->retrieve_acq_fund_debit($debit_id);
+
+                if ($U->is_true($debit->encumbrance)) {
+                    $logger->info("EDI: deleting debit $debit_id for cancelled LID $lid_id");
+
+                    unless ($e->delete_acq_fund_debit($debit)) {
+                        $logger->error("EDI: unable to update fund_debit " . $e->die_event);
+                        return (0, 1);
+                    }
+                } else {
+                    # do not delete a paid-for debit
+                    $logger->warn("EDI: cannot delete invoiced debit $debit_id");
+                }
+            }
+        }
+
+        $e->update_acq_lineitem_detail($lid);
+        $cancel_count++;
+    }
+
+    return ($cancel_count);
 }
 
 
