@@ -113,7 +113,7 @@ sub retrieve_lineitem_impl {
     push(@{$fields->{jub}   },'lineitem_notes') if $$options{flesh_notes};
     push(@{$fields->{acqlin}},    'alert_text') if $$options{flesh_notes};
     push(@{$fields->{jub}   }, 'order_summary') if $$options{flesh_order_summary};
-    push(@{$fields->{acqlin}}, 'cancel_reason') if $$options{flesh_cancel_reason};
+    push(@{$fields->{jub}   }, 'cancel_reason') if $$options{flesh_cancel_reason};
 
     if($$options{flesh_li_details}) {
         push(@{$fields->{jub}   }, 'lineitem_details');
