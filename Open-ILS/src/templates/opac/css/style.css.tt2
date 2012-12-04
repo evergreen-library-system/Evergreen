@@ -1009,7 +1009,7 @@ div.facet_sidebar {
     padding-right:11px;
 }
 
-.facet_template_selected {
+.facet_template_selected .facet {
     background-color: [% css_colors.accent_lighter2 %];
 }
 
