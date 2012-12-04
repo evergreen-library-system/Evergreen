@@ -543,7 +543,10 @@ sub process_parsed_msg {
             $lids_cancelled += $cancel_count;
 
             # if ALL the items have the same cancel_reason, the LI gets it too
-            $li->cancel_reason($eg_reason->id) if $qty_count == $lid_count;
+            if ($qty_count == $lid_count) {
+                $li->cancel_reason($eg_reason->id);
+                $li->state("cancelled");
+            }
                 
             $li->edit_time('now'); 
             unless ($e->update_acq_lineitem($li)) {
@@ -604,8 +607,11 @@ sub process_parsed_msg {
 
                     # All LIDs cancelled with same reason, apply 
                     # the same cancel reason to the lineitem 
-                    $li->cancel_reason($reason->id) if $remaining_lids == $order_qty;
-                        
+                    if ($remaining_lids == $order_qty) {
+                        $li->cancel_reason($reason->id);
+                        $li->state("cancelled");
+                    }
+
                     $li->edit_time('now'); 
                     unless ($e->update_acq_lineitem($li)) {
                         $logger->error("EDI: update_acq_lineitem failed " . $e->die_event);
