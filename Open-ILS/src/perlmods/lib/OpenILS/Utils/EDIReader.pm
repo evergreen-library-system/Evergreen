@@ -26,7 +26,8 @@ my %edi_fields = (
     vendor_acct     => qr/^NAD\+SU\+([^:]+)::91/,
     purchase_order  => qr/^RFF\+ON:(\S+)/,
     invoice_ident   => qr/^BGM\+380\+([^\+]+)/,
-    total_billed    => qr/^MOA\+86:(\d+)/
+    total_billed    => qr/^MOA\+86:(\d+)/,
+    invoice_date    => qr/^DTM\+137:([^:]+)/
 );
 
 my %edi_li_fields = (

@@ -449,13 +449,8 @@ sub process_parsed_msg {
             next;
         }
 
-        if ($li_hash->{expected_date}) {
-            my ($y, $m, $d) = $li_hash->{expected_date} =~ /^(\d{4})(\d{2})(\d{2})/g;
-            my $recv_time = $y;
-            $recv_time .= "-$m" if $m;
-            $recv_time .= "-$d" if $d;
-            $li->expected_recv_time($recv_time);
-        }
+         $li->expected_recv_time(
+            $class->edi_date_to_iso($li_hash->{expected_date}));
 
         $li->estimated_unit_price($li_hash->{unit_price});
 
@@ -681,6 +676,15 @@ sub cancel_lids {
     return ($cancel_count);
 }
 
+sub edi_date_to_iso {
+    my ($class, $date) = @_;
+    return undef unless $date and $date =~ /\d+/;
+    my ($iso, $m, $d) = $date =~ /^(\d{4})(\d{2})(\d{2})/g;
+    $iso .= "-$m" if $m;
+    $iso .= "-$d" if $d;
+    return $iso;
+}
+
 
 # create_acq_invoice_from_edi() does what it sounds like it does for INVOIC
 # messages.  For similar operation on ORDRSP messages, see the guts of
@@ -703,6 +707,9 @@ sub create_acq_invoice_from_edi {
     $eg_inv->shipper($provider);    # XXX Do we really have a meaningful way to
                                     # distinguish provider and shipper?
     $eg_inv->recv_method("EDI");
+
+    $eg_inv->recv_date(
+        $class->edi_date_to_iso($invoice->{invoice_date}));
 
 
     # some vendors encode the account number as the SAN.
@@ -793,6 +800,9 @@ sub create_acq_invoice_from_edi {
         my $eg_inv_entry = Fieldmapper::acq::invoice_entry->new;
         $eg_inv_entry->inv_item_count($quantity);
 
+        # amount staff agree to pay for
+        $eg_inv_entry->phys_item_count($quantity);
+
         # XXX Validate by making sure the LI is on-order and belongs to
         # the right provider and ordering agency and all that.
         $eg_inv_entry->lineitem($li_id);
@@ -802,6 +812,9 @@ sub create_acq_invoice_from_edi {
 
         # This is the total price for all units billed, not per-unit.
         $eg_inv_entry->cost_billed($lineitem_price);
+
+        # amount staff agree to pay
+        $eg_inv_entry->amount_paid($lineitem_price);
 
         push @eg_inv_entries, $eg_inv_entry;
     }
