@@ -12,5 +12,5 @@
     <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy"  id='vl-menu-match-set-editor'
         onclick="vlShowMatchSetEditor();" showLabel="true">[% l('Record Match Sets') %]</div>
     <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy"  id='vl-menu-import-item-attr-editor'
-        onclick="vlShowImportItemAttrEditor();" showLabel="true">[% l('Import Item Attributes') %]</div>
+        onclick="vlShowImportItemAttrEditor();" showLabel="true">[% l('Holdings Import Profiles') %]</div>
 </div>
