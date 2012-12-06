@@ -4,7 +4,7 @@
     [%- depths = ctx.copy_summary.size;
         depth = 0;
         displayed_ous = {};
-        ou_hiding_disabled = org_hiding_disabled();
+        ou_hiding_disabled = ctx.org_hiding_disabled();
         WHILE depth < depths;
             ou_avail = ctx.copy_summary.$depth.available;
             ou_id = ctx.copy_summary.$depth.org_unit;
