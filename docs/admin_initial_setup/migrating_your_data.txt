@@ -1,0 +1,349 @@
+Migrating from a legacy system
+==============================
+
+When you migrate to Evergreen, you generally want to migrate the bibliographic
+records and copy information that existed in your previous library system. For
+anything more than a few thousand records, you should import the data directly
+into the database rather than use the tools in the staff client. While the data
+that you can extract from your legacy system varies widely, this section
+assumes that you or members of your team have the ability to write scripts and
+are comfortable working with SQL to manipulate data within PostgreSQL. If so,
+then the following section will guide you towards a method of generating common
+data formats so that you can then load the data into the database in bulk.
+
+Making electronic resources visible in the catalog
+--------------------------------------------------
+Electronic resources generally do not have any call number or copy information
+associated with them, and Evergreen enables you to easily make bibliographic
+records visible in the public catalog within sections of the organizational
+unit hierarchy. For example, you can make a set of bibliographic records
+visible only to specific branches that have purchased licenses for the
+corresponding resources, or you can make records representing publicly
+available electronic resources visible to the entire consortium.
+
+Therefore, to make a record visible in the public catalog, modify the records
+using your preferred MARC editing approach to ensure the 856 field contains the
+following information before loading records for electronic resources into
+Evergreen:
+
+.856 field for electronic resources: indicators and subfields
+[width="100%",options="header"]
+|=============================================================================
+|Attribute   | Value | Note
+|Indicator 1 |4      |
+|Indicator 2 |0 or 1 |
+|Subfield u  |URL for the electronic resource |
+|Subfield y  |Text content of the link |
+|Subfield z  |Public note | Normally displayed after the link
+|Subfield 9  |Organizational unit short name | The record will be visible when
+  a search is performed specifying this organizational unit or one of its
+  children. You can repeat this subfield as many times as you need.
+|=============================================================================
+
+Once your electronic resource bibliographic records have the required
+indicators and subfields for each 856 field in the record, you can proceed to
+load the records using either the command-line bulk import method or the MARC
+Batch Importer in the staff client.
+
+Migrating your bibliographic records
+------------------------------------
+Convert your MARC21 binary records into the MARCXML format, with one record per
+line. You can use the following Python script to achieve this goal; just
+install the _pymarc_ library first, and adjust the values of the _input_ and
+_output_ variables as needed.
+
+[source,python]
+------------------------------------------------------------------------------
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import codecs
+import pymarc
+
+input = 'records_in.mrc'
+output = 'records_out.xml'
+
+reader = pymarc.MARCReader(open(input, 'rb'), to_unicode=True)
+writer = codecs.open(output, 'w', 'utf-8')
+for record in reader:
+    record.leader = record.leader[:9] + 'a' + record.leader[10:]
+    writer.write(pymarc.record_to_xml(record) + "\n")
+------------------------------------------------------------------------------
+
+Once you have a MARCXML file with one record per line, you can load the records
+into your Evergreen system via a staging table in your database.
+
+. Connect to the PostgreSQL database using the _psql_ command. For example:
++
+------------------------------------------------------------------------------
+psql -U <user-name> -h <hostname> -d <database>
+------------------------------------------------------------------------------
++
+. Create a staging table in the database. The staging table is a temporary
+  location for the raw data that you will load into the production table or
+  tables. Issue the following SQL statement from the _psql_ command line,
+  adjusting the name of the table from _staging_records_import_, if desired:
++
+[source,sql]
+------------------------------------------------------------------------------
+CREATE TABLE staging_records_import (id BIGSERIAL, dest BIGINT, marc TEXT);
+------------------------------------------------------------------------------
++
+. Create a function that will insert the new records into the production table
+  and update the _dest_ column of the staging table. Adjust
+  "staging_records_import" to match the name of the staging table that you plan
+  to create when you issue the following SQL statement:
++
+[source,sql]
+------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION staging_importer() RETURNS NULL AS $$
+DECLARE stage RECORD;
+BEGIN
+FOR stage IN SELECT * FROM staging_records_import ORDER BY id LOOP
+      INSERT INTO biblio.record_entry (marc, last_xact_id) VALUES (stage.marc, 'IMPORT');
+      UPDATE staging_records_import SET dest = currval('biblio.record_entry_id_seq');
+   END LOOP;
+  END;
+  $$ LANGUAGE plpgsql;
+------------------------------------------------------------------------------
++
+. Load the data from your MARCXML file into the staging table using the COPY
+  statement, adjusting for the name of the staging table and the location of
+  your MARCXML file:
++
+[source,sql]
+------------------------------------------------------------------------------
+COPY staging_records_import (marc) FROM '/tmp/records_out.xml';
+------------------------------------------------------------------------------
++
+. Load the data from your staging table into the production table by invoking
+  your staging function:
++
+[source,sql]
+------------------------------------------------------------------------------
+SELECT staging_importer();
+------------------------------------------------------------------------------
+
+When you leave out the _id_ value for a _BIGSERIAL_ column, the value in the
+column automatically increments for each new record that you add to the table.
+
+Once you have loaded the records into your Evergreen system, you can search for
+some known records using the staff client to confirm that the import was
+successful.
+
+Migrating your call numbers, copies, and parts
+----------------------------------------------
+'Holdings', comprised of call numbers, copies, and parts, are the set of
+objects that enable users to locate and potentially acquire materials from your
+library system.
+
+'Call numbers' connect libraries to bibliographic records. Each call number has a
+'label' associated with a classification scheme such as a the Library of Congress
+or Dewey Decimal systems, and can optionally have either or both a label prefix
+and a label suffix. Label prefixes and suffixes do not affect the sort order of
+the label.
+
+'Copies' connect call numbers to particular instances of that resource at a
+particular library. Each copy has a barcode and must exist in a particular copy
+location. Other optional attributes of copies include circulation modifier,
+which may affect whether that copy can circulate or for how long it can
+circulate, and OPAC visibility, which controls whether that particular copy
+should be visible in the public catalog.
+
+'Parts' provide more granularity for copies, primarily to enable patrons to
+place holds on individual parts of a set of items. For example, an encyclopedia
+might be represented by a single bibliographic record, with a single call
+number representing the label for that encyclopedia at a given library, with 26
+copies representing each letter of the alphabet, with each copy mapped to a
+different part such as _A, B, C, ... Z_.
+
+To migrate this data into your Evergreen system, you will create another
+staging table in the database to hold the raw data for your materials from
+which the actual call numbers, copies, and parts will be generated.
+
+Begin by connecting to the PostgreSQL database using the _psql_ command. For
+example:
+
+------------------------------------------------------------------------------
+psql -U <user-name> -h <hostname> -d <database>
+------------------------------------------------------------------------------
+
+Create the staging materials table by issuing the following SQL statement:
+
+[source,sql]
+------------------------------------------------------------------------------
+CREATE TABLE staging_materials (
+  bibkey BIGINT,  -- biblio.record_entry_id
+  callnum TEXT, -- call number label
+  callnum_prefix TEXT, -- call number prefix
+  callnum_suffix TEXT, -- call number suffix
+  callnum_class TEXT, -- classification scheme
+  create_date DATE,
+  location TEXT, -- shelving location code
+  item_type TEXT, -- circulation modifier code
+  owning_lib TEXT, -- org unit code
+  barcode TEXT, -- copy barcode
+  part TEXT
+);
+------------------------------------------------------------------------------
+
+For the purposes of this example migration of call numbers, copies, and parts,
+we assume that you are able to create a tab-delimited file containing values
+that map to the staging table properties, with one copy per line. For example,
+the following 5 lines demonstrate how the file could look for 5 different
+copies, with non-applicable attribute values represented by _\N_, and 3 of the
+copies connected to a single call number and bibliographic record via parts:
+
+------------------------------------------------------------------------------
+1   QA 76.76 A3 \N  \N  LC  2012-12-05  STACKS  BOOK    BR1 30007001122620  \N
+2   GV 161 V8   Ref.    Juv.    LC  2010-11-11  KIDS    DVD BR2 30007005197073  \N
+3   AE 5 E363 1984  \N  \N      LC  1984-01-10  REFERENCE   BOOK    BR1 30007006853385  A
+3   AE 5 E363 1984  \N  \N      LC  1984-01-10  REFERENCE   BOOK    BR1 30007006853393  B
+3   AE 5 E363 1984  \N  \N      LC  1984-01-10  REFERENCE   BOOK    BR1 30007006853344  C
+------------------------------------------------------------------------------
+
+Once your holdings are in a tab-delimited format--which, for the purposes of
+this example, we will name _holdings.tsv_--you can import the holdings file
+into your staging table. Copy the contents of the holdings file into the
+staging table using the _COPY_ SQL statement:
+
+[source,sql]
+------------------------------------------------------------------------------
+COPY staging_items (bibkey, callnum, callnum_prefix,
+  callnum_suffix, callnum_class, create_date, location,
+  item_type, owning_lib, barcode, part) FROM 'holdings.tsv';
+------------------------------------------------------------------------------
+
+Generate the copy locations you need to represent your holdings:
+
+[source,sql]
+------------------------------------------------------------------------------
+INSERT INTO asset.copy_location (name, owning_lib)
+  SELECT DISTINCT location, 1 FROM staging_materials
+  WHERE NOT EXISTS (
+    SELECT 1 FROM asset.copy_location
+    WHERE name = location
+  );
+------------------------------------------------------------------------------
+
+Generate the circulation modifiers you need to represent your holdings:
+
+[source,sql]
+------------------------------------------------------------------------------
+INSERT INTO config.circ_modifier (code, name, description, sip2_media_type)
+  SELECT DISTINCT circmod, circmod, circmod, '001'
+  FROM staging_materials
+  WHERE NOT EXISTS (
+    SELECT 1 FROM config.circ_modifier
+    WHERE circmod = code
+  );
+------------------------------------------------------------------------------
+
+Generate the call number prefixes and suffixes you need to represent your
+holdings:
+
+[source,sql]
+------------------------------------------------------------------------------
+INSERT INTO asset.call_number_prefix (owning_lib, label)
+  SELECT DISTINCT aou.id, callnum_prefix
+  FROM staging_materials sm
+    INNER JOIN actor.org_unit aou
+      ON aou.shortname = sm.owning_lib
+  WHERE NOT EXISTS (
+    SELECT 1 FROM asset.call_number_prefix acnp
+    WHERE callnum_prefix = acnp.label
+      AND aou.id = acnp.owning_lib
+  ) AND callnum_prefix IS NOT NULL;
+
+INSERT INTO asset.call_number_suffix (owning_lib, label)
+  SELECT DISTINCT aou.id, callnum_suffix
+  FROM staging_materials sm
+    INNER JOIN actor.org_unit aou
+      ON aou.shortname = sm.owning_lib
+  WHERE NOT EXISTS (
+    SELECT 1 FROM asset.call_number_suffix acns
+    WHERE callnum_suffix = acns.label
+      AND aou.id = acns.owning_lib
+  ) AND callnum_suffix IS NOT NULL;
+------------------------------------------------------------------------------
+
+Generate the call numbers for your holdings:
+
+[source,sql]
+------------------------------------------------------------------------------
+INSERT INTO asset.call_number (
+  creator, editor, record, owning_lib, label, prefix, suffix, label_class
+)
+  SELECT DISTINCT 1, 1, bibkey, aou.id, callnum, acnp.id, acns.id,
+  CASE WHEN callnum_class = 'LC' THEN 1
+             WHEN callnum_class = 'DEWEY' THEN 2
+  END
+  FROM staging_materials sm
+    INNER JOIN actor.org_unit aou
+      ON aou.shortname = owning_lib
+    INNER JOIN asset.call_number_prefix acnp
+      ON COALESCE(acnp.label, '') = COALESCE(callnum_prefix, '')
+    INNER JOIN asset.call_number_suffix acns
+      ON COALESCE(acns.label, '') = COALESCE(callnum_suffix, '')
+;
+------------------------------------------------------------------------------
+
+Generate the copies for your holdings:
+
+[source,sql]
+------------------------------------------------------------------------------
+INSERT INTO asset.copy (
+  circ_lib, creator, editor, call_number, location,
+ loan_duration, fine_level, barcode
+)
+  SELECT DISTINCT aou.id, 1, 1, acn.id, acl.id, 2, 2, barcode
+  FROM staging_materials sm
+    INNER JOIN actor.org_unit aou
+      ON aou.shortname = sm.owning_lib
+    INNER JOIN asset.copy_location acl
+      ON acl.name = sm.location
+    INNER JOIN asset.call_number acn
+      ON acn.label = sm.callnum
+  WHERE acn.deleted IS FALSE
+;
+------------------------------------------------------------------------------
+
+Generate the parts for your holdings. First, create the set of parts that are
+required for each record based on your staging materials table:
+
+[source,sql]
+------------------------------------------------------------------------------
+INSERT INTO biblio.monograph_part (record, label)
+  SELECT DISTINCT bibkey, part
+  FROM staging_materials sm
+  WHERE part IS NOT NULL AND NOT EXISTS (
+    SELECT 1 FROM biblio.monograph_part bmp
+    WHERE sm.part = bmp.label
+      AND sm.bibkey = bmp.record
+  );
+------------------------------------------------------------------------------
+
+Now map the parts for each record to the specific copies that you added:
+
+[source,sql]
+------------------------------------------------------------------------------
+INSERT INTO asset.copy_part_map (target_copy, part)
+  SELECT DISTINCT acp.id, bmp.id
+  FROM staging_materials sm
+    INNER JOIN asset.copy acp
+      ON acp.barcode = sm.barcode
+    INNER JOIN biblio.monograph_part bmp
+      ON bmp.record = sm.bibkey
+  WHERE part IS NOT NULL
+    AND part = bmp.label
+    AND acp.deleted IS FALSE
+    AND NOT EXISTS (
+    SELECT 1 FROM asset.copy_part_map
+    WHERE target_copy = acp.id
+      AND part = bmp.id
+  );
+------------------------------------------------------------------------------
+
+At this point, you have loaded your bibliographic records, call numbers, call
+number prefixes and suffixes, copies, and parts, and your records should be
+visible to searches in the public catalog within the appropriate organization
+unit scope.
