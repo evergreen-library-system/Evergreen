@@ -1,0 +1,99 @@
+Describing your organization
+============================
+
+Your Evergreen system is almost ready to go. You'll need to add each of the
+libraries that will be using your Evergreen system. If you're doing this for a
+consortium, you'll have to add your consortium as a whole, and all the
+libraries and branches that are members of the consortium. In this chapter,
+we'll talk about how to get the Evergreen system to see all your libraries, how
+to set each one up, and how to edit all the details of each one. 
+
+Organization Unit Types 
+-----------------------
+The term _Organization Unit Types_ refers to levels in the hierarchy of your
+library system(s). Examples could include: All-Encompassing Consortium, Library
+System, Branch, Bookmobile, Sub-Branch, etc. 
+
+You can add or remove organizational unit types, and rename them as needed to
+match the organizational hierarchy that matches the libraries using your
+installation of Evergreen. Organizational unit types should never have proper
+names since they are only generic types. 
+
+When working with configuration, settings, and permissions, it is very
+important to be careful of the Organization Unit *Context Location* - this is the
+organizational unit to which the configuration settings are being applied. If,
+for example, a setting is applied at the Consortium context location, all child
+units will inherit that setting. If a specific branch location is selected,
+only that branch and its child units will have the setting applied. The levels
+of the hierarchy to which settings can be applied are often referred to in
+terms of "depth" in various configuration interfaces. In a typical hierarchy,
+the consortium has a depth of 0, the system is 1, the branch is 2, and any
+bookmobiles or sub-branches is 3.
+
+Create and edit Organization Unit Types 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+. Open *Admin > Server Administration > Organization Types*.
+. In the left panel, expand the *Organization Unit Types* hierarchy. 
+. Click on a organization type to edit the existing type or to add a new
+  organization unit. 
+. A form opens in the right panel, displaying the data for the selected
+  organization unit. 
+. Edit the fields as required and click *Save*. 
+
+To create a new dependent organization unit, click *New Child*. The new child
+organization unit will appear in the left panel list below the parent.
+Highlight the new unit and edit the data as needed, click *Save*
+
+Organizational Units 
+--------------------
+'Organizational Units' are the specific instances of the organization unit types
+that make up your library's hierarchy. These will have distinctive proper names
+such as Main Street Branch or Townsville Campus. 
+
+Remove or edit default Organizational Units 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+After installing the Evergreen software, the default CONS, SYS1, BR1, etc.,
+organizational units remain. These must be removed or edited to reflect actual
+library entities. 
+
+Create and edit Organizational Units 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+. Open *Admin > Server Administration > Organizational Units*.
+. In the left panel, expand the the Organizational Units hierarchy, select a
+  unit.
+. A form opens in the right panel, displaying the data for the selected
+  organizational unit.
+. To edit the existing, default organizational unit, enter system or library
+  specific data in the form; complete all three tabs: Main Settings, Hours
+  of Operation, Addresses.
+. Click *Save*.
+
+To create a new dependent organizational unit, click *New Child*. The new child
+will appear in the hierarchy list below the parent unit. Click on the new unit
+and edit the data, click *Save*
+
+Organizational Unit data
+~~~~~~~~~~~~~~~~~~~~~~~~
+The *Addresses* tab allows you to enter library contact information. Library
+Phone number, email address, and addresses are used in patron email
+notifications, hold slips, and transit slips. The Library address tab is broken
+out into four address types: Physical Address, Holds Address, Mailing Address,
+ILL Address. 
+
+The *Hours of Operation* tab is where you enter regular, weekly hours. Holiday
+and other closures are set in the *Closed Dates Editor*. Hours of operation and
+closed dates impact due dates and fine accrual.  
+
+Set closed dates using the Closed Dates Editor 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+. Open *Admin > Local Administration > Closed Dates Editor*.
+. Select type of closure: typically Single Day or Multiple Day.
+. Click the Calendar gadget to select the All Day date or starting and ending
+  dates.
+. Enter a Reason for closure (optional).
+. Click *Apply* to all of my libraries if your organizational unit has children
+  units that will also be closed.
+. Click *Save*.
+
+Now that your organizational structure is established, you can begin
+configuring permissions for the staff users of your Evergreen system.  

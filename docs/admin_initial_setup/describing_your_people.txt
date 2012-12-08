@@ -1,0 +1,321 @@
+Describing your people
+======================
+
+Many different members of your staff will use your Evergreen system to perform
+the wide variety of tasks required of the library.
+
+When the Evergreen installation was completed, a number of permission groups
+should have been automatically created. These permission groups are:
+
+* Users
+* Patrons
+* Staff
+* Catalogers
+* Circulators
+* Acquisitions
+* Acquisitions Administrator
+* Cataloging Administrator
+* Circulation Administrator
+* Local Administrator
+* Serials
+* System Administrator
+* Global Administrator
+* Data Review
+* Volunteers
+
+Each of these permission groups has a different set of permissions connected to
+them that allow them to do different things with the Evergreen system. Some of
+the permissions are the same between groups; some are different. These
+permissions are typically tied to one or more working location (sometimes
+referred to as a working organizational unit or work OU) which affects where a
+particular user can exercise the permissions they have been granted.
+
+Setting the staff user's working location
+-----------------------------------------
+To grant a working location to a staff user in the staff client:
+
+. Search for the patron. Select *Search > Search for Patrons* from the top menu.
+. When you retrieve the correct patron record, select *Other > User Permission
+  Editor* from the upper right corner. The permissions associated with this
+  account appear in the right side of the client, with the *Working Location*
+  list at the top of the screen.
+. The *Working Location* list displays the Organizational Units in your
+  consortium. Select the check box for each Organization Unit where this user
+  needs working permissions. Clear any other check boxes for Organization Units
+  where the user no longer requires working permissions.
+. Scroll all the way to the bottom of the page and click *Save*. This user
+  account is now ready to be used at your library.
+
+As you scroll down the page you will come to the *Permissions* list. These are
+the permissions that are given through the *Permission Group* that you assigned
+to this user. Depending on your own permissions, you may also have the ability
+to grant individual permissions directly to this user.
+
+Comparing approaches for managing permissions
+---------------------------------------------
+The Evergreen community uses two different approaches to deal with managing
+permissions for users:
+
+* *Staff Client*
++
+Evergreen libraries that are most comfortable using the staff client tend to
+manage permissions by creating different profiles for each type of user. When
+you create a new user, the profile you assign to the user determines their
+basic set of permissions. This approach requires many permission groups that
+contain overlapping sets of permissions: for example, you might need to create
+a _Student Circulator_ group and a _Student Cataloger_ group. Then if a new
+employee needs to perform both of these roles, you need to create a third
+_Student Cataloger / Circulator_ group representing the set of all of the
+permissions of the first two groups.
++
+The advantage to this approach is that you can maintain the permissions
+entirely within the staff client; a drawback to this approach is that it can be
+challenging to remember to add a new permission to all of the groups. Another
+drawback of this approach is that the user profile is also used to determine
+circulation and hold rules, so the complexity of your circulation and hold
+rules might increase significantly.
++
+* *Database Access*
++
+Evergreen libraries that are comfortable manipulating the database directly
+tend to manage permissions by creating permission groups that reflect discrete
+roles within a library. At the database level, you can make a user belong to
+many different permission groups, and that can simplify your permission
+management efforts. For example, if you create a _Student Circulator_ group and
+a _Student Cataloger_ group, and a new employee needs to perform both of these
+roles, you can simply assign them to both of the groups; you do not need to
+create an entirely new permission group in this case. An advantage of this
+approach is that the user profile can represent only the user's borrowing
+category and requires only the basic _Patrons_ permissions, which can simplify
+your circulation and hold rules.
+
+Permissions and profiles are not carved in stone. As the system administrator,
+you can change them as needed. You may set and alter the permissions for each
+permission group in line with what your library, or possibly your consortium,
+defines as the appropriate needs for each function in the library.
+
+Managing permissions in the staff client
+----------------------------------------
+In this section, we'll show you in the staff client:
+
+* where to find the available permissions
+* where to find the existing permission groups
+* how to see the permissions associated with each group
+* how to add or remove permissions from a group
+
+We also provide an appendix with a listing of suggested minimum permissions for
+some essential groups. You can compare the existing permissions with these
+suggested permissions and, if any are missing, you will know how to add them.
+
+Where to find existing permissions and what they mean
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In the staff client, in the upper right corner of the screen, click on *Admin >
+Server Administration > Permissions*.
+
+The list of available permissions will appear on screen and you can scroll down
+through them to see permissions that are already available in your default
+installation of Evergreen.
+
+There are over 500 permissions in the permission list. They appear in two
+columns: *Code* and *Description*. Code is the name of the permission as it
+appear in the Evergreen database. Description is a brief note on what the
+permission allows. All of the most common permissions have easily
+understandable descriptions.
+
+Where to find existing Permission Groups
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In the staff client, in the upper right corner of the screen, navigate to *Admin
+> Server Administration > Permission Groups*.
+
+Two panes will open on your screen. The left pane provides a tree view of
+existing Permission Groups. The right pane contains two tabs: Group
+Configuration and Group Permissions.
+
+In the left pane, you will find a listing of the existing Permission Groups
+which were installed by default. Click on the + sign next to any folder to
+expand the tree and see the groups underneath it. You should see the Permission
+Groups that were listed at the beginning of this chapter. If you do not and you
+need them, you will have to create them.
+
+Adding or removing permissions from a Permission Group
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+First, we will remove a permission from the Staff group.
+
+. From the list of Permission Groups, click on *Staff*.
+. In the right pane, click on the *Group Permissions* tab. You will now see a
+  list of permissions that this group has.
+. From the list, choose *CREATE_CONTAINER*. This will now be highlighted.
+. Click the *Delete Selected* button. CREATE_CONTAINER will be deleted from the
+  list. The system will not ask for a confirmation. If you delete something by
+  accident, you will have to add it back.
+. Click the *Save Changes* button.
+
+You can select a group of individual items by holding down the _Ctrl_ key and
+clicking on them. You can select a list of items by clicking on the first item,
+holding down the _Shift_ key, and clicking on the last item in the list that
+you want to select.
+
+Now, we will add the permission we just removed back to the Staff group.
+
+. From the list of Permission Groups, click on *Staff*.
+. In the right pane, click on the *Group Permissions* tab.
+. Click on the *New Mapping* button. The permission mapping dialog box will
+  appear.
+. From the Permission drop down list, choose *CREATE_CONTAINER*.
+. From the Depth drop down list, choose *Consortium*.
+. Click the checkbox for *Grantable*.
+. Click the *Add Mapping* button. The new permission will now appear in the
+  Group Permissions window.
+. Click the *Save Changes* button.
+
+If you have saved your changes and you don't see them, you may have to click
+the Reload button in the upper left side of the staff client screen.
+
+Managing role-based permission groups in the database
+-----------------------------------------------------
+While the ability to assign a user to multiple permission groups has existed in
+Evergreen for years, a staff client interface is not currently available to
+facilitate the work of the Evergreen administrator. However, if you or members
+of your team are comfortable working directly with the Evergreen database, you
+can use this approach to separate the borrowing profile of your users from the
+permissions that you grant to staff, while minimizing the amount of overlapping
+permissions that you need to manage for a set of permission groups that would
+otherwise multiply exponentially to represent all possible combinations of
+staff roles.
+
+In the following example, we create three new groups:
+
+* a _Student_ group used to determine borrowing privileges
+* a _Student Cataloger_ group representing a limited set of cataloging
+  permissions appropriate for students
+* a _Student Circulator_ group representing a limited set of circulation
+  permissions appropriate for students
+
+Then we add three new users to our system: one who needs to perform some
+cataloging duties as a student; one who needs perform some circulation duties
+as a student; and one who needs to perform both cataloging and circulation
+duties. This section demonstrates how to add these permissions to the users at
+the database level.
+
+To create the Student group, add a new row to the _permission.grp_tree_ table
+as a child of the _Patrons_ group:
+
+[source,sql]
+------------------------------------------------------------------------------
+INSERT INTO permission.grp_tree (name, parent, usergroup, description, application_perm)
+SELECT 'Students', pgt.id, TRUE, 'Student borrowers', 'group_application.user.patron.student'
+FROM permission.grp_tree pgt
+ WHERE name = 'Patrons';
+------------------------------------------------------------------------------
+
+To create the Student Cataloger group, add a new row to the
+_permission.grp_tree_ table as a child of the _Staff_ group:
+
+[source,sql]
+------------------------------------------------------------------------------
+INSERT INTO permission.grp_tree (name, parent, usergroup, description, application_perm)
+SELECT 'Student Catalogers', pgt.id, TRUE, 'Student catalogers', 'group_application.user.staff.student_cataloger'
+FROM permission.grp_tree pgt
+WHERE name = 'Staff';
+------------------------------------------------------------------------------
+
+To create the Student Circulator group, add a new row to the
+_permission.grp_tree_ table as a child of the _Staff_ group:
+
+[source,sql]
+------------------------------------------------------------------------------
+INSERT INTO permission.grp_tree (name, parent, usergroup, description, application_perm)
+SELECT 'Student Circulators', pgt.id, TRUE, 'Student circulators', 'group_application.user.staff.student_circulator'
+FROM permission.grp_tree pgt
+WHERE name = 'Staff';
+------------------------------------------------------------------------------
+
+We want to give the Student Catalogers group the ability to work with MARC
+records at the consortial level, so we assign the UPDATE_MARC, CREATE_MARC, and
+IMPORT_MARC permissions at depth 0:
+
+[source,sql]
+------------------------------------------------------------------------------
+WITH pgt AS (
+  SELECT id
+  FROM permission.grp_tree
+  WHERE name = 'Student Catalogers'
+)
+INSERT INTO permission.grp_perm_map (grp, perm, depth)
+SELECT pgt.id, ppl.id, 0
+FROM permission.perm_list ppl, pgt
+WHERE ppl.code IN ('UPDATE_MARC', 'CREATE_MARC', 'IMPORT_MARC');
+------------------------------------------------------------------------------
+
+Similarly, we want to give the Student Circulators group the abillity to check
+out copies and record in-house uses at the system level, so we assign the
+COPY_CHECKOUT and CREATE_IN_HOUSE_USE permissions at depth 1 (overriding the
+same _Staff_ permissions that were granted only at depth 2):
+
+[source,sql]
+------------------------------------------------------------------------------
+WITH pgt AS (
+  SELECT id
+  FROM permission.grp_tree
+  WHERE name = 'Student Circulators'
+) INSERT INTO permission.grp_perm_map (grp, perm, depth)
+SELECT pgt.id, ppl.id, 1
+FROM permission.perm_list ppl, pgt
+WHERE ppl.code IN ('COPY_CHECKOUT', 'CREATE_IN_HOUSE_USE');
+------------------------------------------------------------------------------
+
+Finally, we want to add our students to the groups. The request may arrive in
+your inbox from the library along the lines of "Please add Mint Julep as a
+Student Cataloger, Bloody Caesar as a Student Circulator, and Grass Hopper as a
+Student Cataloguer / Circulator; I've already created their accounts and given
+them a work organizational unit." You can translate that into the following SQL
+to add the users to the pertinent permission groups, adjusting for the
+inevitable typos in the names of the users.
+
+First, add our Student Cataloger:
+
+[source,sql]
+------------------------------------------------------------------------------
+WITH pgt AS (
+  SELECT id FROM permission.grp_tree
+  WHERE name = 'Student Catalogers'
+)
+INSERT INTO permission.usr_grp_map (usr, grp)
+SELECT au.id, pgt.id
+FROM actor.usr au, pgt
+WHERE first_given_name = 'Mint' AND family_name = 'Julep';
+------------------------------------------------------------------------------
+
+Next, add the Student Circulator:
+
+[source,sql]
+------------------------------------------------------------------------------
+WITH pgt AS (
+  SELECT id FROM permission.grp_tree
+  WHERE name = 'Student Circulators'
+)
+INSERT INTO permission.usr_grp_map (usr, grp)
+SELECT au.id, pgt.id
+FROM actor.usr au, pgt
+WHERE first_given_name = 'Bloody' AND family_name = 'Caesar';
+------------------------------------------------------------------------------
+
+Finally, add the all-powerful Student Cataloger / Student Circulator:
+
+[source,sql]
+------------------------------------------------------------------------------
+ WITH pgt AS (
+  SELECT id FROM permission.grp_tree
+  WHERE name IN ('Student Catalogers', 'Student Circulators')
+)
+INSERT INTO permission.usr_grp_map (usr, grp)
+SELECT au.id, pgt.id
+FROM actor.usr au, pgt
+WHERE first_given_name = 'Grass' AND family_name = 'Hopper';
+------------------------------------------------------------------------------
+
+While adopting this role-based approach might seem labour-intensive when
+applied to a handful of students in this example, over time it can help keep
+the permission profiles of your system relatively simple in comparison to the
+alternative approach of rapidly reproducing permission groups, overlapping
+permissions, and permissions granted on a one-by-one basis to individual users.

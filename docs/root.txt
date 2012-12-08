@@ -103,6 +103,18 @@ The Evergreen system allows a free range of customizations to every aspect of
 the system. Use this part of the documentation to become familiar with the tools
 for configuring the system as well as customizing the catalog and staff client.  
 
+// Push titles down one level.
+:leveloffset: 1
+
+include::admin_initial_setup/describing_your_organization.txt[]
+
+include::admin_initial_setup/describing_your_people.txt[]
+
+include::admin_initial_setup/migrating_your_data.txt[]
+
+// Return to normal title levels.
+:leveloffset: 0
+
 include::admin/template_toolkit.txt[]
 
 // Push titles down one level.
