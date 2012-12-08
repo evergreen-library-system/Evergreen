@@ -1,5 +1,6 @@
 Library Settings Editor
 -----------------------
+[[library_settings_editor]]
 
 Fine Accrual on Closed Dates
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
