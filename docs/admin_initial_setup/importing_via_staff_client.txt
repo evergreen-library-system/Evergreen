@@ -1,0 +1,190 @@
+Importing materials in the staff client
+=======================================
+
+Evergreen exists to connect users to the materials represented by bibliographic
+records, call numbers, and copies -- so getting these materials into your
+Evergreen system is vital to a successful system. There are two primary means
+of getting materials into Evergreen:
+
+* The Evergreen staff client offers the *MARC Batch Importer*, which is a
+  flexible interface primarily used for small batches of records;
+* Alternately, import scripts can load data directly into the database, which is
+  a highly flexible but much more complex method of loading materials suitable
+  for large batches of records such as the initial migration from your legacy
+  library system.
+
+Staff client batch record imports
+---------------------------------
+The staff client has a utility for importing batches of bibliographic and copy
+records available through *Cataloging > MARC Batch Import/Export*. In addition
+to importing new records, this interface can be used to match incoming records
+to existing records in the database, add or overlay MARC fields in the existing
+record, and add copies to those records.
+
+The MARC Batch Import interface may also be colloquially referred to as
+"Vandelay" in the Evergreen community, referring to this interface's internals
+in the system.You will also see this name used in several places in the editor.
+For instance, when you click on the *Record Match Sets*, the title on the screen
+will be *Vandelay Match Sets*.
+
+When to use the MARC Batch Importer
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* When importing in batches of up to 500 to 1,000 records.
+* When you need the system to match those incoming records to existing records
+  and overlay or add fields to the existing record.
+* When you need to add copies to existing records in the system.
+
+The MARC Batch Importer should only be used for importing copies that already
+have barcodes and call numbers. Use *Acquisitions > Load MARC Order Records* to
+add on-order copies that do not yet have barcodes and call numbers.
+
+Record Match Sets
+~~~~~~~~~~~~~~~~~
+Click the *Record Match Sets* button to identify how Evergreen should match
+incoming records to existing records in the system.
+
+These record match sets can be used when importing records through the MARC
+Batch Importer or when importing order records through the Acquisitions Load
+MARC Order Records interface.
+
+Common match points used when creating a match set include:
+
+* MARC tag 020a (ISBN)
+* MARC tag 022a (ISSN)
+* MARC tag 024a (UPC)
+* MARC tag 028a (Publisher number)
+
+Create Match Sets
+~~~~~~~~~~~~~~~~~
+. On the *Record Match Sets* screen, click *New Match Set* to create a set of
+  record match points. Give the set a *Name*. Assign the *Owning Library* from
+  the dropdown list. The *Match Set Type* should remain as *biblio*. Click
+  *Save*.
+. If you don't see your new set in the list, in the upper left corner of the
+  staff client window, click the *Reload* button.
+. If you had to reload, click the *Record Match Sets* button to get back to
+  that screen. Find your new set in the list and click its name. (The name will
+  appear to be a hyperlink.) This will bring you to the *Vandelay Match Set
+  Editor*.
+. Create an expression that will define the match points for the incoming
+  record. You can choose from two areas to create a match: Record Attribute (MARC
+  fixed fields) or MARC Tag and Subfield. You can use the Boolean operators AND
+  and OR to combine these elements to create a match set.
+. When adding a Record Attribute or MARC tag/subfield, you also can enter a
+  Match Score. The Match Score indicates the relative importance of that match
+  point as Evergreen evaluates an incoming record against an existing record. You
+  can enter any integer into this field. The number that you enter is only
+  important as it relates to other match points.
++
+Recommended practice is that you create a match score of one (1) for the least
+important match point and assign increasing match points to the power of 2 to
+working points in increasing importance.
+. After creating a match point, drag the completed match point under the folder
+  with the appropriately-named Boolean folder under the Expression tree.
++
+image::media/create_match_sets.png[]
+. Click *Save Changes to Expression*.
+
+Quality Metrics
+~~~~~~~~~~~~~~~
+* Quality metrics provide a mechanism for Evergreen to measure the quality of
+records and to make importing decisions based on quality.
+* Metrics are configured in the match set editor.
+* Quality metrics are not required when creating a match set.
+* You can use a value in a record attribute (MARC fixed fields) or a MARC tag
+  as your quality metric.
+* The encoding level record attribute can be one indicator of record quality.
+
+image::media/record_quality_metrics.png[]
+
+Import Item Attributes
+~~~~~~~~~~~~~~~~~~~~~~
+If you are importing copies with your records, you will need to map the data in
+your holdings tag to fields in the copy record. Click the *Import Item
+Attributes* button to map this information.
+
+. Click the *New Definition* button to create a new mapping for the holdings tag.
+. Use the *Tag* field to identify the MARC tag that contains your holdings
+  information.
+. Add the subfields that contain specific copy information to the appropriate
+  copy field.
+. Select the *Keep* box if Evergreen should keep this holdings tag in the
+  record after it is imported. Otherwise, Evergreen will remove this holdings
+  tag.
+. At a minimum, you should add a name for the definition, identify the MARC
+  holdings tag, and add the subfields that identify the circulating library, the
+  owning library, the call number and the barcode.
+
+image::media/import_item_attributes.png[]
+
+Overlay/Merge Profiles
+~~~~~~~~~~~~~~~~~~~~~~
+If Evergreen finds a match for an incoming record in the database, you need to
+identify which fields should be replaced, which should be preserved, and which
+should be added to the record. Click the *Merge/Overlay Profiles* button to
+create a profile that contains this information.
+
+These overlay/merge profiles can be used when importing records through the
+MARC Batch Importer or when importing order records through the Acquisitions
+Load MARC Order Records interface.
+
+Evergreen comes pre-installed with two default profiles:
+
+* *Default merge* - No fields from incoming record are added to match. This
+  profile is useful for item loads or for order record uploads.
+* *Default overlay* - Incoming record will replace existing record.
+
+You can customize the overlay/merge behavior with a new profile by clicking the
+*New Merge Profile* button. Available options for handling the fields include:
+
+* *Preserve specification* - fields in the existing record that should be
+  preserved.
+* *Replace specification* - fields in existing record that should be replaced
+  by those in the incoming record.
+* *Add specification* - fields from incoming record that should be added to
+  existing record (in addition to any already there.)
+* *Remove specification* - fields that should be removed from incoming record.
+
+You can add multiple tags to these specifications, separating each tag with a
+comma.
+
+Importing the records
+~~~~~~~~~~~~~~~~~~~~~
+After making the above configurations, you are now ready to import your
+records.
+
+. Click the *Import Records* button
+. Provide a unique name for the queue where the records will be loaded
+. Identify the match set that should be used for matching
+. If you are importing copies, identify the *Import Item Attributes* definition
+  in the Holdings Import Profile
+. Select a record source
+. Select the overlay/merge profile that defines which fields should be
+  replaced, added or preserved
+. Identify which records should be imported, the options are:
+  ** *Import Non-Matching Records* will automatically import records that have
+     no match in the system
+  ** *Merge on Exact Match* will automatically import records that match on the
+     901c (record ID)
+  ** *Merge on Single Match* will automatically import records when there is
+     only one match in the system
+  ** *Merge on Best Match* will automatically import records for the best match
+     in the system; the best match will be determined by the combined total of the
+     records match point scores
+
+You do not need to select any of these import options at this step. You may also opt to review the records first in the import queue and then import them.
+
+* *Best Single Match Minimum Quality Ratio* should only be changed if quality metrics were used in the match set
+
+  ** Set to 0.0 to import a record regardless of record quality
+  ** Set to 1.0 if the incoming record must be of equal or higher quality than
+     the existing record to be imported
+  ** Set to 1.1 if the incoming record must be of higher quality than the
+     existing record to be imported
+  ** *Insufficient Quality Fall-Through Profile* can also be used with quality
+     metrics. If an incoming record does not meet the standards of the minimum
+     quality ratio, you can identify a back-up merge profile to be used for
+     those records. For example, you may want to use the default overlay
+     profile for high-quality records but use the default merge profile for
+     lower quality records.
