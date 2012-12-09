@@ -112,6 +112,8 @@ include::admin_initial_setup/describing_your_people.txt[]
 
 include::admin_initial_setup/migrating_your_data.txt[]
 
+include::admin_initial_setup/importing_via_staff_client.txt[]
+
 // Return to normal title levels.
 :leveloffset: 0
 
