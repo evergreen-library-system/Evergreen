@@ -1,0 +1,238 @@
+Ordering materials
+==================
+
+Acquisitions allows you to order materials, track the expenditure of your
+collections funds, track invoices and set up policies for manual claiming. In
+this chapter, we're going to be describing how to use the most essential
+functions of acquisitions in the Evergreen system.
+
+When should libraries use acquisitions?
+---------------------------------------
+* When you want to track spending of your collections budget.
+* When you want to use Evergreen to place orders electronically with your
+  vendors.
+* When you want to import large batches of records to quickly get your on-order
+  titles into the system.
+
+If your library simply wants to add on-order copies to the catalog so that
+patrons can view and place holds on titles that have not yet arrived,
+acquisitions may be more than you need. Adding those on-order records via
+cataloging is a simpler option that works well for this use case.
+
+Below are the basic administrative settings to be configured to get started
+with acquisitions. At a minimum, a library must configure *Funding Sources*,
+*Funds*, and *Providers* to use acquisitions.
+
+Managing Funds
+--------------
+
+Funding Sources (Required)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+Funding sources allow you to specify the sources that contribute monies to your
+fund(s). You can create as few or as many funding sources as you need. These
+can be used to track exact amounts for accounts in your general ledger.
+
+Example funding sources might be:
+
+* A municipal allocation for your materials budget;
+* A trust fund used for collections;
+* A revolving account that is used to replace lost materials;
+* Grant funds to be used for collections.
+
+Funding sources are not tied to fiscal or calendar years, so you can continue
+to add money to the same funding source over multiple years, e.g. County
+Funding. Alternatively, you can name funding sources by year, e.g. County
+Funding 2010 and County Funding 2011, and apply credits each year to the
+matching source.
+
+. To create a funding source, select *Admin > Server Administration >
+  Acquisitions > Funding Source*. Click the *New Funding Source* button. Give
+  the funding source a name, an owning library, and code. You should also
+  identify the type of currency that is used for the fund.
+. You must add money to the funding source before you can use it. Click the
+  hyperlinked name of the funding source and then click the *Apply Credit*
+  button. Add the amount of funds you need to add. The *Note* field is optional.
+
+Funds (Required)
+~~~~~~~~~~~~~~~~
+Funds allow you to allocate credits toward specific purchases. They typically
+are used to track spending and purchases for specific collections. Some
+libraries may choose to define very broad funds for their collections (e.g.
+children's materials, adult materials) while others may choose to define more
+specific funds (e.g. adult non-fiction DVD's for BR1).
+
+If your library does not wish to track fund accounting, you can create one
+large generic fund and use that fund for all of your purchases.
+
+. To create a fund, select *Admin > Server Administration > Acquisitions >
+  Funds*. Click the *New Fund* button. Give the fund a name and code.
+. The *Year* can either be the fiscal or calendar year for the fund.
+. If you are a multi-branch library that will be ordering titles for multiple
+  branches, you should select the system as the owning *Org Unit*, even if this
+  fund will only be used for collections at a specific branch. If you are a
+  one-branch library or if your branches do their own ordering, you can select
+  the branch as the owning *Org Unit*.
+. Select the *Currency Type* that will be used for this fund.
+. You must select the *Active* checkbox to use the fund.
+. Enter a *Balance Stop Percent*. The balance stop percent prevents you from
+  making purchases when only a specified amount of the fund remains. For example,
+  if you want to spend 95 percent of your funds, leaving a five percent balance
+  in the fund, then you would enter 95 in the field. When the fund reaches its
+  balance stop percent, it will appear in red when you apply funds to copies.
+. Enter a *Balance Warning Percent*. The balance warning percent gives you a
+  warning that the fund is low. You can specify any percent. For example, if you
+  want to spend 90 percent of your funds and be warned when the fund has only 10
+  percent of its balance remaining, then enter 90 in the field. When the fund
+  reaches its balance warning percent, it will appear in yellow when you apply
+  funds to copies.
+. Check the *Propagate* box to propagate funds. When you propagate a fund, the
+  system will create a new fund for the following fiscal year with the same
+  parameters as your current fund. All of the settings transfer except for the
+  year and the amount of money in the fund. Propagation occurs during the fiscal
+  year close-out operation.
+. Check the *Rollover* box if you want to roll over remaining encumbrances and
+  funds into the same fund next year. If you need the ability to roll over
+  encumbrances without rolling over funds, go to the *Library Settings Editor*
+  (*Admin > Local Administration > Library Settings Editor*) and set *Allow
+  funds to be rolled over without bringing the money along* to *True*.
+. You must add money to the fund before you can begin using it. Click the
+  hyperlinked name of the fund. Click the *Create Allocation button*. Select a
+  *Funding Source* from which the allocation will be drawn and then enter an
+  amount for the allocation. The *Note* field is optional.
+
+Fund Tags (Optional)
+~~~~~~~~~~~~~~~~~~~~
+You can apply tags to funds so that you can group funds for easy reporting. For
+example, you have three funds for children’s materials: Children's Board Books,
+Children's DVDs, and Children's CDs. Assign a fund tag of children's to each
+fund. When you need to report on the amount that has been spent on all
+children's materials, you can run a report on the fund tag to find total
+expenditures on children's materials rather than reporting on each individual
+fund.
+
+. To create a fund tag, select *Admin > Server Administration > Acquisitions >
+  Fund Tags*. Click the the *New Fund Tag* button. Select a owning library and
+  add the name for the fund tag.
+. To apply a fund tag to a fund, select *Admin > Server Administration >
+  Acquisitions > Funds*. Click on the hyperlinked name for the fund. Click the
+  *Tags* tab and then click the *Add Tag* button. Select the tag from the
+  dropdown menu.
+
+Ordering
+--------
+
+Providers (Required)
+~~~~~~~~~~~~~~~~~~~~
+Providers are the vendors from whom you order titles.
+
+. To add a provider record,  select *Admin > Server Administration >
+  Acquisitions > Providers*.
+. Enter information about the provider. At a minimum, you need to add a
+  *Provider Name*, *Code*, *Owner*, and *Currency*. You also need to select the
+  *Active* checkbox to use the provider.
+
+Distribution Formulas (Optional)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+If you are ordering for a multi-branch library system, distribution formulas
+are a useful way to specify the number of copies that should be distributed to
+specific branches and copy locations.
+
+. To create a distribution formula, select *Admin > Server Administration >
+  Acquisitions > Distribution Formulas*. Click the *New Formula* button. Enter
+  the formula name and select the owning library. Ignore the *Skip Count* field.
+. Click *New Entry*. Select an Owning Library from the drop down menu. This
+  indicates the branch that will receive the items.
+. Select a Shelving Location from the drop down menu.
+. In the Item Count field, enter the number of items that should be distributed
+  to that branch and copy location. You can enter the number or use the arrows on
+  the right side of the field.
+. Keep adding entries until the distribution formula is complete.
+
+Helpful acquisitions Library Settings
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+There are several acquisitions Library Settings available that will help with
+acquisitions workflow. These settings can be found at *Admin > Local
+Administration > Library Settings Editor*.
+
+* Default circulation modifier - Automatically applies a default circulation
+  modifier to all of your acquisitions copies. Useful if you use a specific
+  circulation modifier for on-order copies.
+* Default copy location - Automatically applies a default copy location (e.g.
+  On Order) to acquisitions copies.
+* Temporary barcode prefix - Applies a unique prefix to the barcode that is
+  automatically generated during the acquisitions process.
+* Temporary call number prefix - Applies a unique prefix to the start of the
+  call number that is automatically generated during the acquisitions process.
+
+Preparing for order record loading
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+If your library is planning to upload order records in a batch, you need to add
+some information to your provider records so that Evergreen knows how to map
+the copy data contained in the order record.
+
+. Retrieve the record for the provider that has supplied the order records by
+  selecting *Admin > Server Administration > Acquisitions > Providers*. Click on
+  the hyperlinked Provider name.
+. In the top frame, add the MARC tag that contains your holdings data in the
+  *Holdings Tag* field (this tag can also be entered at the time you create the
+  provider record.)
+. To map the tag's subfields to the appropriate copy data, click the *Holding
+  Subfield* tab.  Click the *New Holding Subfield* button and select the copy
+  data that you are mapping. Add the subfield that contains that data and click
+  *Save*.
++
+image::media/order_record_loading.png[]
++
+. If your vendor is sending other data in a MARC tag that needs to be mapped to
+a field in acquisitions, you can do so by clicking the Attribute Definitions
+tab. As an example, if you need to import the PO Name, you could set up an
+attribute definition by adding an XPath similar to:
++
+------------------------------------------------------------------------------
+code => purchase_order
+xpath => //*[@tag="962"]/*[@code="p"]
+Is Identifier => false
+------------------------------------------------------------------------------
++
+where 962 is the holdings tag and p is the subfield that contains the PO Name.
+
+Preparing to send electronic orders from Evergreen
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+If your library wants to transmit electronic order information to a vendor, you
+will need to configure your server to use EDI. You need to install the EDI
+translator and EDI scripts on your server by following the instructions in the
+Evergreen 2.3 documentation.
+(http://docs.evergreen-ils.org/2.3/_installation.html)
+
+Configure your provider's EDI information by selecting *Admin > Server
+Administration > Acquisitions > EDI Accounts*. Give the account a name in the
+*Label* box.
+
+. *Host* is the vendor-assigned FTP/SFTP/SSH hostname.
+. *Username* is the vendor-assigned FTP/SFTP/SSH username.
+. *Password* is the vendor-assigned FTP/SFTP/SSH password.
+. *Account* is the vendor-assigned account number associated with your
+  organization.
+. *Owner* is the organizational unit who owns the EDI account
+. *Last Activity* is the date of last activity for the account
+. *Provider* is a link to the codes for the Provider record.
+. *Path* is the path on the vendor’s server where Evergreen will send its
+  outgoing .epo files.
+. *Incoming Directory* is the path on the vendor’s server where incoming .epo
+  files are stored.
+. *Vendor Account Number* is the Vendor assigned account number.
+. *Vendor Assigned Code* is usually a sub-account designation. It can be used
+  with or without the Vendor Account Number.
+
+You now need to add this *EDI Account* and the *SAN* code to the provider's record.
+
+. Select *Admin > Server Administration > Acquisitions > Providers*.
+. Click the hyperlinked Provider name.
+. Select the account you just created in the *EDI Default* field.
+. Add the vendor-provided SAN code to the *SAN* field.
+
+The last step is to add your library's SAN code to Evergreen.
+
+. Select *Admin > Server Administration > Organizational Units*.
+. Select your library from the organizational hierarchy in the left pane.
+. Click the *Addresses* tab and add your library's SAN code to the *SAN* field.
