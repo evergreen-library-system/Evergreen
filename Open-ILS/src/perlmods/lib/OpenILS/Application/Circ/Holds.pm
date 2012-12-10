@@ -69,8 +69,12 @@ __PACKAGE__->register_method(
 sub test_and_create_hold_batch {
     my( $self, $conn, $auth, $params, $target_list, $oargs ) = @_;
 
-    my $override = 1 if $self->api_name =~ /override/;
-    $oargs = { all => 1 } unless defined $oargs;
+    my $override = 0;
+    if ($self->api_name =~ /override/) {
+        $override = 1;
+        $oargs = { all => 1 } unless defined $oargs;
+        $$params{oargs} = $oargs; # for is_possible checking.
+    }
 
     my $e = new_editor(authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
@@ -95,6 +99,11 @@ sub test_and_create_hold_batch {
         if ($res->{'success'} == 1) {
 
             $params->{'depth'} = $res->{'depth'} if $res->{'depth'};
+
+            # Remove oargs from params so holds can be created.
+            if ($$params{oargs}) {
+                delete $$params{oargs};
+            }
 
             my $ahr = construct_hold_request_object($params);
             my ($res2) = $self->method_lookup(
@@ -230,8 +239,11 @@ sub create_hold {
     my $e = new_editor(authtoken=>$auth, xact=>1);
     return $e->die_event unless $e->checkauth;
 
-    my $override = 1 if $self->api_name =~ /override/;
-    $oargs = { all => 1 } unless defined $oargs;
+    my $override = 0;
+    if ($self->api_name =~ /override/) {
+        $override = 1;
+        $oargs = { all => 1 } unless defined $oargs;
+    }
 
     my @events;
 
@@ -2867,7 +2879,7 @@ sub _check_volume_hold_is_possible {
 
 sub verify_copy_for_hold {
     my( $patron, $requestor, $title, $copy, $pickup_lib, $request_lib, $oargs ) = @_;
-    $oargs = {} unless defined $oargs;
+    # $oargs should be undef unless we're overriding.
     $logger->info("checking possibility of copy in hold request for copy ".$copy->id);
     my $permitted = OpenILS::Utils::PermitHold::permit_copy_hold(
         {
@@ -2883,15 +2895,46 @@ sub verify_copy_for_hold {
         }
     );
 
-    # All overridden?
-    my $permit_anyway = 0;
-    foreach my $permit_event (@$permitted) {
-        if (grep { $_ eq $permit_event->{textcode} } @{$oargs->{events}}) {
-            $permit_anyway = 1;
-            last;
+    # Check for override permissions on events.
+    if ($oargs && $permitted && scalar @$permitted) {
+        # Remove the events from permitted that we can override.
+        if ($oargs->{events}) {
+            foreach my $evt (@{$oargs->{events}}) {
+                $permitted = [grep {$_->{textcode} ne $evt} @{$permitted}];
+            }
+        }
+        # Now, we handle the override all case by checking remaining
+        # events against override permissions.
+        if (scalar @$permitted && $oargs->{all}) {
+            # Pre-set events and failed members of oargs to empty
+            # arrays, if they are not set, yet.
+            $oargs->{events} = [] unless ($oargs->{events});
+            $oargs->{failed} = [] unless ($oargs->{failed});
+            # When we're done with these checks, we swap permitted
+            # with a reference to @disallowed.
+            my @disallowed = ();
+            foreach my $evt (@{$permitted}) {
+                # Check if we've already seen the event in this
+                # session and it failed.
+                if (grep {$_ eq $evt->{textcode}} @{$oargs->{failed}}) {
+                    push(@disallowed, $evt);
+                } else {
+                    # We have to check if the requestor has the
+                    # override permission.
+
+                    # AppUtils::check_user_perms returns the perm if
+                    # the user doesn't have it, undef if they do.
+                    if ($apputils->check_user_perms($requestor->id, $requestor->ws_ou, $evt->{textcode} . '.override')) {
+                        push(@disallowed, $evt);
+                        push(@{$oargs->{failed}}, $evt->{textcode});
+                    } else {
+                        push(@{$oargs->{events}}, $evt->{textcode});
+                    }
+                }
+            }
+            $permitted = \@disallowed;
         }
     }
-    $permitted = [] if $permit_anyway;
 
     my $age_protect_only = 0;
     if (@$permitted == 1 && @$permitted[0]->{textcode} eq 'ITEM_AGE_PROTECTED') {
