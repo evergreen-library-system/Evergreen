@@ -10,7 +10,7 @@
     <h1>[% l('Place Hold') %]</h1>
 
     <form method="POST">
-        <input type="hidden" type="name" name="override" value="1" />
+        <input type="hidden" name="override" value="1" />
         [% FOR k IN ctx.orig_params.keys %]
         <input type="hidden" name="[% k %]" value="[% ctx.orig_params.$k | html %]" />
         [% END %]
