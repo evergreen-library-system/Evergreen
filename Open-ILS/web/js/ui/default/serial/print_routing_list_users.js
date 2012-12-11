@@ -1,4 +1,5 @@
 dojo.require("dojo.string");
+dojo.require("dijit.form.Button");
 
 var list_renderer;
 
