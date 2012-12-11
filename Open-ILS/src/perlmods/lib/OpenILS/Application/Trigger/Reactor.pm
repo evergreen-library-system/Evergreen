@@ -98,6 +98,12 @@ $_TT_helpers = {
         return $U->get_copy_price(new_editor(xact=>1), $copy_id);
     },
 
+    get_org_unit => sub {
+        my $org_id = shift;
+        return $org_id if ref $org_id;
+        return new_editor()->retrieve_actor_org_unit($org_id);
+    },
+
     # given a copy, returns the title and author in a hash
     get_copy_bib_basics => sub {
         my $copy_id = shift;
@@ -163,6 +169,14 @@ $_TT_helpers = {
     get_org_setting => sub {
         my($org_id, $setting) = @_;
         return $U->ou_ancestor_setting_value($org_id, $setting);
+    },
+
+    get_user_setting => sub {
+        my ($user_id, $setting) = @_;
+        my $val = new_editor()->search_actor_user_setting(
+            {usr => $user_id, name => $setting})->[0];
+        return undef unless $val; 
+        return OpenSRF::Utils::JSON->JSON2perl($val->value);  
     },
 
     # This basically greps/maps out ths isbn string values, but also promotes the first isbn-13 to the
@@ -372,6 +386,13 @@ $_TT_helpers = {
         my $unapi = new_editor()->json_query($query);
         return undef unless @$unapi;
         return $_TT_helpers->{xml_doc}->($unapi->[0]->{'unapi.bre'});
+    },
+
+    # escapes quotes in csv string values
+    escape_csv => sub {
+        my $string = shift;
+        $string =~ s/"/""/og;
+        return $string;
     }
 };
 
