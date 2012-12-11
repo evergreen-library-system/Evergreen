@@ -1,0 +1,44 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = l('Remote Accounts') | html %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+    <div>[% ctx.page_title %]</div>
+    <div>
+        <button dojoType='dijit.form.Button' onClick='raGrid.showCreateDialog()'>[% l('New') %]</button>
+        <button dojoType='dijit.form.Button' onClick='raGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
+    </div>
+</div>
+
+<table
+    id="raGrid"
+    jsid="raGrid"
+    dojoType="openils.widget.FlattenerGrid"
+    columnPersistKey='"conify.config.remote_account"'
+    autoHeight="true"
+    editOnEnter="true"
+    editStyle="pane"
+    showLoadFilter="true"
+    fmClass="'cracct'"
+    _autoCoreFields="true"
+    suppressEditFields="['id', 'last_activity']"
+    defaultSort="['owner_sn', 'label']"
+    query="{id : {'!=':0}}">
+    <thead>
+        <tr>
+            <th field="id"          fpath="id"/>
+            <th field="owner_sn"    fpath="owner.shortname" ffilter="true"/>
+            <th field="label"       fpath="label" ffilter="true"/>
+            <th field="host"        fpath="host" ffilter="true"/>
+            <th field="username"    fpath="username" ffilter="true"/>
+            <th field="password"    fpath="password" ffilter="true"/>
+            <th field="account"     fpath="account" ffilter="true"/>
+            <th field="path"        fpath="path" ffilter="true"/>
+        </tr>
+    </thead>
+</table>
+
+<script>
+    dojo.require('openils.widget.FlattenerGrid');
+</script>
+
+[% END %]
+

@@ -325,6 +325,9 @@
     <command id="cmd_server_admin_config_best_hold_order"
              perm="ADMIN_HOLD_CAPTURE_SORT"
              />
+    <command id="cmd_server_admin_conify_remote_account"
+             perm="ADMIN_CONFIG_REMOTE_ACCOUNT VIEW_CONFIG_REMOTE_ACCOUNT"
+             />
 
     <command id="cmd_hotkeys_toggle" />
     <command id="cmd_hotkeys_set" />
@@ -637,6 +640,7 @@
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.config_usr_activity_type;" command="cmd_server_admin_config_usr_activity_type"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.config_best_hold_order;" command="cmd_server_admin_config_best_hold_order"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.actor.org_unit_custom_tree;" command="cmd_server_admin_actor_org_unit_custom_tree"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.config.remote_account;" command="cmd_server_admin_conify_remote_account"/>
                 <menu id="main.menu.admin.server.acq" label="&staff.main.menu.admin.server_admin.acq.label;" accesskey="&staff.main.menu.admin.server_admin.acq.accesskey;">
                     <menupopup id="main.menu.admin.server.acq.popup">
                         <menuitem label="&staff.main.menu.admin.server_admin.acq.fund.label;" accesskey="&staff.main.menu.admin.server_admin.acq.fund.accesskey;" command="cmd_server_admin_acq_fund" />

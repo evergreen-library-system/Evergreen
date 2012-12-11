@@ -1191,6 +1191,16 @@ main.menu.prototype = {
                     );
                 }
             ],
+            'cmd_server_admin_conify_remote_account' : [
+                ['oncommand'],
+                function(event) {
+                    open_eg_web_page(
+                        "/eg/conify/global/config/remote_account",
+                        "menu.cmd_server_admin_conify_remote_account.tab",
+                        event
+                    );
+                }
+            ],
             'cmd_reprint' : [
                 ['oncommand'],
                 function() {
