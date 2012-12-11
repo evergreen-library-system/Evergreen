@@ -278,3 +278,4 @@ span[name="bib_origin"] img { vertical-align: middle; }
     border: 1px solid #464; 
 }
 
+span[name="cancel_reason"] { text-decoration: underline; font-weight: bold; }
