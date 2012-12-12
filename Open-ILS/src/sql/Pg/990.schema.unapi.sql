@@ -70,8 +70,8 @@ CREATE OR REPLACE FUNCTION evergreen.ranked_volumes(
     depth INT DEFAULT NULL,
     slimit HSTORE DEFAULT NULL,
     soffset HSTORE DEFAULT NULL,
-    pref_lib INT DEFAULT NULL
-    includes TEXT[],
+    pref_lib INT DEFAULT NULL,
+    includes TEXT[] DEFAULT NULL::TEXT[]
 ) RETURNS TABLE (id BIGINT, name TEXT, label_sortkey TEXT, rank BIGINT) AS $$
     SELECT ua.id, ua.name, ua.label_sortkey, MIN(ua.rank) AS rank FROM (
         SELECT acn.id, aou.name, acn.label_sortkey,
@@ -79,8 +79,6 @@ CREATE OR REPLACE FUNCTION evergreen.ranked_volumes(
             RANK() OVER w
         FROM asset.call_number acn
             JOIN asset.copy acp ON (acn.id = acp.call_number)
-            JOIN asset.copy_location acl ON (acl.id = acp.location)
-            JOIN config.copy_status ccs ON (ccs.id = acp.status)
             JOIN actor.org_unit_descendants( $2, COALESCE(
                 $3, (
                     SELECT depth
@@ -92,10 +90,12 @@ CREATE OR REPLACE FUNCTION evergreen.ranked_volumes(
         WHERE acn.record = $1
             AND acn.deleted IS FALSE
             AND acp.deleted IS FALSE
-            AND CASE WHEN ('exclude_invisible_acn' = ANY($6))
-                acp.opac_visible IS TRUE AND
-                acl.opac_visible IS TRUE AND
-                ccs.opac_visible IS TRUE
+            AND CASE WHEN ('exclude_invisible_acn' = ANY($7)) THEN 
+                EXISTS (
+                    SELECT 1 
+                    FROM asset.opac_visible_copies 
+                    WHERE copy_id = acp.id AND record = acn.record
+                ) ELSE TRUE END
         GROUP BY acn.id, acp.status, aou.name, acn.label_sortkey, aou.id
         WINDOW w AS (
             ORDER BY evergreen.rank_ou(aou.id, $2, $6), evergreen.rank_cp_status(acp.status)
