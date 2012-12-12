@@ -71,6 +71,7 @@ CREATE OR REPLACE FUNCTION evergreen.ranked_volumes(
     slimit HSTORE DEFAULT NULL,
     soffset HSTORE DEFAULT NULL,
     pref_lib INT DEFAULT NULL
+    includes TEXT[],
 ) RETURNS TABLE (id BIGINT, name TEXT, label_sortkey TEXT, rank BIGINT) AS $$
     SELECT ua.id, ua.name, ua.label_sortkey, MIN(ua.rank) AS rank FROM (
         SELECT acn.id, aou.name, acn.label_sortkey,
@@ -78,6 +79,8 @@ CREATE OR REPLACE FUNCTION evergreen.ranked_volumes(
             RANK() OVER w
         FROM asset.call_number acn
             JOIN asset.copy acp ON (acn.id = acp.call_number)
+            JOIN asset.copy_location acl ON (acl.id = acp.location)
+            JOIN config.copy_status ccs ON (ccs.id = acp.status)
             JOIN actor.org_unit_descendants( $2, COALESCE(
                 $3, (
                     SELECT depth
@@ -89,6 +92,10 @@ CREATE OR REPLACE FUNCTION evergreen.ranked_volumes(
         WHERE acn.record = $1
             AND acn.deleted IS FALSE
             AND acp.deleted IS FALSE
+            AND CASE WHEN ('exclude_invisible_acn' = ANY($6))
+                acp.opac_visible IS TRUE AND
+                acl.opac_visible IS TRUE AND
+                ccs.opac_visible IS TRUE
         GROUP BY acn.id, acp.status, aou.name, acn.label_sortkey, aou.id
         WINDOW w AS (
             ORDER BY evergreen.rank_ou(aou.id, $2, $6), evergreen.rank_cp_status(acp.status)
@@ -452,7 +459,7 @@ RETURNS XML AS $F$
                      (SELECT XMLAGG(acn ORDER BY rank, name, label_sortkey) FROM (
                         -- Physical copies
                         SELECT  unapi.acn(y.id,'xml','volume',evergreen.array_remove_item_by_value( evergreen.array_remove_item_by_value($5,'holdings_xml'),'bre'), $3, $4, $6, $7, FALSE), y.rank, name, label_sortkey
-                        FROM evergreen.ranked_volumes($1, $2, $4, $6, $7, $9) AS y
+                        FROM evergreen.ranked_volumes($1, $2, $4, $6, $7, $9, $5) AS y
                         UNION ALL
                         -- Located URIs
                         SELECT unapi.acn(uris.id,'xml','volume',evergreen.array_remove_item_by_value( evergreen.array_remove_item_by_value($5,'holdings_xml'),'bre'), $3, $4, $6, $7, FALSE), 0, name, label_sortkey
