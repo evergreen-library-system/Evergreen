@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+<overlay id="pv_supa_goodstuff_config_overlay"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<script>dump('loading addon/pv_supa_goodstuff_config_overlay.xul\n');</script>
+
+<tabs id="addonpref_tabs">
+    <tab id="pv_supa_goodstuff_tab" />
+</tabs>
+
+<tabpanels id="addonpref_tabpanels">
+    <tabpanel id="pv_supa_goodstuff_tabpanel">
+        <grid>
+            <columns>
+                <column/>
+                <column/>
+            </columns>
+            <rows>
+                <row>
+                    <label id="pv_supa_goodstuff_enabled_label"
+                        control="pv_supa_goodstuff_enabled_cb"/>
+                    <checkbox id="pv_supa_goodstuff_enabled_cb"/>
+                </row>
+                <row>
+                    <label id="pv_supa_goodstuff_hostname_label"
+                        control="pv_supa_goodstuff_hostname_tb"/>
+                    <textbox id="pv_supa_goodstuff_hostname_tb"/>
+                </row>
+                <row>
+                    <label id="pv_supa_goodstuff_port_label"
+                        control="pv_supa_goodstuff_port_tb"/>
+                    <textbox id="pv_supa_goodstuff_port_tb"/>
+                </row>
+                <row>
+                    <spacer/>
+                    <button id="pv_supa_goodstuff_save_btn" />
+                </row>
+            </rows>
+        </grid>
+    </tabpanel>
+</tabpanels>
+
+</overlay>

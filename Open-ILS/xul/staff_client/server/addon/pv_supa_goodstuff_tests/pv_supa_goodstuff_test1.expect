@@ -1,0 +1,52 @@
+#!/usr/bin/expect -f
+# This test simulates interaction with GoodStuff hardware for the purpose
+# of RFID scanning a patron card.  The hardware is capable of fielding
+# multiple such cards in one pass, but the staff client will close the
+# connection after the first successful card.
+#
+# Prerequisites:
+#
+# Requires expect and netcat to be installed, and expects for a pristine
+# load of EG's stock test data to be installed.  In the staff client,
+# pv_supa_goodstuff should be listed in the Add-Ons list under Admin ->
+# Workstation Administration -> Server Add-ons.  In the GoodStuff
+# preferences section, Enabled should be checked, the IP/Hostname field
+# should point to the server running this test script, and the port
+# should be 5000.  Networking should be configured to allow the client
+# machine to reach port 5000 on this server.  If netcat is not installed
+# as /bin/nc, change the spawn line below as appropriate.
+#
+# Steps:
+#
+# 1) Ensure the staff client is configured as per the prerequisites, and
+#    clear all tabs in the staff client.
+# 2) Invoke this script.
+# 3) In the staff client, press F1 or invoke Circulation -> Checkout
+#    Items.  If the RFID checkbox is unchecked, check it.
+# 4) The script should run without errors, and the staff client should
+#    show an attempt at loading a patron with card "bad_card", and then
+#    the patron with card "99999376669" should load.  The script should
+#    end without errors.
+#
+set send_slow {1 .1}
+proc send {ignore arg} {
+    sleep .1
+    exp_send -s -- $arg
+}
+set timeout -1
+spawn "/bin/nc/" -l -p 5000
+match_max 100000
+expect "START|PATRON\r"
+send -- "START|OK\r"
+expect -exact "START|OK\r
+"
+send -- "bad_card\r"
+expect -exact "bad_card\r
+bad_card\r
+"
+send -- "99999376669\r"
+expect -exact "99999376669\r
+99999376669\r
+END\r
+"
+expect eof

@@ -1,0 +1,109 @@
+#!/usr/bin/expect -f
+# This test simulates interaction with GoodStuff hardware for the purpose
+# of RFID scanning items for checkout.
+#
+# Prerequisites:
+#
+# Requires expect and netcat to be installed, and expects for a pristine
+# load of EG's stock test data to be installed.  In the staff client,
+# pv_supa_goodstuff should be listed in the Add-Ons list under Admin ->
+# Workstation Administration -> Server Add-ons.  In the GoodStuff
+# preferences section, Enabled should be checked, the IP/Hostname field
+# should point to the server running this test script, and the port
+# should be 5000.  Networking should be configured to allow the client
+# machine to reach port 5000 on this server.  If netcat is not installed
+# as /bin/nc, change the spawn line below as appropriate.  The staff
+# client should registered to the BR1 branch and the stock admin user
+# should be used.
+#
+# Steps:
+#
+# 1) Ensure the staff client is configured as per the prerequisites, and
+#    clear all tabs in the staff client.
+# 2) Invoke this script.
+# 3) In the staff client, press F2 or invoke Circulation -> Check In Items.
+#    If the RFID checkbox is unchecked, check it.
+# 4) The client will transit item CONC90000480.  Click "Do Not Print".
+# 5) The client will fail to check in item "madeupitem".  Click "OK".
+# 6) The fake GoodStuff will report a problem scanning all the parts for
+#    item CONC40000120, and say that it read only 1 of 2 parts.  Click
+#    "Re-Scan Item".  The item will be checked in.
+# 7) The client will check-in item CONC40000121, but the fake GoodStuff
+#    will report a problem setting the item's security flag.  Click
+#    "Activate Security".  The problem will persist.  Click "Make No
+#    Change".
+# 8) Close the tab.  The script should end without errors.  This
+#    particular test may be ran again with identical results without
+#    needing to reset the test data.
+#
+set send_slow {1 .1}
+proc send {ignore arg} {
+    sleep .1
+    exp_send -s -- $arg
+}
+set timeout -1
+spawn "/bin/nc" -l -p 5000
+match_max 100000
+expect "START|ITEM\r"
+send -- "START|OK\r"
+expect -exact "START|OK\r
+"
+send -- "CONC90000480"
+expect -exact "CONC90000480"
+send -- "|1/1\r"
+expect -exact "|1/1\r
+CONC90000480|ACTIVATE\r
+"
+send -- "CONC90000480"
+expect -exact "CONC90000480"
+send -- "|OK\r"
+expect -exact "|OK\r
+"
+send -- "madeupitem|1/1\r"
+expect -exact "madeupitem|1/1\r
+madeupitem|ACTIVATE\r
+"
+send -- "madeupitem|OK\r"
+expect -exact "madeupitem|OK\r
+"
+send -- "CONC40000120"
+expect -exact "CONC40000120"
+send -- "|1/2\r"
+expect -exact "|1/2\r
+CONC40000120|REREAD\r
+"
+send -- "CONC40000120"
+expect -exact "CONC40000120"
+send -- "|2/2\r"
+expect -exact "|2/2\r
+CONC40000120|ACTIVATE\r
+"
+send -- "CONC40000120"
+expect -exact "CONC40000120"
+send -- "|OK\r"
+expect -exact "|OK\r
+"
+send -- "CONC40000121"
+expect -exact "CONC40000121"
+send -- "|1/1\r"
+expect -exact "|1/1\r
+CONC40000121|ACTIVATE\r
+"
+send -- "CONC40000121"
+expect -exact "CONC40000121"
+send -- "|NOK\r"
+expect -exact "|NOK\r
+CONC40000121|ACTIVATE\r
+"
+send -- "CONC40000121"
+expect -exact "CONC40000121"
+send -- "|NOK\r"
+expect -exact "|NOK\r
+CONC40000121\r
+"
+send -- "CONC40000121"
+expect -exact "CONC40000121"
+send -- "|OK\r"
+expect -exact "|OK\r
+END\r"
+expect eof

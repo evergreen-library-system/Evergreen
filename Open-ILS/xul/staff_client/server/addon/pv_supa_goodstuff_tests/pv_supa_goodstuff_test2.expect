@@ -1,0 +1,144 @@
+#!/usr/bin/expect -f
+# This test simulates interaction with GoodStuff hardware for the purpose
+# of RFID scanning items for checkout.
+#
+# Prerequisites:
+#
+# Requires expect and netcat to be installed, and expects for a pristine
+# load of EG's stock test data to be installed.  In the staff client,
+# pv_supa_goodstuff should be listed in the Add-Ons list under Admin ->
+# Workstation Administration -> Server Add-ons.  In the GoodStuff
+# preferences section, Enabled should be checked, the IP/Hostname field
+# should point to the server running this test script, and the port
+# should be 5000.  Networking should be configured to allow the client
+# machine to reach port 5000 on this server.  If netcat is not installed
+# as /bin/nc, change the spawn line below as appropriate.
+#
+# Steps:
+#
+# 1) Ensure the staff client is configured as per the prerequisites, and
+#    clear all tabs in the staff client.
+# 2) Invoke this script.
+# 3) In the staff client, press F4 or invoke Search -> Search for
+#    Patrons.  Enter Smith for the last name and submit the search.
+#    Retrieve the first patron, Cathy Smith.  If the RFID checkbox is
+#    unchecked, check it.
+# 4) The client will attempt to circulate CONC4000049, which is already
+#    checked out to another user.  Click "Cancel".
+# 5) The client will attempt to circulate CONC4000048, which is already
+#    checked out to another user.  Click "Normal Checkin then Checkout".
+# 6) The client will circulate CONC70000408, but the fake GoodStuff will
+#    fail to deactivate the security flag for the item.  Click
+#    "Deactivate Security".
+# 7) The client will circulate CONC70000401, but the fake GoodStuff will
+#    fail to deactivate the security flag for the item.  Click "Make No
+#    Change".
+# 8) The fake GoodStuff will report a problem with CONC70000394, that it
+#    expected two parts but could only detect one.  Click "Re-Scan Item".
+#    This item should circulate.
+# 9) The fake GoodStuff will report a problem with CONC70000387, that it
+#    expected two parts but could only detect one.  Click "Proceed with
+#    Item".  This item should circulate.
+# 10) Close the tab or click Done (and cancel any print job).  The script
+#     should end without errors.
+#
+# Note: added some gratuitous whitespace near the end with the socket
+#       messages; client should ignore whitespace
+#
+set send_slow {1 .1}
+proc send {ignore arg} {
+    sleep .1
+    exp_send -s -- $arg
+}
+set timeout -1
+spawn "/bin/nc" -l -p 5000
+match_max 100000
+expect "START|ITEM\r"
+send -- "START|OK\r"
+expect -exact "START|OK\r
+"
+send -- "CONC4000049"
+expect -exact "CONC4000049"
+send -- "|1/1\r"
+expect -exact "|1/1\r
+CONC4000049|ACTIVATE\r
+"
+send -- "CONC4000049"
+expect -exact "CONC4000049"
+send -- "|OK\r"
+expect -exact "|OK\r
+"
+send -- "CONC4000048"
+expect -exact "CONC4000048"
+send -- "|1/1\r"
+expect -exact "|1/1\r
+CONC4000048|DEACTIVATE\r
+"
+send -- "CONC4000048"
+expect -exact "CONC4000048"
+send -- "|OK\r"
+expect -exact "|OK\r
+"
+send -- "CONC70000408"
+expect -exact "CONC70000408"
+send -- "|1/1\r"
+expect -exact "|1/1\r
+CONC70000408|DEACTIVATE\r
+"
+send -- "CONC70000408"
+expect -exact "CONC70000408"
+send -- "|NOK\r"
+expect -exact "|NOK\r
+CONC70000408|DEACTIVATE\r
+"
+send -- "CONC70000408"
+expect -exact "CONC70000408"
+send -- "|OK\r"
+expect -exact "|OK\r
+"
+send -- "CONC70000401"
+expect -exact "CONC70000401"
+send -- "|1/1\r"
+expect -exact "|1/1\r
+CONC70000401|DEACTIVATE\r
+"
+send -- "CONC70000401"
+expect -exact "CONC70000401"
+send -- "|NOK\r"
+expect -exact "|NOK\r
+CONC70000401\r
+"
+send -- "CONC70000401"
+expect -exact "CONC70000401"
+send -- "|OK\r"
+expect -exact "|OK\r
+"
+send -- "CONC70000394"
+expect -exact "CONC70000394"
+send -- "|1/2\r"
+expect -exact "|1/2\r
+CONC70000394|REREAD\r
+"
+send -- "CONC70000394"
+expect -exact "CONC70000394"
+send -- "|2/2\r"
+expect -exact "|2/2\r
+CONC70000394|DEACTIVATE\r
+"
+send -- "CONC70000394"
+expect -exact "CONC70000394"
+send -- "|OK\r"
+expect -exact "|OK\r
+"
+send -- "CONC70000387 "
+expect -exact "CONC70000387 "
+send -- "| 1/ 2 \r"
+expect -exact "| 1/ 2 \r
+CONC70000387|DEACTIVATE\r
+"
+send -- "CONC70000387"
+expect -exact "CONC70000387"
+send -- "|OK\r"
+expect -exact "|OK\r
+END\r"
+expect eof
