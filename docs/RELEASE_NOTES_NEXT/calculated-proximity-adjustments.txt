@@ -1,0 +1,10 @@
+Calculated Proximity Adjustments
+================================
+
+Allows customization to the way that Evergreen measures the distance between
+org units for the purposes of 1) determining what copy at what org unit is best
+suited for targeting a title-level hold, and 2) determining what hold is best
+suited for fulfillment by a copy-in-hand at capture (checkin) time.  The
+customization is based on a table 'actor.org_unit_proximity_adjustment', with
+certain matching criteria that the system compares to properties of the holds
+and copies in question.

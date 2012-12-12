@@ -1,0 +1,46 @@
+Calculated Proximity Adjustments
+================================
+
+Summary
+-------
+
+Today in Evergreen, the way in which organizational hierarchy can be taken into account during hold targeting and capture is through the evaluation of Org Unit Proximity.  This is defined as the number of graph edges between Org Units, and for holds, specifically the distance between the capturing library and the pickup library. This value is used to rank sets of potential copies for holds based on their apparent nearness or proximity to the pickup lib at targeting time and to the checkin lib at op-capture time (in certain configurations).
+
+Evergreen needs a mechanism by which the proximity between libraries can be adjusted for the purpose of effecting hold capture.  This will support several use cases, including, but not limited to:
+
+  * Causing a specific library to be targeted for holds in preference to all others.
+  * Causing a specific library to be targeted for holds in preference to all others except for the pickup library.
+  * Allowing transit distance to be more accurately reflected in hold order choice, for instance, causing nearby systems to have lower effective transit distances than widely separated systems.
+  * Reporting on the true cost of transiting items in a broadly distributed consortium.
+
+Overview
+--------
+
+Evergreen can be made to provide a way to specify two types of proximity adjustment: Relative and Absolute.
+
+Relative proximity adjustment will allow Org Units, and descendants thereof, to be treated as closer or farther from one another than the simple edge distance describes by adding or subtracting full or partial edge distance amounts to the baseline edge distance under configured circumstances.
+
+Absolute proximity adjustment will allow Org Units, and descendants thereof, to be viewed as having a specific distance from one another that replaces the baseline edge distance under configure circumstances. This will naturally have an impact on how potential copies are evaluated for their 'proximity' when targeting holds and capturing copies for holds.
+
+Plan
+----
+
+Create a configuration interface allowing certain item- and hold-level criteria to be evaluated at targeting time.  Among the criteria would be:
+
+  * Item circ library (or ancestor thereof)
+  * Item owning library (or ancestor thereof)
+  * Hold pickup library (or ancestor thereof)
+  * Hold request library (or ancestor thereof)
+  * Item circ modifier
+  * Item shelving location
+
+At least one criterion must be supplied.  These criteria would be ranked by order, and reordering allowed.
+
+In addition to these criteria, an Absolute or Relative proximity adjustment would be supplied.  For Absolute proximity adjustments, the highest-ranked criteria-matching rule would be used for the copy.  For Relative proximity adjustments, all applicable adjustments would be summed.  In the case that both Absolute and Relative adjustments are found for the currently evaluated item and hold, the Absolute proximity adjustment will replace the baseline edge distance and then be modified by the Relative proximity adjustment calculation.
+
+To support both targeting-time and capture-time use of this derived proximity information, the calculated value will be stored on the hold-copy map.  In conjunction with the Custom Best-hold Sort Order proposal, this information would then be available for use in choosing the hold to be filled by a particular copy.
+
+
+////
+vim: ft=asciidoc
+////

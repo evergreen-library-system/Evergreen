@@ -1,0 +1,85 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = 'Org Unit Proximity Adjustments' %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
+        <div>[% ctx.page_title %]</div>
+        <div>
+            <button dojoType="dijit.form.Button"
+                onClick="aoupa_grid.showCreateDialog()">New OU Proximity Adjustment</button>
+            <button dojoType="dijit.form.Button"
+                onClick="aoupa_grid.deleteSelected()">Delete Selected</button>
+        </div>
+    </div>
+    <div>
+        Show adjustments involving this branch or deeper:
+        <select dojoType="openils.widget.OrgUnitFilteringSelect"
+            jsId="context_org_selector"></select>
+    </div>
+    <table jsId="aoupa_grid"
+        dojoType="openils.widget.AutoGrid"
+        query="{id: '*'}"
+        fmClass="aoupa"
+        fieldorder="['item_circ_lib','item_owning_lib','hold_pickup_lib','hold_request_lib','copy_location','circ_mod','pos','absolute_adjustment','prox_adjustment']"
+        showPaginator="true"
+        editOnEnter="true">
+        <thead>
+            <tr>
+                <th field="item_circ_lib"
+                    get="openils.widget.AutoGrid.orgUnitGetter"></th>
+                <th field="item_owning_lib"
+                    get="openils.widget.AutoGrid.orgUnitGetter"></th>
+                <th field="hold_pickup_lib"
+                    get="openils.widget.AutoGrid.orgUnitGetter"></th>
+                <th field="hold_request_lib"
+                    get="openils.widget.AutoGrid.orgUnitGetter"></th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<script type="text/javascript">
+    dojo.require("openils.widget.AutoGrid");
+    dojo.require("openils.widget.OrgUnitFilteringSelect");
+
+    var context_org;
+
+    function load_grid(search) {
+        if (!search) search = {"id": {"!=": null}};
+
+        aoupa_grid.loadAll({
+            "order_by": {
+                "aoupa": ["item_circ_lib","item_owning_lib","hold_pickup_lib","hold_request_lib","pos"]
+            }
+        }, search);
+    }
+
+    function reload_grid_from_ou_selector() {
+        context_org = context_org_selector.attr("value");
+        var descendants = aou.descendantNodeList(context_org, true);
+        aoupa_grid.resetStore();
+        load_grid({
+            "-or": [
+                {"item_circ_lib": descendants},
+                {"item_owning_lib": descendants},
+                {"hold_pickup_lib": descendants},
+                {"hold_request_lib": descendants}
+            ]
+        });
+    }
+
+    openils.Util.addOnLoad(
+        function() {
+            new openils.User().buildPermOrgSelector(
+                "ADMIN_PROXIMITY_ADJUSTMENT",
+                context_org_selector,
+                null,
+                function() {
+                    context_org_selector.onChange =
+                        reload_grid_from_ou_selector;
+                    reload_grid_from_ou_selector();
+                }
+            );
+        }
+    );
+</script>
+[% END %]

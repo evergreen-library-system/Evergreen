@@ -380,6 +380,27 @@ default entry.
 $$;
 
 
+CREATE TABLE actor.org_unit_proximity_adjustment (
+    id                  SERIAL   PRIMARY KEY,
+    item_circ_lib       INT         REFERENCES actor.org_unit (id),
+    item_owning_lib     INT         REFERENCES actor.org_unit (id),
+    copy_location       INT         REFERENCES asset.copy_location (id),
+    hold_pickup_lib     INT         REFERENCES actor.org_unit (id),
+    hold_request_lib    INT         REFERENCES actor.org_unit (id),
+    pos                 INT         NOT NULL DEFAULT 0,
+    absolute_adjustment BOOL        NOT NULL DEFAULT FALSE,
+    prox_adjustment     NUMERIC,
+    circ_mod            TEXT,       -- REFERENCES config.circ_modifier (code),
+    CONSTRAINT prox_adj_criterium CHECK (COALESCE(item_circ_lib::TEXT,item_owning_lib::TEXT,copy_location::TEXT,hold_pickup_lib::TEXT,hold_request_lib::TEXT,circ_mod) IS NOT NULL)
+);
+CREATE UNIQUE INDEX prox_adj_once_idx ON actor.org_unit_proximity_adjustment (item_circ_lib,item_owning_lib,copy_location,hold_pickup_lib,hold_request_lib,circ_mod);
+CREATE INDEX prox_adj_circ_lib_idx ON actor.org_unit_proximity_adjustment (item_circ_lib);
+CREATE INDEX prox_adj_owning_lib_idx ON actor.org_unit_proximity_adjustment (item_owning_lib);
+CREATE INDEX prox_adj_copy_location_idx ON actor.org_unit_proximity_adjustment (copy_location);
+CREATE INDEX prox_adj_pickup_lib_idx ON actor.org_unit_proximity_adjustment (hold_pickup_lib);
+CREATE INDEX prox_adj_request_lib_idx ON actor.org_unit_proximity_adjustment (hold_request_lib);
+CREATE INDEX prox_adj_circ_mod_idx ON actor.org_unit_proximity_adjustment (circ_mod);
+
 CREATE TABLE actor.hours_of_operation (
 	id		INT	PRIMARY KEY REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	dow_0_open	TIME	NOT NULL DEFAULT '09:00',

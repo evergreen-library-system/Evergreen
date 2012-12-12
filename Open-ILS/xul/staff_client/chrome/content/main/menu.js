@@ -1021,6 +1021,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/config/z3950_source', null, event); }
             ],
+            'cmd_server_admin_org_unit_proximity_adjustment' : [
+                ['oncommand'],
+                function(event) { open_eg_web_page('conify/global/config/org_unit_proximity_adjustment', null, event); }
+            ],
             'cmd_server_admin_circ_mod' : [
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/config/circ_modifier', null, event); }

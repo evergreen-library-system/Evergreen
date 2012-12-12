@@ -4103,6 +4103,7 @@ SELECT  usr,
 			<field name="hold" reporter:datatype="link"/>
 			<field name="id" reporter:datatype="id" />
 			<field name="target_copy" reporter:datatype="link"/>
+			<field name="proximity" reporter:datatype="number"/>
 		</fields>
 		<links>
 			<link field="hold" reltype="has_a" key="id" map="" class="ahr"/>
@@ -4867,6 +4868,36 @@ SELECT  usr,
                 <retrieve permission="CREATE_LASSO_MAP UPDATE_LASSO_MAP DELETE_LASSO_MAP" global_required="true"/>
                 <update permission="UPDATE_LASSO_MAP" global_required="true"/>
                 <delete permission="DELETE_LASSO_MAP" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+	<class id="aoupa" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::org_unit_proximity_adjustment" oils_persist:tablename="actor.org_unit_proximity_adjustment" reporter:label="Org Unit Proximity Adjustment">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_proximity_adjustment_id_seq">
+			<field name="id" reporter:label="ID" reporter:datatype="id" />
+			<field name="item_circ_lib" reporter:label="Item Circ Lib" reporter:datatype="org_unit"/>
+			<field name="item_owning_lib" reporter:label="Item Owning Lib" reporter:datatype="org_unit"/>
+			<field name="hold_pickup_lib" reporter:label="Hold Pickup Lib" reporter:datatype="org_unit"/>
+			<field name="hold_request_lib" reporter:label="Hold Request Lib" reporter:datatype="org_unit"/>
+			<field name="copy_location" reporter:label="Copy Location" reporter:datatype="link"/>
+			<field name="circ_mod" reporter:label="Circ Modifier" reporter:datatype="link"/>
+			<field name="pos" reporter:label="Position" reporter:datatype="int" />
+			<field name="absolute_adjustment" reporter:label="Absolute adjustment?" reporter:datatype="bool" />
+			<field name="prox_adjustment" reporter:label="Proximity Adjustment" reporter:datatype="number" />
+		</fields>
+		<links>
+			<link field="item_circ_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="item_owning_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="hold_pickup_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="hold_request_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="circ_mod" reltype="has_a" key="code" map="" class="ccm"/>
+			<link field="copy_location" reltype="has_a" key="id" map="" class="acpl"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_PROXIMITY_ADJUSTMENT" global_required="true"/>
+                <retrieve permission="ADMIN_PROXIMITY_ADJUSTMENT" global_required="true"/>
+                <update permission="ADMIN_PROXIMITY_ADJUSTMENT" global_required="true"/>
+                <delete permission="ADMIN_PROXIMITY_ADJUSTMENT" global_required="true"/>
             </actions>
         </permacrud>
 	</class>

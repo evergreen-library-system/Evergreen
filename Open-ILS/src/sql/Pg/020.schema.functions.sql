@@ -193,6 +193,17 @@ CREATE OR REPLACE FUNCTION actor.org_unit_ancestors_distance( INT ) RETURNS TABL
     SELECT * FROM org_unit_ancestors_distance;
 $$ LANGUAGE SQL STABLE ROWS 1;
 
+CREATE OR REPLACE FUNCTION actor.org_unit_ancestors_distance( INT ) RETURNS TABLE (id INT, distance INT) AS $$
+    WITH RECURSIVE org_unit_ancestors_distance(id, distance) AS (
+            SELECT $1, 0
+        UNION
+            SELECT ou.parent_ou, ouad.distance+1
+            FROM actor.org_unit ou JOIN org_unit_ancestors_distance ouad ON (ou.id = ouad.id)
+            WHERE ou.parent_ou IS NOT NULL
+    )
+    SELECT * FROM org_unit_ancestors_distance;
+$$ LANGUAGE SQL STABLE ROWS 1;
+
 CREATE OR REPLACE FUNCTION actor.org_unit_full_path ( INT ) RETURNS SETOF actor.org_unit AS $$
 	SELECT	*
 	  FROM	actor.org_unit_ancestors($1)

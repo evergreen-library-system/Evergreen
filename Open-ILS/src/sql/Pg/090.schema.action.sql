@@ -452,6 +452,7 @@ CREATE TABLE action.hold_copy_map (
 	id		BIGSERIAL	PRIMARY KEY,
 	hold		INT	NOT NULL REFERENCES action.hold_request (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	target_copy	BIGINT	NOT NULL, -- REFERENCES asset.copy (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, -- XXX could be an serial.issuance
+	proximity	NUMERIC,
 	CONSTRAINT copy_once_per_hold UNIQUE (hold,target_copy)
 );
 -- CREATE INDEX acm_hold_idx ON action.hold_copy_map (hold);
@@ -972,5 +973,77 @@ query-based fieldsets.
 Returns NULL if successful, or an error message if not.
 $$;
 
+CREATE OR REPLACE FUNCTION action.hold_copy_calculated_proximity(ahr_id INT, acp_id BIGINT, context_ou INT DEFAULT NULL) RETURNS NUMERIC AS $f$
+DECLARE
+    aoupa           actor.org_unit_proximity_adjustment%ROWTYPE;
+    ahr             action.hold_request%ROWTYPE;
+    acp             asset.copy%ROWTYPE;
+    acn             asset.call_number%ROWTYPE;
+    acl             asset.copy_location%ROWTYPE;
+    baseline_prox   NUMERIC;
+
+    icl_list        INT[];
+    iol_list        INT[];
+    isl_list        INT[];
+    hpl_list        INT[];
+    hrl_list        INT[];
+
+BEGIN
+
+    SELECT * INTO ahr FROM action.hold_request WHERE id = ahr_id;
+    SELECT * INTO acp FROM asset.copy WHERE id = acp_id;
+    SELECT * INTO acn FROM asset.call_number WHERE id = acp.call_number;
+    SELECT * INTO acl FROM asset.copy_location WHERE id = acp.location;
+
+    IF context_ou IS NULL THEN
+        context_ou := acp.circ_lib;
+    END IF;
+
+    -- First, gather the baseline proximity of "here" to pickup lib
+    SELECT prox INTO baseline_prox FROM actor.org_unit_proximity WHERE from_org = context_ou AND to_org = ahr.pickup_lib;
+
+    -- Find any absolute adjustments, and set the baseline prox to that
+    SELECT  adj.* INTO aoupa
+      FROM  actor.org_unit_proximity_adjustment adj
+            LEFT JOIN actor.org_unit_ancestors_distance(context_ou) acp_cl ON (acp_cl.id = adj.item_circ_lib)
+            LEFT JOIN actor.org_unit_ancestors_distance(acn.owning_lib) acn_ol ON (acn_ol.id = adj.item_owning_lib)
+            LEFT JOIN actor.org_unit_ancestors_distance(acl.owning_lib) acl_ol ON (acn_ol.id = adj.copy_location)
+            LEFT JOIN actor.org_unit_ancestors_distance(ahr.pickup_lib) ahr_pl ON (ahr_pl.id = adj.hold_pickup_lib)
+            LEFT JOIN actor.org_unit_ancestors_distance(ahr.request_lib) ahr_rl ON (ahr_rl.id = adj.hold_request_lib)
+      WHERE (adj.circ_mod IS NULL OR adj.circ_mod = acp.circ_modifier) AND
+        absolute_adjustment AND
+        COALESCE(acp_cl.id, acn_ol.id, acl_ol.id, ahr_pl.id, ahr_rl.id) IS NOT NULL
+      ORDER BY
+            COALESCE(acp_cl.distance,999)
+                + COALESCE(acn_ol.distance,999)
+                + COALESCE(acl_ol.distance,999)
+                + COALESCE(ahr_pl.distance,999)
+                + COALESCE(ahr_rl.distance,999),
+            adj.pos
+      LIMIT 1;
+
+    IF FOUND THEN
+        baseline_prox := aoupa.prox_adjustment;
+    END IF;
+
+    -- Now find any relative adjustments, and change the baseline prox based on them
+    FOR aoupa IN
+        SELECT  adj.* 
+          FROM  actor.org_unit_proximity_adjustment adj
+                LEFT JOIN actor.org_unit_ancestors_distance(context_ou) acp_cl ON (acp_cl.id = adj.item_circ_lib)
+                LEFT JOIN actor.org_unit_ancestors_distance(acn.owning_lib) acn_ol ON (acn_ol.id = adj.item_owning_lib)
+                LEFT JOIN actor.org_unit_ancestors_distance(acl.owning_lib) acl_ol ON (acn_ol.id = adj.copy_location)
+                LEFT JOIN actor.org_unit_ancestors_distance(ahr.pickup_lib) ahr_pl ON (ahr_pl.id = adj.hold_pickup_lib)
+                LEFT JOIN actor.org_unit_ancestors_distance(ahr.request_lib) ahr_rl ON (ahr_rl.id = adj.hold_request_lib)
+          WHERE (adj.circ_mod IS NULL OR adj.circ_mod = acp.circ_modifier) AND
+            NOT absolute_adjustment AND
+            COALESCE(acp_cl.id, acn_ol.id, acl_ol.id, ahr_pl.id, ahr_rl.id) IS NOT NULL
+    LOOP
+        baseline_prox := baseline_prox + aoupa.prox_adjustment;
+    END LOOP;
+
+    RETURN baseline_prox;
+END;
+$f$ LANGUAGE PLPGSQL;
 
 COMMIT;

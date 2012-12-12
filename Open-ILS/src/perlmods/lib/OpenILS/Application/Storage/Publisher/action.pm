@@ -294,8 +294,8 @@ sub nearest_hold {
 	local $OpenILS::Application::Storage::WRITE = 1;
 
 	my $holdsort = isTrue($fifo) ?
-			"pgt.hold_priority, CASE WHEN h.cut_in_line IS TRUE THEN 0 ELSE 1 END, h.request_time, h.selection_depth DESC, p.prox " :
-			"p.prox, pgt.hold_priority, CASE WHEN h.cut_in_line IS TRUE THEN 0 ELSE 1 END, h.selection_depth DESC, h.request_time ";
+			"pgt.hold_priority, CASE WHEN h.cut_in_line IS TRUE THEN 0 ELSE 1 END, h.request_time, h.selection_depth DESC, COALESCE(hm.proximity, h.prox) " :
+			"COALESCE(hm.proximity, h.prox), pgt.hold_priority, CASE WHEN h.cut_in_line IS TRUE THEN 0 ELSE 1 END, h.selection_depth DESC, h.request_time ";
 
 	my $ids = action::hold_request->db_Main->selectcol_arrayref(<<"	SQL", {}, $here, $cp, $age);
 		SELECT	h.id
@@ -1293,8 +1293,12 @@ sub new_hold_copy_targeter {
 			# map the potentials, so that we can pick up checkins
 			# XXX Loop-based targeting may require that /only/ copies from this loop should be added to
 			# XXX the potentials list.  If this is the cased, hold_copy_map creation will move down further.
+			my $pu_lib = ''.$hold->pickup_lib;
+			my $prox_list = create_prox_list( $self, $pu_lib, $all_copies, $hold );
 			$log->debug( "\tMapping ".scalar(@$all_copies)." potential copies for hold ".$hold->id);
-			action::hold_copy_map->create( { hold => $hold->id, target_copy => $_->id } ) for (@$all_copies);
+			for my $prox ( keys %$prox_list ) {
+				action::hold_copy_map->create( { proximity => $prox, hold => $hold->id, target_copy => $_->id } ) for (@{$$prox_list{$prox}});
+			}
 
 			#$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
@@ -1374,26 +1378,23 @@ sub new_hold_copy_targeter {
 				}
 			}
 
-            my $pu_lib = ''.$hold->pickup_lib;
+			# reset prox list after trimming good copies
+			$prox_list = create_prox_list( $self, $pu_lib, \@good_copies, $hold );
 
-			my $prox_list = [];
-			$$prox_list[0] =
-			[
-				grep {
-					''.$_->circ_lib eq $pu_lib &&
-                    ( $_->status == 0 || $_->status == 7 )
-				} @good_copies
-			];
 
-			$all_copies = [grep { $_->status == 0 || $_->status == 7 } grep {''.$_->circ_lib ne $pu_lib } @good_copies];
-			# $all_copies is now a list of copies not at the pickup library
-			
-            my $best;
-            if  ($hold->hold_type eq 'R' || $hold->hold_type eq 'F') { # Recall/Force holds bypass hold rules.
-                $best = $good_copies[0] if(scalar @good_copies);
-            } else {
-                $best = choose_nearest_copy($hold, $prox_list);
-            }
+			my $min_prox = [ sort keys %$prox_list ]->[0];
+			my $best;
+			if  ($hold->hold_type eq 'R' || $hold->hold_type eq 'F') { # Recall/Force holds bypass hold rules.
+				$best = $good_copies[0] if(scalar @good_copies);
+			} else {
+				$best = choose_nearest_copy($hold, { $min_prox => delete($$prox_list{$min_prox}) });
+			}
+
+			$all_copies = [];
+			for my $prox (keys %$prox_list) {
+				push @$all_copies, @{$$prox_list{$prox}};
+			}
+	
 			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
 			if (!$best) {
@@ -1481,11 +1482,12 @@ sub new_hold_copy_targeter {
 
 						die "OK\n";
 					}
+
+    				$prox_list = create_prox_list( $self, $pu_lib, $all_copies, $hold );
+
+    				$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
+
 				}
-
-				$prox_list = create_prox_list( $self, $pu_lib, $all_copies );
-
-				$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
 				$best = choose_nearest_copy($hold, $prox_list);
 			}
@@ -1806,6 +1808,10 @@ sub reservation_targeter {
 
 			$log->debug("\t".scalar(@good_resources)." resources available for targeting...");
 
+			# LFW: note that after the inclusion of hold proximity
+			# adjustment, this prox_list is the only prox_list
+			# array in this perl package.  Other occurences are
+			# hashes.
 			my $prox_list = [];
 			$$prox_list[0] =
 			[
@@ -1938,10 +1944,10 @@ sub choose_nearest_copy {
 	my $hold = shift;
 	my $prox_list = shift;
 
-	for my $p ( 0 .. int( scalar(@$prox_list) - 1) ) {
-		next unless (ref $$prox_list[$p]);
+	for my $p ( sort keys %$prox_list ) {
+		next unless (ref $$prox_list{$p});
 
-		my @capturable = @{ $$prox_list[$p] };
+		my @capturable = @{ $$prox_list{$p} };
 		next unless (@capturable);
 
 		my $rand = int(rand(scalar(@capturable)));
@@ -1970,12 +1976,13 @@ sub create_prox_list {
 	my $self = shift;
 	my $lib = shift;
 	my $copies = shift;
+	my $hold = shift;
 
 	my $actor = OpenSRF::AppSession->create('open-ils.actor');
 
-	my @prox_list;
+	my %prox_list;
 	for my $cp (@$copies) {
-		my ($prox) = $self->method_lookup('open-ils.storage.asset.copy.proximity')->run( $cp, $lib );
+		my ($prox) = $self->method_lookup('open-ils.storage.asset.copy.proximity')->run( $cp, $lib, $hold );
 		next unless (defined($prox));
 
         my $copy_circ_lib = ''.$cp->circ_lib;
@@ -1986,12 +1993,12 @@ sub create_prox_list {
         $self->{target_weight}{$copy_circ_lib} = $self->{target_weight}{$copy_circ_lib}{value} if (ref $self->{target_weight}{$copy_circ_lib});
         $self->{target_weight}{$copy_circ_lib} ||= 1;
 
-		$prox_list[$prox] = [] unless defined($prox_list[$prox]);
+		$prox_list{$prox} = [] unless defined($prox_list{$prox});
 		for my $w ( 1 .. $self->{target_weight}{$copy_circ_lib} ) {
-			push @{$prox_list[$prox]}, $cp;
+			push @{$prox_list{$prox}}, $cp;
 		}
 	}
-	return \@prox_list;
+	return \%prox_list;
 }
 
 sub volume_hold_capture {

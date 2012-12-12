@@ -114,7 +114,7 @@ package action::hold_copy_map;
 use base qw/action/;
 __PACKAGE__->table('action_hold_copy_map');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/hold target_copy/);
+__PACKAGE__->columns(Essential => qw/hold target_copy proximity/);
 
 #-------------------------------------------------------------------------------
 

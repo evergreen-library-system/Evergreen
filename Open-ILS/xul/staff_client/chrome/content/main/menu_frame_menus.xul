@@ -257,6 +257,7 @@
     <command id="cmd_server_admin_z39_source" 
              perm="ADMIN_Z3950_SOURCE"
              />
+    <command id="cmd_server_admin_org_unit_proximity_adjustment" />
     <command id="cmd_server_admin_circ_mod" 
              perm="CREATE_CIRC_MOD DELETE_CIRC_MOD UPDATE_CIRC_MOD ADMIN_CIRC_MOD"
              />
@@ -599,6 +600,7 @@
             <menupopup id="main.menu.admin.server.popup">
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.org_unit_type.label;" command="cmd_server_admin_org_type"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.org_unit.label;" command="cmd_server_admin_org_unit"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.org_unit_proximity_adjustment.label;" command="cmd_server_admin_org_unit_proximity_adjustment"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.grp_tree.label;" command="cmd_server_admin_grp_tree"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.perm_list.label;" command="cmd_server_admin_perm_list"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.copy_status.label;" command="cmd_server_admin_copy_status"/>

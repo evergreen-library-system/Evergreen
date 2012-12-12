@@ -396,9 +396,39 @@ sub copy_proximity {
 	my $client = shift;
 
 	my $cp = shift;
-	my $org = shift;
+	my $org = shift;	# hold pickup lib
+	my $hold = shift;
 
 	return unless ($cp && $org);
+
+	if ($hold) {
+		my $row = action::hold_request->db_Main->selectrow_hashref(
+			'SELECT proximity AS prox FROM action.hold_copy_map WHERE hold = ? and target_copy = ?',
+			{},
+			"$hold",
+			"$cp"
+		);
+		return $row->{prox} if $row;
+
+		# There was a bug here before.
+		# action.hold_copy_calculated_proximity()  was called with a
+		# third argument, $org.  Wrong.  a.hccp() interprets its third
+		# argument as an optional override of copy circ lib.  $org
+		# here is hold pickup lib.  This had the effect of basically
+		# measuring the distance between a hold's pickup lib and
+		# itself, which is always zero, so all proximities landing in
+		# the hold copy map were zero.
+
+		$log->debug("Calculating copy proximity with: action.hold_copy_calculated_proximity($hold,$cp)", DEBUG);
+		$row = action::hold_request->db_Main->selectrow_hashref(
+			'SELECT action.hold_copy_calculated_proximity(?,?) AS prox',
+			{},
+			"$hold",
+			"$cp"
+		);
+
+		return $row->{prox} if $row;
+	}
 
 	$cp = asset::copy->retrieve($cp) unless (ref($cp));
 

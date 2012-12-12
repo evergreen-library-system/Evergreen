@@ -39,6 +39,8 @@ ALTER TABLE actor.org_unit ADD CONSTRAINT actor_org_unit_billing_address_fkey FO
 ALTER TABLE actor.org_unit ADD CONSTRAINT actor_org_unit_holds_address_fkey FOREIGN KEY (holds_address) REFERENCES actor.org_address (id) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE actor.org_unit ADD CONSTRAINT actor_org_unit_ill_address_fkey FOREIGN KEY (ill_address) REFERENCES actor.org_address (id) DEFERRABLE INITIALLY DEFERRED;
 
+ALTER TABLE actor.org_unit_proximity_adjustment ADD CONSTRAINT actor_org_unit_proximity_adjustment_circ_mod_fkey FOREIGN KEY (circ_mod) REFERENCES config.circ_modifier (code) DEFERRABLE INITIALLY DEFERRED;
+
 ALTER TABLE acq.provider ADD CONSTRAINT acq_provider_edi_default_fkey FOREIGN KEY (edi_default) REFERENCES acq.edi_account (id) DEFERRABLE INITIALLY DEFERRED;
 
 ALTER TABLE biblio.record_note ADD CONSTRAINT biblio_record_note_record_fkey FOREIGN KEY (record) REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
