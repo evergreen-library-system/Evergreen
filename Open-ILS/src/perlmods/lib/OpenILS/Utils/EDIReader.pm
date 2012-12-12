@@ -26,16 +26,16 @@ my %edi_fields = (
     vendor_acct     => qr/^NAD\+SU\+([^:]+)::91/,
     purchase_order  => qr/^RFF\+ON:(\S+)/,
     invoice_ident   => qr/^BGM\+380\+([^\+]+)/,
-    total_billed    => qr/^MOA\+86:(\d+)/,
+    total_billed    => qr/^MOA\+86:([^:]+)/,
     invoice_date    => qr/^DTM\+137:([^:]+)/
 );
 
 my %edi_li_fields = (
     id      => qr/^RFF\+LI:\S+\/(\S+)/,
     index   => qr/^LIN\+([^\+]+)/,
-    amount_billed   => qr/^MOA\+203:(\d+)/,
-    net_unit_price  => qr/^PRI\+AAA:(\d+)/,
-    gross_unit_price=> qr/^PRI\+AAB:(\d+)/,
+    amount_billed   => qr/^MOA\+203:([^:]+)/,
+    net_unit_price  => qr/^PRI\+AAA:([^:]+)/,
+    gross_unit_price=> qr/^PRI\+AAB:([^:]+)/,
     expected_date   => qr/^DTM\+44:([^:]+)/,
     avail_status    => qr/^FTX\+LIN\++([^:]+):8B:28/,
     # "1B" codes are deprecated, but still in use.  
@@ -55,7 +55,7 @@ my %edi_li_quant_fields = (
 
 my %edi_charge_fields = (
     charge_type   => qr/^ALC\+C\++([^\+]+)/,
-    charge_amount => qr/^MOA\+(8|131):(\d+)/
+    charge_amount => qr/^MOA\+(8|131):([^:]+)/
 );
 
 sub new {
