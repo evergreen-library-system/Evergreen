@@ -28,9 +28,33 @@ sub fetch_mylist {
         }
     }
 
+    {   # sanitize
+        no warnings qw/numeric/;
+        $list = [map { int $_ } @$list];
+        $list = [grep { $_ > 0} @$list];
+    };
+
     my $marc_xml;
     if ($with_marc_xml) {
-        $marc_xml = $self->fetch_marc_xml_by_id($list);
+        my $ctx = $self->ctx;
+
+        # capture pref_ou for callnumber filter/display
+        $ctx->{pref_ou} = $self->_get_pref_lib() || $ctx->{search_ou};
+
+        # search for local callnumbers for display
+        my $focus_ou = $ctx->{physical_loc} || $ctx->{pref_ou};
+
+        my (undef, @recs) = $self->get_records_and_facets(
+            $list, undef, {
+                flesh => '{mra,holdings_xml,acp,exclude_invisible_acn}',
+                flesh_depth => 1,
+                site => $ctx->{get_aou}->($focus_ou)->shortname,
+                pref_lib => $ctx->{pref_ou}
+            }
+        );
+
+        # make it look like the caller is expecting
+        $marc_xml = { map {$_->{id} => $_->{marc_xml}} @recs };
     }
 
     # Leverage QueryParser to sort the items by values of config.metabib_fields

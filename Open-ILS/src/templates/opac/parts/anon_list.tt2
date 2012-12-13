@@ -23,8 +23,9 @@
                                 for (i = 0; i < inputs.length; i++) { 
                                     if (inputs[i].name == 'record' && !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
                         </td>
-                        <td width="49%" class="opac-auto-108"><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'titlesort' ? 'titlesort.descending' : 'titlesort')}) %]">[% l('Title') %]</a></td>
-                        <td width="49%" class="opac-auto-108"><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'authorsort' ? 'authorsort.descending' : 'authorsort')}) %]">[% l('Author(s)') %]</a% l('Author(s)') %]</td>
+                        <td width="40%" class="opac-auto-108"><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'titlesort' ? 'titlesort.descending' : 'titlesort')}) %]">[% l('Title') %]</a></td>
+                        <td width="40%" class="opac-auto-108"><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'authorsort' ? 'authorsort.descending' : 'authorsort')}) %]">[% l('Author(s)') %]</a% l('Author(s)') %]</td>
+                        <td width='18%'>[% l('Local Call Number') %]</td>
                         <td width="1%" class="nowrap">
                             <select name="action">
                                 <option>[% l('-- Actions for these items --') %]</option>
@@ -60,6 +61,21 @@
                                 ['page', 'id', 'edit_notes']
                             )
                         -%]">[% attrs.author | html %]</a></td>
+                        <td class="item_list_padding" style="padding-left: 5px;">
+                        [% 
+                            copy = attrs.holdings.0;
+                            IF copy;
+                                # only show a relevant call number
+                                org = ctx.get_aou_by_shortname(copy.owner);
+                                IF  org.id == ctx.search_ou OR 
+                                    org.id == ctx.pref_ou OR
+                                    org.id == ctx.user.home_ou OR
+                                    org.id == ctx.physical_loc;
+                                        l('[_1] ([_2])', copy.label, org.name) | html;
+                                END;
+                            END;
+                        %]
+                        </td>
                     </tr>
                     [% END %]
                 </tbody>

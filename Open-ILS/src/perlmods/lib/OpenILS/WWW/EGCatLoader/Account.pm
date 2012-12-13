@@ -1755,6 +1755,7 @@ sub load_myopac_bookbags {
             # transaction rollback under the covers.
             $e->rollback;
 
+
             my $query = $self->_prepare_bookbag_container_query(
                 $bookbag->id, $sorter, $modifier
             );
@@ -1769,11 +1770,21 @@ sub load_myopac_bookbags {
             my $items = $U->bib_container_items_via_search($bookbag->id, $query, $args)
                 or return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
 
+            # capture pref_ou for callnumber filter/display
+            $ctx->{pref_ou} = $self->_get_pref_lib() || $ctx->{search_ou};
+
+            # search for local callnumbers for display
+            my $focus_ou = $ctx->{physical_loc} || $ctx->{pref_ou};
 
             my (undef, @recs) = $self->get_records_and_facets(
                 [ map {$_->target_biblio_record_entry->id} @$items ],
                 undef, 
-                {flesh => '{mra}'}
+                {
+                    flesh => '{mra,holdings_xml,acp,exclude_invisible_acn}',
+                    flesh_depth => 1,
+                    site => $ctx->{get_aou}->($focus_ou)->shortname,
+                    pref_lib => $ctx->{pref_ou}
+                }
             );
 
             $ctx->{bookbags_marc_xml}{$_->{id}} = $_->{marc_xml} for @recs;

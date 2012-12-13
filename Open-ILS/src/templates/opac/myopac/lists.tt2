@@ -238,6 +238,9 @@
                     <td class="list_entry">
                         <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {sort=>(CGI.param('sort') == 'authorsort' ? 'authorsort.descending' : 'authorsort')}) %]">[% l('Author(s)') %]</a>
                     </td>
+                    <td class='list_entry'>
+                        [% l('Local Call Number') %]
+                    </td>
                     <td class="list_entry">
                         <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {sort=>(CGI.param('sort') == 'pubdate' ? 'pubdate.descending' : 'pubdate')}) %]">[% l('Publication Date') %]</a>
                     </td>
@@ -283,6 +286,21 @@
                             authorquery = attrs.author | replace('[,\.:;]', '');
                             mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, ['page', 'bbid', 'edit_notes'])
                             -%]">[% attrs.author | html %]</a>
+                    </td>
+                    <td class="list_entry">
+                        [% 
+                            copy = attrs.holdings.0;
+                            IF copy;
+                                # only show a relevant call number
+                                org = ctx.get_aou_by_shortname(copy.owner);
+                                IF  org.id == ctx.search_ou OR 
+                                    org.id == ctx.pref_ou OR
+                                    org.id == ctx.user.home_ou OR
+                                    org.id == ctx.physical_loc;
+                                        l('[_1] ([_2])', copy.label, org.name) | html;
+                                END;
+                            END;
+                        %]
                     </td>
                     <td class="list_entry">
                           [% attrs.pubdate | html %]

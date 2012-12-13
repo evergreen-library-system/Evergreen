@@ -137,6 +137,13 @@ sub init_ro_object_cache {
         return [ values %{$cache{map}{$ctx->{locale}}{aou}} ];
     };
 
+    # returns the org unit object by shortname
+    $ro_object_subs->{get_aou_by_shortname} = sub {
+        my $sn = shift or return undef;
+        my $list = $ro_object_subs->{aou_list}->();
+        return (grep {$_->shortname eq $sn} @$list)[0];
+    };
+
     $ro_object_subs->{aouct_tree} = sub {
 
         # fetch the org unit tree
@@ -338,36 +345,6 @@ sub get_records_and_facets {
     $search->kill_me;
 
     return ($facets, @data);
-}
-
-# TODO: blend this code w/ ^-- get_records_and_facets
-sub fetch_marc_xml_by_id {
-    my ($self, $id_list) = @_;
-    $id_list = [$id_list] unless ref($id_list);
-
-    {
-        no warnings qw/numeric/;
-        $id_list = [map { int $_ } @$id_list];
-        $id_list = [grep { $_ > 0} @$id_list];
-    };
-
-    return {} if scalar(@$id_list) < 1;
-
-    # I'm just sure there needs to be some more efficient way to get all of
-    # this.
-    my $results = $self->editor->json_query({
-        "select" => {"bre" => ["id", "marc"]},
-        "from" => {"bre" => {}},
-        "where" => {"id" => $id_list}
-    }, {substream => 1}) or return $self->editor->die_event;
-
-    my $marc_xml = {};
-    for my $r (@$results) {
-        $marc_xml->{$r->{"id"}} =
-            (new XML::LibXML)->parse_string($r->{"marc"});
-    }
-
-    return $marc_xml;
 }
 
 sub _get_search_lib {

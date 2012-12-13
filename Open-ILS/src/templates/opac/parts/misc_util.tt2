@@ -360,8 +360,9 @@
                         part_label => part_label,
                         location => loc.textContent,
                         library => circlib.textContent,
-                        status => status.textContent
-                        barcode => copy.getAttribute('barcode')
+                        status => status.textContent,
+                        barcode => copy.getAttribute('barcode'),
+                        owner => volume.getAttribute('lib')
                     };
                     args.holdings.push(holding);
                     part_label = '';
