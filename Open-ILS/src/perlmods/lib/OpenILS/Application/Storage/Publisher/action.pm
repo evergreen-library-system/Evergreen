@@ -17,6 +17,32 @@ use OpenILS::Application::Circ::CircCommon;
 use OpenILS::Application::AppUtils;
 my $U = "OpenILS::Application::AppUtils";
 
+# used in build_hold_sort_clause()
+my %HOLD_SORT_ORDER_BY = (
+    pprox => 'p.prox',
+    hprox => 'actor.org_unit_proximity(%d, h.request_lib)',  # $cp->circ_lib
+    aprox => 'COALESCE(hm.proximity, p.prox)',
+    approx => 'action.hold_copy_calculated_proximity(h.id, %d, %d)', # $cp,$here
+    priority => 'pgt.hold_priority',
+    cut => 'CASE WHEN h.cut_in_line IS TRUE THEN 0 ELSE 1 END',
+    depth => 'h.selection_depth',
+    rtime => 'h.request_time',
+    htime => q!
+        CASE WHEN
+            copy_has_not_been_home.result
+        THEN actor.org_unit_proximity(%d, h.request_lib)
+        ELSE 999
+        END
+    !,
+    shtime => q!
+        CASE WHEN
+            copy_has_not_been_home_even_to_idle.result
+        THEN actor.org_unit_proximity(%d, h.request_lib)
+        ELSE 999
+        END
+    !,
+);
+
 
 sub isTrue {
 	my $v = shift;
@@ -282,22 +308,183 @@ __PACKAGE__->register_method(
 	method          => 'grab_overdue',
 );
 
+sub get_hold_sort_order {
+    my ($ou) = @_;
+
+    my $dbh = action::hold_request->db_Main;
+
+    # The purpose of this function is to return column names in a DB-configured
+    # order, so it won't do to add columns here or change column names unless
+    # you also change the expectation of anything calling this function.
+
+    my $row = $dbh->selectrow_hashref(
+        q!
+        SELECT
+            cbho.pprox, cbho.hprox, cbho.aprox, cbho.approx, cbho.priority,
+            cbho.cut, cbho.depth, cbho.htime, cbho.shtime, cbho.rtime
+        FROM config.best_hold_order cbho
+        WHERE id = (
+            SELECT oils_json_to_text(value)::INT
+            FROM actor.org_unit_ancestor_setting('circ.hold_capture_order', ?)
+        )
+        !, undef, $ou
+    ) || {
+        pprox => 1, hprox => 8, aprox => 2, priority => 3,
+        cut => 4, depth => 5, htime => 7, rtime => 6
+    };
+
+    # Return only the keys of our hash, sorted by value,
+    # keys for null values omitted.
+    return [
+        grep { defined $row->{$_} } (
+            sort {$row->{$a} cmp $row->{$b}} keys %$row
+        )
+    ];
+}
+
+# Returns an ORDER BY clause
+# *and* a string with a CTE expression to precede the nearest-hold SQL query
+# *and* a string with extra JOIN statements needed
+sub build_hold_sort_clause {
+    my ($columns, $cp, $here) = @_;
+
+    my %order_by_sprintf_args = (
+        hprox => [$cp->circ_lib],
+        approx => [$cp->id, $here],
+        htime => [$cp->circ_lib],
+        shtime => [$cp->circ_lib]
+    );
+
+    my @clauses;
+    my $ctes_needed = 0;
+    foreach my $col (@$columns) {
+        if ($col eq 'htime' and not $ctes_needed) {
+            $ctes_needed = 1;
+        } elsif ($col eq 'shtime') {
+            $ctes_needed = 2;
+        }
+
+        my @args;
+        @args = @{$order_by_sprintf_args{$col}} if
+            exists $order_by_sprintf_args{$col};
+
+        push @clauses, sprintf($HOLD_SORT_ORDER_BY{$col}, @args);
+
+        last if $col eq 'rtime';    # rtime is effectively unique, no need for
+                                    # more order-by clauses after that.
+    }
+
+    my ($ctes, $joins);
+    if ($ctes_needed >= 1) {
+        # For our first auxiliary query, the question we seek to answer is, "has
+        # our copy been circulating away from home too long?" Two parts to
+        # answer this question.
+        #
+        # part 1: Have their been no checkouts at the copy's circ_lib since the
+        # beginning of our go-home interval?
+        # part 2: Was the last transit to affect our copy before the beginning
+        # of our go-home interval an outbound transit? i.e. away from circ-lib
+
+        # [We use sprintf because the outer function that's going to send one
+        # big query through DBI is blind to our process of dynamically building
+        # these CTEs, and it wouldn't know what bind parameters to pass unless
+        # we did a lot more work here. This is injection-safe because we only
+        # use the %d formatter.]
+        $ctes .= sprintf(q!
+, copy_has_not_been_home AS (
+    SELECT (
+        -- part 1
+        SELECT circ.id FROM action.circulation circ
+        JOIN go_home_interval ON (true)
+        WHERE
+            circ.target_copy = %d AND
+            circ.circ_lib = %d AND
+            circ.xact_start >= NOW() - go_home_interval.value
+    ) IS NULL AND (
+        -- part 2
+        SELECT atc.dest <> %d FROM action.transit_copy atc
+        JOIN go_home_interval ON (true)
+        WHERE
+            atc.id = (
+                SELECT MAX(id) FROM action.transit_copy atc_inner
+                WHERE
+                    atc_inner.target_copy = %d AND
+                    atc_inner.source_send_time < NOW() - go_home_interval.value
+            )
+    ) AS result
+) !, $cp->id, $cp->circ_lib, $cp->circ_lib, $cp->id);
+        $joins .= " JOIN copy_has_not_been_home ON (true) ";
+    }
+
+    if ($ctes_needed == 2) {
+        # In this auxiliary query, we ask the question, "has our copy come home
+        # by any means that we can determine, even if it didn't circulate once
+        # it came home, in the time defined by the go-home-interval?"
+        # answer this question. Two parts to this too (besides including the
+        # previous auxiliary query).
+        #
+        # 1: there have been no homebound transits for this copy since the
+        # beginning of the go-home interval.
+        # 2: there have been no checkins at home since the beginning of
+        # the go-home interval for this copy
+
+        $ctes .= sprintf(q!
+, copy_has_not_been_home_even_to_idle AS (
+    SELECT
+        copy_has_not_been_home.response AND (
+            -- part 1
+            SELECT atc.id FROM action.transit_copy atc
+            JOIN go_home_interval ON (true)
+            WHERE
+                atc.target_copy = %d AND
+                atc.dest = %d AND
+                atc.dest_recv_time >= NOW() - go_home_interval.value
+        ) IS NULL AND (
+            -- part 2
+            SELECT circ.id FROM action.circulation circ
+            JOIN go_home_interval ON (true)
+            WHERE
+                circ.target_copy = %d AND
+                circ.checkin_lib = %d AND
+                circ.checkin_time >= NOW() - go_home_interval.value
+        ) IS NULL
+    AS result
+) !, $cp->id, $cp->circ_lib, $cp->id, $cp->circ_lib);
+        $joins .= " JOIN copy_has_not_been_home_even_to_idle ON (true) ";
+    }
+
+    return (
+        join(", ", @clauses),
+        $ctes,
+        $joins
+    );
+}
+
 sub nearest_hold {
 	my $self = shift;
 	my $client = shift;
-	my $here = shift;
-	my $cp = shift;
+	my $here = shift;   # just the ID
+	my $cp = shift;     # now an object, formerly just the ID
 	my $limit = int(shift()) || 10;
 	my $age = shift() || '0 seconds';
 	my $fifo = shift();
 
+    $log->info("deprecated 'fifo' param true, but ignored") if isTrue $fifo;
+
+    my ($holdsort, $addl_cte, $addl_join) =
+        build_hold_sort_clause(get_hold_sort_order($here), $cp, $here);
+
 	local $OpenILS::Application::Storage::WRITE = 1;
 
-	my $holdsort = isTrue($fifo) ?
-			"pgt.hold_priority, CASE WHEN h.cut_in_line IS TRUE THEN 0 ELSE 1 END, h.request_time, h.selection_depth DESC, COALESCE(hm.proximity, h.prox) " :
-			"COALESCE(hm.proximity, h.prox), pgt.hold_priority, CASE WHEN h.cut_in_line IS TRUE THEN 0 ELSE 1 END, h.selection_depth DESC, h.request_time ";
-
-	my $ids = action::hold_request->db_Main->selectcol_arrayref(<<"	SQL", {}, $here, $cp, $age);
+	my $ids = action::hold_request->db_Main->selectcol_arrayref(<<"	SQL", {}, $cp->circ_lib, $here, $cp->id, $age);
+        WITH go_home_interval AS (
+            SELECT OILS_JSON_TO_TEXT(
+                (SELECT value FROM actor.org_unit_ancestor_setting(
+                    'circ.hold_go_home_interval', ?
+                )
+            ))::INTERVAL AS value
+        )
+        $addl_cte
 		SELECT	h.id
 		  FROM	action.hold_request h
 			JOIN actor.org_unit_proximity p ON (p.from_org = ? AND p.to_org = h.pickup_lib)
@@ -308,6 +495,7 @@ sub nearest_hold {
 				ON ( au.id = ausp.usr AND ( ausp.stop_date IS NULL OR ausp.stop_date > NOW() ) )
 		  	LEFT JOIN config.standing_penalty csp
 				ON ( csp.id = ausp.standing_penalty AND csp.block_list LIKE '%CAPTURE%' )
+            $addl_join
 		  WHERE hm.target_copy = ?
 		  	AND (AGE(NOW(),h.request_time) >= CAST(? AS INTERVAL) OR p.prox = 0)
 			AND h.capture_time IS NULL

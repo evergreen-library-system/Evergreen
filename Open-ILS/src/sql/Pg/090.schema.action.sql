@@ -973,7 +973,16 @@ query-based fieldsets.
 Returns NULL if successful, or an error message if not.
 $$;
 
-CREATE OR REPLACE FUNCTION action.hold_copy_calculated_proximity(ahr_id INT, acp_id BIGINT, context_ou INT DEFAULT NULL) RETURNS NUMERIC AS $f$
+CREATE OR REPLACE FUNCTION action.hold_copy_calculated_proximity(
+    ahr_id INT,
+    acp_id BIGINT,
+    copy_context_ou INT DEFAULT NULL
+    -- TODO maybe? hold_context_ou INT DEFAULT NULL.  This would optionally
+    -- support an "ahprox" measurement: adjust prox between copy circ lib and
+    -- hold request lib, but I'm unsure whether to use this theoretical
+    -- argument only in the baseline calculation or later in the other
+    -- queries in this function.
+) RETURNS NUMERIC AS $f$
 DECLARE
     aoupa           actor.org_unit_proximity_adjustment%ROWTYPE;
     ahr             action.hold_request%ROWTYPE;
@@ -995,17 +1004,17 @@ BEGIN
     SELECT * INTO acn FROM asset.call_number WHERE id = acp.call_number;
     SELECT * INTO acl FROM asset.copy_location WHERE id = acp.location;
 
-    IF context_ou IS NULL THEN
-        context_ou := acp.circ_lib;
+    IF copy_context_ou IS NULL THEN
+        copy_context_ou := acp.circ_lib;
     END IF;
 
     -- First, gather the baseline proximity of "here" to pickup lib
-    SELECT prox INTO baseline_prox FROM actor.org_unit_proximity WHERE from_org = context_ou AND to_org = ahr.pickup_lib;
+    SELECT prox INTO baseline_prox FROM actor.org_unit_proximity WHERE from_org = copy_context_ou AND to_org = ahr.pickup_lib;
 
     -- Find any absolute adjustments, and set the baseline prox to that
     SELECT  adj.* INTO aoupa
       FROM  actor.org_unit_proximity_adjustment adj
-            LEFT JOIN actor.org_unit_ancestors_distance(context_ou) acp_cl ON (acp_cl.id = adj.item_circ_lib)
+            LEFT JOIN actor.org_unit_ancestors_distance(copy_context_ou) acp_cl ON (acp_cl.id = adj.item_circ_lib)
             LEFT JOIN actor.org_unit_ancestors_distance(acn.owning_lib) acn_ol ON (acn_ol.id = adj.item_owning_lib)
             LEFT JOIN actor.org_unit_ancestors_distance(acl.owning_lib) acl_ol ON (acn_ol.id = adj.copy_location)
             LEFT JOIN actor.org_unit_ancestors_distance(ahr.pickup_lib) ahr_pl ON (ahr_pl.id = adj.hold_pickup_lib)
@@ -1030,7 +1039,7 @@ BEGIN
     FOR aoupa IN
         SELECT  adj.* 
           FROM  actor.org_unit_proximity_adjustment adj
-                LEFT JOIN actor.org_unit_ancestors_distance(context_ou) acp_cl ON (acp_cl.id = adj.item_circ_lib)
+                LEFT JOIN actor.org_unit_ancestors_distance(copy_context_ou) acp_cl ON (acp_cl.id = adj.item_circ_lib)
                 LEFT JOIN actor.org_unit_ancestors_distance(acn.owning_lib) acn_ol ON (acn_ol.id = adj.item_owning_lib)
                 LEFT JOIN actor.org_unit_ancestors_distance(acl.owning_lib) acl_ol ON (acn_ol.id = adj.copy_location)
                 LEFT JOIN actor.org_unit_ancestors_distance(ahr.pickup_lib) ahr_pl ON (ahr_pl.id = adj.hold_pickup_lib)

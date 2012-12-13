@@ -2358,6 +2358,32 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
+	<class id="cbho" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::best_hold_order" oils_persist:tablename="config.best_hold_order" reporter:label="Best-Hold Sort Order">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.best_hold_order_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector="name" />
+			<field reporter:label="Name" name="name" reporter:datatype="text"/>
+			<field reporter:label="Capture Lib to Pickup Lib Proximity" name="pprox" reporter:datatype="int" />
+			<field reporter:label="Circ Lib to Request Lib Proximity" name="hprox" reporter:datatype="int" />
+			<field reporter:label="Adjusted Circ Lib to Pickup Lib Proximity" name="aprox" reporter:datatype="int" />
+			<field reporter:label="Adjusted Capture Location to Pickup Lib Proximity" name="approx" reporter:datatype="int" />
+			<field reporter:label="Hold Priority" name="priority" reporter:datatype="int" />
+			<field reporter:label="Hold Cut-in-line State" name="cut" reporter:datatype="int" />
+			<field reporter:label="Hold Selection Depth" name="depth" reporter:datatype="int" />
+			<field reporter:label="Copy Has Circulated From Home Lately" name="htime" reporter:datatype="int" />
+			<field reporter:label="Hold Request Time" name="rtime" reporter:datatype="int" />
+			<field reporter:label="Copy Has Been Home At All Lately" name="shtime" reporter:datatype="int" />
+		</fields>
+		<links>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_HOLD_CAPTURE_SORT" global_required="true"/>
+				<retrieve permission="ADMIN_HOLD_CAPTURE_SORT" global_required="true"/>
+				<update permission="ADMIN_HOLD_CAPTURE_SORT" global_required="true"/>
+				<delete permission="ADMIN_HOLD_CAPTURE_SORT" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
 	<class id="cbfp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::biblio_fingerprint" oils_persist:tablename="config.biblio_fingerprint" reporter:label="Fingerprint Definition">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.biblio_fingerprint_id_seq">
 			<field name="id" reporter:datatype="id" />

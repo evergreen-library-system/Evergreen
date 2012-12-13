@@ -40,6 +40,7 @@ ALTER TABLE actor.org_unit ADD CONSTRAINT actor_org_unit_holds_address_fkey FORE
 ALTER TABLE actor.org_unit ADD CONSTRAINT actor_org_unit_ill_address_fkey FOREIGN KEY (ill_address) REFERENCES actor.org_address (id) DEFERRABLE INITIALLY DEFERRED;
 
 ALTER TABLE actor.org_unit_proximity_adjustment ADD CONSTRAINT actor_org_unit_proximity_adjustment_circ_mod_fkey FOREIGN KEY (circ_mod) REFERENCES config.circ_modifier (code) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE actor.org_unit_proximity_adjustment ADD CONSTRAINT actor_org_unit_proximity_copy_location_fkey FOREIGN KEY (copy_location) REFERENCES asset.copy_location (id) DEFERRABLE INITIALLY DEFERRED;
 
 ALTER TABLE acq.provider ADD CONSTRAINT acq_provider_edi_default_fkey FOREIGN KEY (edi_default) REFERENCES acq.edi_account (id) DEFERRABLE INITIALLY DEFERRED;
 

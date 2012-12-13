@@ -1,0 +1,247 @@
+Custom Best-Hold Selection
+==========================
+
+Background
+----------
+
+In the Evergreen ILS, during opportunistic capture (which occurs at copy
+checkin time), the copy being checked in is evaluated by the system for its
+fitness to fulfill outstanding holds.  When the copy might fulfill more than
+one hold, a set of 'determinants' are used to rank the possible holds that
+might be fulfilled, so that the best hold may be chosen.
+
+Evergreen currently uses one of two possible sets of 'determinants' to rank
+the holds that a given copy might fulfill.  An org-unit setting determines
+which set of 'determinants' is used.
+
+We will call these sets the "best-hold selection sort orders".  The best-hold
+selection sort orders available for use at hold capture time are:
+
+Traditional
+~~~~~~~~~~~
+  . 'pprox' - Proximity of capturing location to pickup library
+  . 'priority' - Group hold priority
+  . 'cut' - Hold cut-in-line
+  . 'depth' - Hold selection depth (deeper/narrower first)
+  . 'rtime' - Hold request time
+
+FIFO
+~~~~
+  . 'priority' - Group hold priority
+  . 'cut' - Hold cut-in-line
+  . 'rtime' - Hold request time
+  . 'depth' - Hold selection depth (deeper/narrower first)
+  . 'pprox' - Proximity of capturing location to pickup library
+
+In either of these scenarios, a case could be made for changing the order of
+several fields. However, the use of these is currently controlled only by a
+single org-unit setting to turn on or off FIFO (if FIFO is "off," the
+Traditional set is used).
+
+Adding more org-unit settings to control yet more hard-coded orderings is a
+path to madness, and therefore we should support custom field ordering for
+best-hold selection.
+
+Proposal
+--------
+
+To that end, we propose a new table to define field importance, and a new org-
+unit setting to replace "FIFO Holds" and select the appropriate definition for
+the capturing location. The UI for creating or editing hold order definitions
+should consist of a list for ordering the options, controlled by up-and-down
+buttons both clickable and accessible by keyboard.  There will also be a field
+for naming the definition and a save button.
+
+This org-unit setting will be retrieved at capture time, instead of the FIFO
+setting, and inspected by open-ils.storage.action.hold_request.nearest_hold.
+If no value is set, the equivalent of the "traditional" order will be used.
+
+An upgrade script will change all FIFO settings to version of the new setting
+which points to the system-supplied definition that implements FIFO as it
+stands today, thus avoiding functional changes and configuration problems.
+
+Design
+------
+
+Database Sketch
+~~~~~~~~~~~~~~~
+
+The 'config.best_hold_order' database table will have two metadata columns
+and eight data columns.
+
+Each of the eight data columns corresponds to a similarly named column used for
+ranking in the best-hold selection process (i.e., the 'determinants').  In a
+given row, the value of each of these columns corresponds to its relative
+priority in the ranking decision (lowest value representing the highest
+priority).
+
+Data columns with a null value have the effect of omitting the corresponding
+determinant in the ORDER BY clause for best-hold selection when the given
+best-hold selector order set is in play.
+
+One of the 'determinants', *aprox*, depends on the Calculated Proximity
+Adjustment enchancement (documented elsewhere).
+
+The 'determinant' *rtime*, which in practice is virtually unique among the
+set of all holds at a site, will always terminate the list of determinants
+used in constructing the ORDER BY clause whenever it appears.  In other words,
+because *rtime* will never tie anyway, no more comparisons after rtime have
+any meaning.
+
+The default best-hold order sets sketched here are subject to refinement and
+are not guaranteed to represent the final product.
+
+[source,sql]
+------------------------------------------------------------------------------
+
+CREATE TABLE config.best_hold_order(
+    id          SERIAL      PRIMARY KEY,    -- (metadata)
+    name        TEXT        UNIQUE,   -- i18n (metadata)
+    pprox       INT, -- copy capture <-> pickup lib prox
+    hprox       INT, -- copy circ lib <-> request lib prox
+    aprox       INT, -- copy circ lib <-> pickup lib ADJUSTED prox on ahcm
+    priority    INT, -- group hold priority
+    cut         INT, -- cut-in-line
+    depth       INT, -- selection depth
+    htime       INT, -- time since last home-lib circ exceeds org-unit setting
+    rtime       INT  -- request time
+);
+
+-- At least one of these columns must contain a non-null value
+ALTER TABLE config.best_hold_order ADD CHECK ((
+    pprox IS NOT NULL OR
+    hprox IS NOT NULL OR
+    aprox IS NOT NULL OR
+    priority IS NOT NULL OR
+    cut IS NOT NULL OR
+    depth IS NOT NULL OR
+    htime IS NOT NULL OR
+    rtime IS NOT NULL
+));
+
+INSERT INTO config.best_hold_order (
+    name,
+    pprox, aprox, priority, cut, depth, rtime, htime, hprox
+) VALUES (
+    'Traditional',
+    1, 2, 3, 4, 5, 6, 7, 8
+);
+
+INSERT INTO config.best_hold_order (
+    name,
+    hprox, pprox, aprox, priority, cut, depth, rtime, htime
+) VALUES (
+    'Traditional with Holds-always-go-to-home-patrons',
+    1, 2, 3, 4, 5, 6, 7, 8
+);
+
+INSERT INTO config.best_hold_order (
+    name,
+    htime, hprox, pprox, aprox, priority, cut, depth, rtime
+) VALUES (
+    'Traditional with Holds-go-home',
+    1, 2, 3, 4, 5, 6, 7, 8
+);
+
+INSERT INTO config.best_hold_order (
+    name,
+    priority, cut, rtime, depth, pprox, hprox, aprox, htime
+) VALUES (
+    'FIFO',
+    1, 2, 3, 4, 5, 6, 7, 8
+);
+
+INSERT INTO config.best_hold_order (
+    name,
+    hprox, priority, cut, rtime, depth, pprox, aprox, htime
+) VALUES (
+    'FIFO with Holds-always-go-to-home-patrons',
+    1, 2, 3, 4, 5, 6, 7, 8
+);
+
+INSERT INTO config.best_hold_order (
+    name,
+    htime, priority, cut, rtime, depth, pprox, aprox, hprox
+) VALUES (
+    'FIFO with Holds-go-home',
+    1, 2, 3, 4, 5, 6, 7, 8
+);
+
+INSERT INTO config.org_unit_setting_type (
+    name, label, description, datatype, fm_class, update_perm
+) VALUES (
+    'circ.hold_capture_order',
+    'Best-hold selection precedence',
+    'Defines the sort order of holds when selecting a hold to fill using a given copy at capture time',
+    'link',
+    'cbho',
+    'ADMIN_HOLD_CAPTURE_SORT'
+);
+
+INSERT INTO config.org_unit_setting_type (
+    name, label, description, datatype, update_perm
+) VALUES (
+    'circ.hold_go_home_interval',
+    'Max foreign-circulation time',
+    'Time a copy can spend circulating away from its circ lib before returning there to fill a hold (if one exists there)',
+    'interval',
+    'ADMIN_HOLD_CAPTURE_SORT'
+);
+
+INSERT INTO actor.org_unit_setting (
+    org_unit, name, value
+) VALUES (
+    1,
+    'circ.hold_go_home_interval',
+    '6 months'
+);
+
+UPDATE actor.org_unit_setting SET
+    name = 'circ.hold_capture_order',
+    value = (SELECT id FROM config.hold_capture_sort WHERE name = 'FIFO')
+WHERE
+    name = 'circ.holds_fifo';
+------------------------------------------------------------------------------
+
+
+When constructing ORDER BY clauses, the *htime* determinant will be
+represented by a more complex expression than the other determinants.  The
+likely form of this will be as follows:
+
+[source,sql]
+-----------------------------------------------
+CASE WHEN
+    ['value of org setting circ.hold_go_home_interval'] <
+        NOW() - ['timestamp of last circulation at copy circ lib']
+    THEN hprox      -- sic
+    ELSE 999
+END
+
+-----------------------------------------------
+
+Middle Layer
+~~~~~~~~~~~~
+
+The 'open-ils.storage.action.hold_request.nearest_hold' method issues a query
+with an ORDER BY clause.
+
+This clause, previously selected from two hard-coded choices based on a
+boolean value indicating use- or don't-use-FIFO, will now be
+dynamically prepared based on the order specified in the
+'circ.hold_capture_order' org-unit setting.
+
+User Interface
+~~~~~~~~~~~~~~
+
+A user interface will allow the creation of new best-hold orders and the
+editing of existing ones, given sufficient user permission.
+
+The name field (metadata) will be editable with a free-form text widget, and
+the remaining (data) fields will be represented by objects that the user
+manipulates via clickable buttons (also keyboard accessible) to indicate order.
+
+////
+vim: ft=asciidoc
+////
+
+

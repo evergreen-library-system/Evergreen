@@ -1,0 +1,16 @@
+Custom best-hold selection sort order
+=====================================
+
+The ranking algorithm that chooses the best hold to target a copy in 
+hand at a capture time used to be fairly simple.  It had two modes, FIFO
+and not-FIFO, and that was it.
+
+This change allows full configuration of that algorithm.  In other 
+words, when the system captures a copy and sets out to evaluate what
+hold, if any, that copy might best fulfull, site staff of sufficient
+permission level are now empowered to choose exactly which comparisons
+the systems makes in what order.  This gives said staff much greater
+flexibililty than they have today over holds policy.
+
+For more information, see the included tech spec documents.
+

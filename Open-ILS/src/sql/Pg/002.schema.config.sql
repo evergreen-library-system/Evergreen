@@ -979,7 +979,6 @@ CREATE TABLE config.usr_activity_type (
 CREATE UNIQUE INDEX unique_wwh ON config.usr_activity_type 
     (COALESCE(ewho,''), COALESCE (ewhat,''), COALESCE(ehow,''));
 
-
 CREATE TABLE config.filter_dialog_interface (
     key         TEXT                        PRIMARY KEY,
     description TEXT
@@ -996,5 +995,31 @@ CREATE TABLE config.filter_dialog_filter_set (
     CONSTRAINT cfdfs_name_once_per_lib UNIQUE (name, owning_lib)
 );
 
+CREATE TABLE config.best_hold_order(
+    id          SERIAL      PRIMARY KEY,
+    name        TEXT        UNIQUE,   -- i18n
+    pprox       INT, -- copy capture <-> pickup lib prox
+    hprox       INT, -- copy circ lib <-> request lib prox
+    aprox       INT, -- copy circ lib <-> pickup lib ADJUSTED prox on ahcm
+    approx      INT, -- copy capture <-> pickup lib ADJUSTED prox from function
+    priority    INT, -- group hold priority
+    cut         INT, -- cut-in-line
+    depth       INT, -- selection depth
+    htime       INT, -- time since last home-lib circ exceeds org-unit setting
+    rtime       INT, -- request time
+    shtime      INT  -- time since copy last trip home exceeds org-unit setting
+);
+
+-- At least one of these columns must contain a non-null value
+ALTER TABLE config.best_hold_order ADD CHECK ((
+    pprox IS NOT NULL OR
+    hprox IS NOT NULL OR
+    aprox IS NOT NULL OR
+    priority IS NOT NULL OR
+    cut IS NOT NULL OR
+    depth IS NOT NULL OR
+    htime IS NOT NULL OR
+    rtime IS NOT NULL
+));
 
 COMMIT;

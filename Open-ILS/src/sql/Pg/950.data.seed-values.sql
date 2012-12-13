@@ -1582,9 +1582,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 544, 'URL_VERIFY_UPDATE_SETTINGS', oils_i18n_gettext( 544, 
     'Allows a user to configure URL verification org unit settings', 'ppl', 'description')),
  ( 545, 'SAVED_FILTER_DIALOG_FILTERS', oils_i18n_gettext( 545,
-    'Allows users to save and load sets of filters for filter dialogs, available in certain staff interfaces', 'ppl', 'description'))
-
-
+    'Allows users to save and load sets of filters for filter dialogs, available in certain staff interfaces', 'ppl', 'description')),
+ ( 546, 'ADMIN_HOLD_CAPTURE_SORT', oils_i18n_gettext( 546,
+        'Allows a user to make changes to best-hold selection sort order', 'ppl', 'description'))
 ;
 
 
@@ -12412,3 +12412,104 @@ INSERT INTO config.metabib_class_ts_map(field_class, ts_config, index_weight, al
     ('subject','simple','A',true),
     ('subject','english_nostop','C',true),
     ('identifier','simple','A',true);
+
+INSERT INTO config.org_unit_setting_type (
+    name, label, description, datatype, fm_class, update_perm, grp
+) VALUES (
+    'circ.hold_capture_order',
+    oils_i18n_gettext(
+        'circ.hold_capture_order',
+        'Best-hold selection sort order',
+        'coust',
+        'label'
+    ),
+    oils_i18n_gettext(
+        'circ.hold_capture_order',
+        'Defines the sort order of holds when selecting a hold to fill using a given copy at capture time',
+        'coust',
+        'description'
+    ),
+    'link',
+    'cbho',
+    543,
+    'holds'
+);
+
+INSERT INTO config.org_unit_setting_type (
+    name, label, description, datatype, update_perm, grp
+) VALUES (
+    'circ.hold_go_home_interval',
+    oils_i18n_gettext(
+        'circ.hold_go_home_interval',
+        'Max foreign-circulation time',
+        'coust',
+        'label'
+    ),
+    oils_i18n_gettext(
+        'circ.hold_go_home_interval',
+        'Time a copy can spend circulating away from its circ lib before returning there to fill a hold (if one exists there)',
+        'coust',
+        'description'
+    ),
+    'interval',
+    543,
+    'holds'
+);
+
+
+INSERT INTO config.best_hold_order (
+    name,
+    pprox, aprox, priority, cut, depth, rtime, htime, hprox
+) VALUES (
+    'Traditional',
+    1, 2, 3, 4, 5, 6, 7, 8
+);
+
+INSERT INTO config.best_hold_order (
+    name,
+    hprox, pprox, aprox, priority, cut, depth, rtime, htime
+) VALUES (
+    'Traditional with Holds-always-go-home',
+    1, 2, 3, 4, 5, 6, 7, 8
+);
+
+INSERT INTO config.best_hold_order (
+    name,
+    htime, hprox, pprox, aprox, priority, cut, depth, rtime
+) VALUES (
+    'Traditional with Holds-go-home',
+    1, 2, 3, 4, 5, 6, 7, 8
+);
+
+INSERT INTO config.best_hold_order (
+    name,
+    priority, cut, rtime, depth, pprox, hprox, aprox, htime
+) VALUES (
+    'FIFO',
+    1, 2, 3, 4, 5, 6, 7, 8
+);
+
+INSERT INTO config.best_hold_order (
+    name,
+    hprox, priority, cut, rtime, depth, pprox, aprox, htime
+) VALUES (
+    'FIFO with Holds-always-go-home',
+    1, 2, 3, 4, 5, 6, 7, 8
+);
+
+INSERT INTO config.best_hold_order (
+    name,
+    htime, priority, cut, rtime, depth, pprox, aprox, hprox
+) VALUES (
+    'FIFO with Holds-go-home',
+    1, 2, 3, 4, 5, 6, 7, 8
+);
+
+INSERT INTO actor.org_unit_setting (
+    org_unit, name, value
+) VALUES (
+    (SELECT id FROM actor.org_unit WHERE parent_ou IS NULL),
+    'circ.hold_go_home_interval',
+    '"6 months"'
+);
+

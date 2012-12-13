@@ -1,0 +1,119 @@
+[% WRAPPER base.tt2 %]
+<style type="text/css">
+    h1 { margin-bottom: 0.5ex; }
+    #cbho-loading { text-align: center; }
+    #cbho-edit-space { padding: 0.25ex 0.5em; }
+    #cbho-name { width: 30em; }
+    #cbho-field-order { width: 30em; }
+    #cbho-field-order-space > div { float: left; padding-right: 1em; }
+    #cbho-needs-saved { color: #c00; font-weight: bold; }
+    option.post-rtime, option.post-rtime:focus {
+        font-style: italic; color: #999;
+    }
+    .body-part { margin: 1ex 0; }
+    .clear-both { clear: both; }
+    .show-access-key { font-weight: bold; border-bottom: 1px dashed black; }
+</style>
+<h1>[% l('Best-Hold Selection Sort Order') %]</h1>
+
+<!-- Hidden after JS load. Prevents early clicks from breaking anything. -->
+<div id="cbho-loading">
+    <img src="[% ctx.media_prefix %]/opac/images/progressbar_green-old.gif"
+        alt="[% l('Interface loading') %]" />
+    <!-- <audio src="knight rider theme ;)" /> -->
+</div>
+
+<div id="cbho-main-body" class="hidden"><!-- main body -->
+    <div class="body-part">
+        <span dojoType="dijit.form.Button" onClick="module.new_cbho()">[% l('Create New') %]</span>
+        [% l('or') %]
+        <span dojoType="dijit.form.Button" onClick="module.edit_cbho()">[% l('Edit Existing') %]</span>
+    </div>
+
+    <div class="body-part hidden" id="cbho-edit-space"><!-- editing space -->
+        <p>
+            <span id="cbho-editing"></span>
+            <span id="cbho-needs-saved">[% l('You have unsaved changes.') %]</span>
+        </p>
+        <div id="cbho-name-edit-space">
+            <label for="cbho-name">[% l('Name:') %]</label>
+            <input id="cbho-name" type="text" onchange="module.editor_changed(true);" />
+        </div>
+        <div id="cbho-field-order-space" class="body-part">
+            <div>
+                <label for="cbho-field-order">[% l('Order:') %]</label>
+            </div>
+            <div>
+                <select id="cbho-field-order" size="10"> </select>
+            </div>
+            <div>
+                <input type="button"
+                    onclick="module.editor_move(-1); return false;"
+                    accesskey="[% l('k') %]"
+                    value="&uarr; [% l('Move Up') %]" />
+                <span class="show-access-key">[% l('k') %]</span>
+                <br />
+                <input type="button"
+                    onclick="module.editor_move(1); return false;"
+                    accesskey="[% l('j') %]"
+                    value="&darr; [% l('Move Down') %]" />
+                <span class="show-access-key">[% l('j') %]</span>
+            </div>
+        </div>
+
+        <div class="clear-both"></div>
+
+        <div class="body-part"><!-- save changes -->
+            <p><em>[% l('Because rtime, a high-precision timestamp, is ' _
+                'essentially unique among holds, ' _
+                'no fields arranged after rtime really have any effect in ' _
+                'determining best-hold selection.') %]</em></p>
+
+            <p>[% l('To choose which Best-Hold Selection Sort Order will be ' _
+                'used by Evergreen at copy capture time, see the Library ' _
+                'Settings interface.') %]</p>
+
+            <button id="cbho-save-changes"
+                onclick="module.editor_save(); return false" disabled="disabled">
+                [% l('Save Changes') %]
+            </button>
+        </div><!-- save changes -->
+    </div><!-- editing space -->
+
+</div><!-- main body -->
+
+<div class="hidden">
+    <div dojoType="openils.widget.ProgressDialog" id="progress-dialog"></div>
+    <div dojoType="dijit.Dialog" id="cbho-existing" title="[% l('Choose a best-hold order') %]">
+        <div class="body-part">
+            <label for="cbho-existing-selector">
+                [% l('Choose a best-hold order') %]
+            </label>
+            <span id="cbho-existing-selector"></span>
+        </div>
+        <div class="body-part">
+            <span dojoType="dijit.form.Button" type="submit"
+                id="cbho-existing-edit-go">
+                [% l('Edit') %]
+            </span>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    dojo.require("dijit.form.Button");
+    dojo.require("dijit.form.TextBox");
+    dojo.require("dijit.Dialog");
+    dojo.require("openils.widget.ProgressDialog");
+    dojo.require("openils.conify.BestHoldOrder");
+
+    var module;
+
+    openils.Util.addOnLoad(
+        function() {
+            module = openils.conify.BestHoldOrder;
+            module.init();
+        }
+    );
+</script>
+[% END %]

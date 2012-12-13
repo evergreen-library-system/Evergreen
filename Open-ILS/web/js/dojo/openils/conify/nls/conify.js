@@ -88,6 +88,11 @@
     "SURVEY_FOOT_LABEL": "Questions & Answers",
     "EVENT_DEF_LABEL" : "${0}: ${1}",
     "ACQ_DISTRIB_FORMULA_NAME_PROMPT" : "Enter new formula name",
-    "ACQ_DISTRIB_FORMULA_NAME_CLONE" : "${0} (Clone)"
+    "ACQ_DISTRIB_FORMULA_NAME_CLONE" : "${0} (Clone)",
+    "CBHO_EDITING_NEW": "You are editing a new best-hold order.",
+    "CBHO_EDITING_EXISTING": "You are editing best-hold order #${0}: ${1}.",
+    "CBHO_FIELD_DISPLAY": "[${0}] ${1}",
+    "CBHO_NO_LOAD": "Unable to load selected item.",
+    "CBHO_NEEDS_NAME": "You need to enter a name for the best-hold order."
 }
 

@@ -384,7 +384,7 @@ CREATE TABLE actor.org_unit_proximity_adjustment (
     id                  SERIAL   PRIMARY KEY,
     item_circ_lib       INT         REFERENCES actor.org_unit (id),
     item_owning_lib     INT         REFERENCES actor.org_unit (id),
-    copy_location       INT         REFERENCES asset.copy_location (id),
+    copy_location       INT,        -- REFERENCES asset.copy_location (id),
     hold_pickup_lib     INT         REFERENCES actor.org_unit (id),
     hold_request_lib    INT         REFERENCES actor.org_unit (id),
     pos                 INT         NOT NULL DEFAULT 0,

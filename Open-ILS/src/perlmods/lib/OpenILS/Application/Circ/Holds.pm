@@ -3000,10 +3000,10 @@ sub find_nearest_permitted_hold {
 
     my $fifo = $U->ou_ancestor_setting_value($user->ws_ou, 'circ.holds_fifo');
 
-    # search for what should be the best holds for this copy to fulfill
-    my $best_holds = $U->storagereq(
-        "open-ils.storage.action.hold_request.nearest_hold.atomic",
-        $user->ws_ou, $copy->id, 100, $hold_stall_interval, $fifo );
+	# search for what should be the best holds for this copy to fulfill
+	my $best_holds = $U->storagereq(
+        "open-ils.storage.action.hold_request.nearest_hold.atomic", 
+		$user->ws_ou, $copy, 100, $hold_stall_interval, $fifo );
 
     # Add any pre-targeted holds to the list too? Unless they are already there, anyway.
     if ($old_holds) {
