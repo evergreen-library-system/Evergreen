@@ -761,6 +761,7 @@ sub create_acq_invoice_from_edi {
     }
 
     my @eg_inv_entries;
+    my @eg_inv_cancel_lis;
 
     $message->purchase_order($invoice->{purchase_order});
 
@@ -817,6 +818,9 @@ sub create_acq_invoice_from_edi {
         $eg_inv_entry->amount_paid($lineitem_price);
 
         push @eg_inv_entries, $eg_inv_entry;
+        push @eg_inv_cancel_lis, 
+            {lineitem => $li, quantity => $quantity} 
+            if $li->cancel_reason;
     }
 
     my @eg_inv_items;
@@ -897,6 +901,68 @@ sub create_acq_invoice_from_edi {
             return 0;
         }
     }
+
+    # if an invoiced lineitem is marked as cancelled 
+    # (e.g. back-order), invoicing the lineitem implies 
+    # we need to un-cancel it
+    for my $li_chunk (@eg_inv_cancel_lis) {
+        my $li = $li_chunk->{lineitem};
+        my $quantity = $li_chunk->{quantity};
+
+        $logger->info($log_prefix . 
+            "un-cancelling invoiced lineitem ". $li->id);
+         
+        # collect the LIDs, starting with those that are
+        # not cancelled (should not happen), followed by
+        # those that have keep-debits cancel_reasons, 
+        # followed by non-keep-debit cancel reasons.
+
+        my $lid_ids = $e->json_query({
+            select => {acqlid => ['id']},
+            from => {
+                acqlid => {
+                    acqcr => {type => 'left'},
+                    acqfdeb => {type => 'left'}
+                }
+            },
+            where => {
+                '+acqlid' => {lineitem => $li->id},
+                # not-yet invoiced copies
+                '+acqfdeb' => {encumbrance => 't'}
+            },
+            order_by => [{
+                class => 'acqcr',
+                field => 'keep_debits',
+                direction => 'desc'
+            }],
+            limit => $quantity
+        });
+
+        for my $lid_id (map {$_->{id}} @$lid_ids) {
+            my $lid = $e->retrieve_acq_lineitem_detail($lid_id);
+            next unless $lid->cancel_reason;
+
+            $lid->clear_cancel_reason;
+            unless ($e->update_acq_lineitem_detail($lid)) {
+                $logger->error($log_prefix . 
+                    "couldn't clear lid cancel reason: ". $e->die_event
+                );
+                return 0;
+            }
+        }
+
+        $li->clear_cancel_reason;
+        $li->state("on-order");
+        $li->edit_time('now'); 
+
+        unless ($e->update_acq_lineitem($li)) {
+            $logger->error($log_prefix . 
+                "couldn't clear li cancel reason: ". $e->die_event
+            );
+            return 0;
+        }
+    }
+
 
     $e->xact_commit;
     return 1;
