@@ -80,12 +80,12 @@
             <menuitem label="&common.textbox.delete;" oncommand="document.popupNode.value = ''" />
             <menuitem label="&common.textbox.select_all;" oncommand="document.popupNode.select()" />
         </menupopup>
-        <popup id="column_sort_menu">
+        <menupopup id="column_sort_menu">
             <menuitem label="&common.sort.first.ascending;" oncommand="util.sort.dispatch('first','asc');"/>
             <menuitem label="&common.sort.first.descending;" oncommand="util.sort.dispatch('first','desc');"/>
             <menuitem label="&common.sort.next.ascending;" oncommand="util.sort.dispatch('next','asc');"/>
             <menuitem label="&common.sort.next.descending;" oncommand="util.sort.dispatch('next','desc');"/>
-        </popup>
+        </menupopup>
         <messagecatalog id="commonStrings" src='/xul/server/locale/<!--#echo var="locale"-->/common.properties'/>
         <messagecatalog id="offlineStrings" src='/xul/server/locale/<!--#echo var="locale"-->/offline.properties'/>
         <messagecatalog id="authStrings" src='/xul/server/locale/<!--#echo var="locale"-->/auth.properties'/>
