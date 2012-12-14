@@ -52,6 +52,7 @@ vim:noet:sw=4:ts=4:
 		<command id="cmd_add_sstr"/>
 		<command id="cmd_add_subscriptions"/>
 		<command id="cmd_broken" />
+		<command id="cmd_claim_items"/>
 		<command id="cmd_clear" />
 		<command id="cmd_edit_items"/>
         <command id="cmd_edit_sdists"/>
@@ -74,6 +75,8 @@ vim:noet:sw=4:ts=4:
 		<command id="cmd_refresh_list"/>
 		<command id="cmd_replace_barcode"/>
         <command id="cmd_reset_items"/>
+        <command id="cmd_set_items_not_held"/>
+        <command id="cmd_set_items_not_published"/>
         <command id="cmd_set_sunit" />
         <command id="cmd_set_other_sunit" />
         <command id="cmd_show_all_libs" />

@@ -27,3 +27,12 @@ groupbox {
 description#print_routing_desc { margin: 0; padding: 0 1em; }
 #pattern_wizard_main > vbox { padding: 0.5em 0; }
 #pattern_wizard_main { overflow: auto; }
+treechildren::-moz-tree-row(makeItGray) {
+    background-color: #CCCCCC;
+}
+treechildren::-moz-tree-row(makeItGray, selected) {
+    background-color: #AAAAAA;
+}
+treechildren::-moz-tree-cell-text(crossItOut) {
+    text-decoration: line-through;
+}

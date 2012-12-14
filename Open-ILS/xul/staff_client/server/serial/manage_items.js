@@ -280,6 +280,18 @@ serial.manage_items.prototype = {
                             }
                         }
                     ],
+                    'cmd_claim_items' : [
+                        ['command'],
+                        function () { obj.set_items_special_status('Claimed','staff.serial.manage_items.set_claimed_success') }
+                    ],
+                    'cmd_set_items_not_published' : [
+                        ['command'],
+                        function () { obj.set_items_special_status('Not Published','staff.serial.manage_items.set_not_published_success') }
+                    ],
+                    'cmd_set_items_not_held' : [
+                        ['command'],
+                        function () { obj.set_items_special_status('Not Held','staff.serial.manage_items.set_not_held_success') }
+                    ],
                     'cmd_delete_items' : [
                         ['command'],
                         function() {
@@ -728,7 +740,7 @@ serial.manage_items.prototype = {
             if ($('serial_manage_items_show_all').checked) {
                 obj.lists.main.sitem_retrieve_params = {};
             } else {
-                obj.lists.main.sitem_retrieve_params = {'date_received' : null };
+                obj.lists.main.sitem_retrieve_params = { 'date_received' : null, 'status' : {'not in' : ['Not Held', 'Not Published']} };
             }
             obj.lists.main.sitem_extra_params ={'order_by' : {'sitem' : 'date_expected ASC, stream ASC'}};
 
@@ -797,6 +809,14 @@ serial.manage_items.prototype = {
                             row.my.parent_obj = obj;
                             //params.treeitem_node.setAttribute( 'retrieve_id', js2JSON({'copy_id':copy_id,'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': ( row.my.record ? row.my.record.id() : null ) }) );
                             params.treeitem_node.setAttribute( 'retrieve_id', js2JSON({'sitem_id':sitem.id()}) );
+                            if (sitem.status() == 'Claimed') {
+                                params.treeitem_node.firstChild.setAttribute( 'properties', 'makeItGray' );
+                            } else if (sitem.status() == 'Not Held' || sitem.status() == 'Not Published') {
+                                var treecells = params.treeitem_node.firstChild.childNodes;
+                                for (i = 0; i < treecells.length; i++) {
+                                    treecells[i].setAttribute( 'properties', 'crossItOut' );
+                                }
+                            }
                             dump('dumping... ' + js2JSON(obj.list_sitem_map[sitem.id()]));
                             if (typeof params.on_retrieve == 'function') {
                                 params.on_retrieve(row);
@@ -899,6 +919,28 @@ serial.manage_items.prototype = {
         }
     },
 
+    // accepts a list of ids or a list of objects
+    'refresh_rows' : function(list) {
+        var obj = this;
+
+        var id_list;
+
+        if (typeof list[0] == 'object') {
+            id_list = util.functional.map_list(
+                list,
+                function(o) {
+                    return o.id()
+                }
+            );
+        } else {
+            id_list = list;
+        }
+
+        for (var i = 0; i < id_list.length; i++) {
+            obj.lists[obj.selected_list].refresh_row(obj.row_map[id_list[i]]);
+        }
+    },
+
 	'retrieve' : function(list_name) {
 		var obj = this;
         var list = obj.lists[list_name];
@@ -947,6 +989,15 @@ serial.manage_items.prototype = {
 		dump('manage_items.on_select list = ' + js2JSON(list) + '\n');
 
 		var obj = this;
+        obj.controller.view.cmd_claim_items.setAttribute('disabled','false');
+
+        for (var i = 0; i < list.length; i++) {
+            var item = obj.list_sitem_map[list[i].sitem_id];
+            if (item.status() != 'Expected') {
+                obj.controller.view.cmd_claim_items.setAttribute('disabled','true');
+                break;
+            }
+        }
 
 		/*obj.controller.view.cmd_items_claimed_returned.setAttribute('disabled','false');
 		obj.controller.view.sel_mark_items_missing.setAttribute('disabled','false');*/
@@ -1026,6 +1077,36 @@ serial.manage_items.prototype = {
                 { 'object_id' : obj_id, 'function_type' : function_type, 'object_type' : object_type, 'constructor' : constructor, 'title' : $('serialStrings').getString('staff.serial.'+type+'_editor.notes') + ' -- ' + title_fn(item) }
             );
             seen_ids[obj_id] = 1;
+        }
+    },
+
+    'set_items_special_status' : function(new_status, message) {
+        var obj = this;
+        try {
+            if (!obj.retrieve_ids || obj.retrieve_ids.length == 0) return;
+
+            JSAN.use('util.functional');
+            var list = util.functional.map_list(
+                    obj.retrieve_ids,
+                    function (o) {
+                        var item = obj.list_sitem_map[o.sitem_id];
+                        item.status(new_status);
+                        obj.list_sitem_map[o.sitem_id] = item;
+                        return item;
+                    }
+                );
+
+            var robj = obj.network.request(
+                        'open-ils.serial',
+                        'open-ils.serial.item.fleshed.batch.update',
+                        [ ses(), list ]
+                    );
+            if (typeof robj.ilsevent != 'undefined') throw(robj);
+
+            alert($('serialStrings').getFormattedString(message, [list.length]));
+            obj.refresh_rows(list);
+        } catch(E) {
+            obj.error.standard_unexpected_error_alert('staff.serial.manage_items.set_items_special_status.error',E);
         }
     }
 }
