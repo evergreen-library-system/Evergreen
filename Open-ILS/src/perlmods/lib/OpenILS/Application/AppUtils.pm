@@ -1542,8 +1542,6 @@ sub get_copy_price {
 
     $copy->price(0) if $copy->price and $copy->price < 0;
 
-    return $copy->price if $copy->price and $copy->price > 0;
-
 
     my $owner;
     if(ref $volume) {
@@ -1560,17 +1558,30 @@ sub get_copy_price {
         }
     }
 
-    my $default_price = $self->ou_ancestor_setting_value(
-        $owner, OILS_SETTING_DEF_ITEM_PRICE, $e) || 0;
+    my $min_price = $self->ou_ancestor_setting_value($owner, OILS_SETTING_MIN_ITEM_PRICE);
+    my $max_price = $self->ou_ancestor_setting_value($owner, OILS_SETTING_MAX_ITEM_PRICE);
+    my $charge_on_0 = $self->ou_ancestor_setting_value($owner, OILS_SETTING_CHARGE_LOST_ON_ZERO, $e);
 
-    return $default_price unless defined $copy->price;
+    my $price = $copy->price;
 
-    # price is 0.  Use the default?
-    my $charge_on_0 = $self->ou_ancestor_setting_value(
-        $owner, OILS_SETTING_CHARGE_LOST_ON_ZERO, $e) || 0;
+    # set the default price if needed
+    if (!defined $price or ($price == 0 and $charge_on_0)) {
+        # set to default price
+        $price = $self->ou_ancestor_setting_value(
+            $owner, OILS_SETTING_DEF_ITEM_PRICE, $e) || 0;
+    }
 
-    return $default_price if $charge_on_0;
-    return 0;
+    # adjust to min/max range if needed
+    if (defined $max_price and $price > $max_price) {
+        $price = $max_price;
+    } elsif (defined $min_price and $price < $min_price
+        and ($price != 0 or $charge_on_0 or !defined $charge_on_0)) {
+        # default to raising the price to the minimum,
+        # but let 0 fall through if $charge_on_0 is set and is false
+        $price = $min_price;
+    }
+
+    return $price;
 }
 
 # given a transaction ID, this returns the context org_unit for the transaction

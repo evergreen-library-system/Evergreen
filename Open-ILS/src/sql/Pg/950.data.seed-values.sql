@@ -1591,7 +1591,11 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 551, 'ADMIN_SERVER_ADDON_FOR_WORKSTATION', oils_i18n_gettext( 551,
         'Allows a user to specify which Server Add-ons get invoked at the current workstation', 'ppl', 'description')),
  ( 552, 'ADMIN_FLOAT_GROUPS', oils_i18n_gettext( 552,
-    'Allows administration of floating groups', 'ppl', 'description' ))
+    'Allows administration of floating groups', 'ppl', 'description' )),
+ ( 552, 'UPDATE_ORG_UNIT_SETTING.circ.min_item_price', oils_i18n_gettext( 552,
+    'UPDATE_ORG_UNIT_SETTING.circ.min_item_price', 'ppl', 'description' )),
+ ( 553, 'UPDATE_ORG_UNIT_SETTING.circ.max_item_price', oils_i18n_gettext( 553,
+    'UPDATE_ORG_UNIT_SETTING.circ.max_item_price', 'ppl', 'description' ))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -2782,6 +2786,24 @@ INSERT into config.org_unit_setting_type
         'coust', 'label'),
     oils_i18n_gettext('cat.default_item_price',
         'Default Item Price',
+        'coust', 'description'),
+    'currency', null)
+
+,( 'circ.min_item_price', 'finance',
+    oils_i18n_gettext('circ.min_item_price',
+        'Minimum Item Price',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.min_item_price',
+        'When charging for lost items, charge this amount as a minimum.',
+        'coust', 'description'),
+    'currency', null)
+
+,( 'circ.max_item_price', 'finance',
+    oils_i18n_gettext('circ.max_item_price',
+        'Maximum Item Price',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.max_item_price',
+        'When charging for lost items, limit the charge to this as a maximum.',
         'coust', 'description'),
     'currency', null)
 
