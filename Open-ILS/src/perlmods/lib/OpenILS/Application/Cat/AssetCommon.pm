@@ -815,7 +815,7 @@ sub set_item_lost_or_lod {
     # ---------------------------------------------------------------------
     # zero out overdue fines on this circ if configured
     if( $void_overdue ) {
-        my $evt = OpenILS::Application::Circ::CircCommon->void_or_zero_overdues($e, $circ, {force_zero => 1});
+        my $evt = OpenILS::Application::Circ::CircCommon->void_or_zero_overdues($e, $circ, {force_zero => 1, note => "System: OVERDUE REVERSED for " . $args{bill_note} . " Processing"});
         return $evt if $evt;
     }
 
