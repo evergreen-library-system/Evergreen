@@ -1,9 +1,9 @@
-[% ctx.page_title = 'Barcode Completion Configuration' %]
+[% ctx.page_title = l('Barcode Completion Configuration') %]
 [% WRAPPER base.tt2 %]
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/barcode_completion.js'> </script>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-    <div>Barcode Completion Configuration</div>
-    <div><button dojoType='dijit.form.Button' onClick='cmGrid.showCreatePane()'>New</button></div>
+    <div>[% l('Barcode Completion Configuration') %]</div>
+    <div><button dojoType='dijit.form.Button' onClick='cmGrid.showCreatePane()'>[% l('New') %]</button></div>
 </div>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <table  jsId="cmGrid"

@@ -28,10 +28,10 @@
             <thead>
                 <tr><!-- FIXME: i18n problem: init_auto_l10n() runs
                         too late to take care of the below elements. -->
-                    <th width="35%" field="type">Title</th>
-                    <th width="25%" field="resource">Barcode</th>
-                    <th width="20%" field="pickup_time">Pickup time</th>
-                    <th width="20%" field="end_time">Due time</th>
+                    <th width="35%" field="type">[% l('Title') %]</th>
+                    <th width="25%" field="resource">[% l('Barcode') %]</th>
+                    <th width="20%" field="pickup_time">[% l('Pickup time') %]</th>
+                    <th width="20%" field="end_time">[% l('Due time') %]</th>
                 </tr>
             </thead>
         </table>
@@ -53,10 +53,10 @@
             <thead>
                 <tr><!-- FIXME: i18n problem: init_auto_l10n() runs
                         too late to take care of the below elements. -->
-                    <th width="35%" field="type">Title</th>
-                    <th width="25%" field="resource">Barcode</th>
-                    <th width="20%" field="due_time">Due time</th>
-                    <th width="20%" field="return_time">Return time</th>
+                    <th width="35%" field="type">[% l('Title') %]</th>
+                    <th width="25%" field="resource">[% l('Barcode') %]</th>
+                    <th width="20%" field="due_time">[% l('Due time') %]</th>
+                    <th width="20%" field="return_time">[% l('Return time') %]</th>
                 </tr>
             </thead>
         </table>

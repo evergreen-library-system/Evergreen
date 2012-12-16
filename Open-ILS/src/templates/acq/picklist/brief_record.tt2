@@ -1,5 +1,5 @@
 [% WRAPPER 'base.tt2' %]
-<h1>New Brief Record</h1><br/>
+<h1>[% l('New Brief Record') %]</h1><br/>
 <form dojoType='dijit.form.Form'>
     <script type='dojo/method' event='onSubmit'>
         return saveBriefRecord(this.getValues());
@@ -7,11 +7,11 @@
     <table class='oils-generic-table'>
         <tbody id='acq-brief-record-tbody'>
             <tr id='acq-brief-record-pl-row'>
-                <td>Add To Selection List</td>
+                <td>[% l('Add To Selection List') %]</td>
                 <td><select dojoType='dijit.form.ComboBox' jsId='plSelector'/></td>
             </tr>
             <tr id='acq-brief-record-po-row'>
-                <td>Adding to Purchase Order</td>
+                <td>[% l('Adding to Purchase Order') %]</td>
                 <td><input dojoType='dijit.form.TextBox' jsId='poNumber' disabled='disabled'/></td>
             </tr>
             <tr id='acq-brief-record-row'>
@@ -21,9 +21,9 @@
         </tbody>
         <tbody>
             <tr>
-                <td><button dojoType='dijit.form.Button' type='submit'>Save Record</button></td>
+                <td><button dojoType='dijit.form.Button' type='submit'>[% l('Save Record') %]</button></td>
                 <!--
-                <td><button dojoType='dijit.form.Button' type='submit' jsId='marcEditButton'>Edit MARC</button></td>
+                <td><button dojoType='dijit.form.Button' type='submit' jsId='marcEditButton'>[% l('Edit MARC') %]</button></td>
                 -->
             </tr>
         </tbody>

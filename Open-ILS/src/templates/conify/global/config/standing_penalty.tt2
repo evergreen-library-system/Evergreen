@@ -2,14 +2,14 @@
 <style type="text/css">
     @import "[% ctx.media_prefix %]/js/dojo/dojox/form/resources/CheckedMultiSelect.css";
 </style>
-<h1>Standing Penalty Types</h1><br/>
+<h1>[% l('Standing Penalty Types') %]</h1><br/>
 
   <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-            <div>Standing Penalty Types</div>
+            <div>[% l('Standing Penalty Types') %]</div>
             <div>
-                <button dojoType='dijit.form.Button' onClick='spGrid.showCreateDialog()'>New Penalty Type</button>
-                <button dojoType='dijit.form.Button' onClick='spGrid.deleteSelected()'>Delete Selected</button>
+                <button dojoType='dijit.form.Button' onClick='spGrid.showCreateDialog()'>[% l('New Penalty Type') %]</button>
+                <button dojoType='dijit.form.Button' onClick='spGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
             </div>
         </div>
 

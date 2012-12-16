@@ -1,5 +1,5 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Flattener Test' %]
+[% ctx.page_title = l('Flattener Test') %]
 <!--
         -->
 <script type="text/javascript">
@@ -9,12 +9,12 @@
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane"
          layoutAlign="top" class="oils-header-panel">
-        <div>Flattener Test</div>
+        <div>[% l('Flattener Test') %]</div>
         <div>
             <button dojoType="dijit.form.Button"
-                onClick="grid.showCreateDialog()">New Thing</button>
+                onClick="grid.showCreateDialog()">[% l('New Thing') %]</button>
             <button dojoType="dijit.form.Button"
-                onClick="grid.deleteSelected()">Delete Selected Thing</button>
+                onClick="grid.deleteSelected()">[% l('Delete Selected Thing') %]</button>
         </div>
     </div>
     <!-- <div class="oils-acq-basic-roomy">
@@ -34,14 +34,14 @@
         fmClass="'acp'"
         defaultSort="['call_number']"
         mapExtras="{copy_status: {path: 'status.name', filter: true}}"
-        query="{'copy_status': ['Available','Reshelving','In process'],'circ_lib': 'BR1'}">
+        query="{'copy_status': ['[% l('Available') %]','[% l('Reshelving') %]','[% l('In process') %]'],'circ_lib': 'BR1'}">
         <thead>
             <tr>
-                 <th field="barcode" fpath="barcode" ffilter="true">Barcode</th>
-                <th field="circ_lib_name" fpath="circ_lib.name" ffilter="true">Circulation Library Name</th>
-                <th field="circ_lib" fpath="circ_lib.shortname" ffilter="true">Circulation Library</th>
+                 <th field="barcode" fpath="barcode" ffilter="true">[% l('Barcode') %]</th>
+                <th field="circ_lib_name" fpath="circ_lib.name" ffilter="true">[% l('Circulation Library Name') %]</th>
+                <th field="circ_lib" fpath="circ_lib.shortname" ffilter="true">[% l('Circulation Library') %]</th>
                 <th field="call_number" fpath="call_number.label" ffilter="true"></th>
-                <th field="shelving_loc" fpath="location.name" ffilter="true">Shelving Location</th>
+                <th field="shelving_loc" fpath="location.name" ffilter="true">[% l('Shelving Location') %]</th>
             </tr>
         </thead>
     </table>

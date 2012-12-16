@@ -1,9 +1,9 @@
 [% WRAPPER "base.tt2" %]
-[% ctx.page_title = "EDI Messages" %]
+[% ctx.page_title = l("EDI Messages") %]
 [% IF ctx.page_args.0 %]
-<h1>EDI Messages (Purchase Order [% ctx.page_args.0 %])</h1>
+<h1>[% l('EDI Messages (Purchase Order [_1])', ctx.page_args.0) %]</h1>
 [% ELSE %]
-<h1>EDI Messages</h1>
+<h1>[% l('EDI Messages') %]</h1>
 [% END  %]
 <br/>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">

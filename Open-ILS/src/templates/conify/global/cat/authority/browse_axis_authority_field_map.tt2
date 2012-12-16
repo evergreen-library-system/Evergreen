@@ -1,15 +1,15 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = "Configure Browse Axis-Authority Field Maps" %]
+[% ctx.page_title = l("Configure Browse Axis-Authority Field Maps") %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
-        <div>Browse Axis-Authority Field Maps</div>
+        <div>[% l('Browse Axis-Authority Field Maps') %]</div>
         <div>
-            <button dojoType="dijit.form.Button" onClick="abaafm_grid.showCreateDialog()">New Browse Axis-Authority Field Map</button>
-            <button dojoType="dijit.form.Button" onClick="abaafm_grid.deleteSelected()">Delete Selected</button>
+            <button dojoType="dijit.form.Button" onClick="abaafm_grid.showCreateDialog()">[% l('New Browse Axis-Authority Field Map') %]</button>
+            <button dojoType="dijit.form.Button" onClick="abaafm_grid.deleteSelected()">[% l('Delete Selected') %]</button>
         </div>
     </div>
     <div id="authority-field-metadata-holder" class="hidden">
-        Showing only browse axis-authority field maps linked to authority field:
+        [% l('Showing only browse axis-authority field maps linked to authority field:') %]
         <a id="authority-field-metadata"></a>
     </div>
     <div>

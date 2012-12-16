@@ -1,18 +1,18 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Claim Event Types' %]
+[% ctx.page_title = l('Claim Event Types') %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane"
          layoutAlign="top" class="oils-header-panel">
-        <div>Claim Event Types</div>
+        <div>[% l('Claim Event Types') %]</div>
         <div>
             <button onclick="grid.showCreateDialog()">
-                New Claim Event Type
+                [% l('New Claim Event Type') %]
             </button>
-            <button onclick="grid.deleteSelected()">Delete Selected</button>
+            <button onclick="grid.deleteSelected()">[% l('Delete Selected') %]</button>
         </div>
     </div>
     <div class="oils-acq-basic-roomy">
-        <span>Show claim event types available to</span>
+        <span>[% l('Show claim event types available to') %]</span>
         <select
             dojoType="openils.widget.OrgUnitFilteringSelect"
             jsId="ownerSelect" searchAttr="shortname"

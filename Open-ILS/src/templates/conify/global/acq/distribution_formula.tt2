@@ -1,14 +1,14 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Distribution Formulas' %]
+[% ctx.page_title = l('Distribution Formulas') %]
 
 <div id='formula-list-div'>
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
-            <div>Distribution Formulas</div>
+            <div>[% l('Distribution Formulas') %]</div>
             <div>
-                <button dojoType='dijit.form.Button' onClick='fListGrid.showCreateDialog()'>New Formula</button>
-                <button dojoType='dijit.form.Button' onClick='fListGrid.deleteSelected()'>Delete Selected</button>
-                <button dojoType='dijit.form.Button' onClick='cloneSelectedFormula()'>Clone Selected</button>
+                <button dojoType='dijit.form.Button' onClick='fListGrid.showCreateDialog()'>[% l('New Formula') %]</button>
+                <button dojoType='dijit.form.Button' onClick='fListGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
+                <button dojoType='dijit.form.Button' onClick='cloneSelectedFormula()'>[% l('Clone Selected') %]</button>
             </div>
         </div>
         <table  jsId="fListGrid"
@@ -39,18 +39,18 @@
     </div>
     <br/>
     <div>
-        <button dojoType='dijit.form.Button' onClick='addEntry()'>New Entry</button>
+        <button dojoType='dijit.form.Button' onClick='addEntry()'>[% l('New Entry') %]</button>
         <span style='padding-right:20px;'></span>
-        <button dojoType='dijit.form.Button' onClick='saveFormula()'>Apply Changes</button>
+        <button dojoType='dijit.form.Button' onClick='saveFormula()'>[% l('Apply Changes') %]</button>
     </div>
     <br/>
     <table class='oils-generic-table'>
         <thead>
             <tr>
                 <th></th>
-                <th>Owning Library</th>
-                <th>Shelving Location</th>
-                <th>Item Count</th>
+                <th>[% l('Owning Library') %]</th>
+                <th>[% l('Shelving Location') %]</th>
+                <th>[% l('Item Count') %]</th>
                 <th></th>
             </tr>
         </thead>
@@ -70,9 +70,9 @@
     </table>
     <br/>
     <div>
-        <button dojoType='dijit.form.Button' onClick='addEntry()'>New Entry</button>
+        <button dojoType='dijit.form.Button' onClick='addEntry()'>[% l('New Entry') %]</button>
         <span style='padding-right:20px;'></span>
-        <button dojoType='dijit.form.Button' onClick='saveFormula()'>Apply Changes</button>
+        <button dojoType='dijit.form.Button' onClick='saveFormula()'>[% l('Apply Changes') %]</button>
     </div>
 </div>
 

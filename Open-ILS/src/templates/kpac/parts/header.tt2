@@ -2,17 +2,17 @@
     <div class="logo_wrapper">
         <a href="http://evergreen-ils.org">
             <span class="logo_left">&nbsp;</span>
-            <span class="logo_middle"><img src="[% ctx.media_prefix %]/images/eg_logo.jpg" width="170" lt="[% l('Logo') %]" /></span>
+            <span class="logo_middle"><img src="[% ctx.media_prefix %]/images/eg_logo.jpg" width="170" alt="[% l('Logo') %]" /></span>
             <span class="logo_right">&nbsp;</span>
         </a>
     </div>
     <div class="header_utils">
         <!--
-        <a href="javascript:;" class="text_size_btn"><span>Text size</span> &nbsp; <img 
-            alt="text size" src="[% ctx.media_prefix %]/images/kpac/text_size_btn.png" /></a>
+        <a href="javascript:;" class="text_size_btn"><span>[% l('Text size') %]</span> &nbsp; <img 
+            alt="[% l('text size') %]" src="[% ctx.media_prefix %]/images/kpac/text_size_btn.png" /></a>
         -->
-        <a href="javascript:window.print()" class="print_btn"><span>Print</span> &nbsp; <img 
-            alt="print" src="[% ctx.media_prefix %]/images/kpac/print_btn.png" /></a>
+        <a href="javascript:window.print()" class="print_btn"><span>[% l('Print') %]</span> &nbsp; <img 
+            alt="[% l('print') %]" src="[% ctx.media_prefix %]/images/kpac/print_btn.png" /></a>
     </div>
     <div class="header_menu">
         <!-- menu rendered in reverse order -->

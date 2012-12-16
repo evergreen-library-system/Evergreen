@@ -1,11 +1,11 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Configure Monograph Parts' %]
+[% ctx.page_title = l('Configure Monograph Parts') %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-        <div>Monograph Parts</div>
+        <div>[% l('Monograph Parts') %]</div>
         <div>
-            <button dojoType='dijit.form.Button' onClick='monoPartGrid.showCreateDialog()'>New Monograph Part</button>
-            <button dojoType='dijit.form.Button' onClick='monoPartGrid.deleteSelected()'>Delete Selected</button>
+            <button dojoType='dijit.form.Button' onClick='monoPartGrid.showCreateDialog()'>[% l('New Monograph Part') %]</button>
+            <button dojoType='dijit.form.Button' onClick='monoPartGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
         </div>
     </div>
     <div>

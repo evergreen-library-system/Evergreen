@@ -1,14 +1,14 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Resource Attributes' %]
+[% ctx.page_title = l('Resource Attributes') %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
-    <div>Resource Attributes</div>
+    <div>[% l('Resource Attributes') %]</div>
     <div>
-        <button dojoType='dijit.form.Button' onClick='braGrid.showCreateDialog()'>New Resource Attribute</button>
-        <button dojoType='dijit.form.Button' onClick='braGrid.deleteSelected()'>Delete Selected</button>
+        <button dojoType='dijit.form.Button' onClick='braGrid.showCreateDialog()'>[% l('New Resource Attribute') %]</button>
+        <button dojoType='dijit.form.Button' onClick='braGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
     </div>
 </div>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-    <span>Context Org Unit</span>
+    <span>[% l('Context Org Unit') %]</span>
     <select dojoType="openils.widget.OrgUnitFilteringSelect"
             jsId='contextOrgSelector'
             searchAttr='shortname'

@@ -1,11 +1,11 @@
 [% WRAPPER 'base.tt2' %]
-[% ctx.page_title = 'Invoicing' %]
+[% ctx.page_title = l('Invoicing') %]
 <div dojoType="dijit.layout.ContentPane" style="height:100%">
 
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
-        <div> Invoice </div>
+        <div>[% l(' Invoice ') %]</div>
         <div id="acq-view-invoice-receive" class="hidden">
-            <button id="acq-view-invoice-receive-link">Receive Items</button>
+            <button id="acq-view-invoice-receive-link">[% l('Receive Items') %]</button>
         </div>
     </div>
 
@@ -51,7 +51,7 @@
 
         <div dojoType="dijit.layout.TabContainer" style="width: 96%; height: 100%;" doLayout='false'>
             <div dojoType="dijit.layout.ContentPane" 
-                class='oils-acq-detail-content-pane' title="Invoice" selected='true'>
+                class='oils-acq-detail-content-pane' title="[% l('Invoice') %]" selected='true'>
 
                 <script type='dojo/connect' event='onShow'>
                     // the table is left at display=none on subsequent tab views
@@ -72,12 +72,12 @@
                     <!-- acq.invoice_entry -->
                     <thead id='acq-invoice-entry-thead' class='hidden'>
                         <tr>
-                            <th colspan='2'>Title Details</th>
-                            <th class='acq-invoice-center-col'>#&nbsp;Invoiced&nbsp;/&nbsp;#&nbsp;Paid</th>
-                            <th class='acq-invoice-center-col'>Billed</th>
-                            <th class='acq-invoice-paid-per-copy-col'>Per Copy</th>
-                            <th class='acq-invoice-paid-col'>Paid</th>
-                            <th class='acq-invoice-center-col hide-complete'>Detach</th>
+                            <th colspan='2'>[% l('Title Details') %]</th>
+                            <th class='acq-invoice-center-col'>[% l('#&nbsp;Invoiced&nbsp;/&nbsp;#&nbsp;Paid') %]</th>
+                            <th class='acq-invoice-center-col'>[% l('Billed') %]</th>
+                            <th class='acq-invoice-paid-per-copy-col'>[% l('Per Copy') %]</th>
+                            <th class='acq-invoice-paid-col'>[% l('Paid') %]</th>
+                            <th class='acq-invoice-center-col hide-complete'>[% l('Detach') %]</th>
                         </tr>
                     </thead>
                     <tbody id='acq-invoice-entry-tbody' class='hidden'>
@@ -92,26 +92,26 @@
                             <td class='acq-invoice-billed-col'><div name='cost_billed'></div></td>
                             <td><div name='amount_paid_per_copy'>0.00</div></td>
                             <td class='acq-invoice-paid-col'><div name='amount_paid'></div></td>
-                            <td class='acq-invoice-center-col hide-complete'><a href='javascript:void(0);' name='detach'>Detach</a></td>
+                            <td class='acq-invoice-center-col hide-complete'><a href='javascript:void(0);' name='detach'>[% l('Detach') %]</a></td>
                         </tr>
                     </tbody>
                     <tbody>
                         <tr>
                             <td  style='margin-top:15px;' colspan='0'>
-                                <h3>Direct Charges, Taxes, Fees, etc.</h3>
+                                <h3>[% l('Direct Charges, Taxes, Fees, etc.') %]</h3>
                             </td>
                         </tr>
                     </tbody>
                     <!-- acq.invoice_item -->
                     <thead>
                         <tr>
-                            <th>Charge Type</th>
-                            <th class='acq-invoice-center-col'>Fund</th>
-                            <th>Title/Description</th>
-                            <th class='acq-invoice-center-col'>Billed</th>
+                            <th>[% l('Charge Type') %]</th>
+                            <th class='acq-invoice-center-col'>[% l('Fund') %]</th>
+                            <th>[% l('Title/Description') %]</th>
+                            <th class='acq-invoice-center-col'>[% l('Billed') %]</th>
                             <th/>
-                            <th class='acq-invoice-paid-col'>Paid</th>
-                            <th class='acq-invoice-center-col hide-complete'>Delete</th>
+                            <th class='acq-invoice-paid-col'>[% l('Paid') %]</th>
+                            <th class='acq-invoice-center-col hide-complete'>[% l('Delete') %]</th>
                         </tr>
                     </thead>
                     <tbody id='acq-invoice-item-tbody'>
@@ -122,13 +122,13 @@
                             <td class='acq-invoice-center-col acq-invoice-billed-col'><div name='cost_billed'></div></td>
                             <td/>
                             <td class='acq-invoice-paid-col'><div name='amount_paid'></div></td>
-                            <td class='acq-invoice-center-col hide-complete'><a href='javascript:void(0);' name='delete'>Delete</a></td>
+                            <td class='acq-invoice-center-col hide-complete'><a href='javascript:void(0);' name='delete'>[% l('Delete') %]</a></td>
                         </tr>
                     </tbody>
                     <tbody class='hide-complete'>
                         <tr>
                             <td colspan='0'>
-                                <a href='javascript:void(0);' id='acq-invoice-new-item'>Add Charge...</a>
+                                <a href='javascript:void(0);' id='acq-invoice-new-item'>[% l('Add Charge...') %]</a>
                             </td>
                         </tr>
                     </tbody>
@@ -142,10 +142,10 @@
                     <thead>
                         <tr>
                             <th colspan='3'/>
-                            <th class='acq-invoice-center-col acq-invoice-billed-col'>Total</th>
+                            <th class='acq-invoice-center-col acq-invoice-billed-col'>[% l('Total') %]</th>
                             <th/>
-                            <th class='acq-invoice-paid-col'>Total</th>
-                            <th class='acq-invoice-center-col acq-invoice-balance-col'>Balance</th>
+                            <th class='acq-invoice-paid-col'>[% l('Total') %]</th>
+                            <th class='acq-invoice-center-col acq-invoice-balance-col'>[% l('Balance') %]</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -174,7 +174,7 @@
             </div> <!-- tab 1 -->
 
             <div dojoType="dijit.layout.ContentPane" 
-                class='oils-acq-detail-content-pane' title="Search">
+                class='oils-acq-detail-content-pane' title="[% l('Search') %]">
     
                 <script type='dojo/connect' event='onShow'>
                     // hide summary info when opening the search tab
@@ -188,24 +188,23 @@
 
                     <div id="acq-unified-form">
                         <div>
+                            [%# TODO - i18n - fix constructed string %]
                             <label for="acq-unified-result-type">[% l('Search for') %]</label>
                             <select id="acq-unified-result-type" disabled='disabled'>
-                                <option value="lineitem">line items</option>
+                                <option value="lineitem">[% l('line items') %]</option>
                             </select>
-                            <label for="acq-unified-conjunction">matching</label>
+                            <label for="acq-unified-conjunction">[% l('matching') %]</label>
                             <select id="acq-unified-conjunction">
-                                <option value="and">all</option>
-                                <option value="or">any</option>
+                                <option value="and">[% l('all') %]</option>
+                                <option value="or">[% l('any') %]</option>
                             </select>
                             <label for="acq-unified-conjunction">
-                                of the following terms
-                            </label> (
+                                [% l('of the following terms') %]
+                            </label>
                             <input type="checkbox" id="acq-unified-build-progressively" />
                             <label for="acq-unified-build-progressively">
-                                building the results list progressively
-                            </label> )
-
-
+                                [% l('(building the results list progressively)') %]
+                            </label>
                         </div>
                         <div id="acq-unified-terms">
                             <table id="acq-unified-terms-table">
@@ -217,23 +216,23 @@
                                         <td name="match"
                                             class="acq-unified-terms-match">
                                             <select>
-                                                <option value="">is</option>
-                                                <option value="__not">is NOT</option>
+                                                <option value="">[% l('is') %]</option>
+                                                <option value="__not">[% l('is NOT') %]</option>
                                                 <option value="__fuzzy" disabled="disabled">
-                                                    contains
+                                                    [% l('contains') %]
                                                 </option>
                                                 <option value="__not,__fuzzy"
                                                     disabled="disabled">
-                                                    does NOT contain
+                                                    [% l('does NOT contain') %]
                                                 </option>
                                                 <option value="__lte" disabled="disabled">
-                                                    is on or BEFORE
+                                                    [% l('is on or BEFORE') %]
                                                 </option>
                                                 <option value="__gte" disabled="disabled">
-                                                    is on or AFTER
+                                                    [% l('is on or AFTER') %]
                                                 </option>
                                                 <option value="__in" disabled="disabled">
-                                                    matches a term from a file
+                                                    [% l('matches a term from a file') %]
                                                 </option>
                                             </select>
                                         </td>
@@ -246,7 +245,7 @@
                             </table>
                         </div>
                         <div id="acq-unified-add-term">
-                            <button onclick="termManager.addRow()">Add Search Term</button>
+                            <button onclick="termManager.addRow()">[% l('Add Search Term') %]</button>
                         </div>
                         <table width='100%'><tr>
                             <td align='left'>
@@ -314,17 +313,17 @@
     <!--</div>--> <!-- end contentpane -->
 </div>
 <div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'></div>
-<div jsId='extraItemsDialog' dojoType="dijit.Dialog" title="Extra Items">
+<div jsId='extraItemsDialog' dojoType="dijit.Dialog" title="[% l('Extra Items') %]">
     <div dojoType="dijit.layout.ContentPane" style='text-align:center;'>
         <div id='acq-invoice-extra-copies-message'></div>
         <br/>
-        Select a fund for the new items: <div id='acq-invoice-extra-copies-fund'></div>
+        [% l('Select a fund for the new items: [_1]', '<div id="acq-invoice-extra-copies-fund"></div>') %]
         <br/><br/>
         <br/><br/>
         <span style='padding-right: 10px;'>
-            <button dojoType='dijit.form.Button' jsId='extraCopiesCancel'>Cancel</button>
+            <button dojoType='dijit.form.Button' jsId='extraCopiesCancel'>[% l('Cancel') %]</button>
         </span>
-        <button dojoType='dijit.form.Button' jsId='extraCopiesGo'>Add New Items</button>
+        <button dojoType='dijit.form.Button' jsId='extraCopiesGo'>[% l('Add New Items') %]</button>
     </div>
 </div>
 <script type="text/javascript">

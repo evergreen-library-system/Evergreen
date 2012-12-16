@@ -41,8 +41,8 @@
                 -->
 
                 <!--
-                <div class="item_detail_rate_starts"><img alt="rating" src="[% ctx.media_prefix %]/images/kpac/stars.png" /></div>
-                <div class="item_detail_rate_link"><a href="javascript:;">Rate this</a></div>
+                <div class="item_detail_rate_starts"><img alt="[% l('rating') %]" src="[% ctx.media_prefix %]/images/kpac/stars.png" /></div>
+                <div class="item_detail_rate_link"><a href="javascript:;">[% l('Rate this') %]</a></div>
                 <div class="clear">&nbsp;</div>
                 -->
 

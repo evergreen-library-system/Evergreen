@@ -2,38 +2,38 @@
 <script type="text/javascript"> var fundingSourceID = [% ctx.page_args.0 %]; </script>
 
 <div id='oils-acq-list-header' class='container'>
-    <div id='oils-acq-list-header-label'>Funding Source Details</div>
+    <div id='oils-acq-list-header-label'>[% l('Funding Source Details') %]</div>
 </div>
 
 <div class='oils-acq-actions-div' style='margin:8px;'> <!-- XXX CSS -->
 
     <!-- Dropdown menu for creating a new funding source credit -->
     <div dojoType="dijit.form.DropDownButton">
-        <span>Apply Credit</span>
+        <span>[% l('Apply Credit') %]</span>
         <div dojoType="dijit.TooltipDialog" execute="applyFSCredit(arguments[0]);">
             <table class='dijitTooltipTable'>
                 <tr>
-                    <td><label for="amount">Amount: </label></td>
+                    <td><label for="amount">[% l('Amount: ') %]</label></td>
                     <td>
                         <input dojoType="dijit.form.CurrencyTextBox" name="amount"> </input>
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="note">Note: </label></td>
+                    <td><label for="note">[% l('Note: ') %]</label></td>
                     <td>
                         <input dojoType="dijit.form.TextBox" name="note"> </input>
                     </td>
                 </tr>
                 <tr>
                     <td colspan='2' align='center'>
-                        <button dojoType=dijit.form.Button type="submit">Apply</button>
+                        <button dojoType=dijit.form.Button type="submit">[% l('Apply') %]</button>
                     </td>
                 </tr>
             </table>
         </div>
     </div> 
     <div dojoType="dijit.form.DropDownButton">
-        <span>Allocate to Fund</span>
+        <span>[% l('Allocate to Fund') %]</span>
         <div dojoType="dijit.TooltipDialog" execute="applyFSAllocation(arguments[0]);">
             <script type='dojo/connect' event='onOpen'>
                 openils.acq.Fund.createStore(
@@ -46,7 +46,7 @@
             </script>
             <table class='dijitTooltipTable'>
                 <tr>
-                    <td><label for="amount">Fund: </label></td>
+                    <td><label for="amount">[% l('Fund: ') %]</label></td>
                     <td>
                         <input jsId='fundingSourceFundSelector' name="fund" 
                             dojoType="dijit.form.FilteringSelect" searchAttr='code' labelAttr='code'>
@@ -54,33 +54,33 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="amount">Amount: </label></td>
+                    <td><label for="amount">[% l('Amount: ') %]</label></td>
                     <td>
                         <input dojoType="dijit.form.CurrencyTextBox" name="amount"> </input>
                     </td>
                 </tr>
                 <!-- Percent-based allocations are not supported.  Will implement or remove later.
                 <tr>
-                    <td><label for="amount">Percent: </label></td>
+                    <td><label for="amount">[% l('Percent: ') %]</label></td>
                     <td>
                         <input 
                             dojoType="dijit.form.NumberTextBox" 
                             constraints="{min:0,max:100}" 
-                            promptMessage="Please enter an amount between 0 and 100"
+                            promptMessage="[% l('Please enter an amount between 0 and 100') %]"
                             name="percent"> 
                         </input>
                     </td>
                 </tr>
                 -->
                 <tr>
-                    <td><label for="note">Note: </label></td>
+                    <td><label for="note">[% l('Note: ') %]</label></td>
                     <td>
                         <input dojoType="dijit.form.TextBox" name="note"> </input>
                     </td>
                 </tr>
                 <tr>
                     <td colspan='2' align='center'>
-                        <button dojoType=dijit.form.Button type="submit">Apply</button>
+                        <button dojoType=dijit.form.Button type="submit">[% l('Apply') %]</button>
                     </td>
                 </tr>
             </table>
@@ -91,7 +91,7 @@
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
     <div dojoType="dijit.layout.TabContainer">
 
-        <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="Summary" selected='true'>
+        <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="[% l('Summary') %]" selected='true'>
             <script type='dojo/connect' event='onShow'>loadFSGrid();</script>
 
             <div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
@@ -99,14 +99,14 @@
                     <table jsId="fundingSourceGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'> 
                         <thead> 
                             <tr> 
-                                <th field="id">ID</th> 
-                                <th field="name" width='auto'>Name</th> 
-                                <th field="code">Code</th> 
-                                <th field="balance" get='getSummaryInfo'>Balance</th>
-                                <th field="credit_total" get='getSummaryInfo'>Total Credits</th>
-                                <th field="allocation_total" get='getSummaryInfo'>Total Debits</th>
-                                <th field="currency_type">Currency Type</th> 
-                                <th field="owner" width='auto' get='getOrgInfo'>Owner</th>
+                                <th field="id">[% l('ID') %]</th> 
+                                <th field="name" width='auto'>[% l('Name') %]</th> 
+                                <th field="code">[% l('Code') %]</th> 
+                                <th field="balance" get='getSummaryInfo'>[% l('Balance') %]</th>
+                                <th field="credit_total" get='getSummaryInfo'>[% l('Total Credits') %]</th>
+                                <th field="allocation_total" get='getSummaryInfo'>[% l('Total Debits') %]</th>
+                                <th field="currency_type">[% l('Currency Type') %]</th> 
+                                <th field="owner" width='auto' get='getOrgInfo'>[% l('Owner') %]</th>
                             </tr> 
                         </thead> 
                     </table>     
@@ -114,7 +114,7 @@
             </div>               
         </div>
  
-        <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="Credits">
+        <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="[% l('Credits') %]">
             <script type='dojo/connect' event='onShow'>loadCreditGrid(); </script> 
 
             <div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
@@ -136,7 +136,7 @@
         </div>
 
         <!-- Fund Allocations -->
-        <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="Allocations">
+        <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="[% l('Allocations') %]">
             <script type='dojo/connect' event='onShow'>loadAllocationGrid();</script>
             
             <div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 

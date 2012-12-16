@@ -1,5 +1,5 @@
 [% WRAPPER 'base.tt2' %]
-[% ctx.page_title = 'Vandelay Match Set Editor' %]
+[% ctx.page_title = l('Vandelay Match Set Editor') %]
 <style type="text/css">
     h1 { margin: 1ex 0; }
     .outer { clear: both; margin-bottom: 1ex; }
@@ -31,15 +31,15 @@
 <table id="vms-table">
     <tbody>
         <tr>
-            <th>Match set name:</th>
+            <th>[% l('Match set name:') %]</th>
             <td><strong id="vms-name"></strong></td>
         </tr>
         <tr>
-            <th>Owning Library:</th>
+            <th>[% l('Owning Library:') %]</th>
             <td id="vms-owner"></td>
         </tr>
         <tr>
-            <th>Type:</th>
+            <th>[% l('Type:') %]</th>
             <td id="vms-mtype"></td>
         </tr>
     </tbody>
@@ -51,7 +51,7 @@
 <table class="hidden">
     <tr quality-controls="1">
         <td>
-            <label for="value-input">Value:</label>
+            <label for="value-input">[% l('Value:') %]</label>
         </td>
         <td>
             <input id="value-input" type="text" fmfield="value" />
@@ -60,8 +60,8 @@
     <tr consistent-controls="1">
         <td>
             <label for="quality-input"
-                title="A relative number representing the impact of this expression on the score of the overall record match"><!-- XXX tooltipize -->
-                Match Score
+                title="[% l('A relative number representing the impact of this expression on the score of the overall record match') %]"><!-- XXX tooltipize -->
+                [% l('Match Score') %]
             </label>
         </td>
         <td>
@@ -71,7 +71,7 @@
     </tr>
     <tr point-controls="1">
         <td>
-            <label for="negate-input">Negate?</label>
+            <label for="negate-input">[% l('Negate?') %]</label>
         </td>
         <td>
             <input id="negate-input" type="checkbox" fmfield="negate" />
@@ -80,19 +80,19 @@
 </table>
 <div class="outer">
     <div id="expr-preview-row">
-        <em>Your Expression:</em>
+        <em>[% l('Your Expression:') %]</em>
         <span id="expr-preview"></span>
     </div>
     <div id="vmsp-buttons">
         Add new
-        <button onclick="node_editor.add('svf');">Record Attribute</button>
-        <button onclick="node_editor.add('tag');">MARC Tag and Subfield</button>
-        <button onclick="node_editor.add('bool_op');">Boolean Operator</button>
+        <button onclick="node_editor.add('svf');">[% l('Record Attribute') %]</button>
+        <button onclick="node_editor.add('tag');">[% l('MARC Tag and Subfield') %]</button>
+        <button onclick="node_editor.add('bool_op');">[% l('Boolean Operator') %]</button>
     </div>
 </div>
 <div class="outer" style="margin-top: 2ex;">
     <div id="src-pane">
-        <div><big>Working Match Point</big></div>
+        <div><big>[% l('Working Match Point') %]</big></div>
         <div>
             <form id="node-editor-container" onsubmit="return false;"></form>
         </div>
@@ -100,34 +100,34 @@
     </div>
 
     <div id="tree-pane">
-        <div><big>Your Expression</big></div>
+        <div><big>[% l('Your Expression') %]</big></div>
         <div id="tree-here"></div>
         <div>
             <button id="deleter" onclick="delete_selected_in_tree()">
-                Delete Selected Node
+                [% l('Delete Selected Node') %]
             </button>
             <button id="replacer" onclick="replace_mode()"></button>
         </div>
     </div>
 </div>
 <div id="submit-row">
-    <button onclick="save_tree()">Save Changes To Expression</button>
+    <button onclick="save_tree()">[% l('Save Changes To Expression') %]</button>
 </div>
 <hr />
 <div id="quality-editor-wrapper">
     <div>
         <div style="float: left; width: 50%;">
-            <big>Quality Metrics for this Match Set</big>
+            <big>[% l('Quality Metrics for this Match Set') %]</big>
         </div>
         <div style="float: right; width: 49%; text-align: right;">
             <button onclick="qnode_editor.add('svf')">
-                Record Attribute
+                [% l('Record Attribute') %]
             </button>
             <button onclick="qnode_editor.add('tag')">
-                MARC Tag and Subfield
+                [% l('MARC Tag and Subfield') %]
             </button>
             <button onclick="vmsq_grid.deleteSelected()">
-                Delete Selected Metrics
+                [% l('Delete Selected Metrics') %]
             </button>
         </div>
     </div>

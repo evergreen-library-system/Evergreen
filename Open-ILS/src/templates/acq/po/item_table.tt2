@@ -1,14 +1,14 @@
 <div id="acq-po-item-table" class="hidden">
-    <h3>Direct Charges, Taxes, Fees, etc.</h3>
+    <h3>[% l('Direct Charges, Taxes, Fees, etc.') %]</h3>
     <table>
         <thead id="acq-po-item-table-headings">
             <tr>
-                <th>Charge Type</th>
-                <th>Fund</th>
-                <th>Title/Description</th>
-                <th>Author</th>
-                <th>Note</th>
-                <th>Estimated Cost</th>
+                <th>[% l('Charge Type') %]</th>
+                <th>[% l('Fund') %]</th>
+                <th>[% l('Title/Description') %]</th>
+                <th>[% l('Author') %]</th>
+                <th>[% l('Note') %]</th>
+                <th>[% l('Estimated Cost') %]</th>
                 <th><!-- Delete --></th>
             </tr>
         </thead>
@@ -25,10 +25,10 @@
         </tbody>
     </table>
     <div id="acq-po-item-table-i-am-empty" class="hidden">
-        <em>There are no miscellanea attached to this purchase order.</em>
+        <em>[% l('There are no miscellanea attached to this purchase order.') %]</em>
     </div>
     <div id="acq-po-item-table-controls">
-        <button id="acq-po-item-table-new-charge">New Charge</button> &nbsp;
-        <button id="acq-po-item-table-save-new">Save New Charges</button>
+        <button id="acq-po-item-table-new-charge">[% l('New Charge') %]</button> &nbsp;
+        <button id="acq-po-item-table-save-new">[% l('Save New Charges') %]</button>
     </div>
 </div>

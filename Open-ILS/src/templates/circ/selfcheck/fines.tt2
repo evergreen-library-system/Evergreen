@@ -1,15 +1,15 @@
 <span id='oils-selfck-selected-total'></span>
-<span style='padding-left:5px;'><a class='hidden' href='javascript:void(0);' id='oils-selfck-pay-fines-link'>Pay Fines</a></span>
+<span style='padding-left:5px;'><a class='hidden' href='javascript:void(0);' id='oils-selfck-pay-fines-link'>[% l('Pay Fines') %]</a></span>
 <div id='oils-selfck-fines-table-div'>
     <table id='oils-selfck-fines-table' class='oils-selfck-item-table'>
         <thead>
             <tr>
                 <td><input type='checkbox' checked='checked' id='oils-selfck-fines-selector'/></td>
-                <td>Type</td>
-                <td>Details</td>
-                <td>Total Billed</td>
-                <td>Total Paid</td>
-                <td>Balance Owed</td>
+                <td>[% l('Type') %]</td>
+                <td>[% l('Details') %]</td>
+                <td>[% l('Total Billed') %]</td>
+                <td>[% l('Total Paid') %]</td>
+                <td>[% l('Balance Owed') %]</td>
             </tr>
         </thead>
         <tbody id='oils-selfck-fines-tbody'>

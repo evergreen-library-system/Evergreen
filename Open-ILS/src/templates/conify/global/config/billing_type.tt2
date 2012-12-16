@@ -1,19 +1,19 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Billing Types' %]
+[% ctx.page_title = l('Billing Types') %]
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/billing_type.js'> </script>
 
 <!-- grid -->
 
  <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-            <div>Billing Types</div>
+            <div>[% l('Billing Types') %]</div>
             <div>
-                <button dojoType='dijit.form.Button' onClick='btGrid.showCreateDialog()'>New Billing Type</button>
-                <button dojoType='dijit.form.Button' onClick='btGrid.deleteSelected()'>Delete Selected</button>
+                <button dojoType='dijit.form.Button' onClick='btGrid.showCreateDialog()'>[% l('New Billing Type') %]</button>
+                <button dojoType='dijit.form.Button' onClick='btGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
             </div>
         </div>
         <div>
-            <span>Context Org Unit</span>
+            <span>[% l('Context Org Unit') %]</span>
             <select dojoType="openils.widget.OrgUnitFilteringSelect" jsId='btContextOrgSelect'
                 searchAttr='shortname' labelAttr='shortname'> </select>
         </div>

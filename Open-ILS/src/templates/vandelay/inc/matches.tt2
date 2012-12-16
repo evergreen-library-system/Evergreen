@@ -14,9 +14,9 @@
                     get: vlGetViewMARC, 
                     formatter : vlFormatViewMatchMARC
                 },
-                {name: 'Match Score', field:'match_score'},
-                {name: 'Queued Record Quality', field:'rec_quality'},
-                {name: 'Matched Record Quality', field:'match_quality'},
+                {name: '[% l('Match Score') %]', field:'match_score'},
+                {name: '[% l('Queued Record Quality') %]', field:'rec_quality'},
+                {name: '[% l('Matched Record Quality') %]', field:'match_quality'},
                 {name: '[% l('Creator') %]', get: vlGetCreator},
                 {name: '[% l('Create Date') %]', field:'create_date', get: vlGetDateTimeField},
                 {name: '[% l('Last Edit Date') %]', field:'edit_date', get: vlGetDateTimeField},

@@ -1,5 +1,5 @@
 [% WRAPPER "base.tt2" %]
-[% ctx.page_title = "Lineitem Worksheet" %]
+[% ctx.page_title = l("Lineitem Worksheet") %]
 <script type="text/javascript">
     var liId = "[% ctx.page_args.0 %]";
     dojo.require('openils.CGI');
@@ -8,12 +8,12 @@
     newCgi.param('focus_li', liId);
     var returnRef = newCgi.url();
 </script>
-<h1>Lineitem Worksheet</h1>
-<div dojoType='dijit.form.Button' scrollOnFocus='false' onClick='location.href = returnRef'>&#x2196; Return</div>
+<h1>[% l('Lineitem Worksheet') %]</h1>
+<div dojoType='dijit.form.Button' scrollOnFocus='false' onClick='location.href = returnRef'>[% l('&#x2196; Return') %]</div>
 <br/><br/>
 <div id="acq-worksheet-contents"></div>
 <div class='hidden'>
-    <div jsId='progressDialog' dojoType='openils.widget.ProgressDialog' message='Loading Worksheet...'></div>
+    <div jsId='progressDialog' dojoType='openils.widget.ProgressDialog' message='[% l('Loading Worksheet...') %]'></div>
 </div>
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/lineitem/worksheet.js"></script>
 [% END %]

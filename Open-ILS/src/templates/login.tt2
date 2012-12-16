@@ -1,25 +1,25 @@
 <!-- general purpose login dialog -->
 <div style='display:none;' dojoType="dijit.Dialog" jsId='oilsLoginDialog' class='oils-login-dialog'>
     <script type="text/javascript">dojo.require('dijit.form.TextBox');</script>
-    <b>Please Login</b>
-    <div class='hidden oils-notify-text' id='oils-login-failed'>Login Failed</div>
+    <b>[% l('Please Login') %]</b>
+    <div class='hidden oils-notify-text' id='oils-login-failed'>[% l('Login Failed') %]</div>
     <form>
         <table>
             <tr>
-                <td>Username</td>
+                <td>[% l('Username') %]</td>
                 <td><input dojoType='dijit.form.TextBox' id='oils-login-username'/></td>
             </tr>
             <tr>
-                <td>Password</td>
+                <td>[% l('Password') %]</td>
                 <td><input dojoType='dijit.form.TextBox' id='oils-login-password' type='password'/></td>
             </tr>
             <tr>
-                <td>Workstation</td>
+                <td>[% l('Workstation') %]</td>
                 <td><span id='oils-login-workstation'></span></td>
             </tr>
             <tr>
                 <td colspan='2' align='center'>
-                    <button onclick='oilsDoLogin();' dojoType='dijit.form.Button'>Login</button>
+                    <button onclick='oilsDoLogin();' dojoType='dijit.form.Button'>[% l('Login') %]</button>
                 </td>
             </tr>
         </table>

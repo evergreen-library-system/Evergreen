@@ -1,27 +1,27 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Org Unit Setting Types' %]
+[% ctx.page_title = l('Org Unit Setting Types') %]
 
 <div class='hidden'>
     <select dojoType="dijit.form.FilteringSelect" jsId="dTypeSelector">
-        <option value='string' selected='selected'>String</option>
-        <option value='bool'>Boolean</option>
-        <option value='integer'>Integer</option>
-        <option value='float'>Float</option>
-        <option value='currency'>Currency</option>
-        <option value='interval'>Interval</option>
-        <option value='date'>Date</option>
-        <option value='object'>Object</option>
-        <option value='array'>Array</option>
-        <option value='link'>Link</option>
+        <option value='string' selected='selected'>[% l('String') %]</option>
+        <option value='bool'>[% l('Boolean') %]</option>
+        <option value='integer'>[% l('Integer') %]</option>
+        <option value='float'>[% l('Float') %]</option>
+        <option value='currency'>[% l('Currency') %]</option>
+        <option value='interval'>[% l('Interval') %]</option>
+        <option value='date'>[% l('Date') %]</option>
+        <option value='object'>[% l('Object') %]</option>
+        <option value='array'>[% l('Array') %]</option>
+        <option value='link'>[% l('Link') %]</option>
     </select>
 </div>
 
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
-    <div>Org Unit Setting Types</div>
+    <div>[% l('Org Unit Setting Types') %]</div>
     <div>
-        <button dojoType='dijit.form.Button' onClick='ostGrid.showCreateDialog()'>New Org Setting Type</button>
-        <button dojoType='dijit.form.Button' onClick='ostGrid.deleteSelected()'>Delete Selected</button>
+        <button dojoType='dijit.form.Button' onClick='ostGrid.showCreateDialog()'>[% l('New Org Setting Type') %]</button>
+        <button dojoType='dijit.form.Button' onClick='ostGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
     </div>
 </div>
 

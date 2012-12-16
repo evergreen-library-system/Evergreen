@@ -1,11 +1,11 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Matrix Weight Associations' %]
+[% ctx.page_title = l('Matrix Weight Associations') %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-        <div>Matrix Weight Associations</div>
+        <div>[% l('Matrix Weight Associations') %]</div>
         <div>
-            <button dojoType='dijit.form.Button' onClick='ruleWeightAssocGrid.showCreateDialog()'>New Weight Association</button>
-            <button dojoType='dijit.form.Button' onClick='ruleWeightAssocGrid.deleteSelected()'>Delete Selected</button>
+            <button dojoType='dijit.form.Button' onClick='ruleWeightAssocGrid.showCreateDialog()'>[% l('New Weight Association') %]</button>
+            <button dojoType='dijit.form.Button' onClick='ruleWeightAssocGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
         </div>
     </div>
     <div>

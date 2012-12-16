@@ -2,7 +2,7 @@
 </script>
 <div id="acq-litpager-controls">
     <button id="acq-litpager-controls-prev" disabled="disabled">
-        &laquo; Prev
+        &laquo; [% l('Prev') %]
     </button>
     <span id="acq-litpager-controls-batch-range" class="hidden">
         <span id="acq-litpager-controls-batch-start"></span> &mdash;
@@ -12,6 +12,6 @@
         </span>
     </span>
     <button id="acq-litpager-controls-next" disabled="disabled">
-        Next &raquo;
+        [% l('Next') %] &raquo;
     </button>
 </div>

@@ -1,27 +1,27 @@
 [% WRAPPER base.tt2 %]
-<h1>Circulation Modifier</h1> <br/>
+<h1>[% l('Circulation Modifier') %]</h1> <br/>
 
 <div class='hidden'>
     <select dojoType="dijit.form.FilteringSelect" jsId="sip2Selector">
-        <option value='000'>Other</option>
-        <option value='001' selected='selected'>Book</option>
-        <option value='002'>Magazine</option>
-        <option value='003'>Bound Journal</option>
-        <option value='004'>Audio Tape</option>
-        <option value='005'>Video Tape</option>
-        <option value='006'>CD/CDROM</option>
-        <option value='007'>Diskette</option>
-        <option value='008'>Book with diskette</option>
-        <option value='009'>Book with CD</option>
-        <option value='010'>Book with audio tape</option>
+        <option value='000'>[% l('Other') %]</option>
+        <option value='001' selected='selected'>[% l('Book') %]</option>
+        <option value='002'>[% l('Magazine') %]</option>
+        <option value='003'>[% l('Bound Journal') %]</option>
+        <option value='004'>[% l('Audio Tape') %]</option>
+        <option value='005'>[% l('Video Tape') %]</option>
+        <option value='006'>[% l('CD/CDROM') %]</option>
+        <option value='007'>[% l('Diskette') %]</option>
+        <option value='008'>[% l('Book with diskette') %]</option>
+        <option value='009'>[% l('Book with CD') %]</option>
+        <option value='010'>[% l('Book with audio tape') %]</option>
     </select>
 </div>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
-    <div>Circulation Modifier</div>
+    <div>[% l('Circulation Modifier') %]</div>
     <div>
-        <button dojoType='dijit.form.Button' onClick='cmGrid.showCreateDialog()'>New Circ Modifier</button>
-        <button dojoType='dijit.form.Button' onClick='cmGrid.deleteSelected()'>Delete Selected</button>
+        <button dojoType='dijit.form.Button' onClick='cmGrid.showCreateDialog()'>[% l('New Circ Modifier') %]</button>
+        <button dojoType='dijit.form.Button' onClick='cmGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
     </div>
 </div>
 
@@ -52,27 +52,27 @@
     function formatSIPMediaType(inDatum) {
         switch (inDatum) {
             case '000':
-                return 'Other';
+                return '[% l('Other') %]';
             case '001':
-                return 'Book';
+                return '[% l('Book') %]';
             case '002':
-                return 'Magazine';
+                return '[% l('Magazine') %]';
             case '003':
-                return 'Bound Journal';
+                return '[% l('Bound Journal') %]';
             case '004':
-                return 'Audio Tape';
+                return '[% l('Audio Tape') %]';
             case '005':
-                return 'Video Tape';
+                return '[% l('Video Tape') %]';
             case '006':
-                return 'CD/CDROM';
+                return '[% l('CD/CDROM') %]';
             case '007':
-                return 'Diskette';
+                return '[% l('Diskette') %]';
             case '008':
-                return 'Book with diskette';
+                return '[% l('Book with diskette') %]';
             case '009':
-                return 'Book with CD';
+                return '[% l('Book with CD') %]';
             case '010':
-                return 'Book with audio tape';
+                return '[% l('Book with audio tape') %]';
         }
     }
 

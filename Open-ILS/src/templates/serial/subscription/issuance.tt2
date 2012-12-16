@@ -1,18 +1,18 @@
 <div dojoType="dijit.layout.ContentPane" layout="top"
     class="oils-header-panel lesser">
-    <div>Issuances</div>
+    <div>[% l('Issuances') %]</div>
     <div style="margin-right: 16px;">
         <span dojoType="dijit.form.Button"
-            onclick="iss_grid.refresh();">Refresh Grid</span>
+            onclick="iss_grid.refresh();">[% l('Refresh Grid') %]</span>
         <span dojoType="dijit.form.Button"
-            onclick="iss_grid.showCreatePane();">New Issuance</span>
+            onclick="iss_grid.showCreatePane();">[% l('New Issuance') %]</span>
         <span dojoType="dijit.form.Button"
-            onclick="iss_grid.deleteSelected();">Delete Selected</span>
+            onclick="iss_grid.deleteSelected();">[% l('Delete Selected') %]</span>
     </div>
 </div>
 <div class="serial-additional-controls">
     <span dojoType="dijit.form.Button"
-        onclick="prediction_dialog.show();">Generate Predictions</span>
+        onclick="prediction_dialog.show();">[% l('Generate Predictions') %]</span>
 </div>
 <div dojoType="dijit.layout.ContentPane" layout="top">
     <table jsId="iss_grid"
@@ -37,7 +37,7 @@
 </div>
 <div class="hidden">
     <div dojoType="dijit.Dialog"
-        title="Generate Issuance and Item Predictions"
+        title="[% l('Generate Issuance and Item Predictions') %]"
         execute="generate_predictions(arguments[0]);"
         jsId="prediction_dialog">
         <script type="dojo/connect" event="onShow">
@@ -51,7 +51,7 @@
                         checked="false" disabled="true"
                         jsId="prediction_dialog_end_date" />
                     <label for="end_date">
-                        Predict until end of subscription
+                        [% l('Predict until end of subscription') %]
                     </label>
                 </th>
                 <td></td>
@@ -63,7 +63,7 @@
                         checked="true" jsId="prediction_dialog_end_num"
                         onChange="if (this.attr('checked')) setTimeout(function(){prediction_dialog_num_to_predict.focus();},200);" />
                     <label for="end_num">
-                        Predict a certain number of issuances:
+                        [% l('Predict a certain number of issuances:') %]
                     </label>
                 </th>
                 <td>
@@ -77,7 +77,7 @@
                 <td colspan="2">
                     <button dojoType="dijit.form.Button"
                         jsId="prediction_dialog_submit"
-                        type="submit" disabled="true">Generate</button>
+                        type="submit" disabled="true">[% l('Generate') %]</button>
                 </td>
             </tr>
         </table>

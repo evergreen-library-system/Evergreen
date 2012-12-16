@@ -1,5 +1,5 @@
 [% WRAPPER "base.tt2" %]
-[% ctx.page_title = "Acquisitions Invoice Receiving" %]
+[% ctx.page_title = l("Acquisitions Invoice Receiving") %]
 <script type="text/javascript">var inv_id = "[% ctx.page_args.0 %]";</script>
 <script type="text/javascript"
     src="[% ctx.media_prefix %]/js/ui/default/acq/invoice/receive.js"></script>
@@ -23,44 +23,42 @@
     <p><strong id="inv-header"></strong></p>
     <p id="inv-copy-count-info"></p>
     <div id="non-empty">
-        <p>The remaining are listed below.</p>
+        <p>[% l('The remaining are listed below.') %]</p>
         <p>
-            <span id="set-list-mode">[ <a id="set-list-mode-link" href="javascript:void(0);">Use List Mode</a> ]</span>
-            <span id="set-number-mode">[ <a id="set-number-mode-link" href="javascript:void(0);">Use Numeric Mode</a> ]</span>
+            <span id="set-list-mode">[ <a id="set-list-mode-link" href="javascript:void(0);">[% l('Use List Mode') %]</a> ]</span>
+            <span id="set-number-mode">[ <a id="set-number-mode-link" href="javascript:void(0);">[% l('Use Numeric Mode') %]</a> ]</span>
         </p>
         <div class="receive-button">
-            <button onclick="copy_table.receive_selected();">Receive Selected
-                Copies</button>
+            <button onclick="copy_table.receive_selected();">[% l('Receive Selected Copies') %]</button>
         </div>
         <table id="copy_table" width="100%">
             <thead id="list-mode-headings">
                 <tr>
                     <th>
                         <input type="checkbox" checked="checked" id="select_all"
-                            /><label for="select_all"> Select All</label>
+                            /><label for="select_all">[% l(' Select All') %]</label>
                     </th>
-                    <th>Owning Branch</th>
-                    <th>Shelving Location</th>
-                    <th>Collection Code</th>
-                    <th>Fund</th>
-                    <th>Circ Modifier</th>
-                    <th>Callnumber</th>
-                    <th>Barcode</th>
+                    <th>[% l('Owning Branch') %]</th>
+                    <th>[% l('Shelving Location') %]</th>
+                    <th>[% l('Collection Code') %]</th>
+                    <th>[% l('Fund') %]</th>
+                    <th>[% l('Circ Modifier') %]</th>
+                    <th>[% l('Callnumber') %]</th>
+                    <th>[% l('Barcode') %]</th>
                 </tr>
             </thead>
             <tbody id="rows-here">
             </tbody>
         </table>
         <div class="receive-button">
-            <button onclick="copy_table.receive_selected();">Receive Selected
-                Copies</button>
+            <button onclick="copy_table.receive_selected();">[% l('Receive Selected Copies') %]</button>
         </div>
     </div>
     <div class="hidden" id="empty">
-        This invoice has no more copies to receive.
+        [% l('This invoice has no more copies to receive.') %]
     </div>
     <p>
-        <button onclick="copy_table.back_to_invoice();">Return to Invoice</button>
+        <button onclick="copy_table.back_to_invoice();">[% l('Return to Invoice') %]</button>
     </p>
     <div class="hidden">
         <div dojoType="openils.widget.ProgressDialog" jsId="progress_dialog"></div>

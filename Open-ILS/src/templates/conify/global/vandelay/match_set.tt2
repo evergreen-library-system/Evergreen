@@ -1,17 +1,17 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Vandelay Match Sets' %]
+[% ctx.page_title = l('Vandelay Match Sets') %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
         <div>[% ctx.page_title %]</div>
         <div>
             <button dojoType="dijit.form.Button"
-                onClick="vms_grid.showCreateDialog()">New Match Set</button>
+                onClick="vms_grid.showCreateDialog()">[% l('New Match Set') %]</button>
             <button dojoType="dijit.form.Button"
-                onClick="vms_grid.deleteSelected()">Delete Selected</button>
+                onClick="vms_grid.deleteSelected()">[% l('Delete Selected') %]</button>
         </div>
     </div>
     <div>
-        Show sets owned at or below:
+        [% l('Show sets owned at or below:') %]
         <select dojoType="openils.widget.OrgUnitFilteringSelect"
             jsId="context_org_selector"></select>
     </div>
@@ -37,9 +37,9 @@
     <select dojoType="dijit.form.FilteringSelect" jsId="mtype_selector">
         [%# for the origin of these hard coded options, see the definition
         of vandelay.match_set.mtype in 012.schema.vandelay.sql %]
-        <option value="biblio">biblio</option>
-        <option value="authority">authority</option>
-        <!-- XXX: nah <option value="mfhd">mfhd</option> -->
+        <option value="biblio">[% l('biblio') %]</option>
+        <option value="authority">[% l('authority') %]</option>
+        <!-- XXX: nah <option value="mfhd">[% l('mfhd') %]</option> -->
     </select>
 </div>
 

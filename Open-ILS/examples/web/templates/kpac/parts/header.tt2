@@ -18,11 +18,11 @@
             <a href="[% mkurl(ctx.opac_root _ '/login').replace('^http:', 'https:') %]"><img src="[% ctx.media_prefix %]/images/kpac/login_btn.png"/></a>
         [% END %]
 
-        <a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/get_a_card_btn.png" alt="get a library card" /></a>
-        <a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/help_btn.png" alt="help" /></a>
-        <a href="javascript:window.print()"><img src="[% ctx.media_prefix %]/images/kpac/hp_print_btn.png" alt="print" /></a>
+        <a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/get_a_card_btn.png" alt="[% l('get a library card') %]" /></a>
+        <a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/help_btn.png" alt="[% l('help') %]" /></a>
+        <a href="javascript:window.print()"><img src="[% ctx.media_prefix %]/images/kpac/hp_print_btn.png" alt="[% l('print') %]" /></a>
         <!--
-        <a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/hp_text_size_btn.png" alt="text size" /></a>
+        <a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/hp_text_size_btn.png" alt="[% l('text size') %]" /></a>
         -->
     </div>
     <div class="clear">&nbsp;</div>

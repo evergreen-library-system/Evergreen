@@ -1,6 +1,6 @@
 [% WRAPPER "base.tt2" %]
-[% ctx.page_title = "PO History" %]
-<h1>Purchase Order History</h1>
+[% ctx.page_title = l("PO History") %]
+<h1>[% l('Purchase Order History') %]</h1>
 <br/>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <table  jsId="pohGrid"

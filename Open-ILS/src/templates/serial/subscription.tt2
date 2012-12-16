@@ -13,13 +13,13 @@
 </script>
 
 <div dojoType="dijit.layout.ContentPane" layout="top" class="oils-header-panel">
-    <div>Subscription Details</div>
+    <div>[% l('Subscription Details') %]</div>
     <div>
         <span dojoType="dijit.form.Button" onClick="clone_dialog.show();">
-            Clone Subscription
+            [% l('Clone Subscription') %]
         </span>
         <span dojoType="dijit.form.Button" onClick="open_batch_receive();">
-            Batch Item Receive
+            [% l('Batch Item Receive') %]
         </span>
     </div>
 </div>
@@ -28,7 +28,7 @@
     class="oils-serial-tab-container">
 
     <!-- Subscription Summary -->
-    <div dojoType="dijit.layout.ContentPane" title="Summary" selected="true">
+    <div dojoType="dijit.layout.ContentPane" title="[% l('Summary') %]" selected="true">
         <script type="dojo/connect" event="onShow">
             load_sub_grid(sub_id);
         </script>
@@ -36,22 +36,22 @@
             dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector="20px">
             <thead>
                 <tr>
-                    <th field="id">ID</th>
+                    <th field="id">[% l('ID') %]</th>
                     <th field="owning_lib" formatter="format_org_unit">
-                        Owning Library
+                        [% l('Owning Library') %]
                     </th>
                     <th field="start_date" formatter="format_date">
-                        Start Date
+                        [% l('Start Date') %]
                     </th>
                     <th field="end_date" formatter="format_date">
-                        End Date
+                        [% l('End Date') %]
                     </th>
                     <th field="record_entry" width="20em"
                         formatter="format_bib">
-                        Bibliographic Record
+                        [% l('Bibliographic Record') %]
                     </th>
-                    <th field="expected_date_offset">Expected Date Offset</th>
-                    <th field="num_dist">Number of Distributions</th>
+                    <th field="expected_date_offset">[% l('Expected Date Offset') %]</th>
+                    <th field="num_dist">[% l('Number of Distributions') %]</th>
                 </tr>
             </thead>
         </table>
@@ -59,7 +59,7 @@
 
     <!-- Distributions -->
     <div dojoType="dijit.layout.ContentPane" jsId="distributions_tab"
-        title="Distributions" layoutAlign="client">
+        title="[% l('Distributions') %]" layoutAlign="client">
         <script type="dojo/connect" event="onShow">
             if (!dist_grid._fresh) {
                 dist_grid.resetStore();
@@ -82,9 +82,9 @@
                         "label": "label",
                         "items": [
                             {"display_grouping": "chron",
-                                "label": "Chronology"},
+                                "label": "[% l('Chronology') %]"},
                             {"display_grouping": "enum",
-                                "label": "Enumeration"}
+                                "label": "[% l('Enumeration') %]"}
                         ]
                     }
                 });
@@ -116,7 +116,7 @@
 
     <!-- Caption/Pattern -->
     <div dojoType="dijit.layout.ContentPane"
-        title="Captions and Patterns" layoutAlign="client">
+        title="[% l('Captions and Patterns') %]" layoutAlign="client">
         <script type="dojo/connect" event="onShow">
             if (!cap_editor) {
                 cap_editor = new SCAPEditor(sub_id);
@@ -128,7 +128,7 @@
 
     <!-- Issuances -->
     <div dojoType="dijit.layout.ContentPane" jsId="issuances_tab"
-        title="Issuances" layoutAlign="client">
+        title="[% l('Issuances') %]" layoutAlign="client">
         <script type="dojo/connect" event="onShow">
             if (!iss_grid._fresh) {
                 iss_grid.resetStore();
@@ -170,19 +170,19 @@
 </div>
 <div class="hidden">
     <div dojoType="openils.widget.ProgressDialog" jsId="progress_dialog"></div>
-    <div dojoType="dijit.Dialog" jsId="clone_dialog" title="Clone Subscription"
+    <div dojoType="dijit.Dialog" jsId="clone_dialog" title="[% l('Clone Subscription') %]"
         style="width: 460px;" execute="clone_subscription(arguments[0]);">
         <div style="margin-bottom: 0.5em;">
-            This feature will clone a subscription and all of its subscription
+            [% |l %]This feature will clone a subscription and all of its subscription
             notes, distributions, distribution notes, captions and patterns,
-            streams, and routing list users.</div>
+            streams, and routing list users.[% END %]</div>
         <div style="margin-bottom: 0.5em;">
-            Holdings-related objects, like issuances, items, units, and
-            summaries will <em>not</em> be cloned.
+            [% |l %]Holdings-related objects, like issuances, items, units, and
+            summaries will <em>not</em> be cloned.[% END %]
         </div>
         <div style="margin-bottom: 0.5em;">
-            To what bibliographic record should the new subscription be
-            attached?
+            [% |l %]To what bibliographic record should the new subscription be
+            attached?[% END %]
         </div>
         <table width="100%">
             <tr>
@@ -193,7 +193,7 @@
                 </td>
                 <td>
                     <label for="use_ident_no">
-                        Same record as the existing subscription
+                        [% l('Same record as the existing subscription') %]
                     </label>
                 </td>
             </tr>
@@ -205,7 +205,7 @@
                 </td>
                 <td>
                     <label for="use_ident_yes">
-                        Record specified by this unique identifier:
+                        [% l('Record specified by this unique identifier:') %]
                     </label>
                     <input dojoType="dijit.form.TextBox" name="ident"
                         jsId="clone_ident" disabled="true"
@@ -215,7 +215,7 @@
             <tr>
                 <td colspan="2" align="center">
                     <span dojoType="dijit.form.Button" type="submit">
-                        Clone!
+                        [% l('Clone!') %]
                     </span>
                 </td>
             </tr>

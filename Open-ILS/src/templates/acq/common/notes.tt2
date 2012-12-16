@@ -4,34 +4,34 @@
             <table style="width:100%">
                 <tr>
                     <td style="text-align:left;">
-                        <div dojoType="dijit.form.Button" id="acq-[% which_lc %]-notes-back-button">&#x2196; Return</div>
+                        <div dojoType="dijit.form.Button" id="acq-[% which_lc %]-notes-back-button">&[% l('#x2196; Return') %]</div>
                     </td>
                     <td style="text-align:right;">
                         <div dojoType="dijit.form.DropDownButton">
-                            <span>New Note</span>
+                            <span>[% l('New Note') %]</span>
                             <div dojoType="dijit.TooltipDialog">
                                 <div class="acq-notes-note-row">
                                     <div jsId="acq[% which %]CreateNoteText" dojoType="dijit.form.Textarea" style="height:5em; width:25em;" name="note"></div>
                                     <div style="margin: 8px 0;">
-                                        <div dojoType="dijit.form.CheckBox" jsId="acq[% which %]CreateNoteVendorPublic" name="vendor_public" id="acq-[% which_lc %]-create-note-vendor-public"></div><label for="acq-[% which_lc %]-create-note-vendor-public">Note is vendor-public</label>
+                                        <div dojoType="dijit.form.CheckBox" jsId="acq[% which %]CreateNoteVendorPublic" name="vendor_public" id="acq-[% which_lc %]-create-note-vendor-public"></div><label for="acq-[% which_lc %]-create-note-vendor-public">[% l('Note is vendor-public') %]</label>
                                     </div>
                                 </div>
-                                <button jsId="acq[% which %]CreateNoteSubmit" dojoType="dijit.form.Button" type="submit">Create</button>
+                                <button jsId="acq[% which %]CreateNoteSubmit" dojoType="dijit.form.Button" type="submit">[% l('Create') %]</button>
                             </div>
                         </div>
 [% IF which == "Lit" %]
                         <div dojoType="dijit.form.DropDownButton">
-                            <span>New Alert</span>
+                            <span>[% l('New Alert') %]</span>
                             <div dojoType="dijit.TooltipDialog">
                                 <div class="acq-notes-note-row">
-                                    <label for="acq-lit-alert-alert-text">Choose alert code &nbsp;&nbsp;</label>
+                                    <label for="acq-lit-alert-alert-text">[% l('Choose alert code ') %]&nbsp;&nbsp;</label>
                                     <input id="acq-lit-alert-alert-text" jsId="acqLitAlertAlertText" dojoType="dijit.form.FilteringSelect" labelAttr="code" searchAttr="code" required="true" />
                                 </div>
                                 <div class="acq-notes-note-row">
-                                    <label for="acq-lit-alert-value">Additional comments</label>
+                                    <label for="acq-lit-alert-value">[% l('Additional comments') %]</label>
                                     <div jsId="acqLitAlertNoteValue" id="acq-lit-alert-value" dojoType="dijit.form.Textarea" name="value"></div>
                                 </div>
-                                <button jsId="acqLitCreateAlertSubmit" dojoType="dijit.form.Button" type="submit">Create</button>
+                                <button jsId="acqLitCreateAlertSubmit" dojoType="dijit.form.Button" type="submit">[% l('Create') %]</button>
                             </div>
                         </div>
 [% END %]
@@ -52,7 +52,7 @@
                         <td align="right" style="padding-right:30px;">
                             <span name="edit_time"></span>
                             <span style="padding-left:4px;">
-                                <a name="delete" href="javascript:void(0);" style="color:red;">Delete</a>
+                                <a name="delete" href="javascript:void(0);" style="color:red;">[% l('Delete') %]</a>
                             </span>
                         </td>
                     </tr>

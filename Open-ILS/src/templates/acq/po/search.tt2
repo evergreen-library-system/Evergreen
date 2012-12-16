@@ -1,5 +1,5 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Purchase Orders' %]
+[% ctx.page_title = l('Purchase Orders') %]
 <script type="text/javascript">
     var poIds = function(s) {
         return s == "" ? undefined :
@@ -7,17 +7,17 @@
     }("[% ctx.page_args.0 %]");
 </script>
 <div id='oils-acq-list-header' class='container'>
-    <div id='oils-acq-list-header-label'>PO Search</div>
+    <div id='oils-acq-list-header-label'>[% l('PO Search') %]</div>
 </div>
 
 <div id="oils-acq-po-heading-template" class="hidden">
-    <span>Purchase Order: <a attr="name"></a></span>
-    <span>Total Lineitems: <span attr="lineitem_count"></span></span>
-    <span>Total Encumbered: $<span attr="amount_encumbered"></span></span>
-    <span>Total Spent: $<span attr="amount_spent"></span></span>
-    <span>Total Copies: <span attr="copies"></span></span>
-    <span>Status: <span attr="state"></span></span>
-    <span><a class="hidden" attr="activator" href="javascript:void(0);">Activate Order</a></span>
+    <span>[% l('Purchase Order: [_1]', '<a attr="name"></a>') %]</span>
+    <span>[% l('Total Lineitems: [_1]', '<span attr="lineitem_count"></span>') %]</span>
+    <span>[% l('Total Encumbered: $[_1]', '<span attr="amount_encumbered">') %]</span></span>
+    <span>[% l('Total Spent: $[_1]', '<span attr="amount_spent"></span>') %]</span>
+    <span>[% l('Total Copies: [_1]', '<span attr="copies"></span>') %]</span>
+    <span>[% l('Status: [_1]', '<span attr="state"></span>') %]</span>
+    <span><a class="hidden" attr="activator" href="javascript:void(0);">[% l('Activate Order') %]</a></span>
 </div>
 
 <script type="text/javascript">
@@ -36,13 +36,13 @@
 
     <div class='oils-acq-basic-form-div'>
 
-        <label for='id'>ID</label>
+        <label for='id'>[% l('ID') %]</label>
         <input dojoType='dijit.form.NumberTextBox' name='id'> </input>
 
-        <label for='provider'>Provider</label>
+        <label for='provider'>[% l('Provider') %]</label>
         <input id='po-search-provider-selector'/>
 
-        <label for='state'>State</label></td>
+        <label for='state'>[% l('State') %]</label></td>
         <script type="text/javascript">
             dojo.require('dojo.data.ItemFileReadStore');
             var stateStore = new dojo.data.ItemFileReadStore({
@@ -52,10 +52,10 @@
                     items: [
                         /* FIXME This is probably not the correct final list of 
                         possible states */
-                        {name:"New", value:'new'},
-                        {name:"In Process", value:'in-process'},
-                        {name:"Pending", value:'pending'},
-                        {name:"On order", value:'on-order'}
+                        {name:"[% l('New') %]", value:'new'},
+                        {name:"[% l('In Process') %]", value:'in-process'},
+                        {name:"[% l('Pending') %]", value:'pending'},
+                        {name:"[% l('On order') %]", value:'on-order'}
                     ]
                 }
             });
@@ -68,15 +68,15 @@
             valueAttr='value' 
             searchAttr='name'/>
 
-        <label for='ordering_agency'>Ordering Agency</label>
+        <label for='ordering_agency'>[% l('Ordering Agency') %]</label>
         <input id='po-search-agency-selector'/>
 
-        <span dojoType='dijit.form.Button' type='submit'>Search</span>
+        <span dojoType='dijit.form.Button' type='submit'>[% l('Search') %]</span>
     </div>
     <div class="oils-acq-basic-form-div">
         <input dojoType="dijit.form.CheckBox" value="1" name="metapo_view"
             id="metapo_view" type="checkbox" />
-        <label for="metapo_view">Show results as a virtual combined PO</label>
+        <label for="metapo_view">[% l('Show results as a virtual combined PO') %]</label>
     </div>
 </form>
 <br/>
@@ -96,7 +96,7 @@
             fmClass='acqpo'> 
         <thead> 
             <tr> 
-                <th field="id" formatter='formatId'>ID</th> 
+                <th field="id" formatter='formatId'>[% l('ID') %]</th> 
                 <!--
                 <th field="owner" get='getPOOwner'/>
                 -->
@@ -109,28 +109,28 @@
     <table id="oils-acq-metapo-summary">
         <thead>
             <tr>
-                <th colspan="2">Results Summary</th>
+                <th colspan="2">[% l('Results Summary') %]</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <th>Total Purchase Orders:</th>
+                <th>[% l('Total Purchase Orders:') %]</th>
                 <td id="oils-acq-metapo-summary-po"></td>
             </tr>
             <tr>
-                <th>Total Lineitems:</th>
+                <th>[% l('Total Lineitems:') %]</th>
                 <td id="oils-acq-metapo-summary-lineitem_count"></td>
             </tr>
             <tr>
-                <th>Total Copies:</th>
+                <th>[% l('Total Copies:') %]</th>
                 <td id="oils-acq-metapo-summary-copies"></td>
             </tr>
             <tr>
-                <th>Total Encumbered:</th>
+                <th>[% l('Total Encumbered:') %]</th>
                 <td>$<span id="oils-acq-metapo-summary-amount_encumbered"></span></td>
             </tr>
             <tr>
-                <th>Total Spent:</th>
+                <th>[% l('Total Spent:') %]</th>
                 <td>$<span id="oils-acq-metapo-summary-amount_spent"></span></td>
             </tr>
         </tbody>

@@ -1,13 +1,13 @@
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-        <div>Overlay / Merge Profiles</div>
+        <div>[% l('Overlay / Merge Profiles') %]</div>
         <div>
-            <button dojoType='dijit.form.Button' onClick='pGrid.showCreateDialog()'>New Merge Profile</button>
-            <button dojoType='dijit.form.Button' onClick='pGrid.deleteSelected()'>Delete Selected</button>
+            <button dojoType='dijit.form.Button' onClick='pGrid.showCreateDialog()'>[% l('New Merge Profile') %]</button>
+            <button dojoType='dijit.form.Button' onClick='pGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
         </div>
     </div>
     <div>
-        <span style='padding-right:10px;'>Context Org Unit</span>
+        <span style='padding-right:10px;'>[% l('Context Org Unit') %]</span>
         <select dojoType="openils.widget.OrgUnitFilteringSelect" jsId='profileContextOrgSelector'
             searchAttr='shortname' labelAttr='shortname'> </select>
     </div>

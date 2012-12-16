@@ -21,10 +21,10 @@
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
 
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-        <div>Funding Sources</div>
+        <div>[% l('Funding Sources') %]</div>
         <div>
-            <button dojoType='dijit.form.Button' onClick='fsGrid.showCreateDialog()'>New Funding Source</button>
-            <button dojoType='dijit.form.Button' onClick='fsGrid.deleteSelected()'>Delete Selected</button>
+            <button dojoType='dijit.form.Button' onClick='fsGrid.showCreateDialog()'>[% l('New Funding Source') %]</button>
+            <button dojoType='dijit.form.Button' onClick='fsGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
         </div>
     </div>
 

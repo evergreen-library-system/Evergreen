@@ -1,10 +1,10 @@
 [% WRAPPER "base.tt2" %]
-[% ctx.page_title = "Items Eligible For Claiming" %]
+[% ctx.page_title = l("Items Eligible For Claiming") %]
 <script type="text/javascript">var filter = "[% ctx.page_args.0 %]";</script>
 <div>
-    <h1>Items Eligible For Claiming</h1>
+    <h1>[% l('Items Eligible For Claiming') %]</h1>
     <div class="oils-acq-basic-roomy">
-        Show items ready to claim for:
+        [% l('Show items ready to claim for:') %]
         <select
             dojoType="openils.widget.OrgUnitFilteringSelect"
             jsId="orderingAgency" searchAttr="shortname"
@@ -13,13 +13,13 @@
             jsId="progressDialog"></span>
     </div>
     <div class="oils-acq-basic-roomy">
-        <button name="claim_submit">Claim selected items</button>
+        <button name="claim_submit">[% l('Claim selected items') %]</button>
     </div>
     <table id="acq-eligible-li-table">
         <thead>
             <tr>
                 <th><input type="checkbox" name="selector_all" /></th>
-                <th>Items</th>
+                <th>[% l('Items') %]</th>
             </tr>
         </thead>
         <tbody>
@@ -31,20 +31,20 @@
                     <div name="description"></div>
                     <div name="lid_link_holder" class="hidden">
                         [ <a href="javascript:void(0);"
-                            name="lid_link">Consider individual copies
-                            for claiming</a> ]
+                            name="lid_link">[% l('Consider individual copies
+                            for claiming') %]</a> ]
                     </div>
                 </td>
             </tr>
             <tr><!-- empty template -->
                 <td colspan="2">
-                    <em>There were no items matching your search.</em>
+                    <em>[% l('There were no items matching your search.') %]</em>
                 </td>
             </tr>
         </tbody>
     </table>
     <div class="oils-acq-basic-roomy">
-        <button name="claim_submit">Claim selected items</button>
+        <button name="claim_submit">[% l('Claim selected items') %]</button>
     </div>
 </div>
 <div class="hidden">

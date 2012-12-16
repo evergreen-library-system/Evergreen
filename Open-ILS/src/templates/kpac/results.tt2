@@ -4,7 +4,7 @@
     WRAPPER "kpac/parts/subpage.tt2";
     ctx.page_title = l('Search Results') %]
         
-<h2 class="sub_header2">Search Results</h2>
+<h2 class="sub_header2">[% l('Search Results') %]</h2>
 
 [% IF ctx.records.size == 0 %]
 

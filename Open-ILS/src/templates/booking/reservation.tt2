@@ -95,10 +95,10 @@
             <thead>
                 <tr><!-- FIXME: i18n problem: init_auto_l10n() runs
                         too late to take care of the below elements. -->
-                    <th width="35%" field="type">Type</th>
-                    <th width="25%" field="resource">Resource</th>
-                    <th width="20%" field="start_time">Start time</th>
-                    <th width="20%" field="end_time">End time</th>
+                    <th width="35%" field="type">[% l('Type') %]</th>
+                    <th width="25%" field="resource">[% l('Resource') %]</th>
+                    <th width="20%" field="start_time">[% l('Start time') %]</th>
+                    <th width="20%" field="end_time">[% l('End time') %]</th>
                 </tr>
             </thead>
         </table>

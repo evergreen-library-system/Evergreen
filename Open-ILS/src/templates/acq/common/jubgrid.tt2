@@ -54,57 +54,57 @@ pointing to the JUB model (and store) that you have created.
     JUBGrid.jubGridLayout = [{
         //noscroll: true,
         cells: [[
-            {name: 'ID', field: 'id', width:'auto'},
-            {name: 'Title', width: "180px", get:JUBGrid.getJUBTitle},
-            {name: 'Author', get:JUBGrid.getJUBAuthor, width:'auto'},
-            {name: 'ISBN', get:JUBGrid.getJUBIsbn, width:'auto'},
-            {name: 'Pubdate', get:JUBGrid.getJUBPubdate, width:'auto'},
-            {name: 'Actual Price', 
+            {name: '[% l('ID') %]', field: 'id', width:'auto'},
+            {name: '[% l('Title') %]', width: "180px", get:JUBGrid.getJUBTitle},
+            {name: '[% l('Author') %]', get:JUBGrid.getJUBAuthor, width:'auto'},
+            {name: '[% l('ISBN') %]', get:JUBGrid.getJUBIsbn, width:'auto'},
+            {name: '[% l('Pubdate') %]', get:JUBGrid.getJUBPubdate, width:'auto'},
+            {name: '[% l('Actual Price') %]', 
                 field:'actual_price',
                 get:JUBGrid.getJUBActualPrice,
                 editor:dojox.grid.editors.Dijit, width:'auto', 
                 editorClass: "dijit.form.CurrencyTextBox" 
             },
-            {name: 'Estimated Price', 
+            {name: '[% l('Estimated Price') %]', 
                 field:'estimated_price',
                 get:JUBGrid.getJUBEstimatedPrice, width:'auto',
                 editor:dojox.grid.editors.Dijit, 
                 editorClass: "dijit.form.CurrencyTextBox" 
             },
-            {name: 'Vendor', width:'auto',
+            {name: '[% l('Vendor') %]', width:'auto',
 	     field: 'provider', get:JUBGrid.getProvider,
 	     editor:openils.editors.ProviderSelectEditor,
 	    },
-            {name: 'No. Copies', field: 'item_count', width:'auto'},
-            {name: 'State', field: 'state', width:'auto'},
-            {name: 'PO', get:JUBGrid.getPO, width:'auto'}
+            {name: '[% l('No. Copies') %]', field: 'item_count', width:'auto'},
+            {name: '[% l('State') %]', field: 'state', width:'auto'},
+            {name: '[% l('PO') %]', get:JUBGrid.getPO, width:'auto'}
         ]]
     }];
 
     JUBGrid.jubDetailGridLayout = [{
         cells: [[
-            {name:"ID", field:"id"},
-            {name:"Fund", field:"fund",
+            {name:"[% l('ID') %]", field:"id"},
+            {name:"[% l('Fund') %]", field:"fund",
                 get:JUBGrid.getLIDFundCode,
                 editor: openils.editors.FundSelectEditor,
             },
-            {name:"Branch", field:"owning_lib",
+            {name:"[% l('Branch') %]", field:"owning_lib",
 	            get:JUBGrid.getLIDLibName,
 	            editor: openils.editors.OrgUnitSelectEditor
 	        },
-            {name:"Barcode", field:"barcode", width:'auto',
+            {name:"[% l('Barcode') %]", field:"barcode", width:'auto',
                 editor:dojox.grid.editors.Dijit, 
                 editorClass: "dijit.form.TextBox" 
 	        },
-            {name:"Call Number", field:"cn_label", width:'auto',
+            {name:"[% l('Call Number') %]", field:"cn_label", width:'auto',
                 editor:dojox.grid.editors.Dijit, 
                 editorClass: "dijit.form.TextBox" 
 	        },
-            {name:"Shelving Location", field:"location", width:'auto',
+            {name:"[% l('Shelving Location') %]", field:"location", width:'auto',
                 editor:openils.editors.CopyLocationSelectEditor,
                 get:JUBGrid.getCopyLocation
 	        },
-            {name:"Receive Time", width:'auto',
+            {name:"[% l('Receive Time') %]", width:'auto',
                 get:JUBGrid.getRecvTime
 	        },
         ]]
@@ -112,16 +112,16 @@ pointing to the JUB model (and store) that you have created.
 
     JUBGrid.jubDetailGridLayoutReadOnly = [{
         cells: [[
-            {name:'ID', field:"id"},
-            {name:'Fund', field:"fund",
+            {name:'[% l('ID') %]', field:"id"},
+            {name:'[% l('Fund') %]', field:"fund",
              get:JUBGrid.getLIDFundCode,
             },
-            {name:'Branch', field:"owning_lib",
+            {name:'[% l('Branch') %]', field:"owning_lib",
 	            get:JUBGrid.getLIDLibName,
 	        },
-	    {name:'Barcode', field:"barcode", width:'auto'},
-            {name:'Call Number', field:"cn_label", width:'auto'},
-	    {name:'Shelving Location', field:"location", 
+	    {name:'[% l('Barcode') %]', field:"barcode", width:'auto'},
+            {name:'[% l('Call Number') %]', field:"cn_label", width:'auto'},
+	    {name:'[% l('Shelving Location') %]', field:"location", 
                 width:'auto', get:JUBGrid.getCopyLocation},
         ]]
     }];
@@ -135,10 +135,10 @@ pointing to the JUB model (and store) that you have created.
         <div dojoType="dijit.layout.ContentPane"
              id='[% domprefix %]-jub-buttonbar'>
             <button dojoType="dijit.form.Button" onclick="JUBGrid.approveJUB">
-                Approve Selected Titles
+                [% l('Approve Selected Titles') %]
             </button>
             <button dojoType="dijit.form.Button" onclick="JUBGrid.removeSelectedJUBs">
-                Remove Selected Titles
+                [% l('Remove Selected Titles') %]
             </button>
         </div>
     </div>
@@ -155,7 +155,7 @@ pointing to the JUB model (and store) that you have created.
     <div dojoType="dijit.layout.ContentPane" sizeMin="" sizeShare="" class='container'>
         <div dojoType="dijit.layout.ContentPane" id='[% domprefix %]-details-buttonbar'>
             <div dojoType="dijit.form.DropDownButton">
-                <span>New Copy</span>
+                <span>[% l('New Copy') %]</span>
                 <div dojoType="dijit.TooltipDialog" execute="JUBGrid.createLID(arguments[0]);">
                     <script type='dojo/connect' event='onOpen'>
                         new openils.User().buildPermOrgSelector('MANAGE_FUND', copyOwnerSelect);
@@ -163,14 +163,14 @@ pointing to the JUB model (and store) that you have created.
                     </script>
                     <table class="dijitTooltipTable">
                         <tr>
-                            <td><label for="fund">Fund: </label></td>
+                            <td><label for="fund">[% l('Fund: ') %]</label></td>
                             <td>
                                 <input dojoType="openils.widget.FundSelector"
                                 jsId="acqlidFund" searchAttr="name" autocomplete="true" name="fund"></input>
                             </td>
                         </tr>
                         <tr>
-                            <td><label for="owning_lib">Location: </label></td>
+                            <td><label for="owning_lib">[% l('Location: ') %]</label></td>
                             <td><input dojoType="openils.widget.OrgUnitFilteringSelect"
                                 jsId="copyOwnerSelect"
                                 searchAttr="shortname"
@@ -181,7 +181,7 @@ pointing to the JUB model (and store) that you have created.
                         <tr>
                             <td colspan="2" align="center">
                                 <button dojotype="dijit.form.Button" type="submit">
-                                Create
+                                [% l('Create') %]
                                 </button>
                             </td>
                         </tr>
@@ -189,10 +189,10 @@ pointing to the JUB model (and store) that you have created.
                 </div>
             </div>
             <button dojoType='dijit.form.Button' onclick='JUBGrid.deleteLID'>
-                Delete Selected Copy
+                [% l('Delete Selected Copy') %]
             </button>
             <button dojoType='dijit.form.Button' onclick='JUBGrid.receiveLID'>
-                Mark Selected Copies Received
+                [% l('Mark Selected Copies Received') %]
             </button>
         </div>
     </div>

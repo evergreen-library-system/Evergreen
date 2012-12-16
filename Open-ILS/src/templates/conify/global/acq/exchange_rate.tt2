@@ -1,10 +1,10 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Exchange Rates' %]
+[% ctx.page_title = l('Exchange Rates') %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-    <div>Exchange Rates</div>
+    <div>[% l('Exchange Rates') %]</div>
     <div>
-        <button dojoType='dijit.form.Button' onClick='erGrid.showCreateDialog()'>New Exchange Rate</button>
-        <button dojoType='dijit.form.Button' onClick='erGrid.deleteSelected()'>Delete Selected</button>
+        <button dojoType='dijit.form.Button' onClick='erGrid.showCreateDialog()'>[% l('New Exchange Rate') %]</button>
+        <button dojoType='dijit.form.Button' onClick='erGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
     </div>
 </div>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">

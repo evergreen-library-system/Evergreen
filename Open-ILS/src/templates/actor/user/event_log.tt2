@@ -1,5 +1,5 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = "Triggered Event Log" %]
+[% ctx.page_title = l("Triggered Event Log") %]
 <script type="text/javascript">
     dojo.require("dijit.form.Button");
     dojo.require("dojo.data.ItemFileReadStore");
@@ -109,8 +109,8 @@
                 "data": {
                     "identifier": "name",
                     "items": [  /* XXX i18n */
-                        {"name": "circ", "label": "Circulation"},
-                        {"name": "ahr", "label": "Hold"}
+                        {"name": "circ", "label": "[% l('Circulation') %]"},
+                        {"name": "ahr", "label": "[% l('Hold') %]"}
                     ]
                 }
             })
@@ -124,13 +124,13 @@
                 "data": {
                     "identifier": "name",
                     "items": [  /* XXX i18n */
-                        {"name": "found", "label": "Found"},
-                        {"name": "collected", "label": "Collected"},
-                        {"name": "invalid", "label": "Invalid"},
-                        {"name": "pending", "label": "Pending"},
-                        {"name": "reacting", "label": "Reacting"},
-                        {"name": "complete", "label": "Complete"},
-                        {"name": "error", "label": "Error"}
+                        {"name": "found", "label": "[% l('Found') %]"},
+                        {"name": "collected", "label": "[% l('Collected') %]"},
+                        {"name": "invalid", "label": "[% l('Invalid') %]"},
+                        {"name": "pending", "label": "[% l('Pending') %]"},
+                        {"name": "reacting", "label": "[% l('Reacting') %]"},
+                        {"name": "complete", "label": "[% l('Complete') %]"},
+                        {"name": "error", "label": "[% l('Error') %]"}
                     ]
                 }
             })
@@ -278,7 +278,7 @@
                 query="initial_query">
                 <thead>
                     <tr>
-                        <th field="name" fpath="name" ffilter="true">Event Name</th>
+                        <th field="name" fpath="name" ffilter="true">[% l('Event Name') %]</th>
                         <th field="reactor" fpath="reactor" ffilter="true"></th>
                         <th field="run_time" fpath="run_time" ffilter="true"></th><!-- XXX TODO formatters for *_time -->
                         <th field="add_time" fpath="add_time" ffilter="true" _visible="false"></th>
@@ -287,13 +287,13 @@
                         <th field="complete_time" fpath="complete_time" ffilter="true" _visible="false"></th>
                         <th field="id" fpath="id" ffilter="true" _visible="false"></th>
                         <th field="state" fpath="state" ffilter="true"></th>
-                        <th field="target_circ_copy_barcode" fpath="target_circ.target_copy.barcode" ffilter="true">Target Circulation - Copy Barcode</th>
-                        <th field="target_circ_copy_title" fpath="target_circ.target_copy.call_number.record.simple_record.title">Target Circulation - Title</th>
-                        <th field="target_circ_copy_author" fpath="target_circ.target_copy.call_number.record.simple_record.author">Target Circulation - Author</th>
-                        <th field="target_circ_patron_barcode" fpath="target_circ.usr.card.barcode" ffilter="true">Target Circulation - Patron Barcode</th>
-                        <th field="target_hold_copy_title" fpath="target_hold.current_copy.call_number.record.simple_record.title">Target Hold - Title</th>
-                        <th field="target_hold_copy_author" fpath="target_hold.current_copy.call_number.record.simple_record.author">Target Hold - Author</th>
-                        <th field="target_hold_patron_barcode" fpath="target_hold.usr.card.barcode" ffilter="true">Target Hold - Patron Barcode</th>
+                        <th field="target_circ_copy_barcode" fpath="target_circ.target_copy.barcode" ffilter="true">[% l('Target Circulation - Copy Barcode') %]</th>
+                        <th field="target_circ_copy_title" fpath="target_circ.target_copy.call_number.record.simple_record.title">[% l('Target Circulation - Title') %]</th>
+                        <th field="target_circ_copy_author" fpath="target_circ.target_copy.call_number.record.simple_record.author">[% l('Target Circulation - Author') %]</th>
+                        <th field="target_circ_patron_barcode" fpath="target_circ.usr.card.barcode" ffilter="true">[% l('Target Circulation - Patron Barcode') %]</th>
+                        <th field="target_hold_copy_title" fpath="target_hold.current_copy.call_number.record.simple_record.title">[% l('Target Hold - Title') %]</th>
+                        <th field="target_hold_copy_author" fpath="target_hold.current_copy.call_number.record.simple_record.author">[% l('Target Hold - Author') %]</th>
+                        <th field="target_hold_patron_barcode" fpath="target_hold.usr.card.barcode" ffilter="true">[% l('Target Hold - Patron Barcode') %]</th>
                     </tr>
                 </thead>
             </table>

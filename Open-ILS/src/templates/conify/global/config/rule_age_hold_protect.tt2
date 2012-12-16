@@ -1,11 +1,11 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Age Hold Protect Rules' %]
+[% ctx.page_title = l('Age Hold Protect Rules') %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-        <div>Age Hold Protect Rules</div>
+        <div>[% l('Age Hold Protect Rules') %]</div>
         <div>
-            <button dojoType='dijit.form.Button' onClick='ruleAgeProtectGrid.showCreateDialog()'>New Age Hold Protect Rule</button>
-            <button dojoType='dijit.form.Button' onClick='ruleAgeProtectGrid.deleteSelected()'>Delete Selected</button>
+            <button dojoType='dijit.form.Button' onClick='ruleAgeProtectGrid.showCreateDialog()'>[% l('New Age Hold Protect Rule') %]</button>
+            <button dojoType='dijit.form.Button' onClick='ruleAgeProtectGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
         </div>
     </div>
     <div>

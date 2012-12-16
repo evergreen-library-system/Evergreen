@@ -1,11 +1,11 @@
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/common/inv_dialog.js">
 </script>
-<big><strong>Choose invoice</strong></big>
+<big><strong>[% l('Choose invoice') %]</strong></big>
 <table class="acq-link-invoice-dialog">
     <tr>
         <th>
             <label for="acq-[% which %]-link-invoice-inv_ident">
-                Invoice #
+                [% l('Invoice #') %]
             </label>
         </th>
         <td>
@@ -15,7 +15,7 @@
     </tr>
     <tr>
         <th>
-            <label for="acq-[% which %]-link-invoice-provider">Provider</label>
+            <label for="acq-[% which %]-link-invoice-provider">[% l('Provider') %]</label>
         </th>
         <td>
             <span id="acq-[% which %]-link-invoice-provider"></span>
@@ -24,7 +24,7 @@
     <tr>
         <td colspan="2" style="text-align: center;">
             <button id="acq-[% which %]-link-invoice-link"
-                dojoType="dijit.form.Button" type="submit">Link</button>
+                dojoType="dijit.form.Button" type="submit">[% l('Link') %]</button>
         </td>
     </tr>
 </table>

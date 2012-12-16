@@ -3,12 +3,12 @@
         <thead>
             <tr>
                 <td id='oils-self-circ-pic-cell'></td>
-                <td>Barcode</td>
-                <td>Title</td>
-                <td>Author</td>
-                <td>Due Date</td>
-                <td class='hidden'>Renewals Left</td>
-                <td>Type</td>
+                <td>[% l('Barcode') %]</td>
+                <td>[% l('Title') %]</td>
+                <td>[% l('Author') %]</td>
+                <td>[% l('Due Date') %]</td>
+                <td class='hidden'>[% l('Renewals Left') %]</td>
+                <td>[% l('Type') %]</td>
             </tr>
         </thead>
         <tbody id='oils-selfck-circ-tbody'>
@@ -20,8 +20,8 @@
                 <td name='due_date'></td>
                 <td class='hidden' name='remaining'></td>
                 <td>
-                    <div name='checkout' class='hidden'>Checkout</div>
-                    <div name='renew' class='hidden'>Renewal</div>
+                    <div name='checkout' class='hidden'>[% l('Checkout') %]</div>
+                    <div name='renew' class='hidden'>[% l('Renewal') %]</div>
                 </td>
             </tr>
         </tbody>

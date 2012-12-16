@@ -1,5 +1,5 @@
 [% WRAPPER "base.tt2" %]
-[% ctx.page_title = "Locate Bib Record" %]
+[% ctx.page_title = l("Locate Bib Record") %]
 <script type="text/javascript">
     function iterateSubfields(item) {
         var out = '';
@@ -11,7 +11,7 @@
 
 <div id='acq-findbib-search' style='margin:30px; border:1px solid #333; text-align:center;'>
     <input dojoType='dijit.form.TextBox' jsId='searchQuery' style='width:500px;'></input>
-    <button dojoType='dijit.form.Button' onclick='doSearch'>Search</button>
+    <button dojoType='dijit.form.Button' onclick='doSearch'>[% l('Search') %]</button>
 </div>
 
 <div style='width:100%; ' id='acq-findbib-container'>
@@ -28,8 +28,8 @@
                 </div>
             </div>
             <div>
-                <span><a name='view-marc' href='javascript:void(0);'>View MARC</a></span>
-                <span><a name='select-rec' href='javascript:void(0);'>Select</a></span>
+                <span><a name='view-marc' href='javascript:void(0);'>[% l('View MARC') %]</a></span>
+                <span><a name='select-rec' href='javascript:void(0);'>[% l('Select') %]</a></span>
                 <span type='opac/slot-data' query='datafield[tag=020]'>
                     <script type='opac/slot-format'>return iterateSubfields(item)</script>
                 </span> 
@@ -62,12 +62,12 @@
 </style>
 
 <div id='marc-div' class='hidden'>
-    <button dojoType='dijit.form.Button' onclick='openils.Util.hide("marc-div");'>Hide</button>
+    <button dojoType='dijit.form.Button' onclick='openils.Util.hide("marc-div");'>[% l('Hide') %]</button>
     <div style='text-align:left;'>
         <div id='marc-html-div'></div>
     </div>
 </div>
-<div jsId='progressDialog' dojoType='openils.widget.ProgressDialog' message='Searching....'></div>
+<div jsId='progressDialog' dojoType='openils.widget.ProgressDialog' message='[% l('Searching....') %]'></div>
 
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/lineitem/findbib.js"></script>
 [% END %]

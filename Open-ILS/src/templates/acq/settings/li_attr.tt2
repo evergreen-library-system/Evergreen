@@ -2,42 +2,42 @@
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
     <div dojoType="dijit.form.DropDownButton">
-        <span>Lineitem Attribute Attribute</span>
+        <span>[% l('Lineitem Attribute Attribute') %]</span>
         <div dojoType="dijit.TooltipDialog" execute="createOrderRecordField(arguments[0]);">
             <script type='dojo/connect' event='onOpen'>//setORDesc();</script>
             <table class='dijitTooltipTable'>
                 <tr>
-                    <td><label for="code">Code:</label></td>
+                    <td><label for="code">[% l('Code:') %]</label></td>
                     <td><input dojoType='dijit.form.TextBox' name='code'/></td>
                 </tr>
                 <tr>
-                    <td><label for="description">Description: </label></td>
+                    <td><label for="description">[% l('Description: ') %]</label></td>
                     <td><input id='oils-acq-provider-or-desc' dojoType="dijit.form.TextBox" name="description"> </input></td>
                 </tr>
                 <tr>
-                    <td><label for="amount">Tag: </label></td>
+                    <td><label for="amount">[% l('Tag: ') %]</label></td>
                     <td><input dojoType="dijit.form.TextBox" name="tag"></input></td>
                 </tr>
                 <tr>
-                    <td><label for="amount">Subfield: </label></td>
+                    <td><label for="amount">[% l('Subfield: ') %]</label></td>
                     <td><input dojoType="dijit.form.TextBox" name="subfield"></input></td>
                 </tr>
                 <tr>
-                    <td><label for="ident">Identifer Field?: </label></td>
+                    <td><label for="ident">[% l('Identifer Field?: ') %]</label></td>
                     <td>
                         <select dojoType="dijit.form.FilteringSelect" name="ident">
-                            <option value='f' selected='selected'>False</option>
-                            <option value='t'>True</option>
+                            <option value='f' selected='selected'>[% l('False') %]</option>
+                            <option value='t'>[% l('True') %]</option>
                         </select>
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="amount">XPath (advanced): </label></td>
+                    <td><label for="amount">[% l('XPath (advanced): ') %]</label></td>
                     <td><input dojoType="dijit.form.TextBox" name="xpath"></input></td>
                 </tr>
                 <tr>
                     <td colspan='2' align='center'>
-                        <button dojoType=dijit.form.Button type="submit">Apply</button>
+                        <button dojoType=dijit.form.Button type="submit">[% l('Apply') %]</button>
                     </td>
                 </tr>
             </table>
@@ -46,24 +46,24 @@
     <script type="text/javascript">
         var liAttrGridLayout = [{
             cells : [[
-                {name: 'ID', field: 'id'},
-                {name: 'Code', field:'code', width:'auto'},
-                {name: 'Description', field: "description", width:'auto'}, 
-                {name: 'Tag', get:getTag},
-                {name: 'Subfield', get:getSubfield},
-                {name: 'Identifier', field:'ident'},
-                {name: 'XPath', field:'xpath', width:'auto'}
+                {name: '[% l('ID') %]', field: 'id'},
+                {name: '[% l('Code') %]', field:'code', width:'auto'},
+                {name: '[% l('Description') %]', field: "description", width:'auto'}, 
+                {name: '[% l('Tag') %]', get:getTag},
+                {name: '[% l('Subfield') %]', get:getSubfield},
+                {name: '[% l('Identifier') %]', field:'ident'},
+                {name: '[% l('XPath') %]', field:'xpath', width:'auto'}
             ]]
         }];
     </script>
     <div dojoType="dijit.layout.TabContainer">
         <div dojoType="dijit.layout.ContentPane" 
-                class='oils-acq-detail-content-pane' title="MARC Attributes" style='height:600px;'>
+                class='oils-acq-detail-content-pane' title="[% l('MARC Attributes') %]" style='height:600px;'>
             <script type='dojo/connect' event='onShow'>loadMarcAttrGrid();</script>
             <div jsId='liMarcAttrGrid' dojoType="dojox.Grid" structure='liAttrGridLayout'> </div>
         </div>
         <div dojoType="dijit.layout.ContentPane" 
-                class='oils-acq-detail-content-pane' title="Generated Attributes" style='height:600px;'>
+                class='oils-acq-detail-content-pane' title="[% l('Generated Attributes') %]" style='height:600px;'>
             <script type='dojo/connect' event='onShow'>loadGeneratedAttrGrid();</script>
             <div jsId='liGeneratedAttrGrid' dojoType="dojox.Grid" structure='liAttrGridLayout'> </div>
         </div>

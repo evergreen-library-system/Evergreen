@@ -13,10 +13,10 @@
             Show the <a name="rel_link" href="#"><span name="related_number"></span> lineitem(s)</a> related to the same bibliographic record.
         </div>
         <div style="margin-top:40px;">
-            <h3 id="acq-[% which_lc %]-marc-order-record-label">MARC Order Record</h3>
-            <h3 id="acq-[% which_lc %]-marc-real-record-label">MARC ILS Record</h3>
+            <h3 id="acq-[% which_lc %]-marc-order-record-label">[% l('MARC Order Record') %]</h3>
+            <h3 id="acq-[% which_lc %]-marc-real-record-label">[% l('MARC ILS Record') %]</h3>
             <div>
-                <div dojoType="dijit.form.Button" jsId="acq[% which %]EditOrderMarc" class="hidden">Edit MARC Order Record</div>
+                <div dojoType="dijit.form.Button" jsId="acq[% which %]EditOrderMarc" class="hidden">[% l('Edit MARC Order Record') %]</div>
             </div>
             <div id="acq-[% which_lc %]-marc-div" style="margin-top:20px;"> </div>
         </div>

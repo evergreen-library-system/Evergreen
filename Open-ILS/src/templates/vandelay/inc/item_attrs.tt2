@@ -4,14 +4,14 @@
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-        <div>Holdings Import Profiles</div>
+        <div>[% l('Holdings Import Profiles') %]</div>
         <div>
-            <button dojoType='dijit.form.Button' onClick='itemAttrGrid.showCreatePane()'>New Definition</button>
-            <button dojoType='dijit.form.Button' onClick='itemAttrGrid.deleteSelected()'>Delete Selected</button>
+            <button dojoType='dijit.form.Button' onClick='itemAttrGrid.showCreatePane()'>[% l('New Definition') %]</button>
+            <button dojoType='dijit.form.Button' onClick='itemAttrGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
         </div>
     </div>
     <div>
-        <span style='padding-right:10px;'>Context Org Unit</span>
+        <span style='padding-right:10px;'>[% l('Context Org Unit') %]</span>
         <select dojoType="openils.widget.OrgUnitFilteringSelect" jsId='itemAttrContextOrgSelector'
             searchAttr='shortname' labelAttr='shortname'> </select>
     </div>

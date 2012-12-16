@@ -1,10 +1,10 @@
 [% WRAPPER 'base.tt2' %]
-[% ctx.page_title = 'Selection Lists' %]
+[% ctx.page_title = l('Selection Lists') %]
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div id='oils-acq-list-header' class='container'>
         <div id='oils-acq-picklist-my-list-header'>
-            <div id='oils-acq-list-header-label'>My Selection Lists</div>
+            <div id='oils-acq-list-header-label'>[% l('My Selection Lists') %]</div>
         </div>
     </div>
 </div>
@@ -12,16 +12,16 @@
 <div class='oils-acq-actions-div' dojoType="dijit.layout.ContentPane" layoutAlign="client">
 
     <div dojoType="dijit.form.DropDownButton">
-        <span>New Selection List</span>
+        <span>[% l('New Selection List') %]</span>
         <div dojoType="dijit.TooltipDialog" execute="createPL(arguments[0]);">
             <table class='dijitTooltipTable'>
                 <tr>
-                    <td><label for="name">Name:</label></td>
+                    <td><label for="name">[% l('Name:') %]</label></td>
                     <td><input dojoType="dijit.form.TextBox" name="name"/></td>
                 </tr>
                 <tr>
                     <td colspan='2' align='center'>
-                        <button dojoType='dijit.form.Button' type="submit">Create</button>
+                        <button dojoType='dijit.form.Button' type="submit">[% l('Create') %]</button>
                     </td>
                 </tr>
             </table>
@@ -29,16 +29,16 @@
     </div>
 
     <div dojoType="dijit.form.DropDownButton">
-        <span>Clone Selected</span>
+        <span>[% l('Clone Selected') %]</span>
         <div dojoType="dijit.TooltipDialog" execute="cloneSelectedPl(arguments[0]);">
             <table class='dijitTooltipTable'>
                 <tr>
-                    <td><label for="name">New Name:</label></td>
+                    <td><label for="name">[% l('New Name:') %]</label></td>
                     <td><input dojoType="dijit.form.TextBox" name="name"/></td>
                 </tr>
                 <tr>
                     <td colspan='2' align='center'>
-                        <button dojoType='dijit.form.Button' type="submit">Clone</button>
+                        <button dojoType='dijit.form.Button' type="submit">[% l('Clone') %]</button>
                     </td>
                 </tr>
             </table>
@@ -46,22 +46,22 @@
     </div>
 
     <div dojoType="dijit.form.DropDownButton">
-        <span>Merge Selected</span>
+        <span>[% l('Merge Selected') %]</span>
         <div dojoType="dijit.TooltipDialog" execute="mergeSelectedPl(arguments[0]);" jsId='plMergeDialog'>
             <table class='dijitTooltipTable'>
                 <tr>
-                    <td><label for="name">Choose the Lead Selection List:</label></td>
+                    <td><label for="name">[% l('Choose the Lead Selection List:') %]</label></td>
                     <td><input jsId='plMergeLeadSelector' dojoType="dijit.form.FilteringSelect" name="lead"/></td>
                 </tr>
                 <tr>
                     <td colspan='2' align='center'>
-                        <button dojoType='dijit.form.Button' type="submit">Merge</button>
+                        <button dojoType='dijit.form.Button' type="submit">[% l('Merge') %]</button>
                     </td>
                 </tr>
             </table>
         </div>
     </div>
-    <button dojoType="dijit.form.Button" onclick="deleteFromGrid();">Delete Selected</button>
+    <button dojoType="dijit.form.Button" onclick="deleteFromGrid();">[% l('Delete Selected') %]</button>
 </div>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
@@ -81,7 +81,7 @@
             <tr>
                 <th field="name" formatter='formatName'/>
                 <th field="owner" get='getOwnerName'/>
-                <th field="entry_count">Entry Count</th>
+                <th field="entry_count">[% l('Entry Count') %]</th>
             </tr>
         </thead>
     </table>

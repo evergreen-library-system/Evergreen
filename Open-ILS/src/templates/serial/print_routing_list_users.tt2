@@ -1,5 +1,5 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = "Serial Routing List" %]
+[% ctx.page_title = l("Serial Routing List") %]
 <div class="hidden">
     <div id="list_template">
         <div class="item-title" name="title"></div>
@@ -9,18 +9,18 @@
             <span name="distribution_label"></span> /
             <span name="stream_routing_label" class="hidden"></span>
             <em name="stream_id_container" class="hidden">
-                Unlabeled stream ID #<span name="stream_id"></span>
+                [% l('Unlabeled stream ID #[_1]', '<span name="stream_id"></span>') %]
             </em>
         </div>
         <ol name="users">
             <li id="user_template">
                 <span class="hidden" name="reader_container">
-                    Reader: <span name="barcode"></span> /
-                    <span name="name"></span>
-                    (<span name="ou"></span>)
+                    [% l('Reader: [_1] / [_2] ([_3])', '<span name="barcode"></span>',
+                    '<span name="name"></span>',
+                    '<span name="ou"></span>') %]
                 </span>
                 <span class="hidden" name="department_container">
-                    Department: <span name="department"></span>
+                    [% l('Department: [_1]', '<span name="department"></span>') %]
                 </span>
                 <span class="hidden" name="note_container">
                     <br />&nbsp; <em name="note"></em>
@@ -30,7 +30,7 @@
     </div>
 </div>
 <div style="padding: 1em 0;">
-    <button onclick="list_renderer.print()" accesskey="P"><u>P</u>rint</button>
+    <button onclick="list_renderer.print()" accesskey="[% l('P') %]">[% l('<u>P</u>rint') %]</button>
 </div>
 <div id="iframe_in_here"></div>
 <script type="text/javascript"

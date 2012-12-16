@@ -1,4 +1,4 @@
-[% ctx.page_title = 'Self Checkout' %]
+[% ctx.page_title = l('Self Checkout') %]
 [% WRAPPER base.tt2 %]
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/circ/selfcheck/selfcheck.js'> </script>
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/circ/selfcheck/payment.js"></script>
@@ -11,7 +11,7 @@
 <div id='oils-selfck-bottom-div'>
     <div id='oils-selfck-content-div'>
         <div id='oils-selfck-content-header'>
-            <span><a id='oils-selfck-print-list-link' href='javascript:void(0);'>Print List</a></span>
+            <span><a id='oils-selfck-print-list-link' href='javascript:void(0);'>[% l('Print List') %]</a></span>
         </div>
         <div id='oils-selfck-circ-page' class='hidden'>
             <!-- Checkout / renewal and items out interface -->
@@ -39,17 +39,17 @@
     <form>
         <table>
             <tr>
-                <td>Choose a location</td>
+                <td>[% l('Choose a location') %]</td>
                 <td><div dojoType='openils.widget.OrgUnitFilteringSelect' jsId='oilsSelfckWsLocSelector' 
                     searchAttr='shortname' labelAttr='shortname'></div></td>
             </tr>
             <tr>
-                <td>Enter a workstation name</td>
+                <td>[% l('Enter a workstation name') %]</td>
                 <td><input dojoType='dijit.form.TextBox' jsId='oilsSelfckWsName'/></td>
             </tr>
             <tr>
                 <td colspan='2' align='center'>
-                    <button jsId='oilsSelfckWsSubmit' dojoType='dijit.form.Button'>Submit</button>
+                    <button jsId='oilsSelfckWsSubmit' dojoType='dijit.form.Button'>[% l('Submit') %]</button>
                 </td>
             </tr>
         </table>

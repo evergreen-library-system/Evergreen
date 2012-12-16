@@ -6,17 +6,17 @@
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
     <div id='vl-import-error-record' class='hidden'>
-        <h1>Import Errors</h1><br/>
+        <h1>[% l('Import Errors') %]</h1><br/>
         <table>
             <tbody>
-                <tr><td>ID</td><td id='vl-error-id'/></tr>
-                <tr><td>Import Error</td><td id='vl-error-import-error'/></tr>
-                <tr><td>Error Detail</td><td id='vl-error-error-detail'/></tr>
-                <tr><td>Title</td><td id='vl-error-title'/></tr>
-                <tr><td>Author</td><td id='vl-error-author'/></tr>
-                <tr><td>ISBN</td><td id='vl-error-isbn'/></tr>
-                <tr><td>ISSN</td><td id='vl-error-issn'/></tr>
-                <tr><td>UPC</td><td id='vl-error-upc'/></tr>
+                <tr><td>[% l('ID') %]</td><td id='vl-error-id'/></tr>
+                <tr><td>[% l('Import Error') %]</td><td id='vl-error-import-error'/></tr>
+                <tr><td>[% l('Error Detail') %]</td><td id='vl-error-error-detail'/></tr>
+                <tr><td>[% l('Title') %]</td><td id='vl-error-title'/></tr>
+                <tr><td>[% l('Author') %]</td><td id='vl-error-author'/></tr>
+                <tr><td>[% l('ISBN') %]</td><td id='vl-error-isbn'/></tr>
+                <tr><td>[% l('ISSN') %]</td><td id='vl-error-issn'/></tr>
+                <tr><td>[% l('UPC') %]</td><td id='vl-error-upc'/></tr>
             </tbody>
         </table>
     </div>
@@ -46,16 +46,16 @@
 </div>
 <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
     <div class='hidden' id='vl-import-error-grid-all'>
-        <h1>Import Items</h1><br/>
+        <h1>[% l('Import Items') %]</h1><br/>
         <input dojoType='dijit.form.CheckBox' jsId='vlImportItemsShowErrors' onchange='vlLoadErrorUIAll();'/>
-        <span>Limit to Import Failures</span>
+        <span>[% l('Limit to Import Failures') %]</span>
         <table width='100%'><tr><td width='100%' align='right'>
             <select id='vl-item-export-options' style='margin-right: 10px;'>
                 <!-- TODO I18N -->
-                <option value=''>Export Items As...</option>
-                <option value='print'>Print</option>
-                <option value='csv'>CSV</option>
-                <option value='email'>Email</option>
+                <option value=''>[% l('Export Items As...') %]</option>
+                <option value='print'>[% l('Print') %]</option>
+                <option value='csv'>[% l('CSV') %]</option>
+                <option value='email'>[% l('Email') %]</option>
             </select>
         </td></tr></table>
         <table  jsId="vlAllImportErrorGrid"

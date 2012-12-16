@@ -17,8 +17,8 @@
         <td width="3" class="main_left_shadow"><div class="clear">&nbsp;</div></td>
         <td valign="top" class="main_inside_cell" valign="top">
             <div class="search_wrapper">
-                <h1>Search your Library</h1>
-                <h3>for books, movies, music, magazines, and more!</h3>
+                <h1>[% l('Search your Library') %]</h1>
+                <h3>[% l('for books, movies, music, magazines, and more!') %]</h3>
                 <form action="[% ctx.kpac_root _ '/results' %]">
                     [% qtype = CGI.param('qtype') %]
                     <table cellpadding="0" cellspacing="0" border="0" align="center" class="search_box_wrapper">
@@ -37,13 +37,13 @@
 
                             <td><input type="text" class="search_box" name="query" 
                                 value="[% CGI.param('nosprop') ? '' : CGI.param('query') | html  %]"/></td>
-                            <td><input type="image" src="[% ctx.media_prefix %]/images/kpac/search_btn.png" alt="search" /></td>
+                            <td><input type="image" src="[% ctx.media_prefix %]/images/kpac/search_btn.png" alt="[% l('search') %]" /></td>
                         </tr>
                     </table>
                 </form>
             </div>
             <div class="category_wrapper">
-                <h3 class="c_header_image">Or click on an image to get started:</h3>
+                <h3 class="c_header_image">[% l('Or click on an image to get started:') %]</h3>
                 [% render_kpac_grid(ctx.kpac_layout.page) %]
             </div>
 

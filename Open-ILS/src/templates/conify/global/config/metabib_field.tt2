@@ -1,11 +1,11 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Metabib Field' %]
+[% ctx.page_title = l('MARC Search and Facet Fields') %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-        <div>Metabib Field</div>
+        <div>[% l('Metabib Field') %]</div>
         <div>
-            <button dojoType='dijit.form.Button' onClick='mbFieldGrid.showCreateDialog()'>New Field</button>
-            <button dojoType='dijit.form.Button' onClick='mbFieldGrid.deleteSelected()'>Delete Selected</button>
+            <button dojoType='dijit.form.Button' onClick='mbFieldGrid.showCreateDialog()'>[% l('New Field') %]</button>
+            <button dojoType='dijit.form.Button' onClick='mbFieldGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
         </div>
     </div>
     <div>

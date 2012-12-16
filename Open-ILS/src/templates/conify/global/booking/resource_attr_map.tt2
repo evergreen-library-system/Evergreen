@@ -1,14 +1,14 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Resource Attribute Maps' %]
+[% ctx.page_title = l('Resource Attribute Maps') %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-    <div>Resource Attribute Maps</div>
+    <div>[% l('Resource Attribute Maps') %]</div>
     <div>
-        <button dojoType='dijit.form.Button' onClick='bramGrid.showCreateDialog()'>New Resource Attribute Map</button>
-        <button dojoType='dijit.form.Button' onClick='bramGrid.deleteSelected()'>Delete Selected</button>
+        <button dojoType='dijit.form.Button' onClick='bramGrid.showCreateDialog()'>[% l('New Resource Attribute Map') %]</button>
+        <button dojoType='dijit.form.Button' onClick='bramGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
     </div>
 </div>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-    <span>Context Org Unit</span>
+    <span>[% l('Context Org Unit') %]</span>
     <select dojoType="openils.widget.OrgUnitFilteringSelect"
             jsId='contextOrgSelector'
             searchAttr='shortname'

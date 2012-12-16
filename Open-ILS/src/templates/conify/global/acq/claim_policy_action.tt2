@@ -1,15 +1,15 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Claim Policy Actions' %]
+[% ctx.page_title = l('Claim Policy Actions') %]
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane"
          layoutAlign="top" class="oils-header-panel">
-        <div>Claim Policy Actions</div>
+        <div>[% l('Claim Policy Actions') %]</div>
         <div>
             <button onclick="grid.showCreateDialog()">
-                New Claim Policy Action
+                [% l('New Claim Policy Action') %]
             </button>
-            <button onclick="grid.deleteSelected()">Delete Selected</button>
+            <button onclick="grid.deleteSelected()">[% l('Delete Selected') %]</button>
         </div>
     </div>
     <table jsId="grid"

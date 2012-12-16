@@ -2,30 +2,30 @@
     <div dojoType="dijit.Toolbar" class='menuBar'>
 
         <div dojoType="dijit.form.DropDownButton">
-            <span>Acquisitions</span>
+            <span>[% l('Acquisitions') %]</span>
             <div dojoType="dijit.Menu">
 
                 <!-- ==========================================================================
                      Picklist SubMenu
                     ========================================================================== -->
                 <div dojoType="dijit.PopupMenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy">
-                    <span>Selection Lists</span>
+                    <span>[% l('Selection Lists') %]</span>
                      <div dojoType="dijit.Menu">
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy"
                             onClick="location.href = '[% ctx.base_path %]/acq/picklist/list';">
-                            My Selection Lists
+                            [% l('My Selection Lists') %]
                         </div>
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy"
                             onClick="location.href = '[% ctx.base_path %]/acq/picklist/bib_search';">
-                            Title Search
+                            [% l('Title Search') %]
                         </div>
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy"
                             onClick="location.href = '[% ctx.base_path %]/acq/picklist/upload';">
-                            Load Records
+                            [% l('Load Records') %]
                         </div>
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy"
                             onClick="location.href = '[% ctx.base_path %]/acq/picklist/brief_record';">
-                            New Brief Record
+                            [% l('New Brief Record') %]
                         </div>
                     </div>
                 </div>
@@ -34,20 +34,20 @@
                      Purchase Order SubMenu
                     ========================================================================== -->
                 <div dojoType="dijit.PopupMenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy">
-                    <span>Purchase Orders</span>
+                    <span>[% l('Purchase Orders') %]</span>
                      <div dojoType="dijit.Menu">
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy"
                             onClick="location.href = '[% ctx.base_path %]/acq/po/search';">
-                            PO Search
+                            [% l('PO Search') %]
                         </div>
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy"
                             onClick="location.href = '[% ctx.base_path %]/acq/lineitem/search';">
-                            Lineitem Search
+                            [% l('Lineitem Search') %]
                         </div>
                         <!-- XXX 
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy"
                             onClick="location.href = '[% ctx.base_path %]/acq/po/marc_upload';">
-                            Load Vendor Order Records
+                            [% l('Load Vendor Order Records') %]
                         </div>
                         -->
                     </div>
@@ -56,11 +56,11 @@
                      Receiving SubMenu
                     ========================================================================== -->
                 <div dojoType="dijit.PopupMenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy">
-                    <span>Receiving</span>
+                    <span>[% l('Receiving') %]</span>
                     <div dojoType="dijit.Menu">
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy"
                             onClick="location.href = '[% ctx.base_path %]/acq/receiving/process';">
-                                Receiving
+                                [% l('Receiving') %]
                         </div>
                     </div>
                 </div>
@@ -68,47 +68,47 @@
         </div>
 
         <div dojoType="dijit.form.DropDownButton">
-            <span>Admin</span>
+            <span>[% l('Admin') %]</span>
             <div dojoType="dijit.Menu">
                 <div dojoType="dijit.PopupMenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy">
-                    <span>Acquisitions</span>
+                    <span>[% l('Acquisitions') %]</span>
                      <div dojoType="dijit.Menu">
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy"
-                            onClick="location.href = '[% ctx.base_path %]/acq/fund/list';">Funds</div>
+                            onClick="location.href = '[% ctx.base_path %]/acq/fund/list';">[% l('Funds') %]</div>
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-                                onClick="location.href = '[% ctx.base_path %]/acq/funding_source/list';">Funding Sources</div>
+                                onClick="location.href = '[% ctx.base_path %]/acq/funding_source/list';">[% l('Funding Sources') %]</div>
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-                                onClick="location.href = '[% ctx.base_path %]/conify/global/acq/provider';">Providers</div>
+                                onClick="location.href = '[% ctx.base_path %]/conify/global/acq/provider';">[% l('Providers') %]</div>
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-                                onClick="location.href = '[% ctx.base_path %]/acq/currency_type/list';">Currency Types</div>
+                                onClick="location.href = '[% ctx.base_path %]/acq/currency_type/list';">[% l('Currency Types') %]</div>
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-                                onClick="location.href = '[% ctx.base_path %]/conify/global/acq/exchange_rate';">Exchange Rates</div>
+                                onClick="location.href = '[% ctx.base_path %]/conify/global/acq/exchange_rate';">[% l('Exchange Rates') %]</div>
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-                                onClick="location.href = '[% ctx.base_path %]/conify/global/acq/distribution_formula';">Distribution Formulas</div>
+                                onClick="location.href = '[% ctx.base_path %]/conify/global/acq/distribution_formula';">[% l('Distribution Formulas') %]</div>
                     </div>
                 </div>
                 <div dojoType="dijit.PopupMenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy">
-                    <span>Config</span>
+                    <span>[% l('Config') %]</span>
                      <div dojoType="dijit.Menu">
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-                                onClick="location.href = '[% ctx.base_path %]/conify/global/config/billing_type';">Billing Types</div>
+                                onClick="location.href = '[% ctx.base_path %]/conify/global/config/billing_type';">[% l('Billing Types') %]</div>
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-                                onClick="location.href = '[% ctx.base_path %]/conify/global/config/standing_penalty';">Standing Penalties</div>
+                                onClick="location.href = '[% ctx.base_path %]/conify/global/config/standing_penalty';">[% l('Standing Penalties') %]</div>
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
                                 onClick="location.href = '[% ctx.base_path %]/conify/global/permission/grp_penalty_threshold';">
-                                    Group Penalty Thresholds</div>
+                                    [% l('Group Penalty Thresholds') %]</div>
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-                                onClick="location.href = '[% ctx.base_path %]/conify/global/config/idl_field_doc';">Field Documentation</div>
+                                onClick="location.href = '[% ctx.base_path %]/conify/global/config/idl_field_doc';">[% l('Field Documentation') %]</div>
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-                                onClick="location.href = '[% ctx.base_path %]/conify/global/config/z3950_source';">Z39.50 Sources</div>
+                                onClick="location.href = '[% ctx.base_path %]/conify/global/config/z3950_source';">[% l('Z39.50 Sources') %]</div>
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-                                onClick="location.href = '[% ctx.base_path %]/conify/global/config/circ_modifier';">Circulation Modifiers</div>
+                                onClick="location.href = '[% ctx.base_path %]/conify/global/config/circ_modifier';">[% l('Circulation Modifiers') %]</div>
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-                                onClick="location.href = '[% ctx.base_path %]/conify/global/action_trigger/event_definition';">Action Trigger</div>
+                                onClick="location.href = '[% ctx.base_path %]/conify/global/action_trigger/event_definition';">[% l('Action Trigger') %]</div>
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy"
-                             onClick="location.href = '[% ctx.base_path %]/conify/global/action/survey';">Surveys</div>
+                             onClick="location.href = '[% ctx.base_path %]/conify/global/action/survey';">[% l('Surveys') %]</div>
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy"
-                             onClick="location.href = '[% ctx.base_path %]/conify/global/config/org_unit_setting_type';">Org Unit Setting Types</div>
+                             onClick="location.href = '[% ctx.base_path %]/conify/global/config/org_unit_setting_type';">[% l('Org Unit Setting Types') %]</div>
                     </div>
                 </div>
             </div>

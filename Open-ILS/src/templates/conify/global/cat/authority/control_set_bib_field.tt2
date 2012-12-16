@@ -1,15 +1,15 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = "Configure Authority Control Set Bib Fields" %]
+[% ctx.page_title = l("Configure Authority Control Set Bib Fields") %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
-        <div>Control Set Bib Fields</div>
+        <div>[% l('Control Set Bib Fields') %]</div>
         <div>
-            <button dojoType="dijit.form.Button" onClick="acsbf_grid.showCreateDialog()">New Control Set Bib Field</button>
-            <button dojoType="dijit.form.Button" onClick="acsbf_grid.deleteSelected()">Delete Selected</button>
+            <button dojoType="dijit.form.Button" onClick="acsbf_grid.showCreateDialog()">[% l('New Control Set Bib Field') %]</button>
+            <button dojoType="dijit.form.Button" onClick="acsbf_grid.deleteSelected()">[% l('Delete Selected') %]</button>
         </div>
     </div>
     <div id="authority-field-metadata-holder" class="hidden">
-        Showing only control set bib fields linked to authority field:
+        [% l('Showing only control set bib fields linked to authority field:') %]
         <a id="authority-field-metadata"></a>
     </div>
     <div>

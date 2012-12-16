@@ -18,11 +18,11 @@
             <div id='oils-acq-search-sources-label'>Search Sources</div>
             <select style='overflow-y:auto;' id='oils-acq-search-source-select' 
                     multiple='true' jsId="bibSourceSelect" dojoType="dojox.form.CheckedMultiSelect">
-                <option selected='selected' value='native-evergreen-catalog'>Evergreen Catalog</option>
+                <option selected='selected' value='native-evergreen-catalog'>[% l('Evergreen Catalog') %]</option>
             </select>
         </div>
         <div id='oils-acq-search-form-block'>
-            <div id='oils-acq-search-fields-label'>Search Fields</div>
+            <div id='oils-acq-search-fields-label'>[% l('Search Fields') %]</div>
             <div id='oils-acq-search-fields'>
             </div>
             <table>
@@ -32,7 +32,7 @@
                         <td name='input'> </td>
                     </tr>
                     <tr id='oils-acq-seach-fields-count-row'>
-                        <td name='label'>Hits Per Source</td>
+                        <td name='label'>[% l('Hits Per Source') %]</td>
                         <td><input name='limit'
                             dojoType='dijit.form.NumberSpinner'
                             constraints='{min:5,max:50}'
@@ -40,8 +40,8 @@
                         </td>
                     </tr>
                     <tr id='oils-acq-search-fields-submit-block'>
-                        <td><div dojoType='dijit.form.Button' type='submit'>Submit</div></td>
-                        <td><div dojoType='dijit.form.Button' onclick='clearSearchForm()'>Clear Form</div></td>
+                        <td><div dojoType='dijit.form.Button' type='submit'>[% l('Submit') %]</div></td>
+                        <td><div dojoType='dijit.form.Button' onclick='clearSearchForm()'>[% l('Clear Form') %]</div></td>
                     </tr>
                 </tbody>
             </table>
@@ -51,12 +51,12 @@
 
 <div id='oils-acq-pl-search-results'>
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-        <div>Search Results</div>
+        <div>[% l('Search Results') %]</div>
         <div>
             <div id='oils-acq-update-li-progress' class='hidden'>
                 <div dojoType="dijit.ProgressBar" style="width:300px" jsId="liUpdateProgress"></div>
             </div>
-            <div dojoType='dijit.form.Button' onClick='showDiv("oils-acq-search-block");'>New Search</div>
+            <div dojoType='dijit.form.Button' onClick='showDiv("oils-acq-search-block");'>[% l('New Search') %]</div>
         </div>
     </div>
     <div dojoType='dijit.layout.ContentPane' layoutAlign='client'>

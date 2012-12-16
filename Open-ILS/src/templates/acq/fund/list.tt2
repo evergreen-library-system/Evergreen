@@ -1,5 +1,5 @@
 [% WRAPPER 'base.tt2' %]
-[% ctx.page_title = 'Funds' %]
+[% ctx.page_title = l('Funds') %]
 
 <!-- load the page-specific JS -->
 <script type="text/javascript">
@@ -35,28 +35,28 @@
 <table style='width:100%;'>
     <tr>
         <!-- TODO CSS -->
-        <td style='text-align:left;font-size:130%;font-weight: bold;'>Funds</td>
+        <td style='text-align:left;font-size:130%;font-weight: bold;'>[% l('Funds') %]</td>
         <td style='text-align:right;width:90%;'>
 
-            <button dojoType='dijit.form.Button' onClick='createNewFund()'>New Fund</button>
-            <button dojoType='dijit.form.Button' onClick='lfGrid.deleteSelected()'>Delete Selected</button>
+            <button dojoType='dijit.form.Button' onClick='createNewFund()'>[% l('New Fund') %]</button>
+            <button dojoType='dijit.form.Button' onClick='lfGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
 
             <div dojoType="dijit.form.DropDownButton">
-                <span>Fund Propagation &amp; Rollover</span>
+                <span>[% l('Fund Propagation &amp; Rollover') %]</span>
                 <div dojoType="dijit.TooltipDialog" execute="performRollover(arguments[0]);">
                     <table class='dijitTooltipTable' id='oils-acq-rollover-tooltip-table'>
                         <tr>
                             <td colspan='2'>
                                 <div style='width:400px;'>
-                                Propagation creates new funds for the subsequent fiscal year based on the
+                                [% |l %]Propagation creates new funds for the subsequent fiscal year based on the
                                 funds for the selected fiscal year.  Only funds with the propagate setting
                                 enabled will be affected.  No money or encumbrances are altered
-                                during this process.
+                                during this process.[% END %]
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <td><label for="rollover">Perform Fiscal Year Close-out Operation: </label></td>
+                            <td><label for="rollover">[% l('Perform Fiscal Year Close-out Operation: ') %]</label></td>
                             <td>
                                 <input dojoType="dijit.form.CheckBox" name="rollover"> </input>
                             </td>
@@ -64,16 +64,16 @@
                         <tr>
                             <td colspan='2'>
                                 <div style='width:400px;'>
-                                The year end close out operation moves encumbrances from the selected fiscal
+                                [% |l %]The year end close out operation moves encumbrances from the selected fiscal
                                 year to the analogous funds in the subsequent fiscal year and it deactivates
                                 funds for the selected fiscal year.  Additionally, for all funds that have
                                 the "Rollover" setting enabled, this process will move all unspent money to
-                                the analogous fund in the subsequent fiscal year.
+                                the analogous fund in the subsequent fiscal year.[% END %]
                                 </div>
                             </td>
                         </tr>
                         <tr class="encumb_only hidden">
-                            <td><label for="encumb_only">Limit Fiscal Year Close-out Operation to Encumbrances: </label></td>
+                            <td><label for="encumb_only">[% l('Limit Fiscal Year Close-out Operation to Encumbrances: ') %]</label></td>
                             <td>
                                 <input dojoType="dijit.form.CheckBox" name="encumb_only"> </input>
                             </td>
@@ -81,22 +81,22 @@
                         <tr class="encumb_only hidden">
                             <td colspan='2'>
                                 <div style='width:400px;'>
-                                This modifies the above described Close-out Operation, causing funds to be
+                                [% |l %]This modifies the above described Close-out Operation, causing funds to be
                                 transfered into the void (that is, entirely removed) instead of being transfered
-                                to the analogous funds in the subsequent fiscal year.
+                                to the analogous funds in the subsequent fiscal year.[% END %]
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <td>Context Org Unit:</td>
+                            <td>[% l('Context Org Unit:') %]</td>
                             <td><span id='oils-acq-rollover-ctxt-org'></span></td>
                         </tr>
                         <tr>
-                            <td>Include Funds for Descendant Org Units:</td>
+                            <td>[% l('Include Funds for Descendant Org Units:') %]</td>
                             <td><input dojoType=dijit.form.CheckBox name='child_orgs'/></td>
                         </tr>
                         <tr>
-                            <td><label for="dry_run">Dry Run: </label></td>
+                            <td><label for="dry_run">[% l('Dry Run: ') %]</label></td>
                             <td>
                                 <input dojoType="dijit.form.CheckBox" name="dry_run" checked='checked'> </input>
                             </td>
@@ -104,15 +104,15 @@
                         <tr>
                             <td colspan='2'>
                                 <div style='width:400px;'>
-                                When Dry Run is selected, the system will generate a summary of
+                                [% |l %]When Dry Run is selected, the system will generate a summary of
                                 the changes that would occur during the selected operation(s).
-                                No data will be changed.
+                                No data will be changed.[% END %]
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td colspan='2' align='center'>
-                                <button dojoType=dijit.form.Button type="submit">Process</button>
+                                <button dojoType=dijit.form.Button type="submit">[% l('Process') %]</button>
                             </td>
                         </tr>
                     </table>
@@ -123,7 +123,7 @@
 </table>
 
 <div class="oils-acq-basic-roomy">
-    <span>Context Org Unit</span>
+    <span>[% l('Context Org Unit') %]</span>
     <select
         dojoType="openils.widget.OrgUnitFilteringSelect"
         jsId="contextOrgSelector"
@@ -131,14 +131,14 @@
         labelAttr="shortname">
     </select>
 
-    <span>Year</span>
+    <span>[% l('Year') %]</span>
     <select dojoType="dijit.form.FilteringSelect"
         jsId="fundFilterYearSelect"
         labelAttr="year"
         searchAttr="year">
     </select>
 
-    <div dojoType='dijit.form.Button' jsId='refreshButton'>Refresh</div>
+    <div dojoType='dijit.form.Button' jsId='refreshButton'>[% l('Refresh') %]</div>
 </div>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
@@ -146,7 +146,7 @@
         <div id='acq-fund-list-rollover-summary' class='hidden'>
             <div id='acq-fund-list-rollover-summary-header'> </div>
             <ul>
-                <li id='acq-fund-list-rollover-summary-dry-run'>These changes have <span class='oils-notify-text'>not</span> been committed yet.</li>
+                <li id='acq-fund-list-rollover-summary-dry-run'>[% l('These changes have <span class="oils-notify-text">not</span> been committed yet.') %]</li>
                 <li id='acq-fund-list-rollover-summary-funds'></li>
                 <li id='acq-fund-list-rollover-summary-rollover-amount'></li>
             </ul>

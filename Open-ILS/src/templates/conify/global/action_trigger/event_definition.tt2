@@ -1,28 +1,28 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Event Definitions' %]
+[% ctx.page_title = l('Event Definitions') %]
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/action_trigger/event_definition.js'></script>
 <script type="text/javascript">openils.Util.addOnLoad(loadEventDef)</script>
 
 <div class='hidden'>
     <select dojoType='dijit.form.ComboBox' jsId='eventDefGranularity'>
-        <option value='hourly'>Hourly</option>
-        <option value='daily'>Daily</option>
-        <option value='weekly'>Weekly</option>
-        <option value='monthly'>Monthly</option>
-        <option value='yearly'>Yearly</option>
+        <option value='hourly'>[% l('Hourly') %]</option>
+        <option value='daily'>[% l('Daily') %]</option>
+        <option value='weekly'>[% l('Weekly') %]</option>
+        <option value='monthly'>[% l('Monthly') %]</option>
+        <option value='yearly'>[% l('Yearly') %]</option>
     </select>
 </div>
 
 
 <div dojoType="dijit.layout.TabContainer" style='height:100%;' jsId='eventDefTabs'>
 
-    <div dojoType="dijit.layout.ContentPane" title='Event Definitions' id='tab-atevdef'>
+    <div dojoType="dijit.layout.ContentPane" title='[% l('Event Definitions') %]' id='tab-atevdef'>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
-            <div>Trigger Event Definitions</div>
+            <div>[% l('Trigger Event Definitions') %]</div>
             <div>
-                <button dojoType='dijit.form.Button' onClick='edGrid.showCreatePane()'>New</button>
-                <button dojoType='dijit.form.Button' onClick='edGrid.showClonePane(cloneEventEnv)'>Clone Selected</button>
-                <button dojoType='dijit.form.Button' onClick='edGrid.deleteSelected()'>Delete Selected</button>
+                <button dojoType='dijit.form.Button' onClick='edGrid.showCreatePane()'>[% l('New') %]</button>
+                <button dojoType='dijit.form.Button' onClick='edGrid.showClonePane(cloneEventEnv)'>[% l('Clone Selected') %]</button>
+                <button dojoType='dijit.form.Button' onClick='edGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
             </div>
         </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:460px'>
@@ -43,12 +43,12 @@
         </div>
     </div>
 
-    <div dojoType="dijit.layout.ContentPane" title='Hooks' id='tab-ath' style='height:100%;'>
+    <div dojoType="dijit.layout.ContentPane" title='[% l('Hooks') %]' id='tab-ath' style='height:100%;'>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-            <div>Trigger Hooks</div>
+            <div>[% l('Trigger Hooks') %]</div>
             <div>
-                <button dojoType='dijit.form.Button' onClick='thGrid.showCreateDialog()'>New</button>
-                <button dojoType='dijit.form.Button' onClick='thGrid.deleteSelected()'>Delete Selected</button>
+                <button dojoType='dijit.form.Button' onClick='thGrid.showCreateDialog()'>[% l('New') %]</button>
+                <button dojoType='dijit.form.Button' onClick='thGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
             </div>
         </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px'>
@@ -65,12 +65,12 @@
         </div>
     </div>
 
-    <div dojoType="dijit.layout.ContentPane" title='Reactors' id='tab-atreact'>
+    <div dojoType="dijit.layout.ContentPane" title='[% l('Reactors') %]' id='tab-atreact'>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-            <div>Trigger Reactors</div>
+            <div>[% l('Trigger Reactors') %]</div>
             <div>
-                <button dojoType='dijit.form.Button' onClick='trGrid.showCreateDialog()'>New</button>
-                <button dojoType='dijit.form.Button' onClick='trGrid.deleteSelected()'>Delete Selected</button>
+                <button dojoType='dijit.form.Button' onClick='trGrid.showCreateDialog()'>[% l('New') %]</button>
+                <button dojoType='dijit.form.Button' onClick='trGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
             </div>
         </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px'>
@@ -90,12 +90,12 @@
         </div>
     </div>
 
-    <div dojoType="dijit.layout.ContentPane" title='Validators' id='tab-atval'>
+    <div dojoType="dijit.layout.ContentPane" title='[% l('Validators') %]' id='tab-atval'>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-            <div>Trigger Validators</div>
+            <div>[% l('Trigger Validators') %]</div>
             <div>
-                <button dojoType='dijit.form.Button' onClick='tvGrid.showCreateDialog()'>New</button>
-                <button dojoType='dijit.form.Button' onClick='tvGrid.deleteSelected()'>Delete Selected</button>
+                <button dojoType='dijit.form.Button' onClick='tvGrid.showCreateDialog()'>[% l('New') %]</button>
+                <button dojoType='dijit.form.Button' onClick='tvGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
             </div>
         </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px'>

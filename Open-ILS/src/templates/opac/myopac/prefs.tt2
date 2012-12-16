@@ -79,7 +79,7 @@
                 <td class='color_4 light_border'>
                     <div style="position:absolute">
                         <div class="hide_me" style="position:relative;left:70px;top:-3px;">
-                            <a href="#"><img alt="Username Help" src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
+                            <a href="#"><img alt="[% l('Username Help') %]" src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
                         </div>
                     </div>[% l("Username") %]
                 </td>

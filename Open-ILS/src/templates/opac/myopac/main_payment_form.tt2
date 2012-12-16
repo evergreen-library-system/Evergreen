@@ -119,12 +119,12 @@
                 </tr>
                 <!-- Technically not needed since card type is derived from the CC number
                 <tr>
-                    <td>Type of Card</td>
+                    <td>[% l('Type of Card') %]</td>
                     <td>
                         <select name="type">
-                            <option value='VISA'>VISA</option>
-                            <option value='MasterCard'>MasterCard</option>
-                            <option value='American Express'>American Express</option>
+                            <option value='VISA'>[% l('VISA') %]</option>
+                            <option value='MasterCard'>[% l('MasterCard') %]</option>
+                            <option value='American Express'>[% l('American Express') %]</option>
                         </select>
                     </td>
                 </tr>

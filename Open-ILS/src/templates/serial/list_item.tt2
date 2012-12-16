@@ -1,14 +1,14 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = "Items" %]
+[% ctx.page_title = l("Items") %]
 [% BLOCK status_values %]
-                <option value="Expected">Expected</option>
-                <option value="Bindery">Bindery</option>
-                <option value="Bound">Bound</option>
-                <option value="Claimed">Claimed</option>
-                <option value="Discarded">Discarded</option>
-                <option value="Not Held">Not Held</option>
-                <option value="Not Published">Not Published</option>
-                <option value="Received">Received</option>
+                <option value="Expected">[% l('Expected') %]</option>
+                <option value="Bindery">[% l('Bindery') %]</option>
+                <option value="Bound">[% l('Bound') %]</option>
+                <option value="Claimed">[% l('Claimed') %]</option>
+                <option value="Discarded">[% l('Discarded') %]</option>
+                <option value="Not Held">[% l('Not Held') %]</option>
+                <option value="Not Published">[% l('Not Published') %]</option>
+                <option value="Received">[% l('Received') %]</option>
 [% END %]
 <style type="text/css">
     .create-dialog-table td { padding: 0.35em 0; }
@@ -21,20 +21,20 @@
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane"
         layoutAlign="top" class="oils-header-panel">
-        <div>Items</div>
+        <div>[% l('Items') %]</div>
         <div>
             <button dojoType="dijit.form.Button"
-                onClick="create_dialog.show()">New Items</button>
+                onClick="create_dialog.show()">[% l('New Items') %]</button>
             <button dojoType="dijit.form.Button"
-                onClick="sitem_grid.refresh()">Refresh Grid</button>
+                onClick="sitem_grid.refresh()">[% l('Refresh Grid') %]</button>
             <button dojoType="dijit.form.Button"
                 onClick="sitem_grid.deleteSelected()">
-                Delete Selected
+                [% l('Delete Selected') %]
             </button>
         </div>
     </div>
     <div>
-        Showing items attached to the issuance,
+        [% l('Showing items attached to the issuance,') %]
         <em><a href="javascript:void(0);" id="siss_label_here"></a></em>.
     </div>
     <table jsId="sitem_grid"
@@ -65,23 +65,23 @@
     </table>
     <div class="hidden">
         <div jsId="create_dialog" dojoType="dijit.Dialog"
-            title="Create New Items" execute="create_new_items(arguments[0]);">
+            title="[% l('Create New Items') %]" execute="create_new_items(arguments[0]);">
             <table class="create-dialog-table">
                 <tr>
-                    <th>How many items?</th>
+                    <th>[% l('How many items?') %]</th>
                     <td>
                         <input dojoType="dijit.form.NumberSpinner" value="1"
                             name="count" constraints="{min: 1, max: 100}" />
                     </td>
                 </tr>
                 <tr>
-                    <th>Stream</th>
+                    <th>[% l('Stream') %]</th>
                     <td>
                         <input id="stream_selector" />
                     </td>
                 </tr>
                 <tr>
-                    <th>Date Expected</th>
+                    <th>[% l('Date Expected') %]</th>
                     <td>
                         <input dojoType="dijit.form.DateTextBox"
                             id="create-date-expected" name="date_expected"
@@ -89,14 +89,14 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>Date Received</th>
+                    <th>[% l('Date Received') %]</th>
                     <td>
                         <input dojoType="dijit.form.DateTextBox"
                             name="date_received" required="false" />
                     </td>
                 </tr>
                 <tr>
-                    <th>Status</th>
+                    <th>[% l('Status') %]</th>
                     <td>
                         <select dojoType="dijit.form.FilteringSelect"
                             name="status">
@@ -107,7 +107,7 @@
                 <tr>
                     <td colspan="2" align="center">
                         <span dojoType="dijit.form.Button" type="submit">
-                            Create
+                            [% l('Create') %]
                         </span>
                     </td>
                 </tr>

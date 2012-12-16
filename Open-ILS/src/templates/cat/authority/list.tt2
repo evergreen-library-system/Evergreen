@@ -1,4 +1,4 @@
-[% ctx.page_title = 'Authority record list' %]
+[% ctx.page_title = l('Authority record list') %]
 [% WRAPPER base.tt2 %]
 
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/cat/authority/list.js'> </script>
@@ -12,11 +12,11 @@
 </style>
 <div dojoType="dijit.form.Form" id="myForm" jsId="myForm" encType="multipart/form-data" action="" method="">
     <span style="white-space: nowrap;">
-        <label for="authTerm">Search term: </label>
+        <label for="authTerm">[% l('Search term: ') %]</label>
         <input type="text" name="authTerm" value="" dojoType="dijit.form.TextBox" trim="true" id="authTerm" propercase="false"/>
     </span>
     <span style="white-space: nowrap;">
-        <label for="authAxis">Authority type: </label>
+        <label for="authAxis">[% l('Authority type: ') %]</label>
         <input
             id="authAxis"
             name="authAxis"
@@ -32,19 +32,19 @@
         />
     </span>
 <!-- Not currently useful - see authOUListInit() above -->
-<!--    <label for="authOU">Library: </label><select dojoType="openils.widget.OrgUnitFilteringSelect" id="authOU" name="authOU" searchAttr="shortname" labelAttr="shortname"></select> -->
+<!--    <label for="authOU">[% l('Library: ') %]</label><select dojoType="openils.widget.OrgUnitFilteringSelect" id="authOU" name="authOU" searchAttr="shortname" labelAttr="shortname"></select> -->
 
     <span style="white-space: nowrap;">
-        <span dojoType="dijit.form.Button" type="button" value="Previous">Previous
+        <span dojoType="dijit.form.Button" type="button" value="Previous">[% l('Previous') %]
             <script type="dojo/method" event="onClick" args="evt">
                 displayRecords({"page":"prev"});
             </script>
         </span>
 
-        <label for="authPage">Page: </label>
+        <label for="authPage">[% l('Page: ') %]</label>
         <input dojoType="dijit.form.NumberSpinner" value="0" constraints="{min:-100,max:100,places:0}" smallDelta="1" id="authPage" name="authPage" style="width:5em;" />
 
-        <span dojoType="dijit.form.Button" type="button" value="Next">Next
+        <span dojoType="dijit.form.Button" type="button" value="Next">[% l('Next') %]
             <script type="dojo/method" event="onClick" args="evt">
                 displayRecords({"page":"next"});
             </script>
@@ -52,7 +52,7 @@
     </span>
 
     <span style="white-space: nowrap;">
-        <span dojoType="dijit.form.Button" type="button" value="Submit">Submit
+        <span dojoType="dijit.form.Button" type="button" value="Submit">[% l('Submit') %]
             <script type="dojo/method" event="onClick" args="evt">
                 displayRecords();
             </script>
@@ -65,12 +65,12 @@
 <div id='mergebox-div' class='hidden' style='float:right; border: 4px solid; width: 25%;'>
     <div style="border-bottom: 4px solid; text-align: center;">
         <div dojoType="dijit.form.Form" encType="multipart/form-data" action="" method="">
-            <div dojoType="dijit.form.Button" type="button" value="Merge">Merge
+            <div dojoType="dijit.form.Button" type="button" value="Merge">[% l('Merge') %]
                 <script type="dojo/method" event="onClick" args="evt">
                     mergeRecords();
                 </script>
             </div>
-            <div dojoType="dijit.form.Button" type="button" value="Clear">Clear
+            <div dojoType="dijit.form.Button" type="button" value="Clear">[% l('Clear') %]
                 <script type="dojo/method" event="onClick" args="evt">
                     clearMergeRecords();
                 </script>

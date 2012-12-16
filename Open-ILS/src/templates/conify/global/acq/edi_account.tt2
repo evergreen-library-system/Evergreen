@@ -1,5 +1,5 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'EDI Accounts' %]
+[% ctx.page_title = l('EDI Accounts') %]
 <style type="text/css">
     #pListGrid { min-height: 60px; height: 100%; padding-bottom: 5px; }
     .footer_notes { font-size: smaller; }
@@ -8,16 +8,16 @@
 <div id='main-list-div'>
     <div dojoType="dijit.layout.ContentPane" layoutAlign='top'>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-            <div>EDI Accounts</div>
+            <div>[% l('EDI Accounts') %]</div>
             <div>
-                <button dojoType='dijit.form.Button' onClick='pListGrid.showCreateDialog()'>New Account</button>
-                <button dojoType='dijit.form.Button' onClick='pListGrid.deleteSelected()'>Delete Selected</button> 
+                <button dojoType='dijit.form.Button' onClick='pListGrid.showCreateDialog()'>[% l('New Account') %]</button>
+                <button dojoType='dijit.form.Button' onClick='pListGrid.deleteSelected()'>[% l('Delete Selected') %]</button> 
             </div>
         </div>
     </div>
     <!--
     <div>
-        <span>Context Org Unit</span>
+        <span>[% l('Context Org Unit') %]</span>
         <select dojoType="openils.widget.OrgUnitFilteringSelect" jsId='btContextOrgSelect'
             searchAttr='shortname' labelAttr='shortname'> </select>
     </div>
@@ -41,12 +41,14 @@
         </table>
     </div>
     <div class="footer_notes">
+        [% |l %]
         <b>Host</b> is the full FTP/SSH hostname, including the protocol, e.g. ftp://ftp1.somevendor.com<br />  
         <b>Username</b>, <b>Password</b> and <b>Account</b> are (s)FTP/SSH parameters.<br />
         <b>Account</b> is unlikely to be used by modern systems and should typically be empty.<br />
         <b>Vendor Account Number</b> (VAN) is vendor-assigned, only needed if different than the org_unit SAN.<br />
         <b>Vendor Assigned Code</b> (VAC) is essentially a sub-account designation, e.g. '0001'.  It can be used with or without VAN.<br />
         The location of codes in the EDI message itself may vary according to vendor-specific semantics.
+	[% END %]
     </div>
 </div>
 

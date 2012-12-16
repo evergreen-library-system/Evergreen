@@ -3,9 +3,9 @@
         <thead>
             <tr>
                 <td id='oils-self-hold-pic-cell'></td>
-                <td>Title</td>
-                <td>Author</td>
-                <td>Status</td>
+                <td>[% l('Title') %]</td>
+                <td>[% l('Author') %]</td>
+                <td>[% l('Status') %]</td>
             </tr>
         </thead>
         <tbody id='oils-selfck-hold-tbody'>

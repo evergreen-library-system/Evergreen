@@ -1,5 +1,5 @@
 [% WRAPPER 'base.tt2' %]
-[% ctx.page_title = 'MARC Import/Export' %]
+[% ctx.page_title = l('MARC Import/Export') %]
 
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/vandelay/vandelay.js'> </script>
 <link rel='stylesheet' type='text/css' href='[% ctx.media_prefix %]/css/skin/[% ctx.skin %]/vandelay.css'/>

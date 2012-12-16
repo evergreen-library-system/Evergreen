@@ -1,14 +1,14 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Resources' %]
+[% ctx.page_title = l('Resources') %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
-    <div>Resources</div>
+    <div>[% l('Resources') %]</div>
     <div>
-        <button dojoType='dijit.form.Button' onClick='brsrcGrid.showCreateDialog()'>New Resource</button>
-        <button dojoType='dijit.form.Button' onClick='brsrcGrid.deleteSelected()'>Delete Selected</button>
+        <button dojoType='dijit.form.Button' onClick='brsrcGrid.showCreateDialog()'>[% l('New Resource') %]</button>
+        <button dojoType='dijit.form.Button' onClick='brsrcGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
     </div>
 </div>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-    <span>Context Org Unit</span>
+    <span>[% l('Context Org Unit') %]</span>
     <select dojoType="openils.widget.OrgUnitFilteringSelect"
             jsId='contextOrgSelector'
             searchAttr='shortname'

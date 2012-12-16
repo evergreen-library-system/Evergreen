@@ -1,8 +1,8 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Global Flags' %]
+[% ctx.page_title = l('Global Flags') %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-        <div>Global Flags</div>
+        <div>[% l('Global Flags') %]</div>
         <div></div>
     </div>
     <div>

@@ -1,11 +1,11 @@
-[% ctx.page_title = 'Circulation Limit Set' %]
+[% ctx.page_title = l('Circulation Limit Set') %]
 [% WRAPPER base.tt2 %]
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/circ_limit_set.js'> </script>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-    <div>Circulation Limit Set</div>
+    <div>[% l('Circulation Limit Set') %]</div>
     <div>
-        <button dojoType='dijit.form.Button' onClick='clsGrid.showCreatePane()'>New</button>
-        <button dojoType='dijit.form.Button' onClick='clsGrid.deleteSelected()'>Delete Selected</button>
+        <button dojoType='dijit.form.Button' onClick='clsGrid.showCreatePane()'>[% l('New') %]</button>
+        <button dojoType='dijit.form.Button' onClick='clsGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
     </div>
 </div>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
@@ -25,24 +25,24 @@
 
 <div class='hidden'>
     <div id='linked-editor' style='border:1px solid #aaa'>
-        <h3>Linked Circ Modifiers</h3>
+        <h3>[% l('Linked Circ Modifiers') %]</h3>
         <table class='oils-generic-table'>
             <tbody>
                 <tr>
-                    <th>Name</th>
-                    <th>Remove</th>
+                    <th>[% l('Name') %]</th>
+                    <th>[% l('Remove') %]</th>
                 </tr>
             </tbody>
             <tbody name='circ-mod-entry-tbody'>
                 <tr name='circ-mod-entry-row'>
                     <td name='circ-mod'></td>
-                    <td><a name='remove-circ-mod' href='javascript:void(0);'>Remove</a></td>
+                    <td><a name='remove-circ-mod' href='javascript:void(0);'>[% l('Remove') %]</a></td>
                 </tr>
             </tbody>
             <tbody name='circ-mod-entry-new'>
                 <tr>
                     <td><div name='circ-mod-selector'></div></td>
-                    <td><a href='javascript:void(0);' name='add-circ-mod'>Add</a></td>
+                    <td><a href='javascript:void(0);' name='add-circ-mod'>[% l('Add') %]</a></td>
                 </tr>
             </tbody>
         </table>
@@ -67,26 +67,26 @@
                 </tr>
             </tbody>
         </table>
-        <h3>Linked Limit Groups</h3>
+        <h3>[% l('Linked Limit Groups') %]</h3>
         <table class='oils-generic-table'>
             <tbody>
                 <tr>
-                    <th>Name</th>
-                    <th>Check Only?</th>
-                    <th>Remove</th>
+                    <th>[% l('Name') %]</th>
+                    <th>[% l('Check Only?') %]</th>
+                    <th>[% l('Remove') %]</th>
                 </tr>
             </tbody>
             <tbody name='limit-group-entry-tbody'>
                 <tr name='limit-group-entry-row'>
                     <td name='limit-group'></td>
                     <td><input type="checkbox" name="limit-group-check-only"/></td>
-                    <td><a name='remove-limit-group' href='javascript:void(0);'>Remove</a></td>
+                    <td><a name='remove-limit-group' href='javascript:void(0);'>[% l('Remove') %]</a></td>
                 </tr>
             </tbody>
             <tbody name='limit-group-entry-new'>
                 <tr>
                     <td><div name='limit-group-selector'></div></td>
-                    <td><a href='javascript:void(0);' name='add-limit-group'>Add</a></td>
+                    <td><a href='javascript:void(0);' name='add-limit-group'>[% l('Add') %]</a></td>
                     <td></td>
                 </tr>
             </tbody>

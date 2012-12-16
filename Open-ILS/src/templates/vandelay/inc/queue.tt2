@@ -1,17 +1,17 @@
 <div dojoType="dijit.layout.ContentPane" layoutAlign='client' style='margin-top:10px;'>
     <fieldset id='vl-queue-filter-fieldset'>
-        <legend>Queue <span style='font-style:italic;' id='vl-queue-summary-name'></span></legend>
+        <legend>[% l('Queue ') %]<span style='font-style:italic;' id='vl-queue-summary-name'></span></legend>
         <table width='100%'><tr>
             <td> <!-- big left td -->
             <table>
                 <tr>
                     <td valign='top'>
                         <table class='queue-nav-table'>
-                            <thead><tr><th colspan='2' class='queue-nav-table-label'>Queue Actions</th></tr></thead>
+                            <thead><tr><th colspan='2' class='queue-nav-table-label'>[% l('Queue Actions') %]</th></tr></thead>
                             <tbody>
                                 <tr><td><a href='javascript:;' onclick='vlHandleQueueItemsAction("import")'>[% l('Import Selected Records') %]</a></td></tr>
                                 <tr><td><a href='javascript:;' onclick='vlHandleQueueItemsAction("import_all")'>[% l('Import All  Records') %]</a></td></tr>
-                                <tr><td><a href='javascript:;' onclick='vlLoadErrorUIAll();'>View Import Items</a></td></tr>
+                                <tr><td><a href='javascript:;' onclick='vlLoadErrorUIAll();'>[% l('View Import Items') %]</a></td></tr>
                                 <tr><td><a href='javascript:;' onclick='
                                     if(confirm("[% l('Are you sure you want to delete this queue?') %]")) {
                                         vlDeleteQueue(currentType, currentQueueId, 
@@ -23,21 +23,21 @@
 
                     <td valign='top'>
                         <table  id='vl-queue-summary-table' class='queue-nav-table'>
-                            <thead><tr><th colspan='2' class='queue-nav-table-label'>Queue Summary</th></tr></thead>
+                            <thead><tr><th colspan='2' class='queue-nav-table-label'>[% l('Queue Summary') %]</th></tr></thead>
                             <tbody>
                                 <tr><td>[% l('Records in Queue:') %]</td><td> <span style='font-weight:bold;' id='vl-queue-summary-total-count'></span></td></tr>
                                 <tr><td>[% l('Records Imported:') %]</td><td> <span style='font-weight:bold;' id='vl-queue-summary-import-count'></span></td></tr>
-                                <tr><td>Record Import Failures</td><td> <span style='font-weight:bold;' id='vl-queue-summary-rec-error-count'></span></td></tr>
-                                <tr><td>Items in Queue</td><td> <span style='font-weight:bold;' id='vl-queue-summary-import-item-count'></span></td></tr>
-                                <tr><td>Items Imported</td><td> <span style='font-weight:bold;' id='vl-queue-summary-import-item-imported-count'></span></td></tr>
-                                <tr><td>Item Import Failures</td><td> <span style='font-weight:bold;' id='vl-queue-summary-item-error-count'></span></td></tr>
+                                <tr><td>[% l('Record Import Failures') %]</td><td> <span style='font-weight:bold;' id='vl-queue-summary-rec-error-count'></span></td></tr>
+                                <tr><td>[% l('Items in Queue') %]</td><td> <span style='font-weight:bold;' id='vl-queue-summary-import-item-count'></span></td></tr>
+                                <tr><td>[% l('Items Imported') %]</td><td> <span style='font-weight:bold;' id='vl-queue-summary-import-item-imported-count'></span></td></tr>
+                                <tr><td>[% l('Item Import Failures') %]</td><td> <span style='font-weight:bold;' id='vl-queue-summary-item-error-count'></span></td></tr>
                             </tbody>
                         </table>
                     </td>
 
                     <td valign='top'> <!-- filters -->
                         <table id='vl-queue-filter-table' class='queue-nav-table'>
-                            <thead><tr><th colspan='2' class='queue-nav-table-label'>Queue Filters</th></tr></thead>
+                            <thead><tr><th colspan='2' class='queue-nav-table-label'>[% l('Queue Filters') %]</th></tr></thead>
                             <tbody>
                                 <tr>
                                     <td>[% l('Limit to Records with Matches') %]</td>
@@ -73,10 +73,10 @@
                     <tr><td valign='bottom' align='right'>
                         <select id='vl-queue-export-options' style='margin-right: 10px;'>
                             <!-- TODO I18N -->
-                            <option value=''>Export Queue As...</option>
-                            <option value='print'>Print</option>
-                            <option value='csv'>CSV</option>
-                            <option value='email'>Email</option>
+                            <option value=''>[% l('Export Queue As...') %]</option>
+                            <option value='print'>[% l('Print') %]</option>
+                            <option value='csv'>[% l('CSV') %]</option>
+                            <option value='email'>[% l('Email') %]</option>
                         </select>
                         <span style='padding-right:5px;'>[% l('Records Per Page') %]</span>
                         <span class='queue-pager-span'>
@@ -139,7 +139,7 @@
                     get='vlGetViewErrors'
                     formatter='vlFormatViewErrors'
                     styles='text-align: center;'
-                    nonSelectable='true'>Import Failures</th>
+                    nonSelectable='true'>[% l('Import Failures') %]</th>
                 <th
                     field='import_time'
                     styles='text-align: center;'
@@ -180,7 +180,7 @@
                     get='vlGetViewErrors'
                     formatter='vlFormatViewErrors'
                     styles='text-align: center;'
-                    nonSelectable='true'>Import Failures</th>
+                    nonSelectable='true'>[% l('Import Failures') %]</th>
                 <th
                     field='import_time'
                     styles='text-align: center;'
@@ -191,7 +191,7 @@
     <div></div>
 </div>
 
-<div jsId='queueItemsImportDialog' dojoType="dijit.Dialog" title="Import Items">
+<div jsId='queueItemsImportDialog' dojoType="dijit.Dialog" title="[% l('Import Items') %]">
     <div dojoType="dijit.layout.ContentPane">
         <table class='form_table'>
             <tbody>
@@ -239,10 +239,10 @@
                 </tr>
                 <tr>
                     <td>
-                        <button dojoType='dijit.form.Button' jsId='queueItemsImportCancelButton'>Cancel</button>
+                        <button dojoType='dijit.form.Button' jsId='queueItemsImportCancelButton'>[% l('Cancel') %]</button>
                     </td>
                     <td>
-                        <button dojoType='dijit.form.Button' jsId='queueItemsImportGoButton'>Import</button>
+                        <button dojoType='dijit.form.Button' jsId='queueItemsImportGoButton'>[% l('Import') %]</button>
                     </td>
                 </tr>
             </tbody>

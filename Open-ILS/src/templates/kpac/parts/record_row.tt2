@@ -21,9 +21,9 @@
         [% IF show_actions %]
         <div class="item_detail_actions">
             <div class="button"><a href="[% mkurl(ctx.kpac_root _ '/record/' _ rec_id) %]"><img 
-                src="[% ctx.media_prefix %]/images/kpac/more_info_btn.png" alt="more info" /></a></div>
+                src="[% ctx.media_prefix %]/images/kpac/more_info_btn.png" alt="[% l('more info') %]" /></a></div>
             <div class="button"><a href="[% mkurl(ctx.kpac_root _ '/getit/' _ rec_id) %]"><img 
-                src="[% ctx.media_prefix %]/images/kpac/get_it_btn_sm.png" alt="get it" /></a></div>
+                src="[% ctx.media_prefix %]/images/kpac/get_it_btn_sm.png" alt="[% l('get it') %]" /></a></div>
             <div class="clear">&nbsp;</div>
         </div>
         [% END %]

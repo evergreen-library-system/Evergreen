@@ -1,16 +1,16 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Group Penalty Thresholds' %]
+[% ctx.page_title = l('Group Penalty Thresholds') %]
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
-    <div>Penalty Threshold</div>
+    <div>[% l('Penalty Threshold') %]</div>
     <div>
-        <button dojoType='dijit.form.Button' onClick='gptGrid.showCreateDialog()'>New Penalty Threshold</button>
-        <button dojoType='dijit.form.Button' onClick='gptGrid.deleteSelected()'>Delete Selected</button>
+        <button dojoType='dijit.form.Button' onClick='gptGrid.showCreateDialog()'>[% l('New Penalty Threshold') %]</button>
+        <button dojoType='dijit.form.Button' onClick='gptGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
     </div>
 </div>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-    <span>Context Org Unit</span>
+    <span>[% l('Context Org Unit') %]</span>
     <select dojoType="openils.widget.OrgUnitFilteringSelect" 
             jsId='contextOrgSelector' 
             searchAttr='shortname' 

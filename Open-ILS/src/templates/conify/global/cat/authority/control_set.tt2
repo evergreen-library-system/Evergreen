@@ -1,11 +1,11 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = "Configure Authority Control Sets" %]
+[% ctx.page_title = l("Configure Authority Control Sets") %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
-        <div>Control Sets</div>
+        <div>[% l('Control Sets') %]</div>
         <div>
-            <button dojoType="dijit.form.Button" onClick="acs_grid.showCreateDialog()">New Control Set</button>
-            <button dojoType="dijit.form.Button" onClick="acs_grid.deleteSelected()">Delete Selected</button>
+            <button dojoType="dijit.form.Button" onClick="acs_grid.showCreateDialog()">[% l('New Control Set') %]</button>
+            <button dojoType="dijit.form.Button" onClick="acs_grid.deleteSelected()">[% l('Delete Selected') %]</button>
         </div>
     </div>
     <div>

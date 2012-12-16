@@ -1,5 +1,5 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Z39.50 Servers' %]
+[% ctx.page_title = l('Z39.50 Servers') %]
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/z3950_source.js'> </script>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
@@ -53,10 +53,10 @@
 [% ELSE %]
 
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-        <div>Z39.50 Servers</div>
+        <div>[% l('Z39.50 Servers') %]</div>
         <div>
-            <button dojoType='dijit.form.Button' onClick='zsGrid.showCreateDialog()'>New Z39.50 Server</button>
-            <button dojoType='dijit.form.Button' onClick='zsGrid.deleteSelected()'>Delete Selected</button>
+            <button dojoType='dijit.form.Button' onClick='zsGrid.showCreateDialog()'>[% l('New Z39.50 Server') %]</button>
+            <button dojoType='dijit.form.Button' onClick='zsGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
         </div>
     </div>
 

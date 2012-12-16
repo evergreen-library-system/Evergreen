@@ -1,7 +1,7 @@
 [% WRAPPER "base.tt2" %]
-[% ctx.page_title = "Related Lineitems" %]
+[% ctx.page_title = l("Related Lineitems") %]
 <script type="text/javascript">var targetId = "[% ctx.page_args.0 %]";</script>
-<h1>Related Lineitems</h1>
+<h1>[% l('Related Lineitems') %]</h1>
 <div id="acq-related-mini">
     <script type="text/javascript">
         function iterateSubfields(item) {
@@ -38,13 +38,13 @@
 
     <div id="acq-related-li-create-holder">
         <button jsId="addToPlButton" dojoType="dijit.form.Button">
-            Add to Selection List
+            [% l('Add to Selection List') %]
         </button>
         <button jsId="addToPoButton" dojoType="dijit.form.Button">
-            Add to Purchase Order
+            [% l('Add to Purchase Order') %]
         </button>
         <button jsId="createPoButton" dojoType="dijit.form.Button">
-            Create Purchase Order
+            [% l('Create Purchase Order') %]
         </button>
     </div>
 
@@ -52,12 +52,12 @@
         <div dojoType="dijit.Dialog" jsId='addToPoDialog'>
             <table class='dijitTooltipTable'>
                 <tr>
-                    <td><label>Enter the PO #: </label></td>
+                    <td><label>[% l('Enter the PO #: ') %]</label></td>
                     <td><input jsId='addToPoInput' dojoType="dijit.form.TextBox" /></td>
                 </tr>
                 <tr>
                     <td colspan='2' align='center'>
-                        <button dojoType='dijit.form.Button' jsId='addToPoSave' type="submit">Save</button>
+                        <button dojoType='dijit.form.Button' jsId='addToPoSave' type="submit">[% l('Save') %]</button>
                     </td>
                 </tr>
             </table>

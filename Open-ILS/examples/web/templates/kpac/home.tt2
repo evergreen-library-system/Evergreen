@@ -53,7 +53,7 @@
                 <td width="3"><div class="clear">&nbsp;</div></td>
                 <td valign="top" class="main_inside_cell" valign="top">
                     <div class="category_wrapper">
-                        <h3 class="c_header_image2"><span class="c_header_hp_or">or</span> click on an image to get started:</h3>
+                        <h3 class="c_header_image2">[% l('<span class="c_header_hp_or">or</span> click on an image to get started:') %]</h3>
                         [% render_kpac_grid(ctx.kpac_layout.page) %]
                     </div>
                 </td>

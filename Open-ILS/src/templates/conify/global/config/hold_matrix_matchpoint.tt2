@@ -1,8 +1,8 @@
-[% ctx.page_title = 'Hold Policy Configuration' %]
+[% ctx.page_title = l('Hold Policy Configuration') %]
 [% WRAPPER base.tt2 %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-    <div>Hold Policy Configuration</div>
-    <div><button dojoType='dijit.form.Button' onClick='hmGrid.showCreatePane()'>New</button></div>
+    <div>[% l('Hold Policy Configuration') %]</div>
+    <div><button dojoType='dijit.form.Button' onClick='hmGrid.showCreatePane()'>[% l('New') %]</button></div>
 </div>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <table  jsId="hmGrid" 

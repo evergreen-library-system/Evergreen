@@ -1,9 +1,9 @@
 [% WRAPPER base.tt2 %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
-    <div>Currency Type</div>
+    <div>[% l('Currency Type') %]</div>
     <div>
-        <button dojoType='dijit.form.Button' onClick='ctGrid.showCreateDialog()'>New Currency Type</button>
-        <button dojoType='dijit.form.Button' onClick='ctGrid.deleteSelected()'>Delete Selected</button>
+        <button dojoType='dijit.form.Button' onClick='ctGrid.showCreateDialog()'>[% l('New Currency Type') %]</button>
+        <button dojoType='dijit.form.Button' onClick='ctGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
     </div>
 </div>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">

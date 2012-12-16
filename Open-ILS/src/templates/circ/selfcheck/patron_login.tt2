@@ -1,4 +1,4 @@
-<div>Please login using your library barcode</div>
+<div>[% l('Please login using your library barcode') %]</div>
 <div class='oils-selfck-login-box'>
     <input jsId='selfckBarcodeBox' dojoType='dijit.form.TextBox'></input>
 </div>

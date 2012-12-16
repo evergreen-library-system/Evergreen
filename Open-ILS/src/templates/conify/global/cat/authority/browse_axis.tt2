@@ -1,11 +1,11 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = "Configure Authority Browse Axes" %]
+[% ctx.page_title = l("Configure Authority Browse Axes") %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
-        <div>Browse Axes</div>
+        <div>[% l('Browse Axes') %]</div>
         <div>
-            <button dojoType="dijit.form.Button" onClick="aba_grid.showCreateDialog()">New Browse Axis</button>
-            <button dojoType="dijit.form.Button" onClick="aba_grid.deleteSelected()">Delete Selected</button>
+            <button dojoType="dijit.form.Button" onClick="aba_grid.showCreateDialog()">[% l('New Browse Axis') %]</button>
+            <button dojoType="dijit.form.Button" onClick="aba_grid.deleteSelected()">[% l('Delete Selected') %]</button>
         </div>
     </div>
     <div>

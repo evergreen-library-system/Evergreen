@@ -2,13 +2,13 @@
     <table id="scap_editor" class="hidden">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Type</th>
-                <th>Pattern Code</th>
-                <th>Create Date</th>
-                <th>Active</th>
-                <th>Remove</th>
-                <th>Save Changes</th>
+                <th>[% l('ID') %]</th>
+                <th>[% l('Type') %]</th>
+                <th>[% l('Pattern Code') %]</th>
+                <th>[% l('Create Date') %]</th>
+                <th>[% l('Active') %]</th>
+                <th>[% l('Remove') %]</th>
+                <th>[% l('Save Changes') %]</th>
             </tr>
         </thead>
         <tbody>
@@ -18,14 +18,14 @@
                 </td>
                 <td name="type">
                     <select control="true">
-                        <option value="basic">(853) Basic</option>
-                        <option value="supplement">(854) Supplement</option>
-                        <option value="index">(855) Index</option>
+                        <option value="basic">[% l('(853) Basic') %]</option>
+                        <option value="supplement">[% l('(854) Supplement') %]</option>
+                        <option value="index">[% l('(855) Index') %]</option>
                     </select>
                 </td>
                 <td name="pattern_code">
                     <input type="text" size="16" control="true" />
-                    <button>Wizard ...</button>
+                    <button>[% l('Wizard ...') %]</button>
                 </td>
                 <td name="create_date">
                     <span control="true"></span>
@@ -37,17 +37,17 @@
                     <button>X</button>
                 </td>
                 <td name="save">
-                    <button>Save Changes</button>
+                    <button>[% l('Save Changes') %]</button>
                 </td>
             </tr>
         </tbody>
         <tfoot>
             <tr>
                 <td colspan="7" align="center">
-                    <button name="add">Add New</button>
+                    <button name="add">[% l('Add New') %]</button>
                     &nbsp;
                     <button id="scaps_from_bib">
-                        Import From Bibliographic or Legacy Serial Records
+                        [% l('Import From Bibliographic or Legacy Serial Records') %]
                     </button>
                 </td>
             </tr>
@@ -61,20 +61,20 @@
         <span name="obj_owner_container" class="hidden">
             (<span name="obj_owner"></span>)
         </span><br />
-        &nbsp; Created by <span name="obj_create"></span><br />
-        &nbsp; Edited by <span name="obj_edit"></span><br />
-        <em class="hidden" name="obj_inactive">(Inactive)</em>
+        &nbsp; [% l('Created by [_1]', '<span name="obj_create"></span>') %]<br />
+        &nbsp; [% l('Edited by [_1]', '<span name="obj_edit"></span>') %]<br />
+        <em class="hidden" name="obj_inactive">[% l('(Inactive)') %]</em>
     </div>
     <div dojoType="dijit.Dialog" execute="cap_importer.import()"
         jsId="scaps_from_bib_dialog">
         <div>
             <em>
-                Select records from which to import caption and pattern fields.
+                [% l('Select records from which to import caption and pattern fields.') %]
             </em>
         </div>
         <div id="record_holder" style="padding: 1em 0;"></div>
         <button dojoType="dijit.form.Button" type="submit">
-            Import
+            [% l('Import') %]
         </button>
     </div>
 </div>

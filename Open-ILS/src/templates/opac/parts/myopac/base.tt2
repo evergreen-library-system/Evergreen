@@ -19,7 +19,7 @@
                 [%- FOREACH page IN myopac_pages;
                     IF page.url == myopac_page;
                         cls_which = "acct-tab-on";
-                        ctx.page_title = "Your Account - " _ page.name;
+                        ctx.page_title = l("Your Account - [_1]", page.name);
                     ELSE;
                         cls_which = "acct-tab-off";
                     END -%]

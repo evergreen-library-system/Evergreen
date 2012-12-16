@@ -1,11 +1,11 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Circ Duration Rules' %]
+[% ctx.page_title = l('Circ Duration Rules') %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-        <div>Circ Duration Rules</div>
+        <div>[% l('Circ Duration Rules') %]</div>
         <div>
-            <button dojoType='dijit.form.Button' onClick='ruleCircDurationGrid.showCreateDialog()'>New Duration Rule</button>
-            <button dojoType='dijit.form.Button' onClick='ruleCircDurationGrid.deleteSelected()'>Delete Selected</button>
+            <button dojoType='dijit.form.Button' onClick='ruleCircDurationGrid.showCreateDialog()'>[% l('New Duration Rule') %]</button>
+            <button dojoType='dijit.form.Button' onClick='ruleCircDurationGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
         </div>
     </div>
     <div>

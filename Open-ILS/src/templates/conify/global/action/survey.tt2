@@ -1,11 +1,11 @@
 [% WRAPPER base.tt2 %]
    <div dojoType="dijit.layout.ContentPane" layoutAlign='top'>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-            <div>Survey List</div>
+            <div>[% l('Survey List') %]</div>
             <div>
-                <button dojoType='dijit.form.Button' onclick='svNewSurvey();'>Add New Survey</button>
-                <button dojoType='dijit.form.Button' onclick='deleteFromGrid();'>Delete Selected</button>
-                <button dojoType='dijit.form.Button' onclick='endSurvey();'>End Selected Surveys</button>
+                <button dojoType='dijit.form.Button' onclick='svNewSurvey();'>[% l('Add New Survey') %]</button>
+                <button dojoType='dijit.form.Button' onclick='deleteFromGrid();'>[% l('Delete Selected') %]</button>
+                <button dojoType='dijit.form.Button' onclick='endSurvey();'>[% l('End Selected Surveys') %]</button>
             </div>
         </div>
 
@@ -14,63 +14,63 @@
     <table jsId="svGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}">
         <thead>
             <tr>
-                <th field="id">Survey ID</th>
-                <th field="name" formatter='formatName' width='auto'>Name</th>
-                <th field="description" width='auto'>Description</th>                    
-                <th field="owner" get='getOrgInfo'>Owning Library</th>
-                <th field="start_date" width='auto' get='getDateTimeField'>Survey Start Date</th>
-                <th field="end_date" width='auto' get='getDateTimeField'>End Date</th>
-                <th field="opac" formatter='formatBool'>OPAC Survey?</th>                
-                <th field="poll" formatter='formatBool' >Poll Style?</th>
-                <th field="required" formatter='formatBool'>Is Required?</th>
-                <th field="usr_summary" formatter='formatBool'>Display in User Summary?</th>
+                <th field="id">[% l('Survey ID') %]</th>
+                <th field="name" formatter='formatName' width='auto'>[% l('Name') %]</th>
+                <th field="description" width='auto'>[% l('Description') %]</th>                    
+                <th field="owner" get='getOrgInfo'>[% l('Owning Library') %]</th>
+                <th field="start_date" width='auto' get='getDateTimeField'>[% l('Survey Start Date') %]</th>
+                <th field="end_date" width='auto' get='getDateTimeField'>[% l('End Date') %]</th>
+                <th field="opac" formatter='formatBool'>[% l('OPAC Survey?') %]</th>                
+                <th field="poll" formatter='formatBool' >[% l('Poll Style?') %]</th>
+                <th field="required" formatter='formatBool'>[% l('Is Required?') %]</th>
+                <th field="usr_summary" formatter='formatBool'>[% l('Display in User Summary?') %]</th>
             </tr>
         </thead>
     </table>    
 </div>
 
-<div style='display:none;' dojoType="dijit.Dialog" jsId='svSurveyDialog' title='New Survey' execute='svCreate(arguments[0]);'>
+<div style='display:none;' dojoType="dijit.Dialog" jsId='svSurveyDialog' title='[% l('New Survey') %]' execute='svCreate(arguments[0]);'>
 
         <table id='surveyDialog'>
             <tr>
-                <td>Name</td>
+                <td>[% l('Name') %]</td>
                 <td><input dojoType='dijit.form.TextBox' name='svName'/></td>
             </tr>
             <tr>
-                <td>Description</td>
+                <td>[% l('Description') %]</td>
                 <td><input dojoType='dijit.form.TextBox' name='svDescription'></td>
             </tr>
             <tr>
-                <td>Owning Library</td>
+                <td>[% l('Owning Library') %]</td>
                 <td><select dojoType='openils.widget.OrgUnitFilteringSelect' name='svOwner' jsId='asvOwningOrg' searchAttr='shortname' labelAttr='shortname'/></td>
             </tr>
             <tr>
-                <td>Start Date</td>
+                <td>[% l('Start Date') %]</td>
                 <td><input dojoType='dijit.form.TextBox' name='svStart_date'></td>
             </tr>
             <tr>
-                <td>End Date</td>
+                <td>[% l('End Date') %]</td>
                 <td><input dojoType='dijit.form.TextBox' name='svEnd_date'></td>
             </tr>
             <tr>
-                <td>OPAC Survey?</td>
+                <td>[% l('OPAC Survey?') %]</td>
                 <td><input dojoType='dijit.form.CheckBox' name='svOpac'></td>
             </tr>
             <tr>
-                <td>Poll Style?</td>
+                <td>[% l('Poll Style?') %]</td>
                 <td><input dojoType='dijit.form.CheckBox' name='svPoll'></td>
             </tr>
             <tr>
-                <td>Is Required?</td>
+                <td>[% l('Is Required?') %]</td>
                 <td><input dojoType='dijit.form.CheckBox' name='svRequired'></td>
             </tr>
             <tr>
-                <td>Display in User Summary?</td>
+                <td>[% l('Display in User Summary?') %]</td>
                 <td><input dojoType='dijit.form.CheckBox' name='svUsr_summary'></td>
             </tr>
             <tr>
                 <td colspan='2' align='center'>
-                    <button jsId='createSave' dojoType='dijit.form.Button' type='submit'>Save Changes</button>
+                    <button jsId='createSave' dojoType='dijit.form.Button' type='submit'>[% l('Save Changes') %]</button>
 
                     
                 </td>

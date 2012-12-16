@@ -1,17 +1,17 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Providers' %]
+[% ctx.page_title = l('Providers') %]
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
     <div id='provider-list-div'>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-            <div>Provider</div>
+            <div>[% l('Provider') %]</div>
             <div>
-                <button dojoType='dijit.form.Button' onClick='pListGrid.showCreatePane()'>New Provider</button>
-                <button dojoType='dijit.form.Button' onClick='pListGrid.deleteSelected()'>Delete Selected</button> 
+                <button dojoType='dijit.form.Button' onClick='pListGrid.showCreatePane()'>[% l('New Provider') %]</button>
+                <button dojoType='dijit.form.Button' onClick='pListGrid.deleteSelected()'>[% l('Delete Selected') %]</button> 
             </div>
         </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-            <span>Context Org Unit</span>
+            <span>[% l('Context Org Unit') %]</span>
             <select dojoType="openils.widget.OrgUnitFilteringSelect"
                 jsId='contextOrgSelector'
                 searchAttr='shortname'
@@ -38,12 +38,12 @@
     <div id='provider-details-div' style='height:600px'>
     <div dojoType="dijit.layout.TabContainer" style='height:100%' jsId='providerTabs'>
 
-        <div dojoType="dijit.layout.ContentPane" title='Provider Address' select='true' id='provider-address'>
+        <div dojoType="dijit.layout.ContentPane" title='[% l('Provider Address') %]' select='true' id='provider-address'>
             <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-                <div>Provider Address</div>
+                <div>[% l('Provider Address') %]</div>
                 <div>
-                <button dojoType='dijit.form.Button' onClick='paListGrid.showCreateDialog()'>New Provider Address</button>
-                <button dojoType='dijit.form.Button' onClick='paListGrid.deleteSelected()'>Delete Selected</button>
+                <button dojoType='dijit.form.Button' onClick='paListGrid.showCreateDialog()'>[% l('New Provider Address') %]</button>
+                <button dojoType='dijit.form.Button' onClick='paListGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
                 </div>
             </div>
             <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:100px'>
@@ -59,12 +59,12 @@
             </div>
         </div>
 
-        <div dojoType="dijit.layout.ContentPane" title='Provider Contact' id='tab-pro-contact'>
+        <div dojoType="dijit.layout.ContentPane" title='[% l('Provider Contact') %]' id='tab-pro-contact'>
             <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-                <div>Provider Contact</div>
+                <div>[% l('Provider Contact') %]</div>
                 <div>
-                <button dojoType='dijit.form.Button' onClick='pcListGrid.showCreateDialog()'>New Contact</button>
-                <button dojoType='dijit.form.Button' onClick='pcListGrid.deleteSelected()'>Delete Selected</button>
+                <button dojoType='dijit.form.Button' onClick='pcListGrid.showCreateDialog()'>[% l('New Contact') %]</button>
+                <button dojoType='dijit.form.Button' onClick='pcListGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
                 </div>
             </div>
             <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:200px'>
@@ -80,10 +80,10 @@
             </div>
           
             <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-                <div>Contact Address</div>
+                <div>[% l('Contact Address') %]</div>
                 <div>
-                    <button dojoType='dijit.form.Button' onClick='pcaListGrid.showCreateDialog()'>New Contact Address</button>
-                    <button dojoType='dijit.form.Button' onClick='pcaListGrid.deleteSelected()'>Delete Selected</button>
+                    <button dojoType='dijit.form.Button' onClick='pcaListGrid.showCreateDialog()'>[% l('New Contact Address') %]</button>
+                    <button dojoType='dijit.form.Button' onClick='pcaListGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
                 </div>
             </div>
             <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:200px'>
@@ -99,12 +99,12 @@
             </div>
            
         </div>
-        <div dojoType="dijit.layout.ContentPane" title='Attribute Definitions' id='tab-attr'>
+        <div dojoType="dijit.layout.ContentPane" title='[% l('Attribute Definitions') %]' id='tab-attr'>
             <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-                <div> Attribute Definitions</div>
+                <div>[% l('Attribute Definitions') %]</div>
                 <div>
-                    <button dojoType='dijit.form.Button' onClick='padListGrid.showCreateDialog()'>New Attribute Definition</button>
-                    <button dojoType='dijit.form.Button' onClick='padListGrid.deleteSelected()'>Delete Selected</button>
+                    <button dojoType='dijit.form.Button' onClick='padListGrid.showCreateDialog()'>[% l('New Attribute Definition') %]</button>
+                    <button dojoType='dijit.form.Button' onClick='padListGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
                 </div>
             </div>
             <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:200px'>
@@ -126,12 +126,12 @@
             </div>
         </div>
 
-        <div dojoType="dijit.layout.ContentPane" title='Holding Subfield' id='tab-hold'>
+        <div dojoType="dijit.layout.ContentPane" title='[% l('Holding Subfield') %]' id='tab-hold'>
             <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-                <div>Holding Subfield</div>
+                <div>[% l('Holding Subfield') %]</div>
                 <div>
-                <button dojoType='dijit.form.Button' onClick='phsListGrid.showCreateDialog()'>New Holding Subfield</button>
-                <button dojoType='dijit.form.Button' onClick='phsListGrid.deleteSelected()'>Delete Selected</button>
+                <button dojoType='dijit.form.Button' onClick='phsListGrid.showCreateDialog()'>[% l('New Holding Subfield') %]</button>
+                <button dojoType='dijit.form.Button' onClick='phsListGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
                 </div>
             </div>
             <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:400px'>
@@ -160,8 +160,8 @@
             </div>
         </div>
 
-        <div dojoType="dijit.layout.ContentPane" title="Invoices" id="tab-invoice">
-            <big class="oils-acq-basic-roomy"><strong>Invoices</strong></big>
+        <div dojoType="dijit.layout.ContentPane" title="[% l('Invoices') %]" id="tab-invoice">
+            <big class="oils-acq-basic-roomy"><strong>[% l('Invoices') %]</strong></big>
             <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style="height:400px">
                 <table jsId="invListGrid"
                     dojoType="openils.widget.AutoGrid"
@@ -183,15 +183,15 @@
 
     <div class="hidden">
         <select dojoType="dijit.form.FilteringSelect" jsId="nameSelect">
-            <option value='owning_lib'>Owning Library</option>
-            <option value='quantity'>Quantity</option>
-            <option value='call_number'>Call Number</option>
-            <option value='fund_code'>Fund Code</option>
-            <option value='local_note'>Local Note</option>
-            <option value='price'>Price</option>
-            <option value='circ_modifier'>Circulation Modifier</option>
-            <option value='copy_location'>Copy Location</option>
-            <option value='collection_code'>Collection Code</option>
+            <option value='owning_lib'>[% l('Owning Library') %]</option>
+            <option value='quantity'>[% l('Quantity') %]</option>
+            <option value='call_number'>[% l('Call Number') %]</option>
+            <option value='fund_code'>[% l('Fund Code') %]</option>
+            <option value='local_note'>[% l('Local Note') %]</option>
+            <option value='price'>[% l('Price') %]</option>
+            <option value='circ_modifier'>[% l('Circulation Modifier') %]</option>
+            <option value='copy_location'>[% l('Copy Location') %]</option>
+            <option value='collection_code'>[% l('Collection Code') %]</option>
         </select>
     </div> 
 </div>

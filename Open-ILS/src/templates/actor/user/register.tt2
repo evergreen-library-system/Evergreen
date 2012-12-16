@@ -1,4 +1,4 @@
-[% ctx.page_title = 'User Editor' %]
+[% ctx.page_title = l('User Editor') %]
 [% WRAPPER base.tt2 %]
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/actor/user/register.js'></script>
 <link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/[% ctx.skin %]/register.css" />
@@ -18,9 +18,9 @@
     <button dojoType='dijit.form.Button' jsId='saveButton' onClick='uEditSave' scrollOnFocus='false'></button>
     <button dojoType='dijit.form.Button' jsId='saveCloneButton' onClick='uEditSaveClone' scrollOnFocus='false'></button>
     <div id='require-toggle'>
-        <a href='javascript:uEditToggleRequired(1);' id='uedit-show-required'>Show Only Required Fields</a><br id='uedit-show-required-br'/>
-        <a href='javascript:uEditToggleRequired(2);' id='uedit-show-suggested'>Show Suggested Fields</a><br id='uedit-show-suggested-br'/>
-        <a href='javascript:uEditToggleRequired(0);' id='uedit-show-all' class='hidden'>Show All Fields</a>
+        <a href='javascript:uEditToggleRequired(1);' id='uedit-show-required'>[% l('Show Only Required Fields') %]</a><br id='uedit-show-required-br'/>
+        <a href='javascript:uEditToggleRequired(2);' id='uedit-show-suggested'>[% l('Show Suggested Fields') %]</a><br id='uedit-show-suggested-br'/>
+        <a href='javascript:uEditToggleRequired(0);' id='uedit-show-all' class='hidden'>[% l('Show All Fields') %]</a>
     </div>
 </div>
 
@@ -53,9 +53,9 @@
         <table class='oils-generic-table' style='margin:10px;'>
             <thead>
                 <tr>
-                    <th id='uedit-all-cards-barcode'>Barcode</th>
-                    <th id='uedit-all-cards-active'>Active</th>
-                    <th id='uedit-all-cards-primary'>Primary</th>
+                    <th id='uedit-all-cards-barcode'>[% l('Barcode') %]</th>
+                    <th id='uedit-all-cards-active'>[% l('Active') %]</th>
+                    <th id='uedit-all-cards-primary'>[% l('Primary') %]</th>
                 </tr>
             </thead>
             <tbody id='uedit-all-cards-tbody'>
@@ -68,8 +68,8 @@
             <tbody>
                 <tr>
                     <td colspan='3' style='text-align:center;'>
-                        <button jsId='allCardsClose' dojoType='dijit.form.Button' onClick='allCardsDialog.hide()' scrollOnFocus='false'>Close</button>
-                        <span id='uedit-apply-card-changes'><button jsId='allCardsApply' dojoType='dijit.form.Button' onClick='applyCardChanges()' scrollOnFocus='false'>Apply Changes</button></span>
+                        <button jsId='allCardsClose' dojoType='dijit.form.Button' onClick='allCardsDialog.hide()' scrollOnFocus='false'>[% l('Close') %]</button>
+                        <span id='uedit-apply-card-changes'><button jsId='allCardsApply' dojoType='dijit.form.Button' onClick='applyCardChanges()' scrollOnFocus='false'>[% l('Apply Changes') %]</button></span>
                     </td>
                 </tr>
             </tbody>

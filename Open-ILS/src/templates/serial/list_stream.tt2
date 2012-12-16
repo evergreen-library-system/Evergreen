@@ -1,5 +1,5 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = "Streams" %]
+[% ctx.page_title = l("Streams") %]
 <style type="text/css">
     #new-srlu-table { width: 100%; }
     #new-srlu-table th { text-align: left; padding-left: 1em; }
@@ -9,27 +9,27 @@
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane"
         layoutAlign="top" class="oils-header-panel">
-        <div>Streams</div>
+        <div>[% l('Streams') %]</div>
         <div>
             <button dojoType="dijit.form.Button"
-                onClick="sstr_grid.showCreateDialog()">New Stream</button>
+                onClick="sstr_grid.showCreateDialog()">[% l('New Stream') %]</button>
             <button dojoType="dijit.form.Button"
                 onClick="multi_stream_dialog.show()">
-                Create Many Streams
+                [% l('Create Many Streams') %]
             </button>
             <button dojoType="dijit.form.Button" onClick="rlu_editor.show()">
-                Routing List For Selected Stream
+                [% l('Routing List For Selected Stream') %]
             </button>
             <button dojoType="dijit.form.Button"
-                onClick="sstr_grid.refresh()">Refresh Grid</button>
+                onClick="sstr_grid.refresh()">[% l('Refresh Grid') %]</button>
             <button dojoType="dijit.form.Button"
-                onClick="sstr_grid.deleteSelected()">Delete Selected</button>
+                onClick="sstr_grid.deleteSelected()">[% l('Delete Selected') %]</button>
         </div>
     </div>
     <div>
-        Showing streams attached to the distribution,
-        <em><a href="javascript:void(0);" id="sdist_label_here"></a></em>
-        (<span id="sdist_org_unit_name_here"></span>).
+        [% l('Showing streams attached to the distribution, [_1] ([_2]).',
+        '<em><a href="javascript:void(0);" id="sdist_label_here"></a></em>',
+        '<span id="sdist_org_unit_name_here"></span>') %]
     </div>
     <table jsId="sstr_grid"
         dojoType="openils.widget.AutoGrid"
@@ -52,14 +52,14 @@
 <div class="hidden">
 
     <div id="routing_list_user_template_reader">
-        Reader: ${0} / ${1}, ${2} ${3} (${4})
+        [% l('Reader: ${0} / ${1}, ${2} ${3} (${4})') %]
     </div>
-    <div id="routing_list_user_template_department">Department: ${0}</div>
+    <div id="routing_list_user_template_department">[% l('Department: ${0}') %]</div>
     <div id="routing_list_user_template_note"><br />&nbsp; <em>${0}</em></div>
     <div id="routing_list_user_template_remove">[X]</div>
 
     <div dojoType="dijit.Dialog" id="routing_list_dialog"
-        execute="rlu_editor.save()" title="Manage Routing List">
+        execute="rlu_editor.save()" title="[% l('Manage Routing List') %]">
         <ol id="list-source" dojoType="dojo.dnd.Source"
             jsId="routing_list_source"></ol>
         <table id="new-srlu-table">
@@ -72,7 +72,7 @@
                     </td>
                     <th>
                         <label for="reader_xor_dept-reader">
-                            Reader (barcode):
+                            [% l('Reader (barcode):') %]
                         </label>
                     </th>
                     <td>
@@ -82,7 +82,7 @@
                     <td rowspan="3">
                         <button dojoType="dijit.form.Button"
                             id="routing_list_add_button"
-                            onClick="rlu_editor.new_user()">Add</button>
+                            onClick="rlu_editor.new_user()">[% l('Add') %]</button>
                     </td>
                 </tr>
                 <tr>
@@ -94,7 +94,7 @@
                     </td>
                     <th>
                         <label for="reader_xor_dept-department">
-                            Department:
+                            [% l('Department:') %]
                         </label>
                     </th>
                     <td>
@@ -104,7 +104,7 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <th><label for="note">Note:</label></th>
+                    <th><label for="note">[% l('Note:') %]</label></th>
                     <td>
                         <input id="note" name="note"
                             dojoType="dijit.form.TextBox" />
@@ -114,7 +114,7 @@
                     <td colspan="4" style="padding-top: 1em;">
                         <button id="routing_list_save_button"
                             dojoType="dijit.form.Button" type="submit">
-                            Save Changes
+                            [% l('Save Changes') %]
                         </button>
                     </td>
                 </td>
@@ -124,11 +124,11 @@
 
     <div dojoType="dijit.Dialog"
         execute="create_many_streams(arguments[0]);"
-        title="Create Streams"
+        title="[% l('Create Streams') %]"
         jsId="multi_stream_dialog">
         <table class="serial-dialog-table">
             <tr>
-                <th>How many?</th>
+                <th>[% l('How many?') %]</th>
                 <td>
                     <input dojoType="dijit.form.NumberSpinner"
                         value="1" smallDelta="1" name="quantity"
@@ -138,7 +138,7 @@
             <tr>
                 <td colspan="2">
                     <button dojoType="dijit.form.Button" type="submit">
-                        Create
+                        [% l('Create') %]
                     </button>
                 </td>
             </tr>

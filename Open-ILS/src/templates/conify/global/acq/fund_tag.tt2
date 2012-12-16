@@ -1,19 +1,19 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Fund Tags' %]
+[% ctx.page_title = l('Fund Tags') %]
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/conify/global/acq/fund_tag.js"> </script>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane"
          layoutAlign="top" class="oils-header-panel">
-        <div>Fund Tags</div>
+        <div>[% l('Fund Tags') %]</div>
         <div>
             <button dojoType="dijit.form.Button"
-                onClick="ftGrid.showCreateDialog()">New Fund Tag</button>
+                onClick="ftGrid.showCreateDialog()">[% l('New Fund Tag') %]</button>
             <button dojoType="dijit.form.Button"
-                onClick="ftGrid.deleteSelected()">Delete Selected</button>
+                onClick="ftGrid.deleteSelected()">[% l('Delete Selected') %]</button>
         </div>
     </div>
     <div class="oils-acq-basic-roomy">
-        <span>Show tags available to</span>
+        <span>[% l('Show tags available to') %]</span>
         <select
             dojoType="openils.widget.OrgUnitFilteringSelect"
             jsId="ftOwnerSelect"

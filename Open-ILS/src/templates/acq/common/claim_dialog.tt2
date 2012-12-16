@@ -2,10 +2,10 @@
     <script
         src="[% ctx.media_prefix %]/js/ui/default/acq/common/claim_dialog.js">
     </script>
-    <div><big>Claims</big></div>
-    <div>Against item:
-        <span id="acq-lit-li-claim-dia-li-title"></span>
-        (<span id="acq-lit-li-claim-dia-li-id"></span>)
+    <div><big>[% l('Claims') %]</big></div>
+    <div>[% l('Against item: [_1] ([_2]',
+        '<span id="acq-lit-li-claim-dia-li-title"></span>',
+        '<span id="acq-lit-li-claim-dia-li-id"></span>') %]
     </div>
     <div id="acq-lit-li-claim-dia-show" class="hidden">
         <ul id="acq-lit-li-claim-dia-lid-list">
@@ -16,7 +16,7 @@
                     <li name="claim">
                         <span name="type"></span>
                         <a name="voucher"
-                            href="javascript:void(0);">Show Voucher</a>
+                            href="javascript:void(0);">[% l('Show Voucher') %]</a>
                     </li>
                 </ul>
             </li>
@@ -24,7 +24,7 @@
         <hr />
     </div>
     <div id="acq-lit-li-claim-dia-initiate" class="hidden">
-        <div><big>Initiate New Claims</big></div>
+        <div><big>[% l('Initiate New Claims') %]</big></div>
         <div id="acq-lit-li-claim-dia-lid-list-init">
             <div name="lid_to_claim">
                 <input type="checkbox" name="claimable_lid" />
@@ -36,7 +36,7 @@
         </div>
         <hr />
         <div id="acqclet-display" class="hidden">
-            <div><big>Select Claim Action</big></div>
+            <div><big>[% l('Select Claim Action') %]</big></div>
             <table>
                 <tbody id="acqclet-tbody">
                     <tr name="acqclet-template">
@@ -55,6 +55,6 @@
             </table>
             <hr />
         </div>
-        <button id="acq-lit-li-claim-dia-claim">Claim selected</button>
+        <button id="acq-lit-li-claim-dia-claim">[% l('Claim selected') %]</button>
     </div>
 </div>

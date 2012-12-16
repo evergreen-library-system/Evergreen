@@ -45,7 +45,7 @@
     </div>
     <div class="hr">&nbsp;</div>
     <div>
-        <input type="image" alt="search" src="[% ctx.media_prefix %]/images/kpac/search_btn_sub.png" />
+        <input type="image" alt="[% l('search') %]" src="[% ctx.media_prefix %]/images/kpac/search_btn_sub.png" />
     </div>
 </form>
 

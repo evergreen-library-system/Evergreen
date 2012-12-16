@@ -1,19 +1,19 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Cancel Reasons' %]
+[% ctx.page_title = l('Cancel Reasons') %]
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/acq/cancel_reason.js'> </script>
 
 <!-- grid -->
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-            <div>PO / Item / Request Cancellation Reasons</div>
+            <div>[% l('PO / Item / Request Cancellation Reasons') %]</div>
             <div>
-                <button dojoType='dijit.form.Button' onClick='crGrid.showCreateDialog()'>New Cancel Reason</button>
-                <button dojoType='dijit.form.Button' onClick='crGrid.deleteSelected()'>Delete Selected</button>
+                <button dojoType='dijit.form.Button' onClick='crGrid.showCreateDialog()'>[% l('New Cancel Reason') %]</button>
+                <button dojoType='dijit.form.Button' onClick='crGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
             </div>
         </div>
         <div>
-            <span>Context Org Unit</span>
+            <span>[% l('Context Org Unit') %]</span>
             <select dojoType="openils.widget.OrgUnitFilteringSelect" jsId='contextOrgSelector'
                 searchAttr='shortname' labelAttr='shortname'> </select>
         </div>

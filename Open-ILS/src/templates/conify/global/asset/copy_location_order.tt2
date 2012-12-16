@@ -1,22 +1,22 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Copy Location Order' %]
+[% ctx.page_title = l('Copy Location Order') %]
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/asset/copy_location_order.js'> </script>
 <link rel='stylesheet' type='text/css' href='[% ctx.media_prefix %]/js/dojo/dojo/resources/dnd.css'/>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
-    <div>Copy Location Order</div>
+    <div>[% l('Copy Location Order') %]</div>
     <div></div>
 </div>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-    <span>Context Org Unit</span>
+    <span>[% l('Context Org Unit') %]</span>
     <select dojoType="openils.widget.OrgUnitFilteringSelect"
             jsId='contextOrgSelector'
             searchAttr='shortname'
             labelAttr='shortname'>
     </select>
-    <button dojoType='dijit.form.Button' onClick='applyChanges()'>Apply Changes</button>
-    <span>To move an item, drag it up or down with the mouse.</span>
+    <button dojoType='dijit.form.Button' onClick='applyChanges()'>[% l('Apply Changes') %]</button>
+    <span>[% l('To move an item, drag it up or down with the mouse.') %]</span>
 </div>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">

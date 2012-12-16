@@ -4,15 +4,15 @@
 
  <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
-            <div>PO Triggered Events</div>
+            <div>[% l('PO Triggered Events') %]</div>
             <div>
-                <button dojoType="dijit.form.Button" onClick="eventGrid.cancelSelected()">Cancel Selected</button>
-                <button dojoType="dijit.form.Button" onClick="eventGrid.resetSelected()">Reset Selected</button>
+                <button dojoType="dijit.form.Button" onClick="eventGrid.cancelSelected()">[% l('Cancel Selected') %]</button>
+                <button dojoType="dijit.form.Button" onClick="eventGrid.resetSelected()">[% l('Reset Selected') %]</button>
             </div>
         </div>
         <div class="oils-acq-basic-form-div">
             <span>
-                <label for="state">State</label>
+                <label for="state">[% l('State') %]</label>
                 <select name="state"
                     dojoType="dijit.form.FilteringSelect"
                     jsId="eventStateSelect"
@@ -20,7 +20,7 @@
                     labelAttr="name"></select>
             </span>
             <span>
-                <label for="orgUnit">Context Org Unit</label>
+                <label for="orgUnit">[% l('Context Org Unit') %]</label>
                 <select name="orgUnit" 
                     dojoType="openils.widget.OrgUnitFilteringSelect" 
                     jsId="eventContextOrgSelect"
@@ -28,20 +28,20 @@
                     labelAttr="shortname"></select>
             </span>
             <span>
-                <label for="startDate">Start Date Range</label>
+                <label for="startDate">[% l('Start Date Range') %]</label>
                 <input name="startDate"
                     type="text"
                     dojoType="dijit.form.DateTextBox"
                     jsId="eventStartDatePicker" />
             </span>
             <span>
-                <label for="endDate">End Date Range</label>
+                <label for="endDate">[% l('End Date Range') %]</label>
                 <input name="endDate"
                     type="text"
                     dojoType="dijit.form.DateTextBox"
                     jsId="eventEndDatePicker" />
             </span>
-            <button dojoType="dijit.form.Button" onClick="eventGrid.doSearch()">Search</button>
+            <button dojoType="dijit.form.Button" onClick="eventGrid.doSearch()">[% l('Search') %]</button>
         </div>
         <table  jsId="eventGrid"
                 dojoType="openils.widget.AutoGrid"
@@ -52,7 +52,7 @@
                 editOnEnter="false">
             <thead>
                 <tr>
-                    <th field="target" formatter="format_po_link">Purchase Order</th>
+                    <th field="target" formatter="format_po_link">[% l('Purchase Order') %]</th>
                 </tr>
             </thead>
         </table>

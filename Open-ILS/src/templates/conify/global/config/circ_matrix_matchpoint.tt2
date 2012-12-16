@@ -1,9 +1,9 @@
-[% ctx.page_title = 'Circulation Policy Configuration' %]
+[% ctx.page_title = l('Circulation Policy Configuration') %]
 [% WRAPPER base.tt2 %]
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/circ_matrix_matchpoint.js'> </script>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-    <div>Circulation Policy Configuration</div>
-    <div><button dojoType='dijit.form.Button' onClick='cmGrid.showCreatePane()'>New</button></div>
+    <div>[% l('Circulation Policy Configuration') %]</div>
+    <div><button dojoType='dijit.form.Button' onClick='cmGrid.showCreatePane()'>[% l('New') %]</button></div>
 </div>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <table  jsId="cmGrid"
@@ -28,14 +28,14 @@
 
 <div class='hidden'>
     <div id='limit-set-editor' style='border:1px solid #aaa'>
-        <h3>Linked Limit Sets</h3>
+        <h3>[% l('Linked Limit Sets') %]</h3>
         <table class='oils-generic-table'>
             <tbody>
                 <tr>
-                    <th>Name</th>
-                    <th>Fallthrough</th>
-                    <th>Active</th>
-                    <th>Remove</th>
+                    <th>[% l('Name') %]</th>
+                    <th>[% l('Fallthrough') %]</th>
+                    <th>[% l('Active') %]</th>
+                    <th>[% l('Remove') %]</th>
                 </tr>
             </tbody>
             <tbody name='limit-set-entry-tbody'>
@@ -43,13 +43,13 @@
                     <td name='limit-set'></td>
                     <td><input type="checkbox" name="limit-set-fallthrough"/></td>
                     <td><input type="checkbox" name="limit-set-active"/></td>
-                    <td><a name='remove-limit-set' href='javascript:void(0);'>Remove</a></td>
+                    <td><a name='remove-limit-set' href='javascript:void(0);'>[% l('Remove') %]</a></td>
                 </tr>
             </tbody>
             <tbody name='limit-set-entry-new'>
                 <tr>
                     <td><div name='limit-set-selector'></div></td>
-                    <td colspan="3"><a href='javascript:void(0);' name='add-limit-set'>Add</a></td>
+                    <td colspan="3"><a href='javascript:void(0);' name='add-limit-set'>[% l('Add') %]</a></td>
                 </tr>
             </tbody>
         </table>

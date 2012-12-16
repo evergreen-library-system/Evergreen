@@ -1,13 +1,13 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Field Documentation' %]
+[% ctx.page_title = l('Field Documentation') %]
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/idl_field_doc.js'> </script>
 <table style='width:100%;margin-bottom:10px;'>
     <tr>
-        <td align='left'><h3>Field Documentation</h3></td>
+        <td align='left'><h3>[% l('Field Documentation') %]</h3></td>
         <td align='right'>
-            <span>Class:</span>
+            <span>[% l('Class:') %]</span>
             <span dojoType='dijit.form.FilteringSelect' jsId='fmClassSelector'></span>
-            <button dojoType='dijit.form.Button' onClick='fdocGrid.showCreateDialog()'>New</button>
+            <button dojoType='dijit.form.Button' onClick='fdocGrid.showCreateDialog()'>[% l('New') %]</button>
         </td>
     </tr>
 </table>

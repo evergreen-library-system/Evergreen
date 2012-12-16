@@ -1,10 +1,10 @@
 [% WRAPPER base.tt2 %]
-<h1>Circulation Limit Group</h1> <br/>
+<h1>[% l('Circulation Limit Group') %]</h1> <br/>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
-    <div>Circulation Limit Group</div>
+    <div>[% l('Circulation Limit Group') %]</div>
     <div>
-        <button dojoType='dijit.form.Button' onClick='clgGrid.showCreateDialog()'>New Limit Group</button>
-        <button dojoType='dijit.form.Button' onClick='clgGrid.deleteSelected()'>Delete Selected</button>
+        <button dojoType='dijit.form.Button' onClick='clgGrid.showCreateDialog()'>[% l('New Limit Group') %]</button>
+        <button dojoType='dijit.form.Button' onClick='clgGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
     </div>
 </div>
 

@@ -1,16 +1,16 @@
 <div dojoType="dijit.layout.ContentPane" layout="top"
     class="oils-header-panel lesser">
-    <div>Distributions</div>
+    <div>[% l('Distributions') %]</div>
     <div style="margin-right: 16px;">
         <span dojoType="dijit.form.Button"
-            onClick="dist_grid.refresh();">Refresh Grid</span>
+            onClick="dist_grid.refresh();">[% l('Refresh Grid') %]</span>
         <span dojoType="dijit.form.Button"
             onClick="sub_grid._fresh = false; dist_grid.showCreateDialog();">
-            New Distribution
+            [% l('New Distribution') %]
         </span>
         <span dojoType="dijit.form.Button"
             onClick="sub_grid._fresh = false; dist_grid.deleteSelected();">
-            Delete Selected
+            [% l('Delete Selected') %]
         </span>
     </div>
 </div>

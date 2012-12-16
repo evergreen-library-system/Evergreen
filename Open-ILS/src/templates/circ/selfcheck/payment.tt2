@@ -1,82 +1,82 @@
 <div id='oils-selfck-cc-payment-summary'>
-    Total amount to pay: $<span></span>
+    [% l('Total amount to pay: $[_1]', '<span></span>') %]
 </div>
 <table id='oils-selfck-cc-payment-table'>
     <tbody>
         <!-- Technically not needed since card type is derived from the CC number
         <tr>
-            <td>Type of Card</td>
+            <td>[% l('Type of Card') %]</td>
             <td>
                 <select dojoType='dijit.form.FilteringSelect' jsId='oilsSelfckCCType' required='true'>
-                    <option value='VISA'>VISA</option>
-                    <option value='MasterCard'>MasterCard</option>
-                    <option value='American Express'>American Express</option>
+                    <option value='VISA'>[% l('VISA') %]</option>
+                    <option value='MasterCard'>[% l('MasterCard') %]</option>
+                    <option value='American Express'>[% l('American Express') %]</option>
                 </select>
             </td>
         </tr>
         -->
         <tr>
-            <td>Credit Card #</td>
+            <td>[% l('Credit Card #') %]</td>
             <td><input dojoType='dijit.form.TextBox' jsId='oilsSelfckCCNumber' required='true'/></td>
         </tr>
         <tr>
-            <td>CVV #</td>
+            <td>[% l('CVV #') %]</td>
             <td><input dojoType='dijit.form.TextBox' jsId='oilsSelfckCCCVV' required='true'/></td>
         </tr>
         <tr>
-            <td>Expiration Month</td>
+            <td>[% l('Expiration Month') %]</td>
             <td>
                 <select dojoType='dijit.form.FilteringSelect' jsId='oilsSelfckCCMonth' required='true'>
-                    <option value='01' selected='selected'>Jan</option>
-                    <option value='02'>Feb</option>
-                    <option value='03'>Mar</option>
-                    <option value='04'>April</option>
-                    <option value='05'>May</option>
-                    <option value='06'>June</option>
-                    <option value='07'>July</option>
-                    <option value='08'>Aug</option>
-                    <option value='09'>Sept</option>
-                    <option value='10'>Oct</option>
-                    <option value='11'>Nov</option>
-                    <option value='12'>Dec</option>
+                    <option value='01' selected='selected'>[% l('Jan') %]</option>
+                    <option value='02'>[% l('Feb') %]</option>
+                    <option value='03'>[% l('Mar') %]</option>
+                    <option value='04'>[% l('April') %]</option>
+                    <option value='05'>[% l('May') %]</option>
+                    <option value='06'>[% l('June') %]</option>
+                    <option value='07'>[% l('July') %]</option>
+                    <option value='08'>[% l('Aug') %]</option>
+                    <option value='09'>[% l('Sept') %]</option>
+                    <option value='10'>[% l('Oct') %]</option>
+                    <option value='11'>[% l('Nov') %]</option>
+                    <option value='12'>[% l('Dec') %]</option>
                 </select>
             </td>
         </tr>
         <tr>
-            <td>Expiration Year</td>
+            <td>[% l('Expiration Year') %]</td>
             <td><input dojoType='dijit.form.NumberSpinner' constraints='{pattern:"0000", places:0, maxlength:4}' jsId='oilsSelfckCCYear' required='true'/></td>
         </tr>
         <tr>
-            <td>Edit Billing Details</td>
+            <td>[% l('Edit Billing Details') %]</td>
             <td><input dojoType='dijit.form.CheckBox' jsId='oilsSelfckEditDetails'/></td>
         </tr>
         <tr>
-            <td>First Name</td>
+            <td>[% l('First Name') %]</td>
             <td><input dojoType='dijit.form.TextBox' jsId='oilsSelfckCCFName' disabled='disabled' required='true'/></td>
         </tr>
         <tr>
-            <td>Last Name</td>
+            <td>[% l('Last Name') %]</td>
             <td><input dojoType='dijit.form.TextBox' jsId='oilsSelfckCCLName' disabled='disabled' required='true'/></td>
         </tr>
         <tr>
-            <td>Street Address</td>
+            <td>[% l('Street Address') %]</td>
             <td><input dojoType='dijit.form.TextBox' jsId='oilsSelfckCCStreet' disabled='disabled' required='true'/></td>
         </tr>
         <tr>
-            <td>City</td>
+            <td>[% l('City') %]</td>
             <td><input dojoType='dijit.form.TextBox' jsId='oilsSelfckCCCity' disabled='disabled' required='true'/></td>
         </tr>
         <tr>
-            <td>State or Province</td>
+            <td>[% l('State or Province') %]</td>
             <td><input dojoType='dijit.form.TextBox' jsId='oilsSelfckCCState' disabled='disabled' required='true'/></td>
         </tr>
         <tr>
-            <td>ZIP or Postal Code</td>
+            <td>[% l('ZIP or Postal Code') %]</td>
             <td><input dojoType='dijit.form.TextBox' jsId='oilsSelfckCCZip' disabled='disabled' required='true'/></td>
         </tr>
         <tr>
             <td colspan='2' align='center'>
-                <button dojoType='dijit.form.Button' jsId='oilsSelfckCCSubmit'>Submit Payment</button>
+                <button dojoType='dijit.form.Button' jsId='oilsSelfckCCSubmit'>[% l('Submit Payment') %]</button>
             </td>
         </tr>
     </tbody>

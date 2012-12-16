@@ -1,10 +1,10 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Invoice Payment Methods' %]
+[% ctx.page_title = l('Invoice Payment Methods') %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
-    <div>Invoice Payment Methods</div>
+    <div>[% l('Invoice Payment Methods') %]</div>
     <div>
-        <button dojoType="dijit.form.Button" onClick="acqipmGrid.showCreateDialog();">New Invoice Payment Method</button>
-        <button dojoType="dijit.form.Button" onClick="acqipmGrid.deleteSelected();">Delete Selected</button>
+        <button dojoType="dijit.form.Button" onClick="acqipmGrid.showCreateDialog();">[% l('New Invoice Payment Method') %]</button>
+        <button dojoType="dijit.form.Button" onClick="acqipmGrid.deleteSelected();">[% l('Delete Selected') %]</button>
     </div>
 </div>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">

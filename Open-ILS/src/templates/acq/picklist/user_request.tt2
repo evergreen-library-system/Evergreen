@@ -1,5 +1,5 @@
 [% WRAPPER 'base.tt2' %]
-[% ctx.page_title = 'Patron Requests' %]
+[% ctx.page_title = l('Patron Requests') %]
 <script type="text/javascript">var reqId = '[% ctx.page_args.0 %]';</script>
 
     <div dojoType="dijit.layout.StackContainer" id="stackContainer" doLayout="false">
@@ -10,7 +10,7 @@
             </div>
             <div style="width: 100%">
                 <span>
-                    <span>Context Org Unit</span>
+                    <span>[% l('Context Org Unit') %]</span>
                     <select 
                         dojoType="openils.widget.OrgUnitFilteringSelect" 
                         jsId='contextOrgSelector'
@@ -19,7 +19,7 @@
                     </select>
                 </span>
                 <span>
-                    <a name="user" href="javascript:changeUserPrompt();">User</a>
+                    <a name="user" href="javascript:changeUserPrompt();">[% l('User') %]</a>
                     <span
                         name="user"
                         jsId="contextUsrTextbox"
@@ -28,7 +28,7 @@
                     </span>
                 </span>
                 <span>
-                    <a name="lineitem" href="javascript:changeLIPrompt();">PO Line Item</a>
+                    <a name="lineitem" href="javascript:changeLIPrompt();">[% l('PO Line Item') %]</a>
                     <span
                         name="lineitem"
                         jsId="contextLITextbox"
@@ -36,7 +36,7 @@
                         disabled="true">
                     </span>
                 </span>
-                <button dojoType="dijit.form.Button" onClick="createRequest()">Create Request</button>
+                <button dojoType="dijit.form.Button" onClick="createRequest()">[% l('Create Request') %]</button>
             </div>
             <table  jsId="rGrid"
                     dojoType="openils.widget.AutoGrid"
@@ -62,21 +62,21 @@
         <!-- *** Detail View ********************************************************************************* -->
         <div dojoType="dijit.layout.ContentPane" style="height: 100%;">
             <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-                <div>Patron Request</div>
+                <div>[% l('Patron Request') %]</div>
                 <div>
                     <button dojoType="dijit.form.Button" onClick="location.href=oilsBasePath+'/acq/picklist/user_request'">[% ctx.page_title %]</button>
-                    <button dojoType="dijit.form.Button" onClick="fooPicklist()"><span id="add_to_picklist">Add to Selection List</span><span id="view_picklist">View Selection List</span></button>
-                    <button dojoType="dijit.form.Button" onClick="setNoHold()">Set No Hold</button>
+                    <button dojoType="dijit.form.Button" onClick="fooPicklist()"><span id="add_to_picklist">[% l('Add to Selection List') %]</span><span id="view_picklist">[% l('View Selection List') %]</span></button>
+                    <button dojoType="dijit.form.Button" onClick="setNoHold()">[% l('Set No Hold') %]</button>
                     <span dojoType="dijit.form.DropDownButton">
-                        <span>Cancel Request</span>
+                        <span>[% l('Cancel Request') %]</span>
                         <span dojoType="dijit.TooltipDialog">
                             <label for="acq-ur-cancel-reason">
-                                Reason:
+                                [% l('Reason:') %]
                             </label>
                             <span id="acq-ur-cancel-reason"></span>
                             <button jsId="acqUrCancelReasonSubmit"
                                 dojoType="dijit.form.Button"
-                                type="submit">Cancel Request</button>
+                                type="submit">[% l('Cancel Request') %]</button>
                         </span>
                     </span>
                 </div>

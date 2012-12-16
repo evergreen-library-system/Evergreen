@@ -1,26 +1,26 @@
 <div id='oils-selfck-circ-info-div'>
     <div id='oils-selfck-info-nav'>
-        <span><a id='oils-selfck-nav-home' href='javascript:void(0);' class='selected'>Home</a></span>
-        <span><a id='oils-selfck-nav-logout-print' href='javascript:void(0);'>Logout</a></span>
-        <span><a id='oils-selfck-nav-logout' href='javascript:void(0);'>Logout (No Receipt)</a></span>
+        <span><a id='oils-selfck-nav-home' href='javascript:void(0);' class='selected'>[% l('Home') %]</a></span>
+        <span><a id='oils-selfck-nav-logout-print' href='javascript:void(0);'>[% l('Logout') %]</a></span>
+        <span><a id='oils-selfck-nav-logout' href='javascript:void(0);'>[% l('Logout (No Receipt)') %]</a></span>
     </div>
     <fieldset>
-        <legend>Items Checked Out</legend>
+        <legend>[% l('Items Checked Out') %]</legend>
         <div id='oils-selfck-circ-session-total'></div>
         <div id='oils-selfck-circ-account-total'></div>
-        <div><a href='javascript:void(0);' id='oils-selfck-items-out-details-link'>View Items Out</a></div>
+        <div><a href='javascript:void(0);' id='oils-selfck-items-out-details-link'>[% l('View Items Out') %]</a></div>
     </fieldset>
     <fieldset>
-        <legend>Holds</legend>
+        <legend>[% l('Holds') %]</legend>
         <div id='oils-selfck-holds-ready'></div>
         <div id='oils-selfck-holds-total'></div>
-        <div><a href='javascript:void(0);' id='oils-selfck-hold-details-link'>View Holds</a></div>
+        <div><a href='javascript:void(0);' id='oils-selfck-hold-details-link'>[% l('View Holds') %]</a></div>
     </fieldset>
     <fieldset>
-        <legend>Fines</legend>
+        <legend>[% l('Fines') %]</legend>
         <div id='oils-selfck-fines-total'></div>
         <div>
-            <span><a href='javascript:void(0);' id='oils-selfck-view-fines-link'>View Details</a></span>
+            <span><a href='javascript:void(0);' id='oils-selfck-view-fines-link'>[% l('View Details') %]</a></span>
         </div>
     </fieldset>
 </div>

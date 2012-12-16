@@ -1,6 +1,6 @@
 [% WRAPPER "base.tt2" %]
-[% ctx.page_title = "Lineitem History" %]
-<h1>Lineitem History</h1>
+[% ctx.page_title = l("Lineitem History") %]
+<h1>[% l('Lineitem History') %]</h1>
 <br/>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <table  jsId="lhGrid"

@@ -25,7 +25,7 @@
                     [% END %]
 
                     <div class="top_side">
-                        <h2>get it!</h2>
+                        <h2>[% l('get it!') %]</h2>
                         <p>[% |l %]If you would like to place a hold on this item, please enter the 
                             following information and click<br />Submit below:[% END %]</p>
                     </div>
@@ -46,7 +46,7 @@
                                     </div>
                                     <a class="help_btn" href="javascript:;" 
                                         onclick="helpPopup('card_help', this, event);"><img 
-                                        src="[% ctx.media_prefix %]/images/kpac/question_mark.png" alt="pin number help" /></a>
+                                        src="[% ctx.media_prefix %]/images/kpac/question_mark.png" alt="[% l('pin number help') %]" /></a>
 
                                     <div class="clear">&nbsp;</div>
                                     <div class="hr">&nbsp;</div>

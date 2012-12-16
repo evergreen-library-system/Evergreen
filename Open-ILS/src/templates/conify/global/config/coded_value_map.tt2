@@ -1,16 +1,16 @@
 [% WRAPPER base.tt2 %]
-<h1>Coded Value Maps</h1> <br/>
+<h1>[% l('Coded Value Maps') %]</h1> <br/>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
-    <div>Coded Value Maps</div>
+    <div>[% l('Coded Value Maps') %]</div>
     <div>
-        <button dojoType='dijit.form.Button' onClick='ccvmGrid.showCreateDialog()'>New Map</button>
-        <button dojoType='dijit.form.Button' onClick='ccvmGrid.deleteSelected()'>Delete Selected</button>
+        <button dojoType='dijit.form.Button' onClick='ccvmGrid.showCreateDialog()'>[% l('New Map') %]</button>
+        <button dojoType='dijit.form.Button' onClick='ccvmGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
     </div>
 </div>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-    <span>Record Attribute Type: </span><div id='attr-def-div'></div>
+    <span>[% l('Record Attribute Type: ') %]</span><div id='attr-def-div'></div>
 </div>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">

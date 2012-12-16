@@ -1,5 +1,5 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = "Hard Due Dates" %]
+[% ctx.page_title = l("Hard Due Dates") %]
 <script type="text/javascript">
     dojo.require("openils.CGI");
     dojo.require("openils.Util");

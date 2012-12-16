@@ -1,33 +1,33 @@
 [% WRAPPER 'base.tt2' %]
 [% PROCESS 'acq/common/vlagent.tt2' %]
 
-<h1>Upload</h1><br/>
+<h1>[% l('Upload') %]</h1><br/>
 <form id="acq-pl-upload-form" enctype="multipart/form-data">
     <input type='hidden' name='ses' id='acq-pl-upload-ses'/>
     <table class='oils-generic-table'>
         <tbody>
             <tr>
-                <td>Create Purchase Order</td>
+                <td>[% l('Create Purchase Order') %]</td>
                 <td>
                     <input dojoType='dijit.form.CheckBox' jsId='acqPlUploadCreatePo'></input>
                 </td>
             </tr>
             <tr>
-                <td>Activate Purchase Order</td>
+                <td>[% l('Activate Purchase Order') %]</td>
                 <td>
                     <input dojoType='dijit.form.CheckBox' jsId='acqPlUploadActivatePo'></input>
                 </td>
             </tr>
             <tr>
-                <td>Provider</td>
+                <td>[% l('Provider') %]</td>
                 <td><div id='acq-pl-upload-provider'></div></td>
             </tr>
             <tr id='acq-pl-upload-agency-row'>
-                <td>Context Org Unit</td>
+                <td>[% l('Context Org Unit') %]</td>
                 <td><div id='acq-pl-upload-agency'></div></td>
             </tr>
             <tr id='acq-pl-upload-picklist'>
-                <td>Add to Selection List</td>
+                <td>[% l('Add to Selection List') %]</td>
                 <td>
                     <select jsId='acqPlUploadPlSelector' dojoType='dijit.form.ComboBox'></select>
                 </td>
@@ -66,7 +66,7 @@
         </div>
         [% PROCESS vlagent_results %]
         <div id='acq-pl-upload-complete' class='hidden'>
-            <div>Upload Complete!</div><br/>
+            <div>[% l('Upload Complete!') %]</div><br/>
             <div><a id='acq-pl-upload-complete-po'>[% l('View Purchase Order') %]</a></div><br/>
             <div><a id='acq-pl-upload-complete-pl'>[% l('View Selection List') %]</a></div><br/>
             <div><a id='acq-pl-upload-complete-q'>[% l('View Import Queue') %]</a></div><br/>
