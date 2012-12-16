@@ -8,7 +8,8 @@ selected_facets = CGI.param('facet') || [];
 sorted_facets = [];
 
 # we'll clobber the facet. "namespace" later
-DEFAULT_DISPLAY_COUNT = facet.default_display_count;
+# Provide a default value if unset in config.tt2
+DEFAULT_DISPLAY_COUNT = facet.default_display_count || 5;
 
 IF facet.display;
 
