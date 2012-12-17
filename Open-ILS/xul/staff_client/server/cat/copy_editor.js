@@ -410,7 +410,7 @@ g.delete_template = function() {
         if (typeof robj.ilsevent != 'undefined') {
             throw(robj);
         } else {
-            alert($('catStrings').getFormattedString('staff.cat.copy_editor.delete_template.confirm', [name]));
+            alert($('catStrings').getFormattedString('staff.cat.copy_editor.delete_template.success', [name]));
             setTimeout(
                 function() {
                     try {
