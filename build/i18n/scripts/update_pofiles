@@ -42,6 +42,7 @@ my %locs = (
     en_CA => "en-CA",
     en_GB => "en-GB",
     es => "es-ES",
+    fi => "fi-FI",
     fr => "fr-CA",
     he => "he-IL",
     hu => "hu-HU",
