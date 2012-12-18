@@ -913,9 +913,21 @@ main.menu.prototype = {
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/config/coded_value_map', null, event); }
             ],
+            'cmd_server_admin_metabib_class' : [
+                ['oncommand'],
+                function(event) { open_eg_web_page('conify/global/config/metabib_class', null, event); }
+            ],
+            'cmd_server_admin_metabib_class_ts_map' : [
+                ['oncommand'],
+                function(event) { open_eg_web_page('conify/global/config/metabib_class_ts_map', null, event); }
+            ],
             'cmd_server_admin_metabib_field' : [
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/config/metabib_field', null, event); }
+            ],
+            'cmd_server_admin_metabib_field_ts_map' : [
+                ['oncommand'],
+                function(event) { open_eg_web_page('conify/global/config/metabib_field_ts_map', null, event); }
             ],
             'cmd_server_admin_acn_prefix' : [
                 ['oncommand'],

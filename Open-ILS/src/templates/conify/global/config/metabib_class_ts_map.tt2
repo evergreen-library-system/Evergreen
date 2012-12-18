@@ -1,0 +1,29 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = l('MARC Search Class FTS Config Maps') %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>[% l('Metabib Class FTS Config Maps') %]</div>
+        <div>
+            <button dojoType='dijit.form.Button' onClick='mbClassTSMGrid.showCreateDialog()'>[% l('New FTS Map') %]</button>
+            <button dojoType='dijit.form.Button' onClick='mbClassTSMGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
+        </div>
+    </div>
+    <div>
+    <table  jsId="mbClassTSMGrid"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['id', 'field_class', 'ts_config', 'active', 'index_weight', 'index_lang', 'search_lang', 'always']"
+            query="{id: '*'}"
+            fmClass='cmcts'
+            autoHeight='true'
+            editOnEnter='true'>
+    </table>
+</div>
+
+<script type="text/javascript">
+    dojo.require('openils.Util');
+    dojo.require('openils.widget.AutoGrid');
+    openils.Util.addOnLoad( function() { mbClassTSMGrid.loadAll(); } );
+</script>
+[% END %]
+
+

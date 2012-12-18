@@ -215,9 +215,15 @@
     <command id="cmd_server_admin_coded_value_map" 
              perm="ADMIN_CODED_VALUE"
              />
+    <command id="cmd_server_admin_metabib_class"
+             perm="UPDATE_METABIB_CLASS"/>
+    <command id="cmd_server_admin_metabib_class_ts_map"
+             perm="ADMIN_INDEX_NORMALIZER"/>
     <command id="cmd_server_admin_metabib_field" 
              perm="CREATE_METABIB_FIELD DELETE_METABIB_FIELD UPDATE_METABIB_FIELD"
              />
+    <command id="cmd_server_admin_metabib_field_ts_map"
+             perm="ADMIN_INDEX_NORMALIZER"/>
     <command id="cmd_server_admin_billing_type" 
              perm="CREATE_BILLING_TYPE DELETE_BILLING_TYPE UPDATE_BILLING_TYPE"
              />
@@ -600,7 +606,10 @@
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.acn_suffix.label;" command="cmd_server_admin_acn_suffix"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.marc_record_attrs.label;" command="cmd_server_admin_marc_code"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.coded_value_maps.label;" command="cmd_server_admin_coded_value_map"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.metabib_class.label;" command="cmd_server_admin_metabib_class"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.metabib_class_ts_map.label;" command="cmd_server_admin_metabib_class_ts_map"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.metabib_field.label;" command="cmd_server_admin_metabib_field"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.metabib_field_ts_map.label;" command="cmd_server_admin_metabib_field_ts_map"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.billing_type.label;" command="cmd_server_admin_billing_type"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.sms_carrier.label;" command="cmd_server_admin_sms_carrier"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.z3950_source.label;" command="cmd_server_admin_z39_source"/>

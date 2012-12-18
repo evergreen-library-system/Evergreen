@@ -1,0 +1,25 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = l('MARC Search Classes') %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>[% l('Metabib Class') %]</div>
+    </div>
+    <div>
+    <table  jsId="mbClassGrid"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['name', 'label', 'buoyant', 'restrict', 'a_weight', 'b_weight', 'c_weight', 'd_weight']"
+            query="{name: '*'}"
+            fmClass='cmc'
+            autoHeight='true'
+            editOnEnter='true'>
+    </table>
+</div>
+
+<script type="text/javascript">
+    dojo.require('openils.Util');
+    dojo.require('openils.widget.AutoGrid');
+    openils.Util.addOnLoad( function() { mbClassGrid.loadAll(); } );
+</script>
+[% END %]
+
+
