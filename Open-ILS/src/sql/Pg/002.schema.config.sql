@@ -87,7 +87,7 @@ CREATE TRIGGER no_overlapping_deps
     BEFORE INSERT OR UPDATE ON config.db_patch_dependencies
     FOR EACH ROW EXECUTE PROCEDURE evergreen.array_overlap_check ('deprecates');
 
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0747', :eg_version); -- dyrcona/bshum
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0748', :eg_version); -- dbwells/dbs
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -762,7 +762,7 @@ BEGIN
     -- Look for a current value
     SELECT INTO current_row * FROM config.coded_value_map WHERE ctype = in_ctype AND code = in_code;
     -- If we have one..
-    IF FOUND THEN
+    IF FOUND AND NOT add_only THEN
         -- Update anything we were handed
         current_row.value := COALESCE(current_row.value, in_value);
         current_row.description := COALESCE(current_row.description, in_description);
@@ -777,7 +777,7 @@ BEGIN
                 search_label = current_row.search_label,
                 is_simple = current_row.is_simple
             WHERE id = current_row.id;
-    ELSIF NOT add_only THEN
+    ELSE
         INSERT INTO config.coded_value_map(ctype, code, value, description, opac_visible, search_label, is_simple) VALUES
             (in_ctype, in_code, in_value, in_description, COALESCE(in_opac_visible, TRUE), in_search_label, COALESCE(in_is_simple, FALSE));
     END IF;
