@@ -1,0 +1,180 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2012-10-29 09:00:06-0400\n"
+"PO-Revision-Date: 2012-08-02 12:49+0300\n"
+"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"Language-Team: Finnish <evergreen@jns.fi>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.1\n"
+
+#: register.js:USER_SETTINGS
+msgid "User Settings"
+msgstr "Käyttäjän asetukset"
+
+#: register.js:ALL_CARDS_APPLY
+msgid "Apply Changes"
+msgstr "Ota muutokset käyttöön"
+
+#: register.js:DUPE_PATRON_EMAIL
+msgid "Found ${0} patron(s) with the same email address"
+msgstr "${0} asiakkaalla on sama sähköpostiosoite"
+
+#: register.js:ADDRESS_BILLING
+msgid "Billing"
+msgstr "Laskutus"
+
+#: register.js:ADDRESS_OWNED
+msgid "This address is owned by another user: "
+msgstr "Osoitteen omistaa toinen käyttäjä:"
+
+#: register.js:ADDRESS_NEW
+msgid "New Address"
+msgstr "Uusi osoite"
+
+#: register.js:REPLACED_ADDRESS
+msgid ""
+"<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
+msgstr ""
+"<div>Korvaa osoitteen <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
+
+#: register.js:SHOW_REQUIRED
+msgid "Show Only Required Fields"
+msgstr "Näytä vain vaaditut kentät"
+
+#: register.js:DUPE_PATRON_ADDR
+msgid "Found ${0} patron(s) with the same address"
+msgstr "${0} asiakkaalla on sama osoite"
+
+#: register.js:SAVE
+msgid "Save"
+msgstr "Tallenna"
+
+#: register.js:DUPE_PATRON_IDENT
+msgid "Found ${0} patron(s) with the same identification"
+msgstr "${0} asiakkaalla on sama tunnistautuminen"
+
+#: register.js:ADDRESS_MAILING
+msgid "Mailing"
+msgstr "Postitus"
+
+#: register.js:REPLACE_BARCODE
+msgid "Replace Barcode"
+msgstr "Korvaa asiakastunnus"
+
+#: register.js:NEED_ADDRESS
+msgid "An address is required during registration."
+msgstr "Osoite vaaditaan rekisteröityessä."
+
+#: register.js:ALL_CARDS_PRIMARY
+msgid "Primary"
+msgstr "Ensisijainen"
+
+#: register.js:BARCODE_IN_USE
+msgid "Barcode is already in use"
+msgstr "Asiakastunnus on jo käytössä"
+
+#: register.js:ADDRESS_HEADER
+msgid "Address"
+msgstr "Osoite"
+
+#: register.js:ALL_CARDS_ACTIVE
+msgid "Active"
+msgstr "Aktiivinen"
+
+#: register.js:DUPE_PATRON_PHONE
+msgid "Found ${0} patron(s) with the same phone number"
+msgstr "${0} asiakkaalla on sama puhelinnumero"
+
+#: register.js:INVALID_FORM
+msgid "Form is invalid.  Please edit and try again."
+msgstr "Muoto ei kelpaa. Muokkaa ja yritä uudelleen."
+
+#: register.js:PARENT_OR_GUARDIAN
+msgid "Parent/Guardian"
+msgstr "Vanhempi/huoltaja"
+
+#: register.js:EXAMPLE
+msgid "Example: "
+msgstr "Esimerkki:"
+
+#: register.js:SHOW_SUGGESTED
+msgid "Show Suggested Fields"
+msgstr "Näytä ehdotetut kentät"
+
+#: register.js:ADDRESS_PENDING
+msgid "This is a pending address: "
+msgstr "Tämä on vireillä oleva osoite:"
+
+#: register.js:DUPE_USERNAME
+msgid "Username is already in use"
+msgstr "Käyttäjätunnus on jo käytössä"
+
+#: register.js:HOLD_NOTIFY_PHONE
+msgid "Phone: "
+msgstr "Puhelin:"
+
+#: register.js:DUPE_PATRON_NAME
+msgid "Found ${0} patron(s) with the same name"
+msgstr "${0} asiakkaalla on sama nimi"
+
+#: register.js:DEFAULT_ADDRESS_TYPE
+msgid "MAILING"
+msgstr "POSTITUS"
+
+#: register.js:HOLD_NOTIFY_SMS
+msgid "SMS: "
+msgstr "SMS:"
+
+#: register.js:INVALIDATE
+msgid "Invalidate"
+msgstr "Mitätöi"
+
+#: register.js:SHOW_ALL
+msgid "Show All Fields"
+msgstr "Näytä kaikki kentät"
+
+#: register.js:ADDRESS_APPROVE
+msgid "Approve Address"
+msgstr "Hyväksy osoite"
+
+#: register.js:VERIFY_PASSWORD
+msgid "Verify Password"
+msgstr "Vahvista salasana"
+
+#: register.js:SAVE_CLONE
+msgid "Save &amp; Clone"
+msgstr "Tallenna ja kloonaa"
+
+#: register.js:STAT_CATS
+msgid "Statistical Categories"
+msgstr "Tilastolliset kategoriat"
+
+#: register.js:ALL_CARDS_BARCODE
+msgid "Barcode"
+msgstr "Asiakastunnus"
+
+#: register.js:RESET_PASSWORD
+msgid "Reset Password"
+msgstr "Uusi salasana"
+
+#: register.js:HOLD_NOTIFY_EMAIL
+msgid "Email: "
+msgstr "Sähköposti:"
+
+#: register.js:SEE_ALL
+msgid "See All"
+msgstr "Näytä kaikki"
+
+#: register.js:ALL_CARDS_CLOSE
+msgid "Close"
+msgstr "Sulje"
+
+#: register.js:DELETE_ADDRESS
+msgid "Delete address ${0}?"
+msgstr "Poistetaanko osoite ${0}?"

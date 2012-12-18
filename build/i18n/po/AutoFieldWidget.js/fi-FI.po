@@ -1,0 +1,30 @@
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2012-10-29 09:00:07-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"Language-Team: Finnish <evergreen@jns.fi>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.5.3\n"
+
+#: AutoFieldWidget.js:TRUE
+msgid "True"
+msgstr "Tosi"
+
+#: AutoFieldWidget.js:FALSE
+msgid "False"
+msgstr "Epätosi"
+
+#: AutoFieldWidget.js:UNSET
+msgid "Unset"
+msgstr "Määrittämätön"
+
+#: AutoFieldWidget.js:INHERITED
+msgid "Inherited"
+msgstr "Peritty"

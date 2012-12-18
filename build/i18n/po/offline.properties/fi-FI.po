@@ -1,0 +1,1534 @@
+# extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-29 09:00+0300\n"
+"PO-Revision-Date: 2012-10-05 15:46+0300\n"
+"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"Language-Team: Finnish <evergreen@jns.fi>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Translate Toolkit 1.9.0\n"
+"X-Accelerator-Marker: &\n"
+"X-Project-Style: mozilla\n"
+
+#: common.exception
+msgid ""
+"!! This software has encountered an error.  Please tell your friendly system "
+"administrator or software developer the following:\n"
+"%1$s\n"
+"%2$s\n"
+msgstr ""
+"!! Ohjelmistossa on tapahtunut virhe. Anna järjestelmän ylläpitäjälle tai "
+"ohjelmiston kehittäjälle seuraavat tiedot:\n"
+"%1$s\n"
+"%2$s\n"
+
+#: common.jsan.missing
+msgid "The JSAN library object is missing."
+msgstr "JSAN-kirjasto-objekti puuttuu."
+
+#: common.ok
+msgctxt "common.ok"
+msgid "Ok"
+msgstr "OK"
+
+#: common.ok.label
+msgctxt "common.ok.label"
+msgid "Ok"
+msgstr "OK"
+
+#: common.ok.accesskey
+msgid "O"
+msgstr "O"
+
+#: common.cancel.label
+msgctxt "common.cancel.label"
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: common.cancel.accesskey
+msgctxt "common.cancel.accesskey"
+msgid "C"
+msgstr "P"
+
+#: common.clear
+msgid "Clear"
+msgstr "Tyhjennä"
+
+#: common.confirm
+msgid "Check here to confirm this message."
+msgstr "Vahvista viesti valitsemalla tämä."
+
+#: common.error.default
+msgid "Please report that this happened."
+msgstr "Raportoi asiasta eteenpäin."
+
+#: common.error.copy_msg
+msgid "Copy Message"
+msgstr "Kopioi viesti"
+
+#: common.barcode.status.warning
+msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3$s."
+msgstr "Varoitus: %1$s tämä tunnus (%2$s) merkittiin: %3$s."
+
+#: common.barcode.status.warning.lost
+msgid "Lost"
+msgstr "Kadonnut"
+
+#: common.barcode.status.warning.expired
+msgid "Expired"
+msgstr "Vanhentunut"
+
+#: common.barcode.status.warning.barred
+msgid "Barred"
+msgstr "Estetty"
+
+#: common.barcode.status.warning.blocked
+msgid "Blocked"
+msgstr "Suljettu pois"
+
+#: common.barcode.status.warning.unknown
+msgid "with an unknown code: %1$s"
+msgstr "tuntemattomalla koodilla: %1$s"
+
+#: common.date.invalid
+msgid "Invalid Date"
+msgstr "Virheellinen päiväys"
+
+#: common.no
+msgid "No"
+msgstr "Ei"
+
+#: common.no.accesskey
+msgid "N"
+msgstr "E"
+
+#: common.yes
+msgid "Yes"
+msgstr "Kyllä"
+
+#: common.yes.accesskey
+msgid "Y"
+msgstr "K"
+
+#: common.unimplemented
+msgid "Not Yet Implemented"
+msgstr "Ei vielä otettu käyttöön"
+
+#: cat.bib_record
+msgid "Bib Record: %1$s"
+msgstr "Bibliografinen tietue: %1$s"
+
+#: serial.delete_record.confirm
+msgid "Are you sure you want to delete MFHD record #%1$s?"
+msgstr "Haluatko varmasti poistaa MFHD-tietueen #%1$s?"
+
+#: cat.opac.delete_record.confirm
+msgid "Are you sure you want to delete title record #%1$s from the catalog?"
+msgstr "Haluatko varmasti poistaa nimeketietueen #%1$s tietokannasta?"
+
+#: cat.opac.delete_record
+msgid "Delete Record"
+msgstr "Poista tietue"
+
+#: cat.opac.delete
+msgid "Delete"
+msgstr "Poista"
+
+#: cat.opac.undelete_record.confirm
+msgid "Are you sure you want to undelete title record #%1$s from the catalog?"
+msgstr "Haluatko varmasti palauttaa nimeketietueen #%1$s tietokantaan?"
+
+#: cat.opac.undelete_record
+msgid "Undelete Record"
+msgstr "Palauta tietue"
+
+#: cat.opac.undelete
+msgid "Undelete"
+msgstr "Palauta"
+
+#: cat.opac.cancel
+msgctxt "cat.opac.cancel"
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: cat.opac.record_deleted
+msgid "Record deleted."
+msgstr "Tietue poistettu."
+
+#: cat.opac.record_deleted.confirm
+msgctxt "cat.opac.record_deleted.confirm"
+msgid "Check here to confirm this action."
+msgstr "Vahvista toiminto valitsemalla tämä."
+
+#: cat.opac.record_undeleted
+msgid "Record undeleted."
+msgstr "Tietue palautettu."
+
+#: cat.opac.record_undeleted.confirm
+msgctxt "cat.opac.record_undeleted.confirm"
+msgid "Check here to confirm this action."
+msgstr "Vahvista toiminto valitsemalla tämä."
+
+#. # variables: document ID, error code, error description
+#: cat.opac.record_deleted.error
+msgid "Error deleting record #%1$s : %2$s : %3$s"
+msgstr "Virhe poistettaessa tietuetta #%1$s : %2$s : %3$s"
+
+#. # variables: document ID, error code, error description
+#: cat.opac.record_undeleted.error
+msgid "Error undeleting record #%1$s : %2$s : %3$s"
+msgstr "Virhe palautettaessa tietuetta #%1$s : %2$s : %3$s"
+
+#: cat.opac.record_marked_for_overlay.record_id.alert
+msgctxt "cat.opac.record_marked_for_overlay.record_id.alert"
+msgid "Record with ID %1$s marked for overlay."
+msgstr "Tietue tunnuksella %1$s merkitty korvattavaksi."
+
+#: cat.opac.record_marked_for_overlay.tcn.alert
+msgctxt "cat.opac.record_marked_for_overlay.tcn.alert"
+msgid "Record with TCN %1$s marked for overlay."
+msgstr "Tietue numerolla %1$s merkitty korvattavaksi."
+
+#: cat.opac.record_marked_for_multi_home.record_id.alert
+msgctxt "cat.opac.record_marked_for_multi_home.record_id.alert"
+msgid "Record with ID %1$s targeted for Multi-Bib items."
+msgstr "Tietue tunnuksella %1$s valittu Multi-Bib-niteiden kohteeksi."
+
+#: cat.opac.record_marked_for_multi_home.tcn.alert
+msgid "Record with TCN %1$s targeted for Mutli-Bib items."
+msgstr "Tietue numerolla %1$s valittu Multi-Bib-niteiden kohteeksi."
+
+#: cat.opac.clear_statusbar
+msgid "Un-target/un-mark this record?"
+msgstr "Poistetaanko tämän tietueen kohdevalinta tai merkintä?"
+
+#: cat.save_record
+msgid "Save Record"
+msgstr "Tallenna tietue"
+
+#: cat.save.failure
+msgid "Record not likely updated."
+msgstr "Tietuetta ei luultavasti päivitetty."
+
+#: cat.record.counter
+msgid "Record %1$s of %2$s"
+msgstr "Tietue %1$s / %2$s"
+
+#: cat.preference.error
+msgid "Preference not likely updated."
+msgstr "Ominaisuutta ei luultavasti päivitetty."
+
+#: staff.admin.survey.save_response.label
+msgid "Save this response"
+msgstr "Tallenna tämä vastaus"
+
+#: staff.admin.survey.save_response.accesskey
+msgid "R"
+msgstr "R"
+
+#: circ.bad_checkdigit
+msgid "This barcode has a bad check digit."
+msgstr "Tämän tunnuksen tarkistussumma ei kelpaa."
+
+#: circ.barcode.enter
+msgid "Please enter a patron barcode first."
+msgstr "Syötä ensin asiakastunnus."
+
+#: circ.barcode.warning
+msgid "Barcode Warning"
+msgstr "Tunnusvaroitus"
+
+#: circ.standalone
+msgid "Standalone"
+msgstr "Itsenäinen"
+
+#: circ.duplicate_scan.msg
+msgid "This barcode has already been scanned."
+msgstr "Tämä tunnus on jo luettu."
+
+#: circ.duplicate_scan.field
+msgid "Duplicate Scan"
+msgstr "Kopioi sisäänluku"
+
+#: circ.offline_checkout.nonbarcoded
+msgid "or choose a non-barcoded option..."
+msgstr "tai valitse vaihtoehto, jolla ei ole tunnusta..."
+
+#: circ.offline_checkout.items
+msgid "Enter the number of items:"
+msgstr "Syötä niteiden lukumäärä:"
+
+#: circ.offline_checkout.download.warning
+msgid ""
+"WARNING: The non-barcode types have not been downloaded from the server.  "
+"You should log in to retrieve these."
+msgstr ""
+"VAROITUS: Tunnuksella merkitsemättömiä tyyppejä ei ole haettu palvelimelta. "
+"Kirjaudu sisään, jos haluat hakea ne."
+
+#: circ.offline_checkout.barcode.flagged.lost
+msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Lost."
+msgstr "Varoitus: %1$s tämä tunnus (%2$s) on merkitty kadonneeksi."
+
+#: circ.offline_checkout.barcode.flagged.expired
+msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Expired."
+msgstr "Varoitus: %1$s tämä tunnus (%2$s) on merkitty vanhentuneeksi."
+
+#: circ.offline_checkout.barcode.flagged.barred
+msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Barred."
+msgstr "Varoitus: %1$s tämä tunnus (%2$s) on merkitty estetyksi."
+
+#: circ.offline_checkout.barcode.flagged.blocked
+msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Blocked."
+msgstr "Varoitus: %1$s tämä tunnus (%2$s) on merkitty poissuljetuksi."
+
+#: circ.offline_checkout.barcode.flagged.unknown
+msgid ""
+"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: %"
+"3$s."
+msgstr ""
+"Varoitus: %1$s tämä tunnus (%2$s) on merkitty tuntemattomalla koodilla: %"
+"3$s."
+
+#: circ.offline_checkout.date.early
+msgid "Due date needs to be after today."
+msgstr "Eräpäivän on oltava tämän päivän jälkeen."
+
+#: circ.offline_checkout.required_field
+msgid "Required Field"
+msgstr "Vaadittu kenttä"
+
+#: circ.offline_checkout.valid_count
+msgid "Please try again and enter a valid count."
+msgstr "Yritä uudelleen ja syötä kelvollinen lukumäärä."
+
+#: circ.offline_checkout.required_value
+msgid "Required Value"
+msgstr "Vaadittu arvo"
+
+#: circ.offline_register.future.birth.date
+msgid "Patron needs to be born yesterday."
+msgstr "Asiakkaan on oltava syntynyt eilen."
+
+#: circ.offline_register.invalid.birth.date
+msgid "Happy birthday!  You need to be more than 0 days old."
+msgstr "Onneksi olkoon! Sinun on oltava vanhempi kuin 0 päivää."
+
+#: circ.offline_register.survey.prompt
+msgid "Choose a response..."
+msgstr "Valitse vastaus..."
+
+#: circ.offline_register.missing.post_code
+msgid "Missing Address : Postal Code"
+msgstr "Osoite : Postinumero puuttuu"
+
+#: circ.offline_register.missing.state
+msgid "Missing Address : State"
+msgstr "Osoite : Osavaltio puuttuu"
+
+#: circ.offline_register.missing.city
+msgid "Missing Address : City"
+msgstr "Osoite : Kaupunki puuttuu"
+
+#: circ.offline_register.missing.street1
+msgid "Missing Address : Line 1"
+msgstr "Osoite : Rivi 1 puuttuu"
+
+#: circ.offline_register.missing.ident_value
+msgid "Missing Identification Value"
+msgstr "Tunnistautumisarvo puuttuu"
+
+#: circ.offline_register.missing.ident_type
+msgid "Missing Identification Type"
+msgstr "Tunnistautumistyyppi puuttuu"
+
+#: circ.offline_register.missing.dob
+msgid "Missing Date of Birth"
+msgstr "Syntymäaika puuttuu"
+
+#: circ.offline_register.missing.first_given_name
+msgid "Missing First Name"
+msgstr "Etunimi puuttuu"
+
+#: circ.offline_register.missing.family_name
+msgid "Missing Last Name"
+msgstr "Sukunimi puuttuu"
+
+#: circ.offline_register.missing.passwd
+msgid "Missing Password"
+msgstr "Salasana puuttuu"
+
+#: circ.offline_register.missing.barcode
+msgid "Missing Barcode"
+msgstr "Asiakastunnus puuttuu"
+
+#: circ.offline_register.missing.profile
+msgid "Missing Profile"
+msgstr "Profiili puuttuu"
+
+#: circ.offline_register.missing.home_ou
+msgid "Missing Home Library"
+msgstr "Kotikirjasto puuttuu"
+
+#: circ.offline_register.missing.alert
+msgid "Please fix the following:"
+msgstr "Korjaa seuraava:"
+
+#: circ.offline_register.patron.saved
+msgid "Patron Registration Saved"
+msgstr "Asiakkaan rekisteröinti tallennettu"
+
+#: circ.offline_register.missing.library.list
+msgid "Missing library list."
+msgstr "Kirjastoluettelo puuttuu."
+
+#: circ.offline_register.missing.profile.list
+msgid "Missing profile list."
+msgstr "Profiililuettelo puuttuu."
+
+#: circ.offline_register.missing.id.type.list
+msgid "Missing identification type list."
+msgstr "Tunnistautumistyyppiluettelo puuttuu."
+
+#: circ.offline_register.missing.required.surveys
+msgid "Missing required surveys."
+msgstr "Vaadittavat kyselyt puuttuvat."
+
+#: circ.offline_register.missing.files.error
+msgid ""
+"ERROR: Offline patron registration requires some server-generated files.  "
+"Please login periodically to retrieve these files."
+msgstr ""
+"VIRHE: Asiakkaan offline-rekisteröinti vaatii eräitä palvelimen luomia "
+"tiedostoja. Kirjaudu sisään säännöllisin väliajoin, jotta nämä tiedostot "
+"voidaan hakea."
+
+#: jsan.file_not_found.error
+msgid "File not found: %1$s"
+msgstr "Tiedostoa ei löydy: %1$s"
+
+#: jsan.namespace.creation.error
+msgid "Could not create namespace[%1$s]: %2$s"
+msgstr "Nimitilan luominen epäonnistui[%1$s]: %2$s"
+
+#: menu.cmd_edit_copy_buckets.tab
+msgid "Copy Buckets"
+msgstr "Nidesiilot"
+
+#: menu.cmd_edit_volume_buckets.tab
+msgid "Volume Buckets"
+msgstr "Nimekesiilot"
+
+#: menu.cmd_edit_record_buckets.tab
+msgid "Record Buckets"
+msgstr "Tietuesiilot"
+
+#: menu.cmd_edit_user_buckets.tab
+msgid "User Buckets"
+msgstr "Käyttäjäsiilot"
+
+#: menu.cmd_replace_barcode.prompt
+msgid "Enter original barcode for the item:"
+msgstr "Syötä alkuperäinen nidetunnus:"
+
+#: menu.cmd_replace_barcode.label
+msgctxt "menu.cmd_replace_barcode.label"
+msgid "Replace Barcode"
+msgstr "Korvaa nidetunnus"
+
+#: menu.cmd_replace_barcode.retrieval.error
+msgid "We were unable to retrieve an item with barcode \"%1$s\"."
+msgstr "Nidettä tunnuksella \"%1$s\" ei onnistuttu hakemaan."
+
+#: menu.cmd_replace_barcode.replacement.prompt
+msgid "Enter the replacement barcode for the item:"
+msgstr "Syötä niteelle korvaava tunnus:"
+
+#: menu.cmd_replace_barcode.replacement.label
+msgctxt "menu.cmd_replace_barcode.replacement.label"
+msgid "Replace Barcode"
+msgstr "Korvaa nidetunnus"
+
+#: menu.cmd_replace_barcode.blank.error
+msgid "Rename aborted.  Blank for barcode not allowed."
+msgstr "Uudelleennimeäminen keskeytetty. Tyhjä tunnus ei kelpaa."
+
+#: menu.cmd_replace_barcode.duplicate.error
+msgid "Rename aborted.  Another copy has barcode \"%1$s\"."
+msgstr "Uudelleennimeäminen keskeytetty. Toisella niteellä on tunnus \"%1$s\"."
+
+#: menu.cmd_replace_barcode.testing.error
+msgid "Error testing replacement barcode \"%1$s\"."
+msgstr "Virhe korvaavan tunnuksen \"%1$s\" testauksessa."
+
+#: menu.cmd_replace_barcode.permission.error
+msgid "Rename aborted.  Insufficient permission."
+msgstr "Uudelleennimeäminen keskeytetty. Oikeudet eivät riitä."
+
+#: menu.cmd_replace_barcode.renaming.error
+msgid "Error renaming item."
+msgstr "Virhe niteen uudelleennimeämisessä."
+
+#: menu.cmd_replace_barcode.renaming.failure
+msgid "The rename operation probably failed."
+msgstr "Uudelleennimeäminen luultavasti epäonnistui."
+
+#: menu.cmd_search_opac.tab
+msgid "Catalog"
+msgstr "Tietokanta"
+
+#: menu.cmd_search_bib_id.tab
+msgid "What is the internal ID for the bibliographic record?"
+msgstr "Anna teosnumero"
+
+#: menu.cmd_search_bib_id.prompt
+msgid "Bib ID Lookup"
+msgstr "Bibliografisen tunnuksen haku"
+
+#: menu.cmd_search_usr_id.tab
+msgid "What is the internal database ID for the patron account?"
+msgstr "Anna henkilötunnus"
+
+#: menu.cmd_search_usr_id.prompt
+msgid "Patron ID Lookup"
+msgstr "Asiakkaan tunnuksen haku"
+
+#: menu.cmd_search_tcn.tab
+msgid "What is the TCN or accession ID for the record?"
+msgstr "Anna tietuenumero tai hankintatunnus"
+
+#: menu.cmd_search_tcn.prompt
+msgid "TCN Lookup"
+msgstr "Tietuenumeron haku"
+
+#: menu.cmd_search_tcn.not_found.error
+msgid "\"%1$s\" not found"
+msgstr "Kohdetta \"%1$s\" ei löydy"
+
+#: menu.cmd_search_tcn.deleted.error
+msgid "\"%1$s\" is deleted.  Show the deleted record anyway?"
+msgstr "\"%1$s\" on poistettu. Näytetäänkö poistettu tietue siitä huolimatta?"
+
+#: menu.cmd_patron_register.related.tab
+msgid "Editing Related Patron"
+msgstr "Muokataan liittyvää asiakasta"
+
+#: menu.cmd_patron_register.tab
+msgid "Register Patron"
+msgstr "Rekisteröi asiakas"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode
+#: staff.circ.work_log_patron_registration.message
+msgid "%1$s registered %3$s (%2$s)"
+msgstr "%1$s rekisteröi kohteen %3$s (%2$s)"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Hold ID  5 - Hold Type
+#: staff.circ.work_log_hold_placed.message
+msgid "%1$s placed hold %4$s (%5$s) for %3$s (%2$s)"
+msgstr "%1$s asetti varauksen %4$s (%5$s) asiakkaalle %3$s (%2$s)"
+
+#: menu.cmd_browse_holds.tab
+msgid "Hold Browser"
+msgstr "Varausselain"
+
+#: menu.cmd_browse_holds_shelf.tab
+msgid "Holds Shelf"
+msgstr "Varaushylly"
+
+#: menu.cmd_browse_hold_pull_list.tab
+msgid "On Shelf Pull List"
+msgstr "Varauslista"
+
+#: menu.cmd_local_admin.tab
+msgid "Local Administration"
+msgstr "Paikallinen ylläpito"
+
+#: menu.cmd_open_vandelay.tab
+msgid "MARC Import/Export"
+msgstr "MARC-tuonti/vienti"
+
+#: menu.cmd_marc_batch_edit.tab
+msgid "MARC Batch Edit"
+msgstr "MARC-erämuokkaus"
+
+#: menu.cmd_open_conify.tab
+msgid "Server Settings"
+msgstr "Palvelimen asetukset"
+
+#: menu.cmd_retrieve_last_patron.session.error
+msgid "No patron visited yet this session."
+msgstr "Tässä istunnossa ei vielä ole ollut asiakasta."
+
+#: menu.cmd_retrieve_last_record.session.error
+msgid "No record visited yet this session."
+msgstr "Tässä istunnossa ei vielä ole ollut tietuetta."
+
+#: menu.cmd_retrieve_last_record.status
+msgid "Retrieving title..."
+msgstr "Haetaan nimekettä..."
+
+#: menu.cmd_chg_session.label
+msgid "Change Login"
+msgstr "Vaihda sisäänkirjautumista"
+
+#: menu.cmd_chg_session.operator.label
+msgid "Change Operator: %1$s"
+msgstr "Vaihda käyttäjä: %1$s"
+
+#: menu.cmd_manage_offline_xacts.tab
+msgid "Offline Transactions"
+msgstr "Offline-tapahtumat"
+
+#: menu.cmd_download_patrons.complete.status
+msgid "Download completed"
+msgstr "Lataus valmis"
+
+#: menu.cmd_download_patrons.error
+msgid ""
+"There was a problem with the download.  The server returned a status %1$s : "
+"%2$s"
+msgstr "Latauksessa ilmeni ongelma. Palvelin palautti tilan %1$s : %2$s"
+
+#: menu.cmd_stat_cat_edit.tab
+msgid "Statistical Category Editor"
+msgstr "Tilastollisten kategorioiden muokkaustyökalu"
+
+#: menu.cmd_non_cat_type_edit.tab
+msgid "Non-Cataloged Type Editor"
+msgstr "Ei-luetteloitujen tyyppien muokkaustyökalu"
+
+#: menu.cmd_copy_location_edit.tab
+msgid "Copy Location Editor"
+msgstr "Nidesijainnin muokkaustyökalu"
+
+#: menu.cmd_console.tab
+msgid "JavaScript Console"
+msgstr "JavaScript-konsoli"
+
+#: menu.cmd_shell.tab
+msgid "JavaScript Shell"
+msgstr "JavaScript-kuori"
+
+#: menu.cmd_xuleditor.tab
+msgid "XUL Editor"
+msgstr "XUL-muokkaustyökalu"
+
+#: menu.cmd_fieldmapper.tab
+msgid "Fieldmapper"
+msgstr "Kenttien kartoitustyökalu"
+
+#: menu.cmd_public_opac.tab
+msgid "OPAC"
+msgstr "Verkkokirjasto"
+
+#: menu.cmd_extension_manager.tab
+msgid "Extension Manager"
+msgstr "Laajennusten hallintatyökalu"
+
+#: menu.cmd_theme_manager.tab
+msgid "Theme Manager"
+msgstr "Teemojen hallintatyökalu"
+
+#: menu.cmd_shutdown.prompt
+msgid "Exit Evergreen completely?"
+msgstr "Poistutaanko Evergreenistä kokonaan?"
+
+#: menu.spawn_search.msg
+msgid "Editor would like to search for: %1$s"
+msgstr "Muokkaustyökalu haluaisi etsiä: %1$s"
+
+#: menu.cmd_verify_credentials.tabname
+msgid "Verify Credentials"
+msgstr "Varmista valtuutukset"
+
+#: menu.close_all_tabs.error
+msgid "Error closing all tabs"
+msgstr "Virhe kaikkien välilehtien sulkemisessa"
+
+#: menu.new_tab.tab
+msgid "Tab"
+msgstr "Välilehti"
+
+#: menu.new_tab.max_tab_dialog
+msgid ""
+"Sorry, we can't create any more tabs in this window.\n"
+"Would you like to create a new tab in another window?"
+msgstr ""
+"Valitettavasti tähän ikkunaan ei voi luoda enempää välilehtiä.\n"
+"Haluatko luoda uuden välilehden uuteen ikkunaan?"
+
+#: main.session_cookie.error
+msgid "Error setting session cookie: %1$s"
+msgstr "Virhe asetettaessa istunnon evästettä: %1$s"
+
+#: menu.set_tab.error
+msgid "pause for error"
+msgstr "keskeytä virheen vuoksi"
+
+#: menu.reset_network_stats
+msgid "Reset network activity summary?"
+msgstr "Nollataanko verkon aktiivisuuden yhteenveto?"
+
+#: main.testing
+msgid "Testing"
+msgstr "Testataan"
+
+#: main.transaction_export.title
+msgid "Save Transaction File As"
+msgstr "Tallenna tapahtumatiedosto nimellä"
+
+#: main.transaction_export.prompt
+msgid "Would you like to overwrite the existing file %1$s?"
+msgstr "Haluatko kirjoittaa olemassaolevan tiedoston %1$s päälle?"
+
+#: main.transaction_export.prompt.title
+msgid "Transaction Export Warning"
+msgstr "Tapahtuman vientivaroitus"
+
+#: main.transaction_export.success.prompt
+msgid ""
+"Your transactions have been successfully exported to file %1$s. We strongly "
+"recommend that you now purge the transactions from this staff client.  Would "
+"you like for us to do this?"
+msgstr ""
+"Tapahtumasi on onnistuneesti viety tiedostoon %1$s. On erittäin "
+"suositeltavaa, että siivoat nyt tapahtumat tästä ohjelmasta. Haluatko tehdä "
+"tämän nyt?"
+
+#: main.transaction_export.success.title
+msgid "Transaction Export Successful"
+msgstr "Tapahtuman vienti onnistui"
+
+#: main.transaction_export.filename.error
+msgid ""
+"Error purging transactions:  Taking too long to find a unique filename for "
+"archival."
+msgstr ""
+"Virhe siivottaessa tapahtumia: Ainutkertaisen tiedostonimen löytämiseen "
+"arkistointia varten kului liian kauan."
+
+#: main.transaction_export.duplicate.warning
+msgid ""
+"Please note that you now have two sets of identical transactions.  Unless "
+"the set you just exported is solely for archival purposes, we run the risk "
+"of duplicate transactions being processed on the server."
+msgstr ""
+"Huomaa, että sinulla on nyt kaksi identtistä tapahtumasarjaa. Ellei juuri "
+"viemäsi sarja ole ainoastaan arkistointia varten, on olemassa vaara, että "
+"tapahtuma käsitellään kaksinkertaisena palvelimella."
+
+#: main.transaction_export.no_filename.error
+msgid ""
+"Either you did not choose a filename, or you tried to overwrite an existing "
+"file."
+msgstr ""
+"Et joko valinnut tiedostonimeä, tai yritit kirjoittaa olemassaolevan "
+"tiedoston päälle."
+
+#: main.transaction_export.no_transactions.error
+msgid "There are no outstanding transactions to export."
+msgstr "Selvittämättömiä tapahtumia ei ollut vietäväksi."
+
+#: main.transaction_import.outstanding.error
+msgid ""
+"There are already outstanding transactions on this staff client.  Upload "
+"these first."
+msgstr "Ohjelmassa on selvittämättömiä tapahtumia. Lataa ne ensin."
+
+#: main.transaction_import.title
+msgid "Import Transaction File"
+msgstr "Tuo tapahtumatiedosto"
+
+#: main.transaction_import.delete.prompt
+msgid ""
+"Your transactions have been successfully migrated to this staff client.\n"
+"\n"
+"We recommend that you delete the external copy.  Would you like for us to "
+"delete %1$s?"
+msgstr ""
+"Tapahtumasi on onnistuneesti siirretty tähän ohjelmaan.\n"
+"\n"
+"Suosittelemme, että poistat nyt ulkoisen kopion. Haluatko poistaa tiedoston "
+"%1$s?"
+
+#: main.transaction_import.success
+msgid "Transaction Import Successful"
+msgstr "Tapahtuman tuonti onnistui"
+
+#: main.on_debug.clear_cache
+msgid "cache cleared"
+msgstr "välimuisti tyhjennetty"
+
+#: main.on_debug.debug
+msgid "debug the debug :D"
+msgstr "debuggaa debug :D"
+
+#: main.new_window_btn.login_first_warning
+msgid "Please login first!"
+msgstr "Kirjaudu ensin sisään!"
+
+#: main.settings.migrate
+msgid ""
+"This version of the staff client stores local settings in a different "
+"location than your previous installation.  Should we attempt to migrate "
+"these settings?"
+msgstr ""
+"Tämä ohjelmaversio tallentaa paikalliset asetukset eri sijaintiin kuin "
+"aiempi versiosi. Yritetäänkö näiden asetusten siirtoa?"
+
+#: main.settings.migrate.failed
+msgid ""
+"WARNING: Unable to migrate legacy settings.  The settings and configuration "
+"files appear to exist in multiple locations. \n"
+"To resolve this problem manually, please consider:\n"
+"\t%1$s\n"
+"which is in the directory where we want to store settings for the current "
+"operating system account, and:\n"
+"\t%2$s\n"
+"which is where we used to store such information.\n"
+msgstr ""
+"VAROITUS: Vanhojen asetusten siirto ei onnistu. Asetukset ja "
+"määritystiedostot näyttävät löytyvän useista sijainneista. \n"
+"Jos haluat ratkaista tämän ongelman manuaalisesti, ota huomioon:\n"
+"\t%1$s\n"
+"joka on hakemistossa, johon haluamme tallentaa nykyisen "
+"käyttöjärjestelmätilin asetukset, sekä:\n"
+"\t%2$s\n"
+"missä näitä tietoja aiemmin säilytettiin.\n"
+
+#: main.settings.migrate.confirm
+msgid ""
+"Move the settings and configuration files from\n"
+"%1$s\n"
+"to\n"
+"%2$s?"
+msgstr ""
+"Siirretäänkö asetukset ja määritystiedostot kohteesta\n"
+"%1$s\n"
+"kohteeseen\n"
+"%2$s?"
+
+#: main.settings.migrate.error
+msgid "Error trying to move %1$s to directory %2$s"
+msgstr "Virhe yritettäessä siirtää kohdetta %1$s hakemistoon %2$s"
+
+#: network.override.exceptions
+msgid "Exceptions"
+msgstr "Poikkeukset"
+
+#: network.override.override
+msgid "Override "
+msgstr "Ohita"
+
+#: network.override.force.prompt
+msgid "Force this action?"
+msgstr "Pakotetaanko tämä toiminto?"
+
+#: network.ignore_errors
+msgid "Ignore Errors"
+msgstr "Ohita virheet"
+
+#: network.method_not_found.error
+msgid "Method not found for %1$s"
+msgstr "Menetelmää ei löytynyt kohteelle %1$s"
+
+#: network.new_session.authorize
+msgctxt "network.new_session.authorize"
+msgid "Authorize"
+msgstr "Valtuuta"
+
+#: network.new_session.expired
+msgid "Session Expired"
+msgstr "Istunto vanhentunut"
+
+#: network.new_session.expired.prompt
+msgid "Please enter the credentials for a new login session."
+msgstr "Syötä valtuutukset uutta sisäänkirjautumisistuntoa varten."
+
+#: network.new_session.operator_change
+msgid "Operator Change"
+msgstr "Käyttäjän vaihto"
+
+#: network.new_session.operator_change.prompt
+msgid ""
+"Please enter the credentials for the new login session.  Note that the "
+"previous session is still active."
+msgstr ""
+"Syötä valtuutukset uutta sisäänkirjautumisistuntoa varten. Huomaa, että "
+"edellinen istunto on yhä aktiivinen."
+
+#: network.permission.authorize
+msgctxt "network.permission.authorize"
+msgid "Authorize"
+msgstr "Valtuuta"
+
+#: network.permission.description.brief
+msgid "Permission Denied: %1$s"
+msgstr "Ei oikeutta: %1$s"
+
+#: network.permission.description.full
+msgid ""
+"Another staff member with the above permission may authorize this specific "
+"action.  Please notify your library administrator if you need this "
+"permission.  If you feel you have received this exception in error, please "
+"inform your friendly Evergreen developers or helpdesk staff of the above "
+"permission and this debug information: %1$s"
+msgstr ""
+"Toinen henkilökunnan jäsen, jolla on ylläoleva oikeus, voi valtuuttaa tämän "
+"toiminnon. Ota yhteyttä kirjastojärjestelmän ylläpitäjään, jos tarvitset "
+"tämän oikeuden. Jos uskot erheellisesti saaneesi tämän poikkeuksen, ilmoita "
+"asiasta Evergreenin kehittäjille tai ylläolevasta oikeudesta vastaavalle "
+"tukipalvelulle ja anna heille nämä debug-tiedot: %1$s"
+
+#: network.server_or_method.error
+msgid "Server or method error"
+msgstr "Palvelin- tai menetelmävirhe"
+
+#: network.server.failure.exception
+msgid ""
+"Network or server failure.  Please check your Internet connection to %1$s "
+"and choose Retry Network.  If you need to enter Offline Mode, choose Ignore "
+"Errors in this and subsequent dialogs.  If you believe this error is due to "
+"a bug in Evergreen and not network problems, please contact your help desk "
+"or friendly Evergreen administrators, and give them this information:"
+msgstr ""
+"Verkko- tai palvelinvirhe. Tarkista Internet-yhteytesi kohteeseen %1$s ja "
+"valitse Yritä verkkoa uudelleen. Jos sinun on siirryttävä offline-tilaan, "
+"valitse Ohita virheet tässä ja seuraavissa ikkunoissa. Jos uskot, että virhe "
+"johtuu Evergreenin viasta eikä verkko-ongelmista, ota yhteyttä "
+"tukipalveluusi tai Evergreen-ylläpitäjiin ja anna heille nämä tiedot:"
+
+#: network.server.method
+msgid "method=%1$s"
+msgstr "menetelmä=%1$s"
+
+#: network.server.params
+msgid "params=%1$s"
+msgstr "parametrit=%1$s"
+
+#: network.server.thrown_label
+msgid "THROWN:"
+msgstr "HEITETTY:"
+
+#: network.server.status_label
+msgid "STATUS:"
+msgstr "TILA:"
+
+#: network.network_failure
+msgid "Network Failure"
+msgstr "Verkkovirhe"
+
+#: network.retry_network
+msgid "Retry Network"
+msgstr "Yritä verkkoa uudelleen"
+
+#: network.unknown_status
+msgid "Unknown status"
+msgstr "Tuntematon tila"
+
+#: network.window_title.error
+msgid "Error setting window titles to match new login"
+msgstr ""
+"Virhe asetettaessa ikkunoiden otsikoita vastaamaan uutta sisäänkirjautumista"
+
+#: openils.global_util.clear_cache.error
+msgid "Problem clearing the cache: %1$s"
+msgstr "Ongelma välimuistin tyhjennyksessä: %1$s"
+
+#: openils.global_util.clipboard.error
+msgid "Clipboard action failed: %1$s"
+msgstr "Leikepöytätoiminto epäonnistui: %1$s"
+
+#: openils.global_util.clipboard
+msgid "Copied \"%1$s\" to clipboard."
+msgstr "\"%1$s\" kopioitu leikepöydälle."
+
+#: openils.global_util.content_window_jsobject.error
+msgid "Error with get_contentWindow(%1$s) and wrappedJSObject: %2$s"
+msgstr "Virhe: get_contentWindow(%1$s) ja wrappedJSObject: %2$s"
+
+#: openils.global_util.content_window.error
+msgid "Error with get_contentWindow(%1$s): %2$s"
+msgstr "Virhe: get_contentWindow(%1$s): %2$s"
+
+#: openils.global_util.font_size.error
+msgid "Error adjusting the font size: %1$s"
+msgstr "Virhe fonttikoon muuttamisessa: %1$s"
+
+#: list.row_fetch_warning
+msgid ""
+"WARNING: Only %1$s out of %2$s rows in this list have been retrieved for "
+"immediate viewing.  Sorting this list requires that all these rows be "
+"retrieved, and this may take some time and lag the staff client.  Would you "
+"like to proceed?"
+msgstr ""
+"VAROITUS: Vain %1$s / %2$s riviä tästä luettelosta on haettu välitöntä "
+"näyttöä varten. Tämän luettelon lajittelu edellyttää, että kaikki rivit "
+"haetaan, mikä voi kestää jonkin aikaa ja hidastaa henkilökuntapäätteen "
+"toimintaa. Haluatko jatkaa?"
+
+#: list.columns_saved
+msgid "Column configuration saved."
+msgstr "Sarakemääritykset tallennettu."
+
+#: list.column_save_disabled
+msgid "Column configuration save disabled by server policy."
+msgstr ""
+"Sarakemääritysten tallennus otettu pois käytöstä palvelinsääntöjen mukaan."
+
+#: list.row_retrieving
+msgid "Retrieving..."
+msgstr "Haetaan..."
+
+#: list.save_csv_as
+msgid "Save List CSV As..."
+msgstr "Tallenna CSV-luettelo nimellä..."
+
+#: list.actions.menu.label
+msgid "List Actions"
+msgstr "Luettelotoiminnot"
+
+#: list.actions.menu.accesskey
+msgctxt "list.actions.menu.accesskey"
+msgid "L"
+msgstr "L"
+
+#: list.actions.field_to_clipboard.label
+msgid "Copy Field from Selected Row to Clipboard"
+msgstr "Kopioi kenttä valitulta riviltä leikepöydälle"
+
+#: list.actions.field_to_clipboard.accesskey
+msgctxt "list.actions.field_to_clipboard.accesskey"
+msgid "C"
+msgstr "C"
+
+#: list.actions.csv_to_clipboard.label
+msgid "Copy List CSV to Clipboard"
+msgstr "Kopioi luettelon CSV leikepöydälle"
+
+#: list.actions.csv_to_clipboard.accesskey
+msgctxt "list.actions.csv_to_clipboard.accesskey"
+msgid "L"
+msgstr "L"
+
+#: list.actions.csv_to_printer.label
+msgid "Print List CSV"
+msgstr "Tulosta luettelon CSV"
+
+#: list.actions.csv_to_printer.accesskey
+msgid "P"
+msgstr "P"
+
+#: list.actions.extended_to_printer.label
+msgid "Print List Expanded Format"
+msgstr "Tulosta luettelo laajennetussa muodossa"
+
+#: list.actions.extended_to_printer.accesskey
+msgid "x"
+msgstr "x"
+
+#: list.actions.csv_to_file.label
+msgid "Save List CSV to File"
+msgstr "Tallenna luettelo CSV-tiedostoon"
+
+#: list.actions.csv_to_file.accesskey
+msgid "F"
+msgstr "F"
+
+#: list.actions.save_column_configuration.label
+msgid "Save Column Configuration"
+msgstr "Tallenna sarakemääritykset"
+
+#: list.actions.save_column_configuration.accesskey
+msgid "S"
+msgstr "S"
+
+#: list.dump_extended_format.record_separator
+msgid "=-=-="
+msgstr "=-=-="
+
+#: list.line_number
+msgid "#"
+msgstr "#"
+
+#: menu.cmd_survey_wizard.inadequate_perm
+msgid "You are lacking the CREATE_SURVEY permission and/or working locations."
+msgstr "Sinulla ei ole CREATE_SURVEY-oikeuksia ja/tai työsijainteja."
+
+#: menu.cmd_local_admin_fonts_and_sounds.tab
+msgid "Global Font and Sound Settings"
+msgstr "Yleiset fontti- ja ääniasetukset"
+
+#: menu.cmd_local_admin_printer.tab
+msgid "Printer Settings Editor"
+msgstr "Tulostinasetusten muokkaustyökalu"
+
+#: menu.cmd_local_admin_do_not_auto_attempt_print_setting.tab
+msgid "'Do Not Attempt Auto-Print' Setting"
+msgstr "'Älä yritä automaattista tulostusta'-asetus"
+
+#: menu.cmd_local_admin_closed_dates.tab
+msgid "Closed Dates Editor"
+msgstr "Suljettujen päivien muokkaustyökalu"
+
+#: menu.cmd_local_admin_copy_locations.tab
+msgid "Copy Locations Editor"
+msgstr "Nidesijaintien muokkaustyökalu"
+
+#: menu.cmd_local_admin_lib_settings.tab
+msgid "Library Settings Editor"
+msgstr "Kirjastoasetusten muokkaustyökalu"
+
+#: menu.cmd_local_admin_non_cat_types.tab
+msgid "Non-cataloged Types Editor"
+msgstr "Ei-luetteloitujen tyyppien muokkaustyökalu"
+
+#: menu.cmd_local_admin_stat_cats.tab
+msgid "Statistical Categories Editor"
+msgstr "Tilastollisten kategorioiden muokkaustyökalu"
+
+#: menu.cmd_local_admin_reports.tab
+msgid "Reports"
+msgstr "Raportit"
+
+#: menu.cmd_local_admin_age_overdue_circulations_to_lost.tab
+msgid "Age to Lost"
+msgstr "Ikäännytä kadonneeksi"
+
+#: menu.cmd_local_admin_cash_reports.tab
+msgid "Cash Reports"
+msgstr "Käteisraportit"
+
+#: menu.cmd_local_admin_transit_list.tab
+msgid "Transits"
+msgstr "Kuljetukset"
+
+#: menu.cmd_acq_create_invoice.tab
+msgid "New Invoice"
+msgstr "Uusi lasku"
+
+#: menu.cmd_acq_bib_search.tab
+msgid "MARC Federated Search"
+msgstr "MARC-tietueiden yhdistäminen"
+
+#: menu.cmd_acq_from_bib.tab
+msgid "Load Catalog Record IDs"
+msgstr "Lataa tietokannan tietuetunnukset"
+
+#: menu.cmd_acq_unified_search.tab
+msgid "Acquisitions Search"
+msgstr "Hankintahaku"
+
+#: menu.cmd_acq_upload.tab
+msgid "Load MARC Order Records"
+msgstr "Lataa MARC-tilaustietueet"
+
+#: menu.cmd_acq_new_brief_record.tab
+msgid "New Brief Record"
+msgstr "Uusi minitietue"
+
+#: menu.cmd_acq_po.tab
+msgid "Purchase Orders"
+msgstr "Ostotilaukset"
+
+#: menu.cmd_acq_user_requests.tab
+msgid "Patron Requests"
+msgstr "Asiakkaan hankintapyynnöt"
+
+#: menu.cmd_acq_claim_eligible.tab
+msgid "Claim-Ready Items"
+msgstr "Reklamoitavat niteet"
+
+#: menu.cmd_serial_batch_receive.tab
+msgid "Batch Receive"
+msgstr "Erävastaanotto"
+
+#: menu.cmd_booking_resource.tab
+msgid "Resources"
+msgstr "Aineistot"
+
+#: menu.cmd_booking_reservation.tab
+msgid "Reservations"
+msgstr "Erikoisvaraukset"
+
+#: menu.cmd_booking_reservation_pickup.tab
+msgid "Reservation Pickup"
+msgstr "Erikoisvarauksen nouto"
+
+#: menu.cmd_booking_reservation_return.tab
+msgid "Reservation Return"
+msgstr "Erikoisvarauksen palautus"
+
+#: menu.cmd_booking_pull_list.tab
+msgid "Booking Pull List"
+msgstr "Erikoisvarauslista"
+
+#: menu.cmd_booking_capture.tab
+msgid "Booking Capture"
+msgstr "Erikoisvarauksen kiinnitys"
+
+#: menu.cmd_authority_manage.tab
+msgid "Manage Authorities"
+msgstr "Hallitse auktoriteetteja"
+
+#: menu.cmd_search_prefs.tab
+msgid "Search Preferences"
+msgstr ""
+
+#: menu.local_admin.barcode_completion.tab
+msgid "Barcode Completion"
+msgstr "Tunnuksen täyttö"
+
+#: menu.local_admin.circ_matrix_matchpoint.tab
+msgid "Circulation Policies"
+msgstr "Lainaussäännöt"
+
+#: menu.local_admin.hold_matrix_matchpoint.tab
+msgid "Hold Policies"
+msgstr "Varaussäännöt"
+
+#: menu.local_admin.item_attribute_editor.tab
+msgid "Admin Item Attribute Editor"
+msgstr ""
+
+#: menu.local_admin.work_log.tab
+msgid "Work Log"
+msgstr "Työloki"
+
+#: menu.local_admin.patrons_due_refunds.tab
+msgid "Patrons With Negative Balances"
+msgstr "Asiakkaat, joiden saldo on negatiivinen"
+
+#: menu.circulation.staged_patrons.tab
+msgid "Pending Patrons"
+msgstr "Vireillä olevat asiakkaat"
+
+#: load_printer_settings_error_description
+msgid ""
+"Printer settings did not load cleanly with this version of Evergreen.  You "
+"should reconfigure your printer under Printer Settings Editor."
+msgstr ""
+"Tulostimen asetukset eivät latautuneet oikein tähän Evergreen-versioon. "
+"Määritä tulostimesi asetukset uudelleen tulostimen asetusten "
+"muokkaustyökalulla."
+
+#: load_printer_settings_error_title
+msgid "Printer Settings"
+msgstr "Tulostimen asetukset"
+
+#: staff.cat.util.copy_editor.batch_edit
+msgid "Batch Edit"
+msgstr "Erämuokkaus"
+
+#: staff.cat.util.copy_editor.batch_view
+msgid "Batch View"
+msgstr "Eränäkymä"
+
+#: staff.cat.util.copy_editor.edit
+msgid "Edit"
+msgstr "Muokkaa"
+
+#: staff.cat.util.copy_editor.view
+msgid "View"
+msgstr "Näytä"
+
+#: staff.circ.copy_status.add_volumes.perm_failure
+msgid "You do not have permission to add volumes to the workstation library."
+msgstr "Sinulla ei ole oikeutta lisätä nimekkeitä työasemakirjastoon."
+
+#: staff.circ.copy_status.add_volumes.title
+msgid "Add Volume/Item for Record # %1$s"
+msgstr "Lisää nide tietueeseen # %1$s"
+
+#: staff.cat.copy_browser.marked_record_for_multi_home_indicator.tcn.label
+msgid "Record with TCN %1$s targeted for Multi-Bib items."
+msgstr "Tietue tietuenumerolla %1$s valittu Multi-Bib-niteiden kohteeksi."
+
+#: staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label
+msgctxt "staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label"
+msgid "Record with ID %1$s targeted for Multi-Bib items."
+msgstr "Tietue tunnuksella %1$s valittu Multi-Bib-niteiden kohteeksi."
+
+#: staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label
+msgctxt "staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label"
+msgid "Record with TCN %1$s marked for overlay."
+msgstr "Tietue tietuenumerolla %1$s merkitty korvattavaksi."
+
+#: staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label
+msgctxt "staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label"
+msgid "Record with ID %1$s marked for overlay."
+msgstr "Tietue tunnuksella %1$s merkitty korvattavaksi."
+
+#: staff.cat.opac.marked_record_for_hold_transfer_indicator.tcn.label
+msgid "Record with TCN %1$s marked for title hold transfer."
+msgstr "Tietue numerolla %1$s merkitty nimekevarauksen siirtoon."
+
+#: staff.cat.opac.marked_record_for_hold_transfer_indicator.record_id.label
+msgid "Record with ID %1$s marked for title hold transfer."
+msgstr "Tietue tunnuksella %1$s merkitty nimekevarauksen siirtoon."
+
+#: staff.cat.opac.title_for_hold_transfer.destination_needed.label
+msgid "Need to mark a record as a Title Hold Transfer Destination first."
+msgstr "Tietue on ensin merkittävä nimekevaraussiirron kohteeksi."
+
+#: staff.cat.opac.title_for_hold_transfer.success.label
+msgid "Holds transferred."
+msgstr "Varaukset siirretty."
+
+#: staff.cat.opac.title_for_hold_transfer.failure.label
+msgid "Holds not transferred."
+msgstr "Varauksia ei siirretty."
+
+#: staff.cat.opac.related_items
+msgid "Related Lineitems"
+msgstr "Liittyvät nimikkeet"
+
+#: staff.cat.opac.serial_alt_mgmt
+msgid "Subscriptions"
+msgstr "Tilaukset"
+
+#: staff.cat.create_or_rebarcode_items
+msgid "Create or Re-barcode Items"
+msgstr "Luo niteitä tai määritä niteille uudet tunnukset"
+
+#: staff.cat.bib_source.can_have_copies.false
+msgid "Records from %1$s cannot have copies."
+msgstr "Tietueisiin kohteesta %1$s ei voi kuulua niteitä."
+
+#: printing.nothing_to_reprint
+msgid "Nothing to re-print"
+msgstr "Uudelleentulostettavaa ei ole"
+
+#: printing.prompt_for_external_print_cmd
+msgid ""
+"Enter external print command and parameters (use %receipt.txt% or %"
+"receipt.html% as the file containing the print data. Those values will be "
+"substituted with the proper path.):"
+msgstr ""
+"Syötä ulkoinen tulostuskomento ja parametrit (käytä tiedostoa %receipt.txt% "
+"tai %receipt.html% tiedostona, joka sisältää tulostustiedot. Nämä arvot "
+"korvataan oikealla polulla.):"
+
+#: printing.print_strategy_saved
+msgid "Print strategy (%1$s) for %2$s context saved to file system."
+msgstr ""
+"Tulostusstrategia (%1$s) tiedostojärjestelmään tallennetulle kontekstille %"
+"2$s."
+
+#: text_editor.prompt_for_external_cmd
+msgid ""
+"Enter external text editor command and parameters (use %letter.txt% as the "
+"file containing the text. This value will be substituted with the proper "
+"path.):"
+msgstr ""
+"Syötä ulkoinen tekstieditorikomento ja parametrit (käytä tiedostoa %"
+"letter.txt% tiedostona, joka sisältää tekstin. Tämä arvo korvataan oikealla "
+"polulla.):"
+
+#: menu.tab1.accesskey
+msgid "1"
+msgstr "1"
+
+#: menu.tab2.accesskey
+msgid "2"
+msgstr "2"
+
+#: menu.tab3.accesskey
+msgid "3"
+msgstr "3"
+
+#: menu.tab4.accesskey
+msgid "4"
+msgstr "4"
+
+#: menu.tab5.accesskey
+msgid "5"
+msgstr "5"
+
+#: menu.tab6.accesskey
+msgid "6"
+msgstr "6"
+
+#: menu.tab7.accesskey
+msgid "7"
+msgstr "7"
+
+#: menu.tab8.accesskey
+msgid "8"
+msgstr "8"
+
+#: menu.tab9.accesskey
+msgid "9"
+msgstr "9"
+
+#: menu.tab10.accesskey
+msgid "0"
+msgstr "0"
+
+#: generic.unsaved_data_warning
+msgid ""
+"This action may cause you to lose unsaved information in the current "
+"interface. Continue anyway?"
+msgstr ""
+"Tämän toiminnon johdosta voit menettää tallentamattomat tiedot nykyisessä "
+"käyttöliittymässä. Jatketaanko siitä huolimatta?"
+
+#: browser.reload.unsaved_data_warning
+msgid "This page may have unsaved data. Reload it anyway?"
+msgstr ""
+"Tällä sivulla voi olla tallentamattomia tietoja. Ladataanko sivu uudelleen "
+"siitä huolimatta?"
+
+#: menu.close_tab.unsaved_data_warning
+msgid "This tab may have unsaved data. Close it anyway?"
+msgstr ""
+"Tässä välilehdessä voi olla tallentamattomia tietoja. Suljetaanko välilehti "
+"siitä huolimatta?"
+
+#: menu.replace_tab.unsaved_data_warning
+msgid "This tab may have unsaved data. Replace it anyway?"
+msgstr ""
+"Tässä välilehdessä voi olla tallentamattomia tietoja. Korvataanko välilehti "
+"siitä huolimatta?"
+
+#: menu.close_window.unsaved_data_warning
+msgid "This window may have unsaved data. Close it anyway?"
+msgstr ""
+"Tässä ikkunassa voi olla tallentamattomia tietoja. Suljetaanko ikkuna siitä "
+"huolimatta?"
+
+#: menu.logoff.unsaved_data_warning
+msgid "This session may have unsaved data. Logoff anyway?"
+msgstr ""
+"Tässä istunnossa voi olla tallentamattomia tietoja. Kirjaudutaanko ulos "
+"siitä huolimatta?"
+
+#: menu.shutdown.unsaved_data_warning
+msgid "This application may have unsaved data. Exit it anyway?"
+msgstr ""
+"Tässä sovelluksessa voi olla tallentamattomia tietoja. Haluatko silti "
+"poistua?"
+
+#: hotkeys.Default
+#, fuzzy
+msgctxt "hotkeys.Default"
+msgid "Default"
+msgstr "Oletus"
+
+#: hotkeys.None
+msgid "No Hotkeys"
+msgstr "Ei pikanäppäimiä"
+
+#: barcode_choice.join_barcodes
+msgid "%1$s / %2$s"
+msgstr "%1$s / %2$s"
+
+#: barcode_choice.actor
+msgid "%1$s : %2$s, %3$s from %4$s (%5$s)"
+msgstr "%1$s : %2$s, %3$s kohteesta %4$s (%5$s)"
+
+#: barcode_choice.asset
+msgid "%1$s : %2$s from %3$s (%4$s)"
+msgstr "%1$s : %2$s kohteesta %3$s (%4$s)"
+
+#: barcode_choice.none
+msgid "None of the above"
+msgstr "Ei mikään ylläolevista"
+
+#: barcode_choice.prompt
+msgid ""
+"After auto completion multiple barcodes may match your input. Please choose "
+"the barcode you intended below."
+msgstr ""
+"Automaattisen täytön jälkeen useat tunnukset saattavat vastata syöttämääsi "
+"arvoa. Valitse haluamasi tunnus alta."
+
+#: barcode_choice.errors_found
+msgid ""
+"In addition to the options below, one or more errors were encountered on "
+"items not shown."
+msgstr ""
+"Alla olevien toimintojen lisäksi yksi tai useampia virheitä ilmeni niteissä, "
+"joita ei näytetä."
+
+#: barcode_choice.title
+msgid "Barcode Choice"
+msgstr "Tunnuksen valinta"
+
+#: barcode_choice.choice_label
+msgid "Found Barcodes:"
+msgstr "Seuraavat tunnukset löydettiin:"
+
+#: barcode_choice.actor_label
+msgid "Patron : %1$s"
+msgstr "Asiakas : %1$s"
+
+#: barcode_choice.asset_label
+msgid "Item : %1$s"
+msgstr "Nide : %1$s"
+
+#: barcode_choice.serial_label
+msgid "Serial : %1$s"
+msgstr "Sarjanumero : %1$s"
+
+#: barcode_choice.booking_label
+msgid "Booking : %1$s"
+msgstr "Erikoisvaraus: %1$s"
+
+#: staff.main.button_bar.none
+msgid "None"
+msgstr "Ei yhtään"
+
+#: staff.main.button_bar.default
+#, fuzzy
+msgctxt "staff.main.button_bar.default"
+msgid "Default"
+msgstr "Oletus"
+
+#: util.hide_elements.title
+msgid "Hide UI Elements"
+msgstr "Piilota käyttöliittymäelementit"
+
+#: util.hide_elements.desc
+msgid ""
+"This is a list of hideable elements for this interface.  Check the ones that "
+"you want hidden and the library (and descendants) you want to affect:"
+msgstr ""
+"Tämä on luettelo käyttöliittymän piilotettavissa olevista elementeistä. "
+"Valitse ne, jotka haluat piilottaa, sekä kirjasto (ja sen alla olevat "
+"kohteet), johon haluat muutosten vaikuttavan:"
+
+#: util.hide_elements.current_setting_preamble
+msgid ""
+"Workstation library %1$s is currently hiding these elements based on a "
+"setting inherited from %2$s:"
+msgstr ""
+"Tällä hetkellä työasemakirjasto %1$s piilottaa nämä elementit perustuen "
+"asetukseen, joka on peritty kohteesta %2$s:"
+
+#: util.hide_elements.current_setting_nonexistent
+msgid "Workstation library %1$s is not currently hiding any of these elements."
+msgstr ""
+"Tällä hetkellä työasemakirjasto %1$s ei piilota mitään näistä elementeistä."
+
+#: util.hide_elements.update_setting.update_success
+msgid "Successfully updated the setting."
+msgstr "Asetus päivitetty onnistuneesti."
+
+#: util.hide_elements.update_setting.delete_success
+msgid "Successfully deleted the setting."
+msgstr "Asetus poistettu onnistuneesti."
+
+#: util.hide_elements.update_setting.failure
+msgid "Setting not changed."
+msgstr "Asetusta ei muutettu."
+
+#: util.hide_elements.missing_permission
+msgid "Missing permission %1$s"
+msgstr "Oikeus %1$s puuttuu"

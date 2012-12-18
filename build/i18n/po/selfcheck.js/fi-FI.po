@@ -1,0 +1,198 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2012-10-29 09:00:06-0400\n"
+"PO-Revision-Date: 2012-09-05 14:21+0300\n"
+"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"Language-Team: Finnish <evergreen@jns.fi>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.1\n"
+
+#: selfcheck.js:FAIL_PART_config_hold_matrix_test_max_holds
+msgid "The patron has reached the maximum number of holds"
+msgstr "Asiakkaan varausten määrä on saavuttanut enimmäisrajan"
+
+#: selfcheck.js:FAIL_PART_location.holdable
+msgid "The item's location is not holdable"
+msgstr "Niteen sijainti ei ole varattavissa"
+
+#: selfcheck.js:CHECKOUT_SUCCESS
+msgid "Checkout of item ${0} succeeded"
+msgstr "Niteen ${0} lainaus onnistui"
+
+#: selfcheck.js:FAIL_PART_no_ultimate_items
+msgid "The system could not find any items to match this hold request"
+msgstr "Järjestelmä ei löytänyt varauspyyntöä vastaavia niteitä"
+
+#: selfcheck.js:TOTAL_ITEMS_ACCOUNT
+msgid "Total items on account:  <b>${0}</b>."
+msgstr "Niteitä tilillä yhteensä:  <b>${0}</b>"
+
+#: selfcheck.js:WELCOME_BANNER
+msgid "Welcome, ${0}"
+msgstr "Tervetuloa, ${0}"
+
+#: selfcheck.js:FAIL_PART_config_hold_matrix_test_holdable
+msgid "Hold rules reject this item as unholdable"
+msgstr "Varaussäännöissä tämä nide on määritetty ei-varattavaksi"
+
+#: selfcheck.js:TOTAL_FINES_ACCOUNT
+msgid "Total fines on account: <b>$${0}</b>."
+msgstr "Maksuja tilillä yhteensä:  <b>$${0}</b>."
+
+#: selfcheck.js:FAIL_PART_asset_copy_status
+msgid "The item cannot circulate at this time"
+msgstr "Nidettä ei voida lainata tällä hetkellä"
+
+#: selfcheck.js:FAIL_PART_no_user
+msgid "The system could not find this patron"
+msgstr "Järjestelmä ei löytänyt asiakasta"
+
+#: selfcheck.js:FAIL_PART_transit_range
+msgid "The item cannot transit this far"
+msgstr "Nidettä ei voida kuljettaa näin kauas"
+
+#: selfcheck.js:WORKSTATION_REQUIRED
+msgid ""
+"A workstation is required to log in to selfcheck.  You can set the  workstation name with URL param 'ws'.  \n"
+"\n"
+"Would you like to register a new workstation for this self-check interface?"
+msgstr ""
+"Määritä työasema itselainausta varten.  Voit määrittää työaseman nimen URL-"
+"parametrilla 'ws'.  \n"
+"\n"
+"Haluatko rekisteröidä uuden työaseman itselainauksen käyttöliittymäksi?"
+
+#: selfcheck.js:FAIL_PART_config_circ_matrix_test_total_copy_hold_ratio
+msgid "The total item-to-hold ratio is too low"
+msgstr "Niteet/varaukset-kokonaissuhde on liian alhainen"
+
+#: selfcheck.js:ALREADY_OUT
+msgid "Item ${0} is already checked out"
+msgstr "Nide ${0} on jo lainattu"
+
+#: selfcheck.js:FAIL_PART_config_circ_matrix_test_available_copy_hold_ratio
+msgid "The available item-to-hold ratio is too low"
+msgstr "Lainattavissa olevien niteiden ja varausten suhde on liian alhainen"
+
+#: selfcheck.js:HOLD_STATUS_READY
+msgid "Ready for pickup"
+msgstr "Noudettavissa"
+
+#: selfcheck.js:FAIL_PART_circ_holds_target_skip_me
+msgid "The item's circulation library does not fulfill holds"
+msgstr "Kyseisen sijaintipaikan nidettä ei voi varata"
+
+#: selfcheck.js:HOLD_STATUS_WAITING
+msgid "#${0} in line with ${1} copies"
+msgstr "#${0} jonossa, ${1} kappaletta"
+
+#: selfcheck.js:RENEW_SUCCESS
+msgid "Renewal of item ${0} succeeded"
+msgstr "Niteen ${0} uusiminen onnistui"
+
+#: selfcheck.js:FAIL_PART_config_circ_matrix_circ_mod_test
+msgid "The patron has too many items of this type checked out"
+msgstr "Asiakkaalla on liikaa tämän aineistolajin lainoja"
+
+#: selfcheck.js:TOTAL_HOLDS
+msgid "You have <b>${0}</b> total holds."
+msgstr "Sinulla on yhteensä <b>${0}</b> varausta."
+
+#: selfcheck.js:ITEM_NOT_CATALOGED
+msgid "Item ${0} was not found in the system.  Try re-scanning the item."
+msgstr "Nidettä ${0} ei löytynyt järjestelmästä.  Syötä nidetunnus uudelleen."
+
+#: selfcheck.js:FAIL_PART_actor_usr_barred
+msgid "The patron is barred"
+msgstr "Asiakas on suljettu pois"
+
+#: selfcheck.js:PAYMENT_INVALID_USER_XACT_ID
+msgid ""
+"We cannot proceed with the payment, because your account was updated from "
+"another location.  Please refresh the interface or log out and back in to "
+"retrieve the latest account information"
+msgstr ""
+"Emme voi suorittaa maksua loppuun, koska tiliäsi päivitettiin toisesta "
+"sijainnista. Lataa sivu uudelleen tai kirjaudu ulos ja jälleen takaisin, "
+"niin uusimmat tilitiedot päivittyvät"
+
+#: selfcheck.js:FAIL_PART_status.holdable
+msgid "The item is not in a holdable status"
+msgstr "Niteen tila on ei-varattava"
+
+#: selfcheck.js:CC_PAYABLE_BALANCE
+msgid "Total amount to pay: $${0}"
+msgstr "Maksettava yhteensä: $${0}"
+
+#: selfcheck.js:FAIL_PART_no_item
+msgid "The system could not find this item"
+msgstr "Järjestelmä ei löytänyt nidettä"
+
+#: selfcheck.js:FAIL_PART_no_matchpoint
+msgid "System rules do not define how to handle this item"
+msgstr "Järjestelmäsäännöissä ei määritetä, kuinka nidettä tulee käsitellä"
+
+#: selfcheck.js:FAIL_PART_asset_copy_circulate
+msgid "The item does not circulate"
+msgstr "Nidettä ei lainata"
+
+#: selfcheck.js:LOGIN_FAILED
+msgid "Login for ${0} failed"
+msgstr "Käyttäjän ${0} kirjautuminen epäonnistui"
+
+#: selfcheck.js:GENERIC_CIRC_FAILURE
+msgid "Unable to check out item ${0}.  Please see staff."
+msgstr "Niteen ${0} lainaus ei onnistu.  Ota yhteyttä henkilökuntaan."
+
+#: selfcheck.js:MAX_RENEWALS
+msgid "No more renewals allowed for item ${0}"
+msgstr "Nidettä ${0} ei voi uusia."
+
+#: selfcheck.js:HOLDS_READY_FOR_PICKUP
+msgid "You have <b>${0}</b> item(s) ready for pickup."
+msgstr "<b>${0}</b> noudettavissa olevaa nidettä."
+
+#: selfcheck.js:FAIL_PART_item.holdable
+msgid "The item is not holdable"
+msgstr "Nidettä ei voi varata"
+
+#: selfcheck.js:FAIL_PART_config_circ_matrix_test_circulate
+msgid "Circulation rules reject this item as non-circulatable"
+msgstr "Lainaussäännöissä tämä nide on määritetty ei-lainattavaksi"
+
+#: selfcheck.js:OPEN_CIRCULATION_EXISTS
+msgid "Item ${0} is already checked out to another user"
+msgstr "Nide ${0} on jo lainattu toiselle käyttäjälle"
+
+#: selfcheck.js:WORKSTATION_EXISTS
+msgid ""
+"This workstation has already been registered.  Would you like to use it for "
+"this self-check station?"
+msgstr ""
+"Työasema on jo rekisteröity. Haluatko käyttää sitä itsetarkistuksen asemana?"
+
+#: selfcheck.js:UNKNOWN_ERROR
+msgid "An unhandled exception occurred with error code ${0}"
+msgstr "Käsittelemätön poikkeus ilmeni virhekoodilla ${0}"
+
+#: selfcheck.js:FAIL_PART_asset_copy_location_circulate
+msgid "Items from this shelving location do not circulate"
+msgstr "Tähän hyllysijaintiin kuuluvia niteitä ei lainata"
+
+#: selfcheck.js:TOTAL_ITEMS_SESSION
+msgid "Total items this session: <b>${0}</b>."
+msgstr "Niteitä yhteensä tässä istunnossa: <b>${0}</b>."
+
+#: selfcheck.js:FAIL_PART_config_rule_age_hold_protect_prox
+msgid "The item is too new to transit this far"
+msgstr "Nide on liian uusi kuljetettavaksi näin kauas"
+
+#: selfcheck.js:TOTAL_FINES_SELECTED
+msgid "Selected total: $${0}"
+msgstr "Valittu yhteensä: $${0}"

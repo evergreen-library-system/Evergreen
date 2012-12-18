@@ -1,0 +1,502 @@
+# extracted from ../../Open-ILS/web/opac/locale/en-US/conify.dtd
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-29 08:58+0300\n"
+"PO-Revision-Date: 2012-09-13 18:32+0300\n"
+"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"Language-Team: Finnish <evergreen@jns.fi>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Translate Toolkit 1.9.0\n"
+"X-Accelerator-Marker: &\n"
+"X-Project-Style: mozilla\n"
+
+#. Common entities
+#: conify.save_button.label
+msgctxt "conify.save_button.label"
+msgid "Save"
+msgstr "Tallenna"
+
+#: conify.delete_button.label
+msgctxt "conify.delete_button.label"
+msgid "Delete"
+msgstr "Poista"
+
+#: conify.new_kid_button.label
+msgctxt "conify.new_kid_button.label"
+msgid "New Child"
+msgstr "Uusi alatason elementti"
+
+#. Main configuration interface menu
+#: conify.admin.title
+msgid "Global :: Administration"
+msgstr "Yleinen :: Ylläpito"
+
+#: conify.admin.top_pane.title
+msgctxt "conify.admin.top_pane.title"
+msgid "Controls"
+msgstr "Hallinta"
+
+#: conify.admin.configure
+msgid "Configure your ILS"
+msgstr "Määritä ILS"
+
+#: conify.admin.left_pane.controls
+msgctxt "conify.admin.left_pane.controls"
+msgid "Controls"
+msgstr "Hallinta"
+
+#: conify.admin.org_unit_type.link
+msgid "Organization Types"
+msgstr "Organisaatiotyypit"
+
+#: conify.admin.org_unit.link
+msgctxt "conify.admin.org_unit.link"
+msgid "Organizational Units"
+msgstr "Organisaatioyksiköt"
+
+#: conify.admin.grp_tree.link
+msgctxt "conify.admin.grp_tree.link"
+msgid "Permission Groups"
+msgstr "Oikeusryhmät"
+
+#: conify.admin.perm_list.link
+msgid "Permissions"
+msgstr "Oikeudet"
+
+#: conify.admin.copy_status.link
+msgid "Copy Statuses"
+msgstr "Niteiden tilat"
+
+#: conify.admin.marc_code_maps.link
+msgid "Coded Value Maps"
+msgstr "Koodatut arvokartat"
+
+#: conify.admin.bottom_pane.title
+msgctxt "conify.admin.bottom_pane.title"
+msgid "Controls"
+msgstr "Hallinta"
+
+#. Organization unit type configuration interface
+#: conify.org_unit_type.title
+msgid "Global :: Actor :: Organization Unit Types"
+msgstr "Yleinen :: Toimija :: Organisaatioyksikköjen tyypit"
+
+#: conify.org_unit_type.type_tree.label
+msgid "Organization Unit Types"
+msgstr "Organisaatioyksikköjen tyypit"
+
+#: conify.org_unit_type.type_name
+msgid "Type Name"
+msgstr "Tyyppinimi"
+
+#: conify.org_unit_type.opac_label
+msgid "OPAC Label"
+msgstr "Verkkokirjastossa näkyvä nimi"
+
+#: conify.org_unit_type.parent_type
+msgid "Parent Type"
+msgstr "Ylätason elementin tyyppi"
+
+#: conify.org_unit_type.can_have_volumes
+msgid "Can Have Volumes and Copies"
+msgstr "Voi sisältää niteitä ja kappaleita"
+
+#: conify.org_unit_type.can_have_users
+msgid "Can Have Users"
+msgstr "Voi sisältää käyttäjiä"
+
+#. Organization unit configuration interface
+#: conify.org_unit.title
+msgid "Global :: Actor :: Organization Units"
+msgstr "Yleinen :: Toimija :: Organisaatioyksiköt"
+
+#: conify.org_unit.ou_tree.label
+msgctxt "conify.org_unit.ou_tree.label"
+msgid "Organizational Units"
+msgstr "Organisaatioyksiköt"
+
+#: conify.org_unit.editor_pane.title
+msgid "Main Settings"
+msgstr "Pääasetukset"
+
+#: conify.org_unit.editor_pane.org_unit_name
+msgid "Organization Unit Name"
+msgstr "Organisaatioyksikön nimi"
+
+#: conify.org_unit.editor_pane.org_unit_code
+msgid "Organization Unit Policy Code"
+msgstr "Organisaatioyksikön menettelykoodi"
+
+#: conify.org_unit.editor_pane.main_email
+msgid "Main Email Address"
+msgstr "Ensisijainen sähköpostiosoite"
+
+#: conify.org_unit.editor_pane.main_phone
+msgid "Main Phone Number"
+msgstr "Ensisijainen puhelinnumero"
+
+#: conify.org_unit.editor_pane.org_unit_type
+msgid "Organization Unit Type"
+msgstr "Organisaatioyksikön tyyppi"
+
+#: conify.org_unit.editor_pane.parent
+msgid "Parent Organization Unit"
+msgstr "Ylätason organisaatioyksikkö"
+
+#: conify.org_unit.editor_pane.opac_visible
+msgid "OPAC Visible"
+msgstr "OPAC näkyvissä"
+
+#. Hours of operation
+#: conify.org_unit.hoo_pane.title
+msgid "Hours of Operation"
+msgstr "Aukioloajat"
+
+#: conify.org_unit.hoo_pane.open_time
+msgid "Open time"
+msgstr "Avausaika"
+
+#: conify.org_unit.hoo_pane.close_time
+msgid "Close time"
+msgstr "Sulkemisaika"
+
+#: conify.org_unit.hoo_pane.closed
+msgid "Closed"
+msgstr "Suljettu"
+
+#: conify.org_unit.hoo_pane.monday
+msgid "Monday"
+msgstr "Maanantai"
+
+#: conify.org_unit.hoo_pane.tuesday
+msgid "Tuesday"
+msgstr "Tiistai"
+
+#: conify.org_unit.hoo_pane.wednesday
+msgid "Wednesday"
+msgstr "Keskiviikko"
+
+#: conify.org_unit.hoo_pane.thursday
+msgid "Thursday"
+msgstr "Torstai"
+
+#: conify.org_unit.hoo_pane.friday
+msgid "Friday"
+msgstr "Perjantai"
+
+#: conify.org_unit.hoo_pane.saturday
+msgid "Saturday"
+msgstr "Lauantai"
+
+#: conify.org_unit.hoo_pane.sunday
+msgid "Sunday"
+msgstr "Sunnuntai"
+
+#. Addresses
+#: conify.org_unit.addresses_pane.title
+msgid "Addresses"
+msgstr "Osoitteet"
+
+#: conify.org_unit.addresses_pane.physical.title
+msgid "Physical Address"
+msgstr "Fyysinen osoite"
+
+#: conify.org_unit.addresses_pane.holds.title
+msgid "Holds Address"
+msgstr "Varausten osoite"
+
+#: conify.org_unit.addresses_pane.mailing.title
+msgid "Mailing Address"
+msgstr "Postiosoite"
+
+#: conify.org_unit.addresses_pane.ill.title
+msgid "ILL Address"
+msgstr "ILL-osoite"
+
+#: conify.org_unit.addresses_pane.type
+msgid "Type"
+msgstr "Tyyppi"
+
+#: conify.org_unit.addresses_pane.valid
+msgid "Valid"
+msgstr "Kelvollinen"
+
+#: conify.org_unit.addresses_pane.street1
+msgid "Street 1"
+msgstr "Katuosoite 1"
+
+#: conify.org_unit.addresses_pane.street2
+msgid "Street 2"
+msgstr "Katuosoite 2"
+
+#: conify.org_unit.addresses_pane.city
+msgid "City"
+msgstr "Kaupunki"
+
+#: conify.org_unit.addresses_pane.state
+msgid "State"
+msgstr "Osavaltio"
+
+#: conify.org_unit.addresses_pane.zip
+msgid "Zip"
+msgstr "Postinumero"
+
+#: conify.org_unit.addresses_pane.country
+msgid "Country"
+msgstr "Maa"
+
+#: conify.org_unit.addresses_pane.county
+msgid "County"
+msgstr "Maakunta"
+
+#: conify.org_unit.addresses_pane.san
+msgid "SAN"
+msgstr "SAN"
+
+#. This is a highlighted label that is followed by the name of the organizational unit
+#: conify.org_unit.status_bar
+msgid "Now editing:"
+msgstr "Nyt muokataan:"
+
+#: conify.copy_status.title
+msgid "Global :: Configuration :: Copy Status"
+msgstr "Yleinen :: Asetukset :: Niteen tila"
+
+#: conify.copy_status.new_status.label
+msgid "New Status:"
+msgstr "Uusi tila:"
+
+#: conify.copy_status.new_status.name
+msgid "New Status Name"
+msgstr "Uuden tilan nimi"
+
+#: conify.copy_status.new_status.save
+msgctxt "conify.copy_status.new_status.save"
+msgid "Add"
+msgstr "Lisää"
+
+#: conify.copy_status.save_changes
+msgctxt "conify.copy_status.save_changes"
+msgid "Save Changes"
+msgstr "Tallenna muutokset"
+
+#: conify.copy_status.delete_selected
+msgctxt "conify.copy_status.delete_selected"
+msgid "Delete Selected"
+msgstr "Poista valitut"
+
+#: conify.marc_code_maps.title
+msgid "Global :: Configuration :: MARC Code Maps"
+msgstr "Yleinen :: Asetukset :: MARC-koodikartat"
+
+#: conify.marc_code_maps.audience_map.title
+msgid "Audience Map"
+msgstr "Yleisökartta"
+
+#: conify.marc_code_maps.audience_map.new.label
+msgid "New Audience Map:"
+msgstr "Uusi yleisökartta:"
+
+#: conify.marc_code_maps.new_code
+msgctxt "conify.marc_code_maps.new_code"
+msgid "New Code"
+msgstr "Uusi koodi"
+
+#: conify.marc_code_maps.new_value
+msgid "New Value"
+msgstr "Uusi arvo"
+
+#: conify.marc_code_maps.audience_map.description
+msgctxt "conify.marc_code_maps.audience_map.description"
+msgid "Description"
+msgstr "Kuvaus"
+
+#: conify.marc_code_maps.delete_selected
+msgctxt "conify.marc_code_maps.delete_selected"
+msgid "Delete Selected"
+msgstr "Poista valitut"
+
+#: conify.marc_code_maps.save_changes
+msgctxt "conify.marc_code_maps.save_changes"
+msgid "Save Changes"
+msgstr "Tallenna muutokset"
+
+#: conify.marc_code_maps.bib_level.title
+msgid "Bibliographic Level Map"
+msgstr "Bibliografinen tasokartta"
+
+#: conify.marc_code_maps.bib_level.new.label
+msgid "New Bibliographic Level:"
+msgstr "Uusi bibliografinen taso:"
+
+#: conify.marc_code_maps.add
+msgctxt "conify.marc_code_maps.add"
+msgid "Add"
+msgstr "Lisää"
+
+#: conify.marc_code_maps.item_form.title
+msgid "Item Form Map"
+msgstr "Nidemuotokartta"
+
+#: conify.marc_code_maps.item_form.new.label
+msgid "New Item Form:"
+msgstr "Uusi nidemuoto:"
+
+#: conify.marc_code_maps.item_type.title
+msgid "Item Type Map"
+msgstr "Nidetyyppikartta"
+
+#: conify.marc_code_maps.item_type.new.label
+msgid "New Item Type:"
+msgstr "Uusi nidetyyppi:"
+
+#: conify.marc_code_maps.language.title
+msgid "Language Map"
+msgstr "Kielikartta"
+
+#: conify.marc_code_maps.language.new.label
+msgid "New Language:"
+msgstr "Uusi kieli:"
+
+#: conify.marc_code_maps.literary_form.title
+msgid "Literary Form Map"
+msgstr "Kirjallisuusmuotokartta"
+
+#: conify.marc_code_maps.literary_form.new.label
+msgid "New Literary Form:"
+msgstr "Uusi kirjallisuusmuoto:"
+
+#: conify.marc_code_maps.video.title
+msgid "Videorecording Format Map"
+msgstr "Videotallennemuotokartta"
+
+#: conify.marc_code_maps.video.new.label
+msgid "New Video Recording Format:"
+msgstr "Uusi videotallennemuoto:"
+
+#. perm_list.html Entities
+#: conify.perm_list.permission_list.title
+msgid "Global :: Permission :: Permission List"
+msgstr "Yleinen :: Oikeudet :: Oikeusluettelo"
+
+#: conify.perm_list.new_code.label
+msgctxt "conify.perm_list.new_code.label"
+msgid "New Code"
+msgstr "Uusi koodi"
+
+#: conify.perm_list.add_button.label
+msgctxt "conify.perm_list.add_button.label"
+msgid "Add"
+msgstr "Lisää"
+
+#: conify.perm_list.save_changes.label
+msgctxt "conify.perm_list.save_changes.label"
+msgid "Save Changes"
+msgstr "Tallenna muutokset"
+
+#: conify.perm_list.delete_selected.label
+msgctxt "conify.perm_list.delete_selected.label"
+msgid "Delete Selected"
+msgstr "Poista valitut"
+
+#: conify.perm_list.new_permission.label
+msgid "New Permission:"
+msgstr "Uusi oikeus:"
+
+#. grp_tree.html Entities
+#: conify.grp_tree.group_tree.title
+msgid "Global :: Permission :: Group Tree"
+msgstr "Yleinen :: Oikeudet :: Ryhmäpuu"
+
+#: conify.grp_tree.permission_groups.label
+msgctxt "conify.grp_tree.permission_groups.label"
+msgid "Permission Groups"
+msgstr "Oikeusryhmät"
+
+#: conify.grp_tree.group_config.label
+msgid "Group Configuration"
+msgstr "Ryhmäasetukset"
+
+#: conify.grp_tree.group_name.label
+msgid "Group Name"
+msgstr "Ryhmän nimi"
+
+#: conify.grp_tree.description.label
+msgctxt "conify.grp_tree.description.label"
+msgid "Description"
+msgstr "Kuvaus"
+
+#: conify.grp_tree.permission_interval.label
+msgid "Permission Interval"
+msgstr "Oikeusväli"
+
+#: conify.grp_tree.hold_priority.label
+msgid "Hold Priority"
+msgstr "Varauksen prioriteetti"
+
+#: conify.grp_tree.editing_permission.label
+msgid "Editing Permission"
+msgstr "Muokkausoikeus"
+
+#: conify.grp_tree.parent_group.label
+msgid "Parent Group"
+msgstr "Ylätason ryhmä"
+
+#: conify.grp_tree.user_group.label
+msgid "User Group"
+msgstr "Käyttäjäryhmä"
+
+#: conify.grp_tree.save_button.label
+msgctxt "conify.grp_tree.save_button.label"
+msgid "Save"
+msgstr "Tallenna"
+
+#: conify.grp_tree.delete_button.label
+msgctxt "conify.grp_tree.delete_button.label"
+msgid "Delete"
+msgstr "Poista"
+
+#: conify.grp_tree.new_child_button.label
+msgctxt "conify.grp_tree.new_child_button.label"
+msgid "New Child"
+msgstr "Uusi alatason elementti"
+
+#: conify.grp_tree.group_permissions.title
+msgid "Group Permissions"
+msgstr "Ryhmäoikeudet"
+
+#: conify.grp_tree.new_mapping.label
+msgid "New Mapping"
+msgstr "Uusi kartoitus"
+
+#: conify.grp_tree.permission.label
+msgid "Permission:"
+msgstr "Oikeus:"
+
+#: conify.grp_tree.depth.label
+msgid "Depth:"
+msgstr "Syvyys:"
+
+#: conify.grp_tree.grantable.label
+msgid "Grantable:"
+msgstr "Myönnettävissä:"
+
+#: conify.grp_tree.add_mapping_button.label
+msgid "Add Mapping"
+msgstr "Lisää kartoitus"
+
+#: conify.grp_tree.save_changes.label
+msgctxt "conify.grp_tree.save_changes.label"
+msgid "Save Changes"
+msgstr "Tallenna muutokset"
+
+#: conify.grp_tree.remove_selected.label
+msgctxt "conify.grp_tree.remove_selected.label"
+msgid "Delete Selected"
+msgstr "Poista valitut"

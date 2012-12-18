@@ -1,0 +1,4319 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2012-10-29 09:00:05-0400\n"
+"PO-Revision-Date: 2012-10-17 11:18+0300\n"
+"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"Language-Team: Finnish <evergreen@jns.fi>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.1\n"
+
+# id::cmf.label__27 id::vqbrad.description__11
+#: 950.data.seed-values.sql:170 950.data.seed-values.sql:4791
+msgid "Internal ID"
+msgstr "Sisäinen tunnus"
+
+# id::ccvm.value__461
+#: 950.data.seed-values.sql:6272
+msgid "Vai"
+msgstr "vai"
+
+# id::cmc.label__title id::cza.label__5 id::cza.label__14 id::cza.label__23
+#: 950.data.seed-values.sql:97 950.data.seed-values.sql:368
+#: 950.data.seed-values.sql:389 950.data.seed-values.sql:408
+msgid "Title"
+msgstr "Nimeke"
+
+# id::cmf.label__1
+#: 950.data.seed-values.sql:112
+msgid "Series Title"
+msgstr "Sarjanimeke"
+
+# id::ccvm.value__520
+#: 950.data.seed-values.sql:6337
+msgid "Poetry"
+msgstr "Runous"
+
+# id::ccs.name__6
+#: 950.data.seed-values.sql:303
+msgid "In transit"
+msgstr "Kuljetettavana"
+
+# id::ccvm.value__339
+#: 950.data.seed-values.sql:6150
+msgid "Palauan"
+msgstr "palau"
+
+# id::ccs.name__15
+#: 950.data.seed-values.sql:312
+msgid "On reservation shelf"
+msgstr "Varaushyllyssä"
+
+# id::ccvm.value__226
+#: 950.data.seed-values.sql:6037
+msgid "Kyrgyz"
+msgstr "kirgiisi"
+
+# id::ccvm.value__552
+#: 950.data.seed-values.sql:6376
+msgid "Blu-ray disc"
+msgstr "Blu-ray-levy"
+
+# id::ccvm.value__531
+#: 950.data.seed-values.sql:6353
+msgid "Serial component part"
+msgstr "Sarjakomponentin osa"
+
+# id::ccvm.value__312
+#: 950.data.seed-values.sql:6123
+msgid "Niuean"
+msgstr "niue"
+
+# id::ccvm.value__131
+#: 950.data.seed-values.sql:5942
+msgid "Fanti"
+msgstr "fanti"
+
+# id::coust.label__config.settings_group.opac
+#: 950.data.seed-values.sql:2494
+msgid "OPAC"
+msgstr "Verkkokirjasto"
+
+# id::crcd.name__1
+#: 950.data.seed-values.sql:244
+msgid "7_days_0_renew"
+msgstr "7_päivää_0_uusintaa"
+
+# id::cza.label__3 id::cza.label__12 id::cza.label__21
+#: 950.data.seed-values.sql:364 950.data.seed-values.sql:385
+#: 950.data.seed-values.sql:404
+msgid "LCCN"
+msgstr "LCCN"
+
+# id::ccvm.value__274
+#: 950.data.seed-values.sql:6085
+msgid "Masai"
+msgstr "masai"
+
+# id::ccvm.value__40
+#: 950.data.seed-values.sql:5851
+msgid "Bambara"
+msgstr "bambara"
+
+# id::ccvm.value__395
+#: 950.data.seed-values.sql:6206
+msgid "Sindhi"
+msgstr "sindhi"
+
+# id::ccvm.value__258
+#: 950.data.seed-values.sql:6069
+msgid "Ganda"
+msgstr "ganda"
+
+# id::csp.label__22
+#: 950.data.seed-values.sql:33
+msgid "Alerting block on Circ"
+msgstr "Varoitusesto lainalla"
+
+# id::ccvm.value__370
+#: 950.data.seed-values.sql:6181
+msgid "Santali"
+msgstr "santali"
+
+# id::ccvm.value__110
+#: 950.data.seed-values.sql:5921
+msgid "Duala"
+msgstr "duala"
+
+# id::cmf.label__21
+#: 950.data.seed-values.sql:158
+msgid "ISMN"
+msgstr "ISMN"
+
+# id::ccvm.value__465
+#: 950.data.seed-values.sql:6276
+msgid "Votic"
+msgstr "vatja"
+
+# id::ccvm.value__522 id::ccvm.value__553
+# id::ccvm.value__522
+#: 950.data.seed-values.sql:6339 950.data.seed-values.sql:6377
+msgid "Unknown"
+msgstr "Tuntematon"
+
+# id::cubt.label__folks%3Acirc.view
+#: 950.data.seed-values.sql:4863
+msgid "View Circulations"
+msgstr "Näytä lainat"
+
+# id::aou.name__5
+#: 950.data.seed-values.sql:451
+msgid "Example Branch 2"
+msgstr "Esimerkkihaara 2"
+
+# id::ccvm.value__443
+#: 950.data.seed-values.sql:6254
+msgid "Tsonga"
+msgstr "tsonga"
+
+# id::pgt.name__6 id::coust.label__config.settings_group.system
+# id::pgt.name__6
+#: 950.data.seed-values.sql:1593 950.data.seed-values.sql:2485
+msgid "Acquisitions"
+msgstr "Hankinnat"
+
+# id::ccvm.value__216
+#: 950.data.seed-values.sql:6027
+msgid "Kanuri"
+msgstr "kanuri"
+
+# id::ccvm.value__457
+#: 950.data.seed-values.sql:6268
+msgid "Umbundu"
+msgstr "umbundu"
+
+# id::crrf.name__2
+#: 950.data.seed-values.sql:286
+msgid "10_cent_per_day"
+msgstr "10_senttiä_päivässä"
+
+# id::cmc.label__keyword
+#: 950.data.seed-values.sql:96
+msgid "Keyword"
+msgstr "Avainsana"
+
+# id::cubt.label__folks%3Acirc.renew
+#: 950.data.seed-values.sql:4864
+msgid "Renew Circulations"
+msgstr "Uusi lainat"
+
+# id::acsaf.name__70
+#: 950.data.seed-values.sql:10069
+msgid "See Also Tracing -- Chronological Subdivision"
+msgstr "Katso myös jäljitys -- kronologinen alaosasto"
+
+# id::vie.description__overlay.missing.sysid
+#: 950.data.seed-values.sql:9313
+msgid "Overlay failed due to missing system id"
+msgstr "Korvaaminen epäonnistui puuttuvan järjestelmätunnuksen vuoksi"
+
+# id::ccvm.value__72
+#: 950.data.seed-values.sql:5883
+msgid "Celtic (Other)"
+msgstr "Muut kelttiläiset kielet"
+
+# id::cst.value__2
+#: 950.data.seed-values.sql:19
+msgid "Barred"
+msgstr "Estetty"
+
+# id::ccvm.value__176
+#: 950.data.seed-values.sql:5987
+msgid "Hiligaynon"
+msgstr "hiligaino"
+
+# id::ccvm.value__210
+#: 950.data.seed-values.sql:6021
+msgid "Kachin"
+msgstr "kachin"
+
+# id::acsaf.name__3
+#: 950.data.seed-values.sql:10024
+msgid "Heading -- Meeting Name"
+msgstr "Otsikko -- tapaamisen nimi"
+
+# id::crmf.name__4
+#: 950.data.seed-values.sql:274
+msgid "overdue_max"
+msgstr "overdue_max"
+
+# id::coust.label__config.settings_group.recall
+#: 950.data.seed-values.sql:2500
+msgid "Recalls"
+msgstr "Takaisinkutsut"
+
+# id::pgt.name__15
+#: 950.data.seed-values.sql:1615
+msgid "Volunteers"
+msgstr "Vapaaehtoiset"
+
+# id::ccvm.value__518
+#: 950.data.seed-values.sql:6335
+msgid "Short stories"
+msgstr "Novellit"
+
+# id::ccvm.value__334
+#: 950.data.seed-values.sql:6145
+msgid "Pangasinan"
+msgstr "pangasinan"
+
+# id::cgf.label__history.circ.retention_age
+# id::cust.label__history.circ.retention_age
+# id::cust.description__history.circ.retention_age
+#: 950.data.seed-values.sql:8815 950.data.seed-values.sql:8865
+#: 950.data.seed-values.sql:8866
+msgid "Historical Circulation Retention Age"
+msgstr "Vanhojen lainaustietojen säilytysikä"
+
+# id::at.name__b
+#: 950.data.seed-values.sql:10141
+msgid "LC subject headings for children's literature"
+msgstr "LC-aiheotsikot lastenkirjallisuudelle"
+
+# id::coust.label__config.settings_group.global
+#: 950.data.seed-values.sql:2496
+msgid "Global"
+msgstr "Yleinen"
+
+# id::aiit.name__TAX
+#: 950.data.seed-values.sql:8722
+msgid "Tax"
+msgstr "Vero"
+
+# id::ccvm.value__336
+#: 950.data.seed-values.sql:6147
+msgid "Pampanga"
+msgstr "pampanga"
+
+# id::ccvm.value__299
+#: 950.data.seed-values.sql:6110
+msgid "Nahuatl"
+msgstr "nahuatl"
+
+# id::ccvm.value__478
+#: 950.data.seed-values.sql:6289
+msgid "Yiddish"
+msgstr "jiddish"
+
+# id::ccvm.value__93
+#: 950.data.seed-values.sql:5904
+msgid "Creoles and Pidgins, Portuguese-based (Other)"
+msgstr "ortugaliin perustuvat kreolit ja pidginit"
+
+# id::ccvm.value__438
+#: 950.data.seed-values.sql:6249
+msgid "Tongan"
+msgstr "tonga (Tonga)"
+
+# id::ccvm.value__189
+#: 950.data.seed-values.sql:6000
+msgid "Ijo"
+msgstr "ijo"
+
+# id::aiit.name__ITM
+#: 950.data.seed-values.sql:8726
+msgid "Non-library Item"
+msgstr "Kirjastoon kuulumaton"
+
+# id::ccvm.value__153
+#: 950.data.seed-values.sql:5964
+msgid "Gilbertese"
+msgstr "kiribati"
+
+# id::ccs.name__14
+#: 950.data.seed-values.sql:311
+msgid "Damaged"
+msgstr "Vahingoittunut"
+
+# id::cust.label__history.hold.retention_start
+# id::cust.description__history.hold.retention_start
+#: 950.data.seed-values.sql:8886 950.data.seed-values.sql:8887
+msgid "Historical Hold Retention Start Date"
+msgstr "Vanhojen varaustietojen säilytyksen aloituspäivä"
+
+# id::aout.name__5
+#: 950.data.seed-values.sql:438
+msgid "Bookmobile"
+msgstr "Kirjastoauto"
+
+# id::ccvm.value__217
+#: 950.data.seed-values.sql:6028
+msgid "Kawi"
+msgstr "kavi"
+
+# id::at.name__d
+#: 950.data.seed-values.sql:10143
+msgid "National Agricultural Library subject authority file"
+msgstr "Kansallisen maatalouskirjaston auktoriteettitiedosto"
+
+# id::coust.label__config.settings_group.gui
+#: 950.data.seed-values.sql:2487
+msgid "GUI"
+msgstr "Graafinen käyttöliittymä"
+
+# id::ccvm.value__228
+#: 950.data.seed-values.sql:6039
+msgid "Konkani"
+msgstr "konkani"
+
+# id::ccvm.value__302
+#: 950.data.seed-values.sql:6113
+msgid "Nauru"
+msgstr "nauru"
+
+# id::ccvm.value__494
+#: 950.data.seed-values.sql:6307
+msgid "General"
+msgstr "Yleinen"
+
+# id::ccvm.value__369
+#: 950.data.seed-values.sql:6180
+msgid "Sasak"
+msgstr "sasak"
+
+# id::ccs.name__0
+#: 950.data.seed-values.sql:297
+msgid "Available"
+msgstr "Lainattavissa"
+
+# id::crcd.name__6
+#: 950.data.seed-values.sql:254
+msgid "35_days_1_renew"
+msgstr "35_päivää_1_uusinta"
+
+# id::ccvm.value__247
+#: 950.data.seed-values.sql:6058
+msgid "Latin"
+msgstr "latina"
+
+# id::ccvm.value__485
+#: 950.data.seed-values.sql:6296
+msgid "Zulu"
+msgstr "zulu"
+
+# id::ccvm.value__542
+#: 950.data.seed-values.sql:6366
+msgid "Quadruplex"
+msgstr "Quadruplex"
+
+# id::ccvm.value__150
+#: 950.data.seed-values.sql:5961
+msgid "Georgian"
+msgstr "georgia"
+
+# id::ccvm.value__192
+#: 950.data.seed-values.sql:6003
+msgid "Iloko"
+msgstr "iloko"
+
+# id::ccvm.value__arc
+#: 950.data.seed-values.sql:5831
+msgid "Aramaic"
+msgstr "aramea"
+
+# id::ccvm.value__432
+#: 950.data.seed-values.sql:6243
+msgid "Tigrinya"
+msgstr "tigrinja"
+
+# id::ccvm.value__78 id::ccvm.value__440
+#: 950.data.seed-values.sql:5889 950.data.seed-values.sql:6251
+msgid "Truk"
+msgstr "chuuk"
+
+# id::ccvm.value__430
+#: 950.data.seed-values.sql:6241
+msgid "Tibetan"
+msgstr "tiibet"
+
+# id::cza.label__7 id::cza.label__16 id::cza.label__25
+# id::vqbrad.description__12
+#: 950.data.seed-values.sql:372 950.data.seed-values.sql:393
+#: 950.data.seed-values.sql:412 950.data.seed-values.sql:4792
+msgid "Publisher"
+msgstr "Julkaisija"
+
+# id::ccvm.value__197
+#: 950.data.seed-values.sql:6008
+msgid "Ingush"
+msgstr "inguusi"
+
+# id::csp.label__20
+#: 950.data.seed-values.sql:31
+msgid "Alerting Note, no blocks"
+msgstr "Varoitus, ei estoja"
+
+# id::ccvm.value__114
+#: 950.data.seed-values.sql:5925
+msgid "Dzongkha"
+msgstr "dzongkha"
+
+# id::ccvm.value__166 id::ccvm.value__167
+#: 950.data.seed-values.sql:5977 950.data.seed-values.sql:5978
+msgid "Guarani"
+msgstr "guarani"
+
+# id::ccvm.value__188
+#: 950.data.seed-values.sql:5999
+msgid "Sichuan Yi"
+msgstr "sichuannin-yi"
+
+# id::ccvm.value__60
+#: 950.data.seed-values.sql:5871
+msgid "Batak"
+msgstr "batak"
+
+# id::ccvm.value__107
+#: 950.data.seed-values.sql:5918
+msgid "Divehi"
+msgstr "divehi"
+
+# id::ccvm.value__376
+#: 950.data.seed-values.sql:6187
+msgid "Irish, Old (to 1100)"
+msgstr "muinaisiiri"
+
+# id::cbt.name__4
+#: 950.data.seed-values.sql:475
+msgid "Lost Materials Processing Fee"
+msgstr "Kadonneiden aineistojen käsittelymaksu"
+
+# id::ccvm.value__175
+#: 950.data.seed-values.sql:5986
+msgid "Herero"
+msgstr "herero"
+
+# id::pgt.name__14
+#: 950.data.seed-values.sql:1613
+msgid "Data Review"
+msgstr "Tietojen tarkistus"
+
+# id::crcd.name__3
+#: 950.data.seed-values.sql:248
+msgid "3_months_0_renew"
+msgstr "3_kuukautta_0_uusintaa"
+
+# id::acsaf.name__8
+#: 950.data.seed-values.sql:10028
+msgid "Heading -- General Subdivision"
+msgstr "Otsikko -- yleinen alaosasto"
+
+# id::pgt.name__12
+#: 950.data.seed-values.sql:1607
+msgid "System Administrator"
+msgstr "Järjestelmän ylläpitäjä"
+
+# id::ccvm.value__248
+#: 950.data.seed-values.sql:6059
+msgid "Latvian"
+msgstr "latvia"
+
+# id::ccvm.value__119
+#: 950.data.seed-values.sql:5930
+msgid "English"
+msgstr "englanti"
+
+# id::ccvm.value__487
+#: 950.data.seed-values.sql:6300
+msgid "Unknown or unspecified"
+msgstr "Tuntematon tai määrittämätön"
+
+# id::csg.label__sms
+#: 950.data.seed-values.sql:2504
+msgid "SMS Text Messages"
+msgstr "Tekstiviestit"
+
+# id::ccvm.value__495
+#: 950.data.seed-values.sql:6308
+msgid "Juvenile"
+msgstr "Nuoriso"
+
+# id::ccvm.value__77
+#: 950.data.seed-values.sql:5888
+msgid "Chinese"
+msgstr "kiina"
+
+# id::at.name__r
+#: 950.data.seed-values.sql:10146
+msgid "Art and Architecture Thesaurus"
+msgstr "Taiteen ja arkkitehtuurin synonyymisanakirja"
+
+# id::ccvm.value__190
+#: 950.data.seed-values.sql:6001
+msgid "Inuktitut"
+msgstr "inuktitut"
+
+# id::ccvm.value__295
+#: 950.data.seed-values.sql:6106
+msgid "Munda (Other)"
+msgstr "mundakielet"
+
+# id::ccvm.value__344
+#: 950.data.seed-values.sql:6155
+msgid "Pali"
+msgstr "pali"
+
+# id::ccvm.value__143
+#: 950.data.seed-values.sql:5954
+msgid "Gã"
+msgstr "ga"
+
+# id::ccvm.value__477
+#: 950.data.seed-values.sql:6288
+msgid "Yapese"
+msgstr "japi"
+
+# id::ccvm.value__ara
+#: 950.data.seed-values.sql:5830
+msgid "Arabic"
+msgstr "arabia"
+
+# id::ccvm.value__462
+#: 950.data.seed-values.sql:6273
+msgid "Venda"
+msgstr "venda"
+
+# id::ccvm.value__550
+#: 950.data.seed-values.sql:6374
+msgid "8 mm."
+msgstr "8 mm"
+
+# id::pgt.name__3
+#: 950.data.seed-values.sql:1587
+msgid "Staff"
+msgstr "Henkilökunta"
+
+# id::ccvm.value''in__169
+#: 950.data.seed-values.sql:5980
+msgid "Gwich"
+msgstr "gwitsin"
+
+# id::ccvm.value__202
+#: 950.data.seed-values.sql:6013
+msgid "Iroquoian (Other)"
+msgstr "irokeesikielet"
+
+# id::ccvm.value__240
+#: 950.data.seed-values.sql:6051
+msgid "Kutenai"
+msgstr "kutenai"
+
+# id::ccvm.value__327
+#: 950.data.seed-values.sql:6138
+msgid "Oriya"
+msgstr "orija"
+
+# id::cuat.label__9
+#: 950.data.seed-values.sql:11551
+msgid "Verification via opensrf"
+msgstr "Opensrf-varmennus"
+
+# id::cmf.label__2
+#: 950.data.seed-values.sql:115
+msgid "Abbreviated Title"
+msgstr "Lyhennetty otsikko"
+
+# id::ccvm.value__322
+#: 950.data.seed-values.sql:6133
+msgid "Nyankole"
+msgstr "nyankole"
+
+# id::acsaf.name__10
+#: 950.data.seed-values.sql:10030
+msgid "Heading -- Chronological Subdivision"
+msgstr "Otsikko -- kronologinen alaosasto"
+
+# id::coust.label__config.settings_group.receipt_template
+#: 950.data.seed-values.sql:2503
+msgid "Receipt Template"
+msgstr "Kuittipohja"
+
+# id::i18n_l.name__en-CA
+#: 950.data.seed-values.sql:332
+msgid "English (Canada)"
+msgstr "englanti (Kanada)"
+
+# id::ccvm.value__178
+#: 950.data.seed-values.sql:5989
+msgid "Hindi"
+msgstr "hindi"
+
+# id::ccvm.value__127
+#: 950.data.seed-values.sql:5938
+msgid "Ewondo"
+msgstr "ewondo"
+
+# id::i18n_l.description__es-MX
+#: 950.data.seed-values.sql:345
+msgid "Mexican Spanish"
+msgstr "Meksikon espanja"
+
+# id::acsaf.name__11
+#: 950.data.seed-values.sql:10031
+msgid "Heading -- Form Subdivision"
+msgstr "Otsikko -- kaavakkeen alaosasto"
+
+# id::ccvm.value__abk
+#: 950.data.seed-values.sql:5813
+msgid "Abkhaz"
+msgstr "abhaasi"
+
+# id::cmf.label__4
+#: 950.data.seed-values.sql:119
+msgid "Alternate Title"
+msgstr "Vaihtoehtoinen nimeke"
+
+# id::ccvm.value__87
+#: 950.data.seed-values.sql:5898
+msgid "Chamic languages"
+msgstr "tsam-kielet"
+
+# id::ccvm.value__515
+#: 950.data.seed-values.sql:6332
+msgid "Novels"
+msgstr "Romaanit"
+
+# id::ccvm.value__473
+#: 950.data.seed-values.sql:6284
+msgid "Wolof"
+msgstr "wolof"
+
+# id::ccvm.value__57
+#: 950.data.seed-values.sql:5868
+msgid "Bosnian"
+msgstr "bosnia"
+
+# id::ccvm.value__357
+#: 950.data.seed-values.sql:6168
+msgid "Romani"
+msgstr "romani"
+
+# id::ccvm.value__463
+#: 950.data.seed-values.sql:6274
+msgid "Vietnamese"
+msgstr "vietnam"
+
+# id::aout.opac_label__4
+#: 950.data.seed-values.sql:436
+msgid "This Specialized Library"
+msgstr "Tämä erikoistunut kirjasto"
+
+# id::ccvm.value__287
+#: 950.data.seed-values.sql:6098
+msgid "Manchu"
+msgstr "mantsu"
+
+# id::csp.label__21
+#: 950.data.seed-values.sql:32
+msgid "Note, no blocks"
+msgstr "Huomautus, ei estoja"
+
+# id::aou.name__1
+#: 950.data.seed-values.sql:443
+msgid "Example Consortium"
+msgstr "Esimerkkiyhteenliittymä"
+
+# id::i18n_l.name__ru-RU id::i18n_l.description__ru-RU id::ccvm.value__360
+#: 950.data.seed-values.sql:347 950.data.seed-values.sql:348
+#: 950.data.seed-values.sql:6171
+msgid "Russian"
+msgstr "venäjä"
+
+# id::ccvm.value__543
+#: 950.data.seed-values.sql:6367
+msgid "Laserdisc"
+msgstr "Optinen videolevy"
+
+# id::ccvm.value__148
+#: 950.data.seed-values.sql:5959
+msgid "Gbaya"
+msgstr "gbaja"
+
+# id::ccvm.value__218
+#: 950.data.seed-values.sql:6029
+msgid "Kazakh"
+msgstr "kazakki"
+
+# id::ccvm.value__433
+#: 950.data.seed-values.sql:6244
+msgid "Tiv"
+msgstr "tiv"
+
+# id::ccvm.value__458
+#: 950.data.seed-values.sql:6269
+msgid "Undetermined"
+msgstr "Määrittämätön"
+
+# id::ccvm.value__181
+#: 950.data.seed-values.sql:5992
+msgid "Hiri Motu"
+msgstr "hiri-motu"
+
+# id::coust.label__config.settings_group.holds
+#: 950.data.seed-values.sql:2491
+msgid "Holds"
+msgstr "Varauksia"
+
+# id::cnal.name__3
+#: 950.data.seed-values.sql:321
+msgid "No Access"
+msgstr "Ei oikeutta"
+
+# id::i18n_l.description__en-CA
+#: 950.data.seed-values.sql:333
+msgid "Canadian English"
+msgstr "Kanadan englanti"
+
+# id::aiit.name__SUB
+#: 950.data.seed-values.sql:8727
+msgid "Serial Subscription"
+msgstr "Sarjajulkaisutilaus"
+
+# id::ccvm.value__58
+#: 950.data.seed-values.sql:5869
+msgid "Braj"
+msgstr "bradz"
+
+# id::ccvm.value__44
+#: 950.data.seed-values.sql:5855
+msgid "Baltic (Other)"
+msgstr "balttilaiset kielet"
+
+# id::vie.description__import.item.invalid.deposit_amount
+#: 950.data.seed-values.sql:9324
+msgid "Invalid value for \"deposit_amount\""
+msgstr "Virheellinen arvo kohteelle \"deposit_amount\""
+
+# id::ccvm.value__516
+#: 950.data.seed-values.sql:6333
+msgid "Humor, satires, etc."
+msgstr "Huumori, satiiri jne."
+
+# id::cuat.label__7
+#: 950.data.seed-values.sql:11548
+msgid "SIP2 Proxy Login"
+msgstr "SIP2-välityspalvelimen sisäänkirjautuminen"
+
+# id::ccvm.value__509
+#: 950.data.seed-values.sql:6324
+msgid "Computer file"
+msgstr "Elektroninen aineisto"
+
+# id::ccvm.value__342
+#: 950.data.seed-values.sql:6153
+msgid "Philippine (Other)"
+msgstr "filippiiniläiset kielet"
+
+# id::acsaf.name__51
+#: 950.data.seed-values.sql:10057
+msgid "Subdivision Linking Entry -- Form Subdivision"
+msgstr "Alaosaston linkityskirjaus -- lomakkeen alaosasto"
+
+# id::ccvm.value__151
+#: 950.data.seed-values.sql:5962
+msgid "German"
+msgstr "saksa"
+
+# id::acqim.name__EDI
+#: 950.data.seed-values.sql:8729
+msgid "EDI"
+msgstr "EDI"
+
+# id::vie.description__import.item.duplicate.barcode
+#: 950.data.seed-values.sql:9308
+msgid "Import failed due to barcode collision"
+msgstr "Tuonti epäonnistui tunnusristiriidan vuoksi"
+
+# id::coust.label__config.settings_group.lib
+#: 950.data.seed-values.sql:2488
+msgid "Library"
+msgstr "Kirjasto"
+
+# id::ccvm.value__384
+#: 950.data.seed-values.sql:6195
+msgid "Slavic (Other)"
+msgstr "slaavilaiset kielet"
+
+# id::ccvm.value__42
+#: 950.data.seed-values.sql:5853
+msgid "Basque"
+msgstr "baski"
+
+# id::ccvm.value__446
+#: 950.data.seed-values.sql:6257
+msgid "Tumbuka"
+msgstr "tumbuka"
+
+# id::cbs.source__1
+#: 950.data.seed-values.sql:3
+msgid "oclc"
+msgstr "oclc"
+
+# id::pgt.name__11 id::coust.label__config.settings_group.serial
+#: 950.data.seed-values.sql:1604 950.data.seed-values.sql:2499
+msgid "Serials"
+msgstr "Sarjat"
+
+# id::ccvm.value__56
+#: 950.data.seed-values.sql:5867
+msgid "Bantu (Other)"
+msgstr "bantukielet"
+
+# id::acsaf.name__1
+#: 950.data.seed-values.sql:10022
+msgid "Heading -- Personal Name"
+msgstr "Otsikko -- henkilön nimi"
+
+# id::acsaf.name__43
+#: 950.data.seed-values.sql:10050
+msgid "Established Heading Linking Entry -- Meeting Name"
+msgstr "Vakiintunut otsikkolinkityskirjaus -- kokouksen nimi"
+
+# id::ccvm.value__277
+#: 950.data.seed-values.sql:6088
+msgid "Mandar"
+msgstr "mandar"
+
+# id::ccvm.value__530
+#: 950.data.seed-values.sql:6352
+msgid "Monographic component part"
+msgstr "Monografisen komponentin osa"
+
+# id::ccvm.value__549
+#: 950.data.seed-values.sql:6373
+msgid "D-2"
+msgstr "D-2"
+
+# id::ccvm.value__497
+#: 950.data.seed-values.sql:6312
+msgid "Manuscript language material"
+msgstr "Tekstikäsikirjoitus"
+
+# id::ccvm.value__75
+#: 950.data.seed-values.sql:5886
+msgid "Chechen"
+msgstr "tsetseeni"
+
+# id::ccvm.value__324
+#: 950.data.seed-values.sql:6135
+msgid "Nzima"
+msgstr "nzima"
+
+# id::ccvm.value__112
+#: 950.data.seed-values.sql:5923
+msgid "Dutch"
+msgstr "hollanti"
+
+# id::ccvm.value__232 id::ccvm.value__239
+#: 950.data.seed-values.sql:6043 950.data.seed-values.sql:6050
+msgid "Kusaie"
+msgstr "kosrae"
+
+# id::ccvm.value__117
+#: 950.data.seed-values.sql:5928
+msgid "Ekajuk"
+msgstr "ekajuk"
+
+# id::ccvm.value__163
+#: 950.data.seed-values.sql:5974
+msgid "Grebo"
+msgstr "grebo"
+
+# id::coust.label__config.settings_group.finances
+#: 950.data.seed-values.sql:2497
+msgid "Finances"
+msgstr "Talous"
+
+# id::crcd.name__2
+#: 950.data.seed-values.sql:246
+msgid "28_days_2_renew"
+msgstr "28_päivää_2_uusintaa"
+
+# id::ccvm.value__308
+#: 950.data.seed-values.sql:6119
+msgid "Nepali"
+msgstr "nepali"
+
+# id::ccvm.value__393
+#: 950.data.seed-values.sql:6204
+msgid "Skolt Sami"
+msgstr "saame, koltan-"
+
+# id::ccvm.value__133
+#: 950.data.seed-values.sql:5944
+msgid "Finnish"
+msgstr "suomi"
+
+# id::ccvm.value__51
+#: 950.data.seed-values.sql:5862
+msgid "Bihari"
+msgstr "bihari"
+
+# id::ccvm.value__470
+#: 950.data.seed-values.sql:6281
+msgid "Welsh"
+msgstr "kymri"
+
+# id::ccvm.value__331
+#: 950.data.seed-values.sql:6142
+msgid "Turkish, Ottoman"
+msgstr "osmani"
+
+# id::cmf.label__19 id::cza.label__6 id::cza.label__15 id::cza.label__24
+# id::vqbrad.description__6
+#: 950.data.seed-values.sql:154 950.data.seed-values.sql:370
+#: 950.data.seed-values.sql:391 950.data.seed-values.sql:410
+#: 950.data.seed-values.sql:4786
+msgid "ISSN"
+msgstr "ISSN"
+
+# id::ccvm.value__234
+#: 950.data.seed-values.sql:6045
+msgid "Kru"
+msgstr "kru-kielet"
+
+# id::coust.label__config.settings_group.booking
+#: 950.data.seed-values.sql:2501
+msgid "Booking"
+msgstr "Erikoisvaraukset"
+
+# id::ccvm.value__159
+#: 950.data.seed-values.sql:5970
+msgid "German, Old High (ca. 750-1050)"
+msgstr "muinaisyläsaksa (n. 750-1050 jaa.)"
+
+# id::ccvm.value__424
+#: 950.data.seed-values.sql:6235
+msgid "Temne"
+msgstr "temne"
+
+# id::ccvm.value__206
+#: 950.data.seed-values.sql:6017
+msgid "Judeo-Persian"
+msgstr "juutalaispersia"
+
+# id::cubt.label__folks
+#: 950.data.seed-values.sql:4860
+msgid "Friends"
+msgstr "Ystävät"
+
+# id::csp.label__1
+#: 950.data.seed-values.sql:23
+msgid "Patron exceeds fine threshold"
+msgstr "Asiakkaan maksut ylittävät lainauskieltorajan"
+
+# id::ccvm.value__102
+#: 950.data.seed-values.sql:5913
+msgid "Dayak"
+msgstr "dajakki"
+
+# id::ccvm.value__160
+#: 950.data.seed-values.sql:5971
+msgid "Gondi"
+msgstr "gondi"
+
+# id::ccvm.value__182
+#: 950.data.seed-values.sql:5993
+msgid "Hungarian"
+msgstr "unkari"
+
+# id::ccvm.value__bak
+#: 950.data.seed-values.sql:5849
+msgid "Bashkir"
+msgstr "baskiiri"
+
+# id::ccvm.value__212
+#: 950.data.seed-values.sql:6023
+msgid "Kamba"
+msgstr "kamba"
+
+# id::i18n_l.name__es-MX
+#: 950.data.seed-values.sql:344
+msgid "Spanish (Mexico)"
+msgstr "espanja (Meksiko)"
+
+# id::ccvm.value__507
+#: 950.data.seed-values.sql:6322
+msgid "Nonmusical sound recording"
+msgstr "Puheäänite"
+
+# id::pgt.name__2
+#: 950.data.seed-values.sql:1585
+msgid "Patrons"
+msgstr "Asiakkaat"
+
+# id::aiit.name__SHP
+#: 950.data.seed-values.sql:8724
+msgid "Shipping Charge"
+msgstr "Lähetyskustannukset"
+
+# id::ccvm.value__304
+#: 950.data.seed-values.sql:6115
+msgid "Ndebele (South Africa)"
+msgstr "ndebele, etelä-"
+
+# id::crcd.name__8
+#: 950.data.seed-values.sql:258
+msgid "1_hour_2_renew"
+msgstr "1_tunti_2_uusintaa"
+
+# id::ccvm.value__517
+#: 950.data.seed-values.sql:6334
+msgid "Letters"
+msgstr "Kirjeet"
+
+# id::ccvm.value__268
+#: 950.data.seed-values.sql:6079
+msgid "Makasar"
+msgstr "makassar"
+
+# id::cmc.label__series
+#: 950.data.seed-values.sql:100
+msgid "Series"
+msgstr "Sarja"
+
+# id::ccvm.value__afa
+#: 950.data.seed-values.sql:5818
+msgid "Afroasiatic (Other)"
+msgstr "afroaasialaiset kielet"
+
+# id::ccs.name__4
+#: 950.data.seed-values.sql:301
+msgid "Missing"
+msgstr "Kadonnut"
+
+# id::ccvm.value__53
+#: 950.data.seed-values.sql:5864
+msgid "Edo"
+msgstr "edo"
+
+# id::ccvm.value__225
+#: 950.data.seed-values.sql:6036
+msgid "Kinyarwanda"
+msgstr "ruanda"
+
+# id::ccvm.value__191
+#: 950.data.seed-values.sql:6002
+msgid "Interlingue"
+msgstr "interlingue"
+
+# id::cuat.label__24
+#: 950.data.seed-values.sql:11569
+msgid "EZProxy Verification"
+msgstr "EZProxy-varmennus"
+
+# id::ccs.name__12
+#: 950.data.seed-values.sql:309
+msgid "Reserves"
+msgstr "Varannot"
+
+# id::ccvm.value__174
+#: 950.data.seed-values.sql:5985
+msgid "Hebrew"
+msgstr "heprea"
+
+# id::ccvm.value__121 id::ccvm.value__123
+#: 950.data.seed-values.sql:5932 950.data.seed-values.sql:5934
+msgid "Esperanto"
+msgstr "esperanto"
+
+# id::vie.description__import.item.invalid.price
+#: 950.data.seed-values.sql:9322
+msgid "Invalid value for \"price\""
+msgstr "Virheellinen arvo kohteelle \"price\""
+
+# id::ccvm.value__92
+#: 950.data.seed-values.sql:5903
+msgid "Creoles and Pidgins, French-based (Other)"
+msgstr "Muut ranskaan perustuvat kreolit ja pidginit"
+
+# id::ccvm.value__407 id::ccvm.value__414
+#: 950.data.seed-values.sql:6218 950.data.seed-values.sql:6225
+msgid "Swazi"
+msgstr "swazi"
+
+# id::ccvm.value__246 id::ccvm.value__389
+#: 950.data.seed-values.sql:6057 950.data.seed-values.sql:6200
+msgid "Sami"
+msgstr "saame"
+
+# id::ccvm.value__194
+#: 950.data.seed-values.sql:6005
+msgid "Indic (Other)"
+msgstr "indoarjalaiset kielet"
+
+# id::ccvm.value__423
+#: 950.data.seed-values.sql:6234
+msgid "Telugu"
+msgstr "telugu"
+
+# id::cmc.label__author id::cza.label__4 id::cza.label__13 id::cza.label__22
+#: 950.data.seed-values.sql:98 950.data.seed-values.sql:366
+#: 950.data.seed-values.sql:387 950.data.seed-values.sql:406
+msgid "Author"
+msgstr "Tekijä"
+
+# id::cbs.source__2
+#: 950.data.seed-values.sql:5
+msgid "System Local"
+msgstr "Järjestelmän paikallinen"
+
+# id::cuat.label__13
+#: 950.data.seed-values.sql:11555
+msgid "Verification via xmlrpc"
+msgstr "Xmlrpc-varmennus"
+
+# id::ccvm.value__309
+#: 950.data.seed-values.sql:6120
+msgid "Newari"
+msgstr "newari"
+
+# id::ccvm.value__366
+#: 950.data.seed-values.sql:6177
+msgid "Samaritan Aramaic"
+msgstr "Samarianaramea"
+
+# id::crcd.name__5
+#: 950.data.seed-values.sql:252
+msgid "2_months_2_renew"
+msgstr "2_kuukautta_2_uusintaa"
+
+# id::cnal.name__2
+#: 950.data.seed-values.sql:319
+msgid "Unfiltered"
+msgstr "Suodattamaton"
+
+# id::acsaf.name__62
+#: 950.data.seed-values.sql:10062
+msgid "See Also Tracing -- Corporate Name"
+msgstr "Katso myös jäljitys -- yrityksen nimi"
+
+# id::csp.label__30
+#: 950.data.seed-values.sql:41
+msgid "Patron has been referred to a collections agency"
+msgstr "Asiakas on ohjattu perintätoimistolle"
+
+# id::ccvm.value__417
+#: 950.data.seed-values.sql:6228
+msgid "Tahitian"
+msgstr "tahiti"
+
+# id::ccvm.value__141
+#: 950.data.seed-values.sql:5952
+msgid "Fula"
+msgstr "fulani"
+
+# id::ccvm.value__523
+#: 950.data.seed-values.sql:6343
+msgid "Microfilm"
+msgstr "Mikrofilmi"
+
+# id::acsaf.name__7
+#: 950.data.seed-values.sql:10027
+msgid "Heading -- Genre/Form Term"
+msgstr "Otsikko -- Tyylilaji-/muototermi"
+
+# id::ccvm.value__319
+#: 950.data.seed-values.sql:6130
+msgid "Nubian languages"
+msgstr "nubialaiset kielet"
+
+# id::i18n_l.name__hy-AM id::i18n_l.description__hy-AM id::ccvm.value__arm
+#: 950.data.seed-values.sql:338 950.data.seed-values.sql:339
+#: 950.data.seed-values.sql:5833
+msgid "Armenian"
+msgstr "armenia"
+
+# id::aou.name__2
+#: 950.data.seed-values.sql:445
+msgid "Example System 1"
+msgstr "Esimerkkijärjestelmä 1"
+
+# id::aou.name__3
+#: 950.data.seed-values.sql:447
+msgid "Example System 2"
+msgstr "Esimerkkijärjestelmä 2"
+
+# id::ccvm.value__420
+#: 950.data.seed-values.sql:6231
+msgid "Tamil"
+msgstr "tamili"
+
+# id::ccvm.value__aus
+#: 950.data.seed-values.sql:5841
+msgid "Australian languages"
+msgstr "Australialaiset kielet"
+
+# id::ccvm.value__356
+#: 950.data.seed-values.sql:6167
+msgid "Raeto-Romance"
+msgstr "retoromaani"
+
+# id::ccvm.value__535
+#: 950.data.seed-values.sql:6357
+msgid "Monograph/Item"
+msgstr "Monografia/nide"
+
+# id::ccvm.value__350
+#: 950.data.seed-values.sql:6161
+msgid "Pushto"
+msgstr "pastu"
+
+# id::acsaf.name__49
+#: 950.data.seed-values.sql:10055
+msgid "Subdivision Linking Entry -- Geographic Subdivision"
+msgstr "Alaosaston linkityskirjaus -- maantieteellinen alaosasto"
+
+# id::ccvm.value__524
+#: 950.data.seed-values.sql:6344
+msgid "Microfiche"
+msgstr "Mikrokortti"
+
+# id::ccvm.value__472
+#: 950.data.seed-values.sql:6283
+msgid "Walloon"
+msgstr "valloni"
+
+# id::ccvm.value__106
+#: 950.data.seed-values.sql:5917
+msgid "Dinka"
+msgstr "dinka"
+
+# id::ccvm.value__84
+#: 950.data.seed-values.sql:5895
+msgid "Church Slavic"
+msgstr "kirkkoslaavi"
+
+# id::czs.label__biblios
+#: 950.data.seed-values.sql:357
+msgid "‡biblios.net"
+msgstr "‡biblios.net"
+
+# id::ccvm.value__243
+#: 950.data.seed-values.sql:6054
+msgid "Lamba"
+msgstr "lamba"
+
+# id::ccvm.value__546
+#: 950.data.seed-values.sql:6370
+msgid "Betacam SP"
+msgstr "Betacam SP"
+
+# id::ccvm.value__280
+#: 950.data.seed-values.sql:6091
+msgid "Micmac"
+msgstr "micmac"
+
+# id::cmf.label__8
+#: 950.data.seed-values.sql:128
+msgid "Personal Author"
+msgstr "Henkilötekijä"
+
+# id::ccvm.value__145 id::ccvm.value__156
+#: 950.data.seed-values.sql:5956 950.data.seed-values.sql:5967
+msgid "Galician"
+msgstr "galicia"
+
+# id::cuat.label__16
+#: 950.data.seed-values.sql:11560
+msgid "OPAC Login (jspac)"
+msgstr "Verkkokirjasto-sisäänkirjautuminen (jspac)"
+
+# id::ccvm.value__264
+#: 950.data.seed-values.sql:6075
+msgid "Madurese"
+msgstr "madura"
+
+# id::ccvm.value__227
+#: 950.data.seed-values.sql:6038
+msgid "Kimbundu"
+msgstr "kimbundu"
+
+# id::ccvm.value__405
+#: 950.data.seed-values.sql:6216
+msgid "Nilo-Saharan (Other)"
+msgstr "niililäis-saharalaiset kielet"
+
+# id::ccvm.value__362
+#: 950.data.seed-values.sql:6173
+msgid "Sango (Ubangi Creole)"
+msgstr "sango"
+
+# id::ccvm.value__220
+#: 950.data.seed-values.sql:6031
+msgid "Khasi"
+msgstr "khasi"
+
+# id::vie.description__import.item.invalid.circ_as_type
+#: 950.data.seed-values.sql:9332
+msgid "Invalid value for \"circ_as_type\""
+msgstr "Virheellinen arvo kohteelle \"circ_as_type\""
+
+# id::cmc.label__subject
+#: 950.data.seed-values.sql:99
+msgid "Subject"
+msgstr "Aihe"
+
+# id::ccvm.value__266
+#: 950.data.seed-values.sql:6077
+msgid "Marshallese"
+msgstr "marshall"
+
+# id::ccvm.value__476
+#: 950.data.seed-values.sql:6287
+msgid "Yao (Africa)"
+msgstr "jao"
+
+# id::acsaf.name__72
+#: 950.data.seed-values.sql:10071
+msgid "See Also Tracing -- Chronological Term"
+msgstr "Katso myös jäljitys -- kronologinen termi"
+
+# id::ccvm.value__273
+#: 950.data.seed-values.sql:6084
+msgid "Marathi"
+msgstr "marathi"
+
+# id::ccvm.value__386
+#: 950.data.seed-values.sql:6197
+msgid "Slovenian"
+msgstr "sloveeni"
+
+# id::vie.description__import.duplicate.sysid
+# id::vie.description__import.duplicate.sysid
+#: 950.data.seed-values.sql:9311 950.data.seed-values.sql:9312
+msgid "Import failed due to system id collision"
+msgstr "Tuonti epäonnistui järjestelmätunnusten risteämisen vuoksi"
+
+# id::ccvm.value__365
+#: 950.data.seed-values.sql:6176
+msgid "Salishan languages"
+msgstr "salisialaiset kielet"
+
+# id::cuat.label__23
+#: 950.data.seed-values.sql:11568
+msgid "Self-Check User Verification"
+msgstr "Itsetarkistuksen käyttäjävarmennus"
+
+# id::acsaf.name__6
+#: 950.data.seed-values.sql:10026
+msgid "Heading -- Geographic Name"
+msgstr "Otsikko -- maantieteellinen nimi"
+
+# id::ccvm.value__367
+#: 950.data.seed-values.sql:6178
+msgid "Sanskrit"
+msgstr "sanskrit"
+
+# id::ccvm.value__547
+#: 950.data.seed-values.sql:6371
+msgid "Super-VHS"
+msgstr "Super-VHS"
+
+# id::ccs.name__9
+#: 950.data.seed-values.sql:306
+msgid "On order"
+msgstr "Tilauksessa"
+
+# id::ccvm.value__514
+#: 950.data.seed-values.sql:6331
+msgid "Essays"
+msgstr "Esseet"
+
+# id::aout.opac_label__2
+#: 950.data.seed-values.sql:430
+msgid "Local Library System"
+msgstr "Paikallinen kirjastojärjestelmä"
+
+# id::ccvm.value__528
+#: 950.data.seed-values.sql:6348
+msgid "Regular print reproduction"
+msgstr "Säännöllinen painojulkaisu"
+
+# id::ccvm.value__118
+#: 950.data.seed-values.sql:5929
+msgid "Elamite"
+msgstr "elami"
+
+# id::ccvm.value__ady
+#: 950.data.seed-values.sql:5817
+msgid "Adygei"
+msgstr "adyge"
+
+# id::ccpbt.label__misc id::ccnbt.label__misc id::cbrebt.label__misc
+# id::cubt.label__misc
+#: 950.data.seed-values.sql:4849 950.data.seed-values.sql:4852
+#: 950.data.seed-values.sql:4853 950.data.seed-values.sql:4859
+msgid "Miscellaneous"
+msgstr "Sekalaiset"
+
+# id::ccvm.value__317
+#: 950.data.seed-values.sql:6128
+msgid "Norwegian"
+msgstr "norja"
+
+# id::aou.name__7
+#: 950.data.seed-values.sql:455
+msgid "Example Branch 4"
+msgstr "Esimerkkihaara 4"
+
+# id::aout.opac_label__1
+#: 950.data.seed-values.sql:427
+msgid "Everywhere"
+msgstr "Kaikkialla"
+
+# id::aou.name__6
+#: 950.data.seed-values.sql:453
+msgid "Example Branch 3"
+msgstr "Esimerkkihaara 3"
+
+# id::aou.name__4
+#: 950.data.seed-values.sql:449
+msgid "Example Branch 1"
+msgstr "Esimerkkihaara 1"
+
+# id::ccvm.value__229
+#: 950.data.seed-values.sql:6040
+msgid "Komi"
+msgstr "komi"
+
+# id::acs.description__1
+#: 950.data.seed-values.sql:10009
+msgid "Library of Congress standard authority record control semantics"
+msgstr ""
+"Kongressin kirjaston standardoitu auktoriteettitietueen kontrollisemantiikka"
+
+# id::ccvm.value__179
+#: 950.data.seed-values.sql:5990
+msgid "Hittite"
+msgstr "heetti"
+
+# id::ccvm.value__445
+#: 950.data.seed-values.sql:6256
+msgid "Turkmen"
+msgstr "turkmeeni"
+
+# id::acsaf.name__65
+#: 950.data.seed-values.sql:10064
+msgid "See Also Tracing -- Topical Term"
+msgstr "Katso myös jäljitys -- aiheenmukainen termi"
+
+# id::ccvm.value__408
+#: 950.data.seed-values.sql:6219
+msgid "Sukuma"
+msgstr "sukuma"
+
+# id::ccvm.value__502
+#: 950.data.seed-values.sql:6317
+msgid "Mixed materials"
+msgstr "Sekalainen aineisto"
+
+# id::coust.label__config.settings_group.sec
+#: 950.data.seed-values.sql:2489
+msgid "Security"
+msgstr "Turvallisuus"
+
+# id::ccs.name__8
+#: 950.data.seed-values.sql:305
+msgid "On holds shelf"
+msgstr "Varaushyllyssä"
+
+# id::cuat.label__10
+#: 950.data.seed-values.sql:11552
+msgid "Verification via srfsh"
+msgstr "Srfsh-varmennus"
+
+# id::ccvm.value__480
+#: 950.data.seed-values.sql:6291
+msgid "Yupik languages"
+msgstr "jupikkkikielet"
+
+# id::ccvm.value__450
+#: 950.data.seed-values.sql:6261
+msgid "Tuvaluan"
+msgstr "tuvalu"
+
+# id::at.name__|
+#: 950.data.seed-values.sql:10150
+msgid "No attempt to code"
+msgstr "Ei yritystä koodata"
+
+# id::ccvm.value__318
+#: 950.data.seed-values.sql:6129
+msgid "Northern Sotho"
+msgstr "sotho, pohjois-"
+
+# id::ccvm.value__45
+#: 950.data.seed-values.sql:5856
+msgid "Beja"
+msgstr "bedza"
+
+# id::ccvm.value__149
+#: 950.data.seed-values.sql:5960
+msgid "Germanic (Other)"
+msgstr "germaaniset kielet"
+
+# id::cza.label__9 id::cza.label__18 id::cza.label__27
+#: 950.data.seed-values.sql:376 950.data.seed-values.sql:397
+#: 950.data.seed-values.sql:416
+msgid "Item Type"
+msgstr "Nidetyyppi"
+
+# id::vie.description__import.record.perm_failure
+#: 950.data.seed-values.sql:9334
+msgid "Perm failure creating a record"
+msgstr "Pysyvä epäonnistuminen tietueen luomisessa"
+
+# id::ccvm.value__209
+#: 950.data.seed-values.sql:6020
+msgid "Kabyle"
+msgstr "kabyyli"
+
+# id::crcd.name__10
+#: 950.data.seed-values.sql:262
+msgid "14_days_2_renew"
+msgstr "14_päivää_2_uusintaa"
+
+# id::cit.name__2
+#: 950.data.seed-values.sql:238
+msgid "SSN"
+msgstr "HETU"
+
+# id::ccvm.value__162
+#: 950.data.seed-values.sql:5973
+msgid "Gothic"
+msgstr "gootti"
+
+# id::ccvm.value__436
+#: 950.data.seed-values.sql:6247
+msgid "Tamashek"
+msgstr "tamasek"
+
+# id::ccvm.value__208
+#: 950.data.seed-values.sql:6019
+msgid "Kara-Kalpak"
+msgstr "karakalpakki"
+
+# id::ccvm.value__412
+#: 950.data.seed-values.sql:6223
+msgid "Swahili"
+msgstr "swahili"
+
+# id::ccvm.value__68
+#: 950.data.seed-values.sql:5879
+msgid "Carib"
+msgstr "karibi"
+
+# id::aout.name__4
+#: 950.data.seed-values.sql:435
+msgid "Sub-library"
+msgstr "Alakirjasto"
+
+# id::ccvm.value__83
+#: 950.data.seed-values.sql:5894
+msgid "Cherokee"
+msgstr "cherokee"
+
+# id::acsaf.name__9
+#: 950.data.seed-values.sql:10029
+msgid "Heading -- Geographic Subdivision"
+msgstr "Otsikko -- maantieteellinen alaosasto"
+
+# id::ccs.name__5
+#: 950.data.seed-values.sql:302
+msgid "In process"
+msgstr "Käsittelyssä"
+
+# id::csp.label__24
+#: 950.data.seed-values.sql:35
+msgid "Alerting block on Circ and Renew"
+msgstr "Varoitusesto lainauksessa ja uusinnassa"
+
+# id::coust.label__config.settings_group.program
+#: 950.data.seed-values.sql:2495
+msgid "Program"
+msgstr "Ohjelma"
+
+# id::cust.label__history.hold.retention_count
+# id::cust.description__history.hold.retention_count
+#: 950.data.seed-values.sql:8892 950.data.seed-values.sql:8893
+msgid "Historical Hold Retention Count"
+msgstr "Vanhojen varausten lukumäärä"
+
+# id::ccvm.value__265
+#: 950.data.seed-values.sql:6076
+msgid "Magahi"
+msgstr "magahi"
+
+# id::ccvm.value__333
+#: 950.data.seed-values.sql:6144
+msgid "Papuan (Other)"
+msgstr "papualaiskielet"
+
+# id::ccvm.value__207
+#: 950.data.seed-values.sql:6018
+msgid "Judeo-Arabic"
+msgstr "juutalaisarabia"
+
+# id::ccvm.value__548
+#: 950.data.seed-values.sql:6372
+msgid "M-II"
+msgstr "M-II"
+
+# id::ccvm.value__284 id::ccvm.value__285
+#: 950.data.seed-values.sql:6095 950.data.seed-values.sql:6096
+msgid "Malagasy"
+msgstr "malagassi"
+
+# id::ccvm.value__435
+#: 950.data.seed-values.sql:6246
+msgid "Tlingit"
+msgstr "tlingit"
+
+# id::acsaf.name__67
+#: 950.data.seed-values.sql:10066
+msgid "See Also Tracing -- Genre/Form Term"
+msgstr "Katso myös jäljitys -- tyylilaji-/muototermi"
+
+# id::acsaf.name__24
+#: 950.data.seed-values.sql:10015
+msgid "See Also From Tracing -- Uniform Title"
+msgstr "Katso myös jäljitys -- yhdenmukainen otsikko"
+
+# id::ccvm.value__271
+#: 950.data.seed-values.sql:6082
+msgid "Maori"
+msgstr "maori"
+
+# id::ccvm.value__138
+#: 950.data.seed-values.sql:5949
+msgid "French, Middle (ca. 1400-1600)"
+msgstr "keskiranska (n. 1400-1600)"
+
+# id::ccvm.value__bai
+#: 950.data.seed-values.sql:5848
+msgid "Bamileke languages"
+msgstr "bamileke-kielet"
+
+# id::ccvm.value__185
+#: 950.data.seed-values.sql:5996
+msgid "Igbo"
+msgstr "igbo"
+
+# id::cuat.label__18
+#: 950.data.seed-values.sql:11562
+msgid "Staff Client Login"
+msgstr "Henkilökuntaversion sisäänkirjautuminen"
+
+# id::ccvm.value__241
+#: 950.data.seed-values.sql:6052
+msgid "Ladino"
+msgstr "ladino, juutalaisespanja"
+
+# id::ccvm.value__69
+#: 950.data.seed-values.sql:5880
+msgid "Catalan"
+msgstr "katalaani"
+
+# id::ccvm.value__404
+#: 950.data.seed-values.sql:6215
+msgid "Serer"
+msgstr "serer"
+
+# id::ccvm.value__492
+#: 950.data.seed-values.sql:6305
+msgid "Adult"
+msgstr "Aikuiset"
+
+# id::ccvm.value__540
+#: 950.data.seed-values.sql:6364
+msgid "EIAJ"
+msgstr "EIAJ"
+
+# id::ccvm.value__343
+#: 950.data.seed-values.sql:6154
+msgid "Phoenician"
+msgstr "foinikia"
+
+# id::ccvm.value__471
+#: 950.data.seed-values.sql:6282
+msgid "Sorbian languages"
+msgstr "sorbin kielet"
+
+# id::acsaf.name__22
+#: 950.data.seed-values.sql:10036
+msgid "See Also From Tracing -- Corporate Name"
+msgstr "Katso myös jäljitys -- yrityksen nimi"
+
+# id::vie.description__import.item.invalid.circ_modifier
+#: 950.data.seed-values.sql:9309
+msgid "Import failed due to invalid circulation modifier"
+msgstr "Tuonti epäonnistui virheellisen lainamääritteen vuoksi"
+
+# id::ccvm.value__488
+#: 950.data.seed-values.sql:6301
+msgid "Preschool"
+msgstr "Esikoulu"
+
+# id::ccvm.value__374
+#: 950.data.seed-values.sql:6185
+msgid "Selkup"
+msgstr "selkuppi"
+
+# id::ccvm.value__314
+#: 950.data.seed-values.sql:6125
+msgid "Norwegian (Bokmål)"
+msgstr "norja (bokmål)"
+
+# id::coust.label__config.settings_group.circulation
+#: 950.data.seed-values.sql:2492
+msgid "Circulation"
+msgstr "Laina"
+
+# id::ccvm.value__bal
+#: 950.data.seed-values.sql:5850
+msgid "Baluchi"
+msgstr "belutsi"
+
+# id::ccvm.value__544
+#: 950.data.seed-values.sql:6368
+msgid "CED videodisc"
+msgstr "CED-videolevy"
+
+# id::ccvm.value__337
+#: 950.data.seed-values.sql:6148
+msgid "Panjabi"
+msgstr "punjabi"
+
+# id::ccvm.value__330
+#: 950.data.seed-values.sql:6141
+msgid "Ossetic"
+msgstr "osseetti"
+
+# id::ccvm.value__221
+#: 950.data.seed-values.sql:6032
+msgid "Khoisan (Other)"
+msgstr "khoisankielet"
+
+# id::ccvm.value__352
+#: 950.data.seed-values.sql:6163
+msgid "Rajasthani"
+msgstr "radzastani"
+
+# id::ccvm.value__316
+#: 950.data.seed-values.sql:6127
+msgid "Old Norse"
+msgstr "muinaisnorja"
+
+# id::acpl.name__1
+#: 950.data.seed-values.sql:2426
+msgid "Stacks"
+msgstr "Hyllykokoelma"
+
+# id::ccvm.value__172
+#: 950.data.seed-values.sql:5983
+msgid "Hausa"
+msgstr "hausa"
+
+# id::cubt.label__folks%3Ahold.cancel
+#: 950.data.seed-values.sql:4867
+msgid "Cancel Holds"
+msgstr "Peru varaukset"
+
+# id::ccvm.value__arn
+#: 950.data.seed-values.sql:5834
+msgid "Mapuche"
+msgstr "araukaani"
+
+# id::bpt.name__4
+#: 950.data.seed-values.sql:14
+msgid "Set"
+msgstr "Aseta"
+
+# id::ccvm.value__291
+#: 950.data.seed-values.sql:6102
+msgid "Moldavian"
+msgstr "moldavia"
+
+# id::acsaf.name__45
+#: 950.data.seed-values.sql:10051
+msgid "Established Heading Linking Entry -- Topical Term"
+msgstr "Vakiintunut otsikkolinkityskirjaus -- aiheenmukainen termi"
+
+# id::ccvm.value__539
+#: 950.data.seed-values.sql:6363
+msgid "U-matic"
+msgstr "U-matic"
+
+# id::cmf.label__3
+#: 950.data.seed-values.sql:117
+msgid "Translated Title"
+msgstr "Käännetty otsikko"
+
+# id::ccvm.value__237
+#: 950.data.seed-values.sql:6048
+msgid "Kumyk"
+msgstr "kumykki"
+
+# id::vqbrad.description__14
+#: 950.data.seed-values.sql:4794
+msgid "Edition"
+msgstr "Painos"
+
+# id::bpt.name__3
+#: 950.data.seed-values.sql:13
+msgid "Back-to-back"
+msgstr "Selkä selkää vasten"
+
+# id::csp.label__29
+#: 950.data.seed-values.sql:40
+msgid "Patron has an invalid address"
+msgstr "Asiakkaan osoite on virheellinen"
+
+# id::ccvm.value__ava
+#: 950.data.seed-values.sql:5842
+msgid "Avaric"
+msgstr "avaari"
+
+# id::csp.label__3
+#: 950.data.seed-values.sql:27
+msgid "Patron exceeds max checked out item threshold"
+msgstr "Asiakkaalla on enimmäismäärä lainoja"
+
+# id::ccvm.value__455
+#: 950.data.seed-values.sql:6266
+msgid "Uighur"
+msgstr "uiguuri"
+
+# id::cmf.label__30
+#: 950.data.seed-values.sql:176
+msgid "LC Control Number"
+msgstr "LC-kontrollinumero"
+
+# id::pgt.description__10
+#: 950.data.seed-values.sql:1602
+msgid "Can do anything at the Branch level"
+msgstr "Voi tehdä mitä tahansa lähikirjastotasolla"
+
+# id::cuat.label__3
+#: 950.data.seed-values.sql:11544
+msgid "Login via gateway-v1"
+msgstr "Sisäänkirjautuminen gateway-v1:n kautta"
+
+# id::ccvm.value__158
+#: 950.data.seed-values.sql:5969
+msgid "German, Middle High (ca. 1050-1500)"
+msgstr "Keskiyläsaksa (n. 1050-1500)"
+
+# id::cmf.label__18 id::cza.label__2 id::cza.label__11 id::cza.label__20
+# id::vqbrad.description__5
+#: 950.data.seed-values.sql:152 950.data.seed-values.sql:362
+#: 950.data.seed-values.sql:383 950.data.seed-values.sql:402
+#: 950.data.seed-values.sql:4785
+msgid "ISBN"
+msgstr "ISBN"
+
+# id::ccvm.value__267
+#: 950.data.seed-values.sql:6078
+msgid "Maithili"
+msgstr "maithili"
+
+# id::pgt.name__5
+#: 950.data.seed-values.sql:1591
+msgid "Circulators"
+msgstr "Lainaajat"
+
+# id::acsaf.name__12
+#: 950.data.seed-values.sql:10032
+msgid "Heading -- Chronological Term"
+msgstr "Otsikko -- kronologinen termi"
+
+# id::ccvm.value__418
+#: 950.data.seed-values.sql:6229
+msgid "Tai (Other)"
+msgstr "thaikielet"
+
+# id::ccvm.value__439
+#: 950.data.seed-values.sql:6250
+msgid "Tok Pisin"
+msgstr "tok-pisin"
+
+# id::ccvm.value__205
+#: 950.data.seed-values.sql:6016
+msgid "Japanese"
+msgstr "japani"
+
+# id::cmf.label__14
+#: 950.data.seed-values.sql:141
+msgid "Topic Subject"
+msgstr "Aihepiiri"
+
+# id::at.name__v
+#: 950.data.seed-values.sql:10148
+msgid "Repertoire de vedettes-matiere"
+msgstr "Repertoire de vedettes-matiere"
+
+# id::csp.label__2
+#: 950.data.seed-values.sql:25
+msgid "Patron exceeds max overdue item threshold"
+msgstr "Asiakkaalla on enimmäismäärä erääntyneitä lainoja"
+
+# id::cit.name__3 id::ccvm.value__555 id::at.name__z
+# id::cit.name__3 id::at.name__z
+#: 950.data.seed-values.sql:240 950.data.seed-values.sql:6379
+#: 950.data.seed-values.sql:10149
+msgid "Other"
+msgstr "Muu"
+
+# id::ccvm.value__340
+#: 950.data.seed-values.sql:6151
+msgid "Old Persian (ca. 600-400 B.C.)"
+msgstr "muinaispersia (n. 600-400 eaa.)"
+
+# id::acsaf.name__32
+#: 950.data.seed-values.sql:10045
+msgid "See Also From Tracing -- Chronological Term"
+msgstr "Katso myös jäljitys -- kronologinen termi"
+
+# id::ccvm.value__499
+#: 950.data.seed-values.sql:6314
+msgid "Two-dimensional nonprojectable graphic"
+msgstr "Kuva"
+
+# id::ccvm.value__41
+#: 950.data.seed-values.sql:5852
+msgid "Balinese"
+msgstr "bali"
+
+# id::cust.label__history.circ.retention_start
+# id::cust.description__history.circ.retention_start
+#: 950.data.seed-values.sql:8871 950.data.seed-values.sql:8872
+msgid "Historical Circulation Retention Start Date"
+msgstr "Vanhojen lainaustietojen säilytyksen aloituspäivä"
+
+# id::ccvm.value__434
+#: 950.data.seed-values.sql:6245
+msgid "Tokelauan"
+msgstr "tokelau"
+
+# id::ccvm.value__108
+#: 950.data.seed-values.sql:5919
+msgid "Dogri"
+msgstr "dogri"
+
+# id::pgt.name__1
+#: 950.data.seed-values.sql:1583
+msgid "Users"
+msgstr "Käyttäjät"
+
+# id::ccvm.value__250
+#: 950.data.seed-values.sql:6061
+msgid "Limburgish"
+msgstr "limburg"
+
+# id::ccvm.value__116
+#: 950.data.seed-values.sql:5927
+msgid "Egyptian"
+msgstr "muinaisegypti"
+
+# id::pgt.name__13
+#: 950.data.seed-values.sql:1610
+msgid "Global Administrator"
+msgstr "Yleinen ylläpitäjä"
+
+# id::ccvm.value__452
+#: 950.data.seed-values.sql:6263
+msgid "Tuvinian"
+msgstr "tuva"
+
+# id::coust.label__config.settings_group.ccp
+#: 950.data.seed-values.sql:2498
+msgid "Credit Card Processing"
+msgstr "Luottokortin käsittely"
+
+# id::ccvm.value__501
+#: 950.data.seed-values.sql:6316
+msgid "Kit"
+msgstr "Moniviestin"
+
+# id::aiit.name__PRO
+#: 950.data.seed-values.sql:8723
+msgid "Processing Fee"
+msgstr "Käsittelymaksu"
+
+# id::ccvm.value__294
+#: 950.data.seed-values.sql:6105
+msgid "Multiple languages"
+msgstr "Monikielinen"
+
+# id::ccvm.value__286
+#: 950.data.seed-values.sql:6097
+msgid "Maltese"
+msgstr "malta"
+
+# id::ccvm.value__asm
+#: 950.data.seed-values.sql:5838
+msgid "Assamese"
+msgstr "assami"
+
+# id::vie.description__import.auth.duplicate.acn
+#: 950.data.seed-values.sql:9314
+msgid "Import failed due to Accession Number collision"
+msgstr "Tuonti epäonnistui hankintanumeron risteämän vuoksi"
+
+# id::ccvm.value__500
+#: 950.data.seed-values.sql:6315
+msgid "Three-dimensional artifact or naturally occurring object"
+msgstr "Esine"
+
+# id::cmf.label__17 id::vqbrad.description__8
+#: 950.data.seed-values.sql:150 950.data.seed-values.sql:4788
+msgid "Accession Number"
+msgstr "Hankintanumero"
+
+# id::cmf.label__16
+#: 950.data.seed-values.sql:147
+msgid "All Subjects"
+msgstr "Kaikki aiheet"
+
+# id::ccvm.value__442 id::ccvm.value__444
+#: 950.data.seed-values.sql:6253 950.data.seed-values.sql:6255
+msgid "Tswana"
+msgstr "tswana"
+
+# id::crmf.name__6
+#: 950.data.seed-values.sql:278
+msgid "overdue_equip_mid"
+msgstr "overdue_equip_mid"
+
+# id::ccvm.value__88
+#: 950.data.seed-values.sql:5899
+msgid "Coptic"
+msgstr "kopti"
+
+# id::crmf.name__5
+#: 950.data.seed-values.sql:276
+msgid "overdue_equip_min"
+msgstr "overdue_equip_min"
+
+# id::ccvm.value__255
+#: 950.data.seed-values.sql:6066
+msgid "Letzeburgesch"
+msgstr "luxemburg"
+
+# id::ccvm.value__137 id::ccvm.value__140
+#: 950.data.seed-values.sql:5948 950.data.seed-values.sql:5951
+msgid "Frisian"
+msgstr "friisi"
+
+# id::ccvm.value__298
+#: 950.data.seed-values.sql:6109
+msgid "Mayan languages"
+msgstr "maya-kielet"
+
+# id::ccvm.value__347
+#: 950.data.seed-values.sql:6158
+msgid "Portuguese"
+msgstr "portugali"
+
+# id::ccvm.value__ace
+#: 950.data.seed-values.sql:5814
+msgid "Achinese"
+msgstr "aceh"
+
+# id::cit.name__1
+#: 950.data.seed-values.sql:236
+msgid "Drivers License"
+msgstr "Ajokortti"
+
+# id::acsaf.name__48
+#: 950.data.seed-values.sql:10054
+msgid "Subdivision Linking Entry -- General Subdivision"
+msgstr "Alaosaston linkityskirjaus -- yleinen alaosasto"
+
+# id::ccvm.value__425
+#: 950.data.seed-values.sql:6236
+msgid "Terena"
+msgstr "tereno"
+
+# id::ccvm.value__ave
+#: 950.data.seed-values.sql:5843
+msgid "Avestan"
+msgstr "avesta"
+
+# id::cmf.label__24
+#: 950.data.seed-values.sql:164
+msgid "SICI"
+msgstr "SICI"
+
+# id::ccvm.value__281
+#: 950.data.seed-values.sql:6092
+msgid "Minangkabau"
+msgstr "minangkabau"
+
+# id::ccvm.value__541
+#: 950.data.seed-values.sql:6365
+msgid "Type C"
+msgstr "C-formaatti"
+
+# id::ccvm.value__177
+#: 950.data.seed-values.sql:5988
+msgid "Himachali"
+msgstr "himatsali"
+
+# id::cuat.label__19
+#: 950.data.seed-values.sql:11563
+msgid "Self-Check Proxy Login"
+msgstr "Itsetarkistuksen välityspalvelimen sisäänkirjautuminen"
+
+# id::ccvm.value__534
+#: 950.data.seed-values.sql:6356
+msgid "Integrating resource"
+msgstr "Yhdistetään resurssia"
+
+# id::ccvm.value__484
+#: 950.data.seed-values.sql:6295
+msgid "Zande"
+msgstr "zande"
+
+# id::ccvm.value__139
+#: 950.data.seed-values.sql:5950
+msgid "French, Old (ca. 842-1400)"
+msgstr "muinaisranska"
+
+# id::ccvm.value__383
+#: 950.data.seed-values.sql:6194
+msgid "Sino-Tibetan (Other)"
+msgstr "sinotiibetiläiset kielet"
+
+# id::bpt.name__1
+#: 950.data.seed-values.sql:11
+msgid "Bound Volume"
+msgstr "Sidottu vuosikerta"
+
+# id::ccvm.value__125 id::ccvm.value__152
+#: 950.data.seed-values.sql:5936 950.data.seed-values.sql:5963
+msgid "Ethiopic"
+msgstr "ge'ez"
+
+# id::acsaf.name__4
+#: 950.data.seed-values.sql:10014
+msgid "Heading -- Uniform Title"
+msgstr "Otsikko -- yhdenmukainen otsikko"
+
+# id::ccvm.value__387
+#: 950.data.seed-values.sql:6198
+msgid "Southern Sami"
+msgstr "saame, etelä-"
+
+# id::ccs.name__13
+#: 950.data.seed-values.sql:310
+msgid "Discard/Weed"
+msgstr "Poista/karsi"
+
+# id::coust.label__config.settings_group.self
+#: 950.data.seed-values.sql:2493
+msgid "Self Check"
+msgstr "Itsetarkistus"
+
+# id::ccvm.value__89
+#: 950.data.seed-values.sql:5900
+msgid "Cornish"
+msgstr "korni"
+
+# id::ccvm.value__63
+#: 950.data.seed-values.sql:5874
+msgid "Bulgarian"
+msgstr "bulgaria"
+
+# id::ccvm.value__355
+#: 950.data.seed-values.sql:6166
+msgid "Romance (Other)"
+msgstr "romaaniset kielet"
+
+# id::ccvm.value__479
+#: 950.data.seed-values.sql:6290
+msgid "Yoruba"
+msgstr "joruba"
+
+# id::ccvm.value__arw
+#: 950.data.seed-values.sql:5837
+msgid "Arawak"
+msgstr "arawak"
+
+# id::cbt.name__2
+#: 950.data.seed-values.sql:471
+msgid "Long Overdue Collection Fee"
+msgstr "Kauan sitten erääntyneen aineiston perintämaksu"
+
+# id::ccvm.value__136
+#: 950.data.seed-values.sql:5947
+msgid "French"
+msgstr "ranska"
+
+# id::ccvm.value__437
+#: 950.data.seed-values.sql:6248
+msgid "Tonga (Nyasa)"
+msgstr "tonga (Malawi)"
+
+# id::ccvm.value__48
+#: 950.data.seed-values.sql:5859
+msgid "Bengali"
+msgstr "bengali"
+
+# id::ccvm.value__551
+#: 950.data.seed-values.sql:6375
+msgid "Hi-8 mm."
+msgstr "Hi-8"
+
+# id::ccvm.value__43
+#: 950.data.seed-values.sql:5854
+msgid "Basa"
+msgstr "basa (bantukielet)"
+
+# id::ccvm.value__521
+#: 950.data.seed-values.sql:6338
+msgid "Speeches"
+msgstr "Puheet"
+
+# id::acsaf.name__47
+#: 950.data.seed-values.sql:10053
+msgid "Established Heading Linking Entry -- Genre/Form Term"
+msgstr "Vakiintunut otsikkolinkkikirjaus -- tyylilaji-/muototermi"
+
+# id::cnct.name__1
+#: 950.data.seed-values.sql:232
+msgid "Paperback Book"
+msgstr "Pehmeäkantinen"
+
+# id::ccvm.value__301
+#: 950.data.seed-values.sql:6112
+msgid "Neapolitan Italian"
+msgstr "napoli"
+
+# id::pgt.description__11
+#: 950.data.seed-values.sql:1605
+msgid "Serials (includes admin features)"
+msgstr "Sarjajulkaisut (sisältää ylläpitäjän toiminnot)"
+
+# id::acsaf.name__23
+#: 950.data.seed-values.sql:10037
+msgid "See Also From Tracing -- Meeting Name"
+msgstr "Katso myös jäljitys -- kokouksen nimi"
+
+# id::ccvm.value__409
+#: 950.data.seed-values.sql:6220
+msgid "Sundanese"
+msgstr "sunda"
+
+# id::ccvm.value__alb
+#: 950.data.seed-values.sql:5824
+msgid "Albanian"
+msgstr "albania"
+
+# id::cubt.label__folks%3Ahold.view
+#: 950.data.seed-values.sql:4866
+msgid "View Holds"
+msgstr "Näytä varaukset"
+
+# id::ccvm.value__329
+#: 950.data.seed-values.sql:6140
+msgid "Osage"
+msgstr "osage"
+
+# id::vqbrad.description__10
+#: 950.data.seed-values.sql:4790
+msgid "TCN Source"
+msgstr "Tietuenumeron lähde"
+
+# id::cmf.label__13
+#: 950.data.seed-values.sql:139
+msgid "Temporal Subject"
+msgstr "Ajallinen aihe"
+
+# id::ccvm.value__416 id::ccvm.value__428
+#: 950.data.seed-values.sql:6227 950.data.seed-values.sql:6239
+msgid "Tagalog"
+msgstr "tagalog"
+
+# id::ccvm.value__371
+#: 950.data.seed-values.sql:6182
+msgid "Serbian"
+msgstr "serbia"
+
+# id::acsaf.name__71
+#: 950.data.seed-values.sql:10070
+msgid "See Also Tracing -- Form Subdivision"
+msgstr "Katso myös jäljitys -- lomakkeen alaosasto"
+
+# id::ccvm.value__ast
+#: 950.data.seed-values.sql:5839
+msgid "Bable"
+msgstr "asturia"
+
+# id::ccvm.value__533
+#: 950.data.seed-values.sql:6355
+msgid "Subunit"
+msgstr "Alaosasto"
+
+# id::ccvm.value__203
+#: 950.data.seed-values.sql:6014
+msgid "Italian"
+msgstr "italia"
+
+# id::cuat.label__22
+#: 950.data.seed-values.sql:11566
+msgid "LibraryElf Login"
+msgstr "LibraryElf-sisäänkirjautuminen"
+
+# id::ccvm.value__74
+#: 950.data.seed-values.sql:5885
+msgid "Chibcha"
+msgstr "tsibtsa"
+
+# id::aou.name__8
+#: 950.data.seed-values.sql:457
+msgid "Example Sub-library 1"
+msgstr "Alakirjaston esimerkki 1"
+
+# id::ccvm.value__303
+#: 950.data.seed-values.sql:6114
+msgid "Navajo"
+msgstr "navajo"
+
+# id::ccvm.value__289
+#: 950.data.seed-values.sql:6100
+msgid "Manobo languages"
+msgstr "manobo-kielet"
+
+# id::ccvm.value__73
+#: 950.data.seed-values.sql:5884
+msgid "Chamorro"
+msgstr "tsamorro"
+
+# id::ccvm.value__256
+#: 950.data.seed-values.sql:6067
+msgid "Luba-Lulua"
+msgstr "luba (Lulua)"
+
+# id::pgt.name__4
+#: 950.data.seed-values.sql:1589
+msgid "Catalogers"
+msgstr "Luetteloijat"
+
+# id::ccvm.value__466
+#: 950.data.seed-values.sql:6277
+msgid "Wakashan languages"
+msgstr "wakash-kielet"
+
+# id::ccvm.value__amh
+#: 950.data.seed-values.sql:5827
+msgid "Amharic"
+msgstr "amhara"
+
+# id::crcd.name__11 id::crmf.name__1 id::crrf.name__1
+#: 950.data.seed-values.sql:264 950.data.seed-values.sql:268
+#: 950.data.seed-values.sql:284
+msgid "default"
+msgstr "oletus"
+
+# id::cbt.name__1
+#: 950.data.seed-values.sql:469
+msgid "Overdue Materials"
+msgstr "Erääntyneet aineistot"
+
+# id::ccvm.value__419 id::ccvm.value__427
+#: 950.data.seed-values.sql:6230 950.data.seed-values.sql:6238
+msgid "Tajik"
+msgstr "tadzikki"
+
+# id::ccvm.value__353
+#: 950.data.seed-values.sql:6164
+msgid "Rapanui"
+msgstr "rapanui"
+
+# id::ccvm.value__459
+#: 950.data.seed-values.sql:6270
+msgid "Urdu"
+msgstr "urdu"
+
+# id::vie.description__import.item.invalid.circ_lib
+#: 950.data.seed-values.sql:9328
+msgid "Invalid value for \"circ_lib\""
+msgstr "Virheellinen arvo kohteelle \"circ_lib\""
+
+# id::at.name__a
+#: 950.data.seed-values.sql:10140
+msgid "Library of Congress Subject Headings"
+msgstr "Kongressin kirjaston aiheotsikot"
+
+# id::ccvm.value__254
+#: 950.data.seed-values.sql:6065
+msgid "Lozi"
+msgstr "lozi"
+
+# id::acsaf.name__30
+#: 950.data.seed-values.sql:10043
+msgid "See Also From Tracing -- Chronological Subdivision"
+msgstr "Katso myös jäljitys -- kronologinen alaosasto"
+
+# id::ccvm.value__161
+#: 950.data.seed-values.sql:5972
+msgid "Gorontalo"
+msgstr "gorontalo"
+
+# id::acsaf.name__2
+#: 950.data.seed-values.sql:10023
+msgid "Heading -- Corporate Name"
+msgstr "Otsikko -- yrityksen nimi"
+
+# id::ccvm.value__76
+#: 950.data.seed-values.sql:5887
+msgid "Chagatai"
+msgstr "tsagatai"
+
+# id::crcd.name__9
+#: 950.data.seed-values.sql:260
+msgid "28_days_0_renew"
+msgstr "28_päivää_0_uusintaa"
+
+# id::ccs.name__11 id::coust.label__config.settings_group.cat
+#: 950.data.seed-values.sql:308 950.data.seed-values.sql:2490
+msgid "Cataloging"
+msgstr "Luettelointi"
+
+# id::crcd.name__4
+#: 950.data.seed-values.sql:250
+msgid "3_days_1_renew"
+msgstr "3_päivää_1_uusinta"
+
+# id::ccvm.value__art
+#: 950.data.seed-values.sql:5836
+msgid "Artificial (Other)"
+msgstr "Muut keinotekoiset kielet"
+
+# id::ccvm.value__310
+#: 950.data.seed-values.sql:6121
+msgid "Nias"
+msgstr "nias"
+
+# id::cbt.name__8
+#: 950.data.seed-values.sql:483
+msgid "Damaged Item Processing Fee"
+msgstr "Vahingoittuneen niteen käsittelymaksu"
+
+# id::vqbrad.description__9
+#: 950.data.seed-values.sql:4789
+msgid "TCN Value"
+msgstr "Tietuenumeron arvo"
+
+# id::csp.label__4
+#: 950.data.seed-values.sql:29
+msgid "Patron exceeds pre-collections warning fine threshold"
+msgstr "Asiakkaan maksut ovat ylittäneet perintäkirjeen lähettämisrajan"
+
+# id::ccvm.value__86
+#: 950.data.seed-values.sql:5897
+msgid "Cheyenne"
+msgstr "cheyenne"
+
+# id::bpt.name__2
+#: 950.data.seed-values.sql:12
+msgid "Bilingual"
+msgstr "Kaksikielinen"
+
+# id::ccvm.value__135
+#: 950.data.seed-values.sql:5946
+msgid "Fon"
+msgstr "fon"
+
+# id::ccvm.value__awa
+#: 950.data.seed-values.sql:5844
+msgid "Awadhi"
+msgstr "awadhi"
+
+# id::ccvm.value__94
+#: 950.data.seed-values.sql:5905
+msgid "Cree"
+msgstr "cree"
+
+# id::ccvm.value__332
+#: 950.data.seed-values.sql:6143
+msgid "Otomian languages"
+msgstr "otomi-kielet"
+
+# id::ccvm.value__321
+#: 950.data.seed-values.sql:6132
+msgid "Nyamwezi"
+msgstr "nyamwezi"
+
+# id::ccvm.value__195
+#: 950.data.seed-values.sql:6006
+msgid "Indonesian"
+msgstr "indonesia"
+
+# id::cst.value__1
+#: 950.data.seed-values.sql:18
+msgid "Good"
+msgstr "Hyvä"
+
+# id::ccvm.value__104
+#: 950.data.seed-values.sql:5915
+msgid "Slave"
+msgstr "slevi"
+
+# id::ccvm.value__454
+#: 950.data.seed-values.sql:6265
+msgid "Ugaritic"
+msgstr "ugarit"
+
+# id::ccvm.value__173
+#: 950.data.seed-values.sql:5984
+msgid "Hawaiian"
+msgstr "havaiji"
+
+# id::ccvm.value__263
+#: 950.data.seed-values.sql:6074
+msgid "Macedonian"
+msgstr "makedonia"
+
+# id::ccvm.value__380
+#: 950.data.seed-values.sql:6191
+msgid "Sidamo"
+msgstr "sidamo"
+
+# id::ccvm.value__349
+#: 950.data.seed-values.sql:6160
+msgid "Provençal (to 1500)"
+msgstr "muinaisprovensaali (-1500)"
+
+# id::cubt.label__folks%3Apub_book_bags.view
+#: 950.data.seed-values.sql:4861
+msgid "List Published Book Bags"
+msgstr "Julkaistujen kirjahyllyjen luettelo"
+
+# id::ccvm.value__381 id::ccvm.value__396
+#: 950.data.seed-values.sql:6192 950.data.seed-values.sql:6207
+msgid "Sinhalese"
+msgstr "sinhali"
+
+# id::ccvm.value__ada
+#: 950.data.seed-values.sql:5816
+msgid "Adangme"
+msgstr "adangme"
+
+# id::ccvm.value__429
+#: 950.data.seed-values.sql:6240
+msgid "Thai"
+msgstr "thai"
+
+# id::ccvm.value__afr
+#: 950.data.seed-values.sql:5820
+msgid "Afrikaans"
+msgstr "afrikaans"
+
+# id::acsaf.name__41
+#: 950.data.seed-values.sql:10048
+msgid "Established Heading Linking Entry -- Personal Name"
+msgstr "Vakiintunut otsikkolinkityskirjaus -- henkilön nimi"
+
+# id::ccvm.value__496
+#: 950.data.seed-values.sql:6311
+msgid "Language material"
+msgstr "Tekstiaineisto"
+
+# id::vqbrad.description__4
+#: 950.data.seed-values.sql:4784
+msgid "Pagination"
+msgstr "Sivutus"
+
+# id::cbt.name__7
+#: 950.data.seed-values.sql:481
+msgid "Damaged Item"
+msgstr "Vahingoittunut nide"
+
+# id::ccvm.value__460
+#: 950.data.seed-values.sql:6271
+msgid "Uzbek"
+msgstr "uzbekki"
+
+# id::ccvm.value__235
+#: 950.data.seed-values.sql:6046
+msgid "Kurukh"
+msgstr "kurukh"
+
+# id::ccvm.value__200
+#: 950.data.seed-values.sql:6011
+msgid "Iranian (Other)"
+msgstr "iranilaiset kielet"
+
+# id::ccvm.value__482
+#: 950.data.seed-values.sql:6293
+msgid "Zenaga"
+msgstr "zenaga"
+
+# id::ccvm.value__62
+#: 950.data.seed-values.sql:5873
+msgid "Bugis"
+msgstr "bugi"
+
+# id::ccs.name__7
+#: 950.data.seed-values.sql:304
+msgid "Reshelving"
+msgstr "Uudelleenhyllytys"
+
+# id::ccvm.value__64
+#: 950.data.seed-values.sql:5875
+msgid "Burmese"
+msgstr "burma"
+
+# id::ccvm.value__ale
+#: 950.data.seed-values.sql:5825
+msgid "Aleut"
+msgstr "aleutti"
+
+# id::bpt.name__5
+#: 950.data.seed-values.sql:15
+msgid "e-Reader Preload"
+msgstr "e-lukijan esilataus"
+
+# id::cmc.label__identifier id::vqarad.description__1
+#: 950.data.seed-values.sql:95 950.data.seed-values.sql:4845
+msgid "Identifier"
+msgstr "Tunniste"
+
+# id::cuat.label__11
+#: 950.data.seed-values.sql:11553
+msgid "Verification via gateway-v1"
+msgstr "Varmennus gateway-v1:n kautta"
+
+# id::ccvm.value__251
+#: 950.data.seed-values.sql:6062
+msgid "Lingala"
+msgstr "lingala"
+
+# id::cbt.name__6
+#: 950.data.seed-values.sql:479
+msgid "System: Rental"
+msgstr "Järjestelmä: vuokraus"
+
+# id::cuat.label__8
+#: 950.data.seed-values.sql:11549
+msgid "Login via Apache module"
+msgstr "Sisäänkirjautuminen Apache-moduulin kautta"
+
+# id::ccs.name__1
+#: 950.data.seed-values.sql:298
+msgid "Checked out"
+msgstr "Lainattu"
+
+# id::ccvm.value__260
+#: 950.data.seed-values.sql:6071
+msgid "Lunda"
+msgstr "lunda"
+
+# id::ccvm.value__293
+#: 950.data.seed-values.sql:6104
+msgid "Mooré"
+msgstr "mossi"
+
+# id::ccvm.value__arg
+#: 950.data.seed-values.sql:5832
+msgid "Aragonese Spanish"
+msgstr "aragonia"
+
+# id::ccvm.value__489
+#: 950.data.seed-values.sql:6302
+msgid "Primary"
+msgstr "Ensisijainen"
+
+# id::ccvm.value__282
+#: 950.data.seed-values.sql:6093
+msgid "Miscellaneous languages"
+msgstr "Sekalaiset kielet"
+
+# id::ccvm.value__259
+#: 950.data.seed-values.sql:6070
+msgid "Luiseño"
+msgstr "luiseño"
+
+# id::ccvm.value__415
+#: 950.data.seed-values.sql:6226
+msgid "Syriac"
+msgstr "muinaissyyria"
+
+# id::ccvm.value__214
+#: 950.data.seed-values.sql:6025
+msgid "Karen"
+msgstr "karen"
+
+# id::ccvm.value__164
+#: 950.data.seed-values.sql:5975
+msgid "Greek, Ancient (to 1453)"
+msgstr "muinaiskreikka"
+
+# id::ccvm.value__142
+#: 950.data.seed-values.sql:5953
+msgid "Friulian"
+msgstr "friuli"
+
+# id::ccvm.value__323
+#: 950.data.seed-values.sql:6134
+msgid "Nyoro"
+msgstr "nyoro"
+
+# id::cbrebt.label__template_merge
+#: 950.data.seed-values.sql:4857
+msgid "Template Merge Container"
+msgstr "Luettelointipohjan yhdistyssäiliö"
+
+# id::ccvm.value__59
+#: 950.data.seed-values.sql:5870
+msgid "Breton"
+msgstr "bretoni"
+
+# id::acsaf.name__26
+#: 950.data.seed-values.sql:10039
+msgid "See Also From Tracing -- Geographic Name"
+msgstr "Katso myös jäljitys -- maantieteellinen nimi"
+
+# id::ccvm.value__144 id::ccvm.value__154
+#: 950.data.seed-values.sql:5955 950.data.seed-values.sql:5965
+msgid "Scottish Gaelic"
+msgstr "gaeli"
+
+# id::ccvm.value__448
+#: 950.data.seed-values.sql:6259
+msgid "Turkish"
+msgstr "turkki"
+
+# id::ccvm.value__554
+#: 950.data.seed-values.sql:6378
+msgid "DVD"
+msgstr "DVD"
+
+# id::ccs.name__10
+#: 950.data.seed-values.sql:307
+msgid "ILL"
+msgstr "ILL"
+
+# id::ccvm.value__103
+#: 950.data.seed-values.sql:5914
+msgid "Delaware"
+msgstr "delaware"
+
+# id::ccvm.value__468
+#: 950.data.seed-values.sql:6279
+msgid "Waray"
+msgstr "waray"
+
+# id::aout.name__1
+#: 950.data.seed-values.sql:426
+msgid "Consortium"
+msgstr "Yhteenliittymä"
+
+# id::csp.label__25
+#: 950.data.seed-values.sql:36
+msgid "Alerting block on Circ, Hold and Renew"
+msgstr "Varoitusesto lainoille, varauksille ja uusinnoille"
+
+# id::ccvm.value__397
+#: 950.data.seed-values.sql:6208
+msgid "Soninke"
+msgstr "soninke"
+
+# id::acsaf.name__25
+#: 950.data.seed-values.sql:10038
+msgid "See Also From Tracing -- Topical Term"
+msgstr "Katso myös jäljitys -- aiheenmukainen termi"
+
+# id::ccvm.value__481
+#: 950.data.seed-values.sql:6292
+msgid "Zapotec"
+msgstr "sapoteekki"
+
+# id::ccvm.value__180
+#: 950.data.seed-values.sql:5991
+msgid "Hmong"
+msgstr "hmong"
+
+# id::ccvm.value__556
+#: 950.data.seed-values.sql:6380
+msgid "Unspecified"
+msgstr "Määrittämätön"
+
+# id::acs.name__1
+#: 950.data.seed-values.sql:10008
+msgid "LoC"
+msgstr "LoC"
+
+# id::ccvm.value__67 id::ccvm.value__222
+#: 950.data.seed-values.sql:5878 950.data.seed-values.sql:6033
+msgid "Khmer"
+msgstr "khmer"
+
+# id::ccvm.value__85
+#: 950.data.seed-values.sql:5896
+msgid "Chuvash"
+msgstr "tsuvassi"
+
+# id::ccvm.value__196
+#: 950.data.seed-values.sql:6007
+msgid "Indo-European (Other)"
+msgstr "indoeurooppalaiset kielet"
+
+# id::cmf.label__5
+#: 950.data.seed-values.sql:121
+msgid "Uniform Title"
+msgstr "Yhtenäistetty nimeke"
+
+# id::cbt.name__3
+#: 950.data.seed-values.sql:473
+msgid "Lost Materials"
+msgstr "Kadonneet aineistot"
+
+# id::ccvm.value__252
+#: 950.data.seed-values.sql:6063
+msgid "Lithuanian"
+msgstr "liettua"
+
+# id::ccvm.value__276
+#: 950.data.seed-values.sql:6087
+msgid "Malay"
+msgstr "malaiji"
+
+# id::ccvm.value__211
+#: 950.data.seed-values.sql:6022
+msgid "Kalâtdlisut"
+msgstr "kalaallisut, grönlanti"
+
+# id::ccvm.value__486
+#: 950.data.seed-values.sql:6297
+msgid "Zuni"
+msgstr "zuni"
+
+# id::ccvm.value__504
+#: 950.data.seed-values.sql:6319
+msgid "Manuscript cartographic material"
+msgstr "Karttakäsikirjoitus"
+
+# id::cmf.label__11
+#: 950.data.seed-values.sql:135
+msgid "Geographic Subject"
+msgstr "Maantieteellinen aihe"
+
+# id::ccvm.value__184
+#: 950.data.seed-values.sql:5995
+msgid "Iban"
+msgstr "Iban"
+
+# id::aout.opac_label__3
+#: 950.data.seed-values.sql:433
+msgid "This Branch"
+msgstr "Tämä kirjasto"
+
+# id::cbt.name__9
+#: 950.data.seed-values.sql:485
+msgid "Notification Fee"
+msgstr "Muistutusmaksu"
+
+# id::ccvm.value__373
+#: 950.data.seed-values.sql:6184
+msgid "Croatian"
+msgstr "kroatia"
+
+# id::ccvm.value__71
+#: 950.data.seed-values.sql:5882
+msgid "Cebuano"
+msgstr "cebuano"
+
+# id::pgt.description__12
+#: 950.data.seed-values.sql:1608
+msgid "Can do anything at the System level"
+msgstr "Voi tehdä mitä tahansa järjestelmätasolla"
+
+# id::ccvm.value__290
+#: 950.data.seed-values.sql:6101
+msgid "Mohawk"
+msgstr "mohawk"
+
+# id::ccvm.value__105
+#: 950.data.seed-values.sql:5916
+msgid "Dogrib"
+msgstr "dogrib"
+
+# id::ccvm.value__464
+#: 950.data.seed-values.sql:6275
+msgid "Volapük"
+msgstr "volapük"
+
+# id::cuat.label__12
+#: 950.data.seed-values.sql:11554
+msgid "Verification via translator-v1"
+msgstr "Varmennus translator-v1:n kautta"
+
+# id::ccvm.value__279
+#: 950.data.seed-values.sql:6090
+msgid "Irish, Middle (ca. 1100-1550)"
+msgstr "keski-iiri"
+
+# id::ccvm.value__508
+#: 950.data.seed-values.sql:6323
+msgid "Musical sound recording"
+msgstr "Musiikkiäänite"
+
+# id::ccvm.value__456
+#: 950.data.seed-values.sql:6267
+msgid "Ukrainian"
+msgstr "ukraina"
+
+# id::ccvm.value__361
+#: 950.data.seed-values.sql:6172
+msgid "Sandawe"
+msgstr "sandawe"
+
+# id::czs.label__oclc
+#: 950.data.seed-values.sql:355
+msgid "OCLC"
+msgstr "OCLC"
+
+# id::ccvm.value__204
+#: 950.data.seed-values.sql:6015
+msgid "Javanese"
+msgstr "jaava"
+
+# id::ccvm.value__bad
+#: 950.data.seed-values.sql:5847
+msgid "Banda"
+msgstr "banda"
+
+# id::vqbrad.description__2
+#: 950.data.seed-values.sql:4782
+msgid "Author of work"
+msgstr "Työn tekijä"
+
+# id::cbt.name__101
+#: 950.data.seed-values.sql:487
+msgid "Misc"
+msgstr "Sekalainen"
+
+# id::ccvm.value__449
+#: 950.data.seed-values.sql:6260
+msgid "Altaic (Other)"
+msgstr "altailaiset kielet"
+
+# id::ccvm.value__213
+#: 950.data.seed-values.sql:6024
+msgid "Kannada"
+msgstr "kannada"
+
+# id::ccvm.value__111
+#: 950.data.seed-values.sql:5922
+msgid "Dutch, Middle (ca. 1050-1350)"
+msgstr "keskihollanti"
+
+# id::ccvm.value__341
+#: 950.data.seed-values.sql:6152
+msgid "Persian"
+msgstr "farsi, persia"
+
+# id::cuat.label__21
+#: 950.data.seed-values.sql:11565
+msgid "Apache Auth Proxy Login"
+msgstr "Apachen auktoriteettivälityspalvelimen sisäänkirjautuminen"
+
+# id::ccvm.value__292
+#: 950.data.seed-values.sql:6103
+msgid "Mongolian"
+msgstr "mongoli"
+
+# id::ccvm.value__81
+#: 950.data.seed-values.sql:5892
+msgid "Choctaw"
+msgstr "choctaw"
+
+# id::ccvm.value__aym
+#: 950.data.seed-values.sql:5845
+msgid "Aymara"
+msgstr "aimara"
+
+# id::ccvm.value__364
+#: 950.data.seed-values.sql:6175
+msgid "South American Indian (Other)"
+msgstr "Etelä-Amerikan intiaanikielet"
+
+# id::acsaf.name__68
+#: 950.data.seed-values.sql:10067
+msgid "See Also Tracing -- General Subdivision"
+msgstr "Katso myös jäljitys -- yleinen alaosasto"
+
+# id::cmf.label__26 id::cza.label__1 id::cza.label__10 id::cza.label__19
+#: 950.data.seed-values.sql:168 950.data.seed-values.sql:360
+#: 950.data.seed-values.sql:381 950.data.seed-values.sql:400
+msgid "Title Control Number"
+msgstr "Nidenumero"
+
+# id::ccvm.value__379 id::ccvm.value__394
+#: 950.data.seed-values.sql:6190 950.data.seed-values.sql:6205
+msgid "Shona"
+msgstr "sona"
+
+# id::ccvm.value__82
+#: 950.data.seed-values.sql:5893
+msgid "Chipewyan"
+msgstr "chipewyan"
+
+# id::ccvm.value__90
+#: 950.data.seed-values.sql:5901
+msgid "Corsican"
+msgstr "korsika"
+
+# id::vie.description__import.item.invalid.location
+#: 950.data.seed-values.sql:9310
+msgid "Import failed due to invalid copy location"
+msgstr "Tuonti epäonnistui virheellisen nidesijainnin vuoksi"
+
+# id::ccvm.value__233
+#: 950.data.seed-values.sql:6044
+msgid "Kpelle"
+msgstr "kpelle"
+
+# id::cuat.label__15
+#: 950.data.seed-values.sql:11557
+msgid "SIP2 User Verification"
+msgstr "SIP2-käyttäjävarmenne"
+
+# id::ccvm.value__525
+#: 950.data.seed-values.sql:6345
+msgid "Microopaque"
+msgstr "Mikrokortti"
+
+# id::ccvm.value__399
+#: 950.data.seed-values.sql:6210
+msgid "Somali"
+msgstr "somali"
+
+# id::ccvm.value__arp
+#: 950.data.seed-values.sql:5835
+msgid "Arapaho"
+msgstr "arapho"
+
+# id::ccvm.value__49
+#: 950.data.seed-values.sql:5860
+msgid "Berber (Other)"
+msgstr "berberikielet"
+
+# id::ccvm.value__80
+#: 950.data.seed-values.sql:5891
+msgid "Chinook jargon"
+msgstr "chinook-jargon"
+
+# id::ccvm.value__aka
+#: 950.data.seed-values.sql:5822
+msgid "Akan"
+msgstr "akan"
+
+# id::ccvm.value__262
+#: 950.data.seed-values.sql:6073
+msgid "Lushai"
+msgstr "lusai"
+
+# id::i18n_l.name__en-US
+#: 950.data.seed-values.sql:326
+msgid "English (US)"
+msgstr "englanti (Yhdysvallat)"
+
+# id::ccvm.value__346
+#: 950.data.seed-values.sql:6157
+msgid "Ponape"
+msgstr "pohnpei"
+
+# id::pgt.name__8
+#: 950.data.seed-values.sql:1597
+msgid "Cataloging Administrator"
+msgstr "Luetteloiva ylläpitäjä"
+
+# id::ccvm.value__55
+#: 950.data.seed-values.sql:5866
+msgid "Siksika"
+msgstr "mustajalka"
+
+# id::ccvm.value__307
+#: 950.data.seed-values.sql:6118
+msgid "Low German"
+msgstr "alasaksa"
+
+# id::ccvm.value__101
+#: 950.data.seed-values.sql:5912
+msgid "Dargwa"
+msgstr "dargi"
+
+# id::ccvm.value__519
+#: 950.data.seed-values.sql:6336
+msgid "Mixed forms"
+msgstr "Sekalaisia muotoja"
+
+# id::ccvm.value__398
+#: 950.data.seed-values.sql:6209
+msgid "Sogdian"
+msgstr "sogdi"
+
+# id::ccvm.value__348
+#: 950.data.seed-values.sql:6159
+msgid "Prakrit languages"
+msgstr "prakrit-kielet"
+
+# id::ccvm.value__147
+#: 950.data.seed-values.sql:5958
+msgid "Gayo"
+msgstr "gajo"
+
+# id::acsaf.name__28
+#: 950.data.seed-values.sql:10041
+msgid "See Also From Tracing -- General Subdivision"
+msgstr "Katso myös jäljitys -- yleinen alaosasto"
+
+# id::ccvm.value__510
+#: 950.data.seed-values.sql:6327
+msgid "Not fiction (not further specified)"
+msgstr "Tietokirjallisuus (ei tarkempaa määritystä)"
+
+# id::ccvm.value__236
+#: 950.data.seed-values.sql:6047
+msgid "Kuanyama"
+msgstr "kuanjama"
+
+# id::ccvm.value__421 id::ccvm.value__422
+#: 950.data.seed-values.sql:6232 950.data.seed-values.sql:6233
+msgid "Tatar"
+msgstr "tataari"
+
+# id::ccvm.value__505
+#: 950.data.seed-values.sql:6320
+msgid "Notated music"
+msgstr "Nuottijulkaisu"
+
+# id::csp.label__28
+#: 950.data.seed-values.sql:39
+msgid "Alerting block on Renew"
+msgstr "Varoitusesto uusinnassa"
+
+# id::crmf.name__7
+#: 950.data.seed-values.sql:280
+msgid "overdue_equip_max"
+msgstr "overdue_equip_max"
+
+# id::cmf.label__29
+#: 950.data.seed-values.sql:174
+msgid "System Control Number"
+msgstr "Järjestelmänumero"
+
+# id::ccvm.value__146 id::ccvm.value__328
+#: 950.data.seed-values.sql:5957 950.data.seed-values.sql:6139
+msgid "Oromo"
+msgstr "oromo"
+
+# id::ccvm.value__536
+#: 950.data.seed-values.sql:6358
+msgid "Serial"
+msgstr "Sarja"
+
+# id::cbrebt.label__reading_list
+#: 950.data.seed-values.sql:4856
+msgid "Reading List"
+msgstr "Kirjalista"
+
+# id::ccvm.value__503
+#: 950.data.seed-values.sql:6318
+msgid "Cartographic material"
+msgstr "Kartta-aineisto"
+
+# id::ccvm.value__375
+#: 950.data.seed-values.sql:6186
+msgid "Semitic (Other)"
+msgstr "seemiläiset kielet"
+
+# id::cmf.label__15
+#: 950.data.seed-values.sql:145
+msgid "General Keywords"
+msgstr "Yleiset avainsanat"
+
+# id::ccvm.value__223
+#: 950.data.seed-values.sql:6034
+msgid "Khotanese"
+msgstr "khotani"
+
+# id::ccvm.value__47
+#: 950.data.seed-values.sql:5858
+msgid "Bemba"
+msgstr "bemba"
+
+# id::vqbrad.description__1
+#: 950.data.seed-values.sql:4781
+msgid "Title of work"
+msgstr "Työn otsikko"
+
+# id::ccvm.value__351
+#: 950.data.seed-values.sql:6162
+msgid "Quechua"
+msgstr "ketsua"
+
+# id::acsaf.name__69
+#: 950.data.seed-values.sql:10068
+msgid "See Also Tracing -- Geographic Subdivision"
+msgstr "Katso myös jäljitys -- maantieteellinen alaosasto"
+
+# id::vqbrad.description__7
+#: 950.data.seed-values.sql:4787
+msgid "Price"
+msgstr "Hinta"
+
+# id::ccvm.value__96
+#: 950.data.seed-values.sql:5907
+msgid "Creoles and Pidgins (Other)"
+msgstr "kreolit ja pidginit"
+
+# id::ccvm.value__311
+#: 950.data.seed-values.sql:6122
+msgid "Niger-Kordofanian (Other)"
+msgstr "nigeriläis-kongolaiset kielet"
+
+# id::ccvm.value__124
+#: 950.data.seed-values.sql:5935
+msgid "Estonian"
+msgstr "viro"
+
+# id::ccvm.value__128
+#: 950.data.seed-values.sql:5939
+msgid "Fang"
+msgstr "fang"
+
+# id::ccvm.value__253
+#: 950.data.seed-values.sql:6064
+msgid "Mongo-Nkundu"
+msgstr "mongo"
+
+# id::vie.description__general.unknown
+#: 950.data.seed-values.sql:9307
+msgid "Import or Overlay failed"
+msgstr "Tuonti tai korvaaminen epäonnistui"
+
+# id::ccvm.value__269
+#: 950.data.seed-values.sql:6080
+msgid "Malayalam"
+msgstr "malajalam"
+
+# id::cuat.label__20
+#: 950.data.seed-values.sql:11564
+msgid "Unique Mgt Login"
+msgstr "Ainutkertainen sisäänkirjautuminen hallintaan"
+
+# id::ccvm.value__391
+#: 950.data.seed-values.sql:6202
+msgid "Inari Sami"
+msgstr "saame, inarin-"
+
+# id::i18n_l.name__fr-CA
+#: 950.data.seed-values.sql:335
+msgid "French (Canada)"
+msgstr "ranska (Kanada)"
+
+# id::cmf.label__9
+#: 950.data.seed-values.sql:130
+msgid "Conference Author"
+msgstr "Konferenssin pitäjä"
+
+# id::aout.name__3
+#: 950.data.seed-values.sql:432
+msgid "Branch"
+msgstr "Sivukirjasto"
+
+# id::ccvm.value__afh
+#: 950.data.seed-values.sql:5819
+msgid "Afrihili (Artificial language)"
+msgstr "afrihili (keinotekoinen kieli)"
+
+# id::vqbrad.description__15
+#: 950.data.seed-values.sql:4795
+msgid "Item Barcode"
+msgstr "Nidetunnus"
+
+# id::vie.description__overlay.xml.malformed
+#: 950.data.seed-values.sql:9316
+msgid "Malformed record cause Overlay failure"
+msgstr "Epämuodostunut tietue korvausvirheen johdosta"
+
+# id::cbs.source__3
+#: 950.data.seed-values.sql:7
+msgid "Project Gutenberg"
+msgstr "Gutenberg-projekti"
+
+# id::aou.name__9
+#: 950.data.seed-values.sql:459
+msgid "Example Bookmobile 1"
+msgstr "Kirjastoauton esimerkki 1"
+
+# id::ccvm.value__493
+#: 950.data.seed-values.sql:6306
+msgid "Specialized"
+msgstr "Erikoisala"
+
+# id::ccvm.value__132
+#: 950.data.seed-values.sql:5943
+msgid "Fijian"
+msgstr "fidzi"
+
+# id::acsaf.name__46
+#: 950.data.seed-values.sql:10052
+msgid "Established Heading Linking Entry -- Geographic Name"
+msgstr "Vakiintunut otsikkolinkityskirjaus -- maantieteellinen nimi"
+
+# id::i18n_l.description__en-US
+#: 950.data.seed-values.sql:327
+msgid "American English"
+msgstr "amerikanenglanti"
+
+# id::cmf.label__28
+#: 950.data.seed-values.sql:172
+msgid "Authority Record ID"
+msgstr "Auktoriteettitietueen tunnus"
+
+# id::acsaf.name__52
+#: 950.data.seed-values.sql:10058
+msgid "Established Heading Linking Entry -- Chronological Term"
+msgstr "Vakiintunut otsikkolinkityskirjaus -- kronologinen termi"
+
+# id::cust.label__history.hold.retention_age
+# id::cust.description__history.hold.retention_age
+#: 950.data.seed-values.sql:8880 950.data.seed-values.sql:8881
+msgid "Historical Hold Retention Age"
+msgstr "Vanhojen varaustietojen säilytysaika"
+
+# id::ccvm.value__313
+#: 950.data.seed-values.sql:6124
+msgid "Norwegian (Nynorsk)"
+msgstr "norja (nynorsk)"
+
+# id::ccvm.value__431
+#: 950.data.seed-values.sql:6242
+msgid "Tigré"
+msgstr "tigre"
+
+# id::ccvm.value__368 id::ccvm.value__392
+#: 950.data.seed-values.sql:6179 950.data.seed-values.sql:6203
+msgid "Samoan"
+msgstr "samoa"
+
+# id::ccpbt.label__staff_client id::cbrebt.label__staff_client
+#: 950.data.seed-values.sql:4850 950.data.seed-values.sql:4854
+msgid "General Staff Client container"
+msgstr "Yleinen henkilökunnan pääteohjelman säiliö"
+
+# id::pgt.name__9
+#: 950.data.seed-values.sql:1599
+msgid "Circulation Administrator"
+msgstr "Lainausylläpitäjä"
+
+# id::ccvm.value__157 id::ccvm.value__275
+#: 950.data.seed-values.sql:5968 950.data.seed-values.sql:6086
+msgid "Manx"
+msgstr "manx"
+
+# id::ccvm.value__354
+#: 950.data.seed-values.sql:6165
+msgid "Rarotongan"
+msgstr "rarotonga"
+
+# id::acsaf.name__50
+#: 950.data.seed-values.sql:10056
+msgid "Subdivision Linking Entry -- Chronological Subdivision"
+msgstr "Alaosaston linkityskirjaus -- kronologinen alaosasto"
+
+# id::at.name__s
+#: 950.data.seed-values.sql:10147
+msgid "Sears List of Subject Headings"
+msgstr "Searsin luettelo aiheotsikoista"
+
+# id::crrf.name__3
+#: 950.data.seed-values.sql:288
+msgid "50_cent_per_day"
+msgstr "50_senttiä_päivässä"
+
+# id::ccvm.value__113
+#: 950.data.seed-values.sql:5924
+msgid "Dyula"
+msgstr "djula"
+
+# id::ccvm.value__199
+#: 950.data.seed-values.sql:6010
+msgid "Inupiaq"
+msgstr "Inupiatun"
+
+# id::ccvm.value__165
+#: 950.data.seed-values.sql:5976
+msgid "Greek, Modern (1453- )"
+msgstr "kreikka"
+
+# id::ccvm.value__115
+#: 950.data.seed-values.sql:5926
+msgid "Efik"
+msgstr "efik"
+
+# id::cmf.label__7
+#: 950.data.seed-values.sql:126
+msgid "Corporate Author"
+msgstr "Tekijä (yritys)"
+
+# id::ccvm.value__296
+#: 950.data.seed-values.sql:6107
+msgid "Creek"
+msgstr "creek"
+
+# id::ccvm.value__490
+#: 950.data.seed-values.sql:6303
+msgid "Pre-adolescent"
+msgstr "Varhaisnuoret"
+
+# id::ccvm.value__390
+#: 950.data.seed-values.sql:6201
+msgid "Lule Sami"
+msgstr "saame, luulajan-"
+
+# id::ccvm.value__54
+#: 950.data.seed-values.sql:5865
+msgid "Bislama"
+msgstr "bislama"
+
+# id::ccvm.value__230
+#: 950.data.seed-values.sql:6041
+msgid "Kongo"
+msgstr "kongo"
+
+# id::vie.description__import.item.invalid.owning_lib
+#: 950.data.seed-values.sql:9326
+msgid "Invalid value for \"owning_lib\""
+msgstr "Virheellinen arvo kohteelle \"owning_lib\""
+
+# id::cuat.label__2
+#: 950.data.seed-values.sql:11543
+msgid "Login via srfsh"
+msgstr "Sisäänkirjautuminen srfsh:n kautta"
+
+# id::ccvm.value__ach
+#: 950.data.seed-values.sql:5815
+msgid "Acoli"
+msgstr "atsoli"
+
+# id::ccvm.value__283
+#: 950.data.seed-values.sql:6094
+msgid "Mon-Khmer (Other)"
+msgstr "mon-khmer-kielet"
+
+# id::acsaf.name__21
+#: 950.data.seed-values.sql:10035
+msgid "See Also From Tracing -- Personal Name"
+msgstr "Katso myös jäljitys -- henkilön nimi"
+
+# id::ccvm.value__338
+#: 950.data.seed-values.sql:6149
+msgid "Papiamento"
+msgstr "papiamentu"
+
+# id::ccvm.value__297
+#: 950.data.seed-values.sql:6108
+msgid "Marwari"
+msgstr "marwari"
+
+# id::crmf.name__2
+#: 950.data.seed-values.sql:270
+msgid "overdue_min"
+msgstr "overdue_min"
+
+# id::ccvm.value__99
+#: 950.data.seed-values.sql:5910
+msgid "Dakota"
+msgstr "dakota"
+
+# id::pgt.name__10
+#: 950.data.seed-values.sql:1601
+msgid "Local Administrator"
+msgstr "Paikallinen ylläpitäjä"
+
+# id::crmf.name__3
+#: 950.data.seed-values.sql:272
+msgid "overdue_mid"
+msgstr "overdue_mid"
+
+# id::ccvm.value__171
+#: 950.data.seed-values.sql:5982
+msgid "Haitian French Creole"
+msgstr "haiti"
+
+# id::ccvm.value__52
+#: 950.data.seed-values.sql:5863
+msgid "Bikol"
+msgstr "bikol"
+
+# id::ccvm.value__413
+#: 950.data.seed-values.sql:6224
+msgid "Swedish"
+msgstr "ruotsi"
+
+# id::vie.description__import.item.invalid.copy_number
+#: 950.data.seed-values.sql:9330
+msgid "Invalid value for \"copy_number\""
+msgstr "Virheellinen arvo kohteelle \"copy_number\""
+
+# id::ccvm.value__377
+#: 950.data.seed-values.sql:6188
+msgid "Sign languages"
+msgstr "viittomakielet"
+
+# id::ccvm.value__79
+#: 950.data.seed-values.sql:5890
+msgid "Mari"
+msgstr "mari"
+
+# id::ccvm.value__126
+#: 950.data.seed-values.sql:5937
+msgid "Ewe"
+msgstr "ewe"
+
+# id::ccvm.value__447
+#: 950.data.seed-values.sql:6258
+msgid "Tupi languages"
+msgstr "tupi-kielet"
+
+# id::ccvm.value__alg
+#: 950.data.seed-values.sql:5826
+msgid "Algonquian (Other)"
+msgstr "algonkin-kielet"
+
+# id::ccvm.value__129 id::ccvm.value__130
+#: 950.data.seed-values.sql:5940 950.data.seed-values.sql:5941
+msgid "Faroese"
+msgstr "fääri"
+
+# id::csp.label__23
+#: 950.data.seed-values.sql:34
+msgid "Alerting block on Circ and Hold"
+msgstr "Varoitusesto lainauksessa ja varauksessa"
+
+# id::ccvm.value__100
+#: 950.data.seed-values.sql:5911
+msgid "Danish"
+msgstr "tanska"
+
+# id::ccvm.value__109
+#: 950.data.seed-values.sql:5920
+msgid "Dravidian (Other)"
+msgstr "dravidakielet"
+
+# id::acsaf.name__42
+#: 950.data.seed-values.sql:10049
+msgid "Established Heading Linking Entry -- Corporate Name"
+msgstr "Vakiintunut otsikkolinkityskirjaus -- yrityksen nimi"
+
+# id::ccs.name__3
+#: 950.data.seed-values.sql:300
+msgid "Lost"
+msgstr "Kadonnut"
+
+# id::ccvm.value__91
+#: 950.data.seed-values.sql:5902
+msgid "Creoles and Pidgins, English-based (Other)"
+msgstr "englantiin perustuvat kreolit ja pidginit"
+
+# id::ccvm.value__97
+#: 950.data.seed-values.sql:5908
+msgid "Cushitic (Other)"
+msgstr "kuusilaiset kielet"
+
+# id::ccvm.value__426
+#: 950.data.seed-values.sql:6237
+msgid "Tetum"
+msgstr "tetum"
+
+# id::ccvm.value__335
+#: 950.data.seed-values.sql:6146
+msgid "Pahlavi"
+msgstr "pahlavi"
+
+# id::cubt.label__folks%3Apub_book_bags.add
+#: 950.data.seed-values.sql:4862
+msgid "Add to Published Book Bags"
+msgstr "Lisää julkaistuihin kirjahyllyihin"
+
+# id::vie.description__import.item.invalid.status
+#: 950.data.seed-values.sql:9320
+msgid "Invalid value for \"status\""
+msgstr "Virheellinen arvo kohteelle \"status\""
+
+# id::acsaf.name__61
+#: 950.data.seed-values.sql:10061
+msgid "See Also Tracing -- Personal Name"
+msgstr "Katso myös jäljitys -- henkilön nimi"
+
+# id::ccvm.value__385
+#: 950.data.seed-values.sql:6196
+msgid "Slovak"
+msgstr "slovakki"
+
+# id::at.name__n
+#: 950.data.seed-values.sql:10145
+msgid "Not applicable"
+msgstr "Ei käytettävissä"
+
+# id::ccvm.value__66
+#: 950.data.seed-values.sql:5877
+msgid "Central American Indian (Other)"
+msgstr "Keski-Amerikan intiaanikielet"
+
+# id::ccvm.value__224
+#: 950.data.seed-values.sql:6035
+msgid "Kikuyu"
+msgstr "kikuju"
+
+# id::ccvm.value__545
+#: 950.data.seed-values.sql:6369
+msgid "Betacam"
+msgstr "Betacam"
+
+# id::crahp.name__2
+#: 950.data.seed-values.sql:294
+msgid "6month"
+msgstr "6kuukautta"
+
+# id::cgf.label__history.circ.retention_count
+#: 950.data.seed-values.sql:8819
+msgid "Historical Circulations per Copy"
+msgstr "Lainauksia per nide"
+
+# id::cmf.label__20
+#: 950.data.seed-values.sql:156
+msgid "UPC"
+msgstr "UPC"
+
+# id::aiit.name__HND
+#: 950.data.seed-values.sql:8725
+msgid "Handling Charge"
+msgstr "Käsittelymaksu"
+
+# id::at.name__k
+#: 950.data.seed-values.sql:10144
+msgid "Canadian Subject Headings"
+msgstr "Kanadalaiset aiheotsikot"
+
+# id::ccvm.value__ang
+#: 950.data.seed-values.sql:5828
+msgid "English, Old (ca. 450-1100)"
+msgstr "muinaisenglanti"
+
+# id::ccvm.value__300
+#: 950.data.seed-values.sql:6111
+msgid "North American Indian (Other)"
+msgstr "Pohjois-Amerikan intiaanikielet"
+
+# id::ccvm.value__345
+#: 950.data.seed-values.sql:6156
+msgid "Polish"
+msgstr "puola"
+
+# id::acsaf.name__5
+#: 950.data.seed-values.sql:10025
+msgid "Heading -- Topical Term"
+msgstr "Otsikko -- aiheenmukainen termi"
+
+# id::ccvm.value__95
+#: 950.data.seed-values.sql:5906
+msgid "Crimean Tatar"
+msgstr "krimintataari, kriminturkki"
+
+# id::cbrebt.label__bookbag
+#: 950.data.seed-values.sql:4855
+msgid "Book Bag"
+msgstr "Kirjahylly"
+
+# id::acsaf.name__63
+#: 950.data.seed-values.sql:10063
+msgid "See Also Tracing -- Meeting Name"
+msgstr "Katso myös jäljitys -- kokouksen nimi"
+
+# id::ccvm.value__50
+#: 950.data.seed-values.sql:5861
+msgid "Bhojpuri"
+msgstr "bhodzpuri"
+
+# id::ccvm.value__441
+#: 950.data.seed-values.sql:6252
+msgid "Tsimshian"
+msgstr "Tsimsi"
+
+# id::aout.opac_label__5
+#: 950.data.seed-values.sql:439
+msgid "Your Bookmobile"
+msgstr "Oma kirjastoauto"
+
+# id::ccvm.value__315
+#: 950.data.seed-values.sql:6126
+msgid "Nogai"
+msgstr "nogai"
+
+# id::cuat.label__14
+#: 950.data.seed-values.sql:11556
+msgid "Verification via remoteauth"
+msgstr "Remoteauth-varmennus"
+
+# id::ccvm.value__120
+#: 950.data.seed-values.sql:5931
+msgid "English, Middle (1100-1500)"
+msgstr "keskienglanti"
+
+# id::ccvm.value__363
+#: 950.data.seed-values.sql:6174
+msgid "Yakut"
+msgstr "jakuutti"
+
+# id::ccvm.value__411
+#: 950.data.seed-values.sql:6222
+msgid "Sumerian"
+msgstr "sumeri"
+
+# id::acqit.name__PPR
+#: 950.data.seed-values.sql:8730
+msgid "Paper"
+msgstr "Paperi"
+
+# id::ccvm.value__475
+#: 950.data.seed-values.sql:6286
+msgid "Xhosa"
+msgstr "xhosa"
+
+# id::ccvm.value__288
+#: 950.data.seed-values.sql:6099
+msgid "Manipuri"
+msgstr "manipuri"
+
+# id::ccvm.value__61
+#: 950.data.seed-values.sql:5872
+msgid "Buriat"
+msgstr "burjaatti"
+
+# id::ccvm.value__270
+#: 950.data.seed-values.sql:6081
+msgid "Mandingo"
+msgstr "mandingo"
+
+# id::ccvm.value__183
+#: 950.data.seed-values.sql:5994
+msgid "Hupa"
+msgstr "hupa"
+
+# id::ccvm.value__193 id::ccvm.value__198
+#: 950.data.seed-values.sql:6004 950.data.seed-values.sql:6009
+msgid "Interlingua (International Auxiliary Language Association)"
+msgstr "interlingua"
+
+# id::ccvm.value__186
+#: 950.data.seed-values.sql:5997
+msgid "Icelandic"
+msgstr "islanti"
+
+# id::acsaf.name__27
+#: 950.data.seed-values.sql:10040
+msgid "See Also From Tracing -- Genre/Form Term"
+msgstr "Katso myös jäljitys -- tyylilaji-/muototermi"
+
+# id::ccvm.value__451
+#: 950.data.seed-values.sql:6262
+msgid "Twi"
+msgstr "twi"
+
+# id::ccvm.value__168
+#: 950.data.seed-values.sql:5979
+msgid "Gujarati"
+msgstr "gudzarati"
+
+# id::ccvm.value__511
+#: 950.data.seed-values.sql:6328
+msgid "Fiction (not further specified)"
+msgstr "Fiktio (ei tarkempaa määritystä)"
+
+# id::ccvm.value__272
+#: 950.data.seed-values.sql:6083
+msgid "Austronesian (Other)"
+msgstr "austronesialaiset kielet"
+
+# id::ccvm.value__akk
+#: 950.data.seed-values.sql:5823
+msgid "Akkadian"
+msgstr "akkadi"
+
+# id::cnal.name__1
+#: 950.data.seed-values.sql:317
+msgid "Filtered"
+msgstr "Suodatettu"
+
+# id::ccvm.value__231
+#: 950.data.seed-values.sql:6042
+msgid "Korean"
+msgstr "korea"
+
+# id::ccvm.value__378
+#: 950.data.seed-values.sql:6189
+msgid "Shan"
+msgstr "shan"
+
+# id::vie.description__overlay.record.quality
+#: 950.data.seed-values.sql:9317
+msgid "New record had insufficient quality"
+msgstr "Uuden tietueen laatu oli riittämätön"
+
+# id::ccvm.value__506
+#: 950.data.seed-values.sql:6321
+msgid "Manuscript notated music"
+msgstr "Nuottikäsikirjoitus"
+
+# id::acsaf.name__44
+#: 950.data.seed-values.sql:10016
+msgid "Established Heading Linking Entry -- Uniform Title"
+msgstr "Vakiintunut otsikkolinkityskirjaus -- yhdenmukainen otsikko"
+
+# id::ccvm.value__537
+# id::ccvm.value__45
+#: 950.data.seed-values.sql:6361
+msgid "Beta"
+msgstr "Beta"
+
+# id::ccvm.value__532
+#: 950.data.seed-values.sql:6354
+msgid "Collection"
+msgstr "Kokoelma"
+
+# id::ccvm.value__320
+#: 950.data.seed-values.sql:6131
+msgid "Nyanja"
+msgstr "njandza"
+
+# id::acsaf.name__66
+#: 950.data.seed-values.sql:10065
+msgid "See Also Tracing -- Geographic Name"
+msgstr "Katso myös jäljitys -- maantieteellinen nimi"
+
+# id::pgt.description__13
+#: 950.data.seed-values.sql:1611
+msgid "Can do anything at the Consortium level"
+msgstr "Voi tehdä mitä tahansa yhteenliittymätasolla"
+
+# id::ccvm.value__65
+#: 950.data.seed-values.sql:5876
+msgid "Caddo"
+msgstr "caddo"
+
+# id::ccvm.value__249
+#: 950.data.seed-values.sql:6060
+msgid "Lezgian"
+msgstr "lezgi"
+
+# id::ccvm.value__215
+#: 950.data.seed-values.sql:6026
+msgid "Kashmiri"
+msgstr "kasmiri"
+
+# id::ccvm.value__170
+#: 950.data.seed-values.sql:5981
+msgid "Haida"
+msgstr "haida"
+
+# id::cmf.label__25
+#: 950.data.seed-values.sql:166
+msgid "Local Free-Text Call Number"
+msgstr "Kirjastokohtainen hyllypaikka"
+
+# id::ccvm.value__244 id::ccvm.value__325
+#: 950.data.seed-values.sql:6055 950.data.seed-values.sql:6136
+msgid "Occitan (post-1500)"
+msgstr "oksitaani"
+
+# id::vie.description__import.xml.malformed
+#: 950.data.seed-values.sql:9315
+msgid "Malformed record cause Import failure"
+msgstr "Epämuodostunut tietue tuonnin epäonnistumisen johdosta"
+
+# id::ccvm.value__400
+#: 950.data.seed-values.sql:6211
+msgid "Songhai"
+msgstr "songhai"
+
+# id::i18n_l.name__es-US
+#: 950.data.seed-values.sql:341
+msgid "Spanish (US)"
+msgstr "espanja (Yhdysvallat)"
+
+# id::ccs.name__2
+#: 950.data.seed-values.sql:299
+msgid "Bindery"
+msgstr "Sitomo"
+
+# id::aout.name__2 id::coust.label__config.settings_group.system
+#: 950.data.seed-values.sql:429 950.data.seed-values.sql:2486
+msgid "System"
+msgstr "Järjestelmä"
+
+# id::pgt.name__7
+#: 950.data.seed-values.sql:1595
+msgid "Acquisitions Administrator"
+msgstr "Hankintaylläpitäjä"
+
+# id::cbrebt.label__vandelay_queue
+#: 950.data.seed-values.sql:10166
+msgid "Vandelay Queue"
+msgstr "Vandelay-jono"
+
+# id::vqbrad.description__3
+#: 950.data.seed-values.sql:4783
+msgid "Language of work"
+msgstr "Työkieli"
+
+# id::ccvm.value__aar
+#: 950.data.seed-values.sql:5812
+msgid "Afar"
+msgstr "afar"
+
+# id::crahp.name__1
+#: 950.data.seed-values.sql:292
+msgid "3month"
+msgstr "3kuukautta"
+
+# id::cza.label__8 id::cza.label__17 id::cza.label__26
+# id::vqbrad.description__13
+#: 950.data.seed-values.sql:374 950.data.seed-values.sql:395
+#: 950.data.seed-values.sql:414 950.data.seed-values.sql:4793
+msgid "Publication Date"
+msgstr "Julkaisupäivä"
+
+# id::ccvm.value__453
+#: 950.data.seed-values.sql:6264
+msgid "Udmurt"
+msgstr "udmurtti"
+
+# id::ccvm.value__155 id::ccvm.value__201
+#: 950.data.seed-values.sql:5966 950.data.seed-values.sql:6012
+msgid "Irish"
+msgstr "irlanti"
+
+# id::acsaf.name__64
+#: 950.data.seed-values.sql:10017
+msgid "See Also Tracing -- Uniform Title"
+msgstr "Katso myös jäljitys -- yhdenmukainen otsikko"
+
+# id::i18n_l.name__cs-CZ id::i18n_l.description__cs-CZ id::ccvm.value__98
+#: 950.data.seed-values.sql:329 950.data.seed-values.sql:330
+#: 950.data.seed-values.sql:5909
+msgid "Czech"
+msgstr "tsekki"
+
+# id::ccvm.value__261
+#: 950.data.seed-values.sql:6072
+msgid "Luo (Kenya and Tanzania)"
+msgstr "luo"
+
+# id::ccvm.value__219
+#: 950.data.seed-values.sql:6030
+msgid "Kabardian"
+msgstr "kabardi"
+
+# id::ccvm.value__242
+#: 950.data.seed-values.sql:6053
+msgid "Lahnda"
+msgstr "lahnda"
+
+# id::ccvm.value__46
+#: 950.data.seed-values.sql:5857
+msgid "Belarusian"
+msgstr "valkovenäjä"
+
+# id::czs.label__loc
+#: 950.data.seed-values.sql:353
+msgid "Library of Congress"
+msgstr "Kongressin kirjasto"
+
+# id::cuat.label__1
+#: 950.data.seed-values.sql:11542
+msgid "Login via opensrf"
+msgstr "Sisäänkirjautuminen opensrf:n kautta"
+
+# id::ccvm.value__526
+#: 950.data.seed-values.sql:6346
+msgid "Large print"
+msgstr "Suurikokoinen teksti"
+
+# id::ccvm.value__-ajm
+#: 950.data.seed-values.sql:5821
+msgid "Aljamía"
+msgstr "aljamía"
+
+# id::cmf.label__12
+#: 950.data.seed-values.sql:137
+msgid "Name Subject"
+msgstr "Nimiaihe"
+
+# id::ccvm.value__388
+#: 950.data.seed-values.sql:6199
+msgid "Northern Sami"
+msgstr "saame, pohjois-"
+
+# id::ccvm.value__474
+#: 950.data.seed-values.sql:6285
+msgid "Kalmyk"
+msgstr "kalmukki"
+
+# id::cmf.label__6
+#: 950.data.seed-values.sql:123
+msgid "Title Proper"
+msgstr "Oikea otsikko"
+
+# id::cuat.label__17
+#: 950.data.seed-values.sql:11561
+msgid "OPAC Login (tpac)"
+msgstr "Verkkokirjasto-sisäänkirjautuminen (tpac)"
+
+# id::ccvm.value__491
+#: 950.data.seed-values.sql:6304
+msgid "Adolescent"
+msgstr "Teini-ikäiset"
+
+# id::ccvm.value__358
+#: 950.data.seed-values.sql:6169
+msgid "Romanian"
+msgstr "romania"
+
+# id::ccvm.value__aze
+#: 950.data.seed-values.sql:5846
+msgid "Azerbaijani"
+msgstr "azeri"
+
+# id::ccvm.value__403
+#: 950.data.seed-values.sql:6214
+msgid "Sardinian"
+msgstr "sardi"
+
+# id::ccvm.value__538
+#: 950.data.seed-values.sql:6362
+msgid "VHS"
+msgstr "VHS"
+
+# id::cbt.name__5
+#: 950.data.seed-values.sql:477
+msgid "System: Deposit"
+msgstr "Järjestelmä: Talletus"
+
+# id::at.name__c
+#: 950.data.seed-values.sql:10142
+msgid "Medical Subject Headings"
+msgstr "Lääketieteelliset aiheet"
+
+# id::cuat.label__4
+#: 950.data.seed-values.sql:11545
+msgid "Login via translator-v1"
+msgstr "Sisäänkirjautuminen translator-v1:n kautta"
+
+# id::ccvm.value__498
+#: 950.data.seed-values.sql:6313
+msgid "Projected medium"
+msgstr "Heijastettava kuva tai viestin"
+
+# id::coust.label__config.settings_group.offline
+#: 950.data.seed-values.sql:2502
+msgid "Offline"
+msgstr "Offline"
+
+# id::ccvm.value__245
+#: 950.data.seed-values.sql:6056
+msgid "Lao"
+msgstr "lao"
+
+# id::cmf.label__22
+#: 950.data.seed-values.sql:160
+msgid "EAN"
+msgstr "EAN"
+
+# id::cuat.label__6
+#: 950.data.seed-values.sql:11547
+msgid "Login via remoteauth"
+msgstr "Sisäänkirjautuminen remoteauth:n kautta"
+
+# id::ccvm.value__382
+#: 950.data.seed-values.sql:6193
+msgid "Siouan (Other)"
+msgstr "sioux-kielet"
+
+# id::ccvm.value__372
+#: 950.data.seed-values.sql:6183
+msgid "Scots"
+msgstr "skotti"
+
+# id::ccvm.value__278
+#: 950.data.seed-values.sql:6089
+msgid "Mende"
+msgstr "mende"
+
+# id::ccvm.value__326
+#: 950.data.seed-values.sql:6137
+msgid "Ojibwa"
+msgstr "odzibwa"
+
+# id::ccvm.value__410
+#: 950.data.seed-values.sql:6221
+msgid "Susu"
+msgstr "susu"
+
+# id::ccvm.value__70
+#: 950.data.seed-values.sql:5881
+msgid "Caucasian (Other)"
+msgstr "kaukasialaiset kielet"
+
+# id::ccvm.value__238
+#: 950.data.seed-values.sql:6049
+msgid "Kurdish"
+msgstr "kurdi"
+
+# id::ccvm.value__467
+#: 950.data.seed-values.sql:6278
+msgid "Walamo"
+msgstr "walamo"
+
+# id::cuat.label__5
+#: 950.data.seed-values.sql:11546
+msgid "Login via xmlrpc"
+msgstr "Sisäänkirjautuminen xmlrpc:n kautta"
+
+# id::i18n_l.description__es-US
+#: 950.data.seed-values.sql:342
+msgid "American Spanish"
+msgstr "amerikanespanja"
+
+# id::ccvm.value__305
+#: 950.data.seed-values.sql:6116
+msgid "Ndebele (Zimbabwe)  "
+msgstr "ndebele, -pohjois  "
+
+# id::ccvm.value__257
+#: 950.data.seed-values.sql:6068
+msgid "Luba-Katanga"
+msgstr "luba (Katanga)"
+
+# id::ccvm.value__529
+#: 950.data.seed-values.sql:6349
+msgid "Electronic"
+msgstr "Sähköinen"
+
+# id::ccvm.value__513
+#: 950.data.seed-values.sql:6330
+msgid "Dramas"
+msgstr "Draama"
+
+# id::ccvm.value__483
+#: 950.data.seed-values.sql:6294
+msgid "Zhuang"
+msgstr "zhuang"
+
+# id::ccvm.value__527
+#: 950.data.seed-values.sql:6347
+msgid "Braille"
+msgstr "pistekirjoitus"
+
+# id::ccvm.value__512
+#: 950.data.seed-values.sql:6329
+msgid "Comic strips"
+msgstr "Sarjakuva"
+
+# id::ccvm.value__187
+#: 950.data.seed-values.sql:5998
+msgid "Ido"
+msgstr "ido"
+
+# id::i18n_l.description__fr-CA
+#: 950.data.seed-values.sql:336
+msgid "Canadian French"
+msgstr "kanadanranska"
+
+# id::cmf.label__23
+#: 950.data.seed-values.sql:162
+msgid "ISRC"
+msgstr "ISRC"
+
+# id::ccvm.value__134
+#: 950.data.seed-values.sql:5945
+msgid "Finno-Ugrian (Other)"
+msgstr "suomalais-ugrilaiset kielet"
+
+# id::ccvm.value__apa
+#: 950.data.seed-values.sql:5829
+msgid "Apache languages"
+msgstr "apassikielet"
+
+# id::csp.label__27
+#: 950.data.seed-values.sql:38
+msgid "Alerting block on Hold"
+msgstr "Varoitusesto varauksessa"
+
+# id::ccvm.value__359
+#: 950.data.seed-values.sql:6170
+msgid "Rundi"
+msgstr "rundi"
+
+# id::crcd.name__7
+#: 950.data.seed-values.sql:256
+msgid "7_days_2_renew"
+msgstr "7_päivää_2_uusintaa"
+
+# id::ccvm.value__122
+#: 950.data.seed-values.sql:5933
+msgid "Eskimo languages"
+msgstr "eskimokielet"
+
+# id::cubt.label__folks%3Acirc.checkout
+#: 950.data.seed-values.sql:4865
+msgid "Checkout Items"
+msgstr "Lainaa niteet"
+
+# id::cmf.label__10
+#: 950.data.seed-values.sql:132
+msgid "Other Author"
+msgstr "Muu tekijä"
+
+# id::ccvm.value__ath
+#: 950.data.seed-values.sql:5840
+msgid "Athapascan (Other)"
+msgstr "athapasca-kielet"
+
+# id::ccvm.value__306
+#: 950.data.seed-values.sql:6117
+msgid "Ndonga"
+msgstr "ndonga"
+
+# id::csp.label__26
+#: 950.data.seed-values.sql:37
+msgid "Alerting block on Hold and Renew"
+msgstr "Varoitusesto varauksessa ja uusinnassa"
+
+# id::ccvm.value__401 id::ccvm.value__406
+#: 950.data.seed-values.sql:6212 950.data.seed-values.sql:6217
+msgid "Sotho"
+msgstr "sotho, etelä-"
+
+# id::ccvm.value__469
+#: 950.data.seed-values.sql:6280
+msgid "Washo"
+msgstr "washo"
+
+# id::ccvm.value__402
+#: 950.data.seed-values.sql:6213
+msgid "Spanish"
+msgstr "espanja"
+
+# id::acsaf.name__31
+#: 950.data.seed-values.sql:10044
+msgid "See Also From Tracing -- Form Subdivision"
+msgstr "Katso myös jäljitys -- kaavakkeen alaosasto"
+
+# id::acsaf.name__29
+#: 950.data.seed-values.sql:10042
+msgid "See Also From Tracing -- Geographic Subdivision"
+msgstr "Katso myös jäljitys -- maantieteellinen alaosasto"

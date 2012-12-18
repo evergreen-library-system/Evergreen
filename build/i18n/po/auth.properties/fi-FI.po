@@ -1,0 +1,82 @@
+# extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/auth.properties
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-29 09:00+0300\n"
+"PO-Revision-Date: 2012-08-09 13:32+0300\n"
+"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"Language-Team: Finnish <evergreen@jns.fi>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Translate Toolkit 1.9.0\n"
+"X-Accelerator-Marker: &\n"
+"X-Project-Style: mozilla\n"
+
+#: staff.auth.controller.not_configured
+msgid "Not yet configured for the specified server."
+msgstr "Ei vielä määritetty valitulle palvelimelle."
+
+#: staff.auth.controller.testing_hostname
+msgid "Testing hostname..."
+msgstr "Testataan isäntänimeä..."
+
+#: staff.auth.controller.prompt_hostname
+msgid "Please enter a server hostname."
+msgstr "Syötä palvelimen isäntänimi."
+
+#: staff.auth.controller.error_hostname
+msgid "There was an error testing this hostname."
+msgstr "Tämän isäntänimen testauksessa ilmeni virhe."
+
+#: staff.auth.controller.status
+msgid "%1$s : %2$s"
+msgstr "%1$s : %2$s"
+
+#: staff.auth.controller.testing_version
+msgid "Testing version..."
+msgstr "Testataan versiota..."
+
+#: staff.auth.controller.error_version
+msgid "There was an error checking version support."
+msgstr "Versiotuen tarkistuksessa ilmeni virhe."
+
+#: staff.auth.controller.version_mismatch
+msgid ""
+"This server does not support your version of the staff client.  Please check "
+"with your system administrator."
+msgstr ""
+"Tämä palvelin ei tue käytössäsi olevaa ohjelman henkilökuntaversiota. Kysy "
+"lisätietoja järjestelmän ylläpitäjältä."
+
+#. # login with <username> and <password> at <server>
+#: staff.auth.controller.error_login
+msgid "login with %1$s and %2$s at %3$s"
+msgstr "kirjaudu sisään tunnuksilla %1$s ja %2$s osoitteessa %3$s"
+
+#: staff.auth.controller.confirm_close
+msgid "Are you sure you would like to exit the program completely?"
+msgstr "Haluatko varmasti poistua ohjelmasta kokonaan?"
+
+#: staff.auth.session.unregistered
+msgid "%1$s is not registered with this server."
+msgstr "%1$s ei ole rekisteröity tälle palvelimelle."
+
+#: staff.auth.session.login_failed
+msgid ""
+"Login failed.  Please check your Server Hostname, Username, Password, and "
+"your CAPS LOCK key."
+msgstr ""
+"Sisäänkirjautuminen epäonnistui. Tarkista palvelimen isäntänimi, "
+"käyttäjätunnus, salasana ja CAPS LOCK -näppäimesi tila."
+
+#: staff.auth.session.init_false
+msgid "open-ils.auth.authenticate.init returned false"
+msgstr "open-ils.auth.authenticate.init palautti arvon epätosi"
+
+#: staff.auth.titlebar.label
+msgid "Evergreen Staff Client - %1$s"
+msgstr "Evergreenin henkilökuntaversio - %1$s"

@@ -1,0 +1,502 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2012-10-29 09:00:06-0400\n"
+"PO-Revision-Date: 2012-10-17 10:51+0300\n"
+"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"Language-Team: Finnish <evergreen@jns.fi>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.1\n"
+
+#: acq.js:ADD_LI_TO_PO_BAD_LI_STATE
+msgid ""
+"The selected lineitem is not in a state that can be added to a purchase "
+"order"
+msgstr ""
+"Valittu nimike ei ole sellaisessa tilassa, että sen voisi lisätä "
+"ostotilaukseen"
+
+#: acq.js:CONFIRM_FUNDS_AT_WARNING
+msgid ""
+"One or more of the selected funds has a balance below its warning level.\n"
+"Continue?"
+msgstr ""
+"Yhden tai useamman valitun tilin saldo on alle varoitusrajan.\n"
+"Jatketaanko?"
+
+#: acq.js:NO_LID_TO_CLAIM
+msgid "You have not selected any lineitem details to claim."
+msgstr "Et ole valinnut yhdenkään nimikkeen tietoja reklamointia varten."
+
+#: acq.js:FUND_LIST_ROLLOVER_SUMMARY_FUNDS
+msgid ""
+"<b>${1}</b> funds propagated for fiscal year ${0} for the selected locations"
+msgstr "<b>${1}</b> varoja karttunut valituista toimipisteistä tilivuonna ${0}"
+
+#: acq.js:ONE_LI_ATTR_SEARCH_AT_A_TIME
+msgid ""
+"You cannot both type in an attribute value search and search for an uploaded"
+" file of terms at the same time."
+msgstr ""
+"Et voi syöttää ominaisuushakua ja etsiä samanaikaisesti ladattua "
+"termitiedostoa."
+
+#: acq.js:PREPAYMENT_REQUIRED_REMINDER
+msgid ""
+"This PO requires prepayment.  Are you certain you're ready to activate it?"
+msgstr ""
+"Tämä ostotilaus edellyttää ennakkomaksua. Haluatko varmasti aktivoida sen?"
+
+#: acq.js:INVOICE_EXTRA_COPIES
+msgid ""
+"You are attempting to invoice <b>${0}</b> more copies than originally "
+"ordered.  <br/><br/>To add these items to the original order, select a fund "
+"and choose 'Add New Items' below.  <br/>After saving the invoice, you may "
+"finish editing and importing the new copies from the lineitem details page."
+msgstr ""
+"Yrität luoda laskua <b>${0}</b> useammasta kappaleesta kuin alkuperäisessä "
+"tilauksessa. <br/><br/>Jos haluat lisätä nämä nimekkeet alkuperäiseen "
+"tilaukseen, valitse tili ja sen jälkeen 'Lisää uusia nimekkeitä' alla. "
+"<br/>Kun olet tallentanut laskun, voit muokata ja tuoda uudet kappaleet "
+"nimikkeiden tietosivulta."
+
+#: acq.js:LI_ATTR_SEARCH_CHOOSE_FILE
+msgid "Select file with search terms"
+msgstr "Valitse tiedosto hakuehdoilla"
+
+#: acq.js:ALERT_UNSELECTED
+msgid "You must choose an alert code."
+msgstr "Sinun on valittava varoituskoodi."
+
+#: acq.js:INVOICE_CONFIRM_PRORATE
+msgid ""
+"Prorate charges?\n"
+"\n"
+"Any subsequent changes to the invoice that would affect prorated amounts should be resolved manually."
+msgstr ""
+"Jaetaanko maksut suhteellisesti?\n"
+"\n"
+"Myöhemmät muutokset laskuun, jotka vaikuttaisivat suhteellisesti jaettuihin "
+"osuuksiin, tulee ratkaista manuaalisesti."
+
+#: acq.js:FUND_LIST_ROLLOVER_SUMMARY
+msgid "Fund Propagation &amp; Rollover Summary for Fiscal Year ${0}"
+msgstr ""
+"Varojen karttuminen ja aiemmin käyttämättömien varojen yhteenveto "
+"tilivuodelle ${0}"
+
+#: acq.js:CONFIRM_FUNDS_AT_STOP
+msgid ""
+"One or more of the selected funds has a balance below its stop level.\n"
+"You may not be able to activate purchase orders incorporating these copies.\n"
+"Continue?"
+msgstr ""
+"Yhden tai useamman tilin saldo on alle pysäytysrajan.\n"
+"Et ehkä pysty aktivoimaan näitä ostotilauksia.\n"
+"Jatketaanko?"
+
+#: acq.js:INVOICE_ITEM_DETAILS
+msgid ""
+"${0} <br/> ${1} <br/> ${2}. <br/> Estimated Price: $${3}. <br/> Lineitem ID:"
+" ${4} <br/> PO: ${5} <br/> Order Date: ${6}"
+msgstr ""
+"${0} <br/> ${1} <br/> ${2}. <br/> Arvioitu hinta: $${3}. <br/> Nimikkeen ID: "
+"${4} <br/> Ostotilaus: ${5} <br/> Tilauspäivä: ${6}"
+
+#: acq.js:XUL_RECORD_DETAIL_PAGE
+msgid "Record Details"
+msgstr "Tietueen tiedot"
+
+#: acq.js:INVOICE_IDENT_COLLIDE
+msgid ""
+"There is already an invoice in the system with the given combination of "
+"'Vendor Invoice ID' and 'Provider,' which is not allowed."
+msgstr ""
+
+#: acq.js:DFA_NOT_ALL
+msgid "Could not record all of your applications of distribution forumulas."
+msgstr "Kaikkia jakelukaavojen sovelluksia ei voitu tallentaa tietueeseen."
+
+#: acq.js:CONFIRM_DELETE_MAPPING
+msgid "Are you sure you want to remove this tag from this fund?"
+msgstr "Haluatko varmasti poistaa tämän avainsanan tästä tilistä?"
+
+#: acq.js:VENDOR_SAYS_PREPAY_NOT_NEEDED
+msgid ""
+"The selected vendor does not necessarily require prepayment, according\n"
+"to records. Require prepayment on this PO anyway?"
+msgstr ""
+"Tietueiden mukaan valittu myyjä ei välttämättä vaadi ennakkomaksua.\n"
+"Vaaditaanko ennakkomaksu tässä ostotilauksessa siitä huolimatta?"
+
+#: acq.js:INVOICE_CONFIRM_ITEM_DELETE
+msgid "Remove this $${0} '${1}' charge from the invoice?"
+msgstr "Poistetaanko tämä $${0} '${1}' veloitus laskulta?"
+
+#: acq.js:PO_WARNING_NO_BLOCK_ACTIVATION
+msgid "Yes; fund ${0} (${1}) would be encumbered beyond its warning level."
+msgstr "Kyllä; sidottu summa ${0} (${1}) ylittäisi varoitusrajan."
+
+#: acq.js:FUND_XFER_SAME_SOURCE_AND_DEST
+msgid "Cannot transfer. The source and destination funds are the same."
+msgstr "Siirto ei onnistu. Lähde- ja kohdetili on sama."
+
+#: acq.js:LOAD_TERMS_FIRST
+msgid ""
+"You can't retrieve records until you've loaded a CSV file\n"
+"with bibliographic IDs in the first column."
+msgstr ""
+"Et voi hakea tietueita, ennen kuin olet ladannut CSV-tiedoston,\n"
+"joka sisältää bibliografiset tunnukset ensimmäisessä sarakkeessa."
+
+#: acq.js:LI_FORMAT_ERROR
+msgid "Unexpected error retrieving formatted lineitem information."
+msgstr "Muotoiltujen nimiketietojen hakemisessa ilmeni odottamaton virhe."
+
+#: acq.js:PO_STOP_BLOCKS_ACTIVATION
+msgid "No; fund ${0} (${1}) would be encumbered beyond its stop level."
+msgstr "Ei; sidottu summa ${0} (${1}) ylittäisi pysäytysrajan."
+
+#: acq.js:NO_FIND_INVOICE
+msgid ""
+"Could not find that invoice.\n"
+"Note that the Invoice # field is case-sensitive."
+msgstr ""
+"Laskua ei löydy.\n"
+"Huomaa, että Laskun #-kenttä erottelee isot ja pienet kirjaimet."
+
+#: acq.js:ROLLBACK_PO_RECEIVE_CONFIRM
+msgid ""
+"This will rollback receipt of all copies for this purchase order.\n"
+"\n"
+"Continue?"
+msgstr ""
+"Kaikkien tämän ostotilauksen niteiden kuitit perutaan.\n"
+"\n"
+"Jatketaanko?"
+
+#: acq.js:PO_CANCEL_CONFIRM
+msgid "Are you SURE you want to cancel this purchase order?"
+msgstr "Haluatko VARMASTI perua tämän ostotilauksen?"
+
+#: acq.js:PRINT
+msgid "Print"
+msgstr "Tulosta"
+
+#: acq.js:INVOICE_ITEM_PO_DETAILS
+msgid ""
+"<b>${0}</b><br/><a href='${1}/acq/po/view/${2}'>PO #${3} ${4}</a><br/>Total "
+"Estimated Cost: $${5}"
+msgstr ""
+"<b>${0}</b><br/><a href='${1}/acq/po/view/${2}'>PO #${3} "
+"${4}</a><br/>Yhteenlaskettu kustannusarvio: $${5}"
+
+#: acq.js:LI_CANCEL_CONFIRM
+msgid "Are you SURE you want to cancel this line item?"
+msgstr "Haluatko VARMASTI perua tämän nimikkeen?"
+
+#: acq.js:SELECT_AN_LI_ATTRIBUTE
+msgid "You must select an LI attribute."
+msgstr "Sinun on valittava LI-määrite."
+
+#: acq.js:EXPLAIN_DFA_MGMT
+msgid "Remove record of this distribution formula usage?"
+msgstr "Poistetaanko tämän jakelukaavan käytön tietue?"
+
+#: acq.js:UNNAMED
+msgid "Unnamed"
+msgstr "Nimeämätön"
+
+#: acq.js:DEL_LI_FROM_PO
+msgid ""
+"That item has already been ordered!  Deleting it now will not revoke or "
+"modify any order that has been placed with a vendor.  Deleting the item may "
+"put the system's idea of your purchase order in a state that is inconsistent"
+" with reality.  Are you sure you mean to do this?"
+msgstr ""
+"Nide on jo tilattu! Jos poistat sen nyt, sillä ei ole mitään vaikutusta "
+"myyjälle lähteneeseen tilaukseen. Jos poistat niteen, järjestelmään "
+"tallentuvat ostotilauksen tiedot eivät välttämättä vastaa todellisuutta. "
+"Haluatko varmasti tehdä tämän?"
+
+#: acq.js:CREATE_PO_ASSETS_CONFIRM
+msgid ""
+"This will create bibliographic, call number, and copy records for this purchase order in the ILS.\n"
+"\n"
+"Continue?"
+msgstr ""
+"Tämä luo kirjastojärjestelmään bibliografisen tietueen sekä hyllypaikka- ja "
+"nidetietueen tälle ostotilaukselle.\n"
+"\n"
+"Jatketaanko?"
+
+#: acq.js:LID_CANCEL_CONFIRM
+msgid "Are you SURE you want to cancel this copy?"
+msgstr "Haluatko VARMASTI perua tämän niteen?"
+
+#: acq.js:INVOICE_CONFIRM_ENTRY_DETACH
+msgid "Remove $${0} charge for item '${1}, ${2} [${3}] from the invoice?"
+msgstr "Poistetaanko laskulta $${0} veloitus niteestä '${1}, ${2} [${3}]?"
+
+#: acq.js:SELECT_SEARCH_FIELD
+msgid "Select Search Field"
+msgstr "Valitse hakukenttä"
+
+#: acq.js:VENDOR_PUBLIC
+msgid "VENDOR PUBLIC"
+msgstr "MYYJÄ JULKINEN"
+
+#: acq.js:LINEITEM_SUMMARY
+msgid ""
+"<div class='acq-lineitem-summary'><a href='${19}?focus_li=${10}&source=${22}'>${0}</a>, by ${1} (${2})</div>\n"
+"<div class='acq-lineitem-summary-extra'>\n"
+"${3} Ordered, ${4} Received, ${7} Invoiced, ${8} Claimed, ${9} Cancelled</div>\n"
+"<div class='acq-lineitem-summary-extra'>Estimated $${6}, Encumbered $${16}, Paid $${17}</div>\n"
+"<div class='acq-lineitem-summary-extra'>\n"
+"# ${10} <a style='padding-right: 10px;' class='hidden${20}'  href='${11}/acq/po/view/${12}?focus_li=${10}&source=${22}'>&#x2318; ${13} ${18}</a>\n"
+"<a style='padding-right: 10px;' class='hidden${21}' href='${11}/acq/picklist/view/${14}?focus_li=${10}&source=${22}'>&#x2756; ${15}</a></div>"
+msgstr ""
+"<div class='acq-lineitem-summary'><a href='${19}'>${0}</a>, tekijä ${1} "
+"(${2})</div>\n"
+"<div class='acq-lineitem-summary-extra'>\n"
+"${3} Tilattu, ${4} Vastaanotettu, ${7} Laskutettu, ${8} Reklamoitu, ${9} "
+"Peruttu</div>\n"
+"<div class='acq-lineitem-summary-extra'>Arvioitu $${6}, Sidottu $${16}, "
+"Maksettu $${17}</div>\n"
+"<div class='acq-lineitem-summary-extra'>\n"
+"# ${10} <a style='padding-right: 10px;' class='hidden${20}'  "
+"href='${11}/acq/po/view/${12}'>&#x2318; ${13} ${18}</a>\n"
+"<a style='padding-right: 10px;' class='hidden${21}' "
+"href='${11}/acq/picklist/view/${14}'>&#x2756; ${15}</a></div>"
+
+#: acq.js:VENDOR_SAYS_PREPAY_NEEDED
+msgid ""
+"The selected vendor requires prepayment, according to records.\n"
+"Proceed anyway without required prepayment on this PO?"
+msgstr ""
+"Tietueiden mukaan valittu myyjä vaatii ennakkomaksun.\n"
+"Jatketaanko tätä ostotilausta ilman vaadittua ennakkomaksua siitä "
+"huolimatta?"
+
+#: acq.js:INVOICES
+msgid "Invoices"
+msgstr "Laskut"
+
+#: acq.js:INVOICE_NUMBER
+msgid "Invoice #${0}"
+msgstr "Lasku #${0}"
+
+#: acq.js:CANCELED
+msgid "Canceled"
+msgstr "Peruttu"
+
+#: acq.js:COULD_NOT_DELETE_MAPPING
+msgid "Error removing tag from fund."
+msgstr "Avainsanan poistaminen tilistä epäonnistui."
+
+#: acq.js:YES
+msgid "Yes"
+msgstr "Kyllä"
+
+#: acq.js:COPIES_TO_RECEIVE
+msgid "Number of copies to receive: "
+msgstr "Vastaanotettavien niteiden lukumäärä: "
+
+#: acq.js:PO_CHECKING
+msgid "[One moment...]"
+msgstr "[Hetkinen...]"
+
+#: acq.js:PO_COULD_ACTIVATE
+msgid "Yes."
+msgstr "Kyllä."
+
+#: acq.js:CONFIRM_LI_ALERT
+msgid ""
+"An alert has been placed on the lineitem titled,\n"
+"\"${0}\":\n"
+"\n"
+"${1}\n"
+"${2}\n"
+"${3}\n"
+"Choose OK if you wish to acknowledge this alert."
+msgstr ""
+"Varoitus on määritetty nimikkeelle \n"
+"\"${0}\":\n"
+"\n"
+"${1}\n"
+"${2}\n"
+"${3}\n"
+"Valitse OK, jos haluat huomioida tämän varoituksen."
+
+#: acq.js:NO
+msgid "No"
+msgstr "Ei"
+
+#: acq.js:NO_RESULTS
+msgid "No results."
+msgstr "Ei tuloksia."
+
+#: acq.js:RECVD
+msgid "Recv'd"
+msgstr "Vastaanotettu"
+
+#: acq.js:NUM_CLAIMS_EXISTING
+msgid "Claims (${0} existing)"
+msgstr "Reklamoidut (yhteensä ${0})"
+
+#: acq.js:FUND_LIST_ROLLOVER_SUMMARY_ROLLOVER_AMOUNT
+msgid ""
+"<b>$${1}</b> unspent money rolled over to fiscal year ${0} for the selected "
+"locations"
+msgstr ""
+"<b>$${1}</b> käyttämätöntä rahaa siirretty tilivuodelle ${0} valittuihin "
+"toimipisteisiin"
+
+#: acq.js:DFA_TIP
+msgid "<strong>Applied by</strong>: ${0}<br /><strong>When</strong>: ${1}"
+msgstr "<strong>Käyttöönottaja</strong>: ${0}<br /><strong>Aika</strong>: ${1}"
+
+#: acq.js:OUT_OF_COPIES
+msgid "You have applied distribution formulas to every copy."
+msgstr "Olet ottanut jakelukaavat käyttöön kaikille niteille."
+
+#: acq.js:CREATE_PO_INVALID
+msgid "A purchase order must have an ordering agency and a provider."
+msgstr "Ostotilauksessa on oltava tilaaja ja toimittaja."
+
+#: acq.js:LI_ATTR_SEARCH_TOO_LARGE
+msgid "That file is too large for this operation."
+msgstr "Tiedosto on liian suuri tälle toiminnolle."
+
+#: acq.js:PO_HEADING_ERROR
+msgid "Unexpected problem building virtual combined PO"
+msgstr ""
+"Virtuaalisen yhdistetyn ostotilauksen luomisessa ilmeni odottamaton ongelma"
+
+#: acq.js:DELETE_LI_COPIES_CONFIRM
+msgid "This will delete the last ${0} copies in the table.  Proceed?"
+msgstr "Taulukosta poistetaan viimeiset ${0} kappaletta. Jatketaanko?"
+
+#: acq.js:FUND_XFER_CONFIRM
+msgid "Are you sure you're ready to commit this transfer?"
+msgstr "Haluatko varmasti suorittaa tämän siirron?"
+
+#: acq.js:PO_FUND_WARNING_CONFIRM
+msgid "Are you sure? Did you see the warning about over-encumbering a fund?"
+msgstr "Oletko varma? Huomasitko varoituksen: Sidottu summa ylittää saldon?"
+
+#: acq.js:NO_LI_TO_CLAIM
+msgid "You have not selected any lineitems to claim."
+msgstr "Et ole valinnut yhtään nimikettä reklamointia varten."
+
+#: acq.js:UR_FILTER_USER
+msgid "Enter barcode for user (or leave blank to unset the filter):"
+msgstr ""
+"Syötä asiakastunnus (tai jätä tyhjäksi, jos et halua käyttää suodatinta):"
+
+#: acq.js:UR_FILTER_LINEITEM
+msgid "Enter id for lineitem (or leave blank to unset the filter):"
+msgstr ""
+"Syötä nimikkeen tunnus (tai jätä tyhjäksi, jos et halua käyttää suodatinta):"
+
+#: acq.js:JUST_NOW
+msgid "Just now"
+msgstr "Juuri nyt"
+
+#: acq.js:CANCEL
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: acq.js:CONFIRM_SPLIT_PO
+msgid ""
+"Are you sure you want to split this purchase order into\n"
+"one purchase order for every constituent line item?"
+msgstr ""
+"Haluatko varmasti jakaa kaikki tällä ostotilauksella\n"
+"olevat nimikkeet erillisiksi ostotilauksiksi?"
+
+#: acq.js:CHANGE_CLAIM_POLICY
+msgid "Change claim policy"
+msgstr "Muuta reklamaatiokäytäntöjä"
+
+#: acq.js:PO_ACTIVATED_ON
+msgid "Activated ${0}"
+msgstr "Aktivoitu ${0}"
+
+#: acq.js:ADD_LI_TO_PO_BAD_PO_STATE
+msgid "The selected PO has already been activated"
+msgstr "Valittu ostotilaus on jo aktivoitu"
+
+#: acq.js:EXPORT_SAVE_DIALOG_TITLE
+msgid "Save field values to a file"
+msgstr "Tallenna kenttien arvot tiedostoon"
+
+#: acq.js:NOT_RECVD
+msgid "Not recv'd"
+msgstr "Ei vastaanotettu"
+
+#: acq.js:ITS_YOU
+msgid "You"
+msgstr "Sinä"
+
+#: acq.js:UR_CANCEL_CONFIRM
+msgid "Are you SURE you want to cancel this user request?"
+msgstr "Haluatko VARMASTI perua tämän hankintatoiveen?"
+
+#: acq.js:RESET_FORMULAE
+msgid "Reset Formulas"
+msgstr "Nollaa kaavat"
+
+#: acq.js:UNRECEIVE_LI
+msgid "Are you sure you want to mark this lineitem as UN-received?"
+msgstr "Haluatko varmasti merkitä tämän nimikkeen EI-vastaanotetuksi?"
+
+#: acq.js:COULD_NOT_CREATE_MAPPING
+msgid "Error tagging fund."
+msgstr "Tilin merkitseminen avainsanalla epäonnistui."
+
+#: acq.js:UNRECEIVE_LID
+msgid "Are you sure you want to mark this copy as UN-received?"
+msgstr "Haluatko varmasti merkitä tämän kopion EI-vastaanotetuksi?"
+
+#: acq.js:CANCEL_REASON
+msgid "Cancel reason"
+msgstr "Peru syy"
+
+#: acq.js:NO_PO_RESULTS
+msgid "No results"
+msgstr "Ei tuloksia"
+
+#: acq.js:FUND_NOT_YET_LOADED
+msgid "Fund not yet loaded. Try coming back to this display later."
+msgstr ""
+"Tiliä ei vielä ole ladattu. Yritä tulla myöhemmin takaisin tähän näyttöön."
+
+#: acq.js:LIBRARY_INITIATED
+msgid "Library Initiated"
+msgstr "Kirjasto alustettu"
+
+#: acq.js:EXPORT_SHORT_LIST
+msgid ""
+"Not all of the selected items had the attribute '${0}'.\n"
+"Choose OK to save those values that could be found."
+msgstr ""
+"Kaikilla valituilla niteillä ei ollut määritettä '${0}'.\n"
+"Valitse OK, jos haluat tallentaa arvot, jotka löydettiin."
+
+#: acq.js:INVOICE_COPY_COUNT_INFO
+msgid "Copies received on this invoice: ${0} out of ${1}."
+msgstr "Tällä laskulla olevista niteistä vastaanotettu: ${0} / ${1}."
+
+#: acq.js:EXPORT_EMPTY_LIST
+msgid "No values for attribute '${0}' found."
+msgstr "Määritteen '${0}' arvoja ei löytynyt."
+
+#: acq.js:APPLY
+msgid "Apply"
+msgstr "Hyväksy"

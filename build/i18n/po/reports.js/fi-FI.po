@@ -1,0 +1,433 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2012-10-29 09:00:07-0400\n"
+"PO-Revision-Date: 2012-09-05 17:51+0300\n"
+"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"Language-Team: Finnish <evergreen@jns.fi>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.1\n"
+
+#: reports.js:OPERATORS_IN_LIST reports.js:FILTERS_LABEL_IN
+msgid "In list"
+msgstr "Luettelossa"
+
+#: reports.js:WIDGET_REAL_DATE
+msgid "Real Date"
+msgstr "Todellinen päiväys"
+
+#: reports.js:TFORMS_LABEL_MONTH_NAME
+msgid "Month Name'"
+msgstr "Kuukauden nimi'"
+
+#: reports.js:OPERATORS_IS_NOT_NULL reports.js:FILTERS_LABEL_NOT_NULL
+msgid "Is not NULL"
+msgstr "Ei ole NULL"
+
+#: reports.js:FOLDERS_TEMPLATE
+msgid "Template"
+msgstr "Raporttipohja"
+
+#: reports.js:FILTERS_LABEL_NE_ANY reports.js:OPERATORS_NE_ANY
+msgid "Does Not Equal Any"
+msgstr "Ei vastaa yhtään"
+
+#: reports.js:REPORT_EDITOR_INVALID_DATE_ALERT
+msgid "invalid start date -  YYYY-MM-DD"
+msgstr "virheellinen aloituspäivä - VVVV-KK-PP"
+
+#: reports.js:TEMPLATE_CONF_CONFIRM_SAVE reports.js:RPT_BUILDER_CONFIRM_SAVE
+msgid ""
+"Name : ${0}\n"
+"Description: ${1}\n"
+"Save Template?"
+msgstr ""
+"Nimi : ${0}\n"
+"Kuvaus: ${1}\n"
+"Tallennetaanko pohja?"
+
+#: reports.js:OPERATORS_GT_EQUAL reports.js:FILTERS_LABEL_GT_EQUAL
+msgid "Greater than or equal to"
+msgstr "Suurempi tai yhtä suuri kuin"
+
+#: reports.js:TEMPLATE_CONF_PROMPT_CHANGE
+msgid "Change the column header to: ${0}"
+msgstr "Muuta sarakkeen otsikoksi: ${0}"
+
+#: reports.js:LINK_NULLABLE_RIGHT
+msgid "Parent"
+msgstr "Emoelementti"
+
+#: reports.js:TEMPLATE_CONF_BETWEEN
+msgid "Field value is between (comma separated):"
+msgstr "Kentän arvo on välillä (pilkuilla erotettu):"
+
+#: reports.js:TFORMS_LABEL_DAY_NAME reports.js:TRANSFORMS_DAY_NAME
+msgid "Day Name"
+msgstr "Päivän nimi"
+
+#: reports.js:SOURCE_SETUP_CONFIRM_EXIT
+msgid ""
+"You have started building a template!\n"
+" Selecting a new starting source will destroy the current template and start over.  Is this OK?"
+msgstr ""
+"Olet aloittanut raporttipohjan luomisen!\n"
+"Uudet aloituslähteen valinta tuhoaa nykyisen raporttipohjan ja aloittaa "
+"alusta. OK?"
+
+#: reports.js:WIDGET_YEARS
+msgid "Year(s)"
+msgstr "Vuosi/vuodet"
+
+#: reports.js:FOLDER_WINDOW_SELECT_ITEM
+msgid "Please select an item from the list"
+msgstr "Valitse kohde luettelosta"
+
+#: reports.js:FOLDERS_REPORT
+msgid "Report"
+msgstr "Raportti"
+
+#: reports.js:FILTERS_LABEL_LSE_TIME reports.js:OPERATORS_LTE_TIME
+msgid "On or Before (Date/Time)"
+msgstr "Ajankohtana tai ennen (päiväys/aika)"
+
+#: reports.js:TEMPLATE_CONF_FALSE
+msgid "False"
+msgstr "Epätosi"
+
+#: reports.js:TEMPLATE_CONF_DEFAULT
+msgid "Value ${0}:"
+msgstr "Arvo ${0}:"
+
+#: reports.js:TRANSFORMS_COUNT_DISTINCT reports.js:TFORMS_LABEL_COUNT_DISTINCT
+msgid "Count Distinct"
+msgstr "Laske erikseen"
+
+#: reports.js:TRANSFORMS_SUBSTRING
+msgid "Substring"
+msgstr "Alijono"
+
+#: reports.js:FOLDER_WINDOW_CHANGE_FOLDERS
+msgid "Change Folders"
+msgstr "Muuta kansioita"
+
+#: reports.js:TEMPLATE_CONF_SUCCESS_SAVE
+msgid "Template ${0} was successfully saved."
+msgstr "Raporttipohja ${0} tallennettiin onnistuneesti."
+
+#: reports.js:REPORT_EDITOR_ENTER_NAME_ALERT
+msgid "Please enter a report name"
+msgstr "Syötä raportin nimi"
+
+#: reports.js:FOLDER_WINDOW_COLNAME_SELECT
+msgid "Select"
+msgstr "Valitse"
+
+#: reports.js:FILTERS_LABEL_LT_TIME reports.js:OPERATORS_LT_TIME
+msgid "Before (Date/Time)"
+msgstr "Ennen (päiväys/aika)"
+
+#: reports.js:TFORMS_LABEL_DOY reports.js:TRANSFORMS_DOY
+msgid "Day of Year"
+msgstr "Vuoden päivä"
+
+#: reports.js:TRANSFORMS_SUM reports.js:TFORMS_LABEL_SUM
+msgid "Sum"
+msgstr "Summa"
+
+#: reports.js:TFORMS_LABEL_LOWER reports.js:TRANSFORMS_LOWER
+msgid "Lower case"
+msgstr "Pienet kirjaimet"
+
+#: reports.js:TFORMS_LABEL_DOW reports.js:TRANSFORMS_DOW
+msgid "Day of Week"
+msgstr "Viikonpäivä"
+
+#: reports.js:REPORT_EDITOR_OUTPUT_FOLDERS
+msgid "Output Folders"
+msgstr "Tulostekansiot"
+
+#: reports.js:FOLDER_WINDOW_COLNAME_ALL
+msgid "All"
+msgstr "Kaikki"
+
+#: reports.js:REPORT_EDITOR_REPORT_FOLDERS
+msgid "Report Folders"
+msgstr "Raporttikansiot"
+
+#: reports.js:FILTERS_LABEL_BETWEEN reports.js:OPERATORS_BETWEEN
+msgid "Between"
+msgstr "Välillä"
+
+#: reports.js:FILTERS_LABEL_LT_EQUAL reports.js:OPERATORS_LT_EQUAL
+msgid "Less than or equal to"
+msgstr "Pienempi tai yhtä suuri kuin"
+
+#: reports.js:TRANSFORMS_UPPER reports.js:TFORMS_LABEL_UPPER
+msgid "Upper case"
+msgstr "Isot kirjaimet"
+
+#: reports.js:FILTERS_LABEL_NOT_BETWEEN reports.js:OPERATORS_NOT_BETWEEN
+msgid "Not between"
+msgstr "Ei välillä"
+
+#: reports.js:WIDGET_MONTHS
+msgid "Month(s)"
+msgstr "Kuukausi/kuukaudet"
+
+#: reports.js:SOURCE_BROWSE_AGGREGATE
+msgid "Aggregate"
+msgstr "Yhteenkokouma"
+
+#: reports.js:TEMPLATE_CONF_TRUE
+msgid "True"
+msgstr "Tosi"
+
+#: reports.js:TFORMS_LABEL_AVERAGE reports.js:TRANSFORMS_AVERAGE
+msgid "Average"
+msgstr "Keskimäärin"
+
+#: reports.js:LINK_NULLABLE_NONE reports.js:FOLDER_WINDOW_COLNAME_NONE
+msgid "None"
+msgstr "Ei yhtään"
+
+#: reports.js:TFORMS_LABEL_INT reports.js:TRANSFORMS_INT
+msgid "Drop trailing decimals"
+msgstr "Jätä ylimääräiset desimaalit pois"
+
+#: reports.js:TRANSFORMS_HOUR_TRUNC reports.js:TFORMS_LABEL_HOUR_TRUNC
+msgid "Hour"
+msgstr "Tunti"
+
+#: reports.js:TRANSFORMS_AGE reports.js:TFORMS_LABEL_AGE
+msgid "Age"
+msgstr "Ikä"
+
+#: reports.js:TRANSFORMS_QOY reports.js:TFORMS_LABEL_QOY
+msgid "Quarter of Year"
+msgstr "Vuosineljännes"
+
+#: reports.js:TRANSFORMS_LAST reports.js:TFORMS_LABEL_LAST
+msgid "Last Value"
+msgstr "Viimeisin arvo"
+
+#: reports.js:FILTERS_LABEL_EQ_ANY reports.js:OPERATORS_EQ_ANY
+msgid "Equals Any"
+msgstr "Vastaa mitä tahansa"
+
+#: reports.js:TEMPLATE_CONF_BARE
+msgid "Bare"
+msgstr "Pelkkä"
+
+#: reports.js:TEMPLATE_CONF_IN
+msgid "Field matches one of list (comma separated):"
+msgstr "Kenttä vastaa yhtä arvoa luettelosta (pilkuilla erotettu):"
+
+#: reports.js:TRANSFORMS_MONTH_TRUNC reports.js:TFORMS_LABEL_MONTH_TRUNC
+msgid "Year + Month"
+msgstr "Vuosi + kuukausi"
+
+#: reports.js:TRANSFORMS_FIRST_WORD reports.js:TFORMS_LABEL_FIRST_WORD
+msgid "First contiguous non-space string"
+msgstr "Ensimmäinen yhtäjaksoinen merkkijono ilman välilyöntejä"
+
+#: reports.js:TEMPLATE_CONF_NOT_BETWEEN
+msgid "Field value is not between (comma separated):"
+msgstr "Kentän arvo ei ole välillä (pilkuilla erotettu):"
+
+#: reports.js:TEMPLATE_CONF_RAW_DATA reports.js:TRANSFORMS_BARE
+#: reports.js:TFORMS_LABEL_RAW_DATA
+msgid "Raw Data"
+msgstr "Raakadata"
+
+#: reports.js:SOURCE_SETUP_ALL_AVAIL_SOURCES
+msgid "All Available Sources"
+msgstr "Kaikki lainattavissa olevat lähteet"
+
+#: reports.js:OPERATORS_LIKE reports.js:FILTERS_LABEL_LIKE
+msgid "Contains Matching substring"
+msgstr "Sisältää osuvan alijonon"
+
+#: reports.js:OPERATORS_EQUALS reports.js:TEMPLATE_CONF_EQUALS
+#: reports.js:FILTERS_LABEL_EQUALS
+msgid "Equals"
+msgstr "Vastaa"
+
+#: reports.js:WIDGET_QUARTERS
+msgid "Quarter(s)"
+msgstr "Neljännes/neljännekset"
+
+#: reports.js:LINK_NULLABLE_LEFT
+msgid "Child"
+msgstr "Lapsi"
+
+#: reports.js:TFORMS_LABEL_DATE reports.js:TRANSFORMS_DATE
+msgid "Date"
+msgstr "Päiväys"
+
+#: reports.js:TFORMS_LABEL_COUNT reports.js:TRANSFORMS_COUNT
+msgid "Count"
+msgstr "Lukumäärä"
+
+#: reports.js:LINK_NULLABLE_DEFAULT
+msgid "Default"
+msgstr "Oletus"
+
+#: reports.js:FILTERS_LABEL_LESS_THAN reports.js:OPERATORS_LESS_THAN
+msgid "Less than"
+msgstr "Pienempi kuin"
+
+#: reports.js:SOURCE_SETUP_CORE_SOURCES
+msgid "Core Sources"
+msgstr "Ydinlähteet"
+
+#: reports.js:TRANSFORMS_MONTHS_AGO reports.js:TFORMS_LABEL_MONTHS_AGO
+msgid "Months ago"
+msgstr "Kuukautta sitten"
+
+#: reports.js:TRANSFORMS_ROUND reports.js:TFORMS_LABEL_ROUND
+msgid "Round"
+msgstr "Pyöristä"
+
+#: reports.js:FILTERS_LABEL_NULL_BLANK reports.js:OPERATORS_NULL_BLANK
+msgid "Is NULL or Blank"
+msgstr "On NULL tai tyhjä"
+
+#: reports.js:FILTERS_LABEL_GT_TIME reports.js:OPERATORS_GT_TIME
+msgid "After (Date/Time)"
+msgstr "Jälkeen (päiväys/aika)"
+
+#: reports.js:TRANSFORMS_WOY reports.js:TFORMS_LABEL_WOY
+msgid "Week of Year"
+msgstr "Vuoden viikko"
+
+#: reports.js:TFORMS_LABEL_DOM reports.js:TRANSFORMS_DOM
+msgid "Day of Month"
+msgstr "Kuukauden päivä"
+
+#: reports.js:SOURCE_BROWSE_NON_AGGREGATE
+msgid "Non-Aggregate"
+msgstr "Ei-yhteenkokouma"
+
+#: reports.js:OPERATORS_IS_NULL reports.js:FILTERS_LABEL_NULL
+msgid "Is NULL"
+msgstr "On NULL"
+
+#: reports.js:TRANSFORMS_MIN reports.js:TFORMS_LABEL_MIN
+msgid "Min"
+msgstr "Väh."
+
+#: reports.js:FILTERS_LABEL_NOT_NULL_BLANK reports.js:OPERATORS_NOT_NULL_BLANK
+msgid "Is not NULL or Blank"
+msgstr "Ei ole NULL tai tyhjä"
+
+#: reports.js:WIDGET_DAYS
+msgid "Day(s)"
+msgstr "Päivä(ä)"
+
+#: reports.js:FOLDER_WINDOW_REPORT_OUTPUT
+msgid "Report Output: ${0}"
+msgstr "Raportin tuloste: ${0}"
+
+#: reports.js:TEMPLATE_CONF_CONFIRM_STATE
+msgid "Click OK for TRUE and Cancel for FALSE."
+msgstr "Napsauta OK = TOSI tai Peruuta = EPÄTOSI."
+
+#: reports.js:FOLDERS_TEMPLATES
+msgid "Templates"
+msgstr "Raporttipohjat"
+
+#: reports.js:WIDGET_RELATIVE_DATE
+msgid "Relative Date"
+msgstr "Suhteellinen päivä"
+
+#: reports.js:TRANSFORMS_FIRST reports.js:TFORMS_LABEL_FIRST
+msgid "First Value"
+msgstr "Ensimmäinen arvo"
+
+#: reports.js:FILTERS_LABEL_GREATER_THAN reports.js:OPERATORS_GREATER_THAN
+msgid "Greater than"
+msgstr "Suurempi kuin"
+
+#: reports.js:TEMPLATE_CONF_BOOLEAN_VALUE
+msgid "Boolean Value"
+msgstr "Boolean-arvo"
+
+#: reports.js:REPORT_EDITOR_PROVIDE_OUTPUT_ALERT
+msgid "Please provide an output folder"
+msgstr "Syötä tulostekansio"
+
+#: reports.js:REPORT_EDITOR_PROVIDE_FOLDER_ALERT
+msgid "Please provide a report folder"
+msgstr "Syötä raporttikansio"
+
+#: reports.js:TRANSFORMS_MONTH_NAME
+msgid "Month Name"
+msgstr "Kuukauden nimi"
+
+#: reports.js:TFORMS_LABEL_FIRST5 reports.js:TRANSFORMS_FIRST5
+msgid "First 5 characters (for US ZIP code)"
+msgstr "Ensimmäiset 5 merkkiä (postinumerosta)"
+
+#: reports.js:OPERATORS_GTE_TIME reports.js:FILTERS_LABEL_GTE_TIME
+msgid "On or After (Date/Time)"
+msgstr "Ajankohtana tai jälkeen (päiväys/aika)"
+
+#: reports.js:TRANSFORMS_YEAR_TRUNC reports.js:TFORMS_LABEL_YEAR_TRUNC
+msgid "Year"
+msgstr "Vuosi"
+
+#: reports.js:FOLDERS_REPORTS
+msgid "Reports"
+msgstr "Raportit"
+
+#: reports.js:TFORMS_LABEL_QUARTERS_AGO reports.js:TRANSFORMS_QUARTERS_AGO
+msgid "Quarters ago"
+msgstr "Neljännestä sitten"
+
+#: reports.js:FOLDERS_OUTPUT
+msgid "Output"
+msgstr "Tuloste"
+
+#: reports.js:TEMPLATE_CONF_SELECT_CANCEL
+msgid "Select the value, or cancel:"
+msgstr "Valitse arvo tai peruuta:"
+
+#: reports.js:TEMPLATE_CONF_CONFIRM_RESET
+msgid ""
+"You have already added the [${0}] field\n"
+"from the [${1}] source. Click OK if you\n"
+"would like to reset this field."
+msgstr ""
+"Olet jo lisännyt kentän [${0}]\n"
+" lähteestä [${1}]. Napsauta OK, jos\n"
+"haluat tyhjentää kentän."
+
+#: reports.js:OPERATORS_NOT_IN_LIST reports.js:FILTERS_LABEL_NOT_IN
+msgid "Not in list"
+msgstr "Ei luettelossa"
+
+#: reports.js:OPERATORS_ILIKE reports.js:FILTERS_LABEL_ILIKE
+msgid "Contains Matching substring (ignore case)"
+msgstr "Sisältää osuvan alijonon (kirjainten koosta riippumatta)"
+
+#: reports.js:TRANSFORMS_MOY reports.js:TFORMS_LABEL_MOY
+msgid "Month of Year"
+msgstr "Vuoden kuukausi"
+
+#: reports.js:TRANSFORMS_HOD reports.js:TFORMS_LABEL_HOD
+msgid "Hour of day"
+msgstr "Päivän tunti"
+
+#: reports.js:TRANSFORMS_MAX reports.js:TFORMS_LABEL_MAX
+msgid "Max"
+msgstr "Enint."
+
+#: reports.js:TEMPLATE_CONF_NOT_IN reports.js:TEMPLATE_CONF_NO_MATCH
+msgid "Field does not match one of list (comma separated):"
+msgstr "Kenttä ei vastaa arvoa luettelossa (pilkulla erotettu):"

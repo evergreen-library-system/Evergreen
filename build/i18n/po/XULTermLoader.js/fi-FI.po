@@ -1,0 +1,38 @@
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2012-10-29 09:00:07-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"Language-Team: Finnish <evergreen@jns.fi>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.5.3\n"
+
+#: XULTermLoader.js:LABEL_TEXT
+msgid " term(s) loaded"
+msgstr " termi(ä) ladattu"
+
+#: XULTermLoader.js:BUTTON_TEXT
+msgid "Load more terms"
+msgstr "Lataa lisää termejä"
+
+#: XULTermLoader.js:TERM_LIMIT
+msgid "You have already loaded the maximum number of terms."
+msgstr "Olet jo ladannut enimmäismäärän termejä."
+
+#: XULTermLoader.js:TERM_LIMIT_SOME
+msgid ""
+"Could not load all terms from the file without exceeding maximum number of "
+"terms. Some data not included."
+msgstr ""
+"Kaikkien termien lataus tiedostosta ei onnistunut, koska termien "
+"enimmäismäärä olisi ylitetty. Osa tiedoista jää pois."
+
+#: XULTermLoader.js:CHOOSE_FILE
+msgid "Choose a file from which to read search terms."
+msgstr "Lataa tiedosto, josta hakutermit luetaan."
