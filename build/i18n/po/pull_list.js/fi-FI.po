@@ -1,0 +1,90 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2012-10-29 09:00:06-0400\n"
+"PO-Revision-Date: 2012-09-19 14:13+0300\n"
+"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"Language-Team: Finnish <evergreen@jns.fi>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.1\n"
+
+#: pull_list.js:PULL_LIST_NO_RESPONSE
+msgid "No response from server trying to get pull list!"
+msgstr "Palvelin ei vastaa haettaessa varauslistaa!"
+
+#: pull_list.js:AUTO_interval_in_days
+msgid "Generate list for this many days hence: "
+msgstr "Luo luettelo näin monta päivää eteenpäin:"
+
+#: pull_list.js:COPY_LOOKUP_ERROR
+msgid "Error looking up copies by barcode: "
+msgstr "Virhe hakiessa niteitä tunnuksella:"
+
+#: pull_list.js:COPY_LOOKUP_NO_RESPONSE
+msgid "No response looking up copies by barcode"
+msgstr "Ei vastausta hakiessa niteitä tunnuksella"
+
+#: pull_list.js:FOR
+msgid "for"
+msgstr "kohteelle"
+
+#: pull_list.js:AUTO_pull_list_title
+msgid "Booking Pull List"
+msgstr "Erikoisvarauslista"
+
+#: pull_list.js:AUTO_no_results
+msgid "No results."
+msgstr "Ei tuloksia."
+
+#: pull_list.js:AUTO_th_barcode
+msgid "Barcode"
+msgstr "Nidetunnus"
+
+#: pull_list.js:PULL_LIST_ERROR
+msgid "Error trying to fetch pull list: "
+msgstr "Virhe haettaessa varauslistaa:"
+
+#: pull_list.js:COPY_MISSING
+msgid "Unexpected error: No information for copy: "
+msgstr "Odottamaton virhe: Ei tietoja niteelle: "
+
+#: pull_list.js:AUTO_th_call_number
+msgid "Call number"
+msgstr "Hyllypaikka"
+
+#: pull_list.js:AUTO_owning_lib_selector
+msgid "See pull list for library:"
+msgstr "Näytä varauslista kirjastolle:"
+
+#: pull_list.js:AUTO_th_resv_details
+msgid "Reservation details"
+msgstr "Varaustiedot"
+
+#: pull_list.js:AT
+msgid "at"
+msgstr "kohteessa"
+
+#: pull_list.js:AUTO_ATTR_VALUE_fetch
+msgid "Fetch"
+msgstr "Hae"
+
+#: pull_list.js:AUTO_th_title_or_name
+msgid "Title or name"
+msgstr "Nimeke tai tekijä"
+
+#: pull_list.js:AUTO_ATTR_VALUE_print
+msgid "Print"
+msgstr "Tulosta"
+
+#: pull_list.js:AUTO_th_pickup_lib
+msgid "Pickup library"
+msgstr "Noutokirjasto"
+
+#: pull_list.js:AUTO_th_copy_location
+msgid "Copy location"
+msgstr "Nidesijanti"

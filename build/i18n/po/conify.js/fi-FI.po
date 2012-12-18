@@ -1,0 +1,394 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2012-10-29 09:00:06-0400\n"
+"PO-Revision-Date: 2012-09-13 18:35+0300\n"
+"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"Language-Team: Finnish <evergreen@jns.fi>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.1\n"
+
+#: conify.js:SURVEY_ID
+msgid "Survey ID # ${0}"
+msgstr "Kyselyn ID # ${0}"
+
+#: conify.js:SUCCESS_NEW_PERM_MAP
+msgid "New permission map created"
+msgstr "Uusi oikeuskartta luotu"
+
+#: conify.js:END_SURVEY
+msgid "End Survey Now"
+msgstr "Lopeta kysely nyt"
+
+#: conify.js:SUCCESS_SAVING_DATA conify.js:SUCCESS_SAVE
+msgid "Saved changes to ${0}"
+msgstr "Muutokset tallennettu kohteeseen ${0}"
+
+#: conify.js:ERROR_FETCHING_PHYSICAL
+msgid "Problem fetching Physical Address for ${0}"
+msgstr "Fyysisen osoitteen haku kohteelle ${0} epäonnistui"
+
+#: conify.js:SURVEY_ADD_ANSWER
+msgid "Add Answer"
+msgstr "Lisää vastaus"
+
+#: conify.js:TRANSLATION conify.js:LABEL_TRANSLATION
+msgid "Translation"
+msgstr "Käännös"
+
+#: conify.js:ACQ_DISTRIB_FORMULA_NAME_CLONE
+msgid "${0} (Clone)"
+msgstr "${0} (klooni)"
+
+#: conify.js:ERROR_DELETING_LAST_AOU
+msgid "Cannot delete ${0}, you need at least one organization unit."
+msgstr "${0} poisto ei onnistu, tarvitset vähintään yhden organisaatioyksikön."
+
+#: conify.js:SUCCESS_SAVING_HOO
+msgid "Hours of Operation updated for ${0}"
+msgstr "Aukioloajat päivitetty kohteelle ${0}"
+
+#: conify.js:SUCCESS_CREATING_CHILD_AOUT
+msgid "New child Organization Type created for ${0}"
+msgstr "Uusi alaorganisaatiotyyppi luotu kohteelle ${0}"
+
+#: conify.js:LABEL_VALUE
+msgid "Value"
+msgstr "Arvo"
+
+#: conify.js:ERROR_DELETING
+msgid "Problem deleting ${0}"
+msgstr "Kohteen ${0} poistaminen epäonnistui"
+
+#: conify.js:SURVEY_SAVE_CHANGES
+msgid "Save Changes"
+msgstr "Tallenna muutokset"
+
+#: conify.js:ERROR_CREATING_CHILD_GROUP
+msgid "Problem creating child Group"
+msgstr "Alaryhmän luominen epäonnistui"
+
+#: conify.js:SUCCESS_SAVE_PERM
+msgid "Saved permission changes to ${0}"
+msgstr "Kohteen ${0} oikeuksien muutokset tallennettu"
+
+#: conify.js:SURVEY_DELETE_ANSWER
+msgid "Delete Answer"
+msgstr "Poista vastaus"
+
+#: conify.js:ERROR_FETCHING_GROUPS
+msgid "Problem fetching groups"
+msgstr "Ryhmien haku epäonnistui"
+
+#: conify.js:ERROR_FETCHING_STATUSES
+msgid "Problem fetching statuses"
+msgstr "Statusten haku epäonnistui"
+
+#: conify.js:ERROR_SAVING_PERM_DATA
+msgid "Problem saving permission data for ${0}"
+msgstr "Oikeustietojen tallennus kohteelle ${0} epäonnistui"
+
+#: conify.js:SUCCESS_CREATING_STATUS
+msgid "New ${0} status created"
+msgstr "Uusi status luotu kohteelle ${0}"
+
+#: conify.js:SURVEY_DELETE_QUESTION
+msgid "Delete Question & Answers"
+msgstr "Poista kysymykset ja vastaukset"
+
+#: conify.js:ERROR_CREATING_PERMISSION
+msgid "Problem creating new Permission"
+msgstr "Uuden oikeuden luominen epäonnistui"
+
+#: conify.js:ERROR_CALLING_METHOD_PERM_MAP
+msgid "Problem calling method to create new permission map"
+msgstr "Uuden oikeuskartan luomismenetelmän kutsu epäonnistui"
+
+#: conify.js:SURVEY_QUESTION
+msgid "Question:"
+msgstr "Kysymys:"
+
+#: conify.js:ERROR_FETCHING_MAILING
+msgid "Problem fetching Mailing Address for ${0}"
+msgstr "Postiosoitteen haku kohteelle ${0} epäonnistui"
+
+#: conify.js:CONFIRM_EXIT_AOU
+msgid ""
+"There are unsaved changes to one or more organizational units. Click OK to "
+"save these changes, or Cancel to abandon them."
+msgstr ""
+"Yhteen tai useampaan yksikköön on tehty tallentamattomia muutoksia. Tallenna "
+"muutokset valitsemalla OK tai hylkää ne valitsemalla Peruuta."
+
+#: conify.js:SURVEY_SAVE_ADD
+msgid "Save Question & Add Answer"
+msgstr "Tallenna kysymys ja lisää vastaus"
+
+#: conify.js:LABEL_NEW_BRANCH
+msgid "New Branch"
+msgstr "Uusi sivukirjasto"
+
+#: conify.js:SUCCESS_CREATING_CHILD_AOU
+msgid "New child Organizational Unit created for ${0}"
+msgstr "Uusi alaorganisaatioyksikkö luotu kohteelle ${0}"
+
+#: conify.js:ERROR_ORPHANS
+msgid "Cannot delete ${0}, ${1} subordinates still exist."
+msgstr ""
+"Kohteen ${0} poisto ei onnistu, sillä on vielä ${1} kohdetta alaisuudessaan."
+
+#: conify.js:ACQ_DISTRIB_FORMULA_NAME_PROMPT
+msgid "Enter new formula name"
+msgstr "Syötä uuden kaavan nimi"
+
+#: conify.js:ERROR_DELETING_LAST_AOUT
+msgid "Cannot delete ${0}. You need at least one organization type."
+msgstr ""
+"Kohteen ${0} poisto ei onnistui. Tarvitset vähintään yhden "
+"organisaatiotyypin."
+
+#: conify.js:SURVEY_ANSWER
+msgid "Answer:"
+msgstr "Vastaus:"
+
+#: conify.js:SUCCESS_NEW_CHILD_GROUP
+msgid "New child Group created for ${0}"
+msgstr "Uusi alaryhmä luotu kohteelle ${0}"
+
+#: conify.js:SUCCESS_SAVING_PHYSICAL
+msgid "Saved changes to the Physical Address of ${0}"
+msgstr "Muutokset kohteen ${0} fyysiseen osoitteeseen tallennettu"
+
+#: conify.js:LABEL_NEW_GROUP
+msgid "New Group"
+msgstr "Uusi ryhmä"
+
+#: conify.js:CONFIRM_EXIT_PGT
+msgid ""
+"There are unsaved modified permission maps. Click OK to save these changes, "
+"or Cancel to abandon them."
+msgstr ""
+"Muokattuihin oikeuskarttoihin on tehty tallentamattomia muutoksia. Tallenna "
+"muutokset valitsemalla OK tai hylkää ne valitsemalla Peruuuta."
+
+#: conify.js:SUCCESS_SAVING_MAILING
+msgid "Saved changes to the Mailing Address of ${0}"
+msgstr "Kohteen ${0} postiosoitteeseen tehdyt muutokset tallennettu."
+
+#: conify.js:ERROR_SAVING_STATUS
+msgid "Problem saving ${0}"
+msgstr "Kohteen ${0} tallennus ei onnistunut"
+
+#: conify.js:ERROR_CALLING_METHOD_CAM
+msgid "Problem calling method to create new ${0}"
+msgstr "Uuden kohteen ${0} luomismenetelmän kutsu epäonnistui"
+
+#: conify.js:ERROR_CALLING_METHOD_PPL
+msgid "Problem calling method to create new permission"
+msgstr "Uuden oikeuden luomismenetelmän kutsu epäonnistui"
+
+#: conify.js:CONFIRM_DELETE
+msgid "Are you sure you want to delete ${0}?"
+msgstr "Haluatko varmasti poistaa kohteen ${0}?"
+
+#: conify.js:CONFIRM_EXIT_PPL
+msgid ""
+"There are unsaved modified permissions. Click OK to save these changes, or "
+"Cancel to abandon them."
+msgstr ""
+"Oikeuksiin on tehty tallentamattomia muutoksia. Tallenna muutokset "
+"valitsemalla OK tai hylkää ne valitsemalla Peruuta."
+
+#: conify.js:CONFIRM_UNSAVED_CHANGES
+msgid ""
+"There are unsaved changes to one or more organization types. Click OK to "
+"save these changes, or Cancel to abandon them."
+msgstr ""
+"Yhteen tai useampaan organisaatiotyyppiin on tehty tallentamattomia "
+"muutoksia. Tallenna muutokset valitsemalla OK tai hylkää ne valitsemalla "
+"Peruuta."
+
+#: conify.js:ERROR_FETCHING_HOURS
+msgid "Problem fetching hours of operation for ${0}"
+msgstr "Kohteen ${0} aukioloaikojen haku epäonnistui"
+
+#: conify.js:LABEL_NEW_TYPE
+msgid "New Type"
+msgstr "Uusi tyyppi"
+
+#: conify.js:ERROR_CREATING_CHILD_AOU
+msgid "Problem creating child organizational unit"
+msgstr "Alaorganisaatioyksikön luominen epäonnistui"
+
+#: conify.js:ERROR_SAVING_HOLDS
+msgid "Problem saving Holds Address data for ${0}"
+msgstr "Varausosoitteen tietojen tallennus kohteelle ${0} epäonnistui"
+
+#: conify.js:ERROR_CREATING_CHILD_AOUT
+msgid "Problem creating child organization type"
+msgstr "Alaorganisaatiotyypin luominen epäonnistui"
+
+#: conify.js:ERROR_SAVING_DATA
+msgid "Problem saving data for ${0}"
+msgstr "Kohteen ${0} tietojen tallennus epäonnistui"
+
+#: conify.js:ERROR_FETCHING_TYPES_AOUT
+msgid "Problem fetching organizational unit types"
+msgstr "Organisaatioyksikkötyyppien haku epäonnistui"
+
+#: conify.js:ERROR_CALLING_METHOD_CCS
+msgid "Problem calling method to create new copy status"
+msgstr "Uuden nidestatuksen luomismenetelmän kutsu epäonnistui"
+
+#: conify.js:SUCCESS_CREATING_CODE
+msgid "New ${0} ${1} created"
+msgstr "Uusi ${0} ${1} luotu"
+
+#: conify.js:LABEL_CODE
+msgid "Code"
+msgstr "Koodi"
+
+#: conify.js:SURVEY_FOOT_LABEL
+msgid "Questions & Answers"
+msgstr "Kysymykset ja vastaukset"
+
+#: conify.js:STATUS_EDITING
+msgid "Now editing ${0}"
+msgstr "Muokataan nyt kohdetta ${0}"
+
+#: conify.js:SUCCESS_DELETED_PERM_MAP
+msgid "Permission mapping deleted"
+msgstr "Oikeuksien kartoitus poistettu"
+
+#: conify.js:ERROR_SAVING_ILL
+msgid "Problem saving ILL Address data for ${0}"
+msgstr "ILL-osoitetietojen tallennus kohteelle ${0} epäonnistui"
+
+#: conify.js:ERROR_FETCHING_HOLDS
+msgid "Problem fetching Holds Address for ${0}"
+msgstr "Varausosoitteen haku kohteelle ${0} epäonnistui"
+
+#: conify.js:SUCCESS_SAVING_ILL
+msgid "Saved changes to the ILL Address of ${0}"
+msgstr "Kohteen ${0} ILL-osoitteen muutokset tallennettu"
+
+#: conify.js:HOLDABLE
+msgid "Holdable"
+msgstr "Varattavissa"
+
+#: conify.js:STATUS_DELETED
+msgid "${0} deleted"
+msgstr "${0} poistettu"
+
+#: conify.js:LABEL_GRANTABLE
+msgid "Grantable"
+msgstr "Myönnettävissä"
+
+#: conify.js:ERROR_FETCHING_PERMS
+msgid "Problem fetching perms"
+msgstr "Oikeuksien haku epäonnistui"
+
+#: conify.js:COPY_ACTIVE
+msgid "Sets copy active"
+msgstr "Aktivoi niteen"
+
+#: conify.js:LABEL_DESCRIPTION
+msgid "Description"
+msgstr "Kuvaus"
+
+#: conify.js:ERROR_CREATING_PERM_MAP
+msgid "Problem creating new Permission Map"
+msgstr "Uuden oikeuskartan luominen epäonnistui"
+
+#: conify.js:ERROR_FETCHING_ILL
+msgid "Problem fetching ILL Address for ${0}"
+msgstr "ILL-osoitteen haku kohteelle ${0} epäonnistui"
+
+#: conify.js:ERROR_FETCHING_PERM_MAPS
+msgid "Problem fetching perm maps"
+msgstr "Oikeuskarttojen haku epäonnistui"
+
+#: conify.js:ERROR_FETCHING_ORGS
+msgid "Problem fetching organizational unit data"
+msgstr "Organisaatioyksikön tietojen haku epäonnistui"
+
+#: conify.js:CONFIRM_EXIT_CCS
+msgid ""
+"There are unsaved changes to one or more copy statuses. Click OK to save "
+"these changes, or Cancel to abandon them."
+msgstr ""
+"Yhden tai useamman niteen tilaan on tehty tallentamattomia muutoksia. "
+"Tallenna muutokset valitsemalla OK tai hylkää ne valitsemalla Peruuta."
+
+#: conify.js:OPAC_VISIBLE
+msgid "OPAC Visible"
+msgstr "OPAC näkyvissä"
+
+#: conify.js:ERROR_SAVING_PHYSICAL
+msgid "Problem saving Physical Address data for ${0}"
+msgstr "Kohteen ${0} fyysisten osoitetietojen tallennus epäonnistui"
+
+#: conify.js:ERROR_SAVING_MAILING
+msgid "Problem saving Mailing Address data for ${0}"
+msgstr "Kohteen ${0} postiosoitetietojen tallennus epäonnistui"
+
+#: conify.js:NAME
+msgid "Name"
+msgstr "Nimi"
+
+#: conify.js:ERROR_SAVING_DATA_CAM
+msgid "Problem saving data for ${0} ${1}"
+msgstr "Kohteen ${0} ${1} tietojen tallennus epäonnistui"
+
+#: conify.js:SUCCESS_CREATING_PERMISSION
+msgid "New ${0} permission created"
+msgstr "Uusi ${0} oikeus luotu"
+
+#: conify.js:ERROR_CREATING_STATUS
+msgid "Problem creating new Status"
+msgstr "Uuden statuksen luominen epäonnistui"
+
+#: conify.js:LABEL_DEPTH
+msgid "Depth"
+msgstr "Syvyys"
+
+#: conify.js:ID
+msgid "ID"
+msgstr "ID"
+
+#: conify.js:SUCCESS_SAVING_HOLDS
+msgid "Saved changes to the Holds Address of ${0}"
+msgstr "Kohteen ${0} varausosoitteen muutokset tallennettu"
+
+#: conify.js:ERROR_DELETING_PERM_MAPPING
+msgid "Problem deleting permission mapping ${0}"
+msgstr "Oikeuskartoituksen ${0} poisto epäonnistui"
+
+#: conify.js:EVENT_DEF_LABEL
+msgid "${0}: ${1}"
+msgstr "${0}: ${1}"
+
+#: conify.js:CONFIRM_EXIT_CAM
+msgid ""
+"There are unsaved changes to one or more ${0} codes. Click OK to save these "
+"changes, or Cancel to abandon them."
+msgstr ""
+"Yhteen tai useampaan ${0} koodiin on tehty tallentamattomia muutoksia. "
+"Tallenna muutokset valitsemalla OK tai hylkää ne valitsemalla Peruuta."
+
+#: conify.js:ERROR_CALLING_METHOD_PGT
+msgid "Problem calling method to create child Group"
+msgstr "Alaryhmän luomismenetelmän kutsu epäonnistui"
+
+#: conify.js:ERROR_CALLING_METHOD_AOUT
+msgid "Problem calling method to create child organization type"
+msgstr "Alaorganisaatiotyypin luomismenetelmän kutsu epäonnistui"
+
+#: conify.js:ERROR_SAVING_HOO
+msgid "Problem saving Hours of Operation data for ${0}"
+msgstr "Kohteen ${0} aukioloaikatietojen tallennus epäonnistui"

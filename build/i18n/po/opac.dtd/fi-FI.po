@@ -1,0 +1,2717 @@
+# extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-29 08:58+0300\n"
+"PO-Revision-Date: 2012-10-17 09:41+0300\n"
+"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"Language-Team: Finnish <evergreen@jns.fi>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Translate Toolkit 1.9.0\n"
+"X-Accelerator-Marker: &\n"
+"X-Project-Style: mozilla\n"
+
+#. =================================================================
+#. Some generic stuff
+#. =================================================================
+#: lang.version
+msgid "remote v1"
+msgstr "etä v1"
+
+#: lang.description
+msgid "English"
+msgstr "Englanti"
+
+#: lang.author
+msgid "PINES"
+msgstr "PINES"
+
+#: common.all
+msgid "All"
+msgstr "Kaikki"
+
+#: common.currency
+msgid "$"
+msgstr "$"
+
+#: common.language
+msgid "Language: "
+msgstr "Kieli: "
+
+#: common.name
+msgid "Name"
+msgstr "Nimi"
+
+#: common.none
+msgid "None"
+msgstr "Ei yhtään"
+
+#: common.title
+msgctxt "common.title"
+msgid "Title"
+msgstr "Nimeke"
+
+#: common.author
+msgctxt "common.author"
+msgid "Author"
+msgstr "Tekijä"
+
+#: common.authors
+msgid "Authors"
+msgstr "Tekijät"
+
+#: common.callnumber
+msgctxt "common.callnumber"
+msgid "Call Number"
+msgstr "Hyllypaikka"
+
+#: common.edition
+msgid "Edition"
+msgstr "Painos"
+
+#: common.subject
+msgid "Subject"
+msgstr "Aihe"
+
+#: common.series
+msgid "Series"
+msgstr "Sarja"
+
+#: common.keyword
+msgid "Keyword"
+msgstr "Avainsana"
+
+#: common.type
+msgid "Search Type"
+msgstr "Hakutyyppi"
+
+#: common.isbn
+msgctxt "common.isbn"
+msgid "ISBN"
+msgstr "ISBN"
+
+#: common.format
+msgid "Format"
+msgstr "Formaatti"
+
+#. Message displayed while search results are loading
+#: common.loading
+msgctxt "common.loading"
+msgid "Loading..."
+msgstr "Ladataan..."
+
+#: common.login
+msgctxt "common.login"
+msgid "Login"
+msgstr "Sisäänkirjautuminen"
+
+#: common.logout
+msgid "Log Out"
+msgstr "Kirjaudu ulos"
+
+#: common.physical
+msgid "Physical Description"
+msgstr "Fyysinen kuvaus"
+
+#: common.pubdate
+msgid "Publication Date"
+msgstr "Julkaisuaika"
+
+#: common.publisher
+msgid "Publisher"
+msgstr "Julkaisija"
+
+#: common.results
+msgid "Results"
+msgstr "Tulokset"
+
+#: common.select
+msgid "Select"
+msgstr "Valitse"
+
+#: common.status
+msgid "Status"
+msgstr "Tila"
+
+#: common.at
+msgid "at"
+msgstr "kohteessa"
+
+#: common.of
+msgid "of"
+msgstr "/"
+
+#: common.no
+msgid "No"
+msgstr "Ei"
+
+#: common.yes
+msgid "Yes"
+msgstr "Kyllä"
+
+#: common.cancel
+msgctxt "common.cancel"
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: common.library
+msgctxt "common.library"
+msgid "Library"
+msgstr "Kirjasto"
+
+#: common.username
+msgid "Username"
+msgstr "Käyttäjätunnus"
+
+#: common.password
+msgctxt "common.password"
+msgid "Password"
+msgstr "Salasana"
+
+#: common.submit
+msgctxt "common.submit"
+msgid "Submit"
+msgstr "Lähetä"
+
+#: common.close
+msgid "close"
+msgstr "sulje"
+
+#: common.and
+msgid "and"
+msgstr "ja"
+
+#: common.user_not_found
+msgid "User not found"
+msgstr "Käyttäjää ei löydy"
+
+#: opac.advanced.wizard.title
+msgctxt "opac.advanced.wizard.title"
+msgid "Advanced Search"
+msgstr "Monipuolinen haku"
+
+#: common.nowSearching
+msgid "Now searching "
+msgstr "Etsitään nyt:"
+
+#: common.ofAtLeast
+msgid " of about "
+msgstr " / noin"
+
+#: common.relevancy
+msgid "Match Score: "
+msgstr "Osuvuuspisteet: "
+
+#: common.tips
+msgid "Tips:"
+msgstr "Vinkit:"
+
+#: common.tips.tip1
+msgid "Click on a folder icon in the sidebar to access related quick searches"
+msgstr ""
+"Napsauta sivupalkin kansiokuvaketta, jos haluat päästä käsiksi aiheeseen "
+"liittyviin pikahakuihin"
+
+#: common.tips.tip2
+msgid ""
+"If you don't find what you want try expanding your search using the range "
+"selector at the right of the search bar"
+msgstr ""
+"Jos et löydä etsimääsi, yritä laajentaa hakua käyttämällä aluevalintaa "
+"hakupalkin oikeassa reunassa."
+
+#: common.org.openAll
+msgid "Expand All"
+msgstr "Laajenna kaikki"
+
+#: common.org.closeAll
+msgid "Close All"
+msgstr "Sulje kaikki"
+
+#: common.org.cancel
+msgctxt "common.org.cancel"
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: common.org.loading
+msgid "Loading library selector..."
+msgstr "Ladataan kirjastovalitsinta..."
+
+#: common.org.note
+msgctxt "common.org.note"
+msgid "Tip:"
+msgstr "Vinkki:"
+
+#: common.org.notetext
+msgid ""
+"Click on a location's name to select it.  Click on the folder icons to "
+"expand a section."
+msgstr ""
+"Valitse sijanti napsauttamalla sen nimeä. Laajenna osuus napsauttamalla "
+"kansiokuvakkeita."
+
+#: opac.login.login
+msgctxt "opac.login.login"
+msgid "Login"
+msgstr "Sisäänkirjautuminen"
+
+#: opac.basic
+msgctxt "opac.basic"
+msgid "Basic Catalog (HTML only)"
+msgstr "Perusluettelo (vain HTML)"
+
+#: common.password_criteria
+msgid ""
+"The password must be at least 7 characters in length, \n"
+"contain at least one letter (a-z/A-Z), \n"
+"and contain at least one number."
+msgstr ""
+"Salasanan on oltava vähintään 7 merkin mittainen, ja \n"
+"siinä on oltava vähintään yksi kirjain (a-z/A-Z) \n"
+"sekä vähintään yksi numero."
+
+#: common.a2z.title
+msgid "Title: A to Z"
+msgstr "Nimeke: A-Ö"
+
+#: common.z2a.title
+msgid "Title: Z to A"
+msgstr "Nimeke: Ö-A"
+
+#: common.a2z.author
+msgid "Author: A to Z"
+msgstr "Tekijä: A-Ö"
+
+#: common.z2a.author
+msgid "Author: Z to A"
+msgstr "Tekijä: Ö-A"
+
+#: common.new2old.pubdate
+msgid "Date: Newest to Oldest"
+msgstr "Päiväys: Uusimmasta vanhimpaan"
+
+#: common.old2new.pubdate
+msgid "Date: Oldest to Newest"
+msgstr "Päiväys: Vanhimmasta uusimpaan"
+
+#: opac.style.reddish
+msgid "Reddish"
+msgstr "Punertava"
+
+#: holds.where_am_i
+msgid ""
+"Holds lists are not as simple as \n"
+"'first come, first served.'  A complex matrix combining \n"
+"consideration of item ownership, patron home library, and item purchase \n"
+"date determines  priorities for holds; the list is dynamic, changing \n"
+"with every hold placed.  Therefore, any indication of a place in the \n"
+"holds list would be inaccurate.  The holds system is designed to \n"
+"obtain a requested item in the fastest and most efficient way possible. \n"
+"Your library will contact you when you hold items become \n"
+"available."
+msgstr ""
+"Varausjonot eivät toimi yksinkertaisella \n"
+"'ensimmäinen varaaja saa ensimmäiseksi'-periaatteella. Ne käyttävät "
+"monimutkaista matriisia,\n"
+"joka ottaa huomioon niteen ja asiakkaan kotikirjaston sekä niteen ostopäivän\n"
+"määrittäessään varausten prioriteetteja; luettelo on dynaaminen ja vaihtuu\n"
+"jokaisen varauksen myötä. Näin ollen mikä tahansa ilmoitus paikasta\n"
+"varausluettelossa olisi epätarkka. Varausjärjestelmä on suunniteltu niin,\n"
+"että pyydetty nide toimitetaan nopeimmalla ja tehokkaimmalla mahdollisella "
+"tavalla. \n"
+"Kirjastosi ottaa sinuun yhteyttä, kun varattu nide on saatavissa."
+
+#: holds.advanced_options
+msgid ""
+"If you wish to broaden the scope of your hold to include other \n"
+"versions of this title, select the formats that would be acceptable. \n"
+"The first available copy will be sent to you."
+msgstr ""
+"Jos haluat laajentaa varauksesi koskemaan tämän nimekkeen\n"
+"muita versioita, valitse sinulle käyvät aineistolajit. Saat\n"
+"ensimmäisen saatavilla oleva niteen."
+
+#. =================================================================
+#. Events and Permissions
+#. =================================================================
+#: ilsevent.0
+msgid "Operation Succeeded"
+msgstr "Toiminto onnistui"
+
+#: ilsevent.1000
+msgid "Login failed.  The username or password entered was incorrect."
+msgstr ""
+"Sisäänkirjautuminen epäonnistui. Käyttäjänimi tai salasana oli virheellinen."
+
+#: ilsevent.1001
+msgid "Login session has timed out or does not exist"
+msgstr "Sisäänkirjautumisistunto on vanhentunut tai sitä ei löydy."
+
+#: ilsevent.1002
+msgid "User was not found in the database"
+msgstr "Käyttäjää ei löytynyt tietokannasta"
+
+#: ilsevent.1200
+msgid "The given username already exists in the database"
+msgstr "Annettu käyttäjätunnus löytyy jo tietokannasta"
+
+#: ilsevent.5000
+msgid "Permission Denied"
+msgstr "Ei oikeuksia"
+
+#: ilsperm.CREATE_HOLD
+msgid "User is not allowed to create holds for other users at this location"
+msgstr ""
+"Käyttäjällä ei ole oikeutta luoda varauksia muille käyttäjille tässä "
+"sijainnissa."
+
+#. =================================================================
+#. common/pages
+#. =================================================================
+#: common.cn.loading
+msgid "Loading Callnumber Page..."
+msgstr "Ladataan hyllypaikkasivua..."
+
+#: common.cn.browsing
+msgid "You are now browsing"
+msgstr "Selaat nyt:"
+
+#: common.cn.previous
+msgid "&lt;&lt; Previous Page"
+msgstr "&lt;&lt; Edellinen sivu"
+
+#: common.cn.shelf
+msgctxt "common.cn.shelf"
+msgid "Shelf Browser"
+msgstr "Hyllyselain"
+
+#: common.cn.next
+msgid "Next Page &gt;&gt;"
+msgstr "Seuraava sivu &gt;&gt;"
+
+#: common.textsize.title
+msgid "Text Size: "
+msgstr "Tekstin koko: "
+
+#: common.textsize.regular
+msgid "Regular"
+msgstr "Tavallinen"
+
+#. Regular / Large
+#: common.textsize.separator
+msgid "/"
+msgstr "/"
+
+#: common.textsize.large
+msgid "Large"
+msgstr "Suuri"
+
+#: common.googlechromeframe.why
+msgid ""
+"Installing the Google Chrome Frame plugin for Internet Explorer will improve "
+"your Evergreen experience with more speed and advanced features!"
+msgstr ""
+"Evergreenin käyttämisesi nopeutuu ja saat käyttöösi lisätoimintoja, jos "
+"asennat Google Chrome Frame -liitännäisen Internet Exploreriin!"
+
+#: common.googlechromeframe.install
+msgid "Install Now!"
+msgstr "Asenna nyt!"
+
+#: common.googlechromeframe.dontask
+msgid "Don't ask me again"
+msgstr "Älä kysy uudelleen"
+
+#: home.js.disabled
+msgid ""
+"JavaScript must be enabled in order for you to use the regular Evergreen "
+"Catalog. \n"
+"However, it seems JavaScript is either disabled or not supported by your "
+"browser. \n"
+"To use the regular Evergreen Catalog, enable JavaScript by changing your "
+"browser options, then \n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
+"<br/><br/>Alternatively, you can use the basic HTML-only catalog: "
+msgstr ""
+"JavaScriptin on oltava käytössä, jotta voit käyttää tavallista Evergreen-"
+"tietokantaa. \n"
+"Näyttää kuitenkin siltä, että selaimesi ei joko tue JavaScriptiä tai se on "
+"pois käytöstä. Ota JavaScript käyttöön muokkaamalla selaimesi asetuksia ja \n"
+"<a style='color: blue; text-decoration: underline;' href='/'>yritä "
+"uudelleen</a>. \n"
+"<br/><br/>Vaihtoehtoisesti voit käyttää perus-HTML-tietokantaa \n"
+"<a style='color: blue; text-decoration: underline;' "
+"href='/opac/extras/slimpac/start.html'>täällä</a>."
+
+#. =================================================================
+#. MyOPAC bookbag page
+#. =================================================================
+#: myopac.delete.bookbag
+msgid ""
+"This will remove the selected bookbag and all items contained within the "
+"bookbag. \n"
+"Are you sure you wish to continue?"
+msgstr ""
+"Tämä poistaa valitun kirjahyllyn ja kaikki sen sisältämät niteet. \n"
+"Haluatko varmasti jatkaa?"
+
+#: myopac.no.bookbags
+msgid "You have not created any bookbags"
+msgstr "Et ole luonut yhtään kirjahyllyä"
+
+#: myopac.bookbags.title
+msgctxt "myopac.bookbags.title"
+msgid "My Bookbags"
+msgstr "Omat kirjahyllyt"
+
+#: myopac.bookbag.items
+msgid "# Items"
+msgstr "# niteitä"
+
+#: myopac.bookbag.shared
+msgid "Shared"
+msgstr "Jaettu"
+
+#: myopac.bookbag.toggle
+msgid "Share / Hide"
+msgstr "Jaa / piilota"
+
+#: myopac.bookbag.delete
+msgid "Delete this bookbag?"
+msgstr "Poistetaanko kirjahylly?"
+
+#: myopac.items
+msgid "Items"
+msgstr "Niteet"
+
+#: myopac.view
+msgid "(View)"
+msgstr "(Näytä)"
+
+#: myopac.atom.feed
+msgid "ATOM Feed"
+msgstr "ATOM-syöte"
+
+#: myopac.bookbag.hide
+msgid "Hide"
+msgstr "Piilota"
+
+#: myopac.delete
+msgid "Delete"
+msgstr "Poista"
+
+#: myopac.bookbag.create
+msgid "Create a new Bookbag"
+msgstr "Luo uusi kirjahylly"
+
+#: myopac.bookbag.naming
+msgid "Enter the name of the new Bookbag: "
+msgstr "Syötä uuden kirjahyllyn nimi: "
+
+#: myopac.bookbag.share
+msgid "Share this Bookbag"
+msgstr "Jaa tämä kirjahylly"
+
+#: myopac.bookbag.refworks
+msgctxt "myopac.bookbag.refworks"
+msgid "Export to RefWorks"
+msgstr "Vie RefWorksiin"
+
+#: myopac.bookbag.no.items
+msgid "The selected bookbag contains no items..."
+msgstr "Valitussa kirjahyllyssä ei ole niteitä..."
+
+#: myopac.bookbag.remove
+msgid "Remove this item?"
+msgstr "Poistetaanko tämä nide?"
+
+#: myopac.remove.link
+msgid "remove"
+msgstr "poista"
+
+#: myopac.publish.text
+msgid ""
+"Sharing a Bookbag means that the contents of the Bookbag will be visible to "
+"others. \n"
+"To see the public view of a shared Bookbag, click the \"View\" link in the \n"
+"\"Shared\" column of the Bookbag list at the top of this page."
+msgstr ""
+"Jaettu kirjahylly tarkoittaa, että kirjahyllyn sisältö näkyy muille. \n"
+"Näet jaetun kirjahyllyn julkisen näkymän napsauttamalla \"Näytä\"-linkkiä\n"
+"kirjahyllyluettelon \"Jaetut\"-sarakkeessa tämän sivun yläreunassa."
+
+#: myopac.item.confirm
+msgid "Are you sure you wish to remove this bookbag item?"
+msgstr "Haluatko varmasti poistaa tämän kirjahyllyniteen?"
+
+#: myopac.publish.confirm
+msgid ""
+"Sharing this bookbag will allow the contents \n"
+"of the bookbag to be seen by others.  Are you sure you wish to share this "
+"bookbag?"
+msgstr ""
+"Tämän kirjahyllyn jakaminen tarkoittaa, että \n"
+"muut voivat nähdä kirjahyllyn sisällön. Haluatko varmasti jakaa kirjahyllyn?"
+
+#: myopac.unpublish.confirm
+msgid "Are you sure you wish to hide this bookbag?"
+msgstr "Haluatko varmasti piilottaa tämän kirjahyllyn?"
+
+#: myopac.update.success
+msgid "The Bookbag was successfully updated."
+msgstr "Kirjahylly päivitettiin onnistuneesti."
+
+#: myopac.updated.success
+msgid "Bookbag successfully updated"
+msgstr "Kirjahylly päivitetty onnistuneesti"
+
+#: myopac.create.warning
+msgid ""
+"Warning: Adding items to a bookbag creates a link between you and the \n"
+"items in the database.  The contents of the bookbag are NOT publicly \n"
+"viewable unless the bookbag is shared. However, if you prefer not to \n"
+"have any link between your patron record and a particular item or items, \n"
+"we suggest that you do not place said items in a bookbag or that you \n"
+"avoid using bookbags all together.  Thank you."
+msgstr ""
+"Varoitus: Kun lisäät niteitä kirjahyllyyn, niiden ja tietokannassa olevien\n"
+"niteiden välille muodostuu linkki. Kirjahyllyn niteet EIVÄT ole julkisesti \n"
+"näkyvillä, ellei kirjahyllyä jaeta. Jos et kuitenkaan halua luoda "
+"minkäänlaista \n"
+"linkkiä asiakastietueesi ja tietyn niteen tai niteiden välillä, \n"
+"suosittelemme, ettet lisää tällaisia niteitä kirjahyllyyn tai että \n"
+"yleisesti ottaen vältät kirjahyllyjen käyttöä. Kiitos."
+
+#: myopac.describe.bookbags
+msgid "Bookbags are..."
+msgstr "Kirjahyllyt ovat..."
+
+#. =================================================================
+#. MyOPAC Checked Page
+#. =================================================================
+#: myopac.checked.out
+msgid "Total items out:"
+msgstr "Niteitä lainassa yhteensä:"
+
+#: myopac.checked.overdue
+msgid "Total items overdue:"
+msgstr "Erääntyneitä niteitä yhteensä:"
+
+#: myopac.checked.renew
+msgid "Renew Selected Items"
+msgstr "Uusi valitut lainat"
+
+#: myopac.checked.renewing
+msgid "Renewing..."
+msgstr "Uusitaan..."
+
+#: myopac.checked.renew.remaining
+msgctxt "myopac.checked.renew.remaining"
+msgid "Renewals Remaining"
+msgstr "Uusintoja jäljellä"
+
+#: myopac.checked.noitems
+msgid "You have no items checked out at this time"
+msgstr "Sinulla ei tällä hetkellä ole lainoja"
+
+#: myopac.checked.other.circ
+msgid "Other Circulations"
+msgstr "Muut lainat"
+
+#: myopac.checked.circ.lib
+msgid "Circulating Library"
+msgstr "Lainaava kirjasto"
+
+#: myopac.checked.item.type
+msgid "Circulation Type"
+msgstr "Lainaustyyppi"
+
+#: myopac.checked.circ.time
+msgid "Please return by ..."
+msgstr "Palauta viimeistään..."
+
+#: myopac.checked.renew.success
+msgid "item(s) successfully renewed"
+msgstr "Nide/niteet uusittu onnistuneesti"
+
+#: myopac.checked.renew.confirm
+msgid "Are you sure you wish to renew the selected item(s)?"
+msgstr "Haluatko varmasti uusia valitut lainat?"
+
+#: myopac.checked.renew.fail
+msgid ""
+"The system is unable to renew the selected item at this time.  This usually "
+"means the item is needed to fulfill a hold.  Please see a librarian for "
+"further help."
+msgstr ""
+"Järjestelmä ei pysty uusimaan valittua nidettä tällä hetkellä. Yleensä tämä "
+"tarkoittaa, että nidettä tarvitaan varauksen täyttämiseen. Kysy lisätietoja "
+"kirjastovirkailijalta."
+
+#: myopac.checked.renew.fail2
+msgid ""
+"Library policy prevents the renewal of this item at this time.  Please see a "
+"librarian for further details."
+msgstr ""
+"Kirjastosäännöt estävät tämän niteen uusimisen tällä hetkellä.  Kysy "
+"lisätietoja kirjastovirkailijalta."
+
+#. =================================================================
+#. MyOPAC Fines Page
+#. =================================================================
+#: myopac.fines.title
+msgctxt "myopac.fines.title"
+msgid "Summary"
+msgstr "Yhteenveto"
+
+#: myopac.fines.owed
+msgid "Total Owed"
+msgstr "Velkaa yhteensä"
+
+#: myopac.fines.paid
+msgid "Total Paid"
+msgstr "Maskettu yhteensä"
+
+#: myopac.fines.balance
+msgid "Balance Owed"
+msgstr "Maksuja maksamatta"
+
+#: myopac.fines.status
+msgctxt "myopac.fines.status"
+msgid "Loading..."
+msgstr "Ladataan..."
+
+#: myopac.fines.overdue
+msgid "Overdue Materials"
+msgstr "Erääntyneet aineistot"
+
+#: myopac.fines.checkout
+msgid "Checkout Date"
+msgstr "Lainauspäivä"
+
+#: myopac.fines.due
+msgctxt "myopac.fines.due"
+msgid "Due Date"
+msgstr "Eräpäivä"
+
+#: myopac.fines.returned
+msgid "Date Returned"
+msgstr "Palautuspäivä"
+
+#: myopac.fines.accruing
+msgid "(fines accruing)"
+msgstr "(kerääntyviä maksuja)"
+
+#: myopac.fines.other
+msgid "Other Fees"
+msgstr "Muut maksut"
+
+#: myopac.fines.time.start
+msgid "Transaction Start Time"
+msgstr "Maksutapahtuman aloitusaika"
+
+#: myopac.fines.time.paid
+msgid "Last Payment Time"
+msgstr "Viimeisin maksuaika"
+
+#: myopac.fines.owed.initial
+msgid "Initial Amount Owed"
+msgstr "Velkaa aluksi"
+
+#: myopac.fines.paid.amount
+msgid "Total Amount Paid"
+msgstr "Maksettu yhteensä"
+
+#: myopac.fines.type
+msgid "Billing Type"
+msgstr "Maksutyyppi"
+
+#. =================================================================
+#. MyOPAC Holds Page
+#. =================================================================
+#: myopac.holds.formats
+msgid "Formats"
+msgstr "Muodot"
+
+#: myopac.holds.location
+msgid "Pickup Location"
+msgstr "Noutopaikka"
+
+#: myopac.holds.edit
+msgid "Edit"
+msgstr "Muokkaa"
+
+#: myopac.holds.status.none
+msgid "You have no items on hold at this time"
+msgstr "Sinulla ei tällä hetkellä ole varauksia"
+
+#: myopac.holds.status.waiting
+msgid "Waiting for copy"
+msgstr "Odotetaan nidettä"
+
+#: myopac.holds.status.intransit
+msgid "In Transit"
+msgstr "Kuljetettavana"
+
+#: myopac.holds.status.available
+msgid "Ready for Pickup"
+msgstr "Valmis noudettavaksi"
+
+#: myopac.holds.status.suspended
+msgid "Suspended"
+msgstr "Ennakkovaraus"
+
+#: myopac.holds.cancel
+msgctxt "myopac.holds.cancel"
+msgid "Cancel"
+msgstr "Peruuta "
+
+#: myopac.holds.verify
+msgid ""
+"If you wish to cancel the selected hold, click OK, otherwise click Cancel."
+msgstr ""
+"Jos haluat perua valitun varauksen, napsauta OK, muussa tapauksessa napsauta "
+"Peruuta."
+
+#: myopac.holds.freeze_selected
+msgid "Suspend"
+msgstr "Aseta ennakkovaraukseksi"
+
+#: myopac.holds.thaw_selected
+msgid "Activate"
+msgstr "Aktivoi"
+
+#: myopac.holds.thaw_date_selected
+msgid "Set Active Date"
+msgstr "Aseta aktivointipäivä"
+
+#: myopac.holds.cancel_selected
+msgctxt "myopac.holds.cancel_selected"
+msgid "Cancel"
+msgstr "Peruuta "
+
+#: myopac.holds.processing
+msgid "Processing holds... This may take a moment."
+msgstr "Käsitellään varauksia... Tämä saattaa kestää hetken."
+
+#: myopac.holds.actions
+msgid "Actions for selected holds"
+msgstr "Toiminnot valituille varauksille"
+
+#: myopac.holds.cancel.confirm
+msgid "Are you sure you wish to cancel the selected holds?"
+msgstr "Haluatko varmasti perua valitut varaukset?"
+
+#: myopac.holds.freeze.confirm
+msgid ""
+"Are you sure you wish to suspend the selected holds? \n"
+"If an item has already been selected to fulfill the hold, it will not be "
+"suspended"
+msgstr ""
+"Haluatko varmasti tehdä valituista varauksista ennakkovarauksia? \n"
+"Jos nide on jo valittu täyttämään varaus, siitä ei tehdä ennakkovarausta."
+
+#: myopac.holds.thaw.confirm
+msgid "Are you sure you wish to activate the selected holds?"
+msgstr "Haluatko varmasti aktivoida valitut varaukset?"
+
+#: myopac.holds.thaw_date.confirm
+msgid ""
+"Are you sure you wish to change the activate date for the selected holds?"
+msgstr "Haluatko varmasti vaihtaa valittujen varausten aktivointipäivän?"
+
+#: myopac.holds.freeze.select_thaw
+msgid ""
+"Select an automatic activation date.  If no date is chosen, the holds will "
+"remain suspended until they are manually activated."
+msgstr ""
+"Valitse automaattinen aktivointipäivä. Jos päiväystä ei valita, varaukset "
+"jäävät ennakkovarauksiksi, kunnes ne aktivoidaan manuaalisesti."
+
+#: opac.holds.freeze
+msgid "Suspend this hold"
+msgstr "Muuta varaus ennakkovaraukseksi"
+
+#: opac.holds.freeze.help
+msgid ""
+"A suspended hold will retain its place in the queue, but will not be "
+"fulfilled until it has been activated."
+msgstr ""
+"Ennakkovaraus säilyttää paikkansa jonossa, mutta sitä ei täytetä, ennen kuin "
+"se on aktivoitu."
+
+#: opac.holds.freeze.thaw_date
+msgid "Automatically activate hold on:"
+msgstr "Aktivoi varaus automaattisesti:"
+
+#: opac.holds.expire_time
+msgid "Expiration date"
+msgstr "Vanhentumispäivä"
+
+#: myopac.holds.estimated_wait
+msgid "Estimated Wait (days)"
+msgstr "Oletettu odotusaika (päiviä)"
+
+#. =================================================================
+#. MyOPAC Preferences Page
+#. =================================================================
+#: myopac.prefs.title
+msgid "Preferences"
+msgstr "Asetukset"
+
+#: myopac.prefs.hits
+msgid "Search hits per page"
+msgstr "Hakutuloksia sivulla"
+
+#: myopac.prefs.font
+msgid "Default Font Size"
+msgstr "Oletusfonttikoko"
+
+#: myopac.prefs.font.regular
+msgid "Regular Font"
+msgstr "Tavallinen fontti"
+
+#: myopac.prefs.font.large
+msgid "Large Font"
+msgstr "Suurikokoinen fontti"
+
+#: myopac.prefs.holds.notify
+msgid "Default Hold Notification Method"
+msgstr "Oletettu varauksen ilmoitustapa"
+
+#: myopac.prefs.holds.both
+msgid "Use Phone and Email"
+msgstr "Käytä puhelinta ja sähköpostia"
+
+#: myopac.prefs.holds.phone
+msgid "Use Phone Only"
+msgstr "Käytä vain puhelinta"
+
+#: myopac.prefs.holds.email
+msgid "Use Email Only"
+msgstr "Käytä vain sähköpostia"
+
+#: myopac.prefs.search.location
+msgid "Default Search Location"
+msgstr "Haun oletuskirjasto"
+
+#: myopac.prefs.search.home
+msgid "Always search my home library by default."
+msgstr "Hae aina oletuksena kotikirjastosta."
+
+#: myopac.prefs.search.range
+msgid "Default Search Range"
+msgstr "Haun oletusalue"
+
+#: myopac.prefs.save
+msgid "Save Preference Changes"
+msgstr "Tallenna asetusmuutokset"
+
+#: myopac.prefs.save.success
+msgid "Preferences successfully updated"
+msgstr "Asetukset päivitetty onnistuneesti"
+
+#: myopac.prefs.save.failed
+msgid "Preferences update failed!"
+msgstr "Asetusten päivitys epäonnistui!"
+
+#: myopac.prefs.help
+msgid ""
+"This setting defines how you will be notified of holds that are ready to be "
+"picked up from the library. \n"
+"By default, holds will use the notification style you choose here. \n"
+"However, you will still have the option to change individual holds "
+"regardless of this setting."
+msgstr ""
+"Tämä asetus määrittelee, kuinka sinulle ilmoitetaan varauksista, jotka ovat "
+"valmiita noudettaviksi kirjastosta. \n"
+"Oletuksena varaukset käyttävät ilmoitustyyliä, jonka valitset tässä. \n"
+"Tästä huolimatta sinulla on edelleen mahdollisuus muuttaa yksittäisiä "
+"varauksia oletusasetuksesta riippumatta."
+
+#: myopac.holds.unfrozen
+msgid "Active"
+msgstr "Aktiivinen"
+
+#: myopac.holds.frozen.until
+msgid "Activate on..."
+msgstr "Aktivoi..."
+
+#. =================================================================
+#. MyOPAC Summary page
+#. =================================================================
+#: myopac.summary.expired
+msgid ""
+"Your account expired on <span id='myopac.expired.date'/>! \n"
+"Please see a librarian to renew your account."
+msgstr ""
+"Tilisi vanhentui <span id='myopac.expired.date'/>! \n"
+"Uusi tilisi ottamalla yhteyttä kirjastovirkailijaan."
+
+#: myopac.summary.notes
+msgid "* Staff Notes *"
+msgstr "* Henkilökunnan huomautukset *"
+
+#: myopac.summary.phone.day
+msgid "Day Phone"
+msgstr "Puhelin päivällä"
+
+#: myopac.summary.phone.evening
+msgid "Evening Phone"
+msgstr "Puhelin iltaisin"
+
+#: myopac.summary.phone.other
+msgid "Other Phone"
+msgstr "Muu puhelin"
+
+#: myopac.summary.change
+msgid "Change"
+msgstr "Muuta"
+
+#: myopac.summary.username.enter
+msgid "Enter new username:"
+msgstr "Syötä uusi käyttäjänimi:"
+
+#: myopac.summary.password.text
+msgid "(not shown)"
+msgstr "(ei näytetä)"
+
+#: myopac.summary.password.current
+msgid "Enter current password:"
+msgstr "Syötä nykyinen salasana:"
+
+#: myopac.summary.password.new
+msgid "Enter new password:"
+msgstr "Syötä uusi salasana:"
+
+#: myopac.summary.password.reenter
+msgid "Re-enter new password:"
+msgstr "Syötä uusi salasana uudelleen:"
+
+#: myopac.summary.email
+msgid "Email Address"
+msgstr "Sähköpostiosoite"
+
+#: myopac.summary.email.new
+msgid "Enter new email address:"
+msgstr "Syötä uusi sähköpostiosoite:"
+
+#: myopac.summary.id.primary
+msgid "Primary Identification"
+msgstr "Ensisijainen tunnistus"
+
+#: myopac.summary.barcode
+msgid "Active Barcode"
+msgstr "Aktivoi tunnus"
+
+#: myopac.summary.home
+msgid "Home Library"
+msgstr "Kotikirjasto"
+
+#: myopac.summary.genesis
+msgid "Account Creation Date"
+msgstr "Tilin luomispäivä"
+
+#: myopac.summary.addresses
+msgid "Addresses"
+msgstr "Osoitteet"
+
+#: myopac.summary.addresses.pending
+msgid "Pending Addresses"
+msgstr "Vireillä olevat osoitteet"
+
+#: myopac.summary.address.type
+msgid "Address Type"
+msgstr "Osoitteen tyyppi"
+
+#: myopac.summary.address.street
+msgid "Street"
+msgstr "Katuosoite"
+
+#: myopac.summary.address.city
+msgid "City"
+msgstr "Kaupunki"
+
+#: myopac.summary.address.county
+msgid "County"
+msgstr "Maakunta"
+
+#: myopac.summary.address.state
+msgid "State"
+msgstr "Osavaltio"
+
+#: myopac.summary.address.country
+msgid "Country"
+msgstr "Maa"
+
+#: myopac.summary.address.zip
+msgid "Zip"
+msgstr "Postinumero"
+
+#: myopac.summary.address.edit
+msgid "Edit Address"
+msgstr "Muokkaa osoitetta"
+
+#: myopac.summary.address.invalid
+msgid "Invalid Address"
+msgstr "Virheellinen osoite"
+
+#: myopac.summary.username.error
+msgid "Please enter a username"
+msgstr "Syötä käyttäjänimi"
+
+#: myopac.summary.username.dup
+msgid ""
+"The requested username is not available.  Please choose a different "
+"username."
+msgstr "Pyydetty käyttäjänimi ei ole saatavilla. Valitse toinen käyttäjänimi."
+
+#: myopac.summary.username.success
+msgid "Username successfully updated"
+msgstr "Käyttäjänimi päivitetty onnistuneesti"
+
+#: myopac.summary.username.failure
+msgid "Username update failed"
+msgstr "Käyttäjänimen päivitys epäonnistui"
+
+#: myopac.summary.username.invalid
+msgid ""
+"Username cannot contain spaces or have the same format as a barcode, and may "
+"be restricted by policy"
+msgstr ""
+"Käyttäjänimi ei voi sisältää välilyöntejä tai olla samaa muotoa kuin "
+"nidetunnus, ja siihen saattaa päteä muita rajoituksia"
+
+#: myopac.summary.email.error
+msgid "Please enter a valid email address"
+msgstr "Syötä kelvollinen sähköpostiosoite"
+
+#: myopac.summary.email.success
+msgid "Email address successfully updated"
+msgstr "Sähköpostiosoite päivitetty onnistuneesti"
+
+#: myopac.summary.email.failed
+msgid "Email address update failed"
+msgstr "Sähköpostiosoitteen päivitys epäonnistui"
+
+#: myopac.summary.password.error
+msgid "Passwords are empty or do not match"
+msgstr "Salasanat ovat tyhjät tai eivät vastaa toisiaan"
+
+#: myopac.summary.password.success
+msgctxt "myopac.summary.password.success"
+msgid "Password successfully updated"
+msgstr "Salasana päivitetty onnistuneesti"
+
+#: myopac.summary.password.failure
+msgid "Password update failed"
+msgstr "Salasanan päivitys epäonnistui"
+
+#. =================================================================
+#. Advanced Search Page
+#. =================================================================
+#: opac.advanced.wizard.contains
+msgid "Selected field contains the following words"
+msgstr "Valittu kenttä sisältää seuraavat sanat"
+
+#: opac.advanced.wizard.nocontains
+msgid "Selected field does <u>not</u> contain the following words"
+msgstr "Valitse kenttä <u>ei</u> sisällä seuraavia sanoja"
+
+#: opac.advanced.wizard.exact
+msgid "Selected field contains the <u>exact</u> phrase"
+msgstr "Valittu kenttä sisältää <u>täsmällisen</u> lausekkeen"
+
+#: opac.advanced.refined.title
+msgid "Refined Advanced Search"
+msgstr "Monipuolinen tarkennettu haku"
+
+#: opac.advanced.refined.title_contains
+msgid "Title contains the following words"
+msgstr "Nimeke sisältää seuraavat sanat"
+
+#: opac.advanced.refined.author_contains
+msgid "Author contains the following words"
+msgstr "Tekijä sisältää seuraavat sanat"
+
+#: opac.advanced.refined.subject_contains
+msgid "Subject contains the following words"
+msgstr "Aihe sisältää seuraavat sanat"
+
+#: opac.advanced.refined.series_contains
+msgid "Series contains the following words"
+msgstr "Sarja sisältää seuraavat sanat"
+
+#: opac.advanced.refined.contains
+msgid "Contains"
+msgstr "Sisältää"
+
+#: opac.advanced.refined.nocontains
+msgid "Does not contain"
+msgstr "Ei sisällä"
+
+#: opac.advanced.refined.exact
+msgid "Matches Exactly"
+msgstr "Vastaa täsmälleen"
+
+#: opac.advanced.marc.warning
+msgid "For Librarians"
+msgstr "Kirjastovirkailijoille"
+
+#: opac.advanced.marc.title
+msgctxt "opac.advanced.marc.title"
+msgid "MARC Expert Search"
+msgstr "MARC-ammattilaishaku"
+
+#: opac.advanced.marc.tag
+msgid "MARC Tag"
+msgstr "MARC-avainsana"
+
+#: opac.advanced.marc.ind1
+msgid "Indicator 1"
+msgstr "Ilmaisin 1"
+
+#: opac.advanced.marc.ind2
+msgid "Indicator 2"
+msgstr "Ilmaisin 2"
+
+#: opac.advanced.marc.subfield
+msgid "Subfield"
+msgstr "Alakenttä"
+
+#: opac.advanced.marc.value
+msgid "Value"
+msgstr "Arvo"
+
+#: opac.advanced.marc.addrow
+msgid "Add a new row"
+msgstr "Lisää uusi rivi"
+
+#: opac.advanced.quick.title
+msgctxt "opac.advanced.quick.title"
+msgid "Quick Search"
+msgstr "Pikahaku"
+
+#: opac.advanced.quick.isbn
+msgctxt "opac.advanced.quick.isbn"
+msgid "ISBN"
+msgstr "ISBN"
+
+#: opac.advanced.quick.issn
+msgid "ISSN"
+msgstr "ISSN"
+
+#: opac.advanced.quick.lccn
+msgid "LCCN"
+msgstr "LCCN"
+
+#. title control number
+#: opac.advanced.quick.tcn
+msgid "TCN"
+msgstr "Tietuenumero"
+
+#: opac.advanced.quick.barcode
+msgid "Item Barcode"
+msgstr "Nidetunnus"
+
+#: opac.advanced.quick.cn
+msgctxt "opac.advanced.quick.cn"
+msgid "Call Number"
+msgstr "Hyllypaikka"
+
+#: opac.advanced.copy_loc_filter
+msgid "Shelving Location"
+msgstr "Hyllysijainti"
+
+#. ==========================================================
+#. MARC expert search
+#. ==========================================================
+#: search.marc
+msgctxt "search.marc"
+msgid "MARC Expert Search"
+msgstr "MARC-ammattilaishaku"
+
+#: search.marc.tag
+msgid "Tag:"
+msgstr "Avainsana:"
+
+#: search.marc.subfield
+msgid "Subfield:"
+msgstr "Alakenttä:"
+
+#: search.marc.value
+msgid "Value:"
+msgstr "Arvo:"
+
+#: search.marc.add.row
+msgid "Add Row"
+msgstr "Lisää rivi loppuun"
+
+#. ==========================================================
+#. Status bar
+#. ==========================================================
+#: status.results
+msgid "Including results for"
+msgstr "Sisältää tulokset kohteelle"
+
+#. ==========================================================
+#. Tips
+#. ==========================================================
+#: tips.label
+msgctxt "tips.label"
+msgid "Tip:"
+msgstr "Vinkki:"
+
+#. =================================================================
+#. More generic stuff
+#. =================================================================
+#: opac.session_expiring
+msgid "Your login session will timeout in 1 minute unless there is activity."
+msgstr ""
+"Sisäänkirjautumisistuntosi vanhentuu minuutin kuluttua, jos et tee mitään."
+
+#: opac.session_expired
+msgid "Your login session has expired"
+msgstr "Sisäänkirjautumisistuntosi on vanhentunut"
+
+#: navigate.home
+msgid "Home"
+msgstr "Etusivu"
+
+#: navigate.home.title
+msgid "Go to the Home page"
+msgstr "Siirry kotisivulle"
+
+#: opac.navigate.advanced
+msgctxt "opac.navigate.advanced"
+msgid "Advanced Search"
+msgstr "Monipuolinen haku"
+
+#: opac.navigate.advanced.title
+msgid "Go to the Advanced Search Page"
+msgstr "Siirry tarkennetulle hakusivulle"
+
+#: navigate.myopac
+msgctxt "navigate.myopac"
+msgid "My Account"
+msgstr "Oma tili"
+
+#: opac.navigate.myopac
+msgctxt "opac.navigate.myopac"
+msgid "My Account"
+msgstr "Oma tili"
+
+#: navigate.myopac.title
+msgid "Go to My OPAC"
+msgstr "Siirry Omaan varkkokirjastoon "
+
+#: navigate.login
+msgid "Log in"
+msgstr "Kirjaudu sisään"
+
+#: navigate.login.title
+msgid "Log in for personalized features"
+msgstr "Ota käyttöön muokatut ominaisuudet kirjautumalla sisään"
+
+#: navigate.logout
+msgctxt "navigate.logout"
+msgid "Log out"
+msgstr "Kirjaudu ulos"
+
+#: navigate.logout.title
+msgctxt "navigate.logout.title"
+msgid "Log out"
+msgstr "Kirjaudu ulos"
+
+#: opac.navigate.selectNewOrg
+msgid "Choose a different library"
+msgstr "Valitse eri kirjasto"
+
+#: opac.navigate.selectOrg
+msgctxt "opac.navigate.selectOrg"
+msgid "Choose a library to search"
+msgstr "Valitse kirjasto hakua varten"
+
+#: navigate.loggedinas
+msgid "You are logged in as "
+msgstr "Olet kirjautunut sisään nimellä"
+
+#: navigate.loggedinas.title
+msgid "Logged in as..."
+msgstr "Kirjauduttu sisään nimellä..."
+
+#: navigate.titleGroupResults
+msgid "My Search Results"
+msgstr "Omat hakutulokset"
+
+#: navigate.titleResults
+msgid "My Title Results"
+msgstr "Omat nimeketulokset"
+
+#: navigate.facetRefine
+msgid "Refine your search"
+msgstr "Muokkaa hakua"
+
+#: navigate.title.details
+msgid "My Title Details"
+msgstr "Omat nimeketiedot"
+
+#: navigate.record.details
+msgid "Record Details"
+msgstr "Tietueen tiedot"
+
+#. =================================================================
+#. Footer
+#. =================================================================
+#: footer.basic
+msgctxt "footer.basic"
+msgid "Basic Catalog (HTML only)"
+msgstr "Perustietokanta (vain HTML)"
+
+#: footer.find.library
+msgid "Find a Library Near Me"
+msgstr "Etsi lähikirjasto"
+
+#: footer.find.url
+msgid "http://www.georgialibraries.org/lib/directories/pineslibdir.html"
+msgstr "http://www.georgialibraries.org/lib/directories/pineslibdir.html"
+
+#: footer.help.url
+msgid "http://open-ils.org/dokuwiki/doku.php?id=evergreen-user:opac_help"
+msgstr "http://open-ils.org/dokuwiki/doku.php?id=evergreen-user:opac_help"
+
+#: footer.help
+msgid "Help"
+msgstr "Ohje"
+
+#: footer.library.url
+msgid "http://www.georgialibraries.org/public/pines.html"
+msgstr "http://www.georgialibraries.org/public/pines.html"
+
+#: footer.library.about
+msgid "About PINES"
+msgstr "Tietoja PINESistä"
+
+#: footer.union.url
+msgid "http://www.galileo.usg.edu/"
+msgstr "http://www.galileo.usg.edu/"
+
+#: footer.union
+msgid "GALILEO"
+msgstr "GALILEO"
+
+#: footer.copyright
+msgid "Copyright &#xA9; 2006-2012 Georgia Public Library Service, and others"
+msgstr "Copyright &#xA9; 2006-2012 Georgia Public Library Service ja muut"
+
+#. Introduces the logo for the project
+#: footer.logo
+msgid "Powered by"
+msgstr "Järjestelmää pyörittää"
+
+#. =================================================================
+#. My OPAC
+#. =================================================================
+#: myopac.account
+msgid "Account Summary"
+msgstr "Tilin yhteenveto"
+
+#: myopac.checkouts
+msgid "Items Checked Out"
+msgstr "Lainat"
+
+#: myopac.holds
+msgid "Items on Hold"
+msgstr "Varaukset"
+
+#: myopac.fines
+msgid "Fines"
+msgstr "Maksut"
+
+#: myopac.preferences
+msgid "Account Preferences"
+msgstr "Tilin asetukset"
+
+#: myopac.bookbags
+msgctxt "myopac.bookbags"
+msgid "My Bookbags"
+msgstr "Omat kirjahyllyt"
+
+#. =================================================================
+#. Sidebar
+#. =================================================================
+#: sidebar.relevantSubjects.headerLabel
+msgid "Relevant Subjects"
+msgstr "Asiaankuuluvat aiheet"
+
+#: sidebar.relevantAuthors.headerLabel
+msgid "Relevant Authors"
+msgstr "Asiaankuuluvat tekijät"
+
+#: sidebar.relevantSeries.headerLabel
+msgid "Relevant Series"
+msgstr "Asiaankuuluvat sarjat"
+
+#: sidebar.relevantReviews.headerLabel
+msgctxt "sidebar.relevantReviews.headerLabel"
+msgid "Reviews"
+msgstr "Arvostelut"
+
+#: sidebar.quick.search
+msgctxt "sidebar.quick.search"
+msgid "Quick Search"
+msgstr "Pikahaku"
+
+#: sidebar.authority.browse
+msgid "Authority Browse"
+msgstr "Auktoriteettiselaus"
+
+#: sidebar.copy.not.found
+msgid "No copy with the requested barcode was found"
+msgstr "Pyydetyllä tunnuksella ei löytynyt nidettä"
+
+#: sidebar.copy.not.cataloged
+msgid "The copy with the requested barcode is not cataloged"
+msgstr "Pyydettyyn tunnukseen liitettyä nidettä ei ole luetteloitu"
+
+#. =================================================================
+#. Search formats
+#. =================================================================
+#: opac.search.books
+msgid "Books"
+msgstr "Kirjat"
+
+#: opac.search.allFormats
+msgid "All Formats"
+msgstr "Kaikki formaatit"
+
+#: opac.search.largePrint
+msgid "Large Print Books"
+msgstr "Isotekstiset kirjat"
+
+#: opac.search.ebook
+msgid "E-Books"
+msgstr "E-kirjat"
+
+#: opac.search.audioBooks
+msgid "Audiobooks"
+msgstr "Äänikirjat"
+
+#: opac.search.videoRecordings
+msgid "Video Recordings"
+msgstr "Videotallenteet"
+
+#: opac.search.music
+msgid "Music"
+msgstr "Musiikki"
+
+#: opac.search.electronic
+msgid "Electronic Resources"
+msgstr "Elektroniset aineistot"
+
+#: opac.search.nowSearching
+msgid "Now Searching"
+msgstr "Etsitään nyt"
+
+#. =================================================================
+#. Page Titles
+#. =================================================================
+#: opac.title.home
+msgid "Evergreen Home"
+msgstr "Evergreen - Etusivu"
+
+#: opac.title.mresult
+msgid "Evergreen Title Groups"
+msgstr "Evergreen - Nimekeryhmät"
+
+#: opac.title.rresult
+msgid "Evergreen Titles"
+msgstr "Evergreen - Nimekkeet"
+
+#: opac.title.myopac
+msgid "Evergreen My Account"
+msgstr "Evergreen - Omat tiedot"
+
+#: opac.title.rdetail
+msgid "Evergreen Title Details"
+msgstr "Evergreen - Nimekkeen tiedot"
+
+#: opac.title.advanced
+msgid "Evergreen Advanced Search"
+msgstr "Evergreen - Tarkennettu haku"
+
+#: opac.title.reqitems
+msgid "Evergreen Request Items"
+msgstr "Evergreen - Hankintapyynnöt"
+
+#: opac.title.cnbrowse
+msgid "Evergreen Call Number Browse"
+msgstr "Evergreen - Hyllypaikkojen selaus"
+
+#: opac.title.authbrowse
+msgid "Evergreen Authority Record Browse"
+msgstr "Evergreen - Auktoriteettitietueiden selaus"
+
+#: opac.holds.forMe
+msgid "Place this hold for myself"
+msgstr "Tee varaus itsellesi"
+
+#: opac.holds.xulRecipient
+msgid "Enter recipient barcode"
+msgstr "Syötä vastaanottajan tunnus"
+
+#: opac.holds.recipient
+msgid "Recipient"
+msgstr "Vastaanottaja"
+
+#: opac.holds.placeHold
+msgctxt "opac.holds.placeHold"
+msgid "Place Hold"
+msgstr "Varaa"
+
+#: opac.holds.exportRefWorks
+msgctxt "opac.holds.exportRefWorks"
+msgid "Export to RefWorks"
+msgstr "Vie RefWorksiin"
+
+#: opac.holds.contactPhone
+msgid "Contact telephone number"
+msgstr "Puhelinnumero yhteydenottoon"
+
+#: opac.holds.contactEmail
+msgid "Contact email address"
+msgstr "Sähköpostiosoite yhteydenottoon"
+
+#: opac.holds.pickupLocation
+msgid "Pickup location"
+msgstr "Noutopaikka"
+
+#: opac.holds.success
+msgid "Hold was successfully placed"
+msgstr "Varaus tehtiin onnistuneesti"
+
+#: opac.holds.failure
+msgid "Hold was not successfully placed"
+msgstr "Varausta ei tehty onnistuneesti"
+
+#: opac.hold.has_parts
+msgid ""
+"The system was not able to place the requested hold.  The item requested has "
+"multiple parts to choose from.  Try selecting a specific part for the hold."
+msgstr ""
+"Järjestelmä ei pystynyt tekemään pyydettyä varausta. Valitussa niteessä on "
+"useita valittavia osia. Koita varata jokin tietty osa."
+
+#. =================================================================
+#. Advanced
+#. =================================================================
+#: advanced.search.title
+msgid "Search Input"
+msgstr "Hakusyöttö"
+
+#: advanced.add.row
+msgid "Add Search Row"
+msgstr "Lisää hakurivi"
+
+#: advanced.search.submit
+msgid "Submit Search"
+msgstr "Suorita haku"
+
+#: advanced.search.reset
+msgid "Reset Form"
+msgstr "Tyhjennä lomake"
+
+#: advanced.search.filters
+msgid "Search Filters"
+msgstr "Hakusuodattimet"
+
+#: advanced.item.form
+msgid "Item Form"
+msgstr "Teoksen muoto"
+
+#: advanced.item.type
+msgid "Item Type"
+msgstr "Aineistolaji"
+
+#: advanced.link
+msgid "Advanced"
+msgstr "Edistynyt"
+
+#: advanced.basic.link
+msgid "Basic"
+msgstr "Perus"
+
+#: advanced.literary.form
+msgid "Literary Form"
+msgstr "Kirjallisuudenlaji"
+
+#: advanced.non.fiction
+msgid "Non Fiction"
+msgstr "Tietokirjallisuus"
+
+#: advanced.fiction
+msgid "Fiction"
+msgstr "Kertomakirjallisuus"
+
+#: advanced.language
+msgid "Language"
+msgstr "Kieli"
+
+#: advanced.audience
+msgid "Audience"
+msgstr "Yleisö"
+
+#: advanced.adult
+msgid "Adult"
+msgstr "Aikuiset"
+
+#: advanced.juvenile
+msgid "Juvenile"
+msgstr "Nuoriso"
+
+#: advanced.general
+msgid "General"
+msgstr "Yleinen"
+
+#: advanced.sort.criteria
+msgid "Sort Criteria"
+msgstr "Lajitteluperuste"
+
+#: advanced.search.library
+msgid "Search Library"
+msgstr "Hakukirjasto"
+
+#: advanced.relevance
+msgid "Relevance"
+msgstr "Relevanssi"
+
+#: advanced.pubdate
+msgid "Publication date"
+msgstr "Julkaisuaika"
+
+#: advanced.sort.asc
+msgid "Ascending / A to Z"
+msgstr "Nouseva / A-Ö"
+
+#: advanced.sort.desc
+msgid "Descending / Z to A"
+msgstr "Laskeva / Ö-A"
+
+#: advanced.frbrize
+msgid "Group Formats and Editions"
+msgstr "Aineistolajiryhmät ja eri painokset"
+
+#: advanced.go
+msgid "Go"
+msgstr "Siirry"
+
+#: advanced.biblevel
+msgid "Bib Level"
+msgstr "Bibliografisen tietueen taso"
+
+#: advanced.filter.pubyear
+msgid "Publication Year"
+msgstr "Julkaisuvuosi"
+
+#: advanced.filter.pubyear.equals
+msgid "Is"
+msgstr "On"
+
+#: advanced.filter.pubyear.before
+msgid "Before"
+msgstr "Ennen"
+
+#: advanced.filter.pubyear.after
+msgid "After"
+msgstr "Jälkeen"
+
+#: advanced.filter.pubyear.between
+msgid "Between"
+msgstr "Välissä"
+
+#. =================================================================
+#. Rdetail
+#. =================================================================
+#: rdetail.print
+msgid "print these details"
+msgstr "tulosta nämä tiedot"
+
+#: rdetail.cn.part
+msgid "Part"
+msgstr "Osa"
+
+#: rdetail.cn.barcode
+msgctxt "rdetail.cn.barcode"
+msgid "Barcode"
+msgstr "Tunnus"
+
+#: rdetail.cn.location
+msgid "Location"
+msgstr "Sijainti"
+
+#: rdetail.cn.hold.age
+msgid "Age Hold Protection"
+msgstr "Varaussuoja-aika"
+
+#: rdetail.cn.genesis
+msgid "Create Date"
+msgstr "Luomispäivä"
+
+#: rdetail.cn.active
+msgid "Active Date"
+msgstr "Aktiivinen"
+
+#: rdetail.cn.holdable
+msgid "Holdable"
+msgstr "Varattavissa"
+
+#: rdetail.cn.due
+msgctxt "rdetail.cn.due"
+msgid "Due Date"
+msgstr "Eräpäivä"
+
+#: rdetail.cn.more
+msgid "more info..."
+msgstr "lisätietoja..."
+
+#: rdetail.cn.less
+msgid "less info"
+msgstr "vähemmän tietoja"
+
+#: rdetail.cn.hold
+msgid "place hold"
+msgstr "varaa"
+
+#: rdetail.cn.reserve
+msgid "book now"
+msgstr "varaa nyt"
+
+#: rdetail.cn.multi_home
+msgid "linked titles"
+msgstr "linkitetyt otsikot"
+
+#: rdetail.cn.disabled
+msgid "- Disabled -"
+msgstr "- Ei käytössä -"
+
+#: rdetail.cn.note
+msgid "Copy Note"
+msgstr "Nidehuomautus"
+
+#: rdetail.cn.category
+msgid "Copy Category"
+msgstr "Nidekategoria"
+
+#: rdetail.cn.print
+msgid "Print Page"
+msgstr "Tulosta sivu"
+
+#: rdetail.page.results
+msgid "First results page"
+msgstr "Ensimmäinen tulossivu"
+
+#. Result # &common.of; #
+#: rdetail.result
+msgid "Result"
+msgstr "Tulos"
+
+#: rdetail.start
+msgid "Start"
+msgstr "Aloitus"
+
+#: rdetail.page.previous
+msgid "Previous page"
+msgstr "Edellinen sivu"
+
+#: rdetail.page.previous.short
+msgid "&#171;"
+msgstr "&#171;"
+
+#: rdetail.page.next
+msgid "Next page"
+msgstr "Seuraava sivu"
+
+#: rdetail.page.next.short
+msgid "&#187;"
+msgstr "&#187;"
+
+#: rdetail.page.last
+msgid "Last results page"
+msgstr "Viimeinen tulossivu"
+
+#: rdetail.end
+msgid "End"
+msgstr "Loppu"
+
+#: rdetail.more
+msgid "More Actions..."
+msgstr "Lisää toimintoja..."
+
+#: rdetail.bookbag.add
+msgid "Add to bookbag"
+msgstr "Lisää kirjahyllyyn"
+
+#: rdetail.bookbag.create
+msgid "Create a new bookbag"
+msgstr "Luo uusi kirjahylly"
+
+#: rdetail.record.deleted
+msgid ""
+"This record has been deleted from the database. \n"
+"We recommend that you remove this title from any bookbags it may have been "
+"added to."
+msgstr ""
+"Tietue on poistettu tietokannasta. \n"
+"Suosittelemme, että poistat tämän nimekkeen kaikista kirjahyllyistä, joihin "
+"olet sen mahdollisesti lisännyt."
+
+#: rdetail.none
+msgid "(none)"
+msgstr "(ei mitään)"
+
+#: rdetail.bookbag.add.success
+msgid "Item successfully added to bookbag"
+msgstr "Nide lisätty onnistuneesti kirjahyllyyn"
+
+#: rdetail.bookbag.name
+msgid "Enter the name of the new bookbag"
+msgstr "Syötä uuden kirjahyllyn nimi"
+
+#: rdetail.bookbag.create.success
+msgid "Bookbag successfully created"
+msgstr "Kirjahylly luotu onnistuneesti"
+
+#: rdetail.detailMain.headerLabel
+msgid "Record Summary"
+msgstr "Tietueen yhteenveto"
+
+#: rdetail.detailMain.subjects
+msgctxt "rdetail.detailMain.subjects"
+msgid "Subjects"
+msgstr "Aiheet"
+
+#: rdetail.detailMain.abstract
+msgid "Abstract"
+msgstr "Abstrakti"
+
+#: rdetail.detailMain.viewMarc
+msgid "View MARC"
+msgstr "Näytä MARC"
+
+#: rdetail.detailMain.hideMarc
+msgid "Return to title details"
+msgstr "Palaa nimeketietoihin"
+
+#: rdetail.author.search
+msgid "Perform an author search"
+msgstr "Suorita tekijähaku"
+
+#: rdetail.copyInfo.headerLabel
+msgid "Copy Information"
+msgstr "Niteen tiedot"
+
+#: rdetail.copyInfo.library
+msgctxt "rdetail.copyInfo.library"
+msgid "Library"
+msgstr "Kirjasto"
+
+#: rdetail.copyInfo.callnumber
+msgid "Callnumber"
+msgstr "Hyllypaikka"
+
+#: rdetail.copyInfo.copylocation
+msgid "Copy Location"
+msgstr "Niteen sijanti"
+
+#: rdetail.copyInfo.local
+msgid "View Copy Information for this location only"
+msgstr "Näytä vain tämän toimipisteen nidetiedot"
+
+#: rdetail.copyInfo.all
+msgid "View copy information for all libraries"
+msgstr "Näytä kaikkien kirjastojen nidetiedot"
+
+#: rdetail.copyInfo.actions
+msgid "Actions"
+msgstr "Toiminnot"
+
+#: rdetail.copyInfo.print
+msgid "Print Call Numbers for this library"
+msgstr "Tulosta tämän kirjaston hyllypaikat"
+
+#: rdetail.copyInfo.details
+msgid "Copy Details"
+msgstr "Niteen tiedot"
+
+#: rdetail.copyInfo.browse
+msgid "Browse Call Numbers"
+msgstr "Selaa hyllypaikkoja"
+
+#: rdetail.copyInfo.hold
+msgctxt "rdetail.copyInfo.hold"
+msgid "Place Hold"
+msgstr "Varaa"
+
+#: rdetail.extras.summary
+msgid "Copy Summary"
+msgstr "Nideyhteenveto"
+
+#: rdetail.extras.browser
+msgctxt "rdetail.extras.browser"
+msgid "Shelf Browser"
+msgstr "Hyllyselaus"
+
+#: rdetail.extras.bib_summary
+msgctxt "rdetail.extras.bib_summary"
+msgid "Summary"
+msgstr "Yhteenveto"
+
+#: rdetail.extras.reviews
+msgctxt "rdetail.extras.reviews"
+msgid "Reviews"
+msgstr "Arvostelut"
+
+#: rdetail.extras.toc
+msgid "Table of Contents"
+msgstr "Sisällysluettelo"
+
+#: rdetail.extras.excerpt
+msgid "Excerpt"
+msgstr "Poiminto"
+
+#: rdetail.extras.preview
+msgid "Preview"
+msgstr "Esikatselu"
+
+#: rdetail.extras.author.notes
+msgid "Author Notes"
+msgstr "Tekijän huomautukset"
+
+#: rdetail.extras.annotation
+msgid "Annotation"
+msgstr "Kommentti"
+
+#: rdetail.extras.marc
+msgid "MARC Record"
+msgstr "MARC-tietue"
+
+#: rdetail.extras.foreign_items
+msgid "Linked Titles"
+msgstr "Linkitetyt nimekkeet"
+
+#: rdetail.extras.call.null
+msgid "There are no call numbers for this item at this location."
+msgstr "Tässä sijainnissa ei ole hyllypaikkoja tälle niteelle."
+
+#: rdetail.extras.call.local
+msgctxt "rdetail.extras.call.local"
+msgid "Local Call Numbers:"
+msgstr "Paikalliset hyllypaikat:"
+
+#: rdetail.extras.preview.fulltext
+msgid "Full text"
+msgstr "Koko teksti"
+
+#: rdetail.extras.preview.title
+msgid "See the full text of this book."
+msgstr "Katso tämän kirjan koko teksti."
+
+#: rdetail.extras.preview.badge
+msgid "Show a preview of this book from Google Book Search"
+msgstr "Näytä tämän kirjan esikatselu Google Book -haussa"
+
+#: rdetail.extras.novelist
+msgid "Suggestions by NoveList"
+msgstr "NoveListin suositukset"
+
+#: rdetail.loading
+msgid "Loading copy information..."
+msgstr "Ladataan nidetietoja..."
+
+#: rdetail.noneAvailable
+msgid " * There are no copies in this location"
+msgstr "* Tässä sijainnissa ei ole niteitä"
+
+#: rdetail.summary.online
+msgid "Online Resources"
+msgstr "Online-aineistot"
+
+#: rdetail.summary.subjects
+msgctxt "rdetail.summary.subjects"
+msgid "Subjects"
+msgstr "Aiheet"
+
+#: rdetail.summary.issues_held
+msgid "Issues Held"
+msgstr "Varatut numerot"
+
+#: result.sort_by
+msgid "Sort Results by Relevance"
+msgstr "Lajittele tulokset relevanssin mukaan"
+
+#: result.sort_by.title
+msgid "Sort Results by Title"
+msgstr "Lajittele tulokset nimekkeen mukaan"
+
+#: result.sort_by.author
+msgid "Sort Results by Author"
+msgstr "Lajittele tulokset tekijän mukaan"
+
+#: result.sort_by.pubdate
+msgid "Sort Results by Publication Date"
+msgstr "Lajittele tulokset julkaisupäivän mukaan"
+
+#: result.limit2avail
+msgid "Limit to Available"
+msgstr "Rajoita saatavilla oleviin"
+
+#: result.info.copies
+msgid "Available copies / Total copies"
+msgstr "Saatavilla olevat niteet / Niteitä yhteensä"
+
+#: result.info.no.items
+msgid "No items with the selected format were found in this location."
+msgstr "Halutun aineistolajin niteitä ei löytynyt valitusta toimipisteestä."
+
+#: result.info.format.items
+msgid "Listed below are all items in the catalog with the chosen format."
+msgstr ""
+"Alla on listattu kaikki tietokannassa olevat halutun aineistolajin niteet."
+
+#: result.info.show
+msgid "Show records for"
+msgstr "Näytä tietueet kohteelle"
+
+#: result.lowhits.few
+msgid "Few hits were returned for your search."
+msgstr "Hakusi tuotti vain vähän osumia."
+
+#: result.lowhits.zero
+msgid "Zero hits were returned for your search."
+msgstr "Hakuasi vastaavia tuloksia ei löytynyt."
+
+#: result.lowhits.did.you.mean
+msgid "Maybe you meant:"
+msgstr "Ehkä tarkoitit:"
+
+#: result.lowhits.formats
+msgid "You will find more hits when searching all item formats:"
+msgstr "Saat enemmän osumia, kun haet kaikilla aineistolajeilla:"
+
+#: result.lowhits.formats.search
+msgid "Search again with all formats?"
+msgstr "Etsitäänkö uudelleen kaikista aineistolajeista?"
+
+#: result.lowhits.related
+msgid "You may also like to try these related searches:"
+msgstr "Voit myös yrittää näitä aiheeseen liittyviä hakuja:"
+
+#: result.lowhits.expand
+msgid "You may also wish to expand your search range to:"
+msgstr "Voit haluta laajentaa hakualuettasi kohteeseen:"
+
+#: result.lowhits.class
+msgid "You can try searching the same terms by:"
+msgstr "Voit yrittää etsiä samoja termejä kohteesta:"
+
+#: result.lowhits.title
+msgid "title"
+msgstr "nimike"
+
+#: result.lowhits.author
+msgid "author"
+msgstr "tekijä"
+
+#: result.lowhits.subject
+msgid "subject"
+msgstr "aihe"
+
+#: result.lowhits.series
+msgid "series"
+msgstr "sarja"
+
+#: result.lowhits.keyword
+msgid "keyword"
+msgstr "avainsana"
+
+#: result.table.keyword
+msgid "View titles for this record"
+msgstr "Näytä tämän tietueen nimekkeet"
+
+#: result.table.author
+msgid "Perform an Author Search"
+msgstr "Suorita tekijähaku"
+
+#: result.googleBooks.browse
+msgid "Browse in Google Books Search"
+msgstr "Selaa Google Books -haussa"
+
+#: result.localCallNumbers
+msgctxt "result.localCallNumbers"
+msgid "Local Call Numbers:"
+msgstr "Paikalliset hyllypaikat:"
+
+#: common.call.number.label
+msgid "Call Number:"
+msgstr "Hyllypaikka:"
+
+#: common.isbn.label
+msgid "ISBN:"
+msgstr "ISBN:"
+
+#: common.issn.label
+msgid "ISSN:"
+msgstr "ISSN:"
+
+#: common.mono_parts.label
+msgid "Monograph Parts:"
+msgstr "Monografian osat:"
+
+#: common.copy.barcode.label
+msgid "Copy Barcode:"
+msgstr "Nidetunnus:"
+
+#: common.issuance_label.label
+msgid "Issuance Label:"
+msgstr "Numeroinnin nimike:"
+
+#: common.hold.place
+msgid "Place hold for my account"
+msgstr "Tee varaus omalle tilille"
+
+#: common.hold.check
+msgid "Checking for possibility of hold fulfillment..."
+msgstr "Tarkistetaan varauksen täyttämismahdollisuutta..."
+
+#: common.hold.create
+msgid "Create / Edit a Hold"
+msgstr "Luo / muokkaa varausta"
+
+#: common.hold.update
+msgid "Update Hold"
+msgstr "Päivitä varaus"
+
+#: common.hold.type.label
+msgid "Hold Type:"
+msgstr "Varauksen tyyppi:"
+
+#: common.hold.volume
+msgid "Volume Hold"
+msgstr "Nimekevaraus"
+
+#: common.hold.copy
+msgid "Copy Hold"
+msgstr "Niteen varaus"
+
+#: common.hold.issuance
+msgid "Issuance Hold"
+msgstr "Numerointivaraus"
+
+#: common.hold.advanced
+msgid "Advanced Hold Options"
+msgstr "Tarkennetut varaustoiminnot"
+
+#: common.hold.delivery
+msgid "Please select a physical location where your hold can be delivered."
+msgstr "Valitse kirjasto, johon varauksesi voidaan kuljettaa."
+
+#: common.hold.checked_out
+msgid "This item is already checked out."
+msgstr "Nide on jo lainattu."
+
+#: common.hold.checked_out.override
+msgid ""
+"This item is already checked out.  Would you like to place the hold anyway?"
+msgstr "Nide on jo lainattu. Haluatko tehdä varauksen tästä huolimatta?"
+
+#: common.hold.exists
+msgid "A hold already exists on the requested item."
+msgstr "Pyydetystä niteestä on jo varaus."
+
+#: common.hold.exists.override
+msgid ""
+"A hold already exists on the requested item. Would you like to create the "
+"hold anyway?"
+msgstr "Pyydetystä niteestä on jo varaus. Haluatko varata tästä huolimatta?"
+
+#: common.hold.age_protect.override
+msgid ""
+"This hold may take extra time to fill due to library policies. Would you "
+"like to create the hold anyway?"
+msgstr ""
+"Tämän varauksen täyttämiseen saattaa kulua aikaa kirjastosäännöistä johtuen. "
+"Haluatko tehdä varauksen tästä huolimatta?"
+
+#: common.hold.place_unfillable.override
+msgid ""
+"The requested hold cannot currently be filled. You have permission to place "
+"the hold regardless, but should only do so if you believe the hold will "
+"eventually be filled. Would you like to create the hold anyway?"
+msgstr ""
+"Pyydettyä varausta ei voida täyttää tällä hetkellä. Sinulla on tästä "
+"huolimatta oikeus tehdä varaus, mutta sinun kannattaa toimia näin "
+"ainoastaan, jos uskot, että varaus täytetään ennen pitkää. Haluatko kaikesta "
+"huolimatta tehdä varauksen?"
+
+#: common.hold.barred
+msgid ""
+"PATRON BARRED. Please see any notes in the \n"
+"\"Staff Notes\" section of your \"My Account\" page or contact your local "
+"library."
+msgstr ""
+"ASIAKAS SULJETTU POIS. Katso huomautukset \"Omat tiedot\"-sivun osiosta \n"
+"\"Henkilökunnan huomautukset\" tai ota yhteyttä kirjastoosi."
+
+#: common.hold.item.invalid
+msgid ""
+"This hold is no longer valid. It's likely that the \n"
+"target for the hold was deleted from the system.  Please cancel this hold "
+"and \n"
+"place a new one."
+msgstr ""
+"Varaus ei enää ole voimassa. On todennäköistä, että \n"
+"varauksen kohde on poistettu järjestelmästä. Peru tämä varaus ja\n"
+"tee uusi."
+
+#: common.hold.patron.invalid
+msgid "The patron barcode entered as the hold recipient is invalid."
+msgstr "Varauksen vastaanottajaksi määritetty asiakastunnus on virheellinen."
+
+#. Was (??), perhaps change to a button or icon?
+#: common.help
+msgid "(Help)"
+msgstr "(Ohje)"
+
+#: common.phone.format.help
+msgid ""
+"The phone number does not have the correct format. The expected format is "
+"XXX-YYY-ZZZZ"
+msgstr "Puhelinnumero ei ole oikeassa muodossa. Oletettu muoto on XXX-YYY-ZZZZ."
+
+#: common.hold.failed
+msgid ""
+"No items were found that could fulfill the requested holds. \n"
+"It's possible that choosing a different format will result in a successful "
+"hold. \n"
+"It is also possible that you have exceeded the number of allowable holds. \n"
+"For further information, please consult your local librarian."
+msgstr ""
+"Varauksiin sopivia niteitä ei löytynyt. \n"
+"On mahdollista, että varaus onnistuu valitsemalla eri aineistolaji. \n"
+"On myös mahdollista, että olet ylittänyt sallittujen varausten "
+"enimmäismäärän. \n"
+"Lisätietoja saat kirjastovirkailijalta."
+
+#: common.control.click
+msgid "(control-click to select multiple formats)"
+msgstr "(valitse useita muotoja: control-napsautus)"
+
+#: common.format.alternatives
+msgid "Acceptable Alternative Formats:"
+msgstr "Hyväksyttävät vaihtoehtoiset aineistolajit:"
+
+#: common.phone.format
+msgid "(XXX-YYY-ZZZZ)"
+msgstr "(XXX-YYY-ZZZZ)"
+
+#: common.phone.enable
+msgid "Enable phone notifications for this hold?"
+msgstr "Otetaanko puhelinilmoitukset käyttöön tälle varaukselle?"
+
+#: common.email.enable
+msgid "Enable email notifications for this hold?"
+msgstr "Otetaanko sähköposti-ilmoitukset käyttöön tälle varaukselle?"
+
+#: common.email.none
+msgid "(Patron has no configured email address)"
+msgstr "(Asiakkaalle ei ole määritetty sähköpostiosoitetta)"
+
+#: common.email.set
+msgid ""
+"(See <a class='classic_link' id='holds.no_email.my_account'>My Account</a> "
+"for setting your email address)"
+msgstr ""
+"(Katso <a class='classic_link' id='holds.no_email.my_account'>Oma tili</a>, "
+"jossa voit määrittää sähköpostiosoitteesi)"
+
+#: common.keywords.label
+msgid "Keywords:"
+msgstr "Avainsanat:"
+
+#: common.physical.label
+msgid "Physical Description:"
+msgstr "Fyysinen kuvaus:"
+
+#: common.series.label
+msgid "Series:"
+msgstr "Sarja:"
+
+#: common.subject.label
+msgid "Subject:"
+msgstr "Aihe:"
+
+#: common.title.label
+msgid "Title:"
+msgstr "Nimeke:"
+
+#: common.author.label
+msgid "Author:"
+msgstr "Tekijä:"
+
+#: common.format.label
+msgid "Format:"
+msgstr "Aineistolaji:"
+
+#: library.select
+msgid "Find results in"
+msgstr "Hae tulokset kohteessa"
+
+#: library.select.label
+msgid "Choose a different library..."
+msgstr "Valitse eri kirjasto..."
+
+#: library.select.help
+msgctxt "library.select.help"
+msgid "Choose a library to search"
+msgstr "Valitse etsittävä kirjasto"
+
+#: login.username
+msgid "Enter your username or library barcode"
+msgstr "Syötä käyttäjänimesi tai asiakastunnus"
+
+#: login.password.change
+msgid "Change Password"
+msgstr "Vaihda salasana"
+
+#: login.first.time
+msgid ""
+"This appears to be the first time you have logged in. \n"
+"You will need to change your password."
+msgstr ""
+"Tämä näyttää olevan ensimmäinen kerta, kun kirjaudut sisään. \n"
+"Sinun on vaihdettava salasanasi."
+
+#: login.password.current.enter
+msgid "Enter your current password"
+msgstr "Syötä nykyinen salasanasi"
+
+#: login.password.new.enter
+msgid "Enter the new password"
+msgstr "Syötä uusi salasana"
+
+#: login.password.new.reenter
+msgid "Re-type the new password for verification"
+msgstr "Syötä uusi salasana uudelleen varmennusta varten"
+
+#: login.password.update
+msgid "Update Password"
+msgstr "Päivitä salasana"
+
+#: login.password.nomatch
+msgid "Passwords do not match"
+msgstr "Salasanat eivät vastaa toisiaan"
+
+#: login.password.success
+msgctxt "login.password.success"
+msgid "Password successfully updated"
+msgstr "Salasana päivitetty onnistuneesti"
+
+#: login.password.strength
+msgid "The password provided is not strong enough."
+msgstr "Salasana ei ole tarpeeksi vahva."
+
+#: login.barcode.inactive
+msgid ""
+"The barcode used to login is marked as inactive.  Please contact your local "
+"library."
+msgstr ""
+"Sisäänkirjautumiseen käytetty asiakastunnus on merkitty ei-aktiiviseksi. Ota "
+"yhteyttä kirjastoosi."
+
+#: login.account.inactive
+msgid "This account has been deactivated.  Please contact your local library."
+msgstr "Tili on otettu pois käytöstä. Ota yhteyttä kirjastoosi."
+
+#: login.failed
+msgid ""
+"Login failed. The username or password provided was not valid. \n"
+"Ensure Caps-Lock is off and try again or contact your local library."
+msgstr ""
+"Sisäänkirjautuminen epäonnistui. Käyttäjänimi tai salasana ei kelpaa. \n"
+"Varmista, että Caps-Lock-näppäimesi on pois käytöstä ja yritä uudelleen tai "
+"ota yhteyttä kirjastoosi."
+
+#: button.go
+msgid "Go!"
+msgstr "Siirry!"
+
+#. =================================================================
+#. Slimpac Simple Search
+#. =================================================================
+#: slimpac.language.select
+msgid "Select language"
+msgstr "Valitse kieli"
+
+#: slimpac.start.title
+msgid "Simple Search"
+msgstr "Yksinkertainen haku"
+
+#: slimpac.start.nowSearching
+msgid "Now searching: "
+msgstr "Etsitään nyt: "
+
+#: slimpac.start.dynamic
+msgid "Dynamic Catalog"
+msgstr "Dynaaminen tietokanta"
+
+#. =================================================================
+#. Slimpac Advanced Search
+#. =================================================================
+#: slimpac.advanced.language
+msgid "Item Language"
+msgstr "Aineiston kieli"
+
+#: slimpac.advanced.create_date
+msgid "Record Creation Date"
+msgstr "Tietueen luomispäivä"
+
+#: slimpac.advanced.edit_date
+msgid "Record Edit Date"
+msgstr "Tietueen muokkauspäivä"
+
+#: opac.image_provided
+msgid "Image provided by"
+msgstr "Kuvan toimittaja:"
+
+#: vendor.name
+msgid "Amazon"
+msgstr "Amazon"
+
+#: vendor.base_link
+msgid "http://amazon.com/dp/"
+msgstr "http://amazon.com/dp/"
+
+#. =================================================================
+#. Selfcheck
+#. =================================================================
+#: selfck.staff_login_label
+msgid "Staff login"
+msgstr "Henkilökunnan sisäänkirjautuminen"
+
+#: selfck.staff_login
+msgid "Library barcode or username"
+msgstr "Asiakastunnus tai käyttäjänimi"
+
+#: selfck.staff_pw
+msgctxt "selfck.staff_pw"
+msgid "Password"
+msgstr "Salasana"
+
+#: selfck.submit
+msgctxt "selfck.submit"
+msgid "Submit"
+msgstr "Lähetä"
+
+#: selfck.clear
+msgid "Clear"
+msgstr "Tyhjennä"
+
+#: selfck.patron_barcode_label
+msgid "Please scan your library barcode"
+msgstr "Lue asiakastunnuksesi"
+
+#: selfck.item_barcode_label
+msgid "Please scan an item to checkout or renew:"
+msgstr "Lue nide lainausta tai uusintaa varten:"
+
+#: selfck.barcode
+msgctxt "selfck.barcode"
+msgid "Barcode"
+msgstr "Asiakastunnus"
+
+#: selfck.title
+msgctxt "selfck.title"
+msgid "Title"
+msgstr "Nimeke"
+
+#: selfck.author
+msgctxt "selfck.author"
+msgid "Author"
+msgstr "Tekijä"
+
+#: selfck.due_date
+msgctxt "selfck.due_date"
+msgid "Due Date"
+msgstr "Eräpäivä"
+
+#: selfck.remaining
+msgctxt "selfck.remaining"
+msgid "Renewals Remaining"
+msgstr "Uusintoja jäljellä"
+
+#: selfck.cotype
+msgid "Type"
+msgstr "Tyyppi"
+
+#: selfck.cotype_co
+msgid "Checkout"
+msgstr "Lainaa"
+
+#: selfck.cotype_rn
+msgid "Renewal"
+msgstr "Uusinta"
+
+#: selfck.done
+msgid "Done"
+msgstr "Valmis"
+
+#: selfck.welcome
+msgid "Welcome"
+msgstr "Tervetuloa"
+
+#: selfck.printing
+msgid "Printing Receipt..."
+msgstr "Tulostetaan kuittia..."
+
+#. event messages
+#: selfck.event.co_success
+msgid "Check out succeeded"
+msgstr "Lainaus onnistui"
+
+#: selfck.event.co_unknown
+msgid "An unknown event has occurred"
+msgstr "Järjestelmässä ilmeni tuntematon tapahtuma"
+
+#: selfck.event.dupe_barcode
+msgid "This item has already been checked out during this session"
+msgstr "Nide on jo lainattu tämän istunnon aikana"
+
+#: selfck.event.patron_not_found
+msgid "The patron barcode was not found"
+msgstr "Asiakastunnusta ei löytynyt."
+
+#: selfck.event.item_noncat
+msgid "The requested item is not in the catalog"
+msgstr "Nidettä ei löydy tietokannasta"
+
+#: selfck.event.item_nocirc
+msgid "The requested item is not allowed to circulate"
+msgstr "Nidettä ei lainata"
+
+#: selfck.event.already_out
+msgid "The requested item is already checked out to another patron"
+msgstr "Nide on jo lainattu toiselle asiakkaalle"
+
+#: selfck.items_out
+msgid "You checked out the following items"
+msgstr "Olet lainannut seuraavat niteet"
+
+#: selfck.org_hours
+msgid "Hours of Operation"
+msgstr "Aukioloajat"
+
+#: selfck.org_phone
+msgid "Library Phone Number"
+msgstr "Kirjaston puhelinnumero"
+
+#: selfck.day0
+msgid "Monday"
+msgstr "Maanantai"
+
+#: selfck.day1
+msgid "Tuesday"
+msgstr "Tiistai"
+
+#: selfck.day2
+msgid "Wednesday"
+msgstr "Keskiviikko"
+
+#: selfck.day3
+msgid "Thursday"
+msgstr "Torstai"
+
+#: selfck.day4
+msgid "Friday"
+msgstr "Perjantai"
+
+#: selfck.day5
+msgid "Saturday"
+msgstr "Lauantai"
+
+#: selfck.day6
+msgid "Sunday"
+msgstr "Sunnuntai"
+
+#: circ.fail_part.actor.usr.barred
+msgid "The patron is barred"
+msgstr "Asiakas on suljettu pois"
+
+#: circ.fail_part.asset.copy.circulate
+msgid "The item does not circulate"
+msgstr "Nidettä ei lainata"
+
+#: circ.fail_part.asset.copy_location.circulate
+msgid "Items from this shelving location do not circulate"
+msgstr "Tämän hyllytyssijainnin niteitä ei lainata"
+
+#: circ.fail_part.asset.copy.status
+msgid "The item cannot circulate at this time"
+msgstr "Nidettä ei voida tällä hetkellä lainata"
+
+#: circ.fail_part.circ.holds.target_skip_me
+msgid "The item's circulation library does not fulfill holds"
+msgstr "Niteen kotiosaston aineistoa ei voi varata"
+
+#: circ.fail_part.config.circ_matrix_circ_mod_test
+msgid "The patron has too many items of this type checked out"
+msgstr "Asiakkaalla on liikaa tämän aineistolajin lainoja."
+
+#: circ.fail_part.config.circ_matrix_test.available_copy_hold_ratio
+msgid "The available item-to-hold ratio is too low"
+msgstr "Saatavilla olevat niteet / varaukset -suhde on liian alhainen"
+
+#: circ.fail_part.config.circ_matrix_test.circulate
+msgid "Circulation rules reject this item as non-circulatable"
+msgstr "Lainaussäännöissä tämä nide on määritetty ei-lainattavaksi"
+
+#: circ.fail_part.config.circ_matrix_test.total_copy_hold_ratio
+msgid "The total item-to-hold ratio is too low"
+msgstr "Niteet/varaukset-kokonaissuhde on liian alhainen"
+
+#: circ.fail_part.config.hold_matrix_test.holdable
+msgid "Hold rules reject this item as unholdable"
+msgstr "Varaussäännöissä tämä nide on määritetty ei-varattavaksi"
+
+#: circ.fail_part.config.hold_matrix_test.max_holds
+msgid "The patron has reached the maximum number of holds"
+msgstr "Asiakkaalla on enimmäismäärä varauksia."
+
+#: circ.fail_part.config.rule_age_hold_protect.prox
+msgid "The item is too new to transit this far"
+msgstr "Nide on liian uusi kuljetettavaksi näin kauas"
+
+#: circ.fail_part.no_item
+msgid "The system could not find this item"
+msgstr "Järjestelmä ei löytänyt nidettä"
+
+#: circ.fail_part.no_ultimate_items
+msgid "The system could not find any items to match this hold request"
+msgstr "Järjestelmä ei löytänyt niteitä, jotka sopisivat tähän varauspyyntöön"
+
+#: circ.fail_part.no_matchpoint
+msgid "System rules do not define how to handle this item"
+msgstr ""
+"Järjestelmäsäännöissä ei määritellä, kuinka tätä nidettä tulisi käsitellä"
+
+#: circ.fail_part.no_user
+msgid "The system could not find this patron"
+msgstr "Järjestelmä ei löytänyt asiakasta"
+
+#: circ.fail_part.transit_range
+msgid "The item cannot transit this far"
+msgstr "Nidettä ei voida kuljettaa näin kauas"

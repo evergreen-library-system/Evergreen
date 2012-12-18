@@ -1,0 +1,1987 @@
+# extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/patron.properties
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-29 09:00+0300\n"
+"PO-Revision-Date: 2012-09-19 15:01+0300\n"
+"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"Language-Team: Finnish <evergreen@jns.fi>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Translate Toolkit 1.9.0\n"
+"X-Accelerator-Marker: &\n"
+"X-Project-Style: mozilla\n"
+
+#: staff.patron.barcode_entry.user_permission_editor
+msgid "User Permission Editor"
+msgstr "Käyttäjäoikeuksien muokkaustyökalu"
+
+#: staff.patron.barcode_entry.check_out
+msgid "Check Out"
+msgstr "Lainaa"
+
+#: staff.patron.barcode_entry.no_barcode
+msgid "No barcode entered."
+msgstr "Asiakastunnusta ei syötetty."
+
+#: staff.patron.barcode_entry.barcode_retrieval_problem
+msgid ""
+"Problem retrieving %1$s.  Please report this message: \n"
+"%2$s"
+msgstr ""
+"Kohteen %1$s haussa ilmeni ongelma. Ilmoita tästä viestistä: \n"
+"%2$s"
+
+#: staff.patron.barcode_entry.barcode_not_found
+msgid "Barcode %1$s not found."
+msgstr "Asiakastunnusta %1$s ei löytynyt."
+
+#: staff.patron.barcode_entry.consent_from_patron
+msgid ""
+"Does patron %1$s, %2$s from %3$s (%4$s) consent to having their personal "
+"information shared with your library?"
+msgstr ""
+"Hyväksyykö asiakas %1$s, %2$s kohteesta %3$s (%4$s), että heidän "
+"henkilökohtaiset tietonsa jaetaan kirjastosi kanssa?"
+
+#: staff.patron.barcode_entry.patron_consent_title
+msgid "Patron/Library Opt-In Confirmation"
+msgstr "Asiakkaan/kirjaston hyväksyntävahvistus"
+
+#: staff.patron.barcode_entry.patron_consent_accept
+msgid "Accept"
+msgstr "Hyväksy"
+
+#: staff.patron.barcode_entry.patron_consent_deny
+msgid "Deny"
+msgstr "Hylkää"
+
+#: staff.patron.barcode_entry.patron_consent_confirm
+msgctxt "staff.patron.barcode_entry.patron_consent_confirm"
+msgid "Check here to confirm this message"
+msgstr "Vahvista viesti valitsemalla tämä"
+
+#: staff.patron.barcode_entry.patron_display_error
+msgid "spawning patron display"
+msgstr "alustetaan asiakasnäkymää"
+
+#: staff.patron.barcode_entry.user_perm_display_error
+msgid "spawning user perm editor"
+msgstr "alustetaan käyttäjäoikeuksien muokkaustyökalua"
+
+#: staff.patron.bill_interface.payment_pending.column_header
+msgid "Payment Pending"
+msgstr "Maksu vireillä"
+
+#: staff.patron.bill_cc_info.need_cc_number
+msgid "You must provide a credit card number"
+msgstr "Sinun on syötettävä luottokortin numero"
+
+#: staff.patron.bill_cc_info.need_approval_code
+msgid "You must provide an approval code or an imprint slip number"
+msgstr "Sinun on syötettävä hyväksymiskoodi tai julkaisutietonumero"
+
+#: staff.patron.bill_details.my_init.error
+msgid "bill_details.xul, my_init:"
+msgstr "bill_details.xul, my_init:"
+
+#: staff.patron.bill_details.handle_edit_bill_note.note_dialog.title
+msgctxt "staff.patron.bill_details.handle_edit_bill_note.note_dialog.title"
+msgid "Replacement Note"
+msgstr "Korvaushuomautus"
+
+#: staff.patron.bill_details.handle_edit_bill_note.note_dialog.prompt
+msgctxt "staff.patron.bill_details.handle_edit_bill_note.note_dialog.prompt"
+msgid "Enter new note:"
+msgstr "Syötä uusi huomautus:"
+
+#: staff.patron.bill_details.handle_edit_bill_note.failure
+msgid "Note for selected bills not likely updated."
+msgstr "Valittujen maksujen huomautusta ei luultavasti päivitetty."
+
+#: staff.patron.bill_details.handle_edit_payment_note.note_dialog.title
+msgctxt "staff.patron.bill_details.handle_edit_payment_note.note_dialog.title"
+msgid "Replacement Note"
+msgstr "Korvaushuomautus"
+
+#: staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt
+msgctxt "staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt"
+msgid "Enter new note:"
+msgstr "Syötä uusi huomautus:"
+
+#: staff.patron.bill_details.handle_edit_payment_note.failure
+msgid "Note for selected payments not likely updated."
+msgstr "Valittujen maksujen huomautusta ei luultavasti päivitetty."
+
+#: staff.patron.bill_details.handle_void.voided_billings.alert
+msgid "All selected billings have already voided."
+msgstr "Kaikki valitut maksut on jo mitätöity."
+
+#: staff.patron.bill_details.handle_void.confirm_void_billing
+msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing"
+msgid "Are you sure you would like to void $%1$s worth of line-item billings?"
+msgstr "Haluatko varmasti mitätöidä %1$s € arvosta maksuja?"
+
+#: staff.patron.bill_details.handle_void.confirm_void_billing_title
+msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing_title"
+msgid "Voiding Bills"
+msgstr "Maksujen mitätöinti"
+
+#: staff.patron.bill_details.handle_void.confirm_void_billing_yes
+msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing_yes"
+msgid "Yes"
+msgstr "Kyllä"
+
+#: staff.patron.bill_details.handle_void.confirm_void_billing_no
+msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing_no"
+msgid "No"
+msgstr "Ei"
+
+#: staff.patron.bill_details.handle_void.confirm_void_billing_confirm_message
+msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing_confirm_message"
+msgid "Check here to confirm this message"
+msgstr "Vahvista viesti valitsemalla tämä"
+
+#: staff.patron.bill_details.handle_void.voiding_error
+msgctxt "staff.patron.bill_details.handle_void.voiding_error"
+msgid "Error voiding bills."
+msgstr "Virhe maksujen mitätöinnissä."
+
+#: staff.patron.bill_history.retrieve_mbts_for_list.close_win_try_again
+msgid "Please close this window and try again."
+msgstr "Sulje ikkuna ja yritä uudelleen."
+
+#: staff.patron.bill_history.my_init.current_bills
+msgid "Current Bills"
+msgstr "Nykyiset maksut"
+
+#: staff.patron.bill_history.my_init.bill_history
+msgid "Bill History"
+msgstr "Maksuhistoria"
+
+#: staff.patron.bill_history.handle_add.message_plural
+msgid "Are you sure you would like to add a billing to bills %1$s?"
+msgstr "Haluatko varmasti lisätä maksun maksuihin %1$s?"
+
+#: staff.patron.bill_history.handle_add.message_singular
+msgid "Are you sure you would like to add a billing to bill %1$s?"
+msgstr "Haluatko varmasti lisätä maksun maksuun %1$s?"
+
+#: staff.patron.bill_history.handle_add.title
+msgid "Bill Patron"
+msgstr "Lisää maksu"
+
+#: staff.patron.bill_history.handle_add.btn_yes
+msgctxt "staff.patron.bill_history.handle_add.btn_yes"
+msgid "Yes"
+msgstr "Kyllä"
+
+#: staff.patron.bill_history.handle_add.btn_no
+msgctxt "staff.patron.bill_history.handle_add.btn_no"
+msgid "No"
+msgstr "Ei"
+
+#: staff.patron.bill_history.handle_add.confirm_message
+msgctxt "staff.patron.bill_history.handle_add.confirm_message"
+msgid "Check here to confirm this message"
+msgstr "Vahvista viesti valitsemalla tämä"
+
+#: staff.patron.bill_history.handle_void.message_plural
+msgid "Are you sure you would like to void all billings on bills %1$s?"
+msgstr "Haluatko varmasti mitätöidä kaikki maksut maksuissa %1$s?"
+
+#: staff.patron.bill_history.handle_void.message_singular
+msgid "Are you sure you would like to void all billings on bill %1$s?"
+msgstr "Haluatko varmasti mitätöidä kaikki maksut maksussa %1$s?"
+
+#: staff.patron.bill_history.handle_void.title
+msgctxt "staff.patron.bill_history.handle_void.title"
+msgid "Void All Billings"
+msgstr "Mitätöi kaikki maksut"
+
+#: staff.patron.bill_history.handle_void.btn_yes
+msgctxt "staff.patron.bill_history.handle_void.btn_yes"
+msgid "Yes"
+msgstr "Kyllä"
+
+#: staff.patron.bill_history.handle_void.btn_no
+msgctxt "staff.patron.bill_history.handle_void.btn_no"
+msgid "No"
+msgstr "Ei"
+
+#: staff.patron.bill_history.handle_void.confirm_message
+msgctxt "staff.patron.bill_history.handle_void.confirm_message"
+msgid "Check here to confirm this message"
+msgstr "Vahvista viesti valitsemalla tämä"
+
+#: staff.patron.bills.handle_refund.message_plural
+msgid ""
+"Are you sure you would like to refund excess payment on bills %1$s?  This "
+"action will simply put the amount in the Payment Pending column as a "
+"negative value.  You must still select Apply Payment!  Certain types of "
+"payments may not be refunded.  The refund may be applied to checked "
+"transactions that follow the refunded transaction."
+msgstr ""
+"Haluatko varmasti hyvittää liiallisesti maksetun osuuden maksuissa %1$s? "
+"Toiminto siirtää osuuden Maksu vireillä -sarakkeeseen negatiivisena summana. "
+"Sinun on silti valittava Ota maksu käyttöön! Joitakin maksutyyppejä ei "
+"voida hyvittää. Hyvitystä voidaan soveltaa tarkistettuihin maksutapahtumiin, "
+"jotka seuraavat hyvitettyä maksutapahtumaa."
+
+#: staff.patron.bills.handle_refund.message_singular
+msgid ""
+"Are you sure you would like to refund excess payment on bill %1$s?  This "
+"action will simply put the amount in the Payment Pending column as a "
+"negative value.  You must still select Apply Payment!  Certain types of "
+"payments may not be refunded.  The refund may be applied to checked "
+"transactions that follow the refunded transaction."
+msgstr ""
+"Haluatko varmasti hyvittää liiallisesti maksetun osuuden maksussa %1$s? "
+"Toiminto siirtää osuuden Maksu vireillä -sarakkeeseen negatiivisena summana. "
+"Sinun on silti valittava Ota maksu käyttöön! Joitakin maksutyyppejä ei "
+"voida hyvittää. Hyvitystä voidaan soveltaa tarkistettuihin maksutapahtumiin, "
+"jotka seuraavat hyvitettyä maksutapahtumaa."
+
+#: staff.patron.bills.handle_refund.title
+msgid "Refund Excess Payment"
+msgstr "Hyvitä liiallisesti maksettu osuus"
+
+#: staff.patron.bills.handle_refund.btn_yes
+msgctxt "staff.patron.bills.handle_refund.btn_yes"
+msgid "Yes"
+msgstr "Kyllä"
+
+#: staff.patron.bills.handle_refund.btn_no
+msgctxt "staff.patron.bills.handle_refund.btn_no"
+msgid "No"
+msgstr "Ei"
+
+#: staff.patron.bills.handle_refund.confirm_message
+msgctxt "staff.patron.bills.handle_refund.confirm_message"
+msgid "Check here to confirm this message"
+msgstr "Vahvista viesti valitsemalla tämä"
+
+#: staff.patron.bill_history.print_bills.print_error
+msgid "printing bills"
+msgstr "tulostetaan maksuja"
+
+#: staff.patron.bill_history.column.xact_type.label
+msgid "Transaction Type"
+msgstr "Maksutapahtuman tyyppi"
+
+#: staff.patron.bill_history.column.last_billing_type.label
+msgid "Last Billing Type"
+msgstr "Viimeisimmän maksun tyyppi"
+
+#: staff.patron.bill_history.column.title.label
+msgctxt "staff.patron.bill_history.column.title.label"
+msgid "Title"
+msgstr "Nimeke"
+
+#: staff.patron.bills.init_controller.money_summary_label
+msgid "Money Summary"
+msgstr "Rahojen yhteenveto"
+
+#: staff.patron.bills.bill_payment_amount.credit_amount
+msgid "Patron only has %1$s in credit."
+msgstr "Asiakkaalla on vain %1$s luottoa."
+
+#: staff.patron.bills.bill_change_amount.greedy
+msgid "Someone wanted more money than they deserved"
+msgstr "Joku halusi enemmän rahaa kuin olisi ansainnut"
+
+#: staff.patron.bills.apply_payment.nothing_applied
+msgid "No payments or patron credit applied."
+msgstr "Maksuja tai asiakasluottoa ei otettu käyttöön."
+
+#: staff.patron.bills.pay.annotate_payment
+msgid "Please annotate this payment:"
+msgstr "Lisää merkintä tähän maksuun:"
+
+#: staff.patron.bills.pay.annotate_payment.title
+msgid "Annotate Payment"
+msgstr "Merkitse maksu"
+
+#: staff.patron.bills.pay.refund_exceeds_desk_payment
+msgid ""
+"%1$s\n"
+"\n"
+"Another way to \"zero\" this transaction is to use Add Billing and add a "
+"miscellaneous bill to counter the negative balance."
+msgstr ""
+"%1$s\n"
+"\n"
+"Toinen tapa maksun nollaamiseen on Lisää maksu -toiminnon käyttö ja "
+"sekalaisen laskun lisääminen negatiivisen saldon kumoamiseksi."
+
+#: staff.patron.bills.pay.invalid_user_xact_id
+msgid ""
+"%1$s\n"
+"\n"
+"This patron data is stale.  Refreshing patron data.  You should re-attempt "
+"the payment."
+msgstr ""
+"%1$s\n"
+"\n"
+"Asiakastiedot eivät ole aktiivisia. Otetaan asiakastietoja käyttöön. Yritä "
+"maksua uudelleen."
+
+#: staff.patron.bills.pay.payment_failed
+msgid "Bill payment likely failed"
+msgstr "Maksu luultavasti epäonnistui"
+
+#: staff.patron.bills.info_box.label_value.reservation
+msgid "Reservation"
+msgstr "Erikoisvaraus"
+
+#. # 1 - Resource Barcode  2 - Resource Type Name
+#: staff.patron.bills.info_box.value_format.reservation
+msgid "%1$s : %2$s"
+msgstr "%1$s : %2$s"
+
+#: staff.patron.bills.info_box.label_value.title
+msgctxt "staff.patron.bills.info_box.label_value.title"
+msgid "Title"
+msgstr "Nimeke"
+
+#: staff.patron.bills.info_box.label_value.type
+msgid "Type"
+msgstr "Aineistolaji"
+
+#: staff.patron.bills.info_box.label_value.last_billing
+msgid "Last Billing:"
+msgstr "Viimeisin maksu:"
+
+#: staff.patron.bills.info_box.label_value.add_billing
+msgid "Add Billing"
+msgstr "Lisää maksu"
+
+#: staff.patron.bills.info_box.label_value.refund
+msgid "Refund"
+msgstr "Hyvitä"
+
+#: staff.patron.bills.info_box.label_value.void_all_billings
+msgctxt "staff.patron.bills.info_box.label_value.void_all_billings"
+msgid "Void All Billings"
+msgstr "Mitätöi kaikki maksut"
+
+#: staff.patron.bills.info_box.label_value.full_details
+msgid "Full Details"
+msgstr "Täydet tiedot"
+
+#: staff.patron.bills.void_all_billings.all_voided
+msgid "All billings already voided on this bill."
+msgstr "Kaikki tällä maksulla olevat maksut on jo mitätöity."
+
+#: staff.patron.bills.void_all_billings.void.message
+msgctxt "staff.patron.bills.void_all_billings.void.message"
+msgid "Are you sure you would like to void $%1$s worth of line-item billings?"
+msgstr "Haluatko varmasti mitätöidä %1$s € arvosta maksuja?"
+
+#: staff.patron.bills.void_all_billings.void.title
+msgctxt "staff.patron.bills.void_all_billings.void.title"
+msgid "Voiding Bills"
+msgstr "Maksujen mitätöinti"
+
+#: staff.patron.bills.void_all_billings.void.yes
+msgctxt "staff.patron.bills.void_all_billings.void.yes"
+msgid "Yes"
+msgstr "Kyllä"
+
+#: staff.patron.bills.void_all_billings.void.no
+msgctxt "staff.patron.bills.void_all_billings.void.no"
+msgid "No"
+msgstr "Ei"
+
+#: staff.patron.bills.void_all_billings.void.confirm_message
+msgctxt "staff.patron.bills.void_all_billings.void.confirm_message"
+msgid "Check here to confirm this message"
+msgstr "Vahvista viesti valitsemalla tämä"
+
+#: staff.patron.bills.void_all_billings.error_voiding_bills
+msgctxt "staff.patron.bills.void_all_billings.error_voiding_bills"
+msgid "Error voiding bills."
+msgstr "Virhe maksujen mitätöinnissä."
+
+#: staff.patron.bills.void_all_billings.billings_voided
+msgid "Billings voided."
+msgstr "Maksut mitätöity."
+
+#: staff.patron.bill_wizard.patron_bill_finish.billing_added
+msgid "Billing added."
+msgstr "Maksu lisätty."
+
+#: staff.patron.display.cmd_search_form.no_patron
+msgid "No Patron Selected"
+msgstr "Asiakasta ei ole valittu"
+
+#: staff.patron.display.cmd_patron_delete.dialog.title
+msgid "Delete Patron Account"
+msgstr "Poista asiakkaan tili"
+
+#: staff.patron.display.cmd_patron_delete.dialog.message
+msgid ""
+"Completely OBLITERATE this patron account, including bills, payments, "
+"bookbags, etc?  This is IRREVERSIBLE."
+msgstr ""
+"HÄVITETÄÄNKÖ asiakkaan tili, mukaan lukien laskut, maksut, kirjalistat jne.? "
+"Tätä EI VOI PERUUTTAA."
+
+#: staff.patron.display.cmd_patron_delete.dialog.confirmation
+msgid "Check here to confirm this action."
+msgstr "Vahvista toiminto valitsemalla tämä"
+
+#: staff.patron.display.cmd_patron_delete.dialog.cancel
+msgid "Cancel Deletion"
+msgstr "Peru poisto"
+
+#: staff.patron.display.cmd_patron_delete.dialog.okay
+msgid "Delete Account"
+msgstr "Poista tili"
+
+#: staff.patron.display.cmd_patron_delete.deny_deletion_of_super_user
+msgid "You may not delete a super user through this interface."
+msgstr "Et voi poistaa pääkäyttäjää tätä kautta."
+
+#: staff.patron.display.cmd_patron_delete.deny_deletion_of_self
+msgid "You may not delete your own account."
+msgstr "Et voi poistaa omaa tiliäsi."
+
+#: staff.patron.display.cmd_patron_delete.dest_user.prompt
+msgid ""
+"The user you're attempting to delete has STAFF_LOGIN priviledges.  Please "
+"enter the barcode for a destination user to receive the deleted user's "
+"miscellaneous staff artifacts (reports, etc.):"
+msgstr ""
+"Käyttäjällä, jota yrität poistaa, on STAFF_LOGIN-oikeudet. Syötä "
+"kohdekäyttäjän asiakastunnus, jos haluat saada itsellesi poistettavan "
+"käyttäjän sekalaiset henkilökunta-aineistot (raportit jne.)"
+
+#: staff.patron.display.cmd_patron_delete.dest_user.default_value
+msgctxt "staff.patron.display.cmd_patron_delete.dest_user.default_value"
+msgid ""
+msgstr ""
+
+#: staff.patron.display.cmd_patron_delete.dest_user.title
+msgid "Destination User"
+msgstr "Kohdekäyttäjä"
+
+#: staff.patron.display.cmd_patron_delete.dest_user.failure
+msgid "Failed to retrieve destination user.  User deletion aborted."
+msgstr "Kohdekäyttäjän haku epäonnistui. Käyttäjän poisto keskeytettiin."
+
+#: staff.patron.display.cmd_patron_delete.dest_user.self_reference_failure
+msgid ""
+"Cannot specify the deleted user as the destination user.  User deletion "
+"aborted."
+msgstr ""
+"Poistettavaa käyttäjää ei voida määrittää kohdekäyttäjäksi. Käyttäjän poisto "
+"keskeytettiin."
+
+#: staff.patron.display.cmd_patron_delete.override_prompt
+msgid "Override patron deletion failure?"
+msgstr "Ohitetaanko asiakkaan poistamisen epäonnistuminen?"
+
+#: staff.patron.display.spawn_editor.editing_related_patron
+msgctxt "staff.patron.display.spawn_editor.editing_related_patron"
+msgid "Editing Related Patron"
+msgstr "Muokataan liittyvää asiakasta"
+
+#: staff.patron.display.init.retrieving_patron
+msgid "Retrieving Patron..."
+msgstr "Haetaan asiakasta..."
+
+#: staff.patron.display.init.retrieving
+msgid "Retrieving..."
+msgstr "Haetaan..."
+
+#: staff.patron.display.init.network_request.alert_message
+msgid "Alert message: \"%1$s\"<br/><br/>"
+msgstr "Varoitusviesti: \"%1$s\"<br/><br/>"
+
+#: staff.patron.display.init.network_request.inactive_card
+msgid "Patron account retrieved with an INACTIVE card.<br/><br/>"
+msgstr "Asiakkaan tili haettu, kortti EI-AKTIIVINEN.<br/><br/>"
+
+#: staff.patron.display.init.network_request.account_barred
+msgid "Patron account is BARRED.<br/><br/>"
+msgstr "Asiakkaan tili on SULJETTU POIS.<br/><br/>"
+
+#: staff.patron.display.init.network_request.account_inactive
+msgid "Patron account is INACTIVE.<br/><br/>"
+msgstr "Asiakkaan tili on EI-AKTIIVINEN.<br/><br/>"
+
+#: staff.patron.display.init.network_request.account_expired
+msgid "Patron account is EXPIRED.<br/><br/>"
+msgstr "Asiakkaan tili on VANHENTUNUT.<br/><br/>"
+
+#: staff.patron.display.init.holds_ready
+msgid "Holds available: %1$s"
+msgstr "Varauksia lainattavissa: %1$s"
+
+#: staff.patron.display.init.network_request.window_title
+msgid "Alert"
+msgstr "Varoitus"
+
+#: staff.patron.display.init.network_request.window_message
+msgid ""
+"Press a navigation button above (for example, Check Out) to clear this "
+"alert."
+msgstr ""
+"Poista varoitus painamalla jotakin yllä olevaa navigointipainiketta (esim. "
+"Lainaa)."
+
+#: staff.patron.display.init.network_request.dump_error_message
+msgid "Not re-displaying this alert message: %1$s"
+msgstr "Varoitusviestiä ei näytetä uudelleen: %1$s"
+
+#: staff.patron.display.init.network_request.error_showing_alert
+msgid "Error showing patron alert and holds availability."
+msgstr "Virhe asiakasvaroituksen ja varausten lainattavuuden näytössä."
+
+#: staff.patron.display.render_search_form.patron_search
+msgid "Patron Search"
+msgstr "Asiakkaan haku"
+
+#: staff.patron.display.tab_name
+msgid "Patron:"
+msgstr "Asiakas:"
+
+#: staff.patron.display.no_alerts_or_messages
+msgid "No Alerts, Blocks, or Messages"
+msgstr "Ei varoituksia, estoja tai viestejä"
+
+#. # Field 1 = actor.usr.id, Field 2 = actor.usr.create_date, Field 3 = actor.usr.last_update_time
+#: staff.patron.display.db_data
+msgid "Database ID: %1$s Create Date: %2$s Last Updated: %3$s"
+msgstr "Tietokannan ID: %1$s Luomispäivä: %2$s Päivitetty viimeksi: %3$s"
+
+#: staff.patron.hold_notices.tooltiptext
+msgid "ID: %1$s Hold ID: %2$s Notifying Staff ID: %3$s"
+msgstr "ID: %1$s Varauksen ID: %2$s Henkilökuntahuomautuksen ID: %3$s"
+
+#: staff.patron.hold_notices.new_notification_record
+msgid "New Notification Record"
+msgstr "Uusi ilmoitustietue"
+
+#: staff.patron.hold_notices.method
+msgid "Method"
+msgstr "Menetelmä"
+
+#: staff.patron.hold_notices.note
+msgctxt "staff.patron.hold_notices.note"
+msgid "Note"
+msgstr "Huomautus"
+
+#: staff.patron.hold_notices.cancel
+msgctxt "staff.patron.hold_notices.cancel"
+msgid "Cancel"
+msgstr "Peruuta "
+
+#: staff.patron.hold_notices.cancel_accesskey
+msgctxt "staff.patron.hold_notices.cancel_accesskey"
+msgid "C"
+msgstr "P"
+
+#: staff.patron.hold_notices.add_notif_record
+msgid "Add Notification Record"
+msgstr "Lisää ilmoitustietue"
+
+#: staff.patron.hold_notices.add_notif_record_accesskey
+msgctxt "staff.patron.hold_notices.add_notif_record_accesskey"
+msgid "A"
+msgstr "L"
+
+#: staff.patron.hold_notices.new_notification.not_created
+msgid "The notification was not likely created."
+msgstr "Ilmoitusta ei luultavasti luotu."
+
+#: staff.patron.hold_notes.tooltiptext
+msgid "ID: %1$s Hold ID: %2$s Staff ID: %3$s"
+msgstr "ID: %1$s Varauksen ID: %2$s Henkilökunta-ID: %3$s"
+
+#: staff.patron.hold_notes.new_note
+msgctxt "staff.patron.hold_notes.new_note"
+msgid "New Note"
+msgstr "Uusi huomautus"
+
+#: staff.patron.hold_notes.title
+msgctxt "staff.patron.hold_notes.title"
+msgid "Title"
+msgstr "Nimeke"
+
+#: staff.patron.hold_notes.body
+msgctxt "staff.patron.hold_notes.body"
+msgid "Note"
+msgstr "Huomautus"
+
+#: staff.patron.hold_notes.public
+msgid "Public"
+msgstr "Julkinen"
+
+#: staff.patron.hold_notes.private
+msgid "Private"
+msgstr "Yksityinen"
+
+#: staff.patron.hold_notes.print_on_slip
+msgid "Print on Slip"
+msgstr "Tulosta"
+
+#: staff.patron.hold_notes.no_print_on_slip
+msgid "No print on Slip"
+msgstr "Älä tulosta"
+
+#: staff.patron.hold_notes.by_staff
+msgid "By Staff"
+msgstr "Henkilökunnan mukaan"
+
+#: staff.patron.hold_notes.by_patron
+msgid "By Patron "
+msgstr "Asiakkaan mukaan"
+
+#: staff.patron.hold_notes.new_note.public
+msgid "Public?"
+msgstr "Julkinen?"
+
+#: staff.patron.hold_notes.new_note.slip
+msgid "Print on slip?"
+msgstr "Tulostetaanko?"
+
+#: staff.patron.hold_notes.cancel
+msgctxt "staff.patron.hold_notes.cancel"
+msgid "Cancel"
+msgstr "Peruuta "
+
+#: staff.patron.hold_notes.cancel_accesskey
+msgctxt "staff.patron.hold_notes.cancel_accesskey"
+msgid "C"
+msgstr "P"
+
+#: staff.patron.hold_notes.add_note
+msgctxt "staff.patron.hold_notes.add_note"
+msgid "Add Note"
+msgstr "Lisää huomautus"
+
+#: staff.patron.hold_notes.add_note.accesskey
+msgctxt "staff.patron.hold_notes.add_note.accesskey"
+msgid "A"
+msgstr "L"
+
+#: staff.patron.hold_notes.new_note.not_created
+msgctxt "staff.patron.hold_notes.new_note.not_created"
+msgid "The note was not likely created."
+msgstr "Huomautusta ei luultavasti luotu."
+
+#: staff.patron.holds.init.hold_num_error
+msgid "Error retrieving details for hold #%1$s"
+msgstr "Virhe varausnumeron %1$s tietojen haussa"
+
+#: staff.patron.holds.show_notifications.error_rendering_notifs
+msgid "Error rendering or retrieving hold notifications."
+msgstr "Virhe varausilmoitusten valmistelussa tai haussa."
+
+#: staff.patron.holds.total_count
+msgid "Total Holds: %1$s"
+msgstr "Varauksia yhteensä: %1$s"
+
+#: staff.patron.holds.holds_edit_selection_depth.choose_hold_range
+msgid "Please choose a Hold Range:"
+msgstr "Valitse varausten määrän vaihteluväli:"
+
+#: staff.patron.holds.holds_edit_selection_depth.done.label
+msgctxt "staff.patron.holds.holds_edit_selection_depth.done.label"
+msgid "Done"
+msgstr "Valmis"
+
+#: staff.patron.holds.holds_edit_selection_depth.done.accesskey
+msgctxt "staff.patron.holds.holds_edit_selection_depth.done.accesskey"
+msgid "D"
+msgstr "V"
+
+#: staff.patron.holds.holds_edit_selection_depth.cancel.label
+msgctxt "staff.patron.holds.holds_edit_selection_depth.cancel.label"
+msgid "Cancel"
+msgstr "Peruuta "
+
+#: staff.patron.holds.holds_edit_selection_depth.cancel.accesskey
+msgctxt "staff.patron.holds.holds_edit_selection_depth.cancel.accesskey"
+msgid "C"
+msgstr "P"
+
+#: staff.patron.holds.holds_edit_selection_depth.choose_library
+msgctxt "staff.patron.holds.holds_edit_selection_depth.choose_library"
+msgid "Choose a Pick Up Library"
+msgstr "Valitse noutokirjasto"
+
+#: staff.patron.holds.holds_edit_selection_depth.modify_holds_message.singular
+msgid ""
+"Are you sure you would like to change the Hold Range for hold %1$s to \"%"
+"2$s\"?;"
+msgstr "Haluatko varmasti muuttaa varauksen %1$s varausväliksi \"%2$s\"?;"
+
+#: staff.patron.holds.holds_edit_selection_depth.modify_holds_message.plural
+msgid ""
+"Are you sure you would like to change the Hold Range for holds %1$s to \"%"
+"2$s\"?;"
+msgstr "Haluatko varmasti muuttaa varausten %1$s varausväliksi \"%2$s\"?;"
+
+#: staff.patron.holds.holds_edit_selection_depth.modify_holds_title
+msgctxt "staff.patron.holds.holds_edit_selection_depth.modify_holds_title"
+msgid "Modifying Holds"
+msgstr "Muutetaan varauksia"
+
+#: staff.patron.holds.holds_not_modified
+msgid "Holds not likely modified."
+msgstr "Varauksia ei luultavasti muutettu."
+
+#: staff.patron.holds.holds_edit_pickup_lib.new_pickup_lib.description
+msgid "Please choose a new Pickup Library:"
+msgstr "Valitse uusi noutokirjasto:"
+
+#: staff.patron.holds.holds_edit_pickup_lib.done.label
+msgctxt "staff.patron.holds.holds_edit_pickup_lib.done.label"
+msgid "Done"
+msgstr "Valmis"
+
+#: staff.patron.holds.holds_edit_pickup_lib.done.accesskey
+msgctxt "staff.patron.holds.holds_edit_pickup_lib.done.accesskey"
+msgid "D"
+msgstr "V"
+
+#: staff.patron.holds.holds_edit_pickup_lib.cancel.label
+msgctxt "staff.patron.holds.holds_edit_pickup_lib.cancel.label"
+msgid "Cancel"
+msgstr "Peruuta "
+
+#: staff.patron.holds.holds_edit_pickup_lib.cancel.accesskey
+msgctxt "staff.patron.holds.holds_edit_pickup_lib.cancel.accesskey"
+msgid "C"
+msgstr "P"
+
+#: staff.patron.holds.holds_edit_pickup_lib.choose_lib
+msgctxt "staff.patron.holds.holds_edit_pickup_lib.choose_lib"
+msgid "Choose a Pick Up Library"
+msgstr "Valitse noutokirjasto"
+
+#: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.singular
+msgid ""
+"Are you sure you would like to change the Pick Up Library for hold %1$s to %"
+"2$s?"
+msgstr "Haluatko varmasti muuttaa varauksen %1$s noutokirjastoksi %2$s?"
+
+#: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.plural
+msgid ""
+"Are you sure you would like to change the Pick Up Library for holds %1$s to "
+"%2$s?"
+msgstr "Haluatko varmasti muuttaa varausten %1$s noutokirjastoksi %2$s?"
+
+#: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_title
+msgctxt "staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_title"
+msgid "Modifying Holds"
+msgstr "Muutetaan varauksia"
+
+#: staff.patron.holds.holds_edit_phone_notify.new_phone_number
+msgid ""
+"Please enter a new phone number for hold notification (leave the field empty "
+"to disable phone notification):"
+msgstr ""
+"Syötä uusi puhelinnumero varausilmoituksille (jätä kenttä tyhjäksi, jos et "
+"halua ilmoituksia puhelimella):"
+
+#: staff.patron.holds.holds_edit_phone_notify.btn_done.label
+msgctxt "staff.patron.holds.holds_edit_phone_notify.btn_done.label"
+msgid "Done"
+msgstr "Valmis"
+
+#: staff.patron.holds.holds_edit_phone_notify.btn_done.accesskey
+msgctxt "staff.patron.holds.holds_edit_phone_notify.btn_done.accesskey"
+msgid "D"
+msgstr "V"
+
+#: staff.patron.holds.holds_edit_phone_notify.btn_cancel.label
+msgctxt "staff.patron.holds.holds_edit_phone_notify.btn_cancel.label"
+msgid "Cancel"
+msgstr "Peruuta "
+
+#: staff.patron.holds.holds_edit_phone_notify.btn_cancel.accesskey
+msgctxt "staff.patron.holds.holds_edit_phone_notify.btn_cancel.accesskey"
+msgid "C"
+msgstr "P"
+
+#: staff.patron.holds.holds_edit_phone_notify.choose_phone_number
+msgid "Choose a Hold Notification Phone Number"
+msgstr "Valitse puhelinnumero varausilmoituksille"
+
+#: staff.patron.holds.holds_edit_phone_notify.confirm_phone_number_change.singular
+msgid ""
+"Are you sure you would like to change the Notification Phone Number for hold "
+"%1$s to \"%2$s\"?"
+msgstr ""
+"Haluatko varmasti muuttaa varauksen %1$s ilmoituspuhelinnumeroksi \"%2$s\"?"
+
+#: staff.patron.holds.holds_edit_phone_notify.confirm_phone_number_change.plural
+msgid ""
+"Are you sure you would like to change the Notification Phone Number for "
+"holds %1$s to \"%2$s\"?"
+msgstr ""
+"Haluatko varmasti muuttaa varausten %1$s ilmoituspuhelinnumeroksi \"%2$s\"?"
+
+#: staff.patron.holds.holds_edit_phone_notify.modifying_holds_title
+msgctxt "staff.patron.holds.holds_edit_phone_notify.modifying_holds_title"
+msgid "Modifying Holds"
+msgstr "Muutetaan varauksia"
+
+#: staff.patron.holds.holds_edit_sms_notify.new_phone_number
+msgid ""
+"Please enter a new mobile number for hold notification via text (leave the "
+"field empty to disable):"
+msgstr ""
+"Syötä uusi matkapuhelinnumero varausilmoitusten tekstiviesteille (jätä "
+"kenttä tyhjäksi, jos et halua ilmoituksia tekstiviestillä):"
+
+#: staff.patron.holds.holds_edit_sms_notify.btn_done.label
+msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_done.label"
+msgid "Done"
+msgstr "Valmis"
+
+#: staff.patron.holds.holds_edit_sms_notify.btn_done.accesskey
+msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_done.accesskey"
+msgid "D"
+msgstr "V"
+
+#: staff.patron.holds.holds_edit_sms_notify.btn_cancel.label
+msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_cancel.label"
+msgid "Cancel"
+msgstr "Peruuta "
+
+#: staff.patron.holds.holds_edit_sms_notify.btn_cancel.accesskey
+msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_cancel.accesskey"
+msgid "C"
+msgstr "P"
+
+#: staff.patron.holds.holds_edit_sms_notify.choose_phone_number
+msgid "Choose a Hold Notification Mobile Text Number"
+msgstr "Valitse matkapuhelinnumero varausilmoitusten tekstiviesteille:"
+
+#: staff.patron.holds.holds_edit_sms_notify.confirm_phone_number_change.singular
+msgid ""
+"Are you sure you would like to change the Notification Mobile/Text Number "
+"for hold %1$s to \"%2$s\"?"
+msgstr ""
+"Haluatko varmasti muuttaa varauksen %1$s ilmoitusten "
+"puhelin-/tekstiviestinumeroksi \"%2$s\"?"
+
+#: staff.patron.holds.holds_edit_sms_notify.confirm_phone_number_change.plural
+msgid ""
+"Are you sure you would like to change the Notification Mobile/Text Number "
+"for holds %1$s to \"%2$s\"?"
+msgstr ""
+"Haluatko varmasti muuttaa varausten %1$s ilmoitusten "
+"puhelin-/tekstiviestinumeroksi \"%2$s\"?"
+
+#: staff.patron.holds.holds_edit_sms_notify.modifying_holds_title
+msgctxt "staff.patron.holds.holds_edit_sms_notify.modifying_holds_title"
+msgid "Modifying Holds"
+msgstr "Muutetaan varauksia"
+
+#: staff.patron.holds.holds_edit_sms_carrier.new_carrier
+msgid "Please select a new mobile carrier for hold notification via text:"
+msgstr ""
+"Valitse uusi matkapuhelinoperaattori varausilmoitusten tekstiviesteille:"
+
+#: staff.patron.holds.holds_edit_sms_carrier.btn_done.label
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_done.label"
+msgid "Done"
+msgstr "Valmis"
+
+#: staff.patron.holds.holds_edit_sms_carrier.btn_done.accesskey
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_done.accesskey"
+msgid "D"
+msgstr "V"
+
+#: staff.patron.holds.holds_edit_sms_carrier.btn_cancel.label
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_cancel.label"
+msgid "Cancel"
+msgstr "Peruuta "
+
+#: staff.patron.holds.holds_edit_sms_carrier.btn_cancel.accesskey
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_cancel.accesskey"
+msgid "C"
+msgstr "P"
+
+#: staff.patron.holds.holds_edit_sms_carrier.choose_carrier
+msgid "Select a Hold Notification Mobile Text Carrier"
+msgstr "Valitse matkapuhelinoperaattori varausilmoitusten tekstiviesteille"
+
+#: staff.patron.holds.holds_edit_sms_carrier.confirm_carrier_change.singular
+msgid ""
+"Are you sure you would like to change the Notification Mobile/Text Carrier "
+"for hold %1$s to \"%2$s\"?"
+msgstr ""
+"Haluatko varmasti muuttaa varauksen %1$s ilmoitusten "
+"matkapuhelin-/tekstiviestioperaattoriksi \"%2$s\"?"
+
+#: staff.patron.holds.holds_edit_sms_carrier.confirm_carrier_change.plural
+msgid ""
+"Are you sure you would like to change the Notification Mobile/Text Carrier "
+"for holds %1$s to \"%2$s\"?"
+msgstr ""
+"Haluatko varmasti muuttaa varausten %1$s ilmoitusten "
+"matkapuhelin-/tekstiviestioperaattoriksi \"%2$s\"?"
+
+#: staff.patron.holds.holds_edit_sms_carrier.modifying_holds_title
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.modifying_holds_title"
+msgid "Modifying Holds"
+msgstr "Muutetaan varauksia"
+
+#: staff.patron.holds.holds_edit_email_notify.description
+msgid ""
+"Send email notifications (when appropriate)?  The email address used is "
+"found in the hold recipient account."
+msgstr ""
+"Lähetetäänkö ilmoituksia sähköpostilla (kun siihen on aihetta)? Käytetty "
+"sähköpostiosoite löytyy varauksen vastaanottajan tililtä."
+
+#: staff.patron.holds.holds_edit_email_notify.btn_email.label
+msgid "Email"
+msgstr "Sähköposti"
+
+#: staff.patron.holds.holds_edit_email_notify.btn_email.accesskey
+msgid "E"
+msgstr "S"
+
+#: staff.patron.holds.holds_edit_email_notify.btn_no_email.label
+msgid "No Email"
+msgstr "Ei sähköpostia"
+
+#: staff.patron.holds.holds_edit_email_notify.btn_no_email.accesskey
+msgctxt "staff.patron.holds.holds_edit_email_notify.btn_no_email.accesskey"
+msgid "N"
+msgstr "E"
+
+#: staff.patron.holds.holds_edit_email_notify.btn_cancel.label
+msgctxt "staff.patron.holds.holds_edit_email_notify.btn_cancel.label"
+msgid "Cancel"
+msgstr "Peruuta "
+
+#: staff.patron.holds.holds_edit_email_notify.btn_cancel.accesskey
+msgctxt "staff.patron.holds.holds_edit_email_notify.btn_cancel.accesskey"
+msgid "C"
+msgstr "P"
+
+#: staff.patron.holds.holds_edit_email_notify.set_notifs
+msgid "Set Email Notification for Holds"
+msgstr "Määritä varausten sähköposti-ilmoitus"
+
+#: staff.patron.holds.holds_edit_email_notify.enable_email.singular
+msgid "Are you sure you would like to enable email notification for hold %1$s?"
+msgstr ""
+"Haluatko varmasti ottaa sähköposti-ilmoituksen käyttöön varaukselle %1$s?"
+
+#: staff.patron.holds.holds_edit_email_notify.enable_email.plural
+msgid ""
+"Are you sure you would like to enable email notification for holds %1$s?"
+msgstr ""
+"Haluatko varmasti ottaa sähköposti-ilmoituksen käyttöön varauksille %1$s?"
+
+#: staff.patron.holds.holds_edit_email_notify.disable_email.singular
+msgid ""
+"Are you sure you would like to disable email notification for hold %1$s?"
+msgstr ""
+"Haluatko varmasti ottaa sähköposti-ilmoituksen pois käytöstä varaukselle %"
+"1$s?"
+
+#: staff.patron.holds.holds_edit_email_notify.disable_email.plural
+msgid ""
+"Are you sure you would like to disable email notification for holds %1$s?"
+msgstr ""
+"Haluatko varmasti ottaa sähköposti-ilmoituksen pois käytöstä varauksille %"
+"1$s?"
+
+#: staff.patron.holds.holds_edit_email_notify.mod_holds_title
+msgctxt "staff.patron.holds.holds_edit_email_notify.mod_holds_title"
+msgid "Modifying Holds"
+msgstr "Muutetaan varauksia"
+
+#: staff.patron.holds.holds_cut_in_line.description
+msgid ""
+"Move to the front of the holds queue above other holds that are not likewise "
+"flagged Top of Queue?"
+msgstr ""
+"Siirretäänkö muiden varausten edelle (lukuun ottamatta muita jonon edelle "
+"merkittyjä)?"
+
+#: staff.patron.holds.holds_cut_in_line.btn_cut.label
+msgid "Top of Queue"
+msgstr "Jonon edelle"
+
+#: staff.patron.holds.holds_cut_in_line.btn_cut.accesskey
+msgid "T"
+msgstr "J"
+
+#: staff.patron.holds.holds_cut_in_line.btn_no_cut.label
+msgid "No Top of Queue"
+msgstr "Ei jonon edelle"
+
+#: staff.patron.holds.holds_cut_in_line.btn_no_cut.accesskey
+msgctxt "staff.patron.holds.holds_cut_in_line.btn_no_cut.accesskey"
+msgid "N"
+msgstr "E"
+
+#: staff.patron.holds.holds_cut_in_line.btn_cancel.label
+msgctxt "staff.patron.holds.holds_cut_in_line.btn_cancel.label"
+msgid "Cancel"
+msgstr "Peruuta "
+
+#: staff.patron.holds.holds_cut_in_line.btn_cancel.accesskey
+msgctxt "staff.patron.holds.holds_cut_in_line.btn_cancel.accesskey"
+msgid "C"
+msgstr "P"
+
+#: staff.patron.holds.holds_cut_in_line.set_notifs
+msgid "Set Top of Queue (Force to Front) for Holds"
+msgstr "Aseta varaukset jonon edelle (pakota ensimmäiseksi)"
+
+#: staff.patron.holds.holds_cut_in_line.enable_cut.singular
+msgid "Are you sure you would like to enable Top of Queue for hold %1$s?"
+msgstr "Haluatko varmasti siirtää varauksen %1$s jonon edelle?"
+
+#: staff.patron.holds.holds_cut_in_line.enable_cut.plural
+msgid "Are you sure you would like to enable Top of Queue for holds %1$s?"
+msgstr "Haluatko varmasti siirtää varaukset %1$s jonon edelle?"
+
+#: staff.patron.holds.holds_cut_in_line.disable_cut.singular
+msgid "Are you sure you would like to disable Top of Queue for hold %1$s?"
+msgstr "Haluatko varmasti siirtää varauksen %1$s pois jonon edeltä?"
+
+#: staff.patron.holds.holds_cut_in_line.disable_cut.plural
+msgid "Are you sure you would like to disable Top of Queue for holds %1$s?"
+msgstr "Haluatko varmasti siirtää varaukset %1$s pois jonon edeltä?"
+
+#: staff.patron.holds.holds_cut_in_line.mod_holds_title
+msgctxt "staff.patron.holds.holds_cut_in_line.mod_holds_title"
+msgid "Modifying Holds"
+msgstr "Muutetaan varauksia"
+
+#: staff.patron.holds.holds_desire_mint_condition.description
+msgid "Accept only \"good condition\" copies?"
+msgstr "Hyväksytäänkö vain \"hyväkuntoiset\" kappaleet?"
+
+#: staff.patron.holds.holds_desire_mint_condition.btn_good.label
+msgid "Good Condition"
+msgstr "Hyväkuntoiset"
+
+#: staff.patron.holds.holds_desire_mint_condition.btn_good.accesskey
+msgid "G"
+msgstr "H"
+
+#: staff.patron.holds.holds_desire_mint_condition.btn_mediocre.label
+msgid "Any Condition"
+msgstr "Missä tahansa kunnossa"
+
+#: staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey
+msgctxt "staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey"
+msgid "A"
+msgstr "A"
+
+#: staff.patron.holds.holds_desire_mint_condition.btn_cancel.label
+msgctxt "staff.patron.holds.holds_desire_mint_condition.btn_cancel.label"
+msgid "Cancel"
+msgstr "Peruuta "
+
+#: staff.patron.holds.holds_desire_mint_condition.btn_cancel.accesskey
+msgctxt "staff.patron.holds.holds_desire_mint_condition.btn_cancel.accesskey"
+msgid "C"
+msgstr "P"
+
+#: staff.patron.holds.holds_desire_mint_condition.set_notifs
+msgid "Set Desired Copy Quality for Holds"
+msgstr "Määritä haluamasi varatun niteen laatu"
+
+#: staff.patron.holds.holds_desire_mint_condition.enable_good.singular
+msgid ""
+"Are you sure you would like to restrict to Good Condition copies for hold %"
+"1$s?"
+msgstr "Haluatko varmasti rajoittaa varauksen %1$s hyväkuntoisiin niteisiin?"
+
+#: staff.patron.holds.holds_desire_mint_condition.enable_good.plural
+msgid ""
+"Are you sure you would like to restrict to Good Condition copies for holds %"
+"1$s?"
+msgstr "Haluatko varmasti rajoittaa varaukset %1$s hyväkuntoisiin niteisiin?"
+
+#: staff.patron.holds.holds_desire_mint_condition.disable_good.singular
+msgid ""
+"Are you sure you would like to NOT restrict to Good Condition copies for "
+"hold %1$s?"
+msgstr ""
+"Haluatko varmasti olla rajoittamatta varausta %1$s hyväkuntoisiin niteisiin?"
+
+#: staff.patron.holds.holds_desire_mint_condition.disable_good.plural
+msgid ""
+"Are you sure you would like to NOT restrict to Good Condition copies for "
+"holds %1$s?"
+msgstr ""
+"Haluatko varmasti olla rajoittamatta varauksia %1$s hyväkuntoisiin "
+"niteisiin?"
+
+#: staff.patron.holds.holds_desire_mint_condition.mod_holds_title
+msgctxt "staff.patron.holds.holds_desire_mint_condition.mod_holds_title"
+msgid "Modifying Holds"
+msgstr "Muutetaan varauksia"
+
+#: staff.patron.holds.holds_retarget.reset_hold_message.singular
+msgid "Are you sure you would like to reset hold %1$s?"
+msgstr "Haluatko varmasti nollata varauksen %1$s?"
+
+#: staff.patron.holds.holds_retarget.reset_hold_message.plural
+msgid "Are you sure you would like to reset holds %1$s?"
+msgstr "Haluatko varmasti nollata varaukset %1$s?"
+
+#: staff.patron.holds.holds_retarget.reset_hold_title
+msgid "Resetting Holds"
+msgstr "Nollataan varauksia"
+
+#: staff.patron.holds.holds_retarget.holds_not_reset
+msgid "Holds not likely reset."
+msgstr "Varauksia ei luultavasti poistettu."
+
+#: staff.patron.holds.holds_cancel.cancel_hold_message.singular
+msgid "Are you sure you would like to cancel hold %1$s?"
+msgstr "Haluatko varmasti peruuttaa varauksen %1$s?"
+
+#: staff.patron.holds.holds_cancel.cancel_hold_message.plural
+msgid "Are you sure you would like to cancel holds %1$s?"
+msgstr "Haluatko varmasti peruuttaa varaukset %1$s?"
+
+#: staff.patron.holds.holds_cancel.cancel_hold_title
+msgid "Cancelling Holds"
+msgstr "Poistetaan varauksia"
+
+#: staff.patron.holds.holds_cancel.cancel_for_barcodes
+msgid "For barcodes %1$s, should the associated transits also be cancelled?"
+msgstr "Peruutetaanko myös asiakastunnukseen %1$s liitetyt kuljetukset?"
+
+#: staff.patron.holds.holds_cancel.cancel_for_barcodes.title
+msgid "Cancelling Transits"
+msgstr "Peruutetaan kuljetuksia"
+
+#: staff.patron.holds.holds_cancel.hold_transits_not_cancelled
+msgid "Hold transits not likely cancelled."
+msgstr "Varausten kuljetuksia ei luultavasti peruutettu."
+
+#: staff.patron.holds.holds_cancel.hold_not_cancelled
+msgid "Holds not likely cancelled."
+msgstr "Varauksia ei luultavasti peruutettu."
+
+#: staff.patron.holds.holds_uncancel.hold_not_uncancelled
+msgid "Holds not likely un-cancelled."
+msgstr "Varausten peruutusta ei luultavasti peruutettu."
+
+#: staff.patron.holds.show_catalog.unknown_htype
+msgid ""
+"I do not understand the hold type of %1$s so I can not display the "
+"appropriate record in the catalog."
+msgstr ""
+"Järjestelmä ei ymmärrä varaustyyppiä %1$s, joten tietokannasta ei voida "
+"näyttää oikeaa tietuetta."
+
+#: staff.patron.holds.show_catalog.retrieving_title
+msgctxt "staff.patron.holds.show_catalog.retrieving_title"
+msgid "Retrieving title..."
+msgstr "Haetaan nimekettä..."
+
+#: staff.patron.holds.lib_menus.missing_library_list
+msgctxt "staff.patron.holds.lib_menus.missing_library_list"
+msgid "Missing library list."
+msgstr "Kirjastoluettelo puuttuu."
+
+#: staff.patron.info_group.retrieve_group_members.failure
+msgid "Failed to retrieve all the group members."
+msgstr "Joidenkin ryhmän jäsenten haku epäonnistui."
+
+#: staff.patron.info_group.retrieve_patron.tab_name
+msgid "Retrieving Patron.."
+msgstr "Haetaan asiakasta..."
+
+#: staff.patron.info_group.retrieve_patron.failed_retrieving_patron
+msgid "Failed to retrieve patron."
+msgstr "Asiakkaan haku epäonnistui."
+
+#: staff.patron.info_group.retrieve_patron.failed_retrieving_patrons
+msgid "Failed to retrieve patrons."
+msgstr "Asiakkaiden haku epäonnistui."
+
+#: staff.patron.info_group.merge_patrons.failed_merging_patrons
+msgid "Failed merging patrons."
+msgstr "Asiakkaiden yhdistäminen epäonnistui."
+
+#: staff.patron.info_group.clone_patron.register_clone.tab_name
+msgid "Register Patron Clone for Group"
+msgstr "Rekisteröi asiakkaan klooni ryhmään"
+
+#: staff.patron.info_group.clone_patron.error_spawning_editors
+msgid "error spawning user editors"
+msgstr "käyttäjänmuokkaustyökalujen alustus epäonnistui"
+
+#: staff.patron.info_group.spawn_editor.editing_patron
+msgctxt "staff.patron.info_group.spawn_editor.editing_patron"
+msgid "Editing Related Patron"
+msgstr "Muokataan liittyvää asiakasta"
+
+#: staff.patron.info_group.spawn_search
+msgid "spawn search"
+msgstr "alustetaan hakua"
+
+#: staff.patron.info_group.remove_patron.warning_message
+msgid ""
+"WARNING: If you remove the currently displayed patron, a NEW group will be "
+"displayed in this interface."
+msgstr ""
+"VAROITUS: Jos poistat näytössä olevan asiakkaan, tässä käyttöliittymässä "
+"näkyy UUSI ryhmä."
+
+#: staff.patron.info_group.remove_patron.warning_message_confirm
+msgid "Remove selected patrons from this group?  %1$s"
+msgstr "Poistetaanko valitut asiakkaat tästä ryhmästä? %1$s"
+
+#: staff.patron.info_group.remove_patron.error_removing_patron
+msgid "error removing patron (ID=%1$s) from usergroup"
+msgstr "virhe asiakkaan (ID=%1$s) poistossa käyttäjäryhmästä"
+
+#: staff.patron.info_group.remove_patron.patrons_removed_from_group
+msgid "Patrons removed from group."
+msgstr "Asiakkaat poistettu ryhmästä."
+
+#: staff.patron.info_group.remove_patron.patrons_not_removed_from_group
+msgid "Patron not removed from group."
+msgstr "Asiakasta ei poistettu ryhmästä."
+
+#: staff.patron.info_group.link_patron.null_not_allowed
+msgid "null parameter not allowed"
+msgstr "null-parametri ei kelpaa"
+
+#: staff.patron.info_group.link_patron.invalid_parameter
+msgid "Invalid parameter.  Expected boolean."
+msgstr "Virheellinen parametri. Boolean-arvoa odotettiin."
+
+#: staff.patron.info_group.link_patron.scan_patron_barcode
+msgid "Please scan a patron barcode:"
+msgstr "Syötä asiakastunnus:"
+
+#: staff.patron.info_group.link_patron.move_patron_to_new_usergroup
+msgid "Move patron %1$s into patron %2$s's usergroup..."
+msgstr "Siirrä asiakas %1$s asiakkaan %2$s käyttäjäryhmään..."
+
+#: staff.patron.info_group.link_patron.move.label
+msgid "Move"
+msgstr "Siirrä"
+
+#: staff.patron.info_group.link_patron.move.accesskey
+msgid "M"
+msgstr "S"
+
+#: staff.patron.info_group.link_patron.done.label
+msgctxt "staff.patron.info_group.link_patron.done.label"
+msgid "Done"
+msgstr "Valmis"
+
+#: staff.patron.info_group.link_patron.done.accesskey
+msgctxt "staff.patron.info_group.link_patron.done.accesskey"
+msgid "D"
+msgstr "V"
+
+#: staff.patron.info_group.link_patron.move_patron_to_usergroup
+msgid "Move Patron into a Usergroup"
+msgstr "Siirrä asiakas käyttäjäryhmään"
+
+#: staff.patron.info_group.link_patron.error_linking_patron
+msgid "error linking patron (ID=%1$s)"
+msgstr "virhe asiakkaan linkityksessä (ID=%1$s)"
+
+#: staff.patron.info_group.link_patron.usergroups_updated
+msgid "User groups updated."
+msgstr "Käyttäjäryhmät päivitetty."
+
+#: staff.patron.info_group.link_patron.error_linking_patrons
+msgid "error linking patrons"
+msgstr "virhe asiakkaiden linkityksessä"
+
+#: staff.patron.info_group.column.circs_out.label
+msgid "Items Out"
+msgstr "Niteet lainassa"
+
+#: staff.patron.info_group.column.circs_overdue.label
+msgid "Items Overdue"
+msgstr "Niteet erääntyneet"
+
+#: staff.patron.info_group.column.circs_claimed_returned.label
+msgid "Items Claimed Returned"
+msgstr "Niteet ilmoitettu palautetuiksi"
+
+#: staff.patron.info_group.column.circs_long_overdue.label
+msgid "Items Long Overdue"
+msgstr "Niteet erääntyneet kauan sitten"
+
+#: staff.patron.info_group.column.circs_lost.label
+msgid "Items Lost"
+msgstr "Niteet kadonneet"
+
+#: staff.patron.info_group.total_owed.label
+msgid "Total Owed: %1$s"
+msgstr "Maksettavaa yhteensä: %1$s"
+
+#: staff.patron.info_group.total_out.label
+msgid "Total Items Out: %1$s"
+msgstr "Niteitä lainassa yhteensä: %1$s"
+
+#: staff.patron.info_group.total_overdue.label
+msgid "Total Items Overdue: %1$s"
+msgstr "Erääntyneitä niteitä yhteensä: %1$s"
+
+#: staff.patron.info_notes.render_notes.add_new_note.label
+msgid "Add New Note"
+msgstr "Lisää uusi huomautus"
+
+#: staff.patron.info_notes.render_notes.add_new_note.accesskey
+msgctxt "staff.patron.info_notes.render_notes.add_new_note.accesskey"
+msgid "A"
+msgstr "L"
+
+#: staff.patron.info_notes.render_notes.tooltiptext
+msgid "Note ID: %1$s Creator ID: %2$s"
+msgstr "Huomautuksen ID: %1$s Luojan ID: %2$s"
+
+#: staff.patron.info_notes.render_notes.pub.patron_visible
+msgid "Patron Visible"
+msgstr "Näkyy asiakkaalle"
+
+#: staff.patron.info_notes.render_notes.pub.staff_only
+msgid "Staff Only"
+msgstr "Vain henkilökunnalle"
+
+#: staff.patron.info_notes.render_notes.delete_note_message
+msgid "Delete the note titled \"%1$s\" created on %2$s?"
+msgstr "Poistetaanko huomautus \"%1$s\", joka on luotu %2$s?"
+
+#: staff.patron.info_notes.render_notes.delete_note_title
+msgid "Delete Note"
+msgstr "Poista huomautus"
+
+#: staff.patron.info_notes.render_notes.btn1.delete_note.label
+msgid "Delete This Note"
+msgstr "Poista tämä huomautus"
+
+#: staff.patron.info_notes.render_notes.note_deleted
+msgid "Note deleted."
+msgstr "Huomautus poistettu."
+
+#: staff.patron.info_notes.render_notes.pertaining_to
+msgid "Pertaining to"
+msgstr "Liittyy kohteeseen"
+
+#: staff.patron.info_notes.render_notes.created_on
+msgid "created on"
+msgstr "luotu"
+
+#: staff.patron.info_notes.render_notes.printing_note_num
+msgid "printing note #%1$s"
+msgstr "tulostetaan huomautusta #%1$s"
+
+#: staff.patron.info_notes.render_notes.btn2.print_note.label
+msgid "Print"
+msgstr "Tulosta"
+
+#: staff.patron.info_notes.new_note.label
+msgctxt "staff.patron.info_notes.new_note.label"
+msgid "New Note"
+msgstr "Uusi huomautus"
+
+#: staff.patron.info_notes.new_note.patron_visible.value
+msgid "Patron Visible?"
+msgstr "Näkyy asiakkaalle?"
+
+#: staff.patron.info_notes.new_note.title.value
+msgctxt "staff.patron.info_notes.new_note.title.value"
+msgid "Title"
+msgstr "Nimeke"
+
+#: staff.patron.info_notes.new_note.note.value
+msgctxt "staff.patron.info_notes.new_note.note.value"
+msgid "Note"
+msgstr "Huomautus"
+
+#: staff.patron.info_notes.new_note.initials.value
+msgid "Initials"
+msgstr "Nimikirjaimet"
+
+#: staff.patron.info_notes.new_note.cancel.label
+msgctxt "staff.patron.info_notes.new_note.cancel.label"
+msgid "Cancel"
+msgstr "Peruuta "
+
+#: staff.patron.info_notes.new_note.cancel.accesskey
+msgctxt "staff.patron.info_notes.new_note.cancel.accesskey"
+msgid "C"
+msgstr "P"
+
+#: staff.patron.info_notes.new_note.add.label
+msgctxt "staff.patron.info_notes.new_note.add.label"
+msgid "Add Note"
+msgstr "Lisää huomautus"
+
+#: staff.patron.info_notes.new_note.add.accesskey
+msgctxt "staff.patron.info_notes.new_note.add.accesskey"
+msgid "A"
+msgstr "L"
+
+#: staff.patron.info_notes.new_note.add_note_title
+msgctxt "staff.patron.info_notes.new_note.add_note_title"
+msgid "Add Note"
+msgstr "Lisää huomautus"
+
+#: staff.patron.info_notes.new_note.note_not_created
+msgctxt "staff.patron.info_notes.new_note.note_not_created"
+msgid "The note was not likely created."
+msgstr "Huomautusta ei luultavasti luotu."
+
+#: staff.patron.info_stat_cats.retrieve_fleshed_patron.failed
+msgid "Failed to retrieve patron stat cats."
+msgstr "Asiakkaan tilastokategorioiminen haku epäonnistui."
+
+#: staff.patron.info_stat_cats.render_stat_cats.opac_visible
+msgid "OPAC Visible"
+msgstr "Näkyy verkkokirjastossa"
+
+#: staff.patron.info_stat_cats.render_stat_cats.not_opac_visible
+msgid "Not OPAC Visible"
+msgstr "Ei näy verkkokirjastossa"
+
+#: staff.patron.info_stat_cats.render_stat_cats.rendering_exception
+msgid "rendering or retrieving stat cat"
+msgstr "valmistellaan tai haetaan tilastokategoriaa"
+
+#: staff.patron.info_surveys.retrieve_surveys.failed
+msgid "Failed to retrieve all the survey responses."
+msgstr "Joidenkin kyselyvastausten haku epäonnistui."
+
+#: staff.patron.info_surveys.render_surveys.required
+msgid "Required"
+msgstr "Vaaditaan"
+
+#: staff.patron.info_surveys.render_surveys.not_required
+msgid "Not Required"
+msgstr "Ei vaadita"
+
+#: staff.patron.items.show_noncats.14_days
+msgid "14 days"
+msgstr "14 päivää"
+
+#: staff.patron.items.show_noncats.err_showing_noncat
+msgid "Error showing NonCat #%1$s"
+msgstr "Virhe ei-kategorian %1$s näytössä"
+
+#: staff.patron.items.show_noncats.err_showing_circulations
+msgid "Error showing NonCat circulations"
+msgstr "Virhe ei-kategorian lainojen näytössä"
+
+#: staff.patron.items.items_renew_all.list_is_busy
+msgid ""
+"This is list is busy retrieving or rendering rows for a prior action.  Abort "
+"the prior action and proceed?"
+msgstr ""
+"Tämä lista on hakemassa tai valmistelemassa aiemman toiminnon rivejä. "
+"Keskeytetäänkö toiminto ja jatketaan?"
+
+#: staff.patron.items.items_renew_all.renew_items_in_list
+msgid "Renew all the items in this list?"
+msgstr "Uusitaanko kaikki tämän listan niteet?"
+
+#: staff.patron.items.items_renew_all.items_not_renewed
+msgid "All items were not likely renewed (%1$s)"
+msgstr "Kaikkia niteitä ei luultavasti uusittu (%1$s)"
+
+#: staff.patron.items.items_renew.renew_item_singular
+msgid "Are you sure you would like to renew item %1$s?"
+msgstr "Haluatko varmasti uusia niteen %1$s?"
+
+#: staff.patron.items.items_renew.renew_item_plural
+msgid "Are you sure you would like to renew items %1$s?"
+msgstr "Haluatko varmasti uusia niteet %1$s?"
+
+#: staff.patron.items.items_renew.renewing
+msgid "Renewing %1$s"
+msgstr "Uusitaan %1$s"
+
+#: staff.patron.items.items_renew.renewed
+msgid "%1$s renewed."
+msgstr "%1$s uusittu."
+
+#: staff.patron.items.items_renew.not_renewed
+msgid ""
+"%1$s not renewed.\n"
+"%2$s"
+msgstr ""
+"%1$s ei uusittu.\n"
+"%2$s"
+
+#: staff.patron.items.items_renew.err_in_renew_via_barcode
+msgid ""
+"Error in renew_via_barcode callback\n"
+"Renew probably did not happen for barcode %1$s"
+msgstr ""
+"Virhe renew_via_barcode-takaisinkutsussa\n"
+"Uusintaa ei luultavasti tehty tunnukselle %1$s"
+
+#: staff.patron.items.items_renew.no_renew_for_barcode
+msgid "Renew probably did not happen for barcode %1$s"
+msgstr "Uusintaa ei luultavasti tehty tunnukselle %1$s"
+
+#: staff.patron.items.items_renew.no_renew
+msgid "Renew probably did not happen."
+msgstr "Uusintaa ei luultavasti tehty"
+
+#: staff.patron.items.items_edit.renew_with_date.title
+msgctxt "staff.patron.items.items_edit.renew_with_date.title"
+msgid "Renew with Due Date"
+msgstr "Uusi eräpäivällä"
+
+#: staff.patron.items.items_edit.renew_with_date.description
+msgctxt "staff.patron.items.items_edit.renew_with_date.description"
+msgid "Renew with Due Date"
+msgstr "Uusi eräpäivällä"
+
+#: staff.patron.items.items_edit.renew_with_date.prompt
+msgid "Enter a new due date for these items to be renewed: %1$s"
+msgstr "Syötä uusi eräpäivä näille uusittaville niteille: %1$s"
+
+#: staff.patron.items.items_edit.edit_due_date.singular
+msgid "Edit Due Date"
+msgstr "Muokkaa eräpäivää"
+
+#: staff.patron.items.items_edit.edit_due_date.plural
+msgid "Edit Due Dates"
+msgstr "Muokkaa eräpäiviä"
+
+#: staff.patron.items.items_edit.edit_due_date.description
+msgid "Due Date"
+msgstr "Eräpäivä"
+
+#: staff.patron.items.items_edit.new_due_date
+msgid "Enter a new due date for these items: %1$s"
+msgstr "Syötä uusi eräpäivä näille niteille: %1$s"
+
+#: staff.patron.items.items_edit.dates_not_modified
+msgid "The due dates were not likely modified."
+msgstr "Eräpäiviä ei luultavasti muutettu."
+
+#: staff.patron.items.items_edit.mark_barcode_lost
+msgid "Mark barcode lost = %1$s"
+msgstr "Merkitse tunnus kadonneeksi = %1$s"
+
+#: staff.patron.items.items_edit.item_barcode
+msgid ""
+"Item Barcode %1$s\n"
+"%2$s"
+msgstr ""
+"Nidetunnus %1$s\n"
+"%2$s"
+
+#: staff.patron.items.items_edit.items_not_marked_lost
+msgid "The items were not likely marked lost."
+msgstr "Niteitä ei luultavasti merkitty kadonneiksi."
+
+#: staff.patron.items.items_claimed_returned.claimed_returned
+msgid "Claimed Returned"
+msgstr "Ilmoitettu palautetuksi"
+
+#: staff.patron.items.items_claimed_returned.claimed_returned.description
+msgid "Date Claimed"
+msgstr "Ilmoituspäivä"
+
+#: staff.patron.items.items_claimed_returned.enter_returned_date
+msgid "Enter a claimed returned date for these items: %1$s"
+msgstr "Syötä ilmoitettu palautetuksi -päivämäärä näille niteille: %1$s"
+
+#: staff.patron.items.items_claimed_returned.not_marked_claimed_returned
+msgid "The items were not likely marked Claimed Returned."
+msgstr "Niteitä ei luultavasti merkitty: ilmoitettu palautetuksi."
+
+#: staff.patron.items.set_claim_returned_failure
+msgid "Override set claimed returned failure?"
+msgstr "Ohitetaanko ilmoitettu palautetuiksi -määrityksen epäonnistuminen?"
+
+#: staff.patron.items.items_checkin.confirm_item_check_in.singular
+msgid "Are you sure you would like to check in item %1$s?"
+msgstr "Haluatko varmasti palauttaa niteen %1$s?"
+
+#: staff.patron.items.items_checkin.confirm_item_check_in.plural
+msgid "Are you sure you would like to check in items %1$s?"
+msgstr "Haluatko varmasti palauttaa niteet %1$s?"
+
+#: staff.patron.items.items_checkin.confirm_item_claimed_never_checked_out.singular
+msgid ""
+"Are you sure you would like to mark this item as Claimed Never Checked Out? "
+"%1$s"
+msgstr "Haluatko varmasti merkitä, että nide on ilmoitettu ei-lainatuksi? %1$s"
+
+#: staff.patron.items.items_checkin.confirm_item_claimed_never_checked_out.plural
+msgid ""
+"Are you sure you would like to mark these items as Claimed Never Checked "
+"Out? %1$s"
+msgstr ""
+"Haluatko varmasti merkitä, että niteet on ilmoitettu ei-lainatuiksi? %1$s"
+
+#: staff.patron.items.items_checkin.no_checkin
+msgid "Checkin probably did not happen."
+msgstr "Palautus ei luultavasti onnistunut."
+
+#: staff.patron.items.show_catalog.barcode_not_cataloged
+msgid "%1$s is not cataloged"
+msgstr "%1$s ei ole luetteloitu"
+
+#: staff.patron.items.show_catalog.retrieving_title
+msgctxt "staff.patron.items.show_catalog.retrieving_title"
+msgid "Retrieving title..."
+msgstr "Haetaan nimekettä..."
+
+#: staff.patron.items.retrieve_row.callback_error
+msgid "Error in callback for FM_CIRC_DETAILS.authoritative in patron/items.js"
+msgstr ""
+"Virhe FM_CIRC_DETALS.authoritative-toiminnon takaisinkutsussa tiedostossa "
+"patron/items.js"
+
+#: staff.patron.items.retrieve_row.error_in_retrieve_row
+msgid "error in patron/items.js retrieve_row():"
+msgstr "virhe: patron/items.js retrieve_row():"
+
+#: staff.patron.items.refresh.error_refreshing_row2
+msgid ""
+"2 Error refreshing row in list\n"
+"circ_id = %1$s\n"
+"nparams = %2$s"
+msgstr ""
+"2 virhe luettelorivin päivityksessä\n"
+"circ_id = %1$s\n"
+"nparams = %2$s"
+
+#: staff.patron.items.refresh.error_refreshing_row
+msgid ""
+"Error refreshing row in list\n"
+"circ_id = %1$s\n"
+"nparams = %2$s"
+msgstr ""
+"virhe luettelorivin päivityksessä\n"
+"circ_id = %1$s\n"
+"nparams = %2$s"
+
+#: staff.patron.items.retrieve.err_retrieving_circulations
+msgid "Error retrieving circulations."
+msgstr "Virhe lainojen haussa."
+
+#: staff.patron.items.gen_list_append.error
+msgid "patron/items.js: error in gen_list_append"
+msgstr "patron/items.js: virhe gen_list_append-toiminnossa"
+
+#: staff.patron.search_result.search.no_patrons_found
+msgid "No patrons found matching search criteria."
+msgstr "Hakuehtoihin sopivia asiakkaita ei löytynyt."
+
+#: staff.patron.search_result.search.capped_results
+msgid "Results capped at %1$s patrons."
+msgstr "Tulokset rajoitettu %1$s asiakkaaseen."
+
+#: staff.patron.search_result.search.enter_search_terms
+msgid "Please enter some search terms."
+msgstr "Syötä muita hakuehtoja."
+
+#: staff.patron.search_result.init.typeof_params
+msgid "typeof params.on_retrieve == %1$s"
+msgstr "typeof params.on_retrieve == %1$s"
+
+#: staff.patron.search_result.init.search_print
+msgid "patron search print"
+msgstr "asiakashaku tulostus"
+
+#: staff.patron.search_result.init.search_clipboard
+msgid "patron search clipboard"
+msgstr "asiakashaku leikepöytä"
+
+#: staff.patron.search_result.init.search_saving_columns
+msgid "patron search saving columns"
+msgstr "asiakashaku sarakkeiden tallennus"
+
+#: staff.patron.search_result.mailing_address_column_label_prefix
+msgid "Mailing Addr: "
+msgstr "Postiosoite:"
+
+#: staff.patron.search_result.billing_address_column_label_prefix
+msgid "Billing Addr: "
+msgstr "Laskutusosoite:"
+
+#: staff.patron.summary.patron_bill.money
+msgid "$ %1$s"
+msgstr "$ %1$s"
+
+#: staff.patron.summary.retrieve.no_barcode
+msgid "summary: No barcode or ID"
+msgstr "yhteenveto: Ei tunnusta tai ID:tä"
+
+#: staff.patron.summary.patron_net_access
+msgid "Internet"
+msgstr "Internet"
+
+#: staff.patron.summary.create_date
+msgid "Account created on"
+msgstr "Tili luotu"
+
+#: staff.patron.summary.expires_on
+msgid "Expires on"
+msgstr "Voimassaolo päättyy"
+
+#: staff.patron.summary.last_activity
+msgid "Last Activity"
+msgstr "Viimeisin toiminta"
+
+#: staff.patron.summary.updated_on
+msgid "Last updated on"
+msgstr "Päivitetty viimeksi"
+
+#: staff.patron.summary.standing_penalty.remove
+msgid "Remove"
+msgstr "Poista"
+
+#: staff.patron.summary.standing_penalty.none
+msgid "No Blocks/Penalties"
+msgstr "Ei estoja/rangaistuksia"
+
+#: staff.patron.summary.group_list.column.family_name.label
+msgid "Family Name"
+msgstr "Sukunimi"
+
+#: staff.patron.summary.group_list.column.first_given_name.label
+msgid "First Name"
+msgstr "Etunimi"
+
+#: staff.patron.summary.group_list.column.second_given_name.label
+msgid "Middle Name"
+msgstr "Toinen nimi"
+
+#: staff.patron.summary.group_list.column.home_ou.label
+msgid "Home Lib"
+msgstr "Kotikirjasto"
+
+#: staff.patron.summary.group_list.column.balance_owed.label
+msgid "Balance Owed"
+msgstr "Velkaa"
+
+#: staff.patron.summary.tab.group_list_with_total_owed.label
+msgid "Group: %1$s"
+msgstr "Ryhmä: %1$s"
+
+#: staff.patron.staged.register_patron
+msgid "Registering Pending Patron: %1$s"
+msgstr "Rekisteröidään vireillä olevaa asiakasta: %1$s"
+
+#: staff.patron.staged.confirm_patron_delete
+msgid "Delete the selected patrons?"
+msgstr "Poistetaanko valitut asiakkaat?"
+
+#: staff.patron.staged.error_on_delete
+msgid "Error deleting pending patron with row_id = %1$s"
+msgstr "Virhe vireillä olevan asiakkaan poistossa, row_id = %1$s"
+
+#: staff.patron.staged.lib_menus.missing_library_list
+msgctxt "staff.patron.staged.lib_menus.missing_library_list"
+msgid "Missing library list."
+msgstr "Kirjastoluettelo puuttuu."
+
+#: staff.patron.standing_penalty.apply_error
+msgid "Error applying %1$s block/standing penalty."
+msgstr "Virhe %1$s eston/rangaistuksen käyttöönotossa."
+
+#: staff.patron.standing_penalty.remove_error
+msgid "Error removing %1$s block/standing penalty."
+msgstr "Virhe %1$s eston/rangaistuksen poistamisessa."
+
+#: staff.patron.standing_penalty.update_error
+msgid "Error updating block/standing penalty."
+msgstr "Virhe eston/rangaistuksen päivittämisessä."
+
+#: staff.patron.standing_penalty.retrieve_error
+msgid "Error retrieving block/standing penalty."
+msgstr "Virhe eston/rangaistuksen hakemisessa."
+
+#: staff.patron.ue.uEditInit.session_no_defined
+msgctxt "staff.patron.ue.uEditInit.session_no_defined"
+msgid "User session is not defined"
+msgstr "Käyttäjäistuntoa ei ole määritetty"
+
+#: staff.patron.ue.uEditSaveuser.error_creating_note
+msgid "Error creating patron guardian or parent note"
+msgstr "Virhe huomautuksen luomisessa asiakkaan huoltajalle"
+
+#: staff.patron.ue.uEditShowSearch.search
+msgctxt "staff.patron.ue.uEditShowSearch.search"
+msgid ""
+"Search would be:\n"
+"%1$s"
+msgstr ""
+"Haku olisi:\n"
+"%1$s"
+
+#: staff.patron.user_buckets.tab_name
+msgid "User Buckets"
+msgstr "Käyttäjän siilot"
+
+#: staff.patron.user_edit.save_user.depth_required
+msgid "Depth is required on the %1$s permission."
+msgstr "Syvyys vaaditaan oikeudelle %1$s."
+
+#: staff.patron.user_edit.save_user.user_modified_successfully
+msgid ""
+"User %1$s [%2$s] successfully modified.\n"
+"%3$s permissions and %4$s work locations updated."
+msgstr ""
+"Käyttäjää %1$s [%2$s] muokattu onnistuneesti.\n"
+"%3$s oikeutta ja %4$s työsijaintia päivitetty."
+
+#: staff.patron.user_edit.display_perm.select_one
+msgid "-- Select One --"
+msgstr "-- Valitse --"
+
+#: staff.patron.cmd_verify_credentials.correct_credentials
+msgid "Success testing credentials!"
+msgstr "Valtuutusten testaus onnistui!"
+
+#: staff.patron.cmd_verify_credentials.incorrect_credentials
+msgid "Failure testing credentials!"
+msgstr "Valtuutusten testaus epäonnistui!"
+
+#: staff.patron.cmd_verify_credentials.name_feedback
+msgid "Username: <%1$s>"
+msgstr "Käyttäjätunnus: <%1$s>"
+
+#: staff.patron.cmd_verify_credentials.barcode_feedback
+msgid "Barcode: <%1$s>"
+msgstr "Asiakastunnus: <%1$s>"
+
+#: staff.patron.usr_buckets.merge_records.merge_lead
+msgid "Merge these records? (Select the \"lead\" record first)"
+msgstr "Yhdistetäänkö nämä tietueet? (Valitse \"päätietue\" ensin)"
+
+#: staff.patron.usr_buckets.merge_records.button.label
+msgid "Merge"
+msgstr "Yhdistä"
+
+#: staff.patron.usr_buckets.merge_records.cancel_button.label
+msgctxt "staff.patron.usr_buckets.merge_records.cancel_button.label"
+msgid "Cancel"
+msgstr "Peruuta "
+
+#: staff.patron.usr_buckets.merge_records.cancel_button.accesskey
+msgctxt "staff.patron.usr_buckets.merge_records.cancel_button.accesskey"
+msgid "C"
+msgstr "P"
+
+#: staff.patron.usr_buckets.merge_records.lead_record_number
+msgid "Lead Record? # %1$s"
+msgstr "Päätietue? # %1$s"
+
+#: staff.patron.usr_buckets.merge_records.lead
+msgid "Lead"
+msgstr "Pää"
+
+#: staff.patron.usr_buckets.merge_records.fancy_prompt_title
+msgid "Record Merging"
+msgstr "Tietueita yhdistetään"
+
+#: staff.patron.usr_buckets.merge_records.fancy_prompt.alert
+msgid "Merge Aborted"
+msgstr "Yhdistäminen peruutettu"
+
+#: staff.patron.usr_buckets.merge_records.success
+msgid "Records were successfully merged."
+msgstr "Tietueet yhdistettiin onnistuneesti."
+
+#: staff.patron.usr_buckets.merge_records.catch.std_unex_error
+msgid "Records were not likely merged."
+msgstr "Tietueita ei luultavasti yhdistetty."
+
+#. # The < and > highlight that the value is hidden from immediate display; translate Hidden and change the delimiters as needed
+#: staff.patron.field.hidden
+msgid "<Hidden>"
+msgstr "<Piilotettu>"
+
+#. # The < and > highlight that the value is not set; translate Unset and change the delimiters as needed
+#: staff.patron.field.unset
+msgid "<Unset>"
+msgstr "<Ei määritetty>"
+
+#. # Unused by default but available: %7 is county; %10 is country.
+#: staff.patron.mailable_address_format
+msgid ""
+"%1$s %2$s %3$s\n"
+"%4$s\n"
+"%5$s\n"
+"%6$s, %8$s %9$s"
+msgstr ""
+"%1$s %2$s %3$s\n"
+"%4$s\n"
+"%5$s\n"
+"%6$s, %8$s %9$s"
+
+#: web.staff.patron.ue.session_no_defined
+msgctxt "web.staff.patron.ue.session_no_defined"
+msgid "User session is not defined"
+msgstr "Käyttäjäistuntoa ei ole määritetty"
+
+#: web.staff.patron.ue.uedit_show_search.search_would_be
+msgctxt "web.staff.patron.ue.uedit_show_search.search_would_be"
+msgid ""
+"Search would be:\n"
+"%1$s"
+msgstr ""
+"Haku olisi:\n"
+"%1$s"
+
+#: web.staff.patron.ue.uedit_show_addr_replacement
+msgid ""
+"<div>Replaces address <b>%1$s</b><br/> %2$s %3$s<br/> %4$s, %5$s %6$s</div>"
+msgstr ""
+"<div>Korvaa osoitteen <b>%1$s</b><br/> %2$s %3$s<br/> %4$s, %5$s %6$s</div>"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode
+#: staff.circ.work_log_patron_edit.message
+msgid "%1$s edited %3$s (%2$s)"
+msgstr "%1$s muokkasi kohdetta %3$s (%2$s)"
+
+#. # 1 - Number of hold requests created
+#: staff.item.batch.hold.x_holds_created
+msgid "%1$s holds created."
+msgstr "%1$s varausta luotu."
+
+#. # 1 - Number of holds not created for a given reason  2 - the reason for failure
+#: staff.item.batch.hold.x_failed_holds
+msgid "%1$s failed for %2$s"
+msgstr "%1$s epäonnistui kohteelle %2$s"
+
+#: staff.item.batch.hold.tab_name
+msgid "Item Hold/Recall/Force"
+msgstr "Niteen varaus/takaisinkutsu/pakotus"
+
+#: staff.item.batch.hold.retry_btn_label
+msgid "Retry"
+msgstr "Yritä uudelleen"
+
+#: staff.item.batch.hold.override_btn_label
+msgid "Override"
+msgstr "Ohita"
+
+#: staff.item.batch.hold.user_not_found
+msgid "User Not Found"
+msgstr "Käyttäjää ei löydy"

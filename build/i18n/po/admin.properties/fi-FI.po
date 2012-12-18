@@ -1,0 +1,486 @@
+# extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/admin.properties
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-29 09:00+0300\n"
+"PO-Revision-Date: 2012-10-04 14:00+0300\n"
+"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"Language-Team: Finnish <evergreen@jns.fi>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Translate Toolkit 1.9.0\n"
+"X-Accelerator-Marker: &\n"
+"X-Project-Style: mozilla\n"
+
+#: staff.admin.age_overdue_circulations_to_lost.chunks_processed
+msgid "Chunks Processed: %1$s"
+msgstr "Paketteja käsitelty: %1$s"
+
+#: staff.admin.age_overdue_circulations_to_lost.events_created
+msgid "Events Created: %1$s"
+msgstr "Tapahtumia luotu: %1$s"
+
+#: staff.admin.font_settings.sound
+msgid "Sound preference saved to file system."
+msgstr "Ääniasetukset tallennettu tiedostojärjestelmään."
+
+#: staff.admin.font_settings.save
+msgid "Global Font saved to file system."
+msgstr "Yleisfontti tallennettu tiedostojärjestelmään."
+
+#: staff.admin.font_settings.sound.disabled
+msgid "Sound is now disabled."
+msgstr "Äänet ovat nyt pois käytöstä."
+
+#: staff.admin.font_settings.sound.enabled
+msgid "Sound is now enabled."
+msgstr "Äänet ovat nyt käytössä."
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_SMALLER
+msgid "Global Font Adjust set to Smaller than Default"
+msgstr "Yleisfontiksi määritetty pienempi kuin oletus"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT
+msgid "Global Font Adjust set to Default"
+msgstr "Yleisfontiksi määritetty oletusasetus"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_LARGER
+msgid "Global Font Adjust set to Larger than Default"
+msgstr "Yleisfontiksi määritetty suurempi kuin oletus"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_XX_SMALL
+msgid "Global Font set to XX-Small"
+msgstr "Yleisfontiksi määritetty XX-pieni"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_X_SMALL
+msgid "Global Font set to X-Small"
+msgstr "Yleisfontiksi määritetty X-pieni"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_SMALL
+msgid "Global Font set to Small"
+msgstr "Yleisfontiksi määritetty pieni"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_MEDIUM
+msgid "Global Font set to Medium"
+msgstr "Yleisfontiksi määritetty keskikokoinen"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_LARGE
+msgid "Global Font set to Large"
+msgstr "Yleisfontiksi määritetty suuri"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_X_LARGE
+msgid "Global Font set to X-Large"
+msgstr "Yleisfontiksi määritetty X-suuri"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_XX_LARGE
+msgid "Global Font set to XX-Large"
+msgstr "Yleisfontiksi määritetty XX-suuri"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_5PT
+msgid "Global Font set to 5pt"
+msgstr "Yleisfontiksi määritetty 5 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_6PT
+msgid "Global Font set to 6pt"
+msgstr "Yleisfontiksi määritetty 6 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_7PT
+msgid "Global Font set to 7pt"
+msgstr "Yleisfontiksi määritetty 7 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_8PT
+msgid "Global Font set to 8pt"
+msgstr "Yleisfontiksi määritetty 8 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_9PT
+msgid "Global Font set to 9pt"
+msgstr "Yleisfontiksi määritetty 9 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_10PT
+msgid "Global Font set to 10pt"
+msgstr "Yleisfontiksi määritetty 10 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_11PT
+msgid "Global Font set to 11pt"
+msgstr "Yleisfontiksi määritetty 11 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_12PT
+msgid "Global Font set to 12pt"
+msgstr "Yleisfontiksi määritetty 12 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_13PT
+msgid "Global Font set to 13pt"
+msgstr "Yleisfontiksi määritetty 13 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_14PT
+msgid "Global Font set to 14pt"
+msgstr "Yleisfontiksi määritetty 14 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_15PT
+msgid "Global Font set to 15pt"
+msgstr "Yleisfontiksi määritetty 15 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_16PT
+msgid "Global Font set to 16pt"
+msgstr "Yleisfontiksi määritetty 16 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_17PT
+msgid "Global Font set to 17pt"
+msgstr "Yleisfontiksi määritetty 17 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_18PT
+msgid "Global Font set to 18pt"
+msgstr "Yleisfontiksi määritetty 18 pt"
+
+#: staff.admin.toolbar.unsaved_changes
+msgid ""
+"Unsaved changes. Choose either Save Toolbar or Cancel Changes if you wish to "
+"select a different toolbar."
+msgstr ""
+"Tallentamattomia muutoksia. Valitse joko Tallenna työkalupalkki tai Peruuta "
+"muutokset, jos haluat valita eri työkalupalkin."
+
+#: staff.admin.toolbar.tab_name
+msgid "Toolbars"
+msgstr "Työkalupalkit"
+
+#: staff.admin.toolbar.button_id.header
+msgid "Button ID"
+msgstr "Painikkeen ID"
+
+#: staff.admin.toolbar.label.header
+msgid "Label"
+msgstr "Nimi"
+
+#: staff.admin.toolbar.toolbar_separator.list_entry
+msgid "Toolbar Separator"
+msgstr "Työkalupalkin erotin"
+
+#: staff.admin.toolbar.toolbar_spacer.list_entry
+msgid "Toolbar Spacer"
+msgstr "Työkalupalkin tyhjä väli"
+
+#: staff.admin.transit_list.missing_list
+msgid "Missing library list."
+msgstr "Kirjastoluettelo puuttuu."
+
+#: staff.admin.transit_list.no_match
+msgid "No matching transits."
+msgstr "Ei sopivia kuljetuksia."
+
+#: staff.admin.transit_list.invalid_date
+msgid "Invalid Date (%1$s), setting to Today"
+msgstr "Virheellinen päiväys (%1$s), asetetaan tämä päivä"
+
+#: staff.admin.transit_list.invalid_date_format
+msgid "Invalid Date (%1$s,%2$s), setting to Today"
+msgstr "Virheellinen päiväys (%1$s,%2$s), asetetaan tämä päivä"
+
+#: staff.admin.transit_list.date_processing.error
+msgid "error processing date"
+msgstr "virhe päiväyksen käsittelyssä"
+
+#: staff.admin.transit_list.retrieving_transit.error
+msgid "error retrieving transits"
+msgstr "virhe kuljetusten hakemisessa"
+
+#: staff.admin.transit_list.preretrieving_transit.error
+msgid "error pre-retrieving transits"
+msgstr "virhe kuljetusten esihaussa"
+
+#: staff.admin.transit_list.retrieving_row.error
+msgid "error retrieving row"
+msgstr "virhe rivin hakemisessa"
+
+#: staff.admin.transit_list.empty_array.error
+msgid "Empty array returned by hold retrieve."
+msgstr "Varausten haku palautti tyhjän taulukon."
+
+#: staff.admin.transit_list.retrieve_hold.error
+msgid "retrieving hold id = %1$s for transit id = %2$s"
+msgstr "haetaan säilytystunnus = %1$s kuljetustunnukselle = %2$s"
+
+#: staff.admin.transit_list.transit_id.error
+msgid "retrieving transit id = %1$s"
+msgstr "haetaan kuljetustunnus = %1$s"
+
+#: staff.admin.offline_manage_xacts.init_list.organization
+msgid "Organization"
+msgstr "Organisaatio"
+
+#: staff.admin.offline_manage_xacts.init_list.description
+msgid "Description"
+msgstr "Kuvaus"
+
+#: staff.admin.offline_manage_xacts.init_list.date_created
+msgid "Date Created"
+msgstr "Luomispäivä"
+
+#: staff.admin.offline_manage_xacts.init_list.created_by
+msgid "Created By"
+msgstr "Luonut"
+
+#: staff.admin.offline_manage_xacts.init_list.upload_count
+msgid "Upload Count"
+msgstr "Lähetysten määrä"
+
+#: staff.admin.offline_manage_xacts.init_list.transactions_processed
+msgid "Transactions Processed"
+msgstr "Tapahtumia käsitelty"
+
+#: staff.admin.offline_manage_xacts.init_list.processing
+msgid "Processing?"
+msgstr "Käsittelyssä?"
+
+#: staff.admin.offline_manage_xacts.init_list.date_started
+msgid "Date Started"
+msgstr "Aloituspäivä"
+
+#: staff.admin.offline_manage_xacts.init_list.date_completed
+msgid "Date Completed"
+msgstr "Valmistumispäivä"
+
+#: staff.admin.offline_manage_xacts.init_list.session
+msgid "Session"
+msgstr "Istunto"
+
+#: staff.admin.offline_manage_xacts.init_script_list.date_uploaded
+msgid "Date Uploaded"
+msgstr "Lähetyspäivä"
+
+#: staff.admin.offline_manage_xacts.init_script_list.uploaded_by
+msgid "Uploaded By"
+msgstr "Lähettäjä"
+
+#: staff.admin.offline_manage_xacts.init_script_list.time_delta
+msgid "Server/Local Time Delta"
+msgstr "Palvelimen/paikallisen ajan ero"
+
+#: staff.admin.offline_manage_xacts.init_script_list.workstation
+msgctxt "staff.admin.offline_manage_xacts.init_script_list.workstation"
+msgid "Workstation"
+msgstr "Työasema"
+
+#: staff.admin.offline_manage_xacts.init_error_list.workstation
+msgctxt "staff.admin.offline_manage_xacts.init_error_list.workstation"
+msgid "Workstation"
+msgstr "Työasema"
+
+#: staff.admin.offline_manage_xacts.init_error_list.timestamp
+msgid "Timestamp"
+msgstr "Aikaleima"
+
+#: staff.admin.offline_manage_xacts.init_error_list.type
+msgid "Type"
+msgstr "Tyyppi"
+
+#: staff.admin.offline_manage_xacts.init_error_list.event_code
+msgid "Event Code"
+msgstr "Tapahtumakoodi"
+
+#: staff.admin.offline_manage_xacts.init_error_list.event_name
+msgid "Event Name"
+msgstr "Tapahtuman nimi"
+
+#: staff.admin.offline_manage_xacts.init_error_list.event_description
+msgid "Event Description"
+msgstr "Tapahtuman kuvaus"
+
+#: staff.admin.offline_manage_xacts.init_error_list.item_barcode
+msgid "Item Barcode"
+msgstr "Nidetunnus"
+
+#: staff.admin.offline_manage_xacts.init_error_list.patron_barcode
+msgid "Patron Barcode"
+msgstr "Asiakastunnus"
+
+#: staff.admin.offline_manage_xacts.init_error_list.due_date
+msgid "Due Date"
+msgstr "Eräpäivä"
+
+#: staff.admin.offline_manage_xacts.init_error_list.count
+msgid "In House Use Count"
+msgstr "Kirjaston sisäinen käyttö"
+
+#: staff.admin.offline_manage_xacts.init_error_list.noncat
+msgid "Non-Cataloged?"
+msgstr "Ei-luetteloitu?"
+
+#: staff.admin.offline_manage_xacts.init_error_list.noncat_type
+msgid "Non-Cataloged Type"
+msgstr "Ei-luetteloitu tyyppi"
+
+#: staff.admin.offline_manage_xacts.init_error_list.noncat_count
+msgid "Non-Cataloged Count"
+msgstr "Ei-luetteloituja"
+
+#: staff.admin.offline_manage_xacts.init_error_list.backdate
+msgid "Check In Backdate"
+msgstr "Määritä palautuspäivä"
+
+#: staff.admin.offline_manage_xacts.error.check_perm
+msgid "Error checking permissions"
+msgstr "Oikeuksien tarkistus epäonnistui"
+
+#: staff.admin.offline_manage_xacts.error.bad_cgi_response
+msgid "Bad response from CGI component"
+msgstr "Kelvoton vastaus CGI-komponentilta"
+
+#: staff.admin.offline_manage_xacts.error.execute_error
+msgid "Execute error:"
+msgstr "Suoritusvirhe:"
+
+#: staff.admin.offline_manage_xacts.error.session_execute_error
+msgid "Error executing session"
+msgstr "Virhe istunnon suorittamisessa"
+
+#: staff.admin.offline_manage_xacts.error.session_retrieval
+msgid "Error retrieving session errors:"
+msgstr "Virhe istuntovirheiden hakemisessa:"
+
+#: staff.admin.offline_manage_xacts.error.non_existent_file
+msgid "Cannot rename a non-existent file"
+msgstr "Tiedostoa ei löydy, joten sen uudelleennimeäminen ei onnistu"
+
+#: staff.admin.offline_manage_xacts.error.renaming_file
+msgid "Error renaming transaction file"
+msgstr "Virhe tapahtumatiedoston uudelleennimeämisessä"
+
+#: staff.admin.offline_manage_xacts.error.unique_file
+msgid "Taking too long to find a unique filename."
+msgstr "Ainutkertaisen tiedostonimen löytämiseen kului liian kauan."
+
+#: staff.admin.offline_manage_xacts.error.transaction_conflicts
+msgid ""
+"Something bad happened.  New offline transactions were accumulated during "
+"our attempted upload.  Tell your system admin that the file involved is %1$s"
+msgstr ""
+"Järjestelmässä on tapahtunut häiriö.  Uusia offline-tapahtumia kertyi "
+"siirtoyrityksen aikana.  Kerro järjestelmän ylläpitäjälle, että asiaan "
+"liittyvä tiedosto on %1$s"
+
+#: staff.admin.offline_manage_xacts.error.transaction_conflicts.title
+msgid "Transaction conflicts"
+msgstr "Tapahtumaristiriita"
+
+#: staff.admin.offline_manage_xacts.error.transaction_conflicts.ok
+msgid "Ok"
+msgstr "OK"
+
+#: staff.admin.offline_manage_xacts.error.transaction_conflicts.confirm
+msgid "Check here to confirm this message"
+msgstr "Vahvista viesti valitsemalla tämä"
+
+#: staff.admin.offline_manage_xacts.error.reverting_file
+msgid "Error reverting transaction file"
+msgstr "Virhe tapahtumatiedoston palauttamisessa"
+
+#: staff.admin.offline_manage_xacts.error.archiving_file
+msgid "Error archiving transaction file"
+msgstr "Tapahtumatiedoston arkistointi epäonnistui"
+
+#: staff.admin.offline_manage_xacts.session_upload
+msgid "Please select a session to upload to."
+msgstr "Valitse istunto, johon lähetetään."
+
+#: staff.admin.offline_manage_xacts.single_session_upload
+msgid "Please select a single session to upload to."
+msgstr "Valitse yksittäinen istunto, johon lähetetään."
+
+#: staff.admin.offline_manage_xacts.no_transactions
+msgid "No pending transactions to upload."
+msgstr "Ei vireillä olevia tapahtumia lähetettävänä."
+
+#: staff.admin.offline_manage_xacts.error.uploading_file
+msgid "There was an error:"
+msgstr "Virhe:"
+
+#: staff.admin.offline_manage_xacts.error.uploading_transactions
+msgid "Error uploading transactions"
+msgstr "Tapahtumien latausvirhe"
+
+#: staff.admin.offline_manage_xacts.error.retrieving_session
+msgid "Error retrieving session status"
+msgstr "Virhe istunnon tilan hakemisessa"
+
+#: staff.admin.offline_manage_xacts.create_session.prompt
+msgid "Please enter a description:"
+msgstr "Syötä kuvaus:"
+
+#: staff.admin.offline_manage_xacts.create_session
+msgid "Create an Offline Transaction Session"
+msgstr "Luo offline-tapahtumatiedosto"
+
+#: staff.admin.offline_manage_xacts.error.create_session
+msgid "Error creating session"
+msgstr "Virhe istunnon luomisessa"
+
+#: staff.admin.offline_manage_xacts.error.create_session.alert
+msgid "Error: %1$s"
+msgstr "Virhe: %1$s"
+
+#: staff.admin.offline_manage_xacts.error.retrieving_sessions
+msgid "Error retrieving offline sessions."
+msgstr "Virhe offline-istuntojen hakemisessa."
+
+#: staff.admin.offline_manage_xacts.error.rendering_session
+msgid "Error rendering session list"
+msgstr "Virhe istuntoluettelon valmistelussa"
+
+#: staff.admin.offline_manage_xacts.upload_status
+msgid "Uploaded Transactions for %1$s"
+msgstr "Lähetetyt tapahtumat kohteeseen %1$s"
+
+#: staff.admin.offline_manage_xacts.error.rendering_script
+msgid "Error rendering script list"
+msgstr "Virhe skriptiluettelon valmistelussa"
+
+#: staff.admin.offline_manage_xacts.error.rendering_errors
+msgid "Exceptions for %1$s"
+msgstr "Poikkeukset kohteelle %1$s"
+
+#: staff.admin.offline_manage_xacts.error.rendering_error_list
+msgid "Error rendering error list"
+msgstr "Virhe virheluettelon valmistelussa"
+
+#: staff.admin.offline_manage_xacts.completed
+msgid "Completed"
+msgstr "Valmis"
+
+#: staff.admin.offline_manage_xacts.no
+msgid "No"
+msgstr "Ei"
+
+#: staff.admin.offline_manage_xacts.yes
+msgid "Yes"
+msgstr "Kyllä"
+
+#: staff.admin.staff.do_not_auto_attempt_print_setting.update_success
+msgid "Setting updated"
+msgstr "Asetus päivitetty"
+
+#: staff.admin.staff.do_not_auto_attempt_print_setting.update_failure
+msgid "Setting not updated due to error"
+msgstr "Asetusta ei päivitetty virheen vuoksi"
+
+#. # 1 - workstation library shortname   2 - setting library shortname
+#: staff.admin.staff.do_not_auto_attempt_print_setting.current_setting_preamble
+msgid ""
+"Workstation library %1$s is currently suppressing auto-print for these "
+"receipt/slip types based on a setting inherited from %2$s:"
+msgstr ""
+"Työasemakirjasto %1$s estää tällä hetkellä näiden kuitti/liuskatyyppien "
+"automaattisten tulostuksen perustuen kohteesta %2$s perittyyn asetukseen:"
+
+#. # 1 - workstation library shortname
+#: staff.admin.staff.do_not_auto_attempt_print_setting.current_setting_nonexistent
+msgid ""
+"Workstation library %1$s is not currently suppressing auto-print for any "
+"receipt/slip types."
+msgstr ""
+"Työasemakirjasto %1$s ei tällä hetkellä estä minkään kuitti/liuskatyyppin "
+"automaattista tulostusta."

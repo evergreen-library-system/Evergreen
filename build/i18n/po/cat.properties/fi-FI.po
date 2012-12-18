@@ -1,0 +1,2482 @@
+# extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/cat.properties
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-29 09:00+0300\n"
+"PO-Revision-Date: 2012-10-17 11:31+0300\n"
+"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"Language-Team: Finnish <evergreen@jns.fi>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Translate Toolkit 1.9.0\n"
+"X-Accelerator-Marker: &\n"
+"X-Project-Style: mozilla\n"
+
+#: bib.no_marc
+msgid "No MARC Record"
+msgstr "Ei MARC-tietuetta"
+
+#: cat.barcode_for_item
+msgid "The barcode for the item is %1$s"
+msgstr "Nidetunnus on %1$s"
+
+#: cat.batch_operation_failed
+msgid "The whole batch operation failed. %1$s"
+msgstr "Koko erätoiminto epäonnistui. %1$s"
+
+#: cat.copy_buckets.tab
+msgid "Copy Buckets"
+msgstr "Nidesiilot"
+
+#: cat.total_bucket_items_in_bucket
+msgid "Contains %1$s bucket items"
+msgstr "Sisältää %1$s nidettä"
+
+#: cat.results_returned
+msgid "Returning %1$s hits"
+msgstr "Palautetaan %1$s osumaa"
+
+#: staff.cat.bib_brief.record_id
+msgid "Database ID = %1$s"
+msgstr "Tietokannan ID = %1$s"
+
+#: staff.cat.bib_brief.deleted
+msgid "(Deleted)"
+msgstr "(Poistettu)"
+
+#: staff.cat.bib_brief.inactive
+msgid "(Inactive)"
+msgstr "(Ei-aktiivinen)"
+
+#: staff.cat.bib_brief.noncat
+msgid "(Not Cataloged)"
+msgstr "(Ei luetteloitu)"
+
+#: staff.cat.bib_brief.noncat.alert
+msgid "Item not cataloged."
+msgstr "Nidettä ei ole luetteloitu."
+
+#. # %1$s = Bib Record Database ID
+#: staff.cat.manage_multi_bib_items.tab_name
+msgid "Manage Conjoined Items for Bib with DB ID %1$s"
+msgstr ""
+"Hallitse yhteenliitettyjä niteitä bibliografisessa tietueessa (tietokannan "
+"tunnus %1$s)"
+
+#: staff.cat.manage_multi_bib_items.result.column.value.error
+msgid "Error"
+msgstr "Virhe"
+
+#: staff.cat.manage_multi_bib_items.result.column.value.success
+msgid "Success"
+msgstr "Onnistui"
+
+#: staff.cat.manage_multi_bib_items.result.column.value.failed
+msgid "Failed"
+msgstr "Epäonnistui"
+
+#: staff.cat.manage_multi_bib_items.result.column.value.item_linked_to_bib
+msgid "Item linked to bib"
+msgstr "Nide linkitetty bibliografiseen tietueeseen"
+
+#: staff.cat.manage_multi_bib_items.result.column.value.item_native_to_bib
+msgid "Item native to bib"
+msgstr "Nide kuuluu bibliografiseen tietueeseen"
+
+#: staff.cat.manage_multi_bib_items.result.column.value.peer_type_updated
+msgid "Peer Type updated"
+msgstr "Vertaistyyppi päivitetty"
+
+#: staff.cat.manage_multi_bib_items.prompt.title
+msgid "Change Peer Type"
+msgstr "Muuta vertaistyyppiä"
+
+#. # %1$s = Bib Record Database ID
+#: staff.cat.manage_multi_bib_items.prompt.confirm.unlink_item_from_bib.singular
+msgid "Unlink selected item from Bib with DB ID %1$s"
+msgstr ""
+"Poista valitun niteen linkitys bibliografiseen tietueeseen (tietokannan ID %"
+"1$s)"
+
+#. # %1$s = Bib Record Database ID, %2$s = Number of selected items
+#: staff.cat.manage_multi_bib_items.prompt.confirm.unlink_item_from_bib.plural
+msgid "Unlink %2$s selected items from Bib with DB ID %1$s"
+msgstr ""
+"Poista valittujen %2$s niteen linkitys bibliografiseen tietueeseen "
+"(tietokannan ID %1$s)"
+
+#: staff.cat.copy_browser.add_item.title
+msgid "Add Item"
+msgstr "Lisää nide"
+
+#: staff.cat.copy_browser.add_item.error
+msgid "copy browser -> add copies"
+msgstr "nideselain -> lisää niteitä"
+
+#: staff.cat.copy_browser.add_items_bucket.error
+msgid "copy browser -> add copies to bucket"
+msgstr "nideselain -> lisää niteitä siiloon"
+
+#: staff.cat.copy_browser.make_bookable.create_failed_silent
+msgid "No response from server"
+msgstr "Palvelin ei vastaa"
+
+#: staff.cat.copy_browser.make_bookable.create_failed
+msgid ""
+"Error from server: %1$d %2$s\n"
+"%3$s\n"
+"%4$s"
+msgstr ""
+"Palvelinvirhe: %1$d %2$s\n"
+"%3$s\n"
+"%4$s"
+
+#: staff.cat.copy_browser.make_bookable.newtab_failed
+msgid "Could not open new tab"
+msgstr "Uuden välilehden avaus ei onnistunut"
+
+#: staff.cat.copy_browser.make_bookable.newtab_name
+msgid "Resources"
+msgstr "Aineistot"
+
+#: staff.cat.copy_browser.replace_barcode.failed
+msgid "Barcode %1$s not likely replaced."
+msgstr "Tunnusta %1$s ei luultavasti korvattu."
+
+#: staff.cat.copy_browser.replace_barcode.error
+msgid "copy browser -> replace barcode"
+msgstr "nideselain -> korvaa nidetunnus"
+
+#: staff.cat.copy_browser.edit_items.error
+msgid "Copy Browser -> Edit Items"
+msgstr "Nideselain -> Muokkaa niteitä"
+
+#: staff.cat.copy_browser.delete_items.confirm.plural
+msgid "Are you sure you would like to delete these %1$s items?"
+msgstr "Haluatko varmasti poistaa nämä %1$s nidettä?"
+
+#: staff.cat.copy_browser.delete_items.confirm
+msgid "Are you sure you would like to delete this item?"
+msgstr "Haluatko varmasti poistaa tämän niteen?"
+
+#: staff.cat.copy_browser.delete_items.title
+msgid "Delete Items?"
+msgstr "Poistetaanko niteet?"
+
+#: staff.cat.copy_browser.delete_items.delete
+msgctxt "staff.cat.copy_browser.delete_items.delete"
+msgid "Delete"
+msgstr "Poista"
+
+#: staff.cat.copy_browser.delete_items.cancel
+msgctxt "staff.cat.copy_browser.delete_items.cancel"
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: staff.cat.copy_browser.delete_items.override
+msgctxt "staff.cat.copy_browser.delete_items.override"
+msgid "Override Delete Failure?"
+msgstr "Ohitetaanko poistamisen epäonnistuminen?"
+
+#: staff.cat.copy_browser.delete_items.complete
+msgid "Action complete."
+msgstr "Toiminto suoritettu."
+
+#: staff.cat.copy_browser.delete_items.error
+msgid "copy browser -> delete items"
+msgstr "nideselain -> poista niteitä"
+
+#: staff.cat.copy_browser.print_spine.tab
+msgctxt "staff.cat.copy_browser.print_spine.tab"
+msgid "Spine Labels"
+msgstr "Selkätarrat"
+
+#: staff.cat.copy_browser.print_spine.error
+msgid "copy browser -> Spine Labels"
+msgstr "nideselain -> Selkätarrat"
+
+#: staff.cat.copy_browser.add_volume.permission_error
+msgid "You do not have permission to add volumes to that library."
+msgstr "Sinulla ei ole oikeutta lisätä osia valitsemaasi kirjastoon."
+
+#: staff.cat.copy_browser.add_volume.title
+msgid "Add Volume/Item"
+msgstr "Lisää osa/nide"
+
+#: staff.cat.copy_browser.add_volume.error
+msgid "copy browser -> add volumes"
+msgstr "nideselain -> lisää niteitä"
+
+#: staff.cat.edit_volume.permission_error
+msgid "You do not have permission to edit the volume or volumes selected."
+msgstr "Sinulla ei ole oikeutta muokata valitsemaasi nidettä tai niteitä."
+
+#: staff.cat.edit_volume.title
+msgid "Volume"
+msgstr "Nide"
+
+#: staff.cat.edit_volume.title.plural
+msgctxt "staff.cat.edit_volume.title.plural"
+msgid "Volumes"
+msgstr "Vuosikerrat"
+
+#: staff.cat.edit_volumes.override.confirm
+msgid "Override volume re-labeling collision and merge the volumes?"
+msgstr ""
+"Ohitetaanko niteiden uudelleennimeämisten ristiriita ja yhdistetäänkö "
+"niteet?"
+
+#: staff.cat.edit_volumes.label_exists.details
+msgid "%1$s"
+msgstr "%1$s"
+
+#: staff.cat.edit_volume.exception
+msgid "An error occurred while you were trying to edit these volumes."
+msgstr ""
+
+#: staff.cat.copy_browser.can_have_copies.false
+msgid "Records from %1$s cannot have copies."
+msgstr "Tietueisiin kohteesta %1$s ei voi kuulua niteitä."
+
+#: staff.cat.copy_browser.delete_volume.prompt
+msgid "Are you sure you would like to delete this volume?"
+msgstr "Haluatko varmasti poistaa tämän niteen?"
+
+#: staff.cat.copy_browser.delete_volume.prompt.plural
+msgid "Are you sure you would like to delete these %1$s volumes?"
+msgstr "Haluatko varmasti poistaa nämä %1$s nidettä?"
+
+#: staff.cat.copy_browser.delete_volume.title
+msgid "Delete Volumes?"
+msgstr "Poistetaanko osat?"
+
+#: staff.cat.copy_browser.delete_volume.delete
+msgctxt "staff.cat.copy_browser.delete_volume.delete"
+msgid "Delete"
+msgstr "Poista"
+
+#: staff.cat.copy_browser.delete_volume.cancel
+msgctxt "staff.cat.copy_browser.delete_volume.cancel"
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: staff.cat.copy_browser.delete_volume.override
+msgctxt "staff.cat.copy_browser.delete_volume.override"
+msgid "Override Delete Failure?"
+msgstr "Ohitetaanko poistamisen epäonnistuminen?"
+
+#: staff.cat.copy_browser.delete_volume.copies_remain
+msgid ""
+"You must delete all the items on the volume before you may delete the volume "
+"itself."
+msgstr ""
+"Kaikki osaan kuuluvat niteet on poistettava, ennan kuin voit poistaa itse "
+"osan."
+
+#: staff.cat.copy_browser.delete_volume.copies_remain.confirm
+msgid "Delete Volume and Items"
+msgstr "Poista osa ja niteet"
+
+#: staff.cat.copy_browser.delete_volume.copies_remain.cancel
+msgid "Cancel Delete"
+msgstr "Peru poisto"
+
+#: staff.cat.copy_browser.delete_volume.exception
+msgid "copy browser -> delete volumes"
+msgstr "nideselain -> poista osia"
+
+#: staff.cat.copy_browser.mark_library.alert
+msgid "Library + Record marked as Volume Transfer Destination"
+msgstr "Kirjasto ja tietue merkitty osan siirtokohteeksi"
+
+#: staff.cat.copy_browser.mark_library.prompt
+msgid "Choose just one Library to mark as Volume Transfer Destination"
+msgstr "Valitse vain yksi kirjasto nimekkeen siirtokohteeksi"
+
+#: staff.cat.copy_browser.mark_library.title
+msgctxt "staff.cat.copy_browser.mark_library.title"
+msgid "Limit Selection"
+msgstr "Rajoita valintaa"
+
+#: staff.cat.copy_browser.mark_volume.alert
+msgid "Volume marked as Item Transfer Destination"
+msgstr "Nimeke merkitty niteiden siirtokohteeksi"
+
+#: staff.cat.copy_browser.mark_volume.prompt
+msgid "Choose just one Volume to mark as Item Transfer Destination"
+msgstr "Valitse vain yksi nimeke niteen siirtokohteeksi"
+
+#: staff.cat.copy_browser.mark_volume.title
+msgctxt "staff.cat.copy_browser.mark_volume.title"
+msgid "Limit Selection"
+msgstr "Rajoita valintaa"
+
+#: staff.cat.copy_browser.transfer_volume.alert
+msgid ""
+"Please mark a library as the destination from within holdings maintenance "
+"and then try this again."
+msgstr "Merkitse kirjasto kohteeksi kokoelmien hallinnasta ja yritä uudelleen."
+
+#: staff.cat.copy_browser.transfer.prompt
+msgid "Transfer volumes %1$s to library %2$s on the following record?"
+msgstr "Siirretäänkö niteet %1$s kirjastoon %2$s seuraavalla tietueella?"
+
+#: staff.cat.copy_browser.transfer.submit.label
+msgctxt "staff.cat.copy_browser.transfer.submit.label"
+msgid "Transfer"
+msgstr "Siirrä"
+
+#: staff.cat.copy_browser.transfer.cancel.label
+msgctxt "staff.cat.copy_browser.transfer.cancel.label"
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: staff.cat.copy_browser.transfer.cancel.accesskey
+msgctxt "staff.cat.copy_browser.transfer.cancel.accesskey"
+msgid "C"
+msgstr "P"
+
+#: staff.cat.copy_browser.transfer.title
+msgid "Volume Transfer"
+msgstr "Nimekkeiden siirto"
+
+#: staff.cat.copy_browser.transfer.incomplete
+msgctxt "staff.cat.copy_browser.transfer.incomplete"
+msgid "Transfer Aborted"
+msgstr "Siirto peruttu"
+
+#: staff.cat.copy_browser.transfer.override.failure
+msgid "Override Volume Transfer Failure?"
+msgstr "Ohitetaanko nimekkeen siirron epäonnistuminen?"
+
+#: staff.cat.copy_browser.transfer.ineligible_destination
+msgid "That destination cannot have volumes."
+msgstr "Valitsemallasi kohteella ei voi olla nimekkeitä."
+
+#: staff.cat.copy_browser.transfer.success
+msgid "Volumes transferred."
+msgstr "Nimekkeet siirretty."
+
+#: staff.cat.copy_browser.transfer.unexpected_error
+msgid "All volumes not likely transferred."
+msgstr "Kaikkia nimekkeitä ei luultavasti siirretty."
+
+#: staff.cat.copy_browser.transfer_items.missing_volume
+msgctxt "staff.cat.copy_browser.transfer_items.missing_volume"
+msgid ""
+"Please mark a volume as the destination from within holdings maintenance and "
+"then try this again."
+msgstr "Merkitse nide kohteeksi varaustenhallinnasta ja yritä sitten uudelleen."
+
+#: staff.cat.copy_browser.transfer_items.unexpected_error
+msgid "All copies not likely transferred."
+msgstr "Kaikki niteita ei luultavasti siirretty."
+
+#: staff.cat.copy_browser.link_as_multi_bib.missing_bib
+msgid ""
+"Please Mark a bib record as a Target for Conjoined Items and try this again."
+msgstr ""
+"Merkitse bibliografinen tietue yhteenliitettyjen niteiden kohteeksi ja yritä "
+"uudelleen."
+
+#: staff.cat.copy_browser.missing_library
+msgid "Missing library list."
+msgstr "Kirjastoluettelo puuttuu."
+
+#: staff.cat.copy_browser.consortial_copy_count.error
+msgid "Error retrieving consortial copy count."
+msgstr "Virhe haettaessa seutukirjaston niteiden kokonaismäärää."
+
+#: staff.cat.copy_browser.list_init.tree_location
+msgid "Location/Barcode"
+msgstr "Sijainti/tunnus"
+
+#: staff.cat.copy_browser.list_init.volume_count
+msgctxt "staff.cat.copy_browser.list_init.volume_count"
+msgid "Volumes"
+msgstr "Vuosikerrat"
+
+#: staff.cat.copy_browser.list_init.copy_count
+msgid "Copies"
+msgstr "Niteet"
+
+#: staff.cat.copy_browser.actions.error
+msgid "Copy Browser Actions"
+msgstr "Nideselaimen toiminnot"
+
+#: staff.cat.copy_browser.refresh_list.error
+msgid "Problem refreshing the volume/copy tree."
+msgstr "Virhe päivitettäessä nimeke-/nidepuuta."
+
+#: staff.cat.copy_buckets.render_pending_copies.complete
+msgctxt "staff.cat.copy_buckets.render_pending_copies.complete"
+msgid "Action completed."
+msgstr "Toiminto suoritettu."
+
+#: staff.cat.copy_buckets.retrieve_row.error
+msgid "Error retrieving details for item with copy id = %1$s"
+msgstr "Virhe haettaessa tietoja nidetunnukselle = %1$s"
+
+#: staff.cat.copy_buckets.menulist.render.choose_bucket
+msgctxt "staff.cat.copy_buckets.menulist.render.choose_bucket"
+msgid "Choose a bucket..."
+msgstr "Valitse siilo..."
+
+#: staff.cat.copy_buckets.menulist.render.retrieve_bucket
+msgctxt "staff.cat.copy_buckets.menulist.render.retrieve_bucket"
+msgid "Retrieve shared bucket..."
+msgstr "Hae jaettu siilo..."
+
+#: staff.cat.copy_buckets.menulist.change_bucket.prompt
+msgctxt "staff.cat.copy_buckets.menulist.change_bucket.prompt"
+msgid "Enter bucket number:"
+msgstr "Syötä siilon numero:"
+
+#: staff.cat.copy_buckets.menulist.change_bucket.undefined
+msgctxt "staff.cat.copy_buckets.menulist.change_bucket.undefined"
+msgid "Could not find a bucket with ID = %1$s"
+msgstr "Siiloa tunnuksella = %1$s ei löydy"
+
+#: staff.cat.copy_buckets.menulist.change_bucket.error
+msgid "Error retrieving bucket.  Did you use a valid bucket id?"
+msgstr "Virhe siilon haussa. Annoitko kelvollisen siilotunnuksen?"
+
+#: staff.cat.copy_buckets.copy_buckets_add.error
+msgctxt "staff.cat.copy_buckets.copy_buckets_add.error"
+msgid "Addition likely failed."
+msgstr "Lisäys luultavasti epäonnistui."
+
+#: staff.cat.copy_buckets.copy_buckets_sel_add.error
+msgctxt "staff.cat.copy_buckets.copy_buckets_sel_add.error"
+msgid "Addition likely failed."
+msgstr "Lisäys luultavasti epäonnistui."
+
+#: staff.cat.copy_buckets.copy_buckets_delete_item.error
+msgid "Deletion likely failed."
+msgstr "Poistaminen luultavasti epäonnistui."
+
+#: staff.cat.copy_buckets.copy_buckets_delete_item.complete
+msgctxt "staff.cat.copy_buckets.copy_buckets_delete_item.complete"
+msgid "Action completed."
+msgstr "Toiminto suoritettu."
+
+#: staff.cat.copy_buckets.copy_buckets_delete_bucket.confirm
+msgctxt "staff.cat.copy_buckets.copy_buckets_delete_bucket.confirm"
+msgid "Delete the bucket named %1$s?"
+msgstr "Poistetaanko siilo %1$s?"
+
+#: staff.cat.copy_buckets.copy_buckets_delete_bucket.complete
+msgctxt "staff.cat.copy_buckets.copy_buckets_delete_bucket.complete"
+msgid "Action completed."
+msgstr "Toiminto suoritettu."
+
+#: staff.cat.copy_buckets.copy_buckets_delete_bucket.error
+msgid "Bucket deletion likely failed."
+msgstr "Siilon poisto luultavasti epäonnistui."
+
+#: staff.cat.copy_buckets.copy_buckets_new_bucket.prompt
+msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.prompt"
+msgid "What would you like to name the bucket?"
+msgstr "Kuinka haluat nimetä uuden siilon?"
+
+#: staff.cat.copy_buckets.copy_buckets_new_bucket.title
+msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.title"
+msgid "Bucket Creation"
+msgstr "Siilon luominen"
+
+#: staff.cat.copy_buckets.copy_buckets_new_bucket.container_exists
+msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.container_exists"
+msgid "You already have a bucket with that name."
+msgstr "Sinulla on jo samanniminen siilo."
+
+#: staff.cat.copy_buckets.copy_buckets_new_bucket.success
+msgid "Bucket \"%1$s\" created."
+msgstr "Siilo \"%1$s luotu\"."
+
+#: staff.cat.copy_buckets.copy_buckets_new_bucket.error
+msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.error"
+msgid "Bucket creation failed."
+msgstr "Siilon luominen epäonnistui."
+
+#: staff.cat.copy_buckets.batch.error
+msgid "Batch Item Deletion"
+msgstr "Niteiden poistaminen erissä"
+
+#: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.no_volume
+msgid ""
+"Please mark a volume as the destination from within the copy browser and "
+"then try this again."
+msgstr "Merkitse nimeke kohteeksi nideselaimesta ja yritä uudelleen."
+
+#: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.confirm
+msgid ""
+"Transfer the items in bucket \"%1$s\" from their original volumes to the "
+"volume labelled \"%2$s\" for the library \"%3$s\" on the following record?"
+msgstr ""
+"Siirretäänkö siilon \"%1$s\" niteet alkuperäisestä sijainnista kirjaston \"%"
+"3$s\" nimikkeeseen \"%2$s\" seuraavalla tietueella?"
+
+#: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.error
+msgid "Items not likely transferred."
+msgstr "Niteitä ei luultavasti siirretty."
+
+#: staff.cat.copy_buckets.cmd_export_to_copy_status.error
+msgid "Copy Status from Copy Buckets"
+msgstr "Niteen tila nidesiiloissa"
+
+#: staff.cat.copy_buckets.prep_item_for_list.error
+msgid "List building failed."
+msgstr "Luettelon luominen epäonnistui."
+
+#: staff.cat.copy_buckets_quick.bucket_prompt
+msgid "Copy this item into which bucket?"
+msgstr "Mihin siiloon nide kopioidaan?"
+
+#: staff.cat.copy_buckets_quick.bucket_prompt.plural
+msgctxt "staff.cat.copy_buckets_quick.bucket_prompt.plural"
+msgid "Copy these %1$s items into which bucket?"
+msgstr "Mihin siiloon nämä %1$s nidettä kopioidaan?"
+
+#: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.prompt
+msgctxt "staff.cat.copy_buckets_quick.copy_buckets_new_bucket.prompt"
+msgid "What would you like to name the bucket?"
+msgstr "Kuinka haluat nimetä uuden siilon?"
+
+#: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.title
+msgctxt "staff.cat.copy_buckets_quick.copy_buckets_new_bucket.title"
+msgid "Bucket Creation"
+msgstr "Siilon luominen"
+
+#: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.error
+msgctxt "staff.cat.copy_buckets_quick.copy_buckets_new_bucket.error"
+msgid "Bucket creation failed."
+msgstr "Siilon luominen epäonnistui."
+
+#: staff.cat.copy_buckets_quick.addition.error
+msgid "Addition likely failed for bucket = %1$s and copy ID = %2$s."
+msgstr "Lisäys siiloon = %1$s nidetunnuksella = %1$s luultavasti epäonnistui."
+
+#: staff.cat.copy_editor.caption
+msgid "Copy Editor"
+msgstr "Niteenmuokkaustyökalu"
+
+#: staff.cat.copy_editor.create_copies
+msgid "Modify/Create Copies"
+msgstr "Muokkaa/luo niteitä"
+
+#: staff.cat.copy_editor.create_copies.accesskey
+msgid "M"
+msgstr "M"
+
+#: staff.cat.copy_editor.copy_notes
+msgid "Copy Notes"
+msgstr "Nidehuomautukset"
+
+#: staff.cat.copy_editor.status
+msgid "Status"
+msgstr "Tila"
+
+#: staff.cat.copy_editor.retrieve_templates.error
+msgid "Error retrieving templates"
+msgstr "Virhe luettelointipohjien haussa"
+
+#: staff.cat.copy_editor.apply_templates.error
+msgid "Error applying template"
+msgstr "Virhe luettelointipohjan käyttöönotossa"
+
+#: staff.cat.copy_editor.save_as_template.prompt
+msgid "Enter template name:"
+msgstr "Syötä luettelointipohjan nimi:"
+
+#: staff.cat.copy_editor.save_as_template.title
+msgid "Save As Template"
+msgstr "Tallenna luettelointipohjana"
+
+#: staff.cat.copy_editor.save_as_template.success
+msgid "Template \"%1$s\" saved."
+msgstr "Luettelointipohja \"%1$s\" tallennettu."
+
+#: staff.cat.copy_editor.save_as_template.error
+msgid "Error saving template"
+msgstr "Virhe luettelointipohjan tallennuksessa"
+
+#: staff.cat.copy_editor.delete_template.confirm
+msgid "Delete template \"%1$s\"?"
+msgstr "Poistetaanko luettelointipohja \"%1$s\"?"
+
+#: staff.cat.copy_editor.delete_template.success
+msgid "Template \"%1$s\" deleted."
+msgstr "Luettelointipohja \"%1$s\" poistettu."
+
+#: staff.cat.copy_editor.delete_template.error
+msgid "Error deleting template"
+msgstr "Virhe luettelointipohjan poistamisessa"
+
+#: staff.cat.copy_editor.export_templates.title
+msgid "Save Templates File As"
+msgstr "Tallenna luettelointipohjatiedosto nimellä"
+
+#: staff.cat.copy_editor.export_templates.error
+msgid "Error exporting templates"
+msgstr "Virhe luettelointipohjien viennissä"
+
+#: staff.cat.copy_editor.import_templates.title
+msgid "Import Templates File"
+msgstr "Tuo luettelointipohjatiedosto"
+
+#: staff.cat.copy_editor.import_templates.replace.prompt
+msgid "Replace the existing template with the imported template?"
+msgstr "Korvataanko olemassaoleva luettelointipohja tuodulla pohjalla?"
+
+#: staff.cat.copy_editor.import_templates.replace.title
+msgid "Template %1$s already exists."
+msgstr "Luettelointipohja %1$s on jo olemassa."
+
+#: staff.cat.copy_editor.import_templates.replace.yes
+msgctxt "staff.cat.copy_editor.import_templates.replace.yes"
+msgid "Yes"
+msgstr "Kyllä"
+
+#: staff.cat.copy_editor.import_templates.replace.no
+msgctxt "staff.cat.copy_editor.import_templates.replace.no"
+msgid "No"
+msgstr "Ei"
+
+#: staff.cat.copy_editor.import_templates.replace.click_here
+msgctxt "staff.cat.copy_editor.import_templates.replace.click_here"
+msgid "Click here"
+msgstr "Napsauta tästä"
+
+#: staff.cat.copy_editor.import_templates.save.prompt
+msgid "Save all of these imported templates permanently to this account?"
+msgstr "Talletetaanko kaikki tuodut luettelointipohjat pysyvästi tälle tilille?"
+
+#: staff.cat.copy_editor.import_templates.save.title
+msgid "Final warning"
+msgstr "Viimeinen varoitus"
+
+#: staff.cat.copy_editor.import_templates.save.yes
+msgctxt "staff.cat.copy_editor.import_templates.save.yes"
+msgid "Yes"
+msgstr "Kyllä"
+
+#: staff.cat.copy_editor.import_templates.save.no
+msgctxt "staff.cat.copy_editor.import_templates.save.no"
+msgid "No"
+msgstr "Ei"
+
+#: staff.cat.copy_editor.import_templates.save.click_here
+msgctxt "staff.cat.copy_editor.import_templates.save.click_here"
+msgid "Click here"
+msgstr "Napsauta tästä"
+
+#: staff.cat.copy_editor.import_templates.save.success
+msgid "All templates saved."
+msgstr "Kaikki luettelointipohjat tallennettu."
+
+#: staff.cat.copy_editor.import_templates.save.error
+msgid "Error saving templates"
+msgstr "Virhe luettelointipohjien tallennuksessa"
+
+#: staff.cat.copy_editor.import_templates.note
+msgid ""
+"Note: These imported templates will get saved along with any new template "
+"you try to create, but if that does not happen, then these templates will "
+"disappear with the next invocation of the item attribute editor."
+msgstr ""
+"Huomaa: Nämä tuodut luettelointipohjat tallennetaan yhdessä kaikkien "
+"luomiesi uusien luettelointipohjien kanssa, mutta jos niin ei tapahdu, nämä "
+"luettelointipohjat katoavat, kun nidemääritteiden muokkaustyökalua käytetään "
+"seuraavan kerran."
+
+#: staff.cat.copy_editor.import_templates.error
+msgid "Error importing templates"
+msgstr "Virhe luettelopohjien tuonnissa"
+
+#: staff.cat.copy_editor.apply_unsafe_field
+msgid "Template tried to change field '%1$s', which is not allowed currently."
+msgstr ""
+"Luettelointipohja yritti muuttaa kenttää '%1$s', mikä ei tällä hetkellä ole "
+"sallittua."
+
+#: staff.cat.copy_editor.apply_owning_lib.undefined_volume.error
+msgid ""
+"Error retrieving Volume information for copy %1$s.  The owning library for "
+"this copy will not be changed."
+msgstr ""
+"Virhe haettaessa tietoja niteelle %1$s. Niteen kotikirjastoa ei vaihdeta."
+
+#: staff.cat.copy_editor.apply_owning_lib.call_number.error
+msgid ""
+"Error changing owning library for copy %1$s.  The owning library for this "
+"copy will not be changed."
+msgstr ""
+"Virhe vaihdettaessa niteen %1$s kotikirjastoa. Niteen kotikirjastoa ei "
+"vaihdeta."
+
+#: staff.cat.copy_editor.copy_count
+msgid "1 copy"
+msgstr "1 nide"
+
+#: staff.cat.copy_editor.copy_count.plural
+msgid "%1$s copies"
+msgstr "%1$s nidettä"
+
+#: staff.cat.copy_editor.apply.label
+msgctxt "staff.cat.copy_editor.apply.label"
+msgid "Apply"
+msgstr "Hyväksy"
+
+#: staff.cat.copy_editor.apply.accesskey
+msgctxt "staff.cat.copy_editor.apply.accesskey"
+msgid "A"
+msgstr "O"
+
+#: staff.cat.copy_editor.cancel.label
+msgctxt "staff.cat.copy_editor.cancel.label"
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: staff.cat.copy_editor.handle_update.error
+msgid "copy update error:"
+msgstr "kopion päivitysvirhe:"
+
+#: staff.cat.copy_editor.add_stat_cat.error
+msgid "Error adding statistical category to display definition"
+msgstr "Virhe lisättäessä tilastokategoriaa näyttömääritelmään"
+
+#: staff.cat.copy_editor.populate_stat_cat.error
+msgid "Error populating statistical categories for display"
+msgstr "Virhe täytettäessä tilastokategorioita näyttöä varten"
+
+#: staff.cat.copy_editor.remove_stat_cat_entry
+msgid "<Remove Stat Cat>"
+msgstr "<Poista tilastokategoria>"
+
+#: staff.cat.copy_editor.remove_age_based_hold_protection
+msgid "<Remove Protection>"
+msgstr "<Poista suojaus>"
+
+#: staff.cat.copy_editor.remove_circulate_as_type
+msgid "<Remove Circulate as Type>"
+msgstr "<Poista lainaa tyyppinä>"
+
+#: staff.cat.copy_editor.field.unset_or_null
+msgctxt "staff.cat.copy_editor.field.unset_or_null"
+msgid "<Unset>"
+msgstr "<Määrittämätön>"
+
+#: staff.cat.copy_editor.field.owning_library.label
+msgid "Owning Lib : Call Number"
+msgstr "Kotikirjasto : Hyllypaikka"
+
+#: staff.cat.copy_editor.field.creator.label
+msgid "Creator"
+msgstr "Luonut"
+
+#: staff.cat.copy_editor.field.last_editor.label
+msgid "Last Editor"
+msgstr "Viimeisin muokkaaja"
+
+#: staff.cat.copy_editor.field.barcode.label
+msgid "Barcode"
+msgstr "Nidetunnus"
+
+#: staff.cat.copy_editor.field.creation_date.label
+msgid "Creation Date"
+msgstr "Luomispäivä"
+
+#: staff.cat.copy_editor.field.active_date.label
+msgid "Active Date"
+msgstr "Aktiivinen"
+
+#: staff.cat.copy_editor.field.last_edit_date.label
+msgid "Last Edit Date"
+msgstr "Viimeisin muokkauspäivä"
+
+#: staff.cat.copy_editor.field.location.label
+msgid "Location/Collection"
+msgstr "Sijainti/kokoelma"
+
+#: staff.cat.copy_editor.field.circulation_library.label
+msgid "Circulation Library"
+msgstr "Kotiosasto"
+
+#: staff.cat.copy_editor.field.copy_number.label
+msgid "Copy Number"
+msgstr "Nidenumero"
+
+#: staff.cat.copy_editor.field.circulate.label
+msgid "Circulate?"
+msgstr "Lainattavissa?"
+
+#: staff.cat.copy_editor.field.circulate.yes_or_true
+msgctxt "staff.cat.copy_editor.field.circulate.yes_or_true"
+msgid "Yes"
+msgstr "Kyllä"
+
+#: staff.cat.copy_editor.field.circulate.no_or_false
+msgctxt "staff.cat.copy_editor.field.circulate.no_or_false"
+msgid "No"
+msgstr "Ei"
+
+#: staff.cat.copy_editor.field.holdable.label
+msgid "Holdable?"
+msgstr "Varattavissa?"
+
+#: staff.cat.copy_editor.field.holdable.yes_or_true
+msgctxt "staff.cat.copy_editor.field.holdable.yes_or_true"
+msgid "Yes"
+msgstr "Kyllä"
+
+#: staff.cat.copy_editor.field.holdable.no_or_false
+msgctxt "staff.cat.copy_editor.field.holdable.no_or_false"
+msgid "No"
+msgstr "Ei"
+
+#: staff.cat.copy_editor.field.floating.label
+msgid "Floating?"
+msgstr "Kelluva?"
+
+#: staff.cat.copy_editor.field.floating.yes_or_true
+msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
+msgid "Yes"
+msgstr "Kyllä"
+
+#: staff.cat.copy_editor.field.floating.no_or_false
+msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
+msgid "No"
+msgstr "Ei"
+
+#: staff.cat.copy_editor.field.age_based_hold_protection.label
+msgid "Age-based Hold Protection"
+msgstr "Aikaan perustuva varaussuoja"
+
+#: staff.cat.copy_editor.field.loan_duration.label
+msgid "Loan Duration"
+msgstr "Laina-aika"
+
+#: staff.cat.copy_editor.field.loan_duration.short
+msgid "Short"
+msgstr "Lyhyt"
+
+#: staff.cat.copy_editor.field.loan_duration.normal
+msgctxt "staff.cat.copy_editor.field.loan_duration.normal"
+msgid "Normal"
+msgstr "Normaali"
+
+#: staff.cat.copy_editor.field.loan_duration.extended
+msgid "Long"
+msgstr "Pitkä"
+
+#: staff.cat.copy_editor.field.fine_level.label
+msgid "Fine Level"
+msgstr "Maksutaso"
+
+#: staff.cat.copy_editor.field.fine_level.low
+msgid "Low"
+msgstr "Matala"
+
+#: staff.cat.copy_editor.field.fine_level.normal
+msgctxt "staff.cat.copy_editor.field.fine_level.normal"
+msgid "Normal"
+msgstr "Normaali"
+
+#: staff.cat.copy_editor.field.fine_level.high
+msgid "High"
+msgstr "Korkea"
+
+#: staff.cat.copy_editor.field.circulate_as_type.label
+msgid "Circulate as Type"
+msgstr "Lainaa tyyppinä"
+
+#: staff.cat.copy_editor.field.circulation_modifier.label
+msgid "Circulation Modifier"
+msgstr "Lainausmäärite"
+
+#: staff.cat.copy_editor.field.alert_message.label
+msgid "Alert Message"
+msgstr "Varoitusviesti"
+
+#: staff.cat.copy_editor.field.deposit.label
+msgid "Deposit?"
+msgstr "Talletus?"
+
+#: staff.cat.copy_editor.field.deposit.yes_or_true
+msgctxt "staff.cat.copy_editor.field.deposit.yes_or_true"
+msgid "Yes"
+msgstr "Kyllä"
+
+#: staff.cat.copy_editor.field.deposit.no_or_false
+msgctxt "staff.cat.copy_editor.field.deposit.no_or_false"
+msgid "No"
+msgstr "Ei"
+
+#: staff.cat.copy_editor.field.deposit_amount.label
+msgid "Deposit Amount"
+msgstr "Talletusmäärä"
+
+#: staff.cat.copy_editor.field.price.label
+msgid "Price"
+msgstr "Hinta"
+
+#: staff.cat.copy_editor.field.opac_visible.label
+msgid "OPAC Visible?"
+msgstr "Näkyy verkkokirjastossa?"
+
+#: staff.cat.copy_editor.field.opac_visible.yes_or_true
+msgctxt "staff.cat.copy_editor.field.opac_visible.yes_or_true"
+msgid "Yes"
+msgstr "Kyllä"
+
+#: staff.cat.copy_editor.field.opac_visible.no_or_false
+msgctxt "staff.cat.copy_editor.field.opac_visible.no_or_false"
+msgid "No"
+msgstr "Ei"
+
+#: staff.cat.copy_editor.field.reference.label
+msgid "Reference?"
+msgstr "Viite?"
+
+#: staff.cat.copy_editor.field.reference.yes_or_true
+msgctxt "staff.cat.copy_editor.field.reference.yes_or_true"
+msgid "Yes"
+msgstr "Kyllä"
+
+#: staff.cat.copy_editor.field.reference.no_or_false
+msgctxt "staff.cat.copy_editor.field.reference.no_or_false"
+msgid "No"
+msgstr "Ei"
+
+#: staff.cat.copy_editor.field.mint_condition.label
+msgid "Quality"
+msgstr "Laatu"
+
+#: staff.cat.copy_editor.field.mint_condition.yes_or_true
+msgid "Good"
+msgstr "Hyvä"
+
+#: staff.cat.copy_editor.field.mint_condition.no_or_false
+msgid "Mediocre"
+msgstr "Kohtalainen"
+
+#: staff.cat.copy_notes.render_notes.label
+msgid "Add New Note"
+msgstr "Lisää uusi huomautus"
+
+#: staff.cat.copy_notes.render_notes.accesskey
+msgctxt "staff.cat.copy_notes.render_notes.accesskey"
+msgid "A"
+msgstr "L"
+
+#: staff.cat.copy_notes.widgets_apply.note_id
+msgid "Note ID:"
+msgstr "Huomautustunnus:"
+
+#: staff.cat.copy_notes.widgets_apply.creator_id
+msgid "Creator ID:"
+msgstr "Luojatunnus:"
+
+#: staff.cat.copy_notes.widgets.public
+msgid "Public"
+msgstr "Julkinen"
+
+#: staff.cat.copy_notes.widgets.private
+msgid "Private"
+msgstr "Yksityinen"
+
+#: staff.cat.copy_notes.delete_note.label
+msgid "Delete This Note"
+msgstr "Poista tämä huomautus"
+
+#: staff.cat.copy_notes.delete_note.prompt.msg
+msgid "Delete the note titled \"%1$s\" created on %2$s?"
+msgstr "Poistetaanko huomautus \"%1$s\", joka on luotu %2$s?"
+
+#: staff.cat.copy_notes.delete_note.prompt.title
+msgid "Delete Note"
+msgstr "Poista huomautus"
+
+#: staff.cat.copy_notes.delete_note.prompt.yes
+msgctxt "staff.cat.copy_notes.delete_note.prompt.yes"
+msgid "Yes"
+msgstr "Kyllä"
+
+#: staff.cat.copy_notes.delete_note.prompt.no
+msgctxt "staff.cat.copy_notes.delete_note.prompt.no"
+msgid "No"
+msgstr "Ei"
+
+#: staff.cat.copy_notes.delete_note.success
+msgid "Note deleted."
+msgstr "Huomautus poistettu."
+
+#: staff.cat.copy_notes.delete_note.close_window
+msgid "Close Window"
+msgstr "Sulje ikkuna"
+
+#: staff.cat.copy_notes.delete_note.close_window.accesskey
+msgid "W"
+msgstr "W"
+
+#: staff.cat.copy_notes.new_note.label
+msgid "New Note"
+msgstr "Uusi huomautus"
+
+#: staff.cat.copy_notes.new_note.public
+msgid "Public?"
+msgstr "Julkinen?"
+
+#: staff.cat.copy_notes.new_note.title
+msgid "Title"
+msgstr "Nimeke"
+
+#: staff.cat.copy_notes.new_note.note
+msgid "Note"
+msgstr "Huomautus"
+
+#: staff.cat.copy_notes.new_note.initials
+msgid "Initials"
+msgstr "Nimikirjaimet"
+
+#: staff.cat.copy_notes.new_note.cancel.label
+msgctxt "staff.cat.copy_notes.new_note.cancel.label"
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: staff.cat.copy_notes.new_note.cancel.accesskey
+msgctxt "staff.cat.copy_notes.new_note.cancel.accesskey"
+msgid "C"
+msgstr "P"
+
+#: staff.cat.copy_notes.new_note.add_note.label
+msgid "Add Note"
+msgstr "Lisää huomautus"
+
+#: staff.cat.copy_notes.new_note.add_note.accesskey
+msgctxt "staff.cat.copy_notes.new_note.add_note.accesskey"
+msgid "A"
+msgstr "L"
+
+#: staff.cat.copy_notes.new_note.error
+msgid "The note was not likely created."
+msgstr "Huomautusta ei luultavasti luotu."
+
+#: staff.cat.copy_summary.copy_id
+msgid "Copy ID = %1$s"
+msgstr "Niteen tunnus = %1$s"
+
+#: staff.cat.copy_summary.total_circs.label
+msgid "Total Circs"
+msgstr "Lainauksia yhteensä"
+
+#: staff.cat.copy_summary.yes
+msgctxt "staff.cat.copy_summary.yes"
+msgid "Yes"
+msgstr "Kyllä"
+
+#: staff.cat.copy_summary.no
+msgctxt "staff.cat.copy_summary.no"
+msgid "No"
+msgstr "Ei"
+
+#: staff.cat.copy_summary.unset
+msgctxt "staff.cat.copy_summary.unset"
+msgid "<Unset>"
+msgstr "<Määrittämätön>"
+
+#: staff.cat.copy_summary.not_cataloged
+msgid "Not Cataloged"
+msgstr "Ei luetteloitu"
+
+#: staff.cat.marcedit.authority_see_also
+msgid "See also: %1$s"
+msgstr "Katso myös: %1$s"
+
+#: staff.cat.marcedit.authority_see_from
+msgid "See from: %1$s"
+msgstr "Katso kohteesta: %1$s"
+
+#: staff.cat.marcedit.help.add_row
+msgid "Add Row: CTRL+Enter"
+msgstr "Lisää rivi loppuun: CTRL+Enter"
+
+#: staff.cat.marcedit.help.insert_row
+msgid "Insert Row: CTRL+Shift+Enter"
+msgstr "Lisää rivi väliin: CTRL+Shift+Enter"
+
+#: staff.cat.marcedit.help.copy_row_up
+msgid "Copy Current Row Above: CTRL+Up"
+msgstr "Kopioi nykyinen rivi ylle: CTRL+Ylös"
+
+#: staff.cat.marcedit.help.copy_row_down
+msgid "Copy Current Row Below: CTRL+Down"
+msgstr "Kopioi nykyinen rivi alle: CTRL+Alas"
+
+#: staff.cat.marcedit.help.add_subfield
+msgid "Add Subfield: CTRL+D (CTRL+I on Mac OS X)"
+msgstr "Lisää alakenttä: CTRL+D (CTRL+I Mac OS X:lla)"
+
+#: staff.cat.marcedit.help.remove_row
+msgid "Remove Row: CTRL+Del"
+msgstr "Poista rivi: CTRL+Del"
+
+#: staff.cat.marcedit.help.remove_subfield
+msgid "Remove Subfield: SHIFT+Del"
+msgstr "Poista alakenttä: SHIFT+Del"
+
+#: staff.cat.marcedit.help.replace_006
+msgid "Create/Replace 006: CTRL+F6"
+msgstr "Luo/korvaa 006: CTRL+F6"
+
+#: staff.cat.marcedit.help.replace_007
+msgid "Create/Replace 007: CTRL+F7"
+msgstr "Luo/korvaa 007: CTRL+F7"
+
+#: staff.cat.marcedit.help.replace_008
+msgid "Create/Replace 008: CTRL+F8"
+msgstr "Luo/korvaa 008: CTRL+F8"
+
+#: staff.cat.marcedit.save.label
+msgid "Save Record"
+msgstr "Tallenna tietue"
+
+#: staff.cat.marcedit.marcTag.LDR.label
+msgid "MARC Leader"
+msgstr "MARC-nimiö"
+
+#: staff.cat.marcedit.add_row.label
+msgid "Add Row"
+msgstr "Lisää rivi loppuun"
+
+#: staff.cat.marcedit.insert_row.label
+msgid "Insert Row"
+msgstr "Lisää rivi väliin"
+
+#: staff.cat.marcedit.remove_row.label
+msgid "Remove Row"
+msgstr "Poista rivi"
+
+#: staff.cat.marcedit.replace_006.label
+msgid "Add/Replace 006"
+msgstr "Lisää/korvaa 006"
+
+#: staff.cat.marcedit.replace_007.label
+msgid "Add/Replace 007"
+msgstr "Lisää/korvaa 007"
+
+#: staff.cat.marcedit.replace_008.label
+msgid "Add/Replace 008"
+msgstr "Lisää/korvaa 008"
+
+#: staff.cat.marcedit.not_authority_field.label
+msgid "Not a controlled subfield"
+msgstr "Ei hallittu alakenttä"
+
+#: staff.cat.marcedit.apply_full.label
+msgid "Apply Full Authority (1XX)"
+msgstr "Anna täysi auktoriteetti (1XX)"
+
+#: staff.cat.marcedit.apply_selected.label
+msgid "Apply Selected"
+msgstr "Ota käyttöön valitut"
+
+#: staff.cat.marcedit.no_authority_match.label
+msgid "No matching authority records found"
+msgstr "Osuvia auktoriteettitietueita ei löytynyt"
+
+#: staff.cat.marcedit.next_page.label
+msgid "Next page"
+msgstr "Seuraava sivu"
+
+#: staff.cat.marcedit.previous_page.label
+msgid "Previous page"
+msgstr "Edellinen sivu"
+
+#: staff.cat.marcedit.create_authority.label
+msgid "Create New Authority from this Field"
+msgstr "Luo kentästä uusi auktoriteetti"
+
+#: staff.cat.marcedit.create_authority_now.label
+msgid "Create Immediately"
+msgstr "Luo välittömästi"
+
+#: staff.cat.marcedit.create_authority_success.label
+msgid "Created new authority record"
+msgstr "Uusi auktoriteettitietue luotiin"
+
+#: staff.cat.marcedit.create_authority_edit.label
+msgid "Create and Edit..."
+msgstr "Luo ja muokkaa..."
+
+#: staff.cat.marc_new.tab_name
+msgid "MARC Template"
+msgstr "MARC-luettelointipohja"
+
+#: staff.cat.marc_new.create_record.label
+msgid "Create Record"
+msgstr "Luo tietue"
+
+#: staff.cat.marc_new.system_local.label
+msgid "System Local"
+msgstr "Järjestelmän paikallinen"
+
+#: staff.cat.marc_new.retrieving.label
+msgctxt "staff.cat.marc_new.retrieving.label"
+msgid "Retrieving title..."
+msgstr "Haetaan nimekettä..."
+
+#: staff.cat.marc_new.creating_record.error
+msgid "Error creating MARC record."
+msgstr "Virhe MARC-tietueen luomisessa."
+
+#: staff.cat.marc_new.loading_template.error
+msgid "Error loading MARC template: %1$s"
+msgstr "Virhe MARC-luettelointipohjan latauksessa: %1$s"
+
+#: staff.cat.marc_new.set_default.error
+msgid "Error setting default MARC template: %1$s"
+msgstr "Virhe MARC-oletusluettelointipohjan määrityksessä: %1$s"
+
+#: staff.cat.marc_new.set_default.success
+msgid "Default template set to %1$s"
+msgstr "Oletusluettelointipohjaksi määritetty %1$s"
+
+#: staff.cat.opac.set_marc_edit.alert
+msgid "Record successfully saved."
+msgstr "Tietue tallennettu onnistuneesti."
+
+#: staff.cat.opac.set_marc_edit.std_unexpected_error
+msgid "Record not likely updated."
+msgstr "Tietuetta ei luultavasti päivitetty."
+
+#: staff.cat.opac.refresh.function_not_implemented.alert
+msgid "Not yet implemented.  Work around: Choose Duplicate in New Tab option"
+msgstr ""
+"Ei vielä otettu käyttöön. Vaihtoehto: valitse Kopioi uuteen välilehteen "
+"-toiminto"
+
+#: staff.cat.opac.set_tab_name
+msgid "Record DB ID: %1$s"
+msgstr "Tietueen tietokannan tunnus: %1$s"
+
+#: staff.cat.opac.title_for_hold_transfer.destination_needed.label
+msgid "Need to mark a record as a Title Hold Transfer Destination first."
+msgstr "Tietue on ensin merkittävä nimekkeen varaussiirron kohteeksi."
+
+#: staff.cat.opac.title_for_hold_transfer.success.label
+msgid "Holds transferred."
+msgstr "Varaukset siirretty."
+
+#: staff.cat.opac.title_for_hold_transfer.failure.label
+msgid "Holds not transferred."
+msgstr "Varauksia ei siirretty."
+
+#: staff.cat.opac.title_for_hold_transfer.many_bibs.warning
+msgid "WARNING: Move selected holds from multiple bibs to single targeted bib?"
+msgstr ""
+"VAROITUS: Siirretäänkö valitut varaukset useista bibliografisista tietueista "
+"yhteen kohteeksi valittuun bibliografiseen tietueeseen?"
+
+#: staff.cat.record_buckets.tab_name
+msgid "Record Buckets"
+msgstr "Tietuesiilot"
+
+#: staff.cat.record_buckets.save_file_as
+msgid "Save File As"
+msgstr "Tallenna tiedosto nimellä"
+
+#: staff.cat.record_buckets.export_records.alert
+msgid "File not downloaded."
+msgstr "Tiedostoa ei ladattu."
+
+#: staff.cat.record_buckets.export_records.std_unexpected_error
+msgid "Records could not be exported."
+msgstr "Tietueiden vienti ei onnistunut."
+
+#: staff.cat.record_buckets.rednder_pending_records.alert
+msgctxt "staff.cat.record_buckets.rednder_pending_records.alert"
+msgid "Action completed."
+msgstr "Toiminto suoritettu."
+
+#: staff.cat.record_buckets.retrieve_row.std_unexpected_error
+msgid "Error retrieving mvr for record with ID = %1$s"
+msgstr ""
+"Virhe haettaessa metabib-virtuaalitietuetta tietueelle, jonka tunnus = %1$s"
+
+#: staff.cat.record_buckets.buckets.std_unexpected_error
+msgid "Could not retrieve your buckets."
+msgstr "Siilojesi haku ei onnistunut."
+
+#: staff.cat.record_buckets.menulist_placeholder.item1
+msgctxt "staff.cat.record_buckets.menulist_placeholder.item1"
+msgid "Choose a bucket..."
+msgstr "Valitse siilo..."
+
+#: staff.cat.record_buckets.menulist_placeholder.item2
+msgctxt "staff.cat.record_buckets.menulist_placeholder.item2"
+msgid "Retrieve shared bucket..."
+msgstr "Etsi jaettu siilo..."
+
+#: staff.cat.record_buckets.change_bucket.bucket_id
+msgctxt "staff.cat.record_buckets.change_bucket.bucket_id"
+msgid "Enter bucket number:"
+msgstr "Syötä siilon numero:"
+
+#: staff.cat.record_buckets.change_bucket.error
+msgid "Error retrieving bucket.  Did you use a valid bucket ID?"
+msgstr "Virhe siilon haussa. Annoitko kelvollisen siilotunnuksen?"
+
+#: staff.cat.record_buckets.delete_bucket_named
+msgctxt "staff.cat.record_buckets.delete_bucket_named"
+msgid "Delete the bucket named %1$s?"
+msgstr "Poistetaanko siilo nimeltä %1$s?"
+
+#: staff.cat.record_buckets.new_bucket.bucket_prompt
+msgctxt "staff.cat.record_buckets.new_bucket.bucket_prompt"
+msgid "What would you like to name the bucket?"
+msgstr "Kuinka haluat nimetä uuden siilon?"
+
+#: staff.cat.record_buckets.new_bucket.bucket_prompt_title
+msgctxt "staff.cat.record_buckets.new_bucket.bucket_prompt_title"
+msgid "Bucket Creation"
+msgstr "Siilon luominen"
+
+#: staff.cat.record_buckets.new_bucket.same_name_alert
+msgctxt "staff.cat.record_buckets.new_bucket.same_name_alert"
+msgid "You already have a bucket with that name."
+msgstr "Sinulla on jo samanniminen siilo."
+
+#: staff.cat.record_buckets.new_bucket.bucket_created
+msgid "Bucket %1$s created."
+msgstr "Siilo %1$s luotu."
+
+#: staff.cat.record_buckets.merge_records.fancy_prompt_title
+msgid "Record Merging"
+msgstr "Tietueita yhdistetään"
+
+#: staff.cat.record_buckets.merge_records.catch.std_unex_err
+#, fuzzy
+msgid "Records were not likely merged."
+msgstr "Tietueita ei luultavasti poistettu."
+
+#: staff.cat.record_buckets.delete_records.xml1
+msgid "Delete these records?"
+msgstr "Poistetaanko nämä tietueet?"
+
+#: staff.cat.record_buckets.delete_records.button.label
+msgctxt "staff.cat.record_buckets.delete_records.button.label"
+msgid "Delete"
+msgstr "Poista"
+
+#: staff.cat.record_buckets.delete_records.cancel_button.label
+msgctxt "staff.cat.record_buckets.delete_records.cancel_button.label"
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: staff.cat.record_buckets.delete_records.cancel_button.accesskey
+msgctxt "staff.cat.record_buckets.delete_records.cancel_button.accesskey"
+msgid "C"
+msgstr "P"
+
+#: staff.cat.record_buckets.delete_records.xml2
+msgid "Record? # %1$s"
+msgstr "Tietue? # %1$s"
+
+#: staff.cat.record_buckets.delete_records.fancy_prompt_title
+msgid "Record Purging"
+msgstr "Tietueiden siivous"
+
+#: staff.cat.record_buckets.delete_records.fancy_prompt.alert
+msgid "Delete Aborted"
+msgstr "Poistaminen keskeytetty"
+
+#: staff.cat.record_buckets.delete_records.s1
+msgid "Error deleting these records:\n"
+msgstr "Virhe näiden tietueiden poistamisessa:\n"
+
+#: staff.cat.record_buckets.delete_records.s2
+msgid "Record #%1$s : %2$s  : %3$s\n"
+msgstr "Tietue #%1$s : %2$s  : %3$s\n"
+
+#: staff.cat.record_buckets.delete_records.delete_success.alert
+msgid "Records deleted."
+msgstr "Tietueet poistettu."
+
+#: staff.cat.record_buckets.delete_records.catch.std_unex_err
+msgid "Records were not likely deleted."
+msgstr "Tietueita ei luultavasti poistettu."
+
+#: staff.cat.record_buckets.cmd_broken.alert
+msgid "Not Yet Implemented"
+msgstr "Ei vielä otettu käyttöön"
+
+#: staff.cat.record_buckets.cmd_sel_opac.tab_name
+msgctxt "staff.cat.record_buckets.cmd_sel_opac.tab_name"
+msgid "Retrieving title..."
+msgstr "Haetaan nimekettä..."
+
+#: staff.cat.record_buckets.cmd_sel_opac.catch.std_unex_err
+msgid "Showing in OPAC"
+msgstr "Näytetään verkkokirjastossa"
+
+#: staff.cat.record_buckets.submit.query_status
+msgctxt "staff.cat.record_buckets.submit.query_status"
+msgid "Searching..."
+msgstr "Etsitään..."
+
+#: staff.cat.record_buckets.prep_record_for_list.std_unex_err
+msgid "Could not retrieve this record: %1$s"
+msgstr "Tämän tietueen haku ei onnistunut: %1$s"
+
+#: staff.cat.record_buckets_quick.copy_one_record
+msgid "Copy this record into which bucket?"
+msgstr "Mihin siiloon tämä tietue kopioidaan?"
+
+#: staff.cat.record_buckets_quick.copy_multiple_records
+msgctxt "staff.cat.record_buckets_quick.copy_multiple_records"
+msgid "Copy these %1$s items into which bucket?"
+msgstr "Mihin siiloon nämä %1$s nidettä kopioidaan?"
+
+#: staff.cat.record_buckets_quick.initing_record_buckets_quick_xul
+msgid "Trying to init record_buckets_quick.xul"
+msgstr "Yritetään alustaa record_buckets_quick.xul"
+
+#: staff.cat.record_buckets_quick.name_of_bucket
+msgctxt "staff.cat.record_buckets_quick.name_of_bucket"
+msgid "What would you like to name the bucket?"
+msgstr "Kuinka haluat nimetä uuden siilon?"
+
+#: staff.cat.record_buckets_quick.name_of_bucket.title
+msgctxt "staff.cat.record_buckets_quick.name_of_bucket.title"
+msgid "Bucket Creation"
+msgstr "Siilon luominen"
+
+#: staff.cat.record_buckets_quick.bucket_creation_failure
+msgctxt "staff.cat.record_buckets_quick.bucket_creation_failure"
+msgid "Bucket creation failed."
+msgstr "Siilon luominen epäonnistui."
+
+#: staff.cat.record_buckets_quick.add_to_bucket.addition_failed
+msgid "Addition likely failed for bucket = %1$s and record ID = %2$s"
+msgstr ""
+"Lisäys luultavasti epäonnistui siiloon = %1$s ja tietuetunnukseen = %1$s"
+
+#: staff.cat.record_buckets.menulist.change_bucket.undefined
+msgctxt "staff.cat.record_buckets.menulist.change_bucket.undefined"
+msgid "Could not find a bucket with ID = %1$s"
+msgstr "Siiloa tunnuksella = %1$s ei löydy"
+
+#: staff.cat.spine_labels.copy
+msgid "copy"
+msgstr "nide"
+
+#: staff.cat.spine_labels.copies
+msgid "copies"
+msgstr "kappaleet"
+
+#: staff.cat.spine_labels.generate.std_unexpeceted_err
+msgid "Generate"
+msgstr "Luo"
+
+#: staff.cat.spine_labels.preview.title
+msgctxt "staff.cat.spine_labels.preview.title"
+msgid "Spine Labels"
+msgstr "Selkätarrat"
+
+#: staff.cat.spine_labels.preview.std_unexpected_err
+msgid "Preview and Print"
+msgstr "Esikatsele ja tulosta"
+
+#: staff.cat.util.replace_barcode.old_bc_window_prompt.prompt
+msgid "Enter original barcode for the copy:"
+msgstr "Syötä niteen alkuperäinen tunnus:"
+
+#: staff.cat.util.replace_barcode.old_bc_window_prompt.title
+msgctxt "staff.cat.util.replace_barcode.old_bc_window_prompt.title"
+msgid "Replace Barcode"
+msgstr "Korvaa tunnus"
+
+#: staff.cat.util.replace_barcode.error_alert
+msgid "We were unable to retrieve an item with barcode \"%1$s\"."
+msgstr "Nidettä tunnuksella \"%1$s\" ei onnistuttu hakemaan."
+
+#: staff.cat.util.replace_barcode.new_bc_window_prompt.prompt
+msgid "Enter the replacement barcode for the copy:"
+msgstr "Syötä niteelle korvaava nidetunnus:"
+
+#: staff.cat.util.replace_barcode.new_bc_window_prompt.title
+msgctxt "staff.cat.util.replace_barcode.new_bc_window_prompt.title"
+msgid "Replace Barcode"
+msgstr "Korvaa tunnus"
+
+#: staff.cat.util.replace_barcode.new_bc.failed
+msgid "Rename aborted.  Blank barcodes are not allowed."
+msgstr "Uudelleennimeäminen keskeytetty. Tyhjä tunnus ei kelpaa."
+
+#: staff.cat.util.replace_barcode.testing_error
+msgid "Error testing replacement barcode \"%1$s\"."
+msgstr "Virhe korvaavan tunnuksen \"%1$s\" testauksessa."
+
+#: staff.cat.util.replace_barcode.insufficient_permission_for_rename
+msgid "Rename aborted.  Insufficient permission."
+msgstr "Uudelleennimeäminen keskeytetty. Oikeudet eivät riitä."
+
+#: staff.cat.util.replace_barcode.item_rename_error
+msgid "Error renaming item."
+msgstr "Virhe niteen uudelleennimeämisessä."
+
+#: staff.cat.util.replace_barcode.rename_error
+msgid "Rename did not likely occur."
+msgstr "Uutta nimeä ei luultavasti otettu käyttöön."
+
+#: staff.cat.util.transfer_copies.unmarked_volume_alert
+msgctxt "staff.cat.util.transfer_copies.unmarked_volume_alert"
+msgid ""
+"Please mark a volume as the destination from within holdings maintenance and "
+"then try this again."
+msgstr "Merkitse nide kohteeksi varaustenhallinnasta ja yritä sitten uudelleen."
+
+#: staff.cat.util.transfer_copies.params_message
+msgid ""
+"Transfer items from their original volumes to %1$s's volume labelled %2$s on "
+"the following record (and change their circulation libs to match)?"
+msgstr ""
+"Siirretäänkö niteet alkuperäisistä nimekkeistään käyttäjän %1$s nimekkeeseen "
+"nimeltä %2$s seuraavalla tietueella (ja vaihdetaanko niiden "
+"lainauskirjastot vastaavasti)?"
+
+#: staff.cat.util.transfer_copies.transfer.label
+msgctxt "staff.cat.util.transfer_copies.transfer.label"
+msgid "Transfer"
+msgstr "Siirrä"
+
+#: staff.cat.util.transfer_copies.cancel.label
+msgctxt "staff.cat.util.transfer_copies.cancel.label"
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: staff.cat.util.transfer_copies.cancel.accesskey
+msgctxt "staff.cat.util.transfer_copies.cancel.accesskey"
+msgid "C"
+msgstr "P"
+
+#: staff.cat.util.transfer_copies.window_title
+msgid "Item Transfer"
+msgstr "Niteen siirto"
+
+#: staff.cat.util.transfer_copies.aborted_transfer
+msgctxt "staff.cat.util.transfer_copies.aborted_transfer"
+msgid "Transfer Aborted"
+msgstr "Siirto peruttu"
+
+#: staff.cat.util.transfer_copies.override_transfer_failure
+msgid "Override Transfer Failure?"
+msgstr "Ohitetaanko siirron epäonnistuminen?"
+
+#: staff.cat.util.transfer_copies.successful_transfer
+msgid "Items transferred."
+msgstr "Niteet siirretty."
+
+#: staff.cat.util.transfer_copies.transfer_error
+msgid "All items not likely transferred."
+msgstr "Kaikkia niteitä ei luultavasti siirretty."
+
+#: staff.cat.util.spine_editor.tab_name
+msgctxt "staff.cat.util.spine_editor.tab_name"
+msgid "Spine Labels"
+msgstr "Selkätarrat"
+
+#: staff.cat.util.spine_editor.spine_editor_error
+msgctxt "staff.cat.util.spine_editor.spine_editor_error"
+msgid "Spine Labels"
+msgstr "Selkätarrat"
+
+#: staff.cat.util.show_in_opac.unknown_barcode
+msgid "%1$s is not cataloged"
+msgstr "%1$s ei ole luetteloitu"
+
+#: staff.cat.util.show_in_opac.catalog_error_for_doc_id
+msgid "Error opening catalog for document ID = %1$s"
+msgstr "Virhe avattaessa luettelointitietuetta ID = %1$s"
+
+#: staff.cat.util.copy_editor.batch_in_title
+msgid "Batch "
+msgstr "Erä"
+
+#: staff.cat.util.copy_editor.edit_in_title
+msgctxt "staff.cat.util.copy_editor.edit_in_title"
+msgid "Edit"
+msgstr "Muokkaa"
+
+#: staff.cat.util.copy_editor.view_in_title
+msgctxt "staff.cat.util.copy_editor.view_in_title"
+msgid "View"
+msgstr "Näytä"
+
+#: staff.cat.util.copy_editor.copy_attributes_in_title
+msgid "Copy Attributes"
+msgstr "Nidemääritteet"
+
+#: staff.cat.util.copy_editor.batch_edit
+msgid "Batch Edit"
+msgstr "Erämuokkaus"
+
+#: staff.cat.util.copy_editor.batch_view
+msgid "Batch View"
+msgstr "Eränäkymä"
+
+#: staff.cat.util.copy_editor.edit
+msgctxt "staff.cat.util.copy_editor.edit"
+msgid "Edit"
+msgstr "Muokkaa"
+
+#: staff.cat.util.copy_editor.view
+msgctxt "staff.cat.util.copy_editor.view"
+msgid "View"
+msgstr "Näytä"
+
+#: staff.cat.util.mark_item_damaged.af_message
+msgid ""
+"Action failed.  One or more of these items is in a special status such as "
+"\"Checked Out\" or \"In Transit\" and cannot be changed to the Damaged status."
+msgstr ""
+"Toiminto epäonnistui. Yksi tai useampi nide on erityistilassa, kuten "
+"\"lainassa\" tai \"kuljetettavana\", eikä sitä voi merkitä vahingoittuneeksi."
+
+#: staff.cat.util.mark_item_damaged.af_title
+msgctxt "staff.cat.util.mark_item_damaged.af_title"
+msgid "Action failed."
+msgstr "Toiminto epäonnistui."
+
+#: staff.cat.util.mark_item_damaged.af_ok_label
+msgctxt "staff.cat.util.mark_item_damaged.af_ok_label"
+msgid "OK"
+msgstr "OK"
+
+#: staff.cat.util.mark_item_damaged.af_confirm_action
+msgctxt "staff.cat.util.mark_item_damaged.af_confirm_action"
+msgid "Check here to confirm this message"
+msgstr "Vahvista viesti valitsemalla tämä"
+
+#: staff.cat.util.mark_item_damaged.md_message
+msgid "Change the status for these items to Damaged?  Barcodes: %1$s"
+msgstr "Muutetaanko näiden niteiden tila vahingoittuneeksi? Nidetunnukset: %1$s"
+
+#: staff.cat.util.mark_item_damaged.md_title
+msgid "Mark Damaged"
+msgstr "Merkitse vahingoittuneeksi"
+
+#: staff.cat.util.mark_item_damaged.md_ok_label
+msgctxt "staff.cat.util.mark_item_damaged.md_ok_label"
+msgid "OK"
+msgstr "OK"
+
+#: staff.cat.util.mark_item_damaged.md_cancel_label
+msgctxt "staff.cat.util.mark_item_damaged.md_cancel_label"
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: staff.cat.util.mark_item_damaged.md_confirm_action
+msgctxt "staff.cat.util.mark_item_damaged.md_confirm_action"
+msgid "Check here to confirm this action"
+msgstr "Vahvista toiminto valitsemalla tämä"
+
+#: staff.cat.util.mark_item_damaged.checkin.title
+msgid "Checkin Item Before Marking Damaged?"
+msgstr "Palautetaanko nide ennen kuin se merkitään vahingoittuneeksi?"
+
+#: staff.cat.util.mark_item_damaged.checkin.normal_checkin
+msgid "Normal Checkin"
+msgstr "Normaali palautus"
+
+#: staff.cat.util.mark_item_damaged.checkin.no_checkin
+msgctxt "staff.cat.util.mark_item_damaged.checkin.no_checkin"
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: staff.cat.util.mark_item_damaged.checkin.forgiving_checkin
+msgid "Forgiving Checkin"
+msgstr "Anteeksiantava palautus"
+
+#: staff.cat.util.mark_item_damaged.checkin.confirm_action
+msgctxt "staff.cat.util.mark_item_damaged.checkin.confirm_action"
+msgid "Check here to confirm this action"
+msgstr "Vahvista toiminto valitsemalla tämä"
+
+#: staff.cat.util.mark_item_damaged.item_circulating_to_patron
+msgid "Item %1$s is checked out to patron, %2$s, and is due on %3$s. "
+msgstr "Nide %1$s on lainassa asiakkaalle %2$s, ja sen eräpäivä on %3$s."
+
+#: staff.cat.util.mark_item_damaged.charge_patron_prompt.message
+msgid ""
+"Item %1$s will be marked damaged.  Was returned on %3$s for %2$s.  Charge "
+"this patron $%4$s for the damage? "
+msgstr ""
+"Nide %1$s merkitään vahingoittuneeksi. Palautettu %3$s kohteeseen %2$s. "
+"Veloitetaanko asiakkaalta %4$s vahingosta?"
+
+#: staff.cat.util.mark_item_damaged.charge_patron_prompt.title
+msgid "Charge Patron For Damaged Item? "
+msgstr "Veloitetaanko asiakkaalta vahingoittuneesta niteestä?"
+
+#: staff.cat.util.mark_item_damaged.charge_patron_prompt.ok_label
+msgid "OK "
+msgstr "OK"
+
+#: staff.cat.util.mark_item_damaged.charge_patron_prompt.change_amount_label
+msgid "Change Amount "
+msgstr "Vaihtorahan määrä"
+
+#: staff.cat.util.mark_item_damaged.charge_patron_prompt.cancel_label
+msgid "No Charge"
+msgstr "Ei veloitusta"
+
+#: staff.cat.util.mark_item_damaged.charge_patron_prompt.confirm_action
+msgid "Check here to confirm this action "
+msgstr "Vahvista toiminto valitsemalla tämä"
+
+#: staff.cat.util.mark_item_damaged.marking_error
+msgid "Error marking item %1$s damaged."
+msgstr "Virhe merkittäessä nidettä %1$s vahingoittuneeksi."
+
+#: staff.cat.util.mark_item_damaged.one_item_damaged
+msgid "Item marked Damaged"
+msgstr "Nide merkitty vahingoittuneeksi"
+
+#: staff.cat.util.mark_item_damaged.multiple_item_damaged
+msgid "%1$s items marked Damaged."
+msgstr "%1$s nidettä merkitty vahingoittuneiksi."
+
+#: staff.cat.util.mark_item_missing.af_message
+msgid ""
+"Action failed.  One or more of these items is in a special status such as "
+"\"Checked Out\" or \"In Transit\" and cannot be changed to the Missing status."
+msgstr ""
+"Toiminto epäonnistui.  Yksi tai useampi nide on erityistilassa, kuten "
+"\"lainassa\" tai \"kuljetettavana\", eikä sitä voi määrittää kadonneeksi."
+
+#: staff.cat.util.mark_item_missing.af_title
+msgctxt "staff.cat.util.mark_item_missing.af_title"
+msgid "Action failed."
+msgstr "Toiminto epäonnistui."
+
+#: staff.cat.util.mark_item_missing.af_ok_label
+msgctxt "staff.cat.util.mark_item_missing.af_ok_label"
+msgid "OK"
+msgstr "OK"
+
+#: staff.cat.util.mark_item_missing.af_confirm_action
+msgctxt "staff.cat.util.mark_item_missing.af_confirm_action"
+msgid "Check here to confirm this message"
+msgstr "Vahvista viesti valitsemalla tämä"
+
+#: staff.cat.util.mark_item_missing.ms_message
+msgid "'Change the status for these items to Missing? Barcodes: %1$s"
+msgstr "'Muutetaanko näiden niteiden tila kadonneeksi? Tunnukset: %1$s"
+
+#: staff.cat.util.mark_item_missing.ms_title
+msgid "Mark Missing"
+msgstr "Merkitse kadonneeksi"
+
+#: staff.cat.util.mark_item_missing.ms_ok_label
+msgctxt "staff.cat.util.mark_item_missing.ms_ok_label"
+msgid "OK"
+msgstr "OK"
+
+#: staff.cat.util.mark_item_missing.ms_cancel_label
+msgctxt "staff.cat.util.mark_item_missing.ms_cancel_label"
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: staff.cat.util.mark_item_missing.ms_confirm_action
+msgctxt "staff.cat.util.mark_item_missing.ms_confirm_action"
+msgid "Check here to confirm this action"
+msgstr "Vahvista toiminto valitsemalla tämä"
+
+#: staff.cat.util.mark_item_missing.marking_error
+msgid "Error marking item %1$s missing."
+msgstr "Virhe merkittäessä nidettä %1$s kadonneeksi."
+
+#: staff.cat.util.mark_item_missing.one_item_missing
+msgid "Item marked Missing"
+msgstr "Nide merkitty kadonneeksi"
+
+#: staff.cat.util.mark_item_missing.multiple_item_missing
+msgid "%1$s items marked Missing."
+msgstr "%1$s nidettä merkitty kadonneiksi."
+
+#: staff.cat.util.mark_item_missing_pieces.ms_message
+msgid "Mark these items as missing pieces?  Barcodes: %1$s"
+msgstr "Lisätäänkö näille niteille merkintä: osia puuttuu? Nidetunnukset: %1$s"
+
+#: staff.cat.util.mark_item_missing_pieces.ms_title
+msgid "Mark Missing Pieces"
+msgstr "Merkitse: osia puuttuu"
+
+#: staff.cat.util.mark_item_missing_pieces.ms_ok_label
+msgctxt "staff.cat.util.mark_item_missing_pieces.ms_ok_label"
+msgid "OK"
+msgstr "OK"
+
+#: staff.cat.util.mark_item_missing_pieces.ms_cancel_label
+msgctxt "staff.cat.util.mark_item_missing_pieces.ms_cancel_label"
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: staff.cat.util.mark_item_missing_pieces.ms_confirm_action
+msgctxt "staff.cat.util.mark_item_missing_pieces.ms_confirm_action"
+msgid "Check here to confirm this action"
+msgstr "Vahvista toiminto valitsemalla tämä"
+
+#: staff.cat.util.mark_item_missing_pieces.marking_error
+msgid "Error marking item %1$s as missing pieces."
+msgstr "Virhe merkittäessä nidettä %1$s merkinnällä: osia puuttuu."
+
+#: staff.cat.util.mark_item_missing_pieces.one_item_missing_pieces
+msgid "Item marked as missing pieces."
+msgstr "Nide merkitty: osia puuttuu."
+
+#: staff.cat.util.mark_item_missing_pieces.multiple_item_missing_pieces
+msgid "%1$s items marked as missing pieces."
+msgstr "%1$s nidettä merkitty: osia puuttuu."
+
+#: staff.cat.util.mark_item_missing_pieces.circ_not_found
+msgid "No circulation found for item with barcode %1$s.  Item left unmodified."
+msgstr "Lainaa ei löytynyt niteelle, jonka tunnus = %1$s. Nidettä ei muokattu."
+
+#: staff.cat.util.show_in_opac.retrieving_title
+msgctxt "staff.cat.util.show_in_opac.retrieving_title"
+msgid "Retrieving title..."
+msgstr "Haetaan nimekettä..."
+
+#: staff.cat.util.add_titles_to_bucket.number_of_precats_skipped
+msgid "Skipping %1$s pre-cat records..."
+msgstr "Ohitetaan %1$s ennakkoluetteloitua tietuetta..."
+
+#: staff.cat.volume_buckets.window_tab_name
+msgid "Volume Buckets"
+msgstr "Nimekesiilot"
+
+#: staff.cat.volume_copy_creator.my_init.btn.label
+msgctxt "staff.cat.volume_copy_creator.my_init.btn.label"
+msgid "Apply"
+msgstr "Ota käyttöön"
+
+#: staff.cat.volume_copy_creator.my_init.btn.accesskey
+msgctxt "staff.cat.volume_copy_creator.my_init.btn.accesskey"
+msgid "A"
+msgstr "O"
+
+#: staff.cat.volume_copy_creator.create_part.btn.label
+msgid "Create Part Designator"
+msgstr "Luo osa"
+
+#: staff.cat.volume_copy_creator.edit_then_create.btn.label
+msgid "Edit then Create"
+msgstr "Muokkaa ja luo"
+
+#: staff.cat.volume_copy_creator.edit_then_create.btn.accesskey
+msgctxt "staff.cat.volume_copy_creator.edit_then_create.btn.accesskey"
+msgid "C"
+msgstr "L"
+
+#: staff.cat.volume_copy_creator.create_with_defaults.btn.label
+msgid "Create with Defaults"
+msgstr "Luo oletusasetuksilla"
+
+#: staff.cat.volume_copy_creator.create_with_defaults.btn.accesskey
+msgid "D"
+msgstr "O"
+
+#: staff.cat.volume_copy_creator.create.btn.label
+msgid "Create Volumes/Items"
+msgstr "Luo nimekkeitä/niteitä"
+
+#: staff.cat.volume_copy_creator.create.btn.accesskey
+msgctxt "staff.cat.volume_copy_creator.create.btn.accesskey"
+msgid "C"
+msgstr "L"
+
+#: staff.cat.volume_copy_creator.edit_then_rebarcode.btn.label
+msgid "Edit then Re-barcode"
+msgstr "Muokkaa ja määritä uusi tunnus"
+
+#: staff.cat.volume_copy_creator.edit_then_rebarcode.btn.accesskey
+msgid "E"
+msgstr "M"
+
+#: staff.cat.volume_copy_creator.rebarcode.btn.label
+msgid "Re-barcode / Update Items"
+msgstr "Määritä uusi tunnus / päivitä niteet"
+
+#: staff.cat.volume_copy_creator.rebarcode.btn.accesskey
+msgid "R"
+msgstr "U"
+
+#: staff.cat.volume_copy_creator.render_volume_count_entry.message
+msgid ""
+"You may not add more than %1$s items at a time for a given volume in this "
+"interface."
+msgstr ""
+"Et voi samanaikaisesti lisätä tässä käyttöliittymässä yli %1$s nidettä "
+"määrättyyn nimekkeeseen."
+
+#: staff.cat.volume_copy_creator.render_volume_count_entry.title
+msgid "Maximum items exceeded."
+msgstr "Niteiden enimmäismäärä ylitetty."
+
+#: staff.cat.volume_copy_creator.render_volume_count_entry.ok_label
+msgid "Ok"
+msgstr "OK"
+
+#: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.classification
+msgid "Classification"
+msgstr "Luokitus"
+
+#: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.prefix
+msgid "Prefix"
+msgstr "Etuliite"
+
+#: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.call_nums
+msgid "Call Number"
+msgstr "Hyllypaikka"
+
+#: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.suffix
+msgid "Suffix"
+msgstr "Takaliite"
+
+#: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.num_of_copies
+msgid "# of Copies"
+msgstr "Niteiden lukumäärä"
+
+#: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.barcodes_and_parts
+msgid "Barcode / Part Designation"
+msgstr "Tunnus / osan nimitys"
+
+#: staff.cat.volume_copy_creator.render_barcode_entry.alert_message
+msgid "\"%1$s\" is an invalid barcode."
+msgstr "\"%1$s\" on virheellinen tunnus."
+
+#: staff.cat.volume_copy_creator.render_barcode_entry.alert_title
+msgid "Invalid Barcode"
+msgstr "Virheellinen tunnus"
+
+#: staff.cat.volume_copy_creator.render_barcode_entry.alert_ok_button
+msgctxt "staff.cat.volume_copy_creator.render_barcode_entry.alert_ok_button"
+msgid "OK"
+msgstr "OK"
+
+#: staff.cat.volume_copy_creator.render_barcode_entry.alert_confirm
+msgid "Check here to confirm this message."
+msgstr "Vahvista viesti valitsemalla tämä."
+
+#: staff.cat.volume_copy_creator.stash_and_close.problem_with_volume
+msgid ""
+"Problem finding or creating %1$s.  We will skip item creation for this "
+"volume."
+msgstr ""
+"Virhe etsittäessä tai luotaessa kohdetta %1$s. Niteen luominen tähän "
+"nimekkeeseen ohitetaan."
+
+#: staff.cat.volume_copy_creator.stash_and_close.tree_err2
+msgid "volume tree update 2"
+msgstr "nimekepuun päivitys 2"
+
+#: staff.cat.volume_copy_creator.stash_and_close.tree_err3
+msgid "volume tree update 3"
+msgstr "nimekepuun päivitys 3"
+
+#: staff.cat.volume_copy_creator.load_prefs.err_retrieving_prefs
+msgid "Error retrieving stored preferences"
+msgstr "Virhe talletettujen asetusten haussa"
+
+#: staff.cat.volume_copy_creator.save_prefs.err_storing_prefs
+msgid "Error storing preferences"
+msgstr "Virhe asetusten tallentamisessa"
+
+#. # %1$s = Call Number Prefix Label, %2$s = Call Number Prefix Owning Lib Shortname
+#: staff.cat.volume_copy_creator.call_number_prefix.menuitem_label
+msgctxt "staff.cat.volume_copy_creator.call_number_prefix.menuitem_label"
+msgid "%2$s : %1$s"
+msgstr "%2$s : %1$s"
+
+#. # %1$s = Call Number Suffix Label, %2$s = Call Number Suffix Owning Lib Shortname
+#: staff.cat.volume_copy_creator.call_number_suffix.menuitem_label
+msgctxt "staff.cat.volume_copy_creator.call_number_suffix.menuitem_label"
+msgid "%2$s : %1$s"
+msgstr "%2$s : %1$s"
+
+#: staff.cat.z3950.native_catalog
+msgid "Native Catalog"
+msgstr "Alkuperäinen luettelo"
+
+#: staff.cat.z3950.obj_list_init.list_construction_error
+msgid "Failure during list construction."
+msgstr "Luettelon luominen epäonnistui."
+
+#: staff.cat.z3950.results_view.label
+msgid "Results View"
+msgstr "Tulosnäkymä"
+
+#: staff.cat.z3950.results_view.accesskey
+msgctxt "staff.cat.z3950.results_view.accesskey"
+msgid "V"
+msgstr "V"
+
+#: staff.cat.z3950.marc_view.label
+msgid "MARC View"
+msgstr "MARC-näkymä"
+
+#: staff.cat.z3950.marc_view.accesskey
+msgctxt "staff.cat.z3950.marc_view.accesskey"
+msgid "V"
+msgstr "V"
+
+#: staff.cat.z3950.hide_top_pane.label
+msgid "Hide Top Pane"
+msgstr "Piilota yläruutu"
+
+#: staff.cat.z3950.hide_top_pane.accesskey
+msgctxt "staff.cat.z3950.hide_top_pane.accesskey"
+msgid "T"
+msgstr "T"
+
+#: staff.cat.z3950.unhide_top_pane.label
+msgid "Show Top Pane"
+msgstr "Näytä yläruutu"
+
+#: staff.cat.z3950.unhide_top_pane.accesskey
+msgctxt "staff.cat.z3950.unhide_top_pane.accesskey"
+msgid "T"
+msgstr "T"
+
+#: staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label
+msgid "Record with ID %1$s marked for overlay."
+msgstr "Tietue tunnuksella %1$s merkitty korvattavaksi."
+
+#: staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label
+msgid "Record with TCN %1$s marked for overlay."
+msgstr "Tietue tietuenumerolla %1$s merkitty korvattavaksi."
+
+#: staff.cat.z3950.marked_record_for_overlay_indicator.no_record.label
+msgid "No record marked for overlay."
+msgstr "Mitään tietuetta ei ole merkitty korvattavaksi."
+
+#: staff.cat.z3950.obj_controller_init.marc_view_error
+msgid "Failure during MARC view."
+msgstr "Virhe MARC-näkymässä."
+
+#: staff.cat.z3950.obj_controller_init.marc_import_error
+msgid "Failure during MARC import."
+msgstr "Virhe MARC-tuonnissa."
+
+#: staff.cat.z3950.obj_controller_init.marc_import_overlay_error
+msgid "Failure during MARC import overlay."
+msgstr "Virhe MARC-tuonnin korvaamisessa."
+
+#: staff.cat.z3950.obj_controller_init.search_fields_error
+msgid "Error setting up search fields."
+msgstr "Virhe määritettäessä hakukenttiä."
+
+#: staff.cat.z3950.obj_controller_init.z39_service_error
+msgid "Z39.50 services not likely retrieved."
+msgstr "Z39.50 -palveluita ei luultavasti haettu."
+
+#: staff.cat.z3950.initial_search.no_search_selection
+msgid "No services selected to search."
+msgstr "Ei palveluita valittu hakuun."
+
+#: staff.cat.z3950.initial_search.too_many_selections
+msgid "Only one service can be used with raw search at a time."
+msgstr "Vain yhtä palvelua voidaan käyttää raakahakuun kerrallaan."
+
+#: staff.cat.z3950.initial_search.searching
+msgctxt "staff.cat.z3950.initial_search.searching"
+msgid "Searching..."
+msgstr "Etsitään..."
+
+#: staff.cat.z3950.initial_search.failed_search
+msgid "Failure during initial search."
+msgstr "Virhe alustavassa haussa."
+
+#: staff.cat.z3950.initial_search.raw_prompt.title
+msgid "Raw Z39.50 PQN Search"
+msgstr "Raaka Z39.50 PQN -haku"
+
+#: staff.cat.z3950.initial_search.raw_prompt.msg
+msgid ""
+"WARNING: This is not a simple keyword search.  Enter raw z39.50 PQN search "
+"string: "
+msgstr ""
+"VAROITUS: Tämä ei ole yksinkertainen avainsanahaku. Syötä raaka z39.50 PQN "
+"-hakulauseke:"
+
+#: staff.cat.z3950.initial_search.raw_prompt.default_value
+msgctxt "staff.cat.z3950.initial_search.raw_prompt.default_value"
+"staff.cat.z3950.initial_search.raw_prompt.default_value"
+msgid ""
+msgstr ""
+
+#: staff.cat.z3950.initial_search.raw_search_unsupported_for_native_catalog
+msgid "Raw z39.50 PQN search not yet implemented for native catalog."
+msgstr ""
+"Raakaa z39.50 -hakua ei vielä ole otettu käyttöön alkuperäisessä "
+"luettelossa."
+
+#: staff.cat.z3950.page_next.more_results
+msgid "Retrieving more results..."
+msgstr "Haetaan lisää tuloksia..."
+
+#: staff.cat.z3950.page_next.subsequent_search_error
+msgid "Failure during subsequent search."
+msgstr "Virhe jälkeisessä haussa."
+
+#: staff.cat.z3950.search.search_error
+msgid "Failure during actual search."
+msgstr "Virhe varsinaisessa haussa."
+
+#: staff.cat.z3950.handle_results.null_server_error
+msgid "Server Error: request returned null"
+msgstr "Palvelinvirhe: pyyntö palautti arvon null"
+
+#: staff.cat.z3950.handle_results.server_error
+msgid "Server Error: %1$s : %2$s"
+msgstr "Palvelinvirhe: %1$s : %2$s"
+
+#: staff.cat.z3950.handle_results.raw_query
+msgid "Raw query: %1$s"
+msgstr "Raakahakulauseke: %1$s"
+
+#: staff.cat.z3950.handle_results.showing_results
+msgid "Showing %1$s of %2$s for %3$s"
+msgstr "Näytetään %1$s / %2$s kohteesta %3$s"
+
+#: staff.cat.z3950.handle_results.showing_total_results
+msgid "Showing %1$s of %2$s "
+msgstr "Näytetään %1$s / %2$s"
+
+#: staff.cat.z3950.handle_results.num_of_results
+msgid "%1$s records found"
+msgstr "%1$s tietuetta löytyi"
+
+#: staff.cat.z3950.handle_results.result_error
+msgid "Error retrieving results."
+msgstr "Virhe tulosten haussa."
+
+#: staff.cat.z3950.handle_results.search_result_error
+msgid "Failure during search result handling."
+msgstr "Virhe hakutulosten käsittelyssä."
+
+#: staff.cat.z3950.replace_tab_with_opac.tab_name
+msgctxt "staff.cat.z3950.replace_tab_with_opac.tab_name"
+msgid "Retrieving title..."
+msgstr "Haetaan nimekettä..."
+
+#: staff.cat.z3950.spawn_marc_editor.save_button_label
+msgid "Import Record"
+msgstr "Tuo tietue"
+
+#: staff.cat.z3950.spawn_marc_editor.same_tcn
+msgctxt "staff.cat.z3950.spawn_marc_editor.same_tcn"
+msgid ""
+"A record with TCN %1$s already exists.\n"
+"FIXME: add record summary here"
+msgstr ""
+"Tietue tietuenumerolla %1$s on jo olemassa.\n"
+"FIXME: Lisää tähän tietueyhteenveto"
+
+#: staff.cat.z3950.spawn_marc_editor.title
+msgctxt "staff.cat.z3950.spawn_marc_editor.title"
+msgid "Import Collision"
+msgstr "Tuontiristiriita"
+
+#: staff.cat.z3950.spawn_marc_editor.btn1_overlay
+msgctxt "staff.cat.z3950.spawn_marc_editor.btn1_overlay"
+msgid "Overlay"
+msgstr "Korvaa"
+
+#: staff.cat.z3950.spawn_marc_editor.btn2_import
+msgid "Import with alternate TCN %1$s"
+msgstr "Tuo vaihtoehtoisella tietuenumerolla %1$s"
+
+#: staff.cat.z3950.spawn_marc_editor.permission_error
+msgctxt "staff.cat.z3950.spawn_marc_editor.permission_error"
+msgid "check permission"
+msgstr "tarkista oikeudet"
+
+#: staff.cat.z3950.spawn_marc_editor.btn3_cancel_import
+msgctxt "staff.cat.z3950.spawn_marc_editor.btn3_cancel_import"
+msgid "Cancel Import"
+msgstr "Peru tuonti"
+
+#: staff.cat.z3950.spawn_marc_editor.confirm_action
+msgctxt "staff.cat.z3950.spawn_marc_editor.confirm_action"
+msgid "Check here to confirm this action"
+msgstr "Vahvista toiminto valitsemalla tämä"
+
+#: staff.cat.z3950.spawn_marc_editor.successful_overlay
+msgctxt "staff.cat.z3950.spawn_marc_editor.successful_overlay"
+msgid "Record successfully overlaid."
+msgstr "Tietue korvattiin onnistuneesti."
+
+#: staff.cat.z3950.spawn_marc_editor.successful_import_with_new_tcn
+msgid "Record successfully imported with alternate TCN."
+msgstr "Tietue tuotiin onnistuneesti vaihtoehtoisella tietuenumerolla."
+
+#: staff.cat.z3950.spawn_marc_editor.import_cancelled
+msgid "Record import cancelled"
+msgstr "Tietueen tuonti peruttu"
+
+#: staff.cat.z3950.spawn_marc_editor.successful_import
+msgid "Record successfully imported."
+msgstr "Tietue tuotiin onnistuneesti."
+
+#: staff.cat.z3950.spawn_marc_editor.import_error
+msgid "Record not likely imported."
+msgstr "Tietuetta ei luultavasti tuotu."
+
+#: staff.cat.z3950.confirm_overlay.description
+msgid "Overlay this record?"
+msgstr "Korvataanko tietue?"
+
+#: staff.cat.z3950.confirm_overlay.lead.label
+msgctxt "staff.cat.z3950.confirm_overlay.lead.label"
+msgid "Overlay"
+msgstr "Korvaa"
+
+#: staff.cat.z3950.confirm_overlay.lead.accesskey
+msgid "O"
+msgstr "K"
+
+#: staff.cat.z3950.confirm_overlay.cancel.label
+msgctxt "staff.cat.z3950.confirm_overlay.cancel.label"
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: staff.cat.z3950.confirm_overlay.cancel.accesskey
+msgctxt "staff.cat.z3950.confirm_overlay.cancel.accesskey"
+msgid "C"
+msgstr "P"
+
+#: staff.cat.z3950.confirm_overlay.title
+msgid "Record Overlay"
+msgstr "Tietueen korvaaminen"
+
+#: staff.cat.z3950.confirm_overlay.aborted
+msgid "Overlay Aborted"
+msgstr "Korvaaminen peruttu"
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.try_again
+msgid ""
+"Please mark a record for overlay from within the catalog and try this again."
+msgstr "Merkitse korvattava tietue luettelosta ja yritä uudelleen."
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.tab_name
+msgid "MARC Editor"
+msgstr "MARC-muokkaustyökalu"
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_record_label
+msgid "Overlay Record"
+msgstr "Korvaustietue"
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn
+msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn"
+msgid ""
+"A record with TCN %1$s already exists.\n"
+"FIXME: add record summary here"
+msgstr ""
+"Tietue tietuenumerolla %1$s on jo olemassa.\n"
+"FIXME: Lisää tähän tietueyhteenveto"
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.import_collision
+msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.import_collision"
+msgid "Import Collision"
+msgstr "Tuontiristiriita"
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.btn1_overlay
+msgid "Overlay with alternate TCN %1$s"
+msgstr "Korvaa vaihtoehtoisella tietuenumerolla %1$s"
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.permission_error
+msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.permission_error"
+msgid "check permission"
+msgstr "tarkista oikeudet"
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.btn2_cancel
+msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.btn2_cancel"
+msgid "Cancel Import"
+msgstr "Peru tuonti"
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.confirm_action
+msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.confirm_action"
+msgid "Check here to confirm this action"
+msgstr "Vahvista toiminto valitsemalla tämä"
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.successful_overlay_with_new_TCN
+msgid "Record successfully overlaid with alternate TCN."
+msgstr "Tietue korvattiin onnistuneesti vaihtoehtoisella tietuenumerolla."
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.cancelled_overlay
+msgid "Record overlay cancelled"
+msgstr "Tietueen korvaaminen peruttu"
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay
+msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay"
+msgid "Record successfully overlaid."
+msgstr "Tietue korvattiin onnistuneesti."
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_error
+msgid "Record not likely overlaid."
+msgstr "Tietuetta ei luultavasti korvattu."
+
+#: staff.cat.z3950.load_creds.z3950_cred_error
+msgid "Error retrieving stored z39.50 credentials"
+msgstr "Virhe haettaessa talletettuja z39.50-valtuutuksia"
+
+#: staff.cat.z3950.save_creds.z3950_cred_error
+msgid "Problem storing z39.50 credentials."
+msgstr "Virhe talletettaessa z39.50-valtuutuksia."
+
+#: staff.cat.bib_brief.title.label
+msgid "Title:"
+msgstr "Nimeke:"
+
+#: staff.cat.bib_brief.title.accesskey
+msgctxt "staff.cat.bib_brief.title.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.cat.bib_brief.author.label
+msgid "Author:"
+msgstr "Tekijä:"
+
+#: staff.cat.bib_brief.author.accesskey
+msgctxt "staff.cat.bib_brief.author.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.cat.bib_brief.edition.label
+msgid "Edition:"
+msgstr "Painos:"
+
+#: staff.cat.bib_brief.edition.accesskey
+msgctxt "staff.cat.bib_brief.edition.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.cat.bib_brief.pubdate.label
+msgid "Pub Date:"
+msgstr "Julkaisuaika:"
+
+#: staff.cat.bib_brief.pubdate.accesskey
+msgctxt "staff.cat.bib_brief.pubdate.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.cat.bib_brief.bib_call_number.label
+msgid "Bib Call #:"
+msgstr "Bibliografinen hyllypaikka:"
+
+#: staff.cat.bib_brief.bib_call_number.accesskey
+msgctxt "staff.cat.bib_brief.bib_call_number.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.cat.bib_brief.call_number.label
+msgid "Item Call #:"
+msgstr "Niteen hyllypaikka:"
+
+#: staff.cat.bib_brief.ib_call_number.accesskey
+msgctxt "staff.cat.bib_brief.ib_call_number.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.cat.bib_brief.tcn.label
+msgid "TCN:"
+msgstr "Tietuenro:"
+
+#: staff.cat.bib_brief.tcn.accesskey
+msgctxt "staff.cat.bib_brief.tcn.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.cat.bib_brief.mvr_doc_id.label
+msgid "Bib DB ID:"
+msgstr "Bibliografisen tietokannan tunnus:"
+
+#: staff.cat.bib_brief.mvr_doc_id.accesskey
+msgctxt "staff.cat.bib_brief.mvr_doc_id.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.cat.bib_brief.owner.label
+msgid "Record Owner:"
+msgstr "Tietueen omistaja:"
+
+#: staff.cat.bib_brief.owner.accesskey
+msgctxt "staff.cat.bib_brief.owner.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.cat.bib_brief.creator.label
+msgid "Created By:"
+msgstr "Luonut:"
+
+#: staff.cat.bib_brief.creator.accesskey
+msgctxt "staff.cat.bib_brief.creator.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.cat.bib_brief.create_date.label
+msgid "Created On:"
+msgstr "Luotu:"
+
+#: staff.cat.bib_brief.create_date.accesskey
+msgctxt "staff.cat.bib_brief.create_date.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.cat.bib_brief.editor.label
+msgid "Last Edited By:"
+msgstr "Viimeisin muokkaaja:"
+
+#: staff.cat.bib_brief.editor.accesskey
+msgctxt "staff.cat.bib_brief.editor.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.cat.bib_brief.edit_date.label
+msgid "Last Edited On:"
+msgstr "Muokattu viimeksi:"
+
+#: staff.cat.bib_brief.edit_date.accesskey
+msgctxt "staff.cat.bib_brief.edit_date.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.cat.bib_brief.holds.label
+msgid "Holds:"
+msgstr "Varauksia:"
+
+#: staff.cat.bib_brief.holds.accesskey
+msgctxt "staff.cat.bib_brief.holds.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.cat.bib_brief.items.label
+msgid "Items:"
+msgstr "Niteitä:"
+
+#: staff.cat.bib_brief.items.accesskey
+msgctxt "staff.cat.bib_brief.items.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.cat.bib_brief.items.available.tooltip
+msgid "%1$s available"
+msgstr "%1$s saatavilla"

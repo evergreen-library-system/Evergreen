@@ -1,0 +1,284 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2012-10-29 09:00:06-0400\n"
+"PO-Revision-Date: 2012-09-19 15:22+0300\n"
+"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"Language-Team: Finnish <evergreen@jns.fi>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.1\n"
+
+#: reservation.js:AUTO_ending_at
+msgid "and"
+msgstr "ja"
+
+#: reservation.js:BRSRC_NOT_FOUND
+msgid "Could not locate that resource."
+msgstr "Aineistoa ei löytynyt."
+
+#: reservation.js:AUTO_choose_a_brt
+msgid "Choose a Bookable Resource Type"
+msgstr "Valitse varattavissa oleva aineistotyyppi"
+
+#: reservation.js:CREATE_BRESV_OK
+msgid "Created ${0} reservation(s)"
+msgstr "${0} erikoisvaraus(ta) luotiin"
+
+#: reservation.js:AUTO_ATTR_VALUE_reserve_brsrc
+msgid "Reserve Selected"
+msgstr "Varaa valitut"
+
+#: reservation.js:NO_BRT_RESULTS
+msgid "There are no bookable resource types registered."
+msgstr "Varattavia aineistotyyppejä ei ole rekisteröity."
+
+#: reservation.js:AUTO_ATTR_VALUE_next
+msgid "Next"
+msgstr "Seuraava"
+
+#: reservation.js:BRSRC_RETRIVE_ERROR
+msgid "Error retrieving resource: "
+msgstr "Aineiston haku epäonnistui:"
+
+#: reservation.js:AUTO_starting_at
+msgid "Between"
+msgstr "Välillä"
+
+#: reservation.js:AUTO_bresv_grid_resource
+msgid "Resource"
+msgstr "Aineisto"
+
+#: reservation.js:AUTO_brt_noncat_only
+msgid "Show only non-cataloged bookable resource types"
+msgstr "Näytä vain ei-luetteloidut varattavissa olevat ainestotyypit"
+
+#: reservation.js:ON_FLY_ERROR
+msgid "Error attempting to make item a bookable resource:"
+msgstr "Varattavan aineiston luominen niteestä epäonnistui:"
+
+#: reservation.js:AUTO_bresv_grid_type
+msgid "Type"
+msgstr "Tyyppi"
+
+#: reservation.js:AUTO_with_these_attr
+msgid "With these attributes:"
+msgstr "Näillä määritteillä:"
+
+#: reservation.js:WHERES_THE_BARCODE
+msgid "Enter a patron's barcode to make a reservation."
+msgstr "Tee erikoisvaraus syöttämällä asiakastunnus"
+
+#: reservation.js:CREATE_BRESV_SERVER_ERROR
+msgid "Server error trying to create reservation: "
+msgstr "Erikoisvarausta tehdessä ilmeni palvelinvirhe:"
+
+#: reservation.js:CREATE_BRESV_LOCAL_ERROR
+msgid "Exception trying to create reservation: "
+msgstr "Erikoisvarausta tehdessä ilmeni poikkeus:"
+
+#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET
+msgid ""
+"Created ${0} reservation(s), but ${1} of these could not target any resources.\n"
+"\n"
+"This means that it won't be possible to fulfill some of these\n"
+"reservations until a suitable resource becomes available."
+msgstr ""
+"${0} erikoisvaraus(ta) luotiin, mutta $1 niistä jäi ilman kohdeaineistoa.\n"
+"\n"
+"Viimeksi mainittuja erikoisvarauksia ei voida täyttää,\n"
+"ennen kuin sopiva aineisto on lainattavissa."
+
+#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET_WILL_CANCEL
+msgid ""
+"Since the requested resource could not be targeted, this\n"
+"reservation will now be canceled."
+msgstr ""
+"Koska pyydettyä aineistoa ei voitu ottaa kohteeksi,\n"
+"erikoisvaraus perutaan."
+
+#: reservation.js:OUTSTANDING_BRESV
+msgid "Outstanding reservations for patron"
+msgstr "Asiakkaan voimassaolevat erikoisvaraukset"
+
+#: reservation.js:HERE_ARE_EXISTING_BRESV
+msgid "Existing reservations for"
+msgstr "Olemassaolevat erikoisvaraukset asiakkaalle"
+
+#: reservation.js:CXL_BRESV_SUCCESS
+msgid "Canceled ${0} reservation(s)"
+msgstr "${0} erikoisvaraus(ta) peruttiin"
+
+#: reservation.js:GET_PATRON_NO_RESULT
+msgid "No server response after attempting to look up patron by barcode."
+msgstr ""
+"Palvelin ei vastannut, kun asiakasta yritettiin etsiä asiakastunnuksen "
+"perusteella."
+
+#: reservation.js:AUTO_or
+msgid "- Or -"
+msgstr "- Tai -"
+
+#: reservation.js:AUTO_email_notify
+msgid "Send email notification when resource is available for pickup."
+msgstr "Lähetä ilmoitus sähköpostilla, kun aineisto on noudettavissa."
+
+#: reservation.js:SELECT_A_BRSRC_THEN
+msgid ""
+"You have clicked 'Reserve Selected', but nothing is selected!\n"
+"\n"
+"You must select a resource from the large box above.\n"
+"\n"
+"***  If resources that you would select are highlighted in RED, ***\n"
+"these items are not available during the requested time; if\n"
+"possible, choose another resource or change the reservation time."
+msgstr ""
+"Olet napsauttanut 'Varaa valitut', mutta mitään ei ole valittuna!\n"
+"\n"
+"Sinun on valittava aineisto yllä olevasta suuresta laatikosta.\n"
+"\n"
+"***  Jos haluamasi aineistot on korostettu PUNAISELLA, ***\n"
+"se tarkoittaa, etteivät niteet ole tällä hetkellä lainattavissa; jos\n"
+"mahdollista, valitse toinen aineisto tai muuta varausaikaa."
+
+#: reservation.js:AUTO_ATTR_VALUE_reserve_brt
+msgid "Reserve Any"
+msgstr "Varaa mikä tahansa"
+
+#: reservation.js:AUTO_patron_barcode
+msgid "Reserve to patron barcode:"
+msgstr "Varaa asiakastunnukselle:"
+
+#: reservation.js:COULD_NOT_RETRIEVE_BRT_PASSED_IN
+msgid "Error retrieving booking resource type"
+msgstr "Varausaineiston tyypin haku epäonnistui"
+
+#: reservation.js:ACTOR_CARD_NOT_FOUND
+msgid "Patron barcode not found. Please try again."
+msgstr "Asiakastunnusta ei löydy. Yritä uudelleen."
+
+#: reservation.js:CXL_BRESV_SELECT_SOMETHING
+msgid "You have not selected any reservations to cancel."
+msgstr "Et ole valinnut yhtään erikoisvarausta peruttavaksi."
+
+#: reservation.js:AUTO_i_need_this_resource
+msgid "I need this resource..."
+msgstr "Tarvitsen aineiston..."
+
+#: reservation.js:NEED_EXACTLY_ONE_BRT_PASSED_IN
+msgid "Can't book multiple resource types at once"
+msgstr "Eri aineistotyyppien varaus ei onnistu yhdellä kertaa"
+
+#: reservation.js:AUTO_bresv_grid_start_time
+msgid "Start time"
+msgstr "Aloitusaika"
+
+#: reservation.js:ERROR_FETCHING_AOUS
+msgid ""
+"Could not retrieve organizational unit settings.\n"
+"This is a non-fatal error, but you may wish to\n"
+"contact your system administrator."
+msgstr ""
+"Organisaatioyksikön asetusten haku epäonnistui. \n"
+"Virhe ei ole kriittinen, mutta ota halutessasi\n"
+"yhteyttä järjestelmän ylläpitäjään."
+
+#: reservation.js:AUTO_ATTR_VALUE_button_cancel_existing
+msgid "Cancel selected"
+msgstr "Peruutus valittu"
+
+#: reservation.js:GET_BRESV_LIST_NO_RESULT
+msgid "No results from server retrieving reservation list."
+msgstr "Varauslistaa hakeva palvelin ei antanut tuloksia."
+
+#: reservation.js:GET_BRESV_LIST_ERR
+msgid "Error while retrieving reservation list: "
+msgstr "Virhe varauslistan haussa:"
+
+#: reservation.js:AUTO_arbitrary_resource
+msgid "Enter the barcode of a cataloged, bookable resource:"
+msgstr "Syötä tietokannassa olevan, varattavissa olevan aineiston nidetunnus:"
+
+#: reservation.js:NO_EXISTING_BRESV
+msgid "This user has no existing reservations at this time."
+msgstr "Tällä käyttäjällä ei ole erikoisvarauksia tällä hetkellä"
+
+#: reservation.js:AUTO_explain_bookable
+msgid ""
+"To reserve an item that is not yet registered as a bookable resource, find "
+"it in the catalog or under <em>Display Item</em>, and select <em>Make Item "
+"Bookable</em> or <em>Book Item Now</em> there."
+msgstr ""
+"Jos haluat varata niteen, jota ei ole vielä rekisteröity varattavaksi "
+"aineistoksi, etsi se tietokannasta tai <em>Näytä nide</em>-valinnan kautta, "
+"ja valitse sitten <em>Tee niteestä varattava</em> tai <em>Varaa nide "
+"nyt</em>."
+
+#: reservation.js:CXL_BRESV_FAILURE2
+msgid "Error canceling reservations:\n"
+msgstr "Virhe erikoisvarausten peruutuksessa:\n"
+
+#: reservation.js:NO_BRA_RESULTS
+msgid "Couldn't retrieve booking resource attributes."
+msgstr "Varausaineiston määritteiden haku ei onnistunut."
+
+#: reservation.js:CREATE_BRESV_SERVER_NO_RESPONSE
+msgid "No response from server after trying to create reservation."
+msgstr "Palvelin ei vastannut, kun erikoisvarausta yritettiin luoda."
+
+#: reservation.js:AUTO_bresv_grid_end_time
+msgid "End time"
+msgstr "Lopetusaika"
+
+#: reservation.js:UNTARGETED
+msgid "None targeted"
+msgstr "Ei kohteita"
+
+#: reservation.js:ON_FLY_NO_RESPONSE
+msgid "No response from server attempting to make item a bookable resource."
+msgstr ""
+"Palvelin ei vastannut, kun niteestä yritettiin tehdä varattava aineisto."
+
+#: reservation.js:NO_TARG_DIV
+msgid "Could not find target div"
+msgstr "Kohdeosastoa ei löytynyt"
+
+#: reservation.js:INVALID_TS_RANGE
+msgid "You must choose a valid start and end time for the reservation."
+msgstr "Erikoisvaraukselle on valittava kelvollinen aloitus- ja lopetusaika"
+
+#: reservation.js:AUTO_pickup_lib_selector
+msgid "Choose the pickup library for this reservation:"
+msgstr "Valitse noutokirjasto tälle erikoisvaraukselle:"
+
+#: reservation.js:NO_USABLE_BRSRC
+msgid ""
+"No reservable resources.  Adjust start and end time\n"
+"until a resource is available for reservation."
+msgstr ""
+"Ei varattavissa olevia aineistoja. Muuta aloitus- ja lopetusaikaa, kunnes "
+"aineisto on varattavissa."
+
+#: reservation.js:AUTO_ATTR_VALUE_button_edit_existing
+msgid "Edit selected"
+msgstr "Muokkaa valittuja"
+
+#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET_BLOCKED_BY_CIRC
+msgid ""
+"The desired reservation(s) are blocked by circulation(s) with the following due date(s):\n"
+"${0}"
+msgstr ""
+"Pyydettyjen varausten esteenä ovat lainat, joiden eräpäivät ovat seuraavat:\n"
+"${0}"
+
+#: reservation.js:ANY
+msgid "ANY"
+msgstr "MIKÄ TAHANSA"
+
+#: reservation.js:CXL_BRESV_FAILURE
+msgid "Error canceling reservations; server silent."
+msgstr "Virhe varausten perumisessa; palvelin on hiljaa."

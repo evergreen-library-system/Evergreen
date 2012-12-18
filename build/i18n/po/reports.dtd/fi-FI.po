@@ -1,0 +1,819 @@
+# extracted from ../../Open-ILS/web/opac/locale/en-US/reports.dtd
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-29 08:58+0300\n"
+"PO-Revision-Date: 2012-09-12 16:22+0300\n"
+"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"Language-Team: Finnish <evergreen@jns.fi>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Translate Toolkit 1.9.0\n"
+"X-Accelerator-Marker: &\n"
+"X-Project-Style: mozilla\n"
+
+#. Common Entities
+#: reports.common.logged_in_as
+msgid "You are logged in as "
+msgstr "Olet kirjautunut sisään tunnuksella"
+
+#: reports.common.loading
+msgid "Loading..."
+msgstr "Ladataan..."
+
+#: reports.oils_rpt.title
+msgid "Evergreen: Reports"
+msgstr "Evergreen: Raportit"
+
+#: reports.oils_rpt.insufficient_permissions
+msgid "You do not have sufficient permissions to run reports"
+msgstr "Sinulla ei ole riittäviä oikeuksia raporttien tekemiseen"
+
+#: reports.oils_rpt.my_folders
+msgid "My Folders"
+msgstr "Omat kansiot"
+
+#: reports.oils_rpt.shared_folders
+msgid "Shared Folders"
+msgstr "Jaetut kansiot"
+
+#: reports.oils_rpt.manage_folder_contents
+msgid "Manage Folder Contents"
+msgstr "Hallinnoi kansioiden sisältöä"
+
+#: reports.oils_rpt.manage_folder
+msgid "Manage Folder"
+msgstr "Hallinnoi kansiota"
+
+#: reports.oils_rpt.created_by
+msgid "created by "
+msgstr "luonut"
+
+#: reports.oils_rpt.create_new_sub_folder
+msgctxt "reports.oils_rpt.create_new_sub_folder"
+msgid "Create a new sub-folder"
+msgstr "Luo uusi alikansio"
+
+#: reports.oils_rpt.folder_type
+msgid "Folder type: "
+msgstr "Kansiotyyppi:"
+
+#: reports.oils_rpt.folder_name
+msgctxt "reports.oils_rpt.folder_name"
+msgid "Folder Name:"
+msgstr "Kansion nimi:"
+
+#: reports.oils_rpt.share_folder
+msgid "Share this folder:"
+msgstr "Jaa kansio:"
+
+#: reports.oils_rpt.do_not_share
+msgctxt "reports.oils_rpt.do_not_share"
+msgid "Do not share"
+msgstr "Älä jaa"
+
+#: reports.oils_rpt.share
+msgctxt "reports.oils_rpt.share"
+msgid "Share"
+msgstr "Jaa"
+
+#: reports.oils_rpt.share_with
+msgctxt "reports.oils_rpt.share_with"
+msgid "Share with:"
+msgstr "Jaa seuraavien kanssa:"
+
+#: reports.oils_rpt.create_sub_folder
+msgctxt "reports.oils_rpt.create_sub_folder"
+msgid "Create Sub Folder"
+msgstr "Luo alikansio"
+
+#: reports.oils_rpt_builder.title
+msgid "Evergreen: Report Builder"
+msgstr "Evergreen: Raporttityökalu"
+
+#: reports.oils_rpt_builder.reports_home
+msgid "Reports Home"
+msgstr "Raporttien kotinäkymä"
+
+#: reports.oils_rpt_builder.cloning_template
+msgid "Cloning template"
+msgstr "Kloonauspohja"
+
+#: reports.oils_rpt_builder.template_name
+msgid "Template Name: "
+msgstr "Raporttipohjan nimi:"
+
+#: reports.oils_rpt_builder.template_description
+msgid "Template Description: "
+msgstr "Raporttipohjan kuvaus:"
+
+#: reports.oils_rpt_builder.template_type
+msgid "Template Type: "
+msgstr "Raporttipohjan tyyppi:"
+
+#: reports.oils_rpt_builder.save_this_template
+msgid "Save this Template: "
+msgstr "Tallenna raporttipohja"
+
+#: reports.oils_rpt_builder.filtering_note
+msgid ""
+"Indicates that when filtering on the item, a list of named choices will be "
+"generated."
+msgstr ""
+"Osoittaa, että kun kohdetta suodatetaan, nimetyistä vaihtoehdoista luodaan "
+"luettelo."
+
+#: reports.oils_rpt_builder.temp_disp_items
+msgid "Template Display Items"
+msgstr "Raporttipohjanäytön kohteet"
+
+#: reports.oils_rpt_builder.remove_selected
+msgid "Remove Selected"
+msgstr "Poista valitut"
+
+#: reports.oils_rpt_builder.move_up
+msgctxt "reports.oils_rpt_builder.move_up"
+msgid "Move Up"
+msgstr "Siirrä ylöspäin"
+
+#: reports.oils_rpt_builder.move_down
+msgctxt "reports.oils_rpt_builder.move_down"
+msgid "Move Down"
+msgstr "Siirrä alaspäin"
+
+#. The below two entity strings were the contents of the .xhtml file but I don't think that works when using XML entities
+#. ENTITY reports.oils_rpt_builder.move_up "Move &uarr;"
+#. ENTITY reports.oils_rpt_builder.move_down "Move &darr;"
+#: reports.oils_rpt_builder.template_filters
+msgid "Template Filters"
+msgstr "Raporttipohjan suodattimet"
+
+#: reports.oils_rpt_builder.report_aggregate_filters
+msgid "Report Aggregate Filters"
+msgstr "Raportin yhteenkokouman suodattimet"
+
+#: reports.oils_rpt_builder.hint
+msgid "Hint: "
+msgstr "Vinkki:"
+
+#: reports.oils_rpt_builder.hint_item_details
+msgid "Double-click on an item to see the item details."
+msgstr "Kaksoisnapsauta kohdetta, jos haluat nähdä sen tiedot."
+
+#: reports.oils_rpt_builder.template_types
+msgid "Template Types"
+msgstr "Raporttipohjatyypit"
+
+#: reports.oils_rpt_builder.display_items
+msgid "Display Items"
+msgstr "Näyttökohteet"
+
+#: reports.oils_rpt_builder.filters
+msgid "Filters"
+msgstr "Suodattimet"
+
+#: reports.oils_rpt_builder.aggregate_filters
+msgctxt "reports.oils_rpt_builder.aggregate_filters"
+msgid "Aggregate Filters"
+msgstr "Yhteenkokooman suodattimet"
+
+#: reports.oils_rpt_builder.create_aggregate_filter
+msgid "Create Aggregate Filter"
+msgstr "Luo yhteenkokouman suodatin"
+
+#: reports.oils_rpt_builder.field_editor_window.label
+msgid "Select how this field should be displayed:"
+msgstr "Valitse, kuinka kenttä näytetään:"
+
+#: reports.oils_rpt_builder.add_item
+msgid "Add Item"
+msgstr "Lisää kohde"
+
+#: reports.oils_rpt_builder.select_filter_to_apply
+msgid "Select what filter should be applied to this field:"
+msgstr "Valitse, mitä suodatinta käytetään tähän kenttään:"
+
+#: reports.oils_rpt_builder.choose_a_transform
+msgid "Choose a Transform: "
+msgstr "Valitse muodonmuutos:"
+
+#: reports.oils_rpt_builder.choose_a_filter
+msgid "Choose a Filter: "
+msgstr "Valitse suodatin:"
+
+#: reports.oils_rpt_builder.create_filter
+msgid "Create Filter"
+msgstr "Luo suodatin"
+
+#: reports.oils_rpt_builder.aggregate_filter_to_apply
+msgid "Select what aggregate filter should be applied to this field:"
+msgstr "Valitse, mitä yhteenkokouman suodatinta käytetään tähän kenttään:"
+
+#: reports.oils_rpt_builder.selected_to_sort_columns
+msgid "Select how the columns should be sorted"
+msgstr "Valitse, miten sarakkeet lajitellaan"
+
+#: reports.oils_rpt_builder.choose_column
+msgid "Choose a column: "
+msgstr "Valitse sarake:"
+
+#: reports.oils_rpt_builder.choose_sorting_direction
+msgid "Choose the direction the sorting should occur: "
+msgstr "Valitse lajittelun suunta:"
+
+#: reports.oils_rpt_builder.ascending
+msgid "Ascending"
+msgstr "Nouseva"
+
+#: reports.oils_rpt_builder.descending
+msgid "Descending"
+msgstr "Laskeva"
+
+#: reports.oils_rpt_builder.add_sort
+msgid "Add Sort"
+msgstr "Lisää lajittelu"
+
+#: reports.oils_rpt_builder.close_window
+msgid "Close Window"
+msgstr "Sulje ikkuna"
+
+#: reports.oils_rpt_builder.confirm_new_report
+msgid ""
+"This will destroy the report you are currently constructing.  Are you sure "
+"you wish to do this?"
+msgstr ""
+"Tämä tuhoaa raportin, jota olet rakentamassa. Haluatko varmasti tehdä niin?"
+
+#: reports.oils_rpt_common.action_succeeded
+msgid "Action Succeeded"
+msgstr "Toiminto onnistui"
+
+#: reports.oils_rpt_common.action_failed
+msgid "Action Failed"
+msgstr "Toiminto epäonnistui"
+
+#: reports.oils_rpt_common.generic_calendar_button
+msgid "Date selector"
+msgstr "Päiväyksen valinta"
+
+#: reports.oils_rpt_editor.template_name
+msgid "Template Name:"
+msgstr "Raporttipohjan nimi:"
+
+#: reports.oils_rpt_editor.template_creator
+msgid "Template Creator:"
+msgstr "Raporttipohjan luoja:"
+
+#: reports.oils_rpt_editor.template_description
+msgid "Template Description:"
+msgstr "Raporttipohjan kuvaus:"
+
+#: reports.oils_rpt_editor.report_name
+msgid "Report Name:"
+msgstr "Raportin nimi:"
+
+#: reports.oils_rpt_editor.report_description
+msgid "Report Description:"
+msgstr "Raportin kuvaus:"
+
+#: reports.oils_rpt_editor.report_columns
+msgid "Report Columns:"
+msgstr "Raportin sarakkeet:"
+
+#: reports.oils_rpt_editor.pivot_label_column
+msgid "Pivot Label Column:"
+msgstr "Pivot-nimekkeen sarake:"
+
+#: reports.oils_rpt_editor.select_option
+msgid "Select One (optional)"
+msgstr "Valitse yksi (valinnainen)"
+
+#: reports.oils_rpt_editor.pivot_data_column
+msgid "Pivot Data Column:"
+msgstr "Pivot-tietojen sarake:"
+
+#: reports.oils_rpt_editor.store_report_definition
+msgid "Choose a folder to store this report definition: "
+msgstr "Valitse kansio, johon raportin määritys tallennetaan:"
+
+#: reports.oils_rpt_editor.selected_folder
+msgctxt "reports.oils_rpt_editor.selected_folder"
+msgid "Selected Folder: "
+msgstr "Valittu kansio:"
+
+#: reports.oils_rpt_editor.output_options
+msgid "Output Options"
+msgstr "Tulostevaihtoehdot"
+
+#: reports.oils_rpt_editor.excel_output
+msgid "Excel Output"
+msgstr "Excel-tuloste"
+
+#: reports.oils_rpt_editor.csv_output
+msgid "CSV Output"
+msgstr "CSV-tuloste"
+
+#: reports.oils_rpt_editor.html_output
+msgid "HTML Output"
+msgstr "HTML-tuloste"
+
+#: reports.oils_rpt_editor.bar_charts
+msgid "Bar Charts"
+msgstr "Palkkikaavio"
+
+#: reports.oils_rpt_editor.line_charts
+msgid "Line Charts"
+msgstr "Viivakaavio"
+
+#: reports.oils_rpt_editor.recurring_report
+msgid "Recurring Report: "
+msgstr "Jaksollinen raportti:"
+
+#: reports.oils_rpt_editor.recurring_interval
+msgid "Recurrence Interval: "
+msgstr "Jakson väli:"
+
+#: reports.oils_rpt_editor.days
+msgctxt "reports.oils_rpt_editor.days"
+msgid "Day(s)"
+msgstr "Päivä(ä)"
+
+#: reports.oils_rpt_editor.weeks
+msgctxt "reports.oils_rpt_editor.weeks"
+msgid "Weeks(s)"
+msgstr "Viikko(a)"
+
+#: reports.oils_rpt_editor.months
+msgid "Month(s)"
+msgstr "Kuukausi/kuukaudet"
+
+#: reports.oils_rpt_editor.run_asap
+msgid "Run as soon as possible"
+msgstr "Tee niin pian kuin mahdollista"
+
+#: reports.oils_rpt_editor.sent_to_email
+msgid "Send completion notification to this Email address:"
+msgstr "Lähetä valmistumisilmoitus tähän sähköpostiosoitteeseen:"
+
+#: reports.oils_rpt_editor.midnight
+msgid "Midnight"
+msgstr "Keskiyö"
+
+#: reports.oils_rpt_editor.noon
+msgid "Noon"
+msgstr "Keskipäivä"
+
+#: reports.oils_rpt_editor.storage_folder_for_output
+msgid "Choose a folder to store this report's output:"
+msgstr "Valitse kansio, johon raportin tuloste tallennetaan:"
+
+#: reports.oils_rpt_editor.save_report
+msgid "Save Report"
+msgstr "Tallenna raportti"
+
+#: reports.oils_rpt_editor.empty_parameter
+msgid ""
+"One or more of the user-defined parameters has been left empty. Please fill "
+"in all fields."
+msgstr ""
+"Yksi tai useampi käyttäjän määrittämä parametri on jätetty tyhjäksi. Täytä "
+"kaikki kentät."
+
+#: reports.oils_rpt_editor.same_name
+msgid "There is already a report in this folder with the given name."
+msgstr "Kansiossa on jo raportti, jolla on annettu nimi."
+
+#: reports.oils_rpt_folder_manager.change_folder_name
+msgid "Change folder name"
+msgstr "Muuta kansion nimeä"
+
+#: reports.oils_rpt_folder_manager.delete_folder
+msgid "Delete this folder"
+msgstr "Poista kansio"
+
+#: reports.oils_rpt_folder_manager.create_new_sub_folder
+msgctxt "reports.oils_rpt_folder_manager.create_new_sub_folder"
+msgid "Create a new sub-folder"
+msgstr "Luo uusi alikansio"
+
+#: reports.oils_rpt_folder_manager.share_this_folder
+msgid "Share this folder"
+msgstr "Jaa kansio"
+
+#: reports.oils_rpt_folder_manager.hide_folder
+msgid "Hide (un-share) this folder"
+msgstr "Piilota kansio (lopeta jakaminen)"
+
+#: reports.oils_rpt_folder_manager.disable_recurrence
+msgid "Disable recurrence"
+msgstr "Ota jakso pois käytöstä"
+
+#: reports.oils_rpt_folder_manager.fldr_mngr_actions_submit
+msgid "Go"
+msgstr "Siirry"
+
+#: reports.oils_rpt_folder_manager.change_name
+msgid "Enter new name:"
+msgstr "Syötä uusi nimi:"
+
+#: reports.oils_rpt_folder_manager.submit
+msgctxt "reports.oils_rpt_folder_manager.submit"
+msgid "Submit"
+msgstr "Lähetä"
+
+#: reports.oils_rpt_folder_manager.folder_name
+msgctxt "reports.oils_rpt_folder_manager.folder_name"
+msgid "Folder Name:"
+msgstr "Kansion nimi:"
+
+#: reports.oils_rpt_folder_manager.do_not_share
+msgctxt "reports.oils_rpt_folder_manager.do_not_share"
+msgid "Do not share"
+msgstr "Älä jaa"
+
+#: reports.oils_rpt_folder_manager.share
+msgctxt "reports.oils_rpt_folder_manager.share"
+msgid "Share"
+msgstr "Jaa"
+
+#: reports.oils_rpt_folder_manager.share_with
+msgctxt "reports.oils_rpt_folder_manager.share_with"
+msgid "Share with:"
+msgstr "Jaa seuraavien kanssa:"
+
+#: reports.oils_rpt_folder_manager.create_sub_folder
+msgctxt "reports.oils_rpt_folder_manager.create_sub_folder"
+msgid "Create Sub Folder"
+msgstr "Luo alikansio"
+
+#: reports.oils_rpt_folder_manager.change_name_confirm
+msgid "Are you sure you wish to change this folder's name?"
+msgstr "Haluatko varmasti muuttaa kansion nimen?"
+
+#: reports.oils_rpt_folder_manager.delete_name_confirm
+msgid "Are you sure you wish to delete this folder?"
+msgstr "Haluatko varmasti poistaa kansion?"
+
+#: reports.oils_rpt_folder_manager.cannot_delete
+msgid "This folder may not be deleted because it is not empty."
+msgstr "Kansiota ei voi poistaa, koska se ei ole tyhjä."
+
+#: reports.oils_rpt_folder_manager.already_shared
+msgid "This folder is already shared"
+msgstr "Kansio on jo jaettu"
+
+#: reports.oils_rpt_folder_manager.folder_not_shared
+msgid "This folder is not shared"
+msgstr "Kansiota ei ole jaettu"
+
+#: reports.oils_rpt_folder_manager.confirm_hide_folder
+msgid "Are you sure you wish to hide this folder?"
+msgstr "Haluatko varmasti piilottaa kansion?"
+
+#: reports.oils_rpt_folder_window.new_report_from_template
+msgid "Create a new report from selected template"
+msgstr "Luo uusi raportti valitun pohjan mukaisesti"
+
+#: reports.oils_rpt_folder_window.clone_template
+msgid "Clone selected template"
+msgstr "Kloonaa valittu pohja"
+
+#: reports.oils_rpt_folder_window.delete_template
+msgid "Delete selected template(s)"
+msgstr "Poista valitut pohjat"
+
+#: reports.oils_rpt_folder_window.clone_report
+msgid "Clone report"
+msgstr "Kloonaa raportti"
+
+#: reports.oils_rpt_folder_window.schedule_report
+msgid "Schedule report"
+msgstr "Ajasta raportti"
+
+#: reports.oils_rpt_folder_window.delete_reports
+msgid "Delete selected report(s)"
+msgstr "Poista valitut raportit"
+
+#: reports.oils_rpt_folder_window.view_report_output
+msgid "View report output"
+msgstr "Näytä raportin tuloste"
+
+#: reports.oils_rpt_folder_window.delete_output
+msgid "Delete selected output(s)"
+msgstr "Poista valitut tulosteet"
+
+#: reports.oils_rpt_folder_window.move_templates
+msgid "Move the selected template(s) to a different folder"
+msgstr "Siirrä valitut raporttipohjat eri kansioon"
+
+#: reports.oils_rpt_folder_window.move_reports
+msgid "Move the selected report(s) to a different folder"
+msgstr "Siirrä valitut raportit eri kansioon"
+
+#: reports.oils_rpt_folder_window.move_output
+msgid "Move the selected output(s) to a different folder"
+msgstr "Siirrä valitut tulosteet eri kansioon"
+
+#: reports.oils_rpt_folder_window.submit
+msgctxt "reports.oils_rpt_folder_window.submit"
+msgid "Submit"
+msgstr "Lähetä"
+
+#: reports.oils_rpt_folder_window.limit_output
+msgid "Limit output to "
+msgstr "Rajoita tuloste:"
+
+#: reports.oils_rpt_folder_window.all
+msgid "All"
+msgstr "Kaikki"
+
+#: reports.oils_rpt_folder_window.pending_items
+msgid "Pending Items"
+msgstr "Odottavat kohteet"
+
+#: reports.oils_rpt_folder_window.new_template
+msgid "Create a new Template for this folder"
+msgstr "Luo uusi pohja tälle kansiolle"
+
+#: reports.oils_rpt_folder_window.no_items_to_display
+msgid "No items to display"
+msgstr "Ei näytettäviä kohteita"
+
+#: reports.oils_rpt_folder_window.completed_items
+msgid "Completed Items"
+msgstr "Valmistuneet kohteet"
+
+#: reports.oils_rpt_folder_window.selected_folder
+msgctxt "reports.oils_rpt_folder_window.selected_folder"
+msgid "Selected Folder: "
+msgstr "Valittu kansio:"
+
+#: reports.oils_rpt_folder_window.select_folder
+msgid "Select Folder"
+msgstr "Valitse kansio"
+
+#: reports.oils_rpt_folder_window.cancel
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: reports.oils_rpt_folder_window.confirm_delete
+msgid "Are you sure you wish to delete the selected item(s)?"
+msgstr "Haluatko varmasti poistaa valitut kohteet?"
+
+#: reports.oils_rpt_folder_window.dependant_reports_no_delete
+msgid ""
+"One or more of the selected templates could not be deleted because there are "
+"reports that depend on them."
+msgstr ""
+"Yhtä tai useampaa valittua pohjaa ei voitu poistaa, koska eräät raportit "
+"ovat riippuvaisia niistä."
+
+#: reports.oils_rpt_folder_window.dependant_outputs_no_delete
+msgid ""
+"One or more of The selected reports could not be deleted because there are "
+"outputs that depend on them."
+msgstr ""
+"Yhtä tai useampaa valittua raporttia ei voitu poistaa, koska eräät tulosteet "
+"ovat riippuvaisia niistä."
+
+#: reports.oils_rpt_folder_window.cannot_delete_another_users_data
+msgid "You may not delete another user's items"
+msgstr "Et voi poistaa toisen käyttäjän kohteita"
+
+#: reports.oils_rpt_folder_window.cannot_move_another_users_data
+msgid "You may not move another user's items"
+msgstr "Et voi siirtää toisen käyttäjän kohteita"
+
+#: reports.oils_rpt_folder_window.delete_all_attached_reports
+msgid ""
+"        This will also delete all of your attached reports and outputs for \n"
+"this template. \n"
+" \n"
+"If other users have reports or outputs attached to this template, \n"
+"those will be left untouched and the template will not be deleted. \n"
+" \n"
+"Do you wish to continue?"
+msgstr ""
+"        Tämä poistaa myös kaikki mallineeseen kiinnitetyt raporttisi ja \n"
+"tulosteesi. \n"
+" \n"
+"Jos muilla käyttäjillä on  tähän pohjaan kiinnitettyjä raportteja tai "
+"tulosteita,\n"
+"niihin ei kosketa, eikä pohjaa poisteta. \n"
+" \n"
+"Haluatko jatkaa?"
+
+#: reports.oils_rpt_folder_window.delete_all_attached_outputs
+msgid ""
+"        This will also delete all of your attached outputs for \n"
+"this report. \n"
+" \n"
+"If other users have outputs attached to this report, \n"
+"those will be left untouched and the report will not be deleted. \n"
+" \n"
+"Do you wish to continue?"
+msgstr ""
+"        Tämä poistaa myös kaikki raporttiin kiinnitetyt \n"
+"tulosteesi. \n"
+" \n"
+"Jos muilla käyttäjillä on raporttiin kiinnitettyjä tulosteita,\n"
+"niihin ei kosketa, eikä raporttia poisteta. \n"
+" \n"
+"Haluatko jatkaa?"
+
+#: reports.oils_rpt_param_editor.column
+msgid "Column"
+msgstr "Sarake"
+
+#: reports.oils_rpt_param_editor.transform
+msgid "Transform"
+msgstr "Muuta muotoa"
+
+#: reports.oils_rpt_param_editor.action
+msgid "Action"
+msgstr "Toiminto"
+
+#: reports.oils_rpt_param_editor.user_params
+msgid "User Params"
+msgstr "Käyttäjän parametrit"
+
+#: reports.oils_rpt_param_editor.or
+msgid "OR"
+msgstr "TAI"
+
+#: reports.oils_rpt_param_editor.use_relative_date
+msgid "Use a relative date instead."
+msgstr "Käytä suhteellista ajanmerkintää."
+
+#: reports.oils_rpt_param_editor.days
+msgctxt "reports.oils_rpt_param_editor.days"
+msgid "Day(s)"
+msgstr "Päivä(ä)"
+
+#: reports.oils_rpt_param_editor.weeks
+msgctxt "reports.oils_rpt_param_editor.weeks"
+msgid "Weeks(s)"
+msgstr "Viikko(a)"
+
+#: reports.oils_rpt_param_editor.months
+msgid "Months(s)"
+msgstr "Kuukautta"
+
+#: reports.oils_rpt_param_editor.ago
+msgid " ago"
+msgstr " sitten"
+
+#: reports.xul.template_builder.db_source_browser.label
+msgid "Database Source Browser"
+msgstr "Tietokannan lähteen selaus"
+
+#: reports.xul.template_builder.sources_menulist.label
+msgid "Sources"
+msgstr "Lähteet"
+
+#: reports.xul.template_builder.source_name.label
+msgid "Source Name"
+msgstr "Lähteen nimi"
+
+#: reports.xul.template_builder.source_nullable.label
+msgid "Nullable"
+msgstr "Nollattavissa"
+
+#: reports.xul.template_builder.nullability_select.label
+msgid "Enable nullability selection"
+msgstr "Ota nollattavuusvalinta käyttöön"
+
+#: reports.xul.template_builder.source_specifier.label
+msgid "Source Specifier:"
+msgstr "Lähteen määrittäjä:"
+
+#: reports.xul.template_builder.field_name.label
+msgid "Field Name"
+msgstr "Kentän nimi"
+
+#: reports.xul.template_builder.data_type.label
+msgid "Data Type"
+msgstr "Datatyyppi"
+
+#: reports.xul.template_builder.field_transform.label
+msgid "Field Transform"
+msgstr "Kentän muodonmuutos"
+
+#: reports.xul.template_builder.params.label
+msgid "Params"
+msgstr "Parametrit"
+
+#: reports.xul.template_builder.applicable_datatypes.label
+msgid "Applicable Datatypes"
+msgstr "Soveltuvat datatyypit"
+
+#: reports.xul.template_builder.output_type.label
+msgid "Output Type"
+msgstr "Tulostetyyppi"
+
+#: reports.xul.template_builder.source_add.label
+msgid "Add Selected Fields"
+msgstr "Lisää valitut kentät"
+
+#: reports.xul.template_builder.template_config_caption.label
+msgid "Template Configuration"
+msgstr "Raporttipohjan määritykset"
+
+#: reports.xul.template_builder.name.label
+msgid "Name:"
+msgstr "Nimi:"
+
+#: reports.xul.template_builder.description.label
+msgid "Description:"
+msgstr "Kuvaus:"
+
+#: reports.xul.template_builder.save.label
+msgid "Save"
+msgstr "Tallenna"
+
+#: reports.xul.template_builder.displayed_fields.label
+msgid "Displayed Fields"
+msgstr "Näytetyt kentät"
+
+#: reports.xul.template_builder.base_filters.label
+msgid "Base Filters"
+msgstr "Perussuodattimet"
+
+#: reports.xul.template_builder.aggregate_filters.label
+msgctxt "reports.xul.template_builder.aggregate_filters.label"
+msgid "Aggregate Filters"
+msgstr "Yhteenkokooman suodattimet"
+
+#: reports.xul.template_builder.display_name.label
+msgid "Display Name"
+msgstr "Näyttönimi"
+
+#: reports.xul.template_builder.field_transform_type.label
+msgid "Field Transform Type"
+msgstr "Kentän muodonmuutoksen tyyppi"
+
+#: reports.xul.template_builder.alter_display_header.label
+msgid "Alter Display Header"
+msgstr "Muuta näytön otsikkoa"
+
+#: reports.xul.template_builder.move_up.label
+msgctxt "reports.xul.template_builder.move_up.label"
+msgid "Move Up"
+msgstr "Siirrä ylöspäin"
+
+#: reports.xul.template_builder.move_down.label
+msgctxt "reports.xul.template_builder.move_down.label"
+msgid "Move Down"
+msgstr "Siirrä alaspäin"
+
+#: reports.xul.template_builder.remove_selected_field.label
+msgid "Remove Selected Field"
+msgstr "Poista valittu kenttä"
+
+#: reports.xul.template_builder.filter_field.label
+msgid "Filter Field"
+msgstr "Suodatinkenttä"
+
+#: reports.xul.template_builder.operator.label
+msgid "Operator"
+msgstr "Operaattori"
+
+#: reports.xul.template_builder.value.label
+msgid "Value"
+msgstr "Arvo"
+
+#: reports.xul.template_builder.change_transform.label
+msgid "Change Transform"
+msgstr "Vaihda muutos"
+
+#: reports.xul.template_builder.change_operator.label
+msgid "Change Operator"
+msgstr "Vaihda käyttäjä"
+
+#: reports.xul.template_builder.change_value.label
+msgid "Change value"
+msgstr "Muuta arvoa"
+
+#: reports.xul.template_builder.remove_value.label
+msgid "Remove value"
+msgstr "Poista arvo"
+
+#: reports.xul.template_builder.remove_selected_fields.label
+msgid "Remove Selected Fields"
+msgstr "Poista valitut kentät"
+
+#: reports.xul.template_builder.table_name.label
+msgid "Table Name"
+msgstr "Taulukon nimi"
+
+#: reports.xul.template_builder.sql_alias.label
+msgid "SQL Alias"
+msgstr "SQL-alias"
+
+#: reports.xul.template_builder.relationship.label
+msgid "Relationship"
+msgstr "Suhde"

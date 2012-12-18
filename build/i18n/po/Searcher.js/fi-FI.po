@@ -1,0 +1,174 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2012-10-29 09:00:07-0400\n"
+"PO-Revision-Date: 2012-09-03 08:49+0300\n"
+"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"Language-Team: Finnish <evergreen@jns.fi>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.1\n"
+
+#: Searcher.js:before
+msgid "Published Before"
+msgstr "Julkaistu ennen"
+
+#: Searcher.js:lit_form
+msgid "Literary Form"
+msgstr "Kirjallisuudenlaji"
+
+#: Searcher.js:metabib
+msgid "Metarecord Search"
+msgstr "Haku metatietueesta"
+
+#: Searcher.js:contains
+msgid "Contains"
+msgstr "Sisältää"
+
+#: Searcher.js:more
+msgid "More..."
+msgstr "Lisää..."
+
+#: Searcher.js:after
+msgid "Published After"
+msgstr "Julkaistu jälkeen"
+
+#: Searcher.js:basic
+msgid "Basic"
+msgstr "Perus"
+
+#: Searcher.js:modifiers
+msgid "Modifiers"
+msgstr "Määritteet"
+
+#: Searcher.js:item_type
+msgid "Type"
+msgstr "Tyyppi"
+
+#: Searcher.js:depth
+msgid "Search Depth"
+msgstr "Hakusyvyys"
+
+#: Searcher.js:available
+msgid "Available"
+msgstr "Lainattavissa"
+
+#: Searcher.js:classed_searches
+msgid "Classed Searches"
+msgstr "Luokitetut haut"
+
+#: Searcher.js:item_form
+msgid "Form"
+msgstr "Muoto"
+
+#: Searcher.js:new_modifier
+msgid "New Modifier"
+msgstr "Uusi määrite"
+
+#: Searcher.js:less
+msgid "...Less"
+msgstr "...Vähemmän"
+
+#: Searcher.js:modifier_default
+msgid "-- Select a Modifier --"
+msgstr "-- Valitse määrite --"
+
+#: Searcher.js:during
+msgid "In Publication"
+msgstr "Julkaistu"
+
+#: Searcher.js:exact
+msgid "Exactly Matches"
+msgstr "Vastaa täysin"
+
+#: Searcher.js:advanced
+msgid "Advanced"
+msgstr "Edistynyt"
+
+#: Searcher.js:between
+msgid "Published Between"
+msgstr "Julkaistu välisenä aikana"
+
+#: Searcher.js:new_filter
+msgid "New Filter"
+msgstr "Uusi suodatin"
+
+#: Searcher.js:faceted_searches
+msgid "Facets"
+msgstr "Fasetit"
+
+#: Searcher.js:perform_search
+msgid "Go!"
+msgstr "Hae!"
+
+#: Searcher.js:remove
+msgid "Remove"
+msgstr "Poista"
+
+#: Searcher.js:audience
+msgid "Audience"
+msgstr "Yleisö"
+
+#: Searcher.js:format
+msgid "Type and Form"
+msgstr "Tyyppi ja muoto"
+
+#: Searcher.js:descending
+msgid "Sort Descending"
+msgstr "Laskeva lajittelu"
+
+#: Searcher.js:new_facet
+msgid "New Facet"
+msgstr "Uusi fasetti"
+
+#: Searcher.js:and
+msgid "AND"
+msgstr "JA"
+
+#: Searcher.js:vr_format
+msgid "Videorecording Format"
+msgstr "Videotallenteen muoto"
+
+#: Searcher.js:staff
+msgid "Staff Search"
+msgstr "Virkailijahaku"
+
+#: Searcher.js:site
+msgid "Site"
+msgstr "Sivusto"
+
+#: Searcher.js:notcontains
+msgid "Does Not Contain"
+msgstr "Ei sisällä"
+
+#: Searcher.js:sort
+msgid "Sort Axis"
+msgstr "Lajitteluakseli"
+
+#: Searcher.js:filters
+msgid "Filters"
+msgstr "Suodattimet"
+
+#: Searcher.js:bib_level
+msgid "Bibliographic Level"
+msgstr "Bibliografinen taso"
+
+#: Searcher.js:filter_default
+msgid "-- Select a Filter --"
+msgstr "-- Valitse suodatin --"
+
+#: Searcher.js:ascending
+msgid "Sort Ascending"
+msgstr "Nouseva lajittelu"
+
+#: Searcher.js:or
+msgid "OR"
+msgstr "TAI"
+
+#: Searcher.js:statuses
+msgid "Statuses"
+msgstr "Statukset"
