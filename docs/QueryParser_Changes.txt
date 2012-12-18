@@ -1,0 +1,47 @@
+QueryParser Changes
+
+Quick notes for doc writers.
+
+New columns:
+
+config.metabib_class: Note: This gets a new config interface to expose this and other information. It intentionally has no buttons for adding or removing entries.
+  a_weight
+  b_weight
+  c_weight
+  d_weight
+
+These are the FTS weights used for ranking for the four FTS weight classes. By default "A" is the exact match indexing and "C" is the stemmed version. They default to the PostgreSQL defaults that are used when otherwise unspecified.
+
+
+New tables:
+
+config.ts_config_list: Note: No editing interface exists for this, intentionally. It should be added to when DB-level FTS configs are added.
+  id - Actual DB level text search config name
+  name - Human readable description
+
+This lists the valid FTS configs for use with the following two tables, with more human friendly names.
+
+config.metabib_class_ts_map: Editable from the Server Admin menu
+  id - Primary key for editor benefit
+  field_class - Reference to config.metabib_class
+  ts_config - Which Text Search config to use
+  active - Is this config active. If false will not be used for searching or indexing.
+  index_weight - The FTS index weight to use for this FTS config. Should be A, B, C, or D, defaults to C.
+  index_lang - If set what language the record should be set to in order for this FTS config to be used for indexing
+  search_lang - If set what preferred language search should be using in order for this FTS config to be used for searching
+  always - If true use this config even when searching a specific field (author|personal, for example) even if that field has config as well
+
+This maps broad search classes and text search configs. Multiple can exist for a given search class. Setting index_lang or search_lang to 'NONE' will effectively disable the config for that purpose as they check against a three character field like 'eng' or 'fre'.
+
+config.metabib_field_ts_map: Editable from the Server Admin menu
+  id - Primary key for editor benefit
+  metabib_field - Reference to config.metabib_field
+  ts_config - Which Text Serach config to use
+  active - Is this config active. If false will not be used for searching or indexing.
+  index_weight - The FTS index weight to use for this FTS config. Should be A, B, C, or D, defaults to C.
+  index_lang - If set what language the record should be set to in order for this FTS config to be used for indexing
+  search_lang - If set what preferred language search should be using in order for this FTS config to be used for searching
+
+This maps individual indexes and text search configs. Multiple can exist for a given index. Setting index_lang or search_lang to 'NONE' will effectively disable the config for that purpose as they check against a three character field like 'eng' or 'fre'. Note that anything from the broader configs will be used if none exist for the specified field and the "always" ones from the broader configs will be used even if field specific ones do exist.
+
+New non-configuration tables exist for combined search indexes, but they are, IMO, more implementation details than things to be documented for end users.

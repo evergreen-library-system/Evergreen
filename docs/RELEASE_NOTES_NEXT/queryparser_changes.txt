@@ -1,0 +1,25 @@
+Search Changes
+==============
+A number of changes have been made to search to allow more control and improve
+performance. These changes and their associated configurations are global to
+the entire system and can not be configured on a per-library basis.
+
+Amongst other things the new search code fixes:
+
+* Inability to use statuses and locations as part of a larger query
+* Invalid queries being generated from advanced searches
+* Some timeouts from backend code taking too long to preform a search
+* Some filters being one-use only
+* Negations not working properly where multiple indexes are involved
+
+Improvements include:
+
+* Exact matches on input should be more likely to float to the top of results
+* Non-English stemming can be used, alongside or instead of English stemming
+* Entered search terms can be found across multiple indexes
+
+Default configuration is geared towards English but is easily changed. In a
+production environment changes will likely require re-indexing, however.
+
+The upgrade script could be pre-tweaked to install desired configuration before
+it builds and/or re-builds many of the indexes.
