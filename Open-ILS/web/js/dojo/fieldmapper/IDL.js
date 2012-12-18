@@ -4,8 +4,7 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
     dojo.provide("fieldmapper.IDL");
     dojo.declare('fieldmapper.IDL', null, {
     
-        _URL_PATH : '/reports/fm_IDL.xml', // XXX locale?
-        // -- just need to set up xmlent and use '/reports/'+OpenSRF.locale+'/fm_IDL.xml'
+        _URL_PATH : '/reports/fm_IDL.xml',
         NS_REPORTS : 'http://open-ils.org/spec/opensrf/IDL/reporter/v1',
         NS_PERSIST : 'http://open-ils.org/spec/opensrf/IDL/persistence/v1',
         NS_OBJ : 'http://open-ils.org/spec/opensrf/IDL/objects/v1',
@@ -56,6 +55,7 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                         handleAs : 'xml',
                         sync : true,
                         timeout : 10000,
+                        headers : {"Accept-Language": OpenSRF.locale},
                         load : function (response) {
                             self._parse(response);
                             fieldmapper.IDL.loaded = true;
