@@ -93,6 +93,9 @@ sub test_and_create_hold_batch {
         ($res) = $self->method_lookup(
             'open-ils.circ.title_hold.is_possible')->run($auth, $params, $override ? $oargs : {});
         if ($res->{'success'} == 1) {
+
+            $params->{'depth'} = $res->{'depth'} if $res->{'depth'};
+
             my $ahr = construct_hold_request_object($params);
             my ($res2) = $self->method_lookup(
                 $override
