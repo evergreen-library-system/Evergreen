@@ -998,41 +998,42 @@ sub flatten {
                       . ${spc} x 6 . "FROM  $table AS fe";
                 $from .= "\n" . ${spc} x 7 . "JOIN config.metabib_field AS fe_weight ON (fe_weight.id = fe.field)";
 
-                if ($node->dummy_count < @{$node->only_atoms} ) {
-                    $with .= ",\n     " if $with;
-                    $with .= "${talias}_xq AS (SELECT ". $node->tsquery ." AS tsq,". $node->tsquery_rank ." AS tsq_rank )";
-                    $from .= "\n" . ${spc} x 6 . "JOIN $ctable AS com ON (com.record = fe.source)";
-                    if (@{$node->fields} > 0) {
-                        $from .= "\n" . ${spc} x 6 . "JOIN ${talias}_xq ON (com.index_vector @@ ${talias}_xq.tsq_rank AND fe.index_vector @@ ${talias}_xq.tsq)";
-                    } else {
-                        $from .= "\n" . ${spc} x 6 . "JOIN ${talias}_xq ON (com.index_vector @@ ${talias}_xq.tsq)";
-                    }
-                } else {
-                    $from .= "\n" . ${spc} x 6 . ", (SELECT NULL::tsquery AS tsq, NULL:tsquery AS tsq_rank ) AS ${talias}_xq";
-                }
-
                 my @bump_fields;
+                my @field_ids;
                 if (@{$node->fields} > 0) {
                     @bump_fields = @{$node->fields};
 
-                    my @field_ids = grep defined, (
+                    @field_ids = grep defined, (
                         map {
                             $self->QueryParser->search_field_ids_by_class(
                                 $node->classname, $_
                             )->[0]
                         } @bump_fields
                     );
-                    if (@field_ids) {
-                        $from .= "\n" . ${spc} x 6 . "WHERE fe_weight.id IN  (" .
-                            join(',', @field_ids) . ")";
-                    }
-
                 } else {
                     @bump_fields = @{$self->QueryParser->search_fields->{$node->classname}};
                 }
 
-                $from .= "\n" . ${spc} x 4 . ") AS $talias ON (m.source = ${talias}.source)";
+                if ($node->dummy_count < @{$node->only_atoms} ) {
+                    $with .= ",\n     " if $with;
+                    $with .= "${talias}_xq AS (SELECT ". $node->tsquery ." AS tsq,". $node->tsquery_rank ." AS tsq_rank )";
+                    $from .= "\n" . ${spc} x 6 . "JOIN $ctable AS com ON (com.record = fe.source";
+                    if (@field_ids) {
+                        $from .= " AND com.metabib_field IN (" . join(',',@field_ids) . "))";
+                    } else {
+                        $from .= " AND com.metabib_field IS NULL)";
+                    }
+                    $from .= "\n" . ${spc} x 6 . "JOIN ${talias}_xq ON (com.index_vector @@ ${talias}_xq.tsq)";
+                } else {
+                    $from .= "\n" . ${spc} x 6 . ", (SELECT NULL::tsquery AS tsq, NULL:tsquery AS tsq_rank ) AS ${talias}_xq";
+                }
 
+                if (@field_ids) {
+                    $from .= "\n" . ${spc} x 6 . "WHERE fe_weight.id IN  (" .
+                        join(',', @field_ids) . ")";
+                }
+
+                $from .= "\n" . ${spc} x 4 . ") AS $talias ON (m.source = ${talias}.source)";
 
                 my %used_bumps;
                 my @bumps;
