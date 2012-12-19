@@ -26,6 +26,10 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
             "filterWidgetBuilders": null,
             "filterSemaphore": null,
             "filterSemaphoreCallback": null,
+            "baseQuery": null,  /* Good place to mix in data from, say, context
+                                   OU selectors so that it should get mixed
+                                   correctly with the generated query from the
+                                   filter dialog. */
 
             /* These potential constructor arguments may be useful to
              * FlattenerGrid in their own right, and are passed to
@@ -392,8 +396,11 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
             },
 
             "startup": function() {
-                /* Save original query for further filtering later */
-                this._baseQuery = dojo.clone(this.query);
+                /* Save original query for further filtering later, unless
+                 * we've already defined baseQuery from the outside, in
+                 * which case it persists. */
+                if (!this.baseQuery)
+                    this.baseQuery = dojo.clone(this.query);
 
                 this._addAutoFields();
 
@@ -503,7 +510,7 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                     this.filterUi.onApply = dojo.hitch(
                         this, function(filter) {
                             this.filter(
-                                dojo.mixin(filter, this._baseQuery),
+                                dojo.mixin(filter, this.baseQuery),
                                 true    /* re-render */
                             );
                         }

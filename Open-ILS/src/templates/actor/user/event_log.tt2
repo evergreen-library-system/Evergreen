@@ -196,13 +196,12 @@
 
     /* The callback fired when the OrgUnitFilteringSelect is changed */
     function set_grid_query_from_org_selector() {
-        /* Naughty: shouldn't use _baseQuery like this, but need to rethink
-           multiple competing filtering mechanisms. */
-        grid._baseQuery.perm_lib = aou.descendantNodeList(
+        grid.baseQuery.perm_lib = aou.descendantNodeList(
             org_selector.attr("value"), /* as id */ true
         );
 
-        /* But for the persistent filter UI, this would be grid.refresh() */
+        /* But for the persistent filter UI, this would be grid.filter()
+           and grid.refresh() */
         if (filter_semaphore())   /* avoid race between ou selector and other
                                      filter thing */
             filter_semaphore_callback();

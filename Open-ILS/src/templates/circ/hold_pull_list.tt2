@@ -21,9 +21,15 @@
     };
 
     function set_grid_query_from_org_selector() {
-        grid.query = {
+        grid.baseQuery = {  /* Don't optimize away this assignment.  It's
+                               important to store this data so that the filter
+                               dialog doesn't clobber it later. */
             "copy_circ_lib": org_selector.attr("value")
         };
+        grid.filter(
+            dojo.mixin(grid.query, grid.baseQuery),
+            true    /* re-fetch */
+        );
         grid.refresh();
     }
 
