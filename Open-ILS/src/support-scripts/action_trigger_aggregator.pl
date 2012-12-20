@@ -27,6 +27,7 @@ my $osrf_config = '/openils/conf/opensrf_core.xml';
 my $start_date  = DateTime->now->strftime('%F');
 my $end_date    = '';
 my $event_defs  = '';
+my $granularity = '';
 my $output_file = '';
 my $local_dir   = '/tmp'; # where to keep local copies of generated files
 my $remote_acct = '';
@@ -39,6 +40,7 @@ GetOptions(
     'start-date=s'      => \$start_date,
     'end-date=s'        => \$end_date,
     'event-defs=s'      => \$event_defs,
+    'granularity=s'     => \$granularity,
     'output-file=s'     => \$output_file,
     'remote-acct=s'     => \$remote_acct,
     'local-dir=s'       => \$local_dir,
@@ -76,7 +78,11 @@ $0 \
 Options
 
     --event-defs 
-        action_trigger.event_definition IDs
+        action_trigger.event_definition IDs to include
+
+    --granularity
+        Process all event definitions that match this granularity.  If used in
+        conjunction with --event-defs, the union of the two sets is used.
     
     --start-date 
         Only collect output for events whose run_time is on or after this ISO date
@@ -102,7 +108,8 @@ HELP
 help() if $help;
 
 my @event_defs = split(/,/, $event_defs);
-die "--event-defs required\n" unless @event_defs;
+die "--event-defs or --granularity required\n" 
+    unless @event_defs or $granularity;
 
 my $local_file = $output_file ? "$local_dir/$output_file" : '&STDOUT';
 
@@ -110,11 +117,29 @@ open(OUTFILE, ">$local_file") or
     die "unable to open out-file '$local_file' for writing: $!\n";
 binmode(OUTFILE, ":utf8");
 
+print "Output will be written to $local_file\n" if $verbose;
+
 OpenSRF::System->bootstrap_client(config_file => $osrf_config);
 Fieldmapper->import(IDL => 
     OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
 OpenILS::Utils::CStoreEditor::init();
 my $editor = OpenILS::Utils::CStoreEditor->new;
+
+# if granularity is set, append all event defs with the 
+# selected granularity to the set of event-defs to process.
+if ($granularity) {
+    my $defs = $editor->search_action_trigger_event_definition(
+        {granularity => $granularity},
+        {idlist => 1}
+    );
+
+    for my $id (@$defs) {
+        push(@event_defs, $id) 
+            unless grep { $_ eq $id} @event_defs;
+    }
+}
+
+print "Processing event-defs @event_defs\n" if $verbose;
 
 my %date_filter;
 $date_filter{run_time} = {'>=' => $start_date} if $start_date;
