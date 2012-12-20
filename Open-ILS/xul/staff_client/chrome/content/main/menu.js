@@ -2502,7 +2502,8 @@ commands:
                                         'src' : ''
                                     };
                                     obj.set_help_context(help_params);
-                                } else if (typeof cw.default_focus == 'function') {
+                                }
+                                if (typeof cw.default_focus == 'function') {
                                     cw.default_focus();
                                 }
                             } catch(E) {
