@@ -17,7 +17,7 @@
 
 [% END %]
 
-<form method='POST' id='account-update-email'>
+<form method='POST' id='account-update-email' autocomplete='off'>
     [% IF CGI.param("return_to_referer") %]
     <input type="hidden" name="redirect_to" value="[% ctx.referer | html %]" />
     [% END %]

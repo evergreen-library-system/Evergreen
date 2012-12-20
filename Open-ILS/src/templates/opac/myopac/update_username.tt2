@@ -25,7 +25,7 @@
 
 [% END %]
 
-<form method='POST' id='account-update-email'> 
+<form method='POST' id='account-update-email' autocomplete='off'> 
     <table> 
         <tr><td>[% l('Current Username') %]</td><td>[% ctx.user.usrname | html %]</td></tr>
         <tr><td>[% l('Current Password') %]</td><td><input type='password' name='current_pw'/></td></tr>
