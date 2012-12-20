@@ -3,14 +3,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-04 18:06-0400\n"
+"POT-Creation-Date: 2012-12-20 09:37-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
+"X-Generator: Translate Toolkit 1.9.0\n"
 "X-Accelerator-Marker: &\n"
 
 #: staff.circ.alert
@@ -317,6 +317,18 @@ msgstr ""
 #: staff.circ.checkout.barcode
 msgctxt "staff.circ.checkout.barcode"
 msgid "Barcode:"
+msgstr ""
+
+#: staff.circ.checkout.failed_to_patron_other
+msgid "This copy was checked out by another patron on %1$s."
+msgstr ""
+
+#: staff.circ.checkout.failed_to_patron_renew
+msgid "This copy is already checked out to this patron."
+msgstr ""
+
+#: staff.circ.checkout.failed_to_patron_today
+msgid "This copy was already checked out to this patron today."
 msgstr ""
 
 #: staff.circ.circ_brief.staff_out_id
@@ -1724,6 +1736,20 @@ msgstr ""
 msgid ""
 "%1$s attempted checkin of %4$s, which was not found, and so was routed to "
 "Cataloging.  Route To = %5$s"
+msgstr ""
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Original Balance  5 - Voided Balance  6 - Payment Received  7 - Payment Applied
+#. # 8 - Change Given  9 - Credit Given  10 - New Balance  11 - Payment Type  12 - Note  13 - API call result
+#: staff.circ.work_log_payment_attempt.success.message
+msgid "%1$s received %6$s (%11$s) for %3$s (%2$s)."
+msgstr ""
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Original Balance  5 - Voided Balance  6 - Payment Received  7 - Payment Applied
+#. # 8 - Change Given  9 - Credit Given  10 - New Balance  11 - Payment Type  12 - Note  13 - API call result
+#: staff.circ.work_log_payment_attempt.failure.message
+msgid ""
+"%1$s attempted receipt of %6$s (%11$s) for %3$s (%2$s), which failed for "
+"this reason: %13$s"
 msgstr ""
 
 #: staff.circ.checkin.hold_capture

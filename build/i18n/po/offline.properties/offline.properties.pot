@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-28 14:17-0400\n"
+"POT-Creation-Date: 2012-12-20 09:37-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -512,6 +512,11 @@ msgstr ""
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode
 #: staff.circ.work_log_patron_registration.message
 msgid "%1$s registered %3$s (%2$s)"
+msgstr ""
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Hold ID  5 - Hold Type
+#: staff.circ.work_log_hold_placed.message
+msgid "%1$s placed hold %4$s (%5$s) for %3$s (%2$s)"
 msgstr ""
 
 #: menu.cmd_browse_holds.tab
@@ -1110,6 +1115,10 @@ msgstr ""
 msgid "Manage Authorities"
 msgstr ""
 
+#: menu.cmd_search_prefs.tab
+msgid "Search Preferences"
+msgstr ""
+
 #: menu.local_admin.barcode_completion.tab
 msgid "Barcode Completion"
 msgstr ""
@@ -1120,6 +1129,10 @@ msgstr ""
 
 #: menu.local_admin.hold_matrix_matchpoint.tab
 msgid "Hold Policies"
+msgstr ""
+
+#: menu.local_admin.item_attribute_editor.tab
+msgid "Admin Item Attribute Editor"
 msgstr ""
 
 #: menu.local_admin.work_log.tab
@@ -1316,6 +1329,7 @@ msgid "This application may have unsaved data. Exit it anyway?"
 msgstr ""
 
 #: hotkeys.Default
+msgctxt "hotkeys.Default"
 msgid "Default"
 msgstr ""
 
@@ -1377,6 +1391,11 @@ msgstr ""
 
 #: staff.main.button_bar.none
 msgid "None"
+msgstr ""
+
+#: staff.main.button_bar.default
+msgctxt "staff.main.button_bar.default"
+msgid "Default"
 msgstr ""
 
 #: util.hide_elements.title
