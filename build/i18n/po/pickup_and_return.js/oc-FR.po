@@ -1,91 +1,123 @@
+# Occitan (post 1500) translation for evergreen
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2010-06-07 02:03:44-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2012-11-02 11:50+0000\n"
+"Last-Translator: Cédric VALMARY (Tot en òc) <cvalmary@yahoo.fr>\n"
+"Language-Team: Occitan (post 1500) <oc@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
+"X-Launchpad-Export-Date: 2012-11-03 05:07+0000\n"
+"X-Generator: Launchpad (build 16218)\n"
 
 #: pickup_and_return.js:NO_SUCH_RETURNABLE_RESOURCE
 msgid "No such returnable resource."
-msgstr ""
+msgstr "Pas cap de ressorsa tornabla d'aqueste mena."
 
 #: pickup_and_return.js:PICKUP_ERROR
 msgid "Error communicating with server (attempting pickup):"
 msgstr ""
+"Error de comunicacion amb lo servidor (temptativa de presa de liurason) :"
+
+#: pickup_and_return.js:ADDRESS
+msgid ""
+"${0}\n"
+"${1}\n"
+"${2}, ${3} ${4}"
+msgstr ""
+"${0}\n"
+"${1}\n"
+"${2}, ${3} ${4}"
 
 #: pickup_and_return.js:AUTO_ready_bresv
 msgid "Patron has these reservations ready for pickup:"
 msgstr ""
+"Aquestas reservacions del client son prèstas per èsser presas en liurason :"
 
 #: pickup_and_return.js:AUTO_ATTR_VALUE_pickup
 msgid "Pick up"
-msgstr ""
+msgstr "Prene en liurason"
 
 #: pickup_and_return.js:RETURN_ERROR
 msgid "Error communicating with server (attempting return):"
-msgstr ""
+msgstr "Error de comunicacion amb lo servidor (temptativa de restitucion) :"
 
 #: pickup_and_return.js:AUTO_no_in_bresv
 msgid "Patron has not returned any resources today."
-msgstr ""
-
-#: pickup_and_return.js:SELECT_SOMETHING
-msgid "You have not selected any reservations."
-msgstr ""
+msgstr "Lo client a pas restituit cap de ressorsas uèi :"
 
 #: pickup_and_return.js:NO_PATRON_BARCODE
 msgid "Please enter a patron barcode."
-msgstr ""
+msgstr "Entratz lo còde de barras d’un client"
 
 #: pickup_and_return.js:AUTO_ATTR_VALUE_return
 msgid "Return"
-msgstr ""
+msgstr "Retorn"
 
 #: pickup_and_return.js:AUTO_no_out_bresv
 msgid "Patron has no more reservations out at this time."
-msgstr ""
+msgstr "Lo client a pas mai de reservacions sortidas pel moment."
 
 #: pickup_and_return.js:RESERVATIONS_ERROR
 msgid "Error communicating with server (asking for reservations):"
-msgstr ""
+msgstr "Error de comunicacion amb lo servidor (demanda de reservacions) :"
 
 #: pickup_and_return.js:AUTO_return_h1
 msgid "Reservations Return"
-msgstr ""
+msgstr "Restitucion d’articles reservats"
 
 #: pickup_and_return.js:AUTO_ATTR_VALUE_reset
 msgid "Clear / New Patron"
-msgstr ""
+msgstr "Escafar/ client novèl"
 
 #: pickup_and_return.js:AUTO_h1
 msgid "Reservations Pickup"
-msgstr ""
+msgstr "Presa en liurason de reservacions"
 
 #: pickup_and_return.js:AUTO_no_ready_bresv
 msgid "Patron has no reservations ready for pickup at this time."
 msgstr ""
+"Lo client a pas cap de reservacions que son prèstas per èsser presas en "
+"liurason pel moment."
 
 #: pickup_and_return.js:AUTO_resource
 msgid "Resource"
+msgstr "Ressorsa"
+
+#: pickup_and_return.js:COPY_ALERT
+msgid ""
+"${0}:\n"
+"${1}\n"
+"\n"
+"Do you wish to process it anyway?"
 msgstr ""
+"${0}:\n"
+"${1}\n"
+"\n"
+"Lo volètz tractar malgrat tot ?"
 
 #: pickup_and_return.js:NOTICE_CHANGE_OF_PATRON
 msgid ""
-"Note that the resource scanned was out on reservation to different\n"
+"Note that the resource scanned was out on reservation to a different\n"
 "patron than the last resource you scanned.  If this is not\n"
 "expected, stop to examine outstanding reservations for your patron\n"
 "or on the resource."
 msgstr ""
 
+#: pickup_and_return.js:SELECT_SOMETHING
+msgid "You have not selected any reservations."
+msgstr "Avètz pas seleccionat cap de reservacion."
+
 #: pickup_and_return.js:AUTO_out_bresv
 msgid "Patron currently has these reservations out:"
-msgstr ""
+msgstr "Lo client a sortit aquelas reservacions :"
 
 #: pickup_and_return.js:RESERVATIONS_NO_RESPONSE
 msgid "No response from server when asking for reservations."
@@ -93,7 +125,7 @@ msgstr ""
 
 #: pickup_and_return.js:AUTO_barcode_type
 msgid "Return by barcode of"
-msgstr ""
+msgstr "Restituit amb lo còde de barras seguent :"
 
 #: pickup_and_return.js:RETURN_NO_RESPONSE
 msgid "No response from server when attempting return."
@@ -101,11 +133,11 @@ msgstr ""
 
 #: pickup_and_return.js:RETURN_SUCCESS
 msgid "Return successful."
-msgstr ""
+msgstr "Restitucion capitada."
 
 #: pickup_and_return.js:AUTO_patron_barcode
 msgid "Enter patron barcode:"
-msgstr ""
+msgstr "Entrar lo còde de barras del client :"
 
 #: pickup_and_return.js:PICKUP_NO_RESPONSE
 msgid "No response from server when attempting pickup."
@@ -113,16 +145,16 @@ msgstr ""
 
 #: pickup_and_return.js:RETURNABLE_RESOURCE_ERROR
 msgid "Error looking up returnable resource:"
-msgstr ""
+msgstr "Error a la recèrca d’una ressorsa tornabla :"
 
 #: pickup_and_return.js:AUTO_patron
 msgid "Patron"
-msgstr ""
+msgstr "Client"
 
 #: pickup_and_return.js:AUTO_in_bresv
 msgid "Patron has returned these resources today:"
-msgstr ""
+msgstr "Lo client a restituit aquelas ressorsas uèi"
 
 #: pickup_and_return.js:AUTO_ATTR_VALUE_go
 msgid "Go"
-msgstr ""
+msgstr "Validar"

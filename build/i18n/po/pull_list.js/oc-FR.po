@@ -1,80 +1,96 @@
+# Occitan (post 1500) translation for evergreen
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2010-06-07 02:03:44-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2012-08-03 10:01-0400\n"
+"PO-Revision-Date: 2012-11-02 11:54+0000\n"
+"Last-Translator: Cédric VALMARY (Tot en òc) <cvalmary@yahoo.fr>\n"
+"Language-Team: Occitan (post 1500) <oc@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
+"X-Launchpad-Export-Date: 2012-11-03 05:07+0000\n"
+"X-Generator: Launchpad (build 16218)\n"
 
 #: pull_list.js:PULL_LIST_NO_RESPONSE
 msgid "No response from server trying to get pull list!"
-msgstr ""
+msgstr "Pas de responsa del servidor per la lista desenrotlanta !"
 
 #: pull_list.js:AUTO_interval_in_days
 msgid "Generate list for this many days hence: "
-msgstr ""
+msgstr "Generar la lista per un nombre equivalent de jorns "
 
 #: pull_list.js:COPY_LOOKUP_ERROR
 msgid "Error looking up copies by barcode: "
 msgstr ""
-
-#: pull_list.js:AUTO_no_results
-msgid "No results"
-msgstr ""
+"Error al moment de la verificacion d’un document per còde de barras : "
 
 #: pull_list.js:COPY_LOOKUP_NO_RESPONSE
 msgid "No response looking up copies by barcode"
 msgstr ""
+"Pas de responsa al moment de la verificacion d’una còpia per còde de barras"
+
+#: pull_list.js:FOR
+msgid "for"
+msgstr "per"
 
 #: pull_list.js:AUTO_pull_list_title
 msgid "Booking Pull List"
-msgstr ""
+msgstr "Lista desenrotlanta per las reservacions"
 
-#: pull_list.js:AUTO_th_copy_number
-msgid "Copy number"
-msgstr ""
+#: pull_list.js:AUTO_no_results
+msgid "No results."
+msgstr "Pas cap de resultat."
 
 #: pull_list.js:AUTO_th_barcode
 msgid "Barcode"
-msgstr ""
+msgstr "Còde de barras"
 
 #: pull_list.js:PULL_LIST_ERROR
 msgid "Error trying to fetch pull list: "
-msgstr ""
+msgstr "Error al moment de l’extraccion de la lista de desenrotlament "
 
 #: pull_list.js:COPY_MISSING
 msgid "Unexpected error: No information for copy: "
-msgstr ""
+msgstr "Error imprevista : Pas cap d'informacion sul document : "
 
 #: pull_list.js:AUTO_th_call_number
 msgid "Call number"
-msgstr ""
+msgstr "Còta"
 
 #: pull_list.js:AUTO_owning_lib_selector
 msgid "See pull list for library:"
-msgstr ""
+msgstr "Veire la lista desenrotlanta per las bibliotècas"
 
 #: pull_list.js:AUTO_th_resv_details
 msgid "Reservation details"
-msgstr ""
+msgstr "Detalhs sus la reservacion"
+
+#: pull_list.js:AT
+msgid "at"
+msgstr "a"
 
 #: pull_list.js:AUTO_ATTR_VALUE_fetch
 msgid "Fetch"
-msgstr ""
+msgstr "Cargar"
 
 #: pull_list.js:AUTO_th_title_or_name
 msgid "Title or name"
-msgstr ""
+msgstr "Títol o nom"
 
 #: pull_list.js:AUTO_ATTR_VALUE_print
 msgid "Print"
-msgstr ""
+msgstr "Estampar"
+
+#: pull_list.js:AUTO_th_pickup_lib
+msgid "Pickup library"
+msgstr "Bibliotèca de collècta"
 
 #: pull_list.js:AUTO_th_copy_location
 msgid "Copy location"
-msgstr ""
+msgstr "Emplaçament del document"

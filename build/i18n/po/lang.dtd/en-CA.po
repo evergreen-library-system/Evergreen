@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen ILS > lang.dtd.po\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-08-03 10:01-0400\n"
-"PO-Revision-Date: 2012-05-02 00:46+0000\n"
+"PO-Revision-Date: 2012-11-09 13:33+0000\n"
 "Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-08-04 05:15+0000\n"
-"X-Generator: Launchpad (build 15742)\n"
+"X-Launchpad-Export-Date: 2012-11-10 05:01+0000\n"
+"X-Generator: Launchpad (build 16251)\n"
 "X-Poedit-Country: CANADA\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: English\n"
@@ -996,7 +996,7 @@ msgstr "&Retrieve"
 #: staff.auth.change_type.label
 #: staff.auth.change_type.accesskey
 msgid "&New Login Type:"
-msgstr ""
+msgstr "&New Login Type:"
 
 #: staff.auth.change_type_description
 msgid ""
@@ -1004,18 +1004,21 @@ msgid ""
 "the same as the initial login into the staff client. Permanent will discard "
 "the existing login session and replace it with the new one."
 msgstr ""
+"Temporary logins expire with a few minutes of inactivity. Staff logins are "
+"the same as the initial login into the staff client. Permanent will discard "
+"the existing login session and replace it with the new one."
 
 #: staff.auth.change_type_staff
 msgid "Staff"
-msgstr ""
+msgstr "Staff"
 
 #: staff.auth.change_type_temporary
 msgid "Temporary"
-msgstr ""
+msgstr "Temporary"
 
 #: staff.auth.change_type_permanent
 msgid "Permanent"
-msgstr ""
+msgstr "Permanent"
 
 #: staff.bills_current_payment_label
 msgid "Current Payment"
@@ -2266,7 +2269,7 @@ msgstr "Adult"
 
 #: staff.copy.attr.stat.audience.example2
 msgid "Juvenile"
-msgstr ""
+msgstr "Juvenile"
 
 #: staff.copy.attr.stat.audience.example3
 msgid "Preschool"
@@ -2878,7 +2881,7 @@ msgstr "Copy Location Groups"
 
 #: staff.main.menu.admin.local_admin.search_filter_group.label
 msgid "Search Filter Groups"
-msgstr ""
+msgstr "Search Filter Groups"
 
 #: staff.main.menu.admin.server_admin.label
 msgid "Server Administration"
@@ -2899,7 +2902,7 @@ msgstr "Permission Groups"
 #: staff.main.menu.admin.server_admin.conify.perm_list.label
 msgctxt "staff.main.menu.admin.server_admin.conify.perm_list.label"
 msgid "Permissions"
-msgstr ""
+msgstr "Permissions"
 
 #: staff.main.menu.admin.server_admin.conify.copy_status.label
 msgid "Copy Statuses"
@@ -3701,7 +3704,7 @@ msgstr "&Browse Holds Shelf"
 
 #: staff.main.menu.circ.hold_clear.label
 msgid "Clear Shelf-Expired Holds"
-msgstr ""
+msgstr "Clear Shelf-Expired Holds"
 
 #: staff.main.menu.circ.hold_capture.label
 #: staff.main.menu.circ.hold_capture.accesskey
@@ -5770,11 +5773,11 @@ msgstr "Print"
 
 #: staff.patron_display.radio.mailing_address.label
 msgid "Mailing"
-msgstr ""
+msgstr "Mailing"
 
 #: staff.patron_display.radio.physical_address.label
 msgid "Billing"
-msgstr ""
+msgstr "Billing"
 
 #: staff.patron_display.name.label
 msgctxt "staff.patron_display.name.label"
@@ -7367,7 +7370,7 @@ msgstr "Start Date:"
 
 #: staff.server.admin.cash.date.select
 msgid "Date selector"
-msgstr ""
+msgstr "Date selector"
 
 #: staff.server.admin.cash.end_date
 msgctxt "staff.server.admin.cash.end_date"
@@ -7808,7 +7811,7 @@ msgstr "Create"
 #: staff.server.admin.non_cat_types.name
 msgctxt "staff.server.admin.non_cat_types.name"
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 #: staff.server.admin.non_cat_types.owning_location
 msgid "Owning Location"
@@ -12368,7 +12371,7 @@ msgstr "Print Full Pull List (Alternate strateg&y)"
 #: staff.patron.holds_overlay.simplified_pull_list.label
 #: staff.patron.holds_overlay.simplified_pull_list.accesskey
 msgid "Simplified Pull List &Interface"
-msgstr ""
+msgstr "Simplified Pull List &Interface"
 
 #: staff.patron.holds_overlay.place_hold.label
 #: staff.patron.holds_overlay.place_hold.accesskey
@@ -12544,7 +12547,7 @@ msgstr "Evergreen User Editor"
 
 #: staff.patron.user_edit.user_info.label
 msgid "User Information"
-msgstr ""
+msgstr "User Information"
 
 #: staff.patron.user_edit.user_name.label
 msgid "User Name:"
@@ -12576,21 +12579,21 @@ msgstr "Working Location"
 
 #: staff.patron.user_edit.working_shortname.label
 msgid "Shortname"
-msgstr ""
+msgstr "Shortname"
 
 #: staff.patron.user_edit.working_name.label
 msgctxt "staff.patron.user_edit.working_name.label"
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 #: staff.patron.user_edit.working_ou.label
 msgid "Work OU?"
-msgstr ""
+msgstr "Work OU?"
 
 #: staff.patron.user_edit.permission_list.label
 msgctxt "staff.patron.user_edit.permission_list.label"
 msgid "Permissions"
-msgstr ""
+msgstr "Permissions"
 
 #: staff.patron.user_edit.permission.label
 msgid "Permission"
@@ -12633,35 +12636,35 @@ msgstr ""
 
 #: staff.patron.ue.view_errors.label
 msgid "View Errors"
-msgstr ""
+msgstr "View Errors"
 
 #: staff.patron.ue.nav.user_id.label
 msgid "1. User Identification"
-msgstr ""
+msgstr "1. User Identification"
 
 #: staff.patron.ue.nav.contact_info.label
 msgid "2. Contact Info"
-msgstr ""
+msgstr "2. Contact Info"
 
 #: staff.patron.ue.nav.addresses.label
 msgid "3. Addresses"
-msgstr ""
+msgstr "3. Addresses"
 
 #: staff.patron.ue.nav.groups_permissions.label
 msgid "4. Groups and Permissions"
-msgstr ""
+msgstr "4. Groups and Permissions"
 
 #: staff.patron.ue.nav.stat_categories.label
 msgid "5. Statistical Categories"
-msgstr ""
+msgstr "5. Statistical Categories"
 
 #: staff.patron.ue.nav.surveys.label
 msgid "6. Surveys"
-msgstr ""
+msgstr "6. Surveys"
 
 #: staff.patron.ue.nav.finish.label
 msgid "7. Finish"
-msgstr ""
+msgstr "7. Finish"
 
 #: staff.patron.ue.loading_data.label
 msgctxt "staff.patron.ue.loading_data.label"
@@ -12670,7 +12673,7 @@ msgstr "Loading data..."
 
 #: staff.patron.ue.found_duplicate_patron.label
 msgid "Number of possible duplicate patron(s):"
-msgstr ""
+msgstr "Number of possible duplicate patron(s):"
 
 #: staff.patron.ue.mark_lost.label
 msgctxt "staff.patron.ue.mark_lost.label"
@@ -12689,15 +12692,15 @@ msgstr "Password"
 
 #: staff.patron.ue.reset.label
 msgid "Reset"
-msgstr ""
+msgstr "Reset"
 
 #: staff.patron.ue.re_password.label
 msgid "Password: "
-msgstr ""
+msgstr "Password: "
 
 #: staff.patron.ue.verify_password.label
 msgid "Verify Password"
-msgstr ""
+msgstr "Verify Password"
 
 #: staff.patron.ue.first_name.label
 msgctxt "staff.patron.ue.first_name.label"
@@ -12711,7 +12714,7 @@ msgstr "Middle Name"
 
 #: staff.patron.ue.last_name.label
 msgid "Last Name"
-msgstr ""
+msgstr "Last Name"
 
 #: staff.patron.ue.suffix.label
 msgctxt "staff.patron.ue.suffix.label"
@@ -12721,7 +12724,7 @@ msgstr "Suffix"
 #. Used in a selection list, the '-' at the start and end draws attention to the entry
 #: staff.patron.ue.choose.label
 msgid "- Pick -"
-msgstr ""
+msgstr "- Pick -"
 
 #: staff.patron.ue.dob.label
 msgctxt "staff.patron.ue.dob.label"
@@ -12730,41 +12733,41 @@ msgstr "Date of Birth"
 
 #: staff.patron.ue.primary_id_type.label
 msgid "Primary Identification Type"
-msgstr ""
+msgstr "Primary Identification Type"
 
 #. Used in a selection list, the '-' at the start and end draws attention to the entry
 #: staff.patron.ue.required.label
 msgid " -- Required -- "
-msgstr ""
+msgstr " -- Required -- "
 
 #: staff.patron.ue.primary_id.label
 msgid "Primary Identification"
-msgstr ""
+msgstr "Primary Identification"
 
 #: staff.patron.ue.secondary_id_type.label
 msgid "Secondary Identification Type"
-msgstr ""
+msgstr "Secondary Identification Type"
 
 #. Used in a selection list, the '-' at the start and end draws attention to the entry
 #: staff.patron.ue.none_selected.label
 msgid " -- None Selected -- "
-msgstr ""
+msgstr " -- None Selected -- "
 
 #: staff.patron.ue.secondary_id.label
 msgid "Secondary Identification"
-msgstr ""
+msgstr "Secondary Identification"
 
 #: staff.patron.ue.parent_guardian.label
 msgid "Parent or Guardian"
-msgstr ""
+msgstr "Parent or Guardian"
 
 #: staff.patron.ue.email_address.label
 msgid "Email Address"
-msgstr ""
+msgstr "Email Address"
 
 #: staff.patron.ue.day_phone.label
 msgid "Daytime Phone"
-msgstr ""
+msgstr "Daytime Phone"
 
 #: staff.patron.ue.evening_phone.label
 msgctxt "staff.patron.ue.evening_phone.label"
@@ -12788,11 +12791,11 @@ msgstr "Address"
 
 #: staff.patron.ue.in_city_limits.label
 msgid "Within City Limits"
-msgstr ""
+msgstr "Within City Limits"
 
 #: staff.patron.ue.valid.label
 msgid "Valid"
-msgstr ""
+msgstr "Valid"
 
 #: staff.patron.ue.mailing_address.label
 msgctxt "staff.patron.ue.mailing_address.label"
@@ -12806,7 +12809,7 @@ msgstr "Physical Address"
 
 #: staff.patron.ue.owned_address.label
 msgid "Address is owned by"
-msgstr ""
+msgstr "Address is owned by"
 
 #: staff.patron.ue.edit.label
 msgctxt "staff.patron.ue.edit.label"
@@ -12824,11 +12827,11 @@ msgstr "Postal Code"
 
 #: staff.patron.ue.street_1.label
 msgid "Street 1"
-msgstr ""
+msgstr "Street 1"
 
 #: staff.patron.ue.street_2.label
 msgid "Street 2"
-msgstr ""
+msgstr "Street 2"
 
 #: staff.patron.ue.city.label
 msgctxt "staff.patron.ue.city.label"
@@ -12837,7 +12840,7 @@ msgstr "City"
 
 #: staff.patron.ue.county.label
 msgid "County"
-msgstr ""
+msgstr "County"
 
 #: staff.patron.ue.state.label
 msgctxt "staff.patron.ue.state.label"
@@ -12851,11 +12854,11 @@ msgstr "Country"
 
 #: staff.patron.ue.delete_this_address.label
 msgid "Delete this Address"
-msgstr ""
+msgstr "Delete this Address"
 
 #: staff.patron.ue.detach_this_address.label
 msgid "Detach this Address"
-msgstr ""
+msgstr "Detach this Address"
 
 #: staff.patron.ue.create_address.label
 msgid "Create a New Address"
@@ -12863,15 +12866,15 @@ msgstr "Create a New Address"
 
 #: staff.patron.ue.profile_group.label
 msgid "Profile Group"
-msgstr ""
+msgstr "Profile Group"
 
 #: staff.patron.ue.accoutn_expire_date.label
 msgid "Account Expiration Date"
-msgstr ""
+msgstr "Account Expiration Date"
 
 #: staff.patron.ue.internet_access_level.label
 msgid "Internet Access Level"
-msgstr ""
+msgstr "Internet Access Level"
 
 #: staff.patron.ue.active.label
 msgctxt "staff.patron.ue.active.label"
@@ -12880,11 +12883,11 @@ msgstr "Active"
 
 #: staff.patron.ue.barred.label
 msgid "Barred"
-msgstr ""
+msgstr "Barred"
 
 #: staff.patron.ue.set_lead_account.label
 msgid "Set as Family or Group Lead Account"
-msgstr ""
+msgstr "Set as Family or Group Lead Account"
 
 #: staff.patron.ue.claims_returned_count.label
 msgctxt "staff.patron.ue.claims_returned_count.label"
@@ -12903,7 +12906,7 @@ msgstr "Statistical Category Name"
 
 #: staff.patron.ue.owner.label
 msgid "Owner"
-msgstr ""
+msgstr "Owner"
 
 #: staff.patron.ue.value.label
 msgctxt "staff.patron.ue.value.label"
@@ -12912,7 +12915,7 @@ msgstr "Value"
 
 #: staff.patron.ue.no_surveys_for_location.label
 msgid "No surveys have been created for this location."
-msgstr ""
+msgstr "No surveys have been created for this location."
 
 #: staff.patron.ue.message1.label
 msgid "You are now ready to save the user to the database."
@@ -12934,11 +12937,11 @@ msgstr "View Summary"
 
 #: staff.patron.ue.back.label
 msgid "Back"
-msgstr ""
+msgstr "Back"
 
 #: staff.patron.ue.forward.label
 msgid "Forward"
-msgstr ""
+msgstr "Forward"
 
 #: staff.patron.ue.user_summary.label
 msgid ""
@@ -12960,7 +12963,7 @@ msgstr "Addresses"
 
 #: staff.patron.ue.address_label.label
 msgid "Address Label"
-msgstr ""
+msgstr "Address Label"
 
 #: staff.patron.ue.billing_address.label
 msgctxt "staff.patron.ue.billing_address.label"
@@ -12979,23 +12982,23 @@ msgstr "Expire Date"
 
 #: staff.patron.ue.family_lead_account.label
 msgid "Family Lead Account"
-msgstr ""
+msgstr "Family Lead Account"
 
 #: staff.patron.ue.stat_categories.label
 msgid "Statistical Categories"
-msgstr ""
+msgstr "Statistical Categories"
 
 #: staff.patron.ue.survey.label
 msgid "Survey"
-msgstr ""
+msgstr "Survey"
 
 #: staff.patron.ue.question.label
 msgid "Question"
-msgstr ""
+msgstr "Question"
 
 #: staff.patron.ue.answer.label
 msgid "Answer"
-msgstr ""
+msgstr "Answer"
 
 #: staff.patron.ue.bad_dob.label
 msgid ""
@@ -13063,7 +13066,7 @@ msgstr "An invalid phone number was entered"
 
 #: staff.patron.ue.no_profile.label
 msgid "A profile group must be selected"
-msgstr ""
+msgstr "A profile group must be selected"
 
 #: staff.patron.ue.bad_expire.label
 msgid "The user expiration date is invalid.  We are expecting YYYY-MM-DD"
@@ -13763,6 +13766,19 @@ msgid ""
 "hex=&quot;0C&quot;&gt; will translate to Hello World + form feed control "
 "character."
 msgstr ""
+"If using Receipt Templates with either the DOS LPT1 Print strategy or the "
+"Custom/External Print strategy (with &quot;receipt.txt&quot;), the client "
+"will try to translate any HTML markup to text, but this process may be "
+"imperfect, and for the best fidelity you should consider reworking your "
+"templates to be plain text if you are using a plain text print strategy.  "
+"However, if using a plain text print strategy with HTML markup, you may "
+"include special character codes in 2-digit hexadecimal in a &quot;hex&quot; "
+"attribute for any given element.  Such codes will be converted to actual "
+"characters and inserted at the place of the tag.  For example, &lt;p "
+"hex=&quot;0C&quot;&gt;Hello World&lt;/p&gt; will translate to form feed "
+"control character + Hello World. &lt;p&gt;Hello World&lt;/p "
+"hex=&quot;0C&quot;&gt; will translate to Hello World + form feed control "
+"character."
 
 #: staff.client.portal.title
 msgid "Evergreen Staff Client Portal"

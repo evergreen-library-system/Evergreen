@@ -1,36 +1,185 @@
+# Occitan (post 1500) translation for evergreen
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2010-06-07 02:03:44-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2012-08-03 10:01-0400\n"
+"PO-Revision-Date: 2012-11-02 12:25+0000\n"
+"Last-Translator: Cédric VALMARY (Tot en òc) <cvalmary@yahoo.fr>\n"
+"Language-Team: Occitan (post 1500) <oc@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
+"X-Launchpad-Export-Date: 2012-11-03 05:07+0000\n"
+"X-Generator: Launchpad (build 16218)\n"
 
-#: register.js:DUPE_PATRON_ADDR
-msgid "Found ${0} patron(s) with the same address"
-msgstr ""
+#: register.js:USER_SETTINGS
+msgid "User Settings"
+msgstr "Paramètres de l'utilizaire"
 
-#: register.js:DUPE_PATRON_IDENT
-msgid "Found ${0} patron(s) with the same identification"
-msgstr ""
+#: register.js:ALL_CARDS_APPLY
+msgid "Apply Changes"
+msgstr "Aplicar los cambiaments"
 
 #: register.js:DUPE_PATRON_EMAIL
 msgid "Found ${0} patron(s) with the same email address"
-msgstr ""
+msgstr "Trobat ${0} client(s) amb lo meteis corrièl"
 
-#: register.js:DUPE_PATRON_NAME
-msgid "Found ${0} patron(s) with the same name"
+#: register.js:ADDRESS_BILLING
+msgid "Billing"
+msgstr "Facturacion"
+
+#: register.js:ADDRESS_OWNED
+msgid "This address is owned by another user: "
+msgstr "Aquesta adreça aparten a un autre utilizaire : "
+
+#: register.js:ALL_CARDS_PRIMARY
+msgid "Primary"
+msgstr "Principal"
+
+#: register.js:ALL_CARDS_BARCODE
+msgid "Barcode"
+msgstr "Còde de barras"
+
+#: register.js:REPLACED_ADDRESS
+msgid ""
+"<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
 msgstr ""
+"<div>Remplaça l'adreça <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
+
+#: register.js:SHOW_REQUIRED
+msgid "Show Only Required Fields"
+msgstr "Far veire sonque los camps obligatòris"
+
+#: register.js:DUPE_PATRON_ADDR
+msgid "Found ${0} patron(s) with the same address"
+msgstr "Trobat ${0} client(s) amb la meteissa adreça"
+
+#: register.js:SAVE
+msgid "Save"
+msgstr "Enregistrar"
+
+#: register.js:DUPE_PATRON_IDENT
+msgid "Found ${0} patron(s) with the same identification"
+msgstr "Trobat ${0} client(s) amb la meteissa identificacion"
+
+#: register.js:ADDRESS_MAILING
+msgid "Mailing"
+msgstr "Mandadís"
+
+#: register.js:REPLACE_BARCODE
+msgid "Replace Barcode"
+msgstr "Remplaçar lo còde de barras"
+
+#: register.js:NEED_ADDRESS
+msgid "An address is required during registration."
+msgstr "Una adreça es requesida al moment de l'inscripcion."
+
+#: register.js:BARCODE_IN_USE
+msgid "Barcode is already in use"
+msgstr "Lo còde de barras es ja utilizat"
+
+#: register.js:ADDRESS_HEADER
+msgid "Address"
+msgstr "Adreça"
+
+#: register.js:ALL_CARDS_ACTIVE
+msgid "Active"
+msgstr "Activa"
 
 #: register.js:DUPE_PATRON_PHONE
 msgid "Found ${0} patron(s) with the same phone number"
-msgstr ""
+msgstr "Trobat ${0} client(s) amb lo meteis numèro de telefòn"
 
-#: register.js:REPLACED_ADDRESS
-msgid "<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
+#: register.js:INVALID_FORM
+msgid "Form is invalid.  Please edit and try again."
 msgstr ""
+"Lo formulari es pas valid. Mercé de lo modificar e ensajatz tornarmai."
+
+#: register.js:PARENT_OR_GUARDIAN
+msgid "Parent/Guardian"
+msgstr "Parent/tutor"
+
+#: register.js:EXAMPLE
+msgid "Example: "
+msgstr "Exemple : "
+
+#: register.js:SHOW_SUGGESTED
+msgid "Show Suggested Fields"
+msgstr "Far veire los camps suggerits"
+
+#: register.js:ADDRESS_PENDING
+msgid "This is a pending address: "
+msgstr "S’agís d’una adreça en espèra : "
+
+#: register.js:DUPE_USERNAME
+msgid "Username is already in use"
+msgstr "Nom d’utilizaire ja utilizat"
+
+#: register.js:HOLD_NOTIFY_PHONE
+msgid "Phone: "
+msgstr "Telefòn : "
+
+#: register.js:DUPE_PATRON_NAME
+msgid "Found ${0} patron(s) with the same name"
+msgstr "Trobat ${0} client(s) amb lo meteis nom"
+
+#: register.js:DEFAULT_ADDRESS_TYPE
+msgid "MAILING"
+msgstr "DIFUSION"
+
+#: register.js:HOLD_NOTIFY_SMS
+msgid "SMS: "
+msgstr "SMS : "
+
+#: register.js:INVALIDATE
+msgid "Invalidate"
+msgstr "Invalidar"
+
+#: register.js:SHOW_ALL
+msgid "Show All Fields"
+msgstr "Far veire totes los camps"
+
+#: register.js:ADDRESS_APPROVE
+msgid "Approve Address"
+msgstr "Adreça aprovada"
+
+#: register.js:VERIFY_PASSWORD
+msgid "Verify Password"
+msgstr "Verificar lo senhal"
+
+#: register.js:SAVE_CLONE
+msgid "Save &amp; Clone"
+msgstr "Salvar &amp; Clonar"
+
+#: register.js:STAT_CATS
+msgid "Statistical Categories"
+msgstr "Categorias estatisticas"
+
+#: register.js:ADDRESS_NEW
+msgid "New Address"
+msgstr "Adreça novèla"
+
+#: register.js:RESET_PASSWORD
+msgid "Reset Password"
+msgstr "Reïnicializar lo senhal"
+
+#: register.js:HOLD_NOTIFY_EMAIL
+msgid "Email: "
+msgstr "Adreça electronica : "
+
+#: register.js:SEE_ALL
+msgid "See All"
+msgstr "Veire tot"
+
+#: register.js:ALL_CARDS_CLOSE
+msgid "Close"
+msgstr "Tampar"
+
+#: register.js:DELETE_ADDRESS
+msgid "Delete address ${0}?"
+msgstr "Suprimir l'adreça ${0}?"

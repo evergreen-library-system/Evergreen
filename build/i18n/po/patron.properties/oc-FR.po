@@ -1,17 +1,21 @@
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/patron.properties
+# Occitan (post 1500) translation for evergreen
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-07 02:03-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2012-04-28 14:17-0400\n"
+"PO-Revision-Date: 2012-11-02 18:19+0000\n"
+"Last-Translator: Cédric VALMARY (Tot en òc) <cvalmary@yahoo.fr>\n"
+"Language-Team: Occitan (post 1500) <oc@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
-"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2012-11-03 05:07+0000\n"
+"X-Generator: Launchpad (build 16218)\n"
 
 #: staff.patron.barcode_entry.user_permission_editor
 msgid "User Permission Editor"
@@ -47,16 +51,16 @@ msgstr ""
 
 #: staff.patron.barcode_entry.patron_consent_accept
 msgid "Accept"
-msgstr ""
+msgstr "Acceptar"
 
 #: staff.patron.barcode_entry.patron_consent_deny
 msgid "Deny"
-msgstr ""
+msgstr "Refusar"
 
 #: staff.patron.barcode_entry.patron_consent_confirm
 msgctxt "staff.patron.barcode_entry.patron_consent_confirm"
 msgid "Check here to confirm this message"
-msgstr ""
+msgstr "Marcatz la casa per confirmar aqueste messatge"
 
 #: staff.patron.barcode_entry.patron_display_error
 msgid "spawning patron display"
@@ -97,12 +101,14 @@ msgid "Note for selected bills not likely updated."
 msgstr ""
 
 #: staff.patron.bill_details.handle_edit_payment_note.note_dialog.title
-msgctxt "staff.patron.bill_details.handle_edit_payment_note.note_dialog.title"
+msgctxt ""
+"staff.patron.bill_details.handle_edit_payment_note.note_dialog.title"
 msgid "Replacement Note"
 msgstr ""
 
 #: staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt
-msgctxt "staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt"
+msgctxt ""
+"staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt"
 msgid "Enter new note:"
 msgstr ""
 
@@ -116,7 +122,8 @@ msgstr ""
 
 #: staff.patron.bill_details.handle_void.confirm_void_billing
 msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing"
-msgid "Are you sure you would like to void $%1$s worth of line-item billings?"
+msgid ""
+"Are you sure you would like to void $%1$s worth of line-item billings?"
 msgstr ""
 
 #: staff.patron.bill_details.handle_void.confirm_void_billing_title
@@ -127,17 +134,18 @@ msgstr ""
 #: staff.patron.bill_details.handle_void.confirm_void_billing_yes
 msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing_yes"
 msgid "Yes"
-msgstr ""
+msgstr "Òc"
 
 #: staff.patron.bill_details.handle_void.confirm_void_billing_no
 msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing_no"
 msgid "No"
-msgstr ""
+msgstr "Non"
 
 #: staff.patron.bill_details.handle_void.confirm_void_billing_confirm_message
-msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing_confirm_message"
+msgctxt ""
+"staff.patron.bill_details.handle_void.confirm_void_billing_confirm_message"
 msgid "Check here to confirm this message"
-msgstr ""
+msgstr "Marcatz la casa per confirmar aqueste messatge"
 
 #: staff.patron.bill_details.handle_void.voiding_error
 msgctxt "staff.patron.bill_details.handle_void.voiding_error"
@@ -171,17 +179,17 @@ msgstr ""
 #: staff.patron.bill_history.handle_add.btn_yes
 msgctxt "staff.patron.bill_history.handle_add.btn_yes"
 msgid "Yes"
-msgstr ""
+msgstr "Òc"
 
 #: staff.patron.bill_history.handle_add.btn_no
 msgctxt "staff.patron.bill_history.handle_add.btn_no"
 msgid "No"
-msgstr ""
+msgstr "Non"
 
 #: staff.patron.bill_history.handle_add.confirm_message
 msgctxt "staff.patron.bill_history.handle_add.confirm_message"
 msgid "Check here to confirm this message"
-msgstr ""
+msgstr "Marcatz la casa per confirmar aqueste messatge"
 
 #: staff.patron.bill_history.handle_void.message_plural
 msgid "Are you sure you would like to void all billings on bills %1$s?"
@@ -199,17 +207,54 @@ msgstr ""
 #: staff.patron.bill_history.handle_void.btn_yes
 msgctxt "staff.patron.bill_history.handle_void.btn_yes"
 msgid "Yes"
-msgstr ""
+msgstr "Òc"
 
 #: staff.patron.bill_history.handle_void.btn_no
 msgctxt "staff.patron.bill_history.handle_void.btn_no"
 msgid "No"
-msgstr ""
+msgstr "Non"
 
 #: staff.patron.bill_history.handle_void.confirm_message
 msgctxt "staff.patron.bill_history.handle_void.confirm_message"
 msgid "Check here to confirm this message"
+msgstr "Marcatz la casa per confirmar aqueste messatge"
+
+#: staff.patron.bills.handle_refund.message_plural
+msgid ""
+"Are you sure you would like to refund excess payment on bills %1$s?  This "
+"action will simply put the amount in the Payment Pending column as a "
+"negative value.  You must still select Apply Payment!  Certain types of "
+"payments may not be refunded.  The refund may be applied to checked "
+"transactions that follow the refunded transaction."
 msgstr ""
+
+#: staff.patron.bills.handle_refund.message_singular
+msgid ""
+"Are you sure you would like to refund excess payment on bill %1$s?  This "
+"action will simply put the amount in the Payment Pending column as a "
+"negative value.  You must still select Apply Payment!  Certain types of "
+"payments may not be refunded.  The refund may be applied to checked "
+"transactions that follow the refunded transaction."
+msgstr ""
+
+#: staff.patron.bills.handle_refund.title
+msgid "Refund Excess Payment"
+msgstr ""
+
+#: staff.patron.bills.handle_refund.btn_yes
+msgctxt "staff.patron.bills.handle_refund.btn_yes"
+msgid "Yes"
+msgstr "Òc"
+
+#: staff.patron.bills.handle_refund.btn_no
+msgctxt "staff.patron.bills.handle_refund.btn_no"
+msgid "No"
+msgstr "Non"
+
+#: staff.patron.bills.handle_refund.confirm_message
+msgctxt "staff.patron.bills.handle_refund.confirm_message"
+msgid "Check here to confirm this message"
+msgstr "Marcatz la casa per confirmar aqueste messatge"
 
 #: staff.patron.bill_history.print_bills.print_error
 msgid "printing bills"
@@ -226,7 +271,7 @@ msgstr ""
 #: staff.patron.bill_history.column.title.label
 msgctxt "staff.patron.bill_history.column.title.label"
 msgid "Title"
-msgstr ""
+msgstr "Títol"
 
 #: staff.patron.bills.init_controller.money_summary_label
 msgid "Money Summary"
@@ -260,27 +305,35 @@ msgid ""
 "miscellaneous bill to counter the negative balance."
 msgstr ""
 
+#: staff.patron.bills.pay.invalid_user_xact_id
+msgid ""
+"%1$s\n"
+"\n"
+"This patron data is stale.  Refreshing patron data.  You should re-attempt "
+"the payment."
+msgstr ""
+
 #: staff.patron.bills.pay.payment_failed
 msgid "Bill payment likely failed"
 msgstr ""
 
 #: staff.patron.bills.info_box.label_value.reservation
 msgid "Reservation"
-msgstr ""
+msgstr "Reservacion"
 
 #. # 1 - Resource Barcode  2 - Resource Type Name
 #: staff.patron.bills.info_box.value_format.reservation
 msgid "%1$s : %2$s"
-msgstr ""
+msgstr "%1$s : %2$s"
 
 #: staff.patron.bills.info_box.label_value.title
 msgctxt "staff.patron.bills.info_box.label_value.title"
 msgid "Title"
-msgstr ""
+msgstr "Títol"
 
 #: staff.patron.bills.info_box.label_value.type
 msgid "Type"
-msgstr ""
+msgstr "Tipe"
 
 #: staff.patron.bills.info_box.label_value.last_billing
 msgid "Last Billing:"
@@ -309,7 +362,8 @@ msgstr ""
 
 #: staff.patron.bills.void_all_billings.void.message
 msgctxt "staff.patron.bills.void_all_billings.void.message"
-msgid "Are you sure you would like to void $%1$s worth of line-item billings?"
+msgid ""
+"Are you sure you would like to void $%1$s worth of line-item billings?"
 msgstr ""
 
 #: staff.patron.bills.void_all_billings.void.title
@@ -320,17 +374,17 @@ msgstr ""
 #: staff.patron.bills.void_all_billings.void.yes
 msgctxt "staff.patron.bills.void_all_billings.void.yes"
 msgid "Yes"
-msgstr ""
+msgstr "Òc"
 
 #: staff.patron.bills.void_all_billings.void.no
 msgctxt "staff.patron.bills.void_all_billings.void.no"
 msgid "No"
-msgstr ""
+msgstr "Non"
 
 #: staff.patron.bills.void_all_billings.void.confirm_message
 msgctxt "staff.patron.bills.void_all_billings.void.confirm_message"
 msgid "Check here to confirm this message"
-msgstr ""
+msgstr "Marcatz la casa per confirmar aqueste messatge"
 
 #: staff.patron.bills.void_all_billings.error_voiding_bills
 msgctxt "staff.patron.bills.void_all_billings.error_voiding_bills"
@@ -347,10 +401,6 @@ msgstr ""
 
 #: staff.patron.display.cmd_search_form.no_patron
 msgid "No Patron Selected"
-msgstr ""
-
-#: staff.patron.display.cmd_patron_edit.edit_search
-msgid "Editor would like to search for: %1$s"
 msgstr ""
 
 #: staff.patron.display.cmd_patron_delete.dialog.title
@@ -373,7 +423,7 @@ msgstr ""
 
 #: staff.patron.display.cmd_patron_delete.dialog.okay
 msgid "Delete Account"
-msgstr ""
+msgstr "Suprimir lo compte"
 
 #: staff.patron.display.cmd_patron_delete.deny_deletion_of_super_user
 msgid "You may not delete a super user through this interface."
@@ -390,11 +440,6 @@ msgid ""
 "miscellaneous staff artifacts (reports, etc.):"
 msgstr ""
 
-#: staff.patron.display.cmd_patron_delete.dest_user.default_value
-msgctxt "staff.patron.display.cmd_patron_delete.dest_user.default_value"
-msgid ""
-msgstr ""
-
 #: staff.patron.display.cmd_patron_delete.dest_user.title
 msgid "Destination User"
 msgstr ""
@@ -409,6 +454,10 @@ msgid ""
 "aborted."
 msgstr ""
 
+#: staff.patron.display.cmd_patron_delete.override_prompt
+msgid "Override patron deletion failure?"
+msgstr ""
+
 #: staff.patron.display.spawn_editor.editing_related_patron
 msgctxt "staff.patron.display.spawn_editor.editing_related_patron"
 msgid "Editing Related Patron"
@@ -420,7 +469,7 @@ msgstr ""
 
 #: staff.patron.display.init.retrieving
 msgid "Retrieving..."
-msgstr ""
+msgstr "Telecargament en cors..."
 
 #: staff.patron.display.init.network_request.alert_message
 msgid "Alert message: \"%1$s\"<br/><br/>"
@@ -448,12 +497,11 @@ msgstr ""
 
 #: staff.patron.display.init.network_request.window_title
 msgid "Alert"
-msgstr ""
+msgstr "Alèrta"
 
 #: staff.patron.display.init.network_request.window_message
 msgid ""
-"Press a navigation button above (for example, Check Out) to clear this "
-"alert."
+"Press a navigation button above (for example, Check Out) to clear this alert."
 msgstr ""
 
 #: staff.patron.display.init.network_request.dump_error_message
@@ -476,6 +524,11 @@ msgstr ""
 msgid "No Alerts, Blocks, or Messages"
 msgstr ""
 
+#. # Field 1 = actor.usr.id, Field 2 = actor.usr.create_date, Field 3 = actor.usr.last_update_time
+#: staff.patron.display.db_data
+msgid "Database ID: %1$s Create Date: %2$s Last Updated: %3$s"
+msgstr ""
+
 #: staff.patron.hold_notices.tooltiptext
 msgid "ID: %1$s Hold ID: %2$s Notifying Staff ID: %3$s"
 msgstr ""
@@ -486,22 +539,22 @@ msgstr ""
 
 #: staff.patron.hold_notices.method
 msgid "Method"
-msgstr ""
+msgstr "Metòde"
 
 #: staff.patron.hold_notices.note
 msgctxt "staff.patron.hold_notices.note"
 msgid "Note"
-msgstr ""
+msgstr "Nòta"
 
 #: staff.patron.hold_notices.cancel
 msgctxt "staff.patron.hold_notices.cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Abandonar"
 
 #: staff.patron.hold_notices.cancel_accesskey
 msgctxt "staff.patron.hold_notices.cancel_accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.patron.hold_notices.add_notif_record
 msgid "Add Notification Record"
@@ -510,7 +563,7 @@ msgstr ""
 #: staff.patron.hold_notices.add_notif_record_accesskey
 msgctxt "staff.patron.hold_notices.add_notif_record_accesskey"
 msgid "A"
-msgstr ""
+msgstr "A"
 
 #: staff.patron.hold_notices.new_notification.not_created
 msgid "The notification was not likely created."
@@ -523,25 +576,25 @@ msgstr ""
 #: staff.patron.hold_notes.new_note
 msgctxt "staff.patron.hold_notes.new_note"
 msgid "New Note"
-msgstr ""
+msgstr "Nòta novèla"
 
 #: staff.patron.hold_notes.title
 msgctxt "staff.patron.hold_notes.title"
 msgid "Title"
-msgstr ""
+msgstr "Títol"
 
 #: staff.patron.hold_notes.body
 msgctxt "staff.patron.hold_notes.body"
 msgid "Note"
-msgstr ""
+msgstr "Nòta"
 
 #: staff.patron.hold_notes.public
 msgid "Public"
-msgstr ""
+msgstr "Public"
 
 #: staff.patron.hold_notes.private
 msgid "Private"
-msgstr ""
+msgstr "Privat"
 
 #: staff.patron.hold_notes.print_on_slip
 msgid "Print on Slip"
@@ -561,7 +614,7 @@ msgstr ""
 
 #: staff.patron.hold_notes.new_note.public
 msgid "Public?"
-msgstr ""
+msgstr "Public ?"
 
 #: staff.patron.hold_notes.new_note.slip
 msgid "Print on slip?"
@@ -570,22 +623,22 @@ msgstr ""
 #: staff.patron.hold_notes.cancel
 msgctxt "staff.patron.hold_notes.cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Abandonar"
 
 #: staff.patron.hold_notes.cancel_accesskey
 msgctxt "staff.patron.hold_notes.cancel_accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.patron.hold_notes.add_note
 msgctxt "staff.patron.hold_notes.add_note"
 msgid "Add Note"
-msgstr ""
+msgstr "Apondre una nòta"
 
 #: staff.patron.hold_notes.add_note.accesskey
 msgctxt "staff.patron.hold_notes.add_note.accesskey"
 msgid "A"
-msgstr ""
+msgstr "A"
 
 #: staff.patron.hold_notes.new_note.not_created
 msgctxt "staff.patron.hold_notes.new_note.not_created"
@@ -611,22 +664,22 @@ msgstr ""
 #: staff.patron.holds.holds_edit_selection_depth.done.label
 msgctxt "staff.patron.holds.holds_edit_selection_depth.done.label"
 msgid "Done"
-msgstr ""
+msgstr "Acabat"
 
 #: staff.patron.holds.holds_edit_selection_depth.done.accesskey
 msgctxt "staff.patron.holds.holds_edit_selection_depth.done.accesskey"
 msgid "D"
-msgstr ""
+msgstr "D"
 
 #: staff.patron.holds.holds_edit_selection_depth.cancel.label
 msgctxt "staff.patron.holds.holds_edit_selection_depth.cancel.label"
 msgid "Cancel"
-msgstr ""
+msgstr "Abandonar"
 
 #: staff.patron.holds.holds_edit_selection_depth.cancel.accesskey
 msgctxt "staff.patron.holds.holds_edit_selection_depth.cancel.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.patron.holds.holds_edit_selection_depth.choose_library
 msgctxt "staff.patron.holds.holds_edit_selection_depth.choose_library"
@@ -635,14 +688,14 @@ msgstr ""
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_message.singular
 msgid ""
-"Are you sure you would like to change the Hold Range for hold %1$s to \"%"
-"2$s\"?;"
+"Are you sure you would like to change the Hold Range for hold %1$s to "
+"\"%2$s\"?;"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_message.plural
 msgid ""
-"Are you sure you would like to change the Hold Range for holds %1$s to \"%"
-"2$s\"?;"
+"Are you sure you would like to change the Hold Range for holds %1$s to "
+"\"%2$s\"?;"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_title
@@ -661,22 +714,22 @@ msgstr ""
 #: staff.patron.holds.holds_edit_pickup_lib.done.label
 msgctxt "staff.patron.holds.holds_edit_pickup_lib.done.label"
 msgid "Done"
-msgstr ""
+msgstr "Acabat"
 
 #: staff.patron.holds.holds_edit_pickup_lib.done.accesskey
 msgctxt "staff.patron.holds.holds_edit_pickup_lib.done.accesskey"
 msgid "D"
-msgstr ""
+msgstr "D"
 
 #: staff.patron.holds.holds_edit_pickup_lib.cancel.label
 msgctxt "staff.patron.holds.holds_edit_pickup_lib.cancel.label"
 msgid "Cancel"
-msgstr ""
+msgstr "Abandonar"
 
 #: staff.patron.holds.holds_edit_pickup_lib.cancel.accesskey
 msgctxt "staff.patron.holds.holds_edit_pickup_lib.cancel.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.patron.holds.holds_edit_pickup_lib.choose_lib
 msgctxt "staff.patron.holds.holds_edit_pickup_lib.choose_lib"
@@ -685,8 +738,8 @@ msgstr ""
 
 #: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.singular
 msgid ""
-"Are you sure you would like to change the Pick Up Library for hold %1$s to %"
-"2$s?"
+"Are you sure you would like to change the Pick Up Library for hold %1$s to "
+"%2$s?"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.plural
@@ -709,22 +762,22 @@ msgstr ""
 #: staff.patron.holds.holds_edit_phone_notify.btn_done.label
 msgctxt "staff.patron.holds.holds_edit_phone_notify.btn_done.label"
 msgid "Done"
-msgstr ""
+msgstr "Acabat"
 
 #: staff.patron.holds.holds_edit_phone_notify.btn_done.accesskey
 msgctxt "staff.patron.holds.holds_edit_phone_notify.btn_done.accesskey"
 msgid "D"
-msgstr ""
+msgstr "D"
 
 #: staff.patron.holds.holds_edit_phone_notify.btn_cancel.label
 msgctxt "staff.patron.holds.holds_edit_phone_notify.btn_cancel.label"
 msgid "Cancel"
-msgstr ""
+msgstr "Abandonar"
 
 #: staff.patron.holds.holds_edit_phone_notify.btn_cancel.accesskey
 msgctxt "staff.patron.holds.holds_edit_phone_notify.btn_cancel.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.patron.holds.holds_edit_phone_notify.choose_phone_number
 msgid "Choose a Hold Notification Phone Number"
@@ -747,6 +800,98 @@ msgctxt "staff.patron.holds.holds_edit_phone_notify.modifying_holds_title"
 msgid "Modifying Holds"
 msgstr ""
 
+#: staff.patron.holds.holds_edit_sms_notify.new_phone_number
+msgid ""
+"Please enter a new mobile number for hold notification via text (leave the "
+"field empty to disable):"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_notify.btn_done.label
+msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_done.label"
+msgid "Done"
+msgstr "Acabat"
+
+#: staff.patron.holds.holds_edit_sms_notify.btn_done.accesskey
+msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_done.accesskey"
+msgid "D"
+msgstr "D"
+
+#: staff.patron.holds.holds_edit_sms_notify.btn_cancel.label
+msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_cancel.label"
+msgid "Cancel"
+msgstr "Abandonar"
+
+#: staff.patron.holds.holds_edit_sms_notify.btn_cancel.accesskey
+msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_cancel.accesskey"
+msgid "C"
+msgstr "C"
+
+#: staff.patron.holds.holds_edit_sms_notify.choose_phone_number
+msgid "Choose a Hold Notification Mobile Text Number"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_notify.confirm_phone_number_change.singular
+msgid ""
+"Are you sure you would like to change the Notification Mobile/Text Number "
+"for hold %1$s to \"%2$s\"?"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_notify.confirm_phone_number_change.plural
+msgid ""
+"Are you sure you would like to change the Notification Mobile/Text Number "
+"for holds %1$s to \"%2$s\"?"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_notify.modifying_holds_title
+msgctxt "staff.patron.holds.holds_edit_sms_notify.modifying_holds_title"
+msgid "Modifying Holds"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_carrier.new_carrier
+msgid "Please select a new mobile carrier for hold notification via text:"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_carrier.btn_done.label
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_done.label"
+msgid "Done"
+msgstr "Acabat"
+
+#: staff.patron.holds.holds_edit_sms_carrier.btn_done.accesskey
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_done.accesskey"
+msgid "D"
+msgstr "D"
+
+#: staff.patron.holds.holds_edit_sms_carrier.btn_cancel.label
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_cancel.label"
+msgid "Cancel"
+msgstr "Abandonar"
+
+#: staff.patron.holds.holds_edit_sms_carrier.btn_cancel.accesskey
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_cancel.accesskey"
+msgid "C"
+msgstr "C"
+
+#: staff.patron.holds.holds_edit_sms_carrier.choose_carrier
+msgid "Select a Hold Notification Mobile Text Carrier"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_carrier.confirm_carrier_change.singular
+msgid ""
+"Are you sure you would like to change the Notification Mobile/Text Carrier "
+"for hold %1$s to \"%2$s\"?"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_carrier.confirm_carrier_change.plural
+msgid ""
+"Are you sure you would like to change the Notification Mobile/Text Carrier "
+"for holds %1$s to \"%2$s\"?"
+msgstr ""
+
+#: staff.patron.holds.holds_edit_sms_carrier.modifying_holds_title
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.modifying_holds_title"
+msgid "Modifying Holds"
+msgstr ""
+
 #: staff.patron.holds.holds_edit_email_notify.description
 msgid ""
 "Send email notifications (when appropriate)?  The email address used is "
@@ -755,11 +900,11 @@ msgstr ""
 
 #: staff.patron.holds.holds_edit_email_notify.btn_email.label
 msgid "Email"
-msgstr ""
+msgstr "Corrièr electronic"
 
 #: staff.patron.holds.holds_edit_email_notify.btn_email.accesskey
 msgid "E"
-msgstr ""
+msgstr "E"
 
 #: staff.patron.holds.holds_edit_email_notify.btn_no_email.label
 msgid "No Email"
@@ -768,24 +913,25 @@ msgstr ""
 #: staff.patron.holds.holds_edit_email_notify.btn_no_email.accesskey
 msgctxt "staff.patron.holds.holds_edit_email_notify.btn_no_email.accesskey"
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #: staff.patron.holds.holds_edit_email_notify.btn_cancel.label
 msgctxt "staff.patron.holds.holds_edit_email_notify.btn_cancel.label"
 msgid "Cancel"
-msgstr ""
+msgstr "Abandonar"
 
 #: staff.patron.holds.holds_edit_email_notify.btn_cancel.accesskey
 msgctxt "staff.patron.holds.holds_edit_email_notify.btn_cancel.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.patron.holds.holds_edit_email_notify.set_notifs
 msgid "Set Email Notification for Holds"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_email_notify.enable_email.singular
-msgid "Are you sure you would like to enable email notification for hold %1$s?"
+msgid ""
+"Are you sure you would like to enable email notification for hold %1$s?"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_email_notify.enable_email.plural
@@ -820,7 +966,7 @@ msgstr ""
 
 #: staff.patron.holds.holds_cut_in_line.btn_cut.accesskey
 msgid "T"
-msgstr ""
+msgstr "T"
 
 #: staff.patron.holds.holds_cut_in_line.btn_no_cut.label
 msgid "No Top of Queue"
@@ -829,17 +975,17 @@ msgstr ""
 #: staff.patron.holds.holds_cut_in_line.btn_no_cut.accesskey
 msgctxt "staff.patron.holds.holds_cut_in_line.btn_no_cut.accesskey"
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #: staff.patron.holds.holds_cut_in_line.btn_cancel.label
 msgctxt "staff.patron.holds.holds_cut_in_line.btn_cancel.label"
 msgid "Cancel"
-msgstr ""
+msgstr "Abandonar"
 
 #: staff.patron.holds.holds_cut_in_line.btn_cancel.accesskey
 msgctxt "staff.patron.holds.holds_cut_in_line.btn_cancel.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.patron.holds.holds_cut_in_line.set_notifs
 msgid "Set Top of Queue (Force to Front) for Holds"
@@ -876,26 +1022,27 @@ msgstr ""
 
 #: staff.patron.holds.holds_desire_mint_condition.btn_good.accesskey
 msgid "G"
-msgstr ""
+msgstr "G"
 
 #: staff.patron.holds.holds_desire_mint_condition.btn_mediocre.label
 msgid "Any Condition"
 msgstr ""
 
 #: staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey
-msgctxt "staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey"
+msgctxt ""
+"staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey"
 msgid "A"
-msgstr ""
+msgstr "A"
 
 #: staff.patron.holds.holds_desire_mint_condition.btn_cancel.label
 msgctxt "staff.patron.holds.holds_desire_mint_condition.btn_cancel.label"
 msgid "Cancel"
-msgstr ""
+msgstr "Abandonar"
 
 #: staff.patron.holds.holds_desire_mint_condition.btn_cancel.accesskey
 msgctxt "staff.patron.holds.holds_desire_mint_condition.btn_cancel.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.patron.holds.holds_desire_mint_condition.set_notifs
 msgid "Set Desired Copy Quality for Holds"
@@ -903,14 +1050,14 @@ msgstr ""
 
 #: staff.patron.holds.holds_desire_mint_condition.enable_good.singular
 msgid ""
-"Are you sure you would like to restrict to Good Condition copies for hold %"
-"1$s?"
+"Are you sure you would like to restrict to Good Condition copies for hold "
+"%1$s?"
 msgstr ""
 
 #: staff.patron.holds.holds_desire_mint_condition.enable_good.plural
 msgid ""
-"Are you sure you would like to restrict to Good Condition copies for holds %"
-"1$s?"
+"Are you sure you would like to restrict to Good Condition copies for holds "
+"%1$s?"
 msgstr ""
 
 #: staff.patron.holds.holds_desire_mint_condition.disable_good.singular
@@ -987,7 +1134,7 @@ msgstr ""
 #: staff.patron.holds.show_catalog.retrieving_title
 msgctxt "staff.patron.holds.show_catalog.retrieving_title"
 msgid "Retrieving title..."
-msgstr ""
+msgstr "Recuperacion del títol…"
 
 #: staff.patron.holds.lib_menus.missing_library_list
 msgctxt "staff.patron.holds.lib_menus.missing_library_list"
@@ -1071,21 +1218,21 @@ msgstr ""
 
 #: staff.patron.info_group.link_patron.move.label
 msgid "Move"
-msgstr ""
+msgstr "Desplaçar"
 
 #: staff.patron.info_group.link_patron.move.accesskey
 msgid "M"
-msgstr ""
+msgstr "M"
 
 #: staff.patron.info_group.link_patron.done.label
 msgctxt "staff.patron.info_group.link_patron.done.label"
 msgid "Done"
-msgstr ""
+msgstr "Acabat"
 
 #: staff.patron.info_group.link_patron.done.accesskey
 msgctxt "staff.patron.info_group.link_patron.done.accesskey"
 msgid "D"
-msgstr ""
+msgstr "D"
 
 #: staff.patron.info_group.link_patron.move_patron_to_usergroup
 msgid "Move Patron into a Usergroup"
@@ -1142,7 +1289,7 @@ msgstr ""
 #: staff.patron.info_notes.render_notes.add_new_note.accesskey
 msgctxt "staff.patron.info_notes.render_notes.add_new_note.accesskey"
 msgid "A"
-msgstr ""
+msgstr "A"
 
 #: staff.patron.info_notes.render_notes.tooltiptext
 msgid "Note ID: %1$s Creator ID: %2$s"
@@ -1162,7 +1309,7 @@ msgstr ""
 
 #: staff.patron.info_notes.render_notes.delete_note_title
 msgid "Delete Note"
-msgstr ""
+msgstr "Escafar la nòta"
 
 #: staff.patron.info_notes.render_notes.btn1.delete_note.label
 msgid "Delete This Note"
@@ -1186,12 +1333,12 @@ msgstr ""
 
 #: staff.patron.info_notes.render_notes.btn2.print_note.label
 msgid "Print"
-msgstr ""
+msgstr "Estampar"
 
 #: staff.patron.info_notes.new_note.label
 msgctxt "staff.patron.info_notes.new_note.label"
 msgid "New Note"
-msgstr ""
+msgstr "Nòta novèla"
 
 #: staff.patron.info_notes.new_note.patron_visible.value
 msgid "Patron Visible?"
@@ -1200,41 +1347,41 @@ msgstr ""
 #: staff.patron.info_notes.new_note.title.value
 msgctxt "staff.patron.info_notes.new_note.title.value"
 msgid "Title"
-msgstr ""
+msgstr "Títol"
 
 #: staff.patron.info_notes.new_note.note.value
 msgctxt "staff.patron.info_notes.new_note.note.value"
 msgid "Note"
-msgstr ""
+msgstr "Nòta"
 
 #: staff.patron.info_notes.new_note.initials.value
 msgid "Initials"
-msgstr ""
+msgstr "Inicialas"
 
 #: staff.patron.info_notes.new_note.cancel.label
 msgctxt "staff.patron.info_notes.new_note.cancel.label"
 msgid "Cancel"
-msgstr ""
+msgstr "Abandonar"
 
 #: staff.patron.info_notes.new_note.cancel.accesskey
 msgctxt "staff.patron.info_notes.new_note.cancel.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.patron.info_notes.new_note.add.label
 msgctxt "staff.patron.info_notes.new_note.add.label"
 msgid "Add Note"
-msgstr ""
+msgstr "Apondre una nòta"
 
 #: staff.patron.info_notes.new_note.add.accesskey
 msgctxt "staff.patron.info_notes.new_note.add.accesskey"
 msgid "A"
-msgstr ""
+msgstr "A"
 
 #: staff.patron.info_notes.new_note.add_note_title
 msgctxt "staff.patron.info_notes.new_note.add_note_title"
 msgid "Add Note"
-msgstr ""
+msgstr "Apondre una nòta"
 
 #: staff.patron.info_notes.new_note.note_not_created
 msgctxt "staff.patron.info_notes.new_note.note_not_created"
@@ -1247,7 +1394,7 @@ msgstr ""
 
 #: staff.patron.info_stat_cats.render_stat_cats.opac_visible
 msgid "OPAC Visible"
-msgstr ""
+msgstr "OPAC visible"
 
 #: staff.patron.info_stat_cats.render_stat_cats.not_opac_visible
 msgid "Not OPAC Visible"
@@ -1263,11 +1410,11 @@ msgstr ""
 
 #: staff.patron.info_surveys.render_surveys.required
 msgid "Required"
-msgstr ""
+msgstr "Requesit"
 
 #: staff.patron.info_surveys.render_surveys.not_required
 msgid "Not Required"
-msgstr ""
+msgstr "Pas requesit"
 
 #: staff.patron.items.show_noncats.14_days
 msgid "14 days"
@@ -1332,23 +1479,17 @@ msgid "Renew probably did not happen."
 msgstr ""
 
 #: staff.patron.items.items_edit.renew_with_date.title
+msgctxt "staff.patron.items.items_edit.renew_with_date.title"
+msgid "Renew with Due Date"
+msgstr ""
+
+#: staff.patron.items.items_edit.renew_with_date.description
+msgctxt "staff.patron.items.items_edit.renew_with_date.description"
 msgid "Renew with Due Date"
 msgstr ""
 
 #: staff.patron.items.items_edit.renew_with_date.prompt
 msgid "Enter a new due date for these items to be renewed: %1$s"
-msgstr ""
-
-#: staff.patron.items.items_edit.cancel_renew_with_date
-msgid "Missing Due Date. Renewal canceled."
-msgstr ""
-
-#: staff.patron.items.items_edit.invalid_date
-msgid "Invalid Date"
-msgstr ""
-
-#: staff.patron.items.items_edit.need_later_date
-msgid "Due date needs to be after today."
 msgstr ""
 
 #: staff.patron.items.items_edit.edit_due_date.singular
@@ -1358,6 +1499,10 @@ msgstr ""
 #: staff.patron.items.items_edit.edit_due_date.plural
 msgid "Edit Due Dates"
 msgstr ""
+
+#: staff.patron.items.items_edit.edit_due_date.description
+msgid "Due Date"
+msgstr "Data d'escasença"
 
 #: staff.patron.items.items_edit.new_due_date
 msgid "Enter a new due date for these items: %1$s"
@@ -1381,12 +1526,12 @@ msgstr ""
 msgid "The items were not likely marked lost."
 msgstr ""
 
-#: staff.patron.items.items_claimed_returned.date_cannot_be_in_future
-msgid "Claims Returned Date cannot be in the future."
-msgstr ""
-
 #: staff.patron.items.items_claimed_returned.claimed_returned
 msgid "Claimed Returned"
+msgstr ""
+
+#: staff.patron.items.items_claimed_returned.claimed_returned.description
+msgid "Date Claimed"
 msgstr ""
 
 #: staff.patron.items.items_claimed_returned.enter_returned_date
@@ -1409,6 +1554,18 @@ msgstr ""
 msgid "Are you sure you would like to check in items %1$s?"
 msgstr ""
 
+#: staff.patron.items.items_checkin.confirm_item_claimed_never_checked_out.singular
+msgid ""
+"Are you sure you would like to mark this item as Claimed Never Checked Out? "
+"%1$s"
+msgstr ""
+
+#: staff.patron.items.items_checkin.confirm_item_claimed_never_checked_out.plural
+msgid ""
+"Are you sure you would like to mark these items as Claimed Never Checked "
+"Out? %1$s"
+msgstr ""
+
 #: staff.patron.items.items_checkin.no_checkin
 msgid "Checkin probably did not happen."
 msgstr ""
@@ -1420,10 +1577,11 @@ msgstr ""
 #: staff.patron.items.show_catalog.retrieving_title
 msgctxt "staff.patron.items.show_catalog.retrieving_title"
 msgid "Retrieving title..."
-msgstr ""
+msgstr "Recuperacion del títol…"
 
 #: staff.patron.items.retrieve_row.callback_error
-msgid "Error in callback for FM_CIRC_DETAILS.authoritative in patron/items.js"
+msgid ""
+"Error in callback for FM_CIRC_DETAILS.authoritative in patron/items.js"
 msgstr ""
 
 #: staff.patron.items.retrieve_row.error_in_retrieve_row
@@ -1480,9 +1638,17 @@ msgstr ""
 msgid "patron search saving columns"
 msgstr ""
 
+#: staff.patron.search_result.mailing_address_column_label_prefix
+msgid "Mailing Addr: "
+msgstr ""
+
+#: staff.patron.search_result.billing_address_column_label_prefix
+msgid "Billing Addr: "
+msgstr ""
+
 #: staff.patron.summary.patron_bill.money
 msgid "$ %1$s"
-msgstr ""
+msgstr "$ %1$s"
 
 #: staff.patron.summary.retrieve.no_barcode
 msgid "summary: No barcode or ID"
@@ -1490,15 +1656,27 @@ msgstr ""
 
 #: staff.patron.summary.patron_net_access
 msgid "Internet"
+msgstr "Internet"
+
+#: staff.patron.summary.create_date
+msgid "Account created on"
 msgstr ""
 
 #: staff.patron.summary.expires_on
 msgid "Expires on"
+msgstr "Expira lo"
+
+#: staff.patron.summary.last_activity
+msgid "Last Activity"
+msgstr "Darrièra activitat"
+
+#: staff.patron.summary.updated_on
+msgid "Last updated on"
 msgstr ""
 
 #: staff.patron.summary.standing_penalty.remove
 msgid "Remove"
-msgstr ""
+msgstr "Suprimir"
 
 #: staff.patron.summary.standing_penalty.none
 msgid "No Blocks/Penalties"
@@ -1506,15 +1684,15 @@ msgstr ""
 
 #: staff.patron.summary.group_list.column.family_name.label
 msgid "Family Name"
-msgstr ""
+msgstr "Nom d'ostal"
 
 #: staff.patron.summary.group_list.column.first_given_name.label
 msgid "First Name"
-msgstr ""
+msgstr "Pichon nom"
 
 #: staff.patron.summary.group_list.column.second_given_name.label
 msgid "Middle Name"
-msgstr ""
+msgstr "Segond pichon nom"
 
 #: staff.patron.summary.group_list.column.home_ou.label
 msgid "Home Lib"
@@ -1522,7 +1700,7 @@ msgstr ""
 
 #: staff.patron.summary.group_list.column.balance_owed.label
 msgid "Balance Owed"
-msgstr ""
+msgstr "Sòlde degut"
 
 #: staff.patron.summary.tab.group_list_with_total_owed.label
 msgid "Group: %1$s"
@@ -1593,7 +1771,7 @@ msgstr ""
 
 #: staff.patron.user_edit.display_perm.select_one
 msgid "-- Select One --"
-msgstr ""
+msgstr "-- Seleccionar un --"
 
 #: staff.patron.cmd_verify_credentials.correct_credentials
 msgid "Success testing credentials!"
@@ -1617,17 +1795,17 @@ msgstr ""
 
 #: staff.patron.usr_buckets.merge_records.button.label
 msgid "Merge"
-msgstr ""
+msgstr "Fusionar"
 
 #: staff.patron.usr_buckets.merge_records.cancel_button.label
 msgctxt "staff.patron.usr_buckets.merge_records.cancel_button.label"
 msgid "Cancel"
-msgstr ""
+msgstr "Abandonar"
 
 #: staff.patron.usr_buckets.merge_records.cancel_button.accesskey
 msgctxt "staff.patron.usr_buckets.merge_records.cancel_button.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.patron.usr_buckets.merge_records.lead_record_number
 msgid "Lead Record? # %1$s"
@@ -1661,7 +1839,7 @@ msgstr ""
 #. # The < and > highlight that the value is not set; translate Unset and change the delimiters as needed
 #: staff.patron.field.unset
 msgid "<Unset>"
-msgstr ""
+msgstr "<Pas fixat>"
 
 #. # Unused by default but available: %7 is county; %10 is country.
 #: staff.patron.mailable_address_format
@@ -1671,6 +1849,10 @@ msgid ""
 "%5$s\n"
 "%6$s, %8$s %9$s"
 msgstr ""
+"%1$s %2$s %3$s\n"
+"%4$s\n"
+"%5$s\n"
+"%6$s, %8$s %9$s"
 
 #: web.staff.patron.ue.session_no_defined
 msgctxt "web.staff.patron.ue.session_no_defined"
@@ -1692,4 +1874,30 @@ msgstr ""
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode
 #: staff.circ.work_log_patron_edit.message
 msgid "%1$s edited %3$s (%2$s)"
+msgstr ""
+
+#. # 1 - Number of hold requests created
+#: staff.item.batch.hold.x_holds_created
+msgid "%1$s holds created."
+msgstr ""
+
+#. # 1 - Number of holds not created for a given reason  2 - the reason for failure
+#: staff.item.batch.hold.x_failed_holds
+msgid "%1$s failed for %2$s"
+msgstr ""
+
+#: staff.item.batch.hold.tab_name
+msgid "Item Hold/Recall/Force"
+msgstr ""
+
+#: staff.item.batch.hold.retry_btn_label
+msgid "Retry"
+msgstr "Tornar ensajar"
+
+#: staff.item.batch.hold.override_btn_label
+msgid "Override"
+msgstr "Ignorar"
+
+#: staff.item.batch.hold.user_not_found
+msgid "User Not Found"
 msgstr ""

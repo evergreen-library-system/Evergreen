@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-04-28 14:17-0400\n"
+"POT-Creation-Date: 2012-09-04 13:44-0400\n"
 "PO-Revision-Date: 2012-06-05 18:27+0000\n"
 "Last-Translator: Job Diógenes Ribeiro Borges <jobdrb@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-06-06 04:43+0000\n"
-"X-Generator: Launchpad (build 15353)\n"
+"X-Launchpad-Export-Date: 2012-09-05 04:48+0000\n"
+"X-Generator: Launchpad (build 15901)\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -229,6 +229,10 @@ msgstr "Substituir colisão de re-rotulagem do volume e mesclar os volumes?"
 #: staff.cat.edit_volumes.label_exists.details
 msgid "%1$s"
 msgstr "%1$s"
+
+#: staff.cat.edit_volume.exception
+msgid "An error occurred while you were trying to edit these volumes."
+msgstr ""
 
 #: staff.cat.copy_browser.can_have_copies.false
 msgid "Records from %1$s cannot have copies."
@@ -1366,6 +1370,10 @@ msgstr "A Cesta %1$s foi criada."
 msgid "Record Merging"
 msgstr "Mesclagem de Registro"
 
+#: staff.cat.record_buckets.merge_records.catch.std_unex_err
+msgid "Records were not likely merged."
+msgstr "Os registros provavelmente não foram mesclados."
+
 #: staff.cat.record_buckets.delete_records.xml1
 msgid "Delete these records?"
 msgstr "Excluir esses registros?"
@@ -2455,9 +2463,6 @@ msgstr "%1$s disponíveis"
 
 #~ msgid "Records were successfully merged."
 #~ msgstr "Registros mesclados com sucesso."
-
-#~ msgid "Records were not likely merged."
-#~ msgstr "Os registros provavelmente não foram mesclados."
 
 #~ msgid "Call Numbers"
 #~ msgstr "Números de Chamada"

@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2012-08-03 10:01-0400\n"
-"PO-Revision-Date: 2011-03-21 21:10+0000\n"
-"Last-Translator: Kudret EMRE <Unknown>\n"
+"PO-Revision-Date: 2012-11-26 11:23+0000\n"
+"Last-Translator: Irmak Bıçakçıgil <Unknown>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-08-04 05:15+0000\n"
-"X-Generator: Launchpad (build 15742)\n"
+"X-Launchpad-Export-Date: 2012-11-27 05:36+0000\n"
+"X-Generator: Launchpad (build 16309)\n"
 
 #: common.exception
 msgid ""
@@ -36,12 +36,12 @@ msgstr "JSAN kütüphanesi nesnesi eksik."
 #: common.ok
 msgctxt "common.ok"
 msgid "Ok"
-msgstr ""
+msgstr "Tamam"
 
 #: common.ok.label
 msgctxt "common.ok.label"
 msgid "Ok"
-msgstr ""
+msgstr "Tamam"
 
 #: common.ok.accesskey
 msgid "O"
@@ -157,7 +157,7 @@ msgstr "Silmeyi geri al"
 #: cat.opac.cancel
 msgctxt "cat.opac.cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Vazgeç"
 
 #: cat.opac.record_deleted
 msgid "Record deleted."
@@ -212,7 +212,7 @@ msgstr ""
 
 #: cat.save_record
 msgid "Save Record"
-msgstr ""
+msgstr "Kaydı Kaydet"
 
 #: cat.save.failure
 msgid "Record not likely updated."
@@ -224,7 +224,7 @@ msgstr ""
 
 #: cat.preference.error
 msgid "Preference not likely updated."
-msgstr ""
+msgstr "Tercihler muhtemelen güncellenemedi."
 
 #: staff.admin.survey.save_response.label
 msgid "Save this response"
@@ -244,19 +244,19 @@ msgstr ""
 
 #: circ.barcode.warning
 msgid "Barcode Warning"
-msgstr ""
+msgstr "Barkot Hatası"
 
 #: circ.standalone
 msgid "Standalone"
-msgstr ""
+msgstr "Bağımsız"
 
 #: circ.duplicate_scan.msg
 msgid "This barcode has already been scanned."
-msgstr ""
+msgstr "Bu barkot zaten tarandı."
 
 #: circ.duplicate_scan.field
 msgid "Duplicate Scan"
-msgstr ""
+msgstr "Çift Tarama"
 
 #: circ.offline_checkout.nonbarcoded
 msgid "or choose a non-barcoded option..."
@@ -300,7 +300,7 @@ msgstr ""
 
 #: circ.offline_checkout.required_field
 msgid "Required Field"
-msgstr ""
+msgstr "Zorunlu Alan"
 
 #: circ.offline_checkout.valid_count
 msgid "Please try again and enter a valid count."
@@ -324,51 +324,51 @@ msgstr ""
 
 #: circ.offline_register.missing.post_code
 msgid "Missing Address : Postal Code"
-msgstr ""
+msgstr "Eksik Adres: Posta Kodu"
 
 #: circ.offline_register.missing.state
 msgid "Missing Address : State"
-msgstr ""
+msgstr "Eksik Adres: Eyalet"
 
 #: circ.offline_register.missing.city
 msgid "Missing Address : City"
-msgstr ""
+msgstr "Eksik Adres: Şehir"
 
 #: circ.offline_register.missing.street1
 msgid "Missing Address : Line 1"
-msgstr ""
+msgstr "Eksik Adres: Satır 1"
 
 #: circ.offline_register.missing.ident_value
 msgid "Missing Identification Value"
-msgstr ""
+msgstr "Eksik Kimlik Değeri"
 
 #: circ.offline_register.missing.ident_type
 msgid "Missing Identification Type"
-msgstr ""
+msgstr "Eksik Kimlik Türü"
 
 #: circ.offline_register.missing.dob
 msgid "Missing Date of Birth"
-msgstr ""
+msgstr "Eksik Doğum Tarihi"
 
 #: circ.offline_register.missing.first_given_name
 msgid "Missing First Name"
-msgstr ""
+msgstr "Eksik İsim"
 
 #: circ.offline_register.missing.family_name
 msgid "Missing Last Name"
-msgstr ""
+msgstr "Eksik Soyad"
 
 #: circ.offline_register.missing.passwd
 msgid "Missing Password"
-msgstr ""
+msgstr "Eksik Parola"
 
 #: circ.offline_register.missing.barcode
 msgid "Missing Barcode"
-msgstr ""
+msgstr "Eksik Barkot"
 
 #: circ.offline_register.missing.profile
 msgid "Missing Profile"
-msgstr ""
+msgstr "Eksik Profil"
 
 #: circ.offline_register.missing.home_ou
 msgid "Missing Home Library"
@@ -384,15 +384,15 @@ msgstr ""
 
 #: circ.offline_register.missing.library.list
 msgid "Missing library list."
-msgstr ""
+msgstr "Eksik kütüphane listesi."
 
 #: circ.offline_register.missing.profile.list
 msgid "Missing profile list."
-msgstr ""
+msgstr "Eksik profil listesi."
 
 #: circ.offline_register.missing.id.type.list
 msgid "Missing identification type list."
-msgstr ""
+msgstr "Eksik kimlik türü listesi."
 
 #: circ.offline_register.missing.required.surveys
 msgid "Missing required surveys."
@@ -406,7 +406,7 @@ msgstr ""
 
 #: jsan.file_not_found.error
 msgid "File not found: %1$s"
-msgstr ""
+msgstr "Dosya bulunamadı: %1$s"
 
 #: jsan.namespace.creation.error
 msgid "Could not create namespace[%1$s]: %2$s"
@@ -430,12 +430,12 @@ msgstr ""
 
 #: menu.cmd_replace_barcode.prompt
 msgid "Enter original barcode for the item:"
-msgstr ""
+msgstr "Öğe için özgün barkodu girin:"
 
 #: menu.cmd_replace_barcode.label
 msgctxt "menu.cmd_replace_barcode.label"
 msgid "Replace Barcode"
-msgstr ""
+msgstr "Barkodu Yenile"
 
 #: menu.cmd_replace_barcode.retrieval.error
 msgid "We were unable to retrieve an item with barcode \"%1$s\"."
@@ -464,15 +464,15 @@ msgstr ""
 
 #: menu.cmd_replace_barcode.permission.error
 msgid "Rename aborted.  Insufficient permission."
-msgstr ""
+msgstr "Yeniden isimlendirme kesintiye uğradı. Yetersiz izin."
 
 #: menu.cmd_replace_barcode.renaming.error
 msgid "Error renaming item."
-msgstr ""
+msgstr "Öğe yeniden isimlendirilirken hata meydana geldi."
 
 #: menu.cmd_replace_barcode.renaming.failure
 msgid "The rename operation probably failed."
-msgstr ""
+msgstr "Yeniden isimlendirme operasyonu muhtemelen başarısızlığa uğradı."
 
 #: menu.cmd_search_opac.tab
 msgid "Catalog"
@@ -554,7 +554,7 @@ msgstr ""
 
 #: menu.cmd_open_conify.tab
 msgid "Server Settings"
-msgstr ""
+msgstr "Sunucu Ayarları"
 
 #: menu.cmd_retrieve_last_patron.session.error
 msgid "No patron visited yet this session."
@@ -570,11 +570,11 @@ msgstr ""
 
 #: menu.cmd_chg_session.label
 msgid "Change Login"
-msgstr ""
+msgstr "Girişi Değiştir"
 
 #: menu.cmd_chg_session.operator.label
 msgid "Change Operator: %1$s"
-msgstr ""
+msgstr "Operatörü Değiştir: %1$s"
 
 #: menu.cmd_manage_offline_xacts.tab
 msgid "Offline Transactions"
@@ -582,7 +582,7 @@ msgstr ""
 
 #: menu.cmd_download_patrons.complete.status
 msgid "Download completed"
-msgstr ""
+msgstr "İndirme tamamlandı"
 
 #: menu.cmd_download_patrons.error
 msgid ""
@@ -604,7 +604,7 @@ msgstr ""
 
 #: menu.cmd_console.tab
 msgid "JavaScript Console"
-msgstr ""
+msgstr "JavaScript Konsolu"
 
 #: menu.cmd_shell.tab
 msgid "JavaScript Shell"
@@ -612,7 +612,7 @@ msgstr ""
 
 #: menu.cmd_xuleditor.tab
 msgid "XUL Editor"
-msgstr ""
+msgstr "XUL Editörü"
 
 #: menu.cmd_fieldmapper.tab
 msgid "Fieldmapper"
@@ -620,19 +620,19 @@ msgstr ""
 
 #: menu.cmd_public_opac.tab
 msgid "OPAC"
-msgstr ""
+msgstr "OPAC"
 
 #: menu.cmd_extension_manager.tab
 msgid "Extension Manager"
-msgstr ""
+msgstr "Uzantı Yöneticisi"
 
 #: menu.cmd_theme_manager.tab
 msgid "Theme Manager"
-msgstr ""
+msgstr "Tema Yöneticisi"
 
 #: menu.cmd_shutdown.prompt
 msgid "Exit Evergreen completely?"
-msgstr ""
+msgstr "Evergreen'den tamamen çıkmak istiyor musunuz?"
 
 #: menu.spawn_search.msg
 msgid "Editor would like to search for: %1$s"
@@ -640,21 +640,23 @@ msgstr ""
 
 #: menu.cmd_verify_credentials.tabname
 msgid "Verify Credentials"
-msgstr ""
+msgstr "Bilgileri Doğrula"
 
 #: menu.close_all_tabs.error
 msgid "Error closing all tabs"
-msgstr ""
+msgstr "Sekmeler kapatılırken hata meydana geldi"
 
 #: menu.new_tab.tab
 msgid "Tab"
-msgstr ""
+msgstr "Sekme"
 
 #: menu.new_tab.max_tab_dialog
 msgid ""
 "Sorry, we can't create any more tabs in this window.\n"
 "Would you like to create a new tab in another window?"
 msgstr ""
+"Özür dileriz, bu pencerede daha fazla sekme açamazsınız.\n"
+"Başka bir pencerede yeni sekme açmak ister misiniz?"
 
 #: main.session_cookie.error
 msgid "Error setting session cookie: %1$s"
@@ -662,7 +664,7 @@ msgstr ""
 
 #: menu.set_tab.error
 msgid "pause for error"
-msgstr ""
+msgstr "hata nedeniyle duraklatıldı"
 
 #: menu.reset_network_stats
 msgid "Reset network activity summary?"
@@ -670,7 +672,7 @@ msgstr ""
 
 #: main.testing
 msgid "Testing"
-msgstr ""
+msgstr "Sınanıyor"
 
 #: main.transaction_export.title
 msgid "Save Transaction File As"
