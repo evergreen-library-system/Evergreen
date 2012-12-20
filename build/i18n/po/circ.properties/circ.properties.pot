@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-03 10:01-0400\n"
+"POT-Creation-Date: 2012-12-20 09:37-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -317,6 +317,18 @@ msgstr ""
 #: staff.circ.checkout.barcode
 msgctxt "staff.circ.checkout.barcode"
 msgid "Barcode:"
+msgstr ""
+
+#: staff.circ.checkout.failed_to_patron_other
+msgid "This copy was checked out by another patron on %1$s."
+msgstr ""
+
+#: staff.circ.checkout.failed_to_patron_renew
+msgid "This copy is already checked out to this patron."
+msgstr ""
+
+#: staff.circ.checkout.failed_to_patron_today
+msgid "This copy was already checked out to this patron today."
 msgstr ""
 
 #: staff.circ.circ_brief.staff_out_id
