@@ -1,3 +1,670 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 7f57822cc88feb268fea694148489d320ad6d7f4
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Dec 20 09:47:17 2012 -0500
+
+    Translations update step 2: newpot
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    
+    Conflicts:
+    	build/i18n/po/acq.js/acq.js.pot
+    	build/i18n/po/circ.properties/circ.properties.pot
+    	build/i18n/po/db.seed/db.seed.pot
+    	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+    	build/i18n/po/lang.dtd/lang.dtd.pot
+    	build/i18n/po/offline.properties/offline.properties.pot
+    	build/i18n/po/tpac/tpac.pot
+
+18	12	build/i18n/po/acq.js/acq.js.pot
+28	2	build/i18n/po/circ.properties/circ.properties.pot
+5	1	build/i18n/po/common.properties/common.properties.pot
+810	719	build/i18n/po/db.seed/db.seed.pot
+2541	2345	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+145	542	build/i18n/po/lang.dtd/lang.dtd.pot
+20	1	build/i18n/po/offline.properties/offline.properties.pot
+5	1	build/i18n/po/patron.properties/patron.properties.pot
+1561	323	build/i18n/po/tpac/tpac.pot
+
+commit 61c765c4b6f9a9b634e01c8f3661118bfb0a82ef
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Dec 20 09:36:56 2012 -0500
+
+    Translations update step 1: update profiles
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    
+    Conflicts:
+    	build/i18n/po/XULTermLoader.js/oc-FR.po
+    	build/i18n/po/cat.properties/hy-AM.po
+    	build/i18n/po/cat.properties/pt-BR.po
+    	build/i18n/po/circ.properties/cs-CZ.po
+    	build/i18n/po/circ.properties/en-CA.po
+    	build/i18n/po/db.seed/en-CA.po
+    	build/i18n/po/db.seed/en-GB.po
+    	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+    	build/i18n/po/fm_IDL.dtd/en-CA.po
+    	build/i18n/po/fm_IDL.dtd/tr-TR.po
+    	build/i18n/po/ils_events.xml/en-CA.po
+    	build/i18n/po/ils_events.xml/hy-AM.po
+    	build/i18n/po/lang.dtd/cs-CZ.po
+    	build/i18n/po/lang.dtd/en-CA.po
+    	build/i18n/po/offline.properties/en-CA.po
+    	build/i18n/po/offline.properties/tr-TR.po
+    	build/i18n/po/opac.dtd/de-DE.po
+    	build/i18n/po/opac.dtd/en-CA.po
+    	build/i18n/po/opac.dtd/ru-RU.po
+    	build/i18n/po/opac.dtd/tr-TR.po
+    	build/i18n/po/opac.js/oc-FR.po
+    	build/i18n/po/pull_list.js/de-DE.po
+
+5	5	build/i18n/po/AutoFieldWidget.js/tr-TR.po
+178	0	build/i18n/po/Searcher.js/oc-FR.po
+7	4	build/i18n/po/XULTermLoader.js/oc-FR.po
+7	7	build/i18n/po/admin.properties/oc-FR.po
+12	7	build/i18n/po/cat.properties/cs-CZ.po
+16	11	build/i18n/po/cat.properties/de-DE.po
+12	4	build/i18n/po/cat.properties/en-CA.po
+13	8	build/i18n/po/cat.properties/en-GB.po
+13	8	build/i18n/po/cat.properties/es-ES.po
+11	6	build/i18n/po/cat.properties/fr-CA.po
+49	40	build/i18n/po/cat.properties/hy-AM.po
+502	252	build/i18n/po/cat.properties/oc-FR.po
+74	53	build/i18n/po/cat.properties/pt-BR.po
+11	6	build/i18n/po/cat.properties/ru-RU.po
+11	3	build/i18n/po/cat.properties/tr-TR.po
+23	7	build/i18n/po/circ.properties/cs-CZ.po
+21	5	build/i18n/po/circ.properties/en-CA.po
+190	62	build/i18n/po/circ.properties/oc-FR.po
+114	102	build/i18n/po/conify.dtd/oc-FR.po
+210	180	build/i18n/po/conify.js/oc-FR.po
+792	719	build/i18n/po/db.seed/en-CA.po
+945	872	build/i18n/po/db.seed/en-GB.po
+2573	2385	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+2557	2369	build/i18n/po/fm_IDL.dtd/en-CA.po
+3526	2105	build/i18n/po/fm_IDL.dtd/oc-FR.po
+2534	2349	build/i18n/po/fm_IDL.dtd/tr-TR.po
+37	31	build/i18n/po/ils_events.xml/en-CA.po
+49	33	build/i18n/po/ils_events.xml/hy-AM.po
+719	578	build/i18n/po/lang.dtd/cs-CZ.po
+704	559	build/i18n/po/lang.dtd/en-CA.po
+2887	1847	build/i18n/po/lang.dtd/oc-FR.po
+8	6	build/i18n/po/multiclass_search_help.html/oc-FR.po
+13	8	build/i18n/po/offline.properties/en-CA.po
+358	106	build/i18n/po/offline.properties/oc-FR.po
+58	51	build/i18n/po/offline.properties/tr-TR.po
+43	22	build/i18n/po/opac.dtd/de-DE.po
+31	10	build/i18n/po/opac.dtd/en-CA.po
+89	51	build/i18n/po/opac.dtd/ru-RU.po
+19	19	build/i18n/po/opac.dtd/tr-TR.po
+13	13	build/i18n/po/opac.js/oc-FR.po
+356	148	build/i18n/po/patron.properties/oc-FR.po
+63	31	build/i18n/po/pickup_and_return.js/oc-FR.po
+5	5	build/i18n/po/pickup_and_return.js/pt-BR.po
+12	12	build/i18n/po/pull_list.js/de-DE.po
+43	27	build/i18n/po/pull_list.js/oc-FR.po
+167	18	build/i18n/po/register.js/oc-FR.po
+90	80	build/i18n/po/reports.js/oc-FR.po
+15	15	build/i18n/po/reports.js/tr-TR.po
+79	46	build/i18n/po/reservation.js/oc-FR.po
+133	37	build/i18n/po/selfcheck.js/oc-FR.po
+668	0	build/i18n/po/serial.properties/oc-FR.po
+666	0	build/i18n/po/serial.properties/tr-TR.po
+ create mode 100644 build/i18n/po/Searcher.js/oc-FR.po
+ create mode 100644 build/i18n/po/serial.properties/oc-FR.po
+ create mode 100644 build/i18n/po/serial.properties/tr-TR.po
+
+commit f6ad1af4d193ba0624f6a53f8b0e3091a7963da0
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Sep 14 15:30:15 2012 -0400
+
+    Consistent permission filtering in ACQ search results
+    
+    Add permission checks to search result objects when calling unified
+    search in 'idlist' mode, consistent with the existing permission checks
+    for non-id-list mode.  Without this, different forms of the call return
+    different sets of results.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+4	8	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Search.pm
+
+commit bb9685397f0815d8d7ddb2f8a8f19280a360d741
+Author: Simon Hieu Mai <hieu.mai@mnsu.edu>
+Date:   Wed Dec 19 14:33:54 2012 -0600
+
+    LP#1088561: remove current password (renew password issue with TPAC)
+    
+    If a user chooses to have their browser remember their password for the
+    catalog, it can fill in the password to the change password form page
+    as hidden dots. This behavior was observed specifically with Firefox.
+    
+    Instead, add autocomplete="off" attribute to the form to force users to
+    enter existing password to change to a new password as intended.
+    
+    Signed-off-by: Simon Mai <hieu.mai@mnsu.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/templates/opac/myopac/update_password.tt2
+
+commit 002d505c43861b186e899ae617f9373d0b63424b
+Author: James Fournie <jfournie@sitka.bclibraries.ca>
+Date:   Tue Dec 18 12:45:51 2012 -0800
+
+    Check for a selection_depth returned from title_hold.is_possible.
+    See Launchpad 1064651 for details.  This is a quick fix which solves a
+    fairly serious issue whereby copies outside of a hard boundary could fill
+    holds when they are placed within the TPAC in the staff client.
+    
+    Signed-off-by: James Fournie <jfournie@sitka.bclibraries.ca>
+    
+    Conflicts:
+    
+    	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+3	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit 0b7ce9a6f0b416403f56e549c1410ff4fa01f8bf
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Dec 18 08:52:55 2012 -0500
+
+    Dojo IDL: Set the "Accept-Language" header
+    
+    The internationalization support for /reports/fm_IDL.xml keys off of the
+    Accept-Language header - which, if not set to ^[a-z]{2}-[A-Z]{2}$, falls
+    back to en-US. Setting the header in the dojo.xhrGet() request makes
+    Apache able to serve up the right flavour of /reports/fm_IDL.xml
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+
+2	2	Open-ILS/web/js/dojo/fieldmapper/IDL.js
+
+commit 0a14b5951e6e80a73daa7d03485cf69513bd82dc
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Dec 18 07:39:18 2012 -0500
+
+    Set locale properly in Apache configuration
+    
+    A RewriteCond only applies to the next RewriteRule, while our config was
+    attempting to apply multiple rules for a single condition. Fix that up
+    by using skip (S) rules to apply blocks of rules for the condition in
+    question.
+    
+    Also, use the HTTP:Accept-Language value directly, rather than relying
+    on a backreference (which did not seem to be working as desired).
+    
+    These fixes enable screens like the Register Patron interface to present
+    field labels from the IDL in the correct locale, whereas previously they
+    would always default to en-US.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+
+10	12	Open-ILS/examples/apache/eg_vhost.conf
+
+commit 6a154db860444956b413bb3b3a5eaf3cc865ec6b
+Author: Pasi Kallinen <pasi.kallinen@pttk.fi>
+Date:   Sun Dec 2 22:49:42 2012 +0200
+
+    LP#1078596: Cannot translate strings handled by fieldmapper
+    
+    Strings that should be translatable only show up in English,
+    for example in the Patron Registration screen.
+    
+    There's a bug in the fieldmapper where it sets a variable to
+    an empty array, but later in the code only checks whether that
+    particular variable exists, not if it's an empty array.
+    
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	1	Open-ILS/web/js/dojo/fieldmapper/IDL.js
+
+commit d09f81737f241b8327cf027463121e3314711463
+Author: Ben Shum <bshum@biblio.org>
+Date:   Wed Nov 28 16:05:53 2012 -0500
+
+    Syndetics - retrieve summary as part of added content
+    
+    As noted by Steve Callender in LP1027131, Syndetics added content is not
+    retrieving summary.html to be displayed in the catalog.
+    
+    This change adds a function similar to toc/anotes to bring in summary data.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+
+19	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/AddedContent/Syndetic.pm
+
+commit e98b486aa86ede645a8d793faa0a8f78e9ae514a
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Dec 4 11:04:08 2012 -0500
+
+    ACQ: repair lineitem cancel-reason fleshing
+    
+    When fetching lineitems for display in the general lineitem list page,
+    if the lineitem is cancelled, be sure we correctly retrieve the
+    cancel-reason object.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Lineitem.pm
+
+commit 50d99d255055856a2a417dd10fb4ef54149bf82b
+Author: Ben Shum <bshum@biblio.org>
+Date:   Tue Dec 18 00:12:38 2012 -0500
+
+    Stamping upgrade script for hold request email notify default false
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+7	0	Open-ILS/src/sql/Pg/upgrade/0746.action.hold_request.email_notify_default_false.sql
+0	7	Open-ILS/src/sql/Pg/upgrade/XXXX.action.hold_request.email_notify_default_false.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0746.action.hold_request.email_notify_default_false.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.action.hold_request.email_notify_default_false.sql
+
+commit 12a3ad7bc20774ff5aaa99bf73930a085d8143f6
+Author: Michael Peters <mrpeters@library.in.gov>
+Date:   Thu Sep 13 16:28:04 2012 -0400
+
+    LP#1047475 Set action.hold_request.email_notify to default to false
+    
+    LP#1047475 points out that email notify prefs are ignored in TPAC.
+    Even if a patron deselects email notify during hold request time, it
+    will always be set to true due to the column default.
+    
+    This change defaults the column in the database to false (like most
+    other similar columns are) and resolves the bug.
+    
+    Credit to Steve Callender for the idea.
+    
+    Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/090.schema.action.sql
+7	0	Open-ILS/src/sql/Pg/upgrade/XXXX.action.hold_request.email_notify_default_false.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.action.hold_request.email_notify_default_false.sql
+
+commit 6abaa734dbf96b0eed9384e7def206a871966c49
+Author: Dan Pearl <dpearl@cwmars.org>
+Date:   Tue Dec 11 10:13:41 2012 -0500
+
+    LP: #1086064  Ignore spaces in opac username/barcode entry field
+    
+    Too often, patrons copy the spacing on the barcode on their keytag,
+    or enter a spurious space before entering their name/barcode. This
+    change will remove spaces in their name/barcode.
+    
+    (For now, keep the login screen's directions to omit spaces when
+    entering the username/barcode.)
+    
+    Signed-off-by: Dan Pearl <dpearl@cwmars.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader.pm
+
+commit ecb3ff02e8d03afd3c759c498259a3d0a3021e71
+Author: Michael Peters <mrpeters@library.in.gov>
+Date:   Mon Dec 17 09:10:19 2012 -0500
+
+    LP#1090385 Fix success message for copy template deletion
+    
+    We were displaying the "confirm" message twice, instead of the
+    existing "success" message.
+    
+    Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/xul/staff_client/server/cat/copy_editor.js
+
+commit f59b9fae493cc36c52007fd421e617ae721d171d
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Wed Apr 11 13:26:42 2012 -0400
+
+    mod_perl expects child_init return values
+    
+    So add in Apache2::Const::OK returns on all of them.
+    
+    [LFW: Added the same change to AutoSuggest.pm for consistency's sake.]
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+4	3	Open-ILS/src/perlmods/lib/OpenILS/WWW/AddedContent.pm
+1	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/AutoSuggest.pm
+1	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/BadDebt.pm
+1	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/Exporter.pm
+1	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/IDL2js.pm
+1	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/PasswordReset.pm
+1	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/Proxy.pm
+1	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/Proxy/Authen.pm
+1	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/Reporter.pm
+1	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/SuperCat.pm
+1	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/TemplateBatchBibUpdate.pm
+1	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/Vandelay.pm
+1	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/XMLRPCGateway.pm
+
+commit fbbe66947289e631aa510c28f343ff5b8891f43f
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Thu Mar 22 22:21:36 2012 -0400
+
+    Acq: Yet more efforts to sanitize data for the EDI translator
+    
+    I specifically did this to address cases reported to me by Galen
+    Charlton in which get_li_attr_jedi() would return the string "nul", but
+    I hope this is a nail in the coffin for problems involving
+    JEDI-producing Action/Trigger templates feeding the EDI translator
+    strings that the latter doesn't like.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+35	20	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Reactor.pm
+
+commit 8bd99a225bf3f5bc7cbcb0a954c1e5f53b55a561
+Author: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+Date:   Fri Nov 30 12:16:42 2012 -0500
+
+    Documentation: Fixes to the root.txt file.
+
+0	1	docs/root.txt
+
+commit 23b174c4b0fd936104f46915cb8856d96b33904b
+Author: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+Date:   Fri Nov 30 12:13:04 2012 -0500
+
+    Documentation: Add sections to workstation admin chapter.
+    
+    Content from:
+    http://docs.sitka.bclibraries.ca/Sitka/current/html/intro_start_workstation_admi$
+    
+    Receipt template editor sections moved to this chapter.
+    Converted to asciidoc by rsoulliere. Index terms added by rsoulliere
+    Some duplicate images were also removed from media directory.
+    
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+    
+    Conflicts:
+    
+    	docs/root.txt
+
+210	0	docs/admin/workstation_admin.txt
+-	-	docs/media/Authority_Control_Sets1.jpg.1
+-	-	docs/media/Authority_Control_Sets2.jpg.1
+-	-	docs/media/Authority_Control_Sets3.jpg.1
+-	-	docs/media/Authority_Control_Sets4.jpg.1
+-	-	docs/media/Authority_Control_Sets5.jpg.1
+-	-	docs/media/Authority_Control_Sets6.jpg.1
+-	-	docs/media/Authority_Control_Sets7.jpg.1
+-	-	docs/media/Authority_Control_Sets8.jpg.1
+-	-	docs/media/Authority_Control_Sets9.jpg.1
+-	-	docs/media/Call_Number_Prefixes_and_Suffixes_2_22.jpg.1
+-	-	docs/media/Saved_Catalog_Searches_2_21.jpg.1
+-	-	docs/media/Saved_Catalog_Searches_2_22.jpg.1
+-	-	docs/media/Sorting_Columns3.jpg.1
+-	-	docs/media/receipt-11a.png
+-	-	docs/media/receipt-2.png
+-	-	docs/media/workstation-button_bar-1.png
+-	-	docs/media/workstation-button_bar-2.png
+-	-	docs/media/workstation-button_bar-3.png
+3	0	docs/root.txt
+ delete mode 100644 docs/media/Authority_Control_Sets1.jpg.1
+ delete mode 100644 docs/media/Authority_Control_Sets2.jpg.1
+ delete mode 100644 docs/media/Authority_Control_Sets3.jpg.1
+ delete mode 100644 docs/media/Authority_Control_Sets4.jpg.1
+ delete mode 100644 docs/media/Authority_Control_Sets5.jpg.1
+ delete mode 100644 docs/media/Authority_Control_Sets6.jpg.1
+ delete mode 100644 docs/media/Authority_Control_Sets7.jpg.1
+ delete mode 100644 docs/media/Authority_Control_Sets8.jpg.1
+ delete mode 100644 docs/media/Authority_Control_Sets9.jpg.1
+ delete mode 100644 docs/media/Call_Number_Prefixes_and_Suffixes_2_22.jpg.1
+ delete mode 100644 docs/media/Saved_Catalog_Searches_2_21.jpg.1
+ delete mode 100644 docs/media/Saved_Catalog_Searches_2_22.jpg.1
+ delete mode 100644 docs/media/Sorting_Columns3.jpg.1
+ create mode 100644 docs/media/receipt-11a.png
+ create mode 100644 docs/media/receipt-2.png
+ create mode 100644 docs/media/workstation-button_bar-1.png
+ create mode 100644 docs/media/workstation-button_bar-2.png
+ create mode 100644 docs/media/workstation-button_bar-3.png
+
+commit ab5e06060203f4f2df4bcea2d17c22c6a70a2bb7
+Author: BC Libraries Cooperative <sdineen@sitka.bclibraries.ca>
+Date:   Thu Nov 29 15:39:57 2012 -0500
+
+    Documentation: Add workstation administration chapter.
+    
+    Content from: http://docs.sitka.bclibraries.ca/Sitka/current/html/intro_start_workstation_admin.html
+    Converted to asciidoc by rsoulliere.
+    
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+122	0	docs/admin/workstation_admin.txt
+-	-	docs/media/workstation_admin-1.jpg
+-	-	docs/media/workstation_admin-2.jpg
+-	-	docs/media/workstation_admin-3.png
+-	-	docs/media/workstation_admin-4.png
+-	-	docs/media/workstation_admin-5.png
+-	-	docs/media/workstation_admin-6.jpg
+2	0	docs/root.txt
+ create mode 100644 docs/admin/workstation_admin.txt
+ create mode 100644 docs/media/workstation_admin-1.jpg
+ create mode 100644 docs/media/workstation_admin-2.jpg
+ create mode 100644 docs/media/workstation_admin-3.png
+ create mode 100644 docs/media/workstation_admin-4.png
+ create mode 100644 docs/media/workstation_admin-5.png
+ create mode 100644 docs/media/workstation_admin-6.jpg
+
+commit 47d06c88e5e90dc8f3462a4db527f221ff42f940
+Author: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+Date:   Thu Nov 29 10:43:28 2012 -0500
+
+    Documentation: Add staff client login chapter.
+    
+    Included standalone interface and loggin out information as well as
+    a few index terms.
+    
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+57	0	docs/admin/staff_client-login.txt
+2	0	docs/root.txt
+ create mode 100644 docs/admin/staff_client-login.txt
+
+commit 4756f4345c6808f57dcf67e2a84d69efdc5530f5
+Author: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+Date:   Wed Nov 28 11:36:54 2012 -0500
+
+    Documentation: Add chapter on staff client installation.
+    
+    Also included information on removing staff client preferences
+    (from EG wiki) and registering workstations.
+    
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+173	0	docs/installation/staff_client_installation.txt
+-	-	docs/media/staff_client_installation_0.png
+-	-	docs/media/staff_client_installation_1.png
+-	-	docs/media/staff_client_installation_2.png
+-	-	docs/media/staff_client_installation_3.png
+-	-	docs/media/staff_client_installation_4.png
+2	0	docs/root.txt
+ create mode 100644 docs/installation/staff_client_installation.txt
+ create mode 100644 docs/media/staff_client_installation_0.png
+ create mode 100644 docs/media/staff_client_installation_1.png
+ create mode 100644 docs/media/staff_client_installation_2.png
+ create mode 100644 docs/media/staff_client_installation_3.png
+ create mode 100644 docs/media/staff_client_installation_4.png
+
+commit 18be803d98308cf4a3d711d22eea203f6d4f02dd
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Sep 13 12:47:32 2012 -0400
+
+    rel_2_1 does not have a config.upgrade_log.applied_to column
+    
+    Thanks to Michael Peters for running into & reporting this problem when
+    attempting to upgrade from 2.1.2 to 2.1.3!
+    
+    Fix the version upgrade script.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+3	3	Open-ILS/src/sql/Pg/version-upgrade/2.1.2-2.1.3-upgrade-db.sql
+
+commit 124558f9c3a167356982ec16251d9d2a38c0e935
+Author: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+Date:   Wed Nov 14 10:03:49 2012 -0500
+
+    Documentation: Fix issues acquisitions Admin file so documentation processes.
+    
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+77	3	docs/admin/acquisitions_admin.txt
+
+commit fe0b8c4d0cfd99e319e99f6a152e28f8bd7d8888
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Nov 13 15:51:38 2012 -0500
+
+    Stamping upgrade script for lost xact_finish opt.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+25	0	Open-ILS/src/sql/Pg/upgrade/0744.data.coust_lost_xact_finish_on_zero.sql
+0	25	Open-ILS/src/sql/Pg/upgrade/XXXX.data.coust_lost_xact_finish_on_zero.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0744.data.coust_lost_xact_finish_on_zero.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.coust_lost_xact_finish_on_zero.sql
+
+commit 95a2db1f2f1155daef61ba132d6152180487d481
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Sat Nov 3 12:04:34 2012 -0400
+
+    Address Launchpad Bug 793550.
+    
+    Check for stop fines reason of CHECKIN or RENEW before closing a circulation
+    transaction when the balance reaches zero.
+    
+    Also, if the stop fines reason is LOST, then check a new ou setting,
+    circ.lost.xact_open_on_zero, to determine if the transaction is closed or
+    kept open.  The setting is checked for the circulation copy's circ_lib.
+    
+    Add CircCommon->can_close_circ.
+    
+    Following up on Dan Wells' comments on Launchpad Bug 793550, I have moved
+    the logic to check if the circ transaction can be closed to its own utility
+    function in OpenILS::Application::Circ::CircCommon.  This potentially
+    consolidates the logic in one place in case we need to use it elsewhere.
+    
+    Instead of checking for stop fines reasons of CHECKIN and RENEW and
+    checking for checkin time on the circ, we just check for checkin time.
+    Both CHECKIN and RENEW should set the checkin time.
+    
+    Also, use the constant for stop fines reason of LOST, rather than the
+    literal string "LOST".
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+30	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/CircCommon.pm
+5	3	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Money.pm
+19	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+25	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.coust_lost_xact_finish_on_zero.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.coust_lost_xact_finish_on_zero.sql
+
+commit 8b711435e6e80d6e6809d10f6f950f00390f40a1
+Author: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+Date:   Mon Nov 12 11:04:56 2012 -0500
+
+    Documentation: Fix broken links and adjust image in Acuisition Admin. chapter.
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+8	2	docs/admin/acquisitions_admin.txt
+-	-	docs/media/acq_marc_search-2.png
+
+commit 125697b0d5cb7efc9ee1440a0fa93dacaa41e27f
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Oct 10 17:36:52 2012 -0400
+
+    Make it possible to suppress IDL fields
+    
+    Some clients of external services, particularly pcrud and reporter-store,
+    need to be able to access tables that contain columns we'd rather restrict.
+    For instance, the passwd field on actor.usr.
+    
+    To effect this feature we provide a blacklist attribute for fields, called
+    suppress_controller, which works in the same way as the class controller
+    attribute but names controllers not allowed to use the field.  When the field
+    is explicitly named in a query (fieldmapper select block or json_query) an
+    error is thrown, and suppressed fields are ingored in general fieldmapper
+    search/retreive requests.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	1	Open-ILS/examples/fm_IDL.xml
+1	0	Open-ILS/examples/fm_IDL.xsd
+7	0	Open-ILS/src/c-apps/oils_idl-core.c
+27	2	Open-ILS/src/c-apps/oils_sql.c
+3	0	Open-ILS/web/reports/xul/source-browse.js
+3	0	Open-ILS/web/reports/xul/source-setup.js
+
+commit 8dfb887686cb7a81a09b46c9d917c150bdd14d7a
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Nov 2 15:28:27 2012 -0400
+
+    CStoreEditor auto-activity log redaction
+    
+    CStoreEditor logs all update calls to the activity log as key/value
+    pairs on the updated object.  Avoid loging key/value pairs for objects
+    when the API call being relayed by CStoreEditor is on the list of
+    log-protect API calls.  Instead, log "**DETAILS REDACTED**".
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+20	3	Open-ILS/src/perlmods/lib/OpenILS/Utils/CStoreEditor.pm
+
+commit 65e0a6d715f87b487233f5eea15371404662ebe1
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Oct 31 09:00:19 2012 -0400
+
+    Add sample log redaction config to EG opensrf_core
+    
+    Redact parameter logging for the following API calls:
+    
+    Login:
+    open-ils.auth.authenticate.verify
+    open-ils.auth.authenticate.complete
+    open-ils.auth_proxy.login
+    
+    User updates:
+    open-ils.actor.user.password
+    open-ils.actor.user.username
+    open-ils.actor.user.email
+    open-ils.actor.patron.update
+    open-ils.cstore.direct.actor.user.create
+    open-ils.cstore.direct.actor.user.update
+    open-ils.cstore.direct.actor.user.delete
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+18	0	Open-ILS/examples/opensrf_core.xml.example
+
+commit 08b92941797c63e90cc7f3963da2ea106e33e865
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Nov 6 09:48:51 2012 -0500
+
+    Document log redaction XML for opensrf_core.xml (2.2)
+    
+    Based on Bill Erickson's original text.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+28	1	docs/RELEASE_NOTES_2_2.txt
