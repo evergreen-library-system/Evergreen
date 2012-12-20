@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-28 14:17-0400\n"
-"PO-Revision-Date: 2012-05-01 13:26+0000\n"
+"POT-Creation-Date: 2012-08-03 10:01-0400\n"
+"PO-Revision-Date: 2012-09-25 12:39+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <petrkubiska@seznam.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-05-02 05:27+0000\n"
-"X-Generator: Launchpad (build 15177)\n"
+"X-Launchpad-Export-Date: 2012-09-26 04:43+0000\n"
+"X-Generator: Launchpad (build 16022)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -1434,11 +1434,11 @@ msgstr ""
 
 #: staff.circ.utils.billable.amount
 msgid "Transaction for %1$s billable $%2$s"
-msgstr "Transakce pro %1$s účtovatelná $%2$s"
+msgstr "Čtenáři  %1$s bylo naúčtováno %2$s Kč"
 
 #: staff.circ.utils.fine_tally_text
 msgid "Fine Tally: $%1$s"
-msgstr "Přehled pokut: $%1$s"
+msgstr "Pokuty: %1$s Kč"
 
 #: staff.circ.utils.transit_hold_cancelled
 msgid "Original hold for transit cancelled."
@@ -1776,13 +1776,29 @@ msgstr ""
 "určen ke katalogizaci. Směrovat do = %5$s"
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
-#: staff.circ.work_log_checkin_attempt.cataloging.message
+#: staff.circ.work_log_checkin_attempt.not_found.message
 msgid ""
 "%1$s attempted checkin of %4$s, which was not found, and so was routed to "
 "Cataloging.  Route To = %5$s"
 msgstr ""
 "%1$s se pokusil(a) o vrácení %4$s, který nebyl nalezen, a proto byl předán "
 "ke katalogizaci.  Směrovat do = %5$s"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Original Balance  5 - Voided Balance  6 - Payment Received  7 - Payment Applied
+#. # 8 - Change Given  9 - Credit Given  10 - New Balance  11 - Payment Type  12 - Note  13 - API call result
+#: staff.circ.work_log_payment_attempt.success.message
+msgid "%1$s received %6$s (%11$s) for %3$s (%2$s)."
+msgstr "%1$s přijal(a) %6$s (%11$s) za %3$s (%2$s)."
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Original Balance  5 - Voided Balance  6 - Payment Received  7 - Payment Applied
+#. # 8 - Change Given  9 - Credit Given  10 - New Balance  11 - Payment Type  12 - Note  13 - API call result
+#: staff.circ.work_log_payment_attempt.failure.message
+msgid ""
+"%1$s attempted receipt of %6$s (%11$s) for %3$s (%2$s), which failed for "
+"this reason: %13$s"
+msgstr ""
+"%1$s se pokusil(a) vytisknout potvrzení na %6$s (%11$s) pro %3$s (%2$s), což "
+"se nezdařilo z tohoto důvodu: %13$s"
 
 #: staff.circ.checkin.hold_capture
 msgid "Hold Capture"

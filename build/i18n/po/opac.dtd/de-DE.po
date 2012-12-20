@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-04-28 14:16-0400\n"
-"PO-Revision-Date: 2012-05-18 12:32+0000\n"
-"Last-Translator: Karsten Tinnefeld <Unknown>\n"
+"POT-Creation-Date: 2012-08-03 10:01-0400\n"
+"PO-Revision-Date: 2012-11-09 22:04+0000\n"
+"Last-Translator: SimonFS <simonschuette@arcor.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-05-19 05:22+0000\n"
-"X-Generator: Launchpad (build 15259)\n"
+"X-Launchpad-Export-Date: 2012-11-10 05:01+0000\n"
+"X-Generator: Launchpad (build 16251)\n"
 
 #. =================================================================
 #. Some generic stuff
@@ -441,21 +441,17 @@ msgid ""
 "browser options, then \n"
 "<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
 "\n"
-"<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
-"<a style='color: blue; text-decoration: underline;' "
-"href='/opac/extras/slimpac/start.html'>here</a>."
+"<br/><br/>Alternatively, you can use the basic HTML-only catalog: "
 msgstr ""
-"JavaScript muss aktiviert sein, damit Sie den normalen Evergreen Katalog "
-"benutzen können. \n"
-"Es scheint, als ob JavaScript entweder deaktiviert ist oder nicht von Ihrem "
-"Browser unterstützt wird. \n"
-"Aktivieren Sie JavaScript, um den normalen Evergreen Katalog zu benutzen, "
-"indem Sie Ihre Browsereinstellungen verändern, dann \n"
+"JavaScript muss eingeschaltet sein, damit Sie den regulären Evergreen "
+"Catalog verwenden können.\n"
+"Anscheinend ist JavaScript deaktiviert oder vom wird vom Browser nicht "
+"unterstützt.\n"
+"Um den normalen Evergreen Catalog nutzen zu können, schalten Sie JavaScript "
+"durch Ändern Ihrer Browser-Optionen ein, dann \n"
 "<a style='color: blue; text-decoration: underline;' href='/'>versuchen Sie "
 "es erneut</a>. \n"
-"<br/><br/>Alternativ können Sie unseren HTML-Katalog \n"
-"<a style='color: blue; text-decoration: underline;' "
-"href='/opac/extras/slimpac/start.html'>hier</a> benutzen."
+"<br/><br/>Alternativ können Sie den Katalog auf reiner HTML-Basis verwenden: "
 
 #. =================================================================
 #. MyOPAC bookbag page
@@ -783,7 +779,7 @@ msgstr "Bereit zur Abholung"
 
 #: myopac.holds.status.suspended
 msgid "Suspended"
-msgstr ""
+msgstr "Suspended"
 
 #: myopac.holds.cancel
 msgctxt "myopac.holds.cancel"
@@ -1786,7 +1782,7 @@ msgstr "Erstellungsdatum"
 
 #: rdetail.cn.active
 msgid "Active Date"
-msgstr ""
+msgstr "Aktives Datum"
 
 #: rdetail.cn.holdable
 msgid "Holdable"
@@ -2090,7 +2086,7 @@ msgstr "Ergebnisse nach Erscheinungsdatum sortieren"
 
 #: result.limit2avail
 msgid "Limit to Available"
-msgstr ""
+msgstr "Beschränkung auf die Verfügbaren"
 
 #: result.info.copies
 msgid "Available copies / Total copies"
@@ -2228,7 +2224,7 @@ msgstr "Reservierungstyp:"
 
 #: common.hold.volume
 msgid "Volume Hold"
-msgstr ""
+msgstr "Sammelreservierung"
 
 #: common.hold.copy
 msgid "Copy Hold"
@@ -2762,6 +2758,31 @@ msgstr "Das Kundenkonto konnte nicht gefunden werden"
 #: circ.fail_part.transit_range
 msgid "The item cannot transit this far"
 msgstr "Dieser Gegenstand kann nicht so weit reisen"
+
+#~ msgid ""
+#~ "JavaScript must be enabled in order for you to use the regular Evergreen "
+#~ "Catalog. \n"
+#~ "However, it seems JavaScript is either disabled or not supported by your "
+#~ "browser. \n"
+#~ "To use the regular Evergreen Catalog, enable JavaScript by changing your "
+#~ "browser options, then \n"
+#~ "<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
+#~ "\n"
+#~ "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
+#~ "<a style='color: blue; text-decoration: underline;' "
+#~ "href='/opac/extras/slimpac/start.html'>here</a>."
+#~ msgstr ""
+#~ "JavaScript muss aktiviert sein, damit Sie den normalen Evergreen Katalog "
+#~ "benutzen können. \n"
+#~ "Es scheint, als ob JavaScript entweder deaktiviert ist oder nicht von Ihrem "
+#~ "Browser unterstützt wird. \n"
+#~ "Aktivieren Sie JavaScript, um den normalen Evergreen Katalog zu benutzen, "
+#~ "indem Sie Ihre Browsereinstellungen verändern, dann \n"
+#~ "<a style='color: blue; text-decoration: underline;' href='/'>versuchen Sie "
+#~ "es erneut</a>. \n"
+#~ "<br/><br/>Alternativ können Sie unseren HTML-Katalog \n"
+#~ "<a style='color: blue; text-decoration: underline;' "
+#~ "href='/opac/extras/slimpac/start.html'>hier</a> benutzen."
 
 #~ msgid "Username cannot contain spaces or have the same format as a barcode"
 #~ msgstr ""

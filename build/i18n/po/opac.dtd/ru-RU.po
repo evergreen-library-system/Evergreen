@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-28 14:16-0400\n"
-"PO-Revision-Date: 2012-01-15 15:29+0000\n"
-"Last-Translator: Eugene Marshal <Unknown>\n"
+"POT-Creation-Date: 2012-08-03 10:01-0400\n"
+"PO-Revision-Date: 2012-11-18 15:12+0000\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-30 04:50+0000\n"
-"X-Generator: Launchpad (build 15171)\n"
+"X-Launchpad-Export-Date: 2012-11-19 04:39+0000\n"
+"X-Generator: Launchpad (build 16278)\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Bookmarks: 81,321,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
@@ -414,6 +414,8 @@ msgid ""
 "Installing the Google Chrome Frame plugin for Internet Explorer will improve "
 "your Evergreen experience with more speed and advanced features!"
 msgstr ""
+"Устанока Google Chrome Frame плагин для Internet Explorer улучшит ваш опыт "
+"работы с Evergreen добавляя больше скорости и углубленные возможности!"
 
 #: common.googlechromeframe.install
 msgid "Install Now!"
@@ -433,20 +435,18 @@ msgid ""
 "browser options, then \n"
 "<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
 "\n"
-"<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
-"<a style='color: blue; text-decoration: underline;' "
-"href='/opac/extras/slimpac/start.html'>here</a>."
+"<br/><br/>Alternatively, you can use the basic HTML-only catalog: "
 msgstr ""
-"JavaScript должен быть включен для того, чтобы использовать нормальный "
-"Evergreen каталог. \n"
-"Но кажется JavaScript или выключен или не поддерживается твоим броузерем. \n"
-"Чтобы использовать нормальный Evergreen каталог, включи JavaScript изменяя "
-"настройки броузера, потом \n"
+"JavaScript должен быть разрешен чтобы использовать обычный Evergreen "
+"каталог. \n"
+"Однако, кажется что JavaScript или выключен или не поддерживается твоим "
+"браузером. \n"
+"Чтобы использовать обычный Evergreen каталог, включите JavaScript поменяя "
+"опции твоего браузера, потом \n"
 "<a style='color: blue; text-decoration: underline;' href='/'>попробуй "
 "снова</a>. \n"
-"<br/><br/>Альтернативно, можешь использовать основной HTML-каталог \n"
-"<a style='color: blue; text-decoration: underline;' "
-"href='/opac/extras/slimpac/start.html'>отсюда</a>."
+"<br/><br/>Как альтернатива, ты можешь использовать базовый HTML-только "
+"каталог: "
 
 #. =================================================================
 #. MyOPAC bookbag page
@@ -765,7 +765,7 @@ msgstr "Готов для получения"
 
 #: myopac.holds.status.suspended
 msgid "Suspended"
-msgstr ""
+msgstr "Приостановлено"
 
 #: myopac.holds.cancel
 msgctxt "myopac.holds.cancel"
@@ -1088,6 +1088,8 @@ msgid ""
 "Username cannot contain spaces or have the same format as a barcode, and may "
 "be restricted by policy"
 msgstr ""
+"Имя пользователя не может содержать пробелов или иметь тот же формат что и "
+"штрих код, и может быть запрещен по регуляциям"
 
 #: myopac.summary.email.error
 msgid "Please enter a valid email address"
@@ -1409,6 +1411,7 @@ msgstr "GALILEO"
 #: footer.copyright
 msgid "Copyright &#xA9; 2006-2012 Georgia Public Library Service, and others"
 msgstr ""
+"Copyright &#xA9; 2006-2012 Georgia Public Library Service, and others"
 
 #. Introduces the logo for the project
 #: footer.logo
@@ -1470,7 +1473,7 @@ msgstr "Быстрый поиск"
 
 #: sidebar.authority.browse
 msgid "Authority Browse"
-msgstr ""
+msgstr "Просмотр Авторитетных"
 
 #: sidebar.copy.not.found
 msgid "No copy with the requested barcode was found"
@@ -1478,7 +1481,7 @@ msgstr "Не найдено копий с требуемым  штрих-код�
 
 #: sidebar.copy.not.cataloged
 msgid "The copy with the requested barcode is not cataloged"
-msgstr ""
+msgstr "Копия с запрошенным штрих  кодом не каталогизирована"
 
 #. =================================================================
 #. Search formats
@@ -1556,7 +1559,7 @@ msgstr "Просмотр Шифров Evergreen"
 
 #: opac.title.authbrowse
 msgid "Evergreen Authority Record Browse"
-msgstr ""
+msgstr "Просмотр Авторитетной записи Эвергрина"
 
 #: opac.holds.forMe
 msgid "Place this hold for myself"
@@ -1605,6 +1608,9 @@ msgid ""
 "The system was not able to place the requested hold.  The item requested has "
 "multiple parts to choose from.  Try selecting a specific part for the hold."
 msgstr ""
+"Система не смогла поместить запрошенное задержание. Запрошенный материал "
+"имеет несколько частей из которых надо выбирать. для задержки выбери "
+"конкретную часть."
 
 #. =================================================================
 #. Advanced
@@ -1742,7 +1748,7 @@ msgstr "Печать этих данных"
 
 #: rdetail.cn.part
 msgid "Part"
-msgstr ""
+msgstr "Часть"
 
 #: rdetail.cn.barcode
 msgctxt "rdetail.cn.barcode"
@@ -1763,7 +1769,7 @@ msgstr "Создать дату"
 
 #: rdetail.cn.active
 msgid "Active Date"
-msgstr ""
+msgstr "Активная дата"
 
 #: rdetail.cn.holdable
 msgid "Holdable"
@@ -1792,7 +1798,7 @@ msgstr "купить сейчас"
 
 #: rdetail.cn.multi_home
 msgid "linked titles"
-msgstr ""
+msgstr "связанные заглавия"
 
 #: rdetail.cn.disabled
 msgid "- Disabled -"
@@ -1829,7 +1835,7 @@ msgstr "Предыдущая  страница"
 
 #: rdetail.page.previous.short
 msgid "&#171;"
-msgstr ""
+msgstr "&#171;"
 
 #: rdetail.page.next
 msgid "Next page"
@@ -1837,7 +1843,7 @@ msgstr "Следующая страница"
 
 #: rdetail.page.next.short
 msgid "&#187;"
-msgstr ""
+msgstr "&#187;"
 
 #: rdetail.page.last
 msgid "Last results page"
@@ -2000,7 +2006,7 @@ msgstr "MARC запись"
 
 #: rdetail.extras.foreign_items
 msgid "Linked Titles"
-msgstr ""
+msgstr "связанные Заглавия"
 
 #: rdetail.extras.call.null
 msgid "There are no call numbers for this item at this location."
@@ -2009,7 +2015,7 @@ msgstr "Нет шифров для этой единицы в этом мест�
 #: rdetail.extras.call.local
 msgctxt "rdetail.extras.call.local"
 msgid "Local Call Numbers:"
-msgstr ""
+msgstr "местный Шифр"
 
 #: rdetail.extras.preview.fulltext
 msgid "Full text"
@@ -2025,11 +2031,11 @@ msgstr "Показать предпросмотр этой книги из Googl
 
 #: rdetail.extras.novelist
 msgid "Suggestions by NoveList"
-msgstr ""
+msgstr "Предложения со стороны NoveList"
 
 #: rdetail.loading
 msgid "Loading copy information..."
-msgstr ""
+msgstr "Загружается информация о копии..."
 
 #: rdetail.noneAvailable
 msgid " * There are no copies in this location"
@@ -2046,7 +2052,7 @@ msgstr "Тематики"
 
 #: rdetail.summary.issues_held
 msgid "Issues Held"
-msgstr ""
+msgstr "Удержанные материалы"
 
 #: result.sort_by
 msgid "Sort Results by Relevance"
@@ -2151,7 +2157,7 @@ msgstr "Поиск в  книжном  каталоге Google"
 #: result.localCallNumbers
 msgctxt "result.localCallNumbers"
 msgid "Local Call Numbers:"
-msgstr ""
+msgstr "местный Шифры"
 
 #: common.call.number.label
 msgid "Call Number:"
@@ -2167,7 +2173,7 @@ msgstr "ISSN:"
 
 #: common.mono_parts.label
 msgid "Monograph Parts:"
-msgstr ""
+msgstr "Части монографии"
 
 #: common.copy.barcode.label
 msgid "Copy Barcode:"
@@ -2175,7 +2181,7 @@ msgstr "Копия штрих-кода"
 
 #: common.issuance_label.label
 msgid "Issuance Label:"
-msgstr ""
+msgstr "Выдача этикетки"
 
 #: common.hold.place
 msgid "Place hold for my account"
@@ -2207,7 +2213,7 @@ msgstr "Хранение Копии"
 
 #: common.hold.issuance
 msgid "Issuance Hold"
-msgstr ""
+msgstr "Выдача удерживания"
 
 #: common.hold.advanced
 msgid "Advanced Hold Options"
@@ -2224,7 +2230,7 @@ msgstr "Это уже проверенно."
 #: common.hold.checked_out.override
 msgid ""
 "This item is already checked out.  Would you like to place the hold anyway?"
-msgstr ""
+msgstr "Материал уже выдан. Хочешь поставить задержку?"
 
 #: common.hold.exists
 msgid "A hold already exists on the requested item."
@@ -2234,13 +2240,15 @@ msgstr "Хранение уже существует на запрошенную
 msgid ""
 "A hold already exists on the requested item. Would you like to create the "
 "hold anyway?"
-msgstr ""
+msgstr "Задержка есть для запрошенного материала. Хочешь создать задержку?"
 
 #: common.hold.age_protect.override
 msgid ""
 "This hold may take extra time to fill due to library policies. Would you "
 "like to create the hold anyway?"
 msgstr ""
+"Эта задержка может потребовать лишнее время для выполнения в связи с "
+"регуляциями библиотеки. Хочешь создать задержку?"
 
 #: common.hold.place_unfillable.override
 msgid ""
@@ -2248,6 +2256,9 @@ msgid ""
 "the hold regardless, but should only do so if you believe the hold will "
 "eventually be filled. Would you like to create the hold anyway?"
 msgstr ""
+"Запрошенная задержка не может быть выполнена сейчас. У тебя есть полномочия "
+"поставить задержку несмотря ни на что., но это надо делать если ты уверен "
+"что задержка будет выполнена.  Хочешь создать задержку?"
 
 #: common.hold.barred
 msgid ""
@@ -2644,51 +2655,52 @@ msgstr "Воскресенье"
 
 #: circ.fail_part.actor.usr.barred
 msgid "The patron is barred"
-msgstr ""
+msgstr "Запрещенный патрон"
 
 #: circ.fail_part.asset.copy.circulate
 msgid "The item does not circulate"
-msgstr ""
+msgstr "Материал не обслуживается"
 
 #: circ.fail_part.asset.copy_location.circulate
 msgid "Items from this shelving location do not circulate"
-msgstr ""
+msgstr "Материалы из этого места не обслуживаются."
 
 #: circ.fail_part.asset.copy.status
 msgid "The item cannot circulate at this time"
-msgstr ""
+msgstr "Маьтериал не возможно сейчас обслуживать"
 
 #: circ.fail_part.circ.holds.target_skip_me
 msgid "The item's circulation library does not fulfill holds"
 msgstr ""
+"Библотека обслуживания для этого материала не может выполнить задержку"
 
 #: circ.fail_part.config.circ_matrix_circ_mod_test
 msgid "The patron has too many items of this type checked out"
-msgstr ""
+msgstr "У читателя очень много выданных материалов этого типа"
 
 #: circ.fail_part.config.circ_matrix_test.available_copy_hold_ratio
 msgid "The available item-to-hold ratio is too low"
-msgstr ""
+msgstr "Доступный коэффициент материал-задержка слишком низок"
 
 #: circ.fail_part.config.circ_matrix_test.circulate
 msgid "Circulation rules reject this item as non-circulatable"
-msgstr ""
+msgstr "Правила обслуживания запрещают этот материал как не обслуживаемый"
 
 #: circ.fail_part.config.circ_matrix_test.total_copy_hold_ratio
 msgid "The total item-to-hold ratio is too low"
-msgstr ""
+msgstr "Общий коэффициент материал-задержка слишком низок"
 
 #: circ.fail_part.config.hold_matrix_test.holdable
 msgid "Hold rules reject this item as unholdable"
-msgstr ""
+msgstr "Правила задержки запрещают этот материал как неудерживаемый"
 
 #: circ.fail_part.config.hold_matrix_test.max_holds
 msgid "The patron has reached the maximum number of holds"
-msgstr ""
+msgstr "Читатель достиг наибольшего числа задержек"
 
 #: circ.fail_part.config.rule_age_hold_protect.prox
 msgid "The item is too new to transit this far"
-msgstr ""
+msgstr "Этот материал очень свеж для транзита"
 
 #: circ.fail_part.no_item
 msgid "The system could not find this item"
@@ -2697,18 +2709,44 @@ msgstr "Система не может это найти"
 #: circ.fail_part.no_ultimate_items
 msgid "The system could not find any items to match this hold request"
 msgstr ""
+"Система не может найти никакие материалы чтобы удовлетворять запросы на "
+"задержку."
 
 #: circ.fail_part.no_matchpoint
 msgid "System rules do not define how to handle this item"
-msgstr ""
+msgstr "Системные законы не определяют как обрабатывать  этот материал"
 
 #: circ.fail_part.no_user
 msgid "The system could not find this patron"
-msgstr ""
+msgstr "Система не может найти этого читателя"
 
 #: circ.fail_part.transit_range
 msgid "The item cannot transit this far"
-msgstr ""
+msgstr "Материал нельзя пустить в транзит"
+
+#~ msgid ""
+#~ "JavaScript must be enabled in order for you to use the regular Evergreen "
+#~ "Catalog. \n"
+#~ "However, it seems JavaScript is either disabled or not supported by your "
+#~ "browser. \n"
+#~ "To use the regular Evergreen Catalog, enable JavaScript by changing your "
+#~ "browser options, then \n"
+#~ "<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
+#~ "\n"
+#~ "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
+#~ "<a style='color: blue; text-decoration: underline;' "
+#~ "href='/opac/extras/slimpac/start.html'>here</a>."
+#~ msgstr ""
+#~ "JavaScript должен быть включен для того, чтобы использовать нормальный "
+#~ "Evergreen каталог. \n"
+#~ "Но кажется JavaScript или выключен или не поддерживается твоим броузерем. \n"
+#~ "Чтобы использовать нормальный Evergreen каталог, включи JavaScript изменяя "
+#~ "настройки броузера, потом \n"
+#~ "<a style='color: blue; text-decoration: underline;' href='/'>попробуй "
+#~ "снова</a>. \n"
+#~ "<br/><br/>Альтернативно, можешь использовать основной HTML-каталог \n"
+#~ "<a style='color: blue; text-decoration: underline;' "
+#~ "href='/opac/extras/slimpac/start.html'>отсюда</a>."
 
 #~ msgid "Username cannot contain spaces or have the same format as a barcode"
 #~ msgstr ""

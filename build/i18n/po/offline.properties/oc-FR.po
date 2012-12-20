@@ -1,17 +1,21 @@
-#. extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
+# Occitan (post 1500) translation for evergreen
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-07 02:03-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2012-08-03 10:01-0400\n"
+"PO-Revision-Date: 2012-11-02 18:04+0000\n"
+"Last-Translator: Cédric VALMARY (Tot en òc) <cvalmary@yahoo.fr>\n"
+"Language-Team: Occitan (post 1500) <oc@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
-"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2012-11-03 05:07+0000\n"
+"X-Generator: Launchpad (build 16218)\n"
 
 #: common.exception
 msgid ""
@@ -26,12 +30,32 @@ msgid "The JSAN library object is missing."
 msgstr ""
 
 #: common.ok
+msgctxt "common.ok"
 msgid "Ok"
-msgstr ""
+msgstr "D'acòrdi"
+
+#: common.ok.label
+msgctxt "common.ok.label"
+msgid "Ok"
+msgstr "D'acòrdi"
+
+#: common.ok.accesskey
+msgid "O"
+msgstr "O"
+
+#: common.cancel.label
+msgctxt "common.cancel.label"
+msgid "Cancel"
+msgstr "Abandonar"
+
+#: common.cancel.accesskey
+msgctxt "common.cancel.accesskey"
+msgid "C"
+msgstr "C"
 
 #: common.clear
 msgid "Clear"
-msgstr ""
+msgstr "Escafar"
 
 #: common.confirm
 msgid "Check here to confirm this message."
@@ -43,7 +67,7 @@ msgstr ""
 
 #: common.error.copy_msg
 msgid "Copy Message"
-msgstr ""
+msgstr "Copiar lo messatge"
 
 #: common.barcode.status.warning
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3$s."
@@ -51,19 +75,19 @@ msgstr ""
 
 #: common.barcode.status.warning.lost
 msgid "Lost"
-msgstr ""
+msgstr "Perdut"
 
 #: common.barcode.status.warning.expired
 msgid "Expired"
-msgstr ""
+msgstr "Expirat"
 
 #: common.barcode.status.warning.barred
 msgid "Barred"
-msgstr ""
+msgstr "Raiat"
 
 #: common.barcode.status.warning.blocked
 msgid "Blocked"
-msgstr ""
+msgstr "Blocat"
 
 #: common.barcode.status.warning.unknown
 msgid "with an unknown code: %1$s"
@@ -75,19 +99,19 @@ msgstr ""
 
 #: common.no
 msgid "No"
-msgstr ""
+msgstr "Non"
 
 #: common.no.accesskey
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #: common.yes
 msgid "Yes"
-msgstr ""
+msgstr "Òc"
 
 #: common.yes.accesskey
 msgid "Y"
-msgstr ""
+msgstr "Y"
 
 #: common.unimplemented
 msgid "Not Yet Implemented"
@@ -97,20 +121,25 @@ msgstr ""
 msgid "Bib Record: %1$s"
 msgstr ""
 
+#: serial.delete_record.confirm
+msgid "Are you sure you want to delete MFHD record #%1$s?"
+msgstr ""
+
 #: cat.opac.delete_record.confirm
 msgid "Are you sure you want to delete title record #%1$s from the catalog?"
 msgstr ""
 
 #: cat.opac.delete_record
 msgid "Delete Record"
-msgstr ""
+msgstr "Suprimir la notícia"
 
 #: cat.opac.delete
 msgid "Delete"
-msgstr ""
+msgstr "Suprimir"
 
 #: cat.opac.undelete_record.confirm
-msgid "Are you sure you want to undelete title record #%1$s from the catalog?"
+msgid ""
+"Are you sure you want to undelete title record #%1$s from the catalog?"
 msgstr ""
 
 #: cat.opac.undelete_record
@@ -122,8 +151,9 @@ msgid "Undelete"
 msgstr ""
 
 #: cat.opac.cancel
+msgctxt "cat.opac.cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Abandonar"
 
 #: cat.opac.record_deleted
 msgid "Record deleted."
@@ -163,6 +193,19 @@ msgctxt "cat.opac.record_marked_for_overlay.tcn.alert"
 msgid "Record with TCN %1$s marked for overlay."
 msgstr ""
 
+#: cat.opac.record_marked_for_multi_home.record_id.alert
+msgctxt "cat.opac.record_marked_for_multi_home.record_id.alert"
+msgid "Record with ID %1$s targeted for Multi-Bib items."
+msgstr ""
+
+#: cat.opac.record_marked_for_multi_home.tcn.alert
+msgid "Record with TCN %1$s targeted for Mutli-Bib items."
+msgstr ""
+
+#: cat.opac.clear_statusbar
+msgid "Un-target/un-mark this record?"
+msgstr ""
+
 #: cat.save_record
 msgid "Save Record"
 msgstr ""
@@ -185,7 +228,7 @@ msgstr ""
 
 #: staff.admin.survey.save_response.accesskey
 msgid "R"
-msgstr ""
+msgstr "R"
 
 #: circ.bad_checkdigit
 msgid "This barcode has a bad check digit."
@@ -243,8 +286,8 @@ msgstr ""
 
 #: circ.offline_checkout.barcode.flagged.unknown
 msgid ""
-"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: %"
-"3$s."
+"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: "
+"%3$s."
 msgstr ""
 
 #: circ.offline_checkout.date.early
@@ -367,11 +410,11 @@ msgstr ""
 
 #: menu.cmd_edit_copy_buckets.tab
 msgid "Copy Buckets"
-msgstr ""
+msgstr "Compartiments dels exemplaris"
 
 #: menu.cmd_edit_volume_buckets.tab
 msgid "Volume Buckets"
-msgstr ""
+msgstr "Panièrs de volum"
 
 #: menu.cmd_edit_record_buckets.tab
 msgid "Record Buckets"
@@ -388,7 +431,7 @@ msgstr ""
 #: menu.cmd_replace_barcode.label
 msgctxt "menu.cmd_replace_barcode.label"
 msgid "Replace Barcode"
-msgstr ""
+msgstr "Remplaçar lo còde de barras"
 
 #: menu.cmd_replace_barcode.retrieval.error
 msgid "We were unable to retrieve an item with barcode \"%1$s\"."
@@ -401,7 +444,7 @@ msgstr ""
 #: menu.cmd_replace_barcode.replacement.label
 msgctxt "menu.cmd_replace_barcode.replacement.label"
 msgid "Replace Barcode"
-msgstr ""
+msgstr "Remplaçar lo còde de barras"
 
 #: menu.cmd_replace_barcode.blank.error
 msgid "Rename aborted.  Blank for barcode not allowed."
@@ -429,7 +472,7 @@ msgstr ""
 
 #: menu.cmd_search_opac.tab
 msgid "Catalog"
-msgstr ""
+msgstr "Catalòg"
 
 #: menu.cmd_search_bib_id.tab
 msgid "What is the internal ID for the bibliographic record?"
@@ -437,6 +480,14 @@ msgstr ""
 
 #: menu.cmd_search_bib_id.prompt
 msgid "Bib ID Lookup"
+msgstr ""
+
+#: menu.cmd_search_usr_id.tab
+msgid "What is the internal database ID for the patron account?"
+msgstr ""
+
+#: menu.cmd_search_usr_id.prompt
+msgid "Patron ID Lookup"
 msgstr ""
 
 #: menu.cmd_search_tcn.tab
@@ -468,6 +519,11 @@ msgstr ""
 msgid "%1$s registered %3$s (%2$s)"
 msgstr ""
 
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Hold ID  5 - Hold Type
+#: staff.circ.work_log_hold_placed.message
+msgid "%1$s placed hold %4$s (%5$s) for %3$s (%2$s)"
+msgstr ""
+
 #: menu.cmd_browse_holds.tab
 msgid "Hold Browser"
 msgstr ""
@@ -488,9 +544,13 @@ msgstr ""
 msgid "MARC Import/Export"
 msgstr ""
 
+#: menu.cmd_marc_batch_edit.tab
+msgid "MARC Batch Edit"
+msgstr ""
+
 #: menu.cmd_open_conify.tab
 msgid "Server Settings"
-msgstr ""
+msgstr "Paramètres del servidor"
 
 #: menu.cmd_retrieve_last_patron.session.error
 msgid "No patron visited yet this session."
@@ -502,7 +562,7 @@ msgstr ""
 
 #: menu.cmd_retrieve_last_record.status
 msgid "Retrieving title..."
-msgstr ""
+msgstr "Recuperacion del títol…"
 
 #: menu.cmd_chg_session.label
 msgid "Change Login"
@@ -518,7 +578,7 @@ msgstr ""
 
 #: menu.cmd_download_patrons.complete.status
 msgid "Download completed"
-msgstr ""
+msgstr "Telecargament acabat"
 
 #: menu.cmd_download_patrons.error
 msgid ""
@@ -540,7 +600,7 @@ msgstr ""
 
 #: menu.cmd_console.tab
 msgid "JavaScript Console"
-msgstr ""
+msgstr "Consòla JavaScript"
 
 #: menu.cmd_shell.tab
 msgid "JavaScript Shell"
@@ -556,15 +616,15 @@ msgstr ""
 
 #: menu.cmd_public_opac.tab
 msgid "OPAC"
-msgstr ""
+msgstr "OPAC"
 
 #: menu.cmd_extension_manager.tab
 msgid "Extension Manager"
-msgstr ""
+msgstr "Gestionari d'extensions"
 
 #: menu.cmd_theme_manager.tab
 msgid "Theme Manager"
-msgstr ""
+msgstr "Gestionari de tèmas"
 
 #: menu.cmd_shutdown.prompt
 msgid "Exit Evergreen completely?"
@@ -584,6 +644,12 @@ msgstr ""
 
 #: menu.new_tab.tab
 msgid "Tab"
+msgstr "Tabulacion"
+
+#: menu.new_tab.max_tab_dialog
+msgid ""
+"Sorry, we can't create any more tabs in this window.\n"
+"Would you like to create a new tab in another window?"
 msgstr ""
 
 #: main.session_cookie.error
@@ -600,7 +666,7 @@ msgstr ""
 
 #: main.testing
 msgid "Testing"
-msgstr ""
+msgstr "Tèsts"
 
 #: main.transaction_export.title
 msgid "Save Transaction File As"
@@ -715,7 +781,7 @@ msgstr ""
 
 #: network.override.exceptions
 msgid "Exceptions"
-msgstr ""
+msgstr "Excepcions"
 
 #: network.override.override
 msgid "Override "
@@ -736,7 +802,7 @@ msgstr ""
 #: network.new_session.authorize
 msgctxt "network.new_session.authorize"
 msgid "Authorize"
-msgstr ""
+msgstr "Autorizar"
 
 #: network.new_session.expired
 msgid "Session Expired"
@@ -759,7 +825,7 @@ msgstr ""
 #: network.permission.authorize
 msgctxt "network.permission.authorize"
 msgid "Authorize"
-msgstr ""
+msgstr "Autorizar"
 
 #: network.permission.description.brief
 msgid "Permission Denied: %1$s"
@@ -813,7 +879,7 @@ msgstr ""
 
 #: network.unknown_status
 msgid "Unknown status"
-msgstr ""
+msgstr "Estat desconegut"
 
 #: network.window_title.error
 msgid "Error setting window titles to match new login"
@@ -861,7 +927,7 @@ msgstr ""
 
 #: list.row_retrieving
 msgid "Retrieving..."
-msgstr ""
+msgstr "Telecargament en cors..."
 
 #: list.save_csv_as
 msgid "Save List CSV As..."
@@ -874,15 +940,16 @@ msgstr ""
 #: list.actions.menu.accesskey
 msgctxt "list.actions.menu.accesskey"
 msgid "L"
-msgstr ""
+msgstr "L"
 
 #: list.actions.field_to_clipboard.label
 msgid "Copy Field from Selected Row to Clipboard"
 msgstr ""
 
 #: list.actions.field_to_clipboard.accesskey
+msgctxt "list.actions.field_to_clipboard.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: list.actions.csv_to_clipboard.label
 msgid "Copy List CSV to Clipboard"
@@ -891,7 +958,7 @@ msgstr ""
 #: list.actions.csv_to_clipboard.accesskey
 msgctxt "list.actions.csv_to_clipboard.accesskey"
 msgid "L"
-msgstr ""
+msgstr "L"
 
 #: list.actions.csv_to_printer.label
 msgid "Print List CSV"
@@ -899,7 +966,7 @@ msgstr ""
 
 #: list.actions.csv_to_printer.accesskey
 msgid "P"
-msgstr ""
+msgstr "P"
 
 #: list.actions.extended_to_printer.label
 msgid "Print List Expanded Format"
@@ -907,7 +974,7 @@ msgstr ""
 
 #: list.actions.extended_to_printer.accesskey
 msgid "x"
-msgstr ""
+msgstr "x"
 
 #: list.actions.csv_to_file.label
 msgid "Save List CSV to File"
@@ -915,7 +982,7 @@ msgstr ""
 
 #: list.actions.csv_to_file.accesskey
 msgid "F"
-msgstr ""
+msgstr "F"
 
 #: list.actions.save_column_configuration.label
 msgid "Save Column Configuration"
@@ -923,14 +990,19 @@ msgstr ""
 
 #: list.actions.save_column_configuration.accesskey
 msgid "S"
-msgstr ""
+msgstr "S"
 
 #: list.dump_extended_format.record_separator
 msgid "=-=-="
-msgstr ""
+msgstr "=-=-="
+
+#: list.line_number
+msgid "#"
+msgstr "#"
 
 #: menu.cmd_survey_wizard.inadequate_perm
-msgid "You are lacking the CREATE_SURVEY permission and/or working locations."
+msgid ""
+"You are lacking the CREATE_SURVEY permission and/or working locations."
 msgstr ""
 
 #: menu.cmd_local_admin_fonts_and_sounds.tab
@@ -967,6 +1039,10 @@ msgstr ""
 
 #: menu.cmd_local_admin_reports.tab
 msgid "Reports"
+msgstr "Rapòrts"
+
+#: menu.cmd_local_admin_age_overdue_circulations_to_lost.tab
+msgid "Age to Lost"
 msgstr ""
 
 #: menu.cmd_local_admin_cash_reports.tab
@@ -981,16 +1057,12 @@ msgstr ""
 msgid "New Invoice"
 msgstr ""
 
-#: menu.cmd_acq_view_picklist.tab
-msgid "Selection Lists"
-msgstr ""
-
 #: menu.cmd_acq_bib_search.tab
-msgid "Title Search"
+msgid "MARC Federated Search"
 msgstr ""
 
 #: menu.cmd_acq_from_bib.tab
-msgid "Import Catalog Records"
+msgid "Load Catalog Record IDs"
 msgstr ""
 
 #: menu.cmd_acq_unified_search.tab
@@ -998,64 +1070,36 @@ msgid "Acquisitions Search"
 msgstr ""
 
 #: menu.cmd_acq_upload.tab
-msgid "Load Order Record"
+msgid "Load MARC Order Records"
 msgstr ""
 
 #: menu.cmd_acq_new_brief_record.tab
 msgid "New Brief Record"
 msgstr ""
 
-#: menu.cmd_acq_view_po.tab
+#: menu.cmd_acq_po.tab
 msgid "Purchase Orders"
 msgstr ""
 
-#: menu.cmd_acq_view_po_events.tab
-msgid "Purchase Order Events"
-msgstr ""
-
 #: menu.cmd_acq_user_requests.tab
-msgid "User Requests"
-msgstr ""
-
-#: menu.cmd_acq_view_fund.tab
-msgid "Funds"
-msgstr ""
-
-#: menu.cmd_acq_view_funding_source.tab
-msgid "Funding Sources"
-msgstr ""
-
-#: menu.cmd_acq_view_provider.tab
-msgid "Providers"
-msgstr ""
-
-#: menu.cmd_acq_view_edi_account.tab
-msgid "EDI Accounts"
-msgstr ""
-
-#: menu.cmd_acq_view_currency_type.tab
-msgid "Currency Types"
-msgstr ""
-
-#: menu.cmd_acq_view_exchange_rate.tab
-msgid "Exchange Rates"
-msgstr ""
-
-#: menu.cmd_acq_view_distrib_formula.tab
-msgid "Distribution Formulas"
+msgid "Patron Requests"
 msgstr ""
 
 #: menu.cmd_acq_claim_eligible.tab
-msgid "Claim-Eligible Items"
+msgid "Claim-Ready Items"
+msgstr ""
+
+#: menu.cmd_serial_batch_receive.tab
+msgid "Batch Receive"
 msgstr ""
 
 #: menu.cmd_booking_resource.tab
 msgid "Resources"
-msgstr ""
+msgstr "Ressorsas"
 
 #: menu.cmd_booking_reservation.tab
 msgid "Reservations"
-msgstr ""
+msgstr "Reservacions"
 
 #: menu.cmd_booking_reservation_pickup.tab
 msgid "Reservation Pickup"
@@ -1067,10 +1111,18 @@ msgstr ""
 
 #: menu.cmd_booking_pull_list.tab
 msgid "Booking Pull List"
-msgstr ""
+msgstr "Lista desenrotlanta per las reservacions"
 
 #: menu.cmd_booking_capture.tab
 msgid "Booking Capture"
+msgstr ""
+
+#: menu.cmd_authority_manage.tab
+msgid "Manage Authorities"
+msgstr ""
+
+#: menu.local_admin.barcode_completion.tab
+msgid "Barcode Completion"
 msgstr ""
 
 #: menu.local_admin.circ_matrix_matchpoint.tab
@@ -1101,23 +1153,23 @@ msgstr ""
 
 #: load_printer_settings_error_title
 msgid "Printer Settings"
-msgstr ""
+msgstr "Paramètres de l'estampadoira"
 
 #: staff.cat.util.copy_editor.batch_edit
 msgid "Batch Edit"
-msgstr ""
+msgstr "Modificacion per lòts"
 
 #: staff.cat.util.copy_editor.batch_view
 msgid "Batch View"
-msgstr ""
+msgstr "Afichatge per lòts"
 
 #: staff.cat.util.copy_editor.edit
 msgid "Edit"
-msgstr ""
+msgstr "Edicion"
 
 #: staff.cat.util.copy_editor.view
 msgid "View"
-msgstr ""
+msgstr "Afichatge"
 
 #: staff.circ.copy_status.add_volumes.perm_failure
 msgid "You do not have permission to add volumes to the workstation library."
@@ -1125,6 +1177,16 @@ msgstr ""
 
 #: staff.circ.copy_status.add_volumes.title
 msgid "Add Volume/Item for Record # %1$s"
+msgstr ""
+
+#: staff.cat.copy_browser.marked_record_for_multi_home_indicator.tcn.label
+msgid "Record with TCN %1$s targeted for Multi-Bib items."
+msgstr ""
+
+#: staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label
+msgctxt ""
+"staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label"
+msgid "Record with ID %1$s targeted for Multi-Bib items."
 msgstr ""
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label
@@ -1157,8 +1219,20 @@ msgstr ""
 msgid "Holds not transferred."
 msgstr ""
 
+#: staff.cat.opac.related_items
+msgid "Related Lineitems"
+msgstr ""
+
+#: staff.cat.opac.serial_alt_mgmt
+msgid "Subscriptions"
+msgstr "Abonaments"
+
 #: staff.cat.create_or_rebarcode_items
 msgid "Create or Re-barcode Items"
+msgstr ""
+
+#: staff.cat.bib_source.can_have_copies.false
+msgid "Records from %1$s cannot have copies."
 msgstr ""
 
 #: printing.nothing_to_reprint
@@ -1167,11 +1241,189 @@ msgstr ""
 
 #: printing.prompt_for_external_print_cmd
 msgid ""
-"Enter external print command and parameters (use %receipt.txt% or %"
-"receipt.html% as the file containing the print data. Those values will be "
+"Enter external print command and parameters (use %receipt.txt% or "
+"%receipt.html% as the file containing the print data. Those values will be "
 "substituted with the proper path.):"
 msgstr ""
 
 #: printing.print_strategy_saved
-msgid "Print strategy (%1$s) saved to file system."
+msgid "Print strategy (%1$s) for %2$s context saved to file system."
+msgstr ""
+
+#: text_editor.prompt_for_external_cmd
+msgid ""
+"Enter external text editor command and parameters (use %letter.txt% as the "
+"file containing the text. This value will be substituted with the proper "
+"path.):"
+msgstr ""
+
+#: menu.tab1.accesskey
+msgid "1"
+msgstr "1"
+
+#: menu.tab2.accesskey
+msgid "2"
+msgstr "2"
+
+#: menu.tab3.accesskey
+msgid "3"
+msgstr "3"
+
+#: menu.tab4.accesskey
+msgid "4"
+msgstr "4"
+
+#: menu.tab5.accesskey
+msgid "5"
+msgstr "5"
+
+#: menu.tab6.accesskey
+msgid "6"
+msgstr "6"
+
+#: menu.tab7.accesskey
+msgid "7"
+msgstr "7"
+
+#: menu.tab8.accesskey
+msgid "8"
+msgstr "8"
+
+#: menu.tab9.accesskey
+msgid "9"
+msgstr "9"
+
+#: menu.tab10.accesskey
+msgid "0"
+msgstr "0"
+
+#: generic.unsaved_data_warning
+msgid ""
+"This action may cause you to lose unsaved information in the current "
+"interface. Continue anyway?"
+msgstr ""
+
+#: browser.reload.unsaved_data_warning
+msgid "This page may have unsaved data. Reload it anyway?"
+msgstr ""
+
+#: menu.close_tab.unsaved_data_warning
+msgid "This tab may have unsaved data. Close it anyway?"
+msgstr ""
+
+#: menu.replace_tab.unsaved_data_warning
+msgid "This tab may have unsaved data. Replace it anyway?"
+msgstr ""
+
+#: menu.close_window.unsaved_data_warning
+msgid "This window may have unsaved data. Close it anyway?"
+msgstr ""
+
+#: menu.logoff.unsaved_data_warning
+msgid "This session may have unsaved data. Logoff anyway?"
+msgstr ""
+
+#: menu.shutdown.unsaved_data_warning
+msgid "This application may have unsaved data. Exit it anyway?"
+msgstr ""
+
+#: hotkeys.Default
+msgid "Default"
+msgstr "Valor per defaut"
+
+#: hotkeys.None
+msgid "No Hotkeys"
+msgstr ""
+
+#: barcode_choice.join_barcodes
+msgid "%1$s / %2$s"
+msgstr "%1$s / %2$s"
+
+#: barcode_choice.actor
+msgid "%1$s : %2$s, %3$s from %4$s (%5$s)"
+msgstr ""
+
+#: barcode_choice.asset
+msgid "%1$s : %2$s from %3$s (%4$s)"
+msgstr ""
+
+#: barcode_choice.none
+msgid "None of the above"
+msgstr ""
+
+#: barcode_choice.prompt
+msgid ""
+"After auto completion multiple barcodes may match your input. Please choose "
+"the barcode you intended below."
+msgstr ""
+
+#: barcode_choice.errors_found
+msgid ""
+"In addition to the options below, one or more errors were encountered on "
+"items not shown."
+msgstr ""
+
+#: barcode_choice.title
+msgid "Barcode Choice"
+msgstr ""
+
+#: barcode_choice.choice_label
+msgid "Found Barcodes:"
+msgstr ""
+
+#: barcode_choice.actor_label
+msgid "Patron : %1$s"
+msgstr ""
+
+#: barcode_choice.asset_label
+msgid "Item : %1$s"
+msgstr ""
+
+#: barcode_choice.serial_label
+msgid "Serial : %1$s"
+msgstr ""
+
+#: barcode_choice.booking_label
+msgid "Booking : %1$s"
+msgstr ""
+
+#: staff.main.button_bar.none
+msgid "None"
+msgstr "Pas cap"
+
+#: util.hide_elements.title
+msgid "Hide UI Elements"
+msgstr ""
+
+#: util.hide_elements.desc
+msgid ""
+"This is a list of hideable elements for this interface.  Check the ones that "
+"you want hidden and the library (and descendants) you want to affect:"
+msgstr ""
+
+#: util.hide_elements.current_setting_preamble
+msgid ""
+"Workstation library %1$s is currently hiding these elements based on a "
+"setting inherited from %2$s:"
+msgstr ""
+
+#: util.hide_elements.current_setting_nonexistent
+msgid ""
+"Workstation library %1$s is not currently hiding any of these elements."
+msgstr ""
+
+#: util.hide_elements.update_setting.update_success
+msgid "Successfully updated the setting."
+msgstr ""
+
+#: util.hide_elements.update_setting.delete_success
+msgid "Successfully deleted the setting."
+msgstr ""
+
+#: util.hide_elements.update_setting.failure
+msgid "Setting not changed."
+msgstr ""
+
+#: util.hide_elements.missing_permission
+msgid "Missing permission %1$s"
 msgstr ""

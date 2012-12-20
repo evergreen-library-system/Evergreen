@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-04-28 14:17-0400\n"
+"POT-Creation-Date: 2012-09-04 13:44-0400\n"
 "PO-Revision-Date: 2010-10-30 19:49+0000\n"
-"Last-Translator: Gabriel Perez Pepe <Unknown>\n"
+"Last-Translator: Gabriel Pepe <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-30 04:43+0000\n"
-"X-Generator: Launchpad (build 15171)\n"
+"X-Launchpad-Export-Date: 2012-09-05 04:48+0000\n"
+"X-Generator: Launchpad (build 15901)\n"
 
 #: bib.no_marc
 msgid "No MARC Record"
@@ -227,6 +227,10 @@ msgstr ""
 #: staff.cat.edit_volumes.label_exists.details
 msgid "%1$s"
 msgstr "%1$s"
+
+#: staff.cat.edit_volume.exception
+msgid "An error occurred while you were trying to edit these volumes."
+msgstr ""
 
 #: staff.cat.copy_browser.can_have_copies.false
 msgid "Records from %1$s cannot have copies."
@@ -1018,7 +1022,7 @@ msgstr "W"
 
 #: staff.cat.copy_notes.new_note.label
 msgid "New Note"
-msgstr "Nota Nueva"
+msgstr "Nota nueva"
 
 #: staff.cat.copy_notes.new_note.public
 msgid "Public?"
@@ -1349,6 +1353,10 @@ msgstr ""
 #: staff.cat.record_buckets.merge_records.fancy_prompt_title
 msgid "Record Merging"
 msgstr "Registro De Combinaciones"
+
+#: staff.cat.record_buckets.merge_records.catch.std_unex_err
+msgid "Records were not likely merged."
+msgstr "Los registros probablemente no fueron combinados."
 
 #: staff.cat.record_buckets.delete_records.xml1
 msgid "Delete these records?"
@@ -2423,9 +2431,6 @@ msgstr ""
 #~ msgctxt "staff.cat.record_buckets.merge_records.cancel_button.accesskey"
 #~ msgid "C"
 #~ msgstr "C"
-
-#~ msgid "Records were not likely merged."
-#~ msgstr "Los registros probablemente no fueron combinados."
 
 #~ msgid "Records were successfully merged."
 #~ msgstr "Los registros fueron combinados."

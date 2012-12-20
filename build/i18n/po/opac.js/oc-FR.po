@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-04-28 14:18-0400\n"
-"PO-Revision-Date: 2010-04-16 10:15+0000\n"
+"POT-Creation-Date: 2012-08-03 10:01-0400\n"
+"PO-Revision-Date: 2012-11-02 18:46+0000\n"
 "Last-Translator: Cédric VALMARY (Tot en òc) <cvalmary@yahoo.fr>\n"
 "Language-Team: Occitan (post 1500) <oc@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-30 04:50+0000\n"
-"X-Generator: Launchpad (build 15171)\n"
+"X-Launchpad-Export-Date: 2012-11-03 05:07+0000\n"
+"X-Generator: Launchpad (build 16218)\n"
 
 #: opac.js:PWD_RESET_SUBMIT_PROMPT
 msgid ""
@@ -33,7 +33,7 @@ msgstr ""
 
 #: opac.js:SUBMIT_BUTTON_LABEL
 msgid "Submit"
-msgstr ""
+msgstr "Validar"
 
 #: opac.js:CREATED_MFHD_RECORD
 msgid "Created MFHD record for ${0}"
@@ -45,11 +45,11 @@ msgstr ""
 
 #: opac.js:PWD_RESET_FORGOT_PROMPT
 msgid "Forgot your password?"
-msgstr ""
+msgstr "Senhal doblidat ?"
 
 #: opac.js:SUPPLEMENT_HOLDINGS_ADD
 msgid "Additional Supplement Information"
-msgstr ""
+msgstr "Informacion suplementària"
 
 #: opac.js:DELETED_MFHD_RECORD
 msgid "Deleted MFHD record ${0}"
@@ -61,7 +61,7 @@ msgstr ""
 
 #: opac.js:MORE
 msgid "More"
-msgstr ""
+msgstr "Mai"
 
 #: opac.js:MORE_COPIES_FULL_RECORD
 msgid "... more copies listed in full record"
@@ -115,11 +115,11 @@ msgstr ""
 
 #: opac.js:SUPPLEMENT_HOLDINGS
 msgid "Supplements"
-msgstr ""
+msgstr "Suplements"
 
 #: opac.js:BASIC_HOLDINGS
 msgid "Volumes"
-msgstr ""
+msgstr "Volums"
 
 #: opac.js:HOLDINGS_TABLE_CAPTION
 msgid "Holdings summary (${0})"
@@ -127,11 +127,11 @@ msgstr ""
 
 #: opac.js:OK
 msgid "OK"
-msgstr ""
+msgstr "D'acòrdi"
 
 #: opac.js:INDEX_HOLDINGS
 msgid "Indexes"
-msgstr ""
+msgstr "Indèxes"
 
 #: opac.js:CURRENT_SUPPLEMENTS
 msgid "Current supplements"
@@ -174,7 +174,7 @@ msgstr ""
 
 #: opac.js:CANCEL_BUTTON_LABEL
 msgid "Cancel"
-msgstr ""
+msgstr "Abandonar"
 
 #: opac.js:PWD_RESET_SUBMIT_STATUS
 msgid "Sending request..."

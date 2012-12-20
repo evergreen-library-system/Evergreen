@@ -7,31 +7,31 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2012-01-11 15:47+0000\n"
-"Last-Translator: Daniel Winzen <d@winzen4.de>\n"
+"POT-Creation-Date: 2012-08-03 10:01-0400\n"
+"PO-Revision-Date: 2012-11-21 22:38+0000\n"
+"Last-Translator: Thomas Bernard <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-01-12 05:44+0000\n"
-"X-Generator: Launchpad (build 14640)\n"
+"X-Launchpad-Export-Date: 2012-11-22 05:10+0000\n"
+"X-Generator: Launchpad (build 16293)\n"
 
 #: pull_list.js:PULL_LIST_NO_RESPONSE
 msgid "No response from server trying to get pull list!"
-msgstr ""
+msgstr "Keine Antwort für die \"pull list\" vom Server bekommen!"
 
 #: pull_list.js:AUTO_interval_in_days
 msgid "Generate list for this many days hence: "
-msgstr ""
+msgstr "Erzeuge eine Liste für  so viele Tage da: "
 
 #: pull_list.js:COPY_LOOKUP_ERROR
 msgid "Error looking up copies by barcode: "
-msgstr ""
+msgstr "Fehler beim Suchen von Kopien via Barcode: "
 
 #: pull_list.js:COPY_LOOKUP_NO_RESPONSE
 msgid "No response looking up copies by barcode"
-msgstr ""
+msgstr "Keine Antwort beim Suchen von Kopien via Barcode:"
 
 #: pull_list.js:FOR
 msgid "for"
@@ -55,11 +55,11 @@ msgstr ""
 
 #: pull_list.js:COPY_MISSING
 msgid "Unexpected error: No information for copy: "
-msgstr ""
+msgstr "Unerwarteter Fehler: Keine Informationen für die Kopie: "
 
 #: pull_list.js:AUTO_th_call_number
 msgid "Call number"
-msgstr ""
+msgstr "Signatur"
 
 #: pull_list.js:AUTO_owning_lib_selector
 msgid "See pull list for library:"
@@ -71,7 +71,7 @@ msgstr "Reservierungsdetails"
 
 #: pull_list.js:AT
 msgid "at"
-msgstr ""
+msgstr "at"
 
 #: pull_list.js:AUTO_ATTR_VALUE_fetch
 msgid "Fetch"
