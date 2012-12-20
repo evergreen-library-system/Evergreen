@@ -400,6 +400,17 @@ util.browser.prototype = {
         } else {
             dump(location.href + ': browser.js, updateNavButtons, xulG = ' + xulG + ' xulG.set_help_context = ' + xulG.set_help_context + '\n');
         }
+        try {
+            var cw = obj.get_content();
+            if (typeof cw.default_focus == 'function') {
+                cw.default_focus();
+            }
+            var evt = cw.document.createEvent("Events");
+            evt.initEvent( 'tab_focus', true, true );
+            cw.dispatchEvent(evt);
+        } catch(E) {
+            dump('Error in browser.js, calling cw.default_focus and cw.dispatchEvent: ' + E);
+        }
     },
 
     'buildProgressListener' : function() {

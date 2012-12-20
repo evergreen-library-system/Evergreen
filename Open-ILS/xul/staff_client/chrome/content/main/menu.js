@@ -2043,6 +2043,10 @@ main.menu.prototype = {
                         if (typeof cw.default_focus == 'function') {
                             cw.default_focus();
                         }
+                        // an alternative to the practice above
+                        var evt = cw.document.createEvent("Events");
+                        evt.initEvent( 'tab_focus', true, true );
+                        cw.window.dispatchEvent(evt);
                     }
                 } catch(E) {
                     obj.error.sdump('D_ERROR','init_tab_focus_handler: ' + js2JSON(E));
@@ -2506,6 +2510,10 @@ commands:
                                 if (typeof cw.default_focus == 'function') {
                                     cw.default_focus();
                                 }
+                                // an alternative to the practice above
+                                var evt = cw.document.createEvent("Events");
+                                evt.initEvent( 'tab_focus', true, true );
+                                cw.window.dispatchEvent(evt);
                             } catch(E) {
                                 obj.error.sdump('D_ERROR', 'main.menu, set_tab, onload: ' + E);
                             }
