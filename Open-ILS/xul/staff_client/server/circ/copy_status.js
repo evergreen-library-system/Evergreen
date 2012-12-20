@@ -822,6 +822,13 @@ circ.copy_status.prototype = {
                                 }
 
                                 JSAN.use('cat.util'); cat.util.batch_edit_volumes( volumes );
+                                var funcs = [];
+                                for (var i = 0; i < obj.selection_list.length; i++) {
+                                        var barcode = obj.selection_list[i].barcode;
+                                        funcs.push( function(a) { return function() { obj.copy_status( a, true ); }; }(barcode) );
+                                }
+                                for (var i = 0; i < funcs.length; i++) { funcs[i](); }
+
 
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert('Copy Status -> Volume Edit',E);
