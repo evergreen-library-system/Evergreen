@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2012-08-03 10:01-0400\n"
-"PO-Revision-Date: 2012-05-12 08:34+0000\n"
-"Last-Translator: kulkke <Unknown>\n"
+"PO-Revision-Date: 2012-10-30 21:10+0000\n"
+"Last-Translator: Irmak Bıçakçıgil <Unknown>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-08-04 05:15+0000\n"
-"X-Generator: Launchpad (build 15742)\n"
+"X-Launchpad-Export-Date: 2012-10-31 04:42+0000\n"
+"X-Generator: Launchpad (build 16218)\n"
 
 #. =================================================================
 #. Some generic stuff
@@ -30,7 +30,7 @@ msgstr "İngilizce"
 
 #: lang.author
 msgid "PINES"
-msgstr ""
+msgstr "PINES"
 
 #: common.all
 msgid "All"
@@ -198,7 +198,7 @@ msgstr "Gelişmiş Arama"
 
 #: common.nowSearching
 msgid "Now searching "
-msgstr ""
+msgstr "Şimdi aranıyor "
 
 #: common.ofAtLeast
 msgid " of about "
@@ -238,7 +238,7 @@ msgstr "İptal"
 
 #: common.org.loading
 msgid "Loading library selector..."
-msgstr ""
+msgstr "Kütüphane seçici yükleniyor ..."
 
 #: common.org.note
 msgctxt "common.org.note"
@@ -250,6 +250,8 @@ msgid ""
 "Click on a location's name to select it.  Click on the folder icons to "
 "expand a section."
 msgstr ""
+"Bir konum seçmek için üzerine tıklayın. Bir bölümü genişletmek için klasör "
+"simgesine tıklayın."
 
 #: opac.login.login
 msgctxt "opac.login.login"
@@ -259,7 +261,7 @@ msgstr "Oturum Aç"
 #: opac.basic
 msgctxt "opac.basic"
 msgid "Basic Catalog (HTML only)"
-msgstr ""
+msgstr "Temel Katalog (Sadece HTML)"
 
 #: common.password_criteria
 msgid ""
@@ -332,7 +334,7 @@ msgstr "Oturum açma başarısız. Kullanıcı adı veya parola doğru değil."
 
 #: ilsevent.1001
 msgid "Login session has timed out or does not exist"
-msgstr ""
+msgstr "Oturum zaman aşımına uğradı veya bulunmuyor"
 
 #: ilsevent.1002
 msgid "User was not found in the database"
@@ -359,7 +361,7 @@ msgstr ""
 
 #: common.cn.browsing
 msgid "You are now browsing"
-msgstr ""
+msgstr "Şu anda görüntülüyorsunuz"
 
 #: common.cn.previous
 msgid "&lt;&lt; Previous Page"
@@ -372,7 +374,7 @@ msgstr ""
 
 #: common.cn.next
 msgid "Next Page &gt;&gt;"
-msgstr ""
+msgstr "Sonraki Sayfa &gt;&gt;"
 
 #: common.textsize.title
 msgid "Text Size: "
@@ -635,7 +637,7 @@ msgstr ""
 #: myopac.fines.status
 msgctxt "myopac.fines.status"
 msgid "Loading..."
-msgstr ""
+msgstr "Yükleniyor..."
 
 #: myopac.fines.overdue
 msgid "Overdue Materials"

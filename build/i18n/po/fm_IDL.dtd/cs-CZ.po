@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2012-08-22 08:46-0400\n"
-"PO-Revision-Date: 2012-08-24 22:32+0000\n"
+"PO-Revision-Date: 2012-10-09 08:36+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-08-28 06:48+0000\n"
-"X-Generator: Launchpad (build 15864)\n"
+"X-Launchpad-Export-Date: 2012-10-10 04:46+0000\n"
+"X-Generator: Launchpad (build 16112)\n"
 "X-Accelerator-Marker: &\n"
 
 #: field.bre.source.label:2536
@@ -44,7 +44,7 @@ msgstr "Číslo sekundárního dokladu"
 
 #: field.sdist.record_entry.label:4311
 msgid "Legacy Record Entry"
-msgstr ""
+msgstr "Údaje záznamů zděděného systému"
 
 #: field.acqfst.amount.label:7253 field.acqafst.amount.label:7307
 msgid "Total Spent Amount"
@@ -749,7 +749,7 @@ msgstr ""
 
 #: field.rocit.stat_cat_1_value.label:9839
 msgid "Legacy Stat Cat 1 Value"
-msgstr ""
+msgstr "Zděděná hodnota statistické kategorie 1"
 
 #: field.atul.perm_lib.label:1166
 msgid "Permission Context"
@@ -1164,7 +1164,7 @@ msgstr "Organizační jednotka"
 
 #: class.ahopl.label:5030
 msgid "Hold On Pull List"
-msgstr ""
+msgstr "Seznam rezervací"
 
 #: class.mkfe.label:3182
 msgid "Keyword Field Entry"
@@ -1416,7 +1416,7 @@ msgstr "Celkem přiděleno prostředků"
 
 #: field.rocit.stat_cat_2_value.label:9840
 msgid "Legacy Stat Cat 2 Value"
-msgstr ""
+msgstr "Zděděná hodnota statistické kategorie 2"
 
 #: class.svr.label:4172
 msgid "Serial Virtual Record"
@@ -3462,11 +3462,11 @@ msgstr "Odpovědi"
 
 #: field.rocit.stat_cat_1.label:9837
 msgid "Legacy Stat Cat 1"
-msgstr ""
+msgstr "Zděděná statistická kategorie 1"
 
 #: field.rocit.stat_cat_2.label:9838
 msgid "Legacy Stat Cat 2"
-msgstr ""
+msgstr "Zděděná statistická kategorie 1"
 
 #: field.bre.identifier_field_entries.label:2547
 msgid "Indexed Identifier Field Entries"
@@ -3810,7 +3810,7 @@ msgstr "Výše zrušeného poplatku"
 
 #: class.acqfsum.label:7380
 msgid "Fund Summary"
-msgstr ""
+msgstr "Sumarizace fondu"
 
 #: field.jub.estimated_unit_price.label:7700
 #: field.acqlih.estimated_unit_price.label:7759
@@ -4008,7 +4008,7 @@ msgstr "Zobrazit v OPACu?"
 
 #: field.rccc.stat_cat_2_value.label:9511
 msgid "Legacy CAT2 Value"
-msgstr ""
+msgstr "Hodnota zděděné statistické kategorie 2"
 
 #: field.asv.opac.label:4852
 msgid "OPAC Survey?"
@@ -4037,7 +4037,7 @@ msgstr "Zůstatek ve finančním fondu"
 
 #: field.rccc.stat_cat_2.label:9505
 msgid "Legacy CAT2 Link"
-msgstr ""
+msgstr "Zděděná statistická kategorie 2 (odkaz)"
 
 #: field.acqpon.vendor_public.label:7620 field.acqlin.vendor_public.label:7815
 msgid "Vendor Public"
@@ -4244,7 +4244,7 @@ msgstr "Zdroje metazáznamů"
 
 #: field.atul.target_hold.label:1165
 msgid "Target Hold"
-msgstr ""
+msgstr "Vybrat cíl rezervace"
 
 #: field.ssr.total.label:4836
 msgid "Total Results"
@@ -4502,7 +4502,7 @@ msgstr "Vybírající uživatele"
 
 #: field.mg.billable_transaction.label:5604
 msgid "Billable Transaction link"
-msgstr "Odkaz na účtovatelné transakce"
+msgstr "Odkaz na zúčtovatelné transakce"
 
 #: class.cmpctm.label:9234
 msgid "MARC21 Physical Characteristic Type Map"
@@ -4587,7 +4587,7 @@ msgstr ""
 
 #: field.mb.billing_type.label:6491
 msgid "Legacy Billing Type"
-msgstr ""
+msgstr "Zděděný typ poplatku"
 
 #: field.acqpa.street1.label:6895
 msgid "Street 1"
@@ -6686,7 +6686,7 @@ msgstr "Kredity"
 
 #: field.au.open_billable_transactions_summary.label:2827
 msgid "Open Billable Transactions"
-msgstr "Probíhající účtovatelné transakce"
+msgstr "Neuzavřené zúčtovatelné transakce"
 
 #: field.rsr.genre.label:8261
 msgid "Genres (normalized)"
@@ -7371,7 +7371,7 @@ msgstr "Váha"
 #: class.mbt.label:5636 field.mp.xact.label:6252 field.mbp.xact.label:6280
 #: field.mndp.xact.label:6308 field.mdp.xact.label:6330
 msgid "Billable Transaction"
-msgstr "Účtovatelné transakce"
+msgstr "Zúčtovatelné transakce"
 
 #: field.aou.parent_ou.label:5251
 msgid "Parent Organizational Unit"
@@ -7679,7 +7679,7 @@ msgstr "ID faktury"
 
 #: field.au.billable_transactions.label:2825
 msgid "Billable Transactions"
-msgstr "Účtovatelné transakce"
+msgstr "Zúčtovatelné transakce"
 
 #~ msgid "Matched Attribute"
 #~ msgstr "Odpovídající atribut"

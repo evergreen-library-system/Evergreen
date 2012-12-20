@@ -1,28 +1,31 @@
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
+# Occitan (post 1500) translation for evergreen
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-07 02:03-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2012-08-03 10:01-0400\n"
+"PO-Revision-Date: 2012-11-02 16:27+0000\n"
+"Last-Translator: Cédric VALMARY (Tot en òc) <cvalmary@yahoo.fr>\n"
+"Language-Team: Occitan (post 1500) <oc@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
-"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2012-11-03 05:06+0000\n"
+"X-Generator: Launchpad (build 16218)\n"
 
 #: staff.circ.alert
 msgid "Alert"
-msgstr ""
+msgstr "Alèrta"
 
 #: staff.circ.item_no_circs
 msgid "Item %1$s has never circulated."
 msgstr ""
 
 #: staff.circ.invalid_date
-msgctxt "staff.circ.invalid_date"
 msgid "Invalid Date"
 msgstr ""
 
@@ -61,7 +64,7 @@ msgstr ""
 #: staff.circ.cancel
 msgctxt "staff.circ.cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Abandonar"
 
 #: staff.circ.barcode.accept
 msgid "Accept Barcode"
@@ -69,7 +72,7 @@ msgstr ""
 
 #: staff.circ.confirm
 msgid "Check here to confirm this action"
-msgstr ""
+msgstr "Clicatz aicí per confirmar aquesta accion"
 
 #: staff.circ.confirm.msg
 msgid "Check here to confirm this message."
@@ -161,7 +164,7 @@ msgstr ""
 #: staff.circ.checkout.ok.btn
 msgctxt "staff.circ.checkout.ok.btn"
 msgid "OK"
-msgstr ""
+msgstr "D'acòrdi"
 
 #: staff.circ.checkout.cmd_checkout_submit.confirm.msg
 msgid "Are you sure you want to circulate %1$d %2$s?"
@@ -175,12 +178,12 @@ msgstr ""
 #: staff.circ.checkout.yes.btn
 msgctxt "staff.circ.checkout.yes.btn"
 msgid "Yes"
-msgstr ""
+msgstr "Òc"
 
 #: staff.circ.checkout.no.btn
 msgctxt "staff.circ.checkout.no.btn"
 msgid "No"
-msgstr ""
+msgstr "Non"
 
 #: staff.circ.checkout.cmd_checkout_submit.non_numeric.msg
 msgid "Error with non-cataloged checkout.  %1$s is not a valid number."
@@ -229,6 +232,12 @@ msgstr ""
 msgid ""
 "A billing for an Item Rental Fee will be added to the patron's account if "
 "this action is overrided."
+msgstr ""
+
+#: staff.circ.checkout.override.will_auto
+msgid ""
+"If overriden now, subsequent checkouts during this patron's session will "
+"auto-override this event."
 msgstr ""
 
 #: staff.circ.checkout.not_cataloged.confirm
@@ -312,7 +321,7 @@ msgstr ""
 #: staff.circ.checkout.barcode
 msgctxt "staff.circ.checkout.barcode"
 msgid "Barcode:"
-msgstr ""
+msgstr "Còde de barras :"
 
 #: staff.circ.circ_brief.staff_out_id
 msgid "Check Out Staff ID = %1$s"
@@ -424,7 +433,8 @@ msgstr ""
 
 #. # From asset::copy_location: 1 - Can Circulate?  2 - Is Holdable?  3 - Hold Capture Requires Verification?  4 - Is OPAC Visible?
 #: staff.circ.copy_details.location_tooltip
-msgid "Circulate? %1$s  Holdable? %2$s  Hold Verify? %3$s  OPAC Visible? %4$s"
+msgid ""
+"Circulate? %1$s  Holdable? %2$s  Hold Verify? %3$s  OPAC Visible? %4$s"
 msgstr ""
 
 #. # From config::copy_status: 1 - OPAC Visible?  2 - Is Holdable?
@@ -560,12 +570,16 @@ msgstr ""
 
 #: staff.circ.copy_status.delete_volumes.delete_copies
 msgid ""
-"You must delete all the copies on the volume before you may delete the "
-"volume itself."
+"You must delete all the items on the volume before you may delete the volume "
+"itself."
 msgstr ""
 
-#: staff.circ.copy_status.delete_volumes.success
-msgid "Volumes deleted."
+#: staff.circ.copy_status.delete_volumes.delete_copies.confirm
+msgid "Delete Volume and Items"
+msgstr ""
+
+#: staff.circ.copy_status.delete_volumes.delete_copies.cancel
+msgid "Cancel Delete"
 msgstr ""
 
 #: staff.circ.copy_status.mark_volume.status
@@ -985,6 +999,18 @@ msgstr ""
 msgid "Owning Library"
 msgstr ""
 
+#: staff.circ.utils.prefix
+msgid "CN Prefix"
+msgstr ""
+
+#: staff.circ.utils.suffix
+msgid "CN Suffix"
+msgstr ""
+
+#: staff.circ.utils.label_class
+msgid "Classification"
+msgstr ""
+
 #: staff.circ.utils.loan_duration.short
 msgid "Short"
 msgstr ""
@@ -1028,7 +1054,11 @@ msgid "Floating?"
 msgstr ""
 
 #: staff.circ.utils.hold_note
-msgid "Hold Note(s)"
+msgid "Hold Note(s) Count"
+msgstr ""
+
+#: staff.circ.utils.hold_note_text
+msgid "Hold Note(s) Text"
 msgstr ""
 
 #: staff.circ.utils.staff_hold
@@ -1135,6 +1165,10 @@ msgstr ""
 
 #: staff.circ.utils.creator
 msgid "Created By"
+msgstr ""
+
+#: staff.circ.utils.owner
+msgid "Owned By"
 msgstr ""
 
 #: staff.circ.utils.editor
@@ -1273,6 +1307,18 @@ msgstr ""
 msgid "Reserved/Pending"
 msgstr ""
 
+#: staff.circ.utils.hold_status.6
+msgid "Canceled"
+msgstr ""
+
+#: staff.circ.utils.hold_status.7
+msgid "Suspended"
+msgstr ""
+
+#: staff.circ.utils.hold_status.8
+msgid "Wrong Shelf"
+msgstr ""
+
 #: staff.circ.utils.hold_post_clear_shelf_action.label
 msgid "Post-Clear"
 msgstr ""
@@ -1298,6 +1344,7 @@ msgid "Active?"
 msgstr ""
 
 #: staff.circ.utils.thaw_date
+msgctxt "staff.circ.utils.thaw_date"
 msgid "Activation Date"
 msgstr ""
 
@@ -1329,6 +1376,10 @@ msgstr ""
 msgid "Notices"
 msgstr ""
 
+#: staff.circ.utils.patron_alias
+msgid "Patron Alias"
+msgstr ""
+
 #: staff.circ.utils.patron_family_name
 msgid "Patron Last Name"
 msgstr ""
@@ -1342,7 +1393,8 @@ msgid "Override Checkin Failure?"
 msgstr ""
 
 #: staff.circ.utils.checkin.override.item_deposit_paid.warning
-msgid "A paid deposit will be owed to this patron if this action is overrided."
+msgid ""
+"A paid deposit will be owed to this patron if this action is overrided."
 msgstr ""
 
 #: staff.circ.utils.billable.amount
@@ -1377,12 +1429,17 @@ msgstr ""
 msgid "status of Holds Shelf, but no actual hold found."
 msgstr ""
 
+#: staff.circ.utils.reservation_status_error
+msgid "status of Reservation Shelf, but no actual hold found."
+msgstr ""
+
 #: staff.circ.utils.payload.hold.barcode
 msgctxt "staff.circ.utils.payload.hold.barcode"
 msgid "Barcode: %1$s"
 msgstr ""
 
 #: staff.circ.utils.payload.hold.title
+msgctxt "staff.circ.utils.payload.hold.title"
 msgid "Title: %1$s"
 msgstr ""
 
@@ -1421,15 +1478,21 @@ msgstr ""
 msgid "Notify by phone: %1$s"
 msgstr ""
 
+#: staff.circ.utils.payload.hold.sms_notify
+msgid "Notify by text: %1$s"
+msgstr ""
+
 #: staff.circ.utils.payload.hold.email_notify
 msgid "Notify by email: %1$s"
 msgstr ""
 
 #: staff.circ.utils.payload.hold.request_date
+msgctxt "staff.circ.utils.payload.hold.request_date"
 msgid "Request Date: %1$s"
 msgstr ""
 
 #: staff.circ.utils.payload.hold.slip_date
+msgctxt "staff.circ.utils.payload.hold.slip_date"
 msgid "Slip Date: %1$s"
 msgstr ""
 
@@ -1452,6 +1515,53 @@ msgstr ""
 
 #: staff.circ.utils.hold_slip.print.no
 msgctxt "staff.circ.utils.hold_slip.print.no"
+msgid "Do Not Print"
+msgstr ""
+
+#: staff.circ.utils.payload.reservation.barcode
+msgctxt "staff.circ.utils.payload.reservation.barcode"
+msgid "Barcode: %1$s"
+msgstr ""
+
+#: staff.circ.utils.payload.reservation.title
+msgctxt "staff.circ.utils.payload.reservation.title"
+msgid "Title: %1$s"
+msgstr ""
+
+#. # Hold for patron familyName, firstName secondName
+#: staff.circ.utils.payload.reservation.patron
+msgid "Reservation for patron %1$s, %2$s %3$s"
+msgstr ""
+
+#: staff.circ.utils.payload.reservation.patron_alias
+msgid "Reservation for patron %1$s"
+msgstr ""
+
+#: staff.circ.utils.payload.reservation.request_date
+msgctxt "staff.circ.utils.payload.reservation.request_date"
+msgid "Request Date: %1$s"
+msgstr ""
+
+#: staff.circ.utils.payload.reservation.start_date
+msgid "Start Date: %1$s"
+msgstr ""
+
+#: staff.circ.utils.payload.reservation.slip_date
+msgctxt "staff.circ.utils.payload.reservation.slip_date"
+msgid "Slip Date: %1$s"
+msgstr ""
+
+#: staff.circ.utils.reservation_slip
+msgid "Reservation Slip"
+msgstr ""
+
+#: staff.circ.utils.reservation_slip.print.yes
+msgctxt "staff.circ.utils.reservation_slip.print.yes"
+msgid "Print"
+msgstr ""
+
+#: staff.circ.utils.reservation_slip.print.no
+msgctxt "staff.circ.utils.reservation_slip.print.no"
 msgid "Do Not Print"
 msgstr ""
 
@@ -1485,6 +1595,10 @@ msgstr ""
 
 #: staff.circ.utils.hold_capture_delayed.prompt_for_capture
 msgid "Capture"
+msgstr ""
+
+#: staff.circ.utils.reservation_capture
+msgid "%1$s has been captured for a reservation."
 msgstr ""
 
 #: staff.circ.utils.capture
@@ -1565,24 +1679,26 @@ msgstr ""
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
 #: staff.circ.work_log_checkin_attempt.transit.message
-msgid "%1$s attempted checkin of %4$s, resulting in transit.  Route To = %5$s"
+msgid ""
+"%1$s attempted checkin of %4$s, resulting in transit.  Route To = %5$s"
 msgstr ""
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
 #: staff.circ.work_log_checkin_attempt.transit_for_hold.message
 msgid ""
-"%1$s attempted checkin of %4$s, resulting in a hold-transit.  Route To = %"
-"5$s"
+"%1$s attempted checkin of %4$s, resulting in a hold-transit.  Route To = %5$s"
 msgstr ""
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
 #: staff.circ.work_log_checkin_attempt.no_change.message
-msgid "%1$s attempted checkin of %4$s, but nothing happened.  Route To = %5$s"
+msgid ""
+"%1$s attempted checkin of %4$s, but nothing happened.  Route To = %5$s"
 msgstr ""
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
 #: staff.circ.work_log_checkin_attempt.error.message
-msgid "%1$s attempted checkin of %4$s, and an error occurred.  Route To = %5$s"
+msgid ""
+"%1$s attempted checkin of %4$s, and an error occurred.  Route To = %5$s"
 msgstr ""
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
@@ -1598,6 +1714,13 @@ msgid ""
 msgstr ""
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.reservation_shelf.message
+msgid ""
+"%1$s attempted checkin of %4$s, which routed the item to the Reservations "
+"Shelf.  Route To = %5$s"
+msgstr ""
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
 #: staff.circ.work_log_checkin_attempt.cataloging.message
 msgid ""
 "%1$s attempted checkin of %4$s, which is a pre-cat and was routed to "
@@ -1605,10 +1728,24 @@ msgid ""
 msgstr ""
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
-#: staff.circ.work_log_checkin_attempt.cataloging.message
+#: staff.circ.work_log_checkin_attempt.not_found.message
 msgid ""
 "%1$s attempted checkin of %4$s, which was not found, and so was routed to "
 "Cataloging.  Route To = %5$s"
+msgstr ""
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Original Balance  5 - Voided Balance  6 - Payment Received  7 - Payment Applied
+#. # 8 - Change Given  9 - Credit Given  10 - New Balance  11 - Payment Type  12 - Note  13 - API call result
+#: staff.circ.work_log_payment_attempt.success.message
+msgid "%1$s received %6$s (%11$s) for %3$s (%2$s)."
+msgstr ""
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Original Balance  5 - Voided Balance  6 - Payment Received  7 - Payment Applied
+#. # 8 - Change Given  9 - Credit Given  10 - New Balance  11 - Payment Type  12 - Note  13 - API call result
+#: staff.circ.work_log_payment_attempt.failure.message
+msgid ""
+"%1$s attempted receipt of %6$s (%11$s) for %3$s (%2$s), which failed for "
+"this reason: %13$s"
 msgstr ""
 
 #: staff.circ.checkin.hold_capture
@@ -1686,24 +1823,19 @@ msgstr ""
 
 #: staff.circ.holds.activation_date.prompt
 msgid ""
-"Please enter an Activation Date (or leave blank to unset) for hold %1$s.  "
+"Please enter an Activation Date (or choose Remove to unset) for hold %1$s.  "
 "This will also Suspend the hold."
 msgstr ""
 
 #: staff.circ.holds.activation_date.prompt.plural
 msgid ""
-"Please enter an Activation Date (or leave blank to unset) for holds %1$s.  "
+"Please enter an Activation Date (or choose Remove to unset) for holds %1$s.  "
 "This will also Suspend the holds."
 msgstr ""
 
-#: staff.circ.holds.activation_date.too_early.error
-msgid ""
-"Activation Date needs to be either unset or set to fall on a future date."
-msgstr ""
-
-#: staff.circ.holds.activation_date.invalid_date
-msgctxt "staff.circ.holds.activation_date.invalid_date"
-msgid "Invalid Date"
+#: staff.circ.holds.activation_date.dialog.description
+msgctxt "staff.circ.holds.activation_date.dialog.description"
+msgid "Activation Date"
 msgstr ""
 
 #: staff.circ.holds.request_date.prompt
@@ -1723,29 +1855,18 @@ msgctxt "staff.circ.holds.request_date.dialog.description"
 msgid "Request Date"
 msgstr ""
 
-#: staff.circ.holds.request_date.invalid_date
-msgctxt "staff.circ.holds.request_date.invalid_date"
-msgid "Invalid Date"
-msgstr ""
-
 #: staff.circ.holds.expire_time.prompt
 msgid ""
-"Please enter an Expiration Date (or leave blank to unset) for hold %1$s."
+"Please enter an Expiration Date (or choose Remove to unset) for hold %1$s."
 msgstr ""
 
 #: staff.circ.holds.expire_time.prompt.plural
 msgid ""
-"Please enter an Expiration Date (or leave blank to unset) for holds %1$s."
+"Please enter an Expiration Date (or choose Remove to unset) for holds %1$s."
 msgstr ""
 
-#: staff.circ.holds.expire_time.too_early.error
-msgid ""
-"Expiration Date needs to be either unset or set to fall on a future date."
-msgstr ""
-
-#: staff.circ.holds.expire_time.invalid_date
-msgctxt "staff.circ.holds.expire_time.invalid_date"
-msgid "Invalid Date"
+#: staff.circ.holds.expire_time.dialog.description
+msgid "Expiration Date"
 msgstr ""
 
 #: staff.circ.holds.shelf_expire_time.prompt
@@ -1759,11 +1880,6 @@ msgstr ""
 #: staff.circ.holds.shelf_expire_time.dialog.description
 msgctxt "staff.circ.holds.shelf_expire_time.dialog.description"
 msgid "Shelf Expire Time"
-msgstr ""
-
-#: staff.circ.holds.shelf_expire_time.invalid_date
-msgctxt "staff.circ.holds.shelf_expire_time.invalid_date"
-msgid "Invalid Date"
 msgstr ""
 
 #: staff.circ.holds.modifying_holds
@@ -1819,14 +1935,26 @@ msgstr ""
 #: staff.circ.holds.alt_view.accesskey
 msgctxt "staff.circ.holds.alt_view.accesskey"
 msgid "V"
-msgstr ""
+msgstr "V"
 
 #: staff.circ.holds.list_view.label
 msgctxt "staff.circ.holds.list_view.label"
 msgid "List View"
-msgstr ""
+msgstr "Afichatge en lista"
 
 #: staff.circ.holds.list_view.accesskey
 msgctxt "staff.circ.holds.list_view.accesskey"
 msgid "V"
+msgstr "V"
+
+#: staff.circ.missing_pieces.scan_item.prompt
+msgid "Enter barcode for item missing pieces:"
+msgstr ""
+
+#: staff.circ.missing_pieces.scan_item.title
+msgid "Missing Pieces"
+msgstr ""
+
+#: staff.circ.missing_pieces.scan_item.error_alert
+msgid "No item with barcode \"%1$s\""
 msgstr ""

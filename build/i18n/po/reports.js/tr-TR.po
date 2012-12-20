@@ -8,26 +8,26 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2010-05-10 01:51+0000\n"
-"Last-Translator: Angel Spy <melissadilara@yahoo.com>\n"
+"PO-Revision-Date: 2012-09-30 12:13+0000\n"
+"Last-Translator: Irmak Bıçakçıgil <Unknown>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:48+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2012-10-01 04:51+0000\n"
+"X-Generator: Launchpad (build 16049)\n"
 
 #: reports.js:OPERATORS_IN_LIST reports.js:FILTERS_LABEL_IN
 msgid "In list"
-msgstr ""
+msgstr "Listede"
 
 #: reports.js:WIDGET_REAL_DATE
 msgid "Real Date"
-msgstr ""
+msgstr "Gerçek Tarih"
 
 #: reports.js:TFORMS_LABEL_MONTH_NAME
 msgid "Month Name'"
-msgstr ""
+msgstr "Ay ismi"
 
 #: reports.js:OPERATORS_IS_NOT_NULL reports.js:FILTERS_LABEL_NOT_NULL
 msgid "Is not NULL"
@@ -54,15 +54,15 @@ msgstr ""
 
 #: reports.js:OPERATORS_GT_EQUAL reports.js:FILTERS_LABEL_GT_EQUAL
 msgid "Greater than or equal to"
-msgstr ""
+msgstr "Büyük veya eşit"
 
 #: reports.js:TEMPLATE_CONF_PROMPT_CHANGE
 msgid "Change the column header to: ${0}"
-msgstr ""
+msgstr "Kolon başlığını ${0} olarak değiştir:"
 
 #: reports.js:LINK_NULLABLE_RIGHT
 msgid "Parent"
-msgstr ""
+msgstr "Ana"
 
 #: reports.js:TEMPLATE_CONF_BETWEEN
 msgid "Field value is between (comma separated):"
@@ -70,7 +70,7 @@ msgstr ""
 
 #: reports.js:TFORMS_LABEL_DAY_NAME reports.js:TRANSFORMS_DAY_NAME
 msgid "Day Name"
-msgstr "Gün Adı"
+msgstr "Gün İsmi"
 
 #: reports.js:SOURCE_SETUP_CONFIRM_EXIT
 msgid ""
@@ -85,7 +85,7 @@ msgstr "Yıl(lar)"
 
 #: reports.js:FOLDER_WINDOW_SELECT_ITEM
 msgid "Please select an item from the list"
-msgstr ""
+msgstr "Lütfen listeden bir öğe seçin"
 
 #: reports.js:FOLDERS_REPORT
 msgid "Report"
@@ -101,7 +101,7 @@ msgstr ""
 
 #: reports.js:TEMPLATE_CONF_DEFAULT
 msgid "Value ${0}:"
-msgstr ""
+msgstr "Değer ${0}:"
 
 #: reports.js:TRANSFORMS_COUNT_DISTINCT reports.js:TFORMS_LABEL_COUNT_DISTINCT
 msgid "Count Distinct"
@@ -113,7 +113,7 @@ msgstr ""
 
 #: reports.js:FOLDER_WINDOW_CHANGE_FOLDERS
 msgid "Change Folders"
-msgstr ""
+msgstr "Klasörleri Değiştir"
 
 #: reports.js:TEMPLATE_CONF_SUCCESS_SAVE
 msgid "Template ${0} was successfully saved."
@@ -121,7 +121,7 @@ msgstr ""
 
 #: reports.js:REPORT_EDITOR_ENTER_NAME_ALERT
 msgid "Please enter a report name"
-msgstr ""
+msgstr "Lütfen bir rapor ismi yazınız"
 
 #: reports.js:FOLDER_WINDOW_COLNAME_SELECT
 msgid "Select"

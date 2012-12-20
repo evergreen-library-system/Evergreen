@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2012-08-22 08:46-0400\n"
-"PO-Revision-Date: 2012-05-02 00:36+0000\n"
+"PO-Revision-Date: 2012-11-09 13:24+0000\n"
 "Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: English (Canada) <en_CA@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-08-28 06:49+0000\n"
-"X-Generator: Launchpad (build 15864)\n"
+"X-Launchpad-Export-Date: 2012-11-10 05:00+0000\n"
+"X-Generator: Launchpad (build 16251)\n"
 
 #: field.bre.source.label:2536
 msgid "Record Source"
@@ -400,11 +400,11 @@ msgstr "Billing Type"
 
 #: field.atul.event_def.label:1152
 msgid "Event Definition ID"
-msgstr ""
+msgstr "Event Definition ID"
 
 #: field.atul.add_time.label:1153
 msgid "Event Add Time"
-msgstr ""
+msgstr "Event Add Time"
 
 #: class.rrf.label:8115
 msgid "Report Folder"
@@ -618,7 +618,7 @@ msgstr "Percent"
 
 #: field.ccvm.search_label.label:794
 msgid "Search Label"
-msgstr ""
+msgstr "Search Label"
 
 #: field.sunit.loan_duration.label:4509 field.acp.loan_duration.label:5891
 #: field.act.loan_duration.label:5962
@@ -647,7 +647,7 @@ msgstr "Call Number Bucket Note"
 
 #: field.acqfsum.allocated_total.label:7409
 msgid "Total Allocated"
-msgstr ""
+msgstr "Total Allocated"
 
 #: field.ahn.hold.label:4060 field.aufh.hold.label:6115
 msgid "Hold"
@@ -756,7 +756,7 @@ msgstr "Legacy Stat Cat 1 Value"
 
 #: field.atul.perm_lib.label:1166
 msgid "Permission Context"
-msgstr ""
+msgstr "Permission Context"
 
 #: field.acpl.circulate.label:4074
 msgid "Can Circulate?"
@@ -1005,7 +1005,7 @@ msgstr "User Bucket Type"
 
 #: field.atul.template_output.label:1161
 msgid "Event Template Output"
-msgstr ""
+msgstr "Event Template Output"
 
 #: field.ccmw.is_renewal.label:1411 field.ccmm.is_renewal.label:1518
 msgid "Renewal?"
@@ -1167,7 +1167,7 @@ msgstr "Org Unit"
 
 #: class.ahopl.label:5030
 msgid "Hold On Pull List"
-msgstr ""
+msgstr "Hold On Pull List"
 
 #: class.mkfe.label:3182
 msgid "Keyword Field Entry"
@@ -1399,7 +1399,7 @@ msgstr "Destination"
 
 #: field.ahopl.copy_location_order_position.label:5126
 msgid "Copy Location Sort Order"
-msgstr ""
+msgstr "Copy Location Sort Order"
 
 #: class.mfp.label:3214
 msgid "Forgive Payment"
@@ -1508,7 +1508,7 @@ msgstr "Replaces"
 
 #: field.ahopl.is_staff_hold.label:5130
 msgid "Is Staff Hold?"
-msgstr ""
+msgstr "Is Staff Hold?"
 
 #: class.ancc.label:6082
 msgid "Non-cataloged Circulation"
@@ -1557,7 +1557,7 @@ msgstr "Payment Summary"
 
 #: class.asfge.label:4935
 msgid "Search Filter Group Entry"
-msgstr ""
+msgstr "Search Filter Group Entry"
 
 #: class.bra.label:3838 field.brav.attr.label:3868
 #: field.bram.resource_attr.label:3893
@@ -1669,7 +1669,7 @@ msgstr "Circ Modifier"
 
 #: field.atul.update_time.label:1156
 msgid "Event Update Time"
-msgstr ""
+msgstr "Event Update Time"
 
 #: field.rsr.series_title.label:8254
 msgid "Series Title (normalized)"
@@ -1816,7 +1816,7 @@ msgstr "Non-filing Indicator"
 
 #: field.vii.internal_id.label:213 field.viiad.internal_id.label:265
 msgid "Overlay Match ID"
-msgstr ""
+msgstr "Overlay Match ID"
 
 #: field.aihu.org_unit.label:1863 field.ancihu.org_unit.label:1877
 #: field.acqcr.org_unit.label:7514
@@ -2048,7 +2048,7 @@ msgstr "Call Number/Volume"
 
 #: field.atul.user_data.label:1160
 msgid "Event User Data"
-msgstr ""
+msgstr "Event User Data"
 
 #: field.sunit.notes.label:4522 field.acp.notes.label:5901
 msgid "Copy Notes"
@@ -2181,7 +2181,7 @@ msgstr "Transit Range"
 
 #: field.ahopl.issuance_label.label:5129
 msgid "Issuance Label"
-msgstr ""
+msgstr "Issuance Label"
 
 #: field.mwp.id.label:5746 field.mgp.id.label:5764 field.mckp.id.label:5852
 #: field.mp.id.label:6248 field.mbp.id.label:6276 field.mndp.id.label:6304
@@ -2471,7 +2471,7 @@ msgstr "Record"
 
 #: field.acqfsum.encumbrance_total.label:7411
 msgid "Total Encumbered"
-msgstr ""
+msgstr "Total Encumbered"
 
 #: field.aal.match_all.label:3376
 msgid "Match All Fields"
@@ -3094,7 +3094,7 @@ msgstr "Multiplier"
 
 #: field.atul.run_time.label:1154
 msgid "Event Run Time"
-msgstr ""
+msgstr "Event Run Time"
 
 #: field.stgu.row_date.label:8592 field.stgc.row_date.label:8612
 #: field.stgma.row_date.label:8622 field.stgba.row_date.label:8637
@@ -3138,7 +3138,7 @@ msgstr "Payment Note"
 
 #: field.atul.start_time.label:1155
 msgid "Event Start Time"
-msgstr ""
+msgstr "Event Start Time"
 
 #: class.fdoc.label:6537
 msgid "IDL Field Doc"
@@ -3267,7 +3267,7 @@ msgstr "Open Circulation Count"
 
 #: class.asq.label:4900
 msgid "Search Query"
-msgstr ""
+msgstr "Search Query"
 
 #: field.brt.catalog_item.label:3781 field.brsrc.catalog_item.label:3819
 msgid "Catalog Item"
@@ -3305,7 +3305,7 @@ msgstr "Renewals Override"
 
 #: field.acn.label_sortkey.label:2422
 msgid "Call Number Sort Key"
-msgstr ""
+msgstr "Call Number Sort Key"
 
 #: class.moucs.label:6099
 msgid "Open User Circulation Summary"
@@ -3808,7 +3808,7 @@ msgstr "Voided Billing Amount"
 
 #: class.acqfsum.label:7380
 msgid "Fund Summary"
-msgstr ""
+msgstr "Fund Summary"
 
 #: field.jub.estimated_unit_price.label:7700
 #: field.acqlih.estimated_unit_price.label:7759
@@ -4018,7 +4018,7 @@ msgstr "Request ID"
 
 #: field.atul.state.label:1159
 msgid "Event State"
-msgstr ""
+msgstr "Event State"
 
 #: field.bre.metarecord.label:2541 class.mmr.label:3067
 #: field.rsr.metarecord.label:8244
@@ -4200,7 +4200,7 @@ msgstr "Processing Delay Context Field"
 
 #: field.acqfsum.spent_total.label:7410
 msgid "Total Spent"
-msgstr ""
+msgstr "Total Spent"
 
 #: field.acqcl.lineitem_detail.label:8488
 #: field.acrlid.lineitem_detail.label:9642
@@ -4242,7 +4242,7 @@ msgstr "Metarecord Source Map"
 
 #: field.atul.target_hold.label:1165
 msgid "Target Hold"
-msgstr ""
+msgstr "Target Hold"
 
 #: field.ssr.total.label:4836
 msgid "Total Results"
@@ -4524,7 +4524,7 @@ msgstr "Subfield List"
 
 #: field.atul.error_output.label:1162
 msgid "Event Error Output"
-msgstr ""
+msgstr "Event Error Output"
 
 #: field.bre.last_xact_id.label:2533 field.au.last_xact_id.label:2803
 #: field.sre.last_xact_id.label:4199
@@ -4606,7 +4606,7 @@ msgstr "Datatype"
 
 #: class.cclsacpl.label:1667
 msgid "Circulation Limit Set Copy Location Map"
-msgstr ""
+msgstr "Circulation Limit Set Copy Location Map"
 
 #: field.vqbra.id.label:379 field.vqara.id.label:496
 msgid "Attribute ID"
@@ -4737,7 +4737,7 @@ msgstr "MARC Type"
 
 #: field.au.prefix.label:2810
 msgid "Prefix/Title"
-msgstr ""
+msgstr "Prefix/Title"
 
 #: field.ahr.shelf_time.label:4997 field.ahopl.shelf_time.label:5118
 #: field.alhr.shelf_time.label:5191
@@ -4903,7 +4903,7 @@ msgstr "Record Column ID"
 
 #: field.acqfsum.combined_balance.label:7412
 msgid "Remaining Balance"
-msgstr ""
+msgstr "Remaining Balance"
 
 #: field.rcirct.id.label:8284 field.rmocbbol.id.label:9871
 #: field.rmocbbcol.id.label:9895 field.rmocbbhol.id.label:9923
@@ -5467,7 +5467,7 @@ msgstr "Inter-system Copy Transit"
 
 #: class.acqlisumi.label:9669
 msgid "Invoiceable Lineitem Summary"
-msgstr ""
+msgstr "Invoiceable Lineitem Summary"
 
 #: field.acqclp.name.label:8544
 msgid "Claim Policy Name"
@@ -5559,7 +5559,7 @@ msgstr "User"
 
 #: field.atul.update_process.label:1158
 msgid "Event Update PID"
-msgstr ""
+msgstr "Event Update PID"
 
 #: field.rccbs.billing_location_name.label:9552
 msgid "Billing Location Name"
@@ -5700,7 +5700,7 @@ msgstr "Notifying Staff"
 
 #: field.ccvm.is_simple.label:795
 msgid "Is Simple Selector"
-msgstr ""
+msgstr "Is Simple Selector"
 
 #: field.siss.date_published.label:4455
 msgid "Date Published"
@@ -5820,7 +5820,7 @@ msgstr "Region"
 
 #: field.atul.complete_time.label:1157
 msgid "Event Complete Time"
-msgstr ""
+msgstr "Event Complete Time"
 
 #: class.mbp.label:6273
 msgid "Payments: Brick-and-mortar"
@@ -5979,7 +5979,7 @@ msgstr "Last Payment Timestamp"
 
 #: field.atul.async_output.label:1163
 msgid "Event Async Output"
-msgstr ""
+msgstr "Event Async Output"
 
 #: class.rsr.label:8241
 msgid "Simple Record"
@@ -6421,7 +6421,7 @@ msgstr "Vendor Assigned Code"
 
 #: field.ahopl.usr_display_name.label:5127
 msgid "User Display Name"
-msgstr ""
+msgstr "User Display Name"
 
 #: field.sdist.supplement_summary.label:4326 class.sssum.label:4668
 msgid "Supplemental Issue Summary"
@@ -7014,7 +7014,7 @@ msgstr "Count"
 
 #: class.atul.label:1106
 msgid "Action Trigger User Log"
-msgstr ""
+msgstr "Action Trigger User Log"
 
 #: field.ahrn.staff.label:5227
 msgid "Staff?"
@@ -7302,7 +7302,7 @@ msgstr "Full Authority Record"
 
 #: field.atul.target_circ.label:1164
 msgid "Target Circulation"
-msgstr ""
+msgstr "Target Circulation"
 
 #: field.acqclpa.action_interval.label:8564
 msgid "Action Interval"
@@ -7616,7 +7616,7 @@ msgstr "Authority Links"
 
 #: class.asfg.label:4913
 msgid "Search Filter Group"
-msgstr ""
+msgstr "Search Filter Group"
 
 #: field.at.code.label:2054
 msgid "Thesaurus Code"

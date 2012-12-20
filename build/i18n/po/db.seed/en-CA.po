@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen ILS > db.seed.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2012-08-22 08:46-0400\n"
-"PO-Revision-Date: 2012-05-01 23:41+0000\n"
+"PO-Revision-Date: 2012-11-09 13:21+0000\n"
 "Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-08-28 06:47+0000\n"
-"X-Generator: Launchpad (build 15864)\n"
+"X-Launchpad-Export-Date: 2012-11-10 05:00+0000\n"
+"X-Generator: Launchpad (build 16251)\n"
 "X-Poedit-Country: CANADA\n"
 "X-Poedit-Language: English\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -54,7 +54,7 @@ msgstr "Kyrgyz"
 
 #: 950.data.seed-values.sql:6379
 msgid "Blu-ray disc"
-msgstr ""
+msgstr "Blu-ray disc"
 
 #: 950.data.seed-values.sql:6356
 msgid "Serial component part"
@@ -312,7 +312,7 @@ msgstr "Zulu"
 
 #: 950.data.seed-values.sql:6369
 msgid "Quadruplex"
-msgstr ""
+msgstr "Quadruplex"
 
 #: 950.data.seed-values.sql:5964
 msgid "Georgian"
@@ -457,7 +457,7 @@ msgstr "Venda"
 
 #: 950.data.seed-values.sql:6377
 msgid "8 mm."
-msgstr ""
+msgstr "8 mm."
 
 #: 950.data.seed-values.sql:1581
 msgid "Staff"
@@ -574,7 +574,7 @@ msgstr "Russian"
 
 #: 950.data.seed-values.sql:6370
 msgid "Laserdisc"
-msgstr ""
+msgstr "Laserdisc"
 
 #: 950.data.seed-values.sql:5962
 msgid "Gbaya"
@@ -706,7 +706,7 @@ msgstr "Monographic component part"
 
 #: 950.data.seed-values.sql:6376
 msgid "D-2"
-msgstr ""
+msgstr "D-2"
 
 #: 950.data.seed-values.sql:6315
 msgid "Manuscript language material"
@@ -1038,7 +1038,7 @@ msgstr "Lamba"
 
 #: 950.data.seed-values.sql:6373
 msgid "Betacam SP"
-msgstr ""
+msgstr "Betacam SP"
 
 #: 950.data.seed-values.sql:6094
 msgid "Micmac"
@@ -1126,7 +1126,7 @@ msgstr "Sanskrit"
 
 #: 950.data.seed-values.sql:6374
 msgid "Super-VHS"
-msgstr ""
+msgstr "Super-VHS"
 
 #: 950.data.seed-values.sql:306
 msgid "On order"
@@ -1324,7 +1324,7 @@ msgstr "Judeo-Arabic"
 
 #: 950.data.seed-values.sql:6375
 msgid "M-II"
-msgstr ""
+msgstr "M-II"
 
 #: 950.data.seed-values.sql:6098 950.data.seed-values.sql:6099
 msgid "Malagasy"
@@ -1380,7 +1380,7 @@ msgstr "Adult"
 
 #: 950.data.seed-values.sql:6367
 msgid "EIAJ"
-msgstr ""
+msgstr "EIAJ"
 
 #: 950.data.seed-values.sql:6157
 msgid "Phoenician"
@@ -1420,7 +1420,7 @@ msgstr "Baluchi"
 
 #: 950.data.seed-values.sql:6371
 msgid "CED videodisc"
-msgstr ""
+msgstr "CED videodisc"
 
 #: 950.data.seed-values.sql:6151
 msgid "Panjabi"
@@ -1472,7 +1472,7 @@ msgstr "Established Heading Linking Entry -- Topical Term"
 
 #: 950.data.seed-values.sql:6366
 msgid "U-matic"
-msgstr ""
+msgstr "U-matic"
 
 #: 950.data.seed-values.sql:117
 msgid "Translated Title"
@@ -1558,7 +1558,7 @@ msgstr "Topic Subject"
 
 #: 950.data.seed-values.sql:10144
 msgid "Repertoire de vedettes-matiere"
-msgstr ""
+msgstr "Répertoire de vedettes-matière"
 
 #: 950.data.seed-values.sql:25
 msgid "Patron exceeds max overdue item threshold"
@@ -1719,7 +1719,7 @@ msgstr "Minangkabau"
 
 #: 950.data.seed-values.sql:6368
 msgid "Type C"
-msgstr ""
+msgstr "Type C"
 
 #: 950.data.seed-values.sql:5991
 msgid "Himachali"
@@ -1807,7 +1807,7 @@ msgstr "Bengali"
 
 #: 950.data.seed-values.sql:6378
 msgid "Hi-8 mm."
-msgstr ""
+msgstr "Hi-8 mm."
 
 #: 950.data.seed-values.sql:5857
 msgid "Basa"
@@ -2232,7 +2232,7 @@ msgstr "Turkish"
 
 #: 950.data.seed-values.sql:6381
 msgid "DVD"
-msgstr ""
+msgstr "DVD"
 
 #: 950.data.seed-values.sql:307
 msgid "ILL"
@@ -2272,7 +2272,7 @@ msgstr "Hmong"
 
 #: 950.data.seed-values.sql:6383
 msgid "Unspecified"
-msgstr ""
+msgstr "Unspecified"
 
 #: 950.data.seed-values.sql:10004
 msgid "LoC"
@@ -2941,7 +2941,7 @@ msgstr "Kikuyu"
 
 #: 950.data.seed-values.sql:6372
 msgid "Betacam"
-msgstr ""
+msgstr "Betacam"
 
 #: 950.data.seed-values.sql:294
 msgid "6month"
@@ -3105,7 +3105,7 @@ msgstr "Established Heading Linking Entry -- Uniform Title"
 
 #: 950.data.seed-values.sql:6364
 msgid "Beta"
-msgstr ""
+msgstr "Beta"
 
 #: 950.data.seed-values.sql:6357
 msgid "Collection"
@@ -3275,7 +3275,7 @@ msgstr "Sardinian"
 
 #: 950.data.seed-values.sql:6365
 msgid "VHS"
-msgstr ""
+msgstr "VHS"
 
 #: 950.data.seed-values.sql:477
 msgid "System: Deposit"
