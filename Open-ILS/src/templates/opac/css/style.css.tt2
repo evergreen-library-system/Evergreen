@@ -564,7 +564,7 @@ div.format_icon {
     padding:0;
     background: none;
     font-size: [% css_fonts.size_bigger %];
-    color: [% css_colors.accent_medium %];
+    color: [% css_colors.text %];
 }
 
 #main-content .left_brain .input_bg {
