@@ -13,6 +13,10 @@ function my_init() {
             $('widget_prompt_main').appendChild(widget);
         }
 
+        if (typeof offlineStrings == 'undefined') {
+            offlineStrings = $('offlineStrings');
+        }
+
         var ok_label = xul_param('ok_label') || offlineStrings.getString('common.ok.label');
         $('ok_btn').setAttribute('label',ok_label);
 
