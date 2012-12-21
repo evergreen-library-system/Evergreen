@@ -123,6 +123,10 @@ BEGIN
         max_fine.name,
         due_date
     );
+
+    -- mark copy as checked out
+    UPDATE asset.copy SET status = 1 WHERE id = copy_id;
+
 END;
 $$ LANGUAGE PLPGSQL;
 
