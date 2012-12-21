@@ -1747,6 +1747,16 @@ main.menu.prototype = {
                     }
                 }
             ],
+            'cmd_server_addon_ws_configure' : [
+                ['oncommand'],
+                function() {
+                    try {
+                        obj.set_tab(obj.url_prefix('XUL_SERVER_ADDONS'),{'browser' : false});
+                    } catch(E) {
+                        alert(E);
+                    }
+                }
+            ]
         };
 
         JSAN.use('util.controller');

@@ -912,6 +912,7 @@
 <!ENTITY staff.main.menu.admin.client.hotkeys.clearworkstation.label "Clear Workstation Default">
 <!ENTITY staff.main.menu.admin.client.hotkeys.clearworkstation.accesskey "">
 <!ENTITY staff.main.menu.admin.client.search_prefs.label "Set Search Preferences">
+<!ENTITY staff.main.menu.admin.client.server_addon_ws_configure.label "Server Add-ons">
 <!ENTITY staff.main.menu.admin.client.toolbars "Toolbars">
 <!ENTITY staff.main.menu.admin.client.toolbars.current "Current">
 <!ENTITY staff.main.menu.admin.client.toolbars.config.label "Configure Toolbars">

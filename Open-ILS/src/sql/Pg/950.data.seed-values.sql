@@ -1607,7 +1607,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
         'Allows the user to check-in long-overdue items, prompting ' ||
             'long-overdue check-in processing', 'ppl', 'code')), 
  ( 550, 'SET_CIRC_LONG_OVERDUE', oils_i18n_gettext(550,
-        'Allows the user to mark a circulation as long-overdue', 'ppl', 'code'))
+        'Allows the user to mark a circulation as long-overdue', 'ppl', 'code')),
+ ( 551, 'ADMIN_SERVER_ADDON_FOR_WORKSTATION', oils_i18n_gettext( 551,
+        'Allows a user to specify which Server Add-ons get invoked at the current workstation', 'ppl', 'description'))
 ;
 
 

@@ -643,3 +643,18 @@
             alert('Error in global_utils.js, widget_prompt(): ' + E);
         }
     }
+
+
+    window.addEventListener(
+        'load',
+        function(ev) {
+            try {
+                if (window.oils_autoloaded) { return; }
+                JSAN.use('addon.autoloader');
+                window.oils_autoloaded = new addon.autoloader();
+            } catch(E) {
+                dump('Error in global_util.js with addon.autoloader: ' + E + '\n');
+            }
+        },
+        false
+    );

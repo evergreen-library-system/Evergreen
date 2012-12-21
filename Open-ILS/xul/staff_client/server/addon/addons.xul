@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Example Template for remote xul -->
+
+<!-- /////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/addon/addons.css" type="text/css"?>
+
+<!-- /////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<!-- /////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="addon_win"
+    onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- /////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+    <script type="text/javascript">
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true;
+    </script>
+    <scripts id="openils_util_scripts"/>
+
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="addons.js"/>
+
+    <messagecatalog id="addonStrings"
+        src="/xul/server/locale/<!--#echo var='locale'-->/addon/addons.properties" />
+
+    <vbox id="main" flex="1">
+        <groupbox id="addonlist_groupbox" flex="1">
+            <caption id="addonlist_caption" />
+            <description id="addonlist_desc"/>
+            <textbox id="addonlist_tb" multiline="true" flex="1"/>
+            <button id="addonlist_save_btn" oncommand="update()"/>
+        </groupbox>
+        <groupbox id="addonpref_groupbox" flex="1">
+            <caption id="addonpref_caption" />
+            <tabbox id="addonpref_tabbox" flex="1">
+                <tabs id="addonpref_tabs" />
+                <tabpanels id="addonpref_tabpanels" flex="1" />
+            </tabbox>
+        </groupbox>
+    </vbox>
+
+</window>
+
