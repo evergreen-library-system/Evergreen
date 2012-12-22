@@ -18,9 +18,6 @@
     PROCESS get_library;
 %]
     <form action="[% ctx.opac_root %]/results" method="GET">
-    [% IF CGI.param('facet') %]
-    <input type="hidden" name="facet" value="[% CGI.param('facet') %]" />
-    [% END %]
     <div id="search-wrapper">
         [% INCLUDE "opac/parts/searchbar.tt2" took_care_of_form=1 %]
     </div>
