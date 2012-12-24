@@ -98,8 +98,8 @@
                     <td only="shelf_expired_holds">${usr.display_name}</td>
                     <td only="shelf_expired_holds">${action}</td>
                     <td>${hold_type}</td>
-                    <td type='opac/slot-data' query='datafield[tag=245]'></td>
-                    <td type='opac/slot-data' query='datafield[tag^=1]' limit='1'> </td>
+                    <td type='opac/slot-data' query='datafield[tag="245"]'></td>
+                    <td type='opac/slot-data' query='datafield[tag^="1"]' limit='1'> </td>
                     <td>${current_copy.location.name}</td>
                     <td>${current_copy.call_number.prefix.label} ${current_copy.call_number.label} ${current_copy.call_number.suffix.label}</td>
                     <td>${current_copy.barcode} ${current_copy.parts_stringified}</td>
