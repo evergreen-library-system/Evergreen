@@ -103,6 +103,14 @@
 						If enabled, the PC field in patron-info requests will return the non-translated profile name
 					<option name='patron_type_uses_code' value='true' />
 					-->
+
+                    <!--
+                        By default, most dates use the SIP date format.  Some,
+                        like circulation due dates, use the ISO8601 date format 
+                        instead.  If this setting is set to true, all dates will
+                        use the SIP date format.
+                    <option name='use_sip_date_format' value='true' />
+                    -->
 				</options>
 
                 <checkin_override>

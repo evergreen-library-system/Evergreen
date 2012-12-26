@@ -25,6 +25,8 @@ use OpenSRF::Utils qw/:datetime/;
 use DateTime::Format::ISO8601;
 use Encode;
 use Unicode::Normalize;
+use Sip::Constants qw(SIP_DATETIME);
+
 my $U = 'OpenILS::Application::AppUtils';
 
 my $editor;
@@ -178,9 +180,9 @@ sub format_date {
 
     return "" unless $date;
 
-    $date = DateTime::Format::ISO8601->new->
+    my $dt = DateTime::Format::ISO8601->new->
         parse_datetime(OpenSRF::Utils::cleanse_ISO8601($date));
-    my @time = localtime($date->epoch);
+    my @time = localtime($dt->epoch);
 
     my $year   = $time[5]+1900;
     my $mon    = $time[4]+1;
@@ -193,7 +195,16 @@ sub format_date {
 
     # Due dates need hyphen separators and time of day as well
     if ($type eq 'due') {
-        $date = sprintf("%04d-%02d-%02d %02d:%02d:%02d", $year, $mon, $day, $hour, $minute, $second);
+
+        my $use_sdf = $class->get_option_value('use_sip_date_format') | '';
+
+        if ($use_sdf =~ /true/i) {
+            $date = $dt->strftime(SIP_DATETIME);
+
+        } else {
+            $date = sprintf("%04d-%02d-%02d %02d:%02d:%02d", 
+                $year, $mon, $day, $hour, $minute, $second);
+        }
     }
 
     syslog('LOG_DEBUG', "OILS: formatted date [type=$type]: $date");
