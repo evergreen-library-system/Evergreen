@@ -1,0 +1,28 @@
+EDI Fetching and Parsing Enhancements / Repairs
+===============================================
+This release includes various improvements to how Evergreen processes
+vendor EDI responses, including order responses and invoices.  Changes
+include architectural improvements as well as new features.
+
+Bug Fixes
+---------
+
+* Improved order response handling for cancelled items.
+* Deleting fund debits (encumbrances) for cancelled items.
+* Extracting invoice date
+* Invoices include quantity and amount paid (in addition to billed) to reduce
+  manual staff data entry
+* Proper handling of previously-cancelled (e.g. back-ordered) invoiced items.
+
+Architectural improvements
+--------------------------
+
+For EDI parsing, the Ruby libraries, Ruby HTTP gateway, and Business::EDI Perl
+modules are no longer needed.  They have been replaced with a single Perl
+module which handles EDI parsing.
+
+This reduces the complexity of the fetching and parsing layer.  Though the Ruby
+libraries and Ruby HTTP gateway are still needed for outbound EDI (for now), 
+the Perl Business::EDI modules are no longer needed at all, so they are no 
+longer installed.
+
