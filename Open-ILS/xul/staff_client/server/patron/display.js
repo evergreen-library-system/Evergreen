@@ -899,7 +899,8 @@ patron.display.prototype = {
                     },
                     'get_barcode' : xulG.get_barcode,
                     'get_barcode_and_settings' : xulG.get_barcode_and_settings,
-                    'url_prefix' : xulG.url_prefix
+                    'url_prefix' : xulG.url_prefix,
+                    'set_statusbar' : xulG.set_statusbar
                 }
             );
             obj.checkout_window = get_contentWindow(frame);
