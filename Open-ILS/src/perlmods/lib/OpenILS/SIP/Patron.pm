@@ -325,6 +325,8 @@ sub renew_ok {
 
 sub recall_ok {
     my $self = shift;
+    return $self->charge_ok if 
+        OpenILS::SIP->get_option_value('patron_calculate_recal_ok');
     return 0;
 }
 

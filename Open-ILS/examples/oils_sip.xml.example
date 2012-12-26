@@ -111,6 +111,13 @@
                         use the SIP date format.
                     <option name='use_sip_date_format' value='true' />
                     -->
+
+					<!--
+						If enabled, return the calculated value for the recall
+						flag instead of always returning not-OK
+					<option name='patron_calculate_recal_ok' value='true' />
+					-->
+
 				</options>
 
                 <checkin_override>
