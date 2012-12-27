@@ -373,6 +373,7 @@ sub update_patron {
     # if we want to represent the old patron.
 
     my $old_patron;
+    my $barred_hook = '';
 
 	if($patron->isnew()) {
 		( $new_patron, $evt ) = _add_patron($session, _clone_patron($patron), $user_obj);
@@ -392,6 +393,9 @@ sub update_patron {
         if($U->is_true($old_patron->barred) != $U->is_true($new_patron->barred)) {
             $evt = $U->check_perms($user_obj->id, $patron->home_ou, $U->is_true($old_patron->barred) ? 'UNBAR_PATRON' : 'BAR_PATRON');
             return $evt if $evt;
+
+            $barred_hook = $U->is_true($new_patron->barred) ? 
+                'au.barred' : 'au.unbarred';
         }
     }
 
@@ -429,6 +433,9 @@ sub update_patron {
         $tses->request('open-ils.trigger.event.autocreate', 'au.create', $new_patron, $new_patron->home_ou);
 	} else {
         $tses->request('open-ils.trigger.event.autocreate', 'au.update', $new_patron, $new_patron->home_ou);
+
+        $tses->request('open-ils.trigger.event.autocreate', $barred_hook, 
+            $new_patron, $new_patron->home_ou) if $barred_hook;
     }
 
 	return flesh_user($new_patron->id(), new_editor(requestor => $user_obj, xact => 1));

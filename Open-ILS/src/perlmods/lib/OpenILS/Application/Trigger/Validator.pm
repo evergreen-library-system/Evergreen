@@ -151,4 +151,14 @@ sub HoldNotifyCheck {
     return 1;
 }
 
+# core_type au
+sub PatronBarred {
+    my ($self, $env) = @_;
+    return $U->is_true($env->{target}->barred);
+}
+
+sub PatronNotBarred {
+    return !PatronBarred(@_);
+}
+
 1;
