@@ -14,9 +14,17 @@
             "path": "current_copy.circ_lib",
             "filter": true
         },
+        "call_number_prefix_sort_key": {
+            "path": "current_copy.call_number.prefix.label_sortkey",
+            "sort": true
+        },
+        "call_number_suffix_sort_key": {
+            "path": "current_copy.call_number.suffix.label_sortkey",
+            "sort": true
+        },
         "call_number_sort_key": {
             "path": "current_copy.call_number.label_sortkey",
-            "sort" :true
+            "sort": true
         }
     };
 
@@ -84,7 +92,7 @@
         defaultSort="['copy_location_order_position','call_number_sort_key']"
         mapExtras="map_extras"
         suppressFilterFields="['copy_circ_lib']"
-        sortFieldReMap="{call_number_label:'call_number_sort_key',shelving_loc:'copy_location_order_position'}"
+        sortFieldReMap="{call_number_label:'call_number_sort_key',cn_prefix:'call_number_prefix_sort_key',cn_suffix:'call_number_suffix_sort_key',shelving_loc:'copy_location_order_position'}"
         fetchLock="true"
         query="{}">
         <thead>
@@ -104,6 +112,8 @@
                 <th field="request_lib_shortname" fpath="request_lib.shortname" _visible="false" ffilter="true">Request Library (Shortname)</th>
                 <th field="selection_ou" fpath="selection_ou.shortname" _visible="false" ffilter="true">Selection Locus</th>
                 <th field="sms_carrier_name" fpath="sms_carrier.name" _visible="false" ffilter="true">SMS Carrier</th>
+                <th field="cn_prefix" fpath="current_copy.call_number.prefix.label" _visible="false" ffilter="true" fsort="true">[% l('Call Number Prefix') %]</th>
+                <th field="cn_suffix" fpath="current_copy.call_number.suffix.label" _visible="false" ffilter="true" fsort="true">[% l('Call Number Suffix') %]</th>
             </tr>
         </thead>
     </table>
