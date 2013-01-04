@@ -62,6 +62,17 @@
         </div>
         [%- END %]
         <h1 id='rdetail_title' itemprop="name">[% attrs.title_extended | html %]</h1>
+        [%-
+            FOR link880 IN attrs.graphic_titles;
+                FOR alt IN link880.graphic;
+                    '<h2 class="graphic880"';
+                    IF alt.dir;
+                        ' dir="' _ alt.dir _ '"';
+                    END;
+                    '>'; alt.value | html; '</h2>';
+                END;
+            END;
+        -%]
         [%- INCLUDE "opac/parts/record/authors.tt2" %]
     </div>
 </div>
@@ -146,6 +157,21 @@ IF num_uris > 0;
     <li id='rdetail_edition'>
         <strong class='rdetail_label'>[% l("Edition:") %]</strong>
         <span class='rdetail_value'>[% attrs.edition | html %]</span>
+        [%-
+        FOR entry IN attrs.graphic_editions;
+            FOR alt IN entry.graphic;
+                diratt = "";
+                IF alt.dir;
+                    diratt = ' dir="' _ alt.dir _ '"';
+                END;
+        -%]
+        <div class="graphic880 rdetail_value"[% diratt %]>
+            [% alt.value | html %]
+        </div>
+        [%-
+            END;
+        END;
+        -%]
     </li>
     [%- END %]
     [%- IF attrs.publisher %]
@@ -160,6 +186,23 @@ IF num_uris > 0;
         [%- IF attrs.pubdate; %]
             <span itemprop="datePublished">[% attrs.pubdate | html; %]</span>
         [%- END; %]
+        [%-
+        IF attrs.graphic_pubinfos.size > 0;
+            FOR entry IN attrs.graphic_pubinfos;
+                FOR alt IN entry.graphic;
+                    diratt = "";
+                    IF alt.dir;
+                        diratt = ' dir="' _ alt.dir _ '"';
+                    END;
+        -%]
+        <div class="graphic880"[% diratt %]>
+            [% alt.value | html %]
+        </div>
+        [%-
+                END;
+            END;
+        END
+        -%]
     </li>
     [%- END %]
 </ul>

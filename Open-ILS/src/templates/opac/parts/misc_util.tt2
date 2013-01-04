@@ -1,4 +1,84 @@
 [% 
+    # Support multiscript records via alternate graphic 880 fields
+    # get_graphic_880s(target_field='100')
+    # See "Model A" in http://www.loc.gov/marc/bibliographic/ecbdmulti.html
+    # and $6 description in http://www.loc.gov/marc/bibliographic/ecbdcntf.html
+    MACRO get_graphic_880s BLOCK;
+        FOR node IN xml.findnodes('//*[@tag="' _ target_field _ '"]');
+            raw_vals = [];
+            core_val = '';
+            FOR subnode IN node.findnodes('./*[not(contains("w 0 5 6 8 9", @code))]');
+                raw_vals.push(subnode.textContent());
+            END;
+            core_val = raw_vals.join(" ");
+            raw_vals = [];
+
+            linked_fields = [];
+            FOR sub IN node.findnodes('./*[@code="6"]');
+                linked_fields.push(sub.textContent);
+            END;
+            graphics = [];
+            get_linked_880s;
+            graphic_880s.push({
+                primary => {"occur" => occurrence, "value" => core_val},
+                graphic => graphics
+            });
+        END;
+    END;
+
+    MACRO get_linked_880s BLOCK;
+        FOR link_field IN linked_fields;
+            target = target_field _ link_field.substr(3);
+            # Get the linked 880 value
+            raw_val = '';
+            dir = '';
+            occurrence = '';
+            script = '';
+            FOR node IN xml.findnodes('//*[@tag="880"]');
+                # Operate only on the target linked fields
+                FOR linknode IN node.findnodes('./*[@code="6"]');
+                    lf = linknode.textContent();
+                    IF lf.substr(0, target.length) == target;
+                        occurrence = lf.substr(4, 2);
+                        rawscript = lf.substr(7, 2);
+                        SWITCH rawscript;
+                        CASE '(3';
+                            script = 'Arabic';
+                        CASE '(B';
+                            script = 'Latin';
+                        CASE '$1';
+                            script = 'CJK';
+                        CASE '(N';
+                            script = 'Cyrillic';
+                        CASE '(S';
+                            script = 'Greek';
+                        CASE '(2';
+                            script = 'Hebrew';
+                        END;
+
+                        rawdir = lf.substr(9, 1);
+                        SWITCH rawdir;
+                        CASE 'r';
+                            dir = 'rtl';
+                        END;
+
+                        raw_vals = [];
+                        FOR subnode IN node.findnodes('./*[not(contains("w 0 5 6 8 9", @code))]');
+                            raw_vals.push(subnode.textContent());
+                        END;
+                        raw_val = raw_vals.join(" ");
+                    END;
+                END;
+            END;
+            graphics.push({
+                occur => occurrence,
+                value => raw_val,
+                script => script,
+                dir => dir
+            });
+        END;
+    END;
+
     # Extract MARC fields from XML
     #   get_marc_attrs( { marc_xml => doc } )
     BLOCK get_marc_attrs;
@@ -27,9 +107,12 @@
         END;
         args.issn = (args.issns.size) ? args.issn.0 : '';
 
+        graphic_880s = [];
+        get_graphic_880s(target_field='100');
+        args.graphic_authors = graphic_880s;
         args.authors = [];
-        FOR sub IN xml.findnodes('//*[@tag="100"]/*[@code="a"]');
-            args.authors.push(sub.textContent);
+        FOR author IN args.graphic_authors;
+            args.authors.push(author.primary.value);
         END;
         args.author = (args.authors.size) ? args.authors.0 : '';
 
@@ -41,11 +124,14 @@
         # Avoid ugly trailing syntax on brief titles
         args.title = args.title | replace('[:;/]$', '');
 
-        # Provide correct spacing between the subfields
-        titsubs = xml.findnodes('//*[@tag="245"]/*[@code]');
-        titsubs_content = [];
-            FOR sub IN titsubs; titsubs_content.push(sub.textContent); END;
-        args.title_extended = titsubs_content.join(" ");
+        graphic_880s = [];
+        get_graphic_880s(target_field='245');
+        args.graphic_titles = graphic_880s;
+        args.titles = [];
+        FOR title IN args.graphic_titles;
+            args.titles.push(title.primary.value);
+        END;
+        args.title_extended = (args.titles.size) ? args.titles.0 : '';
 
         args.pubplaces = [];
         FOR sub IN xml.findnodes('//*[@tag="260"]/*[@code="a"]');
@@ -68,13 +154,31 @@
         # Full publisher info
         args.pubinfo = "$args.pubplace $args.publisher $args.pubdate";
 
+        graphic_880s = [];
+        get_graphic_880s(target_field='260');
+        args.graphic_pubinfos = graphic_880s;
+        args.pubinfos = [];
+        FOR pubinfo IN args.graphic_pubinfos;
+            args.pubinfos.push(pubinfo.primary.value);
+        END;
+        args.pubinfo = (args.pubinfos.size) ? args.pubinfos.0 : '';
+
         args.summaries = [];
         FOR sub IN xml.findnodes('//*[@tag="520"]/*[@code="a"]');
             args.summaries.push(sub.textContent);
         END;
         args.summary = (args.summaries.size) ? args.summaries.0 : '';
 
+        # 250 gets pride of place for edition statement, and is the
+        # only logical choice for 880 graphic fields
+        graphic_880s = [];
+        get_graphic_880s(target_field='250');
+        args.graphic_editions = graphic_880s;
         args.editions = [];
+        FOR edition IN args.graphic_editions;
+            args.editions.push(edition.primary.value);
+        END;
+
         ed_hunt = xml.findnodes('//*[@tag="250"]/*[@code="a"]') ||
             xml.findnodes('//*[@tag="534"]/*[@code="b"]') ||
             xml.findnodes('//*[@tag="775"]/*[@code="b"]');
@@ -91,12 +195,19 @@
         END;
         args.phys_desc = phys_content.join(" ");
 
+        graphic_880s = [];
+        get_graphic_880s(target_field='505');
+        args.graphic_contents = graphic_880s;
+        FOR content IN args.graphic_contents;
+            args.contents.push(content.primary.value);
+        END;
+        args.content = (args.contents.size) ? args.contents.0 : '';
+
+        # Maintain contents_list in case any custom use was made of it
         args.contents_list = [];
         FOR sub IN xml.findnodes('//*[@tag="505"]');
             args.contents_list.push(sub.textContent);
         END;
-        args.contents = args.contents_list.join(" ");
-        args.content = (args.contents.size) ? args.contents.0 : '';
 
         # MARC Callnumber
         args.marc_cns = [];
@@ -292,4 +403,5 @@
         loc_name = 'locg';
         loc_value = CGI.param(loc_name) || CGI.param('loc') || ctx.search_ou;
     END;
+
 %]

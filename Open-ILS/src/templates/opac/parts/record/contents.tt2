@@ -157,15 +157,26 @@ BLOCK render_contents;
     xpath = xpath || '//*[starts-with(@tag,"5")]';
     FOR node IN ctx.marc_xml.findnodes(xpath);
         all_content = [];
+        graphics = [];
         FOR subfield IN node.childNodes;
             NEXT UNLESS subfield.nodeName == "subfield";
             code = subfield.getAttribute('code');
+            IF code == '6';
+               linked_fields = [subfield.textContent()];
+               target_field = node.getAttribute('tag');
+               get_linked_880s;
+            END;
             NEXT UNLESS code.match('[a-z]');
             all_content.push(subfield.textContent);
         END;
         total_contents = all_content.join(" ").replace('\s+$', '');
         %] [% total_contents;
         IF total_contents.size; "<br/>"; END;
+        FOREACH link880 IN graphics;
+            '<div class="graphic880"' _ link880.dir _ '>';
+            link880.value | html;
+            '</div>';
+        END;
     END;
 END 
 %]

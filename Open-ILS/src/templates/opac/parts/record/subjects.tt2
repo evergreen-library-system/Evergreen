@@ -31,9 +31,15 @@
         xpath = xpath || '//*[starts-with(@tag,"6")]';
         FOR node IN ctx.marc_xml.findnodes(xpath);
             all_terms = [];
+            graphics = [];
             FOR subfield IN node.childNodes;
                 NEXT UNLESS subfield.nodeName == "subfield";
                 code = subfield.getAttribute('code');
+                IF code == '6';
+                   linked_fields = [subfield.textContent()];
+                   target_field = node.getAttribute('tag');
+                   get_linked_880s;
+                END;
                 NEXT UNLESS code.match('[a-z]');
                 IF code.match('[vxyz]'); " &gt; "; END;
                 # at this point, we actually have a partial term to use.
@@ -44,6 +50,11 @@
 <a href="[% mkurl(ctx.opac_root _ '/results', {qtype=>'subject', query=>total_term}, stop_parms); %]">[% single_term %]</a>
             [%- END;
             IF all_terms.size; "<br/>"; END;
+            FOREACH link880 IN graphics;
+                '<div class="graphic880"' _ link880.dir _ '>';
+                link880.value | html;
+                '</div>';
+            END;
         END;
     END 
 %]
