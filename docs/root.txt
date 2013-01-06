@@ -116,6 +116,8 @@ include::admin_initial_setup/importing_via_staff_client.txt[]
 
 include::admin_initial_setup/ordering_materials.txt[]
 
+include::admin_initial_setup/designing_your_catalog.txt[]
+
 // Return to normal title levels.
 :leveloffset: 0
 
