@@ -1,0 +1,561 @@
+Designing your catalog
+======================
+
+When people want to find things in your Evergreen system, they will check the
+catalog. In Evergreen, the catalog is made available through a web interface,
+called the _OPAC_ (Online Public Access Catalog). In the latest versions of the
+Evergreen system, the OPAC is built on a set of programming modules called the
+Template Toolkit. You will see the OPAC sometimes referred to as the _TPAC_.
+
+In this chapter, we'll show you how to customize the OPAC, change it from its
+default configuration, and make it your own.
+
+Configuring and customizing the public interface
+------------------------------------------------
+
+The public interface is referred to as the TPAC or Template Toolkit (TT) within
+the Evergreen community. The template toolkit system allows you to customize the
+look and feel of your OPAC by editing the template pages (.tt2) files as well as
+the associated style sheets.   
+
+Locating the default template files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The default URL for the TPAC on a default Evergreen system is
+_http://localhost/eg/opac/home_ (adjust _localhost_ to match your hostname or IP
+address).
+
+The default template file is installed in _/openils/var/templates/opac_.
+
+You should generally avoid touching the installed default template files, unless
+you are contributing changes for Evergreen to adopt as a new default. Even then,
+while you are developing your changes, consider using template overrides rather
+than touching the installed templates until you are ready to commit the changes
+to a branch. See below for information on template overrides.
+
+Mapping templates to URLs
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The mapping for templates to URLs is straightforward. Following are a few
+examples, where _<templates>_ is a placeholder for one or more directories that
+will be searched for a match:
+
+* _http://localhost/eg/opac/home => /openils/var/<templates>/opac/home.tt2_
+* _http://localhost/eg/opac/advanced =>
+/openils/var/<templates>/opac/advanced.tt2_
+* _http://localhost/eg/opac/results => 
+/openils/var/<templates>/opac/results.tt2_
+
+The template files themselves can process, be wrapped by, or include other
+template files. For example, the _home.tt2_ template currently involves a number
+of other template files to generate a single HTML file.
+
+Example Template Toolkit file: _opac/home.tt2_.
+----
+[%  PROCESS "opac/parts/header.tt2";
+    WRAPPER "opac/parts/base.tt2";
+    INCLUDE "opac/parts/topnav.tt2";
+    ctx.page_title = l("Home") %]
+    <div id="search-wrapper">
+      [% INCLUDE "opac/parts/searchbar.tt2" %]
+    </div>
+    <div id="content-wrapper">
+        <div id="main-content-home">
+             <div class="common-full-pad"></div>
+             [% INCLUDE "opac/parts/homesearch.tt2" %]
+             <div class="common-full-pad"></div>
+        </div>
+     </div>
+[% END %]
+----
+Note that file references are relative to the top of the template directory.
+
+How to override template files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Overrides for template files or TPAC pages go in a directory that parallels the
+structure of the default templates directory. The overrides then get pulled in
+via the Apache configuration.
+
+The following example demonstrates how to create a file that overrides the
+default "Advanced search page" (_advanced.tt2_) by adding a new 
+_templates_custom_ directory and editing the new file in that directory.
+
+----
+bash$ mkdir -p /openils/var/templates_custom/opac
+bash$ cp /openils/var/templates/opac/advanced.tt2 \
+         /openils/var/templates_custom/opac/.
+bash$ vim /openils/var/templates_custom/opac/advanced.tt2
+----
+
+Configuring the custom templates directory in Apache's eg.conf
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You now need to teach Apache about the new custom template directory. Edit
+_/etc/apache2/sites-available/eg.conf_ and add the following _<Location /eg>_
+element to each of the _<VirtualHost>_ elements in which you want to include the
+overrides. The default Evergreen configuration includes a VirtualHost directive
+for port 80 (HTTP) and another one for port 443 (HTTPS); you probably want to
+edit both, unless you want the HTTP user experience to be different from the
+HTTPS user experience.
+
+----
+<VirtualHost *:80>
+    # <snip>
+
+    # - absorb the shared virtual host settings
+    Include eg_vhost.conf
+    <Location /eg>
+        PerlAddVar OILSWebTemplatePath "/openils/var/templates_custom"
+    </Location>
+
+    # <snip>
+</VirtualHost>
+----
+
+Finally, reload the Apache configuration to pick up the changes. You should now
+be able to see your change at _http://localhost/eg/opac/advanced_ where
+_localhost_ is the hostname of your Evergreen server.
+
+Adjusting colors for your public interface
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You may adjust the colors of your public interface by editing the _colors.tt2_
+file. The location of this file is in 
+_/openils/var/templates/opac/parts/css/colors.tt2_. When you customize the
+colors of your public interface, remember to create a custom file in your custom
+template folder and edit the custom file and not the file located in you default
+template.    
+
+Adjusting fonts in your public interface
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Font sizes can be changed in the _colors.tt2_ file located in
+_/openils/var/templates/opac/parts/css/_. Again, create and edit a custom
+template version and not the file in the default template.
+
+Other aspects of fonts such as the default font family can be adjusted in
+_/openils/var/templates/opac/css/style.css.tt2_. 
+
+Media file locations in the public interface
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The media files (mostly PNG images) used by the default TPAC templates are stored
+in the repository in _Open-ILS/web/images/_ and installed in
+_/openils/var/web/images/_.
+
+Changing some text in the public interface
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Out of the box, TPAC includes a number of placeholder text and links. For
+example, there is a set of links cleverly named Link 1, Link 2, and so on in the
+header and footer of every page in TPAC. Here is how to customize that for a 
+_custom templates_ skin.
+
+To begin with, find the page(s) that contain the text in question. The simplest
+way to do that is with the grep -s command. In the following example, search for
+files that contain the text "Link 1":
+
+----
+bash$ grep -r "Link 1" /openils/var/templates/opac
+/openils/var/templates/opac/parts/topnav_links.tt2
+4:            <a href="http://example.com">[% l('Link 1') %]</a>
+----
+
+
+Next, copy the file into our overrides directory and edit it with vim.
+
+Copying the links file into the overrides directory.
+
+----
+bash$ cp /openils/var/templates/opac/parts/topnav_links.tt2 \
+/openils/var/templates_custom/opac/parts/topnav_links.tt2
+bash$ vim /openils/var/templates_custom/opac/parts/topnav_links.tt2
+----
+
+Finally, edit the link text in _opac/parts/header.tt2_. Content of the
+_opac/parts/header.tt2_ file.
+
+----
+<div id="gold-links-holder">
+    <div id="gold-links">
+        <div id="header-links">
+            <a href="http://example.com">[% l('Link 1') %]</a>
+            <a href="http://example.com">[% l('Link 2') %]</a>
+            <a href="http://example.com">[% l('Link 3') %]</a>
+            <a href="http://example.com">[% l('Link 4') %]</a>
+            <a href="http://example.com">[% l('Link 5') %]</a>
+        </div>
+    </div>
+</div>
+----
+
+For the most part, the page looks like regular HTML, but note the _[%_(" ")%]_
+that surrounds the text of each link. The _[% ... %]_ signifies a TT block, 
+which can contain one or more TT processing instructions. l(" ... "); is a
+function that marks text for localization (translation); a separate process can
+subsequently extract localized text as GNU gettext-formatted PO (Portable
+Object) files.
+
+As Evergreen supports multiple languages, any customization to Evergreen's
+default text must use the localization function. Also, note that the
+localization function supports placeholders such as [_1], [_2] in the text;
+these are replaced by the contents of variables passed as extra arguments to the
+l() function.
+
+Once the link and link text has been edited to your satisfaction, load the page
+in a Web browser and see the live changes immediately.
+
+Adding and removing MARC fields from the record details display page
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It is possible to add and remove the MARC fields and subfields displayed in the
+record details page.  In order to add MARC fields to be displayed on the details
+page of a record, you will need to map the MARC code to variables in the
+_/openils/var/templates/opac/parts/misc_util.tt2 file_.
+
+For example, to map the template variable _args.pubdates_ to the date of
+publication MARC field 260, subfield c, add these lines to _misc_util.tt2_:
+
+----
+args.pubdates = [];
+FOR sub IN xml.findnodes('//*[@tag="260"]/*[@code="c"]');
+    args.pubdates.push(sub.textContent);
+END;
+args.pubdate = (args.pubdates.size) ? args.pubdates.0 : ''
+----
+
+You will then need to edit the 
+_/openils/var/templates/opac/parts/record/summary.tt2_ file in  order to get the
+template variable for the MARC field to display.
+
+For example, to display the date of publication code you created in the
+_misc_util.tt2_ file, add these lines:
+
+----
+[% IF attrs.pubdate; %]
+    <span itemprop="datePublished">[% attrs.pubdate | html; %]</span>
+[% END; %]
+----
+
+You can add any MARC field to your record details page. Moreover, this approach
+can also be used to display MARC fields in other pages, such as your results
+page.
+
+Setting the default physical location for your library environment
+------------------------------------------------------------------
+
+_physical_loc_ is an Apache environment variable that sets the default physical
+location, used for setting search scopes and determining the order in which
+copies should be sorted. This variable is set in
+_/etc/apache2/sites-available/eg.conf_. The following example demonstrates the
+default physical location being set to library ID 104:
+
+----
+SetEnv physical_loc 104
+----
+
+Setting a default language and adding optional languages
+--------------------------------------------------------
+
+_OILSWebLocale_ adds support for a specific language. Add this variable to the
+Virtual Host section in _/etc/apache2/sites-available/eg.conf_.
+
+_OILSWebDefaultLocale_ specifies which locale to display when a user lands on a
+page in TPAC and has not chosen a different locale from the TPAC locale picker.
+The following example shows the _fr_ca_ locale being added to the locale picker
+and being set as the default locale:
+
+----
+PerlAddVar OILSWebLocale "fr_ca"
+PerlAddVar OILSWebLocale "/openils/var/data/locale/fr-CA.po"
+PerlAddVar OILSWebDefaultLocale "fr-CA"
+----
+
+Below is a table of the currently supported languages packaged with Evergreen:
+
+[options="header"]
+|================================================================
+|Language| Code| PO file
+|Czech| cs_cz| /openils/var/data/locale/cs-CZ.po
+|English - Canada| en_ca| /openils/var/data/locale/en-CA.po
+|English - Great Britain| en_gb| /openils/var/data/locale/en-GB.po
+|*English - United States| en_us| not applicable
+|French - Canada| fr_ca| /openils/var/data/locale/fr-CA.po
+|Portuguese - Brazil| pt_br| /openils/var/data/locale/pt_BR.po
+|Russian| ru_ru| /openils/var/data/locale/ru_RU.po
+|=================================================================
+*American English is built into Evergreen so you do not need to set up this
+language and there are no PO files. 
+
+Editing the formats select box options in the search interface.
+---------------------------------------------------------------
+
+You may wish to remove, rename or organize the options in the formats select
+box. This can be accomplished from the staff client.
+
+. From the staff client, navigate to *Admin > Server Administration > Marc Coded
+Value Maps* 
+. Select _Type_ from the *Record Attribute Type* select box.
+. Double click on the format type you wish to edit.
+
+To change the label for the type, enter a value in the *Search Label* field.
+
+To  move the option to a top list separated by a dashed line from the others,
+check the *Is Simple Selector* check box.
+
+To hide the type so that it does not appear in the search interface, uncheck the
+*OPAC Visible* checkbox.
+
+Changes will be immediate.
+
+Adding and removing search fields in advanced search
+-----------------------------------------------------
+
+It is possible to add and remove search fields on the advanced search page by
+editing the _opac/parts/config.tt2_ file in your template directory. Look for
+this section of the file:
+
+----
+search.adv_config = [
+    {adv_label => l("Item Type"), adv_attr => ["mattype", "item_type"]},
+    {adv_label => l("Item Form"), adv_attr => "item_form"},
+    {adv_label => l("Language"),  adv_attr => "item_lang"},
+    {adv_label => l("Audience"),  adv_attr => ["audience_group", "audience"], adv_break => 1},
+    {adv_label => l("Video Format"), adv_attr => "vr_format"},
+    {adv_label => l("Bib Level"), adv_attr => "bib_level"},
+    {adv_label => l("Literary Form"), adv_attr => "lit_form", adv_break => 1},
+    {adv_label => l("Search Library"), adv_special => "lib_selector"},
+    {adv_label => l("Publication Year"), adv_special => "pub_year"},
+    {adv_label => l("Sort Results"), adv_special => "sort_selector"},
+];
+----
+
+For example, if you delete the line:
+
+----
+{adv_label => l("Language"),  adv_attr => "item_lang"},
+----
+
+the language field will no longer appear on your advanced search page. Changes
+will appear immediately after you save your changes.
+
+Changing the display of facets and facet groups
+-----------------------------------------------
+
+Facets can be reordered on the search results page by editing the
+_opac/parts/config.tt2_ file in your template directory.  
+
+Edit the following section of _config.tt2_, changing the order of the facet
+categories according to your needs:
+
+----
+
+facet.display = [
+    {facet_class => 'author',  facet_order => ['personal', 'corporate']},
+    {facet_class => 'subject', facet_order => ['topic']},
+    {facet_class => 'series',  facet_order => ['seriestitle']},
+    {facet_class => 'subject', facet_order => ['name', 'geographic']}
+];
+
+----
+
+You may also change the default number of facets appearing under each category
+by editing the _facet.default_display_count_ value in _config.tt2_. The default 
+value is 5.
+
+Including external content to you public interface
+--------------------------------------------------
+
+The public interface allows you to include external services and content in your
+public interface. These can include book cover images, user reviews, table of
+contents, summaries, author notes, annotations, user suggestions, series
+information among other services. Some of these services are free while others
+require a subscription.    
+
+The following are some of the external content services which you can configure
+in Evergreen.
+
+OpenLibrary
+~~~~~~~~~~~
+
+The default install of Evergreen includes OpenLibrary book covers. The settings
+for this are controlled by the <added_content> section of
+_/openils/conf/opensrf.xml_. Here are the key elements of this configuration:
+
+----
+<module>OpenILS::WWW::AddedContent::OpenLibrary</module>
+----
+
+This section calls the OpenLibrary perl module. If you wish to link to a
+different book cover service other than OpenLibrary, you must refer to the
+location of the corresponding Perl module. You will also need to change other
+settings accordingly.
+
+----
+<timeout>1</timeout>
+----
+
+Max number of seconds to wait for an added content request to return data. Data 
+not returned within the timeout is considered a failure.
+----
+<retry_timeout>600</retry_timeout>
+----
+
+This setting is the amount of time to wait before we try again.
+
+----
+<max_errors>15</max_errors>
+----
+
+Maximum number of consecutive lookup errors a given process can have before
+added content lookups are disabled for everyone. To adjust the site of the cover
+image on the record details page edit the config.tt2 file and change the value
+of the record.summary.jacket_size. The default value is "medium" and the
+available options are "small", "medium" and "large."   
+
+ChiliFresh
+~~~~~~~~~~
+
+ChiliFresh is a subscription-based service which allows book covers, reviews and
+social interaction of patrons to appear in your catalog. To activate ChiliFresh,
+you will need to open the Apache configuration file _/etc/apache2/eg_vhost.conf_
+and edit several lines:
+
+. Uncoment (remove the "#" at the beginning of the line) and add your chilifresh
+account number:
+
+----
+#SetEnv OILS_CHILIFRESH_ACCOUNT
+----
+
+. Uncomment this line and add your ChiliFresh Profile:
+
+----
+#SetEnv OILS_CHILIFRESH_PROFILE
+----
+
+Uncomment the line indicating the location of the Evergreen javaScript for
+ChiliFresh:
+
+----
+#SetEnv OILS_CHILIFRESH_URL http://chilifresh.com/on-site /js/evergreen.js
+----
+
+. Uncomment the line indicating the secure URL for the Evergreen javaScript :
+
+----
+#SetEnv OILS_CHILIFRESH_HTTPS_URL https://secure.chilifresh.com/on-site/js/evergreen.js
+----
+
+Content Café
+~~~~~~~~~~~~
+
+Content Café is a subscription-based service that can add  jacket images,
+reviews, summaries, tables of contents and book details to your records.
+
+In order to activate Content Café, edit the _/openils/conf/opensrf.xml_ file and
+change the _<module>_ element to point to the ContentCafe Perl Module:
+
+----
+<module>OpenILS::WWW::AddedContent::ContentCafe</module>
+----
+
+To adjust settings for Content Café, edit a couple of fields with the
+_<ContentCafe>_ Section of _/openils/conf/opensrf.xml_.
+
+Edit the _userid_ and _password_ elements to match the user id and password for
+your Content Café account.
+
+Change the _return_behavior_on_no_jacket_image_ to set the behavior of your
+service when an image is not available for an item. By default this value is set
+to T which will result in a small image with the text "No Image Available" in
+place of a book cover. If you set this value to 1 a 1X1 blank image will be in
+place of a book cover. 
+
+Google Analytics
+~~~~~~~~~~~~~~~~
+
+Google Analytics is a free service to collect statisitics for your Evergreen
+site.  In order to use Google Analytics you will first need to set up the
+service from the Google Analytics website at http://www.google.com/analytics/.
+To activate Google Analytics you will need to edit _config.tt2_ in your
+template. To enable the service set the value of google_analytics.enabled to
+true and change the value of _google_analytics.code_ to be the code in your
+Google Analytics account.
+
+NoveList
+~~~~~~~~
+
+Novelist is a subscription-based service providing reviews and recommendation
+for books in you catalog. To activate your Novelist service in Evergreen, open
+the Apache configuration file _/etc/apache2/eg_vhost.conf_ and edit the line:
+
+----
+#SetEnv OILS_NOVELIST_URL
+----
+
+You should use the URL provided by NoveList.
+
+RefWorks
+~~~~~~~~
+
+RefWorks is a subscription-based online bibliographic management tool. If you
+have a RefWorks subscription, you can activate RefWorks in Evergreen by editing
+the _config.tt2_ file located in your template directory. You will need to set
+the _ctx.refworks.enabled_ value to _true_. You may also set the RefWorks URL by
+changing the _ctx.refworks.url_ setting on the same file. 
+
+SFX OpenURL resolver
+~~~~~~~~~~~~~~~~~~~~
+
+An OpenURL resolver allows you to find electronic resources and pull them into
+your catalog based on the ISBN or ISSN of the item. In order to use the SFX
+OpenURL resolver, you will need to subscribe to the Ex Libirs SFX service.  To
+activate the service in Evergreen edit the _config.tt2_ file in your template.
+Enable the resolver by changing the value of _openurl.enabled_ to _true_ and
+change the _openurl.baseurl_ setting to point to the URL of your openURL
+resolver. 
+
+Syndetic Solutions
+~~~~~~~~~~~~~~~~~~
+
+Syndetic Solutions is a subscription service providing book covers and other
+data for items in your catalog. In order to activate Syndetic, edit the
+_/openils/conf/opensrf.xml_ file and change the _<module>_ element to point to
+the Syndetic Perl Module:
+
+----
+<module>OpenILS::WWW::AddedContent::Syndetic</module>
+----
+
+You will also need to edit the  _<userid>_ element to be the user id provided to
+you by Syndetic.
+
+Then, you will need to uncomment and edit the _<base_url>_ element so that it
+points to the Syndetic service:
+
+----
+<base_url>http://syndetics.com/index.aspx</base_url>
+----
+
+For changes to be activated for your public interface you will need to restart
+Evergreen and Apache.
+
+Troubleshooting TPAC errors
+---------------------------
+
+If there is a problem such as a TT syntax error, it generally shows up as an
+ugly server failure page. If you check the Apache error logs, you will probably
+find some solid clues about the reason for the failure. For example, in the
+following example, the error message identifies the file in which the problem
+occurred as well as the relevant line numbers.
+
+Example error message in Apache error logs:
+
+----
+bash# grep "template error" /var/log/apache2/error_log
+[Tue Dec 06 02:12:09 2011] [warn] [client 127.0.0.1] egweb: template error:
+ file error - parse error - opac/parts/record/summary.tt2 line 112-121:
+  unexpected token (!=)\n  [% last_cn = 0;\n        FOR copy_info IN
+  ctx.copies;\n            callnum = copy_info.call_number_label;\n
+----
