@@ -16,13 +16,15 @@ my %fields = (
 );
 
 sub new {
-	my $class = shift;;
-	my $self = $class->SUPER::new(@_);
+    my $class = shift;;
+    my $self = $class->SUPER::new(@_);
 
-	$self->{_permitted}->{$_} = $fields{$_} for keys %fields;
-	@{$self}{keys %fields} = values %fields;
+    $self->{_permitted}->{$_} = $fields{$_} for keys %fields;
+    @{$self}{keys %fields} = values %fields;
+    $self->renewed([]);
+    $self->unrenewed([]);
 
-	return bless $self, $class;
+    return bless $self, $class;
 }
 
 sub do_renew_all {
