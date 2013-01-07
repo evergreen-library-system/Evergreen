@@ -1,21 +1,38 @@
-[% 
+[%- 
     series_tags = ['440', '490', '800', '810', '811', '830', '694']; 
     loc = ctx.search_ou;
-%]
 
-[% BLOCK render_series;
+BLOCK render_series;
     results = [];
     FOR tag IN series_tags;
-        FOR node IN ctx.marc_xml.findnodes('//*[@tag="' _ tag _ '"]/*');
-            node_uri = node.textContent.replace('[#"^$\+\-,\.:;&|\[\]()]', '') | uri;
-            node_html = node.textContent | html;
-            IF !loop.first;
-                results.last = result.last _ '<span>&mdash;</span>';
+        FOR node IN ctx.marc_xml.findnodes('//*[@tag="' _ tag _ '"]');
+            all_terms = [];
+            graphics = [];
+            FOR subfield IN node.childNodes;
+                NEXT UNLESS subfield.nodeName == "subfield";
+                code = subfield.getAttribute('code');
+                IF code == '6';
+                   linked_fields = [subfield.textContent()];
+                   target_field = node.getAttribute('tag');
+                   get_linked_880s;
+                END;
+                NEXT UNLESS code.match('[a-z]');
+                # at this point, we actually have a partial term to use.
+                single_term = subfield.textContent | html;
+                all_terms.push(subfield.textContent.replace('[#"^$\+\-,\.:;&|\[\]()]', ''));
+                total_term = all_terms.join(" ").replace('\s+$', '');
+
+                url = mkurl(ctx.opac_root _ '/results',
+                    { qtype=>'series', query=>total_term }, stop_parms
+                );
+                series = series _ '<a href="' _ url _ '">' _ single_term _ '</a> ';
             END;
-            results.push('<a href="' _ ctx.opac_root 
-                _ '/results?qtype=series&amp;query=' _ node_uri _ '&amp;loc='
-                _ loc _ '">' _ node_html _ '</a>'
-            );
+            FOREACH link880 IN graphics;
+                link = link880.value | html;
+                series = series _ '<div class="graphic880"' _ link880.dir _ '>' _ link _ '</div>';
+            END;
+            results.push(series);
+
         END;
     END; 
     FOR entry IN results;
