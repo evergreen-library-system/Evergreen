@@ -94,18 +94,6 @@
 
             <tr>
                 <th>
-                    <label for="no-url-selection">[% l('Process immediately?') %]</label>
-                </th>
-                <td>
-                    <input dojoType="dijit.form.CheckBox" id="no-url-selection"
-                        jsId="no_url_selection" />
-                </td>
-                <td class="note">
-                </td>
-            </tr>
-
-            <tr>
-                <th>
                     [% l('Tags and subfields to search for URLs:') %]
                 </th>
                 <td>
@@ -122,6 +110,19 @@
                 <td class="note">
                 </td>
             </tr>
+
+            <tr>
+                <th>
+                    <label for="no-url-selection">[% l('Process immediately?') %]</label>
+                </th>
+                <td>
+                    <input dojoType="dijit.form.CheckBox" id="no-url-selection"
+                        jsId="no_url_selection" />
+                </td>
+                <td class="note">
+                </td>
+            </tr>
+
         </table>
 
         <div>

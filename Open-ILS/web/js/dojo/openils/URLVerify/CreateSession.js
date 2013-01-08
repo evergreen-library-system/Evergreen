@@ -83,6 +83,8 @@ if (!dojo._hasResource["openils.URLVerify.CreateSession"]) {
                         /* I think we're modal enough to get away with this. */
                         module.session_id = r;
                         module.save_tags();
+                    } else {
+                        module.progress_dialog.hide();
                     }
                 }
             }

@@ -776,6 +776,9 @@
         <event code='2004' textcode='ACTOR_USER_DELETE_OPEN_XACTS'>
                 <desc xml:lang="en-US">The user you have attempted to delete cannot be deleted because it has open circulations and/or unpaid bills.</desc>
         </event>
+	<event code='2005' textcode='OBJECT_UNIQUE_IDENTIFIER_USED'>
+		<desc xml:lang="en-US">You are trying to create an object with a unique identifier (such as a 'name' field) that is already in use.</desc>
+	</event>
 
     <!-- CREDIT EVENTS -->
 	<event code='4001' textcode='CREDIT_PROCESSOR_NOT_ENABLED'>

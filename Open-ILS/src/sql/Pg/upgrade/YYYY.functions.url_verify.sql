@@ -46,6 +46,7 @@ CREATE TRIGGER ingest_url_tgr
 
 CREATE OR REPLACE FUNCTION url_verify.extract_urls ( session_id INT, item_id INT ) RETURNS INT AS $$
 DECLARE
+    last_seen_tag TEXT;
     current_tag TEXT;
     current_sf TEXT;
     current_url TEXT;
@@ -69,6 +70,12 @@ BEGIN
               FROM  biblio.record_entry b
                     JOIN container.biblio_record_entry_bucket_item c ON (c.target_biblio_record_entry = b.id)
               WHERE c.id = item_id;
+
+            IF current_tag IS NULL THEN
+                current_tag := last_seen_tag;
+            ELSE
+                last_seen_tag := current_tag;
+            END IF;
 
             SELECT  (XPATH(current_selector.xpath || '/@code', b.marc::XML))[current_url_pos]::TEXT INTO current_sf
               FROM  biblio.record_entry b

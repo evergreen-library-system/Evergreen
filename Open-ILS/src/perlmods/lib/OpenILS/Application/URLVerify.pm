@@ -658,6 +658,13 @@ sub create_session {
     $owning_lib ||= $e->requestor->ws_ou;
     return $e->die_event unless $e->allowed("URL_VERIFY", $owning_lib);
 
+    $name .= "";
+    my $name_test = $e->search_url_verify_session({name => $name});
+    return $e->die_event unless $name_test; # db error
+    return $e->die_event(
+        new OpenILS::Event("OBJECT_UNIQUE_IDENTIFIER_USED", note => "name"),
+    ) if @$name_test;   # already existing sessions with that name
+
     my $session = Fieldmapper::url_verify::session->new;
     $session->name($name);
     $session->owning_lib($owning_lib);
