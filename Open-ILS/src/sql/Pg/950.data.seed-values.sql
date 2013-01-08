@@ -332,6 +332,9 @@ INSERT INTO config.i18n_locale (code,marc_code,name,description)
     VALUES ('en-CA', 'eng', oils_i18n_gettext('en-CA', 'English (Canada)', 'i18n_l', 'name'),
 	oils_i18n_gettext('en-CA', 'Canadian English', 'i18n_l', 'description'));
 INSERT INTO config.i18n_locale (code,marc_code,name,description)
+    VALUES ('fi-FI', 'fin', oils_i18n_gettext('fi-FI', 'Finnish', 'i18n_l', 'name'),
+	oils_i18n_gettext('fi-FI', 'Finnish', 'i18n_l', 'description'));
+INSERT INTO config.i18n_locale (code,marc_code,name,description)
     VALUES ('fr-CA', 'fre', oils_i18n_gettext('fr-CA', 'French (Canada)', 'i18n_l', 'name'),
 	oils_i18n_gettext('fr-CA', 'Canadian French', 'i18n_l', 'description'));
 INSERT INTO config.i18n_locale (code,marc_code,name,description)
