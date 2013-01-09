@@ -475,7 +475,7 @@ sub next_chron {
         if (!defined($freq)) {
             carp "Undefined frequency in next_chron!";
         } elsif (!MFHD::Date::can_increment($freq)) {
-            carp "Don't know how to deal with frequency '$freq'!";
+            croak "Don't know how to deal with frequency '$freq'!";
         } else {
             # One of the standard defined issue frequencies
             @new = MFHD::Date::incr_date($freq, @cur);
