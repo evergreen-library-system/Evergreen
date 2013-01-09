@@ -405,6 +405,9 @@ sub get_compressed_holdings {
         } else {
             push(@comp_holdings, $curr_holding);
             while ($runner le $holding) {
+                # Here is where we used to get stuck in an infinite loop
+                # until the "Don't know how to deal with frequency" was
+                # elevated from a carp to a croak.
                 $runner->increment;
             }
             $curr_holding = $holding->clone;
