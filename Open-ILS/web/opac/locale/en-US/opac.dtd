@@ -663,7 +663,7 @@ You will need to change your password.">
 <!ENTITY login.barcode.inactive "The barcode used to login is marked as inactive.  Please contact your local library.">
 <!ENTITY login.account.inactive "This account has been deactivated.  Please contact your local library.">
 <!ENTITY login.failed "Login failed. The username or password provided was not valid.
-Ensure Caps-Lock is off and try again or contact your local library.">
+Passwords are case-sensitive.  Check your Caps-Lock key and try again or contact your local library.">
 <!ENTITY button.go "Go!">
 
 <!--	================================================================= 
