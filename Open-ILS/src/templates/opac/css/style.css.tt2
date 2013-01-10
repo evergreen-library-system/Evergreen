@@ -67,6 +67,11 @@ h2 {
     font-weight:bold;
 }
 
+h2.graphic880 {
+    font-size: [% css_fonts.size_bigger %];
+    font-weight:normal;
+}
+
 .hide_me, .hidden {
     display: none;
     visibility: hidden;
