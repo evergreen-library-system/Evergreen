@@ -408,7 +408,7 @@ BEGIN
         )::TEXT;
     END IF;
 
-    FOR main_entry IN SELECT * FROM authority.control_set_authority_field WHERE control_set = cset LOOP
+    FOR main_entry IN SELECT * FROM authority.control_set_authority_field acsaf WHERE acsaf.control_set = cset AND acsaf.main_entry IS NULL LOOP
         auth_field := XPATH('//*[@tag="'||main_entry.tag||'"][1]',source_xml::XML);
         IF ARRAY_LENGTH(auth_field,1) > 0 THEN
             FOR bib_field IN SELECT * FROM authority.control_set_bib_field WHERE authority_field = main_entry.id LOOP
