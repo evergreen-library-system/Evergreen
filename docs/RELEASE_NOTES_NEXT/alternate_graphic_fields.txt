@@ -3,7 +3,7 @@ Display alternate graphic (880) fields
 
 By default, Evergreen displays alternate graphic fields, if any, for
 contributors (1xx / 7xx), titles (245), edition statements (250), imprints
-(260), notes (5xx), and subjects (6xx) in search results and record details
+(260), notes (5xx), subjects (6xx), and series (4xx / 8xx) in search results and record details
 per the Library of Congress MARC21 specifications:
 
 * http://www.loc.gov/marc/bibliographic/bd880.html
