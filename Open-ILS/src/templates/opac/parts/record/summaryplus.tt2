@@ -12,7 +12,7 @@
     <!-- Embedded content cafe iframe -->
     [% ident = attrs.isbn_clean || attrs.upc %]
     <iframe width="100%" height="400" frameborder="0" 
-        src="[% ctx.proto %]://contentcafe2.btol.com/ContentCafeClient/ContentCafe.aspx?UserID=[%- 
+        src="[% ctx.ext_proto %]://contentcafe2.btol.com/ContentCafeClient/ContentCafe.aspx?UserID=[%- 
             ENV.OILS_CONTENT_CAFE_USER %]&amp;Password=[% ENV.OILS_CONTENT_CAFE_PASS %]&amp;ItemKey=[% ident | uri %]&amp;Options=Y" >
     </iframe>
     [%- END %]
