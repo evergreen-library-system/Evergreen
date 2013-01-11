@@ -7288,11 +7288,25 @@ int writeAuditInfo( osrfMethodContext* ctx, const char* user_id, const char* ws_
 static char* _sanitize_savepoint_name( const char* sp ) {
 
 	const char* safe_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345789_";
-	char* safeSpName = safe_malloc( strlen( sp ) + 1);
+
+	// PostgreSQL uses NAMEDATALEN-1 as a max length for identifiers,
+	// and the default value of NAMEDATALEN is 64; that should be long enough
+	// for our purposes, and it's unlikely that anyone is going to recompile
+	// PostgreSQL to have a smaller value, so cap the identifier name
+	// accordingly to avoid the remote chance that someone manages to pass in a
+	// 12GB savepoint name
+	const int MAX_LITERAL_NAMELEN = 63;
+	int len = 0;
+	len = strlen( sp );
+	if (len > MAX_LITERAL_NAMELEN) {
+		len = MAX_LITERAL_NAMELEN;
+	}
+
+	char* safeSpName = safe_malloc( len + 1 );
 	int i = 0;
 	int j;
 	char* found;
-	for (j = 0; j < strlen( sp ); j++) {
+	for (j = 0; j < len; j++) {
 	found = strchr(safe_chars, sp[j]);
 		if (found) {
 			safeSpName[ i++ ] = found[0];
