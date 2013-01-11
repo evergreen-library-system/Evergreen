@@ -145,6 +145,8 @@ static char* modulename = NULL;
 
 int writeAuditInfo( osrfMethodContext* ctx, const char* user_id, const char* ws_id);
 
+static char* _sanitize_savepoint_name( const char* sp );
+
 /**
 	@brief Connect to the database.
 	@return A database connection if successful, or NULL if not.
@@ -888,8 +890,10 @@ int setSavepoint( osrfMethodContext* ctx ) {
 
 	// Get the savepoint name from the method params
 	const char* spName = jsonObjectGetString( jsonObjectGetIndex(ctx->params, spNamePos) );
+	char *safeSpName = _sanitize_savepoint_name( spName );
 
-	dbi_result result = dbi_conn_queryf( writehandle, "SAVEPOINT \"%s\";", spName );
+	dbi_result result = dbi_conn_queryf( writehandle, "SAVEPOINT \"%s\";", safeSpName );
+	free( safeSpName );
 	if( !result ) {
 		const char* msg;
 		int errnum = dbi_conn_error( writehandle, &msg );
@@ -959,8 +963,10 @@ int releaseSavepoint( osrfMethodContext* ctx ) {
 
 	// Get the savepoint name from the method params
 	const char* spName = jsonObjectGetString( jsonObjectGetIndex(ctx->params, spNamePos) );
+	char *safeSpName = _sanitize_savepoint_name( spName );
 
-	dbi_result result = dbi_conn_queryf( writehandle, "RELEASE SAVEPOINT \"%s\";", spName );
+	dbi_result result = dbi_conn_queryf( writehandle, "RELEASE SAVEPOINT \"%s\";", safeSpName );
+	free( safeSpName );
 	if( !result ) {
 		const char* msg;
 		int errnum = dbi_conn_error( writehandle, &msg );
@@ -1030,8 +1036,10 @@ int rollbackSavepoint( osrfMethodContext* ctx ) {
 
 	// Get the savepoint name from the method params
 	const char* spName = jsonObjectGetString( jsonObjectGetIndex(ctx->params, spNamePos) );
+	char *safeSpName = _sanitize_savepoint_name( spName );
 
-	dbi_result result = dbi_conn_queryf( writehandle, "ROLLBACK TO SAVEPOINT \"%s\";", spName );
+	dbi_result result = dbi_conn_queryf( writehandle, "ROLLBACK TO SAVEPOINT \"%s\";", safeSpName );
+	free( safeSpName );
 	if( !result ) {
 		const char* msg;
 		int errnum = dbi_conn_error( writehandle, &msg );
@@ -7258,6 +7266,32 @@ int writeAuditInfo( osrfMethodContext* ctx, const char* user_id, const char* ws_
 		}
 	}
 	return 0;
+}
+
+/**
+	@brief Remove all but safe character from savepoint name
+	@param sp User-supplied savepoint name
+	@return sanitized savepoint name, or NULL
+
+    The caller is expected to free the returned string.  Note that
+    this function exists only because we can't use PQescapeLiteral
+    without either forking libdbi or abandoning it.
+*/
+static char* _sanitize_savepoint_name( const char* sp ) {
+
+	const char* safe_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345789_";
+	char* safeSpName = safe_malloc( strlen( sp ) + 1);
+	int i = 0;
+	int j;
+	char* found;
+	for (j = 0; j < strlen( sp ); j++) {
+	found = strchr(safe_chars, sp[j]);
+		if (found) {
+			safeSpName[ i++ ] = found[0];
+		}
+	}
+	safeSpName[ i ] = '\0';
+	return safeSpName;
 }
 
 /*@}*/
