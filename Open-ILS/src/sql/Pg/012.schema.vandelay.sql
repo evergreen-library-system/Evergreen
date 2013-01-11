@@ -1268,7 +1268,10 @@ BEGIN
         RETURN FALSE;
     END IF;
 
-    IF dyn_profile.replace_rule <> '' THEN
+    IF dyn_profile.replace_rule = '' AND dyn_profile.preserve_rule = '' AND dyn_profile.add_rule = '' AND dyn_profile.strip_rule = '' THEN
+        --Since we have nothing to do, just return a NOOP "we did it"
+        RETURN TRUE;
+    ELSIF dyn_profile.replace_rule <> '' THEN
         source_marc = v_marc;
         target_marc = eg_marc;
         replace_rule = dyn_profile.replace_rule;
@@ -1314,7 +1317,10 @@ BEGIN
         RETURN NULL;
     END IF;
 
-    IF dyn_profile.replace_rule <> '' THEN
+    IF dyn_profile.replace_rule = '' AND dyn_profile.preserve_rule = '' AND dyn_profile.add_rule = '' AND dyn_profile.strip_rule = '' THEN
+        --Since we have nothing to do, just return what we were given.
+        RETURN target_marc;
+    ELSIF dyn_profile.replace_rule <> '' THEN
         trgt_marc = target_marc;
         tmpl_marc = template_marc;
         replace_rule = dyn_profile.replace_rule;
@@ -1689,7 +1695,10 @@ BEGIN
         RETURN FALSE;
     END IF;
 
-    IF dyn_profile.replace_rule <> '' THEN
+    IF dyn_profile.replace_rule = '' AND dyn_profile.preserve_rule = '' AND dyn_profile.add_rule = '' AND dyn_profile.strip_rule = '' THEN
+        --Since we have nothing to do, just return a NOOP "we did it"
+        RETURN TRUE;
+    ELSIF dyn_profile.replace_rule <> '' THEN
         source_marc = v_marc;
         target_marc = eg_marc;
         replace_rule = dyn_profile.replace_rule;
