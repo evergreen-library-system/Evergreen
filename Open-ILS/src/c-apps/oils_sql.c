@@ -890,6 +890,12 @@ int setSavepoint( osrfMethodContext* ctx ) {
 
 	// Get the savepoint name from the method params
 	const char* spName = jsonObjectGetString( jsonObjectGetIndex(ctx->params, spNamePos) );
+
+	if (!spName) {
+		osrfLogWarning(OSRF_LOG_MARK, "savepoint.set called with no name");
+		return -1;
+	}
+
 	char *safeSpName = _sanitize_savepoint_name( spName );
 
 	dbi_result result = dbi_conn_queryf( writehandle, "SAVEPOINT \"%s\";", safeSpName );
