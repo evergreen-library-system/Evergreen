@@ -33,6 +33,26 @@ in general activity logs, add the following XML chunk to the bottom of
 </config>
 ----------------------------------------------------------------
 
+EDI Order Template Updates
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+An updated EDI order template is now part of the stock data.  To avoid 
+clobbering potentially functional EDI templates, no upgrade script was 
+included to automatically upgrade existing templates.  To upgrade to the
+newest template:
+
+[source, sql]
+----------------------------------------------------------------
+UPDATE action_trigger.event_definition SET template = 
+$$
+...
+$$ WHERE id = 23;
+
+/* 
+Use the template value for event definition 23 (line 7995) in 
+950.data.seed-values.sql as the contents (...) of the above command.
+*/
+----------------------------------------------------------------
+
 New features
 ------------
 
@@ -97,6 +117,52 @@ Fund Report
 A new IDL reporter view that provides summary information for funds for
 reporting. The resulting table looks like a fund with four additional fields:
 allocated_total, spent_total, encumbrance_total, and combined_balance.
+
+EDI Fetching and Parsing Enhancements / Repairs
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This release includes various improvements to how Evergreen processes
+vendor EDI responses, including order responses and invoices.  Changes
+include architectural improvements as well as new features.
+
+Bug Fixes
++++++++++
+
+* Improved order response handling for cancelled items.
+* Deleting fund debits (encumbrances) for cancelled items.
+* Extracting invoice date
+* Invoices include quantity and amount paid (in addition to billed) to reduce
+  manual staff data entry
+* Proper handling of previously-cancelled (e.g. back-ordered) invoiced items.
+
+Architectural improvements
+++++++++++++++++++++++++++
+
+For EDI parsing, the Ruby libraries, Ruby HTTP gateway, and Business::EDI Perl
+modules are no longer needed.  They have been replaced with a single Perl
+module which handles EDI parsing.
+
+This reduces the complexity of the fetching and parsing layer.  Though the Ruby
+libraries and Ruby HTTP gateway are still needed for outbound EDI (for now), 
+the Perl Business::EDI modules are no longer needed at all, so they are no 
+longer installed.
+
+EDI order template improvements (no SQL upgrade script!)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Improved template for EDI purchase orders.  This theoretically just
+works better where the old template worked.  Corrections made for
+interactions with ULS, Midwest Tape, Baker & Taylor, and Recorded Books
+especially.  GIR segments in the right place.
+
+And also the template is just more maintainable now.
+
+**THERE IS NO UPGRADE SCRIPT INCLUDED**.  Sites using EDI may not
+necessarily want to mess with what they already have working.
+
+If you want the changes, and maybe you do, especially if you're doing
+enriched ordering and/or ordering from the vendors listed above, you can
+extract the template changes easily enough yourself from the
+950.data.seed-values.sql file.  See Upgrade Notes above.
 
 OPAC
 ~~~~
