@@ -35,11 +35,11 @@ Copy Locations
 ~~~~~~~~~~~~~~
 
 * To get to the Copy Locations Editor, navigate to *Admin > Local Administration
-> Copy Locations Editor*. 
+  > Copy Locations Editor*. 
 * When setting up copy locations for your library you can set an entire copy
 location to allow or disallow circulation.
 
-image::copy_locations_circulate.png
+image::media/copy_locations_circulate.png[]
 
 * Copy locations can also be used as a data element in circulation policies. 
 
@@ -60,7 +60,7 @@ identify the maximum renewals that can be placed on an item.
 You can find Circulation Duration Rules by navigating to *Admin > Server
 Administration > Circulation Duration Rules*. 
 
-image::media/circ_duration_rules.jpg
+image::media/circ_duration_rules.jpg[]
 
 *Recurring fine* describes the amount assessed for daily and hourly fines as
 well as fines set for other regular intervals. You can also identify any grace
@@ -69,7 +69,7 @@ periods that should be applied before the fine starts accruing.
 You can find Recurring Fine Rules by navigating to *Admin > Server
 Administration > Circulation Recurring Fine Rules*.
 
-image::media/circ_recurring_fine_rules.jpg
+image::media/circ_recurring_fine_rules.jpg[]
 
 *Max fine* describes the maximum amount of fines that will be assessed for a
 specific circulation. Set the *Use Percent* field to True if the maximum fine
@@ -78,7 +78,7 @@ should be a percentage of the item's price.
 You can find Circ Max Fine Rules by navigating to *Admin > Server
 Administration > Circulation Max Fine Rules*.
 
-image::media/circ_max_fine_rules.jpg
+image::media/circ_max_fine_rules.jpg[]
 
 These rules generally cause the most variation between organizational units.
 
@@ -143,8 +143,8 @@ it is easier to create and locate rules directly in the database by updating
 The *config.circ_matrix_matchpoint* table is central to the configuration of
 circulation parameters. It collects the main set of data used to determine what
 rules apply to any given circulation. It is useful for us to think of their
-columns in terms of “match” columns, those that are used to match the
-particulars of a given circulation transaction, and “result” columns, those that
+columns in terms of 'match' columns, those that are used to match the
+particulars of a given circulation transaction, and 'result' columns, those that
 return the various parameters that are applied to the matching transaction.
 
 * Circulation policies by checkout library or owning library?
@@ -179,7 +179,7 @@ consortium.
 
 *Example 1*
 
-image::media/circ_example1.PNG
+image::media/circ_example1.png[]
  
 In this example, the consortium has decided on a 21_day_2_renew loan rule for
 general materials, i.e. books, etc. Most members do not charge overdue fines.
@@ -188,7 +188,7 @@ default circulation duration.
 
 *Example 2*
 
-image::media/circ_example2.PNG
+image::media/circ_example2.png[]
 
 This example includes a basic set of fields and creates a situation where items
 with a circ modifier of "book" or "music" can be checked out, but "dvd" items
@@ -196,7 +196,7 @@ will not circulate. The associated rules would apply during checkouts.
 
 *Example 3*
 
-image::media/circ_example3.PNG
+image::media/circ_example3.png[]
 
 This example builds on the earlier example and adds some more complicated
 options.
