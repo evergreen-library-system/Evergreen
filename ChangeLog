@@ -1,3 +1,1027 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 07db4ff1bc0d5e833a0c95a967bc39092629224e
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue Jan 15 11:30:41 2013 -0500
+
+    LP#1098377: protect against even more cstore segfaults
+    
+    Following up on the preceding patch, passing null
+    as the savepoint name to savepoint.release and
+    savepoint.rollback would also segfault cstore.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+12	0	Open-ILS/src/c-apps/oils_sql.c
+
+commit b2c3597d607756523e08932731fd2768d8ecb4d3
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Jan 15 10:58:16 2013 -0500
+
+    Verify savepoint name is non-null
+    
+    Before we attempt to mangle the name, let's ensure that it's non-null.
+    Otherwise, segfaults ensue.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+6	0	Open-ILS/src/c-apps/oils_sql.c
+
+commit 217d29fbfb02913d387a969fe4063cd1d9f3a3c7
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Fri Jan 11 01:32:13 2013 -0500
+
+    Protect against overly long savepoint names
+    
+    Per http://postgresql.org/docs/9.1/static/sql-syntax-lexical.html#SQL-SYNTAX-IDENTIFIERS,
+    the maximum identifier length works out to being 63 bytes (+1 for the
+    null terminator), so to avoid potential memory pressure by a 10GB string
+    somehow being passed in as the savepoint name, malloc no more than 64
+    bytes and copy no more than 63 bytes from the incoming name to the
+    escaped name.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+16	2	Open-ILS/src/c-apps/oils_sql.c
+
+commit 1215411812407ee8d74473a04154cd09ca90c18a
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Jan 11 02:30:50 2013 -0500
+
+    LP#1098377: sanitize savepoint names
+    
+    When invoking open-ils.{cstore,pcrud,rstore}.savepoint.*, the
+    caller supplies a name for the savepoint.  However, the savepoint
+    names could be constructed so that the caller could execute
+    arbitrary SQL.  This patch sanitizes the name so that it contains
+    only alphanumeric and underscore characters.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+37	3	Open-ILS/src/c-apps/oils_sql.c
+
+commit 098477e17693160743382d069adfc5bda73bf549
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Jan 16 11:04:23 2013 -0500
+
+    2.3.3 translations : repair Finnish translator email
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+1	1	build/i18n/po/AutoFieldWidget.js/fi-FI.po
+1	1	build/i18n/po/Searcher.js/fi-FI.po
+1	1	build/i18n/po/TranslatorPopup.js/fi-FI.po
+1	1	build/i18n/po/User.js/fi-FI.po
+1	1	build/i18n/po/XULTermLoader.js/fi-FI.po
+1	1	build/i18n/po/admin.properties/fi-FI.po
+1	1	build/i18n/po/auth.properties/fi-FI.po
+1	1	build/i18n/po/authority.js/fi-FI.po
+1	1	build/i18n/po/capture.js/fi-FI.po
+1	1	build/i18n/po/cat.properties/fi-FI.po
+1	1	build/i18n/po/circ.properties/fi-FI.po
+1	1	build/i18n/po/common.properties/fi-FI.po
+1	1	build/i18n/po/conify.dtd/fi-FI.po
+1	1	build/i18n/po/conify.js/fi-FI.po
+1	1	build/i18n/po/db.seed/fi-FI.po
+1	1	build/i18n/po/fm_IDL.dtd/fi-FI.po
+1	1	build/i18n/po/ils_events.xml/fi-FI.po
+1	1	build/i18n/po/lang.dtd/fi-FI.po
+1	1	build/i18n/po/offline.properties/fi-FI.po
+1	1	build/i18n/po/opac.dtd/fi-FI.po
+1	1	build/i18n/po/opac.js/fi-FI.po
+1	1	build/i18n/po/patron.properties/fi-FI.po
+1	1	build/i18n/po/pickup_and_return.js/fi-FI.po
+1	1	build/i18n/po/pull_list.js/fi-FI.po
+1	1	build/i18n/po/register.js/fi-FI.po
+1	1	build/i18n/po/reports.dtd/fi-FI.po
+1	1	build/i18n/po/reports.js/fi-FI.po
+1	1	build/i18n/po/reservation.js/fi-FI.po
+1	1	build/i18n/po/selfcheck.js/fi-FI.po
+1	1	build/i18n/po/serial.properties/fi-FI.po
+
+commit e391d0d04d68ee6f66bc94ecc7b09f951b1e22ce
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Jan 16 10:39:31 2013 -0500
+
+    2.3.3 translations : newpot
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+120	120	build/i18n/po/db.seed/db.seed.pot
+9	9	build/i18n/po/tpac/tpac.pot
+
+commit 1399c93e2636523fadf7c37daa6355a5d514e967
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Jan 16 10:35:33 2013 -0500
+
+    2.3.3 translations : update profiles
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+6	6	build/i18n/po/AutoFieldWidget.js/fi-FI.po
+6	6	build/i18n/po/Searcher.js/fi-FI.po
+6	6	build/i18n/po/TranslatorPopup.js/fi-FI.po
+6	6	build/i18n/po/User.js/fi-FI.po
+6	6	build/i18n/po/XULTermLoader.js/fi-FI.po
+7	7	build/i18n/po/admin.properties/fi-FI.po
+7	7	build/i18n/po/auth.properties/fi-FI.po
+6	6	build/i18n/po/authority.js/fi-FI.po
+8	8	build/i18n/po/capture.js/fi-FI.po
+54	125	build/i18n/po/cat.properties/fi-FI.po
+17	5	build/i18n/po/circ.properties/cs-CZ.po
+15	3	build/i18n/po/circ.properties/de-DE.po
+15	3	build/i18n/po/circ.properties/en-CA.po
+15	3	build/i18n/po/circ.properties/en-GB.po
+15	3	build/i18n/po/circ.properties/es-ES.po
+53	35	build/i18n/po/circ.properties/fi-FI.po
+16	4	build/i18n/po/circ.properties/fr-CA.po
+15	3	build/i18n/po/circ.properties/hy-AM.po
+15	3	build/i18n/po/circ.properties/oc-FR.po
+15	3	build/i18n/po/circ.properties/pt-BR.po
+15	3	build/i18n/po/circ.properties/ru-RU.po
+203	63	build/i18n/po/circ.properties/tr-TR.po
+9	5	build/i18n/po/common.properties/cs-CZ.po
+7	3	build/i18n/po/common.properties/de-DE.po
+7	3	build/i18n/po/common.properties/en-CA.po
+9	5	build/i18n/po/common.properties/en-GB.po
+9	5	build/i18n/po/common.properties/es-ES.po
+14	31	build/i18n/po/common.properties/fi-FI.po
+7	3	build/i18n/po/common.properties/fr-CA.po
+7	3	build/i18n/po/common.properties/hy-AM.po
+7	3	build/i18n/po/common.properties/oc-FR.po
+7	3	build/i18n/po/common.properties/pt-BR.po
+7	3	build/i18n/po/common.properties/ru-RU.po
+7	7	build/i18n/po/conify.dtd/fi-FI.po
+8	7	build/i18n/po/conify.js/fi-FI.po
+719	719	build/i18n/po/db.seed/cs-CZ.po
+719	719	build/i18n/po/db.seed/de-DE.po
+719	719	build/i18n/po/db.seed/en-CA.po
+719	719	build/i18n/po/db.seed/en-GB.po
+719	719	build/i18n/po/db.seed/es-ES.po
+11	11	build/i18n/po/db.seed/fi-FI.po
+719	719	build/i18n/po/db.seed/fr-CA.po
+719	719	build/i18n/po/db.seed/hy-AM.po
+719	719	build/i18n/po/db.seed/oc-FR.po
+719	719	build/i18n/po/db.seed/pt-BR.po
+719	719	build/i18n/po/db.seed/ru-RU.po
+719	719	build/i18n/po/db.seed/tr-TR.po
+1378	1374	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+1375	1371	build/i18n/po/fm_IDL.dtd/de-DE.po
+1375	1371	build/i18n/po/fm_IDL.dtd/en-CA.po
+1375	1371	build/i18n/po/fm_IDL.dtd/en-GB.po
+1375	1371	build/i18n/po/fm_IDL.dtd/es-ES.po
+24	24	build/i18n/po/fm_IDL.dtd/fi-FI.po
+1375	1371	build/i18n/po/fm_IDL.dtd/fr-CA.po
+1375	1371	build/i18n/po/fm_IDL.dtd/hy-AM.po
+1375	1371	build/i18n/po/fm_IDL.dtd/oc-FR.po
+1375	1371	build/i18n/po/fm_IDL.dtd/pt-BR.po
+1375	1371	build/i18n/po/fm_IDL.dtd/ru-RU.po
+1375	1371	build/i18n/po/fm_IDL.dtd/tr-TR.po
+4	4	build/i18n/po/ils_events.xml/cs-CZ.po
+39	43	build/i18n/po/ils_events.xml/fi-FI.po
+76	3	build/i18n/po/lang.dtd/ar-AR.po
+108	23	build/i18n/po/lang.dtd/cs-CZ.po
+76	3	build/i18n/po/lang.dtd/de-DE.po
+76	3	build/i18n/po/lang.dtd/en-CA.po
+76	3	build/i18n/po/lang.dtd/en-GB.po
+77	4	build/i18n/po/lang.dtd/es-ES.po
+660	763	build/i18n/po/lang.dtd/fi-FI.po
+77	4	build/i18n/po/lang.dtd/fr-CA.po
+76	3	build/i18n/po/lang.dtd/hy-AM.po
+76	3	build/i18n/po/lang.dtd/oc-FR.po
+76	3	build/i18n/po/lang.dtd/pt-BR.po
+76	3	build/i18n/po/lang.dtd/ru-RU.po
+76	3	build/i18n/po/lang.dtd/tr-TR.po
+130	8	build/i18n/po/multiclass_search_help.html/fi-FI.po
+18	4	build/i18n/po/offline.properties/cs-CZ.po
+17	3	build/i18n/po/offline.properties/de-DE.po
+21	7	build/i18n/po/offline.properties/en-CA.po
+18	4	build/i18n/po/offline.properties/en-GB.po
+17	3	build/i18n/po/offline.properties/es-ES.po
+31	28	build/i18n/po/offline.properties/fi-FI.po
+17	3	build/i18n/po/offline.properties/fr-CA.po
+18	4	build/i18n/po/offline.properties/hy-AM.po
+18	4	build/i18n/po/offline.properties/oc-FR.po
+17	3	build/i18n/po/offline.properties/pt-BR.po
+17	3	build/i18n/po/offline.properties/ru-RU.po
+17	3	build/i18n/po/offline.properties/tr-TR.po
+4	4	build/i18n/po/opac.dtd/cs-CZ.po
+30	24	build/i18n/po/opac.dtd/fi-FI.po
+15	15	build/i18n/po/opac.dtd/oc-FR.po
+12	12	build/i18n/po/opac.js/fi-FI.po
+10	4	build/i18n/po/patron.properties/cs-CZ.po
+7	3	build/i18n/po/patron.properties/de-DE.po
+7	3	build/i18n/po/patron.properties/en-CA.po
+7	3	build/i18n/po/patron.properties/en-GB.po
+7	3	build/i18n/po/patron.properties/es-ES.po
+74	68	build/i18n/po/patron.properties/fi-FI.po
+7	3	build/i18n/po/patron.properties/fr-CA.po
+7	3	build/i18n/po/patron.properties/hy-AM.po
+7	3	build/i18n/po/patron.properties/oc-FR.po
+7	3	build/i18n/po/patron.properties/pt-BR.po
+7	3	build/i18n/po/patron.properties/ru-RU.po
+7	3	build/i18n/po/patron.properties/tr-TR.po
+6	6	build/i18n/po/pickup_and_return.js/fi-FI.po
+9	9	build/i18n/po/pull_list.js/fi-FI.po
+22	22	build/i18n/po/register.js/fi-FI.po
+13	13	build/i18n/po/register.js/fr-CA.po
+25	25	build/i18n/po/reports.dtd/fi-FI.po
+8	7	build/i18n/po/reports.js/fi-FI.po
+16	13	build/i18n/po/reservation.js/fi-FI.po
+10	8	build/i18n/po/selfcheck.js/fi-FI.po
+12	10	build/i18n/po/serial.properties/fi-FI.po
+
+commit 07a5bb1c809a547a5b7f7d8792bf855f93eb4c5b
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Mon Dec 10 15:27:40 2012 -0500
+
+    Minor fix in Open-ILS/src/templates/opac/parts/place_hold_result.tt2
+    
+    The hidden override field had two type attrs: "hidden" and "name."
+    I deleted the one with the value of "name."
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	1	Open-ILS/src/templates/opac/parts/place_hold_result.tt2
+
+commit e30474a9609d6a2b711aa95b455b18bf8a5dfa75
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Mon Dec 10 10:29:21 2012 -0500
+
+    LP1076062: Hold overrides not working properly.
+    
+    Edit the verify_copy_for_hold helper function to actually work.  There
+    were cases where it would permit a copy when it shouldn't and also
+    disallow a copy when it should have allowed it.  It now makes better
+    use of the oargs override argument.
+    
+    If oargs has an events member, the method now removes the matching from
+    the list of failure events returned by the permit_copy_hold check.  It
+    was previously bugged, stopping on the first matching event, clearing
+    the list of failed and events, and returning a value to indicate that
+    the copy is permitted for the hold, even when it may not be.
+    
+    If oargs has the "all" member and there are failure events remaining,
+    the function loops through those events checking if the requestor has
+    the override permission for the event.  If the requestor does have the
+    override permission, then the event is added to oargs->{events} to be
+    saved for future checks on future copies.  It the requestor does not
+    have the override permission, then the event is pushed onto a new array
+    of failed events and also onto oargs->{failed}.  The latter is kept
+    to avoid looking up events repeatedly on future copy checks.
+    
+    The oargs->{failed} member is added as a shortcut to avoid repeatedly
+    looking up override permissions when the requestor does not have them.
+    It is actually checked, when present, before the user permission is
+    checked with a costly database lookup.
+    
+    Since verify_copy_for_hold has no other way to determine that an override
+    was requested, it checks for the events and/or all members of oargs being
+    set and having a value that would evaluate to true.  If oargs is undefined,
+    a hashref with no members, or lacks a "true" events or all member, then
+    verify_copy_for_hold functions as though no overrides are requested.
+    
+    Additionally, all functions that call verify_copy_for_hold, either directly
+    or indirectly, have had their intro logic modified to only set oargs when
+    an override is requested and oargs is not already set.  We make the assump-
+    tion that if oargs is set, it contains the events member.  (Perhaps that is
+    a poor assumption, but all of the code so far looks like it will work.)
+    
+    Fix test_and_create_hold_batch so that it passes the oargs parameter into
+    open-ils.circ.title_hold.is_possible in the way that check_title_hold (the
+    implementation function) actually expects it to be passed.  This also means
+    that we need to delete oargs from the params hashref before creating the
+    hold objects, as that would blow up if it were present.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+55	12	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit 29b6a94d649811aa7f8f2f91fb02cae9e688e94d
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Wed Dec 5 10:20:45 2012 -0500
+
+    Whitespace cleanup on aisle 9!
+    
+    Fix whitespace (spaces, not tabs) in OpenILS/Application/Circ/Holds.pm.
+    
+    Also, remove trailing whitespace at the end of lines.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+689	687	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit 8362a03a936ab9687a521282a1f8c31c59083532
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Jan 16 09:39:56 2013 -0500
+
+    Avoid CStoreEditor failures on missing log-protect
+    
+    When the log_protect configuration chunk is not present in
+    opensrf_core.xml, gracefully move on without it.  This prevents errors
+    like:
+    
+    Can't call method \"shared\" on an undefined value at
+    /usr/local/share/perl/5.10.1/OpenILS/Utils/CStoreEditor.pm line 646.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+12	8	Open-ILS/src/perlmods/lib/OpenILS/Utils/CStoreEditor.pm
+
+commit 22ce0de3a8e1b691e2ebbb31ecec3ada50a32eeb
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Fri Nov 2 09:53:30 2012 -0400
+
+    Fix backdate near DST changes
+    
+    When the due date and the backdate date are on opposite sides of a DST
+    boundary we were getting an hour off on the checkin time (using the
+    original due date's time).
+    
+    This commit changes it so that instead we just set the hour and minute
+    values on the backdate date to the due date's versions, leaving the time
+    zone alone.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+3	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit 20577f1088e310e44922ed0d3b7e3dc863ed39b8
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Jan 11 13:11:48 2013 -0500
+
+    LP#1098669: improve handling of Content Cafe external content in staff client
+    
+    This patch introduces a new TPac content variable, ctx.ext_proto, to
+    specify whether external content should be retrieved via HTTP or HTTPS.
+    ctx.proto can't be used for that purpose since it's set to 'oils' when
+    TPac is running inside the staff client.
+    
+    This fixes a bug where Content Cafe reviews wouldn't display in the staff
+    client bib record page and where clicking on the reviews link from search
+    results would open an empty window.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGWeb.pm
+1	1	Open-ILS/src/templates/opac/parts/record/summaryplus.tt2
+2	2	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit 85ebca17b3c38d330ea209b50f0030b94e216206
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Jan 15 14:08:03 2013 -0500
+
+    2.3 Release notes update
+    
+    Merge the edireader and edi_order_template release notes into the 2.3
+    release notes files.  Added a blurb to the Upgrade Notes regarding the
+    lack of an automatic EDI template upgrade.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+66	0	docs/RELEASE_NOTES_2_3.txt
+0	18	docs/RELEASE_NOTES_NEXT/edi_order_template.txt
+0	28	docs/RELEASE_NOTES_NEXT/edireader.txt
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/edi_order_template.txt
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/edireader.txt
+
+commit 5fe74f007ed09acb32a5e092dcba9d61b4d93884
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Oct 1 11:54:00 2012 -0400
+
+    ACQ invoice search persistence repaired
+    
+    Use XUL cookieService / cookieManager for managing cookies in embedded
+    web pages, since dojo.cookie cannot manage cookies within xulrunner.
+    
+    Persist cookies for 30 days.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+58	5	Open-ILS/web/js/ui/default/acq/invoice/view.js
+
+commit 3708c61573ce84ce3e6a9b2df72fd393ee86c406
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Jan 14 22:39:51 2013 -0500
+
+    Docs: minor formatting fixes for "borrowing items" chapter
+    
+    * Images need to have a trailing [] ; ideally this would contain the
+      alt text for the image, but the [] is needed to make the images
+      show up at all
+    * Since we're touching the image:: tags anyway, make the filename
+      extensions consistently lower case
+    * Fix a processing error; a bulleted list item wrapped so that > was the
+      first character on a line, which made Asciidoc angry. Easiest thing to
+      do to avoid this is just to indent the wrapped lines for each bullet
+      item, but we'll do the minimal thing and just indent this one line
+      this time.
+    * Fix one instance of Word "smart quotes" having replaced ye olde single
+      quotes.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+11	11	docs/admin_initial_setup/borrowing_items.txt
+-	-	docs/media/circ_example1.PNG
+-	-	docs/media/circ_example1.png
+-	-	docs/media/circ_example2.PNG
+-	-	docs/media/circ_example2.png
+-	-	docs/media/circ_example3.PNG
+-	-	docs/media/circ_example3.png
+ delete mode 100644 docs/media/circ_example1.PNG
+ create mode 100644 docs/media/circ_example1.png
+ delete mode 100644 docs/media/circ_example2.PNG
+ create mode 100644 docs/media/circ_example2.png
+ delete mode 100644 docs/media/circ_example3.PNG
+ create mode 100644 docs/media/circ_example3.png
+
+commit edcd696ef6ecffce1758e0d6ab296016d4fb057a
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Mon Jan 14 21:43:57 2013 -0500
+
+    Borrowing items: who, what, for how long
+    
+    Adding Borrowing Items chapter from Evergreen in Action to the official
+    docs.`
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+231	0	docs/admin_initial_setup/borrowing_items.txt
+-	-	docs/media/circ_duration_rules.jpg
+-	-	docs/media/circ_example1.PNG
+-	-	docs/media/circ_example2.PNG
+-	-	docs/media/circ_example3.PNG
+-	-	docs/media/circ_max_fine_rules.jpg
+-	-	docs/media/circ_recurring_fine_rules.jpg
+-	-	docs/media/copy_locations_circulate.png
+2	0	docs/root.txt
+ create mode 100644 docs/admin_initial_setup/borrowing_items.txt
+ create mode 100644 docs/media/circ_duration_rules.jpg
+ create mode 100644 docs/media/circ_example1.PNG
+ create mode 100644 docs/media/circ_example2.PNG
+ create mode 100644 docs/media/circ_example3.PNG
+ create mode 100644 docs/media/circ_max_fine_rules.jpg
+ create mode 100644 docs/media/circ_recurring_fine_rules.jpg
+ create mode 100644 docs/media/copy_locations_circulate.png
+
+commit dcc50208fcb68fc7f56422ebc218b14b0a32f86e
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Sep 11 12:41:08 2012 -0400
+
+    EDI order template improvements (no SQL upgrade script!)
+    
+    Improved template for EDI purchase orders.  This theoretically just
+    works better where the old template worked.  Corrections made for
+    interactions with ULS, Midwest Tape, Baker & Taylor, and Recorded Books
+    especially.  GIR segments in the right place.
+    
+    And also the template is just more maintainable now.
+    
+    **THERE IS NO UPGRADE SCRIPT INCLUDED**.  Sites using EDI may not
+    necessarily want to mess with what they already have working.
+    
+    If you want the changes, and maybe you do, especially if you're doing
+    enriched ordering and/or ordering from the vendors listed above, you can
+    extract the template changes easily enough yourself from the
+    950.data.seed-values.sql file.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+164	40	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+18	0	docs/RELEASE_NOTES_NEXT/edi_order_template.txt
+ create mode 100644 docs/RELEASE_NOTES_NEXT/edi_order_template.txt
+
+commit a53c643f54bdb34db7d2b3e3cb9e6974a873f4a8
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Mon Jan 14 16:59:12 2013 -0500
+
+    Upgrade script numbering for edireader branch
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+15	0	Open-ILS/src/sql/Pg/upgrade/0751.data.acq_cancel_not_accepted.sql
+0	14	Open-ILS/src/sql/Pg/upgrade/XXXX.data.acq_cancel_not_accepted.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0751.data.acq_cancel_not_accepted.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.acq_cancel_not_accepted.sql
+
+commit 17431bb096ce0818310a166b1feffeba83b654d4
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Dec 26 16:27:38 2012 -0500
+
+    EDIReader release notes
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+28	0	docs/RELEASE_NOTES_NEXT/edireader.txt
+ create mode 100644 docs/RELEASE_NOTES_NEXT/edireader.txt
+
+commit 676143704be517eb47ef4ce410ee73dc68576cd8
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Dec 13 09:44:55 2012 -0500
+
+    Handle cancelled (back-order) lineitems in EDI invoice
+    
+    Receiving an invoice for a cancelled lineitem mean the lineitem is no
+    longer cancelled.  Identify such lineitems and uncancel them along with
+    the requested number of not-yet-invoiced copies.
+    
+    This work flow is common for back-order items.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+66	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/EDI.pm
+
+commit 028d8d3d529e3ad96a464a59398ee0c2590539a7
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Dec 12 12:50:47 2012 -0500
+
+    EDIReader: improve monetary regexes
+    
+    Make no attempt to enforce/decipher monetary amounts in the regexes,
+    simply capture the values.  If they are invalid, Postgres will let us
+    know.
+    
+    This change allows us to capture non-numeric (\d) characters (e.g. "."),
+    which are of course common in monetary amounts.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+5	5	Open-ILS/src/perlmods/lib/OpenILS/Utils/EDIReader.pm
+
+commit 2eb7bb6d2b1827a10d6937ae027275f889117f94
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Dec 5 09:34:00 2012 -0500
+
+    EDI invoice date; invoice paid quantity/amount
+    
+    * capture the invoice date in EDIReader
+    * apply the invoice date to inbound invoices when available instead of
+      defaulting to 'now'
+    * apply the quantity/amount billed to the quantity/amount paid to reduce
+      staff data entry needs
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+20	7	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/EDI.pm
+2	1	Open-ILS/src/perlmods/lib/OpenILS/Utils/EDIReader.pm
+
+commit c9e1e9fc06e9f2f1f9a2e4e7a771556da074bd95
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Dec 4 10:00:26 2012 -0500
+
+    EDI: ensure lineitem 'state' matches cancel state
+    
+    When cancelling a lineitem becuase all linked copies are cancelled,
+    ensure that the lineitem state is set to "cancelled".
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+9	3	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/EDI.pm
+
+commit a5aad2e6840359f65a278406da3a0f250f93e20b
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Dec 3 14:51:41 2012 -0500
+
+    EDI response honor lineitem-level status; debit cleanup
+    
+    * Honor lineitem-level order status info (FTX+LIN) which indicates, in
+      some cases, that all ordered copies should be cancelled because the LI
+      as a whole is cancelled
+    
+    * Delete fund debits for cancelled lineitem details when appropriate
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+139	30	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/EDI.pm
+5	1	Open-ILS/src/perlmods/lib/OpenILS/Utils/EDIReader.pm
+1	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+14	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.acq_cancel_not_accepted.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.acq_cancel_not_accepted.sql
+
+commit b82675e26f0ad627a7276865a9fccb2a6d27fd33
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Dec 3 09:20:29 2012 -0500
+
+    EDI: protect against invalid order response
+    
+    Do not attempt to createI EDI messages for order responses which
+    reference nonexistent purchase orders, since it results in
+    transaction commit errors on invalid foreign keys, preventing
+    subsequent EDI files from getting processed.  Instead, log it
+    and skip it.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+4	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/EDI.pm
+
+commit 721781979545d0a9fdb335de706d58b07cbf0ba2
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Nov 12 09:35:53 2012 -0500
+
+    EDIReader : detect SAN vs. account number in buyer/seller
+    
+    NAD+BY+XXXXXXX::31B' -- SAN
+    NAD+BY+YYYYYYY::91' -- Account number
+    
+    For invoices, try the SAN first followed by the account number to
+    determine the receiving org unit.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+32	17	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/EDI.pm
+4	2	Open-ILS/src/perlmods/lib/OpenILS/Utils/EDIReader.pm
+
+commit e52692104abeaf6da197c2b010f64f2e4b3ccadf
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Sep 28 10:34:28 2012 -0400
+
+    Custom/local EDI reader module for ORDRSP and INVOIC (etc)
+    
+    Provides a new perl module (OpenILS::Utils::EDIReader) for reading
+    inbound EDI messages and producing data structures more easily
+    understood by the ACQ code.  Through this, extraction of EDI data is
+    focused in one module instead of spread through various layers.
+    
+    EDIReader is a small, purpose built module focusing solely on extracting
+    the needed EDI data and is not meant to be a general purpose EDI library.
+    
+    * Updates edi_fetcher and the ORDRSP and INVOIC handling code to use the
+      new libs.
+    
+    * Removes Business::EDI Evergreen dependency, since it's no longer used (and
+      is quite large).
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+0	1	Open-ILS/src/extras/Makefile.install
+0	1	Open-ILS/src/perlmods/Build.PL
+252	598	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/EDI.pm
+158	0	Open-ILS/src/perlmods/lib/OpenILS/Utils/EDIReader.pm
+12	1	Open-ILS/src/perlmods/t/14-OpenILS-Utils.t
+1	2	Open-ILS/src/support-scripts/edi_fetcher.pl
+9	0	Open-ILS/src/support-scripts/test-scripts/edi_reader.pl
+ create mode 100644 Open-ILS/src/perlmods/lib/OpenILS/Utils/EDIReader.pm
+ create mode 100755 Open-ILS/src/support-scripts/test-scripts/edi_reader.pl
+
+commit 56dfac8d77fd0e309ca3bf09946389abecd652c2
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Fri Jan 11 08:49:11 2013 -0500
+
+    Fix a data destruction bug when authorities are updated.
+    
+    Modify the two-argument form of vandelay.merge_record_xml to return
+    the target_marc when the add_rule, preserve_rule, replace_rule and
+    strip_rule are all empty.
+    
+    This method is used by authority.propagate_changes and would replace
+    the bibliographic record's marc with the overlay template when the
+    above would happen. By returning the biblographic record entry's own
+    marc in that case, we prevent data destruction.
+    
+    Additionally, protect bib and authority template overlay functions
+    in the same manner.
+    
+    Commit includes an upgrade script for this change as well as
+    for the previous commit's authority.generate_overlay_template fix.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+12	3	Open-ILS/src/sql/Pg/012.schema.vandelay.sql
+275	0	Open-ILS/src/sql/Pg/upgrade/0750.function.authority.generate_overlay_template.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0750.function.authority.generate_overlay_template.sql
+
+commit 8ceb28247f531da78f12a15916bc85fd7122baeb
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Jan 10 16:35:44 2013 -0500
+
+    Only consider main entry headings for bib overlay
+    
+    Restrict the authority fields we will pull overlay data from to those
+    that do not subordinate themselves to other authority fields.  That
+    is, skip see-from/see-also/etc for bib overlay.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	1	Open-ILS/src/sql/Pg/011.schema.authority.sql
+
+commit 7361a8df216e527bd4ed8c4ade276bd357352944
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Sat Jan 5 22:01:54 2013 -0500
+
+    Adding Designing Your Catalog chapter from the Evergreen In Action manual.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    
+    Minor fixes to "Designing your catalog" chapter
+    
+    Some strange Latin-1 characters were giving Asciidoc fits...
+    
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+561	0	docs/admin_initial_setup/designing_your_catalog.txt
+2	0	docs/root.txt
+ create mode 100644 docs/admin_initial_setup/designing_your_catalog.txt
+
+commit 973ff08e281de48342f9227dc949837c3ce4fa66
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Wed Jan 9 16:20:39 2013 -0500
+
+    LP #1075167: Serials: Avoid infinite loop in holdings summarization
+    
+    When receiving items with unworkable combinations of holdings and
+    patterns, the holdings summarization code can get stuck in an infinite
+    loop.  This solution prevents that, sparing the open-ils.serial
+    process and server resources, although it doesn't help the user out.
+    
+    It will take further examination of the problem and reëvalution of how
+    we deal with problems reported by OpenILS::Utils::MFHD to help the
+    user avoid or resolve these situations.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+3	0	Open-ILS/src/perlmods/lib/OpenILS/Utils/MFHD.pm
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Utils/MFHD/Caption.pm
+
+commit bed345c3da99ab1c838baf42c5b0bfc5a746b17c
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Fri Oct 5 18:42:11 2012 -0400
+
+    Acq: When invoice-building with embedded search, allow control of results list
+    
+    Previously, a results list could accumulate under inconsistent
+    conditions.  You'd get an accumulating results list if you were pressing
+    enter after successful searches, but your results lists would clear if
+    you actually clicked the Search button.  Worse, searches yielding empty
+    result sets would *appear* to clear your result list, but subsequent
+    sucessful searches would restore what was there before.
+    
+    This is the "missing commit" that makes the behavior consistent and
+    togglable.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+11	5	Open-ILS/src/templates/acq/invoice/view.tt2
+1	2	Open-ILS/src/templates/acq/search/unified.tt2
+12	2	Open-ILS/web/js/ui/default/acq/invoice/view.js
+12	4	Open-ILS/web/js/ui/default/acq/search/unified.js
+
+commit ba61b7aa214c77f67d7651006a542baa86d40142
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Jan 4 14:33:28 2013 -0500
+
+    fix user session management for MARC Batch Edit
+    
+    The Javascript in the hardcoded page templates was
+    not checking the XUL stash for the session key when
+    run from the staff client; this is now needed as
+    a result of the XULRunner updates introdued by
+    commit adee850f.
+    
+    As a consequence, the list of the user's record buckets
+    was not retrieved, and attempts to run a batch edit
+    would spin without updating any records.
+    
+    This fixes LP#1048707 and LP#1054277.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+16	2	Open-ILS/src/perlmods/lib/OpenILS/WWW/TemplateBatchBibUpdate.pm
+
+commit ebba327c695c41dd07e499f23ac52de265d30ea1
+Author: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+Date:   Thu Jan 3 14:23:54 2013 -0500
+
+    Documentation: Update upgrade instructions.
+    
+    Also add a few index terms.
+    
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+22	11	docs/installation/server_upgrade.txt
+
+commit ac3adf79ee0e22c72fe9c06829e2c237db5a8519
+Author: Ben Shum <bshum@biblio.org>
+Date:   Sun Dec 23 20:46:02 2012 -0500
+
+    LP1092937 - fix title/author in alternate pull list
+    
+    Clicking on Print Full Pull List (Alternate strategy) no longer showed
+    the title and author columns for hold pull lists.
+    
+    It seems that adding quotes around the tag lookups was all that was
+    required to bring these back for now. Long-term, it still seems better
+    to continue moving towards fewer pull list interfaces.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+2	2	Open-ILS/web/opac/extras/circ/alt_holds_print.html
+
+commit 1372acf295acf0438cccaab15223db18945164d6
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Tue Oct 2 13:31:13 2012 -0400
+
+    TPAC - SMS Number Munging
+    
+    Addresses LP bug 1016654 - Despite the hint telling users not to use
+    hyphens when entering a text notification number, we have patrons who
+    are entering the hyphens causing the text notification to fail.
+    
+    Munge "pretty printed" numbers into raw sets of digits in the A/T helper.
+    
+    This allows aliases to still work for services that support them.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+6	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Reactor.pm
+
+commit 70f19d8ecddd21953d978f255f8fd0bb172dc680
+Author: Ben Shum <bshum@biblio.org>
+Date:   Sun Dec 23 15:38:43 2012 -0500
+
+    Stamping upgrade script for index corporate authors
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+25	0	Open-ILS/src/sql/Pg/upgrade/0749.data.index_corporate_authors.sql
+0	18	Open-ILS/src/sql/Pg/upgrade/XXXX.data.index_corporate_authors.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0749.data.index_corporate_authors.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.index_corporate_authors.sql
+
+commit a4cbec6a24ea4f4dce22471c8563f00f85a956b4
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Oct 30 12:08:54 2012 -0400
+
+    Index corporate authors based on relator codes
+    
+    The existing stock index for corporate authors only kicks in if the
+    710 subfield 'e' == 'creator', but relator codes (in subfield '4') are
+    by many accounts a preferred mode of identifying the relationship of an
+    added entry. Thus, add '4' == ('aut' or 'cre') to the criteria for
+    indexing a corporate author.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+18	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.index_corporate_authors.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.index_corporate_authors.sql
+
+commit aafe1c65d104c75453133ba97e662846a8549cd4
+Author: Ben Shum <bshum@biblio.org>
+Date:   Thu Dec 20 14:32:46 2012 -0500
+
+    LP 1088561 - part 2, fix all update forms to not show saved passwords
+    
+    Bug re-opened due to locating a few other locations in my account area
+    where the password was being saved by browsers like Firefox instead of
+    requiring users to key in current password to make changes.
+    
+    This patch covers those two additional cases and changes the quoting
+    around the first case to be more consistent with the rest of the line.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Simon Mai <hieu.mai@mnsu.edu>
+
+1	1	Open-ILS/src/templates/opac/myopac/update_email.tt2
+1	1	Open-ILS/src/templates/opac/myopac/update_password.tt2
+1	1	Open-ILS/src/templates/opac/myopac/update_username.tt2
+
+commit e0a4bf8cda8d20c009934d0a76623fea5330cf5a
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Sun Dec 16 09:09:03 2012 -0500
+
+    TPAC: Fallback default value for facet.default_display_count
+    
+    Open-ILS/templates/opac/parts/result/facets.tt2 assigns the value of
+    facet.default_display_count to DEFAULT_DISPLAY_COUNT and then uses the
+    latter in a number of comparisons. facet.default_display_count is
+    expected to be defined in config.tt2; however, on upgrade, sites with
+    many override templates may not realize that they need to define that
+    value in config.tt2. If they do not, then the result is a strange facet
+    display where only the facet category header shows, with no facets, and
+    Apache error log messages like:
+    
+    Argument "" isn't numeric in numeric gt (>) at
+    /openils/var/templates/opac/parts/result/facets.tt2 line 72.
+    
+    This simple defensive fix assigns a fallback default value if one was
+    not provided in config.tt2
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	1	Open-ILS/src/templates/opac/parts/result/facets.tt2
+
+commit 87670e0846606045c5446a2515636b497b414c27
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Fri Dec 21 21:15:49 2012 -0500
+
+    Facets should not be sticky when users click "Search"
+    
+    We were using a hidden form variable to track which facets were in use,
+    at the same time as relying on the GET params to actually display the
+    facets, and munging the links on the remaining facets to properly
+    add/subtract facets.
+    
+    The result of the hidden form variable was that:
+    
+    1) clicking the Search button would unexpectedly result in the facet
+    applying to the new search (wat)
+    
+    2) applying two facets at once and then searching again would result
+    in the facet vars being treated as a raw array.
+    
+    Thanks to Dan Pearl for inspiring this patch with his fix for the latter
+    problem, and Kathy Lussier's recognition of the basic problem.
+    
+    Closes LP# 1092946 and 1091659.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+0	3	Open-ILS/src/templates/opac/results.tt2
+
+commit e794631d602a676ad407ab721b730791c1c906da
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Fri Dec 21 07:26:36 2012 -0500
+
+    lp1090867 Hide Fields undefined var error
+    
+    This fixes the "Error in widget_prompt.js, my_init(): TypeError: offlineStrings
+    is undefined" error.
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+4	0	Open-ILS/xul/staff_client/chrome/content/util/widget_prompt.js
+
+commit b6bacb792e0e0de13b25f9960d6f67570f102d41
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Dec 20 16:48:56 2012 -0500
+
+    Copy 2.3.1-2.3.2 SQL upgrade script into place
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+69	0	Open-ILS/src/sql/Pg/version-upgrade/2.3.1-2.3.2-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.3.1-2.3.2-upgrade-db.sql
+
+commit d67595ba7a88c6ee9be127e21dc9729d5b1b428e
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Dec 20 16:48:42 2012 -0500
+
+    Copy 2.3.0-2.3.1 SQL upgrade script into place
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+272	0	Open-ILS/src/sql/Pg/version-upgrade/2.3.0-2.3.1-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.3.0-2.3.1-upgrade-db.sql
+
+commit e9235d41c329212ad7484ca708525aa2366ca9a4
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Dec 20 11:36:42 2012 -0500
+
+    Update "Adding a data source to the reporter" docs
+    
+    A little bit of formatting clean-up, a little bit of extra information.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+58	28	docs/reports/reporter_add_data_source.txt
