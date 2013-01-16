@@ -1,6 +1,41 @@
 Evergreen 2.1 release notes
 ===========================
 
+Upgrade notes
+-------------
+
+SQL injection fix
+~~~~~~~~~~~~~~~~~
+To prevent arbitrary SQL being executed, the names of savepoints are now
+sanitized in open-ils.pcrud and open-ils.cstore operations.
+
+Log Protect (redaction)
+~~~~~~~~~~~~~~~~~~~~~~~
+To prevent sensitive information such as passwords from being logged
+in general activity logs, add the following XML chunk to the bottom of
+`opensrf_core.xml`, just inside the `<config>` section:
+
+[source, xml]
+----------------------------------------------------------------
+  ...
+  </routers>
+  <shared> <!-- new block starts here -->
+    <log_protect>
+      <match_string>open-ils.auth.authenticate.verify</match_string>
+      <match_string>open-ils.auth.authenticate.complete</match_string>
+      <match_string>open-ils.auth_proxy.login</match_string>
+      <match_string>open-ils.actor.user.password</match_string>
+      <match_string>open-ils.actor.user.username</match_string>
+      <match_string>open-ils.actor.user.email</match_string>
+      <match_string>open-ils.actor.patron.update</match_string>
+      <match_string>open-ils.cstore.direct.actor.user.create</match_string>
+      <match_string>open-ils.cstore.direct.actor.user.update</match_string>
+      <match_string>open-ils.cstore.direct.actor.user.delete</match_string>
+    </log_protect>
+  </shared> <!-- new block ends here -->
+</config>
+----------------------------------------------------------------
+
 Installation enhancements
 -------------------------
 * `eg_db_config.pl` now has a `--create-database` option to automatically create
