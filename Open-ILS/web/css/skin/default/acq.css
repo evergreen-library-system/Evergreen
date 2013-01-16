@@ -258,3 +258,17 @@ span[name="bib_origin"] img { vertical-align: middle; }
     margin-bottom: 15px;
     padding: 4px;
 }
+
+.acq-li-inline-copies-table { 
+    border-collapse: collapse; 
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+.acq-inline-copies-row td {
+    background-color: #FEF;
+    border: 2px solid #333;
+}
+.acq-li-inline-copies-table td { 
+    border: 1px solid #464; 
+}
+

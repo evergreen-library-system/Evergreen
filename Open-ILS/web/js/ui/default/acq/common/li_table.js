@@ -91,6 +91,19 @@ function AcqLiTable() {
 
     this.focusLineitem = new openils.CGI().param('focus_li');
 
+    // capture the inline copy display wrapper and row template
+    this.inlineCopyContainer = 
+        this.tbody.removeChild(dojo.byId('acq-inline-copies-row'));
+    var tb = dojo.query(
+        '[name=acq-li-inline-copies-tbody]', this.inlineCopyContainer)[0];
+    this.inlineCopyTemplate = tb.removeChild(
+        dojo.query('[name=acq-li-inline-copies-template]', tb)[0]);
+    this.inlineNoCopies = tb.removeChild(
+        dojo.query('[name=acq-li-inline-copies-none]', tb)[0]);
+
+    // list of LI IDs that should be refreshed at next display time
+    this.inlineCopiesNeedingRefresh = []; 
+
     dojo.byId("acq-lit-li-actions-selector").onchange = function() { 
         self.applySelectedLiAction(this.options[this.selectedIndex].value);
         this.selectedIndex = 0;
@@ -124,6 +137,7 @@ function AcqLiTable() {
 
 
     dojo.byId('acq-lit-select-toggle').onclick = function(){self.toggleSelect()};
+    dojo.byId('acq-inline-copies-toggle').onclick = function(){self.toggleInlineCopies()};
     dojo.byId('acq-lit-info-back-button').onclick = function(){self.show('list')};
     dojo.byId('acq-lit-copies-back-button').onclick = function(){self.show('list')};
     dojo.byId('acq-lit-notes-back-button').onclick = function(){self.show('list')};
@@ -201,6 +215,7 @@ function AcqLiTable() {
             case 'list':
                 openils.Util.show('acq-lit-table-div');
                 this.focusLi();
+                this.refreshInlineCopies();
                 break;
             case 'info':
                 openils.Util.show('acq-lit-info-div');
@@ -440,6 +455,8 @@ function AcqLiTable() {
         dojo.query('[attr=title]', row)[0].onclick = function() {self.drawInfo(li.id())};
         dojo.query('[name=copieslink]', row)[0].onclick = function() {self.drawCopies(li.id())};
         dojo.query('[name=noteslink]', row)[0].onclick = function() {self.drawLiNotes(li)};
+        dojo.query('[name=expand_inline_copies]', row)[0].onclick = 
+            function() {self.drawInlineCopies(li.id())};
 
         this.drawOrderIdentSelector(li, row);
 
@@ -1216,6 +1233,139 @@ function AcqLiTable() {
             function() { 
                 self._fetchLineitem(liId, function(li){self._drawInfo(li);}); 
             } 
+        );
+    };
+
+    this.toggleInlineCopies = function() {
+        // if any inline copies are not displayed, 
+        // display them all otherwise, hide them all.
+
+        var displayAll = false;
+
+        for (var liId in this.liCache) {
+            if (!this.inlineCopiesVisible(liId)) {
+                displayAll = true;
+                break;
+            }
+        }
+
+        for (var liId in this.liCache) {
+            var row = dojo.byId('acq-inline-copies-row-' + liId);
+            if (displayAll) {
+                if (!row || row._hidden) {
+                    this.drawInlineCopies(liId);
+                }
+            } else { // hide all
+                if (row) {
+                    // drawInlineCopies() on a visible row will hide it.
+                    this.drawInlineCopies(liId);
+                }
+            }
+        }
+
+    };
+
+    this.inlineCopiesVisible = function(liId) {
+        var row = dojo.byId('acq-inline-copies-row-' + liId); 
+        return (row && !row._hidden);
+    }
+
+    this.refreshInlineCopies = function(all, reFetch) {
+        var self = this;
+        var liIds = this.inlineCopiesNeedingRefresh;
+        if (all) liIds = openils.Util.objectProperties(liCache);
+        liIds.forEach(function(liId) {
+            if (self.inlineCopiesVisible(liId)) {
+                self.drawInlineCopies(liId, reFetch); // hide
+                self.drawInlineCopies(liId, reFetch); // re-draw
+            }
+        });
+    };
+
+    // draw inline copy table.  if the table is 
+    // already visible, hide the table as-is
+    // reFetch forces a retrieval of the lineitem and 
+    // copies from the server.  otherwise the locally
+    // cached version of each is used.
+    this.drawInlineCopies = function(liId, reFetch) {
+        var self = this;
+            
+        // find or create the row where the inline copies table will live
+        var containerRow = dojo.byId('acq-inline-copies-row-' + liId);
+        var liRow = dojo.query('[li=' + liId + ']')[0];
+
+        if (!containerRow) {
+
+            // build the inline copies container row and add it to 
+            // the DOM directly after the primary lineitem row
+
+            containerRow = self.inlineCopyContainer.cloneNode(true);
+            containerRow.id = 'acq-inline-copies-row-' + liId;
+
+            if (liRow.nextSibling) {
+                self.tbody.insertBefore(containerRow, liRow.nextSibling);
+            } else {
+                self.tbody.appendChild(containerRow);
+            }
+
+        } else {
+
+            // toggle the visible state
+            containerRow._hidden = !containerRow._hidden;
+            openils.Util.toggle(containerRow, 'table-row');
+
+            if (containerRow._hidden) return; // hide only
+        }
+
+        var handler = function(li) {
+
+            var tbody = dojo.query(
+                '[name=acq-li-inline-copies-tbody]', 
+                containerRow)[0];
+
+            // reset the table before adding copy rows
+            while (tbody.childNodes[0])
+                tbody.removeChild(tbody.childNodes[0]);
+
+            if(li.lineitem_details().length == 0) {
+                tbody.appendChild(
+                    self.inlineNoCopies.cloneNode(true));
+                return; // no copies to show
+            }
+
+            // add a row to the inline copy table for each copy
+            dojo.forEach(li.lineitem_details(),
+                function(copy) {
+                    var row = self.inlineCopyTemplate.cloneNode(true);
+                    tbody.appendChild(row);
+                    self.addInlineCopy(li, copy, row);
+                }
+            );
+        };
+
+        this._fetchLineitem(liId, handler, reFetch);
+    };
+
+    /** Draw read-only copy widgets for inline copies */
+    this.addInlineCopy = function(li, copy, row) {
+
+        var self = this;
+        dojo.forEach(liDetailFields,
+            function(field) {
+
+                var widget = new openils.widget.AutoFieldWidget({
+                    fmObject : copy,
+                    fmField : field,
+                    labelFormat : (field == 'fund') ? fundLabelFormat : null,
+                    searchFormat : (field == 'fund') ? fundSearchFormat : null,
+                    dijitArgs: {"labelType": (field == 'fund') ? "html" : null},
+                    fmClass : 'acqlid',
+                    parentNode : dojo.query('[name=' + field + ']', row)[0],
+                    readOnly : true,
+                });
+
+                widget.build();
+            }
         );
     };
 
@@ -2304,7 +2454,10 @@ function AcqLiTable() {
             );
             this.virtDfaCounts = {};
         }
-    }
+
+        if (this.inlineCopiesNeedingRefresh.indexOf(liId) < 0)
+            this.inlineCopiesNeedingRefresh.push(liId);
+    };
 
     this._updateCreatePoPrepayCheckbox = function(prepay) {
         var prepay = openils.Util.isTrue(prepay);

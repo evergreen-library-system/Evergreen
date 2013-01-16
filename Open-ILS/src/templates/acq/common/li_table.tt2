@@ -74,6 +74,10 @@
                             </a>
                         </span>
                     </td>
+                    <td style='white-space:nowrap;'>
+                        <a id='acq-inline-copies-toggle' 
+                            href='javascript:;'>&#x2713</a>[% l('Expand') %]
+                    </td>
                     <td>[% l('Items') %]</td>
                     <td>[% l('Notes') %]</td>
                     <td>[% l('Actions') %]</td>
@@ -139,6 +143,10 @@
                             </tbody>
                         </table>
                     </td>
+                    <td>
+                        <a name='expand_inline_copies' 
+                            href='javascript:;'>[% l('Expand') %]</a>
+                    </td>
                     <td><a title='FOOOBAR' name='copieslink' href='javascript:void(0);'>[% l('Copies([_1])', '<span name="count">0</span>') %]</a></td>
                     <td>
                         <a name='noteslink' href='javascript:void(0);'>[% l('Notes([_1])', '<span name="notes_count">0</span>') %]</a><span name="notes_alert_flag"></span>
@@ -160,6 +168,39 @@
                     </td>
                     <td><span name='li_state'></span></td>
                     <td><input type='text' size='8' name='price'/></td>
+                </tr>
+                <tr id='acq-inline-copies-row' class='acq-inline-copies-row'>
+                    <td colspan='0'>
+                        <table class='acq-li-inline-copies-table'>
+                            <thead>
+                                <tr>
+                                    <th>[% l('Branch') %]</th>
+                                    <th>[% l('Barcode') %]</th>
+                                    <th>[% l('Callnumber') %]</th>
+                                    <th>[% l('Fund') %]</th>
+                                    <th>[% l('Copy Location') %]</th>
+                                    <th>[% l('Circ Modifier') %]</th>
+                                    <th>[% l('Collection Code') %]</th>
+                                    <th>[% l('Note') %]</th>
+                                </tr>
+                            </thead>
+                            <tbody name='acq-li-inline-copies-tbody'>
+                                <tr name='acq-li-inline-copies-template'>
+                                    <td><div name='owning_lib'></div></td>
+                                    <td><div name='barcode'></div></td>
+                                    <td><div name='cn_label'></div></td>
+                                    <td><div name='fund'></div></td>
+                                    <td><div name='location'></div></td>
+                                    <td><div name='circ_modifier'></div></td>
+                                    <td><div name='collection_code'></div></td>
+                                    <td><div name='note'></div></td>
+                                </tr>
+                                <tr name='acq-li-inline-copies-none'>
+                                    <td colspan='0'>[% l('No Copies') %]</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
                 </tr>
             </tbody>
         </table>
