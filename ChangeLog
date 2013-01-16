@@ -1,8 +1,102 @@
-commit 0676b8be7da2684940362f1674851b357fa40956
+commit 693c174dd014b9b686c9eb169c75f2e5e5837416
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Jan 16 00:00:22 2013 -0500
+
+    Bumping version numbers for 2.1.5
+    
+    Also, add pertinent release notes entry.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application.pm
+1	2	Open-ILS/src/sql/Pg/002.schema.config.sql
+2	2	Open-ILS/xul/staff_client/windowssetup.nsi
+4	4	README
+35	0	RELEASE_NOTES.txt
+2	2	configure.ac
+
+commit 6fbd73b6456c34195ca1b975dbaa4dda8127696f
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue Jan 15 11:30:41 2013 -0500
+
+    LP#1098377: protect against even more cstore segfaults
+    
+    Following up on the preceding patch, passing null
+    as the savepoint name to savepoint.release and
+    savepoint.rollback would also segfault cstore.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+12	0	Open-ILS/src/c-apps/oils_sql.c
+
+commit 32dafc405e39159adf9ad15fd78c07d4c0c38070
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Jan 15 10:58:16 2013 -0500
+
+    Verify savepoint name is non-null
+    
+    Before we attempt to mangle the name, let's ensure that it's non-null.
+    Otherwise, segfaults ensue.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+6	0	Open-ILS/src/c-apps/oils_sql.c
+
+commit 8e5dfdc39c84d86e62c27670fd06cb2a7eac8a27
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Fri Jan 11 01:32:13 2013 -0500
+
+    Protect against overly long savepoint names
+    
+    Per http://postgresql.org/docs/9.1/static/sql-syntax-lexical.html#SQL-SYNTAX-IDENTIFIERS,
+    the maximum identifier length works out to being 63 bytes (+1 for the
+    null terminator), so to avoid potential memory pressure by a 10GB string
+    somehow being passed in as the savepoint name, malloc no more than 64
+    bytes and copy no more than 63 bytes from the incoming name to the
+    escaped name.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+16	2	Open-ILS/src/c-apps/oils_sql.c
+
+commit 4866458029567fc2af36a382dcc7fe3316e74350
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Jan 11 02:30:50 2013 -0500
+
+    LP#1098377: sanitize savepoint names
+    
+    When invoking open-ils.{cstore,pcrud,rstore}.savepoint.*, the
+    caller supplies a name for the savepoint.  However, the savepoint
+    names could be constructed so that the caller could execute
+    arbitrary SQL.  This patch sanitizes the name so that it contains
+    only alphanumeric and underscore characters.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    
+    Conflicts:
+    	Open-ILS/src/c-apps/oils_sql.c
+
+37	3	Open-ILS/src/c-apps/oils_sql.c
+
+commit 4e641eb976d0ed22cb96c76287622d34b32a886f
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Fri Nov 2 12:28:39 2012 -0400
+
+    Update ChangeLog for 2.1.4 release
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+70	211	ChangeLog
+
+commit 2df1d44645c07dd4a54d2d1392f76a3f8bdfbe90
 Author: Dan Scott <dscott@laurentian.ca>
 Date:   Thu Nov 1 23:33:20 2012 -0400
 
-    Bumping version numbers and adding Changelog
+    Bumping version numbers for 2.1.4
     
     Signed-off-by: Dan Scott <dscott@laurentian.ca>
 
@@ -13,100 +107,3 @@ Date:   Thu Nov 1 23:33:20 2012 -0400
 1	1	Open-ILS/xul/staff_client/defaults/preferences/prefs.js
 5	5	README
 2	2	configure.ac
-
-commit 4ac42d85a4e62fa7208387fee4ac67574b1024f1
-Author: Bill Erickson <berick@esilibrary.com>
-Date:   Fri Nov 2 15:28:27 2012 -0400
-
-    CStoreEditor auto-activity log redaction
-    
-    CStoreEditor logs all update calls to the activity log as key/value
-    pairs on the updated object.  Avoid loging key/value pairs for objects
-    when the API call being relayed by CStoreEditor is on the list of
-    log-protect API calls.  Instead, log "**DETAILS REDACTED**".
-    
-    Signed-off-by: Bill Erickson <berick@esilibrary.com>
-    Signed-off-by: Dan Scott <dscott@laurentian.ca>
-
-20	3	Open-ILS/src/perlmods/lib/OpenILS/Utils/CStoreEditor.pm
-
-commit 2fbc5777f8edda0ba211db1622b6fbf7d09f5865
-Author: Dan Scott <dscott@laurentian.ca>
-Date:   Tue Nov 6 14:26:53 2012 -0500
-
-    Document log redaction XML for opensrf_core.xml
-    
-    Based on Bill Erickson's original text.
-    
-    Signed-off-by: Dan Scott <dscott@laurentian.ca>
-
-30	0	RELEASE_NOTES.txt
-
-commit 97b0c04b74e3a8c3b98c7ea1ee5a3fd8d758705a
-Author: Bill Erickson <berick@esilibrary.com>
-Date:   Wed Oct 31 09:00:19 2012 -0400
-
-    Add sample log redaction config to EG opensrf_core
-    
-    Redact parameter logging for the following API calls:
-    
-    Login:
-    open-ils.auth.authenticate.verify
-    open-ils.auth.authenticate.complete
-    open-ils.auth_proxy.login
-    
-    User updates:
-    open-ils.actor.user.password
-    open-ils.actor.user.username
-    open-ils.actor.user.email
-    open-ils.actor.patron.update
-    open-ils.cstore.direct.actor.user.create
-    open-ils.cstore.direct.actor.user.update
-    open-ils.cstore.direct.actor.user.delete
-    
-    Signed-off-by: Bill Erickson <berick@esilibrary.com>
-    Signed-off-by: Dan Scott <dscott@laurentian.ca>
-
-18	0	Open-ILS/examples/opensrf_core.xml.example
-
-commit c8ae69700a34ec126b01b58188f150376bd3f91c
-Author: Mike Rylander <mrylander@gmail.com>
-Date:   Wed Oct 10 17:36:52 2012 -0400
-
-    Make it possible to suppress IDL fields
-    
-    Some clients of external services, particularly pcrud and
-    reporter-store, need to be able to access tables that contain columns
-    we'd rather restrict.  For instance, the passwd field on actor.usr.
-    
-    To effect this feature we provide a blacklist attribute for fields,
-    called suppress_controller, which works in the same way as the class
-    controller attribute but names controllers not allowed to use the field.
-    When the field is explicitly named in a query (fieldmapper select block
-    or json_query) an error is thrown, and suppressed fields are ingored in
-    general fieldmapper search/retreive requests.
-    
-    Signed-off-by: Mike Rylander <mrylander@gmail.com>
-    Signed-off-by: Bill Erickson <berick@esilibrary.com>
-    Signed-off-by: Dan Scott <dscott@laurentian.ca>
-
-1	1	Open-ILS/examples/fm_IDL.xml
-1	0	Open-ILS/examples/fm_IDL.xsd
-7	0	Open-ILS/src/c-apps/oils_idl-core.c
-27	2	Open-ILS/src/c-apps/oils_sql.c
-3	0	Open-ILS/web/reports/xul/source-browse.js
-3	0	Open-ILS/web/reports/xul/source-setup.js
-
-commit 19d53bda570a3eeab65e6d88e4c963b40553986b
-Author: Thomas Berezansky <tsbere@mvlc.org>
-Date:   Tue Jun 19 12:23:09 2012 -0400
-
-    Can't use README for version, so use configure.ac
-    
-    Because one good "this works for now" being broken can be replaced with
-    another one easily.
-    
-    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
-    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
-
-2	2	Open-ILS/xul/staff_client/Makefile.am
