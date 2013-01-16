@@ -1,0 +1,18 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2012-12-20 15:17+0000\n"
+"Last-Translator: Finnish <Unknown>\n"
+"Language-Team: Finnish <evergreen@jns.fi>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2012-12-21 05:01+0000\n"
+"X-Generator: Launchpad (build 16378)\n"
+
+#: User.js:FULL_NAME
+msgid "${0}, ${3} ${1} ${2} ${4}"
+msgstr "${0}, ${3} ${1} ${2} ${4}"

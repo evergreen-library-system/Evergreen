@@ -2,17 +2,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 22:55-0400\n"
-"PO-Revision-Date: 2011-08-04 09:37+0000\n"
+"POT-Creation-Date: 2012-12-20 09:37-0400\n"
+"PO-Revision-Date: 2012-08-14 13:12+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-08-05 04:41+0000\n"
-"X-Generator: Launchpad (build 13604)\n"
+"X-Launchpad-Export-Date: 2012-12-21 04:54+0000\n"
+"X-Generator: Launchpad (build 16378)\n"
 
-#: 950.data.seed-values.sql:3920
+#: 950.data.seed-values.sql:6231
 msgid "Tamil"
 msgstr "Թամիլերեն"
 
@@ -20,15 +20,15 @@ msgstr "Թամիլերեն"
 msgid "American English"
 msgstr "Ամերիկյան անգլերեն"
 
-#: 950.data.seed-values.sql:97 950.data.seed-values.sql:2490
+#: 950.data.seed-values.sql:170 950.data.seed-values.sql:4791
 msgid "Internal ID"
 msgstr "Ներքին ID"
 
-# id::clm.value__ady
-# id::ady
-#: 950.data.seed-values.sql:3506
-msgid "Adygei"
-msgstr "Ադիգեյ"
+# id::clm.value__vai
+# id::vai
+#: 950.data.seed-values.sql:6272
+msgid "Vai"
+msgstr "Vai"
 
 #: 950.data.seed-values.sql:24 950.data.seed-values.sql:289
 #: 950.data.seed-values.sql:310 950.data.seed-values.sql:329
@@ -51,7 +51,7 @@ msgstr "Javanese"
 
 # id::clfm.value__p
 # id::p
-#: 950.data.seed-values.sql:4026
+#: 950.data.seed-values.sql:6337
 msgid "Poetry"
 msgstr "Պոէզիա"
 
@@ -63,7 +63,7 @@ msgstr "Տեղափոխման մեջ"
 
 # id::clm.value__pau
 # id::pau
-#: 950.data.seed-values.sql:3839
+#: 950.data.seed-values.sql:6150
 msgid "Palauan"
 msgstr "Palauan"
 
@@ -71,49 +71,37 @@ msgstr "Palauan"
 msgid "On reservation shelf"
 msgstr "Պահման դարակի վրա է"
 
-# id::clm.value__vai
-# id::vai
-#: 950.data.seed-values.sql:3961
-msgid "Vai"
-msgstr "Vai"
+# id::clm.value__kir
+# id::kir
+#: 950.data.seed-values.sql:6037
+msgid "Kyrgyz"
+msgstr "Կիրգիզերեն"
 
-#: 950.data.seed-values.sql:2002
-msgid "Credit card processing: PayflowPro vendor"
-msgstr "Կրեդիտ քարտի ակտիվացում: PayflowPro մատակարար"
-
-#: 950.data.seed-values.sql:5334
-msgid ""
-"This prevents the system from charging more than the item price in overdue "
-"fines"
-msgstr ""
-"Սա կանխարգելում է համակարգին ժամկետանց տուգանքների համար գանձել ավելին քան "
-"նյութի գինն է։"
-
-#: 950.data.seed-values.sql:1971
-msgid "PayPal login"
-msgstr "PayPal գրանցում"
+#: 950.data.seed-values.sql:6376
+msgid "Blu-ray disc"
+msgstr "Կապույտ ճառագայթով սկավառակ"
 
 # id::cblvl.value__b
 # id::b
-#: 950.data.seed-values.sql:4042
+#: 950.data.seed-values.sql:6353
 msgid "Serial component part"
 msgstr "Պարբերականի մաս"
 
 # id::clm.value__niu
 # id::niu
-#: 950.data.seed-values.sql:3812
+#: 950.data.seed-values.sql:6123
 msgid "Niuean"
 msgstr "Niuean"
 
 # id::clm.value__fat
 # id::fat
-#: 950.data.seed-values.sql:3631
+#: 950.data.seed-values.sql:5942
 msgid "Fanti"
 msgstr "Fanti"
 
-#: 950.data.seed-values.sql:1994
-msgid "Credit card processing: PayflowPro password"
-msgstr "Կրեդիտ քարտի ակտիվացում: PayflowPro գաղտնաբառ"
+#: 950.data.seed-values.sql:2494
+msgid "OPAC"
+msgstr "ՀՕԱՔ"
 
 # id::crcd.name__1
 # id::1
@@ -134,27 +122,27 @@ msgstr "LCCN"
 
 # id::clm.value__mas
 # id::mas
-#: 950.data.seed-values.sql:3774
+#: 950.data.seed-values.sql:6085
 msgid "Masai"
 msgstr "Masai"
 
 # id::clm.value__bam
 # id::bam
-#: 950.data.seed-values.sql:3540
+#: 950.data.seed-values.sql:5851
 msgid "Bambara"
 msgstr "Bambara"
 
-#: 950.data.seed-values.sql:2026
-msgid "Holds: Block Renewal of Items Needed for Holds"
-msgstr "Պահումներ։ Պահման համար պահանջվող նյութերի թարմացումներ"
+# id::clm.value__snd
+# id::snd
+#: 950.data.seed-values.sql:6206
+msgid "Sindhi"
+msgstr "Sindhi"
 
-#: 950.data.seed-values.sql:2413
-msgid ""
-"Instead of All fields, show just suggested fields in patron registration by "
-"default."
-msgstr ""
-"Որպես լռակյաց ընթերցողների գրանցման ընթացքում բոլոր դաշտերի փոխարեն պարզապես "
-"ցույց տուր առաջարկվող դաշտերը։"
+# id::clm.value__lug
+# id::lug
+#: 950.data.seed-values.sql:6069
+msgid "Ganda"
+msgstr "Ganda"
 
 # id::clm.value__abk
 # id::abk
@@ -164,13 +152,13 @@ msgstr "Աբխազ"
 
 # id::clm.value__sat
 # id::sat
-#: 950.data.seed-values.sql:3870
+#: 950.data.seed-values.sql:6181
 msgid "Santali"
 msgstr "Santali"
 
 # id::clm.value__dua
 # id::dua
-#: 950.data.seed-values.sql:3610
+#: 950.data.seed-values.sql:5921
 msgid "Duala"
 msgstr "Duala"
 
@@ -180,19 +168,19 @@ msgstr "ISMN"
 
 # id::clm.value__vot
 # id::vot
-#: 950.data.seed-values.sql:3965
+#: 950.data.seed-values.sql:6276
 msgid "Votic"
 msgstr "Votic"
 
 # id::clfm.value__u
 # id::u
-#: 950.data.seed-values.sql:4028
+#: 950.data.seed-values.sql:6339 950.data.seed-values.sql:6377
 msgid "Unknown"
 msgstr "Չճանաչված"
 
-#: 950.data.seed-values.sql:2408
-msgid "GUI: Regex for post_code field on patron registration"
-msgstr "GUI: Regex for post_code դաշտի ընթերցողի գրանցման ընթացքում"
+#: 950.data.seed-values.sql:4863
+msgid "View Circulations"
+msgstr "Դիտիր տացքերը"
 
 # id::aou.name__5
 # id::5
@@ -202,43 +190,23 @@ msgstr "Օրինակ մասնաճյուղ 2"
 
 # id::clm.value__tso
 # id::tso
-#: 950.data.seed-values.sql:3943
+#: 950.data.seed-values.sql:6254
 msgid "Tsonga"
 msgstr "Tsonga"
 
-#: 950.data.seed-values.sql:2345
-msgid ""
-"The ident_value2 field will be suggested on the patron registration screen. "
-"Suggesting a field makes it appear when suggested fields are shown. If the "
-"field is shown or required this setting is ignored."
-msgstr ""
-"ident_value2 դաշտը կառաջարկվի ընթերցողի գրանցման պաստառում։ Առաջարկելով "
-"դաշտը՝ հանգեցնում է դրա արտածմանը երբ դրանք ցույց են տրվում։ Եթե դաշտը ցույց "
-"է տրված կամ պահանջված է, այս կարգաբերումը անտեսվում է։"
-
-#: 950.data.seed-values.sql:2357
-msgid ""
-"The master_account field will be shown on the patron registration screen. "
-"Showing a field makes it appear with required fields even when not required. "
-"If the field is required this setting is ignored."
-msgstr ""
-"master_account դաշտը կառաջարկվի ընթերցողի գրանցման պաստառում։ Ցուցադրելով "
-"դաշտը՝ հանգեցնում է դրա արտածմանը պահանջվող դաշտերի հետ, եթե նույնիսկ "
-"պահանջված չէ։ Եթե դաշտը պահանջված է, այս կարգաբերումը անտեսվում է։"
-
-#: 950.data.seed-values.sql:1396
+#: 950.data.seed-values.sql:1593 950.data.seed-values.sql:2485
 msgid "Acquisitions"
 msgstr "Համալրում"
 
 # id::clm.value__kau
 # id::kau
-#: 950.data.seed-values.sql:3716
+#: 950.data.seed-values.sql:6027
 msgid "Kanuri"
 msgstr "Kanuri"
 
 # id::clm.value__umb
 # id::umb
-#: 950.data.seed-values.sql:3957
+#: 950.data.seed-values.sql:6268
 msgid "Umbundu"
 msgstr "Umbundu"
 
@@ -252,17 +220,21 @@ msgstr "10_cent_per_day"
 msgid "Keyword"
 msgstr "Հիմնաբառ"
 
-#: 950.data.seed-values.sql:2563
+#: 950.data.seed-values.sql:4864
 msgid "Renew Circulations"
 msgstr "Թարմացրու տացքերը։"
 
-#: 950.data.seed-values.sql:2256
-msgid "GUI: Example for day_phone field on patron registration"
-msgstr "GUI: Ընթերցողի գրանցման ժամանակ day_phone դաշտի օրինակ"
+#: 950.data.seed-values.sql:10069
+msgid "See Also Tracing -- Chronological Subdivision"
+msgstr "Տես նաև հետագիծը -- Ժամանակագրական ենթաբաժին"
+
+#: 950.data.seed-values.sql:9313
+msgid "Overlay failed due to missing system id"
+msgstr "Վերդնումը ձախողվեց բացակա համակարգային id-ի պատճառով"
 
 # id::clm.value__cel
 # id::cel
-#: 950.data.seed-values.sql:3572
+#: 950.data.seed-values.sql:5883
 msgid "Celtic (Other)"
 msgstr "Կելտերեն (այլ)"
 
@@ -272,7 +244,7 @@ msgstr "Կասեցված"
 
 # id::clm.value__hil
 # id::hil
-#: 950.data.seed-values.sql:3676
+#: 950.data.seed-values.sql:5987
 msgid "Hiligaynon"
 msgstr "Hiligaynon"
 
@@ -282,9 +254,13 @@ msgstr "Զգուշացրու դատարկ մատեն գրառումների մա
 
 # id::clm.value__kac
 # id::kac
-#: 950.data.seed-values.sql:3710
+#: 950.data.seed-values.sql:6021
 msgid "Kachin"
 msgstr "Kachin"
+
+#: 950.data.seed-values.sql:10024
+msgid "Heading -- Meeting Name"
+msgstr "Վերնախորագիր -- Հանդիպման անուն"
 
 # id::crmf.name__4
 # id::4
@@ -292,58 +268,58 @@ msgstr "Kachin"
 msgid "overdue_max"
 msgstr "overdue_max"
 
-#: 950.data.seed-values.sql:2233
-msgid ""
-"The barred field will be shown on the patron registration screen. Showing a "
-"field makes it appear with required fields even when not required. If the "
-"field is required this setting is ignored."
-msgstr ""
-"Արգելափակված դաշտը կցուցադրվի ընթերցողի գրանցման պաստառում։ Դաշտի "
-"ցուցադրումը ստիպում է որ այն հայտնվի պահանջված դաշտերի հետ, եթե նույնիսկ դա "
-"պահանջված չէ։ Եթե դաշտը պահանջված է, ապա այս կարգաբերումները անտեսվում են։"
+#: 950.data.seed-values.sql:2500
+msgid "Recalls"
+msgstr "Հետ կանչեր"
+
+#: 950.data.seed-values.sql:1615
+msgid "Volunteers"
+msgstr "Կամավորներ"
+
+# id::clfm.value__j
+# id::j
+#: 950.data.seed-values.sql:6335
+msgid "Short stories"
+msgstr "Կարճ պատմվածքներ"
 
 # id::clm.value__pag
 # id::pag
-#: 950.data.seed-values.sql:3834
+#: 950.data.seed-values.sql:6145
 msgid "Pangasinan"
 msgstr "Pangasinan"
 
-#: 950.data.seed-values.sql:2321
-msgid ""
-"The evening_phone field will be required on the patron registration screen."
-msgstr "երեկոյան_հեռախոս դաշտը կպահանջվի ընթերցողի գրանցման պաստառում։"
+#: 950.data.seed-values.sql:8815 950.data.seed-values.sql:8865
+#: 950.data.seed-values.sql:8866
+msgid "Historical Circulation Retention Age"
+msgstr "Տացքի պատմության պահպանման տարիք"
 
-#: 950.data.seed-values.sql:1892
-msgid ""
-"The purpose is to provide an interval of time after an item goes into the on-"
-"holds-shelf status before it appears to patrons that it is actually on the "
-"holds shelf.  This gives staff time to process the item before it shows as "
-"ready-for-pickup. Examples: \"5 days\", \"1 hour\""
-msgstr ""
-"Նպատակն է տրամադրել ժամանակի միջակայք որից հետո նյութը գնում է դարակի վրա-"
-"պահված վիճակի, մինչ այն կհայտնվի ընթերցողին։ Սա աշխատակազմին տալիս է ժամանակ "
-"մշակել նյութը, մինչ այն կարտածվի որպես պատրաստ-վերցնելու համար։ Օրինակներ՝ "
-"\"5 օր\", \"1 ժամ\""
+#: 950.data.seed-values.sql:10141
+msgid "LC subject headings for children's literature"
+msgstr "Կոնգրեսի գրադարանի խորագրեր մանկական գրականության համար"
 
-#: 950.data.seed-values.sql:6483
+#: 950.data.seed-values.sql:2496
+msgid "Global"
+msgstr "Ընդհանուր"
+
+#: 950.data.seed-values.sql:8722
 msgid "Tax"
 msgstr "Տուրք"
 
 # id::clm.value__pam
 # id::pam
-#: 950.data.seed-values.sql:3836
+#: 950.data.seed-values.sql:6147
 msgid "Pampanga"
 msgstr "Pampanga"
 
 # id::clm.value__nah
 # id::nah
-#: 950.data.seed-values.sql:3799
+#: 950.data.seed-values.sql:6110
 msgid "Nahuatl"
 msgstr "Nahuatl"
 
 # id::clm.value__yid
 # id::yid
-#: 950.data.seed-values.sql:3978
+#: 950.data.seed-values.sql:6289
 msgid "Yiddish"
 msgstr "Yiddish"
 
@@ -360,30 +336,29 @@ msgstr "Այլ_հեռախոս դաշտը կպահանջվի ընթերցողի �
 
 # id::clm.value__cpp
 # id::cpp
-#: 950.data.seed-values.sql:3593
+#: 950.data.seed-values.sql:5904
 msgid "Creoles and Pidgins, Portuguese-based (Other)"
 msgstr "Creoles and Pidgins, Portuguese-based (այլ)"
 
 # id::clm.value__ton
 # id::ton
-#: 950.data.seed-values.sql:3938
+#: 950.data.seed-values.sql:6249
 msgid "Tongan"
 msgstr "Tongan"
 
 # id::clm.value__ijo
 # id::ijo
-#: 950.data.seed-values.sql:3689
+#: 950.data.seed-values.sql:6000
 msgid "Ijo"
 msgstr "Ijo"
 
-#: 950.data.seed-values.sql:5356
-msgid "Patron must log in with barcode and password at selfcheck station"
-msgstr ""
-"Ընթերցողը ինքնաստուգող կայանում պետք է մուտք գործի շտրիխ կոդով և գաղտնաբառով։"
+#: 950.data.seed-values.sql:8726
+msgid "Non-library Item"
+msgstr "Ոչ գրադարանային նյութ"
 
 # id::clm.value__gil
 # id::gil
-#: 950.data.seed-values.sql:3653
+#: 950.data.seed-values.sql:5964
 msgid "Gilbertese"
 msgstr "Gilbertese"
 
@@ -393,7 +368,7 @@ msgstr "Gilbertese"
 msgid "Damaged"
 msgstr "Վնասված"
 
-#: 950.data.seed-values.sql:7235 950.data.seed-values.sql:7236
+#: 950.data.seed-values.sql:8886 950.data.seed-values.sql:8887
 msgid "Historical Hold Retention Start Date"
 msgstr "Պահման պատմության տարիքի սկզբնավորման ամսաթիվ"
 
@@ -405,37 +380,34 @@ msgstr "Ավտոգրադարան"
 
 # id::clm.value__kaw
 # id::kaw
-#: 950.data.seed-values.sql:3717
+#: 950.data.seed-values.sql:6028
 msgid "Kawi"
 msgstr "Kawi"
 
-# id::clm.value__tel
-# id::tel
-#: 950.data.seed-values.sql:3923
-msgid "Telugu"
-msgstr "Telugu"
+#: 950.data.seed-values.sql:10143
+msgid "National Agricultural Library subject authority file"
+msgstr ""
+"Գյուղատնտեսական գրականության ազգային գրադարանի խորագրերի հեղինակավոր ֆայլ"
 
-# id::clm.value__new
-# id::new
-#: 950.data.seed-values.sql:3809
-msgid "Newari"
-msgstr "Newari"
+#: 950.data.seed-values.sql:2487
+msgid "GUI"
+msgstr "GUI"
 
 # id::clm.value__kok
 # id::kok
-#: 950.data.seed-values.sql:3728
+#: 950.data.seed-values.sql:6039
 msgid "Konkani"
 msgstr "Konkani"
 
 # id::clm.value__nau
 # id::nau
-#: 950.data.seed-values.sql:3802
+#: 950.data.seed-values.sql:6113
 msgid "Nauru"
 msgstr "Nauru"
 
 # id::cam.value__g
 # id::g
-#: 950.data.seed-values.sql:3996
+#: 950.data.seed-values.sql:6307
 msgid "General"
 msgstr "Ընդհանուր"
 
@@ -445,7 +417,7 @@ msgstr "Հաճախ նույն բանը ինչ որ PayPal կառավարչի մ�
 
 # id::clm.value__sas
 # id::sas
-#: 950.data.seed-values.sql:3869
+#: 950.data.seed-values.sql:6180
 msgid "Sasak"
 msgstr "Sasak"
 
@@ -463,29 +435,29 @@ msgstr "35_days_1_renew"
 
 # id::clm.value__lat
 # id::lat
-#: 950.data.seed-values.sql:3747
+#: 950.data.seed-values.sql:6058
 msgid "Latin"
 msgstr "Լատիներեն"
 
 # id::clm.value__zul
 # id::zul
-#: 950.data.seed-values.sql:3985
+#: 950.data.seed-values.sql:6296
 msgid "Zulu"
 msgstr "Zulu"
 
-# id::clm.value__dum
-# id::dum
-#: 950.data.seed-values.sql:3611
-msgid "Dutch, Middle (ca. 1050-1350)"
-msgstr "Հոլանդերեն, Միջին (մոտ. 1050-1350)"
+#: 950.data.seed-values.sql:6366
+msgid "Quadruplex"
+msgstr "Quadruplex"
 
-#: 950.data.seed-values.sql:1777
-msgid "Retain a bib record even when all attached copies are deleted"
-msgstr "Պահիր մատեն գրառումը, նույնիսկ եթե բոլոր կցված օրինակները ջնջված են։"
+# id::clm.value__geo
+# id::geo
+#: 950.data.seed-values.sql:5961
+msgid "Georgian"
+msgstr "Վրացերեն"
 
 # id::clm.value__ilo
 # id::ilo
-#: 950.data.seed-values.sql:3692
+#: 950.data.seed-values.sql:6003
 msgid "Iloko"
 msgstr "Iloko"
 
@@ -495,23 +467,19 @@ msgstr "Վերականգնիր ժամկետանցների տուգանքները
 
 # id::clm.value__arc
 # id::arc
-#: 950.data.seed-values.sql:3520
+#: 950.data.seed-values.sql:5831
 msgid "Aramaic"
 msgstr "Aramaic"
 
-#: 950.data.seed-values.sql:2385
-msgid ""
-"The second_given_name field will be shown on the patron registration screen. "
-"Showing a field makes it appear with required fields even when not required. "
-"If the field is required this setting is ignored."
-msgstr ""
-"երկրորդ_տրված_անուն դաշտը կցուցադրվի ընթերցողի գրանցման պաստառին։ Ցույց "
-"տալով դաշտը ստիպում է որ այն հայտնվի պահանջված դաշտերով՝ նույնիսկ եթե "
-"պահանջված չէ։ Եթե դաշտը պահանջված է, ապա այս կարգաբերումները անտեսվում են։"
+# id::clm.value__tir
+# id::tir
+#: 950.data.seed-values.sql:6243
+msgid "Tigrinya"
+msgstr "Tigrinya"
 
 # id::clm.value__chk id::clm.value__-tru
 # id::chk
-#: 950.data.seed-values.sql:3578 950.data.seed-values.sql:3940
+#: 950.data.seed-values.sql:5889 950.data.seed-values.sql:6251
 msgid "Truk"
 msgstr "Truk"
 
@@ -523,54 +491,54 @@ msgstr "Ֆարսի"
 
 # id::clm.value__tib
 # id::tib
-#: 950.data.seed-values.sql:3930
+#: 950.data.seed-values.sql:6241
 msgid "Tibetan"
 msgstr "Տիբեթերեն"
 
-#: 950.data.seed-values.sql:293 950.data.seed-values.sql:314
-#: 950.data.seed-values.sql:333 950.data.seed-values.sql:2491
+#: 950.data.seed-values.sql:372 950.data.seed-values.sql:393
+#: 950.data.seed-values.sql:412 950.data.seed-values.sql:4792
 msgid "Publisher"
 msgstr "Հրատարակիչ"
 
 # id::clm.value__inh
 # id::inh
-#: 950.data.seed-values.sql:3697
+#: 950.data.seed-values.sql:6008
 msgid "Ingush"
 msgstr "Ingush"
 
 # id::clm.value__dzo
 # id::dzo
-#: 950.data.seed-values.sql:3614
+#: 950.data.seed-values.sql:5925
 msgid "Dzongkha"
 msgstr "Dzongkha"
 
 # id::clm.value__grn id::clm.value__-gua
 # id::grn
-#: 950.data.seed-values.sql:3666 950.data.seed-values.sql:3667
+#: 950.data.seed-values.sql:5977 950.data.seed-values.sql:5978
 msgid "Guarani"
 msgstr "Guarani"
 
 # id::clm.value__iii
 # id::iii
-#: 950.data.seed-values.sql:3688
+#: 950.data.seed-values.sql:5999
 msgid "Sichuan Yi"
 msgstr "Sichuan Yi"
 
 # id::clm.value__btk
 # id::btk
-#: 950.data.seed-values.sql:3560
+#: 950.data.seed-values.sql:5871
 msgid "Batak"
 msgstr "Batak"
 
 # id::clm.value__div
 # id::div
-#: 950.data.seed-values.sql:3607
+#: 950.data.seed-values.sql:5918
 msgid "Divehi"
 msgstr "Divehi"
 
 # id::clm.value__sga
 # id::sga
-#: 950.data.seed-values.sql:3876
+#: 950.data.seed-values.sql:6187
 msgid "Irish, Old (to 1100)"
 msgstr "Irish, Old (to 1100)"
 
@@ -579,13 +547,15 @@ msgstr "Irish, Old (to 1100)"
 msgid "Lost Materials Processing Fee"
 msgstr "Կորած նյութերի կատարման գումար"
 
-#: 950.data.seed-values.sql:2042
-msgid ""
-"Prevent the creation of new self-serve password reset requests until the "
-"number of active requests drops back below this number."
-msgstr ""
-"Արգելիր նոր ինքնագրվող գաղտանաբառի վերագրման առաջարկների ստեղծումը մինչ "
-"ակտիվ պատվերների քանակը չի դառնա այս թվից պակաս։"
+# id::clm.value__her
+# id::her
+#: 950.data.seed-values.sql:5986
+msgid "Herero"
+msgstr "Herero"
+
+#: 950.data.seed-values.sql:1613
+msgid "Data Review"
+msgstr "Տվյալների վերանայում"
 
 # id::crcd.name__3
 # id::3
@@ -593,25 +563,23 @@ msgstr ""
 msgid "3_months_0_renew"
 msgstr "3_months_0_renew"
 
-# id::clm.value__roa
-# id::roa
-#: 950.data.seed-values.sql:3855
-msgid "Romance (Other)"
-msgstr "Ռոմաներեն (այլ)"
+#: 950.data.seed-values.sql:10028
+msgid "Heading -- General Subdivision"
+msgstr "Վերնախորագիր -- Ընդհանուր ենթաբաժին"
 
-#: 950.data.seed-values.sql:6486
-msgid "Handling Charge"
-msgstr "Հանձնման ծախս"
+#: 950.data.seed-values.sql:1607
+msgid "System Administrator"
+msgstr "Համակարգային կառավարիչ"
 
 # id::clm.value__lav
 # id::lav
-#: 950.data.seed-values.sql:3748
+#: 950.data.seed-values.sql:6059
 msgid "Latvian"
 msgstr "Լատվիերեն"
 
 # id::clm.value__eng
 # id::eng
-#: 950.data.seed-values.sql:3619
+#: 950.data.seed-values.sql:5930
 msgid "English"
 msgstr "Անգլերեն"
 
@@ -622,146 +590,137 @@ msgstr "Տացքի պատմության պահպանման տարիք"
 
 # id::cam.value__
 # id::
-#: 950.data.seed-values.sql:3989
+#: 950.data.seed-values.sql:6300
 msgid "Unknown or unspecified"
 msgstr "Չիմացված կամ չբնութագրված"
 
-# id::clm.value__scr
-# id::scr
-#: 950.data.seed-values.sql:3873
-msgid "Croatian"
-msgstr "Խորվաթերեն"
+#: 950.data.seed-values.sql:2504
+msgid "SMS Text Messages"
+msgstr "SMS տեքստային հաղորդագրություն"
 
-#: 950.data.seed-values.sql:1692
-msgid ""
-"If enabled, patrons will be able to pay fines accrued at this location via "
-"credit card"
-msgstr ""
-"Եթե թույլատրված է, ընթերցողները ի վիճակի կլինեն վճարել կրեդիտ քարտով այս "
-"կետում կուտակված տուգանքները։"
+# id::cam.value__j
+# id::j
+#: 950.data.seed-values.sql:6308
+msgid "Juvenile"
+msgstr "Պատանեկան"
 
 # id::clm.value__chi
 # id::chi
-#: 950.data.seed-values.sql:3577
+#: 950.data.seed-values.sql:5888
 msgid "Chinese"
 msgstr "Չիներեն"
 
-# id::clm.value__wol
-# id::wol
-#: 950.data.seed-values.sql:3973
-msgid "Wolof"
-msgstr "Wolof"
+#: 950.data.seed-values.sql:10146
+msgid "Art and Architecture Thesaurus"
+msgstr "Արվեստի և ճարտարապետության տեզաուրուս"
 
 # id::clm.value__iku
 # id::iku
-#: 950.data.seed-values.sql:3690
+#: 950.data.seed-values.sql:6001
 msgid "Inuktitut"
 msgstr "Inuktitut"
 
 # id::clm.value__mun
 # id::mun
-#: 950.data.seed-values.sql:3795
+#: 950.data.seed-values.sql:6106
 msgid "Munda (Other)"
 msgstr "Munda(այլ)"
 
 # id::clm.value__pli
 # id::pli
-#: 950.data.seed-values.sql:3844
+#: 950.data.seed-values.sql:6155
 msgid "Pali"
 msgstr "Pali"
 
 # id::clm.value__gaa
 # id::gaa
-#: 950.data.seed-values.sql:3643
+#: 950.data.seed-values.sql:5954
 msgid "Gã"
 msgstr "Gã"
 
 # id::clm.value__yap
 # id::yap
-#: 950.data.seed-values.sql:3977
+#: 950.data.seed-values.sql:6288
 msgid "Yapese"
 msgstr "Yapese"
 
 # id::clm.value__ara
 # id::ara
-#: 950.data.seed-values.sql:3519
+#: 950.data.seed-values.sql:5830
 msgid "Arabic"
 msgstr "Արաբերեն"
 
 # id::clm.value__ven
 # id::ven
-#: 950.data.seed-values.sql:3962
+#: 950.data.seed-values.sql:6273
 msgid "Venda"
 msgstr "Venda"
 
-#: 950.data.seed-values.sql:1821
-msgid "Circ: Restore overdues on lost item return"
-msgstr "Տացք։ Վերականգնիր ժամկետանցները կորած նյութը վերադարձնելիս։"
+#: 950.data.seed-values.sql:6374
+msgid "8 mm."
+msgstr "8 մմ"
 
-#: 950.data.seed-values.sql:1390
+#: 950.data.seed-values.sql:1587
 msgid "Staff"
 msgstr "Աշխատակազմ"
 
-#: 950.data.seed-values.sql:7250
-msgid "Persistent Login Duration"
-msgstr "Գրանցման տևողության մշտականություն"
-
-#: 950.data.seed-values.sql:3669
+#: 950.data.seed-values.sql:5980
 msgid "Gwich"
 msgstr "Gwich"
 
-#: 950.data.seed-values.sql:2353
-msgid ""
-"The juvenile field will be suggested on the patron registration screen. "
-"Suggesting a field makes it appear when suggested fields are shown. If the "
-"field is shown or required this setting is ignored."
-msgstr ""
-"Պատանեկան դաշտը կառաջարկվի ընթերցողի գրանցման պաստառին։ Առաջարկելով դաշտ "
-"ստիպում է որ այն հայտնվի, երբ առաջարկվող դաշտերը ցուցադրված են։ Եթե դաշտը "
-"ցուցադրված կամ պահանջված է, այս կարգաբերումները անտեսվում են։"
+# id::clm.value__iro
+# id::iro
+#: 950.data.seed-values.sql:6013
+msgid "Iroquoian (Other)"
+msgstr "Iroquoian (այլ)"
 
 # id::clm.value__kut
 # id::kut
-#: 950.data.seed-values.sql:3740
+#: 950.data.seed-values.sql:6051
 msgid "Kutenai"
 msgstr "Kutenai"
 
-#: 950.data.seed-values.sql:2324
-msgid "GUI: Show evening_phone field on patron registration"
-msgstr "ՕԳՄ: Ցույց տուր երեկոյան_հեռախոս դաշտը ընթերցող գրանցելիս։"
+# id::clm.value__ori
+# id::ori
+#: 950.data.seed-values.sql:6138
+msgid "Oriya"
+msgstr "Oriya"
 
-#: 950.data.seed-values.sql:42
+#: 950.data.seed-values.sql:11551
+msgid "Verification via opensrf"
+msgstr "Ստուգում opensrf միջոցով"
+
+#: 950.data.seed-values.sql:115
 msgid "Abbreviated Title"
 msgstr "Կրճատված վերնագիր"
 
 # id::clm.value__nyn
 # id::nyn
-#: 950.data.seed-values.sql:3822
+#: 950.data.seed-values.sql:6133
 msgid "Nyankole"
 msgstr "Nyankole"
 
-#: 950.data.seed-values.sql:1831
-msgid "Holds: FIFO"
-msgstr "Պահումներ: FIFO"
+#: 950.data.seed-values.sql:10030
+msgid "Heading -- Chronological Subdivision"
+msgstr "Վերնախորագիր --Ժամանակագրական ենթաբաժին"
+
+#: 950.data.seed-values.sql:2503
+msgid "Receipt Template"
+msgstr "Ստացման ձևանմուշ"
 
 #: 950.data.seed-values.sql:253
 msgid "English (Canada)"
 msgstr "Անգլերեն (Կանադա)"
 
-#: 950.data.seed-values.sql:2032
-msgid ""
-"When a user has more than this number of concurrently active self-serve "
-"password reset requests for their account, prevent the user from creating "
-"any new self-serve password reset requests until the number of active "
-"requests for the user drops back below this number."
-msgstr ""
-"Երբ օգտվողը ունի այս թվից ավել մրցակից ակտիվ ինքնագրվող գաղտնաբառի վերագրման "
-"հարցում, կանխարգելիր օգտվողին ինքնագրվող նոր գաղտնաբառի հարցում անելուց, "
-"քանի դեռ ակտիվ հարցումների քանակը այս օգտվողի համար չի նվազել այս թվից ցածր:"
+# id::clm.value__hin
+# id::hin
+#: 950.data.seed-values.sql:5989
+msgid "Hindi"
+msgstr "Հինդու"
 
 # id::clm.value__ewo
 # id::ewo
-#: 950.data.seed-values.sql:3627
+#: 950.data.seed-values.sql:5938
 msgid "Ewondo"
 msgstr "Ewondo"
 
@@ -771,25 +730,15 @@ msgstr "Ewondo"
 msgid "Mexican Spanish"
 msgstr "Մեքսիկական իսպաներեն"
 
-#: 950.data.seed-values.sql:2209
-msgid ""
-"The active field will be shown on the patron registration screen. Showing a "
-"field makes it appear with required fields even when not required. If the "
-"field is required this setting is ignored."
-msgstr ""
-"Ակտիվ դաշտը կցուցադրվի ընթերցողի գրանցման պաստառում։ Ցուցադրելով դաշտ "
-"ստիպում է որ այն հայտնվի պահանջվող դաշտերով, եթե նույնիսկ պահանջված էլ չէ։ "
-"Եթե դաշտը պահանջված է, այս կարգաբերումները անտեսվում են։"
+#: 950.data.seed-values.sql:10031
+msgid "Heading -- Form Subdivision"
+msgstr "Վերնախորագիր -- Ձևի ենթաբաժին"
 
-#: 950.data.seed-values.sql:2325
-msgid ""
-"The evening_phone field will be shown on the patron registration screen. "
-"Showing a field makes it appear with required fields even when not required. "
-"If the field is required this setting is ignored."
-msgstr ""
-"Երեկոյան_հեռախոս դաշտը կցուցադրվի ընթերցողի գրանցման պաստառում։  Ցուցադրելով "
-"դաշտ ստիպում է որ այն հայտնվի պահանջվող դաշտերով, եթե նույնիսկ պահանջված էլ "
-"չէ։ Եթե դաշտը պահանջված է, այս կարգաբերումները անտեսվում են։"
+# id::clm.value__abk
+# id::abk
+#: 950.data.seed-values.sql:5813
+msgid "Abkhaz"
+msgstr "Աբխազ"
 
 #: 950.data.seed-values.sql:1916 950.data.seed-values.sql:1917
 msgid "Default level of patrons' internet access"
@@ -805,39 +754,39 @@ msgstr "Կրեդիտ քարտի ակտիվացում։ PayPal ստորագրու
 
 # id::clm.value__cmc
 # id::cmc
-#: 950.data.seed-values.sql:3587
+#: 950.data.seed-values.sql:5898
 msgid "Chamic languages"
 msgstr "Chamic languages"
 
 # id::clfm.value__f
 # id::f
-#: 950.data.seed-values.sql:4021
+#: 950.data.seed-values.sql:6332
 msgid "Novels"
 msgstr "Նովելներ"
 
-#: 950.data.seed-values.sql:1832
-msgid "Force holds to a more strict First-In, First-Out capture"
-msgstr ""
-"Պարտադրի որ պահումները ենթարկվեն որսման ավելի խիստ՝ առաջինը մուտք, առաջինը "
-"ելք կարգի։"
+# id::clm.value__wol
+# id::wol
+#: 950.data.seed-values.sql:6284
+msgid "Wolof"
+msgstr "Wolof"
 
 # id::clm.value__bos
 # id::bos
-#: 950.data.seed-values.sql:3557
+#: 950.data.seed-values.sql:5868
 msgid "Bosnian"
 msgstr "Բոսներեն"
 
 # id::clm.value__rom
 # id::rom
-#: 950.data.seed-values.sql:3857
+#: 950.data.seed-values.sql:6168
 msgid "Romani"
 msgstr "Romani"
 
-# id::clm.value__mdr
-# id::mdr
-#: 950.data.seed-values.sql:3777
-msgid "Mandar"
-msgstr "Mandar"
+# id::clm.value__vie
+# id::vie
+#: 950.data.seed-values.sql:6274
+msgid "Vietnamese"
+msgstr "Վիետնամերեն"
 
 #: 950.data.seed-values.sql:357
 msgid "This Specialized Library"
@@ -845,7 +794,7 @@ msgstr "Մասնագիտացված այս գրադարանը"
 
 # id::clm.value__mnc
 # id::mnc
-#: 950.data.seed-values.sql:3787
+#: 950.data.seed-values.sql:6098
 msgid "Manchu"
 msgstr "Manchu"
 
@@ -861,65 +810,48 @@ msgstr "Միավորման օրինակ"
 
 # id::clm.value__rus id::i18n_l.name__ru-RU id::i18n_l.description__ru-RU
 # id::rus
-#: 950.data.seed-values.sql:268 950.data.seed-values.sql:269
-#: 950.data.seed-values.sql:3860
+#: 950.data.seed-values.sql:347 950.data.seed-values.sql:348
+#: 950.data.seed-values.sql:6171
 msgid "Russian"
 msgstr "Ռուսերեն"
 
-#: 950.data.seed-values.sql:1691
-msgid "Allow Credit Card Payments"
-msgstr "Թույլատրիր վճարումներ կրեդիտ քարտով"
+#: 950.data.seed-values.sql:6367
+msgid "Laserdisc"
+msgstr "Լազերային սկավառակ"
+
+# id::clm.value__gba
+# id::gba
+#: 950.data.seed-values.sql:5959
+msgid "Gbaya"
+msgstr "Gbaya"
 
 # id::clm.value__kaz
 # id::kaz
-#: 950.data.seed-values.sql:3718
+#: 950.data.seed-values.sql:6029
 msgid "Kazakh"
 msgstr "Ղազախերեն"
 
 # id::clm.value__tiv
 # id::tiv
-#: 950.data.seed-values.sql:3933
+#: 950.data.seed-values.sql:6244
 msgid "Tiv"
 msgstr "Tiv"
 
-#: 950.data.seed-values.sql:1902
-msgid ""
-"When a patron checks out an item and they have no holds that directly target "
-"the item, the system will attempt to find a hold for the patron that could "
-"be fulfilled by the checked out item and fulfills it"
-msgstr ""
-"Երբ ընթերցողը ստանում է նյութ, և չկան պահումներ, որոնք ուղղակի կապ ունեն "
-"նյութի հետ, համակարգը կփորձի գտնել այդ ընթերցողի համար պահում որը կարելի է "
-"բավարարել սպասարկված նյութով։"
-
-#: 950.data.seed-values.sql:2317
-msgid ""
-"The Regular Expression for validation on the evening_phone field in patron "
-"registration."
-msgstr ""
-"Ընթերցողի գրանցման ընթացքում կանոնավոր արտահայտություն երեկոյան_հեռախոսի "
-"հավաստիացման համար։"
-
-#: 950.data.seed-values.sql:2248
-msgid "GUI: Show claims_returned_count field on patron registration"
-msgstr ""
-"ՕԳՄ: Ցույց տուր խարանված_վերադարձ_հաշվիչ դաշտը ընթերցողի գրանցման ընթացքում։"
+# id::clm.value__und
+# id::und
+#: 950.data.seed-values.sql:6269
+msgid "Undetermined"
+msgstr "Undetermined"
 
 # id::clm.value__hmo
 # id::hmo
-#: 950.data.seed-values.sql:3681
+#: 950.data.seed-values.sql:5992
 msgid "Hiri Motu"
 msgstr "Hiri Motu"
 
-#: 950.data.seed-values.sql:2305
-msgid ""
-"The email field will be shown on the patron registration screen. Showing a "
-"field makes it appear with required fields even when not required. If the "
-"field is required this setting is ignored."
-msgstr ""
-"Էլ. փոստի դաշտը կցուցադրվի ընթերցողի գրանցման պաստառին։ Ցուցադրելով դաշտը "
-"ստիպում է որ այն հայտնվի պահանջված դաշտերի հետ միասին, նունյնիսկ եթե դրանք "
-"պահանջված չեն։ Եթե դաշտը պահանջված է, ապա այս կարգաբերումները անտեսվում են։"
+#: 950.data.seed-values.sql:2491
+msgid "Holds"
+msgstr "Պահումներ"
 
 # id::cnal.name__3
 # id::3
@@ -941,11 +873,7 @@ msgstr "Սուրհանդակի կոդ"
 msgid "Canadian English"
 msgstr "Կանադական անգլերեն"
 
-#: 950.data.seed-values.sql:2562
-msgid "View Circulations"
-msgstr "Դիտիր տացքերը"
-
-#: 950.data.seed-values.sql:6488
+#: 950.data.seed-values.sql:8727
 msgid "Serial Subscription"
 msgstr "Պարբերականի բաժանորդագրություն"
 
@@ -957,67 +885,67 @@ msgstr "Սլովեներեն"
 
 # id::clm.value__bra
 # id::bra
-#: 950.data.seed-values.sql:3558
+#: 950.data.seed-values.sql:5869
 msgid "Braj"
 msgstr "Braj"
 
 # id::clm.value__bat
 # id::bat
-#: 950.data.seed-values.sql:3544
+#: 950.data.seed-values.sql:5855
 msgid "Baltic (Other)"
 msgstr "Baltic (այլ)"
 
+#: 950.data.seed-values.sql:9324
+msgid "Invalid value for \"deposit_amount\""
+msgstr "Սխալ արժեք \"deposit_amount\""
+
 # id::clfm.value__h
 # id::h
-#: 950.data.seed-values.sql:4022
+#: 950.data.seed-values.sql:6333
 msgid "Humor, satires, etc."
 msgstr "Հումոր, սատիրա, այլ"
 
-#: 950.data.seed-values.sql:2337
-msgid ""
-"The ident_value field will be suggested on the patron registration screen. "
-"Suggesting a field makes it appear when suggested fields are shown. If the "
-"field is shown or required this setting is ignored."
-msgstr ""
-"Ընթերցողի գրանցման պաստառին կառաջարկվի ident_value դաշտը։ Առաջարկելով դաշտը "
-"ստիպում է որ այն հայտնվի պահանջված դաշտերի հետ միասին։ Եթե դաշտը ցուցադրված "
-"կամ պահանջված է, ապա այս կարգաբերումները անտեսվում են։"
+#: 950.data.seed-values.sql:11548
+msgid "SIP2 Proxy Login"
+msgstr "SIP2 միջնորդավորված գրանցում"
 
 # id::citm.value__m
 # id::m
-#: 950.data.seed-values.sql:4013
+#: 950.data.seed-values.sql:6324
 msgid "Computer file"
 msgstr "Համակարգչային ֆայլ"
 
 # id::clm.value__phi
 # id::phi
-#: 950.data.seed-values.sql:3842
+#: 950.data.seed-values.sql:6153
 msgid "Philippine (Other)"
 msgstr "Philippine (այլ)"
 
+#: 950.data.seed-values.sql:10057
+msgid "Subdivision Linking Entry -- Form Subdivision"
+msgstr "Ենթաբաժնի կապի մուտք -- Ձևի ենթաբաժին"
+
 # id::clm.value__ger
 # id::ger
-#: 950.data.seed-values.sql:3651
+#: 950.data.seed-values.sql:5962
 msgid "German"
 msgstr "Գերմաներեն"
 
-#: 950.data.seed-values.sql:6490
+#: 950.data.seed-values.sql:8729
 msgid "EDI"
 msgstr "ՓԷՏ"
 
-#: 950.data.seed-values.sql:5918
-msgid ""
-"During offline circulations, allow patrons to identify themselves with "
-"usernames in addition to barcode.  For this setting to work, a barcode "
-"format must also be defined"
-msgstr ""
-"Օֆլայն տացքի ժամանակ թույլ տուր ընթերցողներին բացի շտրիխ կոդից բնութագրել "
-"իրենց նաև օգտվողի անվամբ։ Սա որպեսզի աշխատի, շտրիխ կոդի ձևաչափը նույնպես "
-"պետք է սահմանվի։"
+#: 950.data.seed-values.sql:9308
+msgid "Import failed due to barcode collision"
+msgstr "ներմուծումը տապալվեց կապված շտրիխ կոդի կոլլիզիայի հետ"
+
+#: 950.data.seed-values.sql:2488
+msgid "Library"
+msgstr "Գրադարան"
 
 # id::clm.value__sla
 # id::sla
-#: 950.data.seed-values.sql:3884
+#: 950.data.seed-values.sql:6195
 msgid "Slavic (Other)"
 msgstr "Սլավոներեն (այլ)"
 
@@ -1033,15 +961,21 @@ msgstr "Temne"
 
 # id::clm.value__baq
 # id::baq
-#: 950.data.seed-values.sql:3542
+#: 950.data.seed-values.sql:5853
 msgid "Basque"
 msgstr "Բասկերեն"
 
 # id::clm.value__tum
 # id::tum
-#: 950.data.seed-values.sql:3946
+#: 950.data.seed-values.sql:6257
 msgid "Tumbuka"
 msgstr "Tumbuka"
+
+# id::cifm.value__d
+# id::d
+#: 950.data.seed-values.sql:6346
+msgid "Large print"
+msgstr "Լայն տպագրություն"
 
 # id::cbs.source__1
 # id::1
@@ -1049,79 +983,85 @@ msgstr "Tumbuka"
 msgid "oclc"
 msgstr "oclc"
 
-#: 950.data.seed-values.sql:7124
-msgid "Holds: Has Local Copy Block"
-msgstr "Պահումներ։ Ունի տեղային պատճենի բլոկ"
+#: 950.data.seed-values.sql:1604 950.data.seed-values.sql:2499
+msgid "Serials"
+msgstr "Պարբերականներ"
 
 # id::clm.value__bnt
 # id::bnt
-#: 950.data.seed-values.sql:3556
+#: 950.data.seed-values.sql:5867
 msgid "Bantu (Other)"
 msgstr "Bantu (այլ)"
 
-#: 950.data.seed-values.sql:2245
-msgid ""
-"The claims_never_checked_out_count field will be suggested on the patron "
-"registration screen. Suggesting a field makes it appear when suggested "
-"fields are shown. If the field is shown or required this setting is ignored."
-msgstr ""
-"Կառաջարկվի claims_never_checked_out_count դաշտը ընթերցողի գրանցման պաստառին։ "
-"Առաջարկելով դաշտը՝ ստիպում է որ այն հայտնվի երբ առաջարկվող դաշտերը "
-"ցուցադրված են։ Եթե դաշտը ցուցադրված կամ պահանջված է, ապա այս կարգաբերումները "
-"անտեսվում են։"
+#: 950.data.seed-values.sql:10022
+msgid "Heading -- Personal Name"
+msgstr "Վերնախորագիր -- Անձնանուն"
+
+#: 950.data.seed-values.sql:10050
+msgid "Established Heading Linking Entry -- Meeting Name"
+msgstr "Հաստատված վերնախորագրի կապի մուտք -- Հանդիպման անուն"
+
+# id::clm.value__mdr
+# id::mdr
+#: 950.data.seed-values.sql:6088
+msgid "Mandar"
+msgstr "Mandar"
 
 # id::cblvl.value__a
 # id::a
-#: 950.data.seed-values.sql:4041
+#: 950.data.seed-values.sql:6352
 msgid "Monographic component part"
 msgstr "Մենագրության մաս"
 
-# id::clm.value__gem
-# id::gem
-#: 950.data.seed-values.sql:3649
-msgid "Germanic (Other)"
-msgstr "Գերմանական (այլ)"
+#: 950.data.seed-values.sql:6373
+msgid "D-2"
+msgstr "D-2"
 
 # id::citm.value__t
 # id::t
-#: 950.data.seed-values.sql:4001
+#: 950.data.seed-values.sql:6312
 msgid "Manuscript language material"
 msgstr "Manuscript language material"
 
-#: 950.data.seed-values.sql:297 950.data.seed-values.sql:318
-#: 950.data.seed-values.sql:337
-msgid "Item Type"
-msgstr "Նյութի տեսակ"
+# id::clm.value__che
+# id::che
+#: 950.data.seed-values.sql:5886
+msgid "Chechen"
+msgstr "Չեչեներեն"
 
 # id::clm.value__nzi
 # id::nzi
-#: 950.data.seed-values.sql:3824
+#: 950.data.seed-values.sql:6135
 msgid "Nzima"
 msgstr "Nzima"
 
 # id::clm.value__dut
 # id::dut
-#: 950.data.seed-values.sql:3612
+#: 950.data.seed-values.sql:5923
 msgid "Dutch"
 msgstr "Հոլանդերեն"
 
 # id::clm.value__kos id::clm.value__-kus
 # id::kos
-#: 950.data.seed-values.sql:3732 950.data.seed-values.sql:3739
+#: 950.data.seed-values.sql:6043 950.data.seed-values.sql:6050
 msgid "Kusaie"
 msgstr "Kusaie"
 
 # id::clm.value__eka
 # id::eka
-#: 950.data.seed-values.sql:3617
+#: 950.data.seed-values.sql:5928
 msgid "Ekajuk"
 msgstr "Ekajuk"
 
 # id::clm.value__grb
 # id::grb
-#: 950.data.seed-values.sql:3663
+#: 950.data.seed-values.sql:5974
 msgid "Grebo"
 msgstr "Grebo"
+
+#: 950.data.seed-values.sql:2497
+msgid "Finances"
+msgstr "Ֆինանսներ"
 
 # id::crcd.name__2
 # id::2
@@ -1129,33 +1069,33 @@ msgstr "Grebo"
 msgid "28_days_2_renew"
 msgstr "28_days_2_renew"
 
-# id::clm.value__nap
-# id::nap
-#: 950.data.seed-values.sql:3801
-msgid "Neapolitan Italian"
-msgstr "Neapolitan Italian"
+# id::clm.value__nep
+# id::nep
+#: 950.data.seed-values.sql:6119
+msgid "Nepali"
+msgstr "Նեպալերեն"
 
 # id::clm.value__sms
 # id::sms
-#: 950.data.seed-values.sql:3893
+#: 950.data.seed-values.sql:6204
 msgid "Skolt Sami"
 msgstr "Skolt Sami"
 
-#: 950.data.seed-values.sql:1851
-msgid "GUI: Record In-House Use: Maximum # of uses allowed per entry."
-msgstr ""
-"ՕԳՄ: Գրառումը In-House օգտագործման վիճակում է: Ամենամեծ թույլատրված # "
-"օգտագործումների ըստ մեկ մուտքի։"
+# id::clm.value__fin
+# id::fin
+#: 950.data.seed-values.sql:5944
+msgid "Finnish"
+msgstr "Ֆիներեն"
 
-# id::ccs.name__4
-# id::4
-#: 950.data.seed-values.sql:222
-msgid "Missing"
-msgstr "Բացակա"
+# id::clm.value__bih
+# id::bih
+#: 950.data.seed-values.sql:5862
+msgid "Bihari"
+msgstr "Bihari"
 
 # id::clm.value__wel
 # id::wel
-#: 950.data.seed-values.sql:3970
+#: 950.data.seed-values.sql:6281
 msgid "Welsh"
 msgstr "Welsh"
 
@@ -1165,83 +1105,75 @@ msgstr "Ընթերցող։ գաղտնաբառ այս # հեռախոսից"
 
 # id::clm.value__ota
 # id::ota
-#: 950.data.seed-values.sql:3831
+#: 950.data.seed-values.sql:6142
 msgid "Turkish, Ottoman"
 msgstr "Թուրքերեն, Օտոման"
 
-#: 950.data.seed-values.sql:81 950.data.seed-values.sql:291
-#: 950.data.seed-values.sql:312 950.data.seed-values.sql:331
-#: 950.data.seed-values.sql:2485
+#: 950.data.seed-values.sql:154 950.data.seed-values.sql:370
+#: 950.data.seed-values.sql:391 950.data.seed-values.sql:410
+#: 950.data.seed-values.sql:4786
 msgid "ISSN"
 msgstr "ISSN"
 
-#: 950.data.seed-values.sql:1999
-msgid ""
-"Do not really process transactions, but stay in test mode - uses pilot-"
-"payflowpro.paypal.com instead of the usual host"
-msgstr ""
-"Իրականում մի կատարի տրանզակցիաները, բայց մնա թեսթային վիճակում՝ օգտագործում "
-"է pilot-payflowpro.paypal.com սովորական հոստի փոխարեն։"
+# id::clm.value__kro
+# id::kro
+#: 950.data.seed-values.sql:6045
+msgid "Kru"
+msgstr "Kru"
 
-#: 950.data.seed-values.sql:2031
-msgid ""
-"Circulation: Maximum concurrently active self-serve password reset requests "
-"per user"
-msgstr ""
-"Տացք. Ամենաշատ մրցակից ակտիվ ինքնագրվող գաղտնաբառի վերագրման առաջարկներ ըմտ "
-"մեկ օգտվողի"
+#: 950.data.seed-values.sql:2501
+msgid "Booking"
+msgstr "Ամրագրում"
 
 # id::clm.value__goh
 # id::goh
-#: 950.data.seed-values.sql:3659
+#: 950.data.seed-values.sql:5970
 msgid "German, Old High (ca. 750-1050)"
 msgstr "German, Old High (ca. 750-1050)"
 
-#: 950.data.seed-values.sql:2284
-msgid "GUI: Show dob field on patron registration"
-msgstr "ՕԳՄ: Ցույց տուր dob դաշտը ընթերցող գրանցելիս։"
+# id::clm.value__tem
+# id::tem
+#: 950.data.seed-values.sql:6235
+msgid "Temne"
+msgstr "Temne"
 
-#: 950.data.seed-values.sql:2340
-msgid "GUI: Show ident_value2 field on patron registration"
-msgstr "ՕԳՄ: Ցույց տուր ident_value2 դաշտը ընթերցող գրանցելիս։"
+# id::clm.value__jpr
+# id::jpr
+#: 950.data.seed-values.sql:6017
+msgid "Judeo-Persian"
+msgstr "Judeo-Persian"
 
-# id::clm.value__ber
-# id::ber
-#: 950.data.seed-values.sql:3549
-msgid "Berber (Other)"
-msgstr "Berber (այլ)"
-
-#: 950.data.seed-values.sql:2559
+#: 950.data.seed-values.sql:4860
 msgid "Friends"
 msgstr "Ընկերներ"
 
 # id::clm.value__day
 # id::day
-#: 950.data.seed-values.sql:3602
+#: 950.data.seed-values.sql:5913
 msgid "Dayak"
 msgstr "Dayak"
 
 # id::clm.value__gon
 # id::gon
-#: 950.data.seed-values.sql:3660
+#: 950.data.seed-values.sql:5971
 msgid "Gondi"
 msgstr "Gondi"
 
-#: 950.data.seed-values.sql:1742
-msgid ""
-"Amount of time to wait before changing an item from \"reshelving\" status to "
-"\"available\".  Examples: \"1 day\", \"6 hours\""
-msgstr ""
-"Սպասման ժամանակի այն մեծությունը որ հարկավոր է նյութը \"վերադարակավորում\" "
-"վիճակից \"մատչելի\" վիճակի փոխելու համար։ Օրինակներ՝ \"1 օր\", \"6 ժամ\""
+# id::clm.value__hun
+# id::hun
+#: 950.data.seed-values.sql:5993
+msgid "Hungarian"
+msgstr "Հունգարերեն"
 
-#: 950.data.seed-values.sql:1975
-msgid "PayPal password"
-msgstr "PayPal գաղտնաբառ"
+# id::clm.value__bak
+# id::bak
+#: 950.data.seed-values.sql:5849
+msgid "Bashkir"
+msgstr "Բաշկիրերեն"
 
 # id::clm.value__kam
 # id::kam
-#: 950.data.seed-values.sql:3712
+#: 950.data.seed-values.sql:6023
 msgid "Kamba"
 msgstr "Kamba"
 
@@ -1251,35 +1183,21 @@ msgstr "Արգելափակիր Տպելու ավտոմատ փորձի տեսակ
 
 # id::citm.value__i
 # id::i
-#: 950.data.seed-values.sql:4011
+#: 950.data.seed-values.sql:6322
 msgid "Nonmusical sound recording"
 msgstr "Ոչ երաժշտական ձայներիզներ"
 
-#: 950.data.seed-values.sql:1388
+#: 950.data.seed-values.sql:1585
 msgid "Patrons"
 msgstr "Ընթերցողներ"
 
-#: 950.data.seed-values.sql:1937
-msgid "This might be \"AuthorizeNet\", \"PayPal\", etc."
-msgstr "Սա կարող է լինել \"AuthorizeNet\", \"PayPal\", և այլն։"
-
-#: 950.data.seed-values.sql:1727
-msgid "Regular expression defining the patron barcode format"
-msgstr "Ընթերցողի շտրիխ կոդի ձևաչափը սահմանող կանոնավոր արտահայտություն"
-
-# id::clm.value__lus
-# id::lus
-#: 950.data.seed-values.sql:3762
-msgid "Lushai"
-msgstr "Lushai"
-
-#: 950.data.seed-values.sql:6485
+#: 950.data.seed-values.sql:8724
 msgid "Shipping Charge"
 msgstr "Առաքման ծախս"
 
 # id::clm.value__nbl
 # id::nbl
-#: 950.data.seed-values.sql:3804
+#: 950.data.seed-values.sql:6115
 msgid "Ndebele (South Africa)"
 msgstr "Ndebele (Հարաֆային Աֆրիկա)"
 
@@ -1291,13 +1209,13 @@ msgstr "1_hour_2_renew"
 
 # id::clfm.value__i
 # id::i
-#: 950.data.seed-values.sql:4023
+#: 950.data.seed-values.sql:6334
 msgid "Letters"
 msgstr "Նամակներ"
 
 # id::clm.value__mak
 # id::mak
-#: 950.data.seed-values.sql:3768
+#: 950.data.seed-values.sql:6079
 msgid "Makasar"
 msgstr "Makasar"
 
@@ -1305,9 +1223,11 @@ msgstr "Makasar"
 msgid "Series"
 msgstr "Մատենաշար"
 
-#: 950.data.seed-values.sql:1796 950.data.seed-values.sql:1797
-msgid "Charge lost on zero"
-msgstr "Կորստի վճարը զերո է"
+# id::clm.value__afa
+# id::afa
+#: 950.data.seed-values.sql:5818
+msgid "Afroasiatic (Other)"
+msgstr "Աֆրոասիական (այլ)"
 
 # id::clm.value__bih
 # id::bih
@@ -1317,21 +1237,25 @@ msgstr "Bihari"
 
 # id::clm.value__bin
 # id::bin
-#: 950.data.seed-values.sql:3553
+#: 950.data.seed-values.sql:5864
 msgid "Edo"
 msgstr "Edo"
 
 # id::clm.value__kin
 # id::kin
-#: 950.data.seed-values.sql:3725
+#: 950.data.seed-values.sql:6036
 msgid "Kinyarwanda"
 msgstr "Kinyarwanda"
 
 # id::clm.value__ile
 # id::ile
-#: 950.data.seed-values.sql:3691
+#: 950.data.seed-values.sql:6002
 msgid "Interlingue"
 msgstr "Interlingue"
+
+#: 950.data.seed-values.sql:11569
+msgid "EZProxy Verification"
+msgstr "EZProxy ստուգում"
 
 # id::ccs.name__12
 # id::12
@@ -1341,7 +1265,7 @@ msgstr "Պահեստային"
 
 # id::clm.value__heb
 # id::heb
-#: 950.data.seed-values.sql:3674
+#: 950.data.seed-values.sql:5985
 msgid "Hebrew"
 msgstr "Hebrew"
 
@@ -1351,17 +1275,23 @@ msgstr "Կոճակի տարածք"
 
 # id::clm.value__epo id::clm.value__-esp
 # id::epo
-#: 950.data.seed-values.sql:3621 950.data.seed-values.sql:3623
+#: 950.data.seed-values.sql:5932 950.data.seed-values.sql:5934
 msgid "Esperanto"
 msgstr "Էսպերանտո"
 
-#: 950.data.seed-values.sql:2384
-msgid "GUI: Show second_given_name field on patron registration"
-msgstr "ՕԳՄ: Ցույց տուր երկրորդ_տրված_անուն դաշտը ընթերցող գրանցելիս"
+#: 950.data.seed-values.sql:9322
+msgid "Invalid value for \"price\""
+msgstr "Անիրական արժեք \"գնի\" համար"
+
+# id::clm.value__cpf
+# id::cpf
+#: 950.data.seed-values.sql:5903
+msgid "Creoles and Pidgins, French-based (Other)"
+msgstr "Creoles and Pidgins, French-based (այլ)"
 
 # id::clm.value__ssw id::clm.value__-swz
 # id::ssw
-#: 950.data.seed-values.sql:3907 950.data.seed-values.sql:3914
+#: 950.data.seed-values.sql:6218 950.data.seed-values.sql:6225
 msgid "Swazi"
 msgstr "Swazi"
 
@@ -1377,19 +1307,21 @@ msgstr "Hupa"
 
 # id::clm.value__-lap id::clm.value__smi
 # id::-lap
-#: 950.data.seed-values.sql:3746 950.data.seed-values.sql:3889
+#: 950.data.seed-values.sql:6057 950.data.seed-values.sql:6200
 msgid "Sami"
 msgstr "Sami"
 
 # id::clm.value__inc
 # id::inc
-#: 950.data.seed-values.sql:3694
+#: 950.data.seed-values.sql:6005
 msgid "Indic (Other)"
 msgstr "Indic (Other)"
 
-#: 950.data.seed-values.sql:2011
-msgid "GUI: Work Log: Maximum Actions Logged"
-msgstr "ՕԳՄ։ Աշխատանքային լոգ Մաքսիմում գործողություններ են ակտիվ։"
+# id::clm.value__tel
+# id::tel
+#: 950.data.seed-values.sql:6234
+msgid "Telugu"
+msgstr "Telugu"
 
 #: 950.data.seed-values.sql:25 950.data.seed-values.sql:287
 #: 950.data.seed-values.sql:308 950.data.seed-values.sql:327
@@ -1402,19 +1334,19 @@ msgstr "Հեղինակ"
 msgid "System Local"
 msgstr "System Local"
 
-#: 950.data.seed-values.sql:2320
-msgid "GUI: Require evening_phone field on patron registration"
-msgstr "ՕԳՄ: Պահանջում է երեկոյան_հեռախս դաշտ ընթերցող գրանցելիս"
+#: 950.data.seed-values.sql:11555
+msgid "Verification via xmlrpc"
+msgstr "Ստուգում xmlrpc օգնությամբ"
 
-# id::clm.value__kir
-# id::kir
-#: 950.data.seed-values.sql:3726
-msgid "Kyrgyz"
-msgstr "Կիրգիզերեն"
+# id::clm.value__new
+# id::new
+#: 950.data.seed-values.sql:6120
+msgid "Newari"
+msgstr "Newari"
 
 # id::clm.value__sam
 # id::sam
-#: 950.data.seed-values.sql:3866
+#: 950.data.seed-values.sql:6177
 msgid "Samaritan Aramaic"
 msgstr "Samaritan Aramaic"
 
@@ -1430,10 +1362,9 @@ msgstr "2_months_2_renew"
 msgid "Unfiltered"
 msgstr "Չզտված"
 
-#: 950.data.seed-values.sql:2405
-msgid ""
-"The Example for validation on the post_code field in patron registration."
-msgstr "Օրինակ post_code դաշտը հավաստիացնելիս ընթերցող գրանցելիս"
+#: 950.data.seed-values.sql:10062
+msgid "See Also Tracing -- Corporate Name"
+msgstr "Տես նաև հետագիծ -- Համատեղ անուն"
 
 # id::clfm.value__j
 # id::j
@@ -1441,45 +1372,38 @@ msgstr "Օրինակ post_code դաշտը հավաստիացնելիս ընթե�
 msgid "Short stories"
 msgstr "Կարճ պատմվածքներ"
 
-#: 950.data.seed-values.sql:2393
-msgid ""
-"The suffix field will be shown on the patron registration screen. Showing a "
-"field makes it appear with required fields even when not required. If the "
-"field is required this setting is ignored."
-msgstr ""
-"Վերջացանծի դաշտը կցուցադրվի ընթերցողի գրանցման պաստառին։ Ցուցադրելով դաշտը "
-"ստիպում է որ այն հայտնվի պահանջվող դաշտերի հետ միասին, եթե նույնիսկ դրանք "
-"պահանջված չեն։ Եթե դաշտը պահանջված է, ապա այս կարգաբերումները անտեսվում են։"
+# id::clm.value__tah
+# id::tah
+#: 950.data.seed-values.sql:6228
+msgid "Tahitian"
+msgstr "Tahitian"
 
 # id::clm.value__ful
 # id::ful
-#: 950.data.seed-values.sql:3641
+#: 950.data.seed-values.sql:5952
 msgid "Fula"
 msgstr "Fula"
 
-#: 950.data.seed-values.sql:2236
-msgid "GUI: Suggest barred field on patron registration"
-msgstr "ՕԳՄ։ Առաջարկի արգելափակված դաշտ ընթերցող գրանցելիս։"
+# id::cifm.value__a
+# id::a
+#: 950.data.seed-values.sql:6343
+msgid "Microfilm"
+msgstr "Միկրոֆիլմ"
 
-#: 950.data.seed-values.sql:2421
-msgid ""
-"The Regular Expression for validation on phone fields in patron "
-"registration. Applies to all phone fields without their own setting."
-msgstr ""
-"Կանոնավոր արտահայտություն ընթերող գրանցելիս հեռախոսի դաշտի հավաստիացման "
-"համար։ Կիրառվում է հեռախոսի բոլոր դաշտերին, առանց դրանց իրական "
-"կարգաբերումների։"
+#: 950.data.seed-values.sql:10027
+msgid "Heading -- Genre/Form Term"
+msgstr "Վերնախորագիր -- Ժանրի/Ձևի տերմին"
 
 # id::clm.value__nub
 # id::nub
-#: 950.data.seed-values.sql:3819
+#: 950.data.seed-values.sql:6130
 msgid "Nubian languages"
 msgstr "Նուբիական լեզուներ"
 
 # id::clm.value__arm id::i18n_l.name__hy-AM id::i18n_l.description__hy-AM
 # id::arm
-#: 950.data.seed-values.sql:259 950.data.seed-values.sql:260
-#: 950.data.seed-values.sql:3522
+#: 950.data.seed-values.sql:338 950.data.seed-values.sql:339
+#: 950.data.seed-values.sql:5833
 msgid "Armenian"
 msgstr "Հայերեն"
 
@@ -1507,13 +1431,13 @@ msgstr "Օրինակ համակարգ 2"
 
 # id::clm.value__aus
 # id::aus
-#: 950.data.seed-values.sql:3530
+#: 950.data.seed-values.sql:5841
 msgid "Australian languages"
 msgstr "Ավստրալիական լեզուներ"
 
 # id::clm.value__roh
 # id::roh
-#: 950.data.seed-values.sql:3856
+#: 950.data.seed-values.sql:6167
 msgid "Raeto-Romance"
 msgstr "Raeto-Romance"
 
@@ -1531,41 +1455,23 @@ msgstr "ՕԳՄ։ Լռակյաց ցուցադրում առաջարկվող ընթ
 
 # id::cblvl.value__m
 # id::m
-#: 950.data.seed-values.sql:4046
+#: 950.data.seed-values.sql:6357
 msgid "Monograph/Item"
 msgstr "Մենագրություն/Նյութ"
 
-#: 950.data.seed-values.sql:2401
-msgid "The county field will be required on the patron registration screen."
-msgstr "Կպահանջվի երկրամասի դաշտ, ընթերցողի գրանցման պաստառում։"
+# id::clm.value__pus
+# id::pus
+#: 950.data.seed-values.sql:6161
+msgid "Pushto"
+msgstr "Pushto"
 
-# id::ccs.name__5
-# id::5
-#: 950.data.seed-values.sql:223
-msgid "In process"
-msgstr "Գործողության մեջ"
-
-#: 950.data.seed-values.sql:1906
-msgid "Selfcheck override events list"
-msgstr "Ինքնաստուգող վերագրման իրադարձությունների ցուցակ։"
-
-#: 950.data.seed-values.sql:1896
-msgid "Invalid patron address penalty"
-msgstr "Ընթերցողի սխալ հասցեի տուգանք"
-
-#: 950.data.seed-values.sql:6471
-msgid ""
-"When the amount remaining in the fund, including spent money and "
-"encumbrances, goes below this percentage, attempts to spend from the fund "
-"will result in a warning to the staff."
-msgstr ""
-"Երբ բյուջեում մնացող գումարը ներառած նաև ծախսածը,  ավելի քիչ է դառնում այս "
-"տոկոսից, յուրաքանչյուր փորձ ծախսելու այս գումարը կհանգեցնի աշխատակազմի "
-"զգուշացման"
+#: 950.data.seed-values.sql:10055
+msgid "Subdivision Linking Entry -- Geographic Subdivision"
+msgstr "Ենթաբաժնի կապի մուտք -- Աշխարհագրական ենթաբաժին"
 
 # id::cifm.value__b
 # id::b
-#: 950.data.seed-values.sql:4033
+#: 950.data.seed-values.sql:6344
 msgid "Microfiche"
 msgstr "Միկրոֆիշ"
 
@@ -1577,39 +1483,39 @@ msgstr "Herero"
 
 # id::clm.value__wln
 # id::wln
-#: 950.data.seed-values.sql:3972
+#: 950.data.seed-values.sql:6283
 msgid "Walloon"
 msgstr "Walloon"
 
 # id::clm.value__din
 # id::din
-#: 950.data.seed-values.sql:3606
+#: 950.data.seed-values.sql:5917
 msgid "Dinka"
 msgstr "Dinka"
 
-#: 950.data.seed-values.sql:278
+# id::clm.value__chu
+# id::chu
+#: 950.data.seed-values.sql:5895
+msgid "Church Slavic"
+msgstr "Church Slavic"
+
+#: 950.data.seed-values.sql:357
 msgid "‡biblios.net"
 msgstr "‡biblios.net"
 
-#: 950.data.seed-values.sql:1942
-msgid "Enable AuthorizeNet payments"
-msgstr "Թույլատրի AuthorizeNet վճարումները"
+# id::clm.value__lam
+# id::lam
+#: 950.data.seed-values.sql:6054
+msgid "Lamba"
+msgstr "Lamba"
 
-#: 950.data.seed-values.sql:1787
-msgid ""
-"Use the last 4 digits of the patrons phone number as the default password "
-"when creating new users"
-msgstr ""
-"Երբ ստեղծում ես նոր օգտվող օգտագործիր ընթերցողի հեռախոսի վերջին 4 թվերը "
-"որպես լռակյաց գաղտնաբառ։"
-
-#: 950.data.seed-values.sql:2280
-msgid "GUI: Require dob field on patron registration"
-msgstr "ՕԳՄ: պահանջում է dob դաշտ ընթերցող գրանցելիս"
+#: 950.data.seed-values.sql:6370
+msgid "Betacam SP"
+msgstr "Betacam SP"
 
 # id::clm.value__mic
 # id::mic
-#: 950.data.seed-values.sql:3780
+#: 950.data.seed-values.sql:6091
 msgid "Micmac"
 msgstr "Micmac"
 
@@ -1617,19 +1523,19 @@ msgstr "Micmac"
 msgid "Personal Author"
 msgstr "Անհատական հեղինակ"
 
-#: 950.data.seed-values.sql:1747
-msgid ""
-"When predicting the amount of time a patron will be waiting for a hold to be "
-"fulfilled, this is the default estimated length of time to assume an item "
-"will be checked out. Examples: \"3 weeks\", \"7 days\""
-msgstr ""
-"Երբ կանխատեսվում է ժամանակը, որ ընթերցողը պետք է սպասի պահումը իրականացնելու "
-"համար, սա ժամանակի գնահատված լռակյաց մեծությունն է, որի ընթացքում նյութը "
-"կլինի սպասարկված։Օրինակներ՝ \"3 շաբաթ\", \"7 օր\""
+# id::clm.value__-gag id::clm.value__glg
+# id::-gag
+#: 950.data.seed-values.sql:5956 950.data.seed-values.sql:5967
+msgid "Galician"
+msgstr "Գալիցերեն"
+
+#: 950.data.seed-values.sql:11560
+msgid "OPAC Login (jspac)"
+msgstr "ՀՕԱՔ մուտք (jspac)"
 
 # id::clm.value__mad
 # id::mad
-#: 950.data.seed-values.sql:3764
+#: 950.data.seed-values.sql:6075
 msgid "Madurese"
 msgstr "Madurese"
 
@@ -1645,35 +1551,39 @@ msgstr ""
 
 # id::clm.value__kmb
 # id::kmb
-#: 950.data.seed-values.sql:3727
+#: 950.data.seed-values.sql:6038
 msgid "Kimbundu"
 msgstr "Kimbundu"
 
 # id::clm.value__ssa
 # id::ssa
-#: 950.data.seed-values.sql:3905
+#: 950.data.seed-values.sql:6216
 msgid "Nilo-Saharan (Other)"
 msgstr "Nilo-Saharan (այլ)"
 
 # id::clm.value__sag
 # id::sag
-#: 950.data.seed-values.sql:3862
+#: 950.data.seed-values.sql:6173
 msgid "Sango (Ubangi Creole)"
 msgstr "Sango (Ubangi Creole)"
 
 # id::clm.value__kha
 # id::kha
-#: 950.data.seed-values.sql:3720
+#: 950.data.seed-values.sql:6031
 msgid "Khasi"
 msgstr "Khasi"
 
-#: 950.data.seed-values.sql:26
+#: 950.data.seed-values.sql:9332
+msgid "Invalid value for \"circ_as_type\""
+msgstr "Անիրական արժեք \"circ_as_type\" համար"
+
+#: 950.data.seed-values.sql:99
 msgid "Subject"
 msgstr "Խորագիր"
 
 # id::clm.value__mah
 # id::mah
-#: 950.data.seed-values.sql:3766
+#: 950.data.seed-values.sql:6077
 msgid "Marshallese"
 msgstr "Marshallese"
 
@@ -1687,37 +1597,53 @@ msgstr "ՕԳՄ: ցույց տուր master_account դաշտը ընթերցող �
 
 # id::clm.value__yao
 # id::yao
-#: 950.data.seed-values.sql:3976
+#: 950.data.seed-values.sql:6287
 msgid "Yao (Africa)"
 msgstr "Yao (Africa)"
 
+#: 950.data.seed-values.sql:10071
+msgid "See Also Tracing -- Chronological Term"
+msgstr "Տես նաև հետագիծը -- Ժամանակագրական տերմին"
+
 # id::clm.value__mar
 # id::mar
-#: 950.data.seed-values.sql:3773
+#: 950.data.seed-values.sql:6084
 msgid "Marathi"
 msgstr "Marathi"
 
-# id::clm.value__slo
-# id::slo
-#: 950.data.seed-values.sql:3885
-msgid "Slovak"
-msgstr "Սլովակերեն"
+# id::clm.value__slv
+# id::slv
+#: 950.data.seed-values.sql:6197
+msgid "Slovenian"
+msgstr "Սլովեներեն"
+
+#: 950.data.seed-values.sql:9311 950.data.seed-values.sql:9312
+msgid "Import failed due to system id collision"
+msgstr "Ներմուծումը ձախողվեց համկարգային id-ի կոլլիզիայի պատճառով"
 
 # id::clm.value__sal
 # id::sal
-#: 950.data.seed-values.sql:3865
+#: 950.data.seed-values.sql:6176
 msgid "Salishan languages"
 msgstr "Salishan languages"
 
-#: 950.data.seed-values.sql:2372
-msgid "GUI: Require other_phone field on patron registration"
-msgstr "ՕԳՄ։ Պահանջում է other_phone դաշտ ընթերցող գրանցելիս"
+#: 950.data.seed-values.sql:11568
+msgid "Self-Check User Verification"
+msgstr "Օգտվողի ինքնահանձնման ստուգում"
+
+#: 950.data.seed-values.sql:10026
+msgid "Heading -- Geographic Name"
+msgstr "Վերնախորագիր -- Աշխարհագրական անուն"
 
 # id::clm.value__san
 # id::san
-#: 950.data.seed-values.sql:3867
+#: 950.data.seed-values.sql:6178
 msgid "Sanskrit"
 msgstr "Սանսկրիտ"
+
+#: 950.data.seed-values.sql:6371
+msgid "Super-VHS"
+msgstr "Գեր-VHS"
 
 # id::ccs.name__9
 # id::9
@@ -1733,7 +1659,7 @@ msgstr "Gayo"
 
 # id::clfm.value__e
 # id::e
-#: 950.data.seed-values.sql:4020
+#: 950.data.seed-values.sql:6331
 msgid "Essays"
 msgstr "Էսսէներ"
 
@@ -1743,62 +1669,32 @@ msgstr "Տեղային գրադարանային համակարգ"
 
 # id::cifm.value__r
 # id::r
-#: 950.data.seed-values.sql:4037
+#: 950.data.seed-values.sql:6348
 msgid "Regular print reproduction"
 msgstr "Սովորական տպագիր ռեպրոդուկցիաներ"
 
-# id::clm.value__jpr
-# id::jpr
-#: 950.data.seed-values.sql:3706
-msgid "Judeo-Persian"
-msgstr "Judeo-Persian"
+# id::clm.value__elx
+# id::elx
+#: 950.data.seed-values.sql:5929
+msgid "Elamite"
+msgstr "Elamite"
 
-#: 950.data.seed-values.sql:5364
-msgid "Use audio alerts for selfcheck events"
-msgstr "Ինքնաստուգվող պատահարների համար ընտրիր ձայնային զգուշացում"
+# id::clm.value__ady
+# id::ady
+#: 950.data.seed-values.sql:5817
+msgid "Adygei"
+msgstr "Ադիգեյ"
 
-#: 950.data.seed-values.sql:2289
-msgid ""
-"The dob field will be suggested on the patron registration screen. "
-"Suggesting a field makes it appear when suggested fields are shown. If the "
-"field is shown or required this setting is ignored."
-msgstr ""
-"Կառաջարկվի dob  դաշտը ընթերցողի գրանցման պաստառին։ Առաջարկելով դաշտ ստիպում "
-"է որ այն հայտնվի երբ առաջարկվող դաշտերը ցուցադրված են։ Եթե դաշտը ցուցադրված "
-"կամ պահանջված է, ապա կարգաբերումները անտեսվում են։"
-
-#: 950.data.seed-values.sql:2037
-msgid ""
-"Length of time (in seconds) a self-serve password reset request should "
-"remain active."
-msgstr ""
-"Ժամանակի տևողություն (վայրկյաններ) որի ընթացքում ինքնաստուգվող գաղտնաբառի "
-"վերագրման առաջարկը մնում է ակտիվ։"
-
-# id::clfm.value__c
-# id::c
-#: 950.data.seed-values.sql:4018
-msgid "Comic strips"
-msgstr "Շարժեր"
-
-#: 950.data.seed-values.sql:2252
-msgid "GUI: Suggest claims_returned_count field on patron registration"
-msgstr ""
-"ՕԳՄ: Առաջարկիր claims_returned_count դաշտ ընթերցողի գրանցման պաստառին։"
-
-#: 950.data.seed-values.sql:2548 950.data.seed-values.sql:2551
-#: 950.data.seed-values.sql:2552 950.data.seed-values.sql:2558
+#: 950.data.seed-values.sql:4849 950.data.seed-values.sql:4852
+#: 950.data.seed-values.sql:4853 950.data.seed-values.sql:4859
 msgid "Miscellaneous"
 msgstr "Այլևայլ"
 
-#: 950.data.seed-values.sql:1721 950.data.seed-values.sql:1722
-msgid "Holds: Soft boundary"
-msgstr "Պահումներ։ Փափուկ սահմանագծում"
-
-#: 950.data.seed-values.sql:1782
-msgid "Alert staff when the last copy for a record is being deleted"
-msgstr ""
-"Զգուշացրու աշխատակազմին երբ տվյալ գրառման համար վերջին օրինակը ջնջվում է։"
+# id::clm.value__nor
+# id::nor
+#: 950.data.seed-values.sql:6128
+msgid "Norwegian"
+msgstr "Նորվեգերեն"
 
 # id::aou.name__7
 # id::7
@@ -1824,13 +1720,18 @@ msgstr "Օրինակ մասնաճյուղ 1"
 
 # id::clm.value__kom
 # id::kom
-#: 950.data.seed-values.sql:3729
+#: 950.data.seed-values.sql:6040
 msgid "Komi"
 msgstr "Komi"
 
+#: 950.data.seed-values.sql:10009
+msgid "Library of Congress standard authority record control semantics"
+msgstr ""
+"Կոնգրեսի գրադարանի ստանդարտ հեղինակավոր գրառման վերահսկման շարահյուսություն"
+
 # id::clm.value__hit
 # id::hit
-#: 950.data.seed-values.sql:3679
+#: 950.data.seed-values.sql:5990
 msgid "Hittite"
 msgstr "Հեթիթերեն"
 
@@ -1848,39 +1749,29 @@ msgstr "Նեպալերեն"
 
 # id::clm.value__tuk
 # id::tuk
-#: 950.data.seed-values.sql:3945
+#: 950.data.seed-values.sql:6256
 msgid "Turkmen"
 msgstr "Թուրքմեներեն"
 
-#: 950.data.seed-values.sql:2388
-msgid "GUI: Suggest second_given_name field on patron registration"
-msgstr "ՕԳՄ։ Առաջարկվող երկրորդ_տրված_անուն դաշտ ընթերցող գրանցելիս"
+#: 950.data.seed-values.sql:10064
+msgid "See Also Tracing -- Topical Term"
+msgstr "Տես նաև հետագիծ -- Թեմատիկ տերմին"
 
 # id::clm.value__suk
 # id::suk
-#: 950.data.seed-values.sql:3908
+#: 950.data.seed-values.sql:6219
 msgid "Sukuma"
 msgstr "Sukuma"
 
 # id::citm.value__p
 # id::p
-#: 950.data.seed-values.sql:4006
+#: 950.data.seed-values.sql:6317
 msgid "Mixed materials"
 msgstr "Խառը նյութեր"
 
-#: 950.data.seed-values.sql:6470
-msgid "Fund Spending Limit for Warning"
-msgstr "Բյուջեի ծախսի սահմանափակման զգուշացում"
-
-#: 950.data.seed-values.sql:2273
-msgid ""
-"The day_phone field will be suggested on the patron registration screen. "
-"Suggesting a field makes it appear when suggested fields are shown. If the "
-"field is shown or required this setting is ignored."
-msgstr ""
-"Ցերեկային_հեռախոս դաշտը կառաջարկվի ընթերցողի գրանցման պաստառին։ Առաջարկելով "
-"դաշտ թույլ է տալիս որ այն հայտնվի երբ առաջարկվող դաշտերը ցուցադրված են։ Եթե "
-"դաշտը ցուցադրված կամ պահանջված է, կարգաբերումը անտեսվում է։"
+#: 950.data.seed-values.sql:2489
+msgid "Security"
+msgstr "Անվտանգություն"
 
 # id::ccs.name__8
 # id::8
@@ -1888,43 +1779,29 @@ msgstr ""
 msgid "On holds shelf"
 msgstr "Պահված դարակի վրա"
 
-#: 950.data.seed-values.sql:1687
-msgid ""
-"Amount of time after a hold is placed before the hold expires.  Example "
-"\"100 days\""
-msgstr ""
-"Մինչ պահման ժամկետի լրանալը ժամանակի մեծությունը որից հետո պահումը կահարվում "
-"է։ Օրինակ \"100 օր\""
+#: 950.data.seed-values.sql:11552
+msgid "Verification via srfsh"
+msgstr "Ստուգում srfsh օգնությամբ"
+
+# id::clm.value__ypk
+# id::ypk
+#: 950.data.seed-values.sql:6291
+msgid "Yupik languages"
+msgstr "Yupik languages"
 
 # id::clm.value__tvl
 # id::tvl
-#: 950.data.seed-values.sql:3950
+#: 950.data.seed-values.sql:6261
 msgid "Tuvaluan"
 msgstr "Tuvaluan"
 
-#: 950.data.seed-values.sql:2017
-msgid ""
-"Maximum entries for \"Most Recently Affected Patrons...\" section of the "
-"Work Log interface."
-msgstr ""
-"Մաքսիմում մուտքեր \"Ամենավերջին վարակված հաճախորդներ...\" սեկցիայում, "
-"Աշխատանքի լոգի միջերեսում։"
-
-# id::clm.value__bak
-# id::bak
-#: 950.data.seed-values.sql:3538
-msgid "Bashkir"
-msgstr "Բաշկիրերեն"
-
-# id::clm.value__kua
-# id::kua
-#: 950.data.seed-values.sql:3736
-msgid "Kuanyama"
-msgstr "Kuanyama"
+#: 950.data.seed-values.sql:10150
+msgid "No attempt to code"
+msgstr "Չկա կոդին դիմելու փորձ"
 
 # id::clm.value__nso
 # id::nso
-#: 950.data.seed-values.sql:3818
+#: 950.data.seed-values.sql:6129
 msgid "Northern Sotho"
 msgstr "Northern Sotho"
 
@@ -1936,21 +1813,28 @@ msgstr "Bamileke languages"
 
 # id::clm.value__bej
 # id::bej
-#: 950.data.seed-values.sql:3545
+#: 950.data.seed-values.sql:5856
 msgid "Beja"
 msgstr "Beja"
 
-#: 950.data.seed-values.sql:265
-msgid "Spanish (Mexico)"
-msgstr "Իսպաներեն (Մեքսիկա)"
+# id::clm.value__gem
+# id::gem
+#: 950.data.seed-values.sql:5960
+msgid "Germanic (Other)"
+msgstr "Գերմանական (այլ)"
 
-#: 950.data.seed-values.sql:2007
-msgid "Often \"PayPal\" or \"VeriSign\", sometimes others"
-msgstr "Հաճախ \"PayPal\" կամ \"VeriSign\", երբեմն այլ բան"
+#: 950.data.seed-values.sql:376 950.data.seed-values.sql:397
+#: 950.data.seed-values.sql:416
+msgid "Item Type"
+msgstr "Նյութի տեսակ"
+
+#: 950.data.seed-values.sql:9334
+msgid "Perm failure creating a record"
+msgstr "Գրառում ստեղծելիս ձախողում"
 
 # id::clm.value__kab
 # id::kab
-#: 950.data.seed-values.sql:3709
+#: 950.data.seed-values.sql:6020
 msgid "Kabyle"
 msgstr "Kabyle"
 
@@ -1968,25 +1852,25 @@ msgstr "SSN"
 
 # id::clm.value__got
 # id::got
-#: 950.data.seed-values.sql:3662
+#: 950.data.seed-values.sql:5973
 msgid "Gothic"
 msgstr "Գոթերեն"
 
 # id::clm.value__tmh
 # id::tmh
-#: 950.data.seed-values.sql:3936
+#: 950.data.seed-values.sql:6247
 msgid "Tamashek"
 msgstr "Tamashek"
 
 # id::clm.value__kaa
 # id::kaa
-#: 950.data.seed-values.sql:3708
+#: 950.data.seed-values.sql:6019
 msgid "Kara-Kalpak"
 msgstr "Կարա-կալպակերեն"
 
 # id::clm.value__swa
 # id::swa
-#: 950.data.seed-values.sql:3912
+#: 950.data.seed-values.sql:6223
 msgid "Swahili"
 msgstr "Swahili"
 
@@ -1996,7 +1880,7 @@ msgstr "Ոչ գրադարանային նյութ"
 
 # id::clm.value__car
 # id::car
-#: 950.data.seed-values.sql:3568
+#: 950.data.seed-values.sql:5879
 msgid "Carib"
 msgstr "Carib"
 
@@ -2016,25 +1900,29 @@ msgstr ""
 
 # id::clm.value__chr
 # id::chr
-#: 950.data.seed-values.sql:3583
+#: 950.data.seed-values.sql:5894
 msgid "Cherokee"
 msgstr "Cherokee"
 
-# id::citm.value__f
-# id::f
-#: 950.data.seed-values.sql:4008
-msgid "Manuscript cartographic material"
-msgstr "Ձեռագիր քարտեզներ"
+#: 950.data.seed-values.sql:10029
+msgid "Heading -- Geographic Subdivision"
+msgstr "Վերնախորագիր -- Աշխարհագրական ենթաբաժին"
+
+# id::ccs.name__5
+# id::5
+#: 950.data.seed-values.sql:302
+msgid "In process"
+msgstr "Գործողության մեջ"
 
 #: 950.data.seed-values.sql:1817
 msgid "Void processing fee when lost item returned"
 msgstr "Դատարկ գործողության վճար երբ ւորած նյութը վերադարձված է։"
 
-#: 950.data.seed-values.sql:2488
-msgid "TCN Value"
-msgstr "TCN արժեք"
+#: 950.data.seed-values.sql:2495
+msgid "Program"
+msgstr "Ծրագիր"
 
-#: 950.data.seed-values.sql:7241 950.data.seed-values.sql:7242
+#: 950.data.seed-values.sql:8892 950.data.seed-values.sql:8893
 msgid "Historical Hold Retention Count"
 msgstr "Պահման պատմական ժամկետի հաշվիչ"
 
@@ -2044,31 +1932,49 @@ msgstr "Հաճախ նույնը ինչ ո գրանցման ժամանակ է"
 
 # id::clm.value__mag
 # id::mag
-#: 950.data.seed-values.sql:3765
+#: 950.data.seed-values.sql:6076
 msgid "Magahi"
 msgstr "Magahi"
 
 # id::clm.value__paa
 # id::paa
-#: 950.data.seed-values.sql:3833
+#: 950.data.seed-values.sql:6144
 msgid "Papuan (Other)"
 msgstr "Papuan (այլ)"
 
+# id::clm.value__jrb
+# id::jrb
+#: 950.data.seed-values.sql:6018
+msgid "Judeo-Arabic"
+msgstr "Judeo-Arabic"
+
+#: 950.data.seed-values.sql:6372
+msgid "M-II"
+msgstr "M-II"
+
 # id::clm.value__-mla id::clm.value__mlg
 # id::-mla
-#: 950.data.seed-values.sql:3784 950.data.seed-values.sql:3785
+#: 950.data.seed-values.sql:6095 950.data.seed-values.sql:6096
 msgid "Malagasy"
 msgstr "Malagasy"
 
 # id::clm.value__tli
 # id::tli
-#: 950.data.seed-values.sql:3935
+#: 950.data.seed-values.sql:6246
 msgid "Tlingit"
 msgstr "Tlingit"
 
+#: 950.data.seed-values.sql:10066
+msgid "See Also Tracing -- Genre/Form Term"
+msgstr "Տես նաև հետագիծը -- Ժանրի/Ձևի տերմին"
+
+#: 950.data.seed-values.sql:10015
+msgid "See Also From Tracing -- Uniform Title"
+msgstr "Տես նաև Հետագծից - Համընդհանուր վերնագիր"
+
 # id::clm.value__mao
 # id::mao
-#: 950.data.seed-values.sql:3771
+#: 950.data.seed-values.sql:6082
 msgid "Maori"
 msgstr "Մաորի"
 
@@ -2080,27 +1986,29 @@ msgstr "Վիետնամերեն"
 
 # id::clm.value__frm
 # id::frm
-#: 950.data.seed-values.sql:3638
+#: 950.data.seed-values.sql:5949
 msgid "French, Middle (ca. 1400-1600)"
 msgstr "Ֆրանսերեն, Միջին (մոտ. 1400-1600)"
 
-#: 950.data.seed-values.sql:2416
-msgid "GUI: Example for phone fields on patron registration"
-msgstr "ՕԳՄ։ Օրինակներ հեռախոսի դաշտերի համար ընթերցող գրանցելիս։"
-
-#: 950.data.seed-values.sql:2392
-msgid "GUI: Show suffix field on patron registration"
-msgstr "ՕԳՄ։ Ցույց տուր վերջածանցի դաշտը ընթերցող գրանցելիս"
+# id::clm.value__bai
+# id::bai
+#: 950.data.seed-values.sql:5848
+msgid "Bamileke languages"
+msgstr "Bamileke languages"
 
 # id::clm.value__ibo
 # id::ibo
-#: 950.data.seed-values.sql:3685
+#: 950.data.seed-values.sql:5996
 msgid "Igbo"
 msgstr "Igbo"
 
+#: 950.data.seed-values.sql:11562
+msgid "Staff Client Login"
+msgstr "Աշխատակազմի հաճախորդի գրանցման մուտք"
+
 # id::clm.value__lad
 # id::lad
-#: 950.data.seed-values.sql:3741
+#: 950.data.seed-values.sql:6052
 msgid "Ladino"
 msgstr "Ladino"
 
@@ -2112,25 +2020,29 @@ msgstr "Serer"
 
 # id::clm.value__cat
 # id::cat
-#: 950.data.seed-values.sql:3569
+#: 950.data.seed-values.sql:5880
 msgid "Catalan"
 msgstr "Կատալոներեն"
 
-# id::clm.value__kro
-# id::kro
-#: 950.data.seed-values.sql:3734
-msgid "Kru"
-msgstr "Kru"
+# id::clm.value__srr
+# id::srr
+#: 950.data.seed-values.sql:6215
+msgid "Serer"
+msgstr "Serer"
 
 # id::cam.value__e
 # id::e
-#: 950.data.seed-values.sql:3994
+#: 950.data.seed-values.sql:6305
 msgid "Adult"
 msgstr "Մեծահասակ"
 
+#: 950.data.seed-values.sql:6364
+msgid "EIAJ"
+msgstr "EIAJ"
+
 # id::clm.value__phn
 # id::phn
-#: 950.data.seed-values.sql:3843
+#: 950.data.seed-values.sql:6154
 msgid "Phoenician"
 msgstr "Phoenician"
 
@@ -2140,19 +2052,27 @@ msgstr "Տացք։ ինքնստուգվող գաղնաբառի վերագրմա�
 
 # id::clm.value__wen
 # id::wen
-#: 950.data.seed-values.sql:3971
+#: 950.data.seed-values.sql:6282
 msgid "Sorbian languages"
 msgstr "Sorbian languages"
 
+#: 950.data.seed-values.sql:10036
+msgid "See Also From Tracing -- Corporate Name"
+msgstr "Տես նաև Հետագծից -- Համատեղ անուն"
+
+#: 950.data.seed-values.sql:9309
+msgid "Import failed due to invalid circulation modifier"
+msgstr "Ներմուծումը տապալվեց տացքի անիրական ձևափոխիչի պատճառով"
+
 # id::cam.value__a
 # id::a
-#: 950.data.seed-values.sql:3990
+#: 950.data.seed-values.sql:6301
 msgid "Preschool"
 msgstr "Նախադպրոցական"
 
 # id::clm.value__sel
 # id::sel
-#: 950.data.seed-values.sql:3874
+#: 950.data.seed-values.sql:6185
 msgid "Selkup"
 msgstr "Selkup"
 
@@ -2164,75 +2084,73 @@ msgstr "3_days_1_renew"
 
 # id::clm.value__nob
 # id::nob
-#: 950.data.seed-values.sql:3814
+#: 950.data.seed-values.sql:6125
 msgid "Norwegian (Bokmål)"
 msgstr "Norwegian (Bokmål)"
 
-#: 950.data.seed-values.sql:1791 950.data.seed-values.sql:1792
-msgid "Charge item price when marked damaged"
-msgstr "Երբ նշված է որպես վնասված գանձիր նյութի գինը։"
+#: 950.data.seed-values.sql:2492
+msgid "Circulation"
+msgstr "Տացք"
 
 # id::clm.value__bal
 # id::bal
-#: 950.data.seed-values.sql:3539
+#: 950.data.seed-values.sql:5850
 msgid "Baluchi"
 msgstr "Baluchi"
 
-#: 950.data.seed-values.sql:1732
-msgid "Regular expression defining the password format"
-msgstr "Կանոնավոր արտահայտություն որը սահմանում է գաղտնաբառի ձևաչափը։"
-
-#: 950.data.seed-values.sql:2400
-msgid "GUI: Require county field on patron registration"
-msgstr "ՕԳՄ։ Պահանջում է երկրամասի կոդ ընթերցող գրանցելիս"
+#: 950.data.seed-values.sql:6368
+msgid "CED videodisc"
+msgstr "CED տեսասկավառակ"
 
 # id::clm.value__pan
 # id::pan
-#: 950.data.seed-values.sql:3837
+#: 950.data.seed-values.sql:6148
 msgid "Panjabi"
 msgstr "Panjabi"
 
 # id::clm.value__oss
 # id::oss
-#: 950.data.seed-values.sql:3830
+#: 950.data.seed-values.sql:6141
 msgid "Ossetic"
 msgstr "Ossetic"
 
-#: 950.data.seed-values.sql:1947
-msgid "AuthorizeNet login"
-msgstr "AuthorizeNet գրանցում"
+# id::clm.value__khi
+# id::khi
+#: 950.data.seed-values.sql:6032
+msgid "Khoisan (Other)"
+msgstr "Khoisan (այլ)"
 
 # id::clm.value__raj
 # id::raj
-#: 950.data.seed-values.sql:3852
+#: 950.data.seed-values.sql:6163
 msgid "Rajasthani"
 msgstr "Rajasthani"
 
-# id::clm.value__nia
-# id::nia
-#: 950.data.seed-values.sql:3810
-msgid "Nias"
-msgstr "Nias"
+# id::clm.value__non
+# id::non
+#: 950.data.seed-values.sql:6127
+msgid "Old Norse"
+msgstr "Old Norse"
 
 # id::acpl.name__1
 # id::1
-#: 950.data.seed-values.sql:1596
+#: 950.data.seed-values.sql:2426
 msgid "Stacks"
 msgstr "Պահոցներ"
 
 # id::clm.value__hau
 # id::hau
-#: 950.data.seed-values.sql:3672
+#: 950.data.seed-values.sql:5983
 msgid "Hausa"
 msgstr "Hausa"
 
-#: 950.data.seed-values.sql:2566
+#: 950.data.seed-values.sql:4867
 msgid "Cancel Holds"
 msgstr "Չեղյալ արա պահումները"
 
 # id::clm.value__arn
 # id::arn
-#: 950.data.seed-values.sql:3523
+#: 950.data.seed-values.sql:5834
 msgid "Mapuche"
 msgstr "Mapuche"
 
@@ -2240,13 +2158,19 @@ msgstr "Mapuche"
 msgid "Set"
 msgstr "Բազմություն"
 
-#: 950.data.seed-values.sql:2396
-msgid "GUI: Suggest suffix field on patron registration"
-msgstr "ՕԳՄ։ պահանջիր վերջածանցի դաշտ ընթերցող գրանցելիս"
+# id::clm.value__mol
+# id::mol
+#: 950.data.seed-values.sql:6102
+msgid "Moldavian"
+msgstr "Մոլդավերեն"
 
-#: 950.data.seed-values.sql:1716 950.data.seed-values.sql:1717
-msgid "Holds: Hard boundary"
-msgstr "Պահումներ։ Կոշտ կազմ։"
+#: 950.data.seed-values.sql:10051
+msgid "Established Heading Linking Entry -- Topical Term"
+msgstr "Կայացած վերնախորագրի կապի մուտք -- Թեմատիկ անուն"
+
+#: 950.data.seed-values.sql:6363
+msgid "U-matic"
+msgstr "U-matic"
 
 #: 950.data.seed-values.sql:44
 msgid "Translated Title"
@@ -2254,11 +2178,11 @@ msgstr "Թարգմանված վերնագիր"
 
 # id::clm.value__kum
 # id::kum
-#: 950.data.seed-values.sql:3737
+#: 950.data.seed-values.sql:6048
 msgid "Kumyk"
 msgstr "Kumyk"
 
-#: 950.data.seed-values.sql:2493
+#: 950.data.seed-values.sql:4794
 msgid "Edition"
 msgstr "Հրատարակություն"
 
@@ -2278,7 +2202,7 @@ msgstr ""
 
 # id::clm.value__ava
 # id::ava
-#: 950.data.seed-values.sql:3531
+#: 950.data.seed-values.sql:5842
 msgid "Avaric"
 msgstr "Avaric"
 
@@ -2290,77 +2214,65 @@ msgstr ""
 "Ցույց տուր ամբողջովին սեղմված պարբերականների պահումները բոլոր գրադարանների "
 "համար՝ այս իմաստային միավորից վեր և ներքո։"
 
-#: 950.data.seed-values.sql:1752
-msgid ""
-"When predicting the amount of time a patron will be waiting for a hold to be "
-"fulfilled, this is the minimum estimated length of time to assume an item "
-"will be checked out. Examples: \"2 weeks\", \"5 days\""
-msgstr ""
-"Երբ կանատեսվում է որոշակի ժամանակ որի ընթացքում ընթերցողը սպասելու է պահման "
-"իրականացմանը, սա գնահատված նվազագույն ժամանակն է, որի ենթացքում ենթադրվում է "
-"որ նյութը դրսում է լինելու։ Օրինակներ՝ \"2 շաբաթ\", \"5 օր\""
+# id::clm.value__uig
+# id::uig
+#: 950.data.seed-values.sql:6266
+msgid "Uighur"
+msgstr "Uighur"
 
 #: 950.data.seed-values.sql:1961
 msgid "Credit card processing: AuthorizeNet test mode"
 msgstr "Կրեդիտ քարտի ակտիվացում։ AuthorizeNet թեստ վիճակ"
 
-# id::clm.value__afa
-# id::afa
-#: 950.data.seed-values.sql:3507
-msgid "Afroasiatic (Other)"
-msgstr "Աֆրոասիական (այլ)"
+#: 950.data.seed-values.sql:1602
+msgid "Can do anything at the Branch level"
+msgstr "Կարող է մասնաճյուղի մակարդակում անել ամեն ինչ"
 
-#: 950.data.seed-values.sql:1922
-msgid ""
-"When this count is exceeded, a staff override is required to mark the item "
-"as claims returned"
-msgstr ""
-"Երբ այս հաշվիչը գերազանցված է, պահանջվում է աշխատակազմի չեղյալ անել, որպեսզի "
-"նյութը նշվի որպես խարանվածի վերադարձ։"
+#: 950.data.seed-values.sql:11544
+msgid "Login via gateway-v1"
+msgstr "մուտքի գրանցում gateway-v1 միջոցով"
 
 # id::clm.value__gmh
 # id::gmh
-#: 950.data.seed-values.sql:3658
+#: 950.data.seed-values.sql:5969
 msgid "German, Middle High (ca. 1050-1500)"
 msgstr "German, Middle High (ca. 1050-1500)"
 
-# id::clm.value__kho
-# id::kho
-#: 950.data.seed-values.sql:3723
-msgid "Khotanese"
-msgstr "Khotanese"
-
-#: 950.data.seed-values.sql:79 950.data.seed-values.sql:283
-#: 950.data.seed-values.sql:304 950.data.seed-values.sql:323
-#: 950.data.seed-values.sql:2484
+#: 950.data.seed-values.sql:152 950.data.seed-values.sql:362
+#: 950.data.seed-values.sql:383 950.data.seed-values.sql:402
+#: 950.data.seed-values.sql:4785
 msgid "ISBN"
 msgstr "ISBN"
 
 # id::clm.value__mai
 # id::mai
-#: 950.data.seed-values.sql:3767
+#: 950.data.seed-values.sql:6078
 msgid "Maithili"
 msgstr "Maithili"
 
-#: 950.data.seed-values.sql:2293
-msgid "The Example for validation on the email field in patron registration."
-msgstr "Օրինակ էլ. փոստի դաշտը հավաստիացնելիս, երբ ընթերցող է գրանցվում։"
+#: 950.data.seed-values.sql:1591
+msgid "Circulators"
+msgstr "Տացքեր"
+
+#: 950.data.seed-values.sql:10032
+msgid "Heading -- Chronological Term"
+msgstr "Վերնախորագիր -- Ժամանակագրական տերմին"
 
 # id::clm.value__tai
 # id::tai
-#: 950.data.seed-values.sql:3918
+#: 950.data.seed-values.sql:6229
 msgid "Tai (Other)"
 msgstr "Թաի (այլ)"
 
 # id::clm.value__tpi
 # id::tpi
-#: 950.data.seed-values.sql:3939
+#: 950.data.seed-values.sql:6250
 msgid "Tok Pisin"
 msgstr "Tok Pisin"
 
 # id::clm.value__jpn
 # id::jpn
-#: 950.data.seed-values.sql:3705
+#: 950.data.seed-values.sql:6016
 msgid "Japanese"
 msgstr "Ճապոներեն"
 
@@ -2368,131 +2280,128 @@ msgstr "Ճապոներեն"
 msgid "Topic Subject"
 msgstr "Թեմատիկ խորագիր"
 
+#: 950.data.seed-values.sql:10148
+msgid "Repertoire de vedettes-matiere"
+msgstr "Repertoire de vedettes-matiere"
+
+#: 950.data.seed-values.sql:25
+msgid "Patron exceeds max overdue item threshold"
+msgstr "Հաճախորդը գերազանցում է ամենամեծ ժամկետանցի շեմը"
+
 # id::cit.name__3
 # id::3
-#: 950.data.seed-values.sql:161
+#: 950.data.seed-values.sql:240 950.data.seed-values.sql:6379
+#: 950.data.seed-values.sql:10149
 msgid "Other"
 msgstr "Այլ"
 
 # id::clm.value__peo
 # id::peo
-#: 950.data.seed-values.sql:3840
+#: 950.data.seed-values.sql:6151
 msgid "Old Persian (ca. 600-400 B.C.)"
 msgstr "Հին պարսկերեն (մոտ. 600-400 B.C.)"
 
-# id::citm.value__c
-# id::c
-#: 950.data.seed-values.sql:4009
-msgid "Notated music"
-msgstr "Նոտաներ"
+#: 950.data.seed-values.sql:10045
+msgid "See Also From Tracing -- Chronological Term"
+msgstr "Տես նաև այս հետագծից -- Ժամանակագրական տերմին"
 
 # id::citm.value__k
 # id::k
-#: 950.data.seed-values.sql:4003
+#: 950.data.seed-values.sql:6314
 msgid "Two-dimensional nonprojectable graphic"
 msgstr "Երկչափանի չպրոեկտվող գրաֆիկա"
 
 # id::clm.value__ban
 # id::ban
-#: 950.data.seed-values.sql:3541
+#: 950.data.seed-values.sql:5852
 msgid "Balinese"
 msgstr "Balinese"
 
-#: 950.data.seed-values.sql:1956
-msgid "Credit card processing: AuthorizeNet server"
-msgstr "Կրեդիտ քարտի ակտիվացում։ AuthorizeNet կայան"
+#: 950.data.seed-values.sql:8871 950.data.seed-values.sql:8872
+msgid "Historical Circulation Retention Start Date"
+msgstr "Տացքի պատմութան պահպանման սկզբնավորման ամսաթիվ"
 
-#: 950.data.seed-values.sql:2404
-msgid "GUI: Example for post_code field on patron registration"
-msgstr "ՕԳՄ: Օրինակ post_code դաշտի համար ընթերցող գրանցելիս։"
+# id::clm.value__tkl
+# id::tkl
+#: 950.data.seed-values.sql:6245
+msgid "Tokelauan"
+msgstr "Tokelauan"
 
 # id::clm.value__doi
 # id::doi
-#: 950.data.seed-values.sql:3608
+#: 950.data.seed-values.sql:5919
 msgid "Dogri"
 msgstr "Dogri"
 
-#: 950.data.seed-values.sql:1386
+#: 950.data.seed-values.sql:1583
 msgid "Users"
 msgstr "Օգտվողներ"
 
 # id::clm.value__lim
 # id::lim
-#: 950.data.seed-values.sql:3750
+#: 950.data.seed-values.sql:6061
 msgid "Limburgish"
 msgstr "Limburgish"
 
-#: 950.data.seed-values.sql:2480
-msgid "Title of work"
-msgstr "Աշխատանքի վերնագիր"
+# id::clm.value__egy
+# id::egy
+#: 950.data.seed-values.sql:5927
+msgid "Egyptian"
+msgstr "Եգիպտերեն"
 
-#: 950.data.seed-values.sql:2486
-msgid "Price"
-msgstr "Գին"
+#: 950.data.seed-values.sql:1610
+msgid "Global Administrator"
+msgstr "Համընդհանուր կառավարիչ"
 
 # id::clm.value__tyv
 # id::tyv
-#: 950.data.seed-values.sql:3952
+#: 950.data.seed-values.sql:6263
 msgid "Tuvinian"
 msgstr "Tuvinian"
 
-#: 950.data.seed-values.sql:57
-msgid "Conference Author"
-msgstr "Կոնֆերանսի հեղինակ"
+#: 950.data.seed-values.sql:2498
+msgid "Credit Card Processing"
+msgstr "Կրեդիտ քարտի աշխատեցում"
 
 # id::citm.value__o
 # id::o
-#: 950.data.seed-values.sql:4005
+#: 950.data.seed-values.sql:6316
 msgid "Kit"
 msgstr "Kit"
 
-#: 950.data.seed-values.sql:1846
-msgid "GUI: Idle timeout"
-msgstr "ՕԳՄ: անգործության ժամանակի տիրույթ"
-
-#: 950.data.seed-values.sql:1841
-msgid "Show billing tab first when bills are present"
-msgstr ""
-"Ցույց տուր գանձելու տաբը սկզբից , երբ վճարման հաշիվները ներկայացված են։"
-
-#: 950.data.seed-values.sql:2364
-msgid "GUI: Example for other_phone field on patron registration"
-msgstr "ՕԳՄ։ Օրինակ other_phone դաշտի համար ընթերցող գրանցելիս։"
+#: 950.data.seed-values.sql:8723
+msgid "Processing Fee"
+msgstr "Գործողության կատարման վճար"
 
 # id::clm.value__mul
 # id::mul
-#: 950.data.seed-values.sql:3794
+#: 950.data.seed-values.sql:6105
 msgid "Multiple languages"
 msgstr "Բազմաթիվ լեզուներ"
 
 # id::clm.value__mlt
 # id::mlt
-#: 950.data.seed-values.sql:3786
+#: 950.data.seed-values.sql:6097
 msgid "Maltese"
 msgstr "Maltese"
 
 # id::clm.value__asm
 # id::asm
-#: 950.data.seed-values.sql:3527
+#: 950.data.seed-values.sql:5838
 msgid "Assamese"
 msgstr "Assamese"
 
-#: 950.data.seed-values.sql:6479
-msgid ""
-"When the amount remaining in the fund, including spent money and "
-"encumbrances, goes below this percentage, attempts to spend from the fund "
-"will be blocked."
-msgstr ""
-"Երբ հաշվի վրա մնացող գումարը, ներառած ծախսած գումարը, ավլեի ցածր է դառնում "
-"այս տոկոսից, հաշվից գումար ծախսելու փորձերը կարգելափակվեն;"
+#: 950.data.seed-values.sql:9314
+msgid "Import failed due to Accession Number collision"
+msgstr "Գույքահամարի կոլիզիայի պատճառով ներմուծումը ձախողվեց"
 
 # id::citm.value__r
 # id::r
-#: 950.data.seed-values.sql:4004
+#: 950.data.seed-values.sql:6315
 msgid "Three-dimensional artifact or naturally occurring object"
 msgstr "Three-dimensional artifact or naturally occurring object"
 
-#: 950.data.seed-values.sql:77 950.data.seed-values.sql:2487
+#: 950.data.seed-values.sql:150 950.data.seed-values.sql:4788
 msgid "Accession Number"
 msgstr "Աճման համար"
 
@@ -2508,7 +2417,7 @@ msgstr "Բոլոր խորագրերը"
 
 # id::clm.value__tsn id::clm.value__-tsw
 # id::tsn
-#: 950.data.seed-values.sql:3942 950.data.seed-values.sql:3944
+#: 950.data.seed-values.sql:6253 950.data.seed-values.sql:6255
 msgid "Tswana"
 msgstr "Tswana"
 
@@ -2520,7 +2429,7 @@ msgstr "overdue_equip_mid"
 
 # id::clm.value__cop
 # id::cop
-#: 950.data.seed-values.sql:3588
+#: 950.data.seed-values.sql:5899
 msgid "Coptic"
 msgstr "Ղպտերեն"
 
@@ -2532,33 +2441,33 @@ msgstr "overdue_equip_min"
 
 # id::clm.value__ltz
 # id::ltz
-#: 950.data.seed-values.sql:3755
+#: 950.data.seed-values.sql:6066
 msgid "Letzeburgesch"
 msgstr "Letzeburgesch"
 
-#: 950.data.seed-values.sql:1852
-msgid ""
-"The # of uses entry in the Record In-House Use interface may not exceed the "
-"value of this setting."
-msgstr ""
-"Օգտվողների մուտքերի քանակ գրառման In-House գտագործման դեպքում։ Միջերեսը չի "
-"կարող գերազանցել այս կարգաբերումների արժեքները։"
+# id::clm.value__-fri id::clm.value__fry
+# id::-fri
+#: 950.data.seed-values.sql:5948 950.data.seed-values.sql:5951
+msgid "Frisian"
+msgstr "Frisian"
 
 # id::clm.value__myn
 # id::myn
-#: 950.data.seed-values.sql:3798
+#: 950.data.seed-values.sql:6109
 msgid "Mayan languages"
 msgstr "Mayan լեզուներ"
 
-#: 950.data.seed-values.sql:1761
-msgid "Selfcheck: Pop-up alert for errors"
-msgstr "Ինքնաստուգում.սխալների համար բաց արա զգուշացումները։"
+# id::clm.value__por
+# id::por
+#: 950.data.seed-values.sql:6158
+msgid "Portuguese"
+msgstr "Պորտուգալերեն"
 
-# id::ccs.name__2
-# id::2
-#: 950.data.seed-values.sql:220
-msgid "Bindery"
-msgstr "Կազմատուն"
+# id::clm.value__ace
+# id::ace
+#: 950.data.seed-values.sql:5814
+msgid "Achinese"
+msgstr "Աշկենազի"
 
 # id::cit.name__1
 # id::1
@@ -2566,17 +2475,13 @@ msgstr "Կազմատուն"
 msgid "Drivers License"
 msgstr "Վարորդական իրավունք"
 
-#: 950.data.seed-values.sql:1995
-msgid "PayflowPro password"
-msgstr "PayflowPro գաղտնաբառ"
-
-#: 950.data.seed-values.sql:1776
-msgid "Retain empty bib records"
-msgstr "Պահիր դատարկ մատեն գրառումները"
+#: 950.data.seed-values.sql:10054
+msgid "Subdivision Linking Entry -- General Subdivision"
+msgstr "Ենթաբաժնի կապի մուտք -- Համընդհանուր ենթաբաժին"
 
 # id::clm.value__ter
 # id::ter
-#: 950.data.seed-values.sql:3925
+#: 950.data.seed-values.sql:6236
 msgid "Terena"
 msgstr "Terena"
 
@@ -2592,7 +2497,7 @@ msgstr "ՕԳՄ։ ընթերցող գրանցելիս ցույց տուր այլ�
 
 # id::clm.value__ave
 # id::ave
-#: 950.data.seed-values.sql:3532
+#: 950.data.seed-values.sql:5843
 msgid "Avestan"
 msgstr "Avestan"
 
@@ -2606,75 +2511,47 @@ msgstr "Կրեդիտ քարտի ակտիվացում։ PayPal մուտք"
 
 # id::clm.value__min
 # id::min
-#: 950.data.seed-values.sql:3781
+#: 950.data.seed-values.sql:6092
 msgid "Minangkabau"
 msgstr "Minangkabau"
 
-#: 950.data.seed-values.sql:2304
-msgid "GUI: Show email field on patron registration"
-msgstr "ՕԳՄ։ ընթերցող գրանցելիս ցույց տուր էլ. փոստի դաշտը։"
-
-# id::clm.value__geo
-# id::geo
-#: 950.data.seed-values.sql:3650
-msgid "Georgian"
-msgstr "Վրացերեն"
+#: 950.data.seed-values.sql:6365
+msgid "Type C"
+msgstr "Տեսակ C"
 
 # id::clm.value__him
 # id::him
-#: 950.data.seed-values.sql:3677
+#: 950.data.seed-values.sql:5988
 msgid "Himachali"
 msgstr "Himachali"
 
-#: 950.data.seed-values.sql:1701 950.data.seed-values.sql:1702
-msgid "Void overdue fines when items are marked lost"
-msgstr "դատարկել ժամկետանց տուգանքները երբ նյութերը նշված են կորած"
+#: 950.data.seed-values.sql:11563
+msgid "Self-Check Proxy Login"
+msgstr "Ինքնա ընդունման միջնորդավորված գրանցում"
 
 # id::cblvl.value__i
 # id::i
-#: 950.data.seed-values.sql:4045
+#: 950.data.seed-values.sql:6356
 msgid "Integrating resource"
 msgstr "Միավորող պաշար"
 
-#: 950.data.seed-values.sql:2312
-msgid "GUI: Example for evening_phone field on patron registration"
-msgstr "ՕԳՄ: Օրինակ evening_phone դաշտի համար ընթերցող գրանցելիս"
-
-#: 950.data.seed-values.sql:2344
-msgid "GUI: Suggest ident_value2 field on patron registration"
-msgstr "ՕԳՄ։ Առաջարկիր ident_value2 դաշտ ընթերցող գրանցելիս"
+# id::clm.value__znd
+# id::znd
+#: 950.data.seed-values.sql:6295
+msgid "Zande"
+msgstr "Zande"
 
 # id::clm.value__fro
 # id::fro
-#: 950.data.seed-values.sql:3639
+#: 950.data.seed-values.sql:5950
 msgid "French, Old (ca. 842-1400)"
 msgstr "Ֆրանսերեն, Հին (մոտ. 842-1400)"
 
-#: 950.data.seed-values.sql:1912
-msgid ""
-"Disable automatic print attempts from staff client interfaces for the "
-"receipt types in this list.  Possible values: \"Checkout\", \"Bill Pay\", "
-"\"Hold Slip\", \"Transit Slip\", and \"Hold/Transit Slip\".  This is "
-"different from the Auto-Print checkbox in the pertinent interfaces in that "
-"it disables automatic print attempts altogether, rather than encouraging "
-"silent printing by suppressing the print dialog.  The Auto-Print checkbox in "
-"these interfaces have no effect on the behavior for this setting.  In the "
-"case of the Hold, Transit, and Hold/Transit slips, this also suppresses the "
-"alert dialogs that precede the print dialog (the ones that offer Print and "
-"Do Not Print as options)."
-msgstr ""
-"Այս ցուցակում ստացականների տեսակների համար արգելափակիր աշխատակազմի հաճախորդի "
-"կողմից ավտոմատ տպելու փորձերը։ Հնարավոր արժեքներն են՝ \"Checkout\", \"Bill "
-"Pay\", \"Hold Slip\", \"Transit Slip\", և \"Hold/Transit Slip\"։ Սա տարբեր է "
-"Ինքնատպել ընտրելու վանդակից, որը ավտոմատ արգելափակում է ինքնատպման փորձերը։"
-
-#: 950.data.seed-values.sql:6484
-msgid "Processing Fee"
-msgstr "Գործողության կատարման վճար"
-
-#: 950.data.seed-values.sql:1861 950.data.seed-values.sql:1862
-msgid "Default circulation modifier"
-msgstr "Տացքի լռակյաց ձևափոխիչ"
+# id::clm.value__sit
+# id::sit
+#: 950.data.seed-values.sql:6194
+msgid "Sino-Tibetan (Other)"
+msgstr "Sino-Tibetan (Other)"
 
 #: 950.data.seed-values.sql:11
 msgid "Bound Volume"
@@ -2682,17 +2559,17 @@ msgstr "Հատոր կազմի մեջ"
 
 # id::clm.value__-eth id::clm.value__gez
 # id::-eth
-#: 950.data.seed-values.sql:3625 950.data.seed-values.sql:3652
+#: 950.data.seed-values.sql:5936 950.data.seed-values.sql:5963
 msgid "Ethiopic"
 msgstr "Եթովպերեն"
 
-#: 950.data.seed-values.sql:2332
-msgid "GUI: Show ident_value field on patron registration"
-msgstr "ՕԳՄ: Ցույց տուր ident_value դաշտը ընթերցող գրանցելիս։"
+#: 950.data.seed-values.sql:10014
+msgid "Heading -- Uniform Title"
+msgstr "Վերնախորագիր -- Համընդհանուր վերնագիր"
 
 # id::clm.value__sma
 # id::sma
-#: 950.data.seed-values.sql:3887
+#: 950.data.seed-values.sql:6198
 msgid "Southern Sami"
 msgstr "Southern Sami"
 
@@ -2708,52 +2585,37 @@ msgstr "Creoles and Pidgins, French-based (այլ)"
 msgid "Discard/Weed"
 msgstr "Discard/Weed"
 
+#: 950.data.seed-values.sql:2493
+msgid "Self Check"
+msgstr "Ինքնա ընդունում"
+
 # id::clm.value__cor
 # id::cor
-#: 950.data.seed-values.sql:3589
+#: 950.data.seed-values.sql:5900
 msgid "Cornish"
 msgstr "Cornish"
 
 # id::clm.value__bul
 # id::bul
-#: 950.data.seed-values.sql:3563
+#: 950.data.seed-values.sql:5874
 msgid "Bulgarian"
 msgstr "Բուլղարերեն"
 
-#: 950.data.seed-values.sql:2313
-msgid ""
-"The Example for validation on the evening_phone field in patron registration."
-msgstr "Ընթերցող գրանցելիս evening_phone դաշտի հավաստիացման օրինակներ։"
-
-#: 950.data.seed-values.sql:2225
-msgid ""
-"The alias field will be shown on the patron registration screen. Showing a "
-"field makes it appear with required fields even when not required. If the "
-"field is required this setting is ignored."
-msgstr ""
-"Ընթերցղի գրանցման պաստառին ցույց կտրվի այլընտրանքային դաշտը։ Ցուցադրելով "
-"դաշտը ստիպում է որ այն հայտնվի պահանջվող դաշտերով, եթե նույնիսկ  երբ այն "
-"պահանջված չէ։ Եթե դաշտը պահանջված է, այս կարգաբերումը անտեսվում է։"
-
-# id::clm.value__tir
-# id::tir
-#: 950.data.seed-values.sql:3932
-msgid "Tigrinya"
-msgstr "Tigrinya"
-
-#: 950.data.seed-values.sql:1983
-msgid "PayPal test mode"
-msgstr "PayPal թեստային վիճակ։"
+# id::clm.value__roa
+# id::roa
+#: 950.data.seed-values.sql:6166
+msgid "Romance (Other)"
+msgstr "Ռոմաներեն (այլ)"
 
 # id::clm.value__yor
 # id::yor
-#: 950.data.seed-values.sql:3979
+#: 950.data.seed-values.sql:6290
 msgid "Yoruba"
 msgstr "Yoruba"
 
 # id::clm.value__arw
 # id::arw
-#: 950.data.seed-values.sql:3526
+#: 950.data.seed-values.sql:5837
 msgid "Arawak"
 msgstr "Arawak"
 
@@ -2763,29 +2625,29 @@ msgstr "Երկարատև ժամկետանցի հավաքածուի գումար"
 
 # id::clm.value__fre
 # id::fre
-#: 950.data.seed-values.sql:3636
+#: 950.data.seed-values.sql:5947
 msgid "French"
 msgstr "Ֆրանսերեն"
 
 # id::clm.value__tog
 # id::tog
-#: 950.data.seed-values.sql:3937
+#: 950.data.seed-values.sql:6248
 msgid "Tonga (Nyasa)"
 msgstr "Tonga (Nyasa)"
 
 # id::clm.value__ben
 # id::ben
-#: 950.data.seed-values.sql:3548
+#: 950.data.seed-values.sql:5859
 msgid "Bengali"
 msgstr "Բենգալերեն"
 
-#: 950.data.seed-values.sql:1836
-msgid "OPAC: Allow pending addresses"
-msgstr "ՀՕԱՔ։ Թույլատրի սպասող հասցեներ։"
+#: 950.data.seed-values.sql:6375
+msgid "Hi-8 mm."
+msgstr "Hi-8 մմ"
 
 # id::clm.value__bas
 # id::bas
-#: 950.data.seed-values.sql:3543
+#: 950.data.seed-values.sql:5854
 msgid "Basa"
 msgstr "Basa"
 
@@ -2803,9 +2665,13 @@ msgstr ""
 
 # id::clfm.value__s
 # id::s
-#: 950.data.seed-values.sql:4027
+#: 950.data.seed-values.sql:6338
 msgid "Speeches"
 msgstr "Ելույթներ"
+
+#: 950.data.seed-values.sql:10053
+msgid "Established Heading Linking Entry -- Genre/Form Term"
+msgstr "Սահմանված վերնախորագրի կապի մուտք -- Ժանրի/Ձևի տերմին"
 
 # id::cnct.name__1
 # id::1
@@ -2813,29 +2679,33 @@ msgstr "Ելույթներ"
 msgid "Paperback Book"
 msgstr "Փափուկ կազմով գիրք"
 
-#: 950.data.seed-values.sql:1686
-msgid "Holds: Expire Interval"
-msgstr "Պահումներ. ժամկետը լրանալու միջակայք"
+# id::clm.value__nap
+# id::nap
+#: 950.data.seed-values.sql:6112
+msgid "Neapolitan Italian"
+msgstr "Neapolitan Italian"
 
-# id::clm.value__fin
-# id::fin
-#: 950.data.seed-values.sql:3633
-msgid "Finnish"
-msgstr "Ֆիներեն"
+#: 950.data.seed-values.sql:1605
+msgid "Serials (includes admin features)"
+msgstr "Պարբերականներ (ներառում է կառավարիչի հնարավորություններ)"
+
+#: 950.data.seed-values.sql:10037
+msgid "See Also From Tracing -- Meeting Name"
+msgstr "Տես նաև Այս հետագծից -- Հանդիպման անուն"
 
 # id::clm.value__sun
 # id::sun
-#: 950.data.seed-values.sql:3909
+#: 950.data.seed-values.sql:6220
 msgid "Sundanese"
 msgstr "Sundanese"
 
 # id::clm.value__alb
 # id::alb
-#: 950.data.seed-values.sql:3513
+#: 950.data.seed-values.sql:5824
 msgid "Albanian"
 msgstr "Ալբաներեն"
 
-#: 950.data.seed-values.sql:2565
+#: 950.data.seed-values.sql:4866
 msgid "View Holds"
 msgstr "Դիտիր պահումները"
 
@@ -2849,11 +2719,11 @@ msgstr ""
 
 # id::clm.value__osa
 # id::osa
-#: 950.data.seed-values.sql:3829
+#: 950.data.seed-values.sql:6140
 msgid "Osage"
 msgstr "Osage"
 
-#: 950.data.seed-values.sql:2489
+#: 950.data.seed-values.sql:4790
 msgid "TCN Source"
 msgstr "TCN աղբյուր"
 
@@ -2871,37 +2741,45 @@ msgstr "Ժամանակավոր խորագիր"
 
 # id::clm.value__-tag id::clm.value__tgl
 # id::-tag
-#: 950.data.seed-values.sql:3916 950.data.seed-values.sql:3928
+#: 950.data.seed-values.sql:6227 950.data.seed-values.sql:6239
 msgid "Tagalog"
 msgstr "Tagalog"
 
 # id::clm.value__scc
 # id::scc
-#: 950.data.seed-values.sql:3871
+#: 950.data.seed-values.sql:6182
 msgid "Serbian"
 msgstr "Սերբերեն"
 
+#: 950.data.seed-values.sql:10070
+msgid "See Also Tracing -- Form Subdivision"
+msgstr "Տես նաև Հետագիծ -- Ձևի ենթաբաժին"
+
 # id::clm.value__ast
 # id::ast
-#: 950.data.seed-values.sql:3528
+#: 950.data.seed-values.sql:5839
 msgid "Bable"
 msgstr "Բաբելոնյան"
 
 # id::cblvl.value__d
 # id::d
-#: 950.data.seed-values.sql:4044
+#: 950.data.seed-values.sql:6355
 msgid "Subunit"
 msgstr "Ենթամիավոր"
 
 # id::clm.value__ita
 # id::ita
-#: 950.data.seed-values.sql:3703
+#: 950.data.seed-values.sql:6014
 msgid "Italian"
 msgstr "Իտալերեն"
 
+#: 950.data.seed-values.sql:11566
+msgid "LibraryElf Login"
+msgstr "LibraryElf մուտքի գրանցում"
+
 # id::clm.value__chb
 # id::chb
-#: 950.data.seed-values.sql:3574
+#: 950.data.seed-values.sql:5885
 msgid "Chibcha"
 msgstr "Chibcha"
 
@@ -2911,7 +2789,7 @@ msgstr "Օրինակ։ Ենթագրադարան 1"
 
 # id::clm.value__nav
 # id::nav
-#: 950.data.seed-values.sql:3803
+#: 950.data.seed-values.sql:6114
 msgid "Navajo"
 msgstr "Նավախո"
 
@@ -2934,7 +2812,7 @@ msgstr ""
 
 # id::clm.value__mno
 # id::mno
-#: 950.data.seed-values.sql:3789
+#: 950.data.seed-values.sql:6100
 msgid "Manobo languages"
 msgstr "Manobo լեզուներ"
 
@@ -2944,34 +2822,29 @@ msgstr "Ինքնստուգում։ Ձայնային զգուշացում"
 
 # id::clm.value__cha
 # id::cha
-#: 950.data.seed-values.sql:3573
+#: 950.data.seed-values.sql:5884
 msgid "Chamorro"
 msgstr "Chamorro"
 
 # id::clm.value__lua
 # id::lua
-#: 950.data.seed-values.sql:3756
+#: 950.data.seed-values.sql:6067
 msgid "Luba-Lulua"
 msgstr "Luba-Lulua"
 
-#: 950.data.seed-values.sql:1931
-msgid "GUI: Toggle off the patron summary sidebar after first view."
-msgstr ""
-"ՕԳՄ։ առաջին դիտումից հետո փոխանջատիր ըներցողի համառոտագրության կողային տողը։"
-
-#: 950.data.seed-values.sql:1392
+#: 950.data.seed-values.sql:1589
 msgid "Catalogers"
 msgstr "Քարտագրողներ"
 
 # id::clm.value__wak
 # id::wak
-#: 950.data.seed-values.sql:3966
+#: 950.data.seed-values.sql:6277
 msgid "Wakashan languages"
 msgstr "Wakashan languages"
 
 # id::clm.value__amh
 # id::amh
-#: 950.data.seed-values.sql:3516
+#: 950.data.seed-values.sql:5827
 msgid "Amharic"
 msgstr "Ամհարիկ"
 
@@ -2988,13 +2861,13 @@ msgstr "Ժամկետանց նյութեր"
 
 # id::clm.value__-taj id::clm.value__tgk
 # id::-taj
-#: 950.data.seed-values.sql:3919 950.data.seed-values.sql:3927
+#: 950.data.seed-values.sql:6230 950.data.seed-values.sql:6238
 msgid "Tajik"
 msgstr "Տաջիկերեն"
 
 # id::clm.value__rap
 # id::rap
-#: 950.data.seed-values.sql:3853
+#: 950.data.seed-values.sql:6164
 msgid "Rapanui"
 msgstr "Rapanui"
 
@@ -3004,29 +2877,41 @@ msgstr "ՕԳՄ: Առաջարկիր այլընտրանքի դաշտ ընթերց�
 
 # id::clm.value__urd
 # id::urd
-#: 950.data.seed-values.sql:3959
+#: 950.data.seed-values.sql:6270
 msgid "Urdu"
 msgstr "Ուրդու"
 
-#: 950.data.seed-values.sql:1866 950.data.seed-values.sql:1867
-msgid "Temporary barcode prefix"
-msgstr "Ժամանակավոր շտրիխ կոդի նախածանց"
+#: 950.data.seed-values.sql:9328
+msgid "Invalid value for \"circ_lib\""
+msgstr "Անիրական արժեք \"circ_lib\" համար"
+
+#: 950.data.seed-values.sql:10140
+msgid "Library of Congress Subject Headings"
+msgstr "Կոնգրեսի գրադարանի խորագրեր"
 
 # id::clm.value__loz
 # id::loz
-#: 950.data.seed-values.sql:3754
+#: 950.data.seed-values.sql:6065
 msgid "Lozi"
 msgstr "Lozi"
 
+#: 950.data.seed-values.sql:10043
+msgid "See Also From Tracing -- Chronological Subdivision"
+msgstr "Տես նաև այս հետագծից -- Ժամանակագրական ենթաբաժին"
+
 # id::clm.value__gor
 # id::gor
-#: 950.data.seed-values.sql:3661
+#: 950.data.seed-values.sql:5972
 msgid "Gorontalo"
 msgstr "Gorontalo"
 
+#: 950.data.seed-values.sql:10023
+msgid "Heading -- Corporate Name"
+msgstr "Վերնախորագիր -- համատեղ անուն"
+
 # id::clm.value__chg
 # id::chg
-#: 950.data.seed-values.sql:3576
+#: 950.data.seed-values.sql:5887
 msgid "Chagatai"
 msgstr "Chagatai"
 
@@ -3044,7 +2929,7 @@ msgstr "28_days_0_renew"
 
 # id::ccs.name__11
 # id::11
-#: 950.data.seed-values.sql:229
+#: 950.data.seed-values.sql:308 950.data.seed-values.sql:2490
 msgid "Cataloging"
 msgstr "Քարտագրում"
 
@@ -3062,24 +2947,26 @@ msgstr "Աշխատակազմի գրանցման պասիվության ժամա�
 
 # id::clm.value__art
 # id::art
-#: 950.data.seed-values.sql:3525
+#: 950.data.seed-values.sql:5836
 msgid "Artificial (Other)"
 msgstr "Արհեստական (այլ)"
 
-#: 950.data.seed-values.sql:1772
-msgid ""
-"The age at which a user is no long considered a juvenile.  For example, \"18 "
-"years\"."
-msgstr "Տարիք որից հետո ընթերցողը չի համարվում պատանի։ Օրինակ 18 տարեկան։"
+# id::clm.value__nia
+# id::nia
+#: 950.data.seed-values.sql:6121
+msgid "Nias"
+msgstr "Nias"
 
 #: 950.data.seed-values.sql:404
 msgid "Damaged Item Processing Fee"
 msgstr "Վնասված նյութի մշակման գումար"
 
-#: 950.data.seed-values.sql:1857
-msgid ""
-"In the Record In-House Use interface, a submission attempt will warn if the "
-"# of uses field exceeds the value of this setting."
+#: 950.data.seed-values.sql:4789
+msgid "TCN Value"
+msgstr "TCN արժեք"
+
+#: 950.data.seed-values.sql:29
+msgid "Patron exceeds pre-collections warning fine threshold"
 msgstr ""
 "Գրառման In-House օգտագործման միջերեսում, գրանցման փորձը կահազանգվի, եթե "
 "օգտվողների քանակի դաշտը գերազանցի կարգաբերման արժեքը։"
@@ -3092,7 +2979,7 @@ msgstr "Uighur"
 
 # id::clm.value__chy
 # id::chy
-#: 950.data.seed-values.sql:3586
+#: 950.data.seed-values.sql:5897
 msgid "Cheyenne"
 msgstr "Cheyenne"
 
@@ -3102,19 +2989,19 @@ msgstr "Երկլեզվանի"
 
 # id::clm.value__fon
 # id::fon
-#: 950.data.seed-values.sql:3635
+#: 950.data.seed-values.sql:5946
 msgid "Fon"
 msgstr "Fon"
 
 # id::clm.value__awa
 # id::awa
-#: 950.data.seed-values.sql:3533
+#: 950.data.seed-values.sql:5844
 msgid "Awadhi"
 msgstr "Awadhi"
 
 # id::clm.value__cre
 # id::cre
-#: 950.data.seed-values.sql:3594
+#: 950.data.seed-values.sql:5905
 msgid "Cree"
 msgstr "Cree"
 
@@ -3130,23 +3017,19 @@ msgstr ""
 
 # id::clm.value__oto
 # id::oto
-#: 950.data.seed-values.sql:3832
+#: 950.data.seed-values.sql:6143
 msgid "Otomian languages"
 msgstr "Օտոմանական լեզուներ"
 
-#: 950.data.seed-values.sql:1941
-msgid "Credit card processing: Enable AuthorizeNet payments"
-msgstr "Կրեդիտ քարտի ակտիվացում։ Թույլատրի AuthorizeNet վճարումներ։"
-
-# id::clm.value__ace
-# id::ace
-#: 950.data.seed-values.sql:3503
-msgid "Achinese"
-msgstr "Աշկենազի"
+# id::clm.value__nym
+# id::nym
+#: 950.data.seed-values.sql:6132
+msgid "Nyamwezi"
+msgstr "Nyamwezi"
 
 # id::clm.value__ind
 # id::ind
-#: 950.data.seed-values.sql:3695
+#: 950.data.seed-values.sql:6006
 msgid "Indonesian"
 msgstr "Ինդոնեզերեն"
 
@@ -3158,25 +3041,25 @@ msgstr "Լավ"
 
 # id::clm.value__den
 # id::den
-#: 950.data.seed-values.sql:3604
+#: 950.data.seed-values.sql:5915
 msgid "Slave"
 msgstr "Slave"
 
 # id::clm.value__uga
 # id::uga
-#: 950.data.seed-values.sql:3954
+#: 950.data.seed-values.sql:6265
 msgid "Ugaritic"
 msgstr "Ugaritic"
 
 # id::clm.value__haw
 # id::haw
-#: 950.data.seed-values.sql:3673
+#: 950.data.seed-values.sql:5984
 msgid "Hawaiian"
 msgstr "Hawaiian"
 
 # id::clm.value__mac
 # id::mac
-#: 950.data.seed-values.sql:3763
+#: 950.data.seed-values.sql:6074
 msgid "Macedonian"
 msgstr "Մակեդոներեն"
 
@@ -3186,7 +3069,7 @@ msgstr "ՕԳՄ։ Ընթերցող գրանցելիս առաջարկիր ակտի
 
 # id::clm.value__sid
 # id::sid
-#: 950.data.seed-values.sql:3880
+#: 950.data.seed-values.sql:6191
 msgid "Sidamo"
 msgstr "Sidamo"
 
@@ -3202,53 +3085,49 @@ msgstr "Fijian"
 
 # id::clm.value__pro
 # id::pro
-#: 950.data.seed-values.sql:3849
+#: 950.data.seed-values.sql:6160
 msgid "Provençal (to 1500)"
 msgstr "Provençal (to 1500)"
 
-#: 950.data.seed-values.sql:1801 950.data.seed-values.sql:1802
-msgid "Charge processing fee for damaged items"
-msgstr "Գանձիր գործողության արժեքը վնասված նյութերի համար"
+#: 950.data.seed-values.sql:4861
+msgid "List Published Book Bags"
+msgstr "Թվարկիր տպագրված գրքերի պայուսակները"
 
 # id::clm.value__sin id::clm.value__-snh
 # id::sin
-#: 950.data.seed-values.sql:3881 950.data.seed-values.sql:3896
+#: 950.data.seed-values.sql:6192 950.data.seed-values.sql:6207
 msgid "Sinhalese"
 msgstr "Sinhalese"
 
 # id::clm.value__ada
 # id::ada
-#: 950.data.seed-values.sql:3505
+#: 950.data.seed-values.sql:5816
 msgid "Adangme"
 msgstr "Adangme"
 
 # id::clm.value__tha
 # id::tha
-#: 950.data.seed-values.sql:3929
+#: 950.data.seed-values.sql:6240
 msgid "Thai"
 msgstr "Thai"
 
 # id::clm.value__afr
 # id::afr
-#: 950.data.seed-values.sql:3509
+#: 950.data.seed-values.sql:5820
 msgid "Afrikaans"
 msgstr "Afrikaans"
 
-#: 950.data.seed-values.sql:1767
-msgid ""
-"If true, patrons will be required to enter their password in addition to "
-"their username/barcode to log into the selfcheck interface"
-msgstr ""
-"Եթե ճիշտ է, ընթերցողից բացի օգտվողի անուն/շտրիխ կոդից լրացուցիչ կպահանջվի "
-"մուտք անել իր գաղտնաբառը, որպեսզի մուտք գործի ինքնաստուգման միջերես։"
+#: 950.data.seed-values.sql:10048
+msgid "Established Heading Linking Entry -- Personal Name"
+msgstr "Հաստատված վերնախորագրի կապի մուտք -- Անհատական անուն"
 
 # id::citm.value__a
 # id::a
-#: 950.data.seed-values.sql:4000
+#: 950.data.seed-values.sql:6311
 msgid "Language material"
 msgstr "Լեզվական նյութեր"
 
-#: 950.data.seed-values.sql:2483
+#: 950.data.seed-values.sql:4784
 msgid "Pagination"
 msgstr "Էջակալում"
 
@@ -3258,31 +3137,31 @@ msgstr "Վնասված նյութ"
 
 # id::clm.value__uzb
 # id::uzb
-#: 950.data.seed-values.sql:3960
+#: 950.data.seed-values.sql:6271
 msgid "Uzbek"
 msgstr "Ուզբեկերեն"
 
 # id::clm.value__kru
 # id::kru
-#: 950.data.seed-values.sql:3735
+#: 950.data.seed-values.sql:6046
 msgid "Kurukh"
 msgstr "Kurukh"
 
 # id::clm.value__ira
 # id::ira
-#: 950.data.seed-values.sql:3700
+#: 950.data.seed-values.sql:6011
 msgid "Iranian (Other)"
 msgstr "Իրանական (այլ)"
 
 # id::clm.value__zen
 # id::zen
-#: 950.data.seed-values.sql:3982
+#: 950.data.seed-values.sql:6293
 msgid "Zenaga"
 msgstr "Zenaga"
 
 # id::clm.value__bug
 # id::bug
-#: 950.data.seed-values.sql:3562
+#: 950.data.seed-values.sql:5873
 msgid "Bugis"
 msgstr "Bugis"
 
@@ -3294,13 +3173,13 @@ msgstr "Վերադասավորում"
 
 # id::clm.value__bur
 # id::bur
-#: 950.data.seed-values.sql:3564
+#: 950.data.seed-values.sql:5875
 msgid "Burmese"
 msgstr "Burmese"
 
 # id::clm.value__ale
 # id::ale
-#: 950.data.seed-values.sql:3514
+#: 950.data.seed-values.sql:5825
 msgid "Aleut"
 msgstr "Ալեուտ"
 
@@ -3308,13 +3187,17 @@ msgstr "Ալեուտ"
 msgid "e-Reader Preload"
 msgstr "e-Reader նախնաբեռնում"
 
-#: 950.data.seed-values.sql:22 950.data.seed-values.sql:2544
+#: 950.data.seed-values.sql:95 950.data.seed-values.sql:4845
 msgid "Identifier"
 msgstr "Նկարագրիչ"
 
+#: 950.data.seed-values.sql:11553
+msgid "Verification via gateway-v1"
+msgstr "Ստուգում gateway-v1 օգնությամբ"
+
 # id::clm.value__lin
 # id::lin
-#: 950.data.seed-values.sql:3751
+#: 950.data.seed-values.sql:6062
 msgid "Lingala"
 msgstr "Lingala"
 
@@ -3326,6 +3209,10 @@ msgstr "Ընթերցողի շտրիխ կոդի ձևաչափ"
 msgid "System: Rental"
 msgstr "Համակարգ։ Վարձակալում։"
 
+#: 950.data.seed-values.sql:11549
+msgid "Login via Apache module"
+msgstr "Գրանցման մուտք Apache մոդուլից"
+
 # id::ccs.name__1
 # id::1
 #: 950.data.seed-values.sql:219
@@ -3334,74 +3221,71 @@ msgstr "Սպասարկված է"
 
 # id::clm.value__lun
 # id::lun
-#: 950.data.seed-values.sql:3760
+#: 950.data.seed-values.sql:6071
 msgid "Lunda"
 msgstr "Lunda"
 
-#: 950.data.seed-values.sql:1807
-msgid "Void lost item billing when returned"
-msgstr "Դատարկիր կորած նյութի հաշիվը երբ վերադարձվում է"
+# id::clm.value__mos
+# id::mos
+#: 950.data.seed-values.sql:6104
+msgid "Mooré"
+msgstr "Mooré"
 
 # id::clm.value__arg
 # id::arg
-#: 950.data.seed-values.sql:3521
+#: 950.data.seed-values.sql:5832
 msgid "Aragonese Spanish"
 msgstr "Aragonese Spanish"
 
-#: 950.data.seed-values.sql:2229
-msgid ""
-"The alias field will be suggested on the patron registration screen. "
-"Suggesting a field makes it appear when suggested fields are shown. If the "
-"field is shown or required this setting is ignored."
-msgstr ""
-"Ընթերցողի գրանցման պաստառին այլընտրանքային դաշտ կառաջարկվի։ Առաջարկելով դաշտ "
-"ստիպում է որ այն հայտնվի, երբ առաջարկվող դաշտերը ցուցադրված են։ Եթե դաշտը "
-"ցուցադրված կամ պահանջված է, այս կարգաբերումը անտեսվում է։"
+# id::cam.value__b
+# id::b
+#: 950.data.seed-values.sql:6302
+msgid "Primary"
+msgstr "Նախնական"
 
 # id::clm.value__mis
 # id::mis
-#: 950.data.seed-values.sql:3782
+#: 950.data.seed-values.sql:6093
 msgid "Miscellaneous languages"
 msgstr "Miscellaneous languages"
 
 # id::clm.value__lui
 # id::lui
-#: 950.data.seed-values.sql:3759
+#: 950.data.seed-values.sql:6070
 msgid "Luiseño"
 msgstr "Luiseño"
 
-#: 950.data.seed-values.sql:1856
-msgid ""
-"GUI: Record In-House Use: # of uses threshold for Are You Sure? dialog."
-msgstr ""
-"ՕԳՄ։ Գրառումը In-House օգտագործման է։ Օգտ քանակի ճեղքվածք։ Վստա՞հ ես։ "
-"երկխոսություն։"
+# id::clm.value__syr
+# id::syr
+#: 950.data.seed-values.sql:6226
+msgid "Syriac"
+msgstr "Syriac"
 
 # id::clm.value__kar
 # id::kar
-#: 950.data.seed-values.sql:3714
+#: 950.data.seed-values.sql:6025
 msgid "Karen"
 msgstr "Karen"
 
 # id::clm.value__grc
 # id::grc
-#: 950.data.seed-values.sql:3664
+#: 950.data.seed-values.sql:5975
 msgid "Greek, Ancient (to 1453)"
 msgstr "Greek, Ancient (to 1453)"
 
 # id::clm.value__fur
 # id::fur
-#: 950.data.seed-values.sql:3642
+#: 950.data.seed-values.sql:5953
 msgid "Friulian"
 msgstr "Friulian"
 
 # id::clm.value__nyo
 # id::nyo
-#: 950.data.seed-values.sql:3823
+#: 950.data.seed-values.sql:6134
 msgid "Nyoro"
 msgstr "Nyoro"
 
-#: 950.data.seed-values.sql:2556
+#: 950.data.seed-values.sql:4857
 msgid "Template Merge Container"
 msgstr "Ձևաչափի ձուլման կոնտեյներ"
 
@@ -3415,35 +3299,29 @@ msgstr ""
 
 # id::clm.value__bre
 # id::bre
-#: 950.data.seed-values.sql:3559
+#: 950.data.seed-values.sql:5870
 msgid "Breton"
 msgstr "Բրետոներեն"
 
-#: 950.data.seed-values.sql:2046
-msgid "OPAC: Use fully compressed serial holdings"
-msgstr "ՀՕԱՔ։ օգտագործիր ամբողջովին սեղմված պարբերականի պահումներ"
-
-#: 950.data.seed-values.sql:1926
-msgid "Obscure the Date of Birth field"
-msgstr "Անորոշ ծննդյան տարեթվի դաշտ"
+#: 950.data.seed-values.sql:10039
+msgid "See Also From Tracing -- Geographic Name"
+msgstr "Տես նաև Հետագծից -- Աշխարհագրական անուն"
 
 # id::clm.value__-gae id::clm.value__gla
 # id::-gae
-#: 950.data.seed-values.sql:3644 950.data.seed-values.sql:3654
+#: 950.data.seed-values.sql:5955 950.data.seed-values.sql:5965
 msgid "Scottish Gaelic"
 msgstr "Scottish Gaelic"
 
 # id::clm.value__tur
 # id::tur
-#: 950.data.seed-values.sql:3948
+#: 950.data.seed-values.sql:6259
 msgid "Turkish"
 msgstr "Թուրքերեն"
 
-# id::clm.value__mal
-# id::mal
-#: 950.data.seed-values.sql:3769
-msgid "Malayalam"
-msgstr "Malayalam"
+#: 950.data.seed-values.sql:6378
+msgid "DVD"
+msgstr "DVD"
 
 # id::ccs.name__10
 # id::10
@@ -3453,13 +3331,13 @@ msgstr "ՄԳԲ"
 
 # id::clm.value__del
 # id::del
-#: 950.data.seed-values.sql:3603
+#: 950.data.seed-values.sql:5914
 msgid "Delaware"
 msgstr "Delaware"
 
 # id::clm.value__war
 # id::war
-#: 950.data.seed-values.sql:3968
+#: 950.data.seed-values.sql:6279
 msgid "Waray"
 msgstr "Waray"
 
@@ -3473,64 +3351,51 @@ msgstr "Միավորում"
 msgid "GUI: Show alert_message field on patron registration"
 msgstr "ՕԳՄI: Ցույց տուր alert_message դաշտը ընթերցող գրանցելիս"
 
-#: 950.data.seed-values.sql:1979
-msgid "PayPal signature"
-msgstr "PayPal ստորագրություն"
+# id::clm.value__snk
+# id::snk
+#: 950.data.seed-values.sql:6208
+msgid "Soninke"
+msgstr "Soninke"
 
-# id::clm.value__sit
-# id::sit
-#: 950.data.seed-values.sql:3883
-msgid "Sino-Tibetan (Other)"
-msgstr "Sino-Tibetan (Other)"
+#: 950.data.seed-values.sql:10038
+msgid "See Also From Tracing -- Topical Term"
+msgstr "Տես նաև Հետագծից -- Թեմատիկ տերմին"
 
 # id::clm.value__zap
 # id::zap
-#: 950.data.seed-values.sql:3981
+#: 950.data.seed-values.sql:6292
 msgid "Zapotec"
 msgstr "Zapotec"
 
 # id::clm.value__hmn
 # id::hmn
-#: 950.data.seed-values.sql:3680
+#: 950.data.seed-values.sql:5991
 msgid "Hmong"
 msgstr "Hmong"
 
-# id::clm.value__son
-# id::son
-#: 950.data.seed-values.sql:3900
-msgid "Songhai"
-msgstr "Songhai"
+#: 950.data.seed-values.sql:6380
+msgid "Unspecified"
+msgstr "Չսահմանված"
 
-# id::cifm.value__a
-# id::a
-#: 950.data.seed-values.sql:4032
-msgid "Microfilm"
-msgstr "Միկրոֆիլմ"
-
-#: 950.data.seed-values.sql:1897
-msgid ""
-"When set, if a patron address is set to invalid, a penalty is applied."
-msgstr "Երբ կարգաբերված է, եթե ընթերցողի հասցեն սխալ է, կիրառվում է տուգանք։"
-
-#: 950.data.seed-values.sql:1711 950.data.seed-values.sql:1712
-msgid "Holds: Hard stalling interval"
-msgstr "Պահումներ։ ծանր կորուստի տիրույթ"
+#: 950.data.seed-values.sql:10008
+msgid "LoC"
+msgstr "LoC"
 
 # id::clm.value__-cam id::clm.value__khm
 # id::-cam
-#: 950.data.seed-values.sql:3567 950.data.seed-values.sql:3722
+#: 950.data.seed-values.sql:5878 950.data.seed-values.sql:6033
 msgid "Khmer"
 msgstr "Կխմեր"
 
 # id::clm.value__chv
 # id::chv
-#: 950.data.seed-values.sql:3585
+#: 950.data.seed-values.sql:5896
 msgid "Chuvash"
 msgstr "Չուվաշերեն"
 
 # id::clm.value__ine
 # id::ine
-#: 950.data.seed-values.sql:3696
+#: 950.data.seed-values.sql:6007
 msgid "Indo-European (Other)"
 msgstr "Հնդ-եվրոպական (այլ)"
 
@@ -3551,46 +3416,35 @@ msgstr "Համընդհանուր վերնագիր"
 msgid "Lost Materials"
 msgstr "Կորած նյութեր"
 
-#: 950.data.seed-values.sql:2409
-msgid ""
-"The Regular Expression for validation on the post_code field in patron "
-"registration."
-msgstr ""
-"Ընթերցող գրանցելիս կանոնավոր արտահայտություն post_code դաշտի հավաստիացման "
-"համար"
-
-#: 950.data.seed-values.sql:2265
-msgid ""
-"The day_phone field will be required on the patron registration screen."
-msgstr "Կպահանջվի day_phone դաշտ ընթերցողի գանցման պաստառում"
+# id::clm.value__lit
+# id::lit
+#: 950.data.seed-values.sql:6063
+msgid "Lithuanian"
+msgstr "Լիտվերեն"
 
 # id::clm.value__may
 # id::may
-#: 950.data.seed-values.sql:3776
+#: 950.data.seed-values.sql:6087
 msgid "Malay"
 msgstr "Malay"
 
 # id::clm.value__kal
 # id::kal
-#: 950.data.seed-values.sql:3711
+#: 950.data.seed-values.sql:6022
 msgid "Kalâtdlisut"
 msgstr "Kalâtdlisut"
 
 # id::clm.value__zun
 # id::zun
-#: 950.data.seed-values.sql:3986
+#: 950.data.seed-values.sql:6297
 msgid "Zuni"
 msgstr "Zuni"
 
-#: 950.data.seed-values.sql:1907
-msgid ""
-"List of checkout/renewal events that the selfcheck interface should "
-"automatically override instead instead of alerting and stopping the "
-"transaction"
-msgstr ""
-"Դուրս տրումների/թարմացումների իրադարձությունների ցուցակ որը ինքնաստուգող "
-"միջերեսը պետք է ավտոմատ վերագրի տրանզակցիան կանգնեցնելու կամ ահազանգելու "
-"փոխարեն։"
+# id::citm.value__f
+# id::f
+#: 950.data.seed-values.sql:6319
+msgid "Manuscript cartographic material"
+msgstr "Ձեռագիր քարտեզներ"
 
 #: 950.data.seed-values.sql:2249
 msgid ""
@@ -3609,7 +3463,7 @@ msgstr "Աշխարհագրական խորագիր"
 
 # id::clm.value__iba
 # id::iba
-#: 950.data.seed-values.sql:3684
+#: 950.data.seed-values.sql:5995
 msgid "Iban"
 msgstr "Iban"
 
@@ -3621,84 +3475,65 @@ msgstr "Մասնաճյուղ"
 msgid "Notification Fee"
 msgstr "Զգուշացման գումար"
 
-#: 950.data.seed-values.sql:1827
-msgid "Lost items are usable on checkin instead of going 'home' first"
-msgstr "Կորած նյութերը պետքական են ընդունելիս փոխարենը կգնալու սկզբից 'տուն'"
-
-# id::clm.value__tut
-# id::tut
-#: 950.data.seed-values.sql:3949
-msgid "Altaic (Other)"
-msgstr "Altaic (այլ)"
-
-# id::clm.value__hun
-# id::hun
-#: 950.data.seed-values.sql:3682
-msgid "Hungarian"
-msgstr "Հունգարերեն"
-
-#: 950.data.seed-values.sql:1394
-msgid "Circulators"
-msgstr "Տացքեր"
+# id::clm.value__scr
+# id::scr
+#: 950.data.seed-values.sql:6184
+msgid "Croatian"
+msgstr "Խորվաթերեն"
 
 # id::clm.value__ceb
 # id::ceb
-#: 950.data.seed-values.sql:3571
+#: 950.data.seed-values.sql:5882
 msgid "Cebuano"
 msgstr "Cebuano"
 
-#: 950.data.seed-values.sql:1957
-msgid "Required if using a developer/test account with AuthorizeNet"
-msgstr ""
-"Պահանջված է, երբ օգտագործում ենք նախագծողի/թեստի հաշիվը AuthorizeNet-ի հետ"
+#: 950.data.seed-values.sql:1608
+msgid "Can do anything at the System level"
+msgstr "Կարող է անեկ ամեն ինչ Համակարգի մակարդակով"
 
 # id::clm.value__moh
 # id::moh
-#: 950.data.seed-values.sql:3790
+#: 950.data.seed-values.sql:6101
 msgid "Mohawk"
 msgstr "Mohawk"
 
 # id::clm.value__dgr
 # id::dgr
-#: 950.data.seed-values.sql:3605
+#: 950.data.seed-values.sql:5916
 msgid "Dogrib"
 msgstr "Dogrib"
 
 # id::clm.value__vol
 # id::vol
-#: 950.data.seed-values.sql:3964
+#: 950.data.seed-values.sql:6275
 msgid "Volapük"
 msgstr "Volapük"
 
-#: 950.data.seed-values.sql:7251
-msgid "How long a persistent login lasts.  E.g. '2 weeks'"
-msgstr "Ինչքան երկար է տևում մշտական գրանցումը, ասենք '2 շաբաթ'"
+#: 950.data.seed-values.sql:11554
+msgid "Verification via translator-v1"
+msgstr "Ստուգում translator-v1 միջոցով"
 
 # id::clm.value__mga
 # id::mga
-#: 950.data.seed-values.sql:3779
+#: 950.data.seed-values.sql:6090
 msgid "Irish, Middle (ca. 1100-1550)"
 msgstr "Irish, Middle (ca. 1100-1550)"
 
 # id::cam.value__j
 # id::j
-#: 950.data.seed-values.sql:3997
-msgid "Juvenile"
-msgstr "Պատանեկան"
-
-#: 950.data.seed-values.sql:2281
-msgid "The dob field will be required on the patron registration screen."
-msgstr "Կպահանջվի dob դաշտ ընթերցողի գրանցման պաստառում"
+#: 950.data.seed-values.sql:6323
+msgid "Musical sound recording"
+msgstr "Երաժշտական ձայներիզներ"
 
 # id::clm.value__ukr
 # id::ukr
-#: 950.data.seed-values.sql:3956
+#: 950.data.seed-values.sql:6267
 msgid "Ukrainian"
 msgstr "Ուկրաիներեն"
 
 # id::clm.value__sad
 # id::sad
-#: 950.data.seed-values.sql:3861
+#: 950.data.seed-values.sql:6172
 msgid "Sandawe"
 msgstr "Sandawe"
 
@@ -3712,37 +3547,19 @@ msgstr "Nyamwezi"
 msgid "OCLC"
 msgstr "OCLC"
 
-#: 950.data.seed-values.sql:1736
-msgid "Maximum previous checkouts displayed"
-msgstr "Նախորդ ամենաշատ դուրս տրումների արտածում"
-
-#: 950.data.seed-values.sql:2555
-msgid "Reading List"
-msgstr "Ընթերցանության ցուցակ"
-
-#: 950.data.seed-values.sql:2296
-msgid "GUI: Regex for email field on patron registration"
-msgstr "ՕԳՄ: Regex էլ փոստի դաշտի համար ընթերցող գանցելիս"
-
-#: 950.data.seed-values.sql:5342
-msgid ""
-"Any copies that have not been put into reshelving, in-transit, or on-holds-"
-"shelf (for a new hold) during the clear shelf process will be put into this "
-"status.  This is basically a purgatory status for copies waiting to be "
-"pulled from the shelf and processed by hand"
-msgstr ""
-"Ցանկացած պատճե որ տեղափոխված չեն վերադասավորման, տրանզիտում, կամ դարակի վրա "
-"պահման (նոր պահման համար) վիճակի դարակի մաքրման գործողության ընթացքում "
-"կբերվեն այս վիճակի։ Սա հիմնականում պատճենների համար մաքրման վիճակ է, որոնք "
-"սպասում են դարակից դուրս մղման որպեսզի կառավարվեն եռքով։"
+# id::clm.value__jav
+# id::jav
+#: 950.data.seed-values.sql:6015
+msgid "Javanese"
+msgstr "Javanese"
 
 # id::clm.value__bad
 # id::bad
-#: 950.data.seed-values.sql:3536
+#: 950.data.seed-values.sql:5847
 msgid "Banda"
 msgstr "Banda"
 
-#: 950.data.seed-values.sql:2481
+#: 950.data.seed-values.sql:4782
 msgid "Author of work"
 msgstr "Աշխատանքի հեղինակ"
 
@@ -3750,33 +3567,43 @@ msgstr "Աշխատանքի հեղինակ"
 msgid "Misc"
 msgstr "Այլ"
 
+# id::clm.value__tut
+# id::tut
+#: 950.data.seed-values.sql:6260
+msgid "Altaic (Other)"
+msgstr "Altaic (այլ)"
+
 # id::clm.value__kan
 # id::kan
-#: 950.data.seed-values.sql:3713
+#: 950.data.seed-values.sql:6024
 msgid "Kannada"
 msgstr "Kannada"
 
-#: 950.data.seed-values.sql:2232
-msgid "GUI: Show barred field on patron registration"
-msgstr "ՕԳՄ։ ցույց տուր կասեցված դաշտը ընթերցող գրանցելիս"
+# id::clm.value__dum
+# id::dum
+#: 950.data.seed-values.sql:5922
+msgid "Dutch, Middle (ca. 1050-1350)"
+msgstr "Հոլանդերեն, Միջին (մոտ. 1050-1350)"
 
-#: 950.data.seed-values.sql:1682
-msgid ""
-"Amount of time before a hold expires at which point the patron should be "
-"alerted. Examples: \"5 days\", \"1 hour\""
-msgstr ""
-"Այն ժամանակը մինչ որը պահումի ժամկետը լրանում է որից հետո ընթերցողը պետք է "
-"զգուշացվի։ Օրինակներ՝ \"5 օր\", \"1 ժամ\""
+# id::clm.value__per
+# id::per
+#: 950.data.seed-values.sql:6152
+msgid "Persian"
+msgstr "Ֆարսի"
+
+#: 950.data.seed-values.sql:11565
+msgid "Apache Auth Proxy Login"
+msgstr "Apache Auth Proxy մուտքի գրանցում"
 
 # id::clm.value__mon
 # id::mon
-#: 950.data.seed-values.sql:3792
+#: 950.data.seed-values.sql:6103
 msgid "Mongolian"
 msgstr "Մոնղոլերեն"
 
 # id::clm.value__cho
 # id::cho
-#: 950.data.seed-values.sql:3581
+#: 950.data.seed-values.sql:5892
 msgid "Choctaw"
 msgstr "Choctaw"
 
@@ -3788,25 +3615,19 @@ msgstr "Mooré"
 
 # id::clm.value__aym
 # id::aym
-#: 950.data.seed-values.sql:3534
+#: 950.data.seed-values.sql:5845
 msgid "Aymara"
 msgstr "Aymara"
 
 # id::clm.value__sai
 # id::sai
-#: 950.data.seed-values.sql:3864
+#: 950.data.seed-values.sql:6175
 msgid "South American Indian (Other)"
 msgstr "South American Indian(այլ)"
 
-# id::clm.value__tkl
-# id::tkl
-#: 950.data.seed-values.sql:3934
-msgid "Tokelauan"
-msgstr "Tokelauan"
-
-#: 950.data.seed-values.sql:1982
-msgid "Credit card processing: PayPal test mode"
-msgstr "Կրեդիտ քարտի ակտիվացում։ PayPal թեստ վիճակ"
+#: 950.data.seed-values.sql:10067
+msgid "See Also Tracing -- General Subdivision"
+msgstr "Տես նաև Հետագծից -- Համընդհանուր ենթաբաժին"
 
 #: 950.data.seed-values.sql:95 950.data.seed-values.sql:281
 #: 950.data.seed-values.sql:302 950.data.seed-values.sql:321
@@ -3819,13 +3640,13 @@ msgstr "Թույլատրի PayPal վճարումները"
 
 # id::clm.value__-sho id::clm.value__sna
 # id::-sho
-#: 950.data.seed-values.sql:3879 950.data.seed-values.sql:3894
+#: 950.data.seed-values.sql:6190 950.data.seed-values.sql:6205
 msgid "Shona"
 msgstr "Shona"
 
 # id::clm.value__chp
 # id::chp
-#: 950.data.seed-values.sql:3582
+#: 950.data.seed-values.sql:5893
 msgid "Chipewyan"
 msgstr "Chipewyan"
 
@@ -3839,73 +3660,65 @@ msgstr ""
 
 # id::clm.value__cos
 # id::cos
-#: 950.data.seed-values.sql:3590
+#: 950.data.seed-values.sql:5901
 msgid "Corsican"
 msgstr "Կորսիկերեն"
 
-# id::cam.value__b
-# id::b
-#: 950.data.seed-values.sql:3991
-msgid "Primary"
-msgstr "Նախնական"
+#: 950.data.seed-values.sql:9310
+msgid "Import failed due to invalid copy location"
+msgstr "ներմուծումը ձախողվեց պատճենի տեղաբաշխման անիրական վայրի պատճառով"
 
 # id::clm.value__kpe
 # id::kpe
-#: 950.data.seed-values.sql:3733
+#: 950.data.seed-values.sql:6044
 msgid "Kpelle"
 msgstr "Kpelle"
 
+#: 950.data.seed-values.sql:11557
+msgid "SIP2 User Verification"
+msgstr "SIP2 Օգտվողի ստուգում"
+
 # id::cifm.value__c
 # id::c
-#: 950.data.seed-values.sql:4034
+#: 950.data.seed-values.sql:6345
 msgid "Microopaque"
 msgstr "Microopaque"
 
 # id::clm.value__som
 # id::som
-#: 950.data.seed-values.sql:3899
+#: 950.data.seed-values.sql:6210
 msgid "Somali"
 msgstr "Somali"
 
 # id::clm.value__arp
 # id::arp
-#: 950.data.seed-values.sql:3524
+#: 950.data.seed-values.sql:5835
 msgid "Arapaho"
 msgstr "Arapaho"
 
-#: 950.data.seed-values.sql:1901
-msgid "Checkout Fills Related Hold"
-msgstr "Դուրս տրման լրացման հետ կապված պահում"
-
-#: 950.data.seed-values.sql:1401
-msgid "System maintenance, configuration, etc."
-msgstr "Համակարգի շահագործում, կարգաբերում, և այլն"
+# id::clm.value__ber
+# id::ber
+#: 950.data.seed-values.sql:5860
+msgid "Berber (Other)"
+msgstr "Berber (այլ)"
 
 # id::clm.value__chn
 # id::chn
-#: 950.data.seed-values.sql:3580
+#: 950.data.seed-values.sql:5891
 msgid "Chinook jargon"
 msgstr "Chinook jargon"
 
 # id::clm.value__aka
 # id::aka
-#: 950.data.seed-values.sql:3511
+#: 950.data.seed-values.sql:5822
 msgid "Akan"
 msgstr "Akan"
 
-#: 950.data.seed-values.sql:1766
-msgid "Selfcheck: Require patron password"
-msgstr "Ինքնաստուգում։ Պահանջում է ընթերցողի գաղտնաբառ"
-
-# id::clm.value__syr
-# id::syr
-#: 950.data.seed-values.sql:3915
-msgid "Syriac"
-msgstr "Syriac"
-
-#: 950.data.seed-values.sql:1806
-msgid "Circ: Void lost item billing when returned"
-msgstr "Տացք։ Դատարկիր կորած նյութի հաշիվը երբ վերադարձվում է"
+# id::clm.value__lus
+# id::lus
+#: 950.data.seed-values.sql:6073
+msgid "Lushai"
+msgstr "Lushai"
 
 #: 950.data.seed-values.sql:247
 msgid "English (US)"
@@ -3923,19 +3736,17 @@ msgstr ""
 
 # id::clm.value__pon
 # id::pon
-#: 950.data.seed-values.sql:3846
+#: 950.data.seed-values.sql:6157
 msgid "Ponape"
 msgstr "Ponape"
 
-# id::clm.value__tah
-# id::tah
-#: 950.data.seed-values.sql:3917
-msgid "Tahitian"
-msgstr "Tahitian"
+#: 950.data.seed-values.sql:1597
+msgid "Cataloging Administrator"
+msgstr "Քարտագրամն կառավարիչ"
 
 # id::clm.value__bla
 # id::bla
-#: 950.data.seed-values.sql:3555
+#: 950.data.seed-values.sql:5866
 msgid "Siksika"
 msgstr "Siksika"
 
@@ -3951,7 +3762,7 @@ msgstr ""
 
 # id::clm.value__nds
 # id::nds
-#: 950.data.seed-values.sql:3807
+#: 950.data.seed-values.sql:6118
 msgid "Low German"
 msgstr "Low German"
 
@@ -3963,13 +3774,13 @@ msgstr "Pushto"
 
 # id::clm.value__dar
 # id::dar
-#: 950.data.seed-values.sql:3601
+#: 950.data.seed-values.sql:5912
 msgid "Dargwa"
 msgstr "Dargwa"
 
 # id::clfm.value__m
 # id::m
-#: 950.data.seed-values.sql:4025
+#: 950.data.seed-values.sql:6336
 msgid "Mixed forms"
 msgstr "Խառը ձևաչափեր"
 
@@ -3985,56 +3796,49 @@ msgstr ""
 
 # id::clm.value__sog
 # id::sog
-#: 950.data.seed-values.sql:3898
+#: 950.data.seed-values.sql:6209
 msgid "Sogdian"
 msgstr "Sogdian"
 
 # id::clm.value__pra
 # id::pra
-#: 950.data.seed-values.sql:3848
+#: 950.data.seed-values.sql:6159
 msgid "Prakrit languages"
 msgstr "Prakrit languages"
 
-# id::clm.value__crh
-# id::crh
-#: 950.data.seed-values.sql:3595
-msgid "Crimean Tatar"
-msgstr "Crimean Tatar"
+# id::clm.value__gay
+# id::gay
+#: 950.data.seed-values.sql:5958
+msgid "Gayo"
+msgstr "Gayo"
 
-#: 950.data.seed-values.sql:1966
-msgid "Credit card processing: Enable PayPal payments"
-msgstr "Կրեդիտ քարտի ակտիվացում։ Թույլատրի PayPal վճարումները։"
-
-#: 950.data.seed-values.sql:7220 950.data.seed-values.sql:7221
-msgid "Historical Circulation Retention Start Date"
-msgstr "Տացքի պատմութան պահպանման սկզբնավորման ամսաթիվ"
-
-#: 950.data.seed-values.sql:1987
-msgid ""
-"This is NOT the same thing as the settings labeled with just \"PayPal.\""
-msgstr "Սա ՆՈՒՅՆԸ չէ ինչ որ \"PayPal.\" պիտակով կարգաբերումները։"
+#: 950.data.seed-values.sql:10041
+msgid "See Also From Tracing -- General Subdivision"
+msgstr "Տես նաև Հետագծից -- Համընդհանուր ենթաբաժին"
 
 # id::clfm.value__0
 # id::0
-#: 950.data.seed-values.sql:4016
+#: 950.data.seed-values.sql:6327
 msgid "Not fiction (not further specified)"
 msgstr "Ոչ գեղարվեստական (սահմանված չէ)"
 
-#: 950.data.seed-values.sql:2316
-msgid "GUI: Regex for evening_phone field on patron registration"
-msgstr "ՕԳՄ: Regex evening_phone դաշտի համար ընթերցող գրանցելիս"
+# id::clm.value__kua
+# id::kua
+#: 950.data.seed-values.sql:6047
+msgid "Kuanyama"
+msgstr "Kuanyama"
 
 # id::clm.value__-tar id::clm.value__tat
 # id::-tar
-#: 950.data.seed-values.sql:3921 950.data.seed-values.sql:3922
+#: 950.data.seed-values.sql:6232 950.data.seed-values.sql:6233
 msgid "Tatar"
 msgstr "Թաթարերեն"
 
-# id::clm.value__lao
-# id::lao
-#: 950.data.seed-values.sql:3745
-msgid "Lao"
-msgstr "Lao"
+# id::citm.value__c
+# id::c
+#: 950.data.seed-values.sql:6320
+msgid "Notated music"
+msgstr "Նոտաներ"
 
 #: 950.data.seed-values.sql:1998
 msgid "Credit card processing: PayflowPro test mode"
@@ -4054,39 +3858,29 @@ msgstr "Judeo-Arabic"
 
 # id::clm.value__-gal id::clm.value__orm
 # id::-gal
-#: 950.data.seed-values.sql:3646 950.data.seed-values.sql:3828
+#: 950.data.seed-values.sql:5957 950.data.seed-values.sql:6139
 msgid "Oromo"
 msgstr "Oromo"
 
 # id::cblvl.value__s
 # id::s
-#: 950.data.seed-values.sql:4047
+#: 950.data.seed-values.sql:6358
 msgid "Serial"
 msgstr "Պարբերական"
 
-# id::clm.value__-sao id::clm.value__smo
-# id::-sao
-#: 950.data.seed-values.sql:3868 950.data.seed-values.sql:3892
-msgid "Samoan"
-msgstr "Samoan"
-
-#: 950.data.seed-values.sql:2277
-msgid ""
-"If set the calendar widget will appear when editing the dob field on the "
-"patron registration form."
-msgstr ""
-"Եթե դրված է, ապա օրացույցի քաշը կհայտնվի երբ խմբագրվում է dob դաշտը "
-"ընթերցողի գրանցման ձևում։"
+#: 950.data.seed-values.sql:4856
+msgid "Reading List"
+msgstr "Ընթերցանության ցուցակ"
 
 # id::citm.value__e
 # id::e
-#: 950.data.seed-values.sql:4007
+#: 950.data.seed-values.sql:6318
 msgid "Cartographic material"
 msgstr "Քարտեզներ"
 
 # id::clm.value__sem
 # id::sem
-#: 950.data.seed-values.sql:3875
+#: 950.data.seed-values.sql:6186
 msgid "Semitic (Other)"
 msgstr "Semitic (այլ)"
 
@@ -4098,51 +3892,39 @@ msgstr "ՕԳՄ: Առաջարկի day_phone դաշտ ընթերցող գրանց�
 msgid "General Keywords"
 msgstr "Ընդհանուր վճռորոշ բառեր"
 
-# id::clm.value__egy
-# id::egy
-#: 950.data.seed-values.sql:3616
-msgid "Egyptian"
-msgstr "Եգիպտերեն"
+# id::clm.value__kho
+# id::kho
+#: 950.data.seed-values.sql:6034
+msgid "Khotanese"
+msgstr "Khotanese"
 
 # id::clm.value__bem
 # id::bem
-#: 950.data.seed-values.sql:3547
+#: 950.data.seed-values.sql:5858
 msgid "Bemba"
 msgstr "Bemba"
 
-#: 950.data.seed-values.sql:1974
-msgid "Credit card processing: PayPal password"
-msgstr "Կրեդիտ քարտի ակտիվացում։ PayPal գաղտնաբառ"
+#: 950.data.seed-values.sql:4781
+msgid "Title of work"
+msgstr "Աշխատանքի վերնագիր"
 
-#: 950.data.seed-values.sql:1400
-msgid "Local System Administrator"
-msgstr "Տեղային համակարգի կառավարիչ"
+# id::clm.value__que
+# id::que
+#: 950.data.seed-values.sql:6162
+msgid "Quechua"
+msgstr "Quechua"
 
-#: 950.data.seed-values.sql:2333
-msgid ""
-"The ident_value field will be shown on the patron registration screen. "
-"Showing a field makes it appear with required fields even when not required. "
-"If the field is required this setting is ignored."
-msgstr ""
-"Կցուցադրվի ident_value դաշտը ընթերցողի գրանցման պաստառին։ ցուցադրելով դաշտը "
-"ստիպում է որ այն հայտնվի պահանջված դաշտերով, եթե նույնիսկ պահանջված չէ։ Եթե "
-"դաշտը պահանջված է, այս կարգաբերումը անտեսվում է։"
+#: 950.data.seed-values.sql:10068
+msgid "See Also Tracing -- Geographic Subdivision"
+msgstr "Տես նաև Հետագիծը -- Աշխարհագրական ենթաբաժին"
 
-#: 950.data.seed-values.sql:2308
-msgid "GUI: Suggest email field on patron registration"
-msgstr "ՕԳՄ: Առաջարկի էլ փոստ դաշտ ընթերցող գրանցելիս։"
-
-#: 950.data.seed-values.sql:1707
-msgid ""
-"How long to wait before allowing remote items to be opportunistically "
-"captured for a hold.  Example \"5 days\""
-msgstr ""
-"Ինչքան երկար սպասել մինչ թույլատրելը որ հեռահար նյութերը պահանջված ժամանակին "
-"բռնվեն պահման համար։ Օրինակ՝ \"5 օր\""
+#: 950.data.seed-values.sql:4787
+msgid "Price"
+msgstr "Գին"
 
 # id::clm.value__crp
 # id::crp
-#: 950.data.seed-values.sql:3596
+#: 950.data.seed-values.sql:5907
 msgid "Creoles and Pidgins (Other)"
 msgstr "Creoles and Pidgins (այլ)"
 
@@ -4152,41 +3934,45 @@ msgstr "Կրեդիտ քարտի կատարում։ Անվանիր լռակյաց
 
 # id::clm.value__nic
 # id::nic
-#: 950.data.seed-values.sql:3811
+#: 950.data.seed-values.sql:6122
 msgid "Niger-Kordofanian (Other)"
 msgstr "Niger-Kordofanian (այլ)"
 
 # id::clm.value__est
 # id::est
-#: 950.data.seed-values.sql:3624
+#: 950.data.seed-values.sql:5935
 msgid "Estonian"
 msgstr "Էստոներեն"
 
 # id::clm.value__fan
 # id::fan
-#: 950.data.seed-values.sql:3628
+#: 950.data.seed-values.sql:5939
 msgid "Fang"
 msgstr "Fang"
 
 # id::clm.value__lol
 # id::lol
-#: 950.data.seed-values.sql:3753
+#: 950.data.seed-values.sql:6064
 msgid "Mongo-Nkundu"
 msgstr "Mongo-Nkundu"
 
-# id::clm.value__gre
-# id::gre
-#: 950.data.seed-values.sql:3665
-msgid "Greek, Modern (1453- )"
-msgstr "Greek, Modern (1453- )"
+#: 950.data.seed-values.sql:9307
+msgid "Import or Overlay failed"
+msgstr "Ներմուծումը կամ վերագրումը ձախողվեց"
 
-#: 950.data.seed-values.sql:1681
-msgid "Holds: Expire Alert Interval"
-msgstr "Պահումներ։ Ժամկետը անցնելու զգուշացման տիրույթ"
+# id::clm.value__mal
+# id::mal
+#: 950.data.seed-values.sql:6080
+msgid "Malayalam"
+msgstr "Malayalam"
+
+#: 950.data.seed-values.sql:11564
+msgid "Unique Mgt Login"
+msgstr "Եզակի Mgt մուտքի գրանցում"
 
 # id::clm.value__smn
 # id::smn
-#: 950.data.seed-values.sql:3891
+#: 950.data.seed-values.sql:6202
 msgid "Inari Sami"
 msgstr "Inari Sami"
 
@@ -4200,27 +3986,19 @@ msgstr "Ֆրանսերեն (Կանադա)"
 msgid "Branch"
 msgstr "Մասնաճյուղ"
 
-#: 950.data.seed-values.sql:2260
-msgid "GUI: Regex for day_phone field on patron registration"
-msgstr "ՕԳՄ: Regex day_phone դաշտի համար ընթերցող գրանցելիս։"
+# id::clm.value__afh
+# id::afh
+#: 950.data.seed-values.sql:5819
+msgid "Afrihili (Artificial language)"
+msgstr "Afrihili (Աֆրիյան լեզու)"
 
-#: 950.data.seed-values.sql:2494
+#: 950.data.seed-values.sql:4795
 msgid "Item Barcode"
 msgstr "Նյութի շտրիխ կոդ"
 
-#: 950.data.seed-values.sql:2285
-msgid ""
-"The dob field will be shown on the patron registration screen. Showing a "
-"field makes it appear with required fields even when not required. If the "
-"field is required this setting is ignored."
-msgstr ""
-"Կցուցադրվի dob դաշտը ընթերցողի գրանցման պաստառին։ Ցուցադրելով դաշտը ստիպում "
-"է որ այն հայտնվի պահանջվող դաշտերով, եթե նույնիսկ պահանջված չէ։ Եթե դաշտը "
-"պահանջված է, ապա այս կարգաբերումը անտեսվում է։"
-
-#: 950.data.seed-values.sql:5355
-msgid "Selfcheck: Require Patron Password"
-msgstr "Ինքնաստուգում։ Պահանջում է ընթերցողի գաղտնաբառ։"
+#: 950.data.seed-values.sql:9316
+msgid "Malformed record cause Overlay failure"
+msgstr "Ձևախեղված գրառումը հանգեցրեց վերագրման ձաղոխման"
 
 # id::cbs.source__3
 # id::3
@@ -4250,48 +4028,19 @@ msgstr ""
 
 # id::cam.value__f
 # id::f
-#: 950.data.seed-values.sql:3995
+#: 950.data.seed-values.sql:6306
 msgid "Specialized"
 msgstr "Մասնագիտացված"
 
-#: 950.data.seed-values.sql:2220
-msgid "GUI: Suggest alert_message field on patron registration"
-msgstr "ՕԳՄ: Առաջարկի alert_message դաշտ ընթերցող գրանցելիս։"
+# id::clm.value__fij
+# id::fij
+#: 950.data.seed-values.sql:5943
+msgid "Fijian"
+msgstr "Fijian"
 
-#: 950.data.seed-values.sql:2257
-msgid ""
-"The Example for validation on the day_phone field in patron registration."
-msgstr "Օրինակ day_phone դաշտի հավաստիացման համար, երբ ընթերցող է գրանցվում։"
-
-#: 950.data.seed-values.sql:2221
-msgid ""
-"The alert_message field will be suggested on the patron registration screen. "
-"Suggesting a field makes it appear when suggested fields are shown. If the "
-"field is shown or required this setting is ignored."
-msgstr ""
-"Կառաջարկվի alert_message դաշտը, ընթերցողի գրանցման պաստառին։ Առաջարկելով "
-"դաշտը ստիպում է որ այն հայտնվի պահանջվող դաշտերով, եթե նույնիսկ պահանջված "
-"չէ։ Եթե դաշտը պահանջված է, ապա այս կարգաբերումը անտեսվում է։"
-
-#: 950.data.seed-values.sql:2292
-msgid "GUI: Example for email field on patron registration"
-msgstr "ՕԳՄ: Օրինակ էլ փոստի դաշտի ընթերցող գրանցելիս։"
-
-#: 950.data.seed-values.sql:1731
-msgid "Password format"
-msgstr "Գաղտնաբառի ձևաչափ"
-
-# id::clm.value__chu
-# id::chu
-#: 950.data.seed-values.sql:3584
-msgid "Church Slavic"
-msgstr "Church Slavic"
-
-# id::clm.value__iro
-# id::iro
-#: 950.data.seed-values.sql:3702
-msgid "Iroquoian (Other)"
-msgstr "Iroquoian (այլ)"
+#: 950.data.seed-values.sql:10052
+msgid "Established Heading Linking Entry -- Geographic Name"
+msgstr "Սահմանված Վերնախորագրի կապի մուտք -- Աշխարհագրական անուն"
 
 # id::ccs.name__3
 # id::3
@@ -4305,11 +4054,11 @@ msgstr "Կորած"
 msgid "Mende"
 msgstr "Mende"
 
-#: 950.data.seed-values.sql:1871 950.data.seed-values.sql:1872
-msgid "Temporary call number prefix"
-msgstr "Ժամանակավոր դասիչի նախածանց"
+#: 950.data.seed-values.sql:10058
+msgid "Established Heading Linking Entry -- Chronological Term"
+msgstr "Սահմանված Վերնախորագրի կապի մուտք -- Ժամանակագրական տերմին"
 
-#: 950.data.seed-values.sql:7229 950.data.seed-values.sql:7230
+#: 950.data.seed-values.sql:8880 950.data.seed-values.sql:8881
 msgid "Historical Hold Retention Age"
 msgstr "Պահման պատմության հիշոելու տարիք"
 
@@ -4321,47 +4070,49 @@ msgstr "Յակուտերեն"
 
 # id::clm.value__nno
 # id::nno
-#: 950.data.seed-values.sql:3813
+#: 950.data.seed-values.sql:6124
 msgid "Norwegian (Nynorsk)"
 msgstr "Norwegian (Nynorsk)"
 
 # id::clm.value__tig
 # id::tig
-#: 950.data.seed-values.sql:3931
+#: 950.data.seed-values.sql:6242
 msgid "Tigré"
 msgstr "Tigré"
 
-# id::clm.value__ori
-# id::ori
-#: 950.data.seed-values.sql:3827
-msgid "Oriya"
-msgstr "Oriya"
+# id::clm.value__-sao id::clm.value__smo
+# id::-sao
+#: 950.data.seed-values.sql:6179 950.data.seed-values.sql:6203
+msgid "Samoan"
+msgstr "Samoan"
 
-#: 950.data.seed-values.sql:2549 950.data.seed-values.sql:2553
+#: 950.data.seed-values.sql:4850 950.data.seed-values.sql:4854
 msgid "General Staff Client container"
 msgstr "Ընդհանուր աշխատակազմի հաճախորդի կոնտեյներ"
 
+#: 950.data.seed-values.sql:1599
+msgid "Circulation Administrator"
+msgstr "Տացքի կառավարիչ"
+
 # id::clm.value__glv id::clm.value__-max
 # id::glv
-#: 950.data.seed-values.sql:3657 950.data.seed-values.sql:3775
+#: 950.data.seed-values.sql:5968 950.data.seed-values.sql:6086
 msgid "Manx"
 msgstr "Manx"
 
 # id::clm.value__rar
 # id::rar
-#: 950.data.seed-values.sql:3854
+#: 950.data.seed-values.sql:6165
 msgid "Rarotongan"
 msgstr "Rarotongan"
 
-#: 950.data.seed-values.sql:2309
-msgid ""
-"The email field will be suggested on the patron registration screen. "
-"Suggesting a field makes it appear when suggested fields are shown. If the "
-"field is shown or required this setting is ignored."
-msgstr ""
-"Կառաջարկվի էլ փոստի դաշտ ընթերցողի գրանցման պաստառում։ Առաջարկելով դաշտը "
-"ստիպում է որ այն հայտնվի առաջարկվող դաշտերով, եթե նույնիսկ պահանջված չէ։ Եթե "
-"դաշտը պահանջված է, ապա այս կարգաբերումը անտեսվում է։"
+#: 950.data.seed-values.sql:10056
+msgid "Subdivision Linking Entry -- Chronological Subdivision"
+msgstr "Ենթաբաժնի կապի մուտք -- Ժամանակագրական ենթաբաժին"
+
+#: 950.data.seed-values.sql:10147
+msgid "Sears List of Subject Headings"
+msgstr "Խորագրերի Սիրսի ցուցակ"
 
 # id::crrf.name__3
 # id::3
@@ -4375,35 +4126,25 @@ msgstr "AuthorizeNet թեստ վիճակ"
 
 # id::clm.value__dyu
 # id::dyu
-#: 950.data.seed-values.sql:3613
+#: 950.data.seed-values.sql:5924
 msgid "Dyula"
 msgstr "Dyula"
 
 # id::clm.value__ipk
 # id::ipk
-#: 950.data.seed-values.sql:3699
+#: 950.data.seed-values.sql:6010
 msgid "Inupiaq"
 msgstr "Inupiaq"
 
-#: 950.data.seed-values.sql:2027
-msgid ""
-"When an item could fulfill a hold, do not allow the current patron to renew"
-msgstr ""
-"Երբ նյութը կարող է բավարարել պահումը, թույլ մի տուր ընթացիկ ընթերցողին "
-"թարմացնել"
-
-#: 950.data.seed-values.sql:1837
-msgid ""
-"If enabled, patrons can create and edit existing addresses.  Addresses are "
-"kept in a pending state until staff approves the changes"
-msgstr ""
-"Եթե թույլատրված է, հաճախորդները կարող են ստեղծել և խմբագել գոյություն "
-"ունեցող հասցենրը։ Հասցեները պահվում են սպասող վիճակում մինչ աշխատակազմը "
-"կհաստատի փոփոխությունները։"
+# id::clm.value__gre
+# id::gre
+#: 950.data.seed-values.sql:5976
+msgid "Greek, Modern (1453- )"
+msgstr "Greek, Modern (1453- )"
 
 # id::clm.value__efi
 # id::efi
-#: 950.data.seed-values.sql:3615
+#: 950.data.seed-values.sql:5926
 msgid "Efik"
 msgstr "Efik"
 
@@ -4423,19 +4164,19 @@ msgstr "Լիտվերեն"
 
 # id::clm.value__mus
 # id::mus
-#: 950.data.seed-values.sql:3796
+#: 950.data.seed-values.sql:6107
 msgid "Creek"
 msgstr "Creek"
 
 # id::cam.value__c
 # id::c
-#: 950.data.seed-values.sql:3992
+#: 950.data.seed-values.sql:6303
 msgid "Pre-adolescent"
 msgstr "Pre-adolescent"
 
 # id::clm.value__smj
 # id::smj
-#: 950.data.seed-values.sql:3890
+#: 950.data.seed-values.sql:6201
 msgid "Lule Sami"
 msgstr "Lule Sami"
 
@@ -4451,43 +4192,43 @@ msgstr "ՕԳՄ: Ցույց տուր պատանեկան դաշտը ընթերցո
 
 # id::clm.value__bis
 # id::bis
-#: 950.data.seed-values.sql:3554
+#: 950.data.seed-values.sql:5865
 msgid "Bislama"
 msgstr "Bislama"
 
 # id::clm.value__kon
 # id::kon
-#: 950.data.seed-values.sql:3730
+#: 950.data.seed-values.sql:6041
 msgid "Kongo"
 msgstr "Kongo"
 
-# id::clm.value__snk
-# id::snk
-#: 950.data.seed-values.sql:3897
-msgid "Soninke"
-msgstr "Soninke"
+#: 950.data.seed-values.sql:9326
+msgid "Invalid value for \"owning_lib\""
+msgstr "Անիրական արժեք \"owning_lib\" համար"
+
+#: 950.data.seed-values.sql:11543
+msgid "Login via srfsh"
+msgstr "Մուտքի գրանցում srfsh օգնությամբ"
 
 # id::clm.value__ach
 # id::ach
-#: 950.data.seed-values.sql:3504
+#: 950.data.seed-values.sql:5815
 msgid "Acoli"
 msgstr "Acoli"
 
 # id::clm.value__mkh
 # id::mkh
-#: 950.data.seed-values.sql:3783
+#: 950.data.seed-values.sql:6094
 msgid "Mon-Khmer (Other)"
 msgstr "Mon-Khmer (այլ)"
 
-# id::clm.value__lam
-# id::lam
-#: 950.data.seed-values.sql:3743
-msgid "Lamba"
-msgstr "Lamba"
+#: 950.data.seed-values.sql:10035
+msgid "See Also From Tracing -- Personal Name"
+msgstr "Տես նաև Հետագծից -- Անձնական անուն"
 
 # id::clm.value__pap
 # id::pap
-#: 950.data.seed-values.sql:3838
+#: 950.data.seed-values.sql:6149
 msgid "Papiamento"
 msgstr "Papiamento"
 
@@ -4497,7 +4238,7 @@ msgstr "ՕԳՄ: Առաջարկիր պատանեկան դաշտը ընթերցո�
 
 # id::clm.value__mwr
 # id::mwr
-#: 950.data.seed-values.sql:3797
+#: 950.data.seed-values.sql:6108
 msgid "Marwari"
 msgstr "Marwari"
 
@@ -4509,15 +4250,13 @@ msgstr "overdue_min"
 
 # id::clm.value__dak
 # id::dak
-#: 950.data.seed-values.sql:3599
+#: 950.data.seed-values.sql:5910
 msgid "Dakota"
 msgstr "Dakota"
 
-# id::clm.value__pol
-# id::pol
-#: 950.data.seed-values.sql:3845
-msgid "Polish"
-msgstr "Լեհերեն"
+#: 950.data.seed-values.sql:1601
+msgid "Local Administrator"
+msgstr "Տեղային կառավարիչ"
 
 # id::crmf.name__3
 # id::3
@@ -4525,13 +4264,15 @@ msgstr "Լեհերեն"
 msgid "overdue_mid"
 msgstr "overdue_mid"
 
-#: 950.data.seed-values.sql:2328
-msgid "GUI: Suggest evening_phone field on patron registration"
-msgstr "ՕԳՄ: Առաջարկիր evening_phone դաշտը ընթերցող գրանցելիս"
+# id::clm.value__hat
+# id::hat
+#: 950.data.seed-values.sql:5982
+msgid "Haitian French Creole"
+msgstr "Haitian French Creole"
 
 # id::clm.value__bik
 # id::bik
-#: 950.data.seed-values.sql:3552
+#: 950.data.seed-values.sql:5863
 msgid "Bikol"
 msgstr "Bikol"
 
@@ -4543,43 +4284,41 @@ msgstr "Հինդու"
 
 # id::clm.value__swe
 # id::swe
-#: 950.data.seed-values.sql:3913
+#: 950.data.seed-values.sql:6224
 msgid "Swedish"
 msgstr "Շվեդերեն"
 
-# id::clm.value__kur
-# id::kur
-#: 950.data.seed-values.sql:3738
-msgid "Kurdish"
-msgstr "Քրդերեն"
+#: 950.data.seed-values.sql:9330
+msgid "Invalid value for \"copy_number\""
+msgstr "Անիրական արժեք \"copy_number\" համար"
 
 # id::clm.value__sgn
 # id::sgn
-#: 950.data.seed-values.sql:3877
+#: 950.data.seed-values.sql:6188
 msgid "Sign languages"
 msgstr "Sign languages"
 
-# id::aout.name__2
-# id::2
-#: 950.data.seed-values.sql:350
-msgid "System"
-msgstr "Համակարգ"
+# id::clm.value__chm
+# id::chm
+#: 950.data.seed-values.sql:5890
+msgid "Mari"
+msgstr "Mari"
 
 # id::clm.value__ewe
 # id::ewe
-#: 950.data.seed-values.sql:3626
+#: 950.data.seed-values.sql:5937
 msgid "Ewe"
 msgstr "Ewe"
 
 # id::clm.value__tup
 # id::tup
-#: 950.data.seed-values.sql:3947
+#: 950.data.seed-values.sql:6258
 msgid "Tupi languages"
 msgstr "Tupi languages"
 
 # id::clm.value__alg
 # id::alg
-#: 950.data.seed-values.sql:3515
+#: 950.data.seed-values.sql:5826
 msgid "Algonquian (Other)"
 msgstr "Algonquian (այլ)"
 
@@ -4589,7 +4328,7 @@ msgstr "Լռակյաց պատճենի տեղաբաշխում"
 
 # id::clm.value__fao id::clm.value__-far
 # id::fao
-#: 950.data.seed-values.sql:3629 950.data.seed-values.sql:3630
+#: 950.data.seed-values.sql:5940 950.data.seed-values.sql:5941
 msgid "Faroese"
 msgstr "Faroese"
 
@@ -4600,23 +4339,19 @@ msgstr "Օրինակ other_phone դաշտի հավաստիացման, ընթեր
 
 # id::clm.value__dan
 # id::dan
-#: 950.data.seed-values.sql:3600
+#: 950.data.seed-values.sql:5911
 msgid "Danish"
 msgstr "Դանիերեն"
 
 # id::clm.value__dra
 # id::dra
-#: 950.data.seed-values.sql:3609
+#: 950.data.seed-values.sql:5920
 msgid "Dravidian (Other)"
 msgstr "Dravidian (այլ)"
 
-#: 950.data.seed-values.sql:2417
-msgid ""
-"The Example for validation on phone fields in patron registration. Applies "
-"to all phone fields without their own setting."
-msgstr ""
-"Օրինակ ընթերցող գրանցելիս հեռախոսի դաշտերի հավաստիացման։ Կիրառվում է "
-"հեռախոսի բոլոր դաշտերի վրա, առանց դրանց սեփական կարգաբերումների։"
+#: 950.data.seed-values.sql:10049
+msgid "Established Heading Linking Entry -- Corporate Name"
+msgstr "Սահմանված Վերնախորագրի կապի մուտք -- Համատեղ անուն"
 
 #: 950.data.seed-values.sql:2269
 msgid ""
@@ -4630,7 +4365,7 @@ msgstr ""
 
 # id::clm.value__cpe
 # id::cpe
-#: 950.data.seed-values.sql:3591
+#: 950.data.seed-values.sql:5902
 msgid "Creoles and Pidgins, English-based (Other)"
 msgstr "Creoles and Pidgins, English-based (այլ)"
 
@@ -4642,7 +4377,7 @@ msgstr "Լեզգիերեն"
 
 # id::clm.value__cus
 # id::cus
-#: 950.data.seed-values.sql:3597
+#: 950.data.seed-values.sql:5908
 msgid "Cushitic (Other)"
 msgstr "Cushitic (այլ)"
 
@@ -4654,35 +4389,41 @@ msgstr "Ganda"
 
 # id::clm.value__tet
 # id::tet
-#: 950.data.seed-values.sql:3926
+#: 950.data.seed-values.sql:6237
 msgid "Tetum"
 msgstr "Tetum"
 
 # id::clm.value__pal
 # id::pal
-#: 950.data.seed-values.sql:3835
+#: 950.data.seed-values.sql:6146
 msgid "Pahlavi"
 msgstr "Պահլավերեն"
 
-#: 950.data.seed-values.sql:2561
+#: 950.data.seed-values.sql:4862
 msgid "Add to Published Book Bags"
 msgstr "Ավելացրու Հրատարակված գրքերի պայուսակում"
 
-# id::clm.value__znd
-# id::znd
-#: 950.data.seed-values.sql:3984
-msgid "Zande"
-msgstr "Zande"
+#: 950.data.seed-values.sql:9320
+msgid "Invalid value for \"status\""
+msgstr "Անիրական արժեք \"status\" համար"
 
-# id::clm.value__-gag id::clm.value__glg
-# id::-gag
-#: 950.data.seed-values.sql:3645 950.data.seed-values.sql:3656
-msgid "Galician"
-msgstr "Գալիցերեն"
+#: 950.data.seed-values.sql:10061
+msgid "See Also Tracing -- Personal Name"
+msgstr "Տես նաև Հետագիծ -- Անձնական անուն"
+
+# id::clm.value__slo
+# id::slo
+#: 950.data.seed-values.sql:6196
+msgid "Slovak"
+msgstr "Սլովակերեն"
+
+#: 950.data.seed-values.sql:10145
+msgid "Not applicable"
+msgstr "Ընդունելի չէ"
 
 # id::clm.value__cai
 # id::cai
-#: 950.data.seed-values.sql:3566
+#: 950.data.seed-values.sql:5877
 msgid "Central American Indian (Other)"
 msgstr "Central American Indian (այլ)"
 
@@ -4702,9 +4443,13 @@ msgstr ""
 
 # id::clm.value__kik
 # id::kik
-#: 950.data.seed-values.sql:3724
+#: 950.data.seed-values.sql:6035
 msgid "Kikuyu"
 msgstr "Kikuyu"
+
+#: 950.data.seed-values.sql:6369
+msgid "Betacam"
+msgstr "Betacam"
 
 # id::crahp.name__2
 # id::2
@@ -4712,7 +4457,7 @@ msgstr "Kikuyu"
 msgid "6month"
 msgstr "6ամիս"
 
-#: 950.data.seed-values.sql:7194
+#: 950.data.seed-values.sql:8819
 msgid "Historical Circulations per Copy"
 msgstr "Տացքի պատմություն ըստ օրինակի"
 
@@ -4720,63 +4465,59 @@ msgstr "Տացքի պատմություն ըստ օրինակի"
 msgid "UPC"
 msgstr "UPC"
 
-#: 950.data.seed-values.sql:1676 950.data.seed-values.sql:1677
-msgid "Sending email address for patron notices"
-msgstr "Ուղարկվում է ընթերցողի նշումների համար էլ փոստի հասցեն"
+#: 950.data.seed-values.sql:8725
+msgid "Handling Charge"
+msgstr "Հանձնման ծախս"
+
+#: 950.data.seed-values.sql:10144
+msgid "Canadian Subject Headings"
+msgstr "Կանադական խորագրեր"
 
 # id::clm.value__ang
 # id::ang
-#: 950.data.seed-values.sql:3517
+#: 950.data.seed-values.sql:5828
 msgid "English, Old (ca. 450-1100)"
 msgstr "Անգլերեն, հին (մոտ. 450-1100)"
 
 # id::clm.value__nai
 # id::nai
-#: 950.data.seed-values.sql:3800
+#: 950.data.seed-values.sql:6111
 msgid "North American Indian (Other)"
 msgstr "North American Indian (այլ)"
 
-#: 950.data.seed-values.sql:2016
-msgid "GUI: Work Log: Maximum Patrons Logged"
-msgstr "ՕԳՄ։ Աշխատանքային լոգ։ Գրանցված են մաքսիմում ընթերցողներ։"
+# id::clm.value__pol
+# id::pol
+#: 950.data.seed-values.sql:6156
+msgid "Polish"
+msgstr "Լեհերեն"
 
-#: 950.data.seed-values.sql:2397
-msgid ""
-"The suffix field will be suggested on the patron registration screen. "
-"Suggesting a field makes it appear when suggested fields are shown. If the "
-"field is shown or required this setting is ignored."
-msgstr ""
-"Կցուցադրվի վերջածանցի դաշտը ընթերցողի գրանցման պաստառին։ Առաջարկելով դաշտը "
-"ստիպում է որ այն հայտնվի առաջարկվող դաշտերով, եթե նույնիսկ պահանջված չեն։ "
-"Եթե դաշտը պահանջվաած է, այս կարգաբերումը անտեսվում է։"
+#: 950.data.seed-values.sql:10025
+msgid "Heading -- Topical Term"
+msgstr "Վերնախորագիր -- Թեմատիկ տերմին"
 
-#: 950.data.seed-values.sql:2381
-msgid ""
-"The other_phone field will be suggested on the patron registration screen. "
-"Suggesting a field makes it appear when suggested fields are shown. If the "
-"field is shown or required this setting is ignored."
-msgstr ""
-"Կառաջարկվի other_phone դաշտը ընթերցողի գրանցման պաստառին։ Առաջարկելով դաշտը "
-"ստիպում է որ այն հայտնվի առաջարկվող դաշտերով, եթե նույնիսկ պահանջված չեն։ "
-"Եթե դաշտը պահանջվաած է, այս կարգաբերումը անտեսվում է։"
+# id::clm.value__crh
+# id::crh
+#: 950.data.seed-values.sql:5906
+msgid "Crimean Tatar"
+msgstr "Crimean Tatar"
 
-#: 950.data.seed-values.sql:2554
+#: 950.data.seed-values.sql:4855
 msgid "Book Bag"
 msgstr "Գրքի պայուսակ"
 
-#: 950.data.seed-values.sql:1951
-msgid "Credit card processing: AuthorizeNet password"
-msgstr "Կրեդիտ քարտի կատարում։ AuthorizeNet գաղտնաբառ։"
+#: 950.data.seed-values.sql:10063
+msgid "See Also Tracing -- Meeting Name"
+msgstr "Տես նաև հետագիծ -- Հանդիպման անուն"
 
 # id::clm.value__bho
 # id::bho
-#: 950.data.seed-values.sql:3550
+#: 950.data.seed-values.sql:5861
 msgid "Bhojpuri"
 msgstr "Bhojpuri"
 
 # id::clm.value__tsi
 # id::tsi
-#: 950.data.seed-values.sql:3941
+#: 950.data.seed-values.sql:6252
 msgid "Tsimshian"
 msgstr "Tsimshian"
 
@@ -4786,43 +4527,33 @@ msgstr "Քո շարժական գրադարանը"
 
 # id::clm.value__nog
 # id::nog
-#: 950.data.seed-values.sql:3815
+#: 950.data.seed-values.sql:6126
 msgid "Nogai"
 msgstr "Nogai"
 
-#: 950.data.seed-values.sql:2349
-msgid ""
-"The juvenile field will be shown on the patron registration screen. Showing "
-"a field makes it appear with required fields even when not required. If the "
-"field is required this setting is ignored."
-msgstr ""
-"Կցուցադրվի պատանեկան դաշտը ընթերցողի գրանցման պաստառին։ Ցուցադրելով դաշտը "
-"ստիպում է որ այն հայտնվի պահանջվող դաշտերով, եթե նույնիսկ պահանջված չեն։ Եթե "
-"դաշտը պահանջվաած է, այս կարգաբերումը անտեսվում է։"
+#: 950.data.seed-values.sql:11556
+msgid "Verification via remoteauth"
+msgstr "Ստուգում remoteauth միջոցով"
 
 # id::clm.value__enm
 # id::enm
-#: 950.data.seed-values.sql:3620
+#: 950.data.seed-values.sql:5931
 msgid "English, Middle (1100-1500)"
 msgstr "Անգլերեն, Միջին (1100-1500)"
 
-# id::clm.value__hat
-# id::hat
-#: 950.data.seed-values.sql:3671
-msgid "Haitian French Creole"
-msgstr "Haitian French Creole"
+# id::clm.value__sah
+# id::sah
+#: 950.data.seed-values.sql:6174
+msgid "Yakut"
+msgstr "Յակուտերեն"
 
 # id::clm.value__sux
 # id::sux
-#: 950.data.seed-values.sql:3911
+#: 950.data.seed-values.sql:6222
 msgid "Sumerian"
 msgstr "Sumerian"
 
-#: 950.data.seed-values.sql:1756
-msgid "Selfcheck: Patron Login Timeout (in seconds)"
-msgstr "Ինքնաստուգում. Ընթերցողի գրանցման ժամանակը լրացավ (վայրկյաններով)"
-
-#: 950.data.seed-values.sql:6491
+#: 950.data.seed-values.sql:8730
 msgid "Paper"
 msgstr "Հոդված"
 
@@ -4832,53 +4563,53 @@ msgstr "Պահումներ։ Սպասման գնահատված նվազագու�
 
 # id::clm.value__xho
 # id::xho
-#: 950.data.seed-values.sql:3975
+#: 950.data.seed-values.sql:6286
 msgid "Xhosa"
 msgstr "Xhosa"
 
-#: 950.data.seed-values.sql:2300
-msgid "GUI: Require email field on patron registration"
-msgstr "ՕԳՄ:Պահանջում է էլ փոստի դաշտ ընթերցող գրանցելիս։"
+# id::clm.value__mni
+# id::mni
+#: 950.data.seed-values.sql:6099
+msgid "Manipuri"
+msgstr "Manipuri"
 
 # id::clm.value__bua
 # id::bua
-#: 950.data.seed-values.sql:3561
+#: 950.data.seed-values.sql:5872
 msgid "Buriat"
 msgstr "Բուրյաթերեն"
 
 # id::clm.value__man
 # id::man
-#: 950.data.seed-values.sql:3770
+#: 950.data.seed-values.sql:6081
 msgid "Mandingo"
 msgstr "Mandingo"
 
-#: 950.data.seed-values.sql:1656 950.data.seed-values.sql:1657
-msgid "OPAC Inactivity Timeout (in seconds)"
-msgstr "ՀՕԱՔ պասիվության ժամանակի լրանալ (վայրկյաններ)"
-
-#: 950.data.seed-values.sql:2369
-msgid ""
-"The Regular Expression for validation on the other_phone field in patron "
-"registration."
-msgstr ""
-"Ընթերցող գրանցելիս կանոնավոր արտահայտություն other_phone դաշտի հավաստիացման "
-"համար"
+# id::clm.value__hup
+# id::hup
+#: 950.data.seed-values.sql:5994
+msgid "Hupa"
+msgstr "Hupa"
 
 # id::clm.value__ina id::clm.value__-int
 # id::ina
-#: 950.data.seed-values.sql:3693 950.data.seed-values.sql:3698
+#: 950.data.seed-values.sql:6004 950.data.seed-values.sql:6009
 msgid "Interlingua (International Auxiliary Language Association)"
 msgstr "Interlingua (International Auxiliary Language Association)"
 
 # id::clm.value__ice
 # id::ice
-#: 950.data.seed-values.sql:3686
+#: 950.data.seed-values.sql:5997
 msgid "Icelandic"
 msgstr "Իսլանդերեն"
 
+#: 950.data.seed-values.sql:10040
+msgid "See Also From Tracing -- Genre/Form Term"
+msgstr "Տես նաև Հետագծից -- Ժանրի/Ձևի տերմին"
+
 # id::clm.value__twi
 # id::twi
-#: 950.data.seed-values.sql:3951
+#: 950.data.seed-values.sql:6262
 msgid "Twi"
 msgstr "Twi"
 
@@ -4892,25 +4623,25 @@ msgstr ""
 
 # id::clm.value__guj
 # id::guj
-#: 950.data.seed-values.sql:3668
+#: 950.data.seed-values.sql:5979
 msgid "Gujarati"
 msgstr "Gujarati"
 
 # id::clfm.value__1
 # id::1
-#: 950.data.seed-values.sql:4017
+#: 950.data.seed-values.sql:6328
 msgid "Fiction (not further specified)"
 msgstr "Գեղարվեստական (սահմանված չէ)"
 
 # id::clm.value__map
 # id::map
-#: 950.data.seed-values.sql:3772
+#: 950.data.seed-values.sql:6083
 msgid "Austronesian (Other)"
 msgstr "Austronesian (այլ)"
 
 # id::clm.value__akk
 # id::akk
-#: 950.data.seed-values.sql:3512
+#: 950.data.seed-values.sql:5823
 msgid "Akkadian"
 msgstr "Akkadian"
 
@@ -4930,7 +4661,7 @@ msgstr "Զտված"
 
 # id::clm.value__kor
 # id::kor
-#: 950.data.seed-values.sql:3731
+#: 950.data.seed-values.sql:6042
 msgid "Korean"
 msgstr "Կորեերեն"
 
@@ -4940,87 +4671,69 @@ msgstr "ՕԳՄ: Ցույց տուր other_phone դաշտը ընթերցող գր
 
 # id::clm.value__shn
 # id::shn
-#: 950.data.seed-values.sql:3878
+#: 950.data.seed-values.sql:6189
 msgid "Shan"
 msgstr "Shan"
 
-#: 950.data.seed-values.sql:1882
-msgid "Appends staff initials and edit date into note content."
-msgstr "Կիրառում է աշխատակազմի սկզբնատառերը և խմբագրում է ամսաթիվը նշումի"
-
-#: 950.data.seed-values.sql:2380
-msgid "GUI: Suggest other_phone field on patron registration"
-msgstr "ՕԳՄ: Ցույց տուր other_phone դաշտը ընթերող գրանցելիս"
+#: 950.data.seed-values.sql:9317
+msgid "New record had insufficient quality"
+msgstr "Նոր գրառումը ունի անբավարար որակ"
 
 # id::citm.value__d
 # id::d
-#: 950.data.seed-values.sql:4010
+#: 950.data.seed-values.sql:6321
 msgid "Manuscript notated music"
 msgstr "Ձեռագիր նոտաներ"
 
-#: 950.data.seed-values.sql:1737
-msgid ""
-"This is the maximum number of previous circulations the staff client will "
-"display when investigating item details"
-msgstr ""
-"Երբ նյութի մանրամասները կհետազոտվեն աշխատակազմի հաճախորդի կողմից, սա նախորդ "
-"տացքերի նվազագաույն քանակը կլինի։"
+#: 950.data.seed-values.sql:10016
+msgid "Established Heading Linking Entry -- Uniform Title"
+msgstr "Հաստատված վերնախորագրի կապի մուտք -- Համընդհանուր վերնագիր"
 
-#: 950.data.seed-values.sql:1746
-msgid "Holds: Default Estimated Wait"
-msgstr "Պահումներ։ լռակյաց գնահատված սպասում"
-
-#: 950.data.seed-values.sql:1921
-msgid "Max Patron Claims Returned Count"
-msgstr "Հաճախորդի մաքս խարանների վերադարձի հաշվիչ"
-
-#: 950.data.seed-values.sql:1671 950.data.seed-values.sql:1672
-msgid "Default Item Price"
-msgstr "Լռակյաց նյութի գին"
+#: 950.data.seed-values.sql:6361
+msgid "Beta"
+msgstr "Բետա"
 
 # id::cblvl.value__c
 # id::c
-#: 950.data.seed-values.sql:4043
+#: 950.data.seed-values.sql:6354
 msgid "Collection"
 msgstr "Հավաքածու"
 
 # id::clm.value__nya
 # id::nya
-#: 950.data.seed-values.sql:3820
+#: 950.data.seed-values.sql:6131
 msgid "Nyanja"
 msgstr "Nyanja"
 
-# id::clm.value__khi
-# id::khi
-#: 950.data.seed-values.sql:3721
-msgid "Khoisan (Other)"
-msgstr "Khoisan (այլ)"
+#: 950.data.seed-values.sql:10065
+msgid "See Also Tracing -- Geographic Name"
+msgstr "Տես նաև Հետագիծ -- Աշխարհագրական անուն"
+
+#: 950.data.seed-values.sql:1611
+msgid "Can do anything at the Consortium level"
+msgstr "Կարող է անել ամեն ինչ կոնսորցիումի մակարդակում"
 
 # id::clm.value__cad
 # id::cad
-#: 950.data.seed-values.sql:3565
+#: 950.data.seed-values.sql:5876
 msgid "Caddo"
 msgstr "Caddo"
 
-# id::clm.value__-fri id::clm.value__fry
-# id::-fri
-#: 950.data.seed-values.sql:3637 950.data.seed-values.sql:3640
-msgid "Frisian"
-msgstr "Frisian"
-
-#: 950.data.seed-values.sql:5917
-msgid "Offline: Patron Usernames Allowed"
-msgstr "Օֆլայն։ Օգտվողների գրանցման բառերը թույլատրված են"
+# id::clm.value__lez
+# id::lez
+#: 950.data.seed-values.sql:6060
+msgid "Lezgian"
+msgstr "Լեզգիերեն"
 
 # id::clm.value__kas
 # id::kas
-#: 950.data.seed-values.sql:3715
+#: 950.data.seed-values.sql:6026
 msgid "Kashmiri"
 msgstr "Kashmiri"
 
 # id::clm.value__hai
 # id::hai
-#: 950.data.seed-values.sql:3670
+#: 950.data.seed-values.sql:5981
 msgid "Haida"
 msgstr "Haida"
 
@@ -5030,21 +4743,19 @@ msgstr "Տեղային ազատ տեքստային դասիչ"
 
 # id::clm.value__-lan id::clm.value__oci
 # id::-lan
-#: 950.data.seed-values.sql:3744 950.data.seed-values.sql:3825
+#: 950.data.seed-values.sql:6055 950.data.seed-values.sql:6136
 msgid "Occitan (post-1500)"
 msgstr "Occitan (post-1500)"
 
-# id::clm.value__por
-# id::por
-#: 950.data.seed-values.sql:3847
-msgid "Portuguese"
-msgstr "Պորտուգալերեն"
+#: 950.data.seed-values.sql:9315
+msgid "Malformed record cause Import failure"
+msgstr "Ձևախեղված գրառումը հանգեցրել է ներմուծման ձախողման"
 
-# id::clm.value__non
-# id::non
-#: 950.data.seed-values.sql:3816
-msgid "Old Norse"
-msgstr "Old Norse"
+# id::clm.value__son
+# id::son
+#: 950.data.seed-values.sql:6211
+msgid "Songhai"
+msgstr "Songhai"
 
 #: 950.data.seed-values.sql:262
 msgid "Spanish (US)"
@@ -5054,25 +4765,21 @@ msgstr "Իսպաներեն (ԱՄՆ)"
 msgid "GUI: Show active field on patron registration"
 msgstr "ՕԳՄ։ ընթերցող գրանցելիս ցույց տուր ակտիվ դաշտը"
 
-#: 950.data.seed-values.sql:2360
-msgid "GUI: Suggest master_account field on patron registration"
-msgstr "ՕԳՄ: Առաջարկիր master_account դաշտ ընթերցող գրանցելիս"
+# id::aout.name__2
+# id::2
+#: 950.data.seed-values.sql:429 950.data.seed-values.sql:2486
+msgid "System"
+msgstr "Համակարգ"
 
-# id::clm.value__chm
-# id::chm
-#: 950.data.seed-values.sql:3579
-msgid "Mari"
-msgstr "Mari"
-
-#: 950.data.seed-values.sql:1398
+#: 950.data.seed-values.sql:1595
 msgid "Acquisitions Administrator"
 msgstr "Համալրման կառավարիչ"
 
-#: 950.data.seed-values.sql:2276
-msgid "GUI: Show calendar widget for dob field on patron registration"
-msgstr "ՕԳՄ։ Ընթերցող գրանցելիս ցույց տուր օրացույցի քաշը dob դաշտի համար"
+#: 950.data.seed-values.sql:10166
+msgid "Vandelay Queue"
+msgstr "Vandelay հերթ"
 
-#: 950.data.seed-values.sql:2482
+#: 950.data.seed-values.sql:4783
 msgid "Language of work"
 msgstr "Աշխատանքի լեզու"
 
@@ -5086,7 +4793,7 @@ msgstr "ՕԳՄ: Պահանջում է day_phone դաշտ ընթերցող գրա
 
 # id::clm.value__aar
 # id::aar
-#: 950.data.seed-values.sql:3501
+#: 950.data.seed-values.sql:5812
 msgid "Afar"
 msgstr "Afar"
 
@@ -5096,61 +4803,55 @@ msgstr "Afar"
 msgid "3month"
 msgstr "3ամիս"
 
-#: 950.data.seed-values.sql:295 950.data.seed-values.sql:316
-#: 950.data.seed-values.sql:335 950.data.seed-values.sql:2492
+#: 950.data.seed-values.sql:374 950.data.seed-values.sql:395
+#: 950.data.seed-values.sql:414 950.data.seed-values.sql:4793
 msgid "Publication Date"
 msgstr "Հրատարակման ամսաթիվ"
 
 # id::clm.value__udm
 # id::udm
-#: 950.data.seed-values.sql:3953
+#: 950.data.seed-values.sql:6264
 msgid "Udmurt"
 msgstr "Ուդմուրտերեն"
 
 # id::clm.value__gle id::clm.value__-iri
 # id::gle
-#: 950.data.seed-values.sql:3655 950.data.seed-values.sql:3701
+#: 950.data.seed-values.sql:5966 950.data.seed-values.sql:6012
 msgid "Irish"
 msgstr "Իռլանդերեն"
 
-# id::clm.value__gba
-# id::gba
-#: 950.data.seed-values.sql:3648
-msgid "Gbaya"
-msgstr "Gbaya"
-
-#: 950.data.seed-values.sql:5333
-msgid "Circ: Cap Max Fine at Item Price"
-msgstr "Տացք: Cap Max տուգանք նյութի գնին համապատասխան"
+#: 950.data.seed-values.sql:10017
+msgid "See Also Tracing -- Uniform Title"
+msgstr "Տես նաև Հետագիծ -- Համընդհանուր վերնագիր"
 
 # id::clm.value__cze id::i18n_l.name__cs-CZ id::i18n_l.description__cs-CZ
 # id::cze
-#: 950.data.seed-values.sql:250 950.data.seed-values.sql:251
-#: 950.data.seed-values.sql:3598
+#: 950.data.seed-values.sql:329 950.data.seed-values.sql:330
+#: 950.data.seed-values.sql:5909
 msgid "Czech"
 msgstr "Չեխերեն"
 
 # id::clm.value__luo
 # id::luo
-#: 950.data.seed-values.sql:3761
+#: 950.data.seed-values.sql:6072
 msgid "Luo (Kenya and Tanzania)"
 msgstr "Luo (Kenya and Tanzania)"
 
 # id::clm.value__kbd
 # id::kbd
-#: 950.data.seed-values.sql:3719
+#: 950.data.seed-values.sql:6030
 msgid "Kabardian"
 msgstr "Կաբարդիներեն"
 
 # id::clm.value__lah
 # id::lah
-#: 950.data.seed-values.sql:3742
+#: 950.data.seed-values.sql:6053
 msgid "Lahnda"
 msgstr "Lahnda"
 
 # id::clm.value__bel
 # id::bel
-#: 950.data.seed-values.sql:3546
+#: 950.data.seed-values.sql:5857
 msgid "Belarusian"
 msgstr "Բելառուսերեն"
 
@@ -5164,19 +4865,13 @@ msgstr "Manipuri"
 msgid "Library of Congress"
 msgstr "Կոնգրեսի գրադարան"
 
-#: 950.data.seed-values.sql:2336
-msgid "GUI: Suggest ident_value field on patron registration"
-msgstr "ՕԳՄ: Պահանջում էident_value դաշտ ընթերցող գրանցելիս"
-
-# id::cifm.value__d
-# id::d
-#: 950.data.seed-values.sql:4035
-msgid "Large print"
-msgstr "Լայն տպագրություն"
+#: 950.data.seed-values.sql:11542
+msgid "Login via opensrf"
+msgstr "Մուտքի գրանցում opensrf օգնությամբ"
 
 # id::clm.value__-ajm
 # id::-ajm
-#: 950.data.seed-values.sql:3510
+#: 950.data.seed-values.sql:5821
 msgid "Aljamía"
 msgstr "Aljamía"
 
@@ -5186,7 +4881,7 @@ msgstr "Անվան խորագիր"
 
 # id::clm.value__sme
 # id::sme
-#: 950.data.seed-values.sql:3888
+#: 950.data.seed-values.sql:6199
 msgid "Northern Sami"
 msgstr "Northern Sami"
 
@@ -5198,7 +4893,7 @@ msgstr "Undetermined"
 
 # id::clm.value__xal
 # id::xal
-#: 950.data.seed-values.sql:3974
+#: 950.data.seed-values.sql:6285
 msgid "Kalmyk"
 msgstr "Kalmyk"
 
@@ -5206,9 +4901,13 @@ msgstr "Kalmyk"
 msgid "Title Proper"
 msgstr "Վերնագիր ուղիղ"
 
+#: 950.data.seed-values.sql:11561
+msgid "OPAC Login (tpac)"
+msgstr "ՀՕԱՔ մուտք (tpac)"
+
 # id::cam.value__d
 # id::d
-#: 950.data.seed-values.sql:3993
+#: 950.data.seed-values.sql:6304
 msgid "Adolescent"
 msgstr "Adolescent"
 
@@ -5224,112 +4923,113 @@ msgstr ""
 
 # id::clm.value__rum
 # id::rum
-#: 950.data.seed-values.sql:3858
+#: 950.data.seed-values.sql:6169
 msgid "Romanian"
 msgstr "Ռումիներեն"
 
 # id::clm.value__aze
 # id::aze
-#: 950.data.seed-values.sql:3535
+#: 950.data.seed-values.sql:5846
 msgid "Azerbaijani"
 msgstr "Ադրբեջաներեն"
 
 # id::clm.value__srd
 # id::srd
-#: 950.data.seed-values.sql:3903
+#: 950.data.seed-values.sql:6214
 msgid "Sardinian"
 msgstr "Սարդիներեն"
 
-#: 950.data.seed-values.sql:398
+#: 950.data.seed-values.sql:6362
+msgid "VHS"
+msgstr "VHS"
+
+#: 950.data.seed-values.sql:477
 msgid "System: Deposit"
 msgstr "Համակարգ։ Կանխավճար"
 
-#: 950.data.seed-values.sql:1811
-msgid "Circ: Void lost max interval"
-msgstr "Տացք։ Դատարկիր կորածի մաքս տիրույթը"
+#: 950.data.seed-values.sql:10142
+msgid "Medical Subject Headings"
+msgstr "Բժշկական թեմաների խորագրեր"
+
+#: 950.data.seed-values.sql:11545
+msgid "Login via translator-v1"
+msgstr "Մուտքի գրանցում translator-v1 միջոցով"
 
 # id::citm.value__g
 # id::g
-#: 950.data.seed-values.sql:4002
+#: 950.data.seed-values.sql:6313
 msgid "Projected medium"
 msgstr "Պրոյեկտված"
 
-#: 950.data.seed-values.sql:2301
-msgid "The email field will be required on the patron registration screen."
-msgstr "Կպահանջվի Էլ փոստի դաշտը ընթերցող գրանցելիս։"
+#: 950.data.seed-values.sql:2502
+msgid "Offline"
+msgstr "Ցանցից անջատված"
 
-#: 950.data.seed-values.sql:1757
-msgid ""
-"Number of seconds of inactivity before the patron is logged out of the "
-"selfcheck interface"
-msgstr ""
-"Անգործունյա լինելու ժամանակը վայրկյաններով մինչև ընթեցողը դուրս չի եկել "
-"ինքնաստուգման միջերեսից։"
+# id::clm.value__lao
+# id::lao
+#: 950.data.seed-values.sql:6056
+msgid "Lao"
+msgstr "Lao"
 
 #: 950.data.seed-values.sql:87
 msgid "EAN"
 msgstr "EAN"
 
-#: 950.data.seed-values.sql:1876 950.data.seed-values.sql:1877
-msgid "Patron circulation summary is horizontal"
-msgstr "Ընթերցողի տացքերի համառոտագրությունն ուղղահայաց է։"
-
-#: 950.data.seed-values.sql:2022
-msgid ""
-"Courier Code for the library.  Available in transit slip templates as the "
-"%courier_code% macro."
-msgstr ""
-"Սուրհանդակի կոդ գրադարանի համար։ Տրանզիտում գտնվող կտրոնների ձևանմուշներ "
-"որպես %courier_code% մակրո."
+#: 950.data.seed-values.sql:11547
+msgid "Login via remoteauth"
+msgstr "Մուտքի գրանցում remoteauth օգնությամբ"
 
 # id::clm.value__sio
 # id::sio
-#: 950.data.seed-values.sql:3882
+#: 950.data.seed-values.sql:6193
 msgid "Siouan (Other)"
 msgstr "Siouan (այլ)"
 
-#: 950.data.seed-values.sql:1706
-msgid "Holds: Soft stalling interval"
-msgstr "Պահումներ։ Փափուկ կրիտիկական միջակայք"
+# id::clm.value__sco
+# id::sco
+#: 950.data.seed-values.sql:6183
+msgid "Scots"
+msgstr "Scots"
 
-#: 950.data.seed-values.sql:2240
-msgid "GUI: Show claims_never_checked_out_count field on patron registration"
-msgstr ""
-"ՕԳՄ: Ցուցադրի claims_never_checked_out_count դաշտը ընթերցող գրանցելիս"
-
-#: 950.data.seed-values.sql:6478
-msgid "Fund Spending Limit for Block"
-msgstr "Բլոկի համար գումարի ծախսի սահմանափակում"
+# id::clm.value__men
+# id::men
+#: 950.data.seed-values.sql:6089
+msgid "Mende"
+msgstr "Mende"
 
 # id::clm.value__oji
 # id::oji
-#: 950.data.seed-values.sql:3826
+#: 950.data.seed-values.sql:6137
 msgid "Ojibwa"
 msgstr "Ojibwa"
 
 # id::clm.value__sus
 # id::sus
-#: 950.data.seed-values.sql:3910
+#: 950.data.seed-values.sql:6221
 msgid "Susu"
 msgstr "Susu"
 
 # id::clm.value__cau
 # id::cau
-#: 950.data.seed-values.sql:3570
+#: 950.data.seed-values.sql:5881
 msgid "Caucasian (Other)"
 msgstr "Caucasian (այլ)"
 
-# id::clm.value__elx
-# id::elx
-#: 950.data.seed-values.sql:3618
-msgid "Elamite"
-msgstr "Elamite"
+# id::clm.value__kur
+# id::kur
+#: 950.data.seed-values.sql:6049
+msgid "Kurdish"
+msgstr "Քրդերեն"
 
 # id::clm.value__wal
 # id::wal
-#: 950.data.seed-values.sql:3967
+#: 950.data.seed-values.sql:6278
 msgid "Walamo"
 msgstr "Walamo"
+
+#: 950.data.seed-values.sql:11546
+msgid "Login via xmlrpc"
+msgstr "Մուտքի գրանցում xmlrpc օգնությամբ"
 
 # id::i18n_l.description__es-US
 # id::es-US
@@ -5339,59 +5039,49 @@ msgstr "Ամերիկական իսպաներեն"
 
 # id::clm.value__nde
 # id::nde
-#: 950.data.seed-values.sql:3805
+#: 950.data.seed-values.sql:6116
 msgid "Ndebele (Zimbabwe)  "
 msgstr "Ndebele (Zimbabwe)  "
 
 # id::clm.value__lub
 # id::lub
-#: 950.data.seed-values.sql:3757
+#: 950.data.seed-values.sql:6068
 msgid "Luba-Katanga"
 msgstr "Luba-Katanga"
 
-#: 950.data.seed-values.sql:1826
-msgid "Circ: Lost items usable on checkin"
-msgstr "Տացք։ Կորած նյութերը դարձրեք պետքական վերադարձնելիս։"
+# id::cifm.value__s
+# id::s
+#: 950.data.seed-values.sql:6349
+msgid "Electronic"
+msgstr "Էլեկտրոնային"
 
 # id::clfm.value__d
 # id::d
-#: 950.data.seed-values.sql:4019
+#: 950.data.seed-values.sql:6330
 msgid "Dramas"
 msgstr "Դրամա"
 
 # id::clm.value__zha
 # id::zha
-#: 950.data.seed-values.sql:3983
+#: 950.data.seed-values.sql:6294
 msgid "Zhuang"
 msgstr "Zhuang"
 
 # id::cifm.value__f
 # id::f
-#: 950.data.seed-values.sql:4036
+#: 950.data.seed-values.sql:6347
 msgid "Braille"
 msgstr "Բրայլ"
 
-#: 950.data.seed-values.sql:1891
-msgid "Hold Shelf Status Delay"
-msgstr "Պահման դարակի վիճակի ուշացում"
-
-#: 950.data.seed-values.sql:2420
-msgid "GUI: Regex for phone fields on patron registration"
-msgstr "ՕԳՄ: Regex հեռախոսի դաշտերի համար ընթերցող գրանցելիս։"
-
-# id::citm.value__j
-# id::j
-#: 950.data.seed-values.sql:4012
-msgid "Musical sound recording"
-msgstr "Երաժշտական ձայներիզներ"
-
-#: 950.data.seed-values.sql:1990
-msgid "Credit card processing: PayflowPro login/merchant ID"
-msgstr "Կրեդտ քարտի կատարում։ PayflowPro մուտք/առևտրային ID"
+# id::clfm.value__c
+# id::c
+#: 950.data.seed-values.sql:6329
+msgid "Comic strips"
+msgstr "Շարժեր"
 
 # id::clm.value__ido
 # id::ido
-#: 950.data.seed-values.sql:3687
+#: 950.data.seed-values.sql:5998
 msgid "Ido"
 msgstr "Ido"
 
@@ -5415,13 +5105,13 @@ msgstr "ISRC"
 
 # id::clm.value__fiu
 # id::fiu
-#: 950.data.seed-values.sql:3634
+#: 950.data.seed-values.sql:5945
 msgid "Finno-Ugrian (Other)"
 msgstr "Finno-Ugrian (այլ)"
 
 # id::clm.value__apa
 # id::apa
-#: 950.data.seed-values.sql:3518
+#: 950.data.seed-values.sql:5829
 msgid "Apache languages"
 msgstr "Ապաչի լեզուներ"
 
@@ -5436,7 +5126,7 @@ msgstr ""
 
 # id::clm.value__run
 # id::run
-#: 950.data.seed-values.sql:3859
+#: 950.data.seed-values.sql:6170
 msgid "Rundi"
 msgstr "Rundi"
 
@@ -5448,11 +5138,11 @@ msgstr "7_days_2_renew"
 
 # id::clm.value__-esk
 # id::-esk
-#: 950.data.seed-values.sql:3622
+#: 950.data.seed-values.sql:5933
 msgid "Eskimo languages"
 msgstr "Eskimo languages"
 
-#: 950.data.seed-values.sql:2564
+#: 950.data.seed-values.sql:4865
 msgid "Checkout Items"
 msgstr "Դուրս տրված նյութեր"
 
@@ -5462,13 +5152,13 @@ msgstr "Այլ հեղինակ"
 
 # id::clm.value__ath
 # id::ath
-#: 950.data.seed-values.sql:3529
+#: 950.data.seed-values.sql:5840
 msgid "Athapascan (Other)"
 msgstr "Athapascan (այլ)"
 
 # id::clm.value__ndo
 # id::ndo
-#: 950.data.seed-values.sql:3806
+#: 950.data.seed-values.sql:6117
 msgid "Ndonga"
 msgstr "Ndonga"
 
@@ -5484,46 +5174,29 @@ msgstr "Scots"
 
 # id::clm.value__sot id::clm.value__-sso
 # id::sot
-#: 950.data.seed-values.sql:3901 950.data.seed-values.sql:3906
+#: 950.data.seed-values.sql:6212 950.data.seed-values.sql:6217
 msgid "Sotho"
 msgstr "Sotho"
 
 # id::clm.value__was
 # id::was
-#: 950.data.seed-values.sql:3969
+#: 950.data.seed-values.sql:6280
 msgid "Washo"
 msgstr "Washo"
 
 # id::clm.value__spa
 # id::spa
-#: 950.data.seed-values.sql:3902
+#: 950.data.seed-values.sql:6213
 msgid "Spanish"
 msgstr "Իսպաներեն"
 
-#: 950.data.seed-values.sql:1847
-msgid ""
-"If you want staff client windows to be minimized after a certain amount of "
-"system idle time, set this to the number of seconds of idle time that you "
-"want to allow before minimizing (requires staff client restart)."
-msgstr ""
-"Եթե ցանկանում ես որ համակարգի անգործության որոշակի ժամանակից հետո "
-"աշխատակազմի հաճախորդի պատուհանները մինիմիլացվեն, տեղադրի սա անգործության "
-"վայրկյանների այն չափով, որից հետո ցանկանում ես մինիմալացնել (պահանջում է "
-"շխատակազմի հաճախորդի վերաբեռնում)։"
+#: 950.data.seed-values.sql:10044
+msgid "See Also From Tracing -- Form Subdivision"
+msgstr "Տես նաև հետագծից -- Ձևի ենթաբաժին"
 
-# id::ppl.description__139
-# id::139
-#~ msgid "Allow staff to override checkout count failure"
-#~ msgstr ""
-#~ "Թույլ է տալիս աշխատակազմին վերագրել դուրս տրումների հաշվիչի ձախողումը:"
-
-# id::ppl.description__152
-# id::152
-#~ msgid ""
-#~ "Allow a staff member to define where another staff member has their "
-#~ "permissions"
-#~ msgstr ""
-#~ "Թույլ է տալիս աշխատակազմի անդամին սահմանել այլ անդամի իրավասությունները:"
+#: 950.data.seed-values.sql:10042
+msgid "See Also From Tracing -- Geographic Subdivision"
+msgstr "Տես նաև հետագծից -- Աշխարհագրական ենթաբաժին"
 
 # id::ppl.description__140
 # id::140

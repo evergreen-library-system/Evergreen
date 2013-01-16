@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-18 21:44-0400\n"
-"PO-Revision-Date: 2011-07-16 08:54+0000\n"
-"Last-Translator: Serj Safarian <serjsafarian@gmail.com>\n"
+"POT-Creation-Date: 2012-12-20 09:37-0400\n"
+"PO-Revision-Date: 2012-08-17 09:33+0000\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-07-17 04:33+0000\n"
-"X-Generator: Launchpad (build 13405)\n"
+"X-Launchpad-Export-Date: 2012-12-21 04:57+0000\n"
+"X-Generator: Launchpad (build 16378)\n"
 "X-Accelerator-Marker: &\n"
 
 #: common.logout
@@ -2791,6 +2791,11 @@ msgstr "&Work Log"
 msgid "Copy &Template Editor"
 msgstr "Պատճենի &Ձևի խմբագրիչ"
 
+#: staff.main.menu.admin.local_admin.item_attribute_editor.label
+#: staff.main.menu.admin.local_admin.item_attribute_editor.accesskey
+msgid "Item Attribute &Editor"
+msgstr ""
+
 #: staff.main.menu.admin.local_admin.patrons_due_refunds.label
 #: staff.main.menu.admin.local_admin.patrons_due_refunds.accesskey
 msgid "Patrons with &Negative Balances"
@@ -3082,6 +3087,109 @@ msgstr "Admin"
 #: staff.main.menu.admin.local_admin.accesskey
 msgid "&Local Administration"
 msgstr "&Տեղային սպասարկում"
+
+#: staff.main.menu.admin.client.label
+#: staff.main.menu.admin.client.accesskey
+msgid "&Workstation Administration"
+msgstr "&Աշխատանքային կայանի կառավարիչ"
+
+#: staff.main.menu.admin.client.hotkeys
+msgid "Hotkeys"
+msgstr "Տաք բանալիներ"
+
+#: staff.main.menu.admin.client.hotkeys.current
+msgctxt "staff.main.menu.admin.client.hotkeys.current"
+msgid "Current"
+msgstr "Ընթացիկ"
+
+#: staff.main.menu.admin.client.hotkeys.toggle.label
+#: staff.main.menu.admin.client.hotkeys.toggle.accesskey
+msgid "&Disable Hotkeys"
+msgstr "&Արգելափակիր տաք բանալիները"
+
+#: staff.main.menu.admin.client.hotkeys.setworkstation.label
+msgctxt "staff.main.menu.admin.client.hotkeys.setworkstation.label"
+msgid "Set Workstation Default to Current"
+msgstr "Կարգաբերի աշխ. կայանի լռակյացը ընթացիկին"
+
+#: staff.main.menu.admin.client.hotkeys.clearworkstation.label
+msgctxt "staff.main.menu.admin.client.hotkeys.clearworkstation.label"
+msgid "Clear Workstation Default"
+msgstr "Մաքրի աշխ. կայանի լռակյացը"
+
+#: staff.main.menu.admin.client.search_prefs.label
+msgid "Set Search Preferences"
+msgstr ""
+
+#: staff.main.menu.admin.client.toolbars
+msgid "Toolbars"
+msgstr "Գործիքաշարեր"
+
+#: staff.main.menu.admin.client.toolbars.current
+msgctxt "staff.main.menu.admin.client.toolbars.current"
+msgid "Current"
+msgstr "Ընթացիկ"
+
+#: staff.main.menu.admin.client.toolbars.config.label
+msgid "Configure Toolbars"
+msgstr "Ձևավորի գործիքաշարերը"
+
+#: staff.main.menu.admin.client.toolbars.setworkstation.label
+msgctxt "staff.main.menu.admin.client.toolbars.setworkstation.label"
+msgid "Set Workstation Default to Current"
+msgstr "Կարգաբերի աշխ. կայանի լռակյացը ընթացիկին"
+
+#: staff.main.menu.admin.client.toolbars.clearworkstation.label
+msgctxt "staff.main.menu.admin.client.toolbars.clearworkstation.label"
+msgid "Clear Workstation Default"
+msgstr "Մաքրի աշխ. կայանի լռակյացը"
+
+#. Do not translate this.  Only change the numeric values if you need this dialogue box to appear bigger
+#: staff.main.menu.admin.client.toolbars.size
+msgid "Icon Size"
+msgstr "Պատկերիկի Չափը"
+
+#: staff.main.menu.admin.client.toolbars.size.large
+msgctxt "staff.main.menu.admin.client.toolbars.size.large"
+msgid "Large"
+msgstr "Լայն"
+
+#: staff.main.menu.admin.client.toolbars.size.small
+msgctxt "staff.main.menu.admin.client.toolbars.size.small"
+msgid "Small"
+msgstr "Փոքր"
+
+#: staff.main.menu.admin.client.toolbars.mode
+msgid "Mode"
+msgstr "Ռեժիմ"
+
+#: staff.main.menu.admin.client.toolbars.mode.both
+msgid "Icons and Labels"
+msgstr "Պատկերիկներ և պիտակներ"
+
+#: staff.main.menu.admin.client.toolbars.mode.icons
+msgid "Icons Only"
+msgstr "Միայն Պատկերիկներ"
+
+#: staff.main.menu.admin.client.toolbars.mode.text
+msgid "Labels Only"
+msgstr "Միայն պիտակներ"
+
+#: staff.main.menu.admin.client.toolbars.label_position
+msgid "Label Position"
+msgstr "Պիտակի դիրք"
+
+#: staff.main.menu.admin.client.toolbars.label_position.side
+msgid "Next to icons"
+msgstr "Պատկերիկներից հետո հաջորդը"
+
+#: staff.main.menu.admin.client.toolbars.label_position.under
+msgid "Under icons"
+msgstr "Պատկերիկների ներքևում"
+
+#: staff.main.menu.admin.client.copy_editor.copy_location.label
+msgid "Copy Editor: Copy Location Name First"
+msgstr "Պատճենի խմբագիր: Սկզբից արտագրի անվան տեղաբաշխումը"
 
 #: staff.main.menu.admin.non_cat_type_edit.label
 #: staff.main.menu.admin.non_cat_type_edit.accesskey
@@ -13764,8 +13872,117 @@ msgstr "Ուժեղացված"
 #~ msgid "t"
 #~ msgstr "t"
 
-#~ msgid "Default"
-#~ msgstr "Լռակյաց"
+#: staff.item.batch.hold.cancel_btn.label
+#: staff.item.batch.hold.cancel_btn.accesskey
+msgctxt ""
+"staff.item.batch.hold.cancel_btn.label "
+"staff.item.batch.hold.cancel_btn.accesskey"
+msgid "&Cancel"
+msgstr "&Չեղյալ անել"
+
+#: staff.item.batch.hold.failures_and_settings
+msgid "The settings above may be changed for retries and overrides."
+msgstr "Վերևի կարգաբերումները կարելի է փոխել վերադրւմների համար։"
+
+#: staff.search_prefs.search_lib.caption
+msgid "Default Search Library"
+msgstr ""
+
+#: staff.search_prefs.search_lib.description
+msgid ""
+"The default search library setting determines what library is searched from "
+"the advanced search screen and portal page by default. Manual selection of a "
+"search library will override it. One recommendation is to set the search "
+"library to the highest point you would normally want to search."
+msgstr ""
+
+#: staff.search_prefs.pref_lib.caption
+msgid "Preferred Library"
+msgstr ""
+
+#: staff.search_prefs.pref_lib.description
+msgid ""
+"The preferred library is used to show copies and URIs regardless of the "
+"library searched. One recommendation is to set this to your workstation "
+"library so that local copies show up first in search results."
+msgstr ""
+
+#: staff.search_prefs.adv_pane.caption
+msgid "Advanced Search Default Pane"
+msgstr ""
+
+#: staff.search_prefs.adv_pane.description
+msgid ""
+"Advanced search has secondary panes for Numeric and MARC Expert searching. "
+"You can change which one is loaded by default when opening a new catalog "
+"window here."
+msgstr ""
+
+#: staff.search_prefs.adv_pane.advanced
+msgid "Advanced (default)"
+msgstr ""
+
+#: staff.search_prefs.adv_pane.numeric
+msgid "Numeric"
+msgstr ""
+
+#: staff.search_prefs.adv_pane.expert
+msgid "MARC Expert"
+msgstr ""
+
+#: staff.search_prefs.save.label
+#: staff.search_prefs.save.accesskey
+msgid "&Save"
+msgstr ""
+
+#: staff.search_prefs.saved_message
+msgid "Preferences saved"
+msgstr ""
+
+#: staff.search_prefs.clear.label
+#: staff.search_prefs.clear.accesskey
+msgid "&Clear All"
+msgstr ""
+
+#: staff.search_prefs.cleared_message
+msgid "Preferences cleared"
+msgstr ""
+
+#~ msgid "Record ID"
+#~ msgstr "Գրառման ID"
+
+#~ msgctxt "staff.circ.offline_register.dob.label"
+#~ msgid "Date of Birth:"
+#~ msgstr "Ծննդյան տարեթիվ"
+
+#~ msgctxt "staff.copy.attr.stat.audience.example2"
+#~ msgid "Juvenile"
+#~ msgstr "Պատանեկան"
+
+#~ msgid "Available"
+#~ msgstr "Մատչելի"
+
+#~ msgid "&Browse Unfulfilled Holds for this Pickup Lib"
+#~ msgstr "&Դիտիր վերցնելու գրադարանի չիրականացված պահումները"
+
+#~ msgid "Create &New Marc Record"
+#~ msgstr "Ստեղծիր &նոր Marc գրառում"
+
+#~ msgid "Retrieve record by &TCN"
+#~ msgstr "կանչիր գրառումը ըստ &TCN"
+
+#~ msgid "Retrieve record by Record I&D"
+#~ msgstr "Կանչիր գրառումը ըստ Գրառման I&D"
+
+#~ msgctxt "staff.main.menu.circ.claimed_returned.key"
+#~ msgid "C"
+#~ msgstr "C"
+
+#~ msgid "Mark as \"Claimed Returned\""
+#~ msgstr "Նշիր որպես \"Վերադարձված խարանվածներ\""
+
+#~ msgid "Search for record by Record I&D"
+#~ msgstr "Որոնիր գրառումը ըստ Գրառման I&D"
 
 #~ msgid "End Date"
 #~ msgstr "Ավարտի ամսաթիվ"

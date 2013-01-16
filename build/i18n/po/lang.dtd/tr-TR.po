@@ -1,17 +1,21 @@
-#. extracted from ../../Open-ILS/web/opac/locale/en-US/lang.dtd
+# Turkish translation for evergreen
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-07 02:02-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2012-12-20 09:37-0400\n"
+"PO-Revision-Date: 2012-05-22 16:00+0000\n"
+"Last-Translator: kulkke <Unknown>\n"
+"Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
-"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2012-12-21 04:59+0000\n"
+"X-Generator: Launchpad (build 16378)\n"
 
 #: lang.version
 msgid "remote v1"
@@ -2758,6 +2762,16 @@ msgstr ""
 msgid "&Work Log"
 msgstr ""
 
+#: staff.main.menu.admin.local_admin.copy_template.label
+#: staff.main.menu.admin.local_admin.copy_template.accesskey
+msgid "Copy &Template Editor"
+msgstr ""
+
+#: staff.main.menu.admin.local_admin.item_attribute_editor.label
+#: staff.main.menu.admin.local_admin.item_attribute_editor.accesskey
+msgid "Item Attribute &Editor"
+msgstr ""
+
 #: staff.main.menu.admin.local_admin.patrons_due_refunds.label
 #: staff.main.menu.admin.local_admin.patrons_due_refunds.accesskey
 msgid "Patrons with &Negative Balances"
@@ -2912,6 +2926,109 @@ msgstr ""
 #: staff.main.menu.admin.local_admin.label
 #: staff.main.menu.admin.local_admin.accesskey
 msgid "&Local Administration"
+msgstr ""
+
+#: staff.main.menu.admin.client.label
+#: staff.main.menu.admin.client.accesskey
+msgid "&Workstation Administration"
+msgstr ""
+
+#: staff.main.menu.admin.client.hotkeys
+msgid "Hotkeys"
+msgstr ""
+
+#: staff.main.menu.admin.client.hotkeys.current
+msgctxt "staff.main.menu.admin.client.hotkeys.current"
+msgid "Current"
+msgstr ""
+
+#: staff.main.menu.admin.client.hotkeys.toggle.label
+#: staff.main.menu.admin.client.hotkeys.toggle.accesskey
+msgid "&Disable Hotkeys"
+msgstr ""
+
+#: staff.main.menu.admin.client.hotkeys.setworkstation.label
+msgctxt "staff.main.menu.admin.client.hotkeys.setworkstation.label"
+msgid "Set Workstation Default to Current"
+msgstr ""
+
+#: staff.main.menu.admin.client.hotkeys.clearworkstation.label
+msgctxt "staff.main.menu.admin.client.hotkeys.clearworkstation.label"
+msgid "Clear Workstation Default"
+msgstr ""
+
+#: staff.main.menu.admin.client.search_prefs.label
+msgid "Set Search Preferences"
+msgstr ""
+
+#: staff.main.menu.admin.client.toolbars
+msgid "Toolbars"
+msgstr "Araç Çubukları"
+
+#: staff.main.menu.admin.client.toolbars.current
+msgctxt "staff.main.menu.admin.client.toolbars.current"
+msgid "Current"
+msgstr ""
+
+#: staff.main.menu.admin.client.toolbars.config.label
+msgid "Configure Toolbars"
+msgstr "Araç Çubuklarını Yapılandır"
+
+#: staff.main.menu.admin.client.toolbars.setworkstation.label
+msgctxt "staff.main.menu.admin.client.toolbars.setworkstation.label"
+msgid "Set Workstation Default to Current"
+msgstr ""
+
+#: staff.main.menu.admin.client.toolbars.clearworkstation.label
+msgctxt "staff.main.menu.admin.client.toolbars.clearworkstation.label"
+msgid "Clear Workstation Default"
+msgstr ""
+
+#. Do not translate this.  Only change the numeric values if you need this dialogue box to appear bigger
+#: staff.main.menu.admin.client.toolbars.size
+msgid "Icon Size"
+msgstr "Simge Boyutu"
+
+#: staff.main.menu.admin.client.toolbars.size.large
+msgctxt "staff.main.menu.admin.client.toolbars.size.large"
+msgid "Large"
+msgstr ""
+
+#: staff.main.menu.admin.client.toolbars.size.small
+msgctxt "staff.main.menu.admin.client.toolbars.size.small"
+msgid "Small"
+msgstr ""
+
+#: staff.main.menu.admin.client.toolbars.mode
+msgid "Mode"
+msgstr ""
+
+#: staff.main.menu.admin.client.toolbars.mode.both
+msgid "Icons and Labels"
+msgstr "Simgeler ve Etiketler"
+
+#: staff.main.menu.admin.client.toolbars.mode.icons
+msgid "Icons Only"
+msgstr "Sadece Simgeler"
+
+#: staff.main.menu.admin.client.toolbars.mode.text
+msgid "Labels Only"
+msgstr "Sadece Etiketler"
+
+#: staff.main.menu.admin.client.toolbars.label_position
+msgid "Label Position"
+msgstr "Etiket Konumu"
+
+#: staff.main.menu.admin.client.toolbars.label_position.side
+msgid "Next to icons"
+msgstr ""
+
+#: staff.main.menu.admin.client.toolbars.label_position.under
+msgid "Under icons"
+msgstr ""
+
+#: staff.main.menu.admin.client.copy_editor.copy_location.label
+msgid "Copy Editor: Copy Location Name First"
 msgstr ""
 
 #: staff.main.menu.admin.non_cat_type_edit.label
@@ -12757,3 +12874,178 @@ msgid ""
 "&amp;lt;p&amp;gt;Hello World&amp;lt;/p hex=&amp;quot;0C&amp;quot;&amp;gt; "
 "will translate to Hello World + form feed control character."
 msgstr ""
+
+#: staff.client.portal.marcutil
+msgid "MARC Batch Import / Export"
+msgstr ""
+
+#: staff.client.portal.z3950
+msgid "z39.50 Import"
+msgstr ""
+
+#: staff.client.portal.copybuckets
+msgctxt "staff.client.portal.copybuckets"
+msgid "Copy Buckets"
+msgstr ""
+
+#: staff.client.portal.recordbuckets
+msgctxt "staff.client.portal.recordbuckets"
+msgid "Record Buckets"
+msgstr ""
+
+#: staff.client.portal.admin
+msgid "Administration"
+msgstr ""
+
+#: staff.client.portal.helpdesk
+msgid "Get Help with Evergreen"
+msgstr ""
+
+#: staff.client.portal.reports
+msgctxt "staff.client.portal.reports"
+msgid "Reports"
+msgstr ""
+
+#: staff.client.portal.receipts
+msgid "Edit Receipt Templates"
+msgstr ""
+
+#: staff.client.portal.copyright
+msgid "Copyright &copy; 2006-2012 Georgia Public Library Service, and others"
+msgstr ""
+
+#: staff.client.portal.poweredby
+msgid "Powered by"
+msgstr ""
+
+#: staff.client.portal.toggle_tpac
+msgid "Toggle Template Toolkit OPAC Use"
+msgstr ""
+
+#: staff.client.portal.toggle_tpac.message_on
+msgid ""
+"The use of the Template Toolkit OPAC has been enabled. You may need to "
+"restart the staff client for this to take effect."
+msgstr ""
+
+#: staff.client.portal.toggle_tpac.message_off
+msgid ""
+"The use of the Template Toolkit OPAC has been disabled. You may need to "
+"restart the staff client for this to take effect."
+msgstr ""
+
+#: staff.item.batch.hold.groupbox_caption
+msgid "Request Details"
+msgstr ""
+
+#: staff.item.batch.hold.hold_type_menu.label
+#: staff.item.batch.hold.hold_type_menu.accesskey
+msgid "Hold &Type"
+msgstr ""
+
+#: staff.item.batch.hold.hold_type_menuentry.copy_hold
+msgctxt "staff.item.batch.hold.hold_type_menuentry.copy_hold"
+msgid "Copy Hold"
+msgstr ""
+
+#: staff.item.batch.hold.hold_type_menuentry.recall_hold
+msgid "Recall Hold"
+msgstr ""
+
+#: staff.item.batch.hold.hold_type_menuentry.force_hold
+msgid "Force Hold"
+msgstr ""
+
+#: staff.item.batch.hold.pick_up_lib_menu.label
+#: staff.item.batch.hold.pick_up_lib_menu.accesskey
+msgid "&Pickup Library"
+msgstr ""
+
+#: staff.item.batch.hold.hold_usr.label
+#: staff.item.batch.hold.hold_usr.accesskey
+msgid "Hold &User Barcode"
+msgstr ""
+
+#: staff.item.batch.hold.request_btn.label
+#: staff.item.batch.hold.request_btn.accesskey
+msgid "&Make Request"
+msgstr ""
+
+#: staff.item.batch.hold.cancel_btn.label
+#: staff.item.batch.hold.cancel_btn.accesskey
+msgctxt ""
+"staff.item.batch.hold.cancel_btn.label "
+"staff.item.batch.hold.cancel_btn.accesskey"
+msgid "&Cancel"
+msgstr ""
+
+#: staff.item.batch.hold.failures_and_settings
+msgid "The settings above may be changed for retries and overrides."
+msgstr ""
+
+#: staff.search_prefs.search_lib.caption
+msgid "Default Search Library"
+msgstr ""
+
+#: staff.search_prefs.search_lib.description
+msgid ""
+"The default search library setting determines what library is searched from "
+"the advanced search screen and portal page by default. Manual selection of a "
+"search library will override it. One recommendation is to set the search "
+"library to the highest point you would normally want to search."
+msgstr ""
+
+#: staff.search_prefs.pref_lib.caption
+msgid "Preferred Library"
+msgstr ""
+
+#: staff.search_prefs.pref_lib.description
+msgid ""
+"The preferred library is used to show copies and URIs regardless of the "
+"library searched. One recommendation is to set this to your workstation "
+"library so that local copies show up first in search results."
+msgstr ""
+
+#: staff.search_prefs.adv_pane.caption
+msgid "Advanced Search Default Pane"
+msgstr ""
+
+#: staff.search_prefs.adv_pane.description
+msgid ""
+"Advanced search has secondary panes for Numeric and MARC Expert searching. "
+"You can change which one is loaded by default when opening a new catalog "
+"window here."
+msgstr ""
+
+#: staff.search_prefs.adv_pane.advanced
+msgid "Advanced (default)"
+msgstr ""
+
+#: staff.search_prefs.adv_pane.numeric
+msgid "Numeric"
+msgstr ""
+
+#: staff.search_prefs.adv_pane.expert
+msgid "MARC Expert"
+msgstr ""
+
+#: staff.search_prefs.save.label
+#: staff.search_prefs.save.accesskey
+msgid "&Save"
+msgstr ""
+
+#: staff.search_prefs.saved_message
+msgid "Preferences saved"
+msgstr ""
+
+#: staff.search_prefs.clear.label
+#: staff.search_prefs.clear.accesskey
+msgid "&Clear All"
+msgstr ""
+
+#: staff.search_prefs.cleared_message
+msgid "Preferences cleared"
+msgstr ""
+
+#~ msgid "Name"
+#~ msgstr "Ad"

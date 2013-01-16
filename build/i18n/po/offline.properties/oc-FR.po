@@ -1,17 +1,17 @@
 #. extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-07 02:03-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2012-12-20 09:37-0400\n"
+"PO-Revision-Date: 2012-11-02 18:04+0000\n"
+"Last-Translator: Cédric VALMARY (Tot en òc) <cvalmary@yahoo.fr>\n"
+"Language-Team: Occitan (post 1500) <oc@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
-"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2012-12-21 05:00+0000\n"
+"X-Generator: Launchpad (build 16378)\n"
 
 #: common.exception
 msgid ""
@@ -1073,12 +1073,28 @@ msgstr ""
 msgid "Booking Capture"
 msgstr ""
 
+#: menu.cmd_authority_manage.tab
+msgid "Manage Authorities"
+msgstr ""
+
+#: menu.cmd_search_prefs.tab
+msgid "Search Preferences"
+msgstr ""
+
+#: menu.local_admin.barcode_completion.tab
+msgid "Barcode Completion"
+msgstr ""
+
 #: menu.local_admin.circ_matrix_matchpoint.tab
 msgid "Circulation Policies"
 msgstr ""
 
 #: menu.local_admin.hold_matrix_matchpoint.tab
 msgid "Hold Policies"
+msgstr ""
+
+#: menu.local_admin.item_attribute_editor.tab
+msgid "Admin Item Attribute Editor"
 msgstr ""
 
 #: menu.local_admin.work_log.tab
@@ -1173,5 +1189,189 @@ msgid ""
 msgstr ""
 
 #: printing.print_strategy_saved
-msgid "Print strategy (%1$s) saved to file system."
+msgid "Print strategy (%1$s) for %2$s context saved to file system."
+msgstr ""
+
+#: text_editor.prompt_for_external_cmd
+msgid ""
+"Enter external text editor command and parameters (use %letter.txt% as the "
+"file containing the text. This value will be substituted with the proper "
+"path.):"
+msgstr ""
+
+#: menu.tab1.accesskey
+msgid "1"
+msgstr "1"
+
+#: menu.tab2.accesskey
+msgid "2"
+msgstr "2"
+
+#: menu.tab3.accesskey
+msgid "3"
+msgstr "3"
+
+#: menu.tab4.accesskey
+msgid "4"
+msgstr "4"
+
+#: menu.tab5.accesskey
+msgid "5"
+msgstr "5"
+
+#: menu.tab6.accesskey
+msgid "6"
+msgstr "6"
+
+#: menu.tab7.accesskey
+msgid "7"
+msgstr "7"
+
+#: menu.tab8.accesskey
+msgid "8"
+msgstr "8"
+
+#: menu.tab9.accesskey
+msgid "9"
+msgstr "9"
+
+#: menu.tab10.accesskey
+msgid "0"
+msgstr "0"
+
+#: generic.unsaved_data_warning
+msgid ""
+"This action may cause you to lose unsaved information in the current "
+"interface. Continue anyway?"
+msgstr ""
+
+#: browser.reload.unsaved_data_warning
+msgid "This page may have unsaved data. Reload it anyway?"
+msgstr ""
+
+#: menu.close_tab.unsaved_data_warning
+msgid "This tab may have unsaved data. Close it anyway?"
+msgstr ""
+
+#: menu.replace_tab.unsaved_data_warning
+msgid "This tab may have unsaved data. Replace it anyway?"
+msgstr ""
+
+#: menu.close_window.unsaved_data_warning
+msgid "This window may have unsaved data. Close it anyway?"
+msgstr ""
+
+#: menu.logoff.unsaved_data_warning
+msgid "This session may have unsaved data. Logoff anyway?"
+msgstr ""
+
+#: menu.shutdown.unsaved_data_warning
+msgid "This application may have unsaved data. Exit it anyway?"
+msgstr ""
+
+#: hotkeys.Default
+msgctxt "hotkeys.Default"
+msgid "Default"
+msgstr ""
+
+#: hotkeys.None
+msgid "No Hotkeys"
+msgstr ""
+
+#: barcode_choice.join_barcodes
+msgid "%1$s / %2$s"
+msgstr "%1$s / %2$s"
+
+#: barcode_choice.actor
+msgid "%1$s : %2$s, %3$s from %4$s (%5$s)"
+msgstr ""
+
+#: barcode_choice.asset
+msgid "%1$s : %2$s from %3$s (%4$s)"
+msgstr ""
+
+#: barcode_choice.none
+msgid "None of the above"
+msgstr ""
+
+#: barcode_choice.prompt
+msgid ""
+"After auto completion multiple barcodes may match your input. Please choose "
+"the barcode you intended below."
+msgstr ""
+
+#: barcode_choice.errors_found
+msgid ""
+"In addition to the options below, one or more errors were encountered on "
+"items not shown."
+msgstr ""
+
+#: barcode_choice.title
+msgid "Barcode Choice"
+msgstr ""
+
+#: barcode_choice.choice_label
+msgid "Found Barcodes:"
+msgstr ""
+
+#: barcode_choice.actor_label
+msgid "Patron : %1$s"
+msgstr ""
+
+#: barcode_choice.asset_label
+msgid "Item : %1$s"
+msgstr ""
+
+#: barcode_choice.serial_label
+msgid "Serial : %1$s"
+msgstr ""
+
+#: barcode_choice.booking_label
+msgid "Booking : %1$s"
+msgstr ""
+
+#: staff.main.button_bar.none
+msgid "None"
+msgstr "Pas cap"
+
+#: staff.main.button_bar.default
+msgctxt "staff.main.button_bar.default"
+msgid "Default"
+msgstr ""
+
+#: util.hide_elements.title
+msgid "Hide UI Elements"
+msgstr ""
+
+#: util.hide_elements.desc
+msgid ""
+"This is a list of hideable elements for this interface.  Check the ones that "
+"you want hidden and the library (and descendants) you want to affect:"
+msgstr ""
+
+#: util.hide_elements.current_setting_preamble
+msgid ""
+"Workstation library %1$s is currently hiding these elements based on a "
+"setting inherited from %2$s:"
+msgstr ""
+
+#: util.hide_elements.current_setting_nonexistent
+msgid ""
+"Workstation library %1$s is not currently hiding any of these elements."
+msgstr ""
+
+#: util.hide_elements.update_setting.update_success
+msgid "Successfully updated the setting."
+msgstr ""
+
+#: util.hide_elements.update_setting.delete_success
+msgid "Successfully deleted the setting."
+msgstr ""
+
+#: util.hide_elements.update_setting.failure
+msgid "Setting not changed."
+msgstr ""
+
+#: util.hide_elements.missing_permission
+msgid "Missing permission %1$s"
 msgstr ""
