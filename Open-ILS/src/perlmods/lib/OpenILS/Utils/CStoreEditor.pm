@@ -642,14 +642,18 @@ sub log_activity {
 	my $str = "$type.$action";
 
     if ($arg) {
+        
+        my $redact;
 
-        my $redact = $OpenSRF::Application::shared_conf->shared->log_protect;
-        if (ref($redact) eq 'ARRAY' and grep { $method =~ /^$_/ } @{$redact}) {
+        if ($OpenSRF::Application::shared_conf and
+            $OpenSRF::Application::shared_conf->shared and
+            $redact = $OpenSRF::Application::shared_conf->shared->log_protect and
+            ref($redact) eq 'ARRAY' and
+            grep { $method =~ /^$_/ } @{$redact}) {
 
-            # when API calls are marked as log-protect, avoid 
-            # dumping the param object to the activity log.
-            $str .= " **DETAILS REDACTED**";
-
+                # when API calls are marked as log-protect, avoid
+                # dumping the param object to the activity log.
+                $str .= " **DETAILS REDACTED**";
         } else {
 
             $str .= _prop_string($arg);
