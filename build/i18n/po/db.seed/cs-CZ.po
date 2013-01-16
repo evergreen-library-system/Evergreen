@@ -2,26 +2,26 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2012-04-28 14:17-0400\n"
-"PO-Revision-Date: 2012-05-06 09:34+0000\n"
+"POT-Creation-Date: 2012-12-20 09:37-0400\n"
+"PO-Revision-Date: 2012-08-23 22:16+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-05-07 04:38+0000\n"
-"X-Generator: Launchpad (build 15195)\n"
+"X-Launchpad-Export-Date: 2012-12-21 04:54+0000\n"
+"X-Generator: Launchpad (build 16378)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 # id::vqbrad.description__11
-#: 950.data.seed-values.sql:170 950.data.seed-values.sql:4767
+#: 950.data.seed-values.sql:170 950.data.seed-values.sql:4791
 msgid "Internal ID"
 msgstr "Interní ID"
 
 # id::clm.value__vai
-#: 950.data.seed-values.sql:6248
+#: 950.data.seed-values.sql:6272
 msgid "Vai"
 msgstr "Vai"
 
@@ -36,7 +36,7 @@ msgid "Series Title"
 msgstr "Název edice"
 
 # id::clfm.value__p
-#: 950.data.seed-values.sql:6313
+#: 950.data.seed-values.sql:6337
 msgid "Poetry"
 msgstr "Poezie"
 
@@ -46,7 +46,7 @@ msgid "In transit"
 msgstr "V přepravě"
 
 # id::clm.value__pau
-#: 950.data.seed-values.sql:6126
+#: 950.data.seed-values.sql:6150
 msgid "Palauan"
 msgstr "Palauština"
 
@@ -55,26 +55,30 @@ msgid "On reservation shelf"
 msgstr "Na regále s rezervacemi"
 
 # id::clm.value__kir
-#: 950.data.seed-values.sql:6013
+#: 950.data.seed-values.sql:6037
 msgid "Kyrgyz"
 msgstr "Kyrgyzština"
 
+#: 950.data.seed-values.sql:6376
+msgid "Blu-ray disc"
+msgstr "Disk Blu-ray"
+
 # id::cblvl.value__b
 # možná by bylo lepší užít číslo periodika
-#: 950.data.seed-values.sql:6329
+#: 950.data.seed-values.sql:6353
 msgid "Serial component part"
 msgstr "Číslo/svazek seriálu"
 
-#: 950.data.seed-values.sql:6099
+#: 950.data.seed-values.sql:6123
 msgid "Niuean"
 msgstr "Niue"
 
 # id::clm.value__fat
-#: 950.data.seed-values.sql:5918
+#: 950.data.seed-values.sql:5942
 msgid "Fanti"
 msgstr "Fantiština"
 
-#: 950.data.seed-values.sql:2461
+#: 950.data.seed-values.sql:2494
 msgid "OPAC"
 msgstr "OPAC"
 
@@ -90,22 +94,22 @@ msgid "LCCN"
 msgstr "LCCN"
 
 # id::clm.value__mas
-#: 950.data.seed-values.sql:6061
+#: 950.data.seed-values.sql:6085
 msgid "Masai"
 msgstr "Masajština"
 
 # id::clm.value__bam
-#: 950.data.seed-values.sql:5827
+#: 950.data.seed-values.sql:5851
 msgid "Bambara"
 msgstr "Bambarština"
 
 # id::clm.value__snd
-#: 950.data.seed-values.sql:6182
+#: 950.data.seed-values.sql:6206
 msgid "Sindhi"
 msgstr "Sindhština"
 
 # id::clm.value__lug
-#: 950.data.seed-values.sql:6045
+#: 950.data.seed-values.sql:6069
 msgid "Ganda"
 msgstr "Ganda"
 
@@ -113,12 +117,12 @@ msgstr "Ganda"
 msgid "Alerting block on Circ"
 msgstr "Upozornění s blokací výpůjček"
 
-#: 950.data.seed-values.sql:6157
+#: 950.data.seed-values.sql:6181
 msgid "Santali"
 msgstr "Santálí"
 
 # id::clm.value__dua
-#: 950.data.seed-values.sql:5897
+#: 950.data.seed-values.sql:5921
 msgid "Duala"
 msgstr "Dualština"
 
@@ -127,16 +131,16 @@ msgid "ISMN"
 msgstr "ISMN"
 
 # id::clm.value__vot
-#: 950.data.seed-values.sql:6252
+#: 950.data.seed-values.sql:6276
 msgid "Votic"
 msgstr "Votiatština"
 
 # id::clfm.value__u
-#: 950.data.seed-values.sql:6315
+#: 950.data.seed-values.sql:6339 950.data.seed-values.sql:6377
 msgid "Unknown"
 msgstr "Neznámý"
 
-#: 950.data.seed-values.sql:4839
+#: 950.data.seed-values.sql:4863
 msgid "View Circulations"
 msgstr "Zobrazit výpůjčky"
 
@@ -144,21 +148,21 @@ msgstr "Zobrazit výpůjčky"
 msgid "Example Branch 2"
 msgstr "Vzorová pobočka 2"
 
-#: 950.data.seed-values.sql:6230
+#: 950.data.seed-values.sql:6254
 msgid "Tsonga"
 msgstr "Tsongština"
 
-#: 950.data.seed-values.sql:1561
+#: 950.data.seed-values.sql:1593 950.data.seed-values.sql:2485
 msgid "Acquisitions"
 msgstr "Akvizice"
 
 # id::clm.value__kau
-#: 950.data.seed-values.sql:6003
+#: 950.data.seed-values.sql:6027
 msgid "Kanuri"
 msgstr "Kanuri"
 
 # id::clm.value__umb
-#: 950.data.seed-values.sql:6244
+#: 950.data.seed-values.sql:6268
 msgid "Umbundu"
 msgstr "Umbundu"
 
@@ -172,20 +176,20 @@ msgstr "10_centů_za_den"
 msgid "Keyword"
 msgstr "Klíčové slovo"
 
-#: 950.data.seed-values.sql:4840
+#: 950.data.seed-values.sql:4864
 msgid "Renew Circulations"
 msgstr "Prodloužit výpůjčky"
 
-#: 950.data.seed-values.sql:9986
+#: 950.data.seed-values.sql:10069
 msgid "See Also Tracing -- Chronological Subdivision"
 msgstr "Viz také dohledávání -- chronologické podrozdělení"
 
-#: 950.data.seed-values.sql:9237
+#: 950.data.seed-values.sql:9313
 msgid "Overlay failed due to missing system id"
 msgstr "Přepsání se nezdařilo kvůli chybějícímu systémovému ID"
 
 # id::clm.value__cel
-#: 950.data.seed-values.sql:5859
+#: 950.data.seed-values.sql:5883
 msgid "Celtic (Other)"
 msgstr "Keltské jazyky (ostatní)"
 
@@ -194,16 +198,16 @@ msgid "Barred"
 msgstr "Omezení transakcí"
 
 # id::clm.value__hil
-#: 950.data.seed-values.sql:5963
+#: 950.data.seed-values.sql:5987
 msgid "Hiligaynon"
 msgstr "Hiligayonština"
 
 # id::clm.value__kac
-#: 950.data.seed-values.sql:5997
+#: 950.data.seed-values.sql:6021
 msgid "Kachin"
 msgstr "Kačjinština"
 
-#: 950.data.seed-values.sql:9941
+#: 950.data.seed-values.sql:10024
 msgid "Heading -- Meeting Name"
 msgstr "Titulek --jméno shromaždiště"
 
@@ -212,75 +216,75 @@ msgstr "Titulek --jméno shromaždiště"
 msgid "overdue_max"
 msgstr "zpoždění_max"
 
-#: 950.data.seed-values.sql:2467
+#: 950.data.seed-values.sql:2500
 msgid "Recalls"
 msgstr "zpětné volání"
 
-#: 950.data.seed-values.sql:1583
+#: 950.data.seed-values.sql:1615
 msgid "Volunteers"
 msgstr "Dobrovolníci"
 
 # id::clfm.value__j
-#: 950.data.seed-values.sql:6311
+#: 950.data.seed-values.sql:6335
 msgid "Short stories"
 msgstr "Povídky"
 
-#: 950.data.seed-values.sql:6121
+#: 950.data.seed-values.sql:6145
 msgid "Pangasinan"
 msgstr "Pangsinan"
 
-#: 950.data.seed-values.sql:8739 950.data.seed-values.sql:8789
-#: 950.data.seed-values.sql:8790
+#: 950.data.seed-values.sql:8815 950.data.seed-values.sql:8865
+#: 950.data.seed-values.sql:8866
 msgid "Historical Circulation Retention Age"
 msgstr "Doba uchování historických výpůjček"
 
-#: 950.data.seed-values.sql:10058
+#: 950.data.seed-values.sql:10141
 msgid "LC subject headings for children's literature"
 msgstr "Věcné třídění Kongresové knihovny pro dětskou literaturu"
 
-#: 950.data.seed-values.sql:2463
+#: 950.data.seed-values.sql:2496
 msgid "Global"
 msgstr "Globální"
 
-#: 950.data.seed-values.sql:8646
+#: 950.data.seed-values.sql:8722
 msgid "Tax"
 msgstr "Daň"
 
 # id::clm.value__pam
-#: 950.data.seed-values.sql:6123
+#: 950.data.seed-values.sql:6147
 msgid "Pampanga"
 msgstr "Pampangau"
 
 # id::clm.value__nah
-#: 950.data.seed-values.sql:6086
+#: 950.data.seed-values.sql:6110
 msgid "Nahuatl"
 msgstr "Nahuatl"
 
 # id::clm.value__yid
-#: 950.data.seed-values.sql:6265
+#: 950.data.seed-values.sql:6289
 msgid "Yiddish"
 msgstr "Jidiš"
 
 # id::clm.value__cpp
-#: 950.data.seed-values.sql:5880
+#: 950.data.seed-values.sql:5904
 msgid "Creoles and Pidgins, Portuguese-based (Other)"
 msgstr "Kreolština a jiné pidginy na základě portugalštiny"
 
 # id::clm.value__ton
-#: 950.data.seed-values.sql:6225
+#: 950.data.seed-values.sql:6249
 msgid "Tongan"
 msgstr "Tongština"
 
 # id::clm.value__ijo
-#: 950.data.seed-values.sql:5976
+#: 950.data.seed-values.sql:6000
 msgid "Ijo"
 msgstr "Idžo"
 
-#: 950.data.seed-values.sql:8650
+#: 950.data.seed-values.sql:8726
 msgid "Non-library Item"
 msgstr "Neknihovní položka"
 
-#: 950.data.seed-values.sql:5940
+#: 950.data.seed-values.sql:5964
 msgid "Gilbertese"
 msgstr "Kiribatština"
 
@@ -288,7 +292,7 @@ msgstr "Kiribatština"
 msgid "Damaged"
 msgstr "Poškozeno"
 
-#: 950.data.seed-values.sql:8810 950.data.seed-values.sql:8811
+#: 950.data.seed-values.sql:8886 950.data.seed-values.sql:8887
 msgid "Historical Hold Retention Start Date"
 msgstr "Počáteční datum ponechávání historických rezervací"
 
@@ -298,33 +302,33 @@ msgid "Bookmobile"
 msgstr "Pojízdná knihovna"
 
 # id::clm.value__kaw
-#: 950.data.seed-values.sql:6004
+#: 950.data.seed-values.sql:6028
 msgid "Kawi"
 msgstr "Kawi"
 
-#: 950.data.seed-values.sql:10060
+#: 950.data.seed-values.sql:10143
 msgid "National Agricultural Library subject authority file"
 msgstr "Věcné autority National Agricultural Library"
 
-#: 950.data.seed-values.sql:2454
+#: 950.data.seed-values.sql:2487
 msgid "GUI"
 msgstr "Grafické uživatelské rozhraní"
 
 # id::clm.value__kok
-#: 950.data.seed-values.sql:6015
+#: 950.data.seed-values.sql:6039
 msgid "Konkani"
 msgstr "Konkánština"
 
-#: 950.data.seed-values.sql:6089
+#: 950.data.seed-values.sql:6113
 msgid "Nauru"
 msgstr "Nauruština"
 
-#: 950.data.seed-values.sql:6283
+#: 950.data.seed-values.sql:6307
 msgid "General"
 msgstr "Obecné"
 
 # id::clm.value__sas
-#: 950.data.seed-values.sql:6156
+#: 950.data.seed-values.sql:6180
 msgid "Sasak"
 msgstr "Sasakština"
 
@@ -337,55 +341,55 @@ msgstr "Dostupné"
 msgid "35_days_1_renew"
 msgstr "35_dní_1_prodloužení"
 
-#: 950.data.seed-values.sql:6034
+#: 950.data.seed-values.sql:6058
 msgid "Latin"
 msgstr "Latina"
 
 # id::clm.value__zul
-#: 950.data.seed-values.sql:6272
+#: 950.data.seed-values.sql:6296
 msgid "Zulu"
 msgstr "Zuluština"
 
-#: 950.data.seed-values.sql:9241
-msgid "New record had insufficient quality"
-msgstr "Nový záznam není dostatečně kvalitní"
+#: 950.data.seed-values.sql:6366
+msgid "Quadruplex"
+msgstr "Quadruplex"
 
 # id::clm.value__geo
-#: 950.data.seed-values.sql:5937
+#: 950.data.seed-values.sql:5961
 msgid "Georgian"
 msgstr "Gruzínština"
 
-#: 950.data.seed-values.sql:5979
+#: 950.data.seed-values.sql:6003
 msgid "Iloko"
 msgstr "Ilokánština"
 
 # id::clm.value__arc
-#: 950.data.seed-values.sql:5807
+#: 950.data.seed-values.sql:5831
 msgid "Aramaic"
 msgstr "Aramejština"
 
 # id::clm.value__tir
-#: 950.data.seed-values.sql:6219
+#: 950.data.seed-values.sql:6243
 msgid "Tigrinya"
 msgstr "Tigriňa"
 
 # id::clm.value__chk id::clm.value__-tru
-#: 950.data.seed-values.sql:5865 950.data.seed-values.sql:6227
+#: 950.data.seed-values.sql:5889 950.data.seed-values.sql:6251
 msgid "Truk"
 msgstr "Čukčtina"
 
 # id::clm.value__tib
-#: 950.data.seed-values.sql:6217
+#: 950.data.seed-values.sql:6241
 msgid "Tibetan"
 msgstr "Tibetština"
 
 #: 950.data.seed-values.sql:372 950.data.seed-values.sql:393
-#: 950.data.seed-values.sql:412 950.data.seed-values.sql:4768
+#: 950.data.seed-values.sql:412 950.data.seed-values.sql:4792
 msgid "Publisher"
 msgstr "Nakladatel"
 
 # id::clm.value__inh
-#: 950.data.seed-values.sql:5984
+#: 950.data.seed-values.sql:6008
 msgid "Ingush"
 msgstr "Inguština"
 
@@ -393,32 +397,32 @@ msgstr "Inguština"
 msgid "Alerting Note, no blocks"
 msgstr "Upozornění bez blokace výpůjček"
 
-#: 950.data.seed-values.sql:5901
+#: 950.data.seed-values.sql:5925
 msgid "Dzongkha"
 msgstr "Dzongkä"
 
 # id::clm.value__grn id::clm.value__-gua
-#: 950.data.seed-values.sql:5953 950.data.seed-values.sql:5954
+#: 950.data.seed-values.sql:5977 950.data.seed-values.sql:5978
 msgid "Guarani"
 msgstr "Guaraní"
 
 # id::clm.value__iii
-#: 950.data.seed-values.sql:5975
+#: 950.data.seed-values.sql:5999
 msgid "Sichuan Yi"
 msgstr "S'čchuanština"
 
 # id::clm.value__btk
-#: 950.data.seed-values.sql:5847
+#: 950.data.seed-values.sql:5871
 msgid "Batak"
 msgstr "Batačtina"
 
 # id::clm.value__div
-#: 950.data.seed-values.sql:5894
+#: 950.data.seed-values.sql:5918
 msgid "Divehi"
 msgstr "Divehi"
 
 # id::clm.value__sga
-#: 950.data.seed-values.sql:6163
+#: 950.data.seed-values.sql:6187
 msgid "Irish, Old (to 1100)"
 msgstr "Irština, stará (do 1100)"
 
@@ -426,11 +430,11 @@ msgstr "Irština, stará (do 1100)"
 msgid "Lost Materials Processing Fee"
 msgstr "Poplatek za zpracování ztracených exemplářů"
 
-#: 950.data.seed-values.sql:5962
+#: 950.data.seed-values.sql:5986
 msgid "Herero"
 msgstr "Herero"
 
-#: 950.data.seed-values.sql:1581
+#: 950.data.seed-values.sql:1613
 msgid "Data Review"
 msgstr "Přehled dat"
 
@@ -439,103 +443,107 @@ msgstr "Přehled dat"
 msgid "3_months_0_renew"
 msgstr "3_měsíce_0_prodloužení"
 
-#: 950.data.seed-values.sql:9945
+#: 950.data.seed-values.sql:10028
 msgid "Heading -- General Subdivision"
 msgstr "Záhlaví -- všeobecné podrozdělení"
 
-#: 950.data.seed-values.sql:1575
+#: 950.data.seed-values.sql:1607
 msgid "System Administrator"
 msgstr "Systémový administrátor"
 
-#: 950.data.seed-values.sql:6035
+#: 950.data.seed-values.sql:6059
 msgid "Latvian"
 msgstr "Lotyština"
 
 # id::clm.value__eng
-#: 950.data.seed-values.sql:5906
+#: 950.data.seed-values.sql:5930
 msgid "English"
 msgstr "Angličtina"
 
 # id::cam.value__
-#: 950.data.seed-values.sql:6276
+#: 950.data.seed-values.sql:6300
 msgid "Unknown or unspecified"
 msgstr "Neznámý nebo nespecifikovaný"
 
-#: 950.data.seed-values.sql:2471
+#: 950.data.seed-values.sql:2504
 msgid "SMS Text Messages"
 msgstr "SMS"
 
-#: 950.data.seed-values.sql:6284
+#: 950.data.seed-values.sql:6308
 msgid "Juvenile"
 msgstr "Nezletilí"
 
 # id::clm.value__chi
-#: 950.data.seed-values.sql:5864
+#: 950.data.seed-values.sql:5888
 msgid "Chinese"
 msgstr "Čínština"
 
-#: 950.data.seed-values.sql:10063
+#: 950.data.seed-values.sql:10146
 msgid "Art and Architecture Thesaurus"
 msgstr "Tezaurus Art and Architecture"
 
-#: 950.data.seed-values.sql:5977
+#: 950.data.seed-values.sql:6001
 msgid "Inuktitut"
 msgstr "Inuktitut"
 
 # id::clm.value__mun
-#: 950.data.seed-values.sql:6082
+#: 950.data.seed-values.sql:6106
 msgid "Munda (Other)"
 msgstr "Mundské jazyky (ostatní)"
 
 # id::clm.value__pli
-#: 950.data.seed-values.sql:6131
+#: 950.data.seed-values.sql:6155
 msgid "Pali"
 msgstr "Páli"
 
-#: 950.data.seed-values.sql:5930
+#: 950.data.seed-values.sql:5954
 msgid "Gã"
 msgstr "Ga"
 
 # id::clm.value__yap
-#: 950.data.seed-values.sql:6264
+#: 950.data.seed-values.sql:6288
 msgid "Yapese"
 msgstr "Yapese"
 
 # id::clm.value__ara
-#: 950.data.seed-values.sql:5806
+#: 950.data.seed-values.sql:5830
 msgid "Arabic"
 msgstr "Arabština"
 
 # id::clm.value__ven
-#: 950.data.seed-values.sql:6249
+#: 950.data.seed-values.sql:6273
 msgid "Venda"
 msgstr "Vendština"
 
+#: 950.data.seed-values.sql:6374
+msgid "8 mm."
+msgstr "8 mm."
+
 # id::pgt.name__3
-#: 950.data.seed-values.sql:1555
+#: 950.data.seed-values.sql:1587
 msgid "Staff"
 msgstr "Personál"
 
 # id::clm.value''in__gwi
-#: 950.data.seed-values.sql:5956
+#: 950.data.seed-values.sql:5980
 msgid "Gwich"
 msgstr "Gwich'in"
 
 # id::clm.value__iro
-#: 950.data.seed-values.sql:5989
+#: 950.data.seed-values.sql:6013
 msgid "Iroquoian (Other)"
 msgstr "Irokézské jazyky (ostatní)"
 
-#: 950.data.seed-values.sql:6027
+#: 950.data.seed-values.sql:6051
 msgid "Kutenai"
 msgstr "Kutenai"
 
 # id::clm.value__ori
-#: 950.data.seed-values.sql:6114
+#: 950.data.seed-values.sql:6138
 msgid "Oriya"
 msgstr "Urijština"
 
-#: 950.data.seed-values.sql:11431
+#: 950.data.seed-values.sql:11551
 msgid "Verification via opensrf"
 msgstr "Ověření  prostřednictvím opensrf"
 
@@ -543,15 +551,15 @@ msgstr "Ověření  prostřednictvím opensrf"
 msgid "Abbreviated Title"
 msgstr "Zkrácený název"
 
-#: 950.data.seed-values.sql:6109
+#: 950.data.seed-values.sql:6133
 msgid "Nyankole"
 msgstr "Nyankolština"
 
-#: 950.data.seed-values.sql:9947
+#: 950.data.seed-values.sql:10030
 msgid "Heading -- Chronological Subdivision"
 msgstr "Záhlaví - chronologické podrozdělení"
 
-#: 950.data.seed-values.sql:2470
+#: 950.data.seed-values.sql:2503
 msgid "Receipt Template"
 msgstr "Šablona stvrzenky"
 
@@ -561,12 +569,12 @@ msgid "English (Canada)"
 msgstr "Angličtina (Kanada)"
 
 # id::clm.value__hin
-#: 950.data.seed-values.sql:5965
+#: 950.data.seed-values.sql:5989
 msgid "Hindi"
 msgstr "Hindština"
 
 # id::clm.value__ewo
-#: 950.data.seed-values.sql:5914
+#: 950.data.seed-values.sql:5938
 msgid "Ewondo"
 msgstr "Ewondo"
 
@@ -575,12 +583,12 @@ msgstr "Ewondo"
 msgid "Mexican Spanish"
 msgstr "Mexická španělština"
 
-#: 950.data.seed-values.sql:9948
+#: 950.data.seed-values.sql:10031
 msgid "Heading -- Form Subdivision"
 msgstr "Záhlaví -- podrozdělení podle formy"
 
 # id::clm.value__abk
-#: 950.data.seed-values.sql:5789
+#: 950.data.seed-values.sql:5813
 msgid "Abkhaz"
 msgstr "Abchazština"
 
@@ -588,31 +596,31 @@ msgstr "Abchazština"
 msgid "Alternate Title"
 msgstr "Další název"
 
-#: 950.data.seed-values.sql:5874
+#: 950.data.seed-values.sql:5898
 msgid "Chamic languages"
 msgstr "Čamské jazyky"
 
-#: 950.data.seed-values.sql:6308
+#: 950.data.seed-values.sql:6332
 msgid "Novels"
 msgstr "Romány"
 
 # id::clm.value__wol
-#: 950.data.seed-values.sql:6260
+#: 950.data.seed-values.sql:6284
 msgid "Wolof"
 msgstr "Wolofština"
 
 # id::clm.value__bos
-#: 950.data.seed-values.sql:5844
+#: 950.data.seed-values.sql:5868
 msgid "Bosnian"
 msgstr "Bosenština"
 
 # id::clm.value__rom
-#: 950.data.seed-values.sql:6144
+#: 950.data.seed-values.sql:6168
 msgid "Romani"
 msgstr "Romština"
 
 # id::clm.value__vie
-#: 950.data.seed-values.sql:6250
+#: 950.data.seed-values.sql:6274
 msgid "Vietnamese"
 msgstr "Vietnamština"
 
@@ -620,7 +628,7 @@ msgstr "Vietnamština"
 msgid "This Specialized Library"
 msgstr "Tato specializovaná knihovna"
 
-#: 950.data.seed-values.sql:6074
+#: 950.data.seed-values.sql:6098
 msgid "Manchu"
 msgstr "Manchu"
 
@@ -635,34 +643,38 @@ msgstr "Vzorové konsorcium"
 # id::clm.value__rus id::i18n_l.name__ru-RU id::i18n_l.description__ru-RU
 # id::clm.value__rus
 #: 950.data.seed-values.sql:347 950.data.seed-values.sql:348
-#: 950.data.seed-values.sql:6147
+#: 950.data.seed-values.sql:6171
 msgid "Russian"
 msgstr "Ruština"
 
+#: 950.data.seed-values.sql:6367
+msgid "Laserdisc"
+msgstr "Laserdisc"
+
 # id::clm.value__gba
-#: 950.data.seed-values.sql:5935
+#: 950.data.seed-values.sql:5959
 msgid "Gbaya"
 msgstr "Gbaja"
 
 # id::clm.value__kaz
-#: 950.data.seed-values.sql:6005
+#: 950.data.seed-values.sql:6029
 msgid "Kazakh"
 msgstr "Kazaština"
 
 # id::clm.value__tiv
-#: 950.data.seed-values.sql:6220
+#: 950.data.seed-values.sql:6244
 msgid "Tiv"
 msgstr "Tivština"
 
-#: 950.data.seed-values.sql:6245
+#: 950.data.seed-values.sql:6269
 msgid "Undetermined"
 msgstr "Nezjištěno"
 
-#: 950.data.seed-values.sql:5968
+#: 950.data.seed-values.sql:5992
 msgid "Hiri Motu"
 msgstr "Hiri motu"
 
-#: 950.data.seed-values.sql:2458
+#: 950.data.seed-values.sql:2491
 msgid "Holds"
 msgstr "Rezervace"
 
@@ -675,140 +687,152 @@ msgstr "Nepřístupné"
 msgid "Canadian English"
 msgstr "Kanadská angličtina"
 
-#: 950.data.seed-values.sql:8651
+#: 950.data.seed-values.sql:8727
 msgid "Serial Subscription"
 msgstr "Předplatné seriálu"
 
 # id::clm.value__bra
-#: 950.data.seed-values.sql:5845
+#: 950.data.seed-values.sql:5869
 msgid "Braj"
 msgstr "Bradžština"
 
 # id::clm.value__bat
-#: 950.data.seed-values.sql:5831
+#: 950.data.seed-values.sql:5855
 msgid "Baltic (Other)"
 msgstr "Baltské jazyky (ostatní)"
 
-#: 950.data.seed-values.sql:9248
+#: 950.data.seed-values.sql:9324
 msgid "Invalid value for \"deposit_amount\""
 msgstr "Neplatná hodnota \"výše vkladu\""
 
 # id::clfm.value__h
-#: 950.data.seed-values.sql:6309
+#: 950.data.seed-values.sql:6333
 msgid "Humor, satires, etc."
 msgstr "Humor, satira apod."
 
-#: 950.data.seed-values.sql:11428
+#: 950.data.seed-values.sql:11548
 msgid "SIP2 Proxy Login"
 msgstr "SIP2 proxy přihlášení"
 
 # id::citm.value__m
-#: 950.data.seed-values.sql:6300
+#: 950.data.seed-values.sql:6324
 msgid "Computer file"
 msgstr "Počítačový soubor"
 
 # id::clm.value__phi
-#: 950.data.seed-values.sql:6129
+#: 950.data.seed-values.sql:6153
 msgid "Philippine (Other)"
 msgstr "Filipínské jazyky (ostatní)"
 
-#: 950.data.seed-values.sql:9974
+#: 950.data.seed-values.sql:10057
 msgid "Subdivision Linking Entry -- Form Subdivision"
 msgstr "Záznam odkazující na podrozdělení  -- podrozdělení podle formy"
 
-#: 950.data.seed-values.sql:5938
+#: 950.data.seed-values.sql:5962
 msgid "German"
 msgstr "Němčina"
 
-#: 950.data.seed-values.sql:8653
+#: 950.data.seed-values.sql:8729
 msgid "EDI"
 msgstr "EDI"
 
-#: 950.data.seed-values.sql:9232
+#: 950.data.seed-values.sql:9308
 msgid "Import failed due to barcode collision"
 msgstr "Import se nezdařil kvůli kolizi čárových kódů"
 
-#: 950.data.seed-values.sql:2455
+#: 950.data.seed-values.sql:2488
 msgid "Library"
 msgstr "Knihovna"
 
 # id::clm.value__sla
-#: 950.data.seed-values.sql:6171
+#: 950.data.seed-values.sql:6195
 msgid "Slavic (Other)"
 msgstr "Slovanské jazyky (ostatní)"
 
 # id::clm.value__baq
-#: 950.data.seed-values.sql:5829
+#: 950.data.seed-values.sql:5853
 msgid "Basque"
 msgstr "Baskičtina"
 
 # id::clm.value__tum
-#: 950.data.seed-values.sql:6233
+#: 950.data.seed-values.sql:6257
 msgid "Tumbuka"
 msgstr "Tumbukština"
+
+#: 950.data.seed-values.sql:6346
+msgid "Large print"
+msgstr "Velká písmena"
 
 # id::cbs.source__1
 #: 950.data.seed-values.sql:3
 msgid "oclc"
 msgstr "oclc"
 
-#: 950.data.seed-values.sql:1572 950.data.seed-values.sql:2466
+#: 950.data.seed-values.sql:1604 950.data.seed-values.sql:2499
 msgid "Serials"
 msgstr "Seriály"
 
 # id::clm.value__bnt
-#: 950.data.seed-values.sql:5843
+#: 950.data.seed-values.sql:5867
 msgid "Bantu (Other)"
 msgstr "Bantuské jazyky (ostatní)"
 
-#: 950.data.seed-values.sql:9939
+#: 950.data.seed-values.sql:10022
 msgid "Heading -- Personal Name"
 msgstr "Záhlaví -- osobní jméno"
 
+#: 950.data.seed-values.sql:10050
+msgid "Established Heading Linking Entry -- Meeting Name"
+msgstr "Záznam odkazující na systemizované záhlaví -- název akce"
+
 # id::clm.value__mdr
-#: 950.data.seed-values.sql:6064
+#: 950.data.seed-values.sql:6088
 msgid "Mandar"
 msgstr "Mandar"
 
 # id::cblvl.value__a
-#: 950.data.seed-values.sql:6328
+#: 950.data.seed-values.sql:6352
 msgid "Monographic component part"
 msgstr "Dílčí část monografie"
 
-#: 950.data.seed-values.sql:6288
+#: 950.data.seed-values.sql:6373
+msgid "D-2"
+msgstr "D-2"
+
+#: 950.data.seed-values.sql:6312
 msgid "Manuscript language material"
 msgstr "Rukopisný textový dokument"
 
 # id::clm.value__che
-#: 950.data.seed-values.sql:5862
+#: 950.data.seed-values.sql:5886
 msgid "Chechen"
 msgstr "Čečenština"
 
 # id::clm.value__nzi
-#: 950.data.seed-values.sql:6111
+#: 950.data.seed-values.sql:6135
 msgid "Nzima"
 msgstr "Nzima"
 
 # id::clm.value__dut
-#: 950.data.seed-values.sql:5899
+#: 950.data.seed-values.sql:5923
 msgid "Dutch"
 msgstr "Nizozemština"
 
-#: 950.data.seed-values.sql:6019 950.data.seed-values.sql:6026
+#: 950.data.seed-values.sql:6043 950.data.seed-values.sql:6050
 msgid "Kusaie"
 msgstr "Kosrajština (kusaie)"
 
 # id::clm.value__eka
-#: 950.data.seed-values.sql:5904
+#: 950.data.seed-values.sql:5928
 msgid "Ekajuk"
 msgstr "Ekajuk"
 
 # id::clm.value__grb
-#: 950.data.seed-values.sql:5950
+#: 950.data.seed-values.sql:5974
 msgid "Grebo"
 msgstr "Grebo"
 
-#: 950.data.seed-values.sql:2464
+#: 950.data.seed-values.sql:2497
 msgid "Finances"
 msgstr "Finance"
 
@@ -817,30 +841,30 @@ msgid "28_days_2_renew"
 msgstr "28_dní_2_prodloužení"
 
 # id::clm.value__nep
-#: 950.data.seed-values.sql:6095
+#: 950.data.seed-values.sql:6119
 msgid "Nepali"
 msgstr "Nepálština"
 
-#: 950.data.seed-values.sql:6180
+#: 950.data.seed-values.sql:6204
 msgid "Skolt Sami"
 msgstr "Skolt sami"
 
-#: 950.data.seed-values.sql:5920
+#: 950.data.seed-values.sql:5944
 msgid "Finnish"
 msgstr "Finština"
 
 # id::clm.value__bih
-#: 950.data.seed-values.sql:5838
+#: 950.data.seed-values.sql:5862
 msgid "Bihari"
 msgstr "Bihárština"
 
 # id::clm.value__wel
-#: 950.data.seed-values.sql:6257
+#: 950.data.seed-values.sql:6281
 msgid "Welsh"
 msgstr "Velština"
 
 # id::clm.value__ota
-#: 950.data.seed-values.sql:6118
+#: 950.data.seed-values.sql:6142
 msgid "Turkish, Ottoman"
 msgstr "Turečtina, osmanská"
 
@@ -848,34 +872,34 @@ msgstr "Turečtina, osmanská"
 # id::vqbrad.description__6
 #: 950.data.seed-values.sql:154 950.data.seed-values.sql:370
 #: 950.data.seed-values.sql:391 950.data.seed-values.sql:410
-#: 950.data.seed-values.sql:4762
+#: 950.data.seed-values.sql:4786
 msgid "ISSN"
 msgstr "ISSN"
 
-#: 950.data.seed-values.sql:6021
+#: 950.data.seed-values.sql:6045
 msgid "Kru"
 msgstr "Kru"
 
-#: 950.data.seed-values.sql:2468
+#: 950.data.seed-values.sql:2501
 msgid "Booking"
 msgstr "Rezervace zdrojů"
 
 # id::clm.value__goh
-#: 950.data.seed-values.sql:5946
+#: 950.data.seed-values.sql:5970
 msgid "German, Old High (ca. 750-1050)"
 msgstr "Němčina, horní, starší doba (cca 750-1050)"
 
 # id::clm.value__tem
-#: 950.data.seed-values.sql:6211
+#: 950.data.seed-values.sql:6235
 msgid "Temne"
 msgstr "Temne"
 
 # id::clm.value__jpr
-#: 950.data.seed-values.sql:5993
+#: 950.data.seed-values.sql:6017
 msgid "Judeo-Persian"
 msgstr "Judeo-perština"
 
-#: 950.data.seed-values.sql:4836
+#: 950.data.seed-values.sql:4860
 msgid "Friends"
 msgstr "Přátelé"
 
@@ -884,27 +908,27 @@ msgid "Patron exceeds fine threshold"
 msgstr "Čtenář překročil nastavený limit pokut"
 
 # id::clm.value__day
-#: 950.data.seed-values.sql:5889
+#: 950.data.seed-values.sql:5913
 msgid "Dayak"
 msgstr "Dajáčtina"
 
 # id::clm.value__gon
-#: 950.data.seed-values.sql:5947
+#: 950.data.seed-values.sql:5971
 msgid "Gondi"
 msgstr "Góndština"
 
 # id::clm.value__hun
-#: 950.data.seed-values.sql:5969
+#: 950.data.seed-values.sql:5993
 msgid "Hungarian"
 msgstr "Maďarština"
 
 # id::clm.value__bak
-#: 950.data.seed-values.sql:5825
+#: 950.data.seed-values.sql:5849
 msgid "Bashkir"
 msgstr "Baškirština"
 
 # id::clm.value__kam
-#: 950.data.seed-values.sql:5999
+#: 950.data.seed-values.sql:6023
 msgid "Kamba"
 msgstr "Kambština"
 
@@ -914,21 +938,21 @@ msgid "Spanish (Mexico)"
 msgstr "Španělština (Mexiko)"
 
 # id::citm.value__i
-#: 950.data.seed-values.sql:6298
+#: 950.data.seed-values.sql:6322
 msgid "Nonmusical sound recording"
 msgstr "Nehudební zvukový záznam"
 
 # id::pgt.name__2
-#: 950.data.seed-values.sql:1553
+#: 950.data.seed-values.sql:1585
 msgid "Patrons"
 msgstr "Čtenáři"
 
-#: 950.data.seed-values.sql:8648
+#: 950.data.seed-values.sql:8724
 msgid "Shipping Charge"
 msgstr "Poštovné"
 
 # id::clm.value__nbl
-#: 950.data.seed-values.sql:6091
+#: 950.data.seed-values.sql:6115
 msgid "Ndebele (South Africa)"
 msgstr "Ndebelština (Jižní Afrika)"
 
@@ -939,12 +963,12 @@ msgstr "1_hodina_2_prodloužení"
 
 # id::clfm.value__i
 # nutný kontext
-#: 950.data.seed-values.sql:6310
+#: 950.data.seed-values.sql:6334
 msgid "Letters"
 msgstr "Dopisy"
 
 # id::clm.value__mak
-#: 950.data.seed-values.sql:6055
+#: 950.data.seed-values.sql:6079
 msgid "Makasar"
 msgstr "Makasarština"
 
@@ -953,7 +977,7 @@ msgid "Series"
 msgstr "Edice"
 
 # id::clm.value__afa
-#: 950.data.seed-values.sql:5794
+#: 950.data.seed-values.sql:5818
 msgid "Afroasiatic (Other)"
 msgstr "Afroasijské jazyky (ostatní)"
 
@@ -961,20 +985,20 @@ msgstr "Afroasijské jazyky (ostatní)"
 msgid "Missing"
 msgstr "Nezvěstné"
 
-#: 950.data.seed-values.sql:5840
+#: 950.data.seed-values.sql:5864
 msgid "Edo"
 msgstr "Bini"
 
 # id::clm.value__kin
-#: 950.data.seed-values.sql:6012
+#: 950.data.seed-values.sql:6036
 msgid "Kinyarwanda"
 msgstr "Rwandština"
 
-#: 950.data.seed-values.sql:5978
+#: 950.data.seed-values.sql:6002
 msgid "Interlingue"
 msgstr "Interlingua (Mezinárodní pomocná jazyková asociace)"
 
-#: 950.data.seed-values.sql:11449
+#: 950.data.seed-values.sql:11569
 msgid "EZProxy Verification"
 msgstr "Ověření prostřednictvím EZ proxy"
 
@@ -983,39 +1007,39 @@ msgid "Reserves"
 msgstr "Literatura ke kurzům"
 
 # id::clm.value__heb
-#: 950.data.seed-values.sql:5961
+#: 950.data.seed-values.sql:5985
 msgid "Hebrew"
 msgstr "Hebrejština"
 
 # id::clm.value__epo id::clm.value__-esp
-#: 950.data.seed-values.sql:5908 950.data.seed-values.sql:5910
+#: 950.data.seed-values.sql:5932 950.data.seed-values.sql:5934
 msgid "Esperanto"
 msgstr "Esperanto"
 
-#: 950.data.seed-values.sql:9246
+#: 950.data.seed-values.sql:9322
 msgid "Invalid value for \"price\""
 msgstr "Neplatná hodnota pro \"cenu\""
 
-#: 950.data.seed-values.sql:5879
+#: 950.data.seed-values.sql:5903
 msgid "Creoles and Pidgins, French-based (Other)"
 msgstr "Kreolština a jiné pigdiny na základě francouzštiny"
 
 # id::clm.value__ssw id::clm.value__-swz
-#: 950.data.seed-values.sql:6194 950.data.seed-values.sql:6201
+#: 950.data.seed-values.sql:6218 950.data.seed-values.sql:6225
 msgid "Swazi"
 msgstr "Svatština"
 
-#: 950.data.seed-values.sql:6033 950.data.seed-values.sql:6176
+#: 950.data.seed-values.sql:6057 950.data.seed-values.sql:6200
 msgid "Sami"
 msgstr "Sami"
 
 # id::clm.value__inc
-#: 950.data.seed-values.sql:5981
+#: 950.data.seed-values.sql:6005
 msgid "Indic (Other)"
 msgstr "Indo-árijské jazyky (ostatní)"
 
 # id::clm.value__tel
-#: 950.data.seed-values.sql:6210
+#: 950.data.seed-values.sql:6234
 msgid "Telugu"
 msgstr "Telugu"
 
@@ -1031,16 +1055,16 @@ msgstr "Autor"
 msgid "System Local"
 msgstr "Lokální systém"
 
-#: 950.data.seed-values.sql:11435
+#: 950.data.seed-values.sql:11555
 msgid "Verification via xmlrpc"
 msgstr "Ověření protřednictvím xmlrpc"
 
 # id::clm.value__new
-#: 950.data.seed-values.sql:6096
+#: 950.data.seed-values.sql:6120
 msgid "Newari"
 msgstr "Névárština"
 
-#: 950.data.seed-values.sql:6153
+#: 950.data.seed-values.sql:6177
 msgid "Samaritan Aramaic"
 msgstr "Samarština"
 
@@ -1053,7 +1077,7 @@ msgstr "2_měsíce_2_prodloužení"
 msgid "Unfiltered"
 msgstr "Nefiltrováno"
 
-#: 950.data.seed-values.sql:9979
+#: 950.data.seed-values.sql:10062
 msgid "See Also Tracing -- Corporate Name"
 msgstr "Viz také dohledávání -- název korporace"
 
@@ -1062,31 +1086,31 @@ msgid "Patron has been referred to a collections agency"
 msgstr "čtenář byl nahlášen dluhové agentuře"
 
 # id::clm.value__tah
-#: 950.data.seed-values.sql:6204
+#: 950.data.seed-values.sql:6228
 msgid "Tahitian"
 msgstr "Tahitština"
 
 # id::clm.value__ful
-#: 950.data.seed-values.sql:5928
+#: 950.data.seed-values.sql:5952
 msgid "Fula"
 msgstr "Fulahština"
 
 # id::cifm.value__a
-#: 950.data.seed-values.sql:6319
+#: 950.data.seed-values.sql:6343
 msgid "Microfilm"
 msgstr "Mikrofilm"
 
-#: 950.data.seed-values.sql:9944
+#: 950.data.seed-values.sql:10027
 msgid "Heading -- Genre/Form Term"
 msgstr "Záhlaví -- termín žánru/formy"
 
-#: 950.data.seed-values.sql:6106
+#: 950.data.seed-values.sql:6130
 msgid "Nubian languages"
 msgstr "Nubijské jazyky"
 
 # id::clm.value__arm id::i18n_l.name__hy-AM id::i18n_l.description__hy-AM
 #: 950.data.seed-values.sql:338 950.data.seed-values.sql:339
-#: 950.data.seed-values.sql:5809
+#: 950.data.seed-values.sql:5833
 msgid "Armenian"
 msgstr "Arménština"
 
@@ -1099,49 +1123,49 @@ msgid "Example System 2"
 msgstr "Vzorový systém 2"
 
 # id::clm.value__tam
-#: 950.data.seed-values.sql:6207
+#: 950.data.seed-values.sql:6231
 msgid "Tamil"
 msgstr "Tamilština"
 
 # id::clm.value__aus
-#: 950.data.seed-values.sql:5817
+#: 950.data.seed-values.sql:5841
 msgid "Australian languages"
 msgstr "Australské jazky"
 
 # id::clm.value__roh
-#: 950.data.seed-values.sql:6143
+#: 950.data.seed-values.sql:6167
 msgid "Raeto-Romance"
 msgstr "Rétorománština"
 
-#: 950.data.seed-values.sql:6333
+#: 950.data.seed-values.sql:6357
 msgid "Monograph/Item"
 msgstr "Monografie (i vícesvazkové)"
 
-#: 950.data.seed-values.sql:6137
+#: 950.data.seed-values.sql:6161
 msgid "Pushto"
 msgstr "Pašto (pachto, paštština)"
 
-#: 950.data.seed-values.sql:9972
+#: 950.data.seed-values.sql:10055
 msgid "Subdivision Linking Entry -- Geographic Subdivision"
 msgstr "Záznam odkazující na podrozdělení -- geografické podrozdělení"
 
 # id::cifm.value__b
-#: 950.data.seed-values.sql:6320
+#: 950.data.seed-values.sql:6344
 msgid "Microfiche"
 msgstr "Mikrofiš"
 
 # id::clm.value__wln
-#: 950.data.seed-values.sql:6259
+#: 950.data.seed-values.sql:6283
 msgid "Walloon"
 msgstr "Valonština"
 
 # id::clm.value__din
-#: 950.data.seed-values.sql:5893
+#: 950.data.seed-values.sql:5917
 msgid "Dinka"
 msgstr "Dinkština"
 
 # id::clm.value__chu
-#: 950.data.seed-values.sql:5871
+#: 950.data.seed-values.sql:5895
 msgid "Church Slavic"
 msgstr "Církevní slověnština"
 
@@ -1150,16 +1174,16 @@ msgid "‡biblios.net"
 msgstr "‡biblios.net"
 
 # id::clm.value__lam
-#: 950.data.seed-values.sql:6030
+#: 950.data.seed-values.sql:6054
 msgid "Lamba"
 msgstr "Lambština"
 
-#: 950.data.seed-values.sql:9957
-msgid "See Also From Tracing -- Genre/Form Term"
-msgstr "Viz také z dohledávání -- termín žánru/formy"
+#: 950.data.seed-values.sql:6370
+msgid "Betacam SP"
+msgstr "Betacam SP"
 
 # id::clm.value__mic
-#: 950.data.seed-values.sql:6067
+#: 950.data.seed-values.sql:6091
 msgid "Micmac"
 msgstr "Micmac"
 
@@ -1168,39 +1192,39 @@ msgid "Personal Author"
 msgstr "Personální autor"
 
 # id::clm.value__-gag id::clm.value__glg
-#: 950.data.seed-values.sql:5932 950.data.seed-values.sql:5943
+#: 950.data.seed-values.sql:5956 950.data.seed-values.sql:5967
 msgid "Galician"
 msgstr "Galicijština"
 
-#: 950.data.seed-values.sql:11440
+#: 950.data.seed-values.sql:11560
 msgid "OPAC Login (jspac)"
 msgstr "Přihlášení do OPACu (jspac)"
 
 # id::clm.value__mad
-#: 950.data.seed-values.sql:6051
+#: 950.data.seed-values.sql:6075
 msgid "Madurese"
 msgstr "Madurština"
 
 # id::clm.value__kmb
-#: 950.data.seed-values.sql:6014
+#: 950.data.seed-values.sql:6038
 msgid "Kimbundu"
 msgstr "Kimbundština"
 
 # id::clm.value__ssa
-#: 950.data.seed-values.sql:6192
+#: 950.data.seed-values.sql:6216
 msgid "Nilo-Saharan (Other)"
 msgstr "Nilsko-saharské jazyky (ostatní)"
 
 # id::clm.value__sag
-#: 950.data.seed-values.sql:6149
+#: 950.data.seed-values.sql:6173
 msgid "Sango (Ubangi Creole)"
 msgstr "Sangština (Ubangi Creole)"
 
-#: 950.data.seed-values.sql:6007
+#: 950.data.seed-values.sql:6031
 msgid "Khasi"
 msgstr "Khásí"
 
-#: 950.data.seed-values.sql:9256
+#: 950.data.seed-values.sql:9332
 msgid "Invalid value for \"circ_as_type\""
 msgstr "Neplatná hodnota pro \"circ_as_type\" (půjčovat jako typ)"
 
@@ -1209,61 +1233,61 @@ msgid "Subject"
 msgstr "Téma"
 
 # id::clm.value__mah
-#: 950.data.seed-values.sql:6053
+#: 950.data.seed-values.sql:6077
 msgid "Marshallese"
 msgstr "Maršalština"
 
 # id::clm.value__yao
-#: 950.data.seed-values.sql:6263
+#: 950.data.seed-values.sql:6287
 msgid "Yao (Africa)"
 msgstr "Jaoština (Afrika)"
 
-#: 950.data.seed-values.sql:9988
+#: 950.data.seed-values.sql:10071
 msgid "See Also Tracing -- Chronological Term"
 msgstr "Viz také dohledávání -- chronologický termín"
 
 # id::clm.value__mar
-#: 950.data.seed-values.sql:6060
+#: 950.data.seed-values.sql:6084
 msgid "Marathi"
 msgstr "Maráthština"
 
 # id::clm.value__slv
-#: 950.data.seed-values.sql:6173
+#: 950.data.seed-values.sql:6197
 msgid "Slovenian"
 msgstr "Slovinština"
 
-#: 950.data.seed-values.sql:9235 950.data.seed-values.sql:9236
+#: 950.data.seed-values.sql:9311 950.data.seed-values.sql:9312
 msgid "Import failed due to system id collision"
 msgstr "Import se nezdařil kvůli kolizi systémových ID"
 
 # id::clm.value__sal
-#: 950.data.seed-values.sql:6152
+#: 950.data.seed-values.sql:6176
 msgid "Salishan languages"
 msgstr "Salishské jazyky"
 
-#: 950.data.seed-values.sql:11448
+#: 950.data.seed-values.sql:11568
 msgid "Self-Check User Verification"
 msgstr "Uživatelské ověření pro samoobslužnou výpůjční stanici"
 
-#: 950.data.seed-values.sql:9943
+#: 950.data.seed-values.sql:10026
 msgid "Heading -- Geographic Name"
 msgstr "Záhlaví -- Geografické jméno"
 
 # id::clm.value__san
-#: 950.data.seed-values.sql:6154
+#: 950.data.seed-values.sql:6178
 msgid "Sanskrit"
 msgstr "Sanskrt"
 
-#: 950.data.seed-values.sql:11441
-msgid "OPAC Login (tpac)"
-msgstr "Přihlášení do OPACu (tpac)"
+#: 950.data.seed-values.sql:6371
+msgid "Super-VHS"
+msgstr "Super-VHS"
 
 #: 950.data.seed-values.sql:306
 msgid "On order"
 msgstr "Objednáno"
 
 # id::clfm.value__e
-#: 950.data.seed-values.sql:6307
+#: 950.data.seed-values.sql:6331
 msgid "Essays"
 msgstr "Eseje"
 
@@ -1274,27 +1298,27 @@ msgid "Local Library System"
 msgstr "Lokální knihovní systém"
 
 # id::cifm.value__r
-#: 950.data.seed-values.sql:6324
+#: 950.data.seed-values.sql:6348
 msgid "Regular print reproduction"
 msgstr "Reprodukce běžným písmem"
 
 # id::clm.value__elx
-#: 950.data.seed-values.sql:5905
+#: 950.data.seed-values.sql:5929
 msgid "Elamite"
 msgstr "Elamština"
 
 # id::clm.value__ady
-#: 950.data.seed-values.sql:5793
+#: 950.data.seed-values.sql:5817
 msgid "Adygei"
 msgstr "Adygei"
 
-#: 950.data.seed-values.sql:4825 950.data.seed-values.sql:4828
-#: 950.data.seed-values.sql:4829 950.data.seed-values.sql:4835
+#: 950.data.seed-values.sql:4849 950.data.seed-values.sql:4852
+#: 950.data.seed-values.sql:4853 950.data.seed-values.sql:4859
 msgid "Miscellaneous"
 msgstr "Různé"
 
 # id::clm.value__nor
-#: 950.data.seed-values.sql:6104
+#: 950.data.seed-values.sql:6128
 msgid "Norwegian"
 msgstr "Norština"
 
@@ -1314,38 +1338,38 @@ msgstr "Vzorová pobočka 3"
 msgid "Example Branch 1"
 msgstr "Vzorová pobočka 1"
 
-#: 950.data.seed-values.sql:6016
+#: 950.data.seed-values.sql:6040
 msgid "Komi"
 msgstr "Komijština"
 
-#: 950.data.seed-values.sql:9926
+#: 950.data.seed-values.sql:10009
 msgid "Library of Congress standard authority record control semantics"
 msgstr "Sémantika kontrolního čísla autoritního záznamu Kongresové knihovny"
 
 # id::clm.value__hit
-#: 950.data.seed-values.sql:5966
+#: 950.data.seed-values.sql:5990
 msgid "Hittite"
 msgstr "Chetitština"
 
 # id::clm.value__tuk
-#: 950.data.seed-values.sql:6232
+#: 950.data.seed-values.sql:6256
 msgid "Turkmen"
 msgstr "Turkmenština"
 
-#: 950.data.seed-values.sql:9981
+#: 950.data.seed-values.sql:10064
 msgid "See Also Tracing -- Topical Term"
 msgstr "Viz také dohledávání -- tematický termín"
 
 # id::clm.value__suk
-#: 950.data.seed-values.sql:6195
+#: 950.data.seed-values.sql:6219
 msgid "Sukuma"
 msgstr "Sukuma"
 
-#: 950.data.seed-values.sql:6293
+#: 950.data.seed-values.sql:6317
 msgid "Mixed materials"
 msgstr "Smíšené dokumenty"
 
-#: 950.data.seed-values.sql:2456
+#: 950.data.seed-values.sql:2489
 msgid "Security"
 msgstr "Zabezpečení"
 
@@ -1353,32 +1377,32 @@ msgstr "Zabezpečení"
 msgid "On holds shelf"
 msgstr "Na regále s rezervacemi"
 
-#: 950.data.seed-values.sql:11432
+#: 950.data.seed-values.sql:11552
 msgid "Verification via srfsh"
 msgstr "Ověření prostřednictvím srfsh"
 
-#: 950.data.seed-values.sql:6267
+#: 950.data.seed-values.sql:6291
 msgid "Yupik languages"
 msgstr "Yupik"
 
-#: 950.data.seed-values.sql:6237
+#: 950.data.seed-values.sql:6261
 msgid "Tuvaluan"
 msgstr "Tuvalština"
 
-#: 950.data.seed-values.sql:10067
+#: 950.data.seed-values.sql:10150
 msgid "No attempt to code"
 msgstr "Žádný pokus o kódování"
 
 # id::clm.value__nso
-#: 950.data.seed-values.sql:6105
+#: 950.data.seed-values.sql:6129
 msgid "Northern Sotho"
 msgstr "Severní sothoština"
 
-#: 950.data.seed-values.sql:5832
+#: 950.data.seed-values.sql:5856
 msgid "Beja"
 msgstr "Bedža"
 
-#: 950.data.seed-values.sql:5936
+#: 950.data.seed-values.sql:5960
 msgid "Germanic (Other)"
 msgstr "Germánské jazyky (ostatní)"
 
@@ -1388,11 +1412,11 @@ msgstr "Germánské jazyky (ostatní)"
 msgid "Item Type"
 msgstr "Typ exempláře"
 
-#: 950.data.seed-values.sql:9258
+#: 950.data.seed-values.sql:9334
 msgid "Perm failure creating a record"
 msgstr "Trvalá chyba při vytváření záznámů"
 
-#: 950.data.seed-values.sql:5996
+#: 950.data.seed-values.sql:6020
 msgid "Kabyle"
 msgstr "Kabulí"
 
@@ -1405,25 +1429,25 @@ msgid "SSN"
 msgstr "Číslo pasu"
 
 # id::clm.value__got
-#: 950.data.seed-values.sql:5949
+#: 950.data.seed-values.sql:5973
 msgid "Gothic"
 msgstr "gótština"
 
-#: 950.data.seed-values.sql:6223
+#: 950.data.seed-values.sql:6247
 msgid "Tamashek"
 msgstr "Tamašek"
 
-#: 950.data.seed-values.sql:5995
+#: 950.data.seed-values.sql:6019
 msgid "Kara-Kalpak"
 msgstr "Karakalpačtina"
 
 # id::clm.value__swa
-#: 950.data.seed-values.sql:6199
+#: 950.data.seed-values.sql:6223
 msgid "Swahili"
 msgstr "Svahilština"
 
 # id::clm.value__car
-#: 950.data.seed-values.sql:5855
+#: 950.data.seed-values.sql:5879
 msgid "Carib"
 msgstr "Karibština"
 
@@ -1432,11 +1456,11 @@ msgstr "Karibština"
 msgid "Sub-library"
 msgstr "Dílčí knihovna"
 
-#: 950.data.seed-values.sql:5870
+#: 950.data.seed-values.sql:5894
 msgid "Cherokee"
 msgstr "Cherokee"
 
-#: 950.data.seed-values.sql:9946
+#: 950.data.seed-values.sql:10029
 msgid "Heading -- Geographic Subdivision"
 msgstr "Záhlaví -- geografické podrozdělení"
 
@@ -1448,150 +1472,162 @@ msgstr "Zpracovává se"
 msgid "Alerting block on Circ and Renew"
 msgstr "Upozornění s blokací výpůjček a rezervací"
 
-#: 950.data.seed-values.sql:2462
+#: 950.data.seed-values.sql:2495
 msgid "Program"
 msgstr "Program"
 
-#: 950.data.seed-values.sql:8816 950.data.seed-values.sql:8817
+#: 950.data.seed-values.sql:8892 950.data.seed-values.sql:8893
 msgid "Historical Hold Retention Count"
 msgstr "Počet ponechávaných historických rezervací"
 
-#: 950.data.seed-values.sql:6052
+#: 950.data.seed-values.sql:6076
 msgid "Magahi"
 msgstr "Magahština"
 
-#: 950.data.seed-values.sql:6120
+#: 950.data.seed-values.sql:6144
 msgid "Papuan (Other)"
 msgstr "Papuánské jazyky (ostatní)"
 
-#: 950.data.seed-values.sql:5994
+#: 950.data.seed-values.sql:6018
 msgid "Judeo-Arabic"
 msgstr "Judeo-arabština"
 
-#: 950.data.seed-values.sql:6071 950.data.seed-values.sql:6072
+#: 950.data.seed-values.sql:6372
+msgid "M-II"
+msgstr "M-II"
+
+#: 950.data.seed-values.sql:6095 950.data.seed-values.sql:6096
 msgid "Malagasy"
 msgstr "Malgaština"
 
-#: 950.data.seed-values.sql:6222
+#: 950.data.seed-values.sql:6246
 msgid "Tlingit"
 msgstr "Tlingit"
 
-#: 950.data.seed-values.sql:9983
+#: 950.data.seed-values.sql:10066
 msgid "See Also Tracing -- Genre/Form Term"
 msgstr "Viz také dohledávání -- termín žánru/formy"
 
-#: 950.data.seed-values.sql:9932
+#: 950.data.seed-values.sql:10015
 msgid "See Also From Tracing -- Uniform Title"
 msgstr "Viz také z dohledávání -- unifikovaný název"
 
-#: 950.data.seed-values.sql:6058
+#: 950.data.seed-values.sql:6082
 msgid "Maori"
 msgstr "Maorština"
 
-#: 950.data.seed-values.sql:5925
+#: 950.data.seed-values.sql:5949
 msgid "French, Middle (ca. 1400-1600)"
 msgstr "Francouzština, střední doba (cca 1400-1600)"
 
-#: 950.data.seed-values.sql:5824
+#: 950.data.seed-values.sql:5848
 msgid "Bamileke languages"
 msgstr "Bamilecké jazyky"
 
-#: 950.data.seed-values.sql:5972
+#: 950.data.seed-values.sql:5996
 msgid "Igbo"
 msgstr "Igbo"
 
-#: 950.data.seed-values.sql:11442
+#: 950.data.seed-values.sql:11562
 msgid "Staff Client Login"
 msgstr "Přihlášení do služebního klienta"
 
-#: 950.data.seed-values.sql:6028
+#: 950.data.seed-values.sql:6052
 msgid "Ladino"
 msgstr "Ladinština"
 
 # id::clm.value__cat
-#: 950.data.seed-values.sql:5856
+#: 950.data.seed-values.sql:5880
 msgid "Catalan"
 msgstr "Katalánština"
 
-#: 950.data.seed-values.sql:6191
+#: 950.data.seed-values.sql:6215
 msgid "Serer"
 msgstr "Serer"
 
 # id::cam.value__e
-#: 950.data.seed-values.sql:6281
+#: 950.data.seed-values.sql:6305
 msgid "Adult"
 msgstr "Dospělý"
 
-#: 950.data.seed-values.sql:6130
+#: 950.data.seed-values.sql:6364
+msgid "EIAJ"
+msgstr "EIAJ"
+
+#: 950.data.seed-values.sql:6154
 msgid "Phoenician"
 msgstr "Foiničtina"
 
-#: 950.data.seed-values.sql:6258
+#: 950.data.seed-values.sql:6282
 msgid "Sorbian languages"
 msgstr "Lužická srbština"
 
-#: 950.data.seed-values.sql:9953
+#: 950.data.seed-values.sql:10036
 msgid "See Also From Tracing -- Corporate Name"
 msgstr "Viz také z dohledávání  -- název korporace"
 
-#: 950.data.seed-values.sql:9233
+#: 950.data.seed-values.sql:9309
 msgid "Import failed due to invalid circulation modifier"
 msgstr "Import se nezdařil kvůli neplatnému modifikátoru výpůjčky"
 
 # id::cam.value__a
-#: 950.data.seed-values.sql:6277
+#: 950.data.seed-values.sql:6301
 msgid "Preschool"
 msgstr "Předškolní"
 
-#: 950.data.seed-values.sql:6161
+#: 950.data.seed-values.sql:6185
 msgid "Selkup"
 msgstr "Selkupština"
 
-#: 950.data.seed-values.sql:6101
+#: 950.data.seed-values.sql:6125
 msgid "Norwegian (Bokmål)"
 msgstr "Norština (bokmål)"
 
-#: 950.data.seed-values.sql:2459
+#: 950.data.seed-values.sql:2492
 msgid "Circulation"
 msgstr "Výpůjčky"
 
-#: 950.data.seed-values.sql:5826
+#: 950.data.seed-values.sql:5850
 msgid "Baluchi"
 msgstr "Balúčština"
 
-#: 950.data.seed-values.sql:6124
+#: 950.data.seed-values.sql:6368
+msgid "CED videodisc"
+msgstr "CED videodisk"
+
+#: 950.data.seed-values.sql:6148
 msgid "Panjabi"
 msgstr "Paňdžábština"
 
-#: 950.data.seed-values.sql:6117
+#: 950.data.seed-values.sql:6141
 msgid "Ossetic"
 msgstr "Osetština"
 
-#: 950.data.seed-values.sql:6008
+#: 950.data.seed-values.sql:6032
 msgid "Khoisan (Other)"
 msgstr "Khoisanské jazyky (ostatní)"
 
-#: 950.data.seed-values.sql:6139
+#: 950.data.seed-values.sql:6163
 msgid "Rajasthani"
 msgstr "Rádžasthánština"
 
-#: 950.data.seed-values.sql:6103
+#: 950.data.seed-values.sql:6127
 msgid "Old Norse"
 msgstr "Norština, stará"
 
-#: 950.data.seed-values.sql:2394
+#: 950.data.seed-values.sql:2426
 msgid "Stacks"
 msgstr "Regály"
 
-#: 950.data.seed-values.sql:5959
+#: 950.data.seed-values.sql:5983
 msgid "Hausa"
 msgstr "Hauština"
 
-#: 950.data.seed-values.sql:4843
+#: 950.data.seed-values.sql:4867
 msgid "Cancel Holds"
 msgstr "Zrušit rezervace"
 
-#: 950.data.seed-values.sql:5810
+#: 950.data.seed-values.sql:5834
 msgid "Mapuche"
 msgstr "Mapuche (araukánština)"
 
@@ -1599,27 +1635,27 @@ msgstr "Mapuche (araukánština)"
 msgid "Set"
 msgstr "Sada"
 
-#: 950.data.seed-values.sql:6078
+#: 950.data.seed-values.sql:6102
 msgid "Moldavian"
 msgstr "Moldavština"
 
-#: 950.data.seed-values.sql:9968
+#: 950.data.seed-values.sql:10051
 msgid "Established Heading Linking Entry -- Topical Term"
 msgstr "Záznam odkazující na systemizované záhlaví -- věcný termín"
 
-#: 950.data.seed-values.sql:9940
-msgid "Heading -- Corporate Name"
-msgstr "Záhlaví - název korporace"
+#: 950.data.seed-values.sql:6363
+msgid "U-matic"
+msgstr "U-matic"
 
 #: 950.data.seed-values.sql:117
 msgid "Translated Title"
 msgstr "Přeložený název"
 
-#: 950.data.seed-values.sql:6024
+#: 950.data.seed-values.sql:6048
 msgid "Kumyk"
 msgstr "Kumyčtina"
 
-#: 950.data.seed-values.sql:4770
+#: 950.data.seed-values.sql:4794
 msgid "Edition"
 msgstr "Vydání"
 
@@ -1631,7 +1667,7 @@ msgstr "Oboustranná kniha"
 msgid "Patron has an invalid address"
 msgstr "Čtenář má neplatnou adresu"
 
-#: 950.data.seed-values.sql:5818
+#: 950.data.seed-values.sql:5842
 msgid "Avaric"
 msgstr "Avarština"
 
@@ -1639,7 +1675,7 @@ msgstr "Avarština"
 msgid "Patron exceeds max checked out item threshold"
 msgstr "Čtenář překročil maximální povolený počet výpůjček"
 
-#: 950.data.seed-values.sql:6242
+#: 950.data.seed-values.sql:6266
 msgid "Uighur"
 msgstr "Ujgurština"
 
@@ -1647,15 +1683,15 @@ msgstr "Ujgurština"
 msgid "LC Control Number"
 msgstr "Kontrolní číslo Kongresové knihovny"
 
-#: 950.data.seed-values.sql:1570
+#: 950.data.seed-values.sql:1602
 msgid "Can do anything at the Branch level"
 msgstr "Může dělat cokoliv na úrovni pobočky"
 
-#: 950.data.seed-values.sql:11424
+#: 950.data.seed-values.sql:11544
 msgid "Login via gateway-v1"
 msgstr "Přihlášení prostřednictvím brány-v1"
 
-#: 950.data.seed-values.sql:5945
+#: 950.data.seed-values.sql:5969
 msgid "German, Middle High (ca. 1050-1500)"
 msgstr "Němčina, horní, střední doba (cca 1050-1500)"
 
@@ -1663,33 +1699,33 @@ msgstr "Němčina, horní, střední doba (cca 1050-1500)"
 # id::vqbrad.description__5
 #: 950.data.seed-values.sql:152 950.data.seed-values.sql:362
 #: 950.data.seed-values.sql:383 950.data.seed-values.sql:402
-#: 950.data.seed-values.sql:4761
+#: 950.data.seed-values.sql:4785
 msgid "ISBN"
 msgstr "ISBN"
 
-#: 950.data.seed-values.sql:6054
+#: 950.data.seed-values.sql:6078
 msgid "Maithili"
 msgstr "Maithilština"
 
-#: 950.data.seed-values.sql:1559
+#: 950.data.seed-values.sql:1591
 msgid "Circulators"
 msgstr "Díla určená k půjčování"
 
-#: 950.data.seed-values.sql:9949
+#: 950.data.seed-values.sql:10032
 msgid "Heading -- Chronological Term"
 msgstr "Záhlaví -- chronologický termín"
 
-#: 950.data.seed-values.sql:6205
+#: 950.data.seed-values.sql:6229
 msgid "Tai (Other)"
 msgstr "Thajské jazyky (ostatní)"
 
 # id::clm.value__tpi
-#: 950.data.seed-values.sql:6226
+#: 950.data.seed-values.sql:6250
 msgid "Tok Pisin"
 msgstr "Tok Pisin"
 
 # id::clm.value__jpn
-#: 950.data.seed-values.sql:5992
+#: 950.data.seed-values.sql:6016
 msgid "Japanese"
 msgstr "Japonština"
 
@@ -1697,7 +1733,7 @@ msgstr "Japonština"
 msgid "Topic Subject"
 msgstr "Věcné téma"
 
-#: 950.data.seed-values.sql:10065
+#: 950.data.seed-values.sql:10148
 msgid "Repertoire de vedettes-matiere"
 msgstr "Adresář předmětových hesel"
 
@@ -1706,93 +1742,94 @@ msgid "Patron exceeds max overdue item threshold"
 msgstr "čtenář překročil maximální povolený limit pokut"
 
 # id::cit.name__3
-#: 950.data.seed-values.sql:240 950.data.seed-values.sql:10066
+#: 950.data.seed-values.sql:240 950.data.seed-values.sql:6379
+#: 950.data.seed-values.sql:10149
 msgid "Other"
 msgstr "Ostatní"
 
-#: 950.data.seed-values.sql:6127
+#: 950.data.seed-values.sql:6151
 msgid "Old Persian (ca. 600-400 B.C.)"
 msgstr "Perština, stará (cca 600-400 př. Kr.)"
 
-#: 950.data.seed-values.sql:9962
+#: 950.data.seed-values.sql:10045
 msgid "See Also From Tracing -- Chronological Term"
 msgstr "Viz také z dohledávání -- chronologický termín"
 
-#: 950.data.seed-values.sql:6290
+#: 950.data.seed-values.sql:6314
 msgid "Two-dimensional nonprojectable graphic"
 msgstr "Dvojrozměrná neprojekční grafika"
 
-#: 950.data.seed-values.sql:5828
+#: 950.data.seed-values.sql:5852
 msgid "Balinese"
 msgstr "Balijština"
 
-#: 950.data.seed-values.sql:8795 950.data.seed-values.sql:8796
+#: 950.data.seed-values.sql:8871 950.data.seed-values.sql:8872
 msgid "Historical Circulation Retention Start Date"
 msgstr "Počáteční datum uchovávání historických výpůjček"
 
-#: 950.data.seed-values.sql:6221
+#: 950.data.seed-values.sql:6245
 msgid "Tokelauan"
 msgstr "Tokelauština"
 
-#: 950.data.seed-values.sql:5895
+#: 950.data.seed-values.sql:5919
 msgid "Dogri"
 msgstr "Dógrí"
 
 # id::pgt.name__1
-#: 950.data.seed-values.sql:1551
+#: 950.data.seed-values.sql:1583
 msgid "Users"
 msgstr "Uživatelé"
 
-#: 950.data.seed-values.sql:6037
+#: 950.data.seed-values.sql:6061
 msgid "Limburgish"
 msgstr "Limburština"
 
-#: 950.data.seed-values.sql:5903
+#: 950.data.seed-values.sql:5927
 msgid "Egyptian"
 msgstr "Egyptština"
 
-#: 950.data.seed-values.sql:1578
+#: 950.data.seed-values.sql:1610
 msgid "Global Administrator"
 msgstr "Globální administrátor"
 
-#: 950.data.seed-values.sql:6239
+#: 950.data.seed-values.sql:6263
 msgid "Tuvinian"
 msgstr "Tuvština"
 
-#: 950.data.seed-values.sql:2465
+#: 950.data.seed-values.sql:2498
 msgid "Credit Card Processing"
 msgstr "Zpracování kreditní karty"
 
-#: 950.data.seed-values.sql:6292
+#: 950.data.seed-values.sql:6316
 msgid "Kit"
 msgstr "Souprava/soubor"
 
-#: 950.data.seed-values.sql:8647
+#: 950.data.seed-values.sql:8723
 msgid "Processing Fee"
 msgstr "Poplatek za zpracování"
 
-#: 950.data.seed-values.sql:6081
+#: 950.data.seed-values.sql:6105
 msgid "Multiple languages"
 msgstr "Více jazyků"
 
-#: 950.data.seed-values.sql:6073
+#: 950.data.seed-values.sql:6097
 msgid "Maltese"
 msgstr "Maltština"
 
-#: 950.data.seed-values.sql:5814
+#: 950.data.seed-values.sql:5838
 msgid "Assamese"
 msgstr "Asámština"
 
-#: 950.data.seed-values.sql:9238
+#: 950.data.seed-values.sql:9314
 msgid "Import failed due to Accession Number collision"
 msgstr "Import se nezdařil kvůli kolizi přístupového čísla"
 
-#: 950.data.seed-values.sql:6291
+#: 950.data.seed-values.sql:6315
 msgid "Three-dimensional artifact or naturally occurring object"
 msgstr "Trojrozměrný předmět či přírodní objekt"
 
 # id::vqbrad.description__8
-#: 950.data.seed-values.sql:150 950.data.seed-values.sql:4764
+#: 950.data.seed-values.sql:150 950.data.seed-values.sql:4788
 msgid "Accession Number"
 msgstr "Přírůstkové číslo"
 
@@ -1800,7 +1837,7 @@ msgstr "Přírůstkové číslo"
 msgid "All Subjects"
 msgstr "Všechna témata"
 
-#: 950.data.seed-values.sql:6229 950.data.seed-values.sql:6231
+#: 950.data.seed-values.sql:6253 950.data.seed-values.sql:6255
 msgid "Tswana"
 msgstr "Tswanština (čwanština)"
 
@@ -1808,7 +1845,7 @@ msgstr "Tswanština (čwanština)"
 msgid "overdue_equip_mid"
 msgstr "zpoždění_vybavení_střední"
 
-#: 950.data.seed-values.sql:5875
+#: 950.data.seed-values.sql:5899
 msgid "Coptic"
 msgstr "Koptština"
 
@@ -1816,24 +1853,24 @@ msgstr "Koptština"
 msgid "overdue_equip_min"
 msgstr "zpoždění_vybavení_minimální"
 
-#: 950.data.seed-values.sql:6042
+#: 950.data.seed-values.sql:6066
 msgid "Letzeburgesch"
 msgstr "Lucemburština"
 
-#: 950.data.seed-values.sql:5924 950.data.seed-values.sql:5927
+#: 950.data.seed-values.sql:5948 950.data.seed-values.sql:5951
 msgid "Frisian"
 msgstr "Fríština"
 
-#: 950.data.seed-values.sql:6085
+#: 950.data.seed-values.sql:6109
 msgid "Mayan languages"
 msgstr "Mayské jazyky"
 
 # id::clm.value__por
-#: 950.data.seed-values.sql:6134
+#: 950.data.seed-values.sql:6158
 msgid "Portuguese"
 msgstr "Portugalština"
 
-#: 950.data.seed-values.sql:5790
+#: 950.data.seed-values.sql:5814
 msgid "Achinese"
 msgstr "Aceh(ština)"
 
@@ -1841,15 +1878,15 @@ msgstr "Aceh(ština)"
 msgid "Drivers License"
 msgstr "Občanský průkaz"
 
-#: 950.data.seed-values.sql:9971
+#: 950.data.seed-values.sql:10054
 msgid "Subdivision Linking Entry -- General Subdivision"
 msgstr "Záznam odkazující na podrozdělení -- všeobecné podrozdělení"
 
-#: 950.data.seed-values.sql:6212
+#: 950.data.seed-values.sql:6236
 msgid "Terena"
 msgstr "Tereno"
 
-#: 950.data.seed-values.sql:5819
+#: 950.data.seed-values.sql:5843
 msgid "Avestan"
 msgstr "Avestský jazyk"
 
@@ -1857,31 +1894,35 @@ msgstr "Avestský jazyk"
 msgid "SICI"
 msgstr "SICI"
 
-#: 950.data.seed-values.sql:6068
+#: 950.data.seed-values.sql:6092
 msgid "Minangkabau"
 msgstr "Minangkabau"
 
-#: 950.data.seed-values.sql:5964
+#: 950.data.seed-values.sql:6365
+msgid "Type C"
+msgstr "Videopáska - typ C"
+
+#: 950.data.seed-values.sql:5988
 msgid "Himachali"
 msgstr "Himáčalí"
 
-#: 950.data.seed-values.sql:11443
+#: 950.data.seed-values.sql:11563
 msgid "Self-Check Proxy Login"
 msgstr "Samoobslužné výpůjčky - proxy přihlášení"
 
-#: 950.data.seed-values.sql:6332
+#: 950.data.seed-values.sql:6356
 msgid "Integrating resource"
 msgstr "Integrující zdroj"
 
-#: 950.data.seed-values.sql:6271
+#: 950.data.seed-values.sql:6295
 msgid "Zande"
 msgstr "Zandština"
 
-#: 950.data.seed-values.sql:5926
+#: 950.data.seed-values.sql:5950
 msgid "French, Old (ca. 842-1400)"
 msgstr "Francouzština, stará (cca 842-1400)"
 
-#: 950.data.seed-values.sql:6170
+#: 950.data.seed-values.sql:6194
 msgid "Sino-Tibetan (Other)"
 msgstr "Sinotibetské jazyky (ostatní)"
 
@@ -1890,15 +1931,15 @@ msgid "Bound Volume"
 msgstr "Svázaný ročník"
 
 # id::clm.value__-eth id::clm.value__gez
-#: 950.data.seed-values.sql:5912 950.data.seed-values.sql:5939
+#: 950.data.seed-values.sql:5936 950.data.seed-values.sql:5963
 msgid "Ethiopic"
 msgstr "Etiopština"
 
-#: 950.data.seed-values.sql:9931
+#: 950.data.seed-values.sql:10014
 msgid "Heading -- Uniform Title"
 msgstr "Záhlaví -- unifikovaný náze"
 
-#: 950.data.seed-values.sql:6174
+#: 950.data.seed-values.sql:6198
 msgid "Southern Sami"
 msgstr "Sami jazyky, jižní"
 
@@ -1906,28 +1947,28 @@ msgstr "Sami jazyky, jižní"
 msgid "Discard/Weed"
 msgstr "Stáhnout/vyřadit"
 
-#: 950.data.seed-values.sql:2460
+#: 950.data.seed-values.sql:2493
 msgid "Self Check"
 msgstr "Samoobslužná výpůjčka"
 
-#: 950.data.seed-values.sql:5876
+#: 950.data.seed-values.sql:5900
 msgid "Cornish"
 msgstr "Kornština"
 
 # id::clm.value__bul
-#: 950.data.seed-values.sql:5850
+#: 950.data.seed-values.sql:5874
 msgid "Bulgarian"
 msgstr "Bulharština"
 
-#: 950.data.seed-values.sql:6142
+#: 950.data.seed-values.sql:6166
 msgid "Romance (Other)"
 msgstr "Románské jazyky (ostatní)"
 
-#: 950.data.seed-values.sql:6266
+#: 950.data.seed-values.sql:6290
 msgid "Yoruba"
 msgstr "Jorubština"
 
-#: 950.data.seed-values.sql:5813
+#: 950.data.seed-values.sql:5837
 msgid "Arawak"
 msgstr "Arawacké jazyky"
 
@@ -1936,28 +1977,32 @@ msgid "Long Overdue Collection Fee"
 msgstr "Poplatek za dlouhé překročení výpůjční lhůty"
 
 # id::clm.value__fre
-#: 950.data.seed-values.sql:5923
+#: 950.data.seed-values.sql:5947
 msgid "French"
 msgstr "Francouzština"
 
-#: 950.data.seed-values.sql:6224
+#: 950.data.seed-values.sql:6248
 msgid "Tonga (Nyasa)"
 msgstr "Tongština (nyasa)"
 
 # id::clm.value__ben
-#: 950.data.seed-values.sql:5835
+#: 950.data.seed-values.sql:5859
 msgid "Bengali"
 msgstr "Bengálština"
 
-#: 950.data.seed-values.sql:5830
+#: 950.data.seed-values.sql:6375
+msgid "Hi-8 mm."
+msgstr "Hi-8 mm."
+
+#: 950.data.seed-values.sql:5854
 msgid "Basa"
 msgstr "Basa"
 
-#: 950.data.seed-values.sql:6314
+#: 950.data.seed-values.sql:6338
 msgid "Speeches"
 msgstr "Projevy"
 
-#: 950.data.seed-values.sql:9970
+#: 950.data.seed-values.sql:10053
 msgid "Established Heading Linking Entry -- Genre/Form Term"
 msgstr "Záznam odkazující na systemizované záhlaví -- termín žánru/formy"
 
@@ -1967,36 +2012,36 @@ msgid "Paperback Book"
 msgstr "Brožovaná kniha"
 
 # id::clm.value__nap
-#: 950.data.seed-values.sql:6088
+#: 950.data.seed-values.sql:6112
 msgid "Neapolitan Italian"
 msgstr "Neapolská italština"
 
-#: 950.data.seed-values.sql:1573
+#: 950.data.seed-values.sql:1605
 msgid "Serials (includes admin features)"
 msgstr "Seriály (včetně administrátorských funkcí)"
 
-#: 950.data.seed-values.sql:9954
+#: 950.data.seed-values.sql:10037
 msgid "See Also From Tracing -- Meeting Name"
 msgstr "Viz také z dohledávání -- název akce"
 
-#: 950.data.seed-values.sql:6196
+#: 950.data.seed-values.sql:6220
 msgid "Sundanese"
 msgstr "Sundština"
 
 # id::clm.value__alb
-#: 950.data.seed-values.sql:5800
+#: 950.data.seed-values.sql:5824
 msgid "Albanian"
 msgstr "Albánština"
 
-#: 950.data.seed-values.sql:4842
+#: 950.data.seed-values.sql:4866
 msgid "View Holds"
 msgstr "Zobrazit rezervace"
 
-#: 950.data.seed-values.sql:6116
+#: 950.data.seed-values.sql:6140
 msgid "Osage"
 msgstr "Osage"
 
-#: 950.data.seed-values.sql:4766
+#: 950.data.seed-values.sql:4790
 msgid "TCN Source"
 msgstr "Zdroj kontrolního čísla záznamu (TCN)"
 
@@ -2004,37 +2049,37 @@ msgstr "Zdroj kontrolního čísla záznamu (TCN)"
 msgid "Temporal Subject"
 msgstr "Časové téma"
 
-#: 950.data.seed-values.sql:6203 950.data.seed-values.sql:6215
+#: 950.data.seed-values.sql:6227 950.data.seed-values.sql:6239
 msgid "Tagalog"
 msgstr "Tagalština"
 
 # id::clm.value__scc
-#: 950.data.seed-values.sql:6158
+#: 950.data.seed-values.sql:6182
 msgid "Serbian"
 msgstr "Srbština"
 
-#: 950.data.seed-values.sql:9987
+#: 950.data.seed-values.sql:10070
 msgid "See Also Tracing -- Form Subdivision"
 msgstr "Viz také dohledávání -- podrozdělení  podle formy"
 
-#: 950.data.seed-values.sql:5815
+#: 950.data.seed-values.sql:5839
 msgid "Bable"
 msgstr "Bable"
 
-#: 950.data.seed-values.sql:6331
+#: 950.data.seed-values.sql:6355
 msgid "Subunit"
 msgstr "Dílčí jednotka"
 
 # id::clm.value__ita
-#: 950.data.seed-values.sql:5990
+#: 950.data.seed-values.sql:6014
 msgid "Italian"
 msgstr "Italština"
 
-#: 950.data.seed-values.sql:11446
+#: 950.data.seed-values.sql:11566
 msgid "LibraryElf Login"
 msgstr "Elf přihlášení do knihovny"
 
-#: 950.data.seed-values.sql:5861
+#: 950.data.seed-values.sql:5885
 msgid "Chibcha"
 msgstr "Čibča"
 
@@ -2042,32 +2087,32 @@ msgstr "Čibča"
 msgid "Example Sub-library 1"
 msgstr "Vzorová dílčí knihovna 1"
 
-#: 950.data.seed-values.sql:6090
+#: 950.data.seed-values.sql:6114
 msgid "Navajo"
 msgstr "Navahština (navaho)"
 
-#: 950.data.seed-values.sql:6076
+#: 950.data.seed-values.sql:6100
 msgid "Manobo languages"
 msgstr "Manobo jazyky"
 
-#: 950.data.seed-values.sql:5860
+#: 950.data.seed-values.sql:5884
 msgid "Chamorro"
 msgstr "Čamoro"
 
-#: 950.data.seed-values.sql:6043
+#: 950.data.seed-values.sql:6067
 msgid "Luba-Lulua"
 msgstr "Luba-luluaština"
 
 # id::pgt.name__4
-#: 950.data.seed-values.sql:1557
+#: 950.data.seed-values.sql:1589
 msgid "Catalogers"
 msgstr "Katalogizátoři"
 
-#: 950.data.seed-values.sql:6253
+#: 950.data.seed-values.sql:6277
 msgid "Wakashan languages"
 msgstr "Wakashské jazyky"
 
-#: 950.data.seed-values.sql:5803
+#: 950.data.seed-values.sql:5827
 msgid "Amharic"
 msgstr "Amharština"
 
@@ -2080,43 +2125,43 @@ msgstr "standardní"
 msgid "Overdue Materials"
 msgstr "Exempláře s překročenou výpůjční lhůtou"
 
-#: 950.data.seed-values.sql:6206 950.data.seed-values.sql:6214
+#: 950.data.seed-values.sql:6230 950.data.seed-values.sql:6238
 msgid "Tajik"
 msgstr "Tadžičtina"
 
-#: 950.data.seed-values.sql:6140
+#: 950.data.seed-values.sql:6164
 msgid "Rapanui"
 msgstr "Rapanuiština"
 
-#: 950.data.seed-values.sql:6246
+#: 950.data.seed-values.sql:6270
 msgid "Urdu"
 msgstr "Urdština"
 
-#: 950.data.seed-values.sql:9252
+#: 950.data.seed-values.sql:9328
 msgid "Invalid value for \"circ_lib\""
 msgstr "Neplatná hodnota pro \"circ_lib\" (výpůjční knihovna)"
 
-#: 950.data.seed-values.sql:10057
+#: 950.data.seed-values.sql:10140
 msgid "Library of Congress Subject Headings"
 msgstr "Věcné třídění kongresové knihovny"
 
-#: 950.data.seed-values.sql:6041
+#: 950.data.seed-values.sql:6065
 msgid "Lozi"
 msgstr "Lozština"
 
-#: 950.data.seed-values.sql:9960
+#: 950.data.seed-values.sql:10043
 msgid "See Also From Tracing -- Chronological Subdivision"
 msgstr "Viz také z dohledávání -- chronologické podrozdělení"
 
-#: 950.data.seed-values.sql:5948
+#: 950.data.seed-values.sql:5972
 msgid "Gorontalo"
 msgstr "Gorontalo"
 
-#: 950.data.seed-values.sql:9967
-msgid "Established Heading Linking Entry -- Meeting Name"
-msgstr "Záznam odkazující na systemizované záhlaví -- název akce"
+#: 950.data.seed-values.sql:10023
+msgid "Heading -- Corporate Name"
+msgstr "Záhlaví - název korporace"
 
-#: 950.data.seed-values.sql:5863
+#: 950.data.seed-values.sql:5887
 msgid "Chagatai"
 msgstr "Čagatajština"
 
@@ -2124,7 +2169,7 @@ msgstr "Čagatajština"
 msgid "28_days_0_renew"
 msgstr "28_dní_0_prodloužení"
 
-#: 950.data.seed-values.sql:308 950.data.seed-values.sql:2457
+#: 950.data.seed-values.sql:308 950.data.seed-values.sql:2490
 msgid "Cataloging"
 msgstr "Katalogizace"
 
@@ -2132,11 +2177,11 @@ msgstr "Katalogizace"
 msgid "3_days_1_renew"
 msgstr "3_dní_1_prodloužení"
 
-#: 950.data.seed-values.sql:5812
+#: 950.data.seed-values.sql:5836
 msgid "Artificial (Other)"
 msgstr "Umělé jazyky (ostatní)"
 
-#: 950.data.seed-values.sql:6097
+#: 950.data.seed-values.sql:6121
 msgid "Nias"
 msgstr "Nias"
 
@@ -2144,7 +2189,7 @@ msgstr "Nias"
 msgid "Damaged Item Processing Fee"
 msgstr "Poplatek za zpracování poškozeného exempláře"
 
-#: 950.data.seed-values.sql:4765
+#: 950.data.seed-values.sql:4789
 msgid "TCN Value"
 msgstr "Hodnota kontrolního čísla záznamu (TCN)"
 
@@ -2152,7 +2197,7 @@ msgstr "Hodnota kontrolního čísla záznamu (TCN)"
 msgid "Patron exceeds pre-collections warning fine threshold"
 msgstr "Čtenář překročil maximální povolené pokuty předběžných kolekcí"
 
-#: 950.data.seed-values.sql:5873
+#: 950.data.seed-values.sql:5897
 msgid "Cheyenne"
 msgstr "Čejenština"
 
@@ -2160,28 +2205,28 @@ msgstr "Čejenština"
 msgid "Bilingual"
 msgstr "Dvojjazyčný"
 
-#: 950.data.seed-values.sql:5922
+#: 950.data.seed-values.sql:5946
 msgid "Fon"
 msgstr "Fonština"
 
-#: 950.data.seed-values.sql:5820
+#: 950.data.seed-values.sql:5844
 msgid "Awadhi"
 msgstr "Avadhština (avadhí)"
 
-#: 950.data.seed-values.sql:5881
+#: 950.data.seed-values.sql:5905
 msgid "Cree"
 msgstr "Cree"
 
-#: 950.data.seed-values.sql:6119
+#: 950.data.seed-values.sql:6143
 msgid "Otomian languages"
 msgstr "Osmanské jazyky"
 
-#: 950.data.seed-values.sql:6108
+#: 950.data.seed-values.sql:6132
 msgid "Nyamwezi"
 msgstr "Ňamwežština"
 
 # id::clm.value__ind
-#: 950.data.seed-values.sql:5982
+#: 950.data.seed-values.sql:6006
 msgid "Indonesian"
 msgstr "Indonéština"
 
@@ -2190,62 +2235,62 @@ msgstr "Indonéština"
 msgid "Good"
 msgstr "Dobrý"
 
-#: 950.data.seed-values.sql:5891
+#: 950.data.seed-values.sql:5915
 msgid "Slave"
 msgstr "Otrok"
 
-#: 950.data.seed-values.sql:6241
+#: 950.data.seed-values.sql:6265
 msgid "Ugaritic"
 msgstr "Ugaritština"
 
-#: 950.data.seed-values.sql:5960
+#: 950.data.seed-values.sql:5984
 msgid "Hawaiian"
 msgstr "Havajština"
 
 # id::clm.value__mac
-#: 950.data.seed-values.sql:6050
+#: 950.data.seed-values.sql:6074
 msgid "Macedonian"
 msgstr "Makedonština"
 
-#: 950.data.seed-values.sql:6167
+#: 950.data.seed-values.sql:6191
 msgid "Sidamo"
 msgstr "Sidamo"
 
-#: 950.data.seed-values.sql:6136
+#: 950.data.seed-values.sql:6160
 msgid "Provençal (to 1500)"
 msgstr "Provensálština, stará (do 1500)"
 
-#: 950.data.seed-values.sql:4837
+#: 950.data.seed-values.sql:4861
 msgid "List Published Book Bags"
 msgstr "Vypsat zveřejněné seznamy knih"
 
-#: 950.data.seed-values.sql:6168 950.data.seed-values.sql:6183
+#: 950.data.seed-values.sql:6192 950.data.seed-values.sql:6207
 msgid "Sinhalese"
 msgstr "Sinhálština"
 
-#: 950.data.seed-values.sql:5792
+#: 950.data.seed-values.sql:5816
 msgid "Adangme"
 msgstr "Adangme"
 
-#: 950.data.seed-values.sql:6216
+#: 950.data.seed-values.sql:6240
 msgid "Thai"
 msgstr "Thajština"
 
 # id::clm.value__afr
-#: 950.data.seed-values.sql:5796
+#: 950.data.seed-values.sql:5820
 msgid "Afrikaans"
 msgstr "Afrikánština"
 
-#: 950.data.seed-values.sql:9965
+#: 950.data.seed-values.sql:10048
 msgid "Established Heading Linking Entry -- Personal Name"
 msgstr "Záznam odkazující na systemizované záhlaví -- osobní jméno"
 
-#: 950.data.seed-values.sql:6287
+#: 950.data.seed-values.sql:6311
 msgid "Language material"
 msgstr "Textový dokument"
 
 # id::vqbrad.description__4
-#: 950.data.seed-values.sql:4760
+#: 950.data.seed-values.sql:4784
 msgid "Pagination"
 msgstr "Stránkování"
 
@@ -2253,24 +2298,24 @@ msgstr "Stránkování"
 msgid "Damaged Item"
 msgstr "Poškozený exemplář"
 
-#: 950.data.seed-values.sql:6247
+#: 950.data.seed-values.sql:6271
 msgid "Uzbek"
 msgstr "Uzbečtina"
 
 # id::clm.value__kru
-#: 950.data.seed-values.sql:6022
+#: 950.data.seed-values.sql:6046
 msgid "Kurukh"
 msgstr "Kurukh"
 
-#: 950.data.seed-values.sql:5987
+#: 950.data.seed-values.sql:6011
 msgid "Iranian (Other)"
 msgstr "Íránské jazyky (ostatní)"
 
-#: 950.data.seed-values.sql:6269
+#: 950.data.seed-values.sql:6293
 msgid "Zenaga"
 msgstr "Zenaga"
 
-#: 950.data.seed-values.sql:5849
+#: 950.data.seed-values.sql:5873
 msgid "Bugis"
 msgstr "Bugiština"
 
@@ -2278,11 +2323,11 @@ msgstr "Bugiština"
 msgid "Reshelving"
 msgstr "Vráceno, dosud nezařazeno"
 
-#: 950.data.seed-values.sql:5851
+#: 950.data.seed-values.sql:5875
 msgid "Burmese"
 msgstr "Barmština"
 
-#: 950.data.seed-values.sql:5801
+#: 950.data.seed-values.sql:5825
 msgid "Aleut"
 msgstr "Aleutština"
 
@@ -2291,15 +2336,15 @@ msgid "e-Reader Preload"
 msgstr "Přednahrání pro čtečku e-knih"
 
 # id::vqarad.description__1
-#: 950.data.seed-values.sql:95 950.data.seed-values.sql:4821
+#: 950.data.seed-values.sql:95 950.data.seed-values.sql:4845
 msgid "Identifier"
 msgstr "Identifikátor"
 
-#: 950.data.seed-values.sql:11433
+#: 950.data.seed-values.sql:11553
 msgid "Verification via gateway-v1"
 msgstr "Ověření prostřednictvím brány-v1"
 
-#: 950.data.seed-values.sql:6038
+#: 950.data.seed-values.sql:6062
 msgid "Lingala"
 msgstr "Lingalština"
 
@@ -2307,7 +2352,7 @@ msgstr "Lingalština"
 msgid "System: Rental"
 msgstr "Systém: Pronájem"
 
-#: 950.data.seed-values.sql:11429
+#: 950.data.seed-values.sql:11549
 msgid "Login via Apache module"
 msgstr "Přihlášení prostřednictvím modulu Apache"
 
@@ -2315,88 +2360,88 @@ msgstr "Přihlášení prostřednictvím modulu Apache"
 msgid "Checked out"
 msgstr "Vypůjčeno"
 
-#: 950.data.seed-values.sql:6047
+#: 950.data.seed-values.sql:6071
 msgid "Lunda"
 msgstr "Lundština"
 
-#: 950.data.seed-values.sql:6080
+#: 950.data.seed-values.sql:6104
 msgid "Mooré"
 msgstr "Mosi (more)"
 
-#: 950.data.seed-values.sql:5808
+#: 950.data.seed-values.sql:5832
 msgid "Aragonese Spanish"
 msgstr "Aragonská španělština"
 
 # id::cam.value__b
-#: 950.data.seed-values.sql:6278
+#: 950.data.seed-values.sql:6302
 msgid "Primary"
 msgstr "Primární"
 
 # id::clm.value__mis
-#: 950.data.seed-values.sql:6069
+#: 950.data.seed-values.sql:6093
 msgid "Miscellaneous languages"
 msgstr "Různé jazyky"
 
 # id::clm.value__lui
-#: 950.data.seed-values.sql:6046
+#: 950.data.seed-values.sql:6070
 msgid "Luiseño"
 msgstr "Luiseño"
 
-#: 950.data.seed-values.sql:6202
+#: 950.data.seed-values.sql:6226
 msgid "Syriac"
 msgstr "Syrština"
 
-#: 950.data.seed-values.sql:6001
+#: 950.data.seed-values.sql:6025
 msgid "Karen"
 msgstr "Karenština"
 
-#: 950.data.seed-values.sql:5951
+#: 950.data.seed-values.sql:5975
 msgid "Greek, Ancient (to 1453)"
 msgstr "Řečtina, starověká (do 1453)"
 
-#: 950.data.seed-values.sql:5929
+#: 950.data.seed-values.sql:5953
 msgid "Friulian"
 msgstr "Friulština (furlanština)"
 
-#: 950.data.seed-values.sql:6110
+#: 950.data.seed-values.sql:6134
 msgid "Nyoro"
 msgstr "Nyorština"
 
-#: 950.data.seed-values.sql:4833
+#: 950.data.seed-values.sql:4857
 msgid "Template Merge Container"
 msgstr "Kontejner pro sloučení šablon"
 
-#: 950.data.seed-values.sql:5846
+#: 950.data.seed-values.sql:5870
 msgid "Breton"
 msgstr "Bretonština"
 
-#: 950.data.seed-values.sql:9956
+#: 950.data.seed-values.sql:10039
 msgid "See Also From Tracing -- Geographic Name"
 msgstr "Viz také z dohledávání -- geografické jméno"
 
 # id::clm.value__-gae id::clm.value__gla
-#: 950.data.seed-values.sql:5931 950.data.seed-values.sql:5941
+#: 950.data.seed-values.sql:5955 950.data.seed-values.sql:5965
 msgid "Scottish Gaelic"
 msgstr "Skotská gaelština"
 
 # id::clm.value__tur
-#: 950.data.seed-values.sql:6235
+#: 950.data.seed-values.sql:6259
 msgid "Turkish"
 msgstr "Turečtina"
 
-#: 950.data.seed-values.sql:9975
-msgid "Established Heading Linking Entry -- Chronological Term"
-msgstr "Záznam odkazující na systemizované záhlaví -- chronologický termín"
+#: 950.data.seed-values.sql:6378
+msgid "DVD"
+msgstr "DVD"
 
 #: 950.data.seed-values.sql:307
 msgid "ILL"
 msgstr "Meziknihovní výpůjční služba"
 
-#: 950.data.seed-values.sql:5890
+#: 950.data.seed-values.sql:5914
 msgid "Delaware"
 msgstr "Delaware"
 
-#: 950.data.seed-values.sql:6255
+#: 950.data.seed-values.sql:6279
 msgid "Waray"
 msgstr "Waray"
 
@@ -2408,35 +2453,39 @@ msgstr "Konsorcium"
 msgid "Alerting block on Circ, Hold and Renew"
 msgstr "Upozornění s blokací výpůjček, rezervací a prodloužení"
 
-#: 950.data.seed-values.sql:6184
+#: 950.data.seed-values.sql:6208
 msgid "Soninke"
 msgstr "Sonikština"
 
-#: 950.data.seed-values.sql:9955
+#: 950.data.seed-values.sql:10038
 msgid "See Also From Tracing -- Topical Term"
 msgstr "Viz také z dohledávání -- tematický termín"
 
-#: 950.data.seed-values.sql:6268
+#: 950.data.seed-values.sql:6292
 msgid "Zapotec"
 msgstr "Zapotéčtina"
 
-#: 950.data.seed-values.sql:5967
+#: 950.data.seed-values.sql:5991
 msgid "Hmong"
 msgstr "Hmongština"
 
-#: 950.data.seed-values.sql:9925
+#: 950.data.seed-values.sql:6380
+msgid "Unspecified"
+msgstr "Nespecifikováno"
+
+#: 950.data.seed-values.sql:10008
 msgid "LoC"
 msgstr "Kongr. kn."
 
-#: 950.data.seed-values.sql:5854 950.data.seed-values.sql:6009
+#: 950.data.seed-values.sql:5878 950.data.seed-values.sql:6033
 msgid "Khmer"
 msgstr "Khmérština"
 
-#: 950.data.seed-values.sql:5872
+#: 950.data.seed-values.sql:5896
 msgid "Chuvash"
 msgstr "Čuvaština"
 
-#: 950.data.seed-values.sql:5983
+#: 950.data.seed-values.sql:6007
 msgid "Indo-European (Other)"
 msgstr "Indo-evropské jazyky (ostatní)"
 
@@ -2449,24 +2498,24 @@ msgid "Lost Materials"
 msgstr "Ztracené dokumenty"
 
 # id::clm.value__lit
-#: 950.data.seed-values.sql:6039
+#: 950.data.seed-values.sql:6063
 msgid "Lithuanian"
 msgstr "Litevština"
 
-#: 950.data.seed-values.sql:6063
+#: 950.data.seed-values.sql:6087
 msgid "Malay"
 msgstr "Malajština"
 
-#: 950.data.seed-values.sql:5998
+#: 950.data.seed-values.sql:6022
 msgid "Kalâtdlisut"
 msgstr "Kalmyčtina"
 
-#: 950.data.seed-values.sql:6273
+#: 950.data.seed-values.sql:6297
 msgid "Zuni"
 msgstr "Zunijština"
 
 # id::citm.value__f
-#: 950.data.seed-values.sql:6295
+#: 950.data.seed-values.sql:6319
 msgid "Manuscript cartographic material"
 msgstr "Rukopisný kartografický dokument"
 
@@ -2475,7 +2524,7 @@ msgid "Geographic Subject"
 msgstr "Geografické téma"
 
 # id::clm.value__iba
-#: 950.data.seed-values.sql:5971
+#: 950.data.seed-values.sql:5995
 msgid "Iban"
 msgstr "Iban"
 
@@ -2489,48 +2538,52 @@ msgid "Notification Fee"
 msgstr "Poplatek za upozornění"
 
 # id::clm.value__scr
-#: 950.data.seed-values.sql:6160
+#: 950.data.seed-values.sql:6184
 msgid "Croatian"
 msgstr "Chorvatština"
 
-#: 950.data.seed-values.sql:5858
+#: 950.data.seed-values.sql:5882
 msgid "Cebuano"
 msgstr "Cebuánština"
 
-#: 950.data.seed-values.sql:1576
+#: 950.data.seed-values.sql:1608
 msgid "Can do anything at the System level"
 msgstr "Může dělat cokoliv na úrovni systému"
 
 # id::clm.value__moh
-#: 950.data.seed-values.sql:6077
+#: 950.data.seed-values.sql:6101
 msgid "Mohawk"
 msgstr "Mohawk"
 
 # id::clm.value__dgr
-#: 950.data.seed-values.sql:5892
+#: 950.data.seed-values.sql:5916
 msgid "Dogrib"
 msgstr "Dogrib"
 
-#: 950.data.seed-values.sql:6251
+#: 950.data.seed-values.sql:6275
 msgid "Volapük"
 msgstr "Volapük"
 
-#: 950.data.seed-values.sql:6066
+#: 950.data.seed-values.sql:11554
+msgid "Verification via translator-v1"
+msgstr "Ověření prostřednictvím tránslátoru-v1"
+
+#: 950.data.seed-values.sql:6090
 msgid "Irish, Middle (ca. 1100-1550)"
 msgstr "Irština, střední doba (cca 1100-1550)"
 
 # id::citm.value__j
-#: 950.data.seed-values.sql:6299
+#: 950.data.seed-values.sql:6323
 msgid "Musical sound recording"
 msgstr "Hudební zvukový záznam"
 
 # id::clm.value__ukr
-#: 950.data.seed-values.sql:6243
+#: 950.data.seed-values.sql:6267
 msgid "Ukrainian"
 msgstr "Ukrajinština"
 
 # id::clm.value__sad
-#: 950.data.seed-values.sql:6148
+#: 950.data.seed-values.sql:6172
 msgid "Sandawe"
 msgstr "Sandawština"
 
@@ -2540,17 +2593,17 @@ msgid "OCLC"
 msgstr "OCLC"
 
 # id::clm.value__jav
-#: 950.data.seed-values.sql:5991
+#: 950.data.seed-values.sql:6015
 msgid "Javanese"
 msgstr "Javánština"
 
 # id::clm.value__bad
-#: 950.data.seed-values.sql:5823
+#: 950.data.seed-values.sql:5847
 msgid "Banda"
 msgstr "Banda"
 
 # id::vqbrad.description__2
-#: 950.data.seed-values.sql:4758
+#: 950.data.seed-values.sql:4782
 msgid "Author of work"
 msgstr "Autor díla"
 
@@ -2558,47 +2611,47 @@ msgstr "Autor díla"
 msgid "Misc"
 msgstr "Různé"
 
-#: 950.data.seed-values.sql:6236
+#: 950.data.seed-values.sql:6260
 msgid "Altaic (Other)"
 msgstr "Altajské jazyky (ostatní)"
 
 # id::clm.value__kan
-#: 950.data.seed-values.sql:6000
+#: 950.data.seed-values.sql:6024
 msgid "Kannada"
 msgstr "Kannadština"
 
-#: 950.data.seed-values.sql:5898
+#: 950.data.seed-values.sql:5922
 msgid "Dutch, Middle (ca. 1050-1350)"
 msgstr "Nizozemština, střední doba (cca 1050-1350)"
 
 # id::clm.value__per
-#: 950.data.seed-values.sql:6128
+#: 950.data.seed-values.sql:6152
 msgid "Persian"
 msgstr "Perština"
 
-#: 950.data.seed-values.sql:11445
+#: 950.data.seed-values.sql:11565
 msgid "Apache Auth Proxy Login"
 msgstr "Autorizace Apache - Proxy přihlášení"
 
 # id::clm.value__mon
-#: 950.data.seed-values.sql:6079
+#: 950.data.seed-values.sql:6103
 msgid "Mongolian"
 msgstr "Mongolština"
 
-#: 950.data.seed-values.sql:5868
+#: 950.data.seed-values.sql:5892
 msgid "Choctaw"
 msgstr "Choctawština"
 
 # id::clm.value__aym
-#: 950.data.seed-values.sql:5821
+#: 950.data.seed-values.sql:5845
 msgid "Aymara"
 msgstr "Ajmarština"
 
-#: 950.data.seed-values.sql:6151
+#: 950.data.seed-values.sql:6175
 msgid "South American Indian (Other)"
 msgstr "Jihoamerické indiánské jazyky (ostatní)"
 
-#: 950.data.seed-values.sql:9984
+#: 950.data.seed-values.sql:10067
 msgid "See Also Tracing -- General Subdivision"
 msgstr "Viz také dohledávání -- všeobecné podrozdělení"
 
@@ -2608,59 +2661,59 @@ msgid "Title Control Number"
 msgstr "Kontrolní číslo záznamu (TCN)"
 
 # id::clm.value__-sho id::clm.value__sna
-#: 950.data.seed-values.sql:6166 950.data.seed-values.sql:6181
+#: 950.data.seed-values.sql:6190 950.data.seed-values.sql:6205
 msgid "Shona"
 msgstr "Šonština"
 
 # id::clm.value__chp
-#: 950.data.seed-values.sql:5869
+#: 950.data.seed-values.sql:5893
 msgid "Chipewyan"
 msgstr "Chipewyan"
 
 # id::clm.value__cos
-#: 950.data.seed-values.sql:5877
+#: 950.data.seed-values.sql:5901
 msgid "Corsican"
 msgstr "Korsičtina"
 
-#: 950.data.seed-values.sql:9234
+#: 950.data.seed-values.sql:9310
 msgid "Import failed due to invalid copy location"
 msgstr "Import se nezdařil kvůli neplatnému umístění exempláře"
 
 # id::clm.value__kpe
-#: 950.data.seed-values.sql:6020
+#: 950.data.seed-values.sql:6044
 msgid "Kpelle"
 msgstr "Kpelle"
 
-#: 950.data.seed-values.sql:11437
+#: 950.data.seed-values.sql:11557
 msgid "SIP2 User Verification"
 msgstr "Uživatelské ověření SIP2"
 
-#: 950.data.seed-values.sql:6321
+#: 950.data.seed-values.sql:6345
 msgid "Microopaque"
 msgstr "Mikrokarta"
 
 # id::clm.value__som
-#: 950.data.seed-values.sql:6186
+#: 950.data.seed-values.sql:6210
 msgid "Somali"
 msgstr "Somálština"
 
-#: 950.data.seed-values.sql:5811
+#: 950.data.seed-values.sql:5835
 msgid "Arapaho"
 msgstr "Arapaho"
 
-#: 950.data.seed-values.sql:5836
+#: 950.data.seed-values.sql:5860
 msgid "Berber (Other)"
 msgstr "Berberské jazyky (ostatní)"
 
-#: 950.data.seed-values.sql:5867
+#: 950.data.seed-values.sql:5891
 msgid "Chinook jargon"
 msgstr "Chinook (činuk) pidžin"
 
-#: 950.data.seed-values.sql:5798
+#: 950.data.seed-values.sql:5822
 msgid "Akan"
 msgstr "Akan"
 
-#: 950.data.seed-values.sql:6049
+#: 950.data.seed-values.sql:6073
 msgid "Lushai"
 msgstr "Lušáí"
 
@@ -2669,65 +2722,65 @@ msgstr "Lušáí"
 msgid "English (US)"
 msgstr "Angličtina (US)"
 
-#: 950.data.seed-values.sql:6133
+#: 950.data.seed-values.sql:6157
 msgid "Ponape"
 msgstr "Pohnpeiština (ponape)"
 
-#: 950.data.seed-values.sql:1565
+#: 950.data.seed-values.sql:1597
 msgid "Cataloging Administrator"
 msgstr "Administrátor katalogizace"
 
 # id::clm.value__bla
-#: 950.data.seed-values.sql:5842
+#: 950.data.seed-values.sql:5866
 msgid "Siksika"
 msgstr "Siksika"
 
-#: 950.data.seed-values.sql:6094
+#: 950.data.seed-values.sql:6118
 msgid "Low German"
 msgstr "Němčina, dolní (plattdeutsch)"
 
 # id::clm.value__dar
-#: 950.data.seed-values.sql:5888
+#: 950.data.seed-values.sql:5912
 msgid "Dargwa"
 msgstr "Dargwa"
 
 # id::clfm.value__m
-#: 950.data.seed-values.sql:6312
+#: 950.data.seed-values.sql:6336
 msgid "Mixed forms"
 msgstr "Smíšené formy"
 
-#: 950.data.seed-values.sql:6185
+#: 950.data.seed-values.sql:6209
 msgid "Sogdian"
 msgstr "Soghdština"
 
-#: 950.data.seed-values.sql:6135
+#: 950.data.seed-values.sql:6159
 msgid "Prakrit languages"
 msgstr "Prákrty"
 
 # id::clm.value__gay
-#: 950.data.seed-values.sql:5934
+#: 950.data.seed-values.sql:5958
 msgid "Gayo"
 msgstr "Gayo"
 
-#: 950.data.seed-values.sql:9958
+#: 950.data.seed-values.sql:10041
 msgid "See Also From Tracing -- General Subdivision"
 msgstr "Viz také z dohledávání -- všeobecné podrozdělení"
 
 # id::clfm.value__0
-#: 950.data.seed-values.sql:6303
+#: 950.data.seed-values.sql:6327
 msgid "Not fiction (not further specified)"
 msgstr "Literatura faktu (blíže nespecifikovaná)"
 
-#: 950.data.seed-values.sql:6023
+#: 950.data.seed-values.sql:6047
 msgid "Kuanyama"
 msgstr "Kuaňamština"
 
 # id::clm.value__-tar id::clm.value__tat
-#: 950.data.seed-values.sql:6208 950.data.seed-values.sql:6209
+#: 950.data.seed-values.sql:6232 950.data.seed-values.sql:6233
 msgid "Tatar"
 msgstr "Tatarština"
 
-#: 950.data.seed-values.sql:6296
+#: 950.data.seed-values.sql:6320
 msgid "Notated music"
 msgstr "Hudebnina"
 
@@ -2744,23 +2797,23 @@ msgid "System Control Number"
 msgstr "Systémové kontrolní číslo"
 
 # id::clm.value__-gal id::clm.value__orm
-#: 950.data.seed-values.sql:5933 950.data.seed-values.sql:6115
+#: 950.data.seed-values.sql:5957 950.data.seed-values.sql:6139
 msgid "Oromo"
 msgstr "Oromština"
 
-#: 950.data.seed-values.sql:6334
+#: 950.data.seed-values.sql:6358
 msgid "Serial"
 msgstr "Seriál"
 
-#: 950.data.seed-values.sql:4832
+#: 950.data.seed-values.sql:4856
 msgid "Reading List"
 msgstr "Seznam literatury"
 
-#: 950.data.seed-values.sql:6294
+#: 950.data.seed-values.sql:6318
 msgid "Cartographic material"
 msgstr "Kartografický dokument"
 
-#: 950.data.seed-values.sql:6162
+#: 950.data.seed-values.sql:6186
 msgid "Semitic (Other)"
 msgstr "Semitské jazyky (ostatní)"
 
@@ -2768,68 +2821,68 @@ msgstr "Semitské jazyky (ostatní)"
 msgid "General Keywords"
 msgstr "Obecná klíčová slova"
 
-#: 950.data.seed-values.sql:6010
+#: 950.data.seed-values.sql:6034
 msgid "Khotanese"
 msgstr "Chotánština"
 
-#: 950.data.seed-values.sql:5834
+#: 950.data.seed-values.sql:5858
 msgid "Bemba"
 msgstr "Bembština"
 
 # id::vqbrad.description__1
-#: 950.data.seed-values.sql:4757
+#: 950.data.seed-values.sql:4781
 msgid "Title of work"
 msgstr "Název díla"
 
 # id::clm.value__que
-#: 950.data.seed-values.sql:6138
+#: 950.data.seed-values.sql:6162
 msgid "Quechua"
 msgstr "Kečuánština"
 
-#: 950.data.seed-values.sql:9985
+#: 950.data.seed-values.sql:10068
 msgid "See Also Tracing -- Geographic Subdivision"
 msgstr "Viz také dohledávání -- geografické podrozdělení"
 
 # id::vqbrad.description__7
-#: 950.data.seed-values.sql:4763
+#: 950.data.seed-values.sql:4787
 msgid "Price"
 msgstr "Cena"
 
-#: 950.data.seed-values.sql:5883
+#: 950.data.seed-values.sql:5907
 msgid "Creoles and Pidgins (Other)"
 msgstr "Kreolština a jiné pidginy (ostatní)"
 
-#: 950.data.seed-values.sql:6098
+#: 950.data.seed-values.sql:6122
 msgid "Niger-Kordofanian (Other)"
 msgstr "Nigersko-konžské jazyky (ostatní)"
 
 # id::clm.value__est
-#: 950.data.seed-values.sql:5911
+#: 950.data.seed-values.sql:5935
 msgid "Estonian"
 msgstr "Estonština"
 
 # id::clm.value__fan
-#: 950.data.seed-values.sql:5915
+#: 950.data.seed-values.sql:5939
 msgid "Fang"
 msgstr "Fang"
 
-#: 950.data.seed-values.sql:6040
+#: 950.data.seed-values.sql:6064
 msgid "Mongo-Nkundu"
 msgstr "Mongština"
 
-#: 950.data.seed-values.sql:9231
+#: 950.data.seed-values.sql:9307
 msgid "Import or Overlay failed"
 msgstr "Import nebo přepsání se nezdařilo"
 
-#: 950.data.seed-values.sql:6056
+#: 950.data.seed-values.sql:6080
 msgid "Malayalam"
 msgstr "Malajálamština"
 
-#: 950.data.seed-values.sql:11444
+#: 950.data.seed-values.sql:11564
 msgid "Unique Mgt Login"
 msgstr "Unikátní přihlášení Mgt"
 
-#: 950.data.seed-values.sql:6178
+#: 950.data.seed-values.sql:6202
 msgid "Inari Sami"
 msgstr "Inari sami"
 
@@ -2846,16 +2899,16 @@ msgstr "Konference"
 msgid "Branch"
 msgstr "Pobočka"
 
-#: 950.data.seed-values.sql:5795
+#: 950.data.seed-values.sql:5819
 msgid "Afrihili (Artificial language)"
 msgstr "Afrihili (umělý jazyk)"
 
 # id::vqbrad.description__15
-#: 950.data.seed-values.sql:4771
+#: 950.data.seed-values.sql:4795
 msgid "Item Barcode"
 msgstr "Čárový kód exempláře"
 
-#: 950.data.seed-values.sql:9240
+#: 950.data.seed-values.sql:9316
 msgid "Malformed record cause Overlay failure"
 msgstr "Poškozený záznam způsobil chybu při přepsání"
 
@@ -2869,16 +2922,16 @@ msgid "Example Bookmobile 1"
 msgstr "Vzorová pojízdná knihovna 1"
 
 # id::cam.value__f
-#: 950.data.seed-values.sql:6282
+#: 950.data.seed-values.sql:6306
 msgid "Specialized"
 msgstr "Specializovaný"
 
 # id::clm.value__fij
-#: 950.data.seed-values.sql:5919
+#: 950.data.seed-values.sql:5943
 msgid "Fijian"
 msgstr "Fidžijština"
 
-#: 950.data.seed-values.sql:9969
+#: 950.data.seed-values.sql:10052
 msgid "Established Heading Linking Entry -- Geographic Name"
 msgstr "Záznam odkazující na systemizované záhlaví -- geografické jméno"
 
@@ -2891,49 +2944,49 @@ msgstr "Americká angličtina"
 msgid "Authority Record ID"
 msgstr "ID autoritního záznamu"
 
-#: 950.data.seed-values.sql:11434
-msgid "Verification via translator-v1"
-msgstr "Ověření prostřednictvím tránslátoru-v1"
+#: 950.data.seed-values.sql:10058
+msgid "Established Heading Linking Entry -- Chronological Term"
+msgstr "Záznam odkazující na systemizované záhlaví -- chronologický termín"
 
-#: 950.data.seed-values.sql:8804 950.data.seed-values.sql:8805
+#: 950.data.seed-values.sql:8880 950.data.seed-values.sql:8881
 msgid "Historical Hold Retention Age"
 msgstr "Doba uchovávání historických rezervací"
 
-#: 950.data.seed-values.sql:6100
+#: 950.data.seed-values.sql:6124
 msgid "Norwegian (Nynorsk)"
 msgstr "Norština (nynorsk)"
 
 # id::clm.value__tig
-#: 950.data.seed-values.sql:6218
+#: 950.data.seed-values.sql:6242
 msgid "Tigré"
 msgstr "Tigrejština"
 
 # id::clm.value__-sao id::clm.value__smo
-#: 950.data.seed-values.sql:6155 950.data.seed-values.sql:6179
+#: 950.data.seed-values.sql:6179 950.data.seed-values.sql:6203
 msgid "Samoan"
 msgstr "Samojština"
 
-#: 950.data.seed-values.sql:4826 950.data.seed-values.sql:4830
+#: 950.data.seed-values.sql:4850 950.data.seed-values.sql:4854
 msgid "General Staff Client container"
 msgstr "Obecný kontejner ve služebním klientovi"
 
-#: 950.data.seed-values.sql:1567
+#: 950.data.seed-values.sql:1599
 msgid "Circulation Administrator"
 msgstr "Administrátor výpůjčního protokolu"
 
-#: 950.data.seed-values.sql:5944 950.data.seed-values.sql:6062
+#: 950.data.seed-values.sql:5968 950.data.seed-values.sql:6086
 msgid "Manx"
 msgstr "Manština (manx)"
 
-#: 950.data.seed-values.sql:6141
+#: 950.data.seed-values.sql:6165
 msgid "Rarotongan"
 msgstr "Rarotongština"
 
-#: 950.data.seed-values.sql:9973
+#: 950.data.seed-values.sql:10056
 msgid "Subdivision Linking Entry -- Chronological Subdivision"
 msgstr "Záznam odkazující na podtřídění -- chronologické podtřídění"
 
-#: 950.data.seed-values.sql:10064
+#: 950.data.seed-values.sql:10147
 msgid "Sears List of Subject Headings"
 msgstr "Mrtvá větev věcného třídění"
 
@@ -2942,19 +2995,19 @@ msgstr "Mrtvá větev věcného třídění"
 msgid "50_cent_per_day"
 msgstr "50_centů_za_den"
 
-#: 950.data.seed-values.sql:5900
+#: 950.data.seed-values.sql:5924
 msgid "Dyula"
 msgstr "Djula"
 
-#: 950.data.seed-values.sql:5986
+#: 950.data.seed-values.sql:6010
 msgid "Inupiaq"
 msgstr "Inupiak"
 
-#: 950.data.seed-values.sql:5952
+#: 950.data.seed-values.sql:5976
 msgid "Greek, Modern (1453- )"
 msgstr "Řečtina, moderní (po 1453)"
 
-#: 950.data.seed-values.sql:5902
+#: 950.data.seed-values.sql:5926
 msgid "Efik"
 msgstr "Efik"
 
@@ -2962,52 +3015,52 @@ msgstr "Efik"
 msgid "Corporate Author"
 msgstr "Korporace"
 
-#: 950.data.seed-values.sql:6083
+#: 950.data.seed-values.sql:6107
 msgid "Creek"
 msgstr "Muskogee"
 
-#: 950.data.seed-values.sql:6279
+#: 950.data.seed-values.sql:6303
 msgid "Pre-adolescent"
 msgstr "Preadolescenti"
 
-#: 950.data.seed-values.sql:6177
+#: 950.data.seed-values.sql:6201
 msgid "Lule Sami"
 msgstr "Lule sami"
 
-#: 950.data.seed-values.sql:5841
+#: 950.data.seed-values.sql:5865
 msgid "Bislama"
 msgstr "Bislama"
 
-#: 950.data.seed-values.sql:6017
+#: 950.data.seed-values.sql:6041
 msgid "Kongo"
 msgstr "Konžština"
 
-#: 950.data.seed-values.sql:9250
+#: 950.data.seed-values.sql:9326
 msgid "Invalid value for \"owning_lib\""
 msgstr "Neplatná hodnot \"owning_lib\" (vlastnická knihovna)"
 
-#: 950.data.seed-values.sql:11423
+#: 950.data.seed-values.sql:11543
 msgid "Login via srfsh"
 msgstr "Přihlášení prostřednictvím srfsh"
 
-#: 950.data.seed-values.sql:5791
+#: 950.data.seed-values.sql:5815
 msgid "Acoli"
 msgstr "Ačoli"
 
-#: 950.data.seed-values.sql:6070
+#: 950.data.seed-values.sql:6094
 msgid "Mon-Khmer (Other)"
 msgstr "Mon-khmerské jazyky (ostatní)"
 
-#: 950.data.seed-values.sql:9952
+#: 950.data.seed-values.sql:10035
 msgid "See Also From Tracing -- Personal Name"
 msgstr "Viz také z dohledávání -- osobní jméno"
 
 # id::clm.value__pap
-#: 950.data.seed-values.sql:6125
+#: 950.data.seed-values.sql:6149
 msgid "Papiamento"
 msgstr "Papiamento"
 
-#: 950.data.seed-values.sql:6084
+#: 950.data.seed-values.sql:6108
 msgid "Marwari"
 msgstr "Márvárština"
 
@@ -3016,11 +3069,11 @@ msgid "overdue_min"
 msgstr "zpoždění_minimální"
 
 # id::clm.value__dak
-#: 950.data.seed-values.sql:5886
+#: 950.data.seed-values.sql:5910
 msgid "Dakota"
 msgstr "Dakota"
 
-#: 950.data.seed-values.sql:1569
+#: 950.data.seed-values.sql:1601
 msgid "Local Administrator"
 msgstr "Lokální administrátor"
 
@@ -3029,48 +3082,48 @@ msgstr "Lokální administrátor"
 msgid "overdue_mid"
 msgstr "zpoždění_střední"
 
-#: 950.data.seed-values.sql:5958
+#: 950.data.seed-values.sql:5982
 msgid "Haitian French Creole"
 msgstr "Haitsko-francouzská kreolština"
 
-#: 950.data.seed-values.sql:5839
+#: 950.data.seed-values.sql:5863
 msgid "Bikol"
 msgstr "Bikolština"
 
 # id::clm.value__swe
-#: 950.data.seed-values.sql:6200
+#: 950.data.seed-values.sql:6224
 msgid "Swedish"
 msgstr "Švédština"
 
-#: 950.data.seed-values.sql:9254
+#: 950.data.seed-values.sql:9330
 msgid "Invalid value for \"copy_number\""
 msgstr "Neplatná hodnota \"copy_number\" (číslo exempláře)"
 
 # id::clm.value__sgn
-#: 950.data.seed-values.sql:6164
+#: 950.data.seed-values.sql:6188
 msgid "Sign languages"
 msgstr "Znakové jazyky"
 
 # id::clm.value__chm
-#: 950.data.seed-values.sql:5866
+#: 950.data.seed-values.sql:5890
 msgid "Mari"
 msgstr "Marijština"
 
 # id::clm.value__ewe
-#: 950.data.seed-values.sql:5913
+#: 950.data.seed-values.sql:5937
 msgid "Ewe"
 msgstr "Eweština"
 
-#: 950.data.seed-values.sql:6234
+#: 950.data.seed-values.sql:6258
 msgid "Tupi languages"
 msgstr "Tupi jazyky"
 
-#: 950.data.seed-values.sql:5802
+#: 950.data.seed-values.sql:5826
 msgid "Algonquian (Other)"
 msgstr "Algonkinské jazyky (ostatní)"
 
 # id::clm.value__fao id::clm.value__-far
-#: 950.data.seed-values.sql:5916 950.data.seed-values.sql:5917
+#: 950.data.seed-values.sql:5940 950.data.seed-values.sql:5941
 msgid "Faroese"
 msgstr "Faerština"
 
@@ -3079,15 +3132,15 @@ msgid "Alerting block on Circ and Hold"
 msgstr "Upozornění s blokací výpůjček a rezervaqcí"
 
 # id::clm.value__dan
-#: 950.data.seed-values.sql:5887
+#: 950.data.seed-values.sql:5911
 msgid "Danish"
 msgstr "Dánština"
 
-#: 950.data.seed-values.sql:5896
+#: 950.data.seed-values.sql:5920
 msgid "Dravidian (Other)"
 msgstr "Drávidské jazyky (ostatní)"
 
-#: 950.data.seed-values.sql:9966
+#: 950.data.seed-values.sql:10049
 msgid "Established Heading Linking Entry -- Corporate Name"
 msgstr "Záznam odkazující na systemizované záhlaví -- název korporace"
 
@@ -3095,57 +3148,61 @@ msgstr "Záznam odkazující na systemizované záhlaví -- název korporace"
 msgid "Lost"
 msgstr "Ztraceno"
 
-#: 950.data.seed-values.sql:5878
+#: 950.data.seed-values.sql:5902
 msgid "Creoles and Pidgins, English-based (Other)"
 msgstr "Kreolština a jiné pidginy na základě angličtiny"
 
-#: 950.data.seed-values.sql:5884
+#: 950.data.seed-values.sql:5908
 msgid "Cushitic (Other)"
 msgstr "Kušitské jazyky (ostatní)"
 
-#: 950.data.seed-values.sql:6213
+#: 950.data.seed-values.sql:6237
 msgid "Tetum"
 msgstr "Tetumština"
 
-#: 950.data.seed-values.sql:6122
+#: 950.data.seed-values.sql:6146
 msgid "Pahlavi"
 msgstr "Pahlaví (střední perština)"
 
-#: 950.data.seed-values.sql:4838
+#: 950.data.seed-values.sql:4862
 msgid "Add to Published Book Bags"
 msgstr "Přidat do zveřejněných seznamů knih"
 
-#: 950.data.seed-values.sql:9244
+#: 950.data.seed-values.sql:9320
 msgid "Invalid value for \"status\""
 msgstr "Neplatná hodnota pro \"status\""
 
-#: 950.data.seed-values.sql:9978
+#: 950.data.seed-values.sql:10061
 msgid "See Also Tracing -- Personal Name"
 msgstr "Viz také dohledávání -- osobní jméno"
 
 # id::clm.value__slo
-#: 950.data.seed-values.sql:6172
+#: 950.data.seed-values.sql:6196
 msgid "Slovak"
 msgstr "Slovenština"
 
-#: 950.data.seed-values.sql:10062
+#: 950.data.seed-values.sql:10145
 msgid "Not applicable"
 msgstr "Nelze použít"
 
-#: 950.data.seed-values.sql:5853
+#: 950.data.seed-values.sql:5877
 msgid "Central American Indian (Other)"
 msgstr "Indiánské jazyky střední Ameriky (ostatní)"
 
-#: 950.data.seed-values.sql:6011
+#: 950.data.seed-values.sql:6035
 msgid "Kikuyu"
 msgstr "Kukujština"
+
+#: 950.data.seed-values.sql:6369
+msgid "Betacam"
+msgstr "Betacam"
 
 # id::crahp.name__2
 #: 950.data.seed-values.sql:294
 msgid "6month"
 msgstr "6měsíční"
 
-#: 950.data.seed-values.sql:8743
+#: 950.data.seed-values.sql:8819
 msgid "Historical Circulations per Copy"
 msgstr "Historické výpůjčky podle exempláře"
 
@@ -3153,49 +3210,49 @@ msgstr "Historické výpůjčky podle exempláře"
 msgid "UPC"
 msgstr "Univerzální kód výrobků (UPC)"
 
-#: 950.data.seed-values.sql:8649
+#: 950.data.seed-values.sql:8725
 msgid "Handling Charge"
 msgstr "Manipulační poplatek"
 
-#: 950.data.seed-values.sql:10061
+#: 950.data.seed-values.sql:10144
 msgid "Canadian Subject Headings"
 msgstr "Kanadské věcné třídění"
 
-#: 950.data.seed-values.sql:5804
+#: 950.data.seed-values.sql:5828
 msgid "English, Old (ca. 450-1100)"
 msgstr "Anglosaština, stará (cca 450-1100)"
 
-#: 950.data.seed-values.sql:6087
+#: 950.data.seed-values.sql:6111
 msgid "North American Indian (Other)"
 msgstr "Severoamerické indiánské jazyky (ostatní)"
 
 # id::clm.value__pol
-#: 950.data.seed-values.sql:6132
+#: 950.data.seed-values.sql:6156
 msgid "Polish"
 msgstr "Polština"
 
-#: 950.data.seed-values.sql:9942
+#: 950.data.seed-values.sql:10025
 msgid "Heading -- Topical Term"
 msgstr "Záhlaví - tematický termín"
 
 # id::clm.value__crh
-#: 950.data.seed-values.sql:5882
+#: 950.data.seed-values.sql:5906
 msgid "Crimean Tatar"
 msgstr "Krymská tatarština"
 
-#: 950.data.seed-values.sql:4831
+#: 950.data.seed-values.sql:4855
 msgid "Book Bag"
 msgstr "Seznam knih"
 
-#: 950.data.seed-values.sql:9980
+#: 950.data.seed-values.sql:10063
 msgid "See Also Tracing -- Meeting Name"
 msgstr "Viz také dohledávání -- jméno akce"
 
-#: 950.data.seed-values.sql:5837
+#: 950.data.seed-values.sql:5861
 msgid "Bhojpuri"
 msgstr "Bhódžpurí (bhódžpurština)"
 
-#: 950.data.seed-values.sql:6228
+#: 950.data.seed-values.sql:6252
 msgid "Tsimshian"
 msgstr "Tsimshijské jazyky"
 
@@ -3204,81 +3261,85 @@ msgid "Your Bookmobile"
 msgstr "Vaše pojízdná knihovna"
 
 # id::clm.value__nog
-#: 950.data.seed-values.sql:6102
+#: 950.data.seed-values.sql:6126
 msgid "Nogai"
 msgstr "Nogai"
 
-#: 950.data.seed-values.sql:11436
+#: 950.data.seed-values.sql:11556
 msgid "Verification via remoteauth"
 msgstr "Ověření prostřednictvím vzdálené autentizace"
 
-#: 950.data.seed-values.sql:5907
+#: 950.data.seed-values.sql:5931
 msgid "English, Middle (1100-1500)"
 msgstr "Angličtina, střední doba (1100-1500)"
 
-#: 950.data.seed-values.sql:6150
+#: 950.data.seed-values.sql:6174
 msgid "Yakut"
 msgstr "Jakutština"
 
 # id::clm.value__sux
-#: 950.data.seed-values.sql:6198
+#: 950.data.seed-values.sql:6222
 msgid "Sumerian"
 msgstr "Sumerština"
 
-#: 950.data.seed-values.sql:8654
+#: 950.data.seed-values.sql:8730
 msgid "Paper"
 msgstr "Dokument"
 
-#: 950.data.seed-values.sql:6262
+#: 950.data.seed-values.sql:6286
 msgid "Xhosa"
 msgstr "Xhosština"
 
 # id::clm.value__mni
-#: 950.data.seed-values.sql:6075
+#: 950.data.seed-values.sql:6099
 msgid "Manipuri"
 msgstr "Manipurština"
 
-#: 950.data.seed-values.sql:5848
+#: 950.data.seed-values.sql:5872
 msgid "Buriat"
 msgstr "Burjatština"
 
 # id::clm.value__man
-#: 950.data.seed-values.sql:6057
+#: 950.data.seed-values.sql:6081
 msgid "Mandingo"
 msgstr "Mandingština"
 
 # id::clm.value__hup
-#: 950.data.seed-values.sql:5970
+#: 950.data.seed-values.sql:5994
 msgid "Hupa"
 msgstr "Hupa"
 
-#: 950.data.seed-values.sql:5980 950.data.seed-values.sql:5985
+#: 950.data.seed-values.sql:6004 950.data.seed-values.sql:6009
 msgid "Interlingua (International Auxiliary Language Association)"
 msgstr "Interlingua (Mezinárodní pomocná jazyková asociace)"
 
 # id::clm.value__ice
-#: 950.data.seed-values.sql:5973
+#: 950.data.seed-values.sql:5997
 msgid "Icelandic"
 msgstr "Islandština"
 
-#: 950.data.seed-values.sql:6238
+#: 950.data.seed-values.sql:10040
+msgid "See Also From Tracing -- Genre/Form Term"
+msgstr "Viz také z dohledávání -- termín žánru/formy"
+
+#: 950.data.seed-values.sql:6262
 msgid "Twi"
 msgstr "Twi"
 
-#: 950.data.seed-values.sql:5955
+#: 950.data.seed-values.sql:5979
 msgid "Gujarati"
 msgstr "Gudžarátština"
 
-#: 950.data.seed-values.sql:6304
+#: 950.data.seed-values.sql:6328
 msgid "Fiction (not further specified)"
 msgstr "Beletrie (bez bližší specifikace)"
 
-#: 950.data.seed-values.sql:6059
+#: 950.data.seed-values.sql:6083
 msgid "Austronesian (Other)"
 msgstr "Malajsko-polynéské jazyky (ostatní)"
 
 # id::clm.value__akk
-#: 950.data.seed-values.sql:5799
+#: 950.data.seed-values.sql:5823
 msgid "Akkadian"
 msgstr "Akkadština"
 
@@ -3288,52 +3349,60 @@ msgid "Filtered"
 msgstr "Filtrováno"
 
 # id::clm.value__kor
-#: 950.data.seed-values.sql:6018
+#: 950.data.seed-values.sql:6042
 msgid "Korean"
 msgstr "Korejština"
 
-#: 950.data.seed-values.sql:6165
+#: 950.data.seed-values.sql:6189
 msgid "Shan"
 msgstr "Šanština"
 
-#: 950.data.seed-values.sql:6297
+#: 950.data.seed-values.sql:9317
+msgid "New record had insufficient quality"
+msgstr "Nový záznam není dostatečně kvalitní"
+
+#: 950.data.seed-values.sql:6321
 msgid "Manuscript notated music"
 msgstr "Rukopisná hudebnina"
 
-#: 950.data.seed-values.sql:9933
+#: 950.data.seed-values.sql:10016
 msgid "Established Heading Linking Entry -- Uniform Title"
 msgstr "Záznam odkazující na systemizované záhlaví -- unifikovaný název"
 
-#: 950.data.seed-values.sql:6330
+#: 950.data.seed-values.sql:6361
+msgid "Beta"
+msgstr "Beta"
+
+#: 950.data.seed-values.sql:6354
 msgid "Collection"
 msgstr "Fond"
 
-#: 950.data.seed-values.sql:6107
+#: 950.data.seed-values.sql:6131
 msgid "Nyanja"
 msgstr "Ňandžština"
 
-#: 950.data.seed-values.sql:9982
+#: 950.data.seed-values.sql:10065
 msgid "See Also Tracing -- Geographic Name"
 msgstr "Viz také dohledávání -- geografické jméno"
 
-#: 950.data.seed-values.sql:1579
+#: 950.data.seed-values.sql:1611
 msgid "Can do anything at the Consortium level"
 msgstr "Může dělat cokoliv na úrovni konsorcia"
 
 # id::clm.value__cad
-#: 950.data.seed-values.sql:5852
+#: 950.data.seed-values.sql:5876
 msgid "Caddo"
 msgstr "Caddo"
 
-#: 950.data.seed-values.sql:6036
+#: 950.data.seed-values.sql:6060
 msgid "Lezgian"
 msgstr "Lezgiština"
 
-#: 950.data.seed-values.sql:6002
+#: 950.data.seed-values.sql:6026
 msgid "Kashmiri"
 msgstr "Kašmírí"
 
-#: 950.data.seed-values.sql:5957
+#: 950.data.seed-values.sql:5981
 msgid "Haida"
 msgstr "Haida"
 
@@ -3341,15 +3410,15 @@ msgstr "Haida"
 msgid "Local Free-Text Call Number"
 msgstr "Lokální signatura (zapsaná volným textem)"
 
-#: 950.data.seed-values.sql:6031 950.data.seed-values.sql:6112
+#: 950.data.seed-values.sql:6055 950.data.seed-values.sql:6136
 msgid "Occitan (post-1500)"
 msgstr "Okcitánština (po 1500)"
 
-#: 950.data.seed-values.sql:9239
+#: 950.data.seed-values.sql:9315
 msgid "Malformed record cause Import failure"
 msgstr "Poškozený záznam způsobil chybu importu"
 
-#: 950.data.seed-values.sql:6187
+#: 950.data.seed-values.sql:6211
 msgid "Songhai"
 msgstr "Songhajština"
 
@@ -3363,24 +3432,24 @@ msgid "Bindery"
 msgstr "Vazba"
 
 # id::aout.name__2
-#: 950.data.seed-values.sql:429 950.data.seed-values.sql:2453
+#: 950.data.seed-values.sql:429 950.data.seed-values.sql:2486
 msgid "System"
 msgstr "Systém"
 
-#: 950.data.seed-values.sql:1563
+#: 950.data.seed-values.sql:1595
 msgid "Acquisitions Administrator"
 msgstr "Administrátor akvizice"
 
-#: 950.data.seed-values.sql:10083
+#: 950.data.seed-values.sql:10166
 msgid "Vandelay Queue"
 msgstr "Fronta nástroje Vandelay"
 
 # id::vqbrad.description__3
-#: 950.data.seed-values.sql:4759
+#: 950.data.seed-values.sql:4783
 msgid "Language of work"
 msgstr "Jazyk díla"
 
-#: 950.data.seed-values.sql:5788
+#: 950.data.seed-values.sql:5812
 msgid "Afar"
 msgstr "Afar"
 
@@ -3390,47 +3459,47 @@ msgid "3month"
 msgstr "3měsíční"
 
 #: 950.data.seed-values.sql:374 950.data.seed-values.sql:395
-#: 950.data.seed-values.sql:414 950.data.seed-values.sql:4769
+#: 950.data.seed-values.sql:414 950.data.seed-values.sql:4793
 msgid "Publication Date"
 msgstr "Datum vydání"
 
 # id::clm.value__udm
-#: 950.data.seed-values.sql:6240
+#: 950.data.seed-values.sql:6264
 msgid "Udmurt"
 msgstr "Udmurtština"
 
 # id::clm.value__gle id::clm.value__-iri
-#: 950.data.seed-values.sql:5942 950.data.seed-values.sql:5988
+#: 950.data.seed-values.sql:5966 950.data.seed-values.sql:6012
 msgid "Irish"
 msgstr "Irština"
 
-#: 950.data.seed-values.sql:9934
+#: 950.data.seed-values.sql:10017
 msgid "See Also Tracing -- Uniform Title"
 msgstr "Viz také dohledávání -- unifikovaný název"
 
 # id::clm.value__cze id::i18n_l.name__cs-CZ id::i18n_l.description__cs-CZ
 # id::clm.value__cze
 #: 950.data.seed-values.sql:329 950.data.seed-values.sql:330
-#: 950.data.seed-values.sql:5885
+#: 950.data.seed-values.sql:5909
 msgid "Czech"
 msgstr "Čeština"
 
-#: 950.data.seed-values.sql:6048
+#: 950.data.seed-values.sql:6072
 msgid "Luo (Kenya and Tanzania)"
 msgstr "Luoština (Keňa a Tanzanie)"
 
 # id::clm.value__kbd
-#: 950.data.seed-values.sql:6006
+#: 950.data.seed-values.sql:6030
 msgid "Kabardian"
 msgstr "Kabardština"
 
 # id::clm.value__lah
-#: 950.data.seed-values.sql:6029
+#: 950.data.seed-values.sql:6053
 msgid "Lahnda"
 msgstr "Lahndština"
 
 # id::clm.value__bel
-#: 950.data.seed-values.sql:5833
+#: 950.data.seed-values.sql:5857
 msgid "Belarusian"
 msgstr "Běloruština"
 
@@ -3439,15 +3508,11 @@ msgstr "Běloruština"
 msgid "Library of Congress"
 msgstr "Kongresová knihovna"
 
-#: 950.data.seed-values.sql:11422
+#: 950.data.seed-values.sql:11542
 msgid "Login via opensrf"
 msgstr "Přihlášení prostřednictvím opensrf"
 
-#: 950.data.seed-values.sql:6322
-msgid "Large print"
-msgstr "Velká písmena"
-
-#: 950.data.seed-values.sql:5797
+#: 950.data.seed-values.sql:5821
 msgid "Aljamía"
 msgstr "Aljamia"
 
@@ -3455,11 +3520,11 @@ msgstr "Aljamia"
 msgid "Name Subject"
 msgstr "Jmenné téma"
 
-#: 950.data.seed-values.sql:6175
+#: 950.data.seed-values.sql:6199
 msgid "Northern Sami"
 msgstr "Sami jazyky, severní"
 
-#: 950.data.seed-values.sql:6261
+#: 950.data.seed-values.sql:6285
 msgid "Kalmyk"
 msgstr "Kalmyčtina"
 
@@ -3467,47 +3532,55 @@ msgstr "Kalmyčtina"
 msgid "Title Proper"
 msgstr "Název"
 
-#: 950.data.seed-values.sql:6280
+#: 950.data.seed-values.sql:11561
+msgid "OPAC Login (tpac)"
+msgstr "Přihlášení do OPACu (tpac)"
+
+#: 950.data.seed-values.sql:6304
 msgid "Adolescent"
 msgstr "Dospívající"
 
 # id::clm.value__rum
-#: 950.data.seed-values.sql:6145
+#: 950.data.seed-values.sql:6169
 msgid "Romanian"
 msgstr "Rumunština"
 
 # id::clm.value__aze
-#: 950.data.seed-values.sql:5822
+#: 950.data.seed-values.sql:5846
 msgid "Azerbaijani"
 msgstr "Ázerbájdžánština"
 
 # id::clm.value__srd
-#: 950.data.seed-values.sql:6190
+#: 950.data.seed-values.sql:6214
 msgid "Sardinian"
 msgstr "Sardština"
+
+#: 950.data.seed-values.sql:6362
+msgid "VHS"
+msgstr "VHS"
 
 #: 950.data.seed-values.sql:477
 msgid "System: Deposit"
 msgstr "Systém: Vklad"
 
-#: 950.data.seed-values.sql:10059
+#: 950.data.seed-values.sql:10142
 msgid "Medical Subject Headings"
 msgstr "Medical Subject Headings"
 
-#: 950.data.seed-values.sql:11425
+#: 950.data.seed-values.sql:11545
 msgid "Login via translator-v1"
 msgstr "Přihlášení prostřednictvím translátoru-v1"
 
-#: 950.data.seed-values.sql:6289
+#: 950.data.seed-values.sql:6313
 msgid "Projected medium"
 msgstr "Projekční médium"
 
-#: 950.data.seed-values.sql:2469
+#: 950.data.seed-values.sql:2502
 msgid "Offline"
 msgstr "Offline"
 
 # id::clm.value__lao
-#: 950.data.seed-values.sql:6032
+#: 950.data.seed-values.sql:6056
 msgid "Lao"
 msgstr "Laoština"
 
@@ -3515,47 +3588,47 @@ msgstr "Laoština"
 msgid "EAN"
 msgstr "EAN"
 
-#: 950.data.seed-values.sql:11427
+#: 950.data.seed-values.sql:11547
 msgid "Login via remoteauth"
 msgstr "Přihlášení prostřednictvím vzdálené autentizace"
 
-#: 950.data.seed-values.sql:6169
+#: 950.data.seed-values.sql:6193
 msgid "Siouan (Other)"
 msgstr "Siouxské jazyky (ostatní)"
 
 # id::clm.value__sco
-#: 950.data.seed-values.sql:6159
+#: 950.data.seed-values.sql:6183
 msgid "Scots"
 msgstr "Skotština"
 
 # id::clm.value__men
-#: 950.data.seed-values.sql:6065
+#: 950.data.seed-values.sql:6089
 msgid "Mende"
 msgstr "Mende"
 
-#: 950.data.seed-values.sql:6113
+#: 950.data.seed-values.sql:6137
 msgid "Ojibwa"
 msgstr "Odžibwejština"
 
 # id::clm.value__sus
-#: 950.data.seed-values.sql:6197
+#: 950.data.seed-values.sql:6221
 msgid "Susu"
 msgstr "Susu"
 
-#: 950.data.seed-values.sql:5857
+#: 950.data.seed-values.sql:5881
 msgid "Caucasian (Other)"
 msgstr "Kavkazské jazyky (ostatní)"
 
 # id::clm.value__kur
-#: 950.data.seed-values.sql:6025
+#: 950.data.seed-values.sql:6049
 msgid "Kurdish"
 msgstr "Kurdština"
 
-#: 950.data.seed-values.sql:6254
+#: 950.data.seed-values.sql:6278
 msgid "Walamo"
 msgstr "Walamština"
 
-#: 950.data.seed-values.sql:11426
+#: 950.data.seed-values.sql:11546
 msgid "Login via xmlrpc"
 msgstr "Přihlášení prostřednictvím xmlrpc"
 
@@ -3564,38 +3637,38 @@ msgstr "Přihlášení prostřednictvím xmlrpc"
 msgid "American Spanish"
 msgstr "Americká španělština"
 
-#: 950.data.seed-values.sql:6092
+#: 950.data.seed-values.sql:6116
 msgid "Ndebele (Zimbabwe)  "
 msgstr "Ndebelština (Zimbabwe)  "
 
-#: 950.data.seed-values.sql:6044
+#: 950.data.seed-values.sql:6068
 msgid "Luba-Katanga"
 msgstr "Lubu-katanžština"
 
 # id::cifm.value__s
-#: 950.data.seed-values.sql:6325
+#: 950.data.seed-values.sql:6349
 msgid "Electronic"
 msgstr "Elektronický"
 
-#: 950.data.seed-values.sql:6306
+#: 950.data.seed-values.sql:6330
 msgid "Dramas"
 msgstr "Divadelní hry"
 
-#: 950.data.seed-values.sql:6270
+#: 950.data.seed-values.sql:6294
 msgid "Zhuang"
 msgstr "Čuangština"
 
 # id::cifm.value__f
-#: 950.data.seed-values.sql:6323
+#: 950.data.seed-values.sql:6347
 msgid "Braille"
 msgstr "Braillovo písmo"
 
-#: 950.data.seed-values.sql:6305
+#: 950.data.seed-values.sql:6329
 msgid "Comic strips"
 msgstr "Kreslené seriály (komiksy)"
 
 # id::clm.value__ido
-#: 950.data.seed-values.sql:5974
+#: 950.data.seed-values.sql:5998
 msgid "Ido"
 msgstr "Ido"
 
@@ -3608,11 +3681,11 @@ msgstr "Kanadská francouzština"
 msgid "ISRC"
 msgstr "ISRC"
 
-#: 950.data.seed-values.sql:5921
+#: 950.data.seed-values.sql:5945
 msgid "Finno-Ugrian (Other)"
 msgstr "Ugrofinské jazyky (ostatní)"
 
-#: 950.data.seed-values.sql:5805
+#: 950.data.seed-values.sql:5829
 msgid "Apache languages"
 msgstr "Apačské jazyky"
 
@@ -3620,7 +3693,7 @@ msgstr "Apačské jazyky"
 msgid "Alerting block on Hold"
 msgstr "Upozornění s blokací zerevací"
 
-#: 950.data.seed-values.sql:6146
+#: 950.data.seed-values.sql:6170
 msgid "Rundi"
 msgstr "Rundština"
 
@@ -3628,11 +3701,11 @@ msgstr "Rundština"
 msgid "7_days_2_renew"
 msgstr "7_dní_2_prodloužení"
 
-#: 950.data.seed-values.sql:5909
+#: 950.data.seed-values.sql:5933
 msgid "Eskimo languages"
 msgstr "Eskymáčtina"
 
-#: 950.data.seed-values.sql:4841
+#: 950.data.seed-values.sql:4865
 msgid "Checkout Items"
 msgstr "Vypůjčené exempláře"
 
@@ -3640,11 +3713,11 @@ msgstr "Vypůjčené exempláře"
 msgid "Other Author"
 msgstr "Další autor"
 
-#: 950.data.seed-values.sql:5816
+#: 950.data.seed-values.sql:5840
 msgid "Athapascan (Other)"
 msgstr "Athapaskánské jazyky (ostatní)"
 
-#: 950.data.seed-values.sql:6093
+#: 950.data.seed-values.sql:6117
 msgid "Ndonga"
 msgstr "Ndondština"
 
@@ -3652,24 +3725,24 @@ msgstr "Ndondština"
 msgid "Alerting block on Hold and Renew"
 msgstr "Varování s blokací rezervací a prodloužení"
 
-#: 950.data.seed-values.sql:6188 950.data.seed-values.sql:6193
+#: 950.data.seed-values.sql:6212 950.data.seed-values.sql:6217
 msgid "Sotho"
 msgstr "Sothoština, jižní"
 
 # id::clm.value__was
-#: 950.data.seed-values.sql:6256
+#: 950.data.seed-values.sql:6280
 msgid "Washo"
 msgstr "Washo"
 
-#: 950.data.seed-values.sql:6189
+#: 950.data.seed-values.sql:6213
 msgid "Spanish"
 msgstr "Španělština"
 
-#: 950.data.seed-values.sql:9961
+#: 950.data.seed-values.sql:10044
 msgid "See Also From Tracing -- Form Subdivision"
 msgstr "Viz také z dohledávání -- podtřídění podle formy"
 
-#: 950.data.seed-values.sql:9959
+#: 950.data.seed-values.sql:10042
 msgid "See Also From Tracing -- Geographic Subdivision"
 msgstr "Viz také z dohledávání -- geografické podtřídění"
 

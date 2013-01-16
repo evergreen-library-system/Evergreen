@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-08-03 10:01-0400\n"
+"POT-Creation-Date: 2012-12-20 09:37-0400\n"
 "PO-Revision-Date: 2012-11-02 18:04+0000\n"
 "Last-Translator: Cédric VALMARY (Tot en òc) <cvalmary@yahoo.fr>\n"
 "Language-Team: Occitan (post 1500) <oc@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-11-03 05:07+0000\n"
-"X-Generator: Launchpad (build 16218)\n"
+"X-Launchpad-Export-Date: 2012-12-21 05:00+0000\n"
+"X-Generator: Launchpad (build 16378)\n"
 
 #: common.exception
 msgid ""
@@ -1121,6 +1121,10 @@ msgstr ""
 msgid "Manage Authorities"
 msgstr ""
 
+#: menu.cmd_search_prefs.tab
+msgid "Search Preferences"
+msgstr ""
+
 #: menu.local_admin.barcode_completion.tab
 msgid "Barcode Completion"
 msgstr ""
@@ -1131,6 +1135,10 @@ msgstr ""
 
 #: menu.local_admin.hold_matrix_matchpoint.tab
 msgid "Hold Policies"
+msgstr ""
+
+#: menu.local_admin.item_attribute_editor.tab
+msgid "Admin Item Attribute Editor"
 msgstr ""
 
 #: menu.local_admin.work_log.tab
@@ -1328,8 +1336,9 @@ msgid "This application may have unsaved data. Exit it anyway?"
 msgstr ""
 
 #: hotkeys.Default
+msgctxt "hotkeys.Default"
 msgid "Default"
-msgstr "Valor per defaut"
+msgstr ""
 
 #: hotkeys.None
 msgid "No Hotkeys"
@@ -1390,6 +1399,11 @@ msgstr ""
 #: staff.main.button_bar.none
 msgid "None"
 msgstr "Pas cap"
+
+#: staff.main.button_bar.default
+msgctxt "staff.main.button_bar.default"
+msgid "Default"
+msgstr ""
 
 #: util.hide_elements.title
 msgid "Hide UI Elements"

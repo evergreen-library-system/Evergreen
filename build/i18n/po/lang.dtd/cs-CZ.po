@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-03 10:01-0400\n"
-"PO-Revision-Date: 2012-11-06 15:40+0000\n"
+"POT-Creation-Date: 2012-12-20 09:37-0400\n"
+"PO-Revision-Date: 2013-01-15 12:38+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-11-07 04:40+0000\n"
-"X-Generator: Launchpad (build 16232)\n"
+"X-Launchpad-Export-Date: 2013-01-16 04:37+0000\n"
+"X-Generator: Launchpad (build 16420)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -1385,7 +1385,7 @@ msgstr "&Alternativní rozhraní správy seriálů"
 #: staff.cat.opac.batch_receive.label
 #: staff.cat.opac.batch_receive.accesskey
 msgid "Ser&ials Batch Receive"
-msgstr "Příjem exemplářů per&iodik"
+msgstr "Dávkový příjem exemplářů per&iodik"
 
 #: staff.cat.popup.add_to_bucket
 msgctxt "staff.cat.popup.add_to_bucket"
@@ -2868,6 +2868,11 @@ msgstr "&Work Log"
 msgid "Copy &Template Editor"
 msgstr "Šabl&ony exemplářů"
 
+#: staff.main.menu.admin.local_admin.item_attribute_editor.label
+#: staff.main.menu.admin.local_admin.item_attribute_editor.accesskey
+msgid "Item Attribute &Editor"
+msgstr "&Editor vlastností  exempláře"
+
 #: staff.main.menu.admin.local_admin.patrons_due_refunds.label
 #: staff.main.menu.admin.local_admin.patrons_due_refunds.accesskey
 msgid "Patrons with &Negative Balances"
@@ -3258,6 +3263,10 @@ msgctxt "staff.main.menu.admin.client.hotkeys.clearworkstation.label"
 msgid "Clear Workstation Default"
 msgstr "Smazat výchozí nastavení pracovní stanice"
 
+#: staff.main.menu.admin.client.search_prefs.label
+msgid "Set Search Preferences"
+msgstr "Nastavit preference vyhledávání"
+
 #: staff.main.menu.admin.client.toolbars
 msgid "Toolbars"
 msgstr "Nástrojové lišty"
@@ -3614,7 +3623,7 @@ msgstr "&Seriály"
 #: staff.main.menu.serial.batch_receive.label
 #: staff.main.menu.serial.batch_receive.accesskey
 msgid "&Batch Receive"
-msgstr "&Příjem exemplářů"
+msgstr "&Dávkový příjem exemplářů"
 
 #: staff.main.menu.booking.label
 #: staff.main.menu.booking.accesskey
@@ -6504,7 +6513,7 @@ msgctxt ""
 "staff.serial.manage_items.actions.cmd_edit_items.label "
 "staff.serial.manage_items.actions.cmd_edit_items.accesskey"
 msgid "&Edit Item Attributes"
-msgstr "&Editovat atributy exempláře"
+msgstr "Upravit  vlastnosti  &exempláře"
 
 #: staff.serial.manage_items.actions.cmd_delete_items.label
 #: staff.serial.manage_items.actions.cmd_delete_items.accesskey
@@ -6596,7 +6605,7 @@ msgstr "Kontext:"
 
 #: staff.serial.batch_receive
 msgid "Batch Receive"
-msgstr "Příjem exemplářů"
+msgstr "Dávkový příjem exemplářů"
 
 #: staff.serial.batch_receive.bib_search_term.label
 #: staff.serial.batch_receive.bib_search_term.accesskey
@@ -7349,7 +7358,7 @@ msgctxt ""
 "staff.server.admin.transit.list.edit.label "
 "staff.server.admin.transit.list.edit.accesskey"
 msgid "&Edit Item Attributes"
-msgstr "&Editovat atributy exempláře"
+msgstr "Upravit  vlastnosti &exempláře"
 
 #: staff.server.admin.transit.list.abort.label
 msgctxt "staff.server.admin.transit.list.abort.label"
@@ -8721,7 +8730,7 @@ msgctxt ""
 "staff.circ.checkin_overlay.sel_edit.label "
 "staff.circ.checkin_overlay.sel_edit.accesskey"
 msgid "&Edit Item Attributes"
-msgstr "&Editovat atributy exempláře"
+msgstr "Upravit  vlastnosti &exempláře"
 
 #: staff.circ.checkin_overlay.sel_backdate.label
 #: staff.circ.checkin_overlay.sel_backdate.accesskey
@@ -8906,7 +8915,7 @@ msgctxt ""
 "staff.circ.renew_overlay.sel_edit.label "
 "staff.circ.renew_overlay.sel_edit.accesskey"
 msgid "&Edit Item Attributes"
-msgstr "&Editovat atributy exempláře"
+msgstr "Upravit  vlastnosti &exempláře"
 
 #: staff.circ.renew_overlay.sel_mark_items_damaged.label
 #: staff.circ.renew_overlay.sel_mark_items_damaged.accesskey
@@ -9164,7 +9173,7 @@ msgctxt ""
 "staff.circ.copy_status_overlay.cmd_book_item_now.label "
 "staff.circ.copy_status_overlay.cmd_book_item_now.accesskey"
 msgid "Book Item &Now"
-msgstr "Rezervovat exemplář &nyní"
+msgstr "Re&zervovat jako zdroj"
 
 #: staff.circ.copy_status_overlay.cmd_request_items.label
 #: staff.circ.copy_status_overlay.cmd_request_items.accesskey
@@ -9172,7 +9181,7 @@ msgctxt ""
 "staff.circ.copy_status_overlay.cmd_request_items.label "
 "staff.circ.copy_status_overlay.cmd_request_items.accesskey"
 msgid "&Request Item"
-msgstr "Vyžáda&t exemplář"
+msgstr "Rezervova&t tento  exemplář"
 
 #: staff.circ.copy_status_overlay.cmd_create_brt.label
 #: staff.circ.copy_status_overlay.cmd_create_brt.accesskey
@@ -9193,12 +9202,12 @@ msgctxt ""
 "staff.circ.copy_status_overlay.sel_edit.label "
 "staff.circ.copy_status_overlay.sel_edit.accesskey"
 msgid "&Edit Item Attributes"
-msgstr "&Editovat atributy exempláře"
+msgstr "Upravit  vlastnosti exempláře"
 
 #: staff.circ.copy_status_overlay.sel_vol_copy_edit.label
 #: staff.circ.copy_status_overlay.sel_vol_copy_edit.accesskey
 msgid "Edit Items/&Volumes Per Bib"
-msgstr "Editovat exempláře/s&vazky  bib. zázn."
+msgstr "Upravit  exempláře/s&vazky  bib. zázn."
 
 #: staff.circ.copy_status_overlay.sel_mark_items_damaged.label
 #: staff.circ.copy_status_overlay.sel_mark_items_damaged.accesskey
@@ -10042,7 +10051,7 @@ msgctxt ""
 "staff.cat.copy_browser.actions.cmd_book_item_now.label "
 "staff.cat.copy_browser.actions.cmd_book_item_now.accesskey"
 msgid "Book Item &Now"
-msgstr "Rezervovat exemplář &nyní"
+msgstr "Re&zervovat jako zdroj"
 
 #: staff.cat.copy_browser.actions.cmd_create_brt.label
 #: staff.cat.copy_browser.actions.cmd_create_brt.accesskey
@@ -10066,7 +10075,7 @@ msgctxt ""
 "staff.cat.copy_browser.actions.cmd_edit_items.label "
 "staff.cat.copy_browser.actions.cmd_edit_items.accesskey"
 msgid "&Edit Items"
-msgstr "&Editovat exempláře"
+msgstr "Upravit   &exempláře"
 
 #: staff.cat.copy_browser.actions.cmd_transfer_items.label
 #: staff.cat.copy_browser.actions.cmd_transfer_items.accesskey
@@ -10146,7 +10155,7 @@ msgctxt ""
 "staff.cat.copy_browser.actions.cmd_request_items.label "
 "staff.cat.copy_browser.actions.cmd_request_items.accesskey"
 msgid "&Request Item"
-msgstr "Vyžáda&t exemplář"
+msgstr "Rezervova&t tento  exemplář"
 
 #: staff.cat.copy_browser.actions.sel_mark_items_damaged.label
 #: staff.cat.copy_browser.actions.sel_mark_items_damaged.accesskey
@@ -10278,7 +10287,7 @@ msgctxt ""
 "staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.label "
 "staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.accesskey"
 msgid "&Edit Items"
-msgstr "&Editovat exempláře"
+msgstr "Upravit   &exempláře"
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.label
 #: staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.accesskey
@@ -10518,7 +10527,7 @@ msgstr "Zobrazit statut"
 #: staff.cat.copy_buckets_overlay.copy_buckets.cmd_request_items.label
 #: staff.cat.copy_buckets_overlay.copy_buckets.cmd_request_items.accesskey
 msgid "&Request Items"
-msgstr "Žád&at exempláře"
+msgstr "Rezervova&t tyto  exempláře"
 
 #: staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_transfer_to_volume.label
 msgid "Transfer to Specific Volume"
@@ -10526,7 +10535,7 @@ msgstr "Přesunout do specifického svazku"
 
 #: staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_batch_copy_edit.label
 msgid "Edit Item Attributes"
-msgstr "Editovat vlastnosti exempláře"
+msgstr "Upravit vlastnosti  &exempláře"
 
 #: staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_batch_copy_delete.label
 msgid "Delete All from Catalog"
@@ -12096,7 +12105,7 @@ msgstr "Provést &platbu"
 
 #: staff.patron.bill_summary_overlay.bill_number.value
 msgid "Bill #"
-msgstr "Číslo transakce #"
+msgstr "Transakce č."
 
 #: staff.patron.bill_summary_overlay.total_billed.value
 msgctxt "staff.patron.bill_summary_overlay.total_billed.value"
@@ -13837,7 +13846,7 @@ msgstr "Vrátit"
 
 #: staff.client.portal.patronreg
 msgid "Register Patron(s)"
-msgstr "Registrace čtenáře"
+msgstr "Registrovat čtenáře"
 
 #: staff.client.portal.patronsearch
 msgid "Search For Patron By Name"
@@ -13972,6 +13981,82 @@ msgstr "Stor&no"
 #: staff.item.batch.hold.failures_and_settings
 msgid "The settings above may be changed for retries and overrides."
 msgstr "Uvedená nastavení se mohla změnit kvůli zpětným voláním a přepsáním."
+
+#: staff.search_prefs.search_lib.caption
+msgid "Default Search Library"
+msgstr "Výchozí knihovna pro vyhledávání"
+
+#: staff.search_prefs.search_lib.description
+msgid ""
+"The default search library setting determines what library is searched from "
+"the advanced search screen and portal page by default. Manual selection of a "
+"search library will override it. One recommendation is to set the search "
+"library to the highest point you would normally want to search."
+msgstr ""
+"Nastavení výchozí knihovny určuje, která knihovna je standardně prohledávání "
+"v rozhraní pro pokročilé vyhledávání a na vstupním portále služebního "
+"klienta. Manuální výběr knihovny pro vyhledávání toto nastavení změní.  "
+"Jedním z doporučení je  nastavit jako výchozí tu knihovnu, ve které "
+"nejčastěji potřebujete vyhledávat."
+
+#: staff.search_prefs.pref_lib.caption
+msgid "Preferred Library"
+msgstr "Preferovaná knihovna"
+
+#: staff.search_prefs.pref_lib.description
+msgid ""
+"The preferred library is used to show copies and URIs regardless of the "
+"library searched. One recommendation is to set this to your workstation "
+"library so that local copies show up first in search results."
+msgstr ""
+"Pro preferovanou knihovnu jsou při vyhledávání zobrazovány exempláře a URI. "
+"Jedno z doporučení je nastavit jako preferovanou tuknihovnu, v níž je "
+"registrována pracovní stanice, aby se ve výsledcích hledání zobrazovaly na "
+"prvním místě exempláře z této knihovny."
+
+#: staff.search_prefs.adv_pane.caption
+msgid "Advanced Search Default Pane"
+msgstr "Výchozí pole pro pokročilé vyhledávání"
+
+#: staff.search_prefs.adv_pane.description
+msgid ""
+"Advanced search has secondary panes for Numeric and MARC Expert searching. "
+"You can change which one is loaded by default when opening a new catalog "
+"window here."
+msgstr ""
+"Pokročilé vyhledávání má sekundární pole pro numerické vyhledávání a "
+"expertní vyhledávání v MARCu. Můžete zvolit, které z nich z polí bude "
+"standardně zobrazeno při otevření nového okna katalogu."
+
+#: staff.search_prefs.adv_pane.advanced
+msgid "Advanced (default)"
+msgstr "Pokročilé (výchozí)"
+
+#: staff.search_prefs.adv_pane.numeric
+msgid "Numeric"
+msgstr "Numerické"
+
+#: staff.search_prefs.adv_pane.expert
+msgid "MARC Expert"
+msgstr "Expertní (MARC)"
+
+#: staff.search_prefs.save.label
+#: staff.search_prefs.save.accesskey
+msgid "&Save"
+msgstr "&Uložit"
+
+#: staff.search_prefs.saved_message
+msgid "Preferences saved"
+msgstr "Předvolby byly uloženy"
+
+#: staff.search_prefs.clear.label
+#: staff.search_prefs.clear.accesskey
+msgid "&Clear All"
+msgstr "&Vymazat vše"
+
+#: staff.search_prefs.cleared_message
+msgid "Preferences cleared"
+msgstr "Předvolby byly zrušeny"
 
 #~ msgid "Record ID"
 #~ msgstr "ID záznamu"
