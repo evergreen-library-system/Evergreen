@@ -3,18 +3,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-29 08:58+0300\n"
-"PO-Revision-Date: 2012-10-17 09:41+0300\n"
-"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"POT-Creation-Date: 2012-08-03 10:01-0400\n"
+"PO-Revision-Date: 2012-12-20 15:22+0000\n"
+"Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
-"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Translate Toolkit 1.9.0\n"
-"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2012-12-21 05:00+0000\n"
+"X-Generator: Launchpad (build 16378)\n"
 "X-Project-Style: mozilla\n"
+"X-Accelerator-Marker: &\n"
+"Language: fi\n"
 
 #. =================================================================
 #. Some generic stuff
@@ -197,11 +197,11 @@ msgstr "Monipuolinen haku"
 
 #: common.nowSearching
 msgid "Now searching "
-msgstr "Etsitään nyt:"
+msgstr "Etsitään nyt: "
 
 #: common.ofAtLeast
 msgid " of about "
-msgstr " / noin"
+msgstr " / noin "
 
 #: common.relevancy
 msgid "Match Score: "
@@ -212,7 +212,8 @@ msgid "Tips:"
 msgstr "Vinkit:"
 
 #: common.tips.tip1
-msgid "Click on a folder icon in the sidebar to access related quick searches"
+msgid ""
+"Click on a folder icon in the sidebar to access related quick searches"
 msgstr ""
 "Napsauta sivupalkin kansiokuvaketta, jos haluat päästä käsiksi aiheeseen "
 "liittyviin pikahakuihin"
@@ -318,7 +319,8 @@ msgstr ""
 "Varausjonot eivät toimi yksinkertaisella \n"
 "'ensimmäinen varaaja saa ensimmäiseksi'-periaatteella. Ne käyttävät "
 "monimutkaista matriisia,\n"
-"joka ottaa huomioon niteen ja asiakkaan kotikirjaston sekä niteen ostopäivän\n"
+"joka ottaa huomioon niteen ja asiakkaan kotikirjaston sekä niteen "
+"ostopäivän\n"
 "määrittäessään varausten prioriteetteja; luettelo on dynaaminen ja vaihtuu\n"
 "jokaisen varauksen myötä. Näin ollen mikä tahansa ilmoitus paikasta\n"
 "varausluettelossa olisi epätarkka. Varausjärjestelmä on suunniteltu niin,\n"
@@ -435,7 +437,8 @@ msgid ""
 "browser. \n"
 "To use the regular Evergreen Catalog, enable JavaScript by changing your "
 "browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
+"\n"
 "<br/><br/>Alternatively, you can use the basic HTML-only catalog: "
 msgstr ""
 "JavaScriptin on oltava käytössä, jotta voit käyttää tavallista Evergreen-"
@@ -446,7 +449,7 @@ msgstr ""
 "uudelleen</a>. \n"
 "<br/><br/>Vaihtoehtoisesti voit käyttää perus-HTML-tietokantaa \n"
 "<a style='color: blue; text-decoration: underline;' "
-"href='/opac/extras/slimpac/start.html'>täällä</a>."
+"href='/opac/extras/slimpac/start.html'>täällä</a>. "
 
 #. =================================================================
 #. MyOPAC bookbag page
@@ -769,7 +772,7 @@ msgstr "Ennakkovaraus"
 #: myopac.holds.cancel
 msgctxt "myopac.holds.cancel"
 msgid "Cancel"
-msgstr "Peruuta "
+msgstr "Peruuta"
 
 #: myopac.holds.verify
 msgid ""
@@ -793,7 +796,7 @@ msgstr "Aseta aktivointipäivä"
 #: myopac.holds.cancel_selected
 msgctxt "myopac.holds.cancel_selected"
 msgid "Cancel"
-msgstr "Peruuta "
+msgstr "Peruuta"
 
 #: myopac.holds.processing
 msgid "Processing holds... This may take a moment."
@@ -1067,9 +1070,9 @@ msgstr "Syötä käyttäjänimi"
 
 #: myopac.summary.username.dup
 msgid ""
-"The requested username is not available.  Please choose a different "
-"username."
-msgstr "Pyydetty käyttäjänimi ei ole saatavilla. Valitse toinen käyttäjänimi."
+"The requested username is not available.  Please choose a different username."
+msgstr ""
+"Pyydetty käyttäjänimi ei ole saatavilla. Valitse toinen käyttäjänimi."
 
 #: myopac.summary.username.success
 msgid "Username successfully updated"
@@ -1308,7 +1311,7 @@ msgstr "Oma tili"
 
 #: navigate.myopac.title
 msgid "Go to My OPAC"
-msgstr "Siirry Omaan varkkokirjastoon "
+msgstr "Siirry Omaan varkkokirjastoon"
 
 #: navigate.login
 msgid "Log in"
@@ -1339,7 +1342,7 @@ msgstr "Valitse kirjasto hakua varten"
 
 #: navigate.loggedinas
 msgid "You are logged in as "
-msgstr "Olet kirjautunut sisään nimellä"
+msgstr "Olet kirjautunut sisään nimellä "
 
 #: navigate.loggedinas.title
 msgid "Logged in as..."
@@ -2035,7 +2038,7 @@ msgstr "Ladataan nidetietoja..."
 
 #: rdetail.noneAvailable
 msgid " * There are no copies in this location"
-msgstr "* Tässä sijainnissa ei ole niteitä"
+msgstr " * Tässä sijainnissa ei ole niteitä"
 
 #: rdetail.summary.online
 msgid "Online Resources"
@@ -2291,7 +2294,8 @@ msgstr "(Ohje)"
 msgid ""
 "The phone number does not have the correct format. The expected format is "
 "XXX-YYY-ZZZZ"
-msgstr "Puhelinnumero ei ole oikeassa muodossa. Oletettu muoto on XXX-YYY-ZZZZ."
+msgstr ""
+"Puhelinnumero ei ole oikeassa muodossa. Oletettu muoto on XXX-YYY-ZZZZ."
 
 #: common.hold.failed
 msgid ""
@@ -2434,7 +2438,8 @@ msgstr ""
 "yhteyttä kirjastoosi."
 
 #: login.account.inactive
-msgid "This account has been deactivated.  Please contact your local library."
+msgid ""
+"This account has been deactivated.  Please contact your local library."
 msgstr "Tili on otettu pois käytöstä. Ota yhteyttä kirjastoosi."
 
 #: login.failed
@@ -2701,7 +2706,8 @@ msgstr "Järjestelmä ei löytänyt nidettä"
 
 #: circ.fail_part.no_ultimate_items
 msgid "The system could not find any items to match this hold request"
-msgstr "Järjestelmä ei löytänyt niteitä, jotka sopisivat tähän varauspyyntöön"
+msgstr ""
+"Järjestelmä ei löytänyt niteitä, jotka sopisivat tähän varauspyyntöön"
 
 #: circ.fail_part.no_matchpoint
 msgid "System rules do not define how to handle this item"

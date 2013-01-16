@@ -1,12 +1,134 @@
+# Finnish translation for evergreen
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-29 09:46+0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Finnish <evergreen@jns.fi>\n"
-"Language-Team: Finnish <evergreen@jns.fi>\n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"PO-Revision-Date: 2012-03-21 09:29+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.9.0\n"
+"X-Launchpad-Export-Date: 2012-03-22 04:58+0000\n"
+"X-Generator: Launchpad (build 14981)\n"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:1
+msgctxt ""
+"../../Open-ILS/xul/staff_client/server/locale/en-"
+"US/multiclass_search_help.html:1"
+msgid "Multiclass Search Help"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:2
+msgctxt ""
+"../../Open-ILS/xul/staff_client/server/locale/en-"
+"US/multiclass_search_help.html:2"
+msgid "Multiclass Search Help"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:3
+msgid "Recognized search keys include:"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:4
+msgid "Search key"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:5
+msgid "Definition"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:6
+msgid ""
+"keyword</strong>, <strong>title</strong>,             "
+"<strong>author</strong>, <strong>subject</strong>, and             "
+"<strong>series</strong> support additional search subclasses,             "
+"specified with a <kbd>|</kbd>. For example:             "
+"<kbd>title|proper:gone with the wind"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:7
+msgid "keyword/kw"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:8
+msgid "search keyword(s)"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:9
+msgid "author/au/name"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:10
+msgid "search author(s)"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:11
+msgid "title/ti"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:12
+msgid "search title"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:13
+msgid "subject/su"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:14
+msgid "search subject"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:15
+msgid "series/se"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:16
+msgid "search series"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:17
+msgid "lang"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:18
+msgid "limit by language (specifiy multiple langs with lang:l1 lang:l2 ...)"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:19
+msgid "site"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:20
+msgid "search at specified org unit, corresponds to actor.org_unit.shortname"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:21
+msgid "sort"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:22
+msgid "sort type (title, author, pubdate)"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:23
+msgid "dir"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:24
+msgid "sort direction (asc, desc)"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:25
+msgid "available"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:26
+msgid ""
+"if set to anything other than \"false\" or \"0\", limits to available items"
+msgstr ""

@@ -3,18 +3,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-29 08:58+0300\n"
-"PO-Revision-Date: 2012-10-17 11:19+0300\n"
-"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"POT-Creation-Date: 2012-12-20 09:37-0400\n"
+"PO-Revision-Date: 2012-12-20 15:09+0000\n"
+"Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
-"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Translate Toolkit 1.9.0\n"
-"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2012-12-21 04:58+0000\n"
+"X-Generator: Launchpad (build 16378)\n"
 "X-Project-Style: mozilla\n"
+"X-Accelerator-Marker: &\n"
+"Language: fi\n"
 
 #: lang.version
 msgid "remote v1"
@@ -806,12 +806,6 @@ msgstr "&Uusi työkalupalkki"
 msgid "Delete Toolbar"
 msgstr "Poista työkalupalkki"
 
-#: staff.admin.toolbar.delete_toolbar.accesskey
-msgctxt "staff.admin.toolbar.delete_toolbar.accesskey"
-"staff.admin.toolbar.delete_toolbar.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.admin.toolbar.add_toolbar_button.label
 msgid "--&gt;"
 msgstr "--&gt;"
@@ -879,11 +873,6 @@ msgstr ""
 msgctxt "staff.admin.work_log.refresh_btn.label"
 msgid "Refresh"
 msgstr "Päivitä"
-
-#: staff.admin.work_log.refresh_btn.accesskey
-msgctxt "staff.admin.work_log.refresh_btn.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.admin.work_log.list1.retrieve_item_btn.label
 #: staff.admin.work_log.list1.retrieve_item_btn.accesskey
@@ -1267,7 +1256,8 @@ msgstr "Kopioi uuteen välilehteen"
 
 #: staff.cat.opac.copy_browse.label
 #: staff.cat.opac.copy_browse.accesskey
-msgctxt "staff.cat.opac.copy_browse.label staff.cat.opac.copy_browse.accesskey"
+msgctxt ""
+"staff.cat.opac.copy_browse.label staff.cat.opac.copy_browse.accesskey"
 msgid "&Holdings Maintenance"
 msgstr "&Kokoelmienhallinta"
 
@@ -1307,19 +1297,9 @@ msgstr "MARC-&näkymä"
 msgid "&Mark for Overlay"
 msgstr "&Merkitse korvattavaksi"
 
-#: staff.cat.opac.mark_for_hold_transfer.accesskey
-msgctxt "staff.cat.opac.mark_for_hold_transfer.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.cat.opac.mark_for_hold_transfer.label
 msgid "Mark as Title Hold Transfer Destination"
 msgstr "Merkitse nimekevaraus siirron kohteeksi"
-
-#: staff.cat.opac.transfer_title_holds.accesskey
-msgctxt "staff.cat.opac.transfer_title_holds.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.cat.opac.transfer_title_holds.label
 msgid "Transfer All Title Holds"
@@ -1363,7 +1343,8 @@ msgstr "&Loppu"
 
 #: staff.cat.opac.record_next.label
 #: staff.cat.opac.record_next.accesskey
-msgctxt "staff.cat.opac.record_next.label staff.cat.opac.record_next.accesskey"
+msgctxt ""
+"staff.cat.opac.record_next.label staff.cat.opac.record_next.accesskey"
 msgid "&Next"
 msgstr "&Seuraava"
 
@@ -1412,21 +1393,6 @@ msgctxt "staff.cat.popup.add_to_bucket"
 msgid "Add to Bucket"
 msgstr "Lisää siiloon"
 
-#: staff.cat.popup.add_to_bucket.key
-msgctxt "staff.cat.popup.add_to_bucket.key"
-msgid ""
-msgstr ""
-
-#: staff.cat.popup.browse.record.tab.key
-msgctxt "staff.cat.popup.browse.record.tab.key"
-msgid ""
-msgstr ""
-
-#: staff.cat.popup.browse.record.window.key
-msgctxt "staff.cat.popup.browse.record.window.key"
-msgid ""
-msgstr ""
-
 #: staff.cat.popup.browse_record.tab
 msgid "View Copies (Tab)"
 msgstr "Näytä niteet (välilehti)"
@@ -1434,16 +1400,6 @@ msgstr "Näytä niteet (välilehti)"
 #: staff.cat.popup.browse_record.window
 msgid "View Copies (Window)"
 msgstr "Näytä niteet (ikkuna)"
-
-#: staff.cat.popup.edit.record.tab.key
-msgctxt "staff.cat.popup.edit.record.tab.key"
-msgid ""
-msgstr ""
-
-#: staff.cat.popup.edit.record.window.key
-msgctxt "staff.cat.popup.edit.record.window.key"
-msgid ""
-msgstr ""
 
 #: staff.cat.popup.edit_record.tab
 msgid "Edit Record (Tab)"
@@ -1464,7 +1420,9 @@ msgstr "&Yhdistä"
 
 #: staff.cat.record_buckets.merge_records.cancel_button.label
 #: staff.cat.record_buckets.merge_records.cancel_button.accesskey
-msgctxt "staff.cat.record_buckets.merge_records.cancel_button.label staff.cat.record_buckets.merge_records.cancel_button.accesskey"
+msgctxt ""
+"staff.cat.record_buckets.merge_records.cancel_button.label "
+"staff.cat.record_buckets.merge_records.cancel_button.accesskey"
 msgid "&Cancel"
 msgstr "&Peruuta"
 
@@ -1704,20 +1662,10 @@ msgctxt "staff.checkin.print_receipt.label"
 msgid "Print List"
 msgstr "Tulosta luettelo"
 
-#: staff.checkin.print_receipt.accesskey
-msgctxt "staff.checkin.print_receipt.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.renew.print_receipt.label
 msgctxt "staff.renew.print_receipt.label"
 msgid "Print List"
 msgstr "Tulosta luettelo"
-
-#: staff.renew.print_receipt.accesskey
-msgctxt "staff.renew.print_receipt.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.checkin.reprint_receipt_label
 msgctxt "staff.checkin.reprint_receipt_label"
@@ -1807,7 +1755,8 @@ msgstr "&Viimeisin kuitti"
 
 #: staff.circ.offline.cmd_exit.label
 #: staff.circ.offline.cmd_exit.accesskey
-msgctxt "staff.circ.offline.cmd_exit.label staff.circ.offline.cmd_exit.accesskey"
+msgctxt ""
+"staff.circ.offline.cmd_exit.label staff.circ.offline.cmd_exit.accesskey"
 msgid "E&xit"
 msgstr "P&oistu"
 
@@ -1817,7 +1766,9 @@ msgstr "Itsenäinen palautus"
 
 #: staff.circ.offline_checkin.step2a.label
 #: staff.circ.offline_checkin.step2a.accesskey
-msgctxt "staff.circ.offline_checkin.step2a.label staff.circ.offline_checkin.step2a.accesskey"
+msgctxt ""
+"staff.circ.offline_checkin.step2a.label "
+"staff.circ.offline_checkin.step2a.accesskey"
 msgid "&Enter"
 msgstr "&Syötä"
 
@@ -1988,13 +1939,17 @@ msgstr "Palauta menneellä päiväyksellä jo palautettu laina"
 
 #: staff.circ.backdate_post_checkin.cancel_btn.label
 #: staff.circ.backdate_post_checkin.cancel_btn.accesskey
-msgctxt "staff.circ.backdate_post_checkin.cancel_btn.label staff.circ.backdate_post_checkin.cancel_btn.accesskey"
+msgctxt ""
+"staff.circ.backdate_post_checkin.cancel_btn.label "
+"staff.circ.backdate_post_checkin.cancel_btn.accesskey"
 msgid "&Cancel"
 msgstr "&Peruuta"
 
 #: staff.circ.backdate_post_checkin.apply_btn.label
 #: staff.circ.backdate_post_checkin.apply_btn.accesskey
-msgctxt "staff.circ.backdate_post_checkin.apply_btn.label staff.circ.backdate_post_checkin.apply_btn.accesskey"
+msgctxt ""
+"staff.circ.backdate_post_checkin.apply_btn.label "
+"staff.circ.backdate_post_checkin.apply_btn.accesskey"
 msgid "&Apply"
 msgstr "&Hyväksy"
 
@@ -2434,11 +2389,6 @@ msgstr "s"
 msgid "Clone Copy"
 msgstr "Kloonaa nide"
 
-#: staff.copy.clone.key
-msgctxt "staff.copy.clone.key"
-msgid ""
-msgstr ""
-
 #: staff.copy.close
 msgid "Close Window"
 msgstr "Sulje ikkuna"
@@ -2460,11 +2410,6 @@ msgstr "Arvo"
 #: staff.copy.delete
 msgid "Delete Copy"
 msgstr "Poista nide"
-
-#: staff.copy.delete.key
-msgctxt "staff.copy.delete.key"
-msgid ""
-msgstr ""
 
 #: staff.copy.edit_categories
 msgid "Edit Categories"
@@ -2545,11 +2490,6 @@ msgstr "Tunnus tulee tähän"
 msgid "Transfer Copy"
 msgstr "Siirrä nide"
 
-#: staff.copy.transfer.key
-msgctxt "staff.copy.transfer.key"
-msgid ""
-msgstr ""
-
 #: staff.copy.wizard.title
 msgid "Batch Add Copies Wizard"
 msgstr "Lisää niteitä erissä: ohjattu luominen"
@@ -2590,7 +2530,8 @@ msgstr "Suodatinkonsoli"
 
 #: staff.hold_capture.auto_print.label
 #: staff.hold_capture.auto_print.accesskey
-msgctxt "staff.hold_capture.auto_print.label staff.hold_capture.auto_print.accesskey"
+msgctxt ""
+"staff.hold_capture.auto_print.label staff.hold_capture.auto_print.accesskey"
 msgid "&Auto-Print"
 msgstr "&Automaattinen tulostus"
 
@@ -2604,11 +2545,6 @@ msgstr "&Valmis"
 msgctxt "staff.hold_capture.print_receipt.label"
 msgid "Print List"
 msgstr "Tulosta luettelo"
-
-#: staff.hold_capture.print_receipt.accesskey
-msgctxt "staff.hold_capture.print_receipt.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.hold_capture.reprint_receipt_label
 msgctxt "staff.hold_capture.reprint_receipt_label"
@@ -2721,19 +2657,9 @@ msgstr "I"
 msgid "Chrome List"
 msgstr "Chrome-luettelo"
 
-#: staff.main.auth.debug.chrome_list.accesskey
-msgctxt "staff.main.auth.debug.chrome_list.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.main.auth.debug.js_shell
 msgid "Javascript Shell"
 msgstr "JavaScript-kehote"
-
-#: staff.main.auth.debug.js_shell.accesskey
-msgctxt "staff.main.auth.debug.js_shell.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.main.auth.hostname
 msgid "Hostname"
@@ -2804,58 +2730,28 @@ msgctxt "staff.main.button_bar.check_out.label"
 msgid "Check Out"
 msgstr "Lainaa"
 
-#: staff.main.button_bar.check_out.accesskey
-msgctxt "staff.main.button_bar.check_out.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.main.button_bar.check_in.label
 msgctxt "staff.main.button_bar.check_in.label"
 msgid "Check In"
 msgstr "Palauta"
 
-#: staff.main.button_bar.check_in.accesskey
-msgctxt "staff.main.button_bar.check_in.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.main.button_bar.search_opac.label
 msgid "Search Catalog"
 msgstr "Hae aineistoa"
-
-#: staff.main.button_bar.search_opac.accesskey
-msgctxt "staff.main.button_bar.search_opac.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.main.button_bar.item_status.label
 msgctxt "staff.main.button_bar.item_status.label"
 msgid "Item Status"
 msgstr "Niteen tila"
 
-#: staff.main.button_bar.item_status.accesskey
-msgctxt "staff.main.button_bar.item_status.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.main.button_bar.patron_search.label
 msgctxt "staff.main.button_bar.patron_search.label"
 msgid "Patron Search"
 msgstr "Asiakkaan haku"
 
-#: staff.main.button_bar.patron_search.accesskey
-msgctxt "staff.main.button_bar.patron_search.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.main.button_bar.patron_registration.label
 msgid "Patron Registration"
 msgstr "Asiakkaan rekisteröinti"
-
-#: staff.main.button_bar.patron_registration.accesskey
-msgctxt "staff.main.button_bar.patron_registration.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.main.button_bar.hotkeys_toggle
 msgid "Toggle Hotkeys"
@@ -2906,11 +2802,6 @@ msgstr "&JavaScript-konsoli"
 #: staff.main.menu.admin.cmd_shell.accesskey
 msgid "JavaScript S&hell"
 msgstr "JavaScript-k&ehote"
-
-#: staff.main.menu.admin.cmd_chrome_shell.accesskey
-msgctxt "staff.main.menu.admin.cmd_chrome_shell.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.main.menu.admin.cmd_chrome_shell.label
 msgid "JavaScript Shell (Chrome)"
@@ -3133,7 +3024,9 @@ msgstr "Lainausrajoitusryhmät"
 
 #: staff.main.menu.admin.server_admin.acq.label
 #: staff.main.menu.admin.server_admin.acq.accesskey
-msgctxt "staff.main.menu.admin.server_admin.acq.label staff.main.menu.admin.server_admin.acq.accesskey"
+msgctxt ""
+"staff.main.menu.admin.server_admin.acq.label "
+"staff.main.menu.admin.server_admin.acq.accesskey"
 msgid "&Acquisitions"
 msgstr "&Hankinnat"
 
@@ -3249,7 +3142,9 @@ msgstr "&Synonyymisanakirjat"
 
 #: staff.main.menu.admin.server_admin.booking.label
 #: staff.main.menu.admin.server_admin.booking.accesskey
-msgctxt "staff.main.menu.admin.server_admin.booking.label staff.main.menu.admin.server_admin.booking.accesskey"
+msgctxt ""
+"staff.main.menu.admin.server_admin.booking.label "
+"staff.main.menu.admin.server_admin.booking.accesskey"
 msgid "&Booking"
 msgstr "&Erikoisvaraukset"
 
@@ -3280,7 +3175,9 @@ msgstr "Aineistomääritteiden &kartat"
 
 #: staff.main.menu.admin.server_admin.serial.label
 #: staff.main.menu.admin.server_admin.serial.accesskey
-msgctxt "staff.main.menu.admin.server_admin.serial.label staff.main.menu.admin.server_admin.serial.accesskey"
+msgctxt ""
+"staff.main.menu.admin.server_admin.serial.label "
+"staff.main.menu.admin.server_admin.serial.accesskey"
 msgid "&Serials"
 msgstr "&Sarjajulkaisut"
 
@@ -3360,20 +3257,10 @@ msgctxt "staff.main.menu.admin.client.hotkeys.setworkstation.label"
 msgid "Set Workstation Default to Current"
 msgstr "Aseta nykyinen työaseman oletukseksi"
 
-#: staff.main.menu.admin.client.hotkeys.setworkstation.accesskey
-msgctxt "staff.main.menu.admin.client.hotkeys.setworkstation.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.main.menu.admin.client.hotkeys.clearworkstation.label
 msgctxt "staff.main.menu.admin.client.hotkeys.clearworkstation.label"
 msgid "Clear Workstation Default"
 msgstr "Tyhjennä työaseman oletus"
-
-#: staff.main.menu.admin.client.hotkeys.clearworkstation.accesskey
-msgctxt "staff.main.menu.admin.client.hotkeys.clearworkstation.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.main.menu.admin.client.search_prefs.label
 msgid "Set Search Preferences"
@@ -3392,30 +3279,15 @@ msgstr "Nykyinen"
 msgid "Configure Toolbars"
 msgstr "Määritä työkalupalkit"
 
-#: staff.main.menu.admin.client.toolbars.config.accesskey
-msgctxt "staff.main.menu.admin.client.toolbars.config.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.main.menu.admin.client.toolbars.setworkstation.label
 msgctxt "staff.main.menu.admin.client.toolbars.setworkstation.label"
 msgid "Set Workstation Default to Current"
 msgstr "Aseta nykyinen työaseman oletukseksi"
 
-#: staff.main.menu.admin.client.toolbars.setworkstation.accesskey
-msgctxt "staff.main.menu.admin.client.toolbars.setworkstation.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.main.menu.admin.client.toolbars.clearworkstation.label
 msgctxt "staff.main.menu.admin.client.toolbars.clearworkstation.label"
 msgid "Clear Workstation Default"
 msgstr "Tyhjennä työaseman oletus"
-
-#: staff.main.menu.admin.client.toolbars.clearworkstation.accesskey
-msgctxt "staff.main.menu.admin.client.toolbars.clearworkstation.accesskey"
-msgid ""
-msgstr ""
 
 #. Do not translate this.  Only change the numeric values if you need this dialogue box to appear bigger
 #: staff.main.menu.admin.client.toolbars.size
@@ -3651,7 +3523,9 @@ msgstr "Hae nimeke &tietuenumerolla"
 
 #: staff.main.menu.cat.search_bib_id.label
 #: staff.main.menu.cat.search_bib_id.accesskey
-msgctxt "staff.main.menu.cat.search_bib_id.label staff.main.menu.cat.search_bib_id.accesskey"
+msgctxt ""
+"staff.main.menu.cat.search_bib_id.label "
+"staff.main.menu.cat.search_bib_id.accesskey"
 msgid "Retrieve title via &Database ID"
 msgstr "Hae nimeke &tietokannan tunnuksella"
 
@@ -3842,11 +3716,6 @@ msgstr "Merkitse löytyneeksi"
 msgid "&Browse Holds Shelf"
 msgstr "&Selaa varaushyllyä"
 
-#: staff.main.menu.circ.hold_clear.accesskey
-msgctxt "staff.main.menu.circ.hold_clear.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.main.menu.circ.hold_clear.label
 msgid "Clear Shelf-Expired Holds"
 msgstr "Tyhjennä hyllyssä vanhentuneet varaukset"
@@ -3921,7 +3790,9 @@ msgstr "Vireill&ä olevat asiakkaat"
 
 #: staff.main.menu.circ.patron_retrieve.label
 #: staff.main.menu.circ.patron_retrieve.accesskey
-msgctxt "staff.main.menu.circ.patron_retrieve.label staff.main.menu.circ.patron_retrieve.accesskey"
+msgctxt ""
+"staff.main.menu.circ.patron_retrieve.label "
+"staff.main.menu.circ.patron_retrieve.accesskey"
 msgid "Retrieve &Last Patron"
 msgstr "Hae &viimeisin asiakas"
 
@@ -3936,7 +3807,9 @@ msgstr "Näytä asiakas"
 
 #: staff.main.menu.circ.place_hold.label
 #: staff.main.menu.circ.place_hold.accesskey
-msgctxt "staff.main.menu.circ.place_hold.label staff.main.menu.circ.place_hold.accesskey"
+msgctxt ""
+"staff.main.menu.circ.place_hold.label "
+"staff.main.menu.circ.place_hold.accesskey"
 msgid "Place &Hold"
 msgstr "Tee &varaus"
 
@@ -4114,28 +3987,13 @@ msgstr "m"
 msgid "Undo"
 msgstr "Kumoa"
 
-#: staff.main.menu.entity.bib.key
-msgctxt "staff.main.menu.entity.bib.key"
-msgid ""
-msgstr ""
-
 #: staff.main.menu.entity.bib.label
 msgid "Bib Records"
 msgstr "Bibliografiset tietueet"
 
-#: staff.main.menu.entity.copy.key
-msgctxt "staff.main.menu.entity.copy.key"
-msgid ""
-msgstr ""
-
 #: staff.main.menu.entity.copy.label
 msgid "Items"
 msgstr "Niteet"
-
-#: staff.main.menu.entity.patron.key
-msgctxt "staff.main.menu.entity.patron.key"
-msgid ""
-msgstr ""
 
 #: staff.main.menu.entity.patron.label
 msgid "Patrons"
@@ -4145,11 +4003,6 @@ msgstr "Asiakkaat"
 msgctxt "staff.main.menu.entity.patron.register.key"
 msgid "R"
 msgstr "R"
-
-#: staff.main.menu.entity.volume.key
-msgctxt "staff.main.menu.entity.volume.key"
-msgid ""
-msgstr ""
 
 #: staff.main.menu.entity.volume.label
 msgctxt "staff.main.menu.entity.volume.label"
@@ -4170,11 +4023,6 @@ msgstr "S"
 #: staff.main.menu.file.close_tab.accesskey
 msgid "&Close Tab"
 msgstr "&Sulje välilehti"
-
-#: staff.main.menu.file.close_tab.key
-msgctxt "staff.main.menu.file.close_tab.key"
-msgid ""
-msgstr ""
 
 #: staff.main.menu.file.label
 #: staff.main.menu.file.accesskey
@@ -4249,11 +4097,6 @@ msgctxt "staff.main.menu.replace_barcode.label"
 msgid "Replace Barcode"
 msgstr "Korvaa tunnus"
 
-#: staff.main.menu.reports.key
-msgctxt "staff.main.menu.reports.key"
-msgid ""
-msgstr ""
-
 #: staff.main.menu.reports.label
 msgctxt "staff.main.menu.reports.label"
 msgid "Reports"
@@ -4284,11 +4127,6 @@ msgstr "Hae &asiakkaita"
 msgid "Search for patro&n by Barcode"
 msgstr "Hae asiakast&a tunnuksella"
 
-#: staff.main.menu.search.patron_db_id.accesskey
-msgctxt "staff.main.menu.search.patron_db_id.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.main.menu.search.patron_db_id.label
 msgid "Retrieve patron via Database ID"
 msgstr "Hae asiakas tietokannan tunnuksella"
@@ -4300,7 +4138,9 @@ msgstr "Hae tietue &tietuenumerolla"
 
 #: staff.main.menu.search.record_via_id.label
 #: staff.main.menu.search.record_via_id.accesskey
-msgctxt "staff.main.menu.search.record_via_id.label staff.main.menu.search.record_via_id.accesskey"
+msgctxt ""
+"staff.main.menu.search.record_via_id.label "
+"staff.main.menu.search.record_via_id.accesskey"
 msgid "Retrieve title via &Database ID"
 msgstr "Hae nimeke &tietokannan tunnuksella"
 
@@ -5735,24 +5575,23 @@ msgstr "Maksut:"
 
 #: staff.patron_display.checkout.auto_print.label
 #: staff.patron_display.checkout.auto_print.accesskey
-msgctxt "staff.patron_display.checkout.auto_print.label staff.patron_display.checkout.auto_print.accesskey"
+msgctxt ""
+"staff.patron_display.checkout.auto_print.label "
+"staff.patron_display.checkout.auto_print.accesskey"
 msgid "&Auto-Print"
 msgstr "&Automaattinen tulostus"
 
 #: staff.patron_display.checkout.done.label
 #: staff.patron_display.checkout.done.accesskey
-msgctxt "staff.patron_display.checkout.done.label staff.patron_display.checkout.done.accesskey"
+msgctxt ""
+"staff.patron_display.checkout.done.label "
+"staff.patron_display.checkout.done.accesskey"
 msgid "&Done"
 msgstr "&Valmis"
 
 #: staff.patron_display.checkout.print_receipt.label
 msgid "Print Receipt"
 msgstr "Tulosta kuitti"
-
-#: staff.patron_display.checkout.print_receipt.accesskey
-msgctxt "staff.patron_display.checkout.print_receipt.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.patron_display.checkout.reprint_receipt_label
 msgid "Re-Print Last Receipt"
@@ -5765,13 +5604,17 @@ msgstr "L"
 
 #: staff.patron_display.checkout.scan.label
 #: staff.patron_display.checkout.scan.accesskey
-msgctxt "staff.patron_display.checkout.scan.label staff.patron_display.checkout.scan.accesskey"
+msgctxt ""
+"staff.patron_display.checkout.scan.label "
+"staff.patron_display.checkout.scan.accesskey"
 msgid "Enter B&arcode:"
 msgstr "Syötä t&unnus:"
 
 #: staff.patron_display.checkout.submit.label
 #: staff.patron_display.checkout.submit.accesskey
-msgctxt "staff.patron_display.checkout.submit.label staff.patron_display.checkout.submit.accesskey"
+msgctxt ""
+"staff.patron_display.checkout.submit.label "
+"staff.patron_display.checkout.submit.accesskey"
 msgid "&Submit"
 msgstr "&Lähetä"
 
@@ -5791,11 +5634,6 @@ msgstr "Henkilöllisyys &amp; yhteystiedot"
 msgid "Account Info"
 msgstr "Tilitiedot"
 
-#: staff.patron_display.tab.account_info.accesskey
-msgctxt "staff.patron_display.tab.account_info.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.patron_display.patron_info.caption
 msgid "Patron Info"
 msgstr "Asiakastiedot"
@@ -5809,29 +5647,14 @@ msgctxt "staff.patron_display.tab.identification.label"
 msgid "Identification"
 msgstr "Tunnistautuminen"
 
-#: staff.patron_display.tab.identification.accesskey
-msgctxt "staff.patron_display.tab.identification.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.patron_display.tab.group.label
 msgctxt "staff.patron_display.tab.group.label"
 msgid "Group"
 msgstr "Ryhmä"
 
-#: staff.patron_display.tab.group.accesskey
-msgctxt "staff.patron_display.tab.group.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.patron_display.tab.stat_cats.label
 msgid "Stat Cats"
 msgstr "Tilastolliset kategoriat"
-
-#: staff.patron_display.tab.stat_cats.accesskey
-msgctxt "staff.patron_display.tab.stat_cats.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.patron_display.credit.label
 msgid "Credit:"
@@ -5966,19 +5789,9 @@ msgstr "Tulosta"
 msgid "Mailing"
 msgstr "Postitus"
 
-#: staff.patron_display.radio.mailing_address.accesskey
-msgctxt "staff.patron_display.radio.mailing_address.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.patron_display.radio.physical_address.label
 msgid "Billing"
 msgstr "Maksu"
-
-#: staff.patron_display.radio.physical_address.accesskey
-msgctxt "staff.patron_display.radio.physical_address.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.patron_display.name.label
 msgctxt "staff.patron_display.name.label"
@@ -6088,37 +5901,49 @@ msgstr "Muistiinpanot, varoitukset, estot"
 
 #: staff.patron_display.apply_penalty_dialog.radio_btn.note.label
 #: staff.patron_display.apply_penalty_dialog.radio_btn.note.accesskey
-msgctxt "staff.patron_display.apply_penalty_dialog.radio_btn.note.label staff.patron_display.apply_penalty_dialog.radio_btn.note.accesskey"
+msgctxt ""
+"staff.patron_display.apply_penalty_dialog.radio_btn.note.label "
+"staff.patron_display.apply_penalty_dialog.radio_btn.note.accesskey"
 msgid "&Note"
 msgstr "&Huomautus"
 
 #: staff.patron_display.apply_penalty_dialog.radio_btn.alert.label
 #: staff.patron_display.apply_penalty_dialog.radio_btn.alert.accesskey
-msgctxt "staff.patron_display.apply_penalty_dialog.radio_btn.alert.label staff.patron_display.apply_penalty_dialog.radio_btn.alert.accesskey"
+msgctxt ""
+"staff.patron_display.apply_penalty_dialog.radio_btn.alert.label "
+"staff.patron_display.apply_penalty_dialog.radio_btn.alert.accesskey"
 msgid "Aler&t"
 msgstr "Varoitu&s"
 
 #: staff.patron_display.apply_penalty_dialog.radio_btn.block.label
 #: staff.patron_display.apply_penalty_dialog.radio_btn.block.accesskey
-msgctxt "staff.patron_display.apply_penalty_dialog.radio_btn.block.label staff.patron_display.apply_penalty_dialog.radio_btn.block.accesskey"
+msgctxt ""
+"staff.patron_display.apply_penalty_dialog.radio_btn.block.label "
+"staff.patron_display.apply_penalty_dialog.radio_btn.block.accesskey"
 msgid "Bloc&k"
 msgstr "Sulje poi&s"
 
 #: staff.patron_display.apply_penalty_dialog.cancel_btn.label
 #: staff.patron_display.apply_penalty_dialog.cancel_btn.accesskey
-msgctxt "staff.patron_display.apply_penalty_dialog.cancel_btn.label staff.patron_display.apply_penalty_dialog.cancel_btn.accesskey"
+msgctxt ""
+"staff.patron_display.apply_penalty_dialog.cancel_btn.label "
+"staff.patron_display.apply_penalty_dialog.cancel_btn.accesskey"
 msgid "&Cancel"
 msgstr "&Peruuta"
 
 #: staff.patron_display.apply_penalty_dialog.apply_btn.label
 #: staff.patron_display.apply_penalty_dialog.apply_btn.accesskey
-msgctxt "staff.patron_display.apply_penalty_dialog.apply_btn.label staff.patron_display.apply_penalty_dialog.apply_btn.accesskey"
+msgctxt ""
+"staff.patron_display.apply_penalty_dialog.apply_btn.label "
+"staff.patron_display.apply_penalty_dialog.apply_btn.accesskey"
 msgid "&Apply"
 msgstr "&Ota käyttöön"
 
 #: staff.patron_display.apply_penalty_dialog.initials_entry.label
 #: staff.patron_display.apply_penalty_dialog.initials_entry.accesskey
-msgctxt "staff.patron_display.apply_penalty_dialog.initials_entry.label staff.patron_display.apply_penalty_dialog.initials_entry.accesskey"
+msgctxt ""
+"staff.patron_display.apply_penalty_dialog.initials_entry.label "
+"staff.patron_display.apply_penalty_dialog.initials_entry.accesskey"
 msgid "&Initials"
 msgstr "&Nimikirjaimet"
 
@@ -6139,37 +5964,49 @@ msgstr "Muistiinpanot, varoitukset, estot"
 
 #: staff.patron_display.edit_penalty_dialog.radio_btn.note.label
 #: staff.patron_display.edit_penalty_dialog.radio_btn.note.accesskey
-msgctxt "staff.patron_display.edit_penalty_dialog.radio_btn.note.label staff.patron_display.edit_penalty_dialog.radio_btn.note.accesskey"
+msgctxt ""
+"staff.patron_display.edit_penalty_dialog.radio_btn.note.label "
+"staff.patron_display.edit_penalty_dialog.radio_btn.note.accesskey"
 msgid "&Note"
 msgstr "&Huomautus"
 
 #: staff.patron_display.edit_penalty_dialog.radio_btn.alert.label
 #: staff.patron_display.edit_penalty_dialog.radio_btn.alert.accesskey
-msgctxt "staff.patron_display.edit_penalty_dialog.radio_btn.alert.label staff.patron_display.edit_penalty_dialog.radio_btn.alert.accesskey"
+msgctxt ""
+"staff.patron_display.edit_penalty_dialog.radio_btn.alert.label "
+"staff.patron_display.edit_penalty_dialog.radio_btn.alert.accesskey"
 msgid "Aler&t"
 msgstr "Huomautu&s"
 
 #: staff.patron_display.edit_penalty_dialog.radio_btn.block.label
 #: staff.patron_display.edit_penalty_dialog.radio_btn.block.accesskey
-msgctxt "staff.patron_display.edit_penalty_dialog.radio_btn.block.label staff.patron_display.edit_penalty_dialog.radio_btn.block.accesskey"
+msgctxt ""
+"staff.patron_display.edit_penalty_dialog.radio_btn.block.label "
+"staff.patron_display.edit_penalty_dialog.radio_btn.block.accesskey"
 msgid "Bloc&k"
 msgstr "Sulje poi&s"
 
 #: staff.patron_display.edit_penalty_dialog.cancel_btn.label
 #: staff.patron_display.edit_penalty_dialog.cancel_btn.accesskey
-msgctxt "staff.patron_display.edit_penalty_dialog.cancel_btn.label staff.patron_display.edit_penalty_dialog.cancel_btn.accesskey"
+msgctxt ""
+"staff.patron_display.edit_penalty_dialog.cancel_btn.label "
+"staff.patron_display.edit_penalty_dialog.cancel_btn.accesskey"
 msgid "&Cancel"
 msgstr "&Peruuta"
 
 #: staff.patron_display.edit_penalty_dialog.apply_btn.label
 #: staff.patron_display.edit_penalty_dialog.apply_btn.accesskey
-msgctxt "staff.patron_display.edit_penalty_dialog.apply_btn.label staff.patron_display.edit_penalty_dialog.apply_btn.accesskey"
+msgctxt ""
+"staff.patron_display.edit_penalty_dialog.apply_btn.label "
+"staff.patron_display.edit_penalty_dialog.apply_btn.accesskey"
 msgid "&Modify"
 msgstr "&Muokkaa"
 
 #: staff.patron_display.edit_penalty_dialog.initials_entry.label
 #: staff.patron_display.edit_penalty_dialog.initials_entry.accesskey
-msgctxt "staff.patron_display.edit_penalty_dialog.initials_entry.label staff.patron_display.edit_penalty_dialog.initials_entry.accesskey"
+msgctxt ""
+"staff.patron_display.edit_penalty_dialog.initials_entry.label "
+"staff.patron_display.edit_penalty_dialog.initials_entry.accesskey"
 msgid "&Initials"
 msgstr "&Nimikirjaimet"
 
@@ -6178,20 +6015,10 @@ msgctxt "staff.patron_display.archived_penalty.start_date.label"
 msgid "Start Date:"
 msgstr "Lainaus/uusimispäivä:"
 
-#: staff.patron_display.archived_penalty.start_date.accesskey
-msgctxt "staff.patron_display.archived_penalty.start_date.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.patron_display.archived_penalty.end_date.label
 msgctxt "staff.patron_display.archived_penalty.end_date.label"
 msgid "End Date:"
 msgstr "Päättymispäivä:"
-
-#: staff.patron_display.archived_penalty.end_date.accesskey
-msgctxt "staff.patron_display.archived_penalty.end_date.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.patron_display.archived_penalty.retrieve.label
 #: staff.patron_display.archived_penalty.retrieve.accesskey
@@ -6205,11 +6032,6 @@ msgstr "Vireillä olevat asiakkaat"
 #: staff.patron_display.staged.menu.actions.cancel.label
 msgid "Delete Patron"
 msgstr "Poista asiakas"
-
-#: staff.patron_display.staged.menu.actions.cancel.accesskey
-msgctxt "staff.patron_display.staged.menu.actions.cancel.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.patron_display.staged.menu.actions.load.label
 #: staff.patron_display.staged.menu.actions.load.accesskey
@@ -6368,11 +6190,6 @@ msgctxt "staff.patron_navbar.refresh"
 msgid "Refresh"
 msgstr "Päivitä"
 
-#: staff.patron_navbar.refresh.accesskey
-msgctxt "staff.patron_navbar.refresh.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.patron_navbar.retrieve
 msgctxt "staff.patron_navbar.retrieve"
 msgid "Retrieve Patron"
@@ -6401,34 +6218,20 @@ msgstr "Uusi asiakas"
 msgid "Search for Patron"
 msgstr "Hae asiakas"
 
-#: staff.patron_search_form.city.accesskey
-msgctxt "staff.patron_search_form.city.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.patron_search_form.city.label
 msgid "City:"
 msgstr "Kaupunki:"
 
 #: staff.patron_search_form.clear.label
 #: staff.patron_search_form.clear.accesskey
-msgctxt "staff.patron_search_form.clear.label staff.patron_search_form.clear.accesskey"
+msgctxt ""
+"staff.patron_search_form.clear.label staff.patron_search_form.clear.accesskey"
 msgid "&Clear Form"
 msgstr "&Tyhjennä lomake"
-
-#: staff.patron_search_form.alias.accesskey
-msgctxt "staff.patron_search_form.alias.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.patron_search_form.alias.label
 msgid "Alias:"
 msgstr "Alias:"
-
-#: staff.patron_search_form.email.accesskey
-msgctxt "staff.patron_search_form.email.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.patron_search_form.email.label
 msgctxt "staff.patron_search_form.email.label"
@@ -6440,20 +6243,10 @@ msgstr "Sähköposti:"
 msgid "&Last Name:"
 msgstr "&Sukunimi:"
 
-#: staff.patron_search_form.first_given_name.accesskey
-msgctxt "staff.patron_search_form.first_given_name.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.patron_search_form.first_given_name.label
 msgctxt "staff.patron_search_form.first_given_name.label"
 msgid "First Name:"
 msgstr "Etunimi:"
-
-#: staff.patron_search_form.ident.accesskey
-msgctxt "staff.patron_search_form.ident.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.patron_search_form.ident.label
 msgid "ID:"
@@ -6466,7 +6259,8 @@ msgstr "&Verkkokirjasto-sisäänkirjautuminen:"
 
 #: staff.patron_search_form.card.label
 #: staff.patron_search_form.card.accesskey
-msgctxt "staff.patron_search_form.card.label staff.patron_search_form.card.accesskey"
+msgctxt ""
+"staff.patron_search_form.card.label staff.patron_search_form.card.accesskey"
 msgid "&Barcode:"
 msgstr "&Tunnus:"
 
@@ -6475,19 +6269,9 @@ msgstr "&Tunnus:"
 msgid "&Phone:"
 msgstr "&Puhelin:"
 
-#: staff.patron_search_form.post_code.accesskey
-msgctxt "staff.patron_search_form.post_code.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.patron_search_form.post_code.label
 msgid "ZIP:"
 msgstr "Postinumero:"
-
-#: staff.patron_search_form.profile.accesskey
-msgctxt "staff.patron_search_form.profile.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.patron_search_form.profile.label
 msgid "Filter by Permission Profile:"
@@ -6495,24 +6279,16 @@ msgstr "Suodata oikeusprofiilin mukaan:"
 
 #: staff.patron_search_form.search.label
 #: staff.patron_search_form.search.accesskey
-msgctxt "staff.patron_search_form.search.label staff.patron_search_form.search.accesskey"
+msgctxt ""
+"staff.patron_search_form.search.label "
+"staff.patron_search_form.search.accesskey"
 msgid "&Search"
 msgstr "&Hae"
-
-#: staff.patron_search_form.second_given_name.accesskey
-msgctxt "staff.patron_search_form.second_given_name.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.patron_search_form.second_given_name.label
 msgctxt "staff.patron_search_form.second_given_name.label"
 msgid "Middle Name:"
 msgstr "Toinen nimi:"
-
-#: staff.patron_search_form.state.accesskey
-msgctxt "staff.patron_search_form.state.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.patron_search_form.state.label
 msgid "State:"
@@ -6522,11 +6298,6 @@ msgstr "Osavaltio:"
 #: staff.patron_search_form.street1.accesskey
 msgid "A&ddress 1:"
 msgstr "O&soite 1:"
-
-#: staff.patron_search_form.street2.accesskey
-msgctxt "staff.patron_search_form.street2.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.patron_search_form.street2.label
 msgid "Address 2:"
@@ -6739,7 +6510,9 @@ msgstr "Poista jakelu"
 
 #: staff.serial.manage_items.actions.cmd_edit_items.label
 #: staff.serial.manage_items.actions.cmd_edit_items.accesskey
-msgctxt "staff.serial.manage_items.actions.cmd_edit_items.label staff.serial.manage_items.actions.cmd_edit_items.accesskey"
+msgctxt ""
+"staff.serial.manage_items.actions.cmd_edit_items.label "
+"staff.serial.manage_items.actions.cmd_edit_items.accesskey"
 msgid "&Edit Item Attributes"
 msgstr "&Muokkaa niteen määritteitä"
 
@@ -6871,7 +6644,9 @@ msgstr "Valitse &numerointi:"
 
 #: staff.serial.batch_receive.next.label
 #: staff.serial.batch_receive.next.accesskey
-msgctxt "staff.serial.batch_receive.next.label staff.serial.batch_receive.next.accesskey"
+msgctxt ""
+"staff.serial.batch_receive.next.label "
+"staff.serial.batch_receive.next.accesskey"
 msgid "&Next"
 msgstr "&Seuraava"
 
@@ -7209,8 +6984,7 @@ msgstr "Tuo"
 msgid ""
 "Copy this to your clipboard and save it to a file to export the settings."
 msgstr ""
-"Kopioi tämä leikepöydälle ja tallenna tiedostoon, jos haluat viedä "
-"asetukset."
+"Kopioi tämä leikepöydälle ja tallenna tiedostoon, jos haluat viedä asetukset."
 
 #: staff.server.admin.org_unit_settings.import_paste_label
 msgid "Paste in your exported settings."
@@ -7294,8 +7068,8 @@ msgstr "Ladatut tapahtumatiedostot"
 #: staff.server.admin.offline.xacts.status.desc
 msgid ""
 "The transactions from the following workstations have been uploaded, but not "
-"processed.  When all expected workstations are present here, use the "
-"Process button above."
+"processed.  When all expected workstations are present here, use the Process "
+"button above."
 msgstr ""
 "Seuraavien työasemien tapahtumat on ladattu, mutta niitä ei ole käsitelty. "
 "Kun kaikki oletetut työasemat näkyvät tässä, paina yllä olevaa Käsittele-"
@@ -7543,37 +7317,49 @@ msgstr "S"
 
 #: staff.server.admin.transit.list.copy.label
 #: staff.server.admin.transit.list.copy.accesskey
-msgctxt "staff.server.admin.transit.list.copy.label staff.server.admin.transit.list.copy.accesskey"
+msgctxt ""
+"staff.server.admin.transit.list.copy.label "
+"staff.server.admin.transit.list.copy.accesskey"
 msgid "&Copy to Clipboard"
 msgstr "&Kopioi leikepöydälle"
 
 #: staff.server.admin.transit.list.add.label
 #: staff.server.admin.transit.list.add.accesskey
-msgctxt "staff.server.admin.transit.list.add.label staff.server.admin.transit.list.add.accesskey"
+msgctxt ""
+"staff.server.admin.transit.list.add.label "
+"staff.server.admin.transit.list.add.accesskey"
 msgid "&Add to Item Bucket"
 msgstr "&Lisää nidekoriin"
 
 #: staff.server.admin.transit.list.show.label
 #: staff.server.admin.transit.list.show.accesskey
-msgctxt "staff.server.admin.transit.list.show.label staff.server.admin.transit.list.show.accesskey"
+msgctxt ""
+"staff.server.admin.transit.list.show.label "
+"staff.server.admin.transit.list.show.accesskey"
 msgid "&Show in Catalog"
 msgstr "&Näytä luettelossa"
 
 #: staff.server.admin.transit.list.details.label
 #: staff.server.admin.transit.list.details.accesskey
-msgctxt "staff.server.admin.transit.list.details.label staff.server.admin.transit.list.details.accesskey"
+msgctxt ""
+"staff.server.admin.transit.list.details.label "
+"staff.server.admin.transit.list.details.accesskey"
 msgid "Show &Item Details"
 msgstr "Näytä &niteen tiedot"
 
 #: staff.server.admin.transit.list.circs.label
 #: staff.server.admin.transit.list.circs.accesskey
-msgctxt "staff.server.admin.transit.list.circs.label staff.server.admin.transit.list.circs.accesskey"
+msgctxt ""
+"staff.server.admin.transit.list.circs.label "
+"staff.server.admin.transit.list.circs.accesskey"
 msgid "Show &Last Few Circulations"
 msgstr "Näytä &viimeisimmät lainaukset"
 
 #: staff.server.admin.transit.list.edit.label
 #: staff.server.admin.transit.list.edit.accesskey
-msgctxt "staff.server.admin.transit.list.edit.label staff.server.admin.transit.list.edit.accesskey"
+msgctxt ""
+"staff.server.admin.transit.list.edit.label "
+"staff.server.admin.transit.list.edit.accesskey"
 msgid "&Edit Item Attributes"
 msgstr "&Muokkaa niteen määritteitä"
 
@@ -7642,7 +7428,7 @@ msgstr "Tervetuloa "
 
 #: staff.server.admin.closed_dates.editor.title
 msgid " Closed Dates Editor "
-msgstr "Kiinnioloaikojen muokkaustyökalu "
+msgstr " Kiinnioloaikojen muokkaustyökalu "
 
 #: staff.server.admin.closed_dates.editor.for
 msgid "Edit Closed Dates for: "
@@ -8084,13 +7870,13 @@ msgstr "Haluatko varmasti poistaa valitun ei-luetteloidun tyypin?"
 
 #: staff.server.admin.non_cat_types.in_house.help
 msgid ""
-"If the \"In-House\" flag is set on a non-cataloged type, items that circulate "
-"as that type will create \"In-House\" circulations.  This is ideal for "
-"computer use, room \"rentals\", etc."
+"If the \"In-House\" flag is set on a non-cataloged type, items that "
+"circulate as that type will create \"In-House\" circulations.  This is ideal "
+"for computer use, room \"rentals\", etc."
 msgstr ""
 "Jos \"kirjaston sisäinen\" merkintä on asetettu ei-luetteloidulle tyypille, "
-"tällä tyypillä lainattavat niteet luovat \"kirjaston sisäisiä\" lainoja. Tämä "
-"soveltuu hyvin tietokonekäyttöön, \"huonevuokrauksiin\" jne."
+"tällä tyypillä lainattavat niteet luovat \"kirjaston sisäisiä\" lainoja. "
+"Tämä soveltuu hyvin tietokonekäyttöön, \"huonevuokrauksiin\" jne."
 
 #: staff.server.admin.non_cat_types.update.success
 msgid "Non-cataloged type successfully updated"
@@ -8127,11 +7913,6 @@ msgstr "Tulostinasetusten muokkaustyökalu"
 #: staff.server.admin.index.do_not_auto_attempt_print_setting.label
 msgid "'Do Not Attempt Auto-Print' Setting"
 msgstr "'Älä yritä automaattista tulostusta'-asetus"
-
-#: staff.server.admin.index.do_not_auto_attempt_print_setting.accesskey
-msgctxt "staff.server.admin.index.do_not_auto_attempt_print_setting.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.server.admin.index.closed_dates
 msgid "Closed Dates Editor"
@@ -8179,11 +7960,6 @@ msgstr "Raportit"
 msgid "Age Overdue Circs to Lost"
 msgstr "Ikäännytä erääntyneet lainat kadonneiksi"
 
-#: staff.server.admin.index.age_overdue_circulations_to_lost.accesskey
-msgctxt "staff.server.admin.index.age_overdue_circulations_to_lost.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.server.admin.index.age_overdue_circulations_to_lost.description
 msgid ""
 "Choose the user profile and circulation library for the overdue circulations "
@@ -8191,8 +7967,8 @@ msgid ""
 "(sub-groups, sub-libraries) will also be affected."
 msgstr ""
 "Valitse käyttäjäprofiili ja kotiosasto erääntyneille lainoille, jotka haluat "
-"ikäännyttää Kadonnut-tilaan. Huomaa, että tämä vaikuttaa myös näiden "
-"arvojen perillisiin (alaryhmät, alakirjastot)."
+"ikäännyttää Kadonnut-tilaan. Huomaa, että tämä vaikuttaa myös näiden arvojen "
+"perillisiin (alaryhmät, alakirjastot)."
 
 #: staff.server.admin.index.age_overdue_circulations_to_lost.user_profile
 msgid "User Profile:"
@@ -8244,7 +8020,7 @@ msgstr "Tervetuloa "
 
 #: staff.server.admin.org_settings.header
 msgid " Library Settings Editor "
-msgstr "Kirjaston asetusten muokkaustyökalu "
+msgstr " Kirjaston asetusten muokkaustyökalu "
 
 #. This will be followed by the library's name
 #: staff.server.admin.org_settings.select_library
@@ -8291,11 +8067,11 @@ msgstr ""
 
 #: staff.server.admin.org_settings.apply_all.note
 msgid ""
-"I. \"Apply to all Locations\" will force the new setting to be applied to all "
-"locations in the location dropdown."
+"I. \"Apply to all Locations\" will force the new setting to be applied to "
+"all locations in the location dropdown."
 msgstr ""
-"I. \"Ota käyttöön kaikissa toimipisteissä\" pakottaa uuden asetuksen kaikkiin "
-"toimipisteisiin, jotka näkyvät toimipistevalikossa."
+"I. \"Ota käyttöön kaikissa toimipisteissä\" pakottaa uuden asetuksen "
+"kaikkiin toimipisteisiin, jotka näkyvät toimipistevalikossa."
 
 #: staff.server.admin.org_settings.update_success
 msgid "Update succeeded."
@@ -8325,8 +8101,8 @@ msgstr "Varaukset: Vanhentumisen aikaväli"
 
 #: staff.server.admin.org_settings.circ.hold_expire_interval.desc
 msgid ""
-"Amount of time after a hold is placed before the hold expires.  Example \"100 "
-"days\""
+"Amount of time after a hold is placed before the hold expires.  Example "
+"\"100 days\""
 msgstr "Aika, jonka jälkeen varaus vanhentuu. Esimerkiksi \"100 päivää\""
 
 #: staff.server.admin.org_settings.global.credit.allow
@@ -8421,11 +8197,13 @@ msgstr "Varaukset: Estä varatun aineiston uusinta"
 #: staff.server.admin.org_settings.circ.block_renews_for_holds.desc
 msgid ""
 "When an item could fulfill a hold, do not allow the current patron to renew"
-msgstr "Kun nide voi kiinnittyä varaukseen, älä salli nykyisen asiakkaan uusia"
+msgstr ""
+"Kun nide voi kiinnittyä varaukseen, älä salli nykyisen asiakkaan uusia"
 
 #: staff.server.admin.org_settings.circ.selfcheck.patron_login_timeout
 msgid "Selfcheck: Patron Login Timeout (in seconds)"
-msgstr "Itselainaus: Asiakkaan sisäänkirjautumisen vanhentumisaika (sekuntia)"
+msgstr ""
+"Itselainaus: Asiakkaan sisäänkirjautumisen vanhentumisaika (sekuntia)"
 
 #: staff.server.admin.org_settings.circ.selfcheck.patron_login_timeout.desc
 msgid ""
@@ -8468,8 +8246,8 @@ msgid ""
 "The age at which a user is no long considered a juvenile.  For example, \"18 "
 "years\"."
 msgstr ""
-"Ikä, jolloin käyttäjää ei enää lasketa kuuluvaksi nuorisoon. Esimerkiksi \"18 "
-"vuotta\"."
+"Ikä, jolloin käyttäjää ei enää lasketa kuuluvaksi nuorisoon. Esimerkiksi "
+"\"18 vuotta\"."
 
 #: staff.server.admin.org_settings.cat.bib.keep_on_empty
 msgid "Do not automatically delete empty bib records"
@@ -8477,8 +8255,7 @@ msgstr "Älä automaattisesti poista tyhjiä bibliografisia tietueita"
 
 #: staff.server.admin.org_settings.cat.bib.keep_on_empty.desc
 msgid ""
-"Do not automatically delete a bib record when all attached copies are "
-"deleted"
+"Do not automatically delete a bib record when all attached copies are deleted"
 msgstr ""
 "Älä automaattisesti poista bibliografista tietuetta, kun kaikki tietueen "
 "niteet on poistettu"
@@ -8520,28 +8297,35 @@ msgid "Charge processing fee for damaged items"
 msgstr "Veloita käsittelymaksu vahingoittuneista niteistä"
 
 #: staff.server.admin.org_settings.circ.damaged_item_processing_fee.desc
-msgctxt "staff.server.admin.org_settings.circ.damaged_item_processing_fee.desc"
+msgctxt ""
+"staff.server.admin.org_settings.circ.damaged_item_processing_fee.desc"
 msgid "Charge processing fee for damaged items"
 msgstr "Veloita käsittelymaksu vahingoittuneista niteistä"
 
 #: staff.server.admin.org_settings.circ.void_item_billing_on_lost_return
-msgctxt "staff.server.admin.org_settings.circ.void_item_billing_on_lost_return"
+msgctxt ""
+"staff.server.admin.org_settings.circ.void_item_billing_on_lost_return"
 msgid "Void lost item fine when returned"
 msgstr "Mitätöi kadonneesta niteestä perittävä maksu palautettaessa"
 
 #: staff.server.admin.org_settings.circ.void_item_billing_on_lost_return.desc
-msgctxt "staff.server.admin.org_settings.circ.void_item_billing_on_lost_return.desc"
+msgctxt ""
+"staff.server.admin.org_settings.circ.void_item_billing_on_lost_return.desc"
 msgid "Void lost item fine when returned"
 msgstr "Mitätöi kadonneesta niteestä perittävä maksu palautettaessa"
 
 #: staff.server.admin.org_settings.circ.void_item_billing_on_lost_return_before_interval
-msgctxt "staff.server.admin.org_settings.circ.void_item_billing_on_lost_return_before_interval"
+msgctxt ""
+"staff.server.admin.org_settings.circ.void_item_billing_on_lost_return_before_"
+"interval"
 msgid "Void lost item fine when returned before interval"
 msgstr ""
 "Mitätöi kadonneesta niteestä perittävä maksu palautettaessa ennen aikaväliä"
 
 #: staff.server.admin.org_settings.circ.void_item_billing_on_lost_return_before_interval.desc
-msgctxt "staff.server.admin.org_settings.circ.void_item_billing_on_lost_return_before_interval.desc"
+msgctxt ""
+"staff.server.admin.org_settings.circ.void_item_billing_on_lost_return_before_"
+"interval.desc"
 msgid "Void lost item fine when returned before interval"
 msgstr ""
 "Mitätöi kadonneesta niteestä perittävä maksu palautettaessa ennen aikaväliä"
@@ -8628,8 +8412,8 @@ msgid ""
 "after a certain interval of inactivity.  Example \\'5 minutes\\'"
 msgstr ""
 "Aseta tämä, jos haluat asiakasnäyttöjen sulkeutuvan henkilökunnan "
-"asiakaspäätteessä määrätyn mittaisen ei-aktiivisuuden jälkeen. Esimerkiksi "
-"\\'5 minuuttia\\'"
+"asiakaspäätteessä määrätyn mittaisen ei-aktiivisuuden jälkeen. Esimerkiksi \\"
+"'5 minuuttia\\'"
 
 #: staff.server.admin.stat_cat.title
 msgid "Evergreen: Statistical Category Editor"
@@ -8642,7 +8426,7 @@ msgstr "Tervetuloa "
 
 #: staff.server.admin.stat_cat.heading
 msgid " Statistical Category Editor"
-msgstr "Tilastollisten kategorioiden muokkaustyökalu"
+msgstr " Tilastollisten kategorioiden muokkaustyökalu"
 
 #: staff.server.admin.stat_cat.create
 msgid "Create a new statistical category"
@@ -8713,8 +8497,8 @@ msgstr "Asiakkaan tilastolliset kategoriat"
 
 #: staff.server.admin.stat_cat.info_prompt
 msgid ""
-"* To edit or view information about an entry, click on the entry in the "
-"drop-down menu"
+"* To edit or view information about an entry, click on the entry in the drop-"
+"down menu"
 msgstr ""
 "* Jos haluat muokata kohtaa tai näyttää sen tiedot, napsauta kohtaa "
 "alasvetovalikossa"
@@ -8882,43 +8666,57 @@ msgstr "Lataa"
 
 #: staff.circ.checkin_overlay.sel_clip.label
 #: staff.circ.checkin_overlay.sel_clip.accesskey
-msgctxt "staff.circ.checkin_overlay.sel_clip.label staff.circ.checkin_overlay.sel_clip.accesskey"
+msgctxt ""
+"staff.circ.checkin_overlay.sel_clip.label "
+"staff.circ.checkin_overlay.sel_clip.accesskey"
 msgid "&Copy to Clipboard"
 msgstr "&Kopioi leikepöydälle"
 
 #: staff.circ.checkin_overlay.sel_bucket.label
 #: staff.circ.checkin_overlay.sel_bucket.accesskey
-msgctxt "staff.circ.checkin_overlay.sel_bucket.label staff.circ.checkin_overlay.sel_bucket.accesskey"
+msgctxt ""
+"staff.circ.checkin_overlay.sel_bucket.label "
+"staff.circ.checkin_overlay.sel_bucket.accesskey"
 msgid "&Add to Item Bucket"
 msgstr "&Lisää nidesiiloon"
 
 #: staff.circ.checkin_overlay.sel_opac.label
 #: staff.circ.checkin_overlay.sel_opac.accesskey
-msgctxt "staff.circ.checkin_overlay.sel_opac.label staff.circ.checkin_overlay.sel_opac.accesskey"
+msgctxt ""
+"staff.circ.checkin_overlay.sel_opac.label "
+"staff.circ.checkin_overlay.sel_opac.accesskey"
 msgid "&Show in Catalog"
 msgstr "&Näytä luettelossa"
 
 #: staff.circ.checkin_overlay.sel_copy_details.label
 #: staff.circ.checkin_overlay.sel_copy_details.accesskey
-msgctxt "staff.circ.checkin_overlay.sel_copy_details.label staff.circ.checkin_overlay.sel_copy_details.accesskey"
+msgctxt ""
+"staff.circ.checkin_overlay.sel_copy_details.label "
+"staff.circ.checkin_overlay.sel_copy_details.accesskey"
 msgid "Show &Item Details"
 msgstr "Näytä &niteen tiedot"
 
 #: staff.circ.checkin_overlay.sel_patron.label
 #: staff.circ.checkin_overlay.sel_patron.accesskey
-msgctxt "staff.circ.checkin_overlay.sel_patron.label staff.circ.checkin_overlay.sel_patron.accesskey"
+msgctxt ""
+"staff.circ.checkin_overlay.sel_patron.label "
+"staff.circ.checkin_overlay.sel_patron.accesskey"
 msgid "Show &Last Few Circulations"
 msgstr "Näytä &viimeisimmät lainaukset"
 
 #: staff.circ.checkin_overlay.sel_last_patron.label
 #: staff.circ.checkin_overlay.sel_last_patron.accesskey
-msgctxt "staff.circ.checkin_overlay.sel_last_patron.label staff.circ.checkin_overlay.sel_last_patron.accesskey"
+msgctxt ""
+"staff.circ.checkin_overlay.sel_last_patron.label "
+"staff.circ.checkin_overlay.sel_last_patron.accesskey"
 msgid "&Retrieve Last Patron who circulated item"
 msgstr "&Hae viimeisin niteen lainannut asiakas"
 
 #: staff.circ.checkin_overlay.sel_edit.label
 #: staff.circ.checkin_overlay.sel_edit.accesskey
-msgctxt "staff.circ.checkin_overlay.sel_edit.label staff.circ.checkin_overlay.sel_edit.accesskey"
+msgctxt ""
+"staff.circ.checkin_overlay.sel_edit.label "
+"staff.circ.checkin_overlay.sel_edit.accesskey"
 msgid "&Edit Item Attributes"
 msgstr "&Muokkaa niteen määritteitä"
 
@@ -8929,7 +8727,9 @@ msgstr "&Palauta menneellä päiväyksellä palautuksen jälkeen"
 
 #: staff.circ.checkin_overlay.sel_mark_items_damaged.label
 #: staff.circ.checkin_overlay.sel_mark_items_damaged.accesskey
-msgctxt "staff.circ.checkin_overlay.sel_mark_items_damaged.label staff.circ.checkin_overlay.sel_mark_items_damaged.accesskey"
+msgctxt ""
+"staff.circ.checkin_overlay.sel_mark_items_damaged.label "
+"staff.circ.checkin_overlay.sel_mark_items_damaged.accesskey"
 msgid "Mark Item &Damaged"
 msgstr "Merkitse nide &vaurioituneeksi"
 
@@ -8945,7 +8745,9 @@ msgstr "Keskeytä kuljetus"
 
 #: staff.circ.checkin_overlay.sel_spine.label
 #: staff.circ.checkin_overlay.sel_spine.accesskey
-msgctxt "staff.circ.checkin_overlay.sel_spine.label staff.circ.checkin_overlay.sel_spine.accesskey"
+msgctxt ""
+"staff.circ.checkin_overlay.sel_spine.label "
+"staff.circ.checkin_overlay.sel_spine.accesskey"
 msgid "&Print Spine Label"
 msgstr "&Tulosta selkätarra"
 
@@ -8965,7 +8767,9 @@ msgstr "Voimaantulo&päivä:"
 
 #: staff.circ.checkin_overlay.actions.label
 #: staff.circ.checkin_overlay.actions.accesskey
-msgctxt "staff.circ.checkin_overlay.actions.label staff.circ.checkin_overlay.actions.accesskey"
+msgctxt ""
+"staff.circ.checkin_overlay.actions.label "
+"staff.circ.checkin_overlay.actions.accesskey"
 msgid "Actions for &Selected Items"
 msgstr "&Valittujen niteiden toiminnot"
 
@@ -9047,49 +8851,65 @@ msgstr "Lainan uusiminen"
 
 #: staff.circ.renew_overlay.sel_clip.label
 #: staff.circ.renew_overlay.sel_clip.accesskey
-msgctxt "staff.circ.renew_overlay.sel_clip.label staff.circ.renew_overlay.sel_clip.accesskey"
+msgctxt ""
+"staff.circ.renew_overlay.sel_clip.label "
+"staff.circ.renew_overlay.sel_clip.accesskey"
 msgid "&Copy to Clipboard"
 msgstr "&Kopioi leikepöydälle"
 
 #: staff.circ.renew_overlay.sel_bucket.label
 #: staff.circ.renew_overlay.sel_bucket.accesskey
-msgctxt "staff.circ.renew_overlay.sel_bucket.label staff.circ.renew_overlay.sel_bucket.accesskey"
+msgctxt ""
+"staff.circ.renew_overlay.sel_bucket.label "
+"staff.circ.renew_overlay.sel_bucket.accesskey"
 msgid "&Add to Item Bucket"
 msgstr "&Lisää nidekoriin"
 
 #: staff.circ.renew_overlay.sel_opac.label
 #: staff.circ.renew_overlay.sel_opac.accesskey
-msgctxt "staff.circ.renew_overlay.sel_opac.label staff.circ.renew_overlay.sel_opac.accesskey"
+msgctxt ""
+"staff.circ.renew_overlay.sel_opac.label "
+"staff.circ.renew_overlay.sel_opac.accesskey"
 msgid "&Show in Catalog"
 msgstr "&Näytä luettelossa"
 
 #: staff.circ.renew_overlay.sel_copy_details.label
 #: staff.circ.renew_overlay.sel_copy_details.accesskey
-msgctxt "staff.circ.renew_overlay.sel_copy_details.label staff.circ.renew_overlay.sel_copy_details.accesskey"
+msgctxt ""
+"staff.circ.renew_overlay.sel_copy_details.label "
+"staff.circ.renew_overlay.sel_copy_details.accesskey"
 msgid "Show &Item Details"
 msgstr "Näytä &niteen tiedot"
 
 #: staff.circ.renew_overlay.sel_patron.label
 #: staff.circ.renew_overlay.sel_patron.accesskey
-msgctxt "staff.circ.renew_overlay.sel_patron.label staff.circ.renew_overlay.sel_patron.accesskey"
+msgctxt ""
+"staff.circ.renew_overlay.sel_patron.label "
+"staff.circ.renew_overlay.sel_patron.accesskey"
 msgid "Show &Last Few Circulations"
 msgstr "Näytä &viimeisimmät lainaukset"
 
 #: staff.circ.renew_overlay.sel_last_patron.label
 #: staff.circ.renew_overlay.sel_last_patron.accesskey
-msgctxt "staff.circ.renew_overlay.sel_last_patron.label staff.circ.renew_overlay.sel_last_patron.accesskey"
+msgctxt ""
+"staff.circ.renew_overlay.sel_last_patron.label "
+"staff.circ.renew_overlay.sel_last_patron.accesskey"
 msgid "&Retrieve Last Patron who circulated item"
 msgstr "&Etsi viimeisin niteen lainannut asiakas"
 
 #: staff.circ.renew_overlay.sel_edit.label
 #: staff.circ.renew_overlay.sel_edit.accesskey
-msgctxt "staff.circ.renew_overlay.sel_edit.label staff.circ.renew_overlay.sel_edit.accesskey"
+msgctxt ""
+"staff.circ.renew_overlay.sel_edit.label "
+"staff.circ.renew_overlay.sel_edit.accesskey"
 msgid "&Edit Item Attributes"
 msgstr "&Muokkaa niteen määritteitä"
 
 #: staff.circ.renew_overlay.sel_mark_items_damaged.label
 #: staff.circ.renew_overlay.sel_mark_items_damaged.accesskey
-msgctxt "staff.circ.renew_overlay.sel_mark_items_damaged.label staff.circ.renew_overlay.sel_mark_items_damaged.accesskey"
+msgctxt ""
+"staff.circ.renew_overlay.sel_mark_items_damaged.label "
+"staff.circ.renew_overlay.sel_mark_items_damaged.accesskey"
 msgid "Mark Item &Damaged"
 msgstr "Merkitse nide &vaurioituneeksi"
 
@@ -9100,7 +8920,9 @@ msgstr "Keskeytä kuljetus"
 
 #: staff.circ.renew_overlay.sel_spine.label
 #: staff.circ.renew_overlay.sel_spine.accesskey
-msgctxt "staff.circ.renew_overlay.sel_spine.label staff.circ.renew_overlay.sel_spine.accesskey"
+msgctxt ""
+"staff.circ.renew_overlay.sel_spine.label "
+"staff.circ.renew_overlay.sel_spine.accesskey"
 msgid "&Print Spine Label"
 msgstr "&Tulosta selkätarra"
 
@@ -9111,7 +8933,9 @@ msgstr "Tallenna sarakkeet"
 
 #: staff.circ.renew_overlay.actions.label
 #: staff.circ.renew_overlay.actions.accesskey
-msgctxt "staff.circ.renew_overlay.actions.label staff.circ.renew_overlay.actions.accesskey"
+msgctxt ""
+"staff.circ.renew_overlay.actions.label "
+"staff.circ.renew_overlay.actions.accesskey"
 msgid "Actions for &Selected Items"
 msgstr "&Valittujen niteiden toiminnot"
 
@@ -9132,13 +8956,17 @@ msgstr "Tarkka tunnus"
 
 #: staff.circ.renew_overlay.duedate.label
 #: staff.circ.renew_overlay.duedate.accesskey
-msgctxt "staff.circ.renew_overlay.duedate.label staff.circ.renew_overlay.duedate.accesskey"
+msgctxt ""
+"staff.circ.renew_overlay.duedate.label "
+"staff.circ.renew_overlay.duedate.accesskey"
 msgid "Specific D&ue Date"
 msgstr "Määrätty e&räpäivä"
 
 #: staff.circ.checkout_overlay.duedate.label
 #: staff.circ.checkout_overlay.duedate.accesskey
-msgctxt "staff.circ.checkout_overlay.duedate.label staff.circ.checkout_overlay.duedate.accesskey"
+msgctxt ""
+"staff.circ.checkout_overlay.duedate.label "
+"staff.circ.checkout_overlay.duedate.accesskey"
 msgid "Specific D&ue Date"
 msgstr "Määrätty e&räpäivä"
 
@@ -9146,11 +8974,6 @@ msgstr "Määrätty e&räpäivä"
 msgctxt "staff.circ.checkout_overlay.barcode.accesskey"
 msgid "C"
 msgstr "C"
-
-#: staff.circ.checkout_overlay.export.accesskey
-msgctxt "staff.circ.checkout_overlay.export.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.circ.checkout_overlay.export.label
 msgctxt "staff.circ.checkout_overlay.export.label"
@@ -9222,7 +9045,9 @@ msgstr "Viimeisimmät lainaukset"
 
 #: staff.circ.circ_summary.retrieve_last.label
 #: staff.circ.circ_summary.retrieve_last.accesskey
-msgctxt "staff.circ.circ_summary.retrieve_last.label staff.circ.circ_summary.retrieve_last.accesskey"
+msgctxt ""
+"staff.circ.circ_summary.retrieve_last.label "
+"staff.circ.circ_summary.retrieve_last.accesskey"
 msgid "Retrieve &Last Patron"
 msgstr "Hae &viimeisin asiakas"
 
@@ -9233,7 +9058,8 @@ msgstr "Hae &kaikki nämä asiakkaat"
 
 #: staff.circ.circ_summary.done.label
 #: staff.circ.circ_summary.done.accesskey
-msgctxt "staff.circ.circ_summary.done.label staff.circ.circ_summary.done.accesskey"
+msgctxt ""
+"staff.circ.circ_summary.done.label staff.circ.circ_summary.done.accesskey"
 msgid "&Done"
 msgstr "&Valmis"
 
@@ -9252,7 +9078,8 @@ msgstr "Viimeisin tai nykyinen lainaus"
 
 #: staff.circ.copy_details.r_last.label
 #: staff.circ.copy_details.r_last.accesskey
-msgctxt "staff.circ.copy_details.r_last.label staff.circ.copy_details.r_last.accesskey"
+msgctxt ""
+"staff.circ.copy_details.r_last.label staff.circ.copy_details.r_last.accesskey"
 msgid "Retrieve &Last Patron"
 msgstr "Hae &viimeisin asiakas"
 
@@ -9263,25 +9090,32 @@ msgstr "Hae &varausasiakas"
 
 #: staff.circ.copy_details.done.label
 #: staff.circ.copy_details.done.accesskey
-msgctxt "staff.circ.copy_details.done.label staff.circ.copy_details.done.accesskey"
+msgctxt ""
+"staff.circ.copy_details.done.label staff.circ.copy_details.done.accesskey"
 msgid "&Done"
 msgstr "&Valmis"
 
 #: staff.circ.copy_status_overlay.sel_items.label
 #: staff.circ.copy_status_overlay.sel_items.accesskey
-msgctxt "staff.circ.copy_status_overlay.sel_items.label staff.circ.copy_status_overlay.sel_items.accesskey"
+msgctxt ""
+"staff.circ.copy_status_overlay.sel_items.label "
+"staff.circ.copy_status_overlay.sel_items.accesskey"
 msgid "Actions for &Selected Items"
 msgstr "&Valittujen niteiden toiminnot"
 
 #: staff.circ.copy_status_overlay.sel_clip.label
 #: staff.circ.copy_status_overlay.sel_clip.accesskey
-msgctxt "staff.circ.copy_status_overlay.sel_clip.label staff.circ.copy_status_overlay.sel_clip.accesskey"
+msgctxt ""
+"staff.circ.copy_status_overlay.sel_clip.label "
+"staff.circ.copy_status_overlay.sel_clip.accesskey"
 msgid "&Copy to Clipboard"
 msgstr "&Kopioi leikepöydälle"
 
 #: staff.circ.copy_status_overlay.sel_bucket.label
 #: staff.circ.copy_status_overlay.sel_bucket.accesskey
-msgctxt "staff.circ.copy_status_overlay.sel_bucket.label staff.circ.copy_status_overlay.sel_bucket.accesskey"
+msgctxt ""
+"staff.circ.copy_status_overlay.sel_bucket.label "
+"staff.circ.copy_status_overlay.sel_bucket.accesskey"
 msgid "&Add to Item Bucket"
 msgstr "&Lisää nidesiiloon"
 
@@ -9289,50 +9123,59 @@ msgstr "&Lisää nidesiiloon"
 msgid "Add to Record Bucket"
 msgstr "Lisää tietuesiiloon"
 
-#: staff.circ.copy_status_overlay.sel_record_bucket.accesskey
-msgctxt "staff.circ.copy_status_overlay.sel_record_bucket.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.circ.copy_status_overlay.sel_opac.label
 #: staff.circ.copy_status_overlay.sel_opac.accesskey
-msgctxt "staff.circ.copy_status_overlay.sel_opac.label staff.circ.copy_status_overlay.sel_opac.accesskey"
+msgctxt ""
+"staff.circ.copy_status_overlay.sel_opac.label "
+"staff.circ.copy_status_overlay.sel_opac.accesskey"
 msgid "&Show in Catalog"
 msgstr "&Näytä luettelossa"
 
 #: staff.circ.copy_status_overlay.sel_copy_details.label
 #: staff.circ.copy_status_overlay.sel_copy_details.accesskey
-msgctxt "staff.circ.copy_status_overlay.sel_copy_details.label staff.circ.copy_status_overlay.sel_copy_details.accesskey"
+msgctxt ""
+"staff.circ.copy_status_overlay.sel_copy_details.label "
+"staff.circ.copy_status_overlay.sel_copy_details.accesskey"
 msgid "Show &Item Details"
 msgstr "Näytä &niteen tiedot"
 
 #: staff.circ.copy_status_overlay.sel_patron.label
 #: staff.circ.copy_status_overlay.sel_patron.accesskey
-msgctxt "staff.circ.copy_status_overlay.sel_patron.label staff.circ.copy_status_overlay.sel_patron.accesskey"
+msgctxt ""
+"staff.circ.copy_status_overlay.sel_patron.label "
+"staff.circ.copy_status_overlay.sel_patron.accesskey"
 msgid "Show &Last Few Circulations"
 msgstr "Näytä &viimeisimmät lainaukset"
 
 #: staff.circ.copy_status_overlay.cmd_triggered_events.label
 #: staff.circ.copy_status_overlay.cmd_triggered_events.accesskey
-msgctxt "staff.circ.copy_status_overlay.cmd_triggered_events.label staff.circ.copy_status_overlay.cmd_triggered_events.accesskey"
+msgctxt ""
+"staff.circ.copy_status_overlay.cmd_triggered_events.label "
+"staff.circ.copy_status_overlay.cmd_triggered_events.accesskey"
 msgid "Show &Triggered Events"
 msgstr "Näytä &laukaistut tapahtumat"
 
 #: staff.circ.copy_status_overlay.cmd_book_item_now.label
 #: staff.circ.copy_status_overlay.cmd_book_item_now.accesskey
-msgctxt "staff.circ.copy_status_overlay.cmd_book_item_now.label staff.circ.copy_status_overlay.cmd_book_item_now.accesskey"
+msgctxt ""
+"staff.circ.copy_status_overlay.cmd_book_item_now.label "
+"staff.circ.copy_status_overlay.cmd_book_item_now.accesskey"
 msgid "Book Item &Now"
 msgstr "Varaa nide &nyt"
 
 #: staff.circ.copy_status_overlay.cmd_request_items.label
 #: staff.circ.copy_status_overlay.cmd_request_items.accesskey
-msgctxt "staff.circ.copy_status_overlay.cmd_request_items.label staff.circ.copy_status_overlay.cmd_request_items.accesskey"
+msgctxt ""
+"staff.circ.copy_status_overlay.cmd_request_items.label "
+"staff.circ.copy_status_overlay.cmd_request_items.accesskey"
 msgid "&Request Item"
 msgstr "&Pyydä nide"
 
 #: staff.circ.copy_status_overlay.cmd_create_brt.label
 #: staff.circ.copy_status_overlay.cmd_create_brt.accesskey
-msgctxt "staff.circ.copy_status_overlay.cmd_create_brt.label staff.circ.copy_status_overlay.cmd_create_brt.accesskey"
+msgctxt ""
+"staff.circ.copy_status_overlay.cmd_create_brt.label "
+"staff.circ.copy_status_overlay.cmd_create_brt.accesskey"
 msgid "Ma&ke Item Bookable"
 msgstr "Te&e niteestä varattava"
 
@@ -9343,7 +9186,9 @@ msgstr "&Hae alkuperäinen hankinta"
 
 #: staff.circ.copy_status_overlay.sel_edit.label
 #: staff.circ.copy_status_overlay.sel_edit.accesskey
-msgctxt "staff.circ.copy_status_overlay.sel_edit.label staff.circ.copy_status_overlay.sel_edit.accesskey"
+msgctxt ""
+"staff.circ.copy_status_overlay.sel_edit.label "
+"staff.circ.copy_status_overlay.sel_edit.accesskey"
 msgid "&Edit Item Attributes"
 msgstr "&Muokkaa niteen määritteitä"
 
@@ -9354,7 +9199,9 @@ msgstr "Muokkaa niteitä / &nimekkeitä per bibliografinen tietue"
 
 #: staff.circ.copy_status_overlay.sel_mark_items_damaged.label
 #: staff.circ.copy_status_overlay.sel_mark_items_damaged.accesskey
-msgctxt "staff.circ.copy_status_overlay.sel_mark_items_damaged.label staff.circ.copy_status_overlay.sel_mark_items_damaged.accesskey"
+msgctxt ""
+"staff.circ.copy_status_overlay.sel_mark_items_damaged.label "
+"staff.circ.copy_status_overlay.sel_mark_items_damaged.accesskey"
 msgid "Mark Item &Damaged"
 msgstr "Merkitse nide &vaurioituneeksi"
 
@@ -9380,7 +9227,9 @@ msgstr "&Lainojen uusiminen"
 
 #: staff.circ.copy_status_overlay.sel_spine.label
 #: staff.circ.copy_status_overlay.sel_spine.accesskey
-msgctxt "staff.circ.copy_status_overlay.sel_spine.label staff.circ.copy_status_overlay.sel_spine.accesskey"
+msgctxt ""
+"staff.circ.copy_status_overlay.sel_spine.label "
+"staff.circ.copy_status_overlay.sel_spine.accesskey"
 msgid "&Print Spine Label"
 msgstr "&Tulosta selkätarra"
 
@@ -9389,11 +9238,6 @@ msgctxt "staff.circ.copy_status_overlay.cmd_replace_barcode.label"
 msgid "Replace Barcode"
 msgstr "Korvaa tunnus"
 
-#: staff.circ.copy_status_overlay.cmd_replace_barcode.accesskey
-msgctxt "staff.circ.copy_status_overlay.cmd_replace_barcode.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.circ.copy_status_overlay.save_columns.label
 msgctxt "staff.circ.copy_status_overlay.save_columns.label"
 msgid "Save Columns"
@@ -9401,43 +9245,57 @@ msgstr "Tallenna sarakkeet"
 
 #: staff.circ.copy_status_overlay.cmd_transfer_items.label
 #: staff.circ.copy_status_overlay.cmd_transfer_items.accesskey
-msgctxt "staff.circ.copy_status_overlay.cmd_transfer_items.label staff.circ.copy_status_overlay.cmd_transfer_items.accesskey"
+msgctxt ""
+"staff.circ.copy_status_overlay.cmd_transfer_items.label "
+"staff.circ.copy_status_overlay.cmd_transfer_items.accesskey"
 msgid "&Transfer Items to Previously Marked Volume"
 msgstr "&Siirrä niteet aiemmin merkittyyn nimekkeeseen"
 
 #: staff.circ.copy_status_overlay.cmd_add_volumes.label
 #: staff.circ.copy_status_overlay.cmd_add_volumes.accesskey
-msgctxt "staff.circ.copy_status_overlay.cmd_add_volumes.label staff.circ.copy_status_overlay.cmd_add_volumes.accesskey"
+msgctxt ""
+"staff.circ.copy_status_overlay.cmd_add_volumes.label "
+"staff.circ.copy_status_overlay.cmd_add_volumes.accesskey"
 msgid "Add &Volumes"
 msgstr "Lisää &niteitä"
 
 #: staff.circ.copy_status_overlay.cmd_mark_library.label
 #: staff.circ.copy_status_overlay.cmd_mark_library.accesskey
-msgctxt "staff.circ.copy_status_overlay.cmd_mark_library.label staff.circ.copy_status_overlay.cmd_mark_library.accesskey"
+msgctxt ""
+"staff.circ.copy_status_overlay.cmd_mark_library.label "
+"staff.circ.copy_status_overlay.cmd_mark_library.accesskey"
 msgid "&Mark Library as Volume Transfer Destination"
 msgstr "&Merkitse kirjasto nimekkeen siirtokohteeksi"
 
 #: staff.circ.copy_status_overlay.cmd_add_items.label
 #: staff.circ.copy_status_overlay.cmd_add_items.accesskey
-msgctxt "staff.circ.copy_status_overlay.cmd_add_items.label staff.circ.copy_status_overlay.cmd_add_items.accesskey"
+msgctxt ""
+"staff.circ.copy_status_overlay.cmd_add_items.label "
+"staff.circ.copy_status_overlay.cmd_add_items.accesskey"
 msgid "&Add Items"
 msgstr "&Lisää niteitä"
 
 #: staff.circ.copy_status_overlay.cmd_edit_volumes.label
 #: staff.circ.copy_status_overlay.cmd_edit_volumes.accesskey
-msgctxt "staff.circ.copy_status_overlay.cmd_edit_volumes.label staff.circ.copy_status_overlay.cmd_edit_volumes.accesskey"
+msgctxt ""
+"staff.circ.copy_status_overlay.cmd_edit_volumes.label "
+"staff.circ.copy_status_overlay.cmd_edit_volumes.accesskey"
 msgid "&Edit Volumes"
 msgstr "&Muokkaa nimekkeitä"
 
 #: staff.circ.copy_status_overlay.cmd_mark_volume.label
 #: staff.circ.copy_status_overlay.cmd_mark_volume.accesskey
-msgctxt "staff.circ.copy_status_overlay.cmd_mark_volume.label staff.circ.copy_status_overlay.cmd_mark_volume.accesskey"
+msgctxt ""
+"staff.circ.copy_status_overlay.cmd_mark_volume.label "
+"staff.circ.copy_status_overlay.cmd_mark_volume.accesskey"
 msgid "&Mark Volume as Item Transfer Destination"
 msgstr "&Merkitse nimeke niteen siirtokohteeksi"
 
 #: staff.circ.copy_status_overlay.cmd_transfer_volumes.label
 #: staff.circ.copy_status_overlay.cmd_transfer_volumes.accesskey
-msgctxt "staff.circ.copy_status_overlay.cmd_transfer_volumes.label staff.circ.copy_status_overlay.cmd_transfer_volumes.accesskey"
+msgctxt ""
+"staff.circ.copy_status_overlay.cmd_transfer_volumes.label "
+"staff.circ.copy_status_overlay.cmd_transfer_volumes.accesskey"
 msgid "&Transfer Volumes to Previously Marked Library"
 msgstr "&Siirrä niteet aiemmin merkittyyn kirjastoon"
 
@@ -9446,30 +9304,24 @@ msgctxt "staff.circ.copy_status_overlay.cmd_delete_items.label"
 msgid "Delete Items"
 msgstr "Poista niteet"
 
-#: staff.circ.copy_status_overlay.cmd_delete_items.accesskey
-msgctxt "staff.circ.copy_status_overlay.cmd_delete_items.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.circ.copy_status_overlay.cmd_delete_volumes.label
 msgctxt "staff.circ.copy_status_overlay.cmd_delete_volumes.label"
 msgid "Delete Volumes"
 msgstr "Poista osat"
 
-#: staff.circ.copy_status_overlay.cmd_delete_volumes.accesskey
-msgctxt "staff.circ.copy_status_overlay.cmd_delete_volumes.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.circ.copy_status_overlay.copy_actions.sel_mark_items_damaged.label
 #: staff.circ.copy_status_overlay.copy_actions.sel_mark_items_damaged.accesskey
-msgctxt "staff.circ.copy_status_overlay.copy_actions.sel_mark_items_damaged.label staff.circ.copy_status_overlay.copy_actions.sel_mark_items_damaged.accesskey"
+msgctxt ""
+"staff.circ.copy_status_overlay.copy_actions.sel_mark_items_damaged.label "
+"staff.circ.copy_status_overlay.copy_actions.sel_mark_items_damaged.accesskey"
 msgid "Mark Item &Damaged"
 msgstr "Merkitse nide &vaurioituneeksi"
 
 #: staff.circ.copy_status_overlay.copy_actions.sel_mark_items_missing.label
 #: staff.circ.copy_status_overlay.copy_actions.sel_mark_items_missing.accesskey
-msgctxt "staff.circ.copy_status_overlay.copy_actions.sel_mark_items_missing.label staff.circ.copy_status_overlay.copy_actions.sel_mark_items_missing.accesskey"
+msgctxt ""
+"staff.circ.copy_status_overlay.copy_actions.sel_mark_items_missing.label "
+"staff.circ.copy_status_overlay.copy_actions.sel_mark_items_missing.accesskey"
 msgid "Mark Item Missin&g"
 msgstr "Merkitse nide kadonneeks&i"
 
@@ -9484,7 +9336,9 @@ msgstr "Lue nide"
 
 #: staff.circ.copy_status_overlay.copy_status_scan_barcode.label
 #: staff.circ.copy_status_overlay.copy_status_scan_barcode.accesskey
-msgctxt "staff.circ.copy_status_overlay.copy_status_scan_barcode.label staff.circ.copy_status_overlay.copy_status_scan_barcode.accesskey"
+msgctxt ""
+"staff.circ.copy_status_overlay.copy_status_scan_barcode.label "
+"staff.circ.copy_status_overlay.copy_status_scan_barcode.accesskey"
 msgid "&Barcode:"
 msgstr "&Tunnus:"
 
@@ -9505,7 +9359,9 @@ msgstr "Toiminnot &luetteloijille"
 
 #: staff.circ.copy_status_overlay.copy_status_print.label
 #: staff.circ.copy_status_overlay.copy_status_print.accesskey
-msgctxt "staff.circ.copy_status_overlay.copy_status_print.label staff.circ.copy_status_overlay.copy_status_print.accesskey"
+msgctxt ""
+"staff.circ.copy_status_overlay.copy_status_print.label "
+"staff.circ.copy_status_overlay.copy_status_print.accesskey"
 msgid "&Print"
 msgstr "&Tulosta"
 
@@ -9514,20 +9370,10 @@ msgctxt "staff.circ.copy_status_overlay.copy_status_export.label"
 msgid "Export"
 msgstr "Vie"
 
-#: staff.circ.copy_status_overlay.copy_status_export.accesskey
-msgctxt "staff.circ.copy_status_overlay.copy_status_export.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.circ.copy_status_overlay.copy_status_print_export.label
 msgctxt "staff.circ.copy_status_overlay.copy_status_print_export.label"
 msgid "Print Export"
 msgstr "Tulosta vienti"
-
-#: staff.circ.copy_status_overlay.copy_status_print_export.accesskey
-msgctxt "staff.circ.copy_status_overlay.copy_status_print_export.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.circ.copy_status_overlay.trim_list.label
 msgctxt "staff.circ.copy_status_overlay.trim_list.label"
@@ -9599,7 +9445,8 @@ msgstr "&Käyttöjen lukumäärä:"
 
 #: staff.circ.in_house_use.submit.label
 #: staff.circ.in_house_use.submit.accesskey
-msgctxt "staff.circ.in_house_use.submit.label staff.circ.in_house_use.submit.accesskey"
+msgctxt ""
+"staff.circ.in_house_use.submit.label staff.circ.in_house_use.submit.accesskey"
 msgid "&Submit"
 msgstr "&Lähetä"
 
@@ -9729,7 +9576,9 @@ msgstr "&Vie"
 
 #: staff.circ.print_list.top_ui.description.import.label
 #: staff.circ.print_list.top_ui.description.import.accesskey
-msgctxt "staff.circ.print_list.top_ui.description.import.label staff.circ.print_list.top_ui.description.import.accesskey"
+msgctxt ""
+"staff.circ.print_list.top_ui.description.import.label "
+"staff.circ.print_list.top_ui.description.import.accesskey"
 msgid "&Import"
 msgstr "&Tuo"
 
@@ -9775,7 +9624,8 @@ msgstr "&Rekisteröinti"
 
 #: staff.main.ws_info.help_btn.label
 #: staff.main.ws_info.help_btn.accesskey
-msgctxt "staff.main.ws_info.help_btn.label staff.main.ws_info.help_btn.accesskey"
+msgctxt ""
+"staff.main.ws_info.help_btn.label staff.main.ws_info.help_btn.accesskey"
 msgid "&Help"
 msgstr "&Ohje"
 
@@ -9787,11 +9637,6 @@ msgstr "Tietueyhteenveto"
 msgctxt "staff.cat.bib_brief.title.label"
 msgid "Title:"
 msgstr "Nimeke:"
-
-#: staff.cat.bib_brief.title.accesskey
-msgctxt "staff.cat.bib_brief.title.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.cat.bib_brief.view_marc
 msgid "View MARC"
@@ -9806,92 +9651,42 @@ msgctxt "staff.cat.bib_brief.author.label"
 msgid "Author:"
 msgstr "Tekijä:"
 
-#: staff.cat.bib_brief.author.accesskey
-msgctxt "staff.cat.bib_brief.author.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.cat.bib_brief.edition.label
 msgid "Edition:"
 msgstr "Painos:"
-
-#: staff.cat.bib_brief.edition.accesskey
-msgctxt "staff.cat.bib_brief.edition.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.cat.bib_brief.pub_date.label
 msgid "Pub Date:"
 msgstr "Julkaisuaika:"
 
-#: staff.cat.bib_brief.pub_date.accesskey
-msgctxt "staff.cat.bib_brief.pub_date.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.cat.bib_brief.call_number.label
 msgid "Bib Call #:"
 msgstr "Bibliografinen hyllypaikka:"
-
-#: staff.cat.bib_brief.call_number.accesskey
-msgctxt "staff.cat.bib_brief.call_number.accesskey"
-msgid ""
-msgstr ""
 
 #. "TCN" is an abbreviation for "title control number"
 #: staff.cat.bib_brief.title_control_number.label
 msgid "TCN:"
 msgstr "Tietuenro:"
 
-#: staff.cat.bib_brief.title_control_number.accesskey
-msgctxt "staff.cat.bib_brief.title_control_number.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.cat.bib_brief.biblio_record_entry_id.label
 msgid "Database ID:"
 msgstr "Tietokannan tunnus:"
-
-#: staff.cat.bib_brief.biblio_record_entry_id.accesskey
-msgctxt "staff.cat.bib_brief.biblio_record_entry_id.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.cat.bib_brief.biblio_record_entry_owner.label
 msgid "Record Owner:"
 msgstr "Tietueen omistaja:"
 
-#: staff.cat.bib_brief.biblio_record_entry_owner.accesskey
-msgctxt "staff.cat.bib_brief.biblio_record_entry_owner.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.cat.bib_brief.created_by.label
 msgid "Created By:"
 msgstr "Luonut:"
-
-#: staff.cat.bib_brief.created_by.accesskey
-msgctxt "staff.cat.bib_brief.created_by.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.cat.bib_brief.last_edited_by.label
 msgid "Last Edited By:"
 msgstr "Viimeisin muokkaaja:"
 
-#: staff.cat.bib_brief.last_edited_by.accesskey
-msgctxt "staff.cat.bib_brief.last_edited_by.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.cat.bib_brief.last_edited_on.label
 msgid "Last Edited On:"
 msgstr "Muokattu viimeksi:"
-
-#: staff.cat.bib_brief.last_edited_on.accesskey
-msgctxt "staff.cat.bib_brief.last_edited_on.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.circ.holds.copy_to_clipboard
 msgctxt "staff.circ.holds.copy_to_clipboard"
@@ -10079,11 +9874,6 @@ msgstr "Q"
 msgid "Transfer to Marked Title"
 msgstr "Siirrä merkittyyn nimekkeeseen"
 
-#: staff.circ.holds.title_transfer.accesskey
-msgctxt "staff.circ.holds.title_transfer.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.circ.holds.view_expired_onshelf_holds.label
 #: staff.circ.holds.view_expired_onshelf_holds.accesskey
 msgid "View Shelf-E&xpired Holds"
@@ -10092,11 +9882,6 @@ msgstr "Näytä v&anhentuneet varaukset -hylly"
 #: staff.circ.holds.clear_expired_onshelf_holds.label
 msgid "Clear these Holds"
 msgstr "Tyhjennä nämä varaukset"
-
-#: staff.circ.holds.clear_expired_onshelf_holds.accesskey
-msgctxt "staff.circ.holds.clear_expired_onshelf_holds.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.circ.holds.mark_item_damaged
 msgid "Mark Item Damaged"
@@ -10149,11 +9934,6 @@ msgctxt "staff.circ.holds.save_columns"
 msgid "Save Columns"
 msgstr "Tallenna sarakkeet"
 
-#: staff.circ.holds.save_columns.accesskey
-msgctxt "staff.circ.holds.save_columns.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.hold_list.cancel_hold_dialog.title
 msgctxt "staff.hold_list.cancel_hold_dialog.title"
 msgid "Cancel Hold"
@@ -10170,13 +9950,17 @@ msgstr "Syy ja huomautukset"
 
 #: staff.hold_list.cancel_hold_dialog.cancel_btn.label
 #: staff.hold_list.cancel_hold_dialog.cancel_btn.accesskey
-msgctxt "staff.hold_list.cancel_hold_dialog.cancel_btn.label staff.hold_list.cancel_hold_dialog.cancel_btn.accesskey"
+msgctxt ""
+"staff.hold_list.cancel_hold_dialog.cancel_btn.label "
+"staff.hold_list.cancel_hold_dialog.cancel_btn.accesskey"
 msgid "&Cancel"
 msgstr "&Peruuta"
 
 #: staff.hold_list.cancel_hold_dialog.apply_btn.label
 #: staff.hold_list.cancel_hold_dialog.apply_btn.accesskey
-msgctxt "staff.hold_list.cancel_hold_dialog.apply_btn.label staff.hold_list.cancel_hold_dialog.apply_btn.accesskey"
+msgctxt ""
+"staff.hold_list.cancel_hold_dialog.apply_btn.label "
+"staff.hold_list.cancel_hold_dialog.apply_btn.accesskey"
 msgid "&Apply"
 msgstr "&Ota käyttöön"
 
@@ -10191,7 +9975,9 @@ msgstr "&Valittujen niteiden toiminnot"
 
 #: staff.cat.manage_multi_bib_items.actions.menu_entry.show_in_opac.label
 #: staff.cat.manage_multi_bib_items.actions.menu_entry.show_in_opac.accesskey
-msgctxt "staff.cat.manage_multi_bib_items.actions.menu_entry.show_in_opac.label staff.cat.manage_multi_bib_items.actions.menu_entry.show_in_opac.accesskey"
+msgctxt ""
+"staff.cat.manage_multi_bib_items.actions.menu_entry.show_in_opac.label "
+"staff.cat.manage_multi_bib_items.actions.menu_entry.show_in_opac.accesskey"
 msgid "&Show in Catalog"
 msgstr "&Näytä luettelossa"
 
@@ -10212,7 +9998,9 @@ msgstr "Vertais&tyyppi:"
 
 #: staff.cat.manage_multi_bib_items.barcode.textbox.label
 #: staff.cat.manage_multi_bib_items.barcode.textbox.accesskey
-msgctxt "staff.cat.manage_multi_bib_items.barcode.textbox.label staff.cat.manage_multi_bib_items.barcode.textbox.accesskey"
+msgctxt ""
+"staff.cat.manage_multi_bib_items.barcode.textbox.label "
+"staff.cat.manage_multi_bib_items.barcode.textbox.accesskey"
 msgid "&Barcode:"
 msgstr "&Tunnus:"
 
@@ -10223,49 +10011,65 @@ msgstr "Linkitä bibliografiseen tietueeseen (&Lähetä)"
 
 #: staff.cat.copy_browser.actions.sel_clip.label
 #: staff.cat.copy_browser.actions.sel_clip.accesskey
-msgctxt "staff.cat.copy_browser.actions.sel_clip.label staff.cat.copy_browser.actions.sel_clip.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.actions.sel_clip.label "
+"staff.cat.copy_browser.actions.sel_clip.accesskey"
 msgid "&Copy to Clipboard"
 msgstr "&Kopioi leikepöydälle"
 
 #: staff.cat.copy_browser.actions.cmd_add_items_to_buckets.label
 #: staff.cat.copy_browser.actions.cmd_add_items_to_buckets.accesskey
-msgctxt "staff.cat.copy_browser.actions.cmd_add_items_to_buckets.label staff.cat.copy_browser.actions.cmd_add_items_to_buckets.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.actions.cmd_add_items_to_buckets.label "
+"staff.cat.copy_browser.actions.cmd_add_items_to_buckets.accesskey"
 msgid "Add Items to &Buckets"
 msgstr "Lisää niteet &siiloihin"
 
 #: staff.cat.copy_browser.actions.sel_copy_details.label
 #: staff.cat.copy_browser.actions.sel_copy_details.accesskey
-msgctxt "staff.cat.copy_browser.actions.sel_copy_details.label staff.cat.copy_browser.actions.sel_copy_details.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.actions.sel_copy_details.label "
+"staff.cat.copy_browser.actions.sel_copy_details.accesskey"
 msgid "Show &Item Details"
 msgstr "Näytä &niteen tiedot"
 
 #: staff.cat.copy_browser.actions.cmd_book_item_now.label
 #: staff.cat.copy_browser.actions.cmd_book_item_now.accesskey
-msgctxt "staff.cat.copy_browser.actions.cmd_book_item_now.label staff.cat.copy_browser.actions.cmd_book_item_now.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.actions.cmd_book_item_now.label "
+"staff.cat.copy_browser.actions.cmd_book_item_now.accesskey"
 msgid "Book Item &Now"
 msgstr "Varaa nide &nyt"
 
 #: staff.cat.copy_browser.actions.cmd_create_brt.label
 #: staff.cat.copy_browser.actions.cmd_create_brt.accesskey
-msgctxt "staff.cat.copy_browser.actions.cmd_create_brt.label staff.cat.copy_browser.actions.cmd_create_brt.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.actions.cmd_create_brt.label "
+"staff.cat.copy_browser.actions.cmd_create_brt.accesskey"
 msgid "Ma&ke Item Bookable"
 msgstr "Te&e niteestä varattava"
 
 #: staff.cat.copy_browser.actions.sel_patron.label
 #: staff.cat.copy_browser.actions.sel_patron.accesskey
-msgctxt "staff.cat.copy_browser.actions.sel_patron.label staff.cat.copy_browser.actions.sel_patron.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.actions.sel_patron.label "
+"staff.cat.copy_browser.actions.sel_patron.accesskey"
 msgid "Show &Last Few Circulations"
 msgstr "Näytä &viimeisimmät lainaukset"
 
 #: staff.cat.copy_browser.actions.cmd_edit_items.label
 #: staff.cat.copy_browser.actions.cmd_edit_items.accesskey
-msgctxt "staff.cat.copy_browser.actions.cmd_edit_items.label staff.cat.copy_browser.actions.cmd_edit_items.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.actions.cmd_edit_items.label "
+"staff.cat.copy_browser.actions.cmd_edit_items.accesskey"
 msgid "&Edit Items"
 msgstr "&Muokkaa niteitä"
 
 #: staff.cat.copy_browser.actions.cmd_transfer_items.label
 #: staff.cat.copy_browser.actions.cmd_transfer_items.accesskey
-msgctxt "staff.cat.copy_browser.actions.cmd_transfer_items.label staff.cat.copy_browser.actions.cmd_transfer_items.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.actions.cmd_transfer_items.label "
+"staff.cat.copy_browser.actions.cmd_transfer_items.accesskey"
 msgid "&Transfer Items to Previously Marked Volume"
 msgstr "&Siirrä niteet aiemmin merkittyyn nimekkeeseen"
 
@@ -10278,37 +10082,49 @@ msgstr ""
 
 #: staff.cat.copy_browser.actions.cmd_add_volumes.label
 #: staff.cat.copy_browser.actions.cmd_add_volumes.accesskey
-msgctxt "staff.cat.copy_browser.actions.cmd_add_volumes.label staff.cat.copy_browser.actions.cmd_add_volumes.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.actions.cmd_add_volumes.label "
+"staff.cat.copy_browser.actions.cmd_add_volumes.accesskey"
 msgid "Add &Volumes"
 msgstr "Lisää &niteet"
 
 #: staff.cat.copy_browser.actions.cmd_mark_library.label
 #: staff.cat.copy_browser.actions.cmd_mark_library.accesskey
-msgctxt "staff.cat.copy_browser.actions.cmd_mark_library.label staff.cat.copy_browser.actions.cmd_mark_library.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.actions.cmd_mark_library.label "
+"staff.cat.copy_browser.actions.cmd_mark_library.accesskey"
 msgid "&Mark Library as Volume Transfer Destination"
 msgstr "&Merkitse kirjasto nimekkeen siirtokohteeksi"
 
 #: staff.cat.copy_browser.actions.cmd_add_items.label
 #: staff.cat.copy_browser.actions.cmd_add_items.accesskey
-msgctxt "staff.cat.copy_browser.actions.cmd_add_items.label staff.cat.copy_browser.actions.cmd_add_items.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.actions.cmd_add_items.label "
+"staff.cat.copy_browser.actions.cmd_add_items.accesskey"
 msgid "&Add Items"
 msgstr "&Lisää niteitä"
 
 #: staff.cat.copy_browser.actions.cmd_edit_volumes.label
 #: staff.cat.copy_browser.actions.cmd_edit_volumes.accesskey
-msgctxt "staff.cat.copy_browser.actions.cmd_edit_volumes.label staff.cat.copy_browser.actions.cmd_edit_volumes.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.actions.cmd_edit_volumes.label "
+"staff.cat.copy_browser.actions.cmd_edit_volumes.accesskey"
 msgid "&Edit Volumes"
 msgstr "&Muokkaa nimekkeitä"
 
 #: staff.cat.copy_browser.actions.cmd_mark_volume.label
 #: staff.cat.copy_browser.actions.cmd_mark_volume.accesskey
-msgctxt "staff.cat.copy_browser.actions.cmd_mark_volume.label staff.cat.copy_browser.actions.cmd_mark_volume.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.actions.cmd_mark_volume.label "
+"staff.cat.copy_browser.actions.cmd_mark_volume.accesskey"
 msgid "&Mark Volume as Item Transfer Destination"
 msgstr "&Merkitse nimeke niteen siirtokohteeksi"
 
 #: staff.cat.copy_browser.actions.cmd_transfer_volume.label
 #: staff.cat.copy_browser.actions.cmd_transfer_volume.accesskey
-msgctxt "staff.cat.copy_browser.actions.cmd_transfer_volume.label staff.cat.copy_browser.actions.cmd_transfer_volume.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.actions.cmd_transfer_volume.label "
+"staff.cat.copy_browser.actions.cmd_transfer_volume.accesskey"
 msgid "&Transfer Volumes to Previously Marked Library"
 msgstr "&Siirrä niteet aiemmin merkittyyn kirjastoon"
 
@@ -10324,25 +10140,33 @@ msgstr "Poista osat"
 
 #: staff.cat.copy_browser.actions.cmd_request_items.label
 #: staff.cat.copy_browser.actions.cmd_request_items.accesskey
-msgctxt "staff.cat.copy_browser.actions.cmd_request_items.label staff.cat.copy_browser.actions.cmd_request_items.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.actions.cmd_request_items.label "
+"staff.cat.copy_browser.actions.cmd_request_items.accesskey"
 msgid "&Request Item"
 msgstr "&Pyydä nide"
 
 #: staff.cat.copy_browser.actions.sel_mark_items_damaged.label
 #: staff.cat.copy_browser.actions.sel_mark_items_damaged.accesskey
-msgctxt "staff.cat.copy_browser.actions.sel_mark_items_damaged.label staff.cat.copy_browser.actions.sel_mark_items_damaged.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.actions.sel_mark_items_damaged.label "
+"staff.cat.copy_browser.actions.sel_mark_items_damaged.accesskey"
 msgid "Mark Item &Damaged"
 msgstr "Merkitse nide &vaurioituneeksi"
 
 #: staff.cat.copy_browser.actions.sel_mark_items_missing.label
 #: staff.cat.copy_browser.actions.sel_mark_items_missing.accesskey
-msgctxt "staff.cat.copy_browser.actions.sel_mark_items_missing.label staff.cat.copy_browser.actions.sel_mark_items_missing.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.actions.sel_mark_items_missing.label "
+"staff.cat.copy_browser.actions.sel_mark_items_missing.accesskey"
 msgid "Mark Item Missin&g"
 msgstr "Merkitse nide puuttuvaks&i"
 
 #: staff.cat.copy_browser.actions.cmd_print_spine_labels.label
 #: staff.cat.copy_browser.actions.cmd_print_spine_labels.accesskey
-msgctxt "staff.cat.copy_browser.actions.cmd_print_spine_labels.label staff.cat.copy_browser.actions.cmd_print_spine_labels.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.actions.cmd_print_spine_labels.label "
+"staff.cat.copy_browser.actions.cmd_print_spine_labels.accesskey"
 msgid "&Print Item Spine Labels"
 msgstr "&Tulosta niteiden selkätarrat"
 
@@ -10353,7 +10177,9 @@ msgstr "Tallenna sarakkeet"
 
 #: staff.cat.copy_browser.actions.cmd_refresh_list.label
 #: staff.cat.copy_browser.actions.cmd_refresh_list.accesskey
-msgctxt "staff.cat.copy_browser.actions.cmd_refresh_list.label staff.cat.copy_browser.actions.cmd_refresh_list.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.actions.cmd_refresh_list.label "
+"staff.cat.copy_browser.actions.cmd_refresh_list.accesskey"
 msgid "&Refresh Listing"
 msgstr "&Päivitä luettelo"
 
@@ -10406,19 +10232,25 @@ msgstr "Toiminnot &valituille riveille"
 
 #: staff.cat.copy_browser.holdings_maintenance.sel_clip.label
 #: staff.cat.copy_browser.holdings_maintenance.sel_clip.accesskey
-msgctxt "staff.cat.copy_browser.holdings_maintenance.sel_clip.label staff.cat.copy_browser.holdings_maintenance.sel_clip.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.holdings_maintenance.sel_clip.label "
+"staff.cat.copy_browser.holdings_maintenance.sel_clip.accesskey"
 msgid "&Copy to Clipboard"
 msgstr "&Kopioi leikepöydälle"
 
 #: staff.cat.copy_browser.holdings_maintenance.add_items_to_bucket.label
 #: staff.cat.copy_browser.holdings_maintenance.add_items_to_bucket.accesskey
-msgctxt "staff.cat.copy_browser.holdings_maintenance.add_items_to_bucket.label staff.cat.copy_browser.holdings_maintenance.add_items_to_bucket.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.holdings_maintenance.add_items_to_bucket.label "
+"staff.cat.copy_browser.holdings_maintenance.add_items_to_bucket.accesskey"
 msgid "Add Items to &Buckets"
 msgstr "Lisää niteet &siiloihin"
 
 #: staff.cat.copy_browser.holdings_maintenance.sel_copy_details.label
 #: staff.cat.copy_browser.holdings_maintenance.sel_copy_details.accesskey
-msgctxt "staff.cat.copy_browser.holdings_maintenance.sel_copy_details.label staff.cat.copy_browser.holdings_maintenance.sel_copy_details.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.holdings_maintenance.sel_copy_details.label "
+"staff.cat.copy_browser.holdings_maintenance.sel_copy_details.accesskey"
 msgid "Show &Item Details"
 msgstr "Näytä &niteen tiedot"
 
@@ -10432,55 +10264,73 @@ msgstr "Y"
 
 #: staff.cat.copy_browser.holdings_maintenance.sel_patron.label
 #: staff.cat.copy_browser.holdings_maintenance.sel_patron.accesskey
-msgctxt "staff.cat.copy_browser.holdings_maintenance.sel_patron.label staff.cat.copy_browser.holdings_maintenance.sel_patron.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.holdings_maintenance.sel_patron.label "
+"staff.cat.copy_browser.holdings_maintenance.sel_patron.accesskey"
 msgid "Show &Last Few Circulations"
 msgstr "Näytä &viimeisimmät lainaukset"
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.label
 #: staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.accesskey
-msgctxt "staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.label staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.label "
+"staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.accesskey"
 msgid "&Edit Items"
 msgstr "&Muokkaa niteitä"
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.label
 #: staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.accesskey
-msgctxt "staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.label staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.label "
+"staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.accesskey"
 msgid "&Transfer Items to Previously Marked Volume"
 msgstr "&Siirrä niteet aiemmin merkittyyn nimekkeeseen"
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.label
 #: staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.accesskey
-msgctxt "staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.label staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.label "
+"staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.accesskey"
 msgid "Add &Volumes"
 msgstr "Lisää &niteet"
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_mark_library.label
 #: staff.cat.copy_browser.holdings_maintenance.cmd_mark_library.accesskey
-msgctxt "staff.cat.copy_browser.holdings_maintenance.cmd_mark_library.label staff.cat.copy_browser.holdings_maintenance.cmd_mark_library.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.holdings_maintenance.cmd_mark_library.label "
+"staff.cat.copy_browser.holdings_maintenance.cmd_mark_library.accesskey"
 msgid "&Mark Library as Volume Transfer Destination"
 msgstr "&Merkitse kirjasto nimekkeen siirtokohteeksi"
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_add_items.label
 #: staff.cat.copy_browser.holdings_maintenance.cmd_add_items.accesskey
-msgctxt "staff.cat.copy_browser.holdings_maintenance.cmd_add_items.label staff.cat.copy_browser.holdings_maintenance.cmd_add_items.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.holdings_maintenance.cmd_add_items.label "
+"staff.cat.copy_browser.holdings_maintenance.cmd_add_items.accesskey"
 msgid "&Add Items"
 msgstr "&Lisää niteitä"
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_edit_volumes.label
 #: staff.cat.copy_browser.holdings_maintenance.cmd_edit_volumes.accesskey
-msgctxt "staff.cat.copy_browser.holdings_maintenance.cmd_edit_volumes.label staff.cat.copy_browser.holdings_maintenance.cmd_edit_volumes.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.holdings_maintenance.cmd_edit_volumes.label "
+"staff.cat.copy_browser.holdings_maintenance.cmd_edit_volumes.accesskey"
 msgid "&Edit Volumes"
 msgstr "&Muokkaa nimekkeitä"
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_mark_volume.label
 #: staff.cat.copy_browser.holdings_maintenance.cmd_mark_volume.accesskey
-msgctxt "staff.cat.copy_browser.holdings_maintenance.cmd_mark_volume.label staff.cat.copy_browser.holdings_maintenance.cmd_mark_volume.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.holdings_maintenance.cmd_mark_volume.label "
+"staff.cat.copy_browser.holdings_maintenance.cmd_mark_volume.accesskey"
 msgid "&Mark Volume as Item Transfer Destination"
 msgstr "&Merkitse nimeke niteen siirtokohteeksi"
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_transfer_volume.label
 #: staff.cat.copy_browser.holdings_maintenance.cmd_transfer_volume.accesskey
-msgctxt "staff.cat.copy_browser.holdings_maintenance.cmd_transfer_volume.label staff.cat.copy_browser.holdings_maintenance.cmd_transfer_volume.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.holdings_maintenance.cmd_transfer_volume.label "
+"staff.cat.copy_browser.holdings_maintenance.cmd_transfer_volume.accesskey"
 msgid "&Transfer Volumes to Previously Marked Library"
 msgstr "&Siirrä niteet aiemmin merkittyyn kirjastoon"
 
@@ -10490,25 +10340,32 @@ msgid "Delete Items"
 msgstr "Poista niteet"
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_delete_volumes.label
-msgctxt "staff.cat.copy_browser.holdings_maintenance.cmd_delete_volumes.label"
+msgctxt ""
+"staff.cat.copy_browser.holdings_maintenance.cmd_delete_volumes.label"
 msgid "Delete Volumes"
 msgstr "Poista osat"
 
 #: staff.cat.copy_browser.holdings_maintenance.sel_mark_items_damaged.label
 #: staff.cat.copy_browser.holdings_maintenance.sel_mark_items_damaged.accesskey
-msgctxt "staff.cat.copy_browser.holdings_maintenance.sel_mark_items_damaged.label staff.cat.copy_browser.holdings_maintenance.sel_mark_items_damaged.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.holdings_maintenance.sel_mark_items_damaged.label "
+"staff.cat.copy_browser.holdings_maintenance.sel_mark_items_damaged.accesskey"
 msgid "Mark Item &Damaged"
 msgstr "Merkitse nide &vaurioituneeksi"
 
 #: staff.cat.copy_browser.holdings_maintenance.sel_mark_items_missing.label
 #: staff.cat.copy_browser.holdings_maintenance.sel_mark_items_missing.accesskey
-msgctxt "staff.cat.copy_browser.holdings_maintenance.sel_mark_items_missing.label staff.cat.copy_browser.holdings_maintenance.sel_mark_items_missing.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.holdings_maintenance.sel_mark_items_missing.label "
+"staff.cat.copy_browser.holdings_maintenance.sel_mark_items_missing.accesskey"
 msgid "Mark Item Missin&g"
 msgstr "Merkitse nide puuttuvaks&i"
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_print_spine_labels.label
 #: staff.cat.copy_browser.holdings_maintenance.cmd_print_spine_labels.accesskey
-msgctxt "staff.cat.copy_browser.holdings_maintenance.cmd_print_spine_labels.label staff.cat.copy_browser.holdings_maintenance.cmd_print_spine_labels.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.holdings_maintenance.cmd_print_spine_labels.label "
+"staff.cat.copy_browser.holdings_maintenance.cmd_print_spine_labels.accesskey"
 msgid "&Print Item Spine Labels"
 msgstr "&Tulosta niteiden selkätarrat"
 
@@ -10524,13 +10381,17 @@ msgstr "Tallenna sarakkeet"
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.label
 #: staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.accesskey
-msgctxt "staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.label staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.label "
+"staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.accesskey"
 msgid "&Refresh Listing"
 msgstr "&Päivitä luettelo"
 
 #: staff.cat.copy_browser.holdings_maintenance.print.label
 #: staff.cat.copy_browser.holdings_maintenance.print.accesskey
-msgctxt "staff.cat.copy_browser.holdings_maintenance.print.label staff.cat.copy_browser.holdings_maintenance.print.accesskey"
+msgctxt ""
+"staff.cat.copy_browser.holdings_maintenance.print.label "
+"staff.cat.copy_browser.holdings_maintenance.print.accesskey"
 msgid "&Print"
 msgstr "&Tulosta"
 
@@ -10573,17 +10434,20 @@ msgid "&Add All"
 msgstr "&Lisää kaikki"
 
 #: staff.cat.copy_buckets_overlay.pending_buckets.copy_buckets_sel_add.label
-msgctxt "staff.cat.copy_buckets_overlay.pending_buckets.copy_buckets_sel_add.label"
+msgctxt ""
+"staff.cat.copy_buckets_overlay.pending_buckets.copy_buckets_sel_add.label"
 msgid "Add Selected"
 msgstr "Lisää valitut"
 
 #: staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_new_bucket.label
-msgctxt "staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_new_bucket.label"
+msgctxt ""
+"staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_new_bucket.label"
 msgid "New Bucket"
 msgstr "Uusi siilo"
 
 #: staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_delete_bucket.label
-msgctxt "staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_delete_bucket.label"
+msgctxt ""
+"staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_delete_bucket.label"
 msgid "Delete Bucket"
 msgstr "Poista siilo"
 
@@ -10623,7 +10487,9 @@ msgstr "Omistaja:"
 
 #: staff.cat.copy_buckets_overlay.copy_buckets.print.label
 #: staff.cat.copy_buckets_overlay.copy_buckets.print.accesskey
-msgctxt "staff.cat.copy_buckets_overlay.copy_buckets.print.label staff.cat.copy_buckets_overlay.copy_buckets.print.accesskey"
+msgctxt ""
+"staff.cat.copy_buckets_overlay.copy_buckets.print.label "
+"staff.cat.copy_buckets_overlay.copy_buckets.print.accesskey"
 msgid "&Print"
 msgstr "&Tulosta"
 
@@ -10633,7 +10499,8 @@ msgid "Print Export"
 msgstr "Tulosta vienti"
 
 #: staff.cat.copy_buckets_overlay.copy_buckets.cmd_copy_buckets_export.label
-msgctxt "staff.cat.copy_buckets_overlay.copy_buckets.cmd_copy_buckets_export.label"
+msgctxt ""
+"staff.cat.copy_buckets_overlay.copy_buckets.cmd_copy_buckets_export.label"
 msgid "Export"
 msgstr "Vie"
 
@@ -10674,19 +10541,25 @@ msgstr "Nidesiilot"
 
 #: staff.cat.copy_buckets_quick.item_buckets.add_to_bucket.label
 #: staff.cat.copy_buckets_quick.item_buckets.add_to_bucket.accesskey
-msgctxt "staff.cat.copy_buckets_quick.item_buckets.add_to_bucket.label staff.cat.copy_buckets_quick.item_buckets.add_to_bucket.accesskey"
+msgctxt ""
+"staff.cat.copy_buckets_quick.item_buckets.add_to_bucket.label "
+"staff.cat.copy_buckets_quick.item_buckets.add_to_bucket.accesskey"
 msgid "&Add to Selected Bucket"
 msgstr "&Lisää valittuun siiloon"
 
 #: staff.cat.copy_buckets_quick.item_buckets.new_bucket.label
 #: staff.cat.copy_buckets_quick.item_buckets.new_bucket.accesskey
-msgctxt "staff.cat.copy_buckets_quick.item_buckets.new_bucket.label staff.cat.copy_buckets_quick.item_buckets.new_bucket.accesskey"
+msgctxt ""
+"staff.cat.copy_buckets_quick.item_buckets.new_bucket.label "
+"staff.cat.copy_buckets_quick.item_buckets.new_bucket.accesskey"
 msgid "Add to &New Bucket"
 msgstr "Lisää &uuteen siiloon"
 
 #: staff.cat.copy_buckets_quick.item_buckets.cancel.label
 #: staff.cat.copy_buckets_quick.item_buckets.cancel.accesskey
-msgctxt "staff.cat.copy_buckets_quick.item_buckets.cancel.label staff.cat.copy_buckets_quick.item_buckets.cancel.accesskey"
+msgctxt ""
+"staff.cat.copy_buckets_quick.item_buckets.cancel.label "
+"staff.cat.copy_buckets_quick.item_buckets.cancel.accesskey"
 msgid "&Cancel"
 msgstr "&Peruuta"
 
@@ -10798,11 +10671,6 @@ msgstr "&Sulje"
 msgid "Hide Fields"
 msgstr "Piilota kentät"
 
-#: staff.cat.copy_editor.hide_fields.accesskey
-msgctxt "staff.cat.copy_editor.hide_fields.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.cat.copy_summary.label
 msgid "Item Summary"
 msgstr "Nideyhteenveto"
@@ -10866,14 +10734,11 @@ msgctxt "staff.cat.copy_summary.alternate_view.label"
 msgid "Alternate View"
 msgstr "Vaihtoehtoinen näkymä"
 
-#: staff.cat.copy_summary.alternate_view.accesskey
-msgctxt "staff.cat.copy_summary.alternate_view.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.cat.copy_summary.show_in_opac.label
 #: staff.cat.copy_summary.show_in_opac.accesskey
-msgctxt "staff.cat.copy_summary.show_in_opac.label staff.cat.copy_summary.show_in_opac.accesskey"
+msgctxt ""
+"staff.cat.copy_summary.show_in_opac.label "
+"staff.cat.copy_summary.show_in_opac.accesskey"
 msgid "&Show in Catalog"
 msgstr "&Näytä tietokannassa"
 
@@ -10920,11 +10785,6 @@ msgstr "&Ohje"
 msgid "Flat-Text Editor"
 msgstr "Muotoilemattoman tekstin muokkaustyökalu"
 
-#: staff.cat.marcedit.flatTextEditor.accesskey
-msgctxt "staff.cat.marcedit.flatTextEditor.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.cat.marcedit.caption.label
 msgid "MARC Record"
 msgstr "MARC-tietue"
@@ -10957,37 +10817,49 @@ msgstr "MARC-näkymä"
 
 #: staff.cat.opac.menuitem.opacview.label
 #: staff.cat.opac.menuitem.opacview.accesskey
-msgctxt "staff.cat.opac.menuitem.opacview.label staff.cat.opac.menuitem.opacview.accesskey"
+msgctxt ""
+"staff.cat.opac.menuitem.opacview.label "
+"staff.cat.opac.menuitem.opacview.accesskey"
 msgid "&OPAC View"
 msgstr "&Verkkokirjasto-näkymä"
 
 #: staff.cat.opac.menuitem.marcview.label
 #: staff.cat.opac.menuitem.marcview.accesskey
-msgctxt "staff.cat.opac.menuitem.marcview.label staff.cat.opac.menuitem.marcview.accesskey"
+msgctxt ""
+"staff.cat.opac.menuitem.marcview.label "
+"staff.cat.opac.menuitem.marcview.accesskey"
 msgid "MARC &View"
 msgstr "MARC-&näkymä"
 
 #: staff.cat.opac.menuitem.marcedit.label
 #: staff.cat.opac.menuitem.marcedit.accesskey
-msgctxt "staff.cat.opac.menuitem.marcedit.label staff.cat.opac.menuitem.marcedit.accesskey"
+msgctxt ""
+"staff.cat.opac.menuitem.marcedit.label "
+"staff.cat.opac.menuitem.marcedit.accesskey"
 msgid "MARC &Edit"
 msgstr "MARC-&muokkaus"
 
 #: staff.cat.opac.menuitem.holding.label
 #: staff.cat.opac.menuitem.holding.accesskey
-msgctxt "staff.cat.opac.menuitem.holding.label staff.cat.opac.menuitem.holding.accesskey"
+msgctxt ""
+"staff.cat.opac.menuitem.holding.label "
+"staff.cat.opac.menuitem.holding.accesskey"
 msgid "&Holdings Maintenance"
 msgstr "&Kokoelmienhallinta"
 
 #: staff.cat.opac.menuitem.viewholds.label
 #: staff.cat.opac.menuitem.viewholds.accesskey
-msgctxt "staff.cat.opac.menuitem.viewholds.label staff.cat.opac.menuitem.viewholds.accesskey"
+msgctxt ""
+"staff.cat.opac.menuitem.viewholds.label "
+"staff.cat.opac.menuitem.viewholds.accesskey"
 msgid "View Hold&s"
 msgstr "Näytä varaukse&t"
 
 #: staff.cat.opac.menuitem.addtobucket.label
 #: staff.cat.opac.menuitem.addtobucket.accesskey
-msgctxt "staff.cat.opac.menuitem.addtobucket.label staff.cat.opac.menuitem.addtobucket.accesskey"
+msgctxt ""
+"staff.cat.opac.menuitem.addtobucket.label "
+"staff.cat.opac.menuitem.addtobucket.accesskey"
 msgid "Add to &Bucket"
 msgstr "Lisää &siiloon"
 
@@ -11051,19 +10923,25 @@ msgstr "Kysel&y"
 
 #: staff.cat.record_buckets_overlay.cmd_submit_query.button.label
 #: staff.cat.record_buckets_overlay.cmd_submit_query.button.accesskey
-msgctxt "staff.cat.record_buckets_overlay.cmd_submit_query.button.label staff.cat.record_buckets_overlay.cmd_submit_query.button.accesskey"
+msgctxt ""
+"staff.cat.record_buckets_overlay.cmd_submit_query.button.label "
+"staff.cat.record_buckets_overlay.cmd_submit_query.button.accesskey"
 msgid "&Submit"
 msgstr "&Lähetä"
 
 #: staff.cat.record_buckets_overlay.query_help.button.label
 #: staff.cat.record_buckets_overlay.query_help.button.accesskey
-msgctxt "staff.cat.record_buckets_overlay.query_help.button.label staff.cat.record_buckets_overlay.query_help.button.accesskey"
+msgctxt ""
+"staff.cat.record_buckets_overlay.query_help.button.label "
+"staff.cat.record_buckets_overlay.query_help.button.accesskey"
 msgid "&Help"
 msgstr "&Ohje"
 
 #: staff.cat.record_buckets_overlay.query_list_actions.label
 #: staff.cat.record_buckets_overlay.query_list_actions.accesskey
-msgctxt "staff.cat.record_buckets_overlay.query_list_actions.label staff.cat.record_buckets_overlay.query_list_actions.accesskey"
+msgctxt ""
+"staff.cat.record_buckets_overlay.query_list_actions.label "
+"staff.cat.record_buckets_overlay.query_list_actions.accesskey"
 msgid "&List Actions"
 msgstr "&Luettelotoiminnot"
 
@@ -11073,12 +10951,14 @@ msgid "Copy Field from selected row to Clipboard"
 msgstr "Kopioi kenttä valitulta riviltä leikepöydälle"
 
 #: staff.cat.record_buckets_overlay.menuitem.query_csv_to_printer.label
-msgctxt "staff.cat.record_buckets_overlay.menuitem.query_csv_to_printer.label"
+msgctxt ""
+"staff.cat.record_buckets_overlay.menuitem.query_csv_to_printer.label"
 msgid "Print List CSV"
 msgstr "Tulosta luettelon CSV"
 
 #: staff.cat.record_buckets_overlay.menuitem.query_csv_to_clipboard.label
-msgctxt "staff.cat.record_buckets_overlay.menuitem.query_csv_to_clipboard.label"
+msgctxt ""
+"staff.cat.record_buckets_overlay.menuitem.query_csv_to_clipboard.label"
 msgid "Copy List CSV to Clipboard"
 msgstr "Kopioi luettelon CSV leikepöydälle"
 
@@ -11103,7 +10983,9 @@ msgstr "Lisää valitut vireillä oleviin tietueisiin"
 
 #: staff.cat.record_buckets_overlay.pending_buckets_list_actions.label
 #: staff.cat.record_buckets_overlay.pending_buckets_list_actions.accesskey
-msgctxt "staff.cat.record_buckets_overlay.pending_buckets_list_actions.label staff.cat.record_buckets_overlay.pending_buckets_list_actions.accesskey"
+msgctxt ""
+"staff.cat.record_buckets_overlay.pending_buckets_list_actions.label "
+"staff.cat.record_buckets_overlay.pending_buckets_list_actions.accesskey"
 msgid "&List Actions"
 msgstr "&Luettelotoiminnot"
 
@@ -11113,17 +10995,22 @@ msgid "Copy Field from selected row to Clipboard"
 msgstr "Kopioi kenttä valitulta riviltä leikepöydälle"
 
 #: staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_printer.label
-msgctxt "staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_printer.label"
+msgctxt ""
+"staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_printer.labe"
+"l"
 msgid "Print List CSV"
 msgstr "Tulosta luettelon CSV"
 
 #: staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_clipboard.label
-msgctxt "staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_clipboard.label"
+msgctxt ""
+"staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_clipboard.la"
+"bel"
 msgid "Copy List CSV to Clipboard"
 msgstr "Kopioi luettelon CSV leikepöydälle"
 
 #: staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_file.label
-msgctxt "staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_file.label"
+msgctxt ""
+"staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_file.label"
 msgid "Save List CSV to File"
 msgstr "Tallenna luettelo CSV-tiedostoon"
 
@@ -11146,7 +11033,8 @@ msgid "Remove Selected from Bucket"
 msgstr "Poista valitut siilosta"
 
 #: staff.cat.record_buckets_overlay.record_buckets_to_pending_buckets.label
-msgctxt "staff.cat.record_buckets_overlay.record_buckets_to_pending_buckets.label"
+msgctxt ""
+"staff.cat.record_buckets_overlay.record_buckets_to_pending_buckets.label"
 msgid "Add Selected to Pending Records"
 msgstr "Lisää valitut vireillä oleviin tietueisiin"
 
@@ -11162,7 +11050,9 @@ msgstr "Omistaja:"
 
 #: staff.cat.record_buckets_overlay.record_buckets_list_actions.label
 #: staff.cat.record_buckets_overlay.record_buckets_list_actions.accesskey
-msgctxt "staff.cat.record_buckets_overlay.record_buckets_list_actions.label staff.cat.record_buckets_overlay.record_buckets_list_actions.accesskey"
+msgctxt ""
+"staff.cat.record_buckets_overlay.record_buckets_list_actions.label "
+"staff.cat.record_buckets_overlay.record_buckets_list_actions.accesskey"
 msgid "&List Actions"
 msgstr "&Luettelotoiminnot"
 
@@ -11172,17 +11062,21 @@ msgid "Copy Field from selected row to Clipboard"
 msgstr "Kopioi kenttä valitulta riviltä leikepöydälle"
 
 #: staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_printer.label
-msgctxt "staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_printer.label"
+msgctxt ""
+"staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_printer.label"
 msgid "Print List CSV"
 msgstr "Tulosta luettelon CSV"
 
 #: staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_clipboard.label
-msgctxt "staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_clipboard.label"
+msgctxt ""
+"staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_clipboard.lab"
+"el"
 msgid "Copy List CSV to Clipboard"
 msgstr "Kopioi luettelon CSV leikepöydälle"
 
 #: staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_file.label
-msgctxt "staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_file.label"
+msgctxt ""
+"staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_file.label"
 msgid "Save List CSV to File"
 msgstr "Tallenna luettelo CSV-tiedostoon"
 
@@ -11208,11 +11102,6 @@ msgstr "&Siirrä nimekevaraukset"
 #: staff.cat.record_buckets_overlay.marc_batch_edit.label
 msgid "MARC Batch Edit"
 msgstr "MARC-erämuokkaus"
-
-#: staff.cat.record_buckets_overlay.marc_batch_edit.accesskey
-msgctxt "staff.cat.record_buckets_overlay.marc_batch_edit.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.cat.record_buckets_overlay.del_records.label
 msgid "Delete All Records"
@@ -11254,19 +11143,25 @@ msgstr "&Lisää siiloon"
 
 #: staff.cat.record_buckets_quick.add_to_bucket.label
 #: staff.cat.record_buckets_quick.add_to_bucket.accesskey
-msgctxt "staff.cat.record_buckets_quick.add_to_bucket.label staff.cat.record_buckets_quick.add_to_bucket.accesskey"
+msgctxt ""
+"staff.cat.record_buckets_quick.add_to_bucket.label "
+"staff.cat.record_buckets_quick.add_to_bucket.accesskey"
 msgid "&Add to Selected Bucket"
 msgstr "&Lisää valittuun siiloon"
 
 #: staff.cat.record_buckets_quick.new_bucket.label
 #: staff.cat.record_buckets_quick.new_bucket.accesskey
-msgctxt "staff.cat.record_buckets_quick.new_bucket.label staff.cat.record_buckets_quick.new_bucket.accesskey"
+msgctxt ""
+"staff.cat.record_buckets_quick.new_bucket.label "
+"staff.cat.record_buckets_quick.new_bucket.accesskey"
 msgid "Add to &New Bucket"
 msgstr "Lisää &uuteen siiloon"
 
 #: staff.cat.record_buckets_quick.cancel.label
 #: staff.cat.record_buckets_quick.cancel.accesskey
-msgctxt "staff.cat.record_buckets_quick.cancel.label staff.cat.record_buckets_quick.cancel.accesskey"
+msgctxt ""
+"staff.cat.record_buckets_quick.cancel.label "
+"staff.cat.record_buckets_quick.cancel.accesskey"
 msgid "&Cancel"
 msgstr "&Peruuta"
 
@@ -11282,7 +11177,9 @@ msgstr "&Esikatsele ja tulosta"
 
 #: staff.cat.spine_labels.close_window.label
 #: staff.cat.spine_labels.close_window.accesskey
-msgctxt "staff.cat.spine_labels.close_window.label staff.cat.spine_labels.close_window.accesskey"
+msgctxt ""
+"staff.cat.spine_labels.close_window.label "
+"staff.cat.spine_labels.close_window.accesskey"
 msgid "&Close Window"
 msgstr "&Sulje ikkuna"
 
@@ -11446,13 +11343,15 @@ msgstr "Nimekkeiden muokkaustyökalu"
 
 #: staff.cat.volume_editor.modify.label
 #: staff.cat.volume_editor.modify.accesskey
-msgctxt "staff.cat.volume_editor.modify.label staff.cat.volume_editor.modify.accesskey"
+msgctxt ""
+"staff.cat.volume_editor.modify.label staff.cat.volume_editor.modify.accesskey"
 msgid "&Modify"
 msgstr "&Muokkaa"
 
 #: staff.cat.volume_editor.cancel.label
 #: staff.cat.volume_editor.cancel.accesskey
-msgctxt "staff.cat.volume_editor.cancel.label staff.cat.volume_editor.cancel.accesskey"
+msgctxt ""
+"staff.cat.volume_editor.cancel.label staff.cat.volume_editor.cancel.accesskey"
 msgid "&Cancel"
 msgstr "&Peruuta"
 
@@ -11541,8 +11440,8 @@ msgid ""
 "Tip: Click a search field label and then the 'Save as Default' button to "
 "have that field focused by default."
 msgstr ""
-"Vinkki: Napsauta hakukentän nimekettä ja sitten 'Tallenna "
-"oletuksena'-painiketta, jos haluat kentän olevan oletusarvoisesti valittuna."
+"Vinkki: Napsauta hakukentän nimekettä ja sitten 'Tallenna oletuksena'-"
+"painiketta, jos haluat kentän olevan oletusarvoisesti valittuna."
 
 #: staff.cat.z3950.clear.label
 #: staff.cat.z3950.clear.accesskey
@@ -11572,7 +11471,8 @@ msgstr "Tulokset"
 
 #: staff.cat.z3950.search_form.label
 #: staff.cat.z3950.search_form.accesskey
-msgctxt "staff.cat.z3950.search_form.label staff.cat.z3950.search_form.accesskey"
+msgctxt ""
+"staff.cat.z3950.search_form.label staff.cat.z3950.search_form.accesskey"
 msgid "Search &Form"
 msgstr "Haku&lomake"
 
@@ -11583,18 +11483,14 @@ msgstr "Hae &lisää tuloksia"
 
 #: staff.cat.z3950.list_actions.label
 #: staff.cat.z3950.list_actions.accesskey
-msgctxt "staff.cat.z3950.list_actions.label staff.cat.z3950.list_actions.accesskey"
+msgctxt ""
+"staff.cat.z3950.list_actions.label staff.cat.z3950.list_actions.accesskey"
 msgid "&List Actions"
 msgstr "&Luettelotoiminnot"
 
 #: staff.cat.z3950.mark_overlay.label
 msgid "Mark Local Result as Overlay Target"
 msgstr "Merkitse paikallinen tulos korvaamisen kohteeksi"
-
-#: staff.cat.z3950.mark_overlay.accesskey
-msgctxt "staff.cat.z3950.mark_overlay.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.cat.z3950.menuitem.csv_to_clipboard.label
 msgctxt "staff.cat.z3950.menuitem.csv_to_clipboard.label"
@@ -11639,7 +11535,9 @@ msgstr "&Korvaa"
 
 #: staff.cat.z3950.result_message.marc_import.label
 #: staff.cat.z3950.result_message.marc_import.accesskey
-msgctxt "staff.cat.z3950.result_message.marc_import.label staff.cat.z3950.result_message.marc_import.accesskey"
+msgctxt ""
+"staff.cat.z3950.result_message.marc_import.label "
+"staff.cat.z3950.result_message.marc_import.accesskey"
 msgid "&Import"
 msgstr "&Tuo"
 
@@ -11650,13 +11548,17 @@ msgstr "Hae asiakas"
 
 #: staff.pat.barcode_entry.barcode.label
 #: staff.pat.barcode_entry.barcode.accesskey
-msgctxt "staff.pat.barcode_entry.barcode.label staff.pat.barcode_entry.barcode.accesskey"
+msgctxt ""
+"staff.pat.barcode_entry.barcode.label "
+"staff.pat.barcode_entry.barcode.accesskey"
 msgid "&Barcode:"
 msgstr "&Tunnus:"
 
 #: staff.pat.barcode_entry.submit_btn.label
 #: staff.pat.barcode_entry.submit_btn.accesskey
-msgctxt "staff.pat.barcode_entry.submit_btn.label staff.pat.barcode_entry.submit_btn.accesskey"
+msgctxt ""
+"staff.pat.barcode_entry.submit_btn.label "
+"staff.pat.barcode_entry.submit_btn.accesskey"
 msgid "&Submit"
 msgstr "&Lähetä"
 
@@ -11750,7 +11652,9 @@ msgstr "Huomautus"
 
 #: staff.patron.bill_cc_info.cancel.label
 #: staff.patron.bill_cc_info.cancel.accesskey
-msgctxt "staff.patron.bill_cc_info.cancel.label staff.patron.bill_cc_info.cancel.accesskey"
+msgctxt ""
+"staff.patron.bill_cc_info.cancel.label "
+"staff.patron.bill_cc_info.cancel.accesskey"
 msgid "&Cancel"
 msgstr "&Peruuta"
 
@@ -11789,7 +11693,9 @@ msgstr "Huomautus"
 
 #: staff.patron.bill_check_info.cancel.label
 #: staff.patron.bill_check_info.cancel.accesskey
-msgctxt "staff.patron.bill_check_info.cancel.label staff.patron.bill_check_info.cancel.accesskey"
+msgctxt ""
+"staff.patron.bill_check_info.cancel.label "
+"staff.patron.bill_check_info.cancel.accesskey"
 msgid "&Cancel"
 msgstr "&Peruuta"
 
@@ -11817,13 +11723,17 @@ msgstr "Maksut"
 
 #: staff.patron.bill_details.show_in_catalog.label
 #: staff.patron.bill_details.show_in_catalog.accesskey
-msgctxt "staff.patron.bill_details.show_in_catalog.label staff.patron.bill_details.show_in_catalog.accesskey"
+msgctxt ""
+"staff.patron.bill_details.show_in_catalog.label "
+"staff.patron.bill_details.show_in_catalog.accesskey"
 msgid "&Show in Catalog"
 msgstr "&Näytä luettelossa"
 
 #: staff.patron.bill_details.close_window.label
 #: staff.patron.bill_details.close_window.accesskey
-msgctxt "staff.patron.bill_details.close_window.label staff.patron.bill_details.close_window.accesskey"
+msgctxt ""
+"staff.patron.bill_details.close_window.label "
+"staff.patron.bill_details.close_window.accesskey"
 msgid "&Close Window"
 msgstr "&Sulje ikkuna"
 
@@ -11838,19 +11748,25 @@ msgstr "Lisää maksu"
 
 #: staff.patron.bill_history.full_details.label
 #: staff.patron.bill_history.full_details.accesskey
-msgctxt "staff.patron.bill_history.full_details.label staff.patron.bill_history.full_details.accesskey"
+msgctxt ""
+"staff.patron.bill_history.full_details.label "
+"staff.patron.bill_history.full_details.accesskey"
 msgid "Full &Details"
 msgstr "Täydet &tiedot"
 
 #: staff.patron.bill_history.show_in_catalog.label
 #: staff.patron.bill_history.show_in_catalog.accesskey
-msgctxt "staff.patron.bill_history.show_in_catalog.label staff.patron.bill_history.show_in_catalog.accesskey"
+msgctxt ""
+"staff.patron.bill_history.show_in_catalog.label "
+"staff.patron.bill_history.show_in_catalog.accesskey"
 msgid "&Show in Catalog"
 msgstr "&Näytä luettelossa"
 
 #: staff.patron.bill_history.print.label
 #: staff.patron.bill_history.print.accesskey
-msgctxt "staff.patron.bill_history.print.label staff.patron.bill_history.print.accesskey"
+msgctxt ""
+"staff.patron.bill_history.print.label "
+"staff.patron.bill_history.print.accesskey"
 msgid "&Print"
 msgstr "&Tulosta"
 
@@ -11874,7 +11790,9 @@ msgstr "Ma&ksu"
 
 #: staff.patron.bill_history.payments.start_date.label
 #: staff.patron.bill_history.payments.start_date.accesskey
-msgctxt "staff.patron.bill_history.payments.start_date.label staff.patron.bill_history.payments.start_date.accesskey"
+msgctxt ""
+"staff.patron.bill_history.payments.start_date.label "
+"staff.patron.bill_history.payments.start_date.accesskey"
 msgid "&Start Date"
 msgstr "&Lainaus/uusintapäivä"
 
@@ -11883,11 +11801,6 @@ msgctxt "staff.patron.bill_history.payments.end_date.label"
 msgid "End Date"
 msgstr "Päättymispäivä"
 
-#: staff.patron.bill_history.payments.end_date.accesskey
-msgctxt "staff.patron.bill_history.payments.end_date.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.patron.bill_history.payments.retrieve.label
 #: staff.patron.bill_history.payments.retrieve.accesskey
 msgid "&Retrieve Payments"
@@ -11895,7 +11808,9 @@ msgstr "&Hae maksut"
 
 #: staff.patron.bill_history.bills.start_date.label
 #: staff.patron.bill_history.bills.start_date.accesskey
-msgctxt "staff.patron.bill_history.bills.start_date.label staff.patron.bill_history.bills.start_date.accesskey"
+msgctxt ""
+"staff.patron.bill_history.bills.start_date.label "
+"staff.patron.bill_history.bills.start_date.accesskey"
 msgid "&Start Date"
 msgstr "&Lainaus/uusintapäivä"
 
@@ -11903,11 +11818,6 @@ msgstr "&Lainaus/uusintapäivä"
 msgctxt "staff.patron.bill_history.bills.end_date.label"
 msgid "End Date"
 msgstr "Päättymispäivä"
-
-#: staff.patron.bill_history.bills.end_date.accesskey
-msgctxt "staff.patron.bill_history.bills.end_date.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.patron.bill_history.bills.retrieve.label
 #: staff.patron.bill_history.bills.retrieve.accesskey
@@ -11961,19 +11871,25 @@ msgstr "&Hyvitä"
 
 #: staff.patron.bill_interface.full_details.label
 #: staff.patron.bill_interface.full_details.accesskey
-msgctxt "staff.patron.bill_interface.full_details.label staff.patron.bill_interface.full_details.accesskey"
+msgctxt ""
+"staff.patron.bill_interface.full_details.label "
+"staff.patron.bill_interface.full_details.accesskey"
 msgid "Full &Details"
 msgstr "Täydet &tiedot"
 
 #: staff.patron.bill_interface.show_in_catalog.label
 #: staff.patron.bill_interface.show_in_catalog.accesskey
-msgctxt "staff.patron.bill_interface.show_in_catalog.label staff.patron.bill_interface.show_in_catalog.accesskey"
+msgctxt ""
+"staff.patron.bill_interface.show_in_catalog.label "
+"staff.patron.bill_interface.show_in_catalog.accesskey"
 msgid "&Show in Catalog"
 msgstr "&Näytä luettelossa"
 
 #: staff.patron.bill_interface.print.label
 #: staff.patron.bill_interface.print.accesskey
-msgctxt "staff.patron.bill_interface.print.label staff.patron.bill_interface.print.accesskey"
+msgctxt ""
+"staff.patron.bill_interface.print.label "
+"staff.patron.bill_interface.print.accesskey"
 msgid "&Print"
 msgstr "&Tulosta"
 
@@ -12047,11 +11963,6 @@ msgstr "Valitse kaikki pa&lautukset"
 #: staff.patron.bills_overlay.print_bills.label
 msgid "Print Bills"
 msgstr "Tulosta maksut"
-
-#: staff.patron.bills_overlay.print_bills.accesskey
-msgctxt "staff.patron.bills_overlay.print_bills.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.patron.bills_overlay.alternate_view.label
 #: staff.patron.bills_overlay.alternate_view.accesskey
@@ -12280,7 +12191,9 @@ msgstr "Huomautus"
 
 #: staff.patron.bill_wizard.cancel.label
 #: staff.patron.bill_wizard.cancel.accesskey
-msgctxt "staff.patron.bill_wizard.cancel.label staff.patron.bill_wizard.cancel.accesskey"
+msgctxt ""
+"staff.patron.bill_wizard.cancel.label "
+"staff.patron.bill_wizard.cancel.accesskey"
 msgid "&Cancel"
 msgstr "&Peruuta"
 
@@ -12351,13 +12264,17 @@ msgstr "(Virheellinen puhelinnumero - katso viestit)"
 
 #: staff.patron.display_overlay.exit.label
 #: staff.patron.display_overlay.exit.accesskey
-msgctxt "staff.patron.display_overlay.exit.label staff.patron.display_overlay.exit.accesskey"
+msgctxt ""
+"staff.patron.display_overlay.exit.label "
+"staff.patron.display_overlay.exit.accesskey"
 msgid "E&xit"
 msgstr "L&opeta"
 
 #: staff.patron.display_overlay.search_form.label
 #: staff.patron.display_overlay.search_form.accesskey
-msgctxt "staff.patron.display_overlay.search_form.label staff.patron.display_overlay.search_form.accesskey"
+msgctxt ""
+"staff.patron.display_overlay.search_form.label "
+"staff.patron.display_overlay.search_form.accesskey"
 msgid "Search &Form"
 msgstr "Haku&lomake"
 
@@ -12462,7 +12379,9 @@ msgstr "Vie"
 
 #: staff.patron.holds_overlay.print.label
 #: staff.patron.holds_overlay.print.accesskey
-msgctxt "staff.patron.holds_overlay.print.label staff.patron.holds_overlay.print.accesskey"
+msgctxt ""
+"staff.patron.holds_overlay.print.label "
+"staff.patron.holds_overlay.print.accesskey"
 msgid "&Print"
 msgstr "&Tulosta"
 
@@ -12483,7 +12402,9 @@ msgstr "Yksinkertaistettu varauslista&liittymä"
 
 #: staff.patron.holds_overlay.place_hold.label
 #: staff.patron.holds_overlay.place_hold.accesskey
-msgctxt "staff.patron.holds_overlay.place_hold.label staff.patron.holds_overlay.place_hold.accesskey"
+msgctxt ""
+"staff.patron.holds_overlay.place_hold.label "
+"staff.patron.holds_overlay.place_hold.accesskey"
 msgid "Place &Hold"
 msgstr "Tee &varaus"
 
@@ -12491,19 +12412,9 @@ msgstr "Tee &varaus"
 msgid "Show Cancelled Holds"
 msgstr "Näytä peruutetut varaukset"
 
-#: staff.patron.holds_overlay.show_cancelled_holds.accesskey
-msgctxt "staff.patron.holds_overlay.show_cancelled_holds.accesskey"
-msgid ""
-msgstr ""
-
 #: staff.patron.holds_overlay.show_uncancelled_holds.label
 msgid "Show Un-Cancelled Holds"
 msgstr "Näytä varaukset"
-
-#: staff.patron.holds_overlay.show_uncancelled_holds.accesskey
-msgctxt "staff.patron.holds_overlay.show_uncancelled_holds.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.patron.info_group.clone.label
 #: staff.patron.info_group.clone.accesskey
@@ -12529,11 +12440,6 @@ msgstr "Siirrä &toinen asiakas tähän asiakasryhmään."
 #: staff.patron.info_group.retrieve_p.accesskey
 msgid "Retrieve Selected &Patrons"
 msgstr "Hae valitut &asiakkaat"
-
-#: staff.patron.info_group.merge_patrons.accesskey
-msgctxt "staff.patron.info_group.merge_patrons.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.patron.info_group.merge_patrons.label
 msgid "Merge Selected Patrons"
@@ -12656,11 +12562,6 @@ msgstr "Verkkokirjasto-sisäänkirjautuminen:"
 msgctxt "staff.patron.summary_overlay.group_tab.retrieve_patron.label"
 msgid "Retrieve Patron"
 msgstr "Hae asiakas"
-
-#: staff.patron.summary_overlay.group_tab.retrieve_patron.accesskey
-msgctxt "staff.patron.summary_overlay.group_tab.retrieve_patron.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.patron.user_buckets.stub_not_implemented
 msgid "Just a stub, Not Yet Implemented"
@@ -13133,8 +13034,8 @@ msgid ""
 "The date of birth field is not formatted correctly.  We are expecting YYYY-"
 "MM-DD"
 msgstr ""
-"Syntymäpäiväkenttä ei ole oikeassa muodossa. Sen pitäisi olla muotoa VVVV-"
-"KK-PP"
+"Syntymäpäiväkenttä ei ole oikeassa muodossa. Sen pitäisi olla muotoa VVVV-KK-"
+"PP"
 
 #: staff.patron.ue.bad_username.label
 msgid "Username is invalid"
@@ -13303,8 +13204,8 @@ msgstr "Asiakas on alle 18-vuotias. Syötä asiakkaan huoltajan nimi."
 
 #: staff.patron.ue.bad_date.label
 msgid ""
-"The date provided is either in the future or invalid.  We are expecting "
-"YYYY-MM-DD"
+"The date provided is either in the future or invalid.  We are expecting YYYY-"
+"MM-DD"
 msgstr ""
 "Annettu päiväys on joko tulevaisuudessa tai ei kelpaa. Pitäisi olla muotoa "
 "VVVV-KK-PP"
@@ -13319,13 +13220,17 @@ msgstr ""
 
 #: staff.patron.items_overlay.sel_clip.label
 #: staff.patron.items_overlay.sel_clip.accesskey
-msgctxt "staff.patron.items_overlay.sel_clip.label staff.patron.items_overlay.sel_clip.accesskey"
+msgctxt ""
+"staff.patron.items_overlay.sel_clip.label "
+"staff.patron.items_overlay.sel_clip.accesskey"
 msgid "&Copy to Clipboard"
 msgstr "&Kopioi leikepöydälle"
 
 #: staff.patron.items_overlay.sel_bucket.label
 #: staff.patron.items_overlay.sel_bucket.accesskey
-msgctxt "staff.patron.items_overlay.sel_bucket.label staff.patron.items_overlay.sel_bucket.accesskey"
+msgctxt ""
+"staff.patron.items_overlay.sel_bucket.label "
+"staff.patron.items_overlay.sel_bucket.accesskey"
 msgid "&Add to Item Bucket"
 msgstr "&Lisää nidesiiloon"
 
@@ -13336,19 +13241,25 @@ msgstr "Näytä luettelossa"
 
 #: staff.patron.items_overlay.sel_copy_details.label
 #: staff.patron.items_overlay.sel_copy_details.accesskey
-msgctxt "staff.patron.items_overlay.sel_copy_details.label staff.patron.items_overlay.sel_copy_details.accesskey"
+msgctxt ""
+"staff.patron.items_overlay.sel_copy_details.label "
+"staff.patron.items_overlay.sel_copy_details.accesskey"
 msgid "Show &Item Details"
 msgstr "Näytä &niteen tiedot"
 
 #: staff.patron.items_overlay.sel_patron.label
 #: staff.patron.items_overlay.sel_patron.accesskey
-msgctxt "staff.patron.items_overlay.sel_patron.label staff.patron.items_overlay.sel_patron.accesskey"
+msgctxt ""
+"staff.patron.items_overlay.sel_patron.label "
+"staff.patron.items_overlay.sel_patron.accesskey"
 msgid "Show &Last Few Circulations"
 msgstr "Näytä &viimeisimmät lainat"
 
 #: staff.patron.items_overlay.cmd_triggered_events.label
 #: staff.patron.items_overlay.cmd_triggered_events.accesskey
-msgctxt "staff.patron.items_overlay.cmd_triggered_events.label staff.patron.items_overlay.cmd_triggered_events.accesskey"
+msgctxt ""
+"staff.patron.items_overlay.cmd_triggered_events.label "
+"staff.patron.items_overlay.cmd_triggered_events.accesskey"
 msgid "Show &Triggered Events"
 msgstr "Näytä &laukaistut tapahtumat"
 
@@ -13398,7 +13309,9 @@ msgstr "Tallenna sarakkeet"
 
 #: staff.patron.items_overlay.actions_for_selected_items.label
 #: staff.patron.items_overlay.actions_for_selected_items.accesskey
-msgctxt "staff.patron.items_overlay.actions_for_selected_items.label staff.patron.items_overlay.actions_for_selected_items.accesskey"
+msgctxt ""
+"staff.patron.items_overlay.actions_for_selected_items.label "
+"staff.patron.items_overlay.actions_for_selected_items.accesskey"
 msgid "Actions for &Selected Items"
 msgstr "Valittujen &niteiden toiminnot"
 
@@ -13414,13 +13327,16 @@ msgstr "Vie"
 
 #: staff.generic.list_actions.label
 #: staff.generic.list_actions.accesskey
-msgctxt "staff.generic.list_actions.label staff.generic.list_actions.accesskey"
+msgctxt ""
+"staff.generic.list_actions.label staff.generic.list_actions.accesskey"
 msgid "&List Actions"
 msgstr "&Luettelotoiminnot"
 
 #: staff.generic.list_actions.sel_clip.label
 #: staff.generic.list_actions.sel_clip.accesskey
-msgctxt "staff.generic.list_actions.sel_clip.label staff.generic.list_actions.sel_clip.accesskey"
+msgctxt ""
+"staff.generic.list_actions.sel_clip.label "
+"staff.generic.list_actions.sel_clip.accesskey"
 msgid "&Copy to Clipboard"
 msgstr "&Kopioi leikepöydälle"
 
@@ -13470,7 +13386,8 @@ msgstr "Graafinen käyttölittymä: Verkon aktiivisuusmittari"
 
 #: ui.network.progress_meter.desc
 msgid "This enables a network activity indicator in the bottom status bar."
-msgstr "Tämä ottaa käyttöön verkon aktiivisuusmittarin alareunan tilapalkissa."
+msgstr ""
+"Tämä ottaa käyttöön verkon aktiivisuusmittarin alareunan tilapalkissa."
 
 #: staff.circ.alternate_copy_summary.Alert.label
 msgctxt "staff.circ.alternate_copy_summary.Alert.label"
@@ -13490,11 +13407,6 @@ msgstr "Nidetunnus"
 #: staff.circ.alternate_copy_summary.Call_Number.label
 msgid "Item Call #"
 msgstr "Niteen hyllypaikka"
-
-#: staff.circ.alternate_copy_summary.Call_Number.accesskey
-msgctxt "staff.circ.alternate_copy_summary.Call_Number.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.circ.alternate_copy_summary.Cataloging_Info.label
 #: staff.circ.alternate_copy_summary.Cataloging_Info.accesskey
@@ -13587,11 +13499,6 @@ msgstr "Varauksen hyllysijainti"
 #: staff.circ.alternate_copy_summary.Holds_Transit.label
 msgid "Holds/Transit"
 msgstr "Varaukset/kuljetus"
-
-#: staff.circ.alternate_copy_summary.Holds_Transit.accesskey
-msgctxt "staff.circ.alternate_copy_summary.Holds_Transit.accesskey"
-msgid ""
-msgstr ""
 
 #: staff.circ.alternate_copy_summary.ISBN.label
 msgctxt "staff.circ.alternate_copy_summary.ISBN.label"
@@ -13737,7 +13644,9 @@ msgstr "&Päiväys:"
 
 #: staff.util.timestamp_dialog.cancel_btn.label
 #: staff.util.timestamp_dialog.cancel_btn.accesskey
-msgctxt "staff.util.timestamp_dialog.cancel_btn.label staff.util.timestamp_dialog.cancel_btn.accesskey"
+msgctxt ""
+"staff.util.timestamp_dialog.cancel_btn.label "
+"staff.util.timestamp_dialog.cancel_btn.accesskey"
 msgid "&Cancel"
 msgstr "&Peruuta"
 
@@ -13748,7 +13657,9 @@ msgstr "&Poista"
 
 #: staff.util.timestamp_dialog.apply_btn.label
 #: staff.util.timestamp_dialog.apply_btn.accesskey
-msgctxt "staff.util.timestamp_dialog.apply_btn.label staff.util.timestamp_dialog.apply_btn.accesskey"
+msgctxt ""
+"staff.util.timestamp_dialog.apply_btn.label "
+"staff.util.timestamp_dialog.apply_btn.accesskey"
 msgid "&Apply"
 msgstr "&Ota käyttöön"
 
@@ -13820,7 +13731,8 @@ msgstr "Käytä vaihtoehtoista tulostusstrategiaa (DOS LPT1 -tulostus)"
 
 #: staff.printing.advanced.custom_print
 msgid "Use alternate print strategy (Custom/External Print)"
-msgstr "Käytä vaihtoehtoista tulostusstrategiaa (Mukautettu/ulkoinen tulostus)"
+msgstr ""
+"Käytä vaihtoehtoista tulostusstrategiaa (Mukautettu/ulkoinen tulostus)"
 
 #: staff.printing.advanced.dos_print.warning.header
 msgid "Note on DOS LPT1 Print"
@@ -13837,15 +13749,15 @@ msgid ""
 "option is here for legacy purposes, and the Custom/External Print strategy "
 "is more flexible."
 msgstr ""
-"Tämä tulostusstrategia jättää huomiotta "
-"&quot;Normaaliasetukset&quot;-osiossa määritetyt tulostusasetukset. "
-"Windowsissa tulostin on kartoitettava LPT1-porttiin kohdassa Aloitusvalikko "
-"-&gt; Tulostimet ja faksit -&qt; käytettävä tulostin -&qt; oikea napsautus, "
-"Ominaisuudet -&gt; Portit. Lisäksi HTML-muotoilut, esimerkiksi erilaiset "
-"fonttien paksuudet ja koot menetetään, eivätkä JavaScriptiä hyödyntävät "
-"mallineet toimi.  Tiedot lähetetään tulostimelle muotoilemattomana tekstinä. "
-" Tämä toiminto on tarjolla yhteensopivuussyistä, ja mukautettu/ulkoinen "
-"tulostusstrategia on joustavampi valinta."
+"Tämä tulostusstrategia jättää huomiotta &quot;Normaaliasetukset&quot;-"
+"osiossa määritetyt tulostusasetukset. Windowsissa tulostin on kartoitettava "
+"LPT1-porttiin kohdassa Aloitusvalikko -&gt; Tulostimet ja faksit -&qt; "
+"käytettävä tulostin -&qt; oikea napsautus, Ominaisuudet -&gt; Portit. "
+"Lisäksi HTML-muotoilut, esimerkiksi erilaiset fonttien paksuudet ja koot "
+"menetetään, eivätkä JavaScriptiä hyödyntävät mallineet toimi.  Tiedot "
+"lähetetään tulostimelle muotoilemattomana tekstinä.  Tämä toiminto on "
+"tarjolla yhteensopivuussyistä, ja mukautettu/ulkoinen tulostusstrategia on "
+"joustavampi valinta."
 
 #: staff.printing.advanced.custom_print.warning.header
 msgid "Note on Custom/External Print"
@@ -13857,10 +13769,10 @@ msgid ""
 "Settings&quot; section. Advanced templates using Javascript may not work, "
 "even if the external tool can take the receipt.html file."
 msgstr ""
-"Tämä tulostusstrategia jättää huomiotta "
-"&quot;Normaaliasetukset&quot;-osiossa määritetyt tulostusasetukset. "
-"JavaScriptiä hyödyntävät mallineet eivät välttämättä toimi, vaikka ulkoinen "
-"työkalu voisi lukea receipt.html-tiedostoa."
+"Tämä tulostusstrategia jättää huomiotta &quot;Normaaliasetukset&quot;-"
+"osiossa määritetyt tulostusasetukset. JavaScriptiä hyödyntävät mallineet "
+"eivät välttämättä toimi, vaikka ulkoinen työkalu voisi lukea receipt.html-"
+"tiedostoa."
 
 #: staff.printing.advanced.html_templates.warning.header
 msgid "Also..."
@@ -14049,7 +13961,9 @@ msgstr "&Tee hankintapyyntö"
 
 #: staff.item.batch.hold.cancel_btn.label
 #: staff.item.batch.hold.cancel_btn.accesskey
-msgctxt "staff.item.batch.hold.cancel_btn.label staff.item.batch.hold.cancel_btn.accesskey"
+msgctxt ""
+"staff.item.batch.hold.cancel_btn.label "
+"staff.item.batch.hold.cancel_btn.accesskey"
 msgid "&Cancel"
 msgstr "&Peruuta"
 
@@ -14106,9 +14020,8 @@ msgstr ""
 
 #: staff.search_prefs.save.label
 #: staff.search_prefs.save.accesskey
-#, fuzzy
 msgid "&Save"
-msgstr "Tallenna"
+msgstr ""
 
 #: staff.search_prefs.saved_message
 msgid "Preferences saved"
@@ -14122,18 +14035,6 @@ msgstr ""
 #: staff.search_prefs.cleared_message
 msgid "Preferences cleared"
 msgstr ""
-
-#~ msgctxt "staff.serial.manage_items.actions.cmd_edit_items.access_key"
-#~ msgid "E"
-#~ msgstr "E"
-
-#~ msgctxt "staff.serial.manage_items.actions.cmd_delete_items.access_key"
-#~ msgid "D"
-#~ msgstr "D"
-
-#~ msgctxt "staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_batch_copy_edit.label"
-#~ msgid "Edit Item Attributes"
-#~ msgstr "Muokkaa niteen määritteitä"
 
 #~ msgctxt "ev.staff.patron.ue_xhtml.ev_user_editor.label"
 #~ msgid "Evergreen User Editor"
@@ -14343,9 +14244,6 @@ msgstr ""
 #~ msgid "Approve Pending Address"
 #~ msgstr "Hyväksy vireillä oleva osoite"
 
-#~ msgid "Approve pending address?  This operation will be be instantaneous."
-#~ msgstr "Hyväksytäänkö vireillä oleva osoite? Tämä toiminto tapahtuu välittömästi."
-
 #~ msgid "(XXX-YY-ZZZZ)"
 #~ msgstr "(XXX-YY-ZZZZ)"
 
@@ -14418,9 +14316,8 @@ msgstr ""
 #~ "user, click on the 'Save User' button."
 #~ msgstr ""
 #~ "Olet nyt valmis tallentamaan käyttäjän tietokantaan.<br/>Jos haluat näyttää "
-#~ "tai tulostaa yhteenvedon muutoksista, napsauta 'Näytä "
-#~ "yhteenveto'-linkkiä.<br/>Tallenna käyttäjä napsauttamalla 'Tallenna "
-#~ "käyttäjä'-painiketta."
+#~ "tai tulostaa yhteenvedon muutoksista, napsauta 'Näytä yhteenveto'-"
+#~ "linkkiä.<br/>Tallenna käyttäjä napsauttamalla 'Tallenna käyttäjä'-painiketta."
 
 #~ msgctxt "ev.staff.patron.ue_xhtml.back.label"
 #~ msgid "Back"

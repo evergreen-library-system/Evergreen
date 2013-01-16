@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-08-03 10:01-0400\n"
+"POT-Creation-Date: 2012-12-20 09:37-0400\n"
 "PO-Revision-Date: 2012-04-05 15:23+0000\n"
 "Last-Translator: Dennis Baudys <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-08-04 05:13+0000\n"
-"X-Generator: Launchpad (build 15742)\n"
+"X-Launchpad-Export-Date: 2012-12-21 04:58+0000\n"
+"X-Generator: Launchpad (build 16378)\n"
 
 #: lang.version
 msgid "remote v1"
@@ -2860,6 +2860,11 @@ msgstr ""
 msgid "Copy &Template Editor"
 msgstr ""
 
+#: staff.main.menu.admin.local_admin.item_attribute_editor.label
+#: staff.main.menu.admin.local_admin.item_attribute_editor.accesskey
+msgid "Item Attribute &Editor"
+msgstr ""
+
 #: staff.main.menu.admin.local_admin.patrons_due_refunds.label
 #: staff.main.menu.admin.local_admin.patrons_due_refunds.accesskey
 msgid "Patrons with &Negative Balances"
@@ -3248,6 +3253,10 @@ msgstr ""
 #: staff.main.menu.admin.client.hotkeys.clearworkstation.label
 msgctxt "staff.main.menu.admin.client.hotkeys.clearworkstation.label"
 msgid "Clear Workstation Default"
+msgstr ""
+
+#: staff.main.menu.admin.client.search_prefs.label
+msgid "Set Search Preferences"
 msgstr ""
 
 #: staff.main.menu.admin.client.toolbars
@@ -13817,6 +13826,70 @@ msgstr ""
 
 #: staff.item.batch.hold.failures_and_settings
 msgid "The settings above may be changed for retries and overrides."
+msgstr ""
+
+#: staff.search_prefs.search_lib.caption
+msgid "Default Search Library"
+msgstr ""
+
+#: staff.search_prefs.search_lib.description
+msgid ""
+"The default search library setting determines what library is searched from "
+"the advanced search screen and portal page by default. Manual selection of a "
+"search library will override it. One recommendation is to set the search "
+"library to the highest point you would normally want to search."
+msgstr ""
+
+#: staff.search_prefs.pref_lib.caption
+msgid "Preferred Library"
+msgstr ""
+
+#: staff.search_prefs.pref_lib.description
+msgid ""
+"The preferred library is used to show copies and URIs regardless of the "
+"library searched. One recommendation is to set this to your workstation "
+"library so that local copies show up first in search results."
+msgstr ""
+
+#: staff.search_prefs.adv_pane.caption
+msgid "Advanced Search Default Pane"
+msgstr ""
+
+#: staff.search_prefs.adv_pane.description
+msgid ""
+"Advanced search has secondary panes for Numeric and MARC Expert searching. "
+"You can change which one is loaded by default when opening a new catalog "
+"window here."
+msgstr ""
+
+#: staff.search_prefs.adv_pane.advanced
+msgid "Advanced (default)"
+msgstr ""
+
+#: staff.search_prefs.adv_pane.numeric
+msgid "Numeric"
+msgstr ""
+
+#: staff.search_prefs.adv_pane.expert
+msgid "MARC Expert"
+msgstr ""
+
+#: staff.search_prefs.save.label
+#: staff.search_prefs.save.accesskey
+msgid "&Save"
+msgstr ""
+
+#: staff.search_prefs.saved_message
+msgid "Preferences saved"
+msgstr ""
+
+#: staff.search_prefs.clear.label
+#: staff.search_prefs.clear.accesskey
+msgid "&Clear All"
+msgstr ""
+
+#: staff.search_prefs.cleared_message
+msgid "Preferences cleared"
 msgstr ""
 
 #~ msgctxt "staff.circ.offline_register.dob.label"
