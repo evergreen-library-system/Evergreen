@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-12-20 09:37-0400\n"
-"PO-Revision-Date: 2012-05-02 18:44+0000\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-07-14 00:27+0000\n"
 "Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-12-21 05:00+0000\n"
-"X-Generator: Launchpad (build 16378)\n"
+"X-Launchpad-Export-Date: 2011-07-15 04:53+0000\n"
+"X-Generator: Launchpad (build 13405)\n"
 
 #: common.exception
 msgid ""
@@ -1160,18 +1160,6 @@ msgstr "Booking Pull List"
 msgid "Booking Capture"
 msgstr "Booking Capture"
 
-#: menu.cmd_authority_manage.tab
-msgid "Manage Authorities"
-msgstr "Manage Authorities"
-
-#: menu.cmd_search_prefs.tab
-msgid "Search Preferences"
-msgstr ""
-
-#: menu.local_admin.barcode_completion.tab
-msgid "Barcode Completion"
-msgstr "Barcode Completion"
-
 #: menu.local_admin.circ_matrix_matchpoint.tab
 msgid "Circulation Policies"
 msgstr "Circulation Policies"
@@ -1179,10 +1167,6 @@ msgstr "Circulation Policies"
 #: menu.local_admin.hold_matrix_matchpoint.tab
 msgid "Hold Policies"
 msgstr "Hold Policies"
-
-#: menu.local_admin.item_attribute_editor.tab
-msgid "Admin Item Attribute Editor"
-msgstr ""
 
 #: menu.local_admin.work_log.tab
 msgid "Work Log"
@@ -1377,46 +1361,8 @@ msgstr "This session may have unsaved data. Logoff anyway?"
 msgid "This application may have unsaved data. Exit it anyway?"
 msgstr "This application may have unsaved data. Exit it anyway?"
 
-#: hotkeys.Default
-msgctxt "hotkeys.Default"
-msgid "Default"
-msgstr ""
-
-#: hotkeys.None
-msgid "No Hotkeys"
-msgstr "No Hotkeys"
-
-#: barcode_choice.join_barcodes
-msgid "%1$s / %2$s"
-msgstr "%1$s / %2$s"
-
-#: barcode_choice.actor
-msgid "%1$s : %2$s, %3$s from %4$s (%5$s)"
-msgstr "%1$s : %2$s, %3$s from %4$s (%5$s)"
-
-#: barcode_choice.asset
-msgid "%1$s : %2$s from %3$s (%4$s)"
-msgstr "%1$s : %2$s from %3$s (%4$s)"
-
-#: barcode_choice.none
-msgid "None of the above"
-msgstr "None of the above"
-
-#: barcode_choice.prompt
-msgid ""
-"After auto completion multiple barcodes may match your input. Please choose "
-"the barcode you intended below."
-msgstr ""
-"After auto completion multiple barcodes may match your input. Please choose "
-"the barcode you intended below."
-
-#: barcode_choice.errors_found
-msgid ""
-"In addition to the options below, one or more errors were encountered on "
-"items not shown."
-msgstr ""
-"In addition to the options below, one or more errors were encountered on "
-"items not shown."
+#~ msgid "Ok"
+#~ msgstr "Ok"
 
 #~ msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3."
 #~ msgstr "Warning: As of %1$s, this barcode (%2$s) was flagged %3."
@@ -1439,14 +1385,8 @@ msgstr ""
 #~ msgid "C"
 #~ msgstr "C"
 
-#: staff.main.button_bar.default
-msgctxt "staff.main.button_bar.default"
-msgid "Default"
-msgstr ""
-
-#: util.hide_elements.title
-msgid "Hide UI Elements"
-msgstr "Hide UI Elements"
+#~ msgid "Selection Lists"
+#~ msgstr "Selection Lists"
 
 #~ msgid "Title Search"
 #~ msgstr "Title Search"

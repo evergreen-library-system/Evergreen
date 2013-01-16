@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-08-03 10:01-0400\n"
-"PO-Revision-Date: 2013-01-14 11:02+0000\n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
+"PO-Revision-Date: 2010-04-16 11:27+0000\n"
 "Last-Translator: Cédric VALMARY (Tot en òc) <cvalmary@yahoo.fr>\n"
 "Language-Team: Occitan (post 1500) <oc@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-01-15 04:49+0000\n"
-"X-Generator: Launchpad (build 16420)\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:46+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
 
 #. =================================================================
 #. Some generic stuff
@@ -69,7 +69,7 @@ msgstr "Autors"
 #: common.callnumber
 msgctxt "common.callnumber"
 msgid "Call Number"
-msgstr "Numèro de còta"
+msgstr ""
 
 #: common.edition
 msgid "Edition"
@@ -89,7 +89,7 @@ msgstr "Mot clau"
 
 #: common.type
 msgid "Search Type"
-msgstr "Tipe de recèrca"
+msgstr ""
 
 #: common.isbn
 msgctxt "common.isbn"
@@ -117,11 +117,11 @@ msgstr "Se desconnectar"
 
 #: common.physical
 msgid "Physical Description"
-msgstr "Descripcion fisica"
+msgstr ""
 
 #: common.pubdate
 msgid "Publication Date"
-msgstr "Data de publicacion"
+msgstr ""
 
 #: common.publisher
 msgid "Publisher"
@@ -198,19 +198,19 @@ msgstr "Recèrca avançada"
 
 #: common.nowSearching
 msgid "Now searching "
-msgstr "Recèrca en cors "
+msgstr ""
 
 #: common.ofAtLeast
 msgid " of about "
-msgstr " d'environ "
+msgstr ""
 
 #: common.relevancy
 msgid "Match Score: "
-msgstr "Marca de correspondéncia : "
+msgstr ""
 
 #: common.tips
 msgid "Tips:"
-msgstr "Conselhs :"
+msgstr ""
 
 #: common.tips.tip1
 msgid ""
@@ -243,7 +243,7 @@ msgstr ""
 #: common.org.note
 msgctxt "common.org.note"
 msgid "Tip:"
-msgstr "Conselh :"
+msgstr ""
 
 #: common.org.notetext
 msgid ""
@@ -259,7 +259,7 @@ msgstr "Se connectar"
 #: opac.basic
 msgctxt "opac.basic"
 msgid "Basic Catalog (HTML only)"
-msgstr "Catalòg de basa (HTML solament)"
+msgstr ""
 
 #: common.password_criteria
 msgid ""
@@ -278,11 +278,11 @@ msgstr ""
 
 #: common.a2z.author
 msgid "Author: A to Z"
-msgstr "Autor : A a Z"
+msgstr ""
 
 #: common.z2a.author
 msgid "Author: Z to A"
-msgstr "Autor : Z a A"
+msgstr ""
 
 #: common.new2old.pubdate
 msgid "Date: Newest to Oldest"

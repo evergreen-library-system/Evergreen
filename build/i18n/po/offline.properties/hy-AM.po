@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-20 09:37-0400\n"
-"PO-Revision-Date: 2012-08-14 10:15+0000\n"
-"Last-Translator: TZ <tigran@flib.sci.am>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-05-24 12:10+0000\n"
+"Last-Translator: Serj Safarian <serjsafarian@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-12-21 05:00+0000\n"
-"X-Generator: Launchpad (build 16378)\n"
+"X-Launchpad-Export-Date: 2011-05-25 04:40+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
 "X-Accelerator-Marker: &\n"
 
 #: common.cancel.label
@@ -1155,18 +1155,6 @@ msgstr "Բացվող ցուցակի պատվեր"
 msgid "Booking Capture"
 msgstr "Բացվող ցուցակի որսում"
 
-#: menu.cmd_authority_manage.tab
-msgid "Manage Authorities"
-msgstr "Կառավարի Հեղինակավորները"
-
-#: menu.cmd_search_prefs.tab
-msgid "Search Preferences"
-msgstr ""
-
-#: menu.local_admin.barcode_completion.tab
-msgid "Barcode Completion"
-msgstr "Շտրիխ կոդի ավարտում"
-
 #: menu.local_admin.circ_matrix_matchpoint.tab
 msgid "Circulation Policies"
 msgstr "Սպասարկման կանոնակարգեր"
@@ -1174,10 +1162,6 @@ msgstr "Սպասարկման կանոնակարգեր"
 #: menu.local_admin.hold_matrix_matchpoint.tab
 msgid "Hold Policies"
 msgstr "Պահման կանոնակարգեր"
-
-#: menu.local_admin.item_attribute_editor.tab
-msgid "Admin Item Attribute Editor"
-msgstr ""
 
 #: menu.local_admin.work_log.tab
 msgid "Work Log"
@@ -1376,46 +1360,8 @@ msgid "This application may have unsaved data. Exit it anyway?"
 msgstr ""
 "Այս կիրառությունը կարող է ունենալ չհիշված տվյալ։ Դուրս գա՞լ այնուամենայնիվ։"
 
-#: hotkeys.Default
-msgctxt "hotkeys.Default"
-msgid "Default"
-msgstr ""
-
-#: hotkeys.None
-msgid "No Hotkeys"
-msgstr "Չկան տաք ստեղներ"
-
-#: barcode_choice.join_barcodes
-msgid "%1$s / %2$s"
-msgstr "%1$s / %2$s"
-
-#: barcode_choice.actor
-msgid "%1$s : %2$s, %3$s from %4$s (%5$s)"
-msgstr "%1$s : %2$s, %3$s սկսած %4$s (%5$s)"
-
-#: barcode_choice.asset
-msgid "%1$s : %2$s from %3$s (%4$s)"
-msgstr "%1$s : %2$s սկսած %3$s (%4$s)"
-
-#: barcode_choice.none
-msgid "None of the above"
-msgstr "Վերիններից ոչ մեկը"
-
-#: barcode_choice.prompt
-msgid ""
-"After auto completion multiple barcodes may match your input. Please choose "
-"the barcode you intended below."
-msgstr ""
-"Ավատրից հետո բազմակի շտրիխ կոդեր կհամընկնեն քո մուտքին։ ներքռից ընտրի քո "
-"համար նախատեսված շտրիխ կոդը։"
-
-#: barcode_choice.errors_found
-msgid ""
-"In addition to the options below, one or more errors were encountered on "
-"items not shown."
-msgstr ""
-"Որպես հավելում ստորև բերված ընտրություններին, չցուցադրված նյութերի համար "
-"առկա են մեկ կամ ավել սխալներ։"
+#~ msgid "Ok"
+#~ msgstr "Լավ"
 
 #~ msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3."
 #~ msgstr "Զգուշացում: Սրա համար %1$s, այս շտրիխ կոդը (%2$s) նշված է %3:"
@@ -1438,14 +1384,8 @@ msgstr ""
 #~ msgid "Record with ID %1$s marked for overlay."
 #~ msgstr "Այս ID-ով գրառումը %1$s նշված է վերադրման համար։"
 
-#: staff.main.button_bar.default
-msgctxt "staff.main.button_bar.default"
-msgid "Default"
-msgstr ""
-
-#: util.hide_elements.title
-msgid "Hide UI Elements"
-msgstr "Թաքցրու UI տարրերը"
+#~ msgid "Override"
+#~ msgstr "Չեղյալ անել"
 
 #~ msgid "C"
 #~ msgstr "C"
