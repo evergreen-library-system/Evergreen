@@ -1,3 +1,453 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 0250071ae75e33f283cbc4738c30e402b4e9bba6
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue Jan 15 11:30:41 2013 -0500
+
+    LP#1098377: protect against even more cstore segfaults
+    
+    Following up on the preceding patch, passing null
+    as the savepoint name to savepoint.release and
+    savepoint.rollback would also segfault cstore.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+12	0	Open-ILS/src/c-apps/oils_sql.c
+
+commit c08ce1f7294b9ff51e2edb23e1dad0063c02d6e3
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Jan 15 10:58:16 2013 -0500
+
+    Verify savepoint name is non-null
+    
+    Before we attempt to mangle the name, let's ensure that it's non-null.
+    Otherwise, segfaults ensue.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+6	0	Open-ILS/src/c-apps/oils_sql.c
+
+commit afd508b93c5f847073457dbbe2b80391368448e1
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Fri Jan 11 01:32:13 2013 -0500
+
+    Protect against overly long savepoint names
+    
+    Per http://postgresql.org/docs/9.1/static/sql-syntax-lexical.html#SQL-SYNTAX-IDENTIFIERS,
+    the maximum identifier length works out to being 63 bytes (+1 for the
+    null terminator), so to avoid potential memory pressure by a 10GB string
+    somehow being passed in as the savepoint name, malloc no more than 64
+    bytes and copy no more than 63 bytes from the incoming name to the
+    escaped name.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+16	2	Open-ILS/src/c-apps/oils_sql.c
+
+commit df3e58f69423142418baf9583fb82d6691d55235
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Jan 11 02:30:50 2013 -0500
+
+    LP#1098377: sanitize savepoint names
+    
+    When invoking open-ils.{cstore,pcrud,rstore}.savepoint.*, the
+    caller supplies a name for the savepoint.  However, the savepoint
+    names could be constructed so that the caller could execute
+    arbitrary SQL.  This patch sanitizes the name so that it contains
+    only alphanumeric and underscore characters.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+37	3	Open-ILS/src/c-apps/oils_sql.c
+
+commit 4bd4977ddd940b295da56b98ce6394010048bc01
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Jan 16 11:04:23 2013 -0500
+
+    2.3.3 translations : repair Finnish translator email
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+1	1	build/i18n/po/AutoFieldWidget.js/fi-FI.po
+1	1	build/i18n/po/Searcher.js/fi-FI.po
+1	1	build/i18n/po/TranslatorPopup.js/fi-FI.po
+1	1	build/i18n/po/User.js/fi-FI.po
+1	1	build/i18n/po/XULTermLoader.js/fi-FI.po
+1	1	build/i18n/po/admin.properties/fi-FI.po
+1	1	build/i18n/po/auth.properties/fi-FI.po
+1	1	build/i18n/po/authority.js/fi-FI.po
+1	1	build/i18n/po/capture.js/fi-FI.po
+1	1	build/i18n/po/cat.properties/fi-FI.po
+1	1	build/i18n/po/circ.properties/fi-FI.po
+1	1	build/i18n/po/common.properties/fi-FI.po
+1	1	build/i18n/po/conify.dtd/fi-FI.po
+1	1	build/i18n/po/conify.js/fi-FI.po
+1	1	build/i18n/po/db.seed/fi-FI.po
+1	1	build/i18n/po/fm_IDL.dtd/fi-FI.po
+1	1	build/i18n/po/ils_events.xml/fi-FI.po
+1	1	build/i18n/po/lang.dtd/fi-FI.po
+1	1	build/i18n/po/offline.properties/fi-FI.po
+1	1	build/i18n/po/opac.dtd/fi-FI.po
+1	1	build/i18n/po/opac.js/fi-FI.po
+1	1	build/i18n/po/patron.properties/fi-FI.po
+1	1	build/i18n/po/pickup_and_return.js/fi-FI.po
+1	1	build/i18n/po/pull_list.js/fi-FI.po
+1	1	build/i18n/po/register.js/fi-FI.po
+1	1	build/i18n/po/reports.dtd/fi-FI.po
+1	1	build/i18n/po/reports.js/fi-FI.po
+1	1	build/i18n/po/reservation.js/fi-FI.po
+1	1	build/i18n/po/selfcheck.js/fi-FI.po
+1	1	build/i18n/po/serial.properties/fi-FI.po
+
+commit 019667716aa68022427bf6ae43a67db2d8d343fa
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Jan 16 10:39:31 2013 -0500
+
+    2.3.3 translations : newpot
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+120	120	build/i18n/po/db.seed/db.seed.pot
+9	9	build/i18n/po/tpac/tpac.pot
+
+commit 41558633477f266cd4de68148e7c19674083e88f
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Jan 16 10:35:33 2013 -0500
+
+    2.3.3 translations : update profiles
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    
+    Conflicts:
+    	build/i18n/po/AutoFieldWidget.js/fi-FI.po
+    	build/i18n/po/Searcher.js/fi-FI.po
+    	build/i18n/po/TranslatorPopup.js/fi-FI.po
+    	build/i18n/po/User.js/fi-FI.po
+    	build/i18n/po/XULTermLoader.js/fi-FI.po
+    	build/i18n/po/admin.properties/fi-FI.po
+    	build/i18n/po/auth.properties/fi-FI.po
+    	build/i18n/po/authority.js/fi-FI.po
+    	build/i18n/po/capture.js/fi-FI.po
+    	build/i18n/po/cat.properties/fi-FI.po
+    	build/i18n/po/circ.properties/fi-FI.po
+    	build/i18n/po/common.properties/fi-FI.po
+    	build/i18n/po/conify.dtd/fi-FI.po
+    	build/i18n/po/conify.js/fi-FI.po
+    	build/i18n/po/db.seed/fi-FI.po
+    	build/i18n/po/fm_IDL.dtd/fi-FI.po
+    	build/i18n/po/ils_events.xml/fi-FI.po
+    	build/i18n/po/lang.dtd/fi-FI.po
+    	build/i18n/po/multiclass_search_help.html/fi-FI.po
+    	build/i18n/po/offline.properties/fi-FI.po
+    	build/i18n/po/opac.dtd/fi-FI.po
+    	build/i18n/po/opac.js/fi-FI.po
+    	build/i18n/po/patron.properties/fi-FI.po
+    	build/i18n/po/pickup_and_return.js/fi-FI.po
+    	build/i18n/po/pull_list.js/fi-FI.po
+    	build/i18n/po/register.js/fi-FI.po
+    	build/i18n/po/reports.dtd/fi-FI.po
+    	build/i18n/po/reports.js/fi-FI.po
+    	build/i18n/po/reservation.js/fi-FI.po
+    	build/i18n/po/selfcheck.js/fi-FI.po
+    	build/i18n/po/serial.properties/fi-FI.po
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+30	0	build/i18n/po/AutoFieldWidget.js/fi-FI.po
+174	0	build/i18n/po/Searcher.js/fi-FI.po
+38	0	build/i18n/po/TranslatorPopup.js/fi-FI.po
+18	0	build/i18n/po/User.js/fi-FI.po
+38	0	build/i18n/po/XULTermLoader.js/fi-FI.po
+486	0	build/i18n/po/admin.properties/fi-FI.po
+82	0	build/i18n/po/auth.properties/fi-FI.po
+98	0	build/i18n/po/authority.js/fi-FI.po
+136	0	build/i18n/po/capture.js/fi-FI.po
+2411	0	build/i18n/po/cat.properties/fi-FI.po
+17	5	build/i18n/po/circ.properties/cs-CZ.po
+15	3	build/i18n/po/circ.properties/de-DE.po
+15	3	build/i18n/po/circ.properties/en-CA.po
+15	3	build/i18n/po/circ.properties/en-GB.po
+17	5	build/i18n/po/circ.properties/es-ES.po
+2041	0	build/i18n/po/circ.properties/fi-FI.po
+16	4	build/i18n/po/circ.properties/fr-CA.po
+16	4	build/i18n/po/circ.properties/hy-AM.po
+15	3	build/i18n/po/circ.properties/oc-FR.po
+17	5	build/i18n/po/circ.properties/pt-BR.po
+15	3	build/i18n/po/circ.properties/ru-RU.po
+203	63	build/i18n/po/circ.properties/tr-TR.po
+9	5	build/i18n/po/common.properties/cs-CZ.po
+7	3	build/i18n/po/common.properties/de-DE.po
+7	3	build/i18n/po/common.properties/en-CA.po
+9	5	build/i18n/po/common.properties/en-GB.po
+9	5	build/i18n/po/common.properties/es-ES.po
+844	0	build/i18n/po/common.properties/fi-FI.po
+7	3	build/i18n/po/common.properties/fr-CA.po
+8	4	build/i18n/po/common.properties/hy-AM.po
+7	3	build/i18n/po/common.properties/oc-FR.po
+7	3	build/i18n/po/common.properties/pt-BR.po
+7	3	build/i18n/po/common.properties/ru-RU.po
+502	0	build/i18n/po/conify.dtd/fi-FI.po
+395	0	build/i18n/po/conify.js/fi-FI.po
+791	718	build/i18n/po/db.seed/cs-CZ.po
+783	710	build/i18n/po/db.seed/de-DE.po
+719	719	build/i18n/po/db.seed/en-CA.po
+719	719	build/i18n/po/db.seed/en-GB.po
+783	710	build/i18n/po/db.seed/es-ES.po
+4319	0	build/i18n/po/db.seed/fi-FI.po
+785	706	build/i18n/po/db.seed/fr-CA.po
+795	716	build/i18n/po/db.seed/hy-AM.po
+783	710	build/i18n/po/db.seed/oc-FR.po
+791	713	build/i18n/po/db.seed/pt-BR.po
+784	706	build/i18n/po/db.seed/ru-RU.po
+783	710	build/i18n/po/db.seed/tr-TR.po
+1378	1374	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+1743	1578	build/i18n/po/fm_IDL.dtd/de-DE.po
+1375	1371	build/i18n/po/fm_IDL.dtd/en-CA.po
+1752	1587	build/i18n/po/fm_IDL.dtd/en-GB.po
+1743	1578	build/i18n/po/fm_IDL.dtd/es-ES.po
+7681	0	build/i18n/po/fm_IDL.dtd/fi-FI.po
+1736	1575	build/i18n/po/fm_IDL.dtd/fr-CA.po
+1751	1603	build/i18n/po/fm_IDL.dtd/hy-AM.po
+1375	1371	build/i18n/po/fm_IDL.dtd/oc-FR.po
+1752	1587	build/i18n/po/fm_IDL.dtd/pt-BR.po
+1752	1587	build/i18n/po/fm_IDL.dtd/ru-RU.po
+1375	1371	build/i18n/po/fm_IDL.dtd/tr-TR.po
+5	5	build/i18n/po/ils_events.xml/cs-CZ.po
+1254	0	build/i18n/po/ils_events.xml/fi-FI.po
+76	3	build/i18n/po/lang.dtd/ar-AR.po
+108	23	build/i18n/po/lang.dtd/cs-CZ.po
+76	3	build/i18n/po/lang.dtd/de-DE.po
+76	3	build/i18n/po/lang.dtd/en-CA.po
+76	3	build/i18n/po/lang.dtd/en-GB.po
+81	4	build/i18n/po/lang.dtd/es-ES.po
+14428	0	build/i18n/po/lang.dtd/fi-FI.po
+77	4	build/i18n/po/lang.dtd/fr-CA.po
+78	5	build/i18n/po/lang.dtd/hy-AM.po
+76	3	build/i18n/po/lang.dtd/oc-FR.po
+76	3	build/i18n/po/lang.dtd/pt-BR.po
+76	3	build/i18n/po/lang.dtd/ru-RU.po
+79	3	build/i18n/po/lang.dtd/tr-TR.po
+134	0	build/i18n/po/multiclass_search_help.html/fi-FI.po
+18	4	build/i18n/po/offline.properties/cs-CZ.po
+17	3	build/i18n/po/offline.properties/de-DE.po
+21	7	build/i18n/po/offline.properties/en-CA.po
+18	4	build/i18n/po/offline.properties/en-GB.po
+17	3	build/i18n/po/offline.properties/es-ES.po
+1537	0	build/i18n/po/offline.properties/fi-FI.po
+17	3	build/i18n/po/offline.properties/fr-CA.po
+19	5	build/i18n/po/offline.properties/hy-AM.po
+18	4	build/i18n/po/offline.properties/oc-FR.po
+17	3	build/i18n/po/offline.properties/pt-BR.po
+17	3	build/i18n/po/offline.properties/ru-RU.po
+17	3	build/i18n/po/offline.properties/tr-TR.po
+5	5	build/i18n/po/opac.dtd/cs-CZ.po
+2723	0	build/i18n/po/opac.dtd/fi-FI.po
+16	16	build/i18n/po/opac.dtd/oc-FR.po
+190	0	build/i18n/po/opac.js/fi-FI.po
+10	4	build/i18n/po/patron.properties/cs-CZ.po
+7	3	build/i18n/po/patron.properties/de-DE.po
+7	3	build/i18n/po/patron.properties/en-CA.po
+7	3	build/i18n/po/patron.properties/en-GB.po
+7	3	build/i18n/po/patron.properties/es-ES.po
+1993	0	build/i18n/po/patron.properties/fi-FI.po
+7	3	build/i18n/po/patron.properties/fr-CA.po
+8	4	build/i18n/po/patron.properties/hy-AM.po
+7	3	build/i18n/po/patron.properties/oc-FR.po
+7	3	build/i18n/po/patron.properties/pt-BR.po
+7	3	build/i18n/po/patron.properties/ru-RU.po
+7	3	build/i18n/po/patron.properties/tr-TR.po
+156	0	build/i18n/po/pickup_and_return.js/fi-FI.po
+90	0	build/i18n/po/pull_list.js/fi-FI.po
+180	0	build/i18n/po/register.js/fi-FI.po
+19	15	build/i18n/po/register.js/fr-CA.po
+819	0	build/i18n/po/reports.dtd/fi-FI.po
+434	0	build/i18n/po/reports.js/fi-FI.po
+287	0	build/i18n/po/reservation.js/fi-FI.po
+200	0	build/i18n/po/selfcheck.js/fi-FI.po
+690	0	build/i18n/po/serial.properties/fi-FI.po
+ create mode 100644 build/i18n/po/AutoFieldWidget.js/fi-FI.po
+ create mode 100644 build/i18n/po/Searcher.js/fi-FI.po
+ create mode 100644 build/i18n/po/TranslatorPopup.js/fi-FI.po
+ create mode 100644 build/i18n/po/User.js/fi-FI.po
+ create mode 100644 build/i18n/po/XULTermLoader.js/fi-FI.po
+ create mode 100644 build/i18n/po/admin.properties/fi-FI.po
+ create mode 100644 build/i18n/po/auth.properties/fi-FI.po
+ create mode 100644 build/i18n/po/authority.js/fi-FI.po
+ create mode 100644 build/i18n/po/capture.js/fi-FI.po
+ create mode 100644 build/i18n/po/cat.properties/fi-FI.po
+ create mode 100644 build/i18n/po/circ.properties/fi-FI.po
+ create mode 100644 build/i18n/po/common.properties/fi-FI.po
+ create mode 100644 build/i18n/po/conify.dtd/fi-FI.po
+ create mode 100644 build/i18n/po/conify.js/fi-FI.po
+ create mode 100644 build/i18n/po/db.seed/fi-FI.po
+ create mode 100644 build/i18n/po/fm_IDL.dtd/fi-FI.po
+ create mode 100644 build/i18n/po/ils_events.xml/fi-FI.po
+ create mode 100644 build/i18n/po/lang.dtd/fi-FI.po
+ create mode 100644 build/i18n/po/multiclass_search_help.html/fi-FI.po
+ create mode 100644 build/i18n/po/offline.properties/fi-FI.po
+ create mode 100644 build/i18n/po/opac.dtd/fi-FI.po
+ create mode 100644 build/i18n/po/opac.js/fi-FI.po
+ create mode 100644 build/i18n/po/patron.properties/fi-FI.po
+ create mode 100644 build/i18n/po/pickup_and_return.js/fi-FI.po
+ create mode 100644 build/i18n/po/pull_list.js/fi-FI.po
+ create mode 100644 build/i18n/po/register.js/fi-FI.po
+ create mode 100644 build/i18n/po/reports.dtd/fi-FI.po
+ create mode 100644 build/i18n/po/reports.js/fi-FI.po
+ create mode 100644 build/i18n/po/reservation.js/fi-FI.po
+ create mode 100644 build/i18n/po/selfcheck.js/fi-FI.po
+ create mode 100644 build/i18n/po/serial.properties/fi-FI.po
+
+commit da96028092880cd2f1d5a03b2de1239412adbccd
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Fri Nov 2 09:53:30 2012 -0400
+
+    Fix backdate near DST changes
+    
+    When the due date and the backdate date are on opposite sides of a DST
+    boundary we were getting an hour off on the checkin time (using the
+    original due date's time).
+    
+    This commit changes it so that instead we just set the hour and minute
+    values on the backdate date to the due date's versions, leaving the time
+    zone alone.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+3	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit 8b8f0a0e0a51a5321729cc1a58578099b33401fb
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Fri Jan 11 08:49:11 2013 -0500
+
+    Fix a data destruction bug when authorities are updated.
+    
+    Modify the two-argument form of vandelay.merge_record_xml to return
+    the target_marc when the add_rule, preserve_rule, replace_rule and
+    strip_rule are all empty.
+    
+    This method is used by authority.propagate_changes and would replace
+    the bibliographic record's marc with the overlay template when the
+    above would happen. By returning the biblographic record entry's own
+    marc in that case, we prevent data destruction.
+    
+    Additionally, protect bib and authority template overlay functions
+    in the same manner.
+    
+    Commit includes an upgrade script for this change as well as
+    for the previous commit's authority.generate_overlay_template fix.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+12	3	Open-ILS/src/sql/Pg/012.schema.vandelay.sql
+275	0	Open-ILS/src/sql/Pg/upgrade/0750.function.authority.generate_overlay_template.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0750.function.authority.generate_overlay_template.sql
+
+commit 8b988e9da676b2b65b20c503197112a8ccef8d7a
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Jan 10 16:35:44 2013 -0500
+
+    Only consider main entry headings for bib overlay
+    
+    Restrict the authority fields we will pull overlay data from to those
+    that do not subordinate themselves to other authority fields.  That
+    is, skip see-from/see-also/etc for bib overlay.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	1	Open-ILS/src/sql/Pg/011.schema.authority.sql
+
+commit c208c4c555063f40f21d64caa1bbe0fc9c1cbf79
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Wed Jan 9 16:20:39 2013 -0500
+
+    LP #1075167: Serials: Avoid infinite loop in holdings summarization
+    
+    When receiving items with unworkable combinations of holdings and
+    patterns, the holdings summarization code can get stuck in an infinite
+    loop.  This solution prevents that, sparing the open-ils.serial
+    process and server resources, although it doesn't help the user out.
+    
+    It will take further examination of the problem and reëvalution of how
+    we deal with problems reported by OpenILS::Utils::MFHD to help the
+    user avoid or resolve these situations.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+3	0	Open-ILS/src/perlmods/lib/OpenILS/Utils/MFHD.pm
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Utils/MFHD/Caption.pm
+
+commit c1054b299e19f2101996cb707f8408379beb1472
+Author: Ben Shum <bshum@biblio.org>
+Date:   Thu Dec 20 14:32:46 2012 -0500
+
+    LP 1088561 - part 2, fix all update forms to not show saved passwords
+    
+    Bug re-opened due to locating a few other locations in my account area
+    where the password was being saved by browsers like Firefox instead of
+    requiring users to key in current password to make changes.
+    
+    This patch covers those two additional cases and changes the quoting
+    around the first case to be more consistent with the rest of the line.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Simon Mai <hieu.mai@mnsu.edu>
+
+1	1	Open-ILS/src/templates/opac/myopac/update_email.tt2
+1	1	Open-ILS/src/templates/opac/myopac/update_password.tt2
+1	1	Open-ILS/src/templates/opac/myopac/update_username.tt2
+
+commit 4665317984a3492efa992f9dba9fe287530c0c48
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Fri Dec 21 21:15:49 2012 -0500
+
+    Facets should not be sticky when users click "Search"
+    
+    We were using a hidden form variable to track which facets were in use,
+    at the same time as relying on the GET params to actually display the
+    facets, and munging the links on the remaining facets to properly
+    add/subtract facets.
+    
+    The result of the hidden form variable was that:
+    
+    1) clicking the Search button would unexpectedly result in the facet
+    applying to the new search (wat)
+    
+    2) applying two facets at once and then searching again would result
+    in the facet vars being treated as a raw array.
+    
+    Thanks to Dan Pearl for inspiring this patch with his fix for the latter
+    problem, and Kathy Lussier's recognition of the basic problem.
+    
+    Closes LP# 1092946 and 1091659.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+0	3	Open-ILS/src/templates/opac/results.tt2
+
+commit fae6c4cee9fd197da492060692a370d56ca74954
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Thu Dec 20 16:50:44 2012 -0500
+
+    Master didn't get these two rel_2_2 series upgrade scripts
+    
+    [nor did rel_2_2 itself!]
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+519	0	Open-ILS/src/sql/Pg/version-upgrade/2.2.2-2.2.3-upgrade-db.sql
+33	0	Open-ILS/src/sql/Pg/version-upgrade/2.2.3-2.2.4-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.2.2-2.2.3-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.2.3-2.2.4-upgrade-db.sql
