@@ -295,7 +295,7 @@ msgstr ""
 msgid "Adjacency"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/advanced.tt2:1 ../../Open-ILS/src/templates/opac/advanced.tt2:19 ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:10 ../../Open-ILS/src/templates/opac/results.tt2:34
+#: ../../Open-ILS/src/templates/opac/advanced.tt2:1 ../../Open-ILS/src/templates/opac/advanced.tt2:19 ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:10 ../../Open-ILS/src/templates/opac/results.tt2:31
 msgid "Advanced Search"
 msgstr ""
 
@@ -347,7 +347,7 @@ msgstr ""
 msgid "Annotator"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/results.tt2:31
+#: ../../Open-ILS/src/templates/opac/results.tt2:28
 msgid "Another Search"
 msgstr ""
 
@@ -1325,7 +1325,7 @@ msgstr ""
 msgid "February"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/result/facets.tt2:69
+#: ../../Open-ILS/src/templates/opac/parts/result/facets.tt2:70
 msgid "Fewer"
 msgstr ""
 
@@ -1805,7 +1805,7 @@ msgstr ""
 msgid "Limit to Available"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/results.tt2:64
+#: ../../Open-ILS/src/templates/opac/results.tt2:61
 msgid "Limit to available items"
 msgstr ""
 
@@ -1963,7 +1963,7 @@ msgstr ""
 msgid "Monitor"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/result/facets.tt2:71
+#: ../../Open-ILS/src/templates/opac/parts/result/facets.tt2:72
 msgid "More"
 msgstr ""
 
@@ -2883,11 +2883,11 @@ msgstr ""
 msgid "Shelving location"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/results.tt2:53
+#: ../../Open-ILS/src/templates/opac/results.tt2:50
 msgid "Show Fewer Details"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/results.tt2:55
+#: ../../Open-ILS/src/templates/opac/results.tt2:52
 msgid "Show More Details"
 msgstr ""
 
@@ -2964,7 +2964,7 @@ msgstr ""
 msgid "Sort Results"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/results.tt2:46
+#: ../../Open-ILS/src/templates/opac/results.tt2:43
 msgid "Sort by"
 msgstr ""
 
@@ -3404,7 +3404,7 @@ msgstr ""
 msgid "View All"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/results.tt2:39 ../../Open-ILS/src/templates/opac/results.tt2:41
+#: ../../Open-ILS/src/templates/opac/results.tt2:36 ../../Open-ILS/src/templates/opac/results.tt2:38
 msgid "View My List"
 msgstr ""
 
