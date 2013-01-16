@@ -3,23 +3,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-29 08:58+0300\n"
-"PO-Revision-Date: 2012-09-12 16:22+0300\n"
-"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
+"PO-Revision-Date: 2012-12-20 15:09+0000\n"
+"Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
-"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Translate Toolkit 1.9.0\n"
-"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2012-12-21 05:01+0000\n"
+"X-Generator: Launchpad (build 16378)\n"
 "X-Project-Style: mozilla\n"
+"X-Accelerator-Marker: &\n"
+"Language: fi\n"
 
 #. Common Entities
 #: reports.common.logged_in_as
 msgid "You are logged in as "
-msgstr "Olet kirjautunut sisään tunnuksella"
+msgstr "Olet kirjautunut sisään tunnuksella "
 
 #: reports.common.loading
 msgid "Loading..."
@@ -51,7 +51,7 @@ msgstr "Hallinnoi kansiota"
 
 #: reports.oils_rpt.created_by
 msgid "created by "
-msgstr "luonut"
+msgstr "luonut "
 
 #: reports.oils_rpt.create_new_sub_folder
 msgctxt "reports.oils_rpt.create_new_sub_folder"
@@ -60,7 +60,7 @@ msgstr "Luo uusi alikansio"
 
 #: reports.oils_rpt.folder_type
 msgid "Folder type: "
-msgstr "Kansiotyyppi:"
+msgstr "Kansiotyyppi: "
 
 #: reports.oils_rpt.folder_name
 msgctxt "reports.oils_rpt.folder_name"
@@ -105,19 +105,19 @@ msgstr "Kloonauspohja"
 
 #: reports.oils_rpt_builder.template_name
 msgid "Template Name: "
-msgstr "Raporttipohjan nimi:"
+msgstr "Raporttipohjan nimi: "
 
 #: reports.oils_rpt_builder.template_description
 msgid "Template Description: "
-msgstr "Raporttipohjan kuvaus:"
+msgstr "Raporttipohjan kuvaus: "
 
 #: reports.oils_rpt_builder.template_type
 msgid "Template Type: "
-msgstr "Raporttipohjan tyyppi:"
+msgstr "Raporttipohjan tyyppi: "
 
 #: reports.oils_rpt_builder.save_this_template
 msgid "Save this Template: "
-msgstr "Tallenna raporttipohja"
+msgstr "Tallenna raporttipohja "
 
 #: reports.oils_rpt_builder.filtering_note
 msgid ""
@@ -158,7 +158,7 @@ msgstr "Raportin yhteenkokouman suodattimet"
 
 #: reports.oils_rpt_builder.hint
 msgid "Hint: "
-msgstr "Vinkki:"
+msgstr "Vinkki: "
 
 #: reports.oils_rpt_builder.hint_item_details
 msgid "Double-click on an item to see the item details."
@@ -199,11 +199,11 @@ msgstr "Valitse, mitä suodatinta käytetään tähän kenttään:"
 
 #: reports.oils_rpt_builder.choose_a_transform
 msgid "Choose a Transform: "
-msgstr "Valitse muodonmuutos:"
+msgstr "Valitse muodonmuutos: "
 
 #: reports.oils_rpt_builder.choose_a_filter
 msgid "Choose a Filter: "
-msgstr "Valitse suodatin:"
+msgstr "Valitse suodatin: "
 
 #: reports.oils_rpt_builder.create_filter
 msgid "Create Filter"
@@ -219,11 +219,11 @@ msgstr "Valitse, miten sarakkeet lajitellaan"
 
 #: reports.oils_rpt_builder.choose_column
 msgid "Choose a column: "
-msgstr "Valitse sarake:"
+msgstr "Valitse sarake: "
 
 #: reports.oils_rpt_builder.choose_sorting_direction
 msgid "Choose the direction the sorting should occur: "
-msgstr "Valitse lajittelun suunta:"
+msgstr "Valitse lajittelun suunta: "
 
 #: reports.oils_rpt_builder.ascending
 msgid "Ascending"
@@ -298,12 +298,12 @@ msgstr "Pivot-tietojen sarake:"
 
 #: reports.oils_rpt_editor.store_report_definition
 msgid "Choose a folder to store this report definition: "
-msgstr "Valitse kansio, johon raportin määritys tallennetaan:"
+msgstr "Valitse kansio, johon raportin määritys tallennetaan: "
 
 #: reports.oils_rpt_editor.selected_folder
 msgctxt "reports.oils_rpt_editor.selected_folder"
 msgid "Selected Folder: "
-msgstr "Valittu kansio:"
+msgstr "Valittu kansio: "
 
 #: reports.oils_rpt_editor.output_options
 msgid "Output Options"
@@ -331,11 +331,11 @@ msgstr "Viivakaavio"
 
 #: reports.oils_rpt_editor.recurring_report
 msgid "Recurring Report: "
-msgstr "Jaksollinen raportti:"
+msgstr "Jaksollinen raportti: "
 
 #: reports.oils_rpt_editor.recurring_interval
 msgid "Recurrence Interval: "
-msgstr "Jakson väli:"
+msgstr "Jakson väli: "
 
 #: reports.oils_rpt_editor.days
 msgctxt "reports.oils_rpt_editor.days"
@@ -525,7 +525,7 @@ msgstr "Lähetä"
 
 #: reports.oils_rpt_folder_window.limit_output
 msgid "Limit output to "
-msgstr "Rajoita tuloste:"
+msgstr "Rajoita tuloste: "
 
 #: reports.oils_rpt_folder_window.all
 msgid "All"
@@ -550,7 +550,7 @@ msgstr "Valmistuneet kohteet"
 #: reports.oils_rpt_folder_window.selected_folder
 msgctxt "reports.oils_rpt_folder_window.selected_folder"
 msgid "Selected Folder: "
-msgstr "Valittu kansio:"
+msgstr "Valittu kansio: "
 
 #: reports.oils_rpt_folder_window.select_folder
 msgid "Select Folder"

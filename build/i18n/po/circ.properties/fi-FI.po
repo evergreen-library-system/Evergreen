@@ -3,18 +3,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-29 09:00+0300\n"
-"PO-Revision-Date: 2012-10-04 14:03+0300\n"
-"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"POT-Creation-Date: 2012-12-20 09:37-0400\n"
+"PO-Revision-Date: 2012-12-20 15:20+0000\n"
+"Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
-"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Translate Toolkit 1.9.0\n"
-"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2012-12-21 04:54+0000\n"
+"X-Generator: Launchpad (build 16378)\n"
 "X-Project-Style: mozilla\n"
+"X-Accelerator-Marker: &\n"
+"Language: fi\n"
 
 #: staff.circ.alert
 msgid "Alert"
@@ -126,11 +126,11 @@ msgstr "LainaID:n %$s merkintä menneelle päiväykselle %2$s epäonnistui"
 
 #: staff.circ.backdate.circ_ids.prompt
 msgid "Number of circulations selected: %1$s "
-msgstr "Valittujen lainojen lukumäärä: %1$s"
+msgstr "Valittujen lainojen lukumäärä: %1$s "
 
 #: staff.circ.backdate.circ_ids.failed
 msgid "Number of circulations not backdated: %1$s "
-msgstr "Menneelle päiväykselle merkitsemättömien lainojen lukumäärä: %1$s"
+msgstr "Menneelle päiväykselle merkitsemättömien lainojen lukumäärä: %1$s "
 
 #: staff.circ.checkout.sorting.exception
 msgid "error in sorting non-cataloged items: %1$s"
@@ -188,7 +188,8 @@ msgstr "Ei"
 
 #: staff.circ.checkout.cmd_checkout_submit.non_numeric.msg
 msgid "Error with non-cataloged checkout.  %1$s is not a valid number."
-msgstr "Virhe ei-luetteloidun niteen lainassa.  %1$s ei ole kelvollinen numero."
+msgstr ""
+"Virhe ei-luetteloidun niteen lainassa.  %1$s ei ole kelvollinen numero."
 
 #: staff.circ.checkout.cmd_checkout_submit.non_numeric.title
 msgctxt "staff.circ.checkout.cmd_checkout_submit.non_numeric.title"
@@ -334,6 +335,18 @@ msgctxt "staff.circ.checkout.barcode"
 msgid "Barcode:"
 msgstr "Nidetunnus:"
 
+#: staff.circ.checkout.failed_to_patron_other
+msgid "This copy was checked out by another patron on %1$s."
+msgstr ""
+
+#: staff.circ.checkout.failed_to_patron_renew
+msgid "This copy is already checked out to this patron."
+msgstr ""
+
+#: staff.circ.checkout.failed_to_patron_today
+msgid "This copy was already checked out to this patron today."
+msgstr ""
+
 #: staff.circ.circ_brief.staff_out_id
 msgid "Check Out Staff ID = %1$s"
 msgstr "Lainaa henkilökuntatunnuksella = %1$s"
@@ -446,7 +459,8 @@ msgstr "%3$s on prosentti? %4$s"
 
 #. # From asset::copy_location: 1 - Can Circulate?  2 - Is Holdable?  3 - Hold Capture Requires Verification?  4 - Is OPAC Visible?
 #: staff.circ.copy_details.location_tooltip
-msgid "Circulate? %1$s  Holdable? %2$s  Hold Verify? %3$s  OPAC Visible? %4$s"
+msgid ""
+"Circulate? %1$s  Holdable? %2$s  Hold Verify? %3$s  OPAC Visible? %4$s"
 msgstr ""
 "Lainattavissa? %1$s  Varattavissa? %2$s  Varausvahvistus? %3$s  Näkyy "
 "verkkokirjastossa? %4$s"
@@ -636,7 +650,8 @@ msgstr "Rajoita valintaa"
 msgid ""
 "Please mark a library as the destination from within holdings maintenance "
 "and then try this again."
-msgstr "Merkitse kirjasto kohteeksi kokoelmien hallinnasta ja yritä uudelleen."
+msgstr ""
+"Merkitse kirjasto kohteeksi kokoelmien hallinnasta ja yritä uudelleen."
 
 #: staff.circ.copy_status.transfer_volume.confirm
 msgid "Transfer volumes %1$s to library %2$s on the following record?"
@@ -813,7 +828,7 @@ msgstr "Ei-luetteloitu"
 
 #: staff.circ.in_house_use.items_dump
 msgid "items = "
-msgstr "niteet ="
+msgstr "niteet = "
 
 #: staff.circ.in_house_use.confirm_multiple
 msgid "Are you sure you want to mark %1$s as having been used %2$s times?"
@@ -839,9 +854,9 @@ msgid ""
 "In House Use Failed.  If you wish to use the offline interface, in the top "
 "menubar select Circulation -> Offline Interface"
 msgstr ""
-"Kirjaston sisäinen käyttö epäonnistui. Jos haluat käyttää "
-"offline-käyttöliittymää, valitse yllä olevasta valikkopalkista Lainaus -> "
-"Offline-käyttöliittymä"
+"Kirjaston sisäinen käyttö epäonnistui. Jos haluat käyttää offline-"
+"käyttöliittymää, valitse yllä olevasta valikkopalkista Lainaus -> Offline-"
+"käyttöliittymä"
 
 #: staff.circ.in_house_use.failed
 msgid "In House Use Failed"
@@ -1163,7 +1178,7 @@ msgstr "Luomispäivä"
 
 #: staff.circ.utils.edit_date
 msgid "Date Last Edited "
-msgstr "Muokattu viimeksi"
+msgstr "Muokattu viimeksi "
 
 #: staff.circ.utils.bre.create_date
 msgid "Date Record Created"
@@ -1171,7 +1186,7 @@ msgstr "Tietue luotu"
 
 #: staff.circ.utils.bre.edit_date
 msgid "Date Record Last Edited "
-msgstr "Tietuetta muokattu viimeksi"
+msgstr "Tietuetta muokattu viimeksi "
 
 #: staff.circ.utils.edition
 msgid "Edition"
@@ -1419,7 +1434,8 @@ msgid "Override Checkin Failure?"
 msgstr "Ohitetaanko palautuksen epäonnistuminen?"
 
 #: staff.circ.utils.checkin.override.item_deposit_paid.warning
-msgid "A paid deposit will be owed to this patron if this action is overrided."
+msgid ""
+"A paid deposit will be owed to this patron if this action is overrided."
 msgstr "Maksu jäädään velkaa tälle asiakkaalle, jos toiminto ohitetaan."
 
 #: staff.circ.utils.billable.amount
@@ -1618,7 +1634,7 @@ msgstr "Varauksen kiinnitystä lykätty"
 
 #: staff.circ.utils.hold_capture_delayed.prompt_for_nocapture
 msgid "Do Not Capture "
-msgstr "Älä kiinnitä"
+msgstr "Älä kiinnitä "
 
 #: staff.circ.utils.hold_capture_delayed.prompt_for_capture
 msgid "Capture"
@@ -1671,7 +1687,7 @@ msgstr "Arvioitu odotusaika"
 
 #: staff.circ.utils.potential_copies
 msgid "Potential Copies "
-msgstr "Mahdolliset niteet"
+msgstr "Mahdolliset niteet "
 
 #: staff.circ.utils.queue_position
 msgid "Queue Position"
@@ -1706,7 +1722,8 @@ msgstr "%1$s uusi kohteen %4$s käyttäjälle %3$s (%2$s)"
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
 #: staff.circ.work_log_checkin_attempt.transit.message
-msgid "%1$s attempted checkin of %4$s, resulting in transit.  Route To = %5$s"
+msgid ""
+"%1$s attempted checkin of %4$s, resulting in transit.  Route To = %5$s"
 msgstr ""
 "%1$s yritti palauttaa kohteen %4$s, mikä johti kuljetukseen. Kuljetettava "
 "kohteeseen = %5$s"
@@ -1714,22 +1731,23 @@ msgstr ""
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
 #: staff.circ.work_log_checkin_attempt.transit_for_hold.message
 msgid ""
-"%1$s attempted checkin of %4$s, resulting in a hold-transit.  Route To = %"
-"5$s"
+"%1$s attempted checkin of %4$s, resulting in a hold-transit.  Route To = %5$s"
 msgstr ""
 "%1$s yritti palauttaa kohteen %4$s, mikä johti varauksen kuljetukseen. "
 "Kuljetettava kohteeseen = %5$s"
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
 #: staff.circ.work_log_checkin_attempt.no_change.message
-msgid "%1$s attempted checkin of %4$s, but nothing happened.  Route To = %5$s"
+msgid ""
+"%1$s attempted checkin of %4$s, but nothing happened.  Route To = %5$s"
 msgstr ""
 "%1$s yritti palauttaa kohteen %4$s, mutta mitään ei tapahtunut. Kuljetettava "
 "kohteeseen = %5$s"
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
 #: staff.circ.work_log_checkin_attempt.error.message
-msgid "%1$s attempted checkin of %4$s, and an error occurred.  Route To = %5$s"
+msgid ""
+"%1$s attempted checkin of %4$s, and an error occurred.  Route To = %5$s"
 msgstr ""
 "%1$s yritti palauttaa kohteen %4$s, ja tapahtui virhe. Kuljetettava "
 "kohteeseen = %5$s"
@@ -1738,8 +1756,8 @@ msgstr ""
 #: staff.circ.work_log_checkin_attempt.success.message
 msgid "%1$s attempted checkin of %4$s, which succeeded.  Route To = %5$s"
 msgstr ""
-"%1$s yritti palauttaa kohteen %4$s ja onnistui. Kuljetettava kohteeseen = %"
-"5$s"
+"%1$s yritti palauttaa kohteen %4$s ja onnistui. Kuljetettava kohteeseen = "
+"%5$s"
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
 #: staff.circ.work_log_checkin_attempt.hold_shelf.message
@@ -1877,16 +1895,16 @@ msgid ""
 "Please enter an Activation Date (or choose Remove to unset) for hold %1$s.  "
 "This will also Suspend the hold."
 msgstr ""
-"Syötä aktivointipäivä (tai valitse Poista, jos haluat nollata) varaukselle %"
-"1$s. Tämä myös tekee varauksesta ennakkovarauksen."
+"Syötä aktivointipäivä (tai valitse Poista, jos haluat nollata) varaukselle "
+"%1$s. Tämä myös tekee varauksesta ennakkovarauksen."
 
 #: staff.circ.holds.activation_date.prompt.plural
 msgid ""
-"Please enter an Activation Date (or choose Remove to unset) for holds %1$s. "
-" This will also Suspend the holds."
+"Please enter an Activation Date (or choose Remove to unset) for holds %1$s.  "
+"This will also Suspend the holds."
 msgstr ""
-"Syötä aktivointipäivä (tai valitse Poista, jos haluat nollata) varauksille %"
-"1$s. Tämä myös tekee varauksista ennakkovarauksia."
+"Syötä aktivointipäivä (tai valitse Poista, jos haluat nollata) varauksille "
+"%1$s. Tämä myös tekee varauksista ennakkovarauksia."
 
 #: staff.circ.holds.activation_date.dialog.description
 msgctxt "staff.circ.holds.activation_date.dialog.description"
@@ -1961,7 +1979,7 @@ msgstr "Ei"
 
 #: staff.circ.hold_update.hold_ids.failed
 msgid "Number of holds not updated: %1$s "
-msgstr "Ei-päivitettyjen varausten lukumäärä: %1$s"
+msgstr "Ei-päivitettyjen varausten lukumäärä: %1$s "
 
 #: staff.circ.holds.already_activated
 msgid "Hold %1$s was already activated."

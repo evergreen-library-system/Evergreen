@@ -2,25 +2,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2012-10-29 09:00:04-0400\n"
-"PO-Revision-Date: 2012-10-17 09:39+0300\n"
-"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"POT-Creation-Date: 2012-08-22 08:46-0400\n"
+"PO-Revision-Date: 2012-12-20 15:19+0000\n"
+"Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
-"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.7.1\n"
+"X-Launchpad-Export-Date: 2012-12-21 04:57+0000\n"
+"X-Generator: Launchpad (build 16378)\n"
+"Language: fi\n"
 
 #: 1208.TITLE_LAST_COPY:71
 msgid "The last copy attached to a title is being removed or deleted"
 msgstr "Viimeistä nimekkeeseen liitettyä nidettä ollaan poistamassa"
-
-#: 1232.ITEM_DEPOSIT_REQUIRED:162 1233.ITEM_RENTAL_FEE_REQUIRED:165
-#: 1234.ITEM_DEPOSIT_PAID:168
-msgid ""
-msgstr ""
 
 #: 1598.MONEY_USER_CIRCULATION_SUMMARY_NOT_FOUND:443
 msgid "The requested money_user_circulation_summary was not found"
@@ -93,6 +88,10 @@ msgstr "Pyydettyä kohdetta acq.funding_source_dedit ei löytynyt"
 #: 1641.ACTION_OPEN_CIRC_COUNT_BY_CIRC_MOD_NOT_FOUND:572
 msgid "The requested action_open_circ_count_by_circ_mod was not found"
 msgstr "Pyydettyä kohdetta action_open_circ_count_by_circ_mod ei löytynyt"
+
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:967
+msgid "The lineitem detail has no owning_lib"
+msgstr "Nimikkeen tiedoissa ei ole kohdetta owning_lib"
 
 #: 1608.METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND:473
 msgid "The requested metabib_subject_field_entry was not found"
@@ -179,7 +178,8 @@ msgstr "Offline-palvelinta ei ole määritetty oikein"
 
 #: 1001.NO_SESSION:31
 msgid "User login session has either timed out or does not exist"
-msgstr "Käyttäjän sisäänkirjautumisistunto on joko vanhentunut tai sitä ei ole"
+msgstr ""
+"Käyttäjän sisäänkirjautumisistunto on joko vanhentunut tai sitä ei ole"
 
 #: 4019.CREDIT_PROCESSOR_INVALID_CC_NUMBER:790
 msgid "An invalid credit card number has been supplied."
@@ -303,10 +303,6 @@ msgstr "Pyydettyä kohdetta money_collections_tracker ei löytynyt"
 #: 1651.AUTHORITY_RECORD_NUMBER_EXISTS:602
 msgid "An authority record already exists with the requested ARN"
 msgstr "Pyydetty ARN löytyy jo auktoriteettitietueesta"
-
-#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:990
-msgid "The caption/pattern still has dependent issuances"
-msgstr "Ilmestymistiedoista riippuvaisia numerointeja on yhä olemassa"
 
 #: 5000.PERM_FAILURE:804
 msgid "Permission Denied"
@@ -479,8 +475,7 @@ msgstr "Pyydettyä kohdetta metabib_metarecord_source_map ei löytynyt"
 #: 4.CACHE_MISS:24
 msgid "A cached object could not be retrieved by the given reference."
 msgstr ""
-"Välimuistissa olevaa objektia ei voitu hakea annetun viittauksen "
-"perusteella."
+"Välimuistissa olevaa objektia ei voitu hakea annetun viittauksen perusteella."
 
 #: 1612.CONFIG_RULES_MAX_FINE_NOT_FOUND:485
 msgid "The requested config_rules_max_fine was not found"
@@ -496,8 +491,8 @@ msgstr "Pyydettyä kohdetta permission_usr_grp_map ei löytynyt"
 
 #: 1215.CIRC_EXCEEDS_COPY_RANGE:99
 msgid ""
-"The selected copy may not circulate because the recipient's home location is"
-" not within the copy's circulation range"
+"The selected copy may not circulate because the recipient's home location is "
+"not within the copy's circulation range"
 msgstr ""
 "Valittua nidettä ei voi lainata, koska vastaanottajan kotikirjasto ei kuulu "
 "niteen lainausalueeseen"
@@ -586,7 +581,8 @@ msgstr "Nide on merkitty kadonneeksi"
 msgid ""
 "Someone attempted to retrieve a circulation object from the system and the "
 "object was not found."
-msgstr "Joku yritti hakea lainaobjektia järjestelmästä, eikä objektia löytynyt."
+msgstr ""
+"Joku yritti hakea lainaobjektia järjestelmästä, eikä objektia löytynyt."
 
 #: 4001.CREDIT_PROCESSOR_NOT_ENABLED:775
 msgid "Credit card processor not enabled"
@@ -626,8 +622,8 @@ msgstr "Nimikettä ei voi muuttaa, koska se on jo hyväksytty"
 
 #: 1714.HIGH_LEVEL_HOLD_HAS_NO_COPIES:750
 msgid ""
-"A hold request at a higher level than copy has been attempted, but there are"
-" no copies that belonging to the higher-level unit."
+"A hold request at a higher level than copy has been attempted, but there are "
+"no copies that belonging to the higher-level unit."
 msgstr ""
 "Varauspyyntöä yritettiin korkeammalla tasolla kuin nide, mutta korkeamman "
 "tason yksikköön ei kuulu niteitä."
@@ -733,7 +729,8 @@ msgstr "Pyydettyä kohdetta money_billing ei löytynyt"
 msgid ""
 "Someone attempted to retrieve a container item object from the system and "
 "the object was not found."
-msgstr "Joku yritti hakea säiliönidettä järjestelmästä, eikä objektia löytynyt."
+msgstr ""
+"Joku yritti hakea säiliönidettä järjestelmästä, eikä objektia löytynyt."
 
 #: 2002.DATABASE_QUERY_FAILED:764
 msgid "The attempt to query to the DB failed"
@@ -744,13 +741,10 @@ msgid "The requested config_standing was not found"
 msgstr "Pyydettyä kohdetta config_standing ei löytynyt"
 
 #: 1861.ACQ_PURCHASE_ORDER_TOO_LATE:664
-#, fuzzy
 msgid ""
 "The requested acq.purchase_order cannot be split because it has gone beyond "
 "the \"pending\" state"
 msgstr ""
-"Pyydettyä kohdetta acq.purchase_order ei voi jakaa, koska se on ohittanut "
-"\"vireillä\"-tilan"
 
 #: 1210.INCORRECT_PASSWORD:78
 msgid "The provided password is not correct"
@@ -797,8 +791,8 @@ msgstr "Pyydettyä kohdetta asset_call_number_note ei löytynyt"
 
 #: 4004.CREDIT_PROCESSOR_NOT_SPECIFIED:784
 msgid ""
-"No credit card processor specified either in org unit settings or in call to"
-" credit service API method."
+"No credit card processor specified either in org unit settings or in call to "
+"credit service API method."
 msgstr ""
 "Luottokorttivälittäjää ei ole määritetty joko organisaatioyksikön "
 "asetuksissa tai soitto luottopalveluun -API-menetelmässä."
@@ -930,7 +924,8 @@ msgstr "Annetulla nimellä ja kansiolla löytyy jo raporttipohja"
 msgid ""
 "Someone attempted to retrieve a copy object from the system and the object "
 "was not found."
-msgstr "Joku yritti hakea nideobjektia järjestelmästä, eikä objektia löytynyt."
+msgstr ""
+"Joku yritti hakea nideobjektia järjestelmästä, eikä objektia löytynyt."
 
 #: 1703.WORKSTATION_NAME_EXISTS:717
 msgid "A workstation with that name already exists"
@@ -963,6 +958,14 @@ msgstr "Käyttäjä yritti määrittää heikon salasanan."
 #: 9001.REPORT_REPORT_EXISTS:954
 msgid "A report with the given name and folder already exists"
 msgstr "Annetulla nimellä ja kansiolla löytyy jo raportti"
+
+#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1007
+msgid ""
+"A serial pattern code has been configured that fails to conform to MFHD "
+"standards for fields 853-855."
+msgstr ""
+"Määrityksistä löytyy sarjajulkaisukoodi, joka ei sovi MFHD-standardeihin "
+"kenttien 853-855 osalta."
 
 #: 1705.VOLUME_LABEL_EXISTS:723
 msgid "A volume with the same label, title and owning library exists"
@@ -1030,6 +1033,10 @@ msgstr ""
 #: 1000.LOGIN_FAILED:28
 msgid "User login failed"
 msgstr "Käyttäjän sisäänkirjautuminen epäonnistui"
+
+#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:990
+msgid "The caption/pattern still has dependent issuances"
+msgstr "Ilmestymistiedoista riippuvaisia numerointeja on yhä olemassa"
 
 #: 1873.ACQ_CURRENCY_TYPE_NOT_FOUND:682
 msgid "The requested acq.currency_type was not found"
@@ -1114,7 +1121,8 @@ msgstr "Varaus yritettiin muuttaa ennakkovaraukseksi kiinnityksen jälkeen."
 #: 1708.MONEY_COLLECTIONS_TRACKER_EXISTS:732
 msgid ""
 "A duplicate money.collections_tracker object already exists in the database"
-msgstr "Samanlainen money.collections_tracker-objekti löytyy jo tietokannasta"
+msgstr ""
+"Samanlainen money.collections_tracker-objekti löytyy jo tietokannasta"
 
 #: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:799
 msgid ""
@@ -1197,10 +1205,6 @@ msgstr "Pyydettyä kohdetta actor_org_unit ei löytynyt"
 msgid "The requested container_call_number_bucket_item was not found"
 msgstr "Pyydettyä kohdetta container_call_number_bucket_item ei löytynyt"
 
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:967
-msgid "The lineitem detail has no owning_lib"
-msgstr "Nimikkeen tiedoissa ei ole kohdetta owning_lib"
-
 #: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:994
 msgid ""
 "Units cannot be created for the given item because its associated "
@@ -1244,14 +1248,6 @@ msgstr "Pyydettyä kohdetta container_user_bucket_item ei löytynyt"
 #: 1615.ACTION_NON_CATALOGED_CIRCULATION_NOT_FOUND:494
 msgid "The requested action_non_cataloged_circulation was not found"
 msgstr "Pyydettyä kohdetta action_non_cataloged_circulation ei löytynyt"
-
-#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1007
-msgid ""
-"A serial pattern code has been configured that fails to conform to MFHD "
-"standards for fields 853-855."
-msgstr ""
-"Määrityksistä löytyy sarjajulkaisukoodi, joka ei sovi MFHD-standardeihin "
-"kenttien 853-855 osalta."
 
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:461
 msgid "The requested money_user_summary was not found"

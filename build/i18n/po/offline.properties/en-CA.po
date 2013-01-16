@@ -3,20 +3,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-03 10:01-0400\n"
+"POT-Creation-Date: 2012-12-20 09:37-0400\n"
 "PO-Revision-Date: 2012-11-09 13:28+0000\n"
 "Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-11-10 05:01+0000\n"
-"X-Generator: Launchpad (build 16251)\n"
+"X-Launchpad-Export-Date: 2012-12-21 05:00+0000\n"
+"X-Generator: Launchpad (build 16378)\n"
 "X-Accelerator-Marker: &\n"
-
-#: hotkeys.Default
-msgid "Default"
-msgstr "Normal"
 
 #: common.exception
 msgid ""
@@ -1187,6 +1183,10 @@ msgstr "Booking Capture"
 msgid "Manage Authorities"
 msgstr "Manage Authorities"
 
+#: menu.cmd_search_prefs.tab
+msgid "Search Preferences"
+msgstr ""
+
 #: menu.local_admin.barcode_completion.tab
 msgid "Barcode Completion"
 msgstr "Barcode Completion"
@@ -1198,6 +1198,10 @@ msgstr "Circulation Policies"
 #: menu.local_admin.hold_matrix_matchpoint.tab
 msgid "Hold Policies"
 msgstr "Hold Policies"
+
+#: menu.local_admin.item_attribute_editor.tab
+msgid "Admin Item Attribute Editor"
+msgstr ""
 
 #: menu.local_admin.work_log.tab
 msgid "Work Log"
@@ -1404,6 +1408,11 @@ msgstr "This session may have unsaved data. Logoff anyway?"
 msgid "This application may have unsaved data. Exit it anyway?"
 msgstr "This application may have unsaved data. Exit it anyway?"
 
+#: hotkeys.Default
+msgctxt "hotkeys.Default"
+msgid "Default"
+msgstr ""
+
 #: hotkeys.None
 msgid "No Hotkeys"
 msgstr "No Hotkeys"
@@ -1467,6 +1476,11 @@ msgstr "Booking : %1$s"
 #: staff.main.button_bar.none
 msgid "None"
 msgstr "None"
+
+#: staff.main.button_bar.default
+msgctxt "staff.main.button_bar.default"
+msgid "Default"
+msgstr ""
 
 #: util.hide_elements.title
 msgid "Hide UI Elements"

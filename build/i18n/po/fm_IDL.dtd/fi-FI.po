@@ -2,16 +2,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2012-10-29 08:58:30-0400\n"
-"PO-Revision-Date: 2012-10-17 10:43+0300\n"
-"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"POT-Creation-Date: 2012-12-20 09:37-0400\n"
+"PO-Revision-Date: 2012-12-20 15:17+0000\n"
+"Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
-"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.7.1\n"
+"X-Launchpad-Export-Date: 2012-12-21 04:55+0000\n"
+"X-Generator: Launchpad (build 16378)\n"
+"Language: fi\n"
 
 #: field.bre.source.label:2536
 msgid "Record Source"
@@ -2025,7 +2025,7 @@ msgstr "Jakelu"
 
 #: field.bre.simple_record.label:2551
 msgid "Simple Record Extracts "
-msgstr "Yksinkertaiset tietuepoiminnot"
+msgstr "Yksinkertaiset tietuepoiminnot "
 
 #: class.actsce.label:5669
 msgid "User Stat Cat Entry"
@@ -2574,12 +2574,9 @@ msgstr "Suhdetyypistä"
 msgid "Hold/Copy Ratio per Bib"
 msgstr "Varaukset/niteet-suhde per bibliografinen tietue"
 
-#: field.vii.alert_message.label:209 field.viiad.alert_message.label:260
-#: field.au.alert_message.label:2782 field.aal.alert_message.label:3377
-#: field.sunit.alert_message.label:4488 field.acp.alert_message.label:5876
-#: field.act.alert_message.label:5980
-msgid "Alert Message"
-msgstr "Varoitusviesti"
+#: field.artc.reservation.label:6429
+msgid "Reservation requiring Transit"
+msgstr "Kuljetusta vaativa erikoisvaraus"
 
 #: field.sre.creator.label:4194 field.ssubn.creator.label:4296
 #: field.sdistn.creator.label:4357 field.siss.creator.label:4448
@@ -3378,9 +3375,10 @@ msgstr "???nidepohja"
 msgid "Is Persistent?"
 msgstr "Jatkuva?"
 
-#: class.cwa.label:1440
-msgid "Matrix Weight Association"
-msgstr "Matriisipainoyhteys"
+#: field.acqii.fund_debit.label:6854 field.acqpoi.fund_debit.label:7656
+#: field.acqlid.fund_debit.label:7857 field.acqda.fund_debit.label:8439
+msgid "Fund Debit"
+msgstr "Tilin velat"
 
 #: field.au.net_access_level.label:2806
 msgid "Internet Access Level"
@@ -4258,9 +4256,12 @@ msgstr "Laskutusosoitteen vaihe"
 msgid "User Activity Type"
 msgstr "Käyttäjän aktiivisuustyyppi"
 
-#: field.artc.reservation.label:6429
-msgid "Reservation requiring Transit"
-msgstr "Kuljetusta vaativa erikoisvaraus"
+#: field.vii.alert_message.label:209 field.viiad.alert_message.label:260
+#: field.au.alert_message.label:2782 field.aal.alert_message.label:3377
+#: field.sunit.alert_message.label:4488 field.acp.alert_message.label:5876
+#: field.act.alert_message.label:5980
+msgid "Alert Message"
+msgstr "Varoitusviesti"
 
 #: field.sitem.date_received.label:4567
 msgid "Date Received"
@@ -4412,7 +4413,7 @@ msgstr "Varauksen vanhentumispäivä/-aika"
 
 #: field.bre.full_record_entries.label:2550
 msgid "Flattened MARC Fields "
-msgstr "Tasoitetut MARC-kentät"
+msgstr "Tasoitetut MARC-kentät "
 
 #: class.crad.label:698
 msgid "SVF Record Attribute Defintion"
@@ -5392,10 +5393,9 @@ msgstr "Aktiiviset varaukset kaikkialla"
 msgid "Family Linkage or other Group"
 msgstr "Perheyhteys tai muu ryhmä"
 
-#: field.acqii.fund_debit.label:6854 field.acqpoi.fund_debit.label:7656
-#: field.acqlid.fund_debit.label:7857 field.acqda.fund_debit.label:8439
-msgid "Fund Debit"
-msgstr "Tilin velat"
+#: class.cwa.label:1440
+msgid "Matrix Weight Association"
+msgstr "Matriisipainoyhteys"
 
 #: field.cmf.browse_field.label:2291
 msgid "Browse Field"
