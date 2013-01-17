@@ -81,6 +81,7 @@
         
                 //this function will allow for the "Hello, Staff Member" messages
                 function init() { 
+                        document.getElementById('quicksearch').focus();
                         SearchOnBlur();
                         JSAN.use('OpenILS.data'); 
                         var data = new OpenILS.data(); 
@@ -441,7 +442,7 @@
               <td colspan="2" rowspan="1">
                 <form action="#" onsubmit="return SearchOnSubmit();">
                   <input id="quicksearch" onfocus="SearchOnFocus();" onblur=
-                  "SearchOnBlur();" /> <input value="Search" type="submit" />
+                  "SearchOnBlur();" onkeydown="SearchOnFocus();" /> <input value="Search" type="submit" />
                 </form>
               </td>
             </tr>
