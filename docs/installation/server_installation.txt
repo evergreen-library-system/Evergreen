@@ -193,10 +193,11 @@ chown -R opensrf:opensrf /openils
 Configure the Apache Web server
 -------------------------------
 
-1. Use the example configuration files in `Open-ILS/examples/apache/` to
-configure your Web server for the Evergreen catalog, staff client, Web
-services, and administration interfaces. Issue the following commands as the
-*root* Linux account:
+1. Use the example configuration files in `Open-ILS/examples/apache/` (for
+Apache versions below 2.4) or `Open-ILS/examples/apache_24/` (for Apache
+versions 2.4 or greater) to configure your Web server for the Evergreen
+catalog, staff client, Web services, and administration interfaces. Issue the
+following commands as the *root* Linux account:
 +
 .Debian and Ubuntu
 [source,bash]
@@ -209,12 +210,23 @@ mkdir /etc/apache2/ssl
 cd /etc/apache2/ssl
 ------------------------------------------------------------------------------
 +
-.Fedora
+.Fedora 17
 [source,bash]
 ------------------------------------------------------------------------------
 cp Open-ILS/examples/apache/eg.conf       /etc/httpd/conf.d/
 cp Open-ILS/examples/apache/eg_vhost.conf /etc/httpd/
 cp Open-ILS/examples/apache/eg_startup    /etc/httpd/
+# Now set up SSL
+mkdir /etc/httpd/ssl
+cd /etc/httpd/ssl
+------------------------------------------------------------------------------
++
+.Fedora 18
+[source,bash]
+------------------------------------------------------------------------------
+cp Open-ILS/examples/apache_24/eg.conf       /etc/httpd/conf.d/
+cp Open-ILS/examples/apache_24/eg_vhost.conf /etc/httpd/
+cp Open-ILS/examples/apache/startup.pl       /etc/httpd/
 # Now set up SSL
 mkdir /etc/httpd/ssl
 cd /etc/httpd/ssl
@@ -233,9 +245,11 @@ openssl req -new -x509 -days 365 -nodes -out server.crt -keyout server.key
 +
 3. As the *root* Linux account, edit the `eg.conf` file that you copied into
 place.
-  a. Replace `Allow from 10.0.0.0/8` with `Allow from all` (to enable
-     access to the offline upload / execute interface from any workstation on
-     any network - note that you must secure this for a production instance)
+  a. To enable access to the offline upload / execute interface from any
+     workstation on any network, make the following change (and note that
+     you *must* secure this for a production instance):
+     * (Apache 2.2): Replace `Allow from 10.0.0.0/8` with `Allow from all`
+     * (Apache 2.4): Replace `Require host 10.0.0.0/8` with `Require all granted`
   b. (Fedora): Change references from the non-existent `/etc/apache2/` directory
      to `/etc/httpd/`.
 4. Change the user for the Apache server.
