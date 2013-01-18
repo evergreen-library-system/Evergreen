@@ -412,10 +412,16 @@ function init() {
                 /* po item table */
                 poItemTable = new PoItemTable(PO, pcrud);
 
+                liTable.testOrderIdentPerms( PO.ordering_agency(), init2);
+
                 renderPo();
             }
         }
     );
+
+}
+
+function init2() {
 
     var totalEstimated = 0;
     var zeroLi = true;

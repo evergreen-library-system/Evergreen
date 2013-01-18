@@ -14,6 +14,7 @@ dojo.require('dojo.data.ItemFileReadStore');
 dojo.require('openils.widget.ProgressDialog');
 dojo.require('openils.PermaCrud');
 dojo.require("openils.widget.PCrudAutocompleteBox");
+dojo.require('dijit.form.ComboBox');
 dojo.require('openils.CGI');
 
 if (!localeStrings) {   /* we can do this because javascript doesn't have block scope */
@@ -81,6 +82,12 @@ function AcqLiTable() {
         }
     );
     this.vlAgent = new VLAgent();
+
+    if (dojo.byId('acq-lit-apply-idents')) {
+        dojo.byId('acq-lit-apply-idents').onclick = function() {
+            self.applyOrderIdentValues();
+        };
+    }
 
     this.focusLineitem = new openils.CGI().param('focus_li');
 
@@ -434,6 +441,8 @@ function AcqLiTable() {
         dojo.query('[name=copieslink]', row)[0].onclick = function() {self.drawCopies(li.id())};
         dojo.query('[name=noteslink]', row)[0].onclick = function() {self.drawLiNotes(li)};
 
+        this.drawOrderIdentSelector(li, row);
+
         if (!this.skipInitialEligibilityCheck)
             this.fetchClaimInfo(
                 li.id(),
@@ -569,6 +578,217 @@ function AcqLiTable() {
                 function(k) { delete self.claimEligibleLid[k]; }
             );
         }
+    };
+
+    this.applyOrderIdentValues = function() {
+        this._identValuesInFlight = 
+            openils.Util.objectProperties(this.liCache).length;
+        for (var liId in this.liCache) {
+            this._applyOrderIdentValue(this.liCache[liId]);
+        }
+    };
+
+    // returns true if request was sent
+    this._applyOrderIdentValue = function(li) {
+        var self = this;
+
+        console.log('applying ident value for lineitem ' + li.id());
+
+        // main row
+        var row = dojo.query('[li=' + li.id() + ']')[0];
+
+        // find the selected ident value
+        var typeSel = dojo.query('[name=order_ident_type]', row)[0];
+        var valueSel = dojo.query('[name=order_ident_value]', row)[0];
+        var name = typeSel.options[typeSel.selectedIndex].value;
+        var val = typeSel._cbox.attr('value');
+
+        console.log("selected ident is " + val);
+
+        // it differs from the existing ident value, update it
+        var oldIdent = self.getLiOrderIdent(li);
+        if (oldIdent && 
+            oldIdent.attr_name() == name &&
+            oldIdent.attr_value() == val) {
+                console.log('selected ident attr matches existing attr');
+                if (--this._identValuesInFlight == 0) 
+                    location.href = location.href;
+                return false;
+        }
+
+        // see if the selected ident value is represented
+        // by an existing lineitem attr
+
+        var args = {};
+        typeSel._cbox.store.fetch({
+            query : {attr_value : val},
+            onItem : function(item) {                                                       
+                console.log('found existing attr for ident value');
+                args.source_attr_id = li.attributes().filter(
+                    function(attr) { return attr.id() == item.id[0] }
+                )[0];
+            }                                                                      
+        }); 
+
+
+        if (!args.source_attr_id) {
+            // user entered new text in the combobox
+            // so we need to create a new attr
+            console.log('creating new ident attr');
+            args.lineitem_id = li.id();
+            args.attr_name = name;
+            args.attr_value = val;
+        }
+
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.lineitem.order_identifier.set'],
+            {   async : true,
+                params : [openils.User.authtoken, args],
+                oncomplete : function() {
+                    console.log('order_ident oncomplete');
+                    if (--self._identValuesInFlight == 0) 
+                        location.href = location.href;
+                }
+            }
+        );
+
+        return true;
+    };
+
+    this.getLiOrderIdent = function(li) {
+        var attrs = li.attributes();
+        if (!attrs) return null;
+        return attrs.filter(
+            function(attr) {
+                return (
+                    attr.attr_type() == 'lineitem_local_attr_definition' &&
+                    openils.Util.isTrue(attr.order_ident())
+                );
+            }
+        )[0];
+    };
+
+    this.drawOrderIdentSelector = function(li, row) {
+        var self = this;
+        var typeSel = dojo.query('[name=order_ident_type]', row)[0];
+        var valueSel = dojo.query('[name=order_ident_value]', row)[0];
+
+        var attrs = li.attributes();
+
+        // limit to MARC attr defs
+        attrs = attrs.filter(
+            function(attr) {
+                return (attr.attr_type() == 'lineitem_marc_attr_definition');
+            }
+        );
+
+        var identAttr = this.getLiOrderIdent(li);
+
+
+        // collect the values for each type of identifier
+        // find a reasonable default identifier type to render
+        
+        var values = {};
+        var typeSet = null;
+        dojo.forEach(['isbn', 'upc', 'issn'],
+            function(name) {
+
+                // collect the values for this attr name
+                values[name] =  attrs.filter(
+                    function(attr) {
+                        return (attr.attr_name() == name)
+                    }
+                );
+
+                // select a reasonable default name in the type-selector
+                if (!typeSet) {
+                    var useMe = false;
+                    if (identAttr) {
+                        if (identAttr.attr_name() == name)
+                            useMe = true;
+                    } else if (values[name].length) {
+                        useMe = true;
+                    }
+
+                    if (useMe) {
+                        dojo.forEach(typeSel.options, function(opt) {
+                            if (opt.value == name) {
+                                opt.selected = true;
+                                typeSet = name;
+                            }
+                        });
+                    }
+                }
+            }
+        );
+
+        function updateOrderIdent(box) {
+            console.log('updating order ident for box ' + box);
+        }
+
+        // replace the ident combobox with a new 
+        // one for the selected ident type 
+        function changeComboBox(sel) {
+            var name = sel.options[sel.selectedIndex].value;
+
+            var td = dojo.query('[name=order_ident_value]', row)[0];
+            if (td.childNodes[0]) 
+                dojo.destroy(td.childNodes[0]);
+
+            var store = new dojo.data.ItemFileWriteStore({
+                data : acqlia.toStoreData(values[name])
+            });
+
+            var cbox = new dijit.form.ComboBox(
+                {   store : store,
+                    labelAttr : 'attr_value',
+                    searchAttr : 'attr_value'
+                }, 
+                dojo.create('div', {}, td)
+            );
+
+            cbox.startup();
+
+            // set the value for the cbox
+            if (values[name].length) {
+                var orderIdent = self.getLiOrderIdent(li);
+
+                if (orderIdent && orderIdent.attr_name() == name) {
+                    cbox.attr('value', orderIdent.attr_value());
+                } else  {
+                    cbox.attr('value', values[name][0].attr_value());
+                }
+            }
+
+            if (!self.orderIdentAllowed) 
+                cbox.attr('disabled', true);
+
+            sel._cbox = cbox;
+            cbox._lineitem = li;
+            dojo.connect(cbox, 'onChange', updateOrderIdent);
+        }
+
+        changeComboBox(typeSel); // force the initial draw
+        typeSel.onchange = function() {changeComboBox(typeSel)};
+    };
+
+    this.testOrderIdentPerms = function(org, callback) {
+        var self = this;
+        new openils.User().getPermOrgList(
+            'ACQ_SET_LINEITEM_IDENTIFIER',
+            function(orgs) { 
+                console.log('found orgs = ' + orgs);
+                for (var i = 0; i < orgs.length; i++) {
+                    if (Number(orgs[i]) == Number(org)) {
+                        self.orderIdentAllowed = true;
+                        if (callback) callback();
+                        return;
+                    }
+                }
+                if (callback) callback();
+            }, 
+            true, true
+        );
     };
 
     this.checkClaimEligibility = function(li, callback, row) {

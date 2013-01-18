@@ -65,7 +65,15 @@
             <tbody style='font-weight:bold;border:1px solid #aaa;'>
                 <tr>
                     <td><span><a id='acq-lit-select-toggle' href='javascript:void(0);'>&#x2713</a></span></td>
-                    <td>[% l('Line Items') %]</td>
+                    <td>
+                        [% l('Line Items') %]
+                        <span style='padding-left: 10px;'>
+                            <a href='javascript:;' 
+                                id='acq-lit-apply-idents'>
+                                [% l('Apply Order Identifiers') %]
+                            </a>
+                        </span>
+                    </td>
                     <td>[% l('Items') %]</td>
                     <td>[% l('Notes') %]</td>
                     <td>[% l('Actions') %]</td>
@@ -98,6 +106,21 @@
                                         <span attr='pubdate'></span>
                                         <span attr='publisher'></span>
                                         <span name='source_label'></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan='0'>
+                                        <table><tr>
+                                            <td>[% l('Order Identifier') %]</td>
+                                            <td>
+                                                <select name='order_ident_type'>
+                                                    <option value='isbn' selected='selected'>[% l('ISBN') %]</option>
+                                                    <option value='upc' >[% l('UPC') %]</option>
+                                                    <option value='issn'>[% l('ISSN') %]</option>
+                                                </select>
+                                            </td>
+                                            <td name='order_ident_value'></td>
+                                        </tr></table>
                                     </td>
                                 </tr>
                                 <tr>
