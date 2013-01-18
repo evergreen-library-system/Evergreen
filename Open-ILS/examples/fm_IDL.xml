@@ -7907,6 +7907,7 @@ SELECT  usr,
 			<field reporter:label="Code" name="code" reporter:datatype="text"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text"/>
 			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="link"/>
+			<field reporter:label="Order Identifier" name="order_ident" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
@@ -7949,6 +7950,7 @@ SELECT  usr,
 			<field reporter:label="Name" name="attr_name" reporter:datatype="text" />
 			<field reporter:label="Value" name="attr_value" reporter:datatype="text" />
 			<field reporter:label="Definition" name="definition" reporter:datatype="text" />
+			<field reporter:label="Order Identifier" name="order_ident" reporter:datatype="bool" />
 		</fields>
 		<links>
 			<link field="lineitem" reltype="has_a" key="id" map="" class="jub"/>

@@ -584,7 +584,8 @@ CREATE TABLE acq.lineitem_attr (
 	lineitem	BIGINT		NOT NULL REFERENCES acq.lineitem (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	attr_type	TEXT		NOT NULL,
 	attr_name	TEXT		NOT NULL,
-	attr_value	TEXT		NOT NULL
+	attr_value	TEXT		NOT NULL,
+	order_ident	BOOLEAN		NOT NULL DEFAULT FALSE
 );
 
 CREATE INDEX li_attr_li_idx ON acq.lineitem_attr (lineitem);

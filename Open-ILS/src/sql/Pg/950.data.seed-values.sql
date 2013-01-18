@@ -1584,7 +1584,11 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 545, 'SAVED_FILTER_DIALOG_FILTERS', oils_i18n_gettext( 545,
     'Allows users to save and load sets of filters for filter dialogs, available in certain staff interfaces', 'ppl', 'description')),
  ( 546, 'ADMIN_HOLD_CAPTURE_SORT', oils_i18n_gettext( 546,
-        'Allows a user to make changes to best-hold selection sort order', 'ppl', 'description'))
+        'Allows a user to make changes to best-hold selection sort order', 'ppl', 'description')),
+ ( 547, 'ACQ_ADD_LINEITEM_IDENTIFIER', oils_i18n_gettext(547,
+        'When granted, newly added lineitem identifiers will propagate to linked bib records', 'ppl', 'description')),
+ ( 548, 'ACQ_SET_LINEITEM_IDENTIFIER', oils_i18n_gettext(549,
+        'Allows staff to change the lineitem identifier', 'ppl', 'description'))
 ;
 
 
