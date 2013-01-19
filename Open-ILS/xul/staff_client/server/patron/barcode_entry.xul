@@ -19,6 +19,7 @@
 
 <window id="patron_barcode_entry_win" 
     onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    onunload="try { my_cleanup(); persist_helper_cleanup(); } catch(E) { alert(E); }"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -42,7 +43,8 @@
                 JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 
                 var tb = document.getElementById('barcode_tb');
-                tb.addEventListener(
+                window.barcode_entry_event_listeners = new EventListenerList();
+                window.barcode_entry_event_listeners.add(tb, 
                     'keypress',
                     function(ev) {
                         if (ev.keyCode == 13 || ev.keyCode == 77) {
@@ -70,6 +72,16 @@
                     alert(error);
                 }
 
+            } catch(E) {
+                var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/barcode_entry.xul', E]);
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
+
+        function my_cleanup() {
+            try {
+                window.barcode_entry_event_listeners.removeAll();
             } catch(E) {
                 var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/barcode_entry.xul', E]);
                 try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }

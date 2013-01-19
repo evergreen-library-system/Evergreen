@@ -21,6 +21,7 @@
 
 <window id="holds_win" active="true" 
     onload="try { font_helper(); persist_helper(); my_init(); } catch(E) { alert(E); }"
+    onunload="try { my_cleanup(); persist_helper_cleanup(); } catch(E) { alert(E); }"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -58,6 +59,16 @@
 
                 default_focus();
 
+            } catch(E) {
+                var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/holds.xul', E]);
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
+
+        function my_cleanup() {
+            try {
+                g.holds.cleanup();
             } catch(E) {
                 var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/holds.xul', E]);
                 try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }

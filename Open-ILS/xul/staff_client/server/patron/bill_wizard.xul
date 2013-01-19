@@ -22,6 +22,7 @@
 <window id="patron_bill" title="&staff.patron.bill_wizard.title;"
     orient="vertical" style="overflow: auto" oils_persist="width height sizemode"
     onload="try { patron_bill_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }" width="700" height="550"
+    onunload="try { patron_bill_cleanup(); persist_helper_cleanup(); } catch(E) { alert(E); }"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->

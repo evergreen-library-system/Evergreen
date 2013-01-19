@@ -41,6 +41,7 @@ patron.holds.prototype = {
         var obj = this;
 
         dojo.require("openils.Util");
+        obj.event_listeners = new EventListenerList();
 
         obj.patron_id = params['patron_id'];
         obj.patron_barcode = params['patron_barcode'];
@@ -1632,6 +1633,13 @@ patron.holds.prototype = {
 
     },
 
+    'cleanup' : function() {
+        var obj = this;
+        obj.controller.cleanup();
+        obj.list.cleanup();
+        obj.event_listeners.removeAll();
+    },
+
     'determine_hold_interface_type' : function() {
         var obj = this;
         if (obj.patron_id) { /*************************************************** PATRON ******************************/
@@ -1825,7 +1833,7 @@ patron.holds.prototype = {
                 var ml = util.widgets.make_menulist( list_data[0], obj.data.list.au[0].ws_ou() );
                 ml.setAttribute('id','lib_menu');
                 x.appendChild( ml );
-                ml.addEventListener(
+                obj.event_listeners.add(ml, 
                     'command',
                     function(ev) {
                         obj.filter_lib = ev.target.value;

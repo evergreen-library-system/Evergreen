@@ -21,6 +21,7 @@
 
 <window id="patron_search_form_win" 
     onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    onunload="try { my_cleanup(); persist_helper_cleanup(); } catch(E) { alert(E); }"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -63,6 +64,16 @@
     
             } catch(E) {
                 var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/search_form_horiz.xul', E]);
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
+
+        function my_cleanup() {
+            try {
+                g.search_form.cleanup();
+            } catch(E) {
+                var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/search_form.xul', E]);
                 try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
                 alert(err_msg);
             }

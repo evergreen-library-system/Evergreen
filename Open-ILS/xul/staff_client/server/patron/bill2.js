@@ -14,6 +14,7 @@ function my_init() {
         g.data.voided_billings = []; g.data.stash('voided_billings');
 
         g.error.sdump('D_TRACE','my_init() for bill2.xul');
+        window.bill_event_listeners = new EventListenerList();
 
         document.title = $("patronStrings").getString('staff.patron.bill_history.my_init.current_bills');
 
@@ -63,45 +64,56 @@ function my_init() {
     }
 }
 
+function my_cleanup() {
+    try {
+        window.bill_event_listeners.removeAll();
+        g.bill_list.cleanup();
+    } catch(E) {
+        var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/bill2.xul', E]);
+        try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+        alert(err_msg);
+    }
+}
+
 function event_listeners() {
     try {
-        $('details').addEventListener(
+        window.bill_event_listeners.add($('details'), 
             'command',
             handle_details,
             false
         );
 
-        $('add').addEventListener(
+        window.bill_event_listeners.add($('add'), 
             'command',
             handle_add,
             false
         );
 
-        $('voidall').addEventListener(
+        window.bill_event_listeners.add($('voidall'), 
             'command',
             handle_void_all,
             false
         );
 
-        $('refund').addEventListener(
+        window.bill_event_listeners.add($('refund'), 
             'command',
             handle_refund,
             false
         );
 
-        $('opac').addEventListener(
+        window.bill_event_listeners.add($('opac'), 
             'command',
             handle_opac,
             false
         );
 
-        $('copy_details').addEventListener(
+        window.bill_event_listeners.add($('copy_details'), 
             'command',
             handle_copy_details,
             false
         );
 
-        $('payment').addEventListener(
+        window.bill_event_listeners.add($('payment'), 
             'change',
             function(ev) {
                 if ($('payment_type').value == 'credit_payment') {
@@ -120,13 +132,13 @@ function event_listeners() {
             false
         );
 
-        $('payment').addEventListener(
+        window.bill_event_listeners.add($('payment'), 
             'focus',
             function(ev) { ev.target.select(); },
             false
         );
 
-        $('payment').addEventListener(
+        window.bill_event_listeners.add($('payment'), 
             'keypress',
             function(ev) {
                 if (! (ev.keyCode == 13 /* enter */ || ev.keyCode == 77 /* mac enter */) ) { return; }
@@ -136,7 +148,7 @@ function event_listeners() {
             false
         );
 
-        $('bill_patron_btn').addEventListener(
+        window.bill_event_listeners.add($('bill_patron_btn'), 
             'command',
             function() {
                 JSAN.use('util.window'); var win = new util.window();
@@ -154,7 +166,7 @@ function event_listeners() {
             false
         );
 
-        $('bill_history_btn').addEventListener(
+        window.bill_event_listeners.add($('bill_history_btn'), 
             'command',
             function() {
                 xulG.display_window.g.patron.right_deck.reset_iframe( 
@@ -171,7 +183,7 @@ function event_listeners() {
             false
         );
 
-        $('convert_change_to_credit').addEventListener(
+        window.bill_event_listeners.add($('convert_change_to_credit'), 
             'command',
             function(ev) {
                 if (ev.target.checked) {
@@ -183,7 +195,7 @@ function event_listeners() {
             false
         );
 
-        $('apply_payment_btn').addEventListener(
+        window.bill_event_listeners.add($('apply_payment_btn'), 
             'command',
             function(ev) {
                 try {

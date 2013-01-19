@@ -16,6 +16,7 @@ circ.checkout.prototype = {
 
         var obj = this;
 
+        obj.event_listeners = new EventListenerList();
         obj.patron_id = params.patron_id;
 
         obj.auto_override_events = [];
@@ -87,7 +88,7 @@ circ.checkout.prototype = {
                                 e.appendChild( ml );
                                 ml.setAttribute('id','checkout_menulist');
                                 ml.setAttribute('accesskey','');
-                                ml.addEventListener(
+                                obj.event_listeners.add(ml,
                                     'command',
                                     function(ev) {
                                         var tb = obj.controller.view.checkout_barcode_entry_textbox;
@@ -267,6 +268,12 @@ circ.checkout.prototype = {
         );
         obj.items_out_count = (robj.out + robj.overdue + robj.claims_returned + robj.long_overdue );
 
+    },
+
+    'cleanup' : function() {
+        var obj = this;
+        obj.controller.cleanup();
+        obj.event_listeners.removeAll();
     },
 
     'check_disable' : function() {

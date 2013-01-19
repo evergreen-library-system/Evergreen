@@ -19,6 +19,7 @@
 
 <window id="place_hold_win" 
     onload="try{my_init();font_helper();persist_helper();}catch(E){alert(E);}"
+    onunload="try { my_cleanup(); persist_helper_cleanup(); } catch(E) { alert(E); }"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <!-- /////////////////////////////////////////////////////////////////// -->

@@ -21,6 +21,7 @@
 <window id="patron_bill" title="&staff.patron.bill_cc_info.title;"
     orient="vertical" style="overflow: auto" oils_persist="height width sizemode"
     onload="try{info_init(); font_helper(); refresh_fields(); persist_helper(); }catch(E){alert(E);}"
+    onunload="try {  persist_helper_cleanup(); } catch(E) { alert(E) }"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->

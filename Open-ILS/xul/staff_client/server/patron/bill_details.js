@@ -215,6 +215,8 @@ function my_init() {
 
         g.mbts_id = xul_param('mbts_id');
 
+        window.bill_details_event_listeners = new EventListenerList();
+
         retrieve_patron();
 
         retrieve_mbts();
@@ -224,19 +226,19 @@ function my_init() {
         retrieve_mb();
         retrieve_mp();
 
-        $('void').addEventListener(
+        window.bill_details_event_listeners.add($('void'), 
             'command',
             handle_void,
             false
         );
 
-        $('edit_bill_note').addEventListener(
+        window.bill_details_event_listeners.add($('edit_bill_note'), 
             'command',
             handle_edit_bill_note,
             false
         );
 
-        $('edit_payment_note').addEventListener(
+        window.bill_details_event_listeners.add($('edit_payment_note'), 
             'command',
             handle_edit_payment_note,
             false
@@ -244,6 +246,16 @@ function my_init() {
 
     } catch(E) {
         try { g.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.bill_details.my_init.error'),E); } catch(F) { alert(E); }
+    }
+}
+
+function my_cleanup() {
+    try {
+        g.bill_list.cleanup();
+        g.payment_list.cleanup();
+        window.bill_details_event_listeners.removeAll();
+    } catch(E) {
+        try { g.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.bill_details.my_cleanup.error'),E); } catch(F) { alert(E); }
     }
 }
 

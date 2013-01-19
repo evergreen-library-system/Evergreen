@@ -237,6 +237,7 @@ function my_init() {
         g.funcs = []; g.bill_map = {}; g.payments_map = {};
 
         g.patron_id = xul_param('patron_id');
+        window.bill_history_event_listeners = new EventListenerList();
 
         init_lists();
 
@@ -244,31 +245,31 @@ function my_init() {
 
         retrieve_mbts_for_list();
 
-        $('details').addEventListener(
+        window.bill_history_event_listeners.add($('details'), 
             'command',
             gen_handle_details('bills'),
             false
         );
 
-        $('payments_details').addEventListener(
+        window.bill_history_event_listeners.add($('payments_details'), 
             'command',
             gen_handle_details('payments'),
             false
         );
 
-        $('copy_details').addEventListener(
+        window.bill_history_event_listeners.add($('copy_details'), 
             'command',
             gen_handle_copy_details('bills'),
             false
         );
 
-        $('copy_details_from_payments').addEventListener(
+        window.bill_history_event_listeners.add($('copy_details_from_payments'), 
             'command',
             gen_handle_copy_details('payments'),
             false
         );
 
-        $('add').addEventListener(
+        window.bill_history_event_listeners.add($('add'), 
             'command',
             handle_add,
             false
@@ -283,6 +284,19 @@ function my_init() {
         alert(err_msg);
     }
 }
+
+function my_cleanup() {
+    try {
+        g.bill_list.cleanup();
+        g.payments_list.cleanup();
+        window.bill_history_event_listeners.removeAll();
+    } catch(E) {
+        var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/bill_history.xul', E]);
+        try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+        alert(err_msg);
+    }
+}
+
 
 function handle_add() {
     if(g.bill_list_selection.length > 1)

@@ -20,6 +20,7 @@
 
 <window id="patron_info_win" width="700" height="550"
     onload="try{ my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    onunload="try { my_cleanup(); persist_helper_cleanup(); } catch(E) { alert(E); }"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -54,8 +55,20 @@
 
                 g.new_note = false;
 
+                g.info_notes_event_listeners = new EventListenerList();
+
                 refresh();
 
+            } catch(E) {
+                var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/info_notes.xul', E]);
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
+
+        function my_cleanup() {
+            try {
+                g.info_notes_event_listeners.removeAll();
             } catch(E) {
                 var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/info_notes.xul', E]);
                 try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
@@ -124,7 +137,7 @@
                 btn1.setAttribute('label',$("patronStrings").getString('staff.patron.info_notes.render_notes.btn1.delete_note.label'));
                 btn1.setAttribute('image',"/xul/server/skin/media/images/up_arrow.gif");
 
-                btn1.addEventListener(
+                g.info_notes_event_listeners.add(btn1, 
                     'command',
                     function(id){ 
                         return function() { 
@@ -153,7 +166,7 @@
                     btn2.setAttribute('label',$("patronStrings").getString('staff.patron.info_notes.render_notes.btn2.print_note.label'));
                     btn2.setAttribute('image',"/xul/server/skin/media/images/up_arrow.gif");
 
-                    btn2.addEventListener(
+                    g.info_notes_event_listeners.add(btn2, 
                         'command',
                         function(id){ return function() { 
                             try {

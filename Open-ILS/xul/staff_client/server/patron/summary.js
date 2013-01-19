@@ -19,6 +19,7 @@ patron.summary.prototype = {
     'init' : function( params ) {
 
         var obj = this;
+        obj.event_listeners = new EventListenerList();
 
         obj.barcode = params['barcode'];
         obj.id = params['id'];
@@ -901,7 +902,7 @@ patron.summary.prototype = {
             var caption = document.getElementById("PatronSummaryContact_caption");
             var arrow = document.getAnonymousNodes(caption)[0];
             var gb_content = document.getAnonymousNodes(caption.parentNode)[1];
-            arrow.addEventListener(
+            obj.event_listeners.add(arrow,
                 'click',
                 function() {
                     setTimeout(
@@ -928,6 +929,14 @@ patron.summary.prototype = {
         } catch(E) {
             obj.error.sdump('D_ERROR','with shrink_state in summary.js: ' + E);
         }
+    },
+
+    'cleanup' : function() {
+        var obj = this;
+        if (typeof obj.group_list != 'undefined') obj.group_list.cleanup();
+        if (typeof obj.stat_cat_list != 'undefined') obj.stat_cat_list.cleanup();
+        obj.controller.cleanup();
+        obj.event_listeners.removeAll();
     },
 
     'retrieve' : function() {

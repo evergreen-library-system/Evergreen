@@ -21,6 +21,7 @@
 
 <window id="checkout_win" 
     onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    onunload="try { my_cleanup(); persist_helper_cleanup(); } catch(E) { alert(E); }"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -50,6 +51,18 @@
         
                 default_focus();
     
+            } catch(E) {
+                try {
+                    g.error.standard_unexpected_error_alert('circ/checkout.xul',E);
+                } catch(F) {
+                    dump('FIXME: circ/checkout.xul -> ' + E + ' -> ' + F + '\n');
+                }
+            }
+        }
+
+        function my_cleanup() {
+            try {
+                g.checkout.cleanup();
             } catch(E) {
                 try {
                     g.error.standard_unexpected_error_alert('circ/checkout.xul',E);
