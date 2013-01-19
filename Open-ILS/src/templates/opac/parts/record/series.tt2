@@ -8,6 +8,7 @@ BLOCK render_series;
         FOR node IN ctx.marc_xml.findnodes('//*[@tag="' _ tag _ '"]');
             all_terms = [];
             graphics = [];
+            series = '';
             FOR subfield IN node.childNodes;
                 NEXT UNLESS subfield.nodeName == "subfield";
                 code = subfield.getAttribute('code');
@@ -32,7 +33,6 @@ BLOCK render_series;
                 series = series _ '<div class="graphic880"' _ link880.dir _ '>' _ link _ '</div>';
             END;
             results.push(series);
-
         END;
     END; 
     FOR entry IN results;
