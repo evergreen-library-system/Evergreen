@@ -19,6 +19,7 @@
 
 <window id="edit_penalty_win" 
     onload="try { edit_penalty_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    onunload="try { edit_penalty_cleanup(); persist_helper_cleanup(); } catch(E) { alert(E); }"
     oils_persist="height width sizemode"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
     title="&staff.patron_display.edit_penalty_dialog.title;">

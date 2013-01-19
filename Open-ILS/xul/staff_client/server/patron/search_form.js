@@ -13,6 +13,7 @@ patron.search_form.prototype = {
     'init' : function( params ) {
 
         var obj = this;
+        obj.event_listeners = new EventListenerList();
 
         // The bulk of params.query is getting parsed/rendered by obj.controller.init below, and will be reconstituted from possibly modified XUL elements upon Submit.
         // But we're going to let search_limit and search_sort be configurable now by those spawning this interface, and let's assume there are no corresponding widgets for now.  
@@ -251,7 +252,7 @@ patron.search_form.prototype = {
         obj.controller.render();
         var nl = document.getElementsByTagName('textbox');
         for (var i = 0; i < nl.length; i++) {
-            nl[i].addEventListener('keypress',function(ev){
+            obj.event_listeners.add(nl[i], 'keypress', function(ev) {
                 if (ev.target.tagName != 'textbox') return;
                 if (ev.keyCode == 13 /* enter */ || ev.keyCode == 77 /* enter on a mac */) setTimeout( function() { obj.submit(); }, 0);
             },false);
@@ -273,7 +274,7 @@ patron.search_form.prototype = {
                 }
             )
         );
-        ml.addEventListener('command', function() {
+        obj.event_listeners.add(ml, 'command', function() {
                 ml.parentNode.setAttribute('value',ml.value);
                 var file = new util.file('patron_search_prefs.'+obj.OpenILS.data.server_unadorned);
                 util.widgets.save_attributes(file, { 'search_depth_ml' : [ 'value' ], 'inactive' : [ 'value' ] });
@@ -291,7 +292,7 @@ patron.search_form.prototype = {
         }
 
         var cb = obj.controller.view.inactive;
-        cb.addEventListener('command',function() { 
+        obj.event_listeners.add(cb, 'command',function() {
                 cb.setAttribute('value',cb.checked ? "true" : "false");
                 var file = new util.file('patron_search_prefs.'+obj.OpenILS.data.server_unadorned);
                 util.widgets.save_attributes(file, { 'search_depth_ml' : [ 'value' ], 'inactive' : [ 'value' ] });
@@ -315,7 +316,7 @@ patron.search_form.prototype = {
                     }
                 )
             );
-            profile_ml.addEventListener('command', function() {
+            obj.event_listeners.add(profile_ml, 'command', function() {
                     profile_ml.parentNode.setAttribute('value', profile_ml.value);
                 }, false
             );
@@ -330,6 +331,12 @@ patron.search_form.prototype = {
             profile_ml.value = profile_ml.getAttribute('value');
         }
     },
+
+    'cleanup' : function() {
+        var obj = this;
+        obj.controller.cleanup();
+        obj.event_listeners.removeAll();    
+    }, 
 
     'on_submit' : function(q) {
         var msg = 'Query = ' + q;

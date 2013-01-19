@@ -25,10 +25,11 @@ function hold_cancel_init() {
         build_cancel_reason_menu();
 
         /* set widget behavior */
-        document.getElementById('cancel_btn').addEventListener(
+        window.hold_cancel_event_listeners = new EventListenerList();
+        window.hold_cancel_event_listeners.add(document.getElementById('cancel_btn'), 
             'command', function() { window.close(); }, false
         );
-        document.getElementById('apply_btn').addEventListener(
+        window.hold_cancel_event_listeners.add(document.getElementById('apply_btn'), 
             'command', 
             function() {
                 var note = document.getElementById('note_tb').value;
@@ -44,6 +45,16 @@ function hold_cancel_init() {
 
     } catch(E) {
         var err_prefix = 'hold_cancel.js -> hold_cancel_init() : ';
+        if (error) error.standard_unexpected_error_alert(err_prefix,E); else alert(err_prefix + E);
+    }
+
+}
+
+function hold_cancel_cleanup() {
+    try {
+        window.hold_cancel_event_listeners.removeAll();
+    } catch(E) {
+        var err_prefix = 'hold_cancel.js -> hold_cancel_cleanup() : ';
         if (error) error.standard_unexpected_error_alert(err_prefix,E); else alert(err_prefix + E);
     }
 

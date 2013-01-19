@@ -225,6 +225,12 @@ patron.items.prototype = {
         obj.controller.view.cmd_show_catalog2.setAttribute('disabled','true');
     },
 
+    'cleanup' : function() {
+        var obj = this;
+        obj.list.cleanup();
+        obj.list2.cleanup();
+    },
+
     'show_noncats' : function() {
         var obj = this; var checkout = {};
         try {

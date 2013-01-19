@@ -19,6 +19,7 @@
 
 <window id="hold_cancel_win" 
     onload="try { hold_cancel_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    onunload="try { hold_cancel_cleanup(); persist_helper_cleanup(); } catch(E) { alert(E); }"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
     title="&staff.hold_list.cancel_hold_dialog.title;">
 

@@ -73,6 +73,25 @@ patron.search_result.prototype = {
             },'mailing_')
         );
 
+        obj.dblclick_handler = function(ev) {
+            JSAN.use('util.functional');
+            var sel = obj.list.retrieve_selection();
+            var list = util.functional.map_list(
+                sel,
+                function(o) { return o.getAttribute('retrieve_id'); }
+            );
+            obj.controller.view.cmd_sel_clip.setAttribute('disabled', list.length < 1 );
+            if (typeof obj.on_dblclick == 'function') {
+                obj.on_dblclick(list);
+            }
+            if (typeof window.xulG == 'object' && typeof window.xulG.on_dblclick == 'function') {
+                obj.error.sdump('D_PATRON','patron.search_result: Calling external .on_dblclick()\n');
+                window.xulG.on_dblclick(list);
+            } else {
+                obj.error.sdump('D_PATRON','patron.search_result: No external .on_dblclick()\n');
+            }
+        };
+
         obj.list.init(
             {
                 'columns' : columns,
@@ -101,24 +120,7 @@ patron.search_result.prototype = {
                         }
                     );
                 },
-                'on_dblclick' : function(ev) {
-                    JSAN.use('util.functional');
-                    var sel = obj.list.retrieve_selection();
-                    var list = util.functional.map_list(
-                        sel,
-                        function(o) { return o.getAttribute('retrieve_id'); }
-                    );
-                    obj.controller.view.cmd_sel_clip.setAttribute('disabled', list.length < 1 );
-                    if (typeof obj.on_dblclick == 'function') {
-                        obj.on_dblclick(list);
-                    }
-                    if (typeof window.xulG == 'object' && typeof window.xulG.on_dblclick == 'function') {
-                        obj.error.sdump('D_PATRON','patron.search_result: Calling external .on_dblclick()\n');
-                        window.xulG.on_dblclick(list);
-                    } else {
-                        obj.error.sdump('D_PATRON','patron.search_result: No external .on_dblclick()\n');
-                    }
-                },
+                'on_dblclick' : obj.dblclick_handler,
                 'on_select' : function(ev) {
                     JSAN.use('util.functional');
                     var sel = obj.list.retrieve_selection();
@@ -182,6 +184,12 @@ patron.search_result.prototype = {
         );
 
         if (obj.query) obj.search(obj.query);
+    },
+
+    'cleanup' : function( params ) {
+        var obj = this;
+        obj.controller.cleanup();
+        obj.list.cleanup();
     },
 
     'search' : function(query) {

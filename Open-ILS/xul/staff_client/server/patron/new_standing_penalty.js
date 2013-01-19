@@ -30,7 +30,8 @@ function new_penalty_init() {
         }
 
         /* set widget behavior */
-        document.getElementById('csp_menulist').addEventListener(
+        window.new_standing_penalty_event_listeners = new EventListenerList();
+        window.new_standing_penalty_event_listeners.add(document.getElementById('csp_menulist'), 
             'command',
             function() {
                 document.getElementById('note_btn').checked = false;
@@ -39,7 +40,7 @@ function new_penalty_init() {
             },
             false
         );
-        document.getElementById('note_btn').addEventListener(
+        window.new_standing_penalty_event_listeners.add(document.getElementById('note_btn'), 
             'command', 
             function() { 
                 document.getElementById('csp_menulist').setAttribute('label',''); 
@@ -47,7 +48,7 @@ function new_penalty_init() {
             }, 
             false
         );
-        document.getElementById('alert_btn').addEventListener(
+        window.new_standing_penalty_event_listeners.add(document.getElementById('alert_btn'), 
             'command', 
             function() { 
                 document.getElementById('csp_menulist').setAttribute('label',''); 
@@ -55,7 +56,7 @@ function new_penalty_init() {
             }, 
             false
         );
-        document.getElementById('block_btn').addEventListener(
+        window.new_standing_penalty_event_listeners.add(document.getElementById('block_btn'), 
             'command', 
             function() { 
                 document.getElementById('csp_menulist').setAttribute('label',''); 
@@ -63,10 +64,10 @@ function new_penalty_init() {
             }, 
             false
         );
-        document.getElementById('cancel_btn').addEventListener(
+        window.new_standing_penalty_event_listeners.add(document.getElementById('cancel_btn'), 
             'command', function() { window.close(); }, false
         );
-        document.getElementById('apply_btn').addEventListener(
+        window.new_standing_penalty_event_listeners.add(document.getElementById('apply_btn'), 
             'command', 
             function() {
                 var note = document.getElementById('note_tb').value;
@@ -91,6 +92,16 @@ function new_penalty_init() {
 
     } catch(E) {
         var err_prefix = 'standing_penalties.js -> penalty_init() : ';
+        if (error) error.standard_unexpected_error_alert(err_prefix,E); else alert(err_prefix + E);
+    }
+
+}
+
+function new_penalty_cleanup() {
+    try {
+        window.new_standing_penalty_event_listeners.removeAll();
+    } catch(E) {
+        var err_prefix = 'standing_penalties.js -> penalty_cleanup() : ';
         if (error) error.standard_unexpected_error_alert(err_prefix,E); else alert(err_prefix + E);
     }
 

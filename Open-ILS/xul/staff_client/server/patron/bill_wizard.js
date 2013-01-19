@@ -116,7 +116,8 @@ function patron_bill_init() {
         );
         ml.setAttribute('id','billing_type');
         document.getElementById('menu_placeholder').appendChild(ml);
-        ml.addEventListener(
+        window.bill_wizard_event_listeners = new EventListenerList();
+        window.bill_wizard_event_listeners.add(ml, 
             'command',
             function() {
                 if ( g.OpenILS.data.hash.cbt[ ml.value ] ) {
@@ -147,6 +148,17 @@ function patron_bill_init() {
             retrieve_circ();
         }
 
+    } catch(E) {
+        var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/bill_wizard.xul', E]);
+        try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+        alert(err_msg);
+    }
+
+}
+
+function patron_bill_cleanup() {
+    try {
+        window.bill_wizard_event_listeners.removeAll();
     } catch(E) {
         var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/bill_wizard.xul', E]);
         try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }

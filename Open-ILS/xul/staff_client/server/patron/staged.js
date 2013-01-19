@@ -33,18 +33,29 @@ function staged_init() {
 
         dojo.require('openils.Util');
 
+        window.staged_event_listeners = new EventListenerList();
         populate_lib_menu();
         init_list();
         $('list_actions').appendChild( list.render_list_actions() );
         list.set_list_actions();
-        $('cmd_cancel').addEventListener('command', gen_event_handler('cancel'), false);
-        $('cmd_load').addEventListener('command', gen_event_handler('load'), false);
-        $('cmd_reload').addEventListener('command', function() { populate_list(); }, false);
+        window.staged_event_listeners.add($('cmd_cancel'), 'command', gen_event_handler('cancel'), false);
+        window.staged_event_listeners.add($('cmd_load'), 'command', gen_event_handler('load'), false);
+        window.staged_event_listeners.add($('cmd_reload'), 'command', function() { populate_list(); }, false);
         populate_list();
         default_focus();
 
     } catch(E) {
         var err_prefix = 'staged.js -> staged_init() : ';
+        if (error) error.standard_unexpected_error_alert(err_prefix,E); else alert(err_prefix + E);
+    }
+}
+
+function staged_cleanup() {
+    try {
+        list.cleanup();
+        window.staged_event_listeners.removeAll();
+    } catch(E) {
+        var err_prefix = 'staged.js -> staged_cleanup() : ';
         if (error) error.standard_unexpected_error_alert(err_prefix,E); else alert(err_prefix + E);
     }
 }
@@ -64,7 +75,7 @@ function populate_lib_menu() {
             var ml = util.widgets.make_menulist( list_data[0], menu_lib );
             ml.setAttribute('id','lib_menu');
             x.appendChild( ml );
-            ml.addEventListener(
+            window.staged_event_listeners.add(ml, 
                 'command',
                 function(ev) {
                     menu_lib = ev.target.value;

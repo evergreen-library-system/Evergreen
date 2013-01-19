@@ -24,6 +24,7 @@ patron.display.prototype = {
 
         var obj = this;
 
+        obj.event_listeners = new EventListenerList();
         obj.barcode = params['barcode'];
         obj.id = params['id'];
 
@@ -600,22 +601,22 @@ patron.display.prototype = {
             }
         );
 
-        var x = document.getElementById("PatronNavBar_checkout");
-        x.addEventListener( 'focus', function(xx) { return function() { try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible(xx); } catch(E) {}; } }(x), false);
-        var x = document.getElementById("PatronNavBar_refresh");
-        x.addEventListener( 'focus', function(xx) { return function() { try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible(xx); } catch(E) {}; } }(x), false);
-        var x = document.getElementById("PatronNavBar_items");
-        x.addEventListener( 'focus', function(xx) { return function() { try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible(xx); } catch(E) {}; } }(x), false);
-        var x = document.getElementById("PatronNavBar_holds");
-        x.addEventListener( 'focus', function(xx) { return function() { try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible(xx); } catch(E) {}; } }(x), false);
-        var x = document.getElementById("PatronNavBar_other");
-        x.addEventListener( 'focus', function(xx) { return function() { try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible(xx); } catch(E) {}; } }(x), false);
-        var x = document.getElementById("PatronNavBar_edit");
-        x.addEventListener( 'focus', function(xx) { return function() { try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible(xx); } catch(E) {}; } }(x), false);
-        var x = document.getElementById("PatronNavBar_bills");
-        x.addEventListener( 'focus', function(xx) { return function() { try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible(xx); } catch(E) {}; } }(x), false);
-        var x = document.getElementById("PatronNavBar_messages");
-        x.addEventListener( 'focus', function(xx) { return function() { try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible(xx); } catch(E) {}; } }(x), false);
+        var make_listener = function(xx) {
+            return function() { 
+                try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible(xx); } catch(E) {}; 
+            }
+        };
+
+        
+        var need_focus_listeners = [
+            'PatronNavBar_checkout', 'PatronNavBar_refresh', 'PatronNavBar_items', 'PatronNavBar_holds',
+            'PatronNavBar_other', 'PatronNavBar_edit', 'PatronNavBar_bills', 'PatronNavBar_messages'
+        ];
+        for (var i = 0; i < need_focus_listeners.length; i++) {
+            var elementID = need_focus_listeners[i];
+            var x = document.getElementById(elementID);
+            obj.event_listeners.add(x, 'focus', make_listener(x), false);
+        }
 
         if (obj.barcode || obj.id) {
             if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
@@ -672,6 +673,12 @@ patron.display.prototype = {
         } else {
             obj.render_search_form(params);
         }
+    },
+
+    'cleanup' : function( params ) {
+        var obj = this;
+        obj.controller.cleanup();
+        obj.event_listeners.removeAll();
     },
 
     'reset_nav_styling' : function(btn,dont_hide_summary) {
