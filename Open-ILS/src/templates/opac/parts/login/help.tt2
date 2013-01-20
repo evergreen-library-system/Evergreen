@@ -1,14 +1,15 @@
-<td class="login_boxes right_brain" align="center" valign="top" width="291">
+<div class="login-help-box">
 
-    <div style="padding: 25px; font-size: 1.5em;">
+    <div class="login-help-button">
         <a href="http://example.com" class="opac-button">[% l('Questions?') %]</a>
     </div>
 
-    <div style="width:182px;color:black;padding:5px 25px;">
+    <div>
         [% l('Visit our FAQs section for answers to common questions about how to use your account.') %]
     </div>
 
-    <div style="padding: 25px; font-size: 1.5em;">
+    <div class="login-help-button">
         <a href="http://example.com" class="opac-button">[% l('FAQs') %]</a>
     </div>
-</td>
+
+</div>

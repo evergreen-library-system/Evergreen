@@ -62,4 +62,4 @@
         </table>
     </form>
 </div>
-<div style='float:right; max-width: 200px; text-align: center; margin-right: 25%;'>[% INCLUDE "opac/parts/login/help.tt2" %]</div>
+[% INCLUDE "opac/parts/login/help.tt2" %]
