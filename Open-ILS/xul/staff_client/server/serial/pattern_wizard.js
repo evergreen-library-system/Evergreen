@@ -544,6 +544,13 @@ function ChronEditor() {
         }
     };
 
+    /* When a caption and pattern has no enumeration, the chronology
+     * fields should go into the enumeration fields. */
+    this._shift_to_enum = function(subfield) {
+        /* i -> a, j -> b, ... */
+        return String.fromCharCode(subfield.charCodeAt(0) - 8);
+    };
+
     this.remove_row = function(subfield) {
         if (this._test_removability(subfield)) {
             hard_empty(this.rows[subfield].element);
@@ -581,7 +588,7 @@ function ChronEditor() {
         (this.active ? show : hide)("chron_editor_here");
     };
 
-    this.compile = function() {
+    this.compile = function(enum_used) {
         if (!this.active) return [];
 
         return this.subfields.filter(
@@ -591,7 +598,12 @@ function ChronEditor() {
                 var caption = self.rows[subfield].fields.caption.value;
                 if (!self.rows[subfield].fields.display_in_holding.checked)
                     caption = "(" + caption + ")";
-                return result.concat([subfield, caption]);
+                return result.concat(
+                    [
+                        (enum_used ? subfield : self._shift_to_enum(subfield)),
+                        caption
+                    ]
+                );
             }, []
         );
     };
@@ -895,7 +907,7 @@ function Wizard() {
         ];
 
         code = code.concat(this.enum_editor.compile());
-        code = code.concat(this.chron_editor.compile());
+        code = code.concat(this.chron_editor.compile(this.enum_editor.active));
 
         code = code.concat("w", this.field_w.value);
 
