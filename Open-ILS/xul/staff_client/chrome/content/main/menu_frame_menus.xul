@@ -76,6 +76,9 @@
     <command id="cmd_about_config"
              perm="DEBUG_CLIENT"
              />
+    <command id="cmd_about_about"
+             perm="DEBUG_CLIENT"
+             />
 
     <command id="cmd_adv_user_edit" />
     <command id="cmd_console"
@@ -635,6 +638,7 @@
                 <menuitem label="&staff.main.menu.admin.extension_manager.label;" command="cmd_extension_manager"/>
                 <menuitem label="&staff.main.menu.admin.theme_manager.label;" command="cmd_theme_manager"/>
                 <menuitem label="&staff.main.menu.admin.about_config.label;" command="cmd_about_config"/>
+                <menuitem label="&staff.main.menu.admin.about_about.label;" command="cmd_about_about"/>
                 <menuitem label="&staff.main.menu.admin.venkman.label;" command="cmd_debug_venkman"/>
                 <menuitem label="&staff.main.auth.debug.inspector;" command="cmd_debug_inspector"/>
                 <menuitem label="&staff.main.auth.debug.chrome_list;" command="cmd_debug_chrome_list"/>

@@ -1,0 +1,13 @@
+New feature: add "about:about" to developer menu in staff client
+=================================================================
+
+about:about gives access to various XULRunner diagnostic tools.
+Useful ones include:
+
+about:buildconfig::
+    Get information about how the staff client is built.
+about:config::
+    Tweak XULRunner settings.
+about:memory::
+    Get detailed information about the memory usage of the staff
+    client.

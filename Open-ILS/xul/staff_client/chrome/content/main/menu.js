@@ -1492,6 +1492,12 @@ main.menu.prototype = {
                     obj.command_tab(event,'chrome://global/content/config.xul',{'tab_name' : 'about:config'},{});
                 }
             ],
+            'cmd_about_about' : [
+                ['oncommand'],
+                function(event) {
+                    obj.command_tab(event,'chrome://global/content/aboutAbout.xhtml',{'tab_name' : 'about:about'},{});
+                }
+            ],
             'cmd_shutdown' : [
                 ['oncommand'],
                 function() {
