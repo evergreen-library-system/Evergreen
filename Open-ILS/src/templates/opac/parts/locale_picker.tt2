@@ -1,5 +1,10 @@
 [%- IF ctx.locales.keys.size > 1;
-    set_locale = CGI.param('set_eg_locale') || CGI.cookie('eg_locale');
+
+    # Ensure the context locale is in xx_yy format
+    base_locale = ctx.locale FILTER lower;
+    base_locale = base_locale.replace('-','_');
+
+    set_locale = CGI.param('set_eg_locale') || CGI.cookie('eg_locale') || base_locale;
 %]
 <form id="locale_picker_form" action="[% mkurl() %]" method="post">
     <label for="locale_picker">[% l("Language:") %]</label>
