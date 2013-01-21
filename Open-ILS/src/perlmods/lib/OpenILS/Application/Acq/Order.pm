@@ -3437,6 +3437,7 @@ sub po_note_CUD_batch {
 
 
 # retrieves a lineitem, fleshes its PO and PL, checks perms
+# returns ($li, $evt, $org)
 sub fetch_and_check_li {
     my $e = shift;
     my $li_id = shift;
@@ -3447,18 +3448,21 @@ sub fetch_and_check_li {
         {   flesh => 1,
             flesh_fields => {jub => ['purchase_order', 'picklist']}
         }
-    ]) or return $e->die_event;
+    ]) or return (undef, $e->die_event);
 
+    my $org;
     if(my $po = $li->purchase_order) {
+        $org = $po->ordering_agency;
         my $perms = ($perm_mode eq 'read') ? 'VIEW_PURCHASE_ORDER' : 'CREATE_PURCHASE_ORDER';
-        return ($li, $e->die_event) unless $e->allowed($perms, $po->ordering_agency);
+        return ($li, $e->die_event) unless $e->allowed($perms, $org);
 
     } elsif(my $pl = $li->picklist) {
+        $org = $pl->org_unit;
         my $perms = ($perm_mode eq 'read') ? 'VIEW_PICKLIST' : 'CREATE_PICKLIST';
-        return ($li, $e->die_event) unless $e->allowed($perms, $pl->org_unit);
+        return ($li, $e->die_event) unless $e->allowed($perms, $org);
     }
 
-    return ($li);
+    return ($li, undef, $org);
 }
 
 
@@ -3591,6 +3595,185 @@ sub po_lineitems_no_copies {
 
     $conn->respond($_->{id}) for @$ids;
     return undef;
+}
+
+__PACKAGE__->register_method(
+    method => 'set_li_order_ident',
+    api_name => 'open-ils.acq.lineitem.order_identifier.set',
+    signature => {
+        desc => q/
+            Given an existing lineitem_attr (typically a marc_attr), this will
+            create a matching local_attr to store the name and value and mark
+            the attr as the order_ident.  Any existing local_attr marked as
+            order_ident is removed.
+        /,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => q/Args object:
+                source_attr_id : ID of the existing lineitem_attr to use as
+                    order ident.
+                lineitem_id : lineitem id
+                attr_name : name ('isbn', etc.) of a new marc_attr to add to 
+                    the lineitem to use for the order ident
+                attr_value : value for the new marc_attr
+                no_apply_bre : if set, newly added attrs will not be applied 
+                    to the lineitems' linked bib record/,
+                type => 'object'}
+        ],
+        return => {desc => q/Returns the attribute 
+            responsible for tracking the order identifier/}
+    }
+);
+
+sub set_li_order_ident {
+    my ($self, $conn, $auth, $args) = @_;
+    $args ||= {};
+
+    my $source_attr;
+    my $source_attr_id = $args->{source_attr_id};
+
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+
+    # fetch attr, LI, and check update permissions
+
+    my $li_id = $args->{lineitem_id};
+
+    if ($source_attr_id) {
+        $source_attr = $e->retrieve_acq_lineitem_attr($source_attr_id)
+            or return $e->die_event;
+        $li_id = $source_attr->lineitem;
+    }
+
+    my ($li, $evt, $perm_org) = fetch_and_check_li($e, $li_id, 'write');
+    return $evt if $evt;
+
+    return $e->die_event unless 
+        $e->allowed('ACQ_SET_LINEITEM_IDENTIFIER', $perm_org);
+
+    # if needed, create a new marc attr for 
+    # the lineitem to represent the ident value
+
+    ($source_attr, $evt) = apply_new_li_ident_attr(
+        $e, $li, $perm_org, $args->{attr_name}, $args->{attr_value}) 
+        unless $source_attr;
+
+    return $evt if $evt;
+
+    # remove the existing order_ident attribute if present
+
+    my $old_attr = $e->search_acq_lineitem_attr({
+        attr_type => 'lineitem_local_attr_definition',
+        lineitem => $li->id,
+        order_ident => 't'
+    })->[0];
+
+    if ($old_attr) {
+
+        # if we already have an order_ident that matches the 
+        # source attr, there's nothing left to do.
+
+        if ($old_attr->attr_name eq $source_attr->attr_name and
+            $old_attr->attr_value eq $source_attr->attr_value) {
+
+            $e->rollback;
+            return $old_attr;
+
+        } else {
+            # remove the old order_ident attribute
+            $e->delete_acq_lineitem_attr($old_attr) or return $e->die_event;
+        }
+    }
+
+    # make sure we have a local_attr_def to match the source attr def
+
+    my $local_def = $e->search_acq_lineitem_local_attr_definition({
+        code => $source_attr->attr_name
+    })->[0];
+
+    if (!$local_def) {
+        my $source_def = 
+            $e->retrieve_acq_lineitem_attr_definition($source_attr->definition);
+        $local_def = Fieldmapper::acq::lineitem_local_attr_definition->new;
+        $local_def->code($source_def->code);
+        $local_def->description($source_def->description);
+        $local_def = $e->create_acq_lineitem_local_attr_definition($local_def)
+            or return $e->die_event;
+    }
+
+    # create the new order_ident local attr
+
+    my $new_attr = Fieldmapper::acq::lineitem_attr->new;
+    $new_attr->definition($local_def->id);
+    $new_attr->attr_type('lineitem_local_attr_definition');
+    $new_attr->lineitem($li->id);
+    $new_attr->attr_name($source_attr->attr_name);
+    $new_attr->attr_value($source_attr->attr_value);
+    $new_attr->order_ident('t');
+
+    $new_attr = $e->create_acq_lineitem_attr($new_attr) 
+        or return $e->die_event;
+    
+    $e->commit;
+    return $new_attr;
+}
+
+
+# Given an isbn, issn, or upc, add the value to the lineitem marc.
+# Upon update, the value will be auto-magically represented as
+# a lineitem marc attr.
+# If the li is linked to a bib record and the user has the correct
+# permissions, update the bib record to match.
+sub apply_new_li_ident_attr {
+    my ($e, $li, $perm_org, $attr_name, $attr_value) = @_;
+
+    my %tags = (
+        isbn => '020',
+        issn => '022',
+        upc  => '024'
+    );
+
+    my $marc_field = MARC::Field->new(
+        $tags{$attr_name}, '', '','a' => $attr_value);
+
+    my $li_rec = MARC::Record->new_from_xml($li->marc, 'UTF-8', 'USMARC');
+    $li_rec->insert_fields_ordered($marc_field);
+
+    $li->marc(clean_marc($li_rec));
+    $li->editor($e->requestor->id);
+    $li->edit_time('now');
+
+    $e->update_acq_lineitem($li) or return (undef, $e->die_event);
+
+    my $source_attr = $e->search_acq_lineitem_attr({
+        attr_name => $attr_name,
+        attr_value => $attr_value,
+        attr_type => 'lineitem_marc_attr_definition'
+    })->[0];
+
+    if (!$source_attr) {
+        $logger->error("ACQ lineitem update failed to produce a matching ".
+            " marc attribute for $attr_name => $attr_value");
+        return (undef, OpenILS::Event->new('INTERNAL_SERVER_ERROR'));
+    }
+
+    return ($source_attr) unless 
+        $li->eg_bib_id and
+        $e->allowed('ACQ_ADD_LINEITEM_IDENTIFIER', $perm_org);
+
+    # li is linked to a bib record and user has the update perms
+
+    my $bre = $e->retrieve_biblio_record_entry($li->eg_bib_id);
+    my $bre_marc = MARC::Record->new_from_xml($bre->marc, 'UTF-8', 'USMARC');
+    $bre_marc->insert_fields_ordered($marc_field);
+
+    $bre->marc(clean_marc($bre_marc));
+    $bre->editor($e->requestor->id);
+    $bre->edit_date('now');
+
+    $e->update_biblio_record_entry($bre) or return (undef, $e->die_event);
+
+    return ($source_attr);
 }
 
 
