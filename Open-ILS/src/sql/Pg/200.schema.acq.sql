@@ -1019,6 +1019,11 @@ CREATE OR REPLACE FUNCTION public.extract_acq_marc_field ( BIGINT, TEXT, TEXT) R
 	SELECT extract_marc_field('acq.lineitem', $1, $2, $3);
 $$ LANGUAGE SQL;
 
+CREATE OR REPLACE FUNCTION public.extract_acq_marc_field_set ( BIGINT, TEXT, TEXT) RETURNS SETOF TEXT AS $$
+	SELECT extract_marc_field_set('acq.lineitem', $1, $2, $3);
+$$ LANGUAGE SQL;
+
+
 /*
 CREATE OR REPLACE FUNCTION public.extract_bib_marc_field ( BIGINT, TEXT ) RETURNS TEXT AS $$
 	SELECT public.extract_marc_field('biblio.record_entry', $1, $2);
@@ -1080,19 +1085,26 @@ BEGIN
                 END IF;
             ELSE
                 pos := 1;
-
                 LOOP
-    			    SELECT extract_acq_marc_field(id, xpath_string || '[' || pos || ']', adef.remove) INTO value FROM acq.lineitem WHERE id = NEW.id;
+                    -- each application of the regex may produce multiple values
+                    FOR value IN
+                        SELECT * FROM extract_acq_marc_field_set(
+                            NEW.id, xpath_string || '[' || pos || ']', adef.remove)
+                        LOOP
 
-    			    IF (value IS NOT NULL AND value <> '') THEN
-	    			    INSERT INTO acq.lineitem_attr (lineitem, definition, attr_type, attr_name, attr_value)
-		    			    VALUES (NEW.id, adef.id, atype, adef.code, value);
-                    ELSE
+                        IF (value IS NOT NULL AND value <> '') THEN
+                            INSERT INTO acq.lineitem_attr
+                                (lineitem, definition, attr_type, attr_name, attr_value)
+                                VALUES (NEW.id, adef.id, atype, adef.code, value);
+                        ELSE
+                            EXIT;
+                        END IF;
+                    END LOOP;
+                    IF NOT FOUND THEN
                         EXIT;
-			        END IF;
-
+                    END IF;
                     pos := pos + 1;
-                END LOOP;
+               END LOOP;
             END IF;
 
 		END IF;

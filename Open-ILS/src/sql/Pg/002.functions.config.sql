@@ -346,6 +346,29 @@ BEGIN
 END;
 $$ LANGUAGE PLPGSQL IMMUTABLE;
 
+CREATE OR REPLACE FUNCTION extract_marc_field_set
+        (TEXT, BIGINT, TEXT, TEXT) RETURNS SETOF TEXT AS $$
+DECLARE
+    query TEXT;
+    output TEXT;
+BEGIN
+    FOR output IN
+        SELECT x.t FROM (
+            SELECT id,t
+                FROM  oils_xpath_table(
+                    'id', 'marc', $1, $3, 'id = ' || $2)
+                AS t(id int, t text))x
+        LOOP
+        IF $4 IS NOT NULL THEN
+            SELECT INTO output (SELECT regexp_replace(output, $4, '', 'g'));
+        END IF;
+        RETURN NEXT output;
+    END LOOP;
+    RETURN;
+END;
+$$ LANGUAGE PLPGSQL IMMUTABLE;
+
+
 CREATE OR REPLACE FUNCTION extract_marc_field ( TEXT, BIGINT, TEXT ) RETURNS TEXT AS $$
     SELECT extract_marc_field($1,$2,$3,'');
 $$ LANGUAGE SQL IMMUTABLE;
