@@ -9,7 +9,9 @@
     </div>
 
     <div class="login-help-button">
-        <a href="http://example.com" class="opac-button">[% l('FAQs') %]</a>
+        <div class="opac-multiline-button">
+        <a href="http://example.com">[% l('FAQs') %]</a>
+	</div>
     </div>
 
 </div>

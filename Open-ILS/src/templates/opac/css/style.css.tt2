@@ -1154,6 +1154,8 @@ a.dash-link:hover { text-decoration: underline !important; }
     background-color: [% css_colors.accent_lighter %];
 }
 
+div.opac-multiline-button > a,
+.opac-multiline-button > a,
 .opac-button, .results_header_btns, #simple-detail-view-links { 
     color: [% css_colors.button_text %];
     font-weight: bold; 
@@ -1183,12 +1185,17 @@ a.dash-link:hover { text-decoration: underline !important; }
     display: table-cell;
 }
 
-a.opac-button:hover, .results_header_btns a:hover, #simple-detail-view-links a:hover {
+.opac-multiline-button > a:hover,
+.opac-button:hover, .results_header_btns a:hover, #simple-detail-view-links a:hover {
     background: [% css_colors.primary %];
     text-decoration: none;
 }
 
-a.opac-button, input.opac-button {
+.opac-multiline-button > a {
+    display:block;
+}
+
+.opac-multiline-button > a, a.opac-button, input.opac-button {
     margin: 10px;
     padding: 5px 10px 5px 10px;
 }
