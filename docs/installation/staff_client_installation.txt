@@ -76,7 +76,7 @@ indexterm:[staff client, building, Linux]
 +
 [source, bash]
 -------- 
-cd  /home/opensrf/Evergreen-ILS-2.3.1/Open-ILS/xul/staff_client
+cd  /home/opensrf/Evergreen-ILS-2.2.5/Open-ILS/xul/staff_client
 -------- 
 + 
 . _Make_  a linux staff client 
@@ -97,12 +97,12 @@ your staff client and version.
 . Within the folder, click on the _evergreen_ file to start the program.  
 + 
 Or, you can run the program from a terminal (command line). For example, if the
-evergreen files were extracted to a directory called  evergreen_client_2.3.1 in
+evergreen files were extracted to a directory called  evergreen_client_2.2.5 in
 your home directory, you can run it with: 
 + 
 [source, bash]
 --------
-~/evergreen_client_2.3.1/evergreen 
+~/evergreen_client_2.2.5/evergreen 
 --------
 
 Registering a Workstation
