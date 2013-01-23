@@ -8139,10 +8139,10 @@ $$
                 [% FOR note IN ftx_vals -%] "[% note %]"[% UNLESS loop.last %], [% END %][% END %] 
             ],            
 
-            "quantity":[% li.lineitem_details.size %],
+            "quantity":[% li.lineitem_details.size %]
 
             [%- IF INC_COPIES -%]
-            "copies" : [
+            ,"copies" : [
                 [%- compressed_copies = [];
                     FOR lid IN li.lineitem_details;
                         fund = lid.fund.code;

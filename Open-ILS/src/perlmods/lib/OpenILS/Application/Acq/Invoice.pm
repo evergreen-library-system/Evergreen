@@ -10,6 +10,18 @@ use OpenILS::Event;
 my $U = 'OpenILS::Application::AppUtils';
 
 
+sub _prepare_fund_debit_for_inv_item {
+    my ($debit, $item, $e) = @_;
+    $debit->fund($item->fund);
+    $debit->amount($item->amount_paid);
+    $debit->origin_amount($item->amount_paid);
+    $debit->origin_currency_type(
+        $e->retrieve_acq_fund($item->fund)->currency_type
+    ); # future: cache funds locally
+    $debit->encumbrance('f');
+    $debit->debit_type('direct_charge');
+}
+
 __PACKAGE__->register_method(
 	method => 'build_invoice_api',
 	api_name	=> 'open-ils.acq.invoice.update',
@@ -103,12 +115,7 @@ sub build_invoice_api {
                         $debit = Fieldmapper::acq::fund_debit->new;
                         $debit->isnew(1);
                     }
-                    $debit->fund($item->fund);
-                    $debit->amount($item->amount_paid);
-                    $debit->origin_amount($item->amount_paid);
-                    $debit->origin_currency_type($e->retrieve_acq_fund($item->fund)->currency_type); # future: cache funds locally
-                    $debit->encumbrance('f');
-                    $debit->debit_type('direct_charge');
+                    _prepare_fund_debit_for_inv_item($debit, $item, $e);
 
                     if($debit->isnew) {
                         $e->create_acq_fund_debit($debit) or return $e->die_event;
@@ -140,11 +147,30 @@ sub build_invoice_api {
 
 
             } elsif($item->ischanged) {
+                my $debit;
 
-                my $debit = $e->retrieve_acq_fund_debit($item->fund_debit) or return $e->die_event;
+                if (!$item->fund_debit) {
+                    # No fund_debit yet? Make one now.
+                    $debit = Fieldmapper::acq::fund_debit->new;
+                    $debit->isnew(1);
+
+                    _prepare_fund_debit_for_inv_item($debit, $item, $e);
+                } else {
+                    $debit = $e->retrieve_acq_fund_debit($item->fund_debit) or
+                        return $e->die_event;
+                }
+
                 $debit->amount($item->amount_paid);
                 $debit->fund($item->fund);
-                $e->update_acq_fund_debit($debit) or return $e->die_event;
+
+                if ($debit->isnew) {
+                    # Making a new debit, so make it and link our item to it.
+                    $e->create_acq_fund_debit($debit) or return $e->die_event;
+                    $item->fund_debit($e->data->id);
+                } else {
+                    $e->update_acq_fund_debit($debit) or return $e->die_event;
+                }
+
                 $e->update_acq_invoice_item($item) or return $e->die_event;
             }
         }
