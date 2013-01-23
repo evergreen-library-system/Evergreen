@@ -1587,7 +1587,7 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
         'Allows a user to make changes to best-hold selection sort order', 'ppl', 'description')),
  ( 547, 'ACQ_ADD_LINEITEM_IDENTIFIER', oils_i18n_gettext(547,
         'When granted, newly added lineitem identifiers will propagate to linked bib records', 'ppl', 'description')),
- ( 548, 'ACQ_SET_LINEITEM_IDENTIFIER', oils_i18n_gettext(549,
+ ( 548, 'ACQ_SET_LINEITEM_IDENTIFIER', oils_i18n_gettext(548,
         'Allows staff to change the lineitem identifier', 'ppl', 'description'))
 ;
 
@@ -6586,11 +6586,12 @@ date <b>[% date.format(date.now, '%Y%m%d') %]</b>
     [% price = li.estimated_unit_price %]
     [% litotal = (price * count) %]
     [% subtotal = subtotal + litotal %]
-    [% isbn = PROCESS get_li_attr attr_name = 'isbn' %]
-    [% ident = PROCESS get_li_attr attr_name = 'identifier' %]
-
+    [% 
+        ident_attr = helpers.get_li_order_ident(li.attributes);
+        SET ident_value = ident_attr.attr_value IF ident_attr;
+    %]
     <td>[% target.id %]</td>
-    <td>[% isbn || ident %]</td>
+    <td>[% ident_value %]</td>
     <td>[% PROCESS get_li_attr attr_name = 'title' %]</td>
     <td>[% count %]</td>
     <td>[% price %]</td>
@@ -8120,15 +8121,24 @@ $$
         [%- FOR li IN target.lineitems %]
         {
             "line_index":"[% li.id %]",
-            "identifiers":[   [%-# li.isbns = helpers.get_li_isbns(li.attributes) %]
-            [% FOR isbn IN helpers.get_li_isbns(li.attributes) -%]
-                [% IF isbn.length == 13 -%]
-                {"id-qualifier":"EN","id":"[% isbn %]"},
-                [% ELSE -%]
-                {"id-qualifier":"IB","id":"[% isbn %]"},
-                [%- END %]
-            [% END %]
-                {"id-qualifier":"IN","id":"[% li.id %]"}
+            "identifiers":[   
+            [%- 
+                idval = '';
+                idqual = 'EN'; # default ISBN/UPC/EAN-13
+                ident_attr = helpers.get_li_order_ident(li.attributes);
+                IF ident_attr;
+                    idname = ident_attr.attr_name;
+                    idval = ident_attr.attr_value;
+                    IF idname == 'isbn' AND idval.length != 13;
+                        idqual = 'IB';
+                    ELSIF idname == 'issn';
+                        idqual = 'IS';
+                    END;
+                ELSE;
+                    idqual = 'IN';
+                    idval = li.id;
+                END -%]
+                {"id-qualifier":"[% idqual %]","id":"[% idval %]"}
             ],
             "price":[% li.estimated_unit_price || '0.00' %],
             "desc":[

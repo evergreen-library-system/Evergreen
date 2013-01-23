@@ -199,6 +199,36 @@ $_TT_helpers = {
         return @isbns;
     },
 
+    get_li_order_ident => sub {
+        my $attrs = shift;
+
+        # preferred identifier
+        my ($attr) =  grep { $U->is_true($_->order_ident) } @$attrs;
+        return $attr if $attr;
+
+        # note we're not using get_li_attr, since we need the 
+        # attr object and not just the attr value
+
+        # isbn-13
+        ($attr) = grep { 
+            $_->attr_name eq 'isbn' and 
+            $_->attr_type eq 'lineitem_marc_attr_definition' and
+            length($_->attr_value) == 13
+        } @$attrs;
+        return $attr if $attr;
+
+        for my $name (qw/isbn issn upc/) {
+            ($attr) = grep { 
+                $_->attr_name eq $name and 
+                $_->attr_type eq 'lineitem_marc_attr_definition'
+            } @$attrs;
+            return $attr if $attr;
+        }
+
+        # any 'identifier' attr
+        return ( grep { $_->attr_name eq 'identifier' } @$attrs)[0];
+    },
+
     # helpers.get_li_attr('isbn_13', li.attributes)
     # returns matching line item attribute, or undef
     get_li_attr => \&get_li_attr,
