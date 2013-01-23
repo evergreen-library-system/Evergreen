@@ -47,19 +47,14 @@ my %map = (
     path     => 'remote_path',
 );
 
+my $VENDOR_KLUDGE_MAP = {
+    INVOIC => {
+        amount_billed_is_per_unit => [1699342]
+    },
+    ORDRSP => {
+    }
+};
 
-## Just for debugging stuff:
-sub add_a_msg {
-    my ($self, $conn) = @_;
-    my $e = new_editor(xact=>1);
-    my $incoming = Fieldmapper::acq::edi_message->new;
-    $incoming->edi("This is content");
-    $incoming->account(1);
-    $incoming->remote_file('in/some_file.edi');
-    $e->create_acq_edi_message($incoming);;
-    $e->commit;
-}
-# __PACKAGE__->register_method( method => 'add_a_msg', api_name => 'open-ils.acq.edi.add_a_msg');  # debugging
 
 __PACKAGE__->register_method(
 	method    => 'retrieve',
@@ -93,71 +88,109 @@ sub retrieve_core {
     foreach my $account (@$set) {
         my $count = 0;
         my $server;
-        $logger->info("EDI check for vendor " . ++$vcount . " of " . scalar(@$set) . ": " . $account->host);
-        unless ($server = __PACKAGE__->remote_account($account)) {   # assignment, not comparison
-            $logger->err(sprintf "Failed remote account mapping for %s (%s)", $account->host, $account->id);
+        $logger->info(
+            "EDI check for vendor " .
+            ++$vcount . " of " . scalar(@$set) . ": " . $account->host
+        );
+        unless ($server = __PACKAGE__->remote_account($account)) { # assignment
+            $logger->err(
+                sprintf "Failed remote account mapping for %s (%s)",
+                $account->host, $account->id
+            );
             next;
         };
-#       my $rf_starter = './';  # default to current dir
+
         if ($account->in_dir) { 
             if ($account->in_dir =~ /\*+.*\//) {
-                $logger->err("EDI in_dir has a slash after an asterisk in value: '" . $account->in_dir . "'.  Skipping account with indeterminate target dir!");
+                $logger->err(
+                    "EDI in_dir has a slash after an asterisk in value: '" .
+                    $account->in_dir .
+                    "'.  Skipping account with indeterminate target dir!"
+                );
                 next;
             }
-#           $rf_starter = $account->in_dir;
-#           $rf_starter =~ s/((\/)?[^\/]*)\*+[^\/]*$//;  # kill up to the first (possible) slash before the asterisk: keep the preceeding static dir
-#           $rf_starter .= '/' if $rf_starter or $2;   # recap the dir, or replace leading "/" if there was one (but don't add if empty)
         }
+
         my @files    = ($server->ls({remote_file => ($account->in_dir || './')}));
         my @ok_files = grep {$_ !~ /\/\.?\.$/ and $_ ne '0'} @files;
         $logger->info(sprintf "%s of %s files at %s/%s", scalar(@ok_files), scalar(@files), $account->host, $account->in_dir);   
-        # $server->remote_path(undef);
+
         foreach my $remote_file (@ok_files) {
-            # my $remote_file = $rf_starter . $_;
             my $description = sprintf "%s/%s", $account->host, $remote_file;
             
-            # deduplicate vs. acct/filenames already in DB
-            my $hits = $e->search_acq_edi_message([
-                {
-                    account     => $account->id,
-                    remote_file => $remote_file,
-                    status      => {'in' => [qw/ processed /]},     # if it never got processed, go ahead and get the new one (try again)
-                    # create_time => 'NOW() - 60 DAYS',     # if we wanted to allow filenames to be reused after a certain time
-                    # ideally we would also use the date from FTP, but that info isn't available via RemoteAccount
-                }
-                # { flesh => 1, flesh_fields => {...}, }
-            ]);
-            if (scalar(@$hits)) {
+            # deduplicate vs. acct/filenames already in DB.
+            #
+            # The reason we match against host/username/password/in_dir
+            # is that there may be many variant accounts that point to the
+            # same FTP site and credentials.  If we only checked based on
+            # acq.edi_account.id, we'd not find out in those cases that we've
+            # already processed the same file before.
+            my $hits = $e->search_acq_edi_message(
+                [
+                    {
+                        "+acqedi" => {
+                            host => $account->host,
+                            username => $account->username,
+                            password => $account->password,
+                            in_dir => $account->in_dir
+                        },
+                        remote_file => $remote_file,
+                        status      => {'in' => [qw/ processed /]},
+                    },
+                    { join => {"acqedi" => {}}, limit => 1 }
+                ], { idlist => 1 }
+            );
+
+            if (!$hits) {
+                my $msg = "EDI: test for already-retrieved files yielded " .
+                    "event " . $e->event->{textcode};
+                $logger->warn($msg);
+                warn $msg;
+                return $e->die_event;
+            }
+
+            if (@$hits) {
                 $logger->debug("EDI: $remote_file already retrieved.  Skipping");
                 warn "EDI: $remote_file already retrieved.  Skipping";
                 next;
             }
 
             ++$count;
-            $max and $count > $max and last;
-            $logger->info(sprintf "%s of %s targets: %s", $count, scalar(@ok_files), $description);
-            print sprintf "%s of %s targets: %s\n", $count, scalar(@ok_files), $description;
+            if ($max and $count > $max) {
+                last;
+            }
+
+            $logger->info(
+                sprintf "%s of %s targets: %s",
+                    $count, scalar(@ok_files), $description
+            );
+            printf("%d of %d targets: %s\n", $count, scalar(@ok_files), $description);
             if ($test) {
                 push @return, "test_$count";
                 next;
             }
             my $content;
             my $io = IO::Scalar->new(\$content);
-            unless ( $server->get({remote_file => $remote_file, local_file => $io}) ) {
+
+            unless (
+                $server->get({remote_file => $remote_file, local_file => $io})
+            ) {
                 $logger->error("(S)FTP get($description) failed");
                 next;
             }
-            my $incoming = __PACKAGE__->process_retrieval($content, $remote_file, $server, $account->id);
-#           $server->delete(remote_file => $_);   # delete remote copies of saved message
+
+            my $incoming = __PACKAGE__->process_retrieval(
+                $content, $remote_file, $server, $account->id
+            );
+
             push @return, @$incoming;
         }
     }
     return \@return;
 }
 
-# my $msg_ids = OpenILS::Application::Acq::EDI->process_retrieval(
-#   $file_content, $remote_filename, $server, $account_id, $editor);
 
+# procses_retrieval() returns a reference to a list of acq.edi_message IDs
 sub process_retrieval {
     my ($class, $content, $filename, $server, $account_or_id) = @_;
     $content or return;
@@ -208,6 +241,7 @@ sub process_retrieval {
         $e->xact_begin;
         $incoming = $e->retrieve_acq_edi_message($incoming->id);
         if ($@) {
+            $logger->error($@);
             $incoming->status('proc_error');
             $incoming->error($@);
         } else {
@@ -224,63 +258,95 @@ sub process_retrieval {
 
 # ->send_core
 # $account     is a Fieldmapper object for acq.edi_account row
-# $messageset  is an arrayref with acq.edi_message.id values
+# $message_ids is an arrayref with acq.edi_message.id values
 # $e           is optional editor object
 sub send_core {
     my ($class, $account, $message_ids, $e) = @_;    # $e is a working editor
 
-    ($account and scalar @$message_ids) or return;
+    return unless $account and @$message_ids;
     $e ||= new_editor();
 
     $e->xact_begin;
     my @messageset = map {$e->retrieve_acq_edi_message($_)} @$message_ids;
     $e->xact_rollback;
     my $m_count = scalar(@messageset);
-    (scalar(@$message_ids) == $m_count) or
+    if (@$message_ids != $m_count) {
         $logger->warn(scalar(@$message_ids) - $m_count . " bad IDs passed to send_core (ignored)");
+    }
 
     my $log_str = sprintf "EDI send to edi_account %s (%s)", $account->id, $account->host;
     $logger->info("$log_str: $m_count message(s)");
-    $m_count or return;
+    return unless $m_count;
 
     my $server;
     my $server_error;
-    unless ($server = __PACKAGE__->remote_account($account, 1)) {   # assignment, not comparison
+    unless ($server = __PACKAGE__->remote_account($account, 1)) { # assignment
         $logger->error("Failed remote account connection for $log_str");
         $server_error = 1;
-    };
+    }
+
     foreach (@messageset) {
         $_ or next;     # we already warned about bum ids
         my ($res, $error);
         if ($server_error) {
-            $error = "Server error: Failed remote account connection for $log_str"; # already told $logger, this is to update object below
+            # We already told $logger; this is to update object below
+            $error = "Server error: Failed remote account connection ".
+                "for $log_str";
         } elsif (! $_->edi) {
-            $logger->error("Message (id " . $_->id. ") for $log_str has no EDI content");
+            $logger->error(
+                "Message (id " . $_->id. ") for $log_str has no EDI content"
+            );
             $error = "EDI empty!";
-        } elsif ($res = $server->put({remote_path => $account->path, content => $_->edi, single_ext => 1})) {
+        } elsif (
+            $res = $server->put({
+                remote_path => $account->path, content => $_->edi,
+                    single_ext => 1
+            })
+        ) {
             #  This is the successful case!
             $_->remote_file($res);
             $_->status('complete');
-            $_->process_time('NOW');    # For outbound files, sending is the end of processing on the EG side.
+            $_->process_time('NOW');
+
+            # For outbound files, sending is the end of processing on
+            # the EG side.
+
             $logger->info("Sent message (id " . $_->id. ") via $log_str");
         } else {
-            $logger->error("(S)FTP put to $log_str FAILED: " . ($server->error || 'UNKOWNN'));
+            $logger->error(
+                "(S)FTP put to $log_str FAILED: " .
+                ($server->error || 'UNKOWNN')
+            );
             $error = "put FAILED: " . ($server->error || 'UNKOWNN');
         }
+
         if ($error) {
             $_->error($error);
             $_->error_time('NOW');
         }
+
         $logger->info("Calling update_acq_edi_message");
         $e->xact_begin;
+
         unless ($e->update_acq_edi_message($_)) {
-             $logger->error("EDI send_core update_acq_edi_message failed for message object: " . Dumper($_));
-             OpenILS::Application::Acq::EDI::Translator->debug_file(Dumper($_              ), '/tmp/update_acq_edi_message.FAIL');
-             OpenILS::Application::Acq::EDI::Translator->debug_file(Dumper($_->to_bare_hash), '/tmp/update_acq_edi_message.FAIL.to_bare_hash');
+             $logger->error(
+                 "EDI send_core update_acq_edi_message failed " .
+                 "for message object: " . Dumper($_)
+             );
+
+             OpenILS::Application::Acq::EDI::Translator->debug_file(
+                 Dumper($_),
+                 '/tmp/update_acq_edi_message.FAIL'
+             );
+             OpenILS::Application::Acq::EDI::Translator->debug_file(
+                 Dumper($_->to_bare_hash),
+                 '/tmp/update_acq_edi_message.FAIL.to_bare_hash'
+             );
         }
+
         # There's always an update, even if we failed.
         $e->xact_commit;
-        __PACKAGE__->record_activity($account, $e);  # There's always an update, even if we failed.
+        __PACKAGE__->record_activity($account, $e);
     }
     return \@messageset;
 }
@@ -288,17 +354,23 @@ sub send_core {
 #  attempt_translation does not touch the DB, just the object.  
 sub attempt_translation {
     my ($class, $edi_message, $to_edi) = @_;
-    my $tran  = translator();
-    my $ret   = $to_edi ? $tran->json2edi($edi_message->jedi) : $tran->edi2json($edi_message->edi);
-#   $logger->error("json: " . Dumper($json)); # debugging
 
-    if (not $ret or (! ref($ret)) or $ret->is_fault) {      # RPC::XML::fault on failure
+    my $ret = $to_edi ? translator->json2edi($edi_message->jedi) :
+        translator->edi2json($edi_message->edi);
+
+    if (not $ret or (! ref($ret)) or $ret->is_fault) {
+        # RPC::XML::fault on failure
+
         $edi_message->status('trans_error');
         $edi_message->error_time('NOW');
-        my $pre = "EDI Translator " . ($to_edi ? 'json2edi' : 'edi2json') . " failed";
+        my $pre = "EDI Translator " .
+            ($to_edi ? 'json2edi' : 'edi2json') . " failed";
+
         my $message = ref($ret) ? 
-                      ("$pre, Error " . $ret->code . ": " . __PACKAGE__->nice_string($ret->string)) :
-                      ("$pre: "                           . __PACKAGE__->nice_string($ret)        ) ;
+            ("$pre, Error " . $ret->code . ": " .
+                __PACKAGE__->nice_string($ret->string)) :
+            ("$pre: " . __PACKAGE__->nice_string($ret)) ;
+
         $edi_message->error($message);
         $logger->error($message);
         return;
@@ -312,6 +384,7 @@ sub attempt_translation {
     } else {
         $edi_message->jedi($ret->value);   # translator returns an object
     }
+
     return $edi_message;
 }
 
@@ -331,7 +404,6 @@ sub retrieve_vendors {
             }
         }
     ]);
-#   {"id":{"!=":null},"+acqpro":{"active":"t"}}, {"join":"acqpro", "flesh_fields":{"acqedi":["provider"]},"flesh":1}
 }
 
 # This is the SRF-exposed call, so it does checkauth
@@ -425,18 +497,95 @@ sub nice_string {
     # return substr($string,0,$head) . "... " . substr($string, -1*$tail);
 }
 
+# process_message_buyer() is used in processing both INVOIC
+# messages as well as ORDRSP ones.  As such, the $eg_inv parameter is
+# optional.
+sub process_message_buyer {
+    my ($class, $e, $msg_hash, $message,  $log_prefix, $eg_inv) = @_;
+
+    # some vendors encode the account number as the SAN.
+    # starting with the san value, then the account value, 
+    # treat each as a san, then an acct number until the first success
+    for my $buyer ( ($msg_hash->{buyer_san}, $msg_hash->{buyer_acct}) ) {
+        next unless $buyer;
+
+        # some vendors encode the SAN as "$SAN $vendcode"
+        my $vendcode;
+        ($buyer, $vendcode) = $buyer =~ /(\S+)\s*(\S+)?$/;
+
+        my $addr = $e->search_actor_org_address(
+            {valid => "t", san => $buyer})->[0];
+
+        if ($addr) {
+
+            $eg_inv->receiver($addr->org_unit) if $eg_inv;
+
+            my $orig_acct = $e->retrieve_acq_edi_account($message->account);
+
+            if (defined($vendcode) and ($orig_acct->vendcode ne $vendcode)) {
+                # The vendcode can give us the opportunity to change the
+                # acq.edi_account with which our acq.edi_message is associated
+                # in case it's wrong.
+
+                my $other_accounts = $e->search_acq_edi_account(
+                    {
+                        vendcode => $vendcode,
+                        host => $orig_acct->host,
+                        username => $orig_acct->username,
+                        password => $orig_acct->password,
+                        in_dir => $orig_acct->in_dir
+                    }
+                );
+
+                if (@$other_accounts) {
+                    # We can update this object because the caller saves
+                    # it with cstore later.
+                    $message->account($other_accounts->[0]->id);
+
+                    $logger->info(
+                        $log_prefix . sprintf(
+                            "changing edi_account from %d to %d based on " .
+                            "vendcode '%s'",
+                            $orig_acct->id, $message->account, $vendcode
+                        )
+                    );
+                }
+            }
+
+            last;
+
+        } elsif ($eg_inv) {
+
+            my $acct = $e->search_acq_edi_account({vendacct => $buyer})->[0];
+
+            if ($acct) {
+                $eg_inv->receiver($acct->owner);
+                last;
+            }
+        }
+    }
+}
+
 # parts of this process can fail without the entire
 # thing failing.  If a catastrophic error occurs,
 # it will occur via die.
 sub process_parsed_msg {
     my ($class, $account, $incoming, $msg_hash) = @_;
 
+    # INVOIC
     if ($incoming->message_type eq 'INVOIC') {
         return $class->create_acq_invoice_from_edi(
             $msg_hash, $account->provider, $incoming);
     }
 
     # ORDRSP
+
+    #  First do this for the whole message...
+    $class->process_message_buyer(
+        new_editor, $msg_hash, $incoming, "ORDRSP processing"
+    );
+
+    #  ... now do this stuff per-lineitem.
     for my $li_hash (@{$msg_hash->{lineitems}}) {
         my $e = new_editor(xact => 1);
 
@@ -686,13 +835,26 @@ sub edi_date_to_iso {
 }
 
 
+# Return hash with a key for every kludge that should apply for this
+# msg_type (INVOIC,ORDRSP) and this vendor SAN.
+sub get_kludges {
+    my ($class, $msg_type, $vendor_san) = @_;
+
+    my @kludges;
+    while (my ($kludge, $vendors) = each %{$VENDOR_KLUDGE_MAP->{$msg_type}}) {
+        push @kludges, $kludge if grep { $_ eq $vendor_san } @$vendors;
+    }
+
+    return map { $_ => 1 } @kludges;
+}
+
 # create_acq_invoice_from_edi() does what it sounds like it does for INVOIC
 # messages.  For similar operation on ORDRSP messages, see the guts of
 # process_jedi().
 # Return boolean success indicator.
 sub create_acq_invoice_from_edi {
-    my ($class, $invoice, $provider, $message) = @_;
-    # $invoice is O::U::EDIReader hash
+    my ($class, $msg_data, $provider, $message) = @_;
+    # $msg_data is O::U::EDIReader hash
     # $provider is only a pkey
     # $message is Fieldmapper::acq::edi_message
 
@@ -701,7 +863,25 @@ sub create_acq_invoice_from_edi {
     my $log_prefix = "create_acq_invoice_from_edi(..., <acq.edi_message #" .
         $message->id . ">): ";
 
+    my %msg_kludges;
+    if ($msg_data->{vendor_san}) {
+        %msg_kludges = $class->get_kludges('INVOIC', $msg_data->{vendor_san});
+    } else {
+        $logger->warn($log_prefix . "no vendor_san field!");
+    }
+
     my $eg_inv = Fieldmapper::acq::invoice->new;
+
+    # Some troubleshooting aids.  Yeah we should have made appropriate links
+    # for this in the schema, but this is better than nothing.  Probably
+    # *don't* try to i18n this.
+    $eg_inv->note("Generated from acq.edi_message #" . $message->id . ".");
+    if (%msg_kludges) {
+        $eg_inv->note(
+            $eg_inv->note .
+            " Vendor kludges: " . join(", ", keys(%msg_kludges)) . "."
+        );
+    }
 
     $eg_inv->provider($provider);
     $eg_inv->shipper($provider);    # XXX Do we really have a meaningful way to
@@ -709,63 +889,33 @@ sub create_acq_invoice_from_edi {
     $eg_inv->recv_method("EDI");
 
     $eg_inv->recv_date(
-        $class->edi_date_to_iso($invoice->{invoice_date}));
+        $class->edi_date_to_iso($msg_data->{invoice_date}));
 
 
-    # some vendors encode the account number as the SAN.
-    # starting with the san value, then the account value, 
-    # treat each as a san, then an acct number until the first success
-    for my $buyer ( ($invoice->{buyer_san}, $invoice->{buyer_acct}) ) {
-        next unless $buyer;
-
-        # some vendors encode the SAN as "$SAN $vendcode"
-        $buyer =~ s/\s.*//g;
-
-        my $addr = $e->search_actor_org_address(
-            {valid => "t", san => $buyer})->[0];
-
-        if ($addr) {
-
-            $eg_inv->receiver($addr->org_unit);
-            last;
-
-        } else {
-
-            my $acct = $e->search_acq_edi_account({vendacct => $buyer})->[0];
-
-            if ($acct) {
-                $eg_inv->receiver($acct->owner);
-                last;
-            }
-        }
-    }
+    $class->process_message_buyer($e, $msg_data, $message, $log_prefix, $eg_inv);
 
     if (!$eg_inv->receiver) {
-        $logger->error($log_prefix . 
+        die($log_prefix .
             sprintf("unable to determine buyer (org unit) in invoice; ".
                 "buyer_san=%s; buyer_acct=%s",
-                ($invoice->{buyer_san} || ''), 
-                ($invoice->{buyer_acct} || '')
+                ($msg_data->{buyer_san} || ''), 
+                ($msg_data->{buyer_acct} || '')
             )
         );
-        return 0;
     }
 
-    $eg_inv->inv_ident($invoice->{invoice_ident});
+    $eg_inv->inv_ident($msg_data->{invoice_ident});
 
     if (!$eg_inv->inv_ident) {
-        $logger->error(
-            $log_prefix . "no invoice ID # in INVOIC message; " . shift
-        );
-        return 0;
+        die($log_prefix . "no invoice ID # in INVOIC message; " . shift);
     }
 
     my @eg_inv_entries;
     my @eg_inv_cancel_lis;
 
-    $message->purchase_order($invoice->{purchase_order});
+    $message->purchase_order($msg_data->{purchase_order});
 
-    for my $lineitem (@{$invoice->{lineitems}}) {
+    for my $lineitem (@{$msg_data->{lineitems}}) {
         my $li_id = $lineitem->{id};
 
         if (!$li_id) {
@@ -776,9 +926,7 @@ sub create_acq_invoice_from_edi {
         my $li = $e->retrieve_acq_lineitem($li_id);
 
         if (!$li) {
-            $logger->warn($log_prefix . 
-                "no LI found with ID: $li_id : " . $e->event);
-            return 0;
+            die($log_prefix . "no LI found with ID: $li_id : " . $e->event);
         }
 
         my ($quant) = grep {$_->{code} eq '47'} @{$lineitem->{quantities}};
@@ -793,6 +941,8 @@ sub create_acq_invoice_from_edi {
         # NOTE: if needed, we also have $lineitem->{net_unit_price}
         # and $lineitem->{gross_unit_price}
         my $lineitem_price = $lineitem->{amount_billed};
+
+        $lineitem_price *= $quantity if $msg_kludges{amount_billed_is_per_unit};
 
         # if the top-level PO value is unset, get it from the first LI
         $message->purchase_order($li->purchase_order)
@@ -821,6 +971,10 @@ sub create_acq_invoice_from_edi {
         push @eg_inv_cancel_lis, 
             {lineitem => $li, quantity => $quantity} 
             if $li->cancel_reason;
+
+        # The EDIReader class does detect certain per-lineitem taxes, but
+        # we'll ignore them for now, as the only sample invoices I've yet seen
+        # containing them also had a final cumulative tax at the end.
     }
 
     my @eg_inv_items;
@@ -828,31 +982,33 @@ sub create_acq_invoice_from_edi {
     my %charge_type_map = (
         'TX' => ['TAX', 'Tax from electronic invoice'],
         'CA' => ['PRO', 'Cataloging services'], 
-        'DL' => ['SHP', 'Delivery']
-    );
+        'DL' => ['SHP', 'Delivery'],
+        'GST' => ['TAX', 'Goods and services tax']
+    ); # XXX i18n, somehow
 
-    for my $charge (@{$invoice->{misc_charges}}) {
+    for my $charge (@{$msg_data->{misc_charges}}, @{$msg_data->{taxes}}) {
         my $eg_inv_item = Fieldmapper::acq::invoice_item->new;
 
-        my $amount = $charge->{charge_amount};
+        my $amount = $charge->{amount};
 
         if (!$amount) {
             $logger->warn($log_prefix . "charge with no amount");
             next;
         }
 
-        my $map = $charge_type_map{$charge->{charge_type}};
+        my $map = $charge_type_map{$charge->{type}};
 
         if (!$map) {
             $map = [
                 'PRO',
-                'Unknown charge type ' .  $charge->{charge_type}
+                'Unknown charge type ' .  $charge->{type}
             ];
         }
 
         $eg_inv_item->inv_item_type($$map[0]);
-        $eg_inv_item->note($$map[1]);
+        $eg_inv_item->title($$map[1]);  # title is user-visible; note isn't.
         $eg_inv_item->cost_billed($amount);
+        $eg_inv_item->amount_paid($amount);
 
         push @eg_inv_items, $eg_inv_item;
     }
@@ -865,16 +1021,12 @@ sub create_acq_invoice_from_edi {
 
     # save changes to acq.edi_message row
     if (not $e->update_acq_edi_message($message)) {
-        $logger->error(
-            $log_prefix . "couldn't update edi_message " . $message->id
-        );
-        return 0;
+        die($log_prefix . "couldn't update edi_message " . $message->id);
     }
 
     # create EG invoice
     if (not $e->create_acq_invoice($eg_inv)) {
-        $logger->error($log_prefix . "couldn't create invoice: " . $e->event);
-        return 0;
+        die($log_prefix . "couldn't create invoice: " . $e->event);
     }
 
     # Now we have a pkey for our EG invoice, so set the invoice field on all
@@ -883,11 +1035,10 @@ sub create_acq_invoice_from_edi {
     foreach (@eg_inv_entries) {
         $_->invoice($eg_inv_id);
         if (not $e->create_acq_invoice_entry($_)) {
-            $logger->error(
+            die(
                 $log_prefix . "couldn't create entry against lineitem " .
                 $_->lineitem . ": " . $e->event
             );
-            return 0;
         }
     }
 
@@ -895,10 +1046,7 @@ sub create_acq_invoice_from_edi {
     foreach (@eg_inv_items) {
         $_->invoice($eg_inv_id);
         if (not $e->create_acq_invoice_item($_)) {
-            $logger->error(
-                $log_prefix . "couldn't create inv item: " . $e->event
-            );
-            return 0;
+            die($log_prefix . "couldn't create inv item: " . $e->event);
         }
     }
 
@@ -944,10 +1092,9 @@ sub create_acq_invoice_from_edi {
 
             $lid->clear_cancel_reason;
             unless ($e->update_acq_lineitem_detail($lid)) {
-                $logger->error($log_prefix . 
+                die($log_prefix .
                     "couldn't clear lid cancel reason: ". $e->die_event
                 );
-                return 0;
             }
         }
 
@@ -956,10 +1103,9 @@ sub create_acq_invoice_from_edi {
         $li->edit_time('now'); 
 
         unless ($e->update_acq_lineitem($li)) {
-            $logger->error($log_prefix . 
+            die($log_prefix .
                 "couldn't clear li cancel reason: ". $e->die_event
             );
-            return 0;
         }
     }
 

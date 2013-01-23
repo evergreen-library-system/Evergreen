@@ -17,9 +17,10 @@ use strict; use warnings;
 
 my $NEW_MSG_RE = '^UNH'; # starts a new message
 my $NEW_LIN_RE = '^LIN'; # starts a new line item
+my $END_ALL_LIN = '^UNS'; # no more lineitems after this
 
 my %edi_fields = (
-    message_type    => qr/^UNH\+\d+\+(\S{6})/,
+    message_type    => qr/^UNH\+[A-z0-9]+\+(\S{6})/,
     buyer_san       => qr/^NAD\+BY\+([^:]+)::31B/,
     buyer_acct      => qr/^NAD\+BY\+([^:]+)::91/,
     vendor_san      => qr/^NAD\+SU\+([^:]+)::31B/,
@@ -31,7 +32,7 @@ my %edi_fields = (
 );
 
 my %edi_li_fields = (
-    id      => qr/^RFF\+LI:\S+\/(\S+)/,
+    id      => qr/^RFF\+LI:(?:\S+\/)?(\d+)/,
     index   => qr/^LIN\+([^\+]+)/,
     amount_billed   => qr/^MOA\+203:([^:]+)/,
     net_unit_price  => qr/^PRI\+AAA:([^:]+)/,
@@ -54,8 +55,15 @@ my %edi_li_quant_fields = (
 );
 
 my %edi_charge_fields = (
-    charge_type   => qr/^ALC\+C\++([^\+]+)/,
-    charge_amount => qr/^MOA\+(8|131):([^:]+)/
+    type   => qr/^ALC\+C\++([^\+]+)/,
+    amount => qr/^MOA\+(?:8|131|304):([^:]+)/
+);
+
+# This may need to be liberalized later, but it works for the only example I
+# have so far.
+my %edi_tax_fields = (
+    type   => qr/^TAX\+7\+([^\+]+)/,
+    amount => qr/^MOA\+124:([^:]+)/
 );
 
 sub new {
@@ -92,7 +100,7 @@ sub read {
         # - starting a new message
 
         if (/$NEW_MSG_RE/) { 
-            $msg = {lineitems => [], misc_charges => []};
+            $msg = {lineitems => [], misc_charges => [], taxes => []};
             push(@msgs, $msg);
         }
 
@@ -139,7 +147,7 @@ sub read {
 
         # - starting a new misc. charge
 
-        if (/$edi_charge_fields{charge_type}/) {
+        if (/$edi_charge_fields{type}/) {
             $msg->{_current_charge} = {};
             push (@{$msg->{misc_charges}}, $msg->{_current_charge});
         }
@@ -150,6 +158,36 @@ sub read {
             for my $field (keys %edi_charge_fields) {
                 ($charge->{$field}) = $_ =~ /$edi_charge_fields{$field}/
                     if /$edi_charge_fields{$field}/;
+            }
+        }
+
+        # - starting a new tax charge.  Taxes wind up on current lineitem if
+        # any, otherwise in the top-level taxes array
+
+        if (/$edi_tax_fields{type}/) {
+            $msg->{_current_tax} = {};
+            if ($msg->{_current_li}) {
+                $msg->{_current_li}{tax} = $msg->{_current_tax}
+            } else {
+                push (@{$msg->{taxes}}, $msg->{_current_tax});
+            }
+        }
+
+        # - extract tax field
+
+        if (my $tax = $msg->{_current_tax}) {
+            for my $field (keys %edi_tax_fields) {
+                ($tax->{$field}) = $_ =~ /$edi_tax_fields{$field}/
+                    if /$edi_tax_fields{$field}/;
+            }
+        }
+
+        # This helps avoid associating taxes and charges at the end of the
+        # message with the final lineitem inapporiately.
+        if (/$END_ALL_LIN/) {
+            # remove the state-maintenance keys
+            foreach (grep /^_/, keys %$msg) {
+                delete $msg->{$_};
             }
         }
     }
