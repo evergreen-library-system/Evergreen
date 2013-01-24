@@ -16,6 +16,7 @@ util.controller.prototype = {
 
         if (typeof params.control_map == 'undefined') throw('util.controller.init: No control_map');
 
+        this.event_listeners = new EventListenerList();
         this.control_map = params.control_map;
         this.window_knows_me_by = params.window_knows_me_by;
         this.render_list = [];
@@ -38,13 +39,18 @@ util.controller.prototype = {
                                 cmd.setAttribute(ev_type, s);
                                 this.cmds[i] = this.control_map[i][1];
                             break;
-                            default: cmd.addEventListener(ev_type,this.control_map[i][1],false);
+                            default: this.event_listeners.add(cmd, ev_type,this.control_map[i][1],false);
                         }
                     }
                 }
             }
             this.view[i] = cmd;
         }
+    },
+
+    'cleanup' : function() {
+        var obj = this;
+        obj.event_listeners.removeAll();
     },
 
     'render' : function(id,param) {
