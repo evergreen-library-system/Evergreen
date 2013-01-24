@@ -1637,6 +1637,7 @@ patron.holds.prototype = {
         var obj = this;
         obj.controller.cleanup();
         obj.list.cleanup();
+        obj.list.clear();
         obj.event_listeners.removeAll();
     },
 

@@ -190,6 +190,7 @@ patron.search_result.prototype = {
         var obj = this;
         obj.controller.cleanup();
         obj.list.cleanup();
+        obj.list.clear();
     },
 
     'search' : function(query) {

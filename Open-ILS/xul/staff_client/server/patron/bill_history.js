@@ -288,7 +288,9 @@ function my_init() {
 function my_cleanup() {
     try {
         g.bill_list.cleanup();
+        g.bill_list.clear();
         g.payments_list.cleanup();
+        g.payments_list.clear();
         window.bill_history_event_listeners.removeAll();
     } catch(E) {
         var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/bill_history.xul', E]);

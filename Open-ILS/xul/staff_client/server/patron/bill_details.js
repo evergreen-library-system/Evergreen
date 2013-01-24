@@ -252,7 +252,9 @@ function my_init() {
 function my_cleanup() {
     try {
         g.bill_list.cleanup();
+        g.bill_list.clear();
         g.payment_list.cleanup();
+        g.payment_list.clear();
         window.bill_details_event_listeners.removeAll();
     } catch(E) {
         try { g.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.bill_details.my_cleanup.error'),E); } catch(F) { alert(E); }
