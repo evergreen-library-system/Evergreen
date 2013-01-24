@@ -256,6 +256,7 @@
             } else {
                 base_key_suffix = '';
             }
+            window.persist_helper_event_listeners = new EventListenerList();
 
             function gen_event_handler(etype,node) {
                 return function(ev) {
@@ -408,12 +409,12 @@
                     }
                 }
                 if (cmd_el) {
-                    cmd_el.addEventListener(
+                    window.persist_helper_event_listeners.add(cmd_el, 
                         'command',
                         gen_event_handler('command',cmd_el),
                         false
                     );
-                    cmd_el.addEventListener(
+                    window.persist_helper_event_listeners.add(cmd_el, 
                         'oils_persist',
                         gen_oils_persist_handler( base_key, nodes[i] ),
                         false
@@ -439,13 +440,13 @@
                         }
                     }
                     for (var j = 0; j < event_types.length; j++) {
-                        node.addEventListener(
+                        window.persist_helper_event_listeners.add(node, 
                             event_types[j],
                             gen_event_handler(event_types[j],node),
                             false
                         );
                     }
-                    node.addEventListener(
+                    window.persist_helper_event_listeners.add(node, 
                         'oils_persist',
                         gen_oils_persist_handler( base_key, node ),
                         false
@@ -454,6 +455,14 @@
             }
         } catch(E) {
             alert('Error in persist_helper(): ' + E);
+        }
+    }
+
+    function persist_helper_cleanup() {
+        try {
+            window.persist_helper_event_listeners.removeAll();
+        } catch(E) {
+            alert('Error in persist_helper_cleanup(): ' + E);
         }
     }
 
