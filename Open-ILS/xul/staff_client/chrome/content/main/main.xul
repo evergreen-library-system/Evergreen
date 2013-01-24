@@ -45,6 +45,7 @@
         <script type="text/javascript" src="../OpenILS/util/OrgTree.js" />
         -->
         <script type="text/javascript" src="../OpenILS/util/org_utils.js" />   
+        <script type="text/javascript" src="../OpenILS/event_util.js" />   
     </scripts>
     <script>dump('Loaded main/main.xul\n');</script>
 

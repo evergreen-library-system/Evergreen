@@ -60,6 +60,7 @@
         <script type="text/javascript" src="util/md5.js" />
         <script type="text/javascript" src="util/JSON_v1.js" />
         <script type="text/javascript" src="global_util.js" />   
+        <script type="text/javascript" src="event_util.js" />   
         <hbox id="debug_box" hidden="true" flex="1" style="border: red thin dashed">
             <label value="Debug:" />
             <textbox id="debug_tb" flex="1"/>
