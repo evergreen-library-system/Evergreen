@@ -73,6 +73,7 @@
         <script type='text/javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js' />
         <script type="text/javascript" src="/opac/common/js/org_utils.js" />   
         <script type="text/javascript" src="global_util.js" />   
+        <script type="text/javascript" src="event_util.js" />   
         <menupopup id="clipboard">
             <menuitem label="&common.textbox.cut;" oncommand="util.clipboard.cut()" />
             <menuitem label="&common.textbox.copy;" oncommand="util.clipboard.copy()" />
