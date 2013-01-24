@@ -272,6 +272,7 @@ circ.checkout.prototype = {
 
     'cleanup' : function() {
         var obj = this;
+        obj.list.cleanup();
         obj.controller.cleanup();
         obj.event_listeners.removeAll();
     },
