@@ -32,6 +32,7 @@ function my_init() {
 function my_cleanup() {
     try {
         list.cleanup();
+        list.clear();
     } catch(E) {
         var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/info_group.xul', E]);
         try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }

@@ -933,8 +933,14 @@ patron.summary.prototype = {
 
     'cleanup' : function() {
         var obj = this;
-        if (typeof obj.group_list != 'undefined') obj.group_list.cleanup();
-        if (typeof obj.stat_cat_list != 'undefined') obj.stat_cat_list.cleanup();
+        if (typeof obj.group_list != 'undefined') {
+            obj.group_list.cleanup();
+            obj.group_list.clear();
+        }
+        if (typeof obj.stat_cat_list != 'undefined') {
+            obj.stat_cat_list.cleanup();
+            obj.stat_cat_list.clear();
+        }
         obj.controller.cleanup();
         obj.event_listeners.removeAll();
     },

@@ -68,6 +68,7 @@ function my_cleanup() {
     try {
         window.bill_event_listeners.removeAll();
         g.bill_list.cleanup();
+        g.bill_list.clear();
     } catch(E) {
         var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/bill2.xul', E]);
         try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }

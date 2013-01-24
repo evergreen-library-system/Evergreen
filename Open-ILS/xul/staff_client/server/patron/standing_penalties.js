@@ -48,7 +48,9 @@ function penalty_cleanup() {
     try {
         window.standing_penalties_event_listeners.removeAll();
         list.cleanup();
+        list.clear();
         archived_list.cleanup();
+        archived_list.clear();
     } catch(E) {
         var err_prefix = 'standing_penalties.js -> penalty_cleanup() : ';
         if (error) error.standard_unexpected_error_alert(err_prefix,E); else alert(err_prefix + E);

@@ -32,6 +32,7 @@ function my_init() {
 function my_cleanup() {
     try {
         g.list.cleanup();
+        g.list.clear();
     } catch(E) {
         try { g.error.standard_unexpected_error_alert('/xul/server/patron/hold_notices.xul',E); } catch(E) { alert('FIXME: ' + js2JSON(E)); }
     }

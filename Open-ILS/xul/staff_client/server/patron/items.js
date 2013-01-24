@@ -228,7 +228,9 @@ patron.items.prototype = {
     'cleanup' : function() {
         var obj = this;
         obj.list.cleanup();
+        obj.list.clear();
         obj.list2.cleanup();
+        obj.list2.clear();
     },
 
     'show_noncats' : function() {

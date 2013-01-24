@@ -53,6 +53,7 @@ function staged_init() {
 function staged_cleanup() {
     try {
         list.cleanup();
+        list.clear();
         window.staged_event_listeners.removeAll();
     } catch(E) {
         var err_prefix = 'staged.js -> staged_cleanup() : ';
