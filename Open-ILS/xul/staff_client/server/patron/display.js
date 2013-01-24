@@ -677,6 +677,12 @@ patron.display.prototype = {
 
     'cleanup' : function( params ) {
         var obj = this;
+        delete obj.search_result;
+        delete obj.search_window;
+        delete obj.patron;
+        delete obj.items_window;
+        delete obj.summary_window;
+        delete obj.checkout_window;
         obj.controller.cleanup();
         obj.event_listeners.removeAll();
     },
