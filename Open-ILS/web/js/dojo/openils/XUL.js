@@ -1,7 +1,6 @@
 if(!dojo._hasResource["openils.XUL"]) {
 
     dojo.provide("openils.XUL");
-    dojo.require('dojo.cookie');
     dojo.declare('openils.XUL', null, {});
 
     openils.XUL.isXUL = function() {
@@ -175,5 +174,27 @@ if(!dojo._hasResource["openils.XUL"]) {
             return 0;
         }
     };
+
+    // returns a ref to a XUL localStorage interface
+    // localStorage is not directly accessible within oils://
+    // http://fartersoft.com/blog/2011/03/07/using-localstorage-in-firefox-extensions-for-persistent-data-storage/
+    openils.XUL.localStorage = function() {
+
+        // in browser mode, use the standard localStorage interface
+        if (!openils.XUL.isXUL()) 
+            return window.localStorage;
+
+        var url = location.protocol + '//' + location.hostname;
+        var ios = Components.classes["@mozilla.org/network/io-service;1"]
+                  .getService(Components.interfaces.nsIIOService);
+        var ssm = Components.classes["@mozilla.org/scriptsecuritymanager;1"]
+                  .getService(Components.interfaces.nsIScriptSecurityManager);
+        var dsm = Components.classes["@mozilla.org/dom/storagemanager;1"]
+                  .getService(Components.interfaces.nsIDOMStorageManager);
+        var uri = ios.newURI(url, "", null);
+        var principal = ssm.getCodebasePrincipal(uri);
+        return dsm.getLocalStorageForPrincipal(principal, "");
+    };
+
  }catch (e) {/*meh*/}
 }
