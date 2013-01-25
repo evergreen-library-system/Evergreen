@@ -21,6 +21,11 @@ var usingNewPl = false;
 
 function init() {
     dojo.byId('acq-pl-upload-ses').value = openils.User.authtoken;
+    vlAgent = new VLAgent();
+    vlAgent.init(init2);
+}
+
+function init2() {
 
     loadYearSelector();
 
@@ -30,7 +35,10 @@ function init() {
         orgLimitPerms : ['CREATE_PICKLIST', 'CREATE_PURCHASE_ORDER'],
         parentNode : dojo.byId('acq-pl-upload-provider'),
     }).build(
-        function(w) { providerWidget = w }
+        function(w) { 
+            providerWidget = w;
+            vlAgent.readCachedValue(w, 'provider');
+        }
     );
 
     new openils.widget.AutoFieldWidget({
@@ -41,12 +49,13 @@ function init() {
     }).build(
         function(w) { 
             orderAgencyWidget = w 
+            vlAgent.readCachedValue(w, 'ordering_agency');
             dojo.connect(orderAgencyWidget, 'onChange', setDefaultFiscalYear);
         }
     );
 
-    vlAgent = new VLAgent();
-    vlAgent.init();
+    vlAgent.readCachedValue(acqPlUploadCreatePo, 'create_po');
+    vlAgent.readCachedValue(acqPlUploadActivatePo, 'activate_po');
 
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.picklist.user.retrieve.atomic'],
@@ -80,6 +89,13 @@ function setDefaultFiscalYear(org) {
 }
 
 function acqUploadRecords() {
+
+    // persist widget values
+    vlAgent.writeCachedValue(acqPlUploadCreatePo, 'create_po');
+    vlAgent.writeCachedValue(acqPlUploadActivatePo, 'activate_po');
+    vlAgent.writeCachedValue(providerWidget, 'provider');
+    vlAgent.writeCachedValue(orderAgencyWidget, 'ordering_agency');
+
     openils.Util.show('acq-pl-upload-progress');
     var picklist = acqPlUploadPlSelector.attr('value');
     if(picklist) {

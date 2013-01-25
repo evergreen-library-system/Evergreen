@@ -1,5 +1,29 @@
 dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('openils.PermaCrud');
+dojo.require('openils.XUL');
+
+var xulStorage = openils.XUL.localStorage();
+var storekey = 'eg.acq.upload.';
+var osetkey = 'acq.upload.default.';
+var persistOrgSettings;
+
+// map local dijit keys/names to their org setting counterparts
+var setNameMap = {
+    match_set : 'vandelay.match_set',
+    merge_profile : 'vandelay.merge_profile',
+    create_assets : 'vandelay.load_item_for_imported',
+    match_quality_ratio : 'vandelay.quality_ratio',
+    auto_overlay_1match : 'vandelay.merge_on_single',
+    import_no_match : 'vandelay.import_non_matching',
+    fall_through_merge_profile : 'vandelay.low_quality_fall_thru_profile',
+    auto_overlay_exact : 'vandelay.merge_on_exact',
+    auto_overlay_best_match : 'vandelay.merge_on_best'
+}
+
+// per-UI setting to change this?
+// if true, set default widget values from org settings
+// (when defined) regardless of any locally persisted value
+var ouSettingTrumpsPersist = true;
 
 function VLAgent(args) {
     args = args || {};
@@ -21,31 +45,70 @@ function VLAgent(args) {
         {key : 'fall_through_merge_profile', cls : 'vmp'},
         {key : 'existing_queue', cls : 'vbq'}
     ];
-    
+
     this.loaded = false;
 
-    this.init = function() {
+    this.init = function(oncomplete) {
+        var self = this;
+
+        // load org unit persist setting values
+        fieldmapper.standardRequest(
+            ['open-ils.actor','open-ils.actor.ou_setting.ancestor_default.batch'],
+            {   async : true,
+                params : [
+                    new openils.User().user.ws_ou(),
+                    [   osetkey + 'create_po',
+                        osetkey + 'activate_po',
+                        osetkey + 'provider',
+                        osetkey + 'vandelay.match_set',
+                        osetkey + 'vandelay.merge_profile',
+                        osetkey + 'vandelay.import_non_matching',
+                        osetkey + 'vandelay.merge_on_exact',
+                        osetkey + 'vandelay.merge_on_best',
+                        osetkey + 'vandelay.merge_on_single',
+                        osetkey + 'vandelay.quality_ratio',
+                        osetkey + 'vandelay.low_quality_fall_thru_profile',
+                        osetkey + 'vandelay.load_item_for_imported'
+                    ]
+                ],
+                oncomplete : function(r) {
+                    persistOrgSettings = openils.Util.readResponse(r);
+                    self.init2();
+                    if (oncomplete) 
+                        oncomplete();
+                }
+            }
+        );
+    };
+
+    this.init2 = function() {
         var self = this;
 
         dojo.forEach(this.widgets,
             function(widg) {
+                var key = widg.key;
+
                 if (widg.cls) { // selectors
 
                     new openils.widget.AutoFieldWidget({
                         fmClass : widg.cls,
                         selfReference : true,
                         orgLimitPerms : [self.limitPerm || 'CREATE_PURCHASE_ORDER'],
-                        parentNode : dojo.byId('acq_vl:' + widg.key),
+                        parentNode : dojo.byId('acq_vl:' + key),
                         searchFilter : (widg.cls == 'vbq') ? {queue_type : 'acq'} : null,
                         useWriteStore :  (widg.cls == 'vbq')
-                    }).build(function(dijit) { 
-                        widg.dijit = dijit; 
+                    }).build(function(dij) { 
+                        widg.dijit = dij; 
+                        if (!key.match(/queue/))
+                            self.readCachedValue(dij, key);
                         self.attachOnChange(widg);
                     }); 
 
                 } else { // bools
-                    widg.dijit = dijit.byId('acq_vl:' + widg.key);
+                    widg.dijit = dijit.byId('acq_vl:' + key);
                     if (!widg.dijit) return; // some fields optional
+                    if (!key.match(/queue/))
+                        self.readCachedValue(widg.dijit, key);
                     self.attachOnChange(widg);
                 }
             }
@@ -131,11 +194,15 @@ function VLAgent(args) {
     }
 
     this.values = function() {
+        var self = this;
         var values = {};
         dojo.forEach(this.widgets,
             function(widg) {
-                if (widg.dijit)
+                if (widg.dijit) {
                     values[widg.key] = widg.dijit.attr('value');
+                    if (!widg.key.match(/queue/))
+                        self.writeCachedValue(widg.dijit, widg.key);
+                }
             }
         );
         return values;
@@ -189,5 +256,39 @@ function VLAgent(args) {
         }
 
         return false; // not yet complete
-    }
+    };
+
+    this.readCachedValue = function(dij, key) {
+        var val;
+        var setname = osetkey + (setNameMap[key] ? setNameMap[key] : key);
+
+        if (ouSettingTrumpsPersist && persistOrgSettings[setname]) {
+            val = persistOrgSettings[setname].value;
+        } else {
+            val = xulStorage.getItem(storekey + key);
+            if (!val && persistOrgSettings[setname])
+                val = persistOrgSettings[setname].value;
+        }
+
+        if (val) dij.attr('value', val);
+        return val;
+    };
+
+    this.writeCachedValue = function(dij, key) {
+        var setname = osetkey + (setNameMap[key] ? setNameMap[key] : key);
+
+        if (ouSettingTrumpsPersist && persistOrgSettings[setname]) {
+            // don't muck up localStorage if we're using org settings
+            xulStorage.removeItem(storekey + key);
+
+        } else {
+            var val = dij.attr('value');
+
+            if (val === null || val === false || val == '') {
+                xulStorage.removeItem(storekey + key);
+            } else {
+                xulStorage.setItem(storekey + key, val);
+            }
+        }
+    };
 }
