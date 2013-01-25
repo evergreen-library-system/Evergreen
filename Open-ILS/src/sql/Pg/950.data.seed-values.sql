@@ -350,7 +350,7 @@ INSERT INTO config.i18n_locale (code,marc_code,name,description)
 -- Z39.50 server attributes
 
 INSERT INTO config.z3950_source (name, label, host, port, db, auth)
-	VALUES ('loc', oils_i18n_gettext('loc', 'Library of Congress', 'czs', 'label'), 'z3950.loc.gov', 7090, 'Voyager', FALSE);
+	VALUES ('loc', oils_i18n_gettext('loc', 'Library of Congress', 'czs', 'label'), 'lx2.loc.gov', 210, 'LCDB', FALSE);
 INSERT INTO config.z3950_source (name, label, host, port, db, auth)
 	VALUES ('oclc', oils_i18n_gettext('oclc', 'OCLC', 'czs', 'label'), 'zcat.oclc.org', 210, 'OLUCWorldCat', TRUE);
 INSERT INTO config.z3950_source (name, label, host, port, db, auth)
@@ -361,7 +361,7 @@ INSERT INTO config.z3950_attr (id, source, name, label, code, format)
 INSERT INTO config.z3950_attr (id, source, name, label, code, format)
 	VALUES (2, 'loc', 'isbn', oils_i18n_gettext(2, 'ISBN', 'cza', 'label'), 7, 6);
 INSERT INTO config.z3950_attr (id, source, name, label, code, format)
-	VALUES (3, 'loc', 'lccn', oils_i18n_gettext(3, 'LCCN', 'cza', 'label'), 9, 1);
+	VALUES (3, 'loc', 'lccn', oils_i18n_gettext(3, 'LCCN', 'cza', 'label'), 9, 6);
 INSERT INTO config.z3950_attr (id, source, name, label, code, format)
 	VALUES (4, 'loc', 'author', oils_i18n_gettext(4, 'Author', 'cza', 'label'), 1003, 6);
 INSERT INTO config.z3950_attr (id, source, name, label, code, format)
