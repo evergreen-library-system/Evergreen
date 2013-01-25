@@ -51,8 +51,8 @@
     <div style="width:662px;">
         <div style="float:left;">
             <div style="padding:10px 0px;">
-            [%- IF date.format(ctx.user.expire_date, '%s') < date.format(date.now , '%s');
-               fmt_expire_date = date.format(ctx.user.expire_date, DATE_FORMAT);
+            [%- IF date.format(ctx.parse_datetime(ctx.user.expire_date), '%s') < date.format(date.now , '%s');
+               fmt_expire_date = date.format(ctx.parse_datetime(ctx.user.expire_date), DATE_FORMAT);
             %]
             <span class="alert">[% l("Your library card expired on [_1]. Please contact a librarian to resolve this issue.", fmt_expire_date) %]</span>
             [% END %]
