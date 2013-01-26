@@ -1,10 +1,10 @@
 Receive Items From an Invoice
------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This feature enables users to receive items from an invoice.  Staff can receive individual copies, or they can receive items in batch.
 
 Receive Items in Batch (List Mode)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In this example, we have created a purchase order, added line items and copies, and activated the purchase order.  We will create an invoice from the purchase order, receive items, and invoice them.  We will receive the items in batch from the invoice.
 
@@ -46,7 +46,7 @@ image::media/Receive_Items_From_an_Invoice4.jpg[Receive_Items_From_an_Invoice4]
 
 
 Receive Specific Copies (Numeric Mode)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In this example, we have created a purchase order, added line items and copies, and activated the purchase order.  We will create an invoice from the purchase order, receive items, and invoice them. We will receive specific copies from the invoice.  This function may be useful to libraries who purchase items that have been barcoded by their vendor. 
 
