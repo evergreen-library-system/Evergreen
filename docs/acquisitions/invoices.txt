@@ -60,6 +60,12 @@ you entered.  If you have not entered the invoice details, then Evergreen
 removes this limit.  
 . Sort by title (optional).  By default, results are listed by line item
 number.  Check this box to sort by ascending title.
+. Building the results list progressively (optional). By default, new search
+results will replace previous results on the screen. Check this box for the
+search results list to build with each subsequent search. This option is useful
+for libraries that might search for line items by scanning an ISBN. Several
+ISBNs can be scanned and then the entire result set can be selected and moved
+to the invoice in a batch.
 . Click *Search*.
 +    
 image::media/Search_for_line_items_from_an_invoice2.jpg[Search_for_line_items_from_an_invoice2]
