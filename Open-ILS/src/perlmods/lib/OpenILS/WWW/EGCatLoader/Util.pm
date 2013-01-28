@@ -392,7 +392,8 @@ sub _get_pref_lib {
         return OpenSRF::Utils::JSON->JSON2perl($lset->value) if $lset;
 
         # Otherwise return the user's home library
-        return $ctx->{user}->home_ou;
+        my $ou = $ctx->{user}->home_ou;
+        return ref($ou) ? $ou->id : $ou;
     }
 
     if ($ctx->{physical_loc}) {
