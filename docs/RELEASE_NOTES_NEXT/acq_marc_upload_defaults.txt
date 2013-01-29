@@ -1,0 +1,7 @@
+Acquisitions MARC Upload Form Persistence
+=========================================
+Adds a two-layer persistence mechanism for the acquisitions MARC file upload
+interface.  A set of org unit settings now exist for managing default values
+for the interface.  Additionally, for each field where no org unit setting
+value is configured, the last-used value will be persisted locally and re-
+used with subsequent loads of the interface.
