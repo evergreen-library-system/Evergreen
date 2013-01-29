@@ -99,38 +99,52 @@ END;
             [% END # is_staff %]
             [% IF ctx.is_staff OR serial_holdings %]
             <td header='copy_header_holdable'>[%  # Show copy/volume hold links to staff (without
-                    # checking whether they have permissions to do those).
-                    overall_holdable = (
-                        copy_info.holdable == 't' AND
-                        copy_info.location_holdable == 't' AND
-                        copy_info.status_holdable == 't');
-                    IF overall_holdable;
-                        l("Place on");
-                        IF ctx.is_staff;
-                    %]
-                <a href="[% mkurl(ctx.opac_root _ '/place_hold', 
-                    {hold_target => copy_info.id, hold_type => 'C', hold_source_page => mkurl()}) %]">[% l("copy") %]</a>
-                [%-      IF copy_info.call_number != last_cn;
-                            last_cn = copy_info.call_number;
-                            l(" / "); %]
-                <a href="[% mkurl(ctx.opac_root _ '/place_hold', 
-                    {hold_target => copy_info.call_number, hold_type => 'V', hold_source_page => mkurl()}) %]">[% l("volume") %]</a>
-                [%-      END;
-                         IF serial_holdings;
-                            l(" / ");
-                         END;
+                # checking whether they have permissions to do those).
+                overall_holdable = (
+                    copy_info.holdable == 't' AND
+                    copy_info.location_holdable == 't' AND
+                    copy_info.status_holdable == 't'
+                );
+                IF overall_holdable;
+                    hold_link = '';
+                    param_sep = l(" / ");
+
+                    # Only staff get to place copy or volume holds
+                    IF ctx.is_staff; 
+                        hold_link = '<a href="' _
+                            mkurl(ctx.opac_root _ '/place_hold', {
+                                hold_target => copy_info.id,
+                                hold_type => 'C',
+                                hold_source_page => mkurl()
+                            }) _ '">' _ l('Copy hold') _ '</a>';
+                        IF copy_info.call_number != last_cn;
+                            last_cn = copy_info.call_number; 
+                            hold_link = hold_link _ param_sep;
+                            hold_link = hold_link _ '<a href="' _
+                                mkurl(ctx.opac_root _ '/place_hold', {
+                                    hold_target => copy_info.call_number,
+                                    hold_type => 'V',
+                                    hold_source_page => mkurl()
+                                }) _ '">' _ l('Volume hold') _ '</a>';
                         END;
                         IF serial_holdings;
-                %]
-                <a class="rdetail-issue-place-hold"
-                    href="[% mkurl(ctx.opac_root _ '/place_hold', {
-                    hold_target => copy_info.issuance, hold_type => 'I',
-                    hold_source_page => mkurl()
-                }) %]">[% l("issue") %]</a>[%-
+                            hold_link = hold_link _ param_sep;
                         END;
-                    ELSE;
-                        l("No");
-                    END %]</td>
+                    END; 
+                    IF serial_holdings; 
+                        hold_link = hold_link _
+                            '<a class="rdetail-issue-place-hold" href="' _
+                            mkurl(ctx.opac_root _ '/place_hold', {
+                                hold_target => copy_info.issuance,
+                                hold_type => 'I',
+                                hold_source_page => mkurl()
+                            }) _ '">' _ l('Issue hold') _ '</a>';
+                    END; 
+
+                    hold_link;
+                ELSE; 
+                    l("Not holdable");
+                END %]</td>
             [%- END %]
             <td header='copy_header_status'>[% copy_info.copy_status | html %]</td>
             <td header='due_date'>[%
