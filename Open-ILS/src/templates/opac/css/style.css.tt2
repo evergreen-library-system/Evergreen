@@ -562,14 +562,13 @@ div.format_icon {
     height:18px;
     margin:0;
     padding:0;
-    background: none;
+    background: [% css_colors.background %];
     font-size: [% css_fonts.size_bigger %];
     color: [% css_colors.text %];
 }
 
 #main-content .left_brain .input_bg {
     padding:10px 10px 0px 13px;
-    background: [% css_colors.background %];
     width:167px;
     height:29px;
 }
