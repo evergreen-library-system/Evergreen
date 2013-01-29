@@ -2,6 +2,14 @@
 
 \set eg_version '''2.3.0'''
 
+\qecho **********************************************************************
+\qecho Your current working directory when you run this script *must* be
+\qecho Open-ILS/src/sql/Pg/version-upgrade/ or it will fail to find the point
+\qecho release upgrade scripts. Press <ENTER> to continue, or hit <CTRL-C> to
+\qecho prevent the upgrade from happening.
+\qecho **********************************************************************
+\prompt chance-to-quit
+
 \qecho The following statement might fail, and that is okay; we are
 \qecho ensuring that an upgrade that should have been applied during
 \qecho the 2.2 upgrade is actually applied now.
@@ -14,7 +22,18 @@ UPDATE config.org_unit_setting_type
     SET grp = 'acq'
     WHERE name LIKE 'acq%';
 
+\qecho Apply previous point release upgrades to ensure that all known fixes are
+\qecho in place. Failures here will generally indicate that the fixes were
+\qecho already applied.
+
+\i 2.2.0-2.2.1-upgrade-db.sql
+\i 2.2.1-2.2.2-upgrade-db.sql
+\i 2.2.2-2.2.3-upgrade-db.sql
+\i 2.2.3-2.2.4-upgrade-db.sql
+\i 2.2.4-2.2.5-upgrade-db.sql
+
 \qecho The real upgrade begins now.
+\set eg_version '''2.3.0'''
 
 BEGIN;
 INSERT INTO config.upgrade_log (version, applied_to) VALUES ('2.3.0', :eg_version);
@@ -909,7 +928,6 @@ BEGIN
     RETURN;
 END;
 $func$ LANGUAGE plpgsql;
-
 
 -- Evergreen DB patch 0727.function.xml_pretty_print.sql
 --
