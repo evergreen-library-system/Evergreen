@@ -21,13 +21,16 @@ EventListenerList.prototype = {
     'removeAll' : function() {
         try {
             if (typeof this._listeners != 'undefined') {
-                for (var i = 0; i < this._listeners.length; i++) {
+                for (var i = this._listeners.length - 1; i >= 0; i--) {
                     this._listeners[i].node.removeEventListener(
                         this._listeners[i].type,
                         this._listeners[i].listener,
                         this._listeners[i].useCapture
                     );
+                    this._listeners[i].listener = null;
+                    delete this._listeners[i];
                 }
+                this._listeners = [];
             }
         } catch(E) {
             alert(location.href + ' Error in unloadEventListeners(): ' + E);
