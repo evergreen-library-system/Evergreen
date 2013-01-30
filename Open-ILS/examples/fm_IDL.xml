@@ -966,6 +966,34 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
     </class>
 
+    <class id="czifm" controller="open-ils.cstore open-ils.pcrud" 
+			oils_obj:fieldmapper="config::z3950_index_field_map" 
+			oils_persist:tablename="config.z3950_index_field_map" 
+			reporter:label="Z39.50 Index Field Map">
+        <fields oils_persist:primary="id" oils_persist:sequence="config.z3950_index_field_map_id_seq">
+            <field reporter:label="Map ID" name="id" reporter:datatype="id"/>
+            <field reporter:label="Label" name="label" reporter:datatype="text" oils_persist:i18n="true"/>
+            <field reporter:label="Metabib Field" name="metabib_field" reporter:datatype="link"/>
+            <field reporter:label="Record Attribute" name="record_attr" reporter:datatype="link"/>
+            <field reporter:label="Z39.50 Attribute" name="z3950_attr"  reporter:datatype="link"/>
+            <field reporter:label="Z39.50 Attribute Type" name="z3950_attr_type" reporter:datatype="text"/>
+        </fields>
+        <links>
+            <link field="metabib_field" reltype="has_a" key="id" map="" class="cmf"/>
+            <link field="record_attr" reltype="has_a" key="id" map="" class="crad"/>
+            <link field="z3950_attr" reltype="has_a" key="id" map="" class="cza"/>
+        </links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_Z3950_SOURCE" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_Z3950_SOURCE" global_required="true"/>
+                <delete permission="ADMIN_Z3950_SOURCE" global_required="true"/>
+            </actions>
+        </permacrud>
+    </class>
+
+
 	<class id="ateo" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::event_output" oils_persist:tablename="action_trigger.event_output" reporter:label="Event Output">
 		<fields oils_persist:primary="id" oils_persist:sequence="action_trigger.event_output_id_seq">
 			<field reporter:label="Output ID" name="id" reporter:datatype="id"/>
