@@ -147,6 +147,18 @@
 				]]>
 			</constructor>
 
+			<destructor>                                                                                              
+				<![CDATA[                                                                                         
+				try {                                                                                                            
+					delete this._props;                                                                                      
+					delete this.sprintf;                                                                                     
+				} catch(E) {                                                                                                     
+					alert('Error destroying messagecatalog in bindings.xml: ' + E);                                             
+					throw(E);                                                                                                    
+				}                                                                                                                
+				]]>                                                                                               
+			</destructor>  
+
 			<property name="src">
 				<getter>
 					<![CDATA[
