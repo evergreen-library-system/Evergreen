@@ -1,0 +1,8 @@
+New Feature: Default Number of Acquisistions Copies to Order
+============================================================
+Acquisitions providers have a new "Default # Copies" field.  When the value
+is set, this number of copies will be automatically added to each lineitem
+added to a purchase order for the provider.  This takes place during PO
+creation from a selection list or existing bib record and when a lineitem is 
+added to an existing purchase order.  If a lineitem already has copies 
+attached, no default copies are added.

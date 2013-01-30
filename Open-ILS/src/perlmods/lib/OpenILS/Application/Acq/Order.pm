@@ -1792,11 +1792,61 @@ sub create_purchase_order_api {
     # commit before starting the asset creation
     $e->xact_commit;
 
-    if($li_ids and $vandelay) {
-        create_lineitem_list_assets($mgr, $li_ids, $vandelay, !$$args{create_assets}) or return $e->die_event;
+    if($li_ids) {
+
+        if ($vandelay) {
+            create_lineitem_list_assets(
+                $mgr, $li_ids, $vandelay, !$$args{create_assets}) 
+                or return $e->die_event;
+        }
+
+        $e->xact_begin;
+        apply_default_copies($mgr, $po) or return $e->die_event;
+        $e->xact_commit;
     }
 
     return $mgr->respond_complete;
+}
+
+# !transaction must be managed by the caller
+# creates the default number of copies for each lineitem on the PO.
+# when a LI already has copies attached, no default copies are added.
+# without li_id, all lineitems are checked/applied
+# returns 1 on success, 0 on error
+sub apply_default_copies {
+    my ($mgr, $po, $li_id) = @_;
+
+    my $e = $mgr->editor;
+
+    my $provider = ref($po->provider) ? $po->provider :
+        $e->retrieve_acq_provider($po->provider);
+
+    my $copy_count = $provider->default_copy_count || return 1;
+    
+    $logger->info("Applying $copy_count default copies for PO ".$po->id);
+
+    my $li_ids = $li_id ? [$li_id] : 
+        $e->search_acq_lineitem({
+            purchase_order => $po->id,
+            cancel_reason => undef
+        }, 
+        {idlist => 1}
+    );
+    
+    for my $li_id (@$li_ids) {
+
+        my $lid_ids = $e->search_acq_lineitem_detail(
+            {lineitem => $li_id}, {idlist => 1});
+
+        # do not apply default copies when copies already exist
+        next if @$lid_ids;
+
+        for (1 .. $copy_count) {
+            create_lineitem_detail($mgr, lineitem => $li_id) or return 0;
+        }
+    }
+
+    return 1;
 }
 
 

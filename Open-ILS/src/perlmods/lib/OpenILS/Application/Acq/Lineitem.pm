@@ -49,9 +49,12 @@ sub create_lineitem {
         $e->update_acq_picklist($picklist) or return $e->die_event;
     }
 
+    my $po;
     if($li->purchase_order) {
-        my $po = $e->retrieve_acq_purchase_order($li->purchase_order)
-            or return $e->die_event;
+        $po = $e->retrieve_acq_purchase_order([
+            $li->purchase_order,
+            {flesh => 1, flesh_fields => {acqpo => ['provider']}}
+            ]) or return $e->die_event;
         return $e->die_event unless 
             $e->allowed('MANAGE_PROVIDER', $po->ordering_agency, $po);
 
@@ -59,7 +62,16 @@ sub create_lineitem {
     }
 
     $li->selector($e->requestor->id);
-    $e->create_acq_lineitem($li) or return $e->die_event;
+    $li = $e->create_acq_lineitem($li) or return $e->die_event;
+
+    if ($po) {
+        # apply the default number of copies for this provider
+        for (1 .. $po->provider->default_copy_count) {
+            my $lid = Fieldmapper::acq::lineitem_detail->new;
+            $lid->lineitem($li->id);
+            $e->create_acq_lineitem_detail($lid) or return $e->die_event;
+        }
+    }
 
     $e->commit;
     return $li->id;

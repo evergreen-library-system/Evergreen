@@ -89,6 +89,7 @@ CREATE TABLE acq.provider (
     email               TEXT,
     phone               TEXT,
     fax_phone           TEXT,
+    default_copy_count  INT     NOT NULL DEFAULT 0,
 	default_claim_policy INT    REFERENCES acq.claim_policy
 	                            DEFERRABLE INITIALLY DEFERRED,
     CONSTRAINT provider_name_once_per_owner UNIQUE (name,owner),
