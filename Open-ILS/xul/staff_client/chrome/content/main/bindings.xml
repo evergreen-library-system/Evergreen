@@ -556,6 +556,12 @@
 					n.setAttribute('src','chrome://open_ils_staff_client/skin/media/images/opentriangle.gif');
 				]]>
 			</constructor>
+			<destructor>
+				<![CDATA[
+					var n = document.getAnonymousNodes(this)[0];
+					n.onclick = null;
+				]]>
+			</destructor>
 		</implementation>
 	</binding>
 
