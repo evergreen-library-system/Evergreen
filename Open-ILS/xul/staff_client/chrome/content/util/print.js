@@ -175,7 +175,7 @@ util.print.prototype = {
                             my_prefix = xulG.url_prefix(my_prefix);
                         }
                     }
-                    var print_url = '<html id="top"><head>'
+                    var print_url = '<html id="top"><head><title>EG</title>'
                         + '<script src="' + my_prefix + 'util/print_win.js"></script>'
                         + '<script src="' + my_prefix + 'util/print_custom.js"></script>';
                     if(this.data.hash.aous['print.custom_js_file']) {
@@ -297,7 +297,7 @@ util.print.prototype = {
 
         if (params.sample_frame) {
             var jsrc = 'data:text/javascript,' + encodeURIComponent('var params = { "data" : ' + js2JSON(params.data) + ', "list" : ' + js2JSON(params.list) + '};');
-            params.sample_frame.setAttribute('src','data:text/html;charset=utf-8,' + encodeURIComponent('<html id="top"><head><script src="' + jsrc + '"></script></head><body>' + s + '</body></html>'));
+            params.sample_frame.setAttribute('src','data:text/html;charset=utf-8,' + encodeURIComponent('<html id="top"><head><title>EG</title><script src="' + jsrc + '"></script></head><body>' + s + '</body></html>'));
         } else {
             this.simple(s,params);
         }
