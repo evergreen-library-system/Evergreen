@@ -57,37 +57,26 @@
             <span class="alert">[% l("Your library card expired on [_1]. Please contact a librarian to resolve this issue.", fmt_expire_date) %]</span>
             [% END %]
             </div>
-            <div class="acct_sum_row">
-                <table width="100%" cellspacing="0" cellpadding="0">
-                    <tr>
+            <table class="acct_sum_table">
+                <tr>
                         <td>[% l("Items Currently Checked out ([_1])", ctx.user_stats.checkouts.total_out) %]</td>
                         <td align="right">
                             <a href="[% mkurl(ctx.opac_root _ '/myopac/circs') %]">[% l("View All") %]</a>
                         </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="acct_sum_row">
-                <table width="100%" cellspacing="0" cellpadding="0">
-                    <tr>
+                </tr>
+                <tr>
                         <td>[% l('Items Currently on Hold ([_1])', ctx.user_stats.holds.total) %]</td>
                         <td align="right">
                             <a href="[% mkurl(ctx.opac_root _ '/myopac/holds') %]">[% l('View All') %]</a>
                         </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="acct_sum_row">
-                <table width="100%" cellspacing="0" cellpadding="0">
-                    <tr>
+                </tr>
+                <tr>
                         <td>[% l('Items ready for pickup ([_1])', ctx.user_stats.holds.ready) %]</td>
                         <td align="right">
                             <a href="[% mkurl(ctx.opac_root _ '/myopac/holds', {available => 1}) %]">[% l('View All') %]</a>
                         </td>
-                    </tr>
-                </table>
-            </div>
-
+                </tr>
+            </table>
         </div>
     </div>
     <div class="clear-both"></div>

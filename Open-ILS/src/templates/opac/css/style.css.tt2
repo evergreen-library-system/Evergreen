@@ -789,22 +789,25 @@ div.result_place_hold {
     font-weight: normal;
 }
 
-.acct_sum_row {
-    padding: 7px 15px;
+.acct_sum_table {
+    border-collapse: collapse;
     background: [% css_colors.accent_ultralight %];
-    margin-bottom: 2px;
     font-size: [% css_fonts.size_smaller %];
     font-weight: bold;
     text-transform: uppercase;
 }
 
-.acct_sum_row a {
+.acct_sum_table td {
+    padding: 1em;
+}
+
+.acct_sum_table a {
     text-transform: none;
     position:relative;
     top:-1px;
 }
 
-.acct_sum_row .view_link {
+.acct_sum_table .view_link {
     font-weight: normal;
 }
 
