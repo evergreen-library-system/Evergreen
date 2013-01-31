@@ -1,0 +1,11 @@
+Vandelay Default Match Set
+==========================
+A new org unit setting to specify a default Record Match Set when 
+importing MARC records through the MARC Batch Import/Export interface. It does
+not affect the default match set selected in acquisitions. If this
+is set, it will not be possible to leave the Record Match Set field blank;
+it may be necessary to define a default match set that replicates the current
+default behavior. 
+
+A new "Vandelay" org unit settings group is also created.
+
