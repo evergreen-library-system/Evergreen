@@ -2512,7 +2512,8 @@ INSERT INTO config.settings_group (name, label) VALUES
 ('booking', oils_i18n_gettext('config.settings_group.booking', 'Booking', 'coust', 'label')),
 ('offline', oils_i18n_gettext('config.settings_group.offline', 'Offline', 'coust', 'label')),
 ('receipt_template', oils_i18n_gettext('config.settings_group.receipt_template', 'Receipt Template', 'coust', 'label')),
-('sms', oils_i18n_gettext('sms','SMS Text Messages','csg','label'))
+('sms', oils_i18n_gettext('sms','SMS Text Messages','csg','label')),
+('vandelay', oils_i18n_gettext('vandelay','Vandelay','coust','label'))
 ;
 
 
@@ -4717,6 +4718,20 @@ INSERT into config.org_unit_setting_type
     oils_i18n_gettext(
         'serial.default_display_grouping',
         'Default display grouping for serials distributions presented in the OPAC. This can be "enum" or "chron".',
+        'coust',
+        'description'
+    ),
+    'string', null)
+,( 'vandelay.default_match_set', 'vandelay',
+    oils_i18n_gettext(
+        'vandelay.default_match_set',
+        'Vandelay: Default Record Match Set',
+        'coust',
+        'label'
+    ),
+    oils_i18n_gettext(
+        'vandelay.default_match_set',
+        'Vandelay: Default Record Match Set',
         'coust',
         'description'
     ),
