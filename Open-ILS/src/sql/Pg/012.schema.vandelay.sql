@@ -496,7 +496,7 @@ $_$ LANGUAGE SQL;
 CREATE TYPE vandelay.match_set_test_result AS (record BIGINT, quality INTEGER);
 
 CREATE OR REPLACE FUNCTION vandelay.match_set_test_marcxml(
-    match_set_id INTEGER, record_xml TEXT
+    match_set_id INTEGER, record_xml TEXT, bucket_id INTEGER 
 ) RETURNS SETOF vandelay.match_set_test_result AS $$
 DECLARE
     tags_rstore HSTORE;
@@ -534,7 +534,16 @@ BEGIN
         FROM _vandelay_tmp_jrows;
 
     -- add those joins and the where clause to our query.
-    query_ := query_ || joins || E'\n' || 'JOIN biblio.record_entry bre ON (bre.id = record) ' || 'WHERE ' || wq || ' AND not bre.deleted';
+    query_ := query_ || joins || E'\n';
+
+    -- join the record bucket
+    IF bucket_id IS NOT NULL THEN
+        query_ := query_ || 'JOIN container.biblio_record_entry_bucket_item ' ||
+            'brebi ON (brebi.target_biblio_record_entry = record ' ||
+            'AND brebi.bucket = ' || bucket_id || E')\n';
+    END IF;
+
+    query_ := query_ || 'JOIN biblio.record_entry bre ON (bre.id = record) ' || 'WHERE ' || wq || ' AND not bre.deleted';
 
     -- this will return rows of record,quality
     FOR rec IN EXECUTE query_ USING tags_rstore, svf_rstore LOOP
@@ -545,8 +554,8 @@ BEGIN
     DROP TABLE _vandelay_tmp_jrows;
     RETURN;
 END;
-
 $$ LANGUAGE PLPGSQL;
+
 
 CREATE OR REPLACE FUNCTION vandelay.flatten_marc_hstore(
     record_xml TEXT
@@ -774,6 +783,7 @@ DECLARE
     test_result             vandelay.match_set_test_result%ROWTYPE;
     tmp_rec                 BIGINT;
     match_set               INT;
+    match_bucket            INT;
 BEGIN
     IF TG_OP IN ('INSERT','UPDATE') AND NEW.imported_as IS NOT NULL THEN
         RETURN NEW;
@@ -810,8 +820,10 @@ BEGIN
         RETURN NEW;
     END IF;
 
+    SELECT q.match_bucket INTO match_bucket FROM vandelay.bib_queue q WHERE q.id = NEW.queue;
+
     FOR test_result IN SELECT * FROM
-        vandelay.match_set_test_marcxml(match_set, NEW.marc) LOOP
+        vandelay.match_set_test_marcxml(match_set, NEW.marc, match_bucket) LOOP
 
         INSERT INTO vandelay.bib_match ( queued_record, eg_record, match_score, quality )
             SELECT  

@@ -30,6 +30,11 @@
                 <input jsId='vlUploadQueueMatchSet'
                     dojoType='dijit.form.FilteringSelect' labelAttr='name' searchAttr='name'/>
             </td>
+            <td>[% l('Limit matches to bucket') %]</td>
+            <td>
+                <input jsId='vlUploadQueueMatchBucket'
+                    dojoType='dijit.form.FilteringSelect' labelAttr='name' searchAttr='name'/>
+            </td>
         </tr>
         <tr>
             <td>[% l('Holdings Import Profile') %]</td>

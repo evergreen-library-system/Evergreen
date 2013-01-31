@@ -63,6 +63,7 @@ sub create_bib_queue {
     my $type = shift;
     my $match_set = shift;
     my $import_def = shift;
+    my $match_bucket = shift;
 
     my $e = new_editor(authtoken => $auth, xact => 1);
 
@@ -81,6 +82,7 @@ sub create_bib_queue {
     $queue->queue_type( $type ) if ($type);
     $queue->item_attr_def( $import_def ) if ($import_def);
     $queue->match_set($match_set) if $match_set;
+    $queue->match_bucket($match_bucket);
 
     my $new_q = $e->create_vandelay_bib_queue( $queue );
     return $e->die_event unless ($new_q);

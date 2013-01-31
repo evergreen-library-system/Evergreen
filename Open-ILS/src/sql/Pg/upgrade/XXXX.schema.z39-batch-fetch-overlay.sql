@@ -30,7 +30,6 @@ CREATE TABLE config.z3950_index_field_map (
     )
 );
 
-
 -- seed data
 
 INSERT INTO config.z3950_index_field_map 

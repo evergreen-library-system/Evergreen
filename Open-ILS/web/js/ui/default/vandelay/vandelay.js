@@ -89,6 +89,7 @@ var vlQueueGridColumePicker = {};
 var vlBibSources = [];
 var importItemDefs = [];
 var matchSets = {biblio : [], authority : []};
+var matchBuckets = {};
 var mergeProfiles = [];
 var copyStatusCache = {};
 var copyLocationCache = {};
@@ -203,6 +204,19 @@ function vlInit() {
                         matchSets[set.mtype()].push(set);
                     }
                 );
+                checkInitDone();
+            }
+        }
+    );
+
+    fieldmapper.standardRequest(
+        ['open-ils.actor', 'open-ils.actor.container.retrieve_by_class'],
+        {   async : true,
+            params : [authtoken, new openils.User().user.id(), 'biblio'],
+            oncomplete : function(r) {
+                var buckets = openils.Util.readResponse(r);
+                // only bib buckets are supported
+                matchBuckets.biblio = buckets;
                 checkInitDone();
             }
         }
@@ -417,7 +431,9 @@ function uploadMARC(onload){
 /**
   * Creates a new vandelay queue
   */
-function createQueue(queueName, type, onload, importDefId, matchSet) {
+function createQueue(
+        queueName, type, onload, importDefId, matchSet, matchBucket) {
+
     var name = (type=='bib') ? 'bib' : 'authority';
     var method = 'open-ils.vandelay.'+ name +'_queue.create'
 
@@ -431,7 +447,10 @@ function createQueue(queueName, type, onload, importDefId, matchSet) {
     fieldmapper.standardRequest(
         ['open-ils.vandelay', method],
         {   async: true,
-            params: [authtoken, queueName, null, qType, matchSet, importDefId],
+            params: [
+                authtoken, queueName, null, 
+                qType, matchSet, importDefId, matchBucket
+            ],
             oncomplete : function(r) {
                 var queue = r.recv().content();
                 if(e = openils.Event.parse(queue)) 
@@ -1421,7 +1440,8 @@ function batchUpload() {
     } else {
         createQueue(queueName, currentType, handleCreateQueue, 
             vlUploadQueueHoldingsImportProfile.attr('value'),
-            vlUploadQueueMatchSet.attr('value')
+            vlUploadQueueMatchSet.attr('value'),
+            vlUploadQueueMatchBucket.attr('value')
         );
     }
 }
@@ -1467,11 +1487,13 @@ function vlFleshQueueSelect(selector, type) {
             vlUploadQueueHoldingsImportProfile.attr('disabled', true);
             vlUploadQueueMatchSet.attr('value', queue.match_set() || '');
             vlUploadQueueMatchSet.attr('disabled', true);
+            vlUploadQueueMatchBucket.attr('value', queue.match_bucket() || '');
+            vlUploadQueueMatchBucket.attr('disabled', true);
         } else {
             vlUploadQueueHoldingsImportProfile.attr('value', '');
             vlUploadQueueHoldingsImportProfile.attr('disabled', false);
-            vlUploadQueueMatchSet.attr('value', '');
-            vlUploadQueueMatchSet.attr('disabled', false);
+            vlUploadQueueMatchBucket.attr('value', '');
+            vlUploadQueueMatchBucket.attr('disabled', false);
         }
         dojo.disconnect(qInput._onchange);
         qInput.attr('value', '');
@@ -1483,6 +1505,7 @@ function vlFleshQueueSelect(selector, type) {
         // user entered a new queue name. clear the selector 
         vlUploadQueueHoldingsImportProfile.attr('disabled', false);
         vlUploadQueueMatchSet.attr('disabled', false);
+        vlUploadQueueMatchBucket.attr('disabled', false);
         dojo.disconnect(selector._onchange);
         selector.attr('value', '');
         selector._onchange = dojo.connect(selector, 'onChange', selChange);
@@ -1505,6 +1528,19 @@ function vlUpdateMatchSetSelector(type) {
     }
 }
 
+function vlUpdateMatchBucketSelector(type) {
+    type = (type.match(/bib/)) ? 'biblio' : 'authority';
+    if (type == 'authority') {
+        vlUploadQueueMatchBucket.attr('value', '');
+        vlUploadQueueMatchBucket.attr('disabled', true);
+    } else {
+        vlUploadQueueMatchBucket.attr('disabled', false);
+        vlUploadQueueMatchBucket.store = 
+            new dojo.data.ItemFileReadStore(
+                {data:cbreb.toStoreData(matchBuckets[type])});
+    }
+}
+
 function vlShowUploadForm() {
     displayGlobalDiv('vl-marc-upload-div');
     vlFleshQueueSelect(vlUploadQueueSelector, vlUploadRecordType.getValue());
@@ -1514,6 +1550,7 @@ function vlShowUploadForm() {
     vlUploadQueueHoldingsImportProfile.store = 
         new dojo.data.ItemFileReadStore({data:viiad.toStoreData(importItemDefs)});
     vlUpdateMatchSetSelector(vlUploadRecordType.getValue());
+    vlUpdateMatchBucketSelector(vlUploadRecordType.getValue());
 
     if (vlUploadRecordType.attr('value').match(/auth/) || trashGroups.length == 0) {
         openils.Util.hide('vl-trash-groups-row');
