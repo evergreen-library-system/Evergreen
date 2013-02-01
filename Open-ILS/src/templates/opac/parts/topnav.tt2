@@ -9,7 +9,7 @@
         <div id="your-acct-login">
             <a href="[% mkurl(ctx.opac_root _ '/myopac/main') %]" 
                 class="opac-button opac-button-header" id="home_myopac_link">
-                [% l('Your Account Log in') %]
+                [% l('My Account') %]
             </a>
         </div>
         [% ELSE %]

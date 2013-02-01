@@ -9,7 +9,7 @@
 
     <!-- new list creation -->
     <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="post" id="create_form">
-        <h1>[% l('Create new list') %]</h1><a name="createnewlist"></a>
+        <h1>[% l('Create New List') %]</h1><a name="createnewlist"></a>
         <table cellpadding="0" border="0" id="list_create_table">
             <tr>
                 <td>
@@ -58,7 +58,7 @@
         </table>
     </form>
 
-    <h1>[% l("Your existing lists") %]</h1>
+    <h1>[% l("My Existing Lists") %]</h1>
     [% INCLUDE "opac/parts/anon_list.tt2" %]
     [% IF ctx.bookbags.size %]
     <div class="header_middle">
