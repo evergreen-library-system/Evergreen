@@ -9,7 +9,7 @@ INSERT INTO config.org_unit_setting_type
     'acq.upload.default.create_po',
     oils_i18n_gettext(
         'acq.upload.default.create_po',
-        'ACQ Upoad Create PO',
+        'Upload Create PO',
         'coust',
         'label'
     ),
@@ -26,7 +26,7 @@ INSERT INTO config.org_unit_setting_type
     'acq.upload.default.activate_po',
     oils_i18n_gettext(
         'acq.upload.default.activate_po',
-        'ACQ Upoad Activate PO',
+        'Upload Activate PO',
         'coust',
         'label'
     ),
@@ -43,7 +43,7 @@ INSERT INTO config.org_unit_setting_type
     'acq.upload.default.provider',
     oils_i18n_gettext(
         'acq.upload.default.provider',
-        'ACQ Upoad Default Provider',
+        'Upload Default Provider',
         'coust',
         'label'
     ),
@@ -60,7 +60,7 @@ INSERT INTO config.org_unit_setting_type
     'acq.upload.default.vandelay.match_set',
     oils_i18n_gettext(
         'acq.upload.default.vandelay.match_set',
-        'ACQ Upoad Default Match Set',
+        'Upload Default Match Set',
         'coust',
         'label'
     ),
@@ -77,7 +77,7 @@ INSERT INTO config.org_unit_setting_type
     'acq.upload.default.vandelay.merge_profile',
     oils_i18n_gettext(
         'acq.upload.default.vandelay.merge_profile',
-        'ACQ Upoad Default Merge Profile',
+        'Upload Default Merge Profile',
         'coust',
         'label'
     ),
@@ -94,7 +94,7 @@ INSERT INTO config.org_unit_setting_type
     'acq.upload.default.vandelay.import_non_matching',
     oils_i18n_gettext(
         'acq.upload.default.vandelay.import_non_matching',
-        'ACQ Upoad Import Non Matching by Default',
+        'Upload Import Non Matching by Default',
         'coust',
         'label'
     ),
@@ -111,7 +111,7 @@ INSERT INTO config.org_unit_setting_type
     'acq.upload.default.vandelay.merge_on_exact',
     oils_i18n_gettext(
         'acq.upload.default.vandelay.merge_on_exact',
-        'ACQ Upoad Merge on Exact Match by Default',
+        'Upload Merge on Exact Match by Default',
         'coust',
         'label'
     ),
@@ -128,7 +128,7 @@ INSERT INTO config.org_unit_setting_type
     'acq.upload.default.vandelay.merge_on_best',
     oils_i18n_gettext(
         'acq.upload.default.vandelay.merge_on_best',
-        'ACQ Upoad Merge on Best Match by Default',
+        'Upload Merge on Best Match by Default',
         'coust',
         'label'
     ),
@@ -145,7 +145,7 @@ INSERT INTO config.org_unit_setting_type
     'acq.upload.default.vandelay.merge_on_single',
     oils_i18n_gettext(
         'acq.upload.default.vandelay.merge_on_single',
-        'ACQ Upoad Merge on Single Match by Default',
+        'Upload Merge on Single Match by Default',
         'coust',
         'label'
     ),
@@ -162,7 +162,7 @@ INSERT INTO config.org_unit_setting_type
     'acq.upload.default.vandelay.quality_ratio',
     oils_i18n_gettext(
         'acq.upload.default.vandelay.quality_ratio',
-        'ACQ Upoad Default Min. Quality Ratio',
+        'Upload Default Min. Quality Ratio',
         'coust',
         'label'
     ),
@@ -179,7 +179,7 @@ INSERT INTO config.org_unit_setting_type
     'acq.upload.default.vandelay.low_quality_fall_thru_profile',
     oils_i18n_gettext(
         'acq.upload.default.vandelay.low_quality_fall_thru_profile',
-        'ACQ Upoad Default Insufficient Quality Fall-Thru Profile',
+        'Upload Default Insufficient Quality Fall-Thru Profile',
         'coust',
         'label'
     ),
@@ -196,7 +196,7 @@ INSERT INTO config.org_unit_setting_type
     'acq.upload.default.vandelay.load_item_for_imported',
     oils_i18n_gettext(
         'acq.upload.default.vandelay.load_item_for_imported',
-        'ACQ Upoad Load Items for Imported Records by Default',
+        'Upload Load Items for Imported Records by Default',
         'coust',
         'label'
     ),
