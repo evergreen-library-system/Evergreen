@@ -1842,7 +1842,10 @@ sub apply_default_copies {
         next if @$lid_ids;
 
         for (1 .. $copy_count) {
-            create_lineitem_detail($mgr, lineitem => $li_id) or return 0;
+            create_lineitem_detail($mgr, 
+                lineitem => $li_id,
+                owning_lib => $e->requestor->ws_ou
+            ) or return 0;
         }
     }
 

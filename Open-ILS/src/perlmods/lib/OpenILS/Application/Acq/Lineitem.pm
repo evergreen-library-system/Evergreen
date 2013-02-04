@@ -69,6 +69,7 @@ sub create_lineitem {
         for (1 .. $po->provider->default_copy_count) {
             my $lid = Fieldmapper::acq::lineitem_detail->new;
             $lid->lineitem($li->id);
+            $lid->owning_lib($e->requestor->ws_ou);
             $e->create_acq_lineitem_detail($lid) or return $e->die_event;
         }
     }
