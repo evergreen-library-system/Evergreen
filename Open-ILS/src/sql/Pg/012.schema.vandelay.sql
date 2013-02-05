@@ -460,7 +460,7 @@ BEGIN
               WHERE attr = attr_def.name
               ORDER BY m.pos LOOP
                 EXECUTE 'SELECT ' || normalizer.func || '(' ||
-                    quote_literal( attr_value ) ||
+                    quote_nullable( attr_value ) ||
                     CASE
                         WHEN normalizer.param_count > 0
                             THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
