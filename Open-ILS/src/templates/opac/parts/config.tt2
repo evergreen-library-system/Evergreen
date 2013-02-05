@@ -128,4 +128,9 @@ search.basic_config = {
     none_label => l("All Formats"),
 };
 
+##############################################################################
+# Show Google Book Previews
+# Set to 1 or 'true' to enable
+ctx.google_books_preview = 0;
+
 %]

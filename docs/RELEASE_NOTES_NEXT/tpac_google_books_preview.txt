@@ -1,0 +1,12 @@
+TPAC: Google Books preview
+==========================
+
+Setting `ctx.google_books_preview` to `1` in the TPAC `config.tt2`
+configuration file will cause the TPAC to check to see, as part of the record
+details view, if Google Books has an online preview available. If it does,
+then a preview button will be displayed in the book cover image location.
+If the user then clicks the preview button, the preview will load below the
+title of the book in the record details page.
+
+By default, this functionality is disabled to protect the privacy of users
+who might not want to share their browsing behaviour with Google.
