@@ -198,4 +198,3 @@ Configuration files allow you to define labels for canned searches in the icon
 grid, determine how icons lead users to new pages, and define whether those icons 
 are canned searches or links to external resources.  Documentation describing how 
 to use the configuration files is available in the Evergreen repository.
-
