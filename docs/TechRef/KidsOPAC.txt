@@ -1,5 +1,5 @@
-Kid's OPAC
-==========
+Kid's OPAC Configuration
+========================
 
 Configuration
 -------------
@@ -73,6 +73,40 @@ XML Configuration File
     type="link">http://en.wikipedia.org/wiki/Clarinet</cell>
 ------------------------------------------------------------------------------
 
+
+Skin Configuration
+~~~~~~~~~~~~~~~~~~
+
+The following example enables you to configure the alternate skin for the Kids
+Catalog.
+
+[source, xml]
+------------------------------------------------------------------------------
+% cp -r Open-ILS/examples/web/css/skin/kpac2 /openils/var/web/css/skin/
+% cp -r Open-ILS/examples/web/images/kpac/* /openils/var/web/images/kpac/ #
+does not clobber
+% mkdir /openils/var/templates_kpac2
+% cp -r Open-ILS/examples/web/templates/kpac /openils/var/templates_kpac2/
+-------------------------------------------------------------------------------
+
+Then set up 443/80 vhosts for serving the alternate skin in eg.conf, something
+along the lines of:
+
+[source, xml]
+------------------------------------------------------------------------------
+<VirtualHost *:80>
+    ServerName xyz.dev198.esilibrary.com:80
+    DocumentRoot /openils/var/web/
+    DirectoryIndex index.xml index.html index.xhtml
+    Include eg_vhost.conf
+    <Location /eg/kpac>
+        PerlSetVar OILSWebContextLoader "OpenILS::WWW::EGKPacLoader"
+        PerlSetVar KPacConfigFile "/openils/conf/kpac.xml.example"
+        PerlAddVar OILSWebTemplatePath "/openils/var/templates"
+        PerlAddVar OILSWebTemplatePath "/openils/var/templates_kpac2"
+    </Location>
+</VirtualHost>
+-------------------------------------------------------------------------------
 
 Considerations for Community Adoption
 -------------------------------------
