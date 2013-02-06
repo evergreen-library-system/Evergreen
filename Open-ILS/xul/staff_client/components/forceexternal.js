@@ -20,7 +20,7 @@ oilsForceExternal.prototype = {
           && node && node.getAttribute('oils_force_external') == 'true') {
             var data_cache = Components.classes["@open-ils.org/openils_data_cache;1"].getService().wrappedJSObject.data;
             var host = data_cache.server_unadorned;
-            if(host && contentLocation.host != host) {
+            if(host && contentLocation.host.toLowerCase() != host.toLowerCase()) {
                 // first construct an nsIURI object using the ioservice
                 var ioservice = Components.classes["@mozilla.org/network/io-service;1"]
                                 .getService(Components.interfaces.nsIIOService);
