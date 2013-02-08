@@ -1,0 +1,6 @@
+New feature: Clickable Patron Indicators
+========================================
+When retrieving a patron record, staff can now click on the indicators listed 
+beneath the patron's name and launch the related tabs.
+
+For example, clicking on (See Notes) will open the associated patron's notes.
