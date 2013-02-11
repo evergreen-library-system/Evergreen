@@ -15,6 +15,7 @@ my $script_libs;
 my $legacy_script_support = 0;
 my $booking_status;
 my $opac_renewal_use_circ_lib;
+my $desk_renewal_use_circ_lib;
 
 sub determine_booking_status {
     unless (defined $booking_status) {
@@ -3662,6 +3663,20 @@ sub do_renew {
             }
         }
         $self->circ_lib($circ->circ_lib) if($opac_renewal_use_circ_lib);
+    }
+
+    # Desk renewal - re-use circ library from original circ (unless told not to)
+    if($self->desk_renewal) {
+        unless(defined($desk_renewal_use_circ_lib)) {
+            my $use_circ_lib = $self->editor->retrieve_config_global_flag('circ.desk_renewal.use_original_circ_lib');
+            if($use_circ_lib and $U->is_true($use_circ_lib->enabled)) {
+                $desk_renewal_use_circ_lib = 1;
+            }
+            else {
+                $desk_renewal_use_circ_lib = 0;
+            }
+        }
+        $self->circ_lib($circ->circ_lib) if($desk_renewal_use_circ_lib);
     }
 
     # Run the fine generator against the old circ
