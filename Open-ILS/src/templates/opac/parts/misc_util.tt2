@@ -379,9 +379,9 @@
         FOR node IN xml.findnodes(xpath);
             FOR attr IN ['count', 'available', 'unshadow', 'transcendant', 'org_unit']; 
                 depth = node.getAttribute('depth');
-                org_unit = node.getAttribute('org_unit');
+                count_org_unit = node.getAttribute('org_unit');
                 args.copy_counts.$depth.$attr = node.getAttribute(attr);
-                args.org_copy_counts.$org_unit.$attr = node.getAttribute(attr);
+                args.org_copy_counts.$count_org_unit.$attr = node.getAttribute(attr);
             END;
         END;
 
