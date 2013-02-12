@@ -84,7 +84,7 @@ function staff_hold_usr_barcode_changed(isload) {
         }
         update_elements = document.getElementsByName('email_address');
         for(var i in update_elements) update_elements[i].textContent = load_info.user_email;
-        if(!document.getElementById('hold_usr_is_requestor').checked && !only_settings) {
+        if(!document.getElementById('hold_usr_is_requestor').checked && document.getElementById('hold_usr_input').value) {
             document.getElementById('patron_name').innerHTML = load_info.patron_name;
         }
         // Ok, now we can allow submitting again
