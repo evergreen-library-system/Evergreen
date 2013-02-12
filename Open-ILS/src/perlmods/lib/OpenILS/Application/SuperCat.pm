@@ -398,6 +398,7 @@ sub cn_browse {
     if (@$statuses || @$copy_locations) {
         @cp_filter = (
             '-exists' => {
+                limit => 1,
                 from  => 'acp',
 				where => {
                     call_number => { '=' => { '+acn' => 'id' } },
@@ -523,6 +524,7 @@ sub cn_startwith {
     if (@$statuses || @$copy_locations) {
         @cp_filter = (
             '-exists' => {
+                limit => 1,
                 from  => 'acp',
 				where => {
                     call_number => { '=' => { '+acn' => 'id' } },
@@ -2159,7 +2161,8 @@ sub new_record_holdings {
                 call_number => { '=' => {'+acn'=>'id'} },
                 deleted => 'f',
                 circ_lib => \@ou_ids
-              }
+              },
+              limit => 1
             }
         }
     ]);
@@ -2182,6 +2185,7 @@ sub new_record_holdings {
             %subselect = (
                 owning_lib => \@uri_ou_ids,
                 '-exists'  => {
+                    limit => 1,
                     from  => { auricnm => 'auri' },
                     where => {
                         call_number => { '=' => {'+acn'=>'id'} },
@@ -2199,7 +2203,8 @@ sub new_record_holdings {
                         call_number => { '=' => {'+acn'=>'id'} },
                         deleted => 'f',
                         circ_lib => \@ou_ids
-                      }
+                      },
+                      limit => 1
                     }
                 },
                 { '-and' => [
@@ -2209,7 +2214,8 @@ sub new_record_holdings {
                         where => {
                             call_number => { '=' => {'+acn'=>'id'} },
                             '+auri' => { active => 't' }
-                        }
+                        },
+                        limit => 1
                     }}
                 ]}
             ]);
@@ -2281,7 +2287,8 @@ sub new_record_holdings {
         { owning_lib => \@ou_ids },
         { '-exists'  =>
             { from  => 'sdist',
-              where => { holding_lib => \@ou_ids }
+              where => { holding_lib => \@ou_ids },
+              limit => 1
             }
         }
     ]);
