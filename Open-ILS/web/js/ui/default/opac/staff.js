@@ -40,11 +40,19 @@ function staff_hold_usr_barcode_changed(isload) {
             if(barcode && barcode != '' && !document.getElementById('hold_usr_is_requestor_not').checked)
                 document.getElementById('hold_usr_is_requestor_not').checked = 'checked';
         }
-        if(barcode == undefined || barcode == '' || barcode == cur_hold_barcode)
+        if(barcode == undefined || barcode == '') {
+            document.getElementById('patron_name').innerHTML = '';
             return;
+        }
+        if(barcode == cur_hold_barcode)
+            return;
+        // No submitting until we think the barcode is valid
+        document.getElementById('place_hold_submit').disabled = true;
         var load_info = xulG.get_barcode_and_settings(window, barcode, only_settings);
-        if(load_info == false || load_info == undefined)
+        if(load_info == false || load_info == undefined) {
+            document.getElementById('patron_name').innerHTML = '';
             return;
+        }
         cur_hold_barcode = load_info.barcode;
         if(!only_settings || (isload && isload !== true)) document.getElementById('hold_usr_input').value = load_info.barcode; // Safe at this point as we already set cur_hold_barcode
         if(load_info.settings['opac.default_pickup_location'])
@@ -76,6 +84,11 @@ function staff_hold_usr_barcode_changed(isload) {
         }
         update_elements = document.getElementsByName('email_address');
         for(var i in update_elements) update_elements[i].textContent = load_info.user_email;
+        if(!document.getElementById('hold_usr_is_requestor').checked && !only_settings) {
+            document.getElementById('patron_name').innerHTML = load_info.patron_name;
+        }
+        // Ok, now we can allow submitting again
+        document.getElementById('place_hold_submit').disabled = false;
     }
 }
 window.onload = function() {

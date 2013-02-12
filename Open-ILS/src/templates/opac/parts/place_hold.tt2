@@ -22,7 +22,7 @@
             <label for="hold_usr_is_requestor_not">
                 [% l("Place hold for patron by barcode:") %]
             </label>
-            <input type="text" name="hold_usr" id="hold_usr_input" onchange="staff_hold_usr_barcode_changed();" onkeypress="return no_hold_submit(event)" /><br />
+            <input type="text" name="hold_usr" id="hold_usr_input" onchange="staff_hold_usr_barcode_changed();" onkeypress="return no_hold_submit(event)" /> <span id="patron_name"></span><br />
             <input type="hidden" id="staff_barcode" value="[% ctx.staff_recipient.card.barcode | html %]"/>
             <span>
                 <input type="radio" id="hold_usr_is_requestor"
@@ -99,7 +99,7 @@
                 [% END %]
             </blockquote>
         </p>
-        <input type="submit" name="submit" value="[% l('Submit') %]" title="[% l('Submit') %]"
+        <input id="place_hold_submit" type="submit" name="submit" value="[% l('Submit') %]" title="[% l('Submit') %]"
             alt="[% l('Submit') %]" class="opac-button" />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <input type="reset" name="cancel" onclick="javascript:history.go(-1);"
