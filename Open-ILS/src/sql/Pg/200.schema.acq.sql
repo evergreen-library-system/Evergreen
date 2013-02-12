@@ -631,6 +631,9 @@ CREATE TABLE acq.distribution_formula_entry (
 	owning_lib	INTEGER REFERENCES actor.org_unit(id)
 				DEFERRABLE INITIALLY DEFERRED,
 	location	INTEGER REFERENCES asset.copy_location(id),
+	fund		INTEGER REFERENCES acq.fund (id),
+	circ_modifier	TEXT REFERENCES config.circ_modifier (code),
+	collection_code TEXT,
 	CONSTRAINT acqdfe_lib_once_per_formula UNIQUE( formula, position ),
 	CONSTRAINT acqdfe_must_be_somewhere
 				CHECK( owning_lib IS NOT NULL OR location IS NOT NULL ) 

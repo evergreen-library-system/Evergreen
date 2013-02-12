@@ -50,6 +50,9 @@
                 <th></th>
                 <th>[% l('Owning Library') %]</th>
                 <th>[% l('Copy Location') %]</th>
+                <th>[% l('Fund') %]</th>
+                <th>[% l('Circ Modifier') %]</th>
+                <th>[% l('Collection Code') %]</th>
                 <th>[% l('Item Count') %]</th>
                 <th></th>
             </tr>
@@ -57,9 +60,12 @@
         <tbody id='formula-entry-tbody'>
             <tr id='formula-entry-tempate'>
                 <td><div name='delete' dojoType='dijit.form.Button' style='color:red;' scrollOnFocus='false'>X</div></td>
-                <td><div name='owning_lib'></td>
-                <td><div name='location'></td>
-                <td><div name='item_count'></td>
+                <td><div name='owning_lib'></div></td>
+                <td><div name='location'></div></td>
+                <td><div name='fund'></div></td>
+                <td><div name='circ_modifier'></div></td>
+                <td><div name='collection_code'></div></td>
+                <td><div name='item_count'></div></td>
                 <td>
                     <img src='[% ctx.media_prefix %]/images/dimple.png'/>
                     <img src='[% ctx.media_prefix %]/images/dimple.png'/>

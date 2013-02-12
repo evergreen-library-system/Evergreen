@@ -12,6 +12,7 @@ use OpenILS::Application::AppUtils;
 use OpenILS::Application::Acq::Financials;
 use OpenILS::Application::Cat::BibCommon;
 use OpenILS::Application::Cat::AssetCommon;
+use OpenILS::Application::Acq::Lineitem::BatchUpdate;
 my $U = 'OpenILS::Application::AppUtils';
 
 

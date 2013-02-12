@@ -12,7 +12,8 @@ var formCache = {};
 var formula, entryTbody, entryTemplate, dndSource;
 var virtualId = -1;
 var pcrud;
-
+var _collection_code_textboxes = [];
+var _collection_code_kludge_active = false;
 
 function gridDataLoader() {
     fListGrid.resetStore();
@@ -145,7 +146,7 @@ function addEntry(entry) {
     };
 
     dojo.forEach(
-        ['owning_lib', 'location', 'item_count'],
+        ['owning_lib', 'location', 'fund', 'circ_modifier', 'collection_code', 'item_count'],
         function(field) {
             new openils.widget.AutoFieldWidget({
                 forceSync : true,
@@ -159,6 +160,10 @@ function addEntry(entry) {
                 dijitArgs : (field == 'item_count') ? {min:1, places:0} : null
             }).build(
                 function(w, ww) {
+                    if (field == "collection_code") {
+                        /* kludge for glitchy textbox */
+                        _collection_code_textboxes.push(w);
+                    }
                     dojo.connect(w, 'onChange', 
                         function(newVal) {
                             entry[field]( newVal );
@@ -169,6 +174,35 @@ function addEntry(entry) {
             );
         }
     );
+
+    /* For some reason (bug) the dndSource intercepts onMouseDown events
+     * that should hit dijit textboxes in our table thingy. Other dijits
+     * (buttons, filteringselects, etc) seem not to be affected.  This
+     * workaround deals with the only textboxes we have for now: the ones
+     * for the collection_code field. */
+    if (!_collection_code_kludge_active) {
+        _collection_code_kludge_active = true;
+        var original = dojo.hitch(dndSource, dndSource.onMouseDown);
+        dndSource.onMouseDown = function(e) {
+            var hits = _collection_code_textboxes.filter(
+                function(w) {
+                    var c = dojo.coords(w.domNode);
+                    if (e.clientX >= c.x && e.clientX < c.x + c.w) {
+                        if (e.clientY >= c.y && e.clientY < c.y + c.h) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            );
+
+            if (hits.length) {
+                hits[0].focus();
+            } else {
+                original(e);
+            }
+        };
+    }
 }
 
 function saveFormula() {

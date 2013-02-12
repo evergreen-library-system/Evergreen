@@ -652,7 +652,7 @@
 		<desc xml:lang='en-US'>The requested acq.funding_source_balance was not found</desc>
 	</event>
 	<event code='1858' textcode='ACQ_LINEITEM_NOT_FOUND'>
-		<desc xml:lang='en-US'>The requested acq.po_lineitem was not found</desc>
+		<desc xml:lang='en-US'>The requested acq.lineitem was not found</desc>
 	</event>
 	<event code='1859' textcode='ACQ_PURCHASE_ORDER_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested acq.purchase_order was not found</desc>
