@@ -1148,6 +1148,13 @@ a.dash-link:hover { text-decoration: underline !important; }
     height: 26px;
 }
 
+.opac-button:disabled {
+    color: [% css_colors.accent_medium %];
+    cursor: pointer !important;
+    border: 1px solid [% css_colors.accent_light %];
+    background-color: [% css_colors.accent_lighter %];
+}
+
 .opac-button, .results_header_btns, #simple-detail-view-links { 
     color: [% css_colors.button_text %];
     font-weight: bold; 
