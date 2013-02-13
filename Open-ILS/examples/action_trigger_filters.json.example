@@ -9,6 +9,12 @@
                     ]
             }
     },
+    "expire" : {
+        "context_org":"home_ou",
+        "filter"                :
+                        { "active":"t",
+                        "deleted":"f" }
+        },
     "hold_request.shelf_expires_soon" : {
         "context_org": "pickup_lib",
         "filter": {
