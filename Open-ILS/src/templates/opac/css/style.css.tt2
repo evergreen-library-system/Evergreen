@@ -1487,3 +1487,7 @@ a.preflib_change {
     padding: 0;
     vertical-align: middle;
 }
+
+#patron_usr_barcode_not_found {
+    font-weight: bold; color: [% css_colors.text_alert %];
+}

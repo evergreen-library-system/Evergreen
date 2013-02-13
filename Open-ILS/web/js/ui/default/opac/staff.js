@@ -42,6 +42,9 @@ function staff_hold_usr_barcode_changed(isload) {
         }
         if(barcode == undefined || barcode == '') {
             document.getElementById('patron_name').innerHTML = '';
+            // No submitting on empty barcode, but empty barcode doesn't really count as "not found" either
+            document.getElementById('place_hold_submit').disabled = true;
+            document.getElementById("patron_usr_barcode_not_found").style.display = 'none';
             cur_hold_barcode = null;
             return;
         }
