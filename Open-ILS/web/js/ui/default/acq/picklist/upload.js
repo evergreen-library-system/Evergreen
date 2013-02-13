@@ -73,6 +73,11 @@ function init2() {
 function setDefaultFiscalYear(org) {
     org = org || orderAgencyWidget.attr('value');
 
+    // NOTE: Evergreen does not yet offer an interface for managing
+    // fiscal years.  For now, make the fiscal year selector persistant
+    vlAgent.readCachedValue(acqUploadYearSelector, 'fiscal_year');
+    return;
+
     if (org) {
 
         fieldmapper.standardRequest(
@@ -95,6 +100,7 @@ function acqUploadRecords() {
     vlAgent.writeCachedValue(acqPlUploadActivatePo, 'activate_po');
     vlAgent.writeCachedValue(providerWidget, 'provider');
     vlAgent.writeCachedValue(orderAgencyWidget, 'ordering_agency');
+    vlAgent.writeCachedValue(acqUploadYearSelector, 'fiscal_year');
 
     openils.Util.show('acq-pl-upload-progress');
     var picklist = acqPlUploadPlSelector.attr('value');
