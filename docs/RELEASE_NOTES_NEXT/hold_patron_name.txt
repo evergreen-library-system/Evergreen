@@ -1,0 +1,7 @@
+Show Hold Patron Name in TPac
+=============================
+
+When looking up patron information for hold placement via the staff client in
+TPac the hold patron name is now shown next to the entered barcode. In the event
+that the barcode is not found a notice is displayed and the submit button is
+disabled until a valid barcode is entered or the staff member is switched to.
