@@ -9004,7 +9004,7 @@ INSERT INTO config.global_flag (name,label,enabled)
         TRUE
     );
 
-INSERT INTO config.global_flag  (name, enabled, label)
+INSERT INTO config.global_flag  (name, label, enabled)
     VALUES (
         'history.hold.retention_age',
         oils_i18n_gettext('history.hold.retention_age', 'Historical Hold Retention Age', 'cgf', 'label'),
