@@ -686,8 +686,13 @@ sub stamp_and_queue_results {
 sub send_and_queue_bucket_searches {
     my ($conn, $e, $queue, $z_searches) = @_;
 
-    my $max_parallel = 5; # TODO org setting
-    my $search_limit = 5; # TODO org setting
+    my $max_parallel = $U->ou_ancestor_setting(
+        $e->requestor->ws_ou,
+        'cat.z3950.batch.max_parallel') || 5;
+
+    my $search_limit = $U->ou_ancestor_setting(
+        $e->requestor->ws_ou,
+        'cat.z3950.batch.max_results') || 5;
 
     my $response = {
         bre_count => 0,

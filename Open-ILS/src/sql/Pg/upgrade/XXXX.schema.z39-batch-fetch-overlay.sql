@@ -49,4 +49,54 @@ INSERT INTO config.z3950_index_field_map
 -- let's leave room for more stock mappings
 SELECT SETVAL('config.z3950_index_field_map_id_seq'::TEXT, 1000);
 
+INSERT INTO config.org_unit_setting_type
+    (name, grp, label, description, datatype)
+    VALUES (
+        'cat.z3950.batch.max_parallel',
+        'cat',
+        oils_i18n_gettext(
+            'cat.z3950.batch.max_parallel',
+            'Maximum Parallel Z39.50 Batch Searches',
+            'coust',
+            'label'
+        ),
+        oils_i18n_gettext(
+            'cat.z3950.batch.max_parallel',
+            'The maximum number of Z39.50 searches that can be in-flight at any given time when performing batch Z39.50 searches',
+            'coust',
+            'description'
+        ),
+        'integer'
+    );
+
+INSERT INTO config.org_unit_setting_type
+    (name, grp, label, description, datatype)
+    VALUES (
+        'cat.z3950.batch.max_results',
+        'cat',
+        oils_i18n_gettext(
+            'cat.z3950.batch.max_results',
+            'Maximum Z39.50 Batch Search Results',
+            'coust',
+            'label'
+        ),
+        oils_i18n_gettext(
+            'cat.z3950.batch.max_results',
+            'The maximum number of search results to retrieve and queue for each record + Z39 source during batch Z39.50 searches',
+            'coust',
+            'description'
+        ),
+        'integer'
+    );
+
+INSERT INTO vandelay.bib_attr_definition (id, code, description, xpath) 
+    VALUES (
+        16, 
+        'zsource',
+        oils_i18n_gettext(16, 'Z39.50 Source', 'vqbrad', 'description'),
+        '//*[@tag="901"]/*[@code="z"]'
+    );
+
+
+
 COMMIT;
