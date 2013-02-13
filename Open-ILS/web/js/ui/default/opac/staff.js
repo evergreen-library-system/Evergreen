@@ -42,6 +42,7 @@ function staff_hold_usr_barcode_changed(isload) {
         }
         if(barcode == undefined || barcode == '') {
             document.getElementById('patron_name').innerHTML = '';
+            cur_hold_barcode = null;
             return;
         }
         if(barcode == cur_hold_barcode)
@@ -51,6 +52,7 @@ function staff_hold_usr_barcode_changed(isload) {
         var load_info = xulG.get_barcode_and_settings(window, barcode, only_settings);
         if(load_info == false || load_info == undefined) {
             document.getElementById('patron_name').innerHTML = '';
+            cur_hold_barcode = null;
             return;
         }
         cur_hold_barcode = load_info.barcode;
