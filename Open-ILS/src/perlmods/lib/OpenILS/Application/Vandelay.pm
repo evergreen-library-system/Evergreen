@@ -82,7 +82,7 @@ sub create_bib_queue {
     $queue->queue_type( $type ) if ($type);
     $queue->item_attr_def( $import_def ) if ($import_def);
     $queue->match_set($match_set) if $match_set;
-    $queue->match_bucket($match_bucket);
+    $queue->match_bucket($match_bucket) if $match_bucket;
 
     my $new_q = $e->create_vandelay_bib_queue( $queue );
     return $e->die_event unless ($new_q);
@@ -469,12 +469,19 @@ sub retrieve_queued_records {
     return $evt if ($evt);
 
     my $class = ($type eq 'bib') ? 'vqbr' : 'vqar';
+    my $mclass = $type eq 'bib' ? 'vbm' : 'vam';
     my $query = {
-        select => {$class => ['id']},
+        select => {
+            $class => ['id'],
+            $mclass => [{
+                column => 'eg_record', 
+                transform => 'min',
+                aggregate => 1
+            }]
+        },
         from => $class,
         where => {queue => $queue_id},
         distinct => 1,
-        order_by => {$class => ['id']}, 
         limit => $limit,
         offset => $offset,
     };
@@ -507,9 +514,17 @@ sub retrieve_queued_records {
 
     if($self->api_name =~ /matches/) {
         # find only records that have matches
-        my $mclass = $type eq 'bib' ? 'vbm' : 'vam';
         $query->{from} = {$class => {$mclass => {type => 'right'}}};
-    } 
+    } else {
+        # join to mclass for sorting (see below)
+        $query->{from} = {$class => {$mclass => {type => 'left'}}};
+    }
+
+    # order by the matched bib records to group like queued records
+    $query->{order_by} = [
+        {class => $mclass, field => 'eg_record', transform => 'min'},
+        {class => $class, field => 'id'} 
+    ];
 
     my $record_ids = $e->json_query($query);
 
