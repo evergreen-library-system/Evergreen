@@ -52,6 +52,7 @@ function staff_hold_usr_barcode_changed(isload) {
         var load_info = xulG.get_barcode_and_settings(window, barcode, only_settings);
         if(load_info == false || load_info == undefined) {
             document.getElementById('patron_name').innerHTML = '';
+            document.getElementById("patron_usr_barcode_not_found").style.display = '';
             cur_hold_barcode = null;
             return;
         }
@@ -88,6 +89,7 @@ function staff_hold_usr_barcode_changed(isload) {
         for(var i in update_elements) update_elements[i].textContent = load_info.user_email;
         if(!document.getElementById('hold_usr_is_requestor').checked && document.getElementById('hold_usr_input').value) {
             document.getElementById('patron_name').innerHTML = load_info.patron_name;
+            document.getElementById("patron_usr_barcode_not_found").style.display = 'none';
         }
         // Ok, now we can allow submitting again, unless this is a "true" load, in which case we likely have a blank barcode box active
         if (isload !== true)
