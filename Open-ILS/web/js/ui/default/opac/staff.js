@@ -89,8 +89,9 @@ function staff_hold_usr_barcode_changed(isload) {
         if(!document.getElementById('hold_usr_is_requestor').checked && document.getElementById('hold_usr_input').value) {
             document.getElementById('patron_name').innerHTML = load_info.patron_name;
         }
-        // Ok, now we can allow submitting again
-        document.getElementById('place_hold_submit').disabled = false;
+        // Ok, now we can allow submitting again, unless this is a "true" load, in which case we likely have a blank barcode box active
+        if (isload !== true)
+            document.getElementById('place_hold_submit').disabled = false;
     }
 }
 window.onload = function() {
