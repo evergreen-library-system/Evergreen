@@ -335,7 +335,7 @@ sub calendar_increment {
 
     # A calendar change is defined, need to check if it applies
     if (scalar(@{$new}) == 1) {
-        carp "Can't calculate date change for ", $self->as_string;
+        croak "Can't calculate date change for ", $self->as_string;
         return 0;
     }
 
@@ -473,7 +473,7 @@ sub next_chron {
         # There was no suitable publication pattern defined,
         # so use the $w frequency to figure out the next date
         if (!defined($freq)) {
-            carp "Undefined frequency in next_chron!";
+            croak "Undefined frequency in next_chron!";
         } elsif (!MFHD::Date::can_increment($freq)) {
             croak "Don't know how to deal with frequency '$freq'!";
         } else {
