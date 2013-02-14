@@ -45,6 +45,7 @@ row#row_billing_zip { padding-bottom: 10px; }
 .PATRON_EXCEEDS_CHECKOUT_COUNT label.items_out { color: purple; }
 /* .PATRON_EXCEEDS_CHECKOUT_COUNT label.items_out.label { text-decoration: underline; } */
 .PATRON_EXCEEDS_CHECKOUT_COUNT label.items_out.value { }
+.PATRON_EXCEEDS_CHECKOUT_COUNT label.max_out_indicator { display: inline; color: purple; }
 
 .PATRON_EXCEEDS_OVERDUE_COUNT .patronNameLarge { border-color: #C99DFF; }
 .PATRON_EXCEEDS_OVERDUE_COUNT label.items_overdue { color: purple; }

@@ -26,6 +26,7 @@
         <label class="hideme note_indicator" value="&staff.patron.display_overlay.see_notes.value;" command="cmd_patron_info_notes"/>
         <label class="hideme max_bills_indicator" value="&staff.patron.display_overlay.max_bills.value;" command="cmd_patron_bills"/>
         <label class="hideme max_overdues_indicator" value="&staff.patron.display_overlay.max_overdues.value;" command="cmd_patron_items"/>
+        <label class="hideme max_out_indicator" value="&staff.patron.display_overlay.max_checked_out.value;" command="cmd_patron_items"/>
         <label class="hideme bills_indicator" value="&staff.patron.display_overlay.has_bills.value;" command="cmd_patron_bills"/>
         <label class="hideme overdues_indicator" value="&staff.patron.display_overlay.has_overdues.value;" command="cmd_patron_items"/>
         <label class="hideme invalid_dob_indicator" value="&staff.patron.display_overlay.invalid_dob.value;" command="cmd_patron_edit"/>

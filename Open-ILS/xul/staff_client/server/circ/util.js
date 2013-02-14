@@ -3748,6 +3748,7 @@ circ.util.renew_via_barcode = function ( params, async ) {
                         case null /* custom event */ : break;
                         case 5000 /* PERM_FAILURE */: break;
                         case 1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */ : break;
+                        case 7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */ : break;
                         case 1213 /* PATRON_BARRED */ : break;
                         case 1215 /* CIRC_EXCEEDS_COPY_RANGE */ : break;
                         case 1224 /* PATRON_ACCOUNT_EXPIRED */ : break;

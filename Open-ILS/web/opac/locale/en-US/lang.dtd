@@ -3222,6 +3222,7 @@
 <!ENTITY staff.patron.display_overlay.see_notes.value "(See Notes)">
 <!ENTITY staff.patron.display_overlay.max_bills.value "(Maximum Bills)">
 <!ENTITY staff.patron.display_overlay.max_overdues.value "(Maximum Overdues)">
+<!ENTITY staff.patron.display_overlay.max_checked_out.value "(Maximum Checked Out)">
 <!ENTITY staff.patron.display_overlay.has_bills.value "(Has Bills)">
 <!ENTITY staff.patron.display_overlay.has_overdues.value "(Has Overdues)">
 <!ENTITY staff.patron.display_overlay.invalid_dob.value "(Invalid Date of Birth)">
