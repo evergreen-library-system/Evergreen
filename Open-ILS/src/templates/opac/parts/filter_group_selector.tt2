@@ -19,14 +19,9 @@
 [% IF none_ok %]
     <option value=''>[% none_label ? none_label : l('-- Any --') %]</option>
 [% END;
-# turn the list of objects into a list of hashes to 
-# leverage TT's array.sort('<hashkey>') behavior
-sorter = [];
-FOR o IN group.entries;
-    sorter.push({id => o.id, label => o.query.label, pos => o.pos}); 
-END;
-FOR o IN sorter.sort('pos') %]
-    <option value='[% o.id %]'[% values.grep(o.id).size ? ' selected="selected"' : '' %]>[% o.label | html %]</option>
+
+FOR o IN group.entries %]
+    <option value='[% o.id %]'[% values.grep(o.id).size ? ' selected="selected"' : '' %]>[% o.query.label | html %]</option>
 [%  END -%]
 </select>
 
