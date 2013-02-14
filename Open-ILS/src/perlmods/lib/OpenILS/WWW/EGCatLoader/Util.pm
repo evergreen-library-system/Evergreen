@@ -559,7 +559,8 @@ sub load_search_filter_groups {
                     flesh_fields => {
                         asfg => ['entries'],
                         asfge => ['query']
-                    }
+                    },
+                    order_by => {asfge => 'pos'}
                 }
             ]);
             $cache{search_filter_groups}{$org_id} = $grps;
