@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0752', :eg_version);
+
 INSERT INTO container.biblio_record_entry_bucket_type (code, label) VALUES ('url_verify', 'URL Verification Queue');
 
 DROP SCHEMA IF EXISTS url_verify CASCADE;
