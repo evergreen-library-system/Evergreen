@@ -258,14 +258,15 @@ function VLAgent(args) {
         return false; // not yet complete
     };
 
-    this.readCachedValue = function(dij, key) {
+    this.readCachedValue = function(dij, key, ousOnly) {
         var val;
         var setname = osetkey + (setNameMap[key] ? setNameMap[key] : key);
 
         if (ouSettingTrumpsPersist && persistOrgSettings[setname]) {
             val = persistOrgSettings[setname].value;
         } else {
-            val = xulStorage.getItem(storekey + key);
+            if (!ousOnly)
+                val = xulStorage.getItem(storekey + key);
             if (!val && persistOrgSettings[setname])
                 val = persistOrgSettings[setname].value;
         }

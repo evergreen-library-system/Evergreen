@@ -37,7 +37,7 @@ function init2() {
     }).build(
         function(w) { 
             providerWidget = w;
-            vlAgent.readCachedValue(w, 'provider');
+            vlAgent.readCachedValue(w, 'provider', true);
         }
     );
 
