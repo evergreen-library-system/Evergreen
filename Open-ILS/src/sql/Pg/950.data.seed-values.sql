@@ -12052,6 +12052,10 @@ INSERT INTO config.org_unit_setting_type
         oils_i18n_gettext(
             'url_verify.url_verification_max_redirects',
             'Maximum redirect lookups',
+            'coust',
+            'label'
+        ),
+        oils_i18n_gettext(
             'url_verify.url_verification_max_redirects',
             'For URLs returning 3XX redirects, this is the maximum number of redirects we will follow before giving up.',
             'coust',
@@ -12358,6 +12362,3 @@ VALUES (
     'bool',
     NULL
 );
-
-
->>>>>>> ACQ MARC upload UI default values SQL

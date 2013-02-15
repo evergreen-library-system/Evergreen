@@ -138,5 +138,5 @@ ALTER TABLE config.filter_dialog_filter_set
 
 ALTER TABLE config.filter_dialog_filter_set
     ADD CONSTRAINT config_filter_dialog_filter_set_filters_check
-    CHECK (evergreen.is_json(filters))
+    CHECK (evergreen.is_json(filters));
 COMMIT;
