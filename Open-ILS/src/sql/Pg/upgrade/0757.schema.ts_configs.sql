@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0757', :eg_version);
+
 SET search_path = public, pg_catalog;
 
 DO $$
