@@ -1,7 +1,7 @@
 
 BEGIN;
 
--- TODO SET VERSION
+SELECT evergreen.upgrade_deps_block_check('0755', :eg_version);
 
 INSERT INTO config.org_unit_setting_type
     (name, label, description, grp, datatype, fm_class) VALUES
