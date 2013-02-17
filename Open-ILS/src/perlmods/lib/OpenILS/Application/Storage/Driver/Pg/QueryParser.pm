@@ -1559,6 +1559,7 @@ sub tsquery_rank {
         push @atomlines, "\n" . ${spc} x 3 . $atom->sql;
     }
     $self->{tsquery_rank} = join(' ||', @atomlines);
+    $self->{tsquery_rank} = 'NULL::tsquery' unless $self->{tsquery_rank};
     return $self->{tsquery_rank};
 }
 
