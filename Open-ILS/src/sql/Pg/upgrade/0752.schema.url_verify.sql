@@ -89,7 +89,7 @@ CREATE TABLE config.filter_dialog_filter_set (
     creator     INT                         NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
     create_time TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT NOW(),
     interface   TEXT                        NOT NULL REFERENCES config.filter_dialog_interface (key) DEFERRABLE INITIALLY DEFERRED,
-    filters     TEXT                        NOT NULL CHECK (evergreen.is_json(filters)),
+    filters     TEXT                        NOT NULL CHECK (is_json(filters)),
     CONSTRAINT cfdfs_name_once_per_lib UNIQUE (name, owning_lib)
 );
  
