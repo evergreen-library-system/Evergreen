@@ -3876,3 +3876,15 @@
 <!ENTITY staff.search_prefs.clear.label "Clear All">
 <!ENTITY staff.search_prefs.clear.accesskey "C">
 <!ENTITY staff.search_prefs.cleared_message "Preferences cleared">
+<!ENTITY staff.bucketz39_search.dialog_label "Locate Z39.59 Matches">
+<!ENTITY staff.bucketz39_search.servers "Z39.50 Servers:">
+<!ENTITY staff.bucketz39_search.indexes "Z39.50 Search Indexes:">
+<!ENTITY staff.bucketz39_search.queue "Add Results to Queue:">
+<!ENTITY staff.bucketz39_search.match_set "Match Set:">
+<!ENTITY staff.bucketz39_search.match_set_select "-- Select Match Set --">
+<!ENTITY staff.bucketz39_search.perform_search "Perform Search">  
+<!ENTITY staff.bucketz39_search.bib_count "Bib Records to Search:">
+<!ENTITY staff.bucketz39_search.progress "Search Progress:">
+<!ENTITY staff.bucketz39_search.found_matches "Matches Found:">
+<!ENTITY staff.bucketz39_search.close "Close">
+<!ENTITY staff.bucketz39_search.open_queue "Open Queue">

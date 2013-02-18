@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE overlay PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+<overlay id="bucketz39_dialog_overlay"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <script type="text/javascript" src="/xul/server/cat/bucketz39_dialog.js" />
+
+    <box orient="vertical" id="bucketz39_dialog_main" flex="1">
+        <caption class="top" label="&staff.bucketz39_search.dialog_label;"/>
+        <vbox flex="1">
+            <grid>                                                     
+                <columns><column /><column /></columns>
+                <rows>      
+                    <row class='search_row'>
+                        <label class='header' 
+                            value="&staff.bucketz39_search.servers;"/>
+                        <grid>
+                            <columns>
+                                <!-- display 2 Z-sources per row -->
+                                <column />
+                                <column />
+                            </columns>
+                            <rows id='source_selector'>
+                            </rows>
+                        </grid>
+                    </row>
+                    <row class='search_row'>
+                        <label class='header' 
+                            value="&staff.bucketz39_search.indexes;"/>
+                        <grid>
+                            <columns>
+                                <!-- display 3 Z-index options per row -->
+                                <column />
+                                <column />
+                                <column />
+                            </columns>
+                            <rows id='index_selector'>
+                            </rows>
+                        </grid>
+                    </row>
+
+                    <row class='search_row'>
+                        <label class='header' 
+                            value="&staff.bucketz39_search.queue;"/>
+                        <menulist editable='true'>
+                            <menupopup id='queue_selector'>
+                            </menupopup>
+                        </menulist>
+                    </row>
+                    <row class='search_row'>
+                        <label class='header' 
+                            value="&staff.bucketz39_search.match_set;"/>
+                        <menulist>
+                            <menupopup id='match_set_selector'>
+                                <menuitem value='' 
+                                    label="&staff.bucketz39_search.match_set_select;"/>
+                            </menupopup>
+                        </menulist>
+                    </row>
+                    <row id='search-submit-row' class='search_row'>
+                        <button oncommand="window.close();" 
+                            icon="remove" accesskey="C" 
+                            label="&common.cancel;" />  
+                        <button oncommand="dialog.submit();" 
+                            icon="accept" accesskey="P" 
+                            label="&staff.bucketz39_search.perform_search;"/>
+                    </row>
+                    <row class='hideme search_result_row search_row'>
+                        <label class='header' 
+                            value='&staff.bucketz39_search.bib_count;'/>
+                        <label id='search-bib-count' value='0'/>
+                    </row>
+                    <row class='hideme search_result_row search_row'>
+                        <label class='header' 
+                            value='&staff.bucketz39_search.found_matches;'/>
+                        <label id='search-queue-count' value='0'/>
+                    </row>
+                    <row class='hideme search_result_row search_row'>
+                        <label class='header' 
+                            value='&staff.bucketz39_search.progress;'/>
+                        <progressmeter id='search-progress' mode='determined'/>
+                    </row>
+                    <row id='final-actions-row' class='hideme search_row'>
+                        <button oncommand="window.close();" 
+                            icon="remove" accesskey="C" 
+                            label="&staff.bucketz39_search.close;"/>
+                        <button oncommand="dialog.open_queue();" 
+                            icon="accept" accesskey="O" 
+                            label="&staff.bucketz39_search.open_queue;"/>
+                    </row>
+                </rows>
+            </grid>
+        </vbox>
+    </box>
+</overlay>

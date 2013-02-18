@@ -29,6 +29,7 @@
     <command id="cmd_record_buckets_new_bucket" />
     <command id="cmd_record_buckets_delete_bucket" disabled="true"/>
     <command id="cmd_record_buckets_refresh" disabled="true"/>
+    <command id="cmd_record_buckets_zsearch" disabled="true"/>
 
     <command id="cmd_record_buckets_delete_item" />
     <command id="cmd_record_buckets_to_pending_buckets" />
@@ -104,6 +105,8 @@
                                 <menuitem command="cmd_record_buckets_new_bucket" label="&staff.cat.record_buckets_overlay.new_bucket.label;"/>
                                 <menuitem command="cmd_record_buckets_delete_bucket" label="&staff.cat.record_buckets_overlay.delete_bucket.label;"/>
                                 <menuitem command="cmd_record_buckets_refresh" label="&staff.cat.record_buckets_overlay.refresh_bucket.label;"/>
+                                <!-- TODO: label -->
+                                <menuitem command="cmd_record_buckets_zsearch" label="Locate Z39.50 Matches"/>
                             </menupopup>
                         </button>
                         <label id="bucket_item_count" />

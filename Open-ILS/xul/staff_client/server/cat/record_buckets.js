@@ -331,6 +331,7 @@ cat.record_buckets.prototype = {
                                     if (x) x.setAttribute('label','');
                                     obj.controller.view.cmd_record_buckets_delete_bucket.setAttribute('disabled','true');
                                     obj.controller.view.cmd_record_buckets_refresh.setAttribute('disabled','true');
+                                    obj.controller.view.cmd_record_buckets_zsearch.setAttribute('disabled','true');
                                     obj.controller.view.record_buckets_export_records.disabled = true;
                                     obj.controller.view.cmd_merge_records.setAttribute('disabled','true');
                                     obj.controller.view.cmd_delete_records.setAttribute('disabled','true');
@@ -353,6 +354,7 @@ cat.record_buckets.prototype = {
                                     try {
                                         obj.controller.view.cmd_record_buckets_delete_bucket.setAttribute('disabled','false');
                                         obj.controller.view.cmd_record_buckets_refresh.setAttribute('disabled','false');
+                                        obj.controller.view.cmd_record_buckets_zsearch.setAttribute('disabled','false');
                                         obj.controller.view.record_buckets_export_records.disabled = false;
                                         obj.controller.view.cmd_merge_records.setAttribute('disabled','false');
                                         obj.controller.view.cmd_delete_records.setAttribute('disabled','false');
@@ -544,6 +546,7 @@ cat.record_buckets.prototype = {
                                 x.setAttribute('hidden','true');
                                 obj.controller.view.cmd_record_buckets_delete_bucket.setAttribute('disabled','true');
                                 obj.controller.view.cmd_record_buckets_refresh.setAttribute('disabled','true');
+                                obj.controller.view.cmd_record_buckets_zsearch.setAttribute('disabled','true');
                                 obj.controller.view.record_buckets_export_records.disabled = true;
                                 obj.controller.view.cmd_merge_records.setAttribute('disabled','true');
                                 obj.controller.view.cmd_delete_records.setAttribute('disabled','true');
@@ -829,6 +832,28 @@ cat.record_buckets.prototype = {
                                 cat.util.transfer_title_holds(docids);
                             } catch(E) {
                                 alert('Error in record_buckets.js, cmd_transfer_title_holds: ' + E);
+                            }
+                        }
+                    ],
+                    'cmd_record_buckets_zsearch' : [
+                        ['command'],
+                        function() {
+                            try {
+                                var bucket_id = obj.controller.view.bucket_menulist.value;
+
+                                window.openDialog(
+                                    // TODO: constants.js
+                                    xulG.url_prefix("oils://remote/xul/server/cat/bucketz39_dialog.xul"),
+                                    "bucketz39_dialog",
+                                    "width=800,height=500",
+                                    obj.data.list.au[0].id(),
+                                    ses(), 
+                                    ses('ws_ou'),
+                                    bucket_id,
+                                    xulG
+                                );
+                            } catch(E) {
+                                alert('Error in record_buckets.js, cmd_record_buckets_zsearch: ' + E);
                             }
                         }
                     ],
