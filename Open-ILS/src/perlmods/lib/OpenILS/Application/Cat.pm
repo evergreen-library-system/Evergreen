@@ -114,6 +114,8 @@ sub create_record_xml {
     my( $user_obj, $evt ) = $U->checksesperm($login, 'CREATE_MARC');
     return $evt if $evt;
 
+    $$oargs{import_location} = $e->requestor->ws_ou;
+
     $logger->activity("user ".$user_obj->id." creating new MARC record");
 
     my $meth = $self->method_lookup("open-ils.cat.biblio.record.xml.import");
@@ -167,6 +169,8 @@ sub biblio_record_replace_marc  {
     } else {
         $oargs = {};
     }
+
+    $$oargs{import_location} = $e->requestor->ws_ou;
 
     my $res = OpenILS::Application::Cat::BibCommon->biblio_record_replace_marc(
         $e, $recid, $newxml, $source, $fix_tcn, $oargs);
@@ -419,6 +423,7 @@ sub biblio_record_xml_import {
     } else {
         $oargs = {};
     }
+    $$oargs{import_location} = $e->requestor->ws_ou;
     my $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import(
         $e, $xml, $source, $auto_tcn, $oargs);
 

@@ -66,6 +66,18 @@ sub biblio_record_replace_marc  {
         $marcdoc = __make_marc_doc($newxml);
     }
 
+    my $import_loc = $$override{import_location};
+    my $ancestors = $U->get_org_ancestors($import_loc) if ($import_loc);
+    my $trash_tags = $e->search_vandelay_import_bib_trash_fields({owner => $ancestors}) if ($ancestors);
+
+    if ($trash_tags && @$trash_tags) {
+        for my $tag (@$trash_tags) {
+            for my $node ($marcdoc->findnodes('//*[@tag="'.$tag->field.'"]')) {
+                $node->parentNode->removeChild($node);
+            }
+        }
+    }
+
 
 	$rec->source(bib_source_from_name($source)) if $source;
 	$rec->editor($e->requestor->id);
@@ -94,6 +106,18 @@ sub biblio_record_xml_import {
 		( $tcn, $tcn_source, $marcdoc, $evt ) = _find_tcn_info($e, $xml, $override);
 		return $evt if $evt;
 	}
+
+    my $import_loc = $$override{import_location};
+    my $ancestors = $U->get_org_ancestors($import_loc) if ($import_loc);
+    my $trash_tags = $e->search_vandelay_import_bib_trash_fields({owner => $ancestors}) if ($ancestors);
+
+    if ($trash_tags && @$trash_tags) {
+        for my $tag (@$trash_tags) {
+            for my $node ($marcdoc->findnodes('//*[@tag="'.$tag.'"]')) {
+                $node->parentNode->removeChild($node);
+            }
+        }
+    }
 
 	# Silence warnings when _find_tcn_info() fails
 	$tcn ||= '';

@@ -16,6 +16,7 @@ use MARC::File::XML ( BinaryEncoding => 'UTF-8' );
 use Time::HiRes qw(time);
 use OpenSRF::Utils::Logger qw/$logger/;
 use MIME::Base64;
+use XML::LibXML;
 use OpenILS::Const qw/:const/;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application::Cat::BibCommon;
@@ -915,6 +916,10 @@ sub import_record_list_impl {
         $rec_class = 'vqar';
     }
 
+    my $import_loc = $requestor->ws_ou;
+    my $ancestors = $U->get_org_ancestors($import_loc) if ($import_loc);
+    my $trash_tags = $editor->search_vandelay_import_bib_trash_fields({owner => $ancestors}) if ($ancestors);
+
     my $new_rec_perm_cache;
     my @success_rec_ids;
     for my $rec_id (@$rec_ids) {
@@ -949,6 +954,20 @@ sub import_record_list_impl {
             push(@success_rec_ids, $rec_id);
             $e->rollback;
             next;
+        }
+
+        if ($trash_tags && @$trash_tags) {
+            my $marcxml = XML::LibXML->new->parse_string($rec->marc);
+            if ($marcxml) {
+                for my $tag (@$trash_tags) {
+                    for my $node ($marcxml->findnodes('//*[@tag="'.$tag->field.'"]')) {
+                        $node->parentNode->removeChild($node);
+                    }
+                }
+
+                $rec->marc( $U->entityize( $marcdoc->documentElement->toString ) );
+                $e->$update_func($rec);
+            }
         }
 
         $$report_args{rec} = $rec;
