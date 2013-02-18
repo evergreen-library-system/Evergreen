@@ -5,7 +5,7 @@
     prefs_page = 'settings' %]
 
 
-    <form method='POST'>
+    <form method='post'>
 
        <table class="full-width data_grid" id="acct_search_main">
             <tbody>

@@ -27,7 +27,7 @@
                [% IF ctx.circs.size < limit %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
         </span>
         <span class="float-left">
-            <form action="[% mkurl(ctx.opac_root _ '/myopac/circ_history/export') %]" method="POST">
+            <form action="[% mkurl(ctx.opac_root _ '/myopac/circ_history/export') %]" method="post">
                 <div>
                     [%- INCLUDE "opac/parts/preserve_params.tt2" %]
                     <input type="hidden" name="filename" value="[% l('circ_history.csv') %]"/> 

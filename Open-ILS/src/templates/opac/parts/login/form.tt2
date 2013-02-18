@@ -16,7 +16,7 @@
 <div id='login-form-box' class='login_boxes left_brain' style='float:left'>
     <h1>[% l('Log in to Your Account') %]</h1>
     [% l('Please enter the following information:') %]
-    <form method='POST'>
+    <form method='post'>
         <table>
             <tr>
                 <td style="width: 20em; vertical-align: top; padding-top: 1.5em;" class='lbl1'><label for='username_field'>[% l('Library Card Number or Username') %]</label>

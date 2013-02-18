@@ -1,7 +1,7 @@
 [% PROCESS "opac/parts/org_selector.tt2" %]
 <div id="search-box">    
     [% UNLESS took_care_of_form -%]
-    <form action="[% ctx.opac_root %]/results" method="GET">
+    <form action="[% ctx.opac_root %]/results" method="get">
     [%- END %]
     <div>
         <span class="search_catalog_lbl">[% l('Search the Catalog') %]</span>

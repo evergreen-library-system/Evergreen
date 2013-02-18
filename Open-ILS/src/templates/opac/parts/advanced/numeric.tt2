@@ -1,4 +1,4 @@
-<form action="[% ctx.opac_root %]/results" method="GET">
+<form action="[% ctx.opac_root %]/results" method="get">
     <div class="header_middle">[% l("Numeric Search") %]</div>
     <input type="hidden" name="contains" value="contains" />
     <input type="hidden" name="_special" value="1" />

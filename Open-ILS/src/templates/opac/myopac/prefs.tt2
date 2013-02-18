@@ -191,7 +191,7 @@
                 [% IF pending_addr OR edit_addr_id == cur_id;
                     update_addr = pending_addr || addr %]
                 <td>
-                    <form method='POST'>
+                    <form method='post'>
                         [% IF pending_addr %]
                             <input type='hidden' name='pending_addr' value='[% pending_addr.id %]'/>
                         [% ELSE %]

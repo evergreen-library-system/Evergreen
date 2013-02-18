@@ -39,11 +39,11 @@
                 %]</td>
                 <td>[% money(payment.mp.amount) %]</td>
                 <td>
-                    <form action="[% ctx.opac_root %]/myopac/receipt_print" method="POST">
+                    <form action="[% ctx.opac_root %]/myopac/receipt_print" method="post">
                         <input type="hidden" name="payment" value="[% payment.mp.id %]" />
                         <input type="submit" value="[% l('Print') %]" />
                     </form>
-                    <form action="[% ctx.opac_root %]/myopac/receipt_email" method="POST">
+                    <form action="[% ctx.opac_root %]/myopac/receipt_email" method="post">
                         <input type="hidden" name="payment" value="[% payment.mp.id %]" />
                         <input type="submit" value="[% l('Email') %]" />
                     </form>

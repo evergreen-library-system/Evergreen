@@ -8,7 +8,7 @@
 <div id='myopac_bookbag_div' style="padding:5px;">
 
     <!-- new list creation -->
-    <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="POST" id="create_form">
+    <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="post" id="create_form">
         <h1>[% l('Create new list') %]</h1><a name="createnewlist"></a>
         <table cellpadding="0" border="0" id="list_create_table">
             <tr>
@@ -96,7 +96,7 @@
                 [% IF bbag.description %]<div class="bookbag-description">[% bbag.description | html %]</div>[% END %]
             </div>
             [% IF ctx.add_rec %]
-            <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update', {}, 1) %]" method="POST">
+            <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update', {}, 1) %]" method="post">
                 <div class="bookbag-controls">
                     <input type="hidden" name="action" value="add_rec" />
                     <input type="hidden" name="list" value="[% bbag.id %]" />
@@ -108,7 +108,7 @@
                 </div>
             </form>
             [% END %]
-            <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="POST">
+            <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="post">
                 <div class="bookbag-share">
                     <input type="hidden" name="list" value="[% bbag.id %]" />
                     [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
@@ -121,7 +121,7 @@
                     [% END %]
                 </div>
             </form>
-            <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="POST">
+            <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="post">
                 <div class="bookbag-controls">
                     <input type="hidden" name="list" value="[% bbag.id %]" />
                     <input type="hidden" name="action" value="delete" />
@@ -129,7 +129,7 @@
                     <input type="submit" value="[% l('Delete List') %]" />
                 </div>
             </form>
-            <form action="[% mkurl(ctx.opac_root _ '/myopac/list/print') %]" method="POST">
+            <form action="[% mkurl(ctx.opac_root _ '/myopac/list/print') %]" method="post">
                 <div class="bookbag-controls">
                     <input type="hidden" name="list" value="[% bbag.id %]" />
                     <input type="hidden" name="sort" value="[% CGI.param('sort') | html %]" />
@@ -138,7 +138,7 @@
                 </div>
             </form>
             [% setting = 'opac.default_list'; %]
-            <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="POST">
+            <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="post">
                 <div class="bookbag-controls">
                     <input type="hidden" name="list" value="[% bbag.id %]" />
                     [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
@@ -174,7 +174,7 @@
         [% IF CGI.param("bbid") == bbag.id %]
         <div class="bookbag-specific">
             <div class="sort">
-                <form method="GET">
+                <form method="get">
                     <label for="opac.result.sort">[% l("Sort list items by: ") %]</label>
                     [%- INCLUDE "opac/parts/preserve_params.tt2" params=['loc', 'query', 'qtype']; %]
                     [% INCLUDE "opac/parts/filtersort.tt2"
@@ -185,7 +185,7 @@
                 </form>
             </div>
             <div class="meta">
-                <form method="POST">
+                <form method="post">
                     <input type="hidden" name="bbid" value="[% bbag.id %]" />
                     <input type="hidden" name="action" value="editmeta" />
                     <input type="hidden" name="limit" value="[% limit %]" />
@@ -218,7 +218,7 @@
             </div>
         </div>
         <br class="clear-both" />
-        <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="POST">
+        <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="post">
         <input type="hidden" name="list" value="[% bbag.id %]" />
         <input type="hidden" name="sort" value="[% CGI.param('sort') | uri %]" />
         <table class="bookbag-specific" cellpadding='0' cellspacing='0' border='0'>

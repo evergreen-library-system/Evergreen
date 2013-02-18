@@ -2,7 +2,7 @@
     PROCESS "opac/parts/misc_util.tt2";
     PROCESS get_library;
 %]
-<form action="[% ctx.opac_root %]/results" method="GET">
+<form action="[% ctx.opac_root %]/results" method="get">
 <table id='adv_global_search' class='data_grid data_grid_center' width='100%'>
     <tr style='border-bottom: none;'>
         <!-- Contains the user-addable(?) rows to define search class, containment and text -->

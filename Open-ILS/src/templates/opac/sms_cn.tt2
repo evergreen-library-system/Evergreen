@@ -21,7 +21,7 @@
                     <a href="[% ctx.origin %]">[% l('Return to record') %]</a>
                     <pre>[% ctx.event.template_output.data %]</pre>
                     <blockquote>
-                        <form method="POST">
+                        <form method="post">
                             <blockquote>
                                 <input type="hidden" name="copy_id" value="[% ctx.copy_id %]"/>
                                 <input type="hidden" name="origin" value="[% ctx.origin %]"/>

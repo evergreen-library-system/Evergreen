@@ -4,7 +4,7 @@
 
 <div id='holds_box' class='canvas' style='margin-top: 6px;'>
     <h1>[% l('Place Hold') %]</h1>
-    <form method="POST">
+    <form method="post">
         <input type="hidden" name="hold_type" value="[% CGI.param('hold_type') | html %]" />
         [%  
             redirect = CGI.param('hold_source_page') || CGI.param('redirect_to') || CGI.referer;

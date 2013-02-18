@@ -16,7 +16,7 @@
 <div id="pay_fines_now">
     [% IF last_chance %]
     <p><big>[% l("Are you sure you are ready to charge [_1] to your credit card?", money(ctx.fines.balance_owed)) %]</big></p>
-    <form action="[% ctx.opac_root %]/myopac/main_pay_init" method="POST">
+    <form action="[% ctx.opac_root %]/myopac/main_pay_init" method="post">
         [% FOR k IN CGI.Vars;
             NEXT UNLESS k;
             FOR val IN CGI.param(k) %]
@@ -25,7 +25,7 @@
         <input type="submit" value="[% l('Submit Payment') %]" />
         <a href="[% mkurl(ctx.opac_root _ '/myopac/main', {}, 1) %]">[% l('Cancel') %]</a>
     [% ELSE %]
-    <form method="POST">
+    <form method="post">
         <input type="hidden" name="last_chance" value="1" />
         [% FOR xact IN CGI.param('xact') %]
         <input type="hidden" name="xact" value="[% xact | html %]" />

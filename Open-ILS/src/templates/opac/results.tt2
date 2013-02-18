@@ -17,7 +17,7 @@
     PROCESS "opac/parts/misc_util.tt2";
     PROCESS get_library;
 %]
-    <form action="[% ctx.opac_root %]/results" method="GET">
+    <form action="[% ctx.opac_root %]/results" method="get">
     <div id="search-wrapper">
         [% INCLUDE "opac/parts/searchbar.tt2" took_care_of_form=1 %]
     </div>

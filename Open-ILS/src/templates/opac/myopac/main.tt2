@@ -8,7 +8,7 @@
         myopac_cc_allowed = 1;
     END
 %]
-<form action="[% ctx.opac_root %]/myopac/main_payment_form" method="GET">
+<form action="[% ctx.opac_root %]/myopac/main_payment_form" method="get">
     [% IF ctx.fines.circulation.size > 0 %]
     <div id='myopac_circ_trans_div'>
         <table width='100%' class='data_grid'>
