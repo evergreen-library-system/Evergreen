@@ -1,4 +1,4 @@
-[%  PROCESS "opac/parts/header.tt2";
+[%- PROCESS "opac/parts/header.tt2";
     PROCESS "opac/parts/misc_util.tt2";
     WRAPPER "opac/parts/base.tt2";
     INCLUDE "opac/parts/topnav.tt2";
@@ -16,4 +16,4 @@
             <div class="common-full-pad"></div>	
         </div>
     </div>
-[% END %]
+[%- END %]

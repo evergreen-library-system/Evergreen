@@ -1,4 +1,4 @@
-[%  PROCESS "opac/parts/header.tt2";
+[%- PROCESS "opac/parts/header.tt2";
     WRAPPER "opac/parts/base.tt2";
     INCLUDE "opac/parts/topnav.tt2";
     basic_search = "f";
@@ -12,4 +12,4 @@
             <div class="clear-both very-big-height"></div>	
         </div>
     </div>
-[% END %]
+[%- END %]
