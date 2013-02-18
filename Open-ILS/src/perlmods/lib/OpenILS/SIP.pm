@@ -25,7 +25,6 @@ use OpenSRF::Utils qw/:datetime/;
 use DateTime::Format::ISO8601;
 use Encode;
 use Unicode::Normalize;
-use Sip::Constants qw(SIP_DATETIME);
 
 my $U = 'OpenILS::Application::AppUtils';
 
@@ -35,6 +34,11 @@ my $login_account;
 my $target_encoding;    # FIXME: this is configured at the institution level. 
 
 use Digest::MD5 qw(md5_hex);
+
+# Copied from Sip::Constants
+use constant {
+    SIP_DATETIME => "%Y%m%d    %H%M%S",
+};
 
 sub new {
     my ($class, $institution, $login) = @_;
