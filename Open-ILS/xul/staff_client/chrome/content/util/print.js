@@ -364,7 +364,7 @@ util.print.prototype = {
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
             try{b = s; s = s.replace(/%PATRON_EXPIRE_DATE%/g,this.escape_html(params.patron.expire_date()));}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-            try{b = s; s = s.replace(/%PATRON_EXPIRE_DATE_YMD%/g,util.date.formatted_date(params.patron.expire_date()), '%Y-%m-%d');}
+            try{b = s; s = s.replace(/%PATRON_EXPIRE_DATE_YMD%/g,util.date.formatted_date(params.patron.expire_date(), '%Y-%m-%d'));}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 
             try{b = s; s=s.replace(/%TODAY%/g,(new Date()));}
