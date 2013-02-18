@@ -349,6 +349,7 @@ cpan Library::CallNumber::LC
 cpan MARC::Record
 cpan MARC::File::XML
 cpan UUID::Tiny
+cpan Rose::URI
 ------------------------------------------------------------------------------
 
 .(Fedora) Installing additional Perl modules on a standalone PostgreSQL 9 server
