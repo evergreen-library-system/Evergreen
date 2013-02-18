@@ -253,7 +253,7 @@ CPAN_MODULES_LUCID = \
     Rose::URI
 
 # Precise Pangolin needs the following CPAN modules. All others are
-# avaialalbe as debs.
+# avaialable as debs.
 CPAN_MODULES_PRECISE = \
     Business::CreditCard::Object \
     Business::OnlinePayment::PayPal \
