@@ -866,16 +866,6 @@ sub toSQL {
         AND (
             cbs.transcendant IS TRUE
             OR
-            EXISTS(
-                SELECT 1 FROM asset.call_number acn
-                    JOIN asset.uri_call_number_map aucnm ON acn.id = aucnm.call_number
-                    JOIN asset.uri uri ON aucnm.uri = uri.id
-                WHERE NOT acn.deleted AND uri.active AND acn.record = m.source AND acn.owning_lib IN (
-                    SELECT * FROM luri_org_list
-                )
-                LIMIT 1
-            )
-            OR
     SQL
     if ($self->find_modifier('staff')) {
         $limit_where .= <<"        SQL";
@@ -933,7 +923,19 @@ sub toSQL {
             )
         SQL
     }
-    $limit_where .= "        )";
+    $limit_where .= <<"    SQL";
+            OR
+            EXISTS(
+                SELECT 1 FROM asset.call_number acn
+                    JOIN asset.uri_call_number_map aucnm ON acn.id = aucnm.call_number
+                    JOIN asset.uri uri ON aucnm.uri = uri.id
+                WHERE NOT acn.deleted AND uri.active AND acn.record = m.source AND acn.owning_lib IN (
+                    SELECT * FROM luri_org_list
+                )
+                LIMIT 1
+            )
+        )
+    SQL
 
     # For single records we want the record id
     # For metarecords we want NULL or the only record ID.
