@@ -903,6 +903,16 @@ sub toSQL {
                         AND pr.peer_record = m.source
                     LIMIT 1
                 )
+                AND
+                NOT EXISTS(
+                    SELECT 1 FROM asset.call_number acn
+                        JOIN asset.uri_call_number_map aucnm ON acn.id = aucnm.call_number
+                        JOIN asset.uri uri ON aucnm.uri = uri.id
+                    WHERE NOT acn.deleted
+                        AND uri.active
+                        AND acn.record = m.source
+                    LIMIT 1
+                )
             )
         SQL
     } else {
