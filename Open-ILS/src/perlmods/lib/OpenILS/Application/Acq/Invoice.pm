@@ -10,16 +10,22 @@ use OpenILS::Event;
 my $U = 'OpenILS::Application::AppUtils';
 
 
+# return nothing on success, event on failure
 sub _prepare_fund_debit_for_inv_item {
     my ($debit, $item, $e) = @_;
+
     $debit->fund($item->fund);
     $debit->amount($item->amount_paid);
     $debit->origin_amount($item->amount_paid);
-    $debit->origin_currency_type(
-        $e->retrieve_acq_fund($item->fund)->currency_type
-    ); # future: cache funds locally
+
+    # future: cache funds locally
+    my $fund = $e->retrieve_acq_fund($item->fund) or return $e->die_event;
+
+    $debit->origin_currency_type($fund->currency_type);
     $debit->encumbrance('f');
     $debit->debit_type('direct_charge');
+
+    return;
 }
 
 __PACKAGE__->register_method(
@@ -37,55 +43,49 @@ __PACKAGE__->register_method(
     }
 );
 
-sub build_invoice_api {
-    my($self, $conn, $auth, $invoice, $entries, $items) = @_;
 
-    my $e = new_editor(xact => 1, authtoken=>$auth);
-    return $e->die_event unless $e->checkauth;
-    my $evt;
+sub build_invoice_impl {
+    my ($e, $invoice, $entries, $items, $do_commit) = @_;
 
-    if(ref $invoice) {
-        if($invoice->isnew) {
-            $invoice->receiver($e->requestor->ws_ou) unless $invoice->receiver;
-            $invoice->recv_method('PPR') unless $invoice->recv_method;
-            $invoice->recv_date('now') unless $invoice->recv_date;
-            $e->create_acq_invoice($invoice) or return $e->die_event;
-        } elsif($invoice->isdeleted) {
-            i$e->delete_acq_invoice($invoice) or return $e->die_event;
-        } else {
-            $e->update_acq_invoice($invoice) or return $e->die_event;
-        }
+    if ($invoice->isnew) {
+        $invoice->recv_method('PPR') unless $invoice->recv_method;
+        $invoice->recv_date('now') unless $invoice->recv_date;
+        $e->create_acq_invoice($invoice) or return $e->die_event;
+    } elsif ($invoice->isdeleted) {
+        $e->delete_acq_invoice($invoice) or return $e->die_event;
     } else {
-        # caller only provided the ID
-        $invoice = $e->retrieve_acq_invoice($invoice) or return $e->die_event;
+        $e->update_acq_invoice($invoice) or return $e->die_event;
     }
 
-    return $e->die_event unless $e->allowed('CREATE_INVOICE', $invoice->receiver);
+    my $evt;
 
-    if($entries) {
+    if ($entries) {
         for my $entry (@$entries) {
             $entry->invoice($invoice->id);
 
-            if($entry->isnew) {
-
+            if ($entry->isnew) {
                 $e->create_acq_invoice_entry($entry) or return $e->die_event;
+                return $evt if $evt = uncancel_copies_as_needed($e, $entry);
                 return $evt if $evt = update_entry_debits($e, $entry);
-
-            } elsif($entry->isdeleted) {
-
-                return $evt if $evt = rollback_entry_debits($e, $entry); 
+            } elsif ($entry->isdeleted) {
+                # XXX Deleting entries does not recancel anything previously
+                # uncanceled.
+                return $evt if $evt = rollback_entry_debits($e, $entry);
                 $e->delete_acq_invoice_entry($entry) or return $e->die_event;
+            } elsif ($entry->ischanged) {
+                my $orig_entry = $e->retrieve_acq_invoice_entry($entry->id) or
+                    return $e->die_event;
 
-            } elsif($entry->ischanged) {
+                if ($orig_entry->amount_paid != $entry->amount_paid or
+                    $entry->phys_item_count != $orig_entry->phys_item_count) {
+                    return $evt if $evt = rollback_entry_debits($e,$orig_entry);
 
-                my $orig_entry = $e->retrieve_acq_invoice_entry($entry->id) or return $e->die_event;
+                    # XXX Updates can only uncancel more LIDs when
+                    # phys_item_count goes up, but cannot recancel them when
+                    # phys_item_count goes down.
+                    return $evt if $evt = uncancel_copies_as_needed($e, $entry);
 
-                if($orig_entry->amount_paid != $entry->amount_paid or 
-                        $entry->phys_item_count != $orig_entry->phys_item_count) {
-
-                    return $evt if $evt = rollback_entry_debits($e, $orig_entry); 
                     return $evt if $evt = update_entry_debits($e, $entry);
-
                 }
 
                 $e->update_acq_invoice_entry($entry) or return $e->die_event;
@@ -93,60 +93,77 @@ sub build_invoice_api {
         }
     }
 
-    if($items) {
+    if ($items) {
         for my $item (@$items) {
             $item->invoice($invoice->id);
 
-            if($item->isnew) {
-
+            if ($item->isnew) {
                 $e->create_acq_invoice_item($item) or return $e->die_event;
 
                 # future: cache item types
                 my $item_type = $e->retrieve_acq_invoice_item_type(
                     $item->inv_item_type) or return $e->die_event;
 
-                # prorated items are handled separately
-                unless($U->is_true($item_type->prorate)) {
+                # This following complex conditional statement effecively means:
+                #   1) Items with item_types that are prorate are handled
+                #       differently.
+                #   2) Only items with a po_item, or which are linked to a fund
+                #       already, or which belong to invoices which we're trying
+                #       to *close* will actually go through this fund_debit
+                #       creation process.  In other cases, we'll consider it
+                #       ok for an item to remain sans fund_debit for the time
+                #       being.
+
+                if (not $U->is_true($item_type->prorate) and
+                    ($item->po_item or $item->fund or
+                        $U->is_true($invoice->complete))) {
+
                     my $debit;
-                    if($item->po_item) {
-                        my $po_item = $e->retrieve_acq_po_item($item->po_item) or return $e->die_event;
-                        $debit = $e->retrieve_acq_fund_debit($po_item->fund_debit) or return $e->die_event;
+                    if ($item->po_item) {
+                        my $po_item = $e->retrieve_acq_po_item($item->po_item)
+                            or return $e->die_event;
+                        $debit = $e->retrieve_acq_fund_debit($po_item->fund_debit)
+                            or return $e->die_event;
                     } else {
                         $debit = Fieldmapper::acq::fund_debit->new;
                         $debit->isnew(1);
                     }
-                    _prepare_fund_debit_for_inv_item($debit, $item, $e);
 
-                    if($debit->isnew) {
-                        $e->create_acq_fund_debit($debit) or return $e->die_event;
+                    return $evt if
+                        $evt = _prepare_fund_debit_for_inv_item($debit, $item, $e);
+
+                    if ($debit->isnew) {
+                        $e->create_acq_fund_debit($debit)
+                            or return $e->die_event;
                     } else {
-                        $e->update_acq_fund_debit($debit) or return $e->die_event;
+                        $e->update_acq_fund_debit($debit)
+                            or return $e->die_event;
                     }
 
                     $item->fund_debit($debit->id);
                     $e->update_acq_invoice_item($item) or return $e->die_event;
                 }
-
-            } elsif($item->isdeleted) {
-
+            } elsif ($item->isdeleted) {
                 $e->delete_acq_invoice_item($item) or return $e->die_event;
 
-                if($item->po_item and $e->retrieve_acq_po_item($item->po_item)->fund_debit == $item->fund_debit) {
-                    # the debit is attached to the po_item.  instead of deleting it, roll it back 
-                    # to being an encumbrance.  Note: a prorated invoice_item that points to a po_item 
-                    # could point to a different fund_debit.  We can't go back in time to collect all the
-                    # prorated invoice_items (nor is the caller asking us too), so when that happens, 
-                    # just delete the extraneous debit (in the else block).
+                if ($item->po_item and
+                    $e->retrieve_acq_po_item($item->po_item)->fund_debit == $item->fund_debit) {
+                    # the debit is attached to the po_item. instead of
+                    # deleting it, roll it back to being an encumbrance.
+                    # Note: a prorated invoice_item that points to a
+                    # po_item could point to a different fund_debit. We
+                    # can't go back in time to collect all the prorated
+                    # invoice_items (nor is the caller asking us too),
+                    # so when that happens, just delete the extraneous
+                    # debit (in the else block).
                     my $debit = $e->retrieve_acq_fund_debit($item->fund_debit);
                     $debit->encumbrance('t');
                     $e->update_acq_fund_debit($debit) or return $e->die_event;
-                } elsif($item->fund_debit) {
+                } elsif ($item->fund_debit) {
                     $e->delete_acq_fund_debit($e->retrieve_acq_fund_debit($item->fund_debit))
                         or return $e->die_event;
                 }
-
-
-            } elsif($item->ischanged) {
+            } elsif ($item->ischanged) {
                 my $debit;
 
                 if (!$item->fund_debit) {
@@ -154,7 +171,8 @@ sub build_invoice_api {
                     $debit = Fieldmapper::acq::fund_debit->new;
                     $debit->isnew(1);
 
-                    _prepare_fund_debit_for_inv_item($debit, $item, $e);
+                    return $evt if
+                        $evt = _prepare_fund_debit_for_inv_item($debit, $item, $e);
                 } else {
                     $debit = $e->retrieve_acq_fund_debit($item->fund_debit) or
                         return $e->die_event;
@@ -177,9 +195,32 @@ sub build_invoice_api {
     }
 
     $invoice = fetch_invoice_impl($e, $invoice->id);
-    $e->commit;
+    if ($do_commit) {
+        $e->commit or return $e->die_event;
+    }
 
     return $invoice;
+}
+
+sub build_invoice_api {
+    my($self, $conn, $auth, $invoice, $entries, $items) = @_;
+
+    my $e = new_editor(xact => 1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+
+    if (not ref $invoice) {
+        # caller only provided the ID
+        $invoice = $e->retrieve_acq_invoice($invoice) or return $e->die_event;
+    }
+
+    if (not $invoice->receiver and $invoice->isnew) {
+        $invoice->receiver($e->requestor->ws_ou);
+    }
+
+    return $e->die_event unless
+        $e->allowed('CREATE_INVOICE', $invoice->receiver);
+
+    return build_invoice_impl($e, $invoice, $entries, $items, 1);
 }
 
 
@@ -231,6 +272,70 @@ sub update_entry_debits {
     return undef;
 }
 
+# This was originally done only for EDI invoices, but needs added to the
+# manual invoice-entering process for consistency's sake.
+sub uncancel_copies_as_needed {
+    my ($e, $entry) = @_;
+
+    return unless $entry->lineitem and $entry->phys_item_count;
+
+    my $li = $e->retrieve_acq_lineitem($entry->lineitem) or
+        return $e->die_event;
+
+    # if an invoiced lineitem is marked as cancelled
+    # (e.g. back-order), invoicing the lineitem implies
+    # we need to un-cancel it
+
+    # collect the LIDs, starting with those that are
+    # not cancelled, followed by those that have keep-debits cancel_reasons,
+    # followed by non-keep-debit cancel reasons.
+
+    my $lid_ids = $e->json_query({
+        select => {acqlid => ['id']},
+        from => {
+            acqlid => {
+                acqcr => {type => 'left'},
+                acqfdeb => {type => 'left'}
+            }
+        },
+        where => {
+            '+acqlid' => {lineitem => $li->id},
+            '+acqfdeb' => {encumbrance => 't'}  # not-yet invoiced copies
+        },
+        order_by => [{
+            class => 'acqcr',
+            field => 'keep_debits',
+            direction => 'desc'
+        }],
+        limit => $entry->phys_item_count    # crucial
+    });
+
+    for my $lid_id (map {$_->{id}} @$lid_ids) {
+        my $lid = $e->retrieve_acq_lineitem_detail($lid_id);
+        next unless $lid->cancel_reason;
+
+        $logger->info(
+            "un-cancelling invoice lineitem " . $li->id .
+            " lineitem_detail " . $lid_id
+        );
+        $lid->clear_cancel_reason;
+        return $e->die_event unless $e->update_acq_lineitem_detail($lid);
+    }
+
+    $li->clear_cancel_reason;
+    $li->state("on-order") if $li->state eq "cancelled";    # sic
+    $li->edit_time("now");
+
+    unless ($e->update_acq_lineitem($li)) {
+        my $evt = $e->die_event;
+        $logger->error("couldn't clear li cancel reason: ". $evt->{textcode});
+        return $evt;
+    }
+
+    return;
+}
+
+
 # update the linked copy to reflect the amount paid for the item
 # returns true on success, false on error
 sub update_copy_cost {
@@ -243,8 +348,15 @@ sub update_copy_cost {
 
     if($lid and my $copy = $lid->eg_copy_id) {
         defined $amount and $copy->cost($amount) or $copy->clear_cost;
-        $copy->editor($e->requestor->id);
-        $copy->edit_date('now');
+
+        # XXX It would be nice to have a way to record that a copy was
+        # updated by a non-user mechanism, like EDI, but we don't have
+        # a clear way to do that here.
+        if ($e->requestor) {
+            $copy->editor($e->requestor->id);
+            $copy->edit_date('now');
+        }
+
         $e->update_asset_copy($copy) or return 0;
     }
 
