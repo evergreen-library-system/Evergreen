@@ -81,5 +81,6 @@
 [% END; # use_autosuggest %]
 
 [% INCLUDE "opac/parts/acjs.tt2" IF ctx.page == 'record' %]
+[% INCLUDE "opac/parts/ac_google_books.tt2" IF ctx.page == 'record' %]
 
 [%- END; # want_dojo -%]

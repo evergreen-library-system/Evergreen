@@ -1,0 +1,97 @@
+<script type="text/javascript">
+var GBisbns = Array();
+
+/**
+ *
+ * @param {DOM object} isbn The form element containing the input parameters "isbns"
+ */
+function searchForGBPreview( isbn ) {
+  dojo.require("dojo.io.script");
+  dojo.io.script.get({"url": "https://www.google.com/jsapi"});
+  dojo.io.script.get({"url": "https://www.googleapis.com/books/v1/volumes", "content": { "q": "isbn:" + isbn, "callback": "GBPreviewCallback"}});
+}
+
+/**
+ * This function is the call-back function for the JSON scripts which 
+ * executes a Google book search response.
+ *
+ * @param {JSON} GBPBookInfo is the JSON object pulled from the Google books service.
+ */
+function GBPreviewCallback(GBPBookInfo) {
+  if (GBPBookInfo.totalItems < 1) return;
+
+  var accessInfo = GBPBookInfo.items[0].accessInfo;
+  if ( !accessInfo ) {
+    return;
+  }
+
+  if ( accessInfo.embeddable ) {
+    /* Add a button below the book cover image to load the preview. */
+    var GBPBadge = document.createElement( 'img' );
+    GBPBadge.id = 'gbpbadge';
+    GBPBadge.src = 'https://www.google.com/intl/[% ctx.locale.substr(0,2) %]/googlebooks/images/gbs_preview_button1.gif';
+    GBPBadge.title = dojo.byId('rdetail_title').innerHTML;
+    GBPBadge.style.border = 0;
+    GBPBadge.style.margin = '0.5em 0 0 0';
+    GBPBadgelink = document.createElement('a');
+    GBPBadgelink.href = 'javascript:GBDisplayPreview();';
+    GBPBadgelink.appendChild( GBPBadge );
+    dojo.byId('rdetail_title_div').appendChild( GBPBadgelink );
+  }
+}
+
+/**
+ *  This is called when the user clicks on the 'Preview' link.  We assume
+ *  a preview is available from Google if this link was made visible.
+ */
+function GBDisplayPreview() {
+  var GBPreviewPane = document.createElement('div');
+  GBPreviewPane.id = 'rdetail_preview_div';
+  GBPreviewPane.style.height = '800px';
+  GBPreviewPane.style.width = '600px';
+  GBPreviewPane.style.display = 'block';
+  var GBClear = document.createElement('div');
+  GBClear.style.padding = '1em';
+  dojo.byId('canvas_main').insertBefore(GBPreviewPane, dojo.byId('rdetail_record_details'));
+  dojo.byId('canvas_main').insertBefore(GBClear, dojo.byId('rdetail_record_details'));
+  if (GBPreviewPane.getAttribute('loaded') == null || GBPreviewPane.getAttribute('loaded') == "false" ) {
+     google.load("books", "0", {"callback" : GBPViewerLoadCallback, "language": "[% ctx.locale.substr(0,2) %]"} );
+     GBPreviewPane.setAttribute('loaded', 'true');
+  }
+}
+
+function GBPViewerLoadCallback() {
+  var GBPViewer = new google.books.DefaultViewer(dojo.byId('rdetail_preview_div'));
+  GBPViewer.load('ISBN:' + GBisbns[0]);
+  GBPViewer.resize();
+  dojo.byId('gbpbadge').style.display = 'none';
+}
+
+dojo.addOnLoad(function() {
+  var spans = dojo.query('li.rdetail_isbns span.rdetail_value');
+  for (var i = 0; i < spans.length; i++) {
+    var prop = spans[i].getAttribute('itemprop');
+    if (!prop) {
+      continue;
+    }
+    var isbn = spans[i].textContent || spans[i].innerText;
+    if (!isbn) {
+      continue;
+    }
+    isbn = isbn.toString().replace(/^\s+/,"");
+    var idx = isbn.indexOf(" ");
+    if (idx > -1) {
+      isbn = isbn.substring(0, idx);
+    }
+    isbn = isbn.toString().replace(/-/g,"");
+    if (!isbn) {
+      continue;
+    }
+    GBisbns.push(isbn);
+  }
+
+  if (GBisbns.length) {
+      searchForGBPreview(GBisbns[0]);
+  }
+});
+</script>

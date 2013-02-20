@@ -96,4 +96,8 @@
     IF use_autosuggest.enabled == "t";
         want_dojo = 1;
     END;
+
+    IF ctx.google_books_preview;
+        want_dojo = 1;
+    END;
 %]
