@@ -1229,36 +1229,35 @@ sub flatten {
                     if ($class) {
                         my ($u,$e) = $apputils->checksesperm($token) if ($token);
                         $perm_join = ' OR c.owner = ' . $u->id if ($u && !$e);
-                        $where .= $joiner if $where ne '';
-                        my $spcdepth = $self->plan_level + 5;
-                        if($class eq 'copy') {
-                            $spcdepth += 1;
-                            $where .= "(\n" . ${spc} x $spcdepth;
-                        }
-                        $where .= "${NOT}EXISTS(\n"
-                               . ${spc} x ($spcdepth + 1) . "SELECT 1 FROM container.${class}_bucket_item ci\n"
-                               . ${spc} x ($spcdepth + 4) . "JOIN container.${class}_bucket c ON (c.id = ci.bucket) $rec_join\n"
-                               . ${spc} x ($spcdepth + 1) . "WHERE c.btype = " . $self->QueryParser->quote_value($ctype) . "\n"
-                               . ${spc} x ($spcdepth + 4) . "AND c.id = " . $self->QueryParser->quote_value($cid) . "\n"
-                               . ${spc} x ($spcdepth + 4) . "AND (c.pub IS TRUE$perm_join)\n"
-                               . ${spc} x ($spcdepth + 4) . "AND $rec_field = m.source\n"
-                               . ${spc} x ($spcdepth + 1) . "LIMIT 1\n"
-                               . ${spc} x $spcdepth . ")";
+
+                        my $filter_alias = "$filter";
+                        $filter_alias =~ s/^.*\(0(x[0-9a-fA-F]+)\)$/$1/go;
+                        $filter_alias =~ s/\|/_/go;
+
+                        $with .= ",\n     " if $with;
+                        $with .= "container_${filter_alias} AS (\n";
+                        $with .= "       SELECT $rec_field AS record FROM container.${class}_bucket_item ci\n"
+                               . "             JOIN container.${class}_bucket c ON (c.id = ci.bucket) $rec_join\n"
+                               . "       WHERE c.btype = " . $self->QueryParser->quote_value($ctype) . "\n"
+                               . "             AND c.id = " . $self->QueryParser->quote_value($cid) . "\n"
+                               . "             AND (c.pub IS TRUE$perm_join)\n";
                         if ($class eq 'copy') {
-                            my $subjoiner = $filter->negate ? 'AND' : 'OR';
-                            $where .= "\n"
-                                   . ${spc} x ($spcdepth) . $subjoiner . "\n"
-                                   . ${spc} x ($spcdepth) . "${NOT}EXISTS(\n"
-                                   . ${spc} x ($spcdepth + 1) . "SELECT 1 FROM container.copy_bucket_item ci\n"
-                                   . ${spc} x ($spcdepth + 4) . "JOIN container.copy_bucket c ON (c.id = ci.bucket)\n"
-                                   . ${spc} x ($spcdepth + 4) . "JOIN biblio.peer_bib_copy_map pr ON ci.target_copy = pr.target_copy\n"
-                                   . ${spc} x ($spcdepth + 1) . "WHERE c.btype = " . $self->QueryParser->quote_value($cid) . "\n"
-                                   . ${spc} x ($spcdepth + 4) . "AND (c.pub IS TRUE$perm_join)\n"
-                                   . ${spc} x ($spcdepth + 4) . "AND pr.peer_record = m.source\n"
-                                   . ${spc} x ($spcdepth + 1) . "LIMIT 1\n"
-                                   . ${spc} x $spcdepth . ")\n"
-                                   . ${spc} x ($spcdepth - 1) . ")";
+                            $with .= "       UNION\n"
+                                   . "       SELECT pr.peer_record AS record FROM container.copy_bucket_item ci\n"
+                                   . "             JOIN container.copy_bucket c ON (c.id = ci.bucket)\n"
+                                   . "             JOIN biblio.peer_bib_copy_map pr ON ci.target_copy = pr.target_copy\n"
+                                   . "       WHERE c.btype = " . $self->QueryParser->quote_value($ctype) . "\n"
+                                   . "             AND c.id = " . $self->QueryParser->quote_value($cid) . "\n"
+                                   . "             AND (c.pub IS TRUE$perm_join)\n";
                         }
+                        $with .= "     )";
+
+                        $from .= "\n" . ${spc} x 3 . "LEFT JOIN container_${filter_alias} ON container_${filter_alias}.record = m.source";
+
+                        my $spcdepth = $self->plan_level + 5;
+
+                        $where .= $joiner if $where ne '';
+                        $where .= "${NOT}(container_${filter_alias} IS NOT NULL)";
                     }
                 }
             } elsif ($filter->name eq 'record_list') {
