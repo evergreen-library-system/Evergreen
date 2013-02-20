@@ -3106,10 +3106,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="cust" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::usr_setting_type" oils_persist:tablename="config.usr_setting_type" reporter:label="User Setting Type">
 		<fields oils_persist:primary="name">
 			<field name="name" reporter:label="Name" reporter:datatype="text"/>
-			<field name="label" reporter:label="Label" reporter:datatype="text"/>
-			<field name="description" reporter:label="Description" reporter:datatype="text"/>
+			<field name="label" reporter:label="Label" reporter:datatype="text" oils_persist:i18n="true"/>
+			<field name="description" reporter:label="Description" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field name="datatype" reporter:label="Datatype" reporter:datatype="text"/>
-			<field name="fm_class" reporter:label="Fielmapper Class" reporter:datatype="text"/>
+			<field name="fm_class" reporter:label="Fieldmapper Class" reporter:datatype="text"/>
 			<field name="grp" reporter:label="Settings Group" reporter:datatype="link"/>
 			<field name="opac_visible" reporter:label="OPAC/Patron Visible" reporter:datatype="bool"/>
 			<field name="reg_default" reporter:label="Registration Default" reporter:datatype="text"/>
@@ -3130,8 +3130,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="coust" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::org_unit_setting_type" oils_persist:tablename="config.org_unit_setting_type" reporter:label="Organizational Unit Setting Type">
 		<fields oils_persist:primary="name">
 			<field name="name" reporter:datatype="text"/>
-			<field name="label" reporter:datatype="text"/>
-			<field name="description" reporter:datatype="text"/>
+			<field name="label" reporter:datatype="text" oils_persist:i18n="true"/>
+			<field name="description" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field name="datatype" reporter:datatype="text"/>
 			<field name="view_perm" reporter:datatype="link"/>
 			<field name="update_perm" reporter:datatype="link"/>
