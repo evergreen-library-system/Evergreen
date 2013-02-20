@@ -11,6 +11,7 @@ use OpenSRF::Utils::Logger qw(:logger);
 use OpenSRF::Utils::JSON;
 
 use OpenILS::Application::Acq::Lineitem;
+use OpenILS::Application::Acq::Invoice;
 use OpenILS::Utils::RemoteAccount;
 use OpenILS::Utils::CStoreEditor q/new_editor/;
 use OpenILS::Utils::Fieldmapper;
@@ -113,7 +114,7 @@ sub retrieve_core {
 
         my @files    = ($server->ls({remote_file => ($account->in_dir || './')}));
         my @ok_files = grep {$_ !~ /\/\.?\.$/ and $_ ne '0'} @files;
-        $logger->info(sprintf "%s of %s files at %s/%s", scalar(@ok_files), scalar(@files), $account->host, $account->in_dir);   
+        $logger->info(sprintf "%s of %s files at %s/%s", scalar(@ok_files), scalar(@files), $account->host, $account->in_dir || "");   
 
         foreach my $remote_file (@ok_files) {
             my $description = sprintf "%s/%s", $account->host, $remote_file;
@@ -871,6 +872,7 @@ sub create_acq_invoice_from_edi {
     }
 
     my $eg_inv = Fieldmapper::acq::invoice->new;
+    $eg_inv->isnew(1);
 
     # Some troubleshooting aids.  Yeah we should have made appropriate links
     # for this in the schema, but this is better than nothing.  Probably
@@ -911,7 +913,6 @@ sub create_acq_invoice_from_edi {
     }
 
     my @eg_inv_entries;
-    my @eg_inv_cancel_lis;
 
     $message->purchase_order($msg_data->{purchase_order});
 
@@ -942,6 +943,8 @@ sub create_acq_invoice_from_edi {
         # and $lineitem->{gross_unit_price}
         my $lineitem_price = $lineitem->{amount_billed};
 
+        # XXX Should we set acqie.billed_per_item=t in this case instead?  Not
+        # sure whether that actually works everywhere it needs to. LFW
         $lineitem_price *= $quantity if $msg_kludges{amount_billed_is_per_unit};
 
         # if the top-level PO value is unset, get it from the first LI
@@ -949,6 +952,7 @@ sub create_acq_invoice_from_edi {
             unless $message->purchase_order;
 
         my $eg_inv_entry = Fieldmapper::acq::invoice_entry->new;
+        $eg_inv_entry->isnew(1);
         $eg_inv_entry->inv_item_count($quantity);
 
         # amount staff agree to pay for
@@ -968,9 +972,6 @@ sub create_acq_invoice_from_edi {
         $eg_inv_entry->amount_paid($lineitem_price);
 
         push @eg_inv_entries, $eg_inv_entry;
-        push @eg_inv_cancel_lis, 
-            {lineitem => $li, quantity => $quantity} 
-            if $li->cancel_reason;
 
         # The EDIReader class does detect certain per-lineitem taxes, but
         # we'll ignore them for now, as the only sample invoices I've yet seen
@@ -988,6 +989,7 @@ sub create_acq_invoice_from_edi {
 
     for my $charge (@{$msg_data->{misc_charges}}, @{$msg_data->{taxes}}) {
         my $eg_inv_item = Fieldmapper::acq::invoice_item->new;
+        $eg_inv_item->isnew(1);
 
         my $amount = $charge->{amount};
 
@@ -999,10 +1001,8 @@ sub create_acq_invoice_from_edi {
         my $map = $charge_type_map{$charge->{type}};
 
         if (!$map) {
-            $map = [
-                'PRO',
-                'Unknown charge type ' .  $charge->{type}
-            ];
+            $map = ['PRO', 'Misc / unspecified'];
+            $eg_inv_item->note($charge->{type});
         }
 
         $eg_inv_item->inv_item_type($$map[0]);
@@ -1024,91 +1024,13 @@ sub create_acq_invoice_from_edi {
         die($log_prefix . "couldn't update edi_message " . $message->id);
     }
 
-    # create EG invoice
-    if (not $e->create_acq_invoice($eg_inv)) {
-        die($log_prefix . "couldn't create invoice: " . $e->event);
+    my $result = OpenILS::Application::Acq::Invoice::build_invoice_impl(
+        $e, $eg_inv, \@eg_inv_entries, \@eg_inv_items, 0   # don't commit yet
+    );
+
+    if ($U->event_code($result)) {
+        die($log_prefix. "build_invoice_impl() failed: " . $result->{textcode});
     }
-
-    # Now we have a pkey for our EG invoice, so set the invoice field on all
-    # our entries according and create those too.
-    my $eg_inv_id = $e->data->id;
-    foreach (@eg_inv_entries) {
-        $_->invoice($eg_inv_id);
-        if (not $e->create_acq_invoice_entry($_)) {
-            die(
-                $log_prefix . "couldn't create entry against lineitem " .
-                $_->lineitem . ": " . $e->event
-            );
-        }
-    }
-
-    # Create any invoice items (taxes)
-    foreach (@eg_inv_items) {
-        $_->invoice($eg_inv_id);
-        if (not $e->create_acq_invoice_item($_)) {
-            die($log_prefix . "couldn't create inv item: " . $e->event);
-        }
-    }
-
-    # if an invoiced lineitem is marked as cancelled 
-    # (e.g. back-order), invoicing the lineitem implies 
-    # we need to un-cancel it
-    for my $li_chunk (@eg_inv_cancel_lis) {
-        my $li = $li_chunk->{lineitem};
-        my $quantity = $li_chunk->{quantity};
-
-        $logger->info($log_prefix . 
-            "un-cancelling invoiced lineitem ". $li->id);
-         
-        # collect the LIDs, starting with those that are
-        # not cancelled (should not happen), followed by
-        # those that have keep-debits cancel_reasons, 
-        # followed by non-keep-debit cancel reasons.
-
-        my $lid_ids = $e->json_query({
-            select => {acqlid => ['id']},
-            from => {
-                acqlid => {
-                    acqcr => {type => 'left'},
-                    acqfdeb => {type => 'left'}
-                }
-            },
-            where => {
-                '+acqlid' => {lineitem => $li->id},
-                # not-yet invoiced copies
-                '+acqfdeb' => {encumbrance => 't'}
-            },
-            order_by => [{
-                class => 'acqcr',
-                field => 'keep_debits',
-                direction => 'desc'
-            }],
-            limit => $quantity
-        });
-
-        for my $lid_id (map {$_->{id}} @$lid_ids) {
-            my $lid = $e->retrieve_acq_lineitem_detail($lid_id);
-            next unless $lid->cancel_reason;
-
-            $lid->clear_cancel_reason;
-            unless ($e->update_acq_lineitem_detail($lid)) {
-                die($log_prefix .
-                    "couldn't clear lid cancel reason: ". $e->die_event
-                );
-            }
-        }
-
-        $li->clear_cancel_reason;
-        $li->state("on-order");
-        $li->edit_time('now'); 
-
-        unless ($e->update_acq_lineitem($li)) {
-            die($log_prefix .
-                "couldn't clear li cancel reason: ". $e->die_event
-            );
-        }
-    }
-
 
     $e->xact_commit;
     return 1;
