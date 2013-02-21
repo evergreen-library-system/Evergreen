@@ -523,6 +523,11 @@ msgstr ""
 msgid "%1$s registered %3$s (%2$s)"
 msgstr ""
 
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Hold ID  5 - Hold Type
+#: staff.circ.work_log_hold_placed.message
+msgid "%1$s placed hold %4$s (%5$s) for %3$s (%2$s)"
+msgstr ""
+
 #: menu.cmd_browse_holds.tab
 msgid "Hold Browser"
 msgstr ""

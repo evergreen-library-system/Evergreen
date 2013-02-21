@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2012-12-20 09:37-0400\n"
-"PO-Revision-Date: 2012-08-15 05:13+0000\n"
+"PO-Revision-Date: 2013-02-15 19:25+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-12-21 04:55+0000\n"
-"X-Generator: Launchpad (build 16378)\n"
+"X-Launchpad-Export-Date: 2013-02-16 04:59+0000\n"
+"X-Generator: Launchpad (build 16491)\n"
 
 #: field.aou.settings.label:5267
 msgid "Settings"
@@ -25,7 +25,11 @@ msgstr "Կարգավորումներ"
 msgid "Contact"
 msgstr "Կապ"
 
-#: field.mrd.item_form.label:3115
+#: field.atevdef.hook.label:1015 field.atul.hook.label:1148
+msgid "Hook"
+msgstr "Կեռ"
+
+#: field.mrd.item_form.label:3241
 msgid "Form"
 msgstr "Ձեւ"
 
@@ -37,17 +41,21 @@ msgstr "Գեղարվեստական ձեւը"
 msgid "Location"
 msgstr "Տեղադրությունը"
 
-#: class.cvrfm.label:1272 field.chmw.marc_vr_format.label:1302
-#: field.ccmw.marc_vr_format.label:1329 field.chmm.marc_vr_format.label:1385
-#: field.ccmm.marc_vr_format.label:1435
+#: class.cvrfm.label:1360 field.chmw.marc_vr_format.label:1391
+#: field.ccmw.marc_vr_format.label:1422 field.chmm.marc_vr_format.label:1479
+#: field.ccmm.marc_vr_format.label:1530
 msgid "Videorecording Format"
 msgstr "Տեսագրման ձեւաչափը"
 
-#: field.acn.copies.label:2288 field.acpl.copies.label:3951
+#: field.acn.copies.label:2409 field.acpl.copies.label:4082
 msgid "Copies"
 msgstr "Պատճեններ"
 
-#: field.bre.source.label:2415
+#: field.amtr.success.label:108
+msgid "Success"
+msgstr "Հաջողվեց"
+
+#: field.bre.source.label:2536
 msgid "Record Source"
 msgstr "Գրառման աղբյուր"
 
@@ -55,27 +63,27 @@ msgstr "Գրառման աղբյուր"
 msgid "Transaction Paid Totals"
 msgstr "Տրանզակցիայի վճարման գումարներ"
 
-#: field.acn.label_sortkey.label:2301 field.sunit.sort_key.label:4388
+#: field.sunit.sort_key.label:4519
 msgid "Sort Key"
 msgstr "Տեսակավորման բանալի"
 
-#: field.mrd.vr_format.label:3122
+#: field.mrd.vr_format.label:3248
 msgid "Video Recording Format"
 msgstr "Տեսագրանցման ձևաչափ"
 
 #: field.acqmapinv.picklist.label:10055
 msgid "Picklist ID"
-msgstr ""
+msgstr "Վերցնելու ցուցակի ID"
 
 #: class.acqlih.label:7745
 msgid "Line Item History"
 msgstr "Գծային նյութի պատմություն"
 
-#: field.au.ident_value2.label:2681
+#: field.au.ident_value2.label:2802
 msgid "Secondary Identification"
 msgstr "Երկրորդային ճանաչում"
 
-#: field.sdist.record_entry.label:4180
+#: field.sdist.record_entry.label:4311
 msgid "Legacy Record Entry"
 msgstr "Գործող գրառման մուտք"
 
@@ -83,7 +91,7 @@ msgstr "Գործող գրառման մուտք"
 msgid "Total Spent Amount"
 msgstr "Ընդհանուր ծախսած գումար"
 
-#: field.auri.use_restriction.label:2333
+#: field.auri.use_restriction.label:2454
 msgid "Use Information"
 msgstr "Օգտվողի տեղեկատվություն"
 
@@ -105,7 +113,7 @@ msgstr "Հյուրընկալող"
 msgid "User City"
 msgstr "Օգտվողի քաղաք"
 
-#: class.cmsa.label:2117
+#: class.cmsa.label:2238
 msgid "Metabib Search Alias"
 msgstr "Metabib փնտրման կեղծանուն"
 
@@ -120,11 +128,11 @@ msgstr "Հաշիվների գումար"
 msgid "WHERE Clause"
 msgstr "WHERE պայման"
 
-#: field.brt.transferable.label:3652
+#: field.brt.transferable.label:3783
 msgid "Transferable"
 msgstr "Փոխարկելի"
 
-#: class.aoa.label:4742
+#: class.aoa.label:4873
 msgid "Org Address"
 msgstr "Կազմ հասցե"
 
@@ -132,7 +140,7 @@ msgstr "Կազմ հասցե"
 msgid "Pyament ID"
 msgstr "Վճարման ID"
 
-#: field.au.claims_returned_count.label:2665
+#: field.au.claims_returned_count.label:2786
 msgid "Claims-returned Count"
 msgstr "Նշված վերադրաձերի հաշվիչ"
 
@@ -144,15 +152,15 @@ msgstr "Ընդհանուր կրեդիտ ֆինանսավորման աղբյու�
 msgid "Line Item Provider Attribute Definition"
 msgstr "Տողային նյութի մատակարարի բնութագրիչների սահմանում"
 
-#: field.bra.required.label:3713
+#: field.bra.required.label:3844
 msgid "Is Required"
 msgstr "Պահանջվում է"
 
-#: field.bresv.booking_interval.label:3807
+#: field.bresv.booking_interval.label:3938
 msgid "Booking Interval"
 msgstr "Պատվերի տիրույթ"
 
-#: field.cmfinm.params.label:679 field.crainm.params.label:767
+#: field.cmfinm.params.label:681 field.crainm.params.label:769
 msgid "Parameters (JSON Array)"
 msgstr "Պարամետրեր (JSON մասսիվ)"
 
@@ -165,11 +173,11 @@ msgstr "Տեղեկատու"
 msgid "Balance after Spent"
 msgstr "Հետո ծախսածի բալանս"
 
-#: class.atenv.label:970
+#: class.atenv.label:980
 msgid "Trigger Event Environment Entry"
 msgstr "Եռակապ իրադարձության միջավայրի մուտք"
 
-#: class.cit.label:1599
+#: class.cit.label:1720
 msgid "Identification Type"
 msgstr "Փոխճանաչման տեսակ"
 
@@ -178,19 +186,19 @@ msgstr "Փոխճանաչման տեսակ"
 msgid "Bib Record link"
 msgstr "Մատեն գրառման կապ"
 
-#: field.ahn.method.label:3931
+#: field.ahn.method.label:4062
 msgid "Notification Method"
 msgstr "Զգուշացման մեթոդ"
 
 #: field.asc.sip_field.label:5390 field.actsc.sip_field.label:5444
 msgid "SIP Field"
-msgstr ""
+msgstr "SIP դաշտ"
 
-#: class.abaafm.label:1975
+#: class.abaafm.label:2096
 msgid "Authority Browse Axis Field Map"
-msgstr ""
+msgstr "Հեղինակավորի դիտման առանցքի դաշտի քարտեզ"
 
-#: class.bravm.label:3845 field.bravm.id.label:3847
+#: class.bravm.label:3976 field.bravm.id.label:3978
 msgid "Reservation Attribute Value Map"
 msgstr "Նախնական պահման բաղադրիչի արժեքի քարտեզ"
 
@@ -203,11 +211,11 @@ msgstr "Դասիչի կապ"
 msgid "Check In Library"
 msgstr "Ընդունող գրադարան"
 
-#: class.citm.label:4604
+#: class.citm.label:4735
 msgid "Item Type Map"
 msgstr "Նյութի տեսակի քարտեզ"
 
-#: field.ccmw.id.label:1319
+#: field.ccmw.id.label:1409
 msgid "Circ Weights ID"
 msgstr "Տացքի քաշերի ID"
 
@@ -215,7 +223,7 @@ msgstr "Տացքի քաշերի ID"
 msgid "Billing Location Short (Policy) Name"
 msgstr "Վճարման վայրի հակիրճ (քաղաքականություն) անվանում"
 
-#: class.aous.label:2884
+#: class.aous.label:3010
 msgid "Organizational Unit Setting"
 msgstr "Կազմակերպչական միավորի կարգաբերումներ"
 
@@ -244,11 +252,11 @@ msgstr "Բաղադրիչի արժեքներ"
 msgid "Import Record"
 msgstr "Ներմուծիր գրառում"
 
-#: field.bra.valid_values.label:3714
+#: field.bra.valid_values.label:3845
 msgid "Valid Values"
 msgstr "Թույլատրելի արժեքներ"
 
-#: field.sstr.items.label:4259 field.siss.items.label:4328
+#: field.sstr.items.label:4390 field.siss.items.label:4459
 msgid "Items"
 msgstr "Նյութեր"
 
@@ -256,13 +264,13 @@ msgstr "Նյութեր"
 msgid "IsActive?"
 msgstr "Ակտի՞վ է"
 
-#: field.au.other_phone.label:2686
+#: field.au.other_phone.label:2807
 msgid "Other Phone"
 msgstr "Այլ հեռախոս"
 
 #: field.actsced.id.label:5685
 msgid "Default Entry ID"
-msgstr ""
+msgstr "Լռակյաց մուտքի ID"
 
 #: class.acqfdeb.label:7126
 msgid "Debit From Fund"
@@ -280,7 +288,7 @@ msgstr "Ազգանուն"
 msgid "Last Copy Delete Time"
 msgstr "Վերջին պատճենի ջնջման ժամանակ"
 
-#: class.mous.label:2361
+#: class.mous.label:2482
 msgid "Open User Summary"
 msgstr "Բաց օգտվողի համառոտագրությունը"
 
@@ -303,7 +311,7 @@ msgstr "Վիճակագրական դասի մուտքեր"
 msgid "Owner"
 msgstr "Տնօրինող"
 
-#: field.bresv.current_resource.label:3813
+#: field.bresv.current_resource.label:3944
 msgid "Current Resource"
 msgstr "Ընթացիկ պաշար"
 
@@ -321,19 +329,19 @@ msgstr "Պահման ձևաչափեր (M-դասի պահումների համա�
 msgid "Invoice Entry"
 msgstr "Հաշվի մուտք"
 
-#: field.pgpt.grp.label:3159 field.acplgm.lgroup.label:3997
+#: field.pgpt.grp.label:3285 field.acplgm.lgroup.label:4128
 msgid "Group"
 msgstr "Խումբ"
 
-#: field.au.ident_type2.label:2679
+#: field.au.ident_type2.label:2800
 msgid "Secondary Identification Type"
 msgstr "Երկրորդային ճանաչման տեսակ"
 
 #: field.actscsf.name.label:5422 field.ascsf.name.label:6394
 msgid "Field Name"
-msgstr ""
+msgstr "Դաշտի անուն"
 
-#: field.auoi.staff.label:626
+#: field.auoi.staff.label:628
 msgid "Staff Member"
 msgstr "Աշխատակազմի անդամ"
 
@@ -372,7 +380,7 @@ msgstr "Տրանզակցիայի ավարտի ժամանակային դրոշմ"
 
 #: class.actsced.label:5683
 msgid "User Stat Cat Default Entry"
-msgstr ""
+msgstr "Օգտվողի վիճակագրական քարտագրման լռակյաց մուտք"
 
 #: field.mb.billing_ts.label:6497
 msgid "Billing Timestamp"
@@ -390,11 +398,11 @@ msgstr "Մատակարարի հասցե"
 msgid "Attribute Value ID"
 msgstr "Բնութագրիչի արժեքի ID"
 
-#: class.ahcm.label:3916
+#: class.ahcm.label:4047
 msgid "Hold Copy Map"
 msgstr "Օրինակի պահման քարտեզ"
 
-#: class.arn.label:3321
+#: class.arn.label:3447
 msgid "Authority Record Note"
 msgstr "Հեղինակավոր գրառման նշում"
 
@@ -402,13 +410,13 @@ msgstr "Հեղինակավոր գրառման նշում"
 msgid "Classic Item List"
 msgstr "Դասական նյութի ցուցակ"
 
-#: field.aba.sorter.label:1955
+#: field.aba.sorter.label:2076
 msgid "Sorter Attribute"
-msgstr ""
+msgstr "Տեսակավորիչի բաղադրիչ"
 
-#: field.ccls.depth.label:1501
+#: field.ccls.depth.label:1597
 msgid "Min Depth"
-msgstr ""
+msgstr "նվազագույն խորություն"
 
 #: field.acqpon.value.label:7626
 msgid "Vote Value"
@@ -457,9 +465,9 @@ msgstr "Տեսակի անուն"
 msgid "Hold Cancel Date/Time"
 msgstr "Պահման չեղարկման ամսաթիվ/ժամ"
 
-#: class.acsaf.label:1879
+#: class.acsaf.label:2000
 msgid "Authority Control Set Authority Field"
-msgstr ""
+msgstr "Հեղինակավորի վերահսկման բազմության Հեղինակավորի դաշտ"
 
 #: class.acqcle.label:8503
 msgid "Claim Event"
@@ -469,16 +477,16 @@ msgstr "Պահանջագրի իրադարձություն"
 msgid "Column Expression"
 msgstr "Սյունակի արտահայտություն"
 
-#: field.crad.format.label:707 field.cza.format.label:867
-#: field.cvrfm.value.label:1275 field.cmf.format.label:2166
+#: field.crad.format.label:709 field.cza.format.label:869
+#: field.cvrfm.value.label:1363 field.cmf.format.label:2287
 msgid "Format"
 msgstr "Ձևաչափ"
 
-#: class.aiit.label:1131
+#: class.aiit.label:1219
 msgid "Non-bibliographic Invoice Item Type"
 msgstr "Ոչ մատենագիտական հաշվի տեսակ"
 
-#: field.au.usrname.label:2696
+#: field.au.usrname.label:2817
 msgid "OPAC/Staff Client User Name"
 msgstr "ՀՕԱՔ/Աշխատակազմի հաճախորդի օգտվողի անուն"
 
@@ -496,11 +504,11 @@ msgstr "Սպասարկող գրադարան"
 msgid "Scheduled Time"
 msgstr "Պլանավորված ժամանակ"
 
-#: field.auri.call_number_maps.label:2335
+#: field.auri.call_number_maps.label:2456
 msgid "Call Number Maps"
 msgstr "Դասիչիքարտեզ"
 
-#: class.acnn.label:3291
+#: class.acnn.label:3417
 msgid "Call Number Note"
 msgstr "Դասիչի նշում"
 
@@ -519,19 +527,19 @@ msgstr "MARC21 սևեռված դաշտի քարտեզ"
 msgid "Max Fine Rule"
 msgstr "Մաքսիմում տուգանքի օրենք"
 
-#: field.cuat.ewhat.label:2750
+#: field.cuat.ewhat.label:2876
 msgid "Event Type"
-msgstr ""
+msgstr "Իրադարձության տեսակ"
 
-#: class.chmm.label:1369
+#: class.chmm.label:1463
 msgid "Hold Matrix Matchpoint"
 msgstr "Պահման մատրիցայի համընկնման կետ"
 
-#: field.bre.subject_field_entries.label:2424
+#: field.bre.subject_field_entries.label:2545
 msgid "Indexed Subject Field Entries"
 msgstr "Ինդեքսավորված առարկայական դաշտի մուտքեր"
 
-#: class.acpl.label:3941
+#: class.acpl.label:4072
 msgid "Copy/Shelving Location"
 msgstr "Օրինակ/դարակի վրա գտնվելու տեղ"
 
@@ -539,11 +547,11 @@ msgstr "Օրինակ/դարակի վրա գտնվելու տեղ"
 msgid "Sort Date"
 msgstr "Տեսակավորման ամսաթիվ"
 
-#: field.asvr.response_group_id.label:1806
+#: field.asvr.response_group_id.label:1927
 msgid "Response Group ID"
 msgstr "Արձագանքի խմբի ID"
 
-#: class.aus.label:1714
+#: class.aus.label:1835
 msgid "User Setting"
 msgstr "Օգտվողի կարգաբերումներ"
 
@@ -555,9 +563,9 @@ msgstr "Օգտագործիր վիճակագրական դասի մուտքը"
 msgid "SAN"
 msgstr "SAN"
 
-#: class.ccls.label:1495
+#: class.ccls.label:1591
 msgid "Circulation Limit Set"
-msgstr ""
+msgstr "Տացքի սահմանափակման կարգաբերում"
 
 #: class.asc.label:5383
 msgid "Asset Statistical Category"
@@ -571,23 +579,23 @@ msgstr "Տողի նյութ"
 msgid "Path"
 msgstr "Ուղի"
 
-#: field.vii.pub_note.label:210 field.viiad.pub_note.label:260
+#: field.vii.pub_note.label:210 field.viiad.pub_note.label:261
 msgid "Public Note"
 msgstr "Հանրային նշում"
 
-#: field.acplg.top.label:3978
+#: field.acplg.top.label:4109
 msgid "Display Above Orgs"
-msgstr ""
+msgstr "Արտածիր Orgs-ից վեր"
 
 #: field.rccbs.usr_home_ou_name.label:9563
 msgid "User Home Library Name"
 msgstr "Օգտվողի տնային գրադարանի անուն"
 
-#: field.au.credit_forward_balance.label:2668
+#: field.au.credit_forward_balance.label:2789
 msgid "User Credit Balance"
 msgstr "Օգտվողի կրեդիտի բալանս"
 
-#: field.scap.enum_5.label:4103
+#: field.scap.enum_5.label:4234
 msgid "Enum 5"
 msgstr "Enum 5"
 
@@ -595,7 +603,7 @@ msgstr "Enum 5"
 msgid "House Credit Payment"
 msgstr "Կրեդիտ տնային վճարում"
 
-#: field.acn.uri_maps.label:2299
+#: field.acn.uri_maps.label:2420
 msgid "URI Maps"
 msgstr "URI քարտեզներ"
 
@@ -604,16 +612,16 @@ msgstr "URI քարտեզներ"
 msgid "Eligible Copies"
 msgstr "Իրավասու պատճեններ"
 
-#: field.ccmlsm.limit_set.label:1522 field.cclscmm.limit_set.label:1549
-#: field.cclsgm.limit_set.label:1575
+#: field.ccmlsm.limit_set.label:1618 field.cclscmm.limit_set.label:1645
+#: field.cclsacpl.limit_set.label:1670 field.cclsgm.limit_set.label:1696
 msgid "Limit Set"
-msgstr ""
+msgstr "Սահմանափակման կարգաբերում"
 
 #: class.bmp.label:2617 field.acp.parts.label:5915
 msgid "Monograph Parts"
 msgstr "Մենագրության ուղիներ"
 
-#: field.brav.valid_value.label:3738
+#: field.brav.valid_value.label:3869
 msgid "Valid Value"
 msgstr "Հավաստի արժեք"
 
@@ -621,7 +629,7 @@ msgstr "Հավաստի արժեք"
 msgid "Hold Target"
 msgstr "Պահման թիրախ"
 
-#: field.asvr.effective_date.label:1803
+#: field.asvr.effective_date.label:1924
 msgid "Effective Answer Date/Time"
 msgstr "Արդյունավետ պատասխանի ամսաթիվ/ժամ"
 
@@ -638,7 +646,7 @@ msgstr "Ընտրացուցակի ID"
 msgid "User Permission Map"
 msgstr "Օգտվողի թույլատրությունների քարտեզ"
 
-#: class.auricnm.label:2343
+#: class.auricnm.label:2464
 msgid "Electronic Access URI to Call Number Map"
 msgstr "Էլեկտրոնային հասանելիության URI դասիչների քարտեզին"
 
@@ -646,9 +654,9 @@ msgstr "Էլեկտրոնային հասանելիության URI դասիչնե
 msgid "Percent"
 msgstr "Տոկոս"
 
-#: field.ccvm.search_label.label:792
+#: field.ccvm.search_label.label:794
 msgid "Search Label"
-msgstr ""
+msgstr "Փնտրման պիտակ"
 
 #: field.sunit.loan_duration.label:4509 field.acp.loan_duration.label:5898
 #: field.act.loan_duration.label:5969
@@ -663,9 +671,9 @@ msgstr "Տրման տևողություն"
 msgid "Type"
 msgstr "Տեսակ"
 
-#: class.acplg.label:3971
+#: class.acplg.label:4102
 msgid "Copy/Shelving Location Group"
-msgstr ""
+msgstr "Պատճենի/Դարականիշի տեղաբաշխման խումբ"
 
 #: field.cracct.username.label:815 field.acqedi.username.label:8013
 msgid "Username"
@@ -683,7 +691,8 @@ msgstr "Ընդամենը հատկացված է"
 msgid "Hold"
 msgstr "Պահում"
 
-#: field.atev.id.label:1045 field.atevparam.id.label:1070
+#: field.atev.id.label:1055 field.atevparam.id.label:1080
+#: field.atul.id.label:1151
 msgid "Event ID"
 msgstr "Միջոցառման ID"
 
@@ -695,7 +704,7 @@ msgstr "Տրանզակցիա"
 msgid "Total Spent Balance"
 msgstr "Ընդհանուր ծախսած հաշվեկշիռ"
 
-#: class.ccbi.label:1831
+#: class.ccbi.label:1952
 msgid "Copy Bucket Item"
 msgstr "Պատճենիր փնջի նյութը"
 
@@ -708,13 +717,13 @@ msgstr "Պատվերի ամսաթիվ"
 msgid "Fine Level"
 msgstr "Տուգանքի մակարդակ"
 
-#: field.atevdef.validator.label:1006
+#: field.atevdef.validator.label:1016
 msgid "Validator"
 msgstr "Ստուգիչ"
 
-#: field.acqpon.vendor_public.label:7256 field.acqlin.vendor_public.label:7451
-msgid "Vendor Public"
-msgstr "Հանրային մատակարար"
+#: field.sdist.streams.label:4323
+msgid "Streams"
+msgstr "Հոսքեր"
 
 #: field.pgt.application_perm.label:6046
 msgid "Required Permission"
@@ -741,19 +750,15 @@ msgstr "Դյուի խումբ - Հարյուրյակներ"
 msgid "MARC Form"
 msgstr "MARC ձևաչափ"
 
-#: field.cmfinm.pos.label:680 field.crainm.pos.label:768
+#: field.cmfinm.pos.label:682 field.crainm.pos.label:770
 msgid "Order of Application"
 msgstr "Դիմումի պատվեր"
 
-#: field.ssr.visible.label:4707
+#: field.ssr.visible.label:4838
 msgid "Visible"
 msgstr "Տեսանելի"
 
-#: field.sdist.streams.label:4192
-msgid "Streams"
-msgstr "Հոսքեր"
-
-#: field.atev.error_output.label:1056
+#: field.atev.error_output.label:1066
 msgid "Error Output"
 msgstr "Ելքի սխալ"
 
@@ -762,32 +767,36 @@ msgstr "Ելքի սխալ"
 msgid "Circ ID"
 msgstr "Տացքի ID"
 
-#: field.cwa.active.label:1349 field.chmm.active.label:1372
-#: field.ccmm.active.label:1425 field.scap.active.label:4097
+#: field.cwa.active.label:1443 field.chmm.active.label:1466
+#: field.ccmm.active.label:1519 field.scap.active.label:4228
 msgid "Active?"
 msgstr "Ակտի՞վ"
 
-#: class.ascecm.label:4591
+#: class.ascecm.label:4722
 msgid "Statistical Category Entry Copy Map"
 msgstr "Վիճակագրական դասի մուտքի պատճենի քարտեզ"
 
-#: field.aws.toolbars.label:1101
+#: field.aws.toolbars.label:1189
 msgid "Toolbars"
-msgstr ""
+msgstr "Գործիքաշարներ"
 
-#: field.atev.add_time.label:1048
+#: field.atev.add_time.label:1058
 msgid "Add Time"
 msgstr "Ավելացրու ժամ"
 
-#: field.cmc.buoyant.label:2141
+#: field.cmc.buoyant.label:2262
 msgid "Buoyant?"
-msgstr ""
+msgstr "Լողացո՞ղ"
 
 #: field.rocit.stat_cat_1_value.label:9846
 msgid "Legacy Stat Cat 1 Value"
 msgstr "Legacy Stat Cat 1 Value"
 
-#: field.acpl.circulate.label:3943
+#: field.atul.perm_lib.label:1166
+msgid "Permission Context"
+msgstr "Թույլատվության բովանդակություն"
+
+#: field.acpl.circulate.label:4074
 msgid "Can Circulate?"
 msgstr "Կարո՞ղ է սպասարկել"
 
@@ -798,14 +807,14 @@ msgstr "Stat-Cat մուտքի քարտեզներ"
 
 #: field.cbc.padding.label:10073
 msgid "Padding"
-msgstr ""
+msgstr "Լրացում"
 
-#: field.atcol.module.label:916 field.atval.module.label:924
-#: field.atreact.module.label:940 field.atclean.module.label:956
+#: field.atcol.module.label:926 field.atval.module.label:934
+#: field.atreact.module.label:950 field.atclean.module.label:966
 msgid "Module Name"
 msgstr "Մոդուլի անուն"
 
-#: class.ccnbin.label:3880
+#: class.ccnbin.label:4011
 msgid "Call Number Bucket Item Note"
 msgstr "Դասիչ. Փնջի նյութի նշում"
 
@@ -818,10 +827,10 @@ msgstr "Ստեղծման ժամ"
 
 #: class.coustl.label:10091
 msgid "Organizational Unit Setting Type Log"
-msgstr ""
+msgstr "Կազմակերպչական միավորի կարգաբերման տեսակի լոգ"
 
-#: field.combcirc.usr_birth_year.label:3531
-#: field.acirc.usr_birth_year.label:3604
+#: field.combcirc.usr_birth_year.label:3662
+#: field.acirc.usr_birth_year.label:3735
 msgid "Patron Birth Year"
 msgstr "Ընթերցողի ծննդյան ամսաթիվ"
 
@@ -842,7 +851,7 @@ msgstr "Պահանջվում է մինչ ամսաթիվ/ժամ"
 msgid "Fieldset Column Value"
 msgstr "Դաշտի բազմության սյունակի արժեք"
 
-#: field.ccm.sip2_media_type.label:1116
+#: field.ccm.sip2_media_type.label:1204
 msgid "SIP2 Media Type"
 msgstr "SIP2 մեդիա տեսակ"
 
@@ -893,16 +902,16 @@ msgstr "Գնման պատվերի ID"
 msgid "Age Hold Protection"
 msgstr "տարիքի պահման պաշտպանություն"
 
-#: field.brt.name.label:3645
+#: field.brt.name.label:3776
 msgid "Resource Type Name"
 msgstr "Պաշարի տեսակի անուն"
 
-#: class.sunit.label:4353 field.sitem.unit.label:4433
+#: class.sunit.label:4484 field.sitem.unit.label:4564
 msgid "Unit"
 msgstr "Միավոր"
 
-#: class.cst.label:2354 class.csp.label:3137
-#: field.ausp.standing_penalty.label:3203
+#: class.cst.label:2475 class.csp.label:3263
+#: field.ausp.standing_penalty.label:3329
 msgid "Standing Penalty"
 msgstr "Մշտական տուգանք"
 
@@ -915,15 +924,15 @@ msgstr "Ընդունող աշխատակազմ"
 msgid "Cash Drawer"
 msgstr "Կանխիկի մեքենա"
 
-#: field.acnc.field.label:2240
+#: field.acnc.field.label:2361
 msgid "Call number fields"
 msgstr "Դասիչի դաշտեր"
 
 #: field.acqf.spent_total.label:7179
 msgid "Spent Total"
-msgstr ""
+msgstr "Ընդամենը ծախսված"
 
-#: class.cza.label:860
+#: class.cza.label:862
 msgid "Z39.50 Attribute"
 msgstr "Z39.50 բաղադրիչ"
 
@@ -934,13 +943,13 @@ msgstr "Հաշիվ ներկայացնողի տեղաբաշխւմ"
 
 #: field.ccmlsm.fallthrough.label:1619
 msgid "Fallthrough"
-msgstr ""
+msgstr "Գահավիժել"
 
-#: class.srlu.label:4283
+#: class.srlu.label:4414
 msgid "Routing List User"
 msgstr "Շրջանառու ցուցակի օգտվող"
 
-#: field.mrd.pub_status.label:3119
+#: field.mrd.pub_status.label:3245
 msgid "Pub Status"
 msgstr "Pub Status"
 
@@ -948,11 +957,11 @@ msgstr "Pub Status"
 msgid "Max Loop"
 msgstr "Մաքս խոշորացում"
 
-#: field.atev.async_output.label:1057
+#: field.atev.async_output.label:1067
 msgid "Asynchronous Output"
 msgstr "Ասինխրոն ելք"
 
-#: class.ccnbt.label:1180
+#: class.ccnbt.label:1268
 msgid "Call Number Bucket Type"
 msgstr "Դասիչի փնջի տեսակ"
 
@@ -960,8 +969,8 @@ msgstr "Դասիչի փնջի տեսակ"
 msgid "Workstation link"
 msgstr "Աշխատանքային կայանի կապ"
 
-#: field.combcirc.usr_post_code.label:3519
-#: field.acirc.usr_post_code.label:3588
+#: field.combcirc.usr_post_code.label:3650
+#: field.acirc.usr_post_code.label:3719
 msgid "Patron ZIP"
 msgstr "Ընթերցողի ZIP"
 
@@ -990,11 +999,11 @@ msgstr "Գծային նյութի նշում"
 msgid "In House?"
 msgstr "Ներքին օգտագործմա՞ն"
 
-#: field.au.card.label:2664
+#: field.au.card.label:2785
 msgid "Current Library Card"
 msgstr "Ընթացիկ գրադարանի քարտ"
 
-#: field.acpn.creator.label:2899
+#: field.acpn.creator.label:3025
 msgid "Note Creator"
 msgstr "Նշման ստեղծող"
 
@@ -1009,17 +1018,17 @@ msgstr "Ընդամենը հատկացված ֆինանսավորման աղբյ�
 
 #: field.acp.last_circ.label:5912 field.rlc.last_circ.label:9470
 msgid "Last Circulation Date"
-msgstr ""
+msgstr "Վերջին Տացքի ամսաթիվ"
 
 #: field.brt.resources.label:3785 field.aou.resources.label:5277
 msgid "Resources"
 msgstr "Պաշարներ"
 
-#: field.sstr.routing_label.label:4258
+#: field.sstr.routing_label.label:4389
 msgid "Routing Label"
 msgstr "Շրջանառու պիտակ"
 
-#: class.acpm.label:2515
+#: class.acpm.label:2636
 msgid "Copy Monograph Part Map"
 msgstr "Մենագրության մասի քարտեզի պատճեն"
 
@@ -1028,17 +1037,21 @@ msgstr "Մենագրության մասի քարտեզի պատճեն"
 msgid "Circulating Item"
 msgstr "Սպասարկվող նյութ"
 
-#: class.cubt.label:1256
+#: class.cubt.label:1344
 msgid "User Bucket Type"
 msgstr "Օգտվողի փնջի տեսակ"
 
-#: field.ccmm.is_renewal.label:1424
+#: field.atul.template_output.label:1161
+msgid "Event Template Output"
+msgstr "Իրադարձության ձևանմուշի ելք"
+
+#: field.ccmw.is_renewal.label:1411 field.ccmm.is_renewal.label:1518
 msgid "Renewal?"
 msgstr "Թարմացու՞մ"
 
-#: field.acs.id.label:1859
+#: field.acs.id.label:1980
 msgid "Control Set ID"
-msgstr ""
+msgstr "Վերահսկման բազմության ID"
 
 #: field.act.age_protect.label:5971
 msgid "Age Protect"
@@ -1056,15 +1069,15 @@ msgstr "Հաշվեհամար"
 msgid "Debits"
 msgstr "Դեբիտներ"
 
-#: class.ccbin.label:1846
+#: class.ccbin.label:1967
 msgid "Copy Bucket Item Note"
 msgstr "Արտագրի փնջի նյութի նշումը"
 
-#: field.atc.prev_dest.label:1775
+#: field.atc.prev_dest.label:1896
 msgid "Prev Destination"
 msgstr "Նախորդ գտնվելու վայր"
 
-#: class.acnc.label:2235
+#: class.acnc.label:2356
 msgid "Call number classification scheme"
 msgstr "Դասիչի դասակարգման սխեմա"
 
@@ -1074,7 +1087,7 @@ msgstr "Չկատարված թիրախ պահումներ"
 
 #: field.rhcrpbap.holds_at_pickup_library.label:9429
 msgid "Active Holds at Pickup Library"
-msgstr ""
+msgstr "Ակտիվ պահումներ վերցնելու գրադարանում"
 
 #: field.rsr.series_statement.label:8262
 msgid "Series Statement (normalized)"
@@ -1097,13 +1110,13 @@ msgstr "Հասցեի տեսակ"
 msgid "Top of Queue"
 msgstr "Հարցման սկիզբ"
 
-#: field.czs.auth.label:842
+#: field.czs.auth.label:844
 msgid "Auth"
 msgstr "Auth"
 
-#: field.auact.event_time.label:2771
+#: field.auact.event_time.label:2897
 msgid "Event Time"
-msgstr ""
+msgstr "Իրադարձության ժամ"
 
 #: field.acn.editor.label:2414 field.bre.editor.label:2530
 #: field.sunit.editor.label:4506 field.acp.editor.label:5894
@@ -1116,17 +1129,17 @@ msgstr "Ընդհանուր կուտակված գումար"
 
 #: field.aouctn.tree.label:5336
 msgid "Tree"
-msgstr ""
+msgstr "Ծառ"
 
-#: field.vbm.match_score.label:402
+#: field.vbm.match_score.label:404
 msgid "Match Score"
-msgstr ""
+msgstr "Համընկնման գնահատական"
 
-#: field.vqbr.queue.label:326 field.vqar.queue.label:447
+#: field.vqbr.queue.label:328 field.vqar.queue.label:449
 msgid "Queue"
 msgstr "Հերթ"
 
-#: field.vbm.queued_record.label:399 field.vam.queued_record.label:516
+#: field.vbm.queued_record.label:401 field.vam.queued_record.label:518
 msgid "Queued Record"
 msgstr "Հարցված գրառում"
 
@@ -1146,11 +1159,11 @@ msgstr "Աշխ կայաններ"
 msgid "Article Title"
 msgstr "Հոդվածի վերնագիր"
 
-#: field.au.hold_requests.label:2652
+#: field.au.hold_requests.label:2773
 msgid "All Hold Requests"
 msgstr "Բոլոր պահումների հարցում"
 
-#: field.au.master_account.label:2684
+#: field.au.master_account.label:2805
 msgid "Is Group Lead Account"
 msgstr "Սա խմբի առաջատարի հաշիվն է"
 
@@ -1182,15 +1195,19 @@ msgstr "Օգտվողի հրապարակ"
 msgid "Org Unit"
 msgstr "Կազմ միավոր"
 
-#: class.mkfe.label:3056
+#: class.ahopl.label:5030
+msgid "Hold On Pull List"
+msgstr "Բացվող ցուցակի պահում"
+
+#: class.mkfe.label:3182
 msgid "Keyword Field Entry"
 msgstr "Վճռորոշ բառի իդաշտի մուտք"
 
-#: class.asvq.label:1615
+#: class.asvq.label:1736
 msgid "User Survey Question"
 msgstr "Օգտվողի հարցախույզի հարց"
 
-#: class.mfae.label:2996
+#: class.mfae.label:3122
 msgid "Combined Facet Entry"
 msgstr "Կոմբինացված ֆասետի մուտք"
 
@@ -1199,12 +1216,12 @@ msgstr "Կոմբինացված ֆասետի մուտք"
 msgid "Phone Renewal"
 msgstr "Հեռախոսի թարմացում"
 
-#: field.cuat.transient.label:2755
+#: field.cuat.transient.label:2881
 msgid "Transient"
-msgstr ""
+msgstr "Անցողիկ"
 
-#: class.siss.label:4314 field.sitem.issuance.label:4431
-#: field.smhc.issuance.label:4499
+#: class.siss.label:4445 field.sitem.issuance.label:4562
+#: field.smhc.issuance.label:4630
 msgid "Issuance"
 msgstr "Հրատարակում"
 
@@ -1216,7 +1233,7 @@ msgstr "Բնութագրիչ դաշտի մուտք"
 msgid "Definition"
 msgstr "Սահմանում"
 
-#: class.sra.label:4634
+#: class.sra.label:4765
 msgid "Relevance Adjustment"
 msgstr "Հարաբերական հավասարեցում"
 
@@ -1224,11 +1241,11 @@ msgstr "Հարաբերական հավասարեցում"
 msgid "Article Pages"
 msgstr "Հոդվածի էջեր"
 
-#: field.cmf.facet_field.label:2168
+#: field.cmf.facet_field.label:2289
 msgid "Facet Field"
 msgstr "Ֆասետի դաշտ"
 
-#: field.sre.edit_date.label:4065
+#: field.sre.edit_date.label:4196
 msgid "Edit date"
 msgstr "Խմբագրիր ամսաթիվը"
 
@@ -1236,7 +1253,7 @@ msgstr "Խմբագրիր ամսաթիվը"
 msgid "Claims"
 msgstr "Պահանջագրեր"
 
-#: class.ppl.label:2969
+#: class.ppl.label:3095
 msgid "Permission List"
 msgstr "Իրավասության ցուցակ"
 
@@ -1249,7 +1266,7 @@ msgstr "Ժամանակավոր ID"
 msgid "Invoice"
 msgstr "Հաշիվ"
 
-#: field.atenv.path.label:974
+#: field.atenv.path.label:984
 msgid "Field Path"
 msgstr "Դաշտի ուղի"
 
@@ -1292,15 +1309,15 @@ msgstr "Դաշտի բազմություն"
 msgid "Publication Year (normalized)"
 msgstr "Հրատարակման տարի (նորմալացված)"
 
-#: field.scap.enum_1.label:4099
+#: field.scap.enum_1.label:4230
 msgid "Enum 1"
 msgstr "Enum 1"
 
-#: field.scap.enum_3.label:4101
+#: field.scap.enum_3.label:4232
 msgid "Enum 3"
 msgstr "Enum 3"
 
-#: field.scap.enum_2.label:4100
+#: field.scap.enum_2.label:4231
 msgid "Enum 2"
 msgstr "Enum 2"
 
@@ -1308,11 +1325,11 @@ msgstr "Enum 2"
 msgid "Answer Text"
 msgstr "Պատասխանի տեքստ"
 
-#: field.scap.enum_4.label:4102
+#: field.scap.enum_4.label:4233
 msgid "Enum 4"
 msgstr "Enum 4"
 
-#: field.scap.enum_6.label:4104
+#: field.scap.enum_6.label:4235
 msgid "Enum 6"
 msgstr "Enum 6"
 
@@ -1323,15 +1340,15 @@ msgstr "Enum 6"
 msgid "Record ID"
 msgstr "Գրառման ID"
 
-#: class.cam.label:2204
-msgid "Audience Map"
-msgstr "Լսարանի քարտեզ"
+#: field.siss.holding_link_id.label:4458
+msgid "Holding Link ID"
+msgstr "Պահման կապի ID"
 
-#: field.sdist.index_summary.label:4196 class.sisum.label:4564
+#: field.sdist.index_summary.label:4327 class.sisum.label:4695
 msgid "Index Issue Summary"
 msgstr "Ցուցիչի սպասարկման համառոտագրություն"
 
-#: field.bre.attrs.label:2433
+#: field.bre.attrs.label:2554
 msgid "SVF Attributes"
 msgstr "SVF բաղկացուցիչներ"
 
@@ -1344,7 +1361,7 @@ msgstr "էլ փոստի հասցե"
 msgid "Boolean Expression"
 msgstr "Բուլյան արտահայտություն"
 
-#: field.mrd.audience.label:3108
+#: field.mrd.audience.label:3234
 msgid "Audn"
 msgstr "Audn"
 
@@ -1370,11 +1387,11 @@ msgstr "Ընթերցող"
 msgid "Length"
 msgstr "Երկարություն"
 
-#: field.au.cards.label:2650
+#: field.au.cards.label:2771
 msgid "All Library Cards"
 msgstr "Գրադարանի բոլոր քարտերը"
 
-#: field.sitem.shadowed.label:4439
+#: field.sitem.shadowed.label:4570
 msgid "Shadowed?"
 msgstr "Ստվերվա՞ծ"
 
@@ -1390,11 +1407,11 @@ msgstr "Մատրիցային թեստի արդյունքներ"
 msgid "User ZIP Code"
 msgstr "Օգտվողի ZIP կոդ"
 
-#: class.vms.label:534
+#: class.vms.label:536
 msgid "Record Matching Definition Set"
-msgstr ""
+msgstr "Գրառման համընկնման սահմանման բազմություն"
 
-#: field.mrd.cat_form.label:3110
+#: field.mrd.cat_form.label:3236
 msgid "Cat Form"
 msgstr "Քարտագրման ձև"
 
@@ -1414,11 +1431,11 @@ msgstr "Պատճենի տեղաբաշխման դասակարգման կարգ"
 msgid "Forgive Payment"
 msgstr "Ներված վճարում"
 
-#: field.vqbr.imported_as.label:328 field.vqar.imported_as.label:448
+#: field.vqbr.imported_as.label:330 field.vqar.imported_as.label:450
 msgid "Final Target Record"
 msgstr "Վերջնական թիրախ գրառում"
 
-#: field.acn.uris.label:2300
+#: field.acn.uris.label:2421
 msgid "URIs"
 msgstr "URIs"
 
@@ -1430,11 +1447,11 @@ msgstr "Բյուջեի բաշխման ընդհանուր գումար"
 msgid "Legacy Stat Cat 2 Value"
 msgstr "Legacy Stat Cat 2 արժեք"
 
-#: class.svr.label:4041
+#: class.svr.label:4172
 msgid "Serial Virtual Record"
 msgstr "Պարբերական վիրտուալ գրառում"
 
-#: field.chmm.distance_is_from_owner.label:1389
+#: field.chmm.distance_is_from_owner.label:1483
 msgid "Range is from Owning Lib?"
 msgstr "Տիրույթը տնօրինող գրադարանի՞ց է։"
 
@@ -1455,11 +1472,11 @@ msgstr "Վիճակագրական դասի արժեք"
 msgid "Transfer Time"
 msgstr "Փոխանցման ժամ"
 
-#: class.mfr.label:2927
+#: class.mfr.label:3053
 msgid "Flattened MARC Fields"
 msgstr "Հարթեցված ՄԵԸՔ դաշտեր"
 
-#: class.acpn.label:2896
+#: class.acpn.label:3022
 msgid "Copy Note"
 msgstr "Նմուշի նշում"
 
@@ -1485,7 +1502,7 @@ msgstr "Օպերատոր"
 msgid "Currency Code"
 msgstr "Արտարժույթի կոդ"
 
-#: class.coust.label:2858
+#: class.coust.label:2984
 msgid "Organizational Unit Setting Type"
 msgstr "Կազմակերպչական միավորի կարգաբերման տեսակ"
 
@@ -1498,20 +1515,20 @@ msgstr "Վերադարձի վիրտուլ օր/ժամ"
 msgid "Unrecovered Debt"
 msgstr "Չվերադարձված պարտք"
 
-#: class.auoi.label:622
+#: class.auoi.label:624
 msgid "User Sharing Opt-in"
 msgstr "User Sharing Opt-in"
 
-#: field.aun.title.label:1693 field.acpn.title.label:2903
+#: field.aun.title.label:1814 field.acpn.title.label:3029
 msgid "Note Title"
 msgstr "Նշում վերնագիր"
 
-#: field.combcirc.copy_owning_lib.label:3534
-#: field.acirc.copy_owning_lib.label:3607
+#: field.combcirc.copy_owning_lib.label:3665
+#: field.acirc.copy_owning_lib.label:3738
 msgid "Copy Owning Library"
 msgstr "Պատճենիր տնօրինող գրադարանը"
 
-#: field.aua.replaces.label:3237
+#: field.aua.replaces.label:3363
 msgid "Replaces"
 msgstr "Փոխարինում է"
 
@@ -1523,11 +1540,11 @@ msgstr "Աշխատակազմի պահու՞մ է"
 msgid "Non-cataloged Circulation"
 msgstr "Չմուտքագրված սպասարկում"
 
-#: field.brav.id.label:3735
+#: field.brav.id.label:3866
 msgid "Resource Attribute Value ID"
 msgstr "Պաշարի բաղկացուցիչի արժեքի ID"
 
-#: field.siss.holding_code.label:4325
+#: field.siss.holding_code.label:4456
 msgid "Holding Code"
 msgstr "Պահման կոդ"
 
@@ -1544,7 +1561,7 @@ msgstr "Տրանզակցիայի հաշիվներ"
 msgid "Mailing Address Stage"
 msgstr "Գրագրության հասցեի հարթակ"
 
-#: field.bra.id.label:3709
+#: field.bra.id.label:3840
 msgid "Resource Attribute ID"
 msgstr "Պաշարի բնութագրիչի ID"
 
@@ -1564,8 +1581,12 @@ msgstr "Տողային նյութի գեներացված բաղադրիչներ�
 msgid "Payment Summary"
 msgstr "Վճարման համառոտագրություն"
 
-#: class.bra.label:3707 field.brav.attr.label:3737
-#: field.bram.resource_attr.label:3762
+#: class.asfge.label:4935
+msgid "Search Filter Group Entry"
+msgstr "Փնտրման զտիչի խմբի մուտք"
+
+#: class.bra.label:3838 field.brav.attr.label:3868
+#: field.bram.resource_attr.label:3893
 msgid "Resource Attribute"
 msgstr "Պաշարի բնութագրիչ"
 
@@ -1587,7 +1608,7 @@ msgstr "Կազմի փոփոխական"
 msgid "Query Seq ID"
 msgstr "Հերթի հաջորդ ID"
 
-#: field.vqbr.matches.label:333 field.vqar.matches.label:453
+#: field.vqbr.matches.label:335 field.vqar.matches.label:455
 msgid "Matches"
 msgstr "Համընկնումներ"
 
@@ -1595,7 +1616,7 @@ msgstr "Համընկնումներ"
 msgid "Transfer User"
 msgstr "Փոխադրի օգտվողին"
 
-#: field.ccmw.user_home_ou.label:1324 field.ccmm.user_home_ou.label:1429
+#: field.ccmw.user_home_ou.label:1415 field.ccmm.user_home_ou.label:1523
 msgid "User Home Lib"
 msgstr "Օգտվողի տնային գրադարան"
 
@@ -1603,9 +1624,9 @@ msgstr "Օգտվողի տնային գրադարան"
 msgid "Non-cat Circulation ID"
 msgstr "Չքարտագրվող սպասարկման ID"
 
-#: field.vms.mtype.label:539
+#: field.vms.mtype.label:541
 msgid "Match Set Type"
-msgstr ""
+msgstr "Համընկնման բազմության տեսակ"
 
 #: field.bresv.xact_start.label:3924 field.mbt.xact_start.label:5648
 #: field.rccbs.xact_start.label:9569
@@ -1621,16 +1642,16 @@ msgstr ""
 msgid "From Relation"
 msgstr "Հարակից կապից"
 
-#: class.chddv.label:2596
+#: class.chddv.label:2717
 msgid "Hard Due Date Values"
 msgstr "Կոշտ վերադարձի ամսաթվերի արժեքներ"
 
-#: field.asvq.survey.label:1621 field.asvr.survey.label:1807
-#: class.asv.label:4713
+#: field.asvq.survey.label:1742 field.asvr.survey.label:1928
+#: class.asv.label:4844
 msgid "Survey"
 msgstr "Հարցախույզ"
 
-#: field.aus.id.label:1716
+#: field.aus.id.label:1837
 msgid "Setting ID"
 msgstr "Կարգաբերման ID"
 
@@ -1642,7 +1663,7 @@ msgstr "Օգտվողի փունջ"
 msgid "Dummy ISBN"
 msgstr "Դատարկ ISBN"
 
-#: field.ath.key.label:898
+#: field.ath.key.label:908
 msgid "Hook Key"
 msgstr "Կեռիկի բանալի"
 
@@ -1687,7 +1708,7 @@ msgstr "Հաշվեկշիռ ծախսելուց հետո"
 
 #: field.actscsf.one_only.label:5423 field.ascsf.one_only.label:6395
 msgid "Exclusive?"
-msgstr ""
+msgstr "Բացառի՞կ"
 
 #: field.aufh.current_copy.label:6120
 msgid "Non-fulfilling Copy"
@@ -1707,7 +1728,7 @@ msgstr "Արտահանման թղթապանակ"
 msgid "Row ID"
 msgstr "Տողի ID"
 
-#: field.siss.caption_and_pattern.label:4322
+#: field.siss.caption_and_pattern.label:4453
 msgid "Caption/Pattern"
 msgstr "Որսալ/նմուշ"
 
@@ -1743,25 +1764,25 @@ msgstr "Չիրականացնող գրադարան"
 msgid "Title Field Entry"
 msgstr "Վերնագրի դաշտի մուտք"
 
-#: class.clm.label:2055
+#: class.clm.label:2176
 msgid "Language Map"
 msgstr "Լեզվի քարտեզ"
 
-#: field.crad.filter.label:701
+#: field.crad.filter.label:703
 msgid "Filter?"
 msgstr "Զտե՞լ"
 
-#: field.brsrc.attr_maps.label:3685 field.bra.attr_maps.label:3715
-#: field.brav.attr_maps.label:3739
+#: field.brsrc.attr_maps.label:3816 field.bra.attr_maps.label:3846
+#: field.brav.attr_maps.label:3870
 msgid "Resource Attribute Maps"
 msgstr "Պաշարի բնութագրիչի քարտեզ"
 
-#: field.vii.error_detail.label:191 field.vqbr.error_detail.label:330
-#: field.vqar.error_detail.label:450
+#: field.vii.error_detail.label:191 field.vqbr.error_detail.label:332
+#: field.vqar.error_detail.label:452
 msgid "Import Error Detail"
-msgstr ""
+msgstr "Ներմուծման սխալի մանրամասներ"
 
-#: field.asv.usr_summary.label:4726
+#: field.asv.usr_summary.label:4857
 msgid "Display in User Summary"
 msgstr "Արտածիր օգտվողի համառոտագրությունում"
 
@@ -1792,9 +1813,9 @@ msgstr "Տնօրինող գրադ"
 msgid "Last Billing Type"
 msgstr "Վերջին հաշվի տեսակ"
 
-#: field.vmsp.bool_op.label:559
+#: field.vmsp.bool_op.label:561
 msgid "Boolean Operator"
-msgstr ""
+msgstr "Բուլյան գործողություն"
 
 #: field.qsi.stored_query.label:8944 field.qobi.stored_query.label:8959
 msgid "Stored Query ID"
@@ -1802,23 +1823,27 @@ msgstr "Պահեստավորված հերթի ID"
 
 #: class.rhcrpbap.label:9396
 msgid "Hold/Copy Ratio per Bib and Pickup Library"
-msgstr ""
+msgstr "Պահման/Պատճենման գործակից ըստ մատենի և վերցնելու գրադարանի"
 
-#: class.cclsgm.label:1572
+#: class.cclsgm.label:1693
 msgid "Circulation Limit Set Group Map"
-msgstr ""
+msgstr "Տացքի սահմանափակման բազմության խմբի քարտեզ"
 
-#: field.sre.active.label:4060
+#: field.sre.active.label:4191
 msgid "Is Active"
 msgstr "Ակտիվ է"
 
-#: field.czs.attrs.label:843
+#: field.czs.attrs.label:845
 msgid "Attrs"
 msgstr "Attrs"
 
-#: field.acsaf.nfi.label:1886
+#: field.acsaf.nfi.label:2007
 msgid "Non-filing Indicator"
-msgstr ""
+msgstr "Չլրացվող ինդիկատոր"
+
+#: field.vii.internal_id.label:213 field.viiad.internal_id.label:265
+msgid "Overlay Match ID"
+msgstr "Վերադրման համընկնման ID"
 
 #: field.aihu.org_unit.label:1863 field.ancihu.org_unit.label:1877
 #: field.acqcr.org_unit.label:7521
@@ -1829,7 +1854,7 @@ msgstr "Օգտագործվող գրադարան"
 msgid "Update Type"
 msgstr "Թարմացման տեսակ"
 
-#: field.bre.marc.label:2413
+#: field.bre.marc.label:2534
 msgid "MARC21Slim"
 msgstr "MARC21Slim"
 
@@ -1851,8 +1876,8 @@ msgstr "Վերնագիր"
 msgid "Bib Source"
 msgstr "Մատեն. աղբյուր"
 
-#: field.circ.checkin_scan_time.label:3457
-#: field.acirc.checkin_scan_time.label:3594
+#: field.circ.checkin_scan_time.label:3583
+#: field.acirc.checkin_scan_time.label:3725
 msgid "Checkin Scan Date/Time"
 msgstr "Հետ ընդունման սկանի ամսաթիվ/ժամ"
 
@@ -1864,15 +1889,15 @@ msgstr "Վճարման Auth"
 msgid "Work Payment"
 msgstr "Աշխատանքային վճարում"
 
-#: class.acirc.label:3564
+#: class.acirc.label:3695
 msgid "Aged (patronless) Circulation"
 msgstr "Տարիքային (ընթերցողից անկախ) սպասարկում"
 
-#: field.vmsp.quality.label:564
+#: field.vmsp.quality.label:566
 msgid "Importance"
-msgstr ""
+msgstr "Կարևորություն"
 
-#: class.vqbrad.label:356
+#: class.vqbrad.label:358
 msgid "Queued Bib Record Attribute Definition"
 msgstr "Հարցված մատեն գրառման բաղադրիչի սահմանում"
 
@@ -1880,7 +1905,7 @@ msgstr "Հարցված մատեն գրառման բաղադրիչի սահման
 msgid "User Group Map"
 msgstr "Օգտվողի խմբի քարտեզ"
 
-#: class.lmap.label:4669
+#: class.lmap.label:4800
 msgid "Org Lasso Map"
 msgstr "Org Lasso քարտեզ"
 
@@ -1890,33 +1915,33 @@ msgstr "Org Lasso քարտեզ"
 msgid "Street (2)"
 msgstr "Փողոց (2)"
 
-#: class.ccmlsm.label:1518
+#: class.ccmlsm.label:1614
 msgid "Circulation Matrix Limit Set Map"
-msgstr ""
+msgstr "Տացքի մատրիցայի սահմանափակման բազմության քարտեզ"
 
-#: field.acs.thesauri.label:1863 field.acsaf.thesauri.label:1891
+#: field.acs.thesauri.label:1984 field.acsaf.thesauri.label:2012
 msgid "Thesauri"
-msgstr ""
+msgstr "Տեզաուրուս"
 
-#: field.cclsgm.limit_group.label:1576
+#: field.cclsgm.limit_group.label:1697
 msgid "Limit Group"
-msgstr ""
+msgstr "Սահմանափակման խումբ"
 
-#: field.au.barred.label:2662
+#: field.au.barred.label:2783
 msgid "Barred"
 msgstr "Կասեցված"
 
-#: class.ateo.label:875
+#: class.ateo.label:885
 msgid "Event Output"
 msgstr "Իրադարձության ելք"
 
-#: field.aba.fields.label:1957
+#: field.aba.fields.label:2078
 msgid "Authority Fields"
-msgstr ""
+msgstr "Հեղինակավորի դաշտեր"
 
-#: field.ccls.global.label:1502
+#: field.ccls.global.label:1598
 msgid "Global"
-msgstr ""
+msgstr "Ընդհանուր"
 
 #: field.viiad.tag.label:244 field.vmsp.tag.label:563 field.vmsq.tag.label:598
 #: field.acsaf.tag.label:2005 field.acsbf.tag.label:2037
@@ -1935,11 +1960,11 @@ msgstr "Ներքաշիր"
 msgid "XPath"
 msgstr "XPath"
 
-#: class.vmsp.label:554
+#: class.vmsp.label:556
 msgid "Record Matching Definition"
-msgstr ""
+msgstr "Գրառման համընկնման սահմանում"
 
-#: field.mrd.date2.label:3124
+#: field.mrd.date2.label:3250
 msgid "Date2"
 msgstr "Date2"
 
@@ -1964,19 +1989,19 @@ msgstr "Առաքող գրադարան"
 msgid "Label"
 msgstr "Պիտակ"
 
-#: class.at.label:1931
+#: class.at.label:2052
 msgid "Authority Thesaurus"
-msgstr ""
+msgstr "Հեղինակավոր տեզաուրուս"
 
-#: field.vmsp.parent.label:557
+#: field.vmsp.parent.label:559
 msgid "Expression Tree Parent"
-msgstr ""
+msgstr "Արտահայտության ծառի ծնող"
 
-#: field.cmfinm.norm.label:678 field.crainm.norm.label:766
+#: field.cmfinm.norm.label:680 field.crainm.norm.label:768
 msgid "Normalizer"
 msgstr "նորմալացնող"
 
-#: field.bre.subscriptions.label:2432
+#: field.bre.subscriptions.label:2553
 msgid "Subscriptions"
 msgstr "Բաժանորդագրություններ"
 
@@ -1984,15 +2009,15 @@ msgstr "Բաժանորդագրություններ"
 msgid "Actual Cost"
 msgstr "Իրական գին"
 
-#: field.csc.email_gateway.label:734
+#: field.csc.email_gateway.label:736
 msgid "Email Gateway"
-msgstr ""
+msgstr "Էլ. փոստի դարպաս"
 
-#: class.crainm.label:762
+#: class.crainm.label:764
 msgid "SVF Record Attribute to Indexing Normalizer Map"
 msgstr "SVF գրառման բաղկացուցիչից դեպի ինդեքսավորման նորմալացման քարտեզ"
 
-#: field.mfr.ind2.label:2931
+#: field.mfr.ind2.label:3057
 msgid "Indicator 2"
 msgstr "Ցուցիչ 2"
 
@@ -2002,13 +2027,13 @@ msgstr "Ընդունումներ"
 
 #: field.actscsf.field.label:5421 field.ascsf.field.label:6393
 msgid "Field Identifier"
-msgstr ""
+msgstr "Դաշտի բնութագրիչ"
 
-#: field.cblvl.code.label:4621
+#: field.cblvl.code.label:4752
 msgid "Bib Level Code"
 msgstr "Մատեն մակարդակի կոդ"
 
-#: field.acpl.id.label:3946 field.acplo.location.label:4023
+#: field.acpl.id.label:4077 field.acplo.location.label:4154
 msgid "Location ID"
 msgstr "Տեղաբաշխման ID"
 
@@ -2016,14 +2041,14 @@ msgstr "Տեղաբաշխման ID"
 msgid "Formula Owner"
 msgstr "Բանաձևի տնօրինող"
 
-#: class.sdist.label:4177 field.sdistn.distribution.label:4225
-#: field.sstr.distribution.label:4257 field.sasum.distribution.label:4488
-#: field.sbsum.distribution.label:4513 field.sssum.distribution.label:4540
-#: field.sisum.distribution.label:4567
+#: class.sdist.label:4308 field.sdistn.distribution.label:4356
+#: field.sstr.distribution.label:4388 field.sasum.distribution.label:4619
+#: field.sbsum.distribution.label:4644 field.sssum.distribution.label:4671
+#: field.sisum.distribution.label:4698
 msgid "Distribution"
 msgstr "Տարածում"
 
-#: field.bre.simple_record.label:2430
+#: field.bre.simple_record.label:2551
 msgid "Simple Record Extracts "
 msgstr "Պարզ գրառման ընդլայնում "
 
@@ -2031,7 +2056,7 @@ msgstr "Պարզ գրառման ընդլայնում "
 msgid "User Stat Cat Entry"
 msgstr "Օգտվողի վիճակ դասի մուտք"
 
-#: field.au.juvenile.label:2698
+#: field.au.juvenile.label:2819
 msgid "Juvenile"
 msgstr "Պատանեկան"
 
@@ -2052,19 +2077,20 @@ msgstr "Իրադարձության օգտվողի տվյալ"
 msgid "Copy Notes"
 msgstr "Օրինակի նշումներ"
 
-#: field.vii.deposit.label:201 field.viiad.deposit.label:251
+#: field.vii.deposit.label:201 field.viiad.deposit.label:252
 msgid "Deposit"
 msgstr "Դեպոզիտ"
 
-#: field.vbm.id.label:398 field.vam.id.label:515
+#: field.vbm.id.label:400 field.vam.id.label:517
 msgid "Match ID"
 msgstr "Համընկեցրու ID"
 
-#: class.mbe.label:3008
+#: class.mbe.label:3134
 msgid "Combined Browse Entry"
-msgstr ""
+msgstr "Կոմբինացված դիտելու մուտք"
 
-#: field.ccmm.juvenile_flag.label:1437
+#: field.chmw.juvenile_flag.label:1392 field.ccmw.juvenile_flag.label:1424
+#: field.ccmm.juvenile_flag.label:1532
 msgid "Juvenile?"
 msgstr "Պատանեակա՞ն"
 
@@ -2077,11 +2103,11 @@ msgstr "Վիճակագրական դաս"
 msgid "Fiscal Calendar ID"
 msgstr "Ֆինանսական օրացույցի ID"
 
-#: field.vii.circulate.label:200 field.viiad.circulate.label:250
+#: field.vii.circulate.label:200 field.viiad.circulate.label:251
 msgid "Circulate"
 msgstr "Սպասարկիր"
 
-#: class.abl.label:2044
+#: class.abl.label:2165
 msgid "Authority-Bibliographic Record Link"
 msgstr "Հեղինակավոր գրառում-մատենագիտական գրառում կապ"
 
@@ -2094,17 +2120,17 @@ msgstr "ISxN"
 msgid "Last Edit Date/Time"
 msgstr "Վերջին խմբագրման ամսաթիվ/ժամ"
 
-#: field.vbq.id.label:280 field.vaq.id.label:420
+#: field.vbq.id.label:282 field.vaq.id.label:422
 msgid "Queue ID"
 msgstr "Հերթի ID"
 
-#: field.brt.tgt_rsrc_types.label:3656
+#: field.brt.tgt_rsrc_types.label:3787
 msgid "Target Resource Types"
 msgstr "Թիրախ պաշարների տեսակներ"
 
-#: field.cuat.ehow.label:2751
+#: field.cuat.ehow.label:2877
 msgid "Event Mechanism"
-msgstr ""
+msgstr "Իրադարձության մեխանիզմ"
 
 #: field.actsce.stat_cat.label:5673 field.actsced.stat_cat.label:5687
 #: field.asce.stat_cat.label:6383
@@ -2136,23 +2162,23 @@ msgstr "ՓԷՏ հաշիվ"
 msgid "Last Activity"
 msgstr "Վերջին գործողություն"
 
-#: field.cclsgm.check_only.label:1577
+#: field.cclsgm.check_only.label:1698
 msgid "Check Only"
-msgstr ""
+msgstr "Միայն ստուգիր"
 
 #: field.aouctn.children.label:5340
 msgid "Children"
-msgstr ""
+msgstr "Երեխա"
 
-#: field.ocirccount.out.label:3375 field.ocirclist.out.label:3417
+#: field.ocirccount.out.label:3501 field.ocirclist.out.label:3543
 msgid "Out"
 msgstr "Դուրս"
 
-#: field.aupr.has_been_reset.label:1708
+#: field.aupr.has_been_reset.label:1829
 msgid "Was Reset?"
 msgstr "Վերագրվա՞ծ է"
 
-#: field.au.settings.label:2654
+#: field.au.settings.label:2775
 msgid "All User Settings"
 msgstr "Բոլոր օգտվողների կարգաբերում"
 
@@ -2168,11 +2194,11 @@ msgstr "Օգտվողի ժամկետանցության տիրույթ"
 msgid "Line Item Alert Text"
 msgstr "Գծային նյութի ահազանգման տեքմտ"
 
-#: class.mrd.label:3106
+#: class.mrd.label:3232
 msgid "Basic Record Descriptor"
 msgstr "Հիմնական գրառման նկարագրիչ"
 
-#: field.chmm.transit_range.label:1390
+#: field.chmm.transit_range.label:1484
 msgid "Transit Range"
 msgstr "Տրանզիտի տիրույթ"
 
@@ -2190,11 +2216,11 @@ msgstr "Վճարման ID"
 msgid "Biblio Record Entry Bucket Item Note"
 msgstr "Մատեն գրառման մուտքի փնջի նյութի նշում"
 
-#: field.chdd.forceto.label:2579
+#: field.chdd.forceto.label:2700
 msgid "Always Use?"
 msgstr "Մի՞շտ օգտագործել"
 
-#: class.cifm.label:2220
+#: class.cifm.label:2341
 msgid "Item Form Map"
 msgstr "Նյութի ձևի քարտեզ"
 
@@ -2202,7 +2228,7 @@ msgstr "Նյութի ձևի քարտեզ"
 msgid "Evergreen Bib ID"
 msgstr "Evergreen Bib ID"
 
-#: field.atevdef.granularity.label:1016
+#: field.atevdef.granularity.label:1026
 msgid "Granularity"
 msgstr "Մանրամասների խորություն"
 
@@ -2210,7 +2236,7 @@ msgstr "Մանրամասների խորություն"
 msgid "Primary Key Value"
 msgstr "Սկզբնական բանալու արժեք"
 
-#: field.bra.name.label:3711
+#: field.bra.name.label:3842
 msgid "Resource Attribute Name"
 msgstr "Պաշարի բաղադրիչի անուն"
 
@@ -2223,15 +2249,15 @@ msgstr "Չեղյալ արա հաշիվը"
 msgid "Fund Tag"
 msgstr "Բյուջեի ցուցիչ"
 
-#: field.smhc.ind1.label:4501
+#: field.smhc.ind1.label:4632
 msgid "First Indicator"
-msgstr ""
+msgstr "Առաջին ինդիկատոր"
 
-#: field.cwa.hold_weights.label:1352
+#: field.cwa.hold_weights.label:1446
 msgid "Hold Weights"
 msgstr "Պահման քաշեր"
 
-#: field.mbts.usr.label:1655 field.mbtslv.usr.label:1676
+#: field.mbts.usr.label:1776 field.mbtslv.usr.label:1797
 msgid "Billed User"
 msgstr "Ընթերցող որին հաշիվ է ներկայացված"
 
@@ -2239,7 +2265,7 @@ msgstr "Ընթերցող որին հաշիվ է ներկայացված"
 msgid "Title or Item Name"
 msgstr "Վերնագրի կամ նյութի անուն"
 
-#: field.cifm.code.label:2222
+#: field.cifm.code.label:2343
 msgid "Item Form Code"
 msgstr "Նյութի ձևի կոդ"
 
@@ -2252,7 +2278,7 @@ msgstr "Տեղային"
 msgid "Overall Record Quality"
 msgstr "Գրառման ընդհանրական որակ"
 
-#: field.sunit.detailed_contents.label:4390
+#: field.sunit.detailed_contents.label:4521
 msgid "Detailed Contents"
 msgstr "Մանրամասն բովանդակություն"
 
@@ -2260,16 +2286,16 @@ msgstr "Մանրամասն բովանդակություն"
 msgid "Import Item ID"
 msgstr "Ներմուծված նյութի ID"
 
-#: field.vmsq.svf.label:595
+#: field.vmsq.svf.label:597
 msgid "Record Attribute"
-msgstr ""
+msgstr "Գրառման բաղկացուցիչ"
 
 #: field.ahr.prev_check_time.label:4981 field.ahopl.prev_check_time.label:5108
 #: field.alhr.prev_check_time.label:5182
 msgid "Last Targeting Date/Time"
 msgstr "Վերջին թիրախավորման ամսաթիվ/ժամ"
 
-#: field.ssr.rel.label:4703
+#: field.ssr.rel.label:4834
 msgid "Relevance"
 msgstr "Համարժեք"
 
@@ -2281,7 +2307,7 @@ msgstr "Նյութի լեզու"
 msgid "Lineitem Summary"
 msgstr "Գծային նյութի համառոտագրություն"
 
-#: class.vqarad.label:473
+#: class.vqarad.label:475
 msgid "Queued Authority Record Attribute Definition"
 msgstr "Հարցված հեղինակային գրառման բաղադրիչի սահմանում"
 
@@ -2289,11 +2315,11 @@ msgstr "Հարցված հեղինակային գրառման բաղադրիչի 
 msgid "OPAC Label"
 msgstr "ՀՕԱՔ Պիտակ"
 
-#: field.atevdef.usr_field.label:1017
+#: field.atevdef.usr_field.label:1027
 msgid "Opt-In User Field"
 msgstr "Օգտվողի դաշտի մասնակցություն"
 
-#: field.au.survey_responses.label:2657
+#: field.au.survey_responses.label:2778
 msgid "Survey Responses"
 msgstr "Հարցախույզի արձագանքեր"
 
@@ -2321,7 +2347,7 @@ msgstr "Ծախսված ժամանակ"
 msgid "Type ID"
 msgstr "Մուտք արա ID"
 
-#: class.bre.label:2400 field.brt.record.label:3651
+#: class.bre.label:2521 field.brt.record.label:3782
 msgid "Bibliographic Record"
 msgstr "Մատենագիտական գրառում"
 
@@ -2337,7 +2363,7 @@ msgstr "Ստացող"
 msgid "Cash Payment Detail"
 msgstr "Կանխիկի վճարման մանրամասներ"
 
-#: field.vmp.id.label:144 field.vibtf.id.label:168 field.mfr.id.label:2929
+#: field.vmp.id.label:144 field.vibtf.id.label:168 field.mfr.id.label:3055
 msgid "Field ID"
 msgstr "Դաշտի ID"
 
@@ -2353,22 +2379,22 @@ msgstr "FROM պահանջ"
 msgid "Non-cat Item Type"
 msgstr "Չքարտագրվող նյութի տեսակ"
 
-#: field.atev.user_data.label:1054
+#: field.atev.user_data.label:1064
 msgid "User Data"
 msgstr "Օգտվողի տվյալներ"
 
-#: class.aal.label:3245
+#: class.aal.label:3371
 msgid "Address Alert"
-msgstr ""
+msgstr "Հասզեի ահազանգ"
 
 #: field.mbts.balance_owed.label:1766 field.mbtslv.balance_owed.label:1787
 #: field.rccbs.balance_owed.label:9589
 msgid "Balance Owed"
 msgstr "Տնօրինած հաշվեկշիռ"
 
-#: field.acsaf.bib_fields.label:1890
+#: field.acsaf.bib_fields.label:2011
 msgid "Controlled Bib Fields"
-msgstr ""
+msgstr "Վերահսկելի մատեն դաշտեր"
 
 #: field.au.second_given_name.label:2812
 #: field.stgu.second_given_name.label:8606
@@ -2377,30 +2403,30 @@ msgstr "Միջին անուն"
 
 #: field.vmp.lwm_ratio.label:151
 msgid "Min. Quality Ratio"
-msgstr ""
+msgstr "Որակի նվազագույն գործակից"
 
 #: field.aou.rsrc_types.label:5276
 msgid "Resource Types"
 msgstr "Պաշարների տեսակներ"
 
-#: class.cclg.label:1478
+#: class.cclg.label:1574
 msgid "Circulation Limit Group"
-msgstr ""
+msgstr "Տացքի սահմանափակման խումբ"
 
 #: field.aur.lineitem.label:6627 field.acqie.lineitem.label:6817
 #: field.acqlid.lineitem.label:7850
 msgid "PO Line Item"
 msgstr "PO Line Item"
 
-#: field.auact.etype.label:2770
+#: field.auact.etype.label:2896
 msgid "Activity Type"
-msgstr ""
+msgstr "Գործունեության տեսակ"
 
 #: field.acqedim.error_time.label:8054
 msgid "Time of Error"
 msgstr "Սխալի ժամ"
 
-#: class.atev.label:1043
+#: class.atev.label:1053
 msgid "Trigger Event Entry"
 msgstr "Եռակապ միջոցառման մուտք"
 
@@ -2412,7 +2438,7 @@ msgstr "Տարիքային պաշտպանություն"
 msgid "Fiscal Calendar Name"
 msgstr "Ֆինանսական օրացույցի անուն"
 
-#: class.czs.label:833 field.czs.name.label:835 field.cza.source.label:863
+#: class.czs.label:835 field.czs.name.label:837 field.cza.source.label:865
 msgid "Z39.50 Source"
 msgstr "Z39.50 աղբյուր"
 
@@ -2426,7 +2452,7 @@ msgstr "Մատեն գրառում"
 msgid "LitF Code"
 msgstr "LitF կոդ"
 
-#: field.cifm.value.label:2223
+#: field.cifm.value.label:2344
 msgid "Item Form"
 msgstr "Նյութի կաղապար"
 
@@ -2439,13 +2465,13 @@ msgstr "Բյուջեի փոխանցման ID"
 msgid "Requesting User"
 msgstr "Պահանջող օգտվող"
 
-#: field.auoi.opt_in_ws.label:625 class.aws.label:1096
-#: field.circ.workstation.label:3455 field.acirc.workstation.label:3592
+#: field.auoi.opt_in_ws.label:627 class.aws.label:1184
+#: field.circ.workstation.label:3581 field.acirc.workstation.label:3723
 msgid "Workstation"
 msgstr "Աշխատանքային կայան"
 
-#: field.ocirccount.long_overdue.label:3379
-#: field.ocirclist.long_overdue.label:3421
+#: field.ocirccount.long_overdue.label:3505
+#: field.ocirclist.long_overdue.label:3547
 msgid "Long Overdue"
 msgstr "Երկար ուշացում"
 
@@ -2453,7 +2479,7 @@ msgstr "Երկար ուշացում"
 msgid "Owning Lib Name"
 msgstr "Տնօրինող գրադ անուն"
 
-#: class.cmfinm.label:674
+#: class.cmfinm.label:676
 msgid "Metabib Field to Indexing Normalizer Map"
 msgstr "Metabib դաշտից նորմալացված ինդեքսների քարտեզ"
 
@@ -2466,11 +2492,11 @@ msgstr "Գրառում"
 msgid "Total Encumbered"
 msgstr "Ընդհանուր բեռնավորված"
 
-#: field.aal.match_all.label:3250
+#: field.aal.match_all.label:3376
 msgid "Match All Fields"
-msgstr ""
+msgstr "Համընկեցրու բոլոր դաշտերը"
 
-#: class.ath.label:896
+#: class.ath.label:906
 msgid "Trigger Hook Point"
 msgstr "Տրիգերի կեռիկի կետ"
 
@@ -2478,7 +2504,7 @@ msgstr "Տրիգերի կեռիկի կետ"
 msgid "Hold/Copy Ratio"
 msgstr "Պահում/պատճեն գործակից"
 
-#: field.bresv.return_time.label:3806
+#: field.bresv.return_time.label:3937
 msgid "Return Time"
 msgstr "Վերադարձի ժամ"
 
@@ -2490,13 +2516,14 @@ msgstr "Կոմպոզիտ է"
 msgid "Callnumber Label"
 msgstr "Դասիչի պիտակ"
 
-#: field.chmm.marc_bib_level.label:1384 field.ccmm.marc_bib_level.label:1434
+#: field.chmw.marc_bib_level.label:1390 field.ccmw.marc_bib_level.label:1421
+#: field.chmm.marc_bib_level.label:1478 field.ccmm.marc_bib_level.label:1529
 msgid "MARC Bib Level"
-msgstr ""
+msgstr "ՄԵԸՔ մատեն մակարդակ"
 
-#: class.csc.label:728
+#: class.csc.label:730
 msgid "SMS Carrier"
-msgstr ""
+msgstr "SMS փոխադրող"
 
 #: field.mp.check_payment.label:6264 field.mbp.check_payment.label:6292
 msgid "Check Payment Detail"
@@ -2526,11 +2553,11 @@ msgstr "Օգտվողի խումբ է"
 msgid "Debit Type"
 msgstr "Դեբետի տեսակ"
 
-#: class.ssr.label:4700
+#: class.ssr.label:4831
 msgid "Search Result"
 msgstr "Որոնման արդյունք"
 
-#: field.ausp.set_date.label:3200
+#: field.ausp.set_date.label:3326
 msgid "Set Date"
 msgstr "Դիր ամսաթիվը"
 
@@ -2539,13 +2566,13 @@ msgstr "Դիր ամսաթիվը"
 msgid "Fingerprint"
 msgstr "Մատնահետք"
 
-#: field.ateo.data.label:879
+#: field.ateo.data.label:889
 msgid "Data"
 msgstr "Տվյալ"
 
-#: field.smhc.ind2.label:4502
+#: field.smhc.ind2.label:4633
 msgid "Second Indicator"
-msgstr ""
+msgstr "Երկրորդ ինդիկատոր"
 
 #: class.i18n.label:6524
 msgid "i18n Core"
@@ -2555,8 +2582,8 @@ msgstr "i18n միջուկ"
 msgid "Circulation"
 msgstr "Տացք"
 
-#: field.cgf.enabled.label:644 field.atevdef.active.label:1003
-#: field.cuat.enabled.label:2754
+#: field.cgf.enabled.label:646 field.atevdef.active.label:1013
+#: field.cuat.enabled.label:2880
 msgid "Enabled"
 msgstr "Թույլատրված"
 
@@ -2585,7 +2612,7 @@ msgstr "նախնական պահում որ պահանջում է տրանզիտ"
 msgid "Creator"
 msgstr "Ստեղծող"
 
-#: field.asvq.id.label:1619
+#: field.asvq.id.label:1740
 msgid "Question ID"
 msgstr "Հարցի ID"
 
@@ -2593,7 +2620,7 @@ msgstr "Հարցի ID"
 msgid "PO Note"
 msgstr "PO նշում"
 
-#: field.czs.transmission_format.label:841
+#: field.czs.transmission_format.label:843
 msgid "Transmission Format"
 msgstr "Ձևափոխման ձևաչափ"
 
@@ -2601,7 +2628,7 @@ msgstr "Ձևափոխման ձևաչափ"
 msgid "Audit Action"
 msgstr "Աուդիտի գործողություն"
 
-#: field.chddv.active_date.label:2601
+#: field.chddv.active_date.label:2722
 msgid "Active Date"
 msgstr "Ակտիվ ամսաթիվ"
 
@@ -2613,7 +2640,7 @@ msgstr "Ենթադաշտի տեսակ"
 msgid "Total Credits to Funding Source"
 msgstr "Ընդհանուր կրեդիտներ ֆինանսավորման աղբյուրին"
 
-#: class.mct.label:2379
+#: class.mct.label:2500
 msgid "Collections Tracker"
 msgstr "հավաքածուի վերահսկիչ"
 
@@ -2621,50 +2648,50 @@ msgstr "հավաքածուի վերահսկիչ"
 msgid "Is Grouped By"
 msgstr "խմբավորված է ըստ"
 
-#: field.crad.tag.label:703
+#: field.crad.tag.label:705
 msgid "MARC Tag"
 msgstr "MARC ցուցիչ"
 
-#: field.czs.db.label:839
+#: field.czs.db.label:841
 msgid "DB"
 msgstr "DB"
 
-#: field.vibtf.field.label:170 field.vqbra.field.label:379
-#: field.vqara.field.label:496 field.cmsa.field.label:2121
+#: field.vibtf.field.label:170 field.vqbra.field.label:381
+#: field.vqara.field.label:498 field.cmsa.field.label:2242
 msgid "Field"
 msgstr "Դաշտ"
 
-#: field.atb.org.label:2789 field.acpl.owning_lib.label:3949
-#: field.acplg.owner.label:3976 field.sre.owning_lib.label:4071
+#: field.atb.org.label:2915 field.acpl.owning_lib.label:4080
+#: field.acplg.owner.label:4107 field.sre.owning_lib.label:4202
 msgid "Owning Org Unit"
 msgstr "Տնօրինող կազմ միավոր"
 
-#: field.scap.chron_5.label:4109
+#: field.scap.chron_5.label:4240
 msgid "Chron 5"
 msgstr "Chron 5"
 
-#: field.scap.chron_4.label:4108
+#: field.scap.chron_4.label:4239
 msgid "Chron 4"
 msgstr "Chron 4"
 
-#: field.mbts.xact_finish.label:1656 field.mbtslv.xact_finish.label:1677
+#: field.mbts.xact_finish.label:1777 field.mbtslv.xact_finish.label:1798
 msgid "Transaction Finish Time"
 msgstr "Տրանզակցիայի ավարտի ժամ"
 
-#: field.scap.chron_1.label:4105
+#: field.scap.chron_1.label:4236
 msgid "Chron 1"
 msgstr "Chron 1"
 
-#: field.scap.chron_3.label:4107
+#: field.scap.chron_3.label:4238
 msgid "Chron 3"
 msgstr "Chron 3"
 
-#: field.scap.chron_2.label:4106
+#: field.scap.chron_2.label:4237
 msgid "Chron 2"
 msgstr "Chron 2"
 
-#: field.accs.start_time.label:120 field.atev.start_time.label:1050
-#: field.bresv.start_time.label:3801
+#: field.accs.start_time.label:120 field.atev.start_time.label:1060
+#: field.bresv.start_time.label:3932
 msgid "Start Time"
 msgstr "Սկսելու ժամ"
 
@@ -2719,13 +2746,13 @@ msgstr "Անուն"
 
 #: class.aaasc.label:10125
 msgid "Circ-Archived Copy Statistical Category Entries"
-msgstr ""
+msgstr "Տացք-Արխիվային պատճենի վիճակագրական դասի մուտքեր"
 
-#: field.clm.code.label:2057 field.bre.language.label:2421
+#: field.clm.code.label:2178 field.bre.language.label:2542
 msgid "Language Code"
 msgstr "Լեզվի կոդ"
 
-#: field.au.ws_ou.label:2658
+#: field.au.ws_ou.label:2779
 msgid "Workstation Org Unit"
 msgstr "Աշխ կայանի Կազմ միավոր"
 
@@ -2749,22 +2776,18 @@ msgstr "Մատեն ներմուծման ձուլման պրոֆայլ"
 msgid "Sequence Number"
 msgstr "Հաջորդականության համար"
 
-#: class.pupm.label:5890
-msgid "User Permission Map"
-msgstr "Օգտվողի թույլատրությունների քարտեզ"
-
 #: field.accs.last_checkin_scan_time.label:128
 msgid "Last Checkin Scan Time"
 msgstr "Վերջին ստացման սկանի ժամ"
 
-#: field.vii.call_number.label:196 field.viiad.call_number.label:247
-#: field.auricnm.call_number.label:2347
-#: field.combcirc.copy_call_number.label:3532
-#: field.acirc.copy_call_number.label:3605
+#: field.vii.call_number.label:196 field.viiad.call_number.label:248
+#: field.auricnm.call_number.label:2468
+#: field.combcirc.copy_call_number.label:3663
+#: field.acirc.copy_call_number.label:3736
 msgid "Call Number"
 msgstr "Դասիչ"
 
-#: field.atev.template_output.label:1055
+#: field.atev.template_output.label:1065
 msgid "Template Output"
 msgstr "Նմուշի ելք"
 
@@ -2780,7 +2803,7 @@ msgstr "Mint Condition?"
 msgid "Renewal"
 msgstr "Թարմացում"
 
-#: class.bram.label:3758
+#: class.bram.label:3889
 msgid "Resource Attribute Map"
 msgstr "Պաշարի բնութագրիչի քարտեզ"
 
@@ -2790,7 +2813,7 @@ msgstr "Օգտվողի տնային գրադարանի կապ"
 
 #: class.cbc.label:10065
 msgid "Barcode Completions"
-msgstr ""
+msgstr "Շտրիխ կոդի ավարտական մաս"
 
 #: field.acqpc.role.label:6933
 msgid "Role"
@@ -2818,7 +2841,7 @@ msgstr "Օգտվողի վճարների համառոտագրություն"
 msgid "Receive Method"
 msgstr "Ստացման ձև"
 
-#: field.au.notes.label:2702
+#: field.au.notes.label:2823
 msgid "User Notes"
 msgstr "Օգտվողի նշումներ"
 
@@ -2831,7 +2854,7 @@ msgstr "Stat Cat ID"
 msgid "From Currency"
 msgstr "Արտարժույթից"
 
-#: field.mrd.enc_level.label:3113
+#: field.mrd.enc_level.label:3239
 msgid "ELvl"
 msgstr "ELvl"
 
@@ -2839,13 +2862,13 @@ msgstr "ELvl"
 msgid "Use ALL"
 msgstr "Օգտագործիր ԲՈԼՈՐԸ"
 
-#: class.atreact.label:938
+#: class.atreact.label:948
 msgid "Trigger Event Reactor"
 msgstr "Եռակի միջոցառման ռեակտոր"
 
 #: field.acqf.combined_balance.label:7180
 msgid "Combined Balance"
-msgstr ""
+msgstr "Կոմբինացված հաշվեկշիռ"
 
 #: field.acqii.po_item.label:6863 class.acqpoi.label:7652
 msgid "Purchase Order Item"
@@ -2856,7 +2879,7 @@ msgstr "Նյութի Պատվերի պահանջ"
 msgid "Selection Locus"
 msgstr "Ընտրելու տեղ"
 
-#: field.atenv.collector.label:975
+#: field.atenv.collector.label:985
 msgid "Collector"
 msgstr "Հավաքող"
 
@@ -2881,9 +2904,9 @@ msgstr "TCN արժեք"
 msgid "MARC21 Physical Characteristic Value Map"
 msgstr "MARC21 ֆիզիկական բնութագրիչների արժեքի քարտեզ"
 
-#: field.rsr.topic_subject.label:7890
-msgid "Topic Subjects (normalized)"
-msgstr "Թեմատիկ խորագրեր (նորմալացված)"
+#: class.cam.label:2325
+msgid "Audience Map"
+msgstr "Լսարանի քարտեզ"
 
 #: field.acqpro.prepayment_required.label:6720
 #: field.acqpo.prepayment_required.label:7553
@@ -2950,8 +2973,8 @@ msgstr "Ենթահերթի ID"
 msgid "Tag ID"
 msgstr "Ցուցիչի ID"
 
-#: field.ccmm.hard_due_date.label:1445 class.chdd.label:2575
-#: field.chddv.hard_due_date.label:2599
+#: field.ccmm.hard_due_date.label:1540 class.chdd.label:2696
+#: field.chddv.hard_due_date.label:2720
 msgid "Hard Due Date"
 msgstr "Վերադարձի կոշտ ամսաթիվ"
 
@@ -2968,7 +2991,7 @@ msgstr "Սկզբնական արտարժույթ"
 msgid "Credit Amount"
 msgstr "Կրեդիտի գումար"
 
-#: field.au.alias.label:2697
+#: field.au.alias.label:2818
 msgid "OPAC/Staff Client Holds Alias"
 msgstr "ՀՕԱՔ/աշխատակազմ հաճախորդի պահման կեղծանուն"
 
@@ -2976,7 +2999,7 @@ msgstr "ՀՕԱՔ/աշխատակազմ հաճախորդի պահման կեղծա
 msgid "Subordinate Organizational Units"
 msgstr "Ենթակայության տակ դիր կազմակերպչական միավորները"
 
-#: field.mfr.value.label:2935
+#: field.mfr.value.label:3061
 msgid "Normalized Value"
 msgstr "Նորմալացված արժեք"
 
@@ -2984,33 +3007,33 @@ msgstr "Նորմալացված արժեք"
 msgid "Checkout Workstation"
 msgstr "Դուրս տրման աշխատանքային կայան"
 
-#: class.cxt.label:2099
+#: class.cxt.label:2220
 msgid "XML/XSLT Transform Definition"
 msgstr "XML/XSLT ձևափոխման սահմանում"
 
 #: class.acqmapinv.label:10002
 msgid "Acq Map to Invoice View"
-msgstr ""
+msgstr "Համալրման քարտեզդիտման ինվոյսի համար"
 
 #: field.acqf.allocation_total.label:7176
 msgid "Allocation Total"
-msgstr ""
+msgstr "Բաշխման ընդհանուր"
 
 #: field.accs.last_renewal_time.label:122
 msgid "Last Renewal Time"
 msgstr "Վերջին թարմացման ժամ"
 
-#: class.acs.label:1857
+#: class.acs.label:1978
 msgid "Authority Control Set"
-msgstr ""
+msgstr "Հեղինակավորի վերահսկման բազմություն"
 
 #: field.jub.source_label.label:7700 field.acqlih.source_label.label:7762
 msgid "Source Label"
 msgstr "Աղբյուրի պիտակ"
 
-#: field.acsaf.id.label:1881
+#: field.acsaf.id.label:2002
 msgid "Control Set Authority Field ID"
-msgstr ""
+msgstr "Վերահսկման բազմություն հեղինակավորի դաշտի ID"
 
 #: field.ahr.fulfillment_time.label:4973
 #: field.ahopl.fulfillment_time.label:5100
@@ -3033,7 +3056,7 @@ msgstr "Իրականացան օր/ժամ"
 msgid "Note"
 msgstr "Նշում"
 
-#: class.ccnbi.label:3865
+#: class.ccnbi.label:3996
 msgid "Call Number Bucket Item"
 msgstr "Փնջի նյութի դասիչ"
 
@@ -3041,7 +3064,7 @@ msgstr "Փնջի նյութի դասիչ"
 msgid "Between Expression"
 msgstr "Արտահայտության միջև"
 
-#: field.ateo.events.label:881
+#: field.ateo.events.label:891
 msgid "Events"
 msgstr "Միջոցառումներ"
 
@@ -3049,7 +3072,7 @@ msgstr "Միջոցառումներ"
 msgid "Circ Lib"
 msgstr "Տացքի գրադարան"
 
-#: field.acn.id.label:2294
+#: field.acn.id.label:2415
 msgid "Call Number/Volume ID"
 msgstr "Դասիչ/Հատորի ID"
 
@@ -3057,24 +3080,24 @@ msgstr "Դասիչ/Հատորի ID"
 msgid "Join Type"
 msgstr "Միացյալ տեսակ"
 
-#: class.vqar.label:441
+#: class.vqar.label:443
 msgid "Queued Authority Record"
 msgstr "Հարցված հեղինակավոր գրառում"
 
-#: field.bresv.capture_staff.label:3816
+#: field.bresv.capture_staff.label:3947
 msgid "Capture Staff"
 msgstr "Որսա աշխատակազմը"
 
-#: field.circ.aaasc_entries.label:3468 field.combcirc.aaasc_entries.label:3538
-#: field.acirc.aaasc_entries.label:3611
+#: field.circ.aaasc_entries.label:3594 field.combcirc.aaasc_entries.label:3669
+#: field.acirc.aaasc_entries.label:3742
 msgid "Archived Copy Stat-Cat Entries"
-msgstr ""
+msgstr "Նվաճած պատճենի վիճակագրություն-Քարտագրման մուտքեր"
 
 #: class.acqclpa.label:8567 field.acrlid.claim_policy_action.label:9650
 msgid "Claim Policy Action"
 msgstr "Պահանջագրի քաղաքականության գործողություն"
 
-#: field.chmw.id.label:1290
+#: field.chmw.id.label:1378
 msgid "Hold Weights ID"
 msgstr "Պահման քաշերի ID"
 
@@ -3082,7 +3105,7 @@ msgstr "Պահման քաշերի ID"
 msgid "Payment Line Items"
 msgstr "Վճարիր տողային նյութերը"
 
-#: field.sra.multiplier.label:4640
+#: field.sra.multiplier.label:4771
 msgid "Multiplier"
 msgstr "Բազմապատկիչ"
 
@@ -3100,7 +3123,7 @@ msgstr "Ամսաթվի շարք"
 msgid "Order By Item"
 msgstr "Պատվեր ըստ նյութի"
 
-#: class.cblvl.label:4619
+#: class.cblvl.label:4750
 msgid "Bib Level Map"
 msgstr "Մատեն մակարդակի քարտեզ"
 
@@ -3143,7 +3166,7 @@ msgstr "IDL դաշտի Doc"
 msgid "Total Circulations"
 msgstr "Գումարային տրումներ"
 
-#: field.ccmm.script_test.label:1448
+#: field.ccmm.script_test.label:1543
 msgid "Script Test"
 msgstr "Սկրիպտի տեստ"
 
@@ -3151,39 +3174,39 @@ msgstr "Սկրիպտի տեստ"
 msgid "Order By Item ID"
 msgstr "Պատվեր ըստ նյութի ID"
 
-#: field.vqbr.import_items.label:334
+#: field.vqbr.import_items.label:336
 msgid "Import Items"
-msgstr ""
+msgstr "Ներմուծիր նյութեր"
 
 #: field.ahr.sms_carrier.label:4979 field.ahopl.sms_carrier.label:5106
 msgid "Notifications SMS Carrier"
-msgstr ""
+msgstr "SMS  Զգուշացումների փոխադրող"
 
-#: field.vms.id.label:536
+#: field.vms.id.label:538
 msgid "Match Set ID"
-msgstr ""
+msgstr "Համընկնման բազմության ID"
 
-#: field.bre.create_date.label:2405 field.au.create_date.label:2667
-#: field.circ.create_time.label:3454 field.combcirc.create_time.label:3522
-#: field.acirc.create_time.label:3591
+#: field.bre.create_date.label:2526 field.au.create_date.label:2788
+#: field.circ.create_time.label:3580 field.combcirc.create_time.label:3653
+#: field.acirc.create_time.label:3722
 msgid "Record Creation Date/Time"
 msgstr "Գրառման ստեղծման օր/ժամ"
 
-#: field.ocirccount.claims_returned.label:3378
-#: field.ocirclist.claims_returned.label:3420
+#: field.ocirccount.claims_returned.label:3504
+#: field.ocirclist.claims_returned.label:3546
 msgid "Claims Returned"
 msgstr "Վերադարձված պահանջագրեր"
 
-#: field.chmw.request_ou.label:1293 field.chmm.request_ou.label:1375
-#: field.bresv.request_lib.label:3814
+#: field.chmw.request_ou.label:1381 field.chmm.request_ou.label:1469
+#: field.bresv.request_lib.label:3945
 msgid "Request Library"
 msgstr "Հարցրու գրադարան"
 
-#: field.asvr.usr.label:1808
+#: field.asvr.usr.label:1929
 msgid "Responding User"
 msgstr "Արձագանքող օգտվող"
 
-#: class.atval.label:922
+#: class.atval.label:932
 msgid "Trigger Condition Validator"
 msgstr "Տրիգերի վիճակի ստուգում"
 
@@ -3211,7 +3234,7 @@ msgstr "Չքարտագրվող տեսակ ID"
 msgid "Datatype ID"
 msgstr "Տվյալի տեսակի ID"
 
-#: field.atevdef.cleanup_failure.label:1009
+#: field.atevdef.cleanup_failure.label:1019
 msgid "Failure Cleanup"
 msgstr "Ձախողված մաքրում"
 
@@ -3219,7 +3242,7 @@ msgstr "Ձախողված մաքրում"
 msgid "Circulate?"
 msgstr "Սպասարկե՞լ"
 
-#: field.chmw.usr_grp.label:1297 field.chmm.usr_grp.label:1379
+#: field.chmw.usr_grp.label:1385 field.chmm.usr_grp.label:1473
 msgid "User Permission Group"
 msgstr "Օգտվողի իրավասության խումբ"
 
@@ -3227,15 +3250,15 @@ msgstr "Օգտվողի իրավասության խումբ"
 msgid "Library Initiated"
 msgstr "Գրադարանը նախաձեռնեց"
 
-#: field.bresv.attr_val_maps.label:3818
+#: field.bresv.attr_val_maps.label:3949
 msgid "Attribute Value Maps"
 msgstr "Բաղկացուցիչի արժեքի քարտեզ"
 
-#: field.scap.start_date.label:4095 field.ssub.start_date.label:4134
+#: field.scap.start_date.label:4226 field.ssub.start_date.label:4265
 msgid "Start Date"
 msgstr "Սկսելու ամսաթիվ"
 
-#: field.acn.label_class.label:2302
+#: field.acn.label_class.label:2423
 msgid "Classification Scheme"
 msgstr "Դասակարգման սխեմա"
 
@@ -3243,11 +3266,11 @@ msgstr "Դասակարգման սխեմա"
 msgid "Billing Line Item"
 msgstr "Վճարման գծային նյութ"
 
-#: field.brav.attr_val_maps.label:3740
+#: field.brav.attr_val_maps.label:3871
 msgid "Resource Attribute Value Maps"
 msgstr "Պաշարի բաղադրիչի արժեքի քարտեզ"
 
-#: field.cxt.prefix.label:2103
+#: field.cxt.prefix.label:2224
 msgid "Namespace Prefix"
 msgstr "Անվան տարածքի նախդիր"
 
@@ -3255,11 +3278,15 @@ msgstr "Անվան տարածքի նախդիր"
 msgid "User Circulation Summary"
 msgstr "Օգտվողի սպասարկման համառոտագրություն"
 
-#: class.ocirccount.label:3343
+#: class.ocirccount.label:3469
 msgid "Open Circulation Count"
 msgstr "Բաց սպասարկման հաշվիչ"
 
-#: field.brt.catalog_item.label:3650 field.brsrc.catalog_item.label:3688
+#: class.asq.label:4900
+msgid "Search Query"
+msgstr "Փնտրի հերթը"
+
+#: field.brt.catalog_item.label:3781 field.brsrc.catalog_item.label:3819
 msgid "Catalog Item"
 msgstr "Քարտարանի նյութ"
 
@@ -3269,7 +3296,7 @@ msgstr "Քարտարանի նյութ"
 msgid "Last Billing Note"
 msgstr "Վերջին հաշվի նշում"
 
-#: field.czs.port.label:838
+#: field.czs.port.label:840
 msgid "Port"
 msgstr "Պորտ"
 
@@ -3277,19 +3304,19 @@ msgstr "Պորտ"
 msgid "Line Item Detail"
 msgstr "Տողային նյութի մանրամասն"
 
-#: field.crad.sorter.label:702
+#: field.crad.sorter.label:704
 msgid "Sorter?"
 msgstr "Տեսակավորի՞չ"
 
-#: class.sasum.label:4484
+#: class.sasum.label:4615
 msgid "All Issues' Summaries"
-msgstr ""
+msgstr "Բոլոր համարների համառոտագրություններ"
 
 #: class.ahrcc.label:6407
 msgid "Hold Request Cancel Cause"
 msgstr "Պահման հարցման չեղյալ անելու պատճառ"
 
-#: field.ccmm.renewals.label:1446
+#: field.ccmm.renewals.label:1541
 msgid "Renewals Override"
 msgstr "Թարմացումների վերագրում"
 
@@ -3305,21 +3332,21 @@ msgstr "Բաց օգտվողի տացքերի համառոտագրություն�
 msgid "Propagate"
 msgstr "Բազմացնել"
 
-#: field.circ.aaactsc_entries.label:3467
-#: field.combcirc.aaactsc_entries.label:3537
-#: field.acirc.aaactsc_entries.label:3610
+#: field.circ.aaactsc_entries.label:3593
+#: field.combcirc.aaactsc_entries.label:3668
+#: field.acirc.aaactsc_entries.label:3741
 msgid "Archived Patron Stat-Cat Entries"
-msgstr ""
+msgstr "Արխիվավորված հաճախորդի վիճակագրության-քարտագրման մուտքեր"
 
-#: field.bre.author_field_entries.label:2427
+#: field.bre.author_field_entries.label:2548
 msgid "Indexed Author Field Entries"
 msgstr "Ինդեքսավորված Հեղինակի դաշտի մուտքեր"
 
-#: class.sre.label:4058
+#: class.sre.label:4189
 msgid "Serial Record Entry"
 msgstr "Պարբերականի գրառման մուտք"
 
-#: field.vqbrad.remove.label:362 field.vqarad.remove.label:479
+#: field.vqbrad.remove.label:364 field.vqarad.remove.label:481
 msgid "Remove RegExp"
 msgstr "Հեռացրու RegExp"
 
@@ -3327,12 +3354,12 @@ msgstr "Հեռացրու RegExp"
 msgid "Holdable?"
 msgstr "Պահվո՞ղ"
 
-#: field.acsaf.control_set.label:1883 field.at.control_set.label:1934
-#: field.are.control_set.label:2007
+#: field.acsaf.control_set.label:2004 field.at.control_set.label:2055
+#: field.are.control_set.label:2128
 msgid "Control Set"
-msgstr ""
+msgstr "Վերահսկելի բազմություն"
 
-#: class.mobts.label:2616
+#: class.mobts.label:2737
 msgid "Open Billable Transaction Summary"
 msgstr "Բաց վճարվող տրանզակցիաների համառոտագրությունը"
 
@@ -3344,11 +3371,11 @@ msgstr "Տացք որպես այս տեսակ"
 msgid "Message Type"
 msgstr "Հաղորդման տեսակ"
 
-#: class.vbq.label:278
+#: class.vbq.label:280
 msgid "Import/Overlay Bib Queue"
 msgstr "Ներմուծիր/համակցի մատեն հարցումը"
 
-#: field.aupr.uuid.label:1705
+#: field.aupr.uuid.label:1826
 msgid "UUID"
 msgstr "UUID"
 
@@ -3370,7 +3397,7 @@ msgstr "Շարունակակա՞ն է"
 msgid "Fund Debit"
 msgstr "Բյուջեի դեբետ"
 
-#: field.au.net_access_level.label:2685
+#: field.au.net_access_level.label:2806
 msgid "Internet Access Level"
 msgstr "Ինտերնետ հասանելիության մակարդակ"
 
@@ -3389,11 +3416,11 @@ msgstr "Վերադարձի տեսակ"
 msgid "Payment Type"
 msgstr "Վճարի տեսակ"
 
-#: class.acplgm.label:3994
+#: class.acplgm.label:4125
 msgid "Copy/Shelving Location Group Map"
-msgstr ""
+msgstr "Պստճենի/դարակի վրա տեղադրման խմբի քարտեզ"
 
-#: field.sdist.receive_unit_template.label:4186
+#: field.sdist.receive_unit_template.label:4317
 msgid "Receive Unit Template"
 msgstr "Ստացվող միավորի ձ.աչափ"
 
@@ -3416,7 +3443,7 @@ msgstr "Այս պահին թիրախավորված օրինակ"
 msgid "Actual Value"
 msgstr "Իրական արժեք"
 
-#: class.are.label:1995
+#: class.are.label:2116
 msgid "Authority Record Entry"
 msgstr "Հեղինակավոր գրառման մուտք"
 
@@ -3440,11 +3467,11 @@ msgstr "Բյուջեի ցուցիչի տնօրինող"
 msgid "Fund Allocation"
 msgstr "Բյուջեի բաշխում"
 
-#: field.auoi.id.label:624
+#: field.auoi.id.label:626
 msgid "Opt-in ID"
 msgstr "Opt-in ID"
 
-#: field.asvq.answers.label:1617
+#: field.asvq.answers.label:1738
 msgid "Answers"
 msgstr "Պատասխաններ"
 
@@ -3456,19 +3483,19 @@ msgstr "Իրավասության ՎԻճակ Դաս 1"
 msgid "Legacy Stat Cat 2"
 msgstr "Իրավասության Վիճակ Դաս 2"
 
-#: field.bre.identifier_field_entries.label:2426
+#: field.bre.identifier_field_entries.label:2547
 msgid "Indexed Identifier Field Entries"
 msgstr "Ինդեքսավորված բնութագրիչ դաշտի մուտքեր"
 
-#: field.acsaf.sub_entries.label:1889
+#: field.acsaf.sub_entries.label:2010
 msgid "Subordinate Entries"
-msgstr ""
+msgstr "Ենթակայության մուտքեր"
 
-#: field.cza.truncation.label:868
+#: field.cza.truncation.label:870
 msgid "Truncation"
 msgstr "Հատում"
 
-#: class.cbfp.label:2186
+#: class.cbfp.label:2307
 msgid "Fingerprint Definition"
 msgstr "Մատնահետքի սահմանում"
 
@@ -3484,7 +3511,7 @@ msgstr "Հաշվի վճարման ձևաչափ"
 msgid "Survey Answer"
 msgstr "Հարցախույզի պատասխան"
 
-#: class.mra.label:747
+#: class.mra.label:749
 msgid "SVF Record Attribute"
 msgstr "SVF գրառման բաղկացուցիչ"
 
@@ -3493,7 +3520,7 @@ msgstr "SVF գրառման բաղկացուցիչ"
 msgid "Transit"
 msgstr "Տրանզիտ"
 
-#: field.atevdef.max_delay.label:1011
+#: field.atevdef.max_delay.label:1021
 msgid "Max Event Validity Delay"
 msgstr "Միջոցառման մաքս իրավասու լինլու ուշացում"
 
@@ -3501,16 +3528,16 @@ msgstr "Միջոցառման մաքս իրավասու լինլու ուշացո
 msgid "Skip Count"
 msgstr "Բաց թող հաշվարկը"
 
-#: field.bpbcm.peer_record.label:1216
+#: field.bpbcm.peer_record.label:1304
 msgid "Peer Record"
 msgstr "Համարժեք գրառում"
 
-#: field.circ.grace_period.label:3447 field.combcirc.grace_period.label:3515
-#: field.acirc.grace_period.label:3584
+#: field.circ.grace_period.label:3573 field.combcirc.grace_period.label:3646
+#: field.acirc.grace_period.label:3715
 msgid "Grace Period"
 msgstr "Գրավչության ժամկետ"
 
-#: field.bresv.capture_time.label:3803
+#: field.bresv.capture_time.label:3934
 msgid "Capture Time"
 msgstr "Որսալու ժամանակը"
 
@@ -3518,7 +3545,7 @@ msgstr "Որսալու ժամանակը"
 msgid "All Fund Allocation Total"
 msgstr "Ողջ բյուջեի բաշխման ընդհանուր"
 
-#: field.asv.start_date.label:4725
+#: field.asv.start_date.label:4856
 msgid "Survey Start Date/Time"
 msgstr "Հարցախույզի սկզբի օր/ժամ"
 
@@ -3526,19 +3553,19 @@ msgstr "Հարցախույզի սկզբի օր/ժամ"
 msgid "Line Item Local Attribute Definition"
 msgstr "Տողային նյութի Տեղային Բաղադրիչների Սահմանում"
 
-#: field.au.checkouts.label:2651
+#: field.au.checkouts.label:2772
 msgid "All Circulations"
 msgstr "Բոլոր սպասարկումները"
 
 #: field.aouctn.sibling_order.label:5339
 msgid "Sibling Sort Order"
-msgstr ""
+msgstr "Եղբայրների ու քույրերի տեսակավորման կարգ"
 
-#: field.aws.name.label:1099
+#: field.aws.name.label:1187
 msgid "Workstation Name"
 msgstr "Աշխատակայանի անուն"
 
-#: field.circ.parent_circ.label:3458 field.acirc.parent_circ.label:3595
+#: field.circ.parent_circ.label:3584 field.acirc.parent_circ.label:3726
 msgid "Parent Circulation"
 msgstr "Ծնող սպասարկում"
 
@@ -3546,7 +3573,7 @@ msgstr "Ծնող սպասարկում"
 msgid "Call Number Bucket"
 msgstr "Փնջի դասիչ"
 
-#: field.ssub.scaps.label:4140
+#: field.ssub.scaps.label:4271
 msgid "Captions and Patterns"
 msgstr "Որսվածներ և պատկերներ"
 
@@ -3569,15 +3596,15 @@ msgstr "Աշխատանքի վճարի մանրամասներ"
 msgid "Fund Spent Balance"
 msgstr "Ծախսած բյուջեի հաշվեկշիռ"
 
-#: field.mrd.lit_form.label:3118
+#: field.mrd.lit_form.label:3244
 msgid "LitF"
 msgstr "LitF"
 
 #: field.rhcrpbap.everywhere_ratio.label:9434
 msgid "Hold/Copy Ratio Everywhere"
-msgstr ""
+msgstr "պահման/Պատճենի գործակից ամենուր"
 
-#: field.auss.query_type.label:3283
+#: field.auss.query_type.label:3409
 msgid "Query Type"
 msgstr "Հարցման տեսակ"
 
@@ -3610,7 +3637,7 @@ msgstr "Սխալ"
 msgid "Circulations"
 msgstr "Սպասարկումներ"
 
-#: field.brsrc.overbook.label:3680
+#: field.brsrc.overbook.label:3811
 msgid "Overbook"
 msgstr "Գերվաճառք"
 
@@ -3626,7 +3653,7 @@ msgstr "Հանձնելու վերջնաժամկետ"
 msgid "Reservation Pickups"
 msgstr "նախնական պահումների վերցնում"
 
-#: field.asv.id.label:4719
+#: field.asv.id.label:4850
 msgid "Survey ID"
 msgstr "Հարցախույզի ID"
 
@@ -3634,7 +3661,7 @@ msgstr "Հարցախույզի ID"
 msgid "Patron County"
 msgstr "Հաճախորդի երկիր"
 
-#: class.acqim.label:1148
+#: class.acqim.label:1236
 msgid "Invoice Method used by Vendor"
 msgstr "Մատակարարի կողմից օգտագործված հաշվի տեսակը"
 
@@ -3646,9 +3673,9 @@ msgstr "Գնահատված արժեք"
 msgid "Allowed Proximity"
 msgstr "Թույլատրված մոտարկում"
 
-#: field.atb.layout.label:2792
+#: field.atb.layout.label:2918
 msgid "Layout"
-msgstr ""
+msgstr "Դասավորություն"
 
 #: field.qdt.datatype_name.label:8801
 msgid "Datatype Name"
@@ -3658,10 +3685,10 @@ msgstr "Տվյալի տեսակի անուն"
 msgid "Grocery Billing link"
 msgstr "Grocery Billing link"
 
-#: field.vbq.match_set.label:285 field.vaq.match_set.label:425
-#: field.vmsp.match_set.label:558 field.vmsq.match_set.label:594
+#: field.vbq.match_set.label:287 field.vaq.match_set.label:427
+#: field.vmsp.match_set.label:560 field.vmsq.match_set.label:596
 msgid "Match Set"
-msgstr ""
+msgstr "Համընկնման բազմություն"
 
 #: field.aou.id.label:5253
 msgid "Organizational Unit ID"
@@ -3675,11 +3702,11 @@ msgstr "Կանոնի ID"
 msgid "Vendor Invoice ID"
 msgstr "Մատակարարի հաշվի ID"
 
-#: field.cmf.browse_xpath.label:2171
+#: field.cmf.browse_xpath.label:2292
 msgid "Browse XPath"
-msgstr ""
+msgstr "Դիտիր XPath"
 
-#: field.acns.label_sortkey.label:2252 field.acnp.label_sortkey.label:2271
+#: field.acns.label_sortkey.label:2373 field.acnp.label_sortkey.label:2392
 msgid "Label Sort Key"
 msgstr "Պիտակի տեսակավորման բանալի"
 
@@ -3692,7 +3719,7 @@ msgstr "Ծնող հարց"
 msgid "Balance Stop Percent"
 msgstr "Հաշվեկշռի կանգնեցման տոկոս"
 
-#: field.atevdef.delay.label:1010
+#: field.atevdef.delay.label:1020
 msgid "Processing Delay"
 msgstr "Ընթացակարգի ուշացում"
 
@@ -3700,7 +3727,7 @@ msgstr "Ընթացակարգի ուշացում"
 msgid "Total Allocation to Funding Source"
 msgstr "Բյուջետային աղբյուրին ընդհանուր հատկացում"
 
-#: class.cust.label:2835
+#: class.cust.label:2961
 msgid "User Setting Type"
 msgstr "Օգտվողի կարգաբերման տեսակ"
 
@@ -3708,11 +3735,11 @@ msgstr "Օգտվողի կարգաբերման տեսակ"
 msgid "Table Name"
 msgstr "Աղյուսակի անուն"
 
-#: field.citm.code.label:4606
+#: field.citm.code.label:4737
 msgid "Item Type Code"
 msgstr "Նյութի տեսակի կոդ"
 
-#: field.au.standing.label:2692
+#: field.au.standing.label:2813
 msgid "Standing (unused)"
 msgstr "Սպասվող (չի օգտագործվում)"
 
@@ -3721,7 +3748,7 @@ msgstr "Սպասվող (չի օգտագործվում)"
 msgid "Password"
 msgstr "Գաղտնաբառ"
 
-#: class.cgf.label:639
+#: class.cgf.label:641
 msgid "Global Flags and Settings"
 msgstr "Համընդհանուր դրոշակներ և կարգաբերումներ"
 
@@ -3729,13 +3756,11 @@ msgstr "Համընդհանուր դրոշակներ և կարգաբերումն�
 msgid "Non-bibliographic Invoice Item"
 msgstr "Ոչ մատենագիտական հաշվի կետ"
 
-#: field.aua.country.label:3227 field.aal.country.label:3257
-#: field.acqpa.country.label:6561 field.acqpca.country.label:6626
-#: field.stgma.country.label:8259 field.stgba.country.label:8274
-msgid "Country"
-msgstr "Երկիր"
+#: field.cmc.fields.label:2264
+msgid "Fields"
+msgstr "Դաշտեր"
 
-#: field.ccmm.total_copy_hold_ratio.label:1449
+#: field.ccmm.total_copy_hold_ratio.label:1544
 msgid "Minimum Total Copy/Hold Ratio"
 msgstr "Ընդհանուր օրինակ/պահում սեղմելու մինիմում"
 
@@ -3747,11 +3772,11 @@ msgstr "Վճարներ"
 msgid "Expected Receive Time"
 msgstr "Ստացման սպասվող ժամ"
 
-#: field.au.usr_activity.label:2711
+#: field.au.usr_activity.label:2832
 msgid "User Activity Entries"
-msgstr ""
+msgstr "Օգտվողի գործողությունների մուտքեր"
 
-#: field.bre.title_field_entries.label:2425
+#: field.bre.title_field_entries.label:2546
 msgid "Indexed Title Field Entries"
 msgstr "Ինդեքսավորված վերնագրի դաշտի մուտքեր"
 
@@ -3771,11 +3796,11 @@ msgstr "Հասցեներ"
 msgid "Peer Records"
 msgstr "Համարժեք գրառումներ"
 
-#: field.vmsp.children.label:565
+#: field.vmsp.children.label:567
 msgid "Expression Tree Children"
-msgstr ""
+msgstr "Երեխա Արտահայտության ծառ"
 
-#: field.auoi.opt_in_ts.label:629
+#: field.auoi.opt_in_ts.label:631
 msgid "Opt-in Date/Time"
 msgstr "Ներգրավման օր/ժամ"
 
@@ -3790,9 +3815,9 @@ msgstr "Սյունակի անուն"
 msgid "Year"
 msgstr "Տարի"
 
-#: field.cuat.ewho.label:2749
+#: field.cuat.ewho.label:2875
 msgid "Event Caller"
-msgstr ""
+msgstr "Իրադարձության կանչող"
 
 #: field.rxbt.voided.label:8314
 msgid "Voided Billing Amount"
@@ -3807,26 +3832,26 @@ msgstr "Դրամագլխի համառոտագրություն"
 msgid "Estimated Unit Price"
 msgstr "Միվորի գնահատված գին"
 
-#: field.crad.sf_list.label:704
+#: field.crad.sf_list.label:706
 msgid "MARC Subfields"
 msgstr "MARC ենթադաշտեր"
 
-#: field.acs.authority_fields.label:1862
+#: field.acs.authority_fields.label:1983
 msgid "Controlling Authority Fields"
-msgstr ""
+msgstr "Վերահսկելի հեղինակավորի դաշտեր"
 
-#: class.mbtslv.label:1664
+#: class.mbtslv.label:1785
 msgid "Billable Transaction Summary with Billing Location"
 msgstr ""
 "Վճարման ենթակա տրանզակցիայի համառոտագրություն փոխանցման տեղաբաշխումով"
 
-#: field.au.demographic.label:2703
+#: field.au.demographic.label:2824
 msgid "Demographic Info"
 msgstr "Ժողովրդագրական տեղեկատվություն"
 
-#: class.atb.label:2785
+#: class.atb.label:2911
 msgid "Custom Toolbar"
-msgstr ""
+msgstr "Հաճախորդի գործիքաշար"
 
 #: field.mbts.last_payment_note.label:1771
 #: field.mbtslv.last_payment_note.label:1792
@@ -3834,7 +3859,7 @@ msgstr ""
 msgid "Last Payment Note"
 msgstr "Վերջին վճարման նշում"
 
-#: field.au.expire_date.label:2673
+#: field.au.expire_date.label:2794
 msgid "Privilege Expiration Date"
 msgstr "Արտոնության լրանալու ամսաթիվ"
 
@@ -3858,11 +3883,11 @@ msgstr "Նախնական քարտագրման դատարկ վերնագիր"
 
 #: field.asc.sip_format.label:5391 field.actsc.sip_format.label:5445
 msgid "SIP Format"
-msgstr ""
+msgstr "SIP ձևաչափ"
 
 #: field.ahr.sms_notify.label:4978 field.ahopl.sms_notify.label:5105
 msgid "Notifications SMS Number"
-msgstr ""
+msgstr "SMS զգուշացումների համար"
 
 #: field.rccc.patron_home_lib_shortname.label:9507
 msgid "Patron Home Library Short (Policy) Name"
@@ -3886,7 +3911,7 @@ msgstr "Գումար"
 msgid "Workstation Payment Summary"
 msgstr "Աշխատանքային կայանի համառոտագրություն"
 
-#: field.bre.series_field_entries.label:2428
+#: field.bre.series_field_entries.label:2549
 msgid "Indexed Series Field Entries"
 msgstr "Ինդեքսավորված մատենաշարի դաշտի մուտք"
 
@@ -3902,7 +3927,7 @@ msgstr "Տարածման ֆորմուլաներ"
 msgid "Claim Event Type ID"
 msgstr "Պահանջագրի իրադարձության տեսակի ID"
 
-#: field.acnc.id.label:2237
+#: field.acnc.id.label:2358
 msgid "Call number class ID"
 msgstr "Դասիչի դասի ID"
 
@@ -3911,7 +3936,7 @@ msgstr "Դասիչի դասի ID"
 msgid "Suffix"
 msgstr "Վերջածանց"
 
-#: field.mrd.type_mat.label:3121
+#: field.mrd.type_mat.label:3247
 msgid "TMat"
 msgstr "TMat"
 
@@ -3923,7 +3948,7 @@ msgstr "Չեկով վճարում"
 msgid "Legacy CAT1 Link"
 msgstr "թույլատրելի CAT1 կապ"
 
-#: field.ccmm.available_copy_hold_ratio.label:1450
+#: field.ccmm.available_copy_hold_ratio.label:1545
 msgid "Minimum Available Copy/Hold Ratio"
 msgstr "Մինիմում հասանելի Պատճե/պահում հարաբերակցություն"
 
@@ -3935,11 +3960,11 @@ msgstr "Թարմացման ժամ"
 msgid "Invoice Items"
 msgstr "Հաշվի կետեր"
 
-#: field.au.groups.label:2700
+#: field.au.groups.label:2821
 msgid "Additional Permission Groups"
 msgstr "Լրացուցիչ իրավասության խումբ"
 
-#: class.cbrebn.label:3906
+#: class.cbrebn.label:4037
 msgid "Bibliographic Record Entry Bucket Note"
 msgstr "Մատենագիտական գրառման մուտքի փնջի նշում"
 
@@ -3952,11 +3977,11 @@ msgstr "Վերջին կանգի տուգանքներ"
 msgid "Requesting Library"
 msgstr "Առաջարկող գրադարան"
 
-#: field.acplg.location_maps.label:3979
+#: field.acplg.location_maps.label:4110
 msgid "Copy Location Mappings"
-msgstr ""
+msgstr "Պատճենի տեղաբաշխման քարտեզավորումներ"
 
-#: field.srlu.department.label:4289
+#: field.srlu.department.label:4420
 msgid "Department"
 msgstr "Բաժանմունք"
 
@@ -3989,7 +4014,7 @@ msgstr "Հիշեցման հաշվիչ"
 msgid "Amount Encumbered"
 msgstr "Պահվող գումար"
 
-#: field.cmf.facet_xpath.label:2169
+#: field.cmf.facet_xpath.label:2290
 msgid "Facet XPath"
 msgstr "Facet XPath"
 
@@ -4001,11 +4026,11 @@ msgstr "ՀՕԱՔ-ը տեսանելի է՞"
 msgid "Legacy CAT2 Value"
 msgstr "Թույլատրված CAT2 արժեք"
 
-#: field.asv.opac.label:4721
+#: field.asv.opac.label:4852
 msgid "OPAC Survey?"
 msgstr "ՀՕԱՔ հարցախու՞յզ"
 
-#: field.aupr.id.label:1704
+#: field.aupr.id.label:1825
 msgid "Request ID"
 msgstr "Պահանջի ID"
 
@@ -4034,15 +4059,15 @@ msgstr "Թույլատրված CAT2 կապ"
 msgid "Vendor Public"
 msgstr "Հանրային մատակարար"
 
-#: field.vbm.eg_record.label:400 field.vam.eg_record.label:517
+#: field.vbm.eg_record.label:402 field.vam.eg_record.label:519
 msgid "Evergreen Record"
 msgstr "Էվերգրին գրառում"
 
-#: field.sdist.display_grouping.label:4191
+#: field.sdist.display_grouping.label:4322
 msgid "Display Grouping"
-msgstr ""
+msgstr "Արտածիր խմբավորումը"
 
-#: field.crad.phys_char_sf.label:711
+#: field.crad.phys_char_sf.label:713
 msgid "Physical Characteristic"
 msgstr "Ֆիզիկական բնութագրիչներ"
 
@@ -4050,41 +4075,41 @@ msgstr "Ֆիզիկական բնութագրիչներ"
 msgid "Line Item MARC Attribute Definition"
 msgstr "Սահմանային նյութի ՄԵԸՔ բաղադրիչի սահմանում"
 
-#: field.pgpt.penalty.label:3160
+#: field.pgpt.penalty.label:3286
 msgid "Penalty"
 msgstr "Տույժ"
 
 #: field.aaactsc.xact.label:10116 field.aaasc.xact.label:10128
 msgid "Circ"
-msgstr ""
+msgstr "Տացք"
 
 #: class.mccp.label:2191 field.mdp.credit_card_payment.label:6342
 msgid "Credit Card Payment"
 msgstr "Վճարում կրեդիտ քարտով"
 
-#: field.srlu.reader.label:4288
+#: field.srlu.reader.label:4419
 msgid "Reader"
 msgstr "Կարդացող"
 
 #: class.rlc.label:9447 field.rlc.last_circ_or_create.label:9469
 msgid "Last Circulation or Creation Date"
-msgstr ""
+msgstr "Վերջին տացքի կամ ստեղծման ամսաթիվ"
 
 #: field.crad.fixed_field.label:712 field.cmfpm.fixed_field.label:9226
 msgid "Fixed Field"
 msgstr "Սևեռված դաշտ"
 
-#: field.aun.pub.label:1692 field.acpn.pub.label:2902
-#: field.acpl.opac_visible.label:3948 field.acplg.opac_visible.label:3975
+#: field.aun.pub.label:1813 field.acpn.pub.label:3028
+#: field.acpl.opac_visible.label:4079 field.acplg.opac_visible.label:4106
 msgid "Is OPAC Visible?"
 msgstr "ՀՕԱՔ-ը տեսանե՞լի է"
 
-#: field.ssubn.pub.label:4167 field.sdistn.pub.label:4228
-#: field.sin.pub.label:4474
+#: field.ssubn.pub.label:4298 field.sdistn.pub.label:4359
+#: field.sin.pub.label:4605
 msgid "Public?"
 msgstr "Հանրայի՞ն"
 
-#: field.asvr.answer_date.label:1802
+#: field.asvr.answer_date.label:1923
 msgid "Answer Date/Time"
 msgstr "Պատասխանի ամսաթիվ/ժամ"
 
@@ -4097,19 +4122,19 @@ msgstr "Դեբետի ID"
 msgid "Transaction Type"
 msgstr "Տրանզակցիայի տեսակ"
 
-#: field.bresv.end_time.label:3802
+#: field.bresv.end_time.label:3933
 msgid "End Time"
 msgstr "Ավարտի ժամ"
 
-#: field.ateo.id.label:877
+#: field.ateo.id.label:887
 msgid "Output ID"
 msgstr "Ելքային ID"
 
-#: field.au.billing_address.label:2663
+#: field.au.billing_address.label:2784
 msgid "Physical Address"
 msgstr "Ֆիզիկական հասցե"
 
-#: field.cza.id.label:862
+#: field.cza.id.label:864
 msgid "Z39.50 Attribute ID"
 msgstr "Z39.50 բաղադրիչի ID"
 
@@ -4144,17 +4169,17 @@ msgstr "Գրառման հանգույց"
 msgid "Circulation Type"
 msgstr "Սպասարկման տեսակ"
 
-#: class.bpbcm.label:1212
+#: class.bpbcm.label:1300
 msgid "Bibliographic Record Peer Copy Map"
 msgstr "Մատենագիտական գրառման համաժեք պատճենի քարտեզ"
 
-#: class.cbreb.label:3890
+#: class.cbreb.label:4021
 msgid "Bibliographic Record Entry Bucket"
 msgstr "Մատենագիտական գրառման մուտքի փունջ"
 
-#: field.vmsq.id.label:593
+#: field.vmsq.id.label:595
 msgid "Quality Metric ID"
-msgstr ""
+msgstr "Որակյալ չափման ID"
 
 #: class.cmpcsm.label:9254
 msgid "MARC21 Physical Characteristic Subfield Map"
@@ -4174,8 +4199,8 @@ msgstr "Հարցման ID"
 msgid "Fine Interval"
 msgstr "Տուգանքի տիրույթ"
 
-#: field.circ.checkin_workstation.label:3456
-#: field.acirc.checkin_workstation.label:3593
+#: field.circ.checkin_workstation.label:3582
+#: field.acirc.checkin_workstation.label:3724
 msgid "Checkin Workstation"
 msgstr "Հետ ընդունման աշխատանքային կայան"
 
@@ -4183,11 +4208,11 @@ msgstr "Հետ ընդունման աշխատանքային կայան"
 msgid "Years"
 msgstr "Տարիներ"
 
-#: class.aua.label:3223
+#: class.aua.label:3349
 msgid "User Address"
 msgstr "Օգտվողի հասցե"
 
-#: field.atevdef.delay_field.label:1012
+#: field.atevdef.delay_field.label:1022
 msgid "Processing Delay Context Field"
 msgstr "Ուշացման բովանդակության դաշտի ակտիվացում"
 
@@ -4209,11 +4234,11 @@ msgstr "Օգտագործիր DISTINCT"
 msgid "Lineitem ID"
 msgstr "Գծային նյութի ID"
 
-#: field.aba.maps.label:1958
+#: field.aba.maps.label:2079
 msgid "Authority Field Maps"
-msgstr ""
+msgstr "Հեղինակավոր դաշտի քարտեզներ"
 
-#: class.cnal.label:2954
+#: class.cnal.label:3080
 msgid "Net Access Level"
 msgstr "Ցանցի մատչելիության մակարդակ"
 
@@ -4225,15 +4250,19 @@ msgstr "Ցանցի մատչելիության մակարդակ"
 msgid "OPAC Visible"
 msgstr "ՀՕԱՔը տեսանելի է"
 
-#: class.auri.label:2328
+#: class.auri.label:2449
 msgid "Electronic Access URI"
 msgstr "Էլեկտրոնային հասանելիության URI"
 
-#: class.mmrsm.label:2985
+#: class.mmrsm.label:3111
 msgid "Metarecord Source Map"
 msgstr "Մետագրառման աղբյուրի քարտեզ"
 
-#: field.ssr.total.label:4705
+#: field.atul.target_hold.label:1165
+msgid "Target Hold"
+msgstr "Թիրախ պահում"
+
+#: field.ssr.total.label:4836
 msgid "Total Results"
 msgstr "Ընդհանուր արդյունքներ"
 
@@ -4241,9 +4270,9 @@ msgstr "Ընդհանուր արդյունքներ"
 msgid "Billing Address Stage"
 msgstr "Վճարի հասցեի հարթակ"
 
-#: class.cuat.label:2746
+#: class.cuat.label:2872
 msgid "User Activity Type"
-msgstr ""
+msgstr "Օգտվողի գործողության տեսակ"
 
 #: field.vii.alert_message.label:209 field.viiad.alert_message.label:260
 #: field.au.alert_message.label:2782 field.aal.alert_message.label:3377
@@ -4252,7 +4281,7 @@ msgstr ""
 msgid "Alert Message"
 msgstr "Ահազանգող հաղորդում"
 
-#: field.sitem.date_received.label:4436
+#: field.sitem.date_received.label:4567
 msgid "Date Received"
 msgstr "Ստացման ամսաթիվ"
 
@@ -4264,7 +4293,7 @@ msgstr "Ստացման ամսաթիվ"
 msgid "Transaction ID"
 msgstr "Տրանզակցիայի ID"
 
-#: field.ahn.notify_time.label:3934
+#: field.ahn.notify_time.label:4065
 msgid "Notification Date/Time"
 msgstr "Զգուշացման ամսաթիվ/ժամ"
 
@@ -4280,25 +4309,25 @@ msgstr "Ստեղծիր ամսաթիվ"
 msgid "Base Transit"
 msgstr "Բազային տրանզիտ"
 
-#: field.ccmm.duration_rule.label:1442
+#: field.ccmm.duration_rule.label:1537
 msgid "Duration Rule"
 msgstr "Տևողության օրենք"
 
-#: field.ccmw.copy_circ_lib.label:1322 field.ccmm.copy_circ_lib.label:1427
+#: field.ccmw.copy_circ_lib.label:1413 field.ccmm.copy_circ_lib.label:1521
 msgid "Copy Circ Lib"
 msgstr "Պատճենի տացքի գրադարանը"
 
-#: field.bre.share_depth.label:2419
+#: field.bre.share_depth.label:2540
 msgid "Share Depth"
 msgstr "Համատեղիր խորությունը"
 
-#: field.czs.use_perm.label:844
+#: field.czs.use_perm.label:846
 msgid "Use Permission"
-msgstr ""
+msgstr "Օգտագործիր թույլատվությունը"
 
 #: field.rhcrpbap.pickup_library_ratio.label:9433
 msgid "Hold/Copy Ratio at Pickup Library"
-msgstr ""
+msgstr "Պահման/պատճենի գործակիցը ստանալու գրադարանում"
 
 #: class.rtf.label:8102
 msgid "Template Folder"
@@ -4308,7 +4337,7 @@ msgstr "Ձևաօրինակի թղթապանակ"
 msgid "User Age Demographic"
 msgstr "Օգտվողի տարիքի դեմոգրաֆիա"
 
-#: field.ahn.note.label:3932
+#: field.ahn.note.label:4063
 msgid "Notification Note"
 msgstr "Հիշեցման նշում"
 
@@ -4317,15 +4346,15 @@ msgstr "Հիշեցման նշում"
 msgid "Circ Duration Rule"
 msgstr "Տացքի տևողության օրենք"
 
-#: field.bravm.attr_value.label:3849
+#: field.bravm.attr_value.label:3980
 msgid "Attribute Map"
 msgstr "Բաղադրիչի քարտեզ"
 
-#: field.asv.required.label:4724
+#: field.asv.required.label:4855
 msgid "Is Required?"
 msgstr "Պահանջվու՞մ է"
 
-#: field.atevparam.value.label:1073
+#: field.atevparam.value.label:1083
 msgid "Parameter Value"
 msgstr "Պարամետրի արժեք"
 
@@ -4341,8 +4370,8 @@ msgstr "Տարվա վերջ"
 msgid "URL"
 msgstr "URL"
 
-#: field.auri.href.label:2331 field.auricnm.uri.label:2346
-#: field.sitem.uri.label:4434
+#: field.auri.href.label:2452 field.auricnm.uri.label:2467
+#: field.sitem.uri.label:4565
 msgid "URI"
 msgstr "URI"
 
@@ -4356,11 +4385,11 @@ msgstr "Պահանջագրի տեսակ"
 msgid "Transaction Payments"
 msgstr "Տրանզակցիայի վճարումներ"
 
-#: field.abaafm.field.label:1978
+#: field.abaafm.field.label:2099
 msgid "Authority Field"
-msgstr ""
+msgstr "Հեղինակավորի դաշտ"
 
-#: field.brt.fine_amount.label:3647 field.bresv.fine_amount.label:3809
+#: field.brt.fine_amount.label:3778 field.bresv.fine_amount.label:3940
 msgid "Fine Amount"
 msgstr "Տուգանքի մեծություն"
 
@@ -4369,7 +4398,7 @@ msgstr "Տուգանքի մեծություն"
 msgid "User Home Library"
 msgstr "Օգտվողի տնային գրադարան"
 
-#: class.aun.label:1687
+#: class.aun.label:1808
 msgid "User Note"
 msgstr "Օգտվողի նշում"
 
@@ -4382,9 +4411,9 @@ msgstr "EDI հաշվի ID"
 msgid "Forgive Payment Detail"
 msgstr "Զիջիր վճարման մանրամասները"
 
-#: class.cclscmm.label:1546
+#: class.cclscmm.label:1642
 msgid "Circulation Limit Set Circ Mod Map"
-msgstr ""
+msgstr "Տացքի սահմանափակման կարգաբերում Circ Mod Map"
 
 #: field.brsrc.deposit.label:3813 field.sunit.deposit.label:4501
 #: field.acp.deposit.label:5889
@@ -4400,11 +4429,11 @@ msgstr "Թիրախ մատեն գրառում"
 msgid "Hold Expire Date/Time"
 msgstr "Պահումի ժամկետի լրանալու ամսաթիվ/ժամ"
 
-#: field.bre.full_record_entries.label:2429
+#: field.bre.full_record_entries.label:2550
 msgid "Flattened MARC Fields "
 msgstr "Հարթեցված ՄԵԸՔ դաշտեր "
 
-#: class.crad.label:696
+#: class.crad.label:698
 msgid "SVF Record Attribute Defintion"
 msgstr "SVF գրառման բաղկացուցիչի սահմանում"
 
@@ -4412,7 +4441,7 @@ msgstr "SVF գրառման բաղկացուցիչի սահմանում"
 msgid "Amount Spent"
 msgstr "Ծախսած գումար"
 
-#: field.crad.string_len.label:709
+#: field.crad.string_len.label:711
 msgid "String Length"
 msgstr "Հաջորդականության երկարություն"
 
@@ -4420,7 +4449,7 @@ msgstr "Հաջորդականության երկարություն"
 msgid "Report"
 msgstr "Հաշվետվություն"
 
-#: field.cmsa.field_class.label:2120 field.cmf.field_class.label:2160
+#: field.cmsa.field_class.label:2241 field.cmf.field_class.label:2281
 msgid "Class"
 msgstr "Կարգ"
 
@@ -4430,7 +4459,7 @@ msgstr "Կարգ"
 msgid "Voided?"
 msgstr "Դատարվա՞ծ"
 
-#: class.viiad.label:238
+#: class.viiad.label:239
 msgid "Import Item Attribute Definition"
 msgstr "Ներմուծիր նյութի բնութագրիչի սահմանումը"
 
@@ -4438,9 +4467,9 @@ msgstr "Ներմուծիր նյութի բնութագրիչի սահմանու�
 msgid "Library Circulation Location Short (Policy) Name"
 msgstr "Սպասարկող գրադարանի կարճ (գործառութային) անուն"
 
-#: field.jub.lineitem_details.label:7340
-msgid "Line Item Details"
-msgstr "Հավասարեցված նյութի մանրամասներ"
+#: field.aun.id.label:1812 field.acpn.id.label:3026
+msgid "Note ID"
+msgstr "Նշոմի ID"
 
 #: field.qfs.is_aggregate.label:8827
 msgid "Is Aggregate"
@@ -4450,23 +4479,23 @@ msgstr "Ագրեգացված է"
 msgid "Card Stage"
 msgstr "Քարտի տիրույթ"
 
-#: class.acplo.label:4020
+#: class.acplo.label:4151
 msgid "Copy/Shelving Location Order"
 msgstr "Պատճենի/Դարակի վրա գտնվելու հերթականություն"
 
 #: field.rhcrpbap.copy_count_at_pickup_library.label:9430
 msgid "Holdable Copy Count at Pickup Library"
-msgstr ""
+msgstr "Պահվող պատճենի հաշվիչ ստացման գրադարանում"
 
 #: field.acqpa.valid.label:6904
 msgid "Is Valid?"
 msgstr "Թույլատրվա՞ծ է"
 
-#: field.ancihu.item_type.label:1755 field.citm.value.label:4607
+#: field.ancihu.item_type.label:1876 field.citm.value.label:4738
 msgid "Item Type"
 msgstr "Նյութի տեսակ"
 
-#: class.mafe.label:1726
+#: class.mafe.label:1847
 msgid "Author Field Entry"
 msgstr "Հեղինակի դաշտի մուտք"
 
@@ -4495,11 +4524,11 @@ msgstr "Գանձվող տրանզակցիայի կապ"
 msgid "MARC21 Physical Characteristic Type Map"
 msgstr "MARC21 ֆիզիկական բնութագրիչների տեսակի քարտեզ"
 
-#: field.mrd.date1.label:3123
+#: field.mrd.date1.label:3249
 msgid "Date1"
 msgstr "Ամսաթիվ1"
 
-#: class.vaq.label:418
+#: class.vaq.label:420
 msgid "Import/Overlay Authority Queue"
 msgstr "Ներմուծիր/վերադրի Հեղինակավորի հերթը"
 
@@ -4507,24 +4536,28 @@ msgstr "Ներմուծիր/վերադրի Հեղինակավորի հերթը"
 msgid "Billing Line Items"
 msgstr "Գծով շարված նյութերի գանձում"
 
-#: field.acsaf.sf_list.label:1885
+#: field.acsaf.sf_list.label:2006
 msgid "Subfield List"
-msgstr ""
+msgstr "Ենթադաշտի ցուցակ"
 
-#: field.bre.last_xact_id.label:2412 field.au.last_xact_id.label:2682
-#: field.sre.last_xact_id.label:4068
+#: field.atul.error_output.label:1162
+msgid "Event Error Output"
+msgstr "Իրադարձության սխալի ելք"
+
+#: field.bre.last_xact_id.label:2533 field.au.last_xact_id.label:2803
+#: field.sre.last_xact_id.label:4199
 msgid "Last Transaction ID"
 msgstr "Վերջին տրանզակցիայի ID"
 
 #: class.alhr.label:5163
 msgid "Last Captured Hold Request"
-msgstr ""
+msgstr "Վերջին որսված պահման առաջարկ"
 
 #: field.rccbs.usr.label:9567
 msgid "User Link"
 msgstr "Օգտվողի կապ"
 
-#: class.ssubn.label:4161
+#: class.ssubn.label:4292
 msgid "Subscription Note"
 msgstr "Բաժանորդագրության նշում"
 
@@ -4564,7 +4597,7 @@ msgstr "ID"
 msgid "Function Signature"
 msgstr "Ստորագրության ֆունկցիա"
 
-#: field.ath.core_type.label:899
+#: field.ath.core_type.label:909
 msgid "Core Type"
 msgstr "Հիմնական տեսակ"
 
@@ -4576,7 +4609,7 @@ msgstr "Պաշտոնական վճարման տեսակ"
 msgid "Street 1"
 msgstr "Փողոց 1"
 
-#: field.clm.value.label:2058
+#: field.clm.value.label:2179
 msgid "Language"
 msgstr "Լեզու"
 
@@ -4589,11 +4622,15 @@ msgstr "Փողոց 2"
 msgid "Datatype"
 msgstr "Տվյալի տեսակ"
 
-#: field.vqbra.id.label:377 field.vqara.id.label:494
+#: class.cclsacpl.label:1667
+msgid "Circulation Limit Set Copy Location Map"
+msgstr "Տացքի սահմանափակմանկարգաբերում պատճենի տեղաբաշխման քարտեզ"
+
+#: field.vqbra.id.label:379 field.vqara.id.label:496
 msgid "Attribute ID"
 msgstr "Բաղկացուցիչի ID"
 
-#: class.brav.label:3733
+#: class.brav.label:3864
 msgid "Resource Attribute Value"
 msgstr "Պաշարի նկարագրիչի արժեք"
 
@@ -4607,7 +4644,7 @@ msgstr "Թիրախ օբյեկտի ID"
 msgid "Claim Count"
 msgstr "Պահանջագրի հաշվիչ"
 
-#: class.sdistn.label:4222
+#: class.sdistn.label:4353
 msgid "Distribution Note"
 msgstr "Տարածման նշում"
 
@@ -4625,7 +4662,7 @@ msgstr "Բյուջեի աղբյուրի ID"
 msgid "State"
 msgstr "Նահանգ"
 
-#: field.cwa.circ_weights.label:1351
+#: field.cwa.circ_weights.label:1445
 msgid "Circ Weights"
 msgstr "Տացքի քաշեր"
 
@@ -4635,7 +4672,7 @@ msgstr "Տացքի քաշեր"
 msgid "Entry ID"
 msgstr "Մուտքի ID"
 
-#: field.chmm.age_hold_protect_rule.label:1393
+#: field.chmm.age_hold_protect_rule.label:1487
 msgid "Copy Age Hold Protection Rule"
 msgstr "Պատճենիր տարիքային պահման պաշտպանության կանոնկ"
 
@@ -4643,31 +4680,31 @@ msgstr "Պատճենիր տարիքային պահման պաշտպանությ�
 msgid "From Relation ID"
 msgstr "Կապակցված ID-ից"
 
-#: field.chmm.include_frozen_holds.label:1392
+#: field.chmm.include_frozen_holds.label:1486
 msgid "Max includes Frozen"
 msgstr "Մաքս ներառում է սառեցված"
 
-#: class.asvr.label:1799
+#: class.asvr.label:1920
 msgid "Survey Response"
 msgstr "Հարցախույզի արձագանքներ"
 
-#: field.crad.start_pos.label:708
+#: field.crad.start_pos.label:710
 msgid "Starting Position"
 msgstr "Սկսվելու դիրք"
 
-#: field.au.claims_never_checked_out_count.label:2666
+#: field.au.claims_never_checked_out_count.label:2787
 msgid "Claims Never Checked Out Count"
 msgstr "Պիտակավորված. երբեք դուրս չտրվածների հաշվիչ"
 
-#: field.au.permissions.label:2653
+#: field.au.permissions.label:2774
 msgid "All Permissions"
 msgstr "Բոլոր թույլատվություններ"
 
-#: field.cit.id.label:1601
+#: field.cit.id.label:1722
 msgid "Identification ID"
 msgstr "Բնութագրական ID"
 
-#: field.acnc.normalizer.label:2239
+#: field.acnc.normalizer.label:2360
 msgid "Normalizer function"
 msgstr "Նորմալացման ֆունկցիա"
 
@@ -4685,9 +4722,9 @@ msgstr "Գին"
 msgid "Group ID"
 msgstr "Խմբի ID"
 
-#: field.sdist.summary_method.label:4181
+#: field.sdist.summary_method.label:4312
 msgid "Summary Method"
-msgstr ""
+msgstr "Համառոտագրության մեթոդ"
 
 #: field.vii.deposit_amount.label:202 field.viiad.deposit_amount.label:253
 #: field.brsrc.deposit_amount.label:3814 field.sunit.deposit_amount.label:4502
@@ -4702,7 +4739,7 @@ msgstr "PO Note ID"
 
 #: field.jub.queued_record.label:7708 field.acqlih.queued_record.label:7767
 msgid "Queued Vandelay Record"
-msgstr ""
+msgstr "Հերթագրված Vandelay գրառում"
 
 #: field.chmw.marc_type.label:1388 field.ccmw.marc_type.label:1419
 #: field.chmm.marc_type.label:1476 field.ccmm.marc_type.label:1527
@@ -4710,9 +4747,9 @@ msgstr ""
 msgid "MARC Type"
 msgstr "ՄԵԸՔ տեսակ"
 
-#: field.bre.edit_date.label:2408
-msgid "Last Edit Data/Time"
-msgstr "Վերջին խմբագրման ամսաթիվ/ժամ"
+#: field.au.prefix.label:2810
+msgid "Prefix/Title"
+msgstr "Նախածանց/Վերնագիր"
 
 #: field.ahr.shelf_time.label:4997 field.ahopl.shelf_time.label:5124
 #: field.alhr.shelf_time.label:5198
@@ -4735,11 +4772,11 @@ msgstr "Պատվիրված բյուջեի աղբյուրի կրեդիտ"
 msgid "Geographic Subjects (normalized)"
 msgstr "Աշխարհագրական խորագրեր (նորմալացված)"
 
-#: field.auss.query_text.label:3282
+#: field.auss.query_text.label:3408
 msgid "Query Text"
 msgstr "Հարցման տեքստ"
 
-#: field.acpl.label_suffix.label:3953
+#: field.acpl.label_suffix.label:4084
 msgid "Label Suffix"
 msgstr "Պիտակի վերջածանց"
 
@@ -4748,15 +4785,16 @@ msgstr "Պիտակի վերջածանց"
 msgid "Transited Copy"
 msgstr "Տրանզիտ օրինակ"
 
-#: field.acplgm.location.label:3998
+#: field.ccmw.copy_location.label:1418 field.ccmm.copy_location.label:1526
+#: field.cclsacpl.copy_loc.label:1671 field.acplgm.location.label:4129
 msgid "Copy Location"
-msgstr ""
+msgstr "Օրինակի տեղաբաշխում"
 
 #: field.acqie.phys_item_count.label:6819
 msgid "Physical Item Count"
 msgstr "Ֆիզիկական նյութի հաշվիչ"
 
-#: class.vbm.label:396
+#: class.vbm.label:398
 msgid "Queued Bib Record Match"
 msgstr "Հարցված մատ գրառումը համընկավ"
 
@@ -4766,13 +4804,13 @@ msgstr "Դասավորիր նյութերը"
 
 #: field.ahopl.potential_copies.label:5137
 msgid "Potential Copies"
-msgstr ""
+msgstr "Հնարավոր պատճեններ"
 
 #: field.mfr.record.label:3058 field.mrd.record.label:3246
 msgid "Bib Record Entry"
 msgstr "Մատեն գրառման մուտք"
 
-#: class.sin.label:4468
+#: class.sin.label:4599
 msgid "Item Note"
 msgstr "Նյութի նշում"
 
@@ -4780,16 +4818,16 @@ msgstr "Նյութի նշում"
 msgid "Fiscal Year ID"
 msgstr "Ֆինանսական տարվա ID"
 
-#: field.ccmw.usr_age_lower_bound.label:1331
-#: field.ccmm.usr_age_lower_bound.label:1438
+#: field.ccmw.usr_age_lower_bound.label:1425
+#: field.ccmm.usr_age_lower_bound.label:1533
 msgid "User Age: Lower Bound"
 msgstr "Օգտվողի տարիք. ներքին սահման"
 
-#: field.czs.record_format.label:840
+#: field.czs.record_format.label:842
 msgid "Record Format"
 msgstr "Գրառման ձևաչափ"
 
-#: field.atevdef.cleanup_success.label:1008
+#: field.atevdef.cleanup_success.label:1018
 msgid "Success Cleanup"
 msgstr "հաջողված մաքրում"
 
@@ -4813,7 +4851,7 @@ msgstr "Վճարման ընդհանուրներ"
 msgid "Patron Link"
 msgstr "Ընթերցողի կապ"
 
-#: field.vii.copy_number.label:197 field.viiad.copy_number.label:263
+#: field.vii.copy_number.label:197 field.viiad.copy_number.label:264
 msgid "Copy Number"
 msgstr "Պատճենի համար"
 
@@ -4838,13 +4876,13 @@ msgstr "Արժեք"
 msgid "CAT1 Entry"
 msgstr "CAT1 մուտք"
 
-#: field.mfr.ind1.label:2930
+#: field.mfr.ind1.label:3056
 msgid "Indicator 1"
 msgstr "Ցուցիչ 1"
 
-#: class.acsbf.label:1912
+#: class.acsbf.label:2033
 msgid "Authority Control Set Bib Field"
-msgstr ""
+msgstr "Հեղինակավորի վերահսկման կարգաբերման մատեն դաշտ"
 
 #: field.acqpo.ordering_agency.label:7547
 #: field.acqpoh.ordering_agency.label:7592
@@ -4856,13 +4894,13 @@ msgstr "Պատվիրող գործակալություն"
 msgid "Slip?"
 msgstr "Բլա՞նկ"
 
-#: field.vmsp.negate.label:563
+#: field.vmsp.negate.label:565
 msgid "Negate"
-msgstr ""
+msgstr "Բացասական"
 
 #: class.aouctn.label:5333
 msgid "Org Unit Custom Tree Node"
-msgstr ""
+msgstr "Կազմ միավորիհաճախորդի ծառի հանգույց"
 
 #: field.qxp.left_operand.label:8870 field.xbet.left_operand.label:8975
 #: field.xcase.left_operand.label:9018 field.xcast.left_operand.label:9033
@@ -4890,15 +4928,15 @@ msgstr "Տացքի ID"
 
 #: field.acqlid.receiver.label:7855
 msgid "Receiving User"
-msgstr ""
+msgstr "Ստացող օգտվող"
 
 #: field.aou.holds_address.label:5252
 msgid "Holds Receiving Address"
 msgstr "Պահումների ստացման հասցե"
 
-#: class.vmsq.label:591
+#: class.vmsq.label:593
 msgid "Record Quality Metric"
-msgstr ""
+msgstr "Գրառման որակի չափիչ"
 
 #: field.acqlih.selector.label:7753
 msgid "Selector"
@@ -4912,7 +4950,7 @@ msgstr "TCN"
 msgid "Cost Billed"
 msgstr "Արժեքը դրված է վճարման"
 
-#: class.aupr.label:1702
+#: class.aupr.label:1823
 msgid "User password reset requests"
 msgstr "Օգտվողի գաղտնաբառի վերագրման հարցում"
 
@@ -4924,7 +4962,7 @@ msgstr "Պատճենի վիճակը տրանզիտում"
 msgid "Total Fund Encumbrance"
 msgstr "Ընդհանուր բյուջեի պարտք"
 
-#: field.brsrc.user_fee.label:3684
+#: field.brsrc.user_fee.label:3815
 msgid "User Fee"
 msgstr "Օգտվողի վարձ"
 
@@ -4938,7 +4976,7 @@ msgstr "Պահանջագրի ID"
 msgid "Credit Payment Detail"
 msgstr "Կրեդիտ վճարման մանրամասներ"
 
-#: field.sdist.unit_label_suffix.label:4190
+#: field.sdist.unit_label_suffix.label:4321
 msgid "Unit Label Suffix"
 msgstr "Պիտակի միավորի վերջածանց"
 
@@ -4947,7 +4985,7 @@ msgstr "Պիտակի միավորի վերջածանց"
 msgid "Subquery"
 msgstr "Ենթահարցում"
 
-#: class.ccmm.label:1421
+#: class.ccmm.label:1515
 msgid "Circulation Matrix Matchpoint"
 msgstr "Սպասարկման մատրիցայի համընկնման կետ"
 
@@ -4955,7 +4993,7 @@ msgstr "Սպասարկման մատրիցայի համընկնման կետ"
 msgid "Evergreen Copy ID"
 msgstr "Evergreen պատճենի ID"
 
-#: class.scap.label:4089
+#: class.scap.label:4220
 msgid "Caption and Pattern"
 msgstr "Որսալ և պատկերներ"
 
@@ -4971,7 +5009,7 @@ msgstr "Համատեղ անվան խորագրեր (նորմալացված)"
 msgid "Hold Priority"
 msgstr "Պահման առաջնահերթություն"
 
-#: class.vqbr.label:320
+#: class.vqbr.label:322
 msgid "Queued Bib Record"
 msgstr "Հարցված մատեն գրառում"
 
@@ -4995,11 +5033,11 @@ msgstr "Օգտվողի նահանգ"
 msgid "Tags"
 msgstr "Ցուցիչներ"
 
-#: field.combcirc.usr_home_ou.label:3529 field.acirc.usr_home_ou.label:3602
+#: field.combcirc.usr_home_ou.label:3660 field.acirc.usr_home_ou.label:3733
 msgid "Patron Home Library"
 msgstr "Ընթերցողի տնային գրադարան"
 
-#: class.cracct.label:808
+#: class.cracct.label:810
 msgid "Remote (3rd party) Account"
 msgstr "Հեռավար (3րդ կողմ) հաշիվ"
 
@@ -5012,17 +5050,17 @@ msgstr "Օգտվողի անուն"
 #: field.actsc.default_entries.label:5438
 #: field.actsce.default_entries.label:5675
 msgid "Default Entries"
-msgstr ""
+msgstr "Լռակյաց մուտքեր"
 
 #: field.aur.other_info.label:6642
 msgid "Other Info"
 msgstr "Այլ տեղեկատվություն"
 
-#: field.chmw.requestor_grp.label:1298 field.chmm.requestor_grp.label:1380
+#: field.chmw.requestor_grp.label:1386 field.chmm.requestor_grp.label:1474
 msgid "Requestor Permission Group"
 msgstr "Հարցում անողի իրավասության խումբ"
 
-#: class.ccvm.label:784
+#: class.ccvm.label:786
 msgid "SVF Record Attribute Coded Value Map"
 msgstr "SVF գրառման բաղկացուցիչի կոդավորված արժեքի քարտեզ"
 
@@ -5030,21 +5068,21 @@ msgstr "SVF գրառման բաղկացուցիչի կոդավորված արժ�
 msgid "Virtual Record"
 msgstr "Վիրտուալ գրառում"
 
-#: class.brt.label:3642 field.brsrc.type.label:3679
-#: field.bra.resource_type.label:3712
+#: class.brt.label:3773 field.brsrc.type.label:3810
+#: field.bra.resource_type.label:3843
 msgid "Resource Type"
 msgstr "Պաշարի տեսակ"
 
-#: field.cxt.xslt.label:2104
+#: field.cxt.xslt.label:2225
 msgid "XSLT"
 msgstr "XSLT"
 
-#: field.au.addresses.label:2649
+#: field.au.addresses.label:2770
 msgid "All Addresses"
 msgstr "Բոլոր հասցեները"
 
-#: field.ccmw.usr_age_upper_bound.label:1332
-#: field.ccmm.usr_age_upper_bound.label:1439
+#: field.ccmw.usr_age_upper_bound.label:1426
+#: field.ccmm.usr_age_upper_bound.label:1534
 msgid "User Age: Upper Bound"
 msgstr "Օգտվողի տարիք։ Վերն սահման"
 
@@ -5062,8 +5100,8 @@ msgstr "Փոստային հասցե"
 msgid "PO Items"
 msgstr "PO նյութեր"
 
-#: field.amtr.matchpoint.label:107 field.chmm.id.label:1371
-#: field.ccmm.id.label:1423
+#: field.amtr.matchpoint.label:107 field.chmm.id.label:1465
+#: field.ccmm.id.label:1517
 msgid "Matchpoint ID"
 msgstr "Համընկնելու ID"
 
@@ -5073,9 +5111,9 @@ msgstr "Օգտվողի տեսակի խումբ"
 
 #: class.actscsf.label:5419 class.ascsf.label:6391
 msgid "SIP Statistical Category Field Identifier"
-msgstr ""
+msgstr "SIP Վիճակագրական Դասի Դաշտի Բնութագրիչ"
 
-#: field.au.performed_circulations.label:2708
+#: field.au.performed_circulations.label:2829
 msgid "Circulations Performed as Staff"
 msgstr "Սպասարկումները կատարված են որպես աշխատակազմ"
 
@@ -5093,9 +5131,9 @@ msgstr "Պահման հարցման նշում"
 msgid "Billing Types"
 msgstr "Հաշվի տեսակներ"
 
-#: field.au.last_update_time.label:2699
+#: field.au.last_update_time.label:2820
 msgid "Record Last Update Time"
-msgstr ""
+msgstr "Գրառման վերջին թարմացման ժամ"
 
 #: field.aua.city.label:3352 field.aal.city.label:3380
 #: field.acqpa.city.label:6895 field.acqpca.city.label:6960
@@ -5103,11 +5141,11 @@ msgstr ""
 msgid "City"
 msgstr "Քաղաք"
 
-#: field.ccm.avg_wait_time.label:1118
+#: field.ccm.avg_wait_time.label:1206
 msgid "Average Wait Time"
 msgstr "Սպասման միջին ժամանակ"
 
-#: class.crcd.label:2554
+#: class.crcd.label:2675
 msgid "Circulation Duration Rule"
 msgstr "Սպասարկման տևողության կանոն"
 
@@ -5115,7 +5153,7 @@ msgstr "Սպասարկման տևողության կանոն"
 msgid "Holds"
 msgstr "Պահումներ"
 
-#: field.sunit.summary_contents.label:4389
+#: field.sunit.summary_contents.label:4520
 msgid "Summary Contents"
 msgstr "Համառոտագրության բովանդակություն"
 
@@ -5123,7 +5161,7 @@ msgstr "Համառոտագրության բովանդակություն"
 msgid "Classic Circulation View"
 msgstr "Դասական տացքի տեսք"
 
-#: field.aihu.id.label:1740 field.ancihu.id.label:1754
+#: field.aihu.id.label:1861 field.ancihu.id.label:1875
 msgid "Use ID"
 msgstr "Օգտագործվող ID"
 
@@ -5132,7 +5170,7 @@ msgstr "Օգտագործվող ID"
 msgid "Receive Date/Time"
 msgstr "Ստացման օր/ժամ"
 
-#: field.asv.poll.label:4723
+#: field.asv.poll.label:4854
 msgid "Poll Style?"
 msgstr "Ընտրացուցակի՞ ոճ"
 
@@ -5140,15 +5178,15 @@ msgstr "Ընտրացուցակի՞ ոճ"
 msgid "Case Branch ID"
 msgstr "Մասնաճյուղի ID"
 
-#: field.sasum.id.label:4487
+#: field.sasum.id.label:4618
 msgid "Native ID"
-msgstr ""
+msgstr "Բնօրինակ ID"
 
-#: class.ocirclist.label:3385
+#: class.ocirclist.label:3511
 msgid "Open Circulation List"
 msgstr "Բաց սպասարկման ցուցակը"
 
-#: field.acpn.owning_copy.label:2901
+#: field.acpn.owning_copy.label:3027
 msgid "Copy"
 msgstr "Պատճենել"
 
@@ -5181,7 +5219,7 @@ msgstr "Օգտվողների դեմոգրաֆիկ պատկեր"
 msgid "Previous Hop (unused)"
 msgstr "Նախորդ կետ (չօգտագործվող)"
 
-#: field.sitem.date_expected.label:4435
+#: field.sitem.date_expected.label:4566
 msgid "Date Expected"
 msgstr "Սպասվող ամսաթիվ"
 
@@ -5197,7 +5235,7 @@ msgstr "Արտարժույթի պիտակ"
 msgid "Encumbrance"
 msgstr "Պարտք"
 
-#: field.brsrc.tgt_rsrcs.label:3686
+#: field.brsrc.tgt_rsrcs.label:3817
 msgid "Reservation Target Resources"
 msgstr "Նախնական պահման թիրախ պաշար"
 
@@ -5209,15 +5247,15 @@ msgstr "նախն քարտագրման կեղծ հեղինակ"
 msgid "Default Value"
 msgstr "Լռակյաց արժեք"
 
-#: field.acqlin.id.label:7443
-msgid "PO Line Item Note ID"
-msgstr "PO Line Item Note ID"
+#: field.ausp.staff.label:3328
+msgid "Staff"
+msgstr "Աշխատակազմ"
 
-#: field.vqbr.quality.label:335 field.vbm.quality.label:401
-#: field.vqar.quality.label:454 field.vam.quality.label:518
-#: field.vmsq.quality.label:599
+#: field.vqbr.quality.label:337 field.vbm.quality.label:403
+#: field.vqar.quality.label:456 field.vam.quality.label:520
+#: field.vmsq.quality.label:601
 msgid "Quality"
-msgstr ""
+msgstr "Որակ"
 
 #: field.ahr.cancel_note.label:4999 field.ahopl.cancel_note.label:5126
 #: field.alhr.cancel_note.label:5200
@@ -5228,7 +5266,7 @@ msgstr "Չեղյալ անելու նշում"
 msgid "Vendor Account Number"
 msgstr "Մատակարարի հաշվի համար"
 
-#: class.combcirc.label:3495
+#: class.combcirc.label:3626
 msgid "Combined Aged and Active Circulations"
 msgstr "Տարիքային և ակտիվ սպասարկումների կոմբինացիա."
 
@@ -5249,7 +5287,7 @@ msgstr "Բաց սպասարկման հաշվեկշիռ տնօրինող գրադ
 msgid "Payments: Non-drawer Staff"
 msgstr "Վճարումներ։ Չսպասարկող աշխատակազմ"
 
-#: field.brt.id.label:3644
+#: field.brt.id.label:3775
 msgid "Resource Type ID"
 msgstr "Պաշարի տեսակի ID"
 
@@ -5268,11 +5306,11 @@ msgstr "Բյուջեի ID"
 msgid "Invoice Date"
 msgstr "Պահանջագրի ամսաթիվ"
 
-#: field.crainm.attr.label:765 field.ccvm.ctype.label:787
+#: field.crainm.attr.label:767 field.ccvm.ctype.label:789
 msgid "SVF Attribute"
 msgstr "SVF բաղկացուցիչ"
 
-#: field.sdist.basic_summary.label:4194 class.sbsum.label:4510
+#: field.sdist.basic_summary.label:4325 class.sbsum.label:4641
 msgid "Basic Issue Summary"
 msgstr "Հիմնական նյութի համառոտագրություն"
 
@@ -5280,13 +5318,13 @@ msgstr "Հիմնական նյութի համառոտագրություն"
 msgid "Is Floating"
 msgstr "Սահում է"
 
-#: field.crad.normalizers.label:712
+#: field.crad.normalizers.label:714
 msgid "Normalizers"
 msgstr "Նորալացնող"
 
-#: field.acsaf.axis_maps.label:1892
+#: field.acsaf.axis_maps.label:2013
 msgid "Browse Axis Maps"
-msgstr ""
+msgstr "Դիտիր առանցքների քարտեզը"
 
 #: field.rocit.patron_name.label:9865
 msgid "Patron Name"
@@ -5296,7 +5334,7 @@ msgstr "Ընթերցողի անուն"
 msgid "Phone Number"
 msgstr "Հեռախոսահամար"
 
-#: class.atc.label:1766
+#: class.atc.label:1887
 msgid "Copy Transit"
 msgstr "Պատճենի տրանզիտ"
 
@@ -5309,7 +5347,7 @@ msgstr "Պատճենի տրանզիտ"
 msgid "Purchase Order"
 msgstr "Առաքման պատվեր"
 
-#: class.mfe.label:3031
+#: class.mfe.label:3157
 msgid "Combined Field Entry View"
 msgstr "Կոմբինացված դաշտի մուտքի տեսք"
 
@@ -5330,15 +5368,15 @@ msgstr "Սպասարկման տեսակ (ՄԵԸՔ)"
 msgid "Line Item Attribute Definition"
 msgstr "Հավասարեցված նյութի բաղկացուցիչի սահմանում"
 
-#: field.aws.id.label:1098 field.au.wsid.label:2659
+#: field.aws.id.label:1186 field.au.wsid.label:2780
 msgid "Workstation ID"
 msgstr "Աշխատակայանի ID"
 
-#: field.ccmlsm.matchpoint.label:1521
+#: field.ccmlsm.matchpoint.label:1617
 msgid "Matchpoint"
-msgstr ""
+msgstr "Համընկնման կետ"
 
-#: field.bram.id.label:3760
+#: field.bram.id.label:3891
 msgid "Resource Attribute Map ID"
 msgstr "Պաշարի բնութագրիչի քարտեզի ID"
 
@@ -5355,26 +5393,25 @@ msgstr "Տարվա սկիզբ"
 msgid "Hold User"
 msgstr "Պահված օգտվող"
 
-#: field.ssub.record_entry.label:4136
+#: field.ssub.record_entry.label:4267
 msgid "Bibliographic Record Entry"
 msgstr "Մատենագիտական գրառման մուտք"
 
 #: field.rhcrpbap.holds_everywhere.label:9431
 msgid "Active Holds Everywhere"
-msgstr ""
+msgstr "Ակտիվ պահումներ ամենուրեք"
 
-#: field.au.usrgroup.label:2695
+#: field.au.usrgroup.label:2816
 msgid "Family Linkage or other Group"
 msgstr "Ընտանեական կապ կամ այլ խումբ"
 
-#: field.acqii.fund_debit.label:6519 field.acqpoi.fund_debit.label:7285
-#: field.acqlid.fund_debit.label:7486 field.acqda.fund_debit.label:8063
-msgid "Fund Debit"
-msgstr "Բյուջեի դեբետ"
+#: class.cwa.label:1440
+msgid "Matrix Weight Association"
+msgstr "Քաշերի մատրիցայի կապակցում"
 
-#: field.cmf.browse_field.label:2170
+#: field.cmf.browse_field.label:2291
 msgid "Browse Field"
-msgstr ""
+msgstr "Դիտիր դաշտը"
 
 #: field.aout.depth.label:5552
 msgid "Type Depth"
@@ -5388,7 +5425,7 @@ msgstr "Էլ. փոստ"
 msgid "Active Holds"
 msgstr "Ակտիվ պահումներ"
 
-#: class.lasso.label:4654
+#: class.lasso.label:4785
 msgid "Org Lasso"
 msgstr "Org Lasso"
 
@@ -5412,17 +5449,17 @@ msgstr "Օգտվողի տնային գրադարանի հակիրճ (գործա�
 msgid "Fund"
 msgstr "Բյուջե"
 
-#: field.atb.usr.label:2788
+#: field.atb.usr.label:2914
 msgid "Owning User"
-msgstr ""
+msgstr "Տնօրինող օգտվող"
 
-#: field.aiit.prorate.label:1135
+#: field.aiit.prorate.label:1223
 msgid "Prorate?"
 msgstr "Համեմատական բաշխե՞լ"
 
 #: field.vii.imported_as.label:192
 msgid "Final Target Copy"
-msgstr ""
+msgstr "Վերջնական թիրախ պատճեն"
 
 #: field.acqftm.id.label:9977
 msgid "Map Entry ID"
@@ -5452,15 +5489,15 @@ msgstr "Վճարման ենթակա գծային նյութի համառոտագ
 msgid "Claim Policy Name"
 msgstr "Պահանջագրի քաղաքականության անուն"
 
-#: class.atclean.label:954
+#: class.atclean.label:964
 msgid "Trigger Event Cleanup"
 msgstr "Բաց թող իրադարձության մաքրիչը"
 
 #: field.acqf.encumbrance_total.label:7178
 msgid "Encumbrance Total"
-msgstr ""
+msgstr "Գումարային պարտք"
 
-#: field.bpbcm.peer_type.label:1215
+#: field.bpbcm.peer_type.label:1303
 msgid "Peer Type"
 msgstr "Համարժեք տեսակ"
 
@@ -5472,19 +5509,19 @@ msgstr "Դեբետի մեծություն"
 msgid "All Fund Combined Total"
 msgstr "Բոլոր բյուջեների համակցման ընդհանուր"
 
-#: field.ateo.error_events.label:882
+#: field.ateo.error_events.label:892
 msgid "Error Events"
 msgstr "Սխալների պատահարներ"
 
-#: field.aun.value.label:1695 field.acpn.value.label:2904
+#: field.aun.value.label:1816 field.acpn.value.label:3030
 msgid "Note Content"
 msgstr "Նշումի բովանդակություն"
 
-#: field.sdist.holding_lib.label:4183
+#: field.sdist.holding_lib.label:4314
 msgid "Holding Lib"
 msgstr "Պահման գրադարան"
 
-#: field.vii.priv_note.label:211 field.viiad.priv_note.label:261
+#: field.vii.priv_note.label:211 field.viiad.priv_note.label:262
 msgid "Private Note"
 msgstr "Մասնավոր նշում"
 
@@ -5501,7 +5538,7 @@ msgstr "Նշման արժեք"
 #: field.ahopl.current_shelf_lib.label:5131
 #: field.alhr.current_shelf_lib.label:5205
 msgid "Current Shelf Lib"
-msgstr ""
+msgstr "Ընթացիկ դարակային գրադ"
 
 #: field.acqfa.id.label:7434 field.acqfap.id.label:7467
 msgid "Allocation ID"
@@ -5511,11 +5548,11 @@ msgstr "Բաշխման ID"
 msgid "Bind Variable Expression"
 msgstr "Կազմելու փոփոխականի արտահայտություն"
 
-#: field.sra.bump_type.label:4639
+#: field.sra.bump_type.label:4770
 msgid "Bump Type"
 msgstr "Հարվածի տեսակ"
 
-#: field.brsrc.curr_rsrcs.label:3687
+#: field.brsrc.curr_rsrcs.label:3818
 msgid "Reservation Current Resources"
 msgstr "Ընթացիկ պաշարների նախնական պահում"
 
@@ -5552,7 +5589,7 @@ msgstr "Պահեստավորված հարցում"
 msgid "Fund Tag ID"
 msgstr "Բյուջեի ցուցիչի ID"
 
-#: field.cxt.namespace_uri.label:2102
+#: field.cxt.namespace_uri.label:2223
 msgid "Namespace URI"
 msgstr "Անվան տարածքի URI"
 
@@ -5562,9 +5599,9 @@ msgstr "Աուդիտի ժամ"
 
 #: field.acqf.debit_total.label:7177
 msgid "Debit Total"
-msgstr ""
+msgstr "Գումարային դեբետ"
 
-#: field.sra.field.label:4638
+#: field.sra.field.label:4769
 msgid "Index Field"
 msgstr "Դաշտի ինդեքս"
 
@@ -5583,15 +5620,15 @@ msgstr "Առաքման հասցե"
 
 #: field.acqmapinv.po_item.label:10054
 msgid "Purchase Order Item ID"
-msgstr ""
+msgstr "Նյութի գնման պատվերի ID"
 
 #: class.acqdf.label:8351 field.acqdfa.formula.label:8410
 msgid "Distribution Formula"
 msgstr "Բաշխման բանաձև"
 
-#: field.jub.source_label.label:7329 field.acqlih.source_label.label:7391
-msgid "Source Label"
-msgstr "Աղբյուրի պիտակ"
+#: field.acsaf.main_entry.label:2003
+msgid "Main Entry"
+msgstr "Հիմնական մուտք"
 
 #: field.acqexr.to_currency.label:6691
 msgid "To Currency"
@@ -5622,9 +5659,9 @@ msgstr "Ստանալու գրադարան"
 
 #: field.actsced.stat_cat_entry.label:5686
 msgid "Default Entry Value"
-msgstr ""
+msgstr "Լռակյաց մուտքի արժեք"
 
-#: field.bre.keyword_field_entries.label:2423
+#: field.bre.keyword_field_entries.label:2544
 msgid "Indexed Keyword Field Entries"
 msgstr "Ինդեքսավորված բանալի բառի դաշտի մուտքեր"
 
@@ -5636,7 +5673,7 @@ msgstr "Տրանզակցիայի հաշիվների գումարներ"
 msgid "Home Library"
 msgstr "Տնային գրադարան"
 
-#: field.cit.name.label:1602
+#: field.cit.name.label:1723
 msgid "Identification Name"
 msgstr "Իդենտիֆիկացիայի անուն"
 
@@ -5652,7 +5689,7 @@ msgstr "Տաքի հաշվի կապ"
 msgid "Pretransit Copy Status"
 msgstr "Նախատրանզիտ պատճենի վիճակ"
 
-#: field.ccmw.copy_owning_lib.label:1323 field.ccmm.copy_owning_lib.label:1428
+#: field.ccmw.copy_owning_lib.label:1414 field.ccmm.copy_owning_lib.label:1522
 msgid "Copy Owning Lib"
 msgstr "Պատճենը տնօրինող գրադարան"
 
@@ -5664,24 +5701,24 @@ msgstr "OFFSET count"
 msgid "Expression Type"
 msgstr "Արտահայտության տեսակ"
 
-#: field.acpl.checkin_alert.label:3954
+#: field.acpl.checkin_alert.label:4085
 msgid "Checkin Alert"
-msgstr ""
+msgstr "Հետ ընդունման ահազանգ"
 
 #: field.aufhl.count.label:8704 field.aufhil.count.label:8726
 #: field.aufhol.count.label:8756
 msgid "Loop Count"
 msgstr "խոշորացված հաշվարկ"
 
-#: field.ahn.notify_staff.label:3933
+#: field.ahn.notify_staff.label:4064
 msgid "Notifying Staff"
 msgstr "Հիշեցնել աշխատակազմին"
 
-#: field.ccvm.is_simple.label:793
+#: field.ccvm.is_simple.label:795
 msgid "Is Simple Selector"
-msgstr ""
+msgstr "Պարզ ընտրություն է"
 
-#: field.siss.date_published.label:4324
+#: field.siss.date_published.label:4455
 msgid "Date Published"
 msgstr "Հրատարակման տարեթիվ"
 
@@ -5695,16 +5732,16 @@ msgstr "LitF անուն"
 msgid "Shelf Expire Time"
 msgstr "Դարակի ժամկետի լրանալու ժամ"
 
-#: field.bpbcm.target_copy.label:1217
+#: field.bpbcm.target_copy.label:1305
 msgid "Target Copy"
 msgstr "Թիրախի պատճեն"
 
-#: field.vii.import_error.label:190 field.vqbr.import_error.label:329
-#: field.vqar.import_error.label:449
+#: field.vii.import_error.label:190 field.vqbr.import_error.label:331
+#: field.vqar.import_error.label:451
 msgid "Import Error"
-msgstr ""
+msgstr "Ներմուծման սխալ"
 
-#: field.ateo.is_error.label:880
+#: field.ateo.is_error.label:890
 msgid "Is Error"
 msgstr "Սխալ է"
 
@@ -5730,21 +5767,21 @@ msgstr "Նախնական ճանաչման տեսակ"
 msgid "Total Billed"
 msgstr "Ընդամենը հաշվված"
 
-#: field.mbts.xact_start.label:1657 field.mbtslv.xact_start.label:1678
+#: field.mbts.xact_start.label:1778 field.mbtslv.xact_start.label:1799
 msgid "Transaction Start Time"
 msgstr "Տրանզակցիայի սկզբանվորման ժամ"
 
-#: field.cust.fm_class.label:2841
+#: field.cust.fm_class.label:2967
 msgid "Fielmapper Class"
 msgstr "Ֆայլի քարտեզի դաս"
 
-#: field.aua.within_city_limits.label:3236
+#: field.aua.within_city_limits.label:3362
 msgid "Within City Limits?"
 msgstr "Քաղաքի սահմաններու՞մ"
 
-#: field.sbsum.textual_holdings.label:4515
-#: field.sssum.textual_holdings.label:4542
-#: field.sisum.textual_holdings.label:4569
+#: field.sbsum.textual_holdings.label:4646
+#: field.sssum.textual_holdings.label:4673
+#: field.sisum.textual_holdings.label:4700
 msgid "Textual Holdings"
 msgstr "Տեքստային պահումներ"
 
@@ -5752,7 +5789,7 @@ msgstr "Տեքստային պահումներ"
 msgid "Hold Request Type"
 msgstr "Պահման առաջարկի տեսակ"
 
-#: class.bpt.label:1196
+#: class.bpt.label:1284
 msgid "Bibliographic Record Peer Type"
 msgstr "Մատենագիտական գրառման համաժեք տեսակ"
 
@@ -5760,8 +5797,8 @@ msgstr "Մատենագիտական գրառման համաժեք տեսակ"
 msgid "Ratio"
 msgstr "Մասշտաբ"
 
-#: field.atenv.event_def.label:973 field.atev.event_def.label:1047
-#: field.atevparam.event_def.label:1071
+#: field.atenv.event_def.label:983 field.atev.event_def.label:1057
+#: field.atevparam.event_def.label:1081
 msgid "Event Definition"
 msgstr "Իրադարձության սահմանում"
 
@@ -5771,7 +5808,7 @@ msgstr "Աջ գործողություն"
 
 #: field.aouctn.parent_node.label:5338
 msgid "Parent"
-msgstr ""
+msgstr "Ծնող"
 
 #: class.rssr.label:8229
 msgid "Simple Record Extracts"
@@ -5781,21 +5818,25 @@ msgstr "Պարզ գրառման ընդլայնում"
 msgid "Distribution Formula Application"
 msgstr "Տարածման բանաձևի կիրառում"
 
-#: field.acsbf.authority_field.label:1915
+#: field.acsbf.authority_field.label:2036
 msgid "Controlling Authority Field"
-msgstr ""
+msgstr "Հեղինակավոր դաշտի վերահսկում"
 
-#: field.acpn.create_date.label:2898
+#: field.acpn.create_date.label:3024
 msgid "Note Creation Date/Time"
 msgstr "Նշումի ստեղծման ամսաթիվ/ժամ"
 
-#: field.atev.update_process.label:1058
+#: field.atev.update_process.label:1068
 msgid "Update Process"
 msgstr "Թարմացման գործընթաց"
 
-#: field.csc.region.label:731
+#: field.csc.region.label:733
 msgid "Region"
-msgstr ""
+msgstr "Շրջան"
+
+#: field.atul.complete_time.label:1157
+msgid "Event Complete Time"
+msgstr "Իրադարձության ավարտի ժամ"
 
 #: class.mbp.label:6280
 msgid "Payments: Brick-and-mortar"
@@ -5805,7 +5846,7 @@ msgstr "Վճարումներ։ Brick-and-mortar"
 msgid "Call Number Dewey/Prefix"
 msgstr "Դասիչ Դյուի/նախածանց"
 
-#: field.ath.passive.label:901
+#: field.ath.passive.label:911
 msgid "Passive"
 msgstr "Պասիվ"
 
@@ -5813,15 +5854,15 @@ msgstr "Պասիվ"
 msgid "Org Units"
 msgstr "Կազմ. միավոր"
 
-#: field.acsbf.id.label:1914
+#: field.acsbf.id.label:2035
 msgid "Controlled Bib Field ID"
-msgstr ""
+msgstr "Վերահսկելի մատեն դաշտի ID"
 
 #: field.atevdef.template.label:1024 class.rt.label:8142
 msgid "Template"
 msgstr "Ձևաօրինակ"
 
-#: field.ccm.magnetic_media.label:1117
+#: field.ccm.magnetic_media.label:1205
 msgid "Magnetic Media"
 msgstr "Մագնիսական կրիչ"
 
@@ -5830,7 +5871,7 @@ msgstr "Մագնիսական կրիչ"
 msgid "Selection List"
 msgstr "Ընտրացուցակ"
 
-#: field.ssub.issuances.label:4139
+#: field.ssub.issuances.label:4270
 msgid "Issuances"
 msgstr "տրումներ"
 
@@ -5839,15 +5880,15 @@ msgstr "տրումներ"
 msgid "Item Count"
 msgstr "Նյութի հաշվիչ"
 
-#: field.vie.code.label:305
+#: field.vie.code.label:307
 msgid "Error Code"
-msgstr ""
+msgstr "Սխալի կոդ"
 
-#: field.atev.run_time.label:1049
+#: field.atev.run_time.label:1059
 msgid "Run Time"
 msgstr "Կատարման ժամանակ"
 
-#: field.sstr.routing_list_users.label:4260
+#: field.sstr.routing_list_users.label:4391
 msgid "Routing List Users"
 msgstr "Օգտվողների շրջաբերական ցուցակներ"
 
@@ -5855,7 +5896,7 @@ msgstr "Օգտվողների շրջաբերական ցուցակներ"
 msgid "Source Amount"
 msgstr "Սկզբնական արժեք"
 
-#: field.asvq.responses.label:1618 field.asv.responses.label:4716
+#: field.asvq.responses.label:1739 field.asv.responses.label:4847
 msgid "Responses"
 msgstr "Արձագանքներ"
 
@@ -5873,15 +5914,15 @@ msgstr "Հրատարակիչ"
 msgid "Negate?"
 msgstr "Բացասակա՞ն"
 
-#: class.csg.label:2820 field.cust.grp.label:2842
+#: class.csg.label:2946 field.cust.grp.label:2968
 msgid "Settings Group"
 msgstr "Կարգաբերումների խումբ"
 
 #: field.sunit.active_date.label:4497 field.acp.active_date.label:5885
 msgid "Active Date/Time"
-msgstr ""
+msgstr "Ակտիվ օր/ժամ"
 
-#: field.auri.call_numbers.label:2336 field.bre.call_numbers.label:2402
+#: field.auri.call_numbers.label:2457 field.bre.call_numbers.label:2523
 msgid "Call Numbers"
 msgstr "Դասիչներ"
 
@@ -5890,7 +5931,7 @@ msgstr "Դասիչներ"
 msgid "Payment Date/Time"
 msgstr "Վճարման օր/ժամ"
 
-#: field.aupr.request_time.label:1707 field.bresv.request_time.label:3800
+#: field.aupr.request_time.label:1828 field.bresv.request_time.label:3931
 msgid "Request Time"
 msgstr "Պահանջի ժամ"
 
@@ -5903,12 +5944,12 @@ msgstr "Հաշվեկշռի զգուշացման ահազանգ"
 msgid "Max Acceptable Fee"
 msgstr "Մաքս ընդունելի գումար"
 
-#: class.sstr.label:4254 field.srlu.stream.label:4286
-#: field.sitem.stream.label:4432
+#: class.sstr.label:4385 field.srlu.stream.label:4417
+#: field.sitem.stream.label:4563
 msgid "Stream"
 msgstr "Հոսք"
 
-#: field.mrd.control_type.label:3112
+#: field.mrd.control_type.label:3238
 msgid "Ctrl"
 msgstr "Ctrl"
 
@@ -5916,20 +5957,20 @@ msgstr "Ctrl"
 msgid "Cast Type"
 msgstr "Դեպքի տեսակ"
 
-#: class.ancihu.label:1752
+#: class.ancihu.label:1873
 msgid "Non-cataloged In House Use"
 msgstr "Չքարտագրված տեղային օգտագործման համար"
 
-#: field.sdist.bind_unit_template.label:4188
+#: field.sdist.bind_unit_template.label:4319
 msgid "Bind Unit Template"
 msgstr "Կազմելու միավորի ձևաչափ"
 
-#: field.cin.param_count.label:662
+#: field.cin.param_count.label:664
 msgid "Required Parameter Count"
 msgstr "Պահանջվող պարամետրի հաշվիչ"
 
-#: field.sasum.show_generated.label:4490 field.sbsum.show_generated.label:4516
-#: field.sssum.show_generated.label:4543 field.sisum.show_generated.label:4570
+#: field.sasum.show_generated.label:4621 field.sbsum.show_generated.label:4647
+#: field.sssum.show_generated.label:4674 field.sisum.show_generated.label:4701
 msgid "Show Generated?"
 msgstr "Ցուցադրե՞լ գեներացվածը"
 
@@ -5943,12 +5984,12 @@ msgstr "Ցուցադրե՞լ գեներացվածը"
 msgid "Expression ID"
 msgstr "Արտահայտության ID"
 
-#: field.mbts.total_owed.label:1653 field.mbtslv.total_owed.label:1674
+#: field.mbts.total_owed.label:1774 field.mbtslv.total_owed.label:1795
 msgid "Total Owed"
 msgstr "Ընդհանուր պարտք"
 
-#: field.mbts.last_payment_ts.label:1651
-#: field.mbtslv.last_payment_ts.label:1672
+#: field.mbts.last_payment_ts.label:1772
+#: field.mbtslv.last_payment_ts.label:1793
 msgid "Last Payment Timestamp"
 msgstr "Վերջին վճարման ժաանակի շտամպ"
 
@@ -5964,7 +6005,7 @@ msgstr "Պարզ գրառում"
 msgid "Open Circulation Billing by Circulating Library and Owning Library"
 msgstr "Տացքի բաց հաշիվ սպասարկող և տնօրինող գրադարանների կողմից"
 
-#: field.asvr.answer.label:1801
+#: field.asvr.answer.label:1922
 msgid "Answer"
 msgstr "Պատասխան"
 
@@ -5988,11 +6029,11 @@ msgstr "Ընթերցողի շտրիխ կոդ"
 msgid "Destination Amount"
 msgstr "Նպատակային գումար"
 
-#: field.cmfinm.field.label:677 class.cmf.label:2158
+#: field.cmfinm.field.label:679 class.cmf.label:2279
 msgid "Metabib Field"
 msgstr "Metabib դաշտ"
 
-#: class.mbts.label:1643
+#: class.mbts.label:1764
 msgid "Billable Transaction Summary"
 msgstr "Վճարվող տրանզակցիայի համառոտագրություն"
 
@@ -6000,19 +6041,19 @@ msgstr "Վճարվող տրանզակցիայի համառոտագրությու
 msgid "Credit ID"
 msgstr "Կրեդիտի ID"
 
-#: field.mrd.item_lang.label:3116
+#: field.mrd.item_lang.label:3242
 msgid "Lang"
 msgstr "Լեզու"
 
-#: field.cblvl.value.label:4622
+#: field.cblvl.value.label:4753
 msgid "Bib Level"
 msgstr "Մատենագիտ մակարդակ"
 
-#: field.mrd.id.label:3114
+#: field.mrd.id.label:3240
 msgid "Descriptor ID"
 msgstr "Նկարագրիչի ID"
 
-#: class.cbrebt.label:1240
+#: class.cbrebt.label:1328
 msgid "Bibliographic Record Bucket Type"
 msgstr "Մատենագիտական գրառման փնջի տեսակ"
 
@@ -6020,10 +6061,10 @@ msgstr "Մատենագիտական գրառման փնջի տեսակ"
 msgid "Import/Overlay Fields for Removal"
 msgstr "Հեռացման համար Ներմուծիր/վերագրի դաշտերը"
 
-#: field.chmw.item_age.label:1304 field.ccmw.item_age.label:1333
-#: field.chmm.item_age.label:1387 field.ccmm.item_age.label:1440
+#: field.chmw.item_age.label:1394 field.ccmw.item_age.label:1427
+#: field.chmm.item_age.label:1481 field.ccmm.item_age.label:1535
 msgid "Item Age <"
-msgstr ""
+msgstr "Նյութի տարիք <"
 
 #: field.viiad.id.label:241 field.atenv.id.label:982
 #: field.atevdef.id.label:1012 field.acqliad.id.label:7882
@@ -6035,7 +6076,7 @@ msgstr "Սահմանման IDադ"
 
 #: class.aaactsc.label:10113
 msgid "Circ-Archived Patron Statistical Category Entries"
-msgstr ""
+msgstr "Ընթերցողի Տացքի արխիվացված վիճակագրական դասի մուտքեր"
 
 #: class.erfcc.label:8342
 msgid "Total Circulation Count, Including Legacy"
@@ -6060,7 +6101,7 @@ msgstr "ՄԵԸՔ"
 msgid "Reservation Requests"
 msgstr "Նախնական պահման պահանջներ"
 
-#: class.aihu.label:1738
+#: class.aihu.label:1859
 msgid "In House Use"
 msgstr "Ներքին օգտագործման համար"
 
@@ -6080,7 +6121,7 @@ msgstr "ՄԳԲ ստացման հասցե"
 msgid "Biblio Record Entry Bucket Item"
 msgstr "Biblio գրառման փնջի մուտքի նյութ"
 
-#: class.atcol.label:914
+#: class.atcol.label:924
 msgid "Trigger Environment Collector"
 msgstr "Բաց թող Միջավայրի կոլլեկտորը"
 
@@ -6089,7 +6130,7 @@ msgstr "Բաց թող Միջավայրի կոլլեկտորը"
 msgid "Author (normalized)"
 msgstr "Հեղինակ (նորմալացված)"
 
-#: field.vii.holdable.label:204 field.viiad.holdable.label:254
+#: field.vii.holdable.label:204 field.viiad.holdable.label:255
 msgid "Holdable"
 msgstr "Պահվող"
 
@@ -6100,11 +6141,11 @@ msgstr "Պահվող"
 msgid "Fine Stop Date/Time"
 msgstr "Տուգանքի կանգնեցման ամսաթիվ/ժամ"
 
-#: class.vie.label:303
+#: class.vie.label:305
 msgid "Import/Overlay Error Definitions"
-msgstr ""
+msgstr "Ներմուծման/Վերադրման սխալի սահմանումներ"
 
-#: field.ssr.excluded.label:4709
+#: field.ssr.excluded.label:4840
 msgid "Excluded"
 msgstr "Բացառված է"
 
@@ -6142,7 +6183,7 @@ msgstr "Նյութի ընտրության խորություն"
 msgid "Column Value"
 msgstr "Սյունակի արժեք"
 
-#: class.bresv.label:3788 field.bravm.reservation.label:3848
+#: class.bresv.label:3919 field.bravm.reservation.label:3979
 msgid "Reservation"
 msgstr "Նախնական պատվեր"
 
@@ -6154,7 +6195,7 @@ msgstr "Չդատարկված վճարված գումար"
 msgid "Total Debit Amount"
 msgstr "Ընդհանուր դեբետի մեծություն"
 
-#: field.cam.code.label:2206
+#: field.cam.code.label:2327
 msgid "Audience Code"
 msgstr "Լսարանի կոդ"
 
@@ -6166,7 +6207,7 @@ msgstr "Օրենքի անուն"
 msgid "Delete Date/Time"
 msgstr "Ջնջիր ամսաթիվ/Ժամ"
 
-#: class.atevdef.label:1000
+#: class.atevdef.label:1010
 msgid "Trigger Event Definition"
 msgstr "Գործարկիր իրադարձության սահմանումը"
 
@@ -6174,7 +6215,7 @@ msgstr "Գործարկիր իրադարձության սահմանումը"
 msgid "Default Price"
 msgstr "Լռակյաց արժեք"
 
-#: class.acns.label:2248
+#: class.acns.label:2369
 msgid "Call Number/Volume Suffix"
 msgstr "Դասիչ/Հատորի վերջածանց"
 
@@ -6182,9 +6223,9 @@ msgstr "Դասիչ/Հատորի վերջածանց"
 msgid "Failure Part"
 msgstr "Ձախողման մաս"
 
-#: class.mbedm.label:3018
+#: class.mbedm.label:3144
 msgid "Combined Browse Entry Definition Map"
-msgstr ""
+msgstr "Համակցված դիտման մուտքի սահմանման քարտեզ"
 
 #: class.xin.label:9090
 msgid "In Expression"
@@ -6192,7 +6233,7 @@ msgstr "Արտահայտություն"
 
 #: field.cbc.asset.label:10075
 msgid "Applies to Items"
-msgstr ""
+msgstr "Կիրառվում է նյութերի վրա"
 
 #: field.acqie.billed_per_item.label:6821
 msgid "Billed Cost per Item"
@@ -6207,7 +6248,7 @@ msgstr "Պահանջ դնելու քաղաքականություն"
 msgid "Provider Note"
 msgstr "Մատակարարի նշում"
 
-#: field.auoi.org_unit.label:628
+#: field.auoi.org_unit.label:630
 msgid "Allowed Org Unit"
 msgstr "Թույլատրված կազմ միավոր"
 
@@ -6237,7 +6278,7 @@ msgstr "Մարմին"
 msgid "Fund Tag Name"
 msgstr "Բյուջեի ցուցիչի անուն"
 
-#: class.ard.label:2031
+#: class.ard.label:2152
 msgid "Authority Record Descriptor"
 msgstr "Հեղինակավոր գրառման նկարագրիչ"
 
@@ -6253,7 +6294,7 @@ msgstr "Աշխատակարգ"
 msgid "Recurring Fine Rule"
 msgstr "Կրկնվող տուգանքի օրենք"
 
-#: field.atev.complete_time.label:1052
+#: field.atev.complete_time.label:1062
 msgid "Complete Time"
 msgstr "Լրիվ ժամ"
 
@@ -6261,7 +6302,7 @@ msgstr "Լրիվ ժամ"
 msgid "Debit Attribution"
 msgstr "Դեբետի հավելագրում"
 
-#: class.ausp.label:3197
+#: class.ausp.label:3323
 msgid "User Standing Penalty"
 msgstr "Օգտվողի մշտական տուգանք"
 
@@ -6269,7 +6310,7 @@ msgstr "Օգտվողի մշտական տուգանք"
 msgid "Exchange Rate ID"
 msgstr "Փոխարժեքի ID"
 
-#: class.vqbra.label:375
+#: class.vqbra.label:377
 msgid "Queued Bib Record Attribute"
 msgstr "Հարցված մատեն գրառման բաղադրիչ"
 
@@ -6282,13 +6323,13 @@ msgstr "Ստեղծման ամսաթիվ/ժամ"
 msgid "Import Item"
 msgstr "Ներմուծի նյութ"
 
-#: field.atevparam.param.label:1072
+#: field.atevparam.param.label:1082
 msgid "Parameter Name"
 msgstr "Պարամետրի անուն"
 
-#: class.smhc.label:4496
+#: class.smhc.label:4627
 msgid "Materialized Holding Code"
-msgstr ""
+msgstr "Նյութականացված պահման կոդ"
 
 #: field.acqfa.allocator.label:7438 field.acqfap.allocator.label:7472
 msgid "Allocating User"
@@ -6306,11 +6347,11 @@ msgstr "Բյուջեից ընդհանուր ծախսած"
 msgid "Class Name"
 msgstr "Դասի անուն"
 
-#: class.pgpt.label:3156
+#: class.pgpt.label:3282
 msgid "Group Penalty Threshold"
 msgstr "Խմբի պատժաչափի սկիզբ"
 
-#: class.vam.label:513
+#: class.vam.label:515
 msgid "Queued Authority Record Match"
 msgstr "Հարցվող հեղինակավոր գրառման համընկնում"
 
@@ -6326,19 +6367,15 @@ msgstr "Ֆունկցիայի անուն"
 msgid "User Statistical Category"
 msgstr "Օգտվողի վիճակագրական դաս"
 
-#: class.auss.label:3276
+#: class.auss.label:3402
 msgid "User Saved Search"
 msgstr "Օգտվողի հիշած որոնում"
 
-#: field.au.suffix.label:2693
-msgid "Suffix/Title"
-msgstr "Նախածանց/կոչում"
-
-#: field.chddv.ceiling_date.label:2600
+#: field.chddv.ceiling_date.label:2721
 msgid "Ceiling Date"
 msgstr "Մաքսիմալ ամսաթիվ"
 
-#: field.chmm.max_holds.label:1391
+#: field.chmm.max_holds.label:1485
 msgid "Max Holds"
 msgstr "Մաքս պահումներ"
 
@@ -6346,11 +6383,11 @@ msgstr "Մաքս պահումներ"
 msgid "Library Card"
 msgstr "Գրադարանի քարտ"
 
-#: field.aihu.staff.label:1743 field.ancihu.staff.label:1757
+#: field.aihu.staff.label:1864 field.ancihu.staff.label:1878
 msgid "Recording Staff"
 msgstr "Գրանցող անձնակազմ"
 
-#: field.acplo.id.label:4022
+#: field.acplo.id.label:4153
 msgid "Location Order ID"
 msgstr "Տեղաբաշխման պատվերի ID"
 
@@ -6370,7 +6407,7 @@ msgstr "JEDI հաղորդման մարմին"
 msgid "Grocery Transaction"
 msgstr "Grocery Transaction"
 
-#: field.cmsa.alias.label:2119
+#: field.cmsa.alias.label:2240
 msgid "Alias (RegExp)"
 msgstr "Կեղծ (RegExp)"
 
@@ -6378,7 +6415,7 @@ msgstr "Կեղծ (RegExp)"
 msgid "Phone Notify"
 msgstr "Հեռախոսով զգուշացում"
 
-#: class.cmc.label:2137
+#: class.cmc.label:2258
 msgid "Metabib Class"
 msgstr "Metabib դաս"
 
@@ -6416,11 +6453,11 @@ msgstr "Զգուշացման ժամ"
 msgid "Fieldset ID"
 msgstr "Դաշտի բազմության ID"
 
-#: class.ahr.label:4770
+#: class.ahr.label:4963
 msgid "Hold Request"
 msgstr "Պահման հարցում"
 
-#: field.bre.notes.label:2422
+#: field.bre.notes.label:2543
 msgid "Non-MARC Record Notes"
 msgstr "Ոչ-ՀՕԱՔ գրառման նշումներ"
 
@@ -6436,15 +6473,15 @@ msgstr "Բացիր սպասակման հաշիվ տնօրինող գրադարա
 msgid "Fund Code"
 msgstr "Բյուջեի կոդ"
 
-#: class.atevparam.label:1068
+#: class.atevparam.label:1078
 msgid "Trigger Event Parameter"
 msgstr "Եռակապ միջոցառման պարամետր"
 
 #: field.acp.last_captured_hold.label:5918
 msgid "Last Captured Hold"
-msgstr ""
+msgstr "Վերջին որսված պահում"
 
-#: field.bre.deleted.label:2407
+#: field.bre.deleted.label:2528
 msgid "Is Deleted?"
 msgstr "Ջնջվա՞ծ է"
 
@@ -6472,8 +6509,8 @@ msgstr "Իրավասության խումբ"
 msgid "Hold ID"
 msgstr "Պահման ID"
 
-#: field.mbts.last_billing_ts.label:1648
-#: field.mbtslv.last_billing_ts.label:1669
+#: field.mbts.last_billing_ts.label:1769
+#: field.mbtslv.last_billing_ts.label:1790
 msgid "Last Billing Timestamp"
 msgstr "Վերջին վճարման ժամանակի դրոշմ"
 
@@ -6491,7 +6528,7 @@ msgstr "Դյուի տասականներ"
 msgid "Lineitem"
 msgstr "Գծային նյութ"
 
-#: field.bresv.cancel_time.label:3804
+#: field.bresv.cancel_time.label:3935
 msgid "Cancel Time"
 msgstr "Չեղյալ անելու ժամ"
 
@@ -6499,7 +6536,7 @@ msgstr "Չեղյալ անելու ժամ"
 msgid "Subordinate Types"
 msgstr "Երկրորդային տեսակներ"
 
-#: field.bre.fixed_fields.label:2403
+#: field.bre.fixed_fields.label:2524
 msgid "Fixed Field Entry"
 msgstr "Սևեռված դաշտի մուտք"
 
@@ -6551,13 +6588,13 @@ msgstr "Նյութի վիճակ Դաս մուտք"
 
 #: field.cbc.actor.label:10076
 msgid "Applies to Users"
-msgstr ""
+msgstr "Կիրառվում է օգտվողների վրա"
 
 #: field.mg.billings.label:5609
 msgid "Billings"
 msgstr "Հաշիվներ"
 
-#: field.aun.creator.label:1690
+#: field.aun.creator.label:1811
 msgid "Creating Staff"
 msgstr "Ստեղծող կազմ"
 
@@ -6565,7 +6602,7 @@ msgstr "Ստեղծող կազմ"
 msgid "Floating?"
 msgstr "Սահո՞ղ"
 
-#: field.acpl.hold_verify.label:3945
+#: field.acpl.hold_verify.label:4076
 msgid "Hold Capture Requires Verification"
 msgstr "Պահման որսումը պահանջում է ստւգում"
 
@@ -6573,9 +6610,9 @@ msgstr "Պահման որսումը պահանջում է ստւգում"
 msgid "Last Payment Date/Time"
 msgstr "Վերջին վճարման օր/ժամ"
 
-#: field.cuat.egroup.label:2753
+#: field.cuat.egroup.label:2879
 msgid "Activity Group"
-msgstr ""
+msgstr "Գործողության խումբ"
 
 #: class.ccbn.label:6204
 msgid "Copy Bucket Note"
@@ -6591,7 +6628,7 @@ msgstr "Պատճենի համար հատորի վրա"
 msgid "Last Payment Type"
 msgstr "Վերջին վճարման տեսակ"
 
-#: field.brsrc.id.label:3677
+#: field.brsrc.id.label:3808
 msgid "Resource ID"
 msgstr "Պաշարի ID"
 
@@ -6604,7 +6641,7 @@ msgstr "Ապրանքների վճարում"
 msgid "ISBN"
 msgstr "ISBN"
 
-#: field.scap.pattern_code.label:4098
+#: field.scap.pattern_code.label:4229
 msgid "Pattern Code"
 msgstr "Պատկերի կոդ"
 
@@ -6620,9 +6657,9 @@ msgstr "Պահման զգուշացում"
 msgid "Post Code"
 msgstr "Փոստային կոդ"
 
-#: field.vmsp.svf.label:560
+#: field.vmsp.svf.label:562
 msgid "Coded Field"
-msgstr ""
+msgstr "Կոդավորված դաշտ"
 
 #: field.atc.source_send_time.label:1897
 #: field.artc.source_send_time.label:6434
@@ -6639,7 +6676,7 @@ msgstr "Առաքման օր/ժամ"
 msgid "Barcode"
 msgstr "Շտրիխ կոդ"
 
-#: field.bresv.pickup_time.label:3805
+#: field.bresv.pickup_time.label:3936
 msgid "Pickup Time"
 msgstr "Վերցնելու ժամ"
 
@@ -6651,7 +6688,7 @@ msgstr "Դյուի բլոկ -տասնյակներ"
 msgid "Credits"
 msgstr "Երախտիք"
 
-#: field.au.open_billable_transactions_summary.label:2706
+#: field.au.open_billable_transactions_summary.label:2827
 msgid "Open Billable Transactions"
 msgstr "Բաց վճարային տրանզակցիա"
 
@@ -6661,9 +6698,9 @@ msgstr "Ժանրեր (նորմալացված)"
 
 #: field.acqf.spent_balance.label:7181
 msgid "Spent Balance"
-msgstr ""
+msgstr "Ծախսածի հաշվեկշիռ"
 
-#: field.bresv.target_resource_type.label:3811
+#: field.bresv.target_resource_type.label:3942
 msgid "Target Resource Type"
 msgstr "Թիրախ պաշարի տեսակ"
 
@@ -6675,7 +6712,7 @@ msgstr "Ծնող խումբ"
 msgid "Serial Claim Event"
 msgstr "Պարբերականի պահանջի իրադարձություն"
 
-#: field.crad.joiner.label:705
+#: field.crad.joiner.label:707
 msgid "Joiner"
 msgstr "միացող"
 
@@ -6713,16 +6750,16 @@ msgstr "Փակ ամսաթվեր"
 msgid "Entry Value"
 msgstr "Մուտքի արժեք"
 
-#: class.cin.label:656
+#: class.cin.label:658
 msgid "Indexing Normalizer"
 msgstr "Ցուցիչավորման նորմալացնող"
 
-#: field.combcirc.copy_circ_lib.label:3535
-#: field.acirc.copy_circ_lib.label:3608
+#: field.combcirc.copy_circ_lib.label:3666
+#: field.acirc.copy_circ_lib.label:3739
 msgid "Copy Circulating Library"
 msgstr "Պատճենիր սպասարկող գրադարանը"
 
-#: field.ssr.checked.label:4706
+#: field.ssr.checked.label:4837
 msgid "Checked"
 msgstr "Ստուգված"
 
@@ -6730,7 +6767,7 @@ msgstr "Ստուգված"
 msgid "Claim Type ID"
 msgstr "Պահանջի տեսակի ID"
 
-#: field.vbq.item_attr_def.label:286
+#: field.vbq.item_attr_def.label:288
 msgid "Item Import Attribute Definition"
 msgstr "Նյութի ներմուծման բնութագրիչի սահմանում"
 
@@ -6739,17 +6776,17 @@ msgstr "Նյութի ներմուծման բնութագրիչի սահմանո�
 msgid "Copy ID"
 msgstr "Պատճենի ID"
 
-#: field.atev.target.label:1046
+#: field.atev.target.label:1056
 msgid "Target ID"
 msgstr "Թիրախի ID"
 
 #: field.cbc.padding_end.label:10074
 msgid "Padding At End"
-msgstr ""
+msgstr "Լրացում ավարտին"
 
 #: field.rhcrpbap.copy_count_everywhere.label:9432
 msgid "Holdable Copy Count Everywhere"
-msgstr ""
+msgstr "Պահման պատճենի հաշվիչ ամենուր"
 
 #: field.aur.author.label:6635 field.acqii.author.label:6857
 #: field.acqpoi.author.label:7659 field.rocit.author.label:9833
@@ -6765,7 +6802,7 @@ msgstr "Պարզ գրառման արագ ընդլայնում"
 msgid "Cancelation cause"
 msgstr "Չեղյալ անելու պատճառ"
 
-#: field.viiad.keep.label:244
+#: field.viiad.keep.label:245
 msgid "Keep"
 msgstr "Պահել"
 
@@ -6786,7 +6823,7 @@ msgstr "Ուղարկվող գրադարան"
 msgid "Claim Event ID"
 msgstr "Պահանջի իրադարձության ID"
 
-#: field.atevdef.group_field.label:1013
+#: field.atevdef.group_field.label:1023
 msgid "Processing Group Context Field"
 msgstr "Աշխատացվում է խմբային բովանդակային դաշտը"
 
@@ -6802,7 +6839,7 @@ msgstr "Պատճենի կապ"
 msgid "Provider Holding Subfield Map"
 msgstr "Մատակարար. պահման ենթադաշտի քարտեզ"
 
-#: field.ssub.distributions.label:4138
+#: field.ssub.distributions.label:4269
 msgid "Distributions"
 msgstr "Բաշխումներ"
 
@@ -6811,9 +6848,9 @@ msgstr "Բաշխումներ"
 msgid "Question"
 msgstr "Հարց"
 
-#: field.abaafm.id.label:1977
+#: field.abaafm.id.label:2098
 msgid "Axis Authority Field Map ID"
-msgstr ""
+msgstr "Առանցքային հեղինակավորի դաշտի քարտեզի ID"
 
 #: field.atc.source.label:1895 field.sre.source.label:4201
 #: field.iatc.source.label:9713
@@ -6824,7 +6861,7 @@ msgstr "Աղբյուր"
 msgid "Subject Field Entry"
 msgstr "Առարկա դաշտի մուտք"
 
-#: field.sdist.unit_label_prefix.label:4189
+#: field.sdist.unit_label_prefix.label:4320
 msgid "Unit Label Prefix"
 msgstr "Միավորի պիտակի նախածանց"
 
@@ -6837,7 +6874,7 @@ msgstr "ՀՕԱՔ թարմացում"
 msgid "User Barcode"
 msgstr "Օգտվողի շտրիխ կոդ"
 
-#: field.acpl.label_prefix.label:3952
+#: field.acpl.label_prefix.label:4083
 msgid "Label Prefix"
 msgstr "Պիտակի նախածանց"
 
@@ -6845,9 +6882,9 @@ msgstr "Պիտակի նախածանց"
 msgid "Default Claim Policy"
 msgstr "Պահանջ դնելու լռակյաց քաղաքականություն"
 
-#: field.sasum.summary_type.label:4486
+#: field.sasum.summary_type.label:4617
 msgid "Summary Type"
-msgstr ""
+msgstr "Համառոտագրության տեսակ"
 
 #: field.qsi.id.label:8943
 msgid "Select Item ID"
@@ -6857,13 +6894,13 @@ msgstr "Ընտրիր նյութի ID"
 msgid "Invoice Item Count"
 msgstr "Նյութի ինվոյսի հաշվիչ"
 
-#: class.ccpbt.label:1164
+#: class.ccpbt.label:1252
 msgid "Copy Bucket Type"
 msgstr "Պատճենի փնջի տեսակ"
 
-#: field.scap.subscription.label:4092 class.ssub.label:4130
-#: field.ssubn.subscription.label:4164 field.sdist.subscription.label:4182
-#: field.siss.subscription.label:4321
+#: field.scap.subscription.label:4223 class.ssub.label:4261
+#: field.ssubn.subscription.label:4295 field.sdist.subscription.label:4313
+#: field.siss.subscription.label:4452
 msgid "Subscription"
 msgstr "Բաժանորդագրություն"
 
@@ -6876,7 +6913,7 @@ msgstr "Դաշտի բազմության անուն"
 msgid "Function ID"
 msgstr "Գործողության ID"
 
-#: field.mrd.bib_level.label:3109
+#: field.mrd.bib_level.label:3235
 msgid "BLvl"
 msgstr "BLvl"
 
@@ -6906,7 +6943,7 @@ msgstr "Բաց սպասարկում"
 msgid "Title Proper (normalized)"
 msgstr "Վերնագիրը ուղիղ (նորմալացված)"
 
-#: field.aihu.use_time.label:1744 field.ancihu.use_time.label:1758
+#: field.aihu.use_time.label:1865 field.ancihu.use_time.label:1879
 msgid "Use Date/Time"
 msgstr "Օգտագործիր ամսաթիվ/ժամ"
 
@@ -6919,31 +6956,31 @@ msgstr "Արդյունք"
 msgid "Accepting Staff Member"
 msgstr "Ընդունել աշխատակազմի անդամ"
 
-#: field.aal.id.label:3247
+#: field.aal.id.label:3373
 msgid "Address Alert ID"
-msgstr ""
+msgstr "Հասցեի ահազանգի ID"
 
-#: field.abaafm.axis.label:1979
+#: field.abaafm.axis.label:2100
 msgid "Axis"
-msgstr ""
+msgstr "Առանցք"
 
 #: class.rodcirc.label:9778
 msgid "Overdue Circulation"
 msgstr "Ժամկետանց սպասարկում"
 
-#: field.bre.active.label:2404
+#: field.bre.active.label:2525
 msgid "Is Active?"
 msgstr "Ակտի՞վ է"
 
 #: field.actsc.allow_freetext.label:5448
 msgid "Free Text"
-msgstr ""
+msgstr "Ազատ տեքստ"
 
-#: field.ausp.stop_date.label:3205
+#: field.ausp.stop_date.label:3331
 msgid "Stop Date"
 msgstr "Կանգնեցման ամսաթիվ"
 
-#: field.aua.pending.label:3238
+#: field.aua.pending.label:3364
 msgid "Pending"
 msgstr "Սպասող"
 
@@ -6951,7 +6988,7 @@ msgstr "Սպասող"
 msgid "Source Fund"
 msgstr "Սկզբնաղբյուր բյուջե"
 
-#: class.au.label:2647
+#: class.au.label:2768
 msgid "ILS User"
 msgstr "ԻԳՀ (ILS) օգտվող"
 
@@ -6963,7 +7000,7 @@ msgstr "Հեռախոս"
 msgid "Time Created"
 msgstr "Ստեղծման ժամ"
 
-#: field.bre.quality.label:2414
+#: field.bre.quality.label:2535
 msgid "Overall Quality"
 msgstr "Ընդհանուր որակ"
 
@@ -6976,7 +7013,7 @@ msgstr "Ընդհանուր որակ"
 msgid "Active"
 msgstr "Ակտիվ"
 
-#: field.bram.value.label:3763
+#: field.bram.value.label:3894
 msgid "Attribute Value"
 msgstr "Բաղկացուցիչի արժեք"
 
@@ -6992,20 +7029,20 @@ msgstr "Գործողության տրիգերի օգտվողի լոգ"
 msgid "Staff?"
 msgstr "Աշխատակա՞զմ"
 
-#: field.cmc.restrict.label:2142 field.cmf.restrict.label:2172
+#: field.cmc.restrict.label:2263 field.cmf.restrict.label:2293
 msgid "Restrict?"
-msgstr ""
+msgstr "Սահմանափակե՞լ"
 
-#: field.atb.ws.label:2790
+#: field.atb.ws.label:2916
 msgid "Owning Workstation"
-msgstr ""
+msgstr "Տնօրինողի աշխատանքային կայան"
 
 #: field.mbts.total_paid.label:1775 field.mbtslv.total_paid.label:1796
 #: field.rccbs.total_paid.label:9573
 msgid "Total Paid"
 msgstr "Վճարված է ընդամենը"
 
-#: field.chmm.strict_ou_match.label:1373
+#: field.chmm.strict_ou_match.label:1467
 msgid "Strict OU matches?"
 msgstr "Ճշգրտորեն OU համընկնու՞մ"
 
@@ -7030,7 +7067,7 @@ msgstr "Էլ փոստ հիշեցում"
 msgid "Payment link"
 msgstr "Վճարի կապ"
 
-#: field.acpl.holdable.label:3944
+#: field.acpl.holdable.label:4075
 msgid "Is Holdable?"
 msgstr "Պահվո՞ղ է"
 
@@ -7046,7 +7083,7 @@ msgstr "Օգտվողի գնման պահանջ"
 msgid "Responses using this Answer"
 msgstr "Արձագանքներ օգտագործելով այս պատասխանը"
 
-#: class.chmw.label:1288
+#: class.chmw.label:1376
 msgid "Hold Matrix Weights"
 msgstr "Պահման մատրիցայի քաշ"
 
@@ -7054,7 +7091,7 @@ msgstr "Պահման մատրիցայի քաշ"
 msgid "IS NULL Expression"
 msgstr "Սա դատարկ արտահայտություն է"
 
-#: field.ssub.expected_date_offset.label:4137
+#: field.ssub.expected_date_offset.label:4268
 msgid "Expected Date Offset"
 msgstr "Սպասվող ամսաթվի շեղում"
 
@@ -7063,7 +7100,7 @@ msgstr "Սպասվող ամսաթվի շեղում"
 msgid "Publisher (normalized)"
 msgstr "Հրատարակիչ (նորմալացված)"
 
-#: field.ccmm.grace_period.label:1447
+#: field.ccmm.grace_period.label:1542
 msgid "Grace Period Override"
 msgstr "Գրավչության ժամկետի վերագրում"
 
@@ -7079,27 +7116,27 @@ msgstr "EDI լռակյաց"
 msgid "Billing ID"
 msgstr "Հաշվի ID"
 
-#: field.vmsp.id.label:556
+#: field.vmsp.id.label:558
 msgid "Match Definition ID"
-msgstr ""
+msgstr "Համընկնման սահմանման ID"
 
 #: field.acqpoh.audit_id.label:7585 field.acqlih.audit_id.label:7747
 msgid "Audit ID"
 msgstr "Աուդիտի ID"
 
-#: field.scap.end_date.label:4096 field.ssub.end_date.label:4135
+#: field.scap.end_date.label:4227 field.ssub.end_date.label:4266
 msgid "End Date"
 msgstr "Ավարտի ամսաթիվ"
 
-#: class.brsrc.label:3675 field.bram.resource.label:3761
+#: class.brsrc.label:3806 field.bram.resource.label:3892
 msgid "Resource"
 msgstr "Պաշար"
 
-#: field.cam.value.label:2208
+#: field.cam.value.label:2329
 msgid "Audience"
 msgstr "Լսարան"
 
-#: field.vii.circ_as_type.label:208 field.viiad.circ_as_type.label:258
+#: field.vii.circ_as_type.label:208 field.viiad.circ_as_type.label:259
 msgid "Circulate As MARC Type"
 msgstr "Սպասարկիր որպես ՄԵԸՔ տեսակ"
 
@@ -7107,7 +7144,7 @@ msgstr "Սպասարկիր որպես ՄԵԸՔ տեսակ"
 msgid "Line Item Count"
 msgstr "Տողի նյութի հաշվիչ"
 
-#: field.au.reservations.label:2710
+#: field.au.reservations.label:2831
 msgid "Reservations"
 msgstr "Նախնական պահումներ"
 
@@ -7115,12 +7152,12 @@ msgstr "Նախնական պահումներ"
 msgid "Open Circulation Billing by User Home Library and Owning Library"
 msgstr "Բաց սպասարկման հաշիվ օգտվողի տնային գրադարանից և տնօրինող գրադարանից"
 
-#: field.vii.import_time.label:193 field.vqbr.import_time.label:324
-#: field.vqar.import_time.label:445
+#: field.vii.import_time.label:193 field.vqbr.import_time.label:326
+#: field.vqar.import_time.label:447
 msgid "Import Time"
 msgstr "Ներմուծման ժամանակ"
 
-#: field.pgpt.threshold.label:3161
+#: field.pgpt.threshold.label:3287
 msgid "Threshold"
 msgstr "Ճեղքվածք"
 
@@ -7128,9 +7165,9 @@ msgstr "Ճեղքվածք"
 msgid "Billing Location Link"
 msgstr "Հաշվի գտնվելու վայրի կապ"
 
-#: class.aba.label:1951
+#: class.aba.label:2072
 msgid "Authority Browse Axis"
-msgstr ""
+msgstr "Հեղինակավորի դիտման առանցք"
 
 #: field.au.evening_phone.label:2793 field.stgu.evening_phone.label:8609
 msgid "Evening Phone"
@@ -7152,7 +7189,7 @@ msgstr "Խմբի անուն"
 msgid "Provider Contact Address"
 msgstr "Մատակարարի կապի հասցե"
 
-#: field.chmw.item_circ_ou.label:1296 field.chmm.item_circ_ou.label:1378
+#: field.chmw.item_circ_ou.label:1384 field.chmm.item_circ_ou.label:1472
 msgid "Item Circ Library"
 msgstr "Նյութի տացքի գրադարան"
 
@@ -7164,7 +7201,7 @@ msgstr "Տրանզակցիայի կապ"
 msgid "Balance Remaining"
 msgstr "Մնացող հաշվեկշիռ"
 
-#: class.vqara.label:492
+#: class.vqara.label:494
 msgid "Queued Authority Record Attribute"
 msgstr "Հարցված Հեղինակավոր գրառման բաղկացուցիչ"
 
@@ -7181,11 +7218,11 @@ msgstr "Հրատարակման վայր"
 msgid "Keep Debits?"
 msgstr "Պահել դեբետնեռը"
 
-#: field.ateo.create_time.label:878 field.acn.create_date.label:2289
+#: field.ateo.create_time.label:888 field.acn.create_date.label:2410
 msgid "Create Date/Time"
 msgstr "Ստեղծման օր/ժամ"
 
-#: field.au.super_user.label:2694
+#: field.au.super_user.label:2815
 msgid "Is Super User"
 msgstr "Գեր օգտվող է"
 
@@ -7193,8 +7230,8 @@ msgstr "Գեր օգտվող է"
 msgid "Record Type"
 msgstr "Գրառման տեսակ"
 
-#: field.vqbr.attributes.label:332 field.vqar.attributes.label:452
-#: field.mra.attrs.label:750
+#: field.vqbr.attributes.label:334 field.vqar.attributes.label:454
+#: field.mra.attrs.label:752
 msgid "Attributes"
 msgstr "Բաղադրիչներ"
 
@@ -7218,11 +7255,11 @@ msgstr "Հաճախորդի ZIP կոդ"
 msgid "Resource Attributes"
 msgstr "Պաշարի բնութագրիչներ"
 
-#: field.siss.holding_type.label:4326 field.smhc.holding_type.label:4500
+#: field.siss.holding_type.label:4457 field.smhc.holding_type.label:4631
 msgid "Holding Type"
 msgstr "Պահման տեսակ"
 
-#: field.brt.elbow_room.label:3653
+#: field.brt.elbow_room.label:3784
 msgid "Inter-booking and Inter-circulation Interval"
 msgstr "Միջ-պատվերի և միջ-տացքի տիրույթ"
 
@@ -7233,21 +7270,21 @@ msgstr "Անձնանունների խորագրեր (նորմալացված)"
 #: field.asc.checkout_archive.label:5393
 #: field.actsc.checkout_archive.label:5446
 msgid "Checkout Archive"
-msgstr ""
+msgstr "Դուրս տրումների արխիվ"
 
 #: class.acqedim.label:8046
 msgid "EDI Message"
 msgstr "EDI հաղորդագրություն"
 
-#: field.atevdef.params.label:1020
+#: field.atevdef.params.label:1030
 msgid "Parameters"
 msgstr "Պարամետրեր"
 
-#: field.ahn.id.label:3930
+#: field.ahn.id.label:4061
 msgid "Notification ID"
 msgstr "Հիշեցման ID"
 
-#: field.cmf.search_field.label:2167
+#: field.cmf.search_field.label:2288
 msgid "Search Field"
 msgstr "Փնտրման դաշտ"
 
@@ -7264,7 +7301,7 @@ msgstr "Խմբագրիչ"
 msgid "HAVING Clause"
 msgstr "HAVING պահանջ"
 
-#: class.ccmw.label:1317
+#: class.ccmw.label:1407
 msgid "Circ Matrix Weights"
 msgstr "Տացքի մատրիցայի քաշեր"
 
@@ -7290,7 +7327,7 @@ msgstr "Ծննդյան ամսաթիվ"
 msgid "Country"
 msgstr "Երկիր"
 
-#: field.bre.creator.label:2406
+#: field.bre.creator.label:2527
 msgid "Record Creator"
 msgstr "Գրառման ստեղծող"
 
@@ -7298,7 +7335,7 @@ msgstr "Գրառման ստեղծող"
 msgid "EDI Message Body"
 msgstr "EDI հաղորդագրության մարմին"
 
-#: field.cwa.id.label:1348
+#: field.cwa.id.label:1442
 msgid "Assoc ID"
 msgstr "Կապված ID"
 
@@ -7321,15 +7358,15 @@ msgstr "Հավաքածուի կոդ"
 msgid "Total Allocation Amount"
 msgstr "Ընդհանուր բաշխված գումար"
 
-#: field.sdist.bind_call_number.label:4187
+#: field.sdist.bind_call_number.label:4318
 msgid "Bind Call Number"
 msgstr "Կազմի դասիչի համար"
 
-#: field.atevdef.reactor.label:1007
+#: field.atevdef.reactor.label:1017 field.atul.reactor.label:1150
 msgid "Reactor"
 msgstr "Ռեակտոր"
 
-#: field.cmf.weight.label:2165
+#: field.cmf.weight.label:2286
 msgid "Weight"
 msgstr "Քաշ"
 
@@ -7342,7 +7379,7 @@ msgstr "Վճարվող տրանզակցիաներ"
 msgid "Parent Organizational Unit"
 msgstr "Ծնող կազմակերպչական միավոր"
 
-#: field.au.photo_url.label:2688
+#: field.au.photo_url.label:2809
 msgid "Photo URL"
 msgstr "Նկարի URL"
 
@@ -7350,11 +7387,11 @@ msgstr "Նկարի URL"
 msgid "Payments: All"
 msgstr "Վճարումներ։ Բոլորը"
 
-#: field.asv.questions.label:4715
+#: field.asv.questions.label:4846
 msgid "Questions"
 msgstr "Հարցեր"
 
-#: field.atevdef.env.label:1019
+#: field.atevdef.env.label:1029
 msgid "Environment Entries"
 msgstr "Միջավայրի մուտքեր"
 
@@ -7374,7 +7411,7 @@ msgstr "Նպատակային բյուջե"
 msgid "Parent Expression"
 msgstr "Ծնող արտահայտություն"
 
-#: class.acnp.label:2267
+#: class.acnp.label:2388
 msgid "Call Number/Volume Prefix"
 msgstr "Դասիչ/Հատորի նախածանց"
 
@@ -7390,7 +7427,7 @@ msgstr "Ֆունկցիայի կանչի ID"
 msgid "Check Number"
 msgstr "Ստուգիչ թիվ"
 
-#: field.au.ident_value.label:2680
+#: field.au.ident_value.label:2801
 msgid "Primary Identification"
 msgstr "Սկզբնական ճանաչում"
 
@@ -7401,7 +7438,7 @@ msgstr "Սկզբնական ճանաչում"
 msgid "Cancel Reason"
 msgstr "Չեղյալ անելու պատճառ"
 
-#: field.mrd.char_encoding.label:3111
+#: field.mrd.char_encoding.label:3237
 msgid "Character Encoding"
 msgstr "Նիշերի կոդավորում"
 
@@ -7413,11 +7450,11 @@ msgstr "Իրադարձության ամսաթիվ"
 msgid "Total Circulation Count"
 msgstr "Ընդհանուր սպասարկման հաշվիչ"
 
-#: field.au.money_summary.label:2705
+#: field.au.money_summary.label:2826
 msgid "Money Summary"
 msgstr "Փողի հաշվեկշիռ"
 
-#: field.sdist.receive_call_number.label:4185
+#: field.sdist.receive_call_number.label:4316
 msgid "Receive Call Number"
 msgstr "Ստացման դասիչի համար"
 
@@ -7431,7 +7468,7 @@ msgstr "Փողոց (1)"
 msgid "Cause Label"
 msgstr "Պիտակի պատճառ"
 
-#: field.ocirccount.overdue.label:3376 field.ocirclist.overdue.label:3418
+#: field.ocirccount.overdue.label:3502 field.ocirclist.overdue.label:3544
 msgid "Overdue"
 msgstr "Ժամկետանց"
 
@@ -7448,7 +7485,7 @@ msgstr "Օգտվողի օբյեկտի իրավասությունների քար�
 msgid "Fine Stop Reason"
 msgstr "Տուգանքի կասեցման պատճառ"
 
-#: field.auri.id.label:2330
+#: field.auri.id.label:2451
 msgid "URI ID"
 msgstr "URI ID"
 
@@ -7474,11 +7511,11 @@ msgstr "Օրինակի վիճակ"
 msgid "Encumbrance Amount"
 msgstr "Կուտակված գումար"
 
-#: class.auact.label:2766
+#: class.auact.label:2892
 msgid "User Activity"
-msgstr ""
+msgstr "Օգտվողի գործողություններ"
 
-#: field.atevdef.opt_in_setting.label:1018
+#: field.atevdef.opt_in_setting.label:1028
 msgid "Opt-In Setting Type"
 msgstr "Մասնակից կարգաբերման տեսակ"
 
@@ -7491,7 +7528,7 @@ msgstr "Հաշվեկշիռ"
 msgid "Claim Policy ID"
 msgstr "Պահանջի քաղաքականության ID"
 
-#: field.au.standing_penalties.label:2655
+#: field.au.standing_penalties.label:2776
 msgid "Standing Penalties"
 msgstr "Սպասող տուգանքներ"
 
@@ -7525,11 +7562,11 @@ msgstr "Տեքստի մուտք"
 msgid "Prev Destination Library"
 msgstr "Նախորդ նպատակային գրադարան"
 
-#: field.cin.func.label:661
+#: field.cin.func.label:663
 msgid "Function"
 msgstr "Ֆունկցիա"
 
-#: field.cust.opac_visible.label:2843
+#: field.cust.opac_visible.label:2969
 msgid "OPAC/Patron Visible"
 msgstr "ՀՕԱՔ/Ընթերցող տեսանելի է"
 
@@ -7558,23 +7595,23 @@ msgstr "Մուտք արա բանալին"
 msgid "Total Circs"
 msgstr "Գումարային տացքեր"
 
-#: field.chdd.ceiling_date.label:2580
+#: field.chdd.ceiling_date.label:2701
 msgid "Current Ceiling Date"
 msgstr "Ընթացիկ մաքսիմալ ամսաթիվ"
 
-#: field.ocirccount.lost.label:3377 field.ocirclist.lost.label:3419
+#: field.ocirccount.lost.label:3503 field.ocirclist.lost.label:3545
 msgid "Lost"
 msgstr "Կորած"
 
-#: field.ccls.items_out.label:1500
+#: field.ccls.items_out.label:1596
 msgid "Items Out"
 msgstr "Նյութեր դրսում"
 
 #: class.aouct.label:5318
 msgid "Org Unit Custom Tree"
-msgstr ""
+msgstr "Կազմ միավորի հաճախորդի ծառ"
 
-#: class.aoup.label:4688
+#: class.aoup.label:4819
 msgid "Org Unit Proximity"
 msgstr "Կազմ միավորի մոտարկում"
 
@@ -7582,13 +7619,17 @@ msgstr "Կազմ միավորի մոտարկում"
 msgid "Remove"
 msgstr "Հեռացնել"
 
-#: field.bre.authority_links.label:2431
+#: field.bre.authority_links.label:2552
 msgid "Authority Links"
 msgstr "Հեղինակավոր կապեր"
 
-#: field.at.code.label:1933
+#: class.asfg.label:4913
+msgid "Search Filter Group"
+msgstr "Փնտրման զտիչի խումբ"
+
+#: field.at.code.label:2054
 msgid "Thesaurus Code"
-msgstr ""
+msgstr "Տեզաուրուսի կոդ"
 
 #: class.qcb.label:8890
 msgid "Case Branch"
@@ -7601,7 +7642,7 @@ msgstr "պատճառի ճյուղ"
 msgid "Recurring Fine Amount"
 msgstr "Կրկնվող տուգանքի մեծություն"
 
-#: field.asv.end_date.label:4718
+#: field.asv.end_date.label:4849
 msgid "Survey End Date/Time"
 msgstr "Հարցախույզի ավարտի օր/ժամ"
 
@@ -7609,7 +7650,7 @@ msgstr "Հարցախույզի ավարտի օր/ժամ"
 msgid "Transaction Start Timestamp"
 msgstr "Տրանզակցիայի սկսվելու ժամանակի դրոշմ"
 
-#: field.bresv.target_resource.label:3812
+#: field.bresv.target_resource.label:3943
 msgid "Target Resource"
 msgstr "Թիրախ պաշար"
 
@@ -7636,9 +7677,9 @@ msgstr "Դատարկիր ժամանակային կնիքը"
 
 #: field.acqmapinv.invoice.label:10053
 msgid "Invoice ID"
-msgstr ""
+msgstr "Հաշվի ID"
 
-#: field.au.billable_transactions.label:2704
+#: field.au.billable_transactions.label:2825
 msgid "Billable Transactions"
 msgstr "Վճարվող տրանզակցիաներ"
 
@@ -7648,6 +7689,9 @@ msgstr "Վճարվող տրանզակցիաներ"
 #~ msgid ""
 #~ "Circulation Matrix Circulation Modifier Subtest Circulation Modifier Set"
 #~ msgstr "Տացքի մատրիցա Տացքի ձևափոխիչի ենթատեստ Տացքի ձևափոխիչի բազմություն"
+
+#~ msgid "Suffix/Title"
+#~ msgstr "Նախածանց/կոչում"
 
 #~ msgid "Test ID"
 #~ msgstr "Թեստ ID"

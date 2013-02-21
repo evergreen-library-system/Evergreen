@@ -79,10 +79,6 @@ msgstr "Remplacer le code à barres"
 msgid "An address is required during registration."
 msgstr "Une adresse est requise lors de l'inscription."
 
-#: register.js:ALL_CARDS_PRIMARY
-msgid "Primary"
-msgstr ""
-
 #: register.js:BARCODE_IN_USE
 msgid "Barcode is already in use"
 msgstr "Le code à barres est déjà utilisé"
@@ -164,9 +160,9 @@ msgstr "Sauvegarder &amp; Cloner"
 msgid "Statistical Categories"
 msgstr "Catégories statistiques"
 
-#: register.js:ALL_CARDS_BARCODE
-msgid "Barcode"
-msgstr ""
+#: register.js:ADDRESS_NEW
+msgid "New Address"
+msgstr "Nouvelle adresse"
 
 #: register.js:RESET_PASSWORD
 msgid "Reset Password"

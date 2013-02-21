@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2012-12-20 09:37-0400\n"
+"POT-Creation-Date: 2013-01-16 10:36-0400\n"
 "PO-Revision-Date: 2012-08-14 13:12+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-12-21 04:54+0000\n"
-"X-Generator: Launchpad (build 16378)\n"
+"X-Launchpad-Export-Date: 2013-01-17 04:37+0000\n"
+"X-Generator: Launchpad (build 16430)\n"
 
 #: 950.data.seed-values.sql:6231
 msgid "Tamil"
@@ -91,7 +91,7 @@ msgstr "Fanti"
 
 #: 950.data.seed-values.sql:2494
 msgid "OPAC"
-msgstr ""
+msgstr "ՀՕԱՔ"
 
 # id::crcd.name__1
 # id::1
@@ -130,7 +130,7 @@ msgstr "Ganda"
 
 #: 950.data.seed-values.sql:33
 msgid "Alerting block on Circ"
-msgstr ""
+msgstr "Տացքի նախազգուշացման բլոկ"
 
 # id::clm.value__sat
 # id::sat
@@ -206,13 +206,13 @@ msgstr "Հիմնաբառ"
 msgid "Renew Circulations"
 msgstr "Թարմացրու տացքերը։"
 
-#: 950.data.seed-values.sql:10069
+#: 950.data.seed-values.sql:10194
 msgid "See Also Tracing -- Chronological Subdivision"
-msgstr ""
+msgstr "Տես նաև հետագիծը -- Ժամանակագրական ենթաբաժին"
 
-#: 950.data.seed-values.sql:9313
+#: 950.data.seed-values.sql:9438
 msgid "Overlay failed due to missing system id"
-msgstr ""
+msgstr "Վերդնումը ձախողվեց բացակա համակարգային id-ի պատճառով"
 
 # id::clm.value__cel
 # id::cel
@@ -236,9 +236,9 @@ msgstr "Hiligaynon"
 msgid "Kachin"
 msgstr "Kachin"
 
-#: 950.data.seed-values.sql:10024
+#: 950.data.seed-values.sql:10149
 msgid "Heading -- Meeting Name"
-msgstr ""
+msgstr "Վերնախորագիր -- Հանդիպման անուն"
 
 # id::crmf.name__4
 # id::4
@@ -248,11 +248,11 @@ msgstr "overdue_max"
 
 #: 950.data.seed-values.sql:2500
 msgid "Recalls"
-msgstr ""
+msgstr "Հետ կանչեր"
 
 #: 950.data.seed-values.sql:1615
 msgid "Volunteers"
-msgstr ""
+msgstr "Կամավորներ"
 
 # id::clfm.value__j
 # id::j
@@ -266,20 +266,20 @@ msgstr "Կարճ պատմվածքներ"
 msgid "Pangasinan"
 msgstr "Pangasinan"
 
-#: 950.data.seed-values.sql:8815 950.data.seed-values.sql:8865
-#: 950.data.seed-values.sql:8866
+#: 950.data.seed-values.sql:8940 950.data.seed-values.sql:8990
+#: 950.data.seed-values.sql:8991
 msgid "Historical Circulation Retention Age"
 msgstr "Տացքի պատմության պահպանման տարիք"
 
-#: 950.data.seed-values.sql:10141
+#: 950.data.seed-values.sql:10266
 msgid "LC subject headings for children's literature"
-msgstr ""
+msgstr "Կոնգրեսի գրադարանի խորագրեր մանկական գրականության համար"
 
 #: 950.data.seed-values.sql:2496
 msgid "Global"
-msgstr ""
+msgstr "Ընդհանուր"
 
-#: 950.data.seed-values.sql:8722
+#: 950.data.seed-values.sql:8846
 msgid "Tax"
 msgstr "Տուրք"
 
@@ -319,7 +319,7 @@ msgstr "Tongan"
 msgid "Ijo"
 msgstr "Ijo"
 
-#: 950.data.seed-values.sql:8726
+#: 950.data.seed-values.sql:8850
 msgid "Non-library Item"
 msgstr "Ոչ գրադարանային նյութ"
 
@@ -335,7 +335,7 @@ msgstr "Gilbertese"
 msgid "Damaged"
 msgstr "Վնասված"
 
-#: 950.data.seed-values.sql:8886 950.data.seed-values.sql:8887
+#: 950.data.seed-values.sql:9011 950.data.seed-values.sql:9012
 msgid "Historical Hold Retention Start Date"
 msgstr "Պահման պատմության տարիքի սկզբնավորման ամսաթիվ"
 
@@ -351,13 +351,14 @@ msgstr "Ավտոգրադարան"
 msgid "Kawi"
 msgstr "Kawi"
 
-#: 950.data.seed-values.sql:10143
+#: 950.data.seed-values.sql:10268
 msgid "National Agricultural Library subject authority file"
 msgstr ""
+"Գյուղատնտեսական գրականության ազգային գրադարանի խորագրերի հեղինակավոր ֆայլ"
 
 #: 950.data.seed-values.sql:2487
 msgid "GUI"
-msgstr ""
+msgstr "GUI"
 
 # id::clm.value__kok
 # id::kok
@@ -460,7 +461,7 @@ msgstr "Ingush"
 
 #: 950.data.seed-values.sql:31
 msgid "Alerting Note, no blocks"
-msgstr ""
+msgstr "Զգուշացման նշում, բլոկներ չկան"
 
 # id::clm.value__dzo
 # id::dzo
@@ -510,7 +511,7 @@ msgstr "Herero"
 
 #: 950.data.seed-values.sql:1613
 msgid "Data Review"
-msgstr ""
+msgstr "Տվյալների վերանայում"
 
 # id::crcd.name__3
 # id::3
@@ -518,13 +519,13 @@ msgstr ""
 msgid "3_months_0_renew"
 msgstr "3_months_0_renew"
 
-#: 950.data.seed-values.sql:10028
+#: 950.data.seed-values.sql:10153
 msgid "Heading -- General Subdivision"
-msgstr ""
+msgstr "Վերնախորագիր -- Ընդհանուր ենթաբաժին"
 
 #: 950.data.seed-values.sql:1607
 msgid "System Administrator"
-msgstr ""
+msgstr "Համակարգային կառավարիչ"
 
 # id::clm.value__lav
 # id::lav
@@ -546,7 +547,7 @@ msgstr "Չիմացված կամ չբնութագրված"
 
 #: 950.data.seed-values.sql:2504
 msgid "SMS Text Messages"
-msgstr ""
+msgstr "SMS տեքստային հաղորդագրություն"
 
 # id::cam.value__j
 # id::j
@@ -560,9 +561,9 @@ msgstr "Պատանեկան"
 msgid "Chinese"
 msgstr "Չիներեն"
 
-#: 950.data.seed-values.sql:10146
+#: 950.data.seed-values.sql:10271
 msgid "Art and Architecture Thesaurus"
-msgstr ""
+msgstr "Արվեստի և ճարտարապետության տեզաուրուս"
 
 # id::clm.value__iku
 # id::iku
@@ -636,9 +637,9 @@ msgstr "Kutenai"
 msgid "Oriya"
 msgstr "Oriya"
 
-#: 950.data.seed-values.sql:11551
+#: 950.data.seed-values.sql:11676
 msgid "Verification via opensrf"
-msgstr ""
+msgstr "Ստուգում opensrf միջոցով"
 
 #: 950.data.seed-values.sql:115
 msgid "Abbreviated Title"
@@ -650,13 +651,13 @@ msgstr "Կրճատված վերնագիր"
 msgid "Nyankole"
 msgstr "Nyankole"
 
-#: 950.data.seed-values.sql:10030
+#: 950.data.seed-values.sql:10155
 msgid "Heading -- Chronological Subdivision"
-msgstr ""
+msgstr "Վերնախորագիր --Ժամանակագրական ենթաբաժին"
 
 #: 950.data.seed-values.sql:2503
 msgid "Receipt Template"
-msgstr ""
+msgstr "Ստացման ձևանմուշ"
 
 #: 950.data.seed-values.sql:332
 msgid "English (Canada)"
@@ -680,9 +681,9 @@ msgstr "Ewondo"
 msgid "Mexican Spanish"
 msgstr "Մեքսիկական իսպաներեն"
 
-#: 950.data.seed-values.sql:10031
+#: 950.data.seed-values.sql:10156
 msgid "Heading -- Form Subdivision"
-msgstr ""
+msgstr "Վերնախորագիր -- Ձևի ենթաբաժին"
 
 # id::clm.value__abk
 # id::abk
@@ -742,7 +743,7 @@ msgstr "Manchu"
 
 #: 950.data.seed-values.sql:32
 msgid "Note, no blocks"
-msgstr ""
+msgstr "Նշում, բլոկներ չկան"
 
 # id::aou.name__1
 # id::1
@@ -793,7 +794,7 @@ msgstr "Hiri Motu"
 
 #: 950.data.seed-values.sql:2491
 msgid "Holds"
-msgstr ""
+msgstr "Պահումներ"
 
 # id::cnal.name__3
 # id::3
@@ -807,7 +808,7 @@ msgstr "Ոչ մատչելի"
 msgid "Canadian English"
 msgstr "Կանադական անգլերեն"
 
-#: 950.data.seed-values.sql:8727
+#: 950.data.seed-values.sql:8851
 msgid "Serial Subscription"
 msgstr "Պարբերականի բաժանորդագրություն"
 
@@ -823,9 +824,9 @@ msgstr "Braj"
 msgid "Baltic (Other)"
 msgstr "Baltic (այլ)"
 
-#: 950.data.seed-values.sql:9324
+#: 950.data.seed-values.sql:9449
 msgid "Invalid value for \"deposit_amount\""
-msgstr ""
+msgstr "Սխալ արժեք \"deposit_amount\""
 
 # id::clfm.value__h
 # id::h
@@ -833,9 +834,9 @@ msgstr ""
 msgid "Humor, satires, etc."
 msgstr "Հումոր, սատիրա, այլ"
 
-#: 950.data.seed-values.sql:11548
+#: 950.data.seed-values.sql:11673
 msgid "SIP2 Proxy Login"
-msgstr ""
+msgstr "SIP2 միջնորդավորված գրանցում"
 
 # id::citm.value__m
 # id::m
@@ -849,9 +850,9 @@ msgstr "Համակարգչային ֆայլ"
 msgid "Philippine (Other)"
 msgstr "Philippine (այլ)"
 
-#: 950.data.seed-values.sql:10057
+#: 950.data.seed-values.sql:10182
 msgid "Subdivision Linking Entry -- Form Subdivision"
-msgstr ""
+msgstr "Ենթաբաժնի կապի մուտք -- Ձևի ենթաբաժին"
 
 # id::clm.value__ger
 # id::ger
@@ -859,17 +860,17 @@ msgstr ""
 msgid "German"
 msgstr "Գերմաներեն"
 
-#: 950.data.seed-values.sql:8729
+#: 950.data.seed-values.sql:8853
 msgid "EDI"
 msgstr "ՓԷՏ"
 
-#: 950.data.seed-values.sql:9308
+#: 950.data.seed-values.sql:9433
 msgid "Import failed due to barcode collision"
-msgstr ""
+msgstr "ներմուծումը տապալվեց կապված շտրիխ կոդի կոլլիզիայի հետ"
 
 #: 950.data.seed-values.sql:2488
 msgid "Library"
-msgstr ""
+msgstr "Գրադարան"
 
 # id::clm.value__sla
 # id::sla
@@ -903,7 +904,7 @@ msgstr "oclc"
 
 #: 950.data.seed-values.sql:1604 950.data.seed-values.sql:2499
 msgid "Serials"
-msgstr ""
+msgstr "Պարբերականներ"
 
 # id::clm.value__bnt
 # id::bnt
@@ -911,11 +912,11 @@ msgstr ""
 msgid "Bantu (Other)"
 msgstr "Bantu (այլ)"
 
-#: 950.data.seed-values.sql:10022
+#: 950.data.seed-values.sql:10147
 msgid "Heading -- Personal Name"
 msgstr "Վերնախորագիր -- Անձնանուն"
 
-#: 950.data.seed-values.sql:10050
+#: 950.data.seed-values.sql:10175
 msgid "Established Heading Linking Entry -- Meeting Name"
 msgstr "Հաստատված վերնախորագրի կապի մուտք -- Հանդիպման անուն"
 
@@ -979,7 +980,7 @@ msgstr "Grebo"
 
 #: 950.data.seed-values.sql:2497
 msgid "Finances"
-msgstr ""
+msgstr "Ֆինանսներ"
 
 # id::crcd.name__2
 # id::2
@@ -1037,7 +1038,7 @@ msgstr "Kru"
 
 #: 950.data.seed-values.sql:2501
 msgid "Booking"
-msgstr ""
+msgstr "Ամրագրում"
 
 # id::clm.value__goh
 # id::goh
@@ -1063,7 +1064,7 @@ msgstr "Ընկերներ"
 
 #: 950.data.seed-values.sql:23
 msgid "Patron exceeds fine threshold"
-msgstr ""
+msgstr "Հաճախորդը գերազանցեց տուգանքի շեմը"
 
 # id::clm.value__day
 # id::day
@@ -1109,7 +1110,7 @@ msgstr "Ոչ երաժշտական ձայներիզներ"
 msgid "Patrons"
 msgstr "Ընթերցողներ"
 
-#: 950.data.seed-values.sql:8724
+#: 950.data.seed-values.sql:8848
 msgid "Shipping Charge"
 msgstr "Առաքման ծախս"
 
@@ -1171,9 +1172,9 @@ msgstr "Kinyarwanda"
 msgid "Interlingue"
 msgstr "Interlingue"
 
-#: 950.data.seed-values.sql:11569
+#: 950.data.seed-values.sql:11694
 msgid "EZProxy Verification"
-msgstr ""
+msgstr "EZProxy ստուգում"
 
 # id::ccs.name__12
 # id::12
@@ -1193,9 +1194,9 @@ msgstr "Hebrew"
 msgid "Esperanto"
 msgstr "Էսպերանտո"
 
-#: 950.data.seed-values.sql:9322
+#: 950.data.seed-values.sql:9447
 msgid "Invalid value for \"price\""
-msgstr ""
+msgstr "Անիրական արժեք \"գնի\" համար"
 
 # id::clm.value__cpf
 # id::cpf
@@ -1238,9 +1239,9 @@ msgstr "Հեղինակ"
 msgid "System Local"
 msgstr "System Local"
 
-#: 950.data.seed-values.sql:11555
+#: 950.data.seed-values.sql:11680
 msgid "Verification via xmlrpc"
-msgstr ""
+msgstr "Ստուգում xmlrpc օգնությամբ"
 
 # id::clm.value__new
 # id::new
@@ -1266,13 +1267,13 @@ msgstr "2_months_2_renew"
 msgid "Unfiltered"
 msgstr "Չզտված"
 
-#: 950.data.seed-values.sql:10062
+#: 950.data.seed-values.sql:10187
 msgid "See Also Tracing -- Corporate Name"
-msgstr ""
+msgstr "Տես նաև հետագիծ -- Համատեղ անուն"
 
 #: 950.data.seed-values.sql:41
 msgid "Patron has been referred to a collections agency"
-msgstr ""
+msgstr "Հաճախորդը ուղղորդվել է դեպի հավաքածուների գործակալություն"
 
 # id::clm.value__tah
 # id::tah
@@ -1292,9 +1293,9 @@ msgstr "Fula"
 msgid "Microfilm"
 msgstr "Միկրոֆիլմ"
 
-#: 950.data.seed-values.sql:10027
+#: 950.data.seed-values.sql:10152
 msgid "Heading -- Genre/Form Term"
-msgstr ""
+msgstr "Վերնախորագիր -- Ժանրի/Ձևի տերմին"
 
 # id::clm.value__nub
 # id::nub
@@ -1345,9 +1346,9 @@ msgstr "Մենագրություն/Նյութ"
 msgid "Pushto"
 msgstr "Pushto"
 
-#: 950.data.seed-values.sql:10055
+#: 950.data.seed-values.sql:10180
 msgid "Subdivision Linking Entry -- Geographic Subdivision"
-msgstr ""
+msgstr "Ենթաբաժնի կապի մուտք -- Աշխարհագրական ենթաբաժին"
 
 # id::cifm.value__b
 # id::b
@@ -1403,9 +1404,9 @@ msgstr "Անհատական հեղինակ"
 msgid "Galician"
 msgstr "Գալիցերեն"
 
-#: 950.data.seed-values.sql:11560
+#: 950.data.seed-values.sql:11685
 msgid "OPAC Login (jspac)"
-msgstr ""
+msgstr "ՀՕԱՔ մուտք (jspac)"
 
 # id::clm.value__mad
 # id::mad
@@ -1437,9 +1438,9 @@ msgstr "Sango (Ubangi Creole)"
 msgid "Khasi"
 msgstr "Khasi"
 
-#: 950.data.seed-values.sql:9332
+#: 950.data.seed-values.sql:9457
 msgid "Invalid value for \"circ_as_type\""
-msgstr ""
+msgstr "Անիրական արժեք \"circ_as_type\" համար"
 
 #: 950.data.seed-values.sql:99
 msgid "Subject"
@@ -1457,9 +1458,9 @@ msgstr "Marshallese"
 msgid "Yao (Africa)"
 msgstr "Yao (Africa)"
 
-#: 950.data.seed-values.sql:10071
+#: 950.data.seed-values.sql:10196
 msgid "See Also Tracing -- Chronological Term"
-msgstr ""
+msgstr "Տես նաև հետագիծը -- Ժամանակագրական տերմին"
 
 # id::clm.value__mar
 # id::mar
@@ -1473,9 +1474,9 @@ msgstr "Marathi"
 msgid "Slovenian"
 msgstr "Սլովեներեն"
 
-#: 950.data.seed-values.sql:9311 950.data.seed-values.sql:9312
+#: 950.data.seed-values.sql:9436 950.data.seed-values.sql:9437
 msgid "Import failed due to system id collision"
-msgstr ""
+msgstr "Ներմուծումը ձախողվեց համկարգային id-ի կոլլիզիայի պատճառով"
 
 # id::clm.value__sal
 # id::sal
@@ -1483,13 +1484,13 @@ msgstr ""
 msgid "Salishan languages"
 msgstr "Salishan languages"
 
-#: 950.data.seed-values.sql:11568
+#: 950.data.seed-values.sql:11693
 msgid "Self-Check User Verification"
-msgstr ""
+msgstr "Օգտվողի ինքնահանձնման ստուգում"
 
-#: 950.data.seed-values.sql:10026
+#: 950.data.seed-values.sql:10151
 msgid "Heading -- Geographic Name"
-msgstr ""
+msgstr "Վերնախորագիր -- Աշխարհագրական անուն"
 
 # id::clm.value__san
 # id::san
@@ -1574,9 +1575,10 @@ msgstr "Օրինակ մասնաճյուղ 1"
 msgid "Komi"
 msgstr "Komi"
 
-#: 950.data.seed-values.sql:10009
+#: 950.data.seed-values.sql:10134
 msgid "Library of Congress standard authority record control semantics"
 msgstr ""
+"Կոնգրեսի գրադարանի ստանդարտ հեղինակավոր գրառման վերահսկման շարահյուսություն"
 
 # id::clm.value__hit
 # id::hit
@@ -1590,9 +1592,9 @@ msgstr "Հեթիթերեն"
 msgid "Turkmen"
 msgstr "Թուրքմեներեն"
 
-#: 950.data.seed-values.sql:10064
+#: 950.data.seed-values.sql:10189
 msgid "See Also Tracing -- Topical Term"
-msgstr ""
+msgstr "Տես նաև հետագիծ -- Թեմատիկ տերմին"
 
 # id::clm.value__suk
 # id::suk
@@ -1608,7 +1610,7 @@ msgstr "Խառը նյութեր"
 
 #: 950.data.seed-values.sql:2489
 msgid "Security"
-msgstr ""
+msgstr "Անվտանգություն"
 
 # id::ccs.name__8
 # id::8
@@ -1616,9 +1618,9 @@ msgstr ""
 msgid "On holds shelf"
 msgstr "Պահված դարակի վրա"
 
-#: 950.data.seed-values.sql:11552
+#: 950.data.seed-values.sql:11677
 msgid "Verification via srfsh"
-msgstr ""
+msgstr "Ստուգում srfsh օգնությամբ"
 
 # id::clm.value__ypk
 # id::ypk
@@ -1632,9 +1634,9 @@ msgstr "Yupik languages"
 msgid "Tuvaluan"
 msgstr "Tuvaluan"
 
-#: 950.data.seed-values.sql:10150
+#: 950.data.seed-values.sql:10275
 msgid "No attempt to code"
-msgstr ""
+msgstr "Չկա կոդին դիմելու փորձ"
 
 # id::clm.value__nso
 # id::nso
@@ -1659,9 +1661,9 @@ msgstr "Գերմանական (այլ)"
 msgid "Item Type"
 msgstr "Նյութի տեսակ"
 
-#: 950.data.seed-values.sql:9334
+#: 950.data.seed-values.sql:9459
 msgid "Perm failure creating a record"
-msgstr ""
+msgstr "Գրառում ստեղծելիս ձախողում"
 
 # id::clm.value__kab
 # id::kab
@@ -1721,9 +1723,9 @@ msgstr "Ենթագրադարան"
 msgid "Cherokee"
 msgstr "Cherokee"
 
-#: 950.data.seed-values.sql:10029
+#: 950.data.seed-values.sql:10154
 msgid "Heading -- Geographic Subdivision"
-msgstr ""
+msgstr "Վերնախորագիր -- Աշխարհագրական ենթաբաժին"
 
 # id::ccs.name__5
 # id::5
@@ -1733,13 +1735,13 @@ msgstr "Գործողության մեջ"
 
 #: 950.data.seed-values.sql:35
 msgid "Alerting block on Circ and Renew"
-msgstr ""
+msgstr "Զգուշացման բլոկ Տացքում և Պահումներում"
 
 #: 950.data.seed-values.sql:2495
 msgid "Program"
-msgstr ""
+msgstr "Ծրագիր"
 
-#: 950.data.seed-values.sql:8892 950.data.seed-values.sql:8893
+#: 950.data.seed-values.sql:9017 950.data.seed-values.sql:9018
 msgid "Historical Hold Retention Count"
 msgstr "Պահման պատմական ժամկետի հաշվիչ"
 
@@ -1777,13 +1779,13 @@ msgstr "Malagasy"
 msgid "Tlingit"
 msgstr "Tlingit"
 
-#: 950.data.seed-values.sql:10066
+#: 950.data.seed-values.sql:10191
 msgid "See Also Tracing -- Genre/Form Term"
-msgstr ""
+msgstr "Տես նաև հետագիծը -- Ժանրի/Ձևի տերմին"
 
-#: 950.data.seed-values.sql:10015
+#: 950.data.seed-values.sql:10140
 msgid "See Also From Tracing -- Uniform Title"
-msgstr ""
+msgstr "Տես նաև Հետագծից - Համընդհանուր վերնագիր"
 
 # id::clm.value__mao
 # id::mao
@@ -1809,9 +1811,9 @@ msgstr "Bamileke languages"
 msgid "Igbo"
 msgstr "Igbo"
 
-#: 950.data.seed-values.sql:11562
+#: 950.data.seed-values.sql:11687
 msgid "Staff Client Login"
-msgstr ""
+msgstr "Աշխատակազմի հաճախորդի գրանցման մուտք"
 
 # id::clm.value__lad
 # id::lad
@@ -1853,13 +1855,13 @@ msgstr "Phoenician"
 msgid "Sorbian languages"
 msgstr "Sorbian languages"
 
-#: 950.data.seed-values.sql:10036
+#: 950.data.seed-values.sql:10161
 msgid "See Also From Tracing -- Corporate Name"
-msgstr ""
+msgstr "Տես նաև Հետագծից -- Համատեղ անուն"
 
-#: 950.data.seed-values.sql:9309
+#: 950.data.seed-values.sql:9434
 msgid "Import failed due to invalid circulation modifier"
-msgstr ""
+msgstr "Ներմուծումը տապալվեց տացքի անիրական ձևափոխիչի պատճառով"
 
 # id::cam.value__a
 # id::a
@@ -1881,7 +1883,7 @@ msgstr "Norwegian (Bokmål)"
 
 #: 950.data.seed-values.sql:2492
 msgid "Circulation"
-msgstr ""
+msgstr "Տացք"
 
 # id::clm.value__bal
 # id::bal
@@ -1955,9 +1957,9 @@ msgstr "Բազմություն"
 msgid "Moldavian"
 msgstr "Մոլդավերեն"
 
-#: 950.data.seed-values.sql:10051
+#: 950.data.seed-values.sql:10176
 msgid "Established Heading Linking Entry -- Topical Term"
-msgstr ""
+msgstr "Կայացած վերնախորագրի կապի մուտք -- Թեմատիկ անուն"
 
 #: 950.data.seed-values.sql:6363
 msgid "U-matic"
@@ -1983,7 +1985,7 @@ msgstr "Հետ-առ-հետ"
 
 #: 950.data.seed-values.sql:40
 msgid "Patron has an invalid address"
-msgstr ""
+msgstr "Հաճախորդը ունի անիրական հասցե"
 
 # id::clm.value__ava
 # id::ava
@@ -1993,7 +1995,7 @@ msgstr "Avaric"
 
 #: 950.data.seed-values.sql:27
 msgid "Patron exceeds max checked out item threshold"
-msgstr ""
+msgstr "Հաճախորդը գերազանցում է ամենաշատ դուրս տրված նյութերի շեմը"
 
 # id::clm.value__uig
 # id::uig
@@ -2003,15 +2005,15 @@ msgstr "Uighur"
 
 #: 950.data.seed-values.sql:176
 msgid "LC Control Number"
-msgstr ""
+msgstr "Կոնգրեսի գրադարանի ստուգիչ համար"
 
 #: 950.data.seed-values.sql:1602
 msgid "Can do anything at the Branch level"
-msgstr ""
+msgstr "Կարող է մասնաճյուղի մակարդակում անել ամեն ինչ"
 
-#: 950.data.seed-values.sql:11544
+#: 950.data.seed-values.sql:11669
 msgid "Login via gateway-v1"
-msgstr ""
+msgstr "մուտքի գրանցում gateway-v1 միջոցով"
 
 # id::clm.value__gmh
 # id::gmh
@@ -2035,9 +2037,9 @@ msgstr "Maithili"
 msgid "Circulators"
 msgstr "Տացքեր"
 
-#: 950.data.seed-values.sql:10032
+#: 950.data.seed-values.sql:10157
 msgid "Heading -- Chronological Term"
-msgstr ""
+msgstr "Վերնախորագիր -- Ժամանակագրական տերմին"
 
 # id::clm.value__tai
 # id::tai
@@ -2061,18 +2063,18 @@ msgstr "Ճապոներեն"
 msgid "Topic Subject"
 msgstr "Թեմատիկ խորագիր"
 
-#: 950.data.seed-values.sql:10148
+#: 950.data.seed-values.sql:10273
 msgid "Repertoire de vedettes-matiere"
-msgstr ""
+msgstr "Repertoire de vedettes-matiere"
 
 #: 950.data.seed-values.sql:25
 msgid "Patron exceeds max overdue item threshold"
-msgstr ""
+msgstr "Հաճախորդը գերազանցում է ամենամեծ ժամկետանցի շեմը"
 
 # id::cit.name__3
 # id::3
 #: 950.data.seed-values.sql:240 950.data.seed-values.sql:6379
-#: 950.data.seed-values.sql:10149
+#: 950.data.seed-values.sql:10274
 msgid "Other"
 msgstr "Այլ"
 
@@ -2082,9 +2084,9 @@ msgstr "Այլ"
 msgid "Old Persian (ca. 600-400 B.C.)"
 msgstr "Հին պարսկերեն (մոտ. 600-400 B.C.)"
 
-#: 950.data.seed-values.sql:10045
+#: 950.data.seed-values.sql:10170
 msgid "See Also From Tracing -- Chronological Term"
-msgstr ""
+msgstr "Տես նաև այս հետագծից -- Ժամանակագրական տերմին"
 
 # id::citm.value__k
 # id::k
@@ -2098,7 +2100,7 @@ msgstr "Երկչափանի չպրոեկտվող գրաֆիկա"
 msgid "Balinese"
 msgstr "Balinese"
 
-#: 950.data.seed-values.sql:8871 950.data.seed-values.sql:8872
+#: 950.data.seed-values.sql:8996 950.data.seed-values.sql:8997
 msgid "Historical Circulation Retention Start Date"
 msgstr "Տացքի պատմութան պահպանման սկզբնավորման ամսաթիվ"
 
@@ -2132,7 +2134,7 @@ msgstr "Եգիպտերեն"
 
 #: 950.data.seed-values.sql:1610
 msgid "Global Administrator"
-msgstr ""
+msgstr "Համընդհանուր կառավարիչ"
 
 # id::clm.value__tyv
 # id::tyv
@@ -2142,7 +2144,7 @@ msgstr "Tuvinian"
 
 #: 950.data.seed-values.sql:2498
 msgid "Credit Card Processing"
-msgstr ""
+msgstr "Կրեդիտ քարտի աշխատեցում"
 
 # id::citm.value__o
 # id::o
@@ -2150,7 +2152,7 @@ msgstr ""
 msgid "Kit"
 msgstr "Kit"
 
-#: 950.data.seed-values.sql:8723
+#: 950.data.seed-values.sql:8847
 msgid "Processing Fee"
 msgstr "Գործողության կատարման վճար"
 
@@ -2172,9 +2174,9 @@ msgstr "Maltese"
 msgid "Assamese"
 msgstr "Assamese"
 
-#: 950.data.seed-values.sql:9314
+#: 950.data.seed-values.sql:9439
 msgid "Import failed due to Accession Number collision"
-msgstr ""
+msgstr "Գույքահամարի կոլիզիայի պատճառով ներմուծումը ձախողվեց"
 
 # id::citm.value__r
 # id::r
@@ -2250,9 +2252,9 @@ msgstr "Աշկենազի"
 msgid "Drivers License"
 msgstr "Վարորդական իրավունք"
 
-#: 950.data.seed-values.sql:10054
+#: 950.data.seed-values.sql:10179
 msgid "Subdivision Linking Entry -- General Subdivision"
-msgstr ""
+msgstr "Ենթաբաժնի կապի մուտք -- Համընդհանուր ենթաբաժին"
 
 # id::clm.value__ter
 # id::ter
@@ -2286,9 +2288,9 @@ msgstr "Տեսակ C"
 msgid "Himachali"
 msgstr "Himachali"
 
-#: 950.data.seed-values.sql:11563
+#: 950.data.seed-values.sql:11688
 msgid "Self-Check Proxy Login"
-msgstr ""
+msgstr "Ինքնա ընդունման միջնորդավորված գրանցում"
 
 # id::cblvl.value__i
 # id::i
@@ -2324,9 +2326,9 @@ msgstr "Հատոր կազմի մեջ"
 msgid "Ethiopic"
 msgstr "Եթովպերեն"
 
-#: 950.data.seed-values.sql:10014
+#: 950.data.seed-values.sql:10139
 msgid "Heading -- Uniform Title"
-msgstr ""
+msgstr "Վերնախորագիր -- Համընդհանուր վերնագիր"
 
 # id::clm.value__sma
 # id::sma
@@ -2342,7 +2344,7 @@ msgstr "Discard/Weed"
 
 #: 950.data.seed-values.sql:2493
 msgid "Self Check"
-msgstr ""
+msgstr "Ինքնա ընդունում"
 
 # id::clm.value__cor
 # id::cor
@@ -2412,9 +2414,9 @@ msgstr "Basa"
 msgid "Speeches"
 msgstr "Ելույթներ"
 
-#: 950.data.seed-values.sql:10053
+#: 950.data.seed-values.sql:10178
 msgid "Established Heading Linking Entry -- Genre/Form Term"
-msgstr ""
+msgstr "Սահմանված վերնախորագրի կապի մուտք -- Ժանրի/Ձևի տերմին"
 
 # id::cnct.name__1
 # id::1
@@ -2430,11 +2432,11 @@ msgstr "Neapolitan Italian"
 
 #: 950.data.seed-values.sql:1605
 msgid "Serials (includes admin features)"
-msgstr ""
+msgstr "Պարբերականներ (ներառում է կառավարիչի հնարավորություններ)"
 
-#: 950.data.seed-values.sql:10037
+#: 950.data.seed-values.sql:10162
 msgid "See Also From Tracing -- Meeting Name"
-msgstr ""
+msgstr "Տես նաև Այս հետագծից -- Հանդիպման անուն"
 
 # id::clm.value__sun
 # id::sun
@@ -2478,9 +2480,9 @@ msgstr "Tagalog"
 msgid "Serbian"
 msgstr "Սերբերեն"
 
-#: 950.data.seed-values.sql:10070
+#: 950.data.seed-values.sql:10195
 msgid "See Also Tracing -- Form Subdivision"
-msgstr ""
+msgstr "Տես նաև Հետագիծ -- Ձևի ենթաբաժին"
 
 # id::clm.value__ast
 # id::ast
@@ -2500,9 +2502,9 @@ msgstr "Ենթամիավոր"
 msgid "Italian"
 msgstr "Իտալերեն"
 
-#: 950.data.seed-values.sql:11566
+#: 950.data.seed-values.sql:11691
 msgid "LibraryElf Login"
-msgstr ""
+msgstr "LibraryElf մուտքի գրանցում"
 
 # id::clm.value__chb
 # id::chb
@@ -2583,13 +2585,13 @@ msgstr "Rapanui"
 msgid "Urdu"
 msgstr "Ուրդու"
 
-#: 950.data.seed-values.sql:9328
+#: 950.data.seed-values.sql:9453
 msgid "Invalid value for \"circ_lib\""
-msgstr ""
+msgstr "Անիրական արժեք \"circ_lib\" համար"
 
-#: 950.data.seed-values.sql:10140
+#: 950.data.seed-values.sql:10265
 msgid "Library of Congress Subject Headings"
-msgstr ""
+msgstr "Կոնգրեսի գրադարանի խորագրեր"
 
 # id::clm.value__loz
 # id::loz
@@ -2597,9 +2599,9 @@ msgstr ""
 msgid "Lozi"
 msgstr "Lozi"
 
-#: 950.data.seed-values.sql:10043
+#: 950.data.seed-values.sql:10168
 msgid "See Also From Tracing -- Chronological Subdivision"
-msgstr ""
+msgstr "Տես նաև այս հետագծից -- Ժամանակագրական ենթաբաժին"
 
 # id::clm.value__gor
 # id::gor
@@ -2607,7 +2609,7 @@ msgstr ""
 msgid "Gorontalo"
 msgstr "Gorontalo"
 
-#: 950.data.seed-values.sql:10023
+#: 950.data.seed-values.sql:10148
 msgid "Heading -- Corporate Name"
 msgstr "Վերնախորագիր -- համատեղ անուն"
 
@@ -2658,6 +2660,7 @@ msgstr "TCN արժեք"
 #: 950.data.seed-values.sql:29
 msgid "Patron exceeds pre-collections warning fine threshold"
 msgstr ""
+"Հաճախորդը գերազանցում է նախնական հավաքածուների զգուշացման տուգանքի շեմը"
 
 # id::clm.value__chy
 # id::chy
@@ -2775,9 +2778,9 @@ msgstr "Thai"
 msgid "Afrikaans"
 msgstr "Afrikaans"
 
-#: 950.data.seed-values.sql:10048
+#: 950.data.seed-values.sql:10173
 msgid "Established Heading Linking Entry -- Personal Name"
-msgstr ""
+msgstr "Հաստատված վերնախորագրի կապի մուտք -- Անհատական անուն"
 
 # id::citm.value__a
 # id::a
@@ -2849,9 +2852,9 @@ msgstr "e-Reader նախնաբեռնում"
 msgid "Identifier"
 msgstr "Նկարագրիչ"
 
-#: 950.data.seed-values.sql:11553
+#: 950.data.seed-values.sql:11678
 msgid "Verification via gateway-v1"
-msgstr ""
+msgstr "Ստուգում gateway-v1 օգնությամբ"
 
 # id::clm.value__lin
 # id::lin
@@ -2863,9 +2866,9 @@ msgstr "Lingala"
 msgid "System: Rental"
 msgstr "Համակարգ։ Վարձակալում։"
 
-#: 950.data.seed-values.sql:11549
+#: 950.data.seed-values.sql:11674
 msgid "Login via Apache module"
-msgstr ""
+msgstr "Գրանցման մուտք Apache մոդուլից"
 
 # id::ccs.name__1
 # id::1
@@ -2949,9 +2952,9 @@ msgstr "Ձևաչափի ձուլման կոնտեյներ"
 msgid "Breton"
 msgstr "Բրետոներեն"
 
-#: 950.data.seed-values.sql:10039
+#: 950.data.seed-values.sql:10164
 msgid "See Also From Tracing -- Geographic Name"
-msgstr ""
+msgstr "Տես նաև Հետագծից -- Աշխարհագրական անուն"
 
 # id::clm.value__-gae id::clm.value__gla
 # id::-gae
@@ -2995,7 +2998,7 @@ msgstr "Միավորում"
 
 #: 950.data.seed-values.sql:36
 msgid "Alerting block on Circ, Hold and Renew"
-msgstr ""
+msgstr "Զգուշացման բլոկ Տացքից, Պահումից և Թարմացումից"
 
 # id::clm.value__snk
 # id::snk
@@ -3003,9 +3006,9 @@ msgstr ""
 msgid "Soninke"
 msgstr "Soninke"
 
-#: 950.data.seed-values.sql:10038
+#: 950.data.seed-values.sql:10163
 msgid "See Also From Tracing -- Topical Term"
-msgstr ""
+msgstr "Տես նաև Հետագծից -- Թեմատիկ տերմին"
 
 # id::clm.value__zap
 # id::zap
@@ -3023,9 +3026,9 @@ msgstr "Hmong"
 msgid "Unspecified"
 msgstr "Չսահմանված"
 
-#: 950.data.seed-values.sql:10008
+#: 950.data.seed-values.sql:10133
 msgid "LoC"
-msgstr ""
+msgstr "LoC"
 
 # id::clm.value__-cam id::clm.value__khm
 # id::-cam
@@ -3115,7 +3118,7 @@ msgstr "Cebuano"
 
 #: 950.data.seed-values.sql:1608
 msgid "Can do anything at the System level"
-msgstr ""
+msgstr "Կարող է անեկ ամեն ինչ Համակարգի մակարդակով"
 
 # id::clm.value__moh
 # id::moh
@@ -3135,7 +3138,7 @@ msgstr "Dogrib"
 msgid "Volapük"
 msgstr "Volapük"
 
-#: 950.data.seed-values.sql:11554
+#: 950.data.seed-values.sql:11679
 msgid "Verification via translator-v1"
 msgstr "Ստուգում translator-v1 միջոցով"
 
@@ -3211,9 +3214,9 @@ msgstr "Հոլանդերեն, Միջին (մոտ. 1050-1350)"
 msgid "Persian"
 msgstr "Ֆարսի"
 
-#: 950.data.seed-values.sql:11565
+#: 950.data.seed-values.sql:11690
 msgid "Apache Auth Proxy Login"
-msgstr ""
+msgstr "Apache Auth Proxy մուտքի գրանցում"
 
 # id::clm.value__mon
 # id::mon
@@ -3239,9 +3242,9 @@ msgstr "Aymara"
 msgid "South American Indian (Other)"
 msgstr "South American Indian(այլ)"
 
-#: 950.data.seed-values.sql:10067
+#: 950.data.seed-values.sql:10192
 msgid "See Also Tracing -- General Subdivision"
-msgstr ""
+msgstr "Տես նաև Հետագծից -- Համընդհանուր ենթաբաժին"
 
 #: 950.data.seed-values.sql:168 950.data.seed-values.sql:360
 #: 950.data.seed-values.sql:381 950.data.seed-values.sql:400
@@ -3266,9 +3269,9 @@ msgstr "Chipewyan"
 msgid "Corsican"
 msgstr "Կորսիկերեն"
 
-#: 950.data.seed-values.sql:9310
+#: 950.data.seed-values.sql:9435
 msgid "Import failed due to invalid copy location"
-msgstr ""
+msgstr "ներմուծումը ձախողվեց պատճենի տեղաբաշխման անիրական վայրի պատճառով"
 
 # id::clm.value__kpe
 # id::kpe
@@ -3276,9 +3279,9 @@ msgstr ""
 msgid "Kpelle"
 msgstr "Kpelle"
 
-#: 950.data.seed-values.sql:11557
+#: 950.data.seed-values.sql:11682
 msgid "SIP2 User Verification"
-msgstr ""
+msgstr "SIP2 Օգտվողի ստուգում"
 
 # id::cifm.value__c
 # id::c
@@ -3334,7 +3337,7 @@ msgstr "Ponape"
 
 #: 950.data.seed-values.sql:1597
 msgid "Cataloging Administrator"
-msgstr ""
+msgstr "Քարտագրամն կառավարիչ"
 
 # id::clm.value__bla
 # id::bla
@@ -3378,9 +3381,9 @@ msgstr "Prakrit languages"
 msgid "Gayo"
 msgstr "Gayo"
 
-#: 950.data.seed-values.sql:10041
+#: 950.data.seed-values.sql:10166
 msgid "See Also From Tracing -- General Subdivision"
-msgstr ""
+msgstr "Տես նաև Հետագծից -- Համընդհանուր ենթաբաժին"
 
 # id::clfm.value__0
 # id::0
@@ -3408,7 +3411,7 @@ msgstr "Նոտաներ"
 
 #: 950.data.seed-values.sql:39
 msgid "Alerting block on Renew"
-msgstr ""
+msgstr "Զգուշացման բլոկ Թարմացման համար"
 
 # id::crmf.name__7
 # id::7
@@ -3418,7 +3421,7 @@ msgstr "overdue_equip_max"
 
 #: 950.data.seed-values.sql:174
 msgid "System Control Number"
-msgstr ""
+msgstr "Համակարգային ստուգիչ համար"
 
 # id::clm.value__-gal id::clm.value__orm
 # id::-gal
@@ -3474,9 +3477,9 @@ msgstr "Աշխատանքի վերնագիր"
 msgid "Quechua"
 msgstr "Quechua"
 
-#: 950.data.seed-values.sql:10068
+#: 950.data.seed-values.sql:10193
 msgid "See Also Tracing -- Geographic Subdivision"
-msgstr ""
+msgstr "Տես նաև Հետագիծը -- Աշխարհագրական ենթաբաժին"
 
 #: 950.data.seed-values.sql:4787
 msgid "Price"
@@ -3512,9 +3515,9 @@ msgstr "Fang"
 msgid "Mongo-Nkundu"
 msgstr "Mongo-Nkundu"
 
-#: 950.data.seed-values.sql:9307
+#: 950.data.seed-values.sql:9432
 msgid "Import or Overlay failed"
-msgstr ""
+msgstr "Ներմուծումը կամ վերագրումը ձախողվեց"
 
 # id::clm.value__mal
 # id::mal
@@ -3522,9 +3525,9 @@ msgstr ""
 msgid "Malayalam"
 msgstr "Malayalam"
 
-#: 950.data.seed-values.sql:11564
+#: 950.data.seed-values.sql:11689
 msgid "Unique Mgt Login"
-msgstr ""
+msgstr "Եզակի Mgt մուտքի գրանցում"
 
 # id::clm.value__smn
 # id::smn
@@ -3556,9 +3559,9 @@ msgstr "Afrihili (Աֆրիյան լեզու)"
 msgid "Item Barcode"
 msgstr "Նյութի շտրիխ կոդ"
 
-#: 950.data.seed-values.sql:9316
+#: 950.data.seed-values.sql:9441
 msgid "Malformed record cause Overlay failure"
-msgstr ""
+msgstr "Ձևախեղված գրառումը հանգեցրեց վերագրման ձաղոխման"
 
 # id::cbs.source__3
 # id::3
@@ -3584,19 +3587,19 @@ msgstr "Մասնագիտացված"
 msgid "Fijian"
 msgstr "Fijian"
 
-#: 950.data.seed-values.sql:10052
+#: 950.data.seed-values.sql:10177
 msgid "Established Heading Linking Entry -- Geographic Name"
-msgstr ""
+msgstr "Սահմանված Վերնախորագրի կապի մուտք -- Աշխարհագրական անուն"
 
 #: 950.data.seed-values.sql:172
 msgid "Authority Record ID"
-msgstr ""
+msgstr "Հեղինակավոր գրառման ID"
 
-#: 950.data.seed-values.sql:10058
+#: 950.data.seed-values.sql:10183
 msgid "Established Heading Linking Entry -- Chronological Term"
 msgstr "Սահմանված Վերնախորագրի կապի մուտք -- Ժամանակագրական տերմին"
 
-#: 950.data.seed-values.sql:8880 950.data.seed-values.sql:8881
+#: 950.data.seed-values.sql:9005 950.data.seed-values.sql:9006
 msgid "Historical Hold Retention Age"
 msgstr "Պահման պատմության հիշոելու տարիք"
 
@@ -3624,7 +3627,7 @@ msgstr "Ընդհանուր աշխատակազմի հաճախորդի կոնտե�
 
 #: 950.data.seed-values.sql:1599
 msgid "Circulation Administrator"
-msgstr ""
+msgstr "Տացքի կառավարիչ"
 
 # id::clm.value__glv id::clm.value__-max
 # id::glv
@@ -3638,13 +3641,13 @@ msgstr "Manx"
 msgid "Rarotongan"
 msgstr "Rarotongan"
 
-#: 950.data.seed-values.sql:10056
+#: 950.data.seed-values.sql:10181
 msgid "Subdivision Linking Entry -- Chronological Subdivision"
-msgstr ""
+msgstr "Ենթաբաժնի կապի մուտք -- Ժամանակագրական ենթաբաժին"
 
-#: 950.data.seed-values.sql:10147
+#: 950.data.seed-values.sql:10272
 msgid "Sears List of Subject Headings"
-msgstr ""
+msgstr "Խորագրերի Սիրսի ցուցակ"
 
 # id::crrf.name__3
 # id::3
@@ -3710,13 +3713,13 @@ msgstr "Bislama"
 msgid "Kongo"
 msgstr "Kongo"
 
-#: 950.data.seed-values.sql:9326
+#: 950.data.seed-values.sql:9451
 msgid "Invalid value for \"owning_lib\""
-msgstr ""
+msgstr "Անիրական արժեք \"owning_lib\" համար"
 
-#: 950.data.seed-values.sql:11543
+#: 950.data.seed-values.sql:11668
 msgid "Login via srfsh"
-msgstr ""
+msgstr "Մուտքի գրանցում srfsh օգնությամբ"
 
 # id::clm.value__ach
 # id::ach
@@ -3730,9 +3733,9 @@ msgstr "Acoli"
 msgid "Mon-Khmer (Other)"
 msgstr "Mon-Khmer (այլ)"
 
-#: 950.data.seed-values.sql:10035
+#: 950.data.seed-values.sql:10160
 msgid "See Also From Tracing -- Personal Name"
-msgstr ""
+msgstr "Տես նաև Հետագծից -- Անձնական անուն"
 
 # id::clm.value__pap
 # id::pap
@@ -3760,7 +3763,7 @@ msgstr "Dakota"
 
 #: 950.data.seed-values.sql:1601
 msgid "Local Administrator"
-msgstr ""
+msgstr "Տեղային կառավարիչ"
 
 # id::crmf.name__3
 # id::3
@@ -3786,9 +3789,9 @@ msgstr "Bikol"
 msgid "Swedish"
 msgstr "Շվեդերեն"
 
-#: 950.data.seed-values.sql:9330
+#: 950.data.seed-values.sql:9455
 msgid "Invalid value for \"copy_number\""
-msgstr ""
+msgstr "Անիրական արժեք \"copy_number\" համար"
 
 # id::clm.value__sgn
 # id::sgn
@@ -3828,7 +3831,7 @@ msgstr "Faroese"
 
 #: 950.data.seed-values.sql:34
 msgid "Alerting block on Circ and Hold"
-msgstr ""
+msgstr "Զգուշացման բլոկ Տացքի և Պահման համար"
 
 # id::clm.value__dan
 # id::dan
@@ -3842,9 +3845,9 @@ msgstr "Դանիերեն"
 msgid "Dravidian (Other)"
 msgstr "Dravidian (այլ)"
 
-#: 950.data.seed-values.sql:10049
+#: 950.data.seed-values.sql:10174
 msgid "Established Heading Linking Entry -- Corporate Name"
-msgstr ""
+msgstr "Սահմանված Վերնախորագրի կապի մուտք -- Համատեղ անուն"
 
 # id::ccs.name__3
 # id::3
@@ -3880,13 +3883,13 @@ msgstr "Պահլավերեն"
 msgid "Add to Published Book Bags"
 msgstr "Ավելացրու Հրատարակված գրքերի պայուսակում"
 
-#: 950.data.seed-values.sql:9320
+#: 950.data.seed-values.sql:9445
 msgid "Invalid value for \"status\""
-msgstr ""
+msgstr "Անիրական արժեք \"status\" համար"
 
-#: 950.data.seed-values.sql:10061
+#: 950.data.seed-values.sql:10186
 msgid "See Also Tracing -- Personal Name"
-msgstr ""
+msgstr "Տես նաև Հետագիծ -- Անձնական անուն"
 
 # id::clm.value__slo
 # id::slo
@@ -3894,9 +3897,9 @@ msgstr ""
 msgid "Slovak"
 msgstr "Սլովակերեն"
 
-#: 950.data.seed-values.sql:10145
+#: 950.data.seed-values.sql:10270
 msgid "Not applicable"
-msgstr ""
+msgstr "Ընդունելի չէ"
 
 # id::clm.value__cai
 # id::cai
@@ -3920,7 +3923,7 @@ msgstr "Betacam"
 msgid "6month"
 msgstr "6ամիս"
 
-#: 950.data.seed-values.sql:8819
+#: 950.data.seed-values.sql:8944
 msgid "Historical Circulations per Copy"
 msgstr "Տացքի պատմություն ըստ օրինակի"
 
@@ -3928,13 +3931,13 @@ msgstr "Տացքի պատմություն ըստ օրինակի"
 msgid "UPC"
 msgstr "UPC"
 
-#: 950.data.seed-values.sql:8725
+#: 950.data.seed-values.sql:8849
 msgid "Handling Charge"
 msgstr "Հանձնման ծախս"
 
-#: 950.data.seed-values.sql:10144
+#: 950.data.seed-values.sql:10269
 msgid "Canadian Subject Headings"
-msgstr ""
+msgstr "Կանադական խորագրեր"
 
 # id::clm.value__ang
 # id::ang
@@ -3954,9 +3957,9 @@ msgstr "North American Indian (այլ)"
 msgid "Polish"
 msgstr "Լեհերեն"
 
-#: 950.data.seed-values.sql:10025
+#: 950.data.seed-values.sql:10150
 msgid "Heading -- Topical Term"
-msgstr ""
+msgstr "Վերնախորագիր -- Թեմատիկ տերմին"
 
 # id::clm.value__crh
 # id::crh
@@ -3968,9 +3971,9 @@ msgstr "Crimean Tatar"
 msgid "Book Bag"
 msgstr "Գրքի պայուսակ"
 
-#: 950.data.seed-values.sql:10063
+#: 950.data.seed-values.sql:10188
 msgid "See Also Tracing -- Meeting Name"
-msgstr ""
+msgstr "Տես նաև հետագիծ -- Հանդիպման անուն"
 
 # id::clm.value__bho
 # id::bho
@@ -3994,9 +3997,9 @@ msgstr "Քո շարժական գրադարանը"
 msgid "Nogai"
 msgstr "Nogai"
 
-#: 950.data.seed-values.sql:11556
+#: 950.data.seed-values.sql:11681
 msgid "Verification via remoteauth"
-msgstr ""
+msgstr "Ստուգում remoteauth միջոցով"
 
 # id::clm.value__enm
 # id::enm
@@ -4016,7 +4019,7 @@ msgstr "Յակուտերեն"
 msgid "Sumerian"
 msgstr "Sumerian"
 
-#: 950.data.seed-values.sql:8730
+#: 950.data.seed-values.sql:8854
 msgid "Paper"
 msgstr "Հոդված"
 
@@ -4062,7 +4065,7 @@ msgstr "Interlingua (International Auxiliary Language Association)"
 msgid "Icelandic"
 msgstr "Իսլանդերեն"
 
-#: 950.data.seed-values.sql:10040
+#: 950.data.seed-values.sql:10165
 msgid "See Also From Tracing -- Genre/Form Term"
 msgstr "Տես նաև Հետագծից -- Ժանրի/Ձևի տերմին"
 
@@ -4114,7 +4117,7 @@ msgstr "Կորեերեն"
 msgid "Shan"
 msgstr "Shan"
 
-#: 950.data.seed-values.sql:9317
+#: 950.data.seed-values.sql:9442
 msgid "New record had insufficient quality"
 msgstr "Նոր գրառումը ունի անբավարար որակ"
 
@@ -4124,7 +4127,7 @@ msgstr "Նոր գրառումը ունի անբավարար որակ"
 msgid "Manuscript notated music"
 msgstr "Ձեռագիր նոտաներ"
 
-#: 950.data.seed-values.sql:10016
+#: 950.data.seed-values.sql:10141
 msgid "Established Heading Linking Entry -- Uniform Title"
 msgstr "Հաստատված վերնախորագրի կապի մուտք -- Համընդհանուր վերնագիր"
 
@@ -4144,13 +4147,13 @@ msgstr "Հավաքածու"
 msgid "Nyanja"
 msgstr "Nyanja"
 
-#: 950.data.seed-values.sql:10065
+#: 950.data.seed-values.sql:10190
 msgid "See Also Tracing -- Geographic Name"
-msgstr ""
+msgstr "Տես նաև Հետագիծ -- Աշխարհագրական անուն"
 
 #: 950.data.seed-values.sql:1611
 msgid "Can do anything at the Consortium level"
-msgstr ""
+msgstr "Կարող է անել ամեն ինչ կոնսորցիումի մակարդակում"
 
 # id::clm.value__cad
 # id::cad
@@ -4186,9 +4189,9 @@ msgstr "Տեղային ազատ տեքստային դասիչ"
 msgid "Occitan (post-1500)"
 msgstr "Occitan (post-1500)"
 
-#: 950.data.seed-values.sql:9315
+#: 950.data.seed-values.sql:9440
 msgid "Malformed record cause Import failure"
-msgstr ""
+msgstr "Ձևախեղված գրառումը հանգեցրել է ներմուծման ձախողման"
 
 # id::clm.value__son
 # id::son
@@ -4216,9 +4219,9 @@ msgstr "Համակարգ"
 msgid "Acquisitions Administrator"
 msgstr "Համալրման կառավարիչ"
 
-#: 950.data.seed-values.sql:10166
+#: 950.data.seed-values.sql:10291
 msgid "Vandelay Queue"
-msgstr ""
+msgstr "Vandelay հերթ"
 
 #: 950.data.seed-values.sql:4783
 msgid "Language of work"
@@ -4253,9 +4256,9 @@ msgstr "Ուդմուրտերեն"
 msgid "Irish"
 msgstr "Իռլանդերեն"
 
-#: 950.data.seed-values.sql:10017
+#: 950.data.seed-values.sql:10142
 msgid "See Also Tracing -- Uniform Title"
-msgstr ""
+msgstr "Տես նաև Հետագիծ -- Համընդհանուր վերնագիր"
 
 # id::clm.value__cze id::i18n_l.name__cs-CZ id::i18n_l.description__cs-CZ
 # id::cze
@@ -4292,15 +4295,9 @@ msgstr "Բելառուսերեն"
 msgid "Library of Congress"
 msgstr "Կոնգրեսի գրադարան"
 
-#: 950.data.seed-values.sql:11542
+#: 950.data.seed-values.sql:11667
 msgid "Login via opensrf"
-msgstr ""
-
-# id::cifm.value__d
-# id::d
-#: 950.data.seed-values.sql:6322
-msgid "Large print"
-msgstr "Լայն տպագրություն"
+msgstr "Մուտքի գրանցում opensrf օգնությամբ"
 
 # id::clm.value__-ajm
 # id::-ajm
@@ -4328,7 +4325,7 @@ msgstr "Kalmyk"
 msgid "Title Proper"
 msgstr "Վերնագիր ուղիղ"
 
-#: 950.data.seed-values.sql:11561
+#: 950.data.seed-values.sql:11686
 msgid "OPAC Login (tpac)"
 msgstr "ՀՕԱՔ մուտք (tpac)"
 
@@ -4364,13 +4361,13 @@ msgstr "VHS"
 msgid "System: Deposit"
 msgstr "Համակարգ։ Կանխավճար"
 
-#: 950.data.seed-values.sql:10142
+#: 950.data.seed-values.sql:10267
 msgid "Medical Subject Headings"
-msgstr ""
+msgstr "Բժշկական թեմաների խորագրեր"
 
-#: 950.data.seed-values.sql:11545
+#: 950.data.seed-values.sql:11670
 msgid "Login via translator-v1"
-msgstr ""
+msgstr "Մուտքի գրանցում translator-v1 միջոցով"
 
 # id::citm.value__g
 # id::g
@@ -4380,7 +4377,7 @@ msgstr "Պրոյեկտված"
 
 #: 950.data.seed-values.sql:2502
 msgid "Offline"
-msgstr ""
+msgstr "Ցանցից անջատված"
 
 # id::clm.value__lao
 # id::lao
@@ -4392,9 +4389,9 @@ msgstr "Lao"
 msgid "EAN"
 msgstr "EAN"
 
-#: 950.data.seed-values.sql:11547
+#: 950.data.seed-values.sql:11672
 msgid "Login via remoteauth"
-msgstr ""
+msgstr "Մուտքի գրանցում remoteauth օգնությամբ"
 
 # id::clm.value__sio
 # id::sio
@@ -4444,9 +4441,9 @@ msgstr "Քրդերեն"
 msgid "Walamo"
 msgstr "Walamo"
 
-#: 950.data.seed-values.sql:11546
+#: 950.data.seed-values.sql:11671
 msgid "Login via xmlrpc"
-msgstr ""
+msgstr "Մուտքի գրանցում xmlrpc օգնությամբ"
 
 # id::i18n_l.description__es-US
 # id::es-US
@@ -4524,7 +4521,7 @@ msgstr "Ապաչի լեզուներ"
 
 #: 950.data.seed-values.sql:38
 msgid "Alerting block on Hold"
-msgstr ""
+msgstr "Զգուշացման բլոկ Պահման համար"
 
 # id::clm.value__run
 # id::run
@@ -4566,7 +4563,7 @@ msgstr "Ndonga"
 
 #: 950.data.seed-values.sql:37
 msgid "Alerting block on Hold and Renew"
-msgstr ""
+msgstr "Զգուշացման բլոկ Պահման և Թարմացման համար"
 
 # id::clm.value__sot id::clm.value__-sso
 # id::sot
@@ -4586,13 +4583,13 @@ msgstr "Washo"
 msgid "Spanish"
 msgstr "Իսպաներեն"
 
-#: 950.data.seed-values.sql:10044
+#: 950.data.seed-values.sql:10169
 msgid "See Also From Tracing -- Form Subdivision"
-msgstr ""
+msgstr "Տես նաև հետագծից -- Ձևի ենթաբաժին"
 
-#: 950.data.seed-values.sql:10042
+#: 950.data.seed-values.sql:10167
 msgid "See Also From Tracing -- Geographic Subdivision"
-msgstr ""
+msgstr "Տես նաև հետագծից -- Աշխարհագրական ենթաբաժին"
 
 #~ msgid "The item is intended for children, approximate ages 6-8 years."
 #~ msgstr "Նյութը նախատեսված է երեխաների համար, մոտավոր տարիքը 6-8։"

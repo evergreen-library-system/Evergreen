@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-12-20 09:37-0400\n"
+"POT-Creation-Date: 2013-01-16 10:36-0400\n"
 "PO-Revision-Date: 2012-05-31 23:27+0000\n"
 "Last-Translator: Job Diógenes Ribeiro Borges <jobdrb@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-12-21 04:55+0000\n"
-"X-Generator: Launchpad (build 16378)\n"
+"X-Launchpad-Export-Date: 2013-01-17 04:38+0000\n"
+"X-Generator: Launchpad (build 16430)\n"
 "X-Poedit-Country: BRAZIL\n"
 "Language: pt_BR\n"
 "X-Poedit-Language: Portuguese\n"
@@ -188,11 +188,11 @@ msgstr "Palavra-chave"
 msgid "Renew Circulations"
 msgstr "Renovar Circulações"
 
-#: 950.data.seed-values.sql:10069
+#: 950.data.seed-values.sql:10194
 msgid "See Also Tracing -- Chronological Subdivision"
 msgstr "Ver também rastreamento - Subdivisão Cronológica"
 
-#: 950.data.seed-values.sql:9313
+#: 950.data.seed-values.sql:9438
 msgid "Overlay failed due to missing system id"
 msgstr "Overlay falhou devido a falta do ID de sistema"
 
@@ -216,7 +216,7 @@ msgstr "Hiligaynon"
 msgid "Kachin"
 msgstr "Kachin"
 
-#: 950.data.seed-values.sql:10024
+#: 950.data.seed-values.sql:10149
 msgid "Heading -- Meeting Name"
 msgstr "Cabeçalho - Nome do Encontro"
 
@@ -243,12 +243,12 @@ msgstr "Histórias Curtas"
 msgid "Pangasinan"
 msgstr "Pangasinan"
 
-#: 950.data.seed-values.sql:8815 950.data.seed-values.sql:8865
-#: 950.data.seed-values.sql:8866
+#: 950.data.seed-values.sql:8940 950.data.seed-values.sql:8990
+#: 950.data.seed-values.sql:8991
 msgid "Historical Circulation Retention Age"
 msgstr "Histórico de Circulação - Tempo de Retenção"
 
-#: 950.data.seed-values.sql:10141
+#: 950.data.seed-values.sql:10266
 msgid "LC subject headings for children's literature"
 msgstr "LC Cabeçalhos de assunto para literatura infantil"
 
@@ -256,7 +256,7 @@ msgstr "LC Cabeçalhos de assunto para literatura infantil"
 msgid "Global"
 msgstr "Global"
 
-#: 950.data.seed-values.sql:8722
+#: 950.data.seed-values.sql:8846
 msgid "Tax"
 msgstr "Imposto"
 
@@ -290,7 +290,7 @@ msgstr "Tongan"
 msgid "Ijo"
 msgstr "IJO"
 
-#: 950.data.seed-values.sql:8726
+#: 950.data.seed-values.sql:8850
 msgid "Non-library Item"
 msgstr "Não é item bibliográfico"
 
@@ -304,7 +304,7 @@ msgstr "Gilbertês"
 msgid "Damaged"
 msgstr "Danificado"
 
-#: 950.data.seed-values.sql:8886 950.data.seed-values.sql:8887
+#: 950.data.seed-values.sql:9011 950.data.seed-values.sql:9012
 msgid "Historical Hold Retention Start Date"
 msgstr "Histórico de Reservas - Data de Início de Retenção"
 
@@ -317,7 +317,7 @@ msgstr "Carrinho de livros"
 msgid "Kawi"
 msgstr "Kawi"
 
-#: 950.data.seed-values.sql:10143
+#: 950.data.seed-values.sql:10268
 msgid "National Agricultural Library subject authority file"
 msgstr "Biblioteca Nacional Agrícola arquivo de autoridade de assunto"
 
@@ -462,7 +462,7 @@ msgstr "Revisão de Dados"
 msgid "3_months_0_renew"
 msgstr "3_meses_0_renovação"
 
-#: 950.data.seed-values.sql:10028
+#: 950.data.seed-values.sql:10153
 msgid "Heading -- General Subdivision"
 msgstr "Cabeçalho - Subdivisão Geral"
 
@@ -499,7 +499,7 @@ msgstr "Juvenil"
 msgid "Chinese"
 msgstr "Chinês"
 
-#: 950.data.seed-values.sql:10146
+#: 950.data.seed-values.sql:10271
 msgid "Art and Architecture Thesaurus"
 msgstr "Enciclopédia de Arte e Arquitetura"
 
@@ -567,7 +567,7 @@ msgstr "Kutenai"
 msgid "Oriya"
 msgstr "Oriá"
 
-#: 950.data.seed-values.sql:11551
+#: 950.data.seed-values.sql:11676
 msgid "Verification via opensrf"
 msgstr "Verificação através opensrf"
 
@@ -580,7 +580,7 @@ msgstr "Titulo abreviado"
 msgid "Nyankole"
 msgstr "Nyankole"
 
-#: 950.data.seed-values.sql:10030
+#: 950.data.seed-values.sql:10155
 msgid "Heading -- Chronological Subdivision"
 msgstr "Cabeçalho - Subdivisão Cronológica"
 
@@ -608,7 +608,7 @@ msgstr "Ewondo"
 msgid "Mexican Spanish"
 msgstr "Espanhol mexicano"
 
-#: 950.data.seed-values.sql:10031
+#: 950.data.seed-values.sql:10156
 msgid "Heading -- Form Subdivision"
 msgstr "Cabeçalho - Subdivisão Forma"
 
@@ -719,7 +719,7 @@ msgstr "Sem acesso"
 msgid "Canadian English"
 msgstr "Inglês Canadense"
 
-#: 950.data.seed-values.sql:8727
+#: 950.data.seed-values.sql:8851
 msgid "Serial Subscription"
 msgstr "Assinatura de Periódico"
 
@@ -733,7 +733,7 @@ msgstr "Braj"
 msgid "Baltic (Other)"
 msgstr "Báltico (Outros)"
 
-#: 950.data.seed-values.sql:9324
+#: 950.data.seed-values.sql:9449
 msgid "Invalid value for \"deposit_amount\""
 msgstr "Valor inválido para \"deposit_amount\""
 
@@ -742,7 +742,7 @@ msgstr "Valor inválido para \"deposit_amount\""
 msgid "Humor, satires, etc."
 msgstr "Humor, sátiras, etc"
 
-#: 950.data.seed-values.sql:11548
+#: 950.data.seed-values.sql:11673
 msgid "SIP2 Proxy Login"
 msgstr "SIP2 Conta do Proxy"
 
@@ -756,7 +756,7 @@ msgstr "Computador arquivo"
 msgid "Philippine (Other)"
 msgstr "Filipinas (Outros)"
 
-#: 950.data.seed-values.sql:10057
+#: 950.data.seed-values.sql:10182
 msgid "Subdivision Linking Entry -- Form Subdivision"
 msgstr "Entrada de Vínculo de Subdivisão - Subdivisão Forma"
 
@@ -765,11 +765,11 @@ msgstr "Entrada de Vínculo de Subdivisão - Subdivisão Forma"
 msgid "German"
 msgstr "Alemão"
 
-#: 950.data.seed-values.sql:8729
+#: 950.data.seed-values.sql:8853
 msgid "EDI"
 msgstr "EDI"
 
-#: 950.data.seed-values.sql:9308
+#: 950.data.seed-values.sql:9433
 msgid "Import failed due to barcode collision"
 msgstr "Importação falhou devido a colisão de código de barras"
 
@@ -810,11 +810,11 @@ msgstr "Periódicos"
 msgid "Bantu (Other)"
 msgstr "Bantu (Other)"
 
-#: 950.data.seed-values.sql:10022
+#: 950.data.seed-values.sql:10147
 msgid "Heading -- Personal Name"
 msgstr "Cabeçalho - Nome Pessoal"
 
-#: 950.data.seed-values.sql:10050
+#: 950.data.seed-values.sql:10175
 msgid "Established Heading Linking Entry -- Meeting Name"
 msgstr "Estabelecida Posição Ligando Entrada -- Nome do Encontro"
 
@@ -985,7 +985,7 @@ msgstr "Gravação de som não musical"
 msgid "Patrons"
 msgstr "Leitores"
 
-#: 950.data.seed-values.sql:8724
+#: 950.data.seed-values.sql:8848
 msgid "Shipping Charge"
 msgstr "Taxa de envio"
 
@@ -1037,7 +1037,7 @@ msgstr "Quiniaruanda"
 msgid "Interlingue"
 msgstr "Interlíngua"
 
-#: 950.data.seed-values.sql:11569
+#: 950.data.seed-values.sql:11694
 msgid "EZProxy Verification"
 msgstr "Verificação EZProxy"
 
@@ -1056,7 +1056,7 @@ msgstr "Hebraico"
 msgid "Esperanto"
 msgstr "Esperanto"
 
-#: 950.data.seed-values.sql:9322
+#: 950.data.seed-values.sql:9447
 msgid "Invalid value for \"price\""
 msgstr "Valor inválido para o \"price\""
 
@@ -1096,7 +1096,7 @@ msgstr "Autor"
 msgid "System Local"
 msgstr "Sistema Local"
 
-#: 950.data.seed-values.sql:11555
+#: 950.data.seed-values.sql:11680
 msgid "Verification via xmlrpc"
 msgstr "Verificação através xmlrpc"
 
@@ -1120,7 +1120,7 @@ msgstr "2_meses_2_renovações"
 msgid "Unfiltered"
 msgstr "Sem Filtro"
 
-#: 950.data.seed-values.sql:10062
+#: 950.data.seed-values.sql:10187
 msgid "See Also Tracing -- Corporate Name"
 msgstr "Ver também rastreamento - Nome Institucionall"
 
@@ -1143,7 +1143,7 @@ msgstr "Fula"
 msgid "Microfilm"
 msgstr "Microfilme"
 
-#: 950.data.seed-values.sql:10027
+#: 950.data.seed-values.sql:10152
 msgid "Heading -- Genre/Form Term"
 msgstr "Cabeçalho - Termo Gênero / Forma"
 
@@ -1193,7 +1193,7 @@ msgstr "Monografia / Item"
 msgid "Pushto"
 msgstr "Pachto"
 
-#: 950.data.seed-values.sql:10055
+#: 950.data.seed-values.sql:10180
 msgid "Subdivision Linking Entry -- Geographic Subdivision"
 msgstr "Entrada de Vínculo de Subdivisão - Subdivisão Geográfica"
 
@@ -1244,7 +1244,7 @@ msgstr "Autor Pessoal"
 msgid "Galician"
 msgstr "Galego"
 
-#: 950.data.seed-values.sql:11560
+#: 950.data.seed-values.sql:11685
 msgid "OPAC Login (jspac)"
 msgstr "OPAC Login (jspac)"
 
@@ -1273,7 +1273,7 @@ msgstr "Sango (Ubangi crioulo)"
 msgid "Khasi"
 msgstr "Khasi"
 
-#: 950.data.seed-values.sql:9332
+#: 950.data.seed-values.sql:9457
 msgid "Invalid value for \"circ_as_type\""
 msgstr "Valor inválido para \"circ_as_type\""
 
@@ -1291,7 +1291,7 @@ msgstr "Marshallês"
 msgid "Yao (Africa)"
 msgstr "Yao (África)"
 
-#: 950.data.seed-values.sql:10071
+#: 950.data.seed-values.sql:10196
 msgid "See Also Tracing -- Chronological Term"
 msgstr "Ver também rastreamento - Termo Cronológico"
 
@@ -1305,7 +1305,7 @@ msgstr "Marati"
 msgid "Slovenian"
 msgstr "Eslovênio"
 
-#: 950.data.seed-values.sql:9311 950.data.seed-values.sql:9312
+#: 950.data.seed-values.sql:9436 950.data.seed-values.sql:9437
 msgid "Import failed due to system id collision"
 msgstr "Importação falhou devido a colisão id do sistema"
 
@@ -1314,11 +1314,11 @@ msgstr "Importação falhou devido a colisão id do sistema"
 msgid "Salishan languages"
 msgstr "Salishan línguas"
 
-#: 950.data.seed-values.sql:11568
+#: 950.data.seed-values.sql:11693
 msgid "Self-Check User Verification"
 msgstr "Autoverificação de Usuário"
 
-#: 950.data.seed-values.sql:10026
+#: 950.data.seed-values.sql:10151
 msgid "Heading -- Geographic Name"
 msgstr "Cabeçalho - Nome Geográfico"
 
@@ -1393,7 +1393,7 @@ msgstr "Exemplo de Setorial 1"
 msgid "Komi"
 msgstr "Komi"
 
-#: 950.data.seed-values.sql:10009
+#: 950.data.seed-values.sql:10134
 msgid "Library of Congress standard authority record control semantics"
 msgstr ""
 "Library of Congress - autoridade semântica padrão de controle de registo"
@@ -1408,7 +1408,7 @@ msgstr "Hitita"
 msgid "Turkmen"
 msgstr "Turcomano"
 
-#: 950.data.seed-values.sql:10064
+#: 950.data.seed-values.sql:10189
 msgid "See Also Tracing -- Topical Term"
 msgstr "Ver também rastreamento - Termo de Tópico"
 
@@ -1431,7 +1431,7 @@ msgstr "Segurança"
 msgid "On holds shelf"
 msgstr "Na prateleira de reservas"
 
-#: 950.data.seed-values.sql:11552
+#: 950.data.seed-values.sql:11677
 msgid "Verification via srfsh"
 msgstr "Verificação através srfsh"
 
@@ -1445,7 +1445,7 @@ msgstr "Yupik línguas"
 msgid "Tuvaluan"
 msgstr "Tuvaluan"
 
-#: 950.data.seed-values.sql:10150
+#: 950.data.seed-values.sql:10275
 msgid "No attempt to code"
 msgstr "Nenhuma tentativa para codificar"
 
@@ -1470,7 +1470,7 @@ msgstr "Germânica (Outros)"
 msgid "Item Type"
 msgstr "Tipo do Item"
 
-#: 950.data.seed-values.sql:9334
+#: 950.data.seed-values.sql:9459
 msgid "Perm failure creating a record"
 msgstr "Falha permanente na criação de um registro"
 
@@ -1524,7 +1524,7 @@ msgstr "Sub-biblioteca"
 msgid "Cherokee"
 msgstr "Cherokee"
 
-#: 950.data.seed-values.sql:10029
+#: 950.data.seed-values.sql:10154
 msgid "Heading -- Geographic Subdivision"
 msgstr "Cabeçalho - Subdivisão Geográfica"
 
@@ -1541,7 +1541,7 @@ msgstr "Aviso de bloqueio na Circulação e Renovação"
 msgid "Program"
 msgstr "Programa"
 
-#: 950.data.seed-values.sql:8892 950.data.seed-values.sql:8893
+#: 950.data.seed-values.sql:9017 950.data.seed-values.sql:9018
 msgid "Historical Hold Retention Count"
 msgstr "Histórico de Reservas - Total de Retidos"
 
@@ -1574,11 +1574,11 @@ msgstr "Malgaxe"
 msgid "Tlingit"
 msgstr "Tlinguit"
 
-#: 950.data.seed-values.sql:10066
+#: 950.data.seed-values.sql:10191
 msgid "See Also Tracing -- Genre/Form Term"
 msgstr "Ver também rastreamento - Prazo Gênero / Forma"
 
-#: 950.data.seed-values.sql:10015
+#: 950.data.seed-values.sql:10140
 msgid "See Also From Tracing -- Uniform Title"
 msgstr "Ver a partir de rastreamento - Título Uniforme"
 
@@ -1602,7 +1602,7 @@ msgstr "Bamileke línguas"
 msgid "Igbo"
 msgstr "Ibo"
 
-#: 950.data.seed-values.sql:11562
+#: 950.data.seed-values.sql:11687
 msgid "Staff Client Login"
 msgstr "Acesso Administrativo"
 
@@ -1640,11 +1640,11 @@ msgstr "Fenício"
 msgid "Sorbian languages"
 msgstr "Sorbian línguas"
 
-#: 950.data.seed-values.sql:10036
+#: 950.data.seed-values.sql:10161
 msgid "See Also From Tracing -- Corporate Name"
 msgstr "Ver a partir de rastreamento - Nome Institucional"
 
-#: 950.data.seed-values.sql:9309
+#: 950.data.seed-values.sql:9434
 msgid "Import failed due to invalid circulation modifier"
 msgstr "Importação falhou devido a modificador de circulação inválido"
 
@@ -1729,7 +1729,7 @@ msgstr "Conjunto"
 msgid "Moldavian"
 msgstr "Moldávio"
 
-#: 950.data.seed-values.sql:10051
+#: 950.data.seed-values.sql:10176
 msgid "Established Heading Linking Entry -- Topical Term"
 msgstr "Estabelecida Posição Ligando Entrada -- Termo do Tópico"
 
@@ -1781,7 +1781,7 @@ msgstr "LC Número de Controle"
 msgid "Can do anything at the Branch level"
 msgstr "Acesso total ao nível de unidade setorial"
 
-#: 950.data.seed-values.sql:11544
+#: 950.data.seed-values.sql:11669
 msgid "Login via gateway-v1"
 msgstr "Acesso via gateway-v1"
 
@@ -1807,7 +1807,7 @@ msgstr "Maithili"
 msgid "Circulators"
 msgstr "Circuladores"
 
-#: 950.data.seed-values.sql:10032
+#: 950.data.seed-values.sql:10157
 msgid "Heading -- Chronological Term"
 msgstr "Cabeçalho - Termo Cronológico"
 
@@ -1830,7 +1830,7 @@ msgstr "Japonês"
 msgid "Topic Subject"
 msgstr "Assunto do Tópico"
 
-#: 950.data.seed-values.sql:10148
+#: 950.data.seed-values.sql:10273
 msgid "Repertoire de vedettes-matiere"
 msgstr "Repertório de vedettes-matiere"
 
@@ -1840,7 +1840,7 @@ msgstr "Usuário excede o limite máximo de itens em atraso"
 
 # id::cit.name__3
 #: 950.data.seed-values.sql:240 950.data.seed-values.sql:6379
-#: 950.data.seed-values.sql:10149
+#: 950.data.seed-values.sql:10274
 msgid "Other"
 msgstr "Outro"
 
@@ -1849,7 +1849,7 @@ msgstr "Outro"
 msgid "Old Persian (ca. 600-400 B.C.)"
 msgstr "Old Persa (ca. 600-400 a.C.)"
 
-#: 950.data.seed-values.sql:10045
+#: 950.data.seed-values.sql:10170
 msgid "See Also From Tracing -- Chronological Term"
 msgstr "Ver a partir de rastreamento - Termo Cronológico"
 
@@ -1863,7 +1863,7 @@ msgstr "Gráfico bidimensional não projetável"
 msgid "Balinese"
 msgstr "Balinês"
 
-#: 950.data.seed-values.sql:8871 950.data.seed-values.sql:8872
+#: 950.data.seed-values.sql:8996 950.data.seed-values.sql:8997
 msgid "Historical Circulation Retention Start Date"
 msgstr "Histórico de Circulação - Data de Início de Retenção"
 
@@ -1910,7 +1910,7 @@ msgstr "Processando Cartão de Crédito"
 msgid "Kit"
 msgstr "Kit"
 
-#: 950.data.seed-values.sql:8723
+#: 950.data.seed-values.sql:8847
 msgid "Processing Fee"
 msgstr "Taxa de Processamento"
 
@@ -1929,7 +1929,7 @@ msgstr "Maltês"
 msgid "Assamese"
 msgstr "Assamês"
 
-#: 950.data.seed-values.sql:9314
+#: 950.data.seed-values.sql:9439
 msgid "Import failed due to Accession Number collision"
 msgstr "Importação falhou devido a colisão com Número de Acesso"
 
@@ -1997,7 +1997,7 @@ msgstr "Achém"
 msgid "Drivers License"
 msgstr "RG"
 
-#: 950.data.seed-values.sql:10054
+#: 950.data.seed-values.sql:10179
 msgid "Subdivision Linking Entry -- General Subdivision"
 msgstr "Entrada de Vínculo de Subdivisão - Subdivisão Geral"
 
@@ -2029,7 +2029,7 @@ msgstr ""
 msgid "Himachali"
 msgstr "Himachali"
 
-#: 950.data.seed-values.sql:11563
+#: 950.data.seed-values.sql:11688
 msgid "Self-Check Proxy Login"
 msgstr "Autoverificação de Acesso pelo Proxy"
 
@@ -2062,7 +2062,7 @@ msgstr "Volume encadernado"
 msgid "Ethiopic"
 msgstr "Etíope"
 
-#: 950.data.seed-values.sql:10014
+#: 950.data.seed-values.sql:10139
 msgid "Heading -- Uniform Title"
 msgstr "Cabeçalho - Cabeçalho Uniforme"
 
@@ -2137,7 +2137,7 @@ msgstr "Basa"
 msgid "Speeches"
 msgstr "Discursos"
 
-#: 950.data.seed-values.sql:10053
+#: 950.data.seed-values.sql:10178
 msgid "Established Heading Linking Entry -- Genre/Form Term"
 msgstr "Estabelecida Posição Ligando Entrada -- Termo Gênero/Forma"
 
@@ -2155,7 +2155,7 @@ msgstr "Napolitano italiano"
 msgid "Serials (includes admin features)"
 msgstr "Periódicos (inclui funcionalidades de administração)"
 
-#: 950.data.seed-values.sql:10037
+#: 950.data.seed-values.sql:10162
 msgid "See Also From Tracing -- Meeting Name"
 msgstr "Ver a partir de rastreamento - Reunião Nome"
 
@@ -2197,7 +2197,7 @@ msgstr "Tagalo"
 msgid "Serbian"
 msgstr "Sérvio"
 
-#: 950.data.seed-values.sql:10070
+#: 950.data.seed-values.sql:10195
 msgid "See Also Tracing -- Form Subdivision"
 msgstr "Ver também rastreamento - Subdivisão de Forma"
 
@@ -2216,7 +2216,7 @@ msgstr "Subunidade"
 msgid "Italian"
 msgstr "Italiano"
 
-#: 950.data.seed-values.sql:11566
+#: 950.data.seed-values.sql:11691
 msgid "LibraryElf Login"
 msgstr "LibraryElf - Acesso"
 
@@ -2291,11 +2291,11 @@ msgstr "Rapanui"
 msgid "Urdu"
 msgstr "Urdu"
 
-#: 950.data.seed-values.sql:9328
+#: 950.data.seed-values.sql:9453
 msgid "Invalid value for \"circ_lib\""
 msgstr "Valor inválido para \"circ_lib\""
 
-#: 950.data.seed-values.sql:10140
+#: 950.data.seed-values.sql:10265
 msgid "Library of Congress Subject Headings"
 msgstr "Library of Congress Título de Assuntos"
 
@@ -2304,7 +2304,7 @@ msgstr "Library of Congress Título de Assuntos"
 msgid "Lozi"
 msgstr "Lozi"
 
-#: 950.data.seed-values.sql:10043
+#: 950.data.seed-values.sql:10168
 msgid "See Also From Tracing -- Chronological Subdivision"
 msgstr "Ver a partir de rastreamento - Subdivisão Cronológica"
 
@@ -2313,7 +2313,7 @@ msgstr "Ver a partir de rastreamento - Subdivisão Cronológica"
 msgid "Gorontalo"
 msgstr "Gorontalo"
 
-#: 950.data.seed-values.sql:10023
+#: 950.data.seed-values.sql:10148
 msgid "Heading -- Corporate Name"
 msgstr "Cabeçalho - Nome Institucional"
 
@@ -2457,7 +2457,7 @@ msgstr "Tailandês"
 msgid "Afrikaans"
 msgstr "Africanos"
 
-#: 950.data.seed-values.sql:10048
+#: 950.data.seed-values.sql:10173
 msgid "Established Heading Linking Entry -- Personal Name"
 msgstr "Estabelecida Posição Ligando Entrada -- Pessoal Nome"
 
@@ -2525,7 +2525,7 @@ msgstr "Pré-carregar e-Reader"
 msgid "Identifier"
 msgstr "Identificador"
 
-#: 950.data.seed-values.sql:11553
+#: 950.data.seed-values.sql:11678
 msgid "Verification via gateway-v1"
 msgstr "Verificação via gateway-v1"
 
@@ -2539,7 +2539,7 @@ msgstr "Lingala"
 msgid "System: Rental"
 msgstr "Sistema: Locação"
 
-#: 950.data.seed-values.sql:11549
+#: 950.data.seed-values.sql:11674
 msgid "Login via Apache module"
 msgstr "Acesso via módulo do Apache"
 
@@ -2612,7 +2612,7 @@ msgstr "Recipiente do modelo de mesclagem"
 msgid "Breton"
 msgstr "Bretão"
 
-#: 950.data.seed-values.sql:10039
+#: 950.data.seed-values.sql:10164
 msgid "See Also From Tracing -- Geographic Name"
 msgstr "Ver a partir de rastreamento - Nome Geográfico"
 
@@ -2659,7 +2659,7 @@ msgstr "Aviso de bloqueio na Circulação, Reserva e Renovação"
 msgid "Soninke"
 msgstr "SONINKE"
 
-#: 950.data.seed-values.sql:10038
+#: 950.data.seed-values.sql:10163
 msgid "See Also From Tracing -- Topical Term"
 msgstr "Ver a partir de rastreamento - Termo de Tópico"
 
@@ -2677,7 +2677,7 @@ msgstr "Hmong"
 msgid "Unspecified"
 msgstr ""
 
-#: 950.data.seed-values.sql:10008
+#: 950.data.seed-values.sql:10133
 msgid "LoC"
 msgstr "LoC"
 
@@ -2776,7 +2776,7 @@ msgstr "Dogrib"
 msgid "Volapük"
 msgstr "Volapuque"
 
-#: 950.data.seed-values.sql:11554
+#: 950.data.seed-values.sql:11679
 msgid "Verification via translator-v1"
 msgstr "Verificação através de tradutor-v1"
 
@@ -2845,7 +2845,7 @@ msgstr "Dutch, Middle (ca. 1050-1350)"
 msgid "Persian"
 msgstr "Persa"
 
-#: 950.data.seed-values.sql:11565
+#: 950.data.seed-values.sql:11690
 msgid "Apache Auth Proxy Login"
 msgstr "Proxy Apache, Autentificação de Acesso"
 
@@ -2869,7 +2869,7 @@ msgstr "Aimara"
 msgid "South American Indian (Other)"
 msgstr "Índio Sul Americano (Outro)"
 
-#: 950.data.seed-values.sql:10067
+#: 950.data.seed-values.sql:10192
 msgid "See Also Tracing -- General Subdivision"
 msgstr "Ver também rastreamento - Subdivisão Geral"
 
@@ -2894,7 +2894,7 @@ msgstr "CHIPEWYAN"
 msgid "Corsican"
 msgstr "Córsico"
 
-#: 950.data.seed-values.sql:9310
+#: 950.data.seed-values.sql:9435
 msgid "Import failed due to invalid copy location"
 msgstr "Importação falhou devido a localização inválida do exemplar"
 
@@ -2903,7 +2903,7 @@ msgstr "Importação falhou devido a localização inválida do exemplar"
 msgid "Kpelle"
 msgstr "Kpelle"
 
-#: 950.data.seed-values.sql:11557
+#: 950.data.seed-values.sql:11682
 msgid "SIP2 User Verification"
 msgstr "SIP2 Verificação do Usuário"
 
@@ -2991,7 +2991,7 @@ msgstr "Prácrito línguas"
 msgid "Gayo"
 msgstr "GAYO"
 
-#: 950.data.seed-values.sql:10041
+#: 950.data.seed-values.sql:10166
 msgid "See Also From Tracing -- General Subdivision"
 msgstr "Ver a partir de rastreamento - Subdivisão Geral"
 
@@ -3075,7 +3075,7 @@ msgstr "Título do trabalho"
 msgid "Quechua"
 msgstr "Quechua"
 
-#: 950.data.seed-values.sql:10068
+#: 950.data.seed-values.sql:10193
 msgid "See Also Tracing -- Geographic Subdivision"
 msgstr "Ver também rastreamento - Subdivisão Geográfica"
 
@@ -3108,7 +3108,7 @@ msgstr "Fang"
 msgid "Mongo-Nkundu"
 msgstr "Mongo-Nkundu"
 
-#: 950.data.seed-values.sql:9307
+#: 950.data.seed-values.sql:9432
 msgid "Import or Overlay failed"
 msgstr "Importar ou Sobreposição falhou"
 
@@ -3117,7 +3117,7 @@ msgstr "Importar ou Sobreposição falhou"
 msgid "Malayalam"
 msgstr "Malaiala"
 
-#: 950.data.seed-values.sql:11564
+#: 950.data.seed-values.sql:11689
 msgid "Unique Mgt Login"
 msgstr "Gestão de Acesso Único"
 
@@ -3149,7 +3149,7 @@ msgstr "Afrihili (Linguagem Artificial)"
 msgid "Item Barcode"
 msgstr "Código de Barras do Item"
 
-#: 950.data.seed-values.sql:9316
+#: 950.data.seed-values.sql:9441
 msgid "Malformed record cause Overlay failure"
 msgstr "Registro malformado causou falha de Sobreposição"
 
@@ -3173,7 +3173,7 @@ msgstr "Especializadas"
 msgid "Fijian"
 msgstr "Fijiano"
 
-#: 950.data.seed-values.sql:10052
+#: 950.data.seed-values.sql:10177
 msgid "Established Heading Linking Entry -- Geographic Name"
 msgstr "Estabelecida Posição Ligando Entrada -- Nome Geográfico"
 
@@ -3186,11 +3186,11 @@ msgstr "Inglês Americano"
 msgid "Authority Record ID"
 msgstr "ID Registro de Autoridade"
 
-#: 950.data.seed-values.sql:10058
+#: 950.data.seed-values.sql:10183
 msgid "Established Heading Linking Entry -- Chronological Term"
 msgstr "Estabelecida Posição Ligando Entrada -- Termo Cronológico"
 
-#: 950.data.seed-values.sql:8880 950.data.seed-values.sql:8881
+#: 950.data.seed-values.sql:9005 950.data.seed-values.sql:9006
 msgid "Historical Hold Retention Age"
 msgstr "Histórico de Reservas - Tempo de Retenção"
 
@@ -3227,11 +3227,11 @@ msgstr "Manx"
 msgid "Rarotongan"
 msgstr "RAROTONGANO"
 
-#: 950.data.seed-values.sql:10056
+#: 950.data.seed-values.sql:10181
 msgid "Subdivision Linking Entry -- Chronological Subdivision"
 msgstr "Entrada de Vínculo de Subdivisão - Subdivisão Cronológica"
 
-#: 950.data.seed-values.sql:10147
+#: 950.data.seed-values.sql:10272
 msgid "Sears List of Subject Headings"
 msgstr "Queimar Lista de cabeçalhos de assunto"
 
@@ -3289,11 +3289,11 @@ msgstr "Bislamá"
 msgid "Kongo"
 msgstr "Congolês"
 
-#: 950.data.seed-values.sql:9326
+#: 950.data.seed-values.sql:9451
 msgid "Invalid value for \"owning_lib\""
 msgstr "Valor inválido para \"owning_lib\""
 
-#: 950.data.seed-values.sql:11543
+#: 950.data.seed-values.sql:11668
 msgid "Login via srfsh"
 msgstr "Acesso via srfsh"
 
@@ -3307,7 +3307,7 @@ msgstr "Acholi"
 msgid "Mon-Khmer (Other)"
 msgstr "Mon-Khmer (Other)"
 
-#: 950.data.seed-values.sql:10035
+#: 950.data.seed-values.sql:10160
 msgid "See Also From Tracing -- Personal Name"
 msgstr "Ver a partir de rastreamento - Nome Pessoal"
 
@@ -3355,7 +3355,7 @@ msgstr "Bikol"
 msgid "Swedish"
 msgstr "Sueco"
 
-#: 950.data.seed-values.sql:9330
+#: 950.data.seed-values.sql:9455
 msgid "Invalid value for \"copy_number\""
 msgstr "Valor inválido para \"copy_number\""
 
@@ -3402,7 +3402,7 @@ msgstr "Dinamarquês"
 msgid "Dravidian (Other)"
 msgstr "Dravidian (Outros)"
 
-#: 950.data.seed-values.sql:10049
+#: 950.data.seed-values.sql:10174
 msgid "Established Heading Linking Entry -- Corporate Name"
 msgstr "Estabelecida Posição Ligando Entrada -- Nome Institucional"
 
@@ -3435,11 +3435,11 @@ msgstr "Pahlavi"
 msgid "Add to Published Book Bags"
 msgstr "Adicionar ao Sacos de livros publicados"
 
-#: 950.data.seed-values.sql:9320
+#: 950.data.seed-values.sql:9445
 msgid "Invalid value for \"status\""
 msgstr "Valor inválido para o \"status\""
 
-#: 950.data.seed-values.sql:10061
+#: 950.data.seed-values.sql:10186
 msgid "See Also Tracing -- Personal Name"
 msgstr "Ver também rastreamento - Nome Pessoal"
 
@@ -3448,7 +3448,7 @@ msgstr "Ver também rastreamento - Nome Pessoal"
 msgid "Slovak"
 msgstr "Eslovaco"
 
-#: 950.data.seed-values.sql:10145
+#: 950.data.seed-values.sql:10270
 msgid "Not applicable"
 msgstr "Não aplicável"
 
@@ -3471,7 +3471,7 @@ msgstr ""
 msgid "6month"
 msgstr "6mes"
 
-#: 950.data.seed-values.sql:8819
+#: 950.data.seed-values.sql:8944
 msgid "Historical Circulations per Copy"
 msgstr "Histórico de Circulação por Exemplar"
 
@@ -3479,11 +3479,11 @@ msgstr "Histórico de Circulação por Exemplar"
 msgid "UPC"
 msgstr "UPC"
 
-#: 950.data.seed-values.sql:8725
+#: 950.data.seed-values.sql:8849
 msgid "Handling Charge"
 msgstr "Custos de Manuseio"
 
-#: 950.data.seed-values.sql:10144
+#: 950.data.seed-values.sql:10269
 msgid "Canadian Subject Headings"
 msgstr "Título de Assuntos Canadenses"
 
@@ -3501,7 +3501,7 @@ msgstr "Índio Norte Americano  (Outro)"
 msgid "Polish"
 msgstr "Polonês"
 
-#: 950.data.seed-values.sql:10025
+#: 950.data.seed-values.sql:10150
 msgid "Heading -- Topical Term"
 msgstr "Cabeçalho - Termo de Tópico"
 
@@ -3514,7 +3514,7 @@ msgstr "Crimean Tatar"
 msgid "Book Bag"
 msgstr "Sacola de Livros"
 
-#: 950.data.seed-values.sql:10063
+#: 950.data.seed-values.sql:10188
 msgid "See Also Tracing -- Meeting Name"
 msgstr "Ver também rastreamento - Reunião Nome"
 
@@ -3538,7 +3538,7 @@ msgstr "Seu Carrinho de Livros"
 msgid "Nogai"
 msgstr "Nogai"
 
-#: 950.data.seed-values.sql:11556
+#: 950.data.seed-values.sql:11681
 msgid "Verification via remoteauth"
 msgstr "Verificação através remoteauth"
 
@@ -3557,7 +3557,7 @@ msgstr "Iacuto"
 msgid "Sumerian"
 msgstr "Sumério"
 
-#: 950.data.seed-values.sql:8730
+#: 950.data.seed-values.sql:8854
 msgid "Paper"
 msgstr "Papel"
 
@@ -3595,7 +3595,7 @@ msgstr "Interlingua (Associação Internacional de Auxilio a Linguá)"
 msgid "Icelandic"
 msgstr "Islandês"
 
-#: 950.data.seed-values.sql:10040
+#: 950.data.seed-values.sql:10165
 msgid "See Also From Tracing -- Genre/Form Term"
 msgstr "Ver a partir de rastreamento - Termo de Gênero/Forma"
 
@@ -3639,7 +3639,7 @@ msgstr "Coreano"
 msgid "Shan"
 msgstr "Shan"
 
-#: 950.data.seed-values.sql:9317
+#: 950.data.seed-values.sql:9442
 msgid "New record had insufficient quality"
 msgstr "Novo registro tinha qualidade insuficiente"
 
@@ -3648,7 +3648,7 @@ msgstr "Novo registro tinha qualidade insuficiente"
 msgid "Manuscript notated music"
 msgstr "Manuscrito de notação de música"
 
-#: 950.data.seed-values.sql:10016
+#: 950.data.seed-values.sql:10141
 msgid "Established Heading Linking Entry -- Uniform Title"
 msgstr "Estabelecida Posição Ligando Entrada -- Uniforme Título"
 
@@ -3666,7 +3666,7 @@ msgstr "Coleção"
 msgid "Nyanja"
 msgstr "Nianja"
 
-#: 950.data.seed-values.sql:10065
+#: 950.data.seed-values.sql:10190
 msgid "See Also Tracing -- Geographic Name"
 msgstr "Ver também rastreamento - Nome Geográfico"
 
@@ -3703,7 +3703,7 @@ msgstr "Número de chamadas locais grátis de Texto"
 msgid "Occitan (post-1500)"
 msgstr "Occitan (pós-1500)"
 
-#: 950.data.seed-values.sql:9315
+#: 950.data.seed-values.sql:9440
 msgid "Malformed record cause Import failure"
 msgstr "Registro malformado causou falha de Importação"
 
@@ -3732,7 +3732,7 @@ msgstr "Sistema"
 msgid "Acquisitions Administrator"
 msgstr "Administrador de Aquisições"
 
-#: 950.data.seed-values.sql:10166
+#: 950.data.seed-values.sql:10291
 msgid "Vandelay Queue"
 msgstr "Fila Vandelay"
 
@@ -3767,7 +3767,7 @@ msgstr "Udmurt"
 msgid "Irish"
 msgstr "Gaélico"
 
-#: 950.data.seed-values.sql:10017
+#: 950.data.seed-values.sql:10142
 msgid "See Also Tracing -- Uniform Title"
 msgstr "Ver também rastreamento - Título Uniforme"
 
@@ -3801,14 +3801,9 @@ msgstr "Bielorrusso"
 msgid "Library of Congress"
 msgstr "Library of Congress"
 
-#: 950.data.seed-values.sql:11542
+#: 950.data.seed-values.sql:11667
 msgid "Login via opensrf"
 msgstr "Acesso via opensrf"
-
-# id::cifm.value__d
-#: 950.data.seed-values.sql:6322
-msgid "Large print"
-msgstr "Grandes imprimir"
 
 # id::clm.value__-ajm
 #: 950.data.seed-values.sql:5821
@@ -3833,7 +3828,7 @@ msgstr "Calmuc"
 msgid "Title Proper"
 msgstr "Título Genuíno"
 
-#: 950.data.seed-values.sql:11561
+#: 950.data.seed-values.sql:11686
 msgid "OPAC Login (tpac)"
 msgstr "OPAC Login (tpac)"
 
@@ -3865,11 +3860,11 @@ msgstr ""
 msgid "System: Deposit"
 msgstr "Sistema: Depósito"
 
-#: 950.data.seed-values.sql:10142
+#: 950.data.seed-values.sql:10267
 msgid "Medical Subject Headings"
 msgstr "Títulos de Assuntos Médicos"
 
-#: 950.data.seed-values.sql:11545
+#: 950.data.seed-values.sql:11670
 msgid "Login via translator-v1"
 msgstr "Acesso via translator-v1"
 
@@ -3891,7 +3886,7 @@ msgstr "Laociano"
 msgid "EAN"
 msgstr "EAN"
 
-#: 950.data.seed-values.sql:11547
+#: 950.data.seed-values.sql:11672
 msgid "Login via remoteauth"
 msgstr "Acesso via remoteauth"
 
@@ -3935,7 +3930,7 @@ msgstr "Curdo"
 msgid "Walamo"
 msgstr "Walamo"
 
-#: 950.data.seed-values.sql:11546
+#: 950.data.seed-values.sql:11671
 msgid "Login via xmlrpc"
 msgstr "Acesso via xmlrpc"
 
@@ -4059,11 +4054,11 @@ msgstr "WASHO"
 msgid "Spanish"
 msgstr "Espanhol"
 
-#: 950.data.seed-values.sql:10044
+#: 950.data.seed-values.sql:10169
 msgid "See Also From Tracing -- Form Subdivision"
 msgstr "Ver a partir de rastreamento - Subdivisão de Forma"
 
-#: 950.data.seed-values.sql:10042
+#: 950.data.seed-values.sql:10167
 msgid "See Also From Tracing -- Geographic Subdivision"
 msgstr "Ver a partir de rastreamento - Subdivisão geográfica"
 

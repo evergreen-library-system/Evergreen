@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-12-20 09:37-0400\n"
-"PO-Revision-Date: 2013-01-15 12:38+0000\n"
+"PO-Revision-Date: 2013-02-10 14:03+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-01-16 04:37+0000\n"
-"X-Generator: Launchpad (build 16420)\n"
+"X-Launchpad-Export-Date: 2013-02-11 05:12+0000\n"
+"X-Generator: Launchpad (build 16482)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -9453,7 +9453,7 @@ msgstr "Prezenční užití"
 #: staff.circ.in_house_use.multiplier.label
 #: staff.circ.in_house_use.multiplier.accesskey
 msgid "# of &uses:"
-msgstr "# z &užití:"
+msgstr "Počet použití"
 
 #: staff.circ.in_house_use.submit.label
 #: staff.circ.in_house_use.submit.accesskey
@@ -10896,7 +10896,7 @@ msgstr "Skupiny záznamů"
 #: staff.cat.record_buckets_overlay.record_query_tab.label
 #: staff.cat.record_buckets_overlay.record_query_tab.accesskey
 msgid "Record &Query"
-msgstr "Záznam &Dotaz"
+msgstr "Vyhle&dání záznamu"
 
 #: staff.cat.record_buckets_overlay.pending_records_tab.label
 #: staff.cat.record_buckets_overlay.pending_records_tab.accesskey
@@ -13915,7 +13915,7 @@ msgstr "Provozováno v systému"
 
 #: staff.client.portal.toggle_tpac
 msgid "Toggle Template Toolkit OPAC Use"
-msgstr "Vypnout použití TemplateTtoolkit OPAC"
+msgstr "Vypnout  zapnout použití TemplateTtoolkit OPAC"
 
 #: staff.client.portal.toggle_tpac.message_on
 msgid ""
