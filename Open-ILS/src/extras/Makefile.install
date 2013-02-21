@@ -132,6 +132,7 @@ FEDORA_RPMS = \
 	perl-Business-CreditCard \
 	perl-Business-ISBN \
 	perl-Business-ISBN-Data \
+	perl-CPAN \
 	perl-DBD-Pg \
 	perl-Email-Send \
 	perl-Email-Simple \
