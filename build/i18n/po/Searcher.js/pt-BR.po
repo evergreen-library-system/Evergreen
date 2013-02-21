@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2012-05-25 23:07+0000\n"
-"Last-Translator: Tomas Abril <Unknown>\n"
+"PO-Revision-Date: 2012-07-04 14:27+0000\n"
+"Last-Translator: Job Diógenes Ribeiro Borges <jobdrb@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-05-26 05:09+0000\n"
-"X-Generator: Launchpad (build 15288)\n"
+"X-Launchpad-Export-Date: 2012-07-05 04:50+0000\n"
+"X-Generator: Launchpad (build 15544)\n"
 
 #: Searcher.js:before
 msgid "Published Before"
@@ -27,7 +27,7 @@ msgstr "Forma Literária"
 
 #: Searcher.js:metabib
 msgid "Metarecord Search"
-msgstr ""
+msgstr "Pesquisa por Metaregistro"
 
 #: Searcher.js:contains
 msgid "Contains"
@@ -51,7 +51,7 @@ msgstr "Modificadores"
 
 #: Searcher.js:item_type
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 #: Searcher.js:depth
 msgid "Search Depth"
@@ -63,27 +63,27 @@ msgstr "Disponível"
 
 #: Searcher.js:classed_searches
 msgid "Classed Searches"
-msgstr ""
+msgstr "Pesquisas Classificadas"
 
 #: Searcher.js:item_form
 msgid "Form"
-msgstr ""
+msgstr "Forma"
 
 #: Searcher.js:new_modifier
 msgid "New Modifier"
-msgstr ""
+msgstr "Novo Modificador"
 
 #: Searcher.js:less
 msgid "...Less"
-msgstr ""
+msgstr "...Menos"
 
 #: Searcher.js:modifier_default
 msgid "-- Select a Modifier --"
-msgstr ""
+msgstr "-- Selecione um Modificador --"
 
 #: Searcher.js:during
 msgid "In Publication"
-msgstr ""
+msgstr "Em Publicação"
 
 #: Searcher.js:exact
 msgid "Exactly Matches"
@@ -95,7 +95,7 @@ msgstr "Avançado"
 
 #: Searcher.js:between
 msgid "Published Between"
-msgstr ""
+msgstr "Publicador Entre"
 
 #: Searcher.js:new_filter
 msgid "New Filter"
@@ -103,7 +103,7 @@ msgstr "Novo Filtro"
 
 #: Searcher.js:faceted_searches
 msgid "Facets"
-msgstr ""
+msgstr "Facetas"
 
 #: Searcher.js:perform_search
 msgid "Go!"
@@ -115,11 +115,11 @@ msgstr "Remover"
 
 #: Searcher.js:audience
 msgid "Audience"
-msgstr ""
+msgstr "Público"
 
 #: Searcher.js:format
 msgid "Type and Form"
-msgstr ""
+msgstr "Tipo e Forma"
 
 #: Searcher.js:descending
 msgid "Sort Descending"
@@ -127,7 +127,7 @@ msgstr "Ordenar em Ordem Decrescente"
 
 #: Searcher.js:new_facet
 msgid "New Facet"
-msgstr ""
+msgstr "Nova Faceta"
 
 #: Searcher.js:and
 msgid "AND"
@@ -135,11 +135,11 @@ msgstr "E"
 
 #: Searcher.js:vr_format
 msgid "Videorecording Format"
-msgstr ""
+msgstr "Formato da Gravação em Vídeo"
 
 #: Searcher.js:staff
 msgid "Staff Search"
-msgstr ""
+msgstr "Pesquisa de Funcionário"
 
 #: Searcher.js:site
 msgid "Site"
@@ -151,7 +151,7 @@ msgstr "Não Contém"
 
 #: Searcher.js:sort
 msgid "Sort Axis"
-msgstr ""
+msgstr "Ordenar Axis"
 
 #: Searcher.js:filters
 msgid "Filters"
@@ -159,7 +159,7 @@ msgstr "Filtros"
 
 #: Searcher.js:bib_level
 msgid "Bibliographic Level"
-msgstr ""
+msgstr "Nível Catalográfico"
 
 #: Searcher.js:filter_default
 msgid "-- Select a Filter --"

@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2012-04-28 14:17-0400\n"
-"PO-Revision-Date: 2012-05-26 01:19+0000\n"
-"Last-Translator: jobdrb <jobdrb@gmail.com>\n"
+"PO-Revision-Date: 2012-07-06 19:40+0000\n"
+"Last-Translator: Job Diógenes Ribeiro Borges <jobdrb@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-05-27 04:42+0000\n"
-"X-Generator: Launchpad (build 15288)\n"
+"X-Launchpad-Export-Date: 2012-07-07 05:14+0000\n"
+"X-Generator: Launchpad (build 15558)\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -58,15 +58,15 @@ msgstr "Ajuste da Fonte Global definido para maior que o padrão"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_XX_SMALL
 msgid "Global Font set to XX-Small"
-msgstr "Fonte Global definida para o tamanho minúsculo"
+msgstr "Fonte Global definida para extra-pequeno"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_X_SMALL
 msgid "Global Font set to X-Small"
-msgstr "Fonte Global definida para o tamanho muito pequeno"
+msgstr "Fonte Global definida para tamanho X-Pequeno"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_SMALL
 msgid "Global Font set to Small"
-msgstr "Fonte Global definida para o tamanho pequeno"
+msgstr "Fonte Global definida para tamanho pequeno"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_MEDIUM
 msgid "Global Font set to Medium"
@@ -186,7 +186,7 @@ msgstr "Data invalida (%1$s,%2$s), definindo para Hoje"
 
 #: staff.admin.transit_list.date_processing.error
 msgid "error processing date"
-msgstr "erro ao tratar data"
+msgstr "erro ao processar data"
 
 #: staff.admin.transit_list.retrieving_transit.error
 msgid "error retrieving transits"
@@ -202,16 +202,15 @@ msgstr "erro ao obter linha"
 
 #: staff.admin.transit_list.empty_array.error
 msgid "Empty array returned by hold retrieve."
-msgstr ""
-"A recuperação do artigo colocado na reserva indica uma prateleira vazia."
+msgstr "Vetor vazio retornado ao obter reserva"
 
 #: staff.admin.transit_list.retrieve_hold.error
 msgid "retrieving hold id = %1$s for transit id = %2$s"
-msgstr "recuperação da ID %1s em reserva para o transito ID = %2$s"
+msgstr "recuperação da reserva ID %1s para o transito ID = %2$s"
 
 #: staff.admin.transit_list.transit_id.error
 msgid "retrieving transit id = %1$s"
-msgstr "recuperação do transito ID = %1$s"
+msgstr "obtendo transito ID = %1$s"
 
 #: staff.admin.offline_manage_xacts.init_list.organization
 msgid "Organization"
@@ -277,7 +276,7 @@ msgstr "Estação de Trabalho"
 
 #: staff.admin.offline_manage_xacts.init_error_list.timestamp
 msgid "Timestamp"
-msgstr "Marca de Tempo"
+msgstr "Registro de Horas"
 
 #: staff.admin.offline_manage_xacts.init_error_list.type
 msgid "Type"
@@ -301,15 +300,15 @@ msgstr "Código de Barra do Item"
 
 #: staff.admin.offline_manage_xacts.init_error_list.patron_barcode
 msgid "Patron Barcode"
-msgstr "Código de Barra do cliente"
+msgstr "Código de barras do Usuário"
 
 #: staff.admin.offline_manage_xacts.init_error_list.due_date
 msgid "Due Date"
-msgstr "Date de Entrega"
+msgstr "Data de Vencimento"
 
 #: staff.admin.offline_manage_xacts.init_error_list.count
 msgid "In House Use Count"
-msgstr "Nome de utilização interna"
+msgstr "Contagem de utilização interna"
 
 #: staff.admin.offline_manage_xacts.init_error_list.noncat
 msgid "Non-Cataloged?"

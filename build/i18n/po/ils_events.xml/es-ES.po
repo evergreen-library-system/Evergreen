@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-04-28 14:17-0400\n"
+"POT-Creation-Date: 2012-08-22 08:46-0400\n"
 "PO-Revision-Date: 2011-05-14 05:59+0000\n"
 "Last-Translator: Julian Lamus <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-30 04:46+0000\n"
-"X-Generator: Launchpad (build 15171)\n"
+"X-Launchpad-Export-Date: 2012-08-28 06:49+0000\n"
+"X-Generator: Launchpad (build 15864)\n"
 
 #: 1621.CONTAINER_COPY_BUCKET_NOT_FOUND:512
 msgid "The requested container_copy_bucket was not found"
@@ -91,6 +91,10 @@ msgstr "el acq.funding_source_dedit requerido no ha sido encontrado"
 
 #: 1641.ACTION_OPEN_CIRC_COUNT_BY_CIRC_MOD_NOT_FOUND:572
 msgid "The requested action_open_circ_count_by_circ_mod was not found"
+msgstr ""
+
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:967
+msgid "The lineitem detail has no owning_lib"
 msgstr ""
 
 #: 1608.METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND:473
@@ -219,6 +223,10 @@ msgid ""
 "found"
 msgstr ""
 
+#: 7011.COPY_STATUS_LOST:862
+msgid "Copy is marked as lost"
+msgstr ""
+
 #: 7010.COPY_ALERT_MESSAGE:859
 msgid "The requested copy has an alert message attached"
 msgstr "La copia solicitada tiene un mensaje de alerta adjunto"
@@ -271,10 +279,6 @@ msgstr ""
 msgid "The requested authority_record_descriptor was not found"
 msgstr ""
 
-#: 7011.COPY_STATUS_LOST:862
-msgid "Copy has is marked as lost"
-msgstr ""
-
 #: 1587.CONTAINER_CALL_NUMBER_BUCKET_NOT_FOUND:410
 msgid "The requested container_call_number_bucket was not found"
 msgstr ""
@@ -295,10 +299,6 @@ msgstr ""
 
 #: 1651.AUTHORITY_RECORD_NUMBER_EXISTS:602
 msgid "An authority record already exists with the requested ARN"
-msgstr ""
-
-#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:990
-msgid "The caption/pattern still has dependent issuances"
 msgstr ""
 
 #: 5000.PERM_FAILURE:804
@@ -557,8 +557,8 @@ msgstr ""
 msgid "The object is not in a cancelable state."
 msgstr ""
 
-#: 9000.REPORT_TEMPLATE_EXISTS:950
-msgid "A report template with the given name and folder already exists"
+#: 7012.COPY_STATUS_MISSING:865
+msgid "Copy is marked as missing"
 msgstr ""
 
 #: 1500.ACTION_CIRCULATION_NOT_FOUND:181
@@ -888,6 +888,10 @@ msgstr ""
 msgid "Hold capture was delayed for this item"
 msgstr ""
 
+#: 9000.REPORT_TEMPLATE_EXISTS:950
+msgid "A report template with the given name and folder already exists"
+msgstr ""
+
 #: 1502.ASSET_COPY_NOT_FOUND:190
 msgid ""
 "Someone attempted to retrieve a copy object from the system and the object "
@@ -922,6 +926,12 @@ msgstr ""
 
 #: 9001.REPORT_REPORT_EXISTS:954
 msgid "A report with the given name and folder already exists"
+msgstr ""
+
+#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1007
+msgid ""
+"A serial pattern code has been configured that fails to conform to MFHD "
+"standards for fields 853-855."
 msgstr ""
 
 #: 1705.VOLUME_LABEL_EXISTS:723
@@ -986,6 +996,10 @@ msgstr ""
 msgid "User login failed"
 msgstr ""
 
+#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:990
+msgid "The caption/pattern still has dependent issuances"
+msgstr ""
+
 #: 1873.ACQ_CURRENCY_TYPE_NOT_FOUND:682
 msgid "The requested acq.currency_type was not found"
 msgstr ""
@@ -996,10 +1010,6 @@ msgstr ""
 
 #: 8009.OFFLINE_NO_ORG:940 8010.OFFLINE_SESSION_COMPLETE:943
 msgid "No org id was provided"
-msgstr ""
-
-#: 7012.COPY_STATUS_MISSING:865
-msgid "Copy has is marked as missing"
 msgstr ""
 
 #: 1532.MONEY_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND:253
@@ -1152,10 +1162,6 @@ msgstr ""
 msgid "The requested container_call_number_bucket_item was not found"
 msgstr ""
 
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:967
-msgid "The lineitem detail has no owning_lib"
-msgstr ""
-
 #: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:994
 msgid ""
 "Units cannot be created for the given item because its associated "
@@ -1196,12 +1202,6 @@ msgstr ""
 
 #: 1615.ACTION_NON_CATALOGED_CIRCULATION_NOT_FOUND:494
 msgid "The requested action_non_cataloged_circulation was not found"
-msgstr ""
-
-#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1007
-msgid ""
-"A serial pattern code has been configured that fails to conform to MFHD "
-"standards for fields 853-855."
 msgstr ""
 
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:461

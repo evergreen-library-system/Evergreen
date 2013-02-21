@@ -246,7 +246,7 @@ msgstr "Rezervovatelná část"
 
 #: staff.ahr_issuance_label_label
 msgid "Issuance Label"
-msgstr "Štítek číslování / chronologie"
+msgstr "Označení číslování / chronologie"
 
 #: staff.ahr_id_label
 msgid "Hold ID"

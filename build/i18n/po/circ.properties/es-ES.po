@@ -888,19 +888,19 @@ msgstr "Para tipo: %1$s"
 
 #: staff.circ.print_list_template.window.close
 msgid "Close Window"
-msgstr "Cerrar Ventana"
+msgstr "Cerrar la ventana"
 
 #: staff.circ.print_list_template.preview
 msgid "preview: "
-msgstr ""
+msgstr "previsualización: "
 
 #: staff.circ.print_list_template.save
 msgid "Template Saved"
-msgstr "Plantilla Guardada"
+msgstr "Plantilla guardada"
 
 #: staff.circ.print_list_template.save_as
 msgid "Save Templates File As"
-msgstr "Guardar Archivo De Plantilla Como"
+msgstr "Guardar archivo de plantillas como"
 
 #: staff.circ.print_list_template.export.error
 msgctxt "staff.circ.print_list_template.export.error"
@@ -1772,13 +1772,27 @@ msgstr ""
 "Catalogar. Enviar A = %5$s"
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
-#: staff.circ.work_log_checkin_attempt.cataloging.message
+#: staff.circ.work_log_checkin_attempt.not_found.message
 msgid ""
 "%1$s attempted checkin of %4$s, which was not found, and so was routed to "
 "Cataloging.  Route To = %5$s"
 msgstr ""
 "%1$s intento entrega de %4$s, lo cual no fue encontrado, y fue enviado a "
 "Catalogar. Enviar A = %5$s"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Original Balance  5 - Voided Balance  6 - Payment Received  7 - Payment Applied
+#. # 8 - Change Given  9 - Credit Given  10 - New Balance  11 - Payment Type  12 - Note  13 - API call result
+#: staff.circ.work_log_payment_attempt.success.message
+msgid "%1$s received %6$s (%11$s) for %3$s (%2$s)."
+msgstr ""
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Original Balance  5 - Voided Balance  6 - Payment Received  7 - Payment Applied
+#. # 8 - Change Given  9 - Credit Given  10 - New Balance  11 - Payment Type  12 - Note  13 - API call result
+#: staff.circ.work_log_payment_attempt.failure.message
+msgid ""
+"%1$s attempted receipt of %6$s (%11$s) for %3$s (%2$s), which failed for "
+"this reason: %13$s"
+msgstr ""
 
 #: staff.circ.checkin.hold_capture
 msgid "Hold Capture"

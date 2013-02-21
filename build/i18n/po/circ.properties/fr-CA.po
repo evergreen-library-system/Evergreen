@@ -1812,13 +1812,27 @@ msgstr ""
 "été acheminé au catalogage. Acheminer à = %5$s"
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
-#: staff.circ.work_log_checkin_attempt.cataloging.message
+#: staff.circ.work_log_checkin_attempt.not_found.message
 msgid ""
 "%1$s attempted checkin of %4$s, which was not found, and so was routed to "
 "Cataloging.  Route To = %5$s"
 msgstr ""
 "%1$s tentative de vérification de %4$s qui n’a pas été trouvé(e) et a donc "
 "été acheminé(e) au catalogage. Acheminer à = %5$s"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Original Balance  5 - Voided Balance  6 - Payment Received  7 - Payment Applied
+#. # 8 - Change Given  9 - Credit Given  10 - New Balance  11 - Payment Type  12 - Note  13 - API call result
+#: staff.circ.work_log_payment_attempt.success.message
+msgid "%1$s received %6$s (%11$s) for %3$s (%2$s)."
+msgstr ""
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Original Balance  5 - Voided Balance  6 - Payment Received  7 - Payment Applied
+#. # 8 - Change Given  9 - Credit Given  10 - New Balance  11 - Payment Type  12 - Note  13 - API call result
+#: staff.circ.work_log_payment_attempt.failure.message
+msgid ""
+"%1$s attempted receipt of %6$s (%11$s) for %3$s (%2$s), which failed for "
+"this reason: %13$s"
+msgstr ""
 
 #: staff.circ.checkin.hold_capture
 msgid "Hold Capture"

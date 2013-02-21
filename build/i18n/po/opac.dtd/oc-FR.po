@@ -412,9 +412,7 @@ msgid ""
 "browser options, then \n"
 "<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
 "\n"
-"<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
-"<a style='color: blue; text-decoration: underline;' "
-"href='/opac/extras/slimpac/start.html'>here</a>."
+"<br/><br/>Alternatively, you can use the basic HTML-only catalog: "
 msgstr ""
 
 #. =================================================================
