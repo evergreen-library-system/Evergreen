@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2012-12-20 09:37-0400\n"
+"POT-Creation-Date: 2013-01-16 10:36-0400\n"
 "PO-Revision-Date: 2012-12-20 15:16+0000\n"
-"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-12-21 04:54+0000\n"
-"X-Generator: Launchpad (build 16378)\n"
+"X-Launchpad-Export-Date: 2013-01-17 04:37+0000\n"
+"X-Generator: Launchpad (build 16430)\n"
 "Language: fi\n"
 
 # id::cmf.label__27 id::vqbrad.description__11
@@ -193,12 +193,12 @@ msgid "Renew Circulations"
 msgstr "Uusi lainat"
 
 # id::acsaf.name__70
-#: 950.data.seed-values.sql:10069
+#: 950.data.seed-values.sql:10194
 msgid "See Also Tracing -- Chronological Subdivision"
 msgstr "Katso myös jäljitys -- kronologinen alaosasto"
 
 # id::vie.description__overlay.missing.sysid
-#: 950.data.seed-values.sql:9313
+#: 950.data.seed-values.sql:9438
 msgid "Overlay failed due to missing system id"
 msgstr "Korvaaminen epäonnistui puuttuvan järjestelmätunnuksen vuoksi"
 
@@ -223,7 +223,7 @@ msgid "Kachin"
 msgstr "kachin"
 
 # id::acsaf.name__3
-#: 950.data.seed-values.sql:10024
+#: 950.data.seed-values.sql:10149
 msgid "Heading -- Meeting Name"
 msgstr "Otsikko -- tapaamisen nimi"
 
@@ -255,13 +255,13 @@ msgstr "pangasinan"
 # id::cgf.label__history.circ.retention_age
 # id::cust.label__history.circ.retention_age
 # id::cust.description__history.circ.retention_age
-#: 950.data.seed-values.sql:8815 950.data.seed-values.sql:8865
-#: 950.data.seed-values.sql:8866
+#: 950.data.seed-values.sql:8940 950.data.seed-values.sql:8990
+#: 950.data.seed-values.sql:8991
 msgid "Historical Circulation Retention Age"
 msgstr "Vanhojen lainaustietojen säilytysikä"
 
 # id::at.name__b
-#: 950.data.seed-values.sql:10141
+#: 950.data.seed-values.sql:10266
 msgid "LC subject headings for children's literature"
 msgstr "LC-aiheotsikot lastenkirjallisuudelle"
 
@@ -271,7 +271,7 @@ msgid "Global"
 msgstr "Yleinen"
 
 # id::aiit.name__TAX
-#: 950.data.seed-values.sql:8722
+#: 950.data.seed-values.sql:8846
 msgid "Tax"
 msgstr "Vero"
 
@@ -306,7 +306,7 @@ msgid "Ijo"
 msgstr "ijo"
 
 # id::aiit.name__ITM
-#: 950.data.seed-values.sql:8726
+#: 950.data.seed-values.sql:8850
 msgid "Non-library Item"
 msgstr "Kirjastoon kuulumaton"
 
@@ -322,7 +322,7 @@ msgstr "Vahingoittunut"
 
 # id::cust.label__history.hold.retention_start
 # id::cust.description__history.hold.retention_start
-#: 950.data.seed-values.sql:8886 950.data.seed-values.sql:8887
+#: 950.data.seed-values.sql:9011 950.data.seed-values.sql:9012
 msgid "Historical Hold Retention Start Date"
 msgstr "Vanhojen varaustietojen säilytyksen aloituspäivä"
 
@@ -337,7 +337,7 @@ msgid "Kawi"
 msgstr "kavi"
 
 # id::at.name__d
-#: 950.data.seed-values.sql:10143
+#: 950.data.seed-values.sql:10268
 msgid "National Agricultural Library subject authority file"
 msgstr "Kansallisen maatalouskirjaston auktoriteettitiedosto"
 
@@ -489,7 +489,7 @@ msgid "3_months_0_renew"
 msgstr "3_kuukautta_0_uusintaa"
 
 # id::acsaf.name__8
-#: 950.data.seed-values.sql:10028
+#: 950.data.seed-values.sql:10153
 msgid "Heading -- General Subdivision"
 msgstr "Otsikko -- yleinen alaosasto"
 
@@ -529,7 +529,7 @@ msgid "Chinese"
 msgstr "kiina"
 
 # id::at.name__r
-#: 950.data.seed-values.sql:10146
+#: 950.data.seed-values.sql:10271
 msgid "Art and Architecture Thesaurus"
 msgstr "Taiteen ja arkkitehtuurin synonyymisanakirja"
 
@@ -599,7 +599,7 @@ msgid "Oriya"
 msgstr "orija"
 
 # id::cuat.label__9
-#: 950.data.seed-values.sql:11551
+#: 950.data.seed-values.sql:11676
 msgid "Verification via opensrf"
 msgstr "Opensrf-varmennus"
 
@@ -614,7 +614,7 @@ msgid "Nyankole"
 msgstr "nyankole"
 
 # id::acsaf.name__10
-#: 950.data.seed-values.sql:10030
+#: 950.data.seed-values.sql:10155
 msgid "Heading -- Chronological Subdivision"
 msgstr "Otsikko -- kronologinen alaosasto"
 
@@ -644,7 +644,7 @@ msgid "Mexican Spanish"
 msgstr "Meksikon espanja"
 
 # id::acsaf.name__11
-#: 950.data.seed-values.sql:10031
+#: 950.data.seed-values.sql:10156
 msgid "Heading -- Form Subdivision"
 msgstr "Otsikko -- kaavakkeen alaosasto"
 
@@ -760,7 +760,7 @@ msgid "Canadian English"
 msgstr "Kanadan englanti"
 
 # id::aiit.name__SUB
-#: 950.data.seed-values.sql:8727
+#: 950.data.seed-values.sql:8851
 msgid "Serial Subscription"
 msgstr "Sarjajulkaisutilaus"
 
@@ -775,7 +775,7 @@ msgid "Baltic (Other)"
 msgstr "balttilaiset kielet"
 
 # id::vie.description__import.item.invalid.deposit_amount
-#: 950.data.seed-values.sql:9324
+#: 950.data.seed-values.sql:9449
 msgid "Invalid value for \"deposit_amount\""
 msgstr "Virheellinen arvo kohteelle \"deposit_amount\""
 
@@ -785,7 +785,7 @@ msgid "Humor, satires, etc."
 msgstr "Huumori, satiiri jne."
 
 # id::cuat.label__7
-#: 950.data.seed-values.sql:11548
+#: 950.data.seed-values.sql:11673
 msgid "SIP2 Proxy Login"
 msgstr "SIP2-välityspalvelimen sisäänkirjautuminen"
 
@@ -800,7 +800,7 @@ msgid "Philippine (Other)"
 msgstr "filippiiniläiset kielet"
 
 # id::acsaf.name__51
-#: 950.data.seed-values.sql:10057
+#: 950.data.seed-values.sql:10182
 msgid "Subdivision Linking Entry -- Form Subdivision"
 msgstr "Alaosaston linkityskirjaus -- lomakkeen alaosasto"
 
@@ -810,12 +810,12 @@ msgid "German"
 msgstr "saksa"
 
 # id::acqim.name__EDI
-#: 950.data.seed-values.sql:8729
+#: 950.data.seed-values.sql:8853
 msgid "EDI"
 msgstr "EDI"
 
 # id::vie.description__import.item.duplicate.barcode
-#: 950.data.seed-values.sql:9308
+#: 950.data.seed-values.sql:9433
 msgid "Import failed due to barcode collision"
 msgstr "Tuonti epäonnistui tunnusristiriidan vuoksi"
 
@@ -860,12 +860,12 @@ msgid "Bantu (Other)"
 msgstr "bantukielet"
 
 # id::acsaf.name__1
-#: 950.data.seed-values.sql:10022
+#: 950.data.seed-values.sql:10147
 msgid "Heading -- Personal Name"
 msgstr "Otsikko -- henkilön nimi"
 
 # id::acsaf.name__43
-#: 950.data.seed-values.sql:10050
+#: 950.data.seed-values.sql:10175
 msgid "Established Heading Linking Entry -- Meeting Name"
 msgstr "Vakiintunut otsikkolinkityskirjaus -- kokouksen nimi"
 
@@ -1043,7 +1043,7 @@ msgid "Patrons"
 msgstr "Asiakkaat"
 
 # id::aiit.name__SHP
-#: 950.data.seed-values.sql:8724
+#: 950.data.seed-values.sql:8848
 msgid "Shipping Charge"
 msgstr "Lähetyskustannukset"
 
@@ -1098,7 +1098,7 @@ msgid "Interlingue"
 msgstr "interlingue"
 
 # id::cuat.label__24
-#: 950.data.seed-values.sql:11569
+#: 950.data.seed-values.sql:11694
 msgid "EZProxy Verification"
 msgstr "EZProxy-varmennus"
 
@@ -1118,7 +1118,7 @@ msgid "Esperanto"
 msgstr "esperanto"
 
 # id::vie.description__import.item.invalid.price
-#: 950.data.seed-values.sql:9322
+#: 950.data.seed-values.sql:9447
 msgid "Invalid value for \"price\""
 msgstr "Virheellinen arvo kohteelle \"price\""
 
@@ -1159,7 +1159,7 @@ msgid "System Local"
 msgstr "Järjestelmän paikallinen"
 
 # id::cuat.label__13
-#: 950.data.seed-values.sql:11555
+#: 950.data.seed-values.sql:11680
 msgid "Verification via xmlrpc"
 msgstr "Xmlrpc-varmennus"
 
@@ -1184,7 +1184,7 @@ msgid "Unfiltered"
 msgstr "Suodattamaton"
 
 # id::acsaf.name__62
-#: 950.data.seed-values.sql:10062
+#: 950.data.seed-values.sql:10187
 msgid "See Also Tracing -- Corporate Name"
 msgstr "Katso myös jäljitys -- yrityksen nimi"
 
@@ -1209,7 +1209,7 @@ msgid "Microfilm"
 msgstr "Mikrofilmi"
 
 # id::acsaf.name__7
-#: 950.data.seed-values.sql:10027
+#: 950.data.seed-values.sql:10152
 msgid "Heading -- Genre/Form Term"
 msgstr "Otsikko -- Tyylilaji-/muototermi"
 
@@ -1260,7 +1260,7 @@ msgid "Pushto"
 msgstr "pastu"
 
 # id::acsaf.name__49
-#: 950.data.seed-values.sql:10055
+#: 950.data.seed-values.sql:10180
 msgid "Subdivision Linking Entry -- Geographic Subdivision"
 msgstr "Alaosaston linkityskirjaus -- maantieteellinen alaosasto"
 
@@ -1315,7 +1315,7 @@ msgid "Galician"
 msgstr "galicia"
 
 # id::cuat.label__16
-#: 950.data.seed-values.sql:11560
+#: 950.data.seed-values.sql:11685
 msgid "OPAC Login (jspac)"
 msgstr "Verkkokirjasto-sisäänkirjautuminen (jspac)"
 
@@ -1345,7 +1345,7 @@ msgid "Khasi"
 msgstr "khasi"
 
 # id::vie.description__import.item.invalid.circ_as_type
-#: 950.data.seed-values.sql:9332
+#: 950.data.seed-values.sql:9457
 msgid "Invalid value for \"circ_as_type\""
 msgstr "Virheellinen arvo kohteelle \"circ_as_type\""
 
@@ -1365,7 +1365,7 @@ msgid "Yao (Africa)"
 msgstr "jao"
 
 # id::acsaf.name__72
-#: 950.data.seed-values.sql:10071
+#: 950.data.seed-values.sql:10196
 msgid "See Also Tracing -- Chronological Term"
 msgstr "Katso myös jäljitys -- kronologinen termi"
 
@@ -1381,7 +1381,7 @@ msgstr "sloveeni"
 
 # id::vie.description__import.duplicate.sysid
 # id::vie.description__import.duplicate.sysid
-#: 950.data.seed-values.sql:9311 950.data.seed-values.sql:9312
+#: 950.data.seed-values.sql:9436 950.data.seed-values.sql:9437
 msgid "Import failed due to system id collision"
 msgstr "Tuonti epäonnistui järjestelmätunnusten risteämisen vuoksi"
 
@@ -1391,12 +1391,12 @@ msgid "Salishan languages"
 msgstr "salisialaiset kielet"
 
 # id::cuat.label__23
-#: 950.data.seed-values.sql:11568
+#: 950.data.seed-values.sql:11693
 msgid "Self-Check User Verification"
 msgstr "Itsetarkistuksen käyttäjävarmennus"
 
 # id::acsaf.name__6
-#: 950.data.seed-values.sql:10026
+#: 950.data.seed-values.sql:10151
 msgid "Heading -- Geographic Name"
 msgstr "Otsikko -- maantieteellinen nimi"
 
@@ -1478,7 +1478,7 @@ msgid "Komi"
 msgstr "komi"
 
 # id::acs.description__1
-#: 950.data.seed-values.sql:10009
+#: 950.data.seed-values.sql:10134
 msgid "Library of Congress standard authority record control semantics"
 msgstr ""
 "Kongressin kirjaston standardoitu auktoriteettitietueen kontrollisemantiikka"
@@ -1494,7 +1494,7 @@ msgid "Turkmen"
 msgstr "turkmeeni"
 
 # id::acsaf.name__65
-#: 950.data.seed-values.sql:10064
+#: 950.data.seed-values.sql:10189
 msgid "See Also Tracing -- Topical Term"
 msgstr "Katso myös jäljitys -- aiheenmukainen termi"
 
@@ -1519,7 +1519,7 @@ msgid "On holds shelf"
 msgstr "Varaushyllyssä"
 
 # id::cuat.label__10
-#: 950.data.seed-values.sql:11552
+#: 950.data.seed-values.sql:11677
 msgid "Verification via srfsh"
 msgstr "Srfsh-varmennus"
 
@@ -1534,7 +1534,7 @@ msgid "Tuvaluan"
 msgstr "tuvalu"
 
 # id::at.name__|
-#: 950.data.seed-values.sql:10150
+#: 950.data.seed-values.sql:10275
 msgid "No attempt to code"
 msgstr "Ei yritystä koodata"
 
@@ -1560,7 +1560,7 @@ msgid "Item Type"
 msgstr "Nidetyyppi"
 
 # id::vie.description__import.record.perm_failure
-#: 950.data.seed-values.sql:9334
+#: 950.data.seed-values.sql:9459
 msgid "Perm failure creating a record"
 msgstr "Pysyvä epäonnistuminen tietueen luomisessa"
 
@@ -1615,7 +1615,7 @@ msgid "Cherokee"
 msgstr "cherokee"
 
 # id::acsaf.name__9
-#: 950.data.seed-values.sql:10029
+#: 950.data.seed-values.sql:10154
 msgid "Heading -- Geographic Subdivision"
 msgstr "Otsikko -- maantieteellinen alaosasto"
 
@@ -1636,7 +1636,7 @@ msgstr "Ohjelma"
 
 # id::cust.label__history.hold.retention_count
 # id::cust.description__history.hold.retention_count
-#: 950.data.seed-values.sql:8892 950.data.seed-values.sql:8893
+#: 950.data.seed-values.sql:9017 950.data.seed-values.sql:9018
 msgid "Historical Hold Retention Count"
 msgstr "Vanhojen varausten lukumäärä"
 
@@ -1671,12 +1671,12 @@ msgid "Tlingit"
 msgstr "tlingit"
 
 # id::acsaf.name__67
-#: 950.data.seed-values.sql:10066
+#: 950.data.seed-values.sql:10191
 msgid "See Also Tracing -- Genre/Form Term"
 msgstr "Katso myös jäljitys -- tyylilaji-/muototermi"
 
 # id::acsaf.name__24
-#: 950.data.seed-values.sql:10015
+#: 950.data.seed-values.sql:10140
 msgid "See Also From Tracing -- Uniform Title"
 msgstr "Katso myös jäljitys -- yhdenmukainen otsikko"
 
@@ -1701,7 +1701,7 @@ msgid "Igbo"
 msgstr "igbo"
 
 # id::cuat.label__18
-#: 950.data.seed-values.sql:11562
+#: 950.data.seed-values.sql:11687
 msgid "Staff Client Login"
 msgstr "Henkilökuntaversion sisäänkirjautuminen"
 
@@ -1741,12 +1741,12 @@ msgid "Sorbian languages"
 msgstr "sorbin kielet"
 
 # id::acsaf.name__22
-#: 950.data.seed-values.sql:10036
+#: 950.data.seed-values.sql:10161
 msgid "See Also From Tracing -- Corporate Name"
 msgstr "Katso myös jäljitys -- yrityksen nimi"
 
 # id::vie.description__import.item.invalid.circ_modifier
-#: 950.data.seed-values.sql:9309
+#: 950.data.seed-values.sql:9434
 msgid "Import failed due to invalid circulation modifier"
 msgstr "Tuonti epäonnistui virheellisen lainamääritteen vuoksi"
 
@@ -1836,7 +1836,7 @@ msgid "Moldavian"
 msgstr "moldavia"
 
 # id::acsaf.name__45
-#: 950.data.seed-values.sql:10051
+#: 950.data.seed-values.sql:10176
 msgid "Established Heading Linking Entry -- Topical Term"
 msgstr "Vakiintunut otsikkolinkityskirjaus -- aiheenmukainen termi"
 
@@ -1896,7 +1896,7 @@ msgid "Can do anything at the Branch level"
 msgstr "Voi tehdä mitä tahansa lähikirjastotasolla"
 
 # id::cuat.label__3
-#: 950.data.seed-values.sql:11544
+#: 950.data.seed-values.sql:11669
 msgid "Login via gateway-v1"
 msgstr "Sisäänkirjautuminen gateway-v1:n kautta"
 
@@ -1924,7 +1924,7 @@ msgid "Circulators"
 msgstr "Lainaajat"
 
 # id::acsaf.name__12
-#: 950.data.seed-values.sql:10032
+#: 950.data.seed-values.sql:10157
 msgid "Heading -- Chronological Term"
 msgstr "Otsikko -- kronologinen termi"
 
@@ -1949,7 +1949,7 @@ msgid "Topic Subject"
 msgstr "Aihepiiri"
 
 # id::at.name__v
-#: 950.data.seed-values.sql:10148
+#: 950.data.seed-values.sql:10273
 msgid "Repertoire de vedettes-matiere"
 msgstr "Repertoire de vedettes-matiere"
 
@@ -1961,7 +1961,7 @@ msgstr "Asiakkaalla on enimmäismäärä erääntyneitä lainoja"
 # id::cit.name__3 id::ccvm.value__555 id::at.name__z
 # id::cit.name__3 id::at.name__z
 #: 950.data.seed-values.sql:240 950.data.seed-values.sql:6379
-#: 950.data.seed-values.sql:10149
+#: 950.data.seed-values.sql:10274
 msgid "Other"
 msgstr "Muu"
 
@@ -1971,7 +1971,7 @@ msgid "Old Persian (ca. 600-400 B.C.)"
 msgstr "muinaispersia (n. 600-400 eaa.)"
 
 # id::acsaf.name__32
-#: 950.data.seed-values.sql:10045
+#: 950.data.seed-values.sql:10170
 msgid "See Also From Tracing -- Chronological Term"
 msgstr "Katso myös jäljitys -- kronologinen termi"
 
@@ -1987,7 +1987,7 @@ msgstr "bali"
 
 # id::cust.label__history.circ.retention_start
 # id::cust.description__history.circ.retention_start
-#: 950.data.seed-values.sql:8871 950.data.seed-values.sql:8872
+#: 950.data.seed-values.sql:8996 950.data.seed-values.sql:8997
 msgid "Historical Circulation Retention Start Date"
 msgstr "Vanhojen lainaustietojen säilytyksen aloituspäivä"
 
@@ -2037,7 +2037,7 @@ msgid "Kit"
 msgstr "Moniviestin"
 
 # id::aiit.name__PRO
-#: 950.data.seed-values.sql:8723
+#: 950.data.seed-values.sql:8847
 msgid "Processing Fee"
 msgstr "Käsittelymaksu"
 
@@ -2057,7 +2057,7 @@ msgid "Assamese"
 msgstr "assami"
 
 # id::vie.description__import.auth.duplicate.acn
-#: 950.data.seed-values.sql:9314
+#: 950.data.seed-values.sql:9439
 msgid "Import failed due to Accession Number collision"
 msgstr "Tuonti epäonnistui hankintanumeron risteämän vuoksi"
 
@@ -2127,7 +2127,7 @@ msgid "Drivers License"
 msgstr "Ajokortti"
 
 # id::acsaf.name__48
-#: 950.data.seed-values.sql:10054
+#: 950.data.seed-values.sql:10179
 msgid "Subdivision Linking Entry -- General Subdivision"
 msgstr "Alaosaston linkityskirjaus -- yleinen alaosasto"
 
@@ -2162,7 +2162,7 @@ msgid "Himachali"
 msgstr "himatsali"
 
 # id::cuat.label__19
-#: 950.data.seed-values.sql:11563
+#: 950.data.seed-values.sql:11688
 msgid "Self-Check Proxy Login"
 msgstr "Itsetarkistuksen välityspalvelimen sisäänkirjautuminen"
 
@@ -2197,7 +2197,7 @@ msgid "Ethiopic"
 msgstr "ge'ez"
 
 # id::acsaf.name__4
-#: 950.data.seed-values.sql:10014
+#: 950.data.seed-values.sql:10139
 msgid "Heading -- Uniform Title"
 msgstr "Otsikko -- yhdenmukainen otsikko"
 
@@ -2277,7 +2277,7 @@ msgid "Speeches"
 msgstr "Puheet"
 
 # id::acsaf.name__47
-#: 950.data.seed-values.sql:10053
+#: 950.data.seed-values.sql:10178
 msgid "Established Heading Linking Entry -- Genre/Form Term"
 msgstr "Vakiintunut otsikkolinkkikirjaus -- tyylilaji-/muototermi"
 
@@ -2297,7 +2297,7 @@ msgid "Serials (includes admin features)"
 msgstr "Sarjajulkaisut (sisältää ylläpitäjän toiminnot)"
 
 # id::acsaf.name__23
-#: 950.data.seed-values.sql:10037
+#: 950.data.seed-values.sql:10162
 msgid "See Also From Tracing -- Meeting Name"
 msgstr "Katso myös jäljitys -- kokouksen nimi"
 
@@ -2342,7 +2342,7 @@ msgid "Serbian"
 msgstr "serbia"
 
 # id::acsaf.name__71
-#: 950.data.seed-values.sql:10070
+#: 950.data.seed-values.sql:10195
 msgid "See Also Tracing -- Form Subdivision"
 msgstr "Katso myös jäljitys -- lomakkeen alaosasto"
 
@@ -2362,7 +2362,7 @@ msgid "Italian"
 msgstr "italia"
 
 # id::cuat.label__22
-#: 950.data.seed-values.sql:11566
+#: 950.data.seed-values.sql:11691
 msgid "LibraryElf Login"
 msgstr "LibraryElf-sisäänkirjautuminen"
 
@@ -2438,12 +2438,12 @@ msgid "Urdu"
 msgstr "urdu"
 
 # id::vie.description__import.item.invalid.circ_lib
-#: 950.data.seed-values.sql:9328
+#: 950.data.seed-values.sql:9453
 msgid "Invalid value for \"circ_lib\""
 msgstr "Virheellinen arvo kohteelle \"circ_lib\""
 
 # id::at.name__a
-#: 950.data.seed-values.sql:10140
+#: 950.data.seed-values.sql:10265
 msgid "Library of Congress Subject Headings"
 msgstr "Kongressin kirjaston aiheotsikot"
 
@@ -2453,7 +2453,7 @@ msgid "Lozi"
 msgstr "lozi"
 
 # id::acsaf.name__30
-#: 950.data.seed-values.sql:10043
+#: 950.data.seed-values.sql:10168
 msgid "See Also From Tracing -- Chronological Subdivision"
 msgstr "Katso myös jäljitys -- kronologinen alaosasto"
 
@@ -2463,7 +2463,7 @@ msgid "Gorontalo"
 msgstr "gorontalo"
 
 # id::acsaf.name__2
-#: 950.data.seed-values.sql:10023
+#: 950.data.seed-values.sql:10148
 msgid "Heading -- Corporate Name"
 msgstr "Otsikko -- yrityksen nimi"
 
@@ -2613,7 +2613,7 @@ msgid "Afrikaans"
 msgstr "afrikaans"
 
 # id::acsaf.name__41
-#: 950.data.seed-values.sql:10048
+#: 950.data.seed-values.sql:10173
 msgid "Established Heading Linking Entry -- Personal Name"
 msgstr "Vakiintunut otsikkolinkityskirjaus -- henkilön nimi"
 
@@ -2683,7 +2683,7 @@ msgid "Identifier"
 msgstr "Tunniste"
 
 # id::cuat.label__11
-#: 950.data.seed-values.sql:11553
+#: 950.data.seed-values.sql:11678
 msgid "Verification via gateway-v1"
 msgstr "Varmennus gateway-v1:n kautta"
 
@@ -2698,7 +2698,7 @@ msgid "System: Rental"
 msgstr "Järjestelmä: vuokraus"
 
 # id::cuat.label__8
-#: 950.data.seed-values.sql:11549
+#: 950.data.seed-values.sql:11674
 msgid "Login via Apache module"
 msgstr "Sisäänkirjautuminen Apache-moduulin kautta"
 
@@ -2773,7 +2773,7 @@ msgid "Breton"
 msgstr "bretoni"
 
 # id::acsaf.name__26
-#: 950.data.seed-values.sql:10039
+#: 950.data.seed-values.sql:10164
 msgid "See Also From Tracing -- Geographic Name"
 msgstr "Katso myös jäljitys -- maantieteellinen nimi"
 
@@ -2823,7 +2823,7 @@ msgid "Soninke"
 msgstr "soninke"
 
 # id::acsaf.name__25
-#: 950.data.seed-values.sql:10038
+#: 950.data.seed-values.sql:10163
 msgid "See Also From Tracing -- Topical Term"
 msgstr "Katso myös jäljitys -- aiheenmukainen termi"
 
@@ -2843,7 +2843,7 @@ msgid "Unspecified"
 msgstr "Määrittämätön"
 
 # id::acs.name__1
-#: 950.data.seed-values.sql:10008
+#: 950.data.seed-values.sql:10133
 msgid "LoC"
 msgstr "LoC"
 
@@ -2948,7 +2948,7 @@ msgid "Volapük"
 msgstr "volapük"
 
 # id::cuat.label__12
-#: 950.data.seed-values.sql:11554
+#: 950.data.seed-values.sql:11679
 msgid "Verification via translator-v1"
 msgstr "Varmennus translator-v1:n kautta"
 
@@ -3018,7 +3018,7 @@ msgid "Persian"
 msgstr "farsi, persia"
 
 # id::cuat.label__21
-#: 950.data.seed-values.sql:11565
+#: 950.data.seed-values.sql:11690
 msgid "Apache Auth Proxy Login"
 msgstr "Apachen auktoriteettivälityspalvelimen sisäänkirjautuminen"
 
@@ -3043,7 +3043,7 @@ msgid "South American Indian (Other)"
 msgstr "Etelä-Amerikan intiaanikielet"
 
 # id::acsaf.name__68
-#: 950.data.seed-values.sql:10067
+#: 950.data.seed-values.sql:10192
 msgid "See Also Tracing -- General Subdivision"
 msgstr "Katso myös jäljitys -- yleinen alaosasto"
 
@@ -3069,7 +3069,7 @@ msgid "Corsican"
 msgstr "korsika"
 
 # id::vie.description__import.item.invalid.location
-#: 950.data.seed-values.sql:9310
+#: 950.data.seed-values.sql:9435
 msgid "Import failed due to invalid copy location"
 msgstr "Tuonti epäonnistui virheellisen nidesijainnin vuoksi"
 
@@ -3079,7 +3079,7 @@ msgid "Kpelle"
 msgstr "kpelle"
 
 # id::cuat.label__15
-#: 950.data.seed-values.sql:11557
+#: 950.data.seed-values.sql:11682
 msgid "SIP2 User Verification"
 msgstr "SIP2-käyttäjävarmenne"
 
@@ -3169,7 +3169,7 @@ msgid "Gayo"
 msgstr "gajo"
 
 # id::acsaf.name__28
-#: 950.data.seed-values.sql:10041
+#: 950.data.seed-values.sql:10166
 msgid "See Also From Tracing -- General Subdivision"
 msgstr "Katso myös jäljitys -- yleinen alaosasto"
 
@@ -3259,7 +3259,7 @@ msgid "Quechua"
 msgstr "ketsua"
 
 # id::acsaf.name__69
-#: 950.data.seed-values.sql:10068
+#: 950.data.seed-values.sql:10193
 msgid "See Also Tracing -- Geographic Subdivision"
 msgstr "Katso myös jäljitys -- maantieteellinen alaosasto"
 
@@ -3294,7 +3294,7 @@ msgid "Mongo-Nkundu"
 msgstr "mongo"
 
 # id::vie.description__general.unknown
-#: 950.data.seed-values.sql:9307
+#: 950.data.seed-values.sql:9432
 msgid "Import or Overlay failed"
 msgstr "Tuonti tai korvaaminen epäonnistui"
 
@@ -3304,7 +3304,7 @@ msgid "Malayalam"
 msgstr "malajalam"
 
 # id::cuat.label__20
-#: 950.data.seed-values.sql:11564
+#: 950.data.seed-values.sql:11689
 msgid "Unique Mgt Login"
 msgstr "Ainutkertainen sisäänkirjautuminen hallintaan"
 
@@ -3339,7 +3339,7 @@ msgid "Item Barcode"
 msgstr "Nidetunnus"
 
 # id::vie.description__overlay.xml.malformed
-#: 950.data.seed-values.sql:9316
+#: 950.data.seed-values.sql:9441
 msgid "Malformed record cause Overlay failure"
 msgstr "Epämuodostunut tietue korvausvirheen johdosta"
 
@@ -3364,7 +3364,7 @@ msgid "Fijian"
 msgstr "fidzi"
 
 # id::acsaf.name__46
-#: 950.data.seed-values.sql:10052
+#: 950.data.seed-values.sql:10177
 msgid "Established Heading Linking Entry -- Geographic Name"
 msgstr "Vakiintunut otsikkolinkityskirjaus -- maantieteellinen nimi"
 
@@ -3379,13 +3379,13 @@ msgid "Authority Record ID"
 msgstr "Auktoriteettitietueen tunnus"
 
 # id::acsaf.name__52
-#: 950.data.seed-values.sql:10058
+#: 950.data.seed-values.sql:10183
 msgid "Established Heading Linking Entry -- Chronological Term"
 msgstr "Vakiintunut otsikkolinkityskirjaus -- kronologinen termi"
 
 # id::cust.label__history.hold.retention_age
 # id::cust.description__history.hold.retention_age
-#: 950.data.seed-values.sql:8880 950.data.seed-values.sql:8881
+#: 950.data.seed-values.sql:9005 950.data.seed-values.sql:9006
 msgid "Historical Hold Retention Age"
 msgstr "Vanhojen varaustietojen säilytysaika"
 
@@ -3425,12 +3425,12 @@ msgid "Rarotongan"
 msgstr "rarotonga"
 
 # id::acsaf.name__50
-#: 950.data.seed-values.sql:10056
+#: 950.data.seed-values.sql:10181
 msgid "Subdivision Linking Entry -- Chronological Subdivision"
 msgstr "Alaosaston linkityskirjaus -- kronologinen alaosasto"
 
 # id::at.name__s
-#: 950.data.seed-values.sql:10147
+#: 950.data.seed-values.sql:10272
 msgid "Sears List of Subject Headings"
 msgstr "Searsin luettelo aiheotsikoista"
 
@@ -3490,12 +3490,12 @@ msgid "Kongo"
 msgstr "kongo"
 
 # id::vie.description__import.item.invalid.owning_lib
-#: 950.data.seed-values.sql:9326
+#: 950.data.seed-values.sql:9451
 msgid "Invalid value for \"owning_lib\""
 msgstr "Virheellinen arvo kohteelle \"owning_lib\""
 
 # id::cuat.label__2
-#: 950.data.seed-values.sql:11543
+#: 950.data.seed-values.sql:11668
 msgid "Login via srfsh"
 msgstr "Sisäänkirjautuminen srfsh:n kautta"
 
@@ -3510,7 +3510,7 @@ msgid "Mon-Khmer (Other)"
 msgstr "mon-khmer-kielet"
 
 # id::acsaf.name__21
-#: 950.data.seed-values.sql:10035
+#: 950.data.seed-values.sql:10160
 msgid "See Also From Tracing -- Personal Name"
 msgstr "Katso myös jäljitys -- henkilön nimi"
 
@@ -3560,7 +3560,7 @@ msgid "Swedish"
 msgstr "ruotsi"
 
 # id::vie.description__import.item.invalid.copy_number
-#: 950.data.seed-values.sql:9330
+#: 950.data.seed-values.sql:9455
 msgid "Invalid value for \"copy_number\""
 msgstr "Virheellinen arvo kohteelle \"copy_number\""
 
@@ -3610,7 +3610,7 @@ msgid "Dravidian (Other)"
 msgstr "dravidakielet"
 
 # id::acsaf.name__42
-#: 950.data.seed-values.sql:10049
+#: 950.data.seed-values.sql:10174
 msgid "Established Heading Linking Entry -- Corporate Name"
 msgstr "Vakiintunut otsikkolinkityskirjaus -- yrityksen nimi"
 
@@ -3645,12 +3645,12 @@ msgid "Add to Published Book Bags"
 msgstr "Lisää julkaistuihin kirjahyllyihin"
 
 # id::vie.description__import.item.invalid.status
-#: 950.data.seed-values.sql:9320
+#: 950.data.seed-values.sql:9445
 msgid "Invalid value for \"status\""
 msgstr "Virheellinen arvo kohteelle \"status\""
 
 # id::acsaf.name__61
-#: 950.data.seed-values.sql:10061
+#: 950.data.seed-values.sql:10186
 msgid "See Also Tracing -- Personal Name"
 msgstr "Katso myös jäljitys -- henkilön nimi"
 
@@ -3660,7 +3660,7 @@ msgid "Slovak"
 msgstr "slovakki"
 
 # id::at.name__n
-#: 950.data.seed-values.sql:10145
+#: 950.data.seed-values.sql:10270
 msgid "Not applicable"
 msgstr "Ei käytettävissä"
 
@@ -3685,7 +3685,7 @@ msgid "6month"
 msgstr "6kuukautta"
 
 # id::cgf.label__history.circ.retention_count
-#: 950.data.seed-values.sql:8819
+#: 950.data.seed-values.sql:8944
 msgid "Historical Circulations per Copy"
 msgstr "Lainauksia per nide"
 
@@ -3695,12 +3695,12 @@ msgid "UPC"
 msgstr "UPC"
 
 # id::aiit.name__HND
-#: 950.data.seed-values.sql:8725
+#: 950.data.seed-values.sql:8849
 msgid "Handling Charge"
 msgstr "Käsittelymaksu"
 
 # id::at.name__k
-#: 950.data.seed-values.sql:10144
+#: 950.data.seed-values.sql:10269
 msgid "Canadian Subject Headings"
 msgstr "Kanadalaiset aiheotsikot"
 
@@ -3720,7 +3720,7 @@ msgid "Polish"
 msgstr "puola"
 
 # id::acsaf.name__5
-#: 950.data.seed-values.sql:10025
+#: 950.data.seed-values.sql:10150
 msgid "Heading -- Topical Term"
 msgstr "Otsikko -- aiheenmukainen termi"
 
@@ -3735,7 +3735,7 @@ msgid "Book Bag"
 msgstr "Kirjahylly"
 
 # id::acsaf.name__63
-#: 950.data.seed-values.sql:10063
+#: 950.data.seed-values.sql:10188
 msgid "See Also Tracing -- Meeting Name"
 msgstr "Katso myös jäljitys -- kokouksen nimi"
 
@@ -3760,7 +3760,7 @@ msgid "Nogai"
 msgstr "nogai"
 
 # id::cuat.label__14
-#: 950.data.seed-values.sql:11556
+#: 950.data.seed-values.sql:11681
 msgid "Verification via remoteauth"
 msgstr "Remoteauth-varmennus"
 
@@ -3780,7 +3780,7 @@ msgid "Sumerian"
 msgstr "sumeri"
 
 # id::acqit.name__PPR
-#: 950.data.seed-values.sql:8730
+#: 950.data.seed-values.sql:8854
 msgid "Paper"
 msgstr "Paperi"
 
@@ -3820,7 +3820,7 @@ msgid "Icelandic"
 msgstr "islanti"
 
 # id::acsaf.name__27
-#: 950.data.seed-values.sql:10040
+#: 950.data.seed-values.sql:10165
 msgid "See Also From Tracing -- Genre/Form Term"
 msgstr "Katso myös jäljitys -- tyylilaji-/muototermi"
 
@@ -3865,7 +3865,7 @@ msgid "Shan"
 msgstr "shan"
 
 # id::vie.description__overlay.record.quality
-#: 950.data.seed-values.sql:9317
+#: 950.data.seed-values.sql:9442
 msgid "New record had insufficient quality"
 msgstr "Uuden tietueen laatu oli riittämätön"
 
@@ -3875,7 +3875,7 @@ msgid "Manuscript notated music"
 msgstr "Nuottikäsikirjoitus"
 
 # id::acsaf.name__44
-#: 950.data.seed-values.sql:10016
+#: 950.data.seed-values.sql:10141
 msgid "Established Heading Linking Entry -- Uniform Title"
 msgstr "Vakiintunut otsikkolinkityskirjaus -- yhdenmukainen otsikko"
 
@@ -3896,7 +3896,7 @@ msgid "Nyanja"
 msgstr "njandza"
 
 # id::acsaf.name__66
-#: 950.data.seed-values.sql:10065
+#: 950.data.seed-values.sql:10190
 msgid "See Also Tracing -- Geographic Name"
 msgstr "Katso myös jäljitys -- maantieteellinen nimi"
 
@@ -3936,7 +3936,7 @@ msgid "Occitan (post-1500)"
 msgstr "oksitaani"
 
 # id::vie.description__import.xml.malformed
-#: 950.data.seed-values.sql:9315
+#: 950.data.seed-values.sql:9440
 msgid "Malformed record cause Import failure"
 msgstr "Epämuodostunut tietue tuonnin epäonnistumisen johdosta"
 
@@ -3966,7 +3966,7 @@ msgid "Acquisitions Administrator"
 msgstr "Hankintaylläpitäjä"
 
 # id::cbrebt.label__vandelay_queue
-#: 950.data.seed-values.sql:10166
+#: 950.data.seed-values.sql:10291
 msgid "Vandelay Queue"
 msgstr "Vandelay-jono"
 
@@ -4003,7 +4003,7 @@ msgid "Irish"
 msgstr "irlanti"
 
 # id::acsaf.name__64
-#: 950.data.seed-values.sql:10017
+#: 950.data.seed-values.sql:10142
 msgid "See Also Tracing -- Uniform Title"
 msgstr "Katso myös jäljitys -- yhdenmukainen otsikko"
 
@@ -4039,7 +4039,7 @@ msgid "Library of Congress"
 msgstr "Kongressin kirjasto"
 
 # id::cuat.label__1
-#: 950.data.seed-values.sql:11542
+#: 950.data.seed-values.sql:11667
 msgid "Login via opensrf"
 msgstr "Sisäänkirjautuminen opensrf:n kautta"
 
@@ -4069,7 +4069,7 @@ msgid "Title Proper"
 msgstr "Oikea otsikko"
 
 # id::cuat.label__17
-#: 950.data.seed-values.sql:11561
+#: 950.data.seed-values.sql:11686
 msgid "OPAC Login (tpac)"
 msgstr "Verkkokirjasto-sisäänkirjautuminen (tpac)"
 
@@ -4104,12 +4104,12 @@ msgid "System: Deposit"
 msgstr "Järjestelmä: Talletus"
 
 # id::at.name__c
-#: 950.data.seed-values.sql:10142
+#: 950.data.seed-values.sql:10267
 msgid "Medical Subject Headings"
 msgstr "Lääketieteelliset aiheet"
 
 # id::cuat.label__4
-#: 950.data.seed-values.sql:11545
+#: 950.data.seed-values.sql:11670
 msgid "Login via translator-v1"
 msgstr "Sisäänkirjautuminen translator-v1:n kautta"
 
@@ -4134,7 +4134,7 @@ msgid "EAN"
 msgstr "EAN"
 
 # id::cuat.label__6
-#: 950.data.seed-values.sql:11547
+#: 950.data.seed-values.sql:11672
 msgid "Login via remoteauth"
 msgstr "Sisäänkirjautuminen remoteauth:n kautta"
 
@@ -4179,7 +4179,7 @@ msgid "Walamo"
 msgstr "walamo"
 
 # id::cuat.label__5
-#: 950.data.seed-values.sql:11546
+#: 950.data.seed-values.sql:11671
 msgid "Login via xmlrpc"
 msgstr "Sisäänkirjautuminen xmlrpc:n kautta"
 
@@ -4309,11 +4309,11 @@ msgid "Spanish"
 msgstr "espanja"
 
 # id::acsaf.name__31
-#: 950.data.seed-values.sql:10044
+#: 950.data.seed-values.sql:10169
 msgid "See Also From Tracing -- Form Subdivision"
 msgstr "Katso myös jäljitys -- kaavakkeen alaosasto"
 
 # id::acsaf.name__29
-#: 950.data.seed-values.sql:10042
+#: 950.data.seed-values.sql:10167
 msgid "See Also From Tracing -- Geographic Subdivision"
 msgstr "Katso myös jäljitys -- maantieteellinen alaosasto"

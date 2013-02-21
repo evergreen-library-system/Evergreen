@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-12-20 09:37-0400\n"
-"PO-Revision-Date: 2012-08-17 09:33+0000\n"
+"PO-Revision-Date: 2013-02-15 19:24+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-12-21 04:57+0000\n"
-"X-Generator: Launchpad (build 16378)\n"
+"X-Launchpad-Export-Date: 2013-02-16 04:59+0000\n"
+"X-Generator: Launchpad (build 16491)\n"
 "X-Accelerator-Marker: &\n"
 
 #: common.logout
@@ -2924,7 +2924,7 @@ msgstr "Պատճենի &Ձևի խմբագրիչ"
 #: staff.main.menu.admin.local_admin.item_attribute_editor.label
 #: staff.main.menu.admin.local_admin.item_attribute_editor.accesskey
 msgid "Item Attribute &Editor"
-msgstr ""
+msgstr "Նյութի բնութագրիչ &Խմբագիր"
 
 #: staff.main.menu.admin.local_admin.patrons_due_refunds.label
 #: staff.main.menu.admin.local_admin.patrons_due_refunds.accesskey
@@ -3318,7 +3318,7 @@ msgstr "Մաքրի աշխ. կայանի լռակյացը"
 
 #: staff.main.menu.admin.client.search_prefs.label
 msgid "Set Search Preferences"
-msgstr ""
+msgstr "Կարգաբերի փնտրման նախապատվությունները"
 
 #: staff.main.menu.admin.client.toolbars
 msgid "Toolbars"
@@ -13972,7 +13972,7 @@ msgstr "Վերևի կարգաբերումները կարելի է փոխել վ�
 
 #: staff.search_prefs.search_lib.caption
 msgid "Default Search Library"
-msgstr ""
+msgstr "Որոնման լռակյաց գրադարան"
 
 #: staff.search_prefs.search_lib.description
 msgid ""
@@ -13981,10 +13981,14 @@ msgid ""
 "search library will override it. One recommendation is to set the search "
 "library to the highest point you would normally want to search."
 msgstr ""
+"Լրակյաց գրադարանի կարգաբերումը որոշում է թե որ գրադարանն է որպես լռակյաց "
+"փնտրվել խորացված որոնման պաստառից։ Փնտրվող գրադարանի ձեռքով ընտրությունը "
+"կվերագրի այն։ Որպես խորհուրդ կարգաբերել որոնման գրադարանը որպես ամենավարձր "
+"արժեքով։"
 
 #: staff.search_prefs.pref_lib.caption
 msgid "Preferred Library"
-msgstr ""
+msgstr "նախընտրած գրադարան"
 
 #: staff.search_prefs.pref_lib.description
 msgid ""
@@ -13992,10 +13996,14 @@ msgid ""
 "library searched. One recommendation is to set this to your workstation "
 "library so that local copies show up first in search results."
 msgstr ""
+"նախընտրած գրադարանը օգտագործվում է փնտրված գրադարանի պատճենների և URI-ի "
+"ցուցադրման համար։ Որպես խորհուրդ կարգաբերել սա քո աշխատանքային կայանում "
+"այնպես որ տեղային պատճենները փնտրման արդյունքում ցույց տրվեն որպես "
+"առաջինները։"
 
 #: staff.search_prefs.adv_pane.caption
 msgid "Advanced Search Default Pane"
-msgstr ""
+msgstr "խորացված փնտրման լռակյաց պանել"
 
 #: staff.search_prefs.adv_pane.description
 msgid ""
@@ -14003,36 +14011,39 @@ msgid ""
 "You can change which one is loaded by default when opening a new catalog "
 "window here."
 msgstr ""
+"Խորացված փնտրումը ունի երկրորդական պանելներ ՄԵԸՔ և թվային որոնումների համար։ "
+"Դու  կարող ես փոխել թե որն է բեռնավորվում որպես լռակյաց երբ այստեղ բացում ես "
+"քարտարանի նոր պատուհան։"
 
 #: staff.search_prefs.adv_pane.advanced
 msgid "Advanced (default)"
-msgstr ""
+msgstr "Խորացված (լռակյաց)"
 
 #: staff.search_prefs.adv_pane.numeric
 msgid "Numeric"
-msgstr ""
+msgstr "Թվային"
 
 #: staff.search_prefs.adv_pane.expert
 msgid "MARC Expert"
-msgstr ""
+msgstr "ՄԵԸՔ փորձագետ"
 
 #: staff.search_prefs.save.label
 #: staff.search_prefs.save.accesskey
 msgid "&Save"
-msgstr ""
+msgstr "&Հիշել"
 
 #: staff.search_prefs.saved_message
 msgid "Preferences saved"
-msgstr ""
+msgstr "Նախապատվությունները հիշված են"
 
 #: staff.search_prefs.clear.label
 #: staff.search_prefs.clear.accesskey
 msgid "&Clear All"
-msgstr ""
+msgstr "&Մաքրի բոլորը"
 
 #: staff.search_prefs.cleared_message
 msgid "Preferences cleared"
-msgstr ""
+msgstr "Նախապատվությունները մաքրված են"
 
 #~ msgid "Record ID"
 #~ msgstr "Գրառման ID"
