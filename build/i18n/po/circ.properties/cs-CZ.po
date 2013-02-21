@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-12-20 09:37-0400\n"
-"PO-Revision-Date: 2013-01-07 11:12+0000\n"
+"PO-Revision-Date: 2013-02-01 23:28+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <petrkubiska@seznam.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-01-08 04:54+0000\n"
-"X-Generator: Launchpad (build 16402)\n"
+"X-Launchpad-Export-Date: 2013-02-03 04:50+0000\n"
+"X-Generator: Launchpad (build 16462)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -841,7 +841,7 @@ msgstr "Jste si jisti, že chcete označit %1$s jako využitý %2$s krát?"
 
 #: staff.circ.in_house_use.confirm_multiple.title
 msgid "In-House Use Verification"
-msgstr "Ověření prezenční výpůjčka"
+msgstr "Ověření prezenční výpůjčky"
 
 #: staff.circ.in_house_use.yes
 msgctxt "staff.circ.in_house_use.yes"
@@ -864,7 +864,7 @@ msgstr ""
 
 #: staff.circ.in_house_use.failed
 msgid "In House Use Failed"
-msgstr "Prezenční využití selhalo"
+msgstr "Prezenční výpůjčka se nezdařila"
 
 #: staff.circ.in_house_use.ok
 msgctxt "staff.circ.in_house_use.ok"
@@ -1029,7 +1029,7 @@ msgstr "Zpětné datum vrácení"
 
 #: staff.circ.utils.offline.use_time
 msgid "Use Time"
-msgstr "Doba využití"
+msgstr "Čas prezenční výpůjčky"
 
 #: staff.circ.utils.not_cataloged
 msgctxt "staff.circ.utils.not_cataloged"
