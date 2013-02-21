@@ -78,6 +78,16 @@ sub load_record {
     $ctx->{marc_xml} = $rec_data[0]->{marc_xml};
 
     $ctx->{copies} = $copy_rec->gather(1);
+
+    # Add public copy notes to each copy
+    foreach my $copy (@{$ctx->{copies}}) {
+        $copy->{notes} = $U->simplereq(
+            'open-ils.circ',
+            'open-ils.circ.copy_note.retrieve.all',
+            {itemid => $copy->{id}, pub => 1 }
+        );
+    }
+
     $self->timelog("past store copy retrieval call");
     $ctx->{copy_limit} = $copy_limit;
     $ctx->{copy_offset} = $copy_offset;

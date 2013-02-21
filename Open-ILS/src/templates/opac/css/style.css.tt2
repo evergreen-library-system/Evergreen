@@ -465,6 +465,12 @@ div.format_icon {
     padding-left: 13px;
     text-align: left;
 }
+#rdetails_status tbody td.copy_note {
+    color: [% css_colors.primary %];
+    text-wrap:normal;
+    white-space:pre-wrap !important;
+    word-wrap:normal;
+}
 
 .rdetail_extras {
     height: 29px;

@@ -34,7 +34,7 @@ END;
             [%- ELSE -%]
             <th id='copy_header_library'>[% l("Location") %]</th>
             [%- END %]
-            <th id='copy_header_callnmber'>[% l("Call Number") %]</th>
+            <th id='copy_header_callnmber'>[% l("Call Number / Copy Notes") %]</th>
             [%- IF has_parts == 'true' %]
             <th id='copy_header_part'>[% l("Part") %]</th>
             [%- END %]
@@ -157,6 +157,13 @@ END;
                     '-';
                 END %]</td>
         </tr>
+
+        [% IF copy_info.notes; %]
+            [% FOREACH note IN copy_info.notes; %]
+                <tr><td>&nbsp;</td><td class="copy_note" colspan="4"><strong>[% note.title | html %]:</strong> [% note.value | html %]</td></tr>
+            [% END %]
+        [% END %]
+
         [%- END %]
         <tr>
         [%- IF ctx.copy_offset > 0 AND NOT serial_holdings;
