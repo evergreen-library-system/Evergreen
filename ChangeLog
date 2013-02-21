@@ -1,3 +1,292 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 9bd326205a6ddbfb82acf5b96effa23a9bbeb870
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Thu Feb 21 13:26:05 2013 -0500
+
+    Translations import
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+21	21	build/i18n/po/Searcher.js/pt-BR.po
+2	4	build/i18n/po/XULTermLoader.js/XULTermLoader.js.pot
+21	47	build/i18n/po/acq.js/acq.js.pot
+10	8	build/i18n/po/admin.properties/hy-AM.po
+15	16	build/i18n/po/admin.properties/pt-BR.po
+8	8	build/i18n/po/authority.js/hy-AM.po
+102	0	build/i18n/po/authority.js/tr-TR.po
+2	4	build/i18n/po/capture.js/capture.js.pot
+2	28	build/i18n/po/circ.properties/circ.properties.pot
+6	6	build/i18n/po/circ.properties/cs-CZ.po
+15	1	build/i18n/po/circ.properties/de-DE.po
+6	6	build/i18n/po/circ.properties/en-CA.po
+15	1	build/i18n/po/circ.properties/en-GB.po
+19	5	build/i18n/po/circ.properties/es-ES.po
+15	1	build/i18n/po/circ.properties/fr-CA.po
+35	16	build/i18n/po/circ.properties/hy-AM.po
+83	36	build/i18n/po/circ.properties/pt-BR.po
+15	1	build/i18n/po/circ.properties/ru-RU.po
+2	6	build/i18n/po/common.properties/common.properties.pot
+1	1	build/i18n/po/common.properties/cs-CZ.po
+4	4	build/i18n/po/common.properties/en-CA.po
+10	10	build/i18n/po/common.properties/hy-AM.po
+2	2	build/i18n/po/conify.dtd/conify.dtd.pot
+4	4	build/i18n/po/conify.dtd/hy-AM.po
+7	19	build/i18n/po/conify.js/conify.js.pot
+6	6	build/i18n/po/conify.js/cs-CZ.po
+9	9	build/i18n/po/conify.js/de-DE.po
+6	6	build/i18n/po/conify.js/es-ES.po
+5	5	build/i18n/po/conify.js/hy-AM.po
+6	6	build/i18n/po/conify.js/pt-BR.po
+122	122	build/i18n/po/db.seed/cs-CZ.po
+718	809	build/i18n/po/db.seed/db.seed.pot
+127	127	build/i18n/po/db.seed/de-DE.po
+122	122	build/i18n/po/db.seed/en-CA.po
+122	122	build/i18n/po/db.seed/en-GB.po
+122	122	build/i18n/po/db.seed/es-ES.po
+122	128	build/i18n/po/db.seed/fr-CA.po
+262	265	build/i18n/po/db.seed/hy-AM.po
+122	122	build/i18n/po/db.seed/oc-FR.po
+122	127	build/i18n/po/db.seed/pt-BR.po
+122	127	build/i18n/po/db.seed/ru-RU.po
+122	122	build/i18n/po/db.seed/tr-TR.po
+4	4	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+798	774	build/i18n/po/fm_IDL.dtd/de-DE.po
+4	4	build/i18n/po/fm_IDL.dtd/en-CA.po
+808	781	build/i18n/po/fm_IDL.dtd/en-GB.po
+795	771	build/i18n/po/fm_IDL.dtd/es-ES.po
+2341	2537	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+835	807	build/i18n/po/fm_IDL.dtd/fr-CA.po
+985	941	build/i18n/po/fm_IDL.dtd/hy-AM.po
+808	781	build/i18n/po/fm_IDL.dtd/pt-BR.po
+808	781	build/i18n/po/fm_IDL.dtd/ru-RU.po
+32	26	build/i18n/po/ils_events.xml/cs-CZ.po
+27	27	build/i18n/po/ils_events.xml/de-DE.po
+36	30	build/i18n/po/ils_events.xml/en-GB.po
+27	27	build/i18n/po/ils_events.xml/es-ES.po
+34	28	build/i18n/po/ils_events.xml/fr-CA.po
+43	103	build/i18n/po/ils_events.xml/ils_events.xml.pot
+33	27	build/i18n/po/ils_events.xml/pt-BR.po
+33	27	build/i18n/po/ils_events.xml/ru-RU.po
+66	541	build/i18n/po/lang.dtd/ar-AR.po
+6	6	build/i18n/po/lang.dtd/cs-CZ.po
+333	568	build/i18n/po/lang.dtd/de-DE.po
+25	15	build/i18n/po/lang.dtd/en-CA.po
+748	616	build/i18n/po/lang.dtd/en-GB.po
+227	551	build/i18n/po/lang.dtd/es-ES.po
+963	788	build/i18n/po/lang.dtd/hy-AM.po
+543	146	build/i18n/po/lang.dtd/lang.dtd.pot
+702	602	build/i18n/po/lang.dtd/pt-BR.po
+704	604	build/i18n/po/lang.dtd/ru-RU.po
+67	542	build/i18n/po/lang.dtd/tr-TR.po
+5	0	build/i18n/po/offline.properties/cs-CZ.po
+5	0	build/i18n/po/offline.properties/de-DE.po
+7	7	build/i18n/po/offline.properties/en-CA.po
+5	0	build/i18n/po/offline.properties/en-GB.po
+5	0	build/i18n/po/offline.properties/es-ES.po
+5	0	build/i18n/po/offline.properties/fr-CA.po
+48	31	build/i18n/po/offline.properties/hy-AM.po
+2	21	build/i18n/po/offline.properties/offline.properties.pot
+5	0	build/i18n/po/offline.properties/pt-BR.po
+5	0	build/i18n/po/offline.properties/ru-RU.po
+32	11	build/i18n/po/opac.dtd/cs-CZ.po
+6	6	build/i18n/po/opac.dtd/de-DE.po
+29	17	build/i18n/po/opac.dtd/en-GB.po
+31	19	build/i18n/po/opac.dtd/es-ES.po
+30	18	build/i18n/po/opac.dtd/fr-CA.po
+4	6	build/i18n/po/opac.dtd/he-IL.po
+53	20	build/i18n/po/opac.dtd/hy-AM.po
+1	3	build/i18n/po/opac.dtd/oc-FR.po
+3	5	build/i18n/po/opac.dtd/opac.dtd.pot
+165	146	build/i18n/po/opac.dtd/pt-BR.po
+3	3	build/i18n/po/opac.js/cs-CZ.po
+3	3	build/i18n/po/opac.js/de-DE.po
+6	6	build/i18n/po/opac.js/es-ES.po
+5	5	build/i18n/po/opac.js/hy-AM.po
+4	11	build/i18n/po/opac.js/opac.js.pot
+4	4	build/i18n/po/patron.properties/en-CA.po
+42	26	build/i18n/po/patron.properties/hy-AM.po
+2	6	build/i18n/po/patron.properties/patron.properties.pot
+5	5	build/i18n/po/pull_list.js/es-ES.po
+16	16	build/i18n/po/pull_list.js/pt-BR.po
+15	15	build/i18n/po/register.js/cs-CZ.po
+17	17	build/i18n/po/register.js/de-DE.po
+13	13	build/i18n/po/register.js/en-CA.po
+13	13	build/i18n/po/register.js/en-GB.po
+29	29	build/i18n/po/register.js/es-ES.po
+3	7	build/i18n/po/register.js/fr-CA.po
+21	21	build/i18n/po/register.js/hy-AM.po
+13	13	build/i18n/po/register.js/pt-BR.po
+2	3	build/i18n/po/register.js/register.js.pot
+13	13	build/i18n/po/register.js/ru-RU.po
+39	39	build/i18n/po/register.js/tr-TR.po
+6	6	build/i18n/po/reservation.js/hy-AM.po
+2	5	build/i18n/po/reservation.js/reservation.js.pot
+5	5	build/i18n/po/selfcheck.js/es-ES.po
+8	8	build/i18n/po/selfcheck.js/hy-AM.po
+32	23	build/i18n/po/selfcheck.js/pt-BR.po
+3	8	build/i18n/po/selfcheck.js/selfcheck.js.pot
+15	15	build/i18n/po/serial.properties/hy-AM.po
+11	11	build/i18n/po/serial.properties/pt-BR.po
+244	1536	build/i18n/po/tpac/tpac.pot
+ create mode 100644 build/i18n/po/authority.js/tr-TR.po
+
+commit 4e266eaf972370051a12bbd4be04b536e6326010
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Wed Feb 13 10:34:17 2013 -0500
+
+    Serials: change more carp() to croak() to avoid infinite loops
+    
+    This addresses a problem very similar to that in LP #1075167, where
+    certain loops never end because problems with the data elicited calls to
+    carp(), which fills up log, but never gives our loops notice to end.
+    
+    Visible symptoms include 1) a greate volume of log spew and 2) an
+    open-ils.serial drone that ties up a CPU.
+    
+    The fault lies maybe in our loops rather than in the MFHD
+    package, but this fixes the problem fastest, and should not have
+    undesirable side-effects.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Utils/MFHD/Caption.pm
+
+commit 173fe017e4639016223fe788755360a4c8240a0b
+Author: Mark Cooper <markchristophercooper@gmail.com>
+Date:   Tue Oct 16 11:02:23 2012 -0700
+
+    LP#1067361: vandelay: batch queue deletion no longer works
+    
+    Because window.location.reload can trigger before the deletions
+    have occurred. Simple fix (band aid?) is to make the delete
+    calls in sync.
+    
+    Signed-off-by: Mark Cooper <markchristophercooper@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/web/js/ui/default/vandelay/vandelay.js
+
+commit 64658bb975b6fd9ca5df403e0e810219df97dbfd
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Thu Sep 20 13:10:15 2012 -0400
+
+    LP1053526 - Don't inadvertently modify the in-memory org tree when printing
+    
+    To see an example of this causing a problem, load Holdings Maintenance for
+    an arbitrary bib record with items. Make sure the Hide Empty Libs checkbox
+    is checked. Hit the Print button at the bottom of the UI (it's okay to then
+    Cancel the print). Then hit Refresh. It should result in an org.children()
+    is null error.
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	2	Open-ILS/xul/staff_client/chrome/content/util/list.js
+
+commit 42980607363da546727ab0e29ae921d907c3cade
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Jan 31 10:51:40 2013 -0500
+
+    Copy_offset and copy_limit shouldn't persist in URL
+    
+    Added copy_offset and copy_limit to stop_parms definition so that they
+    don't persist in URL when returning to search results or launching
+    subject/series searches.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/templates/opac/parts/record/body.tt2
+
+commit 4f0b0ec1c62ed1107e83ae31718030444508e43f
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Mon Jan 21 14:54:55 2013 -0500
+
+    Serials: Caption/pattern wizard use enum fields for chronology when no enum
+    
+    MFHD spec says that when there are no ‡a - ‡f enumeration captions, any
+    chronology captions should move back from their usual ‡i - ‡m places
+    back into enumeration space.
+    
+    The predictions engine we already have deals with this better than with
+    the wrong patterns we were creating before, e.g.:
+    
+    853 20 ‡81 ‡i(year) ‡j(month) ‡wm
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+15	3	Open-ILS/xul/staff_client/server/serial/pattern_wizard.js
+
+commit 47b17025cbc82a9435b68323b29a6768ff7645ad
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Fri Aug 17 16:07:19 2012 -0400
+
+    Deal with opt-in boundaries defensively
+    
+    If a site had not set an 'org.patron_opt_default' OU setting, then it
+    seemed that a DEFAULT value was getting dumped into the "create opt-in"
+    INSERT statement for the org_unit argument, and that (as there is a
+    non-NULL constraint on the column and no default value for the column)
+    resulted in the patron not getting opted in.
+    
+    One way for sites to deal with this is to set an opt-in boundary at the
+    consortial level, along the lines of:
+    
+    INSERT INTO actor.org_unit_setting (org_unit, name, value)
+      VALUES (1, 'org.patron_opt_default', 2);
+    
+    Alternatively, in the absense of any such setting, opt-in should
+    continue to work as it had before the new feature was added; this change
+    keeps the old behaviour active in that case.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: James Fournie <jfournie@sitka.bclibraries.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+5	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor.pm
+
+commit 273f7d81d0d25204dd2c67b93e1a687c18358729
+Author: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+Date:   Tue Jan 22 09:40:37 2013 -0500
+
+    Documentation: Update staff client installation for 2.2.5
+    
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+3	3	docs/installation/staff_client_installation.txt
+
+commit 59d24d0e07c6761e1c97971be18a2af855fe3fdc
+Author: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+Date:   Tue Jan 22 09:26:13 2013 -0500
+
+    Documentation: Update upgrading server instructions for 2.2.5
+    
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+13	10	docs/installation/server_upgrade.txt
+
+commit f9ec4a5ae5d87d4bceba8df4c68422731ffe7124
+Author: Ben Shum <bshum@biblio.org>
+Date:   Mon Dec 3 10:37:43 2012 -0500
+
+    Update staff client's about page to include newest core committers
+    
+    The newest core committers were elected during the Evergreen Hack-A-Way on
+    October 10, 2012:
+    
+    Jeff Godin, Traverse Area District Library
+    Benjamin Shum, Bibliomation, Inc.
+    Jason Stephenson, Merrimack Valley Library Consortium
+    
+    Also update language of page to reflect that these contributors are now core
+    "committers" rather than "developers".  And move past core committers into
+    their own section.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+13	6	Open-ILS/xul/staff_client/chrome/content/main/about.html
+
