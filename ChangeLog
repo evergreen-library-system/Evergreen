@@ -1,3 +1,594 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit d69146ed8a9a02a2aa632ed2211ebf58c9cc1279
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Feb 21 13:04:54 2013 -0500
+
+    Setting OpenILS.pm VERSION
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit a7a1ddc6418e8967a807c6e9360d77fb8c94b695
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Feb 21 11:54:54 2013 -0500
+
+    Translations import / newpot : 2.3.4
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+6	6	build/i18n/po/circ.properties/cs-CZ.po
+6	6	build/i18n/po/circ.properties/en-CA.po
+6	6	build/i18n/po/circ.properties/hy-AM.po
+4	4	build/i18n/po/common.properties/en-CA.po
+4	4	build/i18n/po/common.properties/hy-AM.po
+8	8	build/i18n/po/conify.js/de-DE.po
+122	122	build/i18n/po/db.seed/cs-CZ.po
+127	127	build/i18n/po/db.seed/de-DE.po
+122	122	build/i18n/po/db.seed/en-CA.po
+122	122	build/i18n/po/db.seed/en-GB.po
+122	122	build/i18n/po/db.seed/es-ES.po
+123	123	build/i18n/po/db.seed/fi-FI.po
+122	122	build/i18n/po/db.seed/fr-CA.po
+122	122	build/i18n/po/db.seed/hy-AM.po
+122	122	build/i18n/po/db.seed/oc-FR.po
+122	122	build/i18n/po/db.seed/pt-BR.po
+122	122	build/i18n/po/db.seed/ru-RU.po
+122	122	build/i18n/po/db.seed/tr-TR.po
+4	4	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+4	4	build/i18n/po/fm_IDL.dtd/en-CA.po
+4	4	build/i18n/po/fm_IDL.dtd/hy-AM.po
+6	6	build/i18n/po/lang.dtd/cs-CZ.po
+25	15	build/i18n/po/lang.dtd/en-CA.po
+5	5	build/i18n/po/lang.dtd/fr-CA.po
+26	15	build/i18n/po/lang.dtd/hy-AM.po
+7	7	build/i18n/po/offline.properties/en-CA.po
+7	7	build/i18n/po/offline.properties/hy-AM.po
+6	6	build/i18n/po/opac.dtd/de-DE.po
+4	4	build/i18n/po/patron.properties/en-CA.po
+4	4	build/i18n/po/patron.properties/hy-AM.po
+
+commit 8acbaecda1acdc15183dc379e7135f955118b737
+Author: Ben Shum <bshum@biblio.org>
+Date:   Wed Jan 16 16:33:22 2013 -0500
+
+    LP 1092284 - Fix add to my list dropdown with ContentCafe links
+    
+    As noted in the bug ticket, the dropdown menu for Add to my list disappears
+    whenever hovering over the Reviews & More link for ContentCafe-enabled TPACs.
+    
+    Removing position:relative from .results_review seems to keep the two areas
+    from having any strange interactions.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+0	1	Open-ILS/src/templates/opac/css/style.css.tt2
+
+commit af46b5cc0316a1923c53bdd5dc1d7797cadef3d3
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Wed Jan 23 13:07:33 2013 -0500
+
+    Acq: EDI omnibus bugfix package
+    
+    EDIReader bugfix - Process misc charges better
+        MOA+304 seems to be an encoding peculiar to Ingram for processing fees.
+    
+    Bubble up errors better from invoice processing
+        Errors were getting logged, but weren't linked on the related
+        acq.edi_message row in the database like they could have been to make
+        debugging easier.
+    
+        This incidentally elevates one possible message from warning level to
+        error, but even as a warning it was stopping the processing of the
+        invoice in question there.  So there's no meaningful difference.
+    
+    Try harder to associate incoming EDI messages with exact right account
+        Sites use many very nearly identical EDI accounts (same host and
+        credentials) with different values only for the label and the vendcode.
+        This allows mapping of an order to a profile on the vendor side.
+    
+        The problem with this is that the edi_fetcher and the processes it
+        kicks off did not know how to map incoming messages to the right
+        account based on vendcode.  That code simply iterated through
+        accounts, using host information and login credentials, and grabbing
+        what it can find, as if
+        there will be no other Evergreen-side EDI "accounts" with the same
+        hostname and loging credentials.
+    
+        This should help with that.
+    
+    Style and whitespace cleanups in O::A::Acq::EDI.pm
+        All I could stand before I just couldn't take it anymore.
+    
+    New PO template created malformed JSON in the INC_COPIES=0 case
+        And now it no longer should.
+    
+    Allow order responses and invoices to omit PO repetition in lineitem refs
+        Usually vendor documents have bits of EDI that look like:
+        RFF+LI:100/123
+        where 100 is a PO number and 123 is a lineitem number.
+    
+        Sometimes, for some documents, B&T at least will omit the '100/' part.
+        This is fine because we don't really need that number repeated for
+        every lineitem.  We do need this change so that our EDI reader code
+        can deal with the omission, though.
+    
+    Be more liberal reading EDIFACT message reference number
+        Spec, if I read it correctly, says that this is alphanumeric, not just
+        numeric, and ULS is one vendor I've seen taking advantage of letters
+        and numbers in that space.
+    
+        This commit makes the relevant regex in our EDIReader appropriately
+        more tolerant.
+    
+    Fixes to new vencode parsing for incoming EDI messages
+    
+    Prevent problem in preventing EDI re-retrieves
+        The query we were using before would needlessly transfer large objects,
+        potentially hitting Jabber message size limits.
+    
+        We're just testing for the existence of such objects, so we need no
+        more than a single ID in the result.
+    
+    Fix EDI invoices for ULS, improve troubleshootability
+        1) Taxes appear in different, but still valid way in ULS invoices than
+        in invoices from other vendors observed to date.
+    
+        2) Invoices from ULS use MOA 203 to indicate unit price instead of the
+        usual meaning of whole-lineitem price.
+    
+        3) Now abuse acq.invoice.note to leave better troubleshooting
+        breadcrumbs.
+    
+    Invoices from EDI had unsavable invoice_items attached
+        Deal with this by letting us create fund_debits a little later than in
+        the previous workflow. We have to, because the EDI-level stuff creating
+        the invoice doesn't know what fund we want to target for taxes and misc
+        charges.
+    
+        The problem we're fixing manifested by showing an alert() dialog about
+        ACQ_FUND_DEBIT_NOT_FOUND.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+278	132	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/EDI.pm
+34	8	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Invoice.pm
+44	6	Open-ILS/src/perlmods/lib/OpenILS/Utils/EDIReader.pm
+2	2	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+commit 5af2c67f0345d6222b6323fbd3f56fd80c16da57
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Feb 14 11:00:42 2013 -0500
+
+    Don't sort filter group entries in the template
+    
+    They are now delivered sorted by 'pos', and the template sorting was
+    ascii-betical anyway, which is incorrect.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+3	8	Open-ILS/src/templates/opac/parts/filter_group_selector.tt2
+
+commit ddb61e9a34fd6bd4419fb401dddcba250d75cdee
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Feb 14 10:51:37 2013 -0500
+
+    Sort search filter group entries by 'pos'
+    
+    We use a fleshed cstore call to grab search filter groups and their entries,
+    but we don't currently sort them by their 'pos' field, which is it's purpose.
+    cstore will apply order_by expressions to the applicable tables in a fleshed
+    search/retrieve. This does that.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Util.pm
+
+commit e23d9a755a9ce1c51ef563f776526661b7623228
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Wed Feb 6 16:01:49 2013 -0500
+
+    ForceExternal: Compare hostnames case insensitive
+    
+    Lowercase both sides to avoid "right host, wrong case" issues.
+    
+    Resolves LP1081699 where the external browser would be used due to
+    hostname case sensitivity.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/xul/staff_client/components/forceexternal.js
+
+commit a4526145b8047e864495178b3d63d52b81fc0345
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Jan 21 17:02:42 2013 -0500
+
+    TPAC: Make locale picker match default locale
+    
+    As noted by Pasi Kallinen, the language picker would not reflect the
+    chosen locale unless your cookie had been set or there was an explicit
+    CGI parameter with the locale name.
+    
+    Accordingly, get the default locale from the context vars and use that
+    to set the selected value for the language picker in the absence of
+    anything else, to prevent the picker from possibly confusingly showing
+    the first language alphabetically rather than the currently displayed
+    language in the rest of the UI.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+6	1	Open-ILS/src/templates/opac/parts/locale_picker.tt2
+
+commit 6a1db3f4f1bd2e355032cfc82b59af8861d8fc2a
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Wed Jan 2 12:33:36 2013 -0500
+
+    LP #1092921: Display of/sorting by CN affixes in Simplified Hold Pull List
+    
+    In the Simplified Hold Pull List interface, the "Call Number Label" column
+    displays the call number of the copy targeted by the hold in each row,
+    and it does so by combining affixes with the actual label field.
+    Sorting of this column actually uses the call number sortkey generated
+    in-database for this purpose.
+    
+    Sometimes this means that sorting order doesn't match what you'd
+    expect to see with this column.  Opinions differ on desired behavior, so
+    now you can explicity add columns to the table for call number prefix
+    and suffix, and sort on either of those (potentially in combination with
+    other columns).
+    
+    Amended from an earlier version of this commit that still didn't sort
+    CN prefix and suffix columns quite right.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    
+    Conflicts:
+    	Open-ILS/src/templates/circ/hold_pull_list.tt2
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+12	2	Open-ILS/src/templates/circ/hold_pull_list.tt2
+
+commit ce71d68c024d4d5db1b77f197bfc23a40286a8f7
+Author: Mark Cooper <markchristophercooper@gmail.com>
+Date:   Tue Oct 16 11:02:23 2012 -0700
+
+    LP#1067361: vandelay: batch queue deletion no longer works
+    
+    Because window.location.reload can trigger before the deletions
+    have occurred. Simple fix (band aid?) is to make the delete
+    calls in sync.
+    
+    Signed-off-by: Mark Cooper <markchristophercooper@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/web/js/ui/default/vandelay/vandelay.js
+
+commit 7188b110ca7c2dcde23f053a978c508974564082
+Author: Ben Shum <bshum@biblio.org>
+Date:   Tue Jan 29 00:27:55 2013 -0500
+
+    LP1054053 - Remove white padding around login inputs
+    
+    Forget efforts to make the boxes bigger and smoother as it was in the past.
+    Instead, opting for a cleaner look by removing the extra white background
+    that was part of the padding surrounding the actual login input area. This
+    removes the feeling that the box area should have been bigger than it really
+    is.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+
+1	2	Open-ILS/src/templates/opac/css/style.css.tt2
+
+commit 351427dbde7eadfdbeb68369dbc002dbfea557da
+Author: Michael Peters <mrpeters@library.in.gov>
+Date:   Tue Nov 27 09:05:35 2012 -0500
+
+    Replace "Mirror Mirror" default non-AC jacket cover
+    
+    Every item in KPAC that doesn't have a jacket cover uses
+    the cover for "Mirror Mirror".  This is inappropriate, so
+    lets replace it with a small blank image.
+    
+    Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+-	-	Open-ILS/web/images/kpac/item_image.jpg
+ mode change 100755 => 100644 Open-ILS/web/images/kpac/item_image.jpg
+
+commit 77be46a2947c16cceae185877b6685904ae54f65
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Thu Sep 20 13:10:15 2012 -0400
+
+    LP1053526 - Don't inadvertently modify the in-memory org tree when printing
+    
+    To see an example of this causing a problem, load Holdings Maintenance for
+    an arbitrary bib record with items. Make sure the Hide Empty Libs checkbox
+    is checked. Hit the Print button at the bottom of the UI (it's okay to then
+    Cancel the print). Then hit Refresh. It should result in an org.children()
+    is null error.
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	2	Open-ILS/xul/staff_client/chrome/content/util/list.js
+
+commit 5ad1fd55868f51fb2e72d8c901da617fd86f9494
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Jan 31 10:51:40 2013 -0500
+
+    Copy_offset and copy_limit shouldn't persist in URL
+    
+    Added copy_offset and copy_limit to stop_parms definition so that they
+    don't persist in URL when returning to search results or launching
+    subject/series searches.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/templates/opac/parts/record/body.tt2
+
+commit ad4a7f49ef10bdbdbd7977b576c298ea691c927e
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Mon Jan 21 14:54:55 2013 -0500
+
+    Serials: Caption/pattern wizard use enum fields for chronology when no enum
+    
+    MFHD spec says that when there are no ‡a - ‡f enumeration captions, any
+    chronology captions should move back from their usual ‡i - ‡m places
+    back into enumeration space.
+    
+    The predictions engine we already have deals with this better than with
+    the wrong patterns we were creating before, e.g.:
+    
+    853 20 ‡81 ‡i(year) ‡j(month) ‡wm
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+15	3	Open-ILS/xul/staff_client/server/serial/pattern_wizard.js
+
+commit 677167d56647dd7351b41aeee4851384d05c734e
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Fri Aug 17 16:07:19 2012 -0400
+
+    Deal with opt-in boundaries defensively
+    
+    If a site had not set an 'org.patron_opt_default' OU setting, then it
+    seemed that a DEFAULT value was getting dumped into the "create opt-in"
+    INSERT statement for the org_unit argument, and that (as there is a
+    non-NULL constraint on the column and no default value for the column)
+    resulted in the patron not getting opted in.
+    
+    One way for sites to deal with this is to set an opt-in boundary at the
+    consortial level, along the lines of:
+    
+    INSERT INTO actor.org_unit_setting (org_unit, name, value)
+      VALUES (1, 'org.patron_opt_default', 2);
+    
+    Alternatively, in the absense of any such setting, opt-in should
+    continue to work as it had before the new feature was added; this change
+    keeps the old behaviour active in that case.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: James Fournie <jfournie@sitka.bclibraries.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+5	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor.pm
+
+commit 50483a39db90045150343cc6ee98365a947c9fc3
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Nov 5 09:22:55 2012 -0500
+
+    LP1051112 - Display lineitem commands menu on empty picklists
+    
+    Ensure that the lineitem commands drop-down menu appears even when the
+    picklist is empty.  Previously, the commands were not displayed until
+    the first lineitem was retrieved.  For empty picklists, of course, there
+    will be no first lineitem.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	0	Open-ILS/web/js/ui/default/acq/picklist/view.js
+
+commit e634bfcd3b8c49857bd56f790c489aeed956447c
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri Jan 25 21:35:13 2013 -0500
+
+    Documentation: acquisitions updates
+    
+    Update Search for Line Items from an Invoice section to reflect minor
+    changes that came with lp1050008. Also, moved received Items from an
+    Invoice section to fall within the rest of the Invoices section.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+6	0	docs/acquisitions/invoices.txt
+3	3	docs/acquisitions/receive_items_from_invoice.txt
+-	-	docs/media/Search_for_line_items_from_an_invoice2.jpg
+
+commit 6f6468d4a4e14ceb2376419f88b3930007bd10a8
+Author: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+Date:   Tue Jan 22 09:36:08 2013 -0500
+
+    Documentation: Update staff client installation for 2.3.3 version.
+    
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+3	3	docs/installation/staff_client_installation.txt
+
+commit 2136de21293f78c9496b261854aec3af973222c0
+Author: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+Date:   Tue Jan 22 09:17:26 2013 -0500
+
+    Documentation: Update upgrading the server instructions to point to 2.3.3.
+    
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+13	12	docs/installation/server_upgrade.txt
+
+commit eed9a4fd907be78dca50ec6355ad6d3922a7dd50
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Dec 21 15:47:40 2012 -0500
+
+    LP1054053 - make default input font darker
+    
+    The original light grey made it difficult to see what was being input.
+    Change to use text font color variable (black by default).
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+1	1	Open-ILS/src/templates/opac/css/style.css.tt2
+
+commit 1290cc1aa8a8c4f5a535548cd56d917576ed5fd1
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Jan 8 17:02:38 2013 -0500
+
+    TPAC: Prevent numeric subfields in series display
+    
+    Series fields can theoretically contain linking subfields ($6, $8) and
+    other numeric subfields that aren't meant to be displayed. So, do not
+    display them.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+18	9	Open-ILS/src/templates/opac/parts/record/series.tt2
+
+commit f8e65c7070dd02bb71750f64e77297fabb80f141
+Author: Ben Shum <bshum@biblio.org>
+Date:   Sun Dec 2 00:02:25 2012 -0500
+
+    TPAC - hide subfield 6 and 8 from record title display
+    
+    Record display previously showed every subfield associated with tag 245
+    to display the title in TPAC's record view.  Hide subfields 6 and 8
+    because they only show linkage information that does not contribute to
+    the actual title content.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	1	Open-ILS/src/templates/opac/parts/misc_util.tt2
+
+commit bb2b1fc3b781f34d3074619108004bc62cae38cd
+Author: Ben Shum <bshum@biblio.org>
+Date:   Mon Dec 3 10:37:43 2012 -0500
+
+    Update staff client's about page to include newest core committers
+    
+    The newest core committers were elected during the Evergreen Hack-A-Way on
+    October 10, 2012:
+    
+    Jeff Godin, Traverse Area District Library
+    Benjamin Shum, Bibliomation, Inc.
+    Jason Stephenson, Merrimack Valley Library Consortium
+    
+    Also update language of page to reflect that these contributors are now core
+    "committers" rather than "developers".  And move past core committers into
+    their own section.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+13	6	Open-ILS/xul/staff_client/chrome/content/main/about.html
+
+commit 1caa2b6cda4fd28eabd911ecda5bdc86599b09be
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Wed Jan 16 15:18:56 2013 -0500
+
+    Add 2.2.4 -> 2.2.5 upgrade script
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+278	0	Open-ILS/src/sql/Pg/version-upgrade/2.2.4-2.2.5-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.2.4-2.2.5-upgrade-db.sql
+
+commit 16b73cbada70bd47752b93f9f3213a7ca654d962
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Jan 16 15:18:57 2013 -0500
+
+    Forward-porting 2.3.2 -> 2.3.3 DB upgrade
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+314	0	Open-ILS/src/sql/Pg/version-upgrade/2.3.2-2.3.3-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.3.2-2.3.3-upgrade-db.sql
+
+commit 1419b2ae9fa6a6a9e24e98a55d791406c3a882a1
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue Jan 15 11:30:41 2013 -0500
+
+    LP#1098377: protect against even more cstore segfaults
+    
+    Following up on the preceding patch, passing null
+    as the savepoint name to savepoint.release and
+    savepoint.rollback would also segfault cstore.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+12	0	Open-ILS/src/c-apps/oils_sql.c
+
+commit 850d1054e3c0753dc232f3783a92070114f4ff78
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Jan 15 10:58:16 2013 -0500
+
+    Verify savepoint name is non-null
+    
+    Before we attempt to mangle the name, let's ensure that it's non-null.
+    Otherwise, segfaults ensue.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+6	0	Open-ILS/src/c-apps/oils_sql.c
+
+commit a17f4a5e3961b049adcb8a556e3fcc9d770ed99f
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Fri Jan 11 01:32:13 2013 -0500
+
+    Protect against overly long savepoint names
+    
+    Per http://postgresql.org/docs/9.1/static/sql-syntax-lexical.html#SQL-SYNTAX-IDENTIFIERS,
+    the maximum identifier length works out to being 63 bytes (+1 for the
+    null terminator), so to avoid potential memory pressure by a 10GB string
+    somehow being passed in as the savepoint name, malloc no more than 64
+    bytes and copy no more than 63 bytes from the incoming name to the
+    escaped name.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+16	2	Open-ILS/src/c-apps/oils_sql.c
+
+commit 955468b71d3cee9c97b27a8ddc90c1a2151aaac8
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Jan 11 02:30:50 2013 -0500
+
+    LP#1098377: sanitize savepoint names
+    
+    When invoking open-ils.{cstore,pcrud,rstore}.savepoint.*, the
+    caller supplies a name for the savepoint.  However, the savepoint
+    names could be constructed so that the caller could execute
+    arbitrary SQL.  This patch sanitizes the name so that it contains
+    only alphanumeric and underscore characters.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+37	3	Open-ILS/src/c-apps/oils_sql.c
