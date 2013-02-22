@@ -80,7 +80,6 @@ DEBS =  \
 	libnet-ssh2-perl\
 	libnspr4-dev\
 	libole-storage-lite-perl\
-	libparent-perl \
 	libspreadsheet-writeexcel-perl\
 	libssh2-1-dev\
 	libtext-aspell-perl\
@@ -101,7 +100,11 @@ EXTRA_DEBS = \
 	yaz
 
 EXTRA_DEBS_SQUEEZE = \
+    libparent-perl \
     libuuid-tiny-perl
+
+EXTRA_DEBS_LUCID = \
+    libparent-perl
 
 EXTRA_DEBS_PRECISE = \
     libdbi-dev \
@@ -275,7 +278,7 @@ generic_debian: install_debs install_yaz test_for_libdbi_pkg install debian_sys_
 
 # Needs for Ubuntu Lucid Lynx (10.04 LTS):
 ubuntu-lucid: lucid generic_ubuntu
-lucid: install_pgsql_client_debs_90 install_extra_debs \
+lucid: install_pgsql_client_debs_90 install_extra_debs_lucid \
        install_cpan_marc_record install_yaz install_cpan_more \
        install_cpan_safe install_cpan_lucid install test_for_libdbi_pkg \
        install_libdbi
@@ -461,6 +464,10 @@ install_pgsql_server_backport_debs_91:
 # Install the debian-specific dependencies for more modern distros
 install_extra_debs_squeeze: install_extra_debs
 	$(APT_TOOL) install $(EXTRA_DEBS_SQUEEZE)
+
+# Install dependencies for Ubuntu 10.04:
+install_extra_debs_lucid: install_extra_debs
+	$(APT_TOOL) install $(EXTRA_DEBS_LUCID)
 
 # Install dependencies for Ubuntu 12.04:
 install_extra_debs_precise: install_extra_debs
