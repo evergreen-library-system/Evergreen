@@ -1528,3 +1528,11 @@ a.preflib_change {
     padding-bottom: 0.5em;
 	font-style: italic;
 }
+
+#maintenance_message {
+    padding: 5px;
+    width: 100%;
+    background-color: [% css_colors.text_alert %];
+    color: [% css_colors.text_invert %];
+    text-align: center;
+}

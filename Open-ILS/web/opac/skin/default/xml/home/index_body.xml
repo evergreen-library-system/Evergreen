@@ -8,6 +8,12 @@
 		</p>
 	</noscript>
 
+<!--#if expr="$MAINTENANCE_MESSAGE"-->
+    <div style="padding: 5px; width: 100%; background-color: #f00; color: #fff; text-align: center;">
+            <!--#echo var="MAINTENANCE_MESSAGE"-->
+    </div>
+<!--#endif-->
+
 	<table id='toptable' width='100%' style='border-collapse: collapse;'>
 		<tbody>
 			<tr>

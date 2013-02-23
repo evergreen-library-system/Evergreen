@@ -243,6 +243,8 @@ sub load_common {
         return $self->redirect_ssl unless $self->cgi->https;
     }
 
+    $ctx->{maintenance_message} = $self->apache->subprocess_env("MAINTENANCE_MESSAGE");
+
     $ctx->{referer} = $self->cgi->referer;
     $ctx->{path_info} = $self->cgi->path_info;
     $ctx->{full_path} = $ctx->{base_path} . $self->cgi->path_info;
