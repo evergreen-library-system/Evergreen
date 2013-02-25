@@ -947,7 +947,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
     <class id="cza" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::z3950_attr" oils_persist:tablename="config.z3950_attr" reporter:label="Z39.50 Attribute">
         <fields oils_persist:primary="id" oils_persist:sequence="config.z3950_attr_id_seq">
-            <field reporter:label="Z39.50 Attribute ID" name="id" reporter:datatype="id"/>
+            <field reporter:label="Z39.50 Attribute ID" name="id" reporter:datatype="id" reporter:selector="label"/>
             <field reporter:label="Z39.50 Source" name="source" reporter:datatype="link"/>
             <field reporter:label="Name" name="name" reporter:datatype="text"/>
             <field reporter:label="Label" name="label" reporter:datatype="text" oils_persist:i18n="true"/>
@@ -982,7 +982,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </fields>
         <links>
             <link field="metabib_field" reltype="has_a" key="id" map="" class="cmf"/>
-            <link field="record_attr" reltype="has_a" key="id" map="" class="crad"/>
+            <link field="record_attr" reltype="has_a" key="name" map="" class="crad"/>
             <link field="z3950_attr" reltype="has_a" key="id" map="" class="cza"/>
         </links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
@@ -2398,7 +2398,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="cmf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::metabib_field" oils_persist:tablename="config.metabib_field" reporter:label="Metabib Field" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.metabib_field_id_seq">
 			<field reporter:label="Class" name="field_class" reporter:datatype="link"/>
-			<field reporter:label="ID" name="id" reporter:datatype="id" />
+			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector="label"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text"/>
 			<field reporter:label="Label" name="label" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="XPath" name="xpath" reporter:datatype="text"/>
