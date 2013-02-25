@@ -4,6 +4,10 @@
     myopac_page = "prefs"  %]
 <div id='myopac_summary_div' style="padding:0px;">
 
+    <div class="header_middle">
+       <span class="float-left">[% l('Update Email') %]</span>
+    </div>
+	
 [% IF ctx.invalid_email %]
     <div id='account-update-email-error'>
         [% bad_email = ctx.invalid_email | html %]
