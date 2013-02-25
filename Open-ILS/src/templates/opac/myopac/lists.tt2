@@ -151,6 +151,27 @@
                     [% END %]
                 </div>
             </form>
+            [% IF ctx.is_staff %]
+            <div class="bookbag-controls">
+                <input 
+                    type="submit" 
+                    onclick='
+                       var path = 
+                          "oils://remote/xul/server/cat/bucketz39_dialog.xul";
+                        window.openDialog(
+                            xulG.url_prefix(path),
+                            "bucketz39_dialog",
+                            "width=800,height=500",
+                            "[% ctx.user.id %]",
+                            "[% ctx.authtoken %]",
+                            "[% ctx.user.ws_ou %]",
+                            "[% bbag.id %]",
+                            xulG
+                        )'
+                    value="[% l('Locate Z39.59 Matches') %]" 
+                />
+            </div>
+            [% END %]
             <div class="bookbag-controls">
                 [% IF bbag.pub == 't'; %]
                 <a target='_blank' href='/opac/extras/feed/bookbag/rss2-full/[% bbag.id %]'><img

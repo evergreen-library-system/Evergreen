@@ -23,6 +23,10 @@ sub prepare_extended_user_info {
     my $local_xact = !$e->{xact_id}; 
     $e->xact_begin if $local_xact;
 
+    # keep the original user object so we can restore
+    # login-specific data (e.g. workstation)
+    my $usr = $self->ctx->{user};
+
     $self->ctx->{user} = $self->editor->retrieve_actor_user([
         $self->ctx->{user}->id,
         {
@@ -35,6 +39,9 @@ sub prepare_extended_user_info {
     ]);
 
     $e->rollback if $local_xact;
+
+    $self->ctx->{user}->wsid($usr->wsid);
+    $self->ctx->{user}->ws_ou($usr->ws_ou);
 
     # discard replaced (negative-id) addresses.
     $self->ctx->{user}->addresses([
