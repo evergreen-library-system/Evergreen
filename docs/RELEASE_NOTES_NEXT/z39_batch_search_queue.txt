@@ -1,0 +1,89 @@
+Z39.50 Batch Search and Queue
+=============================
+
+Staff Work Flow
+---------------
+
+ * Staff add records to bib record buckets
+ * Staff select the new "Locate Z39.50 Matches" action for a selected bucket.
+ * Staff choose which Z30.50 sources and indexes to search and the destination 
+   queue.
+ * Submitting the search fires a series of parallel Z39.50 searches across
+   all selected Z39.50 sources.
+ * Matches are added to the selected (Vandelay) queue.
+ * Matched records may be manually or automatically overlaid to existing 
+   catalog records using the existing Vandelay import/merge/overlay features.
+
+Vandelay Limit to Bucket
+------------------------
+
+As a side effect of this feature, Vandelay now has a new option in the 
+interface which allows staff to limit which catalog records to which an 
+inbound record matches to bib records within a record bucket.  When a record
+bucket and match set are chosen, only the records in the bucket can act as
+merge/overlay targets for the inbound Vandelay records.
+
+Configuration
+-------------
+
+Z39.50 Index Field Maps
+~~~~~~~~~~~~~~~~~~~~~~~
+
+These map bib record indexes (Metabib Fields and Record Attributes) to Z39.50
+search attributes.  The purpose of the mapping is to allow the server to
+determine which values to use for the automated Z39.50 searches.  For example,
+if the Z39.50 "title" attribute is mapped to the "Uniform Title" Metabib Field,
+the extracted value for "Uniform Title" for each record in the bucket will be
+used as the "title" value in the Z39.50 search.
+
+Mappings can be applied to specific Z39.50 attributes, which define an attribute
+type and a Z39.50 source, or to generic attribute types (e.g. "title").  When
+a specific attribute is used, the mapping will only be applied to searches 
+directed at the Z39.50 source linked to the attribute.
+
+The management interface can be found in the staff client under 
+
+Admin => Server Administration => Z39.50 Index Field Maps
+
+Metabib Field Additions
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Stock config.metabib_field entries for author include additional author-
+related data, like dates.  For example, a value for Personal Author might 
+look like this:
+
+'girdlestone cuthbert morton 1895 1975 creator'
+
+In the context of searching Z39.50 servers, the extraneous data can be 
+detrimental.  Creating a separate field definition without the extra data
+is recommended.
+
+[source,sql]
+--------------------------------------------
+INSERT INTO config.metabib_field 
+    (field_class, name, label, format, xpath, search_field)
+    VALUES (
+        'author', 
+        'personal - trimmed', 
+        'Personal Author (trimmed)', 
+        'mods32',
+        '//mods32:mods/mods32:name[@type=''personal'' and mods32:role/mods32:roleTerm[text()=''creator'']]/mods32:namePart[not (@type)]',
+        FALSE
+    );
+
+-- FULL BIB (OR INDEX-TARGETED) RE-INGEST REQUIRED
+--------------------------------------------
+
+
+Org Unit Settings
+~~~~~~~~~~~~~~~~~
+
+ * cat.z3950.batch.max_parallel 
+  ** Maximum Parallel Z39.50 Batch Searches
+  ** The maximum number of Z39.50 searches that can be in-flight at any given 
+     time when performing batch Z39.50 searches
+ * cat.z3950.batch.max_results
+  ** Maximum Z39.50 Batch Search Results
+  ** The maximum number of search results to retrieve and queue for each 
+     record + Z39 source during batch Z39.50 searches
+    
