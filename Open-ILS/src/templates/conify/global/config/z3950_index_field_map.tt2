@@ -1,0 +1,118 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = l('Z39.50 Index Field Maps') %]
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+
+    <div dojoType="dijit.layout.ContentPane" 
+            layoutAlign="top" class='oils-header-panel'>
+
+        <div>[% l('Z39.50 Index Field Maps') %]</div>
+        <div>
+            <button dojoType='dijit.form.Button' 
+                onClick='zGrid.showCreateDialog()'>
+                [% l('New') %]
+            </button>
+            <button dojoType='dijit.form.Button' 
+                onClick='zGrid.deleteSelected()'>
+                [% l('Delete Selected') %]
+            </button>
+        </div>
+    </div>
+
+    <br/>
+
+    <table
+        id="zGrid"
+        jsid="zGrid"
+        dojoType="openils.widget.FlattenerGrid"
+        columnPersistKey='"conify.config.z3950_index_field_map"'
+        autoHeight="true"
+        editOnEnter="true"
+        editStyle="pane"
+        showLoadFilter="true"
+        fmClass="'czifm'"
+        defaultSort="['label']"
+        query="{'id': {'!=' : null}}">
+        <thead>
+            <tr>
+                <th field="label" fpath="label" ffilter="true"/>
+                <th field="metabib_field_label" fpath="metabib_field.label" 
+                    ffilter="true" name="[% l('Metabib Field') %]"/>
+                <th field="record_attr_label" fpath="record_attr.label" 
+                    ffilter="true" name="[% l('Record Attribute') %]"/>
+                <th field="z3950_attr_label" fpath="z3950_attr.label" 
+                    ffilter="true" name="[% l('Z39.50 Attribute') %]"/>
+                <th field="z3950_attr_type" fpath="z3950_attr_type" 
+                    ffilter="true"/>
+            </tr>
+        </thead>
+    </table>
+
+    <p><i>
+[% | l %]Map Metabib Fields OR Bib Record Attributes to specific Z39.50 
+Attributes OR generic Z39.50 Attribute types (by name).[% END %]
+    </i></p>
+
+</div>
+
+<script>
+    dojo.require('dijit.form.Button');
+    dojo.require('dojo.data.ItemFileReadStore');
+    dojo.require('dijit.form.FilteringSelect');
+    dojo.require('openils.widget.FlattenerGrid');
+    dojo.require('openils.PermaCrud');
+    dojo.require('openils.Util');
+
+    dojo.addOnLoad(function() {
+
+        // display the z39 attr field label and source
+        zGrid.overrideWidgetArgs.z3950_attr = {
+            labelFormat : ['${0} : ${1}', 'source', 'label']
+        }
+
+        // fetch all of the z39 attrs and create an attr type
+        // selector from the distinct set of z39 attr names
+        new openils.PermaCrud().retrieveAll('cza', {
+            oncomplete : function(r) {
+                var attrs = openils.Util.readResponse(r);
+                var names = [];
+                var seen = {};
+
+                dojo.forEach(attrs, function(attr) {
+                    var name = attr.name();
+                    if (seen[name]) return;
+                    names.push({name : name});
+                    seen[name] = 1;
+                });
+
+                var store = new dojo.data.ItemFileReadStore({ 
+                    data : {
+                        identifier : 'name', 
+                        label : 'name', 
+                        items : names
+                    }
+                });  
+
+                zGrid.overrideEditWidgets.z3950_attr_type = 
+                    new dijit.form.FilteringSelect({
+                        searchAttr : 'name',
+                        valueAttr : 'name',
+                        labelAttr : 'name',
+                        store : store
+                    });
+
+                // when the edit pane is rendered, update the value of our
+                // custom widget to match that of the row being edited
+                zGrid.onEditPane = function(pane) {
+                    zGrid.overrideEditWidgets.z3950_attr_type.attr(
+                        'value', pane.fmObject.z3950_attr_type() || ''
+                    );
+                }
+            }
+        });
+    });
+
+</script>
+
+[% END %]
+

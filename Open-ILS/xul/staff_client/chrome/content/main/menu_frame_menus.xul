@@ -258,6 +258,9 @@
              perm="ADMIN_Z3950_SOURCE"
              />
     <command id="cmd_server_admin_org_unit_proximity_adjustment" />
+    <command id="cmd_server_admin_z39_index_field_map" 
+             perm="ADMIN_Z3950_SOURCE"
+             />
     <command id="cmd_server_admin_circ_mod" 
              perm="CREATE_CIRC_MOD DELETE_CIRC_MOD UPDATE_CIRC_MOD ADMIN_CIRC_MOD"
              />
@@ -624,6 +627,7 @@
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.billing_type.label;" command="cmd_server_admin_billing_type"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.sms_carrier.label;" command="cmd_server_admin_sms_carrier"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.z3950_source.label;" command="cmd_server_admin_z39_source"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.z3950_index_field_map.label;" command="cmd_server_admin_z39_index_field_map"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.circulation_modifier.label;" command="cmd_server_admin_circ_mod"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.circulation_limit_group.label;" command="cmd_server_admin_circ_limit_group"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.global_flag.label;" command="cmd_server_admin_global_flag"/>

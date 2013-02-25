@@ -1032,6 +1032,10 @@ main.menu.prototype = {
             'cmd_server_admin_org_unit_proximity_adjustment' : [
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/config/org_unit_proximity_adjustment', null, event); }
+			],
+            'cmd_server_admin_z39_index_field_map' : [
+                ['oncommand'],
+                function(event) { open_eg_web_page('conify/global/config/z3950_index_field_map', null, event); }
             ],
             'cmd_server_admin_circ_mod' : [
                 ['oncommand'],

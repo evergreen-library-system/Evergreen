@@ -795,6 +795,7 @@
 <!ENTITY staff.main.menu.admin.server_admin.conify.sms_carrier.label "SMS Carriers">
 <!ENTITY staff.main.menu.admin.server_admin.conify.z3950_source.label "Z39.50 Servers">
 <!ENTITY staff.main.menu.admin.server_admin.conify.org_unit_proximity_adjustment.label "Org Unit Proximity Adjustments">
+<!ENTITY staff.main.menu.admin.server_admin.conify.z3950_index_field_map.label "Z39.50 Index Field Maps">
 <!ENTITY staff.main.menu.admin.server_admin.conify.circulation_modifier.label "Circulation Modifiers">
 <!ENTITY staff.main.menu.admin.server_admin.conify.org_unit_setting_type "Organization Unit Setting Types">
 <!ENTITY staff.main.menu.admin.server_admin.conify.import_match_set "Import Match Sets">
