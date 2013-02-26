@@ -976,8 +976,11 @@ openils.Util.addOnLoad(
 
         termManager = new TermManager();
 
+        var li_table = new AcqLiTable();
+        li_table.enableActionsDropdownOptions("gs");
+
         resultManager = new ResultManager(
-            new LiTablePager(null, new AcqLiTable()),
+            new LiTablePager(null, li_table),
             dijit.byId("acq-unified-po-grid"),
             dijit.byId("acq-unified-pl-grid"),
             dijit.byId("acq-unified-inv-grid")

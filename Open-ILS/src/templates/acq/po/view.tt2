@@ -21,7 +21,7 @@
                     <th>[% l('Activatable?') %]</th>
                     <td>
                         <span id="acq-po-activate-checking"></span>
-                        <a class="hidden" id="acq-po-activate-link" href="javascript:void(0);" onclick="activatePo()">[% l('Activate Order') %]</a>
+                        <span class="hidden" id="acq-po-activate-link"><span dojoType="dijit.form.Button" onClick="activatePo()" jsId="activatePoButton">[% l('Activate Order') %]</span></span>
                     </td>
                 </tr>
                 <tr>
@@ -54,7 +54,7 @@
                 <tr>
                     <th>[% l('Total Encumbered') %]</th>
                     <td>[% l('$[_1]', '<span id="acq-po-view-total-enc"></span>') %]</td>
-                    <th>[% l('Invoicing') %]</th>
+                    <th id="acq-po-invoice-label" class="hidden">[% l('Invoicing') %]</th>
                     <td id="acq-po-invoice-stuff" class="hidden">
                         <button dojoType="dijit.form.Button"
                             id="acq-po-view-invoice-link">
@@ -115,8 +115,8 @@
                             <button dojoType='dijit.form.Button' id='acq-po-return-to-invoice-button'>[% l('&#x2196; Return to Invoice') %]</button>
                         </div>
                     </td>
-                    <th>[% l('Allow activation with <br/> zero-copy lineitems') %]</th>
-                    <td><input type='checkbox' id='acq-po-activate-zero-copies' onclick='checkCouldActivatePo()'/></td>
+                    <th class="hidden" id="acq-po-zero-activate-label">[% l('Allow activation with <br/> zero-copy lineitems') %]</th>
+                    <td class="hidden" id="acq-po-zero-activate"><input type='checkbox' id='acq-po-activate-zero-copies' onclick='checkCouldActivatePo()'/></td>
                 </tr>
                 <tr>
                     <td colspan='3'>

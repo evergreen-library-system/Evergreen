@@ -589,8 +589,19 @@ function addInvoiceItem(item) {
                     readOnly : invoice && openils.Util.isTrue(invoice.complete()),
                     dijitArgs : args,
                     parentNode : nodeByName(field, row)
-                })
-            )
+                }),
+                function(w) {
+                    if (field == "cost_billed") {
+                        dojo.connect(
+                            w, "onChange", function(value) {
+                                var paid = widgetRegistry.acqii[item.id()].amount_paid.widget;
+                                if (value && isNaN(paid.attr("value")))
+                                    paid.attr("value", value);
+                            }
+                        );
+                    }
+                }
+            );
         }
     );
 
@@ -819,7 +830,7 @@ function addInvoiceEntry(entry) {
                     } else {
                         dijitArgs.style = 'width:9em;';
                     }
-                    if(entry.isnew() && field == 'phys_item_count') {
+                    if (entry.isnew() && (field == 'phys_item_count' || field == 'inv_item_count')) {
                         // by default, attempt to pay for all non-canceled and as-of-yet-un-invoiced items
                         var count = Number(li.order_summary().item_count() || 0) - 
                                     Number(li.order_summary().cancel_count() || 0) -
@@ -854,6 +865,16 @@ function addInvoiceEntry(entry) {
                                 )
                             } // if
 
+                            if (field == "cost_billed") {
+                                // hooks applied with dojo.connect to dijit events are additive, so there's no conflict between this and what comes next
+                                dojo.connect(
+                                    w, "onChange", function(value) {
+                                    var paid = widgetRegistry.acqie[entry.id()].amount_paid.widget;
+                                        if (value && isNaN(paid.attr("value")))
+                                            paid.attr("value", value);
+                                    }
+                                );
+                            }
                             if(field == 'inv_item_count' || field == 'cost_billed') {
                                 setPerCopyPrice(row, entry);
                                 // update the per-copy count as invoice count and cost billed change 

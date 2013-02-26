@@ -49,7 +49,7 @@
             <tr>
                 <th></th>
                 <th>[% l('Owning Library') %]</th>
-                <th>[% l('Shelving Location') %]</th>
+                <th>[% l('Copy Location') %]</th>
                 <th>[% l('Item Count') %]</th>
                 <th></th>
             </tr>

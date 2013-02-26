@@ -73,9 +73,9 @@
                     <thead id='acq-invoice-entry-thead' class='hidden'>
                         <tr>
                             <th colspan='2'>[% l('Title Details') %]</th>
-                            <th class='acq-invoice-center-col'>[% l('#&nbsp;Invoiced&nbsp;/&nbsp;#&nbsp;Paid') %]</th>
+                            <th class='acq-invoice-center-col'>[% l('# Invoiced / # Paid') %]</th>
                             <th class='acq-invoice-center-col'>[% l('Billed') %]</th>
-                            <th class='acq-invoice-paid-per-copy-col'>[% l('Per Copy') %]</th>
+                            <th class='acq-invoice-paid-per-copy-col' style="white-space: normal">[% l('Per Copy') %]</th>
                             <th class='acq-invoice-paid-col'>[% l('Paid') %]</th>
                             <th class='acq-invoice-center-col hide-complete'>[% l('Detach') %]</th>
                         </tr>
@@ -103,11 +103,11 @@
                         </tr>
                     </tbody>
                     <!-- acq.invoice_item -->
-                    <thead>
+                    <thead id="acq-invoice-item-thead">
                         <tr>
                             <th>[% l('Charge Type') %]</th>
                             <th class='acq-invoice-center-col'>[% l('Fund') %]</th>
-                            <th>[% l('Title/Description') %]</th>
+                            <th>[% l('Title / Description') %]</th>
                             <th class='acq-invoice-center-col'>[% l('Billed') %]</th>
                             <th/>
                             <th class='acq-invoice-paid-col'>[% l('Paid') %]</th>

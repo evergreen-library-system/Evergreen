@@ -14,6 +14,8 @@ var liTable;
 function load() {
     liTable = new AcqLiTable();
     liTable.isPL = plId;
+    liTable.enableActionsDropdownOptions("pl");
+
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.picklist.retrieve.authoritative'],
         {   async: true,

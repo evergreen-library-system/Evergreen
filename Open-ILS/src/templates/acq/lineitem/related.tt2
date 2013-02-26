@@ -49,23 +49,12 @@
     </div>
 
     <div class="hidden">
-        <div dojoType="dijit.Dialog" jsId='addToPoDialog'>
-            <table class='dijitTooltipTable'>
-                <tr>
-                    <td><label>[% l('Enter the PO #: ') %]</label></td>
-                    <td><input jsId='addToPoInput' dojoType="dijit.form.TextBox" /></td>
-                </tr>
-                <tr>
-                    <td colspan='2' align='center'>
-                        <button dojoType='dijit.form.Button' jsId='addToPoSave' type="submit">[% l('Save') %]</button>
-                    </td>
-                </tr>
-            </table>
-        </div>
+        [% INCLUDE "acq/common/add_to_po.tt2" %]
     </div>
 
 </div>
 [% INCLUDE "acq/common/info.tt2" which = "Related" %]
 [% INCLUDE "acq/common/li_table.tt2" %]
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/common/add_to_po.js"></script>
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/lineitem/related.js"></script>
 [% END %]

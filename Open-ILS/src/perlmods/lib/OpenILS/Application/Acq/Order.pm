@@ -580,6 +580,8 @@ sub receive_lineitem {
     my($mgr, $li_id, $skip_complete_check) = @_;
     my $li = $mgr->editor->retrieve_acq_lineitem($li_id) or return 0;
 
+    return 0 unless $li->state eq 'on-order' or $li->state eq 'cancelled'; # sic
+
     my $lid_ids = $mgr->editor->search_acq_lineitem_detail(
         {lineitem => $li_id, recv_time => undef}, {idlist => 1});
 
@@ -1781,6 +1783,14 @@ sub create_purchase_order_api {
                 {flesh => 1, flesh_fields => {jub => ['attributes']}}
             ]) or return $e->die_event;
 
+            return $e->die_event(
+                new OpenILS::Event(
+                    "BAD_PARAMS", payload => $li,
+                        note => "acq.lineitem #" . $li->id .
+                        ": purchase_order #" . $li->purchase_order
+                )
+            ) if $li->purchase_order;
+
             $li->provider($po->provider);
             $li->purchase_order($po->id);
             $li->state('pending-order');
@@ -2146,6 +2156,56 @@ sub receive_lineitem_api {
 
 
 __PACKAGE__->register_method(
+	method => 'receive_lineitem_batch_api',
+	api_name	=> 'open-ils.acq.lineitem.receive.batch',
+	signature => {
+        desc => 'Mark lineitems as received',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'lineitem ID list', type => 'array'}
+        ],
+        return => {desc =>
+            q/On success, stream of objects describing changes to LIs and
+            possibly PO; onerror, Event.  Any event, even after lots of other
+            objects, should mean general failure of whole batch operation./
+        }
+    }
+);
+
+sub receive_lineitem_batch_api {
+    my ($self, $conn, $auth, $li_idlist) = @_;
+
+    return unless ref $li_idlist eq 'ARRAY' and @$li_idlist;
+
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $mgr = new OpenILS::Application::Acq::BatchManager(
+        editor => $e, conn => $conn
+    );
+
+    for my $li_id (map { int $_ } @$li_idlist) {
+        my $li = $e->retrieve_acq_lineitem([
+            $li_id, {
+                flesh => 1,
+                flesh_fields => { jub => ['purchase_order'] }
+            }
+        ]) or return $e->die_event;
+
+        return $e->die_event unless $e->allowed(
+            'RECEIVE_PURCHASE_ORDER', $li->purchase_order->ordering_agency
+        );
+
+        receive_lineitem($mgr, $li_id) or return $e->die_event;
+        $mgr->respond;
+    }
+
+    $e->commit or return $e->die_event;
+    $mgr->respond_complete;
+    $mgr->run_post_response_hooks;
+}
+
+__PACKAGE__->register_method(
     method   => 'rollback_receive_po_api',
     api_name => 'open-ils.acq.purchase_order.receive.rollback'
 );
@@ -2279,6 +2339,65 @@ sub rollback_receive_lineitem_api {
     $result->{"po"} = describe_affected_po($e, $po);
 
     $e->commit and return $result or return $e->die_event;
+}
+
+__PACKAGE__->register_method(
+    method    => 'rollback_receive_lineitem_batch_api',
+    api_name  => 'open-ils.acq.lineitem.receive.rollback.batch',
+    signature => {
+        desc   => 'Mark a list of lineitems as Un-received',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'lineitem ID list',     type => 'array'}
+        ],
+        return => {desc =>
+            q/on success, a stream of objects describing changes to LI and
+            possibly PO; on error, Event. Any event means all previously
+            returned objects indicate changes that didn't really happen./
+        }
+    }
+);
+
+sub rollback_receive_lineitem_batch_api {
+    my ($self, $conn, $auth, $li_idlist) = @_;
+
+    return unless ref $li_idlist eq 'ARRAY' and @$li_idlist;
+
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $mgr = new OpenILS::Application::Acq::BatchManager(
+        editor => $e, conn => $conn
+    );
+
+    for my $li_id (map { int $_ } @$li_idlist) {
+        my $li = $e->retrieve_acq_lineitem([
+            $li_id, {
+                "flesh" => 1,
+                "flesh_fields" => {"jub" => ["purchase_order"]}
+            }
+        ]);
+
+        my $po = $li->purchase_order;
+
+        return $e->die_event unless
+            $e->allowed('RECEIVE_PURCHASE_ORDER', $po->ordering_agency);
+
+        $li = rollback_receive_lineitem($mgr, $li_id) or return $e->die_event;
+
+        my $result = {"li" => {$li->id => {"state" => $li->state}}};
+        if ($po->state eq "received") { # should happen first time, not after
+            $po->state("on-order");
+            $po = update_purchase_order($mgr, $po) or return $e->die_event;
+        }
+        $result->{"po"} = describe_affected_po($e, $po);
+
+        $mgr->respond(%$result);
+    }
+
+    $e->commit or return $e->die_event;
+    $mgr->respond_complete;
+    $mgr->run_post_response_hooks;
 }
 
 
@@ -2887,16 +3006,12 @@ sub cancel_lineitem {
     # Depending on context, this may not warrant an event.
     return -1 if $li->state eq "cancelled";
 
-    # But this always does.
+    # But this always does.  Note that this used to be looser, but you can
+    # no longer cancel lineitems that lack a PO or that are in "pending-order"
+    # state (you could in the past).
     return new OpenILS::Event(
         "ACQ_NOT_CANCELABLE", "note" => "lineitem $li_id"
-    ) unless (
-        (! $li->purchase_order) or (
-            $li->purchase_order and (
-                $li->state eq "on-order" or $li->state eq "pending-order"
-            )
-        )
-    );
+    ) unless $li->purchase_order and $li->state eq "on-order";
 
     $li->state("cancelled");
     $li->cancel_reason($cancel_reason->id);
@@ -3517,7 +3632,7 @@ __PACKAGE__->register_method(
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'The purchase order id', type => 'number'},
-            {desc => 'The lineitem ID', type => 'number'},
+            {desc => 'The lineitem ID (or an array of them)', type => 'mixed'},
         ],
         return => {desc => 'Streams a total versus completed counts object, event on error'}
     }
@@ -3534,9 +3649,6 @@ sub add_li_to_po {
     my $po = $e->retrieve_acq_purchase_order($po_id)
         or return $e->die_event;
 
-    my $li = $e->retrieve_acq_lineitem($li_id)
-        or return $e->die_event;
-
     return $e->die_event unless 
         $e->allowed('CREATE_PURCHASE_ORDER', $po->ordering_agency);
 
@@ -3545,16 +3657,33 @@ sub add_li_to_po {
         return {success => 0, po => $po, error => 'bad-po-state'};
     }
 
-    unless ($li->state =~ /new|order-ready|pending-order/) {
-        $e->rollback;
-        return {success => 0, li => $li, error => 'bad-li-state'};
+    my $lis;
+
+    if (ref $li_id eq "ARRAY") {
+        $li_id = [ map { int($_) } @$li_id ];
+        return $e->die_event(new OpenILS::Event("BAD_PARAMS")) unless @$li_id;
+
+        $lis = $e->search_acq_lineitem({id => $li_id})
+            or return $e->die_event;
+    } else {
+        my $li = $e->retrieve_acq_lineitem(int($li_id))
+            or return $e->die_event;
+        $lis = [$li];
     }
 
-    $li->provider($po->provider);
-    $li->purchase_order($po_id);
-    $li->state('pending-order');
-    update_lineitem($mgr, $li) or return $e->die_event;
-    
+    foreach my $li (@$lis) {
+        if ($li->state !~ /new|order-ready|pending-order/ or
+            $li->purchase_order) {
+            $e->rollback;
+            return {success => 0, li => $li, error => 'bad-li-state'};
+        }
+
+        $li->provider($po->provider);
+        $li->purchase_order($po_id);
+        $li->state('pending-order');
+        update_lineitem($mgr, $li) or return $e->die_event;
+    }
+
     $e->commit;
     return {success => 1};
 }

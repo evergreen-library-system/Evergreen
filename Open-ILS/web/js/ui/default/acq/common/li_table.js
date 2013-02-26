@@ -6,6 +6,7 @@ dojo.require('dijit.form.FilteringSelect');
 dojo.require('dijit.form.Textarea');
 dojo.require('dijit.Tooltip');
 dojo.require('dijit.ProgressBar');
+dojo.require('dojox.timing.doLater');
 dojo.require('openils.acq.Lineitem');
 dojo.require('openils.acq.PO');
 dojo.require('openils.acq.Picklist');
@@ -173,6 +174,28 @@ function AcqLiTable() {
         }
     };
 
+    this.enableActionsDropdownOptions = function(mask) {
+        /* 'mask' is probably a minomer the way I'm using it, but it needs to
+         * be one of pl,po,ao,gs,vp, or fs. */
+        dojo.query("option", "acq-lit-li-actions-selector").forEach(
+            function(option) {
+                var opt_mask = dojo.attr(option, "mask");
+
+                /* For each <option> element, an empty or non-existent mask
+                 * attribute, a mask attribute of "*", or a mask attribute that
+                 * matches this method's argument should result in that
+                 * option's being enabled. */
+                dojo.attr(
+                    option, "disabled", !(
+                        !opt_mask ||
+                        opt_mask == "*" ||
+                        opt_mask.search(mask) != -1
+                    )
+                );
+            }
+        );
+    };
+
     /*
      * Ensures this.focusLineitem is in view and causes a brief 
      * border around the lineitem to come to life then fade.
@@ -333,38 +356,50 @@ function AcqLiTable() {
     };
 
     this.setClaimPolicyControl = function(li, row) {
-        if (!self.claimPolicyPicker) {
-            self.claimPolicyPicker = true; /* prevents a race condition */
+        if (!self._claimPolicyPickerLoading) {
+            self._claimPolicyPickerLoading = true;
+
             new openils.widget.AutoFieldWidget({
                 "parentNode": "acq-lit-li-claim-policy",
                 "fmClass": "acqclp",
                 "selfReference": true,
                 "dijitArgs": {"required": true}
-            }).build(function(w) { self.claimPolicyPicker = w; });
+            }).build(
+                function(w) { self.claimPolicyPicker = w; }
+            );
         }
 
-        if (!row) row = this._findLiRow(li);
+        /* dojox.timing.doLater() is the best thing ever. Resource not yet
+         * ready? Just repeat my whole method when it is. */
+        if (dojox.timing.doLater(self.claimPolicyPicker)) {
+            return;
+        } else {
+            if (!row)
+                row = self._findLiRow(li);
 
-        var actViewPolicy = nodeByName("action_view_claim_policy", row);
-        if (li.claim_policy())
-            actViewPolicy.innerHTML = localeStrings.CHANGE_CLAIM_POLICY;
+            if (li.claim_policy()) {
+                /* This Dojo data dance is necessary to get a whole fieldmapper
+                 * object based on a claim policy ID, since we alreay have the
+                 * widget thing loaded with all that data, and can thereby
+                 * avoid another request to the server. */
+                self.claimPolicyPicker.store.fetchItemByIdentity({
+                    "identity": li.claim_policy(),
+                    "onItem": function(a) {
+                        var policy = (new acqclp()).fromStoreItem(a);
+                        var span = nodeByName("claim_policy", row);
+                        var inner = nodeByName("claim_policy_name", row);
 
-        if (!actViewPolicy.onclick) {
-            actViewPolicy.onclick = function() {
-                if (li.claim_policy())
-                    self.claimPolicyPicker.attr("value", li.claim_policy());
-                liClaimPolicyDialog.show();
-                liClaimPolicySave.onClick = function() {
-                    self.changeClaimPolicy(
-                        [li], self.claimPolicyPicker.attr("value"),
-                        function() {
-                            self.setClaimPolicyControl(li, row);
-                            self.reconsiderClaimControl(li, row);
-                            liClaimPolicyDialog.hide();
-                        }
-                    );
-                }
-            };
+                        openils.Util.show(span, "inline");
+                        inner.innerHTML = policy.name();
+                    },
+                    "onError": function(e) {
+                        console.error(e);
+                    }
+                });
+            } else {
+                openils.Util.hide(nodeByName("claim_policy", row));
+                nodeByName("claim_policy_name", row).innerHTML = "";
+            }
         }
     };
 
@@ -864,13 +899,8 @@ function AcqLiTable() {
     this.updateLiState = function(li, row) {
         if (!row) row = this._findLiRow(li);
 
-        var actReceive = nodeByName("action_mark_recv", row);
-        var actUnRecv = nodeByName("action_mark_unrecv", row);
         var actUpdateBarcodes = nodeByName("action_update_barcodes", row);
         var actHoldingsMaint = nodeByName("action_holdings_maint", row);
-        var actNewInvoice = nodeByName('action_new_invoice', row);
-        var actLinkInvoice = nodeByName('action_link_invoice', row);
-        var actViewInvoice = nodeByName('action_view_invoice', row);
 
         // always allow access to LI history
         nodeByName('action_view_history', row).onclick = 
@@ -881,33 +911,15 @@ function AcqLiTable() {
         openils.Util.addCSSClass(row, "oils-acq-li-state-" + li.state());
 
         // Expose invoice actions for any lineitem that is linked to a PO 
-        if( li.purchase_order() ) {
-
-            actNewInvoice.disabled = false;
-            actLinkInvoice.disabled = false;
-            actViewInvoice.disabled = false;
-
-            actNewInvoice.onclick = function() {
-                location.href = oilsBasePath + '/acq/invoice/view?create=1&attach_li=' + li.id();
-                nodeByName("action_none", row).selected = true;
-            };
-
-            actLinkInvoice.onclick = function() {
-                if (!self.invoiceLinkDialogManager) {
-                    self.invoiceLinkDialogManager =
-                        new InvoiceLinkDialogManager("li");
-                }
-                self.invoiceLinkDialogManager.target = li;
-                acqLitLinkInvoiceDialog.show();
-                nodeByName("action_none", row).selected = true;
-            };
-
-            actViewInvoice.onclick = function() {
-                location.href = oilsBasePath +
-                    "/acq/search/unified?so=" +
-                    base64Encode({"jub":[{"id": li.id()}]}) +
-                    "&rt=invoice";
-                nodeByName("action_none", row).selected = true;
+        if (li.purchase_order()) {
+            openils.Util.show(nodeByName("invoices_span", row), "inline");
+            var link = nodeByName("invoices_link", row);
+            link.onclick = function() {
+                openils.XUL.newTabEasy(
+                    oilsBasePath + "/acq/search/unified?so=" +
+                    base64Encode({"jub":[{"id": li.id()}]}) + "&rt=invoice"
+                );
+                return false;
             };
         }
                 
@@ -954,21 +966,9 @@ function AcqLiTable() {
                 return; // all done
 
             case "on-order":
-                actReceive.disabled = false;
-                actReceive.onclick = function() {
-                    if (self.checkLiAlerts(li.id()))
-                        self.issueReceive(li);
-                    nodeByName("action_none", row).selected = true;
-                };
                 break;
 
             case "received":
-                actUnRecv.disabled = false;
-                actUnRecv.onclick = function() {
-                    if (confirm(localeStrings.UNRECEIVE_LI))
-                        self.issueReceive(li, /* rollback */ true);
-                    nodeByName("action_none", row).selected = true;
-                };
                 break;
         }
 
@@ -2486,6 +2486,14 @@ function AcqLiTable() {
                 this._deleteLiList(self.getSelected());
                 break;
 
+            case 'add_to_order':
+                addToPoDialog._get_li = dojo.hitch(
+                    this,
+                    function() { return this.getSelected(false, null, true); }
+                );
+                addToPoDialog.show();
+                break;
+
             case 'create_order':
                 this._loadPOSelect();
                 acqLitPoCreateDialog.show();
@@ -2517,12 +2525,12 @@ function AcqLiTable() {
                 this.batchLinkInvoice();
                 break;
 
-            case 'receive_po':
-                this.receivePO();
+            case 'receive_lineitems':
+                this.receiveSelectedLineitems();
                 break;
 
-            case 'rollback_receive_po':
-                this.rollbackPoReceive();
+            case 'rollback_receive_lineitems':
+                this.rollbackReceiveLineitems();
                 break;
 
             case 'create_assets':
@@ -2549,7 +2557,7 @@ function AcqLiTable() {
                 this.maybeCancelLineitems();
                 break;
 
-            case "change_claim_policy":
+            case "apply_claim_policy":
                 var li_list = this.getSelected();
                 this.claimPolicyPicker.attr("value", null);
                 liClaimPolicyDialog.show();
@@ -2771,7 +2779,10 @@ function AcqLiTable() {
         if (!liIds.length) return;
         var path = oilsBasePath + '/acq/invoice/view?create=1';
         dojo.forEach(liIds, function(li, idx) { path += '&attach_li=' + li });
-        location.href = path;
+        if (openils.XUL.isXUL())
+            openils.XUL.newTabEasy(path, localeStrings.NEW_INVOICE, null, true);
+        else
+            location.href = path;
     };
 
     this.batchLinkInvoice = function(create) {
@@ -2785,29 +2796,33 @@ function AcqLiTable() {
         acqLitLinkInvoiceDialog.show();
     };
 
-    this.receivePO = function() {
-        if (!this.isPO) return;
+    this.receiveSelectedLineitems = function() {
+        var li_list = this.getSelected();
 
-        for (var id in this.liCache) {
-            /* assumption: liCache reflects exactly the
-             * set of LIs that belong to our PO */
-            if (this.liCache[id].state() != "received" &&
-                !this.checkLiAlerts(id)) return;
+        for (var i = 0; i < li_list.length; i++) {
+            var li = li_list[i];
+
+            if (li.state() != "received" &&
+                !this.checkLiAlerts(li.id())) return;
         }
 
         this.show('acq-lit-progress-numbers');
+
         var self = this;
         fieldmapper.standardRequest(
-            ['open-ils.acq', 'open-ils.acq.purchase_order.receive'],
+            ['open-ils.acq', 'open-ils.acq.lineitem.receive.batch'],
             {   async: true,
-                params: [this.authtoken, this.isPO],
+                params: [
+                    this.authtoken,
+                    li_list.map(function(li) { return li.id(); })
+                ],
                 onresponse : function(r) {
                     var resp = openils.Util.readResponse(r);
                     self._updateProgressNumbers(resp, true);
                 },
             }
         );
-    }
+    };
 
     this.issueReceive = function(obj, rollback) {
         var part =
@@ -2860,22 +2875,23 @@ function AcqLiTable() {
         }
     };
 
-    this.rollbackPoReceive = function() {
-        if(!this.isPO) return;
-        if(!confirm(localeStrings.ROLLBACK_PO_RECEIVE_CONFIRM)) return;
+    this.rollbackReceiveLineitems = function() {
+        if (!confirm(localeStrings.ROLLBACK_LI_RECEIVE_CONFIRM)) return;
+
         this.show('acq-lit-progress-numbers');
         var self = this;
+
         fieldmapper.standardRequest(
-            ['open-ils.acq', 'open-ils.acq.purchase_order.receive.rollback'],
+            ['open-ils.acq', 'open-ils.acq.lineitem.receive.rollback.batch'],
             {   async: true,
-                params: [this.authtoken, this.isPO],
+                params: [this.authtoken, this.getSelected(false, null, true)],
                 onresponse : function(r) {
                     var resp = openils.Util.readResponse(r);
                     self._updateProgressNumbers(resp, true);
                 },
             }
         );
-    }
+    };
 
     this._updateProgressNumbers = function(resp, reloadOnComplete, onComplete) {
         this.vlAgent.handleResponse(resp,

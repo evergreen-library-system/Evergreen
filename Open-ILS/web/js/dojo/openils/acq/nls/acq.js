@@ -1,6 +1,7 @@
 {
     "CREATE_PO_ASSETS_CONFIRM" : "This will create bibliographic, call number, and copy records for this purchase order in the ILS.\n\nContinue?",
     "ROLLBACK_PO_RECEIVE_CONFIRM" : "This will rollback receipt of all copies for this purchase order.\n\nContinue?",
+    "ROLLBACK_LI_RECEIVE_CONFIRM" : "This will rollback receipt of selected line items from this purchase order.\n\nContinue?",
     "XUL_RECORD_DETAIL_PAGE" : "Record Details",
     "DELETE_LI_COPIES_CONFIRM" : "This will delete the last ${0} copies in the table.  Proceed?",
     "NO_PO_RESULTS" : "No results",
@@ -87,5 +88,6 @@
     "COPIES_TO_RECEIVE": "Number of copies to receive: ",
     "CREATE_PO_INVALID": "A purchase order must have an ordering agency and a provider.",
     "INVOICE_COPY_COUNT_INFO": "Copies received on this invoice: ${0} out of ${1}.",
-    "INVOICE_IDENT_COLLIDE": "There is already an invoice in the system with the given combination of 'Vendor Invoice ID' and 'Provider,' which is not allowed."
+    "INVOICE_IDENT_COLLIDE": "There is already an invoice in the system with the given combination of 'Vendor Invoice ID' and 'Provider,' which is not allowed.",
+    "NEW_INVOICE": "New Invoice"
 }

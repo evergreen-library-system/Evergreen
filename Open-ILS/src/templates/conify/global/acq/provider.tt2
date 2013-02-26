@@ -153,7 +153,7 @@
                     <option value='fund_code'>[% l('Fund Code') %]</option>
                     <option value='circ_modifier'>[% l('Circ Modifier') %]</option>
                     <option value='note'>[% l('Note') %]</option>
-                    <option value='copy_location'>[% l('Shelving Location') %]</option>
+                    <option value='copy_location'>[% l('Copy Location') %]</option>
                     <option value='barcode'>[% l('Barcode') %]</option>
                     <option value='collection_code'>[% l('Collection Code') %]</option>
                 </select>

@@ -25,6 +25,7 @@ var liTable;
 
 function drawForm() {
     liTable = new AcqLiTable();
+    liTable.enableActionsDropdownOptions("fs");
     liTable.skipInitialEligibilityCheck = true;
 
     fieldmapper.standardRequest(

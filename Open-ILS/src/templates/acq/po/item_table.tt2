@@ -27,7 +27,7 @@
     <div id="acq-po-item-table-i-am-empty" class="hidden">
         <em>[% l('There are no miscellanea attached to this purchase order.') %]</em>
     </div>
-    <div id="acq-po-item-table-controls">
+    <div id="acq-po-item-table-controls" class="hidden">
         <button id="acq-po-item-table-new-charge">[% l('New Charge') %]</button> &nbsp;
         <button id="acq-po-item-table-save-new">[% l('Save New Charges') %]</button>
     </div>

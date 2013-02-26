@@ -1,0 +1,57 @@
+        <div dojoType="dijit.Dialog" jsId='addToPoDialog'>
+            <script type="dojo/connect" event="execute">
+                var dia = this;
+                var poId = addToPoInput.attr('value');
+                if (!poId) return false;
+
+                var liId = dia._get_li();
+                console.log("adding li " + liId + " to PO " + poId);
+
+                fieldmapper.standardRequest(
+                    ['open-ils.acq',
+                        'open-ils.acq.purchase_order.add_lineitem'],
+                    {   async: true,
+                        params: [openils.User.authtoken, poId, liId],
+                        oncomplete: function(r) {
+                            if ((r = openils.Util.readResponse(r))) {
+                                if (r.success) {
+                                    location.href = oilsBasePath +
+                                        '/acq/po/view/' + poId;
+                                } else {
+                                    if (r.error == 'bad-po-state') {
+                                        alert(localeStrings.ADD_LI_TO_PO_BAD_PO_STATE);
+                                    } else if (r.error == 'bad-li-state') {
+                                        alert(localeStrings.ADD_LI_TO_PO_BAD_LI_STATE);
+                                    }
+                                }
+                            }
+                            dia.hide();
+                        }
+                    }
+                );
+            </script>
+            <script type="dojo/connect" event="onShow">
+                if (!window._already_addToPo_onShow) {
+                    var dia = this;
+                    openils.Util.registerEnterHandler(
+                        addToPoInput.domNode,
+                        function() { dia.execute(); }
+                    );
+                    window._already_addToPo_onShow = true;
+                }
+            </script>
+            <table class='dijitTooltipTable'>
+                <tr>
+                    <td><label>[% l('Enter the PO Name: ') %]</label></td>
+                    <td>
+                        <input jsId="addToPoInput" dojoType="openils.widget.PCrudAutocompleteBox" fmclass="acqpo" searchAttr="name" name="target_po" />
+
+                        </td>
+                </tr>
+                <tr>
+                    <td colspan='2' align='center'>
+                        <span dojoType='dijit.form.Button' type="submit">[% l('Save') %]</span>
+                    </td>
+                </tr>
+            </table>
+        </div>

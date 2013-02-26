@@ -67,7 +67,10 @@ function init() {
     new openils.widget.XULTermLoader(
         {"parentNode": "acq-frombib-upload", "parseCSV": true}
     ).build(function(w) { termLoader = w; });
+
     liTable = new AcqLiTable();
+    liTable.enableActionsDropdownOptions("vp");
+
     pager = new LiTablePager(fetchRecords, liTable);
 
     openils.Util.show("acq-frombib-begin-holder");

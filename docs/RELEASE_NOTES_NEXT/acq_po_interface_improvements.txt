@@ -1,0 +1,23 @@
+Acquisitions Purchase Order Improvements
+========================================
+
+Feature Summary
+---------------
+
+The following features, which primarily affect the user interface layer,
+improve Acquisitions work flows.
+
+  * Avoid double-activation of POs
+  * Disable invoice and cancel options for pending POs
+  * Disable zero-copy checkbox for activated POs
+  * Disable new charges for activated POs
+  * Replace "Shelving Location" with Copy Location
+
+  * Rearranging "actions" drop-down
+    ** More consitency in actions applying to selected lineitems specifically
+    ** Things moved from the per-lineitem dropdown to the main one when
+       sensible.
+    ** Add to PO dialog added
+    ** You can no longer add lineitems to a PO if they're already on one.
+    ** Actions in dropdown now enabled/disabled differently depending on
+       the interface where it appears (PO vs Selection List vs Acq Search etc.)

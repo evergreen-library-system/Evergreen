@@ -97,6 +97,7 @@ function loadMetaPO(fields) {
     } else {
         if (!metaPO) {
             metaPO = new AcqLiTable();
+            metaPo.enableActionsDropdownOptions("po");
 
             /* We need to know the width (in cells) of the template row for
              * the LI table, and we don't want to hardcode it here. */

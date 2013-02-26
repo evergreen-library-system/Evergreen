@@ -11,7 +11,18 @@ function InvoiceLinkDialogManager(which, target) {
             var join = (idx == 0) ? '?' : '&';
             path += join + "attach_" + self.which + "=" + id;
         });
-        location.href = path;
+        if (openils.XUL.isXUL()) {
+            openils.XUL.newTabEasy(
+                path,
+                /* tab title */ dojo.string.substitute(
+                    localeStrings.INVOICE_NUMBER, [self.inv.inv_ident()]
+                ),
+                null,
+                true /* <browser> wrapper */
+            );
+        } else {
+            location.href = path;
+        }
     };
 
     this.which = which;
