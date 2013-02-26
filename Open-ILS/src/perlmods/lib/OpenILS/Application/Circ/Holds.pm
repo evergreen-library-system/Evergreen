@@ -3474,7 +3474,7 @@ __PACKAGE__->register_method(
 sub clear_shelf_process {
     my($self, $client, $auth, $org_id, $match_copy) = @_;
 
-    my $e = new_editor(authtoken=>$auth, xact => 1);
+    my $e = new_editor(authtoken=>$auth);
     $e->checkauth or return $e->die_event;
     my $cache = OpenSRF::Utils::Cache->new('global');
 
@@ -3486,6 +3486,8 @@ sub clear_shelf_process {
     my @hold_ids = $self->method_lookup(
         "open-ils.circ.captured_holds.id_list.expired_on_shelf.retrieve"
     )->run($auth, $org_id, $match_copy);
+
+    $e->xact_begin;
 
     my @holds;
     my @canceled_holds; # newly canceled holds
