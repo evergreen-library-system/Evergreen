@@ -80,10 +80,10 @@ INSERT INTO config.best_hold_order (
 INSERT INTO permission.perm_list (
     id, code, description
 ) VALUES (
-    543,
+    546,
     'ADMIN_HOLD_CAPTURE_SORT',
     oils_i18n_gettext(
-        543,
+        546,
         'Allows a user to make changes to best-hold selection sort order',
         'ppl',
         'description'
@@ -108,7 +108,7 @@ INSERT INTO config.org_unit_setting_type (
     ),
     'link',
     'cbho',
-    543,
+    546,
     'holds'
 );
 
@@ -129,7 +129,7 @@ INSERT INTO config.org_unit_setting_type (
         'description'
     ),
     'interval',
-    543,
+    546,
     'holds'
 );
 
