@@ -5,13 +5,13 @@
         <div>[% ctx.page_title %]</div>
         <div>
             <button dojoType="dijit.form.Button"
-                onClick="aoupa_grid.showCreateDialog()">New OU Proximity Adjustment</button>
+                onClick="aoupa_grid.showCreateDialog()">[% l('New OU Proximity Adjustment') %]</button>
             <button dojoType="dijit.form.Button"
-                onClick="aoupa_grid.deleteSelected()">Delete Selected</button>
+                onClick="aoupa_grid.deleteSelected()">[% l('Delete Selected') %]</button>
         </div>
     </div>
     <div>
-        Show adjustments involving this branch or deeper:
+        [% l('Show adjustments involving this branch or deeper:') %]
         <select dojoType="openils.widget.OrgUnitFilteringSelect"
             jsId="context_org_selector"></select>
     </div>
