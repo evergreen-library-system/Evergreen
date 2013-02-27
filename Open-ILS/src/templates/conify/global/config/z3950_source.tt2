@@ -16,8 +16,31 @@
         </div>
     </div>
     <div>
-        <button onClick="location.href = location.href.replace(/\/[^\/]+$/, '')">[% l('Return to Sources') %]</button>
+        <button onClick="location.href = location.href.replace(/\/[^\/]+$/, '')">
+            [% l('Return to Sources') %]
+        </button>
     </div>
+    <br/>
+    
+    <div>
+        [% l('Credentials for ') %]
+        <select dojoType="openils.widget.OrgUnitFilteringSelect" 
+            jsId='z39ContextSelector'
+            searchAttr='shortname' 
+            labelAttr='shortname'> 
+        </select> 
+        [% l('Username') %] 
+        <input type='text' id='z39-creds-username'/>
+        [% l('Password') %] 
+        <input type='password' id='z39-creds-password'/>
+        <button id='z39-creds-button' onclick='applyCreds()'>
+            [% l('Apply Credentials') %]
+        </button>
+        <button id='z39-creds-clear' onclick='applyCreds(1)'>
+            [% l('Clear Stored Credentials') %]
+        </button>
+    </div>
+
     <br/>
 
     <table

@@ -514,6 +514,15 @@ CREATE TABLE config.z3950_attr (
     CONSTRAINT z_code_format_once_per_source UNIQUE (code,format,source)
 );
 
+CREATE TABLE config.z3950_source_credentials (
+    id SERIAL PRIMARY KEY,
+    owner INTEGER NOT NULL, -- REFERENCES actor.org_unit(id),
+    source TEXT NOT NULL REFERENCES config.z3950_source(name),
+    username TEXT,
+    password TEXT,
+    CONSTRAINT czsc_source_once_per_lib UNIQUE (source, owner)
+);
+
 CREATE TABLE config.i18n_locale (
     code        TEXT    PRIMARY KEY,
     marc_code   TEXT    NOT NULL, -- should exist in config.coded_value_map WHERE ctype = 'item_lang'

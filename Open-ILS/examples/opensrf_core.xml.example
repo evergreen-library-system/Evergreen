@@ -187,6 +187,7 @@ Example OpenSRF bootstrap configuration file for Evergreen
       <match_string>open-ils.cstore.direct.actor.user.create</match_string>
       <match_string>open-ils.cstore.direct.actor.user.update</match_string>
       <match_string>open-ils.cstore.direct.actor.user.delete</match_string>
+      <match_string>open-ils.search.z3950.apply_credentials</match_string>
     </log_protect>
   </shared>
 </config>

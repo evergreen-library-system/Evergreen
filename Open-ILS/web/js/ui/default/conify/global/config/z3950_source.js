@@ -21,10 +21,37 @@ function buildZSGrid() {
             readOnly : true
         };
 
+        // draw the credentials context org unit selector
+        new openils.User().buildPermOrgSelector(
+            'ADMIN_Z3950_SOURCE', z39ContextSelector);
+
     } else {
 
         zsGrid.loadAll({order_by:{czs : 'name'}});
     }
+}
+
+function applyCreds(clear) {
+    dojo.byId('z39-creds-button').disabled = true;
+    dojo.byId('z39-creds-clear').disabled = true;
+    fieldmapper.standardRequest(
+        ['open-ils.search', 'open-ils.search.z3950.apply_credentials'],
+        {   async : true,
+            params : [
+                openils.User.authtoken,
+                sourceCode,
+                z39ContextSelector.attr('value'),
+                clear ? '' : dojo.byId('z39-creds-username').value,
+                clear ? '' : dojo.byId('z39-creds-password').value
+            ],
+            oncomplete : function(r) {
+                dojo.byId('z39-creds-password').value = '';
+                dojo.byId('z39-creds-button').disabled = false;
+                dojo.byId('z39-creds-clear').disabled = false;
+                openils.Util.readResponse(r);
+            }
+        }
+    );
 }
 
 function formatSourceName(val) {

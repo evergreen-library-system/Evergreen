@@ -27,6 +27,44 @@ my $sclient;
 my %services;
 my $default_service;
 
+__PACKAGE__->register_method(
+    method    => 'apply_credentials',
+    api_name  => 'open-ils.search.z3950.apply_credentials',
+    signature => {
+        desc   => "Apply credentials for a Z39.50 server",
+        params => [
+            {desc => 'Authtoken', type => 'string'},
+            {desc => 'Z39.50 Source (server) name', type => 'string'},
+            {desc => 'Context org unit', type => 'number'},
+            {desc => 'Username', type => 'string'},
+            {desc => 'Password', type => 'string'}
+        ],
+        return => {
+            desc => 'Event; SUCCESS on success, other event type on error'
+        }
+    }
+);
+
+sub apply_credentials {
+    my ($self, $client, $auth, $source, $ctx_ou, $username, $password) = @_;
+
+    my $e = new_editor(authtoken => $auth, xact => 1);
+
+    return $e->die_event unless 
+        $e->checkauth and 
+        $e->allowed('ADMIN_Z3950_SOURCE', $ctx_ou);
+
+    $e->json_query({from => [
+        'config.z3950_source_credentials_apply',
+        $source, $ctx_ou, $username, $password
+    ]}) or return $e->die_event;
+
+    $e->commit;
+
+    return OpenILS::Event->new('SUCCESS');
+}
+ 
+
 
 __PACKAGE__->register_method(
     method    => 'do_class_search',
@@ -314,14 +352,22 @@ sub do_search {
     my $limit = $$args{limit} || 10;
     my $offset = $$args{offset} || 0;
 
-    my $username = $$args{username} || "";
-    my $password = $$args{password} || "";
+    my $editor = new_editor(authtoken => $auth);
+    return $editor->event unless 
+        $editor->checkauth and
+        $editor->allowed('REMOTE_Z3950_QUERY', $editor->requestor->ws_ou);
+
+    my $creds = $editor->json_query({from => [
+        'config.z3950_source_credentials_lookup',
+        $$args{service}, $editor->requestor->ws_ou
+    ]})->[0] || {};
+
+    # use the caller-provided username/password if offered.
+    # otherwise, use the stored credentials.
+    my $username = $$args{username} || $creds->{username} || "";
+    my $password = $$args{password} || $creds->{password} || "";
 
     my $tformat = $services{$args->{service}}->{transmission_format} || $output;
-
-    my $editor = new_editor(authtoken => $auth);
-    return $editor->event unless $editor->checkauth;
-    return $editor->event unless $editor->allowed('REMOTE_Z3950_QUERY');
 
     $logger->info("z3950: connecting to server $host:$port:$db as $username");
 

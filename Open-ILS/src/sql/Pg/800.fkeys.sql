@@ -132,6 +132,8 @@ CREATE INDEX by_heading ON authority.record_entry (authority.simple_normalize_he
 
 ALTER TABLE config.z3950_source ADD CONSTRAINT use_perm_fkey FOREIGN KEY (use_perm) REFERENCES permission.perm_list (id) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED;
 
+ALTER TABLE config.z3950_source_credentials ADD CONSTRAINT z3950_source_creds_owner_fkey FOREIGN KEY (owner) REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
 ALTER TABLE config.org_unit_setting_type_log ADD CONSTRAINT config_org_unit_setting_type_log_fkey FOREIGN KEY (org) REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
 ALTER TABLE config.filter_dialog_filter_set
