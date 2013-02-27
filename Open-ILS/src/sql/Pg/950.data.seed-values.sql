@@ -10299,7 +10299,8 @@ INSERT INTO authority.thesaurus (code, name, control_set) VALUES
     ('s', oils_i18n_gettext('s','Sears List of Subject Headings','at','name'), 1),
     ('v', oils_i18n_gettext('v','Repertoire de vedettes-matiere','at','name'), 1),
     ('z', oils_i18n_gettext('z','Other','at','name'), 1),
-    ('|', oils_i18n_gettext('|','No attempt to code','at','name'), NULL);
+    ('|', oils_i18n_gettext('|','No attempt to code','at','name'), NULL),
+    (' ', oils_i18n_gettext(' ','Alternate no attempt to code','at','name'), NULL);
 
 INSERT INTO action_trigger.hook ( key, core_type, description, passive ) VALUES (
     'reservation.available',
