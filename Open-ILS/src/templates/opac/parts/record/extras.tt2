@@ -1,5 +1,24 @@
+[%
+    arrow_img = ctx.media_prefix _ '/images/rdetail_arrow.png';
+    arrow_down_img = ctx.media_prefix _ '/images/rdetail_arrow_down.png';
+%]
 <div>
     <div id='rdetail_extras_div' style='width: 100%;'> 
+        [%
+            IF ctx.google_books_preview;
+                label = l('Google Preview');
+                name = 'google_preview';
+                href = 'javascript:GBDisplayPreview();';
+        %]
+        <div id="gbp_extra" class="rdetail_extras hide_me">
+            <div class="rdetail_extras_hr"></div>
+            <div id="gbp_extra_links" class="rdetail_extras_link">
+                <a id='gbp_arrow_link' name='[% name %]' href='[% href %]'><img alt='[% label %]' src='[% arrow_img %]'/></a>
+                <a id='gbp_arrow_down_link' name='[% name %]' href='[% href %]' class='hide_me'><img alt='[% label %]' src='[% arrow_down_img %]'/></a>
+                <a name='[% name %]_lbl' href='[% href %]' class="rdetail_extras_lbl">[% label %]</a></div>
+        </div>
+        <div id="gbp_extra_container" class='rdetail_extras_div'></div>
+        [%  END %]
 
         [%  # Hidden extras are not yet implemented.  Some may require JS
 
@@ -56,14 +75,14 @@
                 [%  
                     IF tab_is_active(name);
                         href = mkurl('', {}, ['expand', 'ac']);
-                        img_url = ctx.media_prefix _ '/images/rdetail_arrow_down.png';
+                        img_url = arrow_down_img;
                     ELSE;
                         IF name == 'addedcontent' AND default_ac;
                             href = mkurl('', {expand => name, ac => default_ac}) _ '#' _ name; 
                         ELSE;
                             href = mkurl('', {expand => name}) _ '#' _ name; 
                         END;
-                        img_url = ctx.media_prefix _ '/images/rdetail_arrow.png';
+                        img_url = arrow_img;
                     END;
                 %]
                 <a name='[% name %]' href='[% href %]'><img alt='[% extra.label %]' src='[% img_url %]'/></a>

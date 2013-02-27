@@ -1,5 +1,6 @@
 <script type="text/javascript">
 var GBisbns = Array();
+var GBPreviewShowing = false;
 
 /**
  *
@@ -34,9 +35,11 @@ function GBPreviewCallback(GBPBookInfo) {
     GBPBadge.style.border = 0;
     GBPBadge.style.margin = '0.5em 0 0 0';
     GBPBadgelink = document.createElement('a');
-    GBPBadgelink.href = 'javascript:GBDisplayPreview();';
+    GBPBadgelink.id = 'gbpbadge_link';
+    GBPBadgelink.href = 'javascript:GBDisplayPreview(true);';
     GBPBadgelink.appendChild( GBPBadge );
     dojo.byId('rdetail_title_div').appendChild( GBPBadgelink );
+    unHideMe(dojo.byId('gbp_extra'));
   }
 }
 
@@ -44,7 +47,7 @@ function GBPreviewCallback(GBPBookInfo) {
  *  This is called when the user clicks on the 'Preview' link.  We assume
  *  a preview is available from Google if this link was made visible.
  */
-function GBDisplayPreview() {
+function GBDisplayPreview(scroll_to_div) {
   var GBPreviewPane = document.createElement('div');
   GBPreviewPane.id = 'rdetail_preview_div';
   GBPreviewPane.style.height = '800px';
@@ -52,19 +55,46 @@ function GBDisplayPreview() {
   GBPreviewPane.style.display = 'block';
   var GBClear = document.createElement('div');
   GBClear.style.padding = '1em';
-  dojo.byId('canvas_main').insertBefore(GBPreviewPane, dojo.byId('rdetail_record_details'));
-  dojo.byId('canvas_main').insertBefore(GBClear, dojo.byId('rdetail_record_details'));
+  dojo.byId('gbp_extra_container').appendChild(GBPreviewPane);
+  dojo.byId('gbp_extra_container').appendChild(GBClear);
   if (GBPreviewPane.getAttribute('loaded') == null || GBPreviewPane.getAttribute('loaded') == "false" ) {
      google.load("books", "0", {"callback" : GBPViewerLoadCallback, "language": "[% ctx.locale.substr(0,2) %]"} );
      GBPreviewPane.setAttribute('loaded', 'true');
   }
+  if (scroll_to_div) document.location.hash = '#gbp_extra';
 }
 
 function GBPViewerLoadCallback() {
   var GBPViewer = new google.books.DefaultViewer(dojo.byId('rdetail_preview_div'));
   GBPViewer.load('ISBN:' + GBisbns[0]);
   GBPViewer.resize();
-  dojo.byId('gbpbadge').style.display = 'none';
+  var GBPBadgelink = dojo.byId('gbpbadge_link');
+  GBPBadgelink.href = 'javascript:GBShowHidePreview(true);';
+  dojo.forEach(
+    dojo.byId('gbp_extra_links').getElementsByTagName('a'),
+    function(link) {
+      link.href = 'javascript:GBShowHidePreview();';
+    }
+  );
+  hideMe(dojo.byId('gbp_arrow_link'));
+  unHideMe(dojo.byId('gbp_arrow_down_link'));
+  GBPreviewShowing = true;
+}
+
+function GBShowHidePreview(from_button) {
+  if (!GBPreviewShowing) {
+    dojo.byId('gbp_extra_container').style.display = 'inherit';
+    hideMe(dojo.byId('gbp_arrow_link'));
+    unHideMe(dojo.byId('gbp_arrow_down_link'));
+    GBPreviewShowing = true;
+  } else if (!from_button) { // button can open, but shouldn't close
+    dojo.byId('gbp_extra_container').style.display = 'none';
+    unHideMe(dojo.byId('gbp_arrow_link'));
+    hideMe(dojo.byId('gbp_arrow_down_link'));
+    GBPreviewShowing = false;
+  }
+  // button should always scroll
+  if (from_button) document.location.hash = '#gbp_extra';
 }
 
 dojo.addOnLoad(function() {
