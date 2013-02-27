@@ -1,5 +1,5 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = 'Org Unit Proximity Adjustments' %]
+[% ctx.page_title = l('Org Unit Proximity Adjustments') %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
         <div>[% ctx.page_title %]</div>
