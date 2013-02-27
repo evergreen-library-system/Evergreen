@@ -177,12 +177,20 @@ CREATE TABLE vandelay.import_item (
     opac_visible    BOOL,
     internal_id     BIGINT -- queue_type == 'acq' ? acq.lineitem_detail.id : asset.copy.id
 );
+
+CREATE TABLE vandelay.import_bib_trash_group(
+    id           SERIAL  PRIMARY KEY,
+    owner        INTEGER NOT NULL REFERENCES actor.org_unit(id),
+    label        TEXT    NOT NULL, --i18n
+    always_apply BOOLEAN NOT NULL DEFAULT FALSE,
+	CONSTRAINT vand_import_bib_trash_grp_owner_label UNIQUE (owner, label)
+);
  
 CREATE TABLE vandelay.import_bib_trash_fields (
-    id              BIGSERIAL   PRIMARY KEY,
-    owner           INT         NOT NULL REFERENCES actor.org_unit (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    field           TEXT        NOT NULL,
-	CONSTRAINT vand_import_bib_trash_fields_idx UNIQUE (owner,field)
+    id         BIGSERIAL PRIMARY KEY,
+    grp        INTEGER   NOT NULL REFERENCES vandelay.import_bib_trash_group,
+    field      TEXT      NOT NULL,
+    CONSTRAINT vand_import_bib_trash_fields_once_per UNIQUE (grp, field)
 );
 
 CREATE TABLE vandelay.merge_profile (

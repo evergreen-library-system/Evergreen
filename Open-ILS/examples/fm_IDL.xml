@@ -216,8 +216,41 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="vibtf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::import_bib_trash_fields" oils_persist:tablename="vandelay.import_bib_trash_fields" reporter:label="Import/Overlay Fields for Removal">
 		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.import_bib_trash_fields_id_seq">
 			<field reporter:label="Field ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Owner" name="owner" reporter:datatype="link"/>
+			<field reporter:label="Group" name="grp" reporter:datatype="link"/>
 			<field reporter:label="Field" name="field" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="grp" reltype="has_a" key="id" map="" class="vibtg"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="CREATE_IMPORT_TRASH_FIELD">
+                    <context link="grp" field="owner"/>
+                </create>
+				<retrieve permission="CREATE_IMPORT_TRASH_FIELD UPDATE_IMPORT_TRASH_FIELD DELETE_IMPORT_TRASH_FIELD">
+                    <context link="grp" field="owner"/>
+                </retrieve>
+				<update permission="UPDATE_IMPORT_TRASH_FIELD">
+                    <context link="grp" field="owner"/>
+                </update>
+				<delete permission="DELETE_IMPORT_TRASH_FIELD">
+                    <context link="grp" field="owner"/>
+                </delete>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class  id="vibtg" 
+            controller="open-ils.cstore open-ils.pcrud" 
+            oils_obj:fieldmapper="vandelay::import_bib_trash_group" 
+            oils_persist:tablename="vandelay.import_bib_trash_group" 
+            reporter:label="Import/Overlay Field Groups for Removal">
+		<fields oils_persist:primary="id" 
+                oils_persist:sequence="vandelay.import_bib_trash_group_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector="name"/>
+			<field reporter:label="Owner" name="owner" reporter:datatype="link"/>
+			<field reporter:label="Label" name="label" reporter:datatype="text"/>
+			<field reporter:label="Always Apply" name="always_apply" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
@@ -231,6 +264,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			</actions>
 		</permacrud>
 	</class>
+
 
 	<class id="vii" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::import_item" oils_persist:tablename="vandelay.import_item" reporter:label="Import Item">
 		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.import_item_id_seq">
