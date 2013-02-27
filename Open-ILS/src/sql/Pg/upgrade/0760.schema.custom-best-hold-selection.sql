@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0760', :eg_version);
+
 CREATE TABLE config.best_hold_order(
     id          SERIAL      PRIMARY KEY,    -- (metadata)
     name        TEXT        UNIQUE,   -- i18n (metadata)

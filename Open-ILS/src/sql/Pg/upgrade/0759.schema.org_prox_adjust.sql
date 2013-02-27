@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0759', :eg_version);
+
 CREATE TABLE actor.org_unit_proximity_adjustment (
     id                  SERIAL   PRIMARY KEY,
     item_circ_lib       INT         REFERENCES actor.org_unit (id),
