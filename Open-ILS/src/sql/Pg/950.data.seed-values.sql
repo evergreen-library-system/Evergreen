@@ -4725,13 +4725,13 @@ INSERT into config.org_unit_setting_type
 ,( 'vandelay.default_match_set', 'vandelay',
     oils_i18n_gettext(
         'vandelay.default_match_set',
-        'Vandelay: Default Record Match Set',
+        'Default Record Match Set',
         'coust',
         'label'
     ),
     oils_i18n_gettext(
         'vandelay.default_match_set',
-        'Vandelay: Default Record Match Set',
+        'Default Record Match Set',
         'coust',
         'description'
     ),
