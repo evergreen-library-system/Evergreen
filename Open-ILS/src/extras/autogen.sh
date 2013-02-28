@@ -167,7 +167,7 @@ done;
 			md5sum $file
 		fi
 	done
-) | md5sum | cut -f1 -d' ' | colrm 1 26 > LOCALSTATEDIR/web/eg_cache_hash
+) | md5sum | cut -f1 -d' ' | cut -b 27-32 > LOCALSTATEDIR/web/eg_cache_hash
 
 echo
 echo -n "Current Evergreen cache key: "
