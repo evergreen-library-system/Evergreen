@@ -647,7 +647,7 @@ BEGIN
 
     END LOOP;
 
-    IF NOT skip_search THEN
+    IF NOT b_skip_search THEN
         PERFORM metabib.update_combined_index_vectors(bib_id);
     END IF;
 

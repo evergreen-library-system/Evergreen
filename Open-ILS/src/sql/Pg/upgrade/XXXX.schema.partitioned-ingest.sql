@@ -2,38 +2,9 @@ BEGIN;
 
 SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
 
-INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
-    VALUES (
-        'ingest.skip_browse_indexing',
-        oils_i18n_gettext(
-            'ingest.skip_browse_indexing',
-            'Bibliographic Record Ingest: Disable extraction and indexing of browse data',
-            'cgf', 
-            'label'
-        )
-    );
-
-INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
-    VALUES (
-        'ingest.skip_search_indexing',
-        oils_i18n_gettext(
-            'ingest.skip_search_indexing',
-            'Bibliographic Record Ingest: Disable extraction and indexing of search data',
-            'cgf', 
-            'label'
-        )
-    );
-
-INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
-    VALUES (
-        'ingest.skip_facet_indexing',
-        oils_i18n_gettext(
-            'ingest.skip_facet_indexing',
-            'Bibliographic Record Ingest: Disable extraction and indexing of facet data',
-            'cgf', 
-            'label'
-        )
-    );
+INSERT INTO config.internal_flag (name) VALUES ('ingest.skip_browse_indexing');
+INSERT INTO config.internal_flag (name) VALUES ('ingest.skip_search_indexing');
+INSERT INTO config.internal_flag (name) VALUES ('ingest.skip_facet_indexing');
 
 CREATE OR REPLACE FUNCTION metabib.reingest_metabib_field_entries( bib_id BIGINT, skip_facet BOOL DEFAULT FALSE, skip_browse BOOL DEFAULT FALSE, skip_search BOOL DEFAULT FALSE ) RETURNS VOID AS $func$
 DECLARE
@@ -107,6 +78,10 @@ BEGIN
         END IF;
 
     END LOOP;
+
+    IF NOT b_skip_search THEN
+        PERFORM metabib.update_combined_index_vectors(bib_id);
+    END IF;
 
     RETURN;
 END;
