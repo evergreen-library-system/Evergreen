@@ -170,7 +170,7 @@ sub bib_to_svr {
                 $svr->sre_id(-1);
             }
             $svr->location($_->holding_lib->name);
-            $svr->owning_lib($_->holding_lib);
+            $svr->owning_lib($_->holding_lib->id);
             $svr->basic_holdings([]);
             $svr->supplement_holdings([]);
             $svr->index_holdings([]);
