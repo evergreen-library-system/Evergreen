@@ -17,9 +17,9 @@ DECLARE
     b_skip_search   BOOL;
 BEGIN
 
-    SELECT COALESCE(NULLIF(skip_facet, FALSE), enabled) INTO b_skip_facet FROM config.internal_flag WHERE name = 'ingest.skip_facet_indexing';
-    SELECT COALESCE(NULLIF(skip_browse, FALSE), enabled) INTO b_skip_browse FROM config.internal_flag WHERE name = 'ingest.skip_browse_indexing';
-    SELECT COALESCE(NULLIF(skip_search, FALSE), enabled) INTO b_skip_search FROM config.internal_flag WHERE name = 'ingest.skip_search_indexing';
+    SELECT COALESCE(NULLIF(skip_facet, FALSE), EXISTS (SELECT enabled FROM config.internal_flag WHERE name =  'ingest.skip_facet_indexing' AND enabled)) INTO b_skip_facet;
+    SELECT COALESCE(NULLIF(skip_browse, FALSE), EXISTS (SELECT enabled FROM config.internal_flag WHERE name =  'ingest.skip_browse_indexing' AND enabled)) INTO b_skip_browse;
+    SELECT COALESCE(NULLIF(skip_search, FALSE), EXISTS (SELECT enabled FROM config.internal_flag WHERE name =  'ingest.skip_search_indexing' AND enabled)) INTO b_skip_search;
 
     PERFORM * FROM config.internal_flag WHERE name = 'ingest.assume_inserts_only' AND enabled;
     IF NOT FOUND THEN
