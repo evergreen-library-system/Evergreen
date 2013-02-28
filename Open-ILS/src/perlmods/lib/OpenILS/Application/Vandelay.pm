@@ -886,6 +886,7 @@ sub import_record_list_impl {
     my $ft_merge_profile = $$args{fall_through_merge_profile};
     my $bib_source = $$args{bib_source};
     my $import_no_match = $$args{import_no_match};
+    my $strip_grps = $$args{strip_field_groups}; # bib-only
 
     my $overlay_func = 'vandelay.overlay_bib_record';
     my $auto_overlay_func = 'vandelay.auto_overlay_bib_record';
@@ -915,10 +916,6 @@ sub import_record_list_impl {
         $delete_queue_func =~ s/bib/authority/o;
         $rec_class = 'vqar';
     }
-
-    my $import_loc = $requestor->ws_ou;
-    my $ancestors = $U->get_org_ancestors($import_loc) if ($import_loc);
-    my $trash_tags = $editor->search_vandelay_import_bib_trash_fields({owner => $ancestors}) if ($ancestors);
 
     my $new_rec_perm_cache;
     my @success_rec_ids;
@@ -956,25 +953,24 @@ sub import_record_list_impl {
             next;
         }
 
-        if ($trash_tags && @$trash_tags) {
-            my $marcxml = XML::LibXML->new->parse_string($rec->marc);
-            if ($marcxml) {
-                for my $tag (@$trash_tags) {
-                    for my $node ($marcxml->findnodes('//*[@tag="'.$tag->field.'"]')) {
-                        $node->parentNode->removeChild($node);
-                    }
-                }
-
-                $rec->marc( $U->entityize( $marcdoc->documentElement->toString ) );
-                $e->$update_func($rec);
-            }
-        }
-
         $$report_args{rec} = $rec;
         $queues{$rec->queue} = 1;
 
         my $record;
         my $imported = 0;
+
+        if ($type eq 'bib') {
+            # strip configured / selected MARC tags from inbound records
+
+            my $marcdoc = XML::LibXML->new->parse_string($rec->marc);
+            $rec->marc($U->strip_marc_fields($e, $marcdoc, $strip_grps));
+
+            unless ($e->$update_func($rec)) {
+                $$report_args{evt} = $e->die_event;
+                finish_rec_import_attempt($report_args);
+                next;
+            }
+        }
 
         if(defined $overlay_target) {
             # Caller chose an explicit overlay target

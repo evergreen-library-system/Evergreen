@@ -2081,5 +2081,43 @@ sub datecmp {
 }
 
 
+# marcdoc is an XML::LibXML document
+# updates the doc and returns the entityized MARC string
+sub strip_marc_fields {
+    my ($class, $e, $marcdoc, $grps) = @_;
+    
+    my $orgs = $class->get_org_ancestors($e->requestor->ws_ou);
+
+    my $query = {
+        select  => {vibtf => ['field']},
+        from    => {vibtf => 'vibtg'},
+        where   => {'+vibtg' => {owner => $orgs}},
+        distinct => 1
+    };
+
+    # give me always-apply groups plus any selected groups
+    if ($grps and @$grps) {
+        $query->{where}->{'+vibtg'}->{'-or'} = [
+            {id => $grps},
+            {always_apply => 't'}
+        ];
+
+    } else {
+        $query->{where}->{'+vibtg'}->{always_apply} = 't';
+    }
+
+    my $fields = $e->json_query($query);
+
+    for my $field (@$fields) {
+        my $tag = $field->{field};
+        for my $node ($marcdoc->findnodes('//*[@tag="'.$tag.'"]')) {
+            $node->parentNode->removeChild($node);
+        }
+    }
+
+	return $class->entityize($marcdoc->documentElement->toString);
+}
+
+
 1;
 

@@ -36,7 +36,7 @@ sub fetch_bib_sources {
 
 
 sub biblio_record_replace_marc  {
-	my($class, $e, $recid, $newxml, $source, $fixtcn, $override) = @_;
+	my($class, $e, $recid, $newxml, $source, $fixtcn, $override, $strip_grps) = @_;
 
     $override = { all => 1 } if($override && !ref $override);
     $override = { all => 0 } if(!ref $override);
@@ -66,30 +66,19 @@ sub biblio_record_replace_marc  {
         $marcdoc = __make_marc_doc($newxml);
     }
 
-    my $import_loc = $$override{import_location};
-    my $ancestors = $U->get_org_ancestors($import_loc) if ($import_loc);
-    my $trash_tags = $e->search_vandelay_import_bib_trash_fields({owner => $ancestors}) if ($ancestors);
-
-    if ($trash_tags && @$trash_tags) {
-        for my $tag (@$trash_tags) {
-            for my $node ($marcdoc->findnodes('//*[@tag="'.$tag->field.'"]')) {
-                $node->parentNode->removeChild($node);
-            }
-        }
-    }
-
+    my $marc = $U->strip_marc_fields($e, $marcdoc, $strip_grps);
 
 	$rec->source(bib_source_from_name($source)) if $source;
 	$rec->editor($e->requestor->id);
 	$rec->edit_date('now');
-	$rec->marc( $U->entityize( $marcdoc->documentElement->toString ) );
+	$rec->marc($marc);
 	$e->update_biblio_record_entry($rec) or return $e->die_event;
 
 	return $rec;
 }
 
 sub biblio_record_xml_import {
-	my($class, $e, $xml, $source, $auto_tcn, $override) = @_;
+	my($class, $e, $xml, $source, $auto_tcn, $override, $strip_grps) = @_;
 
     $override = { all => 1 } if($override && !ref $override);
     $override = { all => 0 } if(!ref $override);
@@ -107,23 +96,13 @@ sub biblio_record_xml_import {
 		return $evt if $evt;
 	}
 
-    my $import_loc = $$override{import_location};
-    my $ancestors = $U->get_org_ancestors($import_loc) if ($import_loc);
-    my $trash_tags = $e->search_vandelay_import_bib_trash_fields({owner => $ancestors}) if ($ancestors);
-
-    if ($trash_tags && @$trash_tags) {
-        for my $tag (@$trash_tags) {
-            for my $node ($marcdoc->findnodes('//*[@tag="'.$tag.'"]')) {
-                $node->parentNode->removeChild($node);
-            }
-        }
-    }
-
 	# Silence warnings when _find_tcn_info() fails
 	$tcn ||= '';
 	$tcn_source ||= '';
 	$logger->info("user ".$e->requestor->id.
 		" creating new biblio entry with tcn=$tcn and tcn_source $tcn_source");
+
+    my $marc = $U->strip_marc_fields($e, $marcdoc, $strip_grps);
 
 	my $record = Fieldmapper::biblio::record_entry->new;
 
@@ -134,7 +113,7 @@ sub biblio_record_xml_import {
 	$record->editor($e->requestor->id);
 	$record->create_date('now');
 	$record->edit_date('now');
-	$record->marc($U->entityize($marcdoc->documentElement->toString));
+	$record->marc($marc);
 
     $record = $e->create_biblio_record_entry($record) or return $e->die_event;
 
