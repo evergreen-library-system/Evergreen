@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0762', :eg_version);
 
 INSERT INTO config.internal_flag (name) VALUES ('ingest.skip_browse_indexing');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.skip_search_indexing');
