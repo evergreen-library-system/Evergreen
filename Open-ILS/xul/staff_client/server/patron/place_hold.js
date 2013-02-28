@@ -17,10 +17,11 @@ function my_init() {
 
         var copy_ids = xul_param('copy_ids');
 
+        window.place_hold_event_listeners = new EventListenerList();
+
         populate_hold_usr_textbox();
         populate_pickup_lib_menu();
 
-        window.place_hold_event_listeners = new EventListenerList();
         window.place_hold_event_listeners.add($('request_btn'), 
             'command',
             function(ev) {
