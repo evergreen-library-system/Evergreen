@@ -785,6 +785,8 @@ CREATE TABLE acq.edi_message (
 									     'OSTRPT'
 									 ))
 );
+CREATE INDEX edi_message_account_status_idx ON acq.edi_message (account,status);
+CREATE INDEX edi_message_po_idx ON acq.edi_message (purchase_order);
 
 -- Note below that the primary key is NOT a SERIAL type.  We will periodically truncate and rebuild
 -- the table, assigning ids programmatically instead of using a sequence.

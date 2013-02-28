@@ -667,6 +667,7 @@ CREATE TABLE actor.usr_activity (
     etype       INT         NOT NULL REFERENCES config.usr_activity_type (id),
     event_time  TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+CREATE INDEX usr_activity_usr_idx ON actor.usr_activity (usr);
 
 CREATE TABLE actor.toolbar (
     id          BIGSERIAL   PRIMARY KEY,

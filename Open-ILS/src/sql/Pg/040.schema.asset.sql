@@ -109,6 +109,7 @@ CREATE INDEX cp_avail_cn_idx ON asset.copy (call_number);
 CREATE INDEX cp_creator_idx  ON asset.copy ( creator );
 CREATE INDEX cp_editor_idx   ON asset.copy ( editor );
 CREATE INDEX cp_create_date  ON asset.copy (create_date);
+CREATE INDEX cp_available_by_circ_lib_idx ON asset.copy (circ_lib) WHERE status IN (0,7);
 CREATE RULE protect_copy_delete AS ON DELETE TO asset.copy DO INSTEAD UPDATE asset.copy SET deleted = TRUE WHERE OLD.id = asset.copy.id;
 
 CREATE TABLE asset.copy_part_map (

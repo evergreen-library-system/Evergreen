@@ -417,6 +417,8 @@ CREATE INDEX hold_request_current_copy_idx ON action.hold_request (current_copy)
 CREATE INDEX hold_request_prev_check_time_idx ON action.hold_request (prev_check_time);
 CREATE INDEX hold_request_fulfillment_staff_idx ON action.hold_request ( fulfillment_staff );
 CREATE INDEX hold_request_requestor_idx         ON action.hold_request ( requestor );
+CREATE INDEX hold_request_open_idx ON action.hold_request (id) WHERE cancel_time IS NULL AND fulfillment_time IS NULL;
+CREATE INDEX hold_request_current_copy_before_cap_idx ON action.hold_request (current_copy) WHERE capture_time IS NULL AND cancel_time IS NULL;
 
 
 CREATE TABLE action.hold_request_note (
@@ -483,6 +485,7 @@ ALTER TABLE action.hold_transit_copy ADD PRIMARY KEY (id);
 CREATE INDEX active_hold_transit_dest_idx ON "action".hold_transit_copy (dest);
 CREATE INDEX active_hold_transit_source_idx ON "action".hold_transit_copy (source);
 CREATE INDEX active_hold_transit_cp_idx ON "action".hold_transit_copy (target_copy);
+CREATE INDEX hold_transit_copy_hold_idx on action.hold_transit_copy (hold);
 
 
 CREATE TABLE action.unfulfilled_hold_list (

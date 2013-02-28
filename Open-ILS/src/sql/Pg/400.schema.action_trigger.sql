@@ -229,6 +229,7 @@ CREATE TABLE action_trigger.event (
     async_output    BIGINT      REFERENCES action_trigger.event_output (id)
 );
 CREATE INDEX atev_target_def_idx ON action_trigger.event (target,event_def);
+CREATE INDEX atev_def_state ON action_trigger.event (event_def,state);
 
 CREATE TABLE action_trigger.event_params (
     id          BIGSERIAL   PRIMARY KEY,
