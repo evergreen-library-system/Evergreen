@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-20 09:37-0400\n"
-"PO-Revision-Date: 2013-01-15 12:38+0000\n"
+"POT-Creation-Date: 2013-02-21 11:18-0400\n"
+"PO-Revision-Date: 2013-02-10 14:03+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-01-16 04:37+0000\n"
-"X-Generator: Launchpad (build 16420)\n"
+"X-Launchpad-Export-Date: 2013-02-23 05:26+0000\n"
+"X-Generator: Launchpad (build 16506)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -2927,9 +2927,21 @@ msgstr "Atributy záznamu MARC"
 msgid "MARC Coded Value Maps"
 msgstr "Seznam hodnot kódů MARCu"
 
+#: staff.main.menu.admin.server_admin.conify.metabib_class.label
+msgid "MARC Search/Facet Classes"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.conify.metabib_class_ts_map.label
+msgid "MARC Search/Facet Class FTS Maps"
+msgstr ""
+
 #: staff.main.menu.admin.server_admin.conify.metabib_field.label
 msgid "MARC Search/Facet Fields"
 msgstr "Vyhledávání MARC / fasetová pole"
+
+#: staff.main.menu.admin.server_admin.conify.metabib_field_ts_map.label
+msgid "MARC Search/Facet Field FTS Maps"
+msgstr ""
 
 #: staff.main.menu.admin.server_admin.conify.acn_prefix.label
 msgid "Call Number Prefixes"
@@ -3368,6 +3380,10 @@ msgstr "Správa motivů"
 msgid "about:config"
 msgstr "about:config"
 
+#: staff.main.menu.admin.about_about.label
+msgid "about:about (XULRunner diagnostics)"
+msgstr ""
+
 #: staff.main.menu.admin.stat_cat_edit.label
 #: staff.main.menu.admin.stat_cat_edit.accesskey
 msgid "Statistical &Category Editor"
@@ -3547,6 +3563,11 @@ msgstr "Dávkový import/export MARCu"
 #: staff.main.menu.cat.z39_50_import.accesskey
 msgid "Import Record from &Z39.50"
 msgstr "&Import záznamů pomocí Z39.50"
+
+#: staff.main.menu.cat.url_verify.label
+#: staff.main.menu.cat.url_verify.accesskey
+msgid "Lin&k Checker"
+msgstr ""
 
 #: staff.main.menu.acq.label
 #: staff.main.menu.acq.accesskey
@@ -9453,7 +9474,7 @@ msgstr "Prezenční užití"
 #: staff.circ.in_house_use.multiplier.label
 #: staff.circ.in_house_use.multiplier.accesskey
 msgid "# of &uses:"
-msgstr "# z &užití:"
+msgstr "Počet použití"
 
 #: staff.circ.in_house_use.submit.label
 #: staff.circ.in_house_use.submit.accesskey
@@ -10896,7 +10917,7 @@ msgstr "Skupiny záznamů"
 #: staff.cat.record_buckets_overlay.record_query_tab.label
 #: staff.cat.record_buckets_overlay.record_query_tab.accesskey
 msgid "Record &Query"
-msgstr "Záznam &Dotaz"
+msgstr "Vyhle&dání záznamu"
 
 #: staff.cat.record_buckets_overlay.pending_records_tab.label
 #: staff.cat.record_buckets_overlay.pending_records_tab.accesskey
@@ -12248,6 +12269,10 @@ msgstr "(Maximum povolených pokut)"
 msgid "(Maximum Overdues)"
 msgstr "(Maximum povolených  s uplynulou lhůtou)"
 
+#: staff.patron.display_overlay.max_checked_out.value
+msgid "(Maximum Checked Out)"
+msgstr ""
+
 #: staff.patron.display_overlay.has_bills.value
 msgid "(Has Bills)"
 msgstr "(Nezaplacené poplatky)"
@@ -12265,12 +12290,12 @@ msgid "(Invalid Address)"
 msgstr "(Neplatná adresa)"
 
 #: staff.patron.display_overlay.invalid_email.value
-msgid "(Invalid Email - See Messages)"
-msgstr "(neplatná e-mailová adresa - viz zprávy)"
+msgid "(Invalid Email)"
+msgstr ""
 
 #: staff.patron.display_overlay.invalid_phone.value
-msgid "(Invalid Phone - See Messages)"
-msgstr "(Neplatné telefonní číslo - viz zprávy)"
+msgid "(Invalid Phone)"
+msgstr ""
 
 #: staff.patron.display_overlay.exit.label
 #: staff.patron.display_overlay.exit.accesskey
@@ -13915,7 +13940,7 @@ msgstr "Provozováno v systému"
 
 #: staff.client.portal.toggle_tpac
 msgid "Toggle Template Toolkit OPAC Use"
-msgstr "Vypnout použití TemplateTtoolkit OPAC"
+msgstr "Vypnout  zapnout použití TemplateTtoolkit OPAC"
 
 #: staff.client.portal.toggle_tpac.message_on
 msgid ""

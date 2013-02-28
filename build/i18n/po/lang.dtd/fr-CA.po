@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > lang.dtd.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-20 09:37-0400\n"
-"PO-Revision-Date: 2012-05-29 15:13+0000\n"
-"Last-Translator: George Duimovich <george_duimovich@carleton.ca>\n"
+"POT-Creation-Date: 2013-02-21 11:18-0400\n"
+"PO-Revision-Date: 2013-01-29 06:50+0000\n"
+"Last-Translator: Hélion du Mas des Bourboux <helion331990@gmail.com>\n"
 "Language-Team: NRCan Library <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-12-21 04:58+0000\n"
-"X-Generator: Launchpad (build 16378)\n"
+"X-Launchpad-Export-Date: 2013-02-23 05:26+0000\n"
+"X-Generator: Launchpad (build 16506)\n"
 "X-Poedit-Country: CANADA\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: French\n"
@@ -2925,8 +2925,20 @@ msgstr "Attributs des enregistrements MARC"
 msgid "MARC Coded Value Maps"
 msgstr "Mappages de valeurs codées de MARC"
 
+#: staff.main.menu.admin.server_admin.conify.metabib_class.label
+msgid "MARC Search/Facet Classes"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.conify.metabib_class_ts_map.label
+msgid "MARC Search/Facet Class FTS Maps"
+msgstr ""
+
 #: staff.main.menu.admin.server_admin.conify.metabib_field.label
 msgid "MARC Search/Facet Fields"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.conify.metabib_field_ts_map.label
+msgid "MARC Search/Facet Field FTS Maps"
 msgstr ""
 
 #: staff.main.menu.admin.server_admin.conify.acn_prefix.label
@@ -3367,6 +3379,10 @@ msgstr "Gestionnaire des thèmes"
 msgid "about:config"
 msgstr "about:config"
 
+#: staff.main.menu.admin.about_about.label
+msgid "about:about (XULRunner diagnostics)"
+msgstr ""
+
 #: staff.main.menu.admin.stat_cat_edit.label
 #: staff.main.menu.admin.stat_cat_edit.accesskey
 msgid "Statistical &Category Editor"
@@ -3546,6 +3562,11 @@ msgstr "Importer/Exporter des fichiers MARC par lots"
 #: staff.main.menu.cat.z39_50_import.accesskey
 msgid "Import Record from &Z39.50"
 msgstr "Importer le compte de &Z39.50"
+
+#: staff.main.menu.cat.url_verify.label
+#: staff.main.menu.cat.url_verify.accesskey
+msgid "Lin&k Checker"
+msgstr ""
 
 #: staff.main.menu.acq.label
 #: staff.main.menu.acq.accesskey
@@ -6552,7 +6573,7 @@ msgstr "Reçus récemment"
 
 #: staff.serial.manage_items.mode
 msgid "Mode:"
-msgstr "Mode:"
+msgstr "Mode :"
 
 #: staff.serial.manage_items.bind.label
 msgid "Bind"
@@ -12256,6 +12277,10 @@ msgstr "(Factures maximum)"
 msgid "(Maximum Overdues)"
 msgstr "(Retards maximum)"
 
+#: staff.patron.display_overlay.max_checked_out.value
+msgid "(Maximum Checked Out)"
+msgstr ""
+
 #: staff.patron.display_overlay.has_bills.value
 msgid "(Has Bills)"
 msgstr "(a accumulé des factures)"
@@ -12273,11 +12298,11 @@ msgid "(Invalid Address)"
 msgstr "(Adresse invalide)"
 
 #: staff.patron.display_overlay.invalid_email.value
-msgid "(Invalid Email - See Messages)"
+msgid "(Invalid Email)"
 msgstr ""
 
 #: staff.patron.display_overlay.invalid_phone.value
-msgid "(Invalid Phone - See Messages)"
+msgid "(Invalid Phone)"
 msgstr ""
 
 #: staff.patron.display_overlay.exit.label

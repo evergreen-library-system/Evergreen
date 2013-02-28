@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-08-03 10:01-0400\n"
+"POT-Creation-Date: 2013-02-21 11:20-0400\n"
 "PO-Revision-Date: 2012-08-13 18:27+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-08-14 04:47+0000\n"
-"X-Generator: Launchpad (build 15791)\n"
+"X-Launchpad-Export-Date: 2013-02-23 05:29+0000\n"
+"X-Generator: Launchpad (build 16506)\n"
 
 #: register.js:USER_SETTINGS
 msgid "User Settings"
@@ -37,13 +37,9 @@ msgstr "Հաշիվ"
 msgid "This address is owned by another user: "
 msgstr "Հասցեն տնօրինվում է այլ օգտվողի կողմից: "
 
-#: register.js:ALL_CARDS_PRIMARY
-msgid "Primary"
-msgstr "Սկզբնական"
-
-#: register.js:ALL_CARDS_BARCODE
-msgid "Barcode"
-msgstr "Շտրիխ կոդ"
+#: register.js:ADDRESS_NEW
+msgid "New Address"
+msgstr "Նոր հասցե"
 
 #: register.js:REPLACED_ADDRESS
 msgid ""
@@ -78,6 +74,10 @@ msgstr "Փոխարինիր շտրիխ կոդը"
 #: register.js:NEED_ADDRESS
 msgid "An address is required during registration."
 msgstr "Գրանցման ժամանակ պահանջվում է հասցե"
+
+#: register.js:ALL_CARDS_PRIMARY
+msgid "Primary"
+msgstr "Սկզբնական"
 
 #: register.js:BARCODE_IN_USE
 msgid "Barcode is already in use"
@@ -159,9 +159,9 @@ msgstr "Հիշիր &amp; Կլոն"
 msgid "Statistical Categories"
 msgstr "Վիճակագրական դասեր"
 
-#: register.js:ADDRESS_NEW
-msgid "New Address"
-msgstr "Նոր հասցե"
+#: register.js:ALL_CARDS_BARCODE
+msgid "Barcode"
+msgstr "Շտրիխ կոդ"
 
 #: register.js:RESET_PASSWORD
 msgid "Reset Password"

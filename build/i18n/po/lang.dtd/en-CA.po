@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > lang.dtd.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-20 09:37-0400\n"
-"PO-Revision-Date: 2012-11-09 13:33+0000\n"
+"POT-Creation-Date: 2013-02-21 11:18-0400\n"
+"PO-Revision-Date: 2013-01-31 19:06+0000\n"
 "Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-12-21 05:00+0000\n"
-"X-Generator: Launchpad (build 16378)\n"
+"X-Launchpad-Export-Date: 2013-02-23 05:28+0000\n"
+"X-Generator: Launchpad (build 16506)\n"
 "X-Poedit-Country: CANADA\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: English\n"
@@ -2865,7 +2865,7 @@ msgstr "Copy &Template Editor"
 #: staff.main.menu.admin.local_admin.item_attribute_editor.label
 #: staff.main.menu.admin.local_admin.item_attribute_editor.accesskey
 msgid "Item Attribute &Editor"
-msgstr ""
+msgstr "Item Attribute &Editor"
 
 #: staff.main.menu.admin.local_admin.patrons_due_refunds.label
 #: staff.main.menu.admin.local_admin.patrons_due_refunds.accesskey
@@ -2921,9 +2921,21 @@ msgstr "MARC Record Attributes"
 msgid "MARC Coded Value Maps"
 msgstr "MARC Coded Value Maps"
 
+#: staff.main.menu.admin.server_admin.conify.metabib_class.label
+msgid "MARC Search/Facet Classes"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.conify.metabib_class_ts_map.label
+msgid "MARC Search/Facet Class FTS Maps"
+msgstr ""
+
 #: staff.main.menu.admin.server_admin.conify.metabib_field.label
 msgid "MARC Search/Facet Fields"
 msgstr "MARC Search/Facet Fields"
+
+#: staff.main.menu.admin.server_admin.conify.metabib_field_ts_map.label
+msgid "MARC Search/Facet Field FTS Maps"
+msgstr ""
 
 #: staff.main.menu.admin.server_admin.conify.acn_prefix.label
 msgid "Call Number Prefixes"
@@ -3259,7 +3271,7 @@ msgstr "Clear Workstation Default"
 
 #: staff.main.menu.admin.client.search_prefs.label
 msgid "Set Search Preferences"
-msgstr ""
+msgstr "Set Search Preferences"
 
 #: staff.main.menu.admin.client.toolbars
 msgid "Toolbars"
@@ -3361,6 +3373,10 @@ msgstr "Theme Manager"
 #: staff.main.menu.admin.about_config.label
 msgid "about:config"
 msgstr "about:config"
+
+#: staff.main.menu.admin.about_about.label
+msgid "about:about (XULRunner diagnostics)"
+msgstr ""
 
 #: staff.main.menu.admin.stat_cat_edit.label
 #: staff.main.menu.admin.stat_cat_edit.accesskey
@@ -3541,6 +3557,11 @@ msgstr "MARC Batch Import/Export"
 #: staff.main.menu.cat.z39_50_import.accesskey
 msgid "Import Record from &Z39.50"
 msgstr "Import Record from &Z39.50"
+
+#: staff.main.menu.cat.url_verify.label
+#: staff.main.menu.cat.url_verify.accesskey
+msgid "Lin&k Checker"
+msgstr ""
 
 #: staff.main.menu.acq.label
 #: staff.main.menu.acq.accesskey
@@ -12220,6 +12241,10 @@ msgstr "(Maximum Bills)"
 msgid "(Maximum Overdues)"
 msgstr "(Maximum Overdues)"
 
+#: staff.patron.display_overlay.max_checked_out.value
+msgid "(Maximum Checked Out)"
+msgstr ""
+
 #: staff.patron.display_overlay.has_bills.value
 msgid "(Has Bills)"
 msgstr "(Has Bills)"
@@ -12237,12 +12262,12 @@ msgid "(Invalid Address)"
 msgstr "(Invalid Address)"
 
 #: staff.patron.display_overlay.invalid_email.value
-msgid "(Invalid Email - See Messages)"
-msgstr "(Invalid Email - See Messages)"
+msgid "(Invalid Email)"
+msgstr ""
 
 #: staff.patron.display_overlay.invalid_phone.value
-msgid "(Invalid Phone - See Messages)"
-msgstr "(Invalid Phone - See Messages)"
+msgid "(Invalid Phone)"
+msgstr ""
 
 #: staff.patron.display_overlay.exit.label
 #: staff.patron.display_overlay.exit.accesskey
@@ -13953,7 +13978,7 @@ msgstr "The settings above may be changed for retries and overrides."
 
 #: staff.search_prefs.search_lib.caption
 msgid "Default Search Library"
-msgstr ""
+msgstr "Default Search Library"
 
 #: staff.search_prefs.search_lib.description
 msgid ""
@@ -13962,10 +13987,14 @@ msgid ""
 "search library will override it. One recommendation is to set the search "
 "library to the highest point you would normally want to search."
 msgstr ""
+"The default search library setting determines what library is searched from "
+"the advanced search screen and portal page by default. Manual selection of a "
+"search library will override it. One recommendation is to set the search "
+"library to the highest point you would normally want to search."
 
 #: staff.search_prefs.pref_lib.caption
 msgid "Preferred Library"
-msgstr ""
+msgstr "Preferred Library"
 
 #: staff.search_prefs.pref_lib.description
 msgid ""
@@ -13973,10 +14002,13 @@ msgid ""
 "library searched. One recommendation is to set this to your workstation "
 "library so that local copies show up first in search results."
 msgstr ""
+"The preferred library is used to show copies and URIs regardless of the "
+"library searched. One recommendation is to set this to your workstation "
+"library so that local copies show up first in search results."
 
 #: staff.search_prefs.adv_pane.caption
 msgid "Advanced Search Default Pane"
-msgstr ""
+msgstr "Advanced Search Default Pane"
 
 #: staff.search_prefs.adv_pane.description
 msgid ""
@@ -13984,36 +14016,39 @@ msgid ""
 "You can change which one is loaded by default when opening a new catalog "
 "window here."
 msgstr ""
+"Advanced search has secondary panes for Numeric and MARC Expert searching. "
+"You can change which one is loaded by default when opening a new catalogue "
+"window here."
 
 #: staff.search_prefs.adv_pane.advanced
 msgid "Advanced (default)"
-msgstr ""
+msgstr "Advanced (default)"
 
 #: staff.search_prefs.adv_pane.numeric
 msgid "Numeric"
-msgstr ""
+msgstr "Numeric"
 
 #: staff.search_prefs.adv_pane.expert
 msgid "MARC Expert"
-msgstr ""
+msgstr "MARC Expert"
 
 #: staff.search_prefs.save.label
 #: staff.search_prefs.save.accesskey
 msgid "&Save"
-msgstr ""
+msgstr "&Save"
 
 #: staff.search_prefs.saved_message
 msgid "Preferences saved"
-msgstr ""
+msgstr "Preferences saved"
 
 #: staff.search_prefs.clear.label
 #: staff.search_prefs.clear.accesskey
 msgid "&Clear All"
-msgstr ""
+msgstr "&Clear All"
 
 #: staff.search_prefs.cleared_message
 msgid "Preferences cleared"
-msgstr ""
+msgstr "Preferences cleared"
 
 #~ msgid "&Browse Unfulfilled Holds for this Pickup Lib"
 #~ msgstr "&Browse Unfulfilled Holds for this Pickup Library"
