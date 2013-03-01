@@ -89,6 +89,15 @@
                 <div jsId='vlUploadFtMergeProfile' dojoType='dijit.form.FilteringSelect' required='false' labelAttr='name' searchAttr='name'></div>
             </td>
         </tr>
+        <tr id='vl-trash-groups-row'>
+            <td>[% l('Remove MARC Field Groups') %]</td>
+            <td colspan='4'>
+                <select style='overflow-y:auto; height:6em; width:12em' multiple='true' 
+                    jsId="vlUploadTrashGroups" 
+                    dojoType="dojox.form.CheckedMultiSelect">
+                </select>
+            </td>
+        </tr>
 
         <tr><td colspan='2' style='border-bottom:2px solid #888;'></td></tr>
         <tr><td colspan='2' style='padding-bottom: 10px;'></td></tr>

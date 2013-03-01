@@ -1,3 +1,6 @@
+<style type="text/css">
+    @import "[% ctx.media_prefix %]/js/dojo/dojox/form/resources/CheckedMultiSelect.css";
+</style>
 <div dojoType="dijit.layout.ContentPane" layoutAlign='client' style='margin-top:10px;'>
     <fieldset id='vl-queue-filter-fieldset'>
         <legend>[% l('Queue ') %]<span style='font-style:italic;' id='vl-queue-summary-name'></span></legend>
@@ -237,6 +240,16 @@
                         <div jsId='vlUploadFtMergeProfile2' dojoType='dijit.form.FilteringSelect' required='false' labelAttr='name' searchAttr='name'></div>
                     </td>
                 </tr>
+                <tr id='vl-trash-groups-row2'>
+                    <td>[% l('Remove MARC Field Groups') %]</td>
+                    <td colspan='4'>
+                        <select style='overflow-y:auto;' multiple='true' 
+                            jsId="vlUploadTrashGroups2" 
+                            dojoType="dojox.form.CheckedMultiSelect">
+                        </select>
+                    </td>
+                </tr>
+
                 <tr>
                     <td>
                         <button dojoType='dijit.form.Button' jsId='queueItemsImportCancelButton'>[% l('Cancel') %]</button>
