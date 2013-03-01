@@ -327,6 +327,9 @@
              />
     <command id="cmd_server_admin_conify_remote_account"
              perm="ADMIN_CONFIG_REMOTE_ACCOUNT VIEW_CONFIG_REMOTE_ACCOUNT"
+            />
+    <command id="cmd_server_admin_vandelay_import_bib_trash_group"
+             perm="CREATE_IMPORT_TRASH_FIELD UPDATE_IMPORT_TRASH_FIELD DELETE_IMPORT_TRASH_FIELD"
              />
 
     <command id="cmd_hotkeys_toggle" />
@@ -639,6 +642,7 @@
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.config_asset_sip_fields;" command="cmd_server_admin_config_asset_sip_fields"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.config_usr_activity_type;" command="cmd_server_admin_config_usr_activity_type"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.config_best_hold_order;" command="cmd_server_admin_config_best_hold_order"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.vandelay_import_bib_trash_group;" command="cmd_server_admin_vandelay_import_bib_trash_group"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.actor.org_unit_custom_tree;" command="cmd_server_admin_actor_org_unit_custom_tree"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.config.remote_account;" command="cmd_server_admin_conify_remote_account"/>
                 <menu id="main.menu.admin.server.acq" label="&staff.main.menu.admin.server_admin.acq.label;" accesskey="&staff.main.menu.admin.server_admin.acq.accesskey;">

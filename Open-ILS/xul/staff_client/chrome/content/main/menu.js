@@ -796,6 +796,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/config/best_hold_order', null, event); }
             ],
+			'cmd_server_admin_vandelay_import_bib_trash_group' : [
+                ['oncommand'],
+                function(event) { open_eg_web_page('conify/global/vandelay/import_bib_trash_group', null, event); }
+            ],
             'cmd_server_admin_config_usr_activity_type' : [
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/config/usr_activity_type', null, event); }

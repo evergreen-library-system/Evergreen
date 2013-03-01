@@ -775,6 +775,7 @@
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_hard_due_date "Hard Due Date Changes">
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_rule_circ_duration "Circulation Duration Rules">
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_best_hold_order "Best-Hold Selection Sort Order">
+<!ENTITY staff.main.menu.admin.server_admin.conify.vandelay_import_bib_trash_group "MARC Import Remove Fields">
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_rule_recurring_fine "Circulation Recurring Fine Rules">
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_rule_max_fine "Circulation Max Fine Rules">
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_rule_age_hold_protect "Age Hold Protect Rules">

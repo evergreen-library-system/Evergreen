@@ -1,0 +1,104 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = l('Import Bib Trash Groups') %]
+<script type="text/javascript" 
+    src='[% ctx.media_prefix %]/js/ui/default/conify/global/vandelay/import_bib_trash_group.js'>
+</script>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+
+[%  grp_id = ctx.page_args.0 %]
+
+<script>var grp_id = '[% grp_id %]'</script>
+
+[% IF grp_id %]
+
+    <div dojoType="dijit.layout.ContentPane" 
+            layoutAlign="top" class='oils-header-panel'>
+        <div><span id='trash-group-name'></span></div>
+        <div>
+            <button dojoType='dijit.form.Button' 
+                onClick='tfGrid.showCreateDialog()'>[% l('New Field') %]
+            </button>
+            <button dojoType='dijit.form.Button' 
+                onClick='tfGrid.deleteSelected()'>[% l('Delete Selected') %]
+            </button>
+        </div>
+    </div>
+    <div>
+        <button 
+            onClick="location.href = location.href.replace(/\/[^\/]+$/, '')">
+            [% l('Return to Groups') %]
+        </button>
+    </div>
+    <br/>
+
+    <!-- field grid -->
+
+    <table
+        id="tfGrid"
+        jsid="tfGrid"
+        dojoType="openils.widget.FlattenerGrid"
+        columnPersistKey='"conify.vandelay.import_bib_trash_fields"'
+        autoHeight="true"
+        editOnEnter="true"
+        editStyle="pane"
+        showLoadFilter="true"
+        fmClass="'vibtf'"
+        defaultSort="['label']"
+        query="{grp: grp_id}">
+        <thead>
+            <tr>
+                <th field="id" fpath="id" ffilter="true"/>
+                <th field="field" fpath="field" ffilter="true"/>
+            </tr>
+        </thead>
+    </table>
+
+[% ELSE %]
+
+    <div dojoType="dijit.layout.ContentPane" 
+            layoutAlign="top" class='oils-header-panel'>
+
+        <div>[% l('Import Bib Trash Fields') %]</div>
+        <div>
+            <button dojoType='dijit.form.Button' 
+                    onClick='tgGrid.showCreateDialog()'>
+                [% l('New Field Group') %]
+            </button>
+            <button dojoType='dijit.form.Button' 
+                    onClick='tgGrid.deleteSelected()'>
+                [% l('Delete Selected') %]
+            </button>
+        </div>
+    </div>
+
+    <!-- group grid -->
+
+    <table
+        id="tgGrid"
+        jsid="tgGrid"
+        dojoType="openils.widget.FlattenerGrid"
+        columnPersistKey='"conify.vandelay.import_bib_trash_group"'
+        autoHeight="true"
+        editOnEnter="true"
+        editStyle="pane"
+        showLoadFilter="true"
+        fmClass="'vibtg'"
+        defaultSort="['label']"
+        query="{id:{'!=':null}}">
+        <thead>
+            <tr>
+                <th field="id" fpath="id" ffilter="true" formatter="format_grp"/>
+                <th field="owner" fpath="owner.shortname" ffilter="true"/>
+                <th field="label" fpath="label" ffilter="true"/>
+                <th field="always_apply" fpath="always_apply" ffilter="true"/>
+            </tr>
+        </thead>
+    </table>
+
+[% END %]
+
+</div>
+
+[% END %]
+
