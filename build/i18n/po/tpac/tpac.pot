@@ -295,7 +295,7 @@ msgstr ""
 msgid "Adjacency"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/advanced.tt2:1 ../../Open-ILS/src/templates/opac/advanced.tt2:19 ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:10 ../../Open-ILS/src/templates/opac/results.tt2:31
+#: ../../Open-ILS/src/templates/opac/advanced.tt2:1 ../../Open-ILS/src/templates/opac/advanced.tt2:19 ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:10 ../../Open-ILS/src/templates/opac/results.tt2:30
 msgid "Advanced Search"
 msgstr ""
 
@@ -347,7 +347,7 @@ msgstr ""
 msgid "Annotator"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/results.tt2:28
+#: ../../Open-ILS/src/templates/opac/results.tt2:27
 msgid "Another Search"
 msgstr ""
 
@@ -1471,7 +1471,7 @@ msgid "Holdable?"
 msgstr ""
 
 #. (serial.location)
-#: ../../Open-ILS/src/templates/opac/parts/record/issues-mfhd.tt2:20
+#: ../../Open-ILS/src/templates/opac/parts/record/issues-mfhd.tt2:23
 msgid "Holdings summary (%1)"
 msgstr ""
 
@@ -1809,7 +1809,7 @@ msgstr ""
 msgid "Limit to Available"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/results.tt2:61
+#: ../../Open-ILS/src/templates/opac/results.tt2:59
 msgid "Limit to available items"
 msgstr ""
 
@@ -2904,11 +2904,11 @@ msgstr ""
 msgid "Shelving location"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/results.tt2:50
+#: ../../Open-ILS/src/templates/opac/results.tt2:49
 msgid "Show Fewer Details"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/results.tt2:52
+#: ../../Open-ILS/src/templates/opac/results.tt2:50
 msgid "Show More Details"
 msgstr ""
 
@@ -2985,7 +2985,7 @@ msgstr ""
 msgid "Sort Results"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/results.tt2:43
+#: ../../Open-ILS/src/templates/opac/results.tt2:42
 msgid "Sort by"
 msgstr ""
 
@@ -3425,7 +3425,7 @@ msgstr ""
 msgid "View All"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/results.tt2:36 ../../Open-ILS/src/templates/opac/results.tt2:38
+#: ../../Open-ILS/src/templates/opac/results.tt2:35 ../../Open-ILS/src/templates/opac/results.tt2:37
 msgid "View My List"
 msgstr ""
 

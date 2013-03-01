@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-21 11:18-0400\n"
+"POT-Creation-Date: 2013-03-01 16:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3058,6 +3058,10 @@ msgstr ""
 msgid "Z39.50 Servers"
 msgstr ""
 
+#: staff.main.menu.admin.server_admin.conify.org_unit_proximity_adjustment.label
+msgid "Org Unit Proximity Adjustments"
+msgstr ""
+
 #: staff.main.menu.admin.server_admin.conify.circulation_modifier.label
 msgid "Circulation Modifiers"
 msgstr ""
@@ -3080,6 +3084,10 @@ msgstr ""
 
 #: staff.main.menu.admin.server_admin.conify.config_rule_circ_duration
 msgid "Circulation Duration Rules"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.conify.config_best_hold_order
+msgid "Best-Hold Selection Sort Order"
 msgstr ""
 
 #: staff.main.menu.admin.server_admin.conify.config_rule_recurring_fine
