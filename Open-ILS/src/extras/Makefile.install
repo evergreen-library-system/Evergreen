@@ -81,7 +81,6 @@ DEBS =  \
 	libnspr4-dev\
 	libole-storage-lite-perl\
 	libparent-perl \
-	libreadline5-dev\
 	libspreadsheet-writeexcel-perl\
 	libssh2-1-dev\
 	libtext-aspell-perl\
