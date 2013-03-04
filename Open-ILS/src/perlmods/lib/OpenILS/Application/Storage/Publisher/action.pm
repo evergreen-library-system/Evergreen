@@ -1111,6 +1111,10 @@ sub generate_fines {
 				$c->$circ_lib_method->to_fieldmapper->id, 'circ.fines.charge_when_closed');
 			$skip_closed_check = $U->is_true($skip_closed_check);
 
+			my $truncate_to_max_fine = $U->ou_ancestor_setting_value(
+				$c->$circ_lib_method->to_fieldmapper->id, 'circ.fines.truncate_to_max_fine');
+			$truncate_to_max_fine = $U->is_true($truncate_to_max_fine);
+
 			my ($latest_billing_ts, $latest_amount) = ('',0);
 			for (my $bill = 1; $bill <= $pending_fine_count; $bill++) {
 	
@@ -1149,8 +1153,15 @@ sub generate_fines {
 					next if (@cl);
 				}
 
-				$current_fine_total += $recurring_fine;
-				$latest_amount += $recurring_fine;
+				# The billing amount for this billing normally ought to be the recurring fine amount.
+				# However, if the recurring fine amount would cause total fines to exceed the max fine amount,
+				# we may wish to reduce the amount for this billing (if circ.fines.truncate_to_max_fine is true).
+				my $this_billing_amount = $recurring_fine;
+				if ( $truncate_to_max_fine && ($current_fine_total + $this_billing_amount) > $max_fine ) {
+					$this_billing_amount = ($max_fine - $current_fine_total);
+				}
+				$current_fine_total += $this_billing_amount;
+				$latest_amount += $this_billing_amount;
 				$latest_billing_ts = $timestamptz;
 
 				money::billing->create(
@@ -1158,7 +1169,7 @@ sub generate_fines {
 					  note		=> "System Generated Overdue Fine",
 					  billing_type	=> "Overdue materials",
 					  btype		=> 1,
-					  amount	=> sprintf('%0.2f', $recurring_fine/100),
+					  amount	=> sprintf('%0.2f', $this_billing_amount/100),
 					  billing_ts	=> $timestamptz,
 					}
 				);
