@@ -3037,6 +3037,7 @@
 <!ENTITY staff.cat.z3950.marc_import_overlay.accesskey "O">
 <!ENTITY staff.cat.z3950.result_message.marc_import.label "Import">
 <!ENTITY staff.cat.z3950.result_message.marc_import.accesskey "I">
+<!ENTITY staff.cat.z3950.strip_fields.label "Remove Fields on Import: ">
 <!ENTITY staff.pat.barcode_entry.retrieve_patron.label "Retrieve Patron">
 <!ENTITY staff.pat.barcode_entry.barcode.label "Barcode:">
 <!ENTITY staff.pat.barcode_entry.barcode.accesskey "B">

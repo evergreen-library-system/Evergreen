@@ -33,6 +33,8 @@ cat.z3950.prototype = {
 
             obj.load_creds();
 
+            buildStripTags();
+
             JSAN.use('circ.util');
             var columns = circ.util.columns(
                 {
@@ -781,7 +783,19 @@ cat.z3950.prototype = {
 
         function save_marc (new_marcxml) {
             try {
-                var r = obj.network.simple_request('MARC_XML_RECORD_IMPORT', [ ses(), new_marcxml, biblio_source ]);
+
+                // extract the import strip groups
+                var strip_grps = dojo.query('[strip-fields-cbox]').filter(
+                    function(grp) { return grp.checked }).map(
+                    function(grp) { return grp.getAttribute('value') });
+
+                var r = obj.network.simple_request(
+                    'MARC_XML_RECORD_IMPORT', [ 
+                        ses(), new_marcxml, biblio_source, 
+                        null, null, strip_grps 
+                    ]
+                );
+
                 if (typeof r.ilsevent != 'undefined') {
                     switch(Number(r.ilsevent)) {
                         case 1704 /* TCN_EXISTS */ :
@@ -809,7 +823,10 @@ cat.z3950.prototype = {
                             obj.error.sdump('D_ERROR','option ' + p + 'chosen');
                             switch(p) {
                                 case 0:
-                                    var r3 = obj.network.simple_request('MARC_XML_RECORD_UPDATE', [ ses(), r.payload.dup_record, new_marcxml, biblio_source ]);
+                                    var r3 = obj.network.simple_request('MARC_XML_RECORD_UPDATE', [ 
+                                        ses(), r.payload.dup_record, 
+                                        new_marcxml, biblio_source, null, strip_grps 
+                                    ]);
                                     if (typeof r3.ilsevent != 'undefined') {
                                         throw(r3);
                                     } else {
@@ -830,7 +847,7 @@ cat.z3950.prototype = {
                                     var r2 = obj.network.request(
                                         api.MARC_XML_RECORD_IMPORT.app,
                                         api.MARC_XML_RECORD_IMPORT.method + '.override',
-                                        [ ses(), new_marcxml, biblio_source ]
+                                        [ ses(), new_marcxml, biblio_source, null, null, strip_grps ]
                                     );
                                     if (typeof r2.ilsevent != 'undefined') {
                                         throw(r2);
@@ -950,7 +967,14 @@ cat.z3950.prototype = {
         function overlay_marc (new_marcxml) {
             try {
                 if (! obj.confirm_overlay( [ obj.data.marked_record ] ) ) { return; }
-                var r = obj.network.simple_request('MARC_XML_RECORD_REPLACE', [ ses(), obj.data.marked_record, new_marcxml, biblio_source ]);
+
+                var strip_grps = dojo.query('[strip-fields-cbox]').filter(
+                    function(grp) { return grp.checked }).map(
+                    function(grp) { return grp.getAttribute('value') });
+
+                var r = obj.network.simple_request('MARC_XML_RECORD_REPLACE', 
+                    [ ses(), obj.data.marked_record, new_marcxml, biblio_source, null, strip_grps ]);
+
                 if (typeof r.ilsevent != 'undefined') {
                     switch(Number(r.ilsevent)) {
                         case 1704 /* TCN_EXISTS */ :
@@ -979,7 +1003,8 @@ cat.z3950.prototype = {
                                     var r2 = obj.network.request(
                                         api.MARC_XML_RECORD_REPLACE.app,
                                         api.MARC_XML_RECORD_REPLACE.method + '.override',
-                                        [ ses(), obj.data.marked_record, new_marcxml, biblio_source ]
+                                        [ ses(), obj.data.marked_record, new_marcxml, 
+                                            biblio_source, null, strip_grps ]
                                     );
                                     if (typeof r2.ilsevent != 'undefined') {
                                         throw(r2);
@@ -1154,5 +1179,50 @@ cat.z3950.prototype = {
         if (ev.keyCode == 13 /* enter */ || ev.keyCode == 77 /* enter on a mac */) setTimeout( function() { obj.initial_search(); }, 0);
     },
 }
+
+function buildStripTags() {
+
+    // give me every non-always-apply trash field 
+    // group owned at my workstation or ancestor,
+    var query = {   
+        always_apply : 'f',                                                
+        owner : {'in' : {
+            select : {aou : [{
+                column : 'id',
+                transform : 'actor.org_unit_ancestors', 
+                result_field : 'id'
+            }]},
+            from : 'aou',
+            where : {id : ses('ws_ou')}}
+        }
+    };
+
+    fieldmapper.standardRequest(
+        ['open-ils.pcrud', 'open-ils.pcrud.search.vibtg.atomic'],
+        {   async : true,
+            params : [ses(), query, {order_by : {vibtg : ['label']}}],
+            oncomplete : function(r) {
+                var resp = r.recv();
+                if (resp) buildStripTags2(resp.content());
+            }
+        }
+    );
+}
+
+function buildStripTags2(grps) {
+    if (!grps || grps.length == 0) return;
+
+    $('strip-fields-hbox').className = '';
+
+    dojo.forEach(grps, function(grp) {
+        var cbox = dojo.create('checkbox', {
+            label : grp.label(), 
+            value : grp.id(),
+            'strip-fields-cbox' : 1
+        });
+        dojo.place(cbox, $('strip-fields-hbox'));
+    });
+}
+
 
 dump('exiting cat.z3950.js\n');

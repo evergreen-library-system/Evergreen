@@ -166,6 +166,10 @@
                 <hbox>
                     <hbox id="result_message" />
                     <spacer flex="1"/>
+                    <hbox id="strip-fields-hbox" class='hideme' 
+                            style='border:1px solid #CCC; margin-right:10px;'>
+                        <label value="&staff.cat.z3950.strip_fields.label;"/>
+                    </hbox>
                     <label id="overlay_tcn_indicator"/>
                 </hbox>
                 <description>
