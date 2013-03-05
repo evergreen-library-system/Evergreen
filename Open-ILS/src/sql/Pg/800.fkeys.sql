@@ -91,6 +91,7 @@ ALTER TABLE serial.unit ADD CONSTRAINT serial_unit_creator_fkey FOREIGN KEY (cre
 ALTER TABLE serial.unit ADD CONSTRAINT serial_unit_editor_fkey FOREIGN KEY (editor) REFERENCES actor.usr (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 
 ALTER TABLE vandelay.import_item ADD CONSTRAINT imported_as_fkey FOREIGN KEY (imported_as) REFERENCES asset.copy (id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE vandelay.bib_queue ADD CONSTRAINT match_bucket_fkey FOREIGN KEY (match_bucket) REFERENCES container.biblio_record_entry_bucket(id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 
 ALTER TABLE asset.copy_note ADD CONSTRAINT asset_copy_note_copy_fkey FOREIGN KEY (owning_copy) REFERENCES asset.copy (id) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE asset.copy_note ADD CONSTRAINT asset_copy_note_creator_fkey FOREIGN KEY (creator) REFERENCES actor.usr (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;

@@ -3,10 +3,15 @@ BEGIN;
 -- TODO version check
 
 CREATE OR REPLACE FUNCTION 
-    evergreen.z3950_name_is_valid(TEXT) RETURNS BOOLEAN AS $func$
+    evergreen.z3950_attr_name_is_valid(TEXT) RETURNS BOOLEAN AS $func$
     SELECT EXISTS (SELECT 1 FROM config.z3950_attr WHERE name = $1);
 $func$ LANGUAGE SQL STRICT IMMUTABLE;
 
+COMMENT ON FUNCTION evergreen.z3950_attr_name_is_valid(TEXT) IS $$
+Results in TRUE if there exists at least one config.z3950_attr
+with the provided name.  Used by config.z3950_index_field_map
+to verify z3950_attr_type maps.
+$$;
 
 CREATE TABLE config.z3950_index_field_map (
     id              SERIAL  PRIMARY KEY,
@@ -26,7 +31,7 @@ CREATE TABLE config.z3950_index_field_map (
     -- ensure the selected z3950_attr_type refers to a valid attr name
     CONSTRAINT valid_z3950_attr_type CHECK (
         z3950_attr_type IS NULL OR 
-            evergreen.z3950_name_is_valid(z3950_attr_type)
+            evergreen.z3950_attr_name_is_valid(z3950_attr_type)
     )
 );
 

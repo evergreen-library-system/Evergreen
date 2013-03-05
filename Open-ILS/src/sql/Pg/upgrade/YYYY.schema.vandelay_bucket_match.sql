@@ -3,7 +3,8 @@ BEGIN;
 -- TODO version check
 
 ALTER TABLE vandelay.bib_queue ADD COLUMN match_bucket
-   INTEGER REFERENCES container.biblio_record_entry_bucket(id);
+   INTEGER REFERENCES container.biblio_record_entry_bucket(id)
+   ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;  
 
 CREATE OR REPLACE FUNCTION vandelay.match_bib_record() RETURNS TRIGGER AS $func$
 DECLARE

@@ -118,6 +118,7 @@ CREATE TYPE vandelay.bib_queue_queue_type AS ENUM ('bib', 'acq');
 CREATE TABLE vandelay.bib_queue (
 	queue_type	    vandelay.bib_queue_queue_type	NOT NULL DEFAULT 'bib',
 	item_attr_def	BIGINT REFERENCES vandelay.import_item_attr_definition (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
+    match_bucket    INTEGER, -- REFERENCES container.biblio_record_entry_bucket(id);
 	CONSTRAINT vand_bib_queue_name_once_per_owner_const UNIQUE (owner,name,queue_type)
 ) INHERITS (vandelay.queue);
 ALTER TABLE vandelay.bib_queue ADD PRIMARY KEY (id);
