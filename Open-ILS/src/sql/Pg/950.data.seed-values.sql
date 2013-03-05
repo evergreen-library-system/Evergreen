@@ -12030,6 +12030,21 @@ INSERT INTO config.org_unit_setting_type
         'integer'
     );
 
+INSERT INTO config.org_unit_setting_type (
+    name, label, grp, datatype
+) VALUES (
+    'circ.fines.truncate_to_max_fine',
+    oils_i18n_gettext(
+        'circ.fines.truncate_to_max_fine',
+        'Truncate fines to max fine amount',
+        'coust',
+        'label'
+    ),
+    'circ',
+    'bool'
+);
+
+
 INSERT INTO config.settings_group (name, label)
     VALUES (
         'url_verify',
