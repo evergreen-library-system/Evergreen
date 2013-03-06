@@ -292,12 +292,14 @@
                             copy = attrs.holdings.0;
                             IF copy;
                                 # only show a relevant call number
-                                org = ctx.get_aou_by_shortname(copy.owner);
-                                IF  org.id == ctx.search_ou OR 
-                                    org.id == ctx.pref_ou OR
-                                    org.id == ctx.user.home_ou OR
-                                    org.id == ctx.physical_loc;
-                                        l('[_1] ([_2])', copy.label, org.name) | html;
+                                copy_org = ctx.get_aou_by_shortname(copy.owner);
+                                FOR ctx_org IN [ctx.pref_ou, ctx.search_ou, ctx.home_ou, ctx.physical_loc];
+                                    NEXT UNLESS ctx_org;
+                                    ctx_org = ctx.get_aou(ctx_org);
+                                    IF ctx.org_within_scope(ctx_org, copy_org, ctx_org.ou_type.depth);
+                                        l('[_1] ([_2])', copy.label, copy_org.name) | html;
+                                        LAST;
+                                    END;
                                 END;
                             END;
                         %]
