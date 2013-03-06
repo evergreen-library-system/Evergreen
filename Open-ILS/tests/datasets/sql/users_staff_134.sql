@@ -1,3 +1,4 @@
+-- Invalid address
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
     VALUES (13, 3, 'sforbes', 6, 'Forbes', 'samuelf1234', 
@@ -5,7 +6,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '40065', '8751 Gentleman Burgs', 'f', 
+    VALUES ('USA', 'f', '40065', '8751 Gentleman Burgs', 'f',
         'KY', 'Shelbyville', '', 'Shelby', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -32,7 +33,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '45633', '5489 Suitable Way Knoll', 'f', 
+    VALUES ('USA', 'f', '45633', '5489 Suitable Way Knoll', 't',
         'OH', 'Hallsville', '', 'Ross', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -59,7 +60,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '54409', '7918 Subjective Volume Trail', 'f', 
+    VALUES ('USA', 't', '54409', '7918 Subjective Volume Trail', 't',
         'WI', 'Antigo', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -113,7 +114,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '89077', '1552 Okay Communication Motorway', 'f', 
+    VALUES ('USA', 't', '89077', '1552 Okay Communication Motorway', 't',
         'NV', 'Henderson', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -140,7 +141,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '13156', '8717 Cabinet Fords', 'f', 
+    VALUES ('USA', 'f', '13156', '8717 Cabinet Fords', 't',
         'NY', 'Sterling', '', 'Cayuga', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -167,7 +168,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '33122', '4033 Instant Matter Cape', 'f', 
+    VALUES ('USA', 'f', '33122', '4033 Instant Matter Cape', 't',
         'FL', 'Miami', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -194,7 +195,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '55046', '2511 Other Stream', 'f', 
+    VALUES ('USA', 't', '55046', '2511 Other Stream', 't',
         'MN', 'Lonsdale', '', 'Rice', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -221,7 +222,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '55959', '1671 Cabinet Orchard', 'f', 
+    VALUES ('USA', 'f', '55959', '1671 Cabinet Orchard', 't',
         'MN', 'Minnesota city', '', 'Winona', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -248,7 +249,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '34202', '1488 Glamorous Alternative Forks', 'f', 
+    VALUES ('USA', 't', '34202', '1488 Glamorous Alternative Forks', 't',
         'FL', 'Bradenton', '', 'Manatee', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -302,7 +303,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '88211', '9144 White Support Squares', 'f', 
+    VALUES ('USA', 'f', '88211', '9144 White Support Squares', 't',
         'NM', 'Artesia', '', 'Eddy', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -356,7 +357,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '40046', '9875 Support Row', 'f', 
+    VALUES ('USA', 't', '40046', '9875 Support Row', 't',
         'KY', 'Mount eden', '', 'Spencer', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -383,7 +384,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '03457', '2063 Sophisticated Status Plaza', 'f', 
+    VALUES ('USA', 'f', '03457', '2063 Sophisticated Status Plaza', 't',
         'NH', 'Nelson', '', 'Cheshire', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -410,7 +411,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '31126', '7394 Show Valley', 'f', 
+    VALUES ('USA', 'f', '31126', '7394 Show Valley', 't',
         'GA', 'Atlanta', '', 'Fulton', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -437,7 +438,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '98807', '2577 Stuck Benefit Tunnel', 'f', 
+    VALUES ('USA', 't', '98807', '2577 Stuck Benefit Tunnel', 't',
         'WA', 'Wenatchee', '', 'Chelan', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -464,7 +465,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '31758', '3587 Name Neck', 'f', 
+    VALUES ('USA', 'f', '31758', '3587 Name Neck', 't',
         'GA', 'Thomasville', '', 'Thomas', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -491,7 +492,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '11733', '6990 Icy Scene Street', 'f', 
+    VALUES ('USA', 't', '11733', '6990 Icy Scene Street', 't',
         'NY', 'East setauket', '', 'Suffolk', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -518,7 +519,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '94533', '2004 Harsh Gold Tunnel', 'f', 
+    VALUES ('USA', 't', '94533', '2004 Harsh Gold Tunnel', 't',
         'CA', 'Fairfield', '', 'Solano', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -572,7 +573,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '47360', '9934 Coloured Bar Grove', 'f', 
+    VALUES ('USA', 't', '47360', '9934 Coloured Bar Grove', 't',
         'IN', 'Mooreland', '', 'Henry', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -599,7 +600,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '59868', '4426 Temporary Demand River', 'f', 
+    VALUES ('USA', 't', '59868', '4426 Temporary Demand River', 't',
         'MT', 'Seeley lake', '', 'Missoula', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -626,7 +627,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '51036', '4020 Marked Chemical Bayoo', 'f', 
+    VALUES ('USA', 't', '51036', '4020 Marked Chemical Bayoo', 't',
         'IA', 'Maurice', '', 'Sioux', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -680,7 +681,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '23023', '3414 Energetic Weekend Circles', 'f', 
+    VALUES ('USA', 't', '23023', '3414 Energetic Weekend Circles', 't',
         'VA', 'Bruington', '', 'King and queen', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -734,7 +735,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '17349', '1977 Profound Conference Path', 'f', 
+    VALUES ('USA', 't', '17349', '1977 Profound Conference Path', 't',
         'PA', 'New freedom', '', 'York', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -788,7 +789,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '78658', '3275 Error Freeway', 'f', 
+    VALUES ('USA', 'f', '78658', '3275 Error Freeway', 't',
         'TX', 'Ottine', '', 'Gonzales', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -815,7 +816,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '19975', '6946 Constitutional Word Freeway', 'f', 
+    VALUES ('USA', 't', '19975', '6946 Constitutional Word Freeway', 't',
         'DE', 'Selbyville', '', 'Sussex', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -842,7 +843,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '27373', '263 Catholic End Field', 'f', 
+    VALUES ('USA', 't', '27373', '263 Catholic End Field', 't',
         'NC', 'Wallburg', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -869,7 +870,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '61452', '6985 Welcome Statement Fort', 'f', 
+    VALUES ('USA', 't', '61452', '6985 Welcome Statement Fort', 't',
         'IL', 'Littleton', '', 'Schuyler', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -896,7 +897,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '97624', '1283 Splendid West Manor', 'f', 
+    VALUES ('USA', 't', '97624', '1283 Splendid West Manor', 't',
         'OR', 'Chiloquin', '', 'Klamath', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -923,7 +924,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '17081', '9657 Scared Kind Street', 'f', 
+    VALUES ('USA', 't', '17081', '9657 Scared Kind Street', 't',
         'PA', 'Plainfield', '', 'Cumberland', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -950,7 +951,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '85014', '110 Logical Tone Drive', 'f', 
+    VALUES ('USA', 'f', '85014', '110 Logical Tone Drive', 't',
         'AZ', 'Phoenix', '', 'Maricopa', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -977,7 +978,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '60132', '1760 Channel Bottom', 'f', 
+    VALUES ('USA', 't', '60132', '1760 Channel Bottom', 't',
         'IL', 'Carol stream', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1031,7 +1032,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '27014', '5542 Politics Hollow', 'f', 
+    VALUES ('USA', 't', '27014', '5542 Politics Hollow', 't',
         'NC', 'Cooleemee', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1085,7 +1086,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '44705', '2794 Uniform Value Square', 'f', 
+    VALUES ('USA', 't', '44705', '2794 Uniform Value Square', 't',
         'OH', 'Canton', '', 'Stark', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1112,7 +1113,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '35501', '6178 Relieved Rain Wells', 'f', 
+    VALUES ('USA', 't', '35501', '6178 Relieved Rain Wells', 't',
         'AL', 'Jasper', '', 'Walker', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1220,7 +1221,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '83836', '8823 Side Fall', 'f', 
+    VALUES ('USA', 't', '83836', '8823 Side Fall', 't',
         'ID', 'Hope', '', 'Bonner', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1247,7 +1248,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '16213', '6608 Weary Drawing Lakes', 'f', 
+    VALUES ('USA', 'f', '16213', '6608 Weary Drawing Lakes', 't',
         'PA', 'Callensburg', '', 'Clarion', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1274,7 +1275,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '30817', '1658 Organisational Bedroom Square', 'f', 
+    VALUES ('USA', 'f', '30817', '1658 Organisational Bedroom Square', 't',
         'GA', 'Lincolnton', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1301,7 +1302,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '88240', '7269 Sister Gardens', 'f', 
+    VALUES ('USA', 'f', '88240', '7269 Sister Gardens', 't',
         'NM', 'Hobbs', '', 'Lea', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1328,7 +1329,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '50595', '7864 Remarkable Status River', 'f', 
+    VALUES ('USA', 't', '50595', '7864 Remarkable Status River', 't',
         'IA', 'Webster city', '', 'Hamilton', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1355,7 +1356,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '60064', '7230 Trend Mount', 'f', 
+    VALUES ('USA', 'f', '60064', '7230 Trend Mount', 't',
         'IL', 'North chicago', '', 'Lake', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1382,7 +1383,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '55076', '9299 Democratic Hill Cliffs', 'f', 
+    VALUES ('USA', 'f', '55076', '9299 Democratic Hill Cliffs', 't',
         'MN', 'Inver grove heights', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1409,7 +1410,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '61756', '9822 Excess Start Lock', 'f', 
+    VALUES ('USA', 't', '61756', '9822 Excess Start Lock', 't',
         'IL', 'Maroa', '', 'Macon', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1436,7 +1437,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '58773', '5831 Residential Respect Track', 'f', 
+    VALUES ('USA', 'f', '58773', '5831 Residential Respect Track', 't',
         'ND', 'Powers lake', '', 'Burke', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1463,7 +1464,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '12803', '5030 Vision Loop', 'f', 
+    VALUES ('USA', 't', '12803', '5030 Vision Loop', 't',
         'NY', 'South glens falls', '', 'Saratoga', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1490,7 +1491,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '25054', '1723 Multiple Object Canyon', 'f', 
+    VALUES ('USA', 't', '25054', '1723 Multiple Object Canyon', 't',
         'WV', 'Dawes', '', 'Kanawha', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1517,7 +1518,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '36426', '5148 Shaggy Farm Center', 'f', 
+    VALUES ('USA', 'f', '36426', '5148 Shaggy Farm Center', 't',
         'AL', 'Brewton', '', 'Escambia', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1544,7 +1545,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '67664', '2800 Cheerful Animal Valley', 'f', 
+    VALUES ('USA', 't', '67664', '2800 Cheerful Animal Valley', 't',
         'KS', 'Prairie view', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1571,7 +1572,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '63957', '6016 General Dog Divide', 'f', 
+    VALUES ('USA', 'f', '63957', '6016 General Dog Divide', 't',
         'MO', 'Piedmont', '', 'Wayne', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1598,7 +1599,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '62526', '4689 Alert Minute Court', 'f', 
+    VALUES ('USA', 't', '62526', '4689 Alert Minute Court', 't',
         'IL', 'Decatur', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1625,7 +1626,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '72117', '3448 Minor Solicitor Junction', 'f', 
+    VALUES ('USA', 'f', '72117', '3448 Minor Solicitor Junction', 't',
         'AR', 'North little rock', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1679,7 +1680,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '19053', '5012 Unemployed Other Harbor', 'f', 
+    VALUES ('USA', 't', '19053', '5012 Unemployed Other Harbor', 't',
         'PA', 'Feasterville trevose', '', 'Bucks', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1706,7 +1707,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '07095', '9931 Hushed Passage Turnpike', 'f', 
+    VALUES ('USA', 't', '07095', '9931 Hushed Passage Turnpike', 't',
         'NJ', 'Woodbridge', '', 'Middlesex', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1760,7 +1761,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '54017', '1926 Double Effort Spring', 'f', 
+    VALUES ('USA', 'f', '54017', '1926 Double Effort Spring', 't',
         'WI', 'New richmond', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1787,7 +1788,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '80534', '7185 Arbitrary Contrast Freeway', 'f', 
+    VALUES ('USA', 'f', '80534', '7185 Arbitrary Contrast Freeway', 't',
         'CO', 'Johnstown', '', 'Weld', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1895,7 +1896,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '00983', '231 Causal Expert Highway', 'f', 
+    VALUES ('USA', 't', '00983', '231 Causal Expert Highway', 't',
         'PR', 'Carolina', '', 'Carolina', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1922,7 +1923,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '25266', '53 Nice Customer Green', 'f', 
+    VALUES ('USA', 't', '25266', '53 Nice Customer Green', 't',
         'WV', 'Newton', '', 'Roane', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -1949,7 +1950,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '10150', '668 Unconscious Gun Spring', 'f', 
+    VALUES ('USA', 't', '10150', '668 Unconscious Gun Spring', 't',
         'NY', 'New york', '', 'New york', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2003,7 +2004,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '92007', '2632 Unlikely Assumption Tunnel', 'f', 
+    VALUES ('USA', 'f', '92007', '2632 Unlikely Assumption Tunnel', 't',
         'CA', 'Cardiff by the sea', '', 'San diego', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2030,7 +2031,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '44470', '2823 Eventual Hour Gateway', 'f', 
+    VALUES ('USA', 'f', '44470', '2823 Eventual Hour Gateway', 't',
         'OH', 'Southington', '', 'Trumbull', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2138,7 +2139,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '49270', '121 Consequence Club', 'f', 
+    VALUES ('USA', 't', '49270', '121 Consequence Club', 't',
         'MI', 'Petersburg', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2165,7 +2166,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '58064', '5708 Brainy West Bend', 'f', 
+    VALUES ('USA', 'f', '58064', '5708 Brainy West Bend', 't',
         'ND', 'Page', '', 'Cass', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2246,7 +2247,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '80295', '7771 Alive Iron Mission', 'f', 
+    VALUES ('USA', 't', '80295', '7771 Alive Iron Mission', 't',
         'CO', 'Denver', '', 'Denver', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2273,7 +2274,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '58776', '1146 Ability Centers', 'f', 
+    VALUES ('USA', 't', '58776', '1146 Ability Centers', 't',
         'ND', 'Ross', '', 'Mountrail', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2300,7 +2301,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '55168', '3541 Radical Sir Avenue', 'f', 
+    VALUES ('USA', 't', '55168', '3541 Radical Sir Avenue', 't',
         'MN', 'Saint paul', '', 'Ramsey', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2327,7 +2328,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '93247', '4171 Impossible Defence Overpass', 'f', 
+    VALUES ('USA', 't', '93247', '4171 Impossible Defence Overpass', 't',
         'CA', 'Lindsay', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2354,7 +2355,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '22513', '3627 Retail Kind Lodge', 'f', 
+    VALUES ('USA', 't', '22513', '3627 Retail Kind Lodge', 't',
         'VA', 'Merry point', '', 'Lancaster', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2381,7 +2382,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '64778', '1212 Mid Top Parkway', 'f', 
+    VALUES ('USA', 't', '64778', '1212 Mid Top Parkway', 't',
         'MO', 'Richards', '', 'Vernon', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2408,7 +2409,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '55336', '1642 Minor Potential Corners', 'f', 
+    VALUES ('USA', 't', '55336', '1642 Minor Potential Corners', 't',
         'MN', 'Glencoe', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2489,7 +2490,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '25926', '6558 Willing Master Valley', 'f', 
+    VALUES ('USA', 'f', '25926', '6558 Willing Master Valley', 't',
         'WV', 'Sprague', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2516,7 +2517,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '00922', '8532 Spare Offer Cliffs', 'f', 
+    VALUES ('USA', 't', '00922', '8532 Spare Offer Cliffs', 't',
         'PR', 'San juan', '', 'San juan', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2570,7 +2571,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '94547', '4666 Pain Isle', 'f', 
+    VALUES ('USA', 'f', '94547', '4666 Pain Isle', 't',
         'CA', 'Hercules', '', 'Contra costa', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2597,7 +2598,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '15257', '4464 Sense Station', 'f', 
+    VALUES ('USA', 't', '15257', '4464 Sense Station', 't',
         'PA', 'Pittsburgh', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2624,7 +2625,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '75155', '7746 Cooperative Fall Shoal', 'f', 
+    VALUES ('USA', 't', '75155', '7746 Cooperative Fall Shoal', 't',
         'TX', 'Rice', '', 'Navarro', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2651,7 +2652,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '06601', '2896 Jewish Lack Lodge', 'f', 
+    VALUES ('USA', 't', '06601', '2896 Jewish Lack Lodge', 't',
         'CT', 'Bridgeport', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2732,7 +2733,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '33630', '1062 Scornful Air Fort', 'f', 
+    VALUES ('USA', 'f', '33630', '1062 Scornful Air Fort', 't',
         'FL', 'Tampa', '', 'Hillsborough', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2759,7 +2760,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '36028', '3220 Drunk Message Parkway', 'f', 
+    VALUES ('USA', 'f', '36028', '3220 Drunk Message Parkway', 't',
         'AL', 'Dozier', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2786,7 +2787,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '42413', '4924 Part-time Charge Knoll', 'f', 
+    VALUES ('USA', 'f', '42413', '4924 Part-time Charge Knoll', 't',
         'KY', 'Hanson', '', 'Hopkins', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2840,7 +2841,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '64735', '4372 Fact Junction', 'f', 
+    VALUES ('USA', 'f', '64735', '4372 Fact Junction', 't',
         'MO', 'Clinton', '', 'Henry', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2867,7 +2868,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '98131', '8373 Resonant Investment Mission', 'f', 
+    VALUES ('USA', 'f', '98131', '8373 Resonant Investment Mission', 't',
         'WA', 'Seattle', '', 'King', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2921,7 +2922,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '04056', '3517 Hot School Brook', 'f', 
+    VALUES ('USA', 'f', '04056', '3517 Hot School Brook', 't',
         'ME', 'Newfield', '', 'York', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2948,7 +2949,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '63541', '4668 Start Inlet', 'f', 
+    VALUES ('USA', 't', '63541', '4668 Start Inlet', 't',
         'MO', 'Glenwood', '', 'Schuyler', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -2975,7 +2976,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '68659', '7270 Development Row', 'f', 
+    VALUES ('USA', 't', '68659', '7270 Development Row', 't',
         'NE', 'Rogers', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -3029,7 +3030,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '65897', '8092 Pure Name Bridge', 'f', 
+    VALUES ('USA', 'f', '65897', '8092 Pure Name Bridge', 't',
         'MO', 'Springfield', '', 'Greene', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -3056,7 +3057,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '85738', '8772 Forthcoming Hope Fort', 'f', 
+    VALUES ('USA', 't', '85738', '8772 Forthcoming Hope Fort', 't',
         'AZ', 'Catalina', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -3083,7 +3084,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '59604', '9218 Moral Worker Summit', 'f', 
+    VALUES ('USA', 'f', '59604', '9218 Moral Worker Summit', 't',
         'MT', 'Helena', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -3137,7 +3138,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '85063', '881 Scary Holiday Radial', 'f', 
+    VALUES ('USA', 'f', '85063', '881 Scary Holiday Radial', 't',
         'AZ', 'Phoenix', '', 'Maricopa', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -3164,7 +3165,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '40291', '6026 Wide Development Port', 'f', 
+    VALUES ('USA', 't', '40291', '6026 Wide Development Port', 't',
         'KY', 'Louisville', '', 'Jefferson', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -3245,7 +3246,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '29053', '8589 Official Valleys', 'f', 
+    VALUES ('USA', 'f', '29053', '8589 Official Valleys', 't',
         'SC', 'Gaston', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -3326,7 +3327,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '70358', '4786 Prior Politics Mission', 'f', 
+    VALUES ('USA', 'f', '70358', '4786 Prior Politics Mission', 't',
         'LA', 'Grand isle', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -3353,7 +3354,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '14723', '1060 Letter Stravenue', 'f', 
+    VALUES ('USA', 'f', '14723', '1060 Letter Stravenue', 't',
         'NY', 'Cherry creek', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -3380,7 +3381,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '29582', '7735 Street Creek', 'f', 
+    VALUES ('USA', 't', '29582', '7735 Street Creek', 't',
         'SC', 'North myrtle beach', '', 'Horry', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -3407,7 +3408,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '84133', '7301 Watery Arrangement Radial', 'f', 
+    VALUES ('USA', 'f', '84133', '7301 Watery Arrangement Radial', 't',
         'UT', 'Salt lake city', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -3434,7 +3435,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '87027', '8666 Fluttering Situation Heights', 'f', 
+    VALUES ('USA', 'f', '87027', '8666 Fluttering Situation Heights', 't',
         'NM', 'La jara', '', 'Sandoval', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -3461,7 +3462,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '38233', '8859 Roasted Energy Falls', 'f', 
+    VALUES ('USA', 'f', '38233', '8859 Roasted Energy Falls', 't',
         'TN', 'Kenton', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -3488,7 +3489,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '65438', '9082 Plain Bed Avenue', 'f', 
+    VALUES ('USA', 't', '65438', '9082 Plain Bed Avenue', 't',
         'MO', 'Birch tree', '', 'Shannon', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -3515,7 +3516,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '99670', '2204 Status Avenue', 'f', 
+    VALUES ('USA', 'f', '99670', '2204 Status Avenue', 't',
         'AK', 'South naknek', '', '', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -3542,7 +3543,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 'f', '35175', '7622 Thoughtless Science Pines', 'f', 
+    VALUES ('USA', 'f', '35175', '7622 Thoughtless Science Pines', 't',
         'AL', 'Union grove', '', 'Marshall', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
@@ -3596,7 +3597,7 @@ INSERT INTO actor.usr
 
 INSERT INTO actor.usr_address 
     (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr) 
-    VALUES ('USA', 't', '65055', '8231 Relieved Debt Cape', 'f', 
+    VALUES ('USA', 't', '65055', '8231 Relieved Debt Cape', 't',
         'MO', 'Mc girk', '', 'Moniteau', CURRVAL('actor.usr_id_seq'));
 
 INSERT INTO actor.card (barcode, usr) 
