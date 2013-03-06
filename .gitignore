@@ -329,3 +329,7 @@ Open-ILS/xul/staff_client/xulrunner-3.6.25.en-US.linux-i686.tar.bz2
 Open-ILS/xul/staff_client/xulrunner/
 README.html
 HACKING.html
+Open-ILS/examples/apache/eg.conf
+Open-ILS/examples/apache/eg_startup
+Open-ILS/examples/apache/eg_vhost.conf
+Open-ILS/src/support-scripts/eg_db_config
