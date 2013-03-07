@@ -608,30 +608,32 @@ CREATE OR REPLACE FUNCTION authority.axis_authority_tags(a TEXT) RETURNS INT[] A
     SELECT ARRAY_ACCUM(field) FROM authority.browse_axis_authority_field_map WHERE axis = $1;
 $$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION authority.axis_authority_tags_refs(a TEXT) RETURNS INT[] AS $$
-    SELECT  ARRAY_CAT(
-                ARRAY[a.field],
-                (SELECT ARRAY_ACCUM(x.id) FROM authority.control_set_authority_field x WHERE x.main_entry = a.field)
-            )
-      FROM  authority.browse_axis_authority_field_map a
-      WHERE axis = $1
-$$ LANGUAGE SQL;
 
+CREATE OR REPLACE FUNCTION authority.axis_authority_tags_refs(a TEXT) RETURNS INT[] AS $$
+    SELECT ARRAY_AGG(y) from (
+       SELECT  unnest(ARRAY_CAT(
+                 ARRAY[a.field],
+                 (SELECT ARRAY_ACCUM(x.id) FROM authority.control_set_authority_field x WHERE x.main_entry = a.field)
+             )) y
+       FROM  authority.browse_axis_authority_field_map a
+       WHERE axis = $1) x
+$$ LANGUAGE SQL;
 
 
 CREATE OR REPLACE FUNCTION authority.btag_authority_tags(btag TEXT) RETURNS INT[] AS $$
     SELECT ARRAY_ACCUM(authority_field) FROM authority.control_set_bib_field WHERE tag = $1
 $$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION authority.btag_authority_tags_refs(btag TEXT) RETURNS INT[] AS $$
-    SELECT  ARRAY_CAT(
-                ARRAY[a.authority_field],
-                (SELECT ARRAY_ACCUM(x.id) FROM authority.control_set_authority_field x WHERE x.main_entry = a.authority_field)
-            )
-      FROM  authority.control_set_bib_field a
-      WHERE a.tag = $1
-$$ LANGUAGE SQL;
 
+CREATE OR REPLACE FUNCTION authority.btag_authority_tags_refs(btag TEXT) RETURNS INT[] AS $$
+    SELECT ARRAY_AGG(y) from (
+        SELECT  unnest(ARRAY_CAT(
+                    ARRAY[a.authority_field],
+                    (SELECT ARRAY_ACCUM(x.id) FROM authority.control_set_authority_field x WHERE x.main_entry = a.authority_field)
+                )) y
+      FROM  authority.control_set_bib_field a
+      WHERE a.tag = $1) x
+$$ LANGUAGE SQL;
 
 
 CREATE OR REPLACE FUNCTION authority.atag_authority_tags(atag TEXT) RETURNS INT[] AS $$
@@ -639,14 +641,14 @@ CREATE OR REPLACE FUNCTION authority.atag_authority_tags(atag TEXT) RETURNS INT[
 $$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION authority.atag_authority_tags_refs(atag TEXT) RETURNS INT[] AS $$
-    SELECT  ARRAY_CAT(
-                ARRAY[a.id],
-                (SELECT ARRAY_ACCUM(x.id) FROM authority.control_set_authority_field x WHERE x.main_entry = a.id)
-            )
+    SELECT ARRAY_AGG(y) from (
+        SELECT  unnest(ARRAY_CAT(
+                    ARRAY[a.id],
+                    (SELECT ARRAY_ACCUM(x.id) FROM authority.control_set_authority_field x WHERE x.main_entry = a.id)
+                )) y
       FROM  authority.control_set_authority_field a
-      WHERE a.tag = $1
+      WHERE a.tag = $1) x
 $$ LANGUAGE SQL;
-
 
 
 CREATE OR REPLACE FUNCTION authority.axis_browse_center( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 9 ) RETURNS SETOF BIGINT AS $$
