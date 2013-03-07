@@ -339,9 +339,13 @@ CREATE OR REPLACE FUNCTION asset.label_normalizer_dewey(TEXT) RETURNS TEXT AS $f
     $init =~ s/^([\p{IsAlpha}]+)/$1 /;
     my @tokens = split /\.|\s+/, $init;
     my $digit_group_count = 0;
+    my $first_digit_group_idx;
     for (my $i = 0; $i <= $#tokens; $i++) {
         if ($tokens[$i] =~ /^\d+$/) {
             $digit_group_count++;
+            if ($digit_group_count == 1) {
+                $first_digit_group_idx = $i;
+            }
             if (2 == $digit_group_count) {
                 $tokens[$i] = sprintf("%-15.15s", $tokens[$i]);
                 $tokens[$i] =~ tr/ /0/;
@@ -350,7 +354,7 @@ CREATE OR REPLACE FUNCTION asset.label_normalizer_dewey(TEXT) RETURNS TEXT AS $f
     }
     # Pad the first digit_group if there was only one
     if (1 == $digit_group_count) {
-        $tokens[0] .= '_000000000000000'
+        $tokens[$first_digit_group_idx] .= '_000000000000000'
     }
     my $key = join("_", @tokens);
     $key =~ s/[^\p{IsAlnum}_]//g;
@@ -358,6 +362,7 @@ CREATE OR REPLACE FUNCTION asset.label_normalizer_dewey(TEXT) RETURNS TEXT AS $f
     return $key;
 
 $func$ LANGUAGE PLPERLU;
+
 
 CREATE OR REPLACE FUNCTION asset.label_normalizer_lc(TEXT) RETURNS TEXT AS $func$
     use strict;
