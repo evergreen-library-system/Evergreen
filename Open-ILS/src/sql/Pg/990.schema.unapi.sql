@@ -41,8 +41,24 @@ RETURNS INTEGER AS $$
     );
 $$ LANGUAGE SQL STABLE;
 
-CREATE OR REPLACE FUNCTION evergreen.rank_cp_status(status INT)
+-- this version exists mainly to accommodate JSON query transform limitations
+-- (the transform argument must be an IDL field, not an entire row/object)
+-- XXX is there another way?
+CREATE OR REPLACE FUNCTION evergreen.rank_cp(copy_id BIGINT)
 RETURNS INTEGER AS $$
+DECLARE
+    copy asset.copy%ROWTYPE;
+BEGIN
+    SELECT * INTO copy FROM asset.copy WHERE id = copy_id;
+    RETURN evergreen.rank_cp(copy);
+END;
+$$ LANGUAGE PLPGSQL STABLE;
+
+CREATE OR REPLACE FUNCTION evergreen.rank_cp(copy asset.copy)
+RETURNS INTEGER AS $$
+DECLARE
+    rank INT;
+BEGIN
     WITH totally_available AS (
         SELECT id, 0 AS avail_rank
         FROM config.copy_status
@@ -58,11 +74,17 @@ RETURNS INTEGER AS $$
             OR id = 1 -- "Checked out"
     )
     SELECT COALESCE(
-        (SELECT avail_rank FROM totally_available WHERE $1 IN (id)),
-        (SELECT avail_rank FROM almost_available WHERE $1 IN (id)),
+        CASE WHEN NOT copy.opac_visible THEN 100 END,
+        (SELECT avail_rank FROM totally_available WHERE copy.status IN (id)),
+        CASE WHEN copy.holdable THEN
+            (SELECT avail_rank FROM almost_available WHERE copy.status IN (id))
+        END,
         100
-    );
-$$ LANGUAGE SQL STABLE;
+    ) INTO rank;
+
+    RETURN rank;
+END;
+$$ LANGUAGE PLPGSQL STABLE;
 
 CREATE OR REPLACE FUNCTION evergreen.ranked_volumes(
     bibid BIGINT[], 
@@ -119,6 +141,7 @@ CREATE OR REPLACE FUNCTION evergreen.ranked_volumes(
 
     SELECT ua.id, ua.name, ua.label_sortkey, MIN(ua.rank) AS rank FROM (
         SELECT acn.id, aou.name, acn.label_sortkey,
+            evergreen.rank_cp(acp),
             RANK() OVER w
         FROM asset.call_number acn
             JOIN asset.copy acp ON (acn.id = acp.call_number)
@@ -132,7 +155,7 @@ CREATE OR REPLACE FUNCTION evergreen.ranked_volumes(
                     FROM asset.opac_visible_copies 
                     WHERE copy_id = acp.id AND record = acn.record
                 ) ELSE TRUE END
-        GROUP BY acn.id, acp.status, aou.name, acn.label_sortkey, aou.id
+        GROUP BY acn.id, evergreen.rank_cp(acp), aou.name, acn.label_sortkey, aou.id
         WINDOW w AS (
             ORDER BY 
                 COALESCE(
@@ -145,7 +168,7 @@ CREATE OR REPLACE FUNCTION evergreen.ranked_volumes(
                     (SELECT e.distance FROM actor.org_unit_descendants_distance($2) as e WHERE e.id = aou.id),
                     1000
                 ),
-                evergreen.rank_cp_status(acp.status)
+                evergreen.rank_cp(acp)
         )
     ) AS ua
     GROUP BY ua.id, ua.name, ua.label_sortkey
@@ -1110,7 +1133,7 @@ CREATE OR REPLACE FUNCTION unapi.acn ( obj_id BIGINT, format TEXT,  ename TEXT, 
                                 XMLELEMENT( name copies,
                                     (SELECT XMLAGG(acp ORDER BY rank_avail) FROM (
                                         SELECT  unapi.acp( cp.id, 'xml', 'copy', evergreen.array_remove_item_by_value($4,'acn'), $5, $6, $7, $8, FALSE),
-                                            evergreen.rank_cp_status(cp.status) AS rank_avail
+                                            evergreen.rank_cp(cp) AS rank_avail
                                           FROM  asset.copy cp
                                                 JOIN actor.org_unit_descendants( (SELECT id FROM actor.org_unit WHERE shortname = $5), $6) aoud ON (cp.circ_lib = aoud.id)
                                           WHERE cp.call_number = acn.id
@@ -1124,7 +1147,7 @@ CREATE OR REPLACE FUNCTION unapi.acn ( obj_id BIGINT, format TEXT,  ename TEXT, 
                                 XMLELEMENT( name copies,
                                     (SELECT XMLAGG(acp ORDER BY rank_avail) FROM (
                                         SELECT  unapi.acp( cp.id, 'xml', 'copy', evergreen.array_remove_item_by_value($4,'acn'), $5, $6, $7, $8, FALSE),
-                                            evergreen.rank_cp_status(cp.status) AS rank_avail
+                                            evergreen.rank_cp(cp) AS rank_avail
                                           FROM  asset.copy cp
                                                 JOIN actor.org_unit_descendants( (SELECT id FROM actor.org_unit WHERE shortname = $5) ) aoud ON (cp.circ_lib = aoud.id)
                                           WHERE cp.call_number = acn.id
