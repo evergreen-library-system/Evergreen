@@ -15,7 +15,11 @@
   <script type="text/javascript">
 // <![CDATA[
 
-  // FIXME - some I18N love still needed in this file.  See @alt on img tags, and javascript for tab names
+  function get_i18n_str(id) {
+     var e = document.getElementById(id);
+     if (e) return e.textContent;
+     return "Error: i18n string not present: " + id;
+  }
 
   function SearchOnBlur() {
         var textbox = document.getElementById("quicksearch");
@@ -45,7 +49,7 @@
                 if (urls.opac_rresult.match(/\/eg\/opac\/results/)) {
                     opac_url =  xulG.url_prefix('opac_rresult') + "?query=" + encodeURIComponent(textbox.value);
                 }
-                var params = {'tab_name':'Catalog'};
+                var params = {'tab_name': get_i18n_str('staff.client.portal.catalog.tab_name') };
                 var content_params = { 'session' : ses(), 'authtime' : ses('authtime'), 'opac_url' : opac_url };
                 xulG.set_tab(urls.XUL_OPAC_WRAPPER, params, content_params);
         }
@@ -90,7 +94,7 @@
                         data.stash_retrieve(); 
                         document.getElementById('staffname').innerHTML = ", " + data.list.au[0].first_given_name(); 
                         home_ou_id = data.list.au[0].ws_ou();
-                        xulG.set_tab_name('Portal');
+                        xulG.set_tab_name(get_i18n_str('staff.client.portal.tab_name'));
                 }
                 function jb_open_eg_web_page(path, label) {
                         var loc = urls.XUL_BROWSER + '?url=' + window.escape(xulG.url_prefix('EG_WEB_BASE') + '/' + path);
@@ -120,7 +124,7 @@
                 //http://208.119.72.68/evergreen/evergreenmap.html
                 function address_map(newtab) {
                         loc = "http://maps.google.com";
-                        var params = {'tab_name':'Locate Address In Map'};
+                        var params = {'tab_name':get_i18n_str('staff.client.portal.address_map.tab_name')};
                         
                         if(newtab)
                                 xulG.new_tab(loc, params, {}); 
@@ -129,7 +133,7 @@
                 }
                 function local_admin(newtab) {
                         var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape(urls.XUL_LOCAL_ADMIN + '?ses=' + window.escape(ses()) + '&session=' + window.escape(ses())); 
-                        var params = {'tab_name':'Local Administration', 'browser' : true };
+                        var params = {'tab_name': get_i18n_str('staff.client.portal.local_admin.tab_name') , 'browser' : true };
                         var content_params = { 'no_xulG' : false, 'show_nav_buttons' : true, 'show_print_button' : true };
                         
                         if(newtab)
@@ -145,7 +149,7 @@
                 }
                 function hold_pull_list(newtab) {
                         var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape(urls.XUL_HOLD_PULL_LIST + '?ses=' + window.escape(ses()));
-                        var params = {'tab_name':'On Shelf Pull List'};
+                        var params = {'tab_name': get_i18n_str('staff.client.portal.on_shelf_pull_list.tab_name') };
                         
                         if(newtab)
                                 xulG.new_tab(loc, params);
@@ -159,7 +163,7 @@
                                 xulG.set_tab(urls.XUL_PATRON_BARCODE_ENTRY,{},{});
                 }
                 function catalog(newtab) {
-                        var params = {'tab_name':'Catalog'};
+                        var params = {'tab_name': get_i18n_str('staff.client.portal.catalog.tab_name') };
                         var content_params = { 'session' : ses(), 'authtime' : ses('authtime') };
                         
                         if(newtab)
@@ -174,14 +178,14 @@
                                 xulG.set_tab(urls.XUL_Z3950_IMPORT,{},{});
                 }
                 function copy_buckets(newtab) {
-                        params = {'tab_name':'Copy Buckets'};
+                        params = {'tab_name': get_i18n_str('staff.client.portal.copybuckets.tab_name') };
                         if(newtab)
                                 xulG.new_tab(urls.XUL_COPY_BUCKETS, params, {});
                         else
                                 xulG.set_tab(urls.XUL_COPY_BUCKETS, params, {});
                 }
                 function record_buckets(newtab) {
-                        params = {'tab_name':'Record Buckets'};
+                        params = {'tab_name': get_i18n_str('staff.client.portal.recordbuckets.tab_name') };
                         if(newtab)
                                 xulG.new_tab(urls.XUL_RECORD_BUCKETS, params, {});
                         else
@@ -200,14 +204,15 @@
                                 xulG.set_tab(urls.XUL_CHECKIN,{},{});
                 }
                 function MARC_batch_import(newtab) {
+                	var tabstr = get_i18n_str('staff.client.portal.marcutil.tab_name');
                         if(newtab)
-                                jb_open_eg_web_page_newtab('vandelay/vandelay', 'Server Settings');
+                                jb_open_eg_web_page_newtab('vandelay/vandelay', tabstr );
                         else
-                                jb_open_eg_web_page('vandelay/vandelay', 'Server Settings');
+                                jb_open_eg_web_page('vandelay/vandelay', tabstr );
                 }
                 function local_admin_reports(newtab) {
                         var loc = urls.XUL_BROWSER + '?url=' + window.escape( xulG.url_prefix('XUL_REPORTS') + '?ses=' + ses());
-                        params = {'tab_name' : 'Reports', 'browser' : false }
+                        params = {'tab_name' : get_i18n_str('staff.client.portal.reports.tab_name') , 'browser' : false }
                         content_params = {'no_xulG' : false, 'show_print_button' : false, show_nav_buttons : true }
                         if(newtab)
                                 xulG.new_tab(loc, params, content_params);
@@ -233,13 +238,13 @@
                                         url += i + '=' + window.escape(p[i]);
                                 }
                                 var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape( url );
-                                xulG.new_tab(loc, {}, { 'show_print_button' : true , 'tab_name' : 'Editing Related Patron' , 'passthru_content_params' : {'spawn_search' : function(s) { spawn_search(s); }, 'spawn_editor' : spawn_editor }});
+                                xulG.new_tab(loc, {}, { 'show_print_button' : true , 'tab_name' : get_i18n_str('staff.client.portal.patronreg_edit.tab_name') , 'passthru_content_params' : {'spawn_search' : function(s) { spawn_search(s); }, 'spawn_editor' : spawn_editor }});
                         }
                         
                         var loc = urls.XUL_REMOTE_BROWSER  + '?url=' + window.escape( urls.XUL_PATRON_EDIT + '?ses=' + window.escape( ses() ) );
                         var content_params = { 
                                                      'show_print_button' : true , 
-                                                     'tab_name' : 'Register Patron' ,
+                                                     'tab_name' : get_i18n_str('staff.client.portal.patronreg.tab_name') ,
                                                      'passthru_content_params' : { 'spawn_search' : function(s) { spawn_search(s); },
                                                                                     'spawn_editor' : spawn_editor }
                                                  }
@@ -545,6 +550,23 @@
 
   <div class="attribution c1">&staff.client.portal.copyright;<br />
   &staff.client.portal.poweredby; <img src="skin/media/images/portal/eg_tiny_logo.jpg" alt="Evergreen logo" /></div>
+
+<div style="display:none">
+  <span id="tpac_toggled_on">&staff.client.portal.toggle_tpac.message_on;</span>
+  <span id="tpac_toggled_off">&staff.client.portal.toggle_tpac.message_off;</span>
+  <span id="staff.client.portal.catalog.tab_name">&staff.client.portal.catalog.tab_name;</span>
+  <span id="staff.client.portal.tab_name">&staff.client.portal.tab_name;</span>
+  <span id="staff.client.portal.address_map.tab_name">&staff.client.portal.address_map.tab_name;</span>
+  <span id="staff.client.portal.local_admin.tab_name">&staff.client.portal.local_admin.tab_name;</span>
+  <span id="staff.client.portal.on_shelf_pull_list.tab_name">&staff.client.portal.on_shelf_pull_list.tab_name;</span>
+  <span id="staff.client.portal.catalog.tab_name">&staff.client.portal.catalog.tab_name;</span>
+  <span id="staff.client.portal.copybuckets.tab_name">&staff.client.portal.copybuckets.tab_name;</span>
+  <span id="staff.client.portal.recordbuckets.tab_name">&staff.client.portal.recordbuckets.tab_name;</span>
+  <span id="staff.client.portal.marcutil.tab_name">&staff.client.portal.marcutil.tab_name;</span>
+  <span id="staff.client.portal.reports.tab_name">&staff.client.portal.reports.tab_name;</span>
+  <span id="staff.client.portal.patronreg_edit.tab_name">&staff.client.portal.patronreg_edit.tab_name;</span>
+  <span id="staff.client.portal.patronreg.tab_name">&staff.client.portal.patronreg.tab_name;</span>
+</div>
 </body>
 </html>
 

@@ -3623,6 +3623,7 @@
 <!ENTITY staff.printing.advanced.html_templates.warning.header "Also...">
 <!ENTITY staff.printing.advanced.html_templates.warning.text "If using Receipt Templates with either the DOS LPT1 Print strategy or the Custom/External Print strategy (with &quot;receipt.txt&quot;), the client will try to translate any HTML markup to text, but this process may be imperfect, and for the best fidelity you should consider reworking your templates to be plain text if you are using a plain text print strategy.  However, if using a plain text print strategy with HTML markup, you may include special character codes in 2-digit hexadecimal in a &quot;hex&quot; attribute for any given element.  Such codes will be converted to actual characters and inserted at the place of the tag.  For example, &lt;p hex=&quot;0C&quot;&gt;Hello World&lt;/p&gt; will translate to form feed control character + Hello World. &lt;p&gt;Hello World&lt;/p hex=&quot;0C&quot;&gt; will translate to Hello World + form feed control character.">
 <!ENTITY staff.client.portal.title "Evergreen Staff Client Portal">
+<!ENTITY staff.client.portal.tab_name "Portal">
 <!ENTITY staff.client.portal.welcome "Welcome to Evergreen">
 <!ENTITY staff.client.portal.circpatron "Circulation and Patrons">
 <!ENTITY staff.client.portal.checkout "Check Out Items">
@@ -3632,6 +3633,8 @@
 <!ENTITY staff.client.portal.checkin.description "Check In Items">
 <!ENTITY staff.client.portal.patronreg "Register Patron(s)">
 <!ENTITY staff.client.portal.patronreg.description "Register Patron(s)">
+<!ENTITY staff.client.portal.patronreg.tab_name "Register Patron">
+<!ENTITY staff.client.portal.patronreg_edit.tab_name "Editing Related Patron">
 <!ENTITY staff.client.portal.patronsearch "Search For Patron By Name">
 <!ENTITY staff.client.portal.patronsearch.description "Search For Patron By Name">
 <!ENTITY staff.client.portal.holdlist "Pull List for Hold Requests">
@@ -3643,23 +3646,31 @@
 <!ENTITY staff.client.portal.itemstatus.description "Item Status / Display">
 <!ENTITY staff.client.portal.marcutil "MARC Batch Import / Export">
 <!ENTITY staff.client.portal.marcutil.description "MARC Batch Import / Export">
+<!ENTITY staff.client.portal.marcutil.tab_name "Server Settings">
 <!ENTITY staff.client.portal.z3950 "z39.50 Import">
 <!ENTITY staff.client.portal.z3950.description "z39.50 Import">
 <!ENTITY staff.client.portal.copybuckets "Copy Buckets">
 <!ENTITY staff.client.portal.copybuckets.description "Copy Buckets">
 <!ENTITY staff.client.portal.recordbuckets "Record Buckets">
 <!ENTITY staff.client.portal.recordbuckets.description "Record Buckets">
+<!ENTITY staff.client.portal.recordbuckets.tab_name "Record Buckets">
 <!ENTITY staff.client.portal.admin "Administration">
 <!ENTITY staff.client.portal.helpdesk "Get Help with Evergreen">
 <!ENTITY staff.client.portal.helpdesk.description "Submit A Helpdesk Ticket">
 <!ENTITY staff.client.portal.reports "Reports">
 <!ENTITY staff.client.portal.reports.description "Reports">
+<!ENTITY staff.client.portal.reports.tab_name "Reports">
 <!ENTITY staff.client.portal.receipts "Edit Receipt Templates">
 <!ENTITY staff.client.portal.receipts.description "Edit Receipt Templates">
 <!ENTITY staff.client.portal.copyright "Copyright &copy; 2006-2012 Georgia Public Library Service, and others">
 <!ENTITY staff.client.portal.poweredby "Powered by">
 <!ENTITY staff.client.portal.open_new_tab.description "Open in a new tab">
 <!ENTITY staff.client.portal.search.button "Search">
+<!ENTITY staff.client.portal.address_map.tab_name "Locate Address In Map">
+<!ENTITY staff.client.portal.local_admin.tab_name "Local Administration">
+<!ENTITY staff.client.portal.on_shelf_pull_list.tab_name "On Shelf Pull List">
+<!ENTITY staff.client.portal.catalog.tab_name "Catalog">
+<!ENTITY staff.client.portal.copybuckets.tab_name "Copy Buckets">
 <!ENTITY staff.item.batch.hold.groupbox_caption "Request Details">
 <!ENTITY staff.item.batch.hold.hold_type_menu.label "Hold Type">
 <!ENTITY staff.item.batch.hold.hold_type_menu.accesskey "T">
