@@ -262,8 +262,8 @@ sub mk_copy_query {
         }
     );
     push(@{$query->{order_by}},
-        { class => "acp", field => 'status',
-          transform => 'evergreen.rank_cp_status'
+        { class => "acp", field => 'id',
+          transform => 'evergreen.rank_cp'
         }
     );
 
