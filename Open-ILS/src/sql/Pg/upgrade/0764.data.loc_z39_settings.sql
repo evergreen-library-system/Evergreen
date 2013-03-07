@@ -1,5 +1,6 @@
-
 BEGIN;
+
+SELECT evergreen.upgrade_deps_block_check('0764', :eg_version);
 
 UPDATE config.z3950_source
     SET host = 'lx2.loc.gov', port = 210, db = 'LCDB'
