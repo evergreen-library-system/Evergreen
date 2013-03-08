@@ -679,7 +679,7 @@ sub unapi {
         $feed->link( unapi => $base) if ($flesh_feed);
 
         print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
-        print $U->entityize($feed->toString) . "\n";
+        print $feed->toString . "\n";
 
         return Apache2::Const::OK;
     }
@@ -940,7 +940,7 @@ sub supercat {
         $feed->link( unapi => $base) if ($flesh_feed);
 
         print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
-        print $U->entityize($feed->toString) . "\n";
+        print $feed->toString . "\n";
 
         return Apache2::Const::OK;
     }
@@ -1064,7 +1064,7 @@ sub bookbag_feed {
 
 
     print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
-    print $U->entityize($feed->toString) . "\n";
+    print $feed->toString . "\n";
 
     return Apache2::Const::OK;
 }
@@ -1151,7 +1151,7 @@ sub changes_feed {
 
 
     print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
-    print $U->entityize($feed->toString) . "\n";
+    print $feed->toString . "\n";
 
     return Apache2::Const::OK;
 }
@@ -1198,6 +1198,8 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
        template="$base/1.1/$lib/mods3/$class/?searchTerms={searchTerms}&amp;startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
   <Url type="application/x-mods+xml"
        template="$base/1.1/$lib/mods/$class/?searchTerms={searchTerms}&amp;startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
+  <Url type="application/octet-stream"
+       template="$base/1.1/$lib/marc21/$class/?searchTerms={searchTerms}&amp;startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
   <Url type="application/x-marcxml+xml"
        template="$base/1.1/$lib/marcxml/$class/?searchTerms={searchTerms}&amp;startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
   <Url type="text/html"
@@ -1487,7 +1489,11 @@ sub create_record_feed {
     $feed->unapi($unapi) if ($flesh);
 
     $type = 'atom' if ($type eq 'html');
-    $type = 'marcxml' if (($type eq 'htmlholdings') || ($type eq 'marctxt') || ($type eq 'ris'));
+    $type = 'marcxml' if
+        $type eq 'htmlholdings' or
+        $type eq 'marctxt' or
+        $type eq 'ris' or
+        $type eq 'marc21';  # kludgy since it isn't an XML format, but needed
 
     #$records = $supercat->request( "open-ils.supercat.record.object.retrieve", $records )->gather(1);
 

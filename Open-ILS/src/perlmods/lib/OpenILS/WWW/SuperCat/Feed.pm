@@ -852,5 +852,33 @@ sub toString {
 package OpenILS::WWW::SuperCat::Feed::ris::item;
 use base 'OpenILS::WWW::SuperCat::Feed::marcxml::item';
 
+package OpenILS::WWW::SuperCat::Feed::marc21;
+use base 'OpenILS::WWW::SuperCat::Feed::marcxml';
+use MARC::File::XML ( BinaryEncoding => 'utf8', RecordFormat => 'USMARC' );
+
+sub new {
+	my $class = shift;
+	my $self = $class->SUPER::new;
+	$self->{type} = 'application/octet-stream';
+	return $self;
+}
+
+
+sub toString {
+    my $self = shift;
+
+    $self->{doc} = '';
+    for my $item ( $self->items ) {
+        my $r = MARC::Record->new_from_xml( $item->{doc}->toString(1) );
+        $self->{doc} .= $r->as_usmarc;
+    }
+
+    utf8::encode($self->{doc});
+    return $self->{doc};
+}
+
+package OpenILS::WWW::SuperCat::Feed::marc21::item;
+use base 'OpenILS::WWW::SuperCat::Feed::marcxml::item';
+
 
 1;
