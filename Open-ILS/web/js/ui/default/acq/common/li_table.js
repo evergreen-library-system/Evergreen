@@ -144,6 +144,169 @@ function AcqLiTable() {
     dojo.byId('acq-lit-notes-back-button').onclick = function(){self.show('list')};
     dojo.byId('acq-lit-real-copies-back-button').onclick = function(){self.show('list')};
 
+    this.afwCopyFieldArgs = function(field, perms) {
+        return {
+                "fmField" : field,
+                "fmClass": 'acqlid',
+                "labelFormat": (field == 'fund') ? fundLabelFormat : null,
+                "searchFormat": (field == 'fund') ? fundSearchFormat : null,
+                "searchFilter": (field == 'fund') ? {"active": "t"} : null,
+                "orgLimitPerms": [perms],
+                "dijitArgs": {
+                    "required": false,
+                    "labelType": (field == "fund") ? "html" : null
+                },
+                "noCache": (field == "fund"),
+                "forceSync": true
+            };
+    };
+
+    /* This is the "new" batch updater that sits atop all lineitems. It does
+     * use this.afwCopyFieldArgs() to borrow a little common code  from the
+     * "old" batch updater atop the copy details view. */
+    this.initBatchUpdater = function(disabled_fields) {
+        openils.Util.show("acq-batch-update", "table");
+
+        if (!dojo.isArray(disabled_fields)) disabled_fields = [];
+
+        /* Note that this will directly contain dijits, not the AutoWidget
+         * wrapper object. */
+        this.batchUpdateWidgets = {};
+
+        this.batchUpdateWidgets.item_count = new dijit.form.TextBox(
+            {
+                "style": {"width": "3em"},
+                "disabled": Boolean(
+                    dojo.indexOf(disabled_fields, "item_count") != -1
+                )
+            },
+            "acq-bu-item_count"
+        );
+
+        (new openils.widget.AutoFieldWidget({
+            "fmClass": "acqdf",
+            "selfReference": true,
+            "dijitArgs": { "required": false },
+            "forceSync": true,
+            "parentNode": "acq-bu-distribution_formula"
+        })).build(
+            function(w) {
+                dojo.style(w.domNode, {"width": "12em"});
+                /* dijitArgs to AutoFieldWidget won't work for 'disabled' */
+                w.attr(
+                    "disabled",
+                    dojo.indexOf(disabled_fields, "distribution_formula") != -1
+                );
+                self.batchUpdateWidgets.distribution_formula = w;
+            }
+        );
+
+        dojo.forEach(
+            ["owning_lib","location","collection_code","circ_modifier","fund"],
+            function(field) {
+                var args = self.afwCopyFieldArgs(field,"CREATE_PURCHASE_ORDER");
+                args.parentNode = dojo.byId("acq-bu-" + field);
+
+                (new openils.widget.AutoFieldWidget(args)).build(
+                    function(w, aw) {
+                        if (field == "fund") {
+                            dojo.connect(
+                                w, "onChange", function(val) {
+                                    self._updateFundSelectorStyle(aw, val);
+                                }
+                            );
+                            if (w.store)
+                                self._ensureCSSFundClasses(w.store);
+                        }
+
+                        dojo.style(w.domNode, {"width": "10em"});
+                        w.attr(
+                            "disabled",
+                            dojo.indexOf(disabled_fields, field) != -1
+                        );
+                        self.batchUpdateWidgets[field] = w;
+                    }
+                );
+            }
+        );
+
+        acqBatchUpdateApply.onClick = function() {
+            var li_id_list = self.getSelected(false, null, true /* id list */);
+            if (!li_id_list.length) {
+                alert(localeStrings.NO_LI_TO_UPDATE);
+                return;
+            }
+
+            progressDialog.show(true);
+            progressDialog.attr("title", localeStrings.LI_BATCH_UPDATE);
+            progressDialog.update({"maximum": li_id_list.length,"progress": 0});
+
+            var count = 0;
+
+            var params = [ self.authtoken, {"lineitems": li_id_list},
+                        self.batchUpdateChanges(), self.batchUpdateFormula() ];
+            console.log("batch update params: " + dojo.toJson(params));
+
+            fieldmapper.standardRequest(
+                ["open-ils.acq", "open-ils.acq.lineitem.batch_update"], {
+                    "async": true,
+                    "params": params,
+                    "onresponse": function(r) {
+                        if ((r = openils.Util.readResponse(r))) { // assignment
+                            progressDialog.update({"progress": ++count});
+                        } else {
+                            progressDialog.hide();
+                            progressDialog.attr("title", "");
+                        }
+                    },
+                    "oncomplete": function() {
+                        /* XXX Is the last call to onresponse guaranteed to
+                         * finish before oncomplete is fired? */
+                        if (count != li_id_list.length) {
+                            console.error("lineitem batch update operation failed");
+                            progressDialog.hide();
+                            progressDialog.attr("title", "");
+                        } else {
+                            location.href = location.href;
+                        }
+                    }
+                }
+            );
+        };
+    };
+
+    this.batchUpdateChanges = function() {
+        var o = {};
+
+        dojo.forEach(
+            openils.Util.objectProperties(this.batchUpdateWidgets),
+            function(k) {
+                if (k == "distribution_formula") return; /* handled elsewhere */
+                if (self.batchUpdateWidgets[k].attr("disabled")) return;
+
+                /* It's important that a value of "" should mean that a field
+                 * doesn't get used in the arguments to the batch updater API,
+                 * but 0 should mean an actual 0. */
+                var value = self.batchUpdateWidgets[k].attr("value");
+                if (value !== "")
+                    o[k] = value;
+            }
+        );
+
+        return o;
+    };
+
+    this.batchUpdateFormula = function() {
+        if (this.batchUpdateWidgets.distribution_formula.attr("disabled")) {
+            return null;
+        } else {
+            return (
+                this.batchUpdateWidgets.distribution_formula.attr("value") ||
+                null
+            );
+        }
+    };
+
     this.reset = function(keep_selectors) {
         while(self.tbody.childNodes[0])
             self.tbody.removeChild(self.tbody.childNodes[0]);
@@ -175,7 +338,7 @@ function AcqLiTable() {
     };
 
     this.enableActionsDropdownOptions = function(mask) {
-        /* 'mask' is probably a minomer the way I'm using it, but it needs to
+        /* 'mask' is probably a misnomer the way I'm using it, but it needs to
          * be one of pl,po,ao,gs,vp, or fs. */
         dojo.query("option", "acq-lit-li-actions-selector").forEach(
             function(option) {
@@ -1924,21 +2087,10 @@ function AcqLiTable() {
                 if(self.copyBatchRowDrawn) {
                     self.copyBatchWidgets[field].attr('value', null);
                 } else {
-                    var widget = new openils.widget.AutoFieldWidget({
-                        fmField : field,
-                        fmClass : 'acqlid',
-                        labelFormat : (field == 'fund') ? fundLabelFormat : null,
-                        searchFormat : (field == 'fund') ? fundSearchFormat : null,
-                        searchFilter : (field == 'fund') ? {"active": "t"} : null,
-                        parentNode : dojo.query('[name='+field+']', row)[0],
-                        orgLimitPerms : ['CREATE_PICKLIST'],
-                        dijitArgs : {
-                            "required": false,
-                            "labelType": (field == "fund") ? "html" : null
-                        },
-                        noCache: (field == "fund"),
-                        forceSync : true
-                    });
+                    var args = self.afwCopyFieldArgs(field, "CREATE_PICKLIST");
+                    args.parentNode = dojo.query('[name='+field+']', row)[0];
+
+                    var widget = new openils.widget.AutoFieldWidget(args);
                     widget.build(
                         function(w, ww) {
                             if (field == "fund" && w.store)

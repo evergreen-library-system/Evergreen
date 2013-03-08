@@ -318,6 +318,7 @@ function renderPo() {
     if(PO.order_date()) {
         openils.Util.show('acq-po-activated-on', 'inline');
         liTable.enableActionsDropdownOptions("ao"); /* activated */
+        liTable.initBatchUpdater(["item_count", "distribution_formula"]);
 
         dojo.byId('acq-po-activated-on').innerHTML = 
             dojo.string.substitute(
@@ -344,6 +345,7 @@ function renderPo() {
     } else {
         /* These things only make sense for not-ordered-yet POs */
 
+        liTable.initBatchUpdater();
         liTable.enableActionsDropdownOptions("po");
 
         openils.Util.show("acq-po-zero-activate-label", "table-cell");

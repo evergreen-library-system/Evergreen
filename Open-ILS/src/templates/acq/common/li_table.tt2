@@ -6,73 +6,113 @@
     <div id='acq-lit-table-div' class='hidden'>
 
         <!-- Line Item (bib record) list -->
-        <table id='acq-lit-table' class='oils-generic-table'>
-            <thead>
-                <tr>
-                    <th colspan='0'>
-                        <table style='width:100%;'>
-                            <tr>
-                                <td>
-                                    <span>
-                                        <select id="acq-lit-li-actions-selector">
-                                    <!-- mask meanings:
-                                        pl: selection list
-                                        po: pending purchase order
-                                        ao: activated purchase order
-                                        gs: general search
-                                        vp: view/place orders
-                                        fs: MARC federated search
+        <div style="float: left;">
+            <span>
+                <select id="acq-lit-li-actions-selector">
+            <!-- mask meanings:
+                pl: selection list
+                po: pending purchase order
+                ao: activated purchase order
+                gs: general search
+                vp: view/place orders
+                fs: MARC federated search
 
-                                        * for all, otherwise combine with |
-                                    -->
-                                            <option mask='*'  value='_'>[% l('--Actions--') %]</option>
-                                            <option mask='pl|gs|vp|fs' value='save_picklist'>[% l('Save Items To Selection List') %]</option>
-                                            <option mask='pl|gs|vp' value='selector_ready'>[% l('Mark Ready for Selector') %]</option>
-                                            <option mask='pl|gs|vp' value='order_ready'>[% l('Mark Ready for Order') %]</option>
-                                            <option mask='pl|po|gs|vp'  value='delete_selected'>[% l('Delete Selected Items') %]</option>
-                                            <option mask='pl|po'  value='add_brief_record'>[% l('Add Brief Record') %]</option>
-                                            <option mask='pl|po|ao|gs'  value='export_attr_list'>[% l('Export Single Attribute List') %]</option>
-                                            <option mask='*' value='' disabled='disabled'>[% l('----PO----') %]</option>
-                                            <option mask='pl|gs|vp|fs' value='create_order'>[% l('Create Purchase Order') %]</option>
-                                            <option mask='pl|gs|vp|fs' value='add_to_order'>[% l('Add to Purchase Order') %]</option>
-                                            <option mask='po|ao' value='print_po'>[% l('Print Purchase Order') %]</option>
-                                            <option mask='po|ao' value='po_history'>[% l('View PO History') %]</option>
-                                            <option mask='po' value='create_assets'>[% l('Load Bibs and Items') %]</option>
-                                            <!-- <option mask=''  value='batch_apply_funds'>[% l('Apply Funds to Selected Items') %]</option> XXX moving to batch updater -->
-                                            <option mask='ao|gs|vp' value='cancel_lineitems'>[% l('Cancel Selected Line Items') %]</option>
-                                            <option mask='po|ao|gs|vp' value='apply_claim_policy'>[% l('Apply Claim Policy to Selected Line Items') %]</option><!-- can the functionality desired here be covered by the next thing? -->
-                                            <option mask='ao|gs|vp' value='receive_lineitems' id='receive_lineitems' disabled='disabled'>[% l('Mark Selected Line Items as Received') %]</option>
-                                            <option mask='ao|gs|vp' value='rollback_receive_lineitems' id='rollback_receive_lineitems' disabled='disabled'>[% l('Un-Receive Selected Line Items') %]</option>
-                                            <option mask='ao|gs|vp' value='batch_create_invoice'>[% l('Create Invoice From Selected Line Items') %]</option>
-                                            <option mask='ao|gs|vp' value='batch_link_invoice'>[% l('Link Selected Line Items to Invoice') %]</option>
-                                        </select>
-                                        <span id="acq-lit-export-attr-holder" class="hidden">
-                                            <input dojoType="dijit.form.FilteringSelect" id="acq-lit-export-attr" jsId="acqLitExportAttrSelector" labelAttr="description" searchAttr="description" />
-                                            <span dojoType="dijit.form.Button" jsId="acqLitExportAttrButton">[% l('Export List') %]</span>
-                                        </span>
-                                        <span id="acq-lit-cancel-reason" class="hidden">
-                                            <span id="acq-lit-cancel-reason-selector"></span>
-                                            <span dojoType="dijit.form.Button" jsId="acqLitCancelLineitemsButton">[% l('Cancel Line Items') %]</span>
-                                        </span>
-                                    </span>
-                                    <span id='acq-lit-generic-progress' class='hidden'>
-                                        <span dojoType="dijit.ProgressBar" style="width:300px" jsId="litGenericProgress"></span>
-                                    </span>
-                                </td>
-                                <td>
-                                    <div style='width:100%;text-align:right;'>
-                                        <span style='padding-right:15px;'>
-                                            <a href='javascript:void(0);' id='acq-lit-prev' style='visibility:hidden'>[% l('&#171; Previous') %]</a>
-                                            <a href='javascript:void(0);' id='acq-lit-next' style='visibility:hidden'>[% l('Next &#187;') %]</a>
-                                        </span>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                    </th>
-                </tr>
-            </thead>
-            <tbody><tr><td colspan='0' style='height:20px;'/></tr></tbody>
+                * for all, otherwise combine with |
+            -->
+                    <option mask='*'  value='_'>[% l('--Actions--') %]</option>
+                    <option mask='pl|gs|vp|fs' value='save_picklist'>[% l('Save Items To Selection List') %]</option>
+                    <option mask='pl|gs|vp' value='selector_ready'>[% l('Mark Ready for Selector') %]</option>
+                    <option mask='pl|gs|vp' value='order_ready'>[% l('Mark Ready for Order') %]</option>
+                    <option mask='pl|po|gs|vp'  value='delete_selected'>[% l('Delete Selected Items') %]</option>
+                    <option mask='pl|po'  value='add_brief_record'>[% l('Add Brief Record') %]</option>
+                    <option mask='pl|po|ao|gs'  value='export_attr_list'>[% l('Export Single Attribute List') %]</option>
+                    <option mask='*' value='' disabled='disabled'>[% l('----PO----') %]</option>
+                    <option mask='pl|gs|vp|fs' value='create_order'>[% l('Create Purchase Order') %]</option>
+                    <option mask='pl|gs|vp|fs' value='add_to_order'>[% l('Add to Purchase Order') %]</option>
+                    <option mask='po|ao' value='print_po'>[% l('Print Purchase Order') %]</option>
+                    <option mask='po|ao' value='po_history'>[% l('View PO History') %]</option>
+                    <option mask='po' value='create_assets'>[% l('Load Bibs and Items') %]</option>
+                    <option mask='ao|gs|vp' value='cancel_lineitems'>[% l('Cancel Selected Line Items') %]</option>
+                    <option mask='po|ao|gs|vp' value='apply_claim_policy'>[% l('Apply Claim Policy to Selected Line Items') %]</option><!-- can the functionality desired here be covered by the next thing? -->
+                    <option mask='ao|gs|vp' value='receive_lineitems' id='receive_lineitems' disabled='disabled'>[% l('Mark Selected Line Items as Received') %]</option>
+                    <option mask='ao|gs|vp' value='rollback_receive_lineitems' id='rollback_receive_lineitems' disabled='disabled'>[% l('Un-Receive Selected Line Items') %]</option>
+                    <option mask='ao|gs|vp' value='batch_create_invoice'>[% l('Create Invoice From Selected Line Items') %]</option>
+                    <option mask='ao|gs|vp' value='batch_link_invoice'>[% l('Link Selected Line Items to Invoice') %]</option>
+                </select>
+                <span id="acq-lit-export-attr-holder" class="hidden">
+                    <input dojoType="dijit.form.FilteringSelect" id="acq-lit-export-attr" jsId="acqLitExportAttrSelector" labelAttr="description" searchAttr="description" />
+                    <span dojoType="dijit.form.Button" jsId="acqLitExportAttrButton">[% l('Export List') %]</span>
+                </span>
+                <span id="acq-lit-cancel-reason" class="hidden">
+                    <span id="acq-lit-cancel-reason-selector"></span>
+                    <span dojoType="dijit.form.Button" jsId="acqLitCancelLineitemsButton">[% l('Cancel Line Items') %]</span>
+                </span>
+            </span>
+            <span id='acq-lit-generic-progress' class='hidden'>
+                <span dojoType="dijit.ProgressBar" style="width:300px" jsId="litGenericProgress"></span>
+            </span>
+        </div>
+        <div style="float: right;">
+            <div style='width:100%;text-align:right;'>
+                <span style='padding-right:15px;'>
+                    <a href='javascript:void(0);' id='acq-lit-prev' style='visibility:hidden'>[% l('&#171; Previous') %]</a>
+                    <a href='javascript:void(0);' id='acq-lit-next' style='visibility:hidden'>[% l('Next &#187;') %]</a>
+                </span>
+            </div>
+        </div>
+        <div style="clear: both;">&nbsp;</div><!-- XXX better way to end effects of float: left/right ? -->
+
+        <table id="acq-batch-update" class="hidden"><!-- XXX freeze in place w/ CSS? -->
+            <tr>
+                <th>
+                    <label for="acq-bu-item_count">[% l("Copies") %]</label>
+                </th>
+                <th>
+                    <label for="acq-bu-owning_lib">[% l("Owning Branch") %]</label>
+                </th>
+                <th>
+                    <label for="acq-bu-location">[% l("Copy Location") %]</label>
+                </th>
+                <th>
+                    <label for="acq-bu-collection_code">[% l("Collection Code") %]</label>
+                </th>
+                <th>
+                    <label for="acq-bu-fund">[% l("Fund") %]</label>
+                </th>
+                <th>
+                    <label for="acq-bu-circ_modifier">[% l("Circ Modifier") %]</label>
+                </th>
+                <th>
+                    <label for="acq-bu-distribution_formula">[% l("Distribution Formula") %]</label>
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <span id="acq-bu-item_count"></span>
+                </td>
+                <td>
+                    <span id="acq-bu-owning_lib"></span>
+                </td>
+                <td>
+                    <span id="acq-bu-location"></span>
+                </td>
+                <td>
+                    <span id="acq-bu-collection_code"></span>
+                </td>
+                <td>
+                    <span id="acq-bu-fund"></span>
+                </td>
+                <td>
+                    <span id="acq-bu-circ_modifier"></span> OR
+                </td>
+                <td>
+                    <span id="acq-bu-distribution_formula"></span>
+                    <span dojoType="dijit.form.Button" jsId="acqBatchUpdateApply">[% l("Apply to Selected") %]</span>
+                </td>
+            </tr>
+        </table>
+        <table id='acq-lit-table' class='oils-generic-table'>
+            <tbody><tr><td colspan='0' style='height:20px;'></td></tr></tbody>
             <tbody style='font-weight:bold;border:1px solid #aaa;'>
                 <tr>
                     <td><span><a id='acq-lit-select-toggle' href='javascript:void(0);'>&#x2713</a></span></td>

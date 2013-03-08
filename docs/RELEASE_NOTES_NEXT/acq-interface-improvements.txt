@@ -1,5 +1,5 @@
-Acquisitions Purchase Order Improvements
-========================================
+Acquisitions Purchase Order and other Interface Improvements
+============================================================
 
 Feature Summary
 ---------------
@@ -21,3 +21,13 @@ improve Acquisitions work flows.
     ** You can no longer add lineitems to a PO if they're already on one.
     ** Actions in dropdown now enabled/disabled differently depending on
        the interface where it appears (PO vs Selection List vs Acq Search etc.)
+
+  * Batch update for line items
+     ** Apply updates to all copies of all selected line items at once
+     ** Relies on a middle layer method that streams back information that
+        would suit a more asynchronous display in the future (rather than
+        simply reloading the page upon success, which it does now)
+     ** For failure cases, specific information about which line item cannot
+        be updated, and why, is available to the client, although taking
+        best advantage of this information for user-friendly display is left
+        to the future.

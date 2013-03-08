@@ -166,6 +166,10 @@ label[for="attr_search_type_scalar"] { vertical-align: top; }
 span[name="worksheet"] { padding: 0 6px; }
 #acq-lit-li-claim-dia-lid-list-init { margin-left: 8px; }
 
+#acq-batch-update { padding: 20px 0; }
+#acq-batch-update th { font-weight: bold; }
+#acq-batch-update td { white-space: nowrap; padding-right: 0.5em; }
+
 #acq-worksheet-contents thead th { font-weight: bold; background-color: #ccc; text-align: center; border-bottom: 1px #000 solid; border-right: 1px #000 solid; padding: 0 6px; }
 #acq-worksheet-contents tbody td { text-align: left; vertical-align: top; border: 1px #999 inset; padding: 0 2px; }
 

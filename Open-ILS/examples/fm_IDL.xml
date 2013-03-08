@@ -8498,7 +8498,7 @@ SELECT  usr,
 	</class>
 	<class id="acqdf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::distribution_formula" oils_persist:tablename="acq.distribution_formula" reporter:label="Distribution Formula">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.distribution_formula_id_seq">
-			<field reporter:label="Formula ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Formula ID" name="id" reporter:datatype="id" reporter:selector="name" />
 			<field reporter:label="Formula Owner" name="owner" reporter:datatype="org_unit"/>
 			<field reporter:label="Formula Name" name="name" reporter:datatype="text"/>
 			<field reporter:label="Skip Count" name="skip_count" reporter:datatype="int"/>
