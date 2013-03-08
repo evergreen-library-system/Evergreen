@@ -2032,7 +2032,6 @@ CREATE OR REPLACE FUNCTION acq.propagate_funds_by_org_unit( old_year INTEGER, us
     SELECT acq.propagate_funds_by_org_tree( $1, $2, $3, FALSE );
 $$ LANGUAGE SQL;
 
-
 CREATE OR REPLACE FUNCTION acq.rollover_funds_by_org_tree(
 	old_year INTEGER,
 	user_id INTEGER,
@@ -2050,6 +2049,7 @@ xfer_amount NUMERIC := 0;
 roll_fund   RECORD;
 deb         RECORD;
 detail      RECORD;
+roll_distrib_forms BOOL;
 --
 BEGIN
 	--
@@ -2212,6 +2212,19 @@ BEGIN
 				fund = roll_fund.old_fund
 				AND encumbrance;
 		END IF;
+
+		-- Rollover distribution formulae funds
+		SELECT INTO roll_distrib_forms value::BOOL FROM
+			actor.org_unit_ancestor_setting(
+				'acq.fund.rollover_distrib_forms', org_unit_id
+			);
+
+		IF roll_distrib_forms THEN
+			UPDATE acq.distribution_formula_entry 
+				SET fund = roll_fund.new_fund_id
+				WHERE fund = roll_fund.old_fund;
+		END IF;
+
 		--
 		-- Mark old fund as inactive, now that we've closed it
 		--
@@ -2221,6 +2234,8 @@ BEGIN
 	END LOOP;
 END;
 $$ LANGUAGE plpgsql;
+
+
 
 CREATE OR REPLACE FUNCTION acq.rollover_funds_by_org_unit( old_year INTEGER, user_id INTEGER, org_unit_id INTEGER, encumb_only BOOL DEFAULT FALSE ) RETURNS VOID AS $$
     SELECT acq.rollover_funds_by_org_tree( $1, $2, $3, $4, FALSE );
