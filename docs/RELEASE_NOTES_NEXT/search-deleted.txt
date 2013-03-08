@@ -1,0 +1,11 @@
+Searching for deleted records
+=============================
+
+Evergreen now supports searching for deleted records via the '#deleted'
+QP modifier.
+
+In order to support this, sites must enable the
+'ingest.metarecord_mapping.preserve_on_delete' internal flag.  It is off by
+default since the ability to search for deleted records requires keeping
+metarecord mappings around when bibs are deleted, which may not be desirable
+for the typical site.

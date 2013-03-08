@@ -50,6 +50,7 @@ INSERT INTO config.internal_flag (name) VALUES ('ingest.skip_browse_indexing');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.skip_search_indexing');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.skip_facet_indexing');
 INSERT INTO config.internal_flag (name) VALUES ('serial.rematerialize_on_same_holding_code');
+INSERT INTO config.internal_flag (name) VALUES ('ingest.metarecord_mapping.preserve_on_delete');
 
 CREATE TABLE config.global_flag (
     label   TEXT    NOT NULL

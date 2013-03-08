@@ -1173,8 +1173,16 @@ DECLARE
 BEGIN
 
     IF NEW.deleted IS TRUE THEN -- If this bib is deleted
-        DELETE FROM metabib.metarecord_source_map WHERE source = NEW.id; -- Rid ourselves of the search-estimate-killing linkage
-        DELETE FROM metabib.record_attr WHERE id = NEW.id; -- Kill the attrs hash, useless on deleted records
+        PERFORM * FROM config.internal_flag WHERE
+            name = 'ingest.metarecord_mapping.preserve_on_delete' AND enabled;
+        IF NOT FOUND THEN
+            -- One needs to keep these around to support searches
+            -- with the #deleted modifier, so one should turn on the named
+            -- internal flag for that functionality.
+            DELETE FROM metabib.metarecord_source_map WHERE source = NEW.id;
+            DELETE FROM metabib.record_attr WHERE id = NEW.id;
+        END IF;
+
         DELETE FROM authority.bib_linking WHERE bib = NEW.id; -- Avoid updating fields in bibs that are no longer visible
         DELETE FROM biblio.peer_bib_copy_map WHERE peer_record = NEW.id; -- Separate any multi-homed items
         DELETE FROM metabib.browse_entry_def_map WHERE source = NEW.id; -- Don't auto-suggest deleted bibs

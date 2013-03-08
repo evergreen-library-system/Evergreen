@@ -660,6 +660,7 @@ __PACKAGE__->add_search_filter( 'superpage_size' );
 __PACKAGE__->add_search_filter( 'estimation_strategy' );
 __PACKAGE__->add_search_modifier( 'available' );
 __PACKAGE__->add_search_modifier( 'staff' );
+__PACKAGE__->add_search_modifier( 'deleted' );
 __PACKAGE__->add_search_modifier( 'lucky' );
 
 # Start from container data (bre, acn, acp): container(bre,bookbag,123,deadb33fdeadb33fdeadb33fdeadb33f)
@@ -867,11 +868,17 @@ sub toSQL {
     # Limit stuff
     my $limit_where = <<"    SQL";
 -- Filter records based on visibility
+        AND NOT bre.deleted
         AND (
             cbs.transcendant IS TRUE
             OR
     SQL
-    if ($self->find_modifier('staff')) {
+
+    if ($self->find_modifier('deleted')) {
+        $limit_where = <<"        SQL";
+            AND bre.deleted
+        SQL
+    } elsif ($self->find_modifier('staff')) {
         $limit_where .= <<"        SQL";
             EXISTS(
                 SELECT 1 FROM asset.call_number cn
@@ -918,6 +925,17 @@ sub toSQL {
                     LIMIT 1
                 )
             )
+            OR
+            EXISTS(
+                SELECT 1 FROM asset.call_number acn
+                    JOIN asset.uri_call_number_map aucnm ON acn.id = aucnm.call_number
+                    JOIN asset.uri uri ON aucnm.uri = uri.id
+                WHERE NOT acn.deleted AND uri.active AND acn.record = m.source AND acn.owning_lib IN (
+                    SELECT * FROM luri_org_list
+                )
+                LIMIT 1
+            )
+        )
         SQL
     } else {
         $limit_where .= <<"        SQL";
@@ -935,9 +953,6 @@ sub toSQL {
                     AND pr.peer_record = m.source
                 LIMIT 1
             )
-        SQL
-    }
-    $limit_where .= <<"    SQL";
             OR
             EXISTS(
                 SELECT 1 FROM asset.call_number acn
@@ -949,8 +964,8 @@ sub toSQL {
                 LIMIT 1
             )
         )
-    SQL
-
+        SQL
+    }
     # For single records we want the record id
     # For metarecords we want NULL or the only record ID.
     my $agg_record = 'm.source AS record';
