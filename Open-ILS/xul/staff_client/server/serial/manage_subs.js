@@ -56,6 +56,17 @@ serial.manage_subs.prototype = {
                     iframe.refresh_command = function () { /* TODO: redraw tree node */ };
                 }
                 iframe.setAttribute("src", src);
+            } else if (type == "ssub") {
+                var iframe = dojo.byId('alt_ssub_editor');
+                var src;
+                if (mode == "add") {
+                    src = '/eg/serial/subscription?id=new&owning_lib='+params.owning_lib+'&record_entry='+params.record_entry+'&context=scv';
+                    iframe.refresh_command = function () {obj.refresh_list();};
+                } else {
+                    src = '/eg/serial/subscription?id=' + params.ssub_ids[0] + '&context=scv';
+                    iframe.refresh_command = function () {}; //TODO: redraw tree node
+                }
+                iframe.setAttribute("src", src);
             } else {
                 var editor_type = type + '_editor';
                 if (typeof obj[editor_type] == 'undefined') {
@@ -508,12 +519,9 @@ serial.manage_subs.prototype = {
                                         alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.add_volume.permission_error'));
                                         return; // no read-only view for this interface
                                     } */
-                                    var new_ssub = new ssub();
-                                    new_ssub.owning_lib(list[0]);//TODO: add multiple at once support?
-                                    new_ssub.isnew(1);
-                                    new_ssub.record_entry(obj.docid);
                                     var params = {};
-                                    params.ssubs = [new_ssub];
+                                    params.owning_lib = list[0];
+                                    params.record_entry = obj.docid;
                                     obj.editor_init('ssub', 'add', params);
                                 } catch(E) {
                                     obj.error.standard_unexpected_error_alert(document.getElementById('serialStrings').getString('staff.serial.manage_subs.add.error'),E);

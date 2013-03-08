@@ -11,6 +11,8 @@ dojo.require("openils.widget.ProgressDialog");
 dojo.require("openils.widget.HoldingCode");
 dojo.require("openils.PermaCrud");
 dojo.require("openils.CGI");
+dojo.requireLocalization('openils.serial', 'serial');
+var localeStrings = dojo.i18n.getLocalization('openils.serial', 'serial');
 
 var pcrud;
 var cgi;
@@ -129,7 +131,7 @@ function format_sdist_label(blob) {
         "sstr",{"distribution":blob.id},{"id_list":true}
     );
     count = sstr_list ? sstr_list.length : 0;
-    link += "&nbsp;&nbsp; " + count + " stream(s)";
+    link += "&nbsp;&nbsp; " + count + " stream(s)"; //XXX i18n
     return link;
 }
 
@@ -226,6 +228,31 @@ function _clone_subscription(bre_id) {
     );
 }
 
+function open_notes(obj_type, grid) {
+    if (grid.getSelectedRows().length != 1) {
+        alert( localeStrings.REQUIRE_ONE_ROW );
+        return;
+    }
+
+    var id = grid.getSelectedItems()[0].id[0];
+    var args_by_obj_type = {
+        'sub' : { 'function_type' : 'SSUBN', 'object_type' : 'subscription', 'constructor' : ssubn, 'title' : dojo.string.substitute(localeStrings.NOTES_SSUB, [id]) },
+        'dist' : { 'function_type' : 'SDISTN', 'object_type' : 'distribution', 'constructor' : sdistn, 'title' : dojo.string.substitute(localeStrings.NOTES_SDIST, [id]) }
+    };
+    args_by_obj_type[obj_type].object_id = id;
+
+    try {
+        window.openDialog(
+            xulG.url_prefix('XUL_SERIAL_NOTES'),
+            obj_type+'_notes',
+            'chrome,resizable,modal',
+            args_by_obj_type[obj_type]
+        );
+    } catch (E) {
+        alert(E); /* XXX */
+    }
+}
+
 openils.Util.addOnLoad(
     function() {
         var tab_dispatch = {
@@ -236,15 +263,50 @@ openils.Util.addOnLoad(
         cgi = new openils.CGI();
         pcrud = new openils.PermaCrud();
 
+        context = cgi.param("context");
         sub_id = cgi.param("id");
-        load_sub_grid(
-            sub_id,
-            (cgi.param("tab") in tab_dispatch) ?
-                function() {
-                    tab_container.selectChild(
-                        tab_dispatch[cgi.param("tab")]
-                    );
-                } : null
-        );
+        owning_lib = cgi.param("owning_lib");
+        record_entry = cgi.param("record_entry");
+
+        if (context != 'scv') {
+            load_sub_grid(
+                sub_id,
+                (cgi.param("tab") in tab_dispatch) ?
+                    function() {
+                        tab_container.selectChild(
+                            tab_dispatch[cgi.param("tab")]
+                        );
+                    } : null
+            );
+        } else {
+            build_sre_maps(dist_grid);
+            dist_grid.empty_store = new dojo.data.ItemFileReadStore({
+                "data": {
+                    "identifier": "record_entry",
+                    "label": "label",
+                    "items": []
+                }
+            })
+            dist_grid.overrideEditWidgets.record_entry =
+                new dijit.form.FilteringSelect({
+                    "store" : dist_grid.empty_store,
+                    "searchAttr" : "label",
+                    "name" : "record_entry"
+                });
+            dist_grid.overrideEditWidgets.record_entry.shove = {};
+            if (sub_id == 'new') {
+                ssub_grid.overrideEditWidgets.record_entry =
+                        new dijit.form.TextBox({
+                            "disabled": true, "value": record_entry
+                        });
+                ssub_grid.overrideWidgetArgs.owning_lib = {widgetValue : owning_lib, dijitArgs : {disabled : true}};
+
+                ssub_grid.onPostCreate = function(fmObject) {
+                    sub_id = fmObject.id();
+                }
+
+                ssub_grid.showCreateDialog();
+            }
+        }
     }
 );

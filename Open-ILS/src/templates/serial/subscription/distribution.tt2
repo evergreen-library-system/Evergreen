@@ -3,13 +3,15 @@
     <div>[% l('Distributions') %]</div>
     <div style="margin-right: 16px;">
         <span dojoType="dijit.form.Button"
+            onClick="open_notes('dist', dist_grid);">[% l('View/Edit Notes') %]</span>
+        <span dojoType="dijit.form.Button"
             onClick="dist_grid.refresh();">[% l('Refresh Grid') %]</span>
         <span dojoType="dijit.form.Button"
-            onClick="sub_grid._fresh = false; dist_grid.showCreateDialog();">
+            onClick="if (cgi.param('context') != 'scv') sub_grid._fresh = false; dist_grid.showCreateDialog();">
             [% l('New Distribution') %]
         </span>
         <span dojoType="dijit.form.Button"
-            onClick="sub_grid._fresh = false; dist_grid.deleteSelected();">
+            onClick="if (cgi.param('context') != 'scv') sub_grid._fresh = false; dist_grid.deleteSelected();">
             [% l('Delete Selected') %]
         </span>
     </div>
@@ -20,8 +22,8 @@
         dojoType="openils.widget.AutoGrid"
         style="height: 550px;"
         fieldOrder="['subscription','label','holding_lib']"
-        suppressFields="['record_entry','subscription','receive_call_number','bind_call_number','bind_unit_template']"
-        suppressEditFields="['record_entry','receive_call_number','bind_call_number','bind_unit_template']"
+        suppressFields="['subscription','receive_call_number','bind_call_number','bind_unit_template']"
+        suppressEditFields="['receive_call_number','bind_call_number','bind_unit_template']"
         onPostSubmit="attempt_reload_opac"
         fmClass="sdist"
         query="{id: '*'}"

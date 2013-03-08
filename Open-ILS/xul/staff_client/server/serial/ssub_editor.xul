@@ -10,30 +10,9 @@
 <overlay id="serial_ssub_editor_panel_overlay" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<vbox flex="1" id="serial_ssub_editor_panel" class="my_overflow">
-        <vbox id="brief_display_box"/>
-
-		<hbox flex="1" style="overflow: auto">
-			<vbox flex="1" id="before_splitter" oils_persist="width">
-				<label value="Subscription" style="font-weight: bold; font-size: large"/>
-				<vbox id="left_pane" flex="1"/>
-			</vbox>
-			<splitter id="splitter" oils_persist="state hidden" oils_persist_peers="before_splitter after_splitter"><grippy /></splitter>
-			<vbox flex="1" id="after_splitter" oils_persist="width">
-				<label value=" " style="font-weight: bold; font-size: large"/>
-				<vbox id="right_pane" flex="1"/>
-			</vbox>
-		</hbox>
-
-		<hbox id="nav">
-			<spacer flex="1"/>
-			<button id="ssub_notes" label="&staff.serial.ssub_editor.notes.label;" accesskey="&staff.serial.ssub_editor.notes.accesskey;" oncommand="g.manage_subs.ssub_editor.notes()" />
-			<button id="ssub_save" label="&staff.serial.ssub_editor.modify.label;" hidden="true" accesskey="&staff.serial.ssub_editor.modify.accesskey;" oncommand="g.manage_subs.ssub_editor.save()" />
-			<!--<button id="cancel" label="&staff.cat.copy_editor.cancel.label;" accesskey="&staff.cat.copy_editor.cancel.accesskey;" oncommand="window.close();"/>-->
-		</hbox>
-
-		<spacer/>
-	</vbox>
+    <vbox flex="1" id="serial_ssub_editor_panel" class="my_overflow">
+        <iframe flex="1" id="alt_ssub_editor" name="alt_ssub_editor"/>
+    </vbox>
 
 </overlay>
 

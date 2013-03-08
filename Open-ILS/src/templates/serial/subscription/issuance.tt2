@@ -10,10 +10,12 @@
             onclick="iss_grid.deleteSelected();">[% l('Delete Selected') %]</span>
     </div>
 </div>
+[%- IF CGI.param('context') != 'scv' -%]
 <div class="serial-additional-controls">
     <span dojoType="dijit.form.Button"
         onclick="prediction_dialog.show();">[% l('Generate Predictions') %]</span>
 </div>
+[%- END -%]
 <div dojoType="dijit.layout.ContentPane" layout="top">
     <table jsId="iss_grid"
         dojoType="openils.widget.AutoGrid"
