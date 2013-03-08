@@ -4,6 +4,7 @@ use warnings;
 package OpenILS::Application::Storage::Driver::Pg::QueryParser;
 use OpenILS::Application::Storage::QueryParser;
 use base 'QueryParser';
+use OpenSRF::Utils qw/:datetime/;
 use OpenSRF::Utils::JSON;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::CStoreEditor;
@@ -638,6 +639,8 @@ __PACKAGE__->add_search_filter( 'between' );
 __PACKAGE__->add_search_filter( 'during' );
 
 # various filters for limiting in various ways
+__PACKAGE__->add_search_filter( 'edit_date' );
+__PACKAGE__->add_search_filter( 'create_date' );
 __PACKAGE__->add_search_filter( 'statuses' );
 __PACKAGE__->add_search_filter( 'locations' );
 __PACKAGE__->add_search_filter( 'location_groups', sub { return __PACKAGE__->location_groups_callback(@_) } );
@@ -687,6 +690,7 @@ __PACKAGE__->add_search_modifier( 'metabib' );
 package OpenILS::Application::Storage::Driver::Pg::QueryParser::query_plan;
 use base 'QueryParser::query_plan';
 use OpenSRF::Utils::Logger qw($logger);
+use OpenSRF::Utils qw/:datetime/;
 use Data::Dumper;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::CStoreEditor;
@@ -952,6 +956,45 @@ sub toSQL {
     my $agg_record = 'm.source AS record';
     if ($key =~ /metarecord/) {
         $agg_record = 'CASE WHEN COUNT(DISTINCT m.source) = 1 THEN FIRST(m.source) ELSE NULL END AS record';
+    }
+
+    # bre.create_date and bre.edit_date filtering
+    for my $datefilter ( qw/create_date edit_date/ ) {
+        my $cdate = $self->find_filter($datefilter);
+        if ($cdate && $cdate->args && scalar(@{$cdate->args}) > 0 && scalar(@{$cdate->args}) < 3) {
+            my ($cstart, $cend) = @{$cdate->args};
+
+            if (!$cstart and !$cend) {
+                # useless use of filter
+            } elsif (!$cstart or $cstart eq '-infinity') { # no start supplied
+                if ($cend eq 'infinity') {
+                    # useless use of filter
+                } else {
+                    # "before $cend"
+                    $cend = cleanse_ISO8601($cend);
+                    $limit_where .= <<"                    SQL";
+            AND bre.$datefilter <= \$_$$\$$cend\$_$$\$
+                    SQL
+                }
+    
+            } elsif (!$cend or $cend eq 'infinity') { # no end supplied
+                if ($cstart eq '-infinity') {
+                    # useless use of filter
+                } else { # "after $cstart"
+                    $cstart = cleanse_ISO8601($cstart);
+                    $limit_where .= <<"                    SQL";
+            AND bre.$datefilter >= \$_$$\$$cstart\$_$$\$
+                    SQL
+                }
+            } else { # both supplied
+                # "between $cstart and $cend"
+                $cstart = cleanse_ISO8601($cstart);
+                $cend = cleanse_ISO8601($cend);
+                $limit_where .= <<"                SQL";
+            AND bre.$datefilter BETWEEN \$_$$\$$cstart\$_$$\$ AND \$_$$\$$cend\$_$$\$
+                SQL
+            }
+        }
     }
 
     my $sql = <<SQL;
