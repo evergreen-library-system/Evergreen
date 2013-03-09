@@ -378,10 +378,14 @@ sub prepare_browse_call_numbers {
 
 sub get_hold_copy_summary {
     my ($self, $rec_id, $org) = @_;
-    
+
     my $search = OpenSRF::AppSession->create('open-ils.search');
-    my $req1 = $search->request(
-        'open-ils.search.biblio.record.copy_count', $org, $rec_id); 
+    my $copy_count_meth = 'open-ils.search.biblio.record.copy_count';
+    # We want to include OPAC-invisible copies in a staff context
+    if ($self->ctx->{is_staff}) {
+        $copy_count_meth .= '.staff';
+    }
+    my $req1 = $search->request($copy_count_meth, $org, $rec_id); 
 
     $self->ctx->{record_hold_count} = $U->simplereq(
         'open-ils.circ', 'open-ils.circ.bre.holds.count', $rec_id);
