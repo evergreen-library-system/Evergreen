@@ -391,8 +391,12 @@ sub get_hold_copy_summary {
     my $ctx = $self->ctx;
     
     my $search = OpenSRF::AppSession->create('open-ils.search');
-    my $req1 = $search->request(
-        'open-ils.search.biblio.record.copy_count', $org, $rec_id); 
+    my $copy_count_meth = 'open-ils.search.biblio.record.copy_count';
+    # We want to include OPAC-invisible copies in a staff context
+    if ($ctx->{is_staff}) {
+        $copy_count_meth .= '.staff';
+    }
+    my $req1 = $search->request($copy_count_meth, $org, $rec_id); 
 
     # if org unit hiding applies, limit the hold count to holds
     # whose pickup library is within our depth-scoped tree
