@@ -523,7 +523,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                  "AUT" : {"start" : 10, "len" : 1, "def" : ' ' }
              }
          },
-         "SHSys" : {
+         "Subj" : {
              "_8" : {
                  "AUT" : {"start" : 11, "len" : 1, "def" : ' ' }
              }
@@ -543,7 +543,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                  "AUT" : {"start" : 14, "len" : 1, "def" : ' ' }
              }
          },
-         "Subj" : {
+         "SubjUse" : {
              "_8" : {
                  "AUT" : {"start" : 15, "len" : 1, "def" : ' ' }
              }

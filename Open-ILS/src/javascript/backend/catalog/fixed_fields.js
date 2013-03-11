@@ -310,6 +310,11 @@ var ff_pos = {
             "AUT" : {"start" : 10, "len" : 1, "def" : ' ' }
         }
     },
+    "Subj" : {
+        "_8" : {
+            "AUT" : {"start" : 11, "len" : 1, "def" : ' ' }
+        }
+    },
     "SHSys" : {
         "_8" : {
             "AUT" : {"start" : 11, "len" : 1, "def" : ' ' }
@@ -328,6 +333,11 @@ var ff_pos = {
     "HeadMain" : {
         "_8" : {
             "AUT" : {"start" : 14, "len" : 1, "def" : ' ' }
+        }
+    },
+    "SubjUse" : {
+        "_8" : {
+            "AUT" : {"start" : 15, "len" : 1, "def" : ' ' }
         }
     },
     "HeadSubj" : {
