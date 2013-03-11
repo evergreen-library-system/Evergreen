@@ -1954,7 +1954,7 @@ sub basic_opac_copy_query {
     return {
         select => {
             acp => ['id', 'barcode', 'circ_lib', 'create_date',
-                    'age_protect', 'holdable'],
+                    'age_protect', 'holdable', 'copy_number'],
             acpl => [
                 {column => 'name', alias => 'copy_location'},
                 {column => 'holdable', alias => 'location_holdable'}
@@ -2035,7 +2035,8 @@ sub basic_opac_copy_query {
 
         order_by => [
             {class => 'aou', field => 'name'},
-            {class => 'acn', field => 'label'}
+            {class => 'acn', field => 'label'},
+            {class => 'acp', field => 'copy_number'}
         ],
 
         limit => $copy_limit,
