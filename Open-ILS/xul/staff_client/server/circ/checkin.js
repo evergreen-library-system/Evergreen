@@ -562,16 +562,18 @@ circ.checkin.prototype = {
             var async_checkbox = document.getElementById('async_checkin');
             if (async_checkbox) { async = async_checkbox.getAttribute('checked') == 'true'; }
             var barcode = textbox.value;
-            // Auto-complete the barcode, items only
-            var barcode_object = xulG.get_barcode(window, 'asset', barcode);
             if (async) {
                 textbox.value = ''; textbox.focus();
             }
-            // user_false means the user selected "None of the above", abort before other prompts/errors
-            if(barcode_object == "user_false") return;
-            // Got a barcode without an error? Use it. Otherwise fall through.
-            if(barcode_object && typeof barcode_object.ilsevent == 'undefined')
-                barcode = barcode_object.barcode;
+            if (obj.data.list.cbc.length > 0) { // skip barcode completion lookups if none configured
+                // Auto-complete the barcode, items only
+                var barcode_object = xulG.get_barcode(window, 'asset', barcode);
+                // user_false means the user selected "None of the above", abort before other prompts/errors
+                if(barcode_object == "user_false") return;
+                // Got a barcode without an error? Use it. Otherwise fall through.
+                if(barcode_object && typeof barcode_object.ilsevent == 'undefined')
+                    barcode = barcode_object.barcode;
+            }
             if ( obj.test_barcode(barcode) ) { /* good */ } else { /* bad */ return; }
             var placeholder_item = new acp();
             placeholder_item.barcode( barcode );

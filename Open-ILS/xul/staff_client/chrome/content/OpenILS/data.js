@@ -646,6 +646,27 @@ OpenILS.data.prototype = {
         this.chain.push(
             function() {
                 var f = gen_fm_retrieval_func(
+                    'cbc',
+                    [
+                        api.FM_CBC_PCRUD_SEARCH.app,
+                        api.FM_CBC_PCRUD_SEARCH.method,
+                        [ obj.session.key, {"active":"t"}, {"order_by":{"cbc":"id"}} ],
+                        false
+                    ]
+                );
+                try {
+                    f();
+                } catch(E) {
+                    var error = 'Error: ' + js2JSON(E);
+                    obj.error.sdump('D_ERROR',error);
+                    throw(E);
+                }
+            }
+        );
+
+        this.chain.push(
+            function() {
+                var f = gen_fm_retrieval_func(
                     'csp',
                     [
                         api.FM_CSP_PCRUD_SEARCH.app,
