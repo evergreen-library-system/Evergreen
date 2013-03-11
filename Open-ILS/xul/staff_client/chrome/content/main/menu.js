@@ -2545,7 +2545,7 @@ commands:
                 if(context != valid_r[i].type && offlineStrings.testString('barcode_choice.' + valid_r[i].type + '_label'))
                     button_label = offlineStrings.getFormattedString('barcode_choice.' + valid_r[i].type + '_label', [button_label]);
 
-                xml += '<button label="' + button_label + '" name="fancy_submit" value="' + i + '"/>';
+                xml += '<button label="' + button_label.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') + '" name="fancy_submit" value="' + i + '"/>';
             }
         }
         xml += '<button label="' + offlineStrings.getString('barcode_choice.none') + '" name="fancy_cancel"/>';
