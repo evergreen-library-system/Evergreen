@@ -1,6 +1,8 @@
 
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0769', :eg_version);
+
 DROP FUNCTION IF EXISTS 
     evergreen.ranked_volumes(BIGINT, INT, INT, HSTORE, HSTORE, INT);
 
