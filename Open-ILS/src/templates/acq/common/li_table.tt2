@@ -76,7 +76,7 @@
                     </td>
                     <td style='white-space:nowrap;'>
                         <a id='acq-inline-copies-toggle' 
-                            href='javascript:;'>&#x2713</a>[% l('Expand') %]
+                            href='javascript:;'>[% l('Expand All') %]</a>
                     </td>
                     <td>[% l('Items') %]</td>
                     <td>[% l('Notes') %]</td>
@@ -176,7 +176,7 @@
                                 <tr>
                                     <th>[% l('Branch') %]</th>
                                     <th>[% l('Barcode') %]</th>
-                                    <th>[% l('Callnumber') %]</th>
+                                    <th>[% l('Call Number') %]</th>
                                     <th>[% l('Fund') %]</th>
                                     <th>[% l('Copy Location') %]</th>
                                     <th>[% l('Circ Modifier') %]</th>
