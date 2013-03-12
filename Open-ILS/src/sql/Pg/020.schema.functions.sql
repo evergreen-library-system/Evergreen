@@ -359,7 +359,8 @@ BEGIN
         RETURN QUERY SELECT 'booking'::TEXT, id::BIGINT, barcode FROM booking.resource WHERE barcode = ANY(asset_barcodes);
     END IF;
     IF do_actor THEN
-        RETURN QUERY SELECT 'actor'::TEXT, c.usr::BIGINT, c.barcode FROM actor.card c JOIN actor.usr u ON c.usr = u.id WHERE c.barcode = ANY(actor_barcodes) AND c.active AND NOT u.deleted ORDER BY usr;
+        RETURN QUERY SELECT 'actor'::TEXT, c.usr::BIGINT, c.barcode FROM actor.card c JOIN actor.usr u ON c.usr = u.id WHERE
+            ((c.barcode = ANY(actor_barcodes) AND c.active) OR c.barcode = in_barcode) AND NOT u.deleted ORDER BY usr;
     END IF;
     RETURN;
 END;
