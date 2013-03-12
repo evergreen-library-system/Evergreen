@@ -1,3 +1,7 @@
+BEGIN;
+
+SELECT evergreen.upgrade_deps_block_check('0770', :eg_version);
+
 CREATE OR REPLACE FUNCTION evergreen.get_barcodes(select_ou INT, type TEXT, in_barcode TEXT) RETURNS SETOF evergreen.barcode_set AS $$
 DECLARE
     cur_barcode TEXT;
@@ -81,3 +85,5 @@ BEGIN
     RETURN;
 END;
 $$ LANGUAGE plpgsql;
+
+COMMIT;
