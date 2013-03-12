@@ -958,45 +958,6 @@ sub toSQL {
         $agg_record = 'CASE WHEN COUNT(DISTINCT m.source) = 1 THEN FIRST(m.source) ELSE NULL END AS record';
     }
 
-    # bre.create_date and bre.edit_date filtering
-    for my $datefilter ( qw/create_date edit_date/ ) {
-        my $cdate = $self->find_filter($datefilter);
-        if ($cdate && $cdate->args && scalar(@{$cdate->args}) > 0 && scalar(@{$cdate->args}) < 3) {
-            my ($cstart, $cend) = @{$cdate->args};
-
-            if (!$cstart and !$cend) {
-                # useless use of filter
-            } elsif (!$cstart or $cstart eq '-infinity') { # no start supplied
-                if ($cend eq 'infinity') {
-                    # useless use of filter
-                } else {
-                    # "before $cend"
-                    $cend = cleanse_ISO8601($cend);
-                    $limit_where .= <<"                    SQL";
-            AND bre.$datefilter <= \$_$$\$$cend\$_$$\$
-                    SQL
-                }
-    
-            } elsif (!$cend or $cend eq 'infinity') { # no end supplied
-                if ($cstart eq '-infinity') {
-                    # useless use of filter
-                } else { # "after $cstart"
-                    $cstart = cleanse_ISO8601($cstart);
-                    $limit_where .= <<"                    SQL";
-            AND bre.$datefilter >= \$_$$\$$cstart\$_$$\$
-                    SQL
-                }
-            } else { # both supplied
-                # "between $cstart and $cend"
-                $cstart = cleanse_ISO8601($cstart);
-                $cend = cleanse_ISO8601($cend);
-                $limit_where .= <<"                SQL";
-            AND bre.$datefilter BETWEEN \$_$$\$$cstart\$_$$\$ AND \$_$$\$$cend\$_$$\$
-                SQL
-            }
-        }
-    }
-
     my $sql = <<SQL;
 WITH
 $with
@@ -1309,6 +1270,42 @@ sub flatten {
                     $key = 'm.metarecord' if (grep {$_->name eq 'metarecord' or $_->name eq 'metabib'} @{$self->QueryParser->parse_tree->modifiers});
                     $where .= $joiner if $where ne '';
                     $where .= "$key ${NOT}IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{$filter->args}) . ')';
+                }
+
+            } elsif ($filter->name eq 'edit_date' or $filter->name eq 'create_date') {
+                # bre.create_date and bre.edit_date filtering
+                my $datefilter = $filter->name;
+
+                if ($filter && $filter->args && scalar(@{$filter->args}) > 0 && scalar(@{$filter->args}) < 3) {
+                    my ($cstart, $cend) = @{$filter->args};
+        
+                    if (!$cstart and !$cend) {
+                        # useless use of filter
+                    } elsif (!$cstart or $cstart eq '-infinity') { # no start supplied
+                        if ($cend eq 'infinity') {
+                            # useless use of filter
+                        } else {
+                            # "before $cend"
+                            $cend = cleanse_ISO8601($cend);
+                            $where .= $joiner if $where ne '';
+                            $where .= "bre.$datefilter <= \$_$$\$$cend\$_$$\$";
+                        }
+            
+                    } elsif (!$cend or $cend eq 'infinity') { # no end supplied
+                        if ($cstart eq '-infinity') {
+                            # useless use of filter
+                        } else { # "after $cstart"
+                            $cstart = cleanse_ISO8601($cstart);
+                            $where .= $joiner if $where ne '';
+                            $where .= "bre.$datefilter >= \$_$$\$$cstart\$_$$\$";
+                        }
+                    } else { # both supplied
+                        # "between $cstart and $cend"
+                        $cstart = cleanse_ISO8601($cstart);
+                        $cend = cleanse_ISO8601($cend);
+                        $where .= $joiner if $where ne '';
+                        $where .= "bre.$datefilter BETWEEN \$_$$\$$cstart\$_$$\$ AND \$_$$\$$cend\$_$$\$";
+                    }
                 }
             } elsif ($filter->name eq 'locations') {
                 if (@{$filter->args} > 0) {
