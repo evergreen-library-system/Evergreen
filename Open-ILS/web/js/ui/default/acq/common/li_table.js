@@ -2799,6 +2799,11 @@ function AcqLiTable() {
     this.receiveSelectedLineitems = function() {
         var li_list = this.getSelected();
 
+        if (!li_list.length) {
+            alert(localeStrings.NO_LI_GENERAL);
+            return;
+        }
+
         for (var i = 0; i < li_list.length; i++) {
             var li = li_list[i];
 
@@ -2876,6 +2881,12 @@ function AcqLiTable() {
     };
 
     this.rollbackReceiveLineitems = function() {
+        var li_id_list = this.getSelected(false, null, true);
+        if (!li_id_list.length) {
+            alert(localeStrings.NO_LI_GENERAL);
+            return;
+        }
+
         if (!confirm(localeStrings.ROLLBACK_LI_RECEIVE_CONFIRM)) return;
 
         this.show('acq-lit-progress-numbers');
@@ -2884,7 +2895,7 @@ function AcqLiTable() {
         fieldmapper.standardRequest(
             ['open-ils.acq', 'open-ils.acq.lineitem.receive.rollback.batch'],
             {   async: true,
-                params: [this.authtoken, this.getSelected(false, null, true)],
+                params: [this.authtoken, li_id_list],
                 onresponse : function(r) {
                     var resp = openils.Util.readResponse(r);
                     self._updateProgressNumbers(resp, true);

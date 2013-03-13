@@ -2158,6 +2158,7 @@ sub receive_lineitem_api {
 __PACKAGE__->register_method(
 	method => 'receive_lineitem_batch_api',
 	api_name	=> 'open-ils.acq.lineitem.receive.batch',
+    stream => 1,
 	signature => {
         desc => 'Mark lineitems as received',
         params => [
@@ -2344,6 +2345,7 @@ sub rollback_receive_lineitem_api {
 __PACKAGE__->register_method(
     method    => 'rollback_receive_lineitem_batch_api',
     api_name  => 'open-ils.acq.lineitem.receive.rollback.batch',
+    stream => 1,
     signature => {
         desc   => 'Mark a list of lineitems as Un-received',
         params => [
