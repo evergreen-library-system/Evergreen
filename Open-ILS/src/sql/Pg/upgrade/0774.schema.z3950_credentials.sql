@@ -1,7 +1,7 @@
 
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('0773', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0774', :eg_version);
 
 CREATE TABLE config.z3950_source_credentials (
     id SERIAL PRIMARY KEY,
