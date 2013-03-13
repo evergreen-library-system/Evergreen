@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('0779', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0780', :eg_version);
 
 ALTER TABLE acq.distribution_formula_entry
     ADD COLUMN fund INT REFERENCES acq.fund (id),
