@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0779', :eg_version);
+
 CREATE TABLE vandelay.import_bib_trash_group(
     id SERIAL PRIMARY KEY,
     owner INT NOT NULL REFERENCES actor.org_unit(id),
