@@ -3,7 +3,7 @@
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('xxxx', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0773', :eg_version);
 
 
 INSERT INTO authority.thesaurus (code, name, control_set) VALUES
