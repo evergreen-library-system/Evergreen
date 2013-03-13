@@ -1,5 +1,6 @@
-
 BEGIN;
+
+SELECT evergreen.upgrade_deps_block_check('0777', :eg_version);
 
 -- Listed here for reference / ease of access.  The update
 -- is not applied here (see the WHERE clause).

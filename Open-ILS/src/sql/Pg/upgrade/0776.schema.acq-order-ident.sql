@@ -1,5 +1,6 @@
-
 BEGIN;
+
+SELECT evergreen.upgrade_deps_block_check('0776', :eg_version);
 
 ALTER TABLE acq.lineitem_attr
     ADD COLUMN order_ident BOOLEAN NOT NULL DEFAULT FALSE;

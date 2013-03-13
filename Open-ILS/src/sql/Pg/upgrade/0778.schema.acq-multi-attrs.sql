@@ -1,5 +1,6 @@
-
 BEGIN;
+
+SELECT evergreen.upgrade_deps_block_check('0778', :eg_version);
 
 CREATE OR REPLACE FUNCTION extract_marc_field_set
         (TEXT, BIGINT, TEXT, TEXT) RETURNS SETOF TEXT AS $$
