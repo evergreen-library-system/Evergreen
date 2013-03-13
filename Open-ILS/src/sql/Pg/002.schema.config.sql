@@ -517,7 +517,7 @@ CREATE TABLE config.z3950_attr (
 CREATE TABLE config.z3950_source_credentials (
     id SERIAL PRIMARY KEY,
     owner INTEGER NOT NULL, -- REFERENCES actor.org_unit(id),
-    source TEXT NOT NULL REFERENCES config.z3950_source(name),
+    source TEXT NOT NULL REFERENCES config.z3950_source(name) ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
     username TEXT,
     password TEXT,
     CONSTRAINT czsc_source_once_per_lib UNIQUE (source, owner)
