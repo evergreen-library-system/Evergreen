@@ -1,6 +1,8 @@
 
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0771', :eg_version);
+
 INSERT INTO action_trigger.hook (
         key,
         core_type,
