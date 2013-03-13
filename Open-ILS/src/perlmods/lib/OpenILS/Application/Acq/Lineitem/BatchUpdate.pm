@@ -410,8 +410,14 @@ sub lineitem_batch_update_api {
         # It's important that we NOT flesh use_count here, if that [ever]
         # does anything.  We're going to abuse that field internally.
 
-        $dist_formula = $e->acq->retrieve_acq_distribution_formula([
-            int($dist_formula), {flesh=>1, flesh_fields=>["entries","fund"]}
+        $dist_formula = $e->retrieve_acq_distribution_formula([
+            int($dist_formula), {
+                flesh=>2, 
+                flesh_fields=>{
+                    acqdf => ["entries"],
+                    acqdfe => ["fund"]
+                }
+            }
         ]) or return $e->die_event;
 
         return $e->die_event unless
@@ -419,11 +425,13 @@ sub lineitem_batch_update_api {
 
         # If the distribution formula has a fund, there's an additional perm
         # test to do before proceeding.
-        if ($dist_formula->fund) {
-            return $e->die_event unless $e->allowed(
-                ["ADMIN_FUND", "MANAGE_FUND"],
-                $dist_formula->fund->org, $dist_formula->fund
-            );
+        for my $entry (@{$dist_formula->entries}) {
+            if ($entry->fund) {
+                return $e->die_event unless $e->allowed(
+                    ["ADMIN_FUND", "MANAGE_FUND"],
+                    $entry->fund->org, $entry->fund
+                );
+            }
         }
 
         # The following sort is crucial later.
