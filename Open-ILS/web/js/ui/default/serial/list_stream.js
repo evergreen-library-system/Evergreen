@@ -12,6 +12,7 @@ var pcrud;
 var dist_id;
 var rlu_editor;
 var cgi;
+var context_url_param;
 
 function format_routing_label(routing_label) {
     return routing_label ? routing_label : "[None]";
@@ -37,7 +38,8 @@ function load_sdist_display() {
                     link.onclick = function() {
                         location.href = oilsBasePath +
                             "/serial/subscription?id=" +
-                            r.subscription() + "&tab=distributions";
+                            r.subscription() + "&tab=distributions" +
+                            context_url_param;
                     }
                     link.innerHTML = r.label();
                     load_sdist_org_unit_display(r);
@@ -296,5 +298,12 @@ openils.Util.addOnLoad(
         dist_id = cgi.param("distribution");
         load_sdist_display();
         load_sstr_grid();
+
+        var context = cgi.param('context');
+        if (context) {
+            context_url_param = '&context=' + context;
+        } else {
+            context_url_param = '';
+        }
     }
 );

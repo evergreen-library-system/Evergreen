@@ -18,6 +18,7 @@ var pcrud;
 var cgi;
 var sub;
 var sub_id;
+var context_url_param;
 
 function node_by_name(name, ctx) {
     return dojo.query("[name='" + name + "']", ctx)[0];
@@ -118,14 +119,16 @@ function format_siss_label(blob) {
     if (!blob.id) return "";
     return "<a href='" +
         oilsBasePath + "/serial/list_item?issuance=" + blob.id +
-        "'>" + (blob.label ? blob.label : "[None]") + "</a>"; /* XXX i18n */
+        context_url_param + "'>" + (blob.label ? blob.label : "[None]") +
+        "</a>"; /* XXX i18n */
 }
 
 function format_sdist_label(blob) {
     if (!blob.id) return "";
     var link = "<a href='" +
         oilsBasePath + "/serial/list_stream?distribution=" + blob.id +
-        "'>" + (blob.label ? blob.label : "[None]") + "</a>"; /* XXX i18n */
+        context_url_param + "'>" + (blob.label ? blob.label : "[None]") +
+        "</a>"; /* XXX i18n */
 
     var sstr_list = pcrud.search(
         "sstr",{"distribution":blob.id},{"id_list":true}
@@ -268,6 +271,12 @@ openils.Util.addOnLoad(
         owning_lib = cgi.param("owning_lib");
         record_entry = cgi.param("record_entry");
 
+        if (context) {
+            context_url_param = '&context=' + context;
+        } else {
+            context_url_param = '';
+        }
+
         if (context != 'scv') {
             load_sub_grid(
                 sub_id,
@@ -306,6 +315,9 @@ openils.Util.addOnLoad(
                 }
 
                 ssub_grid.showCreateDialog();
+            }
+            if (cgi.param("tab") in tab_dispatch) {
+                tab_container.selectChild(tab_dispatch[cgi.param("tab")]);
             }
         }
     }

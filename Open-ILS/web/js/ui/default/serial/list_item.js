@@ -11,6 +11,7 @@ dojo.require("openils.CGI");
 
 var pcrud, cgi, issuance_id;
 var sitem_cache = {};
+var context_url_param;
 
 function load_sitem_grid() {
     sitem_grid.overrideEditWidgets.status = status_selector;
@@ -29,7 +30,8 @@ function load_siss_display() {
                     link.onclick = function() {
                         location.href = oilsBasePath +
                             "/serial/subscription?id=" +
-                            r.subscription() + "&tab=issuances";
+                            r.subscription() + "&tab=issuances" +
+                            context_url_param;
                     }
                     link.innerHTML = r.label();
                     prepare_create_dialog(r.subscription());
@@ -167,5 +169,12 @@ openils.Util.addOnLoad(
         issuance_id = cgi.param("issuance");
         load_siss_display();
         load_sitem_grid();
+
+        var context = cgi.param('context');
+        if (context) {
+            context_url_param = '&context=' + context;
+        } else {
+            context_url_param = '';
+        }
     }
 );
