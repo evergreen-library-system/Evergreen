@@ -709,7 +709,7 @@ circ.checkout.prototype = {
                                 status_name = obj.data.hash.ccs[ r.payload.status() ].name();
                                 return status_name;
                             } catch (E) {
-                                return "Could not retrieve the name of the current status for the copy";  // XXX
+                                return document.getElementById('circStrings').getString('staff.circ.checkout.error_retrieving_copy_status');
                             }
                         },
                         '7010' : function(r) {
