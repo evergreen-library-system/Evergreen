@@ -92,5 +92,5 @@
     "INVOICE_COPY_COUNT_INFO": "Copies received on this invoice: ${0} out of ${1}.",
     "INVOICE_IDENT_COLLIDE": "There is already an invoice in the system with the given combination of 'Vendor Invoice ID' and 'Provider,' which is not allowed.",
     "NEW_INVOICE": "New Invoice",
-    "NO_LI_GENERAL" : "You have not selected any line items.",
+    "NO_LI_GENERAL" : "You have not selected any line items."
 }
