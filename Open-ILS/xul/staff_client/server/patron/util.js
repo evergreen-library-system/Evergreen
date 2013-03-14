@@ -678,8 +678,11 @@ patron.util.set_penalty_css = function(patron) {
         removeCSSClass(document.documentElement,'PATRON_HAS_BILLS');
         removeCSSClass(document.documentElement,'PATRON_HAS_OVERDUES');
         removeCSSClass(document.documentElement,'PATRON_HAS_NOTES');
+        removeCSSClass(document.documentElement,'PATRON_HAS_LOST');
+        removeCSSClass(document.documentElement,'PATRON_HAS_LOST_AND_COUNTED');
         removeCSSClass(document.documentElement,'PATRON_EXCEEDS_CHECKOUT_COUNT');
         removeCSSClass(document.documentElement,'PATRON_EXCEEDS_OVERDUE_COUNT');
+        removeCSSClass(document.documentElement,'PATRON_EXCEEDS_LOST_COUNT');
         removeCSSClass(document.documentElement,'PATRON_EXCEEDS_FINES');
         removeCSSClass(document.documentElement,'NO_PENALTIES');
         removeCSSClass(document.documentElement,'ONE_PENALTY');
@@ -724,6 +727,16 @@ patron.util.set_penalty_css = function(patron) {
         net.simple_request('FM_AUN_RETRIEVE_ALL.authoritative',[ ses(), { 'patronid' : patron.id() } ], function(req) {
             var notes = req.getResultObject();
             if (notes.length > 0) addCSSClass(document.documentElement,'PATRON_HAS_NOTES');
+        });
+        net.simple_request('FM_CIRC_COUNT_RETRIEVE_VIA_USER.authoritative',[ ses(), patron.id() ], function(req) {
+            try {
+                var co = req.getResultObject();
+                if (co.lost > 0) addCSSClass(document.documentElement,'PATRON_HAS_LOST');
+                JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+                if ((String( data.hash.aous['circ.tally_lost'] ) == 'true') && (co.lost > 0)) addCSSClass(document.documentElement,'PATRON_HAS_LOST_AND_COUNTED');
+            } catch(E) {
+                alert(E);
+            }
         });
 
         /*

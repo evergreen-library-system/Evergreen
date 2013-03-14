@@ -161,8 +161,11 @@ patron.display.prototype = {
                             removeCSSClass(document.documentElement,'PATRON_HAS_BILLS');
                             removeCSSClass(document.documentElement,'PATRON_HAS_OVERDUES');
                             removeCSSClass(document.documentElement,'PATRON_HAS_NOTES');
+                            removeCSSClass(document.documentElement,'PATRON_HAS_LOST');
+                            removeCSSClass(document.documentElement,'PATRON_HAS_LOST_AND_COUNTED');
                             removeCSSClass(document.documentElement,'PATRON_EXCEEDS_CHECKOUT_COUNT');
                             removeCSSClass(document.documentElement,'PATRON_EXCEEDS_OVERDUE_COUNT');
+                            removeCSSClass(document.documentElement,'PATRON_EXCEEDS_LOST_COUNT');
                             removeCSSClass(document.documentElement,'PATRON_EXCEEDS_FINES');
                             removeCSSClass(document.documentElement,'NO_PENALTIES');
                             removeCSSClass(document.documentElement,'ONE_PENALTY');

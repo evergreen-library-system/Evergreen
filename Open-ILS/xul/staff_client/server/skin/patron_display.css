@@ -41,6 +41,13 @@ row#row_billing_zip { padding-bottom: 10px; }
 .PATRON_HAS_OVERDUES label.overdues_indicator { display: inline; color: #AA4400; }
 .PATRON_HAS_OVERDUES label#under_items { color: red; }
 
+.PATRON_HAS_LOST .patronNameLarge { border-color: #FFC266; }
+.PATRON_HAS_LOST label.items_lost { color: #AA4400; }
+.PATRON_HAS_LOST label.items_lost.value { }
+.PATRON_HAS_LOST label.lost_indicator { display: inline; color: #AA4400; }
+
+.PATRON_HAS_LOST_AND_COUNTED label#under_items { color: red; }
+
 .PATRON_EXCEEDS_CHECKOUT_COUNT .patronNameLarge { border-color: #C99DFF; }
 .PATRON_EXCEEDS_CHECKOUT_COUNT label.items_out { color: purple; }
 /* .PATRON_EXCEEDS_CHECKOUT_COUNT label.items_out.label { text-decoration: underline; } */
@@ -52,6 +59,11 @@ row#row_billing_zip { padding-bottom: 10px; }
 /* .PATRON_EXCEEDS_OVERDUE_COUNT label.items_overdue.label { text-decoration: underline; } */
 .PATRON_EXCEEDS_OVERDUE_COUNT label.items_overdue.value { }
 .PATRON_EXCEEDS_OVERDUE_COUNT label.max_overdues_indicator { display: inline; color: purple; }
+
+.PATRON_EXCEEDS_LOST_COUNT .patronNameLarge { border-color: #C99DFF; }
+.PATRON_EXCEEDS_LOST_COUNT label.items_lost { color: purple; }
+.PATRON_EXCEEDS_LOST_COUNT label.items_lost.value { }
+.PATRON_EXCEEDS_LOST_COUNT label.max_lost_indicator { display: inline; color: purple; }
 
 .PATRON_EXCEEDS_FINES .patronNameLarge { border-color: #C99DFF; }
 .PATRON_EXCEEDS_FINES label.bill { color: purple; }

@@ -501,6 +501,7 @@ circ.checkout.prototype = {
                             case 1232 /* ITEM_DEPOSIT_REQUIRED */ : 
                             case 1233 /* ITEM_RENTAL_FEE_REQUIRED */ : 
                             case 1234 /* ITEM_DEPOSIT_PAID */ : 
+                            case 1236 /* PATRON_EXCEEDS_LOST_COUNT */ :
                             case 1500 /* ACTION_CIRCULATION_NOT_FOUND */ : 
                             case 7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */ : 
                             case 7003 /* COPY_CIRC_NOT_ALLOWED */ : 
@@ -673,6 +674,7 @@ circ.checkout.prototype = {
                         1215 /* CIRC_EXCEEDS_COPY_RANGE */,
                         1232 /* ITEM_DEPOSIT_REQUIRED */,
                         1233 /* ITEM_RENTAL_FEE_REQUIRED */,
+                        1236 /* PATRON_EXCEEDS_LOST_COUNT */,
                         7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */,
                         7003 /* COPY_CIRC_NOT_ALLOWED */,
                         7004 /* COPY_NOT_AVAILABLE */, 
@@ -684,6 +686,7 @@ circ.checkout.prototype = {
                     'report_override_on_events' : [ /* Allow auto-override of Patron overrides only */
                         1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */,
                         1213 /* PATRON_BARRED */,
+                        1236 /* PATRON_EXCEEDS_LOST_COUNT */,
                         7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */,
                         7013 /* PATRON_EXCEEDS_FINES */
                     ],
@@ -700,6 +703,9 @@ circ.checkout.prototype = {
                         },
                         '1233' : function(r) {
                             return document.getElementById('circStrings').getString('staff.circ.checkout.override.item_rental_fee_required.warning');
+                        },
+                        '1236' : function(r) {
+                            return document.getElementById('circStrings').getString('staff.circ.checkout.override.will_auto');
                         },
                         '7002' : function(r) {
                             return document.getElementById('circStrings').getString('staff.circ.checkout.override.will_auto');
@@ -861,6 +867,9 @@ circ.checkout.prototype = {
                         break;
                         case 1232 /* ITEM_DEPOSIT_REQUIRED */ :
                         case 1233 /* ITEM_RENTAL_FEE_REQUIRED */ :
+                        case 1236 /* PATRON_EXCEEDS_LOST_COUNT */ :
+                            found_handled = true;
+                        break;
                         case 7013 /* PATRON_EXCEEDS_FINES */ :
                             found_handled = true;
                         break;

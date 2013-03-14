@@ -3755,6 +3755,7 @@ circ.util.renew_via_barcode = function ( params, async ) {
                         case 1232 /* ITEM_DEPOSIT_REQUIRED */ : break;
                         case 1233 /* ITEM_RENTAL_FEE_REQUIRED */ : break;
                         case 1234 /* ITEM_DEPOSIT_PAID */ : break;
+                        case 1236 /* PATRON_EXCEEDS_LOST_COUNT */ : break;
                         case 1500 /* ACTION_CIRCULATION_NOT_FOUND */ : break;
                         case 1502 /* ASSET_COPY_NOT_FOUND */ : 
                             var mis_scan_msg = document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.status.copy_not_found', [params.barcode]);
@@ -3856,6 +3857,7 @@ circ.util.renew_via_barcode = function ( params, async ) {
                     1232 /* ITEM_DEPOSIT_REQUIRED */,
                     1233 /* ITEM_RENTAL_FEE_REQUIRED */,
                     1234 /* ITEM_DEPOSIT_PAID */,
+                    1236 /* PATRON_EXCEEDS_LOST_COUNT */,
                     7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */,
                     7003 /* COPY_CIRC_NOT_ALLOWED */,
                     7004 /* COPY_NOT_AVAILABLE */,
@@ -3879,6 +3881,7 @@ circ.util.renew_via_barcode = function ( params, async ) {
                     '1234' : function(r) {
                         return document.getElementById('circStrings').getFormattedString('staff.circ.utils.checkin.override.item_deposit_paid.warning');
                     },
+                    '1236' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [params.barcode]); },
                     '7002' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [params.barcode]); },
                     '7003' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [params.barcode]); },
                     '7004' : function(r) {

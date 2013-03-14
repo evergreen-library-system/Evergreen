@@ -27,6 +27,8 @@ INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert)
 	VALUES (3,'PATRON_EXCEEDS_CHECKOUT_COUNT',oils_i18n_gettext(3, 'Patron exceeds max checked out item threshold', 'csp', 'label'),'CIRC|FULFILL', TRUE);
 INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert)
 	VALUES (4,'PATRON_EXCEEDS_COLLECTIONS_WARNING',oils_i18n_gettext(4, 'Patron exceeds pre-collections warning fine threshold', 'csp', 'label'),'CIRC|FULFILL|HOLD|CAPTURE|RENEW', TRUE);
+INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert)
+	VALUES (5,'PATRON_EXCEEDS_LOST_COUNT',oils_i18n_gettext(5, 'Patron exceeds max lost item threshold', 'csp', 'label'),'CIRC|FULFILL|HOLD|CAPTURE|RENEW', TRUE);
 
 INSERT INTO config.standing_penalty (id,name,label,staff_alert) VALUES (20,'ALERT_NOTE',oils_i18n_gettext(20, 'Alerting Note, no blocks', 'csp', 'label'),TRUE);
 INSERT INTO config.standing_penalty (id,name,label) VALUES (21,'SILENT_NOTE',oils_i18n_gettext(21, 'Note, no blocks', 'csp', 'label'));
@@ -1637,6 +1639,8 @@ INSERT INTO permission.grp_penalty_threshold (grp,org_unit,penalty,threshold)
     VALUES (1,1,2,10.0);
 INSERT INTO permission.grp_penalty_threshold (grp,org_unit,penalty,threshold)
     VALUES (1,1,3,10.0);
+INSERT INTO permission.grp_penalty_threshold (grp,org_unit,penalty,threshold)
+    VALUES (1,1,5,10.0);
 
 SELECT SETVAL('permission.grp_penalty_threshold_id_seq'::TEXT, (SELECT MAX(id) FROM permission.grp_penalty_threshold));
 
@@ -2884,6 +2888,19 @@ INSERT into config.org_unit_setting_type
     oils_i18n_gettext('circ.do_not_tally_claims_returned',
         'In the Patron Display interface, the number of total active circulations for a given patron is presented in the Summary sidebar and underneath the Items Out navigation button.  This setting will prevent Claims Returned circulations from counting toward these tallies.',
         'coust', 'description'),
+    'bool', null)
+
+,('circ.tally_lost', 'circ',
+    oils_i18n_gettext(
+        'circ.tally_lost',
+        'Include Lost circulations in lump sum tallies in Patron Display.',
+        'coust',
+        'label'),
+    oils_i18n_gettext(
+        'circ.tally_lost',
+        'In the Patron Display interface, the number of total active circulations for a given patron is presented in the Summary sidebar and underneath the Items Out navigation button.  This setting will include Lost circulations as counting toward these tallies.',
+        'coust',
+        'description'),
     'bool', null)
 
 ,( 'circ.grace.extend', 'circ',
