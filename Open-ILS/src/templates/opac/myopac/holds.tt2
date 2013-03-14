@@ -56,7 +56,9 @@
         <table cellpadding='0' cellspacing='0' class="opac-auto-097">
             <tr>
                 <td width="1">
-                    <select name="action" id="acct_holds_actions">
+                    <select name="action" id="acct_holds_actions" aria-label="[%
+                        l('Select your action for the selected holds')
+                    %]">
                         <option id='myopac_holds_actions_none' value=''>
                         -- [% l("Actions for selected holds") %] --
                         </option>
@@ -83,14 +85,13 @@
                     %]
                 </td>
                 <td align="right">
-                    [% IF CGI.param("available") %]
-                    <a href="[% mkurl('holds', {}, ['limit','offset','available']) %]">[% l('Show all') %]</a> |
-                    <strong>[% l("Show only available") %]</strong>
-                    [% ELSE %]
-                    <strong>[% l("Show all") %]</strong> |
-                    <a href="[% mkurl('holds',{available => 1},['limit','offset']) %]">[% l("Show only available") %]</a>
-                    [% END %] &nbsp; &nbsp;
-                    [% l("holds") %]
+                    [% IF CGI.param("available") -%]
+                    <a href="[% mkurl('holds', {}, ['limit','offset','available']) %]">[% l('Show all holds') %]</a> |
+                    <strong>[% l("Show only available holds") %]</strong>
+                    [% ELSE -%]
+                    <strong>[% l("Show all holds") %]</strong> |
+                    <a href="[% mkurl('holds',{available => 1},['limit','offset']) %]">[% l("Show only available holds") %]</a>
+                    [% END -%]
                     <select class="hide_me" id="holds_sort">
                         <option value="">[% l('-- Sort By --') %]</option>
                         <option value="title">[% l('Title') %]</option>

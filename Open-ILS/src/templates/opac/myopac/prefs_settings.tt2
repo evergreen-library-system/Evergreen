@@ -18,11 +18,11 @@
                 </td></tr>
                 [% END %]
 
+                [%- setting = 'opac.hits_per_page' -%]
                 <tr >
-                    <td width='20%'>[% l("Search hits per page") %]</td>
+                    <td width='20%'><label for='[% setting %]'>l("Search hits per page") %]</label></td>
                     <td>
-                        [% setting = 'opac.hits_per_page' %]
-                        <select name='[% setting %]'>
+                        <select id='[% setting %]' name='[% setting %]'>
                             [%  UNLESS ctx.user_setting_map.$setting;
                                     ctx.user_setting_map.$setting = 10;
                                 END;
@@ -37,57 +37,59 @@
                         /></a>
                     </td>
                 </tr>
+                [%- setting = 'opac.default_search_location'; -%]
                 <tr >
-                    <td width='20%'>[% l("Preferred search location") %]</td>
+                    <td width='20%'><label for='[% setting %]'>[% l("Preferred search location") %]</label></td>
                     <td>
-                        [%- setting = 'opac.default_search_location';
-                            thang = ctx.user.home_ou.id;
+                        [%- thang = ctx.user.home_ou.id;
                             IF ctx.user_setting_map.$setting;
                                 thang = ctx.user_setting_map.$setting;
                             END;
+                            id = setting;
                             INCLUDE build_org_selector name=setting value=thang;
                         %]
                     </td>
                 </tr>
+                [%- setting = 'opac.default_pickup_location'; -%]
                 <tr>
-                    <td width='20%'>[% l("Preferred pickup location") %]</td>
+                    <td width='20%'><label for='[% setting %]'>[% l("Preferred pickup location") %]</label></td>
                     <td>
-                        [%- setting = 'opac.default_pickup_location';
-                            thang = ctx.user.home_ou.id;
+                        [%- thang = ctx.user.home_ou.id;
                             IF ctx.user_setting_map.$setting;
                                 thang = ctx.user_setting_map.$setting;
                             END;
+                            id = setting;
                             INCLUDE build_org_selector name=setting value=thang can_have_vols_only=1;
                         %]
                     </td>
                 </tr>
+                [%- setting = 'history.circ.retention_start' -%]
                 <tr>
-                    <td>[% l('Keep history of checked out items?') %]</td>
+                    <td><label for='[% setting %]'>[% l('Keep history of checked out items?') %]</label></td>
                     <td>
-                        [% setting = 'history.circ.retention_start' %]
-                        <input name='[% setting %]' type="checkbox"
+                        <input id='[% setting %]' name='[% setting %]' type="checkbox"
                             [% IF ctx.user_setting_map.$setting; %] checked='checked' [% END %]/>
                     </td>
                 </tr>
+                [%- setting = 'history.hold.retention_start' -%]
                 <tr>
-                    <td>[% l('Keep history of holds?') %]</td>
+                    <td><label for='[% setting %]'>[% l('Keep history of holds?') %]</label></td>
                     <td>
-                        [% setting = 'history.hold.retention_start' %]
-                        <input name='[% setting %]' type="checkbox"
+                        <input id='[% setting %]' name='[% setting %]' type="checkbox"
                             [% IF ctx.user_setting_map.$setting; %] checked='checked' [% END %]/>
                     </td>
                 </tr>
+                [%- setting = 'opac.temporary_list_no_warn' -%]
                 <tr>
-                    <td>[% l('Skip warning when adding to temporary book list?') %]</td>
+                    <td><label for='[% setting %]'>[% l('Skip warning when adding to temporary book list?') %]</label></td>
                     <td>
-                        [% setting = 'opac.temporary_list_no_warn' %]
-                        <input name='[% setting %]' type="checkbox"
+                        <input id='[% setting %]' name='[% setting %]' type="checkbox"
                             [% IF ctx.user_setting_map.$setting %] checked='checked' [% END %]/>
                     </td>
                 </tr>
                 <!--
                 <tr>
-                    <td>[% l("Default Font Size") %]</td>
+                    <td><label for='prefs_def_font'>[% l("Default Font Size") %]</label></td>
                     <td>
                         <select id='prefs_def_font'>
                             <option value='regular'>[% l("Regular Font") %]</option>

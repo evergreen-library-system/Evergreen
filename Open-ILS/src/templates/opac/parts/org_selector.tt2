@@ -24,10 +24,12 @@ BLOCK build_org_selector;
     # disable the ou-hide scoping altogether.
     hiding_disabled = ctx.org_hiding_disabled(value);
 
-    %]
+    -%]
 
-    <select [% IF id %] id='[% id %]' [% END %] name='[% name %]'>
-    [% 
+    <select [% IF id %] id='[% id %]' [% END -%]
+            [% IF arialabel %] aria-label='[% arialabel %]' [% END -%]
+            name='[% name %]'>
+    [%- 
         WHILE node_stack.size > 0; 
             node = node_stack.pop();
             org_unit = node.org;
@@ -107,6 +109,6 @@ BLOCK build_org_selector;
                 [% '&nbsp;' FOR [0..pad_depth]; display_name | html %]
             </option> 
 
-        [% END %]
+        [%- END %]
     </select>
-[% END %]
+[%- END %]

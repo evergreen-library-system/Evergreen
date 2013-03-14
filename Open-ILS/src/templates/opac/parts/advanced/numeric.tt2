@@ -4,8 +4,8 @@
     <input type="hidden" name="_special" value="1" />
     <table>
         <tr>
-            <td><label><strong>[% l("Field:") %]</strong>
-                <select name="qtype">
+            <td><label for="numeric_qtype"><strong>[% l("Field:") %]</strong></label>
+                <select id="numeric_qtype" name="qtype">
                     <!-- TODO: Pull labels from config.metabib_field.label -->
                     <option value="identifier|isbn">[% l('ISBN') %]</option>
                     <option value="identifier|issn">[% l('ISSN') %]</option>
@@ -18,13 +18,14 @@
                 </label>
             </td>
             <td>
-                <input type="text" name="query" size="16" autofocus />
+                <input type="text" name="query" size="16" autofocus placeholder='[% l("Identifier") %]' />
             </td>
         </tr>
         <tr>
-            <td colspan="2"><label><strong>[% l("Search Library:") %]</strong>
+            [%- lib_select_id="numeric_search_library" -%]
+            <td colspan="2"><label for="[% lib_select_id %]"><strong>[% l("Search Library:") %]</strong>
                   [% PROCESS "opac/parts/org_selector.tt2";
-                     INCLUDE build_org_selector show_loc_groups=1
+                     INCLUDE build_org_selector id=lib_select_id show_loc_groups=1
                   %]
                 </label>
             </td>

@@ -20,8 +20,11 @@
             l(' for ');
         %]
         <span class='search_box_wrapper'>
-            <input type="text" id="search_box" name="query"
-                value="[% is_advanced ? ctx.naive_query_scrub(ctx.processed_search_query) : CGI.param('query') | html %]"
+            [%- # autosuggest breaks accessibility, as the aria-label
+                # attribute is removed when the Dijit is created. :(  %]
+            <input type="text" id="search_box" name="query" aria-label="[%
+                    l('Enter search query:');
+                %]" value="[% is_advanced ? ctx.naive_query_scrub(ctx.processed_search_query) : CGI.param('query') | html %]"
                 [%- IF use_autosuggest.enabled == "t" %]
                 dojoType="openils.widget.AutoSuggest" type_selector="'qtype'"
                 submitter="this.textbox.form.submit();"
@@ -32,9 +35,12 @@
                     [% IF basic_search != "f" %] autofocus [% END %] x-webkit-speech
                 [%- END # autosuggest enabled %] />
         </span>
-        [%- INCLUDE "opac/parts/qtype_selector.tt2" id="qtype";
-            l(' in '); INCLUDE build_org_selector show_loc_groups=1
-    %]
+        [%- 
+            select_lib_label = l("Select search library");
+            INCLUDE "opac/parts/qtype_selector.tt2" id="qtype";
+            l(' in ');
+            INCLUDE build_org_selector arialabel=select_lib_label show_loc_groups=1
+        -%]
     <span>
         <input id='search-submit-go' type="submit" value="[% l('Search') %]" alt="[% l('Search') %]" class="opac-button"
             onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"}, 2000)'/>

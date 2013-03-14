@@ -47,8 +47,10 @@
                     [% IF hdata.parts %]
                         [% IF hdata.parts.size > 0 %]
                         <div style='padding-left: 10px'>
-                            <span>[% hdata.part_required ? l('Select a Part:') : l('Select a Part (optional):') %]</span>
-                            <select name='part'>
+                            <span><label for='select_hold_part'>[%
+                                hdata.part_required ? l('Select a Part:') : l('Select a Part (optional):')
+                            %]</label></span>
+                            <select id='select_hold_part' name='part'>
                                 [% IF !hdata.part_required %]
                                 <option selected='selected' value=''>[% l('- All Parts -') %]</option>
                                 [% END %]
@@ -67,33 +69,34 @@
         </table>
 
         <p>
-            [% l('Pickup location:') %]
+            [%- org_select_id = 'pickup_lib'; -%]
+            <label for="[% org_select_id %]'>[%l('Pickup location:') %]</label>
             [% PROCESS "opac/parts/org_selector.tt2";
-                INCLUDE build_org_selector name='pickup_lib' value=ctx.default_pickup_lib id='pickup_lib' can_have_vols_only=1 %]
+                INCLUDE build_org_selector name='pickup_lib' value=ctx.default_pickup_lib id=org_select_id can_have_vols_only=1 %]
         </p>
         <p>
             [% l('Notify when hold is ready for pickup?') %]
             <blockquote>
-                <input type="checkbox" name="email_notify" value="t"
+                <input type="checkbox" id="email_notify" name="email_notify" value="t"
                     [% IF !ctx.user.email %]disabled="true"[% ELSIF ctx.default_email_notify %]checked="checked"[% END %]/>
-                    [% l('Yes, by Email') %]<br/>
+                    <label for="email_notify">[% l('Yes, by Email') %]</label><br/>
                 <blockquote>
                     [% l('Email Address:') %] <span name="email_address">[% ctx.user.email %]</span>
                 </blockquote>
                 [%- IF allow_phone_notifications == 'true' %]
-                <input type="checkbox" name="phone_notify_checkbox"
+                <input type="checkbox" id="phone_notify_checkbox" name="phone_notify_checkbox"
                     [% IF ctx.default_phone_notify %]checked="checked"[% END %]/>
-                    [% l('Yes, by Phone') %]<br/>
+                    <label for="phone_notify_checkbox">[% l('Yes, by Phone') %]</label><br/>
                 <blockquote>
-                    [% l('Phone Number:') %]<input type="text" name="phone_notify" [% setting = 'opac.default_phone';
+                    <label>[% l('Phone Number:') %]<input type="text" name="phone_notify" [% setting = 'opac.default_phone';
                     IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]'
-                    [%- ELSIF ctx.user.day_phone; %] value='[% ctx.user.day_phone | html %]' [% END %]/>
+                    [%- ELSIF ctx.user.day_phone; %] value='[% ctx.user.day_phone | html %]' [% END %]/></label>
                 </blockquote>
                 [%- END -%]
                 [% IF ctx.get_org_setting(ctx.search_ou, 'sms.enable') == 1 %]
-                <input type="checkbox" name="sms_notify_checkbox"
+                <input type="checkbox" id="sms_notify_checkbox" name="sms_notify_checkbox"
                     [% IF ctx.default_sms_notify %]checked="checked"[% END %]/>
-                    [% l('Yes, by Text Messaging') %]<br/>
+                    <label for="sms_notify_checkbox">[% l('Yes, by Text Messaging') %]</label><br/>
                 <blockquote>
                     [% INCLUDE "opac/parts/sms_carrier_selector.tt2" %]<br/>
                     [% INCLUDE "opac/parts/sms_number_textbox.tt2" %]<br/>
@@ -103,7 +106,6 @@
         </p>
         <input id="place_hold_submit" type="submit" name="submit" value="[% l('Submit') %]" title="[% l('Submit') %]"
             alt="[% l('Submit') %]" class="opac-button" />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <input type="reset" name="cancel" onclick="javascript:history.go(-1);"
             value="[% l('Cancel') %]" id="holds_cancel" class="opac-button" />
     </form>

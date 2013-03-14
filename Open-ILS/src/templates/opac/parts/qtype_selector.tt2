@@ -7,7 +7,8 @@
     {value => "series", label => l("Series")},
     {value => "id|bibcn", label => l("Bib Call Number")}
 ] %]
-<select name="qtype"[% IF id; ' id="'; id ; '"' ; END %]>
+<select name="qtype"[% IF id; ' id="'; id ; '"' ; END -%]
+    aria-label="[% l('Select query type:') %]">
     [%  query_type = query_type || CGI.param('qtype') || search.default_qtypes.0;
         FOR qt IN query_types -%]
     <option value='[% qt.value | html %]'[%
