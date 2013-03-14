@@ -78,10 +78,16 @@
                                 value="[% circ.circ.id %]" />
                         </td>
                         <td name="author">
+                            [% IF circ.circ.target_copy.call_number.id == -1 %]
+                                [% circ.circ.target_copy.dummy_title | html %]
+                            [% ELSIF attrs.title %]
                             <a href="[% mkurl(ctx.opac_root _ '/record/' _ 
                                 circ.circ.target_copy.call_number.record.id) %]"
                                 name="[% l('Catalog record') %]">[% attrs.title | html %]</a>
-                            [% IF attrs.author %] /
+                            [% END %]
+                            [% IF circ.circ.target_copy.call_number.id == -1 %] /
+                                [% circ.circ.target_copy.dummy_author | html %]
+                            [% ELSIF attrs.author %] /
                             <a href="[% mkurl(ctx.opac_root _ '/results',
                                 {qtype => 'author', query => attrs.author.replace('[,\.:;]', '')}
                             ) %]">[% attrs.author | html %]</a>
