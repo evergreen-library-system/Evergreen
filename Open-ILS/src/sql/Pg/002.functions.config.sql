@@ -446,6 +446,7 @@ if ($schema eq 'biblio') {
     ");
     if (($id_as_tcn->{processed}) && $id_as_tcn->{rows}[0]->{enabled} eq 't') {
         $tcn_value = $_TD->{new}{id}; 
+        $_TD->{new}{tcn_value} = $tcn_value;
     }
 
     my $new_901 = MARC::Field->new("901", " ", " ",
