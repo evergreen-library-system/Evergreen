@@ -214,6 +214,7 @@ sub summary_json {
 
 sub data_exists {
     my( $self, $data ) = @_;
+    return 0 if $data =~ m/<title>No Data Available<\/title>/iog;
     return 0 if $data =~ m/<title>error<\/title>/iog;
     return 1;
 }
