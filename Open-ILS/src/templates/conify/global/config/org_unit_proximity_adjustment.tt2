@@ -72,7 +72,7 @@
             new openils.User().buildPermOrgSelector(
                 "ADMIN_PROXIMITY_ADJUSTMENT",
                 context_org_selector,
-                null,
+                -1, /* high OU where permission held */
                 function() {
                     context_org_selector.onChange =
                         reload_grid_from_ou_selector;

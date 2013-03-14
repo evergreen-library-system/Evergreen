@@ -306,17 +306,18 @@ if(!dojo._hasResource["openils.User"]) {
          * using the orgs where the user has the requested permission.
          * @param perm The permission to check
          * @param selector The pre-created dijit.form.FilteringSelect object.  
+         * @param selectedOrg org to select in FilteringSelect object. null defaults to user ws_ou, -1 will select the first OU where the perm is held, typically the top of a [sub]tree.
          */
         buildPermOrgSelector : function(perm, selector, selectedOrg, onload) {
             var _u = this;
     
             dojo.require('dojo.data.ItemFileReadStore');
 
-            function hookupStore(store) {
+            function hookupStore(store, useOrg) {
                 selector.store = store;
                 selector.startup();
-                if(selectedOrg != null)
-                    selector.setValue(selectedOrg);
+                if(useOrg != null)
+                    selector.setValue(useOrg);
                 else
                     selector.setValue(_u.user.ws_ou());
                 if(onload) onload();
@@ -324,7 +325,10 @@ if(!dojo._hasResource["openils.User"]) {
 
             function buildTreePicker(orgList) {
                 var store = new dojo.data.ItemFileReadStore({data:aou.toStoreData(orgList)});
-                hookupStore(store);
+                if (selectedOrg == -1 && orgList[0])
+                    selectedOrg = orgList[0].id();
+
+                hookupStore(store, selectedOrg);
                 _u.permOrgStoreCache[perm] = store;
             }
     
