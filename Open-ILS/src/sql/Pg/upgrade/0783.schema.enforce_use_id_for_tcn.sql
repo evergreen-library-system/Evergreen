@@ -1,3 +1,14 @@
+-- Evergreen DB patch 0783.schema.enforce_use_id_for_tcn.sql
+--
+-- Sets the TCN value in the biblio.record_entry row to bib ID,
+-- if the appropriate setting is in place
+--
+BEGIN;
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0783', :eg_version);
+
+-- FIXME: add/check SQL statements to perform the upgrade
 CREATE OR REPLACE FUNCTION evergreen.maintain_901 () RETURNS TRIGGER AS $func$
 use strict;
 use MARC::Record;
@@ -96,3 +107,6 @@ $_TD->{new}{marc} = $xml;
 
 return "MODIFY";
 $func$ LANGUAGE PLPERLU;
+
+
+COMMIT;
