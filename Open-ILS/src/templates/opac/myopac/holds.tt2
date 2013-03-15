@@ -71,7 +71,7 @@
                     <select class="hide_me" id="holds_sort">
                         <option value="">[% l('-- Sort By --') %]</option>
                         <option value="title">[% l('Title') %]</option>
-                        <option value="pickup">[% l('PickUp Location') %]</option>
+                        <option value="pickup">[% l('Pickup Location') %]</option>
                         <option value="status">[% l('Status') %]</option>
                     </select>
                 </td>
