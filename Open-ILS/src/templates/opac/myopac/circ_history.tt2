@@ -30,8 +30,10 @@
             <form action="[% mkurl(ctx.opac_root _ '/myopac/circ_history/export') %]" method="post">
                 <div>
                     [%- INCLUDE "opac/parts/preserve_params.tt2" %]
+                    [% IF ctx.circs.size > 0 %]
                     <input type="hidden" name="filename" value="[% l('circ_history.csv') %]"/> 
                     <button type="submit">[% l('Download CSV') %]</button>
+                    [% END %]
                 </div>
             </form>
         </span>
