@@ -538,15 +538,15 @@ CREATE OR REPLACE FUNCTION oils_text_as_bytea (TEXT) RETURNS BYTEA AS $_$
 $_$ LANGUAGE SQL IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION evergreen.lpad_number_substrings( TEXT, TEXT, INT ) RETURNS TEXT AS $$
-    my $string = shift;
-    my $pad = shift;
-    my $len = shift;
+    my $string = shift;            # Source string
+    my $pad = shift;               # string to fill. Typically '0'. This should be a single character.
+    my $len = shift;               # length of resultant padded field
     my $find = $len - 1;
 
-    while ($string =~ /(?:^|\D)(\d{1,$find})(?:$|\D)/) {
-        my $padded = $1;
+    while ($string =~ /(^|\D)(\d{1,$find})($|\D)/) {
+        my $padded = $2;
         $padded = $pad x ($len - length($padded)) . $padded;
-        $string =~ s/$1/$padded/sg;
+        $string = $` . $1 . $padded . $3 . $';
     }
 
     return $string;
