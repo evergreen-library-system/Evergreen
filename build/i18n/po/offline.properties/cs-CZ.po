@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergeen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-21 11:20-0400\n"
-"PO-Revision-Date: 2013-01-03 09:18+0000\n"
+"PO-Revision-Date: 2013-03-07 08:58+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <petrkubiska@seznam.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-02-23 05:28+0000\n"
-"X-Generator: Launchpad (build 16506)\n"
+"X-Launchpad-Export-Date: 2013-03-08 04:39+0000\n"
+"X-Generator: Launchpad (build 16523)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -1155,7 +1155,7 @@ msgstr "Příjem exemplářů"
 
 #: menu.cmd_url_verify.tab
 msgid "Link Checker"
-msgstr ""
+msgstr "Kontrola odkazů"
 
 #: menu.cmd_booking_resource.tab
 msgid "Resources"
@@ -1203,7 +1203,7 @@ msgstr "Pravidla vyřizování rezervací"
 
 #: menu.local_admin.item_attribute_editor.tab
 msgid "Admin Item Attribute Editor"
-msgstr ""
+msgstr "Administrátorské rozhraní pro editaci vlastností exempláře"
 
 #: menu.local_admin.work_log.tab
 msgid "Work Log"
