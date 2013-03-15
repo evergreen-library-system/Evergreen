@@ -3234,16 +3234,16 @@ sub uber_hold_impl {
     ) or return $e->event;
 
     if($hold->usr->id ne $e->requestor->id) {
-        # A user is allowed to see his/her own holds
+        # caller is asking for someone else's hold
         $e->allowed('VIEW_HOLD') or return $e->event;
         $hold->notes( # filter out any non-staff ("private") notes
-            [ grep { !$U->is_true($_->staff) } @{$hold->notes} ] );
+            [ grep { $U->is_true($_->staff) } @{$hold->notes} ] );
 
     } else {
         # caller is asking for own hold, but may not have permission to view staff notes
         unless($e->allowed('VIEW_HOLD')) {
             $hold->notes( # filter out any staff notes
-                [ grep { $U->is_true($_->staff) } @{$hold->notes} ] );
+                [ grep { !$U->is_true($_->staff) } @{$hold->notes} ] );
         }
     }
 
