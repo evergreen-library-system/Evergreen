@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 
 #. (bad_user)
-#: ../../Open-ILS/src/templates/opac/myopac/update_username.tt2:16
+#: ../../Open-ILS/src/templates/opac/myopac/update_username.tt2:20
 msgid ""
 "\n"
 "        The username \"<b>%1</b>\" is taken.  Please try a different username.\n"
@@ -35,15 +35,15 @@ msgstr ""
 msgid " / "
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/update_password.tt2:10
+#: ../../Open-ILS/src/templates/opac/myopac/update_password.tt2:14
 msgid " New password is invalid.  Please try a different password.  "
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/update_password.tt2:15
+#: ../../Open-ILS/src/templates/opac/myopac/update_password.tt2:19
 msgid " Passwords do not match. "
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/update_email.tt2:15 ../../Open-ILS/src/templates/opac/myopac/update_password.tt2:20 ../../Open-ILS/src/templates/opac/myopac/update_username.tt2:23
+#: ../../Open-ILS/src/templates/opac/myopac/update_email.tt2:19 ../../Open-ILS/src/templates/opac/myopac/update_password.tt2:24 ../../Open-ILS/src/templates/opac/myopac/update_username.tt2:27
 msgid " Your current password was not correct. "
 msgstr ""
 
@@ -51,12 +51,12 @@ msgstr ""
 msgid " for "
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:35
+#: ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:38
 msgid " in "
 msgstr ""
 
 #. (bad_user)
-#: ../../Open-ILS/src/templates/opac/myopac/update_username.tt2:10
+#: ../../Open-ILS/src/templates/opac/myopac/update_username.tt2:14
 msgid "\"<b>%1</b>\" is not a valid username.  Usernames cannot have any spaces or look like a barcode, and may be restricted by policy.  Please try a different username."
 msgstr ""
 
@@ -69,9 +69,10 @@ msgstr ""
 msgid "%1 %2"
 msgstr ""
 
+#. (copy.label, copy_org.name)
 #. (title, part.label)
 #. (title, hold.hold.part.label)
-#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:137 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:25 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:37
+#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:138 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:25 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:291 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:65 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:37
 msgid "%1 (%2)"
 msgstr ""
 
@@ -151,19 +152,19 @@ msgstr ""
 msgid "* Staff Notes *"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:53
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:55
 msgid "- All Parts -"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:255 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:30
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:258 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:31
 msgid "-- Actions for these items --"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/coded_value_selector.tt2:22 ../../Open-ILS/src/templates/opac/parts/filter_group_selector.tt2:20
+#: ../../Open-ILS/src/templates/opac/parts/coded_value_selector.tt2:23 ../../Open-ILS/src/templates/opac/parts/filter_group_selector.tt2:20
 msgid "-- Any --"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:95
+#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:96
 msgid "-- Sort By --"
 msgstr ""
 
@@ -171,7 +172,7 @@ msgstr ""
 msgid "?"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:131
+#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:139
 msgid "Account Creation Date"
 msgstr ""
 
@@ -203,19 +204,19 @@ msgstr ""
 msgid "Action Note: "
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:61
+#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:63
 msgid "Actions for selected holds"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:119 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:64
+#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:120 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:66
 msgid "Activate"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:62 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:121
+#: ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:62 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:122
 msgid "Active"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:120
+#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:128
 msgid "Active Barcode"
 msgstr ""
 
@@ -259,7 +260,7 @@ msgstr ""
 msgid "Added Author"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/extras.tt2:4
+#: ../../Open-ILS/src/templates/opac/parts/record/extras.tt2:23
 msgid "Additional Content"
 msgstr ""
 
@@ -279,15 +280,15 @@ msgstr ""
 msgid "Additional Volume Information"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:171 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:202
+#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:179 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:210
 msgid "Address Type"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:241
+#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:249
 msgid "Address changes will be verified by staff"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:143
+#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:151
 msgid "Addresses"
 msgstr ""
 
@@ -295,7 +296,7 @@ msgstr ""
 msgid "Adjacency"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/advanced.tt2:1 ../../Open-ILS/src/templates/opac/advanced.tt2:19 ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:10 ../../Open-ILS/src/templates/opac/results.tt2:31
+#: ../../Open-ILS/src/templates/opac/advanced.tt2:1 ../../Open-ILS/src/templates/opac/advanced.tt2:19 ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:10 ../../Open-ILS/src/templates/opac/results.tt2:30
 msgid "Advanced Search"
 msgstr ""
 
@@ -339,7 +340,7 @@ msgstr ""
 msgid "Animator"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/extras.tt2:4
+#: ../../Open-ILS/src/templates/opac/parts/record/extras.tt2:23
 msgid "Annotation"
 msgstr ""
 
@@ -347,7 +348,7 @@ msgstr ""
 msgid "Annotator"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/results.tt2:28
+#: ../../Open-ILS/src/templates/opac/results.tt2:27
 msgid "Another Search"
 msgstr ""
 
@@ -412,7 +413,7 @@ msgstr ""
 msgid "August"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:58 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:116 ../../Open-ILS/src/templates/opac/myopac/main.tt2:23 ../../Open-ILS/src/templates/opac/parts/qtype_selector.tt2:1 ../../Open-ILS/src/templates/opac/parts/record/authors.tt2:1 ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
+#: ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:58 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:117 ../../Open-ILS/src/templates/opac/myopac/main.tt2:23 ../../Open-ILS/src/templates/opac/parts/qtype_selector.tt2:1 ../../Open-ILS/src/templates/opac/parts/record/authors.tt2:1 ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Author"
 msgstr ""
 
@@ -468,7 +469,7 @@ msgstr ""
 msgid "Awards Note: "
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/extras.tt2:4
+#: ../../Open-ILS/src/templates/opac/parts/record/extras.tt2:23
 msgid "Awards, Reviews, & Suggested Reads"
 msgstr ""
 
@@ -488,7 +489,7 @@ msgstr ""
 msgid "Balance Owed"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:53 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:66 ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:41
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:55 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:66 ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:41
 msgid "Barcode"
 msgstr ""
 
@@ -596,12 +597,16 @@ msgstr ""
 msgid "Browse in Google Books Search"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:54 ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:37
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:56
 msgid "Call Number"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:13
 msgid "Call Number (Shelf Browse)"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:37
+msgid "Call Number / Copy Notes"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/cnbrowse.tt2:1
@@ -620,11 +625,11 @@ msgstr ""
 msgid "Calligrapher"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:66 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:45 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:46 ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:176 ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:26 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:106 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:129
+#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:68 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:45 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:46 ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:176 ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:26 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:110 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:129
 msgid "Cancel"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:120
+#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:121
 msgid "Cancel if not filled by"
 msgstr ""
 
@@ -649,11 +654,11 @@ msgstr ""
 msgid "Catalog - %1"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:71
+#: ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:77
 msgid "Catalog Home"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:64 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:83
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:66 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:86
 msgid "Catalog record"
 msgstr ""
 
@@ -661,7 +666,7 @@ msgstr ""
 msgid "Censor"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:101 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:90 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:96 ../../Open-ILS/src/templates/opac/parts/locale_picker.tt2:26
+#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:108 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:90 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:99 ../../Open-ILS/src/templates/opac/parts/locale_picker.tt2:26
 msgid "Change"
 msgstr ""
 
@@ -685,7 +690,7 @@ msgstr ""
 msgid "Checked Out Before"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:50 ../../Open-ILS/src/templates/opac/myopac/main.tt2:24
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:52 ../../Open-ILS/src/templates/opac/myopac/main.tt2:24
 msgid "Checkout Date"
 msgstr ""
 
@@ -705,7 +710,7 @@ msgstr ""
 msgid "Citation/References Note: "
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:106 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:174 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:214
+#: ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:106 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:182 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:222
 msgid "City"
 msgstr ""
 
@@ -887,11 +892,11 @@ msgstr ""
 msgid "Costume designer"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:177 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:226
+#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:185 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:234
 msgid "Country"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:175 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:218
+#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:183 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:226
 msgid "County"
 msgstr ""
 
@@ -931,7 +936,7 @@ msgstr ""
 msgid "Curator"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/update_email.tt2:25
+#: ../../Open-ILS/src/templates/opac/myopac/update_email.tt2:29
 msgid "Current Email"
 msgstr ""
 
@@ -943,11 +948,11 @@ msgstr ""
 msgid "Current Items on Hold"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/update_email.tt2:26 ../../Open-ILS/src/templates/opac/myopac/update_password.tt2:26 ../../Open-ILS/src/templates/opac/myopac/update_username.tt2:31
+#: ../../Open-ILS/src/templates/opac/myopac/update_email.tt2:30 ../../Open-ILS/src/templates/opac/myopac/update_password.tt2:30 ../../Open-ILS/src/templates/opac/myopac/update_username.tt2:35
 msgid "Current Password"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/update_username.tt2:30
+#: ../../Open-ILS/src/templates/opac/myopac/update_username.tt2:34
 msgid "Current Username"
 msgstr ""
 
@@ -975,7 +980,7 @@ msgstr ""
 msgid "Date Fulfilled"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:52 ../../Open-ILS/src/templates/opac/myopac/main.tt2:26
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:54 ../../Open-ILS/src/templates/opac/myopac/main.tt2:26
 msgid "Date Returned"
 msgstr ""
 
@@ -1007,7 +1012,7 @@ msgstr ""
 msgid "Dedicator"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:90
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:92
 msgid "Default Font Size"
 msgstr ""
 
@@ -1015,15 +1020,15 @@ msgstr ""
 msgid "Default List"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:56
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:66
 msgid "Default Mobile Carrier"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:60
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:71
 msgid "Default Mobile Number"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:39
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:46
 msgid "Default Phone Number"
 msgstr ""
 
@@ -1071,7 +1076,7 @@ msgstr ""
 msgid "Director"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:238
+#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:246
 msgid "Discard Pending Address"
 msgstr ""
 
@@ -1108,7 +1113,7 @@ msgstr ""
 msgid "Donor"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:34 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:137
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:35 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:137
 msgid "Download CSV"
 msgstr ""
 
@@ -1120,7 +1125,7 @@ msgstr ""
 msgid "Dubious author"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:51 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:65 ../../Open-ILS/src/templates/opac/myopac/main.tt2:25 ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:51
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:53 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:65 ../../Open-ILS/src/templates/opac/myopac/main.tt2:25 ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:51
 msgid "Due Date"
 msgstr ""
 
@@ -1136,11 +1141,11 @@ msgstr ""
 msgid "Earlier issues"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:250
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:253
 msgid "Edit"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:183
+#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:191
 msgid "Edit Address"
 msgstr ""
 
@@ -1176,11 +1181,11 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:95 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:99
+#: ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:95 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:103
 msgid "Email Address"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:81
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:84
 msgid "Email Address:"
 msgstr ""
 
@@ -1188,7 +1193,7 @@ msgstr ""
 msgid "Email address associated with the account:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:75
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:85
 msgid "Enabled"
 msgstr ""
 
@@ -1209,6 +1214,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:66 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:97
 msgid "Enter date in MM/DD/YYYY format"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:25
+msgid "Enter search query:"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:16
@@ -1267,7 +1276,7 @@ msgstr ""
 msgid "Example: 0026626051"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/addedcontent.tt2:3 ../../Open-ILS/src/templates/opac/parts/record/extras.tt2:4
+#: ../../Open-ILS/src/templates/opac/parts/record/addedcontent.tt2:3 ../../Open-ILS/src/templates/opac/parts/record/extras.tt2:23
 msgid "Excerpt"
 msgstr ""
 
@@ -1370,7 +1379,7 @@ msgstr ""
 msgid "Forgot your password?"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:59 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:117 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:245
+#: ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:59 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:118 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:248
 msgid "Format"
 msgstr ""
 
@@ -1418,7 +1427,7 @@ msgstr ""
 msgid "Geographic information specialist"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circs.tt2:45 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:46 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:70 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:71 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:260 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:42
+#: ../../Open-ILS/src/templates/opac/myopac/circs.tt2:45 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:46 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:72 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:73 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:263 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:43
 msgid "Go"
 msgstr ""
 
@@ -1428,6 +1437,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/main_pay.tt2:27
 msgid "Go back to try again or to cancel this payment attempt."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/record/extras.tt2:7
+msgid "Google Preview"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
@@ -1446,7 +1459,7 @@ msgstr ""
 msgid "Hide items in list"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:65 ../../Open-ILS/src/templates/opac/parts/sms_number_textbox.tt2:4
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:75 ../../Open-ILS/src/templates/opac/parts/sms_number_textbox.tt2:4
 msgid "Hint: use the full 10 digits of your phone #, no spaces, no dashes"
 msgstr ""
 
@@ -1471,7 +1484,7 @@ msgid "Holdable?"
 msgstr ""
 
 #. (serial.location)
-#: ../../Open-ILS/src/templates/opac/parts/record/issues-mfhd.tt2:20
+#: ../../Open-ILS/src/templates/opac/parts/record/issues-mfhd.tt2:23
 msgid "Holdings summary (%1)"
 msgstr ""
 
@@ -1479,7 +1492,7 @@ msgstr ""
 msgid "Holds"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:76
+#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:78
 msgid "Holds Help"
 msgstr ""
 
@@ -1491,7 +1504,7 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:126
+#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:134
 msgid "Home Library"
 msgstr ""
 
@@ -1521,6 +1534,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:157 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:151
 msgid "ISSN:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:21
+msgid "Identifier"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:90
@@ -1614,7 +1631,7 @@ msgstr ""
 msgid "Issue hold"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/extras.tt2:4
+#: ../../Open-ILS/src/templates/opac/parts/record/extras.tt2:23
 msgid "Issues Held"
 msgstr ""
 
@@ -1681,11 +1698,11 @@ msgstr ""
 msgid "June"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:65
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:68
 msgid "Keep history of checked out items?"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:73
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:76
 msgid "Keep history of holds?"
 msgstr ""
 
@@ -1725,7 +1742,7 @@ msgstr ""
 msgid "Language:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:94
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:96
 msgid "Large Font"
 msgstr ""
 
@@ -1809,7 +1826,7 @@ msgstr ""
 msgid "Limit to Available"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/results.tt2:61
+#: ../../Open-ILS/src/templates/opac/results.tt2:59
 msgid "Limit to available items"
 msgstr ""
 
@@ -1857,6 +1874,14 @@ msgstr ""
 msgid "Lithographer"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/opac/parts/record/awards.tt2:13
+msgid "Loading..."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:242 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:28
+msgid "Local Call Number"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:35
 msgid "Location"
 msgstr ""
@@ -1895,7 +1920,7 @@ msgstr ""
 msgid "Lyricist"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/extras.tt2:4
+#: ../../Open-ILS/src/templates/opac/parts/record/extras.tt2:23
 msgid "MARC Record"
 msgstr ""
 
@@ -1971,7 +1996,7 @@ msgstr ""
 msgid "More"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:34
+#: ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:35
 msgid "Move selected items to bookbag:"
 msgstr ""
 
@@ -2023,19 +2048,19 @@ msgstr ""
 msgid "Narrator"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/update_email.tt2:27
+#: ../../Open-ILS/src/templates/opac/myopac/update_email.tt2:31
 msgid "New Email"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/update_password.tt2:27
+#: ../../Open-ILS/src/templates/opac/myopac/update_password.tt2:31
 msgid "New Password"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/update_password.tt2:28
+#: ../../Open-ILS/src/templates/opac/myopac/update_password.tt2:32
 msgid "New Password Again"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/update_username.tt2:32
+#: ../../Open-ILS/src/templates/opac/myopac/update_username.tt2:36
 msgid "New Username"
 msgstr ""
 
@@ -2048,7 +2073,7 @@ msgid "Next"
 msgstr ""
 
 #. (ctx.copy_limit)
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:172
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:179
 msgid "Next %1"
 msgstr ""
 
@@ -2072,11 +2097,11 @@ msgstr ""
 msgid "No Content Available"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:51 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:104
+#: ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:51 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:105
 msgid "No holds found."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:79
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:89
 msgid "No notification preferences are configured"
 msgstr ""
 
@@ -2108,7 +2133,7 @@ msgstr ""
 msgid "Note: carrier charges may apply"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:248
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:251
 msgid "Notes"
 msgstr ""
 
@@ -2116,23 +2141,23 @@ msgstr ""
 msgid "Notification Preferences"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:74
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:84
 msgid "Notification Type"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:23
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:24
 msgid "Notify by Email by default when a hold is ready for pickup?"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:31
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:36
 msgid "Notify by Phone by default when a hold is ready for pickup?"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:48
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:57
 msgid "Notify by Text by default when a hold is ready for pickup?"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:75
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:78
 msgid "Notify when hold is ready for pickup?"
 msgstr ""
 
@@ -2160,7 +2185,7 @@ msgstr ""
 msgid "On Hold"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:80
+#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:82
 msgid "One or more holds could not be suspended because the item is at (or en route to) the pickup library."
 msgstr ""
 
@@ -2288,7 +2313,7 @@ msgstr ""
 msgid "Payments History"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:144
+#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:152
 msgid "Pending Addresses"
 msgstr ""
 
@@ -2313,7 +2338,7 @@ msgstr ""
 msgid "Personal Information"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:87
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:91
 msgid "Phone Number:"
 msgstr ""
 
@@ -2329,11 +2354,7 @@ msgstr ""
 msgid "Physical Description:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:97
-msgid "PickUp Location"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:60 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:118
+#: ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:60 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:119 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:98
 msgid "Pickup Location"
 msgstr ""
 
@@ -2341,7 +2362,7 @@ msgstr ""
 msgid "Pickup library"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:70
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:73
 msgid "Pickup location:"
 msgstr ""
 
@@ -2349,7 +2370,7 @@ msgstr ""
 msgid "Place Hold"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:256 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:31
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:259 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:32
 msgid "Place hold"
 msgstr ""
 
@@ -2415,15 +2436,15 @@ msgstr ""
 msgid "Preferred library: %1%2%3"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:53
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:55
 msgid "Preferred pickup location"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:41
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:42
 msgid "Preferred search location"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/extras.tt2:4
+#: ../../Open-ILS/src/templates/opac/parts/record/extras.tt2:23
 msgid "Preview"
 msgstr ""
 
@@ -2432,7 +2453,7 @@ msgid "Previous"
 msgstr ""
 
 #. (ctx.copy_offset - new_offset)
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:166
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:173
 msgid "Previous %1"
 msgstr ""
 
@@ -2452,7 +2473,7 @@ msgstr ""
 msgid "Previously Held Items"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:106
+#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:114
 msgid "Primary Identification"
 msgstr ""
 
@@ -2524,7 +2545,7 @@ msgstr ""
 msgid "Proofreader"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:242
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:245
 msgid "Publication Date"
 msgstr ""
 
@@ -2600,11 +2621,11 @@ msgstr ""
 msgid "Redactor"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:64
+#: ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:70
 msgid "Refine My Original Search"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:93
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:95
 msgid "Regular Font"
 msgstr ""
 
@@ -2612,7 +2633,7 @@ msgstr ""
 msgid "Remove Default List"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:257 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:32
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:260 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:33
 msgid "Remove from list"
 msgstr ""
 
@@ -2708,10 +2729,6 @@ msgstr ""
 msgid "Reviews and More"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/awards.tt2:13
-msgid "Reviews:"
-msgstr ""
-
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Rubricator"
 msgstr ""
@@ -2720,15 +2737,15 @@ msgstr ""
 msgid "SMS not enabled for this site."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:206 ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:93 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:102
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:206 ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:103 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:104
 msgid "Save"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:235
+#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:243
 msgid "Save Changes"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:315
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:335
 msgid "Save Notes"
 msgstr ""
 
@@ -2760,7 +2777,7 @@ msgstr ""
 msgid "Sculptor"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/advanced/expert.tt2:35 ../../Open-ILS/src/templates/opac/parts/advanced/expert.tt2:36 ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:34 ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:35 ../../Open-ILS/src/templates/opac/parts/advanced/search.tt2:108 ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:39
+#: ../../Open-ILS/src/templates/opac/parts/advanced/expert.tt2:36 ../../Open-ILS/src/templates/opac/parts/advanced/expert.tt2:37 ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:35 ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:36 ../../Open-ILS/src/templates/opac/parts/advanced/search.tt2:108 ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:45
 msgid "Search"
 msgstr ""
 
@@ -2784,12 +2801,8 @@ msgstr ""
 msgid "Search Library"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/advanced/expert.tt2:26 ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:25
+#: ../../Open-ILS/src/templates/opac/parts/advanced/expert.tt2:27 ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:26
 msgid "Search Library:"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/opac/parts/myopac/prefs_base.tt2:16 ../../Open-ILS/src/templates/opac/parts/myopac/prefs_base.tt2:26 ../../Open-ILS/src/templates/opac/parts/myopac/prefs_base.tt2:36
-msgid "Search Preferences"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/result/paginate.tt2:3 ../../Open-ILS/src/templates/opac/results.tt2:1
@@ -2800,6 +2813,10 @@ msgstr ""
 msgid "Search Results: "
 msgstr ""
 
+#: ../../Open-ILS/src/templates/opac/parts/myopac/prefs_base.tt2:16 ../../Open-ILS/src/templates/opac/parts/myopac/prefs_base.tt2:26 ../../Open-ILS/src/templates/opac/parts/myopac/prefs_base.tt2:36
+msgid "Search and History Preferences"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/parts/record/series.tt2:47
 msgid "Search for related items by series"
 msgstr ""
@@ -2808,11 +2825,7 @@ msgstr ""
 msgid "Search for related items by subject"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:22
-msgid "Search hits per page"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:49
+#: ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:55
 msgid "Search only within the chosen list"
 msgstr ""
 
@@ -2844,6 +2857,22 @@ msgstr ""
 msgid "Select a Part:"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/opac/parts/coded_value_selector.tt2:21
+msgid "Select item type:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/qtype_selector.tt2:11
+msgid "Select query type:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:38
+msgid "Select search library"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:59
+msgid "Select your action for the selected holds"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:42
 msgid "Selected fines you are paying for:"
 msgstr ""
@@ -2860,7 +2889,7 @@ msgstr ""
 msgid "Series"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:65
+#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:67
 msgid "Set Active Date"
 msgstr ""
 
@@ -2884,7 +2913,7 @@ msgstr ""
 msgid "Sharing Help"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:328
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:348
 msgid ""
 "Sharing a Bookbag means that the contents \n"
 "of the Bookbag will be visible to others.  \n"
@@ -2892,7 +2921,7 @@ msgid ""
 "click on the Bookbag's name in the Bookbag list."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/cnbrowse.tt2:18 ../../Open-ILS/src/templates/opac/parts/record/extras.tt2:4
+#: ../../Open-ILS/src/templates/opac/parts/record/cnbrowse.tt2:18 ../../Open-ILS/src/templates/opac/parts/record/extras.tt2:23
 msgid "Shelf Browser"
 msgstr ""
 
@@ -2904,16 +2933,16 @@ msgstr ""
 msgid "Shelving location"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/results.tt2:50
+#: ../../Open-ILS/src/templates/opac/results.tt2:49
 msgid "Show Fewer Details"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/results.tt2:52
+#: ../../Open-ILS/src/templates/opac/results.tt2:50
 msgid "Show More Details"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:87 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:90
-msgid "Show all"
+#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:89 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:92
+msgid "Show all holds"
 msgstr ""
 
 #. (ou_name)
@@ -2921,7 +2950,7 @@ msgstr ""
 msgid "Show copies at %1"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:189
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:196
 msgid "Show fewer copies"
 msgstr ""
 
@@ -2929,12 +2958,12 @@ msgstr ""
 msgid "Show items in list"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:184
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:191
 msgid "Show more copies"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:88 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:91
-msgid "Show only available"
+#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:90 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:93
+msgid "Show only available holds"
 msgstr ""
 
 #. (ctx.search_result_index + 1, ctx.hit_count)
@@ -2946,15 +2975,11 @@ msgstr ""
 msgid "Signer"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/awards.tt2:19
-msgid "Similar Books:"
-msgstr ""
-
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Singer"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:81
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:84
 msgid "Skip warning when adding to temporary book list?"
 msgstr ""
 
@@ -2985,7 +3010,7 @@ msgstr ""
 msgid "Sort Results"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/results.tt2:43
+#: ../../Open-ILS/src/templates/opac/results.tt2:42
 msgid "Sort by"
 msgstr ""
 
@@ -3037,7 +3062,7 @@ msgstr ""
 msgid "Starts with"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:176 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:222
+#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:184 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:230
 msgid "State"
 msgstr ""
 
@@ -3045,7 +3070,7 @@ msgstr ""
 msgid "State or Province"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:64 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:122 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:98 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:38 ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:50 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:233
+#: ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:64 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:123 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:99 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:38 ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:50 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:233
 msgid "Status"
 msgstr ""
 
@@ -3061,7 +3086,7 @@ msgstr ""
 msgid "Storyteller"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:172 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:173 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:206 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:210
+#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:180 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:181 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:214 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:218
 msgid "Street"
 msgstr ""
 
@@ -3085,7 +3110,7 @@ msgstr ""
 msgid "Subject: "
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:105 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:40 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:41 ../../Open-ILS/src/templates/opac/myopac/update_email.tt2:28 ../../Open-ILS/src/templates/opac/myopac/update_password.tt2:29 ../../Open-ILS/src/templates/opac/myopac/update_username.tt2:33 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:102 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:103 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:122 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:123 ../../Open-ILS/src/templates/opac/password_reset.tt2:43 ../../Open-ILS/src/templates/opac/password_reset.tt2:65 ../../Open-ILS/src/templates/opac/sms_cn.tt2:32 ../../Open-ILS/src/templates/opac/sms_cn.tt2:33 ../../Open-ILS/src/templates/opac/sms_cn.tt2:34
+#: ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:105 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:40 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:41 ../../Open-ILS/src/templates/opac/myopac/update_email.tt2:32 ../../Open-ILS/src/templates/opac/myopac/update_password.tt2:33 ../../Open-ILS/src/templates/opac/myopac/update_username.tt2:37 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:107 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:108 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:122 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:123 ../../Open-ILS/src/templates/opac/password_reset.tt2:43 ../../Open-ILS/src/templates/opac/password_reset.tt2:65 ../../Open-ILS/src/templates/opac/sms_cn.tt2:32 ../../Open-ILS/src/templates/opac/sms_cn.tt2:33 ../../Open-ILS/src/templates/opac/sms_cn.tt2:34
 msgid "Submit"
 msgstr ""
 
@@ -3098,7 +3123,7 @@ msgstr ""
 msgid "Successfully renewed %1 item(s)"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/extras.tt2:4
+#: ../../Open-ILS/src/templates/opac/parts/record/extras.tt2:23
 msgid "Summaries &amp; More"
 msgstr ""
 
@@ -3130,7 +3155,7 @@ msgstr ""
 msgid "Surveyor"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:63
+#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:65
 msgid "Suspend"
 msgstr ""
 
@@ -3191,7 +3216,7 @@ msgid "The barcode used to login is marked as inactive.  Please contact your loc
 msgstr ""
 
 #. (bad_email)
-#: ../../Open-ILS/src/templates/opac/myopac/update_email.tt2:10
+#: ../../Open-ILS/src/templates/opac/myopac/update_email.tt2:14
 msgid "The email address \"<b>%1</b>\" is invalid.  Please try a different email address."
 msgstr ""
 
@@ -3259,7 +3284,7 @@ msgstr ""
 msgid "The total item-to-hold ratio is too low"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:42
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:44
 msgid "There are no items in your circulation history."
 msgstr ""
 
@@ -3283,7 +3308,7 @@ msgstr ""
 msgid "This information will disappear when you logout, unless you save it to a permanent list."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:267
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:270
 msgid "This list contains no items."
 msgstr ""
 
@@ -3303,11 +3328,11 @@ msgstr ""
 msgid "Tip:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:57 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:115 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:96 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:236 ../../Open-ILS/src/templates/opac/myopac/main.tt2:22 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:26 ../../Open-ILS/src/templates/opac/parts/qtype_selector.tt2:1
+#: ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:57 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:116 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:97 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:236 ../../Open-ILS/src/templates/opac/myopac/main.tt2:22 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:26 ../../Open-ILS/src/templates/opac/parts/qtype_selector.tt2:1
 msgid "Title"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:49 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:63
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:51 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:63
 msgid "Title / Author"
 msgstr ""
 
@@ -3393,6 +3418,18 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/opac/myopac/update_email.tt2:8
+msgid "Update Email"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/myopac/update_password.tt2:9
+msgid "Update Password"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/myopac/update_username.tt2:8
+msgid "Update Username"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/password_reset.tt2:58
 msgid "User name:"
 msgstr ""
@@ -3425,7 +3462,7 @@ msgstr ""
 msgid "View All"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/results.tt2:36 ../../Open-ILS/src/templates/opac/results.tt2:38
+#: ../../Open-ILS/src/templates/opac/results.tt2:35 ../../Open-ILS/src/templates/opac/results.tt2:37
 msgid "View My List"
 msgstr ""
 
@@ -3479,15 +3516,15 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:79
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:82
 msgid "Yes, by Email"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:85
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:89
 msgid "Yes, by Phone"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:94
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:99
 msgid "Yes, by Text Messaging"
 msgstr ""
 
@@ -3569,7 +3606,7 @@ msgstr ""
 msgid "ZIP or Postal Code"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:178 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:231
+#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:186 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:239
 msgid "Zip"
 msgstr ""
 
@@ -3577,12 +3614,8 @@ msgstr ""
 msgid "and"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:33
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:34
 msgid "circ_history.csv"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:93
-msgid "holds"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:31

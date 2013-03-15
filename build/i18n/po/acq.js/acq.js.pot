@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2013-02-21 11:20:54-0400\n"
+"POT-Creation-Date: 2013-03-15 19:42:04-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,14 +15,14 @@ msgstr ""
 msgid "The selected lineitem is not in a state that can be added to a purchase order"
 msgstr ""
 
+#: acq.js:NO_LI_TO_CLAIM
+msgid "You have not selected any line items to claim."
+msgstr ""
+
 #: acq.js:CONFIRM_FUNDS_AT_WARNING
 msgid ""
 "One or more of the selected funds has a balance below its warning level.\n"
 "Continue?"
-msgstr ""
-
-#: acq.js:NO_LID_TO_CLAIM
-msgid "You have not selected any lineitem details to claim."
 msgstr ""
 
 #: acq.js:FUND_LIST_ROLLOVER_SUMMARY_FUNDS
@@ -35,6 +35,10 @@ msgstr ""
 
 #: acq.js:PREPAYMENT_REQUIRED_REMINDER
 msgid "This PO requires prepayment.  Are you certain you're ready to activate it?"
+msgstr ""
+
+#: acq.js:DFA_NOT_ALL
+msgid "Could not record all of your applications of distribution formulas."
 msgstr ""
 
 #: acq.js:INVOICE_EXTRA_COPIES
@@ -79,10 +83,6 @@ msgstr ""
 msgid "There is already an invoice in the system with the given combination of 'Vendor Invoice ID' and 'Provider,' which is not allowed."
 msgstr ""
 
-#: acq.js:DFA_NOT_ALL
-msgid "Could not record all of your applications of distribution forumulas."
-msgstr ""
-
 #: acq.js:CONFIRM_DELETE_MAPPING
 msgid "Are you sure you want to remove this tag from this fund?"
 msgstr ""
@@ -103,6 +103,13 @@ msgstr ""
 
 #: acq.js:FUND_XFER_SAME_SOURCE_AND_DEST
 msgid "Cannot transfer. The source and destination funds are the same."
+msgstr ""
+
+#: acq.js:ROLLBACK_LI_RECEIVE_CONFIRM
+msgid ""
+"This will rollback receipt of selected line items from this purchase order.\n"
+"\n"
+"Continue?"
 msgstr ""
 
 #: acq.js:LOAD_TERMS_FIRST
@@ -220,6 +227,10 @@ msgstr ""
 msgid "Error removing tag from fund."
 msgstr ""
 
+#: acq.js:NEW_INVOICE
+msgid "New Invoice"
+msgstr ""
+
 #: acq.js:YES
 msgid "Yes"
 msgstr ""
@@ -255,6 +266,10 @@ msgstr ""
 msgid "No results."
 msgstr ""
 
+#: acq.js:NO_LID_TO_CLAIM
+msgid "You have not selected any line item details to claim."
+msgstr ""
+
 #: acq.js:RECVD
 msgid "Recv'd"
 msgstr ""
@@ -273,6 +288,10 @@ msgstr ""
 
 #: acq.js:OUT_OF_COPIES
 msgid "You have applied distribution formulas to every copy."
+msgstr ""
+
+#: acq.js:NO_LI_TO_UPDATE
+msgid "You have not selected any line items to update."
 msgstr ""
 
 #: acq.js:CREATE_PO_INVALID
@@ -297,10 +316,6 @@ msgstr ""
 
 #: acq.js:PO_FUND_WARNING_CONFIRM
 msgid "Are you sure? Did you see the warning about over-encumbering a fund?"
-msgstr ""
-
-#: acq.js:NO_LI_TO_CLAIM
-msgid "You have not selected any lineitems to claim."
 msgstr ""
 
 #: acq.js:UR_FILTER_USER
@@ -381,6 +396,10 @@ msgstr ""
 msgid "Fund not yet loaded. Try coming back to this display later."
 msgstr ""
 
+#: acq.js:LI_BATCH_UPDATE
+msgid "Line item batch update"
+msgstr ""
+
 #: acq.js:LIBRARY_INITIATED
 msgid "Library Initiated"
 msgstr ""
@@ -401,4 +420,8 @@ msgstr ""
 
 #: acq.js:APPLY
 msgid "Apply"
+msgstr ""
+
+#: acq.js:NO_LI_GENERAL
+msgid "You have not selected any line items."
 msgstr ""

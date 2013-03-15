@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2013-02-21 11:20:55-0400\n"
+"POT-Creation-Date: 2013-03-15 19:42:05-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,6 +33,10 @@ msgstr ""
 
 #: conify.js:SURVEY_ADD_ANSWER
 msgid "Add Answer"
+msgstr ""
+
+#: conify.js:CBHO_FIELD_DISPLAY
+msgid "[${0}] ${1}"
 msgstr ""
 
 #: conify.js:TRANSLATION conify.js:LABEL_TRANSLATION
@@ -103,6 +107,10 @@ msgstr ""
 msgid "Problem creating new Permission"
 msgstr ""
 
+#: conify.js:CBHO_EDITING_NEW
+msgid "You are editing a new best-hold order."
+msgstr ""
+
 #: conify.js:ERROR_CALLING_METHOD_PERM_MAP
 msgid "Problem calling method to create new permission map"
 msgstr ""
@@ -135,8 +143,8 @@ msgstr ""
 msgid "Cannot delete ${0}, ${1} subordinates still exist."
 msgstr ""
 
-#: conify.js:ACQ_DISTRIB_FORMULA_NAME_PROMPT
-msgid "Enter new formula name"
+#: conify.js:CBHO_EDITING_EXISTING
+msgid "You are editing best-hold order #${0}: ${1}."
 msgstr ""
 
 #: conify.js:ERROR_DELETING_LAST_AOUT
@@ -157,6 +165,10 @@ msgstr ""
 
 #: conify.js:LABEL_NEW_GROUP
 msgid "New Group"
+msgstr ""
+
+#: conify.js:CBHO_NO_LOAD
+msgid "Unable to load selected item."
 msgstr ""
 
 #: conify.js:CONFIRM_EXIT_PGT
@@ -197,6 +209,14 @@ msgstr ""
 
 #: conify.js:LABEL_NEW_TYPE
 msgid "New Type"
+msgstr ""
+
+#: conify.js:CBHO_NEEDS_NAME
+msgid "You need to enter a name for the best-hold order."
+msgstr ""
+
+#: conify.js:ACQ_DISTRIB_FORMULA_NAME_PROMPT
+msgid "Enter new formula name"
 msgstr ""
 
 #: conify.js:ERROR_CREATING_CHILD_AOU
