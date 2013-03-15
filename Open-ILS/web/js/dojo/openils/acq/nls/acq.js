@@ -7,7 +7,7 @@
     "NO_PO_RESULTS" : "No results",
     "PO_HEADING_ERROR" : "Unexpected problem building virtual combined PO",
     "CONFIRM_SPLIT_PO" : "Are you sure you want to split this purchase order into\none purchase order for every constituent line item?",
-    "DFA_NOT_ALL" : "Could not record all of your applications of distribution forumulas.",
+    "DFA_NOT_ALL" : "Could not record all of your applications of distribution formulas.",
     "APPLY" : "Apply",
     "RESET_FORMULAE" : "Reset Formulas",
     "OUT_OF_COPIES" : "You have applied distribution formulas to every copy.",
