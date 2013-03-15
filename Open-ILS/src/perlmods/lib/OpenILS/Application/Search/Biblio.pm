@@ -793,7 +793,7 @@ Recognized search keys include:
  title   (ti) - search title      *
  subject (su) - search subject    *
  series  (se) - search series     *
- lang - limit by language (specifiy multiple langs with lang:l1 lang:l2 ...)
+ lang - limit by language (specify multiple langs with lang:l1 lang:l2 ...)
  site - search at specified org unit, corresponds to actor.org_unit.shortname
  pref_ou - extend search to specified org unit, corresponds to actor.org_unit.shortname
  sort - sort type (title, author, pubdate)

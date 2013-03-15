@@ -145,7 +145,7 @@ util.print.prototype = {
                     case 'dos.print':
                         params.dos_print = true;
                     case 'custom.print':
-                        /* FIXME - this it a kludge.. we're going to sidestep window-based html rendering for printing */
+                        /* FIXME - this is a kludge.. we're going to sidestep window-based html rendering for printing */
                         /* I'm using regexps to mangle the html receipt templates; it'd be nice to use xsl but the */
                         /* templates aren't guaranteed to be valid xml.  The unadulterated msg is still preserved in */
                         /* params */

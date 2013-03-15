@@ -4,7 +4,7 @@ function openClaimVoucherWindow() {
     );
     /* XXX i18n - also, the reason this isn't loaded from a server-side page
      * has to do with problems of knowing when the page has loaded, so we
-     * can begin maniuplating it. we could retrieve content with an xhr call
+     * can begin manipulating it. we could retrieve content with an xhr call
      * though...
      */
     win.document.title = "Claim Voucher";
