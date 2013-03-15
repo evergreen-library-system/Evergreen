@@ -49,6 +49,9 @@ INSERT INTO biblio.record_entry (marc, last_xact_id)
 -- load RDA copies, etc.
 \i assets_rda.sql
 
+-- load copy-related data
+\i assets_extras.sql
+
 -- load sample patrons
 \i users_patrons_100.sql
 
