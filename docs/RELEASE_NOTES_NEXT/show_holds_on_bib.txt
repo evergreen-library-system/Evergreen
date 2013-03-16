@@ -1,7 +1,0 @@
-Show Holds On Bib Menu Option
-=============================
-
-Add direct "Show holds on bibs" menu option from item checkin, item status, 
-and patron hold interfaces. This gives staff a quicker way of viewing who 
-else has holds on an item instead of having to click an option to view the 
-bib record, then clicking into the menus to view holds.
