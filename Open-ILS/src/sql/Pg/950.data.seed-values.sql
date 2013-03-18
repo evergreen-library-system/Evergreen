@@ -7952,6 +7952,11 @@ $$
             </tr>
         </thead>
         <tbody>
+        <!-- set detail.owning_lib from fm object to org name -->
+        [% FOREACH detail IN li.lineitem_details %]
+            [% detail.owning_lib = detail.owning_lib.shortname %]
+        [% END %]
+
         [% FOREACH detail IN li.lineitem_details.sort('owning_lib') %]
             [% 
                 IF detail.eg_copy_id;
@@ -7964,7 +7969,7 @@ $$
             %]
             <tr>
                 <!-- acq.lineitem_detail.id = [%- detail.id -%] -->
-                <td style='padding:5px;'>[% detail.owning_lib.shortname %]</td>
+                <td style='padding:5px;'>[% detail.owning_lib %]</td>
                 <td style='padding:5px;'>[% IF copy.barcode   %]<span class="barcode"  >[% detail.barcode   %]</span>[% END %]</td>
                 <td style='padding:5px;'>[% IF cn_label %]<span class="cn_label" >[% cn_label  %]</span>[% END %]</td>
                 <td style='padding:5px;'>[% IF detail.fund %]<span class="fund">[% detail.fund.code %] ([% detail.fund.year %])</span>[% END %]</td>
