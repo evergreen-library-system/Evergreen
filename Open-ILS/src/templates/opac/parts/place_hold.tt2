@@ -70,7 +70,7 @@
 
         <p>
             [%- org_select_id = 'pickup_lib'; -%]
-            <label for="[% org_select_id %]'>[%l('Pickup location:') %]</label>
+            <label for="[% org_select_id %]">[%l('Pickup location:') %]</label>
             [% PROCESS "opac/parts/org_selector.tt2";
                 INCLUDE build_org_selector name='pickup_lib' value=ctx.default_pickup_lib id=org_select_id can_have_vols_only=1 %]
         </p>
