@@ -93,12 +93,12 @@
     <groupbox id="main_groupbox" flex="1" style="overflow: auto;">
         <caption id="main_caption" label="&staff.main.auth.caption;"/>
         <hbox>
-            <button type="menu" label="Help" accesskey="l">
+            <button type="menu" label="&staff.auth.help_btn.label;" accesskey="&staff.auth.help_btn.label;">
                 <menupopup>
                     <menuitem id="about_btn" label="&staff.auth.about_btn.label;" accesskey="&staff.auth.about_btn.accesskey;" />
-                    <menuitem id="contents_menu" label="Contents" accesskey="c" disabled="true" />
+                    <menuitem id="contents_menu" label="&staff.auth.help.menu.contents.label;" accesskey="&staff.auth.help.menu.contents.accesskey;" disabled="true" />
                     <menuseparator id="check_upgrade_sep" hidden="true" />
-                    <menuitem id="check_upgrade" label="Check for upgrades" accesskey="" hidden="true" />
+                    <menuitem id="check_upgrade" label="&staff.auth.help.menu.check_upgrades.label;" accesskey="" hidden="true" />
                 </menupopup>
             </button>
 

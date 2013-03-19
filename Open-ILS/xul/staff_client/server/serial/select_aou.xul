@@ -19,7 +19,7 @@
 <!-- OVERLAYS -->
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
-<window id="select_aou_win" title="Select Org Unit"
+<window id="select_aou_win" title="&staff.select_aou.title;"
 	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }" oils_persist="height width"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
@@ -88,12 +88,12 @@
 	<vbox flex="1" style="overflow: auto">
 	<groupbox flex="1">
 <!--TODO: label strings -->
-		<caption label="Select an Org Unit"/>
-		<description id="desc">Please select an Org Unit</description>
+		<caption label="&staff.select_aou.caption;"/>
+		<description id="desc">&staff.select_aou.desc;</description>
         <hbox id="x_lib_menu"/>
 		<hbox>
-			<button label="Select"
-				accesskey="s" oncommand="g.select_aou()"/>
+			<button label="&staff.select_aou.select_btn.label;"
+				accesskey="&staff.select_aou.select_btn.accesskey;" oncommand="g.select_aou()"/>
 			<button label="&staff.cat.record_buckets_quick.cancel.label;"
 				accesskey="&staff.cat.record_buckets_quick.cancel.accesskey;" oncommand="window.close()"/>
 		</hbox>

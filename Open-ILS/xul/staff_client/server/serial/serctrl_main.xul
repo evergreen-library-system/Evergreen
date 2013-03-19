@@ -114,20 +114,20 @@ vim:noet:sw=4:ts=4:
 
 <!--	<groupbox flex="1" class="my_overflow"> -->
         <tabbox id="serial_tabbox" flex="1" class="my_overflow">
-            <caption label="Serial Control"/>
+            <caption label="&staff.cat.serial_control.title.label;"/>
             <tabs>
-                <tab label="Items" />
-                <tab label="Units" />
-                <tab id="serial_manage_dists_tab" label="Distributions" />
-                <tab id="serial_manage_subs_tab" label="Subscriptions" />
-                <tab label="Claims" />
+                <tab label="&staff.cat.serial_control.tab.items;" />
+                <tab label="&staff.cat.serial_control.tab.units;" />
+                <tab id="serial_manage_dists_tab" label="&staff.cat.serial_control.tab.distributions;" />
+                <tab id="serial_manage_subs_tab" label="&staff.cat.serial_control.tab.subscriptions;" />
+                <tab label="&staff.cat.serial_control.tab.claims;" />
             </tabs>
             <tabpanels flex="1">
                 <tabpanel id="serial_manage_items" />
-                <tabpanel id="serial_manage_units"><description>This tab will contain an alternative unit view/editor.</description></tabpanel>
+                <tabpanel id="serial_manage_units"><description>&staff.cat.serial_control.tab.units.desc;</description></tabpanel>
                 <tabpanel id="serial_manage_dists" />
                 <tabpanel id="serial_manage_subs" />
-                <tabpanel id="serial_manage_claims"><description>This tab will contain a claims interface.</description></tabpanel>
+                <tabpanel id="serial_manage_claims"><description>&staff.cat.serial_control.tab.claims.desc;</description></tabpanel>
             </tabpanels>
         </tabbox>
 <!--	</groupbox> -->

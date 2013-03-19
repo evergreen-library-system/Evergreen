@@ -15,7 +15,7 @@
 
 		<hbox flex="1" style="overflow: auto">
 			<vbox flex="1">
-				<label value="Caption and Pattern" style="font-weight: bold; font-size: large"/>
+				<label value="&staff.serial.scap_editor.title.label;" style="font-weight: bold; font-size: large"/>
 				<vbox id="scap_editor_left_pane" flex="1"/>
 			</vbox>
         </hbox>

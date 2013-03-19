@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE window PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
 <overlay id="iisg_symbol_overlay"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
@@ -10,7 +13,7 @@
 
 <popupset>
   <menupopup id="symbol-menu">
-      <menu label="West-European">
+      <menu label="&staff.symbols.west_european;">
           <menupopup>
               <menu label="A">
                   <menupopup>
@@ -94,7 +97,7 @@
             </menu>                 
         </menupopup>
     </menu>
-    <menu label="Turkish">
+    <menu label="&staff.symbols.turkish;">
           <menupopup>
               <menu label="A">
                   <menupopup>
@@ -140,7 +143,7 @@
             </menu>                 
         </menupopup>
     </menu>
-    <menu label="Cyrillic">
+    <menu label="&staff.symbols.cyrillic;">
           <menupopup>
               <menu label="A">
                   <menupopup>
@@ -176,7 +179,7 @@
             </menu>                 
         </menupopup>
     </menu>
-    <menu label="Slavic">
+    <menu label="&staff.symbols.slavic;">
           <menupopup>
               <menu label="A">
                   <menupopup>
@@ -270,7 +273,7 @@
             </menu>
         </menupopup>
     </menu>
-    <menu label="Hungarian">
+    <menu label="&staff.symbols.hungarian;">
           <menupopup>
               <menu label="A">
                   <menupopup>

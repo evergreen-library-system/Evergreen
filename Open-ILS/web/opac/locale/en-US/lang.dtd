@@ -51,6 +51,12 @@
 <!ENTITY common.save_transactions.accesskey 'S'>
 <!ENTITY common.save_transactions.label 'Save these transactions'>
 
+<!ENTITY common.debug.label "Debug:">
+<!ENTITY common.debug.btn.execute "Execute">
+<!ENTITY common.debug.btn.inspect "Inspect">
+<!ENTITY common.debug.btn.js2JSON "js2JSON">
+<!ENTITY common.debug.menu.btn "Debug">
+
 <!ENTITY common.true "True">
 <!ENTITY common.false "False">
 
@@ -76,6 +82,10 @@
 <!ENTITY common.textbox.paste "Paste">
 <!ENTITY common.textbox.delete "Delete">
 <!ENTITY common.textbox.select_all "Select All">
+
+<!ENTITY common.clipboard.copy_data.desc "Choose the data to copy into the clipboard:">
+<!ENTITY common.clipboard.close.label "Close">
+<!ENTITY common.clipboard.close.accesskey "C">
 
 <!ENTITY common.sort.first.ascending "Sort First (Ascending)">
 <!ENTITY common.sort.first.descending "Sort First (Descending)">
@@ -228,6 +238,11 @@
 <!ENTITY staff.admin.patrons_due_refunds.caption "Patrons With Negative Balances">
 <!ENTITY staff.admin.patrons_due_refunds.menu.actions.label "Actions for Selected Patrons">
 <!ENTITY staff.admin.patrons_due_refunds.menu.actions.accesskey "A">
+<!ENTITY staff.auth.help_btn.label "Help">
+<!ENTITY staff.auth.help_btn.accesskey "l">
+<!ENTITY staff.auth.help.menu.contents.label "Contents">
+<!ENTITY staff.auth.help.menu.contents.accesskey "c">
+<!ENTITY staff.auth.help.menu.check_upgrades.label "Check for upgrades">
 <!ENTITY staff.auth.login_header "Log in">
 <!ENTITY staff.auth.logoff_prompt "Log off">
 <!ENTITY staff.auth.logoff_prompt.accesskey "f">
@@ -261,6 +276,12 @@
 <!ENTITY staff.auth.change_type_staff "Staff">
 <!ENTITY staff.auth.change_type_temporary "Temporary">
 <!ENTITY staff.auth.change_type_permanent "Permanent">
+
+<!ENTITY staff.symbols.west_european "West-European">
+<!ENTITY staff.symbols.turkish "Turkish">
+<!ENTITY staff.symbols.cyrillic "Cyrillic">
+<!ENTITY staff.symbols.slavic "Slavic">
+<!ENTITY staff.symbols.hungarian "Hungarian">
 
 <!ENTITY staff.bills_current_payment_label "Current Payment">
 <!ENTITY staff.bills_information "Information">
@@ -310,6 +331,11 @@
 <!ENTITY staff.cat.fixed.SER.key "S">
 <!ENTITY staff.cat.fixed.VIS "VIS">
 <!ENTITY staff.cat.fixed.VIS.key "V">
+
+<!ENTITY staff.bibs_abreast.view_bib "View Bib">
+<!ENTITY staff.bibs_abreast.edit_bib "Edit Bib">
+<!ENTITY staff.bibs_abreast.holdings "Holdings">
+
 <!ENTITY staff.cat.opac.add_bucket.accesskey "B">
 <!ENTITY staff.cat.opac.add_bucket.label "Add to Bucket">
 <!ENTITY staff.cat.opac.bib_in_new_tab.label "Duplicate in New Tab">
@@ -715,6 +741,7 @@
 <!ENTITY staff.main.menu.acquisitions.label "Acquisitions">
 <!ENTITY staff.main.menu.admin.accesskey "-">
 <!ENTITY staff.main.menu.admin.change_session.label "Operator Change: New">
+<!ENTITY staff.main.menu.admin.change_session.accesskey "O">
 <!ENTITY staff.main.menu.admin.clear_cache.accesskey "3">
 <!ENTITY staff.main.menu.admin.clear_cache.label "Clear Cache">
 <!ENTITY staff.main.menu.admin.cmd_console.accesskey "J">
@@ -1706,6 +1733,8 @@
 <!ENTITY staff.serial.mfhd_menu.add.label "Add MFHD Record">
 <!ENTITY staff.serial.mfhd_menu.edit.label "Edit MFHD Record">
 <!ENTITY staff.serial.mfhd_menu.delete.label "Delete MFHD Record">
+<!ENTITY staff.serial.scap_editor.title.label "Caption and Pattern">
+<!ENTITY staff.serial.pattern_wizard.title "Pattern Code Wizard">
 <!ENTITY staff.serial.scap_editor.pattern_wizard.label "Pattern Code Wizard">
 <!ENTITY staff.serial.scap_editor.pattern_wizard.accesskey "Z">
 <!ENTITY staff.serial.scap_editor.modify.label "Modify Caption and Pattern(s)">
@@ -1714,18 +1743,24 @@
 <!ENTITY staff.serial.scap_editor.create.accesskey "C">
 <!ENTITY staff.serial.scap_editor.notes.label "Caption and Pattern Notes">
 <!ENTITY staff.serial.scap_editor.notes.accesskey "N">
+<!ENTITY staff.serial.sbsum_editor.basicsummary.label "Basic Summary">
 <!ENTITY staff.serial.sbsum_editor.modify.label "Modify Basic Summary">
 <!ENTITY staff.serial.sbsum_editor.modify.accesskey "M">
+<!ENTITY staff.serial.sisum_editor.title.label "Index Summary">
 <!ENTITY staff.serial.sisum_editor.modify.label "Modify Index Summary">
 <!ENTITY staff.serial.sisum_editor.modify.accesskey "M">
 <!ENTITY staff.serial.sssum_editor.modify.label "Modify Supplement Summary">
 <!ENTITY staff.serial.sssum_editor.modify.accesskey "M">
+<!ENTITY staff.serial.sssum_editor.summary.label "Supplement Summary">
 <!ENTITY staff.serial.sdist_editor.modify.label "Modify Distribution(s)">
 <!ENTITY staff.serial.sdist_editor.modify.accesskey "M">
 <!ENTITY staff.serial.sdist_editor.create.label "Create Distribution(s)">
 <!ENTITY staff.serial.sdist_editor.create.accesskey "C">
 <!ENTITY staff.serial.sdist_editor.notes.label "Distribution Notes">
 <!ENTITY staff.serial.sdist_editor.notes.accesskey "N">
+<!ENTITY staff.serial.sdist_editor.distribution.value "Distribution">
+<!ENTITY staff.serial.sdist_editor.libopt.label "Library Specific Options">
+<!ENTITY staff.serial.sdist_editor.libopt.desc "Note: Changing the 'Holding Lib' will unset all of these values">
 <!ENTITY staff.serial.serctrl_view.label "Serial Control View">
 <!ENTITY staff.serial.siss_editor.modify.label "Modify Issuance(s)">
 <!ENTITY staff.serial.siss_editor.modify.accesskey "M">
@@ -1739,6 +1774,11 @@
 <!ENTITY staff.serial.sitem_editor.create.accesskey "C">
 <!ENTITY staff.serial.sitem_editor.notes.label "Item Notes">
 <!ENTITY staff.serial.sitem_editor.notes.accesskey "N">
+<!ENTITY staff.serial.sitem_editor.title "Item Editor">
+<!ENTITY staff.serial.sitem_editor.item.label "Item">
+<!ENTITY staff.serial.sitem_editor.item_dates.btn "Item Dates">
+<!ENTITY staff.serial.sitem_editor.item_dates.accesskey "1">
+<!ENTITY staff.serial.sstr_editor.stream.label "Stream">
 <!ENTITY staff.serial.sstr_editor.modify.label "Modify Stream(s)">
 <!ENTITY staff.serial.sstr_editor.modify.accesskey "M">
 <!ENTITY staff.serial.sstr_editor.create.label "Create Stream(s)">
@@ -1749,6 +1789,11 @@
 <!ENTITY staff.serial.ssub_editor.create.accesskey "C">
 <!ENTITY staff.serial.ssub_editor.notes.label "Subscription Notes">
 <!ENTITY staff.serial.ssub_editor.notes.accesskey "N">
+<!ENTITY staff.serial.manage_dists.title.label "Distributions">
+<!ENTITY staff.serial.manage_dists.show_sdists.label "Show Dists.">
+<!ENTITY staff.serial.manage_dists.show_sdists_groups.label "Show Groups">
+<!ENTITY staff.serial.manage_dists.actions.cmd_menu.label "Actions for Selected Row">
+<!ENTITY staff.serial.manage_dists.actions.select_obj.desc "Please select an object to edit">
 <!ENTITY staff.serial.manage_dists.actions.cmd_add_sstr.label "Add Stream">
 <!ENTITY staff.serial.manage_items.actions.cmd_claim_items.label "Claim Item">
 <!ENTITY staff.serial.manage_items.actions.cmd_set_items_not_held.label "Set 'Not Held'">
@@ -1781,6 +1826,122 @@
 <!ENTITY staff.serial.manage_items.recent.label "Recent">
 <!ENTITY staff.serial.manage_items.other_unit.label "Other...">
 <!ENTITY staff.serial.manage_items.context.label "Context:">
+
+<!ENTITY staff.serial.manage_subs.tab.label "Subscriptions">
+<!ENTITY staff.serial.manage_subs.cmd_add_sub.label "Add Subscription">
+<!ENTITY staff.serial.manage_subs.cmd_add_sdist.label "Add Distribution">
+<!ENTITY staff.serial.manage_subs.cmd_add_siss.label "Add Issuance">
+<!ENTITY staff.serial.manage_subs.cmd_add_scap.label "Add Caption/Pattern">
+<!ENTITY staff.serial.manage_subs.cmd_make_predictions.label "Make Predictions">
+<!ENTITY staff.serial.manage_subs.cmd_del_ssub.label "Delete Subscription">
+<!ENTITY staff.serial.manage_subs.cmd_del_sdist.label "Delete Distribution">
+<!ENTITY staff.serial.manage_subs.cmd_del_siss.label "Delete Issuance">
+<!ENTITY staff.serial.manage_subs.cmd_del_scap.label "Delete Caption/Pattern">
+<!ENTITY staff.serial.manage_subs.show_subs.label "Show Subs.">
+<!ENTITY staff.serial.manage_subs.show_subs_groups.label "Show Groups">
+<!ENTITY staff.serial.manage_subs.actions_menu.label "Actions for Selected Row">
+<!ENTITY staff.serial.manage_subs.deck.desc "Please select an object to edit">
+
+<!ENTITY staff.select_aou.title "Select Org Unit">
+<!ENTITY staff.select_aou.caption "Select an Org Unit">
+<!ENTITY staff.select_aou.desc "Please select an Org Unit">
+<!ENTITY staff.select_aou.select_btn.label "Select">
+<!ENTITY staff.select_aou.select_btn.accesskey "s">
+
+<!ENTITY staff.serial.patternwiz.caption "Pattern Code Wizard">
+<!ENTITY staff.serial.patternwiz.previous.btn "Previous">
+<!ENTITY staff.serial.patternwiz.next.btn "Next">
+<!ENTITY staff.serial.patternwiz.use_enum.label "Use enumerations?">
+<!ENTITY staff.serial.patternwiz.use_enum.desc '"v." and "no." are common first and second level enumeration captions.'>
+<!ENTITY staff.serial.patternwiz.enum_row.enum_capt "Enumeration Caption">
+<!ENTITY staff.serial.patternwiz.enum_row.units_per_higher_lvl "Units Per Higher Level">
+<!ENTITY staff.serial.patternwiz.enum_row.number_cont "Numbering Continuity">
+<!ENTITY staff.serial.patternwiz.units_per.number.label "Number">
+<!ENTITY staff.serial.patternwiz.units_per.varies.label "Varies">
+<!ENTITY staff.serial.patternwiz.units_per.undetermined.label "Undetermined">
+<!ENTITY staff.serial.patternwiz.continuity.continuous.label "Increments continuously">
+<!ENTITY staff.serial.patternwiz.continuity.restarts.label "Restarts at unit completion">
+<!ENTITY staff.serial.patternwiz.enum_row.remove "Remove">
+<!ENTITY staff.serial.patternwiz.enum_row.add.label "Add Enumeration">
+<!ENTITY staff.serial.patternwiz.enum_row.add.accesskey "E">
+<!ENTITY staff.serial.patternwiz.enum_row.add_alt.label "Add Alternate Enumeration">
+<!ENTITY staff.serial.patternwiz.enum_row.add_alt.accesskey "A">
+<!ENTITY staff.serial.patternwiz.use_cal_change "Use calendar changes?">
+<!ENTITY staff.serial.patternwiz.use_cal_change.desc "Identify any points during the year at which the highest level enumeration caption changes.">
+<!ENTITY staff.serial.patternwiz.cal_change_head.type "Type">
+<!ENTITY staff.serial.patternwiz.cal_change_head.point "Point">
+<!ENTITY staff.serial.patternwiz.cal_row.month "At start of a month">
+<!ENTITY staff.serial.patternwiz.cal_row.season "At start of a season">
+<!ENTITY staff.serial.patternwiz.cal_row.date "On a date">
+<!ENTITY staff.serial.patternwiz.season.spring "Spring">
+<!ENTITY staff.serial.patternwiz.season.summer "Summer">
+<!ENTITY staff.serial.patternwiz.season.autumn "Autumn">
+<!ENTITY staff.serial.patternwiz.season.winter "Winter">
+<!ENTITY staff.serial.patternwiz.cal_change.add.btn "Add Calendar Change">
+<!ENTITY staff.serial.patternwiz.cal_change.add.accesskey "C">
+<!ENTITY staff.serial.patternwiz.use_chron.label "Use chronology captions?">
+<!ENTITY staff.serial.patternwiz.use_chron.desc "Each caption must be a smaller unit of time than the preceding caption.">
+<!ENTITY staff.serial.patternwiz.chron_row_head.caption "Caption">
+<!ENTITY staff.serial.patternwiz.chron_row_head.include "Include this actual word in the caption?">
+<!ENTITY staff.serial.patternwiz.chron_row.year "Year">
+<!ENTITY staff.serial.patternwiz.chron_row.season "Season">
+<!ENTITY staff.serial.patternwiz.chron_row.month "Month">
+<!ENTITY staff.serial.patternwiz.chron_row.week "Week">
+<!ENTITY staff.serial.patternwiz.chron_row.day "Day">
+<!ENTITY staff.serial.patternwiz.chron_row.hour "Hour">
+<!ENTITY staff.serial.patternwiz.chron_caption.add.label "Add Chronology Caption">
+<!ENTITY staff.serial.patternwiz.chron_caption.add.accesskey "C">
+<!ENTITY staff.serial.patternwiz.compress.label "Compressibility and Expandability:">
+<!ENTITY staff.serial.patternwiz.compress.cannot "Cannot compress or expand">
+<!ENTITY staff.serial.patternwiz.compress.can_compress "Can compress but not expand">
+<!ENTITY staff.serial.patternwiz.compress.both "Can compress or expand">
+<!ENTITY staff.serial.patternwiz.compress.unknown "Unknown">
+<!ENTITY staff.serial.patternwiz.caption_eval.label "Caption Evaluation:">
+<!ENTITY staff.serial.patternwiz.caption_eval.yes_all "Captions verified; all levels present">
+<!ENTITY staff.serial.patternwiz.caption_eval.yes_some "Captions verified; all levels may not be present">
+<!ENTITY staff.serial.patternwiz.caption_eval.no_all "Captions unverified; all levels present">
+<!ENTITY staff.serial.patternwiz.caption_eval.no_some "Captions unverified; all levels may not be present">
+<!ENTITY staff.serial.patternwiz.freq.label "Select frequency:">
+<!ENTITY staff.serial.patternwiz.freq.accesskey "F">
+<!ENTITY staff.serial.patternwiz.freq.item.a "Annual">
+<!ENTITY staff.serial.patternwiz.freq.item.b "Bimonthly">
+<!ENTITY staff.serial.patternwiz.freq.item.c "Semiweekly">
+<!ENTITY staff.serial.patternwiz.freq.item.d "Daily">
+<!ENTITY staff.serial.patternwiz.freq.item.e "Biweekly">
+<!ENTITY staff.serial.patternwiz.freq.item.f "Semiannual">
+<!ENTITY staff.serial.patternwiz.freq.item.g "Biennial">
+<!ENTITY staff.serial.patternwiz.freq.item.h "Triennial">
+<!ENTITY staff.serial.patternwiz.freq.item.i "Three times a week">
+<!ENTITY staff.serial.patternwiz.freq.item.j "Three times a month">
+<!ENTITY staff.serial.patternwiz.freq.item.k "Continuously updated">
+<!ENTITY staff.serial.patternwiz.freq.item.m "Monthly">
+<!ENTITY staff.serial.patternwiz.freq.item.q "Quarterly">
+<!ENTITY staff.serial.patternwiz.freq.item.s "Semimonthly">
+<!ENTITY staff.serial.patternwiz.freq.item.t "Three times a year">
+<!ENTITY staff.serial.patternwiz.freq.item.w "Weekly">
+<!ENTITY staff.serial.patternwiz.freq.item.x "Completely irregular">
+<!ENTITY staff.serial.patternwiz.issues_per_year.label "Use number of issues per year:">
+<!ENTITY staff.serial.patternwiz.issues_per_year.accesskey "I">
+<!ENTITY staff.serial.patternwiz.use_regularity "Use specific regularity information (published, omitted, and/or combined issues)?">
+<!ENTITY staff.serial.patternwiz.regularity.item.p "Published">
+<!ENTITY staff.serial.patternwiz.regularity.item.o "Omitted">
+<!ENTITY staff.serial.patternwiz.regularity.item.c "Combined">
+<!ENTITY staff.serial.patternwiz.regularity.typecode.d1 "Day of the week">
+<!ENTITY staff.serial.patternwiz.regularity.typecode.d2 "Day of the month">
+<!ENTITY staff.serial.patternwiz.regularity.typecode.d3 "Date of the year">
+<!ENTITY staff.serial.patternwiz.regularity.typecode.m "Month">
+<!ENTITY staff.serial.patternwiz.regularity.typecode.s "Season">
+<!ENTITY staff.serial.patternwiz.regularity.typecode.w1 "Weekday of the month">
+<!ENTITY staff.serial.patternwiz.regularity.typecode.w2 "Weekday of specific month">
+<!ENTITY staff.serial.patternwiz.regularity.typecode.w3 "Week of specific month">
+<!ENTITY staff.serial.patternwiz.regularity.typecode.y "Span over two years">
+<!ENTITY staff.serial.patternwiz.subrow.add.label "Add sub-row">
+<!ENTITY staff.serial.patternwiz.subrow.remove.label "Remove whole row">
+<!ENTITY staff.serial.patternwiz.addrow.label "Add More Regularity Information">
+<!ENTITY staff.serial.patternwiz.addrow.accesskey "Y">
+<!ENTITY staff.serial.patternwiz.submit.desc "Are you ready to create a pattern code from your selections in this wizard?">
+<!ENTITY staff.serial.patternwiz.submit.label "Create Pattern Code">
+<!ENTITY staff.serial.patternwiz.submit.accesskey "P">
 
 <!ENTITY staff.serial.batch_receive "Batch Receive">
 <!ENTITY staff.serial.batch_receive.bib_search_term.label "Enter an identifier for a bibliographic record:">
@@ -2656,6 +2817,14 @@
 <!ENTITY staff.cat.manage_multi_bib_items.barcode.textbox.accesskey "B">
 <!ENTITY staff.cat.manage_multi_bib_items.barcode.submit.label "Link to Bib (Submit)">
 <!ENTITY staff.cat.manage_multi_bib_items.barcode.submit.accesskey "S">
+<!ENTITY staff.cat.serial_control.title.label "Serial Control">
+<!ENTITY staff.cat.serial_control.tab.items "Items">
+<!ENTITY staff.cat.serial_control.tab.units "Units">
+<!ENTITY staff.cat.serial_control.tab.distributions "Distributions">
+<!ENTITY staff.cat.serial_control.tab.subscriptions "Subscriptions">
+<!ENTITY staff.cat.serial_control.tab.claims "Claims">
+<!ENTITY staff.cat.serial_control.tab.units.desc "This tab will contain an alternative unit view/editor.">
+<!ENTITY staff.cat.serial_control.tab.claims.desc "This tab will contain a claims interface.">
 <!ENTITY staff.cat.copy_browser.actions.sel_clip.label "Copy to Clipboard">
 <!ENTITY staff.cat.copy_browser.actions.sel_clip.accesskey "C">
 <!ENTITY staff.cat.copy_browser.actions.cmd_add_items_to_buckets.label "Add Items to Buckets">
@@ -2937,6 +3106,11 @@
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.export_unimarc.label "UNIMARC">
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.export_xml.label "XML">
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.export_eg_bre.label "Evergreen BRE">
+<!ENTITY staff.cat.select_unit.title "Select Serial Unit">
+<!ENTITY staff.cat.record_buckets_quick.select.label "Select a Serial Unit">
+<!ENTITY staff.cat.record_buckets_quick.select.desc "Please select a Serial Unit">
+<!ENTITY staff.cat.record_buckets_quick.select.btn "Select">
+<!ENTITY staff.cat.record_buckets_quick.select.accesskey "s">
 <!ENTITY staff.cat.record_buckets_quick.groupbox.caption "Record Buckets">
 <!ENTITY staff.cat.record_buckets_quick.add_to_bucket.title "Add to Bucket">
 <!ENTITY staff.cat.record_buckets_quick.add_to_bucket.label "Add to Selected Bucket">
@@ -3208,6 +3382,7 @@
 <!ENTITY staff.patron.bills_overlay.see_distribution.accesskey "D">
 <!ENTITY staff.patron.bills_overlay.apply_payment.label "Apply Payment!">
 <!ENTITY staff.patron.bills_overlay.apply_payment.accesskey "P">
+<!ENTITY staff.patron.bill_summary_overlay.caption "Summary">
 <!ENTITY staff.patron.bill_summary_overlay.bill_number.value "Bill #">
 <!ENTITY staff.patron.bill_summary_overlay.total_billed.value "Total Billed">
 <!ENTITY staff.patron.bill_summary_overlay.title.value "Title">

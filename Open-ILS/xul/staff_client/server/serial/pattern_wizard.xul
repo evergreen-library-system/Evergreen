@@ -9,7 +9,7 @@
 <?xul-overlay href="/xul/server/serial/pattern_wizard_overlay.xul"?>
 
 <window id="pattern_wizard_win"
-    title="Pattern Code Wizard"
+    title="&staff.serial.pattern_wizard.title;"
     onload="try{my_init();font_helper();persist_helper();}catch(E){alert(E);}"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 

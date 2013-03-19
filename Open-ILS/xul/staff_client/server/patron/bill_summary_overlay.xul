@@ -6,7 +6,7 @@
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
             <groupbox orient="vertical" flex="1" id="summary">
-                <caption label="Summary" />
+                <caption label="&staff.patron.bill_summary_overlay.caption;" />
                 <hbox>
                     <label class="header1" id="billing_location"/>
                 </hbox>

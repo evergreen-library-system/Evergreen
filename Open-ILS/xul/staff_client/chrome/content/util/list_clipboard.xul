@@ -96,12 +96,12 @@
     ]]>
     </script>
 
-    <description style="font-weight: bold">Choose the data to copy into the clipboard:</description>
+    <description style="font-weight: bold">&common.clipboard.copy_data.desc;</description>
 
     <hbox id="area" flex="1" style="overflow: scroll">
     </hbox>
 
-    <hbox><spacer flex="1"/><button label="Close" accesskey="C" oncommand="window.close()"/></hbox>
+    <hbox><spacer flex="1"/><button label="&common.clipboard.close.label;" accesskey="&common.clipboard.close.accesskey;" oncommand="window.close()"/></hbox>
 
 </window>
 

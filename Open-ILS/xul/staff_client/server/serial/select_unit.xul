@@ -19,7 +19,7 @@
 <!-- OVERLAYS -->
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
-<window id="select_serial_unit_win" title="Select Serial Unit"
+<window id="select_serial_unit_win" title="&staff.cat.select_unit.title;"
 	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }" oils_persist="height width"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
@@ -77,12 +77,12 @@
 	<vbox flex="1" style="overflow: auto">
 	<groupbox flex="1">
 <!--TODO: label strings -->
-		<caption label="Select a Serial Unit"/>
-		<description id="desc">Please select a Serial Unit</description>
+		<caption label="&staff.cat.record_buckets_quick.select.label;"/>
+		<description id="desc">&staff.cat.record_buckets_quick.select.desc;</description>
         <hbox id="x_unit_menu"/>
 		<hbox>
-			<button label="Select"
-				accesskey="s" oncommand="g.select_unit()"/>
+			<button label="&staff.cat.record_buckets_quick.select.btn;"
+				accesskey="&staff.cat.record_buckets_quick.select.accesskey;" oncommand="g.select_unit()"/>
 			<button label="&staff.cat.record_buckets_quick.cancel.label;"
 				accesskey="&staff.cat.record_buckets_quick.cancel.accesskey;" oncommand="window.close()"/>
 		</hbox>

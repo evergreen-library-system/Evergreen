@@ -15,7 +15,7 @@
 
 		<hbox flex="1" style="overflow: auto">
 			<vbox flex="1">
-				<label value="Stream" style="font-weight: bold; font-size: large"/>
+				<label value="&staff.serial.sstr_editor.stream.label;" style="font-weight: bold; font-size: large"/>
 				<vbox id="sstr_editor_left_pane" flex="1"/>
 			</vbox>
         </hbox>

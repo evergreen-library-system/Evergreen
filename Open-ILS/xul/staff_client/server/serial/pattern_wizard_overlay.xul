@@ -9,25 +9,24 @@
     <script type="text/javascript" src="/xul/server/serial/pattern_wizard.js" />
 
     <box orient="vertical" id="pattern_wizard_main" flex="1">
-        <caption class="top" label="Pattern Code Wizard" />
+        <caption class="top" label="&staff.serial.patternwiz.caption;" />
         <vbox flex="1">
             <hbox align="center" class="padded_bottom">
                 <button id="wizard_previous_step" disabled="true"
-                    icon="go-back" label="Previous"
+                    icon="go-back" label="&staff.serial.patternwiz.previous.btn;"
                     oncommand="wizard.previous_step();" />
                 <spacer flex="1" />
                 <button id="wizard_next_step" disabled="true"
-                    icon="go-forward" label="Next"
+                    icon="go-forward" label="&staff.serial.patternwiz.next.btn;"
                     oncommand="wizard.next_step();" />
             </hbox>
             <vbox id="wizard_step_captions" class="hideme">
                 <checkbox id="use_enum"
                     oncommand="wizard.enum_editor.toggle(event);"
-                    label="Use enumerations?" />
+                    label="&staff.serial.patternwiz.use_enum.label;" />
                 <vbox id="enum_editor_here" class="hideme">
                     <description class="step">
-                        "v." and "no." are common first and second level
-                        enumeration captions.
+                        &staff.serial.patternwiz.use_enum.desc;
                     </description>
                     <grid flex="1">
                         <columns>
@@ -38,9 +37,9 @@
                         </columns>
                         <rows>
                             <row id="enum_row_headings">
-                                <label value="Enumeration Caption" />
-                                <label value="Units Per Higher Level" />
-                                <label value="Numbering Continuity" />
+                                <label value="&staff.serial.patternwiz.enum_row.enum_capt;" />
+                                <label value="&staff.serial.patternwiz.enum_row.units_per_higher_lvl;" />
+                                <label value="&staff.serial.patternwiz.enum_row.number_cont;" />
                                 <label />
                             </row>
                             <row id="enum_row_template" align="top">
@@ -53,20 +52,20 @@
                                 </vbox>
                                 <radiogroup name="units_per">
                                     <hbox align="center">
-                                        <radio label="Number" value="number" />
+                                        <radio label="&staff.serial.patternwiz.units_per.number.label;" value="number" />
                                         <textbox name="units_per_number"
                                             size="6" />
                                     </hbox>
-                                    <radio label="Varies" value="var" />
-                                    <radio label="Undetermined" value="und" />
+                                    <radio label="&staff.serial.patternwiz.units_per.varies.label;" value="var" />
+                                    <radio label="&staff.serial.patternwiz.units_per.undetermined.label;" value="und" />
                                 </radiogroup>
                                 <menulist name="continuity">
                                     <menupopup>
-                                        <menuitem value="c" label="Increments continuously" />
-                                        <menuitem value="r" label="Restarts at unit completion" />
+                                        <menuitem value="c" label="&staff.serial.patternwiz.continuity.continuous.label;" />
+                                        <menuitem value="r" label="&staff.serial.patternwiz.continuity.restarts.label;" />
                                     </menupopup>
                                 </menulist>
-                                <button icon="remove" name="remover" label="Remove" />
+                                <button icon="remove" name="remover" label="&staff.serial.patternwiz.enum_row.remove;" />
                             </row>
                         </rows>
                     </grid>
@@ -74,13 +73,15 @@
                         <spacer flex="1" />
                         <button id="enum_add_normal_row"
                             icon="add"
-                            label="Add Enumeration" accesskey="E"
+                            label="&staff.serial.patternwiz.enum_row.add.label;"
+                            accesskey="&staff.serial.patternwiz.enum_row.add.accesskey;"
                             oncommand="wizard.enum_editor.add_normal_row();"
                             />
                         <spacer flex="1" />
                         <button id="enum_add_alt_row"
                             icon="add"
-                            label="Add Alternate Enumeration" accesskey="A"
+                            label="&staff.serial.patternwiz.enum_row.add_alt.label;"
+                            accesskey="&staff.serial.patternwiz.enum_row.add_alt.accesskey;"
                             oncommand="wizard.enum_editor.add_alt_row();"
                             />
                         <spacer flex="1" />
@@ -91,11 +92,10 @@
                 <checkbox id="use_calendar_change"
                     disabled="true"
                     oncommand="wizard.calendar_change_editor.toggle(event);"
-                    label="Use calendar changes?" />
+                    label="&staff.serial.patternwiz.use_cal_change;" />
                 <vbox id="calendar_change_editor_here" class="hideme">
                     <description class="step">
-                        Identify any points during the year at which the
-                        highest level enumeration caption changes.
+                        &staff.serial.patternwiz.use_cal_change.desc;
                     </description>
                     <grid>
                         <columns>
@@ -105,16 +105,16 @@
                         </columns>
                         <rows>
                             <row id="calendar_change_row_headings">
-                                <label value="Type" />
-                                <label value="Point" />
+                                <label value="&staff.serial.patternwiz.cal_change_head.type;" />
+                                <label value="&staff.serial.patternwiz.cal_change_head.point;" />
                                 <label />
                             </row>
                             <row id="calendar_row_template">
                                 <menulist name="type">
                                     <menupopup>
-                                        <menuitem value="month" label="At start of a month" />
-                                        <menuitem value="season" label="At start of a season" />
-                                        <menuitem value="date" label="On a date" />
+                                        <menuitem value="month" label="&staff.serial.patternwiz.cal_row.month;" />
+                                        <menuitem value="season" label="&staff.serial.patternwiz.cal_row.season;" />
+                                        <menuitem value="date" label="&staff.serial.patternwiz.cal_row.date;" />
                                     </menupopup>
                                 </menulist>
                                 <hbox align="center">
@@ -124,10 +124,10 @@
                                     </menulist>
                                     <menulist name="season" class="hideme">
                                         <menupopup>
-                                            <menuitem value="21" label="Spring" />
-                                            <menuitem value="22" label="Summer" />
-                                            <menuitem value="23" label="Autumn" />
-                                            <menuitem value="24" label="Winter" />
+                                            <menuitem value="21" label="&staff.serial.patternwiz.season.spring;" />
+                                            <menuitem value="22" label="&staff.serial.patternwiz.season.summer;" />
+                                            <menuitem value="23" label="&staff.serial.patternwiz.season.autumn;" />
+                                            <menuitem value="24" label="&staff.serial.patternwiz.season.winter;" />
                                         </menupopup>
                                     </menulist>
                                     <hbox name="date" class="hideme">
@@ -139,15 +139,15 @@
                                             type="number" min="1" max="31" />
                                     </hbox>
                                 </hbox>
-                                <button icon="remove" name="remover" label="Remove" />
+                                <button icon="remove" name="remover" label="&staff.serial.patternwiz.enum_row.remove;" />
                             </row>
                         </rows>
                     </grid>
                     <hbox pack="center">
                         <button
                             id="calendar_change_add_row"
-                            label="Add Calendar Change"
-                            accesskey="C"
+                            label="&staff.serial.patternwiz.cal_change.add.btn;"
+                            accesskey="&staff.serial.patternwiz.cal_change.add.accesskey;"
                             oncommand="wizard.calendar_change_editor.add_row();" />
                     </hbox>
                 </vbox>
@@ -155,11 +155,10 @@
             <vbox id="wizard_step_chronology" class="hideme">
                 <checkbox id="use_chron"
                     oncommand="wizard.chron_editor.toggle(event);"
-                    label="Use chronology captions?" />
+                    label="&staff.serial.patternwiz.use_chron.label;" />
                 <vbox id="chron_editor_here" class="hideme">
                     <description class="step">
-                        Each caption must be a smaller unit of
-                        time than the preceding caption.<!-- XXX TODO enforce -->
+                        &staff.serial.patternwiz.use_chron.desc;<!-- XXX TODO enforce -->
                     </description>
                     <grid>
                         <columns>
@@ -171,32 +170,32 @@
                         <rows>
                             <row id="chron_row_headings">
                                 <label />
-                                <label value="Caption" />
-                                <label value="Include this actual word in the caption?" />
+                                <label value="&staff.serial.patternwiz.chron_row_head.caption;" />
+                                <label value="&staff.serial.patternwiz.chron_row_head.include;" />
                                 <label />
                             </row>
                             <row id="chron_row_template">
                                 <label name="caption_label" />
                                 <menulist name="caption">
                                     <menupopup>
-                                        <menuitem label="Year" value="year" />
-                                        <menuitem label="Season" value="season" />
-                                        <menuitem label="Month" value="month" />
-                                        <menuitem label="Week" value="week" />
-                                        <menuitem label="Day" value="day" />
-                                        <menuitem label="Hour" value="hour" />
+                                        <menuitem label="&staff.serial.patternwiz.chron_row.year;" value="year" />
+                                        <menuitem label="&staff.serial.patternwiz.chron_row.season;" value="season" />
+                                        <menuitem label="&staff.serial.patternwiz.chron_row.month;" value="month" />
+                                        <menuitem label="&staff.serial.patternwiz.chron_row.week;" value="week" />
+                                        <menuitem label="&staff.serial.patternwiz.chron_row.day;" value="day" />
+                                        <menuitem label="&staff.serial.patternwiz.chron_row.hour;" value="hour" />
                                     </menupopup>
                                 </menulist>
                                 <checkbox name="display_in_holding" />
-                                <button icon="remove" name="remover" label="Remove" />
+                                <button icon="remove" name="remover" label="&staff.serial.patternwiz.enum_row.remove;" />
                             </row>
                         </rows>
                     </grid>
                     <hbox pack="center">
                         <button
                             id="chron_add_row"
-                            label="Add Chronology Caption"
-                            accesskey="C"
+                            label="&staff.serial.patternwiz.chron_caption.add.label;"
+                            accesskey="&staff.serial.patternwiz.chron_caption.add.accesskey;"
                             oncommand="wizard.chron_editor.add_row();" />
                     </hbox>
                 </vbox>
@@ -209,24 +208,24 @@
                     </columns>
                     <rows><!-- TODO hide these inputs if we're doing an 855 -->
                         <row align="center">
-                            <label align="right" value="Compressibility and Expandability:" />
+                            <label align="right" value="&staff.serial.patternwiz.compress.label;" />
                             <menulist id="ind1">
                                 <menupopup>
-                                    <menuitem value="0" label="Cannot compress or expand" />
-                                    <menuitem value="1" label="Can compress but not expand" />
-                                    <menuitem value="2" label="Can compress or expand" />
-                                    <menuitem value="3" label="Unknown" />
+                                    <menuitem value="0" label="&staff.serial.patternwiz.compress.cannot;" />
+                                    <menuitem value="1" label="&staff.serial.patternwiz.compress.can_compress;" />
+                                    <menuitem value="2" label="&staff.serial.patternwiz.compress.both;" />
+                                    <menuitem value="3" label="&staff.serial.patternwiz.compress.unknown;" />
                                 </menupopup>
                             </menulist>
                         </row>
                         <row align="center">
-                            <label align="right" value="Caption Evaluation:" />
+                            <label align="right" value="&staff.serial.patternwiz.caption_eval.label;" />
                             <menulist id="ind2">
                                 <menupopup>
-                                    <menuitem value="0" label="Captions verified; all levels present" />
-                                    <menuitem value="1" label="Captions verified; all levels may not be present" />
-                                    <menuitem value="2" label="Captions unverified; all levels present" />
-                                    <menuitem value="3" label="Captions unverified; all levels may not be present" />
+                                    <menuitem value="0" label="&staff.serial.patternwiz.caption_eval.yes_all;" />
+                                    <menuitem value="1" label="&staff.serial.patternwiz.caption_eval.yes_some;" />
+                                    <menuitem value="2" label="&staff.serial.patternwiz.caption_eval.no_all;" />
+                                    <menuitem value="3" label="&staff.serial.patternwiz.caption_eval.no_some;" />
                                 </menupopup>
                             </menulist>
                         </row>
@@ -239,36 +238,36 @@
                         <rows>
                             <row>
                                 <radio
-                                    label="Select frequency:"
-                                    accesskey="F" selected="true"
+                                    label="&staff.serial.patternwiz.freq.label;"
+                                    accesskey="&staff.serial.patternwiz.freq.accesskey;" selected="true"
                                     value="hard_w" />
                                 <menulist id="hard_w">
                                     <menupopup>
-                                        <menuitem label="Annual" value="a" />
-                                        <menuitem label="Bimonthly" value="b" />
-                                        <menuitem label="Semiweekly" value="c" />
-                                        <menuitem label="Daily" value="d" />
-                                        <menuitem label="Biweekly" value="e" />
-                                        <menuitem label="Semiannual" value="f" />
-                                        <menuitem label="Biennial" value="g" />
-                                        <menuitem label="Triennial" value="h" />
-                                        <menuitem label="Three times a week" value="i" />
-                                        <menuitem label="Three times a month" value="j" />
-                                        <menuitem label="Continuously updated" value="k" />
-                                        <menuitem label="Monthly" value="m" />
-                                        <menuitem label="Quarterly" value="q" />
-                                        <menuitem label="Semimonthly" value="s" />
-                                        <menuitem label="Three times a year" value="t" />
-                                        <menuitem label="Weekly" value="w" />
-                                        <menuitem label="Completely irregular" value="x" />
+                                        <menuitem label="&staff.serial.patternwiz.freq.item.a;" value="a" />
+                                        <menuitem label="&staff.serial.patternwiz.freq.item.b;" value="b" />
+                                        <menuitem label="&staff.serial.patternwiz.freq.item.c;" value="c" />
+                                        <menuitem label="&staff.serial.patternwiz.freq.item.d;" value="d" />
+                                        <menuitem label="&staff.serial.patternwiz.freq.item.e;" value="e" />
+                                        <menuitem label="&staff.serial.patternwiz.freq.item.f;" value="f" />
+                                        <menuitem label="&staff.serial.patternwiz.freq.item.g;" value="g" />
+                                        <menuitem label="&staff.serial.patternwiz.freq.item.h;" value="h" />
+                                        <menuitem label="&staff.serial.patternwiz.freq.item.i;" value="i" />
+                                        <menuitem label="&staff.serial.patternwiz.freq.item.j;" value="j" />
+                                        <menuitem label="&staff.serial.patternwiz.freq.item.k;" value="k" />
+                                        <menuitem label="&staff.serial.patternwiz.freq.item.m;" value="m" />
+                                        <menuitem label="&staff.serial.patternwiz.freq.item.q;" value="q" />
+                                        <menuitem label="&staff.serial.patternwiz.freq.item.s;" value="s" />
+                                        <menuitem label="&staff.serial.patternwiz.freq.item.t;" value="t" />
+                                        <menuitem label="&staff.serial.patternwiz.freq.item.w;" value="w" />
+                                        <menuitem label="&staff.serial.patternwiz.freq.item.x;" value="x" />
                                     </menupopup>
                                 </menulist>
                             </row>
                             <row>
                                 <radio
-                                    label="Use number of issues per year:"
+                                    label="&staff.serial.patternwiz.issues_per_year.label;"
                                     value="soft_w"
-                                    selected="false" accesskey="I" />
+                                    selected="false" accesskey="&staff.serial.patternwiz.issues_per_year.accesskey;" />
                                 <textbox id="soft_w" disabled="true" />
                             </row>
                         </rows>
@@ -278,8 +277,7 @@
             <vbox id="wizard_step_regularity" class="hideme">
                 <checkbox id="use_regularity"
                     oncommand="wizard.regularity_editor.toggle(event);"
-                    label="Use specific regularity information (published,
-                        omitted, and/or combined issues)?" />
+                    label="&staff.serial.patternwiz.use_regularity;" />
                 <vbox id="regularity_editor_here" class="hideme">
                     <grid>
                         <columns>
@@ -293,37 +291,37 @@
                                 <menulist name="poc">
                                     <menupopup>
                                         <menuitem disabled="true" label="---" />
-                                        <menuitem value="p" label="Published" />
-                                        <menuitem value="o" label="Omitted" />
-                                        <menuitem value="c" label="Combined" />
+                                        <menuitem value="p" label="&staff.serial.patternwiz.regularity.item.p;" />
+                                        <menuitem value="o" label="&staff.serial.patternwiz.regularity.item.o;" />
+                                        <menuitem value="c" label="&staff.serial.patternwiz.regularity.item.c;" />
                                     </menupopup>
                                 </menulist>
                                 <menulist name="type_and_code_pattern">
                                     <menupopup>
                                         <menuitem disabled="true" label="---" />
                                         <menuitem value="d:dd"
-                                            label="Day of the week" />
+                                            label="&staff.serial.patternwiz.regularity.typecode.d1;" />
                                         <menuitem value="d:DD"
-                                            label="Day of the month" />
+                                            label="&staff.serial.patternwiz.regularity.typecode.d2;" />
                                         <menuitem value="d:MMDD"
-                                            label="Date of the year" />
-                                        <menuitem value="m:MM" label="Month" />
-                                        <menuitem value="s:SS" label="Season" />
+                                            label="&staff.serial.patternwiz.regularity.typecode.d3;" />
+                                        <menuitem value="m:MM" label="&staff.serial.patternwiz.regularity.typecode.m;" />
+                                        <menuitem value="s:SS" label="&staff.serial.patternwiz.regularity.typecode.s;" />
                                         <menuitem value="w:WWdd"
-                                            label="Weekday of the month" />
+                                            label="&staff.serial.patternwiz.regularity.typecode.w1;" />
                                         <menuitem value="w:MMWWdd"
-                                            label="Weekday of specific month" />
+                                            label="&staff.serial.patternwiz.regularity.typecode.w2;" />
                                         <menuitem value="w:MMWW"
-                                            label="Week of specific month" />
+                                            label="&staff.serial.patternwiz.regularity.typecode.w3;" />
                                         <menuitem value="y:YYYY"
-                                            label="Span over two years" />
+                                            label="&staff.serial.patternwiz.regularity.typecode.y;" />
                                     </menupopup>
                                 </menulist>
                                 <vbox name="sub_rows_here"></vbox>
                                 <vbox align="top">
-                                    <button label="Add sub-row" icon="add"
+                                    <button label="&staff.serial.patternwiz.subrow.add.label;" icon="add"
                                         disabled="true" name="add_sub_row" />
-                                    <button label="Remove whole row"
+                                    <button label="&staff.serial.patternwiz.subrow.remove.label;"
                                         icon="remove" name="remove" />
                                 </vbox>
                             </row>
@@ -332,20 +330,19 @@
                     <hbox id="y_row_before_this" pack="center"
                         style="padding-top: 1ex;">
                         <button id="regularity_add_y"
-                            label="Add More Regularity Information"
-                            accesskey="Y" icon="add"
+                            label="&staff.serial.patternwiz.addrow.label;"
+                            accesskey="&staff.serial.patternwiz.addrow.accesskey;" icon="add"
                             oncommand="wizard.regularity_editor.add_row();" />
                     </hbox>
                 </vbox>
             </vbox>
             <vbox id="wizard_step_submit" class="hideme">
                 <description class="step">
-                    Are you ready to create a pattern code from your
-                    selections in this wizard?
+                    &staff.serial.patternwiz.submit.desc;
                 </description>
                 <hbox pack="center">
                     <button oncommand="wizard.submit();" icon="accept"
-                        accesskey="P" label="Create Pattern Code" />
+                        accesskey="&staff.serial.patternwiz.submit.accesskey;" label="&staff.serial.patternwiz.submit.label;" />
                 </hbox>
             </vbox>
         </vbox>

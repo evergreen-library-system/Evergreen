@@ -16,7 +16,7 @@ vim:noet:sw=4:ts=4:
 <overlay id="serial_manage_dists_overlay" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-            <tab id="serial_manage_dists_tab" label="Distributions" oncommand="manage_dists_init()"/>
+            <tab id="serial_manage_dists_tab" label="&staff.serial.manage_dists.title.label;" oncommand="manage_dists_init()"/>
             <tabpanel id="serial_manage_dists" orient="vertical" flex="1">
                  <script>
                     <![CDATA[
@@ -71,12 +71,12 @@ vim:noet:sw=4:ts=4:
                     <vbox flex="1" id="before_splitter" oils_persist="width">
                         <hbox id="serial_dist_lib_menu"/>
                         <hbox>
-                            <checkbox id="show_sdists" label="Show Dists." />
-                            <checkbox id="show_sdist_groups" label="Show Groups" />
+                            <checkbox id="show_sdists" label="&staff.serial.manage_dists.show_sdists.label;" />
+                            <checkbox id="show_sdist_groups" label="&staff.serial.manage_dists.show_sdists_groups.label;" />
                             <button id="serial_dist_add_button" label="&staff.cat.copy_browser.holdings_maintenance.refresh_button.label;" command="cmd_refresh_list" />
                             <spacer flex="1"/>
                             <menubar>
-                                <menu label="Actions for Selected Row">
+                                <menu label="&staff.serial.manage_dists.actions.cmd_menu.label;">
                                     <menupopup>
                                         <menuitem command="cmd_add_sstr" label="&staff.serial.manage_dists.actions.cmd_add_sstr.label;"/>
                                         <menuseparator/>
@@ -89,7 +89,7 @@ vim:noet:sw=4:ts=4:
                     </vbox>
                     <splitter state="open" collapse="before" resizebefore="closest" resizeafter="farthest" id="splitter" oils_persist="state hidden" oils_persist_peers="before_splitter serial_manage_dists_editor_deck"/>
                     <deck id="serial_manage_dists_editor_deck" flex="20" oils_persist="width">
-                        <description value="Please select an object to edit"/>
+                        <description value="&staff.serial.manage_dists.actions.select_obj.desc;"/>
                         <vbox id="serial_sdist2_editor_panel" />
                         <vbox id="serial_sstr_editor_panel" />
                         <vbox id="serial_sbsum_editor_panel" />

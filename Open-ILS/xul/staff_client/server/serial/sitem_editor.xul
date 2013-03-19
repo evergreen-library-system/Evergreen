@@ -21,7 +21,7 @@
 <window id="serial_item_editor_win" 
 	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
 	width="800" height="390" oils_persist="width height"
-	title="Item Editor"
+	title="&staff.serial.sitem_editor.title;"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -66,7 +66,7 @@
 	<groupbox flex="1" class="my_overflow">
 		<hbox flex="1" style="overflow: auto">
 			<vbox flex="1" id="before_splitter1" oils_persist="width">
-				<label value="Item" style="font-weight: bold; font-size: large"/>
+				<label value="&staff.serial.sitem_editor.item.label;" style="font-weight: bold; font-size: large"/>
 				<vbox id="sitem_editor_left_pane" flex="1"/>
 			</vbox>
 			<splitter id="splitter1" oils_persist="state hidden" oils_persist_peers="before_splitter1 after_splitter1"><grippy /></splitter>
@@ -76,7 +76,7 @@
 			</vbox>
 			<splitter id="splitter2" oils_persist="state hidden" oils_persist_peers="after_slitter1 after_splitter2"><grippy /></splitter>
 			<vbox flex="1" id="after_splitter2" oils_persist="width">
-				<button style="font-weight: bold; font-size: normal" label="Item Dates" accesskey="1" oncommand="document.getElementById('sitem_editor_right_pane').firstChild.firstChild.focus();"/>
+				<button style="font-weight: bold; font-size: normal" label="&staff.serial.sitem_editor.item_dates.btn;" accesskey="&staff.serial.sitem_editor.item_dates.accesskey;" oncommand="document.getElementById('sitem_editor_right_pane').firstChild.firstChild.focus();"/>
 				<vbox id="sitem_editor_right_pane" flex="1"/>
 			</vbox>
 		</hbox>

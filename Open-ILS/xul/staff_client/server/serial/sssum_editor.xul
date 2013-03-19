@@ -15,7 +15,7 @@
 
 		<hbox flex="1" style="overflow: auto">
 			<vbox flex="1">
-				<label value="Supplement Summary" style="font-weight: bold; font-size: large"/>
+				<label value="&staff.serial.sssum_editor.summary.label;" style="font-weight: bold; font-size: large"/>
 				<vbox id="sssum_editor_left_pane" flex="1"/>
 			</vbox>
         </hbox>

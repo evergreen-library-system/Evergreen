@@ -15,15 +15,15 @@
 
 		<hbox flex="1" style="overflow: auto">
 			<vbox flex="1" id="before_splitter" oils_persist="height">
-				<label value="Distribution" style="font-weight: bold; font-size: large"/>
+				<label value="&staff.serial.sdist_editor.distribution.value;" style="font-weight: bold; font-size: large"/>
 				<vbox id="sdist_editor_left_pane" flex="1"/>
 			</vbox>
 			<splitter id="splitter" oils_persist="state hidden" oils_persist_peers="before_splitter after_splitter"><grippy /></splitter>
 			<vbox flex="1" id="after_splitter" oils_persist="height">
 				<vbox id="sdist_editor_right_pane"/>
                 <groupbox>
-                    <caption label="Library Specific Options" />
-                    <description>Note: Changing the 'Holding Lib' will unset all of these values</description>
+                    <caption label="&staff.serial.sdist_editor.libopt.label;" />
+                    <description>&staff.serial.sdist_editor.libopt.desc;</description>
                     <vbox id="sdist_editor_lso_pane" flex="1"/>
                 </groupbox>
 			</vbox>

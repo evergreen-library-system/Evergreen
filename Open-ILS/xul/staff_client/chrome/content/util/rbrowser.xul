@@ -133,7 +133,7 @@
             <button id="reload" command="cmd_reload" disabled="false" hidden="false"/>
             <button id="forward" command="cmd_forward" disabled="true" hidden="true"/>
             <spacer flex="1"/>
-            <label id="debug" value="Debug" disabled="true" popup="debug_popup" />
+            <label id="debug" value="&common.debug.menu.btn;" disabled="true" popup="debug_popup" />
             <button id="browser_print" command="cmd_print" hidden="true"/>
         </hbox>
         <browser id="browser_browser" flex="1" autoscroll="false" type="content" oils_force_external="true" />

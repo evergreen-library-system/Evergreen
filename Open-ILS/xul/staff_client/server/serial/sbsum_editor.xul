@@ -15,7 +15,7 @@
 
 		<hbox flex="1" style="overflow: auto">
 			<vbox flex="1">
-				<label value="Basic Summary" style="font-weight: bold; font-size: large"/>
+				<label value="&staff.serial.sbsum_editor.basicsummary.label;" style="font-weight: bold; font-size: large"/>
 				<vbox id="sbsum_editor_left_pane" flex="1"/>
 			</vbox>
         </hbox>

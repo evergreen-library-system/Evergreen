@@ -51,9 +51,9 @@
             <iframe name="bib_brief" flex="1" oils_force_external="true" />
             <hbox>
                 <radiogroup flex="0" orient="horizontal">
-                    <radio name="view_bib" label="View Bib" />
-                    <radio name="edit_bib" label="Edit Bib" />
-                    <radio name="holdings" label="Holdings" />
+                    <radio name="view_bib" label="&staff.bibs_abreast.view_bib;" />
+                    <radio name="edit_bib" label="&staff.bibs_abreast.edit_bib;" />
+                    <radio name="holdings" label="&staff.bibs_abreast.holdings;" />
                 </radiogroup>
                 <spacer flex="1"/>
                 <button name="remove_me"
