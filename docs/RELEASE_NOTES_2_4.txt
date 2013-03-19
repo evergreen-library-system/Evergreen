@@ -74,7 +74,7 @@ improve Acquisitions work flows.
   * Replace "Shelving Location" with Copy Location
 
   * Rearranging "actions" drop-down
-    ** More consitency in actions applying to selected lineitems specifically
+    ** More consistency in actions applying to selected lineitems specifically
     ** Things moved from the per-lineitem dropdown to the main one when
        sensible.
     ** Add to PO dialog added
@@ -100,7 +100,7 @@ for the interface.  Additionally, for each field where no org unit setting
 value is configured, the last-used value will be persisted locally and re-
 used with subsequent loads of the interface.
 
-Default Number of Acquisistions Copies to Order
+Default Number of Acquisitions Copies to Order
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Acquisitions providers have a new "Default # Copies" field.  When the value
 is set, this number of copies will be automatically added to each lineitem
@@ -151,7 +151,7 @@ Amongst other things the new search code fixes:
 
 * Inability to use statuses and locations as part of a larger query
 * Invalid queries being generated from advanced searches
-* Some timeouts from backend code taking too long to preform a search
+* Some timeouts from backend code taking too long to perform a search
 * Some filters being one-use only
 * Negations not working properly where multiple indexes are involved
 
@@ -202,7 +202,7 @@ physical location library
 preferred library (plib, home, etc.)
 search library
 
-If no relevant call number is found, no call number is diplayed.
+If no relevant call number is found, no call number is displayed.
 
 TPAC Google Books preview
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -214,7 +214,7 @@ If the user then clicks the preview button, the preview will load below the
 title of the book in the record details page.
 
 By default, this functionality is disabled to protect the privacy of users
-who might not want to share their browsing behaviour with Google.
+who might not want to share their browsing behavior with Google.
 
 TPAC Org Unit Hiding
 ^^^^^^^^^^^^^^^^^^^^
@@ -263,7 +263,7 @@ Interfaces Affected
   ** Optional groups appear with the other import options
  * Vandelay
   ** Cataloging => MARC Import/ExportVandelay
-  ** Acquisistions => Load Order Records
+  ** Acquisitions => Load Order Records
   ** Optional groups appear with the other import options
 
 Vandelay Default Match Set
@@ -332,10 +332,10 @@ and not-FIFO, and that was it.
 
 This change allows full configuration of that algorithm.  In other 
 words, when the system captures a copy and sets out to evaluate what
-hold, if any, that copy might best fulfull, site staff of sufficient
+hold, if any, that copy might best fulfill, site staff of sufficient
 permission level are now empowered to choose exactly which comparisons
 the systems makes in what order.  This gives said staff much greater
-flexibililty than they have today over holds policy.
+flexibility than they have today over holds policy.
 
 For more information, see the included tech spec documents.
 
@@ -393,7 +393,7 @@ Serial Control: Embed Alternate Interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 As another step toward a unified interface, the serial control subscription
 editor now consists of an embedded version of the alternate control. This
-reduces duplication of both code and documentation, and smoothes the eventual
+reduces duplication of both code and documentation, and smooths the eventual
 transition to a single interface.
 
 In order to not lose any essential features, the following additions were made
