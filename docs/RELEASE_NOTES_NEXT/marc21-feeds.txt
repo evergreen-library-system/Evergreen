@@ -1,8 +1,0 @@
-MARC21 Feeds from OpenSearch
-============================
-
-In addition to the already supported formats, you can now get raw MARC21 from
-OpenSearch feeds, à la:
-
-    http://<host>/opac/extras/opensearch/1.1/-/marc21?searchTerms=piano
-

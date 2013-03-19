@@ -1,7 +1,0 @@
-Serial Control: Set Special Statuses
-====================================
-The Serial Control interface prevents direct editing of serial item statuses
-for data integrity reasons. As an alternative to direct control, the interface
-now offers new menu options for setting items to 'claimed', 'not held', and
-'not published'. Note that these statuses are still currently useful for
-reporting and display purposes only.

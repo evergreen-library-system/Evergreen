@@ -1,12 +1,12 @@
-Evergreen 2.4 Alpha1 Release Notes
-==================================
+Evergreen 2.4 Beta1 Release Notes
+=================================
 :toc:
 :numbered:
 
 Upgrade notes
 -------------
 
-Custom toolbar permissions
+Custom Toolbar Permissions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 With the addition of more granular permissions for configuring a custom
 toolbars, the ADMIN_TOOLBAR permission alone will not allow users to 
@@ -23,6 +23,75 @@ New features
 Acquisitions
 ~~~~~~~~~~~~
 
+Acquisitions Inline Item Detail View
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Acquisitions selection lists and purchase order interfaces contain a new link
+beside each lineitem which, when clicked, creates an inline grid of copies
+linked to the lineitem.  The grid contains the same information that displays
+in the full copy edit grid (from clicking on the Copies(n) link).  However,
+the inline grid is read-only, so it displays much faster and does not require
+the user to change visual contexts.  
+
+Included along the top of the lineitem table is a new '✓ Expand' link which, 
+when clicked, expands or collapses the inline grid for all visible lineitems.
+
+Acquisitions Lineitem Order Identifiers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Staff now have the ability to specify the identifier value to use for
+lineitems when communicating order information to vendors.  This is 
+particularly important when a lineitem has, for example, multiple ISBNs.
+Determining which ISBN is to act as the "order identifier" allows staff
+to provide the most accurate order information to vendors.  
+
+Supported identifier types include ISBN, ISSN, and UPC.  Order identifier 
+values are relayed to vendors via EDI and print PO.
+
+Upgrade Notes
++++++++++++++
+Two new permissions are added for this feature:
+
+ * ACQ_SET_LINEITEM_IDENTIFIER
+  ** Allows staff to apply order identifiers to lineitems
+ * ACQ_ADD_LINEITEM_IDENTIFIER
+  ** Implies that new identifiers shall be added to linked bib records, 
+     when a linkage exists.
+
+Acquisitions Purchase Order and other Interface Improvements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Feature Summary
++++++++++++++++
+
+The following features, which primarily affect the user interface layer,
+improve Acquisitions work flows.
+
+  * Avoid double-activation of POs
+  * Disable invoice and cancel options for pending POs
+  * Disable zero-copy checkbox for activated POs
+  * Disable new charges for activated POs
+  * Replace "Shelving Location" with Copy Location
+
+  * Rearranging "actions" drop-down
+    ** More consitency in actions applying to selected lineitems specifically
+    ** Things moved from the per-lineitem dropdown to the main one when
+       sensible.
+    ** Add to PO dialog added
+    ** You can no longer add lineitems to a PO if they're already on one.
+    ** Actions in dropdown now enabled/disabled differently depending on
+       the interface where it appears (PO vs Selection List vs Acq Search etc.)
+
+  * Batch update for line items
+     ** Apply updates to all copies of all selected line items at once
+     ** Relies on a middle layer method that streams back information that
+        would suit a more asynchronous display in the future (rather than
+        simply reloading the page upon success, which it does now)
+     ** For failure cases, specific information about which line item cannot
+        be updated, and why, is available to the client, although taking
+        best advantage of this information for user-friendly display is left
+        to the future.
+
 Acquisitions MARC Upload Form Persistence
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Adds a two-layer persistence mechanism for the acquisitions MARC file upload
@@ -30,6 +99,15 @@ interface.  A set of org unit settings now exist for managing default values
 for the interface.  Additionally, for each field where no org unit setting
 value is configured, the last-used value will be persisted locally and re-
 used with subsequent loads of the interface.
+
+Default Number of Acquisistions Copies to Order
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Acquisitions providers have a new "Default # Copies" field.  When the value
+is set, this number of copies will be automatically added to each lineitem
+added to a purchase order for the provider.  This takes place during PO
+creation from a selection list or existing bib record and when a lineitem is 
+added to an existing purchase order.  If a lineitem already has copies 
+attached, no default copies are added.
 
 OPAC
 ~~~~
@@ -54,6 +132,14 @@ page, in which the alternate graphic field contents display between the
 primary field content and the attribution statement. To support CSS
 customizations, HTML elements for the graphic fields have the class attribute
 value `graphic880`.
+
+MARC21 Feeds from OpenSearch
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In addition to the already supported formats, you can now get raw MARC21 from
+OpenSearch feeds, à la:
+
+    http://<host>/opac/extras/opensearch/1.1/-/marc21?searchTerms=piano
+
 
 Search Changes
 ^^^^^^^^^^^^^^
@@ -80,6 +166,43 @@ production environment changes will likely require re-indexing, however.
 
 The upgrade script could be pre-tweaked to install desired configuration before
 it builds and/or re-builds many of the indexes.
+
+Searching for deleted records
++++++++++++++++++++++++++++++
+Evergreen now supports searching for deleted records via the '#deleted'
+QP modifier.
+
+In order to support this, sites must enable the
+'ingest.metarecord_mapping.preserve_on_delete' internal flag.  It is off by
+default since the ability to search for deleted records requires keeping
+metarecord mappings around when bibs are deleted, which may not be desirable
+for the typical site.
+
+Two new QP filters: create_date and edit_date
++++++++++++++++++++++++++++++++++++++++++++++
+These filter on the fields of the same name in biblio.record_entry.
+
+e.g.
+
+  * create_date(,2013-02-01)  =>  records created before 2013-02-01
+  * create_date(2013-02-01)   =>  records created since 2013-02-01
+  * create_date(2013-02-01,2013-02-28)  =>  records created in Feb 2013
+  * create_date(yesterday)    =>  records since created yesterday
+
+Show local call number in TPAC My Lists display
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+If an opac-visible call number exists that is owned by an org unit
+relevant to the patron, show the most relevant call number label
+and owning branch name in the My Lists display for each record in
+the list.  Call number is displayed in both saved and temporary lists.
+
+A call number is considered relevant if its owner is one of:
+
+physical location library
+preferred library (plib, home, etc.)
+search library
+
+If no relevant call number is found, no call number is diplayed.
 
 TPAC Google Books preview
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -115,6 +238,33 @@ UI Changes
 
 Cataloging
 ~~~~~~~~~~
+
+MARC Import Tag Stripping
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Administrators can configure MARC tags which are removed from MARC records 
+imported via Z39.50 and the Vandelay MARC Import/Export UI (ACQ and non-ACQ).  
+Tags are organized into groups.  Groups can be marked as optional or required.
+For each tag, every instance of the tag (including all subfields) are removed 
+from the record.
+
+MARC fields which are contained within required ('always_apply') tag groups
+are always removed from inbound records.  No action is needed.  Tag groups 
+which are optional will appear in MARC import interfaces (see below) allowing 
+staff to select which groups of tags to strip from incoming records at import 
+time.
+
+Interfaces Affected
++++++++++++++++++++
+
+ * Admin UI
+  ** Admin => Server Administration => MARC Import Remove Fields
+ * Z39.50 Import
+  ** Cataloging => Import Record from Z39.50
+  ** Optional groups appear with the other import options
+ * Vandelay
+  ** Cataloging => MARC Import/ExportVandelay
+  ** Acquisistions => Load Order Records
+  ** Optional groups appear with the other import options
 
 Vandelay Default Match Set
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -154,6 +304,13 @@ TPac the hold patron name is now shown next to the entered barcode. In the event
 that the barcode is not found a notice is displayed and the submit button is
 disabled until a valid barcode is entered or the staff member is switched to.
 
+Show Holds On Bib Menu Option
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Add direct "Show holds on bibs" menu option from item checkin, item status, 
+and patron hold interfaces. This gives staff a quicker way of viewing who 
+else has holds on an item instead of having to click an option to view the 
+bib record, then clicking into the menus to view holds.
+
 Administration
 ~~~~~~~~~~~~~~
 
@@ -182,6 +339,78 @@ flexibililty than they have today over holds policy.
 
 For more information, see the included tech spec documents.
 
+Generic CVS Notification Generator/Receiver
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+New Action/Trigger template and sample event definitions for creating a CSV
+export file for various patron actions, primarily for the purpose of creating
+patron notices via external notification mechanisms.
+
+The reference implementation for this development is the TalkingTech iTiva
+product, which consumes CSV files for generating phone/text notifications and
+produces CSV results files for informing the ILS of notification statuses.  
+The template and send/receive scripts, however, should be generic enough to 
+create CSV for any type of 3rd-party notification product.
+
+For more information, see the included tech spec documents.
+
+Storing Z39.50 Server Credentials
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In the Z39.50 configuration interface, staff now have the option to apply
+z39.50 login credentials to each Z39.50 server at different levels of the 
+org unit hierarchy (similar to org unit settings).  When credentials are set 
+for a Z39 server, searches against the z39 server will used the stored 
+credentials, unless other credentials are provided by the caller, in which 
+case the caller credentials are used.
+
+For security purposes, passwords may not be retrieved or reported on by staff.  
+Staff can only apply new values for credentials or clear existing ones.
+
+URL Verification
+^^^^^^^^^^^^^^^^
+In order to support verification of URLs, Evergreen now has several new
+capabilities, and extensions to some existing features.
+
+A wizard-style interface that walks a staff member through the process of collecting records and URLs to verify, verifying and reviewing the URLs.
+
+URL validation sessions are built as a whole to support immediate and
+future review of any URLs.  Each session carries a name, an owner, a set
+of record search criteria, a set of tag and subfield combinations describing
+the location of URLs to validate, a record container for tracking individual
+records to verify, and a set of state and data tables for managing the
+processing of individual URLs.
+
+A set of middle-layer methods provide the business logic required to collect
+records, extract, parse and test the validity of the URLs.
+
+For more information, see the included tech spec documents.
+
+Serials
+~~~~~~~
+
+Serial Control: Embed Alternate Interfaces
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+As another step toward a unified interface, the serial control subscription
+editor now consists of an embedded version of the alternate control. This
+reduces duplication of both code and documentation, and smoothes the eventual
+transition to a single interface.
+
+In order to not lose any essential features, the following additions were made
+to the new combination editor:
+
+* note editors on subscriptions and distributions
+* labeled dropdown for distribution summary options ("Add to record entry", "Use record entry only", etc.)
+* legacy record entry linkage setup (Allows one to tie a distribution's information to a particular serial record entry (i.e. a MFHD record))
+
+Serial Control: Set Special Statuses
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Serial Control interface prevents direct editing of serial item statuses
+for data integrity reasons. As an alternative to direct control, the interface
+now offers new menu options for setting items to 'claimed', 'not held', and
+'not published'. Note that these statuses are still currently useful for
+reporting and display purposes only.
+
 Staff Client
 ~~~~~~~~~~~~
 
@@ -198,6 +427,7 @@ about:config::
 about:memory::
     Get detailed information about the memory usage of the staff
     client.
+
 
 Miscellaneous
 -------------
@@ -226,4 +456,3 @@ database schema):
    call numbers, copies, users, and transactions.
 * `--load-concerto-sample`: Loads a subset of sample data that includes just
   100 bibliographic records, and associated call numbers and copies.
-
