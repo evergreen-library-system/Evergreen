@@ -267,7 +267,7 @@ int main(int argc,char *argv[])
 	memcpy(header + 12, &outVal, 4);
 	outVal = htonl(newsize);
 	memcpy(header + 16, &outVal, 4);
-	memcpy(header + 20, 0, 12);
+	memset(header + 20, 0, 12);
 	if (fwrite(header, 32, 1, pf) != 1)
 		err(1, "fwrite(%s)", argv[3]);
 

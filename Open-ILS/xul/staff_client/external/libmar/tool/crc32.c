@@ -6,7 +6,7 @@
 #include <stdint.h>
 
 /* This guy lives in libbz2, and is the only reason we need libbz2. */
- extern uint32_t BZ2_crc32Table[256];
+extern uint32_t BZ2_crc32Table[256];
 
 uint32_t
 crc32(const unsigned char *buf, uint32_t len)
@@ -15,7 +15,7 @@ crc32(const unsigned char *buf, uint32_t len)
 
   const unsigned char *end = buf + len;
   for (; buf != end; ++buf)
-    crc = (crc << 8) ^ crc32Table[(crc >> 24) ^ *buf];
+    crc = (crc << 8) ^ BZ2_crc32Table[(crc >> 24) ^ *buf];
 
   crc = ~crc;
   return crc;

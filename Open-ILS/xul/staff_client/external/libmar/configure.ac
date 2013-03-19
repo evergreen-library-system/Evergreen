@@ -27,6 +27,7 @@ AC_PROG_CC
 AC_PROG_RANLIB
 
 # Checks for libraries.
+AC_CHECK_LIB([bz2],[BZ2_bzCompressInit],,AC_MSG_ERROR(*** OpenILS requires libbz2))
 
 # Checks for header files.
 AC_CHECK_HEADERS([err.h fcntl.h netinet/in.h stdint.h stdio.h stdlib.h string.h sys/stat.h sys/types.h unistd.h])
