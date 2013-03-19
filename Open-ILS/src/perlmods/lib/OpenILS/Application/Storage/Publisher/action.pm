@@ -394,7 +394,7 @@ sub build_hold_sort_clause {
 , copy_has_not_been_home AS (
     SELECT (
         -- part 1
-        SELECT circ.id FROM action.circulation circ
+        SELECT MIN(circ.id) FROM action.circulation circ
         JOIN go_home_interval ON (true)
         WHERE
             circ.target_copy = %d AND
@@ -433,7 +433,7 @@ sub build_hold_sort_clause {
     SELECT
         copy_has_not_been_home.response AND (
             -- part 1
-            SELECT atc.id FROM action.transit_copy atc
+            SELECT MIN(atc.id) FROM action.transit_copy atc
             JOIN go_home_interval ON (true)
             WHERE
                 atc.target_copy = %d AND
@@ -441,7 +441,7 @@ sub build_hold_sort_clause {
                 atc.dest_recv_time >= NOW() - go_home_interval.value
         ) IS NULL AND (
             -- part 2
-            SELECT circ.id FROM action.circulation circ
+            SELECT MIN(circ.id) FROM action.circulation circ
             JOIN go_home_interval ON (true)
             WHERE
                 circ.target_copy = %d AND
