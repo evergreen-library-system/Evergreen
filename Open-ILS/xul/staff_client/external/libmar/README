@@ -1,0 +1,11 @@
+This directory contains code for a simple archive file format, which
+is documented at http://wiki.mozilla.org/Software_Update:MAR
+
+The src directory builds a small static library used to create, read,
+and extract an archive file.  The tool directory builds a command line
+utility around the library, mar.
+
+The tool directory also builds a modified version of bsdiff used by
+the Mozilla update mechanism to generate patches.  This version was
+modified from a recent copy of Colin Percival's, FreeBSD-licensed
+bsdiff sources with the crc32 code taken from the Mozilla updater.

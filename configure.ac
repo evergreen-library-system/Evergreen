@@ -24,6 +24,7 @@ AC_INIT(Open-ILS, trunk, open-ils-dev@list.georgialibraries.org)
 AM_INIT_AUTOMAKE([OpenILS], [trunk])
 AC_REVISION($Revision: 0.1 $)
 AC_CONFIG_SRCDIR([configure.ac])
+AC_CONFIG_SUBDIRS([Open-ILS/xul/staff_client/external/libmar])
 AC_SUBST(prefix)
 AC_SUBST([abs_top_builddir])
 #-----------------------------------
