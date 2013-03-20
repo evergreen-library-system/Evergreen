@@ -33,7 +33,7 @@ in the full copy edit grid (from clicking on the Copies(n) link).  However,
 the inline grid is read-only, so it displays much faster and does not require
 the user to change visual contexts.  
 
-Included along the top of the lineitem table is a new '✓ Expand' link which, 
+Included along the top of the lineitem table is a new 'Expand All' link which, 
 when clicked, expands or collapses the inline grid for all visible lineitems.
 
 Acquisitions Lineitem Order Identifiers
@@ -48,7 +48,7 @@ to provide the most accurate order information to vendors.
 Supported identifier types include ISBN, ISSN, and UPC.  Order identifier 
 values are relayed to vendors via EDI and print PO.
 
-Upgrade Notes
+Permissions
 +++++++++++++
 Two new permissions are added for this feature:
 
@@ -167,6 +167,11 @@ production environment changes will likely require re-indexing, however.
 The upgrade script could be pre-tweaked to install desired configuration before
 it builds and/or re-builds many of the indexes.
 
+Permissions
++++++++++++
+One new permission is added for this feature:
+  * ADMIN_INDEX_NORMALIZER
+
 Searching for deleted records
 +++++++++++++++++++++++++++++
 Evergreen now supports searching for deleted records via the '#deleted'
@@ -262,9 +267,17 @@ Interfaces Affected
   ** Cataloging => Import Record from Z39.50
   ** Optional groups appear with the other import options
  * Vandelay
-  ** Cataloging => MARC Import/ExportVandelay
+  ** Cataloging => MARC Import/Export (Vandelay)
   ** Acquisitions => Load Order Records
   ** Optional groups appear with the other import options
+
+Permissions
++++++++++++
+Three new permissions are added for this feature:
+
+  * CREATE_IMPORT_TRASH_FIELD
+  * UPDATE_IMPORT_TRASH_FIELD
+  * DELETE_IMPORT_TRASH_FIELD
 
 Vandelay Default Match Set
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -300,9 +313,10 @@ dates are not displayed.
 Show Hold Patron Name in TPAC
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 When looking up patron information for hold placement via the staff client in
-TPac the hold patron name is now shown next to the entered barcode. In the event
-that the barcode is not found a notice is displayed and the submit button is
-disabled until a valid barcode is entered or the staff member is switched to.
+TPac, the hold patron name is now shown next to the entered barcode. In the
+event that the barcode is not foundi, a notice is displayed and the submit
+button is disabled until a valid barcode is entered or the staff member is
+switched to.
 
 Show Holds On Bib Menu Option
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -324,6 +338,13 @@ customization is based on a table 'actor.org_unit_proximity_adjustment', with
 certain matching criteria that the system compares to properties of the holds
 and copies in question.
 
+Permissions
++++++++++++
+One new permission is added for this feature:
+  * ADMIN_PROXIMITY_ADJUSTMENT
+    ** Allows staff to administer the proximity adjustments
+
+
 Custom best-hold selection sort order
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The ranking algorithm that chooses the best hold to target a copy in 
@@ -338,6 +359,12 @@ the systems makes in what order.  This gives said staff much greater
 flexibility than they have today over holds policy.
 
 For more information, see the included tech spec documents.
+
+Permissions
++++++++++++
+One new permission is added for this feature:
+  * ADMIN_HOLD_CAPTURE_SORT
+    ** Allows staff to adminster the custom best-hold selection sort order.
 
 Generic CVS Notification Generator/Receiver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -385,6 +412,12 @@ A set of middle-layer methods provide the business logic required to collect
 records, extract, parse and test the validity of the URLs.
 
 For more information, see the included tech spec documents.
+
+Permissions
++++++++++++
+One new permission is added for this feature:
+
+ * URL_VERIFY
 
 Serials
 ~~~~~~~
