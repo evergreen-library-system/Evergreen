@@ -318,7 +318,7 @@ msgstr ""
 msgid "August"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:53 ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:46 ../../Open-ILS/src/templates/opac/myopac/main.tt2:23 ../../Open-ILS/src/templates/opac/parts/qtype_selector.tt2:1 ../../Open-ILS/src/templates/opac/parts/record/authors.tt2:1
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:55 ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:46 ../../Open-ILS/src/templates/opac/myopac/main.tt2:23 ../../Open-ILS/src/templates/opac/parts/qtype_selector.tt2:1 ../../Open-ILS/src/templates/opac/parts/record/authors.tt2:1
 msgid "Author"
 msgstr ""
 
@@ -366,7 +366,7 @@ msgstr ""
 msgid "Balance Owed"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:65 ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:41
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:67 ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:41
 msgid "Barcode"
 msgstr ""
 
@@ -422,7 +422,7 @@ msgstr ""
 msgid "Browse in Google Books Search"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:68 ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:37
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:70 ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:37
 msgid "Call Number"
 msgstr ""
 
@@ -463,7 +463,7 @@ msgstr ""
 msgid "Catalog Home"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:79 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:110
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:81 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:110
 msgid "Catalog record"
 msgstr ""
 
@@ -491,7 +491,7 @@ msgstr ""
 msgid "Checked Out Before"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:56 ../../Open-ILS/src/templates/opac/myopac/main.tt2:24
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:58 ../../Open-ILS/src/templates/opac/myopac/main.tt2:24
 msgid "Checkout Date"
 msgstr ""
 
@@ -609,7 +609,7 @@ msgstr ""
 msgid "Date Fulfilled"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:62 ../../Open-ILS/src/templates/opac/myopac/main.tt2:26
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:64 ../../Open-ILS/src/templates/opac/myopac/main.tt2:26
 msgid "Date Returned"
 msgstr ""
 
@@ -666,11 +666,11 @@ msgstr ""
 msgid "Does not contain"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:34 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:111
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:35 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:111
 msgid "Download CSV"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:59 ../../Open-ILS/src/templates/opac/myopac/main.tt2:25 ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:51
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:61 ../../Open-ILS/src/templates/opac/myopac/main.tt2:25 ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:51
 msgid "Due Date"
 msgstr ""
 
@@ -921,7 +921,7 @@ msgid "Holdable?"
 msgstr ""
 
 #. (serial.location)
-#: ../../Open-ILS/src/templates/opac/parts/record/issues-mfhd.tt2:20
+#: ../../Open-ILS/src/templates/opac/parts/record/issues-mfhd.tt2:23
 msgid "Holdings summary (%1)"
 msgstr ""
 
@@ -2058,7 +2058,7 @@ msgstr ""
 msgid "The total item-to-hold ratio is too low"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:43
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:45
 msgid "There are no items in your circulation history."
 msgstr ""
 
@@ -2090,7 +2090,7 @@ msgstr ""
 msgid "Tip:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:52 ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:45 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:196 ../../Open-ILS/src/templates/opac/myopac/main.tt2:22 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:26 ../../Open-ILS/src/templates/opac/parts/qtype_selector.tt2:1
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:54 ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:45 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:196 ../../Open-ILS/src/templates/opac/myopac/main.tt2:22 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:26 ../../Open-ILS/src/templates/opac/parts/qtype_selector.tt2:1
 msgid "Title"
 msgstr ""
 
@@ -2261,7 +2261,7 @@ msgstr ""
 msgid "and"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:33
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:34
 msgid "circ_history.csv"
 msgstr ""
 
