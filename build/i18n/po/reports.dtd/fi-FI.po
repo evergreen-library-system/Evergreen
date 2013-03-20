@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-04-18 21:44-0400\n"
-"PO-Revision-Date: 2012-12-20 15:09+0000\n"
-"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"PO-Revision-Date: 2013-03-19 20:12+0000\n"
+"Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-12-21 05:01+0000\n"
-"X-Generator: Launchpad (build 16378)\n"
+"X-Launchpad-Export-Date: 2013-03-20 04:44+0000\n"
+"X-Generator: Launchpad (build 16532)\n"
 "X-Project-Style: mozilla\n"
 "X-Accelerator-Marker: &\n"
 "Language: fi\n"
@@ -117,7 +117,7 @@ msgstr "Raporttipohjan tyyppi: "
 
 #: reports.oils_rpt_builder.save_this_template
 msgid "Save this Template: "
-msgstr "Tallenna raporttipohja "
+msgstr "Tallenna raporttipohja: "
 
 #: reports.oils_rpt_builder.filtering_note
 msgid ""
@@ -246,7 +246,7 @@ msgid ""
 "This will destroy the report you are currently constructing.  Are you sure "
 "you wish to do this?"
 msgstr ""
-"Tämä tuhoaa raportin, jota olet rakentamassa. Haluatko varmasti tehdä niin?"
+"Tämä tuhoaa raportin, jota olet muodostamassa. Haluatko varmasti tehdä niin?"
 
 #: reports.oils_rpt_common.action_succeeded
 msgid "Action Succeeded"
@@ -331,11 +331,11 @@ msgstr "Viivakaavio"
 
 #: reports.oils_rpt_editor.recurring_report
 msgid "Recurring Report: "
-msgstr "Jaksollinen raportti: "
+msgstr "Toistuva raportti: "
 
 #: reports.oils_rpt_editor.recurring_interval
 msgid "Recurrence Interval: "
-msgstr "Jakson väli: "
+msgstr "Toiston väli: "
 
 #: reports.oils_rpt_editor.days
 msgctxt "reports.oils_rpt_editor.days"
@@ -393,7 +393,7 @@ msgstr "Muuta kansion nimeä"
 
 #: reports.oils_rpt_folder_manager.delete_folder
 msgid "Delete this folder"
-msgstr "Poista kansio"
+msgstr "Tuhoa kansio"
 
 #: reports.oils_rpt_folder_manager.create_new_sub_folder
 msgctxt "reports.oils_rpt_folder_manager.create_new_sub_folder"
@@ -414,7 +414,7 @@ msgstr "Ota jakso pois käytöstä"
 
 #: reports.oils_rpt_folder_manager.fldr_mngr_actions_submit
 msgid "Go"
-msgstr "Siirry"
+msgstr "Suorita"
 
 #: reports.oils_rpt_folder_manager.change_name
 msgid "Enter new name:"
@@ -456,11 +456,11 @@ msgstr "Haluatko varmasti muuttaa kansion nimen?"
 
 #: reports.oils_rpt_folder_manager.delete_name_confirm
 msgid "Are you sure you wish to delete this folder?"
-msgstr "Haluatko varmasti poistaa kansion?"
+msgstr "Haluatko varmasti tuhota kansion?"
 
 #: reports.oils_rpt_folder_manager.cannot_delete
 msgid "This folder may not be deleted because it is not empty."
-msgstr "Kansiota ei voi poistaa, koska se ei ole tyhjä."
+msgstr "Kansiota ei voi tuhota, koska se ei ole tyhjä."
 
 #: reports.oils_rpt_folder_manager.already_shared
 msgid "This folder is already shared"
@@ -484,7 +484,7 @@ msgstr "Kloonaa valittu pohja"
 
 #: reports.oils_rpt_folder_window.delete_template
 msgid "Delete selected template(s)"
-msgstr "Poista valitut pohjat"
+msgstr "Tuhoa valitut pohjat"
 
 #: reports.oils_rpt_folder_window.clone_report
 msgid "Clone report"
@@ -496,7 +496,7 @@ msgstr "Ajasta raportti"
 
 #: reports.oils_rpt_folder_window.delete_reports
 msgid "Delete selected report(s)"
-msgstr "Poista valitut raportit"
+msgstr "Tuhoa valitut raportit"
 
 #: reports.oils_rpt_folder_window.view_report_output
 msgid "View report output"
@@ -504,7 +504,7 @@ msgstr "Näytä raportin tuloste"
 
 #: reports.oils_rpt_folder_window.delete_output
 msgid "Delete selected output(s)"
-msgstr "Poista valitut tulosteet"
+msgstr "Tuhoa valitut tulosteet"
 
 #: reports.oils_rpt_folder_window.move_templates
 msgid "Move the selected template(s) to a different folder"
@@ -562,27 +562,27 @@ msgstr "Peruuta"
 
 #: reports.oils_rpt_folder_window.confirm_delete
 msgid "Are you sure you wish to delete the selected item(s)?"
-msgstr "Haluatko varmasti poistaa valitut kohteet?"
+msgstr "Haluatko varmasti tuhota valitut kohteet?"
 
 #: reports.oils_rpt_folder_window.dependant_reports_no_delete
 msgid ""
 "One or more of the selected templates could not be deleted because there are "
 "reports that depend on them."
 msgstr ""
-"Yhtä tai useampaa valittua pohjaa ei voitu poistaa, koska eräät raportit "
-"ovat riippuvaisia niistä."
+"Yhtä tai useampaa valittua pohjaa ei voitu tuhota, koska eräät raportit ovat "
+"riippuvaisia niistä."
 
 #: reports.oils_rpt_folder_window.dependant_outputs_no_delete
 msgid ""
 "One or more of The selected reports could not be deleted because there are "
 "outputs that depend on them."
 msgstr ""
-"Yhtä tai useampaa valittua raporttia ei voitu poistaa, koska eräät tulosteet "
+"Yhtä tai useampaa valittua raporttia ei voitu tuhota, koska eräät tulosteet "
 "ovat riippuvaisia niistä."
 
 #: reports.oils_rpt_folder_window.cannot_delete_another_users_data
 msgid "You may not delete another user's items"
-msgstr "Et voi poistaa toisen käyttäjän kohteita"
+msgstr "Et voi tuhota toisen käyttäjän kohteita"
 
 #: reports.oils_rpt_folder_window.cannot_move_another_users_data
 msgid "You may not move another user's items"
@@ -598,12 +598,12 @@ msgid ""
 " \n"
 "Do you wish to continue?"
 msgstr ""
-"        Tämä poistaa myös kaikki mallineeseen kiinnitetyt raporttisi ja \n"
+"        Tämä tuhoaa myös kaikki tähän pohjaan kiinnitetyt raporttisi ja \n"
 "tulosteesi. \n"
 " \n"
-"Jos muilla käyttäjillä on  tähän pohjaan kiinnitettyjä raportteja tai "
+"Jos muilla käyttäjillä on tähän pohjaan kiinnitettyjä raportteja tai "
 "tulosteita,\n"
-"niihin ei kosketa, eikä pohjaa poisteta. \n"
+"niihin ei kosketa, eikä pohjaa tuhota. \n"
 " \n"
 "Haluatko jatkaa?"
 
@@ -617,11 +617,11 @@ msgid ""
 " \n"
 "Do you wish to continue?"
 msgstr ""
-"        Tämä poistaa myös kaikki raporttiin kiinnitetyt \n"
+"        Tämä tuhoaa myös kaikki raporttiin kiinnitetyt \n"
 "tulosteesi. \n"
 " \n"
 "Jos muilla käyttäjillä on raporttiin kiinnitettyjä tulosteita,\n"
-"niihin ei kosketa, eikä raporttia poisteta. \n"
+"niihin ei kosketa, eikä raporttia tuhota. \n"
 " \n"
 "Haluatko jatkaa?"
 
