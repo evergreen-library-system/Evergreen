@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2012-08-22 08:46:36-0400\n"
+"POT-Creation-Date: 2013-03-20 09:13:56-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -859,6 +859,10 @@ msgstr ""
 msgid "The requested asset_stat_cat_entry_copy_map was not found"
 msgstr ""
 
+#: 7006.COPY_IS_REFERENCE:847
+msgid "Copy is reference material"
+msgstr ""
+
 #: 1547.CONFIG_ITEM_FORM_MAP_NOT_FOUND:297
 msgid "The requested config_item_form_map was not found"
 msgstr ""
@@ -967,8 +971,11 @@ msgstr ""
 msgid "The requested vandelay_authority_queue was not found"
 msgstr ""
 
-#: 7006.COPY_IS_REFERENCE:847
-msgid "Copy is reference material"
+#: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:799
+msgid ""
+"A *TERRIBLE* problem has occurred: a credit card transaction was processed "
+"successfully, but the patron's payment could not be recorded within "
+"Evergreen.  Please seek assistance."
 msgstr ""
 
 #: 1634.REPORTER_TEMPLATE_NOT_FOUND:551
@@ -1078,13 +1085,6 @@ msgstr ""
 #: 1708.MONEY_COLLECTIONS_TRACKER_EXISTS:732
 msgid ""
 "A duplicate money.collections_tracker object already exists in the database"
-msgstr ""
-
-#: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:799
-msgid ""
-"A *TERRIBLE* problem has occurred: a credit card transaction was processed "
-"successfuly, but the patron's payment could not be recorded within "
-"Evergreen.  Please seek assistance."
 msgstr ""
 
 #: 1614.ACTION_SURVEY_ANSWER_NOT_FOUND:491
