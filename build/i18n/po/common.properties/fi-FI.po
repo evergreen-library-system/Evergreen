@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-12-20 09:37-0400\n"
-"PO-Revision-Date: 2012-12-20 15:19+0000\n"
-"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"PO-Revision-Date: 2013-03-19 19:59+0000\n"
+"Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-12-21 04:54+0000\n"
-"X-Generator: Launchpad (build 16378)\n"
+"X-Launchpad-Export-Date: 2013-03-20 04:44+0000\n"
+"X-Generator: Launchpad (build 16532)\n"
 "X-Project-Style: mozilla\n"
 "X-Accelerator-Marker: &\n"
 "Language: fi\n"
@@ -71,11 +71,11 @@ msgstr "Vanhentunut"
 #: common.barcode.status.warning.barred
 msgctxt "common.barcode.status.warning.barred"
 msgid "Barred"
-msgstr "Estetty"
+msgstr "Lainauskielto"
 
 #: common.barcode.status.warning.blocked
 msgid "Blocked"
-msgstr "Suljettu pois"
+msgstr "Estetty"
 
 #: common.barcode.status.warning.unknown
 msgid "with an unknown code: %1$s"
@@ -342,7 +342,7 @@ msgstr "Nykyinen maksu"
 
 #: staff.csp_id_label
 msgid "Penalty Type ID"
-msgstr "Rangaistustyypin tunnus"
+msgstr "Rajoitustyypin tunnus"
 
 #: staff.csp_name_label
 msgid "Name"
@@ -385,7 +385,7 @@ msgstr "Kyllä"
 
 #: staff.ausp_id_label
 msgid "Penalty ID "
-msgstr "Rangaistustunnus "
+msgstr "Rajoitustunnus "
 
 #: staff.ausp_staff_label
 msgid "Applied By "
@@ -397,7 +397,7 @@ msgstr "Annettu "
 
 #: staff.ausp_note_label
 msgid "Note "
-msgstr "Huomautus "
+msgstr "Ilmoitus "
 
 #: staff.ausp_org_unit_label
 msgid "Library "
@@ -405,7 +405,7 @@ msgstr "Kirjasto "
 
 #: staff.ausp_org_unit_full_label
 msgid "Library (Full Name)"
-msgstr ""
+msgstr "Kirjasto (koko nimi)"
 
 #: staff.mbts_id_label
 msgid "Bill # "
@@ -443,7 +443,7 @@ msgstr "Käyttäjä"
 
 #: staff.mbts_last_billing_note_label
 msgid "Last Billing Note"
-msgstr "Viimeisin maksuhuomautus"
+msgstr "Viimeisin maksuilmoitus"
 
 #: staff.mbts_last_billing_type_label
 msgid "Last Billing Type"
@@ -455,7 +455,7 @@ msgstr "Maksuja viimeksi"
 
 #: staff.mbts_last_payment_note_label
 msgid "Last Payment Note"
-msgstr "Viimeisin maksuhuomautus"
+msgstr "Viimeisin maksuilmoitus"
 
 #: staff.mbts_last_payment_type_label
 msgid "Last Payment Type"
@@ -486,7 +486,7 @@ msgstr "Mitätöintiaika"
 #: staff.mb_note_label
 msgctxt "staff.mb_note_label"
 msgid "Note"
-msgstr "Huomautus"
+msgstr "Ilmoitus"
 
 #: staff.mb_amount_label
 msgctxt "staff.mb_amount_label"
@@ -552,7 +552,7 @@ msgstr "Työmaksu"
 #: staff.mp_note_label
 msgctxt "staff.mp_note_label"
 msgid "Note"
-msgstr "Huomautus"
+msgstr "Ilmoitus"
 
 #: staff.mp_cash_payment_label
 msgid "Cash Payment"
@@ -595,11 +595,11 @@ msgstr "Profiili"
 #: staff.au_barred_label
 msgctxt "staff.au_barred_label"
 msgid "Barred"
-msgstr "Estetty"
+msgstr "Lainauskielto"
 
 #: staff.au_alert_message_label
 msgid "Alert"
-msgstr "Varoitus"
+msgstr "Huomautus"
 
 #: staff.au_claims_returned_count_label
 msgid "Returns Claimed"
@@ -756,7 +756,7 @@ msgstr "Nuotit"
 
 #: staff.z39_50.search_class.item_type.ser
 msgid "Serials"
-msgstr "Sarjat"
+msgstr "Kausijulkaisut"
 
 #: staff.z39_50.search_class.item_type.url
 msgid "Internet Resources"

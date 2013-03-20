@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-09-04 13:44-0400\n"
-"PO-Revision-Date: 2012-12-20 15:17+0000\n"
-"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"PO-Revision-Date: 2013-03-19 19:54+0000\n"
+"Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-12-21 04:53+0000\n"
-"X-Generator: Launchpad (build 16378)\n"
+"X-Launchpad-Export-Date: 2013-03-20 04:44+0000\n"
+"X-Generator: Launchpad (build 16532)\n"
 "X-Project-Style: mozilla\n"
 "X-Accelerator-Marker: &\n"
 "Language: fi\n"
@@ -46,7 +46,7 @@ msgstr "Tietokannan ID = %1$s"
 
 #: staff.cat.bib_brief.deleted
 msgid "(Deleted)"
-msgstr "(Poistettu)"
+msgstr "(Tuhottu)"
 
 #: staff.cat.bib_brief.inactive
 msgid "(Inactive)"
@@ -157,20 +157,20 @@ msgstr "Nideselain -> Muokkaa niteitä"
 
 #: staff.cat.copy_browser.delete_items.confirm.plural
 msgid "Are you sure you would like to delete these %1$s items?"
-msgstr "Haluatko varmasti poistaa nämä %1$s nidettä?"
+msgstr "Haluatko varmasti tuhota nämä %1$s nidettä?"
 
 #: staff.cat.copy_browser.delete_items.confirm
 msgid "Are you sure you would like to delete this item?"
-msgstr "Haluatko varmasti poistaa tämän niteen?"
+msgstr "Haluatko varmasti tuhota tämän niteen?"
 
 #: staff.cat.copy_browser.delete_items.title
 msgid "Delete Items?"
-msgstr "Poistetaanko niteet?"
+msgstr "Tuhotaanko niteet?"
 
 #: staff.cat.copy_browser.delete_items.delete
 msgctxt "staff.cat.copy_browser.delete_items.delete"
 msgid "Delete"
-msgstr "Poista"
+msgstr "Tuhoa"
 
 #: staff.cat.copy_browser.delete_items.cancel
 msgctxt "staff.cat.copy_browser.delete_items.cancel"
@@ -180,7 +180,7 @@ msgstr "Peruuta"
 #: staff.cat.copy_browser.delete_items.override
 msgctxt "staff.cat.copy_browser.delete_items.override"
 msgid "Override Delete Failure?"
-msgstr "Ohitetaanko poistamisen epäonnistuminen?"
+msgstr "Ohitetaanko tuhoamisen epäonnistuminen?"
 
 #: staff.cat.copy_browser.delete_items.complete
 msgid "Action complete."
@@ -188,7 +188,7 @@ msgstr "Toiminto suoritettu."
 
 #: staff.cat.copy_browser.delete_items.error
 msgid "copy browser -> delete items"
-msgstr "nideselain -> poista niteitä"
+msgstr "nideselain -> tuhoa niteitä"
 
 #: staff.cat.copy_browser.print_spine.tab
 msgctxt "staff.cat.copy_browser.print_spine.tab"
@@ -201,33 +201,34 @@ msgstr "nideselain -> Selkätarrat"
 
 #: staff.cat.copy_browser.add_volume.permission_error
 msgid "You do not have permission to add volumes to that library."
-msgstr "Sinulla ei ole oikeutta lisätä osia valitsemaasi kirjastoon."
+msgstr "Sinulla ei ole oikeutta lisätä signumeja valitsemaasi kirjastoon."
 
 #: staff.cat.copy_browser.add_volume.title
 msgid "Add Volume/Item"
-msgstr "Lisää osa/nide"
+msgstr "Lisää signum/nide"
 
 #: staff.cat.copy_browser.add_volume.error
 msgid "copy browser -> add volumes"
-msgstr "nideselain -> lisää niteitä"
+msgstr "nideselain -> lisää signumeja"
 
 #: staff.cat.edit_volume.permission_error
 msgid "You do not have permission to edit the volume or volumes selected."
-msgstr "Sinulla ei ole oikeutta muokata valitsemaasi nidettä tai niteitä."
+msgstr "Sinulla ei ole oikeutta muokata valitsemaasi signumia/signumeja."
 
 #: staff.cat.edit_volume.title
 msgid "Volume"
-msgstr "Nide"
+msgstr "Signum"
 
 #: staff.cat.edit_volume.title.plural
 msgctxt "staff.cat.edit_volume.title.plural"
 msgid "Volumes"
-msgstr "Vuosikerrat"
+msgstr "Signumit"
 
 #: staff.cat.edit_volumes.override.confirm
 msgid "Override volume re-labeling collision and merge the volumes?"
 msgstr ""
-"Ohitetaanko niteiden uudelleennimeämisten ristiriita ja yhdistetäänkö niteet?"
+"Ohitetaanko signumin uudelleennimeämisen ristiriita ja yhdistetäänkö "
+"signumit?"
 
 #: staff.cat.edit_volumes.label_exists.details
 msgid "%1$s"
@@ -235,7 +236,7 @@ msgstr "%1$s"
 
 #: staff.cat.edit_volume.exception
 msgid "An error occurred while you were trying to edit these volumes."
-msgstr ""
+msgstr "Näitä niteitä muokattaessa tapahtui virhe."
 
 #: staff.cat.copy_browser.can_have_copies.false
 msgid "Records from %1$s cannot have copies."
@@ -243,20 +244,20 @@ msgstr "Tietueisiin kohteesta %1$s ei voi kuulua niteitä."
 
 #: staff.cat.copy_browser.delete_volume.prompt
 msgid "Are you sure you would like to delete this volume?"
-msgstr "Haluatko varmasti poistaa tämän niteen?"
+msgstr "Haluatko varmasti tuhota tämän signumin?"
 
 #: staff.cat.copy_browser.delete_volume.prompt.plural
 msgid "Are you sure you would like to delete these %1$s volumes?"
-msgstr "Haluatko varmasti poistaa nämä %1$s nidettä?"
+msgstr "Haluatko varmasti tuhota nämä %1$s signumit?"
 
 #: staff.cat.copy_browser.delete_volume.title
 msgid "Delete Volumes?"
-msgstr "Poistetaanko osat?"
+msgstr "Tuhotaanko signumit?"
 
 #: staff.cat.copy_browser.delete_volume.delete
 msgctxt "staff.cat.copy_browser.delete_volume.delete"
 msgid "Delete"
-msgstr "Poista"
+msgstr "Tuhoa"
 
 #: staff.cat.copy_browser.delete_volume.cancel
 msgctxt "staff.cat.copy_browser.delete_volume.cancel"
@@ -266,35 +267,35 @@ msgstr "Peruuta"
 #: staff.cat.copy_browser.delete_volume.override
 msgctxt "staff.cat.copy_browser.delete_volume.override"
 msgid "Override Delete Failure?"
-msgstr "Ohitetaanko poistamisen epäonnistuminen?"
+msgstr "Ohitetaanko tuhoamisen epäonnistuminen?"
 
 #: staff.cat.copy_browser.delete_volume.copies_remain
 msgid ""
 "You must delete all the items on the volume before you may delete the volume "
 "itself."
 msgstr ""
-"Kaikki osaan kuuluvat niteet on poistettava, ennan kuin voit poistaa itse "
-"osan."
+"Kaikki signumiin kuuluvat niteet on tuhottava ennen kuin voit tuhota itse "
+"signumin."
 
 #: staff.cat.copy_browser.delete_volume.copies_remain.confirm
 msgid "Delete Volume and Items"
-msgstr "Poista osa ja niteet"
+msgstr "Tuhoa signum ja niteet"
 
 #: staff.cat.copy_browser.delete_volume.copies_remain.cancel
 msgid "Cancel Delete"
-msgstr "Peru poisto"
+msgstr "Peru tuhoaminen"
 
 #: staff.cat.copy_browser.delete_volume.exception
 msgid "copy browser -> delete volumes"
-msgstr "nideselain -> poista osia"
+msgstr "nideselain -> tuhoa signumeja"
 
 #: staff.cat.copy_browser.mark_library.alert
 msgid "Library + Record marked as Volume Transfer Destination"
-msgstr "Kirjasto ja tietue merkitty osan siirtokohteeksi"
+msgstr "Kirjasto ja tietue merkitty signumin siirtokohteeksi"
 
 #: staff.cat.copy_browser.mark_library.prompt
 msgid "Choose just one Library to mark as Volume Transfer Destination"
-msgstr "Valitse vain yksi kirjasto nimekkeen siirtokohteeksi"
+msgstr "Valitse vain yksi kirjasto signumin siirtokohteeksi"
 
 #: staff.cat.copy_browser.mark_library.title
 msgctxt "staff.cat.copy_browser.mark_library.title"
@@ -303,11 +304,11 @@ msgstr "Rajoita valintaa"
 
 #: staff.cat.copy_browser.mark_volume.alert
 msgid "Volume marked as Item Transfer Destination"
-msgstr "Nimeke merkitty niteiden siirtokohteeksi"
+msgstr "Signum merkitty niteiden siirtokohteeksi"
 
 #: staff.cat.copy_browser.mark_volume.prompt
 msgid "Choose just one Volume to mark as Item Transfer Destination"
-msgstr "Valitse vain yksi nimeke niteen siirtokohteeksi"
+msgstr "Valitse vain yksi signum niteen siirtokohteeksi"
 
 #: staff.cat.copy_browser.mark_volume.title
 msgctxt "staff.cat.copy_browser.mark_volume.title"
@@ -323,7 +324,7 @@ msgstr ""
 
 #: staff.cat.copy_browser.transfer.prompt
 msgid "Transfer volumes %1$s to library %2$s on the following record?"
-msgstr "Siirretäänkö niteet %1$s kirjastoon %2$s seuraavalla tietueella?"
+msgstr "Siirretäänkö signumit %1$s kirjastoon %2$s seuraavalla tietueella?"
 
 #: staff.cat.copy_browser.transfer.submit.label
 msgctxt "staff.cat.copy_browser.transfer.submit.label"
@@ -342,7 +343,7 @@ msgstr "P"
 
 #: staff.cat.copy_browser.transfer.title
 msgid "Volume Transfer"
-msgstr "Nimekkeiden siirto"
+msgstr "Signumin siirto"
 
 #: staff.cat.copy_browser.transfer.incomplete
 msgctxt "staff.cat.copy_browser.transfer.incomplete"
@@ -351,19 +352,19 @@ msgstr "Siirto peruttu"
 
 #: staff.cat.copy_browser.transfer.override.failure
 msgid "Override Volume Transfer Failure?"
-msgstr "Ohitetaanko nimekkeen siirron epäonnistuminen?"
+msgstr "Ohitetaanko signumin siirron epäonnistuminen?"
 
 #: staff.cat.copy_browser.transfer.ineligible_destination
 msgid "That destination cannot have volumes."
-msgstr "Valitsemallasi kohteella ei voi olla nimekkeitä."
+msgstr "Valitsemallasi kohteella ei voi olla signumeja."
 
 #: staff.cat.copy_browser.transfer.success
 msgid "Volumes transferred."
-msgstr "Nimekkeet siirretty."
+msgstr "Signumit siirretty."
 
 #: staff.cat.copy_browser.transfer.unexpected_error
 msgid "All volumes not likely transferred."
-msgstr "Kaikkia nimekkeitä ei luultavasti siirretty."
+msgstr "Kaikkia signumeja ei luultavasti siirretty."
 
 #: staff.cat.copy_browser.transfer_items.missing_volume
 msgctxt "staff.cat.copy_browser.transfer_items.missing_volume"
@@ -371,7 +372,7 @@ msgid ""
 "Please mark a volume as the destination from within holdings maintenance and "
 "then try this again."
 msgstr ""
-"Merkitse nide kohteeksi varaustenhallinnasta ja yritä sitten uudelleen."
+"Merkitse signum kohteeksi varaustenhallinnasta ja yritä sitten uudelleen."
 
 #: staff.cat.copy_browser.transfer_items.unexpected_error
 msgid "All copies not likely transferred."
@@ -399,7 +400,7 @@ msgstr "Sijainti/tunnus"
 #: staff.cat.copy_browser.list_init.volume_count
 msgctxt "staff.cat.copy_browser.list_init.volume_count"
 msgid "Volumes"
-msgstr "Vuosikerrat"
+msgstr "Signumit"
 
 #: staff.cat.copy_browser.list_init.copy_count
 msgid "Copies"
@@ -411,7 +412,7 @@ msgstr "Nideselaimen toiminnot"
 
 #: staff.cat.copy_browser.refresh_list.error
 msgid "Problem refreshing the volume/copy tree."
-msgstr "Virhe päivitettäessä nimeke-/nidepuuta."
+msgstr "Virhe päivitettäessä signum-/nidepuuta."
 
 #: staff.cat.copy_buckets.render_pending_copies.complete
 msgctxt "staff.cat.copy_buckets.render_pending_copies.complete"
@@ -468,7 +469,7 @@ msgstr "Toiminto suoritettu."
 #: staff.cat.copy_buckets.copy_buckets_delete_bucket.confirm
 msgctxt "staff.cat.copy_buckets.copy_buckets_delete_bucket.confirm"
 msgid "Delete the bucket named %1$s?"
-msgstr "Poistetaanko siilo %1$s?"
+msgstr "Tuhotaanko siilo %1$s?"
 
 #: staff.cat.copy_buckets.copy_buckets_delete_bucket.complete
 msgctxt "staff.cat.copy_buckets.copy_buckets_delete_bucket.complete"
@@ -511,15 +512,15 @@ msgstr "Niteiden poistaminen erissä"
 msgid ""
 "Please mark a volume as the destination from within the copy browser and "
 "then try this again."
-msgstr "Merkitse nimeke kohteeksi nideselaimesta ja yritä uudelleen."
+msgstr "Merkitse signum kohteeksi nideselaimesta ja yritä uudelleen."
 
 #: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.confirm
 msgid ""
 "Transfer the items in bucket \"%1$s\" from their original volumes to the "
 "volume labelled \"%2$s\" for the library \"%3$s\" on the following record?"
 msgstr ""
-"Siirretäänkö siilon \"%1$s\" niteet alkuperäisestä sijainnista kirjaston "
-"\"%3$s\" nimikkeeseen \"%2$s\" seuraavalla tietueella?"
+"Siirretäänkö siilon \"%1$s\" niteet alkuperäisestä signumista kirjaston "
+"\"%3$s\" signumiin \"%2$s\" seuraavalla tietueella?"
 
 #: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.error
 msgid "Items not likely transferred."
@@ -576,7 +577,7 @@ msgstr "M"
 
 #: staff.cat.copy_editor.copy_notes
 msgid "Copy Notes"
-msgstr "Nidehuomautukset"
+msgstr "Nideilmoitukset"
 
 #: staff.cat.copy_editor.status
 msgid "Status"
@@ -608,11 +609,11 @@ msgstr "Virhe luettelointipohjan tallennuksessa"
 
 #: staff.cat.copy_editor.delete_template.confirm
 msgid "Delete template \"%1$s\"?"
-msgstr "Poistetaanko luettelointipohja \"%1$s\"?"
+msgstr "Tuhotaanko luettelointipohja \"%1$s\"?"
 
 #: staff.cat.copy_editor.delete_template.success
 msgid "Template \"%1$s\" deleted."
-msgstr "Luettelointipohja \"%1$s\" poistettu."
+msgstr "Luettelointipohja \"%1$s\" tuhotettu."
 
 #: staff.cat.copy_editor.delete_template.error
 msgid "Error deleting template"
@@ -691,8 +692,8 @@ msgid ""
 "you try to create, but if that does not happen, then these templates will "
 "disappear with the next invocation of the item attribute editor."
 msgstr ""
-"Huomaa: Nämä tuodut luettelointipohjat tallennetaan yhdessä kaikkien "
-"luomiesi uusien luettelointipohjien kanssa, mutta jos niin ei tapahdu, nämä "
+"Huom!: Nämä tuodut luettelointipohjat tallennetaan yhdessä kaikkien luomiesi "
+"uusien luettelointipohjien kanssa, mutta jos niin ei tapahdu, nämä "
 "luettelointipohjat katoavat, kun nidemääritteiden muokkaustyökalua käytetään "
 "seuraavan kerran."
 
@@ -712,7 +713,7 @@ msgid ""
 "Error retrieving Volume information for copy %1$s.  The owning library for "
 "this copy will not be changed."
 msgstr ""
-"Virhe haettaessa tietoja niteelle %1$s. Niteen kotikirjastoa ei vaihdeta."
+"Virhe haettaessa tietoja signumille %1$s. Niteen kotikirjastoa ei vaihdeta."
 
 #: staff.cat.copy_editor.apply_owning_lib.call_number.error
 msgid ""
@@ -796,7 +797,7 @@ msgstr "Luomispäivä"
 
 #: staff.cat.copy_editor.field.active_date.label
 msgid "Active Date"
-msgstr "Aktiivinen"
+msgstr "Aktivointipäivä"
 
 #: staff.cat.copy_editor.field.last_edit_date.label
 msgid "Last Edit Date"
@@ -904,7 +905,7 @@ msgstr "Lainausmäärite"
 
 #: staff.cat.copy_editor.field.alert_message.label
 msgid "Alert Message"
-msgstr "Varoitusviesti"
+msgstr "Huomautusviesti"
 
 #: staff.cat.copy_editor.field.deposit.label
 msgid "Deposit?"
@@ -970,7 +971,7 @@ msgstr "Kohtalainen"
 
 #: staff.cat.copy_notes.render_notes.label
 msgid "Add New Note"
-msgstr "Lisää uusi huomautus"
+msgstr "Lisää uusi ilmoitus"
 
 #: staff.cat.copy_notes.render_notes.accesskey
 msgctxt "staff.cat.copy_notes.render_notes.accesskey"
@@ -979,7 +980,7 @@ msgstr "L"
 
 #: staff.cat.copy_notes.widgets_apply.note_id
 msgid "Note ID:"
-msgstr "Huomautustunnus:"
+msgstr "Ilmoitustunnus:"
 
 #: staff.cat.copy_notes.widgets_apply.creator_id
 msgid "Creator ID:"
@@ -995,15 +996,15 @@ msgstr "Yksityinen"
 
 #: staff.cat.copy_notes.delete_note.label
 msgid "Delete This Note"
-msgstr "Poista tämä huomautus"
+msgstr "Tuhoa tämä ilmoitus"
 
 #: staff.cat.copy_notes.delete_note.prompt.msg
 msgid "Delete the note titled \"%1$s\" created on %2$s?"
-msgstr "Poistetaanko huomautus \"%1$s\", joka on luotu %2$s?"
+msgstr "Tuhotaanko ilmoitus \"%1$s\", joka on luotu %2$s?"
 
 #: staff.cat.copy_notes.delete_note.prompt.title
 msgid "Delete Note"
-msgstr "Poista huomautus"
+msgstr "Tuhoa ilmoitus"
 
 #: staff.cat.copy_notes.delete_note.prompt.yes
 msgctxt "staff.cat.copy_notes.delete_note.prompt.yes"
@@ -1017,7 +1018,7 @@ msgstr "Ei"
 
 #: staff.cat.copy_notes.delete_note.success
 msgid "Note deleted."
-msgstr "Huomautus poistettu."
+msgstr "Ilmoitus tuhottu."
 
 #: staff.cat.copy_notes.delete_note.close_window
 msgid "Close Window"
@@ -1029,7 +1030,7 @@ msgstr "W"
 
 #: staff.cat.copy_notes.new_note.label
 msgid "New Note"
-msgstr "Uusi huomautus"
+msgstr "Uusi ilmoitus"
 
 #: staff.cat.copy_notes.new_note.public
 msgid "Public?"
@@ -1041,7 +1042,7 @@ msgstr "Nimeke"
 
 #: staff.cat.copy_notes.new_note.note
 msgid "Note"
-msgstr "Huomautus"
+msgstr "Ilmoitus"
 
 #: staff.cat.copy_notes.new_note.initials
 msgid "Initials"
@@ -1059,7 +1060,7 @@ msgstr "P"
 
 #: staff.cat.copy_notes.new_note.add_note.label
 msgid "Add Note"
-msgstr "Lisää huomautus"
+msgstr "Lisää ilmoitus"
 
 #: staff.cat.copy_notes.new_note.add_note.accesskey
 msgctxt "staff.cat.copy_notes.new_note.add_note.accesskey"
@@ -1068,7 +1069,7 @@ msgstr "L"
 
 #: staff.cat.copy_notes.new_note.error
 msgid "The note was not likely created."
-msgstr "Huomautusta ei luultavasti luotu."
+msgstr "Ilmoitusta ei luultavasti luotu."
 
 #: staff.cat.copy_summary.copy_id
 msgid "Copy ID = %1$s"
@@ -1261,8 +1262,7 @@ msgstr "Tietuetta ei luultavasti päivitetty."
 #: staff.cat.opac.refresh.function_not_implemented.alert
 msgid "Not yet implemented.  Work around: Choose Duplicate in New Tab option"
 msgstr ""
-"Ei vielä otettu käyttöön. Vaihtoehto: valitse Kopioi uuteen välilehteen -"
-"toiminto"
+"Tämä ei vielä toimi. Vaihtoehto: valitse Kopioi uuteen välilehteen -toiminto"
 
 #: staff.cat.opac.set_tab_name
 msgid "Record DB ID: %1$s"
@@ -1339,7 +1339,7 @@ msgstr "Virhe siilon haussa. Annoitko kelvollisen siilotunnuksen?"
 #: staff.cat.record_buckets.delete_bucket_named
 msgctxt "staff.cat.record_buckets.delete_bucket_named"
 msgid "Delete the bucket named %1$s?"
-msgstr "Poistetaanko siilo nimeltä %1$s?"
+msgstr "Tuhotaanko siilo nimeltä %1$s?"
 
 #: staff.cat.record_buckets.new_bucket.bucket_prompt
 msgctxt "staff.cat.record_buckets.new_bucket.bucket_prompt"
@@ -1366,16 +1366,16 @@ msgstr "Tietueita yhdistetään"
 
 #: staff.cat.record_buckets.merge_records.catch.std_unex_err
 msgid "Records were not likely merged."
-msgstr ""
+msgstr "Tietueita ei luultavasti yhdistetty."
 
 #: staff.cat.record_buckets.delete_records.xml1
 msgid "Delete these records?"
-msgstr "Poistetaanko nämä tietueet?"
+msgstr "Tuhotaanko nämä tietueet?"
 
 #: staff.cat.record_buckets.delete_records.button.label
 msgctxt "staff.cat.record_buckets.delete_records.button.label"
 msgid "Delete"
-msgstr "Poista"
+msgstr "Tuhoa"
 
 #: staff.cat.record_buckets.delete_records.cancel_button.label
 msgctxt "staff.cat.record_buckets.delete_records.cancel_button.label"
@@ -1397,7 +1397,7 @@ msgstr "Tietueiden siivous"
 
 #: staff.cat.record_buckets.delete_records.fancy_prompt.alert
 msgid "Delete Aborted"
-msgstr "Poistaminen keskeytetty"
+msgstr "Tuhoaminen keskeytetty"
 
 #: staff.cat.record_buckets.delete_records.s1
 msgid "Error deleting these records:\n"
@@ -1409,11 +1409,11 @@ msgstr "Tietue #%1$s : %2$s  : %3$s\n"
 
 #: staff.cat.record_buckets.delete_records.delete_success.alert
 msgid "Records deleted."
-msgstr "Tietueet poistettu."
+msgstr "Tietueet tuhottu."
 
 #: staff.cat.record_buckets.delete_records.catch.std_unex_err
 msgid "Records were not likely deleted."
-msgstr "Tietueita ei luultavasti poistettu."
+msgstr "Tietueita ei luultavasti tuhottu."
 
 #: staff.cat.record_buckets.cmd_broken.alert
 msgid "Not Yet Implemented"
@@ -1544,15 +1544,15 @@ msgid ""
 "Please mark a volume as the destination from within holdings maintenance and "
 "then try this again."
 msgstr ""
-"Merkitse nide kohteeksi varaustenhallinnasta ja yritä sitten uudelleen."
+"Merkitse signum kohteeksi varaustenhallinnasta ja yritä sitten uudelleen."
 
 #: staff.cat.util.transfer_copies.params_message
 msgid ""
 "Transfer items from their original volumes to %1$s's volume labelled %2$s on "
 "the following record (and change their circulation libs to match)?"
 msgstr ""
-"Siirretäänkö niteet alkuperäisistä nimekkeistään käyttäjän %1$s nimekkeeseen "
-"nimeltä %2$s seuraavalla tietueella (ja vaihdetaanko niiden lainauskirjastot "
+"Siirretäänkö niteet alkuperäisistä signumista käyttäjän %1$s signumiin "
+"nimeltä %2$s seuraavalla tietueella (ja vaihdetaanko niiden kotiosastot "
 "vastaavasti)?"
 
 #: staff.cat.util.transfer_copies.transfer.label
@@ -1858,7 +1858,7 @@ msgstr "%1$s nidettä merkitty: osia puuttuu."
 msgid ""
 "No circulation found for item with barcode %1$s.  Item left unmodified."
 msgstr ""
-"Lainaa ei löytynyt niteelle, jonka tunnus = %1$s. Nidettä ei muokattu."
+"Lainausta ei löytynyt niteelle, jonka tunnus = %1$s. Nidettä ei muokattu."
 
 #: staff.cat.util.show_in_opac.retrieving_title
 msgctxt "staff.cat.util.show_in_opac.retrieving_title"
@@ -1871,7 +1871,7 @@ msgstr "Ohitetaan %1$s ennakkoluetteloitua tietuetta..."
 
 #: staff.cat.volume_buckets.window_tab_name
 msgid "Volume Buckets"
-msgstr "Nimekesiilot"
+msgstr "Signumsiilot"
 
 #: staff.cat.volume_copy_creator.my_init.btn.label
 msgctxt "staff.cat.volume_copy_creator.my_init.btn.label"
@@ -1906,7 +1906,7 @@ msgstr "O"
 
 #: staff.cat.volume_copy_creator.create.btn.label
 msgid "Create Volumes/Items"
-msgstr "Luo nimekkeitä/niteitä"
+msgstr "Luo signumeja/niteitä"
 
 #: staff.cat.volume_copy_creator.create.btn.accesskey
 msgctxt "staff.cat.volume_copy_creator.create.btn.accesskey"
@@ -1935,7 +1935,7 @@ msgid ""
 "interface."
 msgstr ""
 "Et voi samanaikaisesti lisätä tässä käyttöliittymässä yli %1$s nidettä "
-"määrättyyn nimekkeeseen."
+"määrättyyn signumiin."
 
 #: staff.cat.volume_copy_creator.render_volume_count_entry.title
 msgid "Maximum items exceeded."
@@ -1992,15 +1992,15 @@ msgid ""
 "volume."
 msgstr ""
 "Virhe etsittäessä tai luotaessa kohdetta %1$s. Niteen luominen tähän "
-"nimekkeeseen ohitetaan."
+"signumiin ohitetaan."
 
 #: staff.cat.volume_copy_creator.stash_and_close.tree_err2
 msgid "volume tree update 2"
-msgstr "nimekepuun päivitys 2"
+msgstr "signumpuun päivitys 2"
 
 #: staff.cat.volume_copy_creator.stash_and_close.tree_err3
 msgid "volume tree update 3"
-msgstr "nimekepuun päivitys 3"
+msgstr "signumpuun päivitys 3"
 
 #: staff.cat.volume_copy_creator.load_prefs.err_retrieving_prefs
 msgid "Error retrieving stored preferences"

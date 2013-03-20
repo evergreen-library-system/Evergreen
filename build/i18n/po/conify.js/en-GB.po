@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-08-03 10:01-0400\n"
+"POT-Creation-Date: 2013-03-15 19:42-0400\n"
 "PO-Revision-Date: 2012-05-02 18:38+0000\n"
 "Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-08-04 05:09+0000\n"
-"X-Generator: Launchpad (build 15742)\n"
+"X-Launchpad-Export-Date: 2013-03-16 05:55+0000\n"
+"X-Generator: Launchpad (build 16532)\n"
 
 #: conify.js:SURVEY_ID
 msgid "Survey ID # ${0}"
@@ -40,6 +40,10 @@ msgstr "Problem fetching Physical Address for ${0}"
 #: conify.js:SURVEY_ADD_ANSWER
 msgid "Add Answer"
 msgstr "Add Answer"
+
+#: conify.js:CBHO_FIELD_DISPLAY
+msgid "[${0}] ${1}"
+msgstr ""
 
 #: conify.js:TRANSLATION conify.js:LABEL_TRANSLATION
 msgid "Translation"
@@ -109,6 +113,10 @@ msgstr "Delete Question & Answers"
 msgid "Problem creating new Permission"
 msgstr "Problem creating new Permission"
 
+#: conify.js:CBHO_EDITING_NEW
+msgid "You are editing a new best-hold order."
+msgstr ""
+
 #: conify.js:ERROR_CALLING_METHOD_PERM_MAP
 msgid "Problem calling method to create new permission map"
 msgstr "Problem calling method to create new permission map"
@@ -145,9 +153,9 @@ msgstr "New child Organisational Unit created for ${0}"
 msgid "Cannot delete ${0}, ${1} subordinates still exist."
 msgstr "Cannot delete ${0}, ${1} subordinates still exist."
 
-#: conify.js:ACQ_DISTRIB_FORMULA_NAME_PROMPT
-msgid "Enter new formula name"
-msgstr "Enter new formula name"
+#: conify.js:CBHO_EDITING_EXISTING
+msgid "You are editing best-hold order #${0}: ${1}."
+msgstr ""
 
 #: conify.js:ERROR_DELETING_LAST_AOUT
 msgid "Cannot delete ${0}. You need at least one organization type."
@@ -168,6 +176,10 @@ msgstr "Saved changes to the Physical Address of ${0}"
 #: conify.js:LABEL_NEW_GROUP
 msgid "New Group"
 msgstr "New Group"
+
+#: conify.js:CBHO_NO_LOAD
+msgid "Unable to load selected item."
+msgstr ""
 
 #: conify.js:CONFIRM_EXIT_PGT
 msgid ""
@@ -220,6 +232,14 @@ msgstr "Problem fetching hours of operation for ${0}"
 #: conify.js:LABEL_NEW_TYPE
 msgid "New Type"
 msgstr "New Type"
+
+#: conify.js:CBHO_NEEDS_NAME
+msgid "You need to enter a name for the best-hold order."
+msgstr ""
+
+#: conify.js:ACQ_DISTRIB_FORMULA_NAME_PROMPT
+msgid "Enter new formula name"
+msgstr "Enter new formula name"
 
 #: conify.js:ERROR_CREATING_CHILD_AOU
 msgid "Problem creating child organizational unit"

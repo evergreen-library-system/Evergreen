@@ -3,22 +3,22 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-20 09:37-0400\n"
-"PO-Revision-Date: 2012-12-20 15:20+0000\n"
-"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"POT-Creation-Date: 2013-03-15 19:41+0000\n"
+"PO-Revision-Date: 2013-03-19 19:56+0000\n"
+"Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-12-21 04:54+0000\n"
-"X-Generator: Launchpad (build 16378)\n"
+"X-Launchpad-Export-Date: 2013-03-20 04:44+0000\n"
+"X-Generator: Launchpad (build 16532)\n"
 "X-Project-Style: mozilla\n"
 "X-Accelerator-Marker: &\n"
 "Language: fi\n"
 
 #: staff.circ.alert
 msgid "Alert"
-msgstr "Varoitus"
+msgstr "Huomautus"
 
 #: staff.circ.item_no_circs
 msgid "Item %1$s has never circulated."
@@ -236,7 +236,7 @@ msgid ""
 "A billing for an Item Rental Fee will be added to the patron's account if "
 "this action is overrided."
 msgstr ""
-"Jos toiminto ohitetaan, aineiston vuokramaksu lisätään asiakkaan tilille."
+"Jos toiminto ohitetaan, aineiston vuokramaksu lisätään asiakkaan tietoihin."
 
 #: staff.circ.checkout.override.will_auto
 msgid ""
@@ -246,11 +246,17 @@ msgstr ""
 "Jos toiminto ohitetaan nyt, asiakkaan istunnon aikana tehdyt myöhemmät "
 "lainat ohittavat tämän tapahtuman automaattisesti."
 
+#: staff.circ.checkout.error_retrieving_copy_status
+msgid "Could not retrieve the name of the current status for the copy"
+msgstr "Nimekkeen tilan nimeä ei voitu hakea."
+
 #: staff.circ.checkout.not_cataloged.confirm
-msgid "Mis-scan or non-cataloged item.  Checkout as a pre-cataloged item?"
+msgid ""
+"Barcode %1$s was either mis-scanned or is a non-cataloged item.  Checkout as "
+"a pre-cataloged item?"
 msgstr ""
-"Virheellinen luku tai ei-luetteloitu nide. Lainataanko ennakkoon "
-"luetteloituna niteenä?"
+"Viivakoodi %1$s on väärin, tai nidettä ei ole tietokannassa. Lainataanko "
+"ennakkoon luetteloituna niteenä?"
 
 #: staff.circ.pre_cataloged
 msgid "Pre-cataloged"
@@ -269,7 +275,7 @@ msgid ""
 "The card used to retrieve this account is inactive and may not be used to "
 "circulate items."
 msgstr ""
-"Asiakastietojen hakemiseen käytetty kortti on ei-aktiivinen, eikä sitä voi "
+"Asiakastilin hakemiseen käytetty kortti ei ole käytössä, eikä sitä voi "
 "käyttää lainaukseen."
 
 #: staff.circ.checkout.barcode.check_out_failed
@@ -278,11 +284,11 @@ msgstr "Lainaus epäonnistui"
 
 #: staff.circ.checkout.account.inactive
 msgid "This account is inactive and may not circulate items."
-msgstr "Asiakastunnuksella ei voi lainata."
+msgstr "Asiakastunnus ei ole aktiivinen eikä sillä voi lainata."
 
 #: staff.circ.checkout.account.expired
 msgid "This account has expired and may not circulate items."
-msgstr "Asiakstunnus on vanhentunut, eikä sillä voi lainata."
+msgstr "Asiakastunnus on vanhentunut, eikä sillä voi lainata."
 
 #: staff.circ.checkout.item_due
 msgid "This item was due on %1$s."
@@ -314,7 +320,7 @@ msgstr "Niteen tila = %1$s"
 
 #: staff.circ.checkout.alert_message
 msgid "Alert Message = %1$s"
-msgstr "Varoitusviesti = %1$s"
+msgstr "Huomautusviesti = %1$s"
 
 #: staff.circ.checkout.permission_denied
 msgid "Permission Denied = %1$s"
@@ -337,15 +343,15 @@ msgstr "Nidetunnus:"
 
 #: staff.circ.checkout.failed_to_patron_other
 msgid "This copy was checked out by another patron on %1$s."
-msgstr ""
+msgstr "Tämän niteen on lainannut %1$s toinen asiakas."
 
 #: staff.circ.checkout.failed_to_patron_renew
 msgid "This copy is already checked out to this patron."
-msgstr ""
+msgstr "Tämä nide on jo lainattu tälle asiakkaalle."
 
 #: staff.circ.checkout.failed_to_patron_today
 msgid "This copy was already checked out to this patron today."
-msgstr ""
+msgstr "Tämä nide on jo lainattu tälle asiakkaalle tänään."
 
 #: staff.circ.circ_brief.staff_out_id
 msgid "Check Out Staff ID = %1$s"
@@ -357,7 +363,7 @@ msgstr "Palauta henkilökuntatunnuksella = %1$s"
 
 #: staff.circ.circ_brief.failure
 msgid "Failure rendering circulation."
-msgstr "Lainan valmistelu epäonnistui."
+msgstr "Lainauksen valmistelu epäonnistui."
 
 #: staff.circ.copy_details.hold
 msgid "Hold ID = %1$s"
@@ -516,16 +522,16 @@ msgstr "Lisää nide tietueeseen # %1$s"
 
 #: staff.circ.copy_status.del_items.confirm
 msgid "Are you sure sure you want to delete these items? %1$s"
-msgstr "Haluatko varmasti poistaa nämä niteet? %1$s"
+msgstr "Haluatko varmasti tuhota nämä niteet? %1$s"
 
 #: staff.circ.copy_status.del_items.title
 msgctxt "staff.circ.copy_status.del_items.title"
 msgid "Override Delete Failure?"
-msgstr "Ohitetaanko poistamisen epäonnistuminen?"
+msgstr "Ohitetaanko tuhoamisen epäonnistuminen?"
 
 #: staff.circ.copy_status.del_items.success
 msgid "Items Deleted"
-msgstr "Niteet poistettu"
+msgstr "Niteet tuhottu"
 
 #: staff.circ.copy_status.del_items.success.error
 msgid "Batch Item Deletion"
@@ -533,7 +539,7 @@ msgstr "Niteiden poistaminen erissä"
 
 #: staff.circ.copy_status.transfer_items.mark_destination
 msgid "Please mark a volume as the destination and then try this again."
-msgstr "Merkitse osa kohteeksi ja yritä sitten uudelleen."
+msgstr "Merkitse signum kohteeksi ja yritä sitten uudelleen."
 
 #: staff.circ.copy_status.transfer_items.problem
 msgid "All copies not likely transferred."
@@ -541,23 +547,23 @@ msgstr "Kaikkia niteitä ei luultavasti siirretty."
 
 #: staff.circ.copy_status.add_volumes.perm_failure
 msgid "You do not have permission to add volumes to that library."
-msgstr "Sinulla ei ole oikeutta lisätä niteitä valittuun kirjastoon."
+msgstr "Sinulla ei ole oikeutta lisätä signumeja valittuun kirjastoon."
 
 #: staff.circ.copy_status.add_volumes.title
 msgid "Add Volume/Item for Record # %1$s"
-msgstr "Lisää nide tietueeseen # %1$s"
+msgstr "Lisää signum/nide tietueeseen # %1$s"
 
 #: staff.circ.copy_status.edit_volumes.perm_failure
 msgid "You do not have permission to edit this volume."
-msgstr "Sinulla ei ole oikeutta muokata tätä nidettä."
+msgstr "Sinulla ei ole oikeutta muokata tätä signumia."
 
 #: staff.circ.copy_status.edit_volume.title
 msgid "Volume for record # %1$s"
-msgstr "Nide tietueessa # %1$s"
+msgstr "Signum tietueessa # %1$s"
 
 #: staff.circ.copy_status.edit_volumes.title
 msgid "Volumes for record # %1$s"
-msgstr "Niteet tietueessa # %1$s"
+msgstr "Signumit tietueessa # %1$s"
 
 #: staff.circ.copy_status.edit_volumes.duplicate
 msgid ""
@@ -565,29 +571,29 @@ msgid ""
 "already in use for the given library.  You should transfer the items to the "
 "desired callnumber instead."
 msgstr ""
-"Muokkaus epäonnistui: Yritit muuttaa niteen hyllypaikan sellaiseksi, joka on "
-"jo käytössä valitussa kirjastossa. Siirrä sen sijaan niteet haluttuun "
+"Muokkaus epäonnistui: Yritit muuttaa signumin hyllypaikan sellaiseksi, joka "
+"on jo käytössä valitussa kirjastossa. Siirrä sen sijaan niteet haluttuun "
 "hyllypaikkaan."
 
 #: staff.circ.copy_status.edit_volumes.success
 msgid "Volumes modified."
-msgstr "Niteitä muokattu."
+msgstr "Signumeja muokattu."
 
 #: staff.circ.copy_status.delete_volumes.singular
 msgid "Are you sure you would like to delete this volume?"
-msgstr "Haluatko varmasti poistaa tämän niteen?"
+msgstr "Haluatko varmasti tuhota tämän signumin?"
 
 #: staff.circ.copy_status.delete_volumes.plural
 msgid "Are you sure you would like to delete these volumes?"
-msgstr "Haluatko varmasti poistaa nämä niteet?"
+msgstr "Haluatko varmasti tuhota nämä signumit?"
 
 #: staff.circ.copy_status.delete_volumes.title
 msgid "Delete Volumes?"
-msgstr "Poistetaanko niteet?"
+msgstr "Tuhotaanko signumit?"
 
 #: staff.circ.copy_status.delete_volumes.delete
 msgid "Delete"
-msgstr "Poista"
+msgstr "Tuhoa"
 
 #: staff.circ.copy_status.delete_volumes.cancel
 msgctxt "staff.circ.copy_status.delete_volumes.cancel"
@@ -597,31 +603,31 @@ msgstr "Peruuta"
 #: staff.circ.copy_status.delete_volumes.override
 msgctxt "staff.circ.copy_status.delete_volumes.override"
 msgid "Override Delete Failure?"
-msgstr "Ohitetaanko poistamisen epäonnistuminen?"
+msgstr "Ohitetaanko tuhoamisen epäonnistuminen?"
 
 #: staff.circ.copy_status.delete_volumes.delete_copies
 msgid ""
 "You must delete all the items on the volume before you may delete the volume "
 "itself."
 msgstr ""
-"Kaikki osaan kuuluvat niteet on poistettava, ennan kuin voit poistaa itse "
-"osan."
+"Kaikki signumiin kuuluvat niteet on tuhottava, ennan kuin voit tuhota itse "
+"signumin."
 
 #: staff.circ.copy_status.delete_volumes.delete_copies.confirm
 msgid "Delete Volume and Items"
-msgstr "Poista niteet"
+msgstr "Tuhoa signum ja niteet"
 
 #: staff.circ.copy_status.delete_volumes.delete_copies.cancel
 msgid "Cancel Delete"
-msgstr "Peru poisto"
+msgstr "Peru tuhoaminen"
 
 #: staff.circ.copy_status.mark_volume.status
 msgid "Volume marked as Item Transfer Destination"
-msgstr "Nimeke merkitty niteiden siirtokohteeksi"
+msgstr "Signum merkitty niteiden siirtokohteeksi"
 
 #: staff.circ.copy_status.mark_volume.prompt
 msgid "Choose just one Volume to mark as Item Transfer Destination"
-msgstr "Valitse vain yksi nimeke niteen siirtokohteeksi."
+msgstr "Valitse vain yksi signum niteen siirtokohteeksi."
 
 #: staff.circ.copy_status.mark_volume.title
 msgctxt "staff.circ.copy_status.mark_volume.title"
@@ -635,11 +641,11 @@ msgstr "OK"
 
 #: staff.circ.copy_status.mark_library
 msgid "Library and Record marked as Volume Transfer Destination"
-msgstr "Kirjasto ja tietue merkitty nimekkeen siirtokohteeksi"
+msgstr "Kirjasto ja tietue merkitty signumin siirtokohteeksi"
 
 #: staff.circ.copy_status.mark_library.limit_one
 msgid "Choose just one Library to mark as Volume Transfer Destination"
-msgstr "Valitse vain yksi kirjasto nimekkeen siirtokohteeksi."
+msgstr "Valitse vain yksi kirjasto signumin siirtokohteeksi."
 
 #: staff.circ.copy_status.mark_library.limit_one.title
 msgctxt "staff.circ.copy_status.mark_library.limit_one.title"
@@ -655,7 +661,7 @@ msgstr ""
 
 #: staff.circ.copy_status.transfer_volume.confirm
 msgid "Transfer volumes %1$s to library %2$s on the following record?"
-msgstr "Siirretäänkö niteet %1$s kirjastoon %2$s seuraavalla tietueella?"
+msgstr "Siirretäänkö signumit %1$s kirjastoon %2$s seuraavalla tietueella?"
 
 #: staff.circ.copy_status.transfer_volume.transfer.label
 msgid "Transfer"
@@ -672,7 +678,7 @@ msgstr "P"
 
 #: staff.circ.copy_status.transfer_volume.title
 msgid "Volume Transfer"
-msgstr "Nimekkeiden siirto"
+msgstr "Signumin siirto"
 
 #: staff.circ.copy_status.transfer_volume.aborted
 msgid "Transfer Aborted"
@@ -680,19 +686,19 @@ msgstr "Siirto peruttu"
 
 #: staff.circ.copy_status.transfer_volume.override_failure
 msgid "Override Volume Transfer Failure?"
-msgstr "Ohitetaanko nimekkeen siirron epäonnistuminen?"
+msgstr "Ohitetaanko signumin siirron epäonnistuminen?"
 
 #: staff.circ.copy_status.transfer_volume.cannot_have_vols
 msgid "That destination cannot have volumes."
-msgstr "Valitsemallasi kohteella ei voi olla nimekkeitä."
+msgstr "Valitsemallasi kohteella ei voi olla signumeja."
 
 #: staff.circ.copy_status.transfer_volume.success
 msgid "Volumes transferred."
-msgstr "Nimekkeet siirretty."
+msgstr "Signumit siirretty."
 
 #: staff.circ.copy_status.transfer_volume.error
 msgid "All volumes not likely transferred."
-msgstr "Kaikkia nimekkeitä ei luultavasti siirretty."
+msgstr "Kaikkia signumeja ei luultavasti siirretty."
 
 #: staff.circ.copy_status.test_barcode.prompt
 msgctxt "staff.circ.copy_status.test_barcode.prompt"
@@ -795,7 +801,7 @@ msgstr "Varauksen kiinnitys epäonnistui."
 
 #: staff.circ.hold_capture.error
 msgid "FIXME: need special alert and error handling"
-msgstr "FIXME: tarvitaan erityistä varoitusten ja virheiden käsittelyä"
+msgstr "FIXME: tarvitaan erityistä huomautus- ja virhekäsittelyä"
 
 #: staff.circ.route_to.hold_shelf
 msgid "HOLD SHELF"
@@ -1084,7 +1090,7 @@ msgstr "Lainattavissa?"
 
 #: staff.circ.utils.deleted
 msgid "Deleted?"
-msgstr "Poistettu?"
+msgstr "Tuhottu?"
 
 #: staff.circ.utils.holdable
 msgid "Holdable?"
@@ -1096,11 +1102,11 @@ msgstr "Kelluva?"
 
 #: staff.circ.utils.hold_note
 msgid "Hold Note(s) Count"
-msgstr "Varaushuomautusten lukumäärä"
+msgstr "Varausilmoitusten lukumäärä"
 
 #: staff.circ.utils.hold_note_text
 msgid "Hold Note(s) Text"
-msgstr "Varaushuomautusten teksti"
+msgstr "Varausilmoitusten teksti"
 
 #: staff.circ.utils.staff_hold
 msgid "Staff Hold?"
@@ -1248,7 +1254,7 @@ msgstr "Käyttöjen määrä"
 
 #: staff.circ.utils.alert_message
 msgid "Alert Message"
-msgstr "Varoitusviesti"
+msgstr "Huomautusviesti"
 
 #: staff.circ.utils.barcode
 msgid "Barcode"
@@ -1326,7 +1332,7 @@ msgstr "Peruutuksen syy"
 #. # Freetext note pertaining to the cancelled hold
 #: staff.circ.utils.hold_cancel_note
 msgid "Cancel Note"
-msgstr "Peruutushuomautus"
+msgstr "Peruutusilmoitus"
 
 #: staff.circ.utils.hold_status.1
 msgid "Waiting for copy"
@@ -1539,11 +1545,11 @@ msgstr "Liuska päiväys: %1$s"
 
 #: staff.circ.utils.payload.hold.notes.staff_note
 msgid "Staff Note: %1$s : %2$s"
-msgstr "Henkilökunnan huomautus: %1$s : %2$s"
+msgstr "Henkilökunnan ilmoitus: %1$s : %2$s"
 
 #: staff.circ.utils.payload.hold.notes.patron_note
 msgid "Patron Note: %1$s : %2$s"
-msgstr "Asiakkaan huomautus: %1$s : %2$s"
+msgstr "Asiakasilmoitus: %1$s : %2$s"
 
 #: staff.circ.utils.hold_slip
 msgid "Hold Slip"
@@ -1871,7 +1877,7 @@ msgid ""
 "For item with barcode %1$s, a billing for an Item Rental Fee will be added "
 "to the patron's account if this action is overrided."
 msgstr ""
-"Niteen vuokramaksu (nidetunnus %1$s) lisätään asiakkaan tilille, jos "
+"Niteen vuokramaksu (nidetunnus %1$s) lisätään asiakkaan tietoihin, jos "
 "toiminto ohitetaan."
 
 #: staff.circ.holds.activate.prompt
@@ -2039,3 +2045,8 @@ msgstr "Osia puuttuu"
 #: staff.circ.missing_pieces.scan_item.error_alert
 msgid "No item with barcode \"%1$s\""
 msgstr "Ei nidettä tunnuksella \"%1$s\""
+
+#~ msgid "Mis-scan or non-cataloged item.  Checkout as a pre-cataloged item?"
+#~ msgstr ""
+#~ "Virheellinen luku tai ei-luetteloitu nide. Lainataanko ennakkoon "
+#~ "luetteloituna niteenä?"
