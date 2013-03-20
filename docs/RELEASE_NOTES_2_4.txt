@@ -366,7 +366,7 @@ One new permission is added for this feature:
   * ADMIN_HOLD_CAPTURE_SORT
     ** Allows staff to adminster the custom best-hold selection sort order.
 
-Generic CVS Notification Generator/Receiver
+Generic CSV Notification Generator/Receiver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 New Action/Trigger template and sample event definitions for creating a CSV
