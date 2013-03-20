@@ -1,0 +1,229 @@
+Evergreen 2.4 Alpha1 Release Notes
+==================================
+:toc:
+:numbered:
+
+Upgrade notes
+-------------
+
+Custom toolbar permissions
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+With the addition of more granular permissions for configuring a custom
+toolbars, the ADMIN_TOOLBAR permission alone will not allow users to 
+configure a custom toolbar. This permission must now be used in conjunction
+with one or more of the following permissions:
+
+* ADMIN_TOOLBAR_FOR_ORG
+* ADMIN_TOOLBAR_FOR_USER
+* ADMIN_TOOLBAR_FOR_WORKSTATION
+
+New features
+------------
+
+Acquisitions
+~~~~~~~~~~~~
+
+Acquisitions MARC Upload Form Persistence
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Adds a two-layer persistence mechanism for the acquisitions MARC file upload
+interface.  A set of org unit settings now exist for managing default values
+for the interface.  Additionally, for each field where no org unit setting
+value is configured, the last-used value will be persisted locally and re-
+used with subsequent loads of the interface.
+
+OPAC
+~~~~
+
+Display alternate graphic (880) fields
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+By default, Evergreen displays alternate graphic fields, if any, for
+contributors (1xx / 7xx), titles (245), edition statements (250), imprints
+(260), notes (5xx), subjects (6xx), and series (4xx / 8xx) in search results and record details
+per the Library of Congress MARC21 specifications:
+
+* http://www.loc.gov/marc/bibliographic/bd880.html
+* http://www.loc.gov/marc/bibliographic/ecbdcntf.html
+* http://www.loc.gov/marc/bibliographic/ecbdmulti.html (Model A)
+
+Default display
++++++++++++++++
+In general, alternate graphic fields display below the corresponding
+primary field. One exception is the attribution summary on the record details
+page, in which the alternate graphic field contents display between the
+primary field content and the attribution statement. To support CSS
+customizations, HTML elements for the graphic fields have the class attribute
+value `graphic880`.
+
+Search Changes
+^^^^^^^^^^^^^^
+A number of changes have been made to search to allow more control and improve
+performance. These changes and their associated configurations are global to
+the entire system and can not be configured on a per-library basis.
+
+Amongst other things the new search code fixes:
+
+* Inability to use statuses and locations as part of a larger query
+* Invalid queries being generated from advanced searches
+* Some timeouts from backend code taking too long to preform a search
+* Some filters being one-use only
+* Negations not working properly where multiple indexes are involved
+
+Improvements include:
+
+* Exact matches on input should be more likely to float to the top of results
+* Non-English stemming can be used, alongside or instead of English stemming
+* Entered search terms can be found across multiple indexes
+
+Default configuration is geared towards English but is easily changed. In a
+production environment changes will likely require re-indexing, however.
+
+The upgrade script could be pre-tweaked to install desired configuration before
+it builds and/or re-builds many of the indexes.
+
+TPAC Google Books preview
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Setting `ctx.google_books_preview` to `1` in the TPAC `config.tt2`
+configuration file will cause the TPAC to check to see, as part of the record
+details view, if Google Books has an online preview available. If it does,
+then a preview button will be displayed in the book cover image location.
+If the user then clicks the preview button, the preview will load below the
+title of the book in the record details page.
+
+By default, this functionality is disabled to protect the privacy of users
+who might not want to share their browsing behaviour with Google.
+
+TPAC Org Unit Hiding
+^^^^^^^^^^^^^^^^^^^^
+Adds support for the opac.org_unit_hiding.depth org unit setting to
+TPAC, which makes out-of-scope org units disappear (except when
+explicitly requested).
+
+Org unit hiding is based on the physical_loc (Physical Location) param /
+cookie, which is the closest analog to 'ol' (original location), from
+which it was based in the JSPAC.
+
+UI Changes
+++++++++++
+
+ * All search org unit selectors
+ * Holds pickup lib selector
+ * Copy summary in search results page
+ * Copy list in search results page
+ * Copy summary in record detail page (which controls the copy grid).
+ * Hold summary in record detail page
+
+Cataloging
+~~~~~~~~~~
+
+Vandelay Default Match Set
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new org unit setting to specify a default Record Match Set when 
+importing MARC records through the MARC Batch Import/Export interface. It does
+not affect the default match set selected in acquisitions. If this
+is set, it will not be possible to leave the Record Match Set field blank;
+it may be necessary to define a default match set that replicates the current
+default behavior. 
+
+A new "Vandelay" org unit settings group is also created.
+
+Circulation
+~~~~~~~~~~~
+
+Clickable Patron Indicators
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When retrieving a patron record, staff can now click on the indicators listed 
+beneath the patron's name and launch the related tabs.
+
+For example, clicking on (See Notes) will open the associated patron's notes.
+
+"Warn patrons when their account is about to expire"
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+To give staff the ability to warn patrons when their account is about to
+expire, the staff client can display an alert message on the patron information
+window.  A new library setting, `Warn patrons when their account is about to
+expire` in the *Circulation* section of the *Library Settings Editor*,
+determines how many days in advance of a patron's account expiry date the alert
+should be displayed. By default, warnings about upcoming patron account expiry
+dates are not displayed.
+
+Show Hold Patron Name in TPAC
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When looking up patron information for hold placement via the staff client in
+TPac the hold patron name is now shown next to the entered barcode. In the event
+that the barcode is not found a notice is displayed and the submit button is
+disabled until a valid barcode is entered or the staff member is switched to.
+
+Administration
+~~~~~~~~~~~~~~
+
+Calculated Proximity Adjustments
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Allows customization to the way that Evergreen measures the distance between
+org units for the purposes of 1) determining what copy at what org unit is best
+suited for targeting a title-level hold, and 2) determining what hold is best
+suited for fulfillment by a copy-in-hand at capture (checkin) time.  The
+customization is based on a table 'actor.org_unit_proximity_adjustment', with
+certain matching criteria that the system compares to properties of the holds
+and copies in question.
+
+Custom best-hold selection sort order
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The ranking algorithm that chooses the best hold to target a copy in 
+hand at a capture time used to be fairly simple.  It had two modes, FIFO
+and not-FIFO, and that was it.
+
+This change allows full configuration of that algorithm.  In other 
+words, when the system captures a copy and sets out to evaluate what
+hold, if any, that copy might best fulfull, site staff of sufficient
+permission level are now empowered to choose exactly which comparisons
+the systems makes in what order.  This gives said staff much greater
+flexibililty than they have today over holds policy.
+
+For more information, see the included tech spec documents.
+
+Staff Client
+~~~~~~~~~~~~
+
+add "about:about" to developer menu in staff client
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+about:about gives access to various XULRunner diagnostic tools.
+Useful ones include:
+
+about:buildconfig::
+    Get information about how the staff client is built.
+about:config::
+    Tweak XULRunner settings.
+about:memory::
+    Get detailed information about the memory usage of the staff
+    client.
+
+Miscellaneous
+-------------
+
+Loading Sample Data
+~~~~~~~~~~~~~~~~~~~
+One common need for people evaluating Evergreen, as well as for developers,
+writers, and testers, is a set of sample data that can be easily loaded into
+the Evergreen database and provide a consistent set of results for testing
+and training purposes.
+
+This release features sets of sample data consisting of:
+
+* 100 bibliographic records retrievable via a "concerto" keyword search
+* 100 French bibliographic records
+* Associated call numbers, copies, parts, and conjoined items
+* Patron accounts, including some recently expired patrons
+* Circulation transactions, including some holds and some overdue items
+
+To load the sample data into a freshly installed Evergreen database, you can
+pass the following arguments to the `eg_db_config` script (either when you are
+creating the initial database schema, or as a separate call after creating the
+database schema):
+
+* `--load-all-sample`: Loads all sample data, including bibliographic records,
+   call numbers, copies, users, and transactions.
+* `--load-concerto-sample`: Loads a subset of sample data that includes just
+  100 bibliographic records, and associated call numbers and copies.
+
