@@ -103,3 +103,119 @@ INSERT INTO container.copy_bucket_type (code,label) VALUES ('staff_client', oils
 INSERT INTO container.call_number_bucket_type (code,label) VALUES ('misc', oils_i18n_gettext('misc', 'Miscellaneous', 'ccnbt', 'label'));
 INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('misc', oils_i18n_gettext('misc', 'Miscellaneous', 'cbrebt', 'label'));
 INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('staff_client', oils_i18n_gettext('staff_client', 'General Staff Client container', 'cbrebt', 'label'));
+
+-- 950..data.seed-values.sql
+INSERT INTO permission.perm_list ( id, code, description ) VALUES
+ ( -1, 'EVERYTHING', oils_i18n_gettext( -1, 
+    'EVERYTHING', 'ppl', 'description' )),
+ ( 1, 'OPAC_LOGIN', oils_i18n_gettext( 1, 
+    'Allow a user to log in to the OPAC', 'ppl', 'description' ));
+
+INSERT into config.org_unit_setting_type
+( name, grp, label, description, datatype, fm_class ) VALUES
+( 'acq.copy_creator_uses_receiver', 'acq',
+    oils_i18n_gettext('acq.copy_creator_uses_receiver',
+        'Set copy creator as receiver',
+        'coust', 'label'),
+    oils_i18n_gettext('acq.copy_creator_uses_receiver',
+        'When receiving a copy in acquisitions, set the copy "creator" to be the staff that received the copy',
+        'coust', 'description'),
+    'bool', null),
+,( 'vandelay.default_match_set', 'vandelay',
+    oils_i18n_gettext(
+        'vandelay.default_match_set',
+        'Default Record Match Set',
+        'coust',
+        'label'
+    ),
+    oils_i18n_gettext(
+        'vandelay.default_match_set',
+        'Default Record Match Set',
+        'coust',
+        'description'
+    ),
+    'string', null)
+;
+
+INSERT INTO config.coded_value_map (id, ctype, code, value, description) VALUES 
+    (487,'audience', ' ', oils_i18n_gettext('487', 'Unknown or unspecified', 'ccvm', 'value'),  oils_i18n_gettext('487', 'The target audience for the item not known or not specified.', 'ccvm', 'description')),
+    (488,'audience', 'a', oils_i18n_gettext('488', 'Preschool', 'ccvm', 'value'),               oils_i18n_gettext('488', 'The item is intended for children, approximate ages 0-5 years.', 'ccvm', 'description'))
+;
+
+INSERT INTO config.sms_carrier VALUES
+    (
+        1,
+        oils_i18n_gettext(
+            1,
+            'Local',
+            'csc',
+            'region'
+        ),
+        oils_i18n_gettext(
+            1,
+            'Test Carrier',
+            'csc',
+            'name'
+        ),
+        'opensrf+$number@localhost',
+        FALSE
+    )
+;
+
+-- specific contrived test cases
+
+-- first, with numeric ID
+oils_i18n_gettext(9, 'TEST009', 'TEST009A', 'TEST009B')
+ oils_i18n_gettext(1, 'TEST001', 'TEST001A', 'TEST001B')
+
+	oils_i18n_gettext(2, 'TEST002', 'TEST002A', 'TEST002B')
+
+oils_i18n_gettext(3, 'TEST003', 'TEST003A', 'TEST003B'),  oils_i18n_gettext(4, 'TEST004', 'TEST004A', 'TEST004B')
+
+oils_i18n_gettext(5,
+  'TEST005', 'TEST005A', 'TEST005B');
+
+   oils_i18n_gettext(6,
+'TEST006',
+	'TEST006A',
+'TEST006B'
+)
+
+oils_i18n_gettext(7, 'TEST' || '007', 'TEST007A', 'TEST007B')
+
+   oils_i18n_gettext(8, 'TEST' ||
+'008',
+
+	'TEST008A',	
+
+'TEST008B'  )
+
+oils_i18n_gettext(10, 'TEST''010', 'TEST010A', 'TEST010B')
+
+-- then the same tests with string ID
+oils_i18n_gettext('Str9', 'TEST109', 'TEST109A', 'TEST109B')
+ oils_i18n_gettext('Str1', 'TEST101', 'TEST101A', 'TEST101B')
+
+	oils_i18n_gettext('Str2', 'TEST102', 'TEST102A', 'TEST102B')
+
+oils_i18n_gettext('Str3', 'TEST103', 'TEST103A', 'TEST103B'),  oils_i18n_gettext('Str4', 'TEST104', 'TEST104A', 'TEST104B')
+
+oils_i18n_gettext('Str5',
+  'TEST105', 'TEST105A', 'TEST105B');
+
+   oils_i18n_gettext('Str6',
+'TEST106',
+	'TEST106A',
+'TEST106B'
+)
+
+oils_i18n_gettext('Str7', 'TEST' || '107', 'TEST107A', 'TEST107B')
+
+   oils_i18n_gettext('Str8', 'TEST' ||
+'108',
+
+	'TEST108A',	
+
+'TEST108B'  )
+
+oils_i18n_gettext('Str10', 'TEST''110', 'TEST110A', 'TEST110B')

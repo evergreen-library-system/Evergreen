@@ -11,6 +11,26 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
+# id::TEST110A.TEST110B__Str10
+#: sqlsource.sql:221
+msgid "TEST'110"
+msgstr ""
+
+# id::csc.name__1
+#: sqlsource.sql:154
+msgid "Test Carrier"
+msgstr ""
+
+# id::TEST010A.TEST010B__10
+#: sqlsource.sql:193
+msgid "TEST'010"
+msgstr ""
+
+# id::TEST108A.TEST108B__Str8
+#: sqlsource.sql:214
+msgid "TEST108"
+msgstr ""
+
 # id::cbs.source__2
 #: sqlsource.sql:5
 msgid "System Local"
@@ -19,6 +39,11 @@ msgstr ""
 # id::crcd.name__4
 #: sqlsource.sql:63
 msgid "3_days_1_renew"
+msgstr ""
+
+# id::TEST001A.TEST001B__1
+#: sqlsource.sql:169
+msgid "TEST001"
 msgstr ""
 
 # id::cit.name__3
@@ -36,6 +61,11 @@ msgstr ""
 msgid "oclc"
 msgstr ""
 
+# id::TEST101A.TEST101B__Str1
+#: sqlsource.sql:197
+msgid "TEST101"
+msgstr ""
+
 # id::ccpbt.label__staff_client id::cbrebt.label__staff_client
 #: sqlsource.sql:102 sqlsource.sql:105
 msgid "General Staff Client container"
@@ -46,6 +76,11 @@ msgstr ""
 msgid "Subunit"
 msgstr ""
 
+# id::csc.region__1
+#: sqlsource.sql:148
+msgid "Local"
+msgstr ""
+
 # id::cblvl.value__b
 #: sqlsource.sql:80
 msgid "Serial component part"
@@ -54,6 +89,11 @@ msgstr ""
 # id::crcd.name__2
 #: sqlsource.sql:59
 msgid "28_days_2_renew"
+msgstr ""
+
+# id::coust.label__acq.copy_creator_uses_receiver
+#: sqlsource.sql:117
+msgid "Set copy creator as receiver"
 msgstr ""
 
 # id::crcd.name__6
@@ -76,6 +116,11 @@ msgstr ""
 msgid "English (US)"
 msgstr ""
 
+# id::TEST007A.TEST007B__7
+#: sqlsource.sql:184
+msgid "TEST007"
+msgstr ""
+
 # id::ccpbt.label__misc id::ccnbt.label__misc id::cbrebt.label__misc
 #: sqlsource.sql:101 sqlsource.sql:103 sqlsource.sql:104
 msgid "Miscellaneous"
@@ -86,9 +131,50 @@ msgstr ""
 msgid "Collection"
 msgstr ""
 
+# id::ppl.description__1
+#: sqlsource.sql:109
+msgid "EVERYTHING"
+msgstr ""
+
+# id::ccvm.description__488
+#: sqlsource.sql:142
+msgid "The item is intended for children, approximate ages 0-5 years."
+msgstr ""
+
 # id::cblvl.value__i
 #: sqlsource.sql:83
 msgid "Integrating resource"
+msgstr ""
+
+# id::coust.label__vandelay.default_match_set
+# id::coust.description__vandelay.default_match_set
+#: sqlsource.sql:125 sqlsource.sql:131
+msgid "Default Record Match Set"
+msgstr ""
+
+# id::TEST103A.TEST103B__Str3
+#: sqlsource.sql:201
+msgid "TEST103"
+msgstr ""
+
+# id::TEST102A.TEST102B__Str2
+#: sqlsource.sql:199
+msgid "TEST102"
+msgstr ""
+
+# id::ccvm.value__487
+#: sqlsource.sql:141
+msgid "Unknown or unspecified"
+msgstr ""
+
+# id::TEST003A.TEST003B__3
+#: sqlsource.sql:173
+msgid "TEST003"
+msgstr ""
+
+# id::TEST002A.TEST002B__2
+#: sqlsource.sql:171
+msgid "TEST002"
 msgstr ""
 
 # id::vqbrad.description__4
@@ -96,14 +182,29 @@ msgstr ""
 msgid "Pagination"
 msgstr ""
 
+# id::TEST109A.TEST109B__Str9
+#: sqlsource.sql:196
+msgid "TEST109"
+msgstr ""
+
 # id::cnct.name__1
 #: sqlsource.sql:45
 msgid "Paperback Book"
 msgstr ""
 
+# id::TEST006A.TEST006B__6
+#: sqlsource.sql:178
+msgid "TEST006"
+msgstr ""
+
 # id::i18n_l.description__es-US
 #: sqlsource.sql:99
 msgid "American Spanish"
+msgstr ""
+
+# id::TEST004A.TEST004B__4
+#: sqlsource.sql:173
+msgid "TEST004"
 msgstr ""
 
 # id::i18n_l.name__en-CA
@@ -114,6 +215,31 @@ msgstr ""
 # id::i18n_l.name__es-US
 #: sqlsource.sql:98
 msgid "Spanish (US)"
+msgstr ""
+
+# id::TEST009A.TEST009B__9
+#: sqlsource.sql:168
+msgid "TEST009"
+msgstr ""
+
+# id::TEST008A.TEST008B__8
+#: sqlsource.sql:186
+msgid "TEST008"
+msgstr ""
+
+# id::TEST106A.TEST106B__Str6
+#: sqlsource.sql:206
+msgid "TEST106"
+msgstr ""
+
+# id::TEST107A.TEST107B__Str7
+#: sqlsource.sql:212
+msgid "TEST107"
+msgstr ""
+
+# id::TEST104A.TEST104B__Str4
+#: sqlsource.sql:201
+msgid "TEST104"
 msgstr ""
 
 # id::i18n_l.description__en-CA
@@ -136,9 +262,24 @@ msgstr ""
 msgid "Good"
 msgstr ""
 
+# id::TEST005A.TEST005B__5
+#: sqlsource.sql:175
+msgid "TEST005"
+msgstr ""
+
 # id::vqbrad.description__3
 #: sqlsource.sql:77
 msgid "Language of work"
+msgstr ""
+
+# id::ccvm.description__487
+#: sqlsource.sql:141
+msgid "The target audience for the item not known or not specified."
+msgstr ""
+
+# id::TEST105A.TEST105B__Str5
+#: sqlsource.sql:203
+msgid "TEST105"
 msgstr ""
 
 # id::acpl.name__1
@@ -186,9 +327,26 @@ msgstr ""
 msgid "SSN"
 msgstr ""
 
+# id::coust.description__acq.copy_creator_uses_receiver
+#: sqlsource.sql:120
+msgid ""
+"When receiving a copy in acquisitions, set the copy \"creator\" to be the "
+"staff that received the copy"
+msgstr ""
+
+# id::ccvm.value__488
+#: sqlsource.sql:142
+msgid "Preschool"
+msgstr ""
+
 # id::cblvl.value__s
 #: sqlsource.sql:85
 msgid "Serial"
+msgstr ""
+
+# id::ppl.description__1
+#: sqlsource.sql:111
+msgid "Allow a user to log in to the OPAC"
 msgstr ""
 
 # id::crcd.name__5

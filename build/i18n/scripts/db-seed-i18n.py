@@ -54,44 +54,50 @@ class SQL(basel10n.BaseL10N):
         self.pothead()
 
         num = 0
-        findi18n = re.compile(r'.*?oils_i18n_gettext\((.*?)\'\)')
-        intkey = re.compile(r'\s*(?P<id>\d+)\s*,\s*\'(?P<string>.+?)\',\s*\'(?P<class>.+?)\',\s*\'(?P<property>.+?)$')
-        textkey = re.compile(r'\s*\'(?P<id>.*?)\'\s*,\s*\'(?P<string>.+?)\',\s*\'(?P<class>.+?)\',\s*\'(?P<property>.+?)$')
+        findi18n = re.compile(r'oils_i18n_gettext\((.*?)\'\s*\)', re.UNICODE+re.MULTILINE+re.DOTALL)
+        intkey = re.compile(r'\s*(?P<id>\d+)\s*,\s*E?\'(?P<string>.+?)\',\s*\'(?P<class>.+?)\',\s*\'(?P<property>.+?)$', re.UNICODE+re.MULTILINE+re.DOTALL)
+        textkey = re.compile(r'\s*\'(?P<id>.*?)\'\s*,\s*E?\'(?P<string>.+?)\',\s*\'(?P<class>.+?)\',\s*\'(?P<property>.+?)$', re.UNICODE+re.MULTILINE+re.DOTALL)
         serts = dict()
 
         # Iterate through the source SQL grabbing table names and l10n strings
         sourcefile = codecs.open(source, encoding='utf-8')
-        for line in sourcefile:
-            try:
-                num = num + 1
-                entry = findi18n.search(line)
-                if entry is None:
-                    continue
-                for parms in entry.groups():
-                    # Try for an integer-based primary key parameter first
-                    fi18n = intkey.search(parms)
-                    if fi18n is None:
-                        # Otherwise, it must be a text-based primary key parameter
-                        fi18n = textkey.search(parms)
-                    fq_field = "%s.%s" % (fi18n.group('class'), fi18n.group('property'))
-                    # Unescape escaped SQL single-quotes for translators' sanity
-                    msgid = re.compile(r'\'\'').sub("'", fi18n.group('string'))
+        sourcelines = sourcefile.read()
+        try:
+            for match in findi18n.finditer(sourcelines):
+                parms = match.group(1)
+                num = sourcelines[:match.start()].count('\n') + 1  # ugh
 
-                    # Hmm, sometimes people use ":" in text identifiers and
-                    # polib doesn't seem to like that; urlencode the colon
-                    occurid = re.compile(r':').sub("%3A", fi18n.group('id'))
+                # Try for an integer-based primary key parameter first
+                fi18n = intkey.search(parms)
+                if fi18n is None:
+                    # Otherwise, it must be a text-based primary key parameter
+                    fi18n = textkey.search(parms)
+                if fi18n is None:
+                    raise Exception("Cannot parse the source. Empty strings in there?")
 
-                    if (msgid in serts):
-                        serts[msgid].occurrences.append((os.path.basename(source), num))
-                        serts[msgid].tcomment = ' '.join((serts[msgid].tcomment, 'id::%s__%s' % (fq_field, occurid)))
-                    else:
-                        poe = polib.POEntry()
-                        poe.tcomment = 'id::%s__%s' % (fq_field, occurid)
-                        poe.occurrences = [(os.path.basename(source), num)]
-                        poe.msgid = msgid
-                        serts[msgid] = poe
-            except Exception, exc:
-                print "Error in line %d of SQL source file: %s" % (num, exc) 
+                fq_field = "%s.%s" % (fi18n.group('class'), fi18n.group('property'))
+
+                # strip sql string concatenation
+                strx = re.sub(r'\'\s*\|\|\s*\'', '', fi18n.group('string'))
+
+                # Unescape escaped SQL single-quotes for translators' sanity
+                msgid = re.compile(r'\'\'').sub("'", strx)
+
+                # Hmm, sometimes people use ":" in text identifiers and
+                # polib doesn't seem to like that; urlencode the colon
+                occurid = re.compile(r':').sub("%3A", fi18n.group('id'))
+
+                if (msgid in serts):
+                    serts[msgid].occurrences.append((os.path.basename(source), num))
+                    serts[msgid].tcomment = ' '.join((serts[msgid].tcomment, 'id::%s__%s' % (fq_field, occurid)))
+                else:
+                    poe = polib.POEntry()
+                    poe.tcomment = 'id::%s__%s' % (fq_field, occurid)
+                    poe.occurrences = [(os.path.basename(source), num)]
+                    poe.msgid = msgid
+                    serts[msgid] = poe
+        except Exception, exc:
+            print "Error in oils_i18n_gettext line %d of SQL source file: %s" % (num, exc)
 
         for poe in serts.values():
             self.pot.append(poe)
