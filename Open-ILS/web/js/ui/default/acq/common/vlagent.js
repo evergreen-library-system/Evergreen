@@ -1,6 +1,7 @@
 dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('openils.PermaCrud');
 dojo.require('openils.XUL');
+dojo.require('dojox.form.CheckedMultiSelect');
 
 var xulStorage = openils.XUL.localStorage();
 var storekey = 'eg.acq.upload.';
@@ -43,7 +44,8 @@ function VLAgent(args) {
         {key : 'bib_source', cls : 'cbs'},
         {key : 'merge_profile', cls : 'vmp'},
         {key : 'fall_through_merge_profile', cls : 'vmp'},
-        {key : 'existing_queue', cls : 'vbq'}
+        {key : 'existing_queue', cls : 'vbq'},
+        {key : 'strip_field_groups', cls : 'vibtg'}
     ];
 
     this.loaded = false;
@@ -83,10 +85,59 @@ function VLAgent(args) {
 
     this.init2 = function() {
         var self = this;
+        // fetch the strip field groups, then continue init-ing
+
+        var owner = fieldmapper.aou.orgNodeTrail(
+            fieldmapper.aou.findOrgUnit(new openils.User().user.ws_ou()));
+
+        new openils.PermaCrud().search('vibtg',
+            {   always_apply : 'f',
+                owner: owner.map(function(org) { return org.id(); })
+            }, 
+            {   order_by : {vibtg : ['label']},
+                async: true,
+                oncomplete: function(r) {
+                    var trashGroups = openils.Util.readResponse(r);
+                    var sel = dijit.byId('acq_vl:strip_field_groups');
+
+                    var widg = self.widgets.filter(function(w) {
+                        return w.key == 'strip_field_groups'})[0];
+                    widg.dijit = sel;
+
+                    if (trashGroups.length == 0) {
+                        openils.Util.hide('vl-trash-groups-row');
+
+                    } else {
+
+                        dojo.forEach(trashGroups, function(grp) {
+                            var sn = fieldmapper.aou.findOrgUnit(
+                                grp.owner()).shortname();
+                            var opt = {
+                                label : grp.label() + '&nbsp;(' + sn + ')',
+                                value : grp.id()
+                            };
+                            sel.addOption(opt);
+                        });
+
+                        self.readCachedValue(sel, 'strip_field_groups');
+                    }
+
+                    self.init3();
+                }
+            }
+        );
+
+    },
+
+    this.init3 = function() {
+        var self = this;
 
         dojo.forEach(this.widgets,
             function(widg) {
                 var key = widg.key;
+
+                // strip-fields widget built above
+                if (key == 'strip_field_groups') return;
 
                 if (widg.cls) { // selectors
 

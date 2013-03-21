@@ -1,3 +1,6 @@
+<style type="text/css">
+    @import "[% ctx.media_prefix %]/js/dojo/dojox/form/resources/CheckedMultiSelect.css";
+</style>
 [% BLOCK vlagent_form %]
     <tr>
         <td>[% l('Upload to Queue') %]</td>
@@ -42,6 +45,15 @@
     <tr>
         <td>[% l('Insufficient Quality Fall-Through Profile') %]</td>
         <td><div id='acq_vl:fall_through_merge_profile'></div></td>
+    </tr>
+    <tr id='vl-trash-groups-row'>
+        <td>[% l('Remove MARC Field Groups') %]</td>
+        <td colspan='4'>
+            <select style='overflow-y:auto; height:6em; width:12em' multiple='true' 
+                id='acq_vl:strip_field_groups'
+                dojoType="dojox.form.CheckedMultiSelect">
+            </select>
+        </td>
     </tr>
     [% IF vl_show_copy_option %]
     <tr>
