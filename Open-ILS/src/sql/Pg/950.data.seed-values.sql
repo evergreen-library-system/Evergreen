@@ -10392,6 +10392,10 @@ INSERT INTO authority.control_set_authority_field (id, control_set, main_entry, 
     (71, 1, 11, '485', 'ivwxyz4', oils_i18n_gettext('71','See From Tracing -- Form Subdivision','acsaf','name')),
     (72, 1, 12, '448', 'aivwxyz4', oils_i18n_gettext('72','See From Tracing -- Chronological Term','acsaf','name'));
 
+UPDATE authority.control_set_authority_field
+    SET linking_subfield = '0' WHERE main_entry IS NOT NULL;
+
+
 INSERT INTO authority.browse_axis (code,name,description,sorter) VALUES
     ('title','Title','Title axis','titlesort'),
     ('author','Author','Author axis','titlesort'),

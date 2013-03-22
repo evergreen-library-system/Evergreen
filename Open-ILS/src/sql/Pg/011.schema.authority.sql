@@ -36,7 +36,8 @@ CREATE TABLE authority.control_set_authority_field (
     nfi         CHAR(1),          -- non-filing indicator
     sf_list     TEXT    NOT NULL,
     name        TEXT    NOT NULL, -- i18n
-    description TEXT              -- i18n
+    description TEXT,             -- i18n
+    linking_subfield CHAR(1)
 );
 
 CREATE TABLE authority.control_set_bib_field (
@@ -85,6 +86,13 @@ CREATE INDEX authority_record_deleted_idx ON authority.record_entry(deleted) WHE
 CREATE TRIGGER a_marcxml_is_well_formed BEFORE INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE biblio.check_marcxml_well_formed();
 CREATE TRIGGER b_maintain_901 BEFORE INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE evergreen.maintain_901();
 CREATE TRIGGER c_maintain_control_numbers BEFORE INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE maintain_control_numbers();
+
+CREATE TABLE authority.authority_linking (
+    id      BIGSERIAL PRIMARY KEY,
+    source  BIGINT REFERENCES authority.record_entry (id) NOT NULL,
+    target  BIGINT REFERENCES authority.record_entry (id) NOT NULL,
+    field   INT REFERENCES authority.control_set_authority_field (id) NOT NULL
+);
 
 CREATE TABLE authority.bib_linking (
     id          BIGSERIAL   PRIMARY KEY,
@@ -269,6 +277,11 @@ DECLARE
 BEGIN
 
     res.record := auth_id;
+
+    -- XXX this SELECT control_set... business below should actually only
+    -- be a fallback.  We should (SELECT control_set FROM authority.record_entry
+    -- WHERE id = auth_id) when we have an auth_id, and use that if we can get
+    -- it.
 
     SELECT  control_set INTO cset
       FROM  authority.control_set_authority_field
