@@ -513,7 +513,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                  "AUT" : {"start" : 8, "len" : 1, "def" : ' ' }
              }
          },
-         "Auth/Ref" : {
+         "Kind" : {
              "_8" : {
                  "AUT" : {"start" : 9, "len" : 1, "def" : ' ' }
              }

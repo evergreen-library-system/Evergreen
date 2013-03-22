@@ -201,36 +201,36 @@
                             <textbox id="Rules_tb" context="clipboard" class="plain" name="Rules" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Subj" control="Subj_tb" set="AUT" value="Subj" />
                             <textbox id="Subj_tb" context="clipboard" class="plain" name="Subj" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
-                            <label name="SerType" control="SerType_tb" set="AUT" value="SerType" />
-                            <textbox id="SerType_tb" context="clipboard" class="plain" name="SerType" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="Series" control="Series_tb" set="AUT" value="Series" />
+                            <textbox id="Series_tb" context="clipboard" class="plain" name="Series" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="SerNum" control="SerNum_tb" set="AUT" value="SerNum" />
                             <textbox id="SerNum_tb" context="clipboard" class="plain" name="SerNum" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
-                            <label name="HeadMain" control="HeadMain_tb" set="AUT" value="HeadMain" />
-                            <textbox id="HeadMain_tb" context="clipboard" class="plain" name="HeadMain" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="NameUse" control="NameUse_tb" set="AUT" value="NameUse" />
+                            <textbox id="NameUse_tb" context="clipboard" class="plain" name="NameUse" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                         </row>
                         <row>
                             <label name="SubjUse" control="SubjUse_tb" set="AUT" value="SubjUse" />
                             <textbox id="SubjUse_tb" context="clipboard" class="plain" name="SubjUse" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
-                            <label name="HeadSer" control="HeadSer_tb" set="AUT" value="HeadSer" />
-                            <textbox id="HeadSer_tb" context="clipboard" class="plain" name="HeadSer" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="SerUse" control="SerUse_tb" set="AUT" value="SerUse" />
+                            <textbox id="SerUse_tb" context="clipboard" class="plain" name="SerUse" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="TypeSubd" control="TypeSubd_tb" set="AUT" value="TypeSubd" />
                             <textbox id="TypeSubd_tb" context="clipboard" class="plain" name="TypeSubd" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
-                            <label name="TypeGov" control="TypeGov_tb" set="AUT" value="TypeGov" />
-                            <textbox id="TypeGov_tb" context="clipboard" class="plain" name="TypeGov" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
-                            <label name="RefEval" control="RefEval_tb" set="AUT" value="RefEval" />
-                            <textbox id="RefEval_tb" context="clipboard" class="plain" name="RefEval" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
-                            <label name="RecUpd" control="RecUpd_tb" set="AUT" value="RecUpd" />
-                            <textbox id="RecUpd_tb" context="clipboard" class="plain" name="RecUpd" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="GovAgn" control="GovAgn_tb" set="AUT" value="GovAgn" />
+                            <textbox id="GovAgn_tb" context="clipboard" class="plain" name="GovAgn" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="RefStatus" control="RefStatus_tb" set="AUT" value="RefStatus" />
+                            <textbox id="RefStatus_tb" context="clipboard" class="plain" name="RefStatus" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="UpdStatus" control="UpdStatus_tb" set="AUT" value="UpdStatus" />
+                            <textbox id="UpdStatus_tb" context="clipboard" class="plain" name="UpdStatus" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                         </row>
                         <row>
-                            <label name="NameDiff" control="NameDiff_tb" set="AUT" value="NameDiff" />
-                            <textbox id="NameDiff_tb" context="clipboard" class="plain" name="NameDiff" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
-                            <label name="Level" control="Level_tb" set="AUT" value="Level" />
-                            <textbox id="Level_tb" context="clipboard" class="plain" name="Level" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="Name" control="Name_tb" set="AUT" value="Name" />
+                            <textbox id="Name_tb" context="clipboard" class="plain" name="Name" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="Status" control="Status_tb" set="AUT" value="Status" />
+                            <textbox id="Status_tb" context="clipboard" class="plain" name="Status" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="ModRec" control="ModRec_tb" set="AUT" value="ModRec" />
                             <textbox id="ModRec_tb" context="clipboard" class="plain" name="ModRec" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
-                            <label name="CatSrc" control="CatSrc_tb" set="AUT" value="CatSrc" />
-                            <textbox id="CatSrc_tb" context="clipboard" class="plain" name="CatSrc" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="Source" control="Source_tb" set="AUT" value="Source" />
+                            <textbox id="Source_tb" context="clipboard" class="plain" name="Source" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                         </row>
 
                     </rows>
