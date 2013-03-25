@@ -90,12 +90,10 @@
                     <th field="end_date" formatter="format_date">
                         [% l('End Date') %]
                     </th>
-                    [%- IF CGI.param('context') != 'scv' -%]
                     <th field="record_entry" width="20em"
                         formatter="format_bib">
                         [% l('Bibliographic Record') %]
                     </th>
-                    [%- END -%]
                     <th field="expected_date_offset">[% l('Expected Date Offset') %]</th>
                     <th field="num_dist">[% l('Number of Distributions') %]</th>
                 </tr>
@@ -123,8 +121,11 @@
                         "disabled": true, "value": sub_id
                     });
 
+                [%- IF CGI.param('context') == 'scv' -%]
                 // attach the holding_lib selector to the record_entry selector
                 dist_grid.overrideWidgetArgs.holding_lib = {'dijitArgs' : {'onChange' : function(value) { populate_sre_selector(dist_grid, value); } }};
+
+                [%- END -%]
                 var _display_grouping_store = new dojo.data.ItemFileReadStore({
                     "data": {
                         "identifier": "display_grouping",
