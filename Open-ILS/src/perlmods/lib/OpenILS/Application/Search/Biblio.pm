@@ -36,7 +36,8 @@ my $pfx = "open-ils.search_";
 
 my $cache;
 my $cache_timeout;
-my $max_search_results;
+my $superpage_size;
+my $max_superpages;
 
 sub initialize {
 	$cache = OpenSRF::Utils::Cache->new('global');
@@ -44,17 +45,14 @@ sub initialize {
 	$cache_timeout = $sclient->config_value(
 			"apps", "open-ils.search", "app_settings", "cache_timeout" ) || 300;
 
-	my $superpage_size = $sclient->config_value(
+	$superpage_size = $sclient->config_value(
 			"apps", "open-ils.search", "app_settings", "superpage_size" ) || 500;
 
-	my $max_superpages = $sclient->config_value(
+	$max_superpages = $sclient->config_value(
 			"apps", "open-ils.search", "app_settings", "max_superpages" ) || 20;
 
-    $max_search_results = $sclient->config_value(
-            "apps", "open-ils.search", "app_settings", "max_search_results" ) || ($superpage_size * $max_superpages);
-
 	$logger->info("Search cache timeout is $cache_timeout, ".
-        " max_search_results is $max_search_results");
+        " superpage_size is $superpage_size, max_superpages is $max_superpages");
 }
 
 
@@ -1271,8 +1269,24 @@ sub staged_search {
     $user_offset = ($user_offset >= 0) ? $user_offset :  0;
     $user_limit  = ($user_limit  >= 0) ? $user_limit  : 10;
 
-    # restrict DB query to our max results
-    $search_hash->{core_limit}  = $max_search_results;
+
+    # we're grabbing results on a per-superpage basis, which means the 
+    # limit and offset should coincide with superpage boundaries
+    $search_hash->{offset} = 0;
+    $search_hash->{limit} = $superpage_size;
+
+    # force a well-known check_limit
+    $search_hash->{check_limit} = $superpage_size; 
+    # restrict total tested to superpage size * number of superpages
+    $search_hash->{core_limit}  = $superpage_size * $max_superpages;
+
+    # Set the configured estimation strategy, defaults to 'inclusion'.
+	my $estimation_strategy = OpenSRF::Utils::SettingsClient
+        ->new
+        ->config_value(
+            apps => 'open-ils.search', app_settings => 'estimation_strategy'
+        ) || 'inclusion';
+	$search_hash->{estimation_strategy} = $estimation_strategy;
 
     # pull any existing results from the cache
     my $key = search_cache_key($method, $search_hash);
@@ -1282,67 +1296,126 @@ sub staged_search {
     # keep retrieving results until we find enough to 
     # fulfill the user-specified limit and offset
     my $all_results = [];
-
-    my $results;
-    my $summary;
+    my $page; # current superpage
+    my $est_hit_count = 0;
+    my $current_page_summary = {};
+    my $global_summary = {checked => 0, visible => 0, excluded => 0, deleted => 0, total => 0};
+    my $is_real_hit_count = 0;
     my $new_ids = [];
 
-    if($cache_data->{summary}) {
-        # this window of results is already cached
-        $logger->debug("staged search: found cached results");
-        $summary = $cache_data->{summary};
-        $results = $cache_data->{results};
+    for($page = 0; $page < $max_superpages; $page++) {
 
-    } else {
-        # retrieve the window of results from the database
-        $logger->debug("staged search: fetching results from the database");
-        my $start = time;
-        $results = $U->storagereq($method, %$search_hash);
-        $search_duration = time - $start;
-        $summary = shift(@$results) if $results;
+        my $data = $cache_data->{$page};
+        my $results;
+        my $summary;
 
-        unless($summary) {
-            $logger->info("search timed out: duration=$search_duration: params=".
-                OpenSRF::Utils::JSON->perl2JSON($search_hash));
-            return {count => 0};
-        }
+        $logger->debug("staged search: analyzing superpage $page");
 
-        $logger->info("staged search: DB call took $search_duration seconds and returned ".scalar(@$results)." rows, including summary");
+        if($data) {
+            # this window of results is already cached
+            $logger->debug("staged search: found cached results");
+            $summary = $data->{summary};
+            $results = $data->{results};
 
-        my $hc = $summary->{visible};
-        if($hc == 0) {
-            $logger->info("search returned 0 results: duration=$search_duration: params=".
-                OpenSRF::Utils::JSON->perl2JSON($search_hash));
-        }
-
-        # Create backwards-compatible result structures
-        if($IAmMetabib) {
-            $results = [map {[$_->{id}, $_->{rel}, $_->{record}]} @$results];
         } else {
-            $results = [map {[$_->{id}]} @$results];
+            # retrieve the window of results from the database
+            $logger->debug("staged search: fetching results from the database");
+            $search_hash->{skip_check} = $page * $superpage_size;
+            my $start = time;
+            $results = $U->storagereq($method, %$search_hash);
+            $search_duration = time - $start;
+            $summary = shift(@$results) if $results;
+
+            unless($summary) {
+                $logger->info("search timed out: duration=$search_duration: params=".
+                    OpenSRF::Utils::JSON->perl2JSON($search_hash));
+                return {count => 0};
+            }
+
+            $logger->info("staged search: DB call took $search_duration seconds and returned ".scalar(@$results)." rows, including summary");
+
+            my $hc = $summary->{estimated_hit_count} || $summary->{visible};
+            if($hc == 0) {
+                $logger->info("search returned 0 results: duration=$search_duration: params=".
+                    OpenSRF::Utils::JSON->perl2JSON($search_hash));
+            }
+
+            # Create backwards-compatible result structures
+            if($IAmMetabib) {
+                $results = [map {[$_->{id}, $_->{rel}, $_->{record}]} @$results];
+            } else {
+                $results = [map {[$_->{id}]} @$results];
+            }
+
+            push @$new_ids, grep {defined($_)} map {$_->[0]} @$results;
+            $results = [grep {defined $_->[0]} @$results];
+            cache_staged_search_page($key, $page, $summary, $results) if $docache;
         }
 
-        push @$new_ids, grep {defined($_)} map {$_->[0]} @$results;
-        $results = [grep {defined $_->[0]} @$results];
-        cache_staged_search($key, $summary, $results) if $docache;
+        tag_circulated_records($search_hash->{authtoken}, $results, $IAmMetabib) 
+            if $search_hash->{tag_circulated_records} and $search_hash->{authtoken};
+
+        $current_page_summary = $summary;
+
+        # add the new set of results to the set under construction
+        push(@$all_results, @$results);
+
+        my $current_count = scalar(@$all_results);
+
+        $est_hit_count = $summary->{estimated_hit_count} || $summary->{visible}
+            if $page == 0;
+
+        $logger->debug("staged search: located $current_count, with estimated hits=".
+            $summary->{estimated_hit_count}." : visible=".$summary->{visible}.", checked=".$summary->{checked});
+
+		if (defined($summary->{estimated_hit_count})) {
+            foreach (qw/ checked visible excluded deleted /) {
+                $global_summary->{$_} += $summary->{$_};
+            }
+			$global_summary->{total} = $summary->{total};
+		}
+
+        # we've found all the possible hits
+        last if $current_count == $summary->{visible}
+            and not defined $summary->{estimated_hit_count};
+
+        # we've found enough results to satisfy the requested limit/offset
+        last if $current_count >= ($user_limit + $user_offset);
+
+        # we've scanned all possible hits
+        if($summary->{checked} < $superpage_size) {
+            $est_hit_count = scalar(@$all_results);
+            # we have all possible results in hand, so we know the final hit count
+            $is_real_hit_count = 1;
+            last;
+        }
     }
-
-    tag_circulated_records($search_hash->{authtoken}, $results, $IAmMetabib) 
-        if $search_hash->{tag_circulated_records} and $search_hash->{authtoken};
-
-    # add the new set of results to the set under construction
-    push(@$all_results, @$results);
-
-    my $current_count = scalar(@$all_results);
-
-    $logger->debug("staged search: located $current_count, visible=".$summary->{visible});
 
     my @results = grep {defined $_} @$all_results[$user_offset..($user_offset + $user_limit - 1)];
 
+	# refine the estimate if we have more than one superpage
+	if ($page > 0 and not $is_real_hit_count) {
+		if ($global_summary->{checked} >= $global_summary->{total}) {
+			$est_hit_count = $global_summary->{visible};
+		} else {
+			my $updated_hit_count = $U->storagereq(
+				'open-ils.storage.fts_paging_estimate',
+				$global_summary->{checked},
+				$global_summary->{visible},
+				$global_summary->{excluded},
+				$global_summary->{deleted},
+				$global_summary->{total}
+			);
+			$est_hit_count = $updated_hit_count->{$estimation_strategy};
+		}
+	}
+
     $conn->respond_complete(
         {
-            count             => $summary->{visible},
+            count             => $est_hit_count,
             core_limit        => $search_hash->{core_limit},
+            superpage_size    => $search_hash->{check_limit},
+            superpage_summary => $current_page_summary,
             facet_key         => $facet_key,
             ids               => \@results
         }
@@ -1509,15 +1582,18 @@ sub cache_facets {
     $cache->put_cache($key, $data, $cache_timeout);
 }
 
-sub cache_staged_search {
+sub cache_staged_search_page {
     # puts this set of results into the cache
-    my($key, $summary, $results) = @_;
-    my $data =  {
+    my($key, $page, $summary, $results) = @_;
+    my $data = $cache->get_cache($key);
+    $data ||= {};
+    $data->{$page} = {
         summary => $summary,
         results => $results
     };
 
-    $logger->info("staged search: cached with key=$key, visible=".$summary->{visible});
+    $logger->info("staged search: cached with key=$key, superpage=$page, estimated=".
+        $summary->{estimated_hit_count}.", visible=".$summary->{visible});
 
     $cache->put_cache($key, $data, $cache_timeout);
 }
