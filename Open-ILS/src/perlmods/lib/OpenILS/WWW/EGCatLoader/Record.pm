@@ -61,6 +61,7 @@ sub load_record {
     # run copy retrieval in parallel to bib retrieval
     # XXX unapi
     my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
+    $cstore->session_locale($OpenILS::Utils::CStoreEditor::default_locale);
     my $copy_rec = $cstore->request(
         'open-ils.cstore.json_query.atomic', 
         $self->mk_copy_query($rec_id, $org, $copy_depth, $copy_limit, $copy_offset, $pref_ou)
