@@ -127,7 +127,7 @@ CREATE TABLE asset.opac_visible_copies (
 );
 COMMENT ON TABLE asset.opac_visible_copies IS $$
 Materialized view of copies that are visible in the OPAC, used by
-staged search to speed up OPAC visibility checks on large
+search.query_parser_fts() to speed up OPAC visibility checks on large
 databases.  Contents are maintained by a set of triggers.
 $$;
 CREATE INDEX opac_visible_copies_idx1 on asset.opac_visible_copies (record, circ_lib);
