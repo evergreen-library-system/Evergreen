@@ -87,7 +87,8 @@ DEBS =  \
 	libuniversal-require-perl\
 	libnet-ip-perl\
 	liblocale-maketext-lexicon-perl\
-	libunix-syslog-perl
+	libunix-syslog-perl\
+	libbz2-dev
 
 # Debian Lenny and Ubuntu Intrepid bundle recent versions of yaz
 EXTRA_DEBS = \
@@ -159,7 +160,8 @@ FEDORA_RPMS = \
 	readline-devel \
 	tcp_wrappers-devel \
 	wget \
-	yaz
+	yaz \
+	libbz2-devel
 
 # Note: B:O:AuthorizeNet 3.21 fails with https://rt.cpan.org/Public/Bug/Display.html?id=55172
 # Should be fixed in 3.22

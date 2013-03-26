@@ -14,12 +14,15 @@ Evergreen during the installation or upgrade process.
 The make_updates.sh script that is run when you tell Evergreen to make
 the staff client updates has been modified to use the new tools.
 
-These tools introduce no new dependencies on building or running
-Evergreen.
+These tools introduce a dependency on libbz2.  This is often only
+available when installing the libbz2-dev or libbz2-devel packages.
+Thus this branch introduces a new depency on the development packages
+for libbz2 in Evergreen.
 
 Nothing in the user facing behavior of building updates changes with
 these tools.  They are drop-in replacements for the previous tools and
-you don't even need to know that they are there.
+other than the new dependency on libbz2, you don't even need to know
+that they are there.
 
 These tools were added to Evergreen to be an aid in portability to
 operating systems other than Linux.  They also remove a dependency on
