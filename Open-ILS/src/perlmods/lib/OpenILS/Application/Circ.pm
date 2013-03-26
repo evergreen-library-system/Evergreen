@@ -80,16 +80,6 @@ sub fetch_circ_mods {
 }
 
 __PACKAGE__->register_method(
-	method => 'fetch_bill_types',
-	api_name => 'open-ils.circ.billing_type.retrieve.all');
-sub fetch_bill_types {
-	my $conf = OpenSRF::Utils::SettingsClient->new;
-	return $conf->config_value(
-		'apps', 'open-ils.circ', 'app_settings', 'billing_types', 'type' );
-}
-
-
-__PACKAGE__->register_method(
     method => 'ranged_billing_types',
     api_name => 'open-ils.circ.billing_type.ranged.retrieve.all');
 

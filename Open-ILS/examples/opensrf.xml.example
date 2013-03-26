@@ -816,64 +816,6 @@ vim:et:ts=4:sw=4:
                         <circ_permit_hold>circ/circ_permit_hold.js</circ_permit_hold>
                     </scripts>               
 
-                    <circ_modifiers>
-                        <mod>art</mod>
-                        <mod>atlas</mod>
-                        <mod>audiobook</mod>
-                        <mod>av</mod>
-                        <mod>new-av</mod>
-                        <mod>bestseller</mod>
-                        <mod>bestsellernh</mod>
-                        <mod>book</mod>
-                        <mod>cd</mod>
-                        <mod>dvd</mod>
-                        <mod>dvd-long</mod>
-                        <mod>e-book</mod>
-                        <mod>equipment</mod>
-                        <mod>filmstrip</mod>
-                        <mod>kit</mod>
-                        <mod>magazine</mod>
-                        <mod>map</mod>
-                        <mod>microform</mod>
-                        <mod>music</mod>
-                        <mod>record</mod>
-                        <mod>software</mod>
-                        <mod>softwrlong</mod>
-                        <mod>equip-long</mod>
-                        <mod>talking book</mod>
-                        <mod>toy</mod>
-                        <mod>video</mod>
-                        <mod>video-long</mod>
-                    </circ_modifiers>
-
-                    <billing_types>
-                        <type>Miscellaneous</type>
-                        <type>Overdue materials</type>
-                        <type>Fee for placing a hold</type>
-                        <type>Fee for checking out a book</type>
-                        <type>Fee for library card</type>
-                        <type>Miscellaneous charges</type>
-                        <type>Lost materials</type>
-                        <type>Damaged material</type>
-                        <type>Overdue Reserves charge</type>
-                        <type>Recall overdue</type>
-                        <type>Fee for processing lost library materials</type>
-                        <type>Fee for sending patron bills to collection agency</type>
-                        <type>Fee for interlibrary loan</type>
-                        <type>Fee for copies</type>
-                        <type>Money advanced to pay for telephone use</type>
-                        <type>Deposit fee</type>
-                        <type>Fee for disk</type>
-                        <type>Fee for faxing</type>
-                        <type>Fee for laminating</type>
-                        <type>Fee for room cleaning</type>
-                        <type>Deposit returned; fee refund</type>
-                        <type>Sale items</type>
-                        <type>Fee for lost card</type>
-                        <type>Long overdue items</type>
-                        <type>Lost/Replacement Cassette</type>
-                        <type>Returned Check</type>
-                    </billing_types>
                 </app_settings>
             </open-ils.circ>
 
