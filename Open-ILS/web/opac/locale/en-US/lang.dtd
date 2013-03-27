@@ -2640,6 +2640,7 @@
 <!ENTITY staff.hold_list.cancel_hold_dialog.cancel_btn.accesskey "N">
 <!ENTITY staff.hold_list.cancel_hold_dialog.apply_btn.label "Yes">
 <!ENTITY staff.hold_list.cancel_hold_dialog.apply_btn.accesskey "Y">
+<!ENTITY staff.hold_list.cancel_hold_dialog.confirmation "Are you sure you want to cancel the hold(s)?">
 <!ENTITY staff.cat.manage_multi_bib_items.caption "Manage Conjoined Items">
 <!ENTITY staff.cat.manage_multi_bib_items.actions.menu.label "Actions for Selected Items">
 <!ENTITY staff.cat.manage_multi_bib_items.actions.menu.accesskey "f">
