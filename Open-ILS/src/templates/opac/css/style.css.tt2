@@ -1198,7 +1198,7 @@ div.opac-multiline-button > a,
 }
 
 .opac-multiline-button > a {
-    display:block;
+    display: inline-block;
 }
 
 .opac-multiline-button > a, a.opac-button, input.opac-button {
