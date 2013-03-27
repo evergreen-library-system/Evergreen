@@ -2636,10 +2636,10 @@
 <!ENTITY staff.hold_list.cancel_hold_dialog.title "Cancel Hold">
 <!ENTITY staff.hold_list.cancel_hold_dialog.header "Cancel Hold">
 <!ENTITY staff.hold_list.cancel_hold_dialog.description "Reason and Notes">
-<!ENTITY staff.hold_list.cancel_hold_dialog.cancel_btn.label "Cancel Action">
-<!ENTITY staff.hold_list.cancel_hold_dialog.cancel_btn.accesskey "C">
-<!ENTITY staff.hold_list.cancel_hold_dialog.apply_btn.label "Apply Cancellation">
-<!ENTITY staff.hold_list.cancel_hold_dialog.apply_btn.accesskey "A">
+<!ENTITY staff.hold_list.cancel_hold_dialog.cancel_btn.label "No">
+<!ENTITY staff.hold_list.cancel_hold_dialog.cancel_btn.accesskey "N">
+<!ENTITY staff.hold_list.cancel_hold_dialog.apply_btn.label "Yes">
+<!ENTITY staff.hold_list.cancel_hold_dialog.apply_btn.accesskey "Y">
 <!ENTITY staff.cat.manage_multi_bib_items.caption "Manage Conjoined Items">
 <!ENTITY staff.cat.manage_multi_bib_items.actions.menu.label "Actions for Selected Items">
 <!ENTITY staff.cat.manage_multi_bib_items.actions.menu.accesskey "f">
