@@ -61,10 +61,6 @@ sub _prepare_biblio_search {
 
     $query .= ' ' . $ctx->{global_search_filter} if $ctx->{global_search_filter};
 
-    foreach ($cgi->param('modifier')) {
-        # The unless bit is to avoid stacking modifiers.
-        $query = ('#' . $_ . ' ' . $query) unless $query =~ qr/\#\Q$_/;
-    }
 
     # filters
     foreach (grep /^fi:/, $cgi->param) {
@@ -166,6 +162,11 @@ sub _prepare_biblio_search {
 
         $query .= $thing;
         push @naive_query_re, $thing;
+    }
+
+    foreach ($cgi->param('modifier')) {
+        # The unless bit is to avoid stacking modifiers.
+        $query .= " #$_" unless $query =~ qr/\#\Q$_/;
     }
 
     # This gives templates a way to take site() and depth() back out of
