@@ -1578,8 +1578,13 @@ sub new_hold_copy_targeter {
 			}
 
 			# reset prox list after trimming good copies
-			$prox_list = create_prox_list( $self, $pu_lib, \@good_copies, $hold );
+			$prox_list = create_prox_list(
+				$self, $pu_lib,
+				[ grep { ''.$_->circ_lib eq $pu_lib && ( $_->status == 0 || $_->status == 7 ) } @good_copies ],
+				$hold
+			);
 
+			$all_copies = [ grep { ''.$_->circ_lib ne $pu_lib && ( $_->status == 0 || $_->status == 7 ) } @good_copies ];
 
 			my $min_prox = [ sort keys %$prox_list ]->[0];
 			my $best;
@@ -1589,11 +1594,6 @@ sub new_hold_copy_targeter {
 				$best = choose_nearest_copy($hold, { $min_prox => delete($$prox_list{$min_prox}) });
 			}
 
-			$all_copies = [];
-			for my $prox (keys %$prox_list) {
-				push @$all_copies, @{$$prox_list{$prox}};
-			}
-	
 			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
 			if (!$best) {
