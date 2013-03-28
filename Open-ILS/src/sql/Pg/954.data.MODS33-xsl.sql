@@ -17,8 +17,8 @@ UPDATE config.xml_transform SET xslt=$$<xsl:stylesheet xmlns="http://www.loc.gov
 
 	<xsl:variable name="hex">0123456789ABCDEF</xsl:variable>
 
+    <!-- Evergreen specific: revert Revision 1.23, so we can have those authority xlink attributes back. -->
 
-	
 	<!--MARC21slim2MODS3-3.xsl
 Revision 1.27 - Mapped 648 to <subject> 2009/03/13 tmee
 Revision 1.26 - Added subfield $s mapping for 130/240/730  2008/10/16 tmee
@@ -213,9 +213,7 @@ Revision 1.2 - Added Log Comment  2003/03/24 19:37:42  ckeith
 			select="marc:datafield[@tag='130']|marc:datafield[@tag='240']|marc:datafield[@tag='730'][@ind2!='2']">
 			<titleInfo type="uniform">
 				<title>
-					<!-- deleted uri for subfield 0
 						<xsl:call-template name="uri"/>
-					-->
 
 					<xsl:variable name="str">
 						<xsl:for-each select="marc:subfield">
@@ -252,9 +250,7 @@ Revision 1.2 - Added Log Comment  2003/03/24 19:37:42  ckeith
 		<xsl:for-each select="marc:datafield[@tag='100']">
 			<name type="personal">
 
-				<!-- deleted uri for subfield 0
 				<xsl:call-template name="uri"/>
-				-->
 
 				<xsl:call-template name="nameABCDQ"/>
 				<xsl:call-template name="affiliation"/>
@@ -267,9 +263,7 @@ Revision 1.2 - Added Log Comment  2003/03/24 19:37:42  ckeith
 		<xsl:for-each select="marc:datafield[@tag='110']">
 			<name type="corporate">
 
-				<!-- deleted uri for subfield 0
 					<xsl:call-template name="uri"/>
-				-->
 
 				<xsl:call-template name="nameABCDN"/>
 				<role>
@@ -281,9 +275,7 @@ Revision 1.2 - Added Log Comment  2003/03/24 19:37:42  ckeith
 		<xsl:for-each select="marc:datafield[@tag='111']">
 			<name type="conference">
 
-				<!-- deleted uri for subfield 0
 					<xsl:call-template name="uri"/>
-				-->
 
 				<xsl:call-template name="nameACDEQ"/>
 				<role>
@@ -295,9 +287,7 @@ Revision 1.2 - Added Log Comment  2003/03/24 19:37:42  ckeith
 		<xsl:for-each select="marc:datafield[@tag='700'][not(marc:subfield[@code='t'])]">
 			<name type="personal">
 
-				<!-- deleted uri for subfield 0
 					<xsl:call-template name="uri"/>
-				-->
 
 				<xsl:call-template name="nameABCDQ"/>
 				<xsl:call-template name="affiliation"/>
@@ -307,9 +297,7 @@ Revision 1.2 - Added Log Comment  2003/03/24 19:37:42  ckeith
 		<xsl:for-each select="marc:datafield[@tag='710'][not(marc:subfield[@code='t'])]">
 			<name type="corporate">
 
-				<!-- deleted uri for subfield 0
 					<xsl:call-template name="uri"/>
-				-->
 
 				<xsl:call-template name="nameABCDN"/>
 				<xsl:call-template name="role"/>
@@ -318,9 +306,7 @@ Revision 1.2 - Added Log Comment  2003/03/24 19:37:42  ckeith
 		<xsl:for-each select="marc:datafield[@tag='711'][not(marc:subfield[@code='t'])]">
 			<name type="conference">
 
-				<!-- deleted uri for subfield 0
 					<xsl:call-template name="uri"/>
-				-->
 
 				<xsl:call-template name="nameACDEQ"/>
 				<xsl:call-template name="role"/>
@@ -2441,10 +2427,24 @@ Revision 1.2 - Added Log Comment  2003/03/24 19:37:42  ckeith
 		</xsl:for-each>
 	</xsl:template>
 	<xsl:template name="uri">
-		<xsl:for-each select="marc:subfield[@code='u']|marc:subfield[@code='0']">
+		<xsl:for-each select="marc:subfield[@code='u']">
 			<xsl:attribute name="xlink:href">
 				<xsl:value-of select="."/>
 			</xsl:attribute>
+		</xsl:for-each>
+		<xsl:for-each select="marc:subfield[@code='0']">
+			<xsl:choose>
+				<xsl:when test="contains(text(), ')')">
+					<xsl:attribute name="xlink:href">
+						<xsl:value-of select="substring-after(text(), ')')"></xsl:value-of>
+					</xsl:attribute>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:attribute name="xlink:href">
+						<xsl:value-of select="."></xsl:value-of>
+					</xsl:attribute>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:for-each>
 	</xsl:template>
 	<xsl:template name="role">

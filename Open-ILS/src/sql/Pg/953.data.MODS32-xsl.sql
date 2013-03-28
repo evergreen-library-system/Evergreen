@@ -228,6 +228,7 @@ Added Log Comment
 		<xsl:for-each select="marc:datafield[@tag='130']|marc:datafield[@tag='240']|marc:datafield[@tag='730'][@ind2!='2']">
 			<titleInfo type="uniform">
 				<title>
+					<xsl:call-template name="uri" />
 					<xsl:variable name="str">
 						<xsl:for-each select="marc:subfield">
 							<xsl:if test="(contains('adfklmor',@code) and (not(../marc:subfield[@code='n' or @code='p']) or (following-sibling::marc:subfield[@code='n' or @code='p'])))">
@@ -261,6 +262,7 @@ Added Log Comment
 		</xsl:for-each>
 		<xsl:for-each select="marc:datafield[@tag='100']">
 			<name type="personal">
+				<xsl:call-template name="uri" />
 				<xsl:call-template name="nameABCDQ"/>
 				<xsl:call-template name="affiliation"/>
 				<role>
@@ -271,6 +273,7 @@ Added Log Comment
 		</xsl:for-each>
 		<xsl:for-each select="marc:datafield[@tag='110']">
 			<name type="corporate">
+				<xsl:call-template name="uri" />
 				<xsl:call-template name="nameABCDN"/>
 				<role>
 					<roleTerm authority="marcrelator" type="text">creator</roleTerm>
@@ -280,6 +283,7 @@ Added Log Comment
 		</xsl:for-each>
 		<xsl:for-each select="marc:datafield[@tag='111']">
 			<name type="conference">
+				<xsl:call-template name="uri" />
 				<xsl:call-template name="nameACDEQ"/>
 				<role>
 					<roleTerm authority="marcrelator" type="text">creator</roleTerm>
@@ -289,6 +293,7 @@ Added Log Comment
 		</xsl:for-each>
 		<xsl:for-each select="marc:datafield[@tag='700'][not(marc:subfield[@code='t'])]">
 			<name type="personal">
+				<xsl:call-template name="uri" />
 				<xsl:call-template name="nameABCDQ"/>
 				<xsl:call-template name="affiliation"/>
 				<xsl:call-template name="role"/>
@@ -296,12 +301,14 @@ Added Log Comment
 		</xsl:for-each>
 		<xsl:for-each select="marc:datafield[@tag='710'][not(marc:subfield[@code='t'])]">
 			<name type="corporate">
+				<xsl:call-template name="uri" />
 				<xsl:call-template name="nameABCDN"/>
 				<xsl:call-template name="role"/>
 			</name>
 		</xsl:for-each>
 		<xsl:for-each select="marc:datafield[@tag='711'][not(marc:subfield[@code='t'])]">
 			<name type="conference">
+				<xsl:call-template name="uri" />
 				<xsl:call-template name="nameACDEQ"/>
 				<xsl:call-template name="role"/>
 			</name>
@@ -2195,6 +2202,20 @@ Added Log Comment
 				<xsl:value-of select="."></xsl:value-of>
 			</xsl:attribute>
 		</xsl:for-each>
+		<xsl:for-each select="marc:subfield[@code='0']">
+			<xsl:choose>
+				<xsl:when test="contains(text(), ')')">
+					<xsl:attribute name="xlink:href">
+						<xsl:value-of select="substring-after(text(), ')')"></xsl:value-of>
+					</xsl:attribute>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:attribute name="xlink:href">
+						<xsl:value-of select="."></xsl:value-of>
+					</xsl:attribute>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:for-each>
 	</xsl:template>
 	<xsl:template name="role">
 		<xsl:for-each select="marc:subfield[@code='e']">
@@ -2733,6 +2754,7 @@ Added Log Comment
 					<xsl:value-of select="marc:subfield[@code=2]"></xsl:value-of>
 				</xsl:attribute>
 			</xsl:if>
+			<xsl:call-template name="uri" />
 			<occupation>
 				<xsl:call-template name="chopPunctuation">
 					<xsl:with-param name="chopString">

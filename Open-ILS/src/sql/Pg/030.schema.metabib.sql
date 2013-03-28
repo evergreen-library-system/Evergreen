@@ -390,7 +390,8 @@ CREATE TYPE metabib.field_entry_template AS (
         search_field    BOOL,
         browse_field   BOOL,
         source          BIGINT,
-        value           TEXT
+        value           TEXT,
+        authority       BIGINT
 );
 
 
@@ -408,6 +409,8 @@ DECLARE
     raw_text    TEXT;
     curr_text   TEXT;
     joiner      TEXT := default_joiner; -- XXX will index defs supply a joiner?
+    authority_text TEXT;
+    authority_link BIGINT;
     output_row  metabib.field_entry_template%ROWTYPE;
 BEGIN
 
@@ -480,6 +483,25 @@ BEGIN
                 output_row.field = idx.id;
                 output_row.source = rid;
                 output_row.value = BTRIM(REGEXP_REPLACE(browse_text, E'\\s+', ' ', 'g'));
+
+                IF idx.authority_xpath IS NOT NULL AND idx.authority_xpath <> '' THEN
+                    authority_text := oils_xpath_string(
+                        idx.authority_xpath, xml_node, joiner,
+                        ARRAY[
+                            ARRAY[xfrm.prefix, xfrm.namespace_uri],
+                            ARRAY['xlink','http://www.w3.org/1999/xlink']
+                        ]
+                    );
+
+                    IF authority_text ~ '^\d+$' THEN
+                        authority_link := authority_text::BIGINT;
+                        PERFORM * FROM authority.record_entry WHERE id = authority_link;
+                        IF FOUND THEN
+                            output_row.authority := authority_link;
+                        END IF;
+                    END IF;
+
+                END IF;
 
                 output_row.browse_field = TRUE;
                 RETURN NEXT output_row;
@@ -637,8 +659,8 @@ BEGIN
                 mbe_id := CURRVAL('metabib.browse_entry_id_seq'::REGCLASS);
             END IF;
 
-            INSERT INTO metabib.browse_entry_def_map (entry, def, source)
-                VALUES (mbe_id, ind_data.field, ind_data.source);
+            INSERT INTO metabib.browse_entry_def_map (entry, def, source, authority)
+                VALUES (mbe_id, ind_data.field, ind_data.source, ind_data.authority);
         END IF;
 
         -- Avoid inserting duplicate rows, but retain granularity of being
