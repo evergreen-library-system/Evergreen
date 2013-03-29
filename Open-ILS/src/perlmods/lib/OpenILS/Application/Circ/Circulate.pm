@@ -3556,11 +3556,17 @@ sub checkin_flesh_events {
     }
 
     if($self->circ) {
-        # if we checked in a circulation, flesh the billing summary data
-        $self->circ->billable_transaction(
-            $self->editor->retrieve_money_billable_transaction([
-                $self->circ->id,
-                {flesh => 1, flesh_fields => {mbt => ['summary']}}
+        # update our copy of the circ object and 
+        # flesh the billing summary data
+        $self->circ(
+            $self->editor->retrieve_action_circulation([
+                $self->circ->id, {
+                    flesh => 2,
+                    flesh_fields => {
+                        circ => ['billable_transaction'],
+                        mbt => ['summary']
+                    }
+                }
             ])
         );
     }
