@@ -99,7 +99,7 @@ function rdetail_next_prev_actions(index, count, prev, next, start, end, results
         replace the recid and args on location.href to get the new URL  */
     function fullurl(url) {
         if (url.match(/eg\/opac\/results/)) {
-            return location.href.replace(/eg\/opac\/.+$/, url);
+            return location.href.replace(/\/eg\/opac\/.+$/, url);
         } else {
             return location.href.replace(/\/\d+\??.*/, '/' + url);
         }
