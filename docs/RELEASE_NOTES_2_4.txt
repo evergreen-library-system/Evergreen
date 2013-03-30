@@ -91,6 +91,8 @@ improve Acquisitions work flows.
         be updated, and why, is available to the client, although taking
         best advantage of this information for user-friendly display is left
         to the future.
+  * Add optional fund, circ modifier and collection code fields to distribution
+  formulas.
 
 Acquisitions MARC Upload Form Persistence
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -111,6 +113,12 @@ attached, no default copies are added.
 
 OPAC
 ~~~~
+
+Removal of JSPAC
+^^^^^^^^^^^^^^^^
+TPAC is now the default catalog in Evergreen. The default apache configuration
+now points to TPAC, staff client OPAC options now point to TPAC, and the JSPAC
+to TPAC toggle has been removed from the portal page.
 
 Display alternate graphic (880) fields
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -141,6 +149,19 @@ OpenSearch feeds, à la:
     http://<host>/opac/extras/opensearch/1.1/-/marc21?searchTerms=piano
 
 
+Options to Hide Some User Preferences
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The config.tt2 file now provides options to disable phone notification options, password changes, and e-mail address changes in TPAC. These options are useful
+for libraries that do not do phone notifications and for those that use
+centralized authentication. 
+
+Note the ability to disable user name changes is already available through the
+Library Settings editor.
+
+Public Copy Notes
+^^^^^^^^^^^^^^^^^
+Public copy notes are now visible in TPAC.
+
 Search Changes
 ^^^^^^^^^^^^^^
 A number of changes have been made to search to allow more control and improve
@@ -170,6 +191,7 @@ it builds and/or re-builds many of the indexes.
 Permissions
 +++++++++++
 One new permission is added for this feature:
+
   * ADMIN_INDEX_NORMALIZER
 
 Searching for deleted records
@@ -290,6 +312,14 @@ default behavior.
 
 A new "Vandelay" org unit settings group is also created.
 
+Direct access to Item Attribute Editor
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+You can now access the item attribute editor via Admin -> Local Admin -> Item
+Attribute Editor. No copy record is loaded into the editor, but it is available to without first finding an item and loading it into the editor:
+
+  * Configure copy templates.
+  * Hide fields in the copy editor.
+
 Circulation
 ~~~~~~~~~~~
 
@@ -341,6 +371,7 @@ and copies in question.
 Permissions
 +++++++++++
 One new permission is added for this feature:
+
   * ADMIN_PROXIMITY_ADJUSTMENT
     ** Allows staff to administer the proximity adjustments
 
@@ -363,6 +394,7 @@ For more information, see the included tech spec documents.
 Permissions
 +++++++++++
 One new permission is added for this feature:
+
   * ADMIN_HOLD_CAPTURE_SORT
     ** Allows staff to adminster the custom best-hold selection sort order.
 
@@ -446,6 +478,20 @@ reporting and display purposes only.
 
 Staff Client
 ~~~~~~~~~~~~
+
+Staff client search preferences
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Staff can now set workstation-level search preferences through Admin ->
+Workstation Administration -> Set Search Preferences. 
+
+  * Default Search Library sets the library that is searched by default from
+  the advanced search page and the portal page.
+  * Preferred library is used to identify copies that should display first.
+  * Advanced search default pane allows staff to set the numeric or expert
+  searches as the default search tab.
+
+The option to change the preferred search library from the search results page
+is no longer available when logged into the staff client.
 
 add "about:about" to developer menu in staff client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
