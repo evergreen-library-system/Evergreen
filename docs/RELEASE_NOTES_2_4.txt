@@ -93,6 +93,9 @@ improve Acquisitions work flows.
         to the future.
   * Add optional fund, circ modifier and collection code fields to distribution
   formulas.
+  * The invoices interface auto-populates "# Invoiced" column with number of
+  invoicable copies, and copies the "billed cost" column to the "amount paid"
+  column if the latter doesn't have anything in it yet.
 
 Acquisitions MARC Upload Form Persistence
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -170,7 +173,6 @@ the entire system and can not be configured on a per-library basis.
 
 Amongst other things the new search code fixes:
 
-* Inability to use statuses and locations as part of a larger query
 * Invalid queries being generated from advanced searches
 * Some timeouts from backend code taking too long to perform a search
 * Some filters being one-use only
