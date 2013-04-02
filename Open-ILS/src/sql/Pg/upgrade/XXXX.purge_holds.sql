@@ -62,7 +62,7 @@ BEGIN
       ahr.*
     FROM
       action.hold_request ahr
-      LEFT JOIN config.global_flag cgf_cs ON (ahr.cancel_cause IS NOT NULL AND cgf_cs.name = 'history.hold.retenetion_age_canceled_' || ahr.cancel_cause AND cgf_cs.enabled)
+      LEFT JOIN config.global_flag cgf_cs ON (ahr.cancel_cause IS NOT NULL AND cgf_cs.name = 'history.hold.retention_age_canceled_' || ahr.cancel_cause AND cgf_cs.enabled)
     WHERE
       (fulfillment_time IS NOT NULL OR cancel_time IS NOT NULL)
   LOOP
