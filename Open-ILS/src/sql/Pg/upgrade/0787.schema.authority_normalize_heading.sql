@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('xxxx');
+INSERT INTO config.upgrade_log (version) VALUES ('0787');
 
 CREATE OR REPLACE FUNCTION authority.normalize_heading( marcxml TEXT, no_thesaurus BOOL ) RETURNS TEXT AS $func$
 DECLARE
