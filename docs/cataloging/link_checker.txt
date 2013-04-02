@@ -1,0 +1,84 @@
+Link Checker
+------------
+
+The Link Checker enables you to verify the validity of URLs stored in MARC records.  
+The ability to verify URLs would benefit locations with large electronic resource collections.
+
+Search for URLs
+~~~~~~~~~~~~~~~
+
+Search for MARC records that contain URLs that you want to verify.
+
+. Click *Cataloging* -> *Link Checker*.
+. Click *New Link Checker Session*.
+. Create a session name.  Note that each session must have a unique name.
+. Select a search scope from the drop down menu. Records that would be retrieved by searching 
+Example Branch 1 (BR1) in an OPAC search would also be retrieved here.  For example, 
+a record that describes an electronic resource with a URL in the 856 $u and an org unit code, 
+such as BR1, in the 856 $9, would be retrieved by a search of relevant keywords.  Also, records 
+that contain a URL without the $9 subfield, but also have physical copies at BR1, would be 
+retrieved.  Note that you can skip this step if you enter the org unit code of the location 
+that you want to search in the *Search* field.
+. Enter search terms to retrieve records with URLs that you want to verify.  You can also add 
+a location filter, such as BR1.
+. You may further limit your search by selecting a saved search.  Saved searches are filters made 
+up of specific criteria, such as shelving location or audience.  Adding a saved search to your 
+keyword search will narrow your search for records with URLs.  This step is optional.
+. Enter tags and subfields that contain URLs in the appropriate boxes.  Click *Add* after you enter 
+the data in the fields.  You can add multiple tags and subfields by repeating this process. Evergreen 
+will search for records that match your search terms, and then, from the set that it retrieves, it 
+will extract any URLs from all of the tag/subfield locations you have specified for the session.
+. To view and manually verify the URLs that Evergreen retrieves, leave the *Process Immediately* button 
+unchecked.  If you want Evergreen to automatically verify the URLs that it retrieves, then check the box to *Process Immediately*.
+. Click *Begin* to process your search.
+
+image::media/Link_Checker1.jpg[Link_Checker1]   
+
+   
+View Your Results
+~~~~~~~~~~~~~~~~~
+
+If you do not click *Process Immediately*, then you must select the links that you want to verify, and click 
+*Verify Selected URLs*.  If you click *Process Immediately*, then you skip this step, and Evergreen 
+jumps directly to the results of the verification attempts as seen in the next step.
+
+image::media/Link_Checker2.jpg[Link_Checker2]   
+
+Evergreen displays the results of the verification attempts, including the tags that you searched, 
+the URLs that Evergreen retrieved, the Bib Record ID, the request and result time, and the result code and text.
+
+image::media/Link_Checker6.jpg[Link_Checker6]  
+
+Manage Your Sessions
+~~~~~~~~~~~~~~~~~~~~
+
+Edit Columns
+^^^^^^^^^^^^
+
+You can use the *Column Picker* to add and remove columns on any of the *Link Checker* interfaces.  
+To access the *Column Picker*, right click on any of the column headings.  The columns are saved to your user account.
+  
+
+Clone Sessions
+^^^^^^^^^^^^^^
+
+You can clone sessions that you run frequently or that have frequently-used parameters that 
+need only minor adjustments to create new searches.  To clone a session:
+
+. Click *Cataloging* -> *Link Checker*.
+. In the Session ID column, click *Clone*.  A copy of the parameters of that search will appear.
+
+
+View Verification Attempts
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To view the results of a verification attempt after you have closed the session, click *Cataloging* -> *Link Checker*.  
+Your link checker sessions appear in a list.  To view the results of a session, click the *Open* link in the Session ID column.  
+
+Click *Filter* to refine the results on this page.  To add a filter:
+
+. Select a column from the first drop down menu.
+. Select an operator from the second drop down menu.
+. A third field will appear.  Enter the appropriate text.
+. Click *Apply* to apply the filter to your current results.  Click *Save Filters* to save the filter to your user account for later use.  
+

@@ -255,6 +255,8 @@ include::cataloging/monograph_parts.txt[]
 
 include::cataloging/conjoined_items.txt[]
 
+include::cataloging/link_checker.txt[]
+
 
 Serials
 =======
