@@ -625,7 +625,7 @@ __PACKAGE__->add_search_filter( 'edit_date' );
 __PACKAGE__->add_search_filter( 'create_date' );
 __PACKAGE__->add_search_filter( 'statuses' );
 __PACKAGE__->add_search_filter( 'locations' );
-__PACKAGE__->add_search_filter( 'location_groups', sub { return __PACKAGE__->location_groups_callback(@_) } );
+__PACKAGE__->add_search_filter( 'location_groups' );
 __PACKAGE__->add_search_filter( 'bib_source' );
 __PACKAGE__->add_search_filter( 'site' );
 __PACKAGE__->add_search_filter( 'pref_ou' );
