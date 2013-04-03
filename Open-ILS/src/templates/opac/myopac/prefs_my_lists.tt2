@@ -1,0 +1,45 @@
+[%  PROCESS "opac/parts/header.tt2";
+    WRAPPER "opac/parts/myopac/prefs_base.tt2";
+    myopac_page = "prefs";
+    prefs_page = 'my_lists' %]
+
+
+    <form method='post'>
+
+       <table class="full-width data_grid" id="acct_search_main">
+            <tbody>
+
+                [% IF ctx.updated_user_settings %]
+                <tr><td colspan='2'>
+                    <div class='renew-summary'>
+                        [% l('Account Successfully Updated') %]
+                    </div>
+                </td></tr>
+                [% END %]
+
+                [%- setting = 'opac.list_items_per_page' -%]
+                <tr >
+                    <td width='20%'><label for='[% setting %]'>[%l("List items per page") %]</label></td>
+                    <td>
+                        <select id='[% setting %]' name='[% setting %]'>
+                            [%  UNLESS ctx.user_setting_map.$setting;
+                                    ctx.user_setting_map.$setting = 10;
+                                END;
+                                FOR val IN [10, 15, 20, 25, 50] %]
+                                <option value='[% val | uri %]' 
+                                    [% IF ctx.user_setting_map.$setting == val %]
+                                        selected='selected'[% END %]>[% val | html %]</option>
+                            [% END %]
+                        </select>
+                        <img alt="[% l('List Items Help') %]"
+                            src="[% ctx.media_prefix %]/images/question-mark.png"
+                            title="[% l('The number of list items displayed per page when viewing a selected list.') %]"
+                        />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="submit" value="[% l('Save') %]" alt="[% l('Save') %]" class="opac-button"/>
+    </form>
+    [% INCLUDE "opac/parts/myopac/prefs_hints.tt2" %]
+[% END %]

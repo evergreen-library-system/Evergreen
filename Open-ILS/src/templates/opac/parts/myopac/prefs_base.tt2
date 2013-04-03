@@ -15,6 +15,9 @@
             <div class="align">
                 <a href='[% mkurl('prefs_settings') %]'>[% l("Search and History Preferences") %]</a>
             </div>
+            <div class="align">
+                <a href='[% mkurl('prefs_my_lists') %]'>[% l("My Lists Preferences") %]</a>
+            </div>
         [% ELSIF prefs_page == 'notify' %]
             <div class="align">
                 <a href='[% mkurl('prefs') %]'>[% l("Personal Information") %]</a>
@@ -25,7 +28,10 @@
             <div class="align" >
                 <a href='[% mkurl('prefs_settings') %]'>[% l("Search and History Preferences") %]</a>
             </div>
-        [% ELSE %]
+            <div class="align">
+                <a href='[% mkurl('prefs_my_lists') %]'>[% l("My Lists Preferences") %]</a>
+            </div>
+        [% ELSIF prefs_page == 'settings' %]
             <div class="align">
                 <a href='[% mkurl('prefs') %]'>[% l("Personal Information") %]</a>
             </div>
@@ -34,6 +40,22 @@
             </div>
             <div class="align selected" >
                 <a href='#'>[% l("Search and History Preferences") %]</a>
+            </div>
+            <div class="align">
+                <a href='[% mkurl('prefs_my_lists') %]'>[% l("My Lists Preferences") %]</a>
+            </div>
+        [% ELSE %]
+            <div class="align">
+                <a href='[% mkurl('prefs') %]'>[% l("Personal Information") %]</a>
+            </div>
+            <div class="align">
+                <a href='[% mkurl('prefs_notify') %]'>[% l("Notification Preferences") %]</a>
+            </div>
+            <div class="align" >
+                <a href='[% mkurl('prefs_settings') %]'>[% l("Search and History Preferences") %]</a>
+            </div>
+            <div class="align selected">
+                <a href='#'>[% l("My Lists Preferences") %]</a>
             </div>
         [% END %]
         </div>

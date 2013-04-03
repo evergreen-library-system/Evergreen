@@ -466,6 +466,42 @@ sub load_myopac_prefs_settings {
     return $self->_load_user_with_prefs || Apache2::Const::OK;
 }
 
+sub load_myopac_prefs_my_lists {
+    my $self = shift;
+
+    my @user_prefs = qw/
+        opac.list_items_per_page
+    /;
+
+    my $stat = $self->_load_user_with_prefs;
+    return $stat if $stat;
+
+    return Apache2::Const::OK
+        unless $self->cgi->request_method eq 'POST';
+
+    # some setting values from the form don't match the
+    # required value/format for the db, so they have to be
+    # individually translated.
+
+    my %settings;
+    my $set_map = $self->ctx->{user_setting_map};
+
+    foreach my $key (@user_prefs) {
+        my $val = $self->cgi->param($key);
+        $settings{$key}= $val unless $$set_map{$key} eq $val;
+    }
+
+    # Send the modified settings off to be saved
+    $U->simplereq(
+        'open-ils.actor',
+        'open-ils.actor.patron.settings.update',
+        $self->editor->authtoken, undef, \%settings);
+
+    # re-fetch user prefs
+    $self->ctx->{updated_user_settings} = \%settings;
+    return $self->_load_user_with_prefs || Apache2::Const::OK;
+}
+
 sub fetch_user_holds {
     my $self = shift;
     my $hold_ids = shift;
@@ -1705,6 +1741,22 @@ sub _update_bookbag_metadata {
     return 0;
 }
 
+sub _get_items_per_page {
+    my $self = shift;
+
+    if($self->editor->requestor) {
+        $self->timelog("Checking for opac.list_items_per_page preference");
+        # See if the user has a list items per page preference
+        my $ipp = $self->editor->search_actor_user_setting({
+            usr => $self->editor->requestor->id,
+            name => 'opac.list_items_per_page'
+        })->[0];
+        $self->timelog("Got opac.list_items_per_page preference");
+        return OpenSRF::Utils::JSON->JSON2perl($ipp->value) if $ipp;
+    }
+    return 10; # default
+}
+
 sub load_myopac_bookbags {
     my $self = shift;
     my $e = $self->editor;
@@ -1714,6 +1766,12 @@ sub load_myopac_bookbags {
 
     $ctx->{bookbags_limit} = $limit;
     $ctx->{bookbags_offset} = $offset;
+
+    # for list item pagination
+    my $itemLimit = $self->_get_items_per_page;
+    my $itemPage = $self->cgi->param('itemPage') || 1;
+    my $itemOffset = ($itemPage - 1) * $itemLimit;
+    $ctx->{bookbags_itemPage} = $itemPage;
 
     my ($sorter, $modifier) = $self->_get_bookbag_sort_params("sort");
     $e->xact_begin; # replication...
@@ -1753,13 +1811,71 @@ sub load_myopac_bookbags {
     $ctx->{bookbag_count} = $r->[0]->{'count'};
 
     # If the user wants a specific bookbag's items, load them.
-    # XXX add bookbag item paging support
 
     if ($self->cgi->param("bbid")) {
         my ($bookbag) =
             grep { $_->id eq $self->cgi->param("bbid") } @{$ctx->{bookbags}};
 
         if ($bookbag) {
+            # Calculate total count of the items in selected bookbag.
+            # This total includes record entries that have no assets available.
+            my $iq = {
+                'select' => { 'acn' => [ { 'column' => 'record', 'distinct' => 'true', 'transform' => 'count', 'aggregate' => 'true', 'alias' => 'count' } ] },
+                'from' => {'cbrebi' =>
+                    { 'bre' =>
+                        { 'join' =>
+                            { 'acn' =>
+                                { 'join' =>
+                                    { 'acp' =>
+                                        { 'join' =>
+                                            { 'ccs' => {}
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                'where' => {
+                        '+cbrebi' => { 'bucket' => $bookbag->id },
+                        '+acn' => { 'deleted' => 'f' },
+                        '+ccs' => { 'opac_visible' => 't' },
+                        '+acp' => {
+                                'deleted' => 'f',
+                                'opac_visible' => 't'
+                            }
+                    }
+            };
+            my $ir = $e->json_query($iq);
+            $ctx->{bb_item_count} = $ir->[0]->{'count'};
+            #now add ebooks
+            my $ebook_q = {
+                'select' => { 'cbrebi' => [ { 'column' => 'target_biblio_record_entry', 'distinct' => 'true', 'transform' => 'count', 'aggregate' => 'true', 'alias' => 'count' } ] },
+                'from' => {'cbrebi' =>
+                    { 'bre' =>
+                        { 'join' =>
+                            {
+                                'cbs' => {}
+                            }
+                        }
+                    }
+                },
+                'where' => {
+                        '+cbrebi' => { 'bucket' => $bookbag->id },
+                        '+bre' => {
+                                'deleted' => 'f',
+                                'active' => 't'
+                            },
+                        '+cbs' => { 'transcendant' => 't' }
+                    }
+            };
+            my $ebook_r = $e->json_query($ebook_q);
+            $ctx->{bb_item_count} = $ctx->{bb_item_count} + $ebook_r->[0]->{'count'};
+
+            #calculate page count
+            $ctx->{bb_page_count} = int ((($ctx->{bb_item_count} - 1) / $itemLimit) + 1);
+
             if ( ($self->cgi->param("action") || '') eq "editmeta") {
                 if (!$self->_update_bookbag_metadata($bookbag))  {
                     $e->rollback;
@@ -1789,11 +1905,10 @@ sub load_myopac_bookbags {
                 $bookbag->id, $sorter, $modifier
             );
 
-            # XXX Limiting to 1000 for now.  This way you should be able to see entire
-            # list contents.  Need to add paging here instead.
+            # For list items pagination
             my $args = {
-                "limit" => 1000,
-                "offset" => 0
+                "limit" => $itemLimit,
+                "offset" => $itemOffset
             };
 
             my $items = $U->bib_container_items_via_search($bookbag->id, $query, $args)
