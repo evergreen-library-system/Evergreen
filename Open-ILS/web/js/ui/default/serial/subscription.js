@@ -312,13 +312,19 @@ openils.Util.addOnLoad(
 
                 ssub_grid.onPostCreate = function(fmObject) {
                     sub_id = fmObject.id();
+                    parent.document.getElementById(window.name).refresh_command(fmObject);
                 }
 
                 ssub_grid.showCreateDialog();
             }
+            ssub_grid.onPostUpdate = function(fmObject) {
+                parent.document.getElementById(window.name).refresh_command();
+            }
             if (cgi.param("tab") in tab_dispatch) {
+                ssub_grid._fresh = false; // force View/Edit tab to reload (otherwise, it is blank) XXX why?
                 tab_container.selectChild(tab_dispatch[cgi.param("tab")]);
             }
+            parent.document.getElementById(window.name).style.visibility = 'visible'; // unhide the editor pane (iframe)
         }
     }
 );

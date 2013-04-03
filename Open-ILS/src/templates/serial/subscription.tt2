@@ -6,6 +6,8 @@
     [%- END %]
     [%- IF CGI.param('id') != 'new' %]
     sub_id = [% CGI.param('id') %];
+    [%- ELSE %]
+    sub_id = -1;
     [%- END %]
     var cap_editor;
     var cap_importer;
@@ -19,6 +21,13 @@
 </script>
 <script src="[% ctx.media_prefix %]/js/ui/default/serial/subscription/issuance.js">
 </script>
+[% IF CGI.param('context') == 'scv' -%]
+<!-- links in the frame have no style at all, let's give them one -->
+<style type="text/css">
+    a { color: #1155CC; text-decoration: underline }
+    a:hover { text-decoration: none }
+</style>
+[%- END %]
 
 <div dojoType="dijit.layout.ContentPane" layout="top" class="oils-header-panel">
     <div>[% l('Subscription Details') %]</div>
@@ -121,11 +130,11 @@
                         "disabled": true, "value": sub_id
                     });
 
-                [%- IF CGI.param('context') == 'scv' -%]
+                [%- IF CGI.param('context') == 'scv' %]
                 // attach the holding_lib selector to the record_entry selector
                 dist_grid.overrideWidgetArgs.holding_lib = {'dijitArgs' : {'onChange' : function(value) { populate_sre_selector(dist_grid, value); } }};
 
-                [%- END -%]
+                [%- END %]
                 var _display_grouping_store = new dojo.data.ItemFileReadStore({
                     "data": {
                         "identifier": "display_grouping",

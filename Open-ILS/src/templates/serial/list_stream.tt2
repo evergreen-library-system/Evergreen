@@ -1,3 +1,4 @@
+[% USE CGI; -%]
 [% WRAPPER base.tt2 %]
 [% ctx.page_title = l("Streams") %]
 <style type="text/css">
@@ -6,6 +7,13 @@
     #new-srlu-table td { text-align: center; padding-right: 1em; }
     #list-source { border: 1px #666 dashed; }
 </style>
+[% IF CGI.param('context') == 'scv' -%]
+<!-- links in the frame have no style at all, let's give them one -->
+<style type="text/css">
+    a { color: #1155CC; text-decoration: underline }
+    a:hover { text-decoration: none }
+</style>
+[%- END %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane"
         layoutAlign="top" class="oils-header-panel">

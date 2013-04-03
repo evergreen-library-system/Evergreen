@@ -58,10 +58,15 @@ serial.manage_subs.prototype = {
                 iframe.setAttribute("src", src);
             } else if (type == "ssub") {
                 var iframe = dojo.byId('alt_ssub_editor');
+                iframe.setAttribute("src", "about:blank"); // clear in case reloading same page (XXX we might want to do this for add only)
+                iframe.style.visibility = "hidden"; // hide the editor while it loads (it will unhide itself when loaded)
                 var src;
                 if (mode == "add") {
                     src = '/eg/serial/subscription?id=new&owning_lib='+params.owning_lib+'&record_entry='+params.record_entry+'&context=scv';
-                    iframe.refresh_command = function () {obj.refresh_list();};
+                    iframe.refresh_command = function (ssub) {
+                        obj.map_ssub[ 'ssub_' + ssub.id() ] = ssub;
+                        obj.append_ssub( obj.data.hash.aou[ssub.owning_lib()], ssub );
+                    };
                 } else {
                     src = '/eg/serial/subscription?id=' + params.ssub_ids[0] + '&context=scv';
                     iframe.refresh_command = function () {}; //TODO: redraw tree node
