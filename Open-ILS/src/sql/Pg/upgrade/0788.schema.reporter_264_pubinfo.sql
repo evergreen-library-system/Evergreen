@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0788', :eg_version);
 
 -- New view including 264 as a potential tag for publisher and pubdate
 CREATE OR REPLACE VIEW reporter.old_super_simple_record AS
