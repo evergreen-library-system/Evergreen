@@ -1378,7 +1378,13 @@ sub retrieve_hold_queue_status_impl {
             ],
             where    => {
                 hold_type => $hold->hold_type,
-                target    => $hold->target
+                target    => $hold->target,
+                capture_time => undef,
+                cancel_time => undef,
+                '-or' => [
+                    {expire_time => undef },
+                    {expire_time => {'>' => 'now'}}
+                ]
            }
         });
     }
