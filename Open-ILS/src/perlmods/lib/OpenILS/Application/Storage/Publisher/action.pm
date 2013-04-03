@@ -17,10 +17,12 @@ use OpenILS::Application::Circ::CircCommon;
 use OpenILS::Application::AppUtils;
 my $U = "OpenILS::Application::AppUtils";
 
-# used in build_hold_sort_clause()
+# Used in build_hold_sort_clause().  See the hash %order_by_sprintf_args in
+# that sub to confirm what gets used to replace the formatters, and see
+# nearest_hold() for the main body of the SQL query that these go into.
 my %HOLD_SORT_ORDER_BY = (
     pprox => 'p.prox',
-    hprox => 'actor.org_unit_proximity(%d, h.request_lib)',  # $cp->circ_lib
+    hprox => 'actor.org_unit_proximity(%d, h.pickup_lib)',  # $cp->call_number->owning_lib
     aprox => 'COALESCE(hm.proximity, p.prox)',
     approx => 'action.hold_copy_calculated_proximity(h.id, %d, %d)', # $cp,$here
     priority => 'pgt.hold_priority',
@@ -29,18 +31,20 @@ my %HOLD_SORT_ORDER_BY = (
     rtime => 'h.request_time',
     htime => q!
         CASE WHEN
+            last_event_on_copy.place <> %d AND
             copy_has_not_been_home.result
-        THEN actor.org_unit_proximity(%d, h.request_lib)
+        THEN actor.org_unit_proximity(%d, h.pickup_lib)
         ELSE 999
         END
-    !,
+    !,  # $cp->call_number->owning_lib x 2
     shtime => q!
         CASE WHEN
+            last_event_on_copy.place <> %d AND
             copy_has_not_been_home_even_to_idle.result
-        THEN actor.org_unit_proximity(%d, h.request_lib)
+        THEN actor.org_unit_proximity(%d, h.pickup_lib)
         ELSE 999
         END
-    !,
+    !,  # $cp->call_number->owning_lib x 2
 );
 
 
@@ -349,10 +353,10 @@ sub build_hold_sort_clause {
     my ($columns, $cp, $here) = @_;
 
     my %order_by_sprintf_args = (
-        hprox => [$cp->circ_lib],
+        hprox => [$cp->call_number->owning_lib],
         approx => [$cp->id, $here],
-        htime => [$cp->circ_lib],
-        shtime => [$cp->circ_lib]
+        htime => [$cp->call_number->owning_lib, $cp->call_number->owning_lib],
+        shtime => [$cp->call_number->owning_lib, $cp->call_number->owning_lib]
     );
 
     my @clauses;
@@ -374,16 +378,69 @@ sub build_hold_sort_clause {
                                     # more order-by clauses after that.
     }
 
-    my ($ctes, $joins);
+    my ($ctes, $joins) = ("", "");
     if ($ctes_needed >= 1) {
-        # For our first auxiliary query, the question we seek to answer is, "has
-        # our copy been circulating away from home too long?" Two parts to
-        # answer this question.
+        # Each CTE serves the next. The first is one version or another
+        # of last_event_on_copy, which is described in holds-go-home.txt
+        # TechRef, but it essentially returns place and time of the most
+        # recent transit or circ to do with a copy, and failing that it
+        # returns a synthetic event that means "here" and "now".
+
+        if ($ctes_needed == 2) {
+            $ctes .= sprintf(q!
+, last_event_on_copy AS (    -- combined circ and transit version
+    SELECT *
+    FROM (
+        (   SELECT
+                TRUE AS concrete,
+                dest AS place,
+                COALESCE(dest_recv_time, source_send_time) AS moment
+            FROM action.transit_copy
+            WHERE target_copy = %d
+            ORDER BY moment DESC LIMIT 1
+        ) UNION (
+            SELECT
+                TRUE AS concrete,
+                COALESCE(checkin_lib, circ_lib) AS place,
+                COALESCE(checkin_time, xact_start) AS moment
+            FROM action.circulation
+            WHERE target_copy = %d
+            ORDER BY moment DESC LIMIT 1
+        ) UNION
+            SELECT
+                FALSE AS concrete,
+                %d AS place,
+                NOW() AS moment
+    ) x ORDER BY concrete DESC, moment DESC LIMIT 1
+) !, $cp->id, $cp->id, $cp->call_number->owning_lib);
+        } else {
+            $ctes .= sprintf(q!
+, last_event_on_copy AS (   -- circ only version
+    SELECT * FROM (
+        ( SELECT
+                TRUE AS concrete,
+                COALESCE(checkin_lib, circ_lib) AS place,
+                COALESCE(checkin_time, xact_start) AS moment
+            FROM action.circulation
+            WHERE target_copy = %d
+            ORDER BY moment DESC LIMIT 1
+        ) UNION SELECT
+                FALSE AS concrete,
+                %d AS place,
+                NOW() AS moment
+    ) x ORDER BY concrete DESC, moment DESC LIMIT 1
+) !, $cp->id, $cp->call_number->owning_lib);
+        }
+
+        $joins .= q!
+            JOIN last_event_on_copy ON (true)
+        !;
+
+        # For our next auxiliary query, the question we seek to answer is,
+        # "has our copy been circulating away from home too long?"
         #
-        # part 1: Have their been no checkouts at the copy's circ_lib since the
+        # Have there been no checkouts at the copy's circ_lib since the
         # beginning of our go-home interval?
-        # part 2: Was the last transit to affect our copy before the beginning
-        # of our go-home interval an outbound transit? i.e. away from circ-lib
 
         # [We use sprintf because the outer function that's going to send one
         # big query through DBI is blind to our process of dynamically building
@@ -400,56 +457,33 @@ sub build_hold_sort_clause {
             circ.target_copy = %d AND
             circ.circ_lib = %d AND
             circ.xact_start >= NOW() - go_home_interval.value
-    ) IS NULL AND (
-        -- part 2
-        SELECT atc.dest <> %d FROM action.transit_copy atc
-        JOIN go_home_interval ON (true)
-        WHERE
-            atc.id = (
-                SELECT MAX(id) FROM action.transit_copy atc_inner
-                WHERE
-                    atc_inner.target_copy = %d AND
-                    atc_inner.source_send_time < NOW() - go_home_interval.value
-            )
-    ) AS result
-) !, $cp->id, $cp->circ_lib, $cp->circ_lib, $cp->id);
-        $joins .= " JOIN copy_has_not_been_home ON (true) ";
+    ) IS NULL AS result
+) !, $cp->id, $cp->circ_lib);
+
+        $joins .= q!
+            JOIN copy_has_not_been_home ON (true)
+        !;
     }
 
     if ($ctes_needed == 2) {
-        # In this auxiliary query, we ask the question, "has our copy come home
-        # by any means that we can determine, even if it didn't circulate once
-        # it came home, in the time defined by the go-home-interval?"
-        # answer this question. Two parts to this too (besides including the
-        # previous auxiliary query).
+        # By this query, we mean to determine that the copy hasn't landed at
+        # home by means of transit during the go-home interval (in addition
+        # to not having circulated from home in the same time frame).
         #
-        # 1: there have been no homebound transits for this copy since the
-        # beginning of the go-home interval.
-        # 2: there have been no checkins at home since the beginning of
-        # the go-home interval for this copy
+        # There have been no homebound transits that arrived for this copy
+        # since the beginning of the go-home interval.
 
         $ctes .= sprintf(q!
 , copy_has_not_been_home_even_to_idle AS (
-    SELECT
-        copy_has_not_been_home.response AND (
-            -- part 1
-            SELECT MIN(atc.id) FROM action.transit_copy atc
-            JOIN go_home_interval ON (true)
-            WHERE
-                atc.target_copy = %d AND
-                atc.dest = %d AND
-                atc.dest_recv_time >= NOW() - go_home_interval.value
-        ) IS NULL AND (
-            -- part 2
-            SELECT MIN(circ.id) FROM action.circulation circ
-            JOIN go_home_interval ON (true)
-            WHERE
-                circ.target_copy = %d AND
-                circ.checkin_lib = %d AND
-                circ.checkin_time >= NOW() - go_home_interval.value
-        ) IS NULL
-    AS result
-) !, $cp->id, $cp->circ_lib, $cp->id, $cp->circ_lib);
+    SELECT result AND NOT (
+        SELECT COUNT(*)::INT::BOOL
+        FROM action.transit_copy atc
+        WHERE
+            atc.target_copy = %d AND
+            (atc.dest = %d OR atc.source = %d) AND
+            atc.dest_recv_time >= NOW() - (SELECT value FROM go_home_interval)
+    ) AS result FROM copy_has_not_been_home
+) !, $cp->id, $cp->circ_lib, $cp->circ_lib);
         $joins .= " JOIN copy_has_not_been_home_even_to_idle ON (true) ";
     }
 
@@ -464,7 +498,8 @@ sub nearest_hold {
 	my $self = shift;
 	my $client = shift;
 	my $here = shift;   # just the ID
-	my $cp = shift;     # now an object, formerly just the ID
+	my $cp = shift;     # now an object with call_number fleshed,
+                        # formerly just copy ID
 	my $limit = int(shift()) || 10;
 	my $age = shift() || '0 seconds';
 	my $fifo = shift();

@@ -12489,15 +12489,15 @@ INSERT INTO config.org_unit_setting_type (
 
 INSERT INTO config.best_hold_order (
     name,
-    pprox, aprox, priority, cut, depth, rtime, htime, hprox
+    approx, pprox, aprox, priority, cut, depth, rtime
 ) VALUES (
     'Traditional',
-    1, 2, 3, 4, 5, 6, 7, 8
+    1, 2, 3, 4, 5, 6, 7
 );
 
 INSERT INTO config.best_hold_order (
     name,
-    hprox, pprox, aprox, priority, cut, depth, rtime, htime
+    hprox, approx, pprox, aprox, priority, cut, depth, rtime
 ) VALUES (
     'Traditional with Holds-always-go-home',
     1, 2, 3, 4, 5, 6, 7, 8
@@ -12505,7 +12505,7 @@ INSERT INTO config.best_hold_order (
 
 INSERT INTO config.best_hold_order (
     name,
-    htime, hprox, pprox, aprox, priority, cut, depth, rtime
+    htime, approx, pprox, aprox, priority, cut, depth, rtime
 ) VALUES (
     'Traditional with Holds-go-home',
     1, 2, 3, 4, 5, 6, 7, 8

@@ -1,0 +1,93 @@
+Holds Go Home
+=============
+
+Outline
+-------
+
+A copy prefers to fulfill a hold near its home when:
+
+    - The last event for a copy was NOT at home *and* ...
+    - The copy has not circulated from home within the defined period *and* ...
+    - The copy has neither departed from home by transit nor arrived at home
+      by transit within the defined period.
+
+Definitions
+-----------
+
+In the preceding section, some terms are used that want explanation.
+
+_Event_ refers to either a circulation or a transit related to a copy. An
+event has only two qualities we care about: moment and place.
+
+    - When the event comes from a circulation, _moment_ is checkin_time if
+      we have it, otherwise xact_start. When the event comes from a transit,
+      moment is dest_recv_time if we have it, otherwise source_send_time.
+
+    - When the event comes from a circulation, _place_ is checkin_lib if we
+      have it, otherwise circ_lib.  When the event comes from a transit,
+      place is dest, *always*.
+
+    - When the copy in question has neither any transit history nor any
+      circulation history, we produce a synthetic event with _moment_ equal
+      to the present time, and _place_ equal to the copy's call number's
+      owning_lib (see 'home' below).
+
+_Home_ is the value of the copy's call number's owning_lib field, which
+incidentally is usually equal to the copy's circ_lib field except where
+floating is in use.
+
+_The defined period_ is the time between the present moment (_NOW()_
+to the database) and the present moment less the value of the interval
+defined in the _circ.hold_go_home_interval_ org unit setting at a scope
+of the copy's _home_.  E.g., if the setting contains the string "6 months",
+the defined period is the last 6 months before the present moment, or
+anything greater than _NOW() - '6 months'::INTERVAL_.
+
+Logic
+-----
+
+............................................
+
+ -------
+| Event |
+ -------
+   |
+   |
+   v
+ -------------------------                   -----------------------
+| Was last event at home? | -----Yes.-----> | Don't try to go home. |
+ -------------------------                   -----------------------
+   |                                                      ^      ^
+   |  No.                                                 |      |
+   v                                                      |      |
+ ------------------------------------------------         |      |
+| Did copy circ from home during defined period? |--Yes.--/      |
+ ------------------------------------------------                |
+   |                                                             |
+   |  No.                                                        |
+   |                                                             |
+   v                                                             |
+ ------------------------------------------------------          |
+| Did copy leave or arrive home during defined period? |--Yes.---/
+ ------------------------------------------------------
+   |
+   |  No.
+   |
+   v
+ ----------
+| Go home. |
+ ----------
+
+............................................
+
+
+Implications in Best-Hold Selection Sort Order
+----------------------------------------------
+
+The calculations described above are all embodied in the best-hold selection
+sort order determinant _shtime_.
+
+_htime_ is a simpler version of the same, with all reference to transits
+removed, considering only circulations.  This means events become thin
+circulations, the "Did a transit bring copy home..." step in the flow chart
+goes away, etc. etc.

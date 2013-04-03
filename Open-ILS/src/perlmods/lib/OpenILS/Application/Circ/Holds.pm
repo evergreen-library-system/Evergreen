@@ -3007,6 +3007,10 @@ sub find_nearest_permitted_hold {
 
     my $fifo = $U->ou_ancestor_setting_value($user->ws_ou, 'circ.holds_fifo');
 
+    # the nearest_hold API call now needs this
+    $copy->call_number($editor->retrieve_asset_call_number($copy->call_number))
+        unless ref $copy->call_number;
+
 	# search for what should be the best holds for this copy to fulfill
 	my $best_holds = $U->storagereq(
         "open-ils.storage.action.hold_request.nearest_hold.atomic", 
