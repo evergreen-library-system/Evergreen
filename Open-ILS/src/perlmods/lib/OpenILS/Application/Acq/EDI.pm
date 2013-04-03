@@ -244,6 +244,7 @@ sub process_retrieval {
         if ($@) {
             $logger->error($@);
             $incoming->status('proc_error');
+            $incoming->error_time('now');
             $incoming->error($@);
         } else {
             $incoming->status('processed');
