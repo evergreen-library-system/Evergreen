@@ -79,7 +79,7 @@
         showLoadFilter="true"
         fmClass="'asfg'"
         defaultSort="['code']"
-        mapExtras="{owner: {path: 'owner.id'}}"
+        mapExtras="{owner: {path: 'owner.id', filter: true}}"
         fetchLock="true">
         <thead>
             <tr>
