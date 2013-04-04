@@ -17,6 +17,26 @@
                 </td></tr>
                 [% END %]
 
+                [%- setting = 'opac.lists_per_page' -%]
+                <tr >
+                    <td width='20%'><label for='[% setting %]'>[%l("Lists per page") %]</label></td>
+                    <td>
+                        <select id='[% setting %]' name='[% setting %]'>
+                            [%  UNLESS ctx.user_setting_map.$setting;
+                                    ctx.user_setting_map.$setting = 10;
+                                END;
+                                FOR val IN [10, 15, 20, 25] %]
+                                <option value='[% val | uri %]' 
+                                    [% IF ctx.user_setting_map.$setting == val %]
+                                        selected='selected'[% END %]>[% val | html %]</option>
+                            [% END %]
+                        </select>
+                        <img alt="[% l('List Items Help') %]"
+                            src="[% ctx.media_prefix %]/images/question-mark.png"
+                            title="[% l('The number of lists displayed per page.') %]"
+                        />
+                    </td>
+                </tr>
                 [%- setting = 'opac.list_items_per_page' -%]
                 <tr >
                     <td width='20%'><label for='[% setting %]'>[%l("List items per page") %]</label></td>

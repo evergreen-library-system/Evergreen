@@ -68,12 +68,43 @@
         <span class='float-left' style='padding-left: 10px;'>
             [%- IF offset > 0 -%]
                 <a href='[% mkurl(ctx.opac_root _ '/myopac/lists', {
-                    limit => limit, offset => (offset - limit)
+                    offset => (offset - limit)
                 }) %]'><span class="nav_arrow_fix">&#9668;</span>[% l('Previous') %]</a>
+            [%- END; -%]
+            [%- IF (offset - (limit * 3)) >= 0 -%]
+                <a href='[% mkurl(ctx.opac_root _ '/myopac/lists', {
+                    offset => (offset - (limit * 3))
+                }) %]'>[% ((offset - (limit * 3)) / limit) + 1 %]</a>
+            [%- END; -%]
+            [%- IF (offset - (limit * 2)) >= 0 -%]
+                <a href='[% mkurl(ctx.opac_root _ '/myopac/lists', {
+                    offset => (offset - (limit * 2))
+                }) %]'>[% ((offset - (limit * 2)) / limit) + 1 %]</a>
+            [%- END; -%]
+            [%- IF (offset - limit) >= 0 -%]
+                <a href='[% mkurl(ctx.opac_root _ '/myopac/lists', {
+                    offset => (offset - limit)
+                }) %]'>[% ((offset - limit) / limit) + 1 %]</a>
+            [%- END; -%]
+            <span style="color:red;" >[% (offset / limit) + 1 %]</span>
+            [%- IF (offset + limit) <= ctx.bookbag_count -%]
+                <a href='[% mkurl(ctx.opac_root _ '/myopac/lists', {
+                    offset => (offset + limit)
+                }) %]'>[% ((offset + limit) / limit) + 1 %]</a>
+            [%- END; -%]
+            [%- IF (offset + (limit * 2)) <= ctx.bookbag_count -%]
+                <a href='[% mkurl(ctx.opac_root _ '/myopac/lists', {
+                    offset => (offset + (limit * 2))
+                }) %]'>[% ((offset + (limit * 2)) / limit) + 1 %]</a>
+            [%- END; -%]
+            [%- IF (offset + (limit * 3)) <= ctx.bookbag_count -%]
+                <a href='[% mkurl(ctx.opac_root _ '/myopac/lists', {
+                    offset => (offset + (limit * 3))
+                }) %]'>[% ((offset + (limit * 3)) / limit) + 1 %]</a>
             [%- END; -%]
             [%- IF (ctx.bookbag_count - offset) > limit; -%] 
                 <a href='[% mkurl(ctx.opac_root _ '/myopac/lists', {
-                    limit => limit, offset => (offset + limit)
+                    offset => (offset + limit)
                 }) %]'>[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
             </span>
             [%- END; -%]

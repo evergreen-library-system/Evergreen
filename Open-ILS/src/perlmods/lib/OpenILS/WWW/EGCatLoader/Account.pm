@@ -470,6 +470,7 @@ sub load_myopac_prefs_my_lists {
     my $self = shift;
 
     my @user_prefs = qw/
+        opac.lists_per_page
         opac.list_items_per_page
     /;
 
@@ -1737,6 +1738,22 @@ sub _update_bookbag_metadata {
     return 0;
 }
 
+sub _get_lists_per_page {
+    my $self = shift;
+
+    if($self->editor->requestor) {
+        $self->timelog("Checking for opac.lists_per_page preference");
+        # See if the user has a lists per page preference
+        my $ipp = $self->editor->search_actor_user_setting({
+            usr => $self->editor->requestor->id,
+            name => 'opac.lists_per_page'
+        })->[0];
+        $self->timelog("Got opac.lists_per_page preference");
+        return OpenSRF::Utils::JSON->JSON2perl($ipp->value) if $ipp;
+    }
+    return 10; # default
+}
+
 sub _get_items_per_page {
     my $self = shift;
 
@@ -1757,7 +1774,7 @@ sub load_myopac_bookbags {
     my $self = shift;
     my $e = $self->editor;
     my $ctx = $self->ctx;
-    my $limit = $self->cgi->param('limit') || 10;
+    my $limit = $self->_get_lists_per_page || 10;
     my $offset = $self->cgi->param('offset') || 0;
 
     $ctx->{bookbags_limit} = $limit;
