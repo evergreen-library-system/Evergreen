@@ -5421,6 +5421,123 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
+	<class id="combahr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::all_hold_request" oils_persist:tablename="action.all_hold_request" reporter:core="true" reporter:label="Combined (Active &amp; Aged) Hold Request">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.hold_request_id_seq">
+			<field reporter:label="Status" name="status" oils_persist:virtual="true" />
+			<field reporter:label="Capture Date/Time" name="capture_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Currently Targeted Copy" name="current_copy" />
+			<field reporter:label="Notify by Email?" name="email_notify" reporter:datatype="bool"/>
+			<field reporter:label="Hold Expire Date/Time" name="expire_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Fulfilling Library" name="fulfillment_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Fulfilling Staff" name="fulfillment_staff" />
+			<field reporter:label="Fulfillment Date/Time" name="fulfillment_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Hold Type" name="hold_type" reporter:datatype="text"/>
+			<field reporter:label="Holdable Formats (for M-type hold)" name="holdable_formats" reporter:datatype="text"/>
+			<field reporter:label="Hold ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Notify by Phone?" name="phone_notify" reporter:datatype="bool"/>
+			<field reporter:label="Notify by SMS?" name="sms_notify" reporter:datatype="bool"/>
+			<field reporter:label="Pickup Library" name="pickup_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Last Targeting Date/Time" name="prev_check_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Requesting Library" name="request_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Request Date/Time" name="request_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Patron ZIP" name="usr_post_code" reporter:datatype="text"/>
+			<field reporter:label="Patron Home Library" name="usr_home_ou" reporter:datatype="link"/>
+			<field reporter:label="Patron Profile Group" name="usr_profile" reporter:datatype="link"/>
+			<field reporter:label="Patron Birth Year" name="usr_birth_year" reporter:datatype="int"/>
+			<field reporter:label="Staff Placed?" name="staff_placed" reporter:datatype="bool"/>
+			<field reporter:label="Item Selection Depth" name="selection_depth" />
+			<field reporter:label="Selection Locus" name="selection_ou" reporter:datatype="org_unit"/>
+			<field reporter:label="Target Object ID" name="target" reporter:datatype="link"/>
+			<field reporter:label="Hold Cancel Date/Time" name="cancel_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Bib Record link" name="bib_rec" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Currently Frozen" name="frozen" reporter:datatype="bool"/>
+			<field reporter:label="Thaw Date (if frozen)" name="thaw_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Shelf Time" name="shelf_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Cancelation cause" name="cancel_cause" reporter:datatype="link" />
+			<field reporter:label="Cancelation note" name="cancel_note" reporter:datatype="text" />
+			<field reporter:label="Top of Queue" name="cut_in_line" reporter:datatype="bool" />
+			<field reporter:label="Is Mint Condition" name="mint_condition" reporter:datatype="bool" />
+			<field reporter:label="Shelf Expire Time" name="shelf_expire_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Current Shelf Lib" name="current_shelf_lib" reporter:datatype="org_unit"/>
+		</fields>
+		<links>
+			<link field="fulfillment_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="fulfillment_staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="pickup_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="selection_ou" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="current_copy" reltype="has_a" key="id" map="" class="acp"/>
+			<link field="request_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="usr_home_ou" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="bib_rec" reltype="might_have" key="id" map="" class="rhrr"/>
+			<link field="cancel_cause" reltype="might_have" key="id" map="" class="ahrcc"/>
+			<link field="current_shelf_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="usr_profile" reltype="has_a" key="id" map="" class="pgt"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="VIEW_HOLD" context_field="pickup_lib" />
+			</actions>
+		</permacrud>
+	</class>
+	<class id="aahr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::aged_hold_request" oils_persist:tablename="action.aged_hold_request" reporter:core="true" reporter:label="Aged Hold Request">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.hold_request_id_seq">
+			<field reporter:label="Status" name="status" oils_persist:virtual="true" />
+			<field reporter:label="Capture Date/Time" name="capture_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Currently Targeted Copy" name="current_copy" />
+			<field reporter:label="Notify by Email?" name="email_notify" reporter:datatype="bool"/>
+			<field reporter:label="Hold Expire Date/Time" name="expire_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Fulfilling Library" name="fulfillment_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Fulfilling Staff" name="fulfillment_staff" />
+			<field reporter:label="Fulfillment Date/Time" name="fulfillment_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Hold Type" name="hold_type" reporter:datatype="text"/>
+			<field reporter:label="Holdable Formats (for M-type hold)" name="holdable_formats" reporter:datatype="text"/>
+			<field reporter:label="Hold ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Notify by Phone?" name="phone_notify" reporter:datatype="bool"/>
+			<field reporter:label="Notify by SMS?" name="sms_notify" reporter:datatype="bool"/>
+			<field reporter:label="Pickup Library" name="pickup_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Last Targeting Date/Time" name="prev_check_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Requesting Library" name="request_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Request Date/Time" name="request_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Patron ZIP" name="usr_post_code" reporter:datatype="text"/>
+			<field reporter:label="Patron Home Library" name="usr_home_ou" reporter:datatype="link"/>
+			<field reporter:label="Patron Profile Group" name="usr_profile" reporter:datatype="link"/>
+			<field reporter:label="Patron Birth Year" name="usr_birth_year" reporter:datatype="int"/>
+			<field reporter:label="Staff Placed?" name="staff_placed" reporter:datatype="bool"/>
+			<field reporter:label="Item Selection Depth" name="selection_depth" />
+			<field reporter:label="Selection Locus" name="selection_ou" reporter:datatype="org_unit"/>
+			<field reporter:label="Target Object ID" name="target" reporter:datatype="link"/>
+			<field reporter:label="Hold Cancel Date/Time" name="cancel_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Bib Record link" name="bib_rec" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Currently Frozen" name="frozen" reporter:datatype="bool"/>
+			<field reporter:label="Thaw Date (if frozen)" name="thaw_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Shelf Time" name="shelf_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Cancelation cause" name="cancel_cause" reporter:datatype="link" />
+			<field reporter:label="Cancelation note" name="cancel_note" reporter:datatype="text" />
+			<field reporter:label="Top of Queue" name="cut_in_line" reporter:datatype="bool" />
+			<field reporter:label="Is Mint Condition" name="mint_condition" reporter:datatype="bool" />
+			<field reporter:label="Shelf Expire Time" name="shelf_expire_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Current Shelf Lib" name="current_shelf_lib" reporter:datatype="org_unit"/>
+		</fields>
+		<links>
+			<link field="fulfillment_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="fulfillment_staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="pickup_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="selection_ou" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="current_copy" reltype="has_a" key="id" map="" class="acp"/>
+			<link field="request_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="usr_home_ou" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="bib_rec" reltype="might_have" key="id" map="" class="rhrr"/>
+			<link field="cancel_cause" reltype="might_have" key="id" map="" class="ahrcc"/>
+			<link field="current_shelf_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="usr_profile" reltype="has_a" key="id" map="" class="pgt"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="VIEW_HOLD" context_field="pickup_lib" />
+			</actions>
+		</permacrud>
+	</class>
+
 	<class id="aou" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::org_unit" oils_persist:tablename="actor.org_unit" reporter:label="Organizational Unit" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_id_seq">
 			<field reporter:label="Subordinate Organizational Units" name="children" oils_persist:virtual="true" reporter:datatype="org_unit"/>

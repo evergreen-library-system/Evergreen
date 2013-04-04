@@ -524,6 +524,210 @@ CREATE VIEW action.unfulfilled_hold_max_loop AS
       GROUP BY 1;
 
 
+CREATE TABLE action.aged_hold_request (
+    usr_post_code		TEXT,
+    usr_home_ou		INT	NOT NULL,
+    usr_profile		INT	NOT NULL,
+    usr_birth_year		INT,
+    staff_placed        BOOLEAN NOT NULL,
+    LIKE action.hold_request
+);
+ALTER TABLE action.aged_hold_request
+      ADD PRIMARY KEY (id),
+      DROP COLUMN usr,
+      DROP COLUMN requestor,
+      DROP COLUMN sms_carrier,
+      ALTER COLUMN phone_notify TYPE BOOLEAN
+            USING CASE WHEN phone_notify IS NULL OR phone_notify = '' THEN FALSE ELSE TRUE END,
+      ALTER COLUMN sms_notify TYPE BOOLEAN
+            USING CASE WHEN sms_notify IS NULL OR sms_notify = '' THEN FALSE ELSE TRUE END,
+      ALTER COLUMN phone_notify SET NOT NULL,
+      ALTER COLUMN sms_notify SET NOT NULL;
+CREATE INDEX aged_hold_request_target_idx ON action.aged_hold_request (target);
+CREATE INDEX aged_hold_request_pickup_lib_idx ON action.aged_hold_request (pickup_lib);
+CREATE INDEX aged_hold_request_current_copy_idx ON action.aged_hold_request (current_copy);
+CREATE INDEX aged_hold_request_fulfillment_staff_idx ON action.aged_hold_request ( fulfillment_staff );
+
+CREATE OR REPLACE VIEW action.all_hold_request AS
+    SELECT DISTINCT
+           COALESCE(a.post_code, b.post_code) AS usr_post_code,
+           p.home_ou AS usr_home_ou,
+           p.profile AS usr_profile,
+           EXTRACT(YEAR FROM p.dob)::INT AS usr_birth_year,
+           CAST(ahr.requestor <> ahr.usr AS BOOLEAN) AS staff_placed,
+           ahr.id,
+           ahr.request_time,
+           ahr.capture_time,
+           ahr.fulfillment_time,
+           ahr.checkin_time,
+           ahr.return_time,
+           ahr.prev_check_time,
+           ahr.expire_time,
+           ahr.cancel_time,
+           ahr.cancel_cause,
+           ahr.cancel_note,
+           ahr.target,
+           ahr.current_copy,
+           ahr.fulfillment_staff,
+           ahr.fulfillment_lib,
+           ahr.request_lib,
+           ahr.selection_ou,
+           ahr.selection_depth,
+           ahr.pickup_lib,
+           ahr.hold_type,
+           ahr.holdable_formats,
+           CASE
+           WHEN ahr.phone_notify IS NULL THEN FALSE
+           WHEN ahr.phone_notify = '' THEN FALSE
+           ELSE TRUE
+           END AS phone_notify,
+           ahr.email_notify,
+           CASE
+           WHEN ahr.sms_notify IS NULL THEN FALSE
+           WHEN ahr.sms_notify = '' THEN FALSE
+           ELSE TRUE
+           END AS sms_notify,
+           ahr.frozen,
+           ahr.thaw_date,
+           ahr.shelf_time,
+           ahr.cut_in_line,
+           ahr.mint_condition,
+           ahr.shelf_expire_time,
+           ahr.current_shelf_lib
+    FROM action.hold_request ahr
+         JOIN actor.usr p ON (ahr.usr = p.id)
+         LEFT JOIN actor.usr_address a ON (p.mailing_address = a.id)
+         LEFT JOIN actor.usr_address b ON (p.billing_address = b.id)
+    UNION ALL
+    SELECT 
+           usr_post_code,
+           usr_home_ou,
+           usr_profile,
+           usr_birth_year,
+           staff_placed,
+           id,
+           request_time,
+           capture_time,
+           fulfillment_time,
+           checkin_time,
+           return_time,
+           prev_check_time,
+           expire_time,
+           cancel_time,
+           cancel_cause,
+           cancel_note,
+           target,
+           current_copy,
+           fulfillment_staff,
+           fulfillment_lib,
+           request_lib,
+           selection_ou,
+           selection_depth,
+           pickup_lib,
+           hold_type,
+           holdable_formats,
+           phone_notify,
+           email_notify,
+           sms_notify,
+           frozen,
+           thaw_date,
+           shelf_time,
+           cut_in_line,
+           mint_condition,
+           shelf_expire_time,
+           current_shelf_lib
+    FROM action.aged_hold_request;
+
+CREATE OR REPLACE FUNCTION action.age_hold_on_delete () RETURNS TRIGGER AS $$
+DECLARE
+BEGIN
+    -- Archive a copy of the old row to action.aged_hold_request
+
+    INSERT INTO action.aged_hold_request
+           (usr_post_code,
+            usr_home_ou,
+            usr_profile,
+            usr_birth_year,
+            staff_placed,
+            id,
+            request_time,
+            capture_time,
+            fulfillment_time,
+            checkin_time,
+            return_time,
+            prev_check_time,
+            expire_time,
+            cancel_time,
+            cancel_cause,
+            cancel_note,
+            target,
+            current_copy,
+            fulfillment_staff,
+            fulfillment_lib,
+            request_lib,
+            selection_ou,
+            selection_depth,
+            pickup_lib,
+            hold_type,
+            holdable_formats,
+            phone_notify,
+            email_notify,
+            sms_notify,
+            frozen,
+            thaw_date,
+            shelf_time,
+            cut_in_line,
+            mint_condition,
+            shelf_expire_time,
+            current_shelf_lib)
+      SELECT 
+           usr_post_code,
+           usr_home_ou,
+           usr_profile,
+           usr_birth_year,
+           staff_placed,
+           id,
+           request_time,
+           capture_time,
+           fulfillment_time,
+           checkin_time,
+           return_time,
+           prev_check_time,
+           expire_time,
+           cancel_time,
+           cancel_cause,
+           cancel_note,
+           target,
+           current_copy,
+           fulfillment_staff,
+           fulfillment_lib,
+           request_lib,
+           selection_ou,
+           selection_depth,
+           pickup_lib,
+           hold_type,
+           holdable_formats,
+           phone_notify,
+           email_notify,
+           sms_notify,
+           frozen,
+           thaw_date,
+           shelf_time,
+           cut_in_line,
+           mint_condition,
+           shelf_expire_time,
+           current_shelf_lib
+        FROM action.all_hold_request WHERE id = OLD.id;
+
+    RETURN OLD;
+END;
+$$ LANGUAGE 'plpgsql';
+
+CREATE TRIGGER action_hold_request_aging_tgr
+	BEFORE DELETE ON action.hold_request
+	FOR EACH ROW
+	EXECUTE PROCEDURE action.age_hold_on_delete ();
+
 CREATE TABLE action.fieldset (
     id              SERIAL          PRIMARY KEY,
     owner           INT             NOT NULL REFERENCES actor.usr (id)
