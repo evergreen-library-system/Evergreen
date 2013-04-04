@@ -303,6 +303,24 @@ openils.Util.addOnLoad(
                     "name" : "record_entry"
                 });
             dist_grid.overrideEditWidgets.record_entry.shove = {};
+            dist_grid.onPostCreate = function() { this.refresh(); };
+            dist_grid.createPaneOnSubmit = function(fmObject, opts, pane) {
+                fmObject.isnew(1);
+                fieldmapper.standardRequest(
+                    ['open-ils.serial', 'open-ils.serial.distribution.fleshed.batch.update'],
+                    {
+                        "async":false,
+                        "params":[openils.User.authtoken, [fmObject]],
+                        "oncomplete": function(r) {
+                            // TODO: adjust create method to send back fmObject,
+                            // then pass through to avoid need for onPostCreate
+                            // refresh
+                            // TODO: check for and handle possible errors
+                            pane.onPostSubmit(null, []);
+                        }
+                    }
+                );
+            };
             if (sub_id == 'new') {
                 ssub_grid.overrideEditWidgets.record_entry =
                         new dijit.form.TextBox({
