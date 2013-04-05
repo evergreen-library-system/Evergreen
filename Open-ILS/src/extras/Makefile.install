@@ -115,7 +115,8 @@ EXTRA_DEBS_PRECISE = \
     libsru-perl \
     libnet-z3950-simple2zoom-perl \
     libuuid-tiny-perl \
-    libnet-https-any-perl
+    libnet-https-any-perl \
+    librpc-xml-perl
 
 FEDORA_RPMS = \
 	aspell \
@@ -148,6 +149,7 @@ FEDORA_RPMS = \
 	perl-Net-IP \
 	perl-Net-SSH2 \
 	perl-OLE-Storage_Lite \
+	perl-RPC-XML \
 	perl-Spreadsheet-WriteExcel \
 	perl-Text-Aspell \
 	perl-Text-CSV \
@@ -250,9 +252,14 @@ CPAN_MODULES_MARC_RECORD = \
 CPAN_MODULES_FORCE = \
 	Class::DBI::Frozen::301
 
+# Debian Squeeze needs the following additional CPAN modules.
+CPAN_MODULES_SQUEEZE = \
+	RPC::XML
+
 # Lucid Lynx needs the following additional CPAN modules.
 CPAN_MODULES_LUCID = \
-    Rose::URI
+    Rose::URI \
+    RPC::XML
 
 # Precise Pangolin needs the following CPAN modules. All others are
 # available as debs.
@@ -273,7 +280,7 @@ install: install_cpan install_js_sm install_cpan_force
 fedora: install_fedora_rpms install_cpan_fedora install_cpan_marc install
 
 debian-squeeze: squeeze generic_debian
-squeeze: install_pgsql_client_backport_debs_91  install_extra_debs_squeeze
+squeeze: install_pgsql_client_backport_debs_91  install_extra_debs_squeeze install_cpan_squeeze
 generic_debian: install_debs install_yaz test_for_libdbi_pkg install debian_sys_config install_libdbi
 
 # Needs for Ubuntu Lucid Lynx (10.04 LTS):
@@ -324,6 +331,10 @@ install_cpan_fedora:
 	for m in $(FEDORA_CPAN); do \
 		echo "force install $$m" | perl -MCPAN -e shell;\
 	done
+
+# Install the CPAN modules needed for Squeeze
+install_cpan_squeeze:
+	for m in $(CPAN_MODULES_SQUEEZE); do perl -MCPAN -e "install \"$$m\";"; done
 
 # Install the CPAN modules needed for Lucid
 install_cpan_lucid:
