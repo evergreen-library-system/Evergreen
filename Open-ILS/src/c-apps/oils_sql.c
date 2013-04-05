@@ -2468,9 +2468,8 @@ int doRetrieve( osrfMethodContext* ctx ) {
 */
 static char* jsonNumberToDBString( osrfHash* field, const jsonObject* value ) {
 	growing_buffer* val_buf = buffer_init( 32 );
-	const char* numtype = get_datatype( field );
 
-    // If the value is a number and the DB field is numeric, no quotes needed
+	// If the value is a number and the DB field is numeric, no quotes needed
 	if( value->type == JSON_NUMBER && !strcmp( get_primitive( field ), "number") ) {
 		buffer_fadd( val_buf, jsonObjectGetString( value ) );
 	} else {
