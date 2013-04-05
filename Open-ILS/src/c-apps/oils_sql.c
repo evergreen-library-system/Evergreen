@@ -2414,8 +2414,7 @@ int doRetrieve( osrfMethodContext* ctx ) {
 	@return Pointer to a newly allocated string.
 
 	The input object is typically a JSON_NUMBER, but it may be a JSON_STRING as long as
-	its contents are numeric.  A non-numeric string is likely to result in invalid SQL,
-	or (what is worse) valid SQL that is wrong.
+	its contents are numeric.  A non-numeric string is likely to result in invalid SQL.
 
 	If the datatype of the receiving field is not numeric, wrap the value in quotes.
 
@@ -2425,22 +2424,9 @@ static char* jsonNumberToDBString( osrfHash* field, const jsonObject* value ) {
 	growing_buffer* val_buf = buffer_init( 32 );
 	const char* numtype = get_datatype( field );
 
-	// For historical reasons the following contains cruft that could be cleaned up.
-	if( !strncmp( numtype, "INT", 3 ) ) {
-		if( value->type == JSON_NUMBER )
-			//buffer_fadd( val_buf, "%ld", (long)jsonObjectGetNumber(value) );
-			buffer_fadd( val_buf, jsonObjectGetString( value ) );
-		else {
-			buffer_fadd( val_buf, jsonObjectGetString( value ) );
-		}
-
-	} else if( !strcmp( numtype, "NUMERIC" )) {
-		if( value->type == JSON_NUMBER )
-			buffer_fadd( val_buf, jsonObjectGetString( value ));
-		else {
-			buffer_fadd( val_buf, jsonObjectGetString( value ));
-		}
-
+    // If the value is a number and the DB field is numeric, no quotes needed
+	if( value->type == JSON_NUMBER && !strcmp( get_primitive( field ), "number") ) {
+		buffer_fadd( val_buf, jsonObjectGetString( value ) );
 	} else {
 		// Presumably this was really intended to be a string, so quote it
 		char* str = jsonObjectToSimpleString( value );
