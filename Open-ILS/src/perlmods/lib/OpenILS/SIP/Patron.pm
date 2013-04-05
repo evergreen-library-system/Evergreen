@@ -467,7 +467,7 @@ sub hold_items {
     push( @holds, OpenILS::SIP::clean_text($self->__hold_to_title($_)) ) for @$holds;
 
     return (defined $start and defined $end) ? 
-        [ $holds[($start-1)..($end-1)] ] : 
+        [ @holds[($start-1)..($end-1)] ] :
         \@holds;
 }
 
@@ -574,7 +574,7 @@ sub overdue_items {
     @overdues = @o;
 
     return (defined $start and defined $end) ? 
-        [ $overdues[($start-1)..($end-1)] ] : \@overdues;
+        [ @overdues[($start-1)..($end-1)] ] : \@overdues;
 }
 
 sub __circ_to_barcode {
@@ -623,7 +623,7 @@ sub charged_items {
     @charges = @c;
 
     return (defined $start and defined $end) ? 
-        [ $charges[($start-1)..($end-1)] ] : 
+        [ @charges[($start-1)..($end-1)] ] :
         \@charges;
 }
 
@@ -646,7 +646,7 @@ sub fine_items {
     my $log_status = $@ ? 'ERROR: ' . $@ : 'OK';
     syslog('LOG_DEBUG', 'OILS: Patron->fine_items() ' . $log_status);
     return (defined $start and defined $end) ? 
-        [ $fines[($start-1)..($end-1)] ] : \@fines;
+        [ @fines[($start-1)..($end-1)] ] : \@fines;
 }
 
 # not currently supported
