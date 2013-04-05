@@ -54,11 +54,19 @@ BLOCK build_author_links;
         
         # schema.org changes
         IF type == 'author';
-            iprop = ' itemprop="accountablePerson"';
+            IF args.schema.itemtype && args.schema.itemtype.match('MusicAlbum');
+                iprop = ' itemtype="http://schema.org/MusicGroup" itemscope itemprop="byArtist"';
+            ELSE;
+                iprop = ' itemprop="accountablePerson"';
+            END;
         ELSIF type == 'added';
             iprop = ' itemprop="contributor"';
         END;
-        '<a href="' _ url _ '"' _ iprop _ '>' _ term.replace('^\s+', '') _ '</a>';
+        '<a href="' _ url _ '"' _ iprop _ '>';
+        IF iprop; '<span itemprop="name">'; END;
+        term.replace('^\s+', '');
+        IF iprop; '</span>'; END;
+        '</a>';
         FOREACH link880 IN graphics;
             diratt = '';
             IF link880.dir;
