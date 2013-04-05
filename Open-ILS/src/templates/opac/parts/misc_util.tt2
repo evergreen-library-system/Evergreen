@@ -8,7 +8,8 @@
         args.schema.itemtype = {};
         schema_typemap = {};
         schema_typemap.a = 'http://schema.org/Book';
-        schema_typemap.j = 'http://schema.org/MusicRecording';
+        schema_typemap.e = 'http://schema.org/Map';
+        schema_typemap.j = 'http://schema.org/MusicAlbum';
 
         args.isbns = [];
         FOR isbn IN xml.findnodes('//*[@tag="020"]/*[@code="a"]');
