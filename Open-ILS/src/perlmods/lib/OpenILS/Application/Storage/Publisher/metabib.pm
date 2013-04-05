@@ -3117,6 +3117,7 @@ sub query_parser_fts {
 	my $param_statuses = '$${' . join(',', map { s/\$//go; "\"$_\""} @statuses) . '}$$';
 	my $param_locations = '$${' . join(',', map { s/\$//go; "\"$_\""} @location) . '}$$';
 	my $staff = ($self->api_name =~ /staff/ or $query->parse_tree->find_modifier('staff')) ? "'t'" : "'f'";
+	my $deleted_search = ($query->parse_tree->find_modifier('deleted')) ? "'t'" : "'f'";
 	my $metarecord = ($self->api_name =~ /metabib/ or $query->parse_tree->find_modifier('metabib') or $query->parse_tree->find_modifier('metarecord')) ? "'t'" : "'f'";
 	my $param_pref_ou = $pref_ou || 'NULL';
 
@@ -3133,6 +3134,7 @@ sub query_parser_fts {
                     $param_limit\:\:INT,
                     $metarecord\:\:BOOL,
                     $staff\:\:BOOL,
+                    $deleted_search\:\:BOOL,
                     $param_pref_ou\:\:INT
                 );
     SQL
