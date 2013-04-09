@@ -1881,7 +1881,8 @@ sub bib_container_items_via_search {
             flesh => 1,
             flesh_fields => {"cbrebi" => \@flesh_fields}
         }
-    ]);
+    ], {substream => 1});
+
     unless ($items) {
         $logger->warn(
             "bib_container_items_via_search() couldn't get bucket items: " .
