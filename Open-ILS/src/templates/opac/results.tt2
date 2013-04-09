@@ -58,6 +58,9 @@
                             [% CGI.param('modifier').grep('available').size ? ' checked="checked"' : '' %] />
                         [% l('Limit to available items') %]
                     </label>
+                    [% IF CGI.param('detail_record_view') %]
+                        <input type="hidden" name="detail_record_view" value="1" />
+                    [% END %]
                 <div class="clear-both"></div>
             </div>
         </div>
