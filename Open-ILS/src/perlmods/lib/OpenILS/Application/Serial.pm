@@ -1590,6 +1590,148 @@ sub _prepare_summaries {
     return $e->die_event unless $e->$method($summary);
 }
 
+
+__PACKAGE__->register_method(
+    method    => 'regen_summaries',
+    api_name  => 'open-ils.serial.regenerate_summaries',
+    api_level => 1,
+    argc      => 1,
+    signature => {
+        'desc'   => 'Regenerate all the generated_coverage fields for given distributions or subscriptions (depending on params given). Params are expected to be hash members.',
+        'params' => [ {
+                 name => 'sdist_ids',
+                 desc => 'IDs of the distribution whose coverage you want to regenerate',
+                 type => 'array'
+            },
+            {
+                 name => 'ssub_ids',
+                 desc => 'IDs of the subscriptions whose coverage you want to regenerate',
+                 type => 'array'
+            }
+        ],
+        'return' => {
+            desc => 'Returns undef if successful, event if failed',
+            type => 'mixed'
+        }
+#TODO: best practices for return values
+    }
+);
+
+sub regen_summaries {
+    my ($self, $conn, $auth, $opts) = @_;
+
+    my $e = new_editor("authtoken" => $auth, "xact" => 1);
+    return $e->die_event unless $e->checkauth;
+    # Perm checks not necessary since generated_coverage is akin to
+    # caching of data, not actual editing.  XXX This might need more
+    # consideration.
+    #return $editor->die_event unless $editor->allowed("RECEIVE_SERIAL");
+
+    my $evt = _regenerate_summaries($e, $opts);
+    if ($U->event_code($evt)) {
+        $e->rollback;
+        return $evt;
+    }
+
+    $e->commit;
+
+    return undef;
+}
+
+sub _regenerate_summaries {
+    my ($e, $opts) = @_;
+
+    $logger->debug('_regenerate_summaries with opts: ' . OpenSRF::Utils::JSON->perl2JSON($opts));
+    my @sdist_ids;
+    if ($opts->{'ssub_ids'}) {
+        foreach my $ssub_id (@{$opts->{'ssub_ids'}}) {
+            my $sdist_ids_temp = $e->search_serial_distribution(
+                { 'subscription' => $ssub_id },
+                { 'idlist' => 1 }
+            );
+            push(@sdist_ids, @$sdist_ids_temp);
+        }
+    } elsif ($opts->{'sdist_ids'}) {
+        @sdist_ids = @$opts->{'sdist_ids'};
+    }
+
+    foreach my $sdist_id (@sdist_ids) {
+        # get distribution
+        my $sdist = $e->retrieve_serial_distribution($sdist_id)
+            or return $e->die_event;
+
+# See large comment below
+#        my $has_merged_mfhd;
+        foreach my $type (@MFHD_NAMES) {
+            # get issuances
+            my $issuances = $e->search_serial_issuance([
+                {
+                    "+sdist" => {"id" => $sdist_id},
+                    "+sitem" => {"status" => "Received"},
+                    "+scap" => {"type" => $type}
+                },
+                {
+                    "join" => {
+                        "sitem" => {},
+                        "scap" => {},
+                        "ssub" => {
+                            "join" => {"sdist" =>{}}
+                        }
+                    },
+                    "order_by" => {
+                        "siss" => "date_published"
+                    }
+                }
+            ]) or return $e->die_event;
+
+# This level of nuance doesn't appear to be necessary.
+# At the moment, we pass down an empty issuance list,
+# and the inner methods will "do the right thing" and
+# pull in the MFHD if called for, but in some cases not
+# ultimately generate any coverage.  The code below is
+# broken in cases where we delete the last issuance, since
+# the now empty summary never gets updated.
+#
+# Leaving this code for now (2014/04) in case pushing
+# the logic down ends up being too slow or complicates
+# the inner methods beyond their scope.
+#
+#            if (!@$issuances and !$has_merged_mfhd) {
+#                if (!defined($has_merged_mfhd)) {
+#                    # even without issuances, we can generate a summary
+#                    # from a merged MFHD record, so look for one
+#                    my $mfhd_ids = $e->search_serial_record_entry(
+#                        {
+#                            '+sdist' => {
+#                                'id' => $sdist_id,
+#                                'summary_method' => 'merge_with_sre'
+#                            }
+#                        },
+#                        {
+#                            'join' => { 'sdist' => {} },
+#                            'idlist' => 1
+#                        }
+#                    );
+#                    if ($mfhd_ids and @$mfhd_ids) {
+#                        $has_merged_mfhd = 1;
+#                    } else {
+#                        next;
+#                    }
+#                } else {
+#                    next; # abort to prevent empty summary creation (i.e. '[]')
+#                }
+#            }
+            my $evt = _prepare_summaries($e, $issuances, $sdist, $type);
+            if ($U->event_code($evt)) {
+                $e->rollback;
+                return $evt;
+            }
+        }
+    }
+
+    return undef;
+}
+
 sub _unit_by_iss_and_str {
     my ($e, $issuance, $stream) = @_;
 
