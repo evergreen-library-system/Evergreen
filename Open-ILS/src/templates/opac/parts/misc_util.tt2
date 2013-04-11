@@ -110,6 +110,7 @@
 
         graphic_880s = [];
         get_graphic_880s(target_field='100');
+        get_graphic_880s(target_field='110');
         args.graphic_authors = graphic_880s;
         args.authors = [];
         FOR author IN args.graphic_authors;
