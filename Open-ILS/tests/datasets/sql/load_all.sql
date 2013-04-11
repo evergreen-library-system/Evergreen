@@ -6,6 +6,9 @@ BEGIN;
 -- build functions, tables
 \i env_create.sql
 
+-- load concerto authorities
+\i auth_concerto.sql
+
 -- load concerto bibs
 \i bibs_concerto.sql
 
