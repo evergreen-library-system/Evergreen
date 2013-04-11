@@ -1503,3 +1503,11 @@ a.preflib_change {
 #patron_usr_barcode_not_found {
     font-weight: bold; color: [% css_colors.text_alert %];
 }
+
+.record_title {
+    font-weight: bold;
+}
+
+.record_author {
+    font-style: italic;
+}

@@ -48,12 +48,10 @@
                                                 [% END %]
                                             </td>
                                             <td class='result_table_title_cell' name='result_table_title_cell'>
-                                                <div class="bold">
-                                                    <a name='record_[% rec.id %]' name='item_title'
+                                                    <a class='record_title' name='record_[% rec.id %]' name='item_title'
                                                         href="[% mkurl(ctx.opac_root _ '/record/' _ rec.id) %]"
                                                         [% HTML.attributes(title => l('Display record details for "[_1]"', attrs.title)) %]
                                                         class='search_link'>[% attrs.title | html %]</a>
-                                                </div>
 [%-
 FOR entry IN attrs.graphic_titles;
     FOR alt IN entry.graphic;
@@ -71,12 +69,12 @@ END;
 -%]
                                                 <div>
                                                     <div>
-                                                        <em><a title="[% l("Perform an Author Search") %]"
-                                                                name='item_author'
+                                                        <a title="[% l("Perform an Author Search") %]"
+                                                                class="record_author" name='item_author'
                                                                 href="[%- 
                                                                     authorquery = attrs.author | replace('[#"^$\+\-,\.:;&|\[\]()]', '');
                                                                     mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, ['page'])
-                                                                    -%]">[% attrs.author | html %]</a></em>
+                                                                    -%]">[% attrs.author | html %]</a>
                                                                     [%- UNLESS CGI.param('detail_record_view')
                                                                         OR (show_more_details.default == 'true'
                                                                         OR show_more_details.default == 'hide')
