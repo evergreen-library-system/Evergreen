@@ -14,7 +14,7 @@
     "BARCODE_IN_USE" : "Barcode is already in use",
     "SEE_ALL" : "See All",
     "DUPE_USERNAME" : "Username is already in use",
-    "RESET_PASSWORD" : "Reset Password",
+    "RESET_PASSWORD" : "Generate Password",
     "VERIFY_PASSWORD" : "Verify Password",
     "PARENT_OR_GUARDIAN" : "Parent/Guardian",
     "USER_SETTINGS" : "User Settings",
