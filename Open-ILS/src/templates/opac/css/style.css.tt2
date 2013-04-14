@@ -692,8 +692,12 @@ tr.result_table_row > td.result_table_pic_header {
     padding-left: 1em;
 }
 
-.result_numbers {
-    font-size: [% css_fonts.size_small %]; padding-left:15px; white-space: nowrap; width: 320px;
+.result_number {
+    padding-left:15px; white-space: nowrap; width: 320px;
+}
+
+.result_count_number {
+   font-weight: bold;
 }
 
 .result_table_subtable {
