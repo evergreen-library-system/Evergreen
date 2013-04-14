@@ -7,7 +7,7 @@
         FOR node IN xml.findnodes('//*[@tag="' _ target_field _ '"]');
             raw_vals = [];
             core_val = '';
-            FOR subnode IN node.findnodes('./*[not(contains("w 0 5 6 8 9", @code))]');
+            FOR subnode IN node.findnodes('./*[not(contains("w 0 4 5 6 8 9", @code))]');
                 raw_vals.push(subnode.textContent());
             END;
             core_val = raw_vals.join(" ");
@@ -111,6 +111,7 @@
         graphic_880s = [];
         get_graphic_880s(target_field='100');
         get_graphic_880s(target_field='110');
+        get_graphic_880s(target_field='111');
         args.graphic_authors = graphic_880s;
         args.authors = [];
         FOR author IN args.graphic_authors;
