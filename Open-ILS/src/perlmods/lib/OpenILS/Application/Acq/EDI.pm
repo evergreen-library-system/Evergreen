@@ -135,7 +135,7 @@ sub retrieve_core {
                             password => $account->password,
                             in_dir => $account->in_dir
                         },
-                        remote_file => $remote_file,
+                        remote_file => {ilike => $remote_file},
                         status      => {'in' => [qw/ processed /]},
                     },
                     { join => {"acqedi" => {}}, limit => 1 }
