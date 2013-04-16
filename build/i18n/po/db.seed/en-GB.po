@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-03-15 19:42-0400\n"
-"PO-Revision-Date: 2012-09-19 10:42+0000\n"
-"Last-Translator: Jonathan Field <Unknown>\n"
+"PO-Revision-Date: 2013-04-10 09:00+0000\n"
+"Last-Translator: Alfredo Hernández <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-16 05:56+0000\n"
-"X-Generator: Launchpad (build 16532)\n"
+"X-Launchpad-Export-Date: 2013-04-11 05:11+0000\n"
+"X-Generator: Launchpad (build 16550)\n"
 
 #: 950.data.seed-values.sql:170 950.data.seed-values.sql:4821
 msgid "Internal ID"
@@ -704,7 +704,7 @@ msgstr "Monographic component part"
 
 #: 950.data.seed-values.sql:2520
 msgid "Vandelay"
-msgstr ""
+msgstr "Vandelay"
 
 #: 950.data.seed-values.sql:6343
 msgid "Manuscript language material"
@@ -1291,7 +1291,7 @@ msgstr "Cherokee"
 
 #: 950.data.seed-values.sql:10317
 msgid "Alternate no attempt to code"
-msgstr ""
+msgstr "Alternate no attempt to code"
 
 #: 950.data.seed-values.sql:10195
 msgid "Heading -- Geographic Subdivision"
@@ -2504,7 +2504,7 @@ msgstr "Ponape"
 
 #: 950.data.seed-values.sql:1612
 msgid "Cataloging Administrator"
-msgstr "Cataloging Administrator"
+msgstr "Cataloguing Administrator"
 
 #: 950.data.seed-values.sql:5897
 msgid "Siksika"
@@ -2640,7 +2640,7 @@ msgstr "Import or Overlay failed"
 
 #: 950.data.seed-values.sql:4888
 msgid "URL Verification Queue"
-msgstr ""
+msgstr "URL Verification Queue"
 
 #: 950.data.seed-values.sql:6111
 msgid "Malayalam"

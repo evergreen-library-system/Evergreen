@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-03-15 19:41+0000\n"
-"PO-Revision-Date: 2012-05-02 18:44+0000\n"
-"Last-Translator: Warren Layton <Unknown>\n"
+"PO-Revision-Date: 2013-04-10 09:06+0000\n"
+"Last-Translator: Alfredo Hernández <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-16 06:01+0000\n"
-"X-Generator: Launchpad (build 16532)\n"
+"X-Launchpad-Export-Date: 2013-04-11 05:12+0000\n"
+"X-Generator: Launchpad (build 16550)\n"
 
 #: common.exception
 msgid ""
@@ -250,7 +250,7 @@ msgstr "Barcode Warning"
 
 #: circ.standalone
 msgid "Standalone"
-msgstr "Standalone"
+msgstr "Stand-alone"
 
 #: circ.duplicate_scan.msg
 msgid "This barcode has already been scanned."
@@ -534,7 +534,7 @@ msgstr "%1$s registered %3$s (%2$s)"
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Hold ID  5 - Hold Type
 #: staff.circ.work_log_hold_placed.message
 msgid "%1$s placed hold %4$s (%5$s) for %3$s (%2$s)"
-msgstr ""
+msgstr "%1$s placed hold %4$s (%5$s) for %3$s (%2$s)"
 
 #: menu.cmd_browse_holds.tab
 msgid "Hold Browser"
@@ -606,7 +606,7 @@ msgstr "Statistical Category Editor"
 
 #: menu.cmd_non_cat_type_edit.tab
 msgid "Non-Cataloged Type Editor"
-msgstr "Non-Cataloged Type Editor"
+msgstr "Non-Catalogued Type Editor"
 
 #: menu.cmd_copy_location_edit.tab
 msgid "Copy Location Editor"
@@ -908,9 +908,9 @@ msgid ""
 msgstr ""
 "Network or server failure.  Please check your Internet connection to %1$s "
 "and choose Retry Network.  If you need to enter Offline Mode, choose Ignore "
-"Errors in this and subsequent dialogs.  If you believe this error is due to "
-"a bug in Evergreen and not network problems, please contact your help desk "
-"or friendly Evergreen administrators, and give them this information:"
+"Errors in this and subsequent dialogues.  If you believe this error is due "
+"to a bug in Evergreen and not network problems, please contact your help "
+"desk or friendly Evergreen administrators, and give them this information:"
 
 #: network.server.method
 msgid "method=%1$s"
@@ -1127,7 +1127,7 @@ msgstr "MARC Federated Search"
 
 #: menu.cmd_acq_from_bib.tab
 msgid "Load Catalog Record IDs"
-msgstr "Load Catalog Record IDs"
+msgstr "Load Catalogue Record IDs"
 
 #: menu.cmd_acq_unified_search.tab
 msgid "Acquisitions Search"
@@ -1159,7 +1159,7 @@ msgstr "Batch Receive"
 
 #: menu.cmd_url_verify.tab
 msgid "Link Checker"
-msgstr ""
+msgstr "Link Checker"
 
 #: menu.cmd_booking_resource.tab
 msgid "Resources"
@@ -1179,7 +1179,7 @@ msgstr "Reservation Return"
 
 #: menu.cmd_server_admin_conify_remote_account.tab
 msgid "Remote Accounts"
-msgstr ""
+msgstr "Remote Accounts"
 
 #: menu.cmd_booking_pull_list.tab
 msgid "Booking Pull List"
@@ -1195,7 +1195,7 @@ msgstr "Manage Authorities"
 
 #: menu.cmd_search_prefs.tab
 msgid "Search Preferences"
-msgstr ""
+msgstr "Search Preferences"
 
 #: menu.local_admin.barcode_completion.tab
 msgid "Barcode Completion"
@@ -1211,7 +1211,7 @@ msgstr "Hold Policies"
 
 #: menu.local_admin.item_attribute_editor.tab
 msgid "Admin Item Attribute Editor"
-msgstr ""
+msgstr "Admin Item Attribute Editor"
 
 #: menu.local_admin.work_log.tab
 msgid "Work Log"
@@ -1421,7 +1421,7 @@ msgstr "This application may have unsaved data. Exit it anyway?"
 #: hotkeys.Default
 msgctxt "hotkeys.Default"
 msgid "Default"
-msgstr ""
+msgstr "Default"
 
 #: hotkeys.None
 msgid "No Hotkeys"
@@ -1490,7 +1490,7 @@ msgstr "None"
 #: staff.main.button_bar.default
 msgctxt "staff.main.button_bar.default"
 msgid "Default"
-msgstr ""
+msgstr "Default"
 
 #: util.hide_elements.title
 msgid "Hide UI Elements"
