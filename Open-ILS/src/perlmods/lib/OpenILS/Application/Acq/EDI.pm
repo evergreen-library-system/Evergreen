@@ -218,11 +218,24 @@ sub process_retrieval {
         $incoming->translate_time('NOW');
 
         if ($msg_hash->{purchase_order}) {
-            $logger->info("EDI: processing message for PO " . $msg_hash->{purchase_order});
-            $incoming->purchase_order($msg_hash->{purchase_order});
-            unless ($e->retrieve_acq_purchase_order($incoming->purchase_order)) {
-                $logger->warn("EDI: received order response for nonexistent PO.  Skipping...");
-                next;
+            # Some vendors just put their name where there ought to be a number,
+            # and others put alphanumeric strings that mean nothing to us, so
+            # we sure won't match a PO in the system this way. We can pick
+            # up PO number later from the lineitems themselves if necessary.
+
+            if ($msg_hash->{purchase_order} !~ /^\d+$/) {
+                $logger->warn("EDI: PO identifier is non-numeric. Continuing.");
+                # No "next" here; we'll process this and just not link to acqpo.
+            } else {
+                $logger->info("EDI: processing message for PO " .
+                    $msg_hash->{purchase_order});
+                $incoming->purchase_order($msg_hash->{purchase_order});
+                unless ($e->retrieve_acq_purchase_order(
+                        $incoming->purchase_order)) {
+                    $logger->warn("EDI: received order response for " .
+                        "nonexistent PO.  Skipping...");
+                    next;
+                }
             }
         }
 
