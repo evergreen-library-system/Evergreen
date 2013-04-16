@@ -174,6 +174,7 @@ CREATE TABLE config.metabib_class (
     label    TEXT    NOT NULL UNIQUE,
     buoyant  BOOL    DEFAULT FALSE NOT NULL,
     restrict BOOL    DEFAULT FALSE NOT NULL,
+    combined BOOL    DEFAULT FALSE NOT NULL,
     a_weight NUMERIC  DEFAULT 1.0 NOT NULL,
     b_weight NUMERIC  DEFAULT 0.4 NOT NULL,
     c_weight NUMERIC  DEFAULT 0.2 NOT NULL,

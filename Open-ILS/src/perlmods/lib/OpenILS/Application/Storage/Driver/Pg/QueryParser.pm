@@ -217,6 +217,7 @@ sub add_search_field_id_map {
     my $field = shift;
     my $id = shift;
     my $weight = shift;
+    my $combined = shift;
 
     $self->add_search_field( $class => $field );
     $self->search_field_id_map->{by_id}{$id} = { classname => $class, field => $field, weight => $weight };
@@ -298,6 +299,18 @@ sub search_class_weights {
     $self->custom_data->{class_weights}->{$class} ||= [0.1, 0.2, 0.4, 1.0];
     $self->custom_data->{class_weights}->{$class} = [$d_weight, $c_weight, $b_weight, $a_weight] if $a_weight;
     return $self->custom_data->{class_weights}->{$class};
+}
+
+sub search_class_combined {
+    my $self = shift;
+    my $class = shift;
+    my $c = shift;
+
+    $self->custom_data->{class_combined} ||= {};
+    # Note: This reverses the A-D order, putting D first, because that is how the call actually works in PG
+    $self->custom_data->{class_combined}->{$class} ||= 0;
+    $self->custom_data->{class_combined}->{$class} = 1 if $c && $c =~ /^(?:t|y|1)/i;
+    return $self->custom_data->{class_combined}->{$class};
 }
 
 sub class_ts_config {
@@ -425,12 +438,13 @@ sub initialize_filter_normalizers {
     }
 }
 
-sub initialize_class_weights {
+sub initialize_search_class_weights {
     my $self = shift;
     my $classes = shift;
 
     for my $search_class (@$classes) {
         __PACKAGE__->search_class_weights( $search_class->name, $search_class->a_weight, $search_class->b_weight, $search_class->c_weight, $search_class->d_weight );
+        __PACKAGE__->search_class_combined( $search_class->name, $search_class->combined );
     }
 }
 
@@ -839,13 +853,17 @@ sub flatten {
                 if ($node->dummy_count < @{$node->only_atoms} ) {
                     $with .= ",\n     " if $with;
                     $with .= "${talias}_xq AS (SELECT ". $node->tsquery ." AS tsq,". $node->tsquery_rank ." AS tsq_rank )";
-                    $from .= "\n" . ${spc} x 6 . "JOIN $ctable AS com ON (com.record = fe.source";
-                    if (@field_ids) {
-                        $from .= " AND com.metabib_field IN (" . join(',',@field_ids) . "))";
+                    if ($node->combined_search) {
+                        $from .= "\n" . ${spc} x 6 . "JOIN $ctable AS com ON (com.record = fe.source";
+                        if (@field_ids) {
+                            $from .= " AND com.metabib_field IN (" . join(',',@field_ids) . "))";
+                        } else {
+                            $from .= " AND com.metabib_field IS NULL)";
+                        }
+                        $from .= "\n" . ${spc} x 6 . "JOIN ${talias}_xq ON (com.index_vector @@ ${talias}_xq.tsq)";
                     } else {
-                        $from .= " AND com.metabib_field IS NULL)";
+                        $from .= "\n" . ${spc} x 6 . "JOIN ${talias}_xq ON (fe.index_vector @@ ${talias}_xq.tsq)";
                     }
-                    $from .= "\n" . ${spc} x 6 . "JOIN ${talias}_xq ON (com.index_vector @@ ${talias}_xq.tsq)";
                 } else {
                     $from .= "\n" . ${spc} x 6 . ", (SELECT NULL::tsquery AS tsq, NULL:tsquery AS tsq_rank ) AS ${talias}_xq";
                 }
@@ -1322,6 +1340,11 @@ sub combined_table {
     $self->{ctable} = $ctable if ($ctable);
     return $self->{ctable} if $self->{ctable};
     return $self->combined_table( 'metabib.combined_' . $self->classname . '_field_entry' );
+}
+
+sub combined_search {
+    my $self = shift;
+    return $self->plan->QueryParser->search_class_combined($self->classname);
 }
 
 sub table_alias {
