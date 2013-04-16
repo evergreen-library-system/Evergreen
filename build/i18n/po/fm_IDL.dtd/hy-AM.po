@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-03-15 19:38-0400\n"
-"PO-Revision-Date: 2013-02-24 14:50+0000\n"
+"PO-Revision-Date: 2013-04-01 14:38+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-16 05:56+0000\n"
-"X-Generator: Launchpad (build 16532)\n"
+"X-Launchpad-Export-Date: 2013-04-02 05:19+0000\n"
+"X-Generator: Launchpad (build 16546)\n"
 
 #: field.aou.settings.label:5412
 msgid "Settings"
@@ -711,7 +711,7 @@ msgstr "Լեզվի ինդեքս"
 
 #: field.cbho.rtime.label:2407
 msgid "Hold Request Time"
-msgstr ""
+msgstr "Պահման հարցման ժամանակ"
 
 #: field.ahn.hold.label:4175 field.aufh.hold.label:6267
 msgid "Hold"
@@ -745,7 +745,7 @@ msgstr "Տուգանքի մակարդակ"
 
 #: field.cbho.pprox.label:2399
 msgid "Capture Lib to Pickup Lib Proximity"
-msgstr ""
+msgstr "Capture Lib to Pickup Lib Proximity"
 
 #: field.sdist.streams.label:4438
 msgid "Streams"
@@ -881,7 +881,7 @@ msgstr "Դաշտի բազմության սյունակի արժեք"
 
 #: field.aoupa.prox_adjustment.label:4945
 msgid "Proximity Adjustment"
-msgstr ""
+msgstr "Մոտարկման ճշգրտում"
 
 #: field.ccm.sip2_media_type.label:1288
 msgid "SIP2 Media Type"
@@ -1528,7 +1528,7 @@ msgstr "A քաշ"
 
 #: field.cbho.aprox.label:2401
 msgid "Adjusted Circ Lib to Pickup Lib Proximity"
-msgstr ""
+msgstr "Adjusted Circ Lib to Pickup Lib Proximity"
 
 #: field.atc.persistant_transfer.label:1977
 #: field.iatc.persistant_transfer.label:10218
@@ -1963,7 +1963,7 @@ msgstr "Տարիքային (ընթերցողից անկախ) սպասարկու�
 
 #: class.cbho.label:2395
 msgid "Best-Hold Sort Order"
-msgstr ""
+msgstr "Best-Hold Sort Order"
 
 #: field.vmsp.quality.label:650
 msgid "Importance"
@@ -1979,7 +1979,7 @@ msgstr "Օգտվողի խմբի քարտեզ"
 
 #: field.cbho.approx.label:2402
 msgid "Adjusted Capture Location to Pickup Lib Proximity"
-msgstr ""
+msgstr "Adjusted Capture Location to Pickup Lib Proximity"
 
 #: field.aua.street2.label:3473 field.aal.street2.label:3493
 #: field.acqpca.street2.label:7113 field.stgma.street2.label:8785
@@ -2021,7 +2021,7 @@ msgstr "Ընդհանուր"
 
 #: field.cbho.depth.label:2405
 msgid "Hold Selection Depth"
-msgstr ""
+msgstr "Պահման ընտրության խորություն"
 
 #: field.viiad.tag.label:328 field.vmsp.tag.label:647 field.vmsq.tag.label:682
 #: field.acsaf.tag.label:2089 field.acsbf.tag.label:2121
@@ -2162,7 +2162,7 @@ msgstr "Իրադարձության օգտվողի տվյալ"
 
 #: field.aoupa.item_circ_lib.label:4937
 msgid "Item Circ Lib"
-msgstr ""
+msgstr "Նյութի Circ Lib"
 
 #: field.rhcrpbap.copy_count_everywhere.label:9877
 msgid "Holdable Copy Count Everywhere"
@@ -2225,7 +2225,7 @@ msgstr "Թիրախ պաշարների տեսակներ"
 
 #: field.aoupa.absolute_adjustment.label:4944
 msgid "Absolute adjustment?"
-msgstr ""
+msgstr "Բացարձակ մոտարկում։"
 
 #: field.cuat.ehow.label:2991
 msgid "Event Mechanism"
@@ -2416,7 +2416,7 @@ msgstr "Հարցված հեղինակային գրառման բաղադրիչի 
 
 #: field.cbho.cut.label:2404
 msgid "Hold Cut-in-line State"
-msgstr ""
+msgstr "Hold Cut-in-line State"
 
 #: field.aout.opac_label.label:5700
 msgid "OPAC Label"
@@ -2642,7 +2642,7 @@ msgstr "Ստուգիր վճարի մանրամասները"
 
 #: field.acqpro.default_copy_count.label:6871
 msgid "Default # Copies"
-msgstr ""
+msgstr "Լռակյաց # պատճեններ"
 
 #: class.acqpc.label:7074
 msgid "Provider Contact"
@@ -2683,7 +2683,7 @@ msgstr "Մատնահետք"
 
 #: class.vibtg.label:243
 msgid "Import/Overlay Field Groups for Removal"
-msgstr ""
+msgstr "Import/Overlay Field Groups for Removal"
 
 #: field.ateo.data.label:973
 msgid "Data"
@@ -3312,7 +3312,7 @@ msgstr "Փնջի նյութի ID"
 
 #: field.cbho.hprox.label:2400
 msgid "Circ Lib to Request Lib Proximity"
-msgstr ""
+msgstr "Circ Lib to Request Lib Proximity"
 
 #: field.ahr.sms_carrier.label:5124 field.ahopl.sms_carrier.label:5251
 msgid "Notifications SMS Carrier"
@@ -4147,7 +4147,7 @@ msgstr "Ահանզանգման տեքստի ID"
 
 #: field.aoupa.hold_request_lib.label:4940
 msgid "Hold Request Lib"
-msgstr ""
+msgstr "Hold Request Lib"
 
 #: field.rud.general_division.label:8431
 msgid "General Demographic Division"
@@ -4627,7 +4627,7 @@ msgstr "Հաշվետվություն"
 
 #: class.aoupa.label:4934
 msgid "Org Unit Proximity Adjustment"
-msgstr ""
+msgstr "Org Unit Proximity Adjustment"
 
 #: field.cmsa.field_class.label:2325 field.cmf.field_class.label:2369
 msgid "Class"
@@ -5587,7 +5587,7 @@ msgstr "Սպասարկման տեսակ (ՄԵԸՔ)"
 
 #: field.vibtg.always_apply.label:253
 msgid "Always Apply"
-msgstr ""
+msgstr "Միշտ կիրառի"
 
 #: class.acqliad.label:8028
 msgid "Line Item Attribute Definition"
@@ -5954,7 +5954,7 @@ msgstr "Հիշեցնել աշխատակազմին"
 
 #: field.cbho.htime.label:2406
 msgid "Copy Has Circulated From Home Lately"
-msgstr ""
+msgstr "Պատճենը ավելի ուշ սպասարկվել է Տնից"
 
 #: field.ccvm.is_simple.label:879
 msgid "Is Simple Selector"
@@ -6362,7 +6362,7 @@ msgstr "Ենթադաշտի ID"
 
 #: field.aoupa.item_owning_lib.label:4938
 msgid "Item Owning Lib"
-msgstr ""
+msgstr "Նյութը տնօրինող գրադ"
 
 #: field.rmsr.biblio_record.label:8366 field.rssr.biblio_record.label:8390
 #: field.rsr.biblio_record.label:8420
@@ -6723,7 +6723,7 @@ msgstr "Մատակարարի նշանակած կոդ"
 
 #: field.cbho.shtime.label:2408
 msgid "Copy Has Been Home At All Lately"
-msgstr ""
+msgstr "Copy Has Been Home At All Lately"
 
 #: field.ahopl.usr_display_name.label:5278
 msgid "User Display Name"
@@ -7224,7 +7224,7 @@ msgstr "Դաշտի բազմության անուն"
 
 #: field.acqliat.order_ident.label:7944 field.acqlia.order_ident.label:7987
 msgid "Order Identifier"
-msgstr ""
+msgstr "Պատվերի բնութագրիչ"
 
 #: field.mrd.bib_level.label:3349
 msgid "BLvl"
@@ -7451,7 +7451,7 @@ msgstr "Պաշար"
 
 #: field.aoupa.hold_pickup_lib.label:4939
 msgid "Hold Pickup Lib"
-msgstr ""
+msgstr "Պահման ստանալու գրադ"
 
 #: field.cam.value.label:2443
 msgid "Audience"
