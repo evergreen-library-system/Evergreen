@@ -741,9 +741,15 @@ sub toSQL {
     $rel = "1.0/($rel)::NUMERIC";
 
     my $mra_join = 'INNER JOIN metabib.record_attr mrd ON m.source = mrd.id';
-    my $bre_join = $self->find_modifier('deleted') ?
-        'INNER JOIN biblio.record_entry bre ON m.source = bre.id AND bre.deleted' :
-        '';
+
+    my $bre_join = '';
+    if ($self->find_modifier('deleted')) {
+        $bre_join = 'INNER JOIN biblio.record_entry bre ON m.source = bre.id AND bre.deleted';
+        # The above suffices for filters too when the #deleted modifier
+        # is in use.
+    } elsif ($$flat_plan{uses_bre}) {
+        $bre_join = 'INNER JOIN biblio.record_entry bre ON m.source = bre.id';
+    }
     
     my $rank = $rel;
 
@@ -814,6 +820,7 @@ sub flatten {
     my $from = shift || '';
     my $where = shift || '';
     my $with = '';
+    my $uses_bre = 0;
 
     my @rank_list;
     for my $node ( @{$self->query_nodes} ) {
@@ -972,6 +979,8 @@ sub flatten {
                     $with .= ",\n     " if $with;
                     $with .= $$subnode{with};
                 }
+
+                $uses_bre = $$subnode{uses_bre};
             }
         } else {
 
@@ -1104,6 +1113,8 @@ sub flatten {
                 # bre.create_date and bre.edit_date filtering
                 my $datefilter = $filter->name;
 
+                $uses_bre = 1;
+
                 if ($filter && $filter->args && scalar(@{$filter->args}) > 0 && scalar(@{$filter->args}) < 3) {
                     my ($cstart, $cend) = @{$filter->args};
         
@@ -1136,6 +1147,8 @@ sub flatten {
                     }
                 }
             } elsif ($filter->name eq 'bib_source') {
+                $uses_bre = 1;
+
                 if (@{$filter->args} > 0) {
                     $where .= $joiner if $where ne '';
                     $where .= "${NOT}COALESCE(bre.source IN ("
@@ -1147,7 +1160,7 @@ sub flatten {
     }
     warn "flatten(): full filter where => $where\n" if $self->QueryParser->debug;
 
-    return { rank_list => \@rank_list, from => $from, where => $where,  with => $with };
+    return { rank_list => \@rank_list, from => $from, where => $where,  with => $with, uses_bre => $uses_bre };
 }
 
 
