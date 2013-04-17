@@ -1,11 +1,9 @@
 BEGIN;
 
 --Check if we can apply the upgrade.
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+--SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
 
 
-CREATE TYPE search.search_result AS ( id BIGINT, rel NUMERIC, record INT, total INT, checked INT, visible INT, deleted INT, excluded INT );
-CREATE TYPE search.search_args AS ( id INT, field_class TEXT, field_name TEXT, table_alias TEXT, term TEXT, term_type TEXT );
 
 CREATE OR REPLACE FUNCTION search.query_parser_fts (
 

@@ -741,6 +741,9 @@ sub toSQL {
     $rel = "1.0/($rel)::NUMERIC";
 
     my $mra_join = 'INNER JOIN metabib.record_attr mrd ON m.source = mrd.id';
+    my $bre_join = $self->find_modifier('deleted') ?
+        'INNER JOIN biblio.record_entry bre ON m.source = bre.id AND bre.deleted' :
+        '';
     
     my $rank = $rel;
 
@@ -792,6 +795,7 @@ SELECT  $key AS id,
   FROM  metabib.metarecord_source_map m
         $$flat_plan{from}
         $mra_join
+        $bre_join
   WHERE 1=1
         $flat_where
   GROUP BY 1
