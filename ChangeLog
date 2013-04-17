@@ -1,109 +1,45 @@
-commit 693c174dd014b9b686c9eb169c75f2e5e5837416
-Author: Dan Scott <dscott@laurentian.ca>
-Date:   Wed Jan 16 00:00:22 2013 -0500
-
-    Bumping version numbers for 2.1.5
-    
-    Also, add pertinent release notes entry.
-    
-    Signed-off-by: Dan Scott <dscott@laurentian.ca>
-
-1	1	Open-ILS/src/perlmods/lib/OpenILS/Application.pm
-1	2	Open-ILS/src/sql/Pg/002.schema.config.sql
-2	2	Open-ILS/xul/staff_client/windowssetup.nsi
-4	4	README
-35	0	RELEASE_NOTES.txt
-2	2	configure.ac
-
-commit 6fbd73b6456c34195ca1b975dbaa4dda8127696f
+commit 778083fbf7082e1cafcd3f2c66f296cf34519e4d
 Author: Galen Charlton <gmc@esilibrary.com>
-Date:   Tue Jan 15 11:30:41 2013 -0500
+Date:   Wed Apr 17 14:37:59 2013 -0400
 
-    LP#1098377: protect against even more cstore segfaults
-    
-    Following up on the preceding patch, passing null
-    as the savepoint name to savepoint.release and
-    savepoint.rollback would also segfault cstore.
+    bump up version numbers for 2.1.6
     
     Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application.pm
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+4	4	README
+8	0	RELEASE_NOTES.txt
+2	2	configure.ac
+
+commit 8c00f551d54cf69ee401ba4961bba4bdfef4b7dc
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Fri Apr 5 01:53:55 2013 -0400
+
+    Prevent compiler warning about unused numtype var
+    
+    There was a dangling variable left around that was making noise in the
+    compiler. Credit to Jeff Godin for the heads-up.
+    
     Signed-off-by: Dan Scott <dscott@laurentian.ca>
-
-12	0	Open-ILS/src/c-apps/oils_sql.c
-
-commit 32dafc405e39159adf9ad15fd78c07d4c0c38070
-Author: Bill Erickson <berick@esilibrary.com>
-Date:   Tue Jan 15 10:58:16 2013 -0500
-
-    Verify savepoint name is non-null
-    
-    Before we attempt to mangle the name, let's ensure that it's non-null.
-    Otherwise, segfaults ensue.
-    
     Signed-off-by: Bill Erickson <berick@esilibrary.com>
     Signed-off-by: Galen Charlton <gmc@esilibrary.com>
 
-6	0	Open-ILS/src/c-apps/oils_sql.c
+1	2	Open-ILS/src/c-apps/oils_sql.c
 
-commit 8e5dfdc39c84d86e62c27670fd06cb2a7eac8a27
-Author: Dan Scott <dscott@laurentian.ca>
-Date:   Fri Jan 11 01:32:13 2013 -0500
+commit 0aaec933cce3d53638cce0754825521478719095
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Apr 5 01:52:16 2013 -0400
 
-    Protect against overly long savepoint names
+    Address SQL injection vulnerability in SQL ORM layer
     
-    Per http://postgresql.org/docs/9.1/static/sql-syntax-lexical.html#SQL-SYNTAX-IDENTIFIERS,
-    the maximum identifier length works out to being 63 bytes (+1 for the
-    null terminator), so to avoid potential memory pressure by a 10GB string
-    somehow being passed in as the savepoint name, malloc no more than 64
-    bytes and copy no more than 63 bytes from the incoming name to the
-    escaped name.
+    If the user-supplied value and the db column are both numbers
+    (jsonObject->type == JSON_NUMBER, get_primitive(field) == "number") then
+    don't quote. Otherwise, quote.
     
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
     Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
     Signed-off-by: Galen Charlton <gmc@esilibrary.com>
 
-16	2	Open-ILS/src/c-apps/oils_sql.c
-
-commit 4866458029567fc2af36a382dcc7fe3316e74350
-Author: Galen Charlton <gmc@esilibrary.com>
-Date:   Fri Jan 11 02:30:50 2013 -0500
-
-    LP#1098377: sanitize savepoint names
-    
-    When invoking open-ils.{cstore,pcrud,rstore}.savepoint.*, the
-    caller supplies a name for the savepoint.  However, the savepoint
-    names could be constructed so that the caller could execute
-    arbitrary SQL.  This patch sanitizes the name so that it contains
-    only alphanumeric and underscore characters.
-    
-    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
-    Signed-off-by: Dan Scott <dscott@laurentian.ca>
-    
-    Conflicts:
-    	Open-ILS/src/c-apps/oils_sql.c
-
-37	3	Open-ILS/src/c-apps/oils_sql.c
-
-commit 4e641eb976d0ed22cb96c76287622d34b32a886f
-Author: Dan Scott <dscott@laurentian.ca>
-Date:   Fri Nov 2 12:28:39 2012 -0400
-
-    Update ChangeLog for 2.1.4 release
-    
-    Signed-off-by: Dan Scott <dscott@laurentian.ca>
-
-70	211	ChangeLog
-
-commit 2df1d44645c07dd4a54d2d1392f76a3f8bdfbe90
-Author: Dan Scott <dscott@laurentian.ca>
-Date:   Thu Nov 1 23:33:20 2012 -0400
-
-    Bumping version numbers for 2.1.4
-    
-    Signed-off-by: Dan Scott <dscott@laurentian.ca>
-
-1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
-1	1	Open-ILS/src/perlmods/lib/OpenILS/Application.pm
-1	0	Open-ILS/src/sql/Pg/002.schema.config.sql
-1	1	Open-ILS/xul/staff_client/chrome/content/main/about.html
-1	1	Open-ILS/xul/staff_client/defaults/preferences/prefs.js
-5	5	README
-2	2	configure.ac
+4	18	Open-ILS/src/c-apps/oils_sql.c
