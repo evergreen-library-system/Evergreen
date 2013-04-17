@@ -3002,8 +3002,8 @@ sub list_record_formats {
 			  docs		  => 'http://www.loc.gov/marcxml/',
 			  schema_location => 'http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd',
 			},
-		  marc21 => { docs => 'http://www.loc.gov/marc/' }
 		},
+		{ marc21 => { docs => 'http://www.loc.gov/marc/' } }
 	);
 
 	for my $type ( keys %record_xslt ) {

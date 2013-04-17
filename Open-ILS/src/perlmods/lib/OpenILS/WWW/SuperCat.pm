@@ -1713,6 +1713,8 @@ sub item_age_browse {
     my $apache = shift;
     return Apache2::Const::DECLINED if (-e $apache->filename);
 
+    check_child_init();
+
     my $cgi = new CGI;
     my $year = (gmtime())[5] + 1900;
 
