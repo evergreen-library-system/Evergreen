@@ -1,6 +1,14 @@
 Evergreen 2.1 release notes
 ===========================
 
+Upgrade notes for 2.1.6
+------------------------
+
+SQL injection fix
+~~~~~~~~~~~~~~~~~
+This release fixes a parameter quoting issue in the ORM that
+could allow arbitrary SQL to be executed.
+
 Upgrade notes
 -------------
 

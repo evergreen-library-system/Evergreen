@@ -58,7 +58,7 @@ CREATE TABLE config.upgrade_log (
 );
 
 INSERT INTO config.upgrade_log (version) VALUES ('0726'); -- denials
-INSERT INTO config.upgrade_log (version) VALUES ('2.1.5');
+INSERT INTO config.upgrade_log (version) VALUES ('2.1.6');
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
