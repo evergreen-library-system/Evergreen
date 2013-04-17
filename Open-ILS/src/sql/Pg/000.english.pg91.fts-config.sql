@@ -45,12 +45,12 @@ ALTER TEXT SEARCH CONFIGURATION ' || lang || '_nostop ALTER MAPPING FOR asciiwor
 END LOOP;
 END;
 $$;
---CREATE TEXT SEARCH CONFIGURATION title ( COPY = english_nostop );
---CREATE TEXT SEARCH CONFIGURATION author ( COPY = english_nostop );
---CREATE TEXT SEARCH CONFIGURATION subject ( COPY = english_nostop );
+CREATE TEXT SEARCH CONFIGURATION title ( COPY = english_nostop );
+CREATE TEXT SEARCH CONFIGURATION author ( COPY = english_nostop );
+CREATE TEXT SEARCH CONFIGURATION subject ( COPY = english_nostop );
 CREATE TEXT SEARCH CONFIGURATION keyword ( COPY = english_nostop );
---CREATE TEXT SEARCH CONFIGURATION identifier ( COPY = english_nostop );
---CREATE TEXT SEARCH CONFIGURATION series ( COPY = english_nostop );
+CREATE TEXT SEARCH CONFIGURATION identifier ( COPY = english_nostop );
+CREATE TEXT SEARCH CONFIGURATION series ( COPY = english_nostop );
 CREATE TEXT SEARCH CONFIGURATION "default" ( COPY = english_nostop );
 
 
