@@ -642,7 +642,47 @@ sub copy_perm_org {
 
 
 sub set_item_lost {
-    my($class, $e, $copy_id) = @_;
+    my ($class, $e, $copy_id) = @_;
+
+    return $class->set_item_lost_or_lod(
+        $e, $copy_id,
+        perm => 'SET_CIRC_LOST',
+        status => OILS_COPY_STATUS_LOST,
+        ous_proc_fee => OILS_SETTING_LOST_PROCESSING_FEE,
+        ous_void_od => OILS_SETTING_VOID_OVERDUE_ON_LOST,
+        bill_type => 3,
+        bill_fee_type => 4,
+        bill_note => 'Lost Materials',
+        bill_fee_note => 'Lost Materials Processing Fee',
+        event => 'COPY_MARKED_LOST',
+        stop_fines => OILS_STOP_FINES_LOST,
+        at_hook => 'lost'
+    );
+}
+
+sub set_item_long_overdue {
+    my ($class, $e, $copy_id) = @_;
+
+    return $class->set_item_lost_or_lod(
+        $e, $copy_id,
+        perm => 'SET_CIRC_LONG_OVERDUE',
+        status => 16, # Long Overdue
+        ous_proc_fee => 'circ.longoverdue_materials_processing_fee',
+        ous_void_od => 'circ.void_overdue_on_longoverdue',
+        bill_type => 10,
+        bill_fee_type => 11,
+        bill_note => 'Long Overdue Materials',
+        bill_fee_note => 'Long Overdue Materials Processing Fee',
+        event => 'COPY_MARKED_LONG_OVERDUE',
+        stop_fines => 'LONGOVERDUE',
+        at_hook => 'longoverdue'
+    );
+}
+
+# LOST or LONGOVERDUE
+# basic process is the same.  details change.
+sub set_item_lost_or_lod {
+    my ($class, $e, $copy_id, %args) = @_;
 
     my $copy = $e->retrieve_asset_copy([
         $copy_id, 
@@ -657,21 +697,21 @@ sub set_item_lost {
         {checkin_time => undef, target_copy => $copy->id} )->[0]
             or return $e->die_event;
 
-    $e->allowed('SET_CIRC_LOST', $circ->circ_lib) or return $e->die_event;
+    $e->allowed($args{perm}, $circ->circ_lib) or return $e->die_event;
 
-    return $e->die_event(OpenILS::Event->new('COPY_MARKED_LOST'))
-        if $copy->status == OILS_COPY_STATUS_LOST;
+    return $e->die_event(OpenILS::Event->new($args{event}))
+	    if $copy->status == $args{status};
 
     # ---------------------------------------------------------------------
     # fetch the related org settings
     my $proc_fee = $U->ou_ancestor_setting_value(
-        $owning_lib, OILS_SETTING_LOST_PROCESSING_FEE, $e) || 0;
+        $owning_lib, $args{ous_proc_fee}, $e) || 0;
     my $void_overdue = $U->ou_ancestor_setting_value(
-        $owning_lib, OILS_SETTING_VOID_OVERDUE_ON_LOST, $e) || 0;
+        $owning_lib, $args{ous_void_od}, $e) || 0;
 
     # ---------------------------------------------------------------------
     # move the copy into LOST status
-    $copy->status(OILS_COPY_STATUS_LOST);
+    $copy->status($args{status});
     $copy->editor($e->requestor->id);
     $copy->edit_date('now');
     $e->update_asset_copy($copy) or return $e->die_event;
@@ -679,22 +719,22 @@ sub set_item_lost {
     my $price = $U->get_copy_price($e, $copy, $copy->call_number);
 
     if( $price > 0 ) {
-        my $evt = OpenILS::Application::Circ::CircCommon->create_bill(
-            $e, $price, 3, 'Lost Materials', $circ->id);
+        my $evt = OpenILS::Application::Circ::CircCommon->create_bill($e, 
+            $price, $args{bill_type}, $args{bill_note}, $circ->id);
         return $evt if $evt;
     }
 
     # ---------------------------------------------------------------------
     # if there is a processing fee, charge that too
     if( $proc_fee > 0 ) {
-        my $evt = OpenILS::Application::Circ::CircCommon->create_bill(
-            $e, $proc_fee, 4, 'Lost Materials Processing Fee', $circ->id);
+        my $evt = OpenILS::Application::Circ::CircCommon->create_bill($e, 
+            $proc_fee, $args{bill_fee_type}, $args{bill_fee_note}, $circ->id);
         return $evt if $evt;
     }
 
     # ---------------------------------------------------------------------
     # mark the circ as lost and stop the fines
-    $circ->stop_fines(OILS_STOP_FINES_LOST);
+    $circ->stop_fines($args{stop_fines});
     $circ->stop_fines_time('now') unless $circ->stop_fines_time;
     $e->update_action_circulation($circ) or return $e->die_event;
 
@@ -709,9 +749,13 @@ sub set_item_lost {
     return $evt if $evt;
 
     my $ses = OpenSRF::AppSession->create('open-ils.trigger');
-    $ses->request('open-ils.trigger.event.autocreate', 'lost', $circ, $circ->circ_lib);
+    $ses->request(
+        'open-ils.trigger.event.autocreate', 
+        $args{at_hook}, $circ, $circ->circ_lib
+    );
 
-    my $evt2 = OpenILS::Utils::Penalty->calculate_penalties($e, $circ->usr, $U->xact_org($circ->id,$e));
+    my $evt2 = OpenILS::Utils::Penalty->calculate_penalties(
+        $e, $circ->usr, $U->xact_org($circ->id, $e));
     return $evt2 if $evt2;
 
     return undef;

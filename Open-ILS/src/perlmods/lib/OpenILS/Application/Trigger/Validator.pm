@@ -6,6 +6,7 @@ use OpenSRF::Utils qw/:datetime/;
 use OpenSRF::Utils::Logger qw/:logger/;
 use OpenILS::Const qw/:const/;
 use OpenILS::Application::AppUtils;
+use OpenILS::Utils::CStoreEditor qw/:funcs/;
 sub fourty_two { return 42 }
 sub NOOP_True { return 1 }
 sub NOOP_False { return 0 }
@@ -160,5 +161,31 @@ sub PatronBarred {
 sub PatronNotBarred {
     return !PatronBarred(@_);
 }
+
+# core type "circ".
+# Being "In Collections" means having the PATRON_IN_COLLECTIONS penalty 
+# applied to the user at or above the circ_lib of the target circ.
+sub PatronNotInCollections {
+    my ($self, $env) = @_;
+    my $user = $env->{target}->usr;
+    my $org = $env->{target}->circ_lib;
+
+    # beware environment fleshing
+    $user = $user->id if ref $user;
+    $org = $org->id if ref $org;
+
+    my $existing = new_editor()->search_actor_user_standing_penalty({
+        usr => $user,
+        org_unit => $U->get_org_ancestors($org, 1),
+        standing_penalty => 30, # PATRON_IN_COLLECTIONS
+        '-or' => [
+            {stop_date => undef},
+            {stop_date => {'>' => 'now'}}
+        ]
+    });
+
+    return @$existing ? 0 : 1;
+}
+
 
 1;
