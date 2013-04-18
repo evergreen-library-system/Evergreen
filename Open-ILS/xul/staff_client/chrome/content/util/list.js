@@ -11,7 +11,7 @@ util.list = function (id) {
 
     this.sub_sorts = [];
 
-    this.count_for_display = 0;
+    this.count_for_display = 1;
 
     if (!this.node) throw('Could not find element ' + id);
     switch(this.node.nodeName) {
