@@ -477,7 +477,7 @@ INSERT INTO permission.perm_list (id, code, description)
 INSERT INTO permission.perm_list (id, code, description) 
     VALUES ( 
         544, 
-        544,
+        'URL_VERIFY_UPDATE_SETTINGS',
         oils_i18n_gettext(
             544, 
             'Allows a user to configure URL verification org unit settings',
