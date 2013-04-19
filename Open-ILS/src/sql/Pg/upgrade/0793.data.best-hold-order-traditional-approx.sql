@@ -1,6 +1,6 @@
 BEGIN;
 
--- INSERT INTO config.upgrade_log (version) VALUES ('XXXX');
+SELECT evergreen.upgrade_deps_block_check('0792', :eg_version);
 
 UPDATE config.best_hold_order
 SET
