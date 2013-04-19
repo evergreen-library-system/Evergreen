@@ -289,17 +289,22 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
             var b_field = this.bibFieldByTag(field.tag);
 
             if (b_field) { // construct an marc authority record
-                af = b_field.authority_field();
+                var af = b_field.authority_field();
+
+                var sflist = [];                
+                for (var i = 0; i < field.subfields.length; i++) {
+                    if (af.sf_list().indexOf(field.subfields[i][0]) > -1) {
+                        sflist.push(field.subfields[i]);
+                    }
+                }
+
                 var m = new MARC.Record ({rtype:'AUT'});
                 m.appendFields(
                     new MARC.Field ({
                         tag : af.tag(),
                         ind1: field.ind1,
                         ind2: field.ind2,
-                        subfields: [dojo.filter(
-                            field.subfields,
-                            function (sf) { return (af.sf_list().indexOf(sf[0]) > -1) }
-                        )]
+                        subfields: sflist
                     })
                 );
 
