@@ -6,7 +6,7 @@
 # ----------------------------------------------------------------------------------
 # Point / to the opac - if you have a custom skin or locale, point at it here
 # ----------------------------------------------------------------------------------
-RedirectMatch 301 ^/$ /opac/en-US/skin/default/xml/index.xml
+RedirectMatch 301 ^/$ /eg/opac/home
 
 # ----------------------------------------------------------------------------------
 # Point / to the IP address redirector
@@ -35,7 +35,7 @@ RedirectMatch 301 ^/opac/extras/slimpac/advanced.html$ /opac/en-US/extras/slimpa
 # ----------------------------------------------------------------------------------
 # Configure the gateway
 # ----------------------------------------------------------------------------------
-OSRFGatewayConfig /openils/conf/opensrf_core.xml
+OSRFGatewayConfig @sysconfdir@/opensrf_core.xml
 # Translator memcache server.  Default is localhost
 # OSRFTranslatorCacheServer 127.0.0.1:11211
 
@@ -85,6 +85,50 @@ RewriteRule . - [E=OILS_OPAC_RID:%2,E=OILS_TIME_YEAR:%{TIME_YEAR}]
 # ----------------------------------------------------------------------------------
 RewriteCond %{REQUEST_URI} ^/opac/(.*?)/
 RewriteRule . - [E=locale:%1]
+
+# ----------------------------------------------------------------------------------
+# Rewrite JSPac->TPac with redirects
+# ----------------------------------------------------------------------------------
+
+# First things first, extract useful data
+# And we are going to start with a "this is the JSPac" check on each of these:
+# RewriteCond %{REQUEST_URI} ^/?opac/
+
+# Basic (overall) search type, if present
+# I am cheating and grabbing RT or TP because I dunno the difference between them.
+RewriteCond %{REQUEST_URI} ^/opac/
+RewriteCond %{QUERY_STRING} (^|[^0-9a-zA-Z])(rt|tp)=([^;&]*)
+RewriteRule . - [E=OILS_JSPAC_SEARCH_TYPE:qtype=%3;]
+
+# Basic (overall) search term(s), if present - NOTE: Not doing advanced search.
+RewriteCond %{REQUEST_URI} ^/opac/
+RewriteCond %{QUERY_STRING} (^|[^0-9a-zA-Z])t=([^;&]*)
+RewriteRule . - [E=OILS_JSPAC_SEARCH_TERMS:query=%2;]
+
+# Search Location, if present
+RewriteCond %{REQUEST_URI} ^/opac/
+RewriteCond %{QUERY_STRING} (^|[^0-9a-zA-Z])l=([^;&]*)
+RewriteRule . - [E=OILS_JSPAC_SEARCH_LOCATION:locg=%2;]
+
+# My Account
+RewriteRule /opac/[^/]*/skin/default/xml/myopac.xml /eg/opac/myopac/main?%{ENV:OILS_JSPAC_SEARCH_TYPE}%{ENV:OILS_JSPAC_SEARCH_TERMS}%{ENV:OILS_JSPAC_SEARCH_LOCATION} [NE,R,L]
+
+# Record Pages
+# /opac/en-US/skin/default/xml/rdetail.xml?r=32 -> /eg/opac/record/32
+RewriteCond %{QUERY_STRING} (^|[^0-9a-zA-Z])r=([^;&]*)
+RewriteRule /opac/.*/rdetail.xml /eg/opac/record/%2?%{ENV:OILS_JSPAC_SEARCH_TYPE}%{ENV:OILS_JSPAC_SEARCH_TERMS}%{ENV:OILS_JSPAC_SEARCH_LOCATION} [NE,R,L]
+
+# Bookbag Pages
+# /opac/extras/feed/bookbag/html-full/1 -> /eg/opac/results?bookbag=1;page=0;locg=1;depth=0
+RewriteRule /opac/extras/feed/bookbag/html-full/(\d*) /eg/opac/results?bookbag=$1;%{ENV:OILS_JSPAC_SEARCH_TYPE}%{ENV:OILS_JSPAC_SEARCH_TERMS}%{ENV:OILS_JSPAC_SEARCH_LOCATION} [NE,R,L]
+
+# Search Results Pages
+RewriteRule /opac/[^/]*/skin/[^/]*/xml/rresult.xml /eg/opac/results?%{ENV:OILS_JSPAC_SEARCH_TYPE}%{ENV:OILS_JSPAC_SEARCH_TERMS}%{ENV:OILS_JSPAC_SEARCH_LOCATION} [NE,R,L]
+
+# Basic Search (STILL not doing advanced)
+# Fallback! But only for things that end in xml, htm, or html
+# Images, CSS, etc can stick around.
+RewriteRule /opac/[^/]*/skin/.*(xml|htm|html|/)$ /eg/opac/home?%{ENV:OILS_JSPAC_SEARCH_TYPE}%{ENV:OILS_JSPAC_SEARCH_TERMS}%{ENV:OILS_JSPAC_SEARCH_LOCATION} [NE,R,L]
 
 # ----------------------------------------------------------------------------------
 # For sanity reasons, default indexes to Off
@@ -353,7 +397,7 @@ RewriteRule .? - [E=locale:%{HTTP:Accept-Language}]
 # ----------------------------------------------------------------------------------
 # Module for processing staff-client offline scripts lives here
 # ----------------------------------------------------------------------------------
-<Directory "/openils/var/cgi-bin/offline">
+<Directory "@localstatedir@/cgi-bin/offline">
     AddHandler cgi-script .pl
     AllowOverride None
     Options +ExecCGI
@@ -551,7 +595,7 @@ RewriteRule ^/conify/([a-z]{2}-[A-Z]{2})/global/(.*)$ /conify/global/$2 [E=local
 </Location>
 
 # OpenURL 0.1 searching based on OpenSearch
-RewriteMap openurl prg:/openils/bin/openurl_map.pl
+RewriteMap openurl prg:@bindir@/openurl_map.pl
 RewriteCond %{QUERY_STRING} (^.*$)
 RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
 
@@ -566,7 +610,7 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
     Require all granted 
 
     PerlSetVar OILSWebBasePath "/eg"
-    PerlSetVar OILSWebWebDir "/openils/var/web"
+    PerlSetVar OILSWebWebDir "@localstatedir@/web"
     PerlSetVar OILSWebDefaultTemplateExtension "tt2"
 
     # Enable Template-Toolkit error debugging messages (apache error log)
@@ -589,18 +633,18 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
     # select their preferred locale from a locale picker in the TPAC.
     #
     #PerlAddVar OILSWebLocale "en"
-    #PerlAddVar OILSWebLocale "/openils/var/data/locale/messages.en.po"
+    #PerlAddVar OILSWebLocale "@localstatedir@/data/locale/messages.en.po"
     #PerlAddVar OILSWebLocale "en_ca"
-    #PerlAddVar OILSWebLocale "/openils/var/data/locale/en-CA.po"
+    #PerlAddVar OILSWebLocale "@localstatedir@/data/locale/en-CA.po"
     #PerlAddVar OILSWebLocale "fr_ca"
-    #PerlAddVar OILSWebLocale "/openils/var/data/locale/fr-CA.po"
+    #PerlAddVar OILSWebLocale "@localstatedir@/data/locale/fr-CA.po"
 
     # Set the default locale: defaults to en-US
     #PerlAddVar OILSWebDefaultLocale "fr_ca"
     
     # Templates will be loaded from the following paths in reverse order.
-    PerlAddVar OILSWebTemplatePath "/openils/var/templates"
-    #PerlAddVar OILSWebTemplatePath "/openils/var/templates_localskin"
+    PerlAddVar OILSWebTemplatePath "@localstatedir@/templates"
+    #PerlAddVar OILSWebTemplatePath "@localstatedir@/templates_localskin"
 
     #-------------------------------------------------
     # Added Content Configuration
@@ -659,7 +703,7 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
 </Location>
 <Location /eg/kpac>
     PerlSetVar OILSWebContextLoader "OpenILS::WWW::EGKPacLoader"
-    PerlSetVar KPacConfigFile "/openils/conf/kpac.xml.example"
+    PerlSetVar KPacConfigFile "@sysconfdir@/kpac.xml.example"
     ExpiresActive On
     ExpiresByType text/html "access plus 5 seconds"
 </Location>

@@ -2,11 +2,11 @@
 
 LogLevel info 
 # - log locally
-CustomLog /var/log/apache2/access.log combined
-ErrorLog /var/log/apache2/error.log
+# CustomLog /var/log/apache2/access.log combined
+# ErrorLog /var/log/apache2/error.log
 # - log to syslog 
-# CustomLog "|/usr/bin/logger -p local7.info" common
-# ErrorLog  "|logger -p local7.error"
+CustomLog "|/usr/bin/logger -p local7.info" common
+ErrorLog syslog:local7
 
 
 # ----------------------------------------------------------------------------------
@@ -14,7 +14,7 @@ ErrorLog /var/log/apache2/error.log
 # ----------------------------------------------------------------------------------
 
 # - needed by CGIs
-PerlRequire /etc/apache2/startup.pl
+PerlRequire /etc/apache2/eg_startup
 PerlChildInitHandler OpenILS::WWW::Reporter::child_init
 PerlChildInitHandler OpenILS::WWW::SuperCat::child_init
 PerlChildInitHandler OpenILS::WWW::AddedContent::child_init
@@ -24,7 +24,7 @@ PerlChildInitHandler OpenILS::WWW::AutoSuggest::child_init
 # ----------------------------------------------------------------------------------
 # Set some defaults for our working directories
 # ----------------------------------------------------------------------------------
-<Directory /openils/var/web>
+<Directory @localstatedir@/web>
    Require all granted
 </Directory>
 
@@ -32,7 +32,7 @@ PerlChildInitHandler OpenILS::WWW::AutoSuggest::child_init
 # ----------------------------------------------------------------------------------
 # XUL directory
 # ----------------------------------------------------------------------------------
-<Directory /openils/var/web/xul>
+<Directory @localstatedir@/web/xul>
    Options Indexes FollowSymLinks
    AllowOverride None
    Require all granted
@@ -42,17 +42,17 @@ PerlChildInitHandler OpenILS::WWW::AutoSuggest::child_init
 # ----------------------------------------------------------------------------------
 # Remove the language portion from the URL
 # ----------------------------------------------------------------------------------
-AliasMatch ^/opac/.*/skin/(.*)/(.*)/(.*) /openils/var/web/opac/skin/$1/$2/$3
-AliasMatch ^/opac/.*/extras/slimpac/(.*) /openils/var/web/opac/extras/slimpac/$1
-AliasMatch ^/opac/.*/extras/selfcheck/(.*) /openils/var/web/opac/extras/selfcheck/$1
+AliasMatch ^/opac/.*/skin/(.*)/(.*)/(.*) @localstatedir@/web/opac/skin/$1/$2/$3
+AliasMatch ^/opac/.*/extras/slimpac/(.*) @localstatedir@/web/opac/extras/slimpac/$1
+AliasMatch ^/opac/.*/extras/selfcheck/(.*) @localstatedir@/web/opac/extras/selfcheck/$1
 
 
 
 # ----------------------------------------------------------------------------------
 # System config CGI scripts go here
 # ----------------------------------------------------------------------------------
-Alias /cgi-bin/offline/ "/openils/var/cgi-bin/offline/"
-<Directory "/openils/var/cgi-bin/offline">
+Alias /cgi-bin/offline/ "@localstatedir@/cgi-bin/offline/"
+<Directory "@localstatedir@/cgi-bin/offline">
 	AddHandler cgi-script .cgi .pl
 	AllowOverride None
 	Options None
@@ -64,8 +64,8 @@ Alias /cgi-bin/offline/ "/openils/var/cgi-bin/offline/"
 # ----------------------------------------------------------------------------------
 # Updates folder
 # ----------------------------------------------------------------------------------
-Alias /updates/ "/openils/var/updates/pub/"
-<Directory "/openils/var/updates/pub">
+Alias /updates/ "@localstatedir@/updates/pub/"
+<Directory "@localstatedir@/updates/pub">
 	<Files check>
 		ForceType cgi-script
 	</Files>
@@ -102,7 +102,7 @@ ExpiresByType text/css "access plus 50 minutes"
 #Listen 443
 NameVirtualHost *:443
 <VirtualHost *:443>
-	DocumentRoot "/openils/var/web"
+	DocumentRoot "@localstatedir@/web"
 	ServerName localhost:443
 	ServerAlias 127.0.0.1:443
 	SSLEngine on
@@ -139,7 +139,7 @@ NameVirtualHost *:443
 <VirtualHost *:80>
 	ServerName localhost:80
 	ServerAlias 127.0.0.1:80
- 	DocumentRoot /openils/var/web/
+ 	DocumentRoot @localstatedir@/web/
 	DirectoryIndex index.xml index.html index.xhtml
     # - absorb the shared virtual host settings
     Include eg_vhost.conf
