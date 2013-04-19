@@ -1615,7 +1615,7 @@ sub new_hold_copy_targeter {
 			# reset prox list after trimming good copies
 			$prox_list = create_prox_list(
 				$self, $pu_lib,
-				[ grep { ''.$_->circ_lib eq $pu_lib && ( $_->status == 0 || $_->status == 7 ) } @good_copies ],
+				[ grep { $_->status == 0 || $_->status == 7 } @good_copies ],
 				$hold
 			);
 
