@@ -1606,8 +1606,7 @@ function validateAuthority (button) {
             var sf_list = [];
             for (var j = 0; j < subfields.length; j++) {
                 var sf = subfields[j];
-                sf_list.push( sf.childNodes[1].value );
-                sf_list.push( sf.childNodes[2].value );
+                sf_list.push( [ sf.childNodes[1].value, sf.childNodes[2].value ] );
             }
 
             var matches = acs.findMatchingAuthorities(
