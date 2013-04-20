@@ -20,7 +20,7 @@
 
                 [%- setting = 'opac.hits_per_page' -%]
                 <tr >
-                    <td width='20%'><label for='[% setting %]'>l("Search hits per page") %]</label></td>
+                    <td width='20%'><label for='[% setting %]'>[% l("Search hits per page") %]</label></td>
                     <td>
                         <select id='[% setting %]' name='[% setting %]'>
                             [%  UNLESS ctx.user_setting_map.$setting;
