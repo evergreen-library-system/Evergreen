@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('0792', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0793', :eg_version);
 
 UPDATE config.best_hold_order
 SET
