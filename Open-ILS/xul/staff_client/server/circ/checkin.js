@@ -682,6 +682,7 @@ circ.checkin.prototype = {
                 || checkin.ilsevent == 1203 /* COPY_BAD_STATUS */
                 || checkin.ilsevent == 7009 /* CIRC_CLAIMS_RETURNED */ 
                 || checkin.ilsevent == 7011 /* COPY_STATUS_LOST */ 
+                || checkin.ilsevent == 7025 /* COPY_STATUS_LONG_OVERDUE */ 
                 || checkin.ilsevent == 7012 /* COPY_STATUS_MISSING */) {
                 obj.list.refresh_row( row_params ); 
                 return obj.on_failure();

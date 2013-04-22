@@ -2932,6 +2932,9 @@ sub checkin_build_copy_transit {
             unless $self->editor->create_action_transit_copy($transit);
     }
 
+    # ensure the transit is returned to the caller
+    $self->transit($transit);
+
     $copy->status(OILS_COPY_STATUS_IN_TRANSIT);
     $self->update_copy;
     $self->checkin_changed(1);
@@ -3413,6 +3416,9 @@ sub checkin_handle_circ {
         # we will need to call lost fine handling code both when checking items
         # in and also when receiving transits
         $self->checkin_handle_lost($circ_lib);
+    } elsif ($stat == OILS_COPY_STATUS_LONG_OVERDUE) {
+        # same process as above.
+        $self->checkin_handle_long_overdue($circ_lib);
     } elsif ($circ_lib != $self->circ_lib and $stat == OILS_COPY_STATUS_MISSING) {
         $logger->info("circulator: not updating copy status on checkin because copy is missing");
     } else {
@@ -3433,63 +3439,171 @@ sub checkin_handle_circ {
     return undef;
 }
 
-
 # ------------------------------------------------------------------
-# See if we need to void billings for lost checkin
+# See if we need to void billings, etc. for lost checkin
 # ------------------------------------------------------------------
 sub checkin_handle_lost {
     my $self = shift;
     my $circ_lib = shift;
-    my $circ = $self->circ;
 
-    my $max_return = $U->ou_ancestor_setting_value(
-        $circ_lib, OILS_SETTING_MAX_ACCEPT_RETURN_OF_LOST, $self->editor) || 0;
+    my $max_return = $U->ou_ancestor_setting_value($circ_lib, 
+        OILS_SETTING_MAX_ACCEPT_RETURN_OF_LOST, $self->editor) || 0;
+
+    return $self->checkin_handle_lost_or_longoverdue(
+        circ_lib => $circ_lib,
+        max_return => $max_return,
+        ous_void_item_cost => OILS_SETTING_VOID_LOST_ON_CHECKIN,
+        ous_void_proc_fee => OILS_SETTING_VOID_LOST_PROCESS_FEE_ON_CHECKIN,
+        ous_restore_overdue => OILS_SETTING_RESTORE_OVERDUE_ON_LOST_RETURN,
+        ous_immediately_available => OILS_SETTING_LOST_IMMEDIATELY_AVAILABLE,
+        ous_use_last_activity => undef, # not supported for LOST checkin
+        void_cost_btype => 3, 
+        void_fee_btype => 4 
+    );
+}
+
+# ------------------------------------------------------------------
+# See if we need to void billings, etc. for long-overdue checkin
+# note: not using constants below since they serve little purpose 
+# for single-use strings that are descriptive in their own right 
+# and mostly just complicate debugging.
+# ------------------------------------------------------------------
+sub checkin_handle_long_overdue {
+    my $self = shift;
+    my $circ_lib = shift;
+
+    $logger->info("circulator: processing long-overdue checkin...");
+
+    my $max_return = $U->ou_ancestor_setting_value($circ_lib, 
+        'circ.max_accept_return_of_longoverdue', $self->editor) || 0;
+
+    return $self->checkin_handle_lost_or_longoverdue(
+        circ_lib => $circ_lib,
+        max_return => $max_return,
+        is_longoverdue => 1,
+        ous_void_item_cost => 'circ.void_longoverdue_on_checkin',
+        ous_void_proc_fee => 'circ.void_longoverdue_proc_fee_on_checkin',
+        ous_restore_overdue => 'circ.restore_overdue_on_longoverdue_return',
+        ous_immediately_available => 'circ.longoverdue_immediately_available',
+        ous_use_last_activity => 
+            'circ.longoverdue.use_last_activity_date_on_return',
+        void_cost_btype => 10,
+        void_fee_btype => 11
+    )
+}
+
+# last billing activity is last payment time, last billing time, or the 
+# circ due date.  If the relevant "use last activity" org unit setting is 
+# false/unset, then last billing activity is always the due date.
+sub get_circ_last_billing_activity {
+    my $self = shift;
+    my $circ_lib = shift;
+    my $setting = shift;
+    my $date = $self->circ->due_date;
+
+    return $date unless $setting and 
+        $U->ou_ancestor_setting_value($circ_lib, $setting, $self->editor);
+
+    my $xact = $self->editor->retrieve_money_billable_transaction([
+        $self->circ->id,
+        {flesh => 1, flesh_fields => {mbt => ['summary']}}
+    ]);
+
+    if ($xact->summary) {
+        $date = $xact->summary->last_payment_ts || 
+                $xact->summary->last_billing_ts || 
+                $self->circ->due_date;
+    }
+
+    return $date;
+}
+
+
+sub checkin_handle_lost_or_longoverdue {
+    my ($self, %args) = @_;
+
+    my $circ = $self->circ;
+    my $max_return = $args{max_return};
+    my $circ_lib = $args{circ_lib};
 
     if ($max_return) {
 
-        my $today = time();
-        my @tm = reverse($circ->due_date =~ /([\d\.]+)/og);
-        $tm[5] -= 1 if $tm[5] > 0;
-        my $due = timelocal(int($tm[1]), int($tm[2]), int($tm[3]), int($tm[4]), int($tm[5]), int($tm[6]));
+        my $last_activity = 
+            $self->get_circ_last_billing_activity(
+                $circ_lib, $args{ous_use_last_activity});
 
-        my $last_chance = OpenSRF::Utils->interval_to_seconds($max_return) + int($due);
-        $logger->info("MAX OD: ".$max_return."  DUEDATE: ".$circ->due_date."  TODAY: ".$today."  DUE: ".$due."  LAST: ".$last_chance);
+        my $today = time();
+        my @tm = reverse($last_activity =~ /([\d\.]+)/og);
+        $tm[5] -= 1 if $tm[5] > 0;
+        my $due = timelocal(int($tm[1]), int($tm[2]), 
+            int($tm[3]), int($tm[4]), int($tm[5]), int($tm[6]));
+
+        my $last_chance = 
+            OpenSRF::Utils->interval_to_seconds($max_return) + int($due);
+
+        $logger->info("MAX OD: $max_return LAST ACTIVITY: ".
+            "$last_activity DUEDATE: ".$circ->due_date." TODAY: $today ".
+                "DUE: $due LAST: $last_chance");
 
         $max_return = 0 if $today < $last_chance;
     }
 
-    if (!$max_return){  # there's either no max time to accept returns defined or we're within that time
 
-        my $void_lost = $U->ou_ancestor_setting_value(
-            $circ_lib, OILS_SETTING_VOID_LOST_ON_CHECKIN, $self->editor) || 0;
-        my $void_lost_fee = $U->ou_ancestor_setting_value(
-            $circ_lib, OILS_SETTING_VOID_LOST_PROCESS_FEE_ON_CHECKIN, $self->editor) || 0;
+    if ($max_return) {
+
+        $logger->info("circulator: check-in of lost/lo item exceeds max ". 
+            "return interval.  skipping fine/fee voiding, etc.");
+
+    } else { # within max-return interval or no interval defined
+
+        $logger->info("circulator: check-in of lost/lo item is within the ".
+            "max return interval (or no interval is defined).  Proceeding ".
+            "with fine/fee voiding, etc.");
+
+        my $void_cost = $U->ou_ancestor_setting_value(
+            $circ_lib, $args{ous_void_item_cost}, $self->editor) || 0;
+        my $void_proc_fee = $U->ou_ancestor_setting_value(
+            $circ_lib, $args{ous_void_proc_fee}, $self->editor) || 0;
         my $restore_od = $U->ou_ancestor_setting_value(
-            $circ_lib, OILS_SETTING_RESTORE_OVERDUE_ON_LOST_RETURN, $self->editor) || 0;
-        $self->generate_lost_overdue(1) if $U->ou_ancestor_setting_value(
-            $circ_lib, OILS_SETTING_GENERATE_OVERDUE_ON_LOST_RETURN, $self->editor);
+            $circ_lib, $args{ous_restore_overdue}, $self->editor) || 0;
 
-        $self->checkin_handle_lost_now_found(3) if $void_lost;
-        $self->checkin_handle_lost_now_found(4) if $void_lost_fee;
-        $self->checkin_handle_lost_now_found_restore_od($circ_lib) if $restore_od && ! $self->void_overdues;
+        # for reference: generate-overdues-on-long-overdue-checkin is not 
+        # supported because it doesn't make any sense that a circ would be 
+        # marked as long-overdue before it was done being regular-overdue
+        if (!$args{is_longoverdue}) {
+            $self->generate_lost_overdue(1) if 
+                $U->ou_ancestor_setting_value($circ_lib, 
+                    OILS_SETTING_GENERATE_OVERDUE_ON_LOST_RETURN, 
+                    $self->editor);
+        }
+
+        $self->checkin_handle_lost_or_lo_now_found(
+            $args{void_cost_btype}, $args{is_longoverdue}) if $void_cost;
+        $self->checkin_handle_lost_or_lo_now_found(
+            $args{void_fee_btype}, $args{is_longoverdue}) if $void_proc_fee;
+        $self->checkin_handle_lost_or_lo_now_found_restore_od($circ_lib) 
+            if $restore_od && ! $self->void_overdues;
     }
 
     if ($circ_lib != $self->circ_lib) {
-        # if the item is not home, check to see if we want to retain the lost
-        # status at this point in the process
-        my $immediately_available = $U->ou_ancestor_setting_value($circ_lib, OILS_SETTING_LOST_IMMEDIATELY_AVAILABLE, $self->editor) || 0;
+        # if the item is not home, check to see if we want to retain the
+        # lost/longoverdue status at this point in the process
+
+        my $immediately_available = $U->ou_ancestor_setting_value($circ_lib, 
+            $args{ous_immediately_available}, $self->editor) || 0;
 
         if ($immediately_available) {
-            # lost item status does not need to be retained, so give it a
+            # item status does not need to be retained, so give it a
             # reshelving status as if it were a normal checkin
             $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
             $self->update_copy;
         } else {
-            $logger->info("circulator: not updating copy status on checkin because copy is lost");
+            $logger->info("circulator: leaving lost/longoverdue copy".
+                " status in place on checkin");
         }
     } else {
-        # lost item is home and processed, treat like a normal checkin from
-        # this point on
+        # lost/longoverdue item is home and processed, treat like a normal 
+        # checkin from this point on
         $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
         $self->update_copy;
     }
@@ -3535,6 +3649,9 @@ sub check_checkin_copy_status {
 
    return OpenILS::Event->new('COPY_STATUS_LOST', payload => $copy )
       if( $status == OILS_COPY_STATUS_LOST );
+
+   return OpenILS::Event->new('COPY_STATUS_LONG_OVERDUE', payload => $copy )
+      if( $status == OILS_COPY_STATUS_LONG_OVERDUE );
 
    return OpenILS::Event->new('COPY_STATUS_MISSING', payload => $copy )
       if( $status == OILS_COPY_STATUS_MISSING );
@@ -3841,8 +3958,8 @@ sub make_trigger_events {
 
 
 
-sub checkin_handle_lost_now_found {
-    my ($self, $bill_type) = @_;
+sub checkin_handle_lost_or_lo_now_found {
+    my ($self, $bill_type, $is_longoverdue) = @_;
 
     # ------------------------------------------------------------------
     # remove charge from patron's account if lost item is returned
@@ -3855,15 +3972,17 @@ sub checkin_handle_lost_now_found {
         }
     );
 
-    $logger->debug("voiding lost item charge of  ".scalar(@$bills));
+    my $tag = $is_longoverdue ? "LONGOVERDUE" : "LOST";
+    
+    $logger->debug("voiding ".scalar(@$bills)." $tag item billings");
     for my $bill (@$bills) {
         if( !$U->is_true($bill->voided) ) {
-            $logger->info("lost item returned - voiding bill ".$bill->id);
+            $logger->info("$tag item returned - voiding bill ".$bill->id);
             $bill->voided('t');
             $bill->void_time('now');
             $bill->voider($self->editor->requestor->id);
             my $note = ($bill->note) ? $bill->note . "\n" : '';
-            $bill->note("${note}System: VOIDED FOR LOST ITEM RETURNED");
+            $bill->note("${note}System: VOIDED FOR $tag ITEM RETURNED");
 
             $self->bail_on_events($self->editor->event)
                 unless $self->editor->update_money_billing($bill);
@@ -3871,9 +3990,11 @@ sub checkin_handle_lost_now_found {
     }
 }
 
-sub checkin_handle_lost_now_found_restore_od {
+sub checkin_handle_lost_or_lo_now_found_restore_od {
     my $self = shift;
     my $circ_lib = shift;
+    my $is_longoverdue = shift;
+    my $tag = $is_longoverdue ? "LONGOVERDUE" : "LOST";
 
     # ------------------------------------------------------------------
     # restore those overdue charges voided when item was set to lost
@@ -3881,20 +4002,20 @@ sub checkin_handle_lost_now_found_restore_od {
 
     my $ods = $self->editor->search_money_billing(
         {
-                xact => $self->circ->id,
-                btype => 1
+            xact => $self->circ->id,
+            btype => 1
         }
     );
 
-    $logger->debug("returning overdue charges pre-lost  ".scalar(@$ods));
+    $logger->debug("returning ".scalar(@$ods)." overdue charges pre-$tag");
     for my $bill (@$ods) {
         if( $U->is_true($bill->voided) ) {
-                $logger->info("lost item returned - restoring overdue ".$bill->id);
+                $logger->info("$tag item returned - restoring overdue ".$bill->id);
                 $bill->voided('f');
                 $bill->clear_void_time;
                 $bill->voider($self->editor->requestor->id);
                 my $note = ($bill->note) ? $bill->note . "\n" : '';
-                $bill->note("${note}System: LOST RETURNED - OVERDUES REINSTATED");
+                $bill->note("${note}System: $tag RETURNED - OVERDUES REINSTATED");
 
                 $self->bail_on_events($self->editor->event)
                         unless $self->editor->update_money_billing($bill);

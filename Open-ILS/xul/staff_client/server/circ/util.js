@@ -2856,6 +2856,7 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
                     7009 /* CIRC_CLAIMS_RETURNED */,
                     7010 /* COPY_ALERT_MESSAGE */,
                     7011 /* COPY_STATUS_LOST */,
+                    7025 /* COPY_STATUS_LONG_OVERDUE */, 
                     7012 /* COPY_STATUS_MISSING */,
                     7013 /* PATRON_EXCEEDS_FINES */
                 ] : [],
@@ -2869,6 +2870,7 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
                     7009 /* CIRC_CLAIMS_RETURNED */,
                     7010 /* COPY_ALERT_MESSAGE */,
                     7011 /* COPY_STATUS_LOST */,
+                    7025 /* COPY_STATUS_LONG_OVERDUE */, 
                     7012 /* COPY_STATUS_MISSING */,
                     7013 /* PATRON_EXCEEDS_FINES */,
                     11103 /* TRANSIT_CHECKIN_INTERVAL_BLOCK */ 
@@ -3744,6 +3746,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                 case 7009 /* CIRC_CLAIMS_RETURNED */ :
                 case 7010 /* COPY_ALERT_MESSAGE */ :
                 case 7011 /* COPY_STATUS_LOST */ :
+                case 7025 /* COPY_STATUS_LONG_OVERDUE */ :
                 case 7012 /* COPY_STATUS_MISSING */ :
                 case 7013 /* PATRON_EXCEEDS_FINES */ :
                     return null; /* handled */
