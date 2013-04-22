@@ -147,8 +147,8 @@ gen_docs = \
 	$(examples)/apache/eg.conf \
 	$(examples)/apache/eg_vhost.conf \
 	$(examples)/apache/eg_startup \
-	$(examples)/apache_24/eg.conf \
-	$(examples)/apache_24/eg_vhost.conf
+	$(examples)/apache_24/eg_24.conf \
+	$(examples)/apache_24/eg_vhost_24.conf
 
 bin_SCRIPTS = $(core_scripts) $(gen_scripts) $(reporter_scripts) $(installautojs)
 
@@ -238,10 +238,10 @@ $(examples)/apache/eg_vhost.conf: Makefile $(examples)/apache/eg_vhost.conf.in
 $(examples)/apache/eg_startup: Makefile $(examples)/apache/eg_startup.in
 	$(do_subst) $(examples)/apache/eg_startup.in > "$@"
 
-$(examples)/apache_24/eg.conf: Makefile $(examples)/apache_24/eg.conf.in
+$(examples)/apache_24/eg_24.conf: Makefile $(examples)/apache_24/eg.conf.in
 	$(do_subst) $(examples)/apache_24/eg.conf.in > "$@"
 
-$(examples)/apache_24/eg_vhost.conf: Makefile $(examples)/apache_24/eg_vhost.conf.in
+$(examples)/apache_24/eg_vhost_24.conf: Makefile $(examples)/apache_24/eg_vhost.conf.in
 	$(do_subst) $(examples)/apache_24/eg_vhost.conf.in > "$@"
 
 #perl-install and string-templates-install	
