@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-12-20 09:37-0400\n"
-"PO-Revision-Date: 2012-05-02 18:42+0000\n"
-"Last-Translator: Warren Layton <Unknown>\n"
+"POT-Creation-Date: 2013-03-15 19:41+0000\n"
+"PO-Revision-Date: 2013-04-10 09:04+0000\n"
+"Last-Translator: Alfredo Hernández <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-12-21 04:54+0000\n"
-"X-Generator: Launchpad (build 16378)\n"
+"X-Launchpad-Export-Date: 2013-04-11 05:11+0000\n"
+"X-Generator: Launchpad (build 16550)\n"
 
 #: staff.circ.alert
 msgid "Alert"
@@ -135,7 +135,7 @@ msgstr "Number of circulations not backdated: %1$s "
 
 #: staff.circ.checkout.sorting.exception
 msgid "error in sorting non-cataloged items: %1$s"
-msgstr "error in sorting non-cataloged items: %1$s"
+msgstr "error in sorting non-catalogeud items: %1$s"
 
 #: staff.circ.checkout.date.exception
 msgid "Use this format: YYYY-MM-DD"
@@ -248,9 +248,17 @@ msgstr ""
 "If overriden now, subsequent checkouts during this patron's session will "
 "auto-override this event."
 
+#: staff.circ.checkout.error_retrieving_copy_status
+msgid "Could not retrieve the name of the current status for the copy"
+msgstr "Could not retrieve the name of the current status for the copy"
+
 #: staff.circ.checkout.not_cataloged.confirm
-msgid "Mis-scan or non-cataloged item.  Checkout as a pre-cataloged item?"
-msgstr "Mis-scan or non-catalogued item. Iissue as a pre-catalogued item?"
+msgid ""
+"Barcode %1$s was either mis-scanned or is a non-cataloged item.  Checkout as "
+"a pre-cataloged item?"
+msgstr ""
+"Barcode %1$s was either mis-scanned or is a non-catalogued item.  Checkout "
+"as a pre-catalogued item?"
 
 #: staff.circ.pre_cataloged
 msgid "Pre-cataloged"
@@ -337,15 +345,15 @@ msgstr "Barcode:"
 
 #: staff.circ.checkout.failed_to_patron_other
 msgid "This copy was checked out by another patron on %1$s."
-msgstr ""
+msgstr "This copy was checked out by another patron on %1$s."
 
 #: staff.circ.checkout.failed_to_patron_renew
 msgid "This copy is already checked out to this patron."
-msgstr ""
+msgstr "This copy is already checked out to this patron."
 
 #: staff.circ.checkout.failed_to_patron_today
 msgid "This copy was already checked out to this patron today."
-msgstr ""
+msgstr "This copy was already checked out to this patron today."
 
 #: staff.circ.circ_brief.staff_out_id
 msgid "Check Out Staff ID = %1$s"
@@ -709,7 +717,7 @@ msgstr "Something weird happened.  Result was null."
 
 #: staff.circ.copy_status.status.copy_not_found
 msgid "%1$s was either mis-scanned or is not cataloged."
-msgstr "%1$s was either mis-scanned or is not cataloged."
+msgstr "%1$s was either mis-scanned or is not catalogued."
 
 #: staff.circ.copy_status.status.not_cataloged
 msgctxt "staff.circ.copy_status.status.not_cataloged"
@@ -1777,7 +1785,7 @@ msgid ""
 "%1$s attempted checkin of %4$s, which is a pre-cat and was routed to "
 "Cataloging.  Route To = %5$s"
 msgstr ""
-"%1$s attempted checkin of %4$s, which is a pre-cat and was routed to "
+"%1$s attempted check-in of %4$s, which is a pre-cat and was routed to "
 "Cataloguing.  Route To = %5$s"
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
@@ -1786,14 +1794,14 @@ msgid ""
 "%1$s attempted checkin of %4$s, which was not found, and so was routed to "
 "Cataloging.  Route To = %5$s"
 msgstr ""
-"%1$s attempted checkin of %4$s, which was not found, and so was routed to "
+"%1$s attempted check-in of %4$s, which was not found, and so was routed to "
 "Cataloguing.  Route To = %5$s"
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Original Balance  5 - Voided Balance  6 - Payment Received  7 - Payment Applied
 #. # 8 - Change Given  9 - Credit Given  10 - New Balance  11 - Payment Type  12 - Note  13 - API call result
 #: staff.circ.work_log_payment_attempt.success.message
 msgid "%1$s received %6$s (%11$s) for %3$s (%2$s)."
-msgstr ""
+msgstr "%1$s received %6$s (%11$s) for %3$s (%2$s)."
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Original Balance  5 - Voided Balance  6 - Payment Received  7 - Payment Applied
 #. # 8 - Change Given  9 - Credit Given  10 - New Balance  11 - Payment Type  12 - Note  13 - API call result
@@ -1802,6 +1810,8 @@ msgid ""
 "%1$s attempted receipt of %6$s (%11$s) for %3$s (%2$s), which failed for "
 "this reason: %13$s"
 msgstr ""
+"%1$s attempted receipt of %6$s (%11$s) for %3$s (%2$s), which failed for "
+"this reason: %13$s"
 
 #: staff.circ.checkin.hold_capture
 msgid "Hold Capture"
@@ -2029,6 +2039,9 @@ msgstr "Missing Pieces"
 #: staff.circ.missing_pieces.scan_item.error_alert
 msgid "No item with barcode \"%1$s\""
 msgstr "No item with barcode \"%1$s\""
+
+#~ msgid "Mis-scan or non-cataloged item.  Checkout as a pre-cataloged item?"
+#~ msgstr "Mis-scan or non-catalogued item. Iissue as a pre-catalogued item?"
 
 #~ msgid ""
 #~ "You must delete all the copies on the volume before you may delete the "

@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2013-02-21 11:20-0400\n"
-"PO-Revision-Date: 2012-12-20 15:19+0000\n"
+"POT-Creation-Date: 2013-03-15 19:41-0400\n"
+"PO-Revision-Date: 2013-03-19 20:02+0000\n"
 "Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-02-23 05:25+0000\n"
-"X-Generator: Launchpad (build 16506)\n"
+"X-Launchpad-Export-Date: 2013-03-20 04:44+0000\n"
+"X-Generator: Launchpad (build 16532)\n"
 "Language: fi\n"
 
 #: 1208.TITLE_LAST_COPY:71
@@ -43,7 +43,7 @@ msgstr "Pyydettyä kohdetta permission_perm_list ei löytynyt"
 
 #: 1213.PATRON_BARRED:88
 msgid "The patron is barred"
-msgstr "Asiakas on suljettu pois"
+msgstr "Asiakas on lainauskiellossa"
 
 #: 1645.CONFIG_CIRC_MATRIX_TEST_NOT_FOUND:584
 msgid "The requested config_circ_matrix_test was not found"
@@ -54,6 +54,8 @@ msgid ""
 "You did not create this URL Verify session, so you cannot change it.  You "
 "may be able to clone it."
 msgstr ""
+"Et luonut tätä linkkitarkastussessiota, joten et voi muuttaa sitä. Voit ehkä "
+"kloonata sen."
 
 #: 1591.METABIB_SERIES_FIELD_ENTRY_NOT_FOUND:422
 msgid "The requested metabib_series_field_entry was not found"
@@ -72,7 +74,7 @@ msgid ""
 "The requested acq.purchase_order cannot be activated because it would over-"
 "encumber a fund."
 msgstr ""
-"Pyydettyä kohdetta acq.purchase_order ei voida ottaa käyttöön, koska se "
+"Pyydettyä kohdetta acq.purchase_order ei voi aktivoida, koska se "
 "ylikuormittaisi tiliä."
 
 #: 1649.VANDELAY_IMPORT_ITEM_NOT_FOUND:596
@@ -286,7 +288,7 @@ msgstr "Pyydettyä kohdetta container_call_number_bucket ei löytynyt"
 
 #: 1229.VOLUME_DELETED:152
 msgid "The requested volume is marked as deleted"
-msgstr "Pyydetty nide on merkitty poistetuksi"
+msgstr "Pyydetty signum on merkitty tuhotuksi"
 
 #: 1635.REPORTER_REPORT_NOT_FOUND:554
 msgid "The requested reporter_report was not found"
@@ -342,7 +344,7 @@ msgstr "Asiakkaan tiedoissa oleva merkintä estää lainauksen"
 
 #: 1525.BILLING_NOT_FOUND:232
 msgid "Requested billing note does not exist"
-msgstr "Pyydettyä maksuhuomautusta ei ole"
+msgstr "Pyydettyä maksuilmoitusta ei ole"
 
 #: 11102.SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER:1008
 msgid ""
@@ -387,10 +389,6 @@ msgstr ""
 #: 1619.ACTOR_STAT_CAT_ENTRY_USER_MAP_NOT_FOUND:506
 msgid "The requested actor_stat_cat_entry_user_map was not found"
 msgstr "Pyydettyä kohdetta actor_stat_cat_entry_user_map ei löydy"
-
-#: 1858.ACQ_LINEITEM_NOT_FOUND:655
-msgid "The requested acq.po_lineitem was not found"
-msgstr "Pyydettyä kohdetta acq.po_lineitem ei löydy"
 
 #: 1558.ASSET_COPY_NOTE_NOT_FOUND:326
 msgid "The requested asset_copy_note was not found"
@@ -517,7 +515,7 @@ msgstr "Pyydettyä kohdetta money_cash_payment ei löytynyt"
 
 #: 1221.ORG_CANNOT_HAVE_VOLS:120
 msgid "The selected location cannot have volumes attached"
-msgstr "Pyydettyyn sijaintiin ei voida liittää niteitä"
+msgstr "Pyydettyyn sijaintiin ei voida liittää signumeja"
 
 #: 1704.TCN_EXISTS:720
 msgid "A record already exists with the requested TCN value"
@@ -533,7 +531,7 @@ msgstr "Pyydettyä kohdetta bibio_record_node ei löytynyt"
 
 #: 1901.URL_VERIFY_SESSION_ALREADY_SEARCHED:761
 msgid "This session has already been searched."
-msgstr ""
+msgstr "Tämä istunto on jo tehty."
 
 #: 1534.ACTOR_USER_SETTING_NOT_FOUND:259
 msgid "The requested actor_user_setting was not found"
@@ -560,6 +558,8 @@ msgid ""
 "You are trying to create an object with a unique identifier (such as a "
 "'name' field) that is already in use."
 msgstr ""
+"Yrität luoda objektia jonka yksilöivä tunnus (esimerkiksi nimi) on jo "
+"käytössä."
 
 #: 1854.ACQ_FUND_SPENT_BALANCE_NOT_FOUND:643
 msgid "The requested acq.fund_spent_balance was not found"
@@ -571,7 +571,7 @@ msgstr "Tilauksessa on yhä riippuvaisia objekteja"
 
 #: 1523.TITLE_NOTE_NOT_FOUND:229
 msgid "Requested title note does not exist"
-msgstr "Pyydettyä nimekehuomautusta ei ole olemassa"
+msgstr "Pyydettyä nimekeilmoitusta ei ole olemassa"
 
 #: 1605.CONFIG_LIT_FORM_MAP_NOT_FOUND:464
 msgid "The requested config_lit_form_map was not found"
@@ -671,7 +671,7 @@ msgstr "Pyydettyä kohdetta acq.funding_source ei löytynyt"
 
 #: 1206.VOLUME_NOT_EMPTY:65
 msgid "The selected volume has copies attached"
-msgstr "Valittuun nimekkeeseen on kiinnitetty niteitä"
+msgstr "Valittuun signumiin on kiinnitetty niteitä"
 
 #: 1540.AUTHORITY_RECORD_ENTRY_NOT_FOUND:276
 msgid "The requested authority_record_entry was not found"
@@ -757,6 +757,8 @@ msgid ""
 "The requested acq.purchase_order cannot be split because it has gone beyond "
 "the \"pending\" state"
 msgstr ""
+"Pyydettyä kohdetta acq.purchase_order ei voi jakaa, koska se on ohittanut "
+"\"vireillä\"-tilan"
 
 #: 1210.INCORRECT_PASSWORD:78
 msgid "The provided password is not correct"
@@ -858,7 +860,7 @@ msgstr "Löydettiin nide, jolle on määritetty etälainauspiste (circ_lib)"
 
 #: 1702.OPEN_CIRCULATION_EXISTS:714
 msgid "There is an open circulation on the requested item"
-msgstr "Pyydetystä niteestä on avoin laina"
+msgstr "Nidettä ei oel palautettu"
 
 #: 0.SUCCESS:14
 msgid "Success"
@@ -866,7 +868,7 @@ msgstr "Onnistui"
 
 #: 1231.RECORD_NOT_EMPTY:159
 msgid "The selected bib record has volumes attached"
-msgstr "Valittuun bibliografiseen tietueeseen on kiinnitetty nimekkeitä"
+msgstr "Valittuun bibliografiseen tietueeseen on kiinnitetty signumeja"
 
 #: 1503.ACTION_HOLD_REQUEST_NOT_FOUND:193
 msgid "The requested action_hold_request was not found"
@@ -906,7 +908,11 @@ msgstr "Pyydettyä kohdetta asset_stat_cat_entry_copy_map ei löytynyt"
 
 #: 7010.COPY_ALERT_MESSAGE:869
 msgid "The requested copy has an alert message attached"
-msgstr "Pyydettyyn niteeseen on liitetty varoitusviesti"
+msgstr "Pyydettyyn niteeseen on liitetty huomautusviesti"
+
+#: 7006.COPY_IS_REFERENCE:857
+msgid "Copy is reference material"
+msgstr "Nide on käsikirjastoaineistoa"
 
 #: 1547.CONFIG_ITEM_FORM_MAP_NOT_FOUND:297
 msgid "The requested config_item_form_map was not found"
@@ -952,8 +958,8 @@ msgid ""
 "While you were trying to make payments, this account's transaction history "
 "changed.  Please go back and try again."
 msgstr ""
-"Kun yritit suorittaa maksuja, tämän tilin maksutapahtumahistoriassa tapahtui "
-"muutoksia. Palaa takaisin ja yritä uudelleen."
+"Yrittäessäsi suorittaa maksuja, tämän tilin maksutapahtumahistoriassa "
+"tapahtui muutoksia. Palaa takaisin ja yritä uudelleen."
 
 #: 1568.CONFIG_COPY_STATUS_NOT_FOUND:356
 msgid "The requested config_copy_status was not found"
@@ -978,7 +984,7 @@ msgstr "Annetulla nimellä ja kansiolla löytyy jo raportti"
 #: 1705.VOLUME_LABEL_EXISTS:723
 msgid "A volume with the same label, title and owning library exists"
 msgstr ""
-"Nimeke samalla nimekkeellä, otsikolla ja omistajakirjastolla on jo olemassa"
+"Signum samalla tarralla, nimekkeella ja omistajakirjastolla on jo olemassa"
 
 #: 8008.OFFLINE_INVALID_SESSION:947
 msgid "The session name is invalid"
@@ -1017,9 +1023,14 @@ msgstr ""
 msgid "The requested vandelay_authority_queue was not found"
 msgstr "Pyydettyä kohdetta vandelay_authority_queue ei löytynyt"
 
-#: 7006.COPY_IS_REFERENCE:857
-msgid "Copy is reference material"
-msgstr "Nide on käsikirjastoaineistoa"
+#: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:809
+msgid ""
+"A *TERRIBLE* problem has occurred: a credit card transaction was processed "
+"successfully, but the patron's payment could not be recorded within "
+"Evergreen.  Please seek assistance."
+msgstr ""
+"VAKAVA virhe: luottokorttitapahtuma käsiteltiin onnistuneesti, mutta "
+"asiakkaan maksua ei voitu tallettaa Evergreeniin. Pyydä apua."
 
 #: 1634.REPORTER_TEMPLATE_NOT_FOUND:551
 msgid "The requested reporter_template was not found"
@@ -1128,15 +1139,6 @@ msgid ""
 msgstr ""
 "Samanlainen money.collections_tracker-objekti löytyy jo tietokannasta"
 
-#: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:809
-msgid ""
-"A *TERRIBLE* problem has occurred: a credit card transaction was processed "
-"successfuly, but the patron's payment could not be recorded within "
-"Evergreen.  Please seek assistance."
-msgstr ""
-"ISO virhe on tapahtunut: luottokorttitapahtuma käsiteltiin onnistuneesti, "
-"mutta asiakkaan maksua ei voitu tallettaa Evergreeniin. Pyydä apua."
-
 #: 1614.ACTION_SURVEY_ANSWER_NOT_FOUND:491
 msgid "The requested action_survey_answer was not found"
 msgstr "Pyydettyä kohdetta action_survey_answer ei löytynyt"
@@ -1148,6 +1150,10 @@ msgid ""
 msgstr ""
 "Käyttäjää ei voida poistaa, koska hänellä on lainoja ja/tai maksamattomia "
 "maksuja."
+
+#: 1858.ACQ_LINEITEM_NOT_FOUND:655
+msgid "The requested acq.lineitem was not found"
+msgstr "Pyydettyä hankinnan kohdetta (acq.lineitem) ei löydy"
 
 #: 1845.ACQ_PROVIDER_NOT_FOUND:616
 msgid "The requested acq.provider was not found"
@@ -1163,7 +1169,7 @@ msgstr "Pyydettyä kohdetta vandelay_queued_bib_record ei löytynyt"
 
 #: 1228.BIB_RECORD_DELETED:149
 msgid "The requested bib record is marked as deleted"
-msgstr "Pyydettyä kohdetta bib record is marked as deleted"
+msgstr "Pyydetty bibliografinen tietue on merkitty tuhotuksi"
 
 #: 1841.ACQ_PICKLIST_NOT_FOUND:607
 msgid "The requested acq.picklist was not found"
@@ -1262,9 +1268,20 @@ msgid ""
 "A serial pattern code has been configured that fails to conform to MFHD "
 "standards for fields 853-855."
 msgstr ""
-"Määrityksistä löytyy sarjajulkaisukoodi, joka ei sovi MFHD-standardeihin "
+"Määrityksistä löytyy kausijulkaisukoodi, joka ei sovi MFHD-standardeihin "
 "kenttien 853-855 osalta."
 
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:461
 msgid "The requested money_user_summary was not found"
 msgstr "Pyydettyä kohdetta money_user_summary ei löytynyt"
+
+#~ msgid "The requested acq.po_lineitem was not found"
+#~ msgstr "Pyydettyä kohdetta acq.po_lineitem ei löydy"
+
+#~ msgid ""
+#~ "A *TERRIBLE* problem has occurred: a credit card transaction was processed "
+#~ "successfuly, but the patron's payment could not be recorded within "
+#~ "Evergreen.  Please seek assistance."
+#~ msgstr ""
+#~ "ISO virhe on tapahtunut: luottokorttitapahtuma käsiteltiin onnistuneesti, "
+#~ "mutta asiakkaan maksua ei voitu tallettaa Evergreeniin. Pyydä apua."

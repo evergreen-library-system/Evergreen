@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-02-21 11:20-0400\n"
-"PO-Revision-Date: 2012-05-02 18:40+0000\n"
-"Last-Translator: Warren Layton <Unknown>\n"
+"POT-Creation-Date: 2013-03-15 19:41-0400\n"
+"PO-Revision-Date: 2013-04-10 09:05+0000\n"
+"Last-Translator: Alfredo Hernández <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-02-23 05:25+0000\n"
-"X-Generator: Launchpad (build 16506)\n"
+"X-Launchpad-Export-Date: 2013-04-11 05:11+0000\n"
+"X-Generator: Launchpad (build 16550)\n"
 
 #: 1208.TITLE_LAST_COPY:71
 msgid "The last copy attached to a title is being removed or deleted"
@@ -58,6 +58,8 @@ msgid ""
 "You did not create this URL Verify session, so you cannot change it.  You "
 "may be able to clone it."
 msgstr ""
+"You did not create this URL Verify session, so you cannot change it.  You "
+"may be able to clone it."
 
 #: 1591.METABIB_SERIES_FIELD_ENTRY_NOT_FOUND:422
 msgid "The requested metabib_series_field_entry was not found"
@@ -232,7 +234,7 @@ msgstr ""
 
 #: 7011.COPY_STATUS_LOST:872
 msgid "Copy is marked as lost"
-msgstr ""
+msgstr "Copy is marked as lost"
 
 #: 7004.COPY_NOT_AVAILABLE:851
 msgid "Copy is not available"
@@ -396,10 +398,6 @@ msgstr ""
 msgid "The requested actor_stat_cat_entry_user_map was not found"
 msgstr "The requested actor_stat_cat_entry_user_map was not found"
 
-#: 1858.ACQ_LINEITEM_NOT_FOUND:655
-msgid "The requested acq.po_lineitem was not found"
-msgstr "The requested acq.po_lineitem was not found"
-
 #: 1558.ASSET_COPY_NOTE_NOT_FOUND:326
 msgid "The requested asset_copy_note was not found"
 msgstr "The requested asset_copy_note was not found"
@@ -538,7 +536,7 @@ msgstr "The requested biblio_record_node was not found"
 
 #: 1901.URL_VERIFY_SESSION_ALREADY_SEARCHED:761
 msgid "This session has already been searched."
-msgstr ""
+msgstr "This session has already been searched."
 
 #: 1534.ACTOR_USER_SETTING_NOT_FOUND:259
 msgid "The requested actor_user_setting was not found"
@@ -565,6 +563,8 @@ msgid ""
 "You are trying to create an object with a unique identifier (such as a "
 "'name' field) that is already in use."
 msgstr ""
+"You are trying to create an object with a unique identifier (such as a "
+"'name' field) that is already in use."
 
 #: 1854.ACQ_FUND_SPENT_BALANCE_NOT_FOUND:643
 msgid "The requested acq.fund_spent_balance was not found"
@@ -592,7 +592,7 @@ msgstr "The object is not in a cancellable state."
 
 #: 7012.COPY_STATUS_MISSING:875
 msgid "Copy is marked as missing"
-msgstr ""
+msgstr "Copy is marked as missing"
 
 #: 1500.ACTION_CIRCULATION_NOT_FOUND:181
 msgid ""
@@ -660,7 +660,7 @@ msgstr "The requested asset_stat_cat_entry was not found"
 
 #: 1595.CONFIG_NON_CATALOGED_TYPE_NOT_FOUND:434
 msgid "The requested config_non_cataloged_type was not found"
-msgstr "The requested config_non_cataloged_type was not found"
+msgstr "The requested config_non_catalogued_type was not found"
 
 #: 1225.TRANSIT_ABORT_NOT_ALLOWED:133
 msgid ""
@@ -734,7 +734,7 @@ msgstr "Booking reservation capture failed"
 
 #: 1202.ITEM_NOT_CATALOGED:50
 msgid "The requested item is not cataloged in the database"
-msgstr "The requested item is not cataloged in the database"
+msgstr "The requested item is not catalogued in the database"
 
 #: 1520.WORKSTATION_NOT_FOUND:226
 msgid "Requested workstation object does not exist"
@@ -920,6 +920,10 @@ msgstr "The requested asset_stat_cat_entry_copy_map was not found"
 msgid "The requested copy has an alert message attached"
 msgstr "The requested copy has an alert message attached"
 
+#: 7006.COPY_IS_REFERENCE:857
+msgid "Copy is reference material"
+msgstr "Copy is reference material"
+
 #: 1547.CONFIG_ITEM_FORM_MAP_NOT_FOUND:297
 msgid "The requested config_item_form_map was not found"
 msgstr "The requested config_item_form_map was not found"
@@ -1028,9 +1032,15 @@ msgstr ""
 msgid "The requested vandelay_authority_queue was not found"
 msgstr "The requested vandelay_authority_queue was not found"
 
-#: 7006.COPY_IS_REFERENCE:857
-msgid "Copy is reference material"
-msgstr "Copy is reference material"
+#: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:809
+msgid ""
+"A *TERRIBLE* problem has occurred: a credit card transaction was processed "
+"successfully, but the patron's payment could not be recorded within "
+"Evergreen.  Please seek assistance."
+msgstr ""
+"A *TERRIBLE* problem has occurred: a credit card transaction was processed "
+"successfully, but the patron's payment could not be recorded within "
+"Evergreen.  Please seek assistance."
 
 #: 1634.REPORTER_TEMPLATE_NOT_FOUND:551
 msgid "The requested reporter_template was not found"
@@ -1139,16 +1149,6 @@ msgid ""
 msgstr ""
 "A duplicate money.collections_tracker object already exists in the database"
 
-#: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:809
-msgid ""
-"A *TERRIBLE* problem has occurred: a credit card transaction was processed "
-"successfuly, but the patron's payment could not be recorded within "
-"Evergreen.  Please seek assistance."
-msgstr ""
-"A *TERRIBLE* problem has occurred: a credit card transaction was processed "
-"successfully, but the patron's payment could not be recorded within "
-"Evergreen.  Please seek assistance."
-
 #: 1614.ACTION_SURVEY_ANSWER_NOT_FOUND:491
 msgid "The requested action_survey_answer was not found"
 msgstr "The requested action_survey_answer was not found"
@@ -1160,6 +1160,10 @@ msgid ""
 msgstr ""
 "The user you have attempted to delete cannot be deleted because it has open "
 "circulations and/or unpaid bills."
+
+#: 1858.ACQ_LINEITEM_NOT_FOUND:655
+msgid "The requested acq.lineitem was not found"
+msgstr "The requested acq.lineitem was not found"
 
 #: 1845.ACQ_PROVIDER_NOT_FOUND:616
 msgid "The requested acq.provider was not found"
@@ -1267,7 +1271,7 @@ msgstr "The requested container_user_bucket_item was not found"
 
 #: 1615.ACTION_NON_CATALOGED_CIRCULATION_NOT_FOUND:494
 msgid "The requested action_non_cataloged_circulation was not found"
-msgstr "The requested action_non_cataloged_circulation was not found"
+msgstr "The requested action_non_catalogued_circulation was not found"
 
 #: 11104.SERIAL_CORRUPT_PATTERN_CODE:1017
 msgid ""
@@ -1281,8 +1285,20 @@ msgstr ""
 msgid "The requested money_user_summary was not found"
 msgstr "The requested money_user_summary was not found"
 
+#~ msgid "The requested acq.po_lineitem was not found"
+#~ msgstr "The requested acq.po_lineitem was not found"
+
 #~ msgid "Copy has is marked as missing"
 #~ msgstr "Copy has is marked as missing"
 
 #~ msgid "Copy has is marked as lost"
 #~ msgstr "Copy is marked as lost"
+
+#~ msgid ""
+#~ "A *TERRIBLE* problem has occurred: a credit card transaction was processed "
+#~ "successfuly, but the patron's payment could not be recorded within "
+#~ "Evergreen.  Please seek assistance."
+#~ msgstr ""
+#~ "A *TERRIBLE* problem has occurred: a credit card transaction was processed "
+#~ "successfully, but the patron's payment could not be recorded within "
+#~ "Evergreen.  Please seek assistance."

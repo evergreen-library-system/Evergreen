@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2013-02-21 11:20-0400\n"
+"POT-Creation-Date: 2013-03-15 19:41-0400\n"
 "PO-Revision-Date: 2013-03-07 13:53+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <PetrKubiska@seznam.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-08 04:38+0000\n"
-"X-Generator: Launchpad (build 16523)\n"
+"X-Launchpad-Export-Date: 2013-03-16 05:57+0000\n"
+"X-Generator: Launchpad (build 16532)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -392,10 +392,6 @@ msgstr ""
 #: 1619.ACTOR_STAT_CAT_ENTRY_USER_MAP_NOT_FOUND:506
 msgid "The requested actor_stat_cat_entry_user_map was not found"
 msgstr "Požadovaný actor_stat_cat_entry_user_map nebyl nalezen"
-
-#: 1858.ACQ_LINEITEM_NOT_FOUND:655
-msgid "The requested acq.po_lineitem was not found"
-msgstr "Požadovaný acq.po_lineitem nebyl nalezen"
 
 #: 1558.ASSET_COPY_NOTE_NOT_FOUND:326
 msgid "The requested asset_copy_note was not found"
@@ -917,6 +913,10 @@ msgstr "Požadovaný asset_stat_cat_entry_copy_map nebyl nalezen"
 msgid "The requested copy has an alert message attached"
 msgstr "K požadovanému exempláři je připojeno upozornění"
 
+#: 7006.COPY_IS_REFERENCE:857
+msgid "Copy is reference material"
+msgstr "Exemplář je označen jako \"příruční knihovna\""
+
 #: 1547.CONFIG_ITEM_FORM_MAP_NOT_FOUND:297
 msgid "The requested config_item_form_map was not found"
 msgstr "Požadovaný config_item_form_map nebyl nalezen"
@@ -1025,9 +1025,12 @@ msgstr ""
 msgid "The requested vandelay_authority_queue was not found"
 msgstr "Požadovaný vandelay_authority_queue nebyl nalezen"
 
-#: 7006.COPY_IS_REFERENCE:857
-msgid "Copy is reference material"
-msgstr "Exemplář je označen jako \"příruční knihovna\""
+#: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:809
+msgid ""
+"A *TERRIBLE* problem has occurred: a credit card transaction was processed "
+"successfully, but the patron's payment could not be recorded within "
+"Evergreen.  Please seek assistance."
+msgstr ""
 
 #: 1634.REPORTER_TEMPLATE_NOT_FOUND:551
 msgid "The requested reporter_template was not found"
@@ -1135,15 +1138,6 @@ msgid ""
 "A duplicate money.collections_tracker object already exists in the database"
 msgstr "Duplikát money.collections_tracker již v databázi existuje"
 
-#: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:809
-msgid ""
-"A *TERRIBLE* problem has occurred: a credit card transaction was processed "
-"successfuly, but the patron's payment could not be recorded within "
-"Evergreen.  Please seek assistance."
-msgstr ""
-"Došlo k *ZÁVAŽNÉMU* problému: transakce kreditní kartou úspěšně proběhla, "
-"ale Evergreen nemohl nahrát platbu čtenáře. Prosím vyhledejte pomoc."
-
 #: 1614.ACTION_SURVEY_ANSWER_NOT_FOUND:491
 msgid "The requested action_survey_answer was not found"
 msgstr "Požadovaný action_survey_answer nebyl nalezen"
@@ -1155,6 +1149,10 @@ msgid ""
 msgstr ""
 "Uživatele nelze smazat, protože má vypůjčené knihovní jednotky  a/nebo "
 "nezaplacené poplatky."
+
+#: 1858.ACQ_LINEITEM_NOT_FOUND:655
+msgid "The requested acq.lineitem was not found"
+msgstr ""
 
 #: 1845.ACQ_PROVIDER_NOT_FOUND:616
 msgid "The requested acq.provider was not found"
@@ -1277,6 +1275,17 @@ msgstr "Požadovaný money_user_summary nebyl nalezen"
 
 #~ msgid "Copy has is marked as lost"
 #~ msgstr "Exemplář byl označen jako ztracený"
+
+#~ msgid "The requested acq.po_lineitem was not found"
+#~ msgstr "Požadovaný acq.po_lineitem nebyl nalezen"
+
+#~ msgid ""
+#~ "A *TERRIBLE* problem has occurred: a credit card transaction was processed "
+#~ "successfuly, but the patron's payment could not be recorded within "
+#~ "Evergreen.  Please seek assistance."
+#~ msgstr ""
+#~ "Došlo k *ZÁVAŽNÉMU* problému: transakce kreditní kartou úspěšně proběhla, "
+#~ "ale Evergreen nemohl nahrát platbu čtenáře. Prosím vyhledejte pomoc."
 
 #~ msgid "Copy has is marked as missing"
 #~ msgstr "Exemplář byl označen jako nezvěstný"

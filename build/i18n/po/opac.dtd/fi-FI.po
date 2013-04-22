@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-21 11:19-0400\n"
-"PO-Revision-Date: 2012-12-20 15:22+0000\n"
+"PO-Revision-Date: 2013-03-19 19:39+0000\n"
 "Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-02-23 05:29+0000\n"
-"X-Generator: Launchpad (build 16506)\n"
+"X-Launchpad-Export-Date: 2013-03-20 04:44+0000\n"
+"X-Generator: Launchpad (build 16532)\n"
 "X-Project-Style: mozilla\n"
 "X-Accelerator-Marker: &\n"
 "Language: fi\n"
@@ -958,7 +958,7 @@ msgstr ""
 
 #: myopac.summary.notes
 msgid "* Staff Notes *"
-msgstr "* Henkilökunnan huomautukset *"
+msgstr "* Henkilökunnan ilmoitukset *"
 
 #: myopac.summary.phone.day
 msgid "Day Phone"
@@ -1311,7 +1311,7 @@ msgstr "Oma tili"
 
 #: navigate.myopac.title
 msgid "Go to My OPAC"
-msgstr "Siirry Omaan varkkokirjastoon"
+msgstr "Siirry Omaan verkkokirjastoon"
 
 #: navigate.login
 msgid "Log in"
@@ -1538,7 +1538,7 @@ msgstr "Evergreen - Nimekkeet"
 
 #: opac.title.myopac
 msgid "Evergreen My Account"
-msgstr "Evergreen - Omat tiedot"
+msgstr "Evergreen - Oma tili"
 
 #: opac.title.rdetail
 msgid "Evergreen Title Details"
@@ -1767,7 +1767,7 @@ msgstr "Luomispäivä"
 
 #: rdetail.cn.active
 msgid "Active Date"
-msgstr "Aktiivinen"
+msgstr "Aktivointipäivä"
 
 #: rdetail.cn.holdable
 msgid "Holdable"
@@ -1804,7 +1804,7 @@ msgstr "- Ei käytössä -"
 
 #: rdetail.cn.note
 msgid "Copy Note"
-msgstr "Nidehuomautus"
+msgstr "Nideilmoitus"
 
 #: rdetail.cn.category
 msgid "Copy Category"
@@ -1869,7 +1869,7 @@ msgid ""
 "We recommend that you remove this title from any bookbags it may have been "
 "added to."
 msgstr ""
-"Tietue on poistettu tietokannasta. \n"
+"Tietue on tuhottu tietokannasta. \n"
 "Suosittelemme, että poistat tämän nimekkeen kaikista kirjahyllyistä, joihin "
 "olet sen mahdollisesti lisännyt."
 
@@ -1993,7 +1993,7 @@ msgstr "Esikatselu"
 
 #: rdetail.extras.author.notes
 msgid "Author Notes"
-msgstr "Tekijän huomautukset"
+msgstr "Tekijäilmoitukset"
 
 #: rdetail.extras.annotation
 msgid "Annotation"
@@ -2051,7 +2051,7 @@ msgstr "Aiheet"
 
 #: rdetail.summary.issues_held
 msgid "Issues Held"
-msgstr "Varatut numerot"
+msgstr "Numeroita saatavilla"
 
 #: result.sort_by
 msgid "Sort Results by Relevance"
@@ -2205,7 +2205,7 @@ msgstr "Varauksen tyyppi:"
 
 #: common.hold.volume
 msgid "Volume Hold"
-msgstr "Nimekevaraus"
+msgstr "Signumvaraus"
 
 #: common.hold.copy
 msgid "Copy Hold"
@@ -2267,8 +2267,8 @@ msgid ""
 "\"Staff Notes\" section of your \"My Account\" page or contact your local "
 "library."
 msgstr ""
-"ASIAKAS SULJETTU POIS. Katso huomautukset \"Omat tiedot\"-sivun osiosta \n"
-"\"Henkilökunnan huomautukset\" tai ota yhteyttä kirjastoosi."
+"ASIAKAS LAINAUSKIELLOSSA. Katso ilmoitukset \"Oma tili\"-sivun osiosta \n"
+"\"Henkilökunnan ilmoitukset\" tai ota yhteyttä kirjastoosi."
 
 #: common.hold.item.invalid
 msgid ""
@@ -2440,7 +2440,7 @@ msgstr ""
 #: login.account.inactive
 msgid ""
 "This account has been deactivated.  Please contact your local library."
-msgstr "Tili on otettu pois käytöstä. Ota yhteyttä kirjastoosi."
+msgstr "Tili ei ole aktiivinen. Ota yhteyttä kirjastoosi."
 
 #: login.failed
 msgid ""
@@ -2448,6 +2448,9 @@ msgid ""
 "Passwords are case-sensitive.  Check your Caps-Lock key and try again or "
 "contact your local library."
 msgstr ""
+"Kirjautuminen epäonnistui. Käyttäjätunnus tai salasana oli väärin.\n"
+"Varmista ettei CAPS LOCK ole päällä ja yritä uudelleen, tai ota yhteyttä "
+"kirjastoosi."
 
 #: button.go
 msgid "Go!"
@@ -2652,7 +2655,7 @@ msgstr "Sunnuntai"
 
 #: circ.fail_part.actor.usr.barred
 msgid "The patron is barred"
-msgstr "Asiakas on suljettu pois"
+msgstr "Asiakas on lainauskiellossa"
 
 #: circ.fail_part.asset.copy.circulate
 msgid "The item does not circulate"

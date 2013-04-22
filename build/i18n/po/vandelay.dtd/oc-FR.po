@@ -1,0 +1,469 @@
+# Occitan (post 1500) translation for evergreen
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
+"PO-Revision-Date: 2012-11-02 12:05+0000\n"
+"Last-Translator: Cédric VALMARY (Tot en òc) <cvalmary@yahoo.fr>\n"
+"Language-Team: Occitan (post 1500) <oc@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2012-11-03 05:07+0000\n"
+"X-Generator: Launchpad (build 16218)\n"
+
+#: vandelay.add.existing.queue
+msgid "or Add to an Existing Queue"
+msgstr ""
+
+#: vandelay.auth.attrs
+msgid "Authority attributes"
+msgstr ""
+
+#: vandelay.auth.records
+msgid "Authority Records"
+msgstr ""
+
+#: vandelay.auto.import.noncolliding
+msgid "Auto-Import Non-Colliding Records"
+msgstr ""
+
+#: vandelay.auto.import.auto_overlay_exact
+msgid "Auto Merge/Overlay Exact Matches"
+msgstr ""
+
+#: vandelay.auto.import.auto_overlay_1match
+msgid "Auto Merge/Overlay When Exactly 1 Match is Found"
+msgstr ""
+
+#: vandelay.auto.import.merge_profile
+msgid "Merge/Overlay Profile"
+msgstr ""
+
+#. Do not translate this.  Only change the numeric values if you need this dialogue box to appear bigger
+#: vandelay.auto.width
+msgid "Auto Width"
+msgstr "Chassa automatica..."
+
+#: vandelay.back.to.import.queue
+msgid "Back To Import Queue"
+msgstr ""
+
+#: vandelay.bib.attrs
+msgid "Bibliographic attributes"
+msgstr ""
+
+#: vandelay.bib.records
+msgid "Bibliographic Records"
+msgstr ""
+
+#: vandelay.cancel
+msgid "Cancel"
+msgstr "Abandonar"
+
+#: vandelay.edit
+msgid "Edit"
+msgstr "Modificar"
+
+#: vandelay.code
+msgid "Code"
+msgstr "Còde"
+
+#: vandelay.column
+msgid "Column"
+msgstr "Colomna"
+
+#: vandelay.create.attr.def
+msgid "Create Attribute Definition"
+msgstr ""
+
+#: vandelay.create
+msgid "Create"
+msgstr "Crear"
+
+#: vandelay.create.date
+msgid "Create Date"
+msgstr "Data de Creacion"
+
+#: vandelay.create.upload.queue
+msgid "Create a New Upload Queue"
+msgstr ""
+
+#: vandelay.creator
+msgid "Creator"
+msgstr "Autor"
+
+#: vandelay.delete.queue
+msgid "Delete Queue"
+msgstr "Suprimir la fila"
+
+#: vandelay.delete.record
+msgid "Delete record"
+msgstr "Suprimir l’enregistrament"
+
+#: vandelay.descrip
+msgid "Description"
+msgstr "Descripcion"
+
+#: vandelay.dest.match.point
+msgid "Destination Match Point"
+msgstr ""
+
+#: vandelay.display
+msgid "Display"
+msgstr "Afichatge"
+
+#: vandelay.done
+msgid "Done"
+msgstr "Acabat"
+
+#: vandelay.edit.attributes
+msgctxt "vandelay.edit.attributes"
+msgid "Edit Attributes"
+msgstr "Modificar los atributs"
+
+#: vandelay.edit.attrs
+msgctxt "vandelay.edit.attrs"
+msgid "Edit Attributes"
+msgstr "Modificar los atributs"
+
+#: vandelay.edit.profiles
+msgid "Edit Merge / Overlay Profiles"
+msgstr ""
+
+#: vandelay.edit.import_item_attrs
+msgid "Edit Import Item Attributes"
+msgstr ""
+
+#: vandelay.false
+msgid "False"
+msgstr "Fals"
+
+#: vandelay.file.to.upload
+msgid "File to Upload:"
+msgstr "Fichièr de mandar :"
+
+#: vandelay.for.example
+msgid "Example"
+msgstr "Exemple"
+
+#: vandelay.identifier
+msgid "Identifier"
+msgstr "Identificador"
+
+#: vandelay.id.field
+msgid "Identifier Field?"
+msgstr "Camp d'identificant ?"
+
+#: vandelay.id
+msgid "ID"
+msgstr "Identificant"
+
+#: vandelay.import.matches
+msgid "Import Matches"
+msgstr "Importar las correspondéncias"
+
+#: vandelay.import.records
+msgid "Import Records"
+msgstr "Importar los enregistraments"
+
+#: vandelay.import.selected
+msgid "Import Selected"
+msgstr "Importar la seleccion"
+
+#: vandelay.import.all
+msgid "Import All"
+msgstr "Importar tot"
+
+#: vandelay.import.time
+msgid "Import Time"
+msgstr "Importar l’ora"
+
+#: vandelay.inspect.queue
+msgid "Inspect Queue"
+msgstr "Examinar la fila"
+
+#: vandelay.last.edit.date
+msgid "Last Edit Date"
+msgstr ""
+
+#: vandelay.limit.to.collision.matches
+msgid "Limit to Collision Matches"
+msgstr ""
+
+#: vandelay.limit.to.non.imported
+msgid "Limit to Non-Imported Records"
+msgstr ""
+
+#: vandelay.marc.file.upload
+msgid "Evergreen MARC File Upload"
+msgstr ""
+
+#: vandelay.marc.record
+msgid "MARC Record"
+msgstr "Enregistrament MARC"
+
+#: vandelay.matches
+msgid "Matches"
+msgstr "Correspond"
+
+#: vandelay.next.page
+msgid "Next Page &#187;"
+msgstr "Pagina seguenta &#187;"
+
+#: vandelay.overlay.selected.record
+msgid "Overlay selected record with imported record"
+msgstr ""
+
+#: vandelay.overlay.target
+msgid "Overlay Target"
+msgstr ""
+
+#: vandelay.page
+msgid "Page"
+msgstr "Pagina"
+
+#: vandelay.powered.by.evergreen
+msgid "Powered by Evergreen!"
+msgstr ""
+
+#: vandelay.prev.page
+msgid "&#171; Previous Page"
+msgstr ""
+
+#: vandelay.processing
+msgid "Processing... "
+msgstr ""
+
+#: vandelay.queue
+msgid "Queue"
+msgstr "Metre en fila d'espèra"
+
+#: vandelay.queue.type
+msgid "Queue Type"
+msgstr ""
+
+#: vandelay.record.queue
+msgid "Record Queue"
+msgstr ""
+
+#: vandelay.record.type
+msgid "Record Type"
+msgstr "Tipe d'enregistrament"
+
+#: vandelay.refresh
+msgid "Refresh"
+msgstr "Actualizar"
+
+#: vandelay.remove.advanced
+msgid "Remove (advanced)"
+msgstr ""
+
+#: vandelay.remove
+msgid "Remove"
+msgstr "Suprimir"
+
+#: vandelay.results.per.page
+msgid "Results Per Page"
+msgstr ""
+
+#: vandelay.retrieve.queue
+msgid "Retrieve Queue"
+msgstr ""
+
+#: vandelay.return
+msgid "Return"
+msgstr "Retorn"
+
+#: vandelay.select.cols
+msgid "Select Columns"
+msgstr "Seleccionar las colomnas"
+
+#: vandelay.select.queue
+msgid "Select a Queue to Inspect"
+msgstr ""
+
+#: vandelay.source.match.point
+msgid "Source Match Point"
+msgstr ""
+
+#: vandelay.source
+msgid "Source"
+msgstr "Font"
+
+#: vandelay.subfields
+msgid "Subfield(s)"
+msgstr ""
+
+#: vandelay.subfield
+msgid "Subfield"
+msgstr ""
+
+#: vandelay.sure.to.delete
+msgid "Are you sure you want to delete this record?"
+msgstr ""
+
+#: vandelay.sure.to.delete.queue
+msgid "Are you sure you want to delete this queue?"
+msgstr ""
+
+#: vandelay.tags
+msgid "Tag(s)"
+msgstr ""
+
+#: vandelay.tag
+msgid "Tag"
+msgstr ""
+
+#: vandelay.tcn.source
+msgid "TCN Source"
+msgstr ""
+
+#: vandelay.tcn.value
+msgid "TCN Value"
+msgstr "Valor de NCT"
+
+#: vandelay.tooltip.subfields
+msgid "You can enter multiple subfields, separated by spaces and/or commas."
+msgstr ""
+
+#: vandelay.tooltip.tags
+msgid "You can enter multiple tags, separated by spaces and/or commas."
+msgstr ""
+
+#: vandelay.true
+msgid "True"
+msgstr "Verai"
+
+#: vandelay.update
+msgid "Update"
+msgstr "Mesa a jorn"
+
+#: vandelay.uploading
+msgid "Uploading..."
+msgstr "Mandadís en cors…"
+
+#: vandelay.upload.status
+msgid "Upload Status"
+msgstr "Estat del telecargement"
+
+#: vandelay.upload
+msgid "Upload"
+msgstr "Mandar"
+
+#: vandelay.vandelay
+msgid "Vandelay"
+msgstr "Vandelay"
+
+#: vandelay.view.marc
+msgid "View MARC"
+msgstr "Veire lo MARC"
+
+#: vandelay.xpath.advanced
+msgid "XPath (advanced)"
+msgstr "XPath (avançat)"
+
+#: vandelay.xpath
+msgid "XPath"
+msgstr "XPath"
+
+#: vandelay.save
+msgid "Save Changes"
+msgstr "Enregistrar las modificacions"
+
+#: vandelay.record_saved
+msgid "Record Saved"
+msgstr "Enregistrament salvat"
+
+#: vandelay.export.records
+msgid "Export Records"
+msgstr "Exportar los Enregistraments"
+
+#: vandelay.export.use_field_no
+msgid "Use Field Number"
+msgstr "Utilizar un numèro de camp"
+
+#: vandelay.export.from_csv
+msgid "From CSV File"
+msgstr "A partir d’un fichièr CSV"
+
+#: vandelay.export.record_id
+msgid "Record ID"
+msgstr "ID d’enregistrament"
+
+#: vandelay.export.or
+msgid "Or"
+msgstr "O"
+
+#: vandelay.export.format
+msgid "Record Format"
+msgstr "Format de l’enregistrament"
+
+#: vandelay.export.format.marc21
+msgid "MARC21"
+msgstr "MARC21"
+
+#: vandelay.export.format.unimarc
+msgid "UNIMARC"
+msgstr "UNIMARC"
+
+#: vandelay.export.format.xml
+msgid "MARC XML"
+msgstr "MARC XML"
+
+#: vandelay.export.format.bre
+msgid "Evergreen Record Entry"
+msgstr "Entrada d’enregistrament Evergreen"
+
+#: vandelay.export.encoding
+msgid "Record Encoding"
+msgstr "Encodatge d’enregistrament"
+
+#: vandelay.export.utf8
+msgid "UTF-8"
+msgstr "UTF-8"
+
+#: vandelay.export.marc8
+msgid "MARC8"
+msgstr "MARC8"
+
+#: vandelay.export.holdings
+msgid "Include holdings in Bibliographic Records"
+msgstr ""
+
+#: vandelay.export.retrieve
+msgid "Retrieve Records"
+msgstr "Recuperar d'enregistraments"
+
+#: vandelay.export.field_no_hint
+msgid "(starting from 0)"
+msgstr "(a partir de 0)"
+
+#: vandelay.export.bucket
+msgid "Record Bucket ID"
+msgstr ""
+
+#: vandelay.select_actions
+msgid "-- Actions --"
+msgstr "-- Accions --"
+
+#: vandelay.queue.total
+msgid "Total:"
+msgstr "Total :"
+
+#: vandelay.queue.imported
+msgid "Imported:"
+msgstr "Importat :"
+
+#: vandelay.queue.column_picker.title
+msgid "Column Picker"
+msgstr "Seleccionador de colomnas"
+
+#: vandelay.import.bib_sources
+msgid "Select a Record Source"
+msgstr "Seleccionatz una font d'enregistrament"

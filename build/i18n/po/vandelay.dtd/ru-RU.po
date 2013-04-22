@@ -1,0 +1,467 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
+"PO-Revision-Date: 2012-10-10 04:18+0000\n"
+"Last-Translator: S1 <Unknown>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2012-10-11 05:02+0000\n"
+"X-Generator: Launchpad (build 16118)\n"
+"X-Accelerator-Marker: &\n"
+
+#: vandelay.add.existing.queue
+msgid "or Add to an Existing Queue"
+msgstr "или добавить в существующую очередь"
+
+#: vandelay.auth.attrs
+msgid "Authority attributes"
+msgstr "Авторитетные атрибуты"
+
+#: vandelay.auth.records
+msgid "Authority Records"
+msgstr "Авторитетные записи"
+
+#: vandelay.auto.import.noncolliding
+msgid "Auto-Import Non-Colliding Records"
+msgstr "Auto-Import Non-Colliding записи"
+
+#: vandelay.auto.import.auto_overlay_exact
+msgid "Auto Merge/Overlay Exact Matches"
+msgstr "Автоматическое слияние/наложение точных совпадений"
+
+#: vandelay.auto.import.auto_overlay_1match
+msgid "Auto Merge/Overlay When Exactly 1 Match is Found"
+msgstr "Автоматическое слияние/наложение, когда найдено дочное совпадение"
+
+#: vandelay.auto.import.merge_profile
+msgid "Merge/Overlay Profile"
+msgstr "Слияние/Наложение профиля"
+
+#. Do not translate this.  Only change the numeric values if you need this dialogue box to appear bigger
+#: vandelay.auto.width
+msgid "Auto Width"
+msgstr "Автоматическая ширина"
+
+#: vandelay.back.to.import.queue
+msgid "Back To Import Queue"
+msgstr "Назад в очередь импорта"
+
+#: vandelay.bib.attrs
+msgid "Bibliographic attributes"
+msgstr "Библиографические атрибуты"
+
+#: vandelay.bib.records
+msgid "Bibliographic Records"
+msgstr "Библиографические записи"
+
+#: vandelay.cancel
+msgid "Cancel"
+msgstr "Отмена"
+
+#: vandelay.edit
+msgid "Edit"
+msgstr "Редакция"
+
+#: vandelay.code
+msgid "Code"
+msgstr "Код"
+
+#: vandelay.column
+msgid "Column"
+msgstr "Колонка"
+
+#: vandelay.create.attr.def
+msgid "Create Attribute Definition"
+msgstr "Создать атрибут Определения"
+
+#: vandelay.create
+msgid "Create"
+msgstr "Создать"
+
+#: vandelay.create.date
+msgid "Create Date"
+msgstr "Создать дату"
+
+#: vandelay.create.upload.queue
+msgid "Create a New Upload Queue"
+msgstr "Создать очередь новой загрузки"
+
+#: vandelay.creator
+msgid "Creator"
+msgstr "Создатель"
+
+#: vandelay.delete.queue
+msgid "Delete Queue"
+msgstr "Удалить очередь"
+
+#: vandelay.delete.record
+msgid "Delete record"
+msgstr "Удалить запись"
+
+#: vandelay.descrip
+msgid "Description"
+msgstr "Описание"
+
+#: vandelay.dest.match.point
+msgid "Destination Match Point"
+msgstr "Точка совпадения назначения"
+
+#: vandelay.display
+msgid "Display"
+msgstr "Отображение"
+
+#: vandelay.done
+msgid "Done"
+msgstr "Выполнен"
+
+#: vandelay.edit.attributes
+msgctxt "vandelay.edit.attributes"
+msgid "Edit Attributes"
+msgstr "Редакция атрибута"
+
+#: vandelay.edit.attrs
+msgctxt "vandelay.edit.attrs"
+msgid "Edit Attributes"
+msgstr "Редакция атрибута"
+
+#: vandelay.edit.profiles
+msgid "Edit Merge / Overlay Profiles"
+msgstr "Редактирование слияния/наложения профилей"
+
+#: vandelay.edit.import_item_attrs
+msgid "Edit Import Item Attributes"
+msgstr "Редактирование аттрибутов импорта"
+
+#: vandelay.false
+msgid "False"
+msgstr "Лож"
+
+#: vandelay.file.to.upload
+msgid "File to Upload:"
+msgstr "Документ для Загрузки:"
+
+#: vandelay.for.example
+msgid "Example"
+msgstr "пример"
+
+#: vandelay.identifier
+msgid "Identifier"
+msgstr "Идентификатор"
+
+#: vandelay.id.field
+msgid "Identifier Field?"
+msgstr "Идентификатор поля?"
+
+#: vandelay.id
+msgid "ID"
+msgstr "ID"
+
+#: vandelay.import.matches
+msgid "Import Matches"
+msgstr "Импорт соответствует"
+
+#: vandelay.import.records
+msgid "Import Records"
+msgstr "Импорт записей"
+
+#: vandelay.import.selected
+msgid "Import Selected"
+msgstr "Импорт отобран"
+
+#: vandelay.import.all
+msgid "Import All"
+msgstr "Импортируйте Все"
+
+#: vandelay.import.time
+msgid "Import Time"
+msgstr "Время импорта"
+
+#: vandelay.inspect.queue
+msgid "Inspect Queue"
+msgstr "Проверьте очередь"
+
+#: vandelay.last.edit.date
+msgid "Last Edit Date"
+msgstr "Дата последнего  Редактирования"
+
+#: vandelay.limit.to.collision.matches
+msgid "Limit to Collision Matches"
+msgstr "Ограничить соответствующими коллизиями"
+
+#: vandelay.limit.to.non.imported
+msgid "Limit to Non-Imported Records"
+msgstr "Ограничить неимпортированными записями"
+
+#: vandelay.marc.file.upload
+msgid "Evergreen MARC File Upload"
+msgstr "Загрузка документа Evergreen MARC"
+
+#: vandelay.marc.record
+msgid "MARC Record"
+msgstr "Запись MARC"
+
+#: vandelay.matches
+msgid "Matches"
+msgstr "Совпадения"
+
+#: vandelay.next.page
+msgid "Next Page &#187;"
+msgstr "Следующая страница &#187;"
+
+#: vandelay.overlay.selected.record
+msgid "Overlay selected record with imported record"
+msgstr "Накладывать  выбранный запись с импортированной записью"
+
+#: vandelay.overlay.target
+msgid "Overlay Target"
+msgstr "Накладывать мишень"
+
+#: vandelay.page
+msgid "Page"
+msgstr "Страница"
+
+#: vandelay.powered.by.evergreen
+msgid "Powered by Evergreen!"
+msgstr "Powered by Evergreen!"
+
+#: vandelay.prev.page
+msgid "&#171; Previous Page"
+msgstr "&#171; Предыдущая страница"
+
+#: vandelay.processing
+msgid "Processing... "
+msgstr "Обработка "
+
+#: vandelay.queue
+msgid "Queue"
+msgstr "Очередь"
+
+#: vandelay.queue.type
+msgid "Queue Type"
+msgstr "Тип очереди"
+
+#: vandelay.record.queue
+msgid "Record Queue"
+msgstr "Очередь записи"
+
+#: vandelay.record.type
+msgid "Record Type"
+msgstr "Тип записи"
+
+#: vandelay.refresh
+msgid "Refresh"
+msgstr "Освежить"
+
+#: vandelay.remove.advanced
+msgid "Remove (advanced)"
+msgstr "Удалить (продвинутый)"
+
+#: vandelay.remove
+msgid "Remove"
+msgstr "Удалить"
+
+#: vandelay.results.per.page
+msgid "Results Per Page"
+msgstr "Результаты по страничная"
+
+#: vandelay.retrieve.queue
+msgid "Retrieve Queue"
+msgstr "Восстановить очередь"
+
+#: vandelay.return
+msgid "Return"
+msgstr "Возврат"
+
+#: vandelay.select.cols
+msgid "Select Columns"
+msgstr "Выберите колонки"
+
+#: vandelay.select.queue
+msgid "Select a Queue to Inspect"
+msgstr "Выберите очередь, чтобы инспектировать"
+
+#: vandelay.source.match.point
+msgid "Source Match Point"
+msgstr "Точка совпадентя источника"
+
+#: vandelay.source
+msgid "Source"
+msgstr "Источник"
+
+#: vandelay.subfields
+msgid "Subfield(s)"
+msgstr "Подполя"
+
+#: vandelay.subfield
+msgid "Subfield"
+msgstr "Подполе"
+
+#: vandelay.sure.to.delete
+msgid "Are you sure you want to delete this record?"
+msgstr "Вы уверены, что хотите удалить эту запись ?"
+
+#: vandelay.sure.to.delete.queue
+msgid "Are you sure you want to delete this queue?"
+msgstr "Вы уверены, что хотите удалить эту очередь?"
+
+#: vandelay.tags
+msgid "Tag(s)"
+msgstr "Теги"
+
+#: vandelay.tag
+msgid "Tag"
+msgstr "Тег"
+
+#: vandelay.tcn.source
+msgid "TCN Source"
+msgstr "Источник TCN"
+
+#: vandelay.tcn.value
+msgid "TCN Value"
+msgstr "TCN значение"
+
+#: vandelay.tooltip.subfields
+msgid "You can enter multiple subfields, separated by spaces and/or commas."
+msgstr ""
+"Вы можете ввести несколько подполей, отделенные пробелами и/или запятыми."
+
+#: vandelay.tooltip.tags
+msgid "You can enter multiple tags, separated by spaces and/or commas."
+msgstr ""
+"Вы можете ввести несколько тегови, отделенные пробелами и/или запятыми."
+
+#: vandelay.true
+msgid "True"
+msgstr "Верно"
+
+#: vandelay.update
+msgid "Update"
+msgstr "Обновление"
+
+#: vandelay.uploading
+msgid "Uploading..."
+msgstr "Загрузка"
+
+#: vandelay.upload.status
+msgid "Upload Status"
+msgstr "Статус загрузки"
+
+#: vandelay.upload
+msgid "Upload"
+msgstr "Загрузка"
+
+#: vandelay.vandelay
+msgid "Vandelay"
+msgstr "Vandelay"
+
+#: vandelay.view.marc
+msgid "View MARC"
+msgstr "MARC просмотр"
+
+#: vandelay.xpath.advanced
+msgid "XPath (advanced)"
+msgstr "XPath (продвинутый)"
+
+#: vandelay.xpath
+msgid "XPath"
+msgstr "XPath"
+
+#: vandelay.save
+msgid "Save Changes"
+msgstr "Сохранить Изменения"
+
+#: vandelay.record_saved
+msgid "Record Saved"
+msgstr "Запись сохранена"
+
+#: vandelay.export.records
+msgid "Export Records"
+msgstr "Экспорт записей"
+
+#: vandelay.export.use_field_no
+msgid "Use Field Number"
+msgstr "Используйте номер поля"
+
+#: vandelay.export.from_csv
+msgid "From CSV File"
+msgstr "Из CSV документа"
+
+#: vandelay.export.record_id
+msgid "Record ID"
+msgstr "ID Записи"
+
+#: vandelay.export.or
+msgid "Or"
+msgstr "или"
+
+#: vandelay.export.format
+msgid "Record Format"
+msgstr "Формат записи"
+
+#: vandelay.export.format.marc21
+msgid "MARC21"
+msgstr "MARC21"
+
+#: vandelay.export.format.unimarc
+msgid "UNIMARC"
+msgstr "UNIMARC"
+
+#: vandelay.export.format.xml
+msgid "MARC XML"
+msgstr "MARC XML"
+
+#: vandelay.export.format.bre
+msgid "Evergreen Record Entry"
+msgstr "Ввод записи Evergreen"
+
+#: vandelay.export.encoding
+msgid "Record Encoding"
+msgstr "Кодировка записи"
+
+#: vandelay.export.utf8
+msgid "UTF-8"
+msgstr "UTF-8"
+
+#: vandelay.export.marc8
+msgid "MARC8"
+msgstr "MARC8"
+
+#: vandelay.export.holdings
+msgid "Include holdings in Bibliographic Records"
+msgstr "Включите хранения в библиографической записи"
+
+#: vandelay.export.retrieve
+msgid "Retrieve Records"
+msgstr "Поиск записей"
+
+#: vandelay.export.field_no_hint
+msgid "(starting from 0)"
+msgstr "(Начиная с 0)"
+
+#: vandelay.export.bucket
+msgid "Record Bucket ID"
+msgstr "ID букета Записи"
+
+#: vandelay.select_actions
+msgid "-- Actions --"
+msgstr "-- Действие --"
+
+#: vandelay.queue.total
+msgid "Total:"
+msgstr "Итого:"
+
+#: vandelay.queue.imported
+msgid "Imported:"
+msgstr "Импортированный:"
+
+#: vandelay.queue.column_picker.title
+msgid "Column Picker"
+msgstr "Сборщик Колонки"
+
+#: vandelay.import.bib_sources
+msgid "Select a Record Source"
+msgstr "Выберите источник записи"

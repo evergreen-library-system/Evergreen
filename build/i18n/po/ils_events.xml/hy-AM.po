@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2013-02-21 11:20-0400\n"
-"PO-Revision-Date: 2013-02-24 14:39+0000\n"
+"POT-Creation-Date: 2013-03-15 19:41-0400\n"
+"PO-Revision-Date: 2013-04-01 14:24+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-02-25 05:09+0000\n"
-"X-Generator: Launchpad (build 16506)\n"
+"X-Launchpad-Export-Date: 2013-04-02 05:19+0000\n"
+"X-Generator: Launchpad (build 16546)\n"
 
 #: 1208.TITLE_LAST_COPY:71
 msgid "The last copy attached to a title is being removed or deleted"
@@ -388,10 +388,6 @@ msgstr ""
 #: 1619.ACTOR_STAT_CAT_ENTRY_USER_MAP_NOT_FOUND:506
 msgid "The requested actor_stat_cat_entry_user_map was not found"
 msgstr "Հարցվող actor_stat_cat_entry_user_map չի գտնված"
-
-#: 1858.ACQ_LINEITEM_NOT_FOUND:655
-msgid "The requested acq.po_lineitem was not found"
-msgstr "Պահանջվող acq.po_lineitem չի գտնված"
 
 #: 1558.ASSET_COPY_NOTE_NOT_FOUND:326
 msgid "The requested asset_copy_note was not found"
@@ -916,6 +912,10 @@ msgstr "Հարցվող asset_stat_cat_entry_copy_map չի գտնված"
 msgid "The requested copy has an alert message attached"
 msgstr "Պահանջվող օրինակը ունի կցված ահազանգի հաղորդում"
 
+#: 7006.COPY_IS_REFERENCE:857
+msgid "Copy is reference material"
+msgstr "Օրինակը տեղեկատու ն յութ է"
+
 #: 1547.CONFIG_ITEM_FORM_MAP_NOT_FOUND:297
 msgid "The requested config_item_form_map was not found"
 msgstr "Հարցվող config_item_form_map չի գտնված"
@@ -1024,9 +1024,15 @@ msgstr ""
 msgid "The requested vandelay_authority_queue was not found"
 msgstr "Պահանջվող vandelay_authority_queue չի գտնվել"
 
-#: 7006.COPY_IS_REFERENCE:857
-msgid "Copy is reference material"
-msgstr "Օրինակը տեղեկատու ն յութ է"
+#: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:809
+msgid ""
+"A *TERRIBLE* problem has occurred: a credit card transaction was processed "
+"successfully, but the patron's payment could not be recorded within "
+"Evergreen.  Please seek assistance."
+msgstr ""
+"*ԱՀԱՎՈՐ* խնդիր է ծագել. կրեդիտ քարտով հաջողությամբ կատարվել է տրանզակցիա, "
+"բայց օգտագտիրոջ վճարումը հնարավոր չէ գրանցել Էվերգրինում։ Դիմիր աջակցության "
+"համար։"
 
 #: 1634.REPORTER_TEMPLATE_NOT_FOUND:551
 msgid "The requested reporter_template was not found"
@@ -1133,15 +1139,6 @@ msgid ""
 "A duplicate money.collections_tracker object already exists in the database"
 msgstr "Կրկնվող money.collections_tracker պատկեր շտեմարանում աօկա է"
 
-#: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:809
-msgid ""
-"A *TERRIBLE* problem has occurred: a credit card transaction was processed "
-"successfuly, but the patron's payment could not be recorded within "
-"Evergreen.  Please seek assistance."
-msgstr ""
-"*ԱՀԱՎՈՐ* պրոբլեմ է համդիպել, կրեդիտ քարտի տրանզակցիան հաջող է կատարվել, բայց "
-"ընթերցողի վճարումը հնարավոր չէ գրանցել Էվեռգռինի ներսում: Դիմիր օգնության"
-
 #: 1614.ACTION_SURVEY_ANSWER_NOT_FOUND:491
 msgid "The requested action_survey_answer was not found"
 msgstr "Հարցվող action_survey_answer չի գտնված"
@@ -1153,6 +1150,10 @@ msgid ""
 msgstr ""
 "Օգտվողին ում փոերձում ես ջնջել հնարավոր չէ ջնջել քանի որ այն ունի բաց տացքեր "
 "և/կամ չվճարված հաշիվներ։"
+
+#: 1858.ACQ_LINEITEM_NOT_FOUND:655
+msgid "The requested acq.lineitem was not found"
+msgstr "Պահանջված acq.lineitem չի գտնված։"
 
 #: 1845.ACQ_PROVIDER_NOT_FOUND:616
 msgid "The requested acq.provider was not found"
@@ -1279,3 +1280,14 @@ msgstr "Հարցվող money_user_summary չի գտնված"
 
 #~ msgid "Copy has is marked as missing"
 #~ msgstr "Օրինակը նշված է որպես բացակա"
+
+#~ msgid "The requested acq.po_lineitem was not found"
+#~ msgstr "Պահանջվող acq.po_lineitem չի գտնված"
+
+#~ msgid ""
+#~ "A *TERRIBLE* problem has occurred: a credit card transaction was processed "
+#~ "successfuly, but the patron's payment could not be recorded within "
+#~ "Evergreen.  Please seek assistance."
+#~ msgstr ""
+#~ "*ԱՀԱՎՈՐ* պրոբլեմ է համդիպել, կրեդիտ քարտի տրանզակցիան հաջող է կատարվել, բայց "
+#~ "ընթերցողի վճարումը հնարավոր չէ գրանցել Էվեռգռինի ներսում: Դիմիր օգնության"

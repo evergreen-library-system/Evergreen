@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2013-02-21 11:20-0400\n"
+"POT-Creation-Date: 2013-03-15 19:41-0400\n"
 "PO-Revision-Date: 2010-05-11 08:59+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-02-23 05:25+0000\n"
-"X-Generator: Launchpad (build 16506)\n"
+"X-Launchpad-Export-Date: 2013-03-16 05:58+0000\n"
+"X-Generator: Launchpad (build 16532)\n"
 
 #: 1208.TITLE_LAST_COPY:71
 msgid "The last copy attached to a title is being removed or deleted"
@@ -371,10 +371,6 @@ msgstr ""
 #: 1619.ACTOR_STAT_CAT_ENTRY_USER_MAP_NOT_FOUND:506
 msgid "The requested actor_stat_cat_entry_user_map was not found"
 msgstr "Запрашиваемый actor_stat_cat_entry_user_map не найден"
-
-#: 1858.ACQ_LINEITEM_NOT_FOUND:655
-msgid "The requested acq.po_lineitem was not found"
-msgstr "Запрашиваемый assacq.po_lineitem не был найден"
 
 #: 1558.ASSET_COPY_NOTE_NOT_FOUND:326
 msgid "The requested asset_copy_note was not found"
@@ -877,6 +873,10 @@ msgstr "Запрашиваемый asset_stat_cat_entry_copy_map не найде
 msgid "The requested copy has an alert message attached"
 msgstr ""
 
+#: 7006.COPY_IS_REFERENCE:857
+msgid "Copy is reference material"
+msgstr ""
+
 #: 1547.CONFIG_ITEM_FORM_MAP_NOT_FOUND:297
 msgid "The requested config_item_form_map was not found"
 msgstr "Запрашиваемый config_item_form_map не найден"
@@ -980,8 +980,11 @@ msgstr ""
 msgid "The requested vandelay_authority_queue was not found"
 msgstr "Запрашиваемый vandelay_authority_queue не найден"
 
-#: 7006.COPY_IS_REFERENCE:857
-msgid "Copy is reference material"
+#: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:809
+msgid ""
+"A *TERRIBLE* problem has occurred: a credit card transaction was processed "
+"successfully, but the patron's payment could not be recorded within "
+"Evergreen.  Please seek assistance."
 msgstr ""
 
 #: 1634.REPORTER_TEMPLATE_NOT_FOUND:551
@@ -1089,13 +1092,6 @@ msgid ""
 "A duplicate money.collections_tracker object already exists in the database"
 msgstr "Дублетный money.collections_tracker объект уже есть в базе"
 
-#: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:809
-msgid ""
-"A *TERRIBLE* problem has occurred: a credit card transaction was processed "
-"successfuly, but the patron's payment could not be recorded within "
-"Evergreen.  Please seek assistance."
-msgstr ""
-
 #: 1614.ACTION_SURVEY_ANSWER_NOT_FOUND:491
 msgid "The requested action_survey_answer was not found"
 msgstr "Запрашиваемый action_survey_answer не найден"
@@ -1104,6 +1100,10 @@ msgstr "Запрашиваемый action_survey_answer не найден"
 msgid ""
 "The user you have attempted to delete cannot be deleted because it has open "
 "circulations and/or unpaid bills."
+msgstr ""
+
+#: 1858.ACQ_LINEITEM_NOT_FOUND:655
+msgid "The requested acq.lineitem was not found"
 msgstr ""
 
 #: 1845.ACQ_PROVIDER_NOT_FOUND:616
@@ -1227,3 +1227,6 @@ msgstr "Запрашиваемый money_user_summary не найден"
 
 #~ msgid "Copy has is marked as missing"
 #~ msgstr "Копия отмечена как отсутствующая"
+
+#~ msgid "The requested acq.po_lineitem was not found"
+#~ msgstr "Запрашиваемый assacq.po_lineitem не был найден"

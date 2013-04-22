@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-20 09:37-0400\n"
-"PO-Revision-Date: 2012-12-20 15:08+0000\n"
-"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"POT-Creation-Date: 2013-03-15 19:42+0000\n"
+"PO-Revision-Date: 2013-03-19 20:04+0000\n"
+"Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-12-21 05:00+0000\n"
-"X-Generator: Launchpad (build 16378)\n"
+"X-Launchpad-Export-Date: 2013-03-20 04:44+0000\n"
+"X-Generator: Launchpad (build 16532)\n"
 "X-Project-Style: mozilla\n"
 "X-Accelerator-Marker: &\n"
 "Language: fi\n"
@@ -89,35 +89,39 @@ msgstr "Sinun on syötettävä hyväksymiskoodi tai julkaisutietonumero"
 msgid "bill_details.xul, my_init:"
 msgstr "bill_details.xul, my_init:"
 
+#: staff.patron.bill_details.my_cleanup.error
+msgid "bill_details.xul, my_cleanup:"
+msgstr ""
+
 #: staff.patron.bill_details.handle_edit_bill_note.note_dialog.title
 msgctxt "staff.patron.bill_details.handle_edit_bill_note.note_dialog.title"
 msgid "Replacement Note"
-msgstr "Korvaushuomautus"
+msgstr "Korvausilmoitus"
 
 #: staff.patron.bill_details.handle_edit_bill_note.note_dialog.prompt
 msgctxt "staff.patron.bill_details.handle_edit_bill_note.note_dialog.prompt"
 msgid "Enter new note:"
-msgstr "Syötä uusi huomautus:"
+msgstr "Syötä uusi ilmoitus:"
 
 #: staff.patron.bill_details.handle_edit_bill_note.failure
 msgid "Note for selected bills not likely updated."
-msgstr "Valittujen maksujen huomautusta ei luultavasti päivitetty."
+msgstr "Valittujen maksujen ilmoitusta ei luultavasti päivitetty."
 
 #: staff.patron.bill_details.handle_edit_payment_note.note_dialog.title
 msgctxt ""
 "staff.patron.bill_details.handle_edit_payment_note.note_dialog.title"
 msgid "Replacement Note"
-msgstr "Korvaushuomautus"
+msgstr "Korvausilmoitus"
 
 #: staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt
 msgctxt ""
 "staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt"
 msgid "Enter new note:"
-msgstr "Syötä uusi huomautus:"
+msgstr "Syötä uusi ilmoitus:"
 
 #: staff.patron.bill_details.handle_edit_payment_note.failure
 msgid "Note for selected payments not likely updated."
-msgstr "Valittujen maksujen huomautusta ei luultavasti päivitetty."
+msgstr "Valittujen maksujen ilmoitusta ei luultavasti päivitetty."
 
 #: staff.patron.bill_details.handle_void.voided_billings.alert
 msgid "All selected billings have already voided."
@@ -426,7 +430,7 @@ msgstr "Asiakasta ei ole valittu"
 
 #: staff.patron.display.cmd_patron_delete.dialog.title
 msgid "Delete Patron Account"
-msgstr "Poista asiakkaan tili"
+msgstr "Tuhoa asiakkaan tili"
 
 #: staff.patron.display.cmd_patron_delete.dialog.message
 msgid ""
@@ -446,15 +450,15 @@ msgstr "Peru poisto"
 
 #: staff.patron.display.cmd_patron_delete.dialog.okay
 msgid "Delete Account"
-msgstr "Poista tili"
+msgstr "Tuhoa tili"
 
 #: staff.patron.display.cmd_patron_delete.deny_deletion_of_super_user
 msgid "You may not delete a super user through this interface."
-msgstr "Et voi poistaa pääkäyttäjää tätä kautta."
+msgstr "Et voi tuhota pääkäyttäjää tätä kautta."
 
 #: staff.patron.display.cmd_patron_delete.deny_deletion_of_self
 msgid "You may not delete your own account."
-msgstr "Et voi poistaa omaa tiliäsi."
+msgstr "Et voi tuhota omaa tiliäsi."
 
 #: staff.patron.display.cmd_patron_delete.dest_user.prompt
 msgid ""
@@ -462,8 +466,8 @@ msgid ""
 "enter the barcode for a destination user to receive the deleted user's "
 "miscellaneous staff artifacts (reports, etc.):"
 msgstr ""
-"Käyttäjällä, jota yrität poistaa, on STAFF_LOGIN-oikeudet. Syötä "
-"kohdekäyttäjän asiakastunnus, jos haluat saada itsellesi poistettavan "
+"Käyttäjällä, jonka tiedot yrität tuhota, on STAFF_LOGIN-oikeudet. Syötä "
+"kohdekäyttäjän asiakastunnus, jos haluat saada itsellesi tuhottavan "
 "käyttäjän sekalaiset henkilökunta-aineistot (raportit jne.)"
 
 #: staff.patron.display.cmd_patron_delete.dest_user.title
@@ -479,8 +483,8 @@ msgid ""
 "Cannot specify the deleted user as the destination user.  User deletion "
 "aborted."
 msgstr ""
-"Poistettavaa käyttäjää ei voida määrittää kohdekäyttäjäksi. Käyttäjän poisto "
-"keskeytettiin."
+"Tuhottavaa käyttäjää ei voida määrittää kohdekäyttäjäksi. Käyttäjän "
+"tuhoaminen keskeytettiin."
 
 #: staff.patron.display.cmd_patron_delete.override_prompt
 msgid "Override patron deletion failure?"
@@ -501,7 +505,7 @@ msgstr "Haetaan..."
 
 #: staff.patron.display.init.network_request.alert_message
 msgid "Alert message: \"%1$s\"<br/><br/>"
-msgstr "Varoitusviesti: \"%1$s\"<br/><br/>"
+msgstr "Huomautusviesti: \"%1$s\"<br/><br/>"
 
 #: staff.patron.display.init.network_request.inactive_card
 msgid "Patron account retrieved with an INACTIVE card.<br/><br/>"
@@ -509,7 +513,7 @@ msgstr "Asiakkaan tili haettu, kortti EI-AKTIIVINEN.<br/><br/>"
 
 #: staff.patron.display.init.network_request.account_barred
 msgid "Patron account is BARRED.<br/><br/>"
-msgstr "Asiakkaan tili on SULJETTU POIS.<br/><br/>"
+msgstr "Asiakkaan tili on LAINAUSKIELLOSSA.<br/><br/>"
 
 #: staff.patron.display.init.network_request.account_inactive
 msgid "Patron account is INACTIVE.<br/><br/>"
@@ -517,7 +521,7 @@ msgstr "Asiakkaan tili on EI-AKTIIVINEN.<br/><br/>"
 
 #: staff.patron.display.init.network_request.account_expire_soon
 msgid "Patron account will expire soon.  Please renew.<br/><br/>"
-msgstr ""
+msgstr "Käyttäjän tili vanhenee pian. Ole hyvä ja uusi se.<br/><br/>"
 
 #: staff.patron.display.init.network_request.account_expired
 msgid "Patron account is EXPIRED.<br/><br/>"
@@ -529,22 +533,22 @@ msgstr "Varauksia lainattavissa: %1$s"
 
 #: staff.patron.display.init.network_request.window_title
 msgid "Alert"
-msgstr "Varoitus"
+msgstr "Huomautus"
 
 #: staff.patron.display.init.network_request.window_message
 msgid ""
 "Press a navigation button above (for example, Check Out) to clear this alert."
 msgstr ""
-"Poista varoitus painamalla jotakin yllä olevaa navigointipainiketta (esim. "
-"Lainaa)."
+"Poista huomautus painamalla jotakin yllä olevaa navigointipainiketta (esim. "
+"Lainaus)."
 
 #: staff.patron.display.init.network_request.dump_error_message
 msgid "Not re-displaying this alert message: %1$s"
-msgstr "Varoitusviestiä ei näytetä uudelleen: %1$s"
+msgstr "Huomautusviestiä ei näytetä uudelleen: %1$s"
 
 #: staff.patron.display.init.network_request.error_showing_alert
 msgid "Error showing patron alert and holds availability."
-msgstr "Virhe asiakasvaroituksen ja varausten lainattavuuden näytössä."
+msgstr "Virhe asiakashuomautuksen ja varausten lainattavuuden näytössä."
 
 #: staff.patron.display.render_search_form.patron_search
 msgid "Patron Search"
@@ -556,7 +560,7 @@ msgstr "Asiakas:"
 
 #: staff.patron.display.no_alerts_or_messages
 msgid "No Alerts, Blocks, or Messages"
-msgstr "Ei varoituksia, estoja tai viestejä"
+msgstr "Ei huomautuksia, estoja tai viestejä"
 
 #. # Field 1 = actor.usr.id, Field 2 = actor.usr.create_date, Field 3 = actor.usr.last_update_time
 #: staff.patron.display.db_data
@@ -578,7 +582,7 @@ msgstr "Menetelmä"
 #: staff.patron.hold_notices.note
 msgctxt "staff.patron.hold_notices.note"
 msgid "Note"
-msgstr "Huomautus"
+msgstr "Ilmoitus"
 
 #: staff.patron.hold_notices.cancel
 msgctxt "staff.patron.hold_notices.cancel"
@@ -610,7 +614,7 @@ msgstr "ID: %1$s Varauksen ID: %2$s Henkilökunta-ID: %3$s"
 #: staff.patron.hold_notes.new_note
 msgctxt "staff.patron.hold_notes.new_note"
 msgid "New Note"
-msgstr "Uusi huomautus"
+msgstr "Uusi ilmoitus"
 
 #: staff.patron.hold_notes.title
 msgctxt "staff.patron.hold_notes.title"
@@ -620,7 +624,7 @@ msgstr "Nimeke"
 #: staff.patron.hold_notes.body
 msgctxt "staff.patron.hold_notes.body"
 msgid "Note"
-msgstr "Huomautus"
+msgstr "Ilmoitus"
 
 #: staff.patron.hold_notes.public
 msgid "Public"
@@ -667,7 +671,7 @@ msgstr "P"
 #: staff.patron.hold_notes.add_note
 msgctxt "staff.patron.hold_notes.add_note"
 msgid "Add Note"
-msgstr "Lisää huomautus"
+msgstr "Lisää ilmoitus"
 
 #: staff.patron.hold_notes.add_note.accesskey
 msgctxt "staff.patron.hold_notes.add_note.accesskey"
@@ -677,7 +681,7 @@ msgstr "L"
 #: staff.patron.hold_notes.new_note.not_created
 msgctxt "staff.patron.hold_notes.new_note.not_created"
 msgid "The note was not likely created."
-msgstr "Huomautusta ei luultavasti luotu."
+msgstr "Ilmoitusta ei luultavasti luotu."
 
 #: staff.patron.holds.init.hold_num_error
 msgid "Error retrieving details for hold #%1$s"
@@ -1349,7 +1353,7 @@ msgstr "Erääntyneitä niteitä yhteensä: %1$s"
 
 #: staff.patron.info_notes.render_notes.add_new_note.label
 msgid "Add New Note"
-msgstr "Lisää uusi huomautus"
+msgstr "Lisää uusi ilmoitus"
 
 #: staff.patron.info_notes.render_notes.add_new_note.accesskey
 msgctxt "staff.patron.info_notes.render_notes.add_new_note.accesskey"
@@ -1358,7 +1362,7 @@ msgstr "L"
 
 #: staff.patron.info_notes.render_notes.tooltiptext
 msgid "Note ID: %1$s Creator ID: %2$s"
-msgstr "Huomautuksen ID: %1$s Luojan ID: %2$s"
+msgstr "Ilmoituksen ID: %1$s Luojan ID: %2$s"
 
 #: staff.patron.info_notes.render_notes.pub.patron_visible
 msgid "Patron Visible"
@@ -1370,19 +1374,19 @@ msgstr "Vain henkilökunnalle"
 
 #: staff.patron.info_notes.render_notes.delete_note_message
 msgid "Delete the note titled \"%1$s\" created on %2$s?"
-msgstr "Poistetaanko huomautus \"%1$s\", joka on luotu %2$s?"
+msgstr "Tuhotaanko ilmoitus \"%1$s\", joka on luotu %2$s?"
 
 #: staff.patron.info_notes.render_notes.delete_note_title
 msgid "Delete Note"
-msgstr "Poista huomautus"
+msgstr "Tuhoa ilmoitus"
 
 #: staff.patron.info_notes.render_notes.btn1.delete_note.label
 msgid "Delete This Note"
-msgstr "Poista tämä huomautus"
+msgstr "Tuhoa tämä ilmoitus"
 
 #: staff.patron.info_notes.render_notes.note_deleted
 msgid "Note deleted."
-msgstr "Huomautus poistettu."
+msgstr "Ilmoitus tuhottu."
 
 #: staff.patron.info_notes.render_notes.pertaining_to
 msgid "Pertaining to"
@@ -1394,7 +1398,7 @@ msgstr "luotu"
 
 #: staff.patron.info_notes.render_notes.printing_note_num
 msgid "printing note #%1$s"
-msgstr "tulostetaan huomautusta #%1$s"
+msgstr "tulostetaan ilmoitusta #%1$s"
 
 #: staff.patron.info_notes.render_notes.btn2.print_note.label
 msgid "Print"
@@ -1403,7 +1407,7 @@ msgstr "Tulosta"
 #: staff.patron.info_notes.new_note.label
 msgctxt "staff.patron.info_notes.new_note.label"
 msgid "New Note"
-msgstr "Uusi huomautus"
+msgstr "Uusi ilmoitus"
 
 #: staff.patron.info_notes.new_note.patron_visible.value
 msgid "Patron Visible?"
@@ -1417,7 +1421,7 @@ msgstr "Nimeke"
 #: staff.patron.info_notes.new_note.note.value
 msgctxt "staff.patron.info_notes.new_note.note.value"
 msgid "Note"
-msgstr "Huomautus"
+msgstr "Ilmoitus"
 
 #: staff.patron.info_notes.new_note.initials.value
 msgid "Initials"
@@ -1436,7 +1440,7 @@ msgstr "P"
 #: staff.patron.info_notes.new_note.add.label
 msgctxt "staff.patron.info_notes.new_note.add.label"
 msgid "Add Note"
-msgstr "Lisää huomautus"
+msgstr "Lisää ilmoitus"
 
 #: staff.patron.info_notes.new_note.add.accesskey
 msgctxt "staff.patron.info_notes.new_note.add.accesskey"
@@ -1446,12 +1450,12 @@ msgstr "L"
 #: staff.patron.info_notes.new_note.add_note_title
 msgctxt "staff.patron.info_notes.new_note.add_note_title"
 msgid "Add Note"
-msgstr "Lisää huomautus"
+msgstr "Lisää ilmoitus"
 
 #: staff.patron.info_notes.new_note.note_not_created
 msgctxt "staff.patron.info_notes.new_note.note_not_created"
 msgid "The note was not likely created."
-msgstr "Huomautusta ei luultavasti luotu."
+msgstr "Ilmoitusta ei luultavasti luotu."
 
 #: staff.patron.info_stat_cats.retrieve_fleshed_patron.failed
 msgid "Failed to retrieve patron stat cats."
@@ -1763,7 +1767,7 @@ msgstr "Poista"
 
 #: staff.patron.summary.standing_penalty.none
 msgid "No Blocks/Penalties"
-msgstr "Ei estoja/rangaistuksia"
+msgstr "Ei estoja/rajoituksia"
 
 #: staff.patron.summary.group_list.column.family_name.label
 msgid "Family Name"
@@ -1795,7 +1799,7 @@ msgstr "Rekisteröidään vireillä olevaa asiakasta: %1$s"
 
 #: staff.patron.staged.confirm_patron_delete
 msgid "Delete the selected patrons?"
-msgstr "Poistetaanko valitut asiakkaat?"
+msgstr "Tuhotaanko valitut asiakkaat?"
 
 #: staff.patron.staged.error_on_delete
 msgid "Error deleting pending patron with row_id = %1$s"
@@ -1808,19 +1812,19 @@ msgstr "Kirjastoluettelo puuttuu."
 
 #: staff.patron.standing_penalty.apply_error
 msgid "Error applying %1$s block/standing penalty."
-msgstr "Virhe %1$s eston/rangaistuksen käyttöönotossa."
+msgstr "Virhe %1$s eston/rajoituksen käyttöönotossa."
 
 #: staff.patron.standing_penalty.remove_error
 msgid "Error removing %1$s block/standing penalty."
-msgstr "Virhe %1$s eston/rangaistuksen poistamisessa."
+msgstr "Virhe %1$s eston/rajoituksen poistamisessa."
 
 #: staff.patron.standing_penalty.update_error
 msgid "Error updating block/standing penalty."
-msgstr "Virhe eston/rangaistuksen päivittämisessä."
+msgstr "Virhe eston/rajoituksen päivittämisessä."
 
 #: staff.patron.standing_penalty.retrieve_error
 msgid "Error retrieving block/standing penalty."
-msgstr "Virhe eston/rangaistuksen hakemisessa."
+msgstr "Virhe eston/rajoituksen hakemisessa."
 
 #: staff.patron.ue.uEditInit.session_no_defined
 msgctxt "staff.patron.ue.uEditInit.session_no_defined"
@@ -1829,7 +1833,7 @@ msgstr "Käyttäjäistuntoa ei ole määritetty"
 
 #: staff.patron.ue.uEditSaveuser.error_creating_note
 msgid "Error creating patron guardian or parent note"
-msgstr "Virhe huomautuksen luomisessa asiakkaan huoltajalle"
+msgstr "Virhe ilmoituksen luomisessa asiakkaan huoltajalle"
 
 #: staff.patron.ue.uEditShowSearch.search
 msgctxt "staff.patron.ue.uEditShowSearch.search"

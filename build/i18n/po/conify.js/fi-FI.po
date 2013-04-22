@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2012-08-03 10:01-0400\n"
-"PO-Revision-Date: 2012-12-20 15:19+0000\n"
-"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"POT-Creation-Date: 2013-03-15 19:42-0400\n"
+"PO-Revision-Date: 2013-03-19 19:58+0000\n"
+"Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-12-21 04:54+0000\n"
-"X-Generator: Launchpad (build 16378)\n"
+"X-Launchpad-Export-Date: 2013-03-20 04:44+0000\n"
+"X-Generator: Launchpad (build 16532)\n"
 "Language: fi\n"
 
 #: conify.js:SURVEY_ID
@@ -37,6 +37,10 @@ msgstr "Fyysisen osoitteen haku kohteelle ${0} epäonnistui"
 msgid "Add Answer"
 msgstr "Lisää vastaus"
 
+#: conify.js:CBHO_FIELD_DISPLAY
+msgid "[${0}] ${1}"
+msgstr "[${0}] ${1}"
+
 #: conify.js:TRANSLATION conify.js:LABEL_TRANSLATION
 msgid "Translation"
 msgstr "Käännös"
@@ -48,7 +52,7 @@ msgstr "${0} (klooni)"
 #: conify.js:ERROR_DELETING_LAST_AOU
 msgid "Cannot delete ${0}, you need at least one organization unit."
 msgstr ""
-"${0} poisto ei onnistu, tarvitset vähintään yhden organisaatioyksikön."
+"${0} tuhoaminen ei onnistu, tarvitset vähintään yhden organisaatioyksikön."
 
 #: conify.js:SUCCESS_SAVING_HOO
 msgid "Hours of Operation updated for ${0}"
@@ -80,7 +84,7 @@ msgstr "Kohteen ${0} oikeuksien muutokset tallennettu"
 
 #: conify.js:SURVEY_DELETE_ANSWER
 msgid "Delete Answer"
-msgstr "Poista vastaus"
+msgstr "Tuhoa vastaus"
 
 #: conify.js:ERROR_FETCHING_GROUPS
 msgid "Problem fetching groups"
@@ -100,11 +104,15 @@ msgstr "Uusi status luotu kohteelle ${0}"
 
 #: conify.js:SURVEY_DELETE_QUESTION
 msgid "Delete Question & Answers"
-msgstr "Poista kysymykset ja vastaukset"
+msgstr "Tuhoa kysymykset ja vastaukset"
 
 #: conify.js:ERROR_CREATING_PERMISSION
 msgid "Problem creating new Permission"
 msgstr "Uuden oikeuden luominen epäonnistui"
+
+#: conify.js:CBHO_EDITING_NEW
+msgid "You are editing a new best-hold order."
+msgstr "Muokkaat uutta paras-varaus -järjestystä."
 
 #: conify.js:ERROR_CALLING_METHOD_PERM_MAP
 msgid "Problem calling method to create new permission map"
@@ -141,16 +149,17 @@ msgstr "Uusi alaorganisaatioyksikkö luotu kohteelle ${0}"
 #: conify.js:ERROR_ORPHANS
 msgid "Cannot delete ${0}, ${1} subordinates still exist."
 msgstr ""
-"Kohteen ${0} poisto ei onnistu, sillä on vielä ${1} kohdetta alaisuudessaan."
+"Kohteen ${0} tuhoaminen ei onnistu, sillä on vielä ${1} kohdetta "
+"alaisuudessaan."
 
-#: conify.js:ACQ_DISTRIB_FORMULA_NAME_PROMPT
-msgid "Enter new formula name"
-msgstr "Syötä uuden kaavan nimi"
+#: conify.js:CBHO_EDITING_EXISTING
+msgid "You are editing best-hold order #${0}: ${1}."
+msgstr "Muokkaat paras-varaus -järjestystä #${0}: ${1}."
 
 #: conify.js:ERROR_DELETING_LAST_AOUT
 msgid "Cannot delete ${0}. You need at least one organization type."
 msgstr ""
-"Kohteen ${0} poisto ei onnistui. Tarvitset vähintään yhden "
+"Kohteen ${0} tuhoaminen ei onnistui. Tarvitset vähintään yhden "
 "organisaatiotyypin."
 
 #: conify.js:SURVEY_ANSWER
@@ -168,6 +177,10 @@ msgstr "Muutokset kohteen ${0} fyysiseen osoitteeseen tallennettu"
 #: conify.js:LABEL_NEW_GROUP
 msgid "New Group"
 msgstr "Uusi ryhmä"
+
+#: conify.js:CBHO_NO_LOAD
+msgid "Unable to load selected item."
+msgstr "Valitun kohteen lataus epäonnistui."
 
 #: conify.js:CONFIRM_EXIT_PGT
 msgid ""
@@ -195,7 +208,7 @@ msgstr "Uuden oikeuden luomismenetelmän kutsu epäonnistui"
 
 #: conify.js:CONFIRM_DELETE
 msgid "Are you sure you want to delete ${0}?"
-msgstr "Haluatko varmasti poistaa kohteen ${0}?"
+msgstr "Haluatko varmasti tuhota kohteen ${0}?"
 
 #: conify.js:CONFIRM_EXIT_PPL
 msgid ""
@@ -221,6 +234,14 @@ msgstr "Kohteen ${0} aukioloaikojen haku epäonnistui"
 #: conify.js:LABEL_NEW_TYPE
 msgid "New Type"
 msgstr "Uusi tyyppi"
+
+#: conify.js:CBHO_NEEDS_NAME
+msgid "You need to enter a name for the best-hold order."
+msgstr "Syötä nimi tälle järjestykselle."
+
+#: conify.js:ACQ_DISTRIB_FORMULA_NAME_PROMPT
+msgid "Enter new formula name"
+msgstr "Syötä uuden kaavan nimi"
 
 #: conify.js:ERROR_CREATING_CHILD_AOU
 msgid "Problem creating child organizational unit"
@@ -264,7 +285,7 @@ msgstr "Muokataan nyt kohdetta ${0}"
 
 #: conify.js:SUCCESS_DELETED_PERM_MAP
 msgid "Permission mapping deleted"
-msgstr "Oikeuksien kartoitus poistettu"
+msgstr "Oikeuksien kartoitus tuhottu"
 
 #: conify.js:ERROR_SAVING_ILL
 msgid "Problem saving ILL Address data for ${0}"
@@ -284,7 +305,7 @@ msgstr "Varattavissa"
 
 #: conify.js:STATUS_DELETED
 msgid "${0} deleted"
-msgstr "${0} poistettu"
+msgstr "${0} tuhottu"
 
 #: conify.js:LABEL_GRANTABLE
 msgid "Grantable"

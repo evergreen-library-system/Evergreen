@@ -1,0 +1,469 @@
+# Turkish translation for evergreen
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
+"PO-Revision-Date: 2012-11-24 18:33+0000\n"
+"Last-Translator: Irmak Bıçakçıgil <Unknown>\n"
+"Language-Team: Turkish <tr@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2012-11-25 06:36+0000\n"
+"X-Generator: Launchpad (build 16293)\n"
+
+#: vandelay.add.existing.queue
+msgid "or Add to an Existing Queue"
+msgstr ""
+
+#: vandelay.auth.attrs
+msgid "Authority attributes"
+msgstr ""
+
+#: vandelay.auth.records
+msgid "Authority Records"
+msgstr ""
+
+#: vandelay.auto.import.noncolliding
+msgid "Auto-Import Non-Colliding Records"
+msgstr ""
+
+#: vandelay.auto.import.auto_overlay_exact
+msgid "Auto Merge/Overlay Exact Matches"
+msgstr ""
+
+#: vandelay.auto.import.auto_overlay_1match
+msgid "Auto Merge/Overlay When Exactly 1 Match is Found"
+msgstr ""
+
+#: vandelay.auto.import.merge_profile
+msgid "Merge/Overlay Profile"
+msgstr ""
+
+#. Do not translate this.  Only change the numeric values if you need this dialogue box to appear bigger
+#: vandelay.auto.width
+msgid "Auto Width"
+msgstr "Otomatik Genişlik"
+
+#: vandelay.back.to.import.queue
+msgid "Back To Import Queue"
+msgstr "İçe Aktarma Kuyruğuna Geri Dön"
+
+#: vandelay.bib.attrs
+msgid "Bibliographic attributes"
+msgstr ""
+
+#: vandelay.bib.records
+msgid "Bibliographic Records"
+msgstr "Bibliyografik Kayıtlar"
+
+#: vandelay.cancel
+msgid "Cancel"
+msgstr "İptal"
+
+#: vandelay.edit
+msgid "Edit"
+msgstr "Düzenle"
+
+#: vandelay.code
+msgid "Code"
+msgstr "Kod"
+
+#: vandelay.column
+msgid "Column"
+msgstr "Sütun"
+
+#: vandelay.create.attr.def
+msgid "Create Attribute Definition"
+msgstr "Nitelik Tanımı Oluştur"
+
+#: vandelay.create
+msgid "Create"
+msgstr "Oluştur"
+
+#: vandelay.create.date
+msgid "Create Date"
+msgstr "Tarih Oluştur"
+
+#: vandelay.create.upload.queue
+msgid "Create a New Upload Queue"
+msgstr ""
+
+#: vandelay.creator
+msgid "Creator"
+msgstr "Oluşturan"
+
+#: vandelay.delete.queue
+msgid "Delete Queue"
+msgstr "Kuyruktakini Sil"
+
+#: vandelay.delete.record
+msgid "Delete record"
+msgstr "Kaydı sil"
+
+#: vandelay.descrip
+msgid "Description"
+msgstr "Açıklama"
+
+#: vandelay.dest.match.point
+msgid "Destination Match Point"
+msgstr ""
+
+#: vandelay.display
+msgid "Display"
+msgstr "Görünüm"
+
+#: vandelay.done
+msgid "Done"
+msgstr "Tamam"
+
+#: vandelay.edit.attributes
+msgctxt "vandelay.edit.attributes"
+msgid "Edit Attributes"
+msgstr "Öznitelikleri Düzenle"
+
+#: vandelay.edit.attrs
+msgctxt "vandelay.edit.attrs"
+msgid "Edit Attributes"
+msgstr "Öznitelikleri Düzenle"
+
+#: vandelay.edit.profiles
+msgid "Edit Merge / Overlay Profiles"
+msgstr ""
+
+#: vandelay.edit.import_item_attrs
+msgid "Edit Import Item Attributes"
+msgstr ""
+
+#: vandelay.false
+msgid "False"
+msgstr "Yanlış"
+
+#: vandelay.file.to.upload
+msgid "File to Upload:"
+msgstr "Yüklenecek dosya:"
+
+#: vandelay.for.example
+msgid "Example"
+msgstr "Örnek"
+
+#: vandelay.identifier
+msgid "Identifier"
+msgstr "Tanımlayıcı"
+
+#: vandelay.id.field
+msgid "Identifier Field?"
+msgstr ""
+
+#: vandelay.id
+msgid "ID"
+msgstr "Kimlik"
+
+#: vandelay.import.matches
+msgid "Import Matches"
+msgstr ""
+
+#: vandelay.import.records
+msgid "Import Records"
+msgstr "Kaydı İçe Aktar"
+
+#: vandelay.import.selected
+msgid "Import Selected"
+msgstr "Seçileni İçe Aktar"
+
+#: vandelay.import.all
+msgid "Import All"
+msgstr "Tümünü İçe Aktar"
+
+#: vandelay.import.time
+msgid "Import Time"
+msgstr ""
+
+#: vandelay.inspect.queue
+msgid "Inspect Queue"
+msgstr ""
+
+#: vandelay.last.edit.date
+msgid "Last Edit Date"
+msgstr "Son Düzenleme Tarihi"
+
+#: vandelay.limit.to.collision.matches
+msgid "Limit to Collision Matches"
+msgstr ""
+
+#: vandelay.limit.to.non.imported
+msgid "Limit to Non-Imported Records"
+msgstr ""
+
+#: vandelay.marc.file.upload
+msgid "Evergreen MARC File Upload"
+msgstr ""
+
+#: vandelay.marc.record
+msgid "MARC Record"
+msgstr ""
+
+#: vandelay.matches
+msgid "Matches"
+msgstr "Eşleşenler"
+
+#: vandelay.next.page
+msgid "Next Page &#187;"
+msgstr "Sonraki Sayfa &#187;"
+
+#: vandelay.overlay.selected.record
+msgid "Overlay selected record with imported record"
+msgstr ""
+
+#: vandelay.overlay.target
+msgid "Overlay Target"
+msgstr ""
+
+#: vandelay.page
+msgid "Page"
+msgstr "Sayfa"
+
+#: vandelay.powered.by.evergreen
+msgid "Powered by Evergreen!"
+msgstr "Evergreen tarafından hazırlandı!"
+
+#: vandelay.prev.page
+msgid "&#171; Previous Page"
+msgstr "&#171; Önceki Sayfa"
+
+#: vandelay.processing
+msgid "Processing... "
+msgstr ""
+
+#: vandelay.queue
+msgid "Queue"
+msgstr ""
+
+#: vandelay.queue.type
+msgid "Queue Type"
+msgstr ""
+
+#: vandelay.record.queue
+msgid "Record Queue"
+msgstr ""
+
+#: vandelay.record.type
+msgid "Record Type"
+msgstr "Kayıt Türü"
+
+#: vandelay.refresh
+msgid "Refresh"
+msgstr "Yenile"
+
+#: vandelay.remove.advanced
+msgid "Remove (advanced)"
+msgstr "Kaldır (gelişmiş)"
+
+#: vandelay.remove
+msgid "Remove"
+msgstr "Kaldır"
+
+#: vandelay.results.per.page
+msgid "Results Per Page"
+msgstr ""
+
+#: vandelay.retrieve.queue
+msgid "Retrieve Queue"
+msgstr ""
+
+#: vandelay.return
+msgid "Return"
+msgstr "Geri dön"
+
+#: vandelay.select.cols
+msgid "Select Columns"
+msgstr "Sütunları Seç"
+
+#: vandelay.select.queue
+msgid "Select a Queue to Inspect"
+msgstr ""
+
+#: vandelay.source.match.point
+msgid "Source Match Point"
+msgstr ""
+
+#: vandelay.source
+msgid "Source"
+msgstr "Kaynak"
+
+#: vandelay.subfields
+msgid "Subfield(s)"
+msgstr ""
+
+#: vandelay.subfield
+msgid "Subfield"
+msgstr ""
+
+#: vandelay.sure.to.delete
+msgid "Are you sure you want to delete this record?"
+msgstr "Bu kaydı silmek istediğinizden emin misiniz?"
+
+#: vandelay.sure.to.delete.queue
+msgid "Are you sure you want to delete this queue?"
+msgstr ""
+
+#: vandelay.tags
+msgid "Tag(s)"
+msgstr "Etiket(ler)"
+
+#: vandelay.tag
+msgid "Tag"
+msgstr "Etiket"
+
+#: vandelay.tcn.source
+msgid "TCN Source"
+msgstr ""
+
+#: vandelay.tcn.value
+msgid "TCN Value"
+msgstr ""
+
+#: vandelay.tooltip.subfields
+msgid "You can enter multiple subfields, separated by spaces and/or commas."
+msgstr ""
+
+#: vandelay.tooltip.tags
+msgid "You can enter multiple tags, separated by spaces and/or commas."
+msgstr ""
+
+#: vandelay.true
+msgid "True"
+msgstr ""
+
+#: vandelay.update
+msgid "Update"
+msgstr ""
+
+#: vandelay.uploading
+msgid "Uploading..."
+msgstr "Yükleniyor..."
+
+#: vandelay.upload.status
+msgid "Upload Status"
+msgstr "Yükleme Durumu"
+
+#: vandelay.upload
+msgid "Upload"
+msgstr "Yükle"
+
+#: vandelay.vandelay
+msgid "Vandelay"
+msgstr ""
+
+#: vandelay.view.marc
+msgid "View MARC"
+msgstr ""
+
+#: vandelay.xpath.advanced
+msgid "XPath (advanced)"
+msgstr "XPath (gelişmiş)"
+
+#: vandelay.xpath
+msgid "XPath"
+msgstr "XPath"
+
+#: vandelay.save
+msgid "Save Changes"
+msgstr "Değişiklikleri Kaydet"
+
+#: vandelay.record_saved
+msgid "Record Saved"
+msgstr ""
+
+#: vandelay.export.records
+msgid "Export Records"
+msgstr ""
+
+#: vandelay.export.use_field_no
+msgid "Use Field Number"
+msgstr ""
+
+#: vandelay.export.from_csv
+msgid "From CSV File"
+msgstr "CSV Dosyasından"
+
+#: vandelay.export.record_id
+msgid "Record ID"
+msgstr "Kayıt Kimliği"
+
+#: vandelay.export.or
+msgid "Or"
+msgstr ""
+
+#: vandelay.export.format
+msgid "Record Format"
+msgstr "Kayıt Biçimi"
+
+#: vandelay.export.format.marc21
+msgid "MARC21"
+msgstr "MARC21"
+
+#: vandelay.export.format.unimarc
+msgid "UNIMARC"
+msgstr "UNIMARC"
+
+#: vandelay.export.format.xml
+msgid "MARC XML"
+msgstr "MARC XML"
+
+#: vandelay.export.format.bre
+msgid "Evergreen Record Entry"
+msgstr ""
+
+#: vandelay.export.encoding
+msgid "Record Encoding"
+msgstr ""
+
+#: vandelay.export.utf8
+msgid "UTF-8"
+msgstr "UTF-8"
+
+#: vandelay.export.marc8
+msgid "MARC8"
+msgstr "MARC8"
+
+#: vandelay.export.holdings
+msgid "Include holdings in Bibliographic Records"
+msgstr ""
+
+#: vandelay.export.retrieve
+msgid "Retrieve Records"
+msgstr ""
+
+#: vandelay.export.field_no_hint
+msgid "(starting from 0)"
+msgstr ""
+
+#: vandelay.export.bucket
+msgid "Record Bucket ID"
+msgstr ""
+
+#: vandelay.select_actions
+msgid "-- Actions --"
+msgstr "-- Eylemler --"
+
+#: vandelay.queue.total
+msgid "Total:"
+msgstr "Toplam:"
+
+#: vandelay.queue.imported
+msgid "Imported:"
+msgstr ""
+
+#: vandelay.queue.column_picker.title
+msgid "Column Picker"
+msgstr ""
+
+#: vandelay.import.bib_sources
+msgid "Select a Record Source"
+msgstr "Bir Kayıt Kaynağı Seç"

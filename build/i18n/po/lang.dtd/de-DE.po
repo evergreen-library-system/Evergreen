@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-02-21 11:18-0400\n"
+"POT-Creation-Date: 2013-03-15 19:37+0000\n"
 "PO-Revision-Date: 2012-04-05 15:23+0000\n"
 "Last-Translator: Dennis Baudys <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-02-23 05:26+0000\n"
-"X-Generator: Launchpad (build 16506)\n"
+"X-Launchpad-Export-Date: 2013-03-16 05:59+0000\n"
+"X-Generator: Launchpad (build 16532)\n"
 
 #: lang.version
 msgid "remote v1"
@@ -1522,8 +1522,9 @@ msgid "Subject"
 msgstr "Thema"
 
 #: staff.cat.search_submit
+msgctxt "staff.cat.search_submit"
 msgid "Search"
-msgstr "Suche"
+msgstr ""
 
 #: staff.cat.search_submit.key
 msgctxt "staff.cat.search_submit.key"
@@ -2955,6 +2956,10 @@ msgstr ""
 msgid "Z39.50 Servers"
 msgstr ""
 
+#: staff.main.menu.admin.server_admin.conify.org_unit_proximity_adjustment.label
+msgid "Org Unit Proximity Adjustments"
+msgstr ""
+
 #: staff.main.menu.admin.server_admin.conify.circulation_modifier.label
 msgid "Circulation Modifiers"
 msgstr ""
@@ -2977,6 +2982,14 @@ msgstr ""
 
 #: staff.main.menu.admin.server_admin.conify.config_rule_circ_duration
 msgid "Circulation Duration Rules"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.conify.config_best_hold_order
+msgid "Best-Hold Selection Sort Order"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.conify.vandelay_import_bib_trash_group
+msgid "MARC Import Remove Fields"
 msgstr ""
 
 #: staff.main.menu.admin.server_admin.conify.config_rule_recurring_fine
@@ -3017,6 +3030,10 @@ msgstr ""
 
 #: staff.main.menu.admin.server_admin.conify.actor.org_unit_custom_tree
 msgid "Custom Org Unit Trees"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.conify.config.remote_account
+msgid "Remote Accounts"
 msgstr ""
 
 #: staff.main.menu.admin.server_admin.conify.global_flag.label
@@ -6514,6 +6531,18 @@ msgstr ""
 msgid "Add Stream"
 msgstr ""
 
+#: staff.serial.manage_items.actions.cmd_claim_items.label
+msgid "Claim Item"
+msgstr ""
+
+#: staff.serial.manage_items.actions.cmd_set_items_not_held.label
+msgid "Set 'Not Held'"
+msgstr ""
+
+#: staff.serial.manage_items.actions.cmd_set_items_not_published.label
+msgid "Set 'Not Published'"
+msgstr ""
+
 #: staff.serial.manage_dists.actions.cmd_delete_sstr.label
 msgid "Delete Stream"
 msgstr ""
@@ -8625,6 +8654,14 @@ msgctxt ""
 msgid "&Show in Catalog"
 msgstr ""
 
+#: staff.circ.checkin_overlay.sel_opac_holds.label
+#: staff.circ.checkin_overlay.sel_opac_holds.accesskey
+msgctxt ""
+"staff.circ.checkin_overlay.sel_opac_holds.label "
+"staff.circ.checkin_overlay.sel_opac_holds.accesskey"
+msgid "Show &Holds on Bib"
+msgstr ""
+
 #: staff.circ.checkin_overlay.sel_copy_details.label
 #: staff.circ.checkin_overlay.sel_copy_details.accesskey
 msgctxt ""
@@ -8808,6 +8845,14 @@ msgctxt ""
 "staff.circ.renew_overlay.sel_opac.label "
 "staff.circ.renew_overlay.sel_opac.accesskey"
 msgid "&Show in Catalog"
+msgstr ""
+
+#: staff.circ.renew_overlay.sel_opac_holds.label
+#: staff.circ.renew_overlay.sel_opac_holds.accesskey
+msgctxt ""
+"staff.circ.renew_overlay.sel_opac_holds.label "
+"staff.circ.renew_overlay.sel_opac_holds.accesskey"
+msgid "Show &Holds on Bib"
 msgstr ""
 
 #: staff.circ.renew_overlay.sel_copy_details.label
@@ -9066,6 +9111,14 @@ msgctxt ""
 "staff.circ.copy_status_overlay.sel_opac.label "
 "staff.circ.copy_status_overlay.sel_opac.accesskey"
 msgid "&Show in Catalog"
+msgstr ""
+
+#: staff.circ.copy_status_overlay.sel_opac_holds.label
+#: staff.circ.copy_status_overlay.sel_opac_holds.accesskey
+msgctxt ""
+"staff.circ.copy_status_overlay.sel_opac_holds.label "
+"staff.circ.copy_status_overlay.sel_opac_holds.accesskey"
+msgid "Show &Holds on Bib"
 msgstr ""
 
 #: staff.circ.copy_status_overlay.sel_copy_details.label
@@ -9641,6 +9694,15 @@ msgstr ""
 msgctxt "staff.circ.holds.show_in_catalog.accesskey"
 msgid "S"
 msgstr "S"
+
+#: staff.circ.holds.show_in_catalog_holds
+msgid "Show Holds on Bib"
+msgstr ""
+
+#: staff.circ.holds.show_in_catalog_holds.accesskey
+msgctxt "staff.circ.holds.show_in_catalog_holds.accesskey"
+msgid "H"
+msgstr ""
 
 #: staff.circ.holds.show_item_details
 msgid "Show Item Details"
@@ -11462,6 +11524,10 @@ msgctxt ""
 "staff.cat.z3950.result_message.marc_import.label "
 "staff.cat.z3950.result_message.marc_import.accesskey"
 msgid "&Import"
+msgstr ""
+
+#: staff.cat.z3950.strip_fields.label
+msgid "Remove Fields on Import: "
 msgstr ""
 
 #: staff.pat.barcode_entry.retrieve_patron.label
@@ -13709,6 +13775,12 @@ msgid "Circulation and Patrons"
 msgstr ""
 
 #: staff.client.portal.checkout
+msgctxt "staff.client.portal.checkout"
+msgid "Check Out Items"
+msgstr ""
+
+#: staff.client.portal.checkout.description
+msgctxt "staff.client.portal.checkout.description"
 msgid "Check Out Items"
 msgstr ""
 
@@ -13717,14 +13789,32 @@ msgid "(Retrieve Patron By Barcode)"
 msgstr ""
 
 #: staff.client.portal.checkin
+msgctxt "staff.client.portal.checkin"
+msgid "Check In Items"
+msgstr ""
+
+#: staff.client.portal.checkin.description
+msgctxt "staff.client.portal.checkin.description"
 msgid "Check In Items"
 msgstr ""
 
 #: staff.client.portal.patronreg
+msgctxt "staff.client.portal.patronreg"
+msgid "Register Patron(s)"
+msgstr ""
+
+#: staff.client.portal.patronreg.description
+msgctxt "staff.client.portal.patronreg.description"
 msgid "Register Patron(s)"
 msgstr ""
 
 #: staff.client.portal.patronsearch
+msgctxt "staff.client.portal.patronsearch"
+msgid "Search For Patron By Name"
+msgstr ""
+
+#: staff.client.portal.patronsearch.description
+msgctxt "staff.client.portal.patronsearch.description"
 msgid "Search For Patron By Name"
 msgstr ""
 
@@ -13733,33 +13823,72 @@ msgctxt "staff.client.portal.holdlist"
 msgid "Pull List for Hold Requests"
 msgstr ""
 
+#: staff.client.portal.holdlist.description
+msgctxt "staff.client.portal.holdlist.description"
+msgid "Pull List for Hold Requests"
+msgstr ""
+
 #: staff.client.portal.itemcataloging
 msgid "Item Search and Cataloging"
 msgstr ""
 
 #: staff.client.portal.advsearch
+msgctxt "staff.client.portal.advsearch"
 msgid "Advanced Search"
-msgstr "Erweiterte Suche"
+msgstr ""
+
+#: staff.client.portal.advsearch.description
+msgctxt "staff.client.portal.advsearch.description"
+msgid "Advanced Search"
+msgstr ""
 
 #: staff.client.portal.itemstatus
+msgctxt "staff.client.portal.itemstatus"
+msgid "Item Status / Display"
+msgstr ""
+
+#: staff.client.portal.itemstatus.description
+msgctxt "staff.client.portal.itemstatus.description"
 msgid "Item Status / Display"
 msgstr ""
 
 #: staff.client.portal.marcutil
+msgctxt "staff.client.portal.marcutil"
+msgid "MARC Batch Import / Export"
+msgstr ""
+
+#: staff.client.portal.marcutil.description
+msgctxt "staff.client.portal.marcutil.description"
 msgid "MARC Batch Import / Export"
 msgstr ""
 
 #: staff.client.portal.z3950
+msgctxt "staff.client.portal.z3950"
 msgid "z39.50 Import"
-msgstr "z39.50 Import"
+msgstr ""
+
+#: staff.client.portal.z3950.description
+msgctxt "staff.client.portal.z3950.description"
+msgid "z39.50 Import"
+msgstr ""
 
 #: staff.client.portal.copybuckets
 msgctxt "staff.client.portal.copybuckets"
 msgid "Copy Buckets"
 msgstr ""
 
+#: staff.client.portal.copybuckets.description
+msgctxt "staff.client.portal.copybuckets.description"
+msgid "Copy Buckets"
+msgstr ""
+
 #: staff.client.portal.recordbuckets
 msgctxt "staff.client.portal.recordbuckets"
+msgid "Record Buckets"
+msgstr ""
+
+#: staff.client.portal.recordbuckets.description
+msgctxt "staff.client.portal.recordbuckets.description"
 msgid "Record Buckets"
 msgstr ""
 
@@ -13771,12 +13900,27 @@ msgstr "Administration"
 msgid "Get Help with Evergreen"
 msgstr "Hilfe mit Evergreen bekommen"
 
+#: staff.client.portal.helpdesk.description
+msgid "Submit A Helpdesk Ticket"
+msgstr ""
+
 #: staff.client.portal.reports
 msgctxt "staff.client.portal.reports"
 msgid "Reports"
 msgstr "Berichte"
 
+#: staff.client.portal.reports.description
+msgctxt "staff.client.portal.reports.description"
+msgid "Reports"
+msgstr ""
+
 #: staff.client.portal.receipts
+msgctxt "staff.client.portal.receipts"
+msgid "Edit Receipt Templates"
+msgstr ""
+
+#: staff.client.portal.receipts.description
+msgctxt "staff.client.portal.receipts.description"
 msgid "Edit Receipt Templates"
 msgstr ""
 
@@ -13788,20 +13932,13 @@ msgstr ""
 msgid "Powered by"
 msgstr ""
 
-#: staff.client.portal.toggle_tpac
-msgid "Toggle Template Toolkit OPAC Use"
+#: staff.client.portal.open_new_tab.description
+msgid "Open in a new tab"
 msgstr ""
 
-#: staff.client.portal.toggle_tpac.message_on
-msgid ""
-"The use of the Template Toolkit OPAC has been enabled. You may need to "
-"restart the staff client for this to take effect."
-msgstr ""
-
-#: staff.client.portal.toggle_tpac.message_off
-msgid ""
-"The use of the Template Toolkit OPAC has been disabled. You may need to "
-"restart the staff client for this to take effect."
+#: staff.client.portal.search.button
+msgctxt "staff.client.portal.search.button"
+msgid "Search"
 msgstr ""
 
 #: staff.item.batch.hold.groupbox_caption
@@ -13916,6 +14053,9 @@ msgstr ""
 #: staff.search_prefs.cleared_message
 msgid "Preferences cleared"
 msgstr ""
+
+#~ msgid "Search"
+#~ msgstr "Suche"
 
 #~ msgctxt "staff.circ.offline_register.dob.label"
 #~ msgid "Date of Birth:"

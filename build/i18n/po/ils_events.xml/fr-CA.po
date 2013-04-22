@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > ils_events.xml.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2013-02-21 11:20-0400\n"
+"POT-Creation-Date: 2013-03-15 19:41-0400\n"
 "PO-Revision-Date: 2009-12-10 21:46+0000\n"
 "Last-Translator: Solarus <Unknown>\n"
 "Language-Team: NRCan Library <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-02-23 05:25+0000\n"
-"X-Generator: Launchpad (build 16506)\n"
+"X-Launchpad-Export-Date: 2013-03-16 05:58+0000\n"
+"X-Generator: Launchpad (build 16532)\n"
 "X-Poedit-Country: CANADA\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -416,10 +416,6 @@ msgstr ""
 msgid "The requested actor_stat_cat_entry_user_map was not found"
 msgstr ""
 "L’élément demandé appelé actor_stat_cat_entry_user_map n’a pas été trouvé"
-
-#: 1858.ACQ_LINEITEM_NOT_FOUND:655
-msgid "The requested acq.po_lineitem was not found"
-msgstr "L’élément demandé appelé acq.po_lineitem n’a pas été trouvé"
 
 #: 1558.ASSET_COPY_NOTE_NOT_FOUND:326
 msgid "The requested asset_copy_note was not found"
@@ -969,6 +965,10 @@ msgstr ""
 msgid "The requested copy has an alert message attached"
 msgstr "Un message d’alerte est joint à l’exemplaire demandé"
 
+#: 7006.COPY_IS_REFERENCE:857
+msgid "Copy is reference material"
+msgstr "L’exemplaire fait partie de la documentation de référence"
+
 #: 1547.CONFIG_ITEM_FORM_MAP_NOT_FOUND:297
 msgid "The requested config_item_form_map was not found"
 msgstr "L’élément demandé appelé config_item_form_map n’a pas été trouvé"
@@ -1083,9 +1083,12 @@ msgstr ""
 msgid "The requested vandelay_authority_queue was not found"
 msgstr "L’élément demandé appelé vandelay_authority_queue n’a pas été trouvé"
 
-#: 7006.COPY_IS_REFERENCE:857
-msgid "Copy is reference material"
-msgstr "L’exemplaire fait partie de la documentation de référence"
+#: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:809
+msgid ""
+"A *TERRIBLE* problem has occurred: a credit card transaction was processed "
+"successfully, but the patron's payment could not be recorded within "
+"Evergreen.  Please seek assistance."
+msgstr ""
 
 #: 1634.REPORTER_TEMPLATE_NOT_FOUND:551
 msgid "The requested reporter_template was not found"
@@ -1203,16 +1206,6 @@ msgstr ""
 "Un objet copié appelé money_collections_tracker existe déjà dans la base de "
 "données"
 
-#: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:809
-msgid ""
-"A *TERRIBLE* problem has occurred: a credit card transaction was processed "
-"successfuly, but the patron's payment could not be recorded within "
-"Evergreen.  Please seek assistance."
-msgstr ""
-"Un problème *TERRIBLE* est survenu : une transaction de carte de crédit a "
-"été traitée avec succès, mais le paiement du client n’a pas pu être "
-"enregistré dans Evergreen. Veuillez demander de l’aide."
-
 #: 1614.ACTION_SURVEY_ANSWER_NOT_FOUND:491
 msgid "The requested action_survey_answer was not found"
 msgstr "L’élément demandé appelé action_survey_answer n’a pas été trouvé"
@@ -1221,6 +1214,10 @@ msgstr "L’élément demandé appelé action_survey_answer n’a pas été trou
 msgid ""
 "The user you have attempted to delete cannot be deleted because it has open "
 "circulations and/or unpaid bills."
+msgstr ""
+
+#: 1858.ACQ_LINEITEM_NOT_FOUND:655
+msgid "The requested acq.lineitem was not found"
 msgstr ""
 
 #: 1845.ACQ_PROVIDER_NOT_FOUND:616
@@ -1352,5 +1349,17 @@ msgstr "L’élément demandé appelé money_user_summary n’a pas été trouv�
 #~ msgid "Copy has is marked as lost"
 #~ msgstr "Cette copie indique qu’elle est perdue"
 
+#~ msgid "The requested acq.po_lineitem was not found"
+#~ msgstr "L’élément demandé appelé acq.po_lineitem n’a pas été trouvé"
+
 #~ msgid "Copy has is marked as missing"
 #~ msgstr "La copie indique qu’elle est manquante"
+
+#~ msgid ""
+#~ "A *TERRIBLE* problem has occurred: a credit card transaction was processed "
+#~ "successfuly, but the patron's payment could not be recorded within "
+#~ "Evergreen.  Please seek assistance."
+#~ msgstr ""
+#~ "Un problème *TERRIBLE* est survenu : une transaction de carte de crédit a "
+#~ "été traitée avec succès, mais le paiement du client n’a pas pu être "
+#~ "enregistré dans Evergreen. Veuillez demander de l’aide."
