@@ -245,6 +245,24 @@ title of the book in the record details page.
 By default, this functionality is disabled to protect the privacy of users
 who might not want to share their browsing behavior with Google.
 
+TPAC Novelist Select Integration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The URL for Novelist Select integration with TPAC has changed, and so
+has the manner in which it is configured in `eg_vhost.conf.` You will
+find a section like the following in `eg_vhost.conf:`
+
+-------------------------------------------------------------------------------
+    # Novelist
+    # SetEnv OILS_NOVELIST_URL http://imageserver.ebscohost.com/novelistselect/ns2init.js
+    # SetEnv OILS_NOVELIST_PROFILE <profile>
+    # SetEnv OILS_NOVELIST_PASSWORD <password>
+-------------------------------------------------------------------------------
+
+You will want to remove the hash marks on the three lines that have
+`SetEnv` in them.  You will also want to replace `<profile>` and
+`<password>` with your Novelist Select profile and password provided
+to you by EBSCO.
+
 TPAC Org Unit Hiding
 ^^^^^^^^^^^^^^^^^^^^
 Adds support for the opac.org_unit_hiding.depth org unit setting to
