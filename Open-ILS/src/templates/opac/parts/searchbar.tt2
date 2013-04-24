@@ -1,13 +1,13 @@
 [% PROCESS "opac/parts/org_selector.tt2" %]
-<div id="search-box">    
+<div id="search-wrapper">
     [% UNLESS took_care_of_form -%]
     <form action="[% ctx.opac_root %]/results" method="get">
     [%- END %]
-    <div>
+    <div id="search-box">
         <span class="search_catalog_lbl">[% l('Search the Catalog') %]</span>
         <a href="[% mkurl(ctx.opac_root _ '/advanced') %]"
-            id="home_adv_search_link"><span
-            class="adv_search_font">[% l('Advanced Search') %]</span></a>
+            id="home_adv_search_link">[% l('Advanced Search') %]</a>
+        <span class="browse_the_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/browse', {}, ['fi:has_browse_entry']) %]">[% l('Browse the Catalog') %]</a></span>
     </div>
     <div class="searchbar">[%- l('Search ');
         IF search.basic_config.type == 'attr';

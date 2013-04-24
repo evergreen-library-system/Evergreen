@@ -3,11 +3,21 @@ BEGIN;
 -- check whether patch can be applied
 -- SELECT evergreen.upgrade_deps_block_check('YYYY', :eg_version);
 
+ALTER TABLE authority.control_set_authority_field
+    ADD COLUMN display_sf_list TEXT;
+
+UPDATE authority.control_set_authority_field
+    SET display_sf_list = REGEXP_REPLACE(sf_list, '[w254]', '', 'g');
+
+ALTER TABLE authority.control_set_authority_field
+    ALTER COLUMN display_sf_list SET NOT NULL;
+
 ALTER TABLE metabib.browse_entry_def_map
     ADD COLUMN authority BIGINT REFERENCES authority.record_entry (id)
         ON DELETE SET NULL;
 
 ALTER TABLE config.metabib_field ADD COLUMN authority_xpath TEXT;
+ALTER TABLE config.metabib_field ADD COLUMN browse_sort_xpath TEXT;
 
 UPDATE config.metabib_field
     SET authority_xpath = '//@xlink:href'
@@ -17,7 +27,7 @@ UPDATE config.metabib_field
         browse_field IS TRUE;
 
 ALTER TYPE metabib.field_entry_template ADD ATTRIBUTE authority BIGINT;
-
+ALTER TYPE metabib.field_entry_template ADD ATTRIBUTE sort_value TEXT;
 
 CREATE OR REPLACE FUNCTION metabib.reingest_metabib_field_entries( bib_id BIGINT, skip_facet BOOL DEFAULT FALSE, skip_browse BOOL DEFAULT FALSE, skip_search BOOL DEFAULT FALSE ) RETURNS VOID AS $func$
 DECLARE
@@ -28,6 +38,7 @@ DECLARE
     b_skip_facet    BOOL;
     b_skip_browse   BOOL;
     b_skip_search   BOOL;
+    value_prepped   TEXT;
 BEGIN
 
     SELECT COALESCE(NULLIF(skip_facet, FALSE), EXISTS (SELECT enabled FROM config.internal_flag WHERE name =  'ingest.skip_facet_indexing' AND enabled)) INTO b_skip_facet;
@@ -67,12 +78,18 @@ BEGIN
             -- evergreen.oils_tsearch2()) changes.  It may or may not be
             -- expensive to add a comparison of index_vector to index_vector
             -- to the WHERE clause below.
-            SELECT INTO mbe_row * FROM metabib.browse_entry WHERE value = ind_data.value;
+
+            value_prepped := metabib.browse_normalize(ind_data.value, ind_data.field);
+            SELECT INTO mbe_row * FROM metabib.browse_entry
+                WHERE value = value_prepped AND sort_value = ind_data.sort_value;
+
             IF FOUND THEN
                 mbe_id := mbe_row.id;
             ELSE
-                INSERT INTO metabib.browse_entry (value) VALUES
-                    (metabib.browse_normalize(ind_data.value, ind_data.field));
+                INSERT INTO metabib.browse_entry
+                    ( value, sort_value ) VALUES
+                    ( value_prepped, ind_data.sort_value );
+
                 mbe_id := CURRVAL('metabib.browse_entry_id_seq'::REGCLASS);
             END IF;
 
@@ -112,6 +129,7 @@ DECLARE
     xml_node_list   TEXT[];
     facet_text  TEXT;
     browse_text TEXT;
+    sort_value  TEXT;
     raw_text    TEXT;
     curr_text   TEXT;
     joiner      TEXT := default_joiner; -- XXX will index defs supply a joiner?
@@ -180,10 +198,25 @@ BEGIN
                     browse_text := curr_text;
                 END IF;
 
+                IF idx.browse_sort_xpath IS NOT NULL AND
+                    idx.browse_sort_xpath <> '' THEN
+
+                    sort_value := oils_xpath_string(
+                        idx.browse_sort_xpath, xml_node, joiner,
+                        ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]
+                    );
+                ELSE
+                    sort_value := browse_text;
+                END IF;
+
                 output_row.field_class = idx.field_class;
                 output_row.field = idx.id;
                 output_row.source = rid;
                 output_row.value = BTRIM(REGEXP_REPLACE(browse_text, E'\\s+', ' ', 'g'));
+                output_row.sort_value :=
+                    public.search_normalize(sort_value);
+
+                output_row.authority := NULL;
 
                 IF idx.authority_xpath IS NOT NULL AND idx.authority_xpath <> '' THEN
                     authority_text := oils_xpath_string(
@@ -207,6 +240,7 @@ BEGIN
                 output_row.browse_field = TRUE;
                 RETURN NEXT output_row;
                 output_row.browse_field = FALSE;
+                output_row.sort_value := NULL;
             END IF;
 
             -- insert raw node text for faceting
@@ -241,6 +275,7 @@ BEGIN
 
             output_row.search_field = TRUE;
             RETURN NEXT output_row;
+            output_row.search_field = FALSE;
         END IF;
 
     END LOOP;
@@ -435,6 +470,16 @@ Added Log Comment
 			</titleInfo>
 		</xsl:for-each>
 		<xsl:for-each select="marc:datafield[@tag='242']">
+			<xsl:variable name="titleChop">
+				<xsl:call-template name="chopPunctuation">
+					<xsl:with-param name="chopString">
+						<xsl:call-template name="subfieldSelect">
+							<!-- 1/04 removed $h, b -->
+							<xsl:with-param name="codes">a</xsl:with-param>
+						</xsl:call-template>
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:variable>
 			<titleInfo type="translated">
 				<!--09/01/04 Added subfield $y-->
 				<xsl:for-each select="marc:subfield[@code='y']">
@@ -443,16 +488,33 @@ Added Log Comment
 					</xsl:attribute>
 				</xsl:for-each>
 				<title>
-					<xsl:call-template name="chopPunctuation">
-						<xsl:with-param name="chopString">
-							<xsl:call-template name="subfieldSelect">
-								<!-- 1/04 removed $h, b -->
-								<xsl:with-param name="codes">a</xsl:with-param>
-							</xsl:call-template>
-						</xsl:with-param>
-					</xsl:call-template>
+					<xsl:value-of select="$titleChop" />
 				</title>
 				<!-- 1/04 fix -->
+				<xsl:call-template name="subtitle"/>
+				<xsl:call-template name="part"/>
+			</titleInfo>
+			<titleInfo type="translated-nfi">
+				<xsl:for-each select="marc:subfield[@code='y']">
+					<xsl:attribute name="lang">
+						<xsl:value-of select="text()"/>
+					</xsl:attribute>
+				</xsl:for-each>
+				<xsl:choose>
+					<xsl:when test="@ind2>0">
+						<nonSort>
+							<xsl:value-of select="substring($titleChop,1,@ind2)"/>
+						</nonSort>
+						<title>
+							<xsl:value-of select="substring($titleChop,@ind2+1)"/>
+						</title>
+					</xsl:when>
+					<xsl:otherwise>
+						<title>
+							<xsl:value-of select="$titleChop" />
+						</title>
+					</xsl:otherwise>
+				</xsl:choose>
 				<xsl:call-template name="subtitle"/>
 				<xsl:call-template name="part"/>
 			</titleInfo>
@@ -479,37 +541,89 @@ Added Log Comment
 			</titleInfo>
 		</xsl:for-each>
 		<xsl:for-each select="marc:datafield[@tag='130']|marc:datafield[@tag='240']|marc:datafield[@tag='730'][@ind2!='2']">
+			<xsl:variable name="nfi">
+				<xsl:choose>
+					<xsl:when test="@tag='240'">
+						<xsl:value-of select="@ind2"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="@ind1"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<xsl:variable name="titleChop">
+				<xsl:call-template name="uri" />
+				<xsl:variable name="str">
+					<xsl:for-each select="marc:subfield">
+						<xsl:if test="(contains('adfklmor',@code) and (not(../marc:subfield[@code='n' or @code='p']) or (following-sibling::marc:subfield[@code='n' or @code='p'])))">
+							<xsl:value-of select="text()"/>
+							<xsl:text> </xsl:text>
+						</xsl:if>
+					</xsl:for-each>
+				</xsl:variable>
+				<xsl:call-template name="chopPunctuation">
+					<xsl:with-param name="chopString">
+						<xsl:value-of select="substring($str,1,string-length($str)-1)"/>
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:variable>
 			<titleInfo type="uniform">
 				<title>
-					<xsl:call-template name="uri" />
-					<xsl:variable name="str">
-						<xsl:for-each select="marc:subfield">
-							<xsl:if test="(contains('adfklmor',@code) and (not(../marc:subfield[@code='n' or @code='p']) or (following-sibling::marc:subfield[@code='n' or @code='p'])))">
-								<xsl:value-of select="text()"/>
-								<xsl:text> </xsl:text>
-							</xsl:if>
-						</xsl:for-each>
-					</xsl:variable>
-					<xsl:call-template name="chopPunctuation">
-						<xsl:with-param name="chopString">
-							<xsl:value-of select="substring($str,1,string-length($str)-1)"/>
-						</xsl:with-param>
-					</xsl:call-template>
+					<xsl:value-of select="$titleChop"/>
 				</title>
+				<xsl:call-template name="part"/>
+			</titleInfo>
+			<titleInfo type="uniform-nfi">
+				<xsl:choose>
+					<xsl:when test="$nfi>0">
+						<nonSort>
+							<xsl:value-of select="substring($titleChop,1,$nfi)"/>
+						</nonSort>
+						<title>
+							<xsl:value-of select="substring($titleChop,$nfi+1)"/>
+						</title>
+					</xsl:when>
+					<xsl:otherwise>
+						<title>
+							<xsl:value-of select="$titleChop"/>
+						</title>
+					</xsl:otherwise>
+				</xsl:choose>
 				<xsl:call-template name="part"/>
 			</titleInfo>
 		</xsl:for-each>
 		<xsl:for-each select="marc:datafield[@tag='740'][@ind2!='2']">
+			<xsl:variable name="titleChop">
+				<xsl:call-template name="chopPunctuation">
+					<xsl:with-param name="chopString">
+						<xsl:call-template name="subfieldSelect">
+							<xsl:with-param name="codes">ah</xsl:with-param>
+						</xsl:call-template>
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:variable>
 			<titleInfo type="alternative">
 				<title>
-					<xsl:call-template name="chopPunctuation">
-						<xsl:with-param name="chopString">
-							<xsl:call-template name="subfieldSelect">
-								<xsl:with-param name="codes">ah</xsl:with-param>
-							</xsl:call-template>
-						</xsl:with-param>
-					</xsl:call-template>
+					<xsl:value-of select="$titleChop" />
 				</title>
+				<xsl:call-template name="part"/>
+			</titleInfo>
+			<titleInfo type="alternative-nfi">
+				<xsl:choose>
+					<xsl:when test="@ind1>0">
+						<nonSort>
+							<xsl:value-of select="substring($titleChop,1,@ind1)"/>
+						</nonSort>
+						<title>
+							<xsl:value-of select="substring($titleChop,@ind1+1)"/>
+						</title>
+					</xsl:when>
+					<xsl:otherwise>
+						<title>
+							<xsl:value-of select="$titleChop" />
+						</title>
+					</xsl:otherwise>
+				</xsl:choose>
 				<xsl:call-template name="part"/>
 			</titleInfo>
 		</xsl:for-each>
@@ -1844,16 +1958,38 @@ Added Log Comment
 		</xsl:for-each>
 		<xsl:for-each select="marc:datafield[@tag=440]">
 			<relatedItem type="series">
+				<xsl:variable name="titleChop">
+					<xsl:call-template name="chopPunctuation">
+						<xsl:with-param name="chopString">
+							<xsl:call-template name="subfieldSelect">
+								<xsl:with-param name="codes">av</xsl:with-param>
+							</xsl:call-template>
+						</xsl:with-param>
+					</xsl:call-template>
+				</xsl:variable>
 				<titleInfo>
 					<title>
-						<xsl:call-template name="chopPunctuation">
-							<xsl:with-param name="chopString">
-								<xsl:call-template name="subfieldSelect">
-									<xsl:with-param name="codes">av</xsl:with-param>
-								</xsl:call-template>
-							</xsl:with-param>
-						</xsl:call-template>
+						<xsl:value-of select="$titleChop" />
 					</title>
+					<xsl:call-template name="part"></xsl:call-template>
+				</titleInfo>
+				<titleInfo type="nfi">
+					<xsl:choose>
+						<xsl:when test="@ind2>0">
+							<nonSort>
+								<xsl:value-of select="substring($titleChop,1,@ind2)"/>
+							</nonSort>
+							<title>
+								<xsl:value-of select="substring($titleChop,@ind2+1)"/>
+							</title>
+							<xsl:call-template name="part"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<title>
+								<xsl:value-of select="$titleChop" />
+							</title>
+						</xsl:otherwise>
+					</xsl:choose>
 					<xsl:call-template name="part"></xsl:call-template>
 				</titleInfo>
 			</relatedItem>
@@ -2041,14 +2177,35 @@ Added Log Comment
 		<xsl:for-each select="marc:datafield[@tag=740][@ind2=2]">
 			<relatedItem>
 				<xsl:call-template name="constituentOrRelatedType"></xsl:call-template>
+				<xsl:variable name="titleChop">
+					<xsl:call-template name="chopPunctuation">
+						<xsl:with-param name="chopString">
+							<xsl:value-of select="marc:subfield[@code='a']"></xsl:value-of>
+						</xsl:with-param>
+					</xsl:call-template>
+				</xsl:variable>
 				<titleInfo>
 					<title>
-						<xsl:call-template name="chopPunctuation">
-							<xsl:with-param name="chopString">
-								<xsl:value-of select="marc:subfield[@code='a']"></xsl:value-of>
-							</xsl:with-param>
-						</xsl:call-template>
+						<xsl:value-of select="$titleChop" />
 					</title>
+					<xsl:call-template name="part"></xsl:call-template>
+				</titleInfo>
+				<titleInfo type="nfi">
+					<xsl:choose>
+						<xsl:when test="@ind1>0">
+							<nonSort>
+								<xsl:value-of select="substring($titleChop,1,@ind1)"/>
+							</nonSort>
+							<title>
+								<xsl:value-of select="substring($titleChop,@ind1+1)"/>
+							</title>
+						</xsl:when>
+						<xsl:otherwise>
+							<title>
+								<xsl:value-of select="$titleChop" />
+							</title>
+						</xsl:otherwise>
+					</xsl:choose>
 					<xsl:call-template name="part"></xsl:call-template>
 				</titleInfo>
 				<xsl:call-template name="relatedForm"></xsl:call-template>
@@ -2204,16 +2361,37 @@ Added Log Comment
 		</xsl:for-each>
 		<xsl:for-each select="marc:datafield[@tag='830']">
 			<relatedItem type="series">
+				<xsl:variable name="titleChop">
+					<xsl:call-template name="chopPunctuation">
+						<xsl:with-param name="chopString">
+							<xsl:call-template name="subfieldSelect">
+								<xsl:with-param name="codes">adfgklmorsv</xsl:with-param>
+							</xsl:call-template>
+						</xsl:with-param>
+					</xsl:call-template>
+				</xsl:variable>
 				<titleInfo>
 					<title>
-						<xsl:call-template name="chopPunctuation">
-							<xsl:with-param name="chopString">
-								<xsl:call-template name="subfieldSelect">
-									<xsl:with-param name="codes">adfgklmorsv</xsl:with-param>
-								</xsl:call-template>
-							</xsl:with-param>
-						</xsl:call-template>
+						<xsl:value-of select="$titleChop" />
 					</title>
+					<xsl:call-template name="part"/>
+				</titleInfo>
+				<titleInfo type="nfi">
+					<xsl:choose>
+						<xsl:when test="@ind2>0">
+							<nonSort>
+								<xsl:value-of select="substring($titleChop,1,@ind2)"/>
+							</nonSort>
+							<title>
+								<xsl:value-of select="substring($titleChop,@ind2+1)"/>
+							</title>
+						</xsl:when>
+						<xsl:otherwise>
+							<title>
+								<xsl:value-of select="$titleChop" />
+							</title>
+						</xsl:otherwise>
+					</xsl:choose>
 					<xsl:call-template name="part"/>
 				</titleInfo>
 				<xsl:call-template name="relatedForm"/>
@@ -2882,6 +3060,7 @@ Added Log Comment
 		<subject>
 			<xsl:call-template name="subjectAuthority"></xsl:call-template>
 			<name type="personal">
+				<xsl:call-template name="uri" />
 				<xsl:call-template name="termsOfAddress"></xsl:call-template>
 				<namePart>
 					<xsl:call-template name="chopPunctuation">
@@ -2903,6 +3082,7 @@ Added Log Comment
 		<subject>
 			<xsl:call-template name="subjectAuthority"></xsl:call-template>
 			<name type="corporate">
+				<xsl:call-template name="uri" />
 				<xsl:for-each select="marc:subfield[@code='a']">
 					<namePart>
 						<xsl:value-of select="."></xsl:value-of>
@@ -2929,6 +3109,7 @@ Added Log Comment
 		<subject>
 			<xsl:call-template name="subjectAuthority"></xsl:call-template>
 			<name type="conference">
+				<xsl:call-template name="uri" />
 				<namePart>
 					<xsl:call-template name="subfieldSelect">
 						<xsl:with-param name="codes">abcdeqnp</xsl:with-param>
@@ -2948,17 +3129,39 @@ Added Log Comment
 	<xsl:template match="marc:datafield[@tag=630]">
 		<subject>
 			<xsl:call-template name="subjectAuthority"></xsl:call-template>
+			<xsl:variable name="titleChop">
+				<xsl:call-template name="chopPunctuation">
+					<xsl:with-param name="chopString">
+						<xsl:call-template name="subfieldSelect">
+							<xsl:with-param name="codes">adfhklor</xsl:with-param>
+						</xsl:call-template>
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:variable>
 			<titleInfo>
 				<title>
-					<xsl:call-template name="chopPunctuation">
-						<xsl:with-param name="chopString">
-							<xsl:call-template name="subfieldSelect">
-								<xsl:with-param name="codes">adfhklor</xsl:with-param>
-							</xsl:call-template>
-						</xsl:with-param>
-					</xsl:call-template>
-					<xsl:call-template name="part"></xsl:call-template>
+					<xsl:value-of select="$titleChop" />
 				</title>
+				<xsl:call-template name="part"></xsl:call-template>
+			</titleInfo>
+			<titleInfo type="nfi">
+				<xsl:choose>
+					<xsl:when test="@ind1>0">
+						<nonSort>
+							<xsl:value-of select="substring($titleChop,1,@ind1)"/>
+						</nonSort>
+						<title>
+							<xsl:value-of select="substring($titleChop,@ind1+1)"/>
+						</title>
+						<xsl:call-template name="part"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<title>
+							<xsl:value-of select="$titleChop" />
+						</title>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:call-template name="part"></xsl:call-template>
 			</titleInfo>
 			<xsl:call-template name="subjectAnyOrder"></xsl:call-template>
 		</subject>
@@ -2967,6 +3170,7 @@ Added Log Comment
 		<subject>
 			<xsl:call-template name="subjectAuthority"></xsl:call-template>
 			<topic>
+				<xsl:call-template name="uri" />
 				<xsl:call-template name="chopPunctuation">
 					<xsl:with-param name="chopString">
 						<xsl:call-template name="subfieldSelect">
@@ -2983,6 +3187,7 @@ Added Log Comment
 			<xsl:call-template name="subjectAuthority"></xsl:call-template>
 			<xsl:for-each select="marc:subfield[@code='a']">
 				<geographic>
+					<xsl:call-template name="uri" />
 					<xsl:call-template name="chopPunctuation">
 						<xsl:with-param name="chopString" select="."></xsl:with-param>
 					</xsl:call-template>
@@ -2995,6 +3200,7 @@ Added Log Comment
 		<subject>
 			<xsl:for-each select="marc:subfield[@code='a']">
 				<topic>
+					<xsl:call-template name="uri" />
 					<xsl:value-of select="."></xsl:value-of>
 				</topic>
 			</xsl:for-each>
@@ -3007,8 +3213,8 @@ Added Log Comment
 					<xsl:value-of select="marc:subfield[@code=2]"></xsl:value-of>
 				</xsl:attribute>
 			</xsl:if>
-			<xsl:call-template name="uri" />
 			<occupation>
+				<xsl:call-template name="uri" />
 				<xsl:call-template name="chopPunctuation">
 					<xsl:with-param name="chopString">
 						<xsl:value-of select="marc:subfield[@code='a']"></xsl:value-of>
@@ -6882,4 +7088,342 @@ Revision 1.2 - Added Log Comment  2003/03/24 19:37:42  ckeith
 	</xsl:template>
 </xsl:stylesheet>$$ WHERE name = 'mods33';
 
+
+INSERT INTO config.global_flag (name, value, enabled, label) VALUES
+(
+    'opac.browse.warnable_regexp_per_class',
+    '{"title": "^(a|the|an)\\s"}',
+    FALSE,
+    oils_i18n_gettext(
+        'opac.browse.warnable_regexp_per_class',
+        'Map of search classes to regular expressions to warn user about leading articles.',
+        'cgf',
+        'label'
+    )
+),
+(
+    'opac.browse.holdings_visibility_test_limit',
+    '100',
+    TRUE,
+    oils_i18n_gettext(
+        'opac.browse.holdings_visibility_test_limit',
+        'Don''t look for more than this number of records with holdings when displaying browse headings with visible record counts.',
+        'cgf',
+        'label'
+    )
+);
+
+ALTER TABLE metabib.browse_entry DROP CONSTRAINT browse_entry_value_key;
+ALTER TABLE metabib.browse_entry ADD COLUMN sort_value TEXT;
+DELETE FROM metabib.browse_entry_def_map; -- Yeah.
+DELETE FROM metabib.browse_entry WHERE sort_value IS NULL;
+ALTER TABLE metabib.browse_entry ALTER COLUMN sort_value SET NOT NULL;
+ALTER TABLE metabib.browse_entry ADD UNIQUE (value, sort_value);
+DROP TRIGGER IF EXISTS mbe_sort_value ON metabib.browse_entry;
+
+CREATE INDEX browse_entry_sort_value_idx
+    ON metabib.browse_entry USING BTREE (sort_value);
+
+-- NOTE If I understand ordered indices correctly, an index on sort_value DESC
+-- is not actually needed, even though we do have a query that does ORDER BY
+-- on this column in that direction.  The previous index serves for both
+-- directions, and ordering in an index is only helpful for multi-column
+-- indices, I think. See http://www.postgresql.org/docs/9.1/static/indexes-ordering.html
+
+-- CREATE INDEX CONCURRENTLY browse_entry_sort_value_idx_desc
+--     ON metabib.browse_entry USING BTREE (sort_value DESC);
+
+CREATE TYPE metabib.flat_browse_entry_appearance AS (
+    browse_entry    BIGINT,
+    value           TEXT,
+    fields          TEXT,
+    authorities     TEXT,
+    sources         INT,        -- visible ones, that is
+    row_number      INT,        -- internal use, sort of
+    accurate        BOOL        -- Count in sources field is accurate? Not
+                                -- if we had more than a browse superpage
+                                -- of records to look at.
+);
+
+
+CREATE OR REPLACE FUNCTION metabib.browse_pivot(
+    search_field        INT[],
+    browse_term         TEXT
+) RETURNS BIGINT AS $p$
+DECLARE
+    id                  BIGINT;
+BEGIN
+    SELECT INTO id mbe.id FROM metabib.browse_entry mbe
+        JOIN metabib.browse_entry_def_map mbedm ON (
+            mbedm.entry = mbe.id AND
+            mbedm.def = ANY(search_field)
+        )
+        WHERE mbe.sort_value >= public.search_normalize(browse_term)
+        ORDER BY mbe.sort_value, mbe.value LIMIT 1;
+
+    RETURN id;
+END;
+$p$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION metabib.staged_browse(
+    core_query              TEXT,
+    context_org             INT,
+    context_locations       INT[],
+    staff                   BOOL,
+    browse_superpage_size   INT,
+    result_limit            INT,
+    use_offset              INT
+) RETURNS SETOF metabib.flat_browse_entry_appearance AS $p$
+DECLARE
+    core_cursor             REFCURSOR;
+    core_record             RECORD;
+    qpfts_query             TEXT;
+    result_row              metabib.flat_browse_entry_appearance%ROWTYPE;
+    results_skipped         INT := 0;
+    results_returned        INT := 0;
+    slice_start             INT;
+    slice_end               INT;
+    full_end                INT;
+    superpage_of_records    BIGINT[];
+    superpage_size          INT;
+BEGIN
+    OPEN core_cursor FOR EXECUTE core_query;
+
+    LOOP
+        FETCH core_cursor INTO core_record;
+        EXIT WHEN NOT FOUND;
+
+        result_row.sources := 0;
+
+        full_end := ARRAY_LENGTH(core_record.records, 1);
+        superpage_size := COALESCE(browse_superpage_size, full_end);
+        slice_start := 1;
+        slice_end := superpage_size;
+
+        WHILE result_row.sources = 0 AND slice_start <= full_end LOOP
+            superpage_of_records := core_record.records[slice_start:slice_end];
+            qpfts_query :=
+                'SELECT NULL::BIGINT AS id, ARRAY[r] AS records, ' ||
+                '1::INT AS rel FROM (SELECT UNNEST(' ||
+                quote_literal(superpage_of_records) || '::BIGINT[]) AS r) rr';
+
+            -- We use search.query_parser_fts() for visibility testing.
+            -- We're calling it once per browse-superpage worth of records
+            -- out of the set of records related to a given mbe, until we've
+            -- either exhausted that set of records or found at least 1
+            -- visible record.
+
+            SELECT INTO result_row.sources visible
+                FROM search.query_parser_fts(
+                    context_org, NULL, qpfts_query, NULL,
+                    context_locations, 0, NULL, NULL, FALSE, staff, FALSE
+                ) qpfts
+                WHERE qpfts.rel IS NULL;
+
+            slice_start := slice_start + superpage_size;
+            slice_end := slice_end + superpage_size;
+        END LOOP;
+
+        -- Accurate?  Well, probably.
+        result_row.accurate := browse_superpage_size IS NULL OR
+            browse_superpage_size >= full_end;
+
+        IF result_row.sources > 0 THEN
+            IF results_skipped < use_offset THEN
+                results_skipped := results_skipped + 1;
+                CONTINUE;
+            END IF;
+
+            result_row.browse_entry := core_record.id;
+            result_row.authorities := core_record.authorities;
+            result_row.fields := core_record.fields;
+            result_row.value := core_record.value;
+
+            -- This is needed so our caller can flip it and reverse it.
+            result_row.row_number := results_returned;
+
+            RETURN NEXT result_row;
+
+            results_returned := results_returned + 1;
+
+            EXIT WHEN results_returned >= result_limit;
+        END IF;
+    END LOOP;
+END;
+$p$ LANGUAGE PLPGSQL;
+
+-- This is optimized to be fast for values of result_offset near zero.
+CREATE OR REPLACE FUNCTION metabib.browse(
+    search_field            INT[],
+    browse_term             TEXT,
+    context_org             INT DEFAULT NULL,
+    context_loc_group       INT DEFAULT NULL,
+    staff                   BOOL DEFAULT FALSE,
+    pivot_id                BIGINT DEFAULT NULL,
+    force_backward          BOOL DEFAULT FALSE,
+    result_limit            INT DEFAULT 10,
+    result_offset           INT DEFAULT 0   -- Can be negative!
+) RETURNS SETOF metabib.flat_browse_entry_appearance AS $p$
+DECLARE
+    core_query              TEXT;
+    whole_query             TEXT;
+    pivot_sort_value        TEXT;
+    pivot_sort_fallback     TEXT;
+    context_locations       INT[];
+    use_offset              INT;
+    browse_superpage_size   INT;
+    results_skipped         INT := 0;
+BEGIN
+    IF pivot_id IS NULL THEN
+        pivot_id := metabib.browse_pivot(search_field, browse_term);
+    END IF;
+
+    SELECT INTO pivot_sort_value, pivot_sort_fallback
+        sort_value, value FROM metabib.browse_entry WHERE id = pivot_id;
+
+    IF pivot_sort_value IS NULL THEN
+        RETURN;
+    END IF;
+
+    IF context_loc_group IS NOT NULL THEN
+        SELECT INTO context_locations ARRAY_AGG(location)
+            FROM asset.copy_location_group_map
+            WHERE lgroup = context_loc_group;
+    END IF;
+
+    SELECT INTO browse_superpage_size value     -- NULL ok
+        FROM config.global_flag
+        WHERE enabled AND name = 'opac.browse.holdings_visibility_test_limit';
+
+    core_query := '
+    SELECT
+        mbe.id,
+        mbe.value,
+        mbe.sort_value,
+        (SELECT ARRAY_AGG(src) FROM (
+            SELECT DISTINCT UNNEST(ARRAY_AGG(mbedm.source)) AS src
+        ) ss) AS records,
+        (SELECT ARRAY_TO_STRING(ARRAY_AGG(authority), $$,$$) FROM (
+            SELECT DISTINCT UNNEST(ARRAY_AGG(mbedm.authority)) AS authority
+        ) au) AS authorities,
+        (SELECT ARRAY_TO_STRING(ARRAY_AGG(field), $$,$$) FROM (
+            SELECT DISTINCT UNNEST(ARRAY_AGG(mbedm.def)) AS field
+        ) fi) AS fields
+    FROM metabib.browse_entry mbe
+    JOIN metabib.browse_entry_def_map mbedm ON (
+        mbedm.entry = mbe.id AND
+        mbedm.def = ANY(' || quote_literal(search_field) || ')
+    )
+    WHERE ';
+
+    -- PostgreSQL is not magic. We can't actually pass a negative offset.
+    IF result_offset >= 0 AND NOT force_backward THEN
+        use_offset := result_offset;
+        core_query := core_query ||
+            ' mbe.sort_value >= ' || quote_literal(pivot_sort_value) ||
+        ' GROUP BY 1,2,3 ORDER BY mbe.sort_value, mbe.value ';
+
+        RETURN QUERY SELECT * FROM metabib.staged_browse(
+            core_query, context_org, context_locations,
+            staff, browse_superpage_size, result_limit, use_offset
+        );
+    ELSE
+        -- Part 1 of 2 to deliver what the user wants with a negative offset:
+        core_query := core_query ||
+            ' mbe.sort_value < ' || quote_literal(pivot_sort_value) ||
+        ' GROUP BY 1,2,3 ORDER BY mbe.sort_value DESC, mbe.value DESC ';
+
+        -- Part 2 of 2 to deliver what the user wants with a negative offset:
+        RETURN QUERY SELECT * FROM (SELECT * FROM metabib.staged_browse(
+            core_query, context_org, context_locations,
+            staff, browse_superpage_size, result_limit, use_offset
+        )) sb ORDER BY row_number DESC;
+
+    END IF;
+END;
+$p$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION metabib.browse(
+    search_class        TEXT,
+    browse_term         TEXT,
+    context_org         INT DEFAULT NULL,
+    context_loc_group   INT DEFAULT NULL,
+    staff               BOOL DEFAULT FALSE,
+    pivot_id            BIGINT DEFAULT NULL,
+    force_backward      BOOL DEFAULT FALSE,
+    result_limit        INT DEFAULT 10,
+    result_offset       INT DEFAULT 0   -- Can be negative, implying backward!
+) RETURNS SETOF metabib.flat_browse_entry_appearance AS $p$
+BEGIN
+    RETURN QUERY SELECT * FROM metabib.browse(
+        (SELECT COALESCE(ARRAY_AGG(id), ARRAY[]::INT[])
+            FROM config.metabib_field WHERE field_class = search_class),
+        browse_term,
+        context_org,
+        context_loc_group,
+        staff,
+        pivot_id,
+        force_backward,
+        result_limit,
+        result_offset
+    );
+END;
+$p$ LANGUAGE PLPGSQL;
+
+UPDATE config.metabib_field
+SET
+    xpath = $$//mods32:mods/mods32:relatedItem[@type="series"]/mods32:titleInfo[@type="nfi"]$$,
+    browse_sort_xpath = $$*[local-name() != "nonSort"]$$,
+    browse_xpath = NULL
+WHERE
+    field_class = 'series' AND name = 'seriestitle' ;
+
+UPDATE config.metabib_field
+SET
+    xpath = $$//mods32:mods/mods32:titleInfo[mods32:title and not (@type)]$$,
+    browse_sort_xpath = $$*[local-name() != "nonSort"]$$,
+    browse_xpath = NULL,
+    browse_field = TRUE
+WHERE
+    field_class = 'title' AND name = 'proper' ;
+
+UPDATE config.metabib_field
+SET
+    xpath = $$//mods32:mods/mods32:titleInfo[mods32:title and (@type='alternative-nfi')]$$,
+    browse_sort_xpath = $$*[local-name() != "nonSort"]$$,
+    browse_xpath = NULL
+WHERE
+    field_class = 'title' AND name = 'alternative' ;
+
+UPDATE config.metabib_field
+SET
+    xpath = $$//mods32:mods/mods32:titleInfo[mods32:title and (@type='uniform-nfi')]$$,
+    browse_sort_xpath = $$*[local-name() != "nonSort"]$$,
+    browse_xpath = NULL
+WHERE
+    field_class = 'title' AND name = 'uniform' ;
+
+UPDATE config.metabib_field
+SET
+    xpath = $$//mods32:mods/mods32:titleInfo[mods32:title and (@type='translated-nfi')]$$,
+    browse_sort_xpath = $$*[local-name() != "nonSort"]$$,
+    browse_xpath = NULL
+WHERE
+    field_class = 'title' AND name = 'translated' ;
+
+-- This keeps extra terms like "creator" out of browse headings.
+UPDATE config.metabib_field
+    SET browse_xpath = $$//*[local-name()='namePart']$$     -- vim */
+    WHERE
+        browse_field AND
+        browse_xpath IS NULL AND
+        field_class = 'author';
+
 COMMIT;
+
+\qecho This is a browse-only reingest of your bib records. It may take a while.
+\qecho You may cancel now without losing the effect of the rest of the
+\qecho upgrade script, and arrange the reingest later.
+\qecho .
+SELECT metabib.reingest_metabib_field_entries(id, TRUE, FALSE, TRUE)
+    FROM biblio.record_entry;

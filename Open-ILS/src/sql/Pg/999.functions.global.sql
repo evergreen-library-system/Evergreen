@@ -1537,7 +1537,7 @@ BEGIN
             FROM authority.control_set_authority_field
             WHERE tag IN (
                 SELECT UNNEST(
-                    XPATH('//*[starts-with(@tag,"1")]/@tag',rec_marc::XML)::TEXT[]
+                    XPATH('//*[starts-with(@tag,"1")]/@tag',rec_marc_xml)::TEXT[]
                 )
             ) LIMIT 1;
 

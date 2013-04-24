@@ -19,7 +19,6 @@
 #new_cat_link_holder a { display: block; width: 675px; height: 213px; }
 .pos-rel { position: relative; }
 #search-box table { position: relative; left: -10px; }
-#home_adv_search_link { position: relative; top: -1px; left: 10px; }
 #util_back_btn { position: relative; top: 1px; left: 10px; }
 #util_help_btn { position: relative; top: 2px; left: 40px; }
 #util_forw_btn { position: relative; top: 2px; left: 50px; }

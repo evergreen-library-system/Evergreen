@@ -21,7 +21,8 @@ our %cache = ( # cached data
     search_filter_groups => {en_us => {}},
     aou_tree => {en_us => undef},
     aouct_tree => {},
-    eg_cache_hash => undef
+    eg_cache_hash => undef,
+    authority_fields => {en_us => {}}
 );
 
 sub init_ro_object_cache {
@@ -228,6 +229,21 @@ sub init_ro_object_cache {
                 unless exists $cache{org_settings}{$ctx->{locale}}{$org_id}{$setting};
 
         return $cache{org_settings}{$ctx->{locale}}{$org_id}{$setting};
+    };
+
+    # retrieve and cache acsaf values
+    $ro_object_subs->{get_authority_fields} = sub {
+        my ($control_set) = @_;
+
+        if (not exists $cache{authority_fields}{$ctx->{locale}}{$control_set}) {
+            my $acs = $e->search_authority_control_set_authority_field(
+                {control_set => $control_set}
+            ) or return;
+            $cache{authority_fields}{$ctx->{locale}}{$control_set} =
+                +{ map { $_->id => $_ } @$acs };
+        }
+
+        return $cache{authority_fields}{$ctx->{locale}}{$control_set};
     };
 
     $ctx->{$_} = $ro_object_subs->{$_} for keys %$ro_object_subs;

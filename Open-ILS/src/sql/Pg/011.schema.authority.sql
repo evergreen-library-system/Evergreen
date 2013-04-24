@@ -35,6 +35,7 @@ CREATE TABLE authority.control_set_authority_field (
     tag         CHAR(3) NOT NULL,
     nfi         CHAR(1),          -- non-filing indicator
     sf_list     TEXT    NOT NULL,
+    display_sf_list     TEXT NOT NULL,
     name        TEXT    NOT NULL, -- i18n
     description TEXT,             -- i18n
     linking_subfield CHAR(1)

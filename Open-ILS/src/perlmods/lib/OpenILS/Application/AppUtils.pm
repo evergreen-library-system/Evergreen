@@ -17,6 +17,7 @@ use UUID::Tiny;
 use Encode;
 use DateTime;
 use DateTime::Format::ISO8601;
+use List::MoreUtils qw/uniq/;
 
 # ---------------------------------------------------------------------------
 # Pile of utilty methods used accross applications.
@@ -2120,6 +2121,22 @@ sub strip_marc_fields {
     return $class->entityize($marcdoc->documentElement->toString);
 }
 
+# Given a list of PostgreSQL arrays of numbers,
+# unnest the numbers and return a unique set, skipping any list elements
+# that are just '{NULL}'.
+sub unique_unnested_numbers {
+    my $class = shift;
+
+    no warnings 'numeric';
+
+    return uniq(
+        map(
+            int,
+            map { $_ eq 'NULL' ? undef : (split /,/, $_) }
+                map { substr($_, 1, -1) } @_
+        )
+    );
+}
 
 1;
 

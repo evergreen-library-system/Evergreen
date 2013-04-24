@@ -2116,6 +2116,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Control Set" name="control_set" reporter:datatype="link"/>
 			<field reporter:label="Tag" name="tag" reporter:datatype="text" oils_obj:required="true" oils_obj:validate="^.{3}$"/>
 			<field reporter:label="Subfield List" name="sf_list" reporter:datatype="text" />
+			<field reporter:label="Subfield List for Display" name="display_sf_list" reporter:datatype="text" />
 			<field reporter:label="Non-filing Indicator" name="nfi" reporter:datatype="text" />
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true" />
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true" />
@@ -5850,6 +5851,19 @@ SELECT  usr,
 		</fields>
 		<links>
 			<link field="record" reltype="has_a" key="id" map="" class="are"/>
+		</links>
+	</class>
+	<class id="aalink" controller="open-ils.cstore" oils_obj:fieldmapper="authority::authority_linking" oils_persist:tablename="authority.authority_linking" reporter:label="Authority to Authority Linking">
+		<fields oils_persist:primary="id" oils_persist:sequence="authority.authority_linking_id_seq">
+			<field name="id" reporter:label="ID" reporter:datatype="id" />
+			<field name="source" reporter:label="Source Record" reporter:datatype="link" />
+			<field name="target" reporter:label="Target Record" reporter:datatype="link" />
+			<field name="field" reporter:label="Authority Field" reporter:datatype="link" />
+		</fields>
+		<links>
+			<link field="source" reltype="has_a" key="id" map="" class="are"/>
+			<link field="target" reltype="has_a" key="id" map="" class="are"/>
+			<link field="field" reltype="has_a" key="id" map="" class="acsaf"/>
 		</links>
 	</class>
 	<class id="cnct" controller="open-ils.cstore" oils_obj:fieldmapper="config::non_cataloged_type" oils_persist:tablename="config.non_cataloged_type" reporter:label="Non-cataloged Type">

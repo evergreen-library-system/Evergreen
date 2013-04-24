@@ -877,10 +877,6 @@ table.acct_notes th {
     padding-right: 5px;
 }
 
-.adv_search_font {
-    font-size: [% css_fonts.size_smaller %];
-}
-
 .search_catalog_lbl {
     font-size: [% css_fonts.size_bigger %];
 }
@@ -1535,4 +1531,43 @@ a.preflib_change {
     background-color: [% css_colors.text_alert %];
     color: [% css_colors.text_invert %];
     text-align: center;
+}
+
+#search-box > span {
+    margin: 0 1em;
+}
+.browse-error {
+    font-weight: bold;
+    font-color: #c00;
+}
+.browse-result-sources, .browse-result-authority-bib-links {
+    margin-left: 1em;
+}
+.browse-pager {
+    margin: 2ex 0;
+}
+.browse-result-list {
+    list-style-type: square;
+}
+.browse-shortcuts {
+    font-size: 120%;
+}
+.browse-result-authority-field-name {
+    font-style: italic;
+    margin-right: 1em;
+}
+.browse-leading-article-warning {
+    font-style: italic;
+    font-size: 110%;
+}
+.browse-public-general-note {
+    font-size: 110%;
+}
+.browse-public-general-note-label { }
+.browse-public-general-note-institution {
+    font-style: normal;
+    font-weight: bold;
+}
+.browse-public-general-note-body {
+    font-style: italic;
 }

@@ -666,6 +666,8 @@ __PACKAGE__->add_search_filter( 'container' );
 # Start from a list of record ids, either bre or metarecords, depending on the #metabib modifier
 __PACKAGE__->add_search_filter( 'record_list' );
 
+__PACKAGE__->add_search_filter( 'has_browse_entry' );
+
 # used internally, but generally not user-settable
 __PACKAGE__->add_search_filter( 'preferred_language' );
 __PACKAGE__->add_search_filter( 'preferred_language_weight' );
@@ -1110,6 +1112,12 @@ sub flatten {
                     $where .= "$key ${NOT}IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{$filter->args}) . ')';
                 }
 
+            } elsif ($filter->name eq 'has_browse_entry') {
+                if (@{$filter->args} >= 2) {
+                    my $entry = int(shift @{$filter->args});
+                    my $fields = join(",", map(int, @{$filter->args}));
+                    $from .= "\n" . $spc x 3 . sprintf("INNER JOIN metabib.browse_entry_def_map mbedm ON (mbedm.source = m.source AND mbedm.entry = %d AND mbedm.def IN (%s))", $entry, $fields);
+                }
             } elsif ($filter->name eq 'edit_date' or $filter->name eq 'create_date') {
                 # bre.create_date and bre.edit_date filtering
                 my $datefilter = $filter->name;

@@ -1,0 +1,45 @@
+Bib record browser with linked authorities
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This feature provides a patron-oriented OPAC interface for browsing
+bibliographic records.
+
+Users choose to browse by Author, Title, Subject, or Series. They then
+enter a browse term, and the nearest match from a left-anchored search
+on the headings extracted for browse purposes will be displayed in a
+typical backwards/forwards paging display. Headings link to search
+results pages showing the related records. If the browse heading is
+linked to any authority records, and if any *other* authority records
+point to those with "See also" or other non-main entry headings, those
+alternative headings are displayed a linked to a search results page
+showing related bib records related to the alternate heading.
+
+The counts of holdings displayed next to headings from bibliographic
+records are subject to the same visiibility tests as search. This means
+that the org unit (and copy location group) dropdown on the browse
+interface affects counds, and it further means that whether or not
+you're looking at the browse interface through the staff client makes a
+difference.
+
+Configuration considerations for site administrators
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+There are two off-by-default features that site administrators may wish
+to enable.
+
+  * Quick paging links (English): By changing the
+    ''browse.english_pager'' setting to 1 in the
+    ''opac/parts/config.tt2'' file for a site's active OPAC templates,
+    you can make shortcut browsing links ''0-9 A B C D ...'' appear
+    between the Back and Forward buttons on the browse page. I haven't
+    figured out how to make this feature internationalizable, so it's
+    off by default.  You can turn it on if it works for your language,
+    or have a look at improving it if it doesn't.
+
+  * There is a global flag by the name
+    ''opac.browse.warnable_regexp_per_class'' to control what leading
+    articles in users' entered browse terms trigger a warning about how
+    it might be better to search for "Rolling Stones" instead of "The
+    Rolling Stones" (or whatever). This is off by default, but can be
+    enabled if it suits your catalog, and can even be customized per
+    search class (author, title, series, subject).
+

@@ -185,9 +185,16 @@ CREATE INDEX metabib_facet_entry_source_idx ON metabib.facet_entry (source);
 
 CREATE TABLE metabib.browse_entry (
     id BIGSERIAL PRIMARY KEY,
-    value TEXT unique,
-    index_vector tsvector
+    value TEXT,
+    index_vector tsvector,
+    sort_value  TEXT NOT NULL,
+    UNIQUE(value, sort_value)
 );
+
+
+CREATE INDEX browse_entry_sort_value_idx
+    ON metabib.browse_entry USING BTREE (sort_value);
+
 CREATE INDEX metabib_browse_entry_index_vector_idx ON metabib.browse_entry USING GIN (index_vector);
 CREATE TRIGGER metabib_browse_entry_fti_trigger
     BEFORE INSERT OR UPDATE ON metabib.browse_entry
@@ -198,7 +205,8 @@ CREATE TABLE metabib.browse_entry_def_map (
     id BIGSERIAL PRIMARY KEY,
     entry BIGINT REFERENCES metabib.browse_entry (id),
     def INT REFERENCES config.metabib_field (id),
-    source BIGINT REFERENCES biblio.record_entry (id)
+    source BIGINT REFERENCES biblio.record_entry (id),
+    authority BIGINT REFERENCES authority.record_entry (id) ON DELETE SET NULL
 );
 CREATE INDEX browse_entry_def_map_def_idx ON metabib.browse_entry_def_map (def);
 CREATE INDEX browse_entry_def_map_entry_idx ON metabib.browse_entry_def_map (entry);
@@ -384,14 +392,15 @@ CREATE INDEX metabib_metarecord_source_map_metarecord_idx ON metabib.metarecord_
 CREATE INDEX metabib_metarecord_source_map_source_record_idx ON metabib.metarecord_source_map (source);
 
 CREATE TYPE metabib.field_entry_template AS (
-        field_class     TEXT,
-        field           INT,
-        facet_field     BOOL,
-        search_field    BOOL,
-        browse_field   BOOL,
-        source          BIGINT,
-        value           TEXT,
-        authority       BIGINT
+    field_class         TEXT,
+    field               INT,
+    facet_field         BOOL,
+    search_field        BOOL,
+    browse_field        BOOL,
+    source              BIGINT,
+    value               TEXT,
+    authority           BIGINT,
+    sort_value          TEXT
 );
 
 
@@ -406,6 +415,7 @@ DECLARE
     xml_node_list   TEXT[];
     facet_text  TEXT;
     browse_text TEXT;
+    sort_value  TEXT;
     raw_text    TEXT;
     curr_text   TEXT;
     joiner      TEXT := default_joiner; -- XXX will index defs supply a joiner?
@@ -479,10 +489,25 @@ BEGIN
                     browse_text := curr_text;
                 END IF;
 
+                IF idx.browse_sort_xpath IS NOT NULL AND
+                    idx.browse_sort_xpath <> '' THEN
+
+                    sort_value := oils_xpath_string(
+                        idx.browse_sort_xpath, xml_node, joiner,
+                        ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]
+                    );
+                ELSE
+                    sort_value := browse_text;
+                END IF;
+
                 output_row.field_class = idx.field_class;
                 output_row.field = idx.id;
                 output_row.source = rid;
                 output_row.value = BTRIM(REGEXP_REPLACE(browse_text, E'\\s+', ' ', 'g'));
+                output_row.sort_value :=
+                    public.search_normalize(sort_value);
+
+                output_row.authority := NULL;
 
                 IF idx.authority_xpath IS NOT NULL AND idx.authority_xpath <> '' THEN
                     authority_text := oils_xpath_string(
@@ -506,6 +531,7 @@ BEGIN
                 output_row.browse_field = TRUE;
                 RETURN NEXT output_row;
                 output_row.browse_field = FALSE;
+                output_row.sort_value := NULL;
             END IF;
 
             -- insert raw node text for faceting
@@ -611,6 +637,7 @@ DECLARE
     b_skip_facet    BOOL;
     b_skip_browse   BOOL;
     b_skip_search   BOOL;
+    value_prepped   TEXT;
 BEGIN
 
     SELECT COALESCE(NULLIF(skip_facet, FALSE), EXISTS (SELECT enabled FROM config.internal_flag WHERE name =  'ingest.skip_facet_indexing' AND enabled)) INTO b_skip_facet;
@@ -650,12 +677,18 @@ BEGIN
             -- evergreen.oils_tsearch2()) changes.  It may or may not be
             -- expensive to add a comparison of index_vector to index_vector
             -- to the WHERE clause below.
-            SELECT INTO mbe_row * FROM metabib.browse_entry WHERE value = ind_data.value;
+
+            value_prepped := metabib.browse_normalize(ind_data.value, ind_data.field);
+            SELECT INTO mbe_row * FROM metabib.browse_entry
+                WHERE value = value_prepped AND sort_value = ind_data.sort_value;
+
             IF FOUND THEN
                 mbe_id := mbe_row.id;
             ELSE
-                INSERT INTO metabib.browse_entry (value) VALUES
-                    (metabib.browse_normalize(ind_data.value, ind_data.field));
+                INSERT INTO metabib.browse_entry
+                    ( value, sort_value ) VALUES
+                    ( value_prepped, ind_data.sort_value );
+
                 mbe_id := CURRVAL('metabib.browse_entry_id_seq'::REGCLASS);
             END IF;
 
@@ -1739,5 +1772,244 @@ BEGIN
     RETURN NEW;
 END;
 $$ LANGUAGE PLPGSQL;
+
+
+CREATE TYPE metabib.flat_browse_entry_appearance AS (
+    browse_entry    BIGINT,
+    value           TEXT,
+    fields          TEXT,
+    authorities     TEXT,
+    sources         INT,        -- visible ones, that is
+    row_number      INT,        -- internal use, sort of
+    accurate        BOOL        -- Count in sources field is accurate? Not
+                                -- if we had more than a browse superpage
+                                -- of records to look at.
+);
+
+
+CREATE OR REPLACE FUNCTION metabib.browse_pivot(
+    search_field        INT[],
+    browse_term         TEXT
+) RETURNS BIGINT AS $p$
+DECLARE
+    id                  BIGINT;
+BEGIN
+    SELECT INTO id mbe.id FROM metabib.browse_entry mbe
+        JOIN metabib.browse_entry_def_map mbedm ON (
+            mbedm.entry = mbe.id AND
+            mbedm.def = ANY(search_field)
+        )
+        WHERE mbe.sort_value >= public.search_normalize(browse_term)
+        ORDER BY mbe.sort_value, mbe.value LIMIT 1;
+
+    RETURN id;
+END;
+$p$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION metabib.staged_browse(
+    core_query              TEXT,
+    context_org             INT,
+    context_locations       INT[],
+    staff                   BOOL,
+    browse_superpage_size   INT,
+    result_limit            INT,
+    use_offset              INT
+) RETURNS SETOF metabib.flat_browse_entry_appearance AS $p$
+DECLARE
+    core_cursor             REFCURSOR;
+    core_record             RECORD;
+    qpfts_query             TEXT;
+    result_row              metabib.flat_browse_entry_appearance%ROWTYPE;
+    results_skipped         INT := 0;
+    results_returned        INT := 0;
+    slice_start             INT;
+    slice_end               INT;
+    full_end                INT;
+    superpage_of_records    BIGINT[];
+    superpage_size          INT;
+BEGIN
+    OPEN core_cursor FOR EXECUTE core_query;
+
+    LOOP
+        FETCH core_cursor INTO core_record;
+        EXIT WHEN NOT FOUND;
+
+        result_row.sources := 0;
+
+        full_end := ARRAY_LENGTH(core_record.records, 1);
+        superpage_size := COALESCE(browse_superpage_size, full_end);
+        slice_start := 1;
+        slice_end := superpage_size;
+
+        WHILE result_row.sources = 0 AND slice_start <= full_end LOOP
+            superpage_of_records := core_record.records[slice_start:slice_end];
+            qpfts_query :=
+                'SELECT NULL::BIGINT AS id, ARRAY[r] AS records, ' ||
+                '1::INT AS rel FROM (SELECT UNNEST(' ||
+                quote_literal(superpage_of_records) || '::BIGINT[]) AS r) rr';
+
+            -- We use search.query_parser_fts() for visibility testing.
+            -- We're calling it once per browse-superpage worth of records
+            -- out of the set of records related to a given mbe, until we've
+            -- either exhausted that set of records or found at least 1
+            -- visible record.
+
+            SELECT INTO result_row.sources visible
+                FROM search.query_parser_fts(
+                    context_org, NULL, qpfts_query, NULL,
+                    context_locations, 0, NULL, NULL, FALSE, staff, FALSE
+                ) qpfts
+                WHERE qpfts.rel IS NULL;
+
+            slice_start := slice_start + superpage_size;
+            slice_end := slice_end + superpage_size;
+        END LOOP;
+
+        -- Accurate?  Well, probably.
+        result_row.accurate := browse_superpage_size IS NULL OR
+            browse_superpage_size >= full_end;
+
+        IF result_row.sources > 0 THEN
+            IF results_skipped < use_offset THEN
+                results_skipped := results_skipped + 1;
+                CONTINUE;
+            END IF;
+
+            result_row.browse_entry := core_record.id;
+            result_row.authorities := core_record.authorities;
+            result_row.fields := core_record.fields;
+            result_row.value := core_record.value;
+
+            -- This is needed so our caller can flip it and reverse it.
+            result_row.row_number := results_returned;
+
+            RETURN NEXT result_row;
+
+            results_returned := results_returned + 1;
+
+            EXIT WHEN results_returned >= result_limit;
+        END IF;
+    END LOOP;
+END;
+$p$ LANGUAGE PLPGSQL;
+
+-- This is optimized to be fast for values of result_offset near zero.
+CREATE OR REPLACE FUNCTION metabib.browse(
+    search_field            INT[],
+    browse_term             TEXT,
+    context_org             INT DEFAULT NULL,
+    context_loc_group       INT DEFAULT NULL,
+    staff                   BOOL DEFAULT FALSE,
+    pivot_id                BIGINT DEFAULT NULL,
+    force_backward          BOOL DEFAULT FALSE,
+    result_limit            INT DEFAULT 10,
+    result_offset           INT DEFAULT 0   -- Can be negative!
+) RETURNS SETOF metabib.flat_browse_entry_appearance AS $p$
+DECLARE
+    core_query              TEXT;
+    whole_query             TEXT;
+    pivot_sort_value        TEXT;
+    pivot_sort_fallback     TEXT;
+    context_locations       INT[];
+    use_offset              INT;
+    browse_superpage_size   INT;
+    results_skipped         INT := 0;
+BEGIN
+    IF pivot_id IS NULL THEN
+        pivot_id := metabib.browse_pivot(search_field, browse_term);
+    END IF;
+
+    SELECT INTO pivot_sort_value, pivot_sort_fallback
+        sort_value, value FROM metabib.browse_entry WHERE id = pivot_id;
+
+    IF pivot_sort_value IS NULL THEN
+        RETURN;
+    END IF;
+
+    IF context_loc_group IS NOT NULL THEN
+        SELECT INTO context_locations ARRAY_AGG(location)
+            FROM asset.copy_location_group_map
+            WHERE lgroup = context_loc_group;
+    END IF;
+
+    SELECT INTO browse_superpage_size value     -- NULL ok
+        FROM config.global_flag
+        WHERE enabled AND name = 'opac.browse.holdings_visibility_test_limit';
+
+    core_query := '
+    SELECT
+        mbe.id,
+        mbe.value,
+        mbe.sort_value,
+        (SELECT ARRAY_AGG(src) FROM (
+            SELECT DISTINCT UNNEST(ARRAY_AGG(mbedm.source)) AS src
+        ) ss) AS records,
+        (SELECT ARRAY_TO_STRING(ARRAY_AGG(authority), $$,$$) FROM (
+            SELECT DISTINCT UNNEST(ARRAY_AGG(mbedm.authority)) AS authority
+        ) au) AS authorities,
+        (SELECT ARRAY_TO_STRING(ARRAY_AGG(field), $$,$$) FROM (
+            SELECT DISTINCT UNNEST(ARRAY_AGG(mbedm.def)) AS field
+        ) fi) AS fields
+    FROM metabib.browse_entry mbe
+    JOIN metabib.browse_entry_def_map mbedm ON (
+        mbedm.entry = mbe.id AND
+        mbedm.def = ANY(' || quote_literal(search_field) || ')
+    )
+    WHERE ';
+
+    -- PostgreSQL is not magic. We can't actually pass a negative offset.
+    IF result_offset >= 0 AND NOT force_backward THEN
+        use_offset := result_offset;
+        core_query := core_query ||
+            ' mbe.sort_value >= ' || quote_literal(pivot_sort_value) ||
+        ' GROUP BY 1,2,3 ORDER BY mbe.sort_value, mbe.value ';
+
+        RETURN QUERY SELECT * FROM metabib.staged_browse(
+            core_query, context_org, context_locations,
+            staff, browse_superpage_size, result_limit, use_offset
+        );
+    ELSE
+        -- Part 1 of 2 to deliver what the user wants with a negative offset:
+        core_query := core_query ||
+            ' mbe.sort_value < ' || quote_literal(pivot_sort_value) ||
+        ' GROUP BY 1,2,3 ORDER BY mbe.sort_value DESC, mbe.value DESC ';
+
+        -- Part 2 of 2 to deliver what the user wants with a negative offset:
+        RETURN QUERY SELECT * FROM (SELECT * FROM metabib.staged_browse(
+            core_query, context_org, context_locations,
+            staff, browse_superpage_size, result_limit, use_offset
+        )) sb ORDER BY row_number DESC;
+
+    END IF;
+END;
+$p$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION metabib.browse(
+    search_class        TEXT,
+    browse_term         TEXT,
+    context_org         INT DEFAULT NULL,
+    context_loc_group   INT DEFAULT NULL,
+    staff               BOOL DEFAULT FALSE,
+    pivot_id            BIGINT DEFAULT NULL,
+    force_backward      BOOL DEFAULT FALSE,
+    result_limit        INT DEFAULT 10,
+    result_offset       INT DEFAULT 0   -- Can be negative, implying backward!
+) RETURNS SETOF metabib.flat_browse_entry_appearance AS $p$
+BEGIN
+    RETURN QUERY SELECT * FROM metabib.browse(
+        (SELECT COALESCE(ARRAY_AGG(id), ARRAY[]::INT[])
+            FROM config.metabib_field WHERE field_class = search_class),
+        browse_term,
+        context_org,
+        context_loc_group,
+        staff,
+        pivot_id,
+        force_backward,
+        result_limit,
+        result_offset
+    );
+END;
+$p$ LANGUAGE PLPGSQL;
+
 
 COMMIT;

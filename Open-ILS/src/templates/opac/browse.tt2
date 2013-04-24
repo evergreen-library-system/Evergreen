@@ -1,0 +1,174 @@
+[%- # This is the bib and authority combined record browser.
+
+    PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    PROCESS "opac/parts/org_selector.tt2";
+    WRAPPER "opac/parts/base.tt2";
+    INCLUDE "opac/parts/topnav.tt2";
+
+    ctx.page_title = l("Browse the Catalog");
+    blimit = CGI.param('blimit') || 10;
+    boffset = CGI.param('boffset') || 0;
+
+    depart_list = ['blimit', 'bterm', 'boffset', 'bpivot', 'bback'];
+%]
+
+    <div id="search-wrapper">
+        [%# XXX TODO Give searchbar.tt2 more smarts so we can just do:
+          # INCLUDE "opac/parts/searchbar.tt2" %]
+        <div id="search-box">
+            <span class="search_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/home', {}, depart_list) %]">[% l('Search the Catalog') %]</a></span>
+            <span><a href="[% mkurl(ctx.opac_root _ '/advanced', {}, depart_list) %]"
+                    id="home_adv_search_link">[%l('Advanced Search')%]</a></span>
+            <span>[% l('Browse the Catalog') %]</span>
+        </div>
+    </div>
+    <div id="content-wrapper">
+        <div id="main-content">
+            <div id="browse-the-catalog">
+                <div id="browse-controls">
+                    <form method="get">
+                        <input type="hidden" name="blimit"
+                            value="[% blimit %]" />
+
+                        [% control_qtype = INCLUDE "opac/parts/qtype_selector.tt2"
+                            id="browse-search-class" browse_only=1 %]
+
+                        [% control_bterm = BLOCK %]<input type="text" name="bterm" id="browse-term"
+                            value="[% CGI.param('bterm') | html %]" />[% END %]
+                        [% control_locg = INCLUDE build_org_selector id='browse-context'
+                            show_loc_groups=1
+                            arialabel=l('Select holding library') %]
+                        [% l('Browse by [_1] for [_2] held under [_3]', control_qtype, control_bterm, control_locg) %]
+
+                        <input type="submit" value="[% l('Go') %]" />
+                    </form>
+                </div>
+
+                [% BLOCK browse_pager %]
+                <div class="browse-pager">
+                    [% IF ctx.more_back %]
+                    <a class="opac-button" href="[% mkurl('', {bpivot => ctx.back_pivot, bback => 1}) %]">&larr; [%l ('Back') %]</a>
+                    [% END %]
+                    [% IF browse.english_pager; # XXX how to apply i18n here?
+                        current_qtype = CGI.param('qtype') || 'title' %]
+                    <span class="browse-shortcuts">
+                        <a href="[% mkurl('', {qtype => current_qtype, bterm => '0'}, ['boffset','bpivot','bback']) %]">0-9</a>
+                        [% FOR letter IN ['A'..'Z'] %]
+                            <a href="[% mkurl('', {qtype => current_qtype, bterm => letter}, ['boffset','bpivot','bback']) %]">[% letter %]</a>
+                        [% END %]
+                    </span>
+                    [% END %]
+
+                    [% IF ctx.more_forward %]
+                    <a class="opac-button" href="[% mkurl('', {bpivot => ctx.forward_pivot}, ['bback']) %]">[%l ('Forward') %] &rarr;</a>
+                    [% END %]
+                </div>
+                [% END %]
+
+                [% PROCESS browse_pager %]
+
+                <div id="browse-results">
+                [% IF ctx.browse_error %]
+                    <span class="browse-error">
+                        [% l("An error occurred browsing records. " _
+                        "Please try again in a moment or report the issue " _
+                        "to library staff.") %]
+                    </span>
+                [% ELSE %]
+                    [% IF ctx.browse_leading_article_warning %]
+                    <div class="browse-leading-article-warning">
+                            [% l("Your browse term seems to begin with an article. You might get better results by omitting the article.") %]
+                    </div>
+                    [% END %]
+                    <ul class="browse-result-list">
+                    [% FOR result IN ctx.browse_results %]
+                        <li class="browse-result">
+                            <span class="browse-result-value">
+                                <a href="[% mkurl(
+                                    ctx.opac_root _ '/results', {
+                                        'fi:has_browse_entry' => (result.browse_entry _ ',' _ result.fields)
+                                    }) %]">[% result.value | html %]</a>
+                            </span>
+                            <span class="browse-result-sources">([%
+                                IF result.accurate == 'f';
+                                    l("At least"); " ";
+                                END;
+                                result.sources %])</span>
+                            [% IF result.authorities.size %]
+                            <ul class="browse-result-authority-headings">
+                                [% FOR a IN result.authorities;
+                                    PROCESS authority_notes authority=a;
+
+                                    # Other than displaying public general
+                                    # notes, we can go no further sans
+                                    # control_set.
+                                    NEXT UNLESS a.control_set;
+
+                                    # get_authority_fields is fast and cache-y.
+                                    acs = ctx.get_authority_fields(a.control_set);
+                                    FOR field_group IN a.headings;
+                                        field_id = field_group.keys.0;
+                                        field = acs.$field_id;
+                                        headings = field_group.values.0;
+                                        FOR h IN headings;
+                                            # We could display headings without
+                                            # links here when h.target is
+                                            # undef, if we wanted to, but note
+                                            # that h.target_count is only
+                                            # defined when h.target is.
+
+                                            IF h.target %]
+                                            <li><span class="browse-result-authority-field-name">[% field.name %]</span>
+                                            <a href="[% mkurl(ctx.opac_root _ '/results', {query => 'identifier|authority_id[' _ h.target _ ']'}) %]">[% h.heading | html %]</a>
+                                            <span class="browse-result-authority-bib-links">([% h.target_count %])</span>
+                                            </li>
+                                            [% END %]
+                                        [% END %]
+                                    [% END %]
+                                [% END %]
+                            </ul>
+                            [% END %]
+                        </li>
+                    [% END %]
+                    </ul>
+                [% END %]
+                </div>
+
+                [% PROCESS browse_pager %]
+            </div>
+
+            <div class="common-full-pad"></div>	
+        </div>
+    </div>
+
+    [% BLOCK authority_notes;
+        # Displays public general notes (sometimes called "scope notes" ?)
+        FOR note IN authority.notes %]
+            <div class="browse-public-general-note">
+                <span class="browse-public-general-note-label">
+                    [% l("Note:") %]
+                </span>
+                <span class="browse-public-general-note-body">
+            [% FOR piece IN note;
+                IF piece.heading;
+                    mkurl_args = {bterm => piece.bterm};
+                    IF piece.org_id;
+                        mkurl_args.locg = piece.org_id;
+                    END;
+                %]
+                <a href="[% mkurl('', mkurl_args, ['boffset','bpivot','bback']) %]">[% piece.heading | html %]</a>
+                [% ELSIF piece.institution %]
+                <span class="browse-public-general-note-institution">
+                    [% piece.institution | html %]
+                </span>
+                [% ELSE %]
+                    [% piece | html %]
+                [% END;
+            END %]
+                </span>
+            </div>
+        [% END;
+    END;    # end of BLOCK authority_notes %]
+
+[% END %]
