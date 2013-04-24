@@ -1,0 +1,92 @@
+Long Overdue Circulations Management
+====================================
+
+This is a two-part feature, which covers marking circulations as long
+overdue via automated processing and check-in of long overdue circulations.
+
+Marking Circulations Long Overdue
+---------------------------------
+
+A new Action/Trigger reactor (MarkItemLongOverdue) and sample event 
+definition (6 Month Overdue Mark Long-Overdue) are included for 
+marking circulations and their associated copies as long overdue.  New org
+unit settings determine whether the item price and/or a processing fee is
+applied.  
+
+A secondary Action/Trigger hook (longoverdue.auto) and sample event 
+definition (6 Month Long Overdue Notice) are added so that (email, etc.) 
+notifications can be sent when a circulation is marked long overdue via
+this new automated process.
+
+Also included is a new Action/Trigger validator PatronNotInCollections, which
+can be used to prevent long overdue processing (or any circ-based event 
+definition) for patrons that are in collections processing at (or above) the 
+circulating library.
+
+New Org Unit Settings
+~~~~~~~~~~~~~~~~~~~~~
+
+ * Long-Overdue Materials Processing Fee
+ * Void Overdue Fines When Items are Marked Long-Overdue
+ * Leave transaction open when long overdue balance equals zero
+
+A combination of 'Charge lost on zero' and 'Default Item Price' are used to
+determine the amount to charge for the item price when a circulation is 
+marked as long overdue.
+
+New Billing Types
+~~~~~~~~~~~~~~~~~
+
+ * Long-Overdue Materials
+ * Long-Overdue Materials Processing Fee
+
+New Permissions
+~~~~~~~~~~~~~~~
+
+ * SET_CIRC_LONG_OVERDUE
+
+New Copy Status
+~~~~~~~~~~~~~~~
+
+ * Long Overdue
+
+Check-in of Long Overdue Circulations
+-------------------------------------
+
+Check-in of long overdue items may result in any of the following actions, 
+depending on configuration.
+
+ * Void the copy price billing 
+ * Void the long-overdue processing fee billing 
+ * Reinstate voided overdue fines 
+
+The process is practically identical to Lost processing.  However, one
+difference between Lost and Long Overdue check-in is that the window
+of time during which a long overdue item may be returned may be based on the
+due date (like Lost) or the last billing activity date (last payment, last 
+billing).  This is controlled with the "Long-Overdue Check-In Interval Uses 
+Last Activity Date" org unit setting.
+
+New Org Unit Settings
+~~~~~~~~~~~~~~~~~~~~~
+
+ * Long-Overdue Items Usable on Checkin
+ * Long-Overdue Max Return Interval
+ * Restore Overdues on Long-Overdue Item Return
+ * Void Long-Overdue Item Billing When Returned
+ * Void Processing Fee on Long-Overdue Item Return
+ * Long-Overdue Check-In Interval Uses Last Activity Date
+
+New Permissions
+~~~~~~~~~~~~~~~
+
+ * COPY_STATUS_LONGOVERDUE.override
+
+Upgrade Notes
+-------------
+
+If you are using a custom version of the 
+'/openils/conf/action_trigger_filters.json.example' file, you will need to 
+merge the changes made by this feature into your file.  The change in 
+question alters the 'checkout.due' hook such that LONGOVERDUE circulations 
+are no longer treated as regular overdue items.
