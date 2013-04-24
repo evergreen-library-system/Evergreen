@@ -1,5 +1,4 @@
 dump('entering circ/util.js\n');
-// vim:noet:sw=4:ts=4:
 
 if (typeof circ == 'undefined') { var circ = {}; }
 circ.util = {};
@@ -1827,6 +1826,24 @@ circ.util.transit_columns = function(modify,params) {
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return my.atc.target_copy(); }
         },
+        {
+            // status of the copy on the transit, not "in-transit".
+            // putting this here allows 'transit_copy_status' to
+            // appear as a MACRO for the 'transit_slip' receipt.
+            // Note that the actual value (for checkin) is 
+            // collected below in circ.util.checkin_via_barcode2().
+            'persist' : 'hidden width ordinal',
+            'id' : 'transit_copy_status',
+            'label' : document.getElementById('circStrings').
+                getString('staff.circ.utils.transit_copy_status'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false,
+            'render' : function(my) {
+                return data.hash.ccs[ my.atc.copy_status() ].name();
+            }
+        },
     ];
     for (var i = 0; i < c.length; i++) {
         if (modify[ c[i].id ]) {
@@ -2978,7 +2995,8 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             'slip_date' : '',
             'slip_date_msg' : '',
             'user' : '',
-            'user_stat_cat_entries' : ''
+            'user_stat_cat_entries' : '',
+            'transit_copy_status' : ''
         };
 
         if (check.payload && check.payload.cancelled_hold_transit) {
@@ -3483,6 +3501,13 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             print_data.item_author = payload_author;
             msg += print_data.item_author_msg;
             msg += '\n';
+            if (check.payload.transit) {
+                // by adding this here, we make the data available to the
+                // receipt printing engine, but since we are not appending it
+                // to the 'msg', it will not display in the pre-print dialog.
+                print_data.transit_copy_status = 
+                    data.hash.ccs[check.payload.transit.copy_status()].name();
+            }
             JSAN.use('util.date');
             if (check.payload.hold) {
                 check.what_happened = 'transit_for_hold';
