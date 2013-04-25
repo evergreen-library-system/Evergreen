@@ -3691,6 +3691,7 @@
 <!ENTITY staff.patron.items_overlay.show_noncats.label "Show Non-Cataloged Circulations in List Above">
 <!ENTITY staff.patron.items_overlay.show_noncats.accesskey "N">
 <!ENTITY staff.patron.items_overlay.items_export.label "Export">
+<!ENTITY staff.patron.items_overlay.print_one.label "Print Item Receipt">
 <!ENTITY staff.generic.list_actions.label "List Actions">
 <!ENTITY staff.generic.list_actions.accesskey "L">
 <!ENTITY staff.generic.list_actions.sel_clip.label "Copy to Clipboard">

@@ -149,6 +149,8 @@ patron.items.prototype = {
                     ],
                     'cmd_items_print' : [ ['command'], function() { obj.items_print(1); } ],
                     'cmd_items_print2' : [ ['command'], function() { obj.items_print(2); } ],
+                    'cmd_items_print_selected' : [ ['command'], function() { obj.items_print_selected(1); } ],
+                    'cmd_items_print_selected2' : [ ['command'], function() { obj.items_print_selected(2); } ],
                     'cmd_items_export' : [ ['command'], function() { obj.items_export(1); } ],
                     'cmd_items_export2' : [ ['command'], function() { obj.items_export(2); } ],
                     'cmd_items_renew' : [ ['command'], function() { obj.items_renew({which_list:1}); } ],
@@ -299,7 +301,38 @@ patron.items.prototype = {
             obj.error.standard_unexpected_error_alert('printing 1',E);
         }
     },
+    'items_print_selected': function(which) {
+        var obj = this;
+        try {
+            JSAN.use('patron.util');
+            // JSAN.use('util.functional');
+            var list = ( which == 2 ? obj.list2 : obj.list);
+            // Selected Rows
+            var list_dump = list.dump_with_keys();
+            var pick_list = ( which == 2 ? obj.retrieve_ids2 : obj.retrieve_ids );
+            if (!pick_list || pick_list.length == 0) return;
 
+            // I don't know a better way to just get all the data from one row
+            for (var i=0; i<pick_list.length; i++) {
+                var bc = pick_list[i].barcode;
+                for (var j=0; j<list_dump.length; j++) {
+                    if (pick_list[i].barcode == list_dump[j].barcode) {
+                        pick_list[i] = list_dump[j];
+                    }
+                }
+            }
+
+            var params = {
+                'list': pick_list,
+                'patron' : patron.util.retrieve_fleshed_au_via_id(ses(),obj.patron_id),
+                'printer_context' : 'receipt',
+                'template' : 'items_out'
+            };
+            list.print( params );
+        } catch(E) {
+            obj.error.standard_unexpected_error_alert('items_print_selected has failed',E);
+        }
+    },
     'items_export' : function(which) {
         var obj = this;
         try {
