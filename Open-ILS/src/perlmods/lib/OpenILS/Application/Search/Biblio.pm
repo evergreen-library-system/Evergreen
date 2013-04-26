@@ -1257,7 +1257,8 @@ sub staged_search {
     # and complexity, this is close to the best we can do.
 
     if ($cache_data->{running}) { # someone is already doing the search...
-        while ( sleep(1) ) { # sleep for a second ... maybe they'll finish
+        my $stop_looping = time() + $cache_timeout;
+        while ( sleep(1) and time() < $stop_looping ) { # sleep for a second ... maybe they'll finish
             $cache_data = $cache->get_cache($key) || {};
             last if (!$cache_data->{running});
         }
