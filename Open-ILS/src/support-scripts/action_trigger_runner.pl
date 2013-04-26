@@ -72,7 +72,7 @@ my $hook_handlers = {
         filter => {
             checkin_time => undef, 
             '-or' => [
-                {stop_fines => ['MAXFINES', 'LONGOVERDUE']}, 
+                {stop_fines => ['MAXFINES']}, 
                 {stop_fines => undef}
             ]
         }
