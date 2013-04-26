@@ -1248,6 +1248,23 @@ sub staged_search {
     my $facet_key = $key.'_facets';
     my $cache_data = $cache->get_cache($key) || {};
 
+    # First, we want to make sure that someone else isn't currently trying to perform exactly
+    # this same search.  The point is to allow just one instance of a search to fill the needs
+    # of all concurrent, identical searches.  This will avoid spammy searches killing the
+    # database without requiring admins to start locking some IP addresses out entirely.
+    #
+    # There's still a tiny race condition where 2 might run, but without sigificantly more code
+    # and complexity, this is close to the best we can do.
+
+    if ($cache_data->{running}) { # someone is already doing the search...
+        while ( sleep(1) ) { # sleep for a second ... maybe they'll finish
+            $cache_data = $cache->get_cache($key) || {};
+            last if (!$cache_data->{running});
+        }
+    } else { # we're the first ... let's give it a try
+        $cache->put_cache($key, { running => $$ }, $cache_timeout / 3);
+    }
+
     # keep retrieving results until we find enough to 
     # fulfill the user-specified limit and offset
     my $all_results = [];
