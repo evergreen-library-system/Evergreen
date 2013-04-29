@@ -62,6 +62,7 @@ DROP FUNCTION IF EXISTS biblio.flatten_marc(text);
 -- These views depend on metabib.full_rec as well. Bye-bye!
 DROP VIEW IF EXISTS reporter.old_super_simple_record;
 DROP VIEW IF EXISTS reporter.simple_record;
+DROP VIEW IF EXISTS reporter.classic_item_list;
 
 -- Now we can drop metabib.full_rec.
 DROP VIEW IF EXISTS metabib.full_rec;
