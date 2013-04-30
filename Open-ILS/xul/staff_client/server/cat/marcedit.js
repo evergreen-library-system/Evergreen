@@ -1716,10 +1716,17 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
         page = 0;
     }
 
+    var sf_string = '';
+    var sf_list = sf.parent().subfield;
+    for ( var i in sf_list) {
+        sf_string += sf_list[i].toString() + ' ';
+        if (sf_list[i] === sf) break;
+    }
+
     var url = '/opac/extras/browse/marcxml/'
         + type + '.refs'
         + '/1' // OU - currently unscoped
-        + '/' + sf.toString()
+        + '/' + sf_string
         + '/' + page
         + '/' + limit
     ;
