@@ -1262,7 +1262,7 @@ sub staged_search {
             $cache_data = $cache->get_cache($key) || {};
             last if (!$cache_data->{running});
         }
-    } else { # we're the first ... let's give it a try
+    } elsif (!$cache_data->{0}) { # we're the first ... let's give it a try
         $cache->put_cache($key, { running => $$ }, $cache_timeout / 3);
     }
 
@@ -1362,6 +1362,13 @@ sub staged_search {
             $is_real_hit_count = 1;
             last;
         }
+    }
+
+    # Let other backends grab our data now that we're done.
+    $cache_data = $cache->get_cache($key);
+    if ($$cache_data{running} and $$cache_data{running} == $$) {
+        delete $$cache_data{running};
+        $cache->put_cache($key, $cache_data, $cache_timeout);
     }
 
     my @results = grep {defined $_} @$all_results[$user_offset..($user_offset + $user_limit - 1)];
