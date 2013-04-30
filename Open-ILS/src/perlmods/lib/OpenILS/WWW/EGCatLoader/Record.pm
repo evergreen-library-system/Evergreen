@@ -535,6 +535,8 @@ sub added_content_stage2 {
                     }
                 }
             }
+            # To avoid a lot of hanging connections.
+            $req->shutdown(2);
         }
     }
 }
