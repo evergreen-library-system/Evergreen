@@ -7,13 +7,13 @@ Software Prerequisites:
 ~~~~~~~~~~~~~~~~~~~~~~~
 
   * **PostgreSQL**: Version 9.1 is recommended. The minimum supported version
-    is 9.0.
-  * **Linux**: Evergreen 2.3 has been tested on Debian Squeeze (6.0),
+    is 9.1.
+  * **Linux**: Evergreen 2.4 has been tested on Debian Squeeze (6.0),
     Ubuntu Lucid Lynx (10.04) and Ubuntu Precise Pangolin (12.04). If you are
     running an older version of these distributions, you may want to upgrade
     before upgrading Evergreen. For instructions on upgrading these
     distributions, visit the Debian or Ubuntu websites.
-  * **OpenSRF**: The minimum supported version of OpenSRF is 2.1.0.
+  * **OpenSRF**: The minimum supported version of OpenSRF is 2.2.0.
 
 In the following instructions, you are asked to perform certain steps as either the root or opensrf user.
 
@@ -42,12 +42,12 @@ osrf_ctl.sh -l -a stop_all
  .. Back up the /openils directory.
 . Upgrade OpenSRF. Download and install the latest version of OpenSRF from
 the http://evergreen-ils.org/opensrf.php[OpenSRF download page].
-. As the opensrf user, download and extract Evergreen 2.3:
+. As the opensrf user, download and extract Evergreen 2.4:
 +
 [source, bash]
 -----------------------------------------------
-wget http://www.open-ils.org/downloads/Evergreen-ILS-2.3.3.tar.gz
-tar xzf Evergreen-ILS-2.3.3.tar.gz
+wget http://www.open-ils.org/downloads/Evergreen-ILS-2.4.0.tar.gz
+tar xzf Evergreen-ILS-2.4.0.tar.gz
 -----------------------------------------------
 +
 [NOTE]
@@ -57,7 +57,7 @@ For the latest edition of Evergreen, check the http://evergreen-ils.org/download
 +
 [source, bash]
 ----------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.3.3
+cd /home/opensrf/Evergreen-ILS-2.4.0
 ---------------------------------------------
 +
 On the next command, replace `[distribution]` with one of these values for your
@@ -81,7 +81,7 @@ make -f Open-ILS/src/extras/Makefile.install [distribution]
 +
 [source, bash]
 ------------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.3.3
+cd /home/opensrf/Evergreen-ILS-2.4.0
 ./configure --prefix=/openils --sysconfdir=/openils/conf
 make
 ------------------------------------------------------------
@@ -90,8 +90,8 @@ make
 +
 [source, bash]
 ------------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.3.3
-make STAFF_CLIENT_STAMP_ID=rel_2_3_3 install
+cd /home/opensrf/Evergreen-ILS-2.4.0
+make STAFF_CLIENT_STAMP_ID=rel_2_4_0 install
 ------------------------------------------------------------
 +
 . As the root user, change all files to be owned by the opensrf user and group:
@@ -107,7 +107,7 @@ chown -R opensrf:opensrf /openils
 -----------------------------------------------------------
 cd /openils/var/web/xul/
 rm server
-ln -sf rel_2_3_3/server server
+ln -sf rel_2_4_0/server server
 ----------------------------------------------------------
 +
 . As the opensrf user, update opensrf_core.xml and opensrf.xml by copying the
@@ -127,7 +127,7 @@ Copying these configuration files will remove any customizations you have made t
 +
 [source, bash]
 -------------------------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.3.3
+cd /home/opensrf/Evergreen-ILS-2.4.0
 perl Open-ILS/src/support-scripts/eg_db_config --update-config --service all \
 --create-offline --database evergreen --host localhost --user evergreen --password evergreen
 -------------------------------------------------------------------------
@@ -144,21 +144,21 @@ For example, if you purchased an SSL certificate, you will need to edit eg.conf 
 +
 [source, bash]
 ----------------------------------------------------------
-cp /home/opensrf/Evergreen-ILS-2.3.3/Open-ILS/examples/apache/eg_startup /etc/apache2/eg_startup 
+cp /home/opensrf/Evergreen-ILS-2.4.0/Open-ILS/examples/apache/eg_startup /etc/apache2/eg_startup 
 ----------------------------------------------------------
 +
 .. Update /etc/apache2/eg_vhost.conf by copying the example from Open-ILS/examples/apache/eg_vhost.conf.
 +
 [source, bash]
 ----------------------------------------------------------
-cp /home/opensrf/Evergreen-ILS-2.3.3/Open-ILS/examples/apache/eg_vhost.conf /etc/apache2/eg_vhost.conf 
+cp /home/opensrf/Evergreen-ILS-2.4.0/Open-ILS/examples/apache/eg_vhost.conf /etc/apache2/eg_vhost.conf 
 ----------------------------------------------------------
 +
 .. Update /etc/apache2/sites-available/eg.conf by copying the example from Open-ILS/examples/apache/eg.conf.
 +
 [source, bash]
 ----------------------------------------------------------
-cp /home/opensrf/Evergreen-ILS-2.3.3/Open-ILS/examples/apache/eg.conf /etc/apache2/sites-available/eg.conf 
+cp /home/opensrf/Evergreen-ILS-2.4.0/Open-ILS/examples/apache/eg.conf /etc/apache2/sites-available/eg.conf 
 ----------------------------------------------------------
 
 Upgrade the Evergreen database schema
@@ -183,17 +183,18 @@ that you cannot resolve yourself through additional troubleshooting, please
 report the errors to the http://evergreen-ils.org/listserv.php[Evergreen
 Technical Discussion List].
 
-Run the following script as a user with the ability to connect to the
-database server. Adjust the arguments to the `psql` command to reflect your
-database server connection information:
+Run the following steps as a user with the ability to connect to the
+database server. Please adjust the arguments to the `psql` command and
+the `PG*` environment variables for the `2.3-2.4-supplemental.sh` command
+to reflect your database server connection information.  To supply the
+pasword, you can create a 
+http://www.postgresql.org/docs/9.1/static/libpq-pgpass.html[PostgreSQL password file].
 
 [source, bash]
 ----------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.3.3/Open-ILS/src/sql/Pg
-psql -U evergreen -h localhost -f version-upgrade/2.2-2.3.0-upgrade-db.sql evergreen
-psql -U evergreen -h localhost -f version-upgrade/2.3.0-2.3.1-upgrade-db.sql evergreen
-psql -U evergreen -h localhost -f version-upgrade/2.3.1-2.3.2-upgrade-db.sql evergreen
-psql -U evergreen -h localhost -f version-upgrade/2.3.2-2.3.3-upgrade-db.sql evergreen
+cd /home/opensrf/Evergreen-ILS-2.4.0/Open-ILS/src/sql/Pg
+psql -U evergreen -h localhost -f version-upgrade/2.3-2.4.0-upgrade-db.sql evergreen
+PGDATABASE=evergreen PGUSER=evergreen PGHOST=localhost version-upgrade/2.3-2.4-supplemental.sh
 ----------------------------------------------------------
 
 Restart Evergreen and Test
