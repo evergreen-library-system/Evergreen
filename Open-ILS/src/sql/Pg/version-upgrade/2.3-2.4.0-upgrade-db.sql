@@ -1,7 +1,7 @@
---Upgrade Script for 2.3 to 2.4.0RC
-\set eg_version '''2.4.0RC'''
+--Upgrade Script for 2.3 to 2.4.0
+\set eg_version '''2.4.0'''
 BEGIN;
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('2.4.0RC', :eg_version);
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('2.4.0', :eg_version);
 -- remove the Bypass hold capture during clear shelf process setting
 
 SELECT evergreen.upgrade_deps_block_check('0739', :eg_version);
