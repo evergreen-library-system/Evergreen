@@ -76,7 +76,7 @@ Installing prerequisites
 Evergreen has a number of prerequisite packages that must be installed
 before you can successfully configure, compile, and install Evergreen.
 
-1. Begin by installing the most recent version of OpenSRF (2.1 or later).
+1. Begin by installing the most recent version of OpenSRF (2.2 or later).
    You can download OpenSRF releases from http://evergreen-ils.org/opensrf.php
 2. On many distributions, it is necessary to install PostgreSQL 9 from external
    repositories.
@@ -147,9 +147,13 @@ the *user* Linux account to configure and build Evergreen:
 
 [source, bash]
 ------------------------------------------------------------------------------
-./configure --prefix=/openils --sysconfdir=/openils/conf
+PATH=/openils/bin:$PATH ./configure --prefix=/openils --sysconfdir=/openils/conf
 make
 ------------------------------------------------------------------------------
+
+These instructions assume that you have also installed OpenSRF under `/openils/`.
+If not, please adjust PATH as needed so that the Evergreen `configure` script
+can find `osrf_config`.
 
 Installation instructions
 -------------------------
@@ -418,26 +422,6 @@ PostgreSQL 9.1 and later
 ^^^^^^^^^^^^^^^^^^^^^^^^
 To create the database instance on a remote database server running PostgreSQL
 9.1 or later, simply use the `--create-database` flag on `eg_db_config`.
-
-For PostgreSQL 9.0
-^^^^^^^^^^^^^^^^^^
-To create the database instance on a remote database server running PostgreSQL
-9.0, you can either:
-
-  *  Install the PostgreSQL contrib modules on the machine on which you
-     are installing the Evergreen code, and use the `--create-database`
-     option from that machine, or
-  *  Copy the `Open-ILS/src/sql/Pg/create_database.sql` script to your
-     PostgreSQL server and invoke it as the *postgres* Linux account:
-+
-[source, bash]
-------------------------------------------------------------------------------
-psql -vdb_name=<dbname> -vcontrib_dir=`pg_config --sharedir`/contrib -f create_database.sql
-------------------------------------------------------------------------------
-
-Then you can issue the `eg_db_config` command as above _without_ the
-`--create-database` argument to create your schema and configure your
-configuration files.
 
 Starting Evergreen
 ------------------
