@@ -64,6 +64,10 @@ DROP VIEW IF EXISTS reporter.old_super_simple_record;
 DROP VIEW IF EXISTS reporter.simple_record;
 DROP VIEW IF EXISTS reporter.classic_item_list;
 
+\echo WARNING: The reporter.classic_item_list view was dropped if it existed.
+\echo If you use that view, please run the example.reporter-extension.sql script
+\echo to recreate it after rest of the schema upgrade is complete.
+
 -- Now we can drop metabib.full_rec.
 DROP VIEW IF EXISTS metabib.full_rec;
 
