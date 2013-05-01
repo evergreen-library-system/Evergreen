@@ -1,5 +1,5 @@
-Evergreen 2.4 Beta1 Release Notes
-=================================
+Evergreen 2.4.0 Release Notes
+=============================
 :toc:
 :numbered:
 
