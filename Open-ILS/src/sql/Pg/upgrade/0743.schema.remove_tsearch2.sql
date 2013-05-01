@@ -44,6 +44,9 @@ ALTER TABLE metabib.series_field_entry ALTER COLUMN index_vector TYPE pg_catalog
 ALTER TABLE metabib.subject_field_entry ALTER COLUMN index_vector TYPE pg_catalog.tsvector;
 ALTER TABLE metabib.title_field_entry ALTER COLUMN index_vector TYPE pg_catalog.tsvector;
 
+-- Make sure that tsearch2 exists as an extension (for a sufficiently
+-- old Evergreen database, it might still be an unpackaged contrib).
+CREATE EXTENSION IF NOT EXISTS tsearch2 SCHEMA public FROM unpackaged;
 -- Halfway there! Goodbye tsearch2 extension!
 DROP EXTENSION tsearch2;
 
