@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-15 19:37+0000\n"
+"POT-Creation-Date: 2013-05-02 18:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -10153,14 +10153,16 @@ msgstr ""
 
 #: staff.hold_list.cancel_hold_dialog.cancel_btn.label
 #: staff.hold_list.cancel_hold_dialog.cancel_btn.accesskey
-msgctxt "staff.hold_list.cancel_hold_dialog.cancel_btn.label staff.hold_list.cancel_hold_dialog.cancel_btn.accesskey"
-msgid "&Cancel"
+msgid "&No"
 msgstr ""
 
 #: staff.hold_list.cancel_hold_dialog.apply_btn.label
 #: staff.hold_list.cancel_hold_dialog.apply_btn.accesskey
-msgctxt "staff.hold_list.cancel_hold_dialog.apply_btn.label staff.hold_list.cancel_hold_dialog.apply_btn.accesskey"
-msgid "&Apply"
+msgid "&Yes"
+msgstr ""
+
+#: staff.hold_list.cancel_hold_dialog.confirmation
+msgid "Are you sure you want to cancel the hold(s)?"
 msgstr ""
 
 #: staff.cat.manage_multi_bib_items.caption
