@@ -3643,4 +3643,35 @@ sub clone_subscription {
     return $result;
 }
 
+__PACKAGE__->register_method(
+    "method" => "summary_test",
+    "api_name" => "open-ils.serial.summary_test",
+    "stream" => 1,
+    "api_level" => 1,
+    "argc" => 3
+);
+
+# This crummy little test method allows quicker reproduction of certain
+# failures (e.g. at item receive time) of the holdings summarization code.
+# Pass it an authtoken, an array of issuance IDs, and a single sdist ID
+sub summary_test {
+    my ($self, $conn, $authtoken, $iss_id_list, $sdist_id) = @_;
+
+    my $e = new_editor(authtoken => $authtoken, xact => 1);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed("RECEIVE_SERIAL");
+
+    my @issuances;
+    foreach my $id (@$iss_id_list) {
+        my $iss = $e->retrieve_serial_issuance($id) or return $e->die_event;
+        push @issuances, $iss;
+    }
+
+    my $dist = $e->retrieve_serial_distribution($sdist_id) or return $e->die_event;
+
+    $conn->respond(_summarize_contents($e, \@issuances, $dist));
+    $e->rollback;
+    return;
+}
+
 1;
