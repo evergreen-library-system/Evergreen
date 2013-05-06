@@ -404,11 +404,23 @@ sub get_compressed_holdings {
             last;
         } else {
             push(@comp_holdings, $curr_holding);
+
+            my $loop_count = 0;
+            (my $runner_dump = $runner->as_formatted) =~ s/\n\s+/*/gm; # logging
+
             while ($runner le $holding) {
-                # Here is where we used to get stuck in an infinite loop
-                # until the "Don't know how to deal with frequency" was
-                # elevated from a carp to a croak.
+                # Infinite loops used to happen here. As written today,
+                # ->increment() cannot be guaranteed to eventually falsify
+                # the condition ($runner le $holding) in certain cases.
+
                 $runner->increment;
+
+                if (++$loop_count >= 10000) {
+                    (my $holding_dump = $holding->as_formatted) =~ s/\n\s+/*/gm;
+
+                    croak "\$runner<$runner_dump> didn't catch up with " .
+                        "\$holding<$holding_dump> after 10000 increments";
+                }
             }
             $curr_holding = $holding->clone;
             $seqno++;
