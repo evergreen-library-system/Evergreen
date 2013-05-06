@@ -219,9 +219,9 @@ sub handler {
 			if ($holdings) {
 				$req->delete_field( $_ ) for ($req->field('852')); # remove any legacy 852s
 
-        			my $cn_list = [ grep { $_->deleted eq 'f' } @{ $bib->call_numbers } ];
+        			my $cn_list = $bib->call_numbers;
         			if ($cn_list && @$cn_list) {
-
+							$cn_list = [ grep { $_->deleted eq 'f' } @$cn_list ];
             				my $cp_list = [ grep { $_->deleted eq 'f' } map { @{ $_->copies } } @$cn_list ];
             				if ($cp_list && @$cp_list) {
 
