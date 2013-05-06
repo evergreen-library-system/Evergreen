@@ -235,7 +235,22 @@ sub can_close_circ {
                 )
             );
         }
+
+    } elsif ($reason eq OILS_STOP_FINES_LONGOVERDUE) {
+        # Check the copy circ_lib to see if they close
+        # transactions when long-overdue are paid.
+        my $copy = $e->retrieve_asset_copy($circ->target_copy);
+        if ($copy) {
+            $can_close = !$U->is_true(
+                $U->ou_ancestor_setting_value(
+                    $copy->circ_lib,
+                    'circ.longoverdue.xact_open_on_zero',
+                    $e
+                )
+            );
+        }
     }
+
     return $can_close;
 }
 
