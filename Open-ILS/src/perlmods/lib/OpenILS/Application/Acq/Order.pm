@@ -3683,6 +3683,7 @@ sub add_li_to_po {
         $li->provider($po->provider);
         $li->purchase_order($po_id);
         $li->state('pending-order');
+        apply_default_copies($mgr, $po, $li->id) or return $e->die_event;
         update_lineitem($mgr, $li) or return $e->die_event;
     }
 
