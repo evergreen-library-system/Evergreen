@@ -173,9 +173,6 @@ sub biblio_record_replace_marc  {
 
     $e->commit unless $U->event_code($res);
 
-    #my $ses = OpenSRF::AppSession->create('open-ils.ingest');
-    #$ses->request('open-ils.ingest.full.biblio.record', $recid);
-
     return $res;
 }
 
@@ -425,9 +422,6 @@ sub biblio_record_xml_import {
     return $record if $U->event_code($record);
 
     $e->commit;
-
-    #my $ses = OpenSRF::AppSession->create('open-ils.ingest');
-    #$ses->request('open-ils.ingest.full.biblio.record', $record->id);
 
     return $record;
 }

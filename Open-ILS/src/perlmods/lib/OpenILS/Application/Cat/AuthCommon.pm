@@ -38,10 +38,6 @@ sub import_authority_record {
 
     $rec = $e->create_authority_record_entry($rec) or return $e->die_event;
 
-    # we don't care about the result, just fire off the request
-    #my $ses = OpenSRF::AppSession->create('open-ils.ingest');
-    #$ses->request('open-ils.ingest.full.authority.record', $recid);
-
     return $rec;
 }
 
@@ -56,10 +52,6 @@ sub overlay_authority_record {
     $rec->marc($U->entityize($marc_doc->documentElement->toString));
 
     $rec = $e->update_authority_record_entry($rec) or return $e->die_event;
-
-    # we don't care about the result, just fire off the request
-    #my $ses = OpenSRF::AppSession->create('open-ils.ingest');
-    #$ses->request('open-ils.ingest.full.authority.record', $recid);
 
     return $rec;
 }

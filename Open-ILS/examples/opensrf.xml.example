@@ -838,33 +838,6 @@ vim:et:ts=4:sw=4:
                 </app_settings>
             </open-ils.circ>
 
-            <open-ils.ingest>
-                <keepalive>3</keepalive>
-                <stateless>1</stateless>
-                <implementation>OpenILS::Application::Ingest</implementation>
-                <language>perl</language>
-                <max_requests>1000000</max_requests>
-                <unix_config>
-                    <max_requests>1000000</max_requests>
-                    <unix_log>open-ils.ingest-unix.log</unix_log>
-                    <unix_sock>open-ils.ingest-unix.sock</unix_sock>
-                    <unix_pid>open-ils.ingest-unix.pid</unix_pid>
-                    <min_children>5</min_children>
-                    <max_children>20</max_children>
-                    <min_spare_children>2</min_spare_children>
-                    <max_spare_children>5</max_spare_children>
-                </unix_config>
-                <app_settings>
-                    <script_path>LIBDIR/javascript/</script_path>
-                    <script_path>LOCALSTATEDIR/catalog/</script_path>
-                    <script_path>LOCALSTATEDIR/web/opac/common/js/</script_path>
-                    <scripts>
-                        <biblio_fingerprint>biblio_fingerprint.js</biblio_fingerprint>
-                        <biblio_descriptor>biblio_descriptor.js</biblio_descriptor>
-                    </scripts>
-                </app_settings>
-            </open-ils.ingest>
-
             <open-ils.storage>
                 <keepalive>10</keepalive>
                 <stateless>1</stateless>
@@ -1220,7 +1193,6 @@ vim:et:ts=4:sw=4:
                 <appname>open-ils.justintime</appname>  
                 <appname>open-ils.cstore</appname>  
                 <appname>open-ils.collections</appname>  
-                <appname>open-ils.ingest</appname>  
                 <appname>open-ils.reporter</appname>  
                 <appname>open-ils.reporter-store</appname>  
                 <!-- <appname>open-ils.resolver</appname> -->
