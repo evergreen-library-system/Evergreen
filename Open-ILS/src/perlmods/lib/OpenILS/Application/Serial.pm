@@ -1899,10 +1899,10 @@ sub _summarize_contents {
     foreach my $scap_field (@scap_fields_ordered) { #TODO: use generic MFHD "summarize" method, once available
         my @updated_holdings;
         eval {
-            @updated_holdings = $mfhd->get_compressed_holdings($scap_field);
+            @updated_holdings = $mfhd->get_combined_holdings($scap_field);
         };
         if ($@) {
-            my $msg = "get_compressed_holdings(): $@ ; using sdist ID #" .
+            my $msg = "get_combined_holdings(): $@ ; using sdist ID #" .
                 ($sdist ? $sdist->id : "<NONE>") . " and " .
                 scalar(@$issuances) . " issuances, of which one has ID #" .
                 $issuances->[0]->id;
