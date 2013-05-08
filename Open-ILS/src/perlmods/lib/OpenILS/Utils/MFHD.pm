@@ -390,10 +390,8 @@ sub get_compressed_holdings {
         if ($runner eq $holding) {
             $curr_holding->extend;
             $runner->increment;
-        } elsif ($runner gt $holding) { # should not happen unless holding is not in series
-            carp("Found unexpected holding, skipping");
         } elsif ($holding->is_open_ended) { # special case, as it will always be the last
-            if ($runner eq $holding->clone->compressed_to_first) {
+            if ($runner ge $holding->clone->compressed_to_first) {
                 $curr_holding->compressed_end();
             } else {
                 push(@comp_holdings, $curr_holding);
@@ -402,6 +400,8 @@ sub get_compressed_holdings {
                 $curr_holding->seqno($seqno);
             }
             last;
+        } elsif ($runner gt $holding) { # should not happen unless holding is not in series
+            carp("Found unexpected holding, skipping");
         } else {
             push(@comp_holdings, $curr_holding);
 
@@ -550,12 +550,20 @@ sub get_combined_holdings {
                 $combined_holdings[-1]->clone->compressed_to_last
                 : $combined_holdings[-1]->clone;
 
+            # next, get the end (or only) holding of the current
+            # holding being considered
+            my $holding_end;
+            if ($holding->is_compressed) {
+                $holding_end = $holding->is_open_ended ?
+                undef
+                : $holding->clone->compressed_to_last;
+            } else {
+                $holding_end = $holding;
+            }
+
             # next, make sure $holding isn't fully contained
-            my $holding_end = $holding->is_compressed ?
-                $holding->clone->compressed_to_last
-                : $holding;
-            # if $holding is fully contained, skip it
-            if ($holding_end le $last_holding_end) {
+            # if it is, skip it
+            if ($holding_end and $holding_end le $last_holding_end) {
                 next;
             }
 
@@ -564,16 +572,9 @@ sub get_combined_holdings {
                 $holding->clone->compressed_to_first
                 : $holding;
 
+            # see if they overlap
             if ($last_holding_end->increment ge $holding_start) {
                 # they overlap, combine them
-                my $holding_end;
-                if ($holding->is_compressed) {
-                    $holding_end = $holding->is_open_ended ?
-                    undef
-                    : $holding->compressed_to_last;
-                } else {
-                    $holding_end = $holding;
-                }
                 $combined_holdings[-1]->compressed_end($holding_end);
             } else {
                 # no overlap, start a new group
