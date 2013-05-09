@@ -449,6 +449,11 @@
 
         ou_hiding_disabled = ctx.org_hiding_disabled();
 
+        # explicitly grabbing the first bib_source node, though there should be only one anyway
+        bib_source = xml.findnodes('//*[local-name()="bib_source"][1]');
+        args.bib_source.id = bib_source.getAttribute('ident');
+        args.bib_source.source = bib_source.textContent;
+
         FOR volume IN xml.findnodes('//*[local-name()="volumes"]/*[local-name()="volume"]');
 
             # Check volume visibility - could push this into XPath

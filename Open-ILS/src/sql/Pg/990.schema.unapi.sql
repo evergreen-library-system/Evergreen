@@ -406,6 +406,7 @@ DECLARE
     output  XML;
     hxml    XML;
     axml    XML;
+    source  XML;
 BEGIN
 
     IF org = '-' OR org IS NULL THEN
@@ -432,6 +433,13 @@ BEGIN
     SELECT * INTO xfrm FROM config.xml_transform WHERE name = layout.transform;
 
     SELECT * INTO me FROM biblio.record_entry WHERE id = obj_id;
+
+    -- grab bib_source, if any
+    IF me.source IS NOT NULL THEN
+        source := unapi.cbs(me.source,NULL,NULL,NULL,NULL);
+    ELSE
+        source := NULL::XML;
+    END IF;
 
     -- grab SVF if we need them
     IF ('mra' = ANY (includes)) THEN 
@@ -461,6 +469,10 @@ BEGIN
     END IF;
 
     top_el := REGEXP_REPLACE(tmp_xml, E'^.*?<((?:\\S+:)?' || layout.holdings_element || ').*$', E'\\1');
+
+    IF source IS NOT NULL THEN
+        tmp_xml := REGEXP_REPLACE(tmp_xml, '</' || top_el || '>(.*?)$', source || '</' || top_el || E'>\\1');
+    END IF;
 
     IF axml IS NOT NULL THEN 
         tmp_xml := REGEXP_REPLACE(tmp_xml, '</' || top_el || '>(.*?)$', axml || '</' || top_el || E'>\\1');
@@ -1203,6 +1215,22 @@ CREATE OR REPLACE FUNCTION unapi.auri ( obj_id BIGINT, format TEXT,  ename TEXT,
           FROM  asset.uri uri
           WHERE uri.id = $1
           GROUP BY uri.id, use_restriction, href, label;
+$F$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION unapi.cbs ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+    SELECT  XMLELEMENT(
+                name bib_source,
+                XMLATTRIBUTES(
+                    NULL AS xmlns, -- TODO needs equivalent to http://open-ils.org/spec/holdings/v1
+                    id AS ident,
+                    quality,
+                    transcendant,
+                    can_have_copies
+                ),
+                source
+            )
+      FROM  config.bib_source
+      WHERE id = $1;
 $F$ LANGUAGE SQL STABLE;
 
 CREATE OR REPLACE FUNCTION unapi.mra (
