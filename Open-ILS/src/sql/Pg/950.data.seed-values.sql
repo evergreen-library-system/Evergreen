@@ -179,7 +179,7 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, 
 
 UPDATE config.metabib_field SET joiner = ' -- ' WHERE field_class = 'subject' AND name NOT IN ('name', 'complete');
 
-SELECT SETVAL('config.metabib_field_id_seq'::TEXT, (SELECT MAX(id) FROM config.metabib_field), TRUE);
+SELECT SETVAL('config.metabib_field_id_seq', GREATEST(1000, (SELECT MAX(id) FROM config.metabib_field)));
 
 INSERT INTO config.metabib_search_alias (alias,field_class) VALUES ('kw','keyword');
 INSERT INTO config.metabib_search_alias (alias,field_class) VALUES ('eg.keyword','keyword');
