@@ -1103,7 +1103,7 @@ div.facet_sidebar {
 .no-dec:hover { text-decoration: none; }
 .pending-addr td { background-color: [% css_colors.background_alert %] !important; border: 0 !important; }
 
-#account-update-email table { text-align: center; padding: 20px; margin-top: 30px; border-collapse: collapse; }
+#account-update-email table { text-align: center; padding: 20px; margin-top: 18px; border-collapse: collapse; }
 #account-update-email table td { padding: 5px 15px 5px 15px; border-bottom: 1px solid [% css_colors.accent_lighter %]; text-align: left;}
 #account-update-email-error { font-size: [% css_fonts.size_biggest %]; padding: 10px; border:1px solid [% css_colors.border_standard %];}
 a.dash-link:hover { text-decoration: underline !important; }
@@ -1514,4 +1514,10 @@ a.preflib_change {
 
 .record_author {
     font-style: italic;
+}
+
+.password_message {
+    padding-top: 1em;
+    padding-bottom: 0.5em;
+	font-style: italic;
 }
