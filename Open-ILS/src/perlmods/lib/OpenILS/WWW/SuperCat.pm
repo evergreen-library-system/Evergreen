@@ -38,6 +38,13 @@ my ($bootstrap, $supercat, $actor, $parser, $search, $xslt, $cn_browse_xslt, %br
 
 my $authority_axis_re = qr/^authority\.(\w+)(\.refs)?$/;
 
+my %extra_header_action_per_type = (
+    marc21 => [
+        {"Content-Disposition" =>
+            sub { "attachment;filename=" . time . ".mrc"}}
+    ]
+);
+
 $browse_types{call_number}{xml} = sub {
     my $tree = shift;
 
@@ -371,6 +378,39 @@ sub unapi_format {
 }
 
 
+# Return a list of strings suitable for printing on STDOUT as HTTP headers.
+sub extra_headers_per_type_to_string {
+    my ($type) = @_;
+    if (my $list = $extra_header_action_per_type{$type}) {
+        return map {
+            my $str = (keys(%$_))[0] . ": ";
+            my $value = (values(%$_))[0];
+            if (ref $value eq 'CODE') {
+                $value = $value->();
+            }
+            return $str . $value . "\n";
+        } @$list;
+    }
+    return;
+}
+
+# Return key/value pairs suitable for feeding into CGI::header()
+sub extra_headers_per_type_to_cgi {
+    my ($type) = @_;
+
+    if (my $list = $extra_header_action_per_type{$type}) {
+        return map {
+            my $key = (keys(%$_))[0];
+            my $value = (values(%$_))[0];
+            if (ref $value eq 'CODE') {
+                $value = $value->();
+            }
+            return $key => $value;
+        } @$list;
+    }
+    return;
+}
+
 sub oisbn {
 
     my $apache = shift;
@@ -678,8 +718,11 @@ sub unapi {
         $feed->update_ts();
         $feed->link( unapi => $base) if ($flesh_feed);
 
-        print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
-        print $feed->toString . "\n";
+        print "Content-type: ". $feed->type ."; charset=utf-8\n";
+
+        print $_ for extra_headers_per_type_to_string($type);
+
+        print "\n", $feed->toString, "\n";
 
         return Apache2::Const::OK;
     }
@@ -899,7 +942,9 @@ sub supercat {
         try {
             my $bib = $supercat->request( "open-ils.supercat.record.object.retrieve", $id )->gather(1)->[0];
         
-            print "Content-type: application/octet-stream\n\n" . MARC::Record->new_from_xml( $bib->marc, 'UTF-8', 'USMARC' )->as_usmarc;
+            print "Content-type: application/octet-stream\n";
+            print $_ for extra_headers_per_type_to_string($base_format);
+            print "\n" . MARC::Record->new_from_xml( $bib->marc, 'UTF-8', 'USMARC' )->as_usmarc;
 
         } otherwise {
             warn shift();
@@ -939,8 +984,11 @@ sub supercat {
 
         $feed->link( unapi => $base) if ($flesh_feed);
 
-        print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
-        print $feed->toString . "\n";
+        print "Content-type: ". $feed->type ."; charset=utf-8\n";
+
+        print $_ for extra_headers_per_type_to_string($type);
+
+        print "\n", $feed->toString, "\n";
 
         return Apache2::Const::OK;
     }
@@ -1150,8 +1198,11 @@ sub changes_feed {
     );
 
 
-    print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
-    print $feed->toString . "\n";
+    print "Content-type: ". $feed->type ."; charset=utf-8\n";
+
+    print $_ for extra_headers_per_type_to_string($type);
+
+    print "\n", $feed->toString, "\n";
 
     return Apache2::Const::OK;
 }
@@ -1451,7 +1502,10 @@ sub opensearch_feed {
 #    );
 
     #print $cgi->header( -type => $feed->type, -charset => 'UTF-8') . entityize($feed->toString) . "\n";
-    print $cgi->header( -type => $feed->type, -charset => 'UTF-8') . $feed->toString . "\n";
+    print $cgi->header(
+        -type => $feed->type, -charset => 'UTF-8',
+        extra_headers_per_type_to_cgi($type)
+    ), $feed->toString, "\n";
 
     $log->debug("...and feed returned.");
 
