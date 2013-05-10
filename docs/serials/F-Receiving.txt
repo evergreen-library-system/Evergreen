@@ -5,21 +5,35 @@ You can receive either through the Serials Control View or in Batch Receive with
 Serials Control View Receiving
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-image::media/scv-rec.jpg[Receiving]
+image::media/scv-rec.png[Receiving]
 
-. To receive items, click the Receive radio button. In the top half of the screen, the items that have yet to be received are displayed. In the bottom half of the screen, recently received items are displayed.
+. To receive items, click the Receive radio button. In the top pane, the items that have yet to be received are displayed. In the bottom pane, recently received items are displayed with the most recent at the top.
 . Select the branch that will receive the items from the drop down box.
-. Select the issue that you want to receive.
+. Select the item that you want to receive.
 . Select the current working unit. Click Set Current Unit, located in the lower right corner of the screen. A drop down menu will appear.
 	* If you want to barcode each item individually, select Auto per item. This setting is recommended for most receiving processes.
 	* If you want each item within a unit to share the same barcode, then select New Unit. This setting is advised for most binding processes.
-	* If you want the item to be received or bound into an existing item, select Recent and select the desired issue. To making a change in bound items, receive or bind the items into an already existing unit.
+	* If you want the item to be received or bound into an existing item, select Recent and select the desired item from the menu. To make a change in bound items, receive or bind the items into an already existing unit.
 . Click Receive/Move Selected.
 . Enter a barcode and call number if prompted to do so.
 . A message confirming receipt of the item appears. Click OK.
-. The screen refreshes. In the top half of the screen, the item displays a received date. In the bottom half of the screen, the item that you have just received is now at the top of the list of the received items.
+. The screen refreshes. Now the item has moved from the top pane to the bottom pane. (If you have checked "Show all", the item also remains in the top pane, with a received date added to it.) In the bottom pane, the item that you have just received is now at the top of the list of the received items.
 
-After receiving items, you can view the updated holdings in the OPAC. In this example, the legacy MFHD record and the items recently received in the serial control view display together in the MFHD statement.
+After receiving items, you can view the updated holdings in the OPAC.
+
+Set Special Statuses
+~~~~~~~~~~~~~~~~~~~~
+
+image::media/scv-status.png[Set Item Status]
+
+The Serial Control interface prevents direct editing of serial item statuses
+for data integrity reasons. As an alternative to direct control, the interface
+now offers new menu options for setting items to 'claimed', 'not held', and
+'not published'. Note that these statuses are still currently useful for
+reporting and display purposes only. The 'claimed' status changes the display 
+but does not yet connect with the Acquisitions module in any way. Also note 
+that, once you set an item to 'not held' or 'not published', that item will 
+be hidden from the list unless you check the "Show All" checkbox.
 
 Batch Receiving
 ~~~~~~~~~~~~~~~
