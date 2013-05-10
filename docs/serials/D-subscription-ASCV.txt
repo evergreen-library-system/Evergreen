@@ -90,7 +90,7 @@ To add a pattern code, click Wizard.
 Page 1: Enumerations
 ++++++++++++++++++++
 
-image::media/cap-wiz-num.jpg[Enuperation]
+image::media/cap-wiz-num.jpg[Enumeration]
 
 . To add an enumeration, check the box adjacent to Use enumerations.. The enumerations conform to $a-$h of the 853,854, and 855 MARC tags.
 . A field for the First level will appear. Enter the enumeration for the first level. A common first level enumeration is volume, or "v."
