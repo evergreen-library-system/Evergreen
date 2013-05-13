@@ -575,11 +575,30 @@ function AcqLiTable() {
         );
     }
 
+    // fetch an updated copy of the lineitem 
+    // and add it back to the lineitem table
+    this.refreshLineitem = function(li, focus) {
+        var self = this;
+        this._fetchLineitem(li.id(), 
+            function(newLi) {
+                if (focus) {
+                    self.focusLineitem = li.id();
+                } else {
+                    self.focusLineitem = null;
+                }
+                var row = dojo.query('[li='+li.id()+']', self.tbody)[0];
+                var nextSibling = row.nextSibling;
+                self.tbody.removeChild(row);
+                self.addLineitem(newLi, false, nextSibling);
+            }, true
+        );
+    }
+
     /**
      * Inserts a single lineitem into the growing table of lineitems
      * @param {Object} li The lineitem object to insert
      */
-    this.addLineitem = function(li, skip_final_placement) {
+    this.addLineitem = function(li, skip_final_placement, nextSibling) {
         this.liCache[li.id()] = li;
 
         // insert the row right away so that final order isn't
@@ -587,8 +606,15 @@ function AcqLiTable() {
         // for a given line item
         var row = self.rowTemplate.cloneNode(true);
         if (!skip_final_placement) {
-            self.tbody.appendChild(row);
+            if (!nextSibling) {
+                // either no nextSibling was provided or it was null
+                // meaning the row was already at the end of the table
+                self.tbody.appendChild(row);
+            } else {
+                self.tbody.insertBefore(row, nextSibling);
+            }
         }
+
         self.selectors.push(dojo.query('[name=selectbox]', row)[0]);
 
         // sort the lineitem notes on edit_time
@@ -804,7 +830,7 @@ function AcqLiTable() {
     };
 
     // returns true if request was sent
-    this._applyOrderIdentValue = function(li) {
+    this._applyOrderIdentValue = function(li, oncomplete) {
         var self = this;
 
         console.log('applying ident value for lineitem ' + li.id());
@@ -826,8 +852,10 @@ function AcqLiTable() {
             oldIdent.attr_name() == name &&
             oldIdent.attr_value() == val) {
                 console.log('selected ident attr matches existing attr');
-                if (--this._identValuesInFlight == 0) 
-                    location.href = location.href;
+                if (--this._identValuesInFlight == 0) {
+                    if (oncomplete) oncomplete(li);
+                    else location.href = location.href;
+                }
                 return false;
         }
 
@@ -861,8 +889,11 @@ function AcqLiTable() {
                 params : [openils.User.authtoken, args],
                 oncomplete : function() {
                     console.log('order_ident oncomplete');
-                    if (--self._identValuesInFlight == 0) 
-                        location.href = location.href;
+                    if (--self._identValuesInFlight == 0) {
+                        if (oncomplete) oncomplete(li);
+                        else location.href = location.href;
+                    }
+                    console.log(self._identValuesInFlight + ' still in flight');
                 }
             }
         );
@@ -937,8 +968,14 @@ function AcqLiTable() {
             }
         );
 
-        function updateOrderIdent(box) {
-            console.log('updating order ident for box ' + box);
+        function updateOrderIdent(val) {
+            self._identValuesInFlight = 1;
+            self._applyOrderIdentValue(
+                this._lineitem,
+                function(li) {
+                    self.refreshLineitem(li);
+                }
+            );
         }
 
         // replace the ident combobox with a new 
