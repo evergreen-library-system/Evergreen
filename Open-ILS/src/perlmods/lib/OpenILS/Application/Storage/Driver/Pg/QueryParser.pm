@@ -904,9 +904,9 @@ sub flatten {
 
                 if(scalar @bumps > 0 && scalar @{$node->only_positive_atoms} > 0) {
                     # Note: Previous rank function used search_normalize outright. Duplicating that here.
-                    $node_rank .= "\n" . ${spc} x 5 . "* evergreen.rel_bump(('{' || search_normalize(";
-                    $node_rank .= join(") || ',' || search_normalize(",map { $self->QueryParser->quote_phrase_value($_->content) } @{$node->only_positive_atoms});
-                    $node_rank .= ") || '}')::TEXT[], " . $node->table_alias . ".value, '{" . join(",",@bumps) . "}'::TEXT[], '{" . join(",",@bumpmults) . "}'::NUMERIC[])";
+                    $node_rank .= "\n" . ${spc} x 5 . "* evergreen.rel_bump(('{' || quote_literal(search_normalize(";
+                    $node_rank .= join(")) || ',' || quote_literal(search_normalize(",map { $self->QueryParser->quote_phrase_value($_->content) } @{$node->only_positive_atoms});
+                    $node_rank .= ")) || '}')::TEXT[], " . $node->table_alias . ".value, '{" . join(",",@bumps) . "}'::TEXT[], '{" . join(",",@bumpmults) . "}'::NUMERIC[])";
                 }
 
                 my $NOT = '';
