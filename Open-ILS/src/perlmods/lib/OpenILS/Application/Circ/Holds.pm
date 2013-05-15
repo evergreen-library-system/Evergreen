@@ -3127,7 +3127,16 @@ sub all_rec_holds {
     $args->{fulfillment_time} = undef; #  we don't want to see old fulfilled holds
     $args->{cancel_time} = undef;
 
-    my $resp = { volume_holds => [], copy_holds => [], recall_holds => [], force_holds => [], metarecord_holds => [], part_holds => [], issuance_holds => [] };
+    my $resp = {
+          metarecord_holds => []
+        , title_holds      => []
+        , volume_holds     => []
+        , copy_holds       => []
+        , recall_holds     => []
+        , force_holds      => []
+        , part_holds       => []
+        , issuance_holds   => []
+    };
 
     my $mr_map = $e->search_metabib_metarecord_source_map({source => $title_id})->[0];
     if($mr_map) {
@@ -3168,7 +3177,7 @@ sub all_rec_holds {
             {subscription => $subs}, {idlist=>1}
         );
 
-        if ($issuances) {
+        if (@$issuances) {
             $resp->{issuance_holds} = $e->search_action_hold_request(
                 {
                     hold_type => OILS_HOLD_TYPE_ISSUANCE,
