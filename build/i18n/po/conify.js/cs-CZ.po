@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2013-03-15 19:42-0400\n"
-"PO-Revision-Date: 2012-08-24 21:55+0000\n"
+"PO-Revision-Date: 2013-04-23 11:56+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-16 05:55+0000\n"
-"X-Generator: Launchpad (build 16532)\n"
+"X-Launchpad-Export-Date: 2013-04-24 04:49+0000\n"
+"X-Generator: Launchpad (build 16580)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -41,7 +41,7 @@ msgstr "Přidat odpověď"
 
 #: conify.js:CBHO_FIELD_DISPLAY
 msgid "[${0}] ${1}"
-msgstr ""
+msgstr "[${0}] ${1}"
 
 #: conify.js:TRANSLATION conify.js:LABEL_TRANSLATION
 msgid "Translation"
@@ -114,7 +114,7 @@ msgstr "Problém při vytvoření nového oprávnění"
 
 #: conify.js:CBHO_EDITING_NEW
 msgid "You are editing a new best-hold order."
-msgstr ""
+msgstr "Upravujte novou \"nejvýhodnější rezervaci\""
 
 #: conify.js:ERROR_CALLING_METHOD_PERM_MAP
 msgid "Problem calling method to create new permission map"
@@ -154,7 +154,7 @@ msgstr "Nelze odstranit ${0}, podřízený ${1} stále existuje."
 
 #: conify.js:CBHO_EDITING_EXISTING
 msgid "You are editing best-hold order #${0}: ${1}."
-msgstr ""
+msgstr "Upravujte pořadí \"nejvýhodnější rezervace\" #${0}: ${1}."
 
 #: conify.js:ERROR_DELETING_LAST_AOUT
 msgid "Cannot delete ${0}. You need at least one organization type."
@@ -178,7 +178,7 @@ msgstr "Nová skupina"
 
 #: conify.js:CBHO_NO_LOAD
 msgid "Unable to load selected item."
-msgstr ""
+msgstr "Nebylo možné načíst vybrané exempláře."
 
 #: conify.js:CONFIRM_EXIT_PGT
 msgid ""
@@ -234,7 +234,7 @@ msgstr "Nový typ"
 
 #: conify.js:CBHO_NEEDS_NAME
 msgid "You need to enter a name for the best-hold order."
-msgstr ""
+msgstr "Je nutné zadat jméno pro pořadí \"nejvýhodnější rezervace\""
 
 #: conify.js:ACQ_DISTRIB_FORMULA_NAME_PROMPT
 msgid "Enter new formula name"
