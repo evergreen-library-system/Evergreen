@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2013-03-15 19:42-0400\n"
-"PO-Revision-Date: 2012-08-13 17:14+0000\n"
+"PO-Revision-Date: 2013-04-01 14:26+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-16 05:55+0000\n"
-"X-Generator: Launchpad (build 16532)\n"
+"X-Launchpad-Export-Date: 2013-04-02 05:19+0000\n"
+"X-Generator: Launchpad (build 16546)\n"
 
 #: conify.js:SURVEY_ID
 msgid "Survey ID # ${0}"
@@ -38,7 +38,7 @@ msgstr "Ավելացրու պատասխան"
 
 #: conify.js:CBHO_FIELD_DISPLAY
 msgid "[${0}] ${1}"
-msgstr ""
+msgstr "[${0}] ${1}"
 
 #: conify.js:TRANSLATION conify.js:LABEL_TRANSLATION
 msgid "Translation"
@@ -111,7 +111,7 @@ msgstr "Պրոբլեմ նոր Իրավասություններ ստեղծելի�
 
 #: conify.js:CBHO_EDITING_NEW
 msgid "You are editing a new best-hold order."
-msgstr ""
+msgstr "Դու խմբարում ես նոր լավագույն պահման պատվեր։"
 
 #: conify.js:ERROR_CALLING_METHOD_PERM_MAP
 msgid "Problem calling method to create new permission map"
@@ -151,7 +151,7 @@ msgstr "Չի կարող ջնջել ${0}, ${1} ենթակաները դեռ առկ
 
 #: conify.js:CBHO_EDITING_EXISTING
 msgid "You are editing best-hold order #${0}: ${1}."
-msgstr ""
+msgstr "ու խմբարում ես նոր լավագույն պահման պատվեր։ #${0}: ${1}."
 
 #: conify.js:ERROR_DELETING_LAST_AOUT
 msgid "Cannot delete ${0}. You need at least one organization type."
@@ -176,7 +176,7 @@ msgstr "Նոր խումբ"
 
 #: conify.js:CBHO_NO_LOAD
 msgid "Unable to load selected item."
-msgstr ""
+msgstr "Չի կարող բեռնավորել ընտրված նյութը։"
 
 #: conify.js:CONFIRM_EXIT_PGT
 msgid ""
@@ -233,7 +233,7 @@ msgstr "Նոր տեսակ"
 
 #: conify.js:CBHO_NEEDS_NAME
 msgid "You need to enter a name for the best-hold order."
-msgstr ""
+msgstr "Քեզ պետք է մուտք անել լավագույն պահման պատվերի անունը։"
 
 #: conify.js:ACQ_DISTRIB_FORMULA_NAME_PROMPT
 msgid "Enter new formula name"

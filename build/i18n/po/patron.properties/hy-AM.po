@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-03-15 19:42+0000\n"
-"PO-Revision-Date: 2013-02-15 18:58+0000\n"
+"PO-Revision-Date: 2013-04-01 14:21+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-16 06:01+0000\n"
-"X-Generator: Launchpad (build 16532)\n"
+"X-Launchpad-Export-Date: 2013-04-02 05:19+0000\n"
+"X-Generator: Launchpad (build 16546)\n"
 "X-Accelerator-Marker: &\n"
 
 #: staff.patron.summary.patron_net_access
@@ -93,7 +93,7 @@ msgstr "bill_details.xul, my_init:"
 
 #: staff.patron.bill_details.my_cleanup.error
 msgid "bill_details.xul, my_cleanup:"
-msgstr ""
+msgstr "bill_details.xul, my_cleanup:"
 
 #: staff.patron.bill_details.handle_edit_bill_note.note_dialog.title
 msgctxt "staff.patron.bill_details.handle_edit_bill_note.note_dialog.title"
