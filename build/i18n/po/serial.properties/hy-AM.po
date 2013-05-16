@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-03-15 19:42+0000\n"
-"PO-Revision-Date: 2012-08-13 17:04+0000\n"
+"PO-Revision-Date: 2013-04-01 14:21+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-16 06:01+0000\n"
-"X-Generator: Launchpad (build 16532)\n"
+"X-Launchpad-Export-Date: 2013-04-02 05:19+0000\n"
+"X-Generator: Launchpad (build 16546)\n"
 
 #: serial.manage_subs.tree_location
 msgid "Location"
@@ -326,15 +326,15 @@ msgstr "Նշումներ (Նյութ/Դիստ/Ենթա)"
 
 #: staff.serial.manage_items.set_claimed_success
 msgid "Successfully claimed %1$s item(s)"
-msgstr ""
+msgstr "Հաջողությամբ խարանվել են %1$s նյութ(եր)"
 
 #: staff.serial.manage_items.set_not_held_success
 msgid "Successfully set %1$s item(s) to 'Not Held'"
-msgstr ""
+msgstr "Հաջողությամբ կարգաբերվել է %1$s նյութ որպես 'Չպահված'"
 
 #: staff.serial.manage_items.set_not_published_success
 msgid "Successfully set %1$s item(s) to 'Not Published'"
-msgstr ""
+msgstr "Հաջողությամբ կարգաբերվել է %1$s նյութ որպես 'Չհրատարակված'"
 
 #: staff.serial.manage_subs.add.error
 msgid "error adding object in manage_subs.js:"

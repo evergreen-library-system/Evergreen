@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-03-15 19:41+0000\n"
-"PO-Revision-Date: 2013-02-15 19:28+0000\n"
+"PO-Revision-Date: 2013-04-01 14:34+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-16 05:54+0000\n"
-"X-Generator: Launchpad (build 16532)\n"
+"X-Launchpad-Export-Date: 2013-04-02 05:19+0000\n"
+"X-Generator: Launchpad (build 16546)\n"
 "X-Accelerator-Marker: &\n"
 
 #: staff.circ.alert
@@ -247,13 +247,15 @@ msgstr ""
 
 #: staff.circ.checkout.error_retrieving_copy_status
 msgid "Could not retrieve the name of the current status for the copy"
-msgstr ""
+msgstr "Պատճենի համար չի կարող հետ բերել ընթացիկ վիճակի անունը"
 
 #: staff.circ.checkout.not_cataloged.confirm
 msgid ""
 "Barcode %1$s was either mis-scanned or is a non-cataloged item.  Checkout as "
 "a pre-cataloged item?"
 msgstr ""
+"Այս շտրիխկոդը %1$s կամ սխալ է սկանավորվել քամ չքարտագրված նյութ է։ Դուրս "
+"տա՞լ որպես նախապես քարտագրված նյութ։"
 
 #: staff.circ.pre_cataloged
 msgid "Pre-cataloged"
