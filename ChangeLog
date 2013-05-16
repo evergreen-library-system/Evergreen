@@ -1,3 +1,352 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 5a63b7f91bbe1c59ad94fafd04c1c336c2be6a94
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Thu May 16 14:52:01 2013 -0400
+
+    Translations import / newpot for 2.2.9
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+5	5	build/i18n/po/cat.properties/en-GB.po
+6	4	build/i18n/po/circ.properties/cs-CZ.po
+17	13	build/i18n/po/circ.properties/en-GB.po
+6	4	build/i18n/po/circ.properties/hy-AM.po
+8	8	build/i18n/po/conify.js/cs-CZ.po
+9	9	build/i18n/po/conify.js/en-GB.po
+8	8	build/i18n/po/conify.js/hy-AM.po
+4	4	build/i18n/po/db.seed/cs-CZ.po
+8	8	build/i18n/po/db.seed/en-GB.po
+5	5	build/i18n/po/db.seed/hy-AM.po
+32	32	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+6	6	build/i18n/po/fm_IDL.dtd/en-GB.po
+1020	1020	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+24	24	build/i18n/po/fm_IDL.dtd/hy-AM.po
+7	4	build/i18n/po/ils_events.xml/cs-CZ.po
+18	11	build/i18n/po/ils_events.xml/en-GB.po
+7	4	build/i18n/po/ils_events.xml/hy-AM.po
+41	41	build/i18n/po/lang.dtd/cs-CZ.po
+8	5	build/i18n/po/lang.dtd/en-GB.po
+42	42	build/i18n/po/lang.dtd/hy-AM.po
+4	4	build/i18n/po/offline.properties/cs-CZ.po
+17	17	build/i18n/po/offline.properties/en-GB.po
+4	4	build/i18n/po/offline.properties/hy-AM.po
+16	4	build/i18n/po/opac.dtd/en-GB.po
+7	7	build/i18n/po/patron.properties/en-GB.po
+4	4	build/i18n/po/patron.properties/hy-AM.po
+5	5	build/i18n/po/reservation.js/en-GB.po
+6	6	build/i18n/po/serial.properties/cs-CZ.po
+7	7	build/i18n/po/serial.properties/en-GB.po
+6	6	build/i18n/po/serial.properties/hy-AM.po
+19	19	build/i18n/po/tpac/tpac.pot
+
+commit bc46b75cc56674e264f8005cd160f68ddf3326ea
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Apr 19 16:14:13 2013 -0400
+
+    Correct subfield format for authority lookup
+    
+    The Authority Control Set code expects the format of subfields
+    that it will be used to build a MARC.Field object to be of the
+    form: [[code,value],...]  This commit makes that true.
+    
+    Additionally, dojo.filter over a list of lists can cause the
+    nested array set to be flattened.  So, instead, we loop directly.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+10	5	Open-ILS/web/js/dojo/openils/AuthorityControlSet.js
+1	2	Open-ILS/xul/staff_client/server/cat/marcedit.js
+
+commit f32375f6d719048329e631c621138db1335f3537
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu May 16 09:11:50 2013 -0400
+
+    Repair faulty MARC editor authority validation
+    
+    Repair how the JS inspects the results of
+    open-ils.search.authority.simple_heading.from_xml.batch.atomic, which is
+    used to look up matches for authority validation.  It returns a more
+    complex structure in the brave new world of authority control sets.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+19	2	Open-ILS/xul/staff_client/server/cat/marcedit.js
+
+commit 815f5e2dfd49019b9962d5a9e28eda3677f8e8dd
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Apr 3 15:30:40 2013 -0400
+
+    stamping upgrade for field 264 reporter view
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+37	0	Open-ILS/src/sql/Pg/upgrade/0788.schema.reporter_264_pubinfo.sql
+0	37	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter_264_pubinfo.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0788.schema.reporter_264_pubinfo.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter_264_pubinfo.sql
+
+commit 1b7a2d1d14838f2a196d09cb1fa2bbcdbc044b03
+Author: Ben Shum <bshum@biblio.org>
+Date:   Thu Jan 31 12:20:20 2013 -0500
+
+    LP1071505 - Add 264 RDA tag to reporter views
+    
+    Some reports draw from reporter.materialized_simple_record table and these
+    were not made aware of the new 264 tag which contains publisher related
+    information.
+    
+    Change the view for reporter.old_super_simple_record, which feeds into the
+    other reporter table.
+    
+    The included upgrade SQL will update this view and then update the table using
+    the new view.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2	2	Open-ILS/src/sql/Pg/reporter-schema.sql
+37	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter_264_pubinfo.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter_264_pubinfo.sql
+
+commit b610f9ab1ae0b14c2927a27e5537a8ce9eecb755
+Author: Ben Shum <bshum@biblio.org>
+Date:   Wed Oct 10 17:00:54 2012 -0400
+
+    LP1071505 - Add 264 RDA tag to TPAC pubinfo display
+    
+    Prior to this, TPAC only retrieved the 260 tag for publication info. Allow for
+    the possibility that the 264 tag might exist and contain relevant information.
+    Special note: the 264 tag must have a second indicator value of 1 to be meant
+    for publication statement.
+    
+    Also, this only picks out the first 260 or 264 tags in any given bib record.
+    
+    Approach inspired by Dan Scott's approach taken for finding edition statements.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    
+    Conflicts:
+    	Open-ILS/src/templates/opac/parts/misc_util.tt2
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+9	3	Open-ILS/src/templates/opac/parts/misc_util.tt2
+
+commit 879c459db9d50a5e7b6e41061a996bd04e3429a8
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Sep 12 12:59:53 2012 -0400
+
+    TPAC: Results - don't show the pubdate if we're showing full pubinfo
+    
+    In the "show few details" mode, we show just the pubdate; in the "show
+    full details" mode, we're showing the full pubinfo and therefore do not
+    need to show the stubby pubdate.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+5	0	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit a0ea0311956079a4f56b8342f5841df3795f3890
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Sep 12 11:50:03 2012 -0400
+
+    TPAC: Display full publication info
+    
+    In both the results table and record summary, we were failing to display
+    the place of publication - which is critical information for people
+    trying to track down the right edition or constructing a bibliography.
+    
+    Grab the place of publication, and then reconstruct 260abc (avoiding
+    another XPath iteration and giving ourselves the ability to enhance the
+    schema.org microdata at the same time).
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+9	0	Open-ILS/src/templates/opac/parts/misc_util.tt2
+9	6	Open-ILS/src/templates/opac/parts/record/summary.tt2
+2	4	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit af1a7ccf5a82e2fbf03f4a8e366502148afb4ef1
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Apr 30 11:26:00 2013 -0400
+
+    Make sure the "running" indicator goes away
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+8	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+
+commit 7b4849c92c6bab2a7dc3615390efc323c9a50712
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Apr 26 11:28:38 2013 -0400
+
+    Add a $cache_timeout-based backstop for infinite loops
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+
+commit 447d859b0f391d041300d35002ecd7a36a595233
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Apr 26 10:49:17 2013 -0400
+
+    "Queue Compression" -- let one do the work for all identical, concurrent searches
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+17	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+
+commit 7107d94b28dd5f70dc64fb6876dcebe609454170
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Mon May 6 14:15:18 2013 -0400
+
+    Serials: MFHD::get_compressed_holdings() can reach infinite loop
+    
+    Even controlled serials holdings involve the internal creation of MFHD
+    fields, upon which caculations are performed for such purposes as the
+    display of holdings summaries in the OPAC.
+    
+    There are too many ways that incorrect MFHD (or MFHD that our code just
+    can't yet handle) can lead our MFHD routines to crash. We can't address
+    all these possibilities in a single bug fix. But we can avoid this
+    infinite loop.
+    
+    A subroutine within open-ils.serial (_summarize_contents()) relies on
+    MFHD::get_compressed_holdings(). When the latter went into an infinite
+    loop the result would be an open-il.serial drone process consuming CPU
+    time indefinitely and, depending on the data that provoked the loop,
+    potentially writing repeating messages to stderr indefinitely.
+    
+    End users will still see the item receiving fail in these cases, and be
+    obliged to work around the issue as before until more robust
+    holdings summarization code can be written, but at least the overall
+    condition of the running Evergreen system won't be affected, and there
+    will be better information in the error logs.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+22	5	Open-ILS/src/perlmods/lib/OpenILS/Application/Serial.pm
+15	3	Open-ILS/src/perlmods/lib/OpenILS/Utils/MFHD.pm
+
+commit 188e0bf1d5328b7a69eb70b50a2cabd5510f9a7f
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Mon May 6 14:13:13 2013 -0400
+
+    Serials: Test method to identify holdings that lead to summarization bugs
+    
+    This adds a simple test method that allows testing of problem holdings.
+    See the next commit.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+31	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Serial.pm
+
+commit 0400e3f88e490b78ee116c0924e9a3cba73423d0
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Mar 29 09:41:44 2013 -0400
+
+    LP1076411 Return updated circ object from checkin
+    
+    Retrieve an updated copy of the circulation object to return to the
+    caller during checkin.  This ensures the data in the circ object, in
+    particular date fields, are consistent with the database.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+11	5	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit 7eed14fed8e2a37cb6b360015aab7a99360e897b
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Mar 14 14:37:17 2013 -0400
+
+    Add accepting_usr to IDL to fix reporter field
+    
+    In the reporter interface, the view 'Payments: Brick-and-mortar' is
+    missing the 'Accepting User' field, which is present in the similar view
+    'Payments: Desk'. This field is already present in the database view and
+    is simply missing from the IDL.  Since it is needed for certain kinds of
+    reports, this commit adds the missing IDL fields. It also adds the
+    missing 'reporter:datatype' to an existing instance of the IDL field.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	1	Open-ILS/examples/fm_IDL.xml
+
+commit 2797b1974c4f0877cc31e4fd9e5766c9891b852f
+Author: Kyle Tomita <ktomita@catalystitservices.com>
+Date:   Tue Apr 9 13:51:14 2013 -0700
+
+    LP1104823 - OPAC search results "Limit to available items" toggles
+    off "Show more details"
+    
+    Added a hidden input to the form when "Show more details" is selected
+    so that when the form is reloaded, "Show more details" will be still
+    selected.
+    
+    Signed-off-by: Kyle Tomita <ktomita@catalystitservices.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	0	Open-ILS/src/templates/opac/results.tt2
+
+commit 607028ba527b037cb85c89832678c530292ee174
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Fri Apr 5 01:53:55 2013 -0400
+
+    Prevent compiler warning about unused numtype var
+    
+    There was a dangling variable left around that was making noise in the
+    compiler. Credit to Jeff Godin for the heads-up.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	2	Open-ILS/src/c-apps/oils_sql.c
+
+commit c7c13b2fb698bb8fb36c8041e05f4711ef0dc4c1
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Apr 5 01:52:16 2013 -0400
+
+    Address SQL injection vulnerability in SQL ORM layer
+    
+    If the user-supplied value and the db column are both numbers
+    (jsonObject->type == JSON_NUMBER, get_primitive(field) == "number") then
+    don't quote. Otherwise, quote.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+4	18	Open-ILS/src/c-apps/oils_sql.c
+
+commit fa462835c2c605fcc0fbe742a1ca1ba3bf18160d
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Tue Apr 16 22:24:07 2013 -0400
+
+    2.2.7-2.2.8 database upgrade script
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+124	0	Open-ILS/src/sql/Pg/version-upgrade/2.2.7-2.2.8-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.2.7-2.2.8-upgrade-db.sql
