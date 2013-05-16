@@ -1616,11 +1616,28 @@ function validateAuthority (button) {
                     'subfields' : sf_list
                 })
             );
+
+            // matches = [ { "$csetId" : [ ... ] } ]
+
+            var found = false;
+            if (matches[0]) { // probably set
+                for (var cset in matches[0]) {
+                    var arr = matches[0][cset];
+                    if (arr.length) {
+                        // protect against errant empty string values
+                        if (arr.length == 1 && arr[0] == '')
+                            continue;
+                        found = true;
+                        break;
+                    }
+                }
+            }
+
     
             // XXX If adt, etc should be validated separately from vxz, etc then move this up into the above for loop
             for (var j = 0; j < subfields.length; j++) {
                 var sf = subfields[j];
-                if (!matches.length) {
+                if (!found) {
                     dojo.removeClass(sf.childNodes[2], 'marcValidated');
                     dojo.addClass(sf.childNodes[2], 'marcUnvalidated');
                 } else {
@@ -1629,7 +1646,7 @@ function validateAuthority (button) {
                 }
             }
 
-            if (matches.length) done = true;
+            if (found) done = true;
         });
     }
 
