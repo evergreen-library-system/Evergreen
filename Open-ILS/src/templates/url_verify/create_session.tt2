@@ -38,7 +38,7 @@
         <table class="create-session-form">
             <tr>
                 <th>
-                    <label for="uv-session-name">[% l("Sesssion name:") %]</label>
+                    <label for="uv-session-name">[% l("Session name:") %]</label>
                 </th>
                 <td>
                     <input dojoType="dijit.form.TextBox"
