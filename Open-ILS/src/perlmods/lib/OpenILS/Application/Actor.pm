@@ -1929,11 +1929,17 @@ __PACKAGE__->register_method(
     api_name      => "open-ils.actor.user.hold_requests.count",
     authoritative => 1,
     argc          => 1,
-    notes         => 'Returns hold ready/total counts'
+    notes         => q/
+        Returns hold ready vs. total counts.
+        If a context org unit is provided, a third value 
+        is returned with key 'behind_desk', which reports
+        how many holds are ready at the pickup library 
+        with the behind_desk flag set to true.
+    /
 );
     
 sub hold_request_count {
-    my( $self, $client, $authtoken, $user_id ) = @_;
+    my( $self, $client, $authtoken, $user_id, $ctx_org ) = @_;
     my $e = new_editor(authtoken => $authtoken);
     return $e->event unless $e->checkauth;
 
@@ -1945,7 +1951,7 @@ sub hold_request_count {
     }
 
     my $holds = $e->json_query({
-        select => {ahr => ['pickup_lib', 'current_shelf_lib']},
+        select => {ahr => ['pickup_lib', 'current_shelf_lib', 'behind_desk']},
         from => 'ahr',
         where => {
             usr => $user_id,
@@ -1954,15 +1960,27 @@ sub hold_request_count {
         }
     });
 
-    return { 
+    my @ready = grep { 
+        $_->{current_shelf_lib} and # avoid undef warnings
+        $_->{pickup_lib} eq $_->{current_shelf_lib} 
+    } @$holds;
+
+	my $resp = { 
         total => scalar(@$holds), 
-        ready => scalar(
-            grep { 
-                $_->{current_shelf_lib} and # avoid undef warnings
-                $_->{pickup_lib} eq $_->{current_shelf_lib} 
-            } @$holds
-        ) 
+        ready => scalar(@ready)
     };
+
+    if ($ctx_org) {
+        # count of holds ready at pickup lib with behind_desk true.
+        $resp->{behind_desk} = scalar(
+            grep {
+                $_->{pickup_lib} == $ctx_org and
+                $U->is_true($_->{behind_desk})
+            } @ready
+        );
+    }
+
+    return $resp;
 }
 
 __PACKAGE__->register_method(

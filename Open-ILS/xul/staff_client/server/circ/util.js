@@ -2762,7 +2762,24 @@ circ.util.hold_columns = function(modify,params) {
                     return document.getElementById('circStrings').getString('staff.circ.utils.no');
                 }
             }
+        },
+        {
+            'persist' : 'hidden width ordinal',
+            'id' : 'behind_desk',
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.hold.behind_desk'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 
+            'render' : function(my) {
+                if (isTrue(my.ahr.behind_desk())) {
+                    return document.getElementById('circStrings').getString('staff.circ.utils.yes');
+                } else {
+                    return document.getElementById('circStrings').getString('staff.circ.utils.no');
+                }
+            }
         }
+
     ];
     for (var i = 0; i < c.length; i++) {
         if (modify[ c[i].id ]) {
@@ -3075,26 +3092,20 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                         } else {
                             print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
                             print_data.route_to = check.route_to;
-                            var behind_the_desk_support = String( data.hash.aous['circ.holds.behind_desk_pickup_supported'] ) == 'true';
-                            if (behind_the_desk_support) {
-                               var usr_settings = network.simple_request('FM_AUS_RETRIEVE',[ses(),check.payload.hold.usr()]); 
-                                if (typeof usr_settings['circ.holds_behind_desk'] != 'undefined') {
-                                    if (usr_settings['circ.holds_behind_desk']) {
-                                        print_data.prefer_behind_holds_desk = true;
-                                        check.route_to = document.getElementById('circStrings').getString('staff.circ.route_to.private_hold_shelf');
-                                        print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
-                                        print_data.route_to = check.route_to;
-                                    } else {
-                                        check.route_to = document.getElementById('circStrings').getString('staff.circ.route_to.public_hold_shelf');
-                                        print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
-                                        print_data.route_to = check.route_to;
-                                    }
-                                } else {
-                                    check.route_to = document.getElementById('circStrings').getString('staff.circ.route_to.public_hold_shelf');
-                                    print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
-                                    print_data.route_to = check.route_to;
-                                }
+
+                            // If the hold is marked as behind-shelf, report it as such 
+                            // in the receipt, regardless of any org or user settings.  
+                            if (isTrue(check.payload.hold.behind_desk())) {
+                                print_data.prefer_behind_holds_desk = true;
+                                check.route_to = document.getElementById('circStrings').getString('staff.circ.route_to.private_hold_shelf');
+                                print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
+                                print_data.route_to = check.route_to;
+                            } else {
+                                check.route_to = document.getElementById('circStrings').getString('staff.circ.route_to.public_hold_shelf');
+                                print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
+                                print_data.route_to = check.route_to;
                             }
+
                             print_data.destination_shelf_msg = print_data.route_to_msg;
                             print_data.destination_shelf = print_data.route_to;
                             msg += print_data.route_to_msg;

@@ -1,0 +1,32 @@
+Per-Hold Behind Desk Setting
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The value for behind-the-desk pickup is now stored directly on each
+hold request.  This allows the system to better track the true location 
+of captured hold items in cases where the patron setting has changed since
+hold capture.
+
+For these features to be accessible, the "Behind Desk Pickup Supported" 
+(circ.holds.behind_desk_pickup_supported) org unit setting must be set 
+to true.
+
+Staff Client
+++++++++++++
+
+In addition to the counts of ready for pickup and available holds, the
+staff client now also displays the number of behind the desk holds ready 
+for pickup at the staff's working location.  If no items are held behind
+the desk, this information does not display, in particular, because this 
+information is useless if behind the desk holds are not supported at the 
+staff's working location.
+
+TPAC Changes
+++++++++++++
+
+The system also allows patrons to set their own behind-the-desk 
+pickup preferences in the TPAC settings interface.  To activate this
+feature, admins need to set the Opac Visible flag to "true" for the 
+"Hold is behind Circ Desk" (circ.holds_behind_desk) user setting and
+"Behind Desk Pickup Supported" must be set to true for the patron's
+home library.
+

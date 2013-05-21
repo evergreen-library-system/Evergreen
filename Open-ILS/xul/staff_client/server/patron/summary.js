@@ -438,7 +438,9 @@ patron.summary.prototype = {
                             return function() { 
                                 util.widgets.set_text(e,'...');
                                 var e2 = document.getElementById('patron_holds_available');
+                                var e3 = document.getElementById('patron_holds_available_behind_desk');
                                 if (e2) util.widgets.set_text(e2,'...');
+                                if (e3) util.widgets.set_text(e3,'...');
                                 var under_btn; 
                                 if (xulG) {
                                     if (xulG.display_window) {
@@ -448,16 +450,39 @@ patron.summary.prototype = {
                                 }
                                 obj.network.simple_request(
                                     'FM_AHR_COUNT_RETRIEVE.authoritative',
-                                    [ ses(), obj.patron.id() ],
+                                    [ ses(), obj.patron.id(), ses('ws_ou') ],
                                     function(req) {
                                         var robj = req.getResultObject();
                                         util.widgets.set_text(e,
                                             robj.total
                                         );
-                                        if (e2) util.widgets.set_text(e2,
-                                            robj.ready
-                                        );
-                                        if (under_btn) util.widgets.set_text(under_btn, req.getResultObject().ready + '/' + req.getResultObject().total );
+                                        if (e2) {
+                                            util.widgets.set_text(e2, robj.ready);
+                                        }
+                                        if (e3) {
+                                            if (robj.behind_desk) {
+                                                removeCSSClass(e3.parentNode, 'hideme');
+                                                util.widgets.set_text(e3, robj.behind_desk);
+                                            } else {
+                                                addCSSClass(e3.parentNode, 'hideme');
+                                            }
+                                        }
+                                        if (under_btn) {
+                                            var str = robj.ready + '/' + robj.total;
+                                            if (robj.behind_desk) {
+                                                str += ' (' + robj.behind_desk + ')';
+                                                under_btn.setAttribute(
+                                                    'tooltiptext', patronStrings.getString(
+                                                        'staff.patron.summary.hold_counts_behind_desk')
+                                                );
+                                            } else {
+                                                under_btn.setAttribute(
+                                                    'tooltiptext', patronStrings.getString(
+                                                        'staff.patron.summary.hold_counts')
+                                                );
+                                            }
+                                            util.widgets.set_text(under_btn, str);
+                                        }
                                         obj.holds_summary = robj;
                                         if (obj.holds_summary && obj.bills_summary) 
                                             if (typeof window.xulG == 'object' && typeof window.xulG.stop_sign_page == 'function')

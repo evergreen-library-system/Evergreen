@@ -395,7 +395,8 @@ CREATE TABLE action.hold_request (
     cut_in_line     BOOL,
 	mint_condition  BOOL NOT NULL DEFAULT TRUE,
 	shelf_expire_time TIMESTAMPTZ,
-	current_shelf_lib INT REFERENCES actor.org_unit DEFERRABLE INITIALLY DEFERRED
+	current_shelf_lib INT REFERENCES actor.org_unit DEFERRABLE INITIALLY DEFERRED,
+    behind_desk BOOLEAN NOT NULL DEFAULT FALSE
 );
 ALTER TABLE action.hold_request ADD CONSTRAINT sms_check CHECK (
     sms_notify IS NULL

@@ -87,6 +87,16 @@
                             [% IF ctx.user_setting_map.$setting %] checked='checked' [% END %]/>
                     </td>
                 </tr>
+                [%- setting = 'circ.holds_behind_desk'; IF ctx.behind_desk_supported -%]
+                <tr>
+                    <td><label for='[% setting %]'>[% l('Pickup holds from behind the desk when possible?') %]</label></td>
+                    <td>
+                        <input id='[% setting %]' name='[% setting %]' type="checkbox"
+                            [% IF ctx.user_setting_map.$setting %] checked='checked' [% END %]/>
+                    </td>
+                </tr>
+                [% END %]
+
                 <!--
                 <tr>
                     <td><label for='prefs_def_font'>[% l("Default Font Size") %]</label></td>

@@ -406,6 +406,28 @@ sub load_myopac_prefs_settings {
     my $stat = $self->_load_user_with_prefs;
     return $stat if $stat;
 
+    # if behind-desk holds are supported and the user
+    # setting which controls the value is opac-visible,
+    # add the setting to the list of settings to manage.
+    # note: this logic may need to be changed later to
+    # check whether behind-the-desk holds are supported
+    # anywhere the patron may select as a pickup lib.
+    my $e = $self->editor;
+    my $bdous = $self->ctx->{get_org_setting}->(
+        $e->requestor->home_ou,
+        'circ.holds.behind_desk_pickup_supported');
+
+    if ($bdous) {
+        my $setting = 
+            $e->retrieve_config_usr_setting_type(
+                'circ.holds_behind_desk');
+
+        if ($U->is_true($setting->opac_visible)) {
+            push(@user_prefs, 'circ.holds_behind_desk');
+            $self->ctx->{behind_desk_supported} = 1;
+        }
+    }
+
     return Apache2::Const::OK
         unless $self->cgi->request_method eq 'POST';
 

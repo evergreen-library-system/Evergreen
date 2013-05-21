@@ -1535,6 +1535,7 @@
 <!ENTITY staff.patron_display.first_given_name.label 'First Name:'>
 <!ENTITY staff.patron_display.holds.label 'Holds:'>
 <!ENTITY staff.patron_display.holds_available.label 'Available:'>
+<!ENTITY staff.patron_display.holds_available_behind_desk.label 'Behind Desk:'>
 <!ENTITY staff.patron_display.home_ou.label 'Home Library:'>
 <!ENTITY staff.patron_display.ident1.label 'ID 1:'>
 <!ENTITY staff.patron_display.ident2.label 'ID 2:'>

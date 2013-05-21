@@ -36,6 +36,7 @@ use DateTime::Format::ISO8601;
 use OpenSRF::Utils qw/:datetime/;
 use Digest::MD5 qw(md5_hex);
 use OpenSRF::Utils::Cache;
+use OpenSRF::Utils::JSON;
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
 
@@ -336,6 +337,31 @@ sub create_hold {
     # set the configured expire time
     unless($hold->expire_time) {
         $hold->expire_time(calculate_expire_time($recipient->home_ou));
+    }
+
+
+    # if behind-the-desk pickup is supported at the hold pickup lib,
+    # set the value to the patron default, unless a value has already
+    # been applied.  If it's not supported, force the value to false.
+
+    my $bdous = $U->ou_ancestor_setting_value(
+        $hold->pickup_lib, 
+        'circ.holds.behind_desk_pickup_supported', $e);
+
+    if ($bdous) {
+        if (!defined $hold->behind_desk) {
+
+            my $set = $e->search_actor_user_setting({
+                usr => $hold->usr, 
+                name => 'circ.holds_behind_desk'
+            })->[0];
+        
+            $hold->behind_desk('t') if $set and 
+                OpenSRF::Utils::JSON->JSON2perl($set->value);
+        }
+    } else {
+        # behind the desk not supported, force it to false
+        $hold->behind_desk('f');
     }
 
     $hold->requestor($e->requestor->id);

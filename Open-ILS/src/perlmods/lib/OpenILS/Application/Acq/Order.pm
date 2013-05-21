@@ -274,6 +274,22 @@ sub promote_lineitem_holds {
             $hold->target( $li->eg_bib_id );
         }
 
+        # if behind-the-desk holds are supported at the 
+        # pickup library, apply the patron default
+        my $bdous = $U->ou_ancestor_setting_value(
+            $hold->pickup_lib, 
+            'circ.holds.behind_desk_pickup_supported', 
+            $mgr->editor
+        );
+
+        if ($bdous) {
+            my $set = $mgr->editor->search_actor_user_setting(
+                {usr => $hold->usr, name => 'circ.holds_behind_desk'})->[0];
+    
+            $hold->behind_desk('t') if $set and 
+                OpenSRF::Utils::JSON->JSON2perl($set->value);
+        }
+
         $mgr->editor->create_action_hold_request( $hold ) or return 0;
     }
 
