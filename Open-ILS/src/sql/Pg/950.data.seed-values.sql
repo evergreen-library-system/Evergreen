@@ -179,6 +179,7 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, 
 INSERT INTO config.metabib_field ( id, field_class, name, label, xpath, format, search_field, facet_field, browse_field) VALUES
     (31, 'title', 'browse', oils_i18n_gettext(31, 'Title Proper (Browse)', 'cmf', 'label'), $$//mods32:mods/mods32:titleInfo[not (@type)]/mods32:title$$, 'mods32', FALSE, FALSE, TRUE);
 
+UPDATE config.metabib_field SET joiner = ' -- ' WHERE field_class = 'subject' AND name NOT IN ('name', 'complete');
 
 SELECT SETVAL('config.metabib_field_id_seq'::TEXT, (SELECT MAX(id) FROM config.metabib_field), TRUE);
 
@@ -10577,8 +10578,13 @@ INSERT INTO authority.control_set_authority_field (id, control_set, main_entry, 
     (71, 1, 11, '485', 'ivwxyz4', 'ivxyz', oils_i18n_gettext('71','See From Tracing -- Form Subdivision','acsaf','name')),
     (72, 1, 12, '448', 'aivwxyz4', 'aivxyz', oils_i18n_gettext('72','See From Tracing -- Chronological Term','acsaf','name'));
 
+-- No linking on 4xx fields for LOC
 UPDATE authority.control_set_authority_field
-    SET linking_subfield = '0' WHERE main_entry IS NOT NULL;
+    SET linking_subfield = '0' WHERE tag LIKE ANY (ARRAY['5%','7%']);
+
+-- Set the default joiner for subject-ish authority fields
+UPDATE authority.control_set_authority_field
+    SET joiner = ' -- ' WHERE tag LIKE ANY (ARRAY['_4_','_5_','_8_']);
 
 
 INSERT INTO authority.browse_axis (code,name,description,sorter) VALUES
@@ -10645,6 +10651,55 @@ INSERT INTO authority.control_set_bib_field (tag, authority_field)
     SELECT '651', id FROM authority.control_set_authority_field WHERE tag IN ('151','180','181','182','185')
         UNION
     SELECT '655', id FROM authority.control_set_authority_field WHERE tag IN ('155','180','181','182','185')
+;
+
+-- Map between authority controlled bib fields and stock indexing metabib fields
+INSERT INTO authority.control_set_bib_field_metabib_field_map (bib_field, metabib_field)
+    SELECT  DISTINCT b.id AS bib_field, m.id AS metabib_field
+      FROM  authority.control_set_bib_field b JOIN authority.control_set_authority_field a ON (b.authority_field = a.id), config.metabib_field m
+      WHERE a.tag = '100' AND m.name = 'personal'
+
+        UNION
+
+    SELECT  DISTINCT b.id AS bib_field, m.id AS metabib_field
+      FROM  authority.control_set_bib_field b JOIN authority.control_set_authority_field a ON (b.authority_field = a.id), config.metabib_field m
+      WHERE a.tag = '110' AND m.name = 'corporate'
+
+        UNION
+
+    SELECT  DISTINCT b.id AS bib_field, m.id AS metabib_field
+      FROM  authority.control_set_bib_field b JOIN authority.control_set_authority_field a ON (b.authority_field = a.id), config.metabib_field m
+      WHERE a.tag = '111' AND m.name = 'conference'
+
+        UNION
+
+    SELECT  DISTINCT b.id AS bib_field, m.id AS metabib_field
+      FROM  authority.control_set_bib_field b JOIN authority.control_set_authority_field a ON (b.authority_field = a.id), config.metabib_field m
+      WHERE a.tag = '130' AND m.name = 'uniform'
+
+        UNION
+
+    SELECT  DISTINCT b.id AS bib_field, m.id AS metabib_field
+      FROM  authority.control_set_bib_field b JOIN authority.control_set_authority_field a ON (b.authority_field = a.id), config.metabib_field m
+      WHERE a.tag = '148' AND m.name = 'temporal'
+
+        UNION
+
+    SELECT  DISTINCT b.id AS bib_field, m.id AS metabib_field
+      FROM  authority.control_set_bib_field b JOIN authority.control_set_authority_field a ON (b.authority_field = a.id), config.metabib_field m
+      WHERE a.tag = '150' AND m.name = 'topic'
+
+        UNION
+
+    SELECT  DISTINCT b.id AS bib_field, m.id AS metabib_field
+      FROM  authority.control_set_bib_field b JOIN authority.control_set_authority_field a ON (b.authority_field = a.id), config.metabib_field m
+      WHERE a.tag = '151' AND m.name = 'geographic'
+
+        UNION
+
+    SELECT  DISTINCT b.id AS bib_field, m.id AS metabib_field
+      FROM  authority.control_set_bib_field b JOIN authority.control_set_authority_field a ON (b.authority_field = a.id), config.metabib_field m
+      WHERE a.tag = '155' AND m.name = 'genre' -- Just in case...
 ;
 
 INSERT INTO authority.thesaurus (code, name, control_set) VALUES

@@ -2126,6 +2126,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Controlled Bib Fields" name="bib_fields" reporter:datatype="link" oils_persist:virtual="true"/>
 			<field reporter:label="Thesauri" name="thesauri" reporter:datatype="link" oils_persist:virtual="true"/>
 			<field reporter:label="Browse Axis Maps" name="axis_maps" reporter:datatype="link" oils_persist:virtual="true"/>
+			<field reporter:label="Joiner" name="joiner" reporter:datatype="text" />
 		</fields>
 		<links>
 			<link field="axis_maps" reltype="has_many" key="field" map="" class="abaafm"/>
@@ -2153,6 +2154,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</fields>
 		<links>
 			<link field="authority_field" reltype="has_a" key="id" map="" class="acsaf"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="CREATE_AUTHORITY_CONTROL_SET" global_required="true"/>
+				<retrieve/>
+				<update permission="UPDATE_AUTHORITY_CONTROL_SET" global_required="true"/>
+				<delete permission="UPDATE_AUTHORITY_CONTROL_SET" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="acsbfmfm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::control_set_bib_field_metabib_field_map" oils_persist:tablename="authority.control_set_bib_field_metabib_field_map" reporter:label="Authority Control Set Bib Field to Metabib Field Map" oils_persist:field_safe="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="authority.control_set_bib_field_metabib_field_map_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector="name"/>
+			<field reporter:label="Bib Field" name="bib_field" reporter:datatype="link"/>
+			<field reporter:label="Metabib Field" name="metabib_field" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="bib_field" reltype="has_a" key="id" map="" class="acsbf"/>
+			<link field="metabib_field" reltype="has_a" key="id" map="" class="cmf"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
@@ -2286,6 +2307,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links>
 			<link field="bib" reltype="has_a" key="id" map="" class="bre"/>
 			<link field="authority" reltype="has_a" key="id" map="" class="are"/>
+		</links>
+	</class>
+	<class id="ash" controller="open-ils.cstore" oils_obj:fieldmapper="authority::simple_heading" oils_persist:tablename="authority.simple_heading" reporter:label="Authority Simple Heading">
+		<fields oils_persist:primary="id" oils_persist:sequence="authority.simple_heading_id_seq">
+			<field name="id" reporter:datatype="id" />
+			<field name="record" reporter:datatype="link" />
+			<field name="atag" reporter:datatype="link" />
+			<field name="value" reporter:datatype="text" />
+		</fields>
+		<links>
+			<link field="record" reltype="has_a" key="id" map="" class="are"/>
+			<link field="atag" reltype="has_a" key="id" map="" class="acsaf"/>
 		</links>
 	</class>
 	<class id="clm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::language_map" oils_persist:tablename="config.language_map" reporter:label="Language Map" oils_persist:field_safe="true">
@@ -3299,6 +3332,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="entry" reltype="has_a" key="id" map="" class="mbe"/>
 			<link field="def" reltype="has_a" key="id" map="" class="cmf"/>
 			<link field="source" reltype="has_a" key="id" map="" class="bre"/>
+		</links>
+	</class>
+	<class id="mbeshm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::browse_entry_simple_heading_map" oils_persist:tablename="metabib.browse_entry_simple_heading_map" reporter:label="Combined Browse Entry Simple Authority Heading Map" oils_persist:readonly="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="metabib.browse_entry_simple_heading_map_id_seq">
+			<field name="id" reporter:datatype="id" />
+			<field name="entry" reporter:datatype="link"/>
+			<field name="simple_heading" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="entry" reltype="has_a" key="id" map="" class="mbe"/>
+			<link field="simple_heading" reltype="has_a" key="id" map="" class="ash"/>
 		</links>
 	</class>
 	<class id="mfe" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::field_entry" reporter:label="Combined Field Entry View" oils_persist:readonly="true">

@@ -212,7 +212,13 @@ CREATE INDEX browse_entry_def_map_def_idx ON metabib.browse_entry_def_map (def);
 CREATE INDEX browse_entry_def_map_entry_idx ON metabib.browse_entry_def_map (entry);
 CREATE INDEX browse_entry_def_map_source_idx ON metabib.browse_entry_def_map (source);
 
-
+CREATE TABLE metabib.browse_entry_simple_heading_map (
+    id BIGSERIAL PRIMARY KEY,
+    entry BIGINT REFERENCES metabib.browse_entry (id),
+    simple_heading BIGINT REFERENCES authority.simple_heading (id) ON DELETE CASCADE
+);
+CREATE INDEX browse_entry_sh_map_entry_idx ON metabib.browse_entry_simple_heading_map (entry);
+CREATE INDEX browse_entry_sh_map_sh_idx ON metabib.browse_entry_simple_heading_map (simple_heading);
 
 CREATE OR REPLACE FUNCTION metabib.facet_normalize_trigger () RETURNS TRIGGER AS $$
 DECLARE
@@ -435,6 +441,8 @@ BEGIN
     -- Loop over the indexing entries
     FOR idx IN SELECT * FROM config.metabib_field ORDER BY format LOOP
 
+        joiner := COALESCE(idx.joiner, default_joiner);
+
         SELECT INTO xfrm * from config.xml_transform WHERE name = idx.format;
 
         -- See if we can skip the XSLT ... it's expensive
@@ -455,21 +463,27 @@ BEGIN
         FOR xml_node IN SELECT x FROM unnest(xml_node_list) AS x LOOP
             CONTINUE WHEN xml_node !~ E'^\\s*<';
 
-            curr_text := ARRAY_TO_STRING(
+            -- XXX much of this should be moved into oils_xpath_string...
+            curr_text := ARRAY_TO_STRING(evergreen.array_remove_item_by_value(evergreen.array_remove_item_by_value(
                 oils_xpath( '//text()',
-                    REGEXP_REPLACE( -- This escapes all &s not followed by "amp;".  Data ise returned from oils_xpath (above) in UTF-8, not entity encoded
-                        REGEXP_REPLACE( -- This escapes embeded <s
-                            xml_node,
-                            $re$(>[^<]+)(<)([^>]+<)$re$,
-                            E'\\1&lt;\\3',
+                    REGEXP_REPLACE(
+                        REGEXP_REPLACE( -- This escapes all &s not followed by "amp;".  Data ise returned from oils_xpath (above) in UTF-8, not entity encoded
+                            REGEXP_REPLACE( -- This escapes embeded <s
+                                xml_node,
+                                $re$(>[^<]+)(<)([^>]+<)$re$,
+                                E'\\1&lt;\\3',
+                                'g'
+                            ),
+                            '&(?!amp;)',
+                            '&amp;',
                             'g'
                         ),
-                        '&(?!amp;)',
-                        '&amp;',
+                        E'\\s+',
+                        ' ',
                         'g'
                     )
-                ),
-                ' '
+                ), ' '), ''),
+                joiner
             );
 
             CONTINUE WHEN curr_text IS NULL OR curr_text = '';
@@ -505,7 +519,7 @@ BEGIN
                 output_row.source = rid;
                 output_row.value = BTRIM(REGEXP_REPLACE(browse_text, E'\\s+', ' ', 'g'));
                 output_row.sort_value :=
-                    public.search_normalize(sort_value);
+                    public.naco_normalize(sort_value);
 
                 output_row.authority := NULL;
 
@@ -1534,7 +1548,7 @@ BEGIN
         evergreen.regexp_split_to_array(orig, E'\\W+'), ' '
     );
 
-    normalized := public.search_normalize(orig); -- also trim()s
+    normalized := public.naco_normalize(orig); -- also trim()s
     plain := trim(orig);
 
     IF NOT orig_ended_in_space THEN
@@ -1779,33 +1793,76 @@ CREATE TYPE metabib.flat_browse_entry_appearance AS (
     value           TEXT,
     fields          TEXT,
     authorities     TEXT,
+    sees            TEXT,
     sources         INT,        -- visible ones, that is
+    asources        INT,        -- visible ones, that is
     row_number      INT,        -- internal use, sort of
     accurate        BOOL,       -- Count in sources field is accurate? Not
                                 -- if we had more than a browse superpage
                                 -- of records to look at.
+    aaccurate       BOOL,       -- See previous comment...
     pivot_point     BIGINT
 );
 
 
-CREATE OR REPLACE FUNCTION metabib.browse_pivot(
-    search_field        INT[],
-    browse_term         TEXT
+CREATE OR REPLACE FUNCTION metabib.browse_bib_pivot(
+    INT[],
+    TEXT
 ) RETURNS BIGINT AS $p$
-DECLARE
-    id                  BIGINT;
-BEGIN
-    SELECT INTO id mbe.id FROM metabib.browse_entry mbe
-        JOIN metabib.browse_entry_def_map mbedm ON (
-            mbedm.entry = mbe.id AND
-            mbedm.def = ANY(search_field)
-        )
-        WHERE mbe.sort_value >= public.search_normalize(browse_term)
-        ORDER BY mbe.sort_value, mbe.value LIMIT 1;
+    SELECT  mbe.id
+      FROM  metabib.browse_entry mbe
+            JOIN metabib.browse_entry_def_map mbedm ON (
+                mbedm.entry = mbe.id
+                AND mbedm.def = ANY($1)
+            )
+      WHERE mbe.sort_value >= public.naco_normalize($2)
+      ORDER BY mbe.sort_value, mbe.value LIMIT 1;
+$p$ LANGUAGE SQL;
 
-    RETURN id;
-END;
-$p$ LANGUAGE PLPGSQL;
+CREATE OR REPLACE FUNCTION metabib.browse_authority_pivot(
+    INT[],
+    TEXT
+) RETURNS BIGINT AS $p$
+    SELECT  mbe.id
+      FROM  metabib.browse_entry mbe
+            JOIN metabib.browse_entry_simple_heading_map mbeshm ON ( mbeshm.entry = mbe.id )
+            JOIN authority.simple_heading ash ON ( mbeshm.simple_heading = ash.id )
+            JOIN authority.control_set_auth_field_metabib_field_map_refs map ON (
+                ash.atag = map.authority_field
+                AND map.metabib_field = ANY($1)
+            )
+      WHERE mbe.sort_value >= public.naco_normalize($2)
+      ORDER BY mbe.sort_value, mbe.value LIMIT 1;
+$p$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION metabib.browse_authority_refs_pivot(
+    INT[],
+    TEXT
+) RETURNS BIGINT AS $p$
+    SELECT  mbe.id
+      FROM  metabib.browse_entry mbe
+            JOIN metabib.browse_entry_simple_heading_map mbeshm ON ( mbeshm.entry = mbe.id )
+            JOIN authority.simple_heading ash ON ( mbeshm.simple_heading = ash.id )
+            JOIN authority.control_set_auth_field_metabib_field_map_refs_only map ON (
+                ash.atag = map.authority_field
+                AND map.metabib_field = ANY($1)
+            )
+      WHERE mbe.sort_value >= public.naco_normalize($2)
+      ORDER BY mbe.sort_value, mbe.value LIMIT 1;
+$p$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION metabib.browse_pivot(
+    INT[],
+    TEXT
+) RETURNS BIGINT AS $p$
+    SELECT  id FROM metabib.browse_entry
+      WHERE id IN (
+                metabib.browse_bib_pivot($1, $2),
+                metabib.browse_authority_refs_pivot($1,$2) -- only look in 4xx, 5xx, 7xx of authority
+            )
+      ORDER BY sort_value, value LIMIT 1;
+$p$ LANGUAGE SQL;
+
 
 CREATE OR REPLACE FUNCTION metabib.staged_browse(
     query                   TEXT,
@@ -1822,6 +1879,9 @@ DECLARE
     curs                    REFCURSOR;
     rec                     RECORD;
     qpfts_query             TEXT;
+    aqpfts_query            TEXT;
+    afields                 INT[];
+    bfields                 INT[];
     result_row              metabib.flat_browse_entry_appearance%ROWTYPE;
     results_skipped         INT := 0;
     row_counter             INT := 0;
@@ -1830,6 +1890,8 @@ DECLARE
     slice_end               INT;
     full_end                INT;
     all_records             BIGINT[];
+    all_brecords             BIGINT[];
+    all_arecords            BIGINT[];
     superpage_of_records    BIGINT[];
     superpage_size          INT;
 BEGIN
@@ -1850,53 +1912,116 @@ BEGIN
             RETURN;
         END IF;
 
-        -- Gather aggregate data based on the MBE row we're looking at now
-        SELECT INTO all_records, result_row.authorities, result_row.fields
+
+        -- Gather aggregate data based on the MBE row we're looking at now, authority axis
+        SELECT INTO all_arecords, result_row.sees, afields
+                ARRAY_AGG(DISTINCT abl.bib), -- bibs to check for visibility
+                ARRAY_TO_STRING(ARRAY_AGG(DISTINCT aal.source), $$,$$), -- authority record ids
+                ARRAY_AGG(DISTINCT map.metabib_field) -- authority-tag-linked CMF rows
+
+          FROM  metabib.browse_entry_simple_heading_map mbeshm
+                JOIN authority.simple_heading ash ON ( mbeshm.simple_heading = ash.id )
+                JOIN authority.authority_linking aal ON ( ash.record = aal.source )
+                JOIN authority.bib_linking abl ON ( aal.target = abl.authority )
+                JOIN authority.control_set_auth_field_metabib_field_map_refs map ON (
+                    ash.atag = map.authority_field
+                    AND map.metabib_field = ANY(fields)
+                )
+          WHERE mbeshm.entry = rec.id;
+
+
+        -- Gather aggregate data based on the MBE row we're looking at now, bib axis
+        SELECT INTO all_brecords, result_row.authorities, bfields
                 ARRAY_AGG(DISTINCT source),
                 ARRAY_TO_STRING(ARRAY_AGG(DISTINCT authority), $$,$$),
-                ARRAY_TO_STRING(ARRAY_AGG(DISTINCT def), $$,$$)
+                ARRAY_AGG(DISTINCT def)
           FROM  metabib.browse_entry_def_map
           WHERE entry = rec.id
                 AND def = ANY(fields);
 
+        SELECT INTO result_row.fields ARRAY_TO_STRING(ARRAY_AGG(DISTINCT x), $$,$$) FROM UNNEST(afields || bfields) x;
+
         result_row.sources := 0;
+        result_row.asources := 0;
 
-        full_end := ARRAY_LENGTH(all_records, 1);
-        superpage_size := COALESCE(browse_superpage_size, full_end);
-        slice_start := 1;
-        slice_end := superpage_size;
+        -- Bib-linked vis checking
+        IF ARRAY_UPPER(all_brecords,1) IS NOT NULL THEN
 
-        WHILE result_row.sources = 0 AND slice_start <= full_end LOOP
-            superpage_of_records := all_records[slice_start:slice_end];
-            qpfts_query :=
-                'SELECT NULL::BIGINT AS id, ARRAY[r] AS records, ' ||
-                '1::INT AS rel FROM (SELECT UNNEST(' ||
-                quote_literal(superpage_of_records) || '::BIGINT[]) AS r) rr';
+            full_end := ARRAY_LENGTH(all_brecords, 1);
+            superpage_size := COALESCE(browse_superpage_size, full_end);
+            slice_start := 1;
+            slice_end := superpage_size;
 
-            -- We use search.query_parser_fts() for visibility testing.
-            -- We're calling it once per browse-superpage worth of records
-            -- out of the set of records related to a given mbe, until we've
-            -- either exhausted that set of records or found at least 1
-            -- visible record.
+            WHILE result_row.sources = 0 AND slice_start <= full_end LOOP
+                superpage_of_records := all_brecords[slice_start:slice_end];
+                qpfts_query :=
+                    'SELECT NULL::BIGINT AS id, ARRAY[r] AS records, ' ||
+                    '1::INT AS rel FROM (SELECT UNNEST(' ||
+                    quote_literal(superpage_of_records) || '::BIGINT[]) AS r) rr';
 
-            SELECT INTO result_row.sources visible
-                FROM search.query_parser_fts(
-                    context_org, NULL, qpfts_query, NULL,
-                    context_locations, 0, NULL, NULL, FALSE, staff, FALSE
-                ) qpfts
-                WHERE qpfts.rel IS NULL;
+                -- We use search.query_parser_fts() for visibility testing.
+                -- We're calling it once per browse-superpage worth of records
+                -- out of the set of records related to a given mbe, until we've
+                -- either exhausted that set of records or found at least 1
+                -- visible record.
 
-            slice_start := slice_start + superpage_size;
-            slice_end := slice_end + superpage_size;
-        END LOOP;
+                SELECT INTO result_row.sources visible
+                    FROM search.query_parser_fts(
+                        context_org, NULL, qpfts_query, NULL,
+                        context_locations, 0, NULL, NULL, FALSE, staff, FALSE
+                    ) qpfts
+                    WHERE qpfts.rel IS NULL;
 
-        -- Accurate?  Well, probably.
-        result_row.accurate := browse_superpage_size IS NULL OR
-            browse_superpage_size >= full_end;
+                slice_start := slice_start + superpage_size;
+                slice_end := slice_end + superpage_size;
+            END LOOP;
 
-        IF result_row.sources > 0 THEN
-            -- We've got a browse entry with visible holdings. Yay.
+            -- Accurate?  Well, probably.
+            result_row.accurate := browse_superpage_size IS NULL OR
+                browse_superpage_size >= full_end;
 
+        END IF;
+
+        -- Authority-linked vis checking
+        IF ARRAY_UPPER(all_arecords,1) IS NOT NULL THEN
+
+            full_end := ARRAY_LENGTH(all_arecords, 1);
+            superpage_size := COALESCE(browse_superpage_size, full_end);
+            slice_start := 1;
+            slice_end := superpage_size;
+
+            WHILE result_row.asources = 0 AND slice_start <= full_end LOOP
+                superpage_of_records := all_arecords[slice_start:slice_end];
+                qpfts_query :=
+                    'SELECT NULL::BIGINT AS id, ARRAY[r] AS records, ' ||
+                    '1::INT AS rel FROM (SELECT UNNEST(' ||
+                    quote_literal(superpage_of_records) || '::BIGINT[]) AS r) rr';
+
+                -- We use search.query_parser_fts() for visibility testing.
+                -- We're calling it once per browse-superpage worth of records
+                -- out of the set of records related to a given mbe, via
+                -- authority until we've either exhausted that set of records
+                -- or found at least 1 visible record.
+
+                SELECT INTO result_row.asources visible
+                    FROM search.query_parser_fts(
+                        context_org, NULL, qpfts_query, NULL,
+                        context_locations, 0, NULL, NULL, FALSE, staff, FALSE
+                    ) qpfts
+                    WHERE qpfts.rel IS NULL;
+
+                slice_start := slice_start + superpage_size;
+                slice_end := slice_end + superpage_size;
+            END LOOP;
+
+
+            -- Accurate?  Well, probably.
+            result_row.aaccurate := browse_superpage_size IS NULL OR
+                browse_superpage_size >= full_end;
+
+        END IF;
+
+        IF result_row.sources > 0 OR result_row.asources > 0 THEN
 
             -- The function that calls this function needs row_number in order
             -- to correctly order results from two different runs of this
@@ -1919,7 +2044,9 @@ BEGIN
                 result_row.fields := NULL;
                 result_row.value := NULL;
                 result_row.sources := NULL;
+                result_row.sees := NULL;
                 result_row.accurate := NULL;
+                result_row.aaccurate := NULL;
                 result_row.pivot_point := rec.id;
 
                 IF row_counter >= next_pivot_pos THEN
@@ -2013,15 +2140,27 @@ BEGIN
     -- rows may be fetched in a loop until some condition is satisfied, without
     -- waiting for a result set of fixed size to be collected all at once.
     core_query := '
-    SELECT
-        mbe.id,
+SELECT  mbe.id,
         mbe.value,
         mbe.sort_value
-    FROM metabib.browse_entry mbe
-    WHERE EXISTS (SELECT 1 FROM  metabib.browse_entry_def_map mbedm WHERE
-        mbedm.entry = mbe.id AND
-        mbedm.def = ANY(' || quote_literal(search_field) || ')
-    ) AND ';
+  FROM  metabib.browse_entry mbe
+  WHERE (
+            EXISTS ( -- are there any bibs using this mbe via the requested fields?
+                SELECT  1
+                  FROM  metabib.browse_entry_def_map mbedm
+                  WHERE mbedm.entry = mbe.id AND mbedm.def = ANY(' || quote_literal(search_field) || ')
+                  LIMIT 1
+            ) OR EXISTS ( -- are there any authorities using this mbe via the requested fields?
+                SELECT  1
+                  FROM  metabib.browse_entry_simple_heading_map mbeshm
+                        JOIN authority.simple_heading ash ON ( mbeshm.simple_heading = ash.id )
+                        JOIN authority.control_set_auth_field_metabib_field_map_refs map ON (
+                            ash.atag = map.authority_field
+                            AND map.metabib_field = ANY(' || quote_literal(search_field) || ')
+                        )
+                  WHERE mbeshm.entry = mbe.id
+            )
+        ) AND ';
 
     -- This is the variant of the query for browsing backward.
     back_query := core_query ||

@@ -37,10 +37,12 @@ sub _init_browse_cache {
 }
 
 sub _get_authority_heading {
-    my ($field, $sf_lookup) = @_;
+    my ($field, $sf_lookup, $joiner) = @_;
+
+    $joiner ||= ' ';
 
     return join(
-        " ",
+        $joiner,
         map { $_->[1] } grep { $sf_lookup->{$_->[0]} } $field->subfields
     );
 }
@@ -119,13 +121,14 @@ sub find_authority_headings_and_notes {
 
     # By applying grep in this way, we get acsaf objects that *have* and
     # therefore *aren't* main entries, which is what we want.
-    foreach my $acsaf (grep { $_->main_entry } values(%$acsaf_table)) {
+    foreach my $acsaf (values(%$acsaf_table)) {
         my @fields = $record->field($acsaf->tag);
         my %sf_lookup = map { $_ => 1 } split("", $acsaf->display_sf_list);
         my @headings;
 
         foreach my $field (@fields) {
-            my $h = { heading => _get_authority_heading($field, \%sf_lookup) };
+            my $h = { main_entry => ( $acsaf->main_entry ? 0 : 1 ),
+                      heading => _get_authority_heading($field, \%sf_lookup), $acsaf->joiner };
 
             # XXX I was getting "target" from authority.authority_linking, but
             # that makes no sense: that table can only tell you that one
@@ -137,6 +140,9 @@ sub find_authority_headings_and_notes {
             $h->{target} = $2
                 if ($field->subfield('0') || "") =~ /(^|\))(\d+)$/;
 
+            # The target is the row id if this is a main entry...
+            $h->{target} = $row->{id} if $h->{main_entry};
+
             push @headings, $h;
         }
 
@@ -147,7 +153,7 @@ sub find_authority_headings_and_notes {
 }
 
 sub map_authority_headings_to_results {
-    my ($self, $linked, $results, $auth_ids) = @_;
+    my ($self, $linked, $results, $auth_ids, $authority_field_name) = @_;
 
     # Use the linked authority records' control sets to find and pick
     # out non-main-entry headings. Build the headings and make a
@@ -157,10 +163,10 @@ sub map_authority_headings_to_results {
     } @$linked;
 
     # Graft this authority heading data onto our main result set at the
-    # "authorities" column.
+    # named column, either "authorities" or "sees".
     foreach my $row (@$results) {
-        $row->{authorities} = [
-            map { $linked_headings_by_auth_id{$_} } @{$row->{authorities}}
+        $row->{$authority_field_name} = [
+            map { $linked_headings_by_auth_id{$_} } @{$row->{$authority_field_name}}
         ];
     }
 
@@ -190,7 +196,7 @@ sub map_authority_headings_to_results {
     # Soooo nesty!  We look for places where we'll need a count of bibs
     # linked to an authority record, and put it there for the template to find.
     for my $row (@$results) {
-        for my $auth (@{$row->{authorities}}) {
+        for my $auth (@{$row->{$authority_field_name}}) {
             if ($auth->{headings}) {
                 for my $outer_heading (@{$auth->{headings}}) {
                     for my $heading_blob (@{(values %$outer_heading)[0]}) {
@@ -212,34 +218,43 @@ sub map_authority_headings_to_results {
 sub flesh_browse_results {
     my ($self, $results) = @_;
 
-    # Turn comma-seprated strings of numbers in "authorities" column
-    # into arrays.
-    $_->{authorities} = [split /,/, $_->{authorities}] foreach @$results;
+    for my $authority_field_name ( qw/authorities sees/ ) {
+        for my $r (@$results) {
+            # Turn comma-seprated strings of numbers in "authorities" and "sees"
+            # columns into arrays.
+            if ($r->{$authority_field_name}) {
+                $r->{$authority_field_name} = [split /,/, $r->{$authority_field_name}];
+            } else {
+                $r->{$authority_field_name} = [];
+            }
+            $r->{"list_$authority_field_name"} = [ @{$r->{$authority_field_name} } ];
+        }
 
-    # Group them in one arrray, not worrying about dupes because we're about
-    # to use them in an IN () comparison in a SQL query.
-    my @auth_ids = map { @{$_->{authorities}} } @$results;
+        # Group them in one arrray, not worrying about dupes because we're about
+        # to use them in an IN () comparison in a SQL query.
+        my @auth_ids = map { @{$_->{$authority_field_name}} } @$results;
 
-    if (@auth_ids) {
-        # Get all linked authority records themselves
-        my $linked = $self->editor->json_query({
-            select => {
-                are => [qw/id marc control_set/],
-                aalink => [{column => "target", transform => "array_agg",
-                    aggregate => 1}]
-            },
-            from => {
-                are => {
-                    aalink => {
-                        type => "left",
-                        fkey => "id", field => "source"
+        if (@auth_ids) {
+            # Get all linked authority records themselves
+            my $linked = $self->editor->json_query({
+                select => {
+                    are => [qw/id marc control_set/],
+                    aalink => [{column => "target", transform => "array_agg",
+                        aggregate => 1}]
+                },
+                from => {
+                    are => {
+                        aalink => {
+                            type => "left",
+                            fkey => "id", field => "source"
+                        }
                     }
-                }
-            },
-            where => {"+are" => {id => \@auth_ids}}
-        }) or return;
+                },
+                where => {"+are" => {id => \@auth_ids}}
+            }) or return;
 
-        $self->map_authority_headings_to_results($linked, $results, \@auth_ids);
+            $self->map_authority_headings_to_results($linked, $results, \@auth_ids, $authority_field_name);
+        }
     }
 
     return 1;

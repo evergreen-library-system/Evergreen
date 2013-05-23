@@ -1577,6 +1577,11 @@ $func$ LANGUAGE PLPGSQL;
 
 -- AFTER UPDATE OR INSERT trigger for authority.record_entry
 CREATE OR REPLACE FUNCTION authority.indexing_ingest_or_delete () RETURNS TRIGGER AS $func$
+DECLARE
+    ashs    authority.simple_heading%ROWTYPE;
+    mbe_row metabib.browse_entry%ROWTYPE;
+    mbe_id  BIGINT;
+    ash_id  BIGINT;
 BEGIN
 
     IF NEW.deleted IS TRUE THEN -- If this authority is deleted
@@ -1612,8 +1617,28 @@ BEGIN
             NEW.id, NEW.control_set, NEW.marc::XML
         );
 
-    INSERT INTO authority.simple_heading (record,atag,value,sort_value)
-        SELECT record, atag, value, sort_value FROM authority.simple_heading_set(NEW.marc);
+    FOR ashs IN SELECT * FROM authority.simple_heading_set(NEW.marc) LOOP
+
+        INSERT INTO authority.simple_heading (record,atag,value,sort_value)
+            VALUES (ashs.record, ashs.atag, ashs.value, ashs.sort_value);
+            ash_id := CURRVAL('authority.simple_heading_id_seq'::REGCLASS);
+
+        SELECT INTO mbe_row * FROM metabib.browse_entry
+            WHERE value = ashs.value AND sort_value = ashs.sort_value;
+
+        IF FOUND THEN
+            mbe_id := mbe_row.id;
+        ELSE
+            INSERT INTO metabib.browse_entry
+                ( value, sort_value ) VALUES
+                ( ashs.value, ashs.sort_value );
+
+            mbe_id := CURRVAL('metabib.browse_entry_id_seq'::REGCLASS);
+        END IF;
+
+        INSERT INTO metabib.browse_entry_simple_heading_map (entry,simple_heading) VALUES (mbe_id,ash_id);
+
+    END LOOP;
 
     -- Flatten and insert the afr data
     PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_authority_full_rec' AND enabled;

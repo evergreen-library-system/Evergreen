@@ -96,19 +96,24 @@
                     [% FOR result IN ctx.browse_results %]
                         <li class="browse-result">
                             <span class="browse-result-value[% result.row_number == 0 && !CGI.param('bpivot') ? ' browse-result-best-match' : '' %]">
-                                <a href="[% mkurl(
-                                    ctx.opac_root _ '/results', {
-                                        'fi:has_browse_entry' => (result.browse_entry _ ',' _ result.fields)
-                                    }) %]">[% result.value | html %]</a>
+                                [% IF result.sources > 0 %] <!-- bib-linked browse value -->
+                                    <a href="[% mkurl(
+                                        ctx.opac_root _ '/results', {
+                                            'fi:has_browse_entry' => (result.browse_entry _ ',' _ result.fields)
+                                        }) %]">[% result.value | html %]</a>
+                                    <span class="browse-result-sources">([%
+                                        IF result.accurate == 'f';
+                                            l("At least"); " ";
+                                        END;
+                                    result.sources %])</span>
+                                [% ELSE %] <!-- only authority links -->
+                                    [% result.value | html %]
+                                [% END %]
                             </span>
-                            <span class="browse-result-sources">([%
-                                IF result.accurate == 'f';
-                                    l("At least"); " ";
-                                END;
-                                result.sources %])</span>
-                            [% IF result.authorities.size %]
+
                             <ul class="browse-result-authority-headings">
-                                [% FOR a IN result.authorities;
+                                [% seenit = {}; # for headings we've rendered
+                                   FOR a IN result.sees;
                                     PROCESS authority_notes authority=a;
 
                                     # Other than displaying public general
@@ -129,17 +134,48 @@
                                             # that h.target_count is only
                                             # defined when h.target is.
 
-                                            IF h.target AND h.target_count %]
-                                            <li><span class="browse-result-authority-field-name">[% field.name %]</span>
-                                            <a href="[% mkurl(ctx.opac_root _ '/results', {query => 'identifier|authority_id[' _ h.target _ ']'}) %]">[% h.heading | html %]</a>
-                                            <span class="browse-result-authority-bib-links">([% h.target_count %])</span>
-                                            </li>
+                                            IF h.target AND h.target_count AND result.list_authorities.grep('^' _ h.target _ '$').size == 0;
+                                                id = h.target; NEXT IF seenit.$id; seenit.$id = 1; %]
+                                                <li><span class="browse-result-authority-field-name">[% field.name %]</span>
+                                                <a href="[% mkurl(ctx.opac_root _ '/browse', {bterm => h.heading}, ['bpivot']) %]">[% h.heading | html %]</a>
+                                                <span class="browse-result-authority-bib-links">([% h.target_count %])</span>
+                                                </li>
+                                            [% END %]
+                                        [% END %]
+                                    [% END %]
+                                [% END %]
+                                [% FOR a IN result.authorities; # I don't think we'll ever get here...
+                                    PROCESS authority_notes authority=a IF !sees.grep(a.id);
+
+                                    # Other than displaying public general
+                                    # notes, we can go no further sans
+                                    # control_set.
+                                    NEXT UNLESS a.control_set;
+
+                                    # get_authority_fields is fast and cache-y.
+                                    acs = ctx.get_authority_fields(a.control_set);
+                                    FOR field_group IN a.headings;
+                                        field_id = field_group.keys.0;
+                                        field = acs.$field_id;
+                                        headings = field_group.values.0;
+                                        FOR h IN headings;
+                                            # We could display headings without
+                                            # links here when h.target is
+                                            # undef, if we wanted to, but note
+                                            # that h.target_count is only
+                                            # defined when h.target is.
+
+                                            IF h.target AND h.target_count AND result.list_sees.grep('^' _ h.target _ '$').size == 0 AND !h.main_entry;
+                                                id = h.target; NEXT IF seenit.$id; seenit.$id = 1; %]
+                                                <li><span class="browse-result-authority-field-name">[% field.name %]</span>
+                                                <a href="[% mkurl(ctx.opac_root _ '/results', {query => 'identifier|authority_id[' _ h.target _ ']'}) %]">[% h.heading | html %]</a>
+                                                <span class="browse-result-authority-bib-links">([% h.target_count %])</span>
+                                                </li>
                                             [% END %]
                                         [% END %]
                                     [% END %]
                                 [% END %]
                             </ul>
-                            [% END %]
                         </li>
                     [% END %]
                     </ul>
