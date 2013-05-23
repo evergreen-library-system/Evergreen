@@ -32,7 +32,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             displayOffset : 0,
             requiredFields : null,
             hidePaginator : false,
-            showLoadFilter : false,
+            showLoadFilter : true,
             onItemReceived : null,
             suppressLinkedFields : null, // list of fields whose linked display data should not be fetched from the server
 
