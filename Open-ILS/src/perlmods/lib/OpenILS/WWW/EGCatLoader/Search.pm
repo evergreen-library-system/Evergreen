@@ -417,8 +417,12 @@ sub load_rresults {
             my $method = 'open-ils.search.biblio.multiclass.query';
             $method .= '.staff' if $ctx->{is_staff};
 
+            my $ses = OpenSRF::AppSession->create('open-ils.search');
+            $ses->session_locale($OpenILS::Utils::CStoreEditor::default_locale); # set in EGWeb
+
             $self->timelog("Firing off the multiclass query");
-            $results = $U->simplereq('open-ils.search', $method, $args, $query, 1);
+            my $req = $ses->request($method, $args, $query, 1);
+            $results = $req->gather(1);
             $self->timelog("Returned from the multiclass query");
 
         } catch Error with {
