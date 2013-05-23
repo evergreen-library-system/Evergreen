@@ -8,6 +8,7 @@ use Encode;
 use Apache2::Const -compile => qw(OK DECLINED HTTP_INTERNAL_SERVER_ERROR);
 use Apache2::Log;
 use OpenSRF::EX qw(:try);
+use OpenSRF::AppSession;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use List::MoreUtils qw/uniq/;
 
@@ -19,6 +20,18 @@ use constant OILS_HTTP_COOKIE_LOCALE => 'eg_locale';
 my %registered_locales;
 
 sub handler {
+    my $r = shift;
+    my $stat = handler_guts($r);
+
+    # other opensrf clients share this apache process,
+    # so it's critical to reset the locale after each
+    # response is handled, lest the other clients 
+    # adopt our temporary, global locale value.
+    OpenSRF::AppSession->reset_locale;
+    return $stat;
+}
+    
+sub handler_guts {
     my $r = shift;
     my $ctx = load_context($r);
     my $base = $ctx->{base_path};
@@ -173,7 +186,7 @@ sub load_context {
         parse_accept_lang($r->headers_in->get('Accept-Language'));
 
     # set the editor default locale for each page load
-    $OpenILS::Utils::CStoreEditor::default_locale = parse_eg_locale($ctx->{locale});
+    OpenSRF::AppSession->default_locale(parse_eg_locale($ctx->{locale}));
 
     my $mprefix = $ctx->{media_prefix};
     if($mprefix and $mprefix !~ /^http/ and $mprefix !~ /^\//) {
