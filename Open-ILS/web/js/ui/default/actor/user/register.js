@@ -300,6 +300,17 @@ function load() {
     }
         
     uUpdateContactInvalidators();
+
+    // Cancel mouse scroll events from propagating to table rows which are
+    // using the dijit.form.NumberSpinner widget, because the mouse scroll
+    // would be applied too early by the widget, before the user has
+    // intentionally focussed on the input field.
+    dojo.query('tr[wclass="dijit.form.NumberSpinner"]').forEach(function (tr) {
+        tr.addEventListener('DOMMouseScroll', function (ev) {
+            ev.stopPropagation();
+        }, true);
+    });
+
     lock_ready = true;
 }
 
