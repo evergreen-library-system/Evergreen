@@ -72,7 +72,7 @@ END;
                                                         <a title="[% l("Perform an Author Search") %]"
                                                                 class="record_author" name='item_author'
                                                                 href="[%- 
-                                                                    authorquery = attrs.author | replace('[#"^$\+\-,\.:;&|\[\]()]', '');
+                                                                    authorquery = attrs.author | replace('[#"^$\+\-,\.:;&|\[\]()]', ' ');
                                                                     mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, ['page'])
                                                                     -%]">[% attrs.author | html %]</a>
                                                                     [%- UNLESS CGI.param('detail_record_view')
