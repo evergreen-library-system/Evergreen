@@ -41,9 +41,9 @@
         var search_depth = 0; // 0 = consortium, 1 = system, 2 = library, 3 = sub-library, etc.
         
         if(textbox && textbox.value != "") {
-                var opac_url =  xulG.url_prefix('opac_rresult') + "?rt=keyword&tp=keyword&l=" + home_ou_id + "&d=" + search_depth +"&f=&t=" + escape(textbox.value);
+                var opac_url =  xulG.url_prefix('opac_rresult') + "?rt=keyword&tp=keyword&l=" + home_ou_id + "&d=" + search_depth +"&f=&t=" + encodeURIComponent(textbox.value);
                 if (urls.opac_rresult.match(/\/eg\/opac\/results/)) {
-                    opac_url =  xulG.url_prefix('opac_rresult') + "?query=" + escape(textbox.value);
+                    opac_url =  xulG.url_prefix('opac_rresult') + "?query=" + encodeURIComponent(textbox.value);
                 }
                 var params = {'tab_name':'Catalog'};
                 var content_params = { 'session' : ses(), 'authtime' : ses('authtime'), 'opac_url' : opac_url };
