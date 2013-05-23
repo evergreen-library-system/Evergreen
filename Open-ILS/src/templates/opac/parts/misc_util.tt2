@@ -413,6 +413,12 @@
                 LAST;
             END;
         END;
+	
+        args.bibid = [];
+        FOR bibid IN xml.findnodes('//*[@tag="901"]/*[@code="c"]');
+            args.bibid.push(bibid.textContent);
+        END;
+        args.bibid = args.bibid.0; 
 
     END;
 

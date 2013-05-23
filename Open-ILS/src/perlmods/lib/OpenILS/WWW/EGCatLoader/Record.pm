@@ -67,6 +67,13 @@ sub load_record {
         $self->mk_copy_query($rec_id, $org, $copy_depth, $copy_limit, $copy_offset, $pref_ou)
     );
 
+    # find foreign copy data
+    my $peer_rec = $U->simplereq(
+        'open-ils.search',
+        'open-ils.search.peer_bibs', $rec_id );
+
+    $ctx->{foreign_copies} = $peer_rec;
+
     my (undef, @rec_data) = $self->get_records_and_facets([$rec_id], undef, {
         flesh => '{holdings_xml,bmp,mra,acp,acnp,acns}',
         site => $org_name,
@@ -80,13 +87,30 @@ sub load_record {
 
     $ctx->{copies} = $copy_rec->gather(1);
 
-    # Add public copy notes to each copy
+    # Add public copy notes to each copy - and while we're in there, grab peer bib records
     foreach my $copy (@{$ctx->{copies}}) {
         $copy->{notes} = $U->simplereq(
             'open-ils.circ',
             'open-ils.circ.copy_note.retrieve.all',
             {itemid => $copy->{id}, pub => 1 }
         );
+        $copy->{peer_bibs} = $U->simplereq(
+	    'open-ils.search',
+	    'open-ils.search.multi_home.bib_ids.by_barcode',
+	    $copy->{barcode} );
+	my @peer_marc;
+    	foreach my $bib (@{$copy->{peer_bibs}}) {
+        	my (undef, @peer_data) = $self->get_records_and_facets(
+            		[$bib], undef, {
+                		flesh => '{holdings_xml,acp,acnp,acns,exclude_invisible_acn}',
+                		site => $org_name,
+				depth => $depth,
+                		pref_lib => $pref_ou
+        	});
+		#$copy->{peer_bib_marc} = $peer_data[0]->{marc_xml};
+		push @peer_marc,$peer_data[0]->{marc_xml};
+	}
+	$copy->{peer_bib_marc} = \@peer_marc;
     }
 
     $self->timelog("past store copy retrieval call");
