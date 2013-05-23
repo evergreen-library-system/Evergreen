@@ -108,7 +108,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                                             {fmClass:self.fmClass, suppressFilterFields:self.suppressFilterFields})
 
                                         self.filterDialog.onApply = function(filter) {
-                                            self.cachedQuerySearch = dojo.mixin( filter, self.preFilterSearch );
+                                            self.cachedQuerySearch = filter;
                                             self.resetStore();
                                             self.loadAll(
                                                 dojo.mixin( { offset : 0 }, self.cachedQueryOpts ),
