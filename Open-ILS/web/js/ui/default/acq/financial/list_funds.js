@@ -116,22 +116,23 @@ function loadFundGrid(year) {
     year = year || fundFilterYearSelect.attr('value');
     cachedFunds = [];
 
+    var order_by = [{'class' : 'acqf', field : 'name'}];
+
+    if (adminPermOrgs.length) {
+        // sort funds I can edit to the front
+        order_by.unshift({   
+            'class' : 'acqf',
+            field : 'org',
+            compare : {'in' : adminPermOrgs},
+            direction : 'desc'
+        });
+    }
+
     lfGrid.loadAll(
-        {
+        {   
             flesh : 1,  
             flesh_fields : {acqf : fundFleshFields},
-            
-            // by default, sort funds I can edit to the front
-            order_by : [
-                {   'class' : 'acqf',
-                    field : 'org',
-                    compare : {'in' : adminPermOrgs},
-                    direction : 'desc'
-                },
-                {   'class' : 'acqf',
-                    field : 'name'
-                }
-            ]
+            order_by : order_by,
         }, {   
             year : year, 
             org : fieldmapper.aou.descendantNodeList(contextOrg, true) 
