@@ -30,7 +30,7 @@ function loadFSGrid() {
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.funding_source.org.retrieve'], {
             async: true,
-            params: [openils.User.authtoken, null, {flesh_summary:1}],
+            params: [openils.User.authtoken, null, {flesh_summary:1, limit_perm : 'VIEW_FUNDING_SOURCE'}],
             onresponse: function(r) { /* request object*/
                 if(fs = openils.Util.readResponse(r)) {
                     openils.acq.FundingSource.cache[fs.id()] = fs;
