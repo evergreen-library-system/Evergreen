@@ -158,7 +158,9 @@
                     <input type="hidden" name="list" value="[% bbag.id %]" />
                     <input type="hidden" name="action" value="delete" />
                     [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
-                    <input type="submit" value="[% l('Delete List') %]" />
+                    <input type="submit" value="[% l('Delete List') %]"
+                        onClick="if(confirm('[% l('Do you really want to delete this list?') %]')) return true; return false"
+                    />
                 </div>
             </form>
             <form action="[% mkurl(ctx.opac_root _ '/myopac/list/print') %]" method="post">
