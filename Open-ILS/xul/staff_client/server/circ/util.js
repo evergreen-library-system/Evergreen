@@ -548,7 +548,7 @@ circ.util.columns = function(modify,params) {
         {
             'persist' : 'hidden width ordinal',
             'id' : 'service',
-            'label' : 'Service',
+            'label' : document.getElementById('commonStrings').getString('staff.checkout_column_label_service'),
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
