@@ -68,16 +68,17 @@
             [% END %]
         </tbody>
     </table>
- 
-    <table>
+
+    <div class='user_opt_in_settings'>
+    [% IF ctx.opt_in_settings.size == 0 %]
+      <strong>[% l('No notification preferences are configured') %]</strong>
+    [% ELSE %]
+      <table>
         <thead><tr>
             <th>[% l('Notification Type') %]</th>
             <th>[% l('Enabled') %]</th>
         </tr></thead>
         <tbody class='data_grid'>
-            [% IF optin.size == 0 %]
-                <strong>[% l('No notification preferences are configured') %]</strong>
-            [% END %]
             [% FOR optin IN ctx.opt_in_settings %]
                 <tr>
                     <td>[% optin.cust.label | html %]</td>
@@ -89,7 +90,9 @@
                 </tr>
             [% END %]
         </tbody>
-    </table>
+      </table>
+    [% END %]
+    </div>
     <input type='submit' value="[% l('Save') %]" alt="[% l('Save') %]" class="opac-button" />
 </form>
 [% END %]
