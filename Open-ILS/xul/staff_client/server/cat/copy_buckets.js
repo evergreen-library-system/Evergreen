@@ -461,6 +461,10 @@ cat.copy_buckets.prototype = {
                     'copy_buckets_batch_copy_delete' : [
                         ['command'],
                         function() {
+
+                            var conf = window.confirm($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_batch_copy_delete.confirm'));
+                            if (!conf) return;
+
                             try {
                             
                                 obj.list2.select_all();
