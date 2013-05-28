@@ -87,7 +87,9 @@ function TermSelectorFactory(terms) {
 
     /* Create abbreviations for class names to make field categories
      * more readable in field selector control. */
-    this._abbreviate = function(s) {
+    this._abbreviate = function(t, s) {
+	var ca = "ACQ_SEARCH_CLASS_ABBR_" + t;
+	if (localeStrings[ca]) return localeStrings[ca];
         var last, result;
         for (var i = 0; i < s.length; i++) {
             if (s[i] != " ") {
@@ -226,7 +228,7 @@ function TermSelectorFactory(terms) {
         var optgroup = dojo.create(
             "optgroup", {"value": "", "label": this.terms[hint].__label}
         );
-        var prefix = this._abbreviate(this.terms[hint].__label);
+        var prefix = this._abbreviate(hint, this.terms[hint].__label);
 
         for (var field in this.terms[hint]) {
             if (!/^__/.test(field)) {

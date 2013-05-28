@@ -93,5 +93,11 @@
     "INVOICE_COPY_COUNT_INFO": "Copies received on this invoice: ${0} out of ${1}.",
     "INVOICE_IDENT_COLLIDE": "There is already an invoice in the system with the given combination of 'Vendor Invoice ID' and 'Provider,' which is not allowed.",
     "NEW_INVOICE": "New Invoice",
+    "ACQ_SEARCH_CLASS_ABBR_jub": "LI",
+    "ACQ_SEARCH_CLASS_ABBR_acqpl": "SL",
+    "ACQ_SEARCH_CLASS_ABBR_acqpo": "PO",
+    "ACQ_SEARCH_CLASS_ABBR_acqinv": "I",
+    "ACQ_SEARCH_CLASS_ABBR_acqlid": "LID",
+    "ACQ_SEARCH_CLASS_ABBR_acqlia": "LIA",
     "NO_LI_GENERAL" : "You have not selected any (suitable) line items."
 }
