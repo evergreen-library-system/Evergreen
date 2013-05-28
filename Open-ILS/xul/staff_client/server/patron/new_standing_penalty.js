@@ -24,7 +24,7 @@ function new_penalty_init() {
 
         build_penalty_menu();
 
-        var show_initials = String( data.hash.aous['ui.staff.require_initials'] ) == 'true';
+        var show_initials = String( data.hash.aous['ui.staff.require_initials.patron_standing_penalty'] ) == 'true';
         if (show_initials) {
             document.getElementById('initials_box').hidden = false;
         }

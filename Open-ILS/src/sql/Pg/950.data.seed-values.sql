@@ -4779,12 +4779,30 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'integer', null)
 
-,( 'ui.staff.require_initials', 'gui',
-    oils_i18n_gettext('ui.staff.require_initials',
-        'Require staff initials for entry/edit of item/patron/penalty notes/messages.',
+,( 'ui.staff.require_initials.patron_standing_penalty', 'gui',
+    oils_i18n_gettext('ui.staff.require_initials.patron_standing_penalty',
+        'Require staff initials for entry/edit of patron standing penalties and messages.',
         'coust', 'label'),
-    oils_i18n_gettext('ui.staff.require_initials',
-        'Appends staff initials and edit date into note content.',
+    oils_i18n_gettext('ui.staff.require_initials.patron_standing_penalty',
+        'Appends staff initials and edit date into patron standing penalties and messages.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.staff.require_initials.patron_info_notes', 'gui',
+    oils_i18n_gettext('ui.staff.require_initials.patron_info_notes',
+        'Require staff initials for entry/edit of patron notes.',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.staff.require_initials.patron_info_notes',
+        'Appends staff initials and edit date into patron note content.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.staff.require_initials.copy_notes', 'gui',
+    oils_i18n_gettext('ui.staff.require_initials.copy_notes',
+        'Require staff initials for entry/edit of copy notes.',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.staff.require_initials.copy_notes',
+        'Appends staff initials and edit date into copy note content.',
         'coust', 'description'),
     'bool', null)
 

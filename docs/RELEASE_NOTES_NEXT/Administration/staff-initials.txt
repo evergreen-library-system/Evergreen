@@ -1,0 +1,18 @@
+Add granular settings for requiring staff initials for notes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+There are now three separate library settings for controlling whether staff 
+are required to input their initials when creating different types of notes.
+See new library settings below.
+
+Any pre-existing library setting for requiring staff initials are preserved 
+during the upgrade process. After upgrading, you may choose to change the set
+behavior for any of the three new settings.
+
+New Library Settings
++++++++++++++++++++++
+
+ * Require staff initials for entry/edit of patron standing penalties and messages. (ui.staff.require_initials.patron_standing_penalty)
+ * Require staff initials for entry/edit of patron notes. (ui.staff.require_initials.patron_info_notes)
+ * Require staff initials for entry/edit of copy notes. (ui.staff.require_initials.copy_notes)
+

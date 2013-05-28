@@ -203,7 +203,7 @@
                 xml += '<label value="'+$("patronStrings").getString('staff.patron.info_notes.new_note.patron_visible.value')+'"/><checkbox id="pub" name="fancy_data"/></row>';
                 xml += '<row><label value="'+$("patronStrings").getString('staff.patron.info_notes.new_note.title.value')+'"/><textbox id="title" name="fancy_data" context="clipboard"/></row>';
                 xml += '<row><label value="'+$("patronStrings").getString('staff.patron.info_notes.new_note.note.value')+'"/><textbox multiline="true" id="note" name="fancy_data" context="clipboard"/></row>';
-                var show_initials = String( g.data.hash.aous['ui.staff.require_initials'] ) == 'true';
+                var show_initials = String( g.data.hash.aous['ui.staff.require_initials.patron_info_notes'] ) == 'true';
                 if (show_initials) {
                     xml += '<row><label value="'+$("patronStrings").getString('staff.patron.info_notes.new_note.initials.value')+'"/><textbox id="initials" name="fancy_required_data" context="clipboard"/></row>';
                 }

@@ -161,7 +161,7 @@
                             <row><label value="' + $('catStrings').getString('staff.cat.copy_notes.new_note.public') + '"/><checkbox id="pub" name="fancy_data" checked="false"/></row> \
                             <row><label value="' + $('catStrings').getString('staff.cat.copy_notes.new_note.title') + '"/><textbox id="title" name="fancy_data" context="clipboard"/></row> \
                             <row><label value="' + $('catStrings').getString('staff.cat.copy_notes.new_note.note') + '"/><textbox multiline="true" id="note" name="fancy_data" context="clipboard"/></row>';
-                var show_initials = String( g.data.hash.aous['ui.staff.require_initials'] ) == 'true';
+                var show_initials = String( g.data.hash.aous['ui.staff.require_initials.copy_notes'] ) == 'true';
                 if (show_initials) {
                     xml += '<row><label value="'+$("catStrings").getString('staff.cat.copy_notes.new_note.initials')+'"/><textbox id="initials" name="fancy_required_data" context="clipboard"/></row>';
                 }
