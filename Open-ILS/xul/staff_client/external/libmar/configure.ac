@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.68])
+AC_PREREQ([2.61])
 AC_INIT([libmar], [1.0], [jason@sigio.com])
 AM_INIT_AUTOMAKE([foreign])
 AC_CONFIG_SRCDIR([tool/mar.c])
