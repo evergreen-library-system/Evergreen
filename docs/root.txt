@@ -180,6 +180,8 @@ include::admin/acquisitions_admin.txt[]
 
 include::admin/authorities.txt[]
 
+include::admin/Best_Hold_Selection_Sort_Order.txt[]
+
 include::admin/cn_prefixes_and_suffixes.txt[]
 
 include::admin/circulation_limit_groups.txt[]
