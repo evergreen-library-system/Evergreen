@@ -1,4 +1,4 @@
-Evergreen Documentation
+﻿Evergreen Documentation
 =======================
 Documentation Interest Group
 :doctype: book
@@ -187,6 +187,8 @@ include::admin/circulation_limit_groups.txt[]
 include::admin/restrict_Z39.50_sources_by_perm_group.txt[]
 
 include::admin/booking-admin.txt[]
+
+include::admin/Org_Unit_Proximity_Adjustments.txt[]
 
 include::admin/permissions.txt[]
 
