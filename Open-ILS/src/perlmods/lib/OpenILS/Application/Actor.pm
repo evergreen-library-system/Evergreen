@@ -1329,6 +1329,9 @@ sub patron_adv_search {
     my $opt_boundary = 0;
     $opt_boundary = $U->ou_ancestor_setting_value($e->requestor->ws_ou,'org.patron_opt_boundary') if user_opt_in_enabled($self);
 
+    #Only set search_ou if it is undef.  Set search_ou to Consortium (1) or the workstation org unit depending on Library Setting
+    $search_ou = ($U->ou_ancestor_setting_value($e->requestor->ws_ou, 'opac.duplicate_patron_check_use_consortium') == 1) ? 1 : $e->requestor->ws_ou if $search_ou == undef;
+
     return $U->storagereq(
         "open-ils.storage.actor.user.crazy_search", $search_hash, 
             $search_limit, $search_sort, $include_inactive, $e->requestor->ws_ou, $search_ou, $opt_boundary);
