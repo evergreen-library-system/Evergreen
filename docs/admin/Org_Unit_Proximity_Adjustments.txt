@@ -33,7 +33,7 @@ Create an Org Unit Proximity Adjustment
 . Enter the *Proximity Adjustment* between the *Item Circulating Library* and the *Request Library*.
 . Click *Save*.
 
-image::media/03/Org_Unit_Prox_Adj2.PNG[Org Unit Proximity Adjustment]
+image::media/Org_Unit_Prox_Adj2.PNG[Org Unit Proximity Adjustment]
 
 This will create a one-way proximity adjustment between Org Units.  In this example this adjustment will apply to items requested at by a patron BR4 and filled at BR1.  To create the reciprocal proximity adjustment, for items requested at BR1 and filled at BR4, create a second proximity adjustment between the two Org Units.
 

@@ -1,0 +1,29 @@
+New Updates Tools
+^^^^^^^^^^^^^^^^^
+
+Source code for tools to generate the staff clients updates tools were
+added to Open-ILS/xul/staff_client/external/libmar.  These tools
+replace the downloadable tools from Mozilla.org that were previously
+used to generate the staff client updates files.
+
+They come with their own configuration script and are condfigured
+automatically as a subpackage when you configure Evergreen for
+installation.  They are also built and ready for use when you make
+Evergreen during the installation or upgrade process.
+
+The make_updates.sh script that is run when you tell Evergreen to make
+the staff client updates has been modified to use the new tools.
+
+These tools introduce a dependency on libbz2.  This is often only
+available when installing the libbz2-dev or libbz2-devel packages.
+Thus this branch introduces a new depency on the development packages
+for libbz2 in Evergreen.
+
+Nothing in the user facing behavior of building updates changes with
+these tools.  They are drop-in replacements for the previous tools and
+other than the new dependency on libbz2, you don't even need to know
+that they are there.
+
+These tools were added to Evergreen to be an aid in portability to
+operating systems other than Linux.  They also remove a dependency on
+a third-party tool, that is typically downloaded as a binary.

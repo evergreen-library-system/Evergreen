@@ -193,12 +193,13 @@ function check_mar
 		MBSDIFF=${MBSDIFF:-mbsdiff}
 	fi
 	if [ ! -x "$MAR" -o ! -x "$MBSDIFF" ]; then
-		if [ ! -f "external/mar" -o ! -f "external/mbsdiff" ]; then
-			wget ftp://ftp.mozilla.org/pub/mozilla.org/xulrunner/mar-generation-tools/mar-generation-tools-linux.zip
-			unzip mar-generation-tools-linux.zip -d external
+		if [ ! -f "external/limbar/tool/mar" -o ! -f "external/libmar/tool/mbsdiff" ]; then
+		    cd external/libmar
+		    make
+		    cd -
 		fi
-		MAR="$PWD/external/mar"
-		MBSDIFF="$PWD/external/mbsdiff"
+		MAR="$PWD/external/libmar/tool/mar"
+		MBSDIFF="$PWD/external/libmar/tool/mbsdiff"
 	fi
 }
 
