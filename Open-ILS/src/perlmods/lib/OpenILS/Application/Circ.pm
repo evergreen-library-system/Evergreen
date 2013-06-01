@@ -26,7 +26,6 @@ use OpenILS::Event;
 use OpenSRF::EX qw(:try);
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Utils::Fieldmapper;
-use OpenILS::Utils::Editor;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Const qw/:const/;
 use OpenSRF::Utils::SettingsClient;
@@ -195,7 +194,7 @@ __PACKAGE__->register_method(
 sub checkouts_by_user_opac {
     my( $self, $client, $auth, $user_id ) = @_;
 
-    my $e = OpenILS::Utils::Editor->new( authtoken => $auth );
+    my $e = new_editor( authtoken => $auth );
     return $e->event unless $e->checkauth;
     $user_id ||= $e->requestor->id;
     return $e->event unless 
@@ -744,7 +743,7 @@ __PACKAGE__->register_method(
 
 sub circ_count {
     my( $self, $client, $copyid, $range ) = @_; 
-    my $e = OpenILS::Utils::Editor->new;
+    my $e = new_editor();
     return $e->request('open-ils.storage.asset.copy.circ_count', $copyid, $range);
 }
 
@@ -835,7 +834,7 @@ __PACKAGE__->register_method(
 
 sub has_notes {
     my( $self, $conn, $authtoken, $id ) = @_;
-    my $editor = OpenILS::Utils::Editor->new(authtoken => $authtoken);
+    my $editor = new_editor(authtoken => $authtoken);
     return $editor->event unless $editor->checkauth;
 
     my $n = $editor->search_asset_copy_note(

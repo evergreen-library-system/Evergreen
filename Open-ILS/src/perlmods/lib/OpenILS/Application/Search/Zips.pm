@@ -5,7 +5,6 @@ use strict; use warnings;
 use OpenSRF::EX qw(:try);
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Application::AppUtils;
-use OpenILS::Utils::Editor;
 use OpenSRF::Utils::SettingsClient;
 
 use open ':utf8';
@@ -62,7 +61,7 @@ __PACKAGE__->register_method(
 );
 sub search_zip {
     #my( $self, $conn, $auth, $zip ) = @_;
-    #my $e = OpenILS::Utils::Editor->new(authtoken=>$auth);
+    #my $e = new_editor(authtoken=>$auth);
     #return $e->event unless $e->checkauth;
     #return $e->event unless $e->allowed('VIEW_ZIP_DATA');
     my( $self, $conn, $zip ) = @_;

@@ -1,13 +1,12 @@
 #!perl -T
 
-use Test::More tests => 32;
+use Test::More tests => 31;
 use Test::Warn;
 use utf8;
 
 use_ok( 'OpenILS::Utils::Configure' );
 use_ok( 'OpenILS::Utils::Cronscript' );
 use_ok( 'OpenILS::Utils::CStoreEditor' );
-use_ok( 'OpenILS::Utils::Editor' );
 use_ok( 'OpenILS::Utils::Fieldmapper' );
 use_ok( 'OpenILS::Utils::ISBN' );
 use_ok( 'OpenILS::Utils::Lockfile' );

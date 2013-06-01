@@ -1778,7 +1778,6 @@ sub biblio_mrid_check_mvr {
 
 sub _grab_metarecord {
     my $mrid = shift;
-    #my $e = OpenILS::Utils::Editor->new;
     my $e = new_editor();
     my $mr = $e->retrieve_metabib_metarecord($mrid) or return ( undef, $e->event );
     return ($mr);
@@ -1796,7 +1795,6 @@ __PACKAGE__->register_method(
 sub biblio_mrid_make_modsbatch {
     my( $self, $client, $mrid ) = @_;
 
-    #my $e = OpenILS::Utils::Editor->new;
     my $e = new_editor();
 
     my $mr;
@@ -1850,7 +1848,6 @@ sub biblio_mrid_make_modsbatch {
     my $string = OpenSRF::Utils::JSON->perl2JSON($mods->decast);
     $mr->mods($string);
 
-    #$e = OpenILS::Utils::Editor->new(xact => 1);
     $e = new_editor(xact => 1);
     $e->update_metabib_metarecord($mr) 
         or $logger->error("Error setting mods text on metarecord $mrid : " . Dumper($e->event));
@@ -2597,7 +2594,6 @@ __PACKAGE__->register_method(
 sub fetch_slim_record {
     my( $self, $conn, $ids ) = @_;
 
-#my $editor = OpenILS::Utils::Editor->new;
     my $editor = new_editor();
     my @res;
     for( @$ids ) {

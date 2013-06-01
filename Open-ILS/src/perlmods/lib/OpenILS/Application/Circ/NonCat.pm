@@ -9,7 +9,6 @@ use OpenSRF::Utils qw/:datetime/;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Fieldmapper;
-use OpenILS::Utils::Editor;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 $Data::Dumper::Indent = 0;
 
@@ -226,7 +225,7 @@ __PACKAGE__->register_method(
 
 sub fetch_open_noncats {
     my( $self, $conn, $auth, $userid ) = @_;
-    my $e = OpenILS::Utils::Editor->new( authtoken => $auth );
+    my $e = new_editor( authtoken => $auth );
     return $e->event unless $e->checkauth;
     $userid ||= $e->requestor->id;
     if( $e->requestor->id ne $userid ) {

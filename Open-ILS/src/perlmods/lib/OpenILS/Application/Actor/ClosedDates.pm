@@ -2,7 +2,7 @@ package OpenILS::Application::Actor::ClosedDates;
 use base 'OpenILS::Application';
 use strict; use warnings;
 use OpenSRF::EX qw(:try);
-use OpenILS::Utils::Editor q/:funcs/;
+use OpenILS::Utils::CStoreEditor q/:funcs/;
 
 sub initialize { return 1; }
 
