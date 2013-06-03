@@ -830,6 +830,8 @@ function updateFixedFields (element) {
     xml_record = new XML( xml_string );
     if (xml_record..record[0]) xml_record = xml_record..record[0];
     loadRecord();
+    // Put the cursor back to the current fixed field
+    element.select();
 
     return true;
 }
