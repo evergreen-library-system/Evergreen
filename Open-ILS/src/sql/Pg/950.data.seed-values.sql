@@ -7681,6 +7681,26 @@ INSERT INTO config.metabib_field_index_norm_map (field,norm,params)
       WHERE i.func IN ('replace')
             AND m.id IN (19);
 
+INSERT INTO config.metabib_field_index_norm_map (field,norm,params, pos)
+     SELECT  m.id,
+             i.id,
+             $$["]",""]$$,
+             '-1'
+       FROM  config.metabib_field m,
+             config.index_normalizer i
+       WHERE i.func IN ('replace')
+             AND m.id IN (1);
+             
+INSERT INTO config.metabib_field_index_norm_map (field,norm,params, pos)
+     SELECT  m.id,
+             i.id,
+             $$["[",""]$$,
+             '-1'
+       FROM  config.metabib_field m,
+             config.index_normalizer i
+       WHERE i.func IN ('replace')
+             AND m.id IN (1);
+
 INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
     SELECT  m.id,
             i.id,
