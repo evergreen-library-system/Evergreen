@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0794', :eg_version);
 
 INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert)
     VALUES (5,'PATRON_EXCEEDS_LOST_COUNT',oils_i18n_gettext(5, 'Patron exceeds max lost item threshold', 'csp', 'label'),'CIRC|FULFILL|HOLD|CAPTURE|RENEW', TRUE);
