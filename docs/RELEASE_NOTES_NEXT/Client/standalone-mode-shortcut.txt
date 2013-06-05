@@ -1,0 +1,5 @@
+Standalone Mode Shortcut
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Evergreen installer now includes a shortcut that launches the staff client 
+directly into standalone (offline) mode.
