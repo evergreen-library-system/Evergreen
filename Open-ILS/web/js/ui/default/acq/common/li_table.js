@@ -1734,6 +1734,12 @@ function AcqLiTable() {
         acqLitBatchUpdateCopies.onClick = function() { self.batchCopyUpdate() };
         acqLitCopyCountInput.attr('value', '0');
 
+        if (this.isPO && PO && PO.order_date()) {
+            // prevent adding copies to activated POs
+            acqLitCopyCountInput.attr('disabled', true);
+            acqLitAddCopyCount.attr('disabled', true);
+        }
+
         while(this.copyTbody.childNodes[0])
             this.copyTbody.removeChild(this.copyTbody.childNodes[0]);
 
