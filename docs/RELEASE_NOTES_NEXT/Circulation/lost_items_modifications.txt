@@ -1,5 +1,6 @@
-New feature: "Patron blocking by lost items and include lost as items out."
-==========================================================================
+Patron blocking by lost items and include lost as items out
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 This feature has two main parts, both of which are to improve the staff's
 ability to assist patrons in regards to lost items.
 
@@ -11,4 +12,3 @@ setting is modified through the Group Penalty Thresholds page.
 'Include Lost circulations in lump sum tallies in Patron Display',
 the staff have the ability to determine if lost items will be included
 in items out.
-
