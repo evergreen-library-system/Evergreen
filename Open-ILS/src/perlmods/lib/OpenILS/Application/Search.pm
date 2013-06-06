@@ -28,7 +28,6 @@ use Text::Aspell;
 # Houses generic search utilites 
 
 sub initialize {
-    OpenILS::Application::Search::Z3950->initialize();
     OpenILS::Application::Search::Zips->initialize();
     OpenILS::Application::Search::Biblio->initialize();
 }
