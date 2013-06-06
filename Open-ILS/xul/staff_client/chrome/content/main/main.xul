@@ -93,7 +93,7 @@
     <groupbox id="main_groupbox" flex="1" style="overflow: auto;">
         <caption id="main_caption" label="&staff.main.auth.caption;"/>
         <hbox>
-            <button type="menu" label="&staff.auth.help_btn.label;" accesskey="&staff.auth.help_btn.label;">
+            <button type="menu" label="&staff.auth.help_btn.label;" accesskey="&staff.auth.help_btn.accesskey;">
                 <menupopup>
                     <menuitem id="about_btn" label="&staff.auth.about_btn.label;" accesskey="&staff.auth.about_btn.accesskey;" />
                     <menuitem id="contents_menu" label="&staff.auth.help.menu.contents.label;" accesskey="&staff.auth.help.menu.contents.accesskey;" disabled="true" />
