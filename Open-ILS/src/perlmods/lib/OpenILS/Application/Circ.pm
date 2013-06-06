@@ -743,8 +743,12 @@ __PACKAGE__->register_method(
 
 sub circ_count {
     my( $self, $client, $copyid, $range ) = @_; 
-    my $e = new_editor();
-    return $e->request('open-ils.storage.asset.copy.circ_count', $copyid, $range);
+
+    return $U->simplereq(
+        'open-ils.storage',
+        'open-ils.storage.asset.copy.circ_count',
+        $copyid, $range
+    );
 }
 
 

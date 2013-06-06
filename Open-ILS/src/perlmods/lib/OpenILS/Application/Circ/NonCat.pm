@@ -231,8 +231,12 @@ sub fetch_open_noncats {
     if( $e->requestor->id ne $userid ) {
         return $e->event unless $e->allowed('VIEW_CIRCULATIONS'); # XXX rely on editor perm
     }
-    return $e->request(
-        'open-ils.storage.action.open_non_cataloged_circulation.user', $userid );
+
+    return $U->simplereq(
+        'open-ils.storage',
+        'open-ils.storage.action.open_non_cataloged_circulation.user',
+        $userid
+    );
 }
 
 
