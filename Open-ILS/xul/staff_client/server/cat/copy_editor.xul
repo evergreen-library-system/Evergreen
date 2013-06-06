@@ -21,6 +21,8 @@
 <window id="cat_copy_editor_win" 
     onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
     title="&staff.cat.copy_editor.window.label;"
+    sizemode="maximized"
+    oils_persist="height width sizemode"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
