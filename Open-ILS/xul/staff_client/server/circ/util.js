@@ -2160,6 +2160,37 @@ circ.util.hold_columns = function(modify,params) {
         },
         {
             'persist' : 'hidden width ordinal',
+            'id' : 'current_shelf_lib',
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.current_shelf_lib'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) {
+                if (Number(my.ahr.current_shelf_lib())>=0) {
+                    return data.hash.aou[ my.ahr.current_shelf_lib() ].name();
+                } else {
+                    return my.ahr.current_shelf_lib().name();
+                }
+            }
+        },
+        {
+            'persist' : 'hidden width ordinal',
+            'id' : 'current_shelf_lib_shortname',
+            'label' : document.getElementById('commonStrings').getString('staff.ahr_current_shelf_lib_label'),
+            'flex' : 0,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) {
+                if (Number(my.ahr.current_shelf_lib())>=0) {
+                    return data.hash.aou[ my.ahr.current_shelf_lib() ].shortname();
+                } else {
+                    return my.ahr.current_shelf_lib().shortname();
+                }
+            }
+        },
+
+        {
+            'persist' : 'hidden width ordinal',
             'id' : 'current_copy',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_current_copy_label'),
             'flex' : 1,
