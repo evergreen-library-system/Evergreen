@@ -419,7 +419,6 @@ sub load_rresults {
             $method .= '.staff' if $ctx->{is_staff};
 
             my $ses = OpenSRF::AppSession->create('open-ils.search');
-            $ses->session_locale($OpenILS::Utils::CStoreEditor::default_locale); # set in EGWeb
 
             $self->timelog("Firing off the multiclass query");
             my $req = $ses->request($method, $args, $query, 1);
