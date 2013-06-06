@@ -80,7 +80,7 @@ message appears automatically, and the patron is not required to take further
 action.
 
 Org Unit Hiding in TPAC
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
 
 This feature enables you to hide specific org units from patron view in the OPAC.  Org units that have not inherited this setting will display in patron-facing dropdowns.
 
