@@ -2778,7 +2778,7 @@
 <!ENTITY staff.circ.holds.set_top_of_queue.accesskey "Q">
 <!ENTITY staff.circ.holds.title_transfer.label "Transfer to Marked Title">
 <!ENTITY staff.circ.holds.title_transfer.accesskey "">
-<!ENTITY staff.circ.holds.view_expired_onshelf_holds.label "View Shelf-Expired Holds">
+<!ENTITY staff.circ.holds.view_expired_onshelf_holds.label "View Clearable Holds">
 <!ENTITY staff.circ.holds.view_expired_onshelf_holds.accesskey "x">
 <!ENTITY staff.circ.holds.clear_expired_onshelf_holds.label "Clear these Holds">
 <!ENTITY staff.circ.holds.clear_expired_onshelf_holds.accesskey "">
