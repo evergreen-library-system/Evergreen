@@ -121,6 +121,7 @@ EXTRA_DEBS_PRECISE = \
 FEDORA_RPMS = \
 	aspell \
 	aspell-en \
+	bzip2-devel \
 	libdbi \
 	libdbi-dbd-pgsql \
 	libdbi-devel \
