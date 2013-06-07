@@ -2056,6 +2056,30 @@ __PACKAGE__->register_method(
     /
 );
 
+__PACKAGE__->register_method(
+    method    => 'fetch_captured_holds',
+    api_name  => 
+      'open-ils.circ.captured_holds.expired_on_shelf_or_wrong_shelf.retrieve',
+    stream    => 1,
+    authoritative => 1,
+    signature => q/
+        Returns list of shelf-expired un-fulfilled holds OR wrong shelf holds
+        for a given shelf lib
+    /
+);
+
+__PACKAGE__->register_method(
+    method    => 'fetch_captured_holds',
+    api_name  => 
+      'open-ils.circ.captured_holds.id_list.expired_on_shelf_or_wrong_shelf.retrieve',
+    stream    => 1,
+    authoritative => 1,
+    signature => q/
+        Returns list of shelf-expired un-fulfilled holds OR wrong shelf holds
+        for a given shelf lib
+    /
+);
+
 
 sub fetch_captured_holds {
     my( $self, $conn, $auth, $org, $match_copy ) = @_;
@@ -2096,6 +2120,17 @@ sub fetch_captured_holds {
         };
     }
     my $hold_ids = $e->json_query( $query );
+
+    if ($self->api_name =~ /wrong_shelf/) {
+        # fetch holds whose current_shelf_lib is $org, but whose pickup 
+        # lib is some other org unit.  Ignore already-retrieved holds.
+        my $wrong_shelf =
+            pickup_lib_changed_on_shelf_holds(
+                $e, $org, [map {$_->{id}} @$hold_ids]);
+        # match the layout of other items in $hold_ids
+        push (@$hold_ids, {id => $_}) for @$wrong_shelf;
+    }
+
 
     for my $hold_id (@$hold_ids) {
         if($self->api_name =~ /id_list/) {
