@@ -3877,7 +3877,7 @@
 <!ENTITY staff.search_prefs.clear.label "Clear All">
 <!ENTITY staff.search_prefs.clear.accesskey "C">
 <!ENTITY staff.search_prefs.cleared_message "Preferences cleared">
-<!ENTITY staff.bucketz39_search.dialog_label "Locate Z39.59 Matches">
+<!ENTITY staff.bucketz39_search.dialog_label "Locate Z39.50 Matches">
 <!ENTITY staff.bucketz39_search.servers "Z39.50 Servers:">
 <!ENTITY staff.bucketz39_search.indexes "Z39.50 Search Indexes:">
 <!ENTITY staff.bucketz39_search.queue "Add Results to Queue:">

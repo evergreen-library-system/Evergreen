@@ -6,7 +6,7 @@ Staff Work Flow
 
  * Staff add records to bib record buckets
  * Staff select the new "Locate Z39.50 Matches" action for a selected bucket.
- * Staff choose which Z30.50 sources and indexes to search and the destination 
+ * Staff choose which Z39.50 sources and indexes to search and the destination 
    queue.
  * Submitting the search fires a series of parallel Z39.50 searches across
    all selected Z39.50 sources.

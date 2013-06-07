@@ -168,7 +168,7 @@
                             "[% bbag.id %]",
                             xulG
                         )'
-                    value="[% l('Locate Z39.59 Matches') %]" 
+                    value="[% l('Locate Z39.50 Matches') %]" 
                 />
             </div>
             [% END %]
