@@ -1,6 +1,6 @@
 BEGIN;
 
--- TODO version check
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0796', :eg_version); -- berick/dbwells
 
 ALTER TABLE vandelay.bib_queue ADD COLUMN match_bucket
    INTEGER REFERENCES container.biblio_record_entry_bucket(id)

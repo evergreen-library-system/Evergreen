@@ -1,6 +1,6 @@
 BEGIN;
 
--- TODO version check
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0795', :eg_version); -- berick/dbwells
 
 CREATE OR REPLACE FUNCTION 
     evergreen.z3950_attr_name_is_valid(TEXT) RETURNS BOOLEAN AS $func$
