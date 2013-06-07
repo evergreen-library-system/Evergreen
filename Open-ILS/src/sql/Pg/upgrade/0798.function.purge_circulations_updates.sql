@@ -1,3 +1,7 @@
+BEGIN;
+
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0798', :eg_version); -- tsbere/Dyrcona/dbwells
+
 INSERT INTO config.global_flag (name, label)
     VALUES (
         'history.circ.retention_uses_last_finished',
@@ -205,3 +209,4 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
+COMMIT;
