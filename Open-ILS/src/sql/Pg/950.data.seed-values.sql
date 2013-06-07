@@ -2501,31 +2501,58 @@ INSERT INTO config.weight_assoc(active, org_unit, circ_weights, hold_weights) VA
 
 -- User setting types
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
-    VALUES ('opac.default_font', TRUE, 'OPAC Font Size', 'OPAC Font Size', 'string');
+    VALUES ('opac.default_font', TRUE,
+    oils_i18n_gettext('opac.default_font', 'OPAC Font Size', 'cust', 'label'),
+    oils_i18n_gettext('opac.default_font', 'OPAC Font Size', 'cust', 'description'),
+    'string');
 
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
-    VALUES ('opac.default_search_depth', TRUE, 'OPAC Search Depth', 'OPAC Search Depth', 'integer');
+    VALUES ('opac.default_search_depth', TRUE,
+    oils_i18n_gettext('opac.default_search_depth', 'OPAC Search Depth', 'cust', 'label'),
+    oils_i18n_gettext('opac.default_search_depth', 'OPAC Search Depth', 'cust', 'description'),
+    'integer');
 
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
-    VALUES ('opac.default_search_location', TRUE, 'OPAC Search Location', 'OPAC Search Location', 'integer');
+    VALUES ('opac.default_search_location', TRUE,
+    oils_i18n_gettext('opac.default_search_location', 'OPAC Search Location', 'cust', 'label'),
+    oils_i18n_gettext('opac.default_search_location', 'OPAC Search Location', 'cust', 'description'),
+    'integer');
 
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
-    VALUES ('opac.hits_per_page', TRUE, 'Hits per Page', 'Hits per Page', 'string');
+    VALUES ('opac.hits_per_page', TRUE,
+    oils_i18n_gettext('opac.hits_per_page', 'Hits per Page', 'cust', 'label'),
+    oils_i18n_gettext('opac.hits_per_page', 'Hits per Page', 'cust', 'description'),
+    'string');
 
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
-    VALUES ('opac.hold_notify', TRUE, 'Hold Notification Format', 'Hold Notification Format', 'string');
+    VALUES ('opac.hold_notify', TRUE,
+    oils_i18n_gettext('opac.hold_notify', 'Hold Notification Format', 'cust', 'label'),
+    oils_i18n_gettext('opac.hold_notify', 'Hold Notification Format', 'cust', 'description'),
+    'string');
 
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
-    VALUES ('staff_client.catalog.record_view.default', TRUE, 'Default Record View', 'Default Record View', 'string');
+    VALUES ('staff_client.catalog.record_view.default', TRUE,
+    oils_i18n_gettext('staff_client.catalog.record_view.default', 'Default Record View', 'cust', 'label'),
+    oils_i18n_gettext('staff_client.catalog.record_view.default', 'Default Record View', 'cust', 'description'),
+    'string');
 
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
-    VALUES ('staff_client.copy_editor.templates', TRUE, 'Copy Editor Template', 'Copy Editor Template', 'object');
+    VALUES ('staff_client.copy_editor.templates', TRUE,
+    oils_i18n_gettext('staff_client.copy_editor.templates', 'Copy Editor Template', 'cust', 'label'),
+    oils_i18n_gettext('staff_client.copy_editor.templates', 'Copy Editor Template', 'cust', 'description'),
+    'object');
 
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
-    VALUES ('circ.holds_behind_desk', FALSE, 'Hold is behind Circ Desk', 'Hold is behind Circ Desk', 'bool');
+    VALUES ('circ.holds_behind_desk', FALSE,
+    oils_i18n_gettext('circ.holds_behind_desk', 'Hold is behind Circ Desk', 'cust', 'label'),
+    oils_i18n_gettext('circ.holds_behind_desk', 'Hold is behind Circ Desk', 'cust', 'description'),
+    'bool');
 
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
-    VALUES ('opac.default_pickup_location', TRUE, 'Default Hold Pickup Location', 'Default location for holds pickup', 'integer');
+    VALUES ('opac.default_pickup_location', TRUE,
+    oils_i18n_gettext('opac.default_pickup_location', 'Default Hold Pickup Location', 'cust', 'label'),
+    oils_i18n_gettext('opac.default_pickup_location', 'Default location for holds pickup', 'cust', 'description'),
+    'integer');
 
 -- Add groups for org_unit settings
 INSERT INTO config.settings_group (name, label) VALUES
