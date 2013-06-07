@@ -3,6 +3,11 @@ BEGIN;
 -- check whether patch can be applied
 -- SELECT evergreen.upgrade_deps_block_check('YYYY', :eg_version);
 
+-- To avoid problems with altering a table column after doing an
+-- update.
+ALTER TABLE authority.control_set_authority_field
+    DISABLE TRIGGER ALL;
+
 ALTER TABLE authority.control_set_authority_field
     ADD COLUMN display_sf_list TEXT;
 
@@ -11,6 +16,9 @@ UPDATE authority.control_set_authority_field
 
 ALTER TABLE authority.control_set_authority_field
     ALTER COLUMN display_sf_list SET NOT NULL;
+
+ALTER TABLE authority.control_set_authority_field
+    ENABLE TRIGGER ALL;
 
 ALTER TABLE metabib.browse_entry_def_map
     ADD COLUMN authority BIGINT REFERENCES authority.record_entry (id)
