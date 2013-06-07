@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0799', :eg_version);
 
 -- allow state to be null
 ALTER TABLE actor.usr_address ALTER COLUMN state DROP NOT NULL;
