@@ -1,3 +1,6 @@
+BEGIN;
+
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0797', :eg_version); -- tsbere/Dyrcona/dbwells
 
 -- New global flags for the purge function
 INSERT INTO config.global_flag  (name, label, enabled)
@@ -366,3 +369,4 @@ CREATE TRIGGER action_hold_request_aging_tgr
 	FOR EACH ROW
 	EXECUTE PROCEDURE action.age_hold_on_delete ();
 
+COMMIT;
