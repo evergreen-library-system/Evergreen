@@ -58,8 +58,8 @@ image::media/My_Lists7.jpg[My_Lists7]
 16) When you no longer need a list, click *Delete List*. 
 
 
-Local Call Number in My Lists
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*Local Call Number in My Lists*
+
 As of Evergreen version 2.4, when a title is added to a list in the TPAC, a local call number will be displayed in the list to assist patrons in locating the physical item.  Evergreen will look at the following locations to identify the most relevant call number to display in the list:  
 
 1)	Physical location - the physical library location where the search takes place
