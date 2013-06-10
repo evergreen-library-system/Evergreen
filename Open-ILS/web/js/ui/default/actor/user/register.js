@@ -2014,14 +2014,14 @@ function uEditNewAddr(evt, id, mkLinks) {
                         var replaced =  patron.addresses().filter(
                             function(i) { return (i.id() == addr.replaces()) })[0];
 
-                        div.innerHTML = dojo.string.substitute(localeStrings.REPLACED_ADDRESS, [
-                            replaced.address_type() || '',
+                        div.innerHTML = '<div>' + dojo.string.substitute(localeStrings.REPLACED_ADDRESS, [
+                            '<b>' + replaced.address_type() + '</b>' || '',
                             replaced.street1() || '',
                             replaced.street2() || '',
                             replaced.city() || '',
                             replaced.state() || '',
                             replaced.post_code() || ''
-                        ]);
+                        ]) + '</div>';
 
                     } else {
                         openils.Util.hide(dojo.query('[name=replaced-addr-div]', row)[0]);

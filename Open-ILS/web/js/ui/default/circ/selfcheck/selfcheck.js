@@ -518,7 +518,7 @@ SelfCheckManager.prototype.updateFinesSummary = function() {
                 dojo.byId('oils-selfck-fines-total').innerHTML = 
                     dojo.string.substitute(
                         localeStrings.TOTAL_FINES_ACCOUNT, 
-                        [summary.balance_owed()]
+                        ['<b>' + summary.balance_owed() + '</b>']
                     );
 
                 self.creditPayableBalance = summary.balance_owed();
@@ -640,13 +640,13 @@ SelfCheckManager.prototype.updateHoldsSummary = function() {
     dojo.byId('oils-selfck-holds-total').innerHTML = 
         dojo.string.substitute(
             localeStrings.TOTAL_HOLDS, 
-            [this.holdsSummary.total]
+            ['<b>' + this.holdsSummary.total + '</b>']
         );
 
     dojo.byId('oils-selfck-holds-ready').innerHTML = 
         dojo.string.substitute(
             localeStrings.HOLDS_READY_FOR_PICKUP, 
-            [this.holdsSummary.ready]
+            ['<b>' + this.holdsSummary.ready + '</b>']
         );
 }
 
@@ -676,13 +676,13 @@ SelfCheckManager.prototype.updateCircSummary = function(increment) {
     dojo.byId('oils-selfck-circ-account-total').innerHTML = 
         dojo.string.substitute(
             localeStrings.TOTAL_ITEMS_ACCOUNT, 
-            [this.circSummary.total]
+            ['<b>' + this.circSummary.total + '</b>']
         );
 
     dojo.byId('oils-selfck-circ-session-total').innerHTML = 
         dojo.string.substitute(
             localeStrings.TOTAL_ITEMS_SESSION, 
-            [this.circSummary.session]
+            ['<b>' + this.circSummary.session + '</b>']
         );
 }
 

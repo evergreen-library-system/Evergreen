@@ -31,8 +31,7 @@
                     <div name="description"></div>
                     <div name="lid_link_holder" class="hidden">
                         [ <a href="javascript:void(0);"
-                            name="lid_link">[% l('Consider individual copies
-                            for claiming') %]</a> ]
+                            name="lid_link">[% l('Consider individual copies for claiming') %]</a> ]
                     </div>
                 </td>
             </tr>

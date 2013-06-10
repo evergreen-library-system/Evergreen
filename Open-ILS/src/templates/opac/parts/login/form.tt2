@@ -6,8 +6,8 @@
     ELSIF ctx.login_failed_event.textcode == 'PATRON_INACTIVE';
         l("This account has been deactivated.  Please contact your local library.");
     ELSE;
-        l("Login failed. The username or password provided was not valid.  
-            Passwords are case-sensitive.  Check your Caps-Lock key and try again or contact your local library.");
+        l("Login failed. The username or password provided was not valid. " _
+           "Passwords are case-sensitive.  Check your Caps-Lock key and try again or contact your local library.");
     END;
 %]
 </div>

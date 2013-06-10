@@ -14,35 +14,27 @@
     [% IF ctx.added_to_anon %]
         <h2 class="sub_header2">[% l('You Saved It!') %]</h2>
         <p>
-        [% |l(title_html) %]
-        You successfully saved [_1].  <br/>
-        To manage your lists, go to <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {}, 1) %]">My Lists</a>
-        [% END %]
+        [% l('You successfully saved [_1].', title_html) %]<br/>
+        [% l('To manage your lists, go to [_1]My Lists[_2]', '<a href="' _ mkurl(ctx.opac_root _ '/myopac/lists', {}, 1) _ '">', '</a>') %]
         <p>
     [% ELSIF ctx.added_to_list %]
         [% list_html = ctx.list.name | html %]
         <h2 class="sub_header2">[% l('You Saved It!') %]</h2>
         <p>
-        [% |l(title_html, list_html) %]
-        You successfully saved [_1] to [_2]. <br/>  
-        To manage your lists, go to <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {}, 1) %]">My Lists</a>
-        [% END %]
+        [% l('You successfully saved [_1] to [_2].', title_html, list_html) %]<br/>
+        [% l('To manage your lists, go to [_1]My Lists[_2]', '<a href="' _ mkurl(ctx.opac_root _ '/myopac/lists', {}, 1) _ '">', '</a>') %]
         <p>
     [% ELSIF CGI.param('hold') %]
         [% lib_html = ctx.get_aou(ctx.hold.pickup_lib).name | html %]
         <h2 class="sub_header2">[% l('Hold Successful!') %]</h2>
         <p>
-        [% |l(title_html, lib_html) %]
-        Your request for <a href="[% mkurl(ctx.kpac_root _ '/record/' _ ctx.bre_id, {}, kill_params) %]">[_1]</a> was successful.<br/>
-        You will be notified when your item is ready for pickup.  You will be able to pick your item up at [_2].
-        [% END %]
+        [% l('Your request for [_1] was successful.', '<a href="' _ mkurl(ctx.kpac_root _ '/record/' _ ctx.bre_id, {}, kill_params) _ '">' _ title_html _ '</a>') %]<br/>
+        [% l('You will be notified when your item is ready for pickup.  You will be able to pick your item up at [_1].', lib_html) %]
         <p>
     [% ELSE %]
         <p>
-        [% |l(title_html) %]
-        Unable to request <a href="[% mkurl(ctx.kpac_root _ '/record/' _ ctx.bre_id, {}, kill_params) %]">[_1]</a>.<br/>
-        Please see a librarian.
-        [% END %]
+        [% l('Unable to request [_1].', '<a href="' _ mkurl(ctx.kpac_root _ '/record/' _ ctx.bre_id, {}, kill_params) _ '">' _ title_html _ '</a>') %]<br/>
+        [% l('Please see a librarian.') %]
     [% END %]
 </div>
 

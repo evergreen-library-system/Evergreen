@@ -2,16 +2,16 @@
 <div class="results_header_nav1">
     <span class="h1">[% ctx.bookbag ? l('List Contents') : l('Search Results') %]</span>
     <span nowrap="nowrap" class="result_number">
-                [% |l('<span class="result_count_number">' _ ctx.result_start _'</span>',
+                [%~ |l('<span class="result_count_number">' _ ctx.result_start _'</span>',
                 '<span class="result_count_number">' _ ctx.result_stop _ '</span>',
-                '<span class="result_count_number">' _ ctx.hit_count _ '</span>')  -%]
+                '<span class="result_count_number">' _ ctx.hit_count _ '</span>')  ~%]
                 Results [_1] - [_2] of about [_3]
-                [%- END %]
+                [%~ END %]
                 <span style='padding-left: 6px;'>
-                    [% |l('<span class="result_count_number">' _ (page + 1) _ '</span>',
-                    '<span class="result_count_number">' _ page_count _ '</span>') -%]
+                    [%~ |l('<span class="result_count_number">' _ (page + 1) _ '</span>',
+                    '<span class="result_count_number">' _ page_count _ '</span>') ~%]
                     (page [_1] of [_2])
-                    [%- END %]
+                    [%~ END %]
                 </span>
     </span>
     [%- INCLUDE "opac/parts/pref_lib_display.tt2" %]

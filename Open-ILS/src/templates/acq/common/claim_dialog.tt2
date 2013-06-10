@@ -3,7 +3,7 @@
         src="[% ctx.media_prefix %]/js/ui/default/acq/common/claim_dialog.js">
     </script>
     <div><big>[% l('Claims') %]</big></div>
-    <div>[% l('Against item: [_1] ([_2]',
+    <div>[% l('Against item: [_1] ([_2])',
         '<span id="acq-lit-li-claim-dia-li-title"></span>',
         '<span id="acq-lit-li-claim-dia-li-id"></span>') %]
     </div>

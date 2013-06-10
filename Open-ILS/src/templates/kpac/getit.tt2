@@ -26,8 +26,8 @@
 
                     <div class="top_side">
                         <h2>[% l('get it!') %]</h2>
-                        <p>[% |l %]If you would like to place a hold on this item, please enter the 
-                            following information and click<br />Submit below:[% END %]</p>
+                        <p>[% l('If you would like to place a hold on this item, please enter the ' _
+                            'following information and click Submit below:') %]</p>
                     </div>
 
                     <form method='POST'><!-- login + place hold form -->

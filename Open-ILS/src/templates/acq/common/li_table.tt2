@@ -531,8 +531,8 @@
         </div>
         <div dojoType="dijit.Dialog" jsId="batchFundUpdateDialog" title="[% l('Batch Update Funds') %]">
             <div>
-                [% |l %]This will update the fund for all copies attached to these lineitems.<br/>
-                This will also update any existing encumbered or spent debits.[% END %]
+                [% l('This will update the fund for all copies attached to these lineitems.') %]<br/>
+                [% l('This will also update any existing encumbered or spent debits.') %]
             </div>
             <br/>
             <table class='oils-generic-table'>

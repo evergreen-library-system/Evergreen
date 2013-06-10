@@ -168,8 +168,7 @@
                     </script>
                     <table class="dijitTooltipTable">
                         <tr>
-                            <td><label for="name">[% l('Choose the Lead
-                                 Selection List:') %]</label></td>
+                            <td><label for="name">[% l('Choose the Lead Selection List:') %]</label></td>
                              <td><input jsId="plMergeLeadSelector"
                                  dojoType="dijit.form.FilteringSelect"
                                  name="lead" /></td>

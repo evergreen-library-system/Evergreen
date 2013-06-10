@@ -24,9 +24,7 @@
         <td width="100%" class="nav_mid_bg">
             <table cellpadding="0" cellspacing="0" border="0" align="center">
                 <tr>
-                    [% |l(page + 1, page_count) %]
-                    <td>Page </td><td class="current_page">[_1]</td><td> of </td><td class="total_pages">[_2]</td>
-                    [% END %]
+		    <td>[% l('Page [_1] of [_2]', '</td><td class="current_page">' _ (page + 1) _ '</td><td>', '</td><td class="total_pages">' _ page_count _ '</td>') %]</td>
                 </tr>
             </table>
         </td>

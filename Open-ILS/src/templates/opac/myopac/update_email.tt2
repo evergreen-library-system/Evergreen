@@ -11,12 +11,12 @@
 [% IF ctx.invalid_email %]
     <div id='account-update-email-error'>
         [% bad_email = ctx.invalid_email | html %]
-        [% l('The email address "<b>[_1]</b>" is invalid.  Please try a different email address.', bad_email) %]
+        [% l('The email address "[_1]" is invalid.  Please try a different email address.', '<b>' _ bad_email _ '</b>') %]
     </div>
 
 [% ELSIF ctx.password_incorrect %]
     <div id='account-update-email-error'>
-        [% |l %] Your current password was not correct. [% END %]
+        [% |l %]Your current password was not correct.[% END %]
     </div>
 
 [% END %]

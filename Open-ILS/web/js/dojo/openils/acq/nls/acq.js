@@ -48,7 +48,7 @@
     "COULD_NOT_CREATE_MAPPING" : "Error tagging fund.",
     "COULD_NOT_DELETE_MAPPING" : "Error removing tag from fund.",
     "FUND_LIST_ROLLOVER_SUMMARY" : "Fund Propagation &amp; Rollover Summary for Fiscal Year ${0}",
-    "FUND_LIST_ROLLOVER_SUMMARY_FUNDS" : "<b>${1}</b> funds propagated for fiscal year ${0} for the selected locations",
+    "FUND_LIST_ROLLOVER_SUMMARY_FUNDS" : "${1} funds propagated for fiscal year ${0} for the selected locations",
     "FUND_LIST_ROLLOVER_SUMMARY_ROLLOVER_AMOUNT" : "<b>$${1}</b> unspent money rolled over to fiscal year ${0} for the selected locations",
     "FUND_XFER_SAME_SOURCE_AND_DEST" : "Cannot transfer. The source and destination funds are the same.",
     "FUND_XFER_CONFIRM" : "Are you sure you're ready to commit this transfer?",

@@ -11,20 +11,17 @@
 [% IF ctx.invalid_username %]
     <div id='account-update-email-error'> <!-- borrow css from update-email page -->
         [% bad_user = ctx.invalid_username | html %]
-        [% l('"<b>[_1]</b>" is not a valid username.  Usernames cannot have any spaces or look like a barcode, and may be restricted by policy.  Please try a different username.', bad_user) %]
+        [% l('"[_1]" is not a valid username.  Usernames cannot have any spaces or look like a barcode, and may be restricted by policy.  Please try a different username.', '<b>' _ bad_user _ '</b>') %]
     </div>
 
 [% ELSIF ctx.username_exists %]
     <div id='account-update-email-error'>
-        [% bad_user = ctx.username_exists | html %]
-        [% | l(bad_user) %]
-        The username "<b>[_1]</b>" is taken.  Please try a different username.
-        [% END %]
+        [% l('The username "[_1]" is taken.  Please try a different username.', '<b>' _ bad_user _ '</b>') %]
     </div>
 
 [% ELSIF ctx.password_incorrect %]
     <div id='account-update-email-error'>
-        [% |l %] Your current password was not correct. [% END %]
+        [% |l %]Your current password was not correct.[% END %]
     </div>
 
 [% END %]

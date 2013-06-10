@@ -972,23 +972,23 @@ patron.display.prototype = {
                 obj._already_defaulted_once = true;
                 var msg = ''; obj.stop_checkouts = false;
                 if (patron.alert_message())
-                    msg += $("patronStrings").getFormattedString('staff.patron.display.init.network_request.alert_message', [patron.alert_message()]);
+                    msg += $("patronStrings").getFormattedString('staff.patron.display.init.network_request.alert_message', [patron.alert_message()]) + '<br/><br/>';
                 //alert('obj.barcode = ' + obj.barcode);
                 if (obj.barcode) {
                     if (patron.cards()) for (var i = 0; i < patron.cards().length; i++) {
                         //alert('card #'+i+' == ' + js2JSON(patron.cards()[i]));
                         if ( (patron.cards()[i].barcode()==obj.barcode) && ( ! get_bool(patron.cards()[i].active()) ) ) {
-                            msg += $("patronStrings").getString('staff.patron.display.init.network_request.inactive_card');
+                            msg += $("patronStrings").getString('staff.patron.display.init.network_request.inactive_card') + '<br/><br/>';
                             obj.stop_checkouts = true;
                         }
                     }
                 }
                 if (get_bool(patron.barred())) {
-                    msg += $("patronStrings").getString('staff.patron.display.init.network_request.account_barred');
+                    msg += $("patronStrings").getString('staff.patron.display.init.network_request.account_barred') + '<br/><br/>';
                     obj.stop_checkouts = true;
                 }
                 if (!get_bool(patron.active())) {
-                    msg += $("patronStrings").getString('staff.patron.display.init.network_request.account_inactive');
+                    msg += $("patronStrings").getString('staff.patron.display.init.network_request.account_inactive') + '<br/><br/>';
                     obj.stop_checkouts = true;
                 }
                 if (patron.expire_date()) {
@@ -1016,10 +1016,10 @@ patron.display.prototype = {
                     preexpire = preexpire.getTime()/1000;
 
                     if (expire < now) {
-                        msg += $("patronStrings").getString('staff.patron.display.init.network_request.account_expired');
+                        msg += $("patronStrings").getString('staff.patron.display.init.network_request.account_expired') + '<br/><br/>';
                         obj.stop_checkouts = true;
                     } else if (expire < preexpire && preexpire_setting) {
-                        msg += $("patronStrings").getString('staff.patron.display.init.network_request.account_expire_soon');
+                        msg += $("patronStrings").getString('staff.patron.display.init.network_request.account_expire_soon') + '<br/><br/>';
                     }
                 }
                 var penalties = patron.standing_penalties();

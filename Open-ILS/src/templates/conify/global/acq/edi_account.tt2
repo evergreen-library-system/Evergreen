@@ -41,14 +41,18 @@
         </table>
     </div>
     <div class="footer_notes">
-        [% |l %]
-        <b>Host</b> is the full FTP/SSH hostname, including the protocol, e.g. ftp://ftp1.somevendor.com<br />  
-        <b>Username</b>, <b>Password</b> and <b>Account</b> are (s)FTP/SSH parameters.<br />
-        <b>Account</b> is unlikely to be used by modern systems and should typically be empty.<br />
-        <b>Vendor Account Number</b> (VAN) is vendor-assigned, only needed if different than the org_unit SAN.<br />
-        <b>Vendor Assigned Code</b> (VAC) is essentially a sub-account designation, e.g. '0001'.  It can be used with or without VAN.<br />
-        The location of codes in the EDI message itself may vary according to vendor-specific semantics.
-	[% END %]
+    	[% i18n_host = '<b>' _ l('Host') _ '</b>';
+	   i18n_username = '<b>' _ l('Username') _ '</b>';
+	   i18n_password = '<b>' _ l('Password') _ '</b>';
+	   i18n_account = '<b>' _ l('Account') _ '</b>';
+	   i18n_van = '<b>' _ l('Vendor Account Number') _ '</b>';
+	   i18n_vac = '<b>' _ l('Vendor Assigned Code') _ '</b>';
+           l('[_1] is the full FTP/SSH hostname, including the protocol, e.g. ftp://ftp1.somevendor.com', i18n_host) %]<br />
+        [% l('[_1], [_2] and [_3] are (s)FTP/SSH parameters.', i18n_username, i18n_password, i18n_account) %]<br />
+        [% l('[_1] is unlikely to be used by modern systems and should typically be empty.', i18n_account) %]<br />
+        [% l('[_1] (VAN) is vendor-assigned, only needed if different than the org_unit SAN.', i18n_van) %]<br />
+        [% l("[_1] (VAC) is essentially a sub-account designation, e.g. '0001'.  It can be used with or without VAN.", i18n_vac) %]<br />
+        [% l('The location of codes in the EDI message itself may vary according to vendor-specific semantics.') %]
     </div>
 </div>
 

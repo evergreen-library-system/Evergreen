@@ -2,8 +2,7 @@
 [% ctx.page_title = l("Items by Bibliographic ID") %]
 <div id="acq-frombib-upload-box">
     <div class="oils-acq-basic-roomy">
-        [% |l %]Provide one or more CSV files whose first columns
-        contain Evergreen bibliographic record IDs.[% END %]
+        [% |l %]Provide one or more CSV files whose first columns contain Evergreen bibliographic record IDs.[% END %]
     </div>
     <div class="oils-acq-basic-roomy">
         <span id="acq-frombib-upload"></span>

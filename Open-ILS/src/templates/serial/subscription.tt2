@@ -261,16 +261,15 @@
     <div dojoType="dijit.Dialog" jsId="clone_dialog" title="[% l('Clone Subscription') %]"
         style="width: 460px;" execute="clone_subscription(arguments[0]);">
         <div style="margin-bottom: 0.5em;">
-            [% |l %]This feature will clone a subscription and all of its subscription
-            notes, distributions, distribution notes, captions and patterns,
-            streams, and routing list users.[% END %]</div>
+            [% l('This feature will clone a subscription and all of its subscription ' _
+            'notes, distributions, distribution notes, captions and patterns, ' _
+            'streams, and routing list users.') %]</div>
         <div style="margin-bottom: 0.5em;">
-            [% |l %]Holdings-related objects, like issuances, items, units, and
-            summaries will <em>not</em> be cloned.[% END %]
+            [% l('Holdings-related objects, like issuances, items, units, and ' _
+            'summaries will <em>not</em> be cloned.') %]
         </div>
         <div style="margin-bottom: 0.5em;">
-            [% |l %]To what bibliographic record should the new subscription be
-            attached?[% END %]
+            [% l('To what bibliographic record should the new subscription be attached?') %]
         </div>
         <table width="100%">
             <tr>

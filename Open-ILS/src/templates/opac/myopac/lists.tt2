@@ -366,10 +366,10 @@
     [% END %]
 
     <span id='bb_publish_text' class='hide_me'>
-[% |l %]Sharing a Bookbag means that the contents 
-of the Bookbag will be visible to others.  
-To see the public view of a shared Bookbag, 
-click on the Bookbag's name in the Bookbag list.[% END %]
+[% l("Sharing a Bookbag means that the contents " _
+"of the Bookbag will be visible to others. " _
+"To see the public view of a shared Bookbag, " _
+"click on the Bookbag's name in the Bookbag list.") %]
     </span>
 </div>
 [% END %]

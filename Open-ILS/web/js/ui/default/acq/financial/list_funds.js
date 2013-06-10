@@ -239,13 +239,13 @@ function performRollover(args) {
                 dojo.byId('acq-fund-list-rollover-summary-funds').innerHTML = 
                     dojo.string.substitute(
                         localeStrings.FUND_LIST_ROLLOVER_SUMMARY_FUNDS,
-                        [nextYear, count]
+                        [nextYear, '<b>' + count + '</b>']
                     );
 
                 dojo.byId('acq-fund-list-rollover-summary-rollover-amount').innerHTML = 
                     dojo.string.substitute(
                         localeStrings.FUND_LIST_ROLLOVER_SUMMARY_ROLLOVER_AMOUNT,
-                        [nextYear, amount_rolled]
+                        [nextYear, '<b>' + amount_rolled + '</b>']
                     );
 
                 if(!dryRun) {

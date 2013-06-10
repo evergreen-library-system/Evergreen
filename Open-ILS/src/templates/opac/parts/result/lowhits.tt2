@@ -11,13 +11,13 @@
                        IF is_advanced OR is_special;
 		          l('Sorry, no entries were found for your search within [_1].', fmt_bookbag);
                        ELSE;
-                          l('Sorry, no entries were found for [_1][_2][_3] within [_4].', '<q>', qhtml, '</q>', fmt_bookbag);
+                          l('Sorry, no entries were found for [_1] within [_2].', '<q>' _ qhtml _ '</q>', fmt_bookbag);
                        END;
                    ELSE;
                      IF is_advanced OR is_special;
                           l('Sorry, no entries were found for your search.');
                        ELSE;
-                          l('Sorry, no entries were found for [_1][_2][_3].', '<q>', qhtml, '</q>');
+                          l('Sorry, no entries were found for [_1].', '<q>' _ qhtml _ '</q>');
                        END;
                    END %]
             </p>
@@ -26,29 +26,35 @@
             [% INCLUDE "opac/parts/result/lowhits_purchase.tt2" %]
             <p>
                 <strong>[% l('Keyword Search Tips') %]</strong><br />
-                [% l('Try changing to [_1]Advanced Search[_2].', '<strong>', '</strong>') %]
+		[% i18n_advsearch = l('Advanced Search');
+                   l('Try changing to [_1].', '<strong>' _ i18n_advsearch _ '</strong>') %]
             </p>
             <p>
                 <strong>[% l('Adjacency') %]</strong><br />
-                [% l('Multiple words are not searched together as a phrase. They will
-		      be found in various parts of the record. To search for a phrase, enclose your
-		      search terms in quotation marks.') %]<br />
-                [% l('(example:  [_1]&quot;garcia marquez&quot;[_2])', '<strong>', '</strong>') %]
+                [% l('Multiple words are not searched together as a phrase. They will ' _
+		     'be found in various parts of the record. To search for a phrase, enclose your ' _
+		     'search terms in quotation marks.') %]<br />
+		[% i18n_searchphrase = l('garcia marquez');
+                   l('(example: [_1])', '<strong>&quot;' _ i18n_searchphrase _ '&quot;</strong>') %]
             </p>
             <p>
                 <strong>[% l('Truncation') %]</strong><br />
-                [% l('Words may be right-hand truncated using an asterisk. Use a single asterisk *
-		      to truncate any number of characters.') %]<br />
-                [% l('(example: [_1]environment* agency[_2])', '<strong>', '</strong>') %]
+                [% l('Words may be right-hand truncated using an asterisk. Use a single asterisk * ' _
+		     'to truncate any number of characters.') %]<br />
+		[% i18n_searchtrunc = l('environment* agency');
+                   l('(example: [_1])', '<strong>' _ i18n_searchtrunc _ '</strong>') %]
             </p>
             <p>
                 <strong>[% l('Anchored Searching') %]</strong><br />
-                [% l('You may use ^ and $ to indicate "phrase begins with" and
-		      "phrase ends with," respectively, within a search phrase
-		      enclosed in quotation marks.') %]<br />
-                [% l('(examples: [_1]"^harry"[_2] for phrases that begin with
-		      the term [_3]harry[_4].
-                      [_1]"stone$"[_2] for phrases that end in [_3]stone[_4].)', '<strong>', '</strong>', '<em>', '</em>') %]
+                [% l('You may use ^ and $ to indicate "phrase begins with" and ' _
+		     '"phrase ends with," respectively, within a search phrase ' _
+		     'enclosed in quotation marks.') %]<br />
+		[% i18n_searchbegins = l('harry');
+		   i18n_searchends = l('stone');
+                   l('(examples: [_1] for phrases that begin with the term [_2]. ' _
+                     '[_3] for phrases that end in [_4].)',
+		     '<strong>&quot;^' _ i18n_searchbegins _ '&quot;</strong>', '<em>' _ i18n_searchbegins _ '</em>',
+		     '<strong>&quot;' _ i18n_searchends _ '$&quot;</strong>', '<em>' _ i18n_searchends _ '</em>') %]
             </p>
         </div>
     </div>
