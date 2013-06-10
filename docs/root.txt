@@ -357,6 +357,8 @@ include::opac/kids_opac.txt[]
 
 include::opac/search_form.txt[]
 
+include::opac/advanced_features.txt[]
+
 // Return to normal title levels.
 :leveloffset: 0
 
