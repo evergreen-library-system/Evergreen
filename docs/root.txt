@@ -190,6 +190,8 @@ include::admin/restrict_Z39.50_sources_by_perm_group.txt[]
 
 include::admin/booking-admin.txt[]
 
+include::admin/MARC_Import_Remove_Fields.txt[]
+
 include::admin/Org_Unit_Proximity_Adjustments.txt[]
 
 include::admin/permissions.txt[]
