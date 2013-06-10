@@ -605,7 +605,7 @@ CREATE TABLE actor.org_address (
 	street2		TEXT,
 	city		TEXT	NOT NULL,
 	county		TEXT,
-	state		TEXT	NOT NULL,
+	state		TEXT,
 	country		TEXT	NOT NULL,
 	post_code	TEXT	NOT NULL,
     san         TEXT

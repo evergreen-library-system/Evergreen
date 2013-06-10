@@ -1,0 +1,5 @@
+BEGIN;
+
+ALTER TABLE actor.org_address ALTER COLUMN state DROP NOT NULL;
+
+COMMIT;
