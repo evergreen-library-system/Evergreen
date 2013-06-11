@@ -1577,7 +1577,7 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 542, 'ADMIN_TOOLBAR_FOR_USER', oils_i18n_gettext( 542,
         'Allows a user to create, edit, and delete custom toolbars for users', 'ppl', 'description')),
  ( 543, 'URL_VERIFY', oils_i18n_gettext( 543, 
-    'Allows a user to process and verify ULSs', 'ppl', 'description')),
+    'Allows a user to process and verify URLs', 'ppl', 'description')),
  ( 544, 'URL_VERIFY_UPDATE_SETTINGS', oils_i18n_gettext( 544, 
     'Allows a user to configure URL verification org unit settings', 'ppl', 'description')),
  ( 545, 'SAVED_FILTER_DIALOG_FILTERS', oils_i18n_gettext( 545,
