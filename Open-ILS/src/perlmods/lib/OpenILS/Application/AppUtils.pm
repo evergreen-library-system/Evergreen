@@ -2138,5 +2138,47 @@ sub unique_unnested_numbers {
     );
 }
 
+# Check if a transaction should be left open or closed. Close the
+# transaction if it should be closed or open it otherwise. Returns
+# undef on success or a failure event.
+sub check_open_xact {
+    my( $self, $editor, $xactid, $xact ) = @_;
+
+    # Grab the transaction
+    $xact ||= $editor->retrieve_money_billable_transaction($xactid);
+    return $editor->event unless $xact;
+    $xactid ||= $xact->id;
+
+    # grab the summary and see how much is owed on this transaction
+    my ($summary) = $self->fetch_mbts($xactid, $editor);
+
+    # grab the circulation if it is a circ;
+    my $circ = $editor->retrieve_action_circulation($xactid);
+
+    # If nothing is owed on the transaction but it is still open
+    # and this transaction is not an open circulation, close it
+    if(
+        ( $summary->balance_owed == 0 and ! $xact->xact_finish ) and
+        ( !$circ or $circ->stop_fines )) {
+
+        $logger->info("closing transaction ".$xact->id. ' because balance_owed == 0');
+        $xact->xact_finish('now');
+        $editor->update_money_billable_transaction($xact)
+            or return $editor->event;
+        return undef;
+    }
+
+    # If money is owed or a refund is due on the xact and xact_finish
+    # is set, clear it (to reopen the xact) and update
+    if( $summary->balance_owed != 0 and $xact->xact_finish ) {
+        $logger->info("re-opening transaction ".$xact->id. ' because balance_owed != 0');
+        $xact->clear_xact_finish;
+        $editor->update_money_billable_transaction($xact)
+            or return $editor->event;
+        return undef;
+    }
+    return undef;
+}
+
 1;
 

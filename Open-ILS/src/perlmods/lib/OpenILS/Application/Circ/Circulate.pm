@@ -2779,8 +2779,8 @@ sub finish_fines_and_voiding {
 
     return $self->bail_on_events($evt) if $evt;
 
-    # make sure the circ isn't closed if we just voided some fines
-    $evt = OpenILS::Application::Circ::CircCommon->reopen_xact($self->editor, $self->circ->id);
+    # Make sure the circ is open or closed as necessary.
+    $evt = $U->check_open_xact($self->editor, $self->circ->id);
     return $self->bail_on_events($evt) if $evt;
 
     return undef;
