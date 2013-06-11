@@ -3225,7 +3225,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="cnal" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::net_access_level" oils_persist:tablename="config.net_access_level" reporter:label="Net Access Level">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.net_access_level_id_seq">
 			<field name="id" reporter:selector="name" reporter:datatype="id"/>
-			<field name="name"  reporter:datatype="text"/>
+			<field name="name"  reporter:datatype="text" oils_persist:i18n="true"/>
 		</fields>
 		<links/>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
