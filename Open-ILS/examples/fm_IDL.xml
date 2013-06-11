@@ -7860,8 +7860,8 @@ SELECT  usr,
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.cancel_reason_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector='label'/>
 			<field reporter:label="Using Library" name="org_unit" reporter:datatype="org_unit"/>
-			<field reporter:label="Label" name="label" reporter:datatype="text"/>
-			<field reporter:label="Description" name="description" reporter:datatype="text"/>
+			<field reporter:label="Label" name="label" reporter:datatype="text" oils_persist:i18n="true"/>
+			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="Keep Debits?" name="keep_debits" reporter:datatype="bool"/>
 		</fields>
 		<links>

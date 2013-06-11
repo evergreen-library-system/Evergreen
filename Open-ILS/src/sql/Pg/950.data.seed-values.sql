@@ -9082,27 +9082,38 @@ INSERT INTO acq.invoice_method (code,name) VALUES ('EDI',oils_i18n_gettext('EDI'
 INSERT INTO acq.invoice_method (code,name) VALUES ('PPR',oils_i18n_gettext('PPR', 'Paper', 'acqit', 'name'));
 
 INSERT INTO acq.cancel_reason ( id, org_unit, label, description ) VALUES (
-    1, 1, 'invalid_isbn', oils_i18n_gettext( 1, 'ISBN is unrecognizable', 'acqcr', 'label' ));
+    1, 1, oils_i18n_gettext(1,'invalid_isbn', 'acqcr', 'label'), oils_i18n_gettext( 1, 'ISBN is unrecognizable', 'acqcr', 'description' ));
 INSERT INTO acq.cancel_reason ( id, org_unit, label, description ) VALUES (
-    2, 1, 'postpone', oils_i18n_gettext( 2, 'Title has been postponed', 'acqcr', 'label' ));
+    2, 1, oils_i18n_gettext(2,'postpone', 'acqcr', 'label'), oils_i18n_gettext( 2, 'Title has been postponed', 'acqcr', 'description' ));
 INSERT INTO acq.cancel_reason ( id, org_unit, label, description, keep_debits ) VALUES (
-    3, 1, 'delivered_but_lost',
-	oils_i18n_gettext( 2, 'Delivered but not received; presumed lost', 'acqcr', 'label' ), TRUE );
+    3, 1, oils_i18n_gettext(3, 'delivered_but_lost', 'acqcr', 'label'),
+	oils_i18n_gettext( 3, 'Delivered but not received; presumed lost', 'acqcr', 'description' ), TRUE );
 
 INSERT INTO acq.cancel_reason (keep_debits, id, org_unit, label, description) VALUES 
-('f',(  2+1000), 1, 'Deleted',   'The information is to be or has been deleted.'),
-('t',(  3+1000), 1, 'Changed',   'The information is to be or has been changed.'),
-('t',(  4+1000), 1, 'No action',                  'This line item is not affected by the actual message.'),
-('t',(  5+1000), 1, 'Accepted without amendment', 'This line item is entirely accepted by the seller.'),
-('f',(  7+1000), 1, 'Not accepted',               'This line item is not accepted by the seller.'),
-('f',( 10+1000), 1, 'Not found',   'This line item is not found in the referenced message.'),
-('t',( 24+1000), 1, 'Accepted with amendment, no confirmation required', 'Accepted with changes which require no confirmation.');
+('f',(  2+1000), 1, oils_i18n_gettext(1002, 'Deleted', 'acqcr', 'label'),
+	oils_i18n_gettext(1002, 'The information is to be or has been deleted.', 'acqcr', 'description')),
+('t',(  3+1000), 1, oils_i18n_gettext(1003, 'Changed', 'acqcr', 'label'),
+	oils_i18n_gettext(1003, 'The information is to be or has been changed.', 'acqcr', 'description')),
+('t',(  4+1000), 1, oils_i18n_gettext(1004, 'No action', 'acqcr', 'label'),
+	oils_i18n_gettext(1004, 'This line item is not affected by the actual message.', 'acqcr', 'description')),
+('t',(  5+1000), 1, oils_i18n_gettext(1005, 'Accepted without amendment', 'acqcr', 'label'),
+	oils_i18n_gettext(1005, 'This line item is entirely accepted by the seller.', 'acqcr', 'description')),
+('f',(  7+1000), 1, oils_i18n_gettext(1007, 'Not accepted', 'acqcr', 'label'),
+	oils_i18n_gettext(1007, 'This line item is not accepted by the seller.', 'acqcr', 'description')),
+('f',( 10+1000), 1, oils_i18n_gettext(1010, 'Not found', 'acqcr', 'label'),
+       oils_i18n_gettext(1010, 'This line item is not found in the referenced message.', 'acqcr', 'description')),
+('t',( 24+1000), 1, oils_i18n_gettext(1024, 'Accepted with amendment, no confirmation required', 'acqcr', 'label'),
+       oils_i18n_gettext(1024, 'Accepted with changes which require no confirmation.', 'acqcr', 'description'));
 
 INSERT INTO acq.cancel_reason (org_unit, keep_debits, id, label, description) VALUES 
-(1, 't', 1211, 'Split quantity', 'Part of the whole quantity.'),
-(1, 't', 1221, 'Ordered quantity', '[6024] The quantity which has been ordered.'),
-(1, 't', 1246, 'Pieces delivered', 'Number of pieces actually received at the final destination.'),
-(1, 't', 1283, 'Backorder quantity', 'The quantity of goods that is on back-order.');
+(1, 't', 1211, oils_i18n_gettext(1211, 'Split quantity', 'acqcr', 'label'),
+    oils_i18n_gettext(1211, 'Part of the whole quantity.', 'acqcr', 'description')),
+(1, 't', 1221, oils_i18n_gettext(1221, 'Ordered quantity', 'acqcr', 'label'),
+    oils_i18n_gettext(1221, '[6024] The quantity which has been ordered.', 'acqcr', 'description')),
+(1, 't', 1246, oils_i18n_gettext(1246, 'Pieces delivered', 'acqcr', 'label'),
+    oils_i18n_gettext(1246, 'Number of pieces actually received at the final destination.', 'acqcr', 'description')),
+(1, 't', 1283, oils_i18n_gettext(1283, 'Backorder quantity', 'acqcr', 'label'),
+    oils_i18n_gettext(1283, 'The quantity of goods that is on back-order.', 'acqcr', 'description'));
 
 INSERT INTO config.global_flag (name, label, enabled)
     VALUES (
