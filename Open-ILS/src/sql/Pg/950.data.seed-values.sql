@@ -3052,7 +3052,7 @@ INSERT into config.org_unit_setting_type
         'Default hold shelf expire interval',
         'coust', 'label'),
     oils_i18n_gettext('circ.holds.default_shelf_expire_interval',
-        '',
+        'The amount of time an item will be held on the shelf before the hold expires. For example: "2 weeks" or "5 days"',
         'coust', 'description'),
     'interval', null)
 
