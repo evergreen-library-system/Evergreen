@@ -9041,6 +9041,11 @@ INSERT INTO action_trigger.environment (
         ,( 32, 'items' )
 ;
 
+-- Use the ISO 4217 abbreviations for currency codes
+INSERT INTO acq.currency_type (code, label) VALUES ('USD', oils_i18n_gettext('USD', 'US Dollars', 'acqct', 'label'));
+INSERT INTO acq.currency_type (code, label) VALUES ('CAN', oils_i18n_gettext('CAN', 'Canadian Dollars', 'acqct', 'label'));
+INSERT INTO acq.currency_type (code, label) VALUES ('EUR', oils_i18n_gettext('EUR', 'Euros', 'acqct', 'label'));
+
 INSERT INTO acq.invoice_item_type (code,name) VALUES ('TAX',oils_i18n_gettext('TAX', 'Tax', 'aiit', 'name'));
 INSERT INTO acq.invoice_item_type (code,name) VALUES ('PRO',oils_i18n_gettext('PRO', 'Processing Fee', 'aiit', 'name'));
 INSERT INTO acq.invoice_item_type (code,name) VALUES ('SHP',oils_i18n_gettext('SHP', 'Shipping Charge', 'aiit', 'name'));

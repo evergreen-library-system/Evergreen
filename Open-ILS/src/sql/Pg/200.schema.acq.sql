@@ -28,11 +28,6 @@ CREATE TABLE acq.currency_type (
 	label	TEXT
 );
 
--- Use the ISO 4217 abbreviations for currency codes
-INSERT INTO acq.currency_type (code, label) VALUES ('USD','US Dollars');
-INSERT INTO acq.currency_type (code, label) VALUES ('CAN','Canadian Dollars');
-INSERT INTO acq.currency_type (code, label) VALUES ('EUR','Euros');
-
 CREATE TABLE acq.exchange_rate (
     id              SERIAL  PRIMARY KEY,
     from_currency   TEXT    NOT NULL REFERENCES acq.currency_type (code) DEFERRABLE INITIALLY DEFERRED,
