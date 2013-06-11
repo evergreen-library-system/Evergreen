@@ -3202,46 +3202,7 @@ sub query_parser_fts_wrapper {
     my $parser = $OpenILS::Application::Storage::QParser;
     $parser->use;
 
-    if (!$parser->initialization_complete) {
-        my $cstore = OpenSRF::AppSession->create( 'open-ils.cstore' );
-        $parser->initialize(
-            config_record_attr_index_norm_map =>
-                $cstore->request(
-                    'open-ils.cstore.direct.config.record_attr_index_norm_map.search.atomic',
-                    { id => { "!=" => undef } },
-                    { flesh => 1, flesh_fields => { crainm => [qw/norm/] }, order_by => [{ class => "crainm", field => "pos" }] }
-                )->gather(1),
-            search_relevance_adjustment         =>
-                $cstore->request(
-                    'open-ils.cstore.direct.search.relevance_adjustment.search.atomic',
-                    { id => { "!=" => undef } }
-                )->gather(1),
-            config_metabib_field                =>
-                $cstore->request(
-                    'open-ils.cstore.direct.config.metabib_field.search.atomic',
-                    { id => { "!=" => undef } }
-                )->gather(1),
-            config_metabib_search_alias         =>
-                $cstore->request(
-                    'open-ils.cstore.direct.config.metabib_search_alias.search.atomic',
-                    { alias => { "!=" => undef } }
-                )->gather(1),
-            config_metabib_field_index_norm_map =>
-                $cstore->request(
-                    'open-ils.cstore.direct.config.metabib_field_index_norm_map.search.atomic',
-                    { id => { "!=" => undef } },
-                    { flesh => 1, flesh_fields => { cmfinm => [qw/norm/] }, order_by => [{ class => "cmfinm", field => "pos" }] }
-                )->gather(1),
-            config_record_attr_definition       =>
-                $cstore->request(
-                    'open-ils.cstore.direct.config.record_attr_definition.search.atomic',
-                    { name => { "!=" => undef } }
-                )->gather(1),
-        );
-
-        $cstore->disconnect;
-        die("Cannot initialize $parser!") unless ($parser->initialization_complete);
-    }
+    _initialize_parser($parser) unless $parser->initialization_complete;
 
 	if (! scalar( keys %{$args{searches}} )) {
 		die "No search arguments were passed to ".$self->api_name;
