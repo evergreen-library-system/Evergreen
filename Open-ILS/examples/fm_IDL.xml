@@ -227,9 +227,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 				<create permission="CREATE_IMPORT_TRASH_FIELD">
                     <context link="grp" field="owner"/>
                 </create>
-				<retrieve permission="CREATE_IMPORT_TRASH_FIELD UPDATE_IMPORT_TRASH_FIELD DELETE_IMPORT_TRASH_FIELD">
-                    <context link="grp" field="owner"/>
-                </retrieve>
+				<retrieve/>
 				<update permission="UPDATE_IMPORT_TRASH_FIELD">
                     <context link="grp" field="owner"/>
                 </update>
@@ -258,7 +256,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="CREATE_IMPORT_TRASH_FIELD" context_field="owner"/>
-				<retrieve permission="CREATE_IMPORT_TRASH_FIELD UPDATE_IMPORT_TRASH_FIELD DELETE_IMPORT_TRASH_FIELD" context_field="owner"/>
+				<retrieve/>
 				<update permission="UPDATE_IMPORT_TRASH_FIELD" context_field="owner"/>
 				<delete permission="DELETE_IMPORT_TRASH_FIELD" context_field="owner"/>
 			</actions>
