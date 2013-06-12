@@ -1638,7 +1638,7 @@ BEGIN
                     m.params AS params
               FROM  config.index_normalizer n
                     JOIN config.metabib_field_index_norm_map m ON (m.norm = n.id)
-              WHERE field = NEW.field
+              WHERE field = NEW.field AND m.pos < 0
               ORDER BY m.pos LOOP
                 EXECUTE 'SELECT ' || normalizer.func || '(' ||
                     quote_literal( value ) ||
@@ -1650,8 +1650,28 @@ BEGIN
                     ')' INTO value;
 
         END LOOP;
+
         NEW.value = value;
-    END IF;
+
+        FOR normalizer IN
+            SELECT  n.func AS func,
+                    n.param_count AS param_count,
+                    m.params AS params
+              FROM  config.index_normalizer n
+                    JOIN config.metabib_field_index_norm_map m ON (m.norm = n.id)
+              WHERE field = NEW.field AND m.pos >= 0
+              ORDER BY m.pos LOOP
+                EXECUTE 'SELECT ' || normalizer.func || '(' ||
+                    quote_literal( value ) ||
+                    CASE
+                        WHEN normalizer.param_count > 0
+                            THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
+                            ELSE ''
+                        END ||
+                    ')' INTO value;
+
+        END LOOP;
+   END IF;
 
     IF TG_TABLE_NAME::TEXT ~ 'browse_entry$' THEN
         value :=  ARRAY_TO_STRING(
