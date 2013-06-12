@@ -1,0 +1,114 @@
+# install files for Debian Squeeze
+
+DIR = $(dir $(lastword $(MAKEFILE_LIST)))
+APT_BACKPORT_TOOL = aptitude -t squeeze-backports -yq
+APT_SAFE_TOOL = aptitude -P
+
+export DEBS = \
+	apache2-prefork-dev\
+	aspell\
+	aspell-en\
+	libbusiness-creditcard-perl\
+	libbusiness-isbn-data-perl\
+	libbusiness-isbn-perl\
+	libbusiness-onlinepayment-authorizenet-perl\
+	libbusiness-onlinepayment-perl\
+	libdatetime-format-builder-perl\
+	libdatetime-format-iso8601-perl\
+	libdatetime-format-mail-perl\
+	libdatetime-perl\
+	libdatetime-set-perl\
+	libdatetime-timezone-perl\
+	libdbd-pg-perl\
+	libemail-send-perl\
+	libemail-simple-perl\
+	libgd-graph3d-perl\
+	liblocale-maketext-lexicon-perl\
+	liblog-log4perl-perl\
+	libmarc-charset-perl \
+	libmarc-record-perl\
+	libmarc-xml-perl \
+	libncurses5-dev\
+	libnet-ip-perl\
+	libnet-ldap-perl \
+	libnet-server-perl\
+	libnet-ssh2-perl\
+	libnet-z3950-zoom-perl \
+	libnspr4-dev\
+	libole-storage-lite-perl\
+	libparent-perl\
+	libspreadsheet-writeexcel-perl\
+	libssh2-1-dev\
+	libtext-aspell-perl\
+	libtext-csv-perl\
+	libuniversal-require-perl\
+	libunix-syslog-perl\
+    libuuid-tiny-perl\
+	libyaz-dev\
+	yaz
+
+export DEB_APACHE_MODS = \
+    expires\
+    include\
+    proxy\
+    proxy_http\
+    rewrite
+
+export DEB_APACHE_DISMODS = \
+    deflate
+
+export CPAN_MODULES = \
+	Business::OnlinePayment::PayPal \
+	Library::CallNumber::LC \
+	Net::Z3950::Simple2ZOOM \
+	RPC::XML \
+	Template::Plugin::POSIX \
+	SRU \
+	Rose::URI \
+	Safe
+
+export CPAN_MODULES_FORCE = \
+	Class::DBI::Frozen::301
+
+PGSQL_SERVER_DEBS_91 = \
+	postgresql-9.1 \
+	postgresql-contrib-9.1 \
+	postgresql-plperl-9.1 \
+	postgresql-server-dev-9.1
+
+PGSQL_CLIENT_DEBS_91 = \
+	libpq5 \
+	libpq-dev \
+	postgresql-client-9.1
+
+all:
+	make -f $(DIR)/Makefile.debian install_debs
+	make -f $(DIR)/Makefile.debian test_for_libdbi_pkg
+	make -f $(DIR)/Makefile.common install_net_z3950_simpleserver
+	make -f $(DIR)/Makefile.common install_cpan
+	make -f $(DIR)/Makefile.common install_cpan_force
+	make -f $(DIR)/Makefile.debian install_js_sm
+	make -f $(DIR)/Makefile.debian debian_sys_config
+
+install_pgsql_server_backport_debs_91:
+	$(APT_BACKPORT_TOOL) install $(PGSQL_SERVER_DEBS_91)
+
+install_pgsql_client_backport_debs_91:
+	@if [ `$(APT_TOOL) versions libpq5 | grep ^i|sed 's/^i[ \t]*//'|cut -d. -f1` -eq 8 ]; \
+		then \
+		echo -e "libpq5 / libpq-dev are installed as part of OpenSRF (a dependency" \
+		"of apache2-prefork-dev), but these are the 8.4 versions and they" \
+		"conflict with the 9.1 versions - so remove them, install the pinned" \
+		"backports of 9.1, then reinstall the apache2-prefork-dev package.\n\n" \
+		"**WARNING**: Saying 'Yes' to this step will _remove_ any PostgreSQL" \
+		"databases that might currently exist on this machine." && \
+		$(APT_SAFE_TOOL) remove libpq5 libpq-dev ; \
+	fi
+	$(APT_BACKPORT_TOOL) install $(PGSQL_CLIENT_DEBS_91)
+	$(APT_TOOL) install apache2-prefork-dev
+
+clean:
+	make -f $(DIR)/Makefile.common clean
+	make -f $(DIR)/Makefile.debian clean
+
+# vim:noet:sw=4:ts=4:

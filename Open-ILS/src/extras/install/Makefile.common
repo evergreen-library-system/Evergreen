@@ -1,0 +1,35 @@
+# Functions used by all installers
+
+# Install the CPAN modules
+install_cpan:
+	for m in $(CPAN_MODULES); do perl -MCPAN -e "install \"$$m\";"; done
+
+install_cpan_force:
+	for m in $(CPAN_MODULES_FORCE); do \
+		echo "force install $$m" | perl -MCPAN -e shell ;\
+	done
+
+install_net_z3950_simpleserver:
+	if [ ! -f $(LIBNET_Z3950_SIMPLESERVER).tar.gz ]; \
+		then wget $(LIBNET_Z3950_SIMPLESERVER_URL).tar.gz; \
+	fi;
+	tar -zxf $(LIBNET_Z3950_SIMPLESERVER).tar.gz
+	cd $(LIBNET_Z3950_SIMPLESERVER) && \
+		perl Makefile.PL && make && make test && make install
+
+# Install libdbi and the postgres drivers
+install_libdbi:
+	if [ ! -d $(LIBDBI) ]; then wget $(LIBDBI_HOST)/$(LIBDBI).tar.gz; fi;
+	if [ ! -d $(LIBDBI_DRIVERS) ]; then wget $(LIBDBI_HOST)/$(LIBDBI_DRIVERS).tar.gz; fi;
+	tar -zxf $(LIBDBI).tar.gz
+	tar -zxf $(LIBDBI_DRIVERS).tar.gz
+	cd $(LIBDBI) && ./configure --disable-docs && make all install
+	cd $(LIBDBI_DRIVERS) && ./configure  \
+		--disable-docs --with-pgsql --enable-libdbi && make all install  
+
+clean:
+	make -C $(LIBDBI) clean
+	make -C $(LIBDBI_DRIVERS) clean
+	make -C $(LIBJS_PERL) clean
+
+# vim:noet:sw=4:ts=4:

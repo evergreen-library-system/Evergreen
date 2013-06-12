@@ -4,12 +4,14 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (squeeze), Ubuntu (10.04), Ubuntu (12.04) and
+# Currently supports Debian (wheezy, squeeze), Ubuntu (10.04), Ubuntu (12.04) and
 # Fedora (16 and 17).
 #
 # Installs Perl prereqs, libjs with Perl wrapper, libdbi, libdbi-drivers, and libyaz
 #
 # usage:
+# 	make -f Makefile.install debian-wheezy
+# 	- or -
 # 	make -f Makefile.install debian-squeeze
 # 	- or -
 # 	make -f Makefile.install ubuntu-lucid
@@ -19,497 +21,45 @@
 # 	make -f Makefile.install fedora
 #
 # ---------------------------------------------------------------------
- 
+
+# variables shared by all installers
+
 # Make any assumptions about the shell being used explicit
-SHELL=/bin/bash 
+export SHELL=/bin/bash 
 
-LIBJS=js-1.7.0
-LIBJS_PERL=JavaScript-SpiderMonkey-0.21
-LIBJS_URL=http://ftp.mozilla.org/pub/mozilla.org/js/$(LIBJS).tar.gz
-LIBJS_PERL_URL=http://mirror.datapipe.net/pub/CPAN/authors/id/T/TB/TBUSCH/$(LIBJS_PERL).tar.gz
+export LIBJS=js-1.7.0
+export LIBJS_PERL=JavaScript-SpiderMonkey-0.21
+export LIBJS_URL=http://ftp.mozilla.org/pub/mozilla.org/js/$(LIBJS).tar.gz
+export LIBJS_PERL_URL=http://mirror.datapipe.net/pub/CPAN/authors/id/T/TB/TBUSCH/$(LIBJS_PERL).tar.gz
+
 # used for installing libjs lib and header files
-JS_INSTALL_PREFIX=/usr/
+export JS_INSTALL_PREFIX=/usr/
 
-LIBNET_Z3950_SIMPLESERVER=Net-Z3950-SimpleServer-1.15
-LIBNET_Z3950_SIMPLESERVER_URL=http://ftp.indexdata.dk/pub/simpleserver/$(LIBNET_Z3950_SIMPLESERVER)
+export LIBNET_Z3950_SIMPLESERVER=Net-Z3950-SimpleServer-1.15
+export LIBNET_Z3950_SIMPLESERVER_URL=http://ftp.indexdata.dk/pub/simpleserver/$(LIBNET_Z3950_SIMPLESERVER)
 
 # The libdbi sources can be fetched from sourceforge.net.  They are stored on
 # the open-ils.org site now for ease of direct linking
-LIBDBI=libdbi-0.8.3
-LIBDBI_DRIVERS=libdbi-drivers-0.8.3
-LIBDBI_HOST=http://open-ils.org/~denials/evergreen
-
-# We need a recent version of Yaz
-# Debian Lenny and Ubuntu 8.10 come with 3.0.34
-YAZ=yaz-4.2.32
-YAZ_HOST=http://ftp.indexdata.dk/pub/yaz
-
-APT_TOOL=aptitude -yq
-APT_SAFE_TOOL=aptitude -P
-APT_BACKPORT_TOOL=aptitude -t squeeze-backports -yq
-
-# Fedora?
-FEDORA=$(shell uname -r | grep "\.fc[0-9][0-9]\.")
-
-# Fedora 64-bit?
-FEDORA_64=$(shell uname -r | grep "\.fc[0-9][0-9]\.x86_64")
-
-# Debian dependencies
-DEBS =  \
-	apache2-prefork-dev\
-	aspell\
-	aspell-en\
-	check\
-	libbusiness-creditcard-perl\
-	libbusiness-onlinepayment-authorizenet-perl\
-	libbusiness-onlinepayment-perl\
-	libdatetime-format-builder-perl\
-	libdatetime-format-iso8601-perl\
-	libdatetime-format-mail-perl\
-	libdatetime-perl\
-	libdatetime-timezone-perl\
-	libdatetime-set-perl\
-	libdbd-pg-perl\
-	libemail-send-perl\
-	libemail-simple-perl\
-	libgd-graph3d-perl\
-	liblog-log4perl-perl\
-	libmarc-record-perl\
-	libncurses5-dev\
-	libnet-ldap-perl \
-	libnet-server-perl\
-	libnet-ssh2-perl\
-	libnspr4-dev\
-	libole-storage-lite-perl\
-	libspreadsheet-writeexcel-perl\
-	libssh2-1-dev\
-	libtest-warn-perl\
-	libtext-aspell-perl\
-	libtext-csv-perl\
-	libuniversal-require-perl\
-	libnet-ip-perl\
-	liblocale-maketext-lexicon-perl\
-	libunix-syslog-perl\
-	libbz2-dev
-
-# Debian Lenny and Ubuntu Intrepid bundle recent versions of yaz
-EXTRA_DEBS = \
-	libbusiness-isbn-perl\
-	libbusiness-isbn-data-perl\
-	libmarc-charset-perl \
-	libmarc-xml-perl \
-	libnet-z3950-zoom-perl \
-	libyaz-dev \
-	yaz
-
-EXTRA_DEBS_SQUEEZE = \
-    libparent-perl \
-    libuuid-tiny-perl
-
-EXTRA_DEBS_LUCID = \
-    libparent-perl
-
-EXTRA_DEBS_PRECISE = \
-    libdbi-dev \
-    libdbd-pgsql \
-    libmarc-record-perl \
-    libbusiness-edi-perl \
-    liblibrary-callnumber-lc-perl \
-    libsru-perl \
-    libnet-z3950-simple2zoom-perl \
-    libuuid-tiny-perl \
-    libnet-https-any-perl \
-    librpc-xml-perl
-
-FEDORA_RPMS = \
-	aspell \
-	aspell-en \
-	bzip2-devel \
-	check \
-	check-devel \
-	libdbi \
-	libdbi-dbd-pgsql \
-	libdbi-devel \
-	libssh2-devel \
-	libyaz \
-	libyaz-devel \
-	mingw32-nsiswrapper \
-	mod_ssl \
-	ncurses-devel \
-	ncurses-libs \
-	perl-parent \
-	perl-Business-CreditCard \
-	perl-Business-ISBN \
-	perl-Business-ISBN-Data \
-	perl-CPAN \
-	perl-DBD-Pg \
-	perl-Email-Send \
-	perl-Email-Simple \
-	perl-GDGraph3d \
-	perl-JSON-XS \
-	perl-LDAP \
-	perl-Library-CallNumber-LC \
-	perl-Locale-Codes \
-	perl-MARC-Charset \
-	perl-MARC-Record \
-	perl-Net-IP \
-	perl-Net-SSH2 \
-	perl-OLE-Storage_Lite \
-	perl-RPC-XML \
-	perl-Spreadsheet-WriteExcel \
-	perl-Test-Warn \
-	perl-Text-Aspell \
-	perl-Text-CSV \
-	perl-Text-CSV_XS \
-	perl-XML-Writer \
-	postgresql-devel \
-	readline-devel \
-	tcp_wrappers-devel \
-	wget \
-	yaz
-
-# Note: B:O:AuthorizeNet 3.21 fails with https://rt.cpan.org/Public/Bug/Display.html?id=55172
-# Should be fixed in 3.22
-# MARC::Record 2.0.1+ is required but only 2.0.0 is packaged
-FEDORA_CPAN = \
-	Business::OnlinePayment \
-	Business::OnlinePayment::AuthorizeNet \
-	Business::OnlinePayment::PayPal \
-	MARC::File::XML \
-	UUID::Tiny
-
-PGSQL_90_RPMS = \
-	postgresql90 \
-	postgresql90-contrib \
-	postgresql90-devel \
-	postgresql90-libs \
-	postgresql90-plperl \
-	postgresql90-server
-
-PGSQL_FEDORA_RPMS = \
-	postgresql \
-	postgresql-contrib \
-	postgresql-libs \
-	postgresql-plperl \
-	postgresql-server
-
-PGSQL_CLIENT_DEBS_90 = \
-	libpq5 \
-	libpq-dev \
-	postgresql-client-9.0
-
-PGSQL_CLIENT_DEBS_91 = \
-	libpq5 \
-	libpq-dev \
-	postgresql-client-9.1
-
-PGSQL_SERVER_DEBS_90 = \
-	postgresql-9.0 \
-	postgresql-contrib-9.0 \
-	postgresql-plperl-9.0 \
-	postgresql-server-dev-9.0
-
-PGSQL_SERVER_DEBS_91 = \
-	postgresql-9.1 \
-	postgresql-contrib-9.1 \
-	postgresql-plperl-9.1 \
-	postgresql-server-dev-9.1
-
-DEB_APACHE_MODS = \
-    expires\
-    include\
-    proxy\
-    proxy_http\
-    rewrite
-
-DEB_APACHE_DISMODS = \
-    deflate
-
-# Chronically unpackaged CPAN modules
-CPAN_MODULES = \
-	Business::OnlinePayment::PayPal \
-	Library::CallNumber::LC \
-	Net::Z3950::Simple2ZOOM \
-	Template::Plugin::POSIX \
-	SRU \
-	Rose::URI
-
-# More chronically unpackaged CPAN modules (available in Squeeze though)
-CPAN_MODULES_MORE = \
-    Business::CreditCard::Object \
-    MARC::Record \
-    Net::SSH2 \
-    UUID::Tiny
-
-# Are we sure most distros don't come with an acceptable version of Safe.pm?
-CPAN_MODULES_SAFE = \
-	Safe
-
-# Recent Debian/Ubuntus have libmarc-charset-perl, libmarc-xml-perl, libnet-z3950-zoom-perl
-CPAN_MODULES_MARC = \
-	Business::ISBN \
-	Business::ISBN::Data \
-	MARC::Charset \
-	MARC::File::XML \
-	Net::Z3950::ZOOM
-
-CPAN_MODULES_MARC_RECORD = \
-	MARC::Record
-
-CPAN_MODULES_FORCE = \
-	Class::DBI::Frozen::301
-
-# Debian Squeeze needs the following additional CPAN modules.
-CPAN_MODULES_SQUEEZE = \
-	RPC::XML
-
-# Lucid Lynx needs the following additional CPAN modules.
-CPAN_MODULES_LUCID = \
-    Rose::URI \
-    RPC::XML
-
-# Precise Pangolin needs the following CPAN modules. All others are
-# available as debs.
-CPAN_MODULES_PRECISE = \
-    Business::CreditCard::Object \
-    Business::OnlinePayment::PayPal \
-    Template::Plugin::POSIX \
-    Rose::URI
+export LIBDBI=libdbi-0.8.3
+export LIBDBI_DRIVERS=libdbi-drivers-0.8.3
+export LIBDBI_HOST=http://open-ils.org/~denials/evergreen
 
 # ----------------------------------------------------------------------------
 
-all: 
+# avoid hard-coding the path to related makefiles
+DIR = $(dir $(lastword $(MAKEFILE_LIST)))/install
+
+all:
 	@echo "please specify an OS" && exit 0
-
-# these should be the same for any distro
-install: install_cpan install_js_sm install_cpan_force
-
-fedora: install_fedora_rpms install_cpan_fedora install_cpan_marc install
-
-debian-squeeze: squeeze generic_debian
-squeeze: install_pgsql_client_backport_debs_91  install_extra_debs_squeeze install_cpan_squeeze
-generic_debian: install_debs install_yaz test_for_libdbi_pkg install debian_sys_config install_libdbi
-
-# Needs for Ubuntu Lucid Lynx (10.04 LTS):
-ubuntu-lucid: lucid generic_ubuntu
-lucid: install_pgsql_client_debs_90 install_extra_debs_lucid \
-       install_cpan_marc_record install_yaz install_cpan_more \
-       install_cpan_safe install_cpan_lucid install test_for_libdbi_pkg \
-       install_libdbi
-
-# Needs for Ubuntu Precise Pangolin (12.04 LTS):
-ubuntu-precise: precise generic_ubuntu
-precise: install_pgsql_client_debs_91 install_extra_debs_precise \
-	 install_cpan_precise install_js_sm install_cpan_force
-
-# We don't do the "install" target on generic_ubuntu because newer
-# Ubuntu releases, like newer Debian releases, include packages for
-# many of those prerequisites.
-generic_ubuntu: install_debs debian_sys_config
-
-# - COMMON TARGETS ---------------------------------------------------------
-
-# Install the CPAN modules
-install_cpan: install_net_z3950_simpleserver
-	for m in $(CPAN_MODULES); do perl -MCPAN -e "install \"$$m\";"; done
-
-install_cpan_more: 
-	for m in $(CPAN_MODULES_MORE); do perl -MCPAN -e "install \"$$m\";"; done
-
-# Install the CPAN modules for MARC functionality
-install_cpan_marc: install_cpan_marc_record
-	for m in $(CPAN_MODULES_MARC); do perl -MCPAN -e "install \"$$m\";"; done
-
-install_cpan_marc_record:
-	for m in $(CPAN_MODULES_MARC_RECORD); do perl -MCPAN -e "install \"$$m\";"; done
-
-install_cpan_force:
-	for m in $(CPAN_MODULES_FORCE); do \
-		echo "force install $$m" | perl -MCPAN -e shell ;\
-	done
-
-# Install the Safe Perl module
-# Is this really unpackaged everywhere except for Fedora?
-install_cpan_safe: 
-	for m in $(CPAN_MODULES_SAFE); do perl -MCPAN -e "install \"$$m\";"; done
-
-# Install the CPAN modules for Fedora
-install_cpan_fedora: 
-	for m in $(FEDORA_CPAN); do \
-		echo "force install $$m" | perl -MCPAN -e shell;\
-	done
-
-# Install the CPAN modules needed for Squeeze
-install_cpan_squeeze:
-	for m in $(CPAN_MODULES_SQUEEZE); do perl -MCPAN -e "install \"$$m\";"; done
-
-# Install the CPAN modules needed for Lucid
-install_cpan_lucid:
-	for m in $(CPAN_MODULES_LUCID); do perl -MCPAN -e "install \"$$m\";"; done
-
-# Install the CPAN modules needed for Precise
-install_cpan_precise:
-	for m in $(CPAN_MODULES_PRECISE); do perl -MCPAN -e "install \"$$m\";"; done
-
-# Install a known working version of YAZ
-install_yaz:    
-	if [ ! -d $(YAZ) ]; then wget $(YAZ_HOST)/$(YAZ).tar.gz; fi;
-	tar xzf $(YAZ).tar.gz
-	cd $(YAZ) && ./configure && make && make install && ldconfig
-
-# Install the custom spidermonkey libs and JavaScript-SpiderMonkey Perl modules
-install_js_sm: install_libjs install_spidermonkey
-
-install_libjs: 
-	if [ ! -f $(LIBJS).tar.gz ]; then wget $(LIBJS_URL); fi;
-	tar -zxf $(LIBJS).tar.gz
-	cd js/src/ && JS_DIST=/usr make -f Makefile.ref
-	mkdir -p $(JS_INSTALL_PREFIX)/include/js/
-	cp js/src/*.h $(JS_INSTALL_PREFIX)/include/js/
-	cp js/src/*.tbl $(JS_INSTALL_PREFIX)/include/js/
-	if [ ! -z $(FEDORA_64) ]; then \
-		cp js/src/Linux_All_DBG.OBJ/*.so $(JS_INSTALL_PREFIX)/lib64/ && \
-		cp js/src/Linux_All_DBG.OBJ/*.a $(JS_INSTALL_PREFIX)/lib64/; \
-	else \
-		cp js/src/Linux_All_DBG.OBJ/*.so $(JS_INSTALL_PREFIX)/lib/ && \
-		cp js/src/Linux_All_DBG.OBJ/*.a $(JS_INSTALL_PREFIX)/lib/; \
-	fi;
-	ldconfig
-
-install_spidermonkey:
-	if [ ! -f $(LIBJS_PERL).tar.gz ]; then wget $(LIBJS_PERL_URL); fi;
-	tar -zxf $(LIBJS_PERL).tar.gz
-	if [ ! -z $(FEDORA_64) ]; then \
-		sed -i -e 's/"\/usr\/lib"/"\/usr\/lib64"/' $(LIBJS_PERL)/Makefile.PL ; \
-	fi;
-	if [ ! -z $(FEDORA) ]; then \
-		sed -i -e 's/js32.dll/libjs.so/' $(LIBJS_PERL)/Makefile.PL ; \
-	fi;
-	cd $(LIBJS_PERL) && perl Makefile.PL -E4X && make && make test && make install
-
-install_net_z3950_simpleserver:
-	if [ ! -f $(LIBNET_Z3950_SIMPLESERVER).tar.gz ]; then wget $(LIBNET_Z3950_SIMPLESERVER_URL).tar.gz; fi;
-	tar -zxf $(LIBNET_Z3950_SIMPLESERVER).tar.gz
-	cd $(LIBNET_Z3950_SIMPLESERVER) && perl Makefile.PL && make && make test && make install
-
-# On Ubuntu and possibly Debian, the libdbi0 package prevents the 
-# compiled-from-source version from being used and breaks the install.
-# This package might get installed depending on the install-time choices
-# for the distro. Test for its existence; if it's there, throw an error
-# message and exit.
-test_for_libdbi_pkg:
-		@if [ "$$(apt-cache policy libdbi0 | grep Installed | grep none | wc -l)" -eq 0 ]; then \
-				echo "*** Detected locally installed libdbi0 package; you must remove this"; \
-				echo "*** with a command like 'aptitude remove libdbi0' before proceeding"; \
-				echo "*** to successfully install Evergreen."; \
-				echo; \
-				echo "*** Note: this may break other applications on your system."; \
-				exit 0; \
-		fi;
-
-# Install libdbi and the postgres drivers
-install_libdbi:
-	if [ ! -d $(LIBDBI) ]; then wget $(LIBDBI_HOST)/$(LIBDBI).tar.gz; fi;
-	if [ ! -d $(LIBDBI_DRIVERS) ]; then wget $(LIBDBI_HOST)/$(LIBDBI_DRIVERS).tar.gz; fi;
-	tar -zxf $(LIBDBI).tar.gz
-	tar -zxf $(LIBDBI_DRIVERS).tar.gz
-	cd $(LIBDBI) && ./configure --disable-docs && make all install
-	cd $(LIBDBI_DRIVERS) && ./configure  \
-		--disable-docs --with-pgsql --enable-libdbi && make all install  
-
-clean:
-	make -C $(LIBDBI) clean
-	make -C $(LIBDBI_DRIVERS) clean
-	make -C $(LIBJS_PERL) clean
-	make -f Makefile.ref -C js/src/ clean
-
-
-# ------------------------------------------------------------------
-# - DEBIAN ---------------------------------------------------------
-
-debian_sys_config: 
-	# link the apache modules in
-	for m in $(DEB_APACHE_MODS); do a2enmod $$m; done;
-	# keep the bad apache modules away
-	for m in $(DEB_APACHE_DISMODS); do a2dismod $$m; done;
-	# refresh the dynamic library cache
-	ldconfig
-
-# Install the debian-specific dependencies
-install_debs:
-	$(APT_TOOL) install $(DEBS)
-
-install_pgsql_client_debs_90:
-	@if [ `$(APT_TOOL) versions libpq5 | grep ^i|sed 's/^i[ \t]*//'|cut -d. -f1` -eq 8 ]; \
-		then \
-		echo -e "libpq5 / libpq-dev are installed as part of OpenSRF (a dependency" \
-		"of apache2-prefork-dev), but these are the 8.4 versions and they" \
-		"conflict with the 9.0 versions - so remove them, install the pinned" \
-		"backports of 9.0, then reinstall the apache2-prefork-dev package.\n\n" \
-		"**WARNING**: Saying 'Yes' to this step will _remove_ any PostgreSQL" \
-		"databases that might currently exist on this machine." && \
-		$(APT_SAFE_TOOL) remove libpq5 libpq-dev ; \
-	fi
-	$(APT_BACKPORT_TOOL) install $(PGSQL_CLIENT_DEBS_90)
-	$(APT_TOOL) install apache2-prefork-dev
-
-install_pgsql_server_debs_90:
-	$(APT_BACKPORT_TOOL) install $(PGSQL_SERVER_DEBS_90)
-
-install_pgsql_client_backport_debs_91:
-	@if [ `$(APT_TOOL) versions libpq5 | grep ^i|sed 's/^i[ \t]*//'|cut -d. -f1` -eq 8 ]; \
-		then \
-		echo -e "libpq5 / libpq-dev are installed as part of OpenSRF (a dependency" \
-		"of apache2-prefork-dev), but these are the 8.4 versions and they" \
-		"conflict with the 9.0 versions - so remove them, install the pinned" \
-		"backports of 9.0, then reinstall the apache2-prefork-dev package.\n\n" \
-		"**WARNING**: Saying 'Yes' to this step will _remove_ any PostgreSQL" \
-		"databases that might currently exist on this machine." && \
-		$(APT_SAFE_TOOL) remove libpq5 libpq-dev ; \
-	fi
-	$(APT_BACKPORT_TOOL) install $(PGSQL_CLIENT_DEBS_91)
-	$(APT_TOOL) install apache2-prefork-dev
-
-install_pgsql_client_debs_91:
-	$(APT_TOOL) install $(PGSQL_CLIENT_DEBS_91)
-
-install_pgsql_server_debs_91:
-	$(APT_TOOL) install $(PGSQL_SERVER_DEBS_91)
-
-install_pgsql_server_backport_debs_91:
-	$(APT_BACKPORT_TOOL) install $(PGSQL_SERVER_DEBS_91)
-
-# Install the debian-specific dependencies for more modern distros
-install_extra_debs_squeeze: install_extra_debs
-	$(APT_TOOL) install $(EXTRA_DEBS_SQUEEZE)
-
-# Install dependencies for Ubuntu 10.04:
-install_extra_debs_lucid: install_extra_debs
-	$(APT_TOOL) install $(EXTRA_DEBS_LUCID)
-
-# Install dependencies for Ubuntu 12.04:
-install_extra_debs_precise: install_extra_debs
-	$(APT_TOOL) install $(EXTRA_DEBS_PRECISE)
-
-install_extra_debs:
-	$(APT_TOOL) install $(EXTRA_DEBS)
-
-# ------------------------------------------------------------------
-
-# FEDORA
-install_fedora_rpms:
-	yum -y update
-	yum -y install $(FEDORA_RPMS)
-
-install_fedora_pgsql_server:
-	yum -y install $(PGSQL_FEDORA_RPMS)
-
-# We need to add /usr/local/lib to the ldconfig list of directories on CentOS,
-# if it is not already there
-create_ld_local:
-	if [ "$$(ldconfig -v 2> /dev/null | grep '^/usr/local/lib' | wc -l)" -eq 0 ]; then \
-		echo '/usr/local/lib' >> /etc/ld.so.conf.d/local.conf; \
-		ldconfig; \
-	fi;
+debian-wheezy:
+	@make -f $(DIR)/Makefile.debian-wheezy
+debian-squeeze: 
+	@make -f $(DIR)/Makefile.debian-squeeze
+ubuntu-lucid:
+	@make -f $(DIR)/Makefile.ubuntu-lucid
+ubuntu-precise:
+	@make -f $(DIR)/Makefile.ubuntu-precise
+fedora:
+	@make -f $(DIR)/Makefile.fedora
 
 # vim:noet:sw=4:ts=4:
