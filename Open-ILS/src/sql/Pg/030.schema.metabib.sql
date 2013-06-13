@@ -641,14 +641,23 @@ BEGIN
                 VALUES (mbe_id, ind_data.field, ind_data.source);
         END IF;
 
-        IF ind_data.search_field AND NOT b_skip_search THEN
-            EXECUTE $$
+        -- Avoid inserting duplicate rows, but retain granularity of being
+        -- able to search browse fields with "starts with" type operators
+        -- (for example, for titles of songs in music albums)
+        IF (ind_data.search_field OR ind_data.browse_field) AND NOT b_skip_search THEN
+            EXECUTE 'SELECT 1 FROM metabib.' || ind_data.field_class ||
+                '_field_entry WHERE field = $1 AND source = $2 AND value = $3'
+                INTO mbe_id USING ind_data.field, ind_data.source, ind_data.value;
+                -- RAISE NOTICE 'Search for an already matching row returned %', mbe_id;
+            IF mbe_id IS NULL THEN
+                EXECUTE $$
                 INSERT INTO metabib.$$ || ind_data.field_class || $$_field_entry (field, source, value)
                     VALUES ($$ ||
                         quote_literal(ind_data.field) || $$, $$ ||
                         quote_literal(ind_data.source) || $$, $$ ||
                         quote_literal(ind_data.value) ||
                     $$);$$;
+            END IF;
         END IF;
 
     END LOOP;
