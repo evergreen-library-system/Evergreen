@@ -82,6 +82,7 @@ DEBS =  \
 	libole-storage-lite-perl\
 	libspreadsheet-writeexcel-perl\
 	libssh2-1-dev\
+	libtest-warn-perl\
 	libtext-aspell-perl\
 	libtext-csv-perl\
 	libuniversal-require-perl\
@@ -153,6 +154,7 @@ FEDORA_RPMS = \
 	perl-OLE-Storage_Lite \
 	perl-RPC-XML \
 	perl-Spreadsheet-WriteExcel \
+	perl-Test-Warn \
 	perl-Text-Aspell \
 	perl-Text-CSV \
 	perl-Text-CSV_XS \

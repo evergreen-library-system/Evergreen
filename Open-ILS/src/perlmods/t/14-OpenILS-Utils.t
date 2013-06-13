@@ -1,6 +1,7 @@
 #!perl -T
 
-use Test::More tests => 29;
+use Test::More tests => 30;
+use Test::Warn;
 
 use_ok( 'OpenILS::Utils::Configure' );
 use_ok( 'OpenILS::Utils::Cronscript' );
@@ -33,7 +34,12 @@ $co_marc->append_fields(
 );
 my $co_mfhd = MFHD->new($co_marc);
 
-my @comp_holdings = $co_mfhd->get_compressed_holdings($co_mfhd->field('853'));
+my @comp_holdings;
+warning_like {
+    @comp_holdings = $co_mfhd->get_compressed_holdings($co_mfhd->field('853'));
+} [ qr/Cannot compress without pattern data, returning original holdings/ ],
+    "warning when attempting to compress holdings without a pattern";
+
 is(@comp_holdings, 0, "Compressed holdings for an MFHD record that only has a caption");
 
 my @decomp_holdings = $co_mfhd->get_decompressed_holdings($co_mfhd->field('853'));
