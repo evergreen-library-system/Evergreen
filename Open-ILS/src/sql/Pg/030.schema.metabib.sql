@@ -411,6 +411,11 @@ DECLARE
     output_row  metabib.field_entry_template%ROWTYPE;
 BEGIN
 
+    -- Start out with no field-use bools set
+    output_row.browse_field = FALSE;
+    output_row.facet_field = FALSE;
+    output_row.search_field = FALSE;
+
     -- Get the record
     SELECT INTO bib * FROM biblio.record_entry WHERE id = rid;
 
@@ -513,6 +518,7 @@ BEGIN
 
             output_row.search_field = TRUE;
             RETURN NEXT output_row;
+            output_row.search_field = FALSE;
         END IF;
 
     END LOOP;
