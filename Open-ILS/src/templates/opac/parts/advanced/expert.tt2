@@ -19,7 +19,7 @@
         </tbody>
         <tfoot>
             <tr>
-               <td colspan="7"><a href="javascript:addExpertRow();">[ [% l("Add row") %] ]</a></td>
+               <td colspan="7"><a href="javascript:addExpertRow();">[% l("Add Search Row") %]</a></td>
             </tr>
             <tr>
                [%- lib_select_id = "expert_search_library"; -%]
