@@ -557,7 +557,7 @@ __PACKAGE__->register_method(
             }
         ],
         return => {
-            q/Object containing status information about the on-going search
+            desc => q/Object containing status information about the on-going search
             and queue operation. 
             {
                 bre_count    : $num, -- number of bibs to search against
