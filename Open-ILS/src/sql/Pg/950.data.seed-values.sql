@@ -6062,7 +6062,7 @@ INSERT INTO config.coded_value_map (id, ctype, code, value) VALUES
     (166, 'item_lang', 'grn', oils_i18n_gettext('166', 'Guarani', 'ccvm', 'value')),
     (167, 'item_lang', '-gua', oils_i18n_gettext('167', 'Guarani', 'ccvm', 'value')),
     (168, 'item_lang', 'guj', oils_i18n_gettext('168', 'Gujarati', 'ccvm', 'value')),
-    (169, 'item_lang', 'gwi', oils_i18n_gettext('169', 'Gwich', 'ccvm', 'value''in')),
+    (169, 'item_lang', 'gwi', oils_i18n_gettext('169', 'Gwich''in', 'ccvm', 'value')),
     (170, 'item_lang', 'hai', oils_i18n_gettext('170', 'Haida', 'ccvm', 'value')),
     (171, 'item_lang', 'hat', oils_i18n_gettext('171', 'Haitian French Creole', 'ccvm', 'value')),
     (172, 'item_lang', 'hau', oils_i18n_gettext('172', 'Hausa', 'ccvm', 'value')),
