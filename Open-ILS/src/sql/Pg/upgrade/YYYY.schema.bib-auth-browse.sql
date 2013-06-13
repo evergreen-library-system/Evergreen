@@ -7148,9 +7148,10 @@ CREATE TYPE metabib.flat_browse_entry_appearance AS (
     authorities     TEXT,
     sources         INT,        -- visible ones, that is
     row_number      INT,        -- internal use, sort of
-    accurate        BOOL        -- Count in sources field is accurate? Not
+    accurate        BOOL,       -- Count in sources field is accurate? Not
                                 -- if we had more than a browse superpage
                                 -- of records to look at.
+    pivot_point     BIGINT
 );
 
 
@@ -7174,42 +7175,55 @@ END;
 $p$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION metabib.staged_browse(
-    core_query              TEXT,
+    query               TEXT,
     context_org             INT,
     context_locations       INT[],
     staff                   BOOL,
     browse_superpage_size   INT,
+    count_up_from_zero      BOOL,   -- if false, count down from -1
     result_limit            INT,
-    use_offset              INT
+    next_pivot_pos          INT
 ) RETURNS SETOF metabib.flat_browse_entry_appearance AS $p$
 DECLARE
-    core_cursor             REFCURSOR;
-    core_record             RECORD;
+    curs                    REFCURSOR;
+    rec                     RECORD;
     qpfts_query             TEXT;
     result_row              metabib.flat_browse_entry_appearance%ROWTYPE;
     results_skipped         INT := 0;
-    results_returned        INT := 0;
+    row_counter             INT := 0;
+    row_number              INT;
     slice_start             INT;
     slice_end               INT;
     full_end                INT;
     superpage_of_records    BIGINT[];
     superpage_size          INT;
 BEGIN
-    OPEN core_cursor FOR EXECUTE core_query;
+    IF count_up_from_zero THEN
+        row_number := 0;
+    ELSE
+        row_number := -1;
+    END IF;
+
+    OPEN curs FOR EXECUTE query;
 
     LOOP
-        FETCH core_cursor INTO core_record;
-        EXIT WHEN NOT FOUND;
+        FETCH curs INTO rec;
+        IF NOT FOUND THEN
+            IF result_row.pivot_point IS NOT NULL THEN
+                RETURN NEXT result_row;
+            END IF;
+            RETURN;
+        END IF;
 
         result_row.sources := 0;
 
-        full_end := ARRAY_LENGTH(core_record.records, 1);
+        full_end := ARRAY_LENGTH(rec.records, 1);
         superpage_size := COALESCE(browse_superpage_size, full_end);
         slice_start := 1;
         slice_end := superpage_size;
 
         WHILE result_row.sources = 0 AND slice_start <= full_end LOOP
-            superpage_of_records := core_record.records[slice_start:slice_end];
+            superpage_of_records := rec.records[slice_start:slice_end];
             qpfts_query :=
                 'SELECT NULL::BIGINT AS id, ARRAY[r] AS records, ' ||
                 '1::INT AS rel FROM (SELECT UNNEST(' ||
@@ -7237,30 +7251,57 @@ BEGIN
             browse_superpage_size >= full_end;
 
         IF result_row.sources > 0 THEN
-            IF results_skipped < use_offset THEN
-                results_skipped := results_skipped + 1;
-                CONTINUE;
+            -- We've got a browse entry with visible holdings. Yay.
+
+
+            -- The function that calls this function needs row_number in order
+            -- to correctly order results from two different runs of this
+            -- functions.
+            result_row.row_number := row_number;
+
+            -- Now, if row_counter is still less than limit, return a row.  If
+            -- not, but it is less than next_pivot_pos, continue on without
+            -- returning actual result rows until we find
+            -- that next pivot, and return it.
+
+            IF row_counter < result_limit THEN
+                result_row.browse_entry := rec.id;
+                result_row.authorities := rec.authorities;
+                result_row.fields := rec.fields;
+                result_row.value := rec.value;
+
+                RETURN NEXT result_row;
+            ELSE
+                result_row.browse_entry := NULL;
+                result_row.authorities := NULL;
+                result_row.fields := NULL;
+                result_row.value := NULL;
+                result_row.sources := NULL;
+                result_row.accurate := NULL;
+                result_row.pivot_point := rec.id;
+
+                IF row_counter >= next_pivot_pos THEN
+                    RETURN NEXT result_row;
+                    RETURN;
+                END IF;
             END IF;
 
-            result_row.browse_entry := core_record.id;
-            result_row.authorities := core_record.authorities;
-            result_row.fields := core_record.fields;
-            result_row.value := core_record.value;
+            IF count_up_from_zero THEN
+                row_number := row_number + 1;
+            ELSE
+                row_number := row_number - 1;
+            END IF;
 
-            -- This is needed so our caller can flip it and reverse it.
-            result_row.row_number := results_returned;
-
-            RETURN NEXT result_row;
-
-            results_returned := results_returned + 1;
-
-            EXIT WHEN results_returned >= result_limit;
+            -- row_counter is different from row_number.
+            -- It simply counts up from zero so that we know when
+            -- we've reached our limit.
+            row_counter := row_counter + 1;
         END IF;
     END LOOP;
 END;
 $p$ LANGUAGE PLPGSQL;
 
--- This is optimized to be fast for values of result_offset near zero.
+
 CREATE OR REPLACE FUNCTION metabib.browse(
     search_field            INT[],
     browse_term             TEXT,
@@ -7268,20 +7309,23 @@ CREATE OR REPLACE FUNCTION metabib.browse(
     context_loc_group       INT DEFAULT NULL,
     staff                   BOOL DEFAULT FALSE,
     pivot_id                BIGINT DEFAULT NULL,
-    force_backward          BOOL DEFAULT FALSE,
-    result_limit            INT DEFAULT 10,
-    result_offset           INT DEFAULT 0   -- Can be negative!
+    result_limit            INT DEFAULT 10
 ) RETURNS SETOF metabib.flat_browse_entry_appearance AS $p$
 DECLARE
     core_query              TEXT;
-    whole_query             TEXT;
+    back_query              TEXT;
+    forward_query           TEXT;
     pivot_sort_value        TEXT;
     pivot_sort_fallback     TEXT;
     context_locations       INT[];
-    use_offset              INT;
     browse_superpage_size   INT;
     results_skipped         INT := 0;
+    back_limit              INT;
+    back_to_pivot           INT;
+    forward_limit           INT;
+    forward_to_pivot        INT;
 BEGIN
+    -- First, find the pivot if we were given a browse term but not a pivot.
     IF pivot_id IS NULL THEN
         pivot_id := metabib.browse_pivot(search_field, browse_term);
     END IF;
@@ -7289,20 +7333,43 @@ BEGIN
     SELECT INTO pivot_sort_value, pivot_sort_fallback
         sort_value, value FROM metabib.browse_entry WHERE id = pivot_id;
 
+    -- Bail if we couldn't find a pivot.
     IF pivot_sort_value IS NULL THEN
         RETURN;
     END IF;
 
+    -- Transform the context_loc_group argument (if any) (logc at the
+    -- TPAC layer) into a form we'll be able to use.
     IF context_loc_group IS NOT NULL THEN
         SELECT INTO context_locations ARRAY_AGG(location)
             FROM asset.copy_location_group_map
             WHERE lgroup = context_loc_group;
     END IF;
 
+    -- Get the configured size of browse superpages.
     SELECT INTO browse_superpage_size value     -- NULL ok
         FROM config.global_flag
         WHERE enabled AND name = 'opac.browse.holdings_visibility_test_limit';
 
+    -- First we're going to search backward from the pivot, then we're going
+    -- to search forward.  In each direction, we need two limits.  At the
+    -- lesser of the two limits, we delineate the edge of the result set
+    -- we're going to return.  At the greater of the two limits, we find the
+    -- pivot value that would represent an offset from the current pivot
+    -- at a distance of one "page" in either direction, where a "page" is a
+    -- result set of the size specified in the "result_limit" argument.
+    --
+    -- The two limits in each direction make four derived values in total,
+    -- and we calculate them now.
+    back_limit := CEIL(result_limit::FLOAT / 2);
+    back_to_pivot := result_limit;
+    forward_limit := result_limit / 2;
+    forward_to_pivot := result_limit - 1;
+
+    -- This is the meat of the SQL query that finds browse entries.  We'll
+    -- pass this to a function which uses it with a cursor, so that individual
+    -- rows may be fetched in a loop until some condition is satisfied, without
+    -- waiting for a result set of fixed size to be collected all at once.
     core_query := '
     SELECT
         mbe.id,
@@ -7324,30 +7391,29 @@ BEGIN
     )
     WHERE ';
 
-    -- PostgreSQL is not magic. We can't actually pass a negative offset.
-    IF result_offset >= 0 AND NOT force_backward THEN
-        use_offset := result_offset;
-        core_query := core_query ||
-            ' mbe.sort_value >= ' || quote_literal(pivot_sort_value) ||
-        ' GROUP BY 1,2,3 ORDER BY mbe.sort_value, mbe.value ';
+    -- This is the variant of the query for browsing backward.
+    back_query := core_query ||
+        ' mbe.sort_value <= ' || quote_literal(pivot_sort_value) ||
+    ' GROUP BY 1,2,3 ORDER BY mbe.sort_value DESC, mbe.value DESC ';
 
-        RETURN QUERY SELECT * FROM metabib.staged_browse(
-            core_query, context_org, context_locations,
-            staff, browse_superpage_size, result_limit, use_offset
-        );
-    ELSE
-        -- Part 1 of 2 to deliver what the user wants with a negative offset:
-        core_query := core_query ||
-            ' mbe.sort_value < ' || quote_literal(pivot_sort_value) ||
-        ' GROUP BY 1,2,3 ORDER BY mbe.sort_value DESC, mbe.value DESC ';
+    -- This variant browses forward.
+    forward_query := core_query ||
+        ' mbe.sort_value > ' || quote_literal(pivot_sort_value) ||
+    ' GROUP BY 1,2,3 ORDER BY mbe.sort_value, mbe.value ';
 
-        -- Part 2 of 2 to deliver what the user wants with a negative offset:
-        RETURN QUERY SELECT * FROM (SELECT * FROM metabib.staged_browse(
-            core_query, context_org, context_locations,
-            staff, browse_superpage_size, result_limit, use_offset
-        )) sb ORDER BY row_number DESC;
+    -- We now call the function which applies a cursor to the provided
+    -- queries, stopping at the appropriate limits and also giving us
+    -- the next page's pivot.
+    RETURN QUERY
+        SELECT * FROM metabib.staged_browse(
+            back_query, context_org, context_locations,
+            staff, browse_superpage_size, TRUE, back_limit, back_to_pivot
+        ) UNION
+        SELECT * FROM metabib.staged_browse(
+            forward_query, context_org, context_locations,
+            staff, browse_superpage_size, FALSE, forward_limit, forward_to_pivot
+        ) ORDER BY row_number DESC;
 
-    END IF;
 END;
 $p$ LANGUAGE PLPGSQL;
 
@@ -7358,9 +7424,7 @@ CREATE OR REPLACE FUNCTION metabib.browse(
     context_loc_group   INT DEFAULT NULL,
     staff               BOOL DEFAULT FALSE,
     pivot_id            BIGINT DEFAULT NULL,
-    force_backward      BOOL DEFAULT FALSE,
-    result_limit        INT DEFAULT 10,
-    result_offset       INT DEFAULT 0   -- Can be negative, implying backward!
+    result_limit        INT DEFAULT 10
 ) RETURNS SETOF metabib.flat_browse_entry_appearance AS $p$
 BEGIN
     RETURN QUERY SELECT * FROM metabib.browse(
@@ -7371,9 +7435,7 @@ BEGIN
         context_loc_group,
         staff,
         pivot_id,
-        force_backward,
-        result_limit,
-        result_offset
+        result_limit
     );
 END;
 $p$ LANGUAGE PLPGSQL;

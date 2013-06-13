@@ -7,10 +7,9 @@
     INCLUDE "opac/parts/topnav.tt2";
 
     ctx.page_title = l("Browse the Catalog");
-    blimit = CGI.param('blimit') || 10;
-    boffset = CGI.param('boffset') || 0;
+    blimit = CGI.param('blimit') || ctx.opac_hits_per_page || 10;
 
-    depart_list = ['blimit', 'bterm', 'boffset', 'bpivot', 'bback'];
+    depart_list = ['blimit', 'bterm', 'bpivot'];
 %]
 
     <div id="search-wrapper">
@@ -27,46 +26,49 @@
         <div id="main-content">
             <div id="browse-the-catalog">
                 <div id="browse-controls">
-                    <form method="get">
+                    <form method="get" onsubmit="$('browse-submit-spinner').className = ''; return true">
                         <input type="hidden" name="blimit"
                             value="[% blimit %]" />
 
                         [% control_qtype = INCLUDE "opac/parts/qtype_selector.tt2"
-                            id="browse-search-class" browse_only=1 %]
+                            id="browse-search-class" browse_only=1 plural=1 %]
 
                         [% control_bterm = BLOCK %]<input type="text" name="bterm" id="browse-term"
                             value="[% CGI.param('bterm') | html %]" />[% END %]
                         [% control_locg = INCLUDE build_org_selector id='browse-context'
                             show_loc_groups=1
                             arialabel=l('Select holding library') %]
-                        [% l('Browse by [_1] for [_2] held under [_3]', control_qtype, control_bterm, control_locg) %]
+                        [% l('Browse for [_1] starting with [_2] in [_3]', control_qtype, control_bterm, control_locg) %]
 
                         <input type="submit" value="[% l('Go') %]" />
+                        <img id="browse-submit-spinner" src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif" class="hidden" style="width: 16px; height: 16px;" alt="" />
                     </form>
                 </div>
 
                 [% BLOCK browse_pager %]
                 <div class="browse-pager">
-                    [% IF ctx.more_back %]
-                    <a class="opac-button" href="[% mkurl('', {bpivot => ctx.back_pivot, bback => 1}) %]">&larr; [%l ('Back') %]</a>
+                    [% IF ctx.back_pivot %]
+                    <a class="opac-button" href="[% mkurl('', {bpivot => ctx.back_pivot}) %]" onclick="$('browse-pager-spinner-[% id %]').className = '';">&larr; [%l ('Back') %]</a>
                     [% END %]
                     [% IF browse.english_pager; # XXX how to apply i18n here?
                         current_qtype = CGI.param('qtype') || 'title' %]
                     <span class="browse-shortcuts">
-                        <a href="[% mkurl('', {qtype => current_qtype, bterm => '0'}, ['boffset','bpivot','bback']) %]">0-9</a>
+                        <a href="[% mkurl('', {qtype => current_qtype, bterm => '0'}, ['bpivot']) %]">0-9</a>
                         [% FOR letter IN ['A'..'Z'] %]
-                            <a href="[% mkurl('', {qtype => current_qtype, bterm => letter}, ['boffset','bpivot','bback']) %]">[% letter %]</a>
+                            <a href="[% mkurl('', {qtype => current_qtype, bterm => letter}, ['bpivot']) %]">[% letter %]</a>
                         [% END %]
                     </span>
                     [% END %]
 
-                    [% IF ctx.more_forward %]
-                    <a class="opac-button" href="[% mkurl('', {bpivot => ctx.forward_pivot}, ['bback']) %]">[%l ('Forward') %] &rarr;</a>
+                    [% IF ctx.forward_pivot %]
+                    <a class="opac-button" href="[% mkurl('', {bpivot => ctx.forward_pivot}) %]" onclick="$('browse-pager-spinner-[% id %]').className = '';">[%l ('Next') %] &rarr;</a>
                     [% END %]
+
+                    <img id="browse-pager-spinner-[% id %]" src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif" class="hidden" style="width: 16px; height: 16px;" alt="" />
                 </div>
                 [% END %]
 
-                [% PROCESS browse_pager %]
+                [% PROCESS browse_pager id=0 %]
 
                 <div id="browse-results">
                 [% IF ctx.browse_error %]
@@ -78,13 +80,22 @@
                 [% ELSE %]
                     [% IF ctx.browse_leading_article_warning %]
                     <div class="browse-leading-article-warning">
-                            [% l("Your browse term seems to begin with an article. You might get better results by omitting the article.") %]
+                            [% l("Your browse term seems to begin with an article (a, an, the). You might get better results by omitting the article.") %]
+                            [% IF ctx.browse_leading_article_alternative %]
+                            <p>
+                            [% alternative_link = BLOCK %]
+                            <a href="[% mkurl('', {bterm => ctx.browse_leading_article_alternative}, ['bpivot']) %]">[% ctx.browse_leading_article_alternative | html %]</a>
+                            [%-  END; # alternative_link BLOCK
+                                l("Did you mean [_1]?", alternative_link);
+                            END # IF %]
+                            </p>
                     </div>
                     [% END %]
-                    <ul class="browse-result-list">
+
+                    <ol class="browse-result-list">
                     [% FOR result IN ctx.browse_results %]
                         <li class="browse-result">
-                            <span class="browse-result-value">
+                            <span class="browse-result-value[% result.row_number == 0 && !CGI.param('bpivot') ? ' browse-result-best-match' : '' %]">
                                 <a href="[% mkurl(
                                     ctx.opac_root _ '/results', {
                                         'fi:has_browse_entry' => (result.browse_entry _ ',' _ result.fields)
@@ -135,7 +146,7 @@
                 [% END %]
                 </div>
 
-                [% PROCESS browse_pager %]
+                [% PROCESS browse_pager id=1 %]
             </div>
 
             <div class="common-full-pad"></div>	
@@ -150,22 +161,7 @@
                     [% l("Note:") %]
                 </span>
                 <span class="browse-public-general-note-body">
-            [% FOR piece IN note;
-                IF piece.heading;
-                    mkurl_args = {bterm => piece.bterm};
-                    IF piece.org_id;
-                        mkurl_args.locg = piece.org_id;
-                    END;
-                %]
-                <a href="[% mkurl('', mkurl_args, ['boffset','bpivot','bback']) %]">[% piece.heading | html %]</a>
-                [% ELSIF piece.institution %]
-                <span class="browse-public-general-note-institution">
-                    [% piece.institution | html %]
-                </span>
-                [% ELSE %]
-                    [% piece | html %]
-                [% END;
-            END %]
+                [% FOR piece IN note; piece | html; END %]
                 </span>
             </div>
         [% END;

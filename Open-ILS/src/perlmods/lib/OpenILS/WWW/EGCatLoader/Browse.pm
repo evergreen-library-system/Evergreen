@@ -15,6 +15,7 @@ use OpenSRF::Utils::SettingsClient;
 use Digest::MD5 qw/md5_hex/;
 use Apache2::Const -compile => qw/OK/;
 use MARC::Record;
+use List::Util qw/first/;
 #use Data::Dumper;
 #$Data::Dumper::Indent = 0;
 
@@ -53,12 +54,7 @@ sub prepare_browse_parameters {
 
     no warnings 'uninitialized';
 
-    # XXX TODO add config.global_flag rows for browse limit-limit and
-    # browse offset-limit?
-
-    my $limit = int($self->cgi->param('blimit') || 10);
-    my $offset = int($self->cgi->param('boffset') || 0);
-    my $force_backward = scalar($self->cgi->param('bback'));
+    # XXX TODO add config.global_flag rows for browse limit-limit ?
 
     my @params = (
         scalar($self->cgi->param('qtype')),
@@ -68,59 +64,36 @@ sub prepare_browse_parameters {
         $self->ctx->{copy_location_group},
         $self->ctx->{is_staff} ? 't' : 'f',
         scalar($self->cgi->param('bpivot')),
-        $force_backward ? 't' : 'f'
+        int(
+            $self->cgi->param('blimit') ||
+            $self->ctx->{opac_hits_per_page} || 10
+        )
     );
 
-    # We do need $limit, $offset, and $force_backward as part of the
-    # cache key, but we also need to keep them separate from other
-    # parameters for purposes of paging link generation.
     return (
-        "oils_browse_" . md5_hex(
-            OpenSRF::Utils::JSON->perl2JSON(
-                [@params, $limit, $offset, $force_backward]
-            )
-        ),
-        $limit, $offset, $force_backward, @params
+        "oils_browse_" . md5_hex(OpenSRF::Utils::JSON->perl2JSON(\@params)),
+        @params
     );
 }
 
-# Break out any Public General Notes (field 680) for display and
-# hyperlinking. These are sometimes (erroneously?) called "scope notes."
-# I say erroneously, tentatively, because LoC doesn't seem to document
-# a "scope notes" field for authority records, while it does so for
-# classification records, which are something else. But I am not a
-# librarian.
+# Break out any Public General Notes (field 680) for display. These are
+# sometimes (erroneously?) called "scope notes." I say erroneously,
+# tentatively, because LoC doesn't seem to document a "scope notes"
+# field for authority records, while it does so for classification
+# records, which are something else. But I am not a librarian.
 sub extract_public_general_notes {
     my ($self, $record, $row) = @_;
 
-    my @notes;
-    foreach my $note ($record->field('680')) {
-        my @note;
-        my $last_heading;
-
-        foreach my $subfield ($note->subfields) {
-            my ($code, $value) = @$subfield;
-
-            if ($code eq 'i') {
-                push @note, $value;
-            } elsif ($code eq '5') {
-                if ($last_heading) {
-                    my $org = $self->ctx->{get_aou_by_shortname}->($value);
-                    $last_heading->{org_id} = $org->id if $org;
-                }
-                push @note, { institution => $value };
-            } elsif ($code eq 'a') {
-                $last_heading = {
-                    heading => $value, bterm => search_normalize($value)
-                };
-                push @note, $last_heading;
-            }
-        }
-
-        push @notes, \@note if @note;
-    }
-
-    $row->{notes} = \@notes;
+    # Make a list of strings, each string being a concatentation of any
+    # subfields 'i', '5', or 'a' from one field 680, in order of appearance.
+    $row->{notes} = [
+        map {
+            join(
+                " ",
+                map { $_->[1] } grep { $_->[0] =~ /[i5a]/ } $_->subfields
+            )
+        } $record->field('680')
+    ];
 }
 
 sub find_authority_headings_and_notes {
@@ -273,15 +246,10 @@ sub flesh_browse_results {
 }
 
 sub load_browse_impl {
-    my ($self, $limit, $offset, $force_backward, @params) = @_;
-
-    my $inner_limit = ($offset >= 0 and not $force_backward) ?
-        $limit + 1 : $limit;
+    my ($self, @params) = @_;
 
     my $results = $self->editor->json_query({
-        from => [
-            "metabib.browse", (@params, $inner_limit, $offset)
-        ]
+        from => [ "metabib.browse", @params ]
     });
 
     if (not $results) {  # DB error, not empty result set.
@@ -303,50 +271,23 @@ sub load_browse_impl {
     return $results;
 }
 
-# $results can be modified by this function.  This would be simpler
-# but for the moving pivot concept that helps us avoid paging with
-# large offsets (slow).
+# Find paging information, put it into $self->ctx, and return "real"
+# rows from $results, excluding those that contain only paging
+# information.
 sub infer_browse_paging {
-    my ($self, $results, $limit, $offset, $force_backward) = @_;
+    my ($self, $results) = @_;
 
-    # (All these comments assume a default limit of 10).  For typical
-    # not-backwards requests not at the end of the result set, we
-    # should have an eleventh result that tells us what's next.
-    while (scalar @$results > $limit) {
-        $self->ctx->{forward_pivot} = (pop @$results)->{browse_entry};
-        $self->ctx->{more_forward} = 1;
+    foreach (@$results) {
+        if ($_->{pivot_point}) {
+            if ($_->{row_number} < 0) { # sic
+                $self->ctx->{forward_pivot} = $_->{pivot_point};
+            } else {
+                $self->ctx->{back_pivot} = $_->{pivot_point};
+            }
+        }
     }
 
-    # If we're going backwards by pivot id, we don't have an eleventh
-    # result to tell us we can page forward, but we can assume we can
-    # go forward because duh, we followed a link backward to get here.
-    if ($force_backward and $self->cgi->param('bpivot')) {
-        $self->ctx->{forward_pivot} = scalar($self->cgi->param('bpivot'));
-        $self->ctx->{more_forward} = 1;
-    }
-
-    # The pivot that the user can use for going backwards is the first
-    # of the result set.
-    if (@$results) {
-        $self->ctx->{back_pivot} = $results->[0]->{browse_entry};
-    }
-
-    # The result of these tests relate to basic limit/offset paging.
-
-    # This comparison for setting more_forward does not fold into
-    # those for setting more_back.
-    if ($offset < 0 || $force_backward) {
-        $self->ctx->{more_forward} = 1;
-    }
-
-    if ($offset > 0 or (!$force_backward and $self->cgi->param('bpivot'))) {
-        $self->ctx->{more_back} = 1;
-    } elsif (scalar @$results < $limit) {
-        $self->ctx->{more_back} = 0;
-    } elsif (not($self->cgi->param('bterm') eq '0' and
-        not defined $self->cgi->param('bpivot'))) {   # paging links
-        $self->ctx->{more_back} = 1;
-    }
+    return [ grep { not defined $_->{pivot_point} } @$results ];
 }
 
 sub leading_article_test {
@@ -370,6 +311,8 @@ sub leading_article_test {
         if ($map->{$qtype}) {
             if ($bterm =~ qr/$map->{$qtype}/i) {
                 $self->ctx->{browse_leading_article_warning} = 1;
+                ($self->ctx->{browse_leading_article_alternative} = $bterm) =~
+                    s/$map->{$qtype}//;
             }
         }
     };
@@ -383,8 +326,17 @@ sub load_browse {
 
     _init_browse_cache();
 
-    $self->ctx->{more_forward} = 0;
-    $self->ctx->{more_back} = 0;
+    # If there's a user logged in, flesh extended user info so we can get
+    # her opac.hits_per_page setting, if any.
+    if ($self->ctx->{user}) {
+        $self->prepare_extended_user_info('settings');
+        if (my $setting = first { $_->name eq 'opac.hits_per_page' }
+            @{$self->ctx->{user}->settings}) {
+
+            $self->ctx->{opac_hits_per_page} =
+                int(OpenSRF::Utils::JSON->JSON2perl($setting->value));
+        }
+    }
 
     if ($self->cgi->param('qtype') and defined $self->cgi->param('bterm')) {
 
@@ -393,24 +345,18 @@ sub load_browse {
             $self->cgi->param('bterm')
         );
 
-        my ($cache_key, $limit, $offset, $force_backward, @params) =
-            $self->prepare_browse_parameters;
+        my ($cache_key, @params) = $self->prepare_browse_parameters;
 
         my $results = $browse_cache->get_cache($cache_key);
         if (not $results) {
-            $results = $self->load_browse_impl(
-                $limit, $offset, $force_backward, @params
-            );
+            $results = $self->load_browse_impl(@params);
             if ($results) {
                 $browse_cache->put_cache($cache_key, $results, $browse_timeout);
             }
         }
 
         if ($results) {
-            $self->infer_browse_paging(
-                $results, $limit, $offset, $force_backward
-            );
-            $self->ctx->{browse_results} = $results;
+            $self->ctx->{browse_results} = $self->infer_browse_paging($results);
         }
 
         # We don't need an else clause to send the user a 5XX error or

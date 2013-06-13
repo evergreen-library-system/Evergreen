@@ -1543,11 +1543,14 @@ a.preflib_change {
 .browse-result-sources, .browse-result-authority-bib-links {
     margin-left: 1em;
 }
+.browse-result-best-match {
+    font-weight: bold;
+}
 .browse-pager {
     margin: 2ex 0;
 }
 .browse-result-list {
-    list-style-type: square;
+    padding-bottom: 0.5ex;
 }
 .browse-shortcuts {
     font-size: 120%;
