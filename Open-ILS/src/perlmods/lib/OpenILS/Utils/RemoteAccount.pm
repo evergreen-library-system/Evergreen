@@ -712,35 +712,35 @@ sub new {
     my ($class, %args) = @_;
     my $self = { _permitted => \%fields, %fields };
 
-	bless $self, $class;
+    bless $self, $class;
 
     $self->init(\%args); # or croak "Initialization error caused by bad args";
     return $self;
 }
 
 sub DESTROY { 
-	# in order to create, we must first ...
-	my $self  = shift;
+    # in order to create, we must first ...
+    my $self  = shift;
     $self->{ssh2} and $self->{ssh2}->disconnect();  # let the other end know we're done.
     $self->{ftp} and $self->{ftp}->quit();  # let the other end know we're done.
 }
 
 sub AUTOLOAD {
-	my $self  = shift;
-	my $class = ref($self) or croak "AUTOLOAD error: $self is not an object";
-	my $name  = $AUTOLOAD;
+    my $self  = shift;
+    my $class = ref($self) or croak "AUTOLOAD error: $self is not an object";
+    my $name  = $AUTOLOAD;
 
-	$name =~ s/.*://;   #   strip leading package stuff
+    $name =~ s/.*://;   #   strip leading package stuff
 
-	unless (exists $self->{_permitted}->{$name}) {
-		croak "AUTOLOAD error: Cannot access '$name' field of class '$class'";
-	}
+    unless (exists $self->{_permitted}->{$name}) {
+        croak "AUTOLOAD error: Cannot access '$name' field of class '$class'";
+    }
 
-	if (@_) {
-		return $self->{$name} = shift;
-	} else {
-		return $self->{$name};
-	}
+    if (@_) {
+        return $self->{$name} = shift;
+    } else {
+        return $self->{$name};
+    }
 }
 
 1;

@@ -13,9 +13,9 @@ use OpenILS::Application::AppUtils;
 my $U = 'OpenILS::Application::AppUtils';
 
 __PACKAGE__->register_method(
-	method => 'create_provider',
-	api_name	=> 'open-ils.acq.provider.create',
-	signature => {
+    method => 'create_provider',
+    api_name    => 'open-ils.acq.provider.create',
+    signature => {
         desc => 'Creates a new provider',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -38,10 +38,10 @@ sub create_provider {
 
 
 __PACKAGE__->register_method(
-	method => 'retrieve_provider',
-	api_name	=> 'open-ils.acq.provider.retrieve',
+    method => 'retrieve_provider',
+    api_name    => 'open-ils.acq.provider.retrieve',
     authoritative => 1,
-	signature => {
+    signature => {
         desc => 'Retrieves a new provider',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -63,10 +63,10 @@ sub retrieve_provider {
 
 
 __PACKAGE__->register_method(
-	method => 'retrieve_org_providers',
-	api_name	=> 'open-ils.acq.provider.org.retrieve',
+    method => 'retrieve_org_providers',
+    api_name    => 'open-ils.acq.provider.org.retrieve',
     stream => 1,
-	signature => {
+    signature => {
         desc => 'Retrieves all the providers associated with an org unit that the requestor has access to see',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -105,10 +105,10 @@ sub retrieve_org_providers {
 }
 
 __PACKAGE__->register_method(
-	method => 'retrieve_provider_attr_def',
-	api_name	=> 'open-ils.acq.lineitem_provider_attr_definition.provider.retrieve',
+    method => 'retrieve_provider_attr_def',
+    api_name    => 'open-ils.acq.lineitem_provider_attr_definition.provider.retrieve',
     stream => 1,
-	signature => {
+    signature => {
         desc => 'Retrieves all of the lineitem_provider_attr_definition for a given provider',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -133,9 +133,9 @@ sub retrieve_provider_attr_def {
 }
 
 __PACKAGE__->register_method(
-	method => 'create_provider_attr_def',
-	api_name	=> 'open-ils.acq.lineitem_provider_attr_definition.create',
-	signature => {
+    method => 'create_provider_attr_def',
+    api_name    => 'open-ils.acq.lineitem_provider_attr_definition.create',
+    signature => {
         desc => 'Retrieves all of the lineitem_provider_attr_definition for a given provider',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -159,9 +159,9 @@ sub create_provider_attr_def {
 }
 
 __PACKAGE__->register_method(
-	method => 'delete_provider_attr_def',
-	api_name	=> 'open-ils.acq.lineitem_provider_attr_definition.delete',
-	signature => {
+    method => 'delete_provider_attr_def',
+    api_name    => 'open-ils.acq.lineitem_provider_attr_definition.delete',
+    signature => {
         desc => 'Deletes a lineitem_provider_attr_definition',
         params => [
             {desc => 'Authentication token', type => 'string'},

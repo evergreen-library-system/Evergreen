@@ -69,7 +69,7 @@ sub void_overdues {
         $e->update_money_billing($bill) or return $e->die_event;
     }
 
-	return undef;
+    return undef;
 }
 
 
@@ -96,22 +96,22 @@ sub reopen_xact {
 
 
 sub create_bill {
-	my($class, $e, $amount, $btype, $type, $xactid, $note) = @_;
+    my($class, $e, $amount, $btype, $type, $xactid, $note) = @_;
 
-	$logger->info("The system is charging $amount [$type] on xact $xactid");
+    $logger->info("The system is charging $amount [$type] on xact $xactid");
     $note ||= 'SYSTEM GENERATED';
 
     # -----------------------------------------------------------------
     # now create the billing
-	my $bill = Fieldmapper::money::billing->new;
-	$bill->xact($xactid);
-	$bill->amount($amount);
-	$bill->billing_type($type); 
-	$bill->btype($btype); 
-	$bill->note($note);
+    my $bill = Fieldmapper::money::billing->new;
+    $bill->xact($xactid);
+    $bill->amount($amount);
+    $bill->billing_type($type); 
+    $bill->btype($btype); 
+    $bill->note($note);
     $e->create_money_billing($bill) or return $e->die_event;
 
-	return undef;
+    return undef;
 }
 
 sub extend_grace_period {

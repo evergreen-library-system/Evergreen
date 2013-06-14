@@ -302,8 +302,8 @@ sub cleanup {
 }
 
 sub retrieve {
-	$logger->info("retrieve() not implemented. how'd we get here?"); # XXX
-	return;
+    $logger->info("retrieve() not implemented. how'd we get here?"); # XXX
+    return;
 }
 
 #sub retrieve {

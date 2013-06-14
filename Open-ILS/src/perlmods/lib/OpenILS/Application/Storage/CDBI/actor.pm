@@ -11,15 +11,15 @@ use base qw/actor/;
 __PACKAGE__->table( 'actor_usr' );
 __PACKAGE__->columns( Primary => qw/id/ );
 __PACKAGE__->columns( Essential => qw/usrname email first_given_name
-				second_given_name family_name billing_address
-				claims_returned_count home_ou dob deleted juvenile
-				active master_account ident_type ident_value
-				ident_type2 ident_value2 net_access_level alias
-				photo_url create_date expire_date credit_forward_balance
-				super_user usrgroup passwd card last_xact_id
-				standing barred profile prefix suffix alert_message
-				day_phone evening_phone other_phone mailing_address
-				claims_never_checked_out_count last_update_time/ );
+                second_given_name family_name billing_address
+                claims_returned_count home_ou dob deleted juvenile
+                active master_account ident_type ident_value
+                ident_type2 ident_value2 net_access_level alias
+                photo_url create_date expire_date credit_forward_balance
+                super_user usrgroup passwd card last_xact_id
+                standing barred profile prefix suffix alert_message
+                day_phone evening_phone other_phone mailing_address
+                claims_never_checked_out_count last_update_time/ );
 
 #-------------------------------------------------------------------------------
 package actor::usr_org_unit_opt_in;
@@ -82,7 +82,7 @@ use base qw/actor/;
 __PACKAGE__->table( 'actor_org_unit' );
 __PACKAGE__->columns( Primary => qw/id/);
 __PACKAGE__->columns( Essential => qw/parent_ou ou_type mailing_address billing_address
-				ill_address holds_address shortname name email phone opac_visible fiscal_calendar/);
+                ill_address holds_address shortname name email phone opac_visible fiscal_calendar/);
 
 #-------------------------------------------------------------------------------
 package actor::org_unit::hours_of_operation;
@@ -91,8 +91,8 @@ use base qw/actor/;
 __PACKAGE__->table( 'actor_hours_of_operation' );
 __PACKAGE__->columns( Primary => qw/id/);
 __PACKAGE__->columns( Essential => qw/dow_0_open dow_0_close dow_1_open dow_1_close dow_2_open dow_2_close
-					dow_3_open dow_3_close dow_4_open dow_4_close dow_5_open dow_5_close
-					dow_6_open dow_6_close/);
+                    dow_3_open dow_3_close dow_4_open dow_4_close dow_5_open dow_5_close
+                    dow_6_open dow_6_close/);
 
 #-------------------------------------------------------------------------------
 package actor::org_unit::closed_date;
@@ -174,8 +174,8 @@ use base qw/actor/;
 __PACKAGE__->table( 'actor_usr_address' );
 __PACKAGE__->columns( Primary => qw/id/ );
 __PACKAGE__->columns( Essential => qw/valid address_type usr street1 street2
-				      city county state country post_code
-				      within_city_limits/ );
+                      city county state country post_code
+                      within_city_limits/ );
 
 #-------------------------------------------------------------------------------
 package actor::org_address;
@@ -184,7 +184,7 @@ use base qw/actor/;
 __PACKAGE__->table( 'actor_org_address' );
 __PACKAGE__->columns( Primary => qw/id/ );
 __PACKAGE__->columns( Essential => qw/valid address_type org_unit street1 street2
-				      city county state country post_code/ );
+                      city county state country post_code/ );
 
 #-------------------------------------------------------------------------------
 1;

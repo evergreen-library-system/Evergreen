@@ -98,12 +98,12 @@ sub init_ro_object_cache {
         # fetch the org unit tree
         unless($cache{aou_tree}{$ctx->{locale}}) {
             my $tree = $e->search_actor_org_unit([
-			    {   parent_ou => undef},
-			    {   flesh            => -1,
-				    flesh_fields    => {aou =>  ['children']},
-				    order_by        => {aou => 'name'}
-			    }
-		    ])->[0];
+                {   parent_ou => undef},
+                {   flesh            => -1,
+                    flesh_fields    => {aou =>  ['children']},
+                    order_by        => {aou => 'name'}
+                }
+            ])->[0];
 
             # flesh the org unit type for each org unit
             # and simultaneously set the id => aou map cache

@@ -73,7 +73,7 @@ sub password_reset {
 
     $apache->content_type('text/html');
 
-	my $cgi = new CGI;
+    my $cgi = new CGI;
     my $ctx = {};
 
     $ctx->{'uri'} = $apache->uri;

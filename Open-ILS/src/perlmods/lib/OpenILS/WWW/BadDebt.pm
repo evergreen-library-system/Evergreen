@@ -41,40 +41,40 @@ sub child_init {
 }
 
 sub handler {
-	my $r = shift;
-	my $cgi = new CGI;
+    my $r = shift;
+    my $cgi = new CGI;
     my $auth_ses = $cgi->cookie('ses') || $cgi->param('ses');
 
-	# find some IDs ...
-	my @xacts;
+    # find some IDs ...
+    my @xacts;
 
     my $user = verify_login($auth_ses);
     return 403 unless $user;
 
-	my $mark_bad = $cgi->param('action') eq 'unmark' ? 'f' : 't';
-	my $format = $cgi->param('format') || 'csv';
+    my $mark_bad = $cgi->param('action') eq 'unmark' ? 'f' : 't';
+    my $format = $cgi->param('format') || 'csv';
 
-	my $file = $cgi->param('idfile');
-	if ($file) {
-		my $col = $cgi->param('idcolumn') || 0;
-		my $csv = new Text::CSV;
+    my $file = $cgi->param('idfile');
+    if ($file) {
+        my $col = $cgi->param('idcolumn') || 0;
+        my $csv = new Text::CSV;
 
-		while (<$file>) {
-			$csv->parse($_);
-			my @data = $csv->fields;
-			my $id = $data[$col];
-			$id =~ s/\D+//o;
-			next unless ($id);
-			push @xacts, $id;
-		}
-	}
+        while (<$file>) {
+            $csv->parse($_);
+            my @data = $csv->fields;
+            my $id = $data[$col];
+            $id =~ s/\D+//o;
+            next unless ($id);
+            push @xacts, $id;
+        }
+    }
 
-	if (!@xacts) { # try pathinfo
-		my $path_rec = $cgi->path_info();
-		if ($path_rec) {
-			@xacts = map { $_ ? ($_) : () } split '/', $path_rec;
-		}
-	}
+    if (!@xacts) { # try pathinfo
+        my $path_rec = $cgi->path_info();
+        if ($path_rec) {
+            @xacts = map { $_ ? ($_) : () } split '/', $path_rec;
+        }
+    }
 
     return 404 unless @xacts;
 
@@ -85,7 +85,7 @@ sub handler {
 
     my @header = ( '"Transaction ID"', '"Message"', '"Amount Owed"', '"Transaction Start Date"', '"User Barcode"' );
 
-	my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
+    my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
     my $actor = OpenSRF::AppSession->create('open-ils.actor');
 
     $cstore->connect();
@@ -142,14 +142,14 @@ sub handler {
 
     if ($format eq 'csv') {
         $r->headers_out->set("Content-Disposition" => "inline; filename=bad_debt_$date.csv");
-	    $r->content_type('application/octet-stream');
+        $r->content_type('application/octet-stream');
 
         $r->print( join(',', @header) . "\n" );
         $r->print( join(',', @$_    ) . "\n" ) for (@lines);
 
     } elsif ($format eq 'json') {
 
-	    $r->content_type('application/json');
+        $r->content_type('application/json');
 
         $r->print( '[' );
 
@@ -169,7 +169,7 @@ sub handler {
         $r->print( ']' );
     }
 
-	return Apache2::Const::OK;
+    return Apache2::Const::OK;
 
 }
 
@@ -191,27 +191,27 @@ sub verify_login {
 }
 
 sub show_template {
-	my $r = shift;
+    my $r = shift;
 
-	$r->content_type('text/html');
-	$r->print(<<HTML);
+    $r->content_type('text/html');
+    $r->print(<<HTML);
 
 <html>
-	<head>
-		<title>Record Export</title>
-	</head>
-	<body>
-		<form method="POST" enctype="multipart/form-data">
-			Use field number <input type="text" size="2" maxlength="2" name="idcolumn" value="0"/> (starting from 0)
-			from CSV file <input type="file" name="idfile"/>
-			<input type="submit" value="Mark Transactions Unrecoverable"/>
-		</form>
-	</body>
+    <head>
+        <title>Record Export</title>
+    </head>
+    <body>
+        <form method="POST" enctype="multipart/form-data">
+            Use field number <input type="text" size="2" maxlength="2" name="idcolumn" value="0"/> (starting from 0)
+            from CSV file <input type="file" name="idfile"/>
+            <input type="submit" value="Mark Transactions Unrecoverable"/>
+        </form>
+    </body>
 </html>
 
 HTML
 
-	return Apache2::Const::OK;
+    return Apache2::Const::OK;
 }
 
 1;

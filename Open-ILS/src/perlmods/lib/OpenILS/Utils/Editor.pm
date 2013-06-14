@@ -43,40 +43,40 @@ use constant A => 'activity';
 
 # -----------------------------------------------------------------------------
 # Params include:
-#	xact=><true> : creates a storage transaction
-#	authtoken=>$token : the login session key
+#   xact=><true> : creates a storage transaction
+#   authtoken=>$token : the login session key
 # -----------------------------------------------------------------------------
 sub new {
-	my( $class, %params ) = @_;
-	$class = ref($class) || $class;
-	my $self = bless( \%params, $class );
-	$self->{checked_perms} = {};
-	return $self;
+    my( $class, %params ) = @_;
+    $class = ref($class) || $class;
+    my $self = bless( \%params, $class );
+    $self->{checked_perms} = {};
+    return $self;
 }
 
 # -----------------------------------------------------------------------------
 # Log the editor metadata along with the log string
 # -----------------------------------------------------------------------------
 sub log {
-	my( $self, $lev, $str ) = @_;
-	my $s = "editor[";
-	$s .= "0|" unless $self->{xact};
-	$s .= "1|" if $self->{xact};
-	$s .= "0" unless $self->requestor;
-	$s .= $self->requestor->id if $self->requestor;
-	$s .= "]";
-	$logger->$lev("$s $str");
+    my( $self, $lev, $str ) = @_;
+    my $s = "editor[";
+    $s .= "0|" unless $self->{xact};
+    $s .= "1|" if $self->{xact};
+    $s .= "0" unless $self->requestor;
+    $s .= $self->requestor->id if $self->requestor;
+    $s .= "]";
+    $logger->$lev("$s $str");
 }
 
 # -----------------------------------------------------------------------------
 # Verifies the auth token and fetches the requestor object
 # -----------------------------------------------------------------------------
 sub checkauth {
-	my $self = shift;
-	$self->log(D, "checking auth token ".$self->authtoken);
-	my ($reqr, $evt) = $U->checkses($self->authtoken);
-	$self->event($evt) if $evt;
-	return $self->{requestor} = $reqr;
+    my $self = shift;
+    $self->log(D, "checking auth token ".$self->authtoken);
+    my ($reqr, $evt) = $U->checkses($self->authtoken);
+    $self->event($evt) if $evt;
+    return $self->{requestor} = $reqr;
 }
 
 
@@ -84,23 +84,23 @@ sub checkauth {
 # Returns the last generated event
 # -----------------------------------------------------------------------------
 sub event {
-	my( $self, $evt ) = @_;
-	$self->{event} = $evt if $evt;
-	return $self->{event};
+    my( $self, $evt ) = @_;
+    $self->{event} = $evt if $evt;
+    return $self->{event};
 }
 
 # -----------------------------------------------------------------------------
 # Clears the last caught event
 # -----------------------------------------------------------------------------
 sub clear_event {
-	my $self = shift;
-	$self->{event} = undef;
+    my $self = shift;
+    $self->{event} = undef;
 }
 
 sub authtoken {
-	my( $self, $auth ) = @_;
-	$self->{authtoken} = $auth if $auth;
-	return $self->{authtoken};
+    my( $self, $auth ) = @_;
+    $self->{authtoken} = $auth if $auth;
+    return $self->{authtoken};
 }
 
 # -----------------------------------------------------------------------------
@@ -108,22 +108,22 @@ sub authtoken {
 # object, a db session is created
 # -----------------------------------------------------------------------------
 sub session {
-	my( $self, $session ) = @_;
-	$self->{session} = $session if $session;
+    my( $self, $session ) = @_;
+    $self->{session} = $session if $session;
 
-	if(!$self->{session}) {
-		$self->{session} = OpenSRF::AppSession->create('open-ils.storage');
+    if(!$self->{session}) {
+        $self->{session} = OpenSRF::AppSession->create('open-ils.storage');
 
-		if( ! $self->{session} ) {
-			my $str = "Error creating storage session with OpenSRF::AppSession->create()!";
-			$self->log(E, $str);
-			throw OpenSRF::EX::ERROR ($str);
-		}
+        if( ! $self->{session} ) {
+            my $str = "Error creating storage session with OpenSRF::AppSession->create()!";
+            $self->log(E, $str);
+            throw OpenSRF::EX::ERROR ($str);
+        }
 
-		$self->{session}->connect if $self->{xact} or $self->{connect};
-		$self->xact_start if $self->{xact};
-	}
-	return $self->{session};
+        $self->{session}->connect if $self->{xact} or $self->{connect};
+        $self->xact_start if $self->{xact};
+    }
+    return $self->{session};
 }
 
 
@@ -131,10 +131,10 @@ sub session {
 # Starts a storage transaction
 # -----------------------------------------------------------------------------
 sub xact_start {
-	my $self = shift;
-	$self->log(D, "starting new db session");
-	my $stat = $self->request('open-ils.storage.transaction.begin');
-	$self->log(E, "error starting database transaction") unless $stat;
+    my $self = shift;
+    $self->log(D, "starting new db session");
+    my $stat = $self->request('open-ils.storage.transaction.begin');
+    $self->log(E, "error starting database transaction") unless $stat;
     if($self->authtoken) {
         if(!$self->requestor) {
             $self->checkauth;
@@ -147,27 +147,27 @@ sub xact_start {
         }
         $self->request('open-ils.storage.set_audit_info', $self->authtoken, $user_id, $ws_id);
     }
-	return $stat;
+    return $stat;
 }
 
 # -----------------------------------------------------------------------------
 # Commits a storage transaction
 # -----------------------------------------------------------------------------
 sub xact_commit {
-	my $self = shift;
-	$self->log(D, "comitting db session");
-	my $stat = $self->request('open-ils.storage.transaction.commit');
-	$self->log(E, "error comitting database transaction") unless $stat;
-	return $stat;
+    my $self = shift;
+    $self->log(D, "comitting db session");
+    my $stat = $self->request('open-ils.storage.transaction.commit');
+    $self->log(E, "error comitting database transaction") unless $stat;
+    return $stat;
 }
 
 # -----------------------------------------------------------------------------
 # Rolls back a storage stransaction
 # -----------------------------------------------------------------------------
 sub xact_rollback {
-	my $self = shift;
-	$self->log(I, "rolling back db session");
-	return $self->request("open-ils.storage.transaction.rollback");
+    my $self = shift;
+    $self->log(I, "rolling back db session");
+    return $self->request("open-ils.storage.transaction.rollback");
 }
 
 
@@ -175,20 +175,20 @@ sub xact_rollback {
 # commits the db session and destroys the session
 # -----------------------------------------------------------------------------
 sub commit {
-	my $self = shift;
-	return unless $self->{xact};
-	$self->xact_commit;
-	$self->session->disconnect;
-	$self->{session} = undef;
+    my $self = shift;
+    return unless $self->{xact};
+    $self->xact_commit;
+    $self->session->disconnect;
+    $self->{session} = undef;
 }
 
 # -----------------------------------------------------------------------------
 # clears all object data. Does not commit the db transaction.
 # -----------------------------------------------------------------------------
 sub reset {
-	my $self = shift;
-	$self->session->disconnect if $self->{session};
-	$$self{$_} = undef for (keys %$self);
+    my $self = shift;
+    $self->session->disconnect if $self->{session};
+    $$self{$_} = undef for (keys %$self);
 }
 
 
@@ -196,9 +196,9 @@ sub reset {
 # commits and resets
 # -----------------------------------------------------------------------------
 sub finish {
-	my $self = shift;
-	$self->commit;
-	$self->reset;
+    my $self = shift;
+    $self->commit;
+    $self->reset;
 }
 
 
@@ -207,24 +207,24 @@ sub finish {
 # Does a simple storage request
 # -----------------------------------------------------------------------------
 sub request {
-	my( $self, $method, @params ) = @_;
+    my( $self, $method, @params ) = @_;
 
-	my $val;
-	my $err;
-	my $argstr = __arg_to_string( (scalar(@params)) == 1 ? $params[0] : \@params);
+    my $val;
+    my $err;
+    my $argstr = __arg_to_string( (scalar(@params)) == 1 ? $params[0] : \@params);
 
-	$self->log(I, "request $method : $argstr");
-	
-	try {
-		$val = $self->session->request($method, @params)->gather(1);
+    $self->log(I, "request $method : $argstr");
+    
+    try {
+        $val = $self->session->request($method, @params)->gather(1);
 
-	} catch Error with {
-		$err = shift;
-		$self->log(E, "request error $method : $argstr : $err");
-	};
+    } catch Error with {
+        $err = shift;
+        $self->log(E, "request error $method : $argstr : $err");
+    };
 
-	throw $err if $err;
-	return $val;
+    throw $err if $err;
+    return $val;
 }
 
 
@@ -232,9 +232,9 @@ sub request {
 # Sets / Returns the requstor object.  This is set when checkauth succeeds.
 # -----------------------------------------------------------------------------
 sub requestor {
-	my($self, $requestor) = @_;
-	$self->{requestor} = $requestor if $requestor;
-	return $self->{requestor};
+    my($self, $requestor) = @_;
+    $self->{requestor} = $requestor if $requestor;
+    return $self->{requestor};
 }
 
 
@@ -243,9 +243,9 @@ sub requestor {
 # Holds the last data received from a storage call
 # -----------------------------------------------------------------------------
 sub data {
-	my( $self, $data ) = @_;
-	$self->{data} = $data if defined $data;
-	return $self->{data};
+    my( $self, $data ) = @_;
+    $self->{data} = $data if defined $data;
+    return $self->{data};
 }
 
 
@@ -253,15 +253,15 @@ sub data {
 # True if this perm has already been checked at this org
 # -----------------------------------------------------------------------------
 sub perm_checked {
-	my( $self, $perm, $org ) = @_;
-	$self->{checked_perms}->{$org} = {}
-		unless $self->{checked_perms}->{$org};
-	my $checked = $self->{checked_perms}->{$org}->{$perm};
-	if(!$checked) {
-		$self->{checked_perms}->{$org}->{$perm} = 1;
-		return 0;
-	}
-	return 1;
+    my( $self, $perm, $org ) = @_;
+    $self->{checked_perms}->{$org} = {}
+        unless $self->{checked_perms}->{$org};
+    my $checked = $self->{checked_perms}->{$org}->{$perm};
+    if(!$checked) {
+        $self->{checked_perms}->{$org}->{$perm} = 1;
+        return 0;
+    }
+    return 1;
 }
 
 
@@ -275,26 +275,26 @@ sub perm_checked {
 # and the perm is not re-checked
 # -----------------------------------------------------------------------------
 sub allowed {
-	my( $self, $perm, $org ) = @_;
-	my $uid = $self->requestor->id;
-	$org ||= $self->requestor->ws_ou;
-	$self->log(I, "checking perms user=$uid, org=$org, perm=$perm");
-	return 1 if $self->perm_checked($perm, $org); 
-	return $self->checkperm($uid, $org, $perm);
+    my( $self, $perm, $org ) = @_;
+    my $uid = $self->requestor->id;
+    $org ||= $self->requestor->ws_ou;
+    $self->log(I, "checking perms user=$uid, org=$org, perm=$perm");
+    return 1 if $self->perm_checked($perm, $org); 
+    return $self->checkperm($uid, $org, $perm);
 }
 
 sub checkperm {
-	my($self, $userid, $org, $perm) = @_;
-	my $s = $self->request(
-		"open-ils.storage.permission.user_has_perm", $userid, $perm, $org );
+    my($self, $userid, $org, $perm) = @_;
+    my $s = $self->request(
+        "open-ils.storage.permission.user_has_perm", $userid, $perm, $org );
 
-	if(!$s) {
-		my $e = OpenILS::Event->new('PERM_FAILURE', ilsperm => $perm, ilspermloc => $org);
-		$self->event($e);
-		return undef;
-	}
+    if(!$s) {
+        my $e = OpenILS::Event->new('PERM_FAILURE', ilsperm => $perm, ilspermloc => $org);
+        $self->event($e);
+        return undef;
+    }
 
-	return 1;
+    return 1;
 }
 
 
@@ -303,16 +303,16 @@ sub checkperm {
 # checks the appropriate perm for the operation
 # -----------------------------------------------------------------------------
 sub _checkperm {
-	my( $self, $ptype, $action, $org ) = @_;
-	$org ||= $self->requestor->ws_ou;
-	my $perm = $PERMS{$ptype}{$action};
-	if( $perm ) {
-		return undef if $self->perm_checked($perm, $org);
-		return $self->event unless $self->allowed($perm, $org);
-	} else {
-		$self->log(E, "no perm provided for $ptype.$action");
-	}
-	return undef;
+    my( $self, $ptype, $action, $org ) = @_;
+    $org ||= $self->requestor->ws_ou;
+    my $perm = $PERMS{$ptype}{$action};
+    if( $perm ) {
+        return undef if $self->perm_checked($perm, $org);
+        return $self->event unless $self->allowed($perm, $org);
+    } else {
+        $self->log(E, "no perm provided for $ptype.$action");
+    }
+    return undef;
 }
 
 
@@ -321,32 +321,32 @@ sub _checkperm {
 # Logs update actions to the activity log
 # -----------------------------------------------------------------------------
 sub log_activity {
-	my( $self, $type, $action, $arg ) = @_;
-	my $str = "$type.$action";
-	$str .= _prop_string($arg);
-	$self->log(A, $str);
+    my( $self, $type, $action, $arg ) = @_;
+    my $str = "$type.$action";
+    $str .= _prop_string($arg);
+    $self->log(A, $str);
 }
 
 
 
 sub _prop_string {
-	my $obj = shift;
-	my @props = $obj->properties;
-	my $str = "";
-	for(@props) {
-		my $prop = $obj->$_() || "";
-		$prop = substr($prop, 0, 128) . "..." if length $prop > 131;
-		$str .= " $_=$prop";
-	}
-	return $str;
+    my $obj = shift;
+    my @props = $obj->properties;
+    my $str = "";
+    for(@props) {
+        my $prop = $obj->$_() || "";
+        $prop = substr($prop, 0, 128) . "..." if length $prop > 131;
+        $str .= " $_=$prop";
+    }
+    return $str;
 }
 
 
 sub __arg_to_string {
-	my $arg = shift;
-	return "" unless defined $arg;
-	return $arg->id if UNIVERSAL::isa($arg, "Fieldmapper");
-	return OpenSRF::Utils::JSON->perl2JSON($arg);
+    my $arg = shift;
+    return "" unless defined $arg;
+    return $arg->id if UNIVERSAL::isa($arg, "Fieldmapper");
+    return OpenSRF::Utils::JSON->perl2JSON($arg);
 }
 
 
@@ -377,117 +377,117 @@ sub __arg_to_string {
 # return $e->event unless @$results; 
 # -----------------------------------------------------------------------------
 sub runmethod {
-	my( $self, $action, $type, $arg, $options ) = @_;
+    my( $self, $action, $type, $arg, $options ) = @_;
 
-	my @arg = ($arg);
-	my $method = "open-ils.storage.direct.$type.$action";
+    my @arg = ($arg);
+    my $method = "open-ils.storage.direct.$type.$action";
 
-	if( $action eq 'search' ) {
-		$method =~ s/search/search_where/o;
-		$method =~ s/direct/id_list/o if $options->{idlist};
-		$method = "$method.atomic";
-		@arg = @$arg if ref($arg) eq 'ARRAY';
+    if( $action eq 'search' ) {
+        $method =~ s/search/search_where/o;
+        $method =~ s/direct/id_list/o if $options->{idlist};
+        $method = "$method.atomic";
+        @arg = @$arg if ref($arg) eq 'ARRAY';
 
-	} elsif( $action eq 'batch_retrieve' ) {
-		$method =~ s/batch_retrieve/batch.retrieve/o;
-		$method = "$method.atomic";
-		@arg = @$arg if ref($arg) eq 'ARRAY';
+    } elsif( $action eq 'batch_retrieve' ) {
+        $method =~ s/batch_retrieve/batch.retrieve/o;
+        $method = "$method.atomic";
+        @arg = @$arg if ref($arg) eq 'ARRAY';
 
-	} elsif( $action eq 'retrieve_all' ) {
-		$method =~ s/retrieve_all/retrieve.all.atomic/o;
-	}
+    } elsif( $action eq 'retrieve_all' ) {
+        $method =~ s/retrieve_all/retrieve.all.atomic/o;
+    }
 
-	# remove any stale events
-	$self->clear_event;
+    # remove any stale events
+    $self->clear_event;
 
-	if( $action eq 'update' or $action eq 'delete' or $action eq 'create' ) {
-		$self->log_activity($type, $action, $arg);
-	}
+    if( $action eq 'update' or $action eq 'delete' or $action eq 'create' ) {
+        $self->log_activity($type, $action, $arg);
+    }
 
-	if($$options{checkperm}) {
-		my $a = ($action eq 'search' or 
-			$action eq 'batch_retrieve' or $action eq 'retrieve_all') ? 'retrieve' : $action;
-		my $e = $self->_checkperm($type, $a, $$options{permorg});
-		if($e) {
-			$self->event($e);
-			return undef;
-		}
-	}
+    if($$options{checkperm}) {
+        my $a = ($action eq 'search' or 
+            $action eq 'batch_retrieve' or $action eq 'retrieve_all') ? 'retrieve' : $action;
+        my $e = $self->_checkperm($type, $a, $$options{permorg});
+        if($e) {
+            $self->event($e);
+            return undef;
+        }
+    }
 
-	my $obj; 
-	my $err;
+    my $obj; 
+    my $err;
 
-	try {
-		$obj = $self->request($method, @arg);
-	} catch Error with { $err = shift; };
-	
+    try {
+        $obj = $self->request($method, @arg);
+    } catch Error with { $err = shift; };
+    
 
-	if(!defined $obj) {
-		$self->log(I, "request returned no data");
+    if(!defined $obj) {
+        $self->log(I, "request returned no data");
 
-		if( $action eq 'retrieve' ) {
-			$self->event(_mk_not_found($type, $arg));
+        if( $action eq 'retrieve' ) {
+            $self->event(_mk_not_found($type, $arg));
 
-		} elsif( $action eq 'update' or 
-				$action eq 'delete' or $action eq 'create' ) {
-			my $evt = OpenILS::Event->new(
-				'DATABASE_UPDATE_FAILED', payload => $arg, debug => "$err" );
-			$self->event($evt);
-		}
+        } elsif( $action eq 'update' or 
+                $action eq 'delete' or $action eq 'create' ) {
+            my $evt = OpenILS::Event->new(
+                'DATABASE_UPDATE_FAILED', payload => $arg, debug => "$err" );
+            $self->event($evt);
+        }
 
-		if( $err ) {
-			$self->event( 
-				OpenILS::Event->new( 'DATABASE_QUERY_FAILED', 
-					payload => $arg, debug => "$err" ));
-			return undef;
-		}
+        if( $err ) {
+            $self->event( 
+                OpenILS::Event->new( 'DATABASE_QUERY_FAILED', 
+                    payload => $arg, debug => "$err" ));
+            return undef;
+        }
 
-		return undef;
-	}
+        return undef;
+    }
 
-	if( $action eq 'create' and $obj == 0 ) {
-		my $evt = OpenILS::Event->new(
-			'DATABASE_UPDATE_FAILED', payload => $arg, debug => "$err" );
-		$self->event($evt);
-		return undef;
-	}
+    if( $action eq 'create' and $obj == 0 ) {
+        my $evt = OpenILS::Event->new(
+            'DATABASE_UPDATE_FAILED', payload => $arg, debug => "$err" );
+        $self->event($evt);
+        return undef;
+    }
 
-	# If we havn't dealt with the error in a nice way, go ahead and throw it
-	if( $err ) {
-		$self->event( 
-			OpenILS::Event->new( 'DATABASE_QUERY_FAILED', 
-				payload => $arg, debug => "$err" ));
-		return undef;
-	}
+    # If we havn't dealt with the error in a nice way, go ahead and throw it
+    if( $err ) {
+        $self->event( 
+            OpenILS::Event->new( 'DATABASE_QUERY_FAILED', 
+                payload => $arg, debug => "$err" ));
+        return undef;
+    }
 
-	if( $action eq 'search' or $action eq 'batch_retrieve' or $action eq 'retrieve_all') {
-		$self->log(I, "$type.$action : returned ".scalar(@$obj). " result(s)");
-		$self->event(_mk_not_found($type, $arg)) unless @$obj;
-	}
+    if( $action eq 'search' or $action eq 'batch_retrieve' or $action eq 'retrieve_all') {
+        $self->log(I, "$type.$action : returned ".scalar(@$obj). " result(s)");
+        $self->event(_mk_not_found($type, $arg)) unless @$obj;
+    }
 
-	$arg->id($obj) if $action eq 'create'; # grabs the id on create
-	$self->data($obj); # cache the data for convenience
+    $arg->id($obj) if $action eq 'create'; # grabs the id on create
+    $self->data($obj); # cache the data for convenience
 
-	return ($obj) ? $obj : 1;
+    return ($obj) ? $obj : 1;
 }
 
 
 sub _mk_not_found {
-	my( $type, $arg ) = @_;
-	(my $t = $type) =~ s/\./_/og;
-	$t = uc($t);
-	return OpenILS::Event->new("${t}_NOT_FOUND", payload => $arg);
+    my( $type, $arg ) = @_;
+    (my $t = $type) =~ s/\./_/og;
+    $t = uc($t);
+    return OpenILS::Event->new("${t}_NOT_FOUND", payload => $arg);
 }
 
 
 
 # utility method for loading
 sub __fm2meth { 
-	my $str = shift;
-	my $sep = shift;
-	$str =~ s/Fieldmapper:://o;
-	$str =~ s/::/$sep/g;
-	return $str;
+    my $str = shift;
+    my $sep = shift;
+    $str =~ s/Fieldmapper:://o;
+    $str =~ s/::/$sep/g;
+    return $str;
 }
 
 
@@ -496,43 +496,43 @@ sub __fm2meth {
 # -------------------------------------------------------------
 my $map = $Fieldmapper::fieldmap;
 for my $object (keys %$map) {
-	my $obj = __fm2meth($object,'_');
-	my $type = __fm2meth($object, '.');
+    my $obj = __fm2meth($object,'_');
+    my $type = __fm2meth($object, '.');
 
-	my $update = "update_$obj";
-	my $updatef = 
-		"sub $update {return shift()->runmethod('update', '$type', \@_);}";
-	eval $updatef;
+    my $update = "update_$obj";
+    my $updatef = 
+        "sub $update {return shift()->runmethod('update', '$type', \@_);}";
+    eval $updatef;
 
-	my $retrieve = "retrieve_$obj";
-	my $retrievef = 
-		"sub $retrieve {return shift()->runmethod('retrieve', '$type', \@_);}";
-	eval $retrievef;
+    my $retrieve = "retrieve_$obj";
+    my $retrievef = 
+        "sub $retrieve {return shift()->runmethod('retrieve', '$type', \@_);}";
+    eval $retrievef;
 
-	my $search = "search_$obj";
-	my $searchf = 
-		"sub $search {return shift()->runmethod('search', '$type', \@_);}";
-	eval $searchf;
+    my $search = "search_$obj";
+    my $searchf = 
+        "sub $search {return shift()->runmethod('search', '$type', \@_);}";
+    eval $searchf;
 
-	my $create = "create_$obj";
-	my $createf = 
-		"sub $create {return shift()->runmethod('create', '$type', \@_);}";
-	eval $createf;
+    my $create = "create_$obj";
+    my $createf = 
+        "sub $create {return shift()->runmethod('create', '$type', \@_);}";
+    eval $createf;
 
-	my $delete = "delete_$obj";
-	my $deletef = 
-		"sub $delete {return shift()->runmethod('delete', '$type', \@_);}";
-	eval $deletef;
+    my $delete = "delete_$obj";
+    my $deletef = 
+        "sub $delete {return shift()->runmethod('delete', '$type', \@_);}";
+    eval $deletef;
 
-	my $bretrieve = "batch_retrieve_$obj";
-	my $bretrievef = 
-		"sub $bretrieve {return shift()->runmethod('batch_retrieve', '$type', \@_);}";
-	eval $bretrievef;
+    my $bretrieve = "batch_retrieve_$obj";
+    my $bretrievef = 
+        "sub $bretrieve {return shift()->runmethod('batch_retrieve', '$type', \@_);}";
+    eval $bretrievef;
 
-	my $retrieveall = "retrieve_all_$obj";
-	my $retrieveallf = 
-		"sub $retrieveall {return shift()->runmethod('retrieve_all', '$type', \@_);}";
-	eval $retrieveallf;
+    my $retrieveall = "retrieve_all_$obj";
+    my $retrieveallf = 
+        "sub $retrieveall {return shift()->runmethod('retrieve_all', '$type', \@_);}";
+    eval $retrieveallf;
 
 
 }

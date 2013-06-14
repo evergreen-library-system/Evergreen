@@ -66,14 +66,14 @@ sub resolve_issn
 
     if (length($issn) <= 9) {
            my $session = OpenSRF::AppSession->create("open-ils.resolver");
-	
+    
            my $request = $session->request("open-ils.resolver.resolve_holdings.raw", "issn", $issn, $baseurl, $timeout)->gather();
            if ($request) {
                  return $request;
            }
            $session->disconnect();
     }
-    	
+        
     return "";
 }
 
@@ -82,14 +82,14 @@ sub resolve_isbn
     my ($class, $isbn, $baseurl, $timeout) = @_;
 
     my $session = OpenSRF::AppSession->create("open-ils.resolver");
-	
+    
     my $request = $session->request("open-ils.resolver.resolve_holdings.raw", "isbn", $isbn, $baseurl, $timeout)->gather();
-	
+    
     if ($request) {
             return $request;
     }
     $session->disconnect();
-    	
+        
     return "";
 }
 

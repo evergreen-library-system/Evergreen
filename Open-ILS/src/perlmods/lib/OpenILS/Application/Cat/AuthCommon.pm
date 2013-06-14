@@ -17,11 +17,11 @@ my $MARC_NAMESPACE = 'http://www.loc.gov/MARC21/slim';
 
 # generate a MARC XML document from a MARC XML string
 sub marc_xml_to_doc {
-	my $xml = shift;
-	my $marc_doc = XML::LibXML->new->parse_string($xml);
-	$marc_doc->documentElement->setNamespace($MARC_NAMESPACE, 'marc', 1);
-	$marc_doc->documentElement->setNamespace($MARC_NAMESPACE);
-	return $marc_doc;
+    my $xml = shift;
+    my $marc_doc = XML::LibXML->new->parse_string($xml);
+    $marc_doc->documentElement->setNamespace($MARC_NAMESPACE, 'marc', 1);
+    $marc_doc->documentElement->setNamespace($MARC_NAMESPACE);
+    return $marc_doc;
 }
 
 
@@ -30,11 +30,11 @@ sub import_authority_record {
     
     my $marc_doc = marc_xml_to_doc($marc_xml);
     my $rec = Fieldmapper::authority::record_entry->new;
-	$rec->creator($e->requestor->id);
-	$rec->editor($e->requestor->id);
-	$rec->create_date('now');
-	$rec->edit_date('now');
-	$rec->marc($U->entityize($marc_doc->documentElement->toString));
+    $rec->creator($e->requestor->id);
+    $rec->editor($e->requestor->id);
+    $rec->create_date('now');
+    $rec->edit_date('now');
+    $rec->marc($U->entityize($marc_doc->documentElement->toString));
 
     $rec = $e->create_authority_record_entry($rec) or return $e->die_event;
 
@@ -42,7 +42,7 @@ sub import_authority_record {
     #my $ses = OpenSRF::AppSession->create('open-ils.ingest');
     #$ses->request('open-ils.ingest.full.authority.record', $recid);
 
-	return $rec;
+    return $rec;
 }
 
 
@@ -51,9 +51,9 @@ sub overlay_authority_record {
     
     my $marc_doc = marc_xml_to_doc($marc_xml);
     my $rec = $e->retrieve_authority_record_entry($rec_id) or return $e->die_event;
-	$rec->editor($e->requestor->id);
-	$rec->edit_date('now');
-	$rec->marc($U->entityize($marc_doc->documentElement->toString));
+    $rec->editor($e->requestor->id);
+    $rec->edit_date('now');
+    $rec->marc($U->entityize($marc_doc->documentElement->toString));
 
     $rec = $e->update_authority_record_entry($rec) or return $e->die_event;
 
@@ -61,7 +61,7 @@ sub overlay_authority_record {
     #my $ses = OpenSRF::AppSession->create('open-ils.ingest');
     #$ses->request('open-ils.ingest.full.authority.record', $recid);
 
-	return $rec;
+    return $rec;
 }
 
 1;

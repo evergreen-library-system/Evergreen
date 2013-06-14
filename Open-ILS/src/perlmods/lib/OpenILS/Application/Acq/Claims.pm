@@ -11,10 +11,10 @@ my $U = 'OpenILS::Application::AppUtils';
 
 
 __PACKAGE__->register_method(
-	method => 'claim_ready_items',
-	api_name	=> 'open-ils.acq.claim.eligible.lineitem_detail',
+    method => 'claim_ready_items',
+    api_name    => 'open-ils.acq.claim.eligible.lineitem_detail',
     stream => 1,
-	signature => {
+    signature => {
         desc => q/Locates lineitem_details that are eligible for claiming/,
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -104,10 +104,10 @@ __PACKAGE__->register_method(
 );
 
 __PACKAGE__->register_method(
-	method => 'claim_item',
-	api_name	=> 'open-ils.acq.claim.lineitem_detail',
+    method => 'claim_item',
+    api_name    => 'open-ils.acq.claim.lineitem_detail',
     stream => 1,
-	signature => {
+    signature => {
         desc => q/Initiates a claim for an individual lineitem_detail/,
         params => [
             {desc => 'Authentication token', type => 'string'},

@@ -28,15 +28,15 @@ use Text::Aspell;
 # Houses generic search utilites 
 
 sub initialize {
-	OpenILS::Application::Search::Z3950->initialize();
-	OpenILS::Application::Search::Zips->initialize();
-	OpenILS::Application::Search::Biblio->initialize();
+    OpenILS::Application::Search::Z3950->initialize();
+    OpenILS::Application::Search::Zips->initialize();
+    OpenILS::Application::Search::Biblio->initialize();
 }
 
 sub child_init {
-	OpenILS::Application::Search::Z3950->child_init;
+    OpenILS::Application::Search::Z3950->child_init;
 }
-	
+    
 
 
 # ------------------------------------------------------------------
@@ -74,25 +74,25 @@ __PACKAGE__->register_method(
 my $speller = Text::Aspell->new();
 
 sub spellcheck {
-	my( $self, $client, $phrase, $class ) = @_;
+    my( $self, $client, $phrase, $class ) = @_;
 
     return [] unless $phrase;   # nothing to check, abort.
 
-	my $conf = OpenSRF::Utils::SettingsClient->new;
+    my $conf = OpenSRF::Utils::SettingsClient->new;
     $class ||= 'default';
 
     my @conf_path = (apps => 'open-ils.search' => app_settings => spelling_dictionary => $class);
 
-	if( my $dict = $conf->config_value(@conf_path) ) {
-		$speller->set_option('master', $dict);
-		$logger->debug("spelling dictionary set to $dict");
-	}
+    if( my $dict = $conf->config_value(@conf_path) ) {
+        $speller->set_option('master', $dict);
+        $logger->debug("spelling dictionary set to $dict");
+    }
 
-	$speller->set_option('ignore-case', 'true');
+    $speller->set_option('ignore-case', 'true');
 
-	my @resp;
+    my @resp;
 
-	for my $word (split(/\s+/,$phrase) ) {
+    for my $word (split(/\s+/,$phrase) ) {
 
         my @suggestions = $speller->suggest($word);
         my @trimmed;
@@ -108,15 +108,15 @@ sub spellcheck {
             push(@trimmed, $sug);
         }
 
-		push( @resp, 
-			{
-				word => $word, 
-				suggestions => (@trimmed) ? [@trimmed] : undef,
+        push( @resp, 
+            {
+                word => $word, 
+                suggestions => (@trimmed) ? [@trimmed] : undef,
                 found => $speller->check($word)
-			} 
-		); 
-	}
-	return \@resp;
+            } 
+        ); 
+    }
+    return \@resp;
 }
 
 

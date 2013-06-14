@@ -459,7 +459,7 @@ sub run_TT {
         my $key = ($error) ? 'error_output' : 'template_output';
         $env->{EventProcessor}->update_state( $state, { $key => $t_o->id } );
     }
-	
+    
     return $output;
 }
 

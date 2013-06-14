@@ -22,10 +22,10 @@ our $always_xact = 0;
 our $_loaded = 1;
 
 #my %PERMS = (
-#	'biblio.record_entry'	=> { update => 'UPDATE_MARC' },
-#	'asset.copy'				=> { update => 'UPDATE_COPY'},
-#	'asset.call_number'		=> { update => 'UPDATE_VOLUME'},
-#	'action.circulation'		=> { retrieve => 'VIEW_CIRCULATIONS'},
+#   'biblio.record_entry'   => { update => 'UPDATE_MARC' },
+#   'asset.copy'                => { update => 'UPDATE_COPY'},
+#   'asset.call_number'     => { update => 'UPDATE_VOLUME'},
+#   'action.circulation'        => { retrieve => 'VIEW_CIRCULATIONS'},
 #);
 
 sub flush_forced_xacts {
@@ -51,9 +51,9 @@ push @EXPORT_OK, ( 'new_editor', 'new_rstore_editor' );
 sub new_editor { return OpenILS::Utils::CStoreEditor->new(@_); }
 
 sub new_rstore_editor { 
-	my $e = OpenILS::Utils::CStoreEditor->new(@_); 
-	$e->app('open-ils.reporter-store');
-	return $e;
+    my $e = OpenILS::Utils::CStoreEditor->new(@_); 
+    $e->app('open-ils.reporter-store');
+    return $e;
 }
 
 
@@ -70,15 +70,15 @@ use constant A => 'activity';
 
 # -----------------------------------------------------------------------------
 # Params include:
-#	xact=><true> : creates a storage transaction
-#	authtoken=>$token : the login session key
+#   xact=><true> : creates a storage transaction
+#   authtoken=>$token : the login session key
 # -----------------------------------------------------------------------------
 sub new {
-	my( $class, %params ) = @_;
-	$class = ref($class) || $class;
-	my $self = bless( \%params, $class );
-	$self->{checked_perms} = {};
-	return $self;
+    my( $class, %params ) = @_;
+    $class = ref($class) || $class;
+    my $self = bless( \%params, $class );
+    $self->{checked_perms} = {};
+    return $self;
 }
 
 sub DESTROY {
@@ -88,10 +88,10 @@ sub DESTROY {
 }
 
 sub app {
-	my( $self, $app ) = @_;
-	$self->{app} = $app if $app;
-	$self->{app} = 'open-ils.cstore' unless $self->{app};
-	return $self->{app};
+    my( $self, $app ) = @_;
+    $self->{app} = $app if $app;
+    $self->{app} = 'open-ils.cstore' unless $self->{app};
+    return $self->{app};
 }
 
 
@@ -99,31 +99,31 @@ sub app {
 # Log the editor metadata along with the log string
 # -----------------------------------------------------------------------------
 sub log {
-	my( $self, $lev, $str ) = @_;
-	my $s = "editor[";
+    my( $self, $lev, $str ) = @_;
+    my $s = "editor[";
     if ($always_xact) {
         $s .= "!|";
     } elsif ($self->{xact}) {
         $s .= "1|";
     } else {
-	    $s .= "0|";
+        $s .= "0|";
     }
-	$s .= "0" unless $self->requestor;
-	$s .= $self->requestor->id if $self->requestor;
-	$s .= "]";
-	$logger->$lev("$s $str");
+    $s .= "0" unless $self->requestor;
+    $s .= $self->requestor->id if $self->requestor;
+    $s .= "]";
+    $logger->$lev("$s $str");
 }
 
 # -----------------------------------------------------------------------------
 # Verifies the auth token and fetches the requestor object
 # -----------------------------------------------------------------------------
 sub checkauth {
-	my $self = shift;
-	$self->log(D, "checking auth token ".$self->authtoken);
+    my $self = shift;
+    $self->log(D, "checking auth token ".$self->authtoken);
 
-	my $content = $U->simplereq( 
-		'open-ils.auth', 
-		'open-ils.auth.session.retrieve', $self->authtoken, 1);
+    my $content = $U->simplereq( 
+        'open-ils.auth', 
+        'open-ils.auth.session.retrieve', $self->authtoken, 1);
 
     if(!$content or $U->event_code($content)) {
         $self->event( ($content) ? $content : OpenILS::Event->new('NO_SESSION'));
@@ -131,19 +131,19 @@ sub checkauth {
     }
 
     $self->{authtime} = $content->{authtime};
-	return $self->{requestor} = $content->{userobj};
+    return $self->{requestor} = $content->{userobj};
 }
 
 =head1 test
 
 sub checkauth {
-	my $self = shift;
-	$cache = OpenSRF::Utils::Cache->new('global') unless $cache;
-	$self->log(D, "checking cached auth token ".$self->authtoken);
-	my $user = $cache->get_cache("oils_auth_".$self->authtoken);
-	return $self->{requestor} = $user->{userobj} if $user;
-	$self->event(OpenILS::Event->new('NO_SESSION'));
-	return undef;
+    my $self = shift;
+    $cache = OpenSRF::Utils::Cache->new('global') unless $cache;
+    $self->log(D, "checking cached auth token ".$self->authtoken);
+    my $user = $cache->get_cache("oils_auth_".$self->authtoken);
+    return $self->{requestor} = $user->{userobj} if $user;
+    $self->event(OpenILS::Event->new('NO_SESSION'));
+    return undef;
 }
 
 =cut
@@ -153,9 +153,9 @@ sub checkauth {
 # Returns the last generated event
 # -----------------------------------------------------------------------------
 sub event {
-	my( $self, $evt ) = @_;
-	$self->{event} = $evt if $evt;
-	return $self->{event};
+    my( $self, $evt ) = @_;
+    $self->{event} = $evt if $evt;
+    return $self->{event};
 }
 
 # -----------------------------------------------------------------------------
@@ -163,12 +163,12 @@ sub event {
 # then returns the last event that occurred
 # -----------------------------------------------------------------------------
 sub die_event {
-	my $self = shift;
+    my $self = shift;
     my $evt = shift;
-	$self->rollback;
+    $self->rollback;
     $self->died(1);
     $self->event($evt);
-	return $self->event;
+    return $self->event;
 }
 
 
@@ -176,8 +176,8 @@ sub die_event {
 # Clears the last caught event
 # -----------------------------------------------------------------------------
 sub clear_event {
-	my $self = shift;
-	$self->{event} = undef;
+    my $self = shift;
+    $self->{event} = undef;
 }
 
 sub died {
@@ -187,15 +187,15 @@ sub died {
 }
 
 sub authtoken {
-	my( $self, $auth ) = @_;
-	$self->{authtoken} = $auth if $auth;
-	return $self->{authtoken};
+    my( $self, $auth ) = @_;
+    $self->{authtoken} = $auth if $auth;
+    return $self->{authtoken};
 }
 
 sub authtime {
-	my( $self, $auth ) = @_;
-	$self->{authtime} = $auth if $auth;
-	return $self->{authtime};
+    my( $self, $auth ) = @_;
+    $self->{authtime} = $auth if $auth;
+    return $self->{authtime};
 }
 
 sub timeout {
@@ -209,33 +209,33 @@ sub timeout {
 # object, a db session is created
 # -----------------------------------------------------------------------------
 sub session {
-	my( $self, $session ) = @_;
-	$self->{session} = $session if $session;
+    my( $self, $session ) = @_;
+    $self->{session} = $session if $session;
 
-	# sessions can stick around longer than a single request/transaction.
-	# kill it if our default locale was altered since the last request
-	# and it does not match the locale of the existing session.
-	delete $self->{session} if
-		$default_locale and
-		$self->{session} and
-		$self->{session}->session_locale ne $default_locale;
+    # sessions can stick around longer than a single request/transaction.
+    # kill it if our default locale was altered since the last request
+    # and it does not match the locale of the existing session.
+    delete $self->{session} if
+        $default_locale and
+        $self->{session} and
+        $self->{session}->session_locale ne $default_locale;
 
-	if(!$self->{session}) {
-		$self->{session} = OpenSRF::AppSession->create($self->app);
-		$self->{session}->session_locale($default_locale) if $default_locale;
+    if(!$self->{session}) {
+        $self->{session} = OpenSRF::AppSession->create($self->app);
+        $self->{session}->session_locale($default_locale) if $default_locale;
 
-		if( ! $self->{session} ) {
-			my $str = "Error creating cstore session with OpenSRF::AppSession->create()!";
-			$self->log(E, $str);
-			throw OpenSRF::EX::ERROR ($str);
-		}
+        if( ! $self->{session} ) {
+            my $str = "Error creating cstore session with OpenSRF::AppSession->create()!";
+            $self->log(E, $str);
+            throw OpenSRF::EX::ERROR ($str);
+        }
 
-		$self->{session}->connect if $self->{xact} or $self->{connect} or $always_xact;
-		$self->xact_begin if $self->{xact} or $always_xact;
-	}
+        $self->{session}->connect if $self->{xact} or $self->{connect} or $always_xact;
+        $self->xact_begin if $self->{xact} or $always_xact;
+    }
 
     $xact_ed_cache{$self->{xact_id}} = $self if $always_xact and $self->{xact_id};
-	return $self->{session};
+    return $self->{session};
 }
 
 
@@ -246,10 +246,10 @@ sub xact_begin {
     my $self = shift;
     return $self->{xact_id} if $self->{xact_id};
     $self->session->connect unless $self->session->state == OpenSRF::AppSession::CONNECTED();
-	$self->log(D, "starting new database transaction");
-	unless($self->{xact_id}) {
-	    my $stat = $self->request($self->app . '.transaction.begin');
-	    $self->log(E, "error starting database transaction") unless $stat;
+    $self->log(D, "starting new database transaction");
+    unless($self->{xact_id}) {
+        my $stat = $self->request($self->app . '.transaction.begin');
+        $self->log(E, "error starting database transaction") unless $stat;
         $self->{xact_id} = $stat;
         if($self->authtoken) {
             if(!$self->requestor) {
@@ -272,28 +272,28 @@ sub xact_begin {
 # Commits a storage transaction
 # -----------------------------------------------------------------------------
 sub xact_commit {
-	my $self = shift;
+    my $self = shift;
     return unless $self->{xact_id};
-	$self->log(D, "comitting db session");
-	my $stat = $self->request($self->app.'.transaction.commit');
-	$self->log(E, "error comitting database transaction") unless $stat;
+    $self->log(D, "comitting db session");
+    my $stat = $self->request($self->app.'.transaction.commit');
+    $self->log(E, "error comitting database transaction") unless $stat;
     delete $self->{xact_id};
     delete $self->{xact};
-	return $stat;
+    return $stat;
 }
 
 # -----------------------------------------------------------------------------
 # Rolls back a storage stransaction
 # -----------------------------------------------------------------------------
 sub xact_rollback {
-	my $self = shift;
+    my $self = shift;
     return unless $self->{session} and $self->{xact_id};
-	$self->log(I, "rolling back db session");
-	my $stat = $self->request($self->app.".transaction.rollback");
-	$self->log(E, "error rolling back database transaction") unless $stat;
+    $self->log(I, "rolling back db session");
+    my $stat = $self->request($self->app.".transaction.rollback");
+    $self->log(E, "error rolling back database transaction") unless $stat;
     delete $self->{xact_id};
     delete $self->{xact};
-	return $stat;
+    return $stat;
 }
 
 
@@ -306,9 +306,9 @@ sub set_savepoint {
     my $self = shift;
     my $name = shift || 'savepoint';
     return unless $self->{session} and $self->{xact_id};
-	$self->log(I, "setting savepoint '$name'");
-	my $stat = $self->request($self->app.".savepoint.set", $name)
-	    or $self->log(E, "error setting savepoint '$name'");
+    $self->log(I, "setting savepoint '$name'");
+    my $stat = $self->request($self->app.".savepoint.set", $name)
+        or $self->log(E, "error setting savepoint '$name'");
     return $stat;
 }
 
@@ -316,8 +316,8 @@ sub release_savepoint {
     my $self = shift;
     my $name = shift || 'savepoint';
     return unless $self->{session} and $self->{xact_id};
-	$self->log(I, "releasing savepoint '$name'");
-	my $stat = $self->request($self->app.".savepoint.release", $name)
+    $self->log(I, "releasing savepoint '$name'");
+    my $stat = $self->request($self->app.".savepoint.release", $name)
         or $self->log(E, "error releasing savepoint '$name'");
     return $stat;
 }
@@ -326,8 +326,8 @@ sub rollback_savepoint {
     my $self = shift;
     my $name = shift || 'savepoint';
     return unless $self->{session} and $self->{xact_id};
-	$self->log(I, "rollback savepoint '$name'");
-	my $stat = $self->request($self->app.".savepoint.rollback", $name)
+    $self->log(I, "rollback savepoint '$name'");
+    my $stat = $self->request($self->app.".savepoint.rollback", $name)
         or $self->log(E, "error rolling back savepoint '$name'");
     return $stat;
 }
@@ -337,10 +337,10 @@ sub rollback_savepoint {
 # Rolls back the transaction and disconnects
 # -----------------------------------------------------------------------------
 sub rollback {
-	my $self = shift;
+    my $self = shift;
     my $err;
     my $ret;
-	try {
+    try {
         $self->xact_rollback;
     } catch Error with  {
         $err = shift
@@ -352,8 +352,8 @@ sub rollback {
 }
 
 sub disconnect {
-	my $self = shift;
-	$self->session->disconnect if 
+    my $self = shift;
+    $self->session->disconnect if 
         $self->{session} and 
         $self->{session}->state == OpenSRF::AppSession::CONNECTED();
     delete $self->{session};
@@ -365,9 +365,9 @@ sub disconnect {
 # returns the status of the commit call
 # -----------------------------------------------------------------------------
 sub commit {
-	my $self = shift;
-	return unless $self->{xact_id};
-	my $stat = $self->xact_commit;
+    my $self = shift;
+    return unless $self->{xact_id};
+    my $stat = $self->xact_commit;
     $self->disconnect;
     return $stat;
 }
@@ -376,9 +376,9 @@ sub commit {
 # clears all object data. Does not commit the db transaction.
 # -----------------------------------------------------------------------------
 sub reset {
-	my $self = shift;
-	$self->disconnect;
-	$$self{$_} = undef for (keys %$self);
+    my $self = shift;
+    $self->disconnect;
+    $$self{$_} = undef for (keys %$self);
 }
 
 
@@ -386,10 +386,10 @@ sub reset {
 # commits and resets
 # -----------------------------------------------------------------------------
 sub finish {
-	my $self = shift;
+    my $self = shift;
     my $err;
     my $ret;
-	try {
+    try {
         $self->commit;
     } catch Error with  {
         $err = shift
@@ -406,23 +406,23 @@ sub finish {
 # Does a simple storage request
 # -----------------------------------------------------------------------------
 sub request {
-	my( $self, $method, @params ) = @_;
+    my( $self, $method, @params ) = @_;
 
     my $val;
-	my $err;
-	my $argstr = __arg_to_string( (scalar(@params)) == 1 ? $params[0] : \@params);
-	my $locale = $self->session->session_locale;
+    my $err;
+    my $argstr = __arg_to_string( (scalar(@params)) == 1 ? $params[0] : \@params);
+    my $locale = $self->session->session_locale;
 
-	$self->log(I, "request $locale $method $argstr");
+    $self->log(I, "request $locale $method $argstr");
 
-	if( ($self->{xact} or $always_xact) and 
-			$self->session->state != OpenSRF::AppSession::CONNECTED() ) {
-		#$logger->error("CStoreEditor lost it's connection!!");
-		throw OpenSRF::EX::ERROR ("CStore connection timed out - transaction cannot continue");
-	}
+    if( ($self->{xact} or $always_xact) and 
+            $self->session->state != OpenSRF::AppSession::CONNECTED() ) {
+        #$logger->error("CStoreEditor lost it's connection!!");
+        throw OpenSRF::EX::ERROR ("CStore connection timed out - transaction cannot continue");
+    }
 
 
-	try {
+    try {
 
         my $req = $self->session->request($method, @params);
 
@@ -437,7 +437,7 @@ sub request {
             my $resp = $req->recv(timeout => $self->timeout);
             if($req->failed) {
                 $err = $resp;
-		        $self->log(E, "request error $method : $argstr : $err");
+                $self->log(E, "request error $method : $argstr : $err");
             } else {
                 $val = $resp->content if $resp;
             }
@@ -445,13 +445,13 @@ sub request {
 
         $req->finish;
 
-	} catch Error with {
-		$err = shift;
-		$self->log(E, "request error $method : $argstr : $err");
-	};
+    } catch Error with {
+        $err = shift;
+        $self->log(E, "request error $method : $argstr : $err");
+    };
 
-	throw $err if $err;
-	return $val;
+    throw $err if $err;
+    return $val;
 }
 
 sub substream {
@@ -475,9 +475,9 @@ sub discard {
 # Sets / Returns the requestor object.  This is set when checkauth succeeds.
 # -----------------------------------------------------------------------------
 sub requestor {
-	my($self, $requestor) = @_;
-	$self->{requestor} = $requestor if $requestor;
-	return $self->{requestor};
+    my($self, $requestor) = @_;
+    $self->{requestor} = $requestor if $requestor;
+    return $self->{requestor};
 }
 
 
@@ -486,9 +486,9 @@ sub requestor {
 # Holds the last data received from a storage call
 # -----------------------------------------------------------------------------
 sub data {
-	my( $self, $data ) = @_;
-	$self->{data} = $data if defined $data;
-	return $self->{data};
+    my( $self, $data ) = @_;
+    $self->{data} = $data if defined $data;
+    return $self->{data};
 }
 
 
@@ -496,15 +496,15 @@ sub data {
 # True if this perm has already been checked at this org
 # -----------------------------------------------------------------------------
 sub perm_checked {
-	my( $self, $perm, $org ) = @_;
-	$self->{checked_perms}->{$org} = {}
-		unless $self->{checked_perms}->{$org};
-	my $checked = $self->{checked_perms}->{$org}->{$perm};
-	if(!$checked) {
-		$self->{checked_perms}->{$org}->{$perm} = 1;
-		return 0;
-	}
-	return 1;
+    my( $self, $perm, $org ) = @_;
+    $self->{checked_perms}->{$org} = {}
+        unless $self->{checked_perms}->{$org};
+    my $checked = $self->{checked_perms}->{$org}->{$perm};
+    if(!$checked) {
+        $self->{checked_perms}->{$org}->{$perm} = 1;
+        return 0;
+    }
+    return 1;
 }
 
 
@@ -545,14 +545,14 @@ my $OBJECT_PERM_QUERY = {
 };
 
 sub allowed {
-	my( $self, $perm, $org, $object, $hint ) = @_;
-	my $uid = $self->requestor->id;
-	$org ||= $self->requestor->ws_ou;
+    my( $self, $perm, $org, $object, $hint ) = @_;
+    my $uid = $self->requestor->id;
+    $org ||= $self->requestor->ws_ou;
 
     my $perms = (ref($perm) eq 'ARRAY') ? $perm : [$perm];
 
     for $perm (@$perms) {
-	    $self->log(I, "checking perms user=$uid, org=$org, perm=$perm");
+        $self->log(I, "checking perms user=$uid, org=$org, perm=$perm");
     
         if($object) {
             my $params;
@@ -577,9 +577,9 @@ sub allowed {
     }
 
     # set the perm failure event if the permission check returned false
-	my $e = OpenILS::Event->new('PERM_FAILURE', ilsperm => $perm, ilspermloc => $org);
-	$self->event($e);
-	return undef;
+    my $e = OpenILS::Event->new('PERM_FAILURE', ilsperm => $perm, ilspermloc => $org);
+    $self->event($e);
+    return undef;
 }
 
 
@@ -620,16 +620,16 @@ sub objects_allowed {
 # checks the appropriate perm for the operation
 # -----------------------------------------------------------------------------
 sub _checkperm {
-	my( $self, $ptype, $action, $org ) = @_;
-	$org ||= $self->requestor->ws_ou;
-	my $perm = $PERMS{$ptype}{$action};
-	if( $perm ) {
-		return undef if $self->perm_checked($perm, $org);
-		return $self->event unless $self->allowed($perm, $org);
-	} else {
-		$self->log(I, "no perm provided for $ptype.$action");
-	}
-	return undef;
+    my( $self, $ptype, $action, $org ) = @_;
+    $org ||= $self->requestor->ws_ou;
+    my $perm = $PERMS{$ptype}{$action};
+    if( $perm ) {
+        return undef if $self->perm_checked($perm, $org);
+        return $self->event unless $self->allowed($perm, $org);
+    } else {
+        $self->log(I, "no perm provided for $ptype.$action");
+    }
+    return undef;
 }
 
 
@@ -638,8 +638,8 @@ sub _checkperm {
 # Logs update actions to the activity log
 # -----------------------------------------------------------------------------
 sub log_activity {
-	my( $self, $method, $type, $action, $arg ) = @_;
-	my $str = "$type.$action";
+    my( $self, $method, $type, $action, $arg ) = @_;
+    my $str = "$type.$action";
 
     if ($arg) {
         
@@ -661,33 +661,33 @@ sub log_activity {
     }
 
 
-	$self->log(A, $str);
+    $self->log(A, $str);
 }
 
 
 
 sub _prop_string {
-	my $obj = shift;
-	my @props = $obj->properties;
-	my $str = "";
-	for(@props) {
-		my $prop = $obj->$_() || "";
-		$prop = substr($prop, 0, 128) . "..." if length $prop > 131;
-		$str .= " $_=$prop";
-	}
-	return $str;
+    my $obj = shift;
+    my @props = $obj->properties;
+    my $str = "";
+    for(@props) {
+        my $prop = $obj->$_() || "";
+        $prop = substr($prop, 0, 128) . "..." if length $prop > 131;
+        $str .= " $_=$prop";
+    }
+    return $str;
 }
 
 
 sub __arg_to_string {
-	my $arg = shift;
-	return "" unless defined $arg;
-	if( UNIVERSAL::isa($arg, "Fieldmapper") ) {
+    my $arg = shift;
+    return "" unless defined $arg;
+    if( UNIVERSAL::isa($arg, "Fieldmapper") ) {
         my $idf = $arg->Identity;
-		return (defined $arg->$idf) ? $arg->$idf : '<new object>';
-	}
-	return OpenSRF::Utils::JSON->perl2JSON($arg);
-	return "";
+        return (defined $arg->$idf) ? $arg->$idf : '<new object>';
+    }
+    return OpenSRF::Utils::JSON->perl2JSON($arg);
+    return "";
 }
 
 
@@ -718,160 +718,160 @@ sub __arg_to_string {
 # return $e->event unless @$results; 
 # -----------------------------------------------------------------------------
 sub runmethod {
-	my( $self, $action, $type, $arg, $options ) = @_;
+    my( $self, $action, $type, $arg, $options ) = @_;
 
    $options ||= {};
 
-	if( $action eq 'retrieve' ) {
-		if(! defined($arg) ) {
-			$self->log(W,"$action $type called with no ID...");
-			$self->event(_mk_not_found($type, $arg));
-			return undef;
-		} elsif( ref($arg) =~ /Fieldmapper/ ) {
-			$self->log(D,"$action $type called with an object.. attempting Identity retrieval..");
+    if( $action eq 'retrieve' ) {
+        if(! defined($arg) ) {
+            $self->log(W,"$action $type called with no ID...");
+            $self->event(_mk_not_found($type, $arg));
+            return undef;
+        } elsif( ref($arg) =~ /Fieldmapper/ ) {
+            $self->log(D,"$action $type called with an object.. attempting Identity retrieval..");
             my $idf = $arg->Identity;
-			$arg = $arg->$idf;
-		}
-	}
+            $arg = $arg->$idf;
+        }
+    }
 
-	my @arg = ( ref($arg) eq 'ARRAY' ) ? @$arg : ($arg);
-	my $method = $self->app.".direct.$type.$action";
+    my @arg = ( ref($arg) eq 'ARRAY' ) ? @$arg : ($arg);
+    my $method = $self->app.".direct.$type.$action";
 
-	if( $action eq 'search' ) {
-		$method .= '.atomic';
+    if( $action eq 'search' ) {
+        $method .= '.atomic';
 
-	} elsif( $action eq 'batch_retrieve' ) {
-		$action = 'search';
-		$method =~ s/batch_retrieve/search/o;
-		$method .= '.atomic';
-		my $tt = $type;
-		$tt =~ s/\./::/og;
-		my $fmobj = "Fieldmapper::$tt";
-		my $ident_field = $fmobj->Identity;
+    } elsif( $action eq 'batch_retrieve' ) {
+        $action = 'search';
+        $method =~ s/batch_retrieve/search/o;
+        $method .= '.atomic';
+        my $tt = $type;
+        $tt =~ s/\./::/og;
+        my $fmobj = "Fieldmapper::$tt";
+        my $ident_field = $fmobj->Identity;
 
-		if (ref $arg[0] eq 'ARRAY') {
-			# $arg looks like: ([1, 2, 3], {search_args})
-			@arg = ( { $ident_field => $arg[0] }, @arg[1 .. $#arg] );
-		} else {
-			# $arg looks like: [1, 2, 3]
-			@arg = ( { $ident_field => $arg } );
-		}
+        if (ref $arg[0] eq 'ARRAY') {
+            # $arg looks like: ([1, 2, 3], {search_args})
+            @arg = ( { $ident_field => $arg[0] }, @arg[1 .. $#arg] );
+        } else {
+            # $arg looks like: [1, 2, 3]
+            @arg = ( { $ident_field => $arg } );
+        }
 
-	} elsif( $action eq 'retrieve_all' ) {
-		$action = 'search';
-		$method =~ s/retrieve_all/search/o;
-		my $tt = $type;
-		$tt =~ s/\./::/og;
-		my $fmobj = "Fieldmapper::$tt";
-		@arg = ( { $fmobj->Identity => { '!=' => undef } } );
-		$method .= '.atomic';
-	}
+    } elsif( $action eq 'retrieve_all' ) {
+        $action = 'search';
+        $method =~ s/retrieve_all/search/o;
+        my $tt = $type;
+        $tt =~ s/\./::/og;
+        my $fmobj = "Fieldmapper::$tt";
+        @arg = ( { $fmobj->Identity => { '!=' => undef } } );
+        $method .= '.atomic';
+    }
 
-	$method =~ s/search/id_list/o if $options->{idlist};
+    $method =~ s/search/id_list/o if $options->{idlist};
 
     $method =~ s/\.atomic$//o if $self->substream($$options{substream} || 0);
     $self->timeout($$options{timeout});
     $self->discard($$options{discard});
 
-	# remove any stale events
-	$self->clear_event;
+    # remove any stale events
+    $self->clear_event;
 
-	if( $action eq 'update' or $action eq 'delete' or $action eq 'create' ) {
-		if(!($self->{xact} or $always_xact)) {
-			$logger->error("Attempt to update DB while not in a transaction : $method");
-			throw OpenSRF::EX::ERROR ("Attempt to update DB while not in a transaction : $method");
-		}
-		$self->log_activity($method, $type, $action, $arg);
-	}
+    if( $action eq 'update' or $action eq 'delete' or $action eq 'create' ) {
+        if(!($self->{xact} or $always_xact)) {
+            $logger->error("Attempt to update DB while not in a transaction : $method");
+            throw OpenSRF::EX::ERROR ("Attempt to update DB while not in a transaction : $method");
+        }
+        $self->log_activity($method, $type, $action, $arg);
+    }
 
-	if($$options{checkperm}) {
-		my $a = ($action eq 'search') ? 'retrieve' : $action;
-		my $e = $self->_checkperm($type, $a, $$options{permorg});
-		if($e) {
-			$self->event($e);
-			return undef;
-		}
-	}
+    if($$options{checkperm}) {
+        my $a = ($action eq 'search') ? 'retrieve' : $action;
+        my $e = $self->_checkperm($type, $a, $$options{permorg});
+        if($e) {
+            $self->event($e);
+            return undef;
+        }
+    }
 
-	my $obj; 
-	my $err = '';
+    my $obj; 
+    my $err = '';
 
-	try {
-		$obj = $self->request($method, @arg);
-	} catch Error with { $err = shift; };
-	
+    try {
+        $obj = $self->request($method, @arg);
+    } catch Error with { $err = shift; };
+    
 
-	if(!defined $obj) {
-		$self->log(I, "request returned no data : $method");
+    if(!defined $obj) {
+        $self->log(I, "request returned no data : $method");
 
-		if( $action eq 'retrieve' ) {
-			$self->event(_mk_not_found($type, $arg));
+        if( $action eq 'retrieve' ) {
+            $self->event(_mk_not_found($type, $arg));
 
-		} elsif( $action eq 'update' or 
-				$action eq 'delete' or $action eq 'create' ) {
-			my $evt = OpenILS::Event->new(
-				'DATABASE_UPDATE_FAILED', payload => $arg, debug => "$err" );
-			$self->event($evt);
-		}
+        } elsif( $action eq 'update' or 
+                $action eq 'delete' or $action eq 'create' ) {
+            my $evt = OpenILS::Event->new(
+                'DATABASE_UPDATE_FAILED', payload => $arg, debug => "$err" );
+            $self->event($evt);
+        }
 
-		if( $err ) {
-			$self->event( 
-				OpenILS::Event->new( 'DATABASE_QUERY_FAILED', 
-					payload => $arg, debug => "$err" ));
-			return undef;
-		}
+        if( $err ) {
+            $self->event( 
+                OpenILS::Event->new( 'DATABASE_QUERY_FAILED', 
+                    payload => $arg, debug => "$err" ));
+            return undef;
+        }
 
-		return undef;
-	}
+        return undef;
+    }
 
-	if( $action eq 'create' and $obj == 0 ) {
-		my $evt = OpenILS::Event->new(
-			'DATABASE_UPDATE_FAILED', payload => $arg, debug => "$err" );
-		$self->event($evt);
-		return undef;
-	}
+    if( $action eq 'create' and $obj == 0 ) {
+        my $evt = OpenILS::Event->new(
+            'DATABASE_UPDATE_FAILED', payload => $arg, debug => "$err" );
+        $self->event($evt);
+        return undef;
+    }
 
-	# If we havn't dealt with the error in a nice way, go ahead and throw it
-	if( $err ) {
-		$self->event( 
-			OpenILS::Event->new( 'DATABASE_QUERY_FAILED', 
-				payload => $arg, debug => "$err" ));
-		return undef;
-	}
+    # If we havn't dealt with the error in a nice way, go ahead and throw it
+    if( $err ) {
+        $self->event( 
+            OpenILS::Event->new( 'DATABASE_QUERY_FAILED', 
+                payload => $arg, debug => "$err" ));
+        return undef;
+    }
 
-	if( $action eq 'search' ) {
-		$self->log(I, "$type.$action : returned ".scalar(@$obj). " result(s)");
-		$self->event(_mk_not_found($type, $arg)) unless @$obj;
-	}
+    if( $action eq 'search' ) {
+        $self->log(I, "$type.$action : returned ".scalar(@$obj). " result(s)");
+        $self->event(_mk_not_found($type, $arg)) unless @$obj;
+    }
 
-	if( $action eq 'create' ) {
+    if( $action eq 'create' ) {
         my $idf = $obj->Identity;
-		$self->log(I, "created a new $type object with Identity " . $obj->$idf);
-		$arg->$idf($obj->$idf);
-	}
+        $self->log(I, "created a new $type object with Identity " . $obj->$idf);
+        $arg->$idf($obj->$idf);
+    }
 
-	$self->data($obj); # cache the data for convenience
+    $self->data($obj); # cache the data for convenience
 
-	return ($obj) ? $obj : 1;
+    return ($obj) ? $obj : 1;
 }
 
 
 sub _mk_not_found {
-	my( $type, $arg ) = @_;
-	(my $t = $type) =~ s/\./_/og;
-	$t = uc($t);
-	return OpenILS::Event->new("${t}_NOT_FOUND", payload => $arg);
+    my( $type, $arg ) = @_;
+    (my $t = $type) =~ s/\./_/og;
+    $t = uc($t);
+    return OpenILS::Event->new("${t}_NOT_FOUND", payload => $arg);
 }
 
 
 
 # utility method for loading
 sub __fm2meth { 
-	my $str = shift;
-	my $sep = shift;
-	$str =~ s/Fieldmapper:://o;
-	$str =~ s/::/$sep/g;
-	return $str;
+    my $str = shift;
+    my $sep = shift;
+    $str =~ s/Fieldmapper:://o;
+    $str =~ s/::/$sep/g;
+    return $str;
 }
 
 
@@ -897,13 +897,13 @@ init();  # Add very many subs to this namespace
 sub json_query {
     my( $self, $arg, $options ) = @_;
     $options ||= {};
-	my @arg = ( ref($arg) eq 'ARRAY' ) ? @$arg : ($arg);
+    my @arg = ( ref($arg) eq 'ARRAY' ) ? @$arg : ($arg);
     my $method = $self->app.'.json_query.atomic';
     $method =~ s/\.atomic$//o if $self->substream($$options{substream} || 0);
 
     $self->timeout($$options{timeout});
     $self->discard($$options{discard});
-	$self->clear_event;
+    $self->clear_event;
     my $obj;
     my $err;
     

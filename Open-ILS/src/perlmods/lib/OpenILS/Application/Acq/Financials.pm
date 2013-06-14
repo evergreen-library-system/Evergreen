@@ -17,9 +17,9 @@ my $U = 'OpenILS::Application::AppUtils';
 # ----------------------------------------------------------------------------
 
 __PACKAGE__->register_method(
-	method => 'create_funding_source',
-	api_name	=> 'open-ils.acq.funding_source.create',
-	signature => {
+    method => 'create_funding_source',
+    api_name    => 'open-ils.acq.funding_source.create',
+    signature => {
         desc => 'Creates a new funding_source',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -41,9 +41,9 @@ sub create_funding_source {
 
 
 __PACKAGE__->register_method(
-	method => 'delete_funding_source',
-	api_name	=> 'open-ils.acq.funding_source.delete',
-	signature => {
+    method => 'delete_funding_source',
+    api_name    => 'open-ils.acq.funding_source.delete',
+    signature => {
         desc => 'Deletes a funding_source',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -65,10 +65,10 @@ sub delete_funding_source {
 }
 
 __PACKAGE__->register_method(
-	method => 'retrieve_funding_source',
-	api_name	=> 'open-ils.acq.funding_source.retrieve',
+    method => 'retrieve_funding_source',
+    api_name    => 'open-ils.acq.funding_source.retrieve',
     authoritative => 1,
-	signature => {
+    signature => {
         desc => 'Retrieves a new funding_source',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -100,10 +100,10 @@ sub retrieve_funding_source {
 }
 
 __PACKAGE__->register_method(
-	method => 'retrieve_org_funding_sources',
-	api_name	=> 'open-ils.acq.funding_source.org.retrieve',
+    method => 'retrieve_org_funding_sources',
+    api_name    => 'open-ils.acq.funding_source.org.retrieve',
     stream => 1,
-	signature => {
+    signature => {
         desc => 'Retrieves all the funding_sources associated with an org unit that the requestor has access to see',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -156,9 +156,9 @@ sub retrieve_funding_source_summary_impl {
 
 
 __PACKAGE__->register_method(
-	method => 'create_funding_source_credit',
-	api_name	=> 'open-ils.acq.funding_source_credit.create',
-	signature => {
+    method => 'create_funding_source_credit',
+    api_name    => 'open-ils.acq.funding_source_credit.create',
+    signature => {
         desc => 'Create a new funding source credit',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -188,9 +188,9 @@ sub create_funding_source_credit {
 # ---------------------------------------------------------------
 
 __PACKAGE__->register_method(
-	method => 'create_fund',
-	api_name	=> 'open-ils.acq.fund.create',
-	signature => {
+    method => 'create_fund',
+    api_name    => 'open-ils.acq.fund.create',
+    signature => {
         desc => 'Creates a new fund',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -212,9 +212,9 @@ sub create_fund {
 
 
 __PACKAGE__->register_method(
-	method => 'delete_fund',
-	api_name	=> 'open-ils.acq.fund.delete',
-	signature => {
+    method => 'delete_fund',
+    api_name    => 'open-ils.acq.fund.delete',
+    signature => {
         desc => 'Deletes a fund',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -236,10 +236,10 @@ sub delete_fund {
 }
 
 __PACKAGE__->register_method(
-	method => 'retrieve_fund',
-	api_name	=> 'open-ils.acq.fund.retrieve',
+    method => 'retrieve_fund',
+    api_name    => 'open-ils.acq.fund.retrieve',
     authoritative => 1,
-	signature => {
+    signature => {
         desc => 'Retrieves a new fund',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -272,10 +272,10 @@ sub retrieve_fund {
 }
 
 __PACKAGE__->register_method(
-	method => 'retrieve_org_funds',
-	api_name	=> 'open-ils.acq.fund.org.retrieve',
+    method => 'retrieve_org_funds',
+    api_name    => 'open-ils.acq.fund.org.retrieve',
     stream => 1,
-	signature => {
+    signature => {
         desc => 'Retrieves all the funds associated with an org unit',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -292,8 +292,8 @@ __PACKAGE__->register_method(
 );
 
 __PACKAGE__->register_method(
-	method => 'retrieve_org_funds',
-	api_name	=> 'open-ils.acq.fund.org.years.retrieve');
+    method => 'retrieve_org_funds',
+    api_name    => 'open-ils.acq.fund.org.years.retrieve');
 
 
 sub retrieve_org_funds {
@@ -345,10 +345,10 @@ sub retrieve_org_funds {
 }
 
 __PACKAGE__->register_method(
-	method => 'retrieve_fund_summary',
-	api_name	=> 'open-ils.acq.fund.summary.retrieve',
+    method => 'retrieve_fund_summary',
+    api_name    => 'open-ils.acq.fund.summary.retrieve',
     authoritative => 1,
-	signature => {
+    signature => {
         desc => 'Returns a summary of credits/debits/encumbrances for a fund',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -389,9 +389,9 @@ sub retrieve_fund_summary_impl {
 }
 
 __PACKAGE__->register_method(
-	method => 'transfer_money_between_funds',
-	api_name	=> 'open-ils.acq.funds.transfer_money',
-	signature => {
+    method => 'transfer_money_between_funds',
+    api_name    => 'open-ils.acq.funds.transfer_money',
+    signature => {
         desc => 'Method for transfering money between funds',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -455,9 +455,9 @@ sub transfer_money_between_funds {
 # ---------------------------------------------------------------
 
 __PACKAGE__->register_method(
-	method => 'create_fund_alloc',
-	api_name	=> 'open-ils.acq.fund_allocation.create',
-	signature => {
+    method => 'create_fund_alloc',
+    api_name    => 'open-ils.acq.fund_allocation.create',
+    signature => {
         desc => 'Creates a new fund_allocation',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -489,9 +489,9 @@ sub create_fund_alloc {
 
 
 __PACKAGE__->register_method(
-	method => 'delete_fund_alloc',
-	api_name	=> 'open-ils.acq.fund_allocation.delete',
-	signature => {
+    method => 'delete_fund_alloc',
+    api_name    => 'open-ils.acq.fund_allocation.delete',
+    signature => {
         desc => 'Deletes a fund_allocation',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -521,10 +521,10 @@ sub delete_fund_alloc {
 }
 
 __PACKAGE__->register_method(
-	method => 'retrieve_fund_alloc',
-	api_name	=> 'open-ils.acq.fund_allocation.retrieve',
+    method => 'retrieve_fund_alloc',
+    api_name    => 'open-ils.acq.fund_allocation.retrieve',
     authoritative => 1,
-	signature => {
+    signature => {
         desc => 'Retrieves a new fund_allocation',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -552,10 +552,10 @@ sub retrieve_fund_alloc {
 
 
 __PACKAGE__->register_method(
-	method => 'retrieve_funding_source_allocations',
-	api_name	=> 'open-ils.acq.funding_source.allocations.retrieve',
+    method => 'retrieve_funding_source_allocations',
+    api_name    => 'open-ils.acq.funding_source.allocations.retrieve',
     authoritative => 1,
-	signature => {
+    signature => {
         desc => 'Retrieves a new fund_allocation',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -586,10 +586,10 @@ sub retrieve_funding_source_allocations {
 # ----------------------------------------------------------------------------
 
 __PACKAGE__->register_method(
-	method => 'retrieve_all_currency_type',
-	api_name	=> 'open-ils.acq.currency_type.all.retrieve',
+    method => 'retrieve_all_currency_type',
+    api_name    => 'open-ils.acq.currency_type.all.retrieve',
     stream => 1,
-	signature => {
+    signature => {
         desc => 'Retrieves all currency_type objects',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -607,9 +607,9 @@ sub retrieve_all_currency_type {
 }
 
 __PACKAGE__->register_method(
-	method => 'create_lineitem_assets',
-	api_name	=> 'open-ils.acq.lineitem.assets.create',
-	signature => {
+    method => 'create_lineitem_assets',
+    api_name    => 'open-ils.acq.lineitem.assets.create',
+    signature => {
         desc => q/Creates the bibliographic data, volume, and copies associated with a lineitem./,
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -729,10 +729,10 @@ sub create_purchase_order_impl {
 
 
 __PACKAGE__->register_method(
-	method => 'retrieve_all_user_purchase_order',
-	api_name	=> 'open-ils.acq.purchase_order.user.all.retrieve',
+    method => 'retrieve_all_user_purchase_order',
+    api_name    => 'open-ils.acq.purchase_order.user.all.retrieve',
     stream => 1,
-	signature => {
+    signature => {
         desc => 'Retrieves a purchase order',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -762,7 +762,7 @@ sub retrieve_all_user_purchase_order {
 
     # grab purchase orders I have 
     my $perm_orgs = $U->user_has_work_perm_at($e, 'MANAGE_PROVIDER', {descendants =>1});
-	return OpenILS::Event->new('PERM_FAILURE', ilsperm => 'MANAGE_PROVIDER')
+    return OpenILS::Event->new('PERM_FAILURE', ilsperm => 'MANAGE_PROVIDER')
         unless @$perm_orgs;
     my $provider_ids = $e->search_acq_provider({owner => $perm_orgs}, {idlist=>1});
     my $po_ids = $e->search_acq_purchase_order({provider => $provider_ids}, {idlist=>1});
@@ -789,10 +789,10 @@ sub retrieve_all_user_purchase_order {
 
 
 __PACKAGE__->register_method(
-	method => 'search_purchase_order',
-	api_name	=> 'open-ils.acq.purchase_order.search',
+    method => 'search_purchase_order',
+    api_name    => 'open-ils.acq.purchase_order.search',
     stream => 1,
-	signature => {
+    signature => {
         desc => 'Search for a purchase order',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -981,8 +981,8 @@ sub retrieve_purchase_order_impl {
 
 
 __PACKAGE__->register_method(
-	method => 'format_po',
-	api_name	=> 'open-ils.acq.purchase_order.format'
+    method => 'format_po',
+    api_name    => 'open-ils.acq.purchase_order.format'
 );
 
 sub format_po {
@@ -998,8 +998,8 @@ sub format_po {
 }
 
 __PACKAGE__->register_method(
-	method => 'format_lineitem',
-	api_name	=> 'open-ils.acq.lineitem.format'
+    method => 'format_lineitem',
+    api_name    => 'open-ils.acq.lineitem.format'
 );
 
 sub format_lineitem {
@@ -1139,12 +1139,12 @@ sub po_events {
 }
 
 __PACKAGE__->register_method (
-	method		=> 'update_po_events',
+    method      => 'update_po_events',
     api_name    => 'open-ils.acq.purchase_order.event.cancel.batch',
     stream      => 1,
 );
 __PACKAGE__->register_method (
-	method		=> 'update_po_events',
+    method      => 'update_po_events',
     api_name    => 'open-ils.acq.purchase_order.event.reset.batch',
     stream      => 1,
 );
@@ -1191,10 +1191,10 @@ sub update_po_events {
 
 
 __PACKAGE__->register_method (
-	method		=> 'process_fiscal_rollover',
+    method      => 'process_fiscal_rollover',
     api_name    => 'open-ils.acq.fiscal_rollover.combined',
     stream      => 1,
-	signature => {
+    signature => {
         desc => q/
             Performs a combined fiscal fund rollover process.
 
@@ -1229,10 +1229,10 @@ __PACKAGE__->register_method (
 );
 
 __PACKAGE__->register_method (
-	method		=> 'process_fiscal_rollover',
+    method      => 'process_fiscal_rollover',
     api_name    => 'open-ils.acq.fiscal_rollover.combined.dry_run',
     stream      => 1,
-	signature => {
+    signature => {
         desc => q/
             @see open-ils.acq.fiscal_rollover.combined
             This is the dry-run version.  The action is performed,
@@ -1243,10 +1243,10 @@ __PACKAGE__->register_method (
 );
 
 __PACKAGE__->register_method (
-	method		=> 'process_fiscal_rollover',
+    method      => 'process_fiscal_rollover',
     api_name    => 'open-ils.acq.fiscal_rollover.propagate',
     stream      => 1,
-	signature => {
+    signature => {
         desc => q/
             @see open-ils.acq.fiscal_rollover.combined
             This version performs fund propagation only.  I.e, creation of
@@ -1257,10 +1257,10 @@ __PACKAGE__->register_method (
 );
 
 __PACKAGE__->register_method (
-	method		=> 'process_fiscal_rollover',
+    method      => 'process_fiscal_rollover',
     api_name    => 'open-ils.acq.fiscal_rollover.propagate.dry_run',
     stream      => 1,
-	signature => { desc => q/ 
+    signature => { desc => q/ 
         @see open-ils.acq.fiscal_rollover.propagate 
         This is the dry-run version.  The action is performed,
         new fund information is returned, then all changes are rolled back.
@@ -1348,9 +1348,9 @@ sub process_fiscal_rollover {
 }
 
 __PACKAGE__->register_method(
-	method => 'org_fiscal_year',
-	api_name	=> 'open-ils.acq.org_unit.current_fiscal_year',
-	signature => {
+    method => 'org_fiscal_year',
+    api_name    => 'open-ils.acq.org_unit.current_fiscal_year',
+    signature => {
         desc => q/
             Returns the current fiscal year for the given org unit.
             If no fiscal year is configured, the current calendar

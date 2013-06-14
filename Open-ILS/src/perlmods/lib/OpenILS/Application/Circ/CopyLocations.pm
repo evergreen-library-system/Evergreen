@@ -12,25 +12,25 @@ my $U = "OpenILS::Application::AppUtils";
 
 
 __PACKAGE__->register_method(
-	api_name		=> "open-ils.circ.copy_location.retrieve.all",
-	method		=> 'cl_retrieve_all',
-	argc			=>	2,
-	signature	=> q/
-		Retrieves the ranged set of copy locations for the requested org.
-		If no org is provided, all copy locations are returned
-		@param orgId The org location id
-		@param noi18n No i18n in result
+    api_name        => "open-ils.circ.copy_location.retrieve.all",
+    method      => 'cl_retrieve_all',
+    argc            =>  2,
+    signature   => q/
+        Retrieves the ranged set of copy locations for the requested org.
+        If no org is provided, all copy locations are returned
+        @param orgId The org location id
+        @param noi18n No i18n in result
         @param flesh_owning_lib Flesh owning lib in results
-		@return An array of copy location objects
-		/);
+        @return An array of copy location objects
+        /);
 
 sub cl_retrieve_all {
-	my ($self, $client, $org_id, $no_i18n, $flesh_owning_lib) = @_;
+    my ($self, $client, $org_id, $no_i18n, $flesh_owning_lib) = @_;
 
-	if(!$org_id) {
-		my $otree = $U->get_org_tree();
-		$org_id = $otree->id;
-	}
+    if(!$org_id) {
+        my $otree = $U->get_org_tree();
+        $org_id = $otree->id;
+    }
 
     my $second_cstore_arg = {"no_i18n" => scalar($no_i18n)};
        $second_cstore_arg->{"order_by"} = {"acpl" => "name"};
@@ -69,16 +69,16 @@ sub cl_retrieve_distinct {
 }
 
 __PACKAGE__->register_method(
-	api_name		=> 'open-ils.circ.copy_location.create',
-	method		=> 'cl_create',
-	argc			=> 2,
-	signature	=> q/
-		Creates a new copy location.  Requestor must have the CREATE_COPY_LOCATION
-		permission at the location specified on the new location object
-		@param authtoken The login session key
-		@param copyLoc The new copy location object
-		@return The if of the new location object on success, event on error
-	/);
+    api_name        => 'open-ils.circ.copy_location.create',
+    method      => 'cl_create',
+    argc            => 2,
+    signature   => q/
+        Creates a new copy location.  Requestor must have the CREATE_COPY_LOCATION
+        permission at the location specified on the new location object
+        @param authtoken The login session key
+        @param copyLoc The new copy location object
+        @return The if of the new location object on success, event on error
+    /);
 
 
 sub cl_create {
@@ -102,16 +102,16 @@ sub cl_create {
 
 
 __PACKAGE__->register_method (
-	api_name		=> 'open-ils.circ.copy_location.delete',
-	method		=> 'cl_delete',
-	argc			=> 2,
-	signature	=> q/
-		Deletes a copy location. Requestor must have the 
-		DELETE_COPY_LOCATION permission.
-		@param authtoken The login session key
-		@param id The copy location object id
-		@return 1 on success, event on error
-	/);
+    api_name        => 'open-ils.circ.copy_location.delete',
+    method      => 'cl_delete',
+    argc            => 2,
+    signature   => q/
+        Deletes a copy location. Requestor must have the 
+        DELETE_COPY_LOCATION permission.
+        @param authtoken The login session key
+        @param id The copy location object id
+        @return 1 on success, event on error
+    /);
 
 
 sub cl_delete {
@@ -132,16 +132,16 @@ sub cl_delete {
 
 
 __PACKAGE__->register_method (
-	api_name		=> 'open-ils.circ.copy_location.update',
-	method		=> 'cl_update',
-	argc			=> 2,
-	signature	=> q/
-		Updates a copy location object.  Requestor must have 
-		the UPDATE_COPY_LOCATION permission
-		@param authtoken The login session key
-		@param copyLoc	The copy location object
-		@return 1 on success, event on error
-	/);
+    api_name        => 'open-ils.circ.copy_location.update',
+    method      => 'cl_update',
+    argc            => 2,
+    signature   => q/
+        Updates a copy location object.  Requestor must have 
+        the UPDATE_COPY_LOCATION permission
+        @param authtoken The login session key
+        @param copyLoc  The copy location object
+        @return 1 on success, event on error
+    /);
 
 
 sub cl_update {
@@ -170,23 +170,23 @@ sub cl_update {
 
 
 __PACKAGE__->register_method(
-	method => 'fetch_loc',
+    method => 'fetch_loc',
     authoritative => 1,
-	api_name => 'open-ils.circ.copy_location.retrieve',
+    api_name => 'open-ils.circ.copy_location.retrieve',
 );
 
 sub fetch_loc {
-	my( $self, $con, $id ) = @_;
-	my $e = new_editor();
-	my $cl = $e->retrieve_asset_copy_location($id)
-		or return $e->event;
-	return $cl;
+    my( $self, $con, $id ) = @_;
+    my $e = new_editor();
+    my $cl = $e->retrieve_asset_copy_location($id)
+        or return $e->event;
+    return $cl;
 }
 
 __PACKAGE__->register_method(
     api_name => "open-ils.circ.copy_location_order.update",
     method => 'update_clo',
-    argc =>	2,
+    argc => 2,
 );
 
 sub update_clo {

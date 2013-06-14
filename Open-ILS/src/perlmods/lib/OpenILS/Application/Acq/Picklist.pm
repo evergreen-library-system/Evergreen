@@ -23,9 +23,9 @@ my $U = 'OpenILS::Application::AppUtils';
 
 
 __PACKAGE__->register_method(
-	method => 'create_picklist',
-	api_name	=> 'open-ils.acq.picklist.create',
-	signature => {
+    method => 'create_picklist',
+    api_name    => 'open-ils.acq.picklist.create',
+    signature => {
         desc => 'Creates a new picklist',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -52,9 +52,9 @@ sub create_picklist {
 
 
 __PACKAGE__->register_method(
-	method => 'update_picklist',
-	api_name	=> 'open-ils.acq.picklist.update',
-	signature => {
+    method => 'update_picklist',
+    api_name    => 'open-ils.acq.picklist.update',
+    signature => {
         desc => 'Updates a new picklist',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -86,10 +86,10 @@ sub update_picklist {
 }
 
 __PACKAGE__->register_method(
-	method => 'retrieve_picklist',
-	api_name	=> 'open-ils.acq.picklist.retrieve',
+    method => 'retrieve_picklist',
+    api_name    => 'open-ils.acq.picklist.retrieve',
     authoritative => 1,
-	signature => {
+    signature => {
         desc => 'Retrieves a picklist',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -148,10 +148,10 @@ sub retrieve_lineitem_count {
 
 
 __PACKAGE__->register_method(
-	method => 'retrieve_picklist_name',
-	api_name	=> 'open-ils.acq.picklist.name.retrieve',
+    method => 'retrieve_picklist_name',
+    api_name    => 'open-ils.acq.picklist.name.retrieve',
     authoritative => 1,
-	signature => {
+    signature => {
         desc => 'Retrieves a picklist by name.  Owner is implied by the caller',
         params => [
             {desc => 'Authentication token',      type => 'string'},
@@ -177,10 +177,10 @@ sub retrieve_picklist_name {
 
 
 __PACKAGE__->register_method(
-	method => 'retrieve_user_picklist',
-	api_name	=> 'open-ils.acq.picklist.user.retrieve',
+    method => 'retrieve_user_picklist',
+    api_name    => 'open-ils.acq.picklist.user.retrieve',
     stream => 1,
-	signature => {
+    signature => {
         desc => 'Retrieves a  user\'s picklists',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -228,10 +228,10 @@ sub retrieve_user_picklist {
 
 
 __PACKAGE__->register_method(
-	method => 'retrieve_all_user_picklist',
-	api_name	=> 'open-ils.acq.picklist.user.all.retrieve',
+    method => 'retrieve_all_user_picklist',
+    api_name    => 'open-ils.acq.picklist.user.all.retrieve',
     stream => 1,
-	signature => {
+    signature => {
         desc => 'Retrieves all of the picklists a user is allowed to see',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -279,10 +279,10 @@ sub retrieve_all_user_picklist {
 }
 
 __PACKAGE__->register_method(
-	method => 'retrieve_pl_lineitem',
-	api_name	=> 'open-ils.acq.lineitem.picklist.retrieve',
+    method => 'retrieve_pl_lineitem',
+    api_name    => 'open-ils.acq.lineitem.picklist.retrieve',
     stream => 1,
-	signature => {
+    signature => {
         desc => 'Retrieves lineitem objects according to picklist',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -453,10 +453,10 @@ sub record_distribution_formula_application {
 
 
 __PACKAGE__->register_method(
-	method => 'ranged_distrib_formulas',
-	api_name	=> 'open-ils.acq.distribution_formula.ranged.retrieve',
+    method => 'ranged_distrib_formulas',
+    api_name    => 'open-ils.acq.distribution_formula.ranged.retrieve',
     stream => 1,
-	signature => {
+    signature => {
         desc => 'Ranged distribution formulas, fleshed with entries',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -505,10 +505,10 @@ sub ranged_distrib_formulas {
 }
 
 __PACKAGE__->register_method(
-	method => "ranged_distrib_formula_applications",
-	api_name => "open-ils.acq.distribution_formula_application.ranged.retrieve",
+    method => "ranged_distrib_formula_applications",
+    api_name => "open-ils.acq.distribution_formula_application.ranged.retrieve",
     stream => 1,
-	signature => {
+    signature => {
         desc => "Ranged distribution formulas applications, fleshed with formulas and users",
         params => [
             {desc => "Authentication token", type => "string"},

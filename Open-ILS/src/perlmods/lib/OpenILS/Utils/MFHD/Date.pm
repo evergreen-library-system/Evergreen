@@ -303,8 +303,8 @@ sub subsequent_week {
         # WWdd: published on given weekday of given week of every month
         my ($week, $day) = ($1, $2);
 
-        # 	printf("# subsequent_week: matched /WWdd/: week='%s', day='%s'\n",
-        # 	       $week, $day);
+        #   printf("# subsequent_week: matched /WWdd/: week='%s', day='%s'\n",
+        #          $week, $day);
 
         if ($week eq '00') {
             # Every week
@@ -327,9 +327,9 @@ sub subsequent_week {
 # current issue, then the next issue is published next
 # month, otherwise, it's published this month.
 # This will never happen for the "00: every week" pattern
-# 	    printf("# subsequent_week: candidate (%s) occurs on or before current date (%s)\n",
-# 		   join('/', $candidate->year, $candidate->month, $candidate->day),
-# 		   join('/', $dt->year, $dt->month, $dt->day));
+#       printf("# subsequent_week: candidate (%s) occurs on or before current date (%s)\n",
+#          join('/', $candidate->year, $candidate->month, $candidate->day),
+#          join('/', $dt->year, $dt->month, $dt->day));
             $candidate->set(day => 1);
             $candidate->add(months => 1);
             $candidate = nth_week_of_month($candidate, $week, $day);
@@ -338,8 +338,8 @@ sub subsequent_week {
         # MMWWdd: published on given weekday of given week of given month
         my ($month, $week, $day) = ($1, $2, $3);
 
-# 	printf("# subsequent_week: matched /MMWWdd/: month='%s', week='%s', day='%s'\n",
-# 	       $month, $week, $day);
+#   printf("# subsequent_week: matched /MMWWdd/: month='%s', week='%s', day='%s'\n",
+#          $month, $week, $day);
 
         $candidate = DateTime->new(
             year  => $dt->year,

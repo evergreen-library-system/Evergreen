@@ -19,12 +19,12 @@ my $lib_ips_hash;
 
 my $bootstrap_config_file;
 sub import {
-	my( $self, $config ) = @_;
-	$bootstrap_config_file = $config;
+    my( $self, $config ) = @_;
+    $bootstrap_config_file = $config;
 }
 
 sub init {
-	OpenSRF::System->bootstrap_client( config_file => $bootstrap_config_file );
+    OpenSRF::System->bootstrap_client( config_file => $bootstrap_config_file );
 }
 
 sub parse_ips_file {
@@ -53,45 +53,45 @@ sub parse_ips_file {
 
 my %org_cache;
 sub handler {
-	my $apache = shift;
+    my $apache = shift;
 
-	my $cgi = CGI->new( $apache );
-	my $port = $cgi->server_port();
-	my $hostname = $cgi->server_name();
+    my $cgi = CGI->new( $apache );
+    my $port = $cgi->server_port();
+    my $hostname = $cgi->server_name();
     my $proto = ($cgi->https) ? 'https' : 'http';
-	my $user_ip = $ENV{REMOTE_ADDR};
+    my $user_ip = $ENV{REMOTE_ADDR};
 
     # Apache config values
-	my $skin = $apache->dir_config('OILSRedirectSkin') || 'default';
-	my $depth = $apache->dir_config('OILSRedirectDepth');
-	my $locale = $apache->dir_config('OILSRedirectLocale') || 'en-US';
+    my $skin = $apache->dir_config('OILSRedirectSkin') || 'default';
+    my $depth = $apache->dir_config('OILSRedirectDepth');
+    my $locale = $apache->dir_config('OILSRedirectLocale') || 'en-US';
     my $use_tt = ($apache->dir_config('OILSRedirectTpac') || '') =~ /true/i;
     my $physical_loc;
 
     $apache->log->debug("Redirector sees client frim $user_ip");
 
     # parse the IP file
-	my ($shortname, $nskin, $nhostname) = redirect_libs($user_ip);
+    my ($shortname, $nskin, $nhostname) = redirect_libs($user_ip);
 
-	if ($shortname) { # we have a config
+    if ($shortname) { # we have a config
 
         # Read any override vars from the ips txt file
-		if ($nskin =~ m/[^\s]/) { $skin = $nskin; }
-		if ($nhostname =~ m/[^\s]/) { $hostname = $nhostname; }
+        if ($nskin =~ m/[^\s]/) { $skin = $nskin; }
+        if ($nhostname =~ m/[^\s]/) { $hostname = $nhostname; }
 
         if($org_cache{$shortname}) {
             $physical_loc = $org_cache{$shortname};
 
         } else {
 
-		    my $session = OpenSRF::AppSession->create("open-ils.actor");
-		    my $org = $session->request(
+            my $session = OpenSRF::AppSession->create("open-ils.actor");
+            my $org = $session->request(
                 'open-ils.actor.org_unit.retrieve_by_shortname',
-			    $shortname)->gather(1);
+                $shortname)->gather(1);
 
             $org_cache{$shortname} = $physical_loc = $org->id if $org;
         }
-	}
+    }
 
     my $url = "$proto://$hostname:$port";
 
@@ -135,14 +135,14 @@ sub handler {
 
     $logger->info("Apache redirecting $user_ip to $url");
     $apache->headers_out->add('Location' => "$url");
-	return Apache2::Const::REDIRECT;
+    return Apache2::Const::REDIRECT;
 }
 
 sub redirect_libs {
-	my $source_ip = new Net::IP (shift) or return 0;
+    my $source_ip = new Net::IP (shift) or return 0;
 
-	# do this the linear way for now...
-	for my $shortname (keys %$lib_ips_hash) {
+    # do this the linear way for now...
+    for my $shortname (keys %$lib_ips_hash) {
 
         for my $block (@{$lib_ips_hash->{$shortname}}) {
 
@@ -155,8 +155,8 @@ sub redirect_libs {
                 }
             }
         }
-	}
-	return 0;
+    }
+    return 0;
 }
 
 1;

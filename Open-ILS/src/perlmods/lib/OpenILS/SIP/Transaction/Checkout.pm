@@ -22,9 +22,9 @@ our @ISA = qw(OpenILS::SIP::Transaction);
 
 # Most fields are handled by the Transaction superclass
 my %fields = (
-	      security_inhibit => 0,
-	      due              => undef,
-	      renew_ok         => 0,
+          security_inhibit => 0,
+          due              => undef,
+          renew_ok         => 0,
              );
 
 sub new {
@@ -69,8 +69,8 @@ sub do_checkout {
     $self->ok(0);
 
     my $args = {
-		barcode => $self->{item}->id,
-		patron_barcode => $self->{patron}->id
+        barcode => $self->{item}->id,
+        patron_barcode => $self->{patron}->id
                };
 
     my ($resp, $method);

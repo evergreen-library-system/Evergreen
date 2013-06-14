@@ -9,18 +9,18 @@ my $U = "OpenILS::Application::AppUtils";
 
 
 __PACKAGE__->register_method (
-	method		=> 'create_user_stage',
-	api_name    => 'open-ils.actor.user.stage.create',
+    method      => 'create_user_stage',
+    api_name    => 'open-ils.actor.user.stage.create',
     signature => {
         desc => q/
             Creates a new pending user account including addresses and statcats.
             Users are added to staging tables pending staff review.
         /,
         params => [
-		    {desc => 'user', type => 'object', class => 'stgu'},
-		    {desc => 'Mailing address.  Optional', type => 'object', class => 'stgma'},
-		    {desc => 'Billing address.  Optional', type => 'object', class => 'stgba'},
-		    {desc => 'Statcats.  Optional.  This is an array of "stgsc" objects', type => 'array'},
+            {desc => 'user', type => 'object', class => 'stgu'},
+            {desc => 'Mailing address.  Optional', type => 'object', class => 'stgma'},
+            {desc => 'Billing address.  Optional', type => 'object', class => 'stgba'},
+            {desc => 'Statcats.  Optional.  This is an array of "stgsc" objects', type => 'array'},
         ],
         return => {
             desc => 'username on success, Event on error',
@@ -68,8 +68,8 @@ sub create_user_stage {
 }
 
 __PACKAGE__->register_method (
-	method		=> 'user_stage_by_org',
-	api_name    => 'open-ils.actor.user.stage.retrieve.by_org',
+    method      => 'user_stage_by_org',
+    api_name    => 'open-ils.actor.user.stage.retrieve.by_org',
     stream      => 1
 );
 
@@ -113,8 +113,8 @@ sub flesh_user_stage {
 
 
 __PACKAGE__->register_method (
-	method		=> 'user_stage_by_uname',
-	api_name    => 'open-ils.actor.user.stage.retrieve.by_username',
+    method      => 'user_stage_by_uname',
+    api_name    => 'open-ils.actor.user.stage.retrieve.by_username',
 );
 
 sub user_stage_by_uname {
@@ -136,8 +136,8 @@ sub user_stage_by_uname {
 
 
 __PACKAGE__->register_method (
-	method		=> 'delete_user_stage', 
-	api_name    => 'open-ils.actor.user.stage.delete',
+    method      => 'delete_user_stage', 
+    api_name    => 'open-ils.actor.user.stage.delete',
 );
 
 sub delete_user_stage {

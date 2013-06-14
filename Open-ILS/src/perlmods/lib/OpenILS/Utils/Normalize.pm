@@ -72,14 +72,14 @@ sub _normalize_codes {
     # transformations based on Unicode category codes
     $str =~ s/[\p{Cc}\p{Cf}\p{Co}\p{Cs}\p{Lm}\p{Mc}\p{Me}\p{Mn}]//g;
 
-	if ($sf && $sf =~ /^a/o) {
-		my $commapos = index($str, ',');
-		if ($commapos > -1) {
-			if ($commapos != length($str) - 1) {
+    if ($sf && $sf =~ /^a/o) {
+        my $commapos = index($str, ',');
+        if ($commapos > -1) {
+            if ($commapos != length($str) - 1) {
                 $str =~ s/,/\x07/; # preserve first comma
-			}
-		}
-	}
+            }
+        }
+    }
 
     # since we've stripped out the control characters, we can now
     # use a few as placeholders temporarily

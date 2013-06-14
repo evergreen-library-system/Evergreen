@@ -40,24 +40,24 @@ Takes an MFHD record ID and returns a hash of holdings statements
 =cut
 
 sub mfhd_to_hash {
-	my ($self, $client, $id) = @_;
-	
-	my $session = OpenSRF::AppSession->create("open-ils.cstore");
-	my $request = $session->request(
-			"open-ils.cstore.direct.serial.record_entry.retrieve", $id )->gather(1);
+    my ($self, $client, $id) = @_;
+    
+    my $session = OpenSRF::AppSession->create("open-ils.cstore");
+    my $request = $session->request(
+            "open-ils.cstore.direct.serial.record_entry.retrieve", $id )->gather(1);
 
-	my $u = OpenILS::Utils::MFHDParser->new();
-	my $mfhd_hash = $u->generate_svr( $request->id, $request->marc, $request->owning_lib );
+    my $u = OpenILS::Utils::MFHDParser->new();
+    my $mfhd_hash = $u->generate_svr( $request->id, $request->marc, $request->owning_lib );
 
-	$session->disconnect();
-	return $mfhd_hash;
+    $session->disconnect();
+    return $mfhd_hash;
 }
 
 __PACKAGE__->register_method(
-	method	=> "mfhd_to_hash",
-	api_name	=> "open-ils.search.serial.record.mfhd.retrieve",
-	argc		=> 1, 
-	note		=> "Given a serial record ID, return MFHD holdings"
+    method  => "mfhd_to_hash",
+    api_name    => "open-ils.search.serial.record.mfhd.retrieve",
+    argc        => 1, 
+    note        => "Given a serial record ID, return MFHD holdings"
 );
 
 =over
@@ -72,46 +72,46 @@ Given a bib record ID, returns a hash of holdings statements
 
 # DEFUNCT ?
 #sub bib_to_mfhd_hash {
-#	my ($self, $client, $bib) = @_;
-#	
-#	my $mfhd_hash;
+#   my ($self, $client, $bib) = @_;
+#   
+#   my $mfhd_hash;
 #
-#	# XXX perhaps this? --miker
-##	my $e = OpenILS::Utils::CStoreEditor->new();
-##	my $mfhd = $e->search_serial_record_entry({ record => $bib });
-##	return $u->generate_svr( $mfhd->[0] ) if (ref $mfhd);
-##	return undef;
+#   # XXX perhaps this? --miker
+##  my $e = OpenILS::Utils::CStoreEditor->new();
+##  my $mfhd = $e->search_serial_record_entry({ record => $bib });
+##  return $u->generate_svr( $mfhd->[0] ) if (ref $mfhd);
+##  return undef;
 #
-#	my @mfhd = $U->cstorereq( "open-ils.cstore.json_query.atomic", {
-#		select  => { sre => 'marc' },
-#		from    => 'sre',
-#		where   => { record => $bib, deleted => 'f' },
-#		distinct => 1
-#	});
-#	
-#	if (!@mfhd or scalar(@mfhd) == 0) {
-#		return undef;
-#	}
+#   my @mfhd = $U->cstorereq( "open-ils.cstore.json_query.atomic", {
+#       select  => { sre => 'marc' },
+#       from    => 'sre',
+#       where   => { record => $bib, deleted => 'f' },
+#       distinct => 1
+#   });
+#   
+#   if (!@mfhd or scalar(@mfhd) == 0) {
+#       return undef;
+#   }
 #
-#	my $u = OpenILS::Utils::MFHDParser->new();
-#	$mfhd_hash = $u->generate_svr( $mfhd[0][0]->{id}, $mfhd[0][0]->{marc}, $mfhd[0][0]->{owning_lib} );
+#   my $u = OpenILS::Utils::MFHDParser->new();
+#   $mfhd_hash = $u->generate_svr( $mfhd[0][0]->{id}, $mfhd[0][0]->{marc}, $mfhd[0][0]->{owning_lib} );
 #
-#	return $mfhd_hash;
+#   return $mfhd_hash;
 #}
 #
 #__PACKAGE__->register_method(
-#	method	=> "bib_to_mfhd_hash",
-#	api_name	=> "open-ils.search.serial.record.bib_to_mfhd.retrieve",
-#	argc		=> 1, 
-#	note		=> "Given a bibliographic record ID, return MFHD holdings"
+#   method  => "bib_to_mfhd_hash",
+#   api_name    => "open-ils.search.serial.record.bib_to_mfhd.retrieve",
+#   argc        => 1, 
+#   note        => "Given a bibliographic record ID, return MFHD holdings"
 #);
 
 sub bib_to_svr {
-	my ($self, $client, $bib, $ou, $ou_depth) = @_;
-	
-	my $svrs = [];
+    my ($self, $client, $bib, $ou, $ou_depth) = @_;
+    
+    my $svrs = [];
 
-	my $e = OpenILS::Utils::CStoreEditor->new();
+    my $e = OpenILS::Utils::CStoreEditor->new();
 
     if (!$ou) {
         # Get the root of the org_tree
@@ -138,7 +138,7 @@ sub bib_to_svr {
             "join" => {"ssub" => {}}
         }
     ]);
-	my $sres = $e->search_serial_record_entry([
+    my $sres = $e->search_serial_record_entry([
         {
             record => $bib,
             deleted => 'f',
@@ -149,12 +149,12 @@ sub bib_to_svr {
             "join" => { "sdist" => { 'type' => 'left' } } 
         }
     ]);
-	if (!ref $sres and !ref $sdists) {
-		return undef;
-	}
+    if (!ref $sres and !ref $sdists) {
+        return undef;
+    }
 
-	my $mfhd_parser = OpenILS::Utils::MFHDParser->new();
-	foreach (@$sdists) {
+    my $mfhd_parser = OpenILS::Utils::MFHDParser->new();
+    foreach (@$sdists) {
         my $svr;
         if ($_->summary_method ne 'use_sdist_only' and ref $_->record_entry and !$U->is_true($_->record_entry->deleted)) {
             my $skip_all_computable = 0;
@@ -208,21 +208,21 @@ sub bib_to_svr {
             }
         }
         push(@$svrs, $svr);
-	}
-	foreach (@$sres) {
-		push(@$svrs, $mfhd_parser->generate_svr($_->id, $_->marc, $_->owning_lib));
-	}
+    }
+    foreach (@$sres) {
+        push(@$svrs, $mfhd_parser->generate_svr($_->id, $_->marc, $_->owning_lib));
+    }
 
     # do a basic location sort for simple predictability
     @$svrs = sort { $a->location cmp $b->location } @$svrs;
 
-	return $svrs;
+    return $svrs;
 }
 
 __PACKAGE__->register_method(
-	method	=> "bib_to_svr",
-	api_name	=> "open-ils.search.serial.record.bib.retrieve",
-	argc		=> 1, 
+    method  => "bib_to_svr",
+    api_name    => "open-ils.search.serial.record.bib.retrieve",
+    argc        => 1, 
     signature => {
         desc   => 'Given a bibliographic record ID, return holdings in svr form',
         params => [

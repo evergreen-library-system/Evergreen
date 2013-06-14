@@ -9,212 +9,212 @@
   # The dirver MUST be a subclass of Class::DBI(::Replication) and
   # OpenILS::Application::Storage.
   #-------------------------------------------------------------------------------
-	package OpenILS::Application::Storage::Driver::Pg;
-	use OpenILS::Application::Storage::Driver::Pg::cdbi;
-	use OpenILS::Application::Storage::Driver::Pg::fts;
-	use OpenILS::Application::Storage::Driver::Pg::storage;
-	use OpenILS::Application::Storage::Driver::Pg::dbi;
-	use UNIVERSAL::require; 
-	BEGIN {                 
-		'Class::DBI::Frozen::301'->use or 'Class::DBI'->use or die $@;
-	}     
-	use base qw/Class::DBI OpenILS::Application::Storage/;
-	use DBI;
-	use OpenSRF::EX qw/:try/;
-	use OpenSRF::DomainObject::oilsResponse;
-	use OpenSRF::Utils::Logger qw/:level/;
-	my $log = 'OpenSRF::Utils::Logger';
+    package OpenILS::Application::Storage::Driver::Pg;
+    use OpenILS::Application::Storage::Driver::Pg::cdbi;
+    use OpenILS::Application::Storage::Driver::Pg::fts;
+    use OpenILS::Application::Storage::Driver::Pg::storage;
+    use OpenILS::Application::Storage::Driver::Pg::dbi;
+    use UNIVERSAL::require; 
+    BEGIN {                 
+        'Class::DBI::Frozen::301'->use or 'Class::DBI'->use or die $@;
+    }     
+    use base qw/Class::DBI OpenILS::Application::Storage/;
+    use DBI;
+    use OpenSRF::EX qw/:try/;
+    use OpenSRF::DomainObject::oilsResponse;
+    use OpenSRF::Utils::Logger qw/:level/;
+    my $log = 'OpenSRF::Utils::Logger';
 
-	__PACKAGE__->set_sql( retrieve_limited => 'SELECT * FROM __TABLE__ ORDER BY id LIMIT ?' );
-	__PACKAGE__->set_sql( copy_start => 'COPY %s (%s) FROM STDIN;' );
-	__PACKAGE__->set_sql( copy_end => '\.' );
+    __PACKAGE__->set_sql( retrieve_limited => 'SELECT * FROM __TABLE__ ORDER BY id LIMIT ?' );
+    __PACKAGE__->set_sql( copy_start => 'COPY %s (%s) FROM STDIN;' );
+    __PACKAGE__->set_sql( copy_end => '\.' );
 
-	my $master_db;
-	my @slave_dbs;
-	my $_db_params;
+    my $master_db;
+    my @slave_dbs;
+    my $_db_params;
 
-	sub db_Handles {
-		return ($master_db, @slave_dbs);
-	}
+    sub db_Handles {
+        return ($master_db, @slave_dbs);
+    }
 
-	sub child_init {
-		my $self = shift;
-		$_db_params = shift;
+    sub child_init {
+        my $self = shift;
+        $_db_params = shift;
 
-		$log->debug("Running child_init inside ".__PACKAGE__, INTERNAL);
+        $log->debug("Running child_init inside ".__PACKAGE__, INTERNAL);
 
-		$_db_params = [ $_db_params ] unless (ref($_db_params) eq 'ARRAY');
+        $_db_params = [ $_db_params ] unless (ref($_db_params) eq 'ARRAY');
 
-		my %attrs = (	%{$self->_default_attributes},
-				RootClass => 'DBIx::ContextualFetch',
-				ShowErrorStatement => 1,
-				RaiseError => 1,
-				AutoCommit => 1,
-				PrintError => 1,
-				Taint => 1,
-				#TraceLevel => "1|SQL",
-				pg_enable_utf8 => 1,
-				pg_server_prepare => 0,
-				FetchHashKeyName => 'NAME_lc',
-				ChopBlanks => 1,
-		);
+        my %attrs = (   %{$self->_default_attributes},
+                RootClass => 'DBIx::ContextualFetch',
+                ShowErrorStatement => 1,
+                RaiseError => 1,
+                AutoCommit => 1,
+                PrintError => 1,
+                Taint => 1,
+                #TraceLevel => "1|SQL",
+                pg_enable_utf8 => 1,
+                pg_server_prepare => 0,
+                FetchHashKeyName => 'NAME_lc',
+                ChopBlanks => 1,
+        );
 
-		my $master = shift @$_db_params;
-		$$master{port} ||= '5432';
-		$$master{host} ||= 'localhost';
-		$$master{db} ||= 'openils';
+        my $master = shift @$_db_params;
+        $$master{port} ||= '5432';
+        $$master{host} ||= 'localhost';
+        $$master{db} ||= 'openils';
 
-		$log->debug("Attempting to connect to $$master{db} at $$master{host}", INFO);
+        $log->debug("Attempting to connect to $$master{db} at $$master{host}", INFO);
 
-		try {
-			$master_db = DBI->connect(
-				"dbi:Pg:".
-					"host=$$master{host};".
-					"port=$$master{port};".
-					"dbname=$$master{db}",
-				$$master{user},
-				$$master{pw},
-				\%attrs)
-			|| do { sleep(1);
-				DBI->connect(
-					"dbi:Pg:".
-						"host=$$master{host};".
-						"port=$$master{port};".
-						"dbname=$$master{db}",
-					$$master{user},
-					$$master{pw},
-					\%attrs) }
-			|| throw OpenSRF::EX::ERROR
-				("Couldn't connect to $$master{db}".
-				 " on $$master{host}::$$master{port}".
-				 " as $$master{user}!!");
-		} catch Error with {
-			my $e = shift;
-			$log->debug("Error connecting to database:\n\t$e\n\t$DBI::errstr", ERROR);
-			throw $e;
-		};
+        try {
+            $master_db = DBI->connect(
+                "dbi:Pg:".
+                    "host=$$master{host};".
+                    "port=$$master{port};".
+                    "dbname=$$master{db}",
+                $$master{user},
+                $$master{pw},
+                \%attrs)
+            || do { sleep(1);
+                DBI->connect(
+                    "dbi:Pg:".
+                        "host=$$master{host};".
+                        "port=$$master{port};".
+                        "dbname=$$master{db}",
+                    $$master{user},
+                    $$master{pw},
+                    \%attrs) }
+            || throw OpenSRF::EX::ERROR
+                ("Couldn't connect to $$master{db}".
+                 " on $$master{host}::$$master{port}".
+                 " as $$master{user}!!");
+        } catch Error with {
+            my $e = shift;
+            $log->debug("Error connecting to database:\n\t$e\n\t$DBI::errstr", ERROR);
+            throw $e;
+        };
 
-		$log->debug("Connected to MASTER db $$master{db} at $$master{host}", INFO);
-		
-		$master_db->do("SET NAMES '$$master{client_encoding}';") if ($$master{client_encoding});
+        $log->debug("Connected to MASTER db $$master{db} at $$master{host}", INFO);
+        
+        $master_db->do("SET NAMES '$$master{client_encoding}';") if ($$master{client_encoding});
 
-		for my $db (@$_db_params) {
-			try {
-				push @slave_dbs, DBI->connect("dbi:Pg:host=$$db{host};port=$$db{port};dbname=$$db{db}",$$db{user},$$db{pw}, \%attrs)
-					|| do { sleep(1); DBI->connect("dbi:Pg:host=$$db{host};port=$$db{port};dbname=$$db{db}",$$db{user},$$db{pw}, \%attrs) }
-					|| throw OpenSRF::EX::ERROR
-						("Couldn't connect to $$db{db}".
-				 		" on $$db{host}::$$db{port}".
-				 		" as $$db{user}!!");
-			} catch Error with {
-				my $e = shift;
-				$log->debug("Error connecting to database:\n\t$e\n\t$DBI::errstr", ERROR);
-				throw $e;
-			};
+        for my $db (@$_db_params) {
+            try {
+                push @slave_dbs, DBI->connect("dbi:Pg:host=$$db{host};port=$$db{port};dbname=$$db{db}",$$db{user},$$db{pw}, \%attrs)
+                    || do { sleep(1); DBI->connect("dbi:Pg:host=$$db{host};port=$$db{port};dbname=$$db{db}",$$db{user},$$db{pw}, \%attrs) }
+                    || throw OpenSRF::EX::ERROR
+                        ("Couldn't connect to $$db{db}".
+                        " on $$db{host}::$$db{port}".
+                        " as $$db{user}!!");
+            } catch Error with {
+                my $e = shift;
+                $log->debug("Error connecting to database:\n\t$e\n\t$DBI::errstr", ERROR);
+                throw $e;
+            };
 
-			$slave_dbs[-1]->do("SET NAMES '$$db{client_encoding}';") if ($$master{client_encoding});
+            $slave_dbs[-1]->do("SET NAMES '$$db{client_encoding}';") if ($$master{client_encoding});
 
-			$log->debug("Connected to MASTER db '$$master{db} at $$master{host}", INFO);
-		}
+            $log->debug("Connected to MASTER db '$$master{db} at $$master{host}", INFO);
+        }
 
-		$log->debug("All is well on the western front", INTERNAL);
-	}
+        $log->debug("All is well on the western front", INTERNAL);
+    }
 
-	sub db_Main {
-		my $self = shift;
-		return $master_db if ($self->current_xact_session || $OpenILS::Application::Storage::WRITE);
-		return $master_db unless (@slave_dbs);
-		return ($master_db, @slave_dbs)[rand(scalar(@slave_dbs))];
-	}
+    sub db_Main {
+        my $self = shift;
+        return $master_db if ($self->current_xact_session || $OpenILS::Application::Storage::WRITE);
+        return $master_db unless (@slave_dbs);
+        return ($master_db, @slave_dbs)[rand(scalar(@slave_dbs))];
+    }
 
-	sub quote {
-		my $self = shift;
-		return $self->db_Main->quote(@_)
-	}
+    sub quote {
+        my $self = shift;
+        return $self->db_Main->quote(@_)
+    }
 
-#	sub tsearch2_trigger {
-#		my $self = shift;
-#		return unless ($self->value);
-#		$self->index_vector(
-#			$self->db_Slaves->selectrow_array(
-#				"SELECT to_tsvector('default',?);",
-#				{},
-#				$self->value
-#			)
-#		);
-#	}
+#   sub tsearch2_trigger {
+#       my $self = shift;
+#       return unless ($self->value);
+#       $self->index_vector(
+#           $self->db_Slaves->selectrow_array(
+#               "SELECT to_tsvector('default',?);",
+#               {},
+#               $self->value
+#           )
+#       );
+#   }
 
-	my $_xact_session;
-	my $_audit_session;
+    my $_xact_session;
+    my $_audit_session;
 
-	sub current_xact_session {
-		my $self = shift;
-		if (defined($_xact_session)) {
-			return $_xact_session;
-		}
-		return undef;
-	}
+    sub current_xact_session {
+        my $self = shift;
+        if (defined($_xact_session)) {
+            return $_xact_session;
+        }
+        return undef;
+    }
 
-	sub current_audit_session {
-		my $self = shift;
-		if (defined($_audit_session)) {
-			return $_audit_session;
-		}
-		return undef;
-	}
+    sub current_audit_session {
+        my $self = shift;
+        if (defined($_audit_session)) {
+            return $_audit_session;
+        }
+        return undef;
+    }
 
-	sub current_xact_is_auto {
-		my $self = shift;
-		my $auto = shift;
-		if (defined($_xact_session) and ref($_xact_session)) {
-			if (defined $auto) {
-				$_xact_session->session_data(autocommit => $auto);
-			}
-			return $_xact_session->session_data('autocommit'); 
-		}
-	}
+    sub current_xact_is_auto {
+        my $self = shift;
+        my $auto = shift;
+        if (defined($_xact_session) and ref($_xact_session)) {
+            if (defined $auto) {
+                $_xact_session->session_data(autocommit => $auto);
+            }
+            return $_xact_session->session_data('autocommit'); 
+        }
+    }
 
-	sub current_xact_id {
-		my $self = shift;
-		if (defined($_xact_session) and ref($_xact_session)) {
-			return $_xact_session->session_id;
-		}
-		return undef;
-	}
+    sub current_xact_id {
+        my $self = shift;
+        if (defined($_xact_session) and ref($_xact_session)) {
+            return $_xact_session->session_id;
+        }
+        return undef;
+    }
 
-	sub set_xact_session {
-		my $self = shift;
-		my $ses = shift;
-		if (!defined($ses)) {
-			return undef;
-		}
-		$_xact_session = $ses;
-		return $_xact_session;
-	}
+    sub set_xact_session {
+        my $self = shift;
+        my $ses = shift;
+        if (!defined($ses)) {
+            return undef;
+        }
+        $_xact_session = $ses;
+        return $_xact_session;
+    }
 
-	sub set_audit_session {
-		my $self = shift;
-		my $ses = shift;
-		if (!defined($ses)) {
-			return undef;
-		}
-		$_audit_session = $ses;
-		return $_audit_session;
-	}
+    sub set_audit_session {
+        my $self = shift;
+        my $ses = shift;
+        if (!defined($ses)) {
+            return undef;
+        }
+        $_audit_session = $ses;
+        return $_audit_session;
+    }
 
-	sub unset_xact_session {
-		my $self = shift;
-		my $ses = $_xact_session;
-		undef $_xact_session;
-		return $ses;
-	}
+    sub unset_xact_session {
+        my $self = shift;
+        my $ses = $_xact_session;
+        undef $_xact_session;
+        return $ses;
+    }
 
-	sub unset_audit_session {
-		my $self = shift;
-		my $ses = $_audit_session;
-		undef $_audit_session;
-		return $ses;
-	}
+    sub unset_audit_session {
+        my $self = shift;
+        my $ses = $_audit_session;
+        undef $_audit_session;
+        return $ses;
+    }
 
 }
 

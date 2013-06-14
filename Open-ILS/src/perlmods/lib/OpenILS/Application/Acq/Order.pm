@@ -915,9 +915,9 @@ sub create_lineitem_detail_debit {
 
 
 __PACKAGE__->register_method(
-	"method" => "fund_exceeds_balance_percent_api",
-	"api_name" => "open-ils.acq.fund.check_balance_percentages",
-	"signature" => {
+    "method" => "fund_exceeds_balance_percent_api",
+    "api_name" => "open-ils.acq.fund.check_balance_percentages",
+    "signature" => {
         "desc" => q/Determine whether a given fund exceeds its defined
             "balance stop and warning percentages"/,
         "params" => [
@@ -1261,10 +1261,10 @@ sub create_copy {
 # ----------------------------------------------------------------------------
 
 __PACKAGE__->register_method(
-	method => 'zsearch',
-	api_name => 'open-ils.acq.picklist.search.z3950',
+    method => 'zsearch',
+    api_name => 'open-ils.acq.picklist.search.z3950',
     stream => 1,
-	signature => {
+    signature => {
         desc => 'Performs a z3950 federated search and creates a picklist and associated lineitems',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -1360,7 +1360,7 @@ sub upload_records {
     my($self, $conn, $auth, $key, $args) = @_;
     $args ||= {};
 
-	my $e = new_editor(authtoken => $auth, xact => 1);
+    my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
     my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
 
@@ -1418,33 +1418,33 @@ sub upload_records {
 
     $logger->info("acq processing MARC file=$filename");
 
-	my $batch = new MARC::Batch ('USMARC', $filename);
-	$batch->strict_off;
+    my $batch = new MARC::Batch ('USMARC', $filename);
+    $batch->strict_off;
 
-	my $count = 0;
+    my $count = 0;
     my @li_list;
 
-	while(1) {
+    while(1) {
 
-	    my ($err, $xml, $r);
-		$count++;
+        my ($err, $xml, $r);
+        $count++;
 
-		try {
+        try {
             $r = $batch->next;
         } catch Error with {
             $err = shift;
-			$logger->warn("Proccessing of record $count in set $key failed with error $err.  Skipping this record");
+            $logger->warn("Proccessing of record $count in set $key failed with error $err.  Skipping this record");
         };
 
         next if $err;
         last unless $r;
 
-		try {
+        try {
             $xml = clean_marc($r);
-		} catch Error with {
-			$err = shift;
-			$logger->warn("Proccessing XML of record $count in set $key failed with error $err.  Skipping this record");
-		};
+        } catch Error with {
+            $err = shift;
+            $logger->warn("Proccessing XML of record $count in set $key failed with error $err.  Skipping this record");
+        };
 
         next if $err or not $xml;
 
@@ -1470,14 +1470,14 @@ sub upload_records {
 
         push(@li_list, $li->id);
         $mgr->respond;
-	}
+    }
 
     if ($po) {
         $evt = extract_po_name($mgr, $po, \@li_list);
         return $evt if $evt;
     }
 
-	$e->commit;
+    $e->commit;
     unlink($filename);
     $cache->delete_cache('vandelay_import_spool_' . $key);
 
@@ -1686,9 +1686,9 @@ sub extract_lineitem_detail_data {
 # ----------------------------------------------------------------------------
 
 __PACKAGE__->register_method(
-	method => 'create_po_assets',
-	api_name	=> 'open-ils.acq.purchase_order.assets.create',
-	signature => {
+    method => 'create_po_assets',
+    api_name    => 'open-ils.acq.purchase_order.assets.create',
+    signature => {
         desc => q/Creates assets for each lineitem in the purchase order/,
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -2054,9 +2054,9 @@ sub receive_po_api {
 # the same way the LIs and LIDs do.
 
 __PACKAGE__->register_method(
-	method => 'receive_lineitem_detail_api',
-	api_name	=> 'open-ils.acq.lineitem_detail.receive',
-	signature => {
+    method => 'receive_lineitem_detail_api',
+    api_name    => 'open-ils.acq.lineitem_detail.receive',
+    signature => {
         desc => 'Mark a lineitem_detail as received',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -2114,9 +2114,9 @@ sub receive_lineitem_detail_api {
 }
 
 __PACKAGE__->register_method(
-	method => 'receive_lineitem_api',
-	api_name	=> 'open-ils.acq.lineitem.receive',
-	signature => {
+    method => 'receive_lineitem_api',
+    api_name    => 'open-ils.acq.lineitem.receive',
+    signature => {
         desc => 'Mark a lineitem as received',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -2156,10 +2156,10 @@ sub receive_lineitem_api {
 
 
 __PACKAGE__->register_method(
-	method => 'receive_lineitem_batch_api',
-	api_name	=> 'open-ils.acq.lineitem.receive.batch',
+    method => 'receive_lineitem_batch_api',
+    api_name    => 'open-ils.acq.lineitem.receive.batch',
     stream => 1,
-	signature => {
+    signature => {
         desc => 'Mark lineitems as received',
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -2790,9 +2790,9 @@ sub not_cancelable {
 }
 
 __PACKAGE__->register_method(
-	method => "cancel_purchase_order_api",
-	api_name	=> "open-ils.acq.purchase_order.cancel",
-	signature => {
+    method => "cancel_purchase_order_api",
+    api_name    => "open-ils.acq.purchase_order.cancel",
+    signature => {
         desc => q/Cancels an on-order purchase order/,
         params => [
             {desc => "Authentication token", type => "string"},
@@ -2899,9 +2899,9 @@ sub cancel_purchase_order {
 
 
 __PACKAGE__->register_method(
-	method => "cancel_lineitem_api",
-	api_name	=> "open-ils.acq.lineitem.cancel",
-	signature => {
+    method => "cancel_lineitem_api",
+    api_name    => "open-ils.acq.lineitem.cancel",
+    signature => {
         desc => q/Cancels an on-order lineitem/,
         params => [
             {desc => "Authentication token", type => "string"},
@@ -2914,9 +2914,9 @@ __PACKAGE__->register_method(
 );
 
 __PACKAGE__->register_method(
-	method => "cancel_lineitem_api",
-	api_name	=> "open-ils.acq.lineitem.cancel.batch",
-	signature => {
+    method => "cancel_lineitem_api",
+    api_name    => "open-ils.acq.lineitem.cancel.batch",
+    signature => {
         desc => q/Batched version of open-ils.acq.lineitem.cancel/,
         return => {desc => q/Object describing changed LIs and LIDs on success;
             Event on error./}
@@ -3127,9 +3127,9 @@ sub cancel_lineitem {
 
 
 __PACKAGE__->register_method(
-	method => "cancel_lineitem_detail_api",
-	api_name	=> "open-ils.acq.lineitem_detail.cancel",
-	signature => {
+    method => "cancel_lineitem_detail_api",
+    api_name    => "open-ils.acq.lineitem_detail.cancel",
+    signature => {
         desc => q/Cancels an on-order lineitem detail/,
         params => [
             {desc => "Authentication token", type => "string"},
@@ -3502,10 +3502,10 @@ sub create_user_request_events {
 
 
 __PACKAGE__->register_method(
-	method => "po_note_CUD_batch",
-	api_name => "open-ils.acq.po_note.cud.batch",
+    method => "po_note_CUD_batch",
+    api_name => "open-ils.acq.po_note.cud.batch",
     stream => 1,
-	signature => {
+    signature => {
         desc => q/Manage purchase order notes/,
         params => [
             {desc => "Authentication token", type => "string"},
@@ -3584,10 +3584,10 @@ sub fetch_and_check_li {
 
 
 __PACKAGE__->register_method(
-	method => "clone_distrib_form",
-	api_name => "open-ils.acq.distribution_formula.clone",
+    method => "clone_distrib_form",
+    api_name => "open-ils.acq.distribution_formula.clone",
     stream => 1,
-	signature => {
+    signature => {
         desc => q/Clone a distribution formula/,
         params => [
             {desc => "Authentication token", type => "string"},
@@ -3627,9 +3627,9 @@ sub clone_distrib_form {
 }
 
 __PACKAGE__->register_method(
-	method => 'add_li_to_po',
-	api_name	=> 'open-ils.acq.purchase_order.add_lineitem',
-	signature => {
+    method => 'add_li_to_po',
+    api_name    => 'open-ils.acq.purchase_order.add_lineitem',
+    signature => {
         desc => q/Adds a lineitem to an existing purchase order/,
         params => [
             {desc => 'Authentication token', type => 'string'},

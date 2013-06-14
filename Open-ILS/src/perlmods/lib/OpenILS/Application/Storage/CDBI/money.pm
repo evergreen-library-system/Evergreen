@@ -60,9 +60,9 @@ use base qw/money/;
 __PACKAGE__->table('money_open_billable_transaction_summary');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/xact_start usr xact_finish total_paid
-				     last_payment_ts total_owed last_billing_ts
-				     balance_owed xact_type last_billing_note last_billing_type
-				     last_payment_note last_payment_type/);
+                     last_payment_ts total_owed last_billing_ts
+                     balance_owed xact_type last_billing_note last_billing_type
+                     last_payment_note last_payment_type/);
 #-------------------------------------------------------------------------------
 
 package money::billable_transaction_summary;
@@ -70,9 +70,9 @@ use base qw/money/;
 __PACKAGE__->table('money_billable_transaction_summary');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/xact_start usr xact_finish total_paid
-				     last_payment_ts total_owed last_billing_ts
-				     balance_owed xact_type last_billing_note last_billing_type
-				     last_payment_note last_payment_type/);
+                     last_payment_ts total_owed last_billing_ts
+                     balance_owed xact_type last_billing_note last_billing_type
+                     last_payment_note last_payment_type/);
 #-------------------------------------------------------------------------------
 
 package money::billing;
@@ -116,9 +116,9 @@ use base qw/money/;
 __PACKAGE__->table('money_credit_card_payment');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/xact amount payment_ts cash_drawer
-				     accepting_usr amount_collected cc_type
-				     cc_number expire_month expire_year
-				     approval_code note/);
+                     accepting_usr amount_collected cc_type
+                     cc_number expire_month expire_year
+                     approval_code note/);
 #-------------------------------------------------------------------------------
 
 package money::forgive_payment;

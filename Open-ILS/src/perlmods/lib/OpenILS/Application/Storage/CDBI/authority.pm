@@ -11,8 +11,8 @@ use base qw/authority/;
 authority::record_entry->table( 'authority_record_entry' );
 authority::record_entry->columns( Primary => qw/id/ );
 authority::record_entry->columns( Essential => qw/creator editor
-				      create_date edit_date source active
-				      deleted marc last_xact_id/ );
+                      create_date edit_date source active
+                      deleted marc last_xact_id/ );
 
 #-------------------------------------------------------------------------------
 package authority::record_note;
@@ -21,7 +21,7 @@ use base qw/authority/;
 authority::record_note->table( 'authority_record_note' );
 authority::record_note->columns( Primary => qw/id/ );
 authority::record_note->columns( Essential => qw/record value creator
-					editor create_date edit_date/ );
+                    editor create_date edit_date/ );
 #-------------------------------------------------------------------------------
 package authority::full_rec;
 use base qw/authority/;
@@ -38,7 +38,7 @@ use base qw/authority/;
 authority::record_descriptor->table( 'authority_rec_descriptor' );
 authority::record_descriptor->columns( Primary => qw/id/ );
 authority::record_descriptor->columns( Essential => qw/record record_status
-						    char_encoding/ );
+                            char_encoding/ );
 
 #-------------------------------------------------------------------------------
 

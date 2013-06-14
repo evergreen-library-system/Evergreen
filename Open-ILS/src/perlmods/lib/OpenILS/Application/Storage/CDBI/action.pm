@@ -32,7 +32,7 @@ use base qw/action/;
 __PACKAGE__->table('action_survey');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/name description owner start_date
-				     end_date usr_summary opac poll required/);
+                     end_date usr_summary opac poll required/);
 #-------------------------------------------------------------------------------
 
 package action::survey_question;
@@ -55,7 +55,7 @@ use base qw/action/;
 __PACKAGE__->table('action_survey_response');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/response_group_id usr survey question
-				     answer answer_date effective_date/);
+                     answer answer_date effective_date/);
 #-------------------------------------------------------------------------------
 
 package action::circulation;
@@ -63,13 +63,13 @@ use base qw/action/;
 __PACKAGE__->table('action_circulation');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/xact_start usr target_copy circ_lib
-				     duration duration_rule renewal_remaining grace_period
-				     recurring_fine_rule recurring_fine stop_fines
-				     max_fine max_fine_rule fine_interval
-				     stop_fines xact_finish due_date opac_renewal
-				     checkin_staff circ_staff circ_lib checkin_lib
-				     stop_fines_time checkin_time desk_renewal
-				     phone_renewal create_time copy_location/);
+                     duration duration_rule renewal_remaining grace_period
+                     recurring_fine_rule recurring_fine stop_fines
+                     max_fine max_fine_rule fine_interval
+                     stop_fines xact_finish due_date opac_renewal
+                     checkin_staff circ_staff circ_lib checkin_lib
+                     stop_fines_time checkin_time desk_renewal
+                     phone_renewal create_time copy_location/);
 
 #-------------------------------------------------------------------------------
 
@@ -78,13 +78,13 @@ use base qw/action/;
 __PACKAGE__->table('action_open_circulation');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/xact_start usr target_copy circ_lib
-				     duration duration_rule renewal_remaining grace_period
-				     recurring_fine_rule recurring_fine stop_fines
-				     max_fine max_fine_rule fine_interval
-				     stop_fines xact_finish due_date opac_renewal
-				     checkin_staff circ_staff circ_lib checkin_lib
-				     stop_fines_time checkin_time desk_renewal
-				     phone_renewal/);
+                     duration duration_rule renewal_remaining grace_period
+                     recurring_fine_rule recurring_fine stop_fines
+                     max_fine max_fine_rule fine_interval
+                     stop_fines xact_finish due_date opac_renewal
+                     checkin_staff circ_staff circ_lib checkin_lib
+                     stop_fines_time checkin_time desk_renewal
+                     phone_renewal/);
 
 #-------------------------------------------------------------------------------
 
@@ -93,12 +93,12 @@ use base qw/action/;
 __PACKAGE__->table('action_hold_request');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/request_time capture_time fulfillment_time
-				     prev_check_time expire_time requestor usr cancel_cause
-				     hold_type holdable_formats target cancel_time shelf_time
-				     phone_notify email_notify sms_notify sms_carrier selection_depth cancel_note
-				     pickup_lib current_copy request_lib frozen thaw_date mint_condition
-				     fulfillment_staff fulfillment_lib selection_ou cut_in_line
-					 shelf_expire_time current_shelf_lib/);
+                     prev_check_time expire_time requestor usr cancel_cause
+                     hold_type holdable_formats target cancel_time shelf_time
+                     phone_notify email_notify sms_notify sms_carrier selection_depth cancel_note
+                     pickup_lib current_copy request_lib frozen thaw_date mint_condition
+                     fulfillment_staff fulfillment_lib selection_ou cut_in_line
+                     shelf_expire_time current_shelf_lib/);
 
 #-------------------------------------------------------------------------------
 
@@ -123,8 +123,8 @@ use base qw/action/;
 __PACKAGE__->table('action_hold_transit_copy');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/source dest persistant_transfer target_copy
-				     source_send_time dest_recv_time prev_hop prev_dest
-				     copy_status hold/);
+                     source_send_time dest_recv_time prev_hop prev_dest
+                     copy_status hold/);
 
 #-------------------------------------------------------------------------------
 
@@ -133,8 +133,8 @@ use base qw/action/;
 __PACKAGE__->table('action_reservation_transit_copy');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/source dest persistant_transfer target_copy
-				     source_send_time dest_recv_time prev_hop prev_dest
-				     copy_status reservation/);
+                     source_send_time dest_recv_time prev_hop prev_dest
+                     copy_status reservation/);
 
 #-------------------------------------------------------------------------------
 
@@ -143,8 +143,8 @@ use base qw/action/;
 __PACKAGE__->table('action_transit_copy');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/source dest persistant_transfer target_copy
-				     source_send_time dest_recv_time prev_hop prev_dest
-				     copy_status/);
+                     source_send_time dest_recv_time prev_hop prev_dest
+                     copy_status/);
 
 #-------------------------------------------------------------------------------
 

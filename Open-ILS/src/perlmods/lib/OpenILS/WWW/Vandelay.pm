@@ -53,40 +53,40 @@ sub child_init {
 }
 
 sub spool_marc {
-	my $r = shift;
-	my $cgi = new CGI;
+    my $r = shift;
+    my $cgi = new CGI;
 
-	my $auth = $cgi->param('ses') || $cgi->cookie('ses');
+    my $auth = $cgi->param('ses') || $cgi->cookie('ses');
 
-	unless(verify_login($auth)) {
+    unless(verify_login($auth)) {
         $logger->error("authentication failed on vandelay record import: $auth");
-	    return Apache2::Const::FORBIDDEN;
+        return Apache2::Const::FORBIDDEN;
     }
 
     my $data_fingerprint = '';
-	my $purpose = $cgi->param('purpose') || '';
-	my $infile = $cgi->param('marc_upload') || '';
+    my $purpose = $cgi->param('purpose') || '';
+    my $infile = $cgi->param('marc_upload') || '';
     my $bib_source = $cgi->param('bib_source') || '';
 
     $logger->debug("purpose = $purpose, infile = $infile, bib_source = $bib_source");
 
-	my $conf = OpenSRF::Utils::SettingsClient->new;
-	my $dir = $conf->config_value(
+    my $conf = OpenSRF::Utils::SettingsClient->new;
+    my $dir = $conf->config_value(
         apps => 'open-ils.vandelay' => app_settings => databases => 'importer');
 
     unless(-w $dir) {
         $logger->error("We need some place to store our MARC files");
-	    return Apache2::Const::FORBIDDEN;
+        return Apache2::Const::FORBIDDEN;
     }
 
     if($infile and -e $infile) {
         my ($total_bytes, $buf, $bytes) = (0);
-	    $data_fingerprint = md5_hex(time."$$".rand());
+        $data_fingerprint = md5_hex(time."$$".rand());
         my $outfile = "$dir/$data_fingerprint.mrc";
 
         unless(open(OUTFILE, ">$outfile")) {
             $logger->error("unable to open MARC file [$outfile] for writing: $@");
-	        return Apache2::Const::FORBIDDEN;
+            return Apache2::Const::FORBIDDEN;
         }
 
         while($bytes = sysread($infile, $buf, $FILE_READ_SIZE)) {
@@ -95,26 +95,26 @@ sub spool_marc {
                 close(OUTFILE);
                 unlink $outfile;
                 $logger->error("import exceeded upload size: $MAX_FILE_SIZE");
-	            return Apache2::Const::FORBIDDEN;
+                return Apache2::Const::FORBIDDEN;
             }
             print OUTFILE $buf;
         }
 
         close(OUTFILE);
 
-	    OpenSRF::Utils::Cache->new->put_cache(
-		    'vandelay_import_spool_' . $data_fingerprint,
-		    {   purpose => $purpose, 
+        OpenSRF::Utils::Cache->new->put_cache(
+            'vandelay_import_spool_' . $data_fingerprint,
+            {   purpose => $purpose, 
                 path => $outfile,
                 bib_source => $bib_source,
             }
-	    );
+        );
     }
 
     $logger->info("uploaded MARC batch with key $data_fingerprint");
     $r->content_type('text/plain; charset=utf-8');
-	print "$data_fingerprint";
-	return Apache2::Const::OK;
+    print "$data_fingerprint";
+    return Apache2::Const::OK;
 }
 
 sub verify_login {

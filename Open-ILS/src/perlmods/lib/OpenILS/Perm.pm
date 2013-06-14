@@ -15,9 +15,9 @@ use OpenSRF::Utils::Logger;
 my $logger = 'OpenSRF::Utils::Logger';
 
 sub new {
-	my($class, $type) = @_;
-	$logger->warn("Returning permission error: $type");
-	return bless( { ilsevent => 5000, ilsperm => $type }, 'OpenILS::Perm');
+    my($class, $type) = @_;
+    $logger->warn("Returning permission error: $type");
+    return bless( { ilsevent => 5000, ilsperm => $type }, 'OpenILS::Perm');
 }
 
 1;

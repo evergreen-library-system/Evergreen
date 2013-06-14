@@ -319,10 +319,10 @@ sub update_lineitem_impl {
 }
 
 __PACKAGE__->register_method(
-	method => 'lineitem_search',
-	api_name => 'open-ils.acq.lineitem.search',
+    method => 'lineitem_search',
+    api_name => 'open-ils.acq.lineitem.search',
     stream => 1,
-	signature => {
+    signature => {
         desc => 'Searches lineitems',
         params => [
             {desc => 'Authentication token',       type => 'string'},
@@ -575,10 +575,10 @@ sub lineitem_search_by_attributes {
 
 
 __PACKAGE__->register_method(
-	method    => 'lineitem_search_ident',
-	api_name  => 'open-ils.acq.lineitem.search.ident',
+    method    => 'lineitem_search_ident',
+    api_name  => 'open-ils.acq.lineitem.search.ident',
     stream    => 1,
-	signature => {
+    signature => {
         desc => 'Performs a search against lineitem_attrs where ident is true',
         params => [
             {desc => 'Authentication token', type => 'string'},

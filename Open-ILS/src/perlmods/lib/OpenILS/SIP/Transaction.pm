@@ -36,37 +36,37 @@ sub new {
 
     my $self = { _permitted => \%fields, %fields };
 
-	bless $self, $class;
-	$self->authtoken($args{authtoken});
+    bless $self, $class;
+    $self->authtoken($args{authtoken});
 
-	syslog('LOG_DEBUG', "OILS: Created new transaction with authtoken %s", $self->authtoken);
+    syslog('LOG_DEBUG', "OILS: Created new transaction with authtoken %s", $self->authtoken);
 
-	my $e = OpenILS::SIP->editor();
-	$e->{authtoken} = $self->authtoken;
+    my $e = OpenILS::SIP->editor();
+    $e->{authtoken} = $self->authtoken;
 
-	return $self;
+    return $self;
 }
 
 sub DESTROY { 
-	# be cool
+    # be cool
 }
 
 sub AUTOLOAD {
-	my $self = shift;
-	my $class = ref($self) or croak "$self is not an object";
-	my $name = $AUTOLOAD;
+    my $self = shift;
+    my $class = ref($self) or croak "$self is not an object";
+    my $name = $AUTOLOAD;
 
-	$name =~ s/.*://;
+    $name =~ s/.*://;
 
-	unless (exists $self->{_permitted}->{$name}) {
-		croak "Can't access '$name' field of class '$class'";
-	}
+    unless (exists $self->{_permitted}->{$name}) {
+        croak "Can't access '$name' field of class '$class'";
+    }
 
-	if (@_) {
-		return $self->{$name} = shift;
-	} else {
-		return $self->{$name};
-	}
+    if (@_) {
+        return $self->{$name} = shift;
+    } else {
+        return $self->{$name};
+    }
 }
 
 1;

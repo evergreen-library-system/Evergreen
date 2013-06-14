@@ -29,9 +29,9 @@ sub _prepare_fund_debit_for_inv_item {
 }
 
 __PACKAGE__->register_method(
-	method => 'build_invoice_api',
-	api_name	=> 'open-ils.acq.invoice.update',
-	signature => {
+    method => 'build_invoice_api',
+    api_name    => 'open-ils.acq.invoice.update',
+    signature => {
         desc => q/Creates, updates, and deletes invoices, and related invoice entries, and invoice items/,
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -455,10 +455,10 @@ sub find_entry_debits {
 
 
 __PACKAGE__->register_method(
-	method => 'build_invoice_api',
-	api_name	=> 'open-ils.acq.invoice.retrieve',
+    method => 'build_invoice_api',
+    api_name    => 'open-ils.acq.invoice.retrieve',
     authoritative => 1,
-	signature => {
+    signature => {
         desc => q/Creates a new stub invoice/,
         params => [
             {desc => 'Authentication token', type => 'string'},
@@ -502,9 +502,9 @@ sub fetch_invoice_impl {
 }
 
 __PACKAGE__->register_method(
-	method => 'prorate_invoice',
-	api_name	=> 'open-ils.acq.invoice.apply_prorate',
-	signature => {
+    method => 'prorate_invoice',
+    api_name    => 'open-ils.acq.invoice.apply_prorate',
+    signature => {
         desc => q/
             For all invoice items that have the prorate flag set to true, this will create the necessary 
             additional invoice_item's to prorate the cost across all affected funds by percent spent for each fund.

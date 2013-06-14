@@ -83,23 +83,23 @@ sub new {
     my $e = OpenILS::SIP->editor();
 
     my $copy = $e->search_asset_copy(
-		[
-			{ barcode => $item_id, deleted => 'f' },
-			{
-				flesh => 3,
-				flesh_fields => {
-					acp => [ 'circ_lib', 'call_number', 'status', 'stat_cat_entry_copy_maps' ],
-					acn => [ 'owning_lib', 'record' ],
+        [
+            { barcode => $item_id, deleted => 'f' },
+            {
+                flesh => 3,
+                flesh_fields => {
+                    acp => [ 'circ_lib', 'call_number', 'status', 'stat_cat_entry_copy_maps' ],
+                    acn => [ 'owning_lib', 'record' ],
                     ascecm => [ 'stat_cat', 'stat_cat_entry' ],
-				}
-			}
-		]
+                }
+            }
+        ]
     )->[0];
 
-	if(!$copy) {
-		syslog("LOG_DEBUG", "OILS: Item '%s' : not found", $item_id);
-		return undef;
-	}
+    if(!$copy) {
+        syslog("LOG_DEBUG", "OILS: Item '%s' : not found", $item_id);
+        return undef;
+    }
 
     my $circ = $e->search_action_circulation([
         {
@@ -241,9 +241,9 @@ sub fetch_hold {
 }
 
 sub run_attr_script {
-	my $self = shift;
-	return 1 if $self->{ran_script};
-	$self->{ran_script} = 1;
+    my $self = shift;
+    return 1 if $self->{ran_script};
+    $self->{ran_script} = 1;
 
     if($self->{legacy_script_support}){
 
@@ -291,7 +291,7 @@ sub run_attr_script {
         $self->{item_config_result} = { item_config => $config };
     }
 
-	return 1;
+    return 1;
 }
 
 sub magnetic_media {
@@ -380,8 +380,8 @@ sub fee {
 
 
 sub fee_currency {
-	my $self = shift;
-	return OpenILS::SIP->config()->{implementation_config}->{currency};
+    my $self = shift;
+    return OpenILS::SIP->config()->{implementation_config}->{currency};
 }
 
 sub owner {

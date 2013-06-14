@@ -120,7 +120,7 @@ sub parse_as_xml {
         $data = $ctx->{final_dtd} . "\n" . $data;
         $success = 1;
     } otherwise {
-	    my $e = shift;
+        my $e = shift;
         my $err = "Invalid XML: $e";
         $r->log->error("egweb: $err");
         $r->content_type('text/plain; encoding=utf8');

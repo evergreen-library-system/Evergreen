@@ -199,19 +199,19 @@ sub org_tree_html_options {
 }
 
 sub print_org_tree_html {
-	my $node = shift;
-	my $org_tree_html = shift;
+    my $node = shift;
+    my $org_tree_html = shift;
     my $types = shift;
 
-	return unless ($node->opac_visible =~ /^[y1t]+/i);
+    return unless ($node->opac_visible =~ /^[y1t]+/i);
 
-	my $depth = $types->[$node->ou_type]->depth;
-	my $sname = OpenILS::Application::AppUtils->entityize($node->shortname);
-	my $name = OpenILS::Application::AppUtils->entityize($node->name);
-	my $kids = $node->children;
+    my $depth = $types->[$node->ou_type]->depth;
+    my $sname = OpenILS::Application::AppUtils->entityize($node->shortname);
+    my $name = OpenILS::Application::AppUtils->entityize($node->name);
+    my $kids = $node->children;
 
-	push @$org_tree_html, "<option value='$sname'>" . '&#160;&#160;&#160;'x$depth . "$name</option>\n";
-	print_org_tree_html($_, $org_tree_html, $types) for (@$kids);
+    push @$org_tree_html, "<option value='$sname'>" . '&#160;&#160;&#160;'x$depth . "$name</option>\n";
+    print_org_tree_html($_, $org_tree_html, $types) for (@$kids);
 }
 
 sub org_lasso {
@@ -254,13 +254,13 @@ sub locale_html_options {
     # Turns supported locales into a static HTML option list
     my $locales = get_locales();
 
-	my $output = "<select name='locale'>\n";
-	foreach my $locale (@$locales) {
-		my $code = OpenILS::Application::AppUtils->entityize($locale->code);
-		my $name = OpenILS::Application::AppUtils->entityize($locale->name);
-		$output .= "  <option value='$code'>$name</option>\n";
-	}
-	$output .= "</select>\n";
+    my $output = "<select name='locale'>\n";
+    foreach my $locale (@$locales) {
+        my $code = OpenILS::Application::AppUtils->entityize($locale->code);
+        my $name = OpenILS::Application::AppUtils->entityize($locale->name);
+        $output .= "  <option value='$code'>$name</option>\n";
+    }
+    $output .= "</select>\n";
 
     return $output;
 }

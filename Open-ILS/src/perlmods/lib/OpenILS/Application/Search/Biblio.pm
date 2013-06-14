@@ -40,18 +40,18 @@ my $superpage_size;
 my $max_superpages;
 
 sub initialize {
-	$cache = OpenSRF::Utils::Cache->new('global');
-	my $sclient = OpenSRF::Utils::SettingsClient->new();
-	$cache_timeout = $sclient->config_value(
-			"apps", "open-ils.search", "app_settings", "cache_timeout" ) || 300;
+    $cache = OpenSRF::Utils::Cache->new('global');
+    my $sclient = OpenSRF::Utils::SettingsClient->new();
+    $cache_timeout = $sclient->config_value(
+            "apps", "open-ils.search", "app_settings", "cache_timeout" ) || 300;
 
-	$superpage_size = $sclient->config_value(
-			"apps", "open-ils.search", "app_settings", "superpage_size" ) || 500;
+    $superpage_size = $sclient->config_value(
+            "apps", "open-ils.search", "app_settings", "superpage_size" ) || 500;
 
-	$max_superpages = $sclient->config_value(
-			"apps", "open-ils.search", "app_settings", "max_superpages" ) || 20;
+    $max_superpages = $sclient->config_value(
+            "apps", "open-ils.search", "app_settings", "max_superpages" ) || 20;
 
-	$logger->info("Search cache timeout is $cache_timeout, ".
+    $logger->info("Search cache timeout is $cache_timeout, ".
         " superpage_size is $superpage_size, max_superpages is $max_superpages");
 }
 
@@ -62,28 +62,28 @@ sub initialize {
 # mods structures. Creates one MODS structure for each doc id.
 # ---------------------------------------------------------------------------
 sub _records_to_mods {
-	my @ids = @_;
-	
-	my @results;
-	my @marcxml_objs;
+    my @ids = @_;
+    
+    my @results;
+    my @marcxml_objs;
 
-	my $session = OpenSRF::AppSession->create("open-ils.cstore");
-	my $request = $session->request(
-			"open-ils.cstore.direct.biblio.record_entry.search", { id => \@ids } );
+    my $session = OpenSRF::AppSession->create("open-ils.cstore");
+    my $request = $session->request(
+            "open-ils.cstore.direct.biblio.record_entry.search", { id => \@ids } );
 
-	while( my $resp = $request->recv ) {
-		my $content = $resp->content;
-		next if $content->id == OILS_PRECAT_RECORD;
-		my $u = OpenILS::Utils::ModsParser->new();  # FIXME: we really need a new parser for each object?
-		$u->start_mods_batch( $content->marc );
-		my $mods = $u->finish_mods_batch();
-		$mods->doc_id($content->id());
-		$mods->tcn($content->tcn_value);
-		push @results, $mods;
-	}
+    while( my $resp = $request->recv ) {
+        my $content = $resp->content;
+        next if $content->id == OILS_PRECAT_RECORD;
+        my $u = OpenILS::Utils::ModsParser->new();  # FIXME: we really need a new parser for each object?
+        $u->start_mods_batch( $content->marc );
+        my $mods = $u->finish_mods_batch();
+        $mods->doc_id($content->id());
+        $mods->tcn($content->tcn_value);
+        push @results, $mods;
+    }
 
-	$session->disconnect();
-	return \@results;
+    $session->disconnect();
+    return \@results;
 }
 
 __PACKAGE__->register_method(
@@ -136,16 +136,16 @@ __PACKAGE__->register_method(
 
 # converts a record into a mods object with NO copy counts attached
 sub record_id_to_mods_slim {
-	my( $self, $client, $id ) = @_;
-	return undef unless defined $id;
+    my( $self, $client, $id ) = @_;
+    return undef unless defined $id;
 
-	if(ref($id) and ref($id) == 'ARRAY') {
-		return _records_to_mods( @$id );
-	}
-	my $mods_list = _records_to_mods( $id );
-	my $mods_obj  = $mods_list->[0];
-	return OpenILS::Event->new('BIBLIO_RECORD_ENTRY_NOT_FOUND') unless $mods_obj;
-	return $mods_obj;
+    if(ref($id) and ref($id) == 'ARRAY') {
+        return _records_to_mods( @$id );
+    }
+    my $mods_list = _records_to_mods( $id );
+    my $mods_obj  = $mods_list->[0];
+    return OpenILS::Event->new('BIBLIO_RECORD_ENTRY_NOT_FOUND') unless $mods_obj;
+    return $mods_obj;
 }
 
 
@@ -156,7 +156,7 @@ __PACKAGE__->register_method(
     stream   => 1
 );
 sub record_id_to_mods_slim_batch {
-	my($self, $conn, $id_list) = @_;
+    my($self, $conn, $id_list) = @_;
     $conn->respond(_records_to_mods($_)->[0]) for @$id_list;
     return undef;
 }
@@ -350,7 +350,7 @@ sub biblio_search_tcn {
     my $search = {tcn_value => $tcn};
     $search->{deleted} = 'f' unless $include_deleted;
     my $recs = $e->search_biblio_record_entry( $search, {idlist =>1} );
-	
+    
     return { count => scalar(@$recs), ids => $recs };
 }
 
@@ -362,10 +362,10 @@ __PACKAGE__->register_method(
     api_name => "open-ils.search.asset.copy.find_by_barcode",
 );
 sub biblio_barcode_to_copy { 
-	my( $self, $client, $barcode ) = @_;
-	my( $copy, $evt ) = $U->fetch_copy_by_barcode($barcode);
-	return $evt if $evt;
-	return $copy;
+    my( $self, $client, $barcode ) = @_;
+    my( $copy, $evt ) = $U->fetch_copy_by_barcode($barcode);
+    return $evt if $evt;
+    return $copy;
 }
 
 __PACKAGE__->register_method(
@@ -373,17 +373,17 @@ __PACKAGE__->register_method(
     api_name => "open-ils.search.asset.copy.batch.retrieve",
 );
 sub biblio_id_to_copy { 
-	my( $self, $client, $ids ) = @_;
-	$logger->info("Fetching copies @$ids");
-	return $U->cstorereq(
-		"open-ils.cstore.direct.asset.copy.search.atomic", { id => $ids } );
+    my( $self, $client, $ids ) = @_;
+    $logger->info("Fetching copies @$ids");
+    return $U->cstorereq(
+        "open-ils.cstore.direct.asset.copy.search.atomic", { id => $ids } );
 }
 
 
 __PACKAGE__->register_method(
-	method	=> "biblio_id_to_uris",
-	api_name=> "open-ils.search.asset.uri.retrieve_by_bib",
-	argc	=> 2, 
+    method  => "biblio_id_to_uris",
+    api_name=> "open-ils.search.asset.uri.retrieve_by_bib",
+    argc    => 2, 
     stream  => 1,
     signature => q#
         @param BibID Which bib record contains the URIs
@@ -394,14 +394,14 @@ __PACKAGE__->register_method(
 
 );
 sub biblio_id_to_uris { 
-	my( $self, $client, $bib, $org, $depth ) = @_;
+    my( $self, $client, $bib, $org, $depth ) = @_;
     die "Org ID required" unless defined($org);
     die "Bib ID required" unless defined($bib);
 
     my @params;
     push @params, $depth if (defined $depth);
 
-	my $ids = $U->cstorereq( "open-ils.cstore.json_query.atomic",
+    my $ids = $U->cstorereq( "open-ils.cstore.json_query.atomic",
         {   select  => { auri => [ 'id' ] },
             from    => {
                 acn => {
@@ -435,8 +435,8 @@ sub biblio_id_to_uris {
         }
     );
 
-	my $uris = $U->cstorereq(
-		"open-ils.cstore.direct.asset.uri.search.atomic",
+    my $uris = $U->cstorereq(
+        "open-ils.cstore.direct.asset.uri.search.atomic",
         { id => [ map { (values %$_) } @$ids ] }
     );
 
@@ -462,9 +462,9 @@ __PACKAGE__->register_method(
 );
 
 sub copy_retrieve {
-	my( $self, $client, $cid ) = @_;
-	my( $copy, $evt ) = $U->fetch_copy($cid);
-	return $evt || $copy;
+    my( $self, $client, $cid ) = @_;
+    my( $copy, $evt ) = $U->fetch_copy($cid);
+    return $evt || $copy;
 }
 
 __PACKAGE__->register_method(
@@ -472,10 +472,10 @@ __PACKAGE__->register_method(
     api_name => "open-ils.search.asset.call_number.retrieve"
 );
 sub volume_retrieve {
-	my( $self, $client, $vid ) = @_;
-	my $e = new_editor();
-	my $vol = $e->retrieve_asset_call_number($vid) or return $e->event;
-	return $vol;
+    my( $self, $client, $vid ) = @_;
+    my $e = new_editor();
+    my $vol = $e->retrieve_asset_call_number($vid) or return $e->event;
+    return $vol;
 }
 
 __PACKAGE__->register_method(
@@ -485,14 +485,14 @@ __PACKAGE__->register_method(
 );
 
 sub fleshed_copy_retrieve_batch { 
-	my( $self, $client, $ids ) = @_;
-	$logger->info("Fetching fleshed copies @$ids");
-	return $U->cstorereq(
-		"open-ils.cstore.direct.asset.copy.search.atomic",
-		{ id => $ids },
-		{ flesh => 1, 
-		  flesh_fields => { acp => [ qw/ circ_lib location status stat_cat_entries parts / ] }
-		});
+    my( $self, $client, $ids ) = @_;
+    $logger->info("Fetching fleshed copies @$ids");
+    return $U->cstorereq(
+        "open-ils.cstore.direct.asset.copy.search.atomic",
+        { id => $ids },
+        { flesh => 1, 
+          flesh_fields => { acp => [ qw/ circ_lib location status stat_cat_entries parts / ] }
+        });
 }
 
 
@@ -502,9 +502,9 @@ __PACKAGE__->register_method(
 );
 
 sub fleshed_copy_retrieve { 
-	my( $self, $client, $id ) = @_;
-	my( $c, $e) = $U->fetch_fleshed_copy($id);
-	return $e || $c;
+    my( $self, $client, $id ) = @_;
+    my( $c, $e) = $U->fetch_fleshed_copy($id);
+    return $e || $c;
 }
 
 
@@ -514,12 +514,12 @@ __PACKAGE__->register_method(
     authoritative => 1,
 );
 sub fleshed_by_barcode {
-	my( $self, $conn, $barcode ) = @_;
-	my $e = new_editor();
-	my $copyid = $e->search_asset_copy(
-		{barcode => $barcode, deleted => 'f'}, {idlist=>1})->[0]
-		or return $e->event;
-	return fleshed_copy_retrieve2( $self, $conn, $copyid);
+    my( $self, $conn, $barcode ) = @_;
+    my $e = new_editor();
+    my $copyid = $e->search_asset_copy(
+        {barcode => $barcode, deleted => 'f'}, {idlist=>1})->[0]
+        or return $e->event;
+    return fleshed_copy_retrieve2( $self, $conn, $copyid);
 }
 
 
@@ -530,11 +530,11 @@ __PACKAGE__->register_method(
 );
 
 sub fleshed_copy_retrieve2 { 
-	my( $self, $client, $id ) = @_;
-	my $e = new_editor();
-	my $copy = $e->retrieve_asset_copy(
-		[
-			$id,
+    my( $self, $client, $id ) = @_;
+    my $e = new_editor();
+    my $copy = $e->retrieve_asset_copy(
+        [
+            $id,
             {
                 flesh        => 2,
                 flesh_fields => {
@@ -544,27 +544,27 @@ sub fleshed_copy_retrieve2 {
                     ascecm => [qw/ stat_cat stat_cat_entry /],
                 }
             }
-		]
-	) or return $e->event;
+        ]
+    ) or return $e->event;
 
-	# For backwards compatibility
-	#$copy->stat_cat_entries($copy->stat_cat_entry_copy_maps);
+    # For backwards compatibility
+    #$copy->stat_cat_entries($copy->stat_cat_entry_copy_maps);
 
-	if( $copy->status->id == OILS_COPY_STATUS_CHECKED_OUT ) {
-		$copy->circulations(
-			$e->search_action_circulation( 
-				[	
-					{ target_copy => $copy->id },
-					{
-						order_by => { circ => 'xact_start desc' },
-						limit => 1
-					}
-				]
-			)
-		);
-	}
+    if( $copy->status->id == OILS_COPY_STATUS_CHECKED_OUT ) {
+        $copy->circulations(
+            $e->search_action_circulation( 
+                [   
+                    { target_copy => $copy->id },
+                    {
+                        order_by => { circ => 'xact_start desc' },
+                        limit => 1
+                    }
+                ]
+            )
+        );
+    }
 
-	return $copy;
+    return $copy;
 }
 
 
@@ -575,20 +575,20 @@ __PACKAGE__->register_method(
 );
 
 sub flesh_copy_custom {
-	my( $self, $conn, $copyid, $fields ) = @_;
-	my $e = new_editor();
-	my $copy = $e->retrieve_asset_copy(
-		[
-			$copyid,
-			{ 
-				flesh				=> 1,
-				flesh_fields	=> { 
-					acp => $fields,
-				}
-			}
-		]
-	) or return $e->event;
-	return $copy;
+    my( $self, $conn, $copyid, $fields ) = @_;
+    my $e = new_editor();
+    my $copy = $e->retrieve_asset_copy(
+        [
+            $copyid,
+            { 
+                flesh               => 1,
+                flesh_fields    => { 
+                    acp => $fields,
+                }
+            }
+        ]
+    ) or return $e->event;
+    return $copy;
 }
 
 
@@ -598,14 +598,14 @@ __PACKAGE__->register_method(
 );
 
 sub biblio_barcode_to_title {
-	my( $self, $client, $barcode ) = @_;
+    my( $self, $client, $barcode ) = @_;
 
-	my $title = $apputils->simple_scalar_request(
-		"open-ils.storage",
-		"open-ils.storage.biblio.record_entry.retrieve_by_barcode", $barcode );
+    my $title = $apputils->simple_scalar_request(
+        "open-ils.storage",
+        "open-ils.storage.biblio.record_entry.retrieve_by_barcode", $barcode );
 
-	return { ids => [ $title->id ], count => 1 } if $title;
-	return { count => 0 };
+    return { ids => [ $title->id ], count => 1 } if $title;
+    return { count => 0 };
 }
 
 __PACKAGE__->register_method(
@@ -704,7 +704,7 @@ __PACKAGE__->register_method(
 
 
 sub find_peer_bibs {
-	my( $self, $client, $doc_id ) = @_;
+    my( $self, $client, $doc_id ) = @_;
     my $e = new_editor();
 
     my $multi_home_list = $e->search_biblio_peer_bib_copy_map(
@@ -755,18 +755,18 @@ __PACKAGE__->register_method(
 
 # takes a copy object and returns it fleshed mods object
 sub biblio_copy_to_mods {
-	my( $self, $client, $copy ) = @_;
+    my( $self, $client, $copy ) = @_;
 
-	my $volume = $U->cstorereq( 
-		"open-ils.cstore.direct.asset.call_number.retrieve",
-		$copy->call_number() );
+    my $volume = $U->cstorereq( 
+        "open-ils.cstore.direct.asset.call_number.retrieve",
+        $copy->call_number() );
 
-	my $mods = _records_to_mods($volume->record());
-	$mods = shift @$mods;
-	$volume->copies([$copy]);
-	push @{$mods->call_numbers()}, $volume;
+    my $mods = _records_to_mods($volume->record());
+    $mods = shift @$mods;
+    $volume->copies([$copy]);
+    push @{$mods->call_numbers()}, $volume;
 
-	return $mods;
+    return $mods;
 }
 
 
@@ -939,7 +939,7 @@ sub multiclass_query {
     # capture the original limit because the search method alters the limit internally
     my $ol = $arghash->{limit};
 
-	my $sclient = OpenSRF::Utils::SettingsClient->new;
+    my $sclient = OpenSRF::Utils::SettingsClient->new;
 
     (my $method = $self->api_name) =~ s/\.query//o;
 
@@ -952,7 +952,7 @@ sub multiclass_query {
     #$arghash->{preferred_language} = $U->get_org_locale($arghash->{org_unit})
     #    unless $arghash->{preferred_language};
 
-	$method = $self->method_lookup($method);
+    $method = $self->method_lookup($method);
     my ($data) = $method->run($arghash, $docache);
 
     $arghash->{searches} = $search if (!$data->{complex_query});
@@ -981,57 +981,57 @@ __PACKAGE__->register_method(
 );
 
 sub cat_search_z_style_wrapper {
-	my $self = shift;
-	my $client = shift;
-	my $authtoken = shift;
-	my $args = shift;
+    my $self = shift;
+    my $client = shift;
+    my $authtoken = shift;
+    my $args = shift;
 
-	my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
+    my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
 
-	my $ou = $cstore->request(
-		'open-ils.cstore.direct.actor.org_unit.search',
-		{ parent_ou => undef }
-	)->gather(1);
+    my $ou = $cstore->request(
+        'open-ils.cstore.direct.actor.org_unit.search',
+        { parent_ou => undef }
+    )->gather(1);
 
-	my $result = { service => 'native-evergreen-catalog', records => [] };
-	my $searchhash = { limit => $$args{limit}, offset => $$args{offset}, org_unit => $ou->id };
+    my $result = { service => 'native-evergreen-catalog', records => [] };
+    my $searchhash = { limit => $$args{limit}, offset => $$args{offset}, org_unit => $ou->id };
 
-	$$searchhash{searches}{title}{term}   = $$args{search}{title}   if $$args{search}{title};
-	$$searchhash{searches}{author}{term}  = $$args{search}{author}  if $$args{search}{author};
-	$$searchhash{searches}{subject}{term} = $$args{search}{subject} if $$args{search}{subject};
-	$$searchhash{searches}{keyword}{term} = $$args{search}{keyword} if $$args{search}{keyword};
-	$$searchhash{searches}{'identifier|isbn'}{term} = $$args{search}{isbn} if $$args{search}{isbn};
-	$$searchhash{searches}{'identifier|issn'}{term} = $$args{search}{issn} if $$args{search}{issn};
+    $$searchhash{searches}{title}{term}   = $$args{search}{title}   if $$args{search}{title};
+    $$searchhash{searches}{author}{term}  = $$args{search}{author}  if $$args{search}{author};
+    $$searchhash{searches}{subject}{term} = $$args{search}{subject} if $$args{search}{subject};
+    $$searchhash{searches}{keyword}{term} = $$args{search}{keyword} if $$args{search}{keyword};
+    $$searchhash{searches}{'identifier|isbn'}{term} = $$args{search}{isbn} if $$args{search}{isbn};
+    $$searchhash{searches}{'identifier|issn'}{term} = $$args{search}{issn} if $$args{search}{issn};
 
-	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{tcn}       if $$args{search}{tcn};
-	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{publisher} if $$args{search}{publisher};
-	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{pubdate}   if $$args{search}{pubdate};
-	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{item_type} if $$args{search}{item_type};
+    $$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{tcn}       if $$args{search}{tcn};
+    $$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{publisher} if $$args{search}{publisher};
+    $$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{pubdate}   if $$args{search}{pubdate};
+    $$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{item_type} if $$args{search}{item_type};
 
-	my $list = the_quest_for_knowledge( $self, $client, $searchhash );
+    my $list = the_quest_for_knowledge( $self, $client, $searchhash );
 
-	if ($list->{count} > 0 and @{$list->{ids}}) {
-		$result->{count} = $list->{count};
+    if ($list->{count} > 0 and @{$list->{ids}}) {
+        $result->{count} = $list->{count};
 
-		my $records = $cstore->request(
-			'open-ils.cstore.direct.biblio.record_entry.search.atomic',
-			{ id => [ map { ( $_->[0] ) } @{$list->{ids}} ] }
-		)->gather(1);
+        my $records = $cstore->request(
+            'open-ils.cstore.direct.biblio.record_entry.search.atomic',
+            { id => [ map { ( $_->[0] ) } @{$list->{ids}} ] }
+        )->gather(1);
 
-		for my $rec ( @$records ) {
-			
-			my $u = OpenILS::Utils::ModsParser->new();
+        for my $rec ( @$records ) {
+            
+            my $u = OpenILS::Utils::ModsParser->new();
                         $u->start_mods_batch( $rec->marc );
                         my $mods = $u->finish_mods_batch();
 
-			push @{ $result->{records} }, { mvr => $mods, marcxml => $rec->marc, bibid => $rec->id };
+            push @{ $result->{records} }, { mvr => $mods, marcxml => $rec->marc, bibid => $rec->id };
 
-		}
+        }
 
-	}
+    }
 
     $cstore->disconnect();
-	return $result;
+    return $result;
 }
 
 # ----------------------------------------------------------------------------
@@ -1116,78 +1116,78 @@ __PACKAGE__->register_method(
 );
 
 sub the_quest_for_knowledge {
-	my( $self, $conn, $searchhash, $docache ) = @_;
+    my( $self, $conn, $searchhash, $docache ) = @_;
 
-	return { count => 0 } unless $searchhash and
-		ref $searchhash->{searches} eq 'HASH';
+    return { count => 0 } unless $searchhash and
+        ref $searchhash->{searches} eq 'HASH';
 
-	my $method = 'open-ils.storage.biblio.multiclass.search_fts';
-	my $ismeta = 0;
-	my @recs;
+    my $method = 'open-ils.storage.biblio.multiclass.search_fts';
+    my $ismeta = 0;
+    my @recs;
 
-	if($self->api_name =~ /metabib/) {
-		$ismeta = 1;
-		$method =~ s/biblio/metabib/o;
-	}
+    if($self->api_name =~ /metabib/) {
+        $ismeta = 1;
+        $method =~ s/biblio/metabib/o;
+    }
 
-	# do some simple sanity checking
-	if(!$searchhash->{searches} or
-		( !grep { /^(?:title|author|subject|series|keyword|identifier\|is[bs]n)/ } keys %{$searchhash->{searches}} ) ) {
-		return { count => 0 };
-	}
+    # do some simple sanity checking
+    if(!$searchhash->{searches} or
+        ( !grep { /^(?:title|author|subject|series|keyword|identifier\|is[bs]n)/ } keys %{$searchhash->{searches}} ) ) {
+        return { count => 0 };
+    }
 
     my $offset = $searchhash->{offset} ||  0;   # user value or default in local var now
     my $limit  = $searchhash->{limit}  || 10;   # user value or default in local var now
     my $end    = $offset + $limit - 1;
 
-	my $maxlimit = 5000;
+    my $maxlimit = 5000;
     $searchhash->{offset} = 0;                  # possible user value overwritten in hash
     $searchhash->{limit}  = $maxlimit;          # possible user value overwritten in hash
 
-	return { count => 0 } if $offset > $maxlimit;
+    return { count => 0 } if $offset > $maxlimit;
 
-	my @search;
-	push( @search, ($_ => $$searchhash{$_})) for (sort keys %$searchhash);
-	my $s = OpenSRF::Utils::JSON->perl2JSON(\@search);
-	my $ckey = $pfx . md5_hex($method . $s);
+    my @search;
+    push( @search, ($_ => $$searchhash{$_})) for (sort keys %$searchhash);
+    my $s = OpenSRF::Utils::JSON->perl2JSON(\@search);
+    my $ckey = $pfx . md5_hex($method . $s);
 
-	$logger->info("bib search for: $s");
+    $logger->info("bib search for: $s");
 
-	$searchhash->{limit} -= $offset;
+    $searchhash->{limit} -= $offset;
 
 
     my $trim = 0;
-	my $result = ($docache) ? search_cache($ckey, $offset, $limit) : undef;
+    my $result = ($docache) ? search_cache($ckey, $offset, $limit) : undef;
 
-	if(!$result) {
+    if(!$result) {
 
-		$method .= ".staff" if($self->api_name =~ /staff/);
-		$method .= ".atomic";
-	
-		for (keys %$searchhash) { 
-			delete $$searchhash{$_} 
-				unless defined $$searchhash{$_}; 
-		}
-	
-		$result = $U->storagereq( $method, %$searchhash );
+        $method .= ".staff" if($self->api_name =~ /staff/);
+        $method .= ".atomic";
+    
+        for (keys %$searchhash) { 
+            delete $$searchhash{$_} 
+                unless defined $$searchhash{$_}; 
+        }
+    
+        $result = $U->storagereq( $method, %$searchhash );
         $trim = 1;
 
-	} else { 
-		$docache = 0;   # results came FROM cache, so we don't write back
-	}
+    } else { 
+        $docache = 0;   # results came FROM cache, so we don't write back
+    }
 
-	return {count => 0} unless ($result && $$result[0]);
+    return {count => 0} unless ($result && $$result[0]);
 
-	@recs = @$result;
+    @recs = @$result;
 
-	my $count = ($ismeta) ? $result->[0]->[3] : $result->[0]->[2];
+    my $count = ($ismeta) ? $result->[0]->[3] : $result->[0]->[2];
 
-	if($docache) {
-		# If we didn't get this data from the cache, put it into the cache
-		# then return the correct offset of records
-		$logger->debug("putting search cache $ckey\n");
-		put_cache($ckey, $count, \@recs);
-	}
+    if($docache) {
+        # If we didn't get this data from the cache, put it into the cache
+        # then return the correct offset of records
+        $logger->debug("putting search cache $ckey\n");
+        put_cache($ckey, $count, \@recs);
+    }
 
     if($trim) {
         # if we have the full set of data, trim out 
@@ -1200,7 +1200,7 @@ sub the_quest_for_knowledge {
         @recs = @t;
     }
 
-	return { ids => \@recs, count => $count };
+    return { ids => \@recs, count => $count };
 }
 
 
@@ -1246,7 +1246,7 @@ __PACKAGE__->register_method(
 );
 
 sub staged_search {
-	my($self, $conn, $search_hash, $docache) = @_;
+    my($self, $conn, $search_hash, $docache) = @_;
 
     my $IAmMetabib = ($self->api_name =~ /metabib/) ? 1 : 0;
 
@@ -1281,12 +1281,12 @@ sub staged_search {
     $search_hash->{core_limit}  = $superpage_size * $max_superpages;
 
     # Set the configured estimation strategy, defaults to 'inclusion'.
-	my $estimation_strategy = OpenSRF::Utils::SettingsClient
+    my $estimation_strategy = OpenSRF::Utils::SettingsClient
         ->new
         ->config_value(
             apps => 'open-ils.search', app_settings => 'estimation_strategy'
         ) || 'inclusion';
-	$search_hash->{estimation_strategy} = $estimation_strategy;
+    $search_hash->{estimation_strategy} = $estimation_strategy;
 
     # pull any existing results from the cache
     my $key = search_cache_key($method, $search_hash);
@@ -1386,12 +1386,12 @@ sub staged_search {
         $logger->debug("staged search: located $current_count, with estimated hits=".
             $summary->{estimated_hit_count}." : visible=".$summary->{visible}.", checked=".$summary->{checked});
 
-		if (defined($summary->{estimated_hit_count})) {
+        if (defined($summary->{estimated_hit_count})) {
             foreach (qw/ checked visible excluded deleted /) {
                 $global_summary->{$_} += $summary->{$_};
             }
-			$global_summary->{total} = $summary->{total};
-		}
+            $global_summary->{total} = $summary->{total};
+        }
 
         # we've found all the possible hits
         last if $current_count == $summary->{visible}
@@ -1418,22 +1418,22 @@ sub staged_search {
 
     my @results = grep {defined $_} @$all_results[$user_offset..($user_offset + $user_limit - 1)];
 
-	# refine the estimate if we have more than one superpage
-	if ($page > 0 and not $is_real_hit_count) {
-		if ($global_summary->{checked} >= $global_summary->{total}) {
-			$est_hit_count = $global_summary->{visible};
-		} else {
-			my $updated_hit_count = $U->storagereq(
-				'open-ils.storage.fts_paging_estimate',
-				$global_summary->{checked},
-				$global_summary->{visible},
-				$global_summary->{excluded},
-				$global_summary->{deleted},
-				$global_summary->{total}
-			);
-			$est_hit_count = $updated_hit_count->{$estimation_strategy};
-		}
-	}
+    # refine the estimate if we have more than one superpage
+    if ($page > 0 and not $is_real_hit_count) {
+        if ($global_summary->{checked} >= $global_summary->{total}) {
+            $est_hit_count = $global_summary->{visible};
+        } else {
+            my $updated_hit_count = $U->storagereq(
+                'open-ils.storage.fts_paging_estimate',
+                $global_summary->{checked},
+                $global_summary->{visible},
+                $global_summary->{excluded},
+                $global_summary->{deleted},
+                $global_summary->{total}
+            );
+            $est_hit_count = $updated_hit_count->{$estimation_strategy};
+        }
+    }
 
     $conn->respond_complete(
         {
@@ -1488,15 +1488,15 @@ sub tag_circulated_records {
 sub search_cache_key {
     my $method = shift;
     my $search_hash = shift;
-	my @sorted;
+    my @sorted;
     for my $key (sort keys %$search_hash) {
-	    push(@sorted, ($key => $$search_hash{$key})) 
+        push(@sorted, ($key => $$search_hash{$key})) 
             unless $key eq 'limit'  or 
                    $key eq 'offset' or 
                    $key eq 'skip_check';
     }
-	my $s = OpenSRF::Utils::JSON->perl2JSON(\@sorted);
-	return $pfx . md5_hex($method . $s);
+    my $s = OpenSRF::Utils::JSON->perl2JSON(\@sorted);
+    return $pfx . md5_hex($method . $s);
 }
 
 sub retrieve_cached_facets {
@@ -1625,42 +1625,42 @@ sub cache_staged_search_page {
 
 sub search_cache {
 
-	my $key		= shift;
-	my $offset	= shift;
-	my $limit	= shift;
-	my $start	= $offset;
-	my $end		= $offset + $limit - 1;
+    my $key     = shift;
+    my $offset  = shift;
+    my $limit   = shift;
+    my $start   = $offset;
+    my $end     = $offset + $limit - 1;
 
-	$logger->debug("searching cache for $key : $start..$end\n");
+    $logger->debug("searching cache for $key : $start..$end\n");
 
-	return undef unless $cache;
-	my $data = $cache->get_cache($key);
+    return undef unless $cache;
+    my $data = $cache->get_cache($key);
 
-	return undef unless $data;
+    return undef unless $data;
 
-	my $count = $data->[0];
-	$data = $data->[1];
+    my $count = $data->[0];
+    $data = $data->[1];
 
-	return undef unless $offset < $count;
+    return undef unless $offset < $count;
 
-	my @result;
-	for( my $i = $offset; $i <= $end; $i++ ) {
-		last unless my $d = $$data[$i];
-		push( @result, $d );
-	}
+    my @result;
+    for( my $i = $offset; $i <= $end; $i++ ) {
+        last unless my $d = $$data[$i];
+        push( @result, $d );
+    }
 
-	$logger->debug("search_cache found ".scalar(@result)." items for count=$count, start=$start, end=$end");
+    $logger->debug("search_cache found ".scalar(@result)." items for count=$count, start=$start, end=$end");
 
-	return \@result;
+    return \@result;
 }
 
 
 sub put_cache {
-	my( $key, $count, $data ) = @_;
-	return undef unless $cache;
-	$logger->debug("search_cache putting ".
-		scalar(@$data)." items at key $key with timeout $cache_timeout");
-	$cache->put_cache($key, [ $count, $data ], $cache_timeout);
+    my( $key, $count, $data ) = @_;
+    return undef unless $cache;
+    $logger->debug("search_cache putting ".
+        scalar(@$data)." items at key $key with timeout $cache_timeout");
+    $cache->put_cache($key, [ $count, $data ], $cache_timeout);
 }
 
 
@@ -1670,16 +1670,16 @@ __PACKAGE__->register_method(
 );
 
 sub biblio_mrid_to_modsbatch_batch {
-	my( $self, $client, $mrids) = @_;
-	# warn "Performing mrid_to_modsbatch_batch..."; # unconditional warn
-	my @mods;
-	my $method = $self->method_lookup("open-ils.search.biblio.metarecord.mods_slim.retrieve");
-	for my $id (@$mrids) {
-		next unless defined $id;
-		my ($m) = $method->run($id);
-		push @mods, $m;
-	}
-	return \@mods;
+    my( $self, $client, $mrids) = @_;
+    # warn "Performing mrid_to_modsbatch_batch..."; # unconditional warn
+    my @mods;
+    my $method = $self->method_lookup("open-ils.search.biblio.metarecord.mods_slim.retrieve");
+    for my $id (@$mrids) {
+        next unless defined $id;
+        my ($m) = $method->run($id);
+        push @mods, $m;
+    }
+    return \@mods;
 }
 
 
@@ -1704,47 +1704,47 @@ foreach (qw /open-ils.search.biblio.metarecord.mods_slim.retrieve
 }
 
 sub biblio_mrid_to_modsbatch {
-	my( $self, $client, $mrid, $args) = @_;
+    my( $self, $client, $mrid, $args) = @_;
 
-	# warn "Grabbing mvr for $mrid\n";    # unconditional warn
+    # warn "Grabbing mvr for $mrid\n";    # unconditional warn
 
-	my ($mr, $evt) = _grab_metarecord($mrid);
-	return $evt unless $mr;
+    my ($mr, $evt) = _grab_metarecord($mrid);
+    return $evt unless $mr;
 
-	my $mvr = biblio_mrid_check_mvr($self, $client, $mr) ||
+    my $mvr = biblio_mrid_check_mvr($self, $client, $mr) ||
               biblio_mrid_make_modsbatch($self, $client, $mr);
 
-	return $mvr unless ref($args);	
+    return $mvr unless ref($args);  
 
-	# Here we find the lead record appropriate for the given filters 
-	# and use that for the title and author of the metarecord
+    # Here we find the lead record appropriate for the given filters 
+    # and use that for the title and author of the metarecord
     my $format = $$args{format};
     my $org    = $$args{org};
     my $depth  = $$args{depth};
 
-	return $mvr unless $format or $org or $depth;
+    return $mvr unless $format or $org or $depth;
 
-	my $method = "open-ils.storage.ordered.metabib.metarecord.records";
-	$method = "$method.staff" if $self->api_name =~ /staff/o; 
+    my $method = "open-ils.storage.ordered.metabib.metarecord.records";
+    $method = "$method.staff" if $self->api_name =~ /staff/o; 
 
-	my $rec = $U->storagereq($method, $format, $org, $depth, 1);
+    my $rec = $U->storagereq($method, $format, $org, $depth, 1);
 
-	if( my $mods = $U->record_to_mvr($rec) ) {
+    if( my $mods = $U->record_to_mvr($rec) ) {
 
         $mvr->title( $mods->title );
         $mvr->author($mods->author);
-		$logger->debug("mods_slim updating title and ".
-			"author in mvr with ".$mods->title." : ".$mods->author);
-	}
+        $logger->debug("mods_slim updating title and ".
+            "author in mvr with ".$mods->title." : ".$mods->author);
+    }
 
-	return $mvr;
+    return $mvr;
 }
 
 # converts a metarecord to an mvr
 sub _mr_to_mvr {
-	my $mr = shift;
-	my $perl = OpenSRF::Utils::JSON->JSON2perl($mr->mods());
-	return Fieldmapper::metabib::virtual_record->new($perl);
+    my $mr = shift;
+    my $perl = OpenSRF::Utils::JSON->JSON2perl($mr->mods());
+    return Fieldmapper::metabib::virtual_record->new($perl);
 }
 
 # checks to see if a metarecord has mods, if so returns true;
@@ -1757,26 +1757,26 @@ __PACKAGE__->register_method(
 );
 
 sub biblio_mrid_check_mvr {
-	my( $self, $client, $mrid ) = @_;
-	my $mr; 
+    my( $self, $client, $mrid ) = @_;
+    my $mr; 
 
-	my $evt;
-	if(ref($mrid)) { $mr = $mrid; } 
-	else { ($mr, $evt) = _grab_metarecord($mrid); }
-	return $evt if $evt;
+    my $evt;
+    if(ref($mrid)) { $mr = $mrid; } 
+    else { ($mr, $evt) = _grab_metarecord($mrid); }
+    return $evt if $evt;
 
-	# warn "Checking mvr for mr " . $mr->id . "\n";   # unconditional warn
+    # warn "Checking mvr for mr " . $mr->id . "\n";   # unconditional warn
 
-	return _mr_to_mvr($mr) if $mr->mods();
-	return undef;
+    return _mr_to_mvr($mr) if $mr->mods();
+    return undef;
 }
 
 sub _grab_metarecord {
-	my $mrid = shift;
-	#my $e = OpenILS::Utils::Editor->new;
-	my $e = new_editor();
-	my $mr = $e->retrieve_metabib_metarecord($mrid) or return ( undef, $e->event );
-	return ($mr);
+    my $mrid = shift;
+    #my $e = OpenILS::Utils::Editor->new;
+    my $e = new_editor();
+    my $mr = $e->retrieve_metabib_metarecord($mrid) or return ( undef, $e->event );
+    return ($mr);
 }
 
 
@@ -1789,69 +1789,69 @@ __PACKAGE__->register_method(
 );
 
 sub biblio_mrid_make_modsbatch {
-	my( $self, $client, $mrid ) = @_;
+    my( $self, $client, $mrid ) = @_;
 
-	#my $e = OpenILS::Utils::Editor->new;
-	my $e = new_editor();
+    #my $e = OpenILS::Utils::Editor->new;
+    my $e = new_editor();
 
-	my $mr;
-	if( ref($mrid) ) {
-		$mr = $mrid;
-		$mrid = $mr->id;
-	} else {
-		$mr = $e->retrieve_metabib_metarecord($mrid) 
-			or return $e->event;
-	}
+    my $mr;
+    if( ref($mrid) ) {
+        $mr = $mrid;
+        $mrid = $mr->id;
+    } else {
+        $mr = $e->retrieve_metabib_metarecord($mrid) 
+            or return $e->event;
+    }
 
-	my $masterid = $mr->master_record;
-	$logger->info("creating new mods batch for metarecord=$mrid, master record=$masterid");
+    my $masterid = $mr->master_record;
+    $logger->info("creating new mods batch for metarecord=$mrid, master record=$masterid");
 
-	my $ids = $U->storagereq(
-		'open-ils.storage.ordered.metabib.metarecord.records.staff.atomic', $mrid);
-	return undef unless @$ids;
+    my $ids = $U->storagereq(
+        'open-ils.storage.ordered.metabib.metarecord.records.staff.atomic', $mrid);
+    return undef unless @$ids;
 
-	my $master = $e->retrieve_biblio_record_entry($masterid)
-		or return $e->event;
+    my $master = $e->retrieve_biblio_record_entry($masterid)
+        or return $e->event;
 
-	# start the mods batch
-	my $u = OpenILS::Utils::ModsParser->new();
-	$u->start_mods_batch( $master->marc );
+    # start the mods batch
+    my $u = OpenILS::Utils::ModsParser->new();
+    $u->start_mods_batch( $master->marc );
 
-	# grab all of the sub-records and shove them into the batch
-	my @ids = grep { $_ ne $masterid } @$ids;
-	#my $subrecs = (@ids) ? $e->batch_retrieve_biblio_record_entry(\@ids) : [];
+    # grab all of the sub-records and shove them into the batch
+    my @ids = grep { $_ ne $masterid } @$ids;
+    #my $subrecs = (@ids) ? $e->batch_retrieve_biblio_record_entry(\@ids) : [];
 
-	my $subrecs = [];
-	if(@$ids) {
-		for my $i (@$ids) {
-			my $r = $e->retrieve_biblio_record_entry($i);
-			push( @$subrecs, $r ) if $r;
-		}
-	}
+    my $subrecs = [];
+    if(@$ids) {
+        for my $i (@$ids) {
+            my $r = $e->retrieve_biblio_record_entry($i);
+            push( @$subrecs, $r ) if $r;
+        }
+    }
 
-	for(@$subrecs) {
-		$logger->debug("adding record ".$_->id." to mods batch for metarecord=$mrid");
-		$u->push_mods_batch( $_->marc ) if $_->marc;
-	}
-
-
-	# finish up and send to the client
-	my $mods = $u->finish_mods_batch();
-	$mods->doc_id($mrid);
-	$client->respond_complete($mods);
+    for(@$subrecs) {
+        $logger->debug("adding record ".$_->id." to mods batch for metarecord=$mrid");
+        $u->push_mods_batch( $_->marc ) if $_->marc;
+    }
 
 
-	# now update the mods string in the db
-	my $string = OpenSRF::Utils::JSON->perl2JSON($mods->decast);
-	$mr->mods($string);
+    # finish up and send to the client
+    my $mods = $u->finish_mods_batch();
+    $mods->doc_id($mrid);
+    $client->respond_complete($mods);
 
-	#$e = OpenILS::Utils::Editor->new(xact => 1);
-	$e = new_editor(xact => 1);
-	$e->update_metabib_metarecord($mr) 
-		or $logger->error("Error setting mods text on metarecord $mrid : " . Dumper($e->event));
-	$e->finish;
 
-	return undef;
+    # now update the mods string in the db
+    my $string = OpenSRF::Utils::JSON->perl2JSON($mods->decast);
+    $mr->mods($string);
+
+    #$e = OpenILS::Utils::Editor->new(xact => 1);
+    $e = new_editor(xact => 1);
+    $e->update_metabib_metarecord($mr) 
+        or $logger->error("Error setting mods text on metarecord $mrid : " . Dumper($e->event));
+    $e->finish;
+
+    return undef;
 }
 
 
@@ -1880,17 +1880,17 @@ foreach (qw/open-ils.search.biblio.metarecord_to_records
 }
 
 sub biblio_mrid_to_record_ids {
-	my( $self, $client, $mrid, $args ) = @_;
+    my( $self, $client, $mrid, $args ) = @_;
 
     my $format = $$args{format};
     my $org    = $$args{org};
     my $depth  = $$args{depth};
 
-	my $method = "open-ils.storage.ordered.metabib.metarecord.records.atomic";
-	$method =~ s/atomic/staff\.atomic/o if $self->api_name =~ /staff/o; 
-	my $recs = $U->storagereq($method, $mrid, $format, $org, $depth);
+    my $method = "open-ils.storage.ordered.metabib.metarecord.records.atomic";
+    $method =~ s/atomic/staff\.atomic/o if $self->api_name =~ /staff/o; 
+    my $recs = $U->storagereq($method, $mrid, $format, $org, $depth);
 
-	return { count => scalar(@$recs), ids => $recs };
+    return { count => scalar(@$recs), ids => $recs };
 }
 
 
@@ -1912,18 +1912,18 @@ my $slim_marc_sheet;
 my $settings_client = OpenSRF::Utils::SettingsClient->new();
 
 sub biblio_record_to_marc_html {
-	my($self, $client, $recordid, $slim, $marcxml) = @_;
+    my($self, $client, $recordid, $slim, $marcxml) = @_;
 
     my $sheet;
-	my $dir = $settings_client->config_value("dirs", "xsl");
+    my $dir = $settings_client->config_value("dirs", "xsl");
 
     if($slim) {
         unless($slim_marc_sheet) {
-		    my $xsl = $settings_client->config_value(
-			    "apps", "open-ils.search", "app_settings", 'marc_html_xsl_slim');
+            my $xsl = $settings_client->config_value(
+                "apps", "open-ils.search", "app_settings", 'marc_html_xsl_slim');
             if($xsl) {
-		        $xsl = $parser->parse_file("$dir/$xsl");
-		        $slim_marc_sheet = $xslt->parse_stylesheet($xsl);
+                $xsl = $parser->parse_file("$dir/$xsl");
+                $slim_marc_sheet = $xslt->parse_stylesheet($xsl);
             }
         }
         $sheet = $slim_marc_sheet;
@@ -1932,10 +1932,10 @@ sub biblio_record_to_marc_html {
     unless($sheet) {
         unless($marc_sheet) {
             my $xsl_key = ($slim) ? 'marc_html_xsl_slim' : 'marc_html_xsl';
-		    my $xsl = $settings_client->config_value(
-			    "apps", "open-ils.search", "app_settings", 'marc_html_xsl');
-		    $xsl = $parser->parse_file("$dir/$xsl");
-		    $marc_sheet = $xslt->parse_stylesheet($xsl);
+            my $xsl = $settings_client->config_value(
+                "apps", "open-ils.search", "app_settings", 'marc_html_xsl');
+            $xsl = $parser->parse_file("$dir/$xsl");
+            $marc_sheet = $xslt->parse_stylesheet($xsl);
         }
         $sheet = $marc_sheet;
     }
@@ -1953,9 +1953,9 @@ sub biblio_record_to_marc_html {
         $marcxml = $record->marc;
     }
 
-	my $xmldoc = $parser->parse_string($marcxml);
-	my $html = $sheet->transform($xmldoc);
-	return $html->documentElement->toString();
+    my $xmldoc = $parser->parse_string($marcxml);
+    my $html = $sheet->transform($xmldoc);
+    return $html->documentElement->toString();
 }
 
 __PACKAGE__->register_method(
@@ -2056,8 +2056,8 @@ __PACKAGE__->register_method(
 );
 
 sub retrieve_all_copy_statuses {
-	my( $self, $client ) = @_;
-	return new_editor()->retrieve_all_config_copy_status();
+    my( $self, $client ) = @_;
+    return new_editor()->retrieve_all_config_copy_status();
 }
 
 
@@ -2072,18 +2072,18 @@ __PACKAGE__->register_method(
 );
 
 sub copy_counts_per_org {
-	my( $self, $client, $record_id ) = @_;
+    my( $self, $client, $record_id ) = @_;
 
-	warn "Retreiveing copy copy counts for record $record_id and method " . $self->api_name . "\n";
+    warn "Retreiveing copy copy counts for record $record_id and method " . $self->api_name . "\n";
 
-	my $method = "open-ils.storage.biblio.record_entry.global_copy_count.atomic";
-	if($self->api_name =~ /staff/) { $method =~ s/atomic/staff\.atomic/; }
+    my $method = "open-ils.storage.biblio.record_entry.global_copy_count.atomic";
+    if($self->api_name =~ /staff/) { $method =~ s/atomic/staff\.atomic/; }
 
-	my $counts = $apputils->simple_scalar_request(
-		"open-ils.storage", $method, $record_id );
+    my $counts = $apputils->simple_scalar_request(
+        "open-ils.storage", $method, $record_id );
 
-	$counts = [ sort {$a->[0] <=> $b->[0]} @$counts ];
-	return $counts;
+    $counts = [ sort {$a->[0] <=> $b->[0]} @$counts ];
+    return $counts;
 }
 
 
@@ -2094,14 +2094,14 @@ __PACKAGE__->register_method(
               . "[ org_id, callnumber_prefix, callnumber_label, callnumber_suffix, <status1_count>, <status2_count>,...] "
               . "where statusx is a copy status name.  The statuses are sorted by ID.",
 );
-		
+        
 
 sub copy_count_summary {
-	my( $self, $client, $rid, $org, $depth ) = @_;
+    my( $self, $client, $rid, $org, $depth ) = @_;
     $org   ||= 1;
     $depth ||= 0;
     my $data = $U->storagereq(
-		'open-ils.storage.biblio.record_entry.status_copy_count.atomic', $rid, $org, $depth );
+        'open-ils.storage.biblio.record_entry.status_copy_count.atomic', $rid, $org, $depth );
 
     return [ sort {
         (($a->[1] ? $a->[1] . ' ' : '') . $a->[2] . ($a->[3] ? ' ' . $a->[3] : ''))
@@ -2123,7 +2123,7 @@ sub copy_location_count_summary {
     $org   ||= 1;
     $depth ||= 0;
     my $data = $U->storagereq(
-		'open-ils.storage.biblio.record_entry.status_copy_location_count.atomic', $rid, $org, $depth );
+        'open-ils.storage.biblio.record_entry.status_copy_location_count.atomic', $rid, $org, $depth );
 
     return [ sort {
         (($a->[1] ? $a->[1] . ' ' : '') . $a->[2] . ($a->[3] ? ' ' . $a->[3] : ''))
@@ -2241,11 +2241,11 @@ Presently, search uses the cache unconditionally.
 # FIXME: that example above isn't actually tested.
 # TODO: docache option?
 sub marc_search {
-	my( $self, $conn, $args, $limit, $offset, $timeout ) = @_;
+    my( $self, $conn, $args, $limit, $offset, $timeout ) = @_;
 
-	my $method = 'open-ils.storage.biblio.full_rec.multi_search';
-	$method .= ".staff" if $self->api_name =~ /staff/;
-	$method .= ".atomic";
+    my $method = 'open-ils.storage.biblio.full_rec.multi_search';
+    $method .= ".staff" if $self->api_name =~ /staff/;
+    $method .= ".atomic";
 
     $limit  ||= 10;     # FIXME: what about $args->{limit} ?
     $offset ||=  0;     # FIXME: what about $args->{offset} ?
@@ -2255,33 +2255,33 @@ sub marc_search {
     # Default to 2 mins.  Arbitrarily cap at 5 mins.
     $timeout = 120 if !$timeout or $timeout > 300;
 
-	my @search;
-	push( @search, ($_ => $$args{$_}) ) for (sort keys %$args);
-	my $ckey = $pfx . md5_hex($method . OpenSRF::Utils::JSON->perl2JSON(\@search));
+    my @search;
+    push( @search, ($_ => $$args{$_}) ) for (sort keys %$args);
+    my $ckey = $pfx . md5_hex($method . OpenSRF::Utils::JSON->perl2JSON(\@search));
 
-	my $recs = search_cache($ckey, $offset, $limit);
+    my $recs = search_cache($ckey, $offset, $limit);
 
-	if(!$recs) {
+    if(!$recs) {
 
         my $ses = OpenSRF::AppSession->create('open-ils.storage');
         my $req = $ses->request($method, %$args);
         my $resp = $req->recv($timeout);
 
         if($resp and $recs = $resp->content) {
-			put_cache($ckey, scalar(@$recs), $recs);
-			$recs = [ @$recs[$offset..($offset + ($limit - 1))] ];
-		} else {
-			$recs = [];
-		}
+            put_cache($ckey, scalar(@$recs), $recs);
+            $recs = [ @$recs[$offset..($offset + ($limit - 1))] ];
+        } else {
+            $recs = [];
+        }
 
         $ses->kill_me;
-	}
+    }
 
-	my $count = 0;
-	$count = $recs->[0]->[2] if $recs->[0] and $recs->[0]->[2];
-	my @recs = map { $_->[0] } @$recs;
+    my $count = 0;
+    $count = $recs->[0]->[2] if $recs->[0] and $recs->[0]->[2];
+    my @recs = map { $_->[0] } @$recs;
 
-	return { ids => \@recs, count => $count };
+    return { ids => \@recs, count => $count };
 }
 
 
@@ -2306,25 +2306,25 @@ __PACKAGE__->register_method(
 }
 
 sub biblio_search_isbn { 
-	my( $self, $client, $isbn ) = @_;
-	$logger->debug("Searching ISBN $isbn");
-	# the previous implementation of this method was essentially unlimited,
-	# so we will set our limit very high and let multiclass.query provide any
-	# actual limit
-	# XXX: if making this unlimited is deemed important, we might consider
-	# reworking 'open-ils.storage.id_list.biblio.record_entry.search.isbn',
-	# which is functionally deprecated at this point, or a custom call to
-	# 'open-ils.storage.biblio.multiclass.search_fts'
+    my( $self, $client, $isbn ) = @_;
+    $logger->debug("Searching ISBN $isbn");
+    # the previous implementation of this method was essentially unlimited,
+    # so we will set our limit very high and let multiclass.query provide any
+    # actual limit
+    # XXX: if making this unlimited is deemed important, we might consider
+    # reworking 'open-ils.storage.id_list.biblio.record_entry.search.isbn',
+    # which is functionally deprecated at this point, or a custom call to
+    # 'open-ils.storage.biblio.multiclass.search_fts'
 
     my $isbn_method = 'open-ils.search.biblio.multiclass.query';
     if ($self->api_name =~ m/.staff$/) {
         $isbn_method .= '.staff';
     }
 
-	my $method = $self->method_lookup($isbn_method);
-	my ($search_result) = $method->run({'limit' => 1000000}, "identifier|isbn:$isbn");
-	my @recs = map { $_->[0] } @{$search_result->{'ids'}};
-	return { ids => \@recs, count => $search_result->{'count'} };
+    my $method = $self->method_lookup($isbn_method);
+    my ($search_result) = $method->run({'limit' => 1000000}, "identifier|isbn:$isbn");
+    my @recs = map { $_->[0] } @{$search_result->{'ids'}};
+    return { ids => \@recs, count => $search_result->{'count'} };
 }
 
 __PACKAGE__->register_method(
@@ -2334,21 +2334,21 @@ __PACKAGE__->register_method(
 
 # XXX: see biblio_search_isbn() for note concerning 'limit'
 sub biblio_search_isbn_batch { 
-	my( $self, $client, $isbn_list ) = @_;
-	$logger->debug("Searching ISBNs @$isbn_list");
-	my @recs = (); my %rec_set = ();
-	my $method = $self->method_lookup('open-ils.search.biblio.multiclass.query');
-	foreach my $isbn ( @$isbn_list ) {
-		my ($search_result) = $method->run({'limit' => 1000000}, "identifier|isbn:$isbn");
-		my @recs_subset = map { $_->[0] } @{$search_result->{'ids'}};
-		foreach my $rec (@recs_subset) {
-			if (! $rec_set{ $rec }) {
-				$rec_set{ $rec } = 1;
-				push @recs, $rec;
-			}
-		}
-	}
-	return { ids => \@recs, count => scalar(@recs) };
+    my( $self, $client, $isbn_list ) = @_;
+    $logger->debug("Searching ISBNs @$isbn_list");
+    my @recs = (); my %rec_set = ();
+    my $method = $self->method_lookup('open-ils.search.biblio.multiclass.query');
+    foreach my $isbn ( @$isbn_list ) {
+        my ($search_result) = $method->run({'limit' => 1000000}, "identifier|isbn:$isbn");
+        my @recs_subset = map { $_->[0] } @{$search_result->{'ids'}};
+        foreach my $rec (@recs_subset) {
+            if (! $rec_set{ $rec }) {
+                $rec_set{ $rec } = 1;
+                push @recs, $rec;
+            }
+        }
+    }
+    return { ids => \@recs, count => scalar(@recs) };
 }
 
 foreach my $issn_method (qw/
@@ -2372,25 +2372,25 @@ __PACKAGE__->register_method(
 }
 
 sub biblio_search_issn { 
-	my( $self, $client, $issn ) = @_;
-	$logger->debug("Searching ISSN $issn");
-	# the previous implementation of this method was essentially unlimited,
-	# so we will set our limit very high and let multiclass.query provide any
-	# actual limit
-	# XXX: if making this unlimited is deemed important, we might consider
-	# reworking 'open-ils.storage.id_list.biblio.record_entry.search.issn',
-	# which is functionally deprecated at this point, or a custom call to
-	# 'open-ils.storage.biblio.multiclass.search_fts'
+    my( $self, $client, $issn ) = @_;
+    $logger->debug("Searching ISSN $issn");
+    # the previous implementation of this method was essentially unlimited,
+    # so we will set our limit very high and let multiclass.query provide any
+    # actual limit
+    # XXX: if making this unlimited is deemed important, we might consider
+    # reworking 'open-ils.storage.id_list.biblio.record_entry.search.issn',
+    # which is functionally deprecated at this point, or a custom call to
+    # 'open-ils.storage.biblio.multiclass.search_fts'
 
     my $issn_method = 'open-ils.search.biblio.multiclass.query';
     if ($self->api_name =~ m/.staff$/) {
         $issn_method .= '.staff';
     }
 
-	my $method = $self->method_lookup($issn_method);
-	my ($search_result) = $method->run({'limit' => 1000000}, "identifier|issn:$issn");
-	my @recs = map { $_->[0] } @{$search_result->{'ids'}};
-	return { ids => \@recs, count => $search_result->{'count'} };
+    my $method = $self->method_lookup($issn_method);
+    my ($search_result) = $method->run({'limit' => 1000000}, "identifier|issn:$issn");
+    my @recs = map { $_->[0] } @{$search_result->{'ids'}};
+    return { ids => \@recs, count => $search_result->{'count'} };
 }
 
 
@@ -2410,11 +2410,11 @@ __PACKAGE__->register_method(
 );
 
 sub fetch_mods_by_copy {
-	my( $self, $client, $copyid ) = @_;
-	my ($record, $evt) = $apputils->fetch_record_by_copy( $copyid );
-	return $evt if $evt;
-	return OpenILS::Event->new('ITEM_NOT_CATALOGED') unless $record->marc;
-	return $apputils->record_to_mvr($record);
+    my( $self, $client, $copyid ) = @_;
+    my ($record, $evt) = $apputils->fetch_record_by_copy( $copyid );
+    return $evt if $evt;
+    return OpenILS::Event->new('ITEM_NOT_CATALOGED') unless $record->marc;
+    return $apputils->record_to_mvr($record);
 }
 
 
@@ -2441,17 +2441,17 @@ __PACKAGE__->register_method(
 
 # RETURNS array of arrays like so: label, owning_lib, record, id
 sub cn_browse {
-	my( $self, $client, @params ) = @_;
-	my $method;
+    my( $self, $client, @params ) = @_;
+    my $method;
 
-	$method = 'open-ils.storage.asset.call_number.browse.target.atomic' 
-		if( $self->api_name =~ /target/ );
-	$method = 'open-ils.storage.asset.call_number.browse.page_up.atomic'
-		if( $self->api_name =~ /page_up/ );
-	$method = 'open-ils.storage.asset.call_number.browse.page_down.atomic'
-		if( $self->api_name =~ /page_down/ );
+    $method = 'open-ils.storage.asset.call_number.browse.target.atomic' 
+        if( $self->api_name =~ /target/ );
+    $method = 'open-ils.storage.asset.call_number.browse.page_up.atomic'
+        if( $self->api_name =~ /page_up/ );
+    $method = 'open-ils.storage.asset.call_number.browse.page_down.atomic'
+        if( $self->api_name =~ /page_down/ );
 
-	return $apputils->simplereq( 'open-ils.storage', $method, @params );
+    return $apputils->simplereq( 'open-ils.storage', $method, @params );
 }
 # -------------------------------------------------------------------------------------
 
@@ -2463,12 +2463,12 @@ __PACKAGE__->register_method(
 );
 
 sub fetch_cn {
-	my( $self, $client, $id ) = @_;
+    my( $self, $client, $id ) = @_;
 
-	my $e = new_editor();
-	my( $cn, $evt ) = $apputils->fetch_callnumber( $id, 0, $e );
-	return $evt if $evt;
-	return $cn;
+    my $e = new_editor();
+    my( $cn, $evt ) = $apputils->fetch_callnumber( $id, 0, $e );
+    return $evt if $evt;
+    return $cn;
 }
 
 __PACKAGE__->register_method(
@@ -2479,12 +2479,12 @@ __PACKAGE__->register_method(
 );
 
 sub fetch_fleshed_cn {
-	my( $self, $client, $id ) = @_;
+    my( $self, $client, $id ) = @_;
 
-	my $e = new_editor();
-	my( $cn, $evt ) = $apputils->fetch_callnumber( $id, 1, $e );
-	return $evt if $evt;
-	return $cn;
+    my $e = new_editor();
+    my( $cn, $evt ) = $apputils->fetch_callnumber( $id, 1, $e );
+    return $evt if $evt;
+    return $cn;
 }
 
 
@@ -2492,36 +2492,36 @@ __PACKAGE__->register_method(
     method    => "fetch_copy_by_cn",
     api_name  => 'open-ils.search.copies_by_call_number.retrieve',
     signature => q/
-		Returns an array of copy ID's by callnumber ID
-		@param cnid The callnumber ID
-		@return An array of copy IDs
-	/
+        Returns an array of copy ID's by callnumber ID
+        @param cnid The callnumber ID
+        @return An array of copy IDs
+    /
 );
 
 sub fetch_copy_by_cn {
-	my( $self, $conn, $cnid ) = @_;
-	return $U->cstorereq(
-		'open-ils.cstore.direct.asset.copy.id_list.atomic', 
-		{ call_number => $cnid, deleted => 'f' } );
+    my( $self, $conn, $cnid ) = @_;
+    return $U->cstorereq(
+        'open-ils.cstore.direct.asset.copy.id_list.atomic', 
+        { call_number => $cnid, deleted => 'f' } );
 }
 
 __PACKAGE__->register_method(
     method    => 'fetch_cn_by_info',
     api_name  => 'open-ils.search.call_number.retrieve_by_info',
     signature => q/
-		@param label The callnumber label
-		@param record The record the cn is attached to
-		@param org The owning library of the cn
-		@return The callnumber object
-	/
+        @param label The callnumber label
+        @param record The record the cn is attached to
+        @param org The owning library of the cn
+        @return The callnumber object
+    /
 );
 
 
 sub fetch_cn_by_info {
-	my( $self, $conn, $label, $record, $org ) = @_;
-	return $U->cstorereq(
-		'open-ils.cstore.direct.asset.call_number.search',
-		{ label => $label, record => $record, owning_lib => $org, deleted => 'f' });
+    my( $self, $conn, $label, $record, $org ) = @_;
+    return $U->cstorereq(
+        'open-ils.cstore.direct.asset.call_number.search',
+        { label => $label, record => $record, owning_lib => $org, deleted => 'f' });
 }
 
 
@@ -2553,10 +2553,10 @@ __PACKAGE__->register_method(
 );
 
 sub bib_extras {
-	my $self = shift;
+    my $self = shift;
     $logger->warn("deprecation warning: " .$self->api_name);
 
-	my $e = new_editor();
+    my $e = new_editor();
 
     my $ctype = $self->{ctype};
     my $ccvms = $e->search_config_coded_value_map({ctype => $ctype});
@@ -2594,7 +2594,7 @@ sub fetch_slim_record {
 
 #my $editor = OpenILS::Utils::Editor->new;
     my $editor = new_editor();
-	my @res;
+    my @res;
     for( @$ids ) {
         return $editor->event unless
             my $r = $editor->retrieve_biblio_record_entry($_);
@@ -2609,11 +2609,11 @@ __PACKAGE__->register_method(
     api_name  => 'open-ils.search.biblio.record_hold_parts',
     signature => q/
        Returns a list of {label :foo, id : bar} objects for viable monograph parts for a given record
-	/
+    /
 );
 
 sub rec_hold_parts {
-	my( $self, $conn, $args ) = @_;
+    my( $self, $conn, $args ) = @_;
 
     my $rec        = $$args{record};
     my $mrec       = $$args{metarecord};
@@ -2657,16 +2657,16 @@ __PACKAGE__->register_method(
     method    => 'rec_to_mr_rec_descriptors',
     api_name  => 'open-ils.search.metabib.record_to_descriptors',
     signature => q/
-		specialized method...
-		Given a biblio record id or a metarecord id, 
-		this returns a list of metabib.record_descriptor
-		objects that live within the same metarecord
-		@param args Object of args including:
-	/
+        specialized method...
+        Given a biblio record id or a metarecord id, 
+        this returns a list of metabib.record_descriptor
+        objects that live within the same metarecord
+        @param args Object of args including:
+    /
 );
 
 sub rec_to_mr_rec_descriptors {
-	my( $self, $conn, $args ) = @_;
+    my( $self, $conn, $args ) = @_;
 
     my $rec        = $$args{record};
     my $mrec       = $$args{metarecord};
@@ -2677,69 +2677,69 @@ sub rec_to_mr_rec_descriptors {
 
     my $hard_boundary = $U->ou_ancestor_setting_value($pickup_lib, OILS_SETTING_HOLD_HARD_BOUNDARY) if (defined $pickup_lib);
 
-	my $e = new_editor();
-	my $recs;
+    my $e = new_editor();
+    my $recs;
 
-	if( !$mrec ) {
-		my $map = $e->search_metabib_metarecord_source_map({source => $rec});
-		return $e->event unless @$map;
-		$mrec = $$map[0]->metarecord;
-	}
+    if( !$mrec ) {
+        my $map = $e->search_metabib_metarecord_source_map({source => $rec});
+        return $e->event unless @$map;
+        $mrec = $$map[0]->metarecord;
+    }
 
-	$recs = $e->search_metabib_metarecord_source_map({metarecord => $mrec});
-	return $e->event unless @$recs;
+    $recs = $e->search_metabib_metarecord_source_map({metarecord => $mrec});
+    return $e->event unless @$recs;
 
-	my @recs = map { $_->source } @$recs;
-	my $search = { record => \@recs };
-	$search->{item_form} = $item_forms if $item_forms and @$item_forms;
-	$search->{item_type} = $item_types if $item_types and @$item_types;
-	$search->{item_lang} = $item_lang  if $item_lang;
+    my @recs = map { $_->source } @$recs;
+    my $search = { record => \@recs };
+    $search->{item_form} = $item_forms if $item_forms and @$item_forms;
+    $search->{item_type} = $item_types if $item_types and @$item_types;
+    $search->{item_lang} = $item_lang  if $item_lang;
 
-	my $desc = $e->search_metabib_record_descriptor($search);
+    my $desc = $e->search_metabib_record_descriptor($search);
 
-	my $query = {
-		distinct => 1,
-		select   => { 'bre' => ['id'] },
-		from	 => {
-			'bre' => {
-				'acn' => {
-					'join' => {
-						'acp' => {"join" => {"acpl" => {}, "ccs" => {}}}
-					  }
-				  }
-			 }
-		},
-		where => {
-			'+bre' => { id => \@recs },
-			'+acp' => {
-				holdable => 't',
-				deleted  => 'f'
-			},
-			"+ccs" => { holdable => 't' },
-			"+acpl" => { holdable => 't' }
-		}
-	};
+    my $query = {
+        distinct => 1,
+        select   => { 'bre' => ['id'] },
+        from     => {
+            'bre' => {
+                'acn' => {
+                    'join' => {
+                        'acp' => {"join" => {"acpl" => {}, "ccs" => {}}}
+                      }
+                  }
+             }
+        },
+        where => {
+            '+bre' => { id => \@recs },
+            '+acp' => {
+                holdable => 't',
+                deleted  => 'f'
+            },
+            "+ccs" => { holdable => 't' },
+            "+acpl" => { holdable => 't' }
+        }
+    };
 
-	if ($hard_boundary) { # 0 (or "top") is the same as no setting
-		my $orgs = $e->json_query(
-			{ from => [ 'actor.org_unit_descendants' => $pickup_lib, $hard_boundary ] }
-		) or return $e->die_event;
+    if ($hard_boundary) { # 0 (or "top") is the same as no setting
+        my $orgs = $e->json_query(
+            { from => [ 'actor.org_unit_descendants' => $pickup_lib, $hard_boundary ] }
+        ) or return $e->die_event;
 
-		$query->{where}->{"+acp"}->{circ_lib} = [ map { $_->{id} } @$orgs ];
-	}
+        $query->{where}->{"+acp"}->{circ_lib} = [ map { $_->{id} } @$orgs ];
+    }
 
-	my $good_records = $e->json_query($query) or return $e->die_event;
+    my $good_records = $e->json_query($query) or return $e->die_event;
 
-	my @keep;
-	for my $d (@$desc) {
-		if ( grep { $d->record == $_->{id} } @$good_records ) {
-			push @keep, $d;
-		}
-	}
+    my @keep;
+    for my $d (@$desc) {
+        if ( grep { $d->record == $_->{id} } @$good_records ) {
+            push @keep, $d;
+        }
+    }
 
-	$desc = \@keep;
+    $desc = \@keep;
 
-	return { metarecord => $mrec, descriptors => $desc };
+    return { metarecord => $mrec, descriptors => $desc };
 }
 
 
@@ -2749,7 +2749,7 @@ __PACKAGE__->register_method(
 );
 
 sub fetch_age_protect {
-	return new_editor()->retrieve_all_config_rule_age_hold_protect();
+    return new_editor()->retrieve_all_config_rule_age_hold_protect();
 }
 
 
@@ -2764,27 +2764,27 @@ __PACKAGE__->register_method(
 );
 
 sub copies_by_cn_label {
-	my( $self, $conn, $record, $cn_parts, $circ_lib ) = @_;
-	my $e = new_editor();
+    my( $self, $conn, $record, $cn_parts, $circ_lib ) = @_;
+    my $e = new_editor();
     my $cnp_id = $cn_parts->[0] eq '' ? -1 : $e->search_asset_call_number_prefix({label => $cn_parts->[0]}, {idlist=>1})->[0];
     my $cns_id = $cn_parts->[2] eq '' ? -1 : $e->search_asset_call_number_suffix({label => $cn_parts->[2]}, {idlist=>1})->[0];
-	my $cns = $e->search_asset_call_number({record => $record, prefix => $cnp_id, label => $cn_parts->[1], suffix => $cns_id, deleted => 'f'}, {idlist=>1});
-	return [] unless @$cns;
+    my $cns = $e->search_asset_call_number({record => $record, prefix => $cnp_id, label => $cn_parts->[1], suffix => $cns_id, deleted => 'f'}, {idlist=>1});
+    return [] unless @$cns;
 
-	# show all non-deleted copies in the staff client ...
-	if ($self->api_name =~ /staff$/o) {
-		return $e->search_asset_copy({call_number => $cns, circ_lib => $circ_lib, deleted => 'f'}, {idlist=>1});
-	}
+    # show all non-deleted copies in the staff client ...
+    if ($self->api_name =~ /staff$/o) {
+        return $e->search_asset_copy({call_number => $cns, circ_lib => $circ_lib, deleted => 'f'}, {idlist=>1});
+    }
 
-	# ... otherwise, grab the copies ...
-	my $copies = $e->search_asset_copy(
-		[ {call_number => $cns, circ_lib => $circ_lib, deleted => 'f', opac_visible => 't'},
-		  {flesh => 1, flesh_fields => { acp => [ qw/location status/] } }
-		]
-	);
+    # ... otherwise, grab the copies ...
+    my $copies = $e->search_asset_copy(
+        [ {call_number => $cns, circ_lib => $circ_lib, deleted => 'f', opac_visible => 't'},
+          {flesh => 1, flesh_fields => { acp => [ qw/location status/] } }
+        ]
+    );
 
-	# ... and test for location and status visibility
-	return [ map { ($U->is_true($_->location->opac_visible) && $U->is_true($_->status->opac_visible)) ? ($_->id) : () } @$copies ];
+    # ... and test for location and status visibility
+    return [ map { ($U->is_true($_->location->opac_visible) && $U->is_true($_->status->opac_visible)) ? ($_->id) : () } @$copies ];
 }
 
 

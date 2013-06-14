@@ -703,15 +703,15 @@ sub mk_env {
     # --------------------------------------------------------------------------
     unless($self->is_noncat) {
         my $copy;
-	    if($self->copy_id) {
-		    $copy = $e->retrieve_asset_copy(
-			    [$self->copy_id, $MK_ENV_FLESH ]) or return $e->event;
+        if($self->copy_id) {
+            $copy = $e->retrieve_asset_copy(
+                [$self->copy_id, $MK_ENV_FLESH ]) or return $e->event;
     
-	    } elsif( $self->copy_barcode ) {
+        } elsif( $self->copy_barcode ) {
     
-		    $copy = $e->search_asset_copy(
-			    [{barcode => $self->copy_barcode, deleted => 'f'}, $MK_ENV_FLESH ])->[0];
-	    } elsif( $self->reservation ) {
+            $copy = $e->search_asset_copy(
+                [{barcode => $self->copy_barcode, deleted => 'f'}, $MK_ENV_FLESH ])->[0];
+        } elsif( $self->reservation ) {
             my $res = $e->json_query(
                 {
                     "select" => {"acp" => ["id"]},
@@ -758,23 +758,23 @@ sub mk_env {
     # Grab the patron
     # --------------------------------------------------------------------------
     my $patron;
-	my $flesh = {
-		flesh => 1,
-		flesh_fields => {au => [ qw/ card / ]}
-	};
+    my $flesh = {
+        flesh => 1,
+        flesh_fields => {au => [ qw/ card / ]}
+    };
 
-	if( $self->patron_id ) {
-		$patron = $e->retrieve_actor_user([$self->patron_id, $flesh])
-			or return $self->bail_on_events(OpenILS::Event->new('ACTOR_USER_NOT_FOUND'));
+    if( $self->patron_id ) {
+        $patron = $e->retrieve_actor_user([$self->patron_id, $flesh])
+            or return $self->bail_on_events(OpenILS::Event->new('ACTOR_USER_NOT_FOUND'));
 
-	} elsif( $self->patron_barcode ) {
+    } elsif( $self->patron_barcode ) {
 
-		# note: throwing ACTOR_USER_NOT_FOUND instead of ACTOR_CARD_NOT_FOUND is intentional
-		my $card = $e->search_actor_card({barcode => $self->patron_barcode})->[0] 
-			or return $self->bail_on_events(OpenILS::Event->new('ACTOR_USER_NOT_FOUND'));
+        # note: throwing ACTOR_USER_NOT_FOUND instead of ACTOR_CARD_NOT_FOUND is intentional
+        my $card = $e->search_actor_card({barcode => $self->patron_barcode})->[0] 
+            or return $self->bail_on_events(OpenILS::Event->new('ACTOR_USER_NOT_FOUND'));
 
-		$patron = $e->retrieve_actor_user($card->usr)
-			or return $self->bail_on_events(OpenILS::Event->new('ACTOR_USER_NOT_FOUND'));
+        $patron = $e->retrieve_actor_user($card->usr)
+            or return $self->bail_on_events(OpenILS::Event->new('ACTOR_USER_NOT_FOUND'));
 
         # Use the card we looked up, not the patron's primary, for card active checks
         $patron->card($card);
@@ -805,16 +805,16 @@ sub mk_env {
         # Check for inactivity and patron reg. expiration
 
         $self->bail_on_events(OpenILS::Event->new('PATRON_INACTIVE'))
-			unless $U->is_true($patron->active);
-	
-		$self->bail_on_events(OpenILS::Event->new('PATRON_CARD_INACTIVE'))
-			unless $U->is_true($patron->card->active);
-	
-		my $expire = DateTime::Format::ISO8601->new->parse_datetime(
-			cleanse_ISO8601($patron->expire_date));
-	
-		$self->bail_on_events(OpenILS::Event->new('PATRON_ACCOUNT_EXPIRED'))
-			if( CORE::time > $expire->epoch ) ;
+            unless $U->is_true($patron->active);
+    
+        $self->bail_on_events(OpenILS::Event->new('PATRON_CARD_INACTIVE'))
+            unless $U->is_true($patron->card->active);
+    
+        my $expire = DateTime::Format::ISO8601->new->parse_datetime(
+            cleanse_ISO8601($patron->expire_date));
+    
+        $self->bail_on_events(OpenILS::Event->new('PATRON_ACCOUNT_EXPIRED'))
+            if( CORE::time > $expire->epoch ) ;
     }
 }
 
@@ -1588,7 +1588,7 @@ sub apply_deposit_fee {
     return if $self->is_deposit and $self->skip_deposit_fee;
     return if $self->is_rental and $self->skip_rental_fee;
 
-	my $bill = Fieldmapper::money::billing->new;
+    my $bill = Fieldmapper::money::billing->new;
     my $amount = $copy->deposit_amount;
     my $billing_type;
     my $btype;
@@ -1603,14 +1603,14 @@ sub apply_deposit_fee {
         $self->rental_billing($bill);
     }
 
-	$bill->xact($self->circ->id);
-	$bill->amount($amount);
-	$bill->note(OILS_BILLING_NOTE_SYSTEM);
-	$bill->billing_type($billing_type);
-	$bill->btype($btype);
+    $bill->xact($self->circ->id);
+    $bill->amount($amount);
+    $bill->note(OILS_BILLING_NOTE_SYSTEM);
+    $bill->billing_type($billing_type);
+    $bill->btype($btype);
     $self->editor->create_money_billing($bill) or $self->bail_on_events($self->editor->event);
 
-	$logger->info("circulator: charged $amount on checkout with billing type $billing_type");
+    $logger->info("circulator: charged $amount on checkout with billing type $billing_type");
 }
 
 sub update_copy {
@@ -1739,7 +1739,7 @@ sub handle_checkout_holds {
         $hold->clear_capture_time;
         $hold->clear_shelf_time;
         $hold->clear_shelf_expire_time;
-	    $hold->clear_current_shelf_lib;
+        $hold->clear_current_shelf_lib;
 
         return $self->bail_on_event($e->event)
             unless $e->update_action_hold_request($hold);
@@ -3767,8 +3767,8 @@ sub append_reading_list {
     my $e = new_editor(xact => 1, requestor => $self->editor->requestor);
 
     # verify the patron wants to retain the hisory
-	my $setting = $e->search_actor_user_setting(
-		{usr => $self->patron->id, name => 'circ.keep_checkout_history'})->[0];
+    my $setting = $e->search_actor_user_setting(
+        {usr => $self->patron->id, name => 'circ.keep_checkout_history'})->[0];
     
     unless($setting and $setting->value) {
         $e->rollback;

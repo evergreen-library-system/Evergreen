@@ -58,10 +58,10 @@ my $VENDOR_KLUDGE_MAP = {
 
 
 __PACKAGE__->register_method(
-	method    => 'retrieve',
-	api_name  => 'open-ils.acq.edi.retrieve',
+    method    => 'retrieve',
+    api_name  => 'open-ils.acq.edi.retrieve',
     authoritative => 1,
-	signature => {
+    signature => {
         desc   => 'Fetch incoming message(s) from EDI accounts.  ' .
                   'Optional arguments to restrict to one vendor and/or a max number of messages.  ' .
                   'Note that messages are not parsed or processed here, just fetched and translated.',

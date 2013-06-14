@@ -3046,10 +3046,10 @@ sub find_nearest_permitted_hold {
     $copy->call_number($editor->retrieve_asset_call_number($copy->call_number))
         unless ref $copy->call_number;
 
-	# search for what should be the best holds for this copy to fulfill
-	my $best_holds = $U->storagereq(
+    # search for what should be the best holds for this copy to fulfill
+    my $best_holds = $U->storagereq(
         "open-ils.storage.action.hold_request.nearest_hold.atomic", 
-		$user->ws_ou, $copy, 100, $hold_stall_interval, $fifo );
+        $user->ws_ou, $copy, 100, $hold_stall_interval, $fifo );
 
     # Add any pre-targeted holds to the list too? Unless they are already there, anyway.
     if ($old_holds) {

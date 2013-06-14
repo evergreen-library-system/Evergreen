@@ -24,11 +24,11 @@ use RPC::XML::Procedure;
 
 $RPC::XML::ENCODING = 'utf-8';
 
-my $services; 						# allowed services
-my $CLASS_KEY = '__class__';	# object wrapper class key
-my $PAYLOAD_KEY = '__data__';	# object wrapper payload key
-my $bs_config; 					# bootstrap config
-my $__inited = 0; 				# has child_init run?
+my $services;                       # allowed services
+my $CLASS_KEY = '__class__';    # object wrapper class key
+my $PAYLOAD_KEY = '__data__';   # object wrapper payload key
+my $bs_config;                  # bootstrap config
+my $__inited = 0;               # has child_init run?
 
 
 # set the bootstrap config when this module is loaded
@@ -37,47 +37,47 @@ sub import { $bs_config = $_[1]; }
 
 # Bootstrap and load config settings
 sub child_init {
-	$__inited = 1;
-	OpenSRF::AppSession->ingress('xmlrpc');
-	OpenSRF::System->bootstrap_client( config_file => $bs_config );
-	my $sclient	= OpenSRF::Utils::SettingsClient->new();
-	my $idl = $sclient->config_value("IDL");
-	$services = $sclient->config_value("xml-rpc", "allowed_services", "service");
-	$services = ref $services ? $services : [ $services ];
-	$logger->debug("XML-RPC: allowed services @$services");
-	OpenILS::Utils::Fieldmapper->require;
-	Fieldmapper->import(IDL => $idl);
-	OpenSRF::AppSession->ingress('apache');
-	return Apache2::Const::OK;
+    $__inited = 1;
+    OpenSRF::AppSession->ingress('xmlrpc');
+    OpenSRF::System->bootstrap_client( config_file => $bs_config );
+    my $sclient = OpenSRF::Utils::SettingsClient->new();
+    my $idl = $sclient->config_value("IDL");
+    $services = $sclient->config_value("xml-rpc", "allowed_services", "service");
+    $services = ref $services ? $services : [ $services ];
+    $logger->debug("XML-RPC: allowed services @$services");
+    OpenILS::Utils::Fieldmapper->require;
+    Fieldmapper->import(IDL => $idl);
+    OpenSRF::AppSession->ingress('apache');
+    return Apache2::Const::OK;
 }
 
 
 sub handler {
 
-	my $r		= shift;
-	my $cgi	= CGI->new;
-	my $service = $r->path_info;
-	$service =~ s#^/##;
+    my $r       = shift;
+    my $cgi = CGI->new;
+    my $service = $r->path_info;
+    $service =~ s#^/##;
 
-	child_init() unless $__inited; # ?
+    child_init() unless $__inited; # ?
 
-	return Apache2::Const::NOT_FOUND unless grep { $_ eq $service } @$services;
+    return Apache2::Const::NOT_FOUND unless grep { $_ eq $service } @$services;
 
-	my $request = RPC::XML::Parser->new->parse($cgi->param('POSTDATA'));
+    my $request = RPC::XML::Parser->new->parse($cgi->param('POSTDATA'));
 
-	my @args;
-	push( @args, unwrap_perl($_->value) ) for @{$request->args};
-	my $method = $request->name;
+    my @args;
+    push( @args, unwrap_perl($_->value) ) for @{$request->args};
+    my $method = $request->name;
 
-	warn "XML-RPC: service=$service, method=$method, args=@args\n";
-	$logger->debug("XML-RPC: service=$service, method=$method, args=@args");
+    warn "XML-RPC: service=$service, method=$method, args=@args\n";
+    $logger->debug("XML-RPC: service=$service, method=$method, args=@args");
 
-	my $perl = run_request( $service, $method, @args );
-	my $resp = RPC::XML::response->new(smart_encode($perl));
+    my $perl = run_request( $service, $method, @args );
+    my $resp = RPC::XML::response->new(smart_encode($perl));
 
-	print "Content-type: application/xml; charset=utf-8\n\n";
-	print $resp->as_string;
-	return Apache2::Const::OK;
+    print "Content-type: application/xml; charset=utf-8\n\n";
+    print $resp->as_string;
+    return Apache2::Const::OK;
 }
 
 

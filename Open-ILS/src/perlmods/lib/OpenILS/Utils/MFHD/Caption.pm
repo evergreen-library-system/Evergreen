@@ -45,19 +45,19 @@ sub new {
         } elsif ($key eq 'u') {
             # Bib units per next higher enumeration level
 
-	    # Some files seem to have "empty" $u subfields,
-	    # especially for top level of enumeration. Just drop them
-	    next if (!defined($val) || !$val);
+        # Some files seem to have "empty" $u subfields,
+        # especially for top level of enumeration. Just drop them
+        next if (!defined($val) || !$val);
 
             carp('$u specified for top-level enumeration')
               unless defined($last_enum);
             $self->{_mfhdc_ENUMS}->{$last_enum}->{COUNT} = $val;
         } elsif ($key eq 'v') {
-	    # Is this level of enumeration continuous, or does it restart?
+        # Is this level of enumeration continuous, or does it restart?
 
-	    # Some files seem to have "empty" $v subfields,
-	    # especially for top level of enumeration. Just drop them
-	    next if (!defined($val) || !$val);
+        # Some files seem to have "empty" $v subfields,
+        # especially for top level of enumeration. Just drop them
+        next if (!defined($val) || !$val);
 
             carp '$v specified for top-level enumeration'
               unless defined($last_enum);
@@ -256,7 +256,7 @@ sub is_omitted {
     my @date = @_;
 
     #     printf("# is_omitted: testing date %s: %d\n", join('/', @date),
-    # 	   $self->regularity_match('o', @date));
+    #      $self->regularity_match('o', @date));
     return $self->regularity_match('o', @date);
 }
 
@@ -307,11 +307,11 @@ sub on_or_after {
 
     foreach my $i (0..(scalar(@{$dt2}) - 1)) {
         if ($dt1->[$i] > $dt2->[$i]) {
-            # 	    printf("after - pass\n");
+            #       printf("after - pass\n");
             # $dt1 occurs AFTER $dt2
             return 1;
         } elsif ($dt1->[$i] < $dt2->[$i]) {
-            # 	    printf("before - fail\n");
+            #       printf("before - fail\n");
             # $dt1 occurs BEFORE $dt2
             return 0;
         }
@@ -348,9 +348,9 @@ sub calendar_increment {
             ($month, $day) = unpack("a2a2", $change);
         }
 
-        # 	printf("# calendar_increment('%s', '%s'): change on '%s/%s'\n",
-        # 	       join('/', @{$cur}), join('/', @{$new}),
-        # 	       $month, defined($day) ? $day : 'UNDEF');
+        #   printf("# calendar_increment('%s', '%s'): change on '%s/%s'\n",
+        #          join('/', @{$cur}), join('/', @{$new}),
+        #          $month, defined($day) ? $day : 'UNDEF');
 
         if ($cur->[0] == $new->[0]) {
             # Same year, so a 'simple' month/day comparison will be fine
@@ -422,7 +422,7 @@ sub next_chron {
                 my ($start, $end);
                 my @candidate;
 
-                # 		printf("# next_date: generating with pattern '%s'\n", $pat);
+                #       printf("# next_date: generating with pattern '%s'\n", $pat);
 
                 if ($combined) {
                     ($start, $end) = split('/', $pat, 2);
@@ -433,13 +433,13 @@ sub next_chron {
                 @candidate = $genfunc->($start || $pat, \@cur, $self);
 
                 while ($self->is_omitted(@candidate)) {
-                    # 		    printf("# pubpat omitting date '%s'\n",
-                    # 			   join('/', @candidate));
+                    #           printf("# pubpat omitting date '%s'\n",
+                    #              join('/', @candidate));
                     @candidate = $genfunc->($start || $pat, \@candidate, $self);
                 }
 
-                # 		printf("# testing new candidate '%s' against '%s'\n",
-                # 		       join('/', @candidate), join('/', @new));
+                #       printf("# testing new candidate '%s' against '%s'\n",
+                #              join('/', @candidate), join('/', @new));
 
                 if (!defined($new[0]) || !on_or_after(\@candidate, \@new)) {
                     # first time through the loop
@@ -452,7 +452,7 @@ sub next_chron {
                         $newend[0] = undef;
                     }
 
-           # 		    printf("# selecting candidate date '%s'\n", join('/', @new));
+           #            printf("# selecting candidate date '%s'\n", join('/', @new));
                 }
             }
         }
@@ -639,8 +639,8 @@ sub next_enum {
         $pubpat = $self->enum_pubpat($level);
 
         if ($pubpat) {
-            # 	    printf("# next_enum: found pubpat '%s' for subfield '%s'\n",
-            # 		   $pubpat, $key);
+            #       printf("# next_enum: found pubpat '%s' for subfield '%s'\n",
+            #          $pubpat, $key);
             my @pats = split(/,/, $pubpat);
 
             # If we fall out the bottom of the loop, then $carry
@@ -653,8 +653,8 @@ sub next_enum {
                 my $combined = $pat =~ m|/|;
                 my $end;
 
-             # 		printf("# next_enum: checking current '%s' against pat '%s'\n",
-             # 		       $next->{$key}, $pat);
+             #      printf("# next_enum: checking current '%s' against pat '%s'\n",
+             #             $next->{$key}, $pat);
 
                 if ($combined) {
                     ($pat, $end) = split('/', $pat, 2);
@@ -666,7 +666,7 @@ sub next_enum {
                     $carry = 0;
                     $next->{$key} = $pat;
                     $next->{$key} .= '/' . $end if $end;
-     # 		    printf("# next_enum: selecting new issue no. %s\n", $next->{$key});
+     #          printf("# next_enum: selecting new issue no. %s\n", $next->{$key});
                     last;    # We've found the correct next issue number
                 }
             }
@@ -688,7 +688,7 @@ sub next_enum {
                 last;
             }
 
-        # 	    printf("# next_enum: no publication pattern, using frequency\n");
+        #       printf("# next_enum: no publication pattern, using frequency\n");
 
             my $cap = $self->capfield($key);
             if (   $cap->{RESTART}

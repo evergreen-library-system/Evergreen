@@ -11,37 +11,37 @@ use OpenSRF::Utils::SettingsParser;
 use OpenSRF::Utils::JSON;
 
 sub new {
-	my ($class) = @_;
-	$class = ref($class) || $class;
-	my $self = {};
-	return bless($self,$class);
+    my ($class) = @_;
+    $class = ref($class) || $class;
+    my $self = {};
+    return bless($self,$class);
 }
-	
+    
 
 sub XML2perl {
-	my( $self, $doc ) = @_;
-	return OpenSRF::Utils::SettingsParser::XML2perl($doc);
+    my( $self, $doc ) = @_;
+    return OpenSRF::Utils::SettingsParser::XML2perl($doc);
 }
 
 
 sub perl2JSON {
-	my( $self, $perl ) = @_;
-	my $json = OpenSRF::Utils::JSON->perl2JSON($perl);
-	warn "Created JSON from perl:\n$json\n";
-	return $json;
+    my( $self, $perl ) = @_;
+    my $json = OpenSRF::Utils::JSON->perl2JSON($perl);
+    warn "Created JSON from perl:\n$json\n";
+    return $json;
 }
-	
+    
 sub JSON2perl {
-	my( $self, $perl ) = @_;
-	warn "Turning JSON into perl:\n$perl\n";
-	my $obj = OpenSRF::Utils::JSON->JSON2perl($perl);
-	warn "Created Perl from JSON: $obj \n";
-	return $obj;
+    my( $self, $perl ) = @_;
+    warn "Turning JSON into perl:\n$perl\n";
+    my $obj = OpenSRF::Utils::JSON->JSON2perl($perl);
+    warn "Created Perl from JSON: $obj \n";
+    return $obj;
 }
 
 sub perl2prettyJSON {
-	my( $self, $perl ) = @_;
-	return OpenSRF::Utils::JSON->perl2prettyJSON($perl);
+    my( $self, $perl ) = @_;
+    return OpenSRF::Utils::JSON->perl2prettyJSON($perl);
 }
 
 

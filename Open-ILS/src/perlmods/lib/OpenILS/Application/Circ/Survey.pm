@@ -28,105 +28,105 @@ my $apputils = "OpenILS::Application::AppUtils";
 # - creates a new survey
 # expects a survey complete with questions and answers
 __PACKAGE__->register_method(
-	method	=> "add_survey",
-	api_name	=> "open-ils.circ.survey.create");
+    method  => "add_survey",
+    api_name    => "open-ils.circ.survey.create");
 
 sub add_survey {
-	my( $self, $client, $user_session, $survey ) = @_;
+    my( $self, $client, $user_session, $survey ) = @_;
 
-	my($user_obj, $evt) = $apputils->checkses($user_session); 
+    my($user_obj, $evt) = $apputils->checkses($user_session); 
     return $evt if $evt;
 
-	my $session = $apputils->start_db_session();
-	$apputils->set_audit_info($session, $user_session, $user_obj->id, $user_obj->wsid);
-	my $err = undef; my $id;
+    my $session = $apputils->start_db_session();
+    $apputils->set_audit_info($session, $user_session, $user_obj->id, $user_obj->wsid);
+    my $err = undef; my $id;
 
 
-	try {
+    try {
 
-		$survey = _add_survey($session, $survey);
-		_add_questions($session, $survey);
-		$apputils->commit_db_session($session);
+        $survey = _add_survey($session, $survey);
+        _add_questions($session, $survey);
+        $apputils->commit_db_session($session);
 
-	} catch Error with {
-		my $e = shift;
-		$err = "Error creating survey: $e\n";
-		$apputils->rollback_db_session($session);
-	};
+    } catch Error with {
+        my $e = shift;
+        $err = "Error creating survey: $e\n";
+        $apputils->rollback_db_session($session);
+    };
 
-	if($err) { throw OpenSRF::EX::ERROR ($err); }
+    if($err) { throw OpenSRF::EX::ERROR ($err); }
 
-	# re-retrieve the survey from the db and return it
-	return get_fleshed_survey($self, $client, $survey->id() );
+    # re-retrieve the survey from the db and return it
+    return get_fleshed_survey($self, $client, $survey->id() );
 }
 
 
 sub _add_survey {
-	my($session, $survey) = @_;
-	my $req = $session->request(
-		"open-ils.storage.direct.action.survey.create",
-		$survey );
+    my($session, $survey) = @_;
+    my $req = $session->request(
+        "open-ils.storage.direct.action.survey.create",
+        $survey );
 
-	my $id = $req->gather(1);
+    my $id = $req->gather(1);
 
-	if(!$id) { 
-		throw OpenSRF::EX::ERROR 
-			("Unable to create new survey " . $survey->name()); 
-	}
+    if(!$id) { 
+        throw OpenSRF::EX::ERROR 
+            ("Unable to create new survey " . $survey->name()); 
+    }
 
-	$survey->id($id);
-	return $survey;
+    $survey->id($id);
+    return $survey;
 }
 
 sub _update_survey {
-	my($session, $survey) = @_;
+    my($session, $survey) = @_;
 }
 
 sub _add_questions {
-	my($session, $survey) = @_;
+    my($session, $survey) = @_;
 
-	# create new questions in the db
-	if( $survey->questions() ) {
-		for my $question (@{$survey->questions()}){
-	
-			$question->survey($survey->id());
-			my $virtual_id = $question->id();
-			$question->clear_id();
+    # create new questions in the db
+    if( $survey->questions() ) {
+        for my $question (@{$survey->questions()}){
+    
+            $question->survey($survey->id());
+            my $virtual_id = $question->id();
+            $question->clear_id();
 
-	
-			my $req = $session->request(
-				'open-ils.storage.direct.action.survey_question.create',
-				$question );
-			my $new_id = $req->gather(1);
-	
-			if(!$new_id) {
-				throw OpenSRF::EX::ERROR
-					("Error creating new survey question " . $question->question() . "\n")
-			}
-	
-			# now update the responses to this question
-			if($question->answers()) {
-				for my $answer (@{$question->answers()}) {
-					$answer->question($new_id);
-					_add_answer($session,$answer);
-				}
-			}
-		}
-	}
+    
+            my $req = $session->request(
+                'open-ils.storage.direct.action.survey_question.create',
+                $question );
+            my $new_id = $req->gather(1);
+    
+            if(!$new_id) {
+                throw OpenSRF::EX::ERROR
+                    ("Error creating new survey question " . $question->question() . "\n")
+            }
+    
+            # now update the responses to this question
+            if($question->answers()) {
+                for my $answer (@{$question->answers()}) {
+                    $answer->question($new_id);
+                    _add_answer($session,$answer);
+                }
+            }
+        }
+    }
 }
 
 
 sub _add_answer {
-	my($session, $answer) = @_;
-	$answer->clear_id();
-	my $req = $session->request(
-		"open-ils.storage.direct.action.survey_answer.create",
-		$answer );
-	my $id = $req->gather(1);
-	if(!$id) {
-		throw OpenSRF::EX::ERROR
-			("Error creating survey answer " . $answer->answer() );
-	}
+    my($session, $answer) = @_;
+    $answer->clear_id();
+    my $req = $session->request(
+        "open-ils.storage.direct.action.survey_answer.create",
+        $answer );
+    my $id = $req->gather(1);
+    if(!$id) {
+        throw OpenSRF::EX::ERROR
+            ("Error creating survey answer " . $answer->answer() );
+    }
 
 }
 
@@ -134,253 +134,253 @@ sub _add_answer {
 
 # retrieve surveys for a specific org subtree.
 __PACKAGE__->register_method(
-	method	=> "get_required_surveys",
-	api_name	=> "open-ils.circ.survey.retrieve.required");
+    method  => "get_required_surveys",
+    api_name    => "open-ils.circ.survey.retrieve.required");
 
 sub get_required_surveys {
-	my( $self, $client, $user_session ) = @_;
-	
+    my( $self, $client, $user_session ) = @_;
+    
 
-	my ($user_obj, $evt) = $apputils->checkses($user_session); 
-    return $evt if $evt;
-
-	my $orgid = $user_obj->ws_ou() ? $user_obj->ws_ou() : $user_obj->home_ou();
-	my $surveys = $apputils->simple_scalar_request(
-		"open-ils.storage",
-		"open-ils.storage.action.survey.required.atomic",
-		$orgid );
-
-	my @fleshed;
-	for my $survey (@$surveys) {
-		push(@fleshed, get_fleshed_survey($self, $client, $survey));
-	}
-	return \@fleshed;
-
-}
-
-__PACKAGE__->register_method(
-	method	=> "get_survey_responses",
-	api_name	=> "open-ils.circ.survey.response.retrieve");
-
-sub get_survey_responses {
-	my( $self, $client, $user_session, $survey_id, $user_id ) = @_;
-	
-	if(!$user_id) {
-	    my ($user_obj, $evt) = $apputils->checkses($user_session); 
-        return $evt if $evt;
-		$user_id = $user_obj->id;
-	}
-
-	my $res = $apputils->simple_scalar_request(
-		"open-ils.cstore",
-		"open-ils.cstore.direct.action.survey_response.search.atomic",
-		{ usr => $user_id, survey => $survey_id } );
-
-	if( $res && ref($res) and $res->[0]) {
-		return [ sort { $a->id() <=> $b->id() } @$res ];
-	} 
-
-	return [];
-}
-
-__PACKAGE__->register_method(
-	method	=> "get_all_surveys",
-	api_name	=> "open-ils.circ.survey.retrieve.all");
-
-sub get_all_surveys {
-	my( $self, $client, $user_session ) = @_;
-	
     my ($user_obj, $evt) = $apputils->checkses($user_session); 
     return $evt if $evt;
 
-	my $orgid = $user_obj->ws_ou() ? $user_obj->ws_ou() : $user_obj->home_ou();
-	my $surveys = $apputils->simple_scalar_request(
-		"open-ils.storage",
-		"open-ils.storage.action.survey.all.atomic",
-		$orgid );
+    my $orgid = $user_obj->ws_ou() ? $user_obj->ws_ou() : $user_obj->home_ou();
+    my $surveys = $apputils->simple_scalar_request(
+        "open-ils.storage",
+        "open-ils.storage.action.survey.required.atomic",
+        $orgid );
 
-	my @fleshed;
-	for my $survey (@$surveys) {
-		push(@fleshed, get_fleshed_survey($self, $client, $survey));
-	}
-	return \@fleshed;
+    my @fleshed;
+    for my $survey (@$surveys) {
+        push(@fleshed, get_fleshed_survey($self, $client, $survey));
+    }
+    return \@fleshed;
+
+}
+
+__PACKAGE__->register_method(
+    method  => "get_survey_responses",
+    api_name    => "open-ils.circ.survey.response.retrieve");
+
+sub get_survey_responses {
+    my( $self, $client, $user_session, $survey_id, $user_id ) = @_;
+    
+    if(!$user_id) {
+        my ($user_obj, $evt) = $apputils->checkses($user_session); 
+        return $evt if $evt;
+        $user_id = $user_obj->id;
+    }
+
+    my $res = $apputils->simple_scalar_request(
+        "open-ils.cstore",
+        "open-ils.cstore.direct.action.survey_response.search.atomic",
+        { usr => $user_id, survey => $survey_id } );
+
+    if( $res && ref($res) and $res->[0]) {
+        return [ sort { $a->id() <=> $b->id() } @$res ];
+    } 
+
+    return [];
+}
+
+__PACKAGE__->register_method(
+    method  => "get_all_surveys",
+    api_name    => "open-ils.circ.survey.retrieve.all");
+
+sub get_all_surveys {
+    my( $self, $client, $user_session ) = @_;
+    
+    my ($user_obj, $evt) = $apputils->checkses($user_session); 
+    return $evt if $evt;
+
+    my $orgid = $user_obj->ws_ou() ? $user_obj->ws_ou() : $user_obj->home_ou();
+    my $surveys = $apputils->simple_scalar_request(
+        "open-ils.storage",
+        "open-ils.storage.action.survey.all.atomic",
+        $orgid );
+
+    my @fleshed;
+    for my $survey (@$surveys) {
+        push(@fleshed, get_fleshed_survey($self, $client, $survey));
+    }
+    return \@fleshed;
 }
 
 
 
 
 __PACKAGE__->register_method(
-	method	=> "get_fleshed_survey",
-	api_name	=> "open-ils.circ.survey.fleshed.retrieve");
+    method  => "get_fleshed_survey",
+    api_name    => "open-ils.circ.survey.fleshed.retrieve");
 
 sub get_fleshed_survey {
-	my( $self, $client, $survey_id ) = @_;
+    my( $self, $client, $survey_id ) = @_;
 
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
+    my $session = OpenSRF::AppSession->create("open-ils.storage");
 
-	my $survey;
-	if( ref($survey_id) and 
-			(ref($survey_id) =~ /^Fieldmapper/)) {
-		$survey = $survey_id;
+    my $survey;
+    if( ref($survey_id) and 
+            (ref($survey_id) =~ /^Fieldmapper/)) {
+        $survey = $survey_id;
 
-	} else {
+    } else {
 
-		my $sreq = $session->request(
-			"open-ils.storage.direct.action.survey.retrieve",
-			$survey_id );
-		$survey = $sreq->gather(1);
-		if(! $survey) { return undef; }
-	}
+        my $sreq = $session->request(
+            "open-ils.storage.direct.action.survey.retrieve",
+            $survey_id );
+        $survey = $sreq->gather(1);
+        if(! $survey) { return undef; }
+    }
 
-	$survey->questions([]);
-	
+    $survey->questions([]);
+    
 
-	my $qreq = $session->request(
-		"open-ils.storage.direct.action.survey_question.search.survey.atomic", 
-		$survey->id() );
+    my $qreq = $session->request(
+        "open-ils.storage.direct.action.survey_question.search.survey.atomic", 
+        $survey->id() );
 
-	my $questions = $qreq->gather(1); 
+    my $questions = $qreq->gather(1); 
 
-	if($questions) {
+    if($questions) {
 
-		for my $question (@$questions) {
-			next unless defined $question;
-	
-			# add this question to the survey
-			push( @{$survey->questions()}, $question );
-	
+        for my $question (@$questions) {
+            next unless defined $question;
+    
+            # add this question to the survey
+            push( @{$survey->questions()}, $question );
+    
 
-			my $ans_req = $session->request(
-				"open-ils.storage.direct.action.survey_answer.search.question.atomic",
-				$question->id() );
-	
-			# add this array of answers to this question
-			$question->answers( $ans_req->gather(1) );
-	
-		}
-	}
+            my $ans_req = $session->request(
+                "open-ils.storage.direct.action.survey_answer.search.question.atomic",
+                $question->id() );
+    
+            # add this array of answers to this question
+            $question->answers( $ans_req->gather(1) );
+    
+        }
+    }
 
-	$session->disconnect();
-	return $survey;
+    $session->disconnect();
+    return $survey;
 
 }
 
 
 
 __PACKAGE__->register_method(
-	method	=> "submit_survey",
-	api_name	=> "open-ils.circ.survey.submit.session");
+    method  => "submit_survey",
+    api_name    => "open-ils.circ.survey.submit.session");
 
 __PACKAGE__->register_method(
-	method	=> "submit_survey",
-	api_name	=> "open-ils.circ.survey.submit.user_id");
+    method  => "submit_survey",
+    api_name    => "open-ils.circ.survey.submit.user_id");
 
 __PACKAGE__->register_method(
-	method	=> "submit_survey",
-	api_name	=> "open-ils.circ.survey.submit.anon");
+    method  => "submit_survey",
+    api_name    => "open-ils.circ.survey.submit.anon");
 
 
 sub submit_survey {
-	my( $self, $client, $responses ) = @_;
+    my( $self, $client, $responses ) = @_;
 
-	if(!$responses) {
-		throw OpenSRF::EX::ERROR 
-			("No survey object sent in update");
-	}
+    if(!$responses) {
+        throw OpenSRF::EX::ERROR 
+            ("No survey object sent in update");
+    }
 
 
-	if(!ref($responses)) { $responses = [$responses]; }
+    if(!ref($responses)) { $responses = [$responses]; }
 
-	my $session = $apputils->start_db_session();
+    my $session = $apputils->start_db_session();
 
-	my $group_id = $session->request(
-		"open-ils.storage.action.survey_response.next_group_id")->gather(1);
+    my $group_id = $session->request(
+        "open-ils.storage.action.survey_response.next_group_id")->gather(1);
 
-	my %already_seen;
-	for my $res (@$responses) {
+    my %already_seen;
+    for my $res (@$responses) {
 
-		my $id; 
+        my $id; 
 
-		if($self->api_name =~ /session/) {
-			if( ! ($id = $already_seen{$res->usr}) ) {
+        if($self->api_name =~ /session/) {
+            if( ! ($id = $already_seen{$res->usr}) ) {
                 my ($user_obj, $evt) = $apputils->checkses($res->usr);
                 return $evt if $evt;
-				$id = $user_obj->id;
-				$already_seen{$res->usr} = $id;
-			}
-			$res->usr($id);
-		} elsif( $self->api_name =~ /anon/ ) {
-			$res->clear_usr();
-		}
-		
-		$res->response_group_id($group_id);
-		my $req = $session->request(
-			"open-ils.storage.direct.action.survey_response.create",
-			$res );
-		my $newid = $req->gather(1);
+                $id = $user_obj->id;
+                $already_seen{$res->usr} = $id;
+            }
+            $res->usr($id);
+        } elsif( $self->api_name =~ /anon/ ) {
+            $res->clear_usr();
+        }
+        
+        $res->response_group_id($group_id);
+        my $req = $session->request(
+            "open-ils.storage.direct.action.survey_response.create",
+            $res );
+        my $newid = $req->gather(1);
 
-		if(!$newid) {
-			throw OpenSRF::EX::ERROR
-				("Error creating new survey response");
-		}
-	}
+        if(!$newid) {
+            throw OpenSRF::EX::ERROR
+                ("Error creating new survey response");
+        }
+    }
 
-	$apputils->commit_db_session($session);
+    $apputils->commit_db_session($session);
 
-	return 1;
+    return 1;
 }
 
 
 __PACKAGE__->register_method(
-	method	=> "get_random_survey",
-	api_name	=> "open-ils.circ.survey.retrieve.opac.random");
+    method  => "get_random_survey",
+    api_name    => "open-ils.circ.survey.retrieve.opac.random");
 
 sub get_random_survey {
-	my( $self, $client, $user_session ) = @_;
-	
+    my( $self, $client, $user_session ) = @_;
+    
     my ($user_obj, $evt) = $apputils->checkses($user_session); 
     return $evt if $evt;
 
-	my $surveys = $apputils->simple_scalar_request(
-		"open-ils.storage",
-		"open-ils.storage.action.survey.opac.atomic",
-		$user_obj->home_ou() );
+    my $surveys = $apputils->simple_scalar_request(
+        "open-ils.storage",
+        "open-ils.storage.action.survey.opac.atomic",
+        $user_obj->home_ou() );
 
-	my $random = int(rand(scalar(@$surveys)));
-	my $surv = $surveys->[$random];
+    my $random = int(rand(scalar(@$surveys)));
+    my $surv = $surveys->[$random];
 
-	return get_fleshed_survey($self, $client, $surv);
+    return get_fleshed_survey($self, $client, $surv);
 
 }
 
 __PACKAGE__->register_method(
-	method	=> "get_random_survey_global",
-	api_name	=> "open-ils.circ.survey.retrieve.opac.random.global");
+    method  => "get_random_survey_global",
+    api_name    => "open-ils.circ.survey.retrieve.opac.random.global");
 
 sub get_random_survey_global {
-	my( $self, $client ) = @_;
-	
-	my $surveys = $apputils->simple_scalar_request(
-		"open-ils.storage",
-		"open-ils.storage.direct.action.survey.search.atomic",
-		# XXX grab the org tree to get the root id...
-		{ owner => 1, opac => 't' } );
+    my( $self, $client ) = @_;
+    
+    my $surveys = $apputils->simple_scalar_request(
+        "open-ils.storage",
+        "open-ils.storage.direct.action.survey.search.atomic",
+        # XXX grab the org tree to get the root id...
+        { owner => 1, opac => 't' } );
 
-	my $random = int(rand(scalar(@$surveys)));
-	my $surv = $surveys->[$random];
+    my $random = int(rand(scalar(@$surveys)));
+    my $surv = $surveys->[$random];
 
-	return get_fleshed_survey($self, $client, $surv);
+    return get_fleshed_survey($self, $client, $surv);
 
 }
 
 
 __PACKAGE__->register_method (
-	method		=> 'delete_survey',
-	api_name	=> 'open-ils.circ.survey.delete.cascade'
+    method      => 'delete_survey',
+    api_name    => 'open-ils.circ.survey.delete.cascade'
 );
 __PACKAGE__->register_method (
-	method		=> 'delete_survey',
-	api_name	=> 'open-ils.circ.survey.delete.cascade.override'
+    method      => 'delete_survey',
+    api_name    => 'open-ils.circ.survey.delete.cascade.override'
 );
 
 sub delete_survey {

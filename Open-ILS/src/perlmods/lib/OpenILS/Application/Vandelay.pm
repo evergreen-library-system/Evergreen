@@ -1184,7 +1184,7 @@ sub import_record_list_impl {
     # see if we need to mark any queues as complete
     for my $q_id (keys %queues) {
 
-    	my $e = new_editor(xact => 1);
+        my $e = new_editor(xact => 1);
         my $remaining = $e->$search_func(
             [{queue => $q_id, import_time => undef}, {limit =>1}], {idlist => 1});
 
@@ -1197,7 +1197,7 @@ sub import_record_list_impl {
                 next;
             }
         } 
-    	$e->rollback;
+        $e->rollback;
     }
 
     # import the copies

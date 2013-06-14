@@ -132,43 +132,43 @@ sub handler {
 
 # returns the user object if the session is valid, 0 otherwise
 sub verify_login {
-	my $auth_token = shift;
-	return undef unless $auth_token;
+    my $auth_token = shift;
+    return undef unless $auth_token;
 
-	my $user = OpenSRF::AppSession
-		->create("open-ils.auth")
-		->request( "open-ils.auth.session.retrieve", $auth_token )
-		->gather(1);
+    my $user = OpenSRF::AppSession
+        ->create("open-ils.auth")
+        ->request( "open-ils.auth.session.retrieve", $auth_token )
+        ->gather(1);
 
-	if (ref($user) eq 'HASH' && $user->{ilsevent} == 1001) {
-		return undef;
-	}
+    if (ref($user) eq 'HASH' && $user->{ilsevent} == 1001) {
+        return undef;
+    }
 
-	return $user if ref($user);
-	return undef;
+    return $user if ref($user);
+    return undef;
 }
 
 sub oils_login {
         my( $username, $password, $type ) = @_;
 
         $type |= "staff";
-	my $nametype = 'username';
-	$nametype = 'barcode' if ($username =~ /^\d+$/o);
+    my $nametype = 'username';
+    $nametype = 'barcode' if ($username =~ /^\d+$/o);
 
         my $seed = OpenSRF::AppSession
-		->create("open-ils.auth")
-		->request( 'open-ils.auth.authenticate.init', $username )
-		->gather(1);
+        ->create("open-ils.auth")
+        ->request( 'open-ils.auth.authenticate.init', $username )
+        ->gather(1);
 
         return undef unless $seed;
 
         my $response = OpenSRF::AppSession
-		->create("open-ils.auth")
-		->request( 'open-ils.auth.authenticate.complete',
-			{ $nametype => $username, agent => 'authproxy',
-			  password => md5_hex($seed . md5_hex($password)),
-			  type => $type })
-		->gather(1);
+        ->create("open-ils.auth")
+        ->request( 'open-ils.auth.authenticate.complete',
+            { $nametype => $username, agent => 'authproxy',
+              password => md5_hex($seed . md5_hex($password)),
+              type => $type })
+        ->gather(1);
 
         return undef unless $response;
 
