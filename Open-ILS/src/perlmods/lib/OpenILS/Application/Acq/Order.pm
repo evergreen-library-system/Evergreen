@@ -299,6 +299,9 @@ sub delete_lineitem {
 sub create_lineitem_list_assets {
     my($mgr, $li_ids, $vandelay, $bib_only) = @_;
 
+    # Do not create line items if none are specified
+    return {} unless (scalar(@$li_ids));
+
     if (check_import_li_marc_perms($mgr, $li_ids)) { # event on error
         $logger->error("acq-vl: user does not have permission to import acq records");
         return undef;
