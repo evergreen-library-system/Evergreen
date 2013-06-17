@@ -49,7 +49,7 @@ my %HOLD_SORT_ORDER_BY = (
 
 
 sub isTrue {
-	my $v = shift;
+	my $v = shift || '0';
 	return 1 if ($v == 1);
 	return 1 if ($v =~ /^t/io);
 	return 1 if ($v =~ /^y/io);
@@ -504,14 +504,23 @@ sub nearest_hold {
 	my $age = shift() || '0 seconds';
 	my $fifo = shift();
 
-    $log->info("deprecated 'fifo' param true, but ignored") if isTrue $fifo;
+    $log->info("deprecated 'fifo' param true, but ignored") if isTrue($fifo);
+
+    # ScriptBuilder fleshes the circ_lib, which confuses things; ensure we
+    # are working with a circ lib ID and not an object
+    my $cp_circ_lib;
+    if (ref $cp->circ_lib) {
+        $cp_circ_lib = $cp->circ_lib->id;
+    } else {
+        $cp_circ_lib = $cp->circ_lib;
+    }
 
     my ($holdsort, $addl_cte, $addl_join) =
         build_hold_sort_clause(get_hold_sort_order($here), $cp, $here);
 
 	local $OpenILS::Application::Storage::WRITE = 1;
 
-	my $ids = action::hold_request->db_Main->selectcol_arrayref(<<"	SQL", {}, $cp->circ_lib, $here, $cp->id, $age);
+	my $ids = action::hold_request->db_Main->selectcol_arrayref(<<"	SQL", {}, $cp_circ_lib, $here, $cp->id, $age);
         WITH go_home_interval AS (
             SELECT OILS_JSON_TO_TEXT(
                 (SELECT value FROM actor.org_unit_ancestor_setting(
