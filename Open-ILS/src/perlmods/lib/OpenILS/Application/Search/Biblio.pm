@@ -1384,7 +1384,10 @@ sub staged_search {
             if $page == 0;
 
         $logger->debug("staged search: located $current_count, with estimated hits=".
-            $summary->{estimated_hit_count}." : visible=".$summary->{visible}.", checked=".$summary->{checked});
+            ($summary->{estimated_hit_count} || "none") .
+            " : visible=" . ($summary->{visible} || "none") . ", checked=" .
+            ($summary->{checked} || "none")
+        );
 
         if (defined($summary->{estimated_hit_count})) {
             foreach (qw/ checked visible excluded deleted /) {
@@ -1618,7 +1621,9 @@ sub cache_staged_search_page {
     };
 
     $logger->info("staged search: cached with key=$key, superpage=$page, estimated=".
-        $summary->{estimated_hit_count}.", visible=".$summary->{visible});
+        ($summary->{estimated_hit_count} || "none") .
+        ", visible=" . ($summary->{visible} || "none")
+    );
 
     $cache->put_cache($key, $data, $cache_timeout);
 }
