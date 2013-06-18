@@ -70,6 +70,12 @@ treechildren::-moz-tree-row(backdate_failed,selected) {
     background-color: #ffc0ff ! important;
 }
 
+
+.copystatus_header_bar #background,
+.copystatus_header_bar #last_scanned_hbox { background-color: yellow; }
+.copystatus_header_bar #background label { font-size: x-large; font-weight: bold; }
+.copystatus_header_bar #last_scanned_hbox label { font-weight: bold; }
+
 .checkin_screen_normal { background-color: green; }
 .checkin_screen_backdating { background-color: red; }
 .checkin_screen_do_not_alert_on_precat { }
