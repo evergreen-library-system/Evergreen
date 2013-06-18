@@ -83,15 +83,15 @@
     <vbox id="cmvb1" flex="1"/>
 </box>
 
-<vbox id="cmvb1" flex="1">
-    <hbox id="background" style="background-color: yellow">
+<vbox id="cmvb1" flex="1" class="copystatus_header_bar">
+    <hbox id="background">
         <spacer flex="1"/>
-        <label value="&staff.circ.copy_status_overlay.item_status.label;" style="font-size: x-large; font-weight: bold;"/>
+        <label value="&staff.circ.copy_status_overlay.item_status.label;"/>
         <spacer flex="1"/>
     </hbox>
-    <hbox id="last_scanned_hbox" style="background-color: yellow">
+    <hbox id="last_scanned_hbox">
         <spacer flex="1"/>
-        <label id="last_scanned" style="font-weight: bold;"/>
+        <label id="last_scanned"/>
         <spacer flex="1"/>
     </hbox>
     <groupbox id="cmgb1" flex="2">
