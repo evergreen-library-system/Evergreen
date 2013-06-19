@@ -1,3 +1,378 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 39f895ee8a044f6975469e124613fb0b83e79f0c
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Jun 19 09:43:21 2013 -0400
+
+    Bumping OpenILS Version to 2.0308
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 82f8d092d767fcc7d7d2ee91e3650d9beacffa2d
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Jun 19 09:37:32 2013 -0400
+
+    2.3.8 Translations Import
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	1	build/i18n/po/AutoFieldWidget.js/fi-FI.po
+5	5	build/i18n/po/Searcher.js/es-ES.po
+1	1	build/i18n/po/Searcher.js/fi-FI.po
+1	1	build/i18n/po/TranslatorPopup.js/fi-FI.po
+1	1	build/i18n/po/User.js/fi-FI.po
+4	2	build/i18n/po/XULTermLoader.js/XULTermLoader.js.pot
+1	1	build/i18n/po/XULTermLoader.js/fi-FI.po
+30	10	build/i18n/po/acq.js/acq.js.pot
+1	1	build/i18n/po/admin.properties/fi-FI.po
+1	1	build/i18n/po/auth.properties/fi-FI.po
+1	1	build/i18n/po/authority.js/fi-FI.po
+4	2	build/i18n/po/capture.js/capture.js.pot
+1	1	build/i18n/po/capture.js/fi-FI.po
+1	1	build/i18n/po/cat.properties/fi-FI.po
+1	1	build/i18n/po/circ.properties/fi-FI.po
+4	4	build/i18n/po/common.properties/cs-CZ.po
+1	1	build/i18n/po/common.properties/fi-FI.po
+19	7	build/i18n/po/conify.js/conify.js.pot
+1	1	build/i18n/po/conify.js/fi-FI.po
+6	6	build/i18n/po/db.seed/db.seed.pot
+1	1	build/i18n/po/db.seed/fi-FI.po
+1	1	build/i18n/po/fm_IDL.dtd/fi-FI.po
+13	13	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+1	1	build/i18n/po/ils_events.xml/fi-FI.po
+104	44	build/i18n/po/ils_events.xml/ils_events.xml.pot
+27	26	build/i18n/po/lang.dtd/cs-CZ.po
+1	1	build/i18n/po/lang.dtd/fi-FI.po
+1	1	build/i18n/po/offline.properties/fi-FI.po
+1	1	build/i18n/po/opac.dtd/fi-FI.po
+1	1	build/i18n/po/opac.js/fi-FI.po
+11	4	build/i18n/po/opac.js/opac.js.pot
+4	4	build/i18n/po/patron.properties/cs-CZ.po
+1	1	build/i18n/po/patron.properties/fi-FI.po
+1	1	build/i18n/po/pickup_and_return.js/fi-FI.po
+1	1	build/i18n/po/pull_list.js/fi-FI.po
+1	1	build/i18n/po/register.js/fi-FI.po
+11	10	build/i18n/po/register.js/register.js.pot
+1	1	build/i18n/po/reports.dtd/fi-FI.po
+1	1	build/i18n/po/reports.js/fi-FI.po
+1	1	build/i18n/po/reservation.js/fi-FI.po
+5	2	build/i18n/po/reservation.js/reservation.js.pot
+1	1	build/i18n/po/selfcheck.js/fi-FI.po
+8	3	build/i18n/po/selfcheck.js/selfcheck.js.pot
+1	1	build/i18n/po/serial.properties/fi-FI.po
+
+commit 9b3b78bab1e8ed3e907ccebbf13b0c08b85a0f0b
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri Jun 14 15:51:42 2013 -0400
+
+    Fixes to MARC batch import docs
+    
+    Added needed subheadings to the MARC batch update docs. Also shortened
+    line lengths and modified intro that focused on 2.2 new features.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+134	62	docs/cataloging/batch_importing_MARC.txt
+
+commit 77231ce373487ced795327f5a95b2ae4ff8e5493
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Aug 27 10:38:48 2012 -0400
+
+    Repair fine generator memory leak
+    
+    Calling "next" from within a "try" block results in a memory leak,
+    presumably because "try" is a tangled nest of subs and evals.
+    Replacing the "try" with a good ol' "eval" avoids the leak.
+    
+    This can be reproduced with the following:
+    
+    ---------
+    use Error qw/:try/;
+    
+    foreach (0..200000) {
+        try {
+            next;
+        } catch Error with {
+        };
+    }
+    ---------
+    
+    This particular leak in the fine generator is onerous when the fine
+    generator is run often (e.g. every 15 mins), which means circs that
+    have already been processed for the day are re-analzyed over and over,
+    causing the code to continue early (next) to the next loop iteration
+    for large numbers of circs.  It also happens when a circs are skipped
+    because they have no fine interval, rate, or max fine.
+    
+    You know this is happening because you will see something like this in
+    the storage stderr log:
+    
+    Exiting eval via next at
+    /usr/local/share/perl/5.10.1/OpenILS/Application/Storage/Publisher/action.pm
+    line 820.
+    
+    Exiting subroutine via next at
+    /usr/local/share/perl/5.10.1/OpenILS/Application/Storage/Publisher/action.pm
+    line 820.
+    
+    This patch does not avoid the "exiting eval via next" warning, since
+    we're still next'ing out of the eval.  It just avoids the memory leak
+    (and the "Exiting subroutine" warning).  More extensive refactoring is
+    needed to to completely remove the second warning.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+7	5	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+
+commit 89898e7bdb8e6d38aa93ccaf045abe2de917fad8
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Apr 30 16:45:55 2013 -0400
+
+    Search clicked /and/ preceding sf values
+    
+    When looking for authority records to control a bib field, we currently
+    search using exactly, and only, the subfield that was clicked.  This
+    commit changes that so that the full field up to and including the clicked
+    subfield is used in the simple authority heading search we perform to find
+    the best-match (pivot) authority record.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+8	1	Open-ILS/xul/staff_client/server/cat/marcedit.js
+
+commit b8e64dbd70608ea91432a9b8fff5d956d3eb7a7d
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Thu Jul 26 10:25:32 2012 -0400
+
+    Make Force/Recall holds always return as nearest
+    
+    Without even running the hold rules.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    
+    Conflicts:
+    	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+    
+    (Just whitespace conflicts on tab vs space -- repaired by hand.)
+
+5	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit feaf67e09fe4d44065d5dadfc4ec20247db00df8
+Author: Ben Shum <bshum@biblio.org>
+Date:   Sat Mar 2 02:21:58 2013 -0500
+
+    TPAC - set autofocus to user input when placing holds in staff client
+    
+    When placing holds in TPAC via the staff client, the focus had been on the
+    basic search field above. Change this to have autofocus on the input field
+    for the hold user by default.
+    
+    This can potentially save staff from having to perform an extra click to
+    select the input field. Now they can immediately begin entering the barcode
+    of the user they plan to create a hold on behalf of.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    
+    Conflicts:
+    	Open-ILS/src/templates/opac/parts/place_hold.tt2
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/templates/opac/parts/place_hold.tt2
+3	0	Open-ILS/src/templates/opac/place_hold.tt2
+
+commit 33b496412b5f2f49a096c54160aa2ed39b33af6f
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Mon Apr 15 14:06:54 2013 -0400
+
+    Acq: Be fuzzy about case when retrieving EDI documents
+    
+    The edi_fetcher relies on a routine in OpenILS::Acq::EDI to, among
+    other things, try to avoid fetching the same EDI document multiple times
+    when many rows in acq.edi_account refer to the same host and login
+    credentials.
+    
+    Since in practice most vendors seem to run FTP servers for EDI on
+    Windows, not UNIX, and pathnames are therefore case-insensitive, that
+    test for other occurrences ought also to be case-insensitive.
+    
+    If I were to look at this as a purist, I could argue that vendor servers
+    might sometimes by run on UNIX, and that for some reason it is possible
+    that different vendor-to-buyer EDI documents (order responses or
+    invoices) could have pathnames that differ only in the case of some
+    characters.  But that seems wildly unlikely.  If anyone does take this
+    possibility seriously, perhaps acq.edi_account needs a Boolean column to
+    indicate the remote host's case [in]sensitivity.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/EDI.pm
+
+commit deba8502795145d5272b21015e6d0e383db91f1b
+Author: Simon Hieu Mai <hieu.mai@mnsu.edu>
+Date:   Mon Jun 3 17:45:08 2013 -0400
+
+    LP#1053074: Editimg MARC Fixed Fields jumps cursor to marc record
+    
+    Put the cursor back to the current fixed field after reload
+    the MARC record table.
+    
+    Signed-off-by: Simon Hieu Mai <hieu.mai@mnsu.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	0	Open-ILS/xul/staff_client/server/cat/marcedit.js
+
+commit 71ef1e8ffaa3f1079fb56a4e47dbb992ac0231b4
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu May 23 09:11:25 2013 -0400
+
+    LP1183340 selectivly apply editable funds sorting
+    
+    Avoid sorting editable funds to the front of the fund list when there
+    are no org units at which the user has the ADMIN_ACQ_FUND permission.
+    Otherwise, we are sorting on an empty 'IN' list in pcrud, which results
+    in an error.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+14	13	Open-ILS/web/js/ui/default/acq/financial/list_funds.js
+
+commit 6bd6690173be01bb9700e3cca731dec64ce046c7
+Author: Ben Shum <bshum@biblio.org>
+Date:   Thu May 23 16:32:49 2013 -0400
+
+    LP1081576 - fix utf8 characters in searches using portal page
+    
+    Replace escape() with encodeURIComponent() on the portal page to allow utf8
+    characters to be passed more appropriately to the subsequent search in catalog.
+    
+    Thanks Dan Scott for pointing this out.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+
+2	2	Open-ILS/xul/staff_client/server/index.xhtml
+
+commit bcd1986bcbc8c60efe56120cc0030c66484bbb74
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu May 23 09:43:52 2013 -0400
+
+    LP1183357 Pass locale to bib search (tpac)
+    
+    Pass the TPAC locale value, which is collected at each page load, to the
+    bib search API call.  This allows us to take advantage of language-based
+    relevance bumps.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+
+commit 0af98c7ca5b53512e75e1f488be681b8383aca3f
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Thu May 23 11:44:05 2013 -0400
+
+    Fix Launchpad Bug 1183418.
+    
+    Clicking on an author with a dash or dates in the name on the search
+    results page comes up with 0 results. It looks like the dash is stripped
+    from the date and/or name.
+    
+    Clicking on such a link from the record view actually works because
+    the dash is replaced with a space.
+    
+    This branch changes table.tt2 to replace special characters in author
+    output with a space in the same way that authors.tt2 does.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit d5fb7c530a7181c35dee992779d602d4d29a9e22
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Thu May 16 16:12:14 2013 -0400
+
+    Database upgrade script for 2.2.9
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+40	0	Open-ILS/src/sql/Pg/version-upgrade/2.2.8-2.2.9-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.2.8-2.2.9-upgrade-db.sql
+
+commit 7fb90796ba1e05af71325ac7b658c0ea288c2f97
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu May 16 15:52:38 2013 -0400
+
+    2.3.6 -> 2.3.7 DB upgrade script
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+40	0	Open-ILS/src/sql/Pg/version-upgrade/2.3.6-2.3.7-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.3.6-2.3.7-upgrade-db.sql
+
+commit 84e538b358db650de5f88df0773a5e326663ae26
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed May 15 16:09:22 2013 -0400
+
+    2.3.7 Translations Newpot
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2	4	build/i18n/po/XULTermLoader.js/XULTermLoader.js.pot
+10	30	build/i18n/po/acq.js/acq.js.pot
+2	4	build/i18n/po/capture.js/capture.js.pot
+7	19	build/i18n/po/conify.js/conify.js.pot
+6	6	build/i18n/po/db.seed/db.seed.pot
+1048	1048	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+44	104	build/i18n/po/ils_events.xml/ils_events.xml.pot
+4	11	build/i18n/po/opac.js/opac.js.pot
+10	11	build/i18n/po/register.js/register.js.pot
+2	5	build/i18n/po/reservation.js/reservation.js.pot
+3	8	build/i18n/po/selfcheck.js/selfcheck.js.pot
+
+commit 23ee004648a6f1d5033046b041dd187712f54103
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed May 15 16:04:07 2013 -0400
+
+    2.3.7 Translations Import
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+5	5	build/i18n/po/cat.properties/en-GB.po
+6	4	build/i18n/po/circ.properties/cs-CZ.po
+17	13	build/i18n/po/circ.properties/en-GB.po
+6	4	build/i18n/po/circ.properties/hy-AM.po
+8	8	build/i18n/po/conify.js/cs-CZ.po
+9	9	build/i18n/po/conify.js/en-GB.po
+8	8	build/i18n/po/conify.js/hy-AM.po
+4	4	build/i18n/po/db.seed/cs-CZ.po
+8	8	build/i18n/po/db.seed/en-GB.po
+5	5	build/i18n/po/db.seed/hy-AM.po
+32	32	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+6	6	build/i18n/po/fm_IDL.dtd/en-GB.po
+24	24	build/i18n/po/fm_IDL.dtd/hy-AM.po
+7	4	build/i18n/po/ils_events.xml/cs-CZ.po
+18	11	build/i18n/po/ils_events.xml/en-GB.po
+7	4	build/i18n/po/ils_events.xml/hy-AM.po
+41	41	build/i18n/po/lang.dtd/cs-CZ.po
+8	5	build/i18n/po/lang.dtd/en-GB.po
+42	42	build/i18n/po/lang.dtd/hy-AM.po
+4	4	build/i18n/po/offline.properties/cs-CZ.po
+17	17	build/i18n/po/offline.properties/en-GB.po
+4	4	build/i18n/po/offline.properties/hy-AM.po
+16	4	build/i18n/po/opac.dtd/en-GB.po
+7	7	build/i18n/po/patron.properties/en-GB.po
+4	4	build/i18n/po/patron.properties/hy-AM.po
+5	5	build/i18n/po/reservation.js/en-GB.po
+6	6	build/i18n/po/serial.properties/cs-CZ.po
+7	7	build/i18n/po/serial.properties/en-GB.po
+6	6	build/i18n/po/serial.properties/hy-AM.po
