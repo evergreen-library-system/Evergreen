@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2013-05-15 16:06:07-0400\n"
+"POT-Creation-Date: 2013-06-19 09:38:24-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -833,6 +833,11 @@ msgstr ""
 # id::ccvm.value__446
 #: 950.data.seed-values.sql:6260
 msgid "Tumbuka"
+msgstr ""
+
+# id::ccvm.value__526
+#: 950.data.seed-values.sql:6349
+msgid "Large print"
 msgstr ""
 
 # id::cbs.source__1
@@ -4029,11 +4034,6 @@ msgstr ""
 # id::cuat.label__1
 #: 950.data.seed-values.sql:11670
 msgid "Login via opensrf"
-msgstr ""
-
-# id::ccvm.value__526
-#: 950.data.seed-values.sql:6349
-msgid "Large print"
 msgstr ""
 
 # id::ccvm.value__-ajm

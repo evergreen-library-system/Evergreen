@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-03-15 19:37+0000\n"
-"PO-Revision-Date: 2013-04-26 16:55+0000\n"
+"PO-Revision-Date: 2013-06-06 13:28+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-04-27 05:52+0000\n"
-"X-Generator: Launchpad (build 16580)\n"
+"X-Launchpad-Export-Date: 2013-06-07 05:57+0000\n"
+"X-Generator: Launchpad (build 16667)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -1035,7 +1035,7 @@ msgstr "Informace"
 #: staff.bills_interface_label
 msgctxt "staff.bills_interface_label"
 msgid "Bills"
-msgstr "Účty"
+msgstr "Poplatky"
 
 #: staff.bills_money_label
 msgid "Money"
@@ -5610,7 +5610,7 @@ msgstr "Čtenář"
 
 #: staff.patron_display.bills.label
 msgid "Bills:"
-msgstr "Účty:"
+msgstr "Poplatky:"
 
 #: staff.patron_display.checkout.auto_print.label
 #: staff.patron_display.checkout.auto_print.accesskey
@@ -5684,7 +5684,7 @@ msgstr "Telefonní čísla"
 #: staff.patron_display.tab.identification.label
 msgctxt "staff.patron_display.tab.identification.label"
 msgid "Identification"
-msgstr "Číslo dokladu"
+msgstr "Identifikační údaje"
 
 #: staff.patron_display.tab.group.label
 msgctxt "staff.patron_display.tab.group.label"
@@ -5892,46 +5892,46 @@ msgstr "Čtenář"
 
 #: staff.patron_display.penalty.caption
 msgid "Staff-Generated Penalties/Messages"
-msgstr "Pokuty / zprávy vytvořené personálem"
+msgstr "Upozornění/blokace vytvořené personálem"
 
 #: staff.patron_display.archived_penalty.caption
 msgid "Archived Penalties/Messages"
-msgstr "Archiv pokut / zpráv"
+msgstr "Archiv upozornění/blokací"
 
 #: staff.patron_display.penalty.menu.actions.label
 #: staff.patron_display.penalty.menu.actions.accesskey
 msgid "Actions for these &Penalties/Messages"
-msgstr "Akce pro pokuty / záznamy"
+msgstr "Akce pro u&pozornění/blokace"
 
 #: staff.patron_display.penalty.menu.apply.label
 #: staff.patron_display.penalty.menu.apply.accesskey
 msgid "Apply &Standing Penalty/Message"
-msgstr "Použít &blokaci / pokutu / zprávu"
+msgstr "Vytvořit upozornění/&blokaci"
 
 #: staff.patron_display.penalty.menu.actions.remove.label
 #: staff.patron_display.penalty.menu.actions.remove.accesskey
 msgid "&Remove Penalty/Message"
-msgstr "Odst&ranit pokutu / zprávu"
+msgstr "Smazat upozo&rnění/blokaci"
 
 #: staff.patron_display.penalty.menu.actions.edit.label
 #: staff.patron_display.penalty.menu.actions.edit.accesskey
 msgid "&Modify Penalty/Message"
-msgstr "Upra&vit pokutu / zprávu"
+msgstr "Upra&vit upozornění/blokaci"
 
 #: staff.patron_display.penalty.menu.actions.archive.label
 #: staff.patron_display.penalty.menu.actions.archive.accesskey
 msgid "&Archive Penalty/Message"
-msgstr "Uložit pokutu / zprávu do &archivu"
+msgstr "Přesunout upozornění/blokaci do &archivu"
 
 #: staff.patron_display.apply_penalty_dialog.title
 msgctxt "staff.patron_display.apply_penalty_dialog.title"
 msgid "Apply Standing Penalty/Message"
-msgstr "Použít  blokaci / pokutu / zprávu"
+msgstr "Nové upozornění/blokace"
 
 #: staff.patron_display.apply_penalty_dialog.header
 msgctxt "staff.patron_display.apply_penalty_dialog.header"
 msgid "Apply Standing Penalty/Message"
-msgstr "Uložit blokaci / pokutu / zprávu"
+msgstr "Vytvořit upozornění/blokaci"
 
 #: staff.patron_display.apply_penalty_dialog.description
 msgctxt "staff.patron_display.apply_penalty_dialog.description"
@@ -5976,7 +5976,7 @@ msgctxt ""
 "staff.patron_display.apply_penalty_dialog.apply_btn.label "
 "staff.patron_display.apply_penalty_dialog.apply_btn.accesskey"
 msgid "&Apply"
-msgstr "Po&užít"
+msgstr "Ulo&užit"
 
 #: staff.patron_display.apply_penalty_dialog.initials_entry.label
 #: staff.patron_display.apply_penalty_dialog.initials_entry.accesskey
@@ -5989,12 +5989,12 @@ msgstr "&Iniciály"
 #: staff.patron_display.edit_penalty_dialog.title
 msgctxt "staff.patron_display.edit_penalty_dialog.title"
 msgid "Modify Standing Penalty/Message"
-msgstr "Upravit blokaci / pokutu / zprávu"
+msgstr "Změna upozornění/blokace"
 
 #: staff.patron_display.edit_penalty_dialog.header
 msgctxt "staff.patron_display.edit_penalty_dialog.header"
 msgid "Modify Standing Penalty/Message"
-msgstr "Upravit blokaci / pokutu / zprávu"
+msgstr "Úpravit upozornění/blokaci"
 
 #: staff.patron_display.edit_penalty_dialog.description
 msgctxt "staff.patron_display.edit_penalty_dialog.description"
@@ -6062,7 +6062,7 @@ msgstr "Datum ukončení:"
 #: staff.patron_display.archived_penalty.retrieve.label
 #: staff.patron_display.archived_penalty.retrieve.accesskey
 msgid "&Retrieve Archived Penalties"
-msgstr "Zob&razit archivované pokuty"
+msgstr "Zob&razit archivovaná upozornění/blokace"
 
 #: staff.patron_display.staged.caption
 msgid "Pending Patrons"
@@ -6147,7 +6147,7 @@ msgstr "čtenář "
 #: staff.patron_navbar.bills
 msgctxt "staff.patron_navbar.bills"
 msgid "Bills"
-msgstr "Účty"
+msgstr "Poplatky"
 
 #: staff.patron_navbar.bills.accesskey
 msgctxt "staff.patron_navbar.bills.accesskey"
@@ -6203,7 +6203,7 @@ msgstr "k"
 #: staff.patron_navbar.other
 msgctxt "staff.patron_navbar.other"
 msgid "Other"
-msgstr "Jiné"
+msgstr "Ostatní"
 
 #: staff.patron_navbar.other.accesskey
 msgid "o"
@@ -7572,7 +7572,7 @@ msgstr "Neplatný formát času"
 
 #: staff.server.admin.closed_dates.success
 msgid "Closed date successfully updated"
-msgstr "DA"
+msgstr "Dny, kdy je knihovna uzavřena byly  úspěšně upraveny"
 
 #: staff.server.admin.copy_locations.title
 msgid "Evergreen: Copy Locations Editor"
@@ -8453,7 +8453,8 @@ msgstr ""
 
 #: staff.server.admin.org_settings.ui.circ.show_billing_tab_on_bills
 msgid "Show billing tab first when bills are present"
-msgstr "Zobrazit kartu s účty, pokud má čtenář nevyřízené platby"
+msgstr ""
+"Pokud má čtenář nevyřízené platby, zobrazit nejdříve kartu s poplatky"
 
 #: staff.server.admin.org_settings.ui.circ.show_billing_tab_on_bills.desc
 msgid ""
@@ -8463,7 +8464,7 @@ msgid ""
 msgstr ""
 "Pokud je tato volba aktivována, má-li čtenář má nezaplacené poplatky a "
 "zároveň není vyžadováno zobrazení varovné stránky, standardně při načítání "
-"čtenáře zobrazit kartu Účty  (místo karty Půjčit)"
+"čtenáře zobrazit kartu Poplatky  (místo karty Půjčit)"
 
 #: staff.server.admin.org_settings.ui.circ.patron_display_timeout_interval
 msgid "GUI: Patron display timeout interval"
@@ -11804,7 +11805,7 @@ msgstr "&Potvrdit tuto informaci"
 #: staff.patron.bill_details.bills.label
 msgctxt "staff.patron.bill_details.bills.label"
 msgid "Bills"
-msgstr "Účty"
+msgstr "Poplatky"
 
 #: staff.patron.bill_details.void_selection.label
 msgid "Void selected billings"
@@ -12945,7 +12946,7 @@ msgstr "Vlastník adresy"
 #: staff.patron.ue.edit.label
 msgctxt "staff.patron.ue.edit.label"
 msgid "Edit"
-msgstr "Editovat"
+msgstr "Údaje o čtenáři"
 
 #: staff.patron.ue.label.label
 msgctxt "staff.patron.ue.label.label"
