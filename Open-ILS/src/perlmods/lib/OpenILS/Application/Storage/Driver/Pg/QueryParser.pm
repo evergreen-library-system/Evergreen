@@ -947,7 +947,7 @@ sub flatten {
                       . ${spc} x 2 ."AND ${talias}.field IN (". join(',', @field_ids) . ")\n"
                       . "${spc})";
 
-                if ($join_type != 'INNER') {
+                if ($join_type ne 'INNER') {
                     my $NOT = $node->negate ? '' : ' NOT';
                     $where .= "${talias}.id IS$NOT NULL";
                 } elsif ($where ne '') {
