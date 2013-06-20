@@ -44,6 +44,18 @@ var fundStyles = {
     "warning": "color: #c93;"
 };
 
+/**
+ * We're not using 'approved' today, but there is API support for it.
+ * I believe it's been replaced by "order-ready".
+ * LIs go new => selector-ready => order-ready/approved => pending-order => 
+ * on-order => received.  'cancelled' can pop up anywhere.
+ * Is this all of 'em?
+ */
+var li_pre_po_states = ["new", "selector-ready", "order-ready", "approved"];
+var li_post_po_states = ["pending-order", "on-order", "received"];
+// i.e. not-canceled ("cancelled") lineitems
+var li_active_states = li_pre_po_states.concat(li_post_po_states);
+
 function AcqLiTable() {
 
     var self = this;
@@ -133,7 +145,12 @@ function AcqLiTable() {
     }
     acqLitSaveLiStateButton.onClick = function() {
         acqLitChangeLiStateDialog.hide();
-        self._updateLiState(acqLitChangeLiStateDialog.getValues(), acqLitChangeLiStateDialog.attr('state'));
+        var state = acqLitChangeLiStateDialog.attr('state');
+        var state_filter = ['new'];
+        if (state == 'order-ready')
+            state_filter.push('selector-ready');
+        self._updateLiState(
+            acqLitChangeLiStateDialog.getValues(), state, state_filter);
     }
 
 
@@ -437,12 +454,15 @@ function AcqLiTable() {
     };
 
 
-    this.getAll = function(callback, id_only) {
+    this.getAll = function(callback, id_only, state) {
         /* For some uses of the li table, we may not really know about "all"
          * the lineitems that the user thinks we know about. If we're a paged
          * picklist, for example, we only know about the lineitems we've
          * displayed, but not necessarily all the lineitems on the picklist.
          * So we reach out to pcrud to inform us.
+         * state: string/array.  only lineitems in one of these states are
+         * included in the final result set.  Not currently supported for
+         * paging mode.
          */
 
         var oncomplete = function(r) {
@@ -454,8 +474,10 @@ function AcqLiTable() {
         };
 
         if (this.isPL) {
+            var search = {"picklist": this.isPL};
+            if (state) search.state = state;
             this.pcrud.search(
-                "jub", {"picklist": this.isPL}, {
+                "jub", search, {
                     "id_list": true,    /* sic, even if id_only */
                     "async": true,
                     "oncomplete": oncomplete
@@ -463,8 +485,10 @@ function AcqLiTable() {
             );
             return;
         } else if (this.isPO) {
+            var search = {"purchase_order": this.isPO};
+            if (state) search.state = state;
             this.pcrud.search(
-                "jub", {"purchase_order": this.isPO}, {
+                "jub", search, {
                     "id_list": true,
                     "async": true,
                     "oncomplete": oncomplete
@@ -480,7 +504,7 @@ function AcqLiTable() {
          * any special tricks to find out the "real" list of "all" lineitems
          * in this context, so we fall back to the old method.
          */
-        callback(this.getSelected(true, null, id_only));
+        callback(this.getSelected(true, null, id_only, state));
     };
 
     /** @param all If true, assume all are selected */
@@ -489,10 +513,12 @@ function AcqLiTable() {
         callback /* If you want a "good" idea of "all" lineitems, you must
         provide a callback that accepts an array parameter, rather than
         relying on the return value of this method itself. */,
-        id_only
+        id_only,
+        state 
     ) {
+        console.log("getSelected states = " + state);
         if (all && callback)
-            return this.getAll(callback, id_only);
+            return this.getAll(callback, id_only, filter);
 
         var indices = {};   /* use to uniqify. needed in paging situations. */
         dojo.forEach(this.selectors,
@@ -503,6 +529,19 @@ function AcqLiTable() {
         );
 
         var result = openils.Util.objectProperties(indices);
+
+        // caller provided a lineitem state filter.  remove IDs for lineitems 
+        // not in the selected state.
+        if (state) {
+            var trimmed = [];
+            if (!dojo.isArray(state)) state = [state];
+            dojo.forEach(result, function(liId) {
+                console.log('filter LI state ' + self.liCache[liId].state());
+                if (state.indexOf(self.liCache[liId].state()) >= 0)
+                    trimmed.push(liId);
+            });
+            result = trimmed;
+        };
 
         if (!id_only)
             result = result.map(function(liId) { return self.liCache[liId]; });
@@ -2684,8 +2723,15 @@ function AcqLiTable() {
             case 'add_to_order':
                 addToPoDialog._get_li = dojo.hitch(
                     this,
-                    function() { return this.getSelected(false, null, true); }
+                    function() { 
+                        return this.getSelected(
+                            false, null, true, li_pre_po_states);
+                    }
                 );
+                if (addToPoDialog._get_li().length == 0) {
+                    alert(localeStrings.NO_LI_GENERAL);
+                    return;
+                }
                 addToPoDialog.show();
                 break;
 
@@ -2749,6 +2795,7 @@ function AcqLiTable() {
                 break;
 
             case "cancel_lineitems":
+                console.log('HERE');
                 this.maybeCancelLineitems();
                 break;
 
@@ -2862,7 +2909,12 @@ function AcqLiTable() {
     };
 
     this._cancelLineitems = function(reason) {
-        var id_list = this.getSelected().map(function(o) { return o.id(); });
+        var id_list = this.getSelected(
+            null, null, true, li_active_states);
+        if (!id_list.length) {
+            alert(localeStrings.NO_LI_GENERAL);
+            return;
+        }
         fieldmapper.standardRequest(
             ["open-ils.acq", "open-ils.acq.lineitem.cancel.batch"], {
                 "params": [openils.User.authtoken, id_list, reason],
@@ -2970,8 +3022,12 @@ function AcqLiTable() {
     };
 
     this.batchCreateInvoice = function() {
-        var liIds = this.getSelected(false, null, true /* id_list */)
-        if (!liIds.length) return;
+        var liIds = this.getSelected(
+            false, null, true /* id_list */, li_active_states)
+        if (!liIds.length) {
+            alert(localeStrings.NO_LI_GENERAL);
+            return;
+        }
         var path = oilsBasePath + '/acq/invoice/view?create=1';
         dojo.forEach(liIds, function(li, idx) { path += '&attach_li=' + li });
         if (openils.XUL.isXUL())
@@ -2981,8 +3037,12 @@ function AcqLiTable() {
     };
 
     this.batchLinkInvoice = function(create) {
-        var liIds = this.getSelected(false, null, true /* id_list */)
-        if (!liIds.length) return;
+        var liIds = this.getSelected(
+            false, null, true /* id_list */, li_active_states)
+        if (!liIds.length) {
+            alert(localeStrings.NO_LI_GENERAL);
+            return;
+        }
         if (!self.invoiceLinkDialogManager) {
             self.invoiceLinkDialogManager =
                 new InvoiceLinkDialogManager("li");
@@ -2992,7 +3052,9 @@ function AcqLiTable() {
     };
 
     this.receiveSelectedLineitems = function() {
-        var li_list = this.getSelected();
+        var states = li_post_po_states.filter(
+            function(s) { return s != 'received' });
+        var li_list = this.getSelected(null, null, null, states);
 
         if (!li_list.length) {
             alert(localeStrings.NO_LI_GENERAL);
@@ -3125,15 +3187,21 @@ function AcqLiTable() {
             this.getSelected(
                 true, function(list) {
                     self._createPOFromLineitems(fields, list);
-                }, /* id_list */ true
+                }, /* id_list */ true, li_pre_po_states
             );
         } else {
-            this._createPOFromLineitems(fields, this.getSelected(false, null, true /* id_list */));
+            this._createPOFromLineitems(
+                fields, this.getSelected(
+                    false, null, true /* id_list */, li_pre_po_states)
+            );
         }
     };
 
     this._createPOFromLineitems = function(fields, selected) {
-        if (selected.length == 0) return;
+        if (selected.length == 0) {
+            alert(localeStrings.NO_LI_GENERAL);
+            return;
+        }
         var self = this;
 
         var po = new fieldmapper.acqpo();
@@ -3337,18 +3405,22 @@ function AcqLiTable() {
         }
     };
 
-    this._updateLiState = function(values, state) {
+    this._updateLiState = function(values, state, state_filter) {
         progressDialog.show(true);
         this.getSelected(
             (values.which == 'all'),
             function(list) {
                 self._updateLiStateFromLineitems(values, state, list);
-            }
+            }, false /* id_list */, state_filter
         );
     };
 
     this._updateLiStateFromLineitems = function(values, state, selected) {
-        if(!selected.length) return;
+        if(!selected.length) {
+            try { progressDialog.hide() } catch(E) {};
+            alert(localeStrings.NO_LI_GENERAL);
+            return;
+        }
         dojo.forEach(selected, function(li) {li.state(state);});
         self._updateLiList(null, selected, 0,
             // TODO consider inline updates for efficiency
