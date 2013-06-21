@@ -50,6 +50,7 @@
                 [% END; # IF status unknown
             END  %] 
 
+[%- IF ENV.OILS_NOVELIST_URL -%]
             /* Load novelist content */
             novSelect.loadContentForQuery(
                 {
@@ -65,6 +66,7 @@
                     dojo.byId('novelist-loading').innerHTML = '';
                 }
             );
+[%- END; # Novelist -%]
 
         [% END; # IF ident
     %]
