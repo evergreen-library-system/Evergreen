@@ -854,7 +854,7 @@ sub generate_fines {
             if ( $fine_interval == 0 || int($c->$recurring_fine_method * 100) == 0 || int($c->max_fine * 100) == 0 ) {
                 $client->respond( "Fine Generator skipping circ due to 0 fine interval, 0 fine rate, or 0 max fine.\n" );
                 $log->info( "Fine Generator skipping circ " . $c->id . " due to 0 fine interval, 0 fine rate, or 0 max fine." );
-                next;
+                return;
             }
 
 			if ( $is_reservation and $fine_interval >= interval_to_seconds('1d') ) {	
@@ -900,7 +900,7 @@ sub generate_fines {
 				$grace_period = OpenILS::Application::Circ::CircCommon->extend_grace_period($c->$circ_lib_method->to_fieldmapper->id,$c->$due_date_method,$grace_period,undef,$hoo{$c->$circ_lib_method});
 			}
 
-            next if ($last_fine > $now);
+            return if ($last_fine > $now);
             # Generate fines for each past interval, including the one we are inside
             my $pending_fine_count = ceil( ($now - $last_fine) / $fine_interval );
 
@@ -910,11 +910,11 @@ sub generate_fines {
             ) {
                 $client->respond( "Still inside grace period of: ". seconds_to_interval( $grace_period )."\n" );
                 $log->info( "Circ ".$c->id." is still inside grace period of: $grace_period [". seconds_to_interval( $grace_period ).']' );
-                next;
+                return;
             }
 
             $client->respond( "\t$pending_fine_count pending fine(s)\n" );
-            next unless ($pending_fine_count);
+            return unless ($pending_fine_count);
 
 			my $recurring_fine = int($c->$recurring_fine_method * 100);
 			my $max_fine = int($c->max_fine * 100);
@@ -950,7 +950,7 @@ sub generate_fines {
 					my $dow_close = "dow_${dow}_close";
 
 					if (my $h = $hoo{$c->$circ_lib_method}) {
-						next if ( $h->$dow_open eq '00:00:00' and $h->$dow_close eq '00:00:00');
+						return if ( $h->$dow_open eq '00:00:00' and $h->$dow_close eq '00:00:00');
 					}
 	
 					my @cl = actor::org_unit::closed_date->search_where(
@@ -958,7 +958,7 @@ sub generate_fines {
 							  close_end	=> { '>=' => $timestamptz },
 							  org_unit	=> $c->$circ_lib_method }
 					);
-					next if (@cl);
+					return if (@cl);
 				}
 
 				$current_fine_total += $recurring_fine;
