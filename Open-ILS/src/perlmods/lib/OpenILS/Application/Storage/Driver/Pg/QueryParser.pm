@@ -415,6 +415,7 @@ sub initialize_query_normalizers {
 
     for my $cmfinm ( @$tree ) {
         my $field_info = $self->search_field_class_by_id( $cmfinm->field );
+        next unless $field_info;
         __PACKAGE__->add_query_normalizer( $field_info->{classname}, $field_info->{field}, $cmfinm->norm->func, OpenSRF::Utils::JSON->JSON2perl($cmfinm->params) );
     }
 }
