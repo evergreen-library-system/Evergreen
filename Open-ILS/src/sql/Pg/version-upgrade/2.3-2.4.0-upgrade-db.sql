@@ -3993,5 +3993,3 @@ CREATE TEXT SEARCH CONFIGURATION subject ( COPY = english_nostop );
 CREATE TEXT SEARCH CONFIGURATION series ( COPY = english_nostop );
 CREATE TEXT SEARCH CONFIGURATION identifier ( COPY = english_nostop );
 
-\qecho Please run Open-ILS/src/sql/Pg/version-upgrade/2.3-2.4-supplemental.sh now, which contains additional required SQL to complete your Evergreen upgrade!
-
