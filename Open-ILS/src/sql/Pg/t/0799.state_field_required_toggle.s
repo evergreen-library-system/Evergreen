@@ -1,0 +1,47 @@
+\set ECHO
+\set QUIET 1
+-- Turn off echo and keep things quiet.
+
+-- Format the output for nice TAP.
+\pset format unaligned
+\pset tuples_only true
+\pset pager
+
+-- Revert all changes on failure.
+\set ON_ERROR_ROLLBACK 1
+\set ON_ERROR_STOP true
+\set QUIET 1
+
+-- Load the TAP functions.
+BEGIN;
+
+-- Plan the tests.
+SELECT plan(4);
+
+-- Run the tests.
+
+SELECT col_is_null(
+    'actor',
+    'usr_address',
+    'state',
+    'actor.usr_address.state does not have the NOT NULL constraint'
+);
+
+SELECT isnt_empty(
+    'SELECT * FROM config.org_unit_setting_type WHERE name = $$ui.patron.edit.au.state.require$$',
+    'ui.patron.edit.au.state.require exists'
+);
+
+SELECT isnt_empty(
+    'SELECT * FROM config.org_unit_setting_type WHERE name = $$ui.patron.edit.au.state.show$$',
+    'ui.patron.edit.au.state.show exists'
+);
+
+SELECT isnt_empty(
+    'SELECT * FROM config.org_unit_setting_type WHERE name = $$ui.patron.edit.au.state.suggest$$',
+    'ui.patron.edit.au.state.suggest exists'
+);
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;

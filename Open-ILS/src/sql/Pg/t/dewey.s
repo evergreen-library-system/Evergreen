@@ -1,0 +1,67 @@
+\set ECHO
+\set QUIET 1
+-- Turn off echo and keep things quiet.
+
+-- Format the output for nice TAP.
+\pset format unaligned
+\pset tuples_only true
+\pset pager
+
+-- Revert all changes on failure.
+\set ON_ERROR_ROLLBACK 1
+\set ON_ERROR_STOP true
+\set QUIET 1
+
+-- Load the TAP functions.
+BEGIN;
+
+-- Plan the tests.
+SELECT plan(6);
+
+-- Run the tests.  Converted from Koha's ClassSortRoutine_Dewey.t
+
+SELECT is(
+    asset.label_normalizer_dewey(NULL),
+    '',
+    'testing whitespace'
+);
+
+SELECT is(
+    asset.label_normalizer_dewey('.... .....'),
+    '',
+    'testing fullstops'
+);
+
+-- I think these tests below may be looking too deeply into the implementation,
+-- but including them for now
+
+SELECT is(
+    asset.label_normalizer_dewey('123 456'),
+    '123_456000000000000',
+    'testing numbers'
+);
+
+SELECT is(
+    asset.label_normalizer_dewey('abc123 456'),
+    'ABC_123_456000000000000',
+    'testing alphanumeric'
+);
+
+SELECT is(
+    asset.label_normalizer_dewey('ab         c123 45   6'),
+    'AB_C123_45_600000000000000',
+    'testing middle whitespace'
+);
+
+SELECT todo('Desired behavior in contention.  See https://bugs.launchpad.net/evergreen/+bug/1150939', 1);
+
+SELECT cmp_ok(
+    asset.label_normalizer_dewey('YR DVD 800.1'),
+    '<',
+    asset.label_normalizer_dewey('YR DVD 900'),
+    'testing prefix plus decimal'
+);
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;
