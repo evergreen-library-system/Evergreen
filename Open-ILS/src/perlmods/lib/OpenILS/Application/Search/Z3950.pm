@@ -274,10 +274,11 @@ sub do_class_search {
                 push @services, $tmp_args{service}; 
                 push @results, $res->{result}; 
                 push @connections, $res->{connection}; 
+
+                $logger->debug("z3950: Result object: $results[$i], Connection object: $connections[$i]");
             } 
         }
 
-        $logger->debug("z3950: Result object: $results[$i], Connection object: $connections[$i]");
     }
 
     $logger->debug("z3950: Connections created");
