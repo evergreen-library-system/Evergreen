@@ -2608,7 +2608,6 @@ Added Log Comment
 		<subject>
 			<xsl:call-template name="subjectAuthority"></xsl:call-template>
 			<name type="personal">
-				<xsl:call-template name="termsOfAddress"></xsl:call-template>
 				<namePart>
 					<xsl:call-template name="chopPunctuation">
 						<xsl:with-param name="chopString">
@@ -2618,6 +2617,7 @@ Added Log Comment
 						</xsl:with-param>
 					</xsl:call-template>
 				</namePart>
+				<xsl:call-template name="termsOfAddress"></xsl:call-template>
 				<xsl:call-template name="nameDate"></xsl:call-template>
 				<xsl:call-template name="affiliation"></xsl:call-template>
 				<xsl:call-template name="role"></xsl:call-template>
