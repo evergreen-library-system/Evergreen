@@ -1823,7 +1823,6 @@ sub new_hold_copy_targeter {
                     ) &&
                 ( OpenILS::Utils::PermitHold::permit_copy_hold(
                     { title => $old_best->call_number->record->to_fieldmapper,
-                      title_descriptor => $old_best->call_number->record->record_descriptor->next->to_fieldmapper,
                       patron => $hold->usr->to_fieldmapper,
                       copy => $old_best->to_fieldmapper,
                       requestor => $hold->requestor->to_fieldmapper,
@@ -2260,7 +2259,6 @@ sub choose_nearest_copy {
         while (my ($c) = splice(@capturable, $rand, 1)) {
             return $c if !exists($seen{$c->id}) && ( OpenILS::Utils::PermitHold::permit_copy_hold(
                 { title => $c->call_number->record->to_fieldmapper,
-                  title_descriptor => $c->call_number->record->record_descriptor->next->to_fieldmapper,
                   patron => $hold->usr->to_fieldmapper,
                   copy => $c->to_fieldmapper,
                   requestor => $hold->requestor->to_fieldmapper,
