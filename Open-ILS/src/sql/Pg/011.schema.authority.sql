@@ -152,6 +152,8 @@ DECLARE
     tag_used        TEXT;
     nfi_used        TEXT;
     sf              TEXT;
+    sf_node         TEXT;
+    tag_node        TEXT;
     thes_code       TEXT;
     cset            INT;
     heading_text    TEXT;
@@ -180,35 +182,43 @@ BEGIN
         tag_used := acsaf.tag;
         nfi_used := acsaf.nfi;
         first_sf := TRUE;
-        FOR sf IN SELECT * FROM regexp_split_to_table(acsaf.sf_list,'') LOOP
-            tmp_text := oils_xpath_string('//*[@tag="'||tag_used||'"]/*[@code="'||sf||'"]', marcxml);
 
-            IF first_sf AND tmp_text IS NOT NULL AND nfi_used IS NOT NULL THEN
+        FOR tag_node IN SELECT unnest(oils_xpath('//*[@tag="'||tag_used||'"]',marcxml)) LOOP
+            FOR sf_node IN SELECT unnest(oils_xpath('//*[contains("'||acsaf.sf_list||'",@code)]',tag_node)) LOOP
 
-                tmp_text := SUBSTRING(
-                    tmp_text FROM
-                    COALESCE(
-                        NULLIF(
-                            REGEXP_REPLACE(
-                                oils_xpath_string('//*[@tag="'||tag_used||'"]/@ind'||nfi_used, marcxml),
-                                $$\D+$$,
-                                '',
-                                'g'
-                            ),
-                            ''
-                        )::INT,
-                        0
-                    ) + 1
-                );
+                tmp_text := oils_xpath_string('.', sf_node);
+                sf := oils_xpath_string('./@code', sf_node);
 
-            END IF;
+                IF first_sf AND tmp_text IS NOT NULL AND nfi_used IS NOT NULL THEN
 
-            first_sf := FALSE;
+                    tmp_text := SUBSTRING(
+                        tmp_text FROM
+                        COALESCE(
+                            NULLIF(
+                                REGEXP_REPLACE(
+                                    oils_xpath_string('./@ind'||nfi_used, tag_node),
+                                    $$\D+$$,
+                                    '',
+                                    'g'
+                                ),
+                                ''
+                            )::INT,
+                            0
+                        ) + 1
+                    );
 
-            IF tmp_text IS NOT NULL AND tmp_text <> '' THEN
-                heading_text := heading_text || E'\u2021' || sf || ' ' || tmp_text;
-            END IF;
+                END IF;
+
+                first_sf := FALSE;
+
+                IF tmp_text IS NOT NULL AND tmp_text <> '' THEN
+                    heading_text := heading_text || E'\u2021' || sf || ' ' || tmp_text;
+                END IF;
+            END LOOP;
+
+            EXIT WHEN heading_text <> '';
         END LOOP;
+
         EXIT WHEN heading_text <> '';
     END LOOP;
 
@@ -272,13 +282,13 @@ BEGIN
         nfi_used := acsaf.nfi;
 
         FOR tmp_xml IN SELECT UNNEST(XPATH('//*[@tag="'||tag_used||'"]', marcxml::XML)) LOOP
-            heading_text := '';
 
-            FOR sf IN SELECT * FROM regexp_split_to_table(acsaf.sf_list,'') LOOP
-                heading_text := heading_text || COALESCE( ' ' || oils_xpath_string('//*[@code="'||sf||'"]',tmp_xml::TEXT), '');
-            END LOOP;
-
-            heading_text := public.naco_normalize(heading_text);
+            heading_text := public.naco_normalize(
+                COALESCE(
+                    oils_xpath_string('//*[contains("'||acsaf.sf_list||'",@code)]',tmp_xml::TEXT, ' '),
+                    ''
+                )
+            );
             
             IF nfi_used IS NOT NULL THEN
 
@@ -287,7 +297,7 @@ BEGIN
                     COALESCE(
                         NULLIF(
                             REGEXP_REPLACE(
-                                oils_xpath_string('//*[@tag="'||tag_used||'"]/@ind'||nfi_used, marcxml),
+                                oils_xpath_string('./@ind'||nfi_used, tmp_xml::TEXT),
                                 $$\D+$$,
                                 '',
                                 'g'
