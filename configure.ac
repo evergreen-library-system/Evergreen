@@ -342,6 +342,7 @@ if test "x$openils_core" = "xtrue"; then
 
     AC_CONFIG_FILES([Open-ILS/examples/Makefile
              Open-ILS/src/c-apps/Makefile
+             Open-ILS/src/c-apps/tests/Makefile
              Open-ILS/src/extras/Makefile
              Open-ILS/src/java/Makefile
              Open-ILS/src/python/Makefile])
