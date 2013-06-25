@@ -1542,7 +1542,8 @@ sub new_hold_copy_targeter {
             my $prox_list = create_prox_list( $self, $pu_lib, $all_copies, $hold );
             $log->debug( "\tMapping ".scalar(@$all_copies)." potential copies for hold ".$hold->id);
             for my $prox ( keys %$prox_list ) {
-                action::hold_copy_map->create( { proximity => $prox, hold => $hold->id, target_copy => $_->id } ) for (@{$$prox_list{$prox}});
+                action::hold_copy_map->create( { proximity => $prox, hold => $hold->id, target_copy => $_ } )
+                    for keys( %{{ map { $_->id => 1 } @{$$prox_list{$prox}} }} );
             }
 
             #$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
