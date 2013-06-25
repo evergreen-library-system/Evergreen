@@ -59,6 +59,7 @@ DEBS =  \
 	apache2-prefork-dev\
 	aspell\
 	aspell-en\
+	check\
 	libbusiness-creditcard-perl\
 	libbusiness-onlinepayment-authorizenet-perl\
 	libbusiness-onlinepayment-perl\
@@ -124,6 +125,8 @@ FEDORA_RPMS = \
 	aspell \
 	aspell-en \
 	bzip2-devel \
+	check \
+	check-devel \
 	libdbi \
 	libdbi-dbd-pgsql \
 	libdbi-devel \
