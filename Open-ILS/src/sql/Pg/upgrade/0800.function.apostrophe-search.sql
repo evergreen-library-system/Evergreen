@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0800', :eg_version);
 
 CREATE OR REPLACE FUNCTION metabib.reingest_metabib_field_entries( bib_id BIGINT, skip_facet BOOL DEFAULT FALSE, skip_browse BOOL DEFAULT FALSE, skip_search BOOL DEFAULT FALSE ) RETURNS VOID AS $func$
 DECLARE
@@ -193,10 +193,10 @@ COMMIT;
 \qecho **** your entire bibliographic data set, consider generating an SQL script
 \qecho **** with the following query, and running that via psql:
 \qecho
-\qecho  \t
-\qecho  \o /tmp/reingest-2.4.1.sql
-\qecho  SELECT 'select metabib.reingest_metabib_field_entries(' || id || ');' FROM biblio.record_entry WHERE NOT DELETED AND id > 0;
-\qecho  \o
-\qecho  \t
+\qecho '\\t'
+\qecho '\\o /tmp/reingest-2.4.1.sql'
+\qecho 'SELECT ''select metabib.reingest_metabib_field_entries('' || id || '');'' FROM biblio.record_entry WHERE NOT DELETED AND id > 0;'
+\qecho '\\o'
+\qecho '\\t'
 \qecho
 
