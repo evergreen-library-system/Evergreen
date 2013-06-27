@@ -317,7 +317,7 @@ util.error.prototype = {
         if (r == 1) {
             JSAN.use('util.window'); var win = new util.window();
             win.open(
-                'data:text/plain,' + window.escape( 'Please open a helpdesk ticket and include the following text: \n\n' + (new Date()) + '\n\n' + msg + '\n\n' + obj.pretty_print(js2JSON(E)) ),
+                'data:text/plain;charset=UTF-8,' + window.encodeURIComponent( 'Please open a helpdesk ticket and include the following text: \n\n' + (new Date()) + '\n\n' + msg + '\n\n' + obj.pretty_print(js2JSON(E)) ),
                 'error_alert',
                 'chrome,resizable,width=700,height=500'
             );

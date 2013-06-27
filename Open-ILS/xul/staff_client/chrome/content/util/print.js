@@ -194,7 +194,7 @@ util.print.prototype = {
                     });
                 break;
                 default:
-                    w = obj.win.open('data:' + content_type + ',' + window.escape(msg),'receipt_temp','chrome,resizable');
+                    w = obj.win.open('data:' + content_type + ',' + window.encodeURIComponent(msg),'receipt_temp','chrome,resizable');
                     w.minimize();
                     setTimeout(
                         function() {
@@ -519,9 +519,9 @@ util.print.prototype = {
                             }
                         } else {
                             if (params.content_type == 'text/plain') {
-                                w = window.open('data:text/plain,'+escape(params.msg),'','chrome');
+                                w = window.open('data:text/plain;charset=UTF-8,'+encodeURIComponent(params.msg),'','chrome');
                             } else {
-                                w = window.open('data:text/html,'+escape(params.msg),'','chrome');
+                                w = window.open('data:text/html;charset=UTF-8,'+encodeURIComponent(params.msg),'','chrome');
                             }
                             setTimeout(
                                 function() {
@@ -544,9 +544,9 @@ util.print.prototype = {
                             obj._NSPrint_webBrowserPrint(w,silent,params);
                         } else {
                             if (params.content_type == 'text/plain') {
-                                w = window.open('data:text/plain,'+escape(params.msg),'','chrome');
+                                w = window.open('data:text/plain;charset=UTF-8,'+encodeURIComponent(params.msg),'','chrome');
                             } else {
-                                w = window.open('data:text/html,'+escape(params.msg),'','chrome');
+                                w = window.open('data:text/html;charset=UTF-8,'+encodeURIComponent(params.msg),'','chrome');
                             }
                             setTimeout(
                                 function() {

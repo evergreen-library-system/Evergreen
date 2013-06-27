@@ -395,7 +395,7 @@ auth.controller.prototype = {
                 try {
                     if (x.readyState != 4) return;
                     if (x.status == 200) {
-                        window.open('data:text/html,'+window.escape(x.responseText),'upgrade','chrome,resizable,modal,centered');
+                        window.open('data:text/html;charset=UTF-8,'+window.encodeURIComponent(x.responseText),'upgrade','chrome,resizable,modal,centered');
                     } else {
                         if(typeof(G.upgradeCheck) == "function")
                         {

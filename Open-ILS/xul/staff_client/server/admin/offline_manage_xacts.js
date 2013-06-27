@@ -879,7 +879,7 @@ admin.offline_manage_xacts.prototype = {
             for (var i = 0; i < obj.sel_errors.length; i++) {
                 var error = obj.errors[ obj.sel_errors[i] ];
                 win.open(
-                    'data:text/plain,' + window.escape(
+                    'data:text/plain;charset=UTF-8,' + window.encodeURIComponent(
                         'Details:\n' + obj.error.pretty_print(js2JSON(error))
                     ),
                     'offline_error_details',

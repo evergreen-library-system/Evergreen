@@ -57,12 +57,12 @@ vim:noet:sw=4:ts=4:
                         function(req) {
                             var marc_html = req.getResultObject();
                             if (noprint||typeof xulG == 'undefined') marc_html = marc_html.replace(/<button.+?button>/, '');
-                            document.getElementById('marc_frame').setAttribute('src', 'data:text/html,' + encodeURIComponent(marc_html));
+                            document.getElementById('marc_frame').setAttribute('src', 'data:text/html;charset=UTF-8,' + encodeURIComponent(marc_html));
                         }
                     );
                 } else {
                     var marc_html = '<h1>' + document.getElementById('catStrings').getString('bib.no_marc') + '</h1>';
-                    document.getElementById('marc_frame').setAttribute('src', 'data:text/html,' + marc_html);
+                    document.getElementById('marc_frame').setAttribute('src', 'data:text/html;charset=UTF-8,' + marc_html);
                 }
 
             } catch(E) {

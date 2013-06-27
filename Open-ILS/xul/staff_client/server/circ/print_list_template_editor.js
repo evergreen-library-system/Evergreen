@@ -254,9 +254,9 @@ circ.print_list_template_editor.prototype = {
                                     var macro_string = macros.join(', ');
                                     JSAN.use('util.window');
                                     var win = new util.window();
-                                    win.open('data:text/html,'
-                                        + window.escape(
-                                            '<html style="width: 600; height: 400;">'
+                                    win.open('data:text/html;charset=UTF-8,'
+                                        + window.encodeURIComponent(
+                                            '<html>'
                                             + '<head><title>' 
                                             + document.getElementById('circStrings').getString('staff.circ.print_list_template.window.title')
                                             + '</title></head>'
@@ -281,7 +281,7 @@ circ.print_list_template_editor.prototype = {
                                             + document.getElementById('circStrings').getString('staff.circ.print_list_template.window.close')
                                             + '</button>'
                                             + '</body></html>'
-                                        ), 'title', 'chrome,resizable');
+                                        ), 'title', 'width=600,height=400,chrome,resizable');
                                 } catch(E) {
                                     alert(E);
                                 }

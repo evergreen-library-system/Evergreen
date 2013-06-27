@@ -413,9 +413,9 @@ patron.display.prototype = {
                         ['command'],
                         function(ev) {
                             if (obj.msg_url) {
-                                obj.right_deck.set_iframe('data:text/html,'+obj.msg_url,{},{});
+                                obj.right_deck.set_iframe('data:text/html;charset=UTF-8,'+obj.msg_url,{},{});
                             } else {
-                                obj.right_deck.set_iframe('data:text/html,<h1>' + $("patronStrings").getString('staff.patron.display.no_alerts_or_messages') + '</h1>',{},{});
+                                obj.right_deck.set_iframe('data:text/html;charset=UTF-8,<h1>' + $("patronStrings").getString('staff.patron.display.no_alerts_or_messages') + '</h1>',{},{});
                             }
                         }
                     ],
@@ -1047,10 +1047,10 @@ patron.display.prototype = {
                     if (msg != obj.old_msg) {
                         //obj.error.yns_alert(msg,'Alert Message','OK',null,null,'Check here to confirm this message.');
                         document.documentElement.firstChild.focus();
-                        var data_url = window.escape("<img src='" + xulG.url_prefix('/xul/server/skin/media/images/stop_sign.png') + "'/>" + '<h1>'
+                        var data_url = window.encodeURIComponent("<img src='" + xulG.url_prefix('/xul/server/skin/media/images/stop_sign.png') + "'/>" + '<h1>'
                             + $("patronStrings").getString('staff.patron.display.init.network_request.window_title') + '</h1><blockquote><p>' + msg + '</p>\r\n\r\n<pre>'
                             + $("patronStrings").getString('staff.patron.display.init.network_request.window_message') + '</pre></blockquote>');
-                        obj.right_deck.set_iframe('data:text/html,'+data_url,{},{});
+                        obj.right_deck.set_iframe('data:text/html;charset=UTF-8,'+data_url,{},{});
                         obj.old_msg = msg;
                         obj.msg_url = data_url;
                     } else {
