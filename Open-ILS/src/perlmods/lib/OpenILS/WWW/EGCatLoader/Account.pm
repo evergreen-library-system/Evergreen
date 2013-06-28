@@ -603,7 +603,7 @@ sub handle_hold_update {
         $url = $self->ctx->{proto} . '://' . $self->ctx->{hostname} . $self->ctx->{opac_root} . '/myopac/holds';
         foreach my $param (('loc', 'qtype', 'query')) {
             if ($self->cgi->param($param)) {
-                $url .= ";$param=" . uri_escape($self->cgi->param($param));
+                $url .= ";$param=" . uri_escape_utf8($self->cgi->param($param));
             }
         }
     }
@@ -1749,7 +1749,7 @@ sub load_myopac_bookbags {
 
                     foreach my $param (('loc', 'qtype', 'query', 'sort', 'offset', 'limit')) {
                         if ($self->cgi->param($param)) {
-                            $url .= ";$param=" . uri_escape($self->cgi->param($param));
+                            $url .= ";$param=" . uri_escape_utf8($self->cgi->param($param));
                         }
                     }
 
@@ -1851,7 +1851,7 @@ sub load_myopac_bookbag_update {
 
     foreach my $param (('loc', 'qtype', 'query', 'sort')) {
         if ($cgi->param($param)) {
-            $url .= "$param=" . uri_escape($cgi->param($param)) . ";";
+            $url .= "$param=" . uri_escape_utf8($cgi->param($param)) . ";";
         }
     }
 
@@ -1893,7 +1893,7 @@ sub load_myopac_bookbag_update {
         $url .= ';hold_target=' . $_ for @hold_recs;
         foreach my $param (('loc', 'qtype', 'query')) {
             if ($cgi->param($param)) {
-                $url .= ";$param=" . uri_escape($cgi->param($param));
+                $url .= ";$param=" . uri_escape_utf8($cgi->param($param));
             }
         }
         return $self->generic_redirect($url);
@@ -1972,7 +1972,7 @@ sub load_myopac_bookbag_update {
         }
     } elsif ($action eq 'save_notes') {
         $success = $self->update_bookbag_item_notes;
-        $url .= "&bbid=" . uri_escape($cgi->param("bbid")) if $cgi->param("bbid");
+        $url .= "&bbid=" . uri_escape_utf8($cgi->param("bbid")) if $cgi->param("bbid");
     } elsif ($action eq 'make_default') {
         $success = $U->simplereq(
             'open-ils.actor',

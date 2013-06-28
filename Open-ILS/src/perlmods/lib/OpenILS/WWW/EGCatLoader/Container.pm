@@ -204,7 +204,7 @@ sub mylist_warning_redirect {
         $redirect =~ s/#.*|$/#$anchor/;
     }
 
-    $base_url .= '?redirect_to=' . uri_escape($redirect);
+    $base_url .= '?redirect_to=' . uri_escape_utf8($redirect);
 
     return $self->generic_redirect(
         $base_url,

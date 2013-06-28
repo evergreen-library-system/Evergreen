@@ -216,7 +216,7 @@ sub redirect_ssl {
 sub redirect_auth {
     my $self = shift;
     my $login_page = sprintf('%s://%s%s/login',($self->ctx->{is_staff} ? 'oils' : 'https'), $self->ctx->{hostname}, $self->ctx->{opac_root});
-    my $redirect_to = uri_escape($self->apache->unparsed_uri);
+    my $redirect_to = uri_escape_utf8($self->apache->unparsed_uri);
     return $self->generic_redirect("$login_page?redirect_to=$redirect_to");
 }
 
