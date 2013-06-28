@@ -55,7 +55,7 @@ function applyCreds(clear) {
 }
 
 function formatSourceName(val) {
-    return '<a href="' + location.href + '/' + escape(val) + '">' + val + '</a>';
+    return '<a href="' + location.href + '/' + encodeURIComponent(val) + '">' + val + '</a>';
 }
 
 var cloneSourceSelector;

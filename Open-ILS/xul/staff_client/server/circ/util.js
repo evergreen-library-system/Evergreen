@@ -4038,7 +4038,7 @@ circ.util.find_acq_po = function(session, copy_id) {
                 if (r = openils.Util.readResponse(r)) {
                     if (r.purchase_order()) {
                         var url = urls.XUL_BROWSER + "?url=" +
-                            window.escape(
+                            window.encodeURIComponent(
                                 xulG.url_prefix('EG_ACQ_PO_VIEW/')
                                     + r.purchase_order() + "/" + r.id()
                             );

@@ -590,7 +590,6 @@
         function preview_xul_190(html) {
             JSAN.use('util.window'); var win = new util.window();
             var loc = ( urls.XUL_REMOTE_BROWSER );
-            //+ '?url=' + window.escape('about:blank') + '&show_print_button=1&alternate_print=1&no_xulG=1&title=' + window.escape('Spine Labels');
             var w = win.open( loc, 'spine_preview', 'chrome,resizable,width=750,height=550');
             w.xulG = { 
                 'url' : 'about:blank',

@@ -177,8 +177,6 @@ cat.util.transfer_copies = function(params) {
         JSAN.use('util.window'); var win = new util.window();
         var fancy_prompt_data = win.open(
             urls.XUL_FANCY_PROMPT,
-            //+ '?xml_in_stash=temp_transfer'
-            //+ '&title=' + window.escape('Item Transfer'),
             'fancy_prompt', 'chrome,resizable,modal,width=500,height=300',
             { 'xml' : xml, 'title' : $("catStrings").getString('staff.cat.util.transfer_copies.window_title') }
         );
@@ -671,7 +669,7 @@ cat.util.edit_new_brsrc = function(brsrc_list) {
     try {
         xulG.resultant_brsrc = brsrc_list.map(function(o) { return o[0]; });
         xulG.new_tab(
-            urls.XUL_BROWSER + "?url=" + window.escape(
+            urls.XUL_BROWSER + "?url=" + window.encodeURIComponent(
                 xulG.url_prefix("BOOKING_RESOURCE")
             ), {
                 "tab_name": offlineStrings.getString(

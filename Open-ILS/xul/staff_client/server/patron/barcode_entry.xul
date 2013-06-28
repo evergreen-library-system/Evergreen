@@ -188,7 +188,7 @@
                 if (typeof window.xulG == 'object' && typeof window.xulG.set_tab == 'function') {
                     window.xulG.set_tab( loc, {}, { 'barcode' : barcode } );
                 } else {
-                    location.href = loc + '?barcode=' + window.escape(barcode);
+                    location.href = loc + '?barcode=' + window.encodeURIComponent(barcode);
                 }
             } catch(E) {
                 g.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.barcode_entry.patron_display_error'),E);
@@ -197,7 +197,7 @@
 
         function spawn_perm_editor(id) {
             try {
-                var loc = urls.XUL_USER_PERM_EDITOR + '?ses=' + window.escape(ses()) + '&usr=' + id;
+                var loc = urls.XUL_USER_PERM_EDITOR + '?ses=' + window.encodeURIComponent(ses()) + '&usr=' + id;
                 if (typeof window.xulG == 'object' && typeof window.xulG.set_tab == 'function') {
                     window.xulG.set_tab( loc, {}, {} );
                 } else {

@@ -168,7 +168,6 @@ serial.sitem_editor.prototype = {
         JSAN.use('util.window'); var win = new util.window();
         win.open(
             urls.XUL_SERIAL_NOTES, 
-            //+ '?copy_id=' + window.escape(obj.sitems[0].id()),
             'Item Notes','chrome,resizable,modal',
             { 'object_id' : obj.sitems[0].id(), 'function_type' : 'SIN', 'object_type' : 'item', 'constructor' : sin }
         );

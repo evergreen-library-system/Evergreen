@@ -1062,8 +1062,6 @@ circ.copy_status.prototype = {
                                     JSAN.use('util.window'); var win = new util.window();
                                     var fancy_prompt_data = win.open(
                                         urls.XUL_FANCY_PROMPT,
-                                        //+ '?xml_in_stash=temp_transfer'
-                                        //+ '&title=' + window.escape('Volume Transfer'),
                                         'fancy_prompt', 'chrome,resizable,modal,width=500,height=300',
                                         { 'xml' : xml, 'title' : document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_volume.title') }
                                     );

@@ -55,7 +55,7 @@ if(!dojo._hasResource["openils.XUL"]) {
 
         if (wrap_in_browser) {
             var urls = xulG.urls || window.urls;
-            loc = urls.XUL_BROWSER + "?url=" + window.escape(loc);
+            loc = urls.XUL_BROWSER + "?url=" + window.encodeURIComponent(loc);
             content_params = dojo.mixin(
                 {
                     "no_xulG": false, "show_print_button": true,

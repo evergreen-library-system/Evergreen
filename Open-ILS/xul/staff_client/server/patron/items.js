@@ -738,8 +738,6 @@ patron.items.prototype = {
                 var circ_id = retrieve_ids[i].circ_id;
                 var my_xulG = win.open(
                     urls.XUL_PATRON_BILL_WIZARD,
-                        //+ '?patron_id=' + window.escape(obj.patron_id)
-                        //+ '&xact_id=' + window.escape( circ_id ),
                     'billwizard',
                     'chrome,resizable,modal',
                     { 'patron_id' : obj.patron_id, 'xact_id' : circ_id }

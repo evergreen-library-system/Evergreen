@@ -152,7 +152,7 @@ main.menu.prototype = {
             label = offlineStrings.getString(labelKey);
 
             // URL
-            var loc = urls.XUL_BROWSER + '?url=' + window.escape( obj.url_prefix('CONIFY/') + path + '.html');
+            var loc = urls.XUL_BROWSER + '?url=' + window.encodeURIComponent( obj.url_prefix('CONIFY/') + path + '.html');
 
             obj.command_tab(
                 event,
@@ -169,8 +169,8 @@ main.menu.prototype = {
             label = offlineStrings.getString(labelKey);
 
             // URL
-            var loc = urls.XUL_BROWSER + '?url=' + window.escape( obj.url_prefix('XUL_LOCAL_ADMIN_BASE/') + path);
-            if(addSes) loc += window.escape('?ses=' + ses());
+            var loc = urls.XUL_BROWSER + '?url=' + window.encodeURIComponent( obj.url_prefix('XUL_LOCAL_ADMIN_BASE/') + path);
+            if(addSes) loc += window.encodeURIComponent('?ses=' + ses());
 
             obj.command_tab( 
                 event,
@@ -188,7 +188,7 @@ main.menu.prototype = {
             var label = offlineStrings.getString(labelKey);
 
             // URL
-            var loc = urls.XUL_BROWSER + '?url=' + window.escape(obj.url_prefix('EG_WEB_BASE/') + path);
+            var loc = urls.XUL_BROWSER + '?url=' + window.encodeURIComponent(obj.url_prefix('EG_WEB_BASE/') + path);
 
             content_params = content_params || {
                 'no_xulG': false,
@@ -516,9 +516,9 @@ main.menu.prototype = {
                         var param_count = 0;
                         for (var i in p) {
                             if (param_count++ == 0) url += '?'; else url += '&';
-                            url += i + '=' + window.escape(p[i]);
+                            url += i + '=' + window.encodeURIComponent(p[i]);
                         }
-                        var loc = obj.url_prefix('XUL_BROWSER?url=') + window.escape( obj.url_prefix(url) );
+                        var loc = obj.url_prefix('XUL_BROWSER?url=') + window.encodeURIComponent( obj.url_prefix(url) );
                         obj.new_tab(
                             loc, 
                             {}, 
@@ -536,7 +536,7 @@ main.menu.prototype = {
 
                     obj.data.stash_retrieve();
                     var loc = obj.url_prefix('XUL_BROWSER?url=') 
-                        + window.escape( obj.url_prefix('XUL_PATRON_EDIT') );
+                        + window.encodeURIComponent( obj.url_prefix('XUL_PATRON_EDIT') );
                     obj.command_tab(
                         event,
                         loc, 
@@ -617,7 +617,7 @@ main.menu.prototype = {
                 ['oncommand'],
                 function(event) { 
                     obj.data.stash_retrieve();
-                    var loc = urls.XUL_BROWSER + '?url=' + window.escape(
+                    var loc = urls.XUL_BROWSER + '?url=' + window.encodeURIComponent(
                         obj.url_prefix('XUL_HOLD_PULL_LIST')
                     );
                     obj.command_tab(event, loc, {'tab_name' : offlineStrings.getString('menu.cmd_browse_hold_pull_list.tab')} );
@@ -650,9 +650,8 @@ main.menu.prototype = {
             'cmd_local_admin' : [
                 ['oncommand'],
                 function(event) { 
-                    //obj.set_tab(obj.url_prefix('XUL_LOCAL_ADMIN')+'?ses='+window.escape(ses())+'&session='+window.escape(ses()),{},{});
-                    var loc = urls.XUL_BROWSER + '?url=' + window.escape(
-                        obj.url_prefix( 'XUL_LOCAL_ADMIN?ses='+window.escape(ses())+'&session='+window.escape(ses()) )
+                    var loc = urls.XUL_BROWSER + '?url=' + window.encodeURIComponent(
+                        obj.url_prefix( 'XUL_LOCAL_ADMIN?ses='+window.encodeURIComponent(ses())+'&session='+window.encodeURIComponent(ses()) )
                     );
                     obj.command_tab(
                         event,
@@ -677,7 +676,7 @@ main.menu.prototype = {
             'cmd_local_admin_reports' : [
                 ['oncommand'],
                 function(event) { 
-                    var loc = urls.XUL_BROWSER + '?url=' + window.escape( obj.url_prefix('XUL_REPORTS?ses=') + ses());
+                    var loc = urls.XUL_BROWSER + '?url=' + window.encodeURIComponent( obj.url_prefix('XUL_REPORTS?ses=') + ses());
                     obj.command_tab(
                         event,
                         loc, 
@@ -1428,21 +1427,21 @@ main.menu.prototype = {
                 ['oncommand'],
                 function(event) {
                     obj.data.stash_retrieve();
-                    obj.command_tab(event,obj.url_prefix('XUL_STAT_CAT_EDIT?ses=') + window.escape(ses()), {'tab_name' : offlineStrings.getString('menu.cmd_stat_cat_edit.tab')},{});
+                    obj.command_tab(event,obj.url_prefix('XUL_STAT_CAT_EDIT?ses=') + window.encodeURIComponent(ses()), {'tab_name' : offlineStrings.getString('menu.cmd_stat_cat_edit.tab')},{});
                 }
             ],
             'cmd_non_cat_type_edit' : [
                 ['oncommand'],
                 function(event) {
                     obj.data.stash_retrieve();
-                    obj.command_tab(event,obj.url_prefix('XUL_NON_CAT_LABEL_EDIT?ses=') + window.escape(ses()), {'tab_name' : offlineStrings.getString('menu.cmd_non_cat_type_edit.tab')},{});
+                    obj.command_tab(event,obj.url_prefix('XUL_NON_CAT_LABEL_EDIT?ses=') + window.encodeURIComponent(ses()), {'tab_name' : offlineStrings.getString('menu.cmd_non_cat_type_edit.tab')},{});
                 }
             ],
             'cmd_copy_location_edit' : [
                 ['oncommand'],
                 function(event) {
                     obj.data.stash_retrieve();
-                    obj.command_tab(event,obj.url_prefix('XUL_COPY_LOCATION_EDIT?ses=') + window.escape(ses()),{'tab_name' : offlineStrings.getString('menu.cmd_copy_location_edit.tab')},{});
+                    obj.command_tab(event,obj.url_prefix('XUL_COPY_LOCATION_EDIT?ses=') + window.encodeURIComponent(ses()),{'tab_name' : offlineStrings.getString('menu.cmd_copy_location_edit.tab')},{});
                 }
             ],
             'cmd_test' : [
@@ -1457,14 +1456,14 @@ main.menu.prototype = {
                 ['oncommand'],
                 function(event) {
                     obj.data.stash_retrieve();
-                    obj.command_tab(event,obj.url_prefix('TEST_HTML?ses=') + window.escape(ses()),{ 'browser' : true },{});
+                    obj.command_tab(event,obj.url_prefix('TEST_HTML?ses=') + window.encodeURIComponent(ses()),{ 'browser' : true },{});
                 }
             ],
             'cmd_test_xul' : [
                 ['oncommand'],
                 function(event) {
                     obj.data.stash_retrieve();
-                    obj.command_tab(event,obj.url_prefix('TEST_XUL?ses=') + window.escape(ses()),{ 'browser' : false },{});
+                    obj.command_tab(event,obj.url_prefix('TEST_XUL?ses=') + window.encodeURIComponent(ses()),{ 'browser' : false },{});
                 }
             ],
             'cmd_console' : [
@@ -1501,7 +1500,7 @@ main.menu.prototype = {
             'cmd_public_opac' : [
                 ['oncommand'],
                 function(event) {
-                    var loc = urls.XUL_BROWSER + '?url=' + window.escape(
+                    var loc = urls.XUL_BROWSER + '?url=' + window.encodeURIComponent(
                         obj.url_prefix('remote')
                     );
                     obj.command_tab(

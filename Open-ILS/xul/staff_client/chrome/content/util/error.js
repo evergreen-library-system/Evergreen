@@ -374,7 +374,7 @@ util.error.prototype = {
         JSAN.use('OpenILS.data');
         //var data = new OpenILS.data(); data.init({'via':'stash'});
         //data.temp_yns_xml = xml; data.stash('temp_yns_xml');
-        var url = urls.XUL_FANCY_PROMPT; // + '?xml_in_stash=temp_yns_xml' + '&title=' + window.escape(title);
+        var url = urls.XUL_FANCY_PROMPT;
         if (typeof xulG != 'undefined') if (typeof xulG.url_prefix == 'function') url = xulG.url_prefix( url );
         JSAN.use('util.window'); var win = new util.window();
         var fancy_prompt_data = win.open(
@@ -447,7 +447,7 @@ util.error.prototype = {
         JSAN.use('OpenILS.data');
         //var data = new OpenILS.data(); data.init({'via':'stash'});
         //data.temp_yns_xml = xml; data.stash('temp_yns_xml');
-        var url = urls.XUL_FANCY_PROMPT; // + '?xml_in_stash=temp_yns_xml' + '&title=' + window.escape(title);
+        var url = urls.XUL_FANCY_PROMPT;
         if (typeof xulG != 'undefined') if (typeof xulG.url_prefix == 'function') url = xulG.url_prefix( url );
         JSAN.use('util.window'); var win = new util.window();
         var fancy_prompt_data = win.open(

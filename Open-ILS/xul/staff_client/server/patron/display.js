@@ -213,7 +213,6 @@ patron.display.prototype = {
                             obj.reset_nav_styling('cmd_patron_items');
                             var frame = obj.right_deck.set_iframe(
                                 urls.XUL_PATRON_ITEMS,
-                                //+ '?patron_id=' + window.escape( obj.patron.id() ),
                                 {},
                                 {
                                     'patron_id' : obj.patron.id(),
@@ -248,12 +247,7 @@ patron.display.prototype = {
 
                                 function spawn_editor(p) {
                                     var url = urls.XUL_PATRON_EDIT;
-                                    //var param_count = 0;
-                                    //for (var i in p) {
-                                    //    if (param_count++ == 0) url += '?'; else url += '&';
-                                    //    url += i + '=' + window.escape(p[i]);
-                                    //}
-                                    var loc = xulG.url_prefix('XUL_REMOTE_BROWSER'); // + '?url=' + window.escape( url );
+                                    var loc = xulG.url_prefix('XUL_REMOTE_BROWSER');
                                     xulG.new_tab(
                                         loc, 
                                         {}, 
@@ -282,11 +276,6 @@ patron.display.prototype = {
 
                             obj.right_deck.set_iframe(
                                 urls.XUL_REMOTE_BROWSER + '?patron_edit=1',
-                                //+ '?url=' + window.escape( 
-                                //    urls.XUL_PATRON_EDIT
-                                //    + '?ses=' + window.escape( ses() )
-                                //    + '&usr=' + window.escape( obj.patron.id() )
-                                //),
                                 {}, {
                                     'url' : urls.XUL_PATRON_EDIT,
                                     'show_print_button' : true,
@@ -484,7 +473,6 @@ patron.display.prototype = {
                                 obj.reset_nav_styling('cmd_patron_holds');
                                 obj.right_deck.set_iframe(
                                     urls.XUL_PATRON_HOLDS,    
-                                    //+ '?patron_id=' + window.escape( obj.patron.id() ),
                                     {},
                                     {
                                         'display_window' : window,
@@ -517,7 +505,6 @@ patron.display.prototype = {
                             obj.reset_nav_styling('cmd_patron_bills');
                             var f = obj.right_deck.set_iframe(
                                 urls.XUL_PATRON_BILLS,
-                                //+ '?patron_id=' + window.escape( obj.patron.id() ),
                                 {},
                                 {
                                     'display_window' : window,
@@ -581,7 +568,7 @@ patron.display.prototype = {
                     'cmd_perm_editor' : [
                         ['command'],
                         function() {
-                             var frame = obj.right_deck.reset_iframe( urls.XUL_USER_PERM_EDITOR + '?ses=' + window.escape(ses()) + '&usr=' + obj.patron.id(), {}, {});
+                             var frame = obj.right_deck.reset_iframe( urls.XUL_USER_PERM_EDITOR + '?ses=' + window.encodeURIComponent(ses()) + '&usr=' + obj.patron.id(), {}, {});
                         }
                     ],
                     'cmd_standing_penalties' : [
@@ -675,7 +662,7 @@ patron.display.prototype = {
                             } else {
                                 error = js2JSON(E).substr(0,100);
                             }
-                            xulG.set_tab(urls.XUL_PATRON_BARCODE_ENTRY + '?error=' + window.escape(error),{},{});
+                            xulG.set_tab(urls.XUL_PATRON_BARCODE_ENTRY + '?error=' + window.encodeURIComponent(error),{},{});
                         } catch(F) {
                             alert(F);
                         }
@@ -774,7 +761,7 @@ patron.display.prototype = {
                                 setTimeout(
                                     function() {
                                         var frame = obj.left_deck.set_iframe(
-                                            urls.XUL_PATRON_SUMMARY + '?id=' + window.escape(list[0]),
+                                            urls.XUL_PATRON_SUMMARY + '?id=' + window.encodeURIComponent(list[0]),
                                             {},
                                             {
                                                 //'id' : list[0],

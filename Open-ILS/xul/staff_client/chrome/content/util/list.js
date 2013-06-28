@@ -429,7 +429,7 @@ util.list.prototype = {
                 var col_ordinal = col.getAttribute('ordinal'); 
                 my_cols[ col_id ] = { 'hidden' : col_hidden, 'width' : col_width, 'ordinal' : col_ordinal };
             }
-            JSAN.use('util.file'); var file = new util.file('tree_columns_for_'+window.escape(id));
+            JSAN.use('util.file'); var file = new util.file('tree_columns_for_'+window.encodeURIComponent(id));
             file.set_object(my_cols);
             file.close();
             alert(document.getElementById('offlineStrings').getString('list.columns_saved'));
@@ -459,7 +459,7 @@ util.list.prototype = {
             var my_cols;
             if (! obj.data.hash.aous) { obj.data.hash.aous = {}; }
             if (! obj.data.hash.aous['gui.disable_local_save_columns']) {
-                JSAN.use('util.file'); var file = new util.file('tree_columns_for_'+window.escape(id));
+                JSAN.use('util.file'); var file = new util.file('tree_columns_for_'+window.encodeURIComponent(id));
                 if (file._file.exists()) {
                     my_cols = file.get_object(); file.close();
                 }
@@ -468,7 +468,7 @@ util.list.prototype = {
             if (obj.data.hash.aous['url.remote_column_settings'] && ! my_cols ) {
                 try {
                     var x = new XMLHttpRequest();
-                    var url = obj.data.hash.aous['url.remote_column_settings'] + '/tree_columns_for_' + window.escape(id);
+                    var url = obj.data.hash.aous['url.remote_column_settings'] + '/tree_columns_for_' + window.encodeURIComponent(id);
                     x.open("GET", url, false);
                     x.send(null);
                     if (x.status == 200) {

@@ -352,10 +352,6 @@ util.network.prototype = {
         var data = new OpenILS.data(); data.init({'via':'stash'});
         var my_xulG = win.open(
             url,
-            //+ '?login_type=staff'
-            //+ '&desc_brief=' + window.escape( text ? 'Session Expired' : 'Operator Change' )
-            //+ '&desc_full=' + window.escape( text ? 'Please enter the credentials for a new login session.' : 'Please enter the credentials for the new login session.  Note that the previous session is still active.'),
-            //'simple_auth' + (new Date()).toString(),
             offlineStrings.getString('network.new_session.authorize'),
             'chrome,resizable,modal,width=700,height=500',
             {
@@ -426,10 +422,6 @@ util.network.prototype = {
                     JSAN.use('util.window'); var win = new util.window();
                     var my_xulG = win.open(
                         urls.XUL_AUTH_SIMPLE,
-                        //+ '?login_type=temp'
-                        //+ '&desc_brief=' + window.escape('Permission Denied: ' + robj.ilsperm)
-                        //+ '&desc_full=' + window.escape('Another staff member with the above permission may authorize this specific action.  Please notify your library administrator if you need this permission.  If you feel you have received this exception in error, inform your friendly Evergreen developers of the above permission and this debug information: ' + name),
-                        //'simple_auth' + (new Date()).toString(),
                         offlineStrings.getFormattedString('network.permission.authorize'),
                         'chrome,resizable,modal,width=700,height=500',
                         {
@@ -509,8 +501,6 @@ util.network.prototype = {
                     JSAN.use('util.window'); var win = new util.window();
                     var fancy_prompt_data = win.open(
                         urls.XUL_FANCY_PROMPT,
-                        //+ '?xml_in_stash=temp_override_xml'
-                        //+ '&title=' + window.escape(override_params.title),
                         'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
                         { 'xml' : xml, 'title' : override_params.title, 'sound' : 'bad', 'sound_object' : obj.sound }
                     );

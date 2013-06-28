@@ -26,7 +26,7 @@ function init2(grp) {
 
 function format_grp(val) {
     return '<a href="' + location.href + 
-        '/' + escape(val) + '">' + val + '</a>';
+        '/' + encodeURIComponent(val) + '">' + val + '</a>';
 }
 
 openils.Util.addOnLoad(init);
