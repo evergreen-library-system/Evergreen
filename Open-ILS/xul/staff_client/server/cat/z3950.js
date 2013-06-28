@@ -946,9 +946,6 @@ cat.z3950.prototype = {
         JSAN.use('util.window'); var win = new util.window();
         var fancy_prompt_data = win.open(
             urls.XUL_FANCY_PROMPT,
-            // + '?xml_in_stash=temp_merge_mid'
-            // + '&top_xml_in_stash=temp_merge_top'
-            // + '&title=' + window.escape('Record Overlay'),
             'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
             { 'top_xml' : top_xml, 'xml' : xml, 'title' : $("catStrings").getString('staff.cat.z3950.confirm_overlay.title') }
         );

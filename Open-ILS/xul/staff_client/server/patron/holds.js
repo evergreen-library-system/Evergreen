@@ -379,7 +379,7 @@ patron.holds.prototype = {
                                     content_params[k] = xulG[k];
                                 });
 
-                                var loc = urls.XUL_BROWSER + "?url=" + window.escape(
+                                var loc = urls.XUL_BROWSER + "?url=" + window.encodeURIComponent(
                                     xulG.url_prefix("ALT_HOLDS_PRINT")
                                 );
                                 xulG.new_tab(
@@ -416,7 +416,7 @@ patron.holds.prototype = {
                                     content_params[k] = xulG[k];
                                 });
 
-                                var loc = urls.XUL_BROWSER + "?url=" + window.escape(
+                                var loc = urls.XUL_BROWSER + "?url=" + window.encodeURIComponent(
                                     xulG.url_prefix("/eg/circ/hold_pull_list").replace("http:","https:")
                                 );
                                 xulG.new_tab(
@@ -505,9 +505,6 @@ patron.holds.prototype = {
                                 JSAN.use('util.window'); var win = new util.window();
                                 var fancy_prompt_data = win.open(
                                     urls.XUL_FANCY_PROMPT,
-                                    //+ '?xml_in_stash=temp_mid'
-                                    //+ '&bottom_xml_in_stash=temp_bot'
-                                    //+ '&title=' + window.escape('Choose a Pick Up Library'),
                                     'fancy_prompt', 'chrome,resizable,modal',
                                     { 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : $("patronStrings").getString('staff.patron.holds.holds_edit_selection_depth.choose_library') }
                                 );
@@ -573,9 +570,6 @@ patron.holds.prototype = {
                                 JSAN.use('util.window'); var win = new util.window();
                                 var fancy_prompt_data = win.open(
                                     urls.XUL_FANCY_PROMPT,
-                                    //+ '?xml_in_stash=temp_mid'
-                                    //+ '&bottom_xml_in_stash=temp_bot'
-                                    //+ '&title=' + window.escape('Choose a Pick Up Library'),
                                     'fancy_prompt', 'chrome,resizable,modal',
                                     { 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : $("patronStrings").getString('staff.patron.holds.holds_edit_pickup_lib.choose_lib') }
                                 );
@@ -622,10 +616,6 @@ patron.holds.prototype = {
                                 JSAN.use('util.window'); var win = new util.window();
                                 var fancy_prompt_data = win.open(
                                     urls.XUL_FANCY_PROMPT,
-                                    //+ '?xml_in_stash=temp_mid'
-                                    //+ '&bottom_xml_in_stash=temp_bot'
-                                    //+ '&title=' + window.escape('Choose a Hold Notification Phone Number')
-                                    //+ '&focus=phone',
                                     'fancy_prompt', 'chrome,resizable,modal',
                                     { 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : $("patronStrings").getString('staff.patron.holds.holds_edit_phone_notify.choose_phone_number'), 'focus' : 'phone' }
                                 );
@@ -673,10 +663,6 @@ patron.holds.prototype = {
                                 JSAN.use('util.window'); var win = new util.window();
                                 var fancy_prompt_data = win.open(
                                     urls.XUL_FANCY_PROMPT,
-                                    //+ '?xml_in_stash=temp_mid'
-                                    //+ '&bottom_xml_in_stash=temp_bot'
-                                    //+ '&title=' + window.escape('Choose a Hold Notification Phone Number')
-                                    //+ '&focus=phone',
                                     'fancy_prompt', 'chrome,resizable,modal',
                                     { 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : $("patronStrings").getString('staff.patron.holds.holds_edit_sms_notify.choose_phone_number'), 'focus' : 'phone' }
                                 );
@@ -746,9 +732,6 @@ patron.holds.prototype = {
                                 JSAN.use('util.window'); var win = new util.window();
                                 var fancy_prompt_data = win.open(
                                     urls.XUL_FANCY_PROMPT,
-                                    //+ '?xml_in_stash=temp_mid'
-                                    //+ '&bottom_xml_in_stash=temp_bot'
-                                    //+ '&title=' + window.escape('Choose a Pick Up Library'),
                                     'fancy_prompt', 'chrome,resizable,modal',
                                     { 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : $("patronStrings").getString('staff.patron.holds.holds_edit_sms_carrier.choose_carrier') }
                                 );
@@ -798,9 +781,6 @@ patron.holds.prototype = {
                                 JSAN.use('util.window'); var win = new util.window();
                                 var fancy_prompt_data = win.open(
                                     urls.XUL_FANCY_PROMPT,
-                                    //+ '?xml_in_stash=temp_mid'
-                                    //+ '&bottom_xml_in_stash=temp_bot'
-                                    //+ '&title=' + window.escape('Set Email Notification for Holds'),
                                     'fancy_prompt', 'chrome,resizable,modal',
                                     { 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : $("patronStrings").getString('staff.patron.holds.holds_edit_email_notify.set_notifs') }
                                 );

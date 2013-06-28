@@ -209,7 +209,7 @@ function Bucketz39Dialog() {
         */
         var urls = this.xulG.urls || window.urls;
         var loc = urls.XUL_BROWSER + '?url=' + 
-            window.escape(
+            window.encodeURIComponent(
                 this.xulG.url_prefix('EG_WEB_BASE/') +
                 'vandelay/vandelay?qtype=bib&qid=' + this.queue.id()
             );

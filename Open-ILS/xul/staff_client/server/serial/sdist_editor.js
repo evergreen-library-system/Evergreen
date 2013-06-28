@@ -278,7 +278,6 @@ serial.sdist_editor.prototype = {
         JSAN.use('util.window'); var win = new util.window();
         win.open(
             urls.XUL_SERIAL_NOTES, 
-            //+ '?copy_id=' + window.escape(obj.sdists[0].id()),
             $('serialStrings').getString('staff.serial.sdist_editor.notes'),'chrome,resizable,modal',
             { 'object_id' : obj.sdists[0].id(), 'function_type' : 'SDISTN', 'object_type' : 'distribution', 'constructor' : sdistn }
         );

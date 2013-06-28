@@ -3543,7 +3543,7 @@ function AcqLiTable() {
         );
 
         win = window.open(
-            oilsBasePath + '/acq/lineitem/findbib?query=' + escape(query),
+            oilsBasePath + '/acq/lineitem/findbib?query=' + encodeURIComponent(query),
             '', 'resizable,scrollbars=1,chrome');
 
         win.window.recordFound = function(bibId) { 

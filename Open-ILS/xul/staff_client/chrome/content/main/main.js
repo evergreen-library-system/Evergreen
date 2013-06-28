@@ -108,7 +108,7 @@ opentabs:
                         if(urls[firstURL]) {
                             firstURL = urls[firstURL];
                         }
-                        firstURL = '&firstURL=' + window.escape(firstURL);
+                        firstURL = '&firstURL=' + window.encodeURIComponent(firstURL);
                     }
                     else {
                         firstURL = '';
@@ -118,7 +118,7 @@ opentabs:
                     firstURL = '';
                 }
                 targetwindow = xulG.window.open(urls.XUL_MENU_FRAME
-                    + '?server='+window.escape(G.data.server) + firstURL,
+                    + '?server='+window.encodeURIComponent(G.data.server) + firstURL,
                     '_blank','chrome,resizable'
                 );
                 targetwindow.xulG = xulG;

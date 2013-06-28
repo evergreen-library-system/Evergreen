@@ -323,13 +323,11 @@ function clone_patron() {
     try {
         for (var i = 0; i < g.sel_list.length; i++) {    
             var loc = xulG.url_prefix('XUL_REMOTE_BROWSER'); 
-                //+ '?url=' + window.escape( urls.XUL_PATRON_EDIT + '?ses=' 
-                //+ window.escape( ses() ) + '&clone=' + g.sel_list[i] );
             if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') xulG.new_tab(
                 loc, 
                 {}, 
                 { 
-                    'url' : urls.XUL_PATRON_EDIT, // + '?ses=' + window.escape(ses()) + '&clone=' + g.sel_list[i],
+                    'url' : urls.XUL_PATRON_EDIT,
                     'show_print_button' : true , 
                     'tab_name' : $("patronStrings").getString('staff.patron.info_group.clone_patron.register_clone.tab_name'),
                     'passthru_content_params' : {
@@ -365,7 +363,7 @@ function spawn_editor(p) {
     for (var i in p) {
         passthru[i] = p[i];
     }
-    var loc = xulG.url_prefix('XUL_REMOTE_BROWSER'); // + '?url=' + window.escape( url );
+    var loc = xulG.url_prefix('XUL_REMOTE_BROWSER');
     if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') xulG.new_tab(
         loc, 
         {}, 
@@ -505,10 +503,6 @@ function link_patron(direction) {
             JSAN.use('util.window'); var win = new util.window();
             var fancy_prompt_data = win.open(
                 urls.XUL_FANCY_PROMPT,
-                //+ '?xml_in_stash=temp_mid'
-                //+ '&top_xml_in_stash=temp_top'
-                //+ '&bottom_xml_in_stash=temp_bot'
-                //+ '&title=' + window.escape('Move Patron into a Usergroup'),
                 'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
                 { 'xml' : xml, 'top_xml' : top_xml, 'bottom_xml' : bot_xml, 'title' : $("patronStrings").getString('staff.patron.info_group.link_patron.move_patron_to_usergroup')}
             );

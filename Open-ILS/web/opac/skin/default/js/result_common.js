@@ -825,7 +825,7 @@ function fetchGoogleBooksLink () {
         scriptElement.setAttribute("id", "jsonScript");
         scriptElement.setAttribute("src",
             "https://www.googleapis.com/books/v1/volumes?q=" +
-            escape('isbn:' + isbnList.join(' | isbn:')) + "&callback=unhideGoogleBooksLink");
+            encodeURIComponent('isbn:' + isbnList.join(' | isbn:')) + "&callback=unhideGoogleBooksLink");
         scriptElement.setAttribute("type", "text/javascript");
         // make the request to Google Book Search
         document.documentElement.firstChild.appendChild(scriptElement);

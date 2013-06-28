@@ -1526,7 +1526,6 @@ g.copy_notes = function() {
     JSAN.use('util.window'); var win = new util.window();
     win.open(
         urls.XUL_COPY_NOTES, 
-        //+ '?copy_id=' + window.escape(g.copies[0].id()),
         $("catStrings").getString("staff.cat.copy_editor.copy_notes"),'chrome,resizable,modal',
         { 'copy_id' : g.copies[0].id() }
     );

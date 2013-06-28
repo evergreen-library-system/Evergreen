@@ -109,7 +109,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
 
                                 // Do pre-query stuff
                                 dojo.forEach(pre_query_callbacks, function (cb) {
-                                    try { (new Function( 'BT', 'slotXML', 'slot', unescape(cb.innerHTML) ))(BT,bib,slot) } catch (e) {/*meh*/}
+                                    try { (new Function( 'BT', 'slotXML', 'slot', decodeURIComponent(cb.innerHTML) ))(BT,bib,slot) } catch (e) {/*meh*/}
                                 });
 
                                 var query = slot.getAttribute('query');
@@ -130,14 +130,14 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
 
                                 // Do post-query stuff
                                 dojo.forEach(post_query_callbacks, function (cb) {
-                                    try { (new Function( 'item_list', 'BT', 'slotXML', 'slot', unescape(cb.innerHTML) ))(item_list,BT,bib,slot) } catch (e) {/*meh*/}
+                                    try { (new Function( 'item_list', 'BT', 'slotXML', 'slot', decodeURIComponent(cb.innerHTML) ))(item_list,BT,bib,slot) } catch (e) {/*meh*/}
                                 });
 
                                 if (!item_list.length) return;
 
                                 // Do pre-render stuff
                                 dojo.forEach(pre_render_callbacks, function (cb) {
-                                    try { (new Function( 'item_list', 'BT', 'slotXML', 'slot', unescape(cb.innerHTML) ))(item_list,BT,bib,slot) } catch (e) {/*meh*/}
+                                    try { (new Function( 'item_list', 'BT', 'slotXML', 'slot', decodeURIComponent(cb.innerHTML) ))(item_list,BT,bib,slot) } catch (e) {/*meh*/}
                                 });
 
                                 var templated = slot.getAttribute('templated') == 'true';
@@ -152,7 +152,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                                         slot
                                     ).orphan().forEach(function(x) {
                                         var name = x.getAttribute('name');
-                                        var value = (new Function( 'item_list', 'BT', 'slotXML', 'slot', unescape(x.innerHTML) ))(item_list,BT,bib,slot);
+                                        var value = (new Function( 'item_list', 'BT', 'slotXML', 'slot', decodeURIComponent(x.innerHTML) ))(item_list,BT,bib,slot);
                                         if (name && (value || value == '')) {
                                             template_values[name] = value;
                                             template_value_count++;
@@ -164,7 +164,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                                         dojo.attr(
                                             slot, "innerHTML",
                                             dojo.string.substitute(
-                                                unescape(slot.innerHTML),
+                                                decodeURIComponent(slot.innerHTML),
                                                 template_values
                                             )
                                         );
@@ -188,7 +188,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
 
                                 // Do post-render stuff
                                 dojo.forEach(post_render_callbacks, function (cb) {
-                                    try { (new Function( 'item_list', 'BT', 'slotXML', 'slot', unescape(cb.innerHTML) ))(item_list,BT,bib,slot) } catch (e) {/*meh*/}
+                                    try { (new Function( 'item_list', 'BT', 'slotXML', 'slot', decodeURIComponent(cb.innerHTML) ))(item_list,BT,bib,slot) } catch (e) {/*meh*/}
                                 });
 
                             } catch (e) {
