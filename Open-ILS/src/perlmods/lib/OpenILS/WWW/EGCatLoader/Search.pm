@@ -137,7 +137,7 @@ sub _prepare_biblio_search {
     }
 
     my $pref_ou = $ctx->{pref_ou};
-    if (defined($pref_ou) and $pref_ou ne '' and $pref_ou != $org and ($pref_ou ne $ctx->{aou_tree}->()->id)) {
+    if (defined($pref_ou) and $pref_ou ne '' and $pref_ou != $org and ($pref_ou ne $ctx->{aou_tree}->()->id) and not $query =~ / pref_ou\(\S+\)/) {
         my $plib = $ctx->{get_aou}->($pref_ou)->shortname;
         $query .= " pref_ou($plib)";
     }
