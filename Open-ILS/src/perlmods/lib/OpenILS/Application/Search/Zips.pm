@@ -8,6 +8,8 @@ use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Editor;
 use OpenSRF::Utils::SettingsClient;
 
+use open ':utf8';
+
 my %zips;
 
 # -----------------------------------------------------------------
