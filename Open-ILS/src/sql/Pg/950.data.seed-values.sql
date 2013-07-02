@@ -2449,6 +2449,17 @@ INSERT INTO asset.call_number_suffix (id, owning_lib, label) VALUES (-1, 1, '');
 INSERT INTO asset.call_number_prefix (id, owning_lib, label) VALUES (-1, 1, '');
 INSERT INTO asset.call_number VALUES (-1,1,NOW(),1,NOW(),-1,1,'UNCATALOGED');
 
+--090.schema.action.sql
+INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (1, oils_i18n_gettext(1, 'Untargeted expiration', 'ahrcc', 'label'));
+INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (2, oils_i18n_gettext(2, 'Hold Shelf expiration', 'ahrcc', 'label'));
+INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (3, oils_i18n_gettext(3, 'Patron via phone', 'ahrcc', 'label'));
+INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (4, oils_i18n_gettext(4, 'Patron in person', 'ahrcc', 'label'));
+INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (5, oils_i18n_gettext(5, 'Staff forced', 'ahrcc', 'label'));
+INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (6, oils_i18n_gettext(6, 'Patron via OPAC', 'ahrcc', 'label'));
+INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (7, oils_i18n_gettext(7, 'Patron via SIP', 'ahrcc', 'label'));
+SELECT SETVAL('action.hold_request_cancel_cause_id_seq', 100);
+
+
 -- circ matrix
 INSERT INTO config.circ_matrix_matchpoint (org_unit,grp,circulate,duration_rule,recurring_fine_rule,max_fine_rule) VALUES (1,1,true,11,1,1);
 

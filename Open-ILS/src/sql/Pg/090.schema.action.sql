@@ -360,14 +360,6 @@ CREATE TABLE action.hold_request_cancel_cause (
     id      SERIAL  PRIMARY KEY,
     label   TEXT    UNIQUE
 );
-INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (1,'Untargeted expiration');
-INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (2,'Hold Shelf expiration');
-INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (3,'Patron via phone');
-INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (4,'Patron in person');
-INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (5,'Staff forced');
-INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (6,'Patron via OPAC');
-INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (7,'Patron via SIP');
-SELECT SETVAL('action.hold_request_cancel_cause_id_seq', 100);
 
 CREATE TABLE action.hold_request (
 	id			SERIAL				PRIMARY KEY,
