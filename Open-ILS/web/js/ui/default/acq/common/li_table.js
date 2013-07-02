@@ -74,7 +74,7 @@ function AcqLiTable() {
     this.liNotesRow = this.liNotesTbody.removeChild(dojo.byId('acq-lit-notes-row'));
     this.realCopiesTbody = dojo.byId('acq-lit-real-copies-tbody');
     this.realCopiesRow = this.realCopiesTbody.removeChild(dojo.byId('acq-lit-real-copies-row'));
-    this._copy_fields_for_acqdf = ['owning_lib', 'location'];
+    this._copy_fields_for_acqdf = ['owning_lib', 'location', 'fund', 'circ_modifier', 'collection_code'];
     this.skipInitialEligibilityCheck = false;
     this.claimDialog = new ClaimDialogManager(
         liClaimDialog, finalClaimDialog, this.claimEligibleLidByLi,
