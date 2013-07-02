@@ -113,7 +113,7 @@ circ.checkout.prototype = {
                         ['keypress'],
                         function(ev) {
                             if (ev.keyCode && ev.keyCode == 13) {
-                                obj.checkout( { barcode: ev.target.value } );
+                                obj.checkout( { barcode: ev.target.value.trim() } );
                             }
                         }
                     ],
@@ -143,7 +143,7 @@ circ.checkout.prototype = {
 
                             if (obj.controller.view.checkout_menu.value == 'barcode' ||
                                 obj.controller.view.checkout_menu.value === '') {
-                                params.barcode = obj.controller.view.checkout_barcode_entry_textbox.value;
+                                params.barcode = obj.controller.view.checkout_barcode_entry_textbox.value.trim();
                             } else {
                                 params.noncat = 1;
                                 params.noncat_type = obj.controller.view.checkout_menu.value;
