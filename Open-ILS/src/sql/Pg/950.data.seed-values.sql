@@ -2525,6 +2525,14 @@ INSERT INTO config.settings_group (name, label) VALUES
 ;
 
 
+INSERT INTO acq.user_request_type (id,label) VALUES (1, oils_i18n_gettext('1', 'Books', 'aurt', 'label'));
+INSERT INTO acq.user_request_type (id,label) VALUES (2, oils_i18n_gettext('2', 'Journal/Magazine & Newspaper Articles', 'aurt', 'label'));
+INSERT INTO acq.user_request_type (id,label) VALUES (3, oils_i18n_gettext('3', 'Audiobooks', 'aurt', 'label'));
+INSERT INTO acq.user_request_type (id,label) VALUES (4, oils_i18n_gettext('4', 'Music', 'aurt', 'label'));
+INSERT INTO acq.user_request_type (id,label) VALUES (5, oils_i18n_gettext('5', 'DVDs', 'aurt', 'label'));
+
+SELECT SETVAL('acq.user_request_type_id_seq'::TEXT, 6);
+
 
 -- org_unit setting types
 INSERT into config.org_unit_setting_type
