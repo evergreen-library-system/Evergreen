@@ -267,13 +267,6 @@
   width: 180px;
   }
 
-  a {
-  font-size: 85%;
-  font-weight: bold;
-  color: black;
-  text-decoration: none;
-  }
-
   #alignment {
         border-collapse: collapse;
         border-style: none;
@@ -282,12 +275,25 @@
 
   #alignment td {
         vertical-align: top;
+        font-size: 85%;
+	font-weight: bold;
+	color: black;
+	text-decoration: none;
   }
 
   .functionlist {
         border-style: none;
         margin-left: auto;
         margin-right: auto;
+        border-collapse:collapse;
+  }
+
+  .functionlist tr.clickable {
+        cursor:pointer;
+  }
+
+  .functionlist tr.clickable:hover {
+        background-color:#e0e0e0;
   }
 
   .functionlist td {
@@ -316,6 +322,10 @@
   .newtabimg {
         float: right;
         padding-left:4px;
+  }
+
+  .newtabimg:hover {
+        background-color: lightgreen;
   }
 
   .funcimg {
@@ -350,65 +360,48 @@
           <hr />
 
           <table class="functionlist">
-            <tr>
+            <tr class="clickable" onclick="try { checkout(false); } catch(E) { alert(E); }">
               <td height="50"><img src="skin/media/images/portal/forward.png" height="48" width="48"
-              onclick="try { checkout(false); } catch(E) { alert(E); }" alt=
-              "&staff.client.portal.checkout.description;" /></td>
+              alt="&staff.client.portal.checkout.description;" /></td>
 
               <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="&staff.client.portal.open_new_tab.description;"
-              onclick="try { checkout(true); } catch(E) { alert(E); }" /><a href="#"
-              onclick=
-              "try { checkout(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.checkout;</a><br />
-              <a href="#" onclick=
-              "try { checkout(false); } catch(E) { alert(E); }; return false;"><span class="c2">
-              &staff.client.portal.retrievebc;</span></a></td>
+              onclick="try { checkout(true); } catch(E) { alert(E); }" /> &staff.client.portal.checkout;<br />
+              <span class="c2">&staff.client.portal.retrievebc;</span></td>
             </tr>
 
-            <tr>
-              <td height="50"><img src="skin/media/images/portal/back.png" height="48" width="48" onclick=
-              "try { checkin(false); } catch(E) { alert(E); }" alt=
-              "&staff.client.portal.checkin.description;" /></td>
+            <tr class="clickable" onclick="try { checkin(false); } catch(E) { alert(E); }">
+              <td height="50"><img src="skin/media/images/portal/back.png" height="48" width="48"
+	      alt="&staff.client.portal.checkin.description;" /></td>
 
               <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="&staff.client.portal.open_new_tab.description;"
-              onclick="try { checkin(true); } catch(E) { alert(E); }" /> <a href="#"
-              onclick=
-              "try { checkin(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.checkin;</a><br /></td>
+              onclick="try { checkin(true); } catch(E) { alert(E); }" />&staff.client.portal.checkin;<br /></td>
             </tr>
 
-            <tr>
+            <tr class="clickable" onclick="try { register_patron(false); } catch(E) { alert(E); }">
               <td height="50"><img src="skin/media/images/portal/registerpatron.png" height="48" width="48"
-              onclick="try { register_patron(false); } catch(E) { alert(E); }" alt=
-              "&staff.client.portal.patronreg.description;" /></td>
+              alt="&staff.client.portal.patronreg.description;" /></td>
 
               <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="&staff.client.portal.open_new_tab.description;"
-              onclick="try { register_patron(true); } catch(E) { alert(E); }" /> <a href=
-              "#" onclick=
-              "try { register_patron(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.patronreg;</a></td>
+              onclick="try { register_patron(true); } catch(E) { alert(E); }" /> &staff.client.portal.patronreg;</td>
             </tr>
 
-            <tr>
+            <tr class="clickable" onclick="try { find_patron(false); } catch(E) { alert(E); }">
               <td height="50"><img src="skin/media/images/portal/retreivepatron.png" height="48" width="48"
-              onclick="try { find_patron(false); } catch(E) { alert(E); }" alt=
-              "&staff.client.portal.patronsearch.description;" /></td>
+              alt="&staff.client.portal.patronsearch.description;" /></td>
 
               <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="&staff.client.portal.open_new_tab.description;"
-              onclick="try { find_patron(true); } catch(E) { alert(E); }" /> <a href="#"
-              onclick=
-              "try { find_patron(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.patronsearch;</a></td>
+              onclick="try { find_patron(true); } catch(E) { alert(E); }" /> &staff.client.portal.patronsearch;</td>
             </tr>
 
-            <tr>
-              <td height="50"><img class="funcimg" src="skin/media/images/portal/holds.png" height="48"
-              width="48" onclick="try { hold_pull_list(false); } catch(E) { alert(E); }"
+            <tr class="clickable" onclick="try { hold_pull_list(false); } catch(E) { alert(E); }">
+              <td height="50"><img class="funcimg" src="skin/media/images/portal/holds.png" height="48" width="48"
               alt="&staff.client.portal.holdlist.description;" /></td>
 
               <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="&staff.client.portal.open_new_tab.description;"
-              onclick="try { hold_pull_list(true); } catch(E) { alert(E); }" /> <a href=
-              "#" onclick=
-              "try { hold_pull_list(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.holdlist;</a></td>
+              onclick="try { hold_pull_list(true); } catch(E) { alert(E); }" /> &staff.client.portal.holdlist;</td>
             </tr>
 <!--
-            <tr>
+            <tr class="clickable" onclick="try { address_map(false); } catch(E) { alert(E); }">
               <td height="50"><img src="skin/media/images/portal/map.PNG" alt="Locate Address In Map"
               onclick="try { address_map(false); } catch(E) { alert(E); }" /></td>
 
@@ -437,69 +430,52 @@
               </td>
             </tr>
 
-            <tr>
-              <td height="50"><img src="skin/media/images/portal/book.png" height="48" width="48" onclick=
-              "try { catalog(false); } catch(E) { alert(E); }" alt=
-              "&staff.client.portal.advsearch.description;" /></td>
+            <tr class="clickable" onclick="try { catalog(false); } catch(E) { alert(E); }">
+              <td height="50"><img src="skin/media/images/portal/book.png" height="48" width="48"
+	      alt="&staff.client.portal.advsearch.description;" /></td>
 
               <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="&staff.client.portal.open_new_tab.description;"
-              onclick="try { catalog(true); } catch(E) { alert(E); }" /> <a href="#"
-              onclick=
-              "try { catalog(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.advsearch;</a></td>
+              onclick="try { catalog(true); } catch(E) { alert(E); }" /> &staff.client.portal.advsearch;</td>
             </tr>
 
-            <tr>
-              <td height="50"><img src="skin/media/images/portal/book.png" height="48" width="48" onclick=
-              "try { copy_status(false); } catch(E) { alert(E); }" alt=
-              "&staff.client.portal.itemstatus.description;" /></td>
+            <tr class="clickable" onclick="try { copy_status(false); } catch(E) { alert(E); }">
+              <td height="50"><img src="skin/media/images/portal/book.png" height="48" width="48" 
+	      alt="&staff.client.portal.itemstatus.description;" /></td>
 
               <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="&staff.client.portal.open_new_tab.description;"
-              onclick="try { copy_status(true); } catch(E) { alert(E); }" /> <a href="#"
-              onclick=
-              "try { copy_status(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.itemstatus;</a></td>
+              onclick="try { copy_status(true); } catch(E) { alert(E); }" /> &staff.client.portal.itemstatus;</td>
             </tr>
 
-            <tr>
+            <tr class="clickable" onclick="try { MARC_batch_import(false); } catch(E) { alert(E); }">
               <td height="50"><img src="skin/media/images/portal/batchimport.png" height="48" width="48"
-              onclick="try { MARC_batch_import(false); } catch(E) { alert(E); }" alt=
-              "&staff.client.portal.marcutil.description;" /></td>
+              alt="&staff.client.portal.marcutil.description;" /></td>
 
               <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="&staff.client.portal.open_new_tab.description;"
-              onclick="try { MARC_batch_import(true); } catch(E) { alert(E); }" />
-              <a href="#" onclick=
-              "try { MARC_batch_import(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.marcutil;</a></td>
+              onclick="try { MARC_batch_import(true); } catch(E) { alert(E); }" /> &staff.client.portal.marcutil;</td>
             </tr>
 
-            <tr>
-              <td height="50"><img src="skin/media/images/portal/z3950.png" height="48" width="48" onclick=
-              "try { z39_50(false); } catch(E) { alert(E); }" alt="&staff.client.portal.z3950.description;" /></td>
+            <tr class="clickable" onclick="try { z39_50(false); } catch(E) { alert(E); }">
+              <td height="50"><img src="skin/media/images/portal/z3950.png" height="48" width="48"
+	      alt="&staff.client.portal.z3950.description;" /></td>
 
               <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="&staff.client.portal.open_new_tab.description;"
-              onclick="try { z39_50(true); } catch(E) { alert(E); }" /> <a href="#"
-              onclick=
-              "try { z39_50(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.z3950;</a></td>
+              onclick="try { z39_50(true); } catch(E) { alert(E); }" /> &staff.client.portal.z3950;</td>
             </tr>
 
-            <tr>
-              <td height="50"><img src="skin/media/images/portal/bucket.png" height="48" width="48" onclick=
-              "try { copy_buckets(false); } catch(E) { alert(E); }" alt=
-              "&staff.client.portal.copybuckets.description;" /></td>
+            <tr class="clickable" onclick="try { copy_buckets(false); } catch(E) { alert(E); }">
+              <td height="50"><img src="skin/media/images/portal/bucket.png" height="48" width="48" 
+	      alt="&staff.client.portal.copybuckets.description;" /></td>
 
               <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="&staff.client.portal.open_new_tab.description;"
-              onclick="try { copy_buckets(true); } catch(E) { alert(E); }" /> <a href="#"
-              onclick=
-              "try { copy_buckets(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.copybuckets;</a></td>
+              onclick="try { copy_buckets(true); } catch(E) { alert(E); }" /> &staff.client.portal.copybuckets;</td>
             </tr>
 
-            <tr>
-              <td height="50"><img src="skin/media/images/portal/bucket.png" height="48" width="48" onclick=
-              "try { record_buckets(false); } catch(E) { alert(E); }" alt=
-              "&staff.client.portal.recordbuckets.description;" /></td>
+            <tr class="clickable" onclick="try { record_buckets(false); } catch(E) { alert(E); }">
+              <td height="50"><img src="skin/media/images/portal/bucket.png" height="48" width="48"
+	      alt="&staff.client.portal.recordbuckets.description;" /></td>
 
               <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="&staff.client.portal.open_new_tab.description;"
-              onclick="try { record_buckets(true); } catch(E) { alert(E); }" /> <a href=
-              "index.html#" onclick=
-              "try { record_buckets(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.recordbuckets;</a></td>
+              onclick="try { record_buckets(true); } catch(E) { alert(E); }" /> &staff.client.portal.recordbuckets;</td>
             </tr>
           </table><br />
         </div>
@@ -511,36 +487,27 @@
           <hr />
 
           <table class="functionlist">
-            <tr>
+            <tr class="clickable" onclick="try { helpdesk(false); } catch(E) { alert(E); }">
               <td height="50"><img src="skin/media/images/portal/helpdesk.png" height="48" width="48"
-              onclick="try { helpdesk(false); } catch(E) { alert(E); }" alt=
-              "&staff.client.portal.helpdesk.description;" /></td>
+              alt="&staff.client.portal.helpdesk.description;" /></td>
 
-              <td><a href="#"
-              onclick="try { helpdesk(false); } catch(E) { alert(E); }">&staff.client.portal.helpdesk;</a></td>
+              <td>&staff.client.portal.helpdesk;</td>
             </tr>
 
-            <tr>
+            <tr class="clickable" onclick="try { local_admin_reports(false); } catch(E) { alert(E); }">
               <td height="50"><img src="skin/media/images/portal/reports.png" height="48" width="48"
-              onclick="try { local_admin_reports(false); } catch(E) { alert(E); }" alt=
-              "&staff.client.portal.reports.description;" /></td>
+              alt="&staff.client.portal.reports.description;" /></td>
 
               <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="&staff.client.portal.open_new_tab.description;"
-              onclick="try { local_admin_reports(true); } catch(E) { alert(E); }" />
-              <a href="#" onclick=
-              "try { local_admin_reports(false); } catch(E) { alert(E); }; return false;">
-              &staff.client.portal.reports;</a></td>
+              onclick="try { local_admin_reports(true); } catch(E) { alert(E); }" /> &staff.client.portal.reports;</td>
             </tr>
 
-            <tr>
+            <tr class="clickable" onclick="try { receipt_editor(false); } catch(E) { alert(E); }">
               <td height="50"><img src="skin/media/images/portal/receipt_editor.png" height="48" width="48"
-              onclick="try { receipt_editor(false); } catch(E) { alert(E); }" alt=
-              "&staff.client.portal.receipts.description;" /></td>
+	      alt="&staff.client.portal.receipts.description;" /></td>
 
               <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="&staff.client.portal.open_new_tab.description;"
-              onclick="try { receipt_editor(true); } catch(E) { alert(E); }" /> <a href=
-              "#" onclick=
-              "try { receipt_editor(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.receipts;</a></td>
+              onclick="try { receipt_editor(true); } catch(E) { alert(E); }" /> &staff.client.portal.receipts;</td>
             </tr>
           </table>
         </div>
