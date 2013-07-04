@@ -530,6 +530,14 @@ RewriteRule .? - [E=locale:%{HTTP:Accept-Language}]
 # ----------------------------------------------------------------------------------
 # Reports GUI
 # ----------------------------------------------------------------------------------
+<LocationMatch /reports.*\.x?html>
+    SSILegacyExprParser on
+    Options +Includes
+    XMLEntContentType "text/html; charset=utf-8"
+    AddOutputFilter INCLUDES;XMLENT .xhtml
+    AddOutputFilter INCLUDES;XMLENT .html
+</LocationMatch>
+
 <LocationMatch /reports>
     SSILegacyExprParser on
     Options +Includes
