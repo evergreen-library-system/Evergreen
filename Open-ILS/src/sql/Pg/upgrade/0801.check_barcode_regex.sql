@@ -1,3 +1,7 @@
+BEGIN;
+
+SELECT evergreen.upgrade_deps_block_check('0801', :eg_version);
+
 INSERT into config.org_unit_setting_type
 ( name, grp, label, description, datatype, fm_class ) VALUES
 ( 'ui.patron.edit.ac.barcode.regex', 'gui',
@@ -8,3 +12,5 @@ INSERT into config.org_unit_setting_type
         'The Regular Expression for validation on barcodes in patron registration.',
         'coust', 'description'),
     'string', null);
+
+COMMIT;
