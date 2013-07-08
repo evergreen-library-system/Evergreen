@@ -282,6 +282,7 @@ sub lineitem_batch_update_impl {
     # Now, going through all our lineitem details, make the updates
     # called for in $changes, other than the 'item_count' field (handled above).
 
+    my %fund_cache;
     my @fields = qw/owning_lib fund location collection_code circ_modifier/;
     foreach my $jub (@$lineitems) {
         # We use the counting style of loop below because we need to know our
@@ -300,6 +301,7 @@ sub lineitem_batch_update_impl {
             }
 
             # Handle existing and new copies.
+            my $fund_changed = 0;
             foreach my $field (@fields) {
                 # Calling pick_winning_change() in list context gets us an
                 # empty list for "no change to make", (undef) for "clear the
@@ -315,6 +317,12 @@ sub lineitem_batch_update_impl {
                         my $meth = "clear_$field";
                         $lid->$meth;
                     } else {
+
+                        $fund_changed = 1 if 
+                            !$lid->isnew and 
+                            $field eq 'fund' and 
+                            $lid->$field ne $change;
+
                         $lid->$field($change);
                     }
                 }
@@ -323,7 +331,18 @@ sub lineitem_batch_update_impl {
             my $method = ($lid->isnew ? "create" : "update") .
                 "_acq_lineitem_detail";
 
-            $e->$method($lid) or return $e->die_event;
+            if ($fund_changed) {
+                # handle_changed_lid updates any existing fund debits
+                # linked to the LID to use the new fund.  If the fund
+                # balance reaches a stop/warn percent (or error), 
+                # processing exits early and returns an event.
+                my $evt = 
+                    OpenILS::Application::Acq::Order::handle_changed_lid(
+                        $e, $lid, 0, \%fund_cache);
+                return $evt if $evt;
+            } else {
+                $e->$method($lid) or return $e->die_event;
+            }
         }
 
         if (defined $starting_use_count and
