@@ -321,25 +321,28 @@ dedicated machine. You can install the packages required by Debian or Ubuntu Luc
 on the machine of your choice using the following commands as the *root*
 Linux account:
 
-.(Debian and Ubuntu Lucid) Installing PostgreSQL 9.1 server packages
+.(Debian / Ubuntu / Fedora) Installing PostgreSQL server packages
+
+Each OS build target provides the postgres server installation packages
+required for each operating system.  To install Postgres server packages, 
+use the make target 'postgres-server-<OSTYPE>'.  Choose the most appropriate 
+command below based on your operating system.
+
 [source, bash]
 ------------------------------------------------------------------------------
-make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_backport_debs_91
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-wheezy
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-squeeze
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-lucid
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-precise
+make -f Open-ILS/src/extras/Makefile.install postgres-server-fedora
 ------------------------------------------------------------------------------
 
-.(Ubuntu Precise) Installing PostgreSQL 9.1 server packages
+.(Fedora) Postgres initialization
+
+Installing Postgres on Fedora requires one additional step.
+
 [source, bash]
 ------------------------------------------------------------------------------
-make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_91
-------------------------------------------------------------------------------
-
-You can install the packages required by Fedora on the machine of your choice
-using the following commands as the *root* Linux account:
-
-.(Fedora) Installing PostgreSQL server packages
-[source, bash]
-------------------------------------------------------------------------------
-make -f Open-ILS/src/extras/Makefile.install install_fedora_pgsql_server
 postgresql-setup initdb
 ------------------------------------------------------------------------------
 

@@ -62,4 +62,15 @@ ubuntu-precise:
 fedora:
 	@make -f $(DIR)/Makefile.fedora
 
+postgres-server-debian-wheezy:
+	@make -f $(DIR)/Makefile.debian-wheezy install_postgres_server
+postgres-server-debian-squeeze: 
+	@make -f $(DIR)/Makefile.debian-squeeze install_postgres_server
+postgres-server-ubuntu-lucid:
+	@make -f $(DIR)/Makefile.ubuntu-lucid install_postgres_server
+postgres-server-ubuntu-precise:
+	@make -f $(DIR)/Makefile.ubuntu-precise install_postgres_server
+postgres-server-fedora:
+	@make -f $(DIR)/Makefile.fedora install_postgres_server
+
 # vim:noet:sw=4:ts=4:

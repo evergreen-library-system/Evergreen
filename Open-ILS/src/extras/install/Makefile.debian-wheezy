@@ -86,7 +86,7 @@ all:
 	make -f $(DIR)/Makefile.debian install_js_sm
 	make -f $(DIR)/Makefile.debian debian_sys_config
 
-install_pgsql_server_debs_91:
+install_postgres_server:
 	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_91)"
 
 clean:
