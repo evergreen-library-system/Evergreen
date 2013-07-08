@@ -1,0 +1,14 @@
+Linked library names in copy details
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A patron may find one or more available copies of an item that they want to
+retrieve, but may not be familiar with the location, hours of operation, or
+contact information for each branch of their local library system. To enable
+the patron to quickly access information about a given library branch, the TPAC
+and KPAC can link the name of the branch in the copy details display to a URL
+associated with that branch.
+
+To set the URL for a given branch, use the *Local Administration -> Library
+Settings Editor* and edit the *Library Information URL* setting for that
+branch. Any branches that do not have a library information URL setting display
+as normal text.

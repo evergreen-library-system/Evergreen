@@ -233,7 +233,14 @@ END;
                                                                         <tbody>
                                                                 [% FOR copy IN args.holdings %]
                                                                         <tr>
-                                                                            <td>[% copy.library | html %]</td>
+                                                                            <td>
+[%-
+    lib_url = ctx.get_org_setting(copy.circ_lib, 'lib.info_url');
+    IF lib_url; '<a href="'; lib_url | url; '">'; END;
+    copy.library | html;
+    IF lib_url; '</a>'; END;
+-%]
+                                                                            </td>
                                                                             <td>[% copy.location | html %]</td>
                                                                             <td>[% copy.label | html %]</td>
                                                                             [%- IF has_parts == 'true'; %]

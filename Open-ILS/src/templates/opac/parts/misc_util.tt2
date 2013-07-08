@@ -351,14 +351,16 @@
                     status = copy.findnodes('./*[local-name()="status"]');
                     NEXT IF status.getAttribute('opac_visible') == 'false';
 
+                    # extract the circ_lib id from the circ_lib node
+                    circ_lib = copy.findnodes('./*[local-name()="circ_lib"]');
+                    circ_lib_id = circ_lib.getAttribute('id').replace('.*/', '');
+
                     UNLESS ou_hiding_disabled;
-                        # extract the circ_lib id from the circ_lib node
-                        circ_lib = copy.findnodes('./*[local-name()="circ_lib"]');
-                        circ_lib_id = circ_lib.getAttribute('id').replace('.*/', '');
                         NEXT UNLESS ctx.org_within_hiding_scope(circ_lib_id);
                     END;
 
                     holding = {
+                        circ_lib => circ_lib_id,
                         label => vol.label,
                         part_label => part_label,
                         location => loc.textContent,
