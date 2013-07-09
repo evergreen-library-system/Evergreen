@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0802', :eg_version);
 
 CREATE OR REPLACE FUNCTION authority.normalize_heading( marcxml TEXT, no_thesaurus BOOL ) RETURNS TEXT AS $func$
 DECLARE
@@ -92,7 +92,7 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL IMMUTABLE;
 
-REATE OR REPLACE FUNCTION authority.simple_heading_set( marcxml TEXT ) RETURNS SETOF authority.simple_heading AS $func$
+CREATE OR REPLACE FUNCTION authority.simple_heading_set( marcxml TEXT ) RETURNS SETOF authority.simple_heading AS $func$
 DECLARE
     res             authority.simple_heading%ROWTYPE;
     acsaf           authority.control_set_authority_field%ROWTYPE;
