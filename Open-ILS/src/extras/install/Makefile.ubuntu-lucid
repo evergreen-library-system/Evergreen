@@ -3,6 +3,11 @@
 DIR = $(dir $(lastword $(MAKEFILE_LIST)))
 APT_SAFE_TOOL = aptitude -P
 
+# We need a recent version of Yaz
+# Ubuntu 10.04 comes with 3.0.52
+YAZ=yaz-4.2.32
+YAZ_HOST=http://ftp.indexdata.dk/pub/yaz
+
 export DEBS = \
 	apache2-prefork-dev\
 	aspell\
@@ -42,7 +47,8 @@ export DEBS = \
 	libuniversal-require-perl\
 	libunix-syslog-perl\
     libuuid-tiny-perl\
-	libyaz-dev\
+	libbz2-dev\
+	libsoap-lite-perl
 
 export DEB_APACHE_MODS = \
     expires\
@@ -79,15 +85,19 @@ PGSQL_CLIENT_DEBS_91 = \
 	libpq-dev \
 	postgresql-client-9.1
 
-all:
+all: install_yaz
 	make -f $(DIR)/Makefile.debian install_debs
 	make -f $(DIR)/Makefile.debian test_for_libdbi_pkg
-	make -f $(DIR)/Makefile.common install_yaz
 	make -f $(DIR)/Makefile.common install_net_z3950_simpleserver
 	make -f $(DIR)/Makefile.common install_cpan
 	make -f $(DIR)/Makefile.common install_cpan_force
 	make -f $(DIR)/Makefile.debian install_js_sm
 	make -f $(DIR)/Makefile.debian debian_sys_config
+
+install_yaz:
+	if [ ! -d $(YAZ) ]; then wget $(YAZ_HOST)/$(YAZ).tar.gz; fi;
+	tar xzf $(YAZ).tar.gz
+	cd $(YAZ) && ./configure && make && make install && ldconfig
 
 install_pgsql_server_debs_91:
 	$(APT_TOOL) install $(PGSQL_SERVER_DEBS_91)

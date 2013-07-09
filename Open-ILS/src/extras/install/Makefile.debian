@@ -1,7 +1,6 @@
 # actions required by all debian-based OSs
 
-# is this OS-specific?
-APT_TOOL=aptitude -yq
+APT_TOOL=apt-get -yq
 
 install_debs:
 	$(APT_TOOL) install $(DEBS)

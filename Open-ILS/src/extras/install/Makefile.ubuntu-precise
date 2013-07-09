@@ -54,6 +54,7 @@ export DEBS = \
 	libuuid-tiny-perl\
 	libyaz-dev\
 	postgresql-client-9.1\
+	libsoap-lite-perl\
 	yaz
 
 export DEB_APACHE_MODS = \

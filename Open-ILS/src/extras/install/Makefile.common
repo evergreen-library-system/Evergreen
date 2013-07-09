@@ -1,10 +1,5 @@
 # Functions used by all installers
 
-# We need a recent version of Yaz
-# Ubuntu 10.04 comes with 3.0.52
-YAZ=yaz-4.2.32
-YAZ_HOST=http://ftp.indexdata.dk/pub/yaz
-
 # Install the CPAN modules
 install_cpan:
 	for m in $(CPAN_MODULES); do perl -MCPAN -e "install \"$$m\";"; done
@@ -36,11 +31,5 @@ clean:
 	make -C $(LIBDBI) clean
 	make -C $(LIBDBI_DRIVERS) clean
 	make -C $(LIBJS_PERL) clean
-
-# Install a known working version of YAZ
-install_yaz:    
-	if [ ! -d $(YAZ) ]; then wget $(YAZ_HOST)/$(YAZ).tar.gz; fi;
-	tar xzf $(YAZ).tar.gz
-	cd $(YAZ) && ./configure && make && make install && ldconfig
 
 # vim:noet:sw=4:ts=4:
