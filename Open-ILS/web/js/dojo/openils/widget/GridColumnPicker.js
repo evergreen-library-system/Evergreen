@@ -25,7 +25,7 @@ if(!dojo._hasResource["openils.widget.GridColumnPicker"]) {
     dojo.require('openils.Event');
     dojo.require('openils.Util');
     dojo.require('fieldmapper.Fieldmapper');
-
+    dojo.requireLocalization('openils.widget', 'AutoFieldWidget');
 
     dojo.declare('openils.widget.GridColumnPicker', null, {
 
@@ -33,6 +33,7 @@ if(!dojo._hasResource["openils.widget.GridColumnPicker"]) {
 
         constructor : function (authtoken, persistKey, grid, structure) {
             var _this = this;
+            this.nls = dojo.i18n.getLocalization('openils.widget', 'AutoFieldWidget');
             this.grid = grid;
             this.persistKey = this.USER_PERSIST_SETTING+'.'+persistKey;
             this.authtoken = authtoken || openils.User.authtoken;
@@ -41,6 +42,7 @@ if(!dojo._hasResource["openils.widget.GridColumnPicker"]) {
 
             this.dialog = this.buildDialog();
             this.dialogTable = this.dialog.containerNode.getElementsByTagName('tbody')[0];
+
 
             // replace: called after any sort changes
             this.onSortChange = function(list) {console.log('onSortChange()')}
@@ -118,13 +120,13 @@ if(!dojo._hasResource["openils.widget.GridColumnPicker"]) {
 
         buildDialog : function() {
             var self = this;
-            
-            // TODO i18n
 
-            var dialog = new dijit.Dialog({title : 'Column Picker'});
+            var dialog = new dijit.Dialog({title : this.nls.COLUMN_PICKER});
             var table = dojo.create('table', {'class':'oils-generic-table', innerHTML : 
-                "<table><thead><tr><th width='30%'>Column</th><th width='23%'>Display</th>" +
-                "<th width='23%'>Auto Width</th><th width='23%'>Sort Priority</th></tr></thead>" +
+                "<table><thead><tr><th width='30%'>" + this.nls.COLUMN + "</th>" +
+		"<th width='23%'>" + this.nls.DISPLAY + "</th>" +
+                "<th width='23%'>" + this.nls.AUTO_WIDTH + "</th>" +
+		"<th width='23%'>" + this.nls.SORT_PRIORITY + "</th></tr></thead>" +
                 "<tbody />"});
 
             var tDiv = dojo.create('div');
@@ -135,8 +137,8 @@ if(!dojo._hasResource["openils.widget.GridColumnPicker"]) {
 
             var textDiv = dojo.create('div', {style : 'padding:5px; margin-top:5px; border-top:1px solid #333', 
                 innerHTML :
-                    "<i>A Sort Priority of '0' means no sorting is applied.<br/>" +
-                    "<i>Apply a negative Sort Priority for descending sort."});
+                    "<i>" + this.nls.SORT_PRIORITY_ZERO + "<br/>" +
+                    "<i>" + this.nls.SORT_PRIORITY_MINUS});
             
             var wrapper = dojo.create('div');
             wrapper.appendChild(tDiv);
@@ -144,11 +146,11 @@ if(!dojo._hasResource["openils.widget.GridColumnPicker"]) {
             wrapper.appendChild(bDiv);
             dialog.containerNode.appendChild(wrapper);
 
-            var button = new dijit.form.Button({label:'Save'}, 
+            var button = new dijit.form.Button({label: this.nls.SAVE },
                 dojo.query('[name=save_button]', bDiv)[0]);
             button.onClick = function() { dialog.hide(); self.update(true); };
 
-            button = new dijit.form.Button({label:'Cancel'}, 
+            button = new dijit.form.Button({label: this.nls.CANCEL },
                 dojo.query('[name=cancel_button]', bDiv)[0]);
             button.onClick = function() { dialog.hide(); };
 

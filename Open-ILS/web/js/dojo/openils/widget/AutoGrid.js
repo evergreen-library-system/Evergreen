@@ -9,6 +9,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
     dojo.require('openils.widget.GridColumnPicker');
     dojo.require('openils.widget._GridHelperColumns');
     dojo.require('openils.Util');
+    dojo.requireLocalization('openils.widget', 'AutoFieldWidget');
 
     dojo.declare(
         'openils.widget.AutoGrid',
@@ -58,6 +59,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 this.overrideEditWidgetClass = {};
                 this.overrideWidgetArgs = {};
 
+		this.nls = dojo.i18n.getLocalization('openils.widget', 'AutoFieldWidget');
+
                 if(this.editOnEnter) 
                     this._applyEditOnEnter();
                 else if(this.singleEditStyle) 
@@ -69,7 +72,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
 
 
                     var back = dojo.create('a', {
-                        innerHTML : 'Back',  // TODO i18n
+                        innerHTML : self.nls.BACK,
                         style : 'padding-right:6px;',
                         href : 'javascript:void(0);', 
                         onclick : function() { 
@@ -81,7 +84,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     });
 
                     var forw = dojo.create('a', {
-                        innerHTML : 'Next',  // TODO i18n
+                        innerHTML : self.nls.NEXT,
                         style : 'padding-right:6px;',
                         href : 'javascript:void(0);', 
                         onclick : function() { 
@@ -98,7 +101,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                         dojo.require('openils.widget.PCrudFilterDialog');
                         dojo.place(
                             dojo.create('a', {
-                                innerHTML : 'Filter', // TODO i18n
+                                innerHTML : self.nls.FILTER,
                                 style : 'padding-right:6px;',
                                 href : 'javascript:void(0);', 
                                 onclick : function() { 

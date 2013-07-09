@@ -7,6 +7,7 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
     dojo.require('openils.Util');
     dojo.require('openils.PermaCrud');
     dojo.require('dijit.form.Button');
+    dojo.requireLocalization('openils.widget', 'AutoFieldWidget');
 
     dojo.declare(
         'openils.widget.EditPane',
@@ -43,6 +44,8 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 var pcrud = new openils.PermaCrud();
                 this.fieldDocs = pcrud.search('fdoc', {fm_class:this.fmClass});
                 */
+
+		this.nls = dojo.i18n.getLocalization('openils.widget', 'AutoFieldWidget');
 
                 var table = this.existingTable;
                 if(!table) {
@@ -190,14 +193,14 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
 
                 var self = this;
                 new dijit.form.Button({
-                    label:'Cancel', // XXX
+                    label: this.nls.CANCEL,
                     onClick : this.onCancel
                 }, cancelSpan);
 
                 if(this.hideSaveButton) return;
 
                 new dijit.form.Button({
-                    label:'Save',  // XXX
+                    label:this.nls.SAVE,
                     onClick: function() {self.performAutoEditAction();}
                 }, applySpan);
             },
@@ -210,15 +213,14 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
             // in this edit pane.  If any required value is null, then return
             // an error object.
             mapValues: function (fn) {
-                var e = 0, msg = this.fmIDL.label + ' ';
+                var e = 0, msg = '', lbl = this.fmIDL.label;
                 dojo.forEach(this.fieldList, function (f) {
                     var v, w = f.widget;
                     if ((v = w.getFormattedValue()) === null && w.isRequired()) { e++; }
                     fn(f.name, v);
                 });
                 if (e > 0) {
-                    msg += 'edit pane has ' + e + ' required field(s) that contain no value(s)';
-                    return new Error(msg);
+                    return new Error(dojo.string.substitute(this.nls.REQ_FIELDS_EMPTY, [lbl, e]));
                 }
             },
 

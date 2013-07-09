@@ -530,6 +530,7 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
 
             "_setupLinks": function() {
                 this.linkHolder = new dijit.layout.ContentPane();
+                var localeStrings = this.localeStrings;
                 dojo.place(this.linkHolder.domNode, this.domNode, "before");
 
                 if (this.showLoadFilter) {
@@ -566,7 +567,7 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                     if (!this.filterAlwaysInDiv) {
                         new dijit.form.Button(
                             {
-                                "label": "Filter", /* XXX i18n */
+                                "label": localeStrings.FILTER,
                                 "onClick": dojo.hitch(
                                     this, function() { this.filterUi.show(); }
                                 )
