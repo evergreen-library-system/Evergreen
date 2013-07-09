@@ -3,6 +3,7 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
     dojo.require("dijit.layout.ContentPane");
     dojo.require("dijit.form.DropDownButton");
     dojo.require("dijit.form.TextBox");
+    dojo.requireLocalization('openils.serial', 'serial');
 
     /* XXX These variables and functions preceding the call to dojo.declar()
      * all pollute the window namespace.  They're not written as methods for
@@ -10,16 +11,18 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
      * into there anyway.
      */
 
+    var _localeStrings = dojo.i18n.getLocalization('openils.serial', 'serial');
+
     var _needed_fields = "abcdefghijklm";
     var _season_store = new dojo.data.ItemFileReadStore({
         "data": {
             "identifier": "code",
             "label": "label",
             "items": [
-                {"code": 21, "label": "Spring"},
-                {"code": 22, "label": "Summer"},
-                {"code": 23, "label": "Fall"},
-                {"code": 24, "label": "Winter"}
+                {"code": 21, "label": _localeStrings.SEASON_SPRING},
+                {"code": 22, "label": _localeStrings.SEASON_SUMMER},
+                {"code": 23, "label": _localeStrings.SEASON_FALL},
+                {"code": 24, "label": _localeStrings.SEASON_WINTER}
             ]
         }
     }); /* XXX i18n the above seasons. Also maybe don't
@@ -44,8 +47,7 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
         }
 
         if (!dojo.isArray(pattern_code)) {
-            div.innerHTML =
-                "Have you selected a valid caption and pattern?";/* XXX i18n */
+            div.innerHTML = _localeStrings.SELECT_VALID_CAP;
             return;
         }
 
@@ -59,8 +61,7 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
         }
 
         if (!fields.length) {
-            div.innerHTML = /* XXX i18n (below) */
-                "No caption subfields in seleted caption and pattern";
+            div.innerHTML = _localeStrings.NO_CAP_SUBFIELDS;
             return;
         }
 
@@ -119,15 +120,13 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
 
         new dijit.form.Button(
             {
-                "label": "Create Holding Code",
+                "label": _localeStrings.COMPILE,
                 "onClick": function() {
                     inputs.forEach(
                         function(input) {
                             var value = input.input.attr("value");
                             if (value === null || value === "") {
-                                /* XXX i18n */
-                                alert("A valid holding code cannot be " +
-                                    "produced with any blank fields.");
+                                alert(_localeStrings.ERROR_BLANK_FIELDS);
                             }
                             holding_code.push(input.subfield);
                             holding_code.push(value);
@@ -192,7 +191,7 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
 
                 this.wizard_button = new dijit.form.Button(
                     {
-                        "label": "Wizard" /* XXX i18n */,
+                        "label": _localeStrings.WIZARD,
                         "onClick": function() {
                             _prepare_ttip_dialog(target_div, self);
                         }
