@@ -797,6 +797,10 @@ div.result_place_hold {
     text-transform: uppercase;
 }
 
+.acct_sum_table tr {
+    border-bottom: 2px solid white;
+}
+
 .acct_sum_table td {
     padding: 1em;
 }
