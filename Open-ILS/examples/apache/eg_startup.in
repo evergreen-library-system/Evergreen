@@ -11,7 +11,6 @@ use OpenILS::WWW::Proxy ('@sysconfdir@/opensrf_core.xml');
 use OpenILS::WWW::Vandelay qw( @sysconfdir@/opensrf_core.xml );
 use OpenILS::WWW::TemplateBatchBibUpdate qw( @sysconfdir@/opensrf_core.xml );
 use OpenILS::WWW::EGWeb;
-use OpenILS::WWW::PasswordReset ('@sysconfdir@/opensrf_core.xml');
 use OpenILS::WWW::IDL2js ('@sysconfdir@/opensrf_core.xml');
 use OpenILS::WWW::FlatFielder;
 

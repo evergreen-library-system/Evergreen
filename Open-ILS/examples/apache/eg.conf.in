@@ -18,7 +18,6 @@ PerlRequire /etc/apache2/eg_startup
 PerlChildInitHandler OpenILS::WWW::Reporter::child_init
 PerlChildInitHandler OpenILS::WWW::SuperCat::child_init
 PerlChildInitHandler OpenILS::WWW::AddedContent::child_init
-PerlChildInitHandler OpenILS::WWW::PasswordReset::child_init
 PerlChildInitHandler OpenILS::WWW::AutoSuggest::child_init
 
 # ----------------------------------------------------------------------------------

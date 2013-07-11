@@ -299,21 +299,6 @@ RewriteRule .? - [E=locale:%{HTTP:Accept-Language}]
 </LocationMatch>
 
 # ----------------------------------------------------------------------------------
-# Self-serve password interface
-# ----------------------------------------------------------------------------------
-<Location /opac/password>
-    SetHandler perl-script
-    PerlHandler OpenILS::WWW::PasswordReset::password_reset
-    Options +ExecCGI
-    PerlSendHeader On
-    Require all granted 
-
-    # Force clients to use HTTPS
-    RewriteCond %{HTTPS} !=on [NC]
-    RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
-</Location>
-
-# ----------------------------------------------------------------------------------
 # Supercat feeds
 # ----------------------------------------------------------------------------------
 <Location /opac/extras/oisbn>
