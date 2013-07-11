@@ -10,6 +10,9 @@
         <title>[% l("Kid's Catalog - [_1]", ctx.page_title) %]</title>
     </head>
     <body>
+        [%- IF ctx.maintenance_message -%]
+        <div id="maintenance_message">[% ctx.maintenance_message %]</div>
+        [%- END -%]
         <div class="main_center">
             [% INCLUDE 'kpac/parts/header.tt2' %]
             <div class="main_wrapper"> [% content %] </div>

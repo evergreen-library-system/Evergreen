@@ -1023,3 +1023,10 @@ div.hr {
     display : none;
 }
 
+#maintenance_message {
+    padding: 5px;
+    width: 100%;
+    background-color: #c00;
+    color: #fff;
+    text-align: center;
+}

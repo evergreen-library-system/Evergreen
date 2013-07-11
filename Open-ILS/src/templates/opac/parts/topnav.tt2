@@ -1,8 +1,6 @@
-[% IF ctx.maintenance_message %]
-<div id="maintenance_message">
-[%= ctx.maintenance_message %]
-</div>
-[% END %]
+[%- IF ctx.maintenance_message -%]
+<div id="maintenance_message">[% ctx.maintenance_message %]</div>
+[%- END -%]
 [% IF !ctx.is_staff %]
 <div id="header-wrap">
 <div id="header">

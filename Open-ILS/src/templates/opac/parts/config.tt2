@@ -149,4 +149,9 @@ search.basic_config = {
 # Set to 1 or 'true' to enable
 ctx.google_books_preview = 0;
 
+##############################################################################
+# Set a maintenance message to display in the catalogue
+#
+# ctx.maintenance_message = "The system will not be available February 29, 2104.";
+
 %]

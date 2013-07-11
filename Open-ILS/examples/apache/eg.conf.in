@@ -149,6 +149,3 @@ NameVirtualHost *:443
     Include eg_vhost.conf
 </VirtualHost>
 
-# Set a maintenance message for notifying OPAC users of scheduled downtime
-# This can be put in specific vhosts as needed
-#SetEnv MAINTENANCE_MESSAGE "The system will be down tomorrow night so use the card catalog at that time."
