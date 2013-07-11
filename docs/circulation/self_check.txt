@@ -11,7 +11,7 @@ The self check interface runs in a web browser. Before patrons can use the self
 check station, a staff member must initialize the interface by logging in.
 
 . Open your self check interface page in a web browser. By default, the URL is
-  https://[hostname]http://localhost/eg/circ/selfcheck/main, where _[hostname]_
+  `https://[hostname]/eg/circ/selfcheck/main`, where _[hostname]_
   represents the host name of your Evergreen web server.
 . Log in with a staff account with circulation permissions.
 
@@ -52,9 +52,9 @@ cp -r /openils/var/web/xul/server/skin/media/audio /openils/var/web/.
   security.
 * *Workstation Required*: If set, the URL must either include a
   `?ws=[workstation]` parameter, where _[workstation]_ is the name of a
-  registered Evergreen workstation, or the staff member is prompted to register
-  a new workstation. The workstation parameter ensures that check outs are
-  recorded as occurring at the correct library.
+  registered Evergreen workstation, or the staff member must register a new
+  workstation when they login. The workstation parameter ensures that check outs
+  are recorded as occurring at the correct library.
 
 Checking out or renewing items in the self check
 ------------------------------------------------
