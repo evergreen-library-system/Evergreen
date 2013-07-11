@@ -803,8 +803,9 @@ sub set_lineitem_attr {
 # Lineitem Debits
 # ----------------------------------------------------------------------------
 sub create_lineitem_debits {
-    my ($mgr, $li, $dry_run, $options) = @_; 
+    my ($mgr, $li, $options) = @_;
     $options ||= {};
+    my $dry_run = $options->{dry_run};
 
     unless($li->estimated_unit_price) {
         $mgr->editor->event(OpenILS::Event->new('ACQ_LINEITEM_NO_PRICE', payload => $li->id));
@@ -2664,7 +2665,7 @@ sub activate_purchase_order_impl {
         $li->state('on-order');
         $li->claim_policy($provider->default_claim_policy)
             if $provider->default_claim_policy and !$li->claim_policy;
-        create_lineitem_debits($mgr, $li, $dry_run) or return $e->die_event;
+        create_lineitem_debits($mgr, $li, $options) or return $e->die_event;
         update_lineitem($mgr, $li) or return $e->die_event;
         $mgr->post_process( sub { create_lineitem_status_events($mgr, $li->id, 'aur.ordered'); });
         $mgr->respond;
