@@ -517,8 +517,8 @@ sub __format_holds {
     }
 
     return (defined $start and defined $end) ? 
-        [ @holds[($start-1)..($end-1)] ] :
-        \@holds;
+        [ @response[($start-1)..($end-1)] ] :
+        \@response;
 }
 
 # Finds a representative copy for the given hold.
