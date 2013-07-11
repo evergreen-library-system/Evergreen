@@ -1,0 +1,5 @@
+Support PO activation without requiring items
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A new _Activate PO Without Loading Items_ option in the PO allows staff to
+activate the PO without loading copies into the catalog.
