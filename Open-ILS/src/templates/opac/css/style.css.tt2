@@ -465,12 +465,6 @@ div.format_icon {
     padding-left: 13px;
     text-align: left;
 }
-#rdetails_status tbody td.copy_note {
-    color: [% css_colors.primary %];
-    text-wrap:normal;
-    white-space:pre-wrap !important;
-    word-wrap:normal;
-}
 
 .rdetail_extras {
     height: 29px;
@@ -692,12 +686,8 @@ tr.result_table_row > td.result_table_pic_header {
     padding-left: 1em;
 }
 
-.result_number {
-    padding-left:15px; white-space: nowrap; width: 320px;
-}
-
-.result_count_number {
-   font-weight: bold;
+.result_numbers {
+    font-size: [% css_fonts.size_small %]; padding-left:15px; white-space: nowrap; width: 320px;
 }
 
 .result_table_subtable {
@@ -789,29 +779,22 @@ div.result_place_hold {
     font-weight: normal;
 }
 
-.acct_sum_table {
-    border-collapse: collapse;
+.acct_sum_row {
+    padding: 7px 15px;
     background: [% css_colors.accent_ultralight %];
+    margin-bottom: 2px;
     font-size: [% css_fonts.size_smaller %];
     font-weight: bold;
     text-transform: uppercase;
 }
 
-.acct_sum_table tr {
-    border-bottom: 2px solid white;
-}
-
-.acct_sum_table td {
-    padding: 1em;
-}
-
-.acct_sum_table a {
+.acct_sum_row a {
     text-transform: none;
     position:relative;
     top:-1px;
 }
 
-.acct_sum_table .view_link {
+.acct_sum_row .view_link {
     font-weight: normal;
 }
 
@@ -1110,7 +1093,7 @@ div.facet_sidebar {
 .no-dec:hover { text-decoration: none; }
 .pending-addr td { background-color: [% css_colors.background_alert %] !important; border: 0 !important; }
 
-#account-update-email table { text-align: center; padding: 20px; margin-top: 18px; border-collapse: collapse; }
+#account-update-email table { text-align: center; padding: 20px; margin-top: 30px; border-collapse: collapse; }
 #account-update-email table td { padding: 5px 15px 5px 15px; border-bottom: 1px solid [% css_colors.accent_lighter %]; text-align: left;}
 #account-update-email-error { font-size: [% css_fonts.size_biggest %]; padding: 10px; border:1px solid [% css_colors.border_standard %];}
 a.dash-link:hover { text-decoration: underline !important; }
@@ -1171,8 +1154,6 @@ a.dash-link:hover { text-decoration: underline !important; }
     background-color: [% css_colors.accent_lighter %];
 }
 
-div.opac-multiline-button > a,
-.opac-multiline-button > a,
 .opac-button, .results_header_btns, #simple-detail-view-links { 
     color: [% css_colors.button_text %];
     font-weight: bold; 
@@ -1202,17 +1183,12 @@ div.opac-multiline-button > a,
     display: table-cell;
 }
 
-.opac-multiline-button > a:hover,
-.opac-button:hover, .results_header_btns a:hover, #simple-detail-view-links a:hover {
+a.opac-button:hover, .results_header_btns a:hover, #simple-detail-view-links a:hover {
     background: [% css_colors.primary %];
     text-decoration: none;
 }
 
-.opac-multiline-button > a {
-    display: inline-block;
-}
-
-.opac-multiline-button > a, a.opac-button, input.opac-button {
+a.opac-button, input.opac-button {
     margin: 10px;
     padding: 5px 10px 5px 10px;
 }
@@ -1515,16 +1491,11 @@ a.preflib_change {
     font-weight: bold; color: [% css_colors.text_alert %];
 }
 
-.record_title {
-    font-weight: bold;
+#maintenance_message {
+    padding: 5px; 
+    width: 100%; 
+    background-color: [% css_colors.text_alert %]; 
+    color: [% css_colors.text_invert %]; 
+    text-align: center;
 }
 
-.record_author {
-    font-style: italic;
-}
-
-.password_message {
-    padding-top: 1em;
-    padding-bottom: 0.5em;
-	font-style: italic;
-}
