@@ -10327,7 +10327,7 @@ INSERT INTO authority.control_set_authority_field (id, control_set, main_entry, 
     (4, 1, NULL, '130', 'adfgklmnoprstvxyz', oils_i18n_gettext('4','Heading -- Uniform Title','acsaf','name'), '2'),
     (24, 1, 4, '530', 'adfgiklmnoprstvwxyz4', oils_i18n_gettext('24','See Also From Tracing -- Uniform Title','acsaf','name'), '2'),
     (44, 1, 4, '730', 'adfghklmnoprstvwxyz25', oils_i18n_gettext('44','Established Heading Linking Entry -- Uniform Title','acsaf','name'), '2'),
-    (64, 1, 4, '430', 'adfgiklmnoprstvwxyz4', oils_i18n_gettext('64','See Also Tracing -- Uniform Title','acsaf','name'), '2');
+    (64, 1, 4, '430', 'adfgiklmnoprstvwxyz4', oils_i18n_gettext('64','See From Tracing -- Uniform Title','acsaf','name'), '2');
 
 INSERT INTO authority.control_set_authority_field (id, control_set, main_entry, tag, sf_list, name) VALUES
 
@@ -10371,17 +10371,17 @@ INSERT INTO authority.control_set_authority_field (id, control_set, main_entry, 
     (52, 1, 12, '748', 'avwxyz25', oils_i18n_gettext('52','Established Heading Linking Entry -- Chronological Term','acsaf','name')),
 
 -- See From tracings
-    (61, 1, 1, '400', 'abcdefiklmnopqrstvwxyz4', oils_i18n_gettext('61','See Also Tracing -- Personal Name','acsaf','name')),
-    (62, 1, 2, '410', 'abcdefgiklmnoprstvwxyz4', oils_i18n_gettext('62','See Also Tracing -- Corporate Name','acsaf','name')),
-    (63, 1, 3, '411', 'acdefgiklnpqstvwxyz4', oils_i18n_gettext('63','See Also Tracing -- Meeting Name','acsaf','name')),
-    (65, 1, 5, '450', 'abivwxyz4', oils_i18n_gettext('65','See Also Tracing -- Topical Term','acsaf','name')),
-    (66, 1, 6, '451', 'aivwxyz4', oils_i18n_gettext('66','See Also Tracing -- Geographic Name','acsaf','name')),
-    (67, 1, 7, '455', 'aivwxyz4', oils_i18n_gettext('67','See Also Tracing -- Genre/Form Term','acsaf','name')),
-    (68, 1, 8, '480', 'ivwxyz4', oils_i18n_gettext('68','See Also Tracing -- General Subdivision','acsaf','name')),
-    (69, 1, 9, '481', 'ivwxyz4', oils_i18n_gettext('69','See Also Tracing -- Geographic Subdivision','acsaf','name')),
-    (70, 1, 10, '482', 'ivwxyz4', oils_i18n_gettext('70','See Also Tracing -- Chronological Subdivision','acsaf','name')),
-    (71, 1, 11, '485', 'ivwxyz4', oils_i18n_gettext('71','See Also Tracing -- Form Subdivision','acsaf','name')),
-    (72, 1, 12, '448', 'aivwxyz4', oils_i18n_gettext('72','See Also Tracing -- Chronological Term','acsaf','name'));
+    (61, 1, 1, '400', 'abcdefiklmnopqrstvwxyz4', oils_i18n_gettext('61','See From Tracing -- Personal Name','acsaf','name')),
+    (62, 1, 2, '410', 'abcdefgiklmnoprstvwxyz4', oils_i18n_gettext('62','See From Tracing -- Corporate Name','acsaf','name')),
+    (63, 1, 3, '411', 'acdefgiklnpqstvwxyz4', oils_i18n_gettext('63','See From Tracing -- Meeting Name','acsaf','name')),
+    (65, 1, 5, '450', 'abivwxyz4', oils_i18n_gettext('65','See From Tracing -- Topical Term','acsaf','name')),
+    (66, 1, 6, '451', 'aivwxyz4', oils_i18n_gettext('66','See From Tracing -- Geographic Name','acsaf','name')),
+    (67, 1, 7, '455', 'aivwxyz4', oils_i18n_gettext('67','See From Tracing -- Genre/Form Term','acsaf','name')),
+    (68, 1, 8, '480', 'ivwxyz4', oils_i18n_gettext('68','See From Tracing -- General Subdivision','acsaf','name')),
+    (69, 1, 9, '481', 'ivwxyz4', oils_i18n_gettext('69','See From Tracing -- Geographic Subdivision','acsaf','name')),
+    (70, 1, 10, '482', 'ivwxyz4', oils_i18n_gettext('70','See From Tracing -- Chronological Subdivision','acsaf','name')),
+    (71, 1, 11, '485', 'ivwxyz4', oils_i18n_gettext('71','See From Tracing -- Form Subdivision','acsaf','name')),
+    (72, 1, 12, '448', 'aivwxyz4', oils_i18n_gettext('72','See From Tracing -- Chronological Term','acsaf','name'));
 
 INSERT INTO authority.browse_axis (code,name,description,sorter) VALUES
     ('title','Title','Title axis','titlesort'),
