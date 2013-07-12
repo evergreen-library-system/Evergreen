@@ -2,11 +2,14 @@ package OpenILS::WWW::EGCatLoader;
 use strict; use warnings;
 use Apache2::Const -compile => qw(OK DECLINED FORBIDDEN HTTP_INTERNAL_SERVER_ERROR REDIRECT HTTP_BAD_REQUEST);
 use File::Spec;
+use Time::HiRes qw/time sleep/;
+use OpenSRF::Utils::Cache;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
 use OpenSRF::MultiSession;
+
 my $U = 'OpenILS::Application::AppUtils';
 
 my $ro_object_subs; # cached subs
@@ -248,6 +251,7 @@ sub generic_redirect {
     return Apache2::Const::REDIRECT;
 }
 
+my $unapi_cache;
 sub get_records_and_facets {
     my ($self, $rec_ids, $facet_key, $unapi_args) = @_;
 
@@ -256,7 +260,16 @@ sub get_records_and_facets {
     $unapi_args->{depth} ||= $self->ctx->{aou_tree}->()->ou_type->depth;
     $unapi_args->{flesh_depth} ||= 5;
 
-    my @data;
+    $unapi_cache ||= OpenSRF::Utils::Cache->new('global');
+    my $unapi_cache_key_suffix = join(
+        '_',
+        $unapi_args->{site},
+        $unapi_args->{depth},
+        $unapi_args->{flesh_depth},
+        ($unapi_args->{pref_lib} || '')
+    );
+
+    my %tmp_data;
     my $outer_self = $self;
     $self->timelog("get_records_and_facets(): about to call multisession");
     my $ses = OpenSRF::MultiSession->new(
@@ -282,24 +295,67 @@ sub get_records_and_facets {
             } else {
                 $logger->warn("Missing 901 subfield 'c' in " . $xml->toString());
             }
-            push(@data, {id => $bre_id, marc_xml => $xml});
+            $tmp_data{$bre_id} = {id => $bre_id, marc_xml => $xml};
+
+            if ($bre_id) {
+                # Let other backends grab our data now that we're done.
+                my $key = 'TPAC_unapi_cache_'.$bre_id.'_'.$unapi_cache_key_suffix;
+                my $cache_data = $unapi_cache->get_cache($key);
+                if ($$cache_data{running}) {
+                    $unapi_cache->put_cache($key, { id => $bre_id, marc_xml => $data->{'unapi.bre'} }, 10);
+                }
+            }
+
+
             $outer_self->timelog("get_records_and_facets(): end of success handler");
         }
     );
 
     $self->timelog("get_records_and_facets(): about to call unapi.bre via json_query (rec_ids has " . scalar(@$rec_ids));
 
-    $ses->request(
-        'open-ils.cstore.json_query',
-         {from => [
-            'unapi.bre', $_, 'marcxml','record', 
-            $unapi_args->{flesh}, 
-            $unapi_args->{site}, 
-            $unapi_args->{depth}, 
-            'acn=>' . $unapi_args->{flesh_depth} . ',acp=>' . $unapi_args->{flesh_depth}, 
-            undef, undef, $unapi_args->{pref_lib}
-        ]}
-    ) for @$rec_ids;
+    my @loop_recs = @$rec_ids;
+    my %rec_timeout;
+
+    while (my $bid = shift @loop_recs) {
+
+        sleep(0.1) if $rec_timeout{$bid};
+
+        my $unapi_cache_key = 'TPAC_unapi_cache_'.$bid.'_'.$unapi_cache_key_suffix;
+        my $unapi_data = $unapi_cache->get_cache($unapi_cache_key) || {};
+
+        if ($unapi_data->{running}) { #cache entry from ongoing, concurrent retrieval
+            if (!$rec_timeout{$bid}) {
+                $rec_timeout{$bid} = time() + 10;
+            }
+
+            if ( time() > $rec_timeout{$bid} ) { # we've waited too long. just do it
+                $unapi_data = {};
+                delete $rec_timeout{$bid};
+            } else { # we'll pause next time around to let this one try again
+                push(@loop_recs, $bid);
+                next;
+            }
+        }
+
+        if ($unapi_data->{marc_xml}) { # we got data from the cache
+            $unapi_data->{marc_xml} = XML::LibXML->new->parse_string($unapi_data->{marc_xml})->documentElement;
+            $tmp_data{$unapi_data->{id}} = $unapi_data;
+        } else { # we're the first or we timed out. success_handler will populate the real value
+            $unapi_cache->put_cache($unapi_cache_key, { running => $$ }, 10);
+            $ses->request(
+                'open-ils.cstore.json_query',
+                 {from => [
+                    'unapi.bre', $bid, 'marcxml','record', 
+                    $unapi_args->{flesh}, 
+                    $unapi_args->{site}, 
+                    $unapi_args->{depth}, 
+                    'acn=>' . $unapi_args->{flesh_depth} . ',acp=>' . $unapi_args->{flesh_depth}, 
+                    undef, undef, $unapi_args->{pref_lib}
+                ]}
+            );
+        }
+
+    }
 
 
     $self->timelog("get_records_and_facets():almost ready to fetch facets");
@@ -344,7 +400,7 @@ sub get_records_and_facets {
 
     $search->kill_me;
 
-    return ($facets, @data);
+    return ($facets, map { $tmp_data{$_} } @$rec_ids);
 }
 
 sub _get_search_lib {
