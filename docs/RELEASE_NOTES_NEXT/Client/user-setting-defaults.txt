@@ -1,0 +1,4 @@
+User Setting Defaults
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+For use during Patron Registration, we can now have supply default values for User Settings, under Admin -> Server Administration -> User Setting Types.
