@@ -1,0 +1,7 @@
+Print Single Item Receipt
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Add ability to print a receipt for just a single selected item from the patron 
+interface for Items Out or Lost, Claims Returned, Long Overdue, Has Unpaid 
+Billings. This can be used via right-click or using the 'Actions for Selected 
+Items' button.
