@@ -3110,7 +3110,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="fm_class" reporter:label="Fielmapper Class" reporter:datatype="text"/>
 			<field name="grp" reporter:label="Settings Group" reporter:datatype="link"/>
 			<field name="opac_visible" reporter:label="OPAC/Patron Visible" reporter:datatype="bool"/>
-            <field name="reg_default" reporter:label="Registration Default" reporter:datatype="text"/>
+			<field name="reg_default" reporter:label="Registration Default" reporter:datatype="text"/>
 		</fields>
 		<links>
 			<link field="name" reltype="has_many" key="name" map="" class="aus"/>
