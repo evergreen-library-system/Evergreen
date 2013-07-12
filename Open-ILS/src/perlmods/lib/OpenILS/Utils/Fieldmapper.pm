@@ -82,13 +82,13 @@ sub load_fields {
                 $virtual = "false";
             }
             my $selector = get_attribute( $attribute_list, 'reporter:selector' );
-           my $datatype = get_attribute( $attribute_list, 'reporter:datatype' );
+            my $datatype = get_attribute( $attribute_list, 'reporter:datatype' );
 
             $$fieldmap{$fm}{fields}{ $name } =
                 { virtual => ( $virtual eq 'true' ) ? 1 : 0,
                   required => ( $required eq 'true' ) ? 1 : 0,
                   position => $array_position,
-                 datatype => $datatype,
+                  datatype => $datatype,
                 };
 
             $$fieldmap{$fm}{fields}{ $name }{validate} = qr/$validate/ if (defined($validate));
@@ -381,19 +381,19 @@ sub ValidateField {
 }
 
 sub FieldInfo {
-   my $self = shift;
-   my $field = shift;
-   my $class_name = $self->class_name;
-   return undef unless ($field && $$fieldmap{$class_name}{fields}{$field});
-   return $$fieldmap{$class_name}{fields}{$field};
+    my $self = shift;
+    my $field = shift;
+    my $class_name = $self->class_name;
+    return undef unless ($field && $$fieldmap{$class_name}{fields}{$field});
+    return $$fieldmap{$class_name}{fields}{$field};
 }
 
 sub FieldDatatype {
-   my $self = shift;
-   my $field = shift;
-   my $class_name = $self->class_name;
-   return undef unless ($field && $$fieldmap{$class_name}{fields}{$field});
-   return $$fieldmap{$class_name}{fields}{$field}{datatype};
+    my $self = shift;
+    my $field = shift;
+    my $class_name = $self->class_name;
+    return undef unless ($field && $$fieldmap{$class_name}{fields}{$field});
+    return $$fieldmap{$class_name}{fields}{$field}{datatype};
 }
 
 sub class_name {
