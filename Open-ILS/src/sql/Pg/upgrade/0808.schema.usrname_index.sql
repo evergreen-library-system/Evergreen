@@ -4,7 +4,7 @@
 --
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0808', :eg_version);
 
 CREATE INDEX actor_usr_usrname_idx ON actor.usr (evergreen.lowercase(usrname));
 
