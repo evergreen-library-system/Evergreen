@@ -185,7 +185,7 @@
                             <textbox id="Type_tbmfhd" context="clipboard" class="plain" name="Type" maxlength="1" size="1" onkeypress="set_lock_on_keypress(event);" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="ELvl" control="ELvl_tbmfhd" set="AUT MFHD" value="ELvl" />
                             <textbox id="ELvl_tbmfhd" context="clipboard" class="plain" name="ELvl" maxlength="1" size="1" onkeypress="set_lock_on_keypress(event);" oninput="updateFixedFields(this);" onfocus="this.select();"/>
-                            <label name="Item" control="Item_tbmfhd" set="AUT MFHD" value="Item" />
+                            <label name="Item" control="Item_tbmfhd" set="MFHD" value="Item" />
                             <textbox id="Item_tbmfhd" context="clipboard" class="plain" name="Item" maxlength="1" size="1" onkeypress="set_lock_on_keypress(event);" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="GeoDiv" control="GeoDiv_tb" set="AUT" value="GeoDiv" />
                             <textbox id="GeoDiv_tb" context="clipboard" class="plain" name="GeoDiv" maxlength="1" size="1" onkeypress="set_lock_on_keypress(event);" oninput="updateFixedFields(this);" onfocus="this.select();"/>
