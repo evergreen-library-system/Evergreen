@@ -36,9 +36,6 @@ CREATE TABLE acq.exchange_rate (
     CONSTRAINT exchange_rate_from_to_once UNIQUE (from_currency,to_currency)
 );
 
-INSERT INTO acq.exchange_rate (from_currency,to_currency,ratio) VALUES ('USD','CAN',1.2);
-INSERT INTO acq.exchange_rate (from_currency,to_currency,ratio) VALUES ('USD','EUR',0.5);
-
 CREATE TABLE acq.claim_policy (
 	id              SERIAL       PRIMARY KEY,
 	org_unit        INT          NOT NULL REFERENCES actor.org_unit

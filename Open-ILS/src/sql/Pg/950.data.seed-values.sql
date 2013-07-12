@@ -9046,6 +9046,9 @@ INSERT INTO acq.currency_type (code, label) VALUES ('USD', oils_i18n_gettext('US
 INSERT INTO acq.currency_type (code, label) VALUES ('CAN', oils_i18n_gettext('CAN', 'Canadian Dollars', 'acqct', 'label'));
 INSERT INTO acq.currency_type (code, label) VALUES ('EUR', oils_i18n_gettext('EUR', 'Euros', 'acqct', 'label'));
 
+INSERT INTO acq.exchange_rate (from_currency,to_currency,ratio) VALUES ('USD','CAN',1.2);
+INSERT INTO acq.exchange_rate (from_currency,to_currency,ratio) VALUES ('USD','EUR',0.5);
+
 INSERT INTO acq.invoice_item_type (code,name) VALUES ('TAX',oils_i18n_gettext('TAX', 'Tax', 'aiit', 'name'));
 INSERT INTO acq.invoice_item_type (code,name) VALUES ('PRO',oils_i18n_gettext('PRO', 'Processing Fee', 'aiit', 'name'));
 INSERT INTO acq.invoice_item_type (code,name) VALUES ('SHP',oils_i18n_gettext('SHP', 'Shipping Charge', 'aiit', 'name'));
