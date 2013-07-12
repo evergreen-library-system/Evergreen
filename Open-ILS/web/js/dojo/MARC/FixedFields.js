@@ -498,7 +498,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                 MFHD : {start : 6, len : 1, def : 'y' }
             }
         },
-        "GeoSubd" : {
+        "GeoDiv" : {
              "_8" : {
                  "AUT" : {"start" : 6, "len" : 1, "def" : ' ' }
              }
