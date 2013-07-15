@@ -12090,9 +12090,9 @@ INSERT INTO action_trigger.environment (event_def, path)
         'target_copy.call_number'
     );
 
-INSERT INTO actor.toolbar(org,label,layout) VALUES
-    ( 1, 'circ', '["circ_checkout","circ_checkin","toolbarseparator.1","search_opac","copy_status","toolbarseparator.2","patron_search","patron_register","toolbarspacer.3","hotkeys_toggle"]' ),
-    ( 1, 'cat', '["circ_checkin","toolbarseparator.1","search_opac","copy_status","toolbarseparator.2","create_marc","authority_manage","retrieve_last_record","toolbarspacer.3","hotkeys_toggle"]' );
+INSERT INTO actor.toolbar(id,org,label,layout) VALUES
+    ( 1, 1, oils_i18n_gettext(1, 'circ', 'atb', 'label'), '["circ_checkout","circ_checkin","toolbarseparator.1","search_opac","copy_status","toolbarseparator.2","patron_search","patron_register","toolbarspacer.3","hotkeys_toggle"]' ),
+    ( 2, 1, oils_i18n_gettext(2, 'cat', 'atb', 'label'), '["circ_checkin","toolbarseparator.1","search_opac","copy_status","toolbarseparator.2","create_marc","authority_manage","retrieve_last_record","toolbarspacer.3","hotkeys_toggle"]' );
 
 INSERT INTO config.global_flag (name, enabled, label) 
     VALUES (
