@@ -818,7 +818,7 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 160, 'CREATE_PROVIDER', oils_i18n_gettext( 160, 
     'Allow a user to create a new provider', 'ppl', 'description' )),
  ( 161, 'DELETE_PROVIDER', oils_i18n_gettext( 161, 
-    'Allow a user to delate a provider', 'ppl', 'description' )),
+    'Allow a user to delete a provider', 'ppl', 'description' )),
  ( 162, 'VIEW_PROVIDER', oils_i18n_gettext( 162, 
     'Allow a user to view a provider', 'ppl', 'description' )),
  ( 163, 'UPDATE_PROVIDER', oils_i18n_gettext( 163, 
