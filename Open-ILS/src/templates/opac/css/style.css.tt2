@@ -448,9 +448,14 @@ div.format_icon {
     padding-top: 1.5em;
 }
 
-#rdetails_status td, #rdetails_status2 td {
-    white-space:nowrap !important;
+#rdetails_status td {
     padding: 7px 0px 3px 13px;
+    white-space: nowrap;
+}
+
+#rdetails_status td[header=copy_header_library], 
+#rdetails_status td[header=copy_header_shelfloc] {
+    white-space: normal;
 }
 
 #rdetails_status thead th {

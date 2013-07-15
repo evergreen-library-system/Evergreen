@@ -54,7 +54,7 @@ END;
     <tbody class="copy_details_table">
 [%- FOREACH peer IN ctx.foreign_copies;
         FOREACH bib IN peer.foreign_copy_maps; %]
-    <tr><td>
+    <tr><td header='copy_header_shelfloc'>
     [%- bib_lib_name = ctx.get_aou(bib.target_copy.circ_lib).name | html;
         l("[_1] (foreign item)", bib_lib_name); -%]
         <ul><li>
@@ -65,11 +65,11 @@ END;
             </a>
         </li></ul>
     </td>
-    <td>[% bib.target_copy.call_number.label | html %]</td>
-    <td>[% bib.target_copy.barcode | html %]</td>
-    <td>[% copy_info.copy_location | html %]</td>
-    <td>[% copy_info.copy_status | html %]</td>
-    <td>[% copy_info.due_date | html %]</td>
+    <td header='copy_header_callnumber'>[% bib.target_copy.call_number.label | html %]</td>
+    <td header='copy_header_barcode'>[% bib.target_copy.barcode | html %]</td>
+    <td header='copy_header_shelfloc'>[% copy_info.copy_location | html %]</td>
+    <td header='copy_header_status'>[% copy_info.copy_status | html %]</td>
+    <td header='copy_header_due_date'>[% copy_info.due_date | html %]</td>
 </tr>
    [%- END; # FOREACH peer
 END; # FOREACH bib
@@ -189,7 +189,7 @@ END; # FOREACH bib
             [% END %]
         [% END %]
 
-<tr><td>
+<tr><td header='copy_header_shelfloc'>
 [%- IF copy_info.peer_bib_marc.size > 1;
 '<ul>';
     FOREACH bib IN copy_info.peer_bib_marc;
