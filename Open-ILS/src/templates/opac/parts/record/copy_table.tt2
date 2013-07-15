@@ -167,33 +167,34 @@ END;
             [% END %]
         [% END %]
 
-[% FOREACH peer IN ctx.foreign_copies %]
-   [% FOREACH bib IN  peer.foreign_copy_maps %]
+[%- FOREACH peer IN ctx.foreign_copies;
+        FOREACH bib IN peer.foreign_copy_maps; %]
     <tr><td>
-	[% ctx.get_aou(bib.target_copy.circ_lib).name %]
+    [%- ctx.get_aou(bib.target_copy.circ_lib).name -%]
     </td><td>
         <a href="[% mkurl(ctx.opac_root _ '/record/' _ bib.target_copy.call_number.record) %]">[% bib.target_copy.call_number.label %]</a>
-    </td><td>
-	[% bib.target_copy.barcode %]
-    </td><td>
-	[% copy_info.copy_location %]
-    </td><td>
-	[% copy_info.copy_status %]
-    </td><td>
-        [% copy_info.due_date %]
-    </td></tr>
-   [% END %]
-[% END %]
+    </td>
+    <td>[%- bib.target_copy.barcode -%]</td>
+    <td>[%- copy_info.copy_location -%]</td>
+    <td>[%- copy_info.copy_status -%]</td>
+    <td>[%- copy_info.due_date -%]</td>
+</tr>
+   [%- END; # FOREACH peer
+[%- END; # FOREACH bib
 <tr><td>
-[% FOREACH bib IN copy_info.peer_bib_marc;
+[%- IF copy_info.peer_bib_marc.size > 1;
+'<ul>';
+    FOREACH bib IN copy_info.peer_bib_marc;
         attrs = {marc_xml => bib};
         PROCESS get_marc_attrs args=attrs %]
-[% IF attrs.bibid != ctx.bre_id %]
-<a href="[% mkurl(ctx.opac_root _ '/record/' _ attrs.bibid) %]"> [% attrs.title %] / [% attrs.author %]</a><br/>
-[% END %]
-[% END %]
+[%- IF attrs.bibid != ctx.bre_id; %]
+    <li><a href="[% mkurl(ctx.opac_root _ '/record/' _ attrs.bibid) %]"> [% attrs.title %] / [% attrs.author %]</a></li>
+[%- END; # IF attrs.bibid
+[%- END; # FOREACH bib in copy_info.peer_bib_marc
+'</ul>';
+    END # IF copy_info.peer_bib_marc.size
+%]
 </td></tr>
-
         [%- END %]
         <tr>
         [%- IF ctx.copy_offset > 0 AND NOT serial_holdings;

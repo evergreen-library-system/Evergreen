@@ -94,23 +94,27 @@ sub load_record {
             'open-ils.circ.copy_note.retrieve.all',
             {itemid => $copy->{id}, pub => 1 }
         );
+        $self->timelog("past copy note retrieval call");
         $copy->{peer_bibs} = $U->simplereq(
-	    'open-ils.search',
-	    'open-ils.search.multi_home.bib_ids.by_barcode',
-	    $copy->{barcode} );
-	my @peer_marc;
-    	foreach my $bib (@{$copy->{peer_bibs}}) {
-        	my (undef, @peer_data) = $self->get_records_and_facets(
-            		[$bib], undef, {
-                		flesh => '{holdings_xml,acp,acnp,acns,exclude_invisible_acn}',
-                		site => $org_name,
-				depth => $depth,
-                		pref_lib => $pref_ou
-        	});
-		#$copy->{peer_bib_marc} = $peer_data[0]->{marc_xml};
-		push @peer_marc,$peer_data[0]->{marc_xml};
-	}
-	$copy->{peer_bib_marc} = \@peer_marc;
+            'open-ils.search',
+            'open-ils.search.multi_home.bib_ids.by_barcode',
+            $copy->{barcode}
+        );
+        $self->timelog("past peer bib id retrieval");
+        my @peer_marc;
+        foreach my $bib (@{$copy->{peer_bibs}}) {
+            my (undef, @peer_data) = $self->get_records_and_facets(
+                [$bib], undef, {
+                    flesh => '{holdings_xml,acp,acnp,acns,exclude_invisible_acn}',
+                    site => $org_name,
+                    depth => $depth,
+                    pref_lib => $pref_ou
+            });
+            #$copy->{peer_bib_marc} = $peer_data[0]->{marc_xml};
+            push @peer_marc, $peer_data[0]->{marc_xml};
+        }
+        $copy->{peer_bib_marc} = \@peer_marc;
+        $self->timelog("past peer bib record retrieval");
     }
 
     $self->timelog("past store copy retrieval call");
