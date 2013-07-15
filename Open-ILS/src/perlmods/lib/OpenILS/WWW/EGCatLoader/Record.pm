@@ -88,6 +88,7 @@ sub load_record {
     $ctx->{copies} = $copy_rec->gather(1);
 
     # Add public copy notes to each copy - and while we're in there, grab peer bib records
+    my %cached_bibs = ();
     foreach my $copy (@{$ctx->{copies}}) {
         $copy->{notes} = $U->simplereq(
             'open-ils.circ',
@@ -103,18 +104,21 @@ sub load_record {
         $self->timelog("past peer bib id retrieval");
         my @peer_marc;
         foreach my $bib (@{$copy->{peer_bibs}}) {
+            next if $bib eq $ctx->{bre_id};
+            next if $cached_bibs{$bib};
             my (undef, @peer_data) = $self->get_records_and_facets(
                 [$bib], undef, {
-                    flesh => '{holdings_xml,acp,acnp,acns,exclude_invisible_acn}',
+                    flesh => '{}',
                     site => $org_name,
                     depth => $depth,
                     pref_lib => $pref_ou
             });
+            $cached_bibs{$bib} = 1;
             #$copy->{peer_bib_marc} = $peer_data[0]->{marc_xml};
             push @peer_marc, $peer_data[0]->{marc_xml};
+            $self->timelog("fetched peer bib record $bib");
         }
         $copy->{peer_bib_marc} = \@peer_marc;
-        $self->timelog("past peer bib record retrieval");
     }
 
     $self->timelog("past store copy retrieval call");

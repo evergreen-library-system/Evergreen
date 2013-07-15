@@ -1575,3 +1575,7 @@ a.preflib_change {
 .browse-public-general-note-body {
     font-style: italic;
 }
+
+.bib_peer_type {
+    font-weight: bold;
+}
