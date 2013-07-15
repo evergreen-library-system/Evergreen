@@ -1186,7 +1186,7 @@ sub generate_fines {
                     my $dow_close = "dow_${dow}_close";
 
                     if (my $h = $hoo{$c->$circ_lib_method}) {
-                        return if ( $h->$dow_open eq '00:00:00' and $h->$dow_close eq '00:00:00');
+                        next if ( $h->$dow_open eq '00:00:00' and $h->$dow_close eq '00:00:00');
                     }
     
                     my @cl = actor::org_unit::closed_date->search_where(
@@ -1194,7 +1194,7 @@ sub generate_fines {
                               close_end => { '>=' => $timestamptz },
                               org_unit  => $c->$circ_lib_method }
                     );
-                    return if (@cl);
+                    next if (@cl);
                 }
 
                 # The billing amount for this billing normally ought to be the recurring fine amount.
