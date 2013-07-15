@@ -200,7 +200,8 @@ function alterColumnLabel () {
 	var field = item.firstChild.firstChild;
 	var colname = field.nextSibling.getAttribute('label');
 
-	var new_label =	prompt( dojo.string.substitute(rpt_strings.TEMPLATE_CONF_PROMPT_CHANGE, [field.getAttribute("label")]) );
+	var old_label = field.getAttribute("label");
+	var new_label = prompt( dojo.string.substitute(rpt_strings.TEMPLATE_CONF_PROMPT_CHANGE, [old_label]), old_label );
 
 	if (new_label) {
 		rpt_rel_cache[relation_alias].fields[tabname][colname].alias = new_label;
