@@ -287,7 +287,7 @@ SelfCheckManager.prototype.drawLoginPage = function() {
             
             // password is required.  wire up the scan box to read it
             self.updateScanBox({
-                msg : 'Please enter your password', // TODO i18n 
+                msg : localeStrings.ENTER_PASSWORD,
                 handler : function(pw) { self.loginPatron(barcode_or_usrname, pw); },
                 password : true
             });
@@ -299,7 +299,7 @@ SelfCheckManager.prototype.drawLoginPage = function() {
     };
 
     this.updateScanBox({
-        msg : 'Please log in with your username or library barcode.', // TODO
+        msg : localeStrings.PLEASE_LOGIN,
         handler : bcHandler
     });
 }
@@ -479,7 +479,7 @@ SelfCheckManager.prototype.drawCircPage = function() {
 
     var self = this;
     this.updateScanBox({
-        msg : 'Please enter an item barcode', // TODO i18n
+        msg : localeStrings.ENTER_BARCODE,
         handler : function(barcode) { self.checkout(barcode); }
     });
 
@@ -835,7 +835,7 @@ SelfCheckManager.prototype.drawFinesPage = function() {
                 self.byName(row, 'details').innerHTML = data.record.title();
 
             } else if(type == 'grocery') {
-                self.byName(row, 'type').innerHTML = 'Miscellaneous'; // Go ahead and head off any confusion around "grocery".  TODO i18n
+                self.byName(row, 'type').innerHTML = localeStrings.MISCELLANEOUS; // Go ahead and head off any confusion around "grocery".
                 self.byName(row, 'details').innerHTML = data.transaction.last_billing_type();
             }
 
