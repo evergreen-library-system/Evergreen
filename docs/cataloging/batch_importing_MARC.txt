@@ -1,6 +1,6 @@
 Batch Importing MARC Records
 ----------------------------
-
+[[batchimport]]
 The cataloging module includes an enhanced MARC Batch Import interface for
 loading MARC records.  This interface allows you to specify match points
 between incoming and existing records, to specify MARC fields that should be
@@ -25,6 +25,7 @@ This feature enables you to specify the tags and subfields that will display in
 records that appear in the import queue. 
 
 
+[[matchsets]]
 Record Match Sets
 ~~~~~~~~~~~~~~~~~
 
