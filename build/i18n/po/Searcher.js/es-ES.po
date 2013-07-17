@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2012-04-22 23:59+0000\n"
-"Last-Translator: A. Byrne <Unknown>\n"
+"PO-Revision-Date: 2013-05-25 01:12+0000\n"
+"Last-Translator: Gerson Vazquez <gerson.v.h@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-24 04:54+0000\n"
-"X-Generator: Launchpad (build 15135)\n"
+"X-Launchpad-Export-Date: 2013-05-26 04:53+0000\n"
+"X-Generator: Launchpad (build 16640)\n"
 
 #: Searcher.js:before
 msgid "Published Before"
@@ -107,7 +107,7 @@ msgstr ""
 
 #: Searcher.js:perform_search
 msgid "Go!"
-msgstr ""
+msgstr "Buscar"
 
 #: Searcher.js:remove
 msgid "Remove"
