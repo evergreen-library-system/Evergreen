@@ -25,6 +25,9 @@ all: build-perl
 check: build-perl
 	./Build test || make -s build-perl-fail
 
+livecheck: build-perl
+	./Build test --test_files live_t || make -s build-perl-fail
+
 install: build-perl
 	./Build install
 
