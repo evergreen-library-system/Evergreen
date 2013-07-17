@@ -1,3 +1,500 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 1c721ed5d118ca9981a32a3d66c8aa742f3db4e9
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Jul 17 15:26:54 2013 -0400
+
+    Bumping OpenILS VERSION to 2.0309
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 6142f642d6efcda39290c9391d154d4d3ad5263e
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Jul 17 15:26:00 2013 -0400
+
+    2.3.9 Translations Import
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+5	5	build/i18n/po/Searcher.js/es-ES.po
+4	2	build/i18n/po/XULTermLoader.js/XULTermLoader.js.pot
+30	10	build/i18n/po/acq.js/acq.js.pot
+4	2	build/i18n/po/capture.js/capture.js.pot
+4	4	build/i18n/po/cat.properties/cs-CZ.po
+4	4	build/i18n/po/common.properties/cs-CZ.po
+19	7	build/i18n/po/conify.js/conify.js.pot
+820	765	build/i18n/po/db.seed/db.seed.pot
+13	13	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+104	44	build/i18n/po/ils_events.xml/ils_events.xml.pot
+28	27	build/i18n/po/lang.dtd/cs-CZ.po
+22	21	build/i18n/po/lang.dtd/es-ES.po
+11	4	build/i18n/po/opac.js/opac.js.pot
+4	4	build/i18n/po/patron.properties/cs-CZ.po
+11	10	build/i18n/po/register.js/register.js.pot
+5	2	build/i18n/po/reservation.js/reservation.js.pot
+8	3	build/i18n/po/selfcheck.js/selfcheck.js.pot
+4	4	build/i18n/po/tpac/tpac.pot
+
+commit 23aaa8d3e29d59eab60e75ca7070e0a9f885fe76
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jul 17 13:29:14 2013 -0400
+
+    Stamping upgrade script for copy stats SP fix
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+60	0	Open-ILS/src/sql/Pg/upgrade/0811.function.copy_related_hold_stats.sql
+0	60	Open-ILS/src/sql/Pg/upgrade/XXXX.function.copy_related_hold_stats.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0811.function.copy_related_hold_stats.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.copy_related_hold_stats.sql
+
+commit 52bd87088f5e909435e7f3ba4a48134dff384ecc
+Author: Fredrick Parks <fparks@catalystitservices.com>
+Date:   Wed Jul 10 11:12:17 2013 -0700
+
+    LP 1103706 Hold ratios in circ policies cause errors when trying to renew items
+    
+    Changed the function action.copy_related_hold_stats to accept a bigint as the perameter instead of an integer.
+    Copy_related_hold_stats is only called by the function action.item_user_circ_test which trys to pass a bigint.
+    
+    Signed-off-by: Fredrick Parks <fparks@catalystitservices.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/100.circ_matrix.sql
+60	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.copy_related_hold_stats.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.copy_related_hold_stats.sql
+
+commit 42c5458bc297bdbc1e2ec3f80f548819921eb994
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jul 17 13:25:29 2013 -0400
+
+    Stamping upgrade script for authority labeling fix
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+10	0	Open-ILS/src/sql/Pg/upgrade/0810.data.authority_4xx_fields.sql
+0	10	Open-ILS/src/sql/Pg/upgrade/XXXX.data.authority_4xx_fields.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0810.data.authority_4xx_fields.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.authority_4xx_fields.sql
+
+commit 82dbea7b2f6d56527fe32fa292c1f1c164166931
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Thu Jul 11 15:31:37 2013 -0400
+
+    Authorities: 4XX fields have wrong names
+    
+    In Evergreen we have authority fields defined in the database that
+    relate to control sets.  These are used somewhere today (I'm fuzzy on
+    that at the moment; some places once had and may still have hardcoded
+    labels) but they also will be used by the bib and auth browser
+    that's not yet merged to master (see LP #1177810).
+    
+    The 4XX tags among the set I'm talking about (in
+    authority.control_set_authority_fields) are mislabled, saying See Also
+    where they ought to say See From, e.g.
+    http://www.loc.gov/marc/authority/ad400.html
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+12	12	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+10	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.authority_4xx_fields.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.authority_4xx_fields.sql
+
+commit 44236778522727ebea14272fafb7c1bd8b87a74f
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Jul 12 13:11:57 2013 -0400
+
+    Implement a concurrent-run cache for result rendering a la initial search queue compression
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+70	14	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Util.pm
+
+commit 4e4589ed0e2f10d8ce7c9c48949f5f0c81b6248a
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Oct 10 09:22:33 2012 -0400
+
+    Capture and log AuthProxy logins with no account
+    
+    The current AuthProxy.pm code assumes that if the external auth
+    passes, the Evergreen account will be there.  This protects
+    against cases where a user is in the external auth system but
+    has no matching account in Evergreen.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+4	0	Open-ILS/src/perlmods/lib/OpenILS/Application/AuthProxy.pm
+
+commit 1532f045e2d2b4e7ac1da880fc75b3bcb4282df7
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Sep 27 17:35:03 2012 -0400
+
+    Make AuthProxy LDAP bind code more robust
+    
+    The existing version of LDAP_Auth.pm assumed that the user's
+    bind DN could be derived from the base DN, the ID attribute, and
+    the user's ID.  This is frequently the case, but not always,
+    particularly in Active Directory setups using sAMAccountName. This
+    commit instead uses the initial LDAP lookup as the authority for
+    determining the user's DN.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+5	5	Open-ILS/src/perlmods/lib/OpenILS/Application/AuthProxy/LDAP_Auth.pm
+
+commit 36c60bd42b0cf8be9eaedd1ff99de6dd63c7ef7f
+Author: Pasi Kallinen <pasi.kallinen@pttk.fi>
+Date:   Tue Jul 2 09:13:40 2013 +0300
+
+    Move action.hold_request_cancel_cause inserts to 950.data.seed-values.sql
+    so they're picked up for translation.
+    
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+0	7	Open-ILS/src/sql/Pg/090.schema.action.sql
+10	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+commit d79c74e39217d2cafa32d954bb05825afa47c07e
+Author: Pasi Kallinen <pasi.kallinen@pttk.fi>
+Date:   Tue Jul 2 08:34:16 2013 +0300
+
+    Move acq.user_request_type data for i18n picking
+    
+    Move acq.user_request_type inserts into 950.data.seed-values.sql
+    so those get picked up for translation.
+    
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+0	8	Open-ILS/src/sql/Pg/200.schema.acq.sql
+8	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+commit 4bcad8a746acccd2f81879b43a5d2400d5a4c56d
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Jul 12 15:19:23 2013 -0400
+
+    LP1200735 stamping upgrade for usrname index
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+11	0	Open-ILS/src/sql/Pg/upgrade/0808.schema.usrname_index.sql
+0	11	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.usrname_index.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0808.schema.usrname_index.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.usrname_index.sql
+
+commit 73c08ceb56c1f707ab367375b3ea9e3a57823ea6
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Jul 12 15:10:32 2013 -0400
+
+    LP#1200735: improve performance of patron search by username
+    
+    This patch adds an additional index on actor.usr.usrname.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	0	Open-ILS/src/sql/Pg/005.schema.actors.sql
+11	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.usrname_index.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.usrname_index.sql
+
+commit 3f0d3f8edffbdd323f23c7a8b86b7689b43435a6
+Author: Steven Chan <schan@sitka.bclibraries.ca>
+Date:   Sat Jun 15 13:06:43 2013 -0400
+
+    Fix LP1177916, Cannot activate PO which contains only direct charges
+    We add a safety check in the function
+    Application/Acq/Order.pm/create_lineitem_list_assets(), which is called
+    by create_po_assets(), which is the service call initiated by the user
+    trying to activate a PO.
+    
+    The safety check prevents the function from processing if there are no
+    line items specified in the arguments.
+    
+    P.S. It would be better to stop the sequence of events earlier in the
+    client, but that will need more coding, which can been done in another
+    fix.
+    
+    Signed-off-by: Steven Chan <schan@sitka.bclibraries.ca>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+3	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Order.pm
+
+commit eb0b61fc74a27035237250e8b758ed2d33903d57
+Author: Steven Chan <schan@sitka.bclibraries.ca>
+Date:   Thu May 23 15:22:15 2013 -0700
+
+    Patron Editor can enter erroneous values for Claims-returned count
+    
+    In the staff client, Patrons interface, Edit screen, when
+    mouse-scrolling up and down the Edit form, it is possible to
+    inadvertently change the value in Claims-returned Count or Claims Never
+    Checked Out Count field.  It will happen if the mouse hovers over either
+    data field while using the mouse wheel.
+    
+    Both data fields use the dijit.form.NumberSpinner widget to provide a
+    'spin' behaviour.  The fix involves cancelling the mouse scroll event as
+    it propagates to input fields in table rows that are using the
+    dijit.form.NumberSpinner widget, because the mouse scroll would be
+    applied too early by the widget, before the user has intentionally
+    focussed on one of the input fields.  Now, mouse scrolling has no effect
+    on the two input fields; it will only have an effect in scrolling the
+    page up or down.
+    
+    Signed-off-by: Steven Chan <schan@sitka.bclibraries.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+11	0	Open-ILS/web/js/ui/default/actor/user/register.js
+
+commit d6b8a74cfb51bbf84fc2e1d2906d018ccf598f30
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Jul 10 11:39:08 2013 -0400
+
+    Add missing oils_i18n call #2 to upgrade script
+    
+    Simple thinko fix for missing translation function call.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/upgrade/0804.data.gwichin-typo-fix.sql
+
+commit 91be8b48a44d0472f4f3551660505a9355bbd2f7
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Jul 10 11:26:07 2013 -0400
+
+    Stamping upgrade for Gwich'in language typo
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+9	0	Open-ILS/src/sql/Pg/upgrade/0804.data.gwichin-typo-fix.sql
+0	9	Open-ILS/src/sql/Pg/upgrade/XXXX.data.gwichin-typo-fix.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0804.data.gwichin-typo-fix.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.gwichin-typo-fix.sql
+
+commit 391191a2b7dae2d539927bc28ee1ec0e31e2f840
+Author: Ben Shum <bshum@biblio.org>
+Date:   Tue Jul 9 20:47:20 2013 -0400
+
+    LP1158206 - include upgrade script to fix Gwich'in typo
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+9	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.gwichin-typo-fix.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.gwichin-typo-fix.sql
+
+commit 2c781e60d634bd813152166ec674d15a3d58dc1e
+Author: Pasi Kallinen <pasi.kallinen@pttk.fi>
+Date:   Thu Jun 13 09:06:26 2013 +0300
+
+    Fix LP1158206 - The language is Gwich'in.
+    
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+commit f6509132b0cbc352ce0e9abced1392086680d0ef
+Author: Mark Cooper <markchristophercooper@gmail.com>
+Date:   Mon Mar 18 15:45:14 2013 -0700
+
+    LP1156905 lineitem worksheet sorts copies by org
+    
+    Lineitem copies (details) were set to be sorted by branch ('owning_lib')
+    by default. However this was not happening because the lineitem_details
+    'owning_lib' referenced a fieldmapper object (not an id or name).
+    This submission sets the owning_lib to the shortname so that sorting can
+    occur in the intended way.
+    
+    Signed-off-by: Mark Cooper <markchristophercooper@gmail.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+6	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+commit 84f0028d9c49a5f6829f8fd47941de88bce57083
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Jul 10 11:39:08 2013 -0400
+
+    Add missing oils_i18n call to upgrade script
+    
+    Simple thinko fix for missing translation function call.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+3	1	Open-ILS/src/sql/Pg/upgrade/0803.data.fill_empty_description.sql
+
+commit 712bf8ffdc41376c6178f683bc1fabf0888fdf31
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Jul 10 10:53:41 2013 -0400
+
+    Stamping upgrade script for empty seed description
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+9	0	Open-ILS/src/sql/Pg/upgrade/0803.data.fill_empty_description.sql
+0	9	Open-ILS/src/sql/Pg/upgrade/XXXX.data.fill_empty_description.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0803.data.fill_empty_description.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.fill_empty_description.sql
+
+commit 13119470e51759229ecb26a53955bee77841f018
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Jul 10 09:32:07 2013 -0400
+
+    LP1158211 - add upgrade script to fill empty description
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+9	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.fill_empty_description.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.fill_empty_description.sql
+
+commit 7df02665b81e577006d6309df0fb60fb140f4a55
+Author: Pasi Kallinen <pasi.kallinen@pttk.fi>
+Date:   Tue Jun 11 11:01:53 2013 +0300
+
+    Description for circ.holds.default_shelf_expire_interval
+    
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+commit 97e134a859c2c0cc876f1501a06d9b5ef74fa12d
+Author: Pasi Kallinen <pasi.kallinen@pttk.fi>
+Date:   Mon May 27 12:02:38 2013 +0300
+
+    LP1183414: OPAC patron opt-in settings table does not work correctly
+    
+    Fix the template logic error, trying to use a variable before
+    it is defined.
+    
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+9	6	Open-ILS/src/templates/opac/myopac/prefs_notify.tt2
+
+commit 67709f49e64df49da26f22f7439db5661324564d
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Jul 9 16:53:29 2013 -0400
+
+    Correct Linux staff client build instructions
+    
+    There were a few things going on here; 2.3 introduced linux32-client and
+    linux64-client targets, so the old linux-client Make target no longer
+    worked.
+    
+    Also, Wine isn't generally how many of us would recommend running staff
+    clients when there's a perfectly good native client likely to better
+    support printing, etc.
+    
+    Also, rather than pointing at evergreen-ils.org for downloads, which
+    won't work in many situations (and which prevents the use of the
+    auto-update mechanism), use the "updates" target to point at the locally
+    downloadable clients. Eventually we'll properly document the use of
+    auto-updates, but for now this is hopefully a step in the right
+    direction.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+37	50	docs/installation/staff_client_installation.txt
+
+commit bfbf3e96c42253a7265626385453ac8a734afb6b
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Jul 9 19:43:17 2013 -0400
+
+    Build 64-bit Linux client updates when asked
+    
+    A copy/paste error led to a request for linux64-updates-client to
+    generate 32-bit clients instead of the requested 64-bit clients.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/xul/staff_client/external/make_updates.sh
+
+commit 701eb8f1932a16bacc98760baec8c8a02a4ca84c
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Jun 5 17:29:36 2013 -0400
+
+    LP1187016 Prevent new copies on activated POs
+    
+    If a PO has already been activated, prevent users from adding new copies
+    in the Item Count entry under the full lineitem copy grid.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+6	0	Open-ILS/web/js/ui/default/acq/common/li_table.js
+
+commit 144fb20f896bf7bb4576177baf6554aa035e9afa
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Jun 20 23:39:21 2013 -0400
+
+    return, not next, from eval BLOCK
+    
+    Per perldoc eval, exiting an eval BLOCK is not allowed. And it generates
+    warnings - 37,000 of them in one day - on a system on which the fine
+    generator runs every 15 minutes. Simply returning from the block
+    achieves the same goal without generating scads of warnings.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+6	6	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+
+commit 0c37a958ff32fd394b8a60b33b4d218acf2f83ef
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Jun 20 23:11:20 2013 -0400
+
+    Silence uninit var warnings from query normalizer
+    
+    $field_info can return undef from the search for a matching ID from the
+    list of normalizers, which in turn generates several uninit var warnings
+    when attempts are made to access members of the undef variable. We saw
+    6700 occurrences of these warnings during a typical day of operations.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+
+commit a91817f3f5a8f1f4f8b859a27eb55d283737b664
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Wed Jun 19 15:42:07 2013 -0400
+
+    Add (noop) upgrade script for 2.2.10
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/2.2.9-2.2.10-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.2.9-2.2.10-upgrade-db.sql
+
+commit 9ff4ed3f585afbbf268cf6a895433f5b0bb7a4c5
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Jun 19 10:47:20 2013 -0400
+
+    2.3.8 stub upgrade script
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/2.3.7-2.3.8-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.3.7-2.3.8-upgrade-db.sql
