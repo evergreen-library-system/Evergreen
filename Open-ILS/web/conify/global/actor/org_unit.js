@@ -34,6 +34,7 @@ dojo.require('dijit.layout.TabContainer');
 dojo.require('dijit.layout.LayoutContainer');
 dojo.require('dijit.layout.SplitContainer');
 dojo.require('dojox.widget.Toaster');
+dojo.require('dojox.string.sprintf');
 dojo.require('dojox.fx');
 dojo.require('openils.XUL');
 dojo.requireLocalization("openils.conify", "conify");
@@ -59,6 +60,10 @@ var highlighter = {};
 
 function status_update (markup) {
     if (parent !== window && parent.status_update) parent.status_update( markup );
+}
+
+function set_hoo_thisvalue(dow_open, timeval) {
+    current_ou_hoo[dow_open](dojox.string.sprintf('%02d:%02d', timeval.getHours(), timeval.getMinutes()));
 }
 
 function save_org () {
