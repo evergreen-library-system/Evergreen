@@ -1,7 +1,7 @@
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0811', :eg_version);
 
 DROP FUNCTION action.copy_related_hold_stats(integer);
 
