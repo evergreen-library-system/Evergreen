@@ -272,8 +272,6 @@ END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
-ALTER FUNCTION action.copy_related_hold_stats(bigint)
-  OWNER TO evergreen;
 
 
 COMMIT;
