@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-03-15 19:42+0000\n"
-"PO-Revision-Date: 2012-05-01 14:49+0000\n"
+"PO-Revision-Date: 2013-04-23 12:11+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-16 06:01+0000\n"
-"X-Generator: Launchpad (build 16532)\n"
+"X-Launchpad-Export-Date: 2013-04-24 04:49+0000\n"
+"X-Generator: Launchpad (build 16580)\n"
 
 #: staff.serial.editor_base.handle_update.error
 msgid "serial update error:"
@@ -319,15 +319,15 @@ msgstr "Poznámky (jednotky/distribuce/předpl.)"
 
 #: staff.serial.manage_items.set_claimed_success
 msgid "Successfully claimed %1$s item(s)"
-msgstr ""
+msgstr "Reklamace proběhla. Počet úspěšně reklamovaných položek:  %1$s"
 
 #: staff.serial.manage_items.set_not_held_success
 msgid "Successfully set %1$s item(s) to 'Not Held'"
-msgstr ""
+msgstr "%1$s položek bylo úspěšně nastaveno na \"Není vlastněno\""
 
 #: staff.serial.manage_items.set_not_published_success
 msgid "Successfully set %1$s item(s) to 'Not Published'"
-msgstr ""
+msgstr "%1$s položek bylo úspěšně nastaveno na \"Nebylo vydáno\""
 
 #: staff.serial.manage_subs.add.error
 msgid "error adding object in manage_subs.js:"

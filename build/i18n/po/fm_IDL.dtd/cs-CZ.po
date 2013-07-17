@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2013-03-15 19:38-0400\n"
-"PO-Revision-Date: 2013-03-07 14:07+0000\n"
+"PO-Revision-Date: 2013-04-26 17:47+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-16 05:56+0000\n"
-"X-Generator: Launchpad (build 16532)\n"
+"X-Launchpad-Export-Date: 2013-04-27 05:52+0000\n"
+"X-Generator: Launchpad (build 16580)\n"
 "X-Accelerator-Marker: &\n"
 
 #: field.bre.source.label:2650
@@ -670,7 +670,7 @@ msgstr ""
 
 #: field.cbho.rtime.label:2407
 msgid "Hold Request Time"
-msgstr ""
+msgstr "Čas požadavku na rezervaci"
 
 #: field.ahn.hold.label:4175 field.aufh.hold.label:6267
 msgid "Hold"
@@ -704,7 +704,7 @@ msgstr "Úroveň pokut"
 
 #: field.cbho.pprox.label:2399
 msgid "Capture Lib to Pickup Lib Proximity"
-msgstr ""
+msgstr "Zachytit knihovnu do proximity knihoven pro vyzvednutí"
 
 #: field.sdist.streams.label:4438
 msgid "Streams"
@@ -840,7 +840,7 @@ msgstr "Hodnota sloupců množiny polí"
 
 #: field.aoupa.prox_adjustment.label:4945
 msgid "Proximity Adjustment"
-msgstr ""
+msgstr "Nastavení proximity"
 
 #: field.ccm.sip2_media_type.label:1288
 msgid "SIP2 Media Type"
@@ -1499,7 +1499,7 @@ msgstr "Váha A"
 
 #: field.cbho.aprox.label:2401
 msgid "Adjusted Circ Lib to Pickup Lib Proximity"
-msgstr ""
+msgstr "Výpůjční knihovny nastavené v proximitě knihoven pro vyzvedenutí"
 
 #: field.atc.persistant_transfer.label:1977
 #: field.iatc.persistant_transfer.label:10218
@@ -1879,7 +1879,7 @@ msgstr "Nenaplněný indikátor"
 
 #: class.uvs.label:9443
 msgid "URL Verification Session"
-msgstr ""
+msgstr "Relace verifikace URL"
 
 #: field.vii.internal_id.label:297 field.viiad.internal_id.label:349
 msgid "Overlay Match ID"
@@ -1935,7 +1935,7 @@ msgstr "Stará výpůjčka (bez čtenáře)"
 
 #: class.cbho.label:2395
 msgid "Best-Hold Sort Order"
-msgstr ""
+msgstr "Pořadí pro řazení \"Nevýhodnějších rezervací\""
 
 #: field.vmsp.quality.label:650
 msgid "Importance"
@@ -1951,7 +1951,7 @@ msgstr "Přehled skupin uživatelů"
 
 #: field.cbho.approx.label:2402
 msgid "Adjusted Capture Location to Pickup Lib Proximity"
-msgstr ""
+msgstr "Nastavená lokace zachycení pro proximitu knihovny pro vyzvednutí"
 
 #: field.aua.street2.label:3473 field.aal.street2.label:3493
 #: field.acqpca.street2.label:7113 field.stgma.street2.label:8785
@@ -1977,7 +1977,7 @@ msgstr "Omezení transakcí"
 
 #: field.ctcl.name.label:9930
 msgid "Text Search Config Name"
-msgstr ""
+msgstr "Název nastavení textového vyhledávání"
 
 #: class.ateo.label:969
 msgid "Event Output"
@@ -1993,7 +1993,7 @@ msgstr "Globální"
 
 #: field.cbho.depth.label:2405
 msgid "Hold Selection Depth"
-msgstr ""
+msgstr "Hloubka výběru rezervace"
 
 #: field.viiad.tag.label:328 field.vmsp.tag.label:647 field.vmsq.tag.label:682
 #: field.acsaf.tag.label:2089 field.acsbf.tag.label:2121
@@ -2138,7 +2138,7 @@ msgstr "Data uživatele události"
 
 #: field.aoupa.item_circ_lib.label:4937
 msgid "Item Circ Lib"
-msgstr ""
+msgstr "Výpůjční knihovna exempláře"
 
 #: field.rhcrpbap.copy_count_everywhere.label:9877
 msgid "Holdable Copy Count Everywhere"
@@ -2201,7 +2201,7 @@ msgstr "Typ cílového zdroje"
 
 #: field.aoupa.absolute_adjustment.label:4944
 msgid "Absolute adjustment?"
-msgstr ""
+msgstr "Absolutní nastavení"
 
 #: field.cuat.ehow.label:2991
 msgid "Event Mechanism"
@@ -2396,7 +2396,7 @@ msgstr "Definice atributů autoritních záznamů ve frontě"
 
 #: field.cbho.cut.label:2404
 msgid "Hold Cut-in-line State"
-msgstr ""
+msgstr "Stav \"vmáčknutí\" rezervace do fornty"
 
 #: field.aout.opac_label.label:5700
 msgid "OPAC Label"
@@ -2622,7 +2622,7 @@ msgstr "Detaily platby šekem"
 
 #: field.acqpro.default_copy_count.label:6871
 msgid "Default # Copies"
-msgstr ""
+msgstr "Přednastavený počet exemplářů"
 
 #: class.acqpc.label:7074
 msgid "Provider Contact"
@@ -2663,7 +2663,7 @@ msgstr "Otisk"
 
 #: class.vibtg.label:243
 msgid "Import/Overlay Field Groups for Removal"
-msgstr ""
+msgstr "Skupiny polí pro odstranění při importu / přepsání"
 
 #: field.ateo.data.label:973
 msgid "Data"
@@ -2745,7 +2745,7 @@ msgstr "Kredit ve finančním zdroji celkem"
 
 #: class.mct.label:2614
 msgid "Collections Tracker"
-msgstr ""
+msgstr "Sledování kolekcí"
 
 #: field.qsi.grouped_by.label:9101
 msgid "Is Grouped By"
@@ -2887,7 +2887,7 @@ msgstr "Čas posledního půjčení"
 
 #: field.uvuv.res_text.label:9655
 msgid "Result Text"
-msgstr ""
+msgstr "Text výsledku"
 
 #: field.vii.call_number.label:280 field.viiad.call_number.label:332
 #: field.auricnm.call_number.label:2582
@@ -4131,7 +4131,7 @@ msgstr "ID textu upozornění"
 
 #: field.aoupa.hold_request_lib.label:4940
 msgid "Hold Request Lib"
-msgstr ""
+msgstr "Knihovna požadavku na rezervaci"
 
 #: field.rud.general_division.label:8431
 msgid "General Demographic Division"
@@ -4611,7 +4611,7 @@ msgstr "Zpráva"
 
 #: class.aoupa.label:4934
 msgid "Org Unit Proximity Adjustment"
-msgstr ""
+msgstr "Nastavení proximity organizačních jednotek"
 
 #: field.cmsa.field_class.label:2325 field.cmf.field_class.label:2369
 msgid "Class"
@@ -5023,7 +5023,7 @@ msgstr "Vyčištění po úspěšném proběhnutí"
 
 #: class.uvu.label:9547
 msgid "URL Verification URL"
-msgstr ""
+msgstr "URL verifikace URL"
 
 #: class.pgpm.label:6312
 msgid "Group Permission Map"
@@ -5577,7 +5577,7 @@ msgstr "Typ výpůjčky (MARC)"
 
 #: field.vibtg.always_apply.label:253
 msgid "Always Apply"
-msgstr ""
+msgstr "Vždy použít"
 
 #: class.acqliad.label:8028
 msgid "Line Item Attribute Definition"
@@ -5695,7 +5695,7 @@ msgstr "Značka vlastnické knihovny"
 
 #: field.uvu.domain.label:9566
 msgid "Domain"
-msgstr ""
+msgstr "Doména"
 
 #: class.iatc.label:10203
 msgid "Inter-system Copy Transit"
@@ -5944,7 +5944,7 @@ msgstr "Personál zajišťující vyrozumění"
 
 #: field.cbho.htime.label:2406
 msgid "Copy Has Circulated From Home Lately"
-msgstr ""
+msgstr "Exemplář byl nedávno půjčen z domovské knihovny"
 
 #: field.ccvm.is_simple.label:879
 msgid "Is Simple Selector"
@@ -6354,7 +6354,7 @@ msgstr "ID  podpole"
 
 #: field.aoupa.item_owning_lib.label:4938
 msgid "Item Owning Lib"
-msgstr ""
+msgstr "Knihovna vlastnící exemplář"
 
 #: field.rmsr.biblio_record.label:8366 field.rssr.biblio_record.label:8390
 #: field.rsr.biblio_record.label:8420
@@ -6719,11 +6719,11 @@ msgstr "Kód dodavatele"
 
 #: field.cbho.shtime.label:2408
 msgid "Copy Has Been Home At All Lately"
-msgstr ""
+msgstr "Exemplář byl nedávno v domovské knihovně"
 
 #: field.ahopl.usr_display_name.label:5278
 msgid "User Display Name"
-msgstr ""
+msgstr "Zobrazené jméno uživatele"
 
 #: field.sdist.supplement_summary.label:4441 class.sssum.label:4783
 msgid "Supplemental Issue Summary"
@@ -6897,7 +6897,7 @@ msgstr "Vytvořil(a)"
 
 #: field.uvuv.res_time.label:9653
 msgid "Result Time"
-msgstr ""
+msgstr "Čas výsledku"
 
 #: field.act.floating.label:6127
 msgid "Floating?"
@@ -6965,7 +6965,7 @@ msgstr "Kódované pole"
 #: field.ctcl.id.label:9929 field.cmcts.ts_config.label:9943
 #: field.cmfts.ts_config.label:9968
 msgid "Text Search Config"
-msgstr ""
+msgstr "Nastavení textového vyhledávání"
 
 #: field.atc.source_send_time.label:1981
 #: field.artc.source_send_time.label:6579
@@ -7224,7 +7224,7 @@ msgstr "Název souboru polí"
 
 #: field.acqliat.order_ident.label:7944 field.acqlia.order_ident.label:7987
 msgid "Order Identifier"
-msgstr ""
+msgstr "Starší identifikátor"
 
 #: field.mrd.bib_level.label:3349
 msgid "BLvl"
@@ -7451,7 +7451,7 @@ msgstr "Zdroj"
 
 #: field.aoupa.hold_pickup_lib.label:4939
 msgid "Hold Pickup Lib"
-msgstr ""
+msgstr "Knihovna pro vyzvednutí rezervace"
 
 #: field.cam.value.label:2443
 msgid "Audience"

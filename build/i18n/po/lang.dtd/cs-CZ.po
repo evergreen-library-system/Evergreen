@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-03-15 19:37+0000\n"
-"PO-Revision-Date: 2013-03-07 13:46+0000\n"
+"PO-Revision-Date: 2013-07-04 11:54+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-16 05:59+0000\n"
-"X-Generator: Launchpad (build 16532)\n"
+"X-Launchpad-Export-Date: 2013-07-05 05:39+0000\n"
+"X-Generator: Launchpad (build 16696)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -1035,7 +1035,7 @@ msgstr "Informace"
 #: staff.bills_interface_label
 msgctxt "staff.bills_interface_label"
 msgid "Bills"
-msgstr "Účty"
+msgstr "Poplatky"
 
 #: staff.bills_money_label
 msgid "Money"
@@ -1530,7 +1530,7 @@ msgstr "Téma"
 #: staff.cat.search_submit
 msgctxt "staff.cat.search_submit"
 msgid "Search"
-msgstr ""
+msgstr "Hledat"
 
 #: staff.cat.search_submit.key
 msgctxt "staff.cat.search_submit.key"
@@ -2966,7 +2966,7 @@ msgstr "Z39.50 servery"
 
 #: staff.main.menu.admin.server_admin.conify.org_unit_proximity_adjustment.label
 msgid "Org Unit Proximity Adjustments"
-msgstr ""
+msgstr "Nastavení proximity organizační jednotky"
 
 #: staff.main.menu.admin.server_admin.conify.circulation_modifier.label
 msgid "Circulation Modifiers"
@@ -2994,7 +2994,7 @@ msgstr "Pravidla délky výpůjček"
 
 #: staff.main.menu.admin.server_admin.conify.config_best_hold_order
 msgid "Best-Hold Selection Sort Order"
-msgstr ""
+msgstr "Pořadí pro třídění \"nejvýhodnějších rezervací\""
 
 #: staff.main.menu.admin.server_admin.conify.vandelay_import_bib_trash_group
 msgid "MARC Import Remove Fields"
@@ -3042,7 +3042,7 @@ msgstr "Vlastní nastavení organizačního stromu"
 
 #: staff.main.menu.admin.server_admin.conify.config.remote_account
 msgid "Remote Accounts"
-msgstr ""
+msgstr "Vzdálený účet"
 
 #: staff.main.menu.admin.server_admin.conify.global_flag.label
 msgid "Global Flags"
@@ -5610,7 +5610,7 @@ msgstr "Čtenář"
 
 #: staff.patron_display.bills.label
 msgid "Bills:"
-msgstr "Účty:"
+msgstr "Poplatky:"
 
 #: staff.patron_display.checkout.auto_print.label
 #: staff.patron_display.checkout.auto_print.accesskey
@@ -5684,7 +5684,7 @@ msgstr "Telefonní čísla"
 #: staff.patron_display.tab.identification.label
 msgctxt "staff.patron_display.tab.identification.label"
 msgid "Identification"
-msgstr "Číslo dokladu"
+msgstr "Identifikační údaje"
 
 #: staff.patron_display.tab.group.label
 msgctxt "staff.patron_display.tab.group.label"
@@ -5892,46 +5892,46 @@ msgstr "Čtenář"
 
 #: staff.patron_display.penalty.caption
 msgid "Staff-Generated Penalties/Messages"
-msgstr "Pokuty / zprávy vytvořené personálem"
+msgstr "Upozornění/blokace vytvořené personálem"
 
 #: staff.patron_display.archived_penalty.caption
 msgid "Archived Penalties/Messages"
-msgstr "Archiv pokut / zpráv"
+msgstr "Archiv upozornění/blokací"
 
 #: staff.patron_display.penalty.menu.actions.label
 #: staff.patron_display.penalty.menu.actions.accesskey
 msgid "Actions for these &Penalties/Messages"
-msgstr "Akce pro pokuty / záznamy"
+msgstr "Akce pro u&pozornění/blokace"
 
 #: staff.patron_display.penalty.menu.apply.label
 #: staff.patron_display.penalty.menu.apply.accesskey
 msgid "Apply &Standing Penalty/Message"
-msgstr "Použít &blokaci / pokutu / zprávu"
+msgstr "Vytvořit upozornění/&blokaci"
 
 #: staff.patron_display.penalty.menu.actions.remove.label
 #: staff.patron_display.penalty.menu.actions.remove.accesskey
 msgid "&Remove Penalty/Message"
-msgstr "Odst&ranit pokutu / zprávu"
+msgstr "Smazat upozo&rnění/blokaci"
 
 #: staff.patron_display.penalty.menu.actions.edit.label
 #: staff.patron_display.penalty.menu.actions.edit.accesskey
 msgid "&Modify Penalty/Message"
-msgstr "Upra&vit pokutu / zprávu"
+msgstr "Upra&vit upozornění/blokaci"
 
 #: staff.patron_display.penalty.menu.actions.archive.label
 #: staff.patron_display.penalty.menu.actions.archive.accesskey
 msgid "&Archive Penalty/Message"
-msgstr "Uložit pokutu / zprávu do &archivu"
+msgstr "Přesunout upozornění/blokaci do &archivu"
 
 #: staff.patron_display.apply_penalty_dialog.title
 msgctxt "staff.patron_display.apply_penalty_dialog.title"
 msgid "Apply Standing Penalty/Message"
-msgstr "Použít  blokaci / pokutu / zprávu"
+msgstr "Nové upozornění/blokace"
 
 #: staff.patron_display.apply_penalty_dialog.header
 msgctxt "staff.patron_display.apply_penalty_dialog.header"
 msgid "Apply Standing Penalty/Message"
-msgstr "Uložit blokaci / pokutu / zprávu"
+msgstr "Vytvořit upozornění/blokaci"
 
 #: staff.patron_display.apply_penalty_dialog.description
 msgctxt "staff.patron_display.apply_penalty_dialog.description"
@@ -5976,7 +5976,7 @@ msgctxt ""
 "staff.patron_display.apply_penalty_dialog.apply_btn.label "
 "staff.patron_display.apply_penalty_dialog.apply_btn.accesskey"
 msgid "&Apply"
-msgstr "Po&užít"
+msgstr "Ulo&užit"
 
 #: staff.patron_display.apply_penalty_dialog.initials_entry.label
 #: staff.patron_display.apply_penalty_dialog.initials_entry.accesskey
@@ -5989,12 +5989,12 @@ msgstr "&Iniciály"
 #: staff.patron_display.edit_penalty_dialog.title
 msgctxt "staff.patron_display.edit_penalty_dialog.title"
 msgid "Modify Standing Penalty/Message"
-msgstr "Upravit blokaci / pokutu / zprávu"
+msgstr "Změna upozornění/blokace"
 
 #: staff.patron_display.edit_penalty_dialog.header
 msgctxt "staff.patron_display.edit_penalty_dialog.header"
 msgid "Modify Standing Penalty/Message"
-msgstr "Upravit blokaci / pokutu / zprávu"
+msgstr "Úpravit upozornění/blokaci"
 
 #: staff.patron_display.edit_penalty_dialog.description
 msgctxt "staff.patron_display.edit_penalty_dialog.description"
@@ -6062,7 +6062,7 @@ msgstr "Datum ukončení:"
 #: staff.patron_display.archived_penalty.retrieve.label
 #: staff.patron_display.archived_penalty.retrieve.accesskey
 msgid "&Retrieve Archived Penalties"
-msgstr "Zob&razit archivované pokuty"
+msgstr "Zob&razit archivovaná upozornění/blokace"
 
 #: staff.patron_display.staged.caption
 msgid "Pending Patrons"
@@ -6147,7 +6147,7 @@ msgstr "čtenář "
 #: staff.patron_navbar.bills
 msgctxt "staff.patron_navbar.bills"
 msgid "Bills"
-msgstr "Účty"
+msgstr "Poplatky"
 
 #: staff.patron_navbar.bills.accesskey
 msgctxt "staff.patron_navbar.bills.accesskey"
@@ -6203,7 +6203,7 @@ msgstr "k"
 #: staff.patron_navbar.other
 msgctxt "staff.patron_navbar.other"
 msgid "Other"
-msgstr "Jiné"
+msgstr "Ostatní"
 
 #: staff.patron_navbar.other.accesskey
 msgid "o"
@@ -6543,15 +6543,15 @@ msgstr "Přidat soubor exemplářů"
 
 #: staff.serial.manage_items.actions.cmd_claim_items.label
 msgid "Claim Item"
-msgstr ""
+msgstr "Reklamovat jednotku"
 
 #: staff.serial.manage_items.actions.cmd_set_items_not_held.label
 msgid "Set 'Not Held'"
-msgstr ""
+msgstr "Nastavit \"Není vlastněno\""
 
 #: staff.serial.manage_items.actions.cmd_set_items_not_published.label
 msgid "Set 'Not Published'"
-msgstr ""
+msgstr "Nastavit \"Nebylo publikováno\""
 
 #: staff.serial.manage_dists.actions.cmd_delete_sstr.label
 msgid "Delete Stream"
@@ -7572,7 +7572,7 @@ msgstr "Neplatný formát času"
 
 #: staff.server.admin.closed_dates.success
 msgid "Closed date successfully updated"
-msgstr "DA"
+msgstr "Dny, kdy je knihovna uzavřena byly  úspěšně upraveny"
 
 #: staff.server.admin.copy_locations.title
 msgid "Evergreen: Copy Locations Editor"
@@ -8453,7 +8453,8 @@ msgstr ""
 
 #: staff.server.admin.org_settings.ui.circ.show_billing_tab_on_bills
 msgid "Show billing tab first when bills are present"
-msgstr "Zobrazit kartu s účty, pokud má čtenář nevyřízené platby"
+msgstr ""
+"Pokud má čtenář nevyřízené platby, zobrazit nejdříve kartu s poplatky"
 
 #: staff.server.admin.org_settings.ui.circ.show_billing_tab_on_bills.desc
 msgid ""
@@ -8463,7 +8464,7 @@ msgid ""
 msgstr ""
 "Pokud je tato volba aktivována, má-li čtenář má nezaplacené poplatky a "
 "zároveň není vyžadováno zobrazení varovné stránky, standardně při načítání "
-"čtenáře zobrazit kartu Účty  (místo karty Půjčit)"
+"čtenáře zobrazit kartu Poplatky  (místo karty Půjčit)"
 
 #: staff.server.admin.org_settings.ui.circ.patron_display_timeout_interval
 msgid "GUI: Patron display timeout interval"
@@ -8756,7 +8757,7 @@ msgctxt ""
 "staff.circ.checkin_overlay.sel_opac_holds.label "
 "staff.circ.checkin_overlay.sel_opac_holds.accesskey"
 msgid "Show &Holds on Bib"
-msgstr ""
+msgstr "Zobrazit &rezervace k záznamu"
 
 #: staff.circ.checkin_overlay.sel_copy_details.label
 #: staff.circ.checkin_overlay.sel_copy_details.accesskey
@@ -8949,7 +8950,7 @@ msgctxt ""
 "staff.circ.renew_overlay.sel_opac_holds.label "
 "staff.circ.renew_overlay.sel_opac_holds.accesskey"
 msgid "Show &Holds on Bib"
-msgstr ""
+msgstr "Zobrazit &rezervace k záznamu"
 
 #: staff.circ.renew_overlay.sel_copy_details.label
 #: staff.circ.renew_overlay.sel_copy_details.accesskey
@@ -9215,7 +9216,7 @@ msgctxt ""
 "staff.circ.copy_status_overlay.sel_opac_holds.label "
 "staff.circ.copy_status_overlay.sel_opac_holds.accesskey"
 msgid "Show &Holds on Bib"
-msgstr ""
+msgstr "Zobrazit &rezervace k záznamu"
 
 #: staff.circ.copy_status_overlay.sel_copy_details.label
 #: staff.circ.copy_status_overlay.sel_copy_details.accesskey
@@ -9796,12 +9797,12 @@ msgstr "S"
 
 #: staff.circ.holds.show_in_catalog_holds
 msgid "Show Holds on Bib"
-msgstr ""
+msgstr "Zobrazit rezervace k záznamu"
 
 #: staff.circ.holds.show_in_catalog_holds.accesskey
 msgctxt "staff.circ.holds.show_in_catalog_holds.accesskey"
 msgid "H"
-msgstr ""
+msgstr "R"
 
 #: staff.circ.holds.show_item_details
 msgid "Show Item Details"
@@ -10754,7 +10755,7 @@ msgstr "Kopie &Poznámky"
 #: staff.cat.copy_editor.save.label
 #: staff.cat.copy_editor.save.accesskey
 msgid "&Modify Copies"
-msgstr "Upravit exe&mpláře"
+msgstr "Uložit z&měny"
 
 #: staff.cat.copy_editor.cancel.label
 #: staff.cat.copy_editor.cancel.accesskey
@@ -11636,7 +11637,7 @@ msgstr "&Importovat"
 
 #: staff.cat.z3950.strip_fields.label
 msgid "Remove Fields on Import: "
-msgstr ""
+msgstr "Při importu odebrat pole: "
 
 #: staff.pat.barcode_entry.retrieve_patron.label
 msgctxt "staff.pat.barcode_entry.retrieve_patron.label"
@@ -11804,7 +11805,7 @@ msgstr "&Potvrdit tuto informaci"
 #: staff.patron.bill_details.bills.label
 msgctxt "staff.patron.bill_details.bills.label"
 msgid "Bills"
-msgstr "Účty"
+msgstr "Poplatky"
 
 #: staff.patron.bill_details.void_selection.label
 msgid "Void selected billings"
@@ -12945,7 +12946,7 @@ msgstr "Vlastník adresy"
 #: staff.patron.ue.edit.label
 msgctxt "staff.patron.ue.edit.label"
 msgid "Edit"
-msgstr "Editovat"
+msgstr "Údaje o čtenáři"
 
 #: staff.patron.ue.label.label
 msgctxt "staff.patron.ue.label.label"
@@ -13926,12 +13927,12 @@ msgstr "Výpůjčky a čtenáři"
 #: staff.client.portal.checkout
 msgctxt "staff.client.portal.checkout"
 msgid "Check Out Items"
-msgstr ""
+msgstr "Půjčit"
 
 #: staff.client.portal.checkout.description
 msgctxt "staff.client.portal.checkout.description"
 msgid "Check Out Items"
-msgstr ""
+msgstr "Vrátit"
 
 #: staff.client.portal.retrievebc
 msgid "(Retrieve Patron By Barcode)"
@@ -13940,32 +13941,32 @@ msgstr "(Vyhledání čtenáře podle čárového kódu)"
 #: staff.client.portal.checkin
 msgctxt "staff.client.portal.checkin"
 msgid "Check In Items"
-msgstr ""
+msgstr "Vrátit"
 
 #: staff.client.portal.checkin.description
 msgctxt "staff.client.portal.checkin.description"
 msgid "Check In Items"
-msgstr ""
+msgstr "Vracení"
 
 #: staff.client.portal.patronreg
 msgctxt "staff.client.portal.patronreg"
 msgid "Register Patron(s)"
-msgstr ""
+msgstr "Registrovat čtenáře"
 
 #: staff.client.portal.patronreg.description
 msgctxt "staff.client.portal.patronreg.description"
 msgid "Register Patron(s)"
-msgstr ""
+msgstr "Registrace čtenáře"
 
 #: staff.client.portal.patronsearch
 msgctxt "staff.client.portal.patronsearch"
 msgid "Search For Patron By Name"
-msgstr ""
+msgstr "Vyhledat čtenáře podle jména"
 
 #: staff.client.portal.patronsearch.description
 msgctxt "staff.client.portal.patronsearch.description"
 msgid "Search For Patron By Name"
-msgstr ""
+msgstr "Hledání čtenáře"
 
 #: staff.client.portal.holdlist
 msgctxt "staff.client.portal.holdlist"
@@ -13975,7 +13976,7 @@ msgstr "Seznam požadavků na rezervace"
 #: staff.client.portal.holdlist.description
 msgctxt "staff.client.portal.holdlist.description"
 msgid "Pull List for Hold Requests"
-msgstr ""
+msgstr "Seznam požadavků na rezervace"
 
 #: staff.client.portal.itemcataloging
 msgid "Item Search and Cataloging"
@@ -13984,42 +13985,42 @@ msgstr "Vyhledávání exemplářů a katalogizace"
 #: staff.client.portal.advsearch
 msgctxt "staff.client.portal.advsearch"
 msgid "Advanced Search"
-msgstr ""
+msgstr "Pokročilé vyhledávání"
 
 #: staff.client.portal.advsearch.description
 msgctxt "staff.client.portal.advsearch.description"
 msgid "Advanced Search"
-msgstr ""
+msgstr "Pokročilé vyhledávání"
 
 #: staff.client.portal.itemstatus
 msgctxt "staff.client.portal.itemstatus"
 msgid "Item Status / Display"
-msgstr ""
+msgstr "Zobrazení / status exempláře"
 
 #: staff.client.portal.itemstatus.description
 msgctxt "staff.client.portal.itemstatus.description"
 msgid "Item Status / Display"
-msgstr ""
+msgstr "Zobrazení / status exempláře"
 
 #: staff.client.portal.marcutil
 msgctxt "staff.client.portal.marcutil"
 msgid "MARC Batch Import / Export"
-msgstr ""
+msgstr "Dávkový import / export MARCu"
 
 #: staff.client.portal.marcutil.description
 msgctxt "staff.client.portal.marcutil.description"
 msgid "MARC Batch Import / Export"
-msgstr ""
+msgstr "Dávkový import / export MARCu"
 
 #: staff.client.portal.z3950
 msgctxt "staff.client.portal.z3950"
 msgid "z39.50 Import"
-msgstr ""
+msgstr "Import pomocí Z39.50"
 
 #: staff.client.portal.z3950.description
 msgctxt "staff.client.portal.z3950.description"
 msgid "z39.50 Import"
-msgstr ""
+msgstr "Import pomocí Z39.50"
 
 #: staff.client.portal.copybuckets
 msgctxt "staff.client.portal.copybuckets"
@@ -14029,7 +14030,7 @@ msgstr "Skupiny exemplářů"
 #: staff.client.portal.copybuckets.description
 msgctxt "staff.client.portal.copybuckets.description"
 msgid "Copy Buckets"
-msgstr ""
+msgstr "Skupiny exemplářů"
 
 #: staff.client.portal.recordbuckets
 msgctxt "staff.client.portal.recordbuckets"
@@ -14039,7 +14040,7 @@ msgstr "Skupiny záznamů"
 #: staff.client.portal.recordbuckets.description
 msgctxt "staff.client.portal.recordbuckets.description"
 msgid "Record Buckets"
-msgstr ""
+msgstr "Skupiny záznamů"
 
 #: staff.client.portal.admin
 msgid "Administration"
@@ -14051,7 +14052,7 @@ msgstr "Získat nápovědu k Evergreenu"
 
 #: staff.client.portal.helpdesk.description
 msgid "Submit A Helpdesk Ticket"
-msgstr ""
+msgstr "Zadat hlášení helpdesku"
 
 #: staff.client.portal.reports
 msgctxt "staff.client.portal.reports"
@@ -14061,17 +14062,17 @@ msgstr "Zprávy"
 #: staff.client.portal.reports.description
 msgctxt "staff.client.portal.reports.description"
 msgid "Reports"
-msgstr ""
+msgstr "Zprávy a statistiky"
 
 #: staff.client.portal.receipts
 msgctxt "staff.client.portal.receipts"
 msgid "Edit Receipt Templates"
-msgstr ""
+msgstr "Šablony výpisů a potvrzení"
 
 #: staff.client.portal.receipts.description
 msgctxt "staff.client.portal.receipts.description"
 msgid "Edit Receipt Templates"
-msgstr ""
+msgstr "Šablony výpisů a potvrzení"
 
 #: staff.client.portal.copyright
 msgid "Copyright &copy; 2006-2012 Georgia Public Library Service, and others"
@@ -14084,12 +14085,12 @@ msgstr "Provozováno v systému"
 
 #: staff.client.portal.open_new_tab.description
 msgid "Open in a new tab"
-msgstr ""
+msgstr "Otevřít v novém panelu"
 
 #: staff.client.portal.search.button
 msgctxt "staff.client.portal.search.button"
 msgid "Search"
-msgstr ""
+msgstr "Vyhedávat"
 
 #: staff.item.batch.hold.groupbox_caption
 msgid "Request Details"
