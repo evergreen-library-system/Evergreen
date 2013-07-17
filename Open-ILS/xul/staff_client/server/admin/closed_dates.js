@@ -357,6 +357,11 @@ function cdNew() {
         end = cdDateStrToDate(edate + ' ' + etime);
     }
 
+    if (end.getTime() < start.getTime()) {
+        alertId('cd_invalid_date_span');
+        return;
+    }
+
     cdCreate(start, end, $('cd_edit_note').value);
 }
 

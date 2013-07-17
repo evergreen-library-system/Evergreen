@@ -2173,6 +2173,7 @@
 <!ENTITY staff.server.admin.closed_dates.confirm_delete "Are you sure you wish to delete the selected close date?">
 <!ENTITY staff.server.admin.closed_dates.date.invalid "Invalid date format">
 <!ENTITY staff.server.admin.closed_dates.time.invalid "Invalid time format">
+<!ENTITY staff.server.admin.closed_dates.date_span.invalid "Ending date is earlier than starting date">
 <!ENTITY staff.server.admin.closed_dates.success "Closed date successfully updated">
 <!ENTITY staff.server.admin.copy_locations.title "Evergreen: Copy Locations Editor">
 <!ENTITY staff.server.admin.copy_locations.editor " Copy Locations Editor ">
