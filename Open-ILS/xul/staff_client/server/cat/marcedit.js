@@ -46,6 +46,61 @@ function $(id) { return document.getElementById(id); }
 
 var acs; // AuthorityControlSet
 
+function get_new_008() {
+    var orig008 = '                                        ';
+    var now = new Date();
+    var y = now.getUTCFullYear().toString().substr(2,2);
+    var m = now.getUTCMonth() + 1;
+    if (m < 10) m = '0' + m;
+    var d = now.getUTCDate();
+    if (d < 10) d = '0' + d;
+
+    if (xml_record.controlfield.(@tag == '008')) {
+	var field = xml_record.controlfield.(@tag == '008')[0];
+	orig008 = field.text();
+    }
+
+    /* lang code from 041a */
+    var lang = orig008.substr(35, 3);
+    if (xml_record.datafield.(@tag == '041')) {
+	var field = xml_record.datafield.(@tag == '041')[0];
+	if (field && field.subfield.(@code == 'a')) {
+	    lang = field.subfield.(@code == 'a');
+	}
+    }
+
+    /* country code from 044a */
+    var country = orig008.substr(15, 3);
+    if (xml_record.datafield.(@tag == '044')) {
+	var field = xml_record.datafield.(@tag == '044')[0];
+	if (field && field.subfield.(@code == 'a')) {
+	    country = field.subfield.(@code == 'a');
+	}
+    }
+    while (country.length < 3) country = country + ' ';
+    if (country.length > 3) country = country.substr(0,3);
+
+    /* date1 from 260c */
+    var date1 = now.getUTCFullYear().toString();
+    if (xml_record.datafield.(@tag == '260')) {
+	var field = xml_record.datafield.(@tag == '260')[0];
+	if (field && field.subfield.(@code == 'c')) {
+	    var tmpd = field.subfield.(@code == 'c').replace(/[^0-9]/g, '');
+	    if (tmpd.match(/^\d\d\d\d/)) {
+		date1 = tmpd.substr(0, 4);
+	    }
+	}
+    }
+
+    var date2 = orig008.substr(11, 4);
+    var datetype = orig008.substr(6, 1);
+    var modded = orig008.substr(38, 1);
+    var catsrc = orig008.substr(39, 1);
+
+    return '' + y + m + d + datetype + date1 + date2 + country + '                 ' + lang + modded + catsrc;
+
+}
+
 function mangle_005() {
     var now = new Date();
     var y = now.getUTCFullYear();
@@ -736,7 +791,7 @@ function createMARCTextbox (element,attrs) {
                 loadRecord();
             } else if (event.keyCode == 119 && event.ctrlKey) { // ctrl + F8
                 box = null;
-                createControlField('008','                                        ');
+                createControlField('008', get_new_008());
                 loadRecord();
             }
 
