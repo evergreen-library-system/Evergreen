@@ -637,7 +637,7 @@ sub unapi {
     if ($format eq 'opac') {
         print "Location: $root/../../$locale/skin/$skin/xml/rresult.xml?m=$id&l=$lib_id&d=$lib_depth\n\n"
             if ($type eq 'metarecord');
-        print "Location: $root/../../$locale/skin/$skin/xml/rdetail.xml?r=$id&l=$lib_id&d=$lib_depth\n\n"
+        print "Location: /eg/opac/record/$id?locg=$lib_id&depth=$lib_depth\n\n"
             if ($type eq 'record');
         return 302;
     } elsif (OpenILS::WWW::SuperCat::Feed->exists($base_format) && ($type ne 'acn' && $type ne 'acp' && $type ne 'auri')) {
@@ -889,7 +889,7 @@ sub supercat {
     if ($format eq 'opac') {
         print "Location: $root/../../$locale/skin/$skin/xml/rresult.xml?m=$id\n\n"
             if ($type eq 'metarecord');
-        print "Location: $root/../../$locale/skin/$skin/xml/rdetail.xml?r=$id\n\n"
+        print "Location: /eg/opac/record/$id\n\n"
             if ($type eq 'record');
         return 302;
 
@@ -1009,9 +1009,9 @@ sub bookbag_feed {
     my $org_unit = get_ou($org);
     my $scope = "l=" . $org_unit->[0]->id . "&";
 
-    $root =~ s{(?<!http:)//}{/}go;
-    $base =~ s{(?<!http:)//}{/}go;
-    $unapi =~ s{(?<!http:)//}{/}go;
+    $root =~ s{(?<!http:)//}{//}go;
+    $base =~ s{(?<!http:)//}{//}go;
+    $unapi =~ s{(?<!http:)//}{//}go;
 
     my $path = $cgi->path_info;
     #warn "URL breakdown: $url -> $root -> $base -> $path -> $unapi";
@@ -1023,10 +1023,8 @@ sub bookbag_feed {
     return Apache2::Const::NOT_FOUND unless($bucket);
 
     my $bucket_tag = "tag:$host,$year:record_bucket/$id";
-    if ($type eq 'opac') {
-        print "Location: $root/../../$locale/skin/$skin/xml/rresult.xml?$scope" . "rt=list&" .
-            join('&', map { "rl=" . $_->target_biblio_record_entry } @{ $bucket->items }) .
-            "\n\n";
+    if (lc($type) eq 'opac') {
+        print "Location: /eg/opac/results?bookbag=$id\n\n";
         return 302;
     }
 
@@ -1045,23 +1043,17 @@ sub bookbag_feed {
     $feed->root($root);
     $feed->id($bucket_tag);
 
-    $feed->title("Items in Book Bag [".$bucket->name."]");
+    $feed->title($bucket->name);
     $feed->description($bucket->description || ("Items in Book Bag [".$bucket->name."]"));
     $feed->creator($host);
     $feed->update_ts();
 
     $feed->link(alternate => $base . "/rss2-full/$id" => 'application/rss+xml');
     $feed->link(atom => $base . "/atom-full/$id" => 'application/atom+xml');
+    $feed->link(opac => $base . "/opac/$id" => 'text/html');
+    $feed->link(OPAC => $base . "/opac/$id" => 'text/html');
     $feed->link(html => $base . "/html-full/$id" => 'text/html');
     $feed->link(unapi => $unapi);
-
-    $feed->link(
-        OPAC =>
-        "http://$host/opac/$locale/skin/$skin/xml/rresult.xml?$scope" . "rt=list&" .
-            join('&', map { 'rl=' . $_->target_biblio_record_entry } @{$bucket->items} ),
-        'text/html'
-    );
-
 
     print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
     print $feed->toString . "\n";
@@ -1114,12 +1106,10 @@ sub changes_feed {
 
     my $list = $supercat->request("open-ils.supercat.$rtype.record.$axis.recent", $date, $limit)->gather(1);
 
-    #if ($type eq 'opac') {
-    #    print "Location: $root/../../en-US/skin/default/xml/rresult.xml?rt=list&" .
-    #        join('&', map { "rl=" . $_ } @$list) .
-    #        "\n\n";
-    #    return 302;
-    #}
+    if (lc($type) eq 'opac') {
+        print "Location: /eg/opac/results?query=record_list(".join(',', @$list ).")+sort(edit_date)+\%23descending&locg=".$org_unit->[0]->id . "\n\n";
+        return 302;
+    }
 
     my $search = 'record';
     if ($rtype eq 'authority') {
@@ -1144,8 +1134,7 @@ sub changes_feed {
 
     $feed->link(
         OPAC =>
-        "http://$host/opac/$locale/skin/$skin/xml/rresult.xml?$scope" . "rt=list&" .
-            join('&', map { 'rl=' . $_} @$list ),
+        "http://$host/eg/opac/results?query=record_list(".join(',', @$list ).")\%20sort(edit_date)#descending&locg=".$org_unit->[0]->id,
         'text/html'
     );
 
@@ -1532,7 +1521,8 @@ sub create_record_feed {
 
         $node->id($item_tag);
         #$node->update_ts(cleanse_ISO8601($record->edit_date));
-        $node->link(alternate => $feed->unapi . "?id=$item_tag&format=htmlholdings-full" => 'text/html') if ($flesh > 0);
+        $node->link(alternate => $feed->unapi . "?id=$item_tag&format=opac" => 'text/html') if ($flesh > 0);
+        $node->link(slimpac => $feed->unapi . "?id=$item_tag&format=htmlholdings-full" => 'text/html') if ($flesh > 0);
         $node->link(opac => $feed->unapi . "?id=$item_tag&format=opac") if ($flesh > 0);
         $node->link(unapi => $feed->unapi . "?id=$item_tag") if ($flesh);
         $node->link('unapi-id' => $item_tag) if ($flesh);
