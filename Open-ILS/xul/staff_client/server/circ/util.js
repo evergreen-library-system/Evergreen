@@ -1621,6 +1621,7 @@ circ.util.transit_columns = function(modify,params) {
 
     JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 
+    var circStrings = document.getElementById('circStrings');
     var c = [
         {
             'id' : 'transit_item_barcode',
@@ -1766,6 +1767,23 @@ circ.util.transit_columns = function(modify,params) {
                 return data.hash.ccs[ my.atc.copy_status() ].name();
             }
         },
+        {
+            'persist' : 'hidden width ordinal',
+            'id' : 'transit_copy_status_msg',
+            'label' : circStrings.getString(
+                        'staff.circ.utils.transit.copy_status_message.label'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false,
+            'render' : function(my) {
+                var stat_obj = data.hash.ccs[my.atc.copy_status()];
+                if (stat_obj.copy_active() == 't') return '';
+                var prop = 'staff.circ.utils.transit.copy_status_message';
+                if (!circStrings.testString(prop)) return ''; // prop not defined
+                return circStrings.getFormattedString(prop, [stat_obj.name()]);
+            }
+        }
     ];
     for (var i = 0; i < c.length; i++) {
         if (modify[ c[i].id ]) {
@@ -3348,12 +3366,30 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             print_data.item_author = payload_author;
             msg += print_data.item_author_msg;
             msg += '\n';
+
+            print_data.transit_copy_status_msg = '';
             if (check.payload.transit) {
+                var stat_obj = data.hash.ccs[check.payload.transit.copy_status()];
+
                 // by adding this here, we make the data available to the
-                // receipt printing engine, but since we are not appending it
-                // to the 'msg', it will not display in the pre-print dialog.
-                print_data.transit_copy_status = 
-                    data.hash.ccs[check.payload.transit.copy_status()].name();
+                // receipt printing engine.
+                print_data.transit_copy_status = stat_obj.name();
+
+                // If the copy, once arrived at its destination, will be 
+                // in a non-active state (and a statu message string is 
+                // present) append the message to the alert dialog and apply
+                // the message to the transit_copy_status_msg macro.
+                if (stat_obj.copy_active() == 'f') {
+                    var strings = document.getElementById('circStrings');
+                    var prop = 'staff.circ.utils.transit.copy_status_message';
+
+                    if (strings.testString(prop)) {
+                        var status_msg = strings.getFormattedString(
+                            prop, [stat_obj.name()]);
+                        msg += status_msg + '\n'; // alert dialog
+                        print_data.transit_copy_status_msg = status_msg; // print macro
+                    }
+                }
             }
             JSAN.use('util.date');
             if (check.payload.hold) {
@@ -3522,6 +3558,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                             'data' : print_data,
                             'context' : data.print_list_templates[ template ].context,
                         };
+
                         if ($('printer_prompt')) {
                             if (! $('printer_prompt').checked) { parms.no_prompt = true; }
                         }
