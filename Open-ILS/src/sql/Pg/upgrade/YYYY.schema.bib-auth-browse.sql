@@ -7126,7 +7126,7 @@ ALTER TABLE metabib.browse_entry ADD COLUMN sort_value TEXT;
 DELETE FROM metabib.browse_entry_def_map; -- Yeah.
 DELETE FROM metabib.browse_entry WHERE sort_value IS NULL;
 ALTER TABLE metabib.browse_entry ALTER COLUMN sort_value SET NOT NULL;
-ALTER TABLE metabib.browse_entry ADD UNIQUE (value, sort_value);
+ALTER TABLE metabib.browse_entry ADD UNIQUE (sort_value, value);
 DROP TRIGGER IF EXISTS mbe_sort_value ON metabib.browse_entry;
 
 CREATE INDEX browse_entry_sort_value_idx
@@ -7175,7 +7175,8 @@ END;
 $p$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION metabib.staged_browse(
-    query               TEXT,
+    query                   TEXT,
+    fields                  INT[],
     context_org             INT,
     context_locations       INT[],
     staff                   BOOL,
@@ -7195,6 +7196,7 @@ DECLARE
     slice_start             INT;
     slice_end               INT;
     full_end                INT;
+    all_records             BIGINT[];
     superpage_of_records    BIGINT[];
     superpage_size          INT;
 BEGIN
@@ -7215,15 +7217,24 @@ BEGIN
             RETURN;
         END IF;
 
+        -- Gather aggregate data based on the MBE row we're looking at now
+        SELECT INTO all_records, result_row.authorities, result_row.fields
+                ARRAY_AGG(DISTINCT source),
+                ARRAY_TO_STRING(ARRAY_AGG(DISTINCT authority), $$,$$),
+                ARRAY_TO_STRING(ARRAY_AGG(DISTINCT def), $$,$$)
+          FROM  metabib.browse_entry_def_map
+          WHERE entry = rec.id
+                AND def = ANY(fields);
+
         result_row.sources := 0;
 
-        full_end := ARRAY_LENGTH(rec.records, 1);
+        full_end := ARRAY_LENGTH(all_records, 1);
         superpage_size := COALESCE(browse_superpage_size, full_end);
         slice_start := 1;
         slice_end := superpage_size;
 
         WHILE result_row.sources = 0 AND slice_start <= full_end LOOP
-            superpage_of_records := rec.records[slice_start:slice_end];
+            superpage_of_records := all_records[slice_start:slice_end];
             qpfts_query :=
                 'SELECT NULL::BIGINT AS id, ARRAY[r] AS records, ' ||
                 '1::INT AS rel FROM (SELECT UNNEST(' ||
@@ -7266,8 +7277,6 @@ BEGIN
 
             IF row_counter < result_limit THEN
                 result_row.browse_entry := rec.id;
-                result_row.authorities := rec.authorities;
-                result_row.fields := rec.fields;
                 result_row.value := rec.value;
 
                 RETURN NEXT result_row;
@@ -7300,7 +7309,6 @@ BEGIN
     END LOOP;
 END;
 $p$ LANGUAGE PLPGSQL;
-
 
 CREATE OR REPLACE FUNCTION metabib.browse(
     search_field            INT[],
@@ -7374,43 +7382,33 @@ BEGIN
     SELECT
         mbe.id,
         mbe.value,
-        mbe.sort_value,
-        (SELECT ARRAY_AGG(src) FROM (
-            SELECT DISTINCT UNNEST(ARRAY_AGG(mbedm.source)) AS src
-        ) ss) AS records,
-        (SELECT ARRAY_TO_STRING(ARRAY_AGG(authority), $$,$$) FROM (
-            SELECT DISTINCT UNNEST(ARRAY_AGG(mbedm.authority)) AS authority
-        ) au) AS authorities,
-        (SELECT ARRAY_TO_STRING(ARRAY_AGG(field), $$,$$) FROM (
-            SELECT DISTINCT UNNEST(ARRAY_AGG(mbedm.def)) AS field
-        ) fi) AS fields
+        mbe.sort_value
     FROM metabib.browse_entry mbe
-    JOIN metabib.browse_entry_def_map mbedm ON (
+    WHERE EXISTS (SELECT 1 FROM  metabib.browse_entry_def_map mbedm WHERE
         mbedm.entry = mbe.id AND
         mbedm.def = ANY(' || quote_literal(search_field) || ')
-    )
-    WHERE ';
+    ) AND ';
 
     -- This is the variant of the query for browsing backward.
     back_query := core_query ||
         ' mbe.sort_value <= ' || quote_literal(pivot_sort_value) ||
-    ' GROUP BY 1,2,3 ORDER BY mbe.sort_value DESC, mbe.value DESC ';
+    ' ORDER BY mbe.sort_value DESC, mbe.value DESC ';
 
     -- This variant browses forward.
     forward_query := core_query ||
         ' mbe.sort_value > ' || quote_literal(pivot_sort_value) ||
-    ' GROUP BY 1,2,3 ORDER BY mbe.sort_value, mbe.value ';
+    ' ORDER BY mbe.sort_value, mbe.value ';
 
     -- We now call the function which applies a cursor to the provided
     -- queries, stopping at the appropriate limits and also giving us
     -- the next page's pivot.
     RETURN QUERY
         SELECT * FROM metabib.staged_browse(
-            back_query, context_org, context_locations,
+            back_query, search_field, context_org, context_locations,
             staff, browse_superpage_size, TRUE, back_limit, back_to_pivot
         ) UNION
         SELECT * FROM metabib.staged_browse(
-            forward_query, context_org, context_locations,
+            forward_query, search_field, context_org, context_locations,
             staff, browse_superpage_size, FALSE, forward_limit, forward_to_pivot
         ) ORDER BY row_number DESC;
 
