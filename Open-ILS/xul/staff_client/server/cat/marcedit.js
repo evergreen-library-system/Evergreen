@@ -727,12 +727,15 @@ function createMARCTextbox (element,attrs) {
                     return false;
                 }
             } else if (event.keyCode == 117 && event.ctrlKey) { // ctrl + F6
+                box = null;
                 createControlField('006','                                        ');
                 loadRecord();
             } else if (event.keyCode == 118 && event.ctrlKey) { // ctrl + F7
+                box = null;
                 createControlField('007','                                        ');
                 loadRecord();
             } else if (event.keyCode == 119 && event.ctrlKey) { // ctrl + F8
+                box = null;
                 createControlField('008','                                        ');
                 loadRecord();
             }
@@ -1635,7 +1638,7 @@ function validateAuthority (button) {
         var row = rows[i];
         var tag = row.firstChild;
 
-	var done = false;
+        var done = false;
         dojo.forEach(acs.controlSetList(), function (acs_id) {
             if (done) return;
             var control_map = acs.controlSet(acs_id).control_map;
