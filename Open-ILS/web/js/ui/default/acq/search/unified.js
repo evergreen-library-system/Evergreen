@@ -722,7 +722,11 @@ function ResultManager(liPager, poGrid, plGrid, invGrid) {
                 "interface": self.invGrid
             },
             "no_results": {
-                "revealer": function() { alert(localeStrings.NO_RESULTS); }
+                "revealer": function() {
+                    alert(localeStrings.NO_RESULTS);
+                    self.show('picklist');
+                    self.plGrid.hideLoadProgressIndicator();
+                }
             }
         }
     };
