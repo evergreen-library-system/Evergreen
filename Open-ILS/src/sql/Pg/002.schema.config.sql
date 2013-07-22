@@ -939,7 +939,7 @@ CREATE TABLE config.org_unit_setting_type_log (
     org             INT,   --REFERENCES actor.org_unit (id),
     original_value  TEXT,
     new_value       TEXT,
-    field_name      TEXT      REFERENCES config.org_unit_setting_type (name)
+    field_name      TEXT      REFERENCES config.org_unit_setting_type (name) DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE config.org_unit_setting_type_log IS $$

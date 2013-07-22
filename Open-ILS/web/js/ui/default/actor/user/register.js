@@ -191,9 +191,9 @@ function load() {
         'opac.barcode_regex',
         'opac.username_regex',
         'sms.enable',
-        'ui.patron.edit.au.state.require',
-        'ui.patron.edit.au.state.suggest',
-        'ui.patron.edit.au.state.show'
+        'ui.patron.edit.aua.state.require',
+        'ui.patron.edit.aua.state.suggest',
+        'ui.patron.edit.aua.state.show'
     ]);
 
     for(k in orgSettings)
