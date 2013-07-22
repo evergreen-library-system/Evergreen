@@ -10245,7 +10245,7 @@ SELECT  usr,
 			asset.copy cp
 				JOIN action.circulation circ ON (cp.id = circ.target_copy)
 		GROUP BY 1, 3, 4
-		UNION
+		UNION ALL
 		SELECT
 			cp.id as copy,
 			COUNT(circ.id),
@@ -10255,7 +10255,7 @@ SELECT  usr,
 			asset.copy cp
 				JOIN action.aged_circulation circ ON (cp.id = circ.target_copy)
 		GROUP BY 1, 3, 4
-		UNION
+		UNION ALL
 		SELECT
 			id as copy,
 			circ_count,
