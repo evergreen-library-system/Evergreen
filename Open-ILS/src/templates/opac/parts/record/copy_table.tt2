@@ -142,16 +142,21 @@ END; # FOREACH bib
                     ctx.get_crahp(copy_info.age_protect).name : l('None') | html %]
             </td>
             <td>[% 
-            IF ctx.get_org_setting(copy_info.circ_lib, 'circ.holds.age_protect.active_date') == 1;
-              disp_date = copy_info.active_date ? copy_info.active_date : copy_info.create_date;
-            ELSE;
-              disp_date = copy_info.create_date;
-            END;
+                IF ctx.get_org_setting(copy_info.circ_lib, 'circ.holds.age_protect.active_date') == 1;
+                    disp_date = copy_info.active_date ? copy_info.active_date : copy_info.create_date;
+                ELSE;
+                    disp_date = copy_info.create_date;
+                END;
 	    
-	    date.format(
-                ctx.parse_datetime(disp_date),
-                DATE_FORMAT
-            ) %]</td>
+                IF disp_date;
+                    date.format(
+                        ctx.parse_datetime(disp_date),
+                        DATE_FORMAT
+                    );
+                ELSE;
+                   '-';
+                END;
+            %]</td>
             [% END # is_staff %]
             [% IF ctx.is_staff OR serial_holdings %]
             <td>[%  # Show copy/volume hold links to staff (without
