@@ -338,6 +338,19 @@ sub load_browse {
         }
     }
 
+    my $pager_shortcuts = $self->ctx->{get_org_setting}->(
+        $self->ctx->{physical_loc} || $self->ctx->{search_ou} ||
+            $self->ctx->{aou_tree}->id, 'opac.browse.pager_shortcuts'
+    );
+    if ($pager_shortcuts) {
+        my @pager_shortcuts;
+        while ($pager_shortcuts =~ s/(\*(.+?)\*)//) {
+            push @pager_shortcuts, [substr($2, 0, 1), $2];
+        }
+        push @pager_shortcuts, map { [$_, $_] } split //, $pager_shortcuts;
+        $self->ctx->{pager_shortcuts} = \@pager_shortcuts;
+    }
+
     if ($self->cgi->param('qtype') and defined $self->cgi->param('bterm')) {
 
         $self->leading_article_test(

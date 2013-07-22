@@ -26,14 +26,19 @@ Configuration considerations for site administrators
 There are two off-by-default features that site administrators may wish
 to enable.
 
-  * Quick paging links (English): By changing the
-    ''browse.english_pager'' setting to 1 in the
-    ''opac/parts/config.tt2'' file for a site's active OPAC templates,
-    you can make shortcut browsing links ''0-9 A B C D ...'' appear
-    between the Back and Forward buttons on the browse page. I haven't
-    figured out how to make this feature internationalizable, so it's
-    off by default.  You can turn it on if it works for your language,
-    or have a look at improving it if it doesn't.
+  * Quick paging links: By adding a value for the org unit setting
+    ''opac.browse.pager_shortcuts'' , you can make shortcut browsing
+    links such as ''0-9 A B C D ...'' appear between the Back and Next
+    buttons on the browse page. The set of shortcuts should be chosen
+    based on the languages in use at your site, but a reasonable value
+    for English might be the string "*0-9*ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    which will yield a link for 0-9 and one for each letter A-Z.  The
+    use of asterisks in the string group a shortcut whose label is more
+    than a single letter in length.  Such longer shortcuts have the multi-
+    character string for the shortcut label, and the link just goes to the
+    first heading matching the first character of the label.  The letters
+    not enclosed in asterisks just lead to individual letter shortcuts.
+
 
   * There is a global flag by the name
     ''opac.browse.warnable_regexp_per_class'' to control what leading
@@ -43,3 +48,9 @@ to enable.
     enabled if it suits your catalog, and can even be customized per
     search class (author, title, series, subject).
 
+Also, by default, authors are indexed for browse in such a way that
+relator roles like "creator" are dropped off the end of their headings.
+This was an aesthetic choice. If a site wanted to display those kinds
+of terms, they would update the 'config.metabib_field' table in
+the database, setting 'browse_xpath' to NULL where 'field_class' =
+''author'' and 'browse_field' is true.

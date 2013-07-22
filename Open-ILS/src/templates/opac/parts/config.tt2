@@ -155,12 +155,4 @@ ctx.google_books_preview = 0;
 #
 # ctx.maintenance_message = "The system will not be available February 29, 2104.";
 
-# Browse settings
-# Set to 1 or 'true' to enable.  This controls whether or not the
-# "0-9 A B C D ..." links appear on the browse page.  We don't yet have a
-# serviceable way to internationalize these links, so sites must choose to
-# turn on this feature.
-
-browse.english_pager = 0;
-
 %]

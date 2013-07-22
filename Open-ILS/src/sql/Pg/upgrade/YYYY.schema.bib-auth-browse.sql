@@ -7487,6 +7487,16 @@ UPDATE config.metabib_field
         browse_xpath IS NULL AND
         field_class = 'author';
 
+INSERT INTO config.org_unit_setting_type (
+    name, label, grp, description, datatype
+) VALUES (
+    'opac.browse.pager_shortcuts',
+    'Paging shortcut links for OPAC Browse',
+    'opac',
+    'The characters in this string, in order, will be used as shortcut links for quick paging in the OPAC browse interface. Any sequence surrounded by asterisks will be taken as a whole label, not split into individual labels at the character level, but only the first character will serve as the basis of the search.',
+    'string'
+);
+
 COMMIT;
 
 \qecho This is a browse-only reingest of your bib records. It may take a while.

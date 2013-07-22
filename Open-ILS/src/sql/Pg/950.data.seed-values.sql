@@ -4824,6 +4824,20 @@ INSERT into config.org_unit_setting_type
         'description'
     ),
     'string', null)
+,( 'opac.browse.pager_shortcuts', 'opac',
+    oils_i18n_gettext(
+        'opac.browse.pager_shortcuts',
+        'Paging shortcut links for OPAC Browse',
+        'coust',
+        'label'
+    ),
+    oils_i18n_gettext(
+        '',
+        'The characters in this string, in order, will be used as shortcut links for quick paging in the OPAC browse interface. Any sequence surrounded by asterisks will be taken as a whole label, not split into individual labels at the character level, but only the first character will serve as the basis of the search.',
+        'coust',
+        'description'
+    ),
+    'string', null)
 
 ;
 

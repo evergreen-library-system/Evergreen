@@ -50,12 +50,11 @@
                     [% IF ctx.back_pivot %]
                     <a class="opac-button" href="[% mkurl('', {bpivot => ctx.back_pivot}) %]" onclick="$('browse-pager-spinner-[% id %]').className = '';">&larr; [%l ('Back') %]</a>
                     [% END %]
-                    [% IF browse.english_pager; # XXX how to apply i18n here?
+                    [% IF ctx.pager_shortcuts;
                         current_qtype = CGI.param('qtype') || 'title' %]
                     <span class="browse-shortcuts">
-                        <a href="[% mkurl('', {qtype => current_qtype, bterm => '0'}, ['bpivot']) %]">0-9</a>
-                        [% FOR letter IN ['A'..'Z'] %]
-                            <a href="[% mkurl('', {qtype => current_qtype, bterm => letter}, ['bpivot']) %]">[% letter %]</a>
+                        [% FOR shortcut IN ctx.pager_shortcuts %]
+                            <a href="[% mkurl('', {qtype => current_qtype, bterm => shortcut.0}, ['bpivot']) %]">[% shortcut.1 %]</a>
                         [% END %]
                     </span>
                     [% END %]
@@ -92,7 +91,7 @@
                     </div>
                     [% END %]
 
-                    <ol class="browse-result-list">
+                    <ul class="browse-result-list">
                     [% FOR result IN ctx.browse_results %]
                         <li class="browse-result">
                             <span class="browse-result-value[% result.row_number == 0 && !CGI.param('bpivot') ? ' browse-result-best-match' : '' %]">
@@ -129,7 +128,7 @@
                                             # that h.target_count is only
                                             # defined when h.target is.
 
-                                            IF h.target %]
+                                            IF h.target AND h.target_count %]
                                             <li><span class="browse-result-authority-field-name">[% field.name %]</span>
                                             <a href="[% mkurl(ctx.opac_root _ '/results', {query => 'identifier|authority_id[' _ h.target _ ']'}) %]">[% h.heading | html %]</a>
                                             <span class="browse-result-authority-bib-links">([% h.target_count %])</span>
