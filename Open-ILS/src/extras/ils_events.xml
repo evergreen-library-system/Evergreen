@@ -170,10 +170,9 @@
 	<event code='1235' textcode='INVALID_USER_XACT_ID'>
         <desc xml:lang="en-US">While you were trying to make payments, this account's transaction history changed.  Please go back and try again.</desc>
 	</event>
-
-
-
-
+	<event code='1237' textcode='HOLD_ITEM_CHECKED_OUT'>
+        <desc xml:lang="en-US">The item you have attempted to place on hold is already checked out to the requestor.</desc>
+	</event>
 	<event code='1500' textcode='ACTION_CIRCULATION_NOT_FOUND'>
 		<desc xml:lang="en-US">
 			Someone attempted to retrieve a circulation object from the system and 
