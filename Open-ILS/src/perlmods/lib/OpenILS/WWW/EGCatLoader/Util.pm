@@ -195,6 +195,9 @@ sub init_ro_object_cache {
     $ro_object_subs->{parse_datetime} = sub {
         my $date = shift;
 
+        # Calling parse_datetime() with empty $date will lead to Internal Server Error
+        return '' if ($date eq '' or $date eq undef);
+
         # Probably an accidental entry like '0212' instead of '2012',
         # but 1) the leading 0 may get stripped in cstore and
         # 2) DateTime::Format::ISO8601 returns an error as years
