@@ -141,10 +141,16 @@ END; # FOREACH bib
                 [% copy_info.age_protect ?
                     ctx.get_crahp(copy_info.age_protect).name : l('None') | html %]
             </td>
-            <td>[% date.format(
-                ctx.parse_datetime(copy_info.create_date),
-                DATE_FORMAT
-            ) %]</td>
+            <td>[% 
+                IF copy_info.create_date;
+                    date.format(
+                        ctx.parse_datetime(copy_info.create_date),
+                        DATE_FORMAT
+                    );
+                ELSE;
+                   '-';
+                END;
+            %]</td>
             [% END # is_staff %]
             [% IF ctx.is_staff OR serial_holdings %]
             <td>[%  # Show copy/volume hold links to staff (without
