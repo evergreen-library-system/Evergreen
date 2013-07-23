@@ -57,7 +57,9 @@ util.clipboard.paste = function() {
         trans.addDataFlavor("text/unicode"); 
         cb.getData(trans, cb.kGlobalClipboard);
         var str = {}; var strLength = {};
-        trans.getTransferData("text/unicode",str,strLength);
+        try {
+            trans.getTransferData("text/unicode",str,strLength);
+        } catch(e) { /* clipboard is empty */ return; }
         if (str) str = str.value.QueryInterface(Components.interfaces.nsISupportsString);
         var clip; if (str) clip = str.data.substring(0, strLength.value / 2);
         n.value = v.substring(0, start) + clip + v.substring(end, v.length);
