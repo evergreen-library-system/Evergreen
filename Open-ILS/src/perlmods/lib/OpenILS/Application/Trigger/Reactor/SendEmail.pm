@@ -29,6 +29,9 @@ Email is encoded in UTF-8 and the corresponding MIME-Version, Content-Type,
 and Content-Transfer-Encoding headers are set to help mail user agents
 decode the content.
 
+The From, To, Subject, Bcc, Cc, Reply-To and Sender -fields are
+automatically MIME-encoded.
+
 No default template is assumed, and all information other than the
 default_sender that the system provides is expected to be gathered by the
 Event Definition through either Environment or Parameter definitions.
@@ -54,6 +57,12 @@ sub handler {
     my $err;
 
     my $email = Email::Simple->new($text);
+
+    for my $hfield (qw/From To Subject Bcc Cc Reply-To Sender/) {
+	my @headers = $email->header($hfield);
+	$email->header_set($hfield => map { encode("MIME-Header", $_) } @headers) if ($headers[0]);
+    }
+
     $email->header_set('MIME-Version' => '1.0');
     $email->header_set('Content-Type' => "text/plain; charset=UTF-8");
     $email->header_set('Content-Transfer-Encoding' => '8bit');
