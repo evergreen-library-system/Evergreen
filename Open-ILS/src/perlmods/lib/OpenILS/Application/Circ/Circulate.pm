@@ -3271,14 +3271,21 @@ sub process_received_transit {
     if($hold_transit) { 
         my $hold = $self->editor->retrieve_action_hold_request($hold_transit->hold);
 
-        # hold has arrived at destination, set shelf time
-        $self->put_hold_on_shelf($hold);
-        $self->bail_on_events($self->editor->event)
-            unless $self->editor->update_action_hold_request($hold);
-        return if $self->bail_out;
+        if ($hold) {
+            # hold has arrived at destination, set shelf time
+            $self->put_hold_on_shelf($hold);
+            $self->bail_on_events($self->editor->event)
+                unless $self->editor->update_action_hold_request($hold);
+            return if $self->bail_out;
 
-        $self->notify_hold($hold_transit->hold);
-        $ishold = 1;
+            $self->notify_hold($hold_transit->hold);
+            $ishold = 1;
+        } else {
+            $hold_transit = undef;
+            $self->cancelled_hold_transit(1);
+            $self->reshelve_copy(1);
+            $self->fake_hold_dest(0);
+        }
     }
 
     $self->push_events( 
