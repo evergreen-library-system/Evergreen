@@ -3,9 +3,7 @@
     INCLUDE "opac/parts/topnav.tt2";
     basic_search = "f";
     ctx.page_title = l("Account Login") %]
-    <div id="search-wrapper">
-        [% INCLUDE "opac/parts/searchbar.tt2" %]
-    </div>
+    [% INCLUDE "opac/parts/searchbar.tt2" %]
     <div id="content-wrapper">
         <div id="main-content">
             [% INCLUDE "opac/parts/login/form.tt2" %]

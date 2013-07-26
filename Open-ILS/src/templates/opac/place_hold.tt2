@@ -5,9 +5,7 @@
         basic_search = "f";
     END;
     ctx.page_title = l("Place Hold") %]
-    <div id="search-wrapper">
-        [% INCLUDE "opac/parts/searchbar.tt2" %]
-    </div>
+    [% INCLUDE "opac/parts/searchbar.tt2" %]
     <div id="content-wrapper">
         <div id="main-content">
             <div class="common-full-pad"></div>	

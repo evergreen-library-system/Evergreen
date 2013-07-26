@@ -6,9 +6,7 @@
     WRAPPER "opac/parts/base.tt2";
     INCLUDE "opac/parts/topnav.tt2";
     ctx.page_title = l("Call Number Browse"); %]
-    <div id="search-wrapper">
-        [% INCLUDE "opac/parts/searchbar.tt2" %]
-    </div>
+    [% INCLUDE "opac/parts/searchbar.tt2" %]
     <div id="content-wrapper">
         <div id="main-content">
             <div class="cnbrowse_div">
