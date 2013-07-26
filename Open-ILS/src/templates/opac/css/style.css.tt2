@@ -7,7 +7,7 @@ body {
     margin:0;
     font-family: Arial, Helvetica, sans-serif;
     font-size: [% css_fonts.size_base %];
-    background: [% css_colors.primary %];
+    background-color: [% css_colors.primary %];
 }
 
 button, input {
@@ -55,7 +55,6 @@ a {
 #search-wrapper select {
     border:0px solid [% css_colors.border_dark %];
     filter:alpha(opacity=0);
-    -moz-opacity:0;
     -khtml-opacity:0;
     opacity:0;
     padding:0;
@@ -98,7 +97,7 @@ div.select-box-wrapper {
 }
 
 #dash_wrapper div {
-    background: [% css_colors.primary %];
+    background-color: [% css_colors.primary %];
     border-radius: 5px;
     padding: 0em 1em;
 }
@@ -155,11 +154,11 @@ for now until a better color is picked - if needed.
 }
 
 #header-wrap {
-    background: linear-gradient([% css_colors.primary %], [% css_colors.primary_fade %]);
-    background: -moz-linear-gradient([% css_colors.primary %], [% css_colors.primary_fade %]);
-    background: -o-linear-gradient([% css_colors.primary %], [% css_colors.primary_fade %]);
-    background: -webkit-linear-gradient([% css_colors.primary %], [% css_colors.primary_fade %]);
     background-color: [% css_colors.primary_fade %];
+    background-image: -moz-linear-gradient([% css_colors.primary %], [% css_colors.primary_fade %]);
+    background-image: -o-linear-gradient([% css_colors.primary %], [% css_colors.primary_fade %]);
+    background-image: -webkit-linear-gradient([% css_colors.primary %], [% css_colors.primary_fade %]);
+    background-image: linear-gradient([% css_colors.primary %], [% css_colors.primary_fade %]);
 }
 #header {
     color: [% css_colors.background %];
@@ -231,7 +230,7 @@ for now until a better color is picked - if needed.
 
 #gold-links-holder {
     height: 24px;
-    background: [% css_colors.background_invert %];
+    background-color: [% css_colors.background_invert %];
 }
 
 #util-bar {
@@ -243,7 +242,7 @@ for now until a better color is picked - if needed.
 #search-wrapper {
     border-bottom: 1px solid [% css_colors.border_standard %];
     padding-bottom: 5px;
-    background: [% css_colors.background %];
+    background-color: [% css_colors.background %];
 }
 
 #search-wrapper #breadcrumb {
@@ -281,6 +280,8 @@ for now until a better color is picked - if needed.
 
 #adv_search_tabs a, #acct_tabs a, #acct_fines_tabs a, #acct_checked_tabs a, #acct_holds_tabs a, #acct_prefs_tabs a {
     float: left;
+    margin: 10px 7px 0px 0px;
+    border-radius: 10px 10px 0px 0px;
     text-align: center;
     vertical-align: middle;
     display: block;
@@ -290,7 +291,7 @@ for now until a better color is picked - if needed.
     border-radius: 10px 10px 0px 0px;
     font-weight: bold;
     color: [% css_colors.text_invert %];
-    background: [% css_colors.control %];
+    background-color: [% css_colors.control %];
     font-weight: bold;
     text-decoration: none;
 }
@@ -300,7 +301,7 @@ for now until a better color is picked - if needed.
 }
 
 #adv_search_tabs a:hover, #acct_tabs a:hover, #acct_fines_tabs a:hover, #acct_checked_tabs a:hover, #acct_holds_tabs a:hover, #acct_prefs_tabs a:hover {
-    background: [% css_colors.primary %]; 
+    background-color: [% css_colors.primary %];
     color: [% css_colors.text_invert %];
     text-decoration: none;
 }
@@ -340,18 +341,18 @@ for now until a better color is picked - if needed.
 
 #adv_search.on, #num_search.on, #expert_search.on {
     color: [% css_colors.accent_darker %];
-    background: [% css_colors.background %];
+    background-color: [% css_colors.background %];
     text-decoration: none;
 }
 
 #adv_search_tabs a.acct-tab-on, #acct_tabs a.acct-tab-on, #acct_fines_tabs a.acct-tab-on {
     color: [% css_colors.accent_darker %];
-    background: [% css_colors.background %];
+    background-color: [% css_colors.background %];
     text-decoration: none;
 }
 
 .acct-tab-off {
-    background: [% css_colors.control %];
+    background-color: [% css_colors.control %];
 }
 
 #acct_checked_tabs a, #acct_holds_tabs a, #acct_prefs_tabs a {
@@ -362,7 +363,7 @@ for now until a better color is picked - if needed.
 }
 
 #acct_checked_tabs div.selected a, #acct_holds_tabs div.selected a, #acct_prefs_tabs div.selected a {
-    background: [% css_colors.accent_lightest %];
+    background-color: [% css_colors.accent_lightest %];
     color: [% css_colors.accent_darker %];
 }
 
@@ -431,8 +432,8 @@ div.rdetail_show_copies {
 }
 
 div#rdetail_actions_div {
+    background-color: [% css_colors.background %];
     float: right;
-    background: [% css_colors.background %];
 }
 
 span#rdetail_copy_counts {
@@ -531,7 +532,7 @@ div.format_icon {
 }
 
 .rdetail_extras {
-    background: [% css_colors.primary_fade %];
+    background-color: [% css_colors.primary_fade %];
     border: 1px solid [% css_colors.primary %];
     padding-top:1px;
     clear:both;
@@ -543,9 +544,9 @@ div.format_icon {
 
 .rdetail_extras_hr {
     height: 1px;
-    background: [% css_colors.accent_light %];
     margin-left: 1px;
     margin-right: 1px;
+    background-color: [% css_colors.accent_light %];
 }
 
 .rdetail_extras_link {
@@ -559,7 +560,7 @@ div.format_icon {
     text-decoration: none;
 }
 
-##rdetail_extras_expand, #rdetail_extras_collapse, #rdetail_locs_collapse {
+#rdetail_extras_expand, #rdetail_extras_collapse, #rdetail_locs_collapse {
     margin-left: 13px;
 }
 
@@ -574,11 +575,11 @@ div.format_icon {
 }
 
 .almost-content-wrapper {
-    background: [% css_colors.background %];
+    background-color: [% css_colors.background %];
 }
 
 #content-wrapper {
-    background: [% css_colors.background %];
+    background-color: [% css_colors.background %];
     min-height: 260px;
     border-bottom: 1px solid [% css_colors.border_dark %];
 }
@@ -600,16 +601,21 @@ div.format_icon {
     padding-left: 4px;
 }
 
-#results-side-bar { float: left; width: 174px; margin-right: 5px; background: [% css_colors.background %]; }
+#results-side-bar {
+    float: left;
+    margin-right: 5px; 
+    width: 174px;
+    background-color: [% css_colors.background %];
+}
 
 #main-content .login_boxes {
     border: 1px solid [% css_colors.accent_lighter %];
-    background: linear-gradient(bottom, [% css_colors.accent_ultralight %] 15%, [% css_colors.accent_lightest %] 55%, [% css_colors.accent_ultralight %] 85%);
-    background: -moz-linear-gradient(bottom, [% css_colors.accent_ultralight %] 15%, [% css_colors.accent_lightest %] 55%, [% css_colors.accent_ultralight %] 85%);
-    background: -ms-linear-gradient(bottom, [% css_colors.accent_ultralight %] 15%, [% css_colors.accent_lightest %] 55%, [% css_colors.accent_ultralight %] 85%);
-    background: -o-linear-gradient(bottom, [% css_colors.accent_ultralight %] 15%, [% css_colors.accent_lightest %] 55%, [% css_colors.accent_ultralight %] 85%);
-    background: -webkit-linear-gradient(bottom, [% css_colors.accent_ultralight %] 15%, [% css_colors.accent_lightest %] 55%, [% css_colors.accent_ultralight %] 85%);
-
+    background-color: [% css_colors.accent_lightest %];
+    background-image: -moz-linear-gradient(bottom, [% css_colors.accent_ultralight %] 15%, [% css_colors.accent_lightest %] 55%, [% css_colors.accent_ultralight %] 85%);
+    background-image: -ms-linear-gradient(bottom, [% css_colors.accent_ultralight %] 15%, [% css_colors.accent_lightest %] 55%, [% css_colors.accent_ultralight %] 85%);
+    background-image: -o-linear-gradient(bottom, [% css_colors.accent_ultralight %] 15%, [% css_colors.accent_lightest %] 55%, [% css_colors.accent_ultralight %] 85%);
+    background-image: -webkit-linear-gradient(bottom, [% css_colors.accent_ultralight %] 15%, [% css_colors.accent_lightest %] 55%, [% css_colors.accent_ultralight %] 85%);
+    background-image: linear-gradient(to bottom, [% css_colors.accent_ultralight %] 15%, [% css_colors.accent_lightest %] 55%, [% css_colors.accent_ultralight %] 85%);
     color: [% css_colors.accent_darker %];
 }
 
@@ -628,7 +634,7 @@ div.format_icon {
     width:167px;
     margin:0;
     padding:0;
-    background: [% css_colors.background %];
+    background-color: [% css_colors.background %];
     font-size: [% css_fonts.size_bigger %];
     color: [% css_colors.text %];
 }
@@ -678,7 +684,7 @@ div.format_icon {
 }
 
 #results_header_bar {
-    background: [% css_colors.accent_medium %];
+    background-color: [% css_colors.accent_medium %];
     border-top:1px solid [% css_colors.accent_mediumdark %];
     border-bottom:1px solid [% css_colors.accent_mediumdark %];
 }
@@ -690,7 +696,7 @@ div.format_icon {
     /* this border is not visible, but it keeps these labels the same size
     as the buttons */
     border: 1px solid [% css_colors.accent_medium %];
-    background: [% css_colors.accent_medium %];
+    background-color: [% css_colors.accent_medium %];
     margin: 0.5em 0.3em;
     padding: 0.3em;
 }
@@ -847,7 +853,8 @@ div.result_table_utils_cont {
 }
 
 #myopac_prefs_div .data_grid td {
-    background:[% css_colors.accent_ultralight %];
+    padding:6px 0px 7px 17px;
+    background-color:[% css_colors.accent_ultralight %];
     border-bottom:3px solid [% css_colors.background %];
     padding:6px 0px 7px 17px;
 }
@@ -873,7 +880,7 @@ div.result_table_utils_cont {
 
 .acct_sum_table {
     border-collapse: collapse;
-    background: [% css_colors.accent_ultralight %];
+    background-color: [% css_colors.accent_ultralight %];
 }
 
 .acct_sum_table tr {
@@ -897,7 +904,7 @@ div.result_table_utils_cont {
 #myopac_sum_fines {
     float:right;
     padding: 15px 0px 0px 23px;
-    background: [% css_colors.accent_ultralight %];
+    background-color: [% css_colors.accent_ultralight %];
     width: 177px;
     height: 166px;
 }
@@ -925,7 +932,7 @@ div.result_table_utils_cont {
 .hold_note_title { font-weight: bold; }
 
 #acct_checked_main_header td, #acct_holds_main_header td, #acct_checked_hist_header td, #acct_holds_hist_header td, #acct_list_header td, #acct_list_header_anon td, #temp_list_holds td, #acct_messages_main_header td {
-    background: [% css_colors.accent_lighter2 %];
+    background-color: [% css_colors.accent_lighter2 %];
     padding: 10px;
 }
 
@@ -964,7 +971,7 @@ div.result_table_utils_cont {
 }
 
 #myopac_tabs, #adv_search_parent, #fines_payments_wrapper {
-    background: [% css_colors.primary_fade %];
+    background-color: [% css_colors.primary_fade %];
     padding-top:5px;
     margin-bottom:20px;
 }
@@ -1054,7 +1061,7 @@ div#facet_sidebar {
 
 .facet_box_temp .header {
     height: 2.3em;
-    background:[% css_colors.primary %];
+    background-color:[% css_colors.primary %];
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     font-weight:bold;
@@ -1091,6 +1098,15 @@ div#facet_sidebar {
     overflow: hidden;
 }
 
+.filter_box_wrapper {
+    margin-bottom: 3px;
+    padding: 2px;
+    border: 1px solid [% css_colors.background_invert %];
+    border-radius: 3px;
+    font-weight:bold;
+    padding-top:4px;
+}
+
 .facet_template {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -1115,11 +1131,11 @@ div#facet_sidebar {
 }
 
 #footer-wrap {
-    background: linear-gradient([% css_colors.primary_fade %], [% css_colors.primary %]);
-    background: -moz-linear-gradient([% css_colors.primary_fade %], [% css_colors.primary %]);
-    background: -o-linear-gradient([% css_colors.primary_fade %], [% css_colors.primary %]);
-    background: -webkit-linear-gradient([% css_colors.primary_fade %], [% css_colors.primary %]);
     background-color: [% css_colors.primary %];
+    background-image: -moz-linear-gradient([% css_colors.primary_fade %], [% css_colors.primary %]);
+    background-image: -o-linear-gradient([% css_colors.primary_fade %], [% css_colors.primary %]);
+    background-image: -webkit-linear-gradient([% css_colors.primary_fade %], [% css_colors.primary %]);
+    background-image: linear-gradient([% css_colors.primary_fade %], [% css_colors.primary %]);
 }
 
 #footer {
@@ -1225,7 +1241,7 @@ a.dash-link:hover { text-decoration: underline !important; }
 .cn_browse_item { padding: 2ex; }
 .results-paginator-list { padding-left: 1em; }
 .results-paginator-selected { color: [% css_colors.text_alert %]; }
-.inactive-hold { background: [% css_colors.accent_lightest %]; }
+.inactive-hold { background-color: [% css_colors.accent_lightest %]; }
 .unread-patron-message { font-weight: bold; }
 
 #hold-items-list td { padding: 5px; margin-bottom: 20px; }
@@ -1279,7 +1295,7 @@ a.dash-link:hover { text-decoration: underline !important; }
     cursor: pointer !important;
     border-radius: 5px;
     border: 1px solid [% css_colors.primary %];
-    background:  [% css_colors.primary_fade %];
+    background-color:  [% css_colors.primary_fade %];
     margin: 0.5em;
     padding: 0.3em;
     display: inline-block;
@@ -1287,7 +1303,7 @@ a.dash-link:hover { text-decoration: underline !important; }
 
 .opac-multiline-button > a:hover,
 .opac-button:hover, .results_header_btns a:hover, #simple-detail-view-links a:hover, #dash_wrapper a.opac-button:hover {
-    background: [% css_colors.primary %];
+    background-color: [% css_colors.primary %];
 }
 
 .opac-button:disabled {
@@ -1304,7 +1320,7 @@ button.opac-button::-moz-focus-inner, input.opac-button::-moz-focus-inner {
 }
 
 .opac-button-header, #dash_wrapper .opac-button {
-    background: [% css_colors.control %];
+    background-color: [% css_colors.control %];
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
     font-size: [% css_fonts.size_base %];
 }
@@ -1500,7 +1516,7 @@ table.result_holdings_table {
     margin-bottom: 1em;
 }
 table.result_holdings_table thead tr {
-    background: [% css_colors.table_heading %];
+    background-color: [% css_colors.table_heading %];
 }
 table.result_holdings_table thead tr th {
     font-weight: bold;
@@ -1820,8 +1836,6 @@ a.preflib_change {
         display: none;
     }
     #acct_tabs a, #acct_fines_tabs a {
-       padding: 2px 4px 3px 4px;
-       -moz-border-radius: 6px 6px 0px 0px;
        border-radius: 6px 6px 0px 0px;
        font-size: [% css_fonts.size_base %];
        margin: 0px 5px 0px 0px;
@@ -2009,7 +2023,6 @@ a.preflib_change {
         font-size: [% css_fonts.size_small %];
         margin: 2px 2px 0px 2px;
         padding: 2px 2px 5px 2px; 
-        -moz-border-radius: 10px 0px 0px 0px;
         border-radius: 7px 7px 0px 0px;                                                                                                           
     }
     #adv_global_tbody td {
