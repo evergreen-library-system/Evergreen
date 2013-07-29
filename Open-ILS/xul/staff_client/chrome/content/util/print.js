@@ -167,7 +167,7 @@ util.print.prototype = {
                     if(!params.type) {
                         params.type = '';
                     }
-                    var my_prefix = '/xul/server/';
+                    var my_prefix = 'oils://remote/xul/server/';
                     if(window.location.protocol == "chrome:") {
                         // Likely in offline interface
                         my_prefix = 'chrome://open_ils_staff_client/content/';
