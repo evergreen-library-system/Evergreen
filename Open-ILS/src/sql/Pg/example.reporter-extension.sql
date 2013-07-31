@@ -235,7 +235,7 @@ SELECT  t.value as title,
     LEFT JOIN metabib.full_rec p ON (cn.record = p.record AND p.tag = '260' and p.subfield = 'c')
     LEFT JOIN action.circulation circ ON (circ.target_copy = cp .id AND circ.checkin_time IS NULL)
     LEFT JOIN actor.usr circ_u ON (circ_u.id = circ.usr)
-    LEFT JOIN actor.card circ_card ON (circ_u.id = circ_card.usr)
+    LEFT JOIN actor.card circ_card ON (circ_u.card = circ_card.id)
     LEFT JOIN asset.stat_cat_entry_copy_map sc1 ON (sc1.owning_copy = cp.id AND sc1.stat_cat = 1)
     LEFT JOIN asset.stat_cat_entry sce1 ON (sce1.id = sc1.stat_cat_entry)
     LEFT JOIN asset.stat_cat_entry_copy_map sc2 ON (sc2.owning_copy = cp.id AND sc2.stat_cat = 2)
