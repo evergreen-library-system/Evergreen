@@ -33,7 +33,7 @@ table { border-collapse: collapse; }
 }
 
 #oils_rpt_table tr {
-	-moz-border-radius: 5px 5px 5px 5px;	
+	border-radius: 5px 5px 5px 5px;
 }
 
 #oils_rpt_table td {

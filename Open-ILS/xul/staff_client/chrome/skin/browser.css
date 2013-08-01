@@ -1338,8 +1338,8 @@ statusbarpanel#statusbar-display {
   border: 2px solid;
   border-right-width: 1px;
   border-bottom: none;
-  -moz-border-radius-topleft: 2px;
-  -moz-border-radius-topright: 2px;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
   -moz-border-top-colors: ThreeDShadow rgba(255,255,255,.3);
   -moz-border-right-colors: rgba(0,0,0,.1);
   -moz-border-left-colors: ThreeDShadow rgba(255,255,255,.3);
@@ -1348,8 +1348,8 @@ statusbarpanel#statusbar-display {
 .tabbrowser-tab:hover,
 .tabbrowser-tab[selected="true"] {
   border-width: 1px;
-  -moz-border-radius-topleft: 4px;
-  -moz-border-radius-topright: 4px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
   -moz-border-top-colors: ThreeDShadow;
   -moz-border-right-colors: ThreeDShadow;
   -moz-border-left-colors: ThreeDShadow;
@@ -1506,14 +1506,14 @@ tabpanels {
 .tabbrowser-arrowscrollbox > .scrollbutton-up {
   border-left-style: none;
   list-style-image: url("chrome://browser/skin/tabbrowser/tab-arrow-start.png");
-  -moz-border-radius-topright: 2px;
+  border-top-right-radius: 2px;
 }
 
 .tabbrowser-arrowscrollbox > .scrollbutton-up[chromedir="rtl"] {
   border-left-style: solid;
   border-right-style: none;
-  -moz-border-radius-topleft: 2px;
-  -moz-border-radius-topright: 0px;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 0px;
   list-style-image: url("chrome://browser/skin/tabbrowser/tab-arrow-end.png");
 }
 
@@ -1525,7 +1525,7 @@ tabpanels {
 .tabs-container > .tabs-newtab-button,
 .tabs-alltabs-button {
   border-right-style: none;
-  -moz-border-radius-topleft: 2px;
+  border-top-left-radius: 2px;
 }
 
 .tabbrowser-arrowscrollbox > .scrollbutton-down {
@@ -1537,8 +1537,8 @@ tabpanels {
 .tabs-container > stack[chromedir="rtl"] > .tabs-alltabs-button {
   border-left-style: none;
   border-right-style: solid;
-  -moz-border-radius-topleft: 0px;
-  -moz-border-radius-topright: 2px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 2px;
 }
 
 .tabbrowser-arrowscrollbox > .scrollbutton-down[chromedir="rtl"] {
@@ -1557,8 +1557,8 @@ tabpanels {
 
 .tabbrowser-arrowscrollbox > .tabs-newtab-button {
   width: 32px;
-  -moz-border-radius-topright: 2px;
-  -moz-border-radius-topleft: 2px;
+  border-top-right-radius: 2px;
+  border-top-left-radius: 2px;
 }
 
 .tabs-newtab-button > .toolbarbutton-icon {
@@ -1619,14 +1619,14 @@ stack[chromedir="rtl"] > hbox > .tabs-alltabs-box-animate {
   background: -moz-dialog url("chrome://browser/skin/tabbrowser/tab-active-bkgnd.png") repeat-x;
   border-left: 1px solid threedshadow;
   border-top: 1px solid threedshadow;
-  -moz-border-radius-topleft: 2px;
+  border-top-left-radius: 2px;
 }
 
 .tabs-container > .tabs-closebutton[chromedir="rtl"] {
   border-left: none;
   border-right: 1px solid threedshadow;
-  -moz-border-radius-topleft: 0px;
-  -moz-border-radius-topright: 2px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 2px;
 }
 
 #sidebar-box .tabs-closebutton {
@@ -1817,8 +1817,8 @@ toolbarbutton.bookmark-item[dragover="true"][open="true"] {
   border-top: 1px solid ThreeDDarkShadow;
   border-bottom: 1px solid ThreeDDarkShadow;
   border-right-style: none;
-  -moz-border-radius-topleft: 21px;
-  -moz-border-radius-bottomleft: 21px;
+  border-top-left-radius: 21px;
+  border-bottom-left-radius: 21px;
   -moz-border-left-colors: ThreeDDarkShadow rgba(255, 255, 255, 0.4);
   background-position: 0 10px;
 }
@@ -2013,7 +2013,7 @@ toolbarbutton.bookmark-item[dragover="true"][open="true"] {
   background: rgba(68, 68, 68, .9) url(KUI-background.png) repeat-x;
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  -moz-border-radius: 10px;
+  border-radius: 10px;
   margin-top: -1px;
   margin-left: -1px;
 }
@@ -2058,7 +2058,7 @@ toolbarbutton.bookmark-item[dragover="true"][open="true"] {
   margin: 0 1em 1em;
   width: 1.5em;
   height: 1.5em;
-  -moz-border-radius: .75em;
+  border-radius: .75em;
   background: rgba(0, 0, 0, .5);
   border: 1px solid rgba(255, 255, 255, .3);
   cursor: pointer;
