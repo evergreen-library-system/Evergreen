@@ -1584,3 +1584,28 @@ a.preflib_change {
 .bib_peer_type {
     font-weight: bold;
 }
+
+#main-content-register {
+    margin-left: 40px;
+    font-size: 120%;
+}
+
+#main-content-register table { 
+    padding: 20px; 
+    margin-top: 18px; 
+    border-collapse: collapse;
+}
+
+#main-content-register td {
+    text-align: left;
+}
+
+#main-content-register td:not(:first-child) {
+    padding-left: 20px;
+}
+
+.patron-reg-invalid {
+    font-weight: bold;
+    color: red;
+    padding-right: 10px;
+}

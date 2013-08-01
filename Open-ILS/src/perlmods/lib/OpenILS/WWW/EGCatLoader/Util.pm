@@ -753,7 +753,24 @@ sub load_org_util_funcs {
 
 }
 
+# returns the list of org unit IDs for which the 
+# selected org unit setting returned a true value
+sub setting_is_true_for_orgs {
+    my ($self, $setting) = @_;
+    my $ctx = $self->ctx;
+    my @valid_orgs;
 
+    my $test_org;
+    $test_org = sub {
+        my $org = shift;
+        push (@valid_orgs, $org->id) if
+            $ctx->{get_org_setting}->($org->id, $setting);
+        $test_org->($_) for @{$org->children};
+    };
+
+    $test_org->($ctx->{aou_tree}->());
+    return \@valid_orgs;
+}
     
 
 

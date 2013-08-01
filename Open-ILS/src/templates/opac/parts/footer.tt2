@@ -1,8 +1,13 @@
 <div id="footer-wrap">
 <div id="footer">
     <a href="/">[% l('Dynamic catalog') %]</a> &nbsp;|&nbsp;
-    <a href="http://example.com">[% l('Bottom Link 2') %]</a> &nbsp;|&nbsp;
+    [% IF ctx.get_org_setting(
+        ctx.physical_loc || ctx.aou_tree.id, 'opac.allow_pending_user') %]
+    <a href="[% mkurl(ctx.opac_root _ '/register') %]">[% 
+        l('Request Library Card') %]</a> &nbsp;|&nbsp;
+    [% ELSE %]
     <a href="http://example.com">[% l('Bottom Link 3') %]</a> &nbsp;|&nbsp;
+    [% END %]
     <a href="http://example.com">[% l('Bottom Link 4') %]</a> &nbsp;|&nbsp;
     <a href="http://example.com">[% l('Bottom Link 5') %]</a>
     [% IF ctx.timing %]

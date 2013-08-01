@@ -24,6 +24,7 @@ use OpenILS::WWW::EGCatLoader::Search;
 use OpenILS::WWW::EGCatLoader::Record;
 use OpenILS::WWW::EGCatLoader::Container;
 use OpenILS::WWW::EGCatLoader::SMS;
+use OpenILS::WWW::EGCatLoader::Register;
 
 my $U = 'OpenILS::Application::AppUtils';
 
@@ -140,6 +141,7 @@ sub load {
     return $self->redirect_ssl unless $self->cgi->https;
     return $self->load_password_reset if $path =~ m|opac/password_reset|;
     return $self->load_logout if $path =~ m|opac/logout|;
+    return $self->load_patron_reg if $path =~ m|opac/register|;
 
     if($path =~ m|opac/login|) {
         return $self->load_login unless $self->editor->requestor; # already logged in?
