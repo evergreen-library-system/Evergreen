@@ -75,7 +75,7 @@ sub load_fields {
             
             my $name     = get_attribute( $attribute_list, 'name' );
             next if( $name eq 'isnew' || $name eq 'ischanged' || $name eq 'isdeleted' );
-            my $required  = get_attribute( $attribute_list, 'oils_obj:required' );
+            my $required  = get_attribute( $attribute_list, 'oils_obj:required' ) || "false";
             my $validate  = get_attribute( $attribute_list, 'oils_obj:validate' );
             my $virtual  = get_attribute( $attribute_list, 'oils_persist:virtual' );
             if( ! defined( $virtual ) ) {
@@ -150,7 +150,7 @@ sub load_class {
     my $fm               = get_attribute( $attribute_list, 'oils_obj:fieldmapper' );
     $fm                  = 'Fieldmapper::' . $fm;
     my $id               = get_attribute( $attribute_list, 'id' );
-    my $controller       = get_attribute( $attribute_list, 'controller' );
+    my $controller       = get_attribute( $attribute_list, 'controller' ) || '';
     my $virtual          = get_attribute( $attribute_list, 'virtual' );
     if( ! defined( $virtual ) ) {
         $virtual = 'false';
