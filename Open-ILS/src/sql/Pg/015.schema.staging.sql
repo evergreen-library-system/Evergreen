@@ -6,7 +6,7 @@ CREATE SCHEMA staging;
 
 CREATE TABLE staging.user_stage (
         row_id                  BIGSERIAL PRIMARY KEY,
-        row_date                            TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        row_date                TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
         usrname                 TEXT NOT NULL,
         profile                 TEXT,
         email                   TEXT,
@@ -19,7 +19,8 @@ CREATE TABLE staging.user_stage (
         evening_phone           TEXT,
         home_ou                 INT DEFAULT 2,
         dob                     TEXT,
-        complete                BOOL DEFAULT FALSE
+        complete                BOOL DEFAULT FALSE,
+        requesting_usr          INT REFERENCES actor.usr(id) ON DELETE SET NULL
 );
 
 CREATE TABLE staging.card_stage ( -- for new library barcodes
@@ -32,12 +33,13 @@ CREATE TABLE staging.card_stage ( -- for new library barcodes
 
 CREATE TABLE staging.mailing_address_stage (
         row_id          BIGSERIAL PRIMARY KEY,
-        row_date            TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        row_date        TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
         usrname         TEXT NOT NULL,  -- user's SIS barcode, for linking
         street1         TEXT,
         street2         TEXT,
         city            TEXT NOT NULL DEFAULT '',
-        state           TEXT    NOT NULL DEFAULT 'OK',
+        county          TEXT,
+        state           TEXT,
         country         TEXT NOT NULL DEFAULT 'US',
         post_code       TEXT NOT NULL,
         complete        BOOL DEFAULT FALSE
