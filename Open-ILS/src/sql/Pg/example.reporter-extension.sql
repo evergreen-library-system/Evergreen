@@ -172,9 +172,9 @@ SELECT	x.id AS id,
 	JOIN actor.usr_address paddr ON (paddr.id = u.billing_address);
 
 CREATE OR REPLACE VIEW reporter.classic_item_list AS
-SELECT  t.value as title,
-    a.value as author,
-    p.value as pubdate,
+SELECT rmsr.title,
+    rmsr.author,
+    rmsr.pubdate,
     cp.id,
     cp.price,
     cp.barcode,
@@ -199,7 +199,7 @@ SELECT  t.value as title,
                 )
         ELSE NULL
     END AS dewey_block_hundreds,
-    (SELECT COUNT(*) FROM action.circulation WHERE target_copy = cp.id) as use_count,
+    erfcc.circ_count as use_count,
     cp.circ_modifier,
     sl.name AS shelving_location,
     sc1.stat_cat_entry AS stat_cat_1,
@@ -218,21 +218,19 @@ SELECT  t.value as title,
     cp.ref,
     cp.deposit_amount,
     cp.deleted,
-    b.tcn_value,
+    rmsr.tcn_value,
     cp.status,
     circ.stop_fines,
     circ.due_date,
     circ_card.barcode as patron_barcode,
     circ_u.first_given_name || ' ' || circ_u.family_name as patron_name
   FROM  asset.copy cp
+    JOIN extend_reporter.full_circ_count erfcc ON (cp.id = erfcc.id)
     JOIN asset.copy_location sl ON (cp.location = sl.id)
     JOIN asset.call_number cn ON (cp.call_number = cn.id)
-    JOIN biblio.record_entry b ON (cn.record = b.id)
     JOIN actor.org_unit ol ON (cn.owning_lib = ol.id)
     JOIN actor.org_unit cl ON (cp.circ_lib = cl.id)
-    LEFT JOIN metabib.full_rec t ON (cn.record = t.record AND t.tag = '245' and t.subfield = 'a')
-    LEFT JOIN metabib.full_rec a ON (cn.record = a.record AND a.tag = '100' and a.subfield = 'a')
-    LEFT JOIN metabib.full_rec p ON (cn.record = p.record AND p.tag = '260' and p.subfield = 'c')
+    JOIN reporter.materialized_simple_record rmsr ON (cn.record = rmsr.id)
     LEFT JOIN action.circulation circ ON (circ.target_copy = cp .id AND circ.checkin_time IS NULL)
     LEFT JOIN actor.usr circ_u ON (circ_u.id = circ.usr)
     LEFT JOIN actor.card circ_card ON (circ_u.card = circ_card.id)
