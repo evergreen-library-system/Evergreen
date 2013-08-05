@@ -86,6 +86,8 @@ PATH=/openils/bin:$PATH ./configure --prefix=/openils --sysconfdir=/openils/conf
 make
 ------------------------------------------------------------
 +
+These instructions assume that you have also installed OpenSRF under /openils/. If not, please adjust PATH as needed so that the Evergreen configure script can find osrf_config.
++
 . As the root user, install Evergreen:
 +
 [source, bash]
