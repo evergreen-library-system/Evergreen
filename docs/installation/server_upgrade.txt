@@ -82,7 +82,7 @@ make -f Open-ILS/src/extras/Makefile.install [distribution]
 [source, bash]
 ------------------------------------------------------------
 cd /home/opensrf/Evergreen-ILS-2.4.0
-./configure --prefix=/openils --sysconfdir=/openils/conf
+PATH=/openils/bin:$PATH ./configure --prefix=/openils --sysconfdir=/openils/conf
 make
 ------------------------------------------------------------
 +
