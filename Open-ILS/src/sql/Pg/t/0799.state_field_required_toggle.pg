@@ -28,18 +28,18 @@ SELECT col_is_null(
 );
 
 SELECT isnt_empty(
-    'SELECT * FROM config.org_unit_setting_type WHERE name = $$ui.patron.edit.au.state.require$$',
-    'ui.patron.edit.au.state.require exists'
+    'SELECT * FROM config.org_unit_setting_type WHERE name = $$ui.patron.edit.aua.state.require$$',
+    'ui.patron.edit.aua.state.require exists'
 );
 
 SELECT isnt_empty(
-    'SELECT * FROM config.org_unit_setting_type WHERE name = $$ui.patron.edit.au.state.show$$',
-    'ui.patron.edit.au.state.show exists'
+    'SELECT * FROM config.org_unit_setting_type WHERE name = $$ui.patron.edit.aua.state.show$$',
+    'ui.patron.edit.aua.state.show exists'
 );
 
 SELECT isnt_empty(
-    'SELECT * FROM config.org_unit_setting_type WHERE name = $$ui.patron.edit.au.state.suggest$$',
-    'ui.patron.edit.au.state.suggest exists'
+    'SELECT * FROM config.org_unit_setting_type WHERE name = $$ui.patron.edit.aua.state.suggest$$',
+    'ui.patron.edit.aua.state.suggest exists'
 );
 
 -- Finish the tests and clean up.
