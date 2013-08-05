@@ -1138,6 +1138,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Granularity" name="granularity"  reporter:datatype="text"/>
 			<field reporter:label="Opt-In User Field" name="usr_field"  reporter:datatype="text"/>
 			<field reporter:label="Opt-In Setting Type" name="opt_in_setting"  reporter:datatype="link"/>
+			<field reporter:label="Event Repeatability Delay" name="repeat_delay"  reporter:datatype="interval"/>
 			<field reporter:label="Environment Entries" name="env" oils_persist:virtual="true"  reporter:datatype="link"/>
 			<field reporter:label="Parameters" name="params" oils_persist:virtual="true"  reporter:datatype="link"/>
 		</fields>

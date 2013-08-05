@@ -183,6 +183,7 @@ CREATE TABLE action_trigger.event_definition (
     cleanup_failure TEXT        REFERENCES action_trigger.cleanup (module) DEFERRABLE INITIALLY DEFERRED,
     delay           INTERVAL    NOT NULL DEFAULT '5 minutes',
     max_delay       INTERVAL,
+    repeat_delay    INTERVAL,
     usr_field       TEXT,
     opt_in_setting  TEXT        REFERENCES config.usr_setting_type (name) DEFERRABLE INITIALLY DEFERRED,
     delay_field     TEXT,                 -- for instance, xact_start on a circ hook ... look for fields on hook.core_type where datatype=timestamp? If not set, delay from now()

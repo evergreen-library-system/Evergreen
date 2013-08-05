@@ -29,7 +29,7 @@
             <table  jsId="edGrid" 
                     autoHeight='true'
                     dojoType="openils.widget.AutoGrid" 
-                    fieldOrder="['owner', 'name', 'hook', 'active', 'delay', 'delay_field', 'group_field', 'reactor', 'validator']"
+                    fieldOrder="['owner', 'name', 'hook', 'active', 'delay', 'delay_field', 'group_field', 'reactor', 'validator', 'repeat_delay']"
                     suppressFields="['usr_field', 'opt_in_setting', 'max_delay', 'template', 'cleanup_failure', 'cleanup_success']"
                     query="{id: '*'}" 
                     fmClass='atevdef'
