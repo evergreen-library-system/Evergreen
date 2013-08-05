@@ -50,8 +50,7 @@ if(!dojo._hasResource['openils.widget.EditDialog']) {
              */
             startup : function() {
                 this.inherited(arguments);
-                this.editPane.startup();
-                this.domNode.appendChild(this.editPane.domNode);
+                this.attr('content', this.editPane);
                 openils.Util.addCSSClass(this.editPane.table, 'oils-fm-edit-dialog');
             }
         }
