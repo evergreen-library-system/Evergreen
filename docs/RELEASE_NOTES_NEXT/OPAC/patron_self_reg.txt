@@ -1,0 +1,53 @@
+New Feature: Web-Based Patron Self-Registration
+===============================================
+
+Feature Summary
+---------------
+
+Patrons may now fill out a web-based form from within the TPAC to create 
+pending user accounts.  The goal is to make the registration process more 
+efficient by allowing the patron to provide much of the registration 
+details in advance of registering with staff.  
+
+Pending user accounts have no privileges.  
+
+The form supports hiding fields, requiring fields, applying format
+validation, and displaying example text for selected fields by inspecting the 
+relevant patron registration org unit settings.
+
+The "Request Library Card" link appears as the second default "bottom link"
+in the TPAC.  
+
+If a user is logged in when clicking the register link, the logged in
+user will be tracked as the requesting user for the pending account.
+Additionally, the home org unit and some address fields will be pre-populated
+for convenience (with the assumption that these will likely be the same for
+the pending user -- they can of course be changed).  When a requesting user
+is present on the pending user, a link to the requesting user will be 
+displayed within the patron registration form in the staff client.
+
+Pending patron accounts which sit unattended in the database for too long
+are purged via a regularly running (CRON) script.
+
+Technical Details
+-----------------
+
+  * To activate the web form and allow pending patrons to be created, set
+    the 'opac.allow_pending_user' org unit setting to true where appropriate.
+  * To purge old pending user accounts, set an interval value for the new
+    'opac.pending_user_expire_interval' org unit setting.
+  * The org unit settings to indicate show/require/regex/example are 
+    loaded dynamically, so any similar org unit settings added in the future
+    will also be honored.  Any setting matching the following format is used:
+    ** ui.patron.edit.[au|aua].*.show
+    ** ui.patron.edit.[au|aua].*.require
+    ** ui.patron.edit.[au|aua].*.regex
+    ** ui.patron.edit.[au|aua].*.example
+
+Upgrade Notes
+-------------
+
+  * If a value is set for the 'opac.pending_user_expire_interval' for
+    any org units, the new /openils/bin/purge_pending_users.srfsh script 
+    should also be added the opensrf user's crontab.  Running the script once 
+    per day should suffice.
