@@ -2,7 +2,7 @@
 # Org Unit Selector Widget :
 #   INCLUDE build_org_selector id='selector-id' name='selector-name' 
 #       value=org_id show_loc_groups=1/0 can_have_vols_only=1/0
-#       can_have_users_only=1/0
+#       can_have_users_only=1/0 valid_org_list=[1,2,3]
 #
 # NOTE: DO NOT USE PROCESS
 # Use of PROCESS results in internal variables, such as value or org_unit, to "leak" out
@@ -96,6 +96,14 @@ BLOCK build_org_selector;
             ELSIF node_value == value;
                 selected = 'selected="selected"';
             END; 
+
+            # caller provided a list of valid org units.
+            # all orgs not in the list are marked invalid.
+            IF valid_org_list AND 
+                    !valid_org_list.grep('^' _ org_unit.id _ '$').size;
+                disabled = 'disabled="disabled"';
+                selected = '';
+            END;
 
             pad_depth = 0;
 
