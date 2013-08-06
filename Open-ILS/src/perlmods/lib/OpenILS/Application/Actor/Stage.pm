@@ -38,8 +38,12 @@ sub create_user_stage {
 
     my $e = new_editor(xact => 1);
 
-    my $uname = $U->create_uuid_string;
+    my $uname = $user->usrname || $U->create_uuid_string;
     $user->usrname($uname);
+
+    # see if this username is already taken
+    return OpenILS::Event->new('USERNAME_EXISTS') if
+        $e->search_staging_user_stage({usrname => $uname})->[0];
 
     $e->create_staging_user_stage($user) or return $e->die_event;
 
