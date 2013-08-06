@@ -60,5 +60,29 @@ CREATE TABLE staging.statcat_stage (
         complete        BOOL DEFAULT FALSE
 );
 
+-- stored procedure for deleting expired pending patrons
+CREATE OR REPLACE FUNCTION staging.purge_pending_users() RETURNS VOID AS $$
+DECLARE
+    org_id INT;
+    intvl TEXT;
+BEGIN
+    FOR org_id IN SELECT DISTINCT(home_ou) FROM staging.user_stage LOOP
+
+        SELECT INTO intvl value FROM 
+            actor.org_unit_ancestor_setting(
+                'opac.pending_user_expire_interval', org_id);
+
+        CONTINUE WHEN intvl IS NULL OR intvl ILIKE 'null';
+
+        -- de-JSON-ify the string
+        SELECT INTO intvl TRIM(BOTH '"' FROM intvl);
+
+        DELETE FROM staging.user_stage 
+            WHERE home_ou = org_id AND row_date + intvl::INTERVAL < NOW();
+
+    END LOOP;
+END;
+$$ LANGUAGE PLPGSQL;
+
 COMMIT;
 

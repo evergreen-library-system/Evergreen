@@ -42,6 +42,9 @@ EG_BIN_DIR = /openils/bin
 # Run the reshelving completer
 2  0  * * *   . ~/.bashrc && $EG_BIN_DIR/reshelving_complete.srfsh
 
+# Run the pending user purger
+2  30  * * *   . ~/.bashrc && $EG_BIN_DIR/purge_pending_users.srfsh
+
 # create the list of blocked patrons for offline use
 # Note: The resulting list.txt file needs to be copied to all Apache servers
 30 6  * * *   . ~/.bashrc && $EG_BIN_DIR/offline-blocked-list.pl $SRF_CORE > $OPENILS/var/web/standalone/list.txt
