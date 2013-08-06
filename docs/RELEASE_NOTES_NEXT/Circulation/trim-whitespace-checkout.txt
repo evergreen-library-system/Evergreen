@@ -1,0 +1,6 @@
+Checkout: Trim whitespace from beginning and end of barcode
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In checkout, when pasting a barcode into the lookup field, one may accidentally
+include spaces or tabs in the beginning or end of the barcode string. Trim 
+those away to avoid potential mis-scans.
