@@ -39,5 +39,6 @@
     "INVALIDATE": "Invalidate",
     "HOLD_NOTIFY_PHONE": "Phone: ",
     "HOLD_NOTIFY_EMAIL": "Email: ",
-    "HOLD_NOTIFY_SMS": "SMS: "
+    "HOLD_NOTIFY_SMS": "SMS: ",
+    "REQUESTING_USER" : "Account requested by ${0} ${1}"
 }

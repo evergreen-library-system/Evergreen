@@ -22,7 +22,13 @@
         <a href='javascript:uEditToggleRequired(2);' id='uedit-show-suggested'>[% l('Show Suggested Fields') %]</a><br id='uedit-show-suggested-br'/>
         <a href='javascript:uEditToggleRequired(0);' id='uedit-show-all' class='hidden'>[% l('Show All Fields') %]</a>
     </div>
+
+    <!-- link to requesting user account for pending users -->
+    <div class='hidden' id='uedit-requesting-user-div'>
+        <a href='javascript:;' id='uedit-requesting-user'></a>
+    </div>
 </div>
+
 
 <!-- context help widget -->
 <a class='hidden' id='uedit-help-template'><img src='/opac/images/advancedsearch-icon.png'></img></a>

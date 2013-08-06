@@ -509,6 +509,40 @@ function uEditLoadStageUser(stageUname) {
     if(!stageUser) 
         return patron;
 
+    /* if we know who requested this pending account, show the requestor's
+     * name and create a link to open the requestor in a new tab */
+    if (stageUser.requesting_usr()) {
+        fieldmapper.standardRequest(
+            ['open-ils.actor', 'open-ils.actor.user.retrieve.parts'],
+            {   params : [
+                    openils.User.authtoken, 
+                    stageUser.requesting_usr(), 
+                    ['first_given_name', 'family_name']
+                ],
+                oncomplete : function(r) {
+                    var res = openils.Util.readResponse(r);
+                    if (!res) return;
+
+                    var link = dojo.byId('uedit-requesting-user');
+                    link.innerHTML = dojo.string.substitute(
+                        localeStrings.REQUESTING_USER, res);
+                    openils.Util.show(link.parentNode);
+
+                    link.onclick = function() {
+                        window.xulG.new_patron_tab(                
+                            {   'tab_name' : '' }, // tab name is set on draw
+                            {   'id' : stageUser.requesting_usr(),
+                                'url_prefix' : xulG.url_prefix,    
+                                'new_tab' : xulG.new_tab,          
+                                'set_tab' : xulG.set_tab           
+                            }                                      
+                        ); 
+                    };
+                }
+            }
+        );
+    }
+
     // copy the data into our new user object
     for(var key in fieldmapper.IDL.fmclasses.stgu.field_map) {
         if(fieldmapper.IDL.fmclasses.au.field_map[key] && !fieldmapper.IDL.fmclasses.stgu.field_map[key].virtual) {
