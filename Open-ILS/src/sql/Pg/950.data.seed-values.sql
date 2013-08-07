@@ -13240,3 +13240,88 @@ VALUES (
         'description'
     )
 );
+
+-- vandelay item import defaults
+INSERT INTO config.org_unit_setting_type
+    (grp, name, label, description, datatype, fm_class)
+VALUES (
+    'vandelay',
+    'vandelay.item.barcode.auto',
+    oils_i18n_gettext(
+        'vandelay.item.barcode.auto',
+        'Vandelay Generate Default Barcodes',
+        'coust', 'label'),
+    oils_i18n_gettext(
+        'vandelay.item.barcode.auto',
+        'Auto-generate deault item barcodes when no item barcode is present',
+        'coust', 'label'),
+    'bool',
+    NULL
+), (
+    'vandelay',
+    'vandelay.item.barcode.prefix',
+    oils_i18n_gettext(
+        'vandelay.item.barcode.prefix',
+        'Vandelay Default Barcode Prefix',
+        'coust', 'label'),
+    oils_i18n_gettext(
+        'vandelay.item.barcode.prefix',
+        'Apply this prefix to any auto-generated item barcodes',
+        'coust', 'label'),
+    'string',
+    NULL
+), (
+    'vandelay',
+    'vandelay.item.call_number.auto',
+    oils_i18n_gettext(
+        'vandelay.item.call_number.auto',
+        'Vandelay Generate Default Call Numbers',
+        'coust', 'label'),
+    oils_i18n_gettext(
+        'vandelay.item.call_number.auto',
+        'Auto-generate default item call numbers when no item call number is present',
+        'coust', 'label'),
+    'bool',
+    NULL
+), (
+    'vandelay',
+    'vandelay.item.call_number.prefix',
+    oils_i18n_gettext(
+        'vandelay.item.call_number.prefix',
+        'Vandelay Default Call Number Prefix',
+        'coust', 'label'),
+    oils_i18n_gettext(
+        'vandelay.item.call_number.prefix',
+        'Apply this prefix to any auto-generated item call numbers',
+        'coust', 'label'),
+    'string',
+    NULL
+), (
+    'vandelay',
+    'vandelay.item.copy_location.default',
+    oils_i18n_gettext(
+        'vandelay.item.copy_location.default',
+        'Vandelay Default Copy Location',
+        'coust', 'label'),
+    oils_i18n_gettext(
+        'vandelay.item.copy_location.default',
+        'Default copy location value for imported items',
+        'coust', 'label'),
+    'link',
+    'acpl'
+), (
+    'vandelay',
+    'vandelay.item.circ_modifier.default',
+    oils_i18n_gettext(
+        'vandelay.item.circ_modifier.default',
+        'Vandelay Default Circulation Modifier',
+        'coust', 'label'),
+    oils_i18n_gettext(
+        'vandelay.item.circ_modifier.default',
+        'Default circulation modifier value for imported items',
+        'coust', 'label'),
+    'link',
+    'ccm'
+);
+
+

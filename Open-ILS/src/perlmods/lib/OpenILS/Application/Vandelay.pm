@@ -878,12 +878,18 @@ sub queued_records_with_matches {
 }
 
 
+# cache of import item org unit settings.  
+# used in apply_import_item_defaults() below, 
+# but reset on each call to import_record_list_impl()
+my %item_defaults_cache;
+
 sub import_record_list_impl {
     my($self, $conn, $rec_ids, $requestor, $args) = @_;
 
     my $overlay_map = $args->{overlay_map} || {};
     my $type = $self->{record_type};
     my %queues;
+    %item_defaults_cache = ();
 
     my $report_args = {
         progress => 1,
@@ -1603,15 +1609,20 @@ sub import_record_asset_list_impl {
             {idlist=>1}
         );
 
+        # if any items have no call_number label and a value should be
+        # applied automatically (via org settings), we want to use the same
+        # call number label for every copy per org per record.
+        my $auto_callnumber = {};
+
         for my $item_id (@$item_ids) {
             my $e = new_editor(requestor => $requestor, xact => 1);
             my $item = $e->retrieve_vandelay_import_item($item_id);
             my ($copy, $vol, $evt);
 
-            $$report_args{import_item} = $item;
             $$report_args{e} = $e;
-            $$report_args{import_error} = undef;
             $$report_args{evt} = undef;
+            $$report_args{import_item} = $item;
+            $$report_args{import_error} = undef;
 
             if (my $copy_id = $item->internal_id) { # assignment
                 # copy matches an existing copy.  Overlay instead of create.
@@ -1753,6 +1764,10 @@ sub import_record_asset_list_impl {
                 # Creating a new copy
                 $logger->info("vl: creating new copy in import");
 
+                # appply defaults values from org settings as needed
+                # if $auto_callnumber is unset, it will be set within
+                apply_import_item_defaults($e, $item, $auto_callnumber);
+
                 # --------------------------------------------------------------------------------
                 # Find or create the volume
                 # --------------------------------------------------------------------------------
@@ -1842,6 +1857,58 @@ sub import_record_asset_list_impl {
 
     $roe->rollback;
     return undef;
+}
+
+sub apply_import_item_defaults {
+    my ($e, $item, $auto_cn) = @_;
+    my $org = $item->owning_lib || $item->circ_lib;
+    my %c = %item_defaults_cache;  
+
+    # fetch and cache the org unit setting value (unless 
+    # it's already cached) and return the value to the caller
+    my $set = sub {
+        my $name = shift;
+        return $c{$org}{$name} if defined $c{$org}{$name};
+        my $sname = "vandelay.item.$name";
+        $c{$org}{$name} = $U->ou_ancestor_setting_value($org, $sname, $e);
+        $c{$org}{$name} = '' unless defined $c{$org}{$name};
+        return $c{$org}{$name};
+    };
+
+    if (!$item->barcode) {
+
+        if ($set->('barcode.auto')) {
+
+            my $pfx = $set->('barcode.prefix') || 'VAN';
+            my $barcode = $pfx . $item->record . $item->id;
+
+            $logger->info("vl: using auto barcode $barcode for ".$item->id);
+            $item->barcode($barcode);
+
+        } else {
+            $logger->error("vl: no barcode (or defualt) for item ".$item->id);
+        }
+    }
+
+    if (!$item->call_number) {
+
+        if ($set->('call_number.auto')) {
+
+            if (!$auto_cn->{$org}) {
+                my $pfx = $set->('call_number.prefix') || 'VAN';
+
+                # use the ID of the first item to differentiate this 
+                # call number from others linked to the same record
+                $auto_cn->{$org} = $pfx . $item->record . $item->id;
+            }
+
+            $logger->info("vl: using auto call number ".$auto_cn->{$org});
+            $item->call_number($auto_cn->{$org});
+
+        } else {
+            $logger->error("vl: no call number or default for item ".$item->id);
+        }
+    }
 }
 
 

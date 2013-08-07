@@ -1870,6 +1870,10 @@ BEGIN
             attr_set.deposit_amount := NULL;
             attr_set.copy_number := NULL;
             attr_set.price := NULL;
+            attr_set.circ_modifier := NULL;
+            attr_set.location := NULL;
+            attr_set.barcode := NULL;
+            attr_set.call_number := NULL;
 
             IF tmp_attr_set.pr != '' THEN
                 tmp_str = REGEXP_REPLACE(tmp_attr_set.pr, E'[^0-9\\.]', '', 'g');
@@ -1928,7 +1932,25 @@ BEGIN
                 END IF;
             END IF;
 
-            IF tmp_attr_set.circ_mod != '' THEN
+            IF COALESCE(tmp_attr_set.circ_mod, '') = '' THEN
+
+                -- no circ mod defined, see if we should apply a default
+                SELECT INTO attr_set.circ_modifier TRIM(BOTH '"' FROM value) 
+                    FROM actor.org_unit_ancestor_setting(
+                        'vandelay.item.circ_modifier.default', 
+                        attr_set.owning_lib
+                    );
+
+                -- make sure the value from the org setting is still valid
+                PERFORM 1 FROM config.circ_modifier WHERE code = attr_set.circ_modifier;
+                IF NOT FOUND THEN
+                    attr_set.import_error := 'import.item.invalid.circ_modifier';
+                    attr_set.error_detail := tmp_attr_set.circ_mod;
+                    RETURN NEXT attr_set; CONTINUE; 
+                END IF;
+
+            ELSE 
+
                 SELECT code INTO attr_set.circ_modifier FROM config.circ_modifier WHERE code = tmp_attr_set.circ_mod;
                 IF NOT FOUND THEN
                     attr_set.import_error := 'import.item.invalid.circ_modifier';
@@ -1946,7 +1968,23 @@ BEGIN
                 END IF;
             END IF;
 
-            IF tmp_attr_set.cl != '' THEN
+            IF COALESCE(tmp_attr_set.cl, '') = '' THEN
+                -- no location specified, see if we should apply a default
+
+                SELECT INTO attr_set.location TRIM(BOTH '"' FROM value) 
+                    FROM actor.org_unit_ancestor_setting(
+                        'vandelay.item.copy_location.default', 
+                        attr_set.owning_lib
+                    );
+
+                -- make sure the value from the org setting is still valid
+                PERFORM 1 FROM asset.copy_location WHERE id = attr_set.location;
+                IF NOT FOUND THEN
+                    attr_set.import_error := 'import.item.invalid.location';
+                    attr_set.error_detail := tmp_attr_set.cs;
+                    RETURN NEXT attr_set; CONTINUE; 
+                END IF;
+            ELSE
 
                 -- search up the org unit tree for a matching copy location
                 WITH RECURSIVE anscestor_depth AS (
@@ -2015,6 +2053,9 @@ BEGIN
 
 END;
 $$ LANGUAGE PLPGSQL;
+
+
+
 
 CREATE OR REPLACE FUNCTION vandelay.ingest_bib_items ( ) RETURNS TRIGGER AS $func$
 DECLARE
