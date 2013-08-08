@@ -13395,3 +13395,18 @@ VALUES (
 );
 
 
+INSERT INTO config.standing_penalty
+    (id, name, label, block_list, staff_alert)
+VALUES (
+    35,
+    'PATRON_EXCEEDS_LONGOVERDUE_COUNT',
+    oils_i18n_gettext(
+        35,
+        'Patron Exceeds Max Long-Overdue Threshold',
+        'csp',
+        'label'
+    ),
+    'CIRC|FULFILL|HOLD|CAPTURE|RENEW',
+    TRUE
+);
+
