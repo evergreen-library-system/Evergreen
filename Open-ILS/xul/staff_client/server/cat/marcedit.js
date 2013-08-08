@@ -237,9 +237,9 @@ function my_init() {
         // then fall back to the default locale if preferred locale is not necessary;
         // however, for now we have a simplistic check:
         //
-        // we currently have translations for only two locales; in the absence of a
+        // we currently have translations for only three locales; in the absence of a
         // valid locale, default to the almighty en-US
-        if (locale != 'en-US' && locale != 'fr-CA') {
+        if (locale != 'en-US' && locale != 'fr-CA' && locale != 'fi-FI') {
             locale = 'en-US';
         }
 
