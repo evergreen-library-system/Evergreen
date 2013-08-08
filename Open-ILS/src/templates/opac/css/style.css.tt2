@@ -41,6 +41,7 @@ a {
 .searchbar {
     font-weight: bold;
     padding-top: 10px;
+    margin-left: 1em;
 }
 
 /*
