@@ -2,7 +2,7 @@ BEGIN;
 
 -- NOTE: very IDs are still correct for perms and event_def data at merge.
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0817', :eg_version);
 
 -- copy status
 
