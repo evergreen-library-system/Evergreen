@@ -390,10 +390,8 @@ sub get_compressed_holdings {
         if ($runner eq $holding) {
             $curr_holding->extend;
             $runner->increment;
-        } elsif ($runner gt $holding) { # should not happen unless holding is not in series
-            carp("Found unexpected holding, skipping");
         } elsif ($holding->is_open_ended) { # special case, as it will always be the last
-            if ($runner eq $holding->clone->compressed_to_first) {
+            if ($runner ge $holding->clone->compressed_to_first) {
                 $curr_holding->compressed_end();
             } else {
                 push(@comp_holdings, $curr_holding);
@@ -402,6 +400,8 @@ sub get_compressed_holdings {
                 $curr_holding->seqno($seqno);
             }
             last;
+        } elsif ($runner gt $holding) { # should not happen unless holding is not in series
+            carp("Found unexpected holding, skipping");
         } else {
             push(@comp_holdings, $curr_holding);
 
@@ -500,6 +500,91 @@ sub get_decompressed_holdings {
     }
 
     return @return_holdings;
+}
+
+#
+# create an array of compressed holdings from all holdings for a given caption,
+# combining as needed
+#
+# NOTE: this sub is similar to, but much less aggressive/strict than
+# get_compressed_holdings(). Ultimately, get_compressed_holdings() might be
+# deprecated in favor of this
+#
+# TODO: gap marking, gap preservation
+#
+# TODO: some of this could be moved to the Caption (and/or Holding) object to
+# allow for combining in the absense of an overarching MFHD object
+#
+sub get_combined_holdings {
+    my $self = shift;
+    my $caption = shift;
+
+    my @holdings = $self->holdings_by_caption($caption);
+    return () if !@holdings;
+
+    # basic check for necessary pattern information
+    if (!scalar keys %{$caption->pattern}) {
+        carp "Cannot combine without pattern data, returning original holdings";
+        return @holdings;
+    }
+
+    my @sorted_holdings = sort {$a cmp $b} @holdings;
+
+    my @combined_holdings = (shift(@sorted_holdings));
+    my $seqno = 1;
+    $combined_holdings[0]->seqno($seqno);
+    foreach my $holding (@sorted_holdings) {
+        # short-circuit: if we hit an open-ended holding,
+        # it 'includes' all the rest, so just exit the loop
+        if ($combined_holdings[-1]->is_open_ended) {
+            last;
+        } elsif ($holding eq $combined_holdings[-1]) {
+            # duplicate, skip
+            next;
+        } else {
+            # at this point, we know that $holding is gt $combined_holdings[-1]
+            # we just need to figure out if they overlap or not
+
+            # first, get the end (or only) holding of [-1]
+            my $last_holding_end = $combined_holdings[-1]->is_compressed ?
+                $combined_holdings[-1]->clone->compressed_to_last
+                : $combined_holdings[-1]->clone;
+
+            # next, get the end (or only) holding of the current
+            # holding being considered
+            my $holding_end;
+            if ($holding->is_compressed) {
+                $holding_end = $holding->is_open_ended ?
+                undef
+                : $holding->clone->compressed_to_last;
+            } else {
+                $holding_end = $holding;
+            }
+
+            # next, make sure $holding isn't fully contained
+            # if it is, skip it
+            if ($holding_end and $holding_end le $last_holding_end) {
+                next;
+            }
+
+            # now, get the beginning (or only) holding of $holding
+            my $holding_start = $holding->is_compressed ?
+                $holding->clone->compressed_to_first
+                : $holding;
+
+            # see if they overlap
+            if ($last_holding_end->increment ge $holding_start) {
+                # they overlap, combine them
+                $combined_holdings[-1]->compressed_end($holding_end);
+            } else {
+                # no overlap, start a new group
+                $holding->seqno(++$seqno);
+                push(@combined_holdings, $holding);
+            }
+        }
+    }
+
+    return @combined_holdings;
 }
 
 ##

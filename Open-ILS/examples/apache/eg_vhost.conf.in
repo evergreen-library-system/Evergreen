@@ -527,6 +527,11 @@ RewriteRule .? - [E=locale:%{HTTP:Accept-Language}]
     AddOutputFilter INCLUDES;XMLENT .xhtml
 </LocationMatch>
 
+# capture locale CGI param for /reports/fm_IDL.xml
+RewriteCond %{REQUEST_URI} ^/reports/fm_IDL.xml
+RewriteCond %{QUERY_STRING} locale=([^&;]*)
+RewriteRule . - [E=locale:%1]
+
 <LocationMatch /reports/fm_IDL.xml>
     IDLChunkStripPI "yes"
     IDLChunkEscapeScript "no"

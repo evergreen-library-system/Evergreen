@@ -64,7 +64,7 @@ case "$2" in
 	;;
 	linux64-updates*)
 	echo "Building Linux (64 bit) Updates only"
-	LINUX32_UPDATES=1
+	LINUX64_UPDATES=1
 	;;
 	extension-updates*)
 	echo "Building Extension Updates only"

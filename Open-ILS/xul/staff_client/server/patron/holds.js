@@ -1903,9 +1903,21 @@ patron.holds.prototype = {
                 ]
             );
             if (typeof robj.ilsevent != 'undefined') { throw(robj); }
-            if (typeof robj.cache_key == 'undefined') { throw(robj); }
 
-            var cache_key = robj.cache_key;
+            var cache_key;
+            if (typeof robj.cache_key != 'undefined') {
+                cache_key = robj.cache_key;
+            } else {
+                if (robj.constructor == Array) {
+                    for (var i = 0; i < robj.length; i++) {
+                        if (typeof robj[i].cache_key != 'undefined') {
+                            cache_key = robj[i].cache_key;
+                        }
+                    }
+                }
+            }
+
+            if (!cache_key) { throw(robj); }
 
             // id's in xulG.holds will prevent the normal retrieval method from
             // firing.  Let's put our affected hold.id's in here:

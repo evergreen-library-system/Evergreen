@@ -227,9 +227,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 				<create permission="CREATE_IMPORT_TRASH_FIELD">
                     <context link="grp" field="owner"/>
                 </create>
-				<retrieve permission="CREATE_IMPORT_TRASH_FIELD UPDATE_IMPORT_TRASH_FIELD DELETE_IMPORT_TRASH_FIELD">
-                    <context link="grp" field="owner"/>
-                </retrieve>
+				<retrieve/>
 				<update permission="UPDATE_IMPORT_TRASH_FIELD">
                     <context link="grp" field="owner"/>
                 </update>
@@ -258,7 +256,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="CREATE_IMPORT_TRASH_FIELD" context_field="owner"/>
-				<retrieve permission="CREATE_IMPORT_TRASH_FIELD UPDATE_IMPORT_TRASH_FIELD DELETE_IMPORT_TRASH_FIELD" context_field="owner"/>
+				<retrieve/>
 				<update permission="UPDATE_IMPORT_TRASH_FIELD" context_field="owner"/>
 				<delete permission="DELETE_IMPORT_TRASH_FIELD" context_field="owner"/>
 			</actions>
@@ -8749,7 +8747,7 @@ SELECT  usr,
 	</class>
 
     <class id="stgu" controller="open-ils.cstore" oils_obj:fieldmapper="staging::user_stage" oils_persist:tablename="staging.user_stage" reporter:label="User Stage">
-        <fields oils_persist:primary="row_id" oils_persist:sequence="staging.usr_stage_row_id_seq">
+        <fields oils_persist:primary="row_id" oils_persist:sequence="staging.user_stage_row_id_seq">
             <field reporter:label="Row ID" name="row_id" reporter:datatype="id"/>
             <field reporter:label="Row Date" name="row_date" reporter:datatype="timestamp"/>
             <field reporter:label="User Name" name="usrname" reporter:datatype="text"/>
@@ -8794,7 +8792,7 @@ SELECT  usr,
     </class>
 
     <class id="stgba" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="staging::billing_address_stage" oils_persist:tablename="staging.billing_address_stage" reporter:label="Billing Address Stage">
-        <fields oils_persist:primary="row_id" oils_persist:sequence="staging.billing_address_stage_row_id_seq">
+        <fields oils_persist:primary="row_id" oils_persist:sequence="staging.mailing_address_stage_row_id_seq">
             <field reporter:label="Row ID" name="row_id" reporter:datatype="id"/>
             <field reporter:label="Row Date" name="row_date" reporter:datatype="timestamp"/>
             <field reporter:label="User Name" name="usrname" reporter:datatype="text"/>

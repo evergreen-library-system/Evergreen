@@ -53,11 +53,13 @@
         fmClass="'uvuv'">
         <thead>
             <tr>
-                <th field="redirect_from" fpath="url.redirect_from"></th><!-- From here through fragment, these are fields from uvu.  We could have just used autoFieldFields on the FlattenerGrid, but by naming them explicitly we use the same field names that we use in the URL selection interface, allowing the two interfaces to use common saved filter sets. -->
+                <th field="redirect_from" fpath="url.redirect_from"></th>
+                <th field="redirect_to" fpath="redirect_to"></th><!-- From here through fragment, these are fields from uvu.  We could have just used autoFieldFields on the FlattenerGrid, but by naming them explicitly we use the same field names that we use in the URL selection interface, allowing the two interfaces to use common saved filter sets. XXX Not very important, but is this comment even true anymore? -->
+                <th field="url_id" fpath="url.id" ffilter="true"></th>
+                <th field="full_url" fpath="url.full_url" ffilter="true"></th>
                 <th field="tag" fpath="url.tag" ffilter="true"></th>
                 <th field="subfield" fpath="url.subfield" ffilter="true"></th>
                 <th field="ord" fpath="url.ord" ffilter="true"></th>
-                <th field="full_url" fpath="url.full_url" ffilter="true"></th>
                 <th field="scheme" fpath="url.scheme" _visible="false" ffilter="true"></th>
                 <th field="host" fpath="url.host" _visible="false" ffilter="true"></th>
                 <th field="domain" fpath="url.domain" _visible="false" ffilter="true"></th>

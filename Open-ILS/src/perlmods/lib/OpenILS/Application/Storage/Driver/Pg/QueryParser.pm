@@ -415,6 +415,7 @@ sub initialize_query_normalizers {
 
     for my $cmfinm ( @$tree ) {
         my $field_info = $self->search_field_class_by_id( $cmfinm->field );
+        next unless $field_info;
         __PACKAGE__->add_query_normalizer( $field_info->{classname}, $field_info->{field}, $cmfinm->norm->func, OpenSRF::Utils::JSON->JSON2perl($cmfinm->params) );
     }
 }
@@ -946,7 +947,7 @@ sub flatten {
                       . ${spc} x 2 ."AND ${talias}.field IN (". join(',', @field_ids) . ")\n"
                       . "${spc})";
 
-                if ($join_type != 'INNER') {
+                if ($join_type ne 'INNER') {
                     my $NOT = $node->negate ? '' : ' NOT';
                     $where .= "${talias}.id IS$NOT NULL";
                 } elsif ($where ne '') {

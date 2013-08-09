@@ -49,7 +49,7 @@ my %HOLD_SORT_ORDER_BY = (
 
 
 sub isTrue {
-	my $v = shift;
+	my $v = shift || '0';
 	return 1 if ($v == 1);
 	return 1 if ($v =~ /^t/io);
 	return 1 if ($v =~ /^y/io);
@@ -504,14 +504,23 @@ sub nearest_hold {
 	my $age = shift() || '0 seconds';
 	my $fifo = shift();
 
-    $log->info("deprecated 'fifo' param true, but ignored") if isTrue $fifo;
+    $log->info("deprecated 'fifo' param true, but ignored") if isTrue($fifo);
+
+    # ScriptBuilder fleshes the circ_lib, which confuses things; ensure we
+    # are working with a circ lib ID and not an object
+    my $cp_circ_lib;
+    if (ref $cp->circ_lib) {
+        $cp_circ_lib = $cp->circ_lib->id;
+    } else {
+        $cp_circ_lib = $cp->circ_lib;
+    }
 
     my ($holdsort, $addl_cte, $addl_join) =
         build_hold_sort_clause(get_hold_sort_order($here), $cp, $here);
 
 	local $OpenILS::Application::Storage::WRITE = 1;
 
-	my $ids = action::hold_request->db_Main->selectcol_arrayref(<<"	SQL", {}, $cp->circ_lib, $here, $cp->id, $age);
+	my $ids = action::hold_request->db_Main->selectcol_arrayref(<<"	SQL", {}, $cp_circ_lib, $here, $cp->id, $age);
         WITH go_home_interval AS (
             SELECT OILS_JSON_TO_TEXT(
                 (SELECT value FROM actor.org_unit_ancestor_setting(
@@ -1052,7 +1061,7 @@ sub generate_fines {
         #TODO: reservation grace periods
         my $grace_period = ($is_reservation ? 0 : interval_to_seconds($c->grace_period));
 
-		try {
+		eval {
 			if ($self->method_lookup('open-ils.storage.transaction.current')->run) {
 				$log->debug("Cleaning up after previous transaction\n");
 				$self->method_lookup('open-ils.storage.transaction.rollback')->run;
@@ -1077,7 +1086,7 @@ sub generate_fines {
             if ( $fine_interval == 0 || int($c->$recurring_fine_method * 100) == 0 || int($c->max_fine * 100) == 0 ) {
                 $client->respond( "Fine Generator skipping circ due to 0 fine interval, 0 fine rate, or 0 max fine.\n" );
                 $log->info( "Fine Generator skipping circ " . $c->id . " due to 0 fine interval, 0 fine rate, or 0 max fine." );
-                next;
+                return;
             }
 
 			if ( $is_reservation and $fine_interval >= interval_to_seconds('1d') ) {	
@@ -1123,7 +1132,7 @@ sub generate_fines {
 				$grace_period = OpenILS::Application::Circ::CircCommon->extend_grace_period($c->$circ_lib_method->to_fieldmapper->id,$c->$due_date_method,$grace_period,undef,$hoo{$c->$circ_lib_method});
 			}
 
-            next if ($last_fine > $now);
+            return if ($last_fine > $now);
             # Generate fines for each past interval, including the one we are inside
             my $pending_fine_count = ceil( ($now - $last_fine) / $fine_interval );
 
@@ -1133,11 +1142,11 @@ sub generate_fines {
             ) {
                 $client->respond( "Still inside grace period of: ". seconds_to_interval( $grace_period )."\n" );
                 $log->info( "Circ ".$c->id." is still inside grace period of: $grace_period [". seconds_to_interval( $grace_period ).']' );
-                next;
+                return;
             }
 
             $client->respond( "\t$pending_fine_count pending fine(s)\n" );
-            next unless ($pending_fine_count);
+            return unless ($pending_fine_count);
 
 			my $recurring_fine = int($c->$recurring_fine_method * 100);
 			my $max_fine = int($c->max_fine * 100);
@@ -1238,13 +1247,15 @@ sub generate_fines {
 			    )->gather(1);
 			}
 
-		} catch Error with {
-			my $e = shift;
+		};
+
+		if ($@) {
+			my $e = $@;
 			$client->respond( "Error processing overdue $ctype [".$c->id."]:\n\n$e\n" );
 			$log->error("Error processing overdue $ctype [".$c->id."]:\n$e\n");
 			$self->method_lookup('open-ils.storage.transaction.rollback')->run;
-			throw $e if ($e =~ /IS NOT CONNECTED TO THE NETWORK/o);
-		};
+			last if ($e =~ /IS NOT CONNECTED TO THE NETWORK/o);
+		}
 	}
 }
 __PACKAGE__->register_method(
@@ -1531,7 +1542,8 @@ sub new_hold_copy_targeter {
 			my $prox_list = create_prox_list( $self, $pu_lib, $all_copies, $hold );
 			$log->debug( "\tMapping ".scalar(@$all_copies)." potential copies for hold ".$hold->id);
 			for my $prox ( keys %$prox_list ) {
-				action::hold_copy_map->create( { proximity => $prox, hold => $hold->id, target_copy => $_->id } ) for (@{$$prox_list{$prox}});
+				action::hold_copy_map->create( { proximity => $prox, hold => $hold->id, target_copy => $_ } )
+					for keys( %{{ map { $_->id => 1 } @{$$prox_list{$prox}} }} );
 			}
 
 			#$client->status( new OpenSRF::DomainObject::oilsContinueStatus );

@@ -365,7 +365,7 @@ CREATE TYPE action.hold_stats AS (
     available_copy_ratio    FLOAT
 );
 
-CREATE OR REPLACE FUNCTION action.copy_related_hold_stats (copy_id INT) RETURNS action.hold_stats AS $func$
+CREATE OR REPLACE FUNCTION action.copy_related_hold_stats (copy_id BIGINT) RETURNS action.hold_stats AS $func$
 DECLARE
     output          action.hold_stats%ROWTYPE;
     hold_count      INT := 0;

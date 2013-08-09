@@ -2445,6 +2445,16 @@ INSERT INTO asset.call_number_suffix (id, owning_lib, label) VALUES (-1, 1, '');
 INSERT INTO asset.call_number_prefix (id, owning_lib, label) VALUES (-1, 1, '');
 INSERT INTO asset.call_number VALUES (-1,1,NOW(),1,NOW(),-1,1,'UNCATALOGED');
 
+--090.schema.action.sql
+INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (1, oils_i18n_gettext(1, 'Untargeted expiration', 'ahrcc', 'label'));
+INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (2, oils_i18n_gettext(2, 'Hold Shelf expiration', 'ahrcc', 'label'));
+INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (3, oils_i18n_gettext(3, 'Patron via phone', 'ahrcc', 'label'));
+INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (4, oils_i18n_gettext(4, 'Patron in person', 'ahrcc', 'label'));
+INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (5, oils_i18n_gettext(5, 'Staff forced', 'ahrcc', 'label'));
+INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (6, oils_i18n_gettext(6, 'Patron via OPAC', 'ahrcc', 'label'));
+SELECT SETVAL('action.hold_request_cancel_cause_id_seq', 100);
+
+
 -- circ matrix
 INSERT INTO config.circ_matrix_matchpoint (org_unit,grp,circulate,duration_rule,recurring_fine_rule,max_fine_rule) VALUES (1,1,true,11,1,1);
 
@@ -2520,6 +2530,14 @@ INSERT INTO config.settings_group (name, label) VALUES
 ('vandelay', oils_i18n_gettext('vandelay','Vandelay','coust','label'))
 ;
 
+
+INSERT INTO acq.user_request_type (id,label) VALUES (1, oils_i18n_gettext('1', 'Books', 'aurt', 'label'));
+INSERT INTO acq.user_request_type (id,label) VALUES (2, oils_i18n_gettext('2', 'Journal/Magazine & Newspaper Articles', 'aurt', 'label'));
+INSERT INTO acq.user_request_type (id,label) VALUES (3, oils_i18n_gettext('3', 'Audiobooks', 'aurt', 'label'));
+INSERT INTO acq.user_request_type (id,label) VALUES (4, oils_i18n_gettext('4', 'Music', 'aurt', 'label'));
+INSERT INTO acq.user_request_type (id,label) VALUES (5, oils_i18n_gettext('5', 'DVDs', 'aurt', 'label'));
+
+SELECT SETVAL('acq.user_request_type_id_seq'::TEXT, 6);
 
 
 -- org_unit setting types
@@ -3035,7 +3053,7 @@ INSERT into config.org_unit_setting_type
         'Default hold shelf expire interval',
         'coust', 'label'),
     oils_i18n_gettext('circ.holds.default_shelf_expire_interval',
-        '',
+        'The amount of time an item will be held on the shelf before the hold expires. For example: "2 weeks" or "5 days"',
         'coust', 'description'),
     'interval', null)
 
@@ -6008,7 +6026,7 @@ INSERT INTO config.coded_value_map (id, ctype, code, value) VALUES
     (166, 'item_lang', 'grn', oils_i18n_gettext('166', 'Guarani', 'ccvm', 'value')),
     (167, 'item_lang', '-gua', oils_i18n_gettext('167', 'Guarani', 'ccvm', 'value')),
     (168, 'item_lang', 'guj', oils_i18n_gettext('168', 'Gujarati', 'ccvm', 'value')),
-    (169, 'item_lang', 'gwi', oils_i18n_gettext('169', 'Gwich', 'ccvm', 'value''in')),
+    (169, 'item_lang', 'gwi', oils_i18n_gettext('169', 'Gwich''in', 'ccvm', 'value')),
     (170, 'item_lang', 'hai', oils_i18n_gettext('170', 'Haida', 'ccvm', 'value')),
     (171, 'item_lang', 'hat', oils_i18n_gettext('171', 'Haitian French Creole', 'ccvm', 'value')),
     (172, 'item_lang', 'hau', oils_i18n_gettext('172', 'Hausa', 'ccvm', 'value')),
@@ -7952,6 +7970,11 @@ $$
             </tr>
         </thead>
         <tbody>
+        <!-- set detail.owning_lib from fm object to org name -->
+        [% FOREACH detail IN li.lineitem_details %]
+            [% detail.owning_lib = detail.owning_lib.shortname %]
+        [% END %]
+
         [% FOREACH detail IN li.lineitem_details.sort('owning_lib') %]
             [% 
                 IF detail.eg_copy_id;
@@ -7964,7 +7987,7 @@ $$
             %]
             <tr>
                 <!-- acq.lineitem_detail.id = [%- detail.id -%] -->
-                <td style='padding:5px;'>[% detail.owning_lib.shortname %]</td>
+                <td style='padding:5px;'>[% detail.owning_lib %]</td>
                 <td style='padding:5px;'>[% IF copy.barcode   %]<span class="barcode"  >[% detail.barcode   %]</span>[% END %]</td>
                 <td style='padding:5px;'>[% IF cn_label %]<span class="cn_label" >[% cn_label  %]</span>[% END %]</td>
                 <td style='padding:5px;'>[% IF detail.fund %]<span class="fund">[% detail.fund.code %] ([% detail.fund.year %])</span>[% END %]</td>
@@ -10180,7 +10203,7 @@ INSERT INTO authority.control_set_authority_field (id, control_set, main_entry, 
     (4, 1, NULL, '130', 'adfgklmnoprstvxyz', oils_i18n_gettext('4','Heading -- Uniform Title','acsaf','name'), '2'),
     (24, 1, 4, '530', 'adfgiklmnoprstvwxyz4', oils_i18n_gettext('24','See Also From Tracing -- Uniform Title','acsaf','name'), '2'),
     (44, 1, 4, '730', 'adfghklmnoprstvwxyz25', oils_i18n_gettext('44','Established Heading Linking Entry -- Uniform Title','acsaf','name'), '2'),
-    (64, 1, 4, '430', 'adfgiklmnoprstvwxyz4', oils_i18n_gettext('64','See Also Tracing -- Uniform Title','acsaf','name'), '2');
+    (64, 1, 4, '430', 'adfgiklmnoprstvwxyz4', oils_i18n_gettext('64','See From Tracing -- Uniform Title','acsaf','name'), '2');
 
 INSERT INTO authority.control_set_authority_field (id, control_set, main_entry, tag, sf_list, name) VALUES
 
@@ -10224,17 +10247,17 @@ INSERT INTO authority.control_set_authority_field (id, control_set, main_entry, 
     (52, 1, 12, '748', 'avwxyz25', oils_i18n_gettext('52','Established Heading Linking Entry -- Chronological Term','acsaf','name')),
 
 -- See From tracings
-    (61, 1, 1, '400', 'abcdefiklmnopqrstvwxyz4', oils_i18n_gettext('61','See Also Tracing -- Personal Name','acsaf','name')),
-    (62, 1, 2, '410', 'abcdefgiklmnoprstvwxyz4', oils_i18n_gettext('62','See Also Tracing -- Corporate Name','acsaf','name')),
-    (63, 1, 3, '411', 'acdefgiklnpqstvwxyz4', oils_i18n_gettext('63','See Also Tracing -- Meeting Name','acsaf','name')),
-    (65, 1, 5, '450', 'abivwxyz4', oils_i18n_gettext('65','See Also Tracing -- Topical Term','acsaf','name')),
-    (66, 1, 6, '451', 'aivwxyz4', oils_i18n_gettext('66','See Also Tracing -- Geographic Name','acsaf','name')),
-    (67, 1, 7, '455', 'aivwxyz4', oils_i18n_gettext('67','See Also Tracing -- Genre/Form Term','acsaf','name')),
-    (68, 1, 8, '480', 'ivwxyz4', oils_i18n_gettext('68','See Also Tracing -- General Subdivision','acsaf','name')),
-    (69, 1, 9, '481', 'ivwxyz4', oils_i18n_gettext('69','See Also Tracing -- Geographic Subdivision','acsaf','name')),
-    (70, 1, 10, '482', 'ivwxyz4', oils_i18n_gettext('70','See Also Tracing -- Chronological Subdivision','acsaf','name')),
-    (71, 1, 11, '485', 'ivwxyz4', oils_i18n_gettext('71','See Also Tracing -- Form Subdivision','acsaf','name')),
-    (72, 1, 12, '448', 'aivwxyz4', oils_i18n_gettext('72','See Also Tracing -- Chronological Term','acsaf','name'));
+    (61, 1, 1, '400', 'abcdefiklmnopqrstvwxyz4', oils_i18n_gettext('61','See From Tracing -- Personal Name','acsaf','name')),
+    (62, 1, 2, '410', 'abcdefgiklmnoprstvwxyz4', oils_i18n_gettext('62','See From Tracing -- Corporate Name','acsaf','name')),
+    (63, 1, 3, '411', 'acdefgiklnpqstvwxyz4', oils_i18n_gettext('63','See From Tracing -- Meeting Name','acsaf','name')),
+    (65, 1, 5, '450', 'abivwxyz4', oils_i18n_gettext('65','See From Tracing -- Topical Term','acsaf','name')),
+    (66, 1, 6, '451', 'aivwxyz4', oils_i18n_gettext('66','See From Tracing -- Geographic Name','acsaf','name')),
+    (67, 1, 7, '455', 'aivwxyz4', oils_i18n_gettext('67','See From Tracing -- Genre/Form Term','acsaf','name')),
+    (68, 1, 8, '480', 'ivwxyz4', oils_i18n_gettext('68','See From Tracing -- General Subdivision','acsaf','name')),
+    (69, 1, 9, '481', 'ivwxyz4', oils_i18n_gettext('69','See From Tracing -- Geographic Subdivision','acsaf','name')),
+    (70, 1, 10, '482', 'ivwxyz4', oils_i18n_gettext('70','See From Tracing -- Chronological Subdivision','acsaf','name')),
+    (71, 1, 11, '485', 'ivwxyz4', oils_i18n_gettext('71','See From Tracing -- Form Subdivision','acsaf','name')),
+    (72, 1, 12, '448', 'aivwxyz4', oils_i18n_gettext('72','See From Tracing -- Chronological Term','acsaf','name'));
 
 INSERT INTO authority.browse_axis (code,name,description,sorter) VALUES
     ('title','Title','Title axis','titlesort'),

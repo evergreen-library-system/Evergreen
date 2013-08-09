@@ -42,6 +42,9 @@ sub new {
             if (exists($self->{_mfhdh_FIELDS}->{$key})) {
                 carp("Duplicate, non-repeatable subfield '$key' found, ignoring");
                 next;
+            } elsif (!$caption->capfield($key)) {
+                carp("Subfield '$key' has no corresponding caption, ignoring");
+                next;
             }
             if ($self->{_mfhdh_COMPRESSED}) {
                 $self->{_mfhdh_FIELDS}->{$key}{HOLDINGS} = [split(/\-/, $val, -1)];
@@ -116,8 +119,15 @@ sub field_values {
     if (exists $self->fields->{$key}) {
         my @values = @{$self->fields->{$key}{HOLDINGS}};
         return \@values;
+    } elsif ($self->caption->capfield($key)) {
+        carp("No values found for existing caption subfield '$key', returning '*' (unknown value indicator)");
+        if ($self->is_compressed) {
+            return ['*', '*'];
+        } else {
+            return ['*'];
+        }
     } else {
-        return undef;
+        return;
     }
 }
 
@@ -161,6 +171,11 @@ sub is_open_ended {
 
 sub caption {
     my $self = shift;
+    my $caption = shift;
+
+    if ($caption) {
+        $self->{_mfhdh_CAPTION} = $caption;
+    }
 
     return $self->{_mfhdh_CAPTION};
 }
@@ -625,12 +640,18 @@ sub compressed_to_last {
 #
 # Creates or replaces an end of a compressed holding
 #
+# If $end_holding does not share caption data with $self, results
+# will be unpredicable
+#
 sub compressed_end {
     my $self = shift;
     my $end_holding = shift;
 
     my %changes;
-    if ($end_holding) {
+    if ($end_holding and !$end_holding->is_open_ended) {
+        if ($end_holding->is_compressed) {
+            $end_holding = $end_holding->clone->compressed_to_last;
+        }
         foreach my $key (keys %{$self->fields}) {
             my @values = @{$self->field_values($key)};
             my @end_values = @{$end_holding->field_values($key)};
@@ -638,7 +659,7 @@ sub compressed_end {
             $self->fields->{$key}{HOLDINGS} = \@values;
             $changes{$key} = join('-', @values);
         }
-    } elsif (!$self->is_open_ended) { # make open-ended if no $end_holding
+    } elsif (!$self->is_open_ended) { # make open-ended if no $end_holding (or $end_holding was open ended)
         foreach my $key (keys %{$self->fields}) {
             my @values = @{$self->field_values($key)};
             $self->fields->{$key}{HOLDINGS} = [$values[0]];
@@ -883,12 +904,19 @@ sub _compare {
 
     # start doing the actual comparison
     my $result;
-    foreach my $key ('a'..'f') {
+    foreach my $key ('a'..'f', 'i'..'m') {
         if (defined($holding_1->field_values($key))) {
             if (!defined($holding_2->field_values($key))) {
                 return 1; # more details equals 'greater' (?)
             } else {
-                $result = $holding_1->field_values($key)->[0] <=> $holding_2->field_values($key)->[0];
+                my $holding_1_value = $holding_1->field_values($key)->[0];
+                my $holding_1_unsure = ($holding_1_value =~ s/\[|\]//g);
+                my $holding_2_value = $holding_2->field_values($key)->[0];
+                my $holding_2_unsure = ($holding_2_value =~ s/\[|\]//g);
+                $result = $holding_1_value <=> $holding_2_value;
+                if (!$result) { # they are 'equal' but we will sort 'maybe' values before 'sure' values (TODO: rethink this is it complicates some algorithms)
+                    $result = $holding_2_unsure <=> $holding_1_unsure;
+                }
             }
         } elsif (defined($holding_2->field_values($key))) {
             return -1; # more details equals 'greater' (?)

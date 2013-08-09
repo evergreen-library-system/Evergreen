@@ -118,12 +118,6 @@
                     <td><span><a id='acq-lit-select-toggle' href='javascript:void(0);'>&#x2713</a></span></td>
                     <td>
                         [% l('Line Items') %]
-                        <span style='padding-left: 10px;'>
-                            <a href='javascript:;' 
-                                id='acq-lit-apply-idents'>
-                                [% l('Apply Order Identifiers') %]
-                            </a>
-                        </span>
                     </td>
                     <td style='white-space:nowrap;'>
                         <a id='acq-inline-copies-toggle' 

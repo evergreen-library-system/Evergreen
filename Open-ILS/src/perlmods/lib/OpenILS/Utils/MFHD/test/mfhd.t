@@ -89,6 +89,18 @@ $rec2 = MFHD->new(testlib::load_MARC_rec($testdata, $testno));
 is_deeply($holdings_a[0]->compressed_to_last, $holdings_b[0], 'compressed to last, normal');
 is($holdings_a[1]->compressed_to_last, undef, 'compressed to last, open ended');
 
+# test: get compressed holdings
+$testno++;
+
+$rec = MFHD->new(testlib::load_MARC_rec($testdata, $testno));
+$rec2 = MFHD->new(testlib::load_MARC_rec($testdata, $testno));
+
+@holdings_a = $rec->get_compressed_holdings(($rec->captions('853'))[0]);
+@holdings_b = $rec2->holdings_by_caption(($rec2->captions('853'))[0]);
+
+is_deeply(\@holdings_a, \@holdings_b, 'get compressed holdings');
+
+
 # test: get compressed holdings, open ended member
 $testno++;
 
@@ -125,6 +137,18 @@ foreach my $holding (@holdings_a) {
 }
 
 is_deeply(\@holdings_a, \@holdings_b, 'comparison testing via sort');
+
+# test: get combined holdings
+$testno++;
+
+$rec = MFHD->new(testlib::load_MARC_rec($testdata, $testno));
+$rec2 = MFHD->new(testlib::load_MARC_rec($testdata, $testno));
+
+@holdings_a = $rec->get_combined_holdings(($rec->captions('853'))[0]);
+@holdings_b = $rec2->holdings_by_caption(($rec2->captions('853'))[0]);
+
+is_deeply(\@holdings_a, \@holdings_b, 'get combined holdings');
+
 
 close $testdata;
 1;

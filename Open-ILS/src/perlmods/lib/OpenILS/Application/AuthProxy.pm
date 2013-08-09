@@ -35,6 +35,7 @@ use OpenSRF::Utils::Logger qw(:logger);
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Fieldmapper;
+use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Event;
 use UNIVERSAL::require;
 use Digest::MD5 qw/md5_hex/;
@@ -155,7 +156,7 @@ __PACKAGE__->register_method(
         params => [
             {name=> "args", desc => q/A hash of arguments.  Valid keys and their meanings:
     username := Username to authenticate.
-    barcode  := Barcode of user to authenticate (currently supported by 'native' only!)
+    barcode  := Barcode of user to authenticate 
     password := Password for verifying the user.
     type     := Type of login being attempted (Staff Client, OPAC, etc.).
     org      := Org unit id
@@ -170,14 +171,25 @@ __PACKAGE__->register_method(
 );
 sub login {
     my ( $self, $conn, $args ) = @_;
+    $args ||= {};
 
     return OpenILS::Event->new( 'LOGIN_FAILED' )
       unless (&enabled() and ($args->{'username'} or $args->{'barcode'}));
 
+    if ($args->{barcode} and !$args->{username}) {
+        # translate barcode logins into username logins by locating
+        # the matching card/user and collecting the username.
+
+        my $card = new_editor()->search_actor_card([
+            {barcode => $args->{barcode}, active => 't'},
+            {flesh => 1, flesh_fields => {ac => ['usr']}}
+        ])->[0];
+
+        $args->{username} = $card->usr->usrname if $card;
+    }
+
     # check for possibility of brute-force attack
     my $fail_count;
-    # since barcode logins are for 'native' only, we will rely on the blocking
-    # code built-in to 'native' for those logins
     if ($args->{'username'}) {
         $fail_count = $cache->get_cache('oils_auth_' . $args->{'username'} . '_count') || 0;
         if ($fail_count >= $block_count) {
@@ -251,12 +263,16 @@ sub _do_login {
     my $real_password = $args->{'password'};
     # if we have already authenticated, look up the password needed to finish
     if ($authenticated) {
-        # barcode-based login is supported only for 'native' logins
+        # username is required
         return OpenILS::Event->new( 'LOGIN_FAILED' ) if !$args->{'username'};
         my $user = $U->cstorereq(
             "open-ils.cstore.direct.actor.user.search.atomic",
             { usrname => $args->{'username'} }
         );
+        if (!$user->[0]) {
+            $logger->debug("Authenticated username '" . $args->{'username'} . "' has no Evergreen account, aborting");
+            return OpenILS::Event->new( 'LOGIN_FAILED' );
+        }
         $args->{'password'} = md5_hex( $seed . $user->[0]->passwd );
     } else {
         $args->{'password'} = md5_hex( $seed . md5_hex($real_password) );
