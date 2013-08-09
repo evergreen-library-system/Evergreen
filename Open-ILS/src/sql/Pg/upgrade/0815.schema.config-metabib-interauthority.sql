@@ -1,7 +1,7 @@
 BEGIN;
 
 -- check whether patch can be applied
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0815', :eg_version);
 
 ALTER TABLE authority.control_set_authority_field
     ADD COLUMN linking_subfield CHAR(1);

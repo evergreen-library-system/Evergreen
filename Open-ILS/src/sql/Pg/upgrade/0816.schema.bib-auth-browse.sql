@@ -1,7 +1,7 @@
 BEGIN;
 
 -- check whether patch can be applied
--- SELECT evergreen.upgrade_deps_block_check('YYYY', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0816', :eg_version);
 
 -- To avoid problems with altering a table column after doing an
 -- update.
