@@ -186,8 +186,6 @@ include::admin/cn_prefixes_and_suffixes.txt[]
 
 include::admin/circulation_limit_groups.txt[]
 
-include::admin/restrict_Z39.50_sources_by_perm_group.txt[]
-
 include::admin/booking-admin.txt[]
 
 include::admin/MARC_Import_Remove_Fields.txt[]
@@ -199,6 +197,8 @@ include::admin/permissions.txt[]
 include::admin/SMS_messaging.txt[]
 
 include::admin/user_activity_type.txt[]
+
+include::admin/restrict_Z39.50_sources_by_perm_group.txt[]
 
 
 Local Administration

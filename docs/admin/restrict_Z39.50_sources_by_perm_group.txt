@@ -59,9 +59,13 @@ Staff have the option to apply Z39.50 login credentials to each Z39.50 server at
 
 
 To set up stored credentials for a Z39.50 server:
-. Go to *Admin -> Server Administration -> Z39.50 Servers*.
-. Select a *Z39.50 Source* by clicking on the hyperlinked source name.  This will take you the Z39.50 Attributes for the source.
-. At the top of the screen, select the *org unit* for which you would like to configure the credentials.  
-. Enter the *Username* and *Password*, and click *Apply Credentials*.  
+
+1) Go to *Admin -> Server Administration -> Z39.50 Servers*.
+
+2) Select a *Z39.50 Source* by clicking on the hyperlinked source name.  This will take you the Z39.50 Attributes for the source.
+
+3) At the top of the screen, select the *org unit* for which you would like to configure the credentials.  
+
+4) Enter the *Username* and *Password*, and click *Apply Credentials*.  
 
 image::media/storing_z3950_credentials.JPG[Storing Z39.50 Credentials]
