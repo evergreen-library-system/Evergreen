@@ -41,6 +41,12 @@ function my_init() {
             $('credit_forward').setAttribute('value',util.money.sanitize( g.patron.credit_forward_balance() ));
         }
 
+        if (g.data.hash.aous['circ.disable_patron_credit']) {
+            var nodes = document.getElementsByClassName('hide_patron_credit');
+            for (var i = 0; i < nodes.length; i++) 
+                nodes[i].setAttribute('hidden', true);
+        }
+
         if (g.data.hash.aous['ui.circ.billing.uncheck_bills_and_unfocus_payment_box']) {
             g.funcs.push(
                 function() {
@@ -983,6 +989,13 @@ function pay(payment_blob) {
                 case 'INVALID_USER_XACT_ID' :
                     refresh(); default_focus();
                     alert($("patronStrings").getFormattedString('staff.patron.bills.pay.invalid_user_xact_id', [robj.desc])); return false; break;
+                case 'PATRON_CREDIT_DISABLED' :
+                    refresh(); 
+                    default_focus();
+                    alert(robj.desc);
+                    return false;
+                    break;
+
                 default: throw(robj); break;
             }
         }

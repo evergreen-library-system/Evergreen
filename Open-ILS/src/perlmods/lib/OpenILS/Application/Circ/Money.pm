@@ -142,6 +142,7 @@ sub make_payments {
     my $this_ou = $e->requestor->ws_ou || $e->requestor->home_ou;
     my %orgs;
 
+
     # unless/until determined by payment processor API
     my ($approval_code, $cc_processor, $cc_type, $cc_order_number) = (undef,undef,undef, undef);
 
@@ -184,7 +185,18 @@ sub make_payments {
 
         $total_paid += $amount;
 
-        $orgs{$U->xact_org($transid, $e)} = 1;
+        my $org_id = $U->xact_org($transid, $e);
+
+        if (!$orgs{$org_id}) {
+            $orgs{$org_id} = 1;
+
+            # patron credit has to be allowed at all orgs receiving payment
+            if ($type eq 'credit_payment' and $U->ou_ancestor_setting_value(
+                    $org_id, 'circ.disable_patron_credit', $e)) {
+                $e->rollback;
+                return OpenILS::Event->new('PATRON_CREDIT_DISABLED');
+            }
+        }
 
         # A negative payment is a refund.  
         if( $amount < 0 ) {

@@ -1020,6 +1020,12 @@
 
 	<!-- ================================================================ -->
 
+    <event code='11105' textcode='PATRON_CREDIT_DISABLED'>
+        <desc xml:lang="en-US">Payments by patron credit are not allowed 
+            for the selected transaction</desc>
+    </event>
+
+
 </ils_events>
 
 
