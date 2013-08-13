@@ -42,14 +42,16 @@
             <tr>
 [%
         END; %]
-            <td valign='top'>
+            <td valign='top'[% IF adv_chunk.js_only %] 
+                id='adv_chunk_[% adv_chunk.adv_special %]' 
+                class='hidden'[% END %]>
                 <strong>[% adv_chunk.adv_label %]</strong><br />
 [%
         IF adv_chunk.adv_special;
             SWITCH adv_chunk.adv_special;
                 CASE "lib_selector";
                     PROCESS "opac/parts/org_selector.tt2";
-                        INCLUDE build_org_selector show_loc_groups=1; %]
+                        INCLUDE build_org_selector show_loc_groups=1 id="adv_org_selector" %]
                             <div style="position:relative;top:7px;">
                                 <input type='checkbox' name="modifier"
                                     value="available"[% CGI.param('modifier').grep('available').size ? ' checked="checked"' : '' %]
@@ -83,6 +85,13 @@
                 CASE "sort_selector";
                     INCLUDE "opac/parts/filtersort.tt2"
                         value=CGI.param('sort') class='results_header_sel';
+
+                CASE "copy_location" %]
+                    <select id="adv_copy_location_selector" 
+                        aria-label="[% l('Select Shelving Location') %]"
+                        name="fi:locations" size="3" multiple="multiple">
+                    </select>
+                [% 
             END;
         ELSIF adv_chunk.adv_attr;
             INCLUDE "opac/parts/coded_value_selector.tt2"

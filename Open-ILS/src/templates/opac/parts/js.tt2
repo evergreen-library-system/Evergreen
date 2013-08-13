@@ -84,5 +84,24 @@
 
 [% INCLUDE "opac/parts/acjs.tt2" IF ctx.page == 'record' %]
 [% INCLUDE "opac/parts/ac_google_books.tt2" IF ctx.page == 'record' AND ctx.google_books_preview %]
+[% IF ctx.page == 'advanced' %]
+<script type="text/javascript" 
+    src="[% ctx.media_prefix %]/js/ui/default/opac/copyloc.js"></script>
+[% END %]
+
+<!-- provide a JS friendly org unit hash -->
+<script type="text/javascript">
+var aou_hash = {
+[% FOR org_unit IN ctx.aou_list %]
+    [% org_unit.id %] : {
+        id : "[% org_unit.id %]",
+        name : "[% org_unit.name | replace('"', '\"') %]",
+        parent_ou : "[% org_unit.parent_ou %]",
+        depth : "[% org_unit.ou_type.depth %]",
+        can_have_vols : "[% org_unit.ou_type.can_have_vols %]"
+    }[%- ',' UNLESS loop.last -%]
+[% END %]
+};
+</script>
 
 [%- END; # want_dojo -%]

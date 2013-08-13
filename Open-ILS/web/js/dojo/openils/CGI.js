@@ -62,6 +62,7 @@ if(!dojo._hasResource["openils.CGI"]) {
                 if(c == "&" || c == ";") {
                     inkey = 1;
                     invalue = 0;
+                    key = decodeURIComponent(key);
                     if( ! this.data[key] ) this.data[key] = [];
                     this.data[key].push(decodeURIComponent(value));
                     this._keys.push(key);

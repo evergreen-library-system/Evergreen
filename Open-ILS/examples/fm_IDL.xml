@@ -4216,7 +4216,7 @@ SELECT  usr,
 			<link field="notify_staff" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
-	<class id="acpl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_location" oils_persist:tablename="asset.copy_location" reporter:label="Copy/Shelving Location">
+	<class id="acpl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_location" oils_persist:tablename="asset.copy_location" reporter:label="Copy/Shelving Location"  oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_location_id_seq">
 			<field reporter:label="Can Circulate?" name="circulate"  reporter:datatype="bool"/>
 			<field reporter:label="Is Holdable?" name="holdable" reporter:datatype="bool"/>
