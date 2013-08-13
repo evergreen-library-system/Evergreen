@@ -1784,6 +1784,14 @@ util.list.prototype = {
                                 if (a.sort_value) {
                                     a = a.sort_value;
                                     b = b.sort_value;
+
+                                    // ensure that numeric values have not
+                                    // morphed into strings along the way.
+                                    if (obj.columns[p].sort_type == 'money' ||
+                                        obj.columns[p].sort_type == 'number') {
+                                        a = Number(a);
+                                        b = Number(b);
+                                    }
                                 } else {
                                     a = a.value;
                                     b = b.value;
