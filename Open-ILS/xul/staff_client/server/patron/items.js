@@ -537,7 +537,14 @@ patron.items.prototype = {
                         default: throw(robj);
                     }
                 } else {
-                    obj.refresh(retrieve_ids[i].circ_id,true);
+                    var c = obj.item_out_display.lost;
+                    if (1 & c) {
+                        // stay in top list, force reload
+                        obj.refresh(retrieve_ids[i].circ_id, false, true);
+                    } else {
+                        // move to bottom list (reload is automatic)
+                        obj.refresh(retrieve_ids[i].circ_id, true);
+                    }
                 }
             }
         } catch(E) {
@@ -577,6 +584,7 @@ patron.items.prototype = {
             if (my_xulG.complete) {
                 var barcodes = util.functional.map_list(retrieve_ids,function(o){return o.barcode;});
                 var do_not_move_these = {};
+                var force_reload = {};
                 for (var i = 0; i < barcodes.length; i++) {
                     var robj = obj.network.simple_request(
                         'MARK_ITEM_CLAIM_RETURNED', 
@@ -597,10 +605,22 @@ patron.items.prototype = {
                         if (robj.textcode == 'PATRON_EXCEEDS_CLAIMS_RETURN_COUNT') {
                             do_not_move_these[ barcodes[i] ] = true;
                         }
+                    } else if (robj == '1') { // success
+                        // if claimsreturned items should display in the
+                        // top list, tell refresh() to keep them there
+                        var c = obj.item_out_display.claimsreturned;
+                        if (1 & c) {
+                            do_not_move_these[ barcodes[i] ] = true;
+                            force_reload[barcodes[i]] = true;
+                        }
                     }
                 }
                 for (var i = 0; i < retrieve_ids.length; i++) {
-                    obj.refresh(retrieve_ids[i].circ_id, !do_not_move_these[ retrieve_ids[i].barcode ]);
+                    obj.refresh(
+                        retrieve_ids[i].circ_id, 
+                        !do_not_move_these[ retrieve_ids[i].barcode ], 
+                        force_reload[ retrieve_ids[i].barcode ]
+                    );
                 }
             }
         } catch(E) {
@@ -879,7 +899,7 @@ patron.items.prototype = {
         );
     },
 
-    'refresh' : function(circ_id,move_to_bottom_list) {
+    'refresh' : function(circ_id,move_to_bottom_list, reload) {
         var obj = this;
         try {
             var nparams = obj.list_circ_map[circ_id];
@@ -888,6 +908,11 @@ patron.items.prototype = {
                 var nparams2 = obj.list2.append( { 'row' : { 'my' : { 'circ_id' : circ_id } },  'to_bottom' : true, 'which_list' : 1 } );
                 obj.list_circ_map[circ_id] = nparams2; 
             } else {
+                if (reload) {
+                    // circ is not changing lists, but we need to re-fetch 
+                    // it from the server.  removing the circ forces a refresh
+                    nparams.row.my.circ = null; 
+                }
                 var which_list = nparams.which_list;
                 switch(which_list) {
                     case 1:
@@ -913,29 +938,85 @@ patron.items.prototype = {
         } else {
             obj.checkouts = [];
             obj.checkouts2 = [];
+
+            obj.item_out_display = {
+                lost : Number(obj.data.hash.aous[
+                    'ui.circ.items_out.lost']) || 2,
+                longoverdue : Number(obj.data.hash.aous[
+                    'ui.circ.items_out.longoverdue']) || 2,
+                claimsreturned : Number(obj.data.hash.aous[
+                    'ui.circ.items_out.claimsreturned']) || 2
+            };
+
+            // items still circulating
             var robj = obj.network.simple_request(
                 'FM_CIRC_RETRIEVE_VIA_USER.authoritative',
                 [ ses(), obj.patron_id ]
             );
+
             if (typeof robj.ilsevent!='undefined') {
-                obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.items.retrieve.err_retrieving_circulations'),E);
-            } else {
-                obj.checkouts = obj.checkouts.concat( robj.overdue );
-                obj.checkouts = obj.checkouts.concat( robj.out );
-                obj.checkouts2 = obj.checkouts2.concat( robj.lost );
-                obj.checkouts2 = obj.checkouts2.concat( robj.claims_returned );
-                obj.checkouts2 = obj.checkouts2.concat( robj.long_overdue );
+                obj.error.standard_unexpected_error_alert($("patronStrings").getString(
+                    'staff.patron.items.retrieve.err_retrieving_circulations'),E);
+                return;
             }
-            var robj = obj.network.simple_request(
-                'FM_CIRC_IN_WITH_FINES_VIA_USER.authoritative',
-                [ ses(), obj.patron_id ]
-            );
-            if (typeof robj.ilsevent!='undefined') {
-                obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.items.retrieve.err_retrieving_circulations'),E);
+
+            obj.checkouts = obj.checkouts.concat(robj.out);
+            obj.checkouts = obj.checkouts.concat(robj.overdue);
+
+            // open circs are added to list one or two based on config.
+            // closed circs added to list 2 only if configured, otherwise
+            // they are added to no list
+            function promote_circs(list, stop_fines, open) {
+                var code = obj.item_out_display[stop_fines];
+                if (open) {
+                    if (1 & code) { // bitflag 1 == top list
+                        obj.checkouts = obj.checkouts.concat(list);
+                    } else {
+                        obj.checkouts2 = obj.checkouts2.concat(list);
+                    }
+                } else {
+                    if (4 & code) return;  // bitflag 4 == hide on checkin
+                    obj.checkouts2 = obj.checkouts2.concat(list);
+                }
+            }
+
+            promote_circs(robj.lost, 'lost', true);
+            promote_circs(robj.long_overdue, 'longoverdue', true);
+            promote_circs(robj.claims_returned, 'claimsreturned', true);
+            
+            if (obj.item_out_display.lost & 4 &&
+                obj.item_out_display.longoverdue & 4 &&
+                obj.item_out_display.claimsreturned & 4) {
+                // all types are configured to be hidden once checked in, 
+                // so there is no need to fetch the checked in circs.
+
+                if (obj.item_out_display.lost & 1 &&
+                    obj.item_out_display.longoverdue & 1 &&
+                    obj.item_out_display.claimsreturned & 1) {
+                    // additionally, if all types are configured to display
+                    // in the top list while checked out, nothing will
+                    // ever appear in the bottom list, so we can hide
+                    // the bottom list from the UI.
+
+                    $('splitter').setAttribute('hidden', true);
+                    $('after_splitter').setAttribute('hidden', true);
+                }
+
             } else {
-                obj.checkouts2 = obj.checkouts2.concat( robj.lost );
-                obj.checkouts2 = obj.checkouts2.concat( robj.claims_returned );
-                obj.checkouts2 = obj.checkouts2.concat( robj.long_overdue );
+                var robj = obj.network.simple_request(
+                    'FM_CIRC_IN_WITH_FINES_VIA_USER.authoritative',
+                    [ ses(), obj.patron_id ]
+                );
+
+                if (typeof robj.ilsevent!='undefined') {
+                    obj.error.standard_unexpected_error_alert($("patronStrings").getString(
+                        'staff.patron.items.retrieve.err_retrieving_circulations'),E);
+                    return;
+                }
+
+                promote_circs(robj.lost, 'lost');
+                promote_circs(robj.long_overdue, 'longoverdue');
+                promote_circs(robj.claims_returned, 'claimsreturned');
             }
         }
 
