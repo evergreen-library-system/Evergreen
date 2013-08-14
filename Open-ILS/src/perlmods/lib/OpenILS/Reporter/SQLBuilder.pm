@@ -1213,7 +1213,7 @@ sub toSQL {
 	my $_nullable_rel = $dir && $dir eq 'l' ? '_right_rel' : '_left_rel';
 	$self->{$_nullable_rel}->{_nullable} = $dir;
 
-	my $j = $dir ? ( $dir eq 'l' ? 'LEFT OUTER' : ( $dir eq 'r' ? 'RIGHT OUTER' : 'FULL OUTER' ) ) : 'INNER';
+	my $j = 'INNER';
 
 	my $sql = "\n\t$j ". $self->SUPER::toSQL;
 
