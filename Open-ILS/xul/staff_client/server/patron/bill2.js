@@ -564,9 +564,24 @@ function init_lists() {
                             util.widgets.addProperty(params.treeitem_node.firstChild.childNodes[ g.payment_pending_column_idx ],'refundable');
                         }
                         if ( row && row.my && row.my.circ && ! row.my.circ.checkin_time() ) {
-                            $('circulating_hint').hidden = false;
-                            util.widgets.addProperty(params.treeitem_node.firstChild,'circulating');
-                            util.widgets.addProperty(params.treeitem_node.firstChild.childNodes[ g.title_column_idx ],'circulating');
+                            var style_type = 'circulating';
+                            var stop_fines = row.my.circ.stop_fines() || '';
+
+                            // we have custom syling for these stop-fines reasons
+                            if (stop_fines.match(/LOST|LONGOVERDUE/)) 
+                                style_type = stop_fines.toLowerCase();
+
+                            $(style_type + '_hint').hidden = false;
+
+                            // style every cell in the row
+                            for (var n in params.treeitem_node.firstChild.childNodes) {
+                                try {
+                                    util.widgets.addProperty(
+                                        params.treeitem_node.firstChild.childNodes[n], 
+                                        style_type
+                                    );
+                                } catch(E) {}
+                            }
                         }
                     } catch(E) {
                         g.error.sdump('D_WARN','Error setting list properties in bill2.js: ' + E);

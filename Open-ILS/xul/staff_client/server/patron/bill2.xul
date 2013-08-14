@@ -125,7 +125,14 @@
                     <button id="bill_history_btn" label="&staff.patron.bills_overlay.history.label;" accesskey="&staff.patron.bills_overlay.history.accesskey;" />
                     <spacer flex="1"/>
                     <vbox pack="center">
-                        <label id="circulating_hint" hidden="true" style="background: red; color: white" value="&staff.patron.bills_overlay.still_checked_out.label;"/>
+                        <label id="circulating_hint" hidden="true" 
+                            value="&staff.patron.bills_overlay.still_checked_out.label;"/>
+
+                        <label id="longoverdue_hint" hidden="true" 
+                            value="&staff.patron.bills_overlay.longoverdue_checked_out.label;"/>
+
+                        <label id="lost_hint" hidden="true"
+                            value="&staff.patron.bills_overlay.lost_checked_out.label;"/>
                     </vbox>
                     <menubar>
                         <menu label="&staff.patron.bill_interface.actions.label;" accesskey="&staff.patron.bill_interface.actions.accesskey;">

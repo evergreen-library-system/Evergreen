@@ -3338,6 +3338,8 @@
 <!ENTITY staff.patron.bill_interface.paid.label "Paid">
 
 <!ENTITY staff.patron.bills_overlay.still_checked_out.label "Red Items are still Checked Out">
+<!ENTITY staff.patron.bills_overlay.longoverdue_checked_out.label "Orange Items are Long Overdue">
+<!ENTITY staff.patron.bills_overlay.lost_checked_out.label "Dark Red Items are Lost">
 <!ENTITY staff.patron.bills_overlay.uncheck_all.label "Uncheck All">
 <!ENTITY staff.patron.bills_overlay.uncheck_all.accesskey "U">
 <!ENTITY staff.patron.bills_overlay.check_all.label "Check All">

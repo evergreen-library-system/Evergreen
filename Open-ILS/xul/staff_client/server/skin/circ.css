@@ -15,8 +15,39 @@ treechildren::-moz-tree-cell(circulating) {
     background-color: red;
 }
 
+treechildren::-moz-tree-cell(longoverdue) {
+    background-color: orange;
+}
+
+treechildren::-moz-tree-cell(lost) {
+    background-color: maroon;
+}
+
 treechildren::-moz-tree-cell-text(circulating) {
     color: white;
+}
+
+treechildren::-moz-tree-cell-text(lost) {
+    color: white;
+}
+
+treechildren::-moz-tree-cell-text(longoverdue) {
+    color: black;
+}
+
+#circulating_hint {
+    background-color: red;
+    color: white;
+}
+
+#lost_hint {
+    background-color: maroon;
+    color: white;
+}
+
+#longoverdue_hint {
+    background-color: orange;
+    color: black;
 }
 
 treechildren::-moz-tree-row(backdate_failed) {
