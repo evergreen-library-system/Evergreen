@@ -4880,18 +4880,18 @@ INSERT into config.org_unit_setting_type
     ),
     'string', null)
 
-,( 'opac.duplicate_patron_check_use_consortium', 'opac',
+,( 'circ.patron_edit.duplicate_patron_check_depth', 'circ',
     oils_i18n_gettext(
-        'opac.duplicate_patron_check_use_consortium',
-        'Use consortium as the search ou for the duplicate patron check.',
+        'circ.patron_edit.duplicate_patron_check_depth',
+        'Specify search depth for the duplicate patron check in the patron editor',
         'coust',
         'label'),
     oils_i18n_gettext(
-        'opac.duplicate_patron_check_use_consortium',
-        'When using the patron registration page, the duplicate patron check will use the consortium as the search_ou.',
+        'circ.patron_edit.duplicate_patron_check_depth',
+        'When using the patron registration page, the duplicate patron check will use the configured depth to scope the search for duplicate patrons.',
         'coust',
         'description'),
-    'bool', null)
+    'integer', null)
 ;
 
 UPDATE config.org_unit_setting_type
