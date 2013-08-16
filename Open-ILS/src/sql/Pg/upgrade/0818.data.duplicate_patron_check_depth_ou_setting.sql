@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0818', :eg_version);
 
 INSERT INTO config.org_unit_setting_type ( name, grp, label, description, datatype ) VALUES (
     'circ.patron_edit.duplicate_patron_check_depth', 'circ',
