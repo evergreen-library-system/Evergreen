@@ -1,0 +1,40 @@
+New Feature: Customize Items Out Display for Lost, etc.
+=======================================================
+
+Items which are LOST, LONGOVERDUE, or CLAIMSRETURNED may now be displayed 
+in the top/main list of circulations instead of the bottom list in the
+staff client patron Items Out interface.  Similarly, such items can be 
+removed from the display once the items are checked in even if the 
+transaction is still open (fines are owed, etc.).
+
+Apart from organization, this has two additional effects:
+
+ * If all 3 types are hidden once checked in, the interface becomes a true
+   items out interface, instead of a combination of items out and 
+   special circumstance checked-in circs.
+ * If, in addition, all types are configured to be displayed in the top
+   list, the bottom list is hidden from the UI (since nothing would display
+   there), which creates more screen space for the main items out list.
+
+New Org Unit Settings
+---------------------
+
+ * ui.circ.items_out.longoverdue    | Items Out Long-Overdue display setting
+ * ui.circ.items_out.lost           | Items Out Lost display setting
+ * ui.circ.items_out.claimsreturned | Items Out Claims Returned display setting
+
+The value for each is a numeric code, describing which list the circulation
+should appear while checked out and whether the circulation should continue 
+to appear in the bottom list, when checked in, regardless of the state of
+the transaction.
+
+Value Codes
+~~~~~~~~~~~
+
+ * 1 = top list, then bottom list 
+ * 2 = bottom list, then bottom list
+ * 5 = top list, then do not display
+ * 6 = bottom list, then do not display
+
+Hint: to hide the bottom list entirely, set the value for all three settings 
+to '5'.
