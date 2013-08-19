@@ -1,0 +1,147 @@
+# install files for Fedora
+
+DIR = $(dir $(lastword $(MAKEFILE_LIST)))
+
+# Fedora?
+FEDORA=$(shell uname -r | grep "\.fc[0-9][0-9]\.")
+# Fedora 64-bit?
+FEDORA_64=$(shell uname -r | grep "\.fc[0-9][0-9]\.x86_64")
+
+FEDORA_RPMS = \
+	aspell \
+	aspell-en \
+	bzip2-devel \
+	check \
+	check-devel \
+	libdbi \
+	libdbi-dbd-pgsql \
+	libdbi-devel \
+	libssh2-devel \
+	libyaz \
+	libyaz-devel \
+	mingw32-nsiswrapper \
+	mod_ssl \
+	ncurses-devel \
+	ncurses-libs \
+	perl-parent \
+	perl-Business-CreditCard \
+	perl-Business-ISBN \
+	perl-Business-ISBN-Data \
+	perl-CPAN \
+	perl-DBD-Pg \
+	perl-Email-Send \
+	perl-Email-Simple \
+	perl-GDGraph3d \
+	perl-JSON-XS \
+	perl-LDAP \
+	perl-Library-CallNumber-LC \
+	perl-Locale-Codes \
+	perl-MARC-Charset \
+	perl-MARC-Record \
+	perl-Module-Pluggable \
+	perl-Net-IP \
+	perl-Net-SSH2 \
+	perl-OLE-Storage_Lite \
+	perl-RPC-XML \
+	perl-Spreadsheet-WriteExcel \
+	perl-Test-Warn \
+	perl-Text-Aspell \
+	perl-Text-CSV \
+	perl-Text-CSV_XS \
+	perl-XML-Writer \
+	postgresql-devel \
+	readline-devel \
+	tcp_wrappers-devel \
+	wget \
+	yaz
+
+export CPAN_MODULES = \
+	MARC::Record \
+	Business::ISBN \
+	Business::ISBN::Data \
+	MARC::Charset \
+	MARC::File::XML \
+	Net::Z3950::ZOOM \
+	Library::CallNumber::LC \
+	Net::Z3950::Simple2ZOOM \
+	Template::Plugin::POSIX \
+	SRU \
+	Rose::URI
+
+export CPAN_MODULES_FORCE = \
+	Class::DBI::Frozen::301
+
+# Note: B:O:AuthorizeNet 3.21 fails with https://rt.cpan.org/Public/Bug/Display.html?id=55172
+# Should be fixed in 3.22
+# MARC::Record 2.0.1+ is required but only 2.0.0 is packaged
+#
+# TODO: can contents of FEDORA_CPAN be moved into CPAN_MODULES_FORCE?
+FEDORA_CPAN = \
+	Business::OnlinePayment \
+	Business::OnlinePayment::AuthorizeNet \
+	Business::OnlinePayment::PayPal \
+	MARC::File::XML \
+	UUID::Tiny
+
+PGSQL_FEDORA_RPMS = \
+	postgresql \
+	postgresql-contrib \
+	postgresql-libs \
+	postgresql-plperl \
+	postgresql-server
+
+all: install_fedora_rpms install_cpan_fedora install_js_sm
+	make -f $(DIR)/Makefile.common install_net_z3950_simpleserver
+	make -f $(DIR)/Makefile.common install_cpan
+	make -f $(DIR)/Makefile.common install_cpan_force
+	make -f $(DIR)/Makefile.common install_libdbi
+
+install_postgres_server:
+	yum -y install $(PGSQL_FEDORA_RPMS)
+
+install_fedora_rpms:
+	yum -y update
+	yum -y install $(FEDORA_RPMS)
+
+install_cpan_fedora: 
+	for m in $(FEDORA_CPAN); do \
+		echo "force install $$m" | perl -MCPAN -e shell;\
+	done
+
+install_cpan_marc: install_cpan_marc_record
+	for m in $(CPAN_MODULES_MARC); do perl -MCPAN -e "install \"$$m\";"; done
+
+install_js_sm: install_libjs install_spidermonkey
+
+install_libjs: 
+	if [ ! -f $(LIBJS).tar.gz ]; then wget $(LIBJS_URL); fi;
+	tar -zxf $(LIBJS).tar.gz
+	cd js/src/ && JS_DIST=/usr make -f Makefile.ref
+	mkdir -p $(JS_INSTALL_PREFIX)/include/js/
+	cp js/src/*.h $(JS_INSTALL_PREFIX)/include/js/
+	cp js/src/*.tbl $(JS_INSTALL_PREFIX)/include/js/
+	if [ ! -z $(FEDORA_64) ]; then \
+		cp js/src/Linux_All_DBG.OBJ/*.so $(JS_INSTALL_PREFIX)/lib64/ && \
+		cp js/src/Linux_All_DBG.OBJ/*.a $(JS_INSTALL_PREFIX)/lib64/; \
+	else \
+		cp js/src/Linux_All_DBG.OBJ/*.so $(JS_INSTALL_PREFIX)/lib/ && \
+		cp js/src/Linux_All_DBG.OBJ/*.a $(JS_INSTALL_PREFIX)/lib/; \
+	fi;
+	ldconfig
+
+install_spidermonkey:
+	if [ ! -f $(LIBJS_PERL).tar.gz ]; then wget $(LIBJS_PERL_URL); fi;
+	tar -zxf $(LIBJS_PERL).tar.gz
+	if [ ! -z $(FEDORA_64) ]; then \
+		sed -i -e 's/"\/usr\/lib"/"\/usr\/lib64"/' $(LIBJS_PERL)/Makefile.PL ; \
+	fi;
+	if [ ! -z $(FEDORA) ]; then \
+		sed -i -e 's/js32.dll/libjs.so/' $(LIBJS_PERL)/Makefile.PL ; \
+	fi;
+	cd $(LIBJS_PERL) && perl Makefile.PL -E4X && make && make test && make install
+
+
+clean:
+	make -f $(DIR)/Makefile.common clean
+
+# vim:noet:sw=4:ts=4:
