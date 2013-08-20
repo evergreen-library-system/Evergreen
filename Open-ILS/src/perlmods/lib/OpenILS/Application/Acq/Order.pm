@@ -601,6 +601,8 @@ sub receive_lineitem {
 
     return 0 unless $li->state eq 'on-order' or $li->state eq 'cancelled'; # sic
 
+    $li->clear_cancel_reason; # un-cancel on receive
+
     my $lid_ids = $mgr->editor->search_acq_lineitem_detail(
         {lineitem => $li_id, recv_time => undef}, {idlist => 1});
 
@@ -727,6 +729,19 @@ sub receive_lineitem_detail {
     ]) or return 0;
 
     return 1 if $lid->recv_time;
+
+    # if the LID is marked as canceled, remove the cancel reason,
+    # and reinstate fund debits where deleted by cancelation.
+    if ($lid->cancel_reason) {
+        my $cr = $e->retrieve_acq_cancel_reason($lid->cancel_reason);
+
+        if (!$U->is_true($cr->keep_debits)) {
+            # debits were removed during cancelation.
+            create_lineitem_detail_debit(
+                $mgr, $lid->lineitem, $lid) or return 0;
+        }
+        $lid->clear_cancel_reason;
+    }
 
     $lid->receiver($e->requestor->id);
     $lid->recv_time('now');
