@@ -1,11 +1,11 @@
--- Evergreen DB patch XXXX.schema.acn_dewey_normalizer.sql
+-- Evergreen DB patch 0819.schema.acn_dewey_normalizer.sql
 --
 -- Fixes Dewey call number sorting (per LP# 1150939)
 --
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0819', :eg_version);
 
 CREATE OR REPLACE FUNCTION asset.label_normalizer_dewey(TEXT) RETURNS TEXT AS $func$
     # Derived from the Koha C4::ClassSortRoutine::Dewey module
