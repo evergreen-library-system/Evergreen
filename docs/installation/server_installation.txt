@@ -214,23 +214,12 @@ mkdir /etc/apache2/ssl
 cd /etc/apache2/ssl
 ------------------------------------------------------------------------------
 +
-.Fedora 17
+.Fedora
 [source,bash]
 ------------------------------------------------------------------------------
-cp Open-ILS/examples/apache/eg.conf       /etc/httpd/conf.d/
-cp Open-ILS/examples/apache/eg_vhost.conf /etc/httpd/
-cp Open-ILS/examples/apache/eg_startup    /etc/httpd/
-# Now set up SSL
-mkdir /etc/httpd/ssl
-cd /etc/httpd/ssl
-------------------------------------------------------------------------------
-+
-.Fedora 18
-[source,bash]
-------------------------------------------------------------------------------
-cp Open-ILS/examples/apache_24/eg.conf       /etc/httpd/conf.d/
-cp Open-ILS/examples/apache_24/eg_vhost.conf /etc/httpd/
-cp Open-ILS/examples/apache/startup.pl       /etc/httpd/
+cp Open-ILS/examples/apache_24/eg_24.conf       /etc/httpd/conf.d/
+cp Open-ILS/examples/apache_24/eg_vhost_24.conf /etc/httpd/eg_vhost.conf
+cp Open-ILS/examples/apache/eg_startup          /etc/httpd/
 # Now set up SSL
 mkdir /etc/httpd/ssl
 cd /etc/httpd/ssl
@@ -374,10 +363,8 @@ cpan Rose::URI
 [source, bash]
 ------------------------------------------------------------------------------
 yum install gcc perl-XML-LibXML perl-XML-LibXSLT perl-Business-ISBN
-cpan Library::CallNumber::LC
-cpan MARC::Record
-cpan MARC::File::XML
-cpan UUID::Tiny
+yum install perl-Library-CallNumber-LC perl-MARC-Record perl-MARC-Charset
+yum install perl-MARC-File-XML perl-UUID-Tiny
 ------------------------------------------------------------------------------
 
 You need to create a PostgreSQL superuser to create and access the database.
