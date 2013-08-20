@@ -203,8 +203,14 @@ END; # FOREACH bib
     FOREACH bib IN copy_info.peer_bib_marc;
         attrs = {marc_xml => bib};
         PROCESS get_marc_attrs args=attrs %]
-[%- IF attrs.bibid != ctx.bre_id; %]
-    <li><a href="[% mkurl(ctx.opac_root _ '/record/' _ attrs.bibid) %]">[% attrs.title | html %] / [% attrs.author | html %]</a></li>
+[%- IF attrs.bibid != ctx.bre_id; -%]
+    <li property="isRelatedTo" typeof="Product">
+        [%- # Map the bound-with relationship -%]
+        <a href="[% mkurl(ctx.opac_root _ '/record/' _ attrs.bibid) %]" property="url">
+            <span class="bib_peer_title" property="name">[% attrs.title | html %]</span>
+            / <span class="bib_peer_author">[% attrs.author | html %]</span>
+        </a>
+    </li>
 [%- END; # IF attrs.bibid %]
 [%- END; # FOREACH bib in copy_info.peer_bib_marc
 '</ul>';
