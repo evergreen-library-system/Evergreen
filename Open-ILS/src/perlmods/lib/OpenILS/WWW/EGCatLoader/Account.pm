@@ -1289,6 +1289,11 @@ sub attempt_hold_placement {
 
     my @create_targets = map {$_->{target_id}} (grep { !$_->{hold_failed} } @hold_data);
 
+    my $thaw_date;
+    if ($cgi->param('hold_suspend') && $cgi->param('thaw_date') =~ m:^(\d{2})/(\d{2})/(\d{4})$:){
+        $thaw_date = "$3-$1-$2";
+    }
+
     if(@create_targets) {
 
         # holdable formats may be different for each MR hold.
@@ -1307,7 +1312,9 @@ sub attempt_hold_placement {
                 patronid => $usr,
                 pickup_lib => $pickup_lib,
                 hold_type => $hold_type,
-                holdable_formats_map => $holdable_formats
+                holdable_formats_map => $holdable_formats,
+                frozen => $cgi->param('hold_suspend'),
+                thaw_date => $thaw_date
             }),
             \@create_targets
         );

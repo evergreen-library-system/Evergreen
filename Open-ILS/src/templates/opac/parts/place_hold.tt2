@@ -202,6 +202,14 @@
                 </blockquote>
                 [% END %]
             </blockquote>
+            <blockquote>
+                <input type="checkbox" name="hold_suspend" value="t"/>[% l('Suspend This Hold?') %]
+            </blockquote>
+            <blockquote>
+                [% l('If suspended, activate on') %]
+		<input type="text" name="thaw_date" value="[% thaw_date | html %]" />
+		<em>[% l('Enter date in MM/DD/YYYY format') %]</em>
+            </blockquote>
         </p>
         <input id="place_hold_submit" type="submit" name="submit" 
             value="[% l('Submit') %]" title="[% l('Submit') %]"
