@@ -479,6 +479,7 @@ DECLARE
     ind_data        metabib.field_entry_template%ROWTYPE;
     mbe_row         metabib.browse_entry%ROWTYPE;
     mbe_id          BIGINT;
+    mbe_txt         TEXT;
 BEGIN
     PERFORM * FROM config.internal_flag WHERE name = 'ingest.assume_inserts_only' AND enabled;
     IF NOT FOUND THEN
@@ -513,12 +514,12 @@ BEGIN
             -- evergreen.oils_tsearch2()) changes.  It may or may not be
             -- expensive to add a comparison of index_vector to index_vector
             -- to the WHERE clause below.
-            SELECT INTO mbe_row * FROM metabib.browse_entry WHERE value = ind_data.value;
+            mbe_txt := metabib.browse_normalize(ind_data.value, ind_data.field);
+            SELECT INTO mbe_row * FROM metabib.browse_entry WHERE value = mbe_txt;
             IF FOUND THEN
                 mbe_id := mbe_row.id;
             ELSE
-                INSERT INTO metabib.browse_entry (value) VALUES
-                    (metabib.browse_normalize(ind_data.value, ind_data.field));
+                INSERT INTO metabib.browse_entry (value) VALUES (mbe_txt);
                 mbe_id := CURRVAL('metabib.browse_entry_id_seq'::REGCLASS);
             END IF;
 
