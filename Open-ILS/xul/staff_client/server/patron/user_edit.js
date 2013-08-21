@@ -130,7 +130,7 @@ function save_user () {
         if (pok.ilsevent) throw pok;
 
         if (pok || wok) {
-            alert($("patronStrings").getFormattedString('staff.patron.user_edit.save_user.user_modified_successfully', [user.usrname(), user.card().barcode(), pok, wok]));
+            alert($("patronStrings").getFormattedString('staff.patron.user_edit.save_user.user_modified_successfully', [user.usrname(), user.card().barcode(), pok, wok]).replace("\\n", "\n"));
         }
 
         init_editor();
