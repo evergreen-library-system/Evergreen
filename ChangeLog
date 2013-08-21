@@ -1,3 +1,465 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 9d563a8d4626cd4e4b6b0f394606e74ef51e0456
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Aug 21 09:20:42 2013 -0400
+
+    Bumping OpenILS VERSION to 2.0310
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 189a620e91fe07bb372a27524544c4e5690a8a82
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Aug 21 09:15:46 2013 -0400
+
+    2.3.10 translations import
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+5	5	build/i18n/po/Searcher.js/es-ES.po
+4	2	build/i18n/po/XULTermLoader.js/XULTermLoader.js.pot
+30	10	build/i18n/po/acq.js/acq.js.pot
+4	2	build/i18n/po/capture.js/capture.js.pot
+4	4	build/i18n/po/cat.properties/cs-CZ.po
+4	4	build/i18n/po/common.properties/cs-CZ.po
+19	7	build/i18n/po/conify.js/conify.js.pot
+820	765	build/i18n/po/db.seed/db.seed.pot
+13	13	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+104	44	build/i18n/po/ils_events.xml/ils_events.xml.pot
+28	27	build/i18n/po/lang.dtd/cs-CZ.po
+22	21	build/i18n/po/lang.dtd/es-ES.po
+5	1	build/i18n/po/lang.dtd/lang.dtd.pot
+11	4	build/i18n/po/opac.js/opac.js.pot
+4	4	build/i18n/po/patron.properties/cs-CZ.po
+11	10	build/i18n/po/register.js/register.js.pot
+5	2	build/i18n/po/reservation.js/reservation.js.pot
+8	3	build/i18n/po/selfcheck.js/selfcheck.js.pot
+4	4	build/i18n/po/tpac/tpac.pot
+
+commit 0aa91b755650846ca7c4d425b324ded0bc30b3a9
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Wed Sep 19 15:27:03 2012 -0400
+
+    Acq general search: improve searching for negative comparisons
+    
+    This aims to address Launchpad bug #1031535.  I think the bug only
+    really shows up when searches involve invoices either as the core type
+    or with filter fields.  If a search doesn't involve invoices, the
+    problematic joins aren't present.
+    
+    Could use more testing though.  Seems to make the problem go away, and
+    other basic searches seem to work, but I certainly haven't tested
+    everything.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+24	4	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Search.pm
+
+commit fa7b8347e9122cd785683599c6d4900763ddc88c
+Author: Ben Shum <bshum@biblio.org>
+Date:   Tue Aug 20 10:50:43 2013 -0400
+
+    Stamping upgrade script for dewey sort fix
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+52	0	Open-ILS/src/sql/Pg/upgrade/0819.schema.acn_dewey_normalizer.sql
+0	52	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.acn_dewey_normalizer.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0819.schema.acn_dewey_normalizer.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.acn_dewey_normalizer.sql
+
+commit c024726cb5ac5f686b0253e09f010649b4696280
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Thu Mar 7 11:59:09 2013 -0500
+
+    LP#1150939 fix dewey sort
+    
+    There's a bit in the code where it tries to pad the first digit group,
+    if it's the only digit group, but it assumed the digit group was the
+    first token.
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+6	1	Open-ILS/src/sql/Pg/040.schema.asset.sql
+52	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.acn_dewey_normalizer.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.acn_dewey_normalizer.sql
+
+commit 85ca009c2bd0ba9e4580660ab3a6ec37d9a2e42d
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon Aug 5 14:10:56 2013 -0400
+
+    LP1208572 - Fixes for reporter.classic_item_list
+    
+    This view was created before the extend_reporter schema and the reporter.
+    materialized_simple_record existed.  Rewriting the view definition to include
+    those.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+7	9	Open-ILS/src/sql/Pg/example.reporter-extension.sql
+
+commit f844bfc0ebd14569cf48b48c6b9076efe0ad549b
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Fri Aug 16 10:32:42 2013 -0400
+
+    DB numbering for patron duplication check depth setting
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+22	0	Open-ILS/src/sql/Pg/upgrade/0818.data.duplicate_patron_check_depth_ou_setting.sql
+0	22	Open-ILS/src/sql/Pg/upgrade/XXXX.add_setting_for_selecting_consortium_as_search_ou_for_duplicate_patron_check.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0818.data.duplicate_patron_check_depth_ou_setting.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.add_setting_for_selecting_consortium_as_search_ou_for_duplicate_patron_check.sql
+
+commit a7017eb786935223d2a2013d6347d9c31a9bd945
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Fri Aug 16 09:31:16 2013 -0400
+
+    Adjust Kyle Tomita's patron dupe check fix to use the depth concept
+    
+    Addressing these comments:
+    https://bugs.launchpad.net/evergreen/+bug/1185524/comments/3
+    
+    And also renaming the OU setting to better peer with similar settings
+    affecting staff client (not OPAC) patron registration.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+11	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor.pm
+6	6	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+16	18	Open-ILS/src/sql/Pg/upgrade/XXXX.add_setting_for_selecting_consortium_as_search_ou_for_duplicate_patron_check.sql
+
+commit 1eb958dede143e3227b52196dda1f0d05fd0cfcf
+Author: Kyle Tomita <ktomita@catalystitservices.com>
+Date:   Fri May 31 11:33:59 2013 -0700
+
+    LP1185524 - Duplicate patron checking in the user editor is limited to workstation OU
+    
+    Added a new library setting opac.duplicate_patron_check_use_consortium.
+    When true, the duplicate check will use the consortium (1) as the OU.
+    When false or not set, the duplicate check will use the workstation OU.
+    
+    The setting is checked in subroutine that creates the search request and
+    sets the OU accordingly.
+    
+    [LFW: Signing off but following with material changes next commit.]
+    
+    Signed-off-by: Kyle Tomita <ktomita@catalystitservices.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    
+    Conflicts:
+    	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor.pm
+
+5	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor.pm
+12	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+24	0	Open-ILS/src/sql/Pg/upgrade/XXXX.add_setting_for_selecting_consortium_as_search_ou_for_duplicate_patron_check.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.add_setting_for_selecting_consortium_as_search_ou_for_duplicate_patron_check.sql
+
+commit fd9fb9ee7811f6b7fa9dcb4f6301c2dfc4fcf89d
+Author: Steven Chan <schan@sitka.bclibraries.ca>
+Date:   Mon Aug 5 12:13:54 2013 -0400
+
+    Fix LP985075, cannot save Patron Acquisition Request form
+    
+    The form is shown using a dojo EditPane attached to an EditDialog,
+    however, attaching the pane was done manually, resulting in the dialog
+    acting improperly and the pane positioned improperly.
+    
+    Instead, we use dojo's attr method to define the content attribute of
+    the dialog to be the pane.
+    
+    Signed-off-by: Steven Chan <schan@sitka.bclibraries.ca>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	2	Open-ILS/web/js/dojo/openils/widget/EditDialog.js
+
+commit 6e5bee24ee72f1c2fd5345d1b5d306507f3fd5ae
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed Jul 31 11:03:25 2013 -0400
+
+    Fixing LP 1072892 - repeated rows in reporter.classic_item_list view
+    
+    The view joined the actor.card table in such a way that all library
+    cards (active or not) were being returned.  This commit changes that
+    behavior so that only the current card (from actor.usr.card) is returned.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/example.reporter-extension.sql
+
+commit 52a63bf1066109a6b151dda399416d31285cff64
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Aug 13 10:03:10 2013 -0400
+
+    LP1211506 fix numeric sorting in staff client grids
+    
+    To recover numeric (vs. ascii-betical) sorting of number and money
+    values in grids, cast the cached sort values back into numbers.
+    
+    This was tested in the billing interface, but should repair numeric
+    sorting for most grids.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+8	0	Open-ILS/xul/staff_client/chrome/content/util/list.js
+
+commit 9e55c1e4619daa5d53fd0a0f8f74d0757210b3cd
+Author: Pasi Kallinen <pasi.kallinen@pttk.fi>
+Date:   Mon Jul 22 10:16:36 2013 +0300
+
+    Always show grid buttons on My Selection List
+    
+    Fix LP#1028601 by showing the selection list creation buttons in the acq
+    search UI even when there are no search results.
+    
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+5	1	Open-ILS/web/js/ui/default/acq/search/unified.js
+
+commit c0a79af1509d3b770c3a919020a515dbc1e2caa0
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Jul 2 11:55:21 2013 -0400
+
+    Solidify caption/holding relationship, improve MFHD::Holding comparisons
+    
+    [This commit has been squashed for merging. LFW]
+    
+      * This commit:
+        - Makes sure that holding data is valid for the given caption
+          for new holding objects
+        - Teaches field_values() to fall back to '*' (unknown marker)
+          when a holding is missing data
+        - Allows the caption() method to be a setter
+    
+      * This commit:
+        - Makes the comparison operator consider chron data, not just
+          enumeration data
+        - Teaches the comparison operator a way to handle 'unsure' data
+          (that is, data presented in brackets [])
+    
+      * The code was assuming the $end_holding param would be uncompressed,
+        but this was not stated anywhere, nor enforced.  Let's allow the
+        method to take both compressed and uncompressed holdings as the "end"
+        (and handle it appropriately).
+    
+      * Add some holdings with missing and unsure data to test the new
+        comparison operators handling of such data.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+33	5	Open-ILS/src/perlmods/lib/OpenILS/Utils/MFHD/Holding.pm
+19	15	Open-ILS/src/perlmods/lib/OpenILS/Utils/MFHD/test/mfhddata2.txt
+
+commit 68c1bf0152750e3d085d24bea7c9a47b80e5189a
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed May 8 15:09:41 2013 -0400
+
+    Fix logic in get_compressed_holdings()
+    
+    [This commit has been squashed for merging. LFW]
+    
+      * This commit rearranges some of the logic branches to protect
+        against an unusual case of having two holding statements with
+        the same start value, but one being open-ended and one not.
+    
+      * The logic in get_combined_holdings() was a little sloppy and
+        repeated some steps unnecessarily.  This cleans things up.
+    
+        See the test case in the previous commit for more clarity.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+17	16	Open-ILS/src/perlmods/lib/OpenILS/Utils/MFHD.pm
+
+commit 12d88a006c06015e9bba5de483af6b987722ee7f
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue May 7 18:23:27 2013 -0400
+
+    Tie in new MFHD method to serials module/MFHD tests for compressing, combining
+    
+    [This commit has been squashed for merging. LFW]
+    
+     *  Now that we have a potentially better alternative, let's call
+        get_combined_holdings() in place of get_compressed_holdings() in
+        Serial.pm.
+    
+     *  First, add a test for the new get_combined_holdings() method.
+    
+        Second, add a known problem case for get_compressed_holdings().
+        The fix will come in a subsequent commit.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Serial.pm
+24	0	Open-ILS/src/perlmods/lib/OpenILS/Utils/MFHD/test/mfhd.t
+31	0	Open-ILS/src/perlmods/lib/OpenILS/Utils/MFHD/test/mfhddata2.txt
+
+commit df0d0704534db44eab4cb7a4b414510c61b21c40
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue May 7 18:19:34 2013 -0400
+
+    Add new get_combined_holdings() method to MFHD.pm
+    
+    This commit adds a new method to the MFHD module which creates an
+    array of compressed holdings from all holdings for a given caption,
+    combining as needed.
+    
+    NOTE: This method is similar to, but much less aggressive/strict than
+    get_compressed_holdings(). Ultimately, get_compressed_holdings()
+    might be deprecated in favor of this.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+84	0	Open-ILS/src/perlmods/lib/OpenILS/Utils/MFHD.pm
+
+commit 9717addcd5221e594df9c9025e9c3e51475b6db3
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Mon Jun 24 11:47:40 2013 -0400
+
+    Acq: When processing EDI invoices, skip unknown line item references
+    
+    See LP #1172373.
+    
+    In their electronic invoices, vendors sometimes include a mix of line
+    items that your ILS knows about, because you ordered them through it,
+    and line items of which your ILS knows nothing. We should not fail
+    altogether at processing invoices, but instead process what line items
+    we can.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+106	66	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/EDI.pm
+
+commit 96a1fb4e9a148af329a0b024534ab4279963c791
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Tue Apr 16 15:18:17 2013 -0400
+
+    Acq: When building invoices from EDI messages, avoid bad data
+    
+    From some vendors, these EDI messages contain strings (useless ones,
+    like just the name of the vendor) where we had been expecting numeric
+    identifiers.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+18	5	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/EDI.pm
+
+commit ed48cbdedf0b6e4be292c4fa2ad9d6741a1ee225
+Author: Pasi Kallinen <pasi.kallinen@pttk.fi>
+Date:   Wed Jul 17 20:24:26 2013 +0300
+
+    Validate date ranges in Close Dates editor
+    
+    Complain in Closed Dates Editor when ending date is earlier than starting date.
+    
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	0	Open-ILS/web/opac/locale/en-US/lang.dtd
+5	0	Open-ILS/xul/staff_client/server/admin/closed_dates.js
+1	0	Open-ILS/xul/staff_client/server/admin/closed_dates.xhtml
+
+commit 3ba30f6c644f51d1158025e94675db8759c30cc2
+Author: Pasi Kallinen <pasi.kallinen@pttk.fi>
+Date:   Tue Jul 23 10:49:47 2013 +0300
+
+    Prevent paste from empty clipboard throwing an error
+    
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	1	Open-ILS/xul/staff_client/chrome/content/util/clipboard.js
+
+commit 953cd16194b454199b3029ac00e83287d533546b
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Tue May 29 10:28:50 2012 -0400
+
+    Fix IDL and OU setting check for staged users
+    
+    The IDL had references to sequences that do not exist:
+    
+    staging.usr_stage_row_id_seq -- a typo, fixed
+    
+    In the case of staging.billing_address_stage_row_id_seq, the
+    staging.billing_address_stage table is created with LIKE,
+    and uses the sequence staging.mailing_address_stage_row_id_seq
+    
+    The OU setting check for the open-ils.actor.user.stage.create API
+    call was not passing an org unit, and would always fail.
+    
+    We now pass the home_ou of the user being staged.
+    
+    At this point, the opac.allow_pending_user OU setting type must
+    be manually created before its value can be set.
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2	2	Open-ILS/examples/fm_IDL.xml
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor/Stage.pm
+
+commit e956804719b1f4380293b5dc2ed1f420f075b478
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Jul 22 15:21:15 2013 -0400
+
+    LP1203753 AuthProxy barcode login support
+    
+    When users attempt a barcode-based login with AuthProxy, the system will
+    determine the username of the user (based on the barcode) and use the
+    username instead of the barcode for all proxied login attempts.  This
+    allows users to use their barcodes (or barcode-looking usernames) to
+    log in via remote authenticators.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+16	4	Open-ILS/src/perlmods/lib/OpenILS/Application/AuthProxy.pm
+
+commit c41a96c64cae57981a5f62ae2b685817a4dbba31
+Author: Pasi Kallinen <pasi.kallinen@pttk.fi>
+Date:   Fri Jul 19 09:04:04 2013 +0300
+
+    Fix LP#1187402: Datafield contents turned undefined in Marc Editor after adding 006, 007 or 008
+    
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+4	1	Open-ILS/xul/staff_client/server/cat/marcedit.js
+
+commit 1f99bc8a85d56f9de3089ca38e9f88dc95f661e3
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jul 17 17:13:57 2013 -0400
+
+    Explicit function ownership is not the job of upgrade scripts
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/version-upgrade/2.4.0-2.4.1-upgrade-db.sql
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+0	2	Open-ILS/src/sql/Pg/upgrade/0811.function.copy_related_hold_stats.sql
