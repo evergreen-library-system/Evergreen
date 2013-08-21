@@ -4,7 +4,7 @@
 # Process this file with automake to generate Makefile.in
 #-----------------------------------------------------------
 
-SUBDIRS = tests
+SUBDIRS = . tests
 
 AM_CFLAGS = $(DEF_CFLAGS) -DOSRF_LOG_PARAMS -I@top_srcdir@/include/
 AM_LDFLAGS = $(DEF_LDFLAGS) -L$(DBI_LIBS) -lopensrf
