@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2013-05-15 16:04:20-0400\n"
+"POT-Creation-Date: 2013-08-21 09:16:06-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2570,11 +2570,8 @@ msgstr ""
 msgid "Hold/Copy Ratio per Bib"
 msgstr ""
 
-#: field.vii.alert_message.label:209 field.viiad.alert_message.label:260
-#: field.au.alert_message.label:2782 field.aal.alert_message.label:3377
-#: field.sunit.alert_message.label:4488 field.acp.alert_message.label:5876
-#: field.act.alert_message.label:5980
-msgid "Alert Message"
+#: field.artc.reservation.label:6431
+msgid "Reservation requiring Transit"
 msgstr ""
 
 #: field.sre.creator.label:4194 field.ssubn.creator.label:4296
@@ -3372,8 +3369,9 @@ msgstr ""
 msgid "Is Persistent?"
 msgstr ""
 
-#: class.cwa.label:1440
-msgid "Matrix Weight Association"
+#: field.acqii.fund_debit.label:6856 field.acqpoi.fund_debit.label:7658
+#: field.acqlid.fund_debit.label:7859 field.acqda.fund_debit.label:8441
+msgid "Fund Debit"
 msgstr ""
 
 #: field.au.net_access_level.label:2806
@@ -4252,8 +4250,11 @@ msgstr ""
 msgid "User Activity Type"
 msgstr ""
 
-#: field.artc.reservation.label:6431
-msgid "Reservation requiring Transit"
+#: field.vii.alert_message.label:209 field.viiad.alert_message.label:260
+#: field.au.alert_message.label:2782 field.aal.alert_message.label:3377
+#: field.sunit.alert_message.label:4488 field.acp.alert_message.label:5876
+#: field.act.alert_message.label:5980
+msgid "Alert Message"
 msgstr ""
 
 #: field.sitem.date_received.label:4567
@@ -5386,9 +5387,8 @@ msgstr ""
 msgid "Family Linkage or other Group"
 msgstr ""
 
-#: field.acqii.fund_debit.label:6856 field.acqpoi.fund_debit.label:7658
-#: field.acqlid.fund_debit.label:7859 field.acqda.fund_debit.label:8441
-msgid "Fund Debit"
+#: class.cwa.label:1440
+msgid "Matrix Weight Association"
 msgstr ""
 
 #: field.cmf.browse_field.label:2291
