@@ -393,6 +393,14 @@ sub authtime {
     return $self->{authtime};
 }
 
+sub cache {
+    my $self = shift;
+    my $cache = "OpenSRF::Utils::Cache";
+    $cache->use;
+    $self->{memcache} = $cache->new('global') unless $self->{memcache};
+    return $self->{memcache};
+}
+
 1;
 __END__
 
