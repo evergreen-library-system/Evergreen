@@ -18,6 +18,7 @@
             displayed_ous.$ou_name = 1;
     %]
     <li property="offers" typeof="AggregateOffer">
+        <link property="itemOffered" href="#schemarecord">
         <meta property="offerCount" content="[% ou_avail %]">
         <meta property="seller" content="[% ou_name | html %]">
     [% l('[quant,_1,copy,copies] at [_2].', ou_avail, ou_name) | html %]
@@ -38,6 +39,7 @@
     %]
     [%- IF attrs.plib_copy_counts.$depth.count > 0; %]
     <li class="preferred" property="offers" typeof="AggregateOffer">
+        <link property="itemOffered" href="#schemarecord">
         <meta property="offerCount" content="[% ou_avail %]">
         <meta property="seller" content="[% ou_name | html %]">
     [%-

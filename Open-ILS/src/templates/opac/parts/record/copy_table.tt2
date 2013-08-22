@@ -102,6 +102,7 @@ END; # FOREACH bib
                 IF lib_url; '</a>'; END;
             -%]
                 <link property="businessFunction" href="http://purl.org/goodrelations/v1#LeaseOut">
+                <link property="itemOffered" href="#schemarecord">
             </td>[% END %]
             <td header='copy_header_callnumber'><span property="sku">[% callnum | html %]</span> [% IF ctx.get_org_setting(CGI.param('loc') OR ctx.aou_tree.id, 'sms.enable') == 1 %](<a href="[% mkurl(ctx.opac_root _ '/sms_cn', {copy_id => copy_info.id}) %]">Text</a>)[% END %]</td>
             [%- IF has_parts == 'true' %]
