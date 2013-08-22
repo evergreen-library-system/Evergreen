@@ -573,12 +573,15 @@ sub _object_by_path {
             my $def_id = $self->event->event_def->id;
             my $str_path = join('.', @$path);
 
+            my @params = (($multi) ? { $ffield => $lval } : $lval);
+            @params = ([@params], {substream => 1}) if $meth =~ /^search/;
+
             $obj = $_object_by_path_cache{$def_id}{$str_path}{$fhint}{$step}{$ffield}{$lval} ||
                 (
                     (grep /cstore/, @{
                         OpenILS::Application->publish_fieldmapper->{$fclass}{controller}
                     }) ? $ed : ($red ||= new_rstore_editor(xact=>1))
-                )->$meth( ($multi) ? { $ffield => $lval } : $lval);
+                )->$meth(@params);
 
             $_object_by_path_cache{$def_id}{$str_path}{$fhint}{$step}{$ffield}{$lval} ||= $obj;
         }
