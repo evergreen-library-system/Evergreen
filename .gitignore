@@ -344,3 +344,15 @@ Open-ILS/xul/staff_client/external/libmar/tool/.deps/
 Open-ILS/src/c-apps/tests/.libs/
 Open-ILS/src/c-apps/tests/check_idl
 Open-ILS/src/c-apps/tests/check_util
+Open-ILS/xul/staff_client/branding/
+Open-ILS/xul/staff_client/evergreen.xpi.md5
+Open-ILS/xul/staff_client/external/libmar/tool/mar
+Open-ILS/xul/staff_client/external/libmar/tool/mbsdiff
+Open-ILS/xul/staff_client/xulrunner-14.0.1.en-US.linux-i686.tar.bz2
+Open-ILS/xul/staff_client/xulrunner-14.0.1.en-US.linux-x86_64.tar.bz2
+Open-ILS/xul/staff_client/xulrunner-14.0.1.en-US.win32.zip
+Open-ILS/xul/staff_client/xulrunner-stub.exe
+js-1.7.0.tar.gz
+js/
+JavaScript-SpiderMonkey-0.21.tar.gz
+JavaScript-SpiderMonkey-0.21/
