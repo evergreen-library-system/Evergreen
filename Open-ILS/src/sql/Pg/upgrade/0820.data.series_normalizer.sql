@@ -3,7 +3,7 @@ BEGIN;
 -- Remove [ and ] characters from seriestitle.
 -- Those characters don't play well when searching.
 
-SELECT evergreen.upgrade_deps_block_check('xxxx', :eg_version); -- Callender
+SELECT evergreen.upgrade_deps_block_check('0820', :eg_version); -- Callender
 
 INSERT INTO config.metabib_field_index_norm_map (field,norm,params, pos)
      SELECT  m.id,
