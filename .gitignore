@@ -333,3 +333,11 @@ Open-ILS/examples/apache/eg.conf
 Open-ILS/examples/apache/eg_startup
 Open-ILS/examples/apache/eg_vhost.conf
 Open-ILS/src/support-scripts/eg_db_config
+Open-ILS/examples/apache_24/eg_24.conf
+Open-ILS/examples/apache_24/eg_vhost_24.conf
+Open-ILS/src/c-apps/tests/.deps/
+Open-ILS/xul/staff_client/external/libmar/config.h
+Open-ILS/xul/staff_client/external/libmar/config.h.in
+Open-ILS/xul/staff_client/external/libmar/src/.deps/
+Open-ILS/xul/staff_client/external/libmar/stamp-h1
+Open-ILS/xul/staff_client/external/libmar/tool/.deps/
