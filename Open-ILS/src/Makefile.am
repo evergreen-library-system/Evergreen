@@ -142,6 +142,7 @@ gen_scripts = \
 	@srcdir@/extras/import/marc2sre.pl \
 	@srcdir@/extras/import/parallel_pg_loader.pl \
 	$(supportscr)/authority_control_fields.pl \
+	$(supportscr)/authority_authority_linker.pl \
 	$(supportscr)/eg_db_config \
 	$(supportscr)/marc_export
 
@@ -217,6 +218,10 @@ uninstall-hook:
 
 @srcdir@/extras/import/parallel_pg_loader.pl: Makefile @srcdir@/extras/import/parallel_pg_loader.pl.in
 	$(do_subst) @srcdir@/extras/import/parallel_pg_loader.pl.in > "$@"
+	chmod 755 "$@"
+
+$(supportscr)/authority_authority_linker.pl: Makefile $(supportscr)/authority_authority_linker.pl.in
+	$(do_subst) $(supportscr)/authority_authority_linker.pl.in > "$@"
 	chmod 755 "$@"
 
 $(supportscr)/authority_control_fields.pl: Makefile $(supportscr)/authority_control_fields.pl.in
