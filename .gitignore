@@ -341,3 +341,6 @@ Open-ILS/xul/staff_client/external/libmar/config.h.in
 Open-ILS/xul/staff_client/external/libmar/src/.deps/
 Open-ILS/xul/staff_client/external/libmar/stamp-h1
 Open-ILS/xul/staff_client/external/libmar/tool/.deps/
+Open-ILS/src/c-apps/tests/.libs/
+Open-ILS/src/c-apps/tests/check_idl
+Open-ILS/src/c-apps/tests/check_util
