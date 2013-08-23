@@ -1,6 +1,8 @@
 
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0823', :eg_version);
+
 -- Track the requesting user
 ALTER TABLE staging.user_stage
     ADD COLUMN requesting_usr INTEGER 
