@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0822', :eg_version);
 
 ALTER TABLE action.hold_request 
     ADD COLUMN behind_desk BOOLEAN NOT NULL DEFAULT FALSE;
