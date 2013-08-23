@@ -85,7 +85,7 @@ VALUES (
     'bool',
     oils_i18n_gettext(
         'ui.patron.edit.aua.county.require',
-        'Show count field on patron registration',
+        'Show county field on patron registration',
         'coust',
         'label'
     ),

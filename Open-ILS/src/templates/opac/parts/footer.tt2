@@ -6,8 +6,9 @@
     <a href="[% mkurl(ctx.opac_root _ '/register') %]">[% 
         l('Request Library Card') %]</a> &nbsp;|&nbsp;
     [% ELSE %]
-    <a href="http://example.com">[% l('Bottom Link 3') %]</a> &nbsp;|&nbsp;
+    <a href="http://example.com">[% l('Bottom Link 2') %]</a> &nbsp;|&nbsp;
     [% END %]
+    <a href="http://example.com">[% l('Bottom Link 3') %]</a> &nbsp;|&nbsp;
     <a href="http://example.com">[% l('Bottom Link 4') %]</a> &nbsp;|&nbsp;
     <a href="http://example.com">[% l('Bottom Link 5') %]</a>
     [% IF ctx.timing %]
