@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2013-07-17 14:56:10-0400\n"
+"POT-Creation-Date: 2013-08-23 11:10:55-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,9 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8-bit\n"
 
 #: acq.js:ADD_LI_TO_PO_BAD_LI_STATE
-msgid ""
-"The selected lineitem is not in a state that can be added to a purchase "
-"order"
+msgid "The selected lineitem is not in a state that can be added to a purchase order"
 msgstr ""
 
 #: acq.js:NO_LI_TO_CLAIM
@@ -28,19 +26,15 @@ msgid ""
 msgstr ""
 
 #: acq.js:FUND_LIST_ROLLOVER_SUMMARY_FUNDS
-msgid ""
-"<b>${1}</b> funds propagated for fiscal year ${0} for the selected locations"
+msgid "<b>${1}</b> funds propagated for fiscal year ${0} for the selected locations"
 msgstr ""
 
 #: acq.js:ONE_LI_ATTR_SEARCH_AT_A_TIME
-msgid ""
-"You cannot both type in an attribute value search and search for an uploaded"
-" file of terms at the same time."
+msgid "You cannot both type in an attribute value search and search for an uploaded file of terms at the same time."
 msgstr ""
 
 #: acq.js:PREPAYMENT_REQUIRED_REMINDER
-msgid ""
-"This PO requires prepayment.  Are you certain you're ready to activate it?"
+msgid "This PO requires prepayment.  Are you certain you're ready to activate it?"
 msgstr ""
 
 #: acq.js:DFA_NOT_ALL
@@ -48,11 +42,7 @@ msgid "Could not record all of your applications of distribution formulas."
 msgstr ""
 
 #: acq.js:INVOICE_EXTRA_COPIES
-msgid ""
-"You are attempting to invoice <b>${0}</b> more copies than originally "
-"ordered.  <br/><br/>To add these items to the original order, select a fund "
-"and choose 'Add New Items' below.  <br/>After saving the invoice, you may "
-"finish editing and importing the new copies from the lineitem details page."
+msgid "You are attempting to invoice <b>${0}</b> more copies than originally ordered.  <br/><br/>To add these items to the original order, select a fund and choose 'Add New Items' below.  <br/>After saving the invoice, you may finish editing and importing the new copies from the lineitem details page."
 msgstr ""
 
 #: acq.js:LI_ATTR_SEARCH_CHOOSE_FILE
@@ -82,9 +72,7 @@ msgid ""
 msgstr ""
 
 #: acq.js:INVOICE_ITEM_DETAILS
-msgid ""
-"${0} <br/> ${1} <br/> ${2}. <br/> Estimated Price: $${3}. <br/> Lineitem ID:"
-" ${4} <br/> PO: ${5} <br/> Order Date: ${6}"
+msgid "${0} <br/> ${1} <br/> ${2}. <br/> Estimated Price: $${3}. <br/> Lineitem ID: ${4} <br/> PO: ${5} <br/> Order Date: ${6}"
 msgstr ""
 
 #: acq.js:XUL_RECORD_DETAIL_PAGE
@@ -92,9 +80,7 @@ msgid "Record Details"
 msgstr ""
 
 #: acq.js:INVOICE_IDENT_COLLIDE
-msgid ""
-"There is already an invoice in the system with the given combination of "
-"'Vendor Invoice ID' and 'Provider,' which is not allowed."
+msgid "There is already an invoice in the system with the given combination of 'Vendor Invoice ID' and 'Provider,' which is not allowed."
 msgstr ""
 
 #: acq.js:CONFIRM_DELETE_MAPPING
@@ -162,9 +148,7 @@ msgid "Print"
 msgstr ""
 
 #: acq.js:INVOICE_ITEM_PO_DETAILS
-msgid ""
-"<b>${0}</b><br/><a href='${1}/acq/po/view/${2}'>PO #${3} ${4}</a><br/>Total "
-"Estimated Cost: $${5}"
+msgid "<b>${0}</b><br/><a href='${1}/acq/po/view/${2}'>PO #${3} ${4}</a><br/>Total Estimated Cost: $${5}"
 msgstr ""
 
 #: acq.js:LI_CANCEL_CONFIRM
@@ -184,11 +168,7 @@ msgid "Unnamed"
 msgstr ""
 
 #: acq.js:DEL_LI_FROM_PO
-msgid ""
-"That item has already been ordered!  Deleting it now will not revoke or "
-"modify any order that has been placed with a vendor.  Deleting the item may "
-"put the system's idea of your purchase order in a state that is inconsistent"
-" with reality.  Are you sure you mean to do this?"
+msgid "That item has already been ordered!  Deleting it now will not revoke or modify any order that has been placed with a vendor.  Deleting the item may put the system's idea of your purchase order in a state that is inconsistent with reality.  Are you sure you mean to do this?"
 msgstr ""
 
 #: acq.js:CREATE_PO_ASSETS_CONFIRM
@@ -299,9 +279,7 @@ msgid "Claims (${0} existing)"
 msgstr ""
 
 #: acq.js:FUND_LIST_ROLLOVER_SUMMARY_ROLLOVER_AMOUNT
-msgid ""
-"<b>$${1}</b> unspent money rolled over to fiscal year ${0} for the selected "
-"locations"
+msgid "<b>$${1}</b> unspent money rolled over to fiscal year ${0} for the selected locations"
 msgstr ""
 
 #: acq.js:DFA_TIP
