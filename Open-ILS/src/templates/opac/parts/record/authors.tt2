@@ -2,6 +2,7 @@
 
 PROCESS "opac/parts/relators.tt2";
 
+author_cnt = 0;
 authors = [
     {
         type => 'author', 
@@ -24,9 +25,11 @@ authors = [
 
 BLOCK build_author_links;
     FOR node IN ctx.marc_xml.findnodes(xpath);
+        author_cnt = author_cnt + 1;
+        contrib_ref = '#schemacontrib' _ author_cnt;
+        iprop = '';
         term = '';
         qterm = '';
-        iprop = '';
         tlabel = '';
         birthdate = '';
         deathdate = '';
@@ -81,17 +84,17 @@ BLOCK build_author_links;
                 iprop = ' typeOf="Organization" property="contributor"';
             END;
         END;
-        '<a href="' _ url _ '"' _ iprop _ '>';
-        IF iprop; '<span property="name">'; END;
+        '<span' _ iprop _ ' resource="' _ contrib_ref _ '"><a href="' _ url _ '">';
+        IF iprop; '<span property="name" about="' _ contrib_ref _ '">'; END;
         term.replace('^\s+', '');
         IF iprop; '</span>'; END;
         IF birthdate;
-            ' <span property="birthDate">' _ birthdate _ '</span>-';
+            ' <span property="birthDate" about="' _ contrib_ref _ '">' _ birthdate _ '</span>-';
         END;
         IF deathdate;
-            '<span property="deathDate">' _ deathdate _ '</span>';
+            '<span property="deathDate" about="' _ contrib_ref _ '">' _ deathdate _ '</span>';
         END;
-        '</a>';
+        '</a>'; # End search link
         FOREACH link880 IN graphics;
             diratt = '';
             IF link880.dir;
@@ -101,7 +104,8 @@ BLOCK build_author_links;
             link880.value | html;
             '</span>';
         END;
-        ' (' _ author_type _ '). ';
+        ' (<span property="description" about="' _ contrib_ref _ '">' _ author_type _ '</span>). ';
+        '</span>'; # End author span
     END;
 END;
 %]
