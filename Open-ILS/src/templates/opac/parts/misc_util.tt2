@@ -91,6 +91,17 @@
         schema_typemap.e = 'http://schema.org/Map';
         schema_typemap.j = 'http://schema.org/MusicAlbum';
 
+        # Hard-coded to match defaults in config.copy_status for all OPAC-visible statuses
+        schema_copy_status = {};
+        schema_copy_status.0 = '<link property="availability" href="http://schema.org/InStock" />'; # Available
+        schema_copy_status.1 = '<link property="availability" href="http://schema.org/OutOfStock" />'; # Checked out
+        schema_copy_status.5 = '<link property="availability" href="http://schema.org/PreOrder" />'; # In process
+        schema_copy_status.6 = '<link property="availability" href="http://schema.org/PreOrder" />'; # In transit
+        schema_copy_status.7 = '<link property="availability" href="http://schema.org/InStock" />'; # Reshelving
+        schema_copy_status.8 = '<link property="availability" href="http://schema.org/OutOfStock" />'; # On holds shelf
+        schema_copy_status.9 = '<link property="availability" href="http://schema.org/PreOrder" />'; # On order
+        schema_copy_status.12 = '<link property="availability" href="http://schema.org/InStoreOnly" />'; # Reserves
+
         args.isbns = [];
         FOR isbn IN xml.findnodes('//*[@tag="020"]/*[@code="a"]');
             args.isbns.push(isbn.textContent);
@@ -228,6 +239,14 @@
 
         # clean up the ISBN
         args.isbn_clean = args.isbns.0.replace('\ .*', '');
+        FOR isbn IN args.isbns;
+            clean_isbn = isbn.replace('\ .*', '');
+            clean_isbn = clean_isbn.replace('-', '');
+            IF clean_isbn.length == 13;
+                args.gtin13 = clean_isbn;
+                LAST;
+            END;
+        END;
 
         # Extract the 856 URLs that are not otherwise represented by asset.uri's
         args.online_res = [];
@@ -366,6 +385,7 @@
                         location => loc.textContent,
                         library => circlib.textContent,
                         status => status.textContent,
+                        status_code => status.getAttribute('ident'),
                         barcode => copy.getAttribute('barcode'),
                         owner => volume.getAttribute('lib')
                     };
@@ -408,7 +428,7 @@
             IF node AND node.textContent;
                 type = node.textContent;
                 args.format_label = node.getAttribute('coded-value')
-                args.schema.itemtype = schema_typemap.$type;
+                args.schema.itemtype = schema_typemap.$type || 'CreativeWork';
                 args.format_icon = ctx.media_prefix _ '/images/format_icons/' _ icon_style _ '/' _ type _ '.png';
                 LAST;
             END;

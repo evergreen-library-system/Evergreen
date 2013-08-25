@@ -100,7 +100,7 @@ function GBShowHidePreview(from_button) {
 dojo.addOnLoad(function() {
   var spans = dojo.query('li.rdetail_isbns span.rdetail_value');
   for (var i = 0; i < spans.length; i++) {
-    var prop = spans[i].getAttribute('itemprop');
+    var prop = spans[i].getAttribute('property');
     if (!prop) {
       continue;
     }

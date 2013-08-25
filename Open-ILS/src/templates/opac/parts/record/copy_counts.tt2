@@ -17,7 +17,9 @@
             ou_name = cp_org_unit.name;
             displayed_ous.$ou_name = 1;
     %]
-    <li>
+    <li property="offers" typeof="AggregateOffer">
+        <meta property="offerCount" content="[% ou_avail %]">
+        <meta property="seller" content="[% ou_name | html %]">
     [% l('[quant,_1,copy,copies] at [_2].', ou_avail, ou_name) | html %]
     [%- this_depth = ctx.get_aou(ou_id).ou_type.depth;
         IF ou_avail > 0 && this_depth != ctx.copy_depth %]
@@ -35,7 +37,10 @@
         UNLESS depth < 0 || displayed_ous.exists(ou_name);
     %]
     [%- IF attrs.plib_copy_counts.$depth.count > 0; %]
-    <li class="preferred">[%
+    <li class="preferred" property="offers" typeof="AggregateOffer">
+        <meta property="offerCount" content="[% ou_avail %]">
+        <meta property="seller" content="[% ou_name | html %]">
+    [%-
         l('[_1] of [quant,_2,copy,copies] available at [_3].',
             attrs.plib_copy_counts.$depth.available,
             attrs.plib_copy_counts.$depth.count,

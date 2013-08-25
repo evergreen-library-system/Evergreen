@@ -61,7 +61,7 @@
             <img alt="[% attrs.format_label %]" title="[% attrs.format_label | html %]" src="[% attrs.format_icon %]" />
         </div>
         [%- END %]
-        <h1 id='rdetail_title' itemprop="name">[% attrs.title_extended | html %]</h1>
+        <h1 id='rdetail_title' property="name">[% attrs.title_extended | html %]</h1>
         [%-
             FOR link880 IN attrs.graphic_titles;
                 FOR alt IN link880.graphic;
@@ -108,8 +108,14 @@ IF num_uris > 0;
 <div class="rdetail_uris">
     [%- IF num_uris > 1 %]<ul>[% END %]
     [%- FOR uri IN merged_uris %]
-        [%- IF num_uris == 1 %]<p class="rdetail_uri">[% ELSE %]<li class="rdetail_uri">[% END %]
+        [%- IF num_uris == 1 -%]
+            <p class="rdetail_uri" property="offers" vocab="http://schema.org/" typeof="Offer">
+        [%- ELSE -%]
+            <li class="rdetail_uri" property="offers" vocab="http://schema.org/" typeof="Offer">
+        [%- END -%]
         <a href="[% uri.href %]">[% uri.link %]</a>[% ' - ' _ uri.note IF uri.note %]
+        <link property="availability" href="http://schema.org/OnlineOnly" />
+        [%- IF attrs.gtin13; '<meta property="gtin13" content="' _ attrs.gtin13 _ '" />'; END; %]
         [%- IF num_uris == 1 %]</p>[% ELSE %]</li>[% END %]
     [%- END %]
     [%- IF num_uris > 1 %]</ul>[% END %]
@@ -148,7 +154,7 @@ IF num_uris > 0;
     [%- IF attrs.isbns.0; FOR isbn IN attrs.isbns %]
     <li class='rdetail_isbns'>
         <strong class='rdetail_label'>[% l('ISBN:'); %]</strong>
-        <span class='rdetail_value' itemprop='isbn'>[% isbn | html  %]</span>
+        <span class='rdetail_value' property='isbn'>[% isbn | html  %]</span>
     </li>
         [%- END %]
     [%- END %]
@@ -189,14 +195,14 @@ IF num_uris > 0;
     [%- IF attrs.publisher %]
     <li id='rdetail_publisher'>
         <strong class='rdetail_label'>[% l("Publisher:") %]</strong>
-        <span class='rdetail_value' itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+        <span class='rdetail_value' property="publisher" typeof="Organization">
         [%- IF attrs.pubplace; %]
-            <span itemprop="location">[% attrs.pubplace | html; %]</span>
+            <span property="location">[% attrs.pubplace | html; %]</span>
         [%- END; %]
-            <span itemprop="name">[% attrs.publisher | html; %]</span>
+            <span property="name">[% attrs.publisher | html; %]</span>
         </span>
         [%- IF attrs.pubdate; %]
-            <span itemprop="datePublished">[% attrs.pubdate | html; %]</span>
+            <span property="datePublished">[% attrs.pubdate | html; %]</span>
         [%- END; %]
         [%-
         IF attrs.graphic_pubinfos.size > 0;

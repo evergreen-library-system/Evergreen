@@ -187,7 +187,7 @@ END
 -%]
 <tr>
     <td class='rdetail_content_type'>[% cont.label %]</td>
-    <td class='rdetail_content_value' itemprop='keywords'>[% content %]</td>
+    <td class='rdetail_content_value' property='keywords'>[% content %]</td>
 </tr>
         [%- END; %]
     [%- END; %]

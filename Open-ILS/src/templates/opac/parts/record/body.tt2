@@ -4,7 +4,7 @@
     stop_parms = ['expand','cnoffset','copy_offset','copy_limit'];
     ctx.record_attrs = attrs; # capture for JS
 %]
-<div id='canvas_main' class='canvas' itemscope itemtype='[% args.schema.itemtype %]'>
+<div id='canvas_main' class='canvas' vocab="http://schema.org/" typeof='[% args.schema.itemtype %] Product'>
     [%- INCLUDE "opac/parts/record/navigation.tt2" %]
     [%- IF ctx.bib_is_dead %]
     <div id='rdetail_deleted_exp'>

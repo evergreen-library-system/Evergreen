@@ -1961,6 +1961,7 @@ sub basic_opac_copy_query {
                 {column => 'holdable', alias => 'location_holdable'}
             ],
             ccs => [
+                {column => 'id', alias => 'status_code'},
                 {column => 'name', alias => 'copy_status'},
                 {column => 'holdable', alias => 'status_holdable'}
             ],

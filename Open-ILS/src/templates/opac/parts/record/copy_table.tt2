@@ -89,11 +89,11 @@ END; # FOREACH bib
                 callnum = callnum  _ " " _ callnum_suffix;
             END;
         -%]
-        <tr>
+        <tr property="offers" typeof="Offer">
             [%- IF serial_holdings %]<td header='copy_header_holding_label' class='rdetail-issue-issue'>
                 [%- copy_info.holding_label | html; -%]
             </td>
-            [%- ELSE %]<td header='copy_header_library'>
+            [%- ELSE %]<td header='copy_header_library' property="seller">
             [%-
                 org_name = ctx.get_aou(copy_info.circ_lib).name;
                 lib_url = ctx.get_org_setting(copy_info.circ_lib, 'lib.info_url');
@@ -101,17 +101,22 @@ END; # FOREACH bib
                 org_name | html;
                 IF lib_url; '</a>'; END;
             -%]
+                <link property="businessFunction" href="http://purl.org/goodrelations/v1#LeaseOut">
             </td>[% END %]
-            <td header='copy_header_callnumber'>[% callnum | html %] [% IF ctx.get_org_setting(CGI.param('loc') OR ctx.aou_tree.id, 'sms.enable') == 1 %](<a href="[% mkurl(ctx.opac_root _ '/sms_cn', {copy_id => copy_info.id}) %]">Text</a>)[% END %]</td>
+            <td header='copy_header_callnumber'><span property="sku">[% callnum | html %]</span> [% IF ctx.get_org_setting(CGI.param('loc') OR ctx.aou_tree.id, 'sms.enable') == 1 %](<a href="[% mkurl(ctx.opac_root _ '/sms_cn', {copy_id => copy_info.id}) %]">Text</a>)[% END %]</td>
             [%- IF has_parts == 'true' %]
             <td header='copy_header_part'>[% copy_info.part_label | html %]</td>
             [%- END %]
-            <td header='copy_header_barcode'>
+            <td header='copy_header_barcode' property="serialNumber">
                 [%- IF ctx.is_staff -%]
                     <a href="javascript:void(0)" onclick="xulG.new_tab(xulG.urls.XUL_COPY_STATUS, {}, {'from_item_details_new': true, 'barcodes': ['[%- copy_info.barcode | html | replace('\'', '\\\'') -%]']})">[% copy_info.barcode | html %]</a>
                 [%- ELSE -%][% copy_info.barcode | html %]
-                [%- END -%]</td>
-            <td header='copy_header_shelfloc'>[% copy_info.copy_location | html %]</td>
+                [%- END -%]
+                [%- IF attrs.gtin13;
+                    '<meta property="gtin13" content="' _ attrs.gtin13 _ '" />';
+                END; -%]
+            </td>
+            <td header='copy_header_shelfloc' property="availableAtOrFrom">[% copy_info.copy_location | html %]</td>
             [%- IF ctx.is_staff %]
             <td header='copy_header_age_hold'>
                 [% copy_info.age_protect ?
@@ -171,7 +176,10 @@ END; # FOREACH bib
                     l("Not holdable");
                 END %]</td>
             [%- END %]
-            <td header='copy_header_status'>[% copy_info.copy_status | html %]</td>
+            <td header='copy_header_status'>[%-
+                schema_copy_status.${copy_info.status_code};
+                copy_info.copy_status | html;
+            -%]</td>
             <td header='due_date'>[%
                 IF copy_info.due_date;
                     date.format(
@@ -185,7 +193,7 @@ END; # FOREACH bib
 
         [% IF copy_info.notes; %]
             [% FOREACH note IN copy_info.notes; %]
-                <tr><td>&nbsp;</td><td class="copy_note" colspan="4"><strong>[% note.title | html %]:</strong> [% note.value | html %]</td></tr>
+                <tr><td>&nbsp;</td><td class="copy_note" colspan="4" property="description"><strong>[% note.title | html %]:</strong> [% note.value | html %]</td></tr>
             [% END %]
         [% END %]
 
