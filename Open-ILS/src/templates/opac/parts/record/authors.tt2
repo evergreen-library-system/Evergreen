@@ -67,7 +67,7 @@ BLOCK build_author_links;
         
         # schema.org changes
         IF type == 'author';
-            IF args.schema.itemtype && args.schema.itemtype.match('MusicAlbum');
+            IF tag.substr(1,2) == '10' && args.schema.itemtype && args.schema.itemtype.match('MusicAlbum');
                 iprop = ' itemtype="http://schema.org/MusicGroup" itemscope itemprop="byArtist"';
             ELSIF tag.substr(1,2) == '00';
                 iprop = ' itemtype="http://schema.org/Person" itemscope itemprop="author"';
