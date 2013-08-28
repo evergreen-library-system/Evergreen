@@ -183,6 +183,11 @@ sub collect_register_validation_settings {
         $ctx->{get_org_setting}->($ctx_org, 'ui.patron.edit.phone.regex')
         unless $shash->{stgu}{day_phone}{regex};
 
+    # The regex OUS for username does not match the format of the other 
+    # org settings.  Wrangle it into place.
+    $shash->{stgu}{usrname}{regex} = 
+        $ctx->{get_org_setting}->($ctx_org, 'opac.username_regex');
+
     # some fields are assumed to be visible / required even without the            
     # presence of org unit settings.  E.g. we obviously want the user to 
     # enter a name, since a name is required for ultimately creating a user 
