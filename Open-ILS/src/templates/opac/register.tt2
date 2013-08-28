@@ -34,6 +34,13 @@ register_fields = [
     {class => 'stgu',  name = 'email', label => l('Email Address')}
     {class => 'stgu',  name = 'usrname', label => l('Requested Username')}
 ];
+
+# The dojo date widget in the patron edit UI only accepts default 
+# values in ISO8601 format.  It will not accept locale-shaped dates.
+IF !ctx.register.settings.stgu.dob.example;
+    ctx.register.settings.stgu.dob.example = l('YYYY-MM-DD');
+END;
+
 %]
 
 <div id="content-wrapper">
