@@ -206,6 +206,10 @@ sub collect_register_validation_settings {
         unless defined $shash->{stgu}{usrname}{show};
 
     $ctx->{register}{settings} = $shash;
+
+    # laod the page timeout setting
+    $shash->{refresh_timeout} = 
+        $ctx->{get_org_setting}->($ctx_org, 'opac.self_register.timeout');
 }
 
 # inspects each value and determines, based on org unit settings, 

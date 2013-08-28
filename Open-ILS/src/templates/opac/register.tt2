@@ -4,6 +4,10 @@
     INCLUDE "opac/parts/topnav.tt2";
     ctx.page_title = l("Request Library Card");
 
+# for privacy, reload the page after (default) 5 minutes
+refresh_time = ctx.register.settings.refresh_timeout || 300; 
+ctx.refresh = refresh_time _ '; ' _ ctx.opac_root _ '/home';
+
 # some useful variables and MACROs for display, 
 # field validation, and added info display
 
