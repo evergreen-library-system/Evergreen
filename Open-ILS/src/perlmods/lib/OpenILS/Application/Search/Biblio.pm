@@ -1598,7 +1598,7 @@ sub cache_facets {
     $query->{where}->{'+cmf'}->{field_class} = {'not in' => $ignore}
         if ref($ignore) and @$ignore > 0;
 
-    my $facets = $U->cstorereq("open-ils.cstore.json_query.atomic", $query);
+    my $facets = OpenILS::Utils::CStoreEditor->new->json_query($query, {substream => 1});
 
     for my $facet (@$facets) {
         next unless ($facet->{value});
