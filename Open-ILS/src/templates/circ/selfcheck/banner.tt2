@@ -2,14 +2,14 @@
 <div id='oils-selfck-logo-div'>
     <img src='[% ctx.media_prefix %]/images/self_eg_logo.png'/>
 </div>
-</br>
-</br>
+<br/>
+<br/>
 <div id='oils-selfck-scan-div'>
     <div id='oils-selfck-scan-text'></div>
-    </br>
+    <br/>
     <input jsId='selfckScanBox' dojoType='dijit.form.TextBox'/>
-    </br>
-    </br>
+    <br/>
+    <br/>
 </div>
 <div id='oils-selfck-status-div'></div>
 
