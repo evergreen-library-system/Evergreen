@@ -1,0 +1,117 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Evergreen 1.4\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2013-08-29 11:40:06-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: PCrudFilterPane.js:OPERATOR_NE
+msgid "is not"
+msgstr ""
+
+#: PCrudFilterPane.js:OPERATOR_EQ
+msgid "is"
+msgstr ""
+
+#: PCrudFilterPane.js:NAME_SAVED_FILTER_SET
+msgid "Enter a name for your saved filter set:"
+msgstr ""
+
+#: PCrudFilterPane.js:OPERATOR_IN
+msgid "is in the set"
+msgstr ""
+
+#: PCrudFilterPane.js:OPERATOR_IS_NULL
+msgid "is null"
+msgstr ""
+
+#: PCrudFilterPane.js:OPERATOR_BETWEEN
+msgid "is between"
+msgstr ""
+
+#: PCrudFilterPane.js:OPERATOR_NOT_LIKE
+msgid "is not like"
+msgstr ""
+
+#: PCrudFilterPane.js:OPERATOR_NOT_IN
+msgid "is not in the set"
+msgstr ""
+
+#: PCrudFilterPane.js:CHOOSE_FILTER_TO_LOAD
+msgid "Choose filter sets to load"
+msgstr ""
+
+#: PCrudFilterPane.js:OPERATOR_LIKE
+msgid "is like"
+msgstr ""
+
+#: PCrudFilterPane.js:OPERATOR_IS_NOT_NULL
+msgid "is not null"
+msgstr ""
+
+#: PCrudFilterPane.js:NEED_NAME
+msgid "You must enter a name for the saved filters."
+msgstr ""
+
+#: PCrudFilterPane.js:ADD_ROW
+msgid "Add Row"
+msgstr ""
+
+#: PCrudFilterPane.js:EMPTY_CASE_COMPACT
+msgid "Add rows to filter results."
+msgstr ""
+
+#: PCrudFilterPane.js:OPERATOR_NOT_BETWEEN
+msgid "is not between"
+msgstr ""
+
+#: PCrudFilterPane.js:EMPTY_CASE
+msgid ""
+"Add rows to filter results, or just click Apply to see unfiltered results."
+msgstr ""
+
+#: PCrudFilterPane.js:EMPTY_LIST
+msgid "Cannot compile search filter.  Empty lists not allowed."
+msgstr ""
+
+#: PCrudFilterPane.js:OPERATOR_LT
+msgid "is less than"
+msgstr ""
+
+#: PCrudFilterPane.js:DEFAULT_DIALOG_TITLE
+msgid "Filter Results"
+msgstr ""
+
+#: PCrudFilterPane.js:OPERATOR_GT
+msgid "is greater than"
+msgstr ""
+
+#: PCrudFilterPane.js:OPERATOR_GTE
+msgid "is greater than or equal to"
+msgstr ""
+
+#: PCrudFilterPane.js:LOAD_FILTERS
+msgid "Load Filters"
+msgstr ""
+
+#: PCrudFilterPane.js:OPERATOR_LTE
+msgid "is less than or equal to"
+msgstr ""
+
+#: PCrudFilterPane.js:CANCEL
+msgid "Cancel"
+msgstr ""
+
+#: PCrudFilterPane.js:APPLY
+msgid "Apply"
+msgstr ""
+
+#: PCrudFilterPane.js:SAVE_FILTERS
+msgid "Save Filters"
+msgstr ""
