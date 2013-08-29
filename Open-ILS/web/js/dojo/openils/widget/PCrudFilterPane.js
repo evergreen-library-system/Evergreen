@@ -165,9 +165,9 @@ if (!dojo._hasResource['openils.widget.PCrudFilterPane']) {
 
         var ops = openils.Util.objectProperties(clause);
         var op = ops.pop();
-        var matches = op.match(/^not [lb].+$/); /* "not in" needs no change */
+        var matches = op.match(/^(not) ([lb].+)$/); /* "not in" needs no change */
         if (matches) {
-            clause[matches[1]] = clause[op];
+            clause[matches[2]] = clause[op];
             delete clause[op];
             return true;
         }
@@ -531,15 +531,20 @@ if (!dojo._hasResource['openils.widget.PCrudFilterPane']) {
         };
 
         this._clear_value_slot = function() {
+            var old_widget_values = [];
             if (this.value_widgets) {
                 this.value_widgets.forEach(
                     function(autowidg) {
-                        if (autowidg.widget)
+                        if (autowidg.widget) {
+                            old_widget_values.push({'value' : autowidg.widget.attr("value"),
+                                                    'type' : autowidg.widget.attr("type") });
                             autowidg.widget.destroy();
+                        }
                     }
                 );
                 delete this.value_widgets;
             }
+            this.old_widget_values = old_widget_values;
 
             dojo.empty(this.value_slot);
         };
@@ -575,8 +580,14 @@ if (!dojo._hasResource['openils.widget.PCrudFilterPane']) {
                     this.value_widgets.push(
                         this._build_one_value_widget(constr)
                     );
+                    if (typeof this.old_widget_values != "undefined" &&
+                        typeof this.old_widget_values[i] != "undefined" &&
+                        this.value_widgets[i].widget.attr("type") == this.old_widget_values[i].type) {
+                        this.value_widgets[i].widget.attr("value", this.old_widget_values[i].value);
+                    }
                 }
             }
+            delete this.old_widget_values;
         };
 
         this._build_set_value_widgets = function(constr) {
