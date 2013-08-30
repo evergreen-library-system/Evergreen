@@ -48,7 +48,8 @@
                         </th>
                         <td>
                             [% INCLUDE build_org_selector
-                                name='pickup_lib' value=ahr.pickup_lib can_have_vols_only=1 %]
+                                name='pickup_lib' value=ahr.pickup_lib 
+                                can_have_vols_only=1 hold_pickup_lib=1 %]
                         </td>
                     </tr>
                     [% IF hold.hold.status < 3 OR hold.hold.status == 7 %]

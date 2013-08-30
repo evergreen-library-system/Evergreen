@@ -97,6 +97,11 @@ BLOCK build_org_selector;
                 selected = 'selected="selected"';
             END; 
 
+            IF hold_pickup_lib AND ctx.get_org_setting(
+                    org_unit.id, 'opac.holds.org_unit_not_pickup_lib');
+                disabled = 'disabled="disabled"';
+            END;
+
             # caller provided a list of valid org units.
             # all orgs not in the list are marked invalid.
             IF valid_org_list AND 
