@@ -83,29 +83,30 @@ sub _prepare_biblio_search {
     foreach (grep /^fg:/, $cgi->param) {
         /:(-?\w+)$/ or next;
         my $term = join(",", $cgi->param($_));
-        $query .= " filter_group_entry($term)" if length $term;
+        $query = "filter_group_entry($term) $query" if length $term;
     }
 
     if ($cgi->param("bookbag")) {
-        $query .= " container(bre,bookbag," . int($cgi->param("bookbag")) . ")";
+        $query = "container(bre,bookbag," . int($cgi->param("bookbag")) . ") $query";
     }
 
     # Journal title hackery complete
     if ($cgi->param("qtype") && $cgi->param("qtype") eq "jtitle") {
-        $query .= " bib_level(s)";
+        $query = "bib_level(s) $query";
     }
 
     if ($cgi->param('pubdate') && $cgi->param('date1')) {
         if ($cgi->param('pubdate') eq 'between') {
-            $query .= ' between(' . $cgi->param('date1');
-            $query .= ',' .  $cgi->param('date2') if $cgi->param('date2');
-            $query .= ')';
+            my $btw = 'between(' . $cgi->param('date1');
+            $btw .= ',' .  $cgi->param('date2') if $cgi->param('date2');
+            $btw .= ')';
+            $query = "$btw $query";
         } elsif ($cgi->param('pubdate') eq 'is') {
-            $query .= ' between(' . $cgi->param('date1') .
-                ',' .  $cgi->param('date1') . ')';  # sic, date1 twice
+            $query = 'between(' . $cgi->param('date1') .
+                ',' .  $cgi->param('date1') . ") $query";  # sic, date1 twice
         } else {
-            $query .= ' ' . $cgi->param('pubdate') .
-                '(' . $cgi->param('date1') . ')';
+            $query = $cgi->param('pubdate') .
+                '(' . $cgi->param('date1') . ") $query";
         }
     }
 
@@ -118,9 +119,9 @@ sub _prepare_biblio_search {
     if ($cgi->param('sort')) {
         $query =~ s/sort\([^\)]*\)//g;  # override existing sort(). no stacking.
         my ($axis, $desc) = split /\./, $cgi->param('sort');
-        $query .= " sort($axis)";
+        $query = "sort($axis) $query";
         if ($desc and not $query =~ /\#descending/) {
-            $query .= '#descending';
+            $query = "#descending $query";
         } elsif (not $desc) {
             $query =~ s/\#descending//;
         }
@@ -139,11 +140,11 @@ sub _prepare_biblio_search {
     my $pref_ou = $ctx->{pref_ou};
     if (defined($pref_ou) and $pref_ou ne '' and $pref_ou != $org and ($pref_ou ne $ctx->{aou_tree}->()->id) and not $query =~ / pref_ou\(\S+\)/) {
         my $plib = $ctx->{get_aou}->($pref_ou)->shortname;
-        $query .= " pref_ou($plib)";
+        $query = "pref_ou($plib) $query";
     }
 
     if (my $grp = $ctx->{copy_location_group}) {
-        $query .= " location_groups($grp)";
+        $query = "location_groups($grp) $query";
     }
 
     if(!$site) {
@@ -408,7 +409,7 @@ sub load_rresults {
         # Stuff these into the TT context so that templates can use them in redrawing forms
         $ctx->{processed_search_query} = $query;
 
-        $query .= " $_" for @facets;
+        $query = "$_ $query" for @facets;
 
         $logger->activity("EGWeb: [search] $query");
 
