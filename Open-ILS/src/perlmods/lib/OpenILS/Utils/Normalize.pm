@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Unicode::Normalize;
 use Encode;
-use UNIVERSAL qw/isa/;
+use UNIVERSAL;
 use MARC::Record;
 use MARC::File::XML ( BinaryEncoding => 'UTF-8' );
 use OpenILS::Application::AppUtils;
@@ -111,7 +111,7 @@ sub _normalize_codes {
 # Assumes input is already in UTF-8.
 sub clean_marc {
     my $input = shift;
-    my $xml = decode_utf8((isa $input, 'MARC::Record') ? $input->as_xml_record() : $input);
+    my $xml = decode_utf8((UNIVERSAL::isa($input, 'MARC::Record')) ? $input->as_xml_record() : $input);
     $xml =~ s/\n//sog;
     $xml =~ s/^<\?xml.+\?\s*>//go;
     $xml =~ s/>\s+</></go;
