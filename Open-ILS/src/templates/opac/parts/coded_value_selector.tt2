@@ -13,6 +13,7 @@
     name = name || "fi:" _ attr_class;
     id = id || attr_class _ "_selector";
     values = values || CGI.param(name); 
+    IF size AND size < 1; size = all_values.size; END;
 -%]
 
 <select id='[% id %]' name='[% name %]'[%

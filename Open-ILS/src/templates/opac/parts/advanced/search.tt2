@@ -44,7 +44,9 @@
         END; %]
             <td valign='top'[% IF adv_chunk.js_only %] 
                 id='adv_chunk_[% adv_chunk.adv_special %]' 
-                class='hidden'[% END %]>
+                class='hidden'[% END %]
+		[% IF adv_chunk.colspan %]colspan='[% adv_chunk.colspan %]'[% END %]
+		[% IF adv_chunk.rowspan %]rowspan='[% adv_chunk.rowspan %]'[% END %]>
                 <strong>[% adv_chunk.adv_label %]</strong><br />
 [%
         IF adv_chunk.adv_special;
@@ -95,10 +97,10 @@
             END;
         ELSIF adv_chunk.adv_attr;
             INCLUDE "opac/parts/coded_value_selector.tt2"
-                attr=adv_chunk.adv_attr multiple="multiple" size="4";
+                attr=adv_chunk.adv_attr multiple="multiple" size=adv_chunk.adv_size || search.default_adv_select_height || "4";
         ELSIF adv_chunk.adv_filter;
             INCLUDE "opac/parts/filter_group_selector.tt2"
-                filter_group=adv_chunk.adv_filter multiple="multiple" size="4";
+                filter_group=adv_chunk.adv_filter multiple="multiple" size=adv_chunk.adv_size || search.default_adv_select_height || "4";
         END; %]
             </td>
 [%
