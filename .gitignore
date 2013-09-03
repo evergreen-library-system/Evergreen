@@ -325,7 +325,6 @@ Open-ILS/xul/staff_client/server/locale/ru-RU/
 Open-ILS/xul/staff_client/server/locale/sv-SE/
 Open-ILS/xul/staff_client/server/locale/tr-TR/
 Open-ILS/xul/staff_client/evergreen_staff_client.tar.bz2
-Open-ILS/xul/staff_client/xulrunner-3.6.25.en-US.linux-i686.tar.bz2
 Open-ILS/xul/staff_client/xulrunner/
 README.html
 HACKING.html
@@ -348,11 +347,8 @@ Open-ILS/xul/staff_client/branding/
 Open-ILS/xul/staff_client/evergreen.xpi.md5
 Open-ILS/xul/staff_client/external/libmar/tool/mar
 Open-ILS/xul/staff_client/external/libmar/tool/mbsdiff
-Open-ILS/xul/staff_client/xulrunner-14.0.1.en-US.linux-i686.tar.bz2
-Open-ILS/xul/staff_client/xulrunner-14.0.1.en-US.linux-x86_64.tar.bz2
-Open-ILS/xul/staff_client/xulrunner-14.0.1.en-US.win32.zip
+Open-ILS/xul/staff_client/xulrunner*.bz2
+Open-ILS/xul/staff_client/xulrunner*.zip
 Open-ILS/xul/staff_client/xulrunner-stub.exe
-js-1.7.0.tar.gz
-js/
-JavaScript-SpiderMonkey-0.21.tar.gz
-JavaScript-SpiderMonkey-0.21/
+/js*
+/JavaScript*
