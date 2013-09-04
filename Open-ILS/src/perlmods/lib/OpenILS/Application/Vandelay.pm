@@ -22,6 +22,7 @@ use OpenILS::Application::AppUtils;
 use OpenILS::Application::Cat::BibCommon;
 use OpenILS::Application::Cat::AuthCommon;
 use OpenILS::Application::Cat::AssetCommon;
+use OpenILS::Application::Cat::Merge;
 my $U = 'OpenILS::Application::AppUtils';
 
 # A list of LDR/06 values from http://loc.gov/marc
@@ -1671,16 +1672,54 @@ sub import_record_asset_list_impl {
                     })->[0]->{count};
 
                     if ($count == 1) {
-                        # if this is the only copy attached to this 
-                        # callnumber, just update the callnumber
 
-                        $logger->info("vl: updating callnumber label in copy overlay");
+                        my $evol = $e->search_asset_call_number({
+                            id => {'<>' => $copy->call_number->id},
+                            label => $item->call_number,
+                            owning_lib => $copy->call_number->owning_lib,
+                            record => $copy->call_number->record,
+                            prefix => $copy->call_number->prefix,
+                            suffix => $copy->call_number->suffix,
+                            deleted => 'f'
+                        })->[0];
 
-                        $copy->call_number->label($item->call_number);
-                        if (!$e->update_asset_call_number($copy->call_number)) {
-                            $$report_args{evt} = $e->die_event;
-                            respond_with_status($report_args);
-                            next;
+                        if ($evol) {
+                            # call number for overlayed copy changed to a
+                            # label already in use by another call number.
+                            # merge the old CN into the new CN
+                            
+                            $logger->info(
+                                "vl: moving copy to new call number ".
+                                $item->call_number);
+
+                            my ($mvol, $err) = 
+                                OpenILS::Application::Cat::Merge::merge_volumes(
+                                    $e, [$copy->call_number], $evol);
+
+                            if (!$mvol) {
+                                $$report_args{evt} = $err;
+                                respond_with_status($report_args);
+                                next;
+                            }
+
+                            # update our copy *cough* of the copy to pick up
+                            # any changes made my merge_volumes
+                            $copy = $e->retrieve_asset_copy([
+                                $copy->id,
+                                {flesh => 1, flesh_fields => {acp => ['call_number']}}
+                            ]);
+
+                        } else {
+                            $logger->info(
+                                "vl: updating copy call number label".
+                                $item->call_number);
+
+                            $copy->call_number->label($item->call_number);
+                            if (!$e->update_asset_call_number($copy->call_number)) {
+                                $$report_args{evt} = $e->die_event;
+                                respond_with_status($report_args);
+                                next;
+                            }
                         }
 
                     } else {
