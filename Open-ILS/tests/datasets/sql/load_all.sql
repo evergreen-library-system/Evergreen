@@ -21,6 +21,9 @@ BEGIN;
 -- load graphic 880 field bibs
 \i bibs_graphic_880.sql 
 
+-- load fiction bibs
+\i bibs_fic.sql
+
 -- insert all loaded bibs into the biblio.record_entry in insert order
 INSERT INTO biblio.record_entry (marc, last_xact_id) 
     SELECT marc, tag FROM marcxml_import ORDER BY id;
@@ -33,6 +36,9 @@ INSERT INTO biblio.record_entry (marc, last_xact_id)
 
 -- load graphic 880 field copies, etc
 \i assets_graphic_880.sql 
+
+-- load fiction copies, etc.
+\i assets_fic.sql
 
 -- load sample patrons
 \i users_patrons_100.sql
