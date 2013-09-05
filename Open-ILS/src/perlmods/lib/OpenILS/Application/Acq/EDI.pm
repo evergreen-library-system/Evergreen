@@ -224,8 +224,8 @@ sub process_retrieval {
             # up PO number later from the lineitems themselves if necessary.
 
             if ($msg_hash->{purchase_order} !~ /^\d+$/) {
-                $logger->warn("EDI: PO identifier is non-numeric. Continuing.");
-                # No "next" here; we'll process this and just not link to acqpo.
+                $logger->warn("EDI: PO identifier is non-numeric. Blanking and continuing.");
+                undef $msg_hash->{purchase_order};
             } else {
                 $logger->info("EDI: processing message for PO " .
                     $msg_hash->{purchase_order});
@@ -898,6 +898,7 @@ sub invoice_lineitem_to_invoice_entry {
 # references from the electronic invoice.
 # @param    $message            An acqedim object
 # @param    $invoice_lineitems  An arrayref from part of EDIReader output
+# NOTE: This sub can have side-effects on $message.
 sub process_invoice_lineitems {
     my ($e, $msg_kludges, $log_prefix, $message, $invoice_lineitems) = @_;
 
