@@ -1241,6 +1241,7 @@ function vlHandleQueueItemsAction(action) {
             vlUploadFtMergeProfile.attr('value',  vlUploadFtMergeProfile2.attr('value'));
             vlUploadQueueAutoOverlayBestMatch.attr('value',  vlUploadQueueAutoOverlayBestMatch2.attr('value'));
             vlUploadQueueAutoOverlayBestMatchRatio.attr('value',  vlUploadQueueAutoOverlayBestMatchRatio2.attr('value'));
+            vlUploadQueueAutoOverlayInprocessAcqCopies.attr('value',  vlUploadQueueAutoOverlayInprocessAcqCopies2.attr('value'));
 
             // attr('value') and various other incantations won't let me set 
             // the value on the checkedmultiselect, so we temporarily swap 
@@ -1271,6 +1272,8 @@ function vlHandleQueueItemsAction(action) {
             vlUploadQueueAutoOverlayBestMatch2.attr('value', false);
             vlUploadQueueAutoOverlayBestMatchRatio.attr('value', '0.0');
             vlUploadQueueAutoOverlayBestMatchRatio2.attr('value', '0.0');
+            vlUploadQueueAutoOverlayInprocessAcqCopies.attr('value', false);
+            vlUploadQueueAutoOverlayInprocessAcqCopies2.attr('value', false);
 
             // and... swap them back
             vlUploadTrashGroups2 = vlUploadTrashGroups;
@@ -1349,6 +1352,11 @@ function vlImportRecordQueue(type, queueId, recList, onload) {
         options.auto_overlay_1match = true;
         vlUploadQueueAutoOverlay1Match.checked = false;
         options.match_quality_ratio = vlUploadQueueAutoOverlayBestMatchRatio.attr('value');
+    }
+
+    if(vlUploadQueueAutoOverlayInprocessAcqCopies.checked) {
+        options.opp_acq_copy_overlay = true; //"opp" for opportunistic
+        vlUploadQueueAutoOverlayInprocessAcqCopies.checked = false;
     }
 
     var profile = vlUploadMergeProfile.attr('value');

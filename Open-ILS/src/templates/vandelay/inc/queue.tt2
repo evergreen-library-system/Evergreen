@@ -249,6 +249,13 @@
                         </select>
                     </td>
                 </tr>
+                <tr><td colspan='2' style='margin-top:10px;border-bottom:1px solid #888;border-top:2px solid #888'>
+                    <b>[% l('Copy Import Actions') %]</b>
+                </td></tr>
+                <tr>
+                    <td>[% l('Auto-overlay In-process Acquisition Copies') %]</td>
+                    <td colspan='4'><input jsId='vlUploadQueueAutoOverlayInprocessAcqCopies2' dojoType='dijit.form.CheckBox'/></td>
+                </tr>
 
                 <tr>
                     <td>

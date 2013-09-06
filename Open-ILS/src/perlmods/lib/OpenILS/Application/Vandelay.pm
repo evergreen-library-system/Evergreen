@@ -1015,6 +1015,7 @@ sub import_record_list_impl {
                     $logger->info("vl: $type direct overlay succeeded for queued rec ".
                         "$rec_id and overlay target $overlay_target");
                     $imported = 1;
+                    $rec->imported_as($overlay_target);
                 }
 
             } else {
@@ -1207,7 +1208,7 @@ sub import_record_list_impl {
     }
 
     # import the copies
-    import_record_asset_list_impl($conn, \@success_rec_ids, $requestor) if @success_rec_ids;
+    import_record_asset_list_impl($conn, \@success_rec_ids, $requestor, $args) if @success_rec_ids;
 
     $conn->respond({total => $$report_args{total}, progress => $$report_args{progress}});
     return undef;
@@ -1577,7 +1578,7 @@ sub retrieve_queue_summary {
 # Given a list of queued record IDs, imports all items attached to those records
 # --------------------------------------------------------------------------------
 sub import_record_asset_list_impl {
-    my($conn, $rec_ids, $requestor) = @_;
+    my($conn, $rec_ids, $requestor, $args) = @_;
 
     my $roe = new_editor(xact=> 1, requestor => $requestor);
 
@@ -1614,6 +1615,8 @@ sub import_record_asset_list_impl {
         # call number label for every copy per org per record.
         my $auto_callnumber = {};
 
+        my $opp_acq_copy_overlay = $args->{opp_acq_copy_overlay};
+        my @overlaid_copy_ids;
         for my $item_id (@$item_ids) {
             my $e = new_editor(requestor => $requestor, xact => 1);
             my $item = $e->retrieve_vandelay_import_item($item_id);
@@ -1673,6 +1676,38 @@ sub import_record_asset_list_impl {
                     respond_with_status($report_args);
                     next;
                 }
+            } elsif ($opp_acq_copy_overlay) { # we are going to "opportunistically" overlay received, in-process acq copies
+                # recv_time should never be null if the copy status is
+                # "In Process", so that is just a double-check
+                my $query = [
+                    {
+                        "recv_time" => {"!=" => undef},
+                        "owning_lib" => $item->owning_lib,
+                        "+acn" => {"record" => $rec->imported_as},
+                        "+acp" => {"status" => OILS_COPY_STATUS_IN_PROCESS}
+                    },
+                    {
+                        "join" => {
+                            "acp" => {
+                                "join" => "acn"
+                            }
+                        },
+                        "flesh" => 2,
+                        "flesh_fields" => {
+                            "acqlid" => ["eg_copy_id"],
+                            "acp" => ["call_number"]
+                        }
+                    }
+                ];
+                # don't overlay the same copy twice
+                $query->[0]{"+acp"}{"id"} = {"not in" => \@overlaid_copy_ids} if @overlaid_copy_ids;
+                if (my $acqlid = $e->search_acq_lineitem_detail($query)->[0]) {
+                    $copy = $acqlid->eg_copy_id;
+                    push(@overlaid_copy_ids, $copy->id);
+                }
+            }
+
+            if ($copy) { # we found a copy to overlay
 
                 # overlaying copies requires an extra permission
                 if (!$e->allowed("IMPORT_OVERLAY_COPY", $copy->call_number->owning_lib)) {
@@ -1743,7 +1778,7 @@ sub import_record_asset_list_impl {
                     price circ_as_type alert_message opac_visible circ_modifier/) {
 
                     my $val = $item->$_();
-                    $copy->$_($val) if $val and $val ne '';
+                    $copy->$_($val) if defined $val and $val ne '';
                 }
 
                 # de-flesh for update
