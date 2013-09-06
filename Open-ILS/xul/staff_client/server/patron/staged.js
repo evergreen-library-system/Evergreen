@@ -222,7 +222,10 @@ function init_list() {
                     }
                 ),
                 'retrieve_row' : retrieve_row,
-                'on_select' : handle_selection
+                'on_select' : handle_selection,
+                'on_dblclick' : function(ev) {
+                    gen_event_handler('load')();
+                }
             }
         );
 
