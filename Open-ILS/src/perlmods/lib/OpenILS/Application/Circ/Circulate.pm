@@ -2044,7 +2044,7 @@ sub build_checkout_circ_object {
 
     # if a patron is renewing, 'requestor' will be the patron
     $circ->circ_staff($self->editor->requestor->id);
-    $circ->due_date( $self->create_due_date($circ->duration, $duration_date_ceiling, $duration_date_ceiling_force) ) if $circ->duration;
+    $circ->due_date( $self->create_due_date($circ->duration, $duration_date_ceiling, $duration_date_ceiling_force, $circ->xact_start) ) if $circ->duration;
 
     $self->circ($circ);
 }
@@ -2252,7 +2252,7 @@ sub apply_modified_due_date {
 
 
 sub create_due_date {
-    my( $self, $duration, $date_ceiling, $force_date ) = @_;
+    my( $self, $duration, $date_ceiling, $force_date, $start_time ) = @_;
 
     # if there is a raw time component (e.g. from postgres), 
     # turn it into an interval that interval_to_seconds can parse
@@ -2260,6 +2260,7 @@ sub create_due_date {
 
     # for now, use the server timezone.  TODO: use workstation org timezone
     my $due_date = DateTime->now(time_zone => 'local');
+    $due_date = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($start_time)) if $start_time;
 
     # add the circ duration
     $due_date->add(seconds => OpenSRF::Utils->interval_to_seconds($duration));
