@@ -53,6 +53,7 @@ CREATE TABLE serial.subscription_note (
 	                    DEFERRABLE INITIALLY DEFERRED,
 	create_date  TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
 	pub          BOOL   NOT NULL DEFAULT FALSE,
+	alert        BOOL   NOT NULL DEFAULT FALSE,
 	title        TEXT   NOT NULL,
 	value        TEXT   NOT NULL
 );
@@ -133,6 +134,7 @@ CREATE TABLE serial.distribution_note (
 	                    DEFERRABLE INITIALLY DEFERRED,
 	create_date  TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
 	pub          BOOL   NOT NULL DEFAULT FALSE,
+	alert        BOOL   NOT NULL DEFAULT FALSE,
 	title        TEXT   NOT NULL,
 	value        TEXT   NOT NULL
 );
@@ -290,6 +292,7 @@ CREATE TABLE serial.item_note (
 	                    DEFERRABLE INITIALLY DEFERRED,
 	create_date TIMESTAMP WITH TIME ZONE    DEFAULT NOW(),
 	pub         BOOL    NOT NULL    DEFAULT FALSE,
+	alert       BOOL    NOT NULL    DEFAULT FALSE,
 	title       TEXT    NOT NULL,
 	value       TEXT    NOT NULL
 );

@@ -102,7 +102,10 @@ vim:noet:sw=4:ts=4:
             <label style="font-weight: bold" value="&staff.serial.manage_items.workarea_showing;"/>
             <label id="serial_workarea_mode_label" value="&staff.serial.manage_items.workarea_recently_received;"/>
             <spacer flex="1"/>
-            <button label="&staff.serial.manage_items.receive_move.label;" command="cmd_receive_items"/>
+            <hbox>
+                <button id="serial_alert_button" command="cmd_read_alerts"><image id="serial_alert_button_image" src="/xul/server/skin/media/images/bell_disabled.png"/><label id="serial_alert_button_label" value="" /></button>
+                <button label="&staff.serial.manage_items.receive_move.label;" command="cmd_receive_items"/>
+            </hbox>
         </hbox>
         <hbox align="center">
             <label style="font-weight: bold" value="&staff.serial.manage_items.workarea_current_unit;"/>

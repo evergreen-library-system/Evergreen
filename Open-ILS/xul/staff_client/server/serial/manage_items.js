@@ -201,6 +201,8 @@ serial.manage_items.prototype = {
             false
         );
 
+        obj.set_alert_notes_button();
+
 		JSAN.use('util.controller'); obj.controller = new util.controller();
 		obj.controller.init(
 			{
@@ -374,6 +376,16 @@ serial.manage_items.prototype = {
                         ['command'],
                         function() {
                             alert('Subscription selection needed here'); //FIXME: make this prompt, or discard this feature
+                        }
+                    ],
+                    'cmd_read_alerts' : [
+                        ['command'],
+                        function() {
+                            try {
+                                obj.view_alert_notes();
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert('cmd_read_alerts failed!',E);
+                            }
                         }
                     ],
                     'cmd_receive_items' : [
@@ -571,7 +583,7 @@ serial.manage_items.prototype = {
                     ],
                     'cmd_items_print' : [ ['command'], function() { obj.items_print(obj.selected_list); } ],
 					'cmd_items_export' : [ ['command'], function() { obj.items_export(obj.selected_list); } ],
-					'cmd_refresh_list' : [ ['command'], function() { obj.retrieve_ssubs_and_sdists(); obj.refresh_list('main'); obj.refresh_list('workarea'); } ]
+					'cmd_refresh_list' : [ ['command'], function() { obj.refresh_all(); } ]
 				}
 			}
 		);
@@ -890,33 +902,19 @@ serial.manage_items.prototype = {
 		);
     },
 
-	'refresh_list' : function(list_name) {
+	'refresh_all' : function() {
+        var obj = this;
+
+        obj.retrieve_ssubs_and_sdists();
+        obj.refresh_list('main');
+        obj.refresh_list('workarea');
+    },
+
+    'refresh_list' : function(list_name) {
         var obj = this;
 
         //TODO Optimize this?
         obj.retrieve(list_name);
-    },
-
-    // accepts a list of ids or a list of objects
-    'refresh_rows' : function(list) {
-        var obj = this;
-
-        var id_list;
-
-        if (typeof list[0] == 'object') {
-            id_list = util.functional.map_list(
-                list,
-                function(o) {
-                    return o.id()
-                }
-            );
-        } else {
-            id_list = list;
-        }
-
-        for (var i = 0; i < id_list.length; i++) {
-            obj.lists[obj.selected_list].refresh_row(obj.row_map[id_list[i]]);
-        }
     },
 
     // accepts a list of ids or a list of objects
@@ -1003,6 +1001,7 @@ serial.manage_items.prototype = {
 		obj.controller.view.sel_mark_items_missing.setAttribute('disabled','false');*/
 
 		obj.retrieve_ids = list;
+		obj.set_alert_notes_button();
 	},
 
     'process_unit_selection' : function(menuitem) {
@@ -1066,18 +1065,170 @@ serial.manage_items.prototype = {
         }
 
         var seen_ids = {};
+        var notes_window;
+        var sitem_ids = [];
         for (var i = 0; i < obj.retrieve_ids.length; i++) {
-            var item = obj.list_sitem_map[obj.retrieve_ids[i].sitem_id];
-            var obj_id = object_id_fn(item);
+            var sitem_id = obj.retrieve_ids[i].sitem_id;
+            var sitem = obj.list_sitem_map[sitem_id];
+            sitem_ids.push(sitem_id);
+            var obj_id = object_id_fn(sitem);
             if (seen_ids[obj_id]) continue;
             JSAN.use('util.window'); var win = new util.window();
-            win.open(
+            notes_window = win.open(
                 urls.XUL_SERIAL_NOTES,
                 '','chrome,resizable,modal',
-                { 'object_id' : obj_id, 'function_type' : function_type, 'object_type' : object_type, 'constructor' : constructor, 'title' : $('serialStrings').getString('staff.serial.'+type+'_editor.notes') + ' -- ' + title_fn(item) }
+                { 'object_id' : obj_id, 'function_type' : function_type, 'object_type' : object_type, 'constructor' : constructor, 'title' : $('serialStrings').getString('staff.serial.'+type+'_editor.notes') + ' -- ' + title_fn(sitem) }
             );
             seen_ids[obj_id] = 1;
         }
+        if (notes_window.notes_updated) { // we changed some notes
+            if (notes_window.notes_updated.sdistn || notes_window.notes_updated.ssubn) {
+                obj.refresh_all();
+            } else {
+                obj.refresh_rows(sitem_ids);
+            }
+        }
+    },
+
+    '_fetch_alert_notes' : function() {
+        var obj = this;
+
+        JSAN.use('util.functional');
+        var notes = [];
+
+        var alert_ids = {
+            "ssub" : [],
+            "sdist" : [],
+            "sitem" : []
+        };
+
+        //gather selected item alerts
+        if (obj.retrieve_ids) {
+            var related_obj_ids = {'ssub' : {}, 'sdist' : {}};
+            for (var i = 0; i < obj.retrieve_ids.length; i++) {
+                var item = obj.list_sitem_map[obj.retrieve_ids[i].sitem_id];
+                var my_notes = util.functional.filter_list(
+                    item.notes(),
+                    function (o) {
+                        return get_bool(o.alert());
+                    }
+                );
+
+                related_obj_ids.ssub[item.issuance().subscription().id()] = 1;
+                related_obj_ids.sdist[item.stream().distribution()] = 1;
+
+                if (my_notes.length) {
+                    alert_ids['sitem'].push(item.id());
+                    notes = notes.concat(my_notes);
+                }
+            }
+
+            // gather related object (sub/dist) alerts
+            ['sdist', 'ssub'].forEach(function(type) {
+                var obj_ids = related_obj_ids[type];
+                var type_map = obj[type + '_map'];
+                for (my_id in obj_ids) {
+                    var my_notes = util.functional.filter_list(
+                        type_map[my_id].notes(),
+                        function (o) {
+                            return get_bool(o.alert());
+                        }
+                    );
+
+                    if (my_notes.length) {
+                        alert_ids[type].push(my_id);
+                        notes = notes.concat(my_notes);
+                    }
+                }
+            });
+        }
+
+        return {
+            "notes" : notes,
+            "alert_ids" : alert_ids
+        };
+    },
+
+    'set_alert_notes_button' : function() {
+        var obj = this;
+        var alert_data = obj._fetch_alert_notes();
+
+        var num_alerts = alert_data.notes.length;
+        if (num_alerts > 0) {
+            $('serial_alert_button').setAttribute('disabled','false');
+            $('serial_alert_button_image').src = '/xul/server/skin/media/images/bell.png';
+            if (num_alerts == 1) {
+                $('serial_alert_button_label').value = $('serialStrings').getString('staff.serial.manage_items.alert_button.label');
+            } else {
+                $('serial_alert_button_label').value = $('serialStrings').getFormattedString('staff.serial.manage_items.alert_button.plural.label', num_alerts);
+            }
+        } else {
+            $('serial_alert_button').setAttribute('disabled','true');
+            $('serial_alert_button_image').src = '/xul/server/skin/media/images/bell_disabled.png';
+            $('serial_alert_button_label').value = $('serialStrings').getFormattedString('staff.serial.manage_items.alert_button.plural.label', 0);
+        }
+    },
+
+    'view_alert_notes' : function() {
+        var obj = this;
+
+        JSAN.use('util.functional');
+        var alert_data = obj._fetch_alert_notes();
+        var notes = alert_data.notes;
+        var alert_ids = alert_data.alert_ids;
+
+        if (notes.length <= 0) return;
+
+        // create titles for each alerted objects notes
+        var section_titles = {
+            "ssubn" : [],
+            "sdistn" : [],
+            "sin" : []
+        }
+        for (type in alert_ids) {
+            var typed_ids = alert_ids[type];
+            for (var i = 0; i < typed_ids.length; i++) {
+                var my_id = typed_ids[i];
+                var title_chunk = '';
+                var fm_class = '';
+                switch(type) {
+                    case 'sitem':
+                        fm_class = 'sin';
+                        break;
+                    case 'ssub':
+                        title_chunk = obj.ssub_map[my_id].owning_lib().shortname();
+                        fm_class = 'ssubn';
+                        break;
+                    case 'sdist':
+                        title_chunk = obj.sdist_map[my_id].label()
+                            + ' -- '
+                            + obj.sdist_map[my_id].holding_lib().shortname();
+                        fm_class = 'sdistn';
+                        break;
+                }
+                section_titles[fm_class].push(
+                    $('serialStrings').getString('staff.serial.'+ type +'_editor.notes')
+                    + ' -- ' + title_chunk + ' ('
+                    + fieldmapper.IDL.fmclasses[type].field_map.id.label
+                    + ' ' + my_id + ')'
+                );
+            }
+        }
+
+        JSAN.use('util.window'); var win = new util.window();
+        var notes_window = win.open(
+            urls.XUL_SERIAL_NOTES,
+            '','chrome,resizable,modal',
+            { 'notes' : notes, 'section_titles' : section_titles, 'title' : "Serial Alerts", 'disable_create' : true, 'section_id_names' : { 'ssubn' : 'subscription', 'sdistn' : 'distribution', 'sin' : 'item'} }
+        );
+        if (notes_window.notes_updated) { // we changed some notes
+            if (notes_window.notes_updated.sdistn || notes_window.notes_updated.ssubn) {
+                obj.refresh_all();
+            } else {
+                obj.refresh_rows(alert_ids["sitem"]);
+            }
+        }
+        return;
     },
 
     'set_items_special_status' : function(new_status, message) {

@@ -1,0 +1,3 @@
+bell.png and bell_bw.png derived from:
+http://www.iconfinder.com/icondetails/1227/128/alarm_bell_icon
+GLPL

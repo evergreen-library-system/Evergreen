@@ -4444,6 +4444,7 @@ SELECT  usr,
 			<field reporter:label="Creator" name="creator" reporter:datatype="link"/>
 			<field reporter:label="Create Date" name="create_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Public?" name="pub" reporter:datatype="bool"/>
+			<field reporter:label="Alert?" name="alert" reporter:datatype="bool"/>
 			<field reporter:label="Title" name="title" reporter:datatype="text"/>
 			<field reporter:label="Value" name="value" reporter:datatype="text"/>
 		</fields>
@@ -4505,6 +4506,7 @@ SELECT  usr,
 			<field reporter:label="Creator" name="creator" reporter:datatype="link"/>
 			<field reporter:label="Create Date" name="create_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Public?" name="pub" reporter:datatype="bool"/>
+			<field reporter:label="Alert?" name="alert" reporter:datatype="bool"/>
 			<field reporter:label="Title" name="title" reporter:datatype="text"/>
 			<field reporter:label="Value" name="value" reporter:datatype="text"/>
 		</fields>
@@ -4751,6 +4753,7 @@ SELECT  usr,
 			<field reporter:label="Creator" name="creator" reporter:datatype="link"/>
 			<field reporter:label="Create Date" name="create_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Public?" name="pub" reporter:datatype="bool"/>
+			<field reporter:label="Alert?" name="alert" reporter:datatype="bool"/>
 			<field reporter:label="Title" name="title" reporter:datatype="text"/>
 			<field reporter:label="Value" name="value" reporter:datatype="text"/>
 		</fields>
