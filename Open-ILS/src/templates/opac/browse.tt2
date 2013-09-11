@@ -54,7 +54,7 @@
                         current_qtype = CGI.param('qtype') || 'title' %]
                     <span class="browse-shortcuts">
                         [% FOR shortcut IN ctx.pager_shortcuts %]
-                            <a href="[% mkurl('', {qtype => current_qtype, bterm => shortcut.0}, ['bpivot']) %]">[% shortcut.1 %]</a>
+                            <a href="[% mkurl('', {qtype => current_qtype, bterm => shortcut.0}, ['bpivot','query']) %]">[% shortcut.1 %]</a>
                         [% END %]
                     </span>
                     [% END %]
