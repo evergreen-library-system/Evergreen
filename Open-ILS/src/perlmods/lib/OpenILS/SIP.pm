@@ -42,6 +42,10 @@ use constant {
     SIP_DATETIME => "%Y%m%d    %H%M%S",
 };
 
+sub disconnect {
+     OpenSRF::Transport::PeerHandle->retrieve->disconnect
+}
+
 sub new {
     my ($class, $institution, $login) = @_;
     my $type = ref($class) || $class;
