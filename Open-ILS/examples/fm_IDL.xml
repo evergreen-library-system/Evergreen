@@ -8946,7 +8946,7 @@ SELECT  usr,
     <class id="stgu" controller="open-ils.cstore" oils_obj:fieldmapper="staging::user_stage" oils_persist:tablename="staging.user_stage" reporter:label="User Stage">
         <fields oils_persist:primary="row_id" oils_persist:sequence="staging.user_stage_row_id_seq">
             <field reporter:label="Row ID" name="row_id" reporter:datatype="id"/>
-            <field reporter:label="Row Date" name="row_date" reporter:datatype="timestamp"/>
+            <field reporter:label="Create Date" name="row_date" reporter:datatype="timestamp"/>
             <field reporter:label="User Name" name="usrname" reporter:datatype="text"/>
             <field reporter:label="Main (Profile) Permission Group" name="profile" reporter:datatype="text"/>
             <field reporter:label="Email Address" name="email" reporter:datatype="text"/>
