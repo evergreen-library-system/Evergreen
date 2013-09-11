@@ -110,9 +110,9 @@
         <command id="cmd_back" label="&common.browser.backward.label;" accesskey="&common.browser.backward.accesskey;" />
         <command id="cmd_reload" label="&common.browser.reload.label;" accesskey="&common.browser.reload.accesskey;" />
         <command id="cmd_forward" label="&common.browser.forward.label;" accesskey="&common.browser.forward.accesskey;" />
-        <command id="cmd_zoom_in" oncommand="g.browser.controller.view.browser_browser.markupDocumentViewer.fullZoom += 0.1;" />
-        <command id="cmd_zoom_out" oncommand="g.browser.controller.view.browser_browser.markupDocumentViewer.fullZoom -= 0.1;" />
-        <command id="cmd_zoom_reset" oncommand="g.browser.controller.view.browser_browser.markupDocumentViewer.fullZoom = 1;" />
+        <command id="cmd_zoom_in" oncommand="g.browser.apply_zoom(null, 0.1);" />
+        <command id="cmd_zoom_out" oncommand="g.browser.apply_zoom(null, -0.1);" />
+        <command id="cmd_zoom_reset" oncommand="g.browser.apply_zoom(1);" />
     </commandset>
 
     <keyset>

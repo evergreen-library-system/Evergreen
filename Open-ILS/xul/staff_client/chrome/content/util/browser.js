@@ -166,6 +166,39 @@ util.browser.prototype = {
         }
     },
 
+    /*
+     * If the browser page is given a name (e.g. the catalog is "Catalog") 
+     * and the user applies a zoom value (ctrl+ / ctrl-), store the value
+     * in the oils.util.browser.zoom.<name> pref.  On page load, if a value
+     * is set for the given page, load and apply the value to the page.
+     */
+    'apply_zoom' : function(val, delta) {
+        var name = xul_param('name');
+        if (!name) return;
+        var key = 'oils.util.browser.zoom.' + name; // pref key
+        var viewer = this.controller.view.browser_browser.markupDocumentViewer;
+
+        var prefs = Components.classes[
+            '@mozilla.org/preferences-service;1'].getService(
+                Components.interfaces['nsIPrefBranch']);
+
+        if (!val) {
+            if (delta) {
+                val = viewer.fullZoom;
+                val += delta
+            } else {
+                if (prefs.prefHasUserValue(key))
+                    val = prefs.getCharPref(key);
+            }
+        } 
+
+        val = Number(val);
+        if (!val || isNaN(val) || val < 0) return;
+
+        viewer.fullZoom = val;
+        prefs.setCharPref(key, ''+val);
+    },
+
     'reload' : function() {
         var obj = this;
         if (obj.lock_reload) {
@@ -465,6 +498,7 @@ util.browser.prototype = {
                                 var alert_string = 'document has stopped: ' + new Date() + '\n'; dump(alert_string);
                                 try {
                                     obj.push_variables(); obj.updateNavButtons();
+                                    obj.apply_zoom();
                                 } catch(E) {
                                     var err_msg = 'browser.js STATE_IS_DOCUMENT STATE_STOP error with push_variables or updateNavButtons: ' + E + '\n';
                                     dump(err_msg);
