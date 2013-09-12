@@ -1094,12 +1094,13 @@ sub flatten {
                         }
                         $with .= "     )";
 
-                        $from .= "\n" . ${spc} x 3 . "LEFT JOIN container_${filter_alias} ON container_${filter_alias}.record = m.source";
+                        my $optimize_join = 1 if $self->top_plan and !$NOT;
+                        $from .= "\n" . ${spc} x 3 . ( $optimize_join ? 'INNER' : 'LEFT') . " JOIN container_${filter_alias} ON container_${filter_alias}.record = m.source";
 
-                        my $spcdepth = $self->plan_level + 5;
-
-                        $where .= $joiner if $where ne '';
-                        $where .= "${NOT}(container_${filter_alias} IS NOT NULL)";
+                        if (!$optimize_join) {
+                            $where .= $joiner if $where ne '';
+                            $where .= "(container_${filter_alias} IS " . ( $NOT ? 'NULL)' : 'NOT NULL)');
+                        }
                     }
                 }
             } elsif ($filter->name eq 'record_list') {
