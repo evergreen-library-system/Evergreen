@@ -802,9 +802,9 @@ SELECT  $key AS id,
         $rank AS rank, 
         FIRST(mrd.attrs->'date1') AS tie_break
   FROM  metabib.metarecord_source_map m
-        $$flat_plan{from}
         $mra_join
         $bre_join
+        $$flat_plan{from}
   WHERE 1=1
         $flat_where
   GROUP BY 1
