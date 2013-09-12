@@ -949,6 +949,7 @@ function fastItemAdd_attempt(doc_id) {
         if (!document.getElementById('fastItemAdd_barcode').value) { return; }
         window.xulG.fast_add_item( doc_id, document.getElementById('fastItemAdd_callnumber').value, document.getElementById('fastItemAdd_barcode').value );
         document.getElementById('fastItemAdd_barcode').value = '';
+        return true;
     } catch(E) {
         alert('fastItemAdd_attempt: ' + E);
     }
@@ -956,11 +957,19 @@ function fastItemAdd_attempt(doc_id) {
 
 function save_attempt(xml_string) {
     try {
-        var result = window.xulG.save.func( xml_string );   
+        var result = window.xulG.save.func( xml_string );
+        // I'd prefer to pass on_complete on through to fast_item_add,
+        // but with the way these window scopes get destroyed with
+        // tab replacement, maybe not a good idea
+        var replace_on_complete = false;
         if (result) {
             oils_unlock_page();
-            if (result.id) fastItemAdd_attempt(result.id);
-            if (typeof result.on_complete == 'function') result.on_complete();
+            if (result.id) {
+                replace_on_complete = fastItemAdd_attempt(result.id);
+            }
+            if (!replace_on_complete && typeof result.on_complete == 'function') {
+                result.on_complete();
+            }
         }
     } catch(E) {
         alert('save_attempt: ' + E);
