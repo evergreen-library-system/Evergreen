@@ -1197,6 +1197,7 @@ function checkClaimsReturnCountPerm() {
         'UPDATE_PATRON_CLAIM_RETURN_COUNT',
         function(orgList) { 
             var cr = findWidget('au', 'claims_returned_count');
+            if (!cr) return;
             if(orgList.indexOf(patron.home_ou()) == -1) 
                 cr.widget.attr('disabled', true);
             else
@@ -1213,6 +1214,7 @@ function checkClaimsNoCheckoutCountPerm() {
         'UPDATE_PATRON_CLAIM_NEVER_CHECKED_OUT_COUNT',
         function(orgList) { 
             var cr = findWidget('au', 'claims_never_checked_out_count');
+            if (!cr) return;
             if(orgList.indexOf(patron.home_ou()) == -1) 
                 cr.widget.attr('disabled', true);
             else
@@ -1229,6 +1231,7 @@ function checkCollectionsExemptPerm(cbox) {
     new openils.User().getPermOrgList(
         'UPDATE_PATRON_COLLECTIONS_EXEMPT',
         function(orgList) { 
+            if (!collectExemptCBox) return;
             if(orgList.indexOf(patron.home_ou()) == -1) 
                 collectExemptCBox.attr('disabled', true);
             else
