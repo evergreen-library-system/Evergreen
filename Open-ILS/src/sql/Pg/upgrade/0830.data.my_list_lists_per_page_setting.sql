@@ -1,11 +1,10 @@
--- Evergreen DB patch XXXX.add_setting_for_selecting_lists_per_page_for_my_list.sql
 --
 -- Adds a setting for selecting the number of lists per page for my list.
 --
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0830', :eg_version);
 
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
     VALUES (
