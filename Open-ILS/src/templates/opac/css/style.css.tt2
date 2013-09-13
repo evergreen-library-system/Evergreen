@@ -1328,6 +1328,7 @@ table.bookbag-specific {
 .bookbag-specific td.list_actions {
     white-space: nowrap !important;
 }
+.bookbag-paginator-selected { color: [% css_colors.text_alert %]; }
 
 .list_is_empty {
     padding: 8px 0px 6px 0px;

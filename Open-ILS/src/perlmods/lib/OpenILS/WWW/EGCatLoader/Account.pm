@@ -479,10 +479,6 @@ sub load_myopac_prefs_my_lists {
     return Apache2::Const::OK
         unless $self->cgi->request_method eq 'POST';
 
-    # some setting values from the form don't match the
-    # required value/format for the db, so they have to be
-    # individually translated.
-
     my %settings;
     my $set_map = $self->ctx->{user_setting_map};
 
@@ -1768,10 +1764,10 @@ sub load_myopac_bookbags {
     $ctx->{bookbags_offset} = $offset;
 
     # for list item pagination
-    my $itemLimit = $self->_get_items_per_page;
-    my $itemPage = $self->cgi->param('itemPage') || 1;
-    my $itemOffset = ($itemPage - 1) * $itemLimit;
-    $ctx->{bookbags_itemPage} = $itemPage;
+    my $item_limit = $self->_get_items_per_page;
+    my $item_page = $self->cgi->param('item_page') || 1;
+    my $item_offset = ($item_page - 1) * $item_limit;
+    $ctx->{bookbags_item_page} = $item_page;
 
     my ($sorter, $modifier) = $self->_get_bookbag_sort_params("sort");
     $e->xact_begin; # replication...
@@ -1874,7 +1870,7 @@ sub load_myopac_bookbags {
             $ctx->{bb_item_count} = $ctx->{bb_item_count} + $ebook_r->[0]->{'count'};
 
             #calculate page count
-            $ctx->{bb_page_count} = int ((($ctx->{bb_item_count} - 1) / $itemLimit) + 1);
+            $ctx->{bb_page_count} = int ((($ctx->{bb_item_count} - 1) / $item_limit) + 1);
 
             if ( ($self->cgi->param("action") || '') eq "editmeta") {
                 if (!$self->_update_bookbag_metadata($bookbag))  {
@@ -1907,8 +1903,8 @@ sub load_myopac_bookbags {
 
             # For list items pagination
             my $args = {
-                "limit" => $itemLimit,
-                "offset" => $itemOffset
+                "limit" => $item_limit,
+                "offset" => $item_offset
             };
 
             my $items = $U->bib_container_items_via_search($bookbag->id, $query, $args)

@@ -4,7 +4,7 @@
     myopac_page = "lists"  
     limit = ctx.bookbags_limit;
     offset = ctx.bookbags_offset;
-    itemPage = ctx.bookbags_itemPage;
+    item_page = ctx.bookbags_item_page;
 %]
 <div id='myopac_bookbag_div' style="padding:5px;">
 
@@ -87,7 +87,7 @@
             <div class="bookbag-controls most">
                 [% baseurl = ctx.opac_root _ '/myopac/lists';
                 IF bbag.id != CGI.param("bbid");
-                    url = mkurl(baseurl,{bbid => bbag.id, itemPage => 1},['edit_notes','sort']);
+                    url = mkurl(baseurl,{bbid => bbag.id, item_page => 1},['edit_notes','sort']);
                     ltitle = l("Show items in list");
                 ELSE;
                     url = mkurl(baseurl, {}, ['bbid', 'edit_notes', 'sort']);
@@ -365,47 +365,47 @@
             <div class="header_middle" style="padding-top:7px;">
                 <span class="float-left" style="padding-left:34px;">[% l('Navigate Selected List ') %]</span>
                 <span class='float-left' style='padding-left: 10px;'>
-                    [%- IF itemPage > 1 -%]
+                    [%- IF item_page > 1 -%]
                         <a href='[% mkurl(ctx.opac_root _ '/myopac/lists', {
-                            itemPage => itemPage - 1
+                            item_page => item_page - 1
                         }) %]'><span class="nav_arrow_fix">&#9668;</span>[% l('Previous') %]</a>
                     [%- END; -%]
 
-                    [%- IF (itemPage - 3) >= 1 -%]
+                    [%- IF (item_page - 3) >= 1 -%]
                         <a href='[% mkurl(ctx.opac_root _ '/myopac/lists', {
-                            itemPage => itemPage - 3
-                        }) %]'>[% itemPage - 3 %]</a>
+                            item_page => item_page - 3
+                        }) %]'>[% item_page - 3 %]</a>
                     [%- END; -%]
-                    [%- IF (itemPage - 2) >= 1 -%]
+                    [%- IF (item_page - 2) >= 1 -%]
                         <a href='[% mkurl(ctx.opac_root _ '/myopac/lists', {
-                            itemPage => itemPage - 2
-                        }) %]'>[% itemPage - 2 %]</a>
+                            item_page => item_page - 2
+                        }) %]'>[% item_page - 2 %]</a>
                     [%- END; -%]
-                    [%- IF (itemPage - 1) >= 1 -%]
+                    [%- IF (item_page - 1) >= 1 -%]
                         <a href='[% mkurl(ctx.opac_root _ '/myopac/lists', {
-                            itemPage => itemPage - 1
-                        }) %]'>[% itemPage - 1%]</a>
+                            item_page => item_page - 1
+                        }) %]'>[% item_page - 1%]</a>
                     [%- END; -%]
-                    <span style="color:red;" >[% itemPage %]</span>
-                    [%- IF (itemPage + 1) <= ctx.bb_page_count -%]
+                    <span class="bookbag-paginator-selected" >[% item_page %]</span>
+                    [%- IF (item_page + 1) <= ctx.bb_page_count -%]
                         <a href='[% mkurl(ctx.opac_root _ '/myopac/lists', {
-                            itemPage => itemPage + 1
-                        }) %]'>[% itemPage + 1 %]</a>
+                            item_page => item_page + 1
+                        }) %]'>[% item_page + 1 %]</a>
                     [%- END; -%]
-                    [%- IF (itemPage + 2) <= ctx.bb_page_count -%]
+                    [%- IF (item_page + 2) <= ctx.bb_page_count -%]
                         <a href='[% mkurl(ctx.opac_root _ '/myopac/lists', {
-                            itemPage => itemPage + 2
-                        }) %]'>[% itemPage + 2 %]</a>
+                            item_page => item_page + 2
+                        }) %]'>[% item_page + 2 %]</a>
                     [%- END; -%]
-                    [%- IF (itemPage + 3) <= ctx.bb_page_count -%]
+                    [%- IF (item_page + 3) <= ctx.bb_page_count -%]
                         <a href='[% mkurl(ctx.opac_root _ '/myopac/lists', {
-                            itemPage => itemPage + 3
-                        }) %]'>[% itemPage + 3 %]</a>
+                            item_page => item_page + 3
+                        }) %]'>[% item_page + 3 %]</a>
                     [%- END; -%]
 
-                    [%- IF (itemPage + 1) <= ctx.bb_page_count; -%]
+                    [%- IF (item_page + 1) <= ctx.bb_page_count; -%]
                         <a href='[% mkurl(ctx.opac_root _ '/myopac/lists', {
-                            itemPage => itemPage + 1
+                            item_page => item_page + 1
                         }) %]'>[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
                     [%- END; -%]
                  </span>
