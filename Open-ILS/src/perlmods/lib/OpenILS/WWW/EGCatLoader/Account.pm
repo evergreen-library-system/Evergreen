@@ -488,15 +488,19 @@ sub load_myopac_prefs_my_lists {
         $settings{$key}= $val unless $$set_map{$key} eq $val;
     }
 
-    # Send the modified settings off to be saved
-    $U->simplereq(
-        'open-ils.actor',
-        'open-ils.actor.patron.settings.update',
-        $self->editor->authtoken, undef, \%settings);
+    if (keys %settings) { # we found a different setting value
+        # Send the modified settings off to be saved
+        $U->simplereq(
+            'open-ils.actor',
+            'open-ils.actor.patron.settings.update',
+            $self->editor->authtoken, undef, \%settings);
 
-    # re-fetch user prefs
-    $self->ctx->{updated_user_settings} = \%settings;
-    return $self->_load_user_with_prefs || Apache2::Const::OK;
+        # re-fetch user prefs
+        $self->ctx->{updated_user_settings} = \%settings;
+        $stat = $self->_load_user_with_prefs;
+    }
+
+    return $stat || Apache2::Const::OK;
 }
 
 sub fetch_user_holds {
@@ -1830,61 +1834,23 @@ sub load_myopac_bookbags {
             grep { $_->id eq $self->cgi->param("bbid") } @{$ctx->{bookbags}};
 
         if ($bookbag) {
+            my $query = $self->_prepare_bookbag_container_query(
+                $bookbag->id, $sorter, $modifier
+            );
+
             # Calculate total count of the items in selected bookbag.
             # This total includes record entries that have no assets available.
-            my $iq = {
-                'select' => { 'acn' => [ { 'column' => 'record', 'distinct' => 'true', 'transform' => 'count', 'aggregate' => 'true', 'alias' => 'count' } ] },
-                'from' => {'cbrebi' =>
-                    { 'bre' =>
-                        { 'join' =>
-                            { 'acn' =>
-                                { 'join' =>
-                                    { 'acp' =>
-                                        { 'join' =>
-                                            { 'ccs' => {}
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                'where' => {
-                        '+cbrebi' => { 'bucket' => $bookbag->id },
-                        '+acn' => { 'deleted' => 'f' },
-                        '+ccs' => { 'opac_visible' => 't' },
-                        '+acp' => {
-                                'deleted' => 'f',
-                                'opac_visible' => 't'
-                            }
-                    }
-            };
-            my $ir = $e->json_query($iq);
-            $ctx->{bb_item_count} = $ir->[0]->{'count'};
-            #now add ebooks
-            my $ebook_q = {
-                'select' => { 'cbrebi' => [ { 'column' => 'target_biblio_record_entry', 'distinct' => 'true', 'transform' => 'count', 'aggregate' => 'true', 'alias' => 'count' } ] },
-                'from' => {'cbrebi' =>
-                    { 'bre' =>
-                        { 'join' =>
-                            {
-                                'cbs' => {}
-                            }
-                        }
-                    }
-                },
-                'where' => {
-                        '+cbrebi' => { 'bucket' => $bookbag->id },
-                        '+bre' => {
-                                'deleted' => 'f',
-                                'active' => 't'
-                            },
-                        '+cbs' => { 'transcendant' => 't' }
-                    }
-            };
-            my $ebook_r = $e->json_query($ebook_q);
-            $ctx->{bb_item_count} = $ctx->{bb_item_count} + $ebook_r->[0]->{'count'};
+            my $bb_search_results = $U->simplereq(
+                "open-ils.search", "open-ils.search.biblio.multiclass.query",
+                {"limit" => 1, "offset" => 0}, $query
+            ); # we only need the count, so do the actual search with limit=1
+
+            if ($bb_search_results) {
+                $ctx->{bb_item_count} = $bb_search_results->{count};
+            } else {
+                $logger->warn("search failed in load_myopac_bookbags()");
+                $ctx->{bb_item_count} = 0; # fallback value
+            }
 
             #calculate page count
             $ctx->{bb_page_count} = int ((($ctx->{bb_item_count} - 1) / $item_limit) + 1);
@@ -1913,10 +1879,6 @@ sub load_myopac_bookbags {
             # transaction rollback under the covers.
             $e->rollback;
 
-
-            my $query = $self->_prepare_bookbag_container_query(
-                $bookbag->id, $sorter, $modifier
-            );
 
             # For list items pagination
             my $args = {
