@@ -55,13 +55,17 @@ function my_init() {
 }
 
 function default_focus() {
-    opac_wrapper_set_help_context(); 
+    opac_wrapper_set_help_context();
 }
 
 function opac_wrapper_set_help_context() {
     try {
+        var tabs = window.parent.document.getElementById('main_tabs');
+        var idx = tabs.selectedIndex;
+        var tab = tabs.childNodes[idx];
+        tab.in_marc_edit = false;
         dump('Entering opac.js, opac_wrapper_set_help_context\n');
-        var cw = bottom_pane.get_contentWindow(); 
+        var cw = bottom_pane.get_contentWindow();
         if (cw && typeof cw['location'] != 'undefined') {
             if (typeof cw.help_context_set_locally == 'undefined') {
                 var help_params = {
@@ -77,6 +81,10 @@ function opac_wrapper_set_help_context() {
                 if (typeof cw.default_focus == 'function') {
                     cw.default_focus();
                 }
+            }
+            var marceditRe = /\/marcedit.xul$/;
+            if (marceditRe.exec(cw.location)) {
+                tab.in_marc_edit = true;
             }
         } else {
             dump('opac.js: problem in opac_wrapper_set_help_context(): bottom_pane = ' + bottom_pane + ' cw = ' + cw + '\n');
@@ -109,7 +117,7 @@ function set_brief_view() {
         "get_barcode", "reload_opac", "get_barcode_and_settings"
     ].forEach(function(k) { content_params[k] = xulG[k]; });
 
-    top_pane.set_iframe( 
+    top_pane.set_iframe(
         url,
         {},
         content_params
@@ -124,7 +132,7 @@ function set_marc_view() {
     } else {
         bottom_pane.set_iframe( xulG.url_prefix( 'XUL_MARC_VIEW?docid=' ) + window.encodeURIComponent(docid),{},xulG);
     }
-    opac_wrapper_set_help_context(); 
+    opac_wrapper_set_help_context();
     bottom_pane.get_contentWindow().addEventListener('load',opac_wrapper_set_help_context,false);
 }
 
@@ -149,7 +157,7 @@ function set_marc_edit() {
                             var obj = {};
                             JSAN.use('util.network'); obj.network = new util.network();
                             JSAN.use('util.error'); obj.error = new util.error();
-                        
+
                             var title = '';
                             if (params.copy_ids && params.copy_ids.length > 1 && params.edit == 1)
                                 title = $("offlineStrings").getString('staff.cat.util.copy_editor.batch_edit');
@@ -232,7 +240,7 @@ function set_marc_edit() {
                                         )
                                     },
                                     {
-                                        'doc_id' : doc_id, 
+                                        'doc_id' : doc_id,
                                         'existing_copies' : [ copy_obj ],
                                         'load_opac_when_done' : true,
                                         'labels_in_new_tab' : true
@@ -286,7 +294,7 @@ function set_marc_edit() {
     } else {
         bottom_pane.set_iframe( a,b,c );
     }
-    opac_wrapper_set_help_context(); 
+    opac_wrapper_set_help_context();
     bottom_pane.get_contentWindow().addEventListener('load',opac_wrapper_set_help_context,false);
 }
 
@@ -298,7 +306,7 @@ function set_copy_browser() {
     } else {
         bottom_pane.set_iframe( xulG.url_prefix( 'XUL_COPY_VOLUME_BROWSE?docid=' ) + window.encodeURIComponent(docid),{},xulG);
     }
-    opac_wrapper_set_help_context(); 
+    opac_wrapper_set_help_context();
     bottom_pane.get_contentWindow().addEventListener('load',opac_wrapper_set_help_context,false);
 }
 
@@ -310,7 +318,7 @@ function set_hold_browser() {
     } else {
         bottom_pane.set_iframe( xulG.url_prefix( 'XUL_HOLDS_BROWSER?docid=' ) + window.encodeURIComponent(docid),{},xulG);
     }
-    opac_wrapper_set_help_context(); 
+    opac_wrapper_set_help_context();
     bottom_pane.get_contentWindow().addEventListener('load',opac_wrapper_set_help_context,false);
 }
 
@@ -329,7 +337,7 @@ function open_acq_orders() {
             "set_patron_tab", "volume_item_creator", "get_new_session",
             "holdings_maintenance_tab", "set_tab_name", "open_chrome_window",
             "url_prefix", "network_meter", "page_meter", "set_statusbar",
-            "set_help_context", "get_barcode", "reload_opac", 
+            "set_help_context", "get_barcode", "reload_opac",
             "get_barcode_and_settings"
         ].forEach(function(k) { content_params[k] = xulG[k]; });
 
@@ -391,11 +399,11 @@ function open_alt_serial_mgmt() {
 function set_opac() {
     g.view = 'opac';
     try {
-        var content_params = { 
+        var content_params = {
             'show_nav_buttons' : true,
             'show_print_button' : true,
-            'passthru_content_params' : { 
-                'authtoken' : ses(), 
+            'passthru_content_params' : {
+                'authtoken' : ses(),
                 'authtime' : ses('authtime'),
                 'window_open' : function(a,b,c) {
                     try {
@@ -462,7 +470,7 @@ function set_opac() {
                         }
                     }
                 );
-                
+
                 g.f_record_start = null; g.f_record_prev = null;
                 g.f_record_next = null; g.f_record_end = null;
                 g.f_record_back_to_results = null;
@@ -470,22 +478,6 @@ function set_opac() {
                 $('record_prev').disabled = true; $('record_end').disabled = true;
                 $('record_back_to_results').disabled = true;
                 $('record_pos').setAttribute('value','');
-
-                function safe_to_proceed() {
-                    if (typeof xulG.is_tab_locked == 'undefined') { return true; }
-                    if (! xulG.is_tab_locked()) { return true; }
-                    var r = window.confirm(
-                        document.getElementById('offlineStrings').getString(
-                           'generic.unsaved_data_warning'
-                        )
-                    );
-                    if (r) {
-                        while ( xulG.unlock_tab() > 0 ) {};
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
 
                 win.attachEvt("rdetail", "nextPrevDrawn",
                     function(rIndex,rCount){
@@ -509,7 +501,7 @@ function set_opac() {
                             $('record_prev').disabled = false;
                         }
                         if (win.rdetailStart) {
-                            g.f_record_start = function() { 
+                            g.f_record_start = function() {
                                 if (safe_to_proceed()) {
                                     g.view_override = g.view;
                                     win.rdetailStart();
@@ -518,7 +510,7 @@ function set_opac() {
                             $('record_start').disabled = false;
                         }
                         if (win.rdetailEnd) {
-                            g.f_record_end = function() { 
+                            g.f_record_end = function() {
                                 if (safe_to_proceed()) {
                                     g.view_override = g.view;
                                     win.rdetailEnd();
@@ -962,7 +954,7 @@ function undelete_record() {
 }
 
 function refresh_display(id) {
-    try { 
+    try {
         marc_view_reset = true;
         marc_edit_reset = true;
         copy_browser_reset = true;
@@ -996,7 +988,7 @@ function refresh_display(id) {
             case 'opac' :
             default: set_opac(); break;
         }
-        opac_wrapper_set_help_context(); 
+        opac_wrapper_set_help_context();
     } catch(E) {
         g.error.standard_unexpected_error_alert('in refresh_display',E);
     }
@@ -1019,9 +1011,9 @@ function add_volumes() {
             edit = g.network.request(
                 api.PERM_MULTI_ORG_CHECK.app,
                 api.PERM_MULTI_ORG_CHECK.method,
-                [ 
-                    ses(), 
-                    ses('staff_id'), 
+                [
+                    ses(),
+                    ses('staff_id'),
                     [ ses('ws_ou') ],
                     [ 'CREATE_VOLUME', 'CREATE_COPY' ]
                 ]
@@ -1183,4 +1175,60 @@ function gen_statusbar_click_handler(data_key) {
     }
 }
 
+function record_action(action_function) {
+    if (safe_to_proceed()) {
+        var args = Array.prototype.slice.call(arguments, 1);
+        if (action_function.name == 'set_marc_edit') {
+            var tabs = window.parent.document.getElementById('main_tabs');
+            var idx = tabs.selectedIndex;
+            var tab = tabs.childNodes[idx];
 
+            if (tab.marc_edit_changed) {
+                xulG.lock_tab();
+                tab.marc_edit_allow_multiple_locks = false;
+            }
+        }
+            
+        return action_function.apply(null, args);
+    }
+}
+
+function safe_to_proceed() {
+    //Check to see if we are not in marc edit.  Or if we are, is 
+    //marc_edit_changed not true? We check for != true because it 
+    //migth also be undefined and if it is and we are checking
+    //for false the test will fail
+
+    var in_marc_edit;
+    var marc_edit_changed;
+
+    var tabs = window.parent.document.getElementById('main_tabs');
+    var idx = tabs.selectedIndex;
+    var tab = tabs.childNodes[idx];
+
+    in_marc_edit = tab.in_marc_edit;
+    marc_edit_changed = tab.marc_edit_changed;
+
+    if ((in_marc_edit != true) || (marc_edit_changed != true)) {
+        if (typeof xulG.is_tab_locked == 'undefined') { return true; }
+        if (! xulG.is_tab_locked()) { return true; }
+    }
+    var r = window.confirm(
+        document.getElementById('offlineStrings').getString(
+           'generic.unsaved_data_warning'
+        )
+    );
+
+    //If we are confirming from within MARC edit then
+    //drop the tab locks.  Otherwise the locks get dropped
+    //in cmd_search_tcn
+    if (r) {
+        if (typeof xulG.unlock_tab === 'function') {
+            while ( xulG.unlock_tab() > 0 ) {};
+        }
+
+        return true;
+    } else {
+        return false;
+    }
+}

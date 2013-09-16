@@ -44,19 +44,19 @@
             <menubar>
                 <menu label="&staff.cat.opac.menu.label;" accesskey="&staff.cat.opac.menu.accesskey;">
                 <menupopup>
-                <menuitem label="&staff.cat.opac.opac_view.label;" accesskey="" id="opac_view" oncommand="set_opac();"/>
-                <menuitem label="&staff.cat.opac.marc_view.label;" accesskey="&staff.cat.opac.marc_view.accesskey;" id="marc_view" oncommand="set_marc_view();"/>
-                <menuitem label="&staff.cat.opac.marc_edit.label;" accesskey="&staff.cat.opac.marc_edit.accesskey;" id="marc_edit" oncommand="set_marc_edit();"/>
-                <menuitem label="&staff.cat.opac.copy_browse.label;" accesskey="&staff.cat.opac.copy_browse.accesskey;" id="copy_browse" oncommand="set_copy_browser();"/>
-                <menuitem label="&staff.cat.opac.manage_multi_home_items.label;" accesskey="&staff.cat.opac.manage_multi_home_items.accesskey;" id="manage_multi_home_items" oncommand="manage_multi_home_items();"/>
-                <menuitem label="&staff.cat.opac.manage_parts.label;" accesskey="&staff.cat.opac.manage_parts.accesskey;" id="manage_parts" oncommand="manage_parts();"/>
-                <menuitem label="&staff.cat.opac.view_holds.label;" accesskey="&staff.cat.opac.view_holds.accesskey;" id="view_holds" oncommand="set_hold_browser();"/>
+                <menuitem label="&staff.cat.opac.opac_view.label;" accesskey="" id="opac_view" oncommand="record_action(set_opac);"/>
+                <menuitem label="&staff.cat.opac.marc_view.label;" accesskey="&staff.cat.opac.marc_view.accesskey;" id="marc_view" oncommand="record_action(set_marc_view);"/>
+                <menuitem label="&staff.cat.opac.marc_edit.label;" accesskey="&staff.cat.opac.marc_edit.accesskey;" id="marc_edit" oncommand="record_action(set_marc_edit);"/>
+                <menuitem label="&staff.cat.opac.copy_browse.label;" accesskey="&staff.cat.opac.copy_browse.accesskey;" id="copy_browse" oncommand="record_action(set_copy_browser);"/>
+                <menuitem label="&staff.cat.opac.manage_multi_home_items.label;" accesskey="&staff.cat.opac.manage_multi_home_items.accesskey;" id="manage_multi_home_items" oncommand="record_action(manage_multi_home_items);"/>
+                <menuitem label="&staff.cat.opac.manage_parts.label;" accesskey="&staff.cat.opac.manage_parts.accesskey;" id="manage_parts" oncommand="record_action(manage_parts);"/>
+                <menuitem label="&staff.cat.opac.view_holds.label;" accesskey="&staff.cat.opac.view_holds.accesskey;" id="view_holds" oncommand="record_action(set_hold_browser);"/>
                 <menuitem label="&staff.cat.opac.view_orders.label;" accesskey="&staff.cat.opac.view_orders.accesskey;" id="view_orders" oncommand="open_acq_orders();"/>
                 <menuseparator/>
                 <menuitem label="&staff.cat.opac.add_bucket.label;" accesskey="&staff.cat.opac.add_bucket.accesskey;" id="add_bucket" oncommand="add_to_bucket();"/>
                 <menuitem label="&staff.cat.opac.mark_for_overlay.label;" accesskey="&staff.cat.opac.mark_for_overlay.accesskey;" id="mark_for_overlay" oncommand="mark_for_overlay();"/>
-                <menuitem label="&staff.cat.opac.delete_record.label;" accesskey="&staff.cat.opac.delete_record.accesskey;" id="delete_record" oncommand="delete_record();"/>
-                <menuitem label="&staff.cat.opac.undelete_record.label;" accesskey="&staff.cat.opac.undelete_record.accesskey;" id="undelete_record" oncommand="undelete_record();"/>
+                <menuitem label="&staff.cat.opac.delete_record.label;" accesskey="&staff.cat.opac.delete_record.accesskey;" id="delete_record" oncommand="record_action(delete_record);"/>
+                <menuitem label="&staff.cat.opac.undelete_record.label;" accesskey="&staff.cat.opac.undelete_record.accesskey;" id="undelete_record" oncommand="record_action(undelete_record);"/>
                 <menuseparator/>
                 <menuitem label="&staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.accesskey;" id="add_volumes" oncommand="add_volumes();"/>
                 <menuitem label="&staff.cat.opac.mark_for_hold_transfer.label;" accesskey="&staff.cat.opac.mark_for_hold_transfer.accesskey;" id="mark_for_hold_transfer" oncommand="mark_for_hold_transfer();"/>
@@ -73,12 +73,12 @@
                         <menu id="mfhd_delete" label="&staff.serial.mfhd_menu.delete.label;"/>
                     </menupopup>
                 </menu>
-                <menuitem id="serctrl_view" label="&staff.serial.serctrl_view.label;" oncommand="set_serctrl_view();" />
+                <menuitem id="serctrl_view" label="&staff.serial.serctrl_view.label;" oncommand="record_action(set_serctrl_view);" />
                 <menuitem label="&staff.cat.opac.alt_serial.label;" accesskey="&staff.cat.opac.alt_serial.accesskey;" id="alt_serial" oncommand="open_alt_serial_mgmt();" />
                 <menuitem label="&staff.cat.opac.batch_receive.label;" accesskey="&staff.cat.opac.batch_receive.accesskey;" id="batch_receive" oncommand="batch_receive_in_new_tab();"/>
                 <menuseparator/>
                 <menuitem label="&staff.cat.opac.default.label;" id="default" oncommand="set_default();"/>
-                <menuitem label="&staff.cat.opac.refresh_me.label;" id="refresh_me" oncommand="refresh_display(docid);"/>
+                <menuitem label="&staff.cat.opac.refresh_me.label;" id="refresh_me" oncommand="record_action(refresh_display, docid);"/>
                 </menupopup>
                 </menu>
             </menubar>

@@ -43,6 +43,7 @@
     <script type="text/javascript" src="constants.js"/>
     <script type="text/javascript" src="../OpenILS/util/fmall.js"/>
     <script type="text/javascript" src="menu.js"/>
+    <script type="text/javascript" src="../cat/opac.js"/>
     <script type="text/javascript">
     <![CDATA[
         function setup_idle_observer(delay) {

@@ -408,6 +408,36 @@ main.menu.prototype = {
             'cmd_search_tcn' : [
                 ['oncommand'],
                 function(event) {
+                    //obj is defined at the beginning of this block
+                    var idx = obj.controller.view.tabs.selectedIndex;
+                    var tab = obj.controller.view.tabs.childNodes[ idx ];
+                    var id = tab.getAttribute('id');
+                    var lose_saved_data_confirmed = 0;
+
+                    if (id) {
+                        var confirmation;
+                        if (tab.in_marc_edit) {
+                            confirmation = safe_to_proceed();
+                            if (!confirmation) { return; }
+                        }
+
+                        if (typeof obj.tab_semaphores[id] != 'undefined') {
+                            if (obj.tab_semaphores[id] > 0) {
+                                //If confirmation has not been defined yet
+                                //make sure we prompt for possible loss of data
+                                if (typeof confirmation == undefined) {
+                                    confirmation = window.confirm(offlineStrings.getString('menu.replace_tab.unsaved_data_warning'));
+                                }
+
+                                if (!confirmation) { return; }
+                                oils_unsaved_data_P( obj.tab_semaphores[id] );
+                                lose_saved_data_confirmed = 1;
+                            }
+
+                            delete obj.tab_semaphores[id];
+                        }
+                    }
+
                     var tcn = prompt(offlineStrings.getString('menu.cmd_search_tcn.tab'),'',offlineStrings.getString('menu.cmd_search_tcn.prompt'));
 
                     function spawn_tcn(r,event) {
@@ -436,7 +466,7 @@ main.menu.prototype = {
                             }
                         }
                     }
-
+					
                     if (tcn) {
                         JSAN.use('util.network');
                         var network = new util.network();
@@ -453,6 +483,16 @@ main.menu.prototype = {
                             }
                         } else {
                             spawn_tcn(robj,event);
+                        }
+                    } else {
+                        if (lose_saved_data_confirmed) {
+                            //Reinstate the unsaved data count on this tab.
+                            //This is necessary if the user clicks that it is ok
+                            //to lose data, then cancels the TCN search.
+                            //This code ensures that they are prompted that they might lose
+                            //data if they replace the tab again.
+                            obj.tab_semaphores[id] = 1;
+                            oils_unsaved_data_V();
                         }
                     }
                 }
@@ -2426,6 +2466,11 @@ commands:
         if (params.focus) tab.focus();
         var panel = this.controller.view.panels.childNodes[ idx ];
         while ( panel.lastChild ) panel.removeChild( panel.lastChild );
+        //We need to set tab.marc_edit_changed to false here, so if the user goes
+        //back to the MARC edit tab from a newly retrieved record when they had
+        //previously edited the record that used to be in the tab then
+        //the tab will not be relocked
+        tab.marc_edit_changed = false;
 
         content_params.is_tab_locked = function() {
             dump('is_tab_locked\n');
@@ -2451,7 +2496,19 @@ commands:
             if (typeof obj.tab_semaphores[id] == 'undefined') {
                 obj.tab_semaphores[id] = 0;
             }
-            obj.tab_semaphores[id]--;
+
+            //If we are in marc edit, then unlock is only calld when saving
+            //the edits.  So, drop all locks in this case.
+            //Otherwise leave the code as is because I am not sure how other parts
+            //of the staff client interact with the tab locking
+            if (tab.in_marc_edit) {
+                obj.tab_semaphores[id] = 0;
+                //allow multiple locks again, so if we
+                //return to marc edit we can put a lock on it again
+                tab.marc_edit_allow_multiple_locks = true;
+            } else {
+                obj.tab_semaphores[id]--;
+            }
             if (obj.tab_semaphores[id] < 0) { obj.tab_semaphores[id] = 0; } 
             oils_unsaved_data_P();
             return obj.tab_semaphores[id]; 

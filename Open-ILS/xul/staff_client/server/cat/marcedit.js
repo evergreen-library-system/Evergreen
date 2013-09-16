@@ -566,11 +566,15 @@ function setFocusToNextTag (row, direction) {
 
 function set_lock_on_keypress(ev) {
     try {
+        var tabs = window.parent.parent.document.getElementById('main_tabs');
+        var idx = tabs.selectedIndex;
+        var tab = tabs.childNodes[idx];
         //dump('keypress: isChar = ' + ev.isChar + ' char = ' + ev.char + ' charCode = ' + ev.charCode + ' key = ' + ev.key + ' keyCode = ' + ev.keyCode + '\n');
         if (! /* NOT */(
                 ev.altKey
                 || ev.ctrlKey
                 || ev.metaKey
+                || ev.shiftKey
                 || ev.keyCode == ev.DOM_VK_F1
                 || ev.keyCode == ev.DOM_VK_F2
                 || ev.keyCode == ev.DOM_VK_F3
@@ -596,7 +600,9 @@ function set_lock_on_keypress(ev) {
                 || ev.keyCode == ev.DOM_VK_F23
                 || ev.keyCode == ev.DOM_VK_F24
         )) {
-            oils_lock_page();
+            var params = {};
+            params.allow_multiple_locks = tab.marc_edit_allow_multiple_locks;
+            oils_lock_page(params);
         }
     } catch(E) {
         alert(E);
@@ -604,7 +610,6 @@ function set_lock_on_keypress(ev) {
 }
 
 function createMARCTextbox (element,attrs) {
-
     var box = createComplexXULElement('textbox', attrs, Array.prototype.slice.apply(arguments, [2]) );
     box.addEventListener(
         'keypress',
@@ -1219,11 +1224,16 @@ function fastItemAdd_attempt(doc_id) {
 function save_attempt(xml_string) {
     try {
         var result = window.xulG.save.func( xml_string );
+        var tabs = window.parent.parent.document.getElementById('main_tabs');
+        var idx = tabs.selectedIndex;
+        var tab = tabs.childNodes[idx];
+        var result = window.xulG.save.func( xml_string );
         // I'd prefer to pass on_complete on through to fast_item_add,
         // but with the way these window scopes get destroyed with
         // tab replacement, maybe not a good idea
         var replace_on_complete = false;
         if (result) {
+            tab.marc_edit_changed = false;
             oils_unlock_page();
             if (result.id) {
                 replace_on_complete = fastItemAdd_attempt(result.id);
@@ -1350,6 +1360,12 @@ function marcSubfield (sf) {
 
 function loadRecord() {
     try {
+            var tabs = window.parent.parent.document.getElementById('main_tabs');
+            var idx = tabs.selectedIndex;
+            var tab = tabs.childNodes[idx];
+            tab.marc_edit_changed = false;
+            tab.marc_edit_allow_multiple_locks = true;
+
             var grid_rows = document.getElementById('recGrid').lastChild;
 
             while (grid_rows.firstChild) grid_rows.removeChild(grid_rows.firstChild);
