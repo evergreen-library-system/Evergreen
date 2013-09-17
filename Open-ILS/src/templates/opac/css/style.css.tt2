@@ -897,6 +897,7 @@ table.acct_notes th {
     font-weight:normal;
     position:relative;
     top:3px;
+    max-width:300px;
 }
 
 #myopac_tabs, #adv_search_parent, #fines_payments_wrapper {

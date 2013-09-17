@@ -17,7 +17,7 @@
     <h1>[% l('Log in to Your Account') %]</h1>
     [% l('Please enter the following information:') %]
     <form method='post'>
-        <div style="float: left; padding-bottom: 10px; margin-right: 20px;">
+        <div style="float: left; padding-bottom: 10px; margin-right: 40px;">
             <label for='username_field' class="lbl1" >[% l('Library Card Number or Username') %]</label>
             <div class="input_bg">
                 <input type='text' id="username_field" name="username" autofocus />
