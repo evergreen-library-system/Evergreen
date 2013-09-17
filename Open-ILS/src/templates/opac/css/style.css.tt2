@@ -1612,7 +1612,11 @@ a.preflib_change {
     padding-right: 10px;
 }
 
-.small_view_only {
+.result_footer_nav1 {
+    clear: both;
+}
+
+.small_view_only, #refine_hits {
     display: none;
 }
 
@@ -1772,9 +1776,6 @@ a.preflib_change {
     .results_header_nav1 span.h1 {
         display: none;
     }
-    .facet_sidebar {
-        display: none;
-    }
     .preflib {
         display: none;
     }
@@ -1851,5 +1852,21 @@ a.preflib_change {
     #main-content-home {
         padding: 0px;
         margin: 0px;
+    }
+    /* Make use of full width in mobile mode */
+    .facet_box_wrapper .box_wrapper .box,
+    .facet_template .facet,
+    .facet_box_temp {
+        width: inherit;
+    }
+    .facet_template .count {
+        padding-left: 1em;
+    }
+    .facet_sidebar {
+        margin-top: 0.5em;
+    }
+    #refine_hits {
+        display: block;
+        padding-left: 15px;
     }
 }
