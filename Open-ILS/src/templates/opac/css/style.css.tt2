@@ -896,6 +896,14 @@ table.acct_notes th {
     font-size: [% css_fonts.size_bigger %];
 }
 
+.adv_search_catalog_lbl {
+    font-size: [% css_fonts.size_bigger %];
+}
+
+.browse_the_catalog_lbl {
+    font-size: [% css_fonts.size_bigger %];
+}
+
 .lbl1 {
     font-size: [% css_fonts.size_bigger %];
     font-weight:bold;

@@ -17,9 +17,9 @@
           # INCLUDE "opac/parts/searchbar.tt2" %]
         <div id="search-box">
             <span class="search_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/home', {}, depart_list) %]">[% l('Search the Catalog') %]</a></span>
-            <span><a href="[% mkurl(ctx.opac_root _ '/advanced', {}, depart_list) %]"
+            <span class="adv_search_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/advanced', {}, depart_list) %]"
                     id="home_adv_search_link">[%l('Advanced Search')%]</a></span>
-            <span>[% l('Browse the Catalog') %]</span>
+            <span class="browse_the_catalog_lbl">[% l('Browse the Catalog') %]</span>
         </div>
     </div>
     <div id="content-wrapper">
