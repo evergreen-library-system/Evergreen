@@ -1610,3 +1610,245 @@ a.preflib_change {
     color: red;
     padding-right: 10px;
 }
+
+.small_view_only {
+    display: none;
+}
+
+@media only screen and (max-width: 600px) {
+    body {
+        font-size: 12pt;
+    }
+    input, select {
+        font-size: 110%;
+    }
+    span .nav_arrow_fix {
+        display: none;
+    }
+    #header {
+        padding: 0px;
+        margin: 0px;
+    }
+    #homesearch_main_logo img {
+        width:75%;
+    }
+    #home_adv_search_link {
+        display: none;
+    }
+    #format_selector {
+        display:none;
+    }
+    #your-acct-login {
+        padding: 0px;
+        padding-top: 10px;
+    }
+    #your-acct-login a {
+        margin: 0px;
+        padding: 5px;
+    }
+    #topnav_logo {
+        padding: 0px;
+    }
+    #topnav_logo img {
+        width: 200px;
+    }
+    #locale_picker_form {
+        display: none;
+    }
+    #gold-links-holder {
+        display: none;
+    }
+    #search-wrapper {
+        display: none;
+    }
+    #simple-detail-view-links {
+        display: none;
+    }
+    .results_header_btns:nth-child(2) {
+        display: none;
+    }
+    .opac-button {
+        padding: 5px;
+        margin: 3px;
+    }
+    #acct_tabs a, #acct_fines_tabs a {
+       padding: 2px 4px 3px 4px;
+       -moz-border-radius: 6px 6px 0px 0px;
+       border-radius: 6px 6px 0px 0px;
+       font-size: 100%; 
+       margin: 0px 5px 0px 0px;
+    }
+    #acct_fines_tabs {
+       display: none;
+    }
+    #acct_tabs {
+       height: 20px;
+       margin: 1em 0em 0em .5em;
+    }
+    #acct_tabs a:nth-child(4), #acct_tabs a:nth-child(5) {
+        display: none;
+    }
+    #acct_checked_tabs {
+        display:none;
+    }
+    #acct_checked_main_header tr td:nth-child(5), #acct_checked_main_header tr td:nth-child(6) {
+        display:none;
+    }
+    #acct_checked_temp table tr td:nth-child(5), #acct_checked_temp table tr td:nth-child(6) {
+        display: none;
+    }
+    #acct_holds_tabs {
+        display: none;
+    }
+    #holds_main form table.opac-auto-097 tr td:nth-child(3), #holds_main form table.opac-auto-097 tr td:nth-child(5) {
+        display: none;
+    }
+    #acct_holds_main_header tr td:nth-child(3), 
+    #acct_holds_main_header tr td:nth-child(4), #acct_holds_main_header tr td:nth-child(5), 
+    #acct_holds_main_header tr td:nth-child(6), #acct_holds_main_header tr td:nth-child(7), 
+    #acct_holds_main_header tr td:nth-child(8) {
+        display: none;
+    }
+    tr#acct_holds_temp td:nth-child(3), 
+    tr#acct_holds_temp td:nth-child(4), tr#acct_holds_temp td:nth-child(5), 
+    tr#acct_holds_temp td:nth-child(6), tr#acct_holds_temp td:nth-child(7), 
+    tr#acct_holds_temp td:nth-child(8), tr#acct_holds_temp td:nth-child(10) {
+        display: none;
+    }
+    #dash_wrapper div {
+        background: transparent;
+        padding: 0px;
+    }
+    #dash_wrapper {
+        position: static;
+        top: auto;
+    }
+    #dash_wrapper .opac-button {
+        top: 0px;
+    }
+    .small_view_only {
+        display: inline !important;
+    }
+    #dash_identity a {
+        float:right;
+    }
+    #dashboard {
+        display: none;
+    }
+    #holds_box form blockquote {
+        margin-left: 10px;
+        margin-right: 2px;
+    }
+    #holds_box form blockquote select {
+        width: 100%;
+    }
+    #myopac_sum_fines_placehold {
+        display:none;
+    }
+    #myopac_sum_fines {
+        display: none;
+    }
+    #myopac_circ_trans_row td:nth-child(2), #myopac_circ_trans_row td:nth-child(3),
+    #myopac_circ_trans_row td:nth-child(4), #myopac_circ_trans_row td:nth-child(5) {
+        display: none;
+    }
+    #myopac_trans_row td:nth-child(1), #myopac_trans_row td:nth-child(2), 
+    #myopac_trans_row td:nth-child(3), #myopac_trans_row td:nth-child(4) {
+        display: none;
+    }
+    /* Hack el terrible... */
+    #myopac_circ_trans_div table thead tr td:nth-child(2), #myopac_circ_trans_div table thead tr td:nth-child(3), 
+    #myopac_circ_trans_div table thead tr td:nth-child(4), #myopac_circ_trans_div table thead tr td:nth-child(5) { 
+        display:none;
+    }
+    #myopac_trans_div table thead tr td:nth-child(1), #myopac_trans_div table thead tr td:nth-child(2), 
+    #myopac_trans_div table thead tr td:nth-child(3), #myopac_trans_div table thead tr td:nth-child(4) {
+        display: none;
+    } 
+    .results_header_div, .results_header_lbl {
+        display: none;
+    }
+    .results_header_nav1 span.h1 {
+        display: none;
+    }
+    .facet_sidebar {
+        display: none;
+    }
+    .preflib {
+        display: none;
+    }
+    .start_end_links_span {
+        /* font-size: 12px; test */
+        display: block;
+    }
+    .invisible {
+        display: none;
+    }
+    .result_table_utils_cont {
+        display: none;
+    }
+    .result_table_pic_header {
+        padding-left: 0px !important;
+        padding-right: 5px;
+        width: 0px !important;
+        margin: 0px;
+    }
+    .result_table_pic {
+        width: 55px;
+        padding: 0px;
+        margin: 0px;
+    }
+    tr[name=results_isbn_tr], tr[name=results_phys_desc_tr], tr[name=results_pub_tr] strong, .result_count {
+         display: none;
+    }
+    tr.result_table_title_cell[name=bib_cn_list] .result_holdings_table th:nth-child(4),
+    tr.result_table_title_cell[name=bib_cn_list] .result_holdings_table td:nth-child(4) {
+        display:none;
+    }
+    .results_info_table td {
+        padding: 0px;
+    }
+    #results_header_bar {
+        background-color: inherit;
+    }
+    .results_header_btns a {
+        margin: 0px;
+    }
+    #main-content {
+        margin-left: 1px;
+    }
+    #rdetail_actions_div {
+        float: none !important;
+    }
+    #rdetail_actions_div div:nth-child(2), #rdetail_actions_div div:nth-child(3) {
+        display: none;
+    }
+    div#rdetail_title_div .format_icon {
+        float: none;
+        display: inline;
+        margin-right: 5px;
+    }
+    #rdetail_title {
+        float: none;
+        display: inline;
+    }
+    #rdetails_status thead {
+        display: none;
+    }
+    #rdetails_status tr, #rdetails_status td {
+        display: block;
+    }
+    select#pickup_lib.search-wrapper-locg {
+        width: 100%;
+    }
+    #search_box {
+        width: 85%;
+    }
+    #qtype {
+        display: none;
+    }
+    #main-content-home {
+        padding: 0px;
+        margin: 0px;
+    }
+}
