@@ -71,6 +71,7 @@ vim:noet:sw=4:ts=4:
         <command id="cmd_mark_sdist"/>
 		<command id="cmd_predict_items"/>
 		<command id="cmd_print_spine_labels"/>
+		<command id="cmd_read_alerts"/>
 		<command id="cmd_receive_items"/>
 		<command id="cmd_refresh_list"/>
 		<command id="cmd_replace_barcode"/>
