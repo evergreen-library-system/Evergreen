@@ -7,6 +7,7 @@
         [% ELSIF ctx.authtime %]
         <meta http-equiv="refresh" content="[% ctx.authtime %]; url=[% ctx.logout_page %]">
         [% END %]
+        <meta name = "viewport" content = "initial-scale = 1.0">
         <link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/default/opac/semiauto.css" />
         <link rel="stylesheet" type="text/css" href="[% ctx.opac_root %]/css/style.css" />
         <title>[% l('Catalog - [_1]', ctx.page_title) %]</title>
