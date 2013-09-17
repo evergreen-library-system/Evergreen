@@ -30,7 +30,7 @@
             <div class="input_bg">
                 <input id="password_field" name="password" type="password" />
             </div>
-            <div>[% INCLUDE "opac/parts/login/password_hint.tt2" %]</div>
+            [% INCLUDE "opac/parts/login/password_hint.tt2" %]
             [% IF reset_password %]
             <a style="font-size: 80%" href='[% mkurl(ctx.opac_root _ '/password_reset', {}, 1) %]'>[% l('Forgot your password?') %]</a>
             [% END %]
