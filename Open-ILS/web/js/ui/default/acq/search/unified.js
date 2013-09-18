@@ -18,6 +18,8 @@ var resultManager;
 var uriManager;
 var pcrud = new openils.PermaCrud();
 var cgi = new openils.CGI();
+var fundSearchFormat = ['${0} (${1})', 'code', 'year'];
+var fundSort = {order_by : {"acqf":"year DESC, code"}};
 
 /* typing save: add {get,set}Value() to all HTML <select> elements */
 HTMLSelectElement.prototype.getValue = function() {
@@ -184,8 +186,11 @@ function TermSelectorFactory(terms) {
                 new openils.widget.AutoFieldWidget({
                     "fmClass": term.hint,
                     "fmField": term.field,
+                    "labelFormat": (term.field == 'fund') ? fundSearchFormat : null,
+                    "searchFormat": (term.field == 'fund') ? fundSearchFormat : null,
                     "noDisablePkey": true,
-                    "parentNode": dojo.create("span", null, parentNode, "only")
+                    "parentNode": dojo.create("span", null, parentNode, "only"),
+                    "searchOptions" : (term.field == 'fund') ? fundSort : null
                 }).build(
                     function(w) {
                         wStore[widgetKey] = w;
