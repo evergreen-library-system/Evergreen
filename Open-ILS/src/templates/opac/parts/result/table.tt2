@@ -45,6 +45,7 @@
                                                 [% END %]
                                             </td>
                                             <td class='result_table_title_cell' name='result_table_title_cell'>
+                                               <div class="result_metadata">
                                                     <abbr class="unapi-id" title='tag:[% ctx.hostname %],[% date.format(date.now, '%Y') %]:biblio-record_entry/[% rec.id %]'></abbr>
                                                     <a class='record_title' name='record_[% rec.id %]' name='item_title'
                                                         href="[% mkurl(ctx.opac_root _ '/record/' _ rec.id) %]"
@@ -65,7 +66,7 @@ FOR entry IN attrs.graphic_titles;
     END;
 END;
 -%]
-                                                <div>
+ 
                                                     <div>
                                                         <a title="[% l("Perform an Author Search") %]"
                                                                 class="record_author" name='item_author'

@@ -708,6 +708,10 @@ tr.result_table_row > td.result_table_title_cell {
     vertical-align: top;
 }
 
+.result_metadata {
+    float: left;
+}
+
 tr.result_table_row:nth-child(n+2) > td {
     border-top: 1px solid [% css_colors.accent_lighter2 %];
 }
@@ -733,6 +737,7 @@ tr.result_table_row > td.result_table_pic_header {
 
 div.result_table_utils_cont {
     text-align:left;
+    float: left;
 }
 
 .icon_text {
