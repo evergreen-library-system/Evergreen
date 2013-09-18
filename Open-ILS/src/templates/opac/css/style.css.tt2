@@ -598,7 +598,6 @@ div.format_icon {
 
 #main-content .left_brain input[type=text], #main-content .left_brain input[type=password] {
     width:167px;
-    height:18px;
     margin:0;
     padding:0;
     background: [% css_colors.background %];
@@ -714,6 +713,7 @@ tr.result_table_row > td.result_table_title_cell {
 .result_metadata {
     float: left;
     width: 30em;
+    padding-right: 2em;
 }
 
 tr.result_table_row:nth-child(n+2) > td {
@@ -1655,6 +1655,15 @@ a.preflib_change {
 
 #search_query_label, #search_qtype_label, #search_itype_label, #search_locg_label {
     white-space: nowrap;
+}
+
+.result_table_title_cell {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.record_title {
+    font-size: [% css_fonts.size_bigger %];
 }
 
 @media only screen and (max-width: 600px) {
