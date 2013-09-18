@@ -1899,4 +1899,10 @@ a.preflib_change {
     .result_metadata {
         width: inherit;
     }
+    div#rdetail_actions_div {
+        float: none;
+    }
+    h2.rdetail_uris {
+        clear: both;
+    }
 }
