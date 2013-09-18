@@ -9,6 +9,21 @@
 
 [%-# This holds the record summary information %]
 <div id="rdetail_summary_header">
+    <div id='rdetail_title_div'>
+        <h1 id='rdetail_title' property="name">[% attrs.title_extended | html %]</h1>
+        [%-
+            FOR link880 IN attrs.graphic_titles;
+                FOR alt IN link880.graphic;
+                    '<h2 class="graphic880"';
+                    IF alt.dir;
+                        ' dir="' _ alt.dir _ '"';
+                    END;
+                    '>'; alt.value | html; '</h2>';
+                END;
+            END;
+        -%]
+        [%- INCLUDE "opac/parts/record/authors.tt2" %]
+    </div>
     <div id="rdetail_image_div">
         [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
         <a href='[% ctx.media_prefix %]/opac/extras/ac/jacket/large/[% ident | uri %]'><img
@@ -17,7 +32,11 @@
         [% END %]
         <br />
     </div>
-
+    [%- IF attrs.format_label %]
+    <div id="rdetail_format_label">
+        [%- attrs.format_label -%]
+    </div>
+    [%- END %]
     <div id="rdetail_actions_div">
         [%- search_ou = ctx.search_ou;
             IF ctx.place_unfillable ||
@@ -54,26 +73,6 @@
         [%- IF ctx.refworks.enabled == 'true' %]
             [%- INCLUDE 'opac/parts/record/refworks.tt2' %]
         [%- END %]
-    </div>
-    <div id='rdetail_title_div'>
-        [%- IF attrs.format_icon %]
-        <div class="format_icon">
-            <img alt="[% attrs.format_label %]" title="[% attrs.format_label | html %]" src="[% attrs.format_icon %]" />
-        </div>
-        [%- END %]
-        <h1 id='rdetail_title' property="name">[% attrs.title_extended | html %]</h1>
-        [%-
-            FOR link880 IN attrs.graphic_titles;
-                FOR alt IN link880.graphic;
-                    '<h2 class="graphic880"';
-                    IF alt.dir;
-                        ' dir="' _ alt.dir _ '"';
-                    END;
-                    '>'; alt.value | html; '</h2>';
-                END;
-            END;
-        -%]
-        [%- INCLUDE "opac/parts/record/authors.tt2" %]
     </div>
 </div>
 

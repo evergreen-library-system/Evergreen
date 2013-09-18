@@ -1643,6 +1643,10 @@ a.preflib_change {
     display: none;
 }
 
+.rdetail_authors_div {
+    margin-bottom: 1em;
+}
+
 @media only screen and (max-width: 600px) {
     body {
         font-size: 12pt;
@@ -1839,21 +1843,6 @@ a.preflib_change {
     #main-content {
         margin-left: 1px;
     }
-    #rdetail_actions_div {
-        float: none !important;
-    }
-    #rdetail_actions_div div:nth-child(2), #rdetail_actions_div div:nth-child(3) {
-        display: none;
-    }
-    div#rdetail_title_div .format_icon {
-        float: none;
-        display: inline;
-        margin-right: 5px;
-    }
-    #rdetail_title {
-        float: none;
-        display: inline;
-    }
     #rdetails_status thead {
         display: none;
     }
@@ -1897,5 +1886,15 @@ a.preflib_change {
         position: relative;                                                                                                                           
         width: 300px;
     }
-
+    #rdetail_format_label {
+        float: left;
+    }
+    .rdetail_aux_utils {
+        padding: 0px;
+        border: none;
+    }
+    div#rdetail_actions_div {
+        float: left;
+        background: [% css_colors.background %];
+    }
 }
