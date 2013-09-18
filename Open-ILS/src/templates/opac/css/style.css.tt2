@@ -1889,16 +1889,12 @@ a.preflib_change {
         position: relative;                                                                                                                           
         width: 300px;
     }
-    #rdetail_format_label {
+    #format_actions {
         float: left;
     }
     .rdetail_aux_utils {
         padding: 0px;
         border: none;
-    }
-    div#rdetail_actions_div {
-        float: left;
-        background: [% css_colors.background %];
     }
     .result_metadata {
         width: inherit;

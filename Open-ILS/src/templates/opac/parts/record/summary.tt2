@@ -32,47 +32,49 @@
         [% END %]
         <br />
     </div>
-    [%- IF attrs.format_label %]
-    <div id="rdetail_format_label">
-        [%- attrs.format_label -%]
-    </div>
-    [%- END %]
-    <div id="rdetail_actions_div">
-        [%- search_ou = ctx.search_ou;
-            IF ctx.place_unfillable ||
-                ( attrs.marc_xml.findnodes('//*[local-name()="holdings" and @has_holdable="true"]').size > 0
-                    && (ctx.holds_block.enabled != 'true' || attrs.org_copy_counts.$search_ou.available == 0)
-                )
-         %]
-        <div class="rdetail_aux_utils place_hold">
-            <a href="[% mkurl(ctx.opac_root _ '/place_hold', 
-                {hold_target => ctx.bre_id, hold_type => 'T', hold_source_page => mkurl()}, stop_parms) %]" 
-            class="no-dec"><img src="[% ctx.media_prefix %]/images/green_check.png" alt="[% l('place hold') %]" /><span 
-            class="place_hold">[% l('Place Hold') %]</span></a>
+    <div id="format_actions">
+        [%- IF attrs.format_label %]
+        <div id="rdetail_format_label">
+            [%- attrs.format_label -%]
         </div>
-        [%- END -%]
-        <div class="rdetail_aux_utils toggle_list">
-        [%  IF ctx.user;
-            INCLUDE "opac/parts/bookbag_actions.tt2";
-        %]
-        [%  ELSE;
-            operation = ctx.mylist.grep(ctx.bre_id).size ? "delete" : "add";
-            label = (operation == "add") ? l("Add to my list") : l("Remove from my list"); 
-        %]
-            <a href="[% mkurl(ctx.opac_root _ '/mylist/' _ operation, {record => ctx.bre_id}, stop_parms) %]" class="no-dec">
-                <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
-                [% label %]
-            </a>
-        [% END %]
-        </div>
-        <div class="rdetail_aux_utils">
-            <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
-            <a href="[% mkurl(ctx.opac_root _ '/record/print/' _ ctx.bre_id) %]" class="no-dec">[% l('Print') %]</a> /
-            <a href="[% mkurl(ctx.opac_root _ '/record/email/' _ ctx.bre_id) %]" class="no-dec">[% l('Email') %]</a>
-        </div>
-        [%- IF ctx.refworks.enabled == 'true' %]
-            [%- INCLUDE 'opac/parts/record/refworks.tt2' %]
         [%- END %]
+        <div id="rdetail_actions_div">
+            [%- search_ou = ctx.search_ou;
+                IF ctx.place_unfillable ||
+                    ( attrs.marc_xml.findnodes('//*[local-name()="holdings" and @has_holdable="true"]').size > 0
+                        && (ctx.holds_block.enabled != 'true' || attrs.org_copy_counts.$search_ou.available == 0)
+                    )
+             %]
+            <div class="rdetail_aux_utils place_hold">
+                <a href="[% mkurl(ctx.opac_root _ '/place_hold', 
+                    {hold_target => ctx.bre_id, hold_type => 'T', hold_source_page => mkurl()}, stop_parms) %]" 
+                class="no-dec"><img src="[% ctx.media_prefix %]/images/green_check.png" alt="[% l('place hold') %]" /><span 
+                class="place_hold">[% l('Place Hold') %]</span></a>
+            </div>
+            [%- END -%]
+            <div class="rdetail_aux_utils toggle_list">
+            [%  IF ctx.user;
+                INCLUDE "opac/parts/bookbag_actions.tt2";
+            %]
+            [%  ELSE;
+                operation = ctx.mylist.grep(ctx.bre_id).size ? "delete" : "add";
+                label = (operation == "add") ? l("Add to my list") : l("Remove from my list"); 
+            %]
+                <a href="[% mkurl(ctx.opac_root _ '/mylist/' _ operation, {record => ctx.bre_id}, stop_parms) %]" class="no-dec">
+                    <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
+                    [% label %]
+                </a>
+            [% END %]
+            </div>
+            <div class="rdetail_aux_utils">
+                <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
+                <a href="[% mkurl(ctx.opac_root _ '/record/print/' _ ctx.bre_id) %]" class="no-dec">[% l('Print') %]</a> /
+                <a href="[% mkurl(ctx.opac_root _ '/record/email/' _ ctx.bre_id) %]" class="no-dec">[% l('Email') %]</a>
+            </div>
+            [%- IF ctx.refworks.enabled == 'true' %]
+                [%- INCLUDE 'opac/parts/record/refworks.tt2' %]
+            [%- END %]
+        </div>
     </div>
 </div>
 
