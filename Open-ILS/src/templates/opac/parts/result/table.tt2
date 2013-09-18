@@ -45,6 +45,7 @@
                                                 [% END %]
                                             </td>
                                             <td class='result_table_title_cell' name='result_table_title_cell'>
+                                                    <abbr class="unapi-id" title='tag:[% ctx.hostname %],[% date.format(date.now, '%Y') %]:biblio-record_entry/[% rec.id %]'></abbr>
                                                     <a class='record_title' name='record_[% rec.id %]' name='item_title'
                                                         href="[% mkurl(ctx.opac_root _ '/record/' _ rec.id) %]"
                                                         [% HTML.attributes(title => l('Display record details for "[_1]"', attrs.title)) %]
@@ -72,11 +73,6 @@ END;
                                                                     authorquery = attrs.author | replace('[#"^$\+\-,\.:;&|\[\]()]', ' ');
                                                                     mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, ['page'])
                                                                     -%]">[% attrs.author | html %]</a>
-                                                                    [%- UNLESS CGI.param('detail_record_view')
-                                                                        OR (show_more_details.default == 'true'
-                                                                        OR show_more_details.default == 'hide')
-                                                                    %] [% attrs.pubdate | html %]
-                                                                    [%- END -%]
 [%-
 FOR entry IN attrs.graphic_authors;
     FOR alt IN entry.graphic;
@@ -94,6 +90,21 @@ END;
 -%]
 
                                                     </div>
+                                                    <div id='bib_format' class='result_table_title_cell'>
+                                                    [%- IF attrs.format_label; %]
+                                                        [% attrs.format_label; %]
+                                                    [%- END %]
+                                                    [%- UNLESS CGI.param('detail_record_view')
+                                                        OR (show_more_details.default == 'true'
+                                                        OR show_more_details.default == 'hide')
+                                                    %] ([% attrs.pubdate | html %])
+                                                    [%- END -%]
+                                                    </div>
+                                                    <span name="googleBooksLink" class="hide_me">
+                                                        <a style='padding-left: 8px;'
+                                                            class='classic_link hide_me'
+                                                            name="googleBooks-link">[% l("Browse in Google Books Search") %]</a>
+                                                    </span>
                                                     <table cellpadding="0" cellspacing="0" border="0"
                                                         class="results_info_table">
                                                         [% IF args.holdings.size > 0 %]
@@ -273,22 +284,6 @@ END;
                                                 </div>
                                             </td>
 
-                                            <td name='result_table_format_cell' class='result_table_format_cell' width="1">
-
-                                                [% IF attrs.format_icon %]
-                                                <img title="[% attrs.format_label | html %]" alt="[% attrs.format_label | html %]" src="[% attrs.format_icon %]" />
-                                                [% END %]
-
-                                                <!-- unAPI link -->
-                                                <abbr class="unapi-id" title='tag:[% ctx.hostname %],[% date.format(date.now, '%Y') %]:biblio-record_entry/[% rec.id %]'></abbr>
-
-                                                <!-- Empty span used for creating Google Book Search-->
-                                                <span name="googleBooksLink" class="hide_me">
-                                                    <a style='padding-left: 8px;'
-                                                        class='classic_link hide_me'
-                                                        name="googleBooks-link">[% l("Browse in Google Books Search") %]</a>
-                                                </span>
-                                            </td>
                                             <td nowrap='nowrap' width="1" align="right">
                                                 <div class="result_table_utils_cont">
                                                     <div class="result_table_utils">
