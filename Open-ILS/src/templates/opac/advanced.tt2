@@ -7,7 +7,7 @@
 -%]
     <div id="search-wrapper">
         <div id="search-box">
-            <span class="search_catalog_lbl">[% l('Search the Catalog') %]</span>
+            <span class="search_catalog_lbl mobile_hide">[% l('Search the Catalog') %]</span>
             <span class="adv_search_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/home') %]"
                     id="home_adv_search_link">[%l('Basic Search')%]</a></span>
 

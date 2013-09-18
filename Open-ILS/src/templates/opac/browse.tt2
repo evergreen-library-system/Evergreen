@@ -16,16 +16,17 @@
         [%# XXX TODO Give searchbar.tt2 more smarts so we can just do:
           # INCLUDE "opac/parts/searchbar.tt2" %]
         <div id="search-box">
-            <span class="search_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/home', {}, depart_list) %]">[% l('Search the Catalog') %]</a></span>
+            <span class="search_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/home', {}, depart_list) %]">[% l('Basic Search') %]</a></span>
             <span class="adv_search_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/advanced', {}, depart_list) %]"
                     id="home_adv_search_link">[%l('Advanced Search')%]</a></span>
-            <span class="browse_the_catalog_lbl">[% l('Browse the Catalog') %]</span>
+        
+            <span class="browse_the_catalog_lbl mobile_hide">[% l('Browse the Catalog') %]</span>
         </div>
     </div>
     <div id="content-wrapper">
         <div id="main-content">
             <div id="browse-the-catalog">
-                <div id="browse-controls">
+                <div id="browse-controls" class='searchbar'>
                     <form method="get" onsubmit="$('browse-submit-spinner').className = ''; return true">
                         <input type="hidden" name="blimit"
                             value="[% blimit %]" />
@@ -40,7 +41,7 @@
                             arialabel=l('Select holding library') %]
                         [% l('Browse for [_1] starting with [_2] in [_3]', control_qtype, control_bterm, control_locg) %]
 
-                        <input type="submit" value="[% l('Go') %]" />
+			<input id='search-submit-go' type="submit" value="[% l('Browse') %]" alt="[% l('Browse') %]" class="opac-button"/>
                         <img id="browse-submit-spinner" src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif" class="hidden" style="width: 16px; height: 16px;" alt="" />
                     </form>
                 </div>

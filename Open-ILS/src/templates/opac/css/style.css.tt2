@@ -1667,9 +1667,6 @@ a.preflib_change {
     #homesearch_main_logo img {
         width:75%;
     }
-    #home_adv_search_link {
-        display: block;
-    }
     #format_selector {
         display:none;
     }
@@ -1692,9 +1689,6 @@ a.preflib_change {
     }
     #gold-links-holder {
         display: none;
-    }
-    #search-wrapper {
-        display: block;
     }
     #simple-detail-view-links {
         display: none;
@@ -1855,8 +1849,9 @@ a.preflib_change {
     select#pickup_lib.search-wrapper-locg {
         width: 100%;
     }
-    #search_box {
+    #search-wrapper #search-box {
         width: 85%;
+        padding-top: 5px;
     }
     #qtype {
         display: none;
@@ -1905,4 +1900,20 @@ a.preflib_change {
     h2.rdetail_uris {
         clear: both;
     }
+    .search_catalog_lbl {
+	margin-left: 0;
+	white-space: nowrap;
+    }
+    .adv_search_catalog_lbl { 
+        margin-top: 0;
+	white-space: nowrap;
+    }
+    .browse_the_catalog_lbl {
+        white-space: nowrap;
+    }
+    .mobile_hide {
+	display: none;
+    } 
+    .searchbar { width: 200px; line-height: 1.5em; }
+    #browse-controls { width: 200px; line-height: 1.5em; }
 }
