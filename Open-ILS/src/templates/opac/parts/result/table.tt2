@@ -96,10 +96,14 @@ END;
                                                         [% attrs.format_label; %]
                                                     [%- END %]
                                                     [%- UNLESS CGI.param('detail_record_view')
-                                                        OR (show_more_details.default == 'true'
-                                                        OR show_more_details.default == 'hide')
-                                                    %] ([% attrs.pubdate | html %])
-                                                    [%- END -%]
+                                                            OR (show_more_details.default == 'true'
+                                                            OR show_more_details.default == 'hide');
+                                                            IF attrs.pubdate;
+                                                                pubdate_clean = attrs.pubdate | html;
+                                                                l(" ([_1])", pubdate_clean);
+                                                            END;
+                                                        END
+                                                    -%]
                                                     </div>
                                                     <span name="googleBooksLink" class="hide_me">
                                                         <a style='padding-left: 8px;'
