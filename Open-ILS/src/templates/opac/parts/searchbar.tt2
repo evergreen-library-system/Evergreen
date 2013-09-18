@@ -34,6 +34,17 @@
             INCLUDE "opac/parts/qtype_selector.tt2" id="qtype";
         -%]
         </label>
+        <label id="search_itype_label">
+        [%-
+            l('Format: ');
+            IF search.basic_config.type == 'attr';
+                INCLUDE "opac/parts/coded_value_selector.tt2"
+                    attr=search.basic_config.group none_ok=1 none_label=search.basic_config.none_label;
+            ELSIF search.basic_config.type == 'filter';
+                INCLUDE "opac/parts/filter_group_selector.tt2"
+                    filter_group=search.basic_config.group none_ok=1 none_label=search.basic_config.none_label;
+            END;
+        -%]
         <label id="search_locg_label">
         [%- 
             l('Library: ');

@@ -1925,7 +1925,7 @@ a.preflib_change {
     } 
     .searchbar { line-height: 1.5em; }
     #browse-controls { line-height: 1.5em; }
-    #search_query_label, #search_qtype_label, #search_locg_label {
+    #search_query_label, #search_qtype_label, #search_itype_label, #search_locg_label {
         display: block;
     }
     .bookshelf td {
