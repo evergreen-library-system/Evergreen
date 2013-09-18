@@ -9,19 +9,11 @@
             id="home_adv_search_link">[% l('Advanced Search') %]</a></span>
         <span class="browse_the_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/browse', {}, ['fi:has_browse_entry']) %]">[% l('Browse the Catalog') %]</a></span>
     </div>
-    <div class="searchbar">[%- l('Search ');
-        IF search.basic_config.type == 'attr';
-            INCLUDE "opac/parts/coded_value_selector.tt2"
-                attr=search.basic_config.group none_ok=1 none_label=search.basic_config.none_label;
-        ELSIF search.basic_config.type == 'filter';
-            INCLUDE "opac/parts/filter_group_selector.tt2"
-                filter_group=search.basic_config.group none_ok=1 none_label=search.basic_config.none_label;
-        END;
-            l(' for ');
-        %]
+    <div class="searchbar">
         <span class='search_box_wrapper'>
             [%- # autosuggest breaks accessibility, as the aria-label
                 # attribute is removed when the Dijit is created. :(  %]
+            <label id="search_box_label">[% l('Search: ') %]
             <input type="text" id="search_box" name="query" aria-label="[%
                     l('Enter search query:');
                 %]" value="[% is_advanced ? ctx.naive_query_scrub(ctx.processed_search_query) : CGI.param('query') | html %]"
@@ -34,13 +26,21 @@
                 [%- ELSE -%]
                     [% IF basic_search != "f" %] autofocus [% END %] x-webkit-speech
                 [%- END # autosuggest enabled %] />
+            </label>
         </span>
+        <label id="search_qtype_label">
         [%- 
-            select_lib_label = l("Select search library");
+            l('Type: ');
             INCLUDE "opac/parts/qtype_selector.tt2" id="qtype";
-            l(' in ');
+        -%]
+        </label>
+        <label id="search_locg_label">
+        [%- 
+            l('Library: ');
+            select_lib_label = l("Select search library");
             INCLUDE build_org_selector arialabel=select_lib_label show_loc_groups=1
         -%]
+        </label>
     <span>
         <input id='search-submit-go' type="submit" value="[% l('Search') %]" alt="[% l('Search') %]" class="opac-button"
             onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"}, 2000)'/>

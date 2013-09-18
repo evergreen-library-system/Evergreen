@@ -228,10 +228,6 @@ span.dash_divider {
     background: [% css_colors.background %];
 }
 
-.search_box_wrapper {
-    padding: 10px 5px 5px 3px;
-}
-
 #search-wrapper #breadcrumb {
     margin-top:0px;
     font-size: [% css_fonts.size_smaller %];
@@ -1874,9 +1870,6 @@ a.preflib_change {
         width: 85%;
         padding-top: 5px;
     }
-    #qtype {
-        display: none;
-    }
     #main-content-home {
         padding: 0px;
         margin: 0px;
@@ -1935,6 +1928,9 @@ a.preflib_change {
     .mobile_hide {
 	display: none;
     } 
-    .searchbar { width: 200px; line-height: 1.5em; }
-    #browse-controls { width: 200px; line-height: 1.5em; }
+    .searchbar { line-height: 1.5em; }
+    #browse-controls { line-height: 1.5em; }
+    #search_query_label, #search_qtype_label, #search_locg_label {
+        display: block;
+    }
 }

@@ -30,7 +30,6 @@
 .nowrap { white-space: nowrap; }
 .opac-auto-164 { white-space: nowrap; padding-left: 5px; }
 .full-width { width: 100%; }
-#search_box { width: 162px; }
 .selector_actions_for_list { width: 175px; margin-right: 11px; }
 .selector_actions_for_list_inner_option { margin-left: 2em; } /* XXX ".opac-auto-179 optgroup option" doesn't work!? */
 #cn_browse_div > div { width: 90%; text-align: center; margin: 10px; }
