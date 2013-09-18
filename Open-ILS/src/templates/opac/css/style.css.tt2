@@ -426,6 +426,9 @@ span#rdetail_hold_counts {
     display: inline-block;
     vertical-align: top;
 }
+span#rdetail_hold_counts p {
+    padding-left: 2em;
+}
 
 #rdetail_image_div {
     float: left;
@@ -1853,8 +1856,16 @@ a.preflib_change {
     #rdetails_status thead {
         display: none;
     }
-    #rdetails_status tr, #rdetails_status td {
-        display: block;
+    #rdetails_status tr {
+	display: block;
+	margin-top: 3px;
+    }
+    #rdetails_status tr:nth-of-type(odd) {
+	background-color: #eee;
+    }
+    #rdetails_status td {
+	display: block;
+	padding: 1px;
     }
     select#pickup_lib.search-wrapper-locg {
         width: 100%;
