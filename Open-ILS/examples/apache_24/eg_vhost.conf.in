@@ -551,6 +551,9 @@ RewriteRule . - [E=locale:%1]
     Options +ExecCGI
     PerlSendHeader On
     Require all granted 
+    <IfModule mod_headers.c>
+        Header onsuccess set Cache-Control no-cache
+    </IfModule>
 </Location>
 
 # ----------------------------------------------------------------------------------
@@ -577,6 +580,25 @@ RewriteRule ^/conify/([a-z]{2}-[A-Z]{2})/global/(.*)$ /conify/global/$2 [E=local
     Require all granted 
 </Location>
 
+# ----------------------------------------------------------------------------------
+# The PhoneList lives here
+# ----------------------------------------------------------------------------------
+<Location /phonelist>
+    SetHandler perl-script
+    AuthType Basic
+    AuthName "PhoneList Login"
+    require valid-user
+    PerlOptions +GlobalRequest
+    PerlSetVar OILSProxyPermissions "STAFF_LOGIN"
+    PerlHandler OpenILS::WWW::PhoneList
+    PerlAuthenHandler OpenILS::WWW::Proxy::Authen
+    Options +ExecCGI
+    PerlSendHeader On
+    allow from all
+    <IfModule mod_headers.c>
+        Header onsuccess set Cache-Control no-cache
+    </IfModule>
+</Location>
 <Location /vandelay-upload>
     SetHandler perl-script
     PerlHandler OpenILS::WWW::Vandelay::spool_marc
