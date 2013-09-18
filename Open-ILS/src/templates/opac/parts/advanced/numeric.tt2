@@ -2,9 +2,8 @@
     <div class="header_middle">[% l("Numeric Search") %]</div>
     <input type="hidden" name="contains" value="contains" />
     <input type="hidden" name="_special" value="1" />
-    <table>
-        <tr>
-            <td><label for="numeric_qtype"><strong>[% l("Field:") %]</strong></label>
+    <div id='adv_numeric_block'>
+            <label for="numeric_qtype"><strong>[% l("Field:") %]</strong></label>
                 <select id="numeric_qtype" name="qtype">
                     <!-- TODO: Pull labels from config.metabib_field.label -->
                     <option value="identifier|isbn">[% l('ISBN') %]</option>
@@ -16,24 +15,17 @@
                     <option value="item_barcode">[% l('Item Barcode') %]</option>
                 </select>
                 </label>
-            </td>
-            <td>
+	
                 <input type="text" name="query" size="16" autofocus placeholder='[% l("Identifier") %]' />
-            </td>
-        </tr>
-        <tr>
+	    <br/>
             [%- lib_select_id="numeric_search_library" -%]
-            <td colspan="2"><label for="[% lib_select_id %]"><strong>[% l("Search Library:") %]</strong>
+            <label for="[% lib_select_id %]"><strong>[% l("Search Library:") %]</strong>
                   [% PROCESS "opac/parts/org_selector.tt2";
                      INCLUDE build_org_selector id=lib_select_id show_loc_groups=1
                   %]
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" align="right">
+            </label>
+	    <br/>
                 <input type="submit" alt="[% l('Search') %]"
                     value="[% l('Search') %]" class="opac-button" />
-            </td>
-    </table>
+    </div>
 </form>

@@ -4,12 +4,16 @@
     <table class="expert-search">
         <tbody id="adv_expert_rows_here">
             <tr id="adv_expert_row">
-                <th><label for="expert_tag">[% l("Tag:") %]</label></th>
-                <td><input id="expert_tag" type="text" name="tag" size="3" autofocus /></td>
-                <th><label for="expert_subfield">[% l("Subfield:") %]</label></th>
-                <td><input id="expert_subfield" type="text" name="subfield" size="1" /></td>
-                <th><label for="expert_term">[% l("Value:") %]</label></th>
-                <td><input id="expert_term" type="text" name="term" size="16" /></td>
+                <td>
+		    <label for="expert_tag">[% l("Tag:") %]</label>
+                    <input id="expert_tag" type="text" name="tag" size="3" autofocus />
+                    <label for="expert_subfield">[% l("Subfield:") %]</label>
+                    <input id="expert_subfield" type="text" name="subfield" size="1" />
+		    <span style="white-space:nowrap">
+                	<label for="expert_term">[% l("Value:") %]</label>
+                	<input id="expert_term" type="text" name="term" size="16" />
+		    </span>
+		</td>
                 <td>
                     <a href="javascript:;" class="row-remover"
                         title="[% l('Remove row') %]" alt="[% l('Remove row') %]"
