@@ -282,9 +282,6 @@ END;
                                                         [% END %]
                                                     [% END %]
                                                 </div>
-                                            </td>
-
-                                            <td nowrap='nowrap' width="1" align="right">
                                                 <div class="result_table_utils_cont">
                                                     <div class="result_table_utils">
 [%- search_ou = ctx.search_ou;
@@ -331,7 +328,9 @@ END;
                                                         [% END %]
                                                     </div>
                                                 </div>
+
                                             </td>
+
                                         </tr>
                                         [%- IF ENV.OILS_CHILIFRESH_ACCOUNT %]
                                         <tr>

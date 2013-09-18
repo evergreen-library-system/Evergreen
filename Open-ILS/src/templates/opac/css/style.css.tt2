@@ -415,12 +415,6 @@ div.place_hold {
     padding-top: 10px;
 }
 
-span.place_hold {
-    position:relative;
-    top:-3px;
-    left:3px;
-}
-
 div.toggle_list { padding-top: 6px; }
 
 div.format_icon {
@@ -428,16 +422,17 @@ div.format_icon {
     margin-right: 17px;
 }
 
-.results_aux_utils {
-    border-left:1px dotted [% css_colors.accent_light %];
-    padding-left: 17px;
-    padding-bottom: 6px;
-    padding-right: 50px;
-}
-
 .result_util {
     border-bottom: 1px dotted [% css_colors.accent_light %];
     padding-top: 6px;
+}
+
+.results_aux_utils {
+    display: table-cell;
+}
+
+.result_util {
+    padding-left: 1em;
 }
 
 .results_reviews {
@@ -712,18 +707,7 @@ tr.result_table_row > td.result_table_pic_header {
 }
 
 div.result_table_utils_cont {
-    width: 250px;
     text-align:left;
-}
-
-div.result_table_utils {
-    float: right;
-}
-
-div.result_place_hold {
-    position: relative;
-    top: -3px;
-    left:3px;
 }
 
 .icon_text {
@@ -1784,9 +1768,6 @@ a.preflib_change {
         display: block;
     }
     .invisible {
-        display: none;
-    }
-    .result_table_utils_cont {
         display: none;
     }
     .result_table_pic_header {
