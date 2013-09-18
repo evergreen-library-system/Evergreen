@@ -710,6 +710,7 @@ tr.result_table_row > td.result_table_title_cell {
 
 .result_metadata {
     float: left;
+    width: 30em;
 }
 
 tr.result_table_row:nth-child(n+2) > td {
@@ -1898,5 +1899,8 @@ a.preflib_change {
     div#rdetail_actions_div {
         float: left;
         background: [% css_colors.background %];
+    }
+    .result_metadata {
+        width: inherit;
     }
 }
