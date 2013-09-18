@@ -262,7 +262,7 @@ span.dash_divider {
 
 #adv_search_tabs, #acct_tabs, #acct_fines_tabs, #acct_checked_tabs, #acct_holds_tabs, #acct_prefs_tabs, #results_header_inner{
     height: 40px;
-    margin-left: 1em;
+    margin-left: 2px;
 }
 
 #adv_search_tabs a, #acct_tabs a, #acct_fines_tabs a, #acct_checked_tabs a, #acct_holds_tabs a, #acct_prefs_tabs a {
@@ -289,6 +289,31 @@ span.dash_divider {
     background: [% css_colors.primary %]; 
     color: [% css_colors.text_invert %];
     text-decoration: none;
+}
+
+#adv_search_filters {
+    position: relative;
+    width: 800px;
+}
+
+#adv_filter_block {
+    padding: 15px;
+    float: left;
+}
+#adv_filter_block_item {
+    float: left;
+    padding: 5px;
+}
+
+#adv_special_block {
+    float: left;
+    padding: 5px;
+}
+
+#adv_search_submit {
+    position: relative;
+    margin-left: 10px;
+
 }
 
 .checkbox_col {
@@ -1070,6 +1095,7 @@ div.facet_sidebar {
 
 .advanced_div { padding-top: 15px; }
 #adv_global_search select { width: 13em; }
+#adv_global_row { nowrap: 'nowrap'; }
 #adv_global_input_table select { width: 7em; }
 .adv_adv_link {
     font-size: [% css_fonts.size_smaller %];
@@ -1622,7 +1648,7 @@ a.preflib_change {
         width:75%;
     }
     #home_adv_search_link {
-        display: none;
+        display: block;
     }
     #format_selector {
         display:none;
@@ -1648,7 +1674,7 @@ a.preflib_change {
         display: none;
     }
     #search-wrapper {
-        display: none;
+        display: block;
     }
     #simple-detail-view-links {
         display: none;
@@ -1850,4 +1876,13 @@ a.preflib_change {
         display: block;
         padding-left: 15px;
     }
+    #myopac_tabs, #adv_search_parent, #fines_payments_wrapper {
+        background: [% css_colors.primary_fade %];
+        font-size: 10px;
+    }
+    #adv_search_filters {                                                                                                                             
+        position: relative;                                                                                                                           
+        width: 300px;
+    }
+
 }
