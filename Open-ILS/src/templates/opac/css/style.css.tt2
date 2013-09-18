@@ -1707,6 +1707,12 @@ a.preflib_change {
         padding: 5px;
         margin: 3px;
     }
+
+    a.opac-button {
+        margin: 15px 5px;
+	padding: 2px 5px;
+    }
+
     #acct_tabs a, #acct_fines_tabs a {
        padding: 2px 4px 3px 4px;
        -moz-border-radius: 6px 6px 0px 0px;
