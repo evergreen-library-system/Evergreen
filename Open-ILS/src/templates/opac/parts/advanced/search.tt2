@@ -3,15 +3,15 @@
     PROCESS get_library;
 %]
 <form action="[% ctx.opac_root %]/results" method="get">
-<div id='adv_global_search' class='data_grid data_grid_center' width='100%'>
-    <div id='adv_search_rows' style='border-bottom: none;'>
+<div id='adv_global_search' class='data_grid data_grid_center'>
+    <div id='adv_search_rows'>
         <!-- Contains the user-addable(?) rows to define search class, containment and text -->
         <div valign='top' class='adv_global_input_container'>
-            <table width='100%' id='adv_global_input_table'>
+            <table id='adv_global_input_table'>
                 <thead>
                     <tr>
                         <td>
-                            <div style="width:100%;" class="header_middle">
+                            <div class="header_middle" id="adv_search_input">
                                 [% l("Search Input") %]
                             </div>
                         </td>
@@ -21,7 +21,7 @@
                     [% INCLUDE "opac/parts/advanced/global_row.tt2" %]
                     <!-- add a new row -->
                     <tr id='adv_global_addrow'>
-                        <td align='left' style="padding-top:7px;">
+                        <td align='left'>
                             <a href="javascript:;" id="myopac_new_global_row" onclick='addSearchRow();'>[% l('Add Search Row') %]</a>
                         </td>
                     </tr>
@@ -35,7 +35,7 @@
         <span>
             <input id='search-submit-go' type="submit" value="[% l('Search') %]" alt="[% l('Search') %]" class="opac-button"
                 onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"}, 2000)'/>
-            <img id='search-submit-spinner' src='/opac/images/progressbar_green.gif' style='height:16px;width:16px;' class='hidden' alt=''/>
+            <img id='search-submit-spinner' src='/opac/images/progressbar_green.gif' class='hidden' alt=''/>
         </span>
 
         <a href="[% mkurl(ctx.opac_root _ '/advanced', {$loc_name => loc_value}, 1) %]"
@@ -65,12 +65,11 @@
                 CASE "lib_selector";
                     PROCESS "opac/parts/org_selector.tt2";
                         INCLUDE build_org_selector show_loc_groups=1 id="adv_org_selector" %]
-                            <div style="position:relative;top:7px;">
+                            <div class="adv_search_available">
                                 <input type='checkbox' name="modifier"
                                     value="available"[% CGI.param('modifier').grep('available').size ? ' checked="checked"' : '' %]
                                     id='opac.result.limit2avail' />
-                                <label style="top:-2px;"
-                                    for='opac.result.limit2avail'>
+                                <label for='opac.result.limit2avail'>
                                     [% l("Limit to Available") %]</label>
                             </div>
 [%
@@ -89,7 +88,7 @@
                                     [%  END %]
                             </select>    
                             <br/>
-                            <div id='adv_special_block' style='margin-top:5px;'>
+                            <div id='adv_special_block'>
                                 <input name='date1' type='text' size='4' maxlength='4' value="[% CGI.param('date1') | html %]" />
                                 <span id='adv_global_pub_date_2_span' class='[% CGI.param("pubdate") == "between" ? "" : "hide_me" %]'>
                                    [% l("and") %] <input name='date2' type='text' size='4' maxlength='4' value="[% CGI.param('date2') | html %]" />

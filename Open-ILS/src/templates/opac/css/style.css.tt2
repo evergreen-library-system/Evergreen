@@ -289,9 +289,10 @@ span.dash_divider {
 
 #adv_search_filters {
     position: relative;
-    width: 850px;
 }
-
+#adv_search_rows {
+    border-bottom: none;
+}
 #adv_filter_block {
     padding: 15px;
     float: left;
@@ -304,6 +305,7 @@ span.dash_divider {
 #adv_special_block {
     float: left;
     padding: 5px;
+    margin-top: 5px;
 }
 
 #adv_search_submit {
@@ -904,7 +906,6 @@ table.acct_notes th {
 .search_catalog_lbl {
     font-size: [% css_fonts.size_bigger %];
 }
-
 .adv_search_catalog_lbl {
     font-size: [% css_fonts.size_bigger %];
 }
@@ -956,11 +957,17 @@ table.acct_notes th {
     padding: 10px; border: 1px solid [% css_colors.accent_medium_dark %];
     text-align: center;
 }
-
+#adv_search_input { width: 100%; }
 #adv_search_parent {
     margin-bottom:0px;
 }
-
+#search-submit-spinner {
+    height: 16px;
+    width: 16px;
+}
+div.adv_search_available {
+    margin-top: 1em;
+}
 #myopac_loading {
     width:100%;
     text-align:center;
@@ -1111,8 +1118,11 @@ div.facet_sidebar {
 }
 
 .advanced_div { padding-top: 15px; }
+#adv_global_search { width: 100%; }
 #adv_global_search select { width: 13em; }
-#adv_global_row { nowrap: 'nowrap'; }
+#adv_global_row { white-space: nowrap; }
+#adv_global_addrow td { padding-top: 7px; }
+#adv_global_input_table { width: 100%; }
 #adv_global_input_table select { width: 7em; }
 .adv_adv_link {
     font-size: [% css_fonts.size_smaller %];

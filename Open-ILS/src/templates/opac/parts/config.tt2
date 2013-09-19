@@ -115,7 +115,7 @@ search.adv_config = [
     {adv_label => l("Item Type"), adv_attr => ["mattype", "item_type"]},
     {adv_label => l("Item Form"), adv_attr => "item_form"},
     {adv_label => l("Language"),  adv_attr => "item_lang"},
-    {adv_label => l("Audience"),  adv_attr => ["audience_group", "audience"], adv_break => 1},
+    {adv_label => l("Audience"),  adv_attr => ["audience_group", "audience"]},
     {adv_label => l("Video Format"), adv_attr => "vr_format"},
     {adv_label => l("Bib Level"), adv_attr => "bib_level"},
     {adv_label => l("Literary Form"), adv_attr => "lit_form"},
