@@ -32,12 +32,9 @@
                     <td class='cn_browse_item' width='25%' valign='top'>
                         [%  rec_attrs = {marc_xml => cn.record.marc};
                             PROCESS get_marc_attrs args=rec_attrs;
-                            ident = rec_attrs.isbn_clean || rec_attrs.upc;
-                            IF ident %]
                         <a href="[% mkurl(ctx.opac_root _ '/record/' _ cn.record.id, {$loc_name => loc_value}, 1) %]"><img height='60' width='50' 
                             class='cn_browse_info' name='cn_browse_pic' border='0'
-                            src="[% ctx.media_prefix %]/opac/extras/ac/jacket/small/[% ident | uri %]" /></a>
-                        [% END %]
+                            src="[% ctx.media_prefix %]/opac/extras/ac/jacket/small/r/[% cn.record_id | uri %]" /></a>
                         <div class='cn_browse_info bold' name='cn_browse_cn'>[% cn.label | html %]</div>
                         <div class='cn_browse_info'>
                             <a name='cn_browse_title' class='classic_link record_title'

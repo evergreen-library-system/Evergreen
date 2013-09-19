@@ -40,11 +40,9 @@
                                                     result_count; result_count = result_count + 1
                                                 %].</td>
                                             <td class='result_table_pic_header'>
-                                                [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
                                                 <a href="[% mkurl(ctx.opac_root _ '/record/' _ rec.id) %]"><img alt="[% l('Image of item') %]"
                                                         name='item_jacket' class='result_table_pic' width="55"
-                                                        src='[% ctx.media_prefix %]/opac/extras/ac/jacket/small/[% ident | uri %]' /></a><br />
-                                                [% END %]
+                                                        src='[% ctx.media_prefix %]/opac/extras/ac/jacket/small/r/[% rec.id | uri %]' /></a><br />
                                             </td>
                                             <td class='result_table_title_cell' name='result_table_title_cell'>
                                                <div class="result_metadata">
@@ -323,6 +321,7 @@ END;
                                                             [% END %]
                                                         </div>
                                                         [% IF ENV.OILS_CONTENT_CAFE_USER %]
+                                                        [% ident = attrs.isbn_clean || attrs.upc %]
                                                         <div class="results_aux_utils result_util">
                                                             <a title="[% l('Reviews and More') %]" target='_blank' 
                                                                 href="[% ctx.ext_proto %]://contentcafe2.btol.com/ContentCafeClient/ContentCafe.aspx?UserID=[%- 

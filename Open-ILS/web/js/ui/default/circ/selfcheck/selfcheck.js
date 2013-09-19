@@ -735,7 +735,7 @@ SelfCheckManager.prototype.insertHold = function(data) {
     var row = this.holdTemplate.cloneNode(true);
 
     if(data.mvr.isbn()) {
-        this.byName(row, 'jacket').setAttribute('src', '/opac/extras/ac/jacket/small/' + data.mvr.isbn());
+        this.byName(row, 'jacket').setAttribute('src', '/opac/extras/ac/jacket/small/r/' + data.mvr.doc_id());
     }
 
     this.byName(row, 'title').innerHTML = data.mvr.title();
@@ -1186,8 +1186,8 @@ SelfCheckManager.prototype.displayCheckout = function(evt, type, itemsOut) {
     var circ = evt.payload.circ;
     var row = this.circTemplate.cloneNode(true);
 
-    if(record.isbn()) {
-        this.byName(row, 'jacket').setAttribute('src', '/opac/extras/ac/jacket/small/' + record.isbn());
+    if(record.id()) {
+        this.byName(row, 'jacket').setAttribute('src', '/opac/extras/ac/jacket/small/r/' + record.doc_id());
     }
 
     this.byName(row, 'barcode').innerHTML = copy.barcode();
