@@ -1,6 +1,10 @@
 <!-- JS imports, etc.  -->
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/simple.js"></script>
 
+[%- IF ctx.use_stripe %]
+<script type="text/javascript">unHideMe($("pay_fines_now"));[%# the DOM is loaded now, right? %]</script>
+[% END -%]
+
 [%- IF ctx.is_staff %]
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/staff.js"></script>
     [% IF ctx.page == 'record' %]

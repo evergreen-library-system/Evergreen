@@ -64,6 +64,7 @@ export DEB_APACHE_DISMODS = \
 export CPAN_MODULES = \
 	Business::ISSN \
 	Business::OnlinePayment::PayPal \
+	Business::Stripe \
 	Library::CallNumber::LC \
 	MARC::Record \
 	Net::Z3950::Simple2ZOOM \

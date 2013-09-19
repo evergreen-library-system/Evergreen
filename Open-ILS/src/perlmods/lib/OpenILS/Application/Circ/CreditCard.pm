@@ -30,8 +30,6 @@ use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Application::AppUtils;
 my $U = "OpenILS::Application::AppUtils";
 
-use constant CREDIT_NS => "credit";
-
 # Given the argshash from process_payment(), this helper function just finds
 # a function in the current namespace named "bop_args_{processor}" and calls
 # it with $argshash as an argument, returning the result, or returning an
@@ -78,18 +76,6 @@ sub bop_args_PayflowPro {
     );
 }
 
-sub get_processor_settings {
-    my $org_unit = shift;
-    my $processor = lc shift;
-
-    # XXX TODO: make this one single cstore request instead of many
-    +{ map { ($_ =>
-        $U->ou_ancestor_setting_value(
-            $org_unit, CREDIT_NS . ".processor.${processor}.${_}"
-        )) } qw/enabled login password signature server testmode vendor partner/
-    };
-}
-
 #        argshash (Hash of arguments with these keys):
 #                patron_id: Not a barcode, but a patron's internal ID
 #                       ou: Org unit where transaction happens
@@ -119,29 +105,7 @@ sub process_payment {
             and $argshash->{expiration}
             and $argshash->{ou};
 
-    if (!$argshash->{processor}) {
-        if (!($argshash->{processor} =
-                $U->ou_ancestor_setting_value(
-                    $argshash->{ou}, CREDIT_NS . '.processor.default'))) {
-            return OpenILS::Event->new('CREDIT_PROCESSOR_NOT_SPECIFIED');
-        }
-    }
-    # Basic sanity check on processor name.
-    if ($argshash->{processor} !~ /^[a-z0-9_\-]+$/i) {
-        return OpenILS::Event->new('CREDIT_PROCESSOR_NOT_ALLOWED');
-    }
-
-    # Get org unit settings related to our processor
-    my $psettings = get_processor_settings(
-        $argshash->{ou}, $argshash->{processor}
-    );
-
-    if (!$psettings->{enabled}) {
-        return OpenILS::Event->new('CREDIT_PROCESSOR_NOT_ENABLED');
-    }
-
-    # Add the org unit settings for the chosen processor to our argshash.
-    $argshash = +{ %{$argshash}, %{$psettings} };
+    # Used to test argshash->{processor} here, but now that's handled earlier.
 
     # At least the following (derived from org unit settings) are required.
     return OpenILS::Event->new('CREDIT_PROCESSOR_BAD_PARAMS')

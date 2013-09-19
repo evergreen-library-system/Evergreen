@@ -72,6 +72,7 @@ export DEB_APACHE_DISMODS = \
 
 export CPAN_MODULES = \
 	Business::CreditCard::Object \
+	Business::Stripe \
 	Business::OnlinePayment::PayPal \
 	Template::Plugin::POSIX \
 	Rose::URI \

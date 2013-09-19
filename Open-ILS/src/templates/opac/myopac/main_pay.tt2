@@ -11,7 +11,8 @@
                 [% ctx.payment_response.desc || ctx.payment_response.textcode %]
             </span><br />
             [% ctx.payment_response.note %]
-            [% ctx.payment_response.payload.error_message %]
+            [% ctx.payment_response.payload.error_message | html %]
+            [% ctx.payment_response.payload.message | html %]
         </div>
         <p>
             [%

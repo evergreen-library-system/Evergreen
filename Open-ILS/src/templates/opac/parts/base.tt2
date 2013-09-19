@@ -19,9 +19,9 @@
             @import "[% ctx.media_prefix %]/js/dojo/dijit/themes/tundra/tundra.css";
         </style>
         [% END %]
-        [% INCLUDE 'opac/parts/goog_analytics.tt2' %]
-        [% INCLUDE 'opac/parts/stripe.tt2' %]
 
+        [% INCLUDE 'opac/parts/goog_analytics.tt2' %]
+        [% PROCESS 'opac/parts/stripe.tt2' %]
     </head>
     <body[% IF want_dojo; ' class="tundra"'; END %]>
         <h1 class="sr-only">[% l('Catalog') %]</h1>

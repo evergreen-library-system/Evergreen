@@ -1,15 +1,12 @@
-[%- PROCESS "opac/parts/header.tt2";
-IF myopac_main_page == "payment_form" AND
-ctx.get_org_setting(ctx.user.home_ou.id, 'credit.processor.stripe.enabled') AND ctx.get_org_setting(ctx.user.home_ou.id, 'credit.processor.default') == 'Stripe';
-    use_stripe = 1; %]
-
+[%- PROCESS "opac/parts/header.tt2" %]
+[% IF ctx.use_stripe %]
         <script type="text/javascript" src="https://js.stripe.com/v2/"></script> <!-- use an ou setting for this url? -->
         <script type="text/javascript">
         // This script is only displayed when logged in, so ctx.user.home_ou is always available
         Stripe.setPublishableKey('[% ctx.get_org_setting(ctx.user.home_ou.id, 'credit.processor.stripe.pubkey') %]');
 
         function stripe_onsubmit() {
-            var form = document.getElementById("stripe_form");
+            var form = document.getElementById("payment_form");
             var button = document.getElementById("payment_submit");
 
             button.disabled = true;

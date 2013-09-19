@@ -1329,7 +1329,7 @@ sub load_myopac_pay_init {
     $cc_args->{$_} = $self->cgi->param($_) for (qw/
         number cvv2 expire_year expire_month billing_first
         billing_last billing_address billing_city billing_state
-        billing_zip
+        billing_zip stripe_token
     /);
 
     my $cache_args = {

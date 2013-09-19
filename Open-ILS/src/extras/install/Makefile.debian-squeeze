@@ -67,6 +67,7 @@ export DEB_APACHE_DISMODS = \
 
 export CPAN_MODULES = \
 	Business::OnlinePayment::PayPal \
+	Business::Stripe \
 	Library::CallNumber::LC \
 	Net::Z3950::Simple2ZOOM \
 	RPC::XML \

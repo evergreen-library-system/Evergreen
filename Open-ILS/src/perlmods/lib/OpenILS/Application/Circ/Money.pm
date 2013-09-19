@@ -27,7 +27,127 @@ use OpenILS::Event;
 use OpenSRF::Utils::Logger qw/:logger/;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Penalty;
+use Business::Stripe;
 $Data::Dumper::Indent = 0;
+
+sub get_processor_settings {
+    my $e = shift;
+    my $org_unit = shift;
+    my $processor = lc shift;
+
+    # Get the names of every credit processor setting for our given processor.
+    # They're a little different per processor.
+    my $setting_names = $e->json_query({
+        select => {coust => ["name"]},
+        from => {coust => {}},
+        where => {name => {like => "credit.processor.${processor}.%"}}
+    }) or return $e->die_event;
+
+    # Make keys for a hash we're going to build out of the last dot-delimited
+    # component of each setting name.
+    ($_->{key} = $_->{name}) =~ s/.+\.(\w+)$/$1/ for @$setting_names;
+
+    # Return a hash with those short keys, and for values the value of
+    # the corresponding OU setting within our scope.
+    return {
+        map {
+            $_->{key} => $U->ou_ancestor_setting_value($org_unit, $_->{name})
+        } @$setting_names
+    };
+}
+
+# process_stripe_or_bop_payment()
+# This is a helper method to make_payments() below (specifically,
+# the credit-card part). It's the first point in the Perl code where
+# we need to care about the distinction between Stripe and the
+# Paypal/PayflowPro/AuthorizeNet kinds of processors (the latter group
+# uses B::OP and handles payment card info, whereas Stripe doesn't use
+# B::OP and doesn't require us to know anything about the payment card
+# info).
+#
+# Return an event in all cases.  That means a success returns a SUCCESS
+# event.
+sub process_stripe_or_bop_payment {
+    my ($e, $user_id, $this_ou, $total_paid, $cc_args) = @_;
+
+    # A few stanzas to determine which processor we're using and whether we're
+    # really adequately set up for it.
+    if (!$cc_args->{processor}) {
+        if (!($cc_args->{processor} =
+                $U->ou_ancestor_setting_value(
+                    $this_ou, 'credit.processor.default'
+                )
+            )
+        ) {
+            return OpenILS::Event->new('CREDIT_PROCESSOR_NOT_SPECIFIED');
+        }
+    }
+
+    # Make sure the configured credit processor has a safe/correct name.
+    return OpenILS::Event->new('CREDIT_PROCESSOR_NOT_ALLOWED')
+        unless $cc_args->{processor} =~ /^[a-z0-9_\-]+$/i;
+
+    # Get the settings for the processor and make sure they're serviceable.
+    my $psettings = get_processor_settings($e, $this_ou, $cc_args->{processor});
+    return $psettings if defined $U->event_code($psettings);
+    return OpenILS::Event->new('CREDIT_PROCESSOR_NOT_ENABLED')
+        unless $psettings->{enabled};
+
+    # Now we branch. Stripe is one thing, and everything else is another.
+
+    if ($cc_args->{processor} eq 'Stripe') { # Stripe
+        my $stripe = Business::Stripe->new(-api_key => $psettings->{secretkey});
+        $stripe->charges_create(
+            amount => int($total_paid * 100.0), # Stripe takes amount in pennies
+            card => $cc_args->{stripe_token},
+            description => $cc_args->{note}
+        );
+
+        if ($stripe->success) {
+            $logger->info("Stripe payment succeeded");
+            return OpenILS::Event->new(
+                "SUCCESS", payload => {
+                    map { $_ => $stripe->success->{$_} } qw(
+                        invoice customer balance_transaction id created card
+                    )
+                }
+            );
+        } else {
+            $logger->info("Stripe payment failed");
+            return OpenILS::Event->new(
+                "CREDIT_PROCESSOR_DECLINED_TRANSACTION",
+                payload => $stripe->error  # XXX what happens if this contains
+                                           # JSON::backportPP::* objects?
+            );
+        }
+
+    } else { # B::OP style (Paypal/PayflowPro/AuthorizeNet)
+        return OpenILS::Event->new('BAD_PARAMS', note => 'Need CC number')
+            unless $cc_args->{number};
+
+        return OpenILS::Application::Circ::CreditCard::process_payment({
+            "desc" => $cc_args->{note},
+            "amount" => $total_paid,
+            "patron_id" => $user_id,
+            "cc" => $cc_args->{number},
+            "expiration" => sprintf(
+                "%02d-%04d",
+                $cc_args->{expire_month},
+                $cc_args->{expire_year}
+            ),
+            "ou" => $this_ou,
+            "first_name" => $cc_args->{billing_first},
+            "last_name" => $cc_args->{billing_last},
+            "address" => $cc_args->{billing_address},
+            "city" => $cc_args->{billing_city},
+            "state" => $cc_args->{billing_state},
+            "zip" => $cc_args->{billing_zip},
+            "cvv2" => $cc_args->{cvv2},
+            %$psettings
+        });
+
+    }
+}
 
 __PACKAGE__->register_method(
     method => "make_payments",
@@ -49,6 +169,7 @@ __PACKAGE__->register_method(
                         approval_code   (for out-of-band payment)
                         type            (for out-of-band payment)
                         number          (for call to payment processor)
+                        stripe_token    (for call to Stripe payment processor)
                         expire_month    (for call to payment processor)
                         expire_year     (for call to payment processor)
                         billing_first   (for out-of-band payments and for call to payment processor)
@@ -264,7 +385,7 @@ sub make_payments {
         if ($payobj->has_field('cc_number')) {
             $payobj->cc_number(substr($cc_args->{number}, -4));
         }
-        if ($payobj->has_field('expire_month')) { $payobj->expire_month($cc_args->{expire_month}); }
+        if ($payobj->has_field('expire_month')) { $payobj->expire_month($cc_args->{expire_month}); $logger->info("LFW XXX expire_month is $cc_args->{expire_month}"); }
         if ($payobj->has_field('expire_year')) { $payobj->expire_year($cc_args->{expire_year}); }
         
         # Note: It is important not to set approval_code
@@ -289,46 +410,34 @@ sub make_payments {
         # If an approval code was not given, we'll need
         # to call to the payment processor ourselves.
         if ($cc_args->{where_process} == 1) {
-            return OpenILS::Event->new('BAD_PARAMS', note => 'Need CC number')
-                if not $cc_args->{number};
-            my $response =
-                OpenILS::Application::Circ::CreditCard::process_payment({
-                    "desc" => $cc_args->{note},
-                    "amount" => $total_paid,
-                    "patron_id" => $user_id,
-                    "cc" => $cc_args->{number},
-                    "expiration" => sprintf(
-                        "%02d-%04d",
-                        $cc_args->{expire_month},
-                        $cc_args->{expire_year}
-                    ),
-                    "ou" => $this_ou,
-                    "first_name" => $cc_args->{billing_first},
-                    "last_name" => $cc_args->{billing_last},
-                    "address" => $cc_args->{billing_address},
-                    "city" => $cc_args->{billing_city},
-                    "state" => $cc_args->{billing_state},
-                    "zip" => $cc_args->{billing_zip},
-                    "cvv2" => $cc_args->{cvv2},
-                });
+            my $response = process_stripe_or_bop_payment(
+                $e, $user_id, $this_ou, $total_paid, $cc_args
+            );
 
-            if ($U->event_code($response)) { # non-success
+            if ($U->event_code($response)) { # non-success (success is 0)
                 $logger->info(
                     "Credit card payment for user $user_id failed: " .
-                    $response->{"textcode"} . " " .
-                    $response->{"payload"}->{"error_message"}
+                    $response->{textcode} . " " .
+                    ($response->{payload}->{error_message} ||
+                        $response->{payload}{message})
                 );
-
                 return $response;
             } else {
                 # We need to save this for later in case there's a failure on
                 # the EG side to store the processor's result.
-                $cc_payload = $response->{"payload"};
 
-                $approval_code = $cc_payload->{"authorization"};
-                $cc_type = $cc_payload->{"card_type"};
-                $cc_processor = $cc_payload->{"processor"};
-                $cc_order_number = $cc_payload->{"order_number"};
+                $cc_payload = $response->{"payload"};   # also used way later
+
+                {
+                    no warnings 'uninitialized';
+                    $cc_type = $cc_payload->{card_type};
+                    $approval_code = $cc_payload->{authorization} ||
+                        $cc_payload->{id};
+                    $cc_processor = $cc_payload->{processor} ||
+                        $cc_args->{processor};
+                    $cc_order_number = $cc_payload->{order_number} ||
+                        $cc_payload->{invoice};
+                };
                 $logger->info("Credit card payment for user $user_id succeeded");
             }
         } else {
@@ -372,6 +481,13 @@ sub make_payments {
                     )
                 }
             }
+        }
+
+        # Urgh, clean up this mega-function one day.
+        if ($cc_processor eq 'Stripe' and $approval_code and $cc_payload) {
+            $payment->expire_month($cc_payload->{card}{exp_month});
+            $payment->expire_year($cc_payload->{card}{exp_year});
+            $payment->cc_number($cc_payload->{card}{last4});
         }
 
         $payment->approval_code($approval_code) if $approval_code;
