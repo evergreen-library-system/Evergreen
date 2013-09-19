@@ -1007,7 +1007,10 @@ div.adv_search_available {
 .facetFieldLineValue { overflow: hidden; text-overflow: ellipsis; }
 [%- END -%]
 
-div.facet_sidebar {
+div#result_block {
+    float: left;
+}
+div#facet_sidebar {
     float: left;
     border-right: 1px solid [% css_colors.border_standard %];
     margin-right: 1em;
@@ -1655,7 +1658,7 @@ a.preflib_change {
     clear: both;
 }
 
-.small_view_only, #refine_hits {
+.small_view_only, #refine_hits, #return_to_hits {
     display: none;
 }
 
@@ -1908,10 +1911,16 @@ a.preflib_change {
     .facet_template .count {
         padding-left: 1em;
     }
-    .facet_sidebar {
+    #facet_sidebar {
         margin-top: 0.5em;
     }
-    #refine_hits {
+    .facet_sidebar_hidden, .result_block_hidden {
+        display: none;
+    }
+    .facet_sidebar_visible, .result_block_visible {
+        display: visible;
+    }
+    #refine_hits, #return_to_hits {
         display: block;
         padding-left: 15px;
     }

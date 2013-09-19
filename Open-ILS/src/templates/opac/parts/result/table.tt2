@@ -10,8 +10,6 @@
 
 %]
 
-<div id="refine_hits"><a href="#facet_sidebar">[% l('Refine these results') %]</a></div>
-
 [% PROCESS "opac/parts/result/paginate.tt2" %] 
 [% ctx.results_count_header = PROCESS results_count_header;
     ctx.results_count_header %]
@@ -22,7 +20,8 @@
 </div>
 [% END %]
 <div id="result_table_div">
-            <div class="result_block">
+            <div id="result_block" class="result_block_visible">
+                <div id="refine_hits"><a onclick="getFacety();">[% l('Refine these results') %]</a></div>
                 <table cellpadding="0" cellspacing="0"
                     border="0" style="margin-top:10px;">
                     <tbody id="result_table">
@@ -355,29 +354,36 @@ END;
                     </tbody>
                 </table>
             </div>
-    <div class="facet_sidebar" id="facet_sidebar">
+    <div class="facet_sidebar_hidden" id="facet_sidebar">
+        <div id="return_to_hits"><a onclick="getResulty();">[% l('Back to results') %]</a></div>
     [% INCLUDE "opac/parts/staff_saved_searches.tt2" %]
     [% INCLUDE 'opac/parts/result/facets.tt2' %]
     </div>
-    <script>
-        function showHideFacets() {
-            var clientWidth = document.documentElement.clientWidth;
-            resultBlock = document.querySelector('.result_block');
-            facetSidebar = document.querySelector('.facet_sidebar');
-            if (clientWidth >= 600) {
-                if (resultBlock && facetSidebar) {
-                    resultBlock.parentNode.insertBefore(facetSidebar, resultBlock);
-                }
-            } else if (clientWidth < 600) {
-                if (resultBlock && facetSidebar) {
-                    resultBlock.parentNode.insertBefore(resultBlock, facetSidebar);
-                }
-            }
-        }
-        window.onresize = showHideFacets;
-        window.onload = showHideFacets;
-    </script>
 </div>
 <div class="result_footer_nav1">
     [% ctx.results_count_header %]
 </div>
+<script>
+resultBlock = document.querySelector('#result_block');
+facetSidebar = document.querySelector('#facet_sidebar');
+function getFacety() {
+    resultBlock.setAttribute('class', 'result_block_hidden');
+    facetSidebar.setAttribute('class', 'facet_sidebar_visible');
+    window.location.hash = 'facet_sidebar';
+}
+function getResulty() {
+    resultBlock.setAttribute('class', 'result_block_visible');
+    facetSidebar.setAttribute('class', 'facet_sidebar_hidden');
+    window.location.hash = 'result_block';
+}
+function moveFacets() {
+    var clientWidth = document.documentElement.clientWidth;
+    if (clientWidth >= 600) {
+        if (resultBlock && facetSidebar) {
+            resultBlock.parentNode.insertBefore(facetSidebar, resultBlock);
+        }
+    }
+}
+window.onresize = moveFacets;
+window.onload = moveFacets;
+</script>
