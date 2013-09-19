@@ -22,11 +22,13 @@
                     [%  l('[_1] [_2]', ctx.user.first_given_name, ctx.user.family_name) | html %]
                 </span>
                 <span class="dash_divider">|</span>
+                <span class="dash_account_buttons">
                 <a href="[% mkurl(ctx.opac_root _ '/myopac/main') %]" 
                     class="opac-button">[% l('My Account') %]</a>
 
                 <a href="[% mkurl(ctx.opac_root _ '/logout', {}, 1) %]"
                     class="opac-button" id="logout_link">[% l('Logout') %]</a>
+                </span>
             </div>
             <div id="dashboard">
                 <span class="dash-align">
