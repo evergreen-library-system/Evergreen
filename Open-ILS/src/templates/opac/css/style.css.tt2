@@ -289,7 +289,7 @@ span.dash_divider {
 
 #adv_search_filters {
     position: relative;
-    width: 800px;
+    width: 850px;
 }
 
 #adv_filter_block {
