@@ -492,7 +492,13 @@ sub reservation_list_by_filters {
     my $filters = shift;
     my $whole_obj = shift;
 
-    return undef unless ($filters->{user} || $filters->{user_barcode} || $filters->{resource} || $filters->{type} || $filters->{attribute_values});
+    return undef unless (
+           $filters->{user}
+        || $filters->{user_barcode}
+        || $filters->{resource}
+        || $filters->{type}
+        || $filters->{attribute_values}
+    );
 
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
