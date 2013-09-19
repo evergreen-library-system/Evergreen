@@ -1794,7 +1794,7 @@ a.preflib_change {
         display: inline !important;
     }
     #dash_identity a {
-        float:right;
+        float:left;
     }
     #dashboard {
         display: none;
