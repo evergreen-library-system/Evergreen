@@ -2155,11 +2155,16 @@ sub booking_adjusted_due_date {
             '0 seconds';
 
         my $booking_ses = OpenSRF::AppSession->create( 'open-ils.booking' );
-        my $bookings = $booking_ses->request(
-            'open-ils.booking.reservations.filtered_id_list', $self->editor->authtoken,
-            { resource => $booking_item->id, search_start => 'now', search_end => $circ->due_date, fields => { cancel_time => undef, return_time => undef}}
-        )->gather(1);
+        my $bookings = $booking_ses->request('open-ils.booking.reservations.filtered_id_list', $self->editor->authtoken, {
+              resource     => $booking_item->id
+            , search_start => 'now'
+            , search_end   => $circ->due_date
+            , fields       => { cancel_time => undef, return_time => undef }
+        })->gather(1);
         $booking_ses->disconnect;
+
+        throw OpenSRF::EX::ERROR ("Improper input arguments") unless defined $bookings;
+        return $self->bail_on_events($bookings) if ref($bookings) eq 'HASH';
         
         my $dt_parser = DateTime::Format::ISO8601->new;
         my $due_date = $dt_parser->parse_datetime( cleanse_ISO8601($circ->due_date) );
