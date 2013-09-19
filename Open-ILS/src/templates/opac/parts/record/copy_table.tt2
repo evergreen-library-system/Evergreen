@@ -54,7 +54,7 @@ END;
     <tbody class="copy_details_table">
 [%- FOREACH peer IN ctx.foreign_copies;
         FOREACH bib IN peer.foreign_copy_maps; %]
-    <tr><td header='copy_header_shelfloc'>
+    <tr class="copy_details_row"><td header='copy_header_shelfloc'>
     [%- bib_lib_name = ctx.get_aou(bib.target_copy.circ_lib).name | html;
         l("[_1] (foreign item)", bib_lib_name); -%]
         <ul><li>
@@ -89,7 +89,7 @@ END; # FOREACH bib
                 callnum = callnum  _ " " _ callnum_suffix;
             END;
         -%]
-        <tr property="offers" typeof="Offer">
+        <tr class="copy_details_offers_row" property="offers" typeof="Offer">
             [%- IF serial_holdings %]<td header='copy_header_holding_label' class='rdetail-issue-issue'>
                 [%- copy_info.holding_label | html; -%]
             </td>

@@ -1882,12 +1882,15 @@ a.preflib_change {
 	display: block;
 	margin-top: 3px;
     }
-    #rdetails_status tr:nth-of-type(odd) {
-	background-color: #eee;
-    }
     #rdetails_status td {
 	display: block;
 	padding: 1px;
+    }
+    .copy_details_row {
+	background-color: [% css_colors.accent_lightest %];
+    }
+    .copy_details_offers_row {
+	background-color: [% css_colors.accent_lightest %];
     }
     select#pickup_lib.search-wrapper-locg {
         width: 100%;
