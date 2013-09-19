@@ -3855,6 +3855,33 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'bool', null)
 
+    ( 'credit.processor.stripe.enabled', 'credit',
+    oils_i18n_gettext('credit.processor.stripe.enabled',
+        'Enable Stripe payments',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.stripe.enabled',
+        'Enable Stripe payments',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'credit.processor.stripe.pubkey', 'credit',
+    oils_i18n_gettext('credit.processor.stripe.pubkey',
+        'Stripe publishable key',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.stripe.pubkey',
+        'Stripe publishable key',
+        'coust', 'description'),
+    'string', null)
+
+,( 'credit.processor.stripe.privatekey', 'credit',
+    oils_i18n_gettext('credit.processor.stripe.privatekey',
+        'Stripe secret key',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.stripe.privatekey',
+        'Stripe secret key',
+        'coust', 'description'),
+    'string', null)
+
 ,( 'format.date', 'gui',
     oils_i18n_gettext('format.date',
         'Format Dates with this pattern.',
