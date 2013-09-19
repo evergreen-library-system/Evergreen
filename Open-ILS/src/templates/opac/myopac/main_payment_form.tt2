@@ -5,7 +5,7 @@
     myopac_main_page = "payment_form";
 
     last_chance = CGI.param("last_chance");
-
+    use_stripe = ctx.get_org_setting(ctx.user.home_ou.id, 'opac.processor.stripe.enabled');
 %]
 <h3 class="sr-only">[% l('Pay Fines') %]</h3>
 [% IF ctx.fines.balance_owed <= 0 %]
@@ -26,7 +26,11 @@
         <input type="submit" value="[% l('Submit Payment') %]" />
         <a href="[% mkurl(ctx.opac_root _ '/myopac/main', {}, 1) %]">[% l('Cancel') %]</a>
     [% ELSE %]
-    <form method="post">
+    <form method="post" id="payment_form"
+    [% IF use_stripe %]
+    onsubmit="return stripe_onsubmit();"
+    [% ENDIF %]
+    >
         <input type="hidden" name="last_chance" value="1" />
         [% FOR xact IN CGI.param('xact') %]
         <input type="hidden" name="xact" value="[% xact | html %]" />
@@ -34,6 +38,9 @@
         [% FOR xact IN CGI.param('xact_misc') %]
         <input type="hidden" name="xact_misc" value="[% xact | html %]" />
         [% END %]
+        [% IF use_stripe %]
+        <input type="hidden" name="stripe_token" id="stripe_token" />
+        [% ENDIF %]
 
         <table title="[% l('Billing Information') %]">
             <tbody>
@@ -127,34 +134,37 @@
                 <tr>
                   <td colspan='2'><strong>[% l('Credit Card Information') %]</strong></td>
                 </tr>
-                <!-- Technically not needed since card type is derived from the CC number
-                <tr>
-                    <td>[% l('Type of Card') %]</td>
-                    <td>
-                        <select name="type">
-                            <option value='VISA'>[% l('VISA') %]</option>
-                            <option value='MasterCard'>[% l('MasterCard') %]</option>
-                            <option value='American Express'>[% l('American Express') %]</option>
-                        </select>
-                    </td>
-                </tr>
-                -->
                 <tr>
                     <td><label for="payment-credit-card">[% l('Credit Card #') %]</label></td>
-                    <td><input type="text" name="number" 
-                        id="payment-credit-card" maxlength="16" /></td>
+                    <td><input type="number" maxlength="16" id="payment-credit-card"
+                    [% IF use_stripe %]
+                    data-stripe="number"
+                    [% ELSE %]
+                    name="number"
+                    [% ENDIF %]
+                    /></td>
                 </tr>
                 <tr>
                     <td><label for="payment-security-code">[% l('Security Code') %]</label></td>
                     <td>
-                        <input type="text" size="4" maxlength="5" 
-                            name="cvv2" id="payment-security-code"/>
-                    </td>
+                        <input type="number" size="4" maxlength="5" id="payment-security-code"
+                        [% IF use_stripe %]
+                        data-stripe="cvc"
+                        [% ELSE %]
+                        name="cvv2"
+                        [% ENDIF %]
+                        /></td>
                 </tr>
                 <tr>
                     <td><label for="payment-expire-month">[% l('Expiration Month') %]</label></td>
                     <td>
-                        <select name="expire_month" id="payment-expire-month">
+                        <select id="payment-expire-month"
+                        [% IF use_stripe %]
+                        data-stripe="exp_month"
+                        [% ELSE %]
+                        name="expire_month"
+                        [% END IF %]
+                        >
                             <option value="01">[% l("January") %]</option>
                             <option value="02">[% l("February") %]</option>
                             <option value="03">[% l("March") %]</option>
@@ -173,7 +183,13 @@
                 <tr>
                     <td><label for="payment-expire-year">[% l('Expiration Year') %]</label></td>
                     <td>
-                        <select name="expire_year" id="payment-expire-year">
+                        <select id="payment-expire-year"
+                        [% IF use_stripe %]
+                        data-stripe="exp_year"
+                        [% ELSE %]
+                        name="expire_year"
+                        [% ENDIF %]
+                        >
                         [% year = date.format(date.now, '%Y');
                         y = year;
                         WHILE y < year + 10; # show ten years starting now %]
@@ -184,7 +200,7 @@
                 </tr>
                 <tr>
                     <td colspan='2' align="center">
-                        <input type="submit" value="[% l('Next') %]" />
+                        <input type="submit" id="payment_submit" value="[% l('Next') %]" />
                         <a href="[% mkurl(ctx.opac_root _ '/myopac/main', {}, 1) %]">[% l('Cancel') %]</a>
                     </td>
                 </tr>
