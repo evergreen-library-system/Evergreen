@@ -1971,5 +1971,16 @@ a.preflib_change {
     .bookshelf table thead tr {
 	display: block;
     }
-
+    #adv_search_tabs { 
+        height: 25px;
+    }
+    #adv_search_tabs a{                                                                                                                           
+        font-size: 93%;
+        margin: 2px;
+        margin-right: 2px;
+        margin-bottom: 2px;
+        padding: 2px 2px 5px 2px; 
+        -moz-border-radius: 10px 0px 0px 0px;
+        border-radius: 7px 7px 0px 0px;                                                                                                           
+    }
 }
