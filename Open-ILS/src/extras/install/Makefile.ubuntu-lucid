@@ -62,6 +62,7 @@ export DEB_APACHE_DISMODS = \
     deflate
 
 export CPAN_MODULES = \
+	Business::ISSN \
 	Business::OnlinePayment::PayPal \
 	Library::CallNumber::LC \
 	MARC::Record \

@@ -21,6 +21,7 @@ use LWP::UserAgent;
 use MIME::Base64;
 
 use Business::ISBN;
+use Business::ISSN;
 
 my $AC = __PACKAGE__;
 
@@ -138,7 +139,8 @@ sub handler {
     } else {
         my $key_data = get_rec_keys($keyvalue);
         my @isbns = grep {$_->{tag} eq '020'} @$key_data;
-        my @upcs = grep {$_->{tag} eq '024'} @$key_data;
+        my @issns = grep {$_->{tag} eq '022'} @$key_data;
+        my @upcs  = grep {$_->{tag} eq '024'} @$key_data;
 
         map {
             my $isbn_obj = Business::ISBN->new($_->{value});
@@ -148,13 +150,22 @@ sub handler {
             undef $_ if !defined($_->{value});
         } @isbns;
 
+        map {
+            my $issn_obj = Business::ISSN->new($_->{value});
+            my $issn_str;
+            $issn_str = $issn_obj->as_string() if defined($issn_obj && $issn_obj->is_valid);
+            $_->{value} = $issn_str;
+            undef $_ if !defined($_->{value});
+        } @issns;
+
         $keyhash = {
             isbn => [map {$_->{value}} @isbns],
-            upc => [map {$_->{value}} @upcs]
+            issn => [map {$_->{value}} @issns],
+            upc  => [map {$_->{value}} @upcs]
         };
     }
 
-    return Apache2::Const::NOT_FOUND unless @{$keyhash->{isbn}} || @{$keyhash->{upc}};
+    return Apache2::Const::NOT_FOUND unless @{$keyhash->{isbn}} || @{$keyhash->{issn}} || @{$keyhash->{upc}};
 
     try {
         if ($handler->can('expects_keyhash') && $handler->expects_keyhash() eq 1) {
@@ -198,6 +209,11 @@ sub get_rec_keys {
                 {
                     '-and' => [
                         {tag => '020'},
+                        {subfield => 'a'}
+                    ]
+                }, {
+                    '-and' => [
+                        {tag => '022'},
                         {subfield => 'a'}
                     ]
                 }, {

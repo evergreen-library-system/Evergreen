@@ -17,6 +17,7 @@ my $build = Module::Build->new(
         'APR::Table' => '0',
         'Business::CreditCard' => '0',
         'Business::ISBN' => '0',
+        'Business::ISSN' => '0',
         'Business::OnlinePayment' => '0',
         'Carp' => '0',
         'CGI' => '0',

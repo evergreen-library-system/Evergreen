@@ -288,14 +288,16 @@ sub fetch_response {
     my( $self, $page, $keys, $notype ) = @_;
     my $uname = $self->userid;
 
-    # Fetch single isbn and single upc
+    # Fetch single isbn, upc, and issn
     my $isbn = $keys->{isbn}[0];
-    my $upc = $keys->{upc}[0];
+    my $upc  = $keys->{upc}[0];
+    my $issn = $keys->{issn}[0];
 
     $isbn = '' if !defined($isbn);
-    $upc = '' if !defined($upc);
+    $upc  = '' if !defined($upc);
+    $issn = '' if !defined($issn);
 
-    my $url = $self->base_url . "?isbn=$isbn/$page&upc=$upc&client=$uname" . (($notype) ? '' : "&type=rw12");
+    my $url = $self->base_url . "?isbn=$isbn/$page&upc=$upc&issn=$issn&client=$uname" . (($notype) ? '' : "&type=rw12");
     return $AC->get_url($url);
 }
 
