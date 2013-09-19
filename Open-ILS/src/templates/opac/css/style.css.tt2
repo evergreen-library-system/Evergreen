@@ -1121,7 +1121,6 @@ div.facet_sidebar {
 .advanced_div { padding-top: 15px; }
 #adv_global_search { width: 100%; }
 #adv_global_search select { width: 13em; }
-#adv_global_row { white-space: nowrap; }
 #adv_global_addrow td { padding-top: 7px; }
 #adv_global_input_table { width: 100%; }
 #adv_global_input_table select { width: 7em; }
@@ -1982,5 +1981,11 @@ a.preflib_change {
         padding: 2px 2px 5px 2px; 
         -moz-border-radius: 10px 0px 0px 0px;
         border-radius: 7px 7px 0px 0px;                                                                                                           
+    }
+    #adv_global_tbody td {
+        border-bottom: thin solid [% css_colors.accent_light %];
+    }
+    #adv_global_addrow td {
+        border-bottom: none;
     }
 }
