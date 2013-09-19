@@ -1,5 +1,7 @@
 [%- PROCESS "opac/parts/header.tt2";
-    IF myopac_main_page == "payment_form" AND ctx.get_org_setting(ctx.user.home_ou.id, 'opac.processor.stripe.enabled')%]
+IF myopac_main_page == "payment_form" AND
+ctx.get_org_setting(ctx.user.home_ou.id, 'credit.processor.stripe.enabled') AND ctx.get_org_setting(ctx.user.home_ou.id, 'credit.processor.default') == 'Stripe';
+    use_stripe = 1; %]
 
         <script type="text/javascript" src="https://js.stripe.com/v2/"></script> <!-- use an ou setting for this url? -->
         <script type="text/javascript">

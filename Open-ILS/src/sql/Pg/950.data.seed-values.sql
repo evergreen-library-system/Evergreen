@@ -3752,7 +3752,7 @@ INSERT into config.org_unit_setting_type
         'Name default credit processor',
         'coust', 'label'),
     oils_i18n_gettext('credit.processor.default',
-        'This might be "AuthorizeNet", "PayPal", etc.',
+        'This might be "AuthorizeNet", "PayPal", "PayflowPro", or "Stripe".',
         'coust', 'description'),
     'string', null)
 
@@ -3873,11 +3873,11 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'string', null)
 
-,( 'credit.processor.stripe.privatekey', 'credit',
-    oils_i18n_gettext('credit.processor.stripe.privatekey',
+,( 'credit.processor.stripe.secretkey', 'credit',
+    oils_i18n_gettext('credit.processor.stripe.secretkey',
         'Stripe secret key',
         'coust', 'label'),
-    oils_i18n_gettext('credit.processor.stripe.privatekey',
+    oils_i18n_gettext('credit.processor.stripe.secretkey',
         'Stripe secret key',
         'coust', 'description'),
     'string', null)
