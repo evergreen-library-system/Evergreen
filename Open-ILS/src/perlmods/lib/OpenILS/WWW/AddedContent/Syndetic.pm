@@ -27,6 +27,10 @@ sub userid {
     return $self->{userid};
 }
 
+sub expects_keyhash {
+    # we expect a keyhash as opposed to a simple scalar containing an ISBN
+    return 1;
+}
 
 # --------------------------------------------------------------------------
 sub jacket_small {

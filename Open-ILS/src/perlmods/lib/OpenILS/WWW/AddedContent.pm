@@ -157,7 +157,13 @@ sub handler {
     return Apache2::Const::NOT_FOUND unless @{$keyhash->{isbn}} || @{$keyhash->{upc}};
 
     try {
-        $data = $handler->$method($keyhash);
+        if ($handler->can('expects_keyhash') && $handler->expects_keyhash() eq 1) {
+            # Handler expects a keyhash
+            $data = $handler->$method($keyhash);
+        } else {
+            # Pass single ISBN as a scalar to the handler
+            $data = $handler->$method($keyhash->{isbn}[0]);
+        }
     } catch Error with {
         $err = shift;
         decr_error_countdown();
