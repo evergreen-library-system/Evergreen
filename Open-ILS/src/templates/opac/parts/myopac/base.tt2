@@ -25,14 +25,17 @@
                     class="[% cls_which %]">[% page.name; %]</a>
                 [% END %]
             </div>
-            <div id="acct_select">
+            <!- Select box navigation for media view ->
+	    <div id="acct_select">
 	       <form name="acct_nav">
 	         <select name="acct_url" aria-label="Select an account page" onchange="window.location.href=document.acct_nav.acct_url.options[document.acct_nav.acct_url.selectedIndex].value">
                    <option value="" selected="selected">Go to...</option>
                [% FOREACH page IN myopac_pages;
                   IF page.url != myopac_page; %]
                     <option value="[% mkurl(ctx.opac_root _ '/myopac/' _ page.url, {}, ['bbid', 'offset', 'limit']) %]">[% page.name; %]</option>
-	          [% END;
+	         [% ELSE; %]
+		   <option value="" disabled>[% page.name; %]</option>
+	       [% END;
                END; %] 
 	       </select>
 	    </div>
