@@ -10,7 +10,9 @@
     skin_root = "../"
 %]
     [% INCLUDE "opac/parts/topnav.tt2" %]
+    <div class="mobile_hide">
     [% INCLUDE "opac/parts/searchbar.tt2" %]
+    </div>
     <div id="content-wrapper">
         <div id="myopac_tabs">
             <div id="acct_tabs">
