@@ -20,6 +20,11 @@
 </div>
 [% END %]
 <div id="result_table_div">
+    <div class="facet_sidebar_hidden" id="facet_sidebar">
+        <div id="return_to_hits"><a onclick="getResulty();">[% l('Back to results') %]</a></div>
+    [% INCLUDE "opac/parts/staff_saved_searches.tt2" %]
+    [% INCLUDE 'opac/parts/result/facets.tt2' %]
+    </div>
             <div id="result_block" class="result_block_visible">
                 <div id="refine_hits"><a onclick="getFacety();">[% l('Refine these results') %]</a></div>
                 <table cellpadding="0" cellspacing="0"
@@ -354,11 +359,6 @@ END;
                     </tbody>
                 </table>
             </div>
-    <div class="facet_sidebar_hidden" id="facet_sidebar">
-        <div id="return_to_hits"><a onclick="getResulty();">[% l('Back to results') %]</a></div>
-    [% INCLUDE "opac/parts/staff_saved_searches.tt2" %]
-    [% INCLUDE 'opac/parts/result/facets.tt2' %]
-    </div>
 </div>
 <div class="result_footer_nav1">
     [% ctx.results_count_header %]
@@ -376,14 +376,4 @@ function getResulty() {
     facetSidebar.setAttribute('class', 'facet_sidebar_hidden');
     window.location.hash = 'result_block';
 }
-function moveFacets() {
-    var clientWidth = document.documentElement.clientWidth;
-    if (clientWidth >= 600) {
-        if (resultBlock && facetSidebar) {
-            resultBlock.parentNode.insertBefore(facetSidebar, resultBlock);
-        }
-    }
-}
-window.onresize = moveFacets;
-window.onload = moveFacets;
 </script>

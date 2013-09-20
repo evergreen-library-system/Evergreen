@@ -1007,9 +1007,6 @@ div.adv_search_available {
 .facetFieldLineValue { overflow: hidden; text-overflow: ellipsis; }
 [%- END -%]
 
-div#result_block {
-    float: left;
-}
 div#facet_sidebar {
     float: left;
     border-right: 1px solid [% css_colors.border_standard %];
@@ -1679,6 +1676,19 @@ a.preflib_change {
     font-size: [% css_fonts.size_bigger %];
 }
 
+@media only screen and (max-width: 800px) {
+    .facet_sidebar_hidden, .result_block_hidden {
+        display: none;
+    }
+    .facet_sidebar_visible, .result_block_visible {
+        display: inline;
+    }
+    #refine_hits, #return_to_hits {
+        display: block;
+        padding-left: 15px;
+    }
+}
+
 @media only screen and (max-width: 600px) {
     input, select {
         font-size: [% css_fonts.size_big %];
@@ -1913,16 +1923,6 @@ a.preflib_change {
     }
     #facet_sidebar {
         margin-top: 0.5em;
-    }
-    .facet_sidebar_hidden, .result_block_hidden {
-        display: none;
-    }
-    .facet_sidebar_visible, .result_block_visible {
-        display: visible;
-    }
-    #refine_hits, #return_to_hits {
-        display: block;
-        padding-left: 15px;
     }
     #adv_search_parent {
         font-size: [% css_fonts.size_smaller %];
