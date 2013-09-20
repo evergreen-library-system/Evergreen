@@ -1,7 +1,7 @@
 [%  PROCESS "opac/parts/header.tt2";
     WRAPPER "opac/parts/myopac/prefs_base.tt2";
     myopac_page = "prefs";
-    prefs_page = 'my_lists' %]
+    prefs_page = 'prefs_my_lists' %]
 
 
     <form method='post'>

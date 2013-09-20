@@ -353,7 +353,7 @@ span.dash_divider {
     color: [% css_colors.accent_medium %];
 }
 
-#acct_select {
+#acct_select, #acct_prefs_select {
      display: none;
 }
 
@@ -1753,11 +1753,11 @@ a.preflib_change {
        display: none;
     }
 
-    #acct_select {
+    #acct_select, #acct_prefs_select {
         display: inline-block;
     }
     
-    #acct_tabs {
+    #acct_tabs, #acct_prefs_tabs {
          display:none;
     }
     

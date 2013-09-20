@@ -1,7 +1,7 @@
 [%  PROCESS "opac/parts/header.tt2";
     WRAPPER "opac/parts/myopac/prefs_base.tt2";
     myopac_page = "prefs";
-    prefs_page = 'notify' %]
+    prefs_page = 'prefs_notify' %]
 
 <form method='post'>
     [% setting = 'opac.hold_notify' %]

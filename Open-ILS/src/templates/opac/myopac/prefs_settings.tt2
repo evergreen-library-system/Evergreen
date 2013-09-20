@@ -2,7 +2,7 @@
     PROCESS "opac/parts/org_selector.tt2";
     WRAPPER "opac/parts/myopac/prefs_base.tt2";
     myopac_page = "prefs";
-    prefs_page = 'settings' %]
+    prefs_page = 'prefs_settings' %]
 
 
     <form method='post'>

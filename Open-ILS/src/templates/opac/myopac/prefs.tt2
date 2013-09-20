@@ -1,7 +1,7 @@
 [%  PROCESS "opac/parts/header.tt2";
     WRAPPER "opac/parts/myopac/prefs_base.tt2";
     myopac_page = "prefs";
-    prefs_page = 'personal' %]
+    prefs_page = 'prefs' %]
 
 <div id="acct_info_main">
     <div id='myopac.expired.alert'
