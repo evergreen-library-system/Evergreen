@@ -1764,28 +1764,7 @@ a.preflib_change {
     #acct_checked_tabs {
         display:none;
     }
-    #acct_checked_main_header tr td:nth-child(5), #acct_checked_main_header tr td:nth-child(6) {
-        display:none;
-    }
-    #acct_checked_temp table tr td:nth-child(5), #acct_checked_temp table tr td:nth-child(6) {
-        display: none;
-    }
     #acct_holds_tabs {
-        display: none;
-    }
-    #holds_main form table.opac-auto-097 tr td:nth-child(3), #holds_main form table.opac-auto-097 tr td:nth-child(5) {
-        display: none;
-    }
-    #acct_holds_main_header tr td:nth-child(3), 
-    #acct_holds_main_header tr td:nth-child(4), #acct_holds_main_header tr td:nth-child(5), 
-    #acct_holds_main_header tr td:nth-child(6), #acct_holds_main_header tr td:nth-child(7), 
-    #acct_holds_main_header tr td:nth-child(8) {
-        display: none;
-    }
-    tr#acct_holds_temp td:nth-child(3), 
-    tr#acct_holds_temp td:nth-child(4), tr#acct_holds_temp td:nth-child(5), 
-    tr#acct_holds_temp td:nth-child(6), tr#acct_holds_temp td:nth-child(7), 
-    tr#acct_holds_temp td:nth-child(8), tr#acct_holds_temp td:nth-child(10) {
         display: none;
     }
     #dash_wrapper div {
@@ -1821,23 +1800,6 @@ a.preflib_change {
     #myopac_sum_fines {
         display: none;
     }
-    #myopac_circ_trans_row td:nth-child(2), #myopac_circ_trans_row td:nth-child(3),
-    #myopac_circ_trans_row td:nth-child(4), #myopac_circ_trans_row td:nth-child(5) {
-        display: none;
-    }
-    #myopac_trans_row td:nth-child(1), #myopac_trans_row td:nth-child(2), 
-    #myopac_trans_row td:nth-child(3), #myopac_trans_row td:nth-child(4) {
-        display: none;
-    }
-    /* Hack el terrible... */
-    #myopac_circ_trans_div table thead tr td:nth-child(2), #myopac_circ_trans_div table thead tr td:nth-child(3), 
-    #myopac_circ_trans_div table thead tr td:nth-child(4), #myopac_circ_trans_div table thead tr td:nth-child(5) { 
-        display:none;
-    }
-    #myopac_trans_div table thead tr td:nth-child(1), #myopac_trans_div table thead tr td:nth-child(2), 
-    #myopac_trans_div table thead tr td:nth-child(3), #myopac_trans_div table thead tr td:nth-child(4) {
-        display: none;
-    } 
     .results_header_div, .results_header_lbl {
         display: none;
     }
@@ -1997,4 +1959,81 @@ a.preflib_change {
     #adv_global_addrow td {
         border-bottom: none;
     }
+        /* Force table to not be like tables anymore */
+        table#acct_checked_main_header thead tr th {
+                display: block;
+        }
+        table#acct_checked_main_header tbody tr td {
+                display: block;
+        }
+
+        /* Hide table headers (but not display: none;, for accessibility) */
+        thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+        }
+
+        table#acct_checked_main_header tr { border: 1px solid #ddd; }
+
+        table#acct_checked_main_header td {
+                /* Behave  like a "row" */
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                padding-left: 40%;
+        }
+
+        table#acct_checked_main_header td:before {
+                /* Now like a table header */
+                position: absolute;
+                /* Top/left values mimic padding */
+                left: 2px;
+                width: 40%;
+                padding-right: 10px;
+                white-space: nowrap;
+        }
+
+        table#acct_checked_main_header td:nth-of-type(1) { border-top: 5px solid #aaa; padding-top: 15px; background-color: #fff;}
+        table#acct_checked_main_header td:nth-of-type(2):before { content: "Title / Author";}
+        table#acct_checked_main_header td:nth-of-type(3):before { content: "Renewals Left"; }
+        table#acct_checked_main_header td:nth-of-type(4):before { content: "Due Date"; }
+        table#acct_checked_main_header td:nth-of-type(5):before { content: "Barcode"; }
+        table#acct_checked_main_header td:nth-of-type(6):before { content: "Call number"; }
+
+        table#acct_holds_main_header thead tr th {
+                display: block;
+        }
+        table#acct_holds_main_header tbody tr td {
+                display: block;
+        }
+
+        table#acct_holds_main_header td {
+                /* Behave  like a "row" */
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                padding-left: 40%;
+        }
+
+
+        table#acct_holds_main_header td:before {
+                /* Now like a table header */
+                position: absolute;
+                /* Top/left values mimic padding */
+                left: 2px;
+                width: 40%;
+                padding-right: 10px;
+                white-space: nowrap;
+        }
+
+        table#acct_holds_main_header td:nth-of-type(1) { border-top: 5px solid #aaa; padding-top: 15px; background-color: #fff;}
+        table#acct_holds_main_header td:nth-of-type(2):before { content: "Title";}
+        table#acct_holds_main_header td:nth-of-type(3):before { content: "Author"; }
+        table#acct_holds_main_header td:nth-of-type(4):before { content: "Format"; }
+        table#acct_holds_main_header td:nth-of-type(5):before { content: "Pickup Location"; }
+        table#acct_holds_main_header td:nth-of-type(6):before { content: "Activate"; }
+        table#acct_holds_main_header td:nth-of-type(7):before { content: "Cancel on"; }
+        table#acct_holds_main_header td:nth-of-type(8):before { content: "Active"; }
+        table#acct_holds_main_header td:nth-of-type(9):before { content: "Status"; }
 }

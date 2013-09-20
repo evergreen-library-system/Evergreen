@@ -93,7 +93,7 @@
                             ) %]">[% attrs.author | html %]</a>
                             [% END %]
                         </td>
-                        <td name="renewals" align="center">
+                        <td name="renewals">
                             [% circ.circ.renewal_remaining %]
                         </td>
                         [%
