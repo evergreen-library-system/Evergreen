@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0834', :eg_version);
 
 INSERT INTO config.org_unit_setting_type 
     (name, grp, datatype, label, description)
