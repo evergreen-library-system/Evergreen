@@ -21,12 +21,10 @@
 [% END %]
 <div id="result_table_div">
     <div class="facet_sidebar_hidden" id="facet_sidebar">
-        <div id="return_to_hits"><a onclick="getResulty();">[% l('Back to results') %]</a></div>
     [% INCLUDE "opac/parts/staff_saved_searches.tt2" %]
     [% INCLUDE 'opac/parts/result/facets.tt2' %]
     </div>
             <div id="result_block" class="result_block_visible">
-                <div id="refine_hits"><a onclick="getFacety();">[% l('Refine these results') %]</a></div>
                 <table cellpadding="0" cellspacing="0"
                     border="0" style="margin-top:10px;">
                     <tbody id="result_table">
@@ -365,15 +363,21 @@ END;
 </div>
 <script>
 resultBlock = document.querySelector('#result_block');
+resultButton = document.querySelector('#return_to_hits');
 facetSidebar = document.querySelector('#facet_sidebar');
+facetButton =  document.querySelector('#refine_hits');
 function getFacety() {
     resultBlock.setAttribute('class', 'result_block_hidden');
+    resultButton.setAttribute('class', 'results_header_btns result_block_visible');
     facetSidebar.setAttribute('class', 'facet_sidebar_visible');
+    facetButton.setAttribute('class', 'result_block_hidden');
     window.location.hash = 'facet_sidebar';
 }
 function getResulty() {
     resultBlock.setAttribute('class', 'result_block_visible');
+    resultButton.setAttribute('class', 'result_block_hidden');
     facetSidebar.setAttribute('class', 'facet_sidebar_hidden');
+    facetButton.setAttribute('class', 'results_header_btns result_block_visible');
     window.location.hash = 'result_block';
 }
 </script>

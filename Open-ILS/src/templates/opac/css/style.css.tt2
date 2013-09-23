@@ -1681,11 +1681,7 @@ a.preflib_change {
         display: none;
     }
     .facet_sidebar_visible, .result_block_visible {
-        display: inline;
-    }
-    #refine_hits, #return_to_hits {
-        display: block;
-        padding-left: 15px;
+        display: inline ! important;
     }
 }
 
