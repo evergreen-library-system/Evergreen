@@ -1,6 +1,5 @@
 <div id="footer-wrap">
 <div id="footer">
-    <a href="/">[% l('Dynamic catalog') %]</a> &nbsp;|&nbsp;
     [% IF ctx.get_org_setting(
         ctx.physical_loc || ctx.aou_tree.id, 'opac.allow_pending_user') %]
     <a href="[% mkurl(ctx.opac_root _ '/register') %]">[% 
