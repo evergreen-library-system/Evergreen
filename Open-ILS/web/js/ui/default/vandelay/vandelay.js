@@ -109,7 +109,7 @@ function vlInit() {
     localeStrings = dojo.i18n.getLocalization("openils.vandelay", "vandelay");
 
     authtoken = openils.User.authtoken;
-    var initNeeded = 9; // how many async responses do we need before we're init'd 
+    var initNeeded = 10; // how many async responses do we need before we're init'd 
     var initCount = 0; // how many async reponses we've received
 
     openils.Util.registerEnterHandler(
