@@ -257,7 +257,6 @@ span.dash_divider {
 }
 
 #adv_search_tabs, #acct_tabs, #acct_fines_tabs, #acct_checked_tabs, #acct_holds_tabs, #acct_prefs_tabs, #results_header_inner{
-    height: 40px;
     margin-left: 2px;
 }
 
@@ -658,8 +657,8 @@ div.format_icon {
 }
 
 #results_header_inner {
-    height: 32px;
-    padding-top:6px;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
 }
 
 .cached_list_div { height: 25px; }
@@ -667,7 +666,6 @@ div.format_icon {
 .results_header_div {
     float: left;
     width: 0px;
-    height: 25px;
     border-left: 1px solid [% css_colors.accent_mediumdark %];
     border-right: 1px solid [% css_colors.accent_medium %];
     margin: 0px 13px;
