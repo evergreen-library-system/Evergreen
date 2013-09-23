@@ -14,11 +14,31 @@
         </div>
         <ol name="users">
             <li id="user_template">
-                <span class="hidden" name="reader_container">
+                <div class="hidden" name="reader_container">
                     [% l('Reader: [_1] / [_2] ([_3])', '<span name="barcode"></span>',
                     '<span name="name"></span>',
                     '<span name="ou"></span>') %]
-                </span>
+                    <!-- XXX i18n?  This template can be customized for
+                    other address layouts if needed. -->
+                    <div name="mailing_address_container" class="hidden">
+                        <span name="mailing_address_street1"></span>
+                        <span name="mailing_address_street2"></span><br />
+                        <span name="mailing_address_city"></span>,
+                        <!-- <span name="mailing_address_county"></span> -->
+                        <span name="mailing_address_state"></span>
+                        <span name="mailing_address_post_code"></span><br />
+                        <span name="mailing_address_country"></span>
+                    </div>
+                    <div name="billing_address_container" class="hidden">
+                        <span name="billing_address_street1"></span>
+                        <span name="billing_address_street2"></span><br />
+                        <span name="billing_address_city"></span>,
+                        <!-- <span name="billing_address_county"></span> -->
+                        <span name="billing_address_state"></span>
+                        <span name="billing_address_post_code"></span><br />
+                        <span name="billing_address_country"></span>
+                    </div>
+                </div>
                 <span class="hidden" name="department_container">
                     [% l('Department: [_1]', '<span name="department"></span>') %]
                 </span>

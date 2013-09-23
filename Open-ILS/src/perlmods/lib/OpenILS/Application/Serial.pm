@@ -3269,7 +3269,7 @@ sub get_routing_list_users {
             "flesh" => 2,
             "flesh_fields" => {
                 "srlu" => [qw/reader stream/],
-                "au" => [qw/card home_ou/],
+                "au" => [qw/card home_ou mailing_address billing_address/],
                 "sstr" => ["distribution"]
             }
         }

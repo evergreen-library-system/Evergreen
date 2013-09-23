@@ -48,6 +48,31 @@ function ListRenderer() {
         return this; /* for chaining */
     };
 
+    this._render_reader_addresses = function(reader, node) {
+        ["mailing", "billing"].forEach(
+            function(addr_type) {
+                var addr = reader[addr_type + "_address"]();
+                if (!addr || !addr.valid())
+                    return;
+
+                var prefix = addr_type + "_address_";
+                var container = n(prefix + "container", node);
+                if (container)
+                    openils.Util.show(container);
+
+                ["street1", "street2", "city", "county", "state",
+                    "country", "post_code"].forEach(
+                    function(f) {
+                        var field = prefix + f;
+                        var target = n(field, node);
+                        if (target)
+                            target.innerHTML = addr[f]();
+                    }
+                );
+            }
+        );
+    };
+
     this.render_users = function(stream, list) {
         for (var i = 0; i < this.users_by_stream[stream.id()].length; i++) {
             var user = this.users_by_stream[stream.id()][i];
@@ -63,6 +88,9 @@ function ListRenderer() {
                     ].map(function(n) { return n || ""; })
                 );
                 n("ou", node).innerHTML = user.reader().home_ou().shortname();
+
+                this._render_reader_addresses(user.reader(), node);
+
                 openils.Util.show(n("reader_container", node), "inline");
             } else if (user.department()) {
                 n("department", node).innerHTML = user.department();
