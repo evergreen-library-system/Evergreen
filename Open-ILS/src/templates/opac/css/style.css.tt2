@@ -677,7 +677,8 @@ div.format_icon {
     font-size: [% css_fonts.size_small %];
     color: [% css_colors.text %];
     background: [% css_colors.accent_medium %];
-    margin-right: 6px;
+    margin-right: 0.5em;
+    margin-top: 0.5em;
 }
 
 .results_header_sel {
@@ -1200,8 +1201,8 @@ a.dash-link:hover { text-decoration: underline !important; }
 
 .results_header_btns, .results_header_sel {
     float:left;
-    margin-right: 6px;
-    height: 26px;
+    margin-right: 0.5em;
+    margin-top: 0.5em;
 }
 
 .opac-button:disabled {
@@ -1721,9 +1722,6 @@ a.preflib_change {
         display: none;
     }
     #simple-detail-view-links {
-        display: none;
-    }
-    .results_header_btns:nth-child(2) {
         display: none;
     }
     .opac-button {
