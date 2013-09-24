@@ -2,6 +2,7 @@
 <html lang='[% ctx.locale.replace('_', '-') %]'>
     <head>
         <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         [% IF ctx.refresh %]
         <meta http-equiv="refresh" content="[% ctx.refresh %]">
         [% ELSIF ctx.authtime %]
