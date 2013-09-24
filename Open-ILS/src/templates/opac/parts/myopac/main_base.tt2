@@ -5,7 +5,7 @@
 
 <div id='myopac_summary_div' style="padding:0px;">
 
-    <div style="width:742px;float:left;">
+    <div style="float:left;">
         <div class="header_middle">[% l('Account Summary') %]</div>
     </div>
 
@@ -48,8 +48,8 @@
     </div>
     [% END %]
 
-    <div style="width:662px;">
-        <div style="float:left;">
+    <div>
+        <div id="acct_sum_block">
             <div style="padding:10px 0px;">
             [%- IF date.format(ctx.parse_datetime(ctx.user.expire_date), '%s') < date.format(date.now , '%s');
                fmt_expire_date = date.format(ctx.parse_datetime(ctx.user.expire_date), DATE_FORMAT);

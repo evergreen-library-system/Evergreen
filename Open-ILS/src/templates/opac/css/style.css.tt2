@@ -809,6 +809,11 @@ div.result_table_utils_cont {
     font-weight: normal;
 }
 
+#acct_sum_block {
+     float:left;
+     clear:left;
+}
+
 .acct_sum_table {
     border-collapse: collapse;
     background: [% css_colors.accent_ultralight %];
