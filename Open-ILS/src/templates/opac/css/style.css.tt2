@@ -729,7 +729,8 @@ tr.result_table_row > td.result_table_pic_header {
 }
 
 .result_number {
-    padding-left:15px; white-space: nowrap; width: 320px;
+    padding-left: 1em;
+    white-space: nowrap;
 }
 
 .result_count_number {
