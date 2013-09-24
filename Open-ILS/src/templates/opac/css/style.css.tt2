@@ -674,7 +674,6 @@ div.format_icon {
 .results_header_lbl {
     font-weight: bold;
     float: left;
-    font-size: [% css_fonts.size_small %];
     color: [% css_colors.text %];
     background: [% css_colors.accent_medium %];
     margin-right: 0.5em;
