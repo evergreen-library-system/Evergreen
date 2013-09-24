@@ -962,6 +962,13 @@ table.acct_notes th {
     height: 16px;
     width: 16px;
 }
+#search-submit-go {
+    background:  [% css_colors.primary_fade %];
+    border-radius: 5px;
+    color: [% css_colors.button_text %];
+    font-weight: bold;
+    padding: 0px;
+}
 div.adv_search_available {
     margin-top: 1em;
 }
@@ -1218,16 +1225,11 @@ div.opac-multiline-button > a,
     color: [% css_colors.button_text %];
     font-weight: bold; 
     text-decoration: none;
-    text-shadow: 1px 1px 1px [% css_colors.button_text_shadow %];
     cursor: pointer !important;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    border: 1px solid [% css_colors.primary_fade %];
-    background: linear-gradient([% css_colors.primary_fade %], [% css_colors.primary %]);
-    background: -moz-linear-gradient([% css_colors.primary_fade %], [% css_colors.primary %]);
-    background: -o-linear-gradient([% css_colors.primary_fade %], [% css_colors.primary %]);
-    background: -webkit-linear-gradient([% css_colors.primary_fade %], [% css_colors.primary %]);
-    background-color: [% css_colors.primary %];
+    border: 5px solid [% css_colors.primary_fade %];
+    background:  [% css_colors.primary_fade %];
 }
 
 .opac-button-header {
@@ -1237,7 +1239,6 @@ div.opac-multiline-button > a,
 
 .results_header_btns a, #simple-detail-view-links a {
     margin: 10px;
-    padding: 5px 10px 5px 10px;
     color: [% css_colors.text_invert %];
     vertical-align: middle;
     display: table-cell;
