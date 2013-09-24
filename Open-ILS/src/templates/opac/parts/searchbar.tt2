@@ -45,6 +45,7 @@
                     filter_group=search.basic_config.group none_ok=1 none_label=search.basic_config.none_label;
             END;
         -%]
+        </label>
         <label id="search_locg_label">
         [%- 
             l('Library: ');
