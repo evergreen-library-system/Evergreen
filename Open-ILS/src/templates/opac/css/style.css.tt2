@@ -800,6 +800,7 @@ div.result_table_utils_cont {
     color:[% css_colors.primary_fade %];
     padding: 0px 7px 0px 0px;
     border-bottom: 1px dotted [% css_colors.accent_light %];
+    clear: both;
 }
 
 .header_middle a {
