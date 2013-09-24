@@ -1977,11 +1977,11 @@ a.preflib_change {
         }
 
         table#acct_checked_main_header td:nth-of-type(1) { border-top: 5px solid #aaa; padding-top: 15px; background-color: #fff;}
-        table#acct_checked_main_header td:nth-of-type(2):before { content: "Title / Author";}
-        table#acct_checked_main_header td:nth-of-type(3):before { content: "Renewals Left"; }
-        table#acct_checked_main_header td:nth-of-type(4):before { content: "Due Date"; }
-        table#acct_checked_main_header td:nth-of-type(5):before { content: "Barcode"; }
-        table#acct_checked_main_header td:nth-of-type(6):before { content: "Call number"; }
+        table#acct_checked_main_header td:nth-of-type(2):before { content: "[% l('Title / Author') %]";}
+        table#acct_checked_main_header td:nth-of-type(3):before { content: "[% l('Renewals Left') %]"; }
+        table#acct_checked_main_header td:nth-of-type(4):before { content: "[% l('Due Date') %]"; }
+        table#acct_checked_main_header td:nth-of-type(5):before { content: "[% l('Barcode') %]"; }
+        table#acct_checked_main_header td:nth-of-type(6):before { content: "[% l('Call number') %]"; }
 
         table#acct_holds_main_header thead tr th {
                 display: block;
@@ -2010,12 +2010,12 @@ a.preflib_change {
         }
 
         table#acct_holds_main_header td:nth-of-type(1) { border-top: 5px solid #aaa; padding-top: 15px; background-color: #fff;}
-        table#acct_holds_main_header td:nth-of-type(2):before { content: "Title";}
-        table#acct_holds_main_header td:nth-of-type(3):before { content: "Author"; }
-        table#acct_holds_main_header td:nth-of-type(4):before { content: "Format"; }
-        table#acct_holds_main_header td:nth-of-type(5):before { content: "Pickup Location"; }
-        table#acct_holds_main_header td:nth-of-type(6):before { content: "Activate"; }
-        table#acct_holds_main_header td:nth-of-type(7):before { content: "Cancel on"; }
-        table#acct_holds_main_header td:nth-of-type(8):before { content: "Active"; }
-        table#acct_holds_main_header td:nth-of-type(9):before { content: "Status"; }
+        table#acct_holds_main_header td:nth-of-type(2):before { content: "[% l('Title') %]";}
+        table#acct_holds_main_header td:nth-of-type(3):before { content: "[% l('Author') %]"; }
+        table#acct_holds_main_header td:nth-of-type(4):before { content: "[% l('Format') %]"; }
+        table#acct_holds_main_header td:nth-of-type(5):before { content: "[% l('Pickup Location') %]"; }
+        table#acct_holds_main_header td:nth-of-type(6):before { content: "[% l('Activate') %]"; }
+        table#acct_holds_main_header td:nth-of-type(7):before { content: "[% l('Cancel on') %]"; }
+        table#acct_holds_main_header td:nth-of-type(8):before { content: "[% l('Active') %]"; }
+        table#acct_holds_main_header td:nth-of-type(9):before { content: "[% l('Status') %]"; }
 }
