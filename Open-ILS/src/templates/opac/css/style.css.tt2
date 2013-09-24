@@ -1253,7 +1253,6 @@ div.opac-multiline-button > a,
 
 .opac-multiline-button > a, a.opac-button, input.opac-button {
     margin: 10px;
-    padding: 5px 10px 5px 10px;
 }
 
 #dash_wrapper .opac-button {
@@ -1737,16 +1736,6 @@ a.preflib_change {
     #simple-detail-view-links {
         display: none;
     }
-    .opac-button {
-        padding: 5px;
-        margin: 3px;
-    }
-
-    a.opac-button {
-        margin: 15px 5px;
-	padding: 2px 5px;
-    }
-
     #acct_tabs a, #acct_fines_tabs a {
        padding: 2px 4px 3px 4px;
        -moz-border-radius: 6px 6px 0px 0px;
