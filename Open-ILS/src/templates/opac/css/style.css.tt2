@@ -567,6 +567,7 @@ div.format_icon {
 #main-content {
     padding-left: 0px;
     margin-left: 1em;
+    clear: both;
 }
 
 #main-content-after-bar {
