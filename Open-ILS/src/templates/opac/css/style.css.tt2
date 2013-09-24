@@ -698,10 +698,6 @@ div.format_icon {
     color:[% css_colors.primary_fade %];
 }
 
-.start_end_links_span {
-    font-size: [% css_fonts.size_small %];
-}
-
 #result_table_div {
     margin-top: 1em;
 }
@@ -1806,7 +1802,6 @@ a.preflib_change {
         display: none;
     }
     .start_end_links_span {
-        /* font-size: 12px; test */
         display: block;
     }
     .invisible {
