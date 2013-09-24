@@ -1,0 +1,24 @@
+Lost Item Billing: New Min/Max Price Settings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When an item is marked lost, the user is typically billed for the item.
+In Evergreen, they can either be charged the amount recorded in the item
+object, or if that value is blank (or zero), charged a default price
+(controlled by settings).
+
+In addition to these existing settings, now we can accommodate a range of
+prices by saying the patron should be billed at least 'X' and not more
+than 'Y'. This also allows you to effectively set a fixed price for all
+lost items by setting min and max to the same amount.
+
+New Org Unit Settings
++++++++++++++++++++++
+
+ * Minimum Item Price: circ.min_item_price
+ * Maximum Item Price: circ.max_item_price
+
+New Permissions
++++++++++++++++
+
+ * UPDATE_ORG_UNIT_SETTING.circ.min_item_price
+ * UPDATE_ORG_UNIT_SETTING.circ.max_item_price
