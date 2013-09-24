@@ -1928,4 +1928,11 @@ a.preflib_change {
     #search_query_label, #search_qtype_label, #search_locg_label {
         display: block;
     }
+    .bookshelf td {
+	display: block;
+	width: 100%;
+    }
+    .bookshelf table thead tr {
+	display: block;
+    }
 }
