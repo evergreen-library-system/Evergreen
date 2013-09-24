@@ -1658,6 +1658,7 @@ a.preflib_change {
 
 #search_query_label, #search_qtype_label, #search_itype_label, #search_locg_label {
     white-space: nowrap;
+    display: inline-block;
 }
 
 .result_table_title_cell {
