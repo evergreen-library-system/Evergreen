@@ -110,7 +110,6 @@ facet.default_display_count = 5;
 #   lib_selector will put the search library box (with limit to available)
 #   pub_year will put the publication year box
 #   sort_selector will put the sort results selector
-# if present, colspan and rowspan will be used for the table cell.
 
 search.adv_config = [
     {adv_label => l("Item Type"), adv_attr => ["mattype", "item_type"]},

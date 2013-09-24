@@ -44,9 +44,7 @@
         END; %]
             <td valign='top'[% IF adv_chunk.js_only %] 
                 id='adv_chunk_[% adv_chunk.adv_special %]' 
-                class='hidden'[% END %]
-		[% IF adv_chunk.colspan %]colspan='[% adv_chunk.colspan %]'[% END %]
-		[% IF adv_chunk.rowspan %]rowspan='[% adv_chunk.rowspan %]'[% END %]>
+                class='hidden'[% END %]>
                 <strong>[% adv_chunk.adv_label %]</strong><br />
 [%
         IF adv_chunk.adv_special;
