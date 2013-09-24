@@ -1746,7 +1746,7 @@ a.preflib_change {
        margin: 0px 5px 0px 0px;
     }
     #acct_fines_tabs {
-       display: none;
+       height: 15px;
     }
 
     #acct_select, #acct_prefs_select {
@@ -1757,12 +1757,6 @@ a.preflib_change {
          display:none;
     }
     
-    #acct_checked_tabs {
-        display:none;
-    }
-    #acct_holds_tabs {
-        display: none;
-    }
     #dash_wrapper div {
         background: transparent;
         padding: 0px;
