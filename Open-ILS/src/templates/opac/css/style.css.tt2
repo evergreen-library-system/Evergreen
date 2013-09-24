@@ -258,6 +258,7 @@ span.dash_divider {
 
 #adv_search_tabs, #acct_tabs, #acct_fines_tabs, #acct_checked_tabs, #acct_holds_tabs, #acct_prefs_tabs, #results_header_inner{
     margin-left: 2px;
+    overflow: auto;
 }
 
 #adv_search_tabs a, #acct_tabs a, #acct_fines_tabs a, #acct_checked_tabs a, #acct_holds_tabs a, #acct_prefs_tabs a {
@@ -1937,9 +1938,6 @@ a.preflib_change {
     }
     .bookshelf table thead tr {
 	display: block;
-    }
-    #adv_search_tabs { 
-        height: 25px;
     }
     #adv_search_tabs a{                                                                                                                           
         font-size: [% css_fonts.size_small %];
