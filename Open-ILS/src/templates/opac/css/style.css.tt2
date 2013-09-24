@@ -1376,7 +1376,10 @@ table.bookbag-specific {
 .save-notes { padding-bottom: 1.5ex; }
 
 /* Moved from semiauto.css */
-.adv_global_input_container { border-bottom: none; }
+.adv_global_input_container {
+    border-bottom: none;
+    clear: both;
+}
 .opac-auto-013 {
     border-bottom: none;
     *height: 0px;
