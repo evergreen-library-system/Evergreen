@@ -27,7 +27,7 @@
 <!-- context help widget -->
 <a class='hidden' id='uedit-help-template'><img src='/opac/images/advancedsearch-icon.png'></img></a>
 <fieldset id='uedit-help-div' class='hidden'>
-    <legend id='uedit-help-field'/>
+    <legend id='uedit-help-field'></legend>
     <div id='uedit-help-text'></div>
 </fieldset>
 
