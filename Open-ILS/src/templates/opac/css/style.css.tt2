@@ -1699,6 +1699,12 @@ a.preflib_change {
     .facet_sidebar_visible, .result_block_visible {
         display: inline ! important;
     }
+    #acct_select, #acct_prefs_select {
+        display: inline-block;
+    }
+#acct_tabs, #acct_prefs_tabs {
+         display:none;
+     }
 }
 
 @media only screen and (max-width: 600px) {
@@ -1752,14 +1758,6 @@ a.preflib_change {
        height: 15px;
     }
 
-    #acct_select, #acct_prefs_select {
-        display: inline-block;
-    }
-    
-    #acct_tabs, #acct_prefs_tabs {
-         display:none;
-    }
-    
     #dash_wrapper div {
         background: transparent;
         padding: 0px;
