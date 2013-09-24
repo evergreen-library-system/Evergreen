@@ -266,7 +266,7 @@ span.dash_divider {
     text-align: center;
     vertical-align: middle;
     display: block;
-    margin: 10px 7px 10px 0px;
+    margin: 10px 7px 0px 0px;
     padding: 10px 0px 10px 0px;
     -moz-border-radius: 10px 10px 0px 0px; 
     border-radius: 10px 10px 0px 0px;
