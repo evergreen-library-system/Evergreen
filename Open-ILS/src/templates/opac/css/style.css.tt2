@@ -1375,6 +1375,10 @@ table.bookbag-specific {
 }
 .save-notes { padding-bottom: 1.5ex; }
 
+.nonbreaking-wrapper {
+    display: inline-block;
+}
+
 /* Moved from semiauto.css */
 .adv_global_input_container {
     border-bottom: none;
