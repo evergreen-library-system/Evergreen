@@ -1685,13 +1685,6 @@ a.preflib_change {
     font-size: [% css_fonts.size_bigger %];
 }
 
-@media only screen and (min-width: 1280px) {
-    .facet_box_temp { width: inherit; }
-    .facet_box_wrapper .box_wrapper .box { width: inherit; }
-    .facet_template .facet { width: inherit; max-width: 640px; }
-    .facet_template .count { margin-left: 1em; }
-}
-
 @media only screen and (max-width: 800px) {
     .facet_sidebar_hidden, .result_block_hidden {
         display: none;
