@@ -1189,7 +1189,10 @@ a.dash-link:hover { text-decoration: underline !important; }
     padding-bottom: 1ex;
 }
 .cn_browse_item { padding: 2ex; }
-
+.results-paginator-list {
+    padding-left: 1em;
+    padding-right: 1em;
+}
 .results-paginator-selected { color: [% css_colors.text_alert %]; }
 .inactive-hold { background: [% css_colors.accent_lightest %]; }
 
