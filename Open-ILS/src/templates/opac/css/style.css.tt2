@@ -656,11 +656,6 @@ div.format_icon {
     border-top:1px solid [% css_colors.accent_mediumdark %];
 }
 
-#results_header_inner {
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-}
-
 .cached_list_div { height: 25px; }
 
 .results_header_div {
@@ -676,8 +671,7 @@ div.format_icon {
     float: left;
     color: [% css_colors.text %];
     background: [% css_colors.accent_medium %];
-    margin-right: 0.5em;
-    margin-top: 0.5em;
+    margin: 0.5em 0.5em 0.5em 0em;
 }
 
 .results_header_sel {
@@ -1207,8 +1201,7 @@ a.dash-link:hover { text-decoration: underline !important; }
 
 .results_header_btns, .results_header_sel {
     float:left;
-    margin-right: 0.5em;
-    margin-top: 0.5em;
+    margin: 0.5em 0.5em 0.5em 0em;
 }
 
 .opac-button:disabled {
