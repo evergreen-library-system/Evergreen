@@ -371,13 +371,13 @@ function getFacety() {
     resultButton.setAttribute('class', 'results_header_btns result_block_visible');
     facetSidebar.setAttribute('class', 'facet_sidebar_visible');
     facetButton.setAttribute('class', 'result_block_hidden');
-    window.location.hash = 'facet_sidebar';
+    window.location.hash = 'return_to_hits';
 }
 function getResulty() {
     resultBlock.setAttribute('class', 'result_block_visible');
     resultButton.setAttribute('class', 'result_block_hidden');
     facetSidebar.setAttribute('class', 'facet_sidebar_hidden');
     facetButton.setAttribute('class', 'results_header_btns result_block_visible');
-    window.location.hash = 'result_block';
+    window.location.hash = 'refine_hits';
 }
 </script>
