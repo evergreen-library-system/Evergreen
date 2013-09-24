@@ -1018,7 +1018,7 @@ div#facet_sidebar {
 }
 
 .facet_box_temp .header {
-    height:31px;
+    height: 2em;
     overflow:hidden;
     background:[% css_colors.primary %];
     -moz-border-top-left-radius: 5px;
@@ -1062,18 +1062,18 @@ div#facet_sidebar {
 }
 
 .facet_template {
-    padding-bottom:5px;
+    clear: both;
 }
 
 .facet_template .facet {
     float:left;
-    width:124px;
+    width: 12em;
+    margin-bottom: 0.5em;
 }
 
 .facet_template .count {
     float:right;
     color: [% css_colors.accent_mediumdark %];
-    padding-right:11px;
 }
 
 .facet_template_selected .facet {
@@ -1670,6 +1670,13 @@ a.preflib_change {
 
 .record_title {
     font-size: [% css_fonts.size_bigger %];
+}
+
+@media only screen and (min-width: 1280px) {
+    .facet_box_temp { width: inherit; }
+    .facet_box_wrapper .box_wrapper .box { width: inherit; }
+    .facet_template .facet { width: inherit; max-width: 640px; }
+    .facet_template .count { margin-left: 1em; }
 }
 
 @media only screen and (max-width: 800px) {
