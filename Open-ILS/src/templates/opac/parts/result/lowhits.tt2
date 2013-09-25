@@ -22,7 +22,7 @@
                    END %]
             </p>
         </div>
-        <div style="float:right;width:353px;background:#ccc;padding:10px;margin-top:7px;">
+        <div id="lowhits_help">
             [% INCLUDE "opac/parts/result/lowhits_purchase.tt2" %]
             <p>
                 <strong>[% l('Keyword Search Tips') %]</strong><br />

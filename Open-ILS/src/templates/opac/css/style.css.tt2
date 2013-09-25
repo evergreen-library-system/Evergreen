@@ -774,6 +774,14 @@ div.result_table_utils_cont {
     text-transform: uppercase;
 }
 
+#lowhits_help {
+    float: right;
+    width: 353px;
+    background: [% css_colors.accent_light %];
+    padding: 10px;
+    margin-top: 7px;
+}
+
 .results_info_table td {
     padding-right: 10px;
 }
@@ -1926,6 +1934,7 @@ a.preflib_change {
     .bookshelf table thead tr {
 	display: block;
     }
+    #lowhits_help { width: inherit; }
     #adv_search_tabs a{                                                                                                                           
         font-size: [% css_fonts.size_small %];
         margin: 2px 2px 0px 2px;
