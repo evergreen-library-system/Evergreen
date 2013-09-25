@@ -1595,7 +1595,17 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 553, 'UPDATE_ORG_UNIT_SETTING.circ.min_item_price', oils_i18n_gettext( 553,
     'UPDATE_ORG_UNIT_SETTING.circ.min_item_price', 'ppl', 'description' )),
  ( 554, 'UPDATE_ORG_UNIT_SETTING.circ.max_item_price', oils_i18n_gettext( 554,
-    'UPDATE_ORG_UNIT_SETTING.circ.max_item_price', 'ppl', 'description' ))
+    'UPDATE_ORG_UNIT_SETTING.circ.max_item_price', 'ppl', 'description' )),
+ ( 555, 'group_application.user.staff.admin.system_admin', oils_i18n_gettext( 555, 
+    'Allow a user to add/remove users to/from the "System Administrator" group', 'ppl', 'description' )),
+ ( 556, 'group_application.user.staff.cat_admin', oils_i18n_gettext( 556, 
+    'Allow a user to add/remove users to/from the "Cataloging Administrator" group', 'ppl', 'description' )),
+ ( 557, 'group_application.user.staff.circ_admin', oils_i18n_gettext( 557, 
+    'Allow a user to add/remove users to/from the "Circulation Administrator" group', 'ppl', 'description' )),
+ ( 558, 'group_application.user.staff.data_review', oils_i18n_gettext( 558, 
+    'Allow a user to add/remove users to/from the "Data Review" group', 'ppl', 'description' )),
+ ( 559, 'group_application.user.staff.volunteers', oils_i18n_gettext( 559, 
+    'Allow a user to add/remove users to/from the "Volunteers" group', 'ppl', 'description' ))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
