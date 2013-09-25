@@ -38,8 +38,8 @@
             <img id='search-submit-spinner' src='/opac/images/progressbar_green.gif' class='hidden' alt=''/>
         </span>
 
-        <button href="[% mkurl(ctx.opac_root _ '/advanced', {$loc_name => loc_value}, 1) %]"
-            class="pointer opac-button">[% l('Clear Form') %]</button>
+        <a href="[% mkurl(ctx.opac_root _ '/advanced', {$loc_name => loc_value}, 1) %]"
+            class="opac-button">[% l('Clear Form') %]</a>
     </div>
 
     <div id='adv_search_filters'>
