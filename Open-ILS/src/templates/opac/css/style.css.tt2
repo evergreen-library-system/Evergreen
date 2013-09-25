@@ -10,6 +10,11 @@ body {
     background: [% css_colors.primary %];
 }
 
+button, input {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: [% css_fonts.size_base %];
+}
+
 img {
     border: none;
 }
@@ -974,13 +979,6 @@ table.acct_notes th {
     height: 16px;
     width: 16px;
 }
-#search-submit-go {
-    background:  [% css_colors.primary_fade %];
-    border-radius: 5px;
-    color: [% css_colors.button_text %];
-    font-weight: bold;
-    padding: 0px;
-}
 div.adv_search_available {
     margin-top: 1em;
 }
@@ -1223,6 +1221,31 @@ a.dash-link:hover { text-decoration: underline !important; }
     margin: 0.5em 0.5em 0.5em 0em;
 }
 
+/*
+ * .various_containers a = shortcut to putting .opac-button on every 'a' with
+ *     the tradeoff of increased stylesheet complexity (TODO: rethink?)
+ */
+
+.opac-multiline-button > a,
+.opac-button, .results_header_btns a, #simple-detail-view-links a, .dash_account_buttons a {
+    color: [% css_colors.button_text %];
+    font-weight: bold; 
+    text-decoration: none;
+    cursor: pointer !important;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid [% css_colors.primary %];
+    background:  [% css_colors.primary_fade %];
+    margin: 10px;
+    padding: 0.3em;
+    display: inline-block;
+}
+
+.opac-multiline-button > a:hover,
+.opac-button:hover, .results_header_btns a:hover, #simple-detail-view-links a:hover, #dash_wrapper a.opac-button:hover {
+    background: [% css_colors.primary %];
+}
+
 .opac-button:disabled {
     color: [% css_colors.accent_medium %];
     cursor: pointer !important;
@@ -1230,44 +1253,29 @@ a.dash-link:hover { text-decoration: underline !important; }
     background-color: [% css_colors.accent_lighter %];
 }
 
-div.opac-multiline-button > a,
-.opac-multiline-button > a,
-.opac-button, .results_header_btns, #simple-detail-view-links { 
-    color: [% css_colors.button_text %];
-    font-weight: bold; 
-    text-decoration: none;
-    cursor: pointer !important;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    border: 5px solid [% css_colors.primary_fade %];
-    background:  [% css_colors.primary_fade %];
-}
-
-.opac-button-header {
-    background: [% css_colors.control %];
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+/* Firefox adds its own special space to inputs; this gets us closer */
+button.opac-button::-moz-focus-inner, input.opac-button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
 }
 
 .results_header_btns a, #simple-detail-view-links a {
-    margin: 10px;
-    color: [% css_colors.text_invert %];
     vertical-align: middle;
     display: table-cell;
-    text-decoration: none;
 }
 
-.opac-multiline-button > a:hover,
-.opac-button:hover, .results_header_btns a:hover, #simple-detail-view-links a:hover {
-    background: [% css_colors.primary %];
-    text-decoration: none;
+.opac-button-header, #dash_wrapper .opac-button {
+    background: [% css_colors.control %];
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    font-size: [% css_fonts.size_base %];
+    display:inline;
+}
+a.opac-button-header:hover, #dash_wrapper a.opac-button:hover {
+    border-color: [% css_colors.control %];
 }
 
 .opac-multiline-button > a {
     display: inline-block;
-}
-
-.opac-multiline-button > a, a.opac-button, input.opac-button {
-    margin: 10px;
 }
 
 #dash_wrapper .opac-button {
