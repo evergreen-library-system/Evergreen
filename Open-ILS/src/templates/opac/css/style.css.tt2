@@ -1757,9 +1757,6 @@ a.preflib_change {
        font-size: [% css_fonts.size_base %];
        margin: 0px 5px 0px 0px;
     }
-    #acct_fines_tabs {
-       height: 15px;
-    }
 
     #dash_wrapper div {
         background: transparent;
