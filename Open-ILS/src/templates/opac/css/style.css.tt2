@@ -20,6 +20,8 @@ img {
 
 #homesearch_main_logo {
     padding-top: 60px;
+    margin: auto;
+    width: 50%;
 }
 
 a {
