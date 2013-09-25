@@ -95,7 +95,7 @@ END;
                                                     </div>
                                                     <div id='bib_format' class='result_table_title_cell'>
                                                     [%- IF attrs.format_label; %]
-                                                        [% attrs.format_label; %]
+                                                        <img title="[% attrs.format_label | html %]" alt="[% attrs.format_label | html %]" src="[% attrs.format_icon %]" /> [% attrs.format_label; %]
                                                     [%- END %]
                                                     [%- UNLESS CGI.param('detail_record_view')
                                                             OR (show_more_details.default == 'true'
