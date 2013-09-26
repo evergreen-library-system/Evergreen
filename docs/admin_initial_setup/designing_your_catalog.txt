@@ -447,6 +447,7 @@ ChiliFresh:
 #SetEnv OILS_CHILIFRESH_HTTPS_URL https://secure.chilifresh.com/on-site/js/evergreen.js
 ----
 
+[id="_content_cafe"]
 Content Café
 ~~~~~~~~~~~~
 

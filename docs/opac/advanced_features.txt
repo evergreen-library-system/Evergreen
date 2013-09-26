@@ -11,7 +11,7 @@ Use the Catalog to Retrieve Records with Specified Date Ranges:
 
 
 Search by Create Date or Range
-++++++++++++++++++++++++++++++
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To find records that were created on or after a specific date, enter the term, create_date, and the date in the catalog search field.  For example, to find records that were created on or after April 1, 2013, enter the following into the catalog search field:
 
@@ -28,7 +28,7 @@ create_date(2013-04-01,2013-04-08)
 
 
 Search by Edit Date or Range
-++++++++++++++++++++++++++++
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 To find records that were edited on or before a specific date, enter the term, edit-date, and the date in the catalog search field.  The date should be preceded by a comma.   For example, to find records that were edited on or before April 1, 2013, enter the following into the catalog search field:
@@ -52,7 +52,7 @@ edit_date(2013-04-01,2013-04-08)
 
 
 Search by Deleted Status
-++++++++++++++++++++++++
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 To search for deleted records, enter in your catalog search field the term, edit_date, the date that you want to search, and the term, #deleted.  For example, to find records that were deleted on or after April 1, 2013, enter the following into the catalog search field:
