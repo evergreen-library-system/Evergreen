@@ -1,3 +1,7 @@
+BEGIN;
+
+SELECT evergreen.upgrade_deps_block_check('0836', :eg_version);
+
 CREATE TABLE config.floating_group (
     id      SERIAL PRIMARY KEY, 
     name    TEXT UNIQUE NOT NULL,
@@ -80,3 +84,5 @@ INSERT INTO permission.perm_list( code, description) VALUES
 
 -- And lets just update all auditors to re-create those lifecycle views
 SELECT auditor.update_auditors();
+
+COMMIT;
