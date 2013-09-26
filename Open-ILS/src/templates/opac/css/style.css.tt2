@@ -623,10 +623,10 @@ div.format_icon {
 }
 
 .login-help-box {
-    float: right;
+    float: left;
     width: 200px;
     text-align: center;
-    margin-right: 25%;
+    margin-left: 2em;
 }
 
 .login-help-button {
