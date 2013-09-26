@@ -363,8 +363,8 @@ You may also change the default number of facets appearing under each category
 by editing the _facet.default_display_count_ value in _config.tt2_. The default 
 value is 5.
 
-Including external content to you public interface
---------------------------------------------------
+Including external content in your public interface
+---------------------------------------------------
 
 The public interface allows you to include external services and content in your
 public interface. These can include book cover images, user reviews, table of
