@@ -499,6 +499,7 @@ RewriteRule .? - [E=locale:%{HTTP:Accept-Language}]
     require valid-user
     PerlSendHeader On
     allow from all
+    SSLRequireSSL
 </Location>
 
 # ----------------------------------------------------------------------------------

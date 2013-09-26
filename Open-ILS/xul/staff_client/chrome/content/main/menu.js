@@ -1383,7 +1383,7 @@ main.menu.prototype = {
                 function() {
                     try {
                         var x = new XMLHttpRequest();
-                        var url = 'http://' + XML_HTTP_SERVER + '/standalone/list.txt';
+                        var url = 'https://' + XML_HTTP_SERVER + '/standalone/list.txt';
                         x.open("GET",url,false);
                         x.send(null);
                         if (x.status == 200) {

@@ -491,6 +491,20 @@ RewriteRule .? - [E=locale:%{HTTP:Accept-Language}]
     Require all granted 
 </Location>
 
+# ----------------------------------------------------------------------------------
+# Protect Standalone/Offline mode files from public view
+# ----------------------------------------------------------------------------------
+<Location /standalone/>
+    AuthType Basic
+    AuthName "Standalone Mode Login"
+    PerlOptions +GlobalRequest
+    PerlSetVar OILSProxyPermissions "STAFF_LOGIN"
+    PerlAuthenHandler OpenILS::WWW::Proxy::Authen
+    require valid-user
+    PerlSendHeader On
+    allow from all
+    SSLRequireSSL
+</Location>
 
 # ----------------------------------------------------------------------------------
 # Reporting output lives here
