@@ -1,5 +1,5 @@
-Authority-enhance Bibliographic Browse
---------------------------------------
+Authority-enhanced bibliographic browse
+---------------------------------------
 
 The Evergreen OPAC includes functionality for browsing by bibliographic terms,
 and where those terms are controlled by authority records, for linking directly
