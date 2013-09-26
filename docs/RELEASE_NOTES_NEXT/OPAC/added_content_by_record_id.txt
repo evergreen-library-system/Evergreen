@@ -1,0 +1,30 @@
+Added Content by Record ID
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Traditionally, Evergreen has supported Added Content lookups by ISBN
+only, or (more recently) by one of ISBN or UPC.
+
+This enhancement adds support for Added Content lookups by record
+ID, while still supporting the previous URL format for lookups by
+ISBN.
+
+The JSPAC and TPAC skins, as well as the web-based Self Checkout
+interface templates are updated to use jacket images / cover art by
+record ID by default.
+
+By using record identifiers, the Added Content handler has the
+opportnity to examine additional identifiers in the bib record.
+Currently, these include:
+
+ * ISBN
+ * UPC
+ * ISSN
+
+Currently, only the OpenILS::WWW::AddedContent::Syndetic provider
+makes use of the new identifiers.
+
+
+Local Content Overrides
++++++++++++++++++++++++
+Just as with ISBN lookups, there is support for local overrides in
+the form of a file created on disk which short-circuits any external
+Added Content lookup.
