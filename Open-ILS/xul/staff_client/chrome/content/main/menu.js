@@ -1762,6 +1762,20 @@ main.menu.prototype = {
 
         obj.sort_menu(document.getElementById('main.menu.admin'), true);
 
+        document.addEventListener(
+            'refresh_checkout',
+            function() {
+                try {
+                    obj.set_tab(obj.url_prefix('XUL_PATRON_BARCODE_ENTRY'),{},{});
+                } catch(E) {
+                    obj.error.sdump('D_ERROR','tab_refresh_checkout_handler: ' + js2JSON(E));
+                }
+            }
+            ,
+            false,
+            true
+        );
+
         if(params['firstURL']) {
             obj.new_tab(params['firstURL'],{'focus':true},null);
         }
