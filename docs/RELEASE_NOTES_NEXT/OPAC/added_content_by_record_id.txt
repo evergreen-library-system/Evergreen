@@ -28,3 +28,26 @@ Local Content Overrides
 Just as with ISBN lookups, there is support for local overrides in
 the form of a file created on disk which short-circuits any external
 Added Content lookup.
+
+
+Apache Configuration
+++++++++++++++++++++
+
+The example Apache configs have been updated to support serving
+blank.png when added content jacket URLs return a 404. This prevents
+"broken image" placeholders in browsers, without requiring a
+Javascript onerror handler on each img tag.
+
+The changes are as follows:
+
+In the eg.conf VirtualHost declaration for SSL, add:
+
+[source]
+SSLProxyEngine on # required for ErrorDocument 404 on SSL connections
+
+In the eg_vhost.conf file, add:
+
+[source]
+<Location /opac/extras/ac/jacket>
+        ErrorDocument 404 /opac/images/blank.png
+</Location>

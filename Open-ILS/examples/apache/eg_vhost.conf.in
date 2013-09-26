@@ -74,6 +74,10 @@ RewriteEngine ON
 RewriteRule ^/opac/extras/ac/jacket/(small|medium|large)/$ \
     /opac/images/blank.png [P,L]
 
+<Location /opac/extras/ac/jacket>
+        ErrorDocument 404 /opac/images/blank.png
+</Location>
+
 # ----------------------------------------------------------------------------------
 # Add the row ID (RID) and date so we can make unAPI happy
 # ----------------------------------------------------------------------------------
