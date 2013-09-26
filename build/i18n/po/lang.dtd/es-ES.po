@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-03-15 19:37+0000\n"
-"PO-Revision-Date: 2011-10-05 02:55+0000\n"
-"Last-Translator: Ben Shum <bshum@biblio.org>\n"
+"PO-Revision-Date: 2013-06-25 20:36+0000\n"
+"Last-Translator: Mariano Couto <mariano.couto@pjn.gov.ar>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-16 06:00+0000\n"
-"X-Generator: Launchpad (build 16532)\n"
+"X-Launchpad-Export-Date: 2013-06-26 05:14+0000\n"
+"X-Generator: Launchpad (build 16681)\n"
 
 #: lang.version
 msgid "remote v1"
@@ -300,19 +300,19 @@ msgstr "Seleccionar todo"
 
 #: common.sort.first.ascending
 msgid "Sort First (Ascending)"
-msgstr ""
+msgstr "Ordenar Primero (Ascendente)"
 
 #: common.sort.first.descending
 msgid "Sort First (Descending)"
-msgstr ""
+msgstr "Ordenar Primero (Descendente)"
 
 #: common.sort.next.ascending
 msgid "Sort Next (Ascending)"
-msgstr ""
+msgstr "Ordenar Siguiente (Ascendente)"
 
 #: common.sort.next.descending
 msgid "Sort Next (Descending)"
-msgstr ""
+msgstr "Ordenar Siguiente (Descendente)"
 
 #: ilsevent.1000
 msgid "Login failed.  The username or password entered was incorrect."
@@ -335,6 +335,7 @@ msgstr "Permiso denegado"
 #: ilsperm.CREATE_HOLD
 msgid "User is not allowed to create holds for other users at this location"
 msgstr ""
+"Usuario no autorizado a crear reservas para otros usuarios en esta ubicación"
 
 #: common.cancel.accesskey
 msgctxt "common.cancel.accesskey"
@@ -445,7 +446,7 @@ msgstr "Fecha de vencimiento"
 
 #: staff.ahr_fulfillment_time_label
 msgid "Fulfillment Time"
-msgstr ""
+msgstr "Tiempo de Cumplimiento"
 
 #: staff.ahr_hold_type_label
 msgctxt "staff.ahr_hold_type_label"
@@ -458,7 +459,7 @@ msgstr "Formatos retenibles"
 
 #: staff.ahr_id_label
 msgid "Hold ID"
-msgstr ""
+msgstr "Identificador de la reserva"
 
 #: staff.ahr_ischanged_label
 msgctxt "staff.ahr_ischanged_label"
@@ -482,15 +483,15 @@ msgstr "Notificar por teléfono"
 #: staff.ahr_pickup_lib_label
 msgctxt "staff.ahr_pickup_lib_label"
 msgid "Pickup Library"
-msgstr ""
+msgstr "Biblioteca de Recolección"
 
 #: staff.ahr_prev_check_time_label
 msgid "Previous Check Time"
-msgstr ""
+msgstr "Tiempo De Verificación Previo"
 
 #: staff.ahr_request_time_label
 msgid "Request Time"
-msgstr ""
+msgstr "Tiempo Pedido"
 
 #: staff.ahr_requestor_label
 msgid "Requestor"
@@ -560,7 +561,7 @@ msgstr ""
 
 #: staff.au_day_phone_label
 msgid "Day Phone"
-msgstr ""
+msgstr "Teléfono Diurno"
 
 #: staff.au_dob_label
 msgctxt "staff.au_dob_label"
@@ -574,7 +575,7 @@ msgstr "Email"
 #: staff.au_evening_phone_label
 msgctxt "staff.au_evening_phone_label"
 msgid "Evening Phone"
-msgstr ""
+msgstr "Teléfono Nocturno"
 
 #: staff.au_expire_date_label
 msgctxt "staff.au_expire_date_label"
@@ -597,7 +598,7 @@ msgstr "Solicitudes de espera"
 #. "OU" is an organization unit - typically a library
 #: staff.au_home_ou_label
 msgid "Home OU"
-msgstr ""
+msgstr "UO de orígen"
 
 #: staff.au_id_label
 msgid "User ID"
@@ -622,17 +623,17 @@ msgstr "Valor de identificacion"
 #: staff.au_ischanged_label
 msgctxt "staff.au_ischanged_label"
 msgid "Is changed"
-msgstr ""
+msgstr "Se ha modificado"
 
 #: staff.au_isdeleted_label
 msgctxt "staff.au_isdeleted_label"
 msgid "Is deleted"
-msgstr ""
+msgstr "Se ha eliminado"
 
 #: staff.au_isnew_label
 msgctxt "staff.au_isnew_label"
 msgid "Is new"
-msgstr ""
+msgstr "Es nuevo"
 
 #: staff.au_label_active
 msgctxt "staff.au_label_active"
@@ -647,11 +648,11 @@ msgstr "Apellido"
 #: staff.au_label_first_given_name
 msgctxt "staff.au_label_first_given_name"
 msgid "First Name"
-msgstr ""
+msgstr "Nombre"
 
 #: staff.au_label_id
 msgid "Database ID"
-msgstr ""
+msgstr "ID de la Base de Datos"
 
 #: staff.au_label_prefix
 msgctxt "staff.au_label_prefix"
