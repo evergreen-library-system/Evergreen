@@ -424,7 +424,8 @@ sub has_field {
 sub properties {
     my $self = shift;
     my $class_name = $self->class_name;
-    return keys %{$$fieldmap{$class_name}{fields}};
+    my $fields = $$fieldmap{$class_name}{fields};
+    return sort {$$fields{$a}{position} <=> $$fields{$b}{position}} keys %{$fields};
 }
 
 sub to_bare_hash {
@@ -437,6 +438,19 @@ sub to_bare_hash {
     }
 
     return \%hash;
+}
+
+# To complement to_bare_hash, and to mimic the fromHash method of the
+# JavaScript Fieldmapper, from_bare_hash takes a hashref argument and
+# builds an object from that.
+sub from_bare_hash {
+    my $self = shift;
+    my $hash = shift;
+    my @value = ();
+    for my $f ($self->properties) {
+        push @value, $$hash{$f};
+    }
+    return $self->new(\@value);
 }
 
 sub clone {
