@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2013-03-15 19:42:04-0400\n"
+"POT-Creation-Date: 2013-09-26 18:17:43-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,10 +23,6 @@ msgstr ""
 msgid ""
 "One or more of the selected funds has a balance below its warning level.\n"
 "Continue?"
-msgstr ""
-
-#: acq.js:FUND_LIST_ROLLOVER_SUMMARY_FUNDS
-msgid "<b>${1}</b> funds propagated for fiscal year ${0} for the selected locations"
 msgstr ""
 
 #: acq.js:ONE_LI_ATTR_SEARCH_AT_A_TIME
@@ -215,6 +211,10 @@ msgstr ""
 msgid "Invoices"
 msgstr ""
 
+#: acq.js:PO_ALREADY_ACTIVATED
+msgid "Activated"
+msgstr ""
+
 #: acq.js:INVOICE_NUMBER
 msgid "Invoice #${0}"
 msgstr ""
@@ -272,6 +272,10 @@ msgstr ""
 
 #: acq.js:RECVD
 msgid "Recv'd"
+msgstr ""
+
+#: acq.js:FUND_LIST_ROLLOVER_SUMMARY_FUNDS
+msgid "${1} funds propagated for fiscal year ${0} for the selected locations"
 msgstr ""
 
 #: acq.js:NUM_CLAIMS_EXISTING
@@ -368,6 +372,10 @@ msgstr ""
 msgid "Are you SURE you want to cancel this user request?"
 msgstr ""
 
+#: acq.js:NO_LI_GENERAL
+msgid "You have not selected any (suitable) line items."
+msgstr ""
+
 #: acq.js:RESET_FORMULAE
 msgid "Reset Formulas"
 msgstr ""
@@ -420,8 +428,4 @@ msgstr ""
 
 #: acq.js:APPLY
 msgid "Apply"
-msgstr ""
-
-#: acq.js:NO_LI_GENERAL
-msgid "You have not selected any line items."
 msgstr ""

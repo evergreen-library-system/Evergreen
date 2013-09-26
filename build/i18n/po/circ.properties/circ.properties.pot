@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-15 19:41+0000\n"
+"POT-Creation-Date: 2013-09-26 18:17-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -500,7 +500,7 @@ msgid "Add Item for record # %1$s"
 msgstr ""
 
 #: staff.circ.copy_status.del_items.confirm
-msgid "Are you sure sure you want to delete these items? %1$s"
+msgid "Are you sure you want to delete these items? %1$s"
 msgstr ""
 
 #: staff.circ.copy_status.del_items.title
@@ -1262,6 +1262,10 @@ msgstr ""
 msgid "Transit Copy ID"
 msgstr ""
 
+#: staff.circ.utils.transit_copy_status
+msgid "Transit Copy Status"
+msgstr ""
+
 #: staff.circ.utils.request_lib
 msgid "Request Library (Full Name)"
 msgstr ""
@@ -1288,6 +1292,10 @@ msgstr ""
 #. # Date the hold was cancelled
 #: staff.circ.utils.hold_cancel_time
 msgid "Cancel Time"
+msgstr ""
+
+#: staff.circ.utils.hold.behind_desk
+msgid "Behind Desk"
 msgstr ""
 
 #. # Controlled entry for why the hold was cancelled
@@ -1329,6 +1337,7 @@ msgid "Suspended"
 msgstr ""
 
 #: staff.circ.utils.hold_status.8
+msgctxt "staff.circ.utils.hold_status.8"
 msgid "Wrong Shelf"
 msgstr ""
 
@@ -1346,6 +1355,11 @@ msgstr ""
 
 #: staff.circ.utils.hold_post_clear_shelf_action.shelf
 msgid "Reshelve"
+msgstr ""
+
+#: staff.circ.utils.hold_post_clear_shelf_action.pl_changed
+msgctxt "staff.circ.utils.hold_post_clear_shelf_action.pl_changed"
+msgid "Wrong Shelf"
 msgstr ""
 
 #: staff.circ.utils.frozen
@@ -1367,6 +1381,10 @@ msgstr ""
 
 #: staff.circ.utils.pickup_lib
 msgid "Pickup Library (Full Name)"
+msgstr ""
+
+#: staff.circ.utils.current_shelf_lib
+msgid "Current Shelf Library (Full Name)"
 msgstr ""
 
 #: staff.circ.utils.current_copy.none

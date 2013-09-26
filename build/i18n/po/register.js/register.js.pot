@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2013-02-21 11:20:54-0400\n"
+"POT-Creation-Date: 2013-09-26 18:17:43-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,8 +35,8 @@ msgstr ""
 msgid "New Address"
 msgstr ""
 
-#: register.js:REPLACED_ADDRESS
-msgid "<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
+#: register.js:SAVE
+msgid "Save"
 msgstr ""
 
 #: register.js:SHOW_REQUIRED
@@ -45,10 +45,6 @@ msgstr ""
 
 #: register.js:DUPE_PATRON_ADDR
 msgid "Found ${0} patron(s) with the same address"
-msgstr ""
-
-#: register.js:SAVE
-msgid "Save"
 msgstr ""
 
 #: register.js:DUPE_PATRON_IDENT
@@ -71,8 +67,8 @@ msgstr ""
 msgid "Primary"
 msgstr ""
 
-#: register.js:BARCODE_IN_USE
-msgid "Barcode is already in use"
+#: register.js:PARENT_OR_GUARDIAN
+msgid "Parent/Guardian"
 msgstr ""
 
 #: register.js:ADDRESS_HEADER
@@ -91,8 +87,12 @@ msgstr ""
 msgid "Form is invalid.  Please edit and try again."
 msgstr ""
 
-#: register.js:PARENT_OR_GUARDIAN
-msgid "Parent/Guardian"
+#: register.js:BARCODE_IN_USE
+msgid "Barcode is already in use"
+msgstr ""
+
+#: register.js:RESET_PASSWORD
+msgid "Generate Password"
 msgstr ""
 
 #: register.js:EXAMPLE
@@ -121,6 +121,10 @@ msgstr ""
 
 #: register.js:DEFAULT_ADDRESS_TYPE
 msgid "MAILING"
+msgstr ""
+
+#: register.js:REQUESTING_USER
+msgid "Account requested by ${0} ${1}"
 msgstr ""
 
 #: register.js:HOLD_NOTIFY_SMS
@@ -155,10 +159,6 @@ msgstr ""
 msgid "Barcode"
 msgstr ""
 
-#: register.js:RESET_PASSWORD
-msgid "Reset Password"
-msgstr ""
-
 #: register.js:HOLD_NOTIFY_EMAIL
 msgid "Email: "
 msgstr ""
@@ -173,4 +173,8 @@ msgstr ""
 
 #: register.js:DELETE_ADDRESS
 msgid "Delete address ${0}?"
+msgstr ""
+
+#: register.js:REPLACED_ADDRESS
+msgid "Replaces address ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
 msgstr ""

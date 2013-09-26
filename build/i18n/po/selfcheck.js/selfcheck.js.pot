@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2013-02-21 11:20:55-0400\n"
+"POT-Creation-Date: 2013-09-26 18:17:43-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,24 +23,20 @@ msgstr ""
 msgid "Checkout of item ${0} succeeded"
 msgstr ""
 
-#: selfcheck.js:FAIL_PART_no_ultimate_items
-msgid "The system could not find any items to match this hold request"
-msgstr ""
-
-#: selfcheck.js:TOTAL_ITEMS_ACCOUNT
-msgid "Total items on account:  <b>${0}</b>."
-msgstr ""
-
 #: selfcheck.js:WELCOME_BANNER
 msgid "Welcome, ${0}"
 msgstr ""
 
-#: selfcheck.js:FAIL_PART_config_hold_matrix_test_holdable
-msgid "Hold rules reject this item as unholdable"
+#: selfcheck.js:FAIL_PART_no_ultimate_items
+msgid "The system could not find any items to match this hold request"
 msgstr ""
 
-#: selfcheck.js:TOTAL_FINES_ACCOUNT
-msgid "Total fines on account: <b>$${0}</b>."
+#: selfcheck.js:TOTAL_HOLDS
+msgid "You have ${0} total holds."
+msgstr ""
+
+#: selfcheck.js:FAIL_PART_config_hold_matrix_test_holdable
+msgid "Hold rules reject this item as unholdable"
 msgstr ""
 
 #: selfcheck.js:FAIL_PART_asset_copy_status
@@ -74,8 +70,8 @@ msgstr ""
 msgid "The available item-to-hold ratio is too low"
 msgstr ""
 
-#: selfcheck.js:HOLD_STATUS_READY
-msgid "Ready for pickup"
+#: selfcheck.js:TOTAL_ITEMS_ACCOUNT
+msgid "Total items on account:  ${0}."
 msgstr ""
 
 #: selfcheck.js:FAIL_PART_circ_holds_target_skip_me
@@ -94,8 +90,12 @@ msgstr ""
 msgid "The patron has too many items of this type checked out"
 msgstr ""
 
-#: selfcheck.js:TOTAL_HOLDS
-msgid "You have <b>${0}</b> total holds."
+#: selfcheck.js:TOTAL_FINES_ACCOUNT
+msgid "Total fines on account: $${0}."
+msgstr ""
+
+#: selfcheck.js:MISCELLANEOUS
+msgid "Miscellaneous"
 msgstr ""
 
 #: selfcheck.js:ITEM_NOT_CATALOGED
@@ -114,6 +114,10 @@ msgstr ""
 msgid "The item is not in a holdable status"
 msgstr ""
 
+#: selfcheck.js:ENTER_PASSWORD
+msgid "Please enter your password"
+msgstr ""
+
 #: selfcheck.js:CC_PAYABLE_BALANCE
 msgid "Total amount to pay: $${0}"
 msgstr ""
@@ -122,8 +126,16 @@ msgstr ""
 msgid "The system could not find this item"
 msgstr ""
 
+#: selfcheck.js:PLEASE_LOGIN
+msgid "Please log in with your username or library barcode."
+msgstr ""
+
 #: selfcheck.js:FAIL_PART_no_matchpoint
 msgid "System rules do not define how to handle this item"
+msgstr ""
+
+#: selfcheck.js:ENTER_BARCODE
+msgid "Please enter an item barcode"
 msgstr ""
 
 #: selfcheck.js:FAIL_PART_asset_copy_circulate
@@ -134,6 +146,10 @@ msgstr ""
 msgid "Login for ${0} failed"
 msgstr ""
 
+#: selfcheck.js:HOLD_STATUS_READY
+msgid "Ready for pickup"
+msgstr ""
+
 #: selfcheck.js:GENERIC_CIRC_FAILURE
 msgid "Unable to check out item ${0}.  Please see staff."
 msgstr ""
@@ -142,8 +158,8 @@ msgstr ""
 msgid "No more renewals allowed for item ${0}"
 msgstr ""
 
-#: selfcheck.js:HOLDS_READY_FOR_PICKUP
-msgid "You have <b>${0}</b> item(s) ready for pickup."
+#: selfcheck.js:FAIL_PART_asset_copy_location_circulate
+msgid "Items from this shelving location do not circulate"
 msgstr ""
 
 #: selfcheck.js:FAIL_PART_item.holdable
@@ -166,12 +182,8 @@ msgstr ""
 msgid "An unhandled exception occurred with error code ${0}"
 msgstr ""
 
-#: selfcheck.js:FAIL_PART_asset_copy_location_circulate
-msgid "Items from this shelving location do not circulate"
-msgstr ""
-
 #: selfcheck.js:TOTAL_ITEMS_SESSION
-msgid "Total items this session: <b>${0}</b>."
+msgid "Total items this session: ${0}."
 msgstr ""
 
 #: selfcheck.js:FAIL_PART_config_rule_age_hold_protect_prox
@@ -180,4 +192,8 @@ msgstr ""
 
 #: selfcheck.js:TOTAL_FINES_SELECTED
 msgid "Selected total: $${0}"
+msgstr ""
+
+#: selfcheck.js:HOLDS_READY_FOR_PICKUP
+msgid "You have ${0} item(s) ready for pickup."
 msgstr ""

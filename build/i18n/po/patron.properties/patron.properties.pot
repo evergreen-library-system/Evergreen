@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-15 19:42+0000\n"
+"POT-Creation-Date: 2013-09-26 18:17-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -472,27 +472,27 @@ msgid "Retrieving..."
 msgstr ""
 
 #: staff.patron.display.init.network_request.alert_message
-msgid "Alert message: \"%1$s\"<br/><br/>"
+msgid "Alert message: \"%1$s\""
 msgstr ""
 
 #: staff.patron.display.init.network_request.inactive_card
-msgid "Patron account retrieved with an INACTIVE card.<br/><br/>"
+msgid "Patron account retrieved with an INACTIVE card."
 msgstr ""
 
 #: staff.patron.display.init.network_request.account_barred
-msgid "Patron account is BARRED.<br/><br/>"
+msgid "Patron account is BARRED."
 msgstr ""
 
 #: staff.patron.display.init.network_request.account_inactive
-msgid "Patron account is INACTIVE.<br/><br/>"
+msgid "Patron account is INACTIVE."
 msgstr ""
 
 #: staff.patron.display.init.network_request.account_expire_soon
-msgid "Patron account will expire soon.  Please renew.<br/><br/>"
+msgid "Patron account will expire soon.  Please renew."
 msgstr ""
 
 #: staff.patron.display.init.network_request.account_expired
-msgid "Patron account is EXPIRED.<br/><br/>"
+msgid "Patron account is EXPIRED."
 msgstr ""
 
 #: staff.patron.display.init.holds_ready
@@ -1898,4 +1898,13 @@ msgstr ""
 
 #: staff.item.batch.hold.user_not_found
 msgid "User Not Found"
+msgstr ""
+
+#. # hold count tooltip labels
+#: staff.patron.summary.hold_counts_behind_desk
+msgid "Available / Total (Behind Desk)"
+msgstr ""
+
+#: staff.patron.summary.hold_counts
+msgid "Available / Total"
 msgstr ""
