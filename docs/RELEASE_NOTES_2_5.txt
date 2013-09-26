@@ -1,0 +1,1095 @@
+Evergreen 2.5 Release Notes
+===========================
+:toc:
+:numbered:
+
+Upgrade notes
+-------------
+
+
+
+Acquisitions
+~~~~~~~~~~~~
+
+
+
+Support PO activation without requiring items
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A new _Activate PO Without Loading Items_ option in the PO allows staff to
+activate the PO without loading copies into the catalog.
+
+
+
+
+New Feature: Differentiate between cancelled and "delayed" lineitems
+====================================================================
+In the ACQ user interface, it is now more clear to users when a lineitem has
+been fully cancelled or if it has been cancelled temporarily (e.g. back-
+ordered).  
+
+When a lineitem is cancelled, but "keep_debits" is true on the cancel reason,
+the lineitem is in effect delayed instead of truly cancelled.  This is now
+more obvious in the interface with different row styling for cancelled vs
+delayed lineitems.  We also always show the lineitem cancel reason (label) 
+next to the non-title attributes in the lineitem list display.
+
+
+
+
+Administration
+~~~~~~~~~~~~~~
+
+
+
+Upgrade Notes : IDL2js Locale Support
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following Apache configuration changes are required to support the 
+locale-aware IDL2js module.  
+
+// note: there's no Apache conf highlighting.  'bash' works well enough.
+[source, bash]
+-----------------------------------------------------------------
+# file: eg_vhost.conf
+
+# this is the new part
+# capture locale CGI param for /reports/fm_IDL.xml
+RewriteCond %{REQUEST_URI} ^/reports/fm_IDL.xml
+RewriteCond %{QUERY_STRING} locale=([^&;]*)
+RewriteRule . - [E=locale:%1]
+
+# it should be placed just above this existing config section
+<LocationMatch /reports/fm_IDL.xml>
+    IDLChunkStripPI "yes"
+    IDLChunkEscapeScript "no"
+    IDLChunkStripComments "yes"
+    IDLChunkStripDoctype "yes"
+    IDLChunkContentType "application/xml; charset=utf-8"
+    AddOutputFilter INCLUDES;IDLCHUNK .xml
+</LocationMatch>
+-----------------------------------------------------------------
+
+
+
+
+
+New Updates Tools
+^^^^^^^^^^^^^^^^^
+
+Source code for tools to generate the staff clients updates tools were
+added to Open-ILS/xul/staff_client/external/libmar.  These tools
+replace the downloadable tools from Mozilla.org that were previously
+used to generate the staff client updates files.
+
+They come with their own configuration script and are condfigured
+automatically as a subpackage when you configure Evergreen for
+installation.  They are also built and ready for use when you make
+Evergreen during the installation or upgrade process.
+
+The make_updates.sh script that is run when you tell Evergreen to make
+the staff client updates has been modified to use the new tools.
+
+These tools introduce a dependency on libbz2.  This is often only
+available when installing the libbz2-dev or libbz2-devel packages.
+Thus this branch introduces a new depency on the development packages
+for libbz2 in Evergreen.
+
+Nothing in the user facing behavior of building updates changes with
+these tools.  They are drop-in replacements for the previous tools and
+other than the new dependency on libbz2, you don't even need to know
+that they are there.
+
+These tools were added to Evergreen to be an aid in portability to
+operating systems other than Linux.  They also remove a dependency on
+a third-party tool, that is typically downloaded as a binary.
+
+
+
+
+Action Trigger Event Repeatability
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Action Trigger Event Definitions have a new field, "Event Repeatability
+Delay". This feature allows events to be repeated after the designated
+delay interval. An example of this is sending a notification email when a
+patron's library card expires. If the library extends the expiration date
+on that card, we then need a way to send another notification email when
+that same card expires again. Before, the Action Trigger processor only
+created a new event if the event definition for that target had never
+been run before. But now it allows repeating of the event after the delay
+interval, if present.
+
+
+
+
+Cataloging
+~~~~~~~~~~
+
+
+
+New Feature: Vandelay Item Import Defaults
+==========================================
+
+Via org settings, support auto-generation of call numbers and barcodes
+for items imported via Vandelay's Item Import interface.  Support
+settings for applying a local prefix string to auto-generated call
+numbers and barcodes.  For both, the prefix defaults to "VAN".
+
+Similarly, support default copy location and circ modifiers.
+
+New Org Unit Settings
+---------------------
+
+ * vandelay.item.barcode.auto
+ * vandelay.item.barcode.prefix
+ * vandelay.item.call_number.auto
+ * vandelay.item.call_number.prefix
+ * vandelay.item.copy_location.default
+ * vandelay.item.circ_modifier.default
+
+
+
+
+
+
+Circulation
+~~~~~~~~~~~
+
+
+
+Setting for Desk Renewal to use original circulating library
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A new global flag option has been added to allow the circulating library of 
+a desk renewal (aka a renewal using the staff client) to reuse the original 
+circulation library for circ rule behaviors rather than using the workstation.
+This new setting is similar to existing options to use the originating 
+circulation library in OPAC renewals.
+
+
+
+
+Floating Groups
+===============
+Thomas Berezansky <tsbere@mvlc.org>
+:Date: 2012-04-22
+
+Before floating groups copies could float or not. If they floated then they floated everywhere, with no restrictions.
+
+After floating groups where a copy will float is defined by what group it has been assigned to.
+
+== Floating Groups
+
+Each floating group comes with a name and a manual flag, plus zero or more group members. The name is used solely for selection and display purposes.
+
+The manual flag dictates whether or not the "Manual Floating Active" checkin modifier needs to be active for a copy to float. This allows for greater control over when items float. It also prevents automated checkins via SIP2 from triggering floats.
+
+== Floating Group Members
+
+Each member of a floating group references an org unit and has a stop depth, an optional max depth, and an exclude flag.
+
+=== Org Unit
+
+The org unit and all descendants are included, unless max depth is set, in which case the tree is cut off at the max depth.
+
+=== Stop Depth
+
+The stop depth is the highest point from the current copy circ library to the checkin library for the item that will be traversed. If the item has to go higher than the stop depth on the tree the member rule in question is ignored.
+
+=== Max Depth
+
+As mentioned with the org unit, the max depth is the furthest down on the tree from the org unit that gets included. This is based on the entire tree, not just off of the org unit. So in the default tree a max depth of 1 will stop at the system level no matter if org unit is set to CONS or SYS1.
+
+=== Exclude
+
+Exclude, if set, causes floating to not happen for the member. Excludes always take priority, so you can remove an org unit from floating without having to worry about other rules overriding it.
+
+== Examples
+
+=== Float Everywhere
+
+This is a default floating rule to emulate the previous floating behavior for new installs and upgrades.
+
+One member:
+
+* Org Unit: CONS
+* Stop Depth: 0
+* Max Depth: Unset
+* Exclude: Off
+
+=== Float Within System
+
+This would permit a copy to float anywhere within a system, but would return to the system if it was returned elsewhere.
+
+One member:
+
+* Org Unit: CONS
+* Stop Depth: 1
+* Max Depth: Unset
+* Exclude: Off
+
+=== Float To All Branches
+
+This would permit a copy to float to any branch, but not to sublibraries or bookmobiles.
+
+One member:
+
+* Org Unit: CONS
+* Stop Depth: 0
+* Max Depth: 2
+* Exclude: Off
+
+=== Float To All Branches Within System
+
+This would permit a copy to float to any branch in a system, but not to sublibraries or bookmobiles, and returning to the system if returned elsewhere.
+
+One member:
+
+* Org Unit: CONS
+* Stop Depth: 1
+* Max Depth: 2
+* Exclude: Off
+
+=== Float Between BR1 and BR3
+
+This would permit a copy to float between BR1 and BR3 specifically, excluding sublibraries and bookmobiles.
+
+It would consist of two members, identical other than the org unit:
+
+* Org Unit: BR1 / BR3
+* Stop Depth: 0
+* Max Depth: 2
+* Exclude: Off
+
+=== Float Everywhere Except BM1
+
+This would allow an item to float anywhere except for BM1. It accomplishes this with two members.
+
+The first includes all org units, just like Float Everywhere:
+
+* Org Unit: CONS
+* Stop Depth: 0
+* Max Depth: Unset
+* Exclude: Off
+
+The second excludes BM1:
+
+* Org Unit: BM1
+* Stop Depth: 0
+* Max Depth: Unset
+* Exclude: On
+
+That works because excludes are applied first.
+
+=== Float into, but not out of, BR2
+
+This would allow an item to float into BR2, but once there it would never leave. Why you would want to allow items to float to but not from a single library I dunno, but here it is. This takes advantage of the fact that the rules say where we can float *to*, but outside of stop depth don't care where we are floating *from*.
+
+One member:
+
+* Org Unit: BR2
+* Stop Depth: 0
+* Max Depth: Unset
+* Exclude: Off 
+
+
+
+
+New Feature: Long-Overdue Patron Standing Penalty
+=================================================
+
+This is the long-overdue version of the existing PATRON_EXCEEDS_LOST_COUNT 
+standing penalty.  When a patron exceeds the configured threshold for open
+long-overdue (i.e. non-zero balance) circulations, the penalty is applied. 
+When the number once again goes below the threshold, the penalty is removed.
+
+The penalty name is PATRON_EXCEEDS_LONGOVERDUE_COUNT / "Patron Exceeds Max 
+Long-Overdue Threshold"
+
+
+
+
+Long Overdue Circulations Management
+====================================
+
+This is a two-part feature, which covers marking circulations as long
+overdue via automated processing and check-in of long overdue circulations.
+
+Marking Circulations Long Overdue
+---------------------------------
+
+A new Action/Trigger reactor (MarkItemLongOverdue) and sample event 
+definition (6 Month Overdue Mark Long-Overdue) are included for 
+marking circulations and their associated copies as long overdue.  New org
+unit settings determine whether the item price and/or a processing fee is
+applied.  
+
+A secondary Action/Trigger hook (longoverdue.auto) and sample event 
+definition (6 Month Long Overdue Notice) are added so that (email, etc.) 
+notifications can be sent when a circulation is marked long overdue via
+this new automated process.
+
+Also included is a new Action/Trigger validator PatronNotInCollections, which
+can be used to prevent long overdue processing (or any circ-based event 
+definition) for patrons that are in collections processing at (or above) the 
+circulating library.
+
+New Org Unit Settings
+~~~~~~~~~~~~~~~~~~~~~
+
+ * Long-Overdue Materials Processing Fee
+ * Void Overdue Fines When Items are Marked Long-Overdue
+ * Leave transaction open when long overdue balance equals zero
+
+A combination of 'Charge lost on zero' and 'Default Item Price' are used to
+determine the amount to charge for the item price when a circulation is 
+marked as long overdue.
+
+New Billing Types
+~~~~~~~~~~~~~~~~~
+
+ * Long-Overdue Materials
+ * Long-Overdue Materials Processing Fee
+
+New Permissions
+~~~~~~~~~~~~~~~
+
+ * SET_CIRC_LONG_OVERDUE
+
+New Copy Status
+~~~~~~~~~~~~~~~
+
+ * Long Overdue
+
+Check-in of Long Overdue Circulations
+-------------------------------------
+
+Check-in of long overdue items may result in any of the following actions, 
+depending on configuration.
+
+ * Void the copy price billing 
+ * Void the long-overdue processing fee billing 
+ * Reinstate voided overdue fines 
+
+The process is practically identical to Lost processing.  However, one
+difference between Lost and Long Overdue check-in is that the window
+of time during which a long overdue item may be returned may be based on the
+due date (like Lost) or the last billing activity date (last payment, last 
+billing).  This is controlled with the "Long-Overdue Check-In Interval Uses 
+Last Activity Date" org unit setting.
+
+New Org Unit Settings
+~~~~~~~~~~~~~~~~~~~~~
+
+ * Long-Overdue Items Usable on Checkin
+ * Long-Overdue Max Return Interval
+ * Restore Overdues on Long-Overdue Item Return
+ * Void Long-Overdue Item Billing When Returned
+ * Void Processing Fee on Long-Overdue Item Return
+ * Long-Overdue Check-In Interval Uses Last Activity Date
+
+New Permissions
+~~~~~~~~~~~~~~~
+
+ * COPY_STATUS_LONGOVERDUE.override
+
+Upgrade Notes
+-------------
+
+If you are using a custom version of the 
+'/openils/conf/action_trigger_filters.json.example' file, you will need to 
+merge the changes made by this feature into your file.  The change in 
+question alters the 'checkout.due' hook such that LONGOVERDUE circulations 
+are no longer treated as regular overdue items.
+
+
+
+
+Patron blocking by lost items and include lost as items out
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This feature has two main parts, both of which are to improve the staff's
+ability to assist patrons in regards to lost items.
+
+* Patron blocking by lost items.  This will add a group penalty threshold
+that will alert staff when a patron has too many lost items.  This
+setting is modified through the Group Penalty Thresholds page.
+
+* Include lost items as items out.  Through a new library setting,
+'Include Lost circulations in lump sum tallies in Patron Display',
+the staff have the ability to determine if lost items will be included
+in items out.
+
+
+
+
+Per-Hold Behind Desk Setting
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The value for behind-the-desk pickup is now stored directly on each
+hold request.  This allows the system to better track the true location 
+of captured hold items in cases where the patron setting has changed since
+hold capture.
+
+For these features to be accessible, the "Behind Desk Pickup Supported" 
+(circ.holds.behind_desk_pickup_supported) org unit setting must be set 
+to true.
+
+Staff Client
+++++++++++++
+
+In addition to the counts of ready for pickup and available holds, the
+staff client now also displays the number of behind the desk holds ready 
+for pickup at the staff's working location.  If no items are held behind
+the desk, this information does not display, in particular, because this 
+information is useless if behind the desk holds are not supported at the 
+staff's working location.
+
+TPAC Changes
+++++++++++++
+
+The system also allows patrons to set their own behind-the-desk 
+pickup preferences in the TPAC settings interface.  To activate this
+feature, admins need to set the Opac Visible flag to "true" for the 
+"Hold is behind Circ Desk" (circ.holds_behind_desk) user setting and
+"Behind Desk Pickup Supported" must be set to true for the patron's
+home library.
+
+
+
+
+
+Print Single Item Receipt
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Add ability to print a receipt for just a single selected item from the patron 
+interface for Items Out or Lost, Claims Returned, Long Overdue, Has Unpaid 
+Billings. This can be used via right-click or using the 'Actions for Selected 
+Items' button.
+
+
+
+
+Checkout: Trim whitespace from beginning and end of barcode
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In checkout, when pasting a barcode into the lookup field, one may accidentally
+include spaces or tabs in the beginning or end of the barcode string. Trim 
+those away to avoid potential mis-scans.
+
+
+
+
+Client
+~~~~~~
+
+
+
+New Feature: Customize Items Out Display for Lost, etc.
+=======================================================
+
+Items which are LOST, LONGOVERDUE, or CLAIMSRETURNED may now be displayed 
+in the top/main list of circulations instead of the bottom list in the
+staff client patron Items Out interface.  Similarly, such items can be 
+removed from the display once the items are checked in even if the 
+transaction is still open (fines are owed, etc.).
+
+Apart from organization, this has two additional effects:
+
+ * If all 3 types are hidden once checked in, the interface becomes a true
+   items out interface, instead of a combination of items out and 
+   special circumstance checked-in circs.
+ * If, in addition, all types are configured to be displayed in the top
+   list, the bottom list is hidden from the UI (since nothing would display
+   there), which creates more screen space for the main items out list.
+
+New Org Unit Settings
+---------------------
+
+ * ui.circ.items_out.longoverdue    | Items Out Long-Overdue display setting
+ * ui.circ.items_out.lost           | Items Out Lost display setting
+ * ui.circ.items_out.claimsreturned | Items Out Claims Returned display setting
+
+The value for each is a numeric code, describing which list the circulation
+should appear while checked out and whether the circulation should continue 
+to appear in the bottom list, when checked in, regardless of the state of
+the transaction.
+
+Value Codes
+~~~~~~~~~~~
+
+ * 1 = top list, then bottom list 
+ * 2 = bottom list, then bottom list
+ * 5 = top list, then do not display
+ * 6 = bottom list, then do not display
+
+Hint: to hide the bottom list entirely, set the value for all three settings 
+to '5'.
+
+
+
+
+Standalone Mode Shortcut
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Evergreen installer now includes a shortcut that launches the staff client 
+directly into standalone (offline) mode.
+
+
+
+
+User Setting Defaults
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+For use during Patron Registration, we can now supply default values for User Settings, under Admin -> Server Administration -> User Setting Types.
+
+
+
+
+OPAC
+~~~~
+
+
+
+Added Content by Record ID
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Traditionally, Evergreen has supported Added Content lookups by ISBN
+only, or (more recently) by one of ISBN or UPC.
+
+This enhancement adds support for Added Content lookups by record
+ID, while still supporting the previous URL format for lookups by
+ISBN.
+
+The JSPAC and TPAC skins, as well as the web-based Self Checkout
+interface templates are updated to use jacket images / cover art by
+record ID by default.
+
+By using record identifiers, the Added Content handler has the
+opportnity to examine additional identifiers in the bib record.
+Currently, these include:
+
+ * ISBN
+ * UPC
+ * ISSN
+
+Currently, only the OpenILS::WWW::AddedContent::Syndetic provider
+makes use of the new identifiers.
+
+
+Local Content Overrides
++++++++++++++++++++++++
+Just as with ISBN lookups, there is support for local overrides in
+the form of a file created on disk which short-circuits any external
+Added Content lookup.
+
+
+Apache Configuration
+++++++++++++++++++++
+
+The example Apache configs have been updated to support serving
+blank.png when added content jacket URLs return a 404. This prevents
+"broken image" placeholders in browsers, without requiring a
+Javascript onerror handler on each img tag.
+
+The changes are as follows:
+
+In the eg.conf VirtualHost declaration for SSL, add:
+
+[source]
+SSLProxyEngine on # required for ErrorDocument 404 on SSL connections
+
+In the eg_vhost.conf file, add:
+
+[source]
+<Location /opac/extras/ac/jacket>
+        ErrorDocument 404 /opac/images/blank.png
+</Location>
+
+
+
+
+Bib record browser with linked authorities
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This feature provides a patron-oriented OPAC interface for browsing
+bibliographic records.
+
+Users choose to browse by Author, Title, Subject, or Series. They then
+enter a browse term, and the nearest match from a left-anchored search
+on the headings extracted for browse purposes will be displayed in a
+typical backwards/forwards paging display. Headings link to search
+results pages showing the related records. If the browse heading is
+linked to any authority records, and if any *other* authority records
+point to those with "See also" or other non-main entry headings, those
+alternative headings are displayed a linked to a search results page
+showing related bib records related to the alternate heading.
+
+The counts of holdings displayed next to headings from bibliographic
+records are subject to the same visiibility tests as search. This means
+that the org unit (and copy location group) dropdown on the browse
+interface affects counds, and it further means that whether or not
+you're looking at the browse interface through the staff client makes a
+difference.
+
+Configuration considerations for site administrators
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+There are two off-by-default features that site administrators may wish
+to enable.
+
+  * Quick paging links: By adding a value for the org unit setting
+    ''opac.browse.pager_shortcuts'' , you can make shortcut browsing
+    links such as ''0-9 A B C D ...'' appear between the Back and Next
+    buttons on the browse page. The set of shortcuts should be chosen
+    based on the languages in use at your site, but a reasonable value
+    for English might be the string "*0-9*ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    which will yield a link for 0-9 and one for each letter A-Z.  The
+    use of asterisks in the string group a shortcut whose label is more
+    than a single letter in length.  Such longer shortcuts have the multi-
+    character string for the shortcut label, and the link just goes to the
+    first heading matching the first character of the label.  The letters
+    not enclosed in asterisks just lead to individual letter shortcuts.
+
+
+  * There is a global flag by the name
+    ''opac.browse.warnable_regexp_per_class'' to control what leading
+    articles in users' entered browse terms trigger a warning about how
+    it might be better to search for "Rolling Stones" instead of "The
+    Rolling Stones" (or whatever). This is off by default, but can be
+    enabled if it suits your catalog, and can even be customized per
+    search class (author, title, series, subject).
+
+Also, by default, authors are indexed for browse in such a way that
+relator roles like "creator" are dropped off the end of their headings.
+This was an aesthetic choice. If a site wanted to display those kinds
+of terms, they would update the 'config.metabib_field' table in
+the database, setting 'browse_xpath' to NULL where 'field_class' =
+''author'' and 'browse_field' is true.
+
+
+
+
+Linked library names in copy details
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A patron may find one or more available copies of an item that they want to
+retrieve, but may not be familiar with the location, hours of operation, or
+contact information for each branch of their local library system. To enable
+the patron to quickly access information about a given library branch, the TPAC
+and KPAC can link the name of the branch in the copy details display to a URL
+associated with that branch.
+
+To set the URL for a given branch, use the *Local Administration -> Library
+Settings Editor* and edit the *Library Information URL* setting for that
+branch. Any branches that do not have a library information URL setting display
+as normal text.
+
+
+
+
+New Feature: Web-Based Patron Self-Registration
+===============================================
+
+Feature Summary
+---------------
+
+Patrons may now fill out a web-based form from within the TPAC to create 
+pending user accounts.  The goal is to make the registration process more 
+efficient by allowing the patron to provide much of the registration 
+details in advance of registering with staff.  
+
+Pending user accounts have no privileges.  
+
+The form supports hiding fields, requiring fields, applying format
+validation, and displaying example text for selected fields by inspecting the 
+relevant patron registration org unit settings.
+
+The "Request Library Card" link appears as the second default "bottom link"
+in the TPAC.  
+
+If a user is logged in when clicking the register link, the logged in
+user will be tracked as the requesting user for the pending account.
+Additionally, the home org unit and some address fields will be pre-populated
+for convenience (with the assumption that these will likely be the same for
+the pending user -- they can of course be changed).  When a requesting user
+is present on the pending user, a link to the requesting user will be 
+displayed within the patron registration form in the staff client.
+
+Pending patron accounts which sit unattended in the database for too long
+are purged via a regularly running (CRON) script.
+
+Technical Details
+-----------------
+
+  * To activate the web form and allow pending patrons to be created, set
+    the 'opac.allow_pending_user' org unit setting to true where appropriate.
+  * To purge old pending user accounts, set an interval value for the new
+    'opac.pending_user_expire_interval' org unit setting.
+  * The org unit settings to indicate show/require/regex/example are 
+    loaded dynamically, so any similar org unit settings added in the future
+    will also be honored.  Any setting matching the following format is used:
+    ** ui.patron.edit.[au|aua].*.show
+    ** ui.patron.edit.[au|aua].*.require
+    ** ui.patron.edit.[au|aua].*.regex
+    ** ui.patron.edit.[au|aua].*.example
+
+Upgrade Notes
+-------------
+
+  * If a value is set for the 'opac.pending_user_expire_interval' for
+    any org units, the new /openils/bin/purge_pending_users.srfsh script 
+    should also be added the opensrf user's crontab.  Running the script once 
+    per day should suffice.
+
+
+
+
+Serials
+~~~~~~~
+
+
+
+Serial Alerts At Receive Time
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In the Serial Control View, you can now flag a note as an "alert" to
+make it more visible on the receiving interface. This flag is available
+on subscription, distribution and item notes. The new "Alerts" button
+on the Items tab displays the number of alert notes that are available
+for the selected items, and clicking this button opens a window which
+displays all applicable alert notes, sorted by type. Notes can also be
+edited or deleted from this window.
+
+
+
+Miscellaneous
+-------------
+
+Release Notes for the Phonelist.pm Module
+=========================================
+
+PhoneList.pm is a mod_perl module for Apache that works with Evergreen
+to generate callings lists for patron holds. It outputs a csv file
+that can be fed into an auto-dialer script to call patrons with little
+or no staff intervention.  It is accessed and configured via a special
+URL and passing any parameters as a ``Query String'' on the URL.  The
+parameters are listed in the table below.
+
+.Parameters for the phonelist program:
+|=====================================
+| user |  Your Evergreen login. Typically your library's circ account. If you leave this off, you will be prompted to login.
+| passwd | The password for your Evergreen login. If you leave this off you will be prompted to login.
+| ws_ou | The ID of the system or branch you want to generate the list for (optional). If your account does not have the appropriate permissions for the location whose ID number you have entered, you will get an error.
+| skipemail | If present, skip patrons with email notification (optional).
+| addcount | Add a count of items on hold (optional). Only makes sense for holds.
+| overdue | Makes a list of patrons with overdues instead of holds. If an additional, numeric parameter is supplied, it will be used as the number of days overdue. If no such extra parameter is supplied, then the default of 14 days is used.
+|=====================================
+
+The URL is
+
+`https://your.evergreen-server.tld/phonelist`
+
+A couple of examples follow:
+
+`https://your.evergreen-server.tld/phonelist?user=circuser&passwd=password&skipemail
+
+The above example would sign in as user circuser with password of
+``password'' and get a list of patrons with holds to call who do not
+have email notification turned on. It would run at whatever branch is
+normally associated with circuser, which would likely be MVC or
+central site. (Note: There is no actual circuser account, it is used
+here for illustration purposes only.)
+
+`https://your.evergreen-server.tld/phonelist?skipemail`
+
+The above example would do more or less the same, but you would be
+prompted by your browser for the user name and password.
+
+If your browser or download script support it, you may also use
+conventional HTTP authentication parameters.
+
+`https://user:password@your.evergreen-server.tld/phonelist?overdue&ws_ou=2`
+
+The above logs in as ``user'' with ``password'' and runs overdues for location ID 2.
+
+The following sections provide more information on getting what you want in your output.
+
+Adding Parameters
+-----------------
+
+If you are not familiar with HTTP/URL query strings, the format is
+quite simple.
+
+You add parameters to the end of the URL, the first parameter is
+separated from the URL page with a question mark (``?'') character. If
+the parameter is to be given an extra value, then that value follows
+the parameter name after an equals sign (``=''). Subsequent parameters
+are separated from the previous parameter by an ampersand (``&'').
+
+Here is an example with 1 parameter that has no value:
+
+`https://your.evergreen-server.tld/phonelist?skipemail`
+
+An example of 1 argument with a value:
+
+`https://your.evergreen-server.tld/phonelist?overdue=21`
+
+An example of 2 arguments, 1 with a value and 1 without:
+
+`https://your.evergreen-server.tld/phonelist?overdue=21&skipemail`
+
+Any misspelled or parameters not listed in the table above will be
+ignored by the program.
+
+Output
+------
+
+On a successful run, the program will return a CSV file named
+phone.csv. Depending on your browser or settings you will alternately
+be prompted to open or save the file. Your browser may also
+automatically save the file in your Downloads or other designated
+folder. You should be able to open this CSV file in Excel, LibreOffice
+Base, any other spread sheet program, or a text editor.
+
+If you have made a mistake and have mistyped your user name or
+password, or if you supply a ws_ou parameter with an ID where your
+user name does not have permission to look up holds or overdue
+information, then you will get an error returned in your browser.
+
+Should your browser appear to do absolutely nothing at all. This is
+normal. When there is no information for you to download, the server
+will return a 200 NO CONTENT message to your browser. Most browsers
+respond to this message by doing nothing at all. It is possible for
+there to be no information for you to retrieve if you added the
+`skipemail` option and all of your notices for that day were sent via
+email, or if you ran this in the morning and then again in the
+afternoon and there was no new information to gather.
+
+The program does indicate that it has already looked at a particular
+hold or overdue and will skip it on later runs. This prevents
+duplicates to the same patron in the same run. It will, however,
+create a ``duplicate'' for the same patron if a different copy is put
+on hold for that patron in between two runs.
+
+The specific content of the CSV file will vary if you are looking at
+holds or overdues. The specific contents are described in the
+appropriate sections below.
+
+Holds
+-----
+
+The `phonelist` program will return a list of patrons with copies on
+hold by default, so long as you do not use the `overdue`
+parameter. You may optionally get a number of items that patron
+currently has on hold by adding the `addcount` parameter.
+
+As always, you can add the skipemail parameter to skip patrons with
+email notifications of their overdues, [#0.5.Skipping patrons with
+email notification of holds|outline as described below].
+
+.Columns in the holds CSV file:
+|=====================================
+| Name | Patron's name first and last.
+| Phone | Patron's phone number.
+| Barcode | Patron's barcode.
+| Count | Number of copies on hold, if `addcount` parameter is used, otherwise this column is not present in the file.
+|=====================================
+
+Overdues
+--------
+
+If you add the `overdue` parameter, you can get a list of patrons with
+overdue copies instead of a list of patrons with copies on the hold
+shelf. By default, this will give you a list of patrons with copies
+that are 14 days overdue. If you'd like to specify a different number
+of days you can add the number after the parameter with an equals
+sign:
+
+`https://your.evergreen-server.tld/phonelist?overdue=21&ws_ou=2`
+
+The above will retrieve a list of patrons who have items that are 21
+days overdue at the location with ID of 2.
+
+The number of days is an exact lookup. This means that the program
+will look only at patrons who have items exactly 14 days or exactly
+the number of days specified overdue. It does not pull up any that are
+less than or greater than the number of days specified.
+
+As always, you can add the skipemail parameter to skip patrons with
+email notifications of their overdues, [#0.5.Skipping patrons with
+email notification of holds|outline as described below].
+
+.Columns in the overdues CSV file:
+|=================================
+| Name | Patron's name first and last.
+| Phone | Patron's phone number.
+| Barcode | Patron's barcode.
+| Titles | A colon-separated list of titles that the patron has overdue.
+|=================================
+
+Skipping patrons with email notification of holds
+-------------------------------------------------
+
+Skipping patrons who have email notification for their holds or
+overdues is very simple. You just need to add the `skipemail`
+parameter on the URL query string. Doing so will produce the list
+without the patrons who have email notification for overdues, or for
+all of their holds. Please note that if a patron has multiple holds
+available, and even one of these holds requests a phone-only
+notification, then that patron will still show on the list. For this
+option to exclude a patron from the holds list, the patron must
+request email notification on all of their current holds. In practice,
+we find that this is usually the case.
+
+Using the ws_ou parameter
+-------------------------
+
+Generally, you will not need to use the ws_ou parameter when using the
+phonelist program. The phonelist will look up the branch where your
+login account works and use that location when generating the list.
+However, if you are part of a multi-branch systems in a consortium,
+then the ws_ou parameter will be of interest to you.  You can use it
+to specify which branch, or the whole system, you wish to search when
+running the program.
+
+Automating the download
+-----------------------
+
+If you'd like to automate the download of these files, you should be
+able to do so using any HTTP programming toolkit. Your client must
+accept cookies and follow any redirects in order to function.
+New Feature: "Purge Holds"
+==========================
+Similar to purging circulations one may wish to purge old (filled or canceled) hold information. This feature adds a database function and settings for doing so.
+
+Purged holds are moved to the action.aged_hold_request table with patron identifying information scrubbed, much like circulations are moved to action.aged_circulation.
+
+The settings allow for a default retention age as well as filled, canceled, and canceled by cancel cause ages. The most specific one wins unless a patron is retaining their hold history. In the latter case the patron's holds are retained either way.
+
+Note that the function still needs to be called, which could be set up as a cron job or done more manually, say after statistics collection. A new script, purge_holds.srfsh, is added that can be used to purge holds from cron.
+Upgrade Notes
+-------------
+P.V. SUPA GoodStuff Integration
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+There is now a "Server Add-ons" module for integrating P.V. Supa's RFID product
+known as GoodStuff with the Evergreen staff client.
+
+To activate it, you should add the identifier "pv_supa_goodstaff" (without the
+quotes) to the list managed by the Admin->Workstation Administration->Server
+Add-ons menu action within the staff client.  You will need the
+ADMIN_SERVER_ADDON_FOR_WORKSTATION permission to do this.
+
+After doing this and clicking the Update Active Add-Ons button, the interface
+will refresh and show a GoodStuff tab in the Add-on Preferences section.  Within
+this tab you will have the option of specifying the hostname and port for the
+Goodstaff hardware. There is also an "Enabled" setting that needs to be checked.
+
+Currently three interfaces have been integrated:
+* Circulation -> Check In Items
+* Circulation -> Check Out Items (where you scan the patron barcode)
+* Circulation -> Check Out Items (where you scan the item barcodes)
+
+Each interface gets an RFID checkbox if the "Enabled" preference has been set,
+that can activate/deactivate the functionality on a per interface basis.  The
+checkbox states persist (i.e. are sticky).
+
+Upgrade Notes
+-------------
+Server Add-ons
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+This adds a "Server Add-ons" menu entry under Admin -> Workstation
+Administration in the staff client.  Choosing this allows you to edit or set a
+list of identifiers that correspond to JSAN-style modules found in
+/server/addons/, and is meant mainly for activating 3rd party modules within the
+staff client on a per-workstation basis.  You need the
+ADMIN_SERVER_ADDON_FOR_WORKSTATION permission to use it.
+
+Configuration options for activated add-ons may also show up in this interface.
+Z39.50 Batch Search and Queue
+=============================
+
+Staff Work Flow
+---------------
+
+ * Staff add records to bib record buckets
+ * Staff select the new "Locate Z39.50 Matches" action for a selected bucket.
+ * Staff choose which Z39.50 sources and indexes to search and the destination 
+   queue.
+ * Submitting the search fires a series of parallel Z39.50 searches across
+   all selected Z39.50 sources.
+ * Matches are added to the selected (Vandelay) queue.
+ * Matched records may be manually or automatically overlaid to existing 
+   catalog records using the existing Vandelay import/merge/overlay features.
+
+Vandelay Limit to Bucket
+------------------------
+
+As a side effect of this feature, Vandelay now has a new option in the 
+interface which allows staff to limit which catalog records to which an 
+inbound record matches to bib records within a record bucket.  When a record
+bucket and match set are chosen, only the records in the bucket can act as
+merge/overlay targets for the inbound Vandelay records.
+
+Configuration
+-------------
+
+Z39.50 Index Field Maps
+~~~~~~~~~~~~~~~~~~~~~~~
+
+These map bib record indexes (Metabib Fields and Record Attributes) to Z39.50
+search attributes.  The purpose of the mapping is to allow the server to
+determine which values to use for the automated Z39.50 searches.  For example,
+if the Z39.50 "title" attribute is mapped to the "Uniform Title" Metabib Field,
+the extracted value for "Uniform Title" for each record in the bucket will be
+used as the "title" value in the Z39.50 search.
+
+Mappings can be applied to specific Z39.50 attributes, which define an attribute
+type and a Z39.50 source, or to generic attribute types (e.g. "title").  When
+a specific attribute is used, the mapping will only be applied to searches 
+directed at the Z39.50 source linked to the attribute.
+
+The management interface can be found in the staff client under 
+
+Admin => Server Administration => Z39.50 Index Field Maps
+
+Metabib Field Additions
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Stock config.metabib_field entries for author include additional author-
+related data, like dates.  For example, a value for Personal Author might 
+look like this:
+
+'girdlestone cuthbert morton 1895 1975 creator'
+
+In the context of searching Z39.50 servers, the extraneous data can be 
+detrimental.  Creating a separate field definition without the extra data
+is recommended.
+
+[source,sql]
+--------------------------------------------
+INSERT INTO config.metabib_field 
+    (field_class, name, label, format, xpath, search_field)
+    VALUES (
+        'author', 
+        'personal - trimmed', 
+        'Personal Author (trimmed)', 
+        'mods32',
+        '//mods32:mods/mods32:name[@type=''personal'' and mods32:role/mods32:roleTerm[text()=''creator'']]/mods32:namePart[not (@type)]',
+        FALSE
+    );
+
+-- FULL BIB (OR INDEX-TARGETED) RE-INGEST REQUIRED
+--------------------------------------------
+
+
+Org Unit Settings
+~~~~~~~~~~~~~~~~~
+
+ * cat.z3950.batch.max_parallel 
+  ** Maximum Parallel Z39.50 Batch Searches
+  ** The maximum number of Z39.50 searches that can be in-flight at any given 
+     time when performing batch Z39.50 searches
+ * cat.z3950.batch.max_results
+  ** Maximum Z39.50 Batch Search Results
+  ** The maximum number of search results to retrieve and queue for each 
+     record + Z39 source during batch Z39.50 searches
+    

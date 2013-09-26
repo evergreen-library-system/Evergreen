@@ -2,7 +2,7 @@
 
 GIT_ABS=`git rev-parse --show-toplevel`
 GIT_BRANCH=`git rev-parse --abbrev-ref HEAD | sed 's|.*/||'`
-HEADURLBASE="http://git.evergreen-ils.org/Evergreen.git?h=refs/heads/"
+HEADURLBASE="http://git.evergreen-ils.org/?p=Evergreen.git;a=shortlog;h=refs/heads/"
 HEADURL="$HEADURLBASE$GIT_BRANCH"
 
 # Drop to the root of the checkout
@@ -305,7 +305,7 @@ cd Evergreen-ILS-$VERSION/
 
 echo "Building Release Staff Clients"
 cd Open-ILS/xul/staff_client
-make rigrelease
+make rigbeta
 make STAFF_CLIENT_STAMP_ID=rel_$UNDER_VERSION build
 make win-client
 mv evergreen_staff_client_setup.exe ../../../../evergreen-setup-$VERSION.exe
