@@ -35,7 +35,7 @@
     <div id="format_actions">
         [%- IF attrs.format_label %]
         <div id="rdetail_format_label">
-            [%- attrs.format_label -%]
+            <img alt="[% attrs.format_label %]" title="[% attrs.format_label | html %]" src="[% attrs.format_icon %]" /> [%- attrs.format_label -%]
         </div>
         [%- END %]
         <div id="rdetail_actions_div">
