@@ -1,4 +1,4 @@
--- Evergreen DB patch XXXX.schema.browse-auth-linking.plus-joiner.sql
+-- Evergreen DB patch 0837.schema.browse-auth-linking.plus-joiner.sql
 --
 -- In this upgrade script we complete inter-subfield joiner support, so that
 -- subject components can be separated by " -- ", for instance.  That's the
@@ -11,7 +11,7 @@ BEGIN;
 
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0837', :eg_version);
 
 ALTER TABLE config.metabib_field ADD COLUMN joiner TEXT;
 UPDATE config.metabib_field SET joiner = ' -- ' WHERE field_class = 'subject' AND name NOT IN ('name', 'complete');
