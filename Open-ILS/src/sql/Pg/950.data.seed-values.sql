@@ -118,7 +118,7 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, 
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, authority_xpath, browse_sort_xpath ) VALUES 
     (3, 'title', 'translated', oils_i18n_gettext(3, 'Translated Title', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:titleInfo[mods32:title and (@type='translated-nfi')]$$, '//@xlink:href', $$*[local-name() != "nonSort"]$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, authority_xpath, browse_sort_xpath ) VALUES 
-    (4, 'title', 'alternative', oils_i18n_gettext(4, 'Alternate Title', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:titleInfo[mods32:title and (@type='alternative-nfi')]$$, '//@xlink:href', $$*[local-name() != "nonSort"]$$ );
+    (4, 'title', 'alternative', oils_i18n_gettext(4, 'Alternate Title', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:titleInfo[mods32:title and starts-with(@type,'alternative')]$$, '//@xlink:href', $$*[local-name() != "nonSort"]$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, authority_xpath, browse_sort_xpath ) VALUES 
     (5, 'title', 'uniform', oils_i18n_gettext(5, 'Uniform Title', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:titleInfo[mods32:title and (@type='uniform-nfi')]$$, '//@xlink:href', $$*[local-name() != "nonSort"]$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, authority_xpath, browse_field, browse_sort_xpath ) VALUES 
