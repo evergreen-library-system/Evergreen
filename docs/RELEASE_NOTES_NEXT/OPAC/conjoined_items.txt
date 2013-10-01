@@ -1,0 +1,6 @@
+Support for Conjoined Items
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The catalog now supports the display of conjoined items. The "joined" titles
+will display a copy record with a link in the copy table back to the "master"
+bib. The master bib will display a set of links to individual titles.

@@ -1,0 +1,5 @@
+RSS Links to Full Catalog Record
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Links in RSS feeds now point directly to the catalog record instead of the 
+htmlholdings-full format of the record.
