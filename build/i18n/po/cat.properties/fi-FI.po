@@ -1,20 +1,22 @@
 # extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/cat.properties
+#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/cat.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-04 13:44-0400\n"
+"POT-Creation-Date: 2013-10-01 20:32+0300\n"
 "PO-Revision-Date: 2013-03-19 19:54+0000\n"
 "Last-Translator: Finnish <evergreen@jns.fi>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
+"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-20 04:44+0000\n"
-"X-Generator: Launchpad (build 16532)\n"
-"X-Project-Style: mozilla\n"
+"X-Generator: Translate Toolkit 1.10.0\n"
 "X-Accelerator-Marker: &\n"
-"Language: fi\n"
+"X-Merge-On: location\n"
+"X-Launchpad-Export-Date: 2013-03-20 04:44+0000\n"
+"X-Project-Style: mozilla\n"
 
 #: bib.no_marc
 msgid "No MARC Record"
@@ -99,8 +101,8 @@ msgstr "Muuta vertaistyyppiä"
 #: staff.cat.manage_multi_bib_items.prompt.confirm.unlink_item_from_bib.singular
 msgid "Unlink selected item from Bib with DB ID %1$s"
 msgstr ""
-"Poista valitun niteen linkitys bibliografiseen tietueeseen (tietokannan ID "
-"%1$s)"
+"Poista valitun niteen linkitys bibliografiseen tietueeseen (tietokannan ID %"
+"1$s)"
 
 #. # %1$s = Bib Record Database ID, %2$s = Number of selected items
 #: staff.cat.manage_multi_bib_items.prompt.confirm.unlink_item_from_bib.plural
@@ -319,8 +321,7 @@ msgstr "Rajoita valintaa"
 msgid ""
 "Please mark a library as the destination from within holdings maintenance "
 "and then try this again."
-msgstr ""
-"Merkitse kirjasto kohteeksi kokoelmien hallinnasta ja yritä uudelleen."
+msgstr "Merkitse kirjasto kohteeksi kokoelmien hallinnasta ja yritä uudelleen."
 
 #: staff.cat.copy_browser.transfer.prompt
 msgid "Transfer volumes %1$s to library %2$s on the following record?"
@@ -519,8 +520,8 @@ msgid ""
 "Transfer the items in bucket \"%1$s\" from their original volumes to the "
 "volume labelled \"%2$s\" for the library \"%3$s\" on the following record?"
 msgstr ""
-"Siirretäänkö siilon \"%1$s\" niteet alkuperäisestä signumista kirjaston "
-"\"%3$s\" signumiin \"%2$s\" seuraavalla tietueella?"
+"Siirretäänkö siilon \"%1$s\" niteet alkuperäisestä signumista kirjaston \"%3$s\" "
+"signumiin \"%2$s\" seuraavalla tietueella?"
 
 #: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.error
 msgid "Items not likely transferred."
@@ -560,8 +561,7 @@ msgstr "Siilon luominen epäonnistui."
 
 #: staff.cat.copy_buckets_quick.addition.error
 msgid "Addition likely failed for bucket = %1$s and copy ID = %2$s."
-msgstr ""
-"Lisäys siiloon = %1$s nidetunnuksella = %1$s luultavasti epäonnistui."
+msgstr "Lisäys siiloon = %1$s nidetunnuksella = %1$s luultavasti epäonnistui."
 
 #: staff.cat.copy_editor.caption
 msgid "Copy Editor"
@@ -656,8 +656,7 @@ msgstr "Napsauta tästä"
 
 #: staff.cat.copy_editor.import_templates.save.prompt
 msgid "Save all of these imported templates permanently to this account?"
-msgstr ""
-"Talletetaanko kaikki tuodut luettelointipohjat pysyvästi tälle tilille?"
+msgstr "Talletetaanko kaikki tuodut luettelointipohjat pysyvästi tälle tilille?"
 
 #: staff.cat.copy_editor.import_templates.save.title
 msgid "Final warning"
@@ -702,8 +701,7 @@ msgid "Error importing templates"
 msgstr "Virhe luettelopohjien tuonnissa"
 
 #: staff.cat.copy_editor.apply_unsafe_field
-msgid ""
-"Template tried to change field '%1$s', which is not allowed currently."
+msgid "Template tried to change field '%1$s', which is not allowed currently."
 msgstr ""
 "Luettelointipohja yritti muuttaa kenttää '%1$s', mikä ei tällä hetkellä ole "
 "sallittua."
@@ -769,6 +767,10 @@ msgstr "<Poista suojaus>"
 #: staff.cat.copy_editor.remove_circulate_as_type
 msgid "<Remove Circulate as Type>"
 msgstr "<Poista lainaa tyyppinä>"
+
+#: staff.cat.copy_editor.remove_floating
+msgid "<Remove Floating>"
+msgstr "<Poista kellunta>"
 
 #: staff.cat.copy_editor.field.unset_or_null
 msgctxt "staff.cat.copy_editor.field.unset_or_null"
@@ -846,16 +848,6 @@ msgstr "Ei"
 #: staff.cat.copy_editor.field.floating.label
 msgid "Floating?"
 msgstr "Kelluva?"
-
-#: staff.cat.copy_editor.field.floating.yes_or_true
-msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
-msgid "Yes"
-msgstr "Kyllä"
-
-#: staff.cat.copy_editor.field.floating.no_or_false
-msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
-msgid "No"
-msgstr "Ei"
 
 #: staff.cat.copy_editor.field.age_based_hold_protection.label
 msgid "Age-based Hold Protection"
@@ -1281,8 +1273,7 @@ msgid "Holds not transferred."
 msgstr "Varauksia ei siirretty."
 
 #: staff.cat.opac.title_for_hold_transfer.many_bibs.warning
-msgid ""
-"WARNING: Move selected holds from multiple bibs to single targeted bib?"
+msgid "WARNING: Move selected holds from multiple bibs to single targeted bib?"
 msgstr ""
 "VAROITUS: Siirretäänkö valitut varaukset useista bibliografisista tietueista "
 "yhteen kohteeksi valittuun bibliografiseen tietueeseen?"
@@ -1648,8 +1639,7 @@ msgstr "Näytä"
 #: staff.cat.util.mark_item_damaged.af_message
 msgid ""
 "Action failed.  One or more of these items is in a special status such as "
-"\"Checked Out\" or \"In Transit\" and cannot be changed to the Damaged "
-"status."
+"\"Checked Out\" or \"In Transit\" and cannot be changed to the Damaged status."
 msgstr ""
 "Toiminto epäonnistui. Yksi tai useampi nide on erityistilassa, kuten "
 "\"lainassa\" tai \"kuljetettavana\", eikä sitä voi merkitä vahingoittuneeksi."
@@ -1671,8 +1661,7 @@ msgstr "Vahvista viesti valitsemalla tämä"
 
 #: staff.cat.util.mark_item_damaged.md_message
 msgid "Change the status for these items to Damaged?  Barcodes: %1$s"
-msgstr ""
-"Muutetaanko näiden niteiden tila vahingoittuneeksi? Nidetunnukset: %1$s"
+msgstr "Muutetaanko näiden niteiden tila vahingoittuneeksi? Nidetunnukset: %1$s"
 
 #: staff.cat.util.mark_item_damaged.md_title
 msgid "Mark Damaged"
@@ -1762,8 +1751,7 @@ msgstr "%1$s nidettä merkitty vahingoittuneiksi."
 #: staff.cat.util.mark_item_missing.af_message
 msgid ""
 "Action failed.  One or more of these items is in a special status such as "
-"\"Checked Out\" or \"In Transit\" and cannot be changed to the Missing "
-"status."
+"\"Checked Out\" or \"In Transit\" and cannot be changed to the Missing status."
 msgstr ""
 "Toiminto epäonnistui.  Yksi tai useampi nide on erityistilassa, kuten "
 "\"lainassa\" tai \"kuljetettavana\", eikä sitä voi määrittää kadonneeksi."
@@ -1820,8 +1808,7 @@ msgstr "%1$s nidettä merkitty kadonneiksi."
 
 #: staff.cat.util.mark_item_missing_pieces.ms_message
 msgid "Mark these items as missing pieces?  Barcodes: %1$s"
-msgstr ""
-"Lisätäänkö näille niteille merkintä: osia puuttuu? Nidetunnukset: %1$s"
+msgstr "Lisätäänkö näille niteille merkintä: osia puuttuu? Nidetunnukset: %1$s"
 
 #: staff.cat.util.mark_item_missing_pieces.ms_title
 msgid "Mark Missing Pieces"
@@ -1855,8 +1842,7 @@ msgid "%1$s items marked as missing pieces."
 msgstr "%1$s nidettä merkitty: osia puuttuu."
 
 #: staff.cat.util.mark_item_missing_pieces.circ_not_found
-msgid ""
-"No circulation found for item with barcode %1$s.  Item left unmodified."
+msgid "No circulation found for item with barcode %1$s.  Item left unmodified."
 msgstr ""
 "Lainausta ei löytynyt niteelle, jonka tunnus = %1$s. Nidettä ei muokattu."
 
@@ -2124,13 +2110,19 @@ msgid ""
 "WARNING: This is not a simple keyword search.  Enter raw z39.50 PQN search "
 "string: "
 msgstr ""
-"VAROITUS: Tämä ei ole yksinkertainen avainsanahaku. Syötä raaka z39.50 PQN -"
-"hakulauseke: "
+"VAROITUS: Tämä ei ole yksinkertainen avainsanahaku. Syötä raaka z39.50 PQN "
+"-hakulauseke: "
+
+#: staff.cat.z3950.initial_search.raw_prompt.default_value
+msgctxt "staff.cat.z3950.initial_search.raw_prompt.default_value"
+msgid ""
+msgstr ""
 
 #: staff.cat.z3950.initial_search.raw_search_unsupported_for_native_catalog
 msgid "Raw z39.50 PQN search not yet implemented for native catalog."
 msgstr ""
-"Raakaa z39.50 -hakua ei vielä ole otettu käyttöön alkuperäisessä luettelossa."
+"Raakaa z39.50 -hakua ei vielä ole otettu käyttöön alkuperäisessä "
+"luettelossa."
 
 #: staff.cat.z3950.page_next.more_results
 msgid "Retrieving more results..."
@@ -2350,62 +2342,145 @@ msgstr "Virhe talletettaessa z39.50-valtuutuksia."
 msgid "Title:"
 msgstr "Nimeke:"
 
+#: staff.cat.bib_brief.title.accesskey
+msgctxt "staff.cat.bib_brief.title.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.cat.bib_brief.author.label
 msgid "Author:"
 msgstr "Tekijä:"
+
+#: staff.cat.bib_brief.author.accesskey
+msgctxt "staff.cat.bib_brief.author.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.cat.bib_brief.edition.label
 msgid "Edition:"
 msgstr "Painos:"
 
+#: staff.cat.bib_brief.edition.accesskey
+msgctxt "staff.cat.bib_brief.edition.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.cat.bib_brief.pubdate.label
 msgid "Pub Date:"
 msgstr "Julkaisuaika:"
+
+#: staff.cat.bib_brief.pubdate.accesskey
+msgctxt "staff.cat.bib_brief.pubdate.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.cat.bib_brief.bib_call_number.label
 msgid "Bib Call #:"
 msgstr "Bibliografinen hyllypaikka:"
 
+#: staff.cat.bib_brief.bib_call_number.accesskey
+msgctxt "staff.cat.bib_brief.bib_call_number.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.cat.bib_brief.call_number.label
 msgid "Item Call #:"
 msgstr "Niteen hyllypaikka:"
+
+#: staff.cat.bib_brief.ib_call_number.accesskey
+msgctxt "staff.cat.bib_brief.ib_call_number.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.cat.bib_brief.tcn.label
 msgid "TCN:"
 msgstr "Tietuenro:"
 
+#: staff.cat.bib_brief.tcn.accesskey
+msgctxt "staff.cat.bib_brief.tcn.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.cat.bib_brief.mvr_doc_id.label
 msgid "Bib DB ID:"
 msgstr "Bibliografisen tietokannan tunnus:"
+
+#: staff.cat.bib_brief.mvr_doc_id.accesskey
+msgctxt "staff.cat.bib_brief.mvr_doc_id.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.cat.bib_brief.owner.label
 msgid "Record Owner:"
 msgstr "Tietueen omistaja:"
 
+#: staff.cat.bib_brief.owner.accesskey
+msgctxt "staff.cat.bib_brief.owner.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.cat.bib_brief.creator.label
 msgid "Created By:"
 msgstr "Luonut:"
+
+#: staff.cat.bib_brief.creator.accesskey
+msgctxt "staff.cat.bib_brief.creator.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.cat.bib_brief.create_date.label
 msgid "Created On:"
 msgstr "Luotu:"
 
+#: staff.cat.bib_brief.create_date.accesskey
+msgctxt "staff.cat.bib_brief.create_date.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.cat.bib_brief.editor.label
 msgid "Last Edited By:"
 msgstr "Viimeisin muokkaaja:"
+
+#: staff.cat.bib_brief.editor.accesskey
+msgctxt "staff.cat.bib_brief.editor.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.cat.bib_brief.edit_date.label
 msgid "Last Edited On:"
 msgstr "Muokattu viimeksi:"
 
+#: staff.cat.bib_brief.edit_date.accesskey
+msgctxt "staff.cat.bib_brief.edit_date.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.cat.bib_brief.holds.label
 msgid "Holds:"
 msgstr "Varauksia:"
+
+#: staff.cat.bib_brief.holds.accesskey
+msgctxt "staff.cat.bib_brief.holds.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.cat.bib_brief.items.label
 msgid "Items:"
 msgstr "Niteitä:"
 
+#: staff.cat.bib_brief.items.accesskey
+msgctxt "staff.cat.bib_brief.items.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.cat.bib_brief.items.available.tooltip
 msgid "%1$s available"
 msgstr "%1$s saatavilla"
+
+#~ msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
+#~ msgid "Yes"
+#~ msgstr "Kyllä"
+
+#~ msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
+#~ msgid "No"
+#~ msgstr "Ei"

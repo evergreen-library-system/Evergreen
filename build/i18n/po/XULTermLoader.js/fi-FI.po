@@ -1,17 +1,17 @@
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2013-02-21 11:20-0400\n"
+"POT-Creation-Date: 2013-10-01 20:32:49-0400\n"
 "PO-Revision-Date: 2012-12-20 15:19+0000\n"
 "Last-Translator: Finnish <evergreen@jns.fi>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-02-23 05:30+0000\n"
 "X-Generator: Launchpad (build 16506)\n"
+"X-Launchpad-Export-Date: 2013-02-23 05:30+0000\n"
 
 #: XULTermLoader.js:LABEL_TEXT
 msgid " term(s) loaded"

@@ -1,20 +1,22 @@
 # extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/common.properties
+#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/common.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-20 09:37-0400\n"
+"POT-Creation-Date: 2013-10-01 20:32+0300\n"
 "PO-Revision-Date: 2013-03-19 19:59+0000\n"
 "Last-Translator: Finnish <evergreen@jns.fi>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
+"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-20 04:44+0000\n"
-"X-Generator: Launchpad (build 16532)\n"
-"X-Project-Style: mozilla\n"
+"X-Generator: Translate Toolkit 1.10.0\n"
 "X-Accelerator-Marker: &\n"
-"Language: fi\n"
+"X-Merge-On: location\n"
+"X-Launchpad-Export-Date: 2013-03-20 04:44+0000\n"
+"X-Project-Style: mozilla\n"
 
 #: common.exception
 msgid ""
@@ -148,6 +150,10 @@ msgstr "Virhe fonttikoon muuttamisessa: %1$s"
 msgid "[ %1$s %2$s @ %3$s ]"
 msgstr "[ %1$s %2$s @ %3$s ]"
 
+#: staff.checkout_column_label_service
+msgid "Service"
+msgstr ""
+
 #: staff.acp_label_barcode
 msgctxt "staff.acp_label_barcode"
 msgid "Barcode"
@@ -268,6 +274,10 @@ msgstr "Tekstiviestien palveluntarjoaja"
 msgid "Pickup Library"
 msgstr "Noutokirjasto"
 
+#: staff.ahr_current_shelf_lib_label
+msgid "Current Shelf Library"
+msgstr "hyllytyskirjasto"
+
 #: staff.ahr_prev_check_time_label
 msgid "Previous Check Time"
 msgstr "Edellinen tarkistusaika"
@@ -373,15 +383,30 @@ msgctxt "staff.csp_block_circ_yes"
 msgid "Yes"
 msgstr "Kyllä"
 
+#: staff.csp_block_circ_no
+msgctxt "staff.csp_block_circ_no"
+msgid ""
+msgstr ""
+
 #: staff.csp_block_renew_yes
 msgctxt "staff.csp_block_renew_yes"
 msgid "Yes"
 msgstr "Kyllä"
 
+#: staff.csp_block_renew_no
+msgctxt "staff.csp_block_renew_no"
+msgid ""
+msgstr ""
+
 #: staff.csp_block_hold_yes
 msgctxt "staff.csp_block_hold_yes"
 msgid "Yes"
 msgstr "Kyllä"
+
+#: staff.csp_block_hold_no
+msgctxt "staff.csp_block_hold_no"
+msgid ""
+msgstr ""
 
 #: staff.ausp_id_label
 msgid "Penalty ID "
@@ -409,7 +434,7 @@ msgstr "Kirjasto (koko nimi)"
 
 #: staff.mbts_id_label
 msgid "Bill # "
-msgstr "Maksun # "
+msgstr "Lasku # "
 
 #: staff.mbts_xact_start_label
 msgid "Start"
@@ -426,7 +451,7 @@ msgstr "Tyyppi"
 
 #: staff.mbts_total_owed_label
 msgid "Total Billed"
-msgstr "Maksuja yhteensä"
+msgstr "Laskutettu yhteensä"
 
 #: staff.mbts_total_paid_label
 msgid "Total Paid"
@@ -443,15 +468,15 @@ msgstr "Käyttäjä"
 
 #: staff.mbts_last_billing_note_label
 msgid "Last Billing Note"
-msgstr "Viimeisin maksuilmoitus"
+msgstr "Viimeisin laskutusilmoitus"
 
 #: staff.mbts_last_billing_type_label
 msgid "Last Billing Type"
-msgstr "Viimeisin maksutyyppi"
+msgstr "Viimeisin laskutustyyppi"
 
 #: staff.mbts_last_billing_timestamp_label
 msgid "Last Billed"
-msgstr "Maksuja viimeksi"
+msgstr "Laskutettu viimeksi"
 
 #: staff.mbts_last_payment_note_label
 msgid "Last Payment Note"
@@ -467,7 +492,7 @@ msgstr "Viimeisin maksu"
 
 #: staff.mb_billing_type_label
 msgid "Billing Type"
-msgstr "Maksutyyppi"
+msgstr "Laskutustyyppi"
 
 #: staff.mb_xact_label
 msgctxt "staff.mb_xact_label"
@@ -504,7 +529,7 @@ msgstr "Mitätöity"
 
 #: staff.mb_id_label
 msgid "Billing ID"
-msgstr "Maksutunnus"
+msgstr "Laskutustunnus"
 
 #: staff.mp_credit_card_payment_label
 msgid "Credit Card Payment"
