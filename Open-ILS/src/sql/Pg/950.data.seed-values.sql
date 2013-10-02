@@ -7539,7 +7539,7 @@ INSERT INTO config.metabib_field_index_norm_map (field,norm)
       FROM  config.metabib_field m,
         config.index_normalizer i
       WHERE i.func IN ('search_normalize','split_date_range')
-            AND m.id NOT IN (18, 19);
+            AND m.id NOT IN (18, 19, 25);
 
 INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
     SELECT  m.id,
