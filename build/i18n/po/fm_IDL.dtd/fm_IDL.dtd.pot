@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2013-07-17 14:55:50-0400\n"
+"POT-Creation-Date: 2013-10-03 11:07:25-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -678,8 +678,8 @@ msgstr ""
 msgid "Event ID"
 msgstr ""
 
-#: class.cubin.label:5855
-msgid "User Bucket Item Note"
+#: field.mcrp.xact.label:5655 field.mb.xact.label:6650
+msgid "Transaction"
 msgstr ""
 
 #: field.acqafsb.amount.label:7471
@@ -2693,8 +2693,11 @@ msgstr ""
 msgid "Hold/Copy Ratio per Bib"
 msgstr ""
 
-#: field.artc.reservation.label:6575
-msgid "Reservation requiring Transit"
+#: field.vii.alert_message.label:291 field.viiad.alert_message.label:342
+#: field.au.alert_message.label:2895 field.aal.alert_message.label:3490
+#: field.sunit.alert_message.label:4602 field.acp.alert_message.label:6020
+#: field.act.alert_message.label:6124
+msgid "Alert Message"
 msgstr ""
 
 #: field.sre.creator.label:4308 field.ssubn.creator.label:4410
@@ -3510,9 +3513,8 @@ msgstr ""
 msgid "Is Persistent?"
 msgstr ""
 
-#: field.acqii.fund_debit.label:7001 field.acqpoi.fund_debit.label:7803
-#: field.acqlid.fund_debit.label:8005 field.acqda.fund_debit.label:8592
-msgid "Fund Debit"
+#: class.cwa.label:1522
+msgid "Matrix Weight Association"
 msgstr ""
 
 #: field.au.net_access_level.label:2919
@@ -4115,8 +4117,8 @@ msgstr ""
 msgid "Department"
 msgstr ""
 
-#: field.mcrp.xact.label:5655 field.mb.xact.label:6650
-msgid "Transaction"
+#: class.cubin.label:5855
+msgid "User Bucket Item Note"
 msgstr ""
 
 #: field.acqliat.id.label:7941
@@ -4425,11 +4427,8 @@ msgstr ""
 msgid "User Activity Type"
 msgstr ""
 
-#: field.vii.alert_message.label:291 field.viiad.alert_message.label:342
-#: field.au.alert_message.label:2895 field.aal.alert_message.label:3490
-#: field.sunit.alert_message.label:4602 field.acp.alert_message.label:6020
-#: field.act.alert_message.label:6124
-msgid "Alert Message"
+#: field.artc.reservation.label:6575
+msgid "Reservation requiring Transit"
 msgstr ""
 
 #: field.sitem.date_received.label:4681
@@ -5617,8 +5616,9 @@ msgstr ""
 msgid "Family Linkage or other Group"
 msgstr ""
 
-#: class.cwa.label:1522
-msgid "Matrix Weight Association"
+#: field.acqii.fund_debit.label:7001 field.acqpoi.fund_debit.label:7803
+#: field.acqlid.fund_debit.label:8005 field.acqda.fund_debit.label:8592
+msgid "Fund Debit"
 msgstr ""
 
 #: field.cmf.browse_field.label:2378
