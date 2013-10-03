@@ -526,7 +526,11 @@ sub next_chron {
                 }
             }
         }
-    } elsif ($carry) {
+    } elsif ($carry and exists $next->{a}) {
+        # If we have only chron fields ('i' through 'm'), don't vivicate an 'a'.
+        # It would be more standard for the chron fields to have been moved to
+        # the enum fields, but imperfect patterns exist, and that's an odd
+        # rule anyway.
         $next->{a} += $carry;
     }
 }

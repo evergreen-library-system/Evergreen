@@ -35,10 +35,12 @@ sub new {
     # TODO: full support for second indicators 2, 3, and 4
     $self->{_mfhdh_OPEN_ENDED}     = 0;
 
+    my $first_enum_or_chron_code = '';
     foreach my $subfield ($self->subfields) {
         my ($key, $val) = @$subfield;
 
         if ($key =~ /[a-m]/) {
+            $first_enum_or_chron_code = $key unless $first_enum_or_chron_code;
             if (exists($self->{_mfhdh_FIELDS}->{$key})) {
                 carp("Duplicate, non-repeatable subfield '$key' found, ignoring");
                 next;
@@ -82,7 +84,7 @@ sub new {
     }
 
     if (   $self->{_mfhdh_COMPRESSED}
-        && $self->{_mfhdh_FIELDS}{'a'}{HOLDINGS}[1] eq '') {
+        && $self->{_mfhdh_FIELDS}{$first_enum_or_chron_code}{HOLDINGS}[1] eq '') {
         $self->{_mfhdh_OPEN_ENDED} = 1;
     }
     bless($self, $class);
