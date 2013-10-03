@@ -110,6 +110,8 @@ include::admin_initial_setup/describing_your_organization.txt[]
 
 include::admin_initial_setup/describing_your_people.txt[]
 
+include::admin_initial_setup/migrating_patron_data.txt[]
+
 include::admin_initial_setup/migrating_your_data.txt[]
 
 include::admin_initial_setup/importing_via_staff_client.txt[]
