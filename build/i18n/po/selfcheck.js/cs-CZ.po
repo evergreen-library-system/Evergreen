@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-02-21 11:20-0400\n"
+"POT-Creation-Date: 2013-09-26 18:17-0400\n"
 "PO-Revision-Date: 2012-04-30 14:07+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-02-23 05:30+0000\n"
-"X-Generator: Launchpad (build 16506)\n"
+"X-Launchpad-Export-Date: 2013-09-28 05:30+0000\n"
+"X-Generator: Launchpad (build 16774)\n"
 
 #: selfcheck.js:FAIL_PART_config_hold_matrix_test_max_holds
 msgid "The patron has reached the maximum number of holds"
@@ -29,26 +29,22 @@ msgstr "Exemplář z daného umístění nelze rezervovat"
 msgid "Checkout of item ${0} succeeded"
 msgstr "Výpůjčka exempláře ${0} proběhla úspěšně"
 
+#: selfcheck.js:WELCOME_BANNER
+msgid "Welcome, ${0}"
+msgstr "Vítejte, ${0}"
+
 #: selfcheck.js:FAIL_PART_no_ultimate_items
 msgid "The system could not find any items to match this hold request"
 msgstr ""
 "Systém nenalezl exempláře, které by odpovídaly pořadavku na rezervaci."
 
-#: selfcheck.js:TOTAL_ITEMS_ACCOUNT
-msgid "Total items on account:  <b>${0}</b>."
-msgstr "Na účtu je celkem <b>${0}</b> exemplářů."
-
-#: selfcheck.js:WELCOME_BANNER
-msgid "Welcome, ${0}"
-msgstr "Vítejte, ${0}"
+#: selfcheck.js:TOTAL_HOLDS
+msgid "You have ${0} total holds."
+msgstr ""
 
 #: selfcheck.js:FAIL_PART_config_hold_matrix_test_holdable
 msgid "Hold rules reject this item as unholdable"
 msgstr "Rezervační pravidla zamítla tento exemplář jako nerezervovatelný"
-
-#: selfcheck.js:TOTAL_FINES_ACCOUNT
-msgid "Total fines on account: <b>$${0}</b>."
-msgstr "Pokuta na tomto účtu celkem: <b>$${0}</b>."
 
 #: selfcheck.js:FAIL_PART_asset_copy_status
 msgid "The item cannot circulate at this time"
@@ -87,9 +83,9 @@ msgstr "Exemplář  ${0} je již vypůjčen"
 msgid "The available item-to-hold ratio is too low"
 msgstr "Procento  dostupných exempářů k rezervaci je příliž nízké"
 
-#: selfcheck.js:HOLD_STATUS_READY
-msgid "Ready for pickup"
-msgstr "Připraveno pro vyzvednutí"
+#: selfcheck.js:TOTAL_ITEMS_ACCOUNT
+msgid "Total items on account:  ${0}."
+msgstr ""
 
 #: selfcheck.js:FAIL_PART_circ_holds_target_skip_me
 msgid "The item's circulation library does not fulfill holds"
@@ -107,9 +103,13 @@ msgstr "Prodloužení exempláře ${0} proběhlo úspěšně"
 msgid "The patron has too many items of this type checked out"
 msgstr "Čtenář má vypůjčeno příliš mnoho exemplářů tohoto typu"
 
-#: selfcheck.js:TOTAL_HOLDS
-msgid "You have <b>${0}</b> total holds."
-msgstr "Máte celkem  <b>${0}</b> rezevací"
+#: selfcheck.js:TOTAL_FINES_ACCOUNT
+msgid "Total fines on account: $${0}."
+msgstr ""
+
+#: selfcheck.js:MISCELLANEOUS
+msgid "Miscellaneous"
+msgstr ""
 
 #: selfcheck.js:ITEM_NOT_CATALOGED
 msgid "Item ${0} was not found in the system.  Try re-scanning the item."
@@ -133,6 +133,10 @@ msgstr ""
 msgid "The item is not in a holdable status"
 msgstr "Exemplář s daným statusem nelze rezervovat"
 
+#: selfcheck.js:ENTER_PASSWORD
+msgid "Please enter your password"
+msgstr ""
+
 #: selfcheck.js:CC_PAYABLE_BALANCE
 msgid "Total amount to pay: $${0}"
 msgstr "Zbývá zaplatit celkem:  $${0}"
@@ -141,9 +145,17 @@ msgstr "Zbývá zaplatit celkem:  $${0}"
 msgid "The system could not find this item"
 msgstr "Systém nemohl najít tento exemplář"
 
+#: selfcheck.js:PLEASE_LOGIN
+msgid "Please log in with your username or library barcode."
+msgstr ""
+
 #: selfcheck.js:FAIL_PART_no_matchpoint
 msgid "System rules do not define how to handle this item"
 msgstr "Nejsou nastavena pravidla pro manipulaci s tímto exemplářem"
+
+#: selfcheck.js:ENTER_BARCODE
+msgid "Please enter an item barcode"
+msgstr ""
 
 #: selfcheck.js:FAIL_PART_asset_copy_circulate
 msgid "The item does not circulate"
@@ -152,6 +164,10 @@ msgstr "Tento exemplář nelze půjčovat"
 #: selfcheck.js:LOGIN_FAILED
 msgid "Login for ${0} failed"
 msgstr "přihlášení jako ${0} se nezdařilo"
+
+#: selfcheck.js:HOLD_STATUS_READY
+msgid "Ready for pickup"
+msgstr "Připraveno pro vyzvednutí"
 
 #: selfcheck.js:GENERIC_CIRC_FAILURE
 msgid "Unable to check out item ${0}.  Please see staff."
@@ -162,9 +178,9 @@ msgid "No more renewals allowed for item ${0}"
 msgstr ""
 "U exempláře  ${0} bylo dosaženo maximálního povoleného počtu prodloužení"
 
-#: selfcheck.js:HOLDS_READY_FOR_PICKUP
-msgid "You have <b>${0}</b> item(s) ready for pickup."
-msgstr "Máte <b>${0}</b> položek připravených k vyzvednutí"
+#: selfcheck.js:FAIL_PART_asset_copy_location_circulate
+msgid "Items from this shelving location do not circulate"
+msgstr "Exempláře z tohoto umístění  nejsou určeny k absenční výpůjčce."
 
 #: selfcheck.js:FAIL_PART_item.holdable
 msgid "The item is not holdable"
@@ -190,13 +206,9 @@ msgstr ""
 msgid "An unhandled exception occurred with error code ${0}"
 msgstr "Došlo k nepřekonatelné výjimce. Kód chyby ${0}"
 
-#: selfcheck.js:FAIL_PART_asset_copy_location_circulate
-msgid "Items from this shelving location do not circulate"
-msgstr "Exempláře z tohoto umístění  nejsou určeny k absenční výpůjčce."
-
 #: selfcheck.js:TOTAL_ITEMS_SESSION
-msgid "Total items this session: <b>${0}</b>."
-msgstr "Celkem položek v této relaci: <b>${0}</b>."
+msgid "Total items this session: ${0}."
+msgstr ""
 
 #: selfcheck.js:FAIL_PART_config_rule_age_hold_protect_prox
 msgid "The item is too new to transit this far"
@@ -205,3 +217,22 @@ msgstr "Exemplář je příliš nový, aby ho bylo možné přesunout jinam"
 #: selfcheck.js:TOTAL_FINES_SELECTED
 msgid "Selected total: $${0}"
 msgstr "Celkem vybráno $${0}"
+
+#: selfcheck.js:HOLDS_READY_FOR_PICKUP
+msgid "You have ${0} item(s) ready for pickup."
+msgstr ""
+
+#~ msgid "Total fines on account: <b>$${0}</b>."
+#~ msgstr "Pokuta na tomto účtu celkem: <b>$${0}</b>."
+
+#~ msgid "Total items on account:  <b>${0}</b>."
+#~ msgstr "Na účtu je celkem <b>${0}</b> exemplářů."
+
+#~ msgid "You have <b>${0}</b> total holds."
+#~ msgstr "Máte celkem  <b>${0}</b> rezevací"
+
+#~ msgid "Total items this session: <b>${0}</b>."
+#~ msgstr "Celkem položek v této relaci: <b>${0}</b>."
+
+#~ msgid "You have <b>${0}</b> item(s) ready for pickup."
+#~ msgstr "Máte <b>${0}</b> položek připravených k vyzvednutí"

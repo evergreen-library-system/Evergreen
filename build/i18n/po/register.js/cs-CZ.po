@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-02-21 11:20-0400\n"
+"POT-Creation-Date: 2013-09-26 18:17-0400\n"
 "PO-Revision-Date: 2012-08-24 22:31+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-02-23 05:29+0000\n"
-"X-Generator: Launchpad (build 16506)\n"
+"X-Launchpad-Export-Date: 2013-09-28 05:30+0000\n"
+"X-Generator: Launchpad (build 16774)\n"
 
 #: register.js:USER_SETTINGS
 msgid "User Settings"
@@ -41,11 +41,9 @@ msgstr "Tuto adresu má  jiný uživatel: "
 msgid "New Address"
 msgstr "Nová adresa"
 
-#: register.js:REPLACED_ADDRESS
-msgid ""
-"<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
-msgstr ""
-"<div>Nahrazuje adresu <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
+#: register.js:SAVE
+msgid "Save"
+msgstr "Uložit"
 
 #: register.js:SHOW_REQUIRED
 msgid "Show Only Required Fields"
@@ -54,10 +52,6 @@ msgstr "Zobrazit pouze povinná pole"
 #: register.js:DUPE_PATRON_ADDR
 msgid "Found ${0} patron(s) with the same address"
 msgstr "Nalezen(o) ${0} čtenář(ů) se stejnou adresou"
-
-#: register.js:SAVE
-msgid "Save"
-msgstr "Uložit"
 
 #: register.js:DUPE_PATRON_IDENT
 msgid "Found ${0} patron(s) with the same identification"
@@ -79,9 +73,9 @@ msgstr "Během registrace je požadována adresa."
 msgid "Primary"
 msgstr "Primární"
 
-#: register.js:BARCODE_IN_USE
-msgid "Barcode is already in use"
-msgstr "Čárový kód již existuje"
+#: register.js:PARENT_OR_GUARDIAN
+msgid "Parent/Guardian"
+msgstr "Rodič / zákonný zástupce"
 
 #: register.js:ADDRESS_HEADER
 msgid "Address"
@@ -99,9 +93,13 @@ msgstr "Nalezen(o) ${0} čtenář(ů) se stejným telefonním číslem"
 msgid "Form is invalid.  Please edit and try again."
 msgstr "Formulář není správně vyplněn. Prosím, upravte ho a zkuste to znovu."
 
-#: register.js:PARENT_OR_GUARDIAN
-msgid "Parent/Guardian"
-msgstr "Rodič / zákonný zástupce"
+#: register.js:BARCODE_IN_USE
+msgid "Barcode is already in use"
+msgstr "Čárový kód již existuje"
+
+#: register.js:RESET_PASSWORD
+msgid "Generate Password"
+msgstr ""
 
 #: register.js:EXAMPLE
 msgid "Example: "
@@ -130,6 +128,10 @@ msgstr "Nalezen(o) ${0} uživatel(ů) se stejným jménem"
 #: register.js:DEFAULT_ADDRESS_TYPE
 msgid "MAILING"
 msgstr "Kontaktní adresa"
+
+#: register.js:REQUESTING_USER
+msgid "Account requested by ${0} ${1}"
+msgstr ""
 
 #: register.js:HOLD_NOTIFY_SMS
 msgid "SMS: "
@@ -163,10 +165,6 @@ msgstr "Statistické kategorie"
 msgid "Barcode"
 msgstr "Čárový kód"
 
-#: register.js:RESET_PASSWORD
-msgid "Reset Password"
-msgstr "Vygenerovat nové heslo"
-
 #: register.js:HOLD_NOTIFY_EMAIL
 msgid "Email: "
 msgstr "E-mail: "
@@ -182,3 +180,12 @@ msgstr "Zavřít"
 #: register.js:DELETE_ADDRESS
 msgid "Delete address ${0}?"
 msgstr "Smazat adresu ${0}?"
+
+#: register.js:REPLACED_ADDRESS
+msgid "Replaces address ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
+msgstr ""
+
+#~ msgid ""
+#~ "<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
+#~ msgstr ""
+#~ "<div>Nahrazuje adresu <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"

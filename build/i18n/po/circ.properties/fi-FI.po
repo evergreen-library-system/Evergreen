@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-15 19:41+0000\n"
+"POT-Creation-Date: 2013-09-26 18:17-0400\n"
 "PO-Revision-Date: 2013-03-19 19:56+0000\n"
-"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-20 04:44+0000\n"
-"X-Generator: Launchpad (build 16532)\n"
+"X-Launchpad-Export-Date: 2013-09-28 05:21+0000\n"
+"X-Generator: Launchpad (build 16774)\n"
 "X-Project-Style: mozilla\n"
 "X-Accelerator-Marker: &\n"
 "Language: fi\n"
@@ -521,8 +521,8 @@ msgid "Add Item for record # %1$s"
 msgstr "Lisää nide tietueeseen # %1$s"
 
 #: staff.circ.copy_status.del_items.confirm
-msgid "Are you sure sure you want to delete these items? %1$s"
-msgstr "Haluatko varmasti tuhota nämä niteet? %1$s"
+msgid "Are you sure you want to delete these items? %1$s"
+msgstr ""
 
 #: staff.circ.copy_status.del_items.title
 msgctxt "staff.circ.copy_status.del_items.title"
@@ -1296,6 +1296,10 @@ msgstr "Kuljetus perillä"
 msgid "Transit Copy ID"
 msgstr "Kuljetettavan niteen tunnus"
 
+#: staff.circ.utils.transit_copy_status
+msgid "Transit Copy Status"
+msgstr ""
+
 #: staff.circ.utils.request_lib
 msgid "Request Library (Full Name)"
 msgstr "Pyyntökirjasto (koko nimi)"
@@ -1323,6 +1327,10 @@ msgstr "Kiinnityspäivä"
 #: staff.circ.utils.hold_cancel_time
 msgid "Cancel Time"
 msgstr "Peruutusaika"
+
+#: staff.circ.utils.hold.behind_desk
+msgid "Behind Desk"
+msgstr ""
 
 #. # Controlled entry for why the hold was cancelled
 #: staff.circ.utils.hold_cancel_cause
@@ -1363,8 +1371,9 @@ msgid "Suspended"
 msgstr "Ennakossa"
 
 #: staff.circ.utils.hold_status.8
+msgctxt "staff.circ.utils.hold_status.8"
 msgid "Wrong Shelf"
-msgstr "Väärä hylly"
+msgstr ""
 
 #: staff.circ.utils.hold_post_clear_shelf_action.label
 msgid "Post-Clear"
@@ -1381,6 +1390,11 @@ msgstr "Kuljetustarve"
 #: staff.circ.utils.hold_post_clear_shelf_action.shelf
 msgid "Reshelve"
 msgstr "Hyllytä uudelleen"
+
+#: staff.circ.utils.hold_post_clear_shelf_action.pl_changed
+msgctxt "staff.circ.utils.hold_post_clear_shelf_action.pl_changed"
+msgid "Wrong Shelf"
+msgstr ""
 
 #: staff.circ.utils.frozen
 msgid "Frozen?"
@@ -1402,6 +1416,10 @@ msgstr "Ei päiväystä"
 #: staff.circ.utils.pickup_lib
 msgid "Pickup Library (Full Name)"
 msgstr "Noutokirjasto (koko nimi)"
+
+#: staff.circ.utils.current_shelf_lib
+msgid "Current Shelf Library (Full Name)"
+msgstr ""
 
 #: staff.circ.utils.current_copy.none
 msgid "No Copy"
@@ -2050,3 +2068,6 @@ msgstr "Ei nidettä tunnuksella \"%1$s\""
 #~ msgstr ""
 #~ "Virheellinen luku tai ei-luetteloitu nide. Lainataanko ennakkoon "
 #~ "luetteloituna niteenä?"
+
+#~ msgid "Are you sure sure you want to delete these items? %1$s"
+#~ msgstr "Haluatko varmasti tuhota nämä niteet? %1$s"

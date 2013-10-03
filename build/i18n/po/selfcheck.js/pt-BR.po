@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-02-21 11:20-0400\n"
+"POT-Creation-Date: 2013-09-26 18:17-0400\n"
 "PO-Revision-Date: 2012-06-20 01:05+0000\n"
 "Last-Translator: Job Diógenes Ribeiro Borges <jobdrb@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-02-23 05:30+0000\n"
-"X-Generator: Launchpad (build 16506)\n"
+"X-Launchpad-Export-Date: 2013-09-28 05:30+0000\n"
+"X-Generator: Launchpad (build 16774)\n"
 
 #: selfcheck.js:FAIL_PART_config_hold_matrix_test_max_holds
 msgid "The patron has reached the maximum number of holds"
@@ -29,27 +29,23 @@ msgstr "A localização de um item não é reservável"
 msgid "Checkout of item ${0} succeeded"
 msgstr "Empréstimo do item ${0} realizado com sucesso"
 
+#: selfcheck.js:WELCOME_BANNER
+msgid "Welcome, ${0}"
+msgstr "Bem-vindo, ${0}"
+
 #: selfcheck.js:FAIL_PART_no_ultimate_items
 msgid "The system could not find any items to match this hold request"
 msgstr ""
 "O sistema não encontrou nenhum item que corresponda à esta solicitação de "
 "reserva"
 
-#: selfcheck.js:TOTAL_ITEMS_ACCOUNT
-msgid "Total items on account:  <b>${0}</b>."
-msgstr "Total de itens na conta:  <b>${0}</b>."
-
-#: selfcheck.js:WELCOME_BANNER
-msgid "Welcome, ${0}"
-msgstr "Bem-vindo, ${0}"
+#: selfcheck.js:TOTAL_HOLDS
+msgid "You have ${0} total holds."
+msgstr ""
 
 #: selfcheck.js:FAIL_PART_config_hold_matrix_test_holdable
 msgid "Hold rules reject this item as unholdable"
 msgstr "Regras de reserva rejeitaram este item como não reservável"
-
-#: selfcheck.js:TOTAL_FINES_ACCOUNT
-msgid "Total fines on account: <b>$${0}</b>."
-msgstr "Total de multas na conta: <b>$${0}</b>."
 
 #: selfcheck.js:FAIL_PART_asset_copy_status
 msgid "The item cannot circulate at this time"
@@ -88,9 +84,9 @@ msgstr "Item ${0} já está emprestado"
 msgid "The available item-to-hold ratio is too low"
 msgstr "O nível de itens disponíveis para reserva está muito baixo"
 
-#: selfcheck.js:HOLD_STATUS_READY
-msgid "Ready for pickup"
-msgstr "Pronto para Coletar"
+#: selfcheck.js:TOTAL_ITEMS_ACCOUNT
+msgid "Total items on account:  ${0}."
+msgstr ""
 
 #: selfcheck.js:FAIL_PART_circ_holds_target_skip_me
 msgid "The item's circulation library does not fulfill holds"
@@ -108,9 +104,13 @@ msgstr "Renovação do item ${0} realizada com sucesso"
 msgid "The patron has too many items of this type checked out"
 msgstr "O usuário esta com itens demais deste tipo emprestados"
 
-#: selfcheck.js:TOTAL_HOLDS
-msgid "You have <b>${0}</b> total holds."
-msgstr "Você possui um total de <b>${0}</b> empréstimos."
+#: selfcheck.js:TOTAL_FINES_ACCOUNT
+msgid "Total fines on account: $${0}."
+msgstr ""
+
+#: selfcheck.js:MISCELLANEOUS
+msgid "Miscellaneous"
+msgstr ""
 
 #: selfcheck.js:ITEM_NOT_CATALOGED
 msgid "Item ${0} was not found in the system.  Try re-scanning the item."
@@ -134,6 +134,10 @@ msgstr ""
 msgid "The item is not in a holdable status"
 msgstr "A situação do  item não permite reservar"
 
+#: selfcheck.js:ENTER_PASSWORD
+msgid "Please enter your password"
+msgstr ""
+
 #: selfcheck.js:CC_PAYABLE_BALANCE
 msgid "Total amount to pay: $${0}"
 msgstr "Valor total a pagar: $${0}"
@@ -142,9 +146,17 @@ msgstr "Valor total a pagar: $${0}"
 msgid "The system could not find this item"
 msgstr "O sistema não pôde encontrar este item"
 
+#: selfcheck.js:PLEASE_LOGIN
+msgid "Please log in with your username or library barcode."
+msgstr ""
+
 #: selfcheck.js:FAIL_PART_no_matchpoint
 msgid "System rules do not define how to handle this item"
 msgstr "As regras do sistema não definem como manipular este item"
+
+#: selfcheck.js:ENTER_BARCODE
+msgid "Please enter an item barcode"
+msgstr ""
 
 #: selfcheck.js:FAIL_PART_asset_copy_circulate
 msgid "The item does not circulate"
@@ -153,6 +165,10 @@ msgstr "O item não circula"
 #: selfcheck.js:LOGIN_FAILED
 msgid "Login for ${0} failed"
 msgstr "Login para ${0} falhou"
+
+#: selfcheck.js:HOLD_STATUS_READY
+msgid "Ready for pickup"
+msgstr "Pronto para Coletar"
 
 #: selfcheck.js:GENERIC_CIRC_FAILURE
 msgid "Unable to check out item ${0}.  Please see staff."
@@ -163,9 +179,9 @@ msgstr ""
 msgid "No more renewals allowed for item ${0}"
 msgstr "Não é permitido realizar mais renovações do item ${0}"
 
-#: selfcheck.js:HOLDS_READY_FOR_PICKUP
-msgid "You have <b>${0}</b> item(s) ready for pickup."
-msgstr "Você tem  <b>${0}</b> itens disponíveis para retirar."
+#: selfcheck.js:FAIL_PART_asset_copy_location_circulate
+msgid "Items from this shelving location do not circulate"
+msgstr "Itens desta localização nas prateleiras não circulam"
 
 #: selfcheck.js:FAIL_PART_item.holdable
 msgid "The item is not holdable"
@@ -191,13 +207,9 @@ msgstr ""
 msgid "An unhandled exception occurred with error code ${0}"
 msgstr "Uma exceção não tratada ocorreu com código de erro ${0}"
 
-#: selfcheck.js:FAIL_PART_asset_copy_location_circulate
-msgid "Items from this shelving location do not circulate"
-msgstr "Itens desta localização nas prateleiras não circulam"
-
 #: selfcheck.js:TOTAL_ITEMS_SESSION
-msgid "Total items this session: <b>${0}</b>."
-msgstr "Total de itens desta sessão: <b>${0}</b>."
+msgid "Total items this session: ${0}."
+msgstr ""
 
 #: selfcheck.js:FAIL_PART_config_rule_age_hold_protect_prox
 msgid "The item is too new to transit this far"
@@ -206,3 +218,22 @@ msgstr "O item é muito novo para transitar nesta distância"
 #: selfcheck.js:TOTAL_FINES_SELECTED
 msgid "Selected total: $${0}"
 msgstr "Total selecionado: $${0}"
+
+#: selfcheck.js:HOLDS_READY_FOR_PICKUP
+msgid "You have ${0} item(s) ready for pickup."
+msgstr ""
+
+#~ msgid "Total fines on account: <b>$${0}</b>."
+#~ msgstr "Total de multas na conta: <b>$${0}</b>."
+
+#~ msgid "Total items on account:  <b>${0}</b>."
+#~ msgstr "Total de itens na conta:  <b>${0}</b>."
+
+#~ msgid "You have <b>${0}</b> total holds."
+#~ msgstr "Você possui um total de <b>${0}</b> empréstimos."
+
+#~ msgid "Total items this session: <b>${0}</b>."
+#~ msgstr "Total de itens desta sessão: <b>${0}</b>."
+
+#~ msgid "You have <b>${0}</b> item(s) ready for pickup."
+#~ msgstr "Você tem  <b>${0}</b> itens disponíveis para retirar."
