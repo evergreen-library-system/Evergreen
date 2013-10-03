@@ -1,0 +1,15 @@
+Opportunitistic Acquisitions In-Process Copy Overlay
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Improves existing acquisitions copy overlay code (which matches and overlays
+using specified IDs) by adding broader matching criteria. By selecting the new
+option, _Auto Overlay In-process Acquisitions Copies_, the system will
+potentially overlay copies which:
+
+* have associated lineitem details (that is, they were created by the 
+acquisitions process),
+* that lineitem detail has the same owning_lib as the incoming copy's
+owning_lib, and
+* the current copy associated with that lineitem detail is _In process_.
+
+

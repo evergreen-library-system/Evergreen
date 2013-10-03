@@ -1,0 +1,5 @@
+Printing PO Names on Purchase Orders
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The _Print Purchase Order_ option now prints the PO Name in addition to the PO
+ID.
