@@ -1,3 +1,623 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 569a76a6a3e3d8f7315797bacb3265f83f54bddf
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Oct 3 11:03:48 2013 -0400
+
+    Bumping OpenILS VERSION to 2.0311
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit fd5140ef0d6ff65693bdd4bdb59a6cf433b652ed
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Oct 3 10:59:35 2013 -0400
+
+    2.3.11 translations import
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	1	build/i18n/po/AutoFieldWidget.js/fi-FI.po
+5	5	build/i18n/po/Searcher.js/es-ES.po
+1	1	build/i18n/po/Searcher.js/fi-FI.po
+1	1	build/i18n/po/TranslatorPopup.js/fi-FI.po
+1	1	build/i18n/po/User.js/fi-FI.po
+4	2	build/i18n/po/XULTermLoader.js/XULTermLoader.js.pot
+1	1	build/i18n/po/XULTermLoader.js/fi-FI.po
+30	10	build/i18n/po/acq.js/acq.js.pot
+1	1	build/i18n/po/admin.properties/fi-FI.po
+1	1	build/i18n/po/auth.properties/fi-FI.po
+1	1	build/i18n/po/authority.js/fi-FI.po
+4	2	build/i18n/po/capture.js/capture.js.pot
+1	1	build/i18n/po/capture.js/fi-FI.po
+17	15	build/i18n/po/cat.properties/cs-CZ.po
+15	13	build/i18n/po/cat.properties/de-DE.po
+15	13	build/i18n/po/cat.properties/en-CA.po
+15	13	build/i18n/po/cat.properties/en-GB.po
+15	13	build/i18n/po/cat.properties/es-ES.po
+16	14	build/i18n/po/cat.properties/fi-FI.po
+15	13	build/i18n/po/cat.properties/fr-CA.po
+15	13	build/i18n/po/cat.properties/hy-AM.po
+15	13	build/i18n/po/cat.properties/oc-FR.po
+15	13	build/i18n/po/cat.properties/pt-BR.po
+15	13	build/i18n/po/cat.properties/ru-RU.po
+7	13	build/i18n/po/cat.properties/tr-TR.po
+2	2	build/i18n/po/circ.properties/circ.properties.pot
+27	6	build/i18n/po/circ.properties/cs-CZ.po
+22	4	build/i18n/po/circ.properties/de-DE.po
+27	6	build/i18n/po/circ.properties/en-CA.po
+27	6	build/i18n/po/circ.properties/en-GB.po
+26	5	build/i18n/po/circ.properties/es-ES.po
+28	7	build/i18n/po/circ.properties/fi-FI.po
+26	5	build/i18n/po/circ.properties/fr-CA.po
+27	6	build/i18n/po/circ.properties/hy-AM.po
+22	4	build/i18n/po/circ.properties/oc-FR.po
+27	6	build/i18n/po/circ.properties/pt-BR.po
+26	5	build/i18n/po/circ.properties/ru-RU.po
+22	4	build/i18n/po/circ.properties/tr-TR.po
+13	5	build/i18n/po/common.properties/cs-CZ.po
+11	3	build/i18n/po/common.properties/de-DE.po
+11	3	build/i18n/po/common.properties/en-CA.po
+11	3	build/i18n/po/common.properties/en-GB.po
+11	3	build/i18n/po/common.properties/es-ES.po
+12	4	build/i18n/po/common.properties/fi-FI.po
+11	3	build/i18n/po/common.properties/fr-CA.po
+11	3	build/i18n/po/common.properties/hy-AM.po
+11	3	build/i18n/po/common.properties/oc-FR.po
+11	3	build/i18n/po/common.properties/pt-BR.po
+11	3	build/i18n/po/common.properties/ru-RU.po
+19	7	build/i18n/po/conify.js/conify.js.pot
+1	1	build/i18n/po/conify.js/fi-FI.po
+9037	3079	build/i18n/po/db.seed/cs-CZ.po
+820	765	build/i18n/po/db.seed/db.seed.pot
+8448	2324	build/i18n/po/db.seed/de-DE.po
+8745	2722	build/i18n/po/db.seed/en-CA.po
+8753	2795	build/i18n/po/db.seed/en-GB.po
+8421	2401	build/i18n/po/db.seed/es-ES.po
+9444	3327	build/i18n/po/db.seed/fi-FI.po
+9760	3802	build/i18n/po/db.seed/fr-CA.po
+9801	3843	build/i18n/po/db.seed/hy-AM.po
+8460	2331	build/i18n/po/db.seed/oc-FR.po
+9309	3270	build/i18n/po/db.seed/pt-BR.po
+9161	3125	build/i18n/po/db.seed/ru-RU.po
+7953	1827	build/i18n/po/db.seed/tr-TR.po
+2667	2468	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+2637	2444	build/i18n/po/fm_IDL.dtd/de-DE.po
+2670	2468	build/i18n/po/fm_IDL.dtd/en-CA.po
+2669	2467	build/i18n/po/fm_IDL.dtd/en-GB.po
+2640	2447	build/i18n/po/fm_IDL.dtd/es-ES.po
+2671	2469	build/i18n/po/fm_IDL.dtd/fi-FI.po
+13	13	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+2639	2446	build/i18n/po/fm_IDL.dtd/fr-CA.po
+2670	2468	build/i18n/po/fm_IDL.dtd/hy-AM.po
+2636	2443	build/i18n/po/fm_IDL.dtd/oc-FR.po
+2655	2462	build/i18n/po/fm_IDL.dtd/pt-BR.po
+2655	2462	build/i18n/po/fm_IDL.dtd/ru-RU.po
+2634	2441	build/i18n/po/fm_IDL.dtd/tr-TR.po
+269	256	build/i18n/po/ils_events.xml/cs-CZ.po
+267	254	build/i18n/po/ils_events.xml/de-DE.po
+269	256	build/i18n/po/ils_events.xml/en-CA.po
+269	256	build/i18n/po/ils_events.xml/en-GB.po
+267	254	build/i18n/po/ils_events.xml/es-ES.po
+270	257	build/i18n/po/ils_events.xml/fi-FI.po
+270	257	build/i18n/po/ils_events.xml/fr-CA.po
+269	256	build/i18n/po/ils_events.xml/hy-AM.po
+104	44	build/i18n/po/ils_events.xml/ils_events.xml.pot
+269	256	build/i18n/po/ils_events.xml/pt-BR.po
+269	256	build/i18n/po/ils_events.xml/ru-RU.po
+827	16	build/i18n/po/lang.dtd/ar-AR.po
+909	55	build/i18n/po/lang.dtd/cs-CZ.po
+853	21	build/i18n/po/lang.dtd/de-DE.po
+883	30	build/i18n/po/lang.dtd/en-CA.po
+882	29	build/i18n/po/lang.dtd/en-GB.po
+865	38	build/i18n/po/lang.dtd/es-ES.po
+885	32	build/i18n/po/lang.dtd/fi-FI.po
+871	27	build/i18n/po/lang.dtd/fr-CA.po
+883	30	build/i18n/po/lang.dtd/hy-AM.po
+5	1	build/i18n/po/lang.dtd/lang.dtd.pot
+835	18	build/i18n/po/lang.dtd/oc-FR.po
+877	27	build/i18n/po/lang.dtd/pt-BR.po
+877	27	build/i18n/po/lang.dtd/ru-RU.po
+843	20	build/i18n/po/lang.dtd/tr-TR.po
+7	3	build/i18n/po/offline.properties/cs-CZ.po
+7	3	build/i18n/po/offline.properties/de-DE.po
+7	3	build/i18n/po/offline.properties/en-CA.po
+7	3	build/i18n/po/offline.properties/en-GB.po
+7	3	build/i18n/po/offline.properties/es-ES.po
+8	4	build/i18n/po/offline.properties/fi-FI.po
+7	3	build/i18n/po/offline.properties/fr-CA.po
+7	3	build/i18n/po/offline.properties/hy-AM.po
+7	3	build/i18n/po/offline.properties/oc-FR.po
+7	3	build/i18n/po/offline.properties/pt-BR.po
+7	3	build/i18n/po/offline.properties/ru-RU.po
+7	3	build/i18n/po/offline.properties/tr-TR.po
+1	1	build/i18n/po/opac.dtd/fi-FI.po
+1	1	build/i18n/po/opac.js/fi-FI.po
+11	4	build/i18n/po/opac.js/opac.js.pot
+40	18	build/i18n/po/patron.properties/cs-CZ.po
+38	14	build/i18n/po/patron.properties/de-DE.po
+39	15	build/i18n/po/patron.properties/en-CA.po
+39	15	build/i18n/po/patron.properties/en-GB.po
+22	10	build/i18n/po/patron.properties/es-ES.po
+40	16	build/i18n/po/patron.properties/fi-FI.po
+38	14	build/i18n/po/patron.properties/fr-CA.po
+39	15	build/i18n/po/patron.properties/hy-AM.po
+18	9	build/i18n/po/patron.properties/oc-FR.po
+38	14	build/i18n/po/patron.properties/pt-BR.po
+38	14	build/i18n/po/patron.properties/ru-RU.po
+23	11	build/i18n/po/patron.properties/tr-TR.po
+1	1	build/i18n/po/pickup_and_return.js/fi-FI.po
+1	1	build/i18n/po/pull_list.js/fi-FI.po
+29	22	build/i18n/po/register.js/cs-CZ.po
+29	22	build/i18n/po/register.js/de-DE.po
+29	22	build/i18n/po/register.js/en-CA.po
+29	22	build/i18n/po/register.js/en-GB.po
+29	22	build/i18n/po/register.js/es-ES.po
+30	23	build/i18n/po/register.js/fi-FI.po
+29	22	build/i18n/po/register.js/fr-CA.po
+29	22	build/i18n/po/register.js/hy-AM.po
+29	22	build/i18n/po/register.js/oc-FR.po
+30	23	build/i18n/po/register.js/pt-BR.po
+11	10	build/i18n/po/register.js/register.js.pot
+29	22	build/i18n/po/register.js/ru-RU.po
+23	20	build/i18n/po/register.js/tr-TR.po
+1	1	build/i18n/po/reports.dtd/fi-FI.po
+1	1	build/i18n/po/reports.js/fi-FI.po
+1	1	build/i18n/po/reservation.js/fi-FI.po
+5	2	build/i18n/po/reservation.js/reservation.js.pot
+60	29	build/i18n/po/selfcheck.js/cs-CZ.po
+41	25	build/i18n/po/selfcheck.js/de-DE.po
+60	29	build/i18n/po/selfcheck.js/en-CA.po
+60	29	build/i18n/po/selfcheck.js/en-GB.po
+48	26	build/i18n/po/selfcheck.js/es-ES.po
+61	30	build/i18n/po/selfcheck.js/fi-FI.po
+60	29	build/i18n/po/selfcheck.js/fr-CA.po
+60	29	build/i18n/po/selfcheck.js/hy-AM.po
+44	25	build/i18n/po/selfcheck.js/oc-FR.po
+60	29	build/i18n/po/selfcheck.js/pt-BR.po
+40	24	build/i18n/po/selfcheck.js/ru-RU.po
+8	3	build/i18n/po/selfcheck.js/selfcheck.js.pot
+11	3	build/i18n/po/serial.properties/cs-CZ.po
+11	3	build/i18n/po/serial.properties/de-DE.po
+11	3	build/i18n/po/serial.properties/en-CA.po
+11	3	build/i18n/po/serial.properties/en-GB.po
+11	3	build/i18n/po/serial.properties/es-ES.po
+12	4	build/i18n/po/serial.properties/fi-FI.po
+11	3	build/i18n/po/serial.properties/fr-CA.po
+11	3	build/i18n/po/serial.properties/hy-AM.po
+11	3	build/i18n/po/serial.properties/oc-FR.po
+11	3	build/i18n/po/serial.properties/pt-BR.po
+11	3	build/i18n/po/serial.properties/tr-TR.po
+8	8	build/i18n/po/tpac/tpac.pot
+
+commit a6e64bfe9ebd5d8512b490f757a09cf848e18805
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Sep 26 14:24:42 2013 -0700
+
+    LP#1207281: require SSL when downloading offline patron list
+    
+    This patch builds on the previous one by forcing use of
+    SSL for downloading the offline patron list.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	0	Open-ILS/examples/apache/eg_vhost.conf
+1	1	Open-ILS/xul/staff_client/chrome/content/main/menu.js
+
+commit a97d5e0c87369a3ed9d23abf010ec368e8460e18
+Author: Michael Peters <mpeters@emeralddata.net>
+Date:   Tue Sep 24 16:57:37 2013 -0400
+
+    LP#1207281 Prevent download of offline patron list without authentication
+    
+    This patch addresses the vulnerability which allowed a user with the proper
+    knowledge of the location of offline patron lists to download the file over
+    regular HTTP without any staff credentials.
+    
+    This small addition to eg_vhost.conf.in will present users with a login prompt
+    when trying to access the /standalone/ subdirectory on an Evergreen server.
+    
+    Users are able to download the patron list in the staff client as normal
+    because they already have obtained credentials during the normal staff client
+    authentication process.
+    
+    Signed-off-by: Michael Peters <mpeters@emeralddata.net>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+13	0	Open-ILS/examples/apache/eg_vhost.conf
+
+commit caa65873f6fa5e20b4a5bde84af3b4748bc3745a
+Author: Ben Shum <bshum@biblio.org>
+Date:   Thu Oct 11 22:04:30 2012 -0400
+
+    LP#1066141: add authtoken check and related permission for age to lost function
+    
+    The SET_CIRC_LOST permission is now required in order to invoke
+    the open-ils.circ.circulation.age_to_lost method.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+3	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ.pm
+
+commit e8d713ddb980400998e30884f3443221e1662d8e
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Jan 30 16:56:12 2013 -0500
+
+    Fix an omission in the log redaction configuration.
+    
+    open-ils.actor.patron.password_reset.commit was omitted in the
+    <log_protect> block of opensrf_core.xml.example.  This commit adds
+    it and updates the release notes for 2.3 to include it.
+    
+    There is also a release notes file informing users that they need to
+    edit opensrf_core.xml to address this issue.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	0	Open-ILS/examples/opensrf_core.xml.example
+1	0	docs/RELEASE_NOTES_2_3.txt
+9	0	docs/RELEASE_NOTES_NEXT/password_reset_commit_not_secure.txt
+ create mode 100644 docs/RELEASE_NOTES_NEXT/password_reset_commit_not_secure.txt
+
+commit 9f35cdfbcde7abb2d76d73ca65aff4b736addc48
+Author: Pasi Kallinen <pasi.kallinen@pttk.fi>
+Date:   Wed Sep 11 08:54:55 2013 +0300
+
+    Fix delete items confirmation typo.
+    
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
+
+commit c9029e11372306b14888085abc8bdee98ba91e21
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Thu Sep 5 13:24:54 2013 -0400
+
+    Better handling of purchase_order being non-numeric
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/EDI.pm
+
+commit 40b54d040927d5361ff65fc7c075a51fc5ba033f
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Aug 22 16:47:27 2013 -0400
+
+    Action/Trigger load environment via stream
+    
+    Load objects in the A/T environment via streaming response instead of
+    atomic, to avoid very large messages.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+4	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Event.pm
+
+commit d2dca2ec9482233d97bcd410e5aaf2c8ceef3474
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Aug 30 11:22:27 2013 -0400
+
+    Have TPAC put user input at the end in all cases
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+16	15	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+
+commit ca021fac379e8141f18faa3ec22c28899c268df7
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Aug 28 15:05:36 2013 -0400
+
+    Stream facet data
+    
+    For certain shapes of facet datasets, the .atomic version of the
+    json_query call can produce an XMPP message large enough to cause
+    ejabberd to fall over unceremoniously.  Switch to a streaming
+    CStoreEditor-based call instead to avoid this.
+    
+    Ideally, this would use message bundling (aka, chunking) as well,
+    but the C parts of OpenSRF don't seem to support that yet.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+
+commit 425bf4a9a6b0134abd54dc0e8e1f5bef0a51efc5
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Sep 6 23:20:16 2013 -0400
+
+    Stamping upgrade script for biblio A/T title variable fix
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+18	0	Open-ILS/src/sql/Pg/upgrade/0825.data.bre_format.sql
+0	18	Open-ILS/src/sql/Pg/upgrade/XXXX.data.bre_format.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0825.data.bre_format.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.bre_format.sql
+
+commit 4ebd19b0f7a51d6417eb1f9c33adc7bf3df0d390
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Thu Nov 8 11:27:13 2012 -0500
+
+    reset title variable when looping with biblio A/T
+    
+    Two templates that I'm concerned with, though there may be others that could use
+    this treatment: biblio.record_entry.email and biblio.record_entry.print
+    
+    Basically, they can group events from the same user and consolidate bibs, but as
+    they loop through the bibs they're not clearing the temporary variable that
+    contains the bib title, so we get duplicated and run-on titles in the output.
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+2	2	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+18	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.bre_format.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.bre_format.sql
+
+commit fa4f670254b912cda0383a58a5c6a7c09c1177ca
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon Aug 19 14:29:23 2013 -0400
+
+    The ILS User reports source branches to an All Hold Requests linked source
+    that was marked class="circ" instead of class="ahr".  This corrects that problem.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/examples/fm_IDL.xml
+
+commit b0923e11f5180efee27ab39528f946cfe05b9905
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Sep 6 22:49:30 2013 -0400
+
+    Fix some bad break syntax
+    
+    Change </br> to a more appropriate <br/>
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/templates/opac/password_reset.tt2
+
+commit 8b8f2690a71d5cbba67f31b6ee67229db0393378
+Author: Pasi Kallinen <pasi.kallinen@pttk.fi>
+Date:   Wed Sep 4 09:07:47 2013 +0300
+
+    Unify appellee/appellant relators
+    
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+3	3	Open-ILS/src/templates/opac/parts/relators.tt2
+
+commit 19c521d3e8ab775f1c7b8fa70b583477c13e990a
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Fri Apr 5 13:21:47 2013 -0400
+
+    Fix schema.org mapping for MusicAlbum, add Map
+    
+    We had set LDR[06] = j to MusicRecording, but that is really meant for
+    individual songs. Use MusicAlbum instead, and per
+    http://schema.org/MusicAlbum, use a new MusicGroup itemtype with a
+    'byArtist' property for the primary artist rather than the generic
+    'accountablePerson'.
+    
+    Also map LDR[06] = e to Map, because that seems like a safe bet.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    
+    Conflicts:
+    	Open-ILS/src/templates/opac/parts/record/authors.tt2
+
+2	1	Open-ILS/src/templates/opac/parts/misc_util.tt2
+
+commit fb4f2ee82e747f338bb52ff121c50eea7e406488
+Author: Pasi Kallinen <pasi.kallinen@pttk.fi>
+Date:   Wed Jul 17 19:07:45 2013 +0300
+
+    Save times in HH:MM format for hours of operation
+    
+    When editing Hours of Operation, save the times in HH:MM format,
+    as that is what the database wants.
+    
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+14	14	Open-ILS/web/conify/global/actor/org_unit.html
+5	0	Open-ILS/web/conify/global/actor/org_unit.js
+
+commit 46959b3963e4ae4f9e8faae64b1772259cc58384
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon Jul 22 12:35:46 2013 -0400
+
+    Fixing LP 1203796.
+    
+    The alternate view in the Item Status screen shows a "Total Circs"
+    field that was under-counting circulations because UNION filtered
+    out duplicates.  This commit replaces UNION with UNION ALL, which
+    allows duplicate rows.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	2	Open-ILS/examples/fm_IDL.xml
+
+commit 58845f8a32dbf95c84a44d3d77538db9ac4782f0
+Author: Ben Shum <bshum@biblio.org>
+Date:   Thu Aug 22 12:11:54 2013 -0400
+
+    Stamping upgrade for browse normalization timing fix
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+76	0	Open-ILS/src/sql/Pg/upgrade/0821.function.browse-normalize-timing.sql
+0	76	Open-ILS/src/sql/Pg/upgrade/XXXX.function.browse-normalize-timing.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0821.function.browse-normalize-timing.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.browse-normalize-timing.sql
+
+commit 2f135e6d21c13a3c5ce013343e0991369f3f9624
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Aug 20 16:00:48 2013 -0400
+
+    Browse normalization timing fix
+    
+    When indexing browse entries, we need to normalize the value we want to use
+    before we go looking for it in the table, for uniqueness.  We do in master,
+    we need to in 2.3 as well.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+4	3	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+76	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.browse-normalize-timing.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.browse-normalize-timing.sql
+
+commit 99cc0c0fe9550f5d0731f042df8341de46ed1198
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Aug 14 10:25:14 2013 -0400
+
+    Correctly mark nested INNER joins as such
+    
+    We've been adopting containing the JOINs flavor, and then
+    attempting to use IS NOT NULL to restrict NULL-ness
+    in the WHERE clause.  This is almost right, but not quite,
+    and was done in an attempt to match behavior with the
+    expectations of users that are not SQL experts.  However,
+    right is better than "looks right most of the time", so
+    we use the proper join type now.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Boyer <jboyer1@library.in.gov>
+    
+    Conflicts [just whitespace style]:
+    	Open-ILS/src/perlmods/lib/OpenILS/Reporter/SQLBuilder.pm
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Reporter/SQLBuilder.pm
+
+commit 3e7f6f8bdf1c11b557df000c22d6809cc8e62698
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Thu Nov 1 09:08:38 2012 -0400
+
+    Fix A/T object cache
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+14	10	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Event.pm
+
+commit b8f5167c16c91a330625b82da8a0438587a43c7d
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu May 23 13:30:43 2013 -0400
+
+    LP1183467 ACQ view funding source list permissions
+    
+    Limit the set of funding sources visible in the funding source list
+    interface by those the user has view permissions for, not just those the
+    user has edit permissions for.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/web/js/ui/default/acq/financial/list_funding_sources.js
+
+commit 730b9492380f2aba97b5b26298dc97f929527961
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Aug 22 11:26:20 2013 -0400
+
+    Stamping upgrade script for series title normalizer improvement
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+28	0	Open-ILS/src/sql/Pg/upgrade/0820.data.series_normalizer.sql
+0	28	Open-ILS/src/sql/Pg/upgrade/xxxx.data.series_normalizer.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0820.data.series_normalizer.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.data.series_normalizer.sql
+
+commit 1465e5b424b8e4c28ab013ff5385c1a57a7d3eae
+Author: Steven Callender <stevecallender@esilibrary.com>
+Date:   Tue Jun 4 14:11:50 2013 -0400
+
+    Remove [ and ] characters from seriestitle index LP#1187521
+    
+    Signed-off-by: Steven Callender <stevecallender@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+20	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+28	0	Open-ILS/src/sql/Pg/upgrade/xxxx.data.series_normalizer.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.data.series_normalizer.sql
+
+commit 07c4756a92e6adc839c68e7f5e9e27e22d080ac6
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Jul 12 14:43:57 2013 -0400
+
+    Repair remaining Authority Fixed Field editor entries
+    
+    The "Item" fixed field is only valid for MFHD records, so we remove
+    that entirely from AUTH records.  The "GeoSubd" fixed field is
+    spelled "GeoDiv" everywhere, so we align that naming so that it can
+    be saved.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/web/js/dojo/MARC/FixedFields.js
+1	1	Open-ILS/xul/staff_client/server/cat/marcedit.xul
+
+commit 2e417b99130665dfc2c31e10f6b2c9f227e6c946
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Aug 22 10:24:57 2013 -0400
+
+    Propagating 2.3.10 DB upgrade script
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+75	0	Open-ILS/src/sql/Pg/version-upgrade/2.3.9-2.3.10-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.3.9-2.3.10-upgrade-db.sql
+
+commit 3ca227fe857467d8007a895444dca0ab346f89f0
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Mon Jan 23 18:44:00 2012 -0500
+
+    Invoke skull-and-crossbones popup in batch receive for server-side errors
+    
+    And introduce a minor bumper rail to guide serials users who might try
+    to hand-edit a holding code.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    
+    Conflicts:
+        Open-ILS/xul/staff_client/server/serial/batch_receive.js
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+14	2	Open-ILS/web/js/dojo/openils/widget/HoldingCode.js
+28	9	Open-ILS/xul/staff_client/server/serial/batch_receive.js
+
+commit c6106d83fbb34370a720c477300a19e1deb7132e
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Aug 21 09:51:10 2013 -0400
+
+    Copying 2.3.8-2.3.9 SQL upgrade script
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+94	0	Open-ILS/src/sql/Pg/version-upgrade/2.3.8-2.3.9-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.3.8-2.3.9-upgrade-db.sql
