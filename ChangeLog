@@ -1,0 +1,681 @@
+commit 2111fd29140f43f02bc0cd881695505721ac4293
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Oct 3 11:28:11 2013 -0400
+
+    Bumping version numbers, adding Upgrade Script and Changelog
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+0	3	ChangeLog
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application.pm
+1	0	Open-ILS/src/sql/Pg/002.schema.config.sql
+21	0	Open-ILS/src/sql/Pg/version-upgrade/2.4.2-2.4.3-upgrade-db.sql
+1	1	Open-ILS/xul/staff_client/chrome/content/main/about.html
+1	1	Open-ILS/xul/staff_client/defaults/preferences/prefs.js
+1	1	Open-ILS/xul/staff_client/windowssetup.nsi
+535	1	README
+2	2	configure.ac
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.4.2-2.4.3-upgrade-db.sql
+ mode change 120000 => 100644 README
+
+commit b619dc4c575d451d18f90b03373b4ef4d582055c
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Oct 3 11:25:53 2013 -0400
+
+    Fresh POT files from translations (and Finnish fixup)
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	build/i18n/po/AutoFieldWidget.js/fi-FI.po
+1	1	build/i18n/po/Searcher.js/fi-FI.po
+1	1	build/i18n/po/TranslatorPopup.js/fi-FI.po
+1	1	build/i18n/po/User.js/fi-FI.po
+2	4	build/i18n/po/XULTermLoader.js/XULTermLoader.js.pot
+1	1	build/i18n/po/XULTermLoader.js/fi-FI.po
+15	37	build/i18n/po/acq.js/acq.js.pot
+1	1	build/i18n/po/admin.properties/fi-FI.po
+1	1	build/i18n/po/auth.properties/fi-FI.po
+1	1	build/i18n/po/authority.js/fi-FI.po
+2	4	build/i18n/po/capture.js/capture.js.pot
+1	1	build/i18n/po/capture.js/fi-FI.po
+1	1	build/i18n/po/cat.properties/fi-FI.po
+2	2	build/i18n/po/circ.properties/circ.properties.pot
+1	1	build/i18n/po/circ.properties/fi-FI.po
+1	1	build/i18n/po/common.properties/fi-FI.po
+7	19	build/i18n/po/conify.js/conify.js.pot
+1	1	build/i18n/po/conify.js/fi-FI.po
+691	691	build/i18n/po/db.seed/db.seed.pot
+1	1	build/i18n/po/db.seed/fi-FI.po
+1	1	build/i18n/po/fm_IDL.dtd/fi-FI.po
+17	17	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+1	1	build/i18n/po/ils_events.xml/fi-FI.po
+46	110	build/i18n/po/ils_events.xml/ils_events.xml.pot
+1	1	build/i18n/po/lang.dtd/fi-FI.po
+6	2	build/i18n/po/lang.dtd/lang.dtd.pot
+1	1	build/i18n/po/offline.properties/fi-FI.po
+1	1	build/i18n/po/opac.dtd/fi-FI.po
+1	1	build/i18n/po/opac.js/fi-FI.po
+4	11	build/i18n/po/opac.js/opac.js.pot
+1	1	build/i18n/po/patron.properties/fi-FI.po
+1	1	build/i18n/po/pickup_and_return.js/fi-FI.po
+1	1	build/i18n/po/pull_list.js/fi-FI.po
+1	1	build/i18n/po/register.js/fi-FI.po
+10	11	build/i18n/po/register.js/register.js.pot
+1	1	build/i18n/po/reports.dtd/fi-FI.po
+1	1	build/i18n/po/reports.js/fi-FI.po
+1	1	build/i18n/po/reservation.js/fi-FI.po
+2	5	build/i18n/po/reservation.js/reservation.js.pot
+1	1	build/i18n/po/selfcheck.js/fi-FI.po
+3	8	build/i18n/po/selfcheck.js/selfcheck.js.pot
+1	1	build/i18n/po/serial.properties/fi-FI.po
+5	5	build/i18n/po/tpac/tpac.pot
+
+commit de6e22548b56ba4456ca3df1c1bcb344c5bac58c
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Oct 3 11:06:19 2013 -0400
+
+    Updating translations from launchpad
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	build/i18n/po/AutoFieldWidget.js/fi-FI.po
+1	1	build/i18n/po/Searcher.js/fi-FI.po
+1	1	build/i18n/po/TranslatorPopup.js/fi-FI.po
+1	1	build/i18n/po/User.js/fi-FI.po
+1	1	build/i18n/po/XULTermLoader.js/fi-FI.po
+1	1	build/i18n/po/admin.properties/fi-FI.po
+1	1	build/i18n/po/auth.properties/fi-FI.po
+1	1	build/i18n/po/authority.js/fi-FI.po
+1	1	build/i18n/po/capture.js/fi-FI.po
+15	13	build/i18n/po/cat.properties/cs-CZ.po
+15	13	build/i18n/po/cat.properties/de-DE.po
+15	13	build/i18n/po/cat.properties/en-CA.po
+15	13	build/i18n/po/cat.properties/en-GB.po
+15	13	build/i18n/po/cat.properties/es-ES.po
+16	14	build/i18n/po/cat.properties/fi-FI.po
+15	13	build/i18n/po/cat.properties/fr-CA.po
+15	13	build/i18n/po/cat.properties/hy-AM.po
+15	13	build/i18n/po/cat.properties/oc-FR.po
+15	13	build/i18n/po/cat.properties/pt-BR.po
+15	13	build/i18n/po/cat.properties/ru-RU.po
+7	13	build/i18n/po/cat.properties/tr-TR.po
+27	6	build/i18n/po/circ.properties/cs-CZ.po
+22	4	build/i18n/po/circ.properties/de-DE.po
+27	6	build/i18n/po/circ.properties/en-CA.po
+27	6	build/i18n/po/circ.properties/en-GB.po
+26	5	build/i18n/po/circ.properties/es-ES.po
+28	7	build/i18n/po/circ.properties/fi-FI.po
+26	5	build/i18n/po/circ.properties/fr-CA.po
+27	6	build/i18n/po/circ.properties/hy-AM.po
+22	4	build/i18n/po/circ.properties/oc-FR.po
+27	6	build/i18n/po/circ.properties/pt-BR.po
+26	5	build/i18n/po/circ.properties/ru-RU.po
+22	4	build/i18n/po/circ.properties/tr-TR.po
+11	3	build/i18n/po/common.properties/cs-CZ.po
+11	3	build/i18n/po/common.properties/de-DE.po
+11	3	build/i18n/po/common.properties/en-CA.po
+11	3	build/i18n/po/common.properties/en-GB.po
+11	3	build/i18n/po/common.properties/es-ES.po
+12	4	build/i18n/po/common.properties/fi-FI.po
+11	3	build/i18n/po/common.properties/fr-CA.po
+11	3	build/i18n/po/common.properties/hy-AM.po
+11	3	build/i18n/po/common.properties/oc-FR.po
+11	3	build/i18n/po/common.properties/pt-BR.po
+11	3	build/i18n/po/common.properties/ru-RU.po
+1	1	build/i18n/po/conify.js/fi-FI.po
+9037	3079	build/i18n/po/db.seed/cs-CZ.po
+8448	2324	build/i18n/po/db.seed/de-DE.po
+8745	2722	build/i18n/po/db.seed/en-CA.po
+8753	2795	build/i18n/po/db.seed/en-GB.po
+8421	2401	build/i18n/po/db.seed/es-ES.po
+9444	3327	build/i18n/po/db.seed/fi-FI.po
+9760	3802	build/i18n/po/db.seed/fr-CA.po
+9801	3843	build/i18n/po/db.seed/hy-AM.po
+8460	2331	build/i18n/po/db.seed/oc-FR.po
+9309	3270	build/i18n/po/db.seed/pt-BR.po
+9161	3125	build/i18n/po/db.seed/ru-RU.po
+7953	1827	build/i18n/po/db.seed/tr-TR.po
+2667	2468	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+2637	2444	build/i18n/po/fm_IDL.dtd/de-DE.po
+2670	2468	build/i18n/po/fm_IDL.dtd/en-CA.po
+2669	2467	build/i18n/po/fm_IDL.dtd/en-GB.po
+2640	2447	build/i18n/po/fm_IDL.dtd/es-ES.po
+2671	2469	build/i18n/po/fm_IDL.dtd/fi-FI.po
+2639	2446	build/i18n/po/fm_IDL.dtd/fr-CA.po
+2670	2468	build/i18n/po/fm_IDL.dtd/hy-AM.po
+2636	2443	build/i18n/po/fm_IDL.dtd/oc-FR.po
+2655	2462	build/i18n/po/fm_IDL.dtd/pt-BR.po
+2655	2462	build/i18n/po/fm_IDL.dtd/ru-RU.po
+2634	2441	build/i18n/po/fm_IDL.dtd/tr-TR.po
+269	256	build/i18n/po/ils_events.xml/cs-CZ.po
+267	254	build/i18n/po/ils_events.xml/de-DE.po
+269	256	build/i18n/po/ils_events.xml/en-CA.po
+269	256	build/i18n/po/ils_events.xml/en-GB.po
+267	254	build/i18n/po/ils_events.xml/es-ES.po
+270	257	build/i18n/po/ils_events.xml/fi-FI.po
+270	257	build/i18n/po/ils_events.xml/fr-CA.po
+269	256	build/i18n/po/ils_events.xml/hy-AM.po
+269	256	build/i18n/po/ils_events.xml/pt-BR.po
+269	256	build/i18n/po/ils_events.xml/ru-RU.po
+827	16	build/i18n/po/lang.dtd/ar-AR.po
+883	30	build/i18n/po/lang.dtd/cs-CZ.po
+853	21	build/i18n/po/lang.dtd/de-DE.po
+883	30	build/i18n/po/lang.dtd/en-CA.po
+882	29	build/i18n/po/lang.dtd/en-GB.po
+845	19	build/i18n/po/lang.dtd/es-ES.po
+885	32	build/i18n/po/lang.dtd/fi-FI.po
+871	27	build/i18n/po/lang.dtd/fr-CA.po
+883	30	build/i18n/po/lang.dtd/hy-AM.po
+835	18	build/i18n/po/lang.dtd/oc-FR.po
+877	27	build/i18n/po/lang.dtd/pt-BR.po
+877	27	build/i18n/po/lang.dtd/ru-RU.po
+843	20	build/i18n/po/lang.dtd/tr-TR.po
+7	3	build/i18n/po/offline.properties/cs-CZ.po
+7	3	build/i18n/po/offline.properties/de-DE.po
+7	3	build/i18n/po/offline.properties/en-CA.po
+7	3	build/i18n/po/offline.properties/en-GB.po
+7	3	build/i18n/po/offline.properties/es-ES.po
+8	4	build/i18n/po/offline.properties/fi-FI.po
+7	3	build/i18n/po/offline.properties/fr-CA.po
+7	3	build/i18n/po/offline.properties/hy-AM.po
+7	3	build/i18n/po/offline.properties/oc-FR.po
+7	3	build/i18n/po/offline.properties/pt-BR.po
+7	3	build/i18n/po/offline.properties/ru-RU.po
+7	3	build/i18n/po/offline.properties/tr-TR.po
+1	1	build/i18n/po/opac.dtd/fi-FI.po
+1	1	build/i18n/po/opac.js/fi-FI.po
+38	16	build/i18n/po/patron.properties/cs-CZ.po
+38	14	build/i18n/po/patron.properties/de-DE.po
+39	15	build/i18n/po/patron.properties/en-CA.po
+39	15	build/i18n/po/patron.properties/en-GB.po
+22	10	build/i18n/po/patron.properties/es-ES.po
+40	16	build/i18n/po/patron.properties/fi-FI.po
+38	14	build/i18n/po/patron.properties/fr-CA.po
+39	15	build/i18n/po/patron.properties/hy-AM.po
+18	9	build/i18n/po/patron.properties/oc-FR.po
+38	14	build/i18n/po/patron.properties/pt-BR.po
+38	14	build/i18n/po/patron.properties/ru-RU.po
+23	11	build/i18n/po/patron.properties/tr-TR.po
+1	1	build/i18n/po/pickup_and_return.js/fi-FI.po
+1	1	build/i18n/po/pull_list.js/fi-FI.po
+29	22	build/i18n/po/register.js/cs-CZ.po
+29	22	build/i18n/po/register.js/de-DE.po
+29	22	build/i18n/po/register.js/en-CA.po
+29	22	build/i18n/po/register.js/en-GB.po
+29	22	build/i18n/po/register.js/es-ES.po
+30	23	build/i18n/po/register.js/fi-FI.po
+29	22	build/i18n/po/register.js/fr-CA.po
+29	22	build/i18n/po/register.js/hy-AM.po
+29	22	build/i18n/po/register.js/oc-FR.po
+30	23	build/i18n/po/register.js/pt-BR.po
+29	22	build/i18n/po/register.js/ru-RU.po
+23	20	build/i18n/po/register.js/tr-TR.po
+1	1	build/i18n/po/reports.dtd/fi-FI.po
+1	1	build/i18n/po/reports.js/fi-FI.po
+1	1	build/i18n/po/reservation.js/fi-FI.po
+60	29	build/i18n/po/selfcheck.js/cs-CZ.po
+41	25	build/i18n/po/selfcheck.js/de-DE.po
+60	29	build/i18n/po/selfcheck.js/en-CA.po
+60	29	build/i18n/po/selfcheck.js/en-GB.po
+48	26	build/i18n/po/selfcheck.js/es-ES.po
+61	30	build/i18n/po/selfcheck.js/fi-FI.po
+60	29	build/i18n/po/selfcheck.js/fr-CA.po
+60	29	build/i18n/po/selfcheck.js/hy-AM.po
+44	25	build/i18n/po/selfcheck.js/oc-FR.po
+60	29	build/i18n/po/selfcheck.js/pt-BR.po
+40	24	build/i18n/po/selfcheck.js/ru-RU.po
+11	3	build/i18n/po/serial.properties/cs-CZ.po
+11	3	build/i18n/po/serial.properties/de-DE.po
+11	3	build/i18n/po/serial.properties/en-CA.po
+11	3	build/i18n/po/serial.properties/en-GB.po
+11	3	build/i18n/po/serial.properties/es-ES.po
+12	4	build/i18n/po/serial.properties/fi-FI.po
+11	3	build/i18n/po/serial.properties/fr-CA.po
+11	3	build/i18n/po/serial.properties/hy-AM.po
+11	3	build/i18n/po/serial.properties/oc-FR.po
+11	3	build/i18n/po/serial.properties/pt-BR.po
+11	3	build/i18n/po/serial.properties/tr-TR.po
+
+commit 55459e8eab9b532694f6174dd7441f70107852ed
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Sep 26 14:24:42 2013 -0700
+
+    LP#1207281: require SSL when downloading offline patron list
+    
+    This patch builds on the previous one by forcing use of
+    SSL for downloading the offline patron list.  It also
+    updates the Apache 2.4 example configuration.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	0	Open-ILS/examples/apache/eg_vhost.conf.in
+14	0	Open-ILS/examples/apache_24/eg_vhost.conf.in
+1	1	Open-ILS/xul/staff_client/chrome/content/main/menu.js
+
+commit 51f96e23aa401f113925063e615b1935c01e1f40
+Author: Michael Peters <mpeters@emeralddata.net>
+Date:   Tue Sep 24 16:57:37 2013 -0400
+
+    LP#1207281 Prevent download of offline patron list without authentication
+    
+    This patch addresses the vulnerability which allowed a user with the proper
+    knowledge of the location of offline patron lists to download the file over
+    regular HTTP without any staff credentials.
+    
+    This small addition to eg_vhost.conf.in will present users with a login prompt
+    when trying to access the /standalone/ subdirectory on an Evergreen server.
+    
+    Users are able to download the patron list in the staff client as normal
+    because they already have obtained credentials during the normal staff client
+    authentication process.
+    
+    Signed-off-by: Michael Peters <mpeters@emeralddata.net>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+13	0	Open-ILS/examples/apache/eg_vhost.conf.in
+
+commit c6785be15aa635b227113a0992a42e43cf5b2d79
+Author: Ben Shum <bshum@biblio.org>
+Date:   Thu Oct 11 22:04:30 2012 -0400
+
+    LP#1066141: add authtoken check and related permission for age to lost function
+    
+    The SET_CIRC_LOST permission is now required in order to invoke
+    the open-ils.circ.circulation.age_to_lost method.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+3	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ.pm
+
+commit d31bc6cb9c26ac48ca2f64bef2f09e320a7f2f89
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Jan 30 16:56:12 2013 -0500
+
+    Fix an omission in the log redaction configuration.
+    
+    open-ils.actor.patron.password_reset.commit was omitted in the
+    <log_protect> block of opensrf_core.xml.example.  This commit adds
+    it and updates the release notes for 2.3 to include it.
+    
+    There is also a release notes file informing users that they need to
+    edit opensrf_core.xml to address this issue.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	0	Open-ILS/examples/opensrf_core.xml.example
+1	0	docs/RELEASE_NOTES_2_3.txt
+9	0	docs/RELEASE_NOTES_NEXT/password_reset_commit_not_secure.txt
+ create mode 100644 docs/RELEASE_NOTES_NEXT/password_reset_commit_not_secure.txt
+
+commit dba5d6389d5e64ee3240d1a643415d8e595c9cbc
+Author: Pasi Kallinen <pasi.kallinen@pttk.fi>
+Date:   Wed Sep 11 08:54:55 2013 +0300
+
+    Fix delete items confirmation typo.
+    
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
+
+commit ff28f7eed66cb6d4d87d213545bb24e066a71987
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Thu Sep 5 13:24:54 2013 -0400
+
+    Better handling of purchase_order being non-numeric
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/EDI.pm
+
+commit ec4b52b40b8829f028830b627850fe704ac81f07
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Aug 22 16:47:27 2013 -0400
+
+    Action/Trigger load environment via stream
+    
+    Load objects in the A/T environment via streaming response instead of
+    atomic, to avoid very large messages.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+4	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Event.pm
+
+commit 855791c648e28fe029bc81a01b0ddc52bbdf4700
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Fri May 10 09:57:31 2013 -0400
+
+    Update serials docs for 2.4
+    
+    In version 2.4, the serials modules underwent significant changes that
+    require significant updates to the documentation. This commit provides
+    the necessary updates, including some new screenshots. And in a few
+    cases, existing documentation was corrected or improved in ways
+    unrelated to the 2.4 update.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+-	-	docs/media/scv-combined-dist.png
+-	-	docs/media/scv-combined-iss.png
+-	-	docs/media/scv-combined-sub.png
+-	-	docs/media/scv-distr.png
+-	-	docs/media/scv-iss.png
+-	-	docs/media/scv-rec.png
+-	-	docs/media/scv-status.png
+16	10	docs/serials/A-intro.txt
+95	29	docs/serials/C-subscription-SCV.txt
+1	1	docs/serials/D-subscription-ASCV.txt
+20	6	docs/serials/F-Receiving.txt
+ create mode 100644 docs/media/scv-combined-dist.png
+ create mode 100644 docs/media/scv-combined-iss.png
+ create mode 100644 docs/media/scv-combined-sub.png
+ create mode 100644 docs/media/scv-distr.png
+ create mode 100644 docs/media/scv-iss.png
+ create mode 100644 docs/media/scv-rec.png
+ create mode 100644 docs/media/scv-status.png
+
+commit 10a5289685ee455342860cb9c24c889f3d7b6a3e
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Wed Sep 18 15:01:21 2013 -0400
+
+    Add altering rows colors to (cataloging) manage authorities interface
+    
+    To make it easier to use the (cataloging) manage authorities interface I added a tiny bit of CSS to have alternating row colors. The "height: 1.5em" part is needed because the enclosing authEntry div ends up with a height of zero because its children containers are all floating. Turns out this zero height behavior is not a bug, but a natural side affect of floating the div's children.
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2	1	Open-ILS/src/templates/cat/authority/list.tt2
+
+commit 0b7963f56729304954eda4d969314f9a572dc447
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Aug 30 11:22:27 2013 -0400
+
+    Have TPAC put user input at the end in all cases
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+16	15	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+
+commit ab44fcc4f3f23495f0c07fbadff353c7ff8b9b66
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Aug 28 15:05:36 2013 -0400
+
+    Stream facet data
+    
+    For certain shapes of facet datasets, the .atomic version of the
+    json_query call can produce an XMPP message large enough to cause
+    ejabberd to fall over unceremoniously.  Switch to a streaming
+    CStoreEditor-based call instead to avoid this.
+    
+    Ideally, this would use message bundling (aka, chunking) as well,
+    but the C parts of OpenSRF don't seem to support that yet.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+
+commit fc23b4ec5c6846b0b31a25c0f708d9409d22bcb0
+Author: Pasi Kallinen <pasi.kallinen@pttk.fi>
+Date:   Thu Aug 29 17:36:37 2013 +0300
+
+    Fix PCrudFilterPane generating illegal queries when using the "not like" and "not between" operators.
+    
+    Make the window remember the user-input value even when changing the operator.
+    
+    [LFW: whitespace fixes - the original commit had real tabs, which we avoid
+    in some files, including .js ones.]
+    
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+14	3	Open-ILS/web/js/dojo/openils/widget/PCrudFilterPane.js
+
+commit 199f25958dcccb992e3b62ed9fc605c792396414
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Sep 12 13:13:23 2013 -0400
+
+    Optimize container filters in QueryParser
+    
+    When a container filter is used at the top level of a QueryParser
+    query (that is, in a simple query with no OR-logic branches or explicit
+    nesting groups) we can use an INNER join instead of LEFT + IS NOT NULL.
+    
+    On some production datasets this showed an increase in performance from
+    20+ seconds to 1ms for the core query.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+6	5	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+
+commit e330dd4c20b1b8ccb7375b4a326069521a0879b4
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Jun 20 15:46:33 2013 -0400
+
+    LP1193095 lineitem batch actions sanity filters
+    
+    Avoid applying the following actions to lineitems which are in a state
+    where each action makes no sense.
+    
+    The following actions are affected.  For each, the set of states for
+    which a lineitem must be in for the action to proceed is listed.
+    
+    create PO
+        - new selector-ready order-ready approved
+    add to PO
+        - new selector-ready order-ready approved
+    create invoice
+        - !cancelled
+    add to invoice
+        - !cancelled
+    cancel lineitem
+        - !cancelled
+    mark selector ready
+        - new
+    mark order ready
+        - new selector-ready
+    mark received
+        - pending-order on-order
+    
+    Depending on the interface, some top-level lineitem actions may be
+    globally disabled.  The list of states listed above represent the bare
+    minimum requirements.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/web/js/dojo/openils/acq/nls/acq.js
+92	20	Open-ILS/web/js/ui/default/acq/common/li_table.js
+
+commit 22761d85fcc0edbf60eeb26be33f337aa72011f3
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Sep 6 23:20:16 2013 -0400
+
+    Stamping upgrade script for biblio A/T title variable fix
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+18	0	Open-ILS/src/sql/Pg/upgrade/0825.data.bre_format.sql
+0	18	Open-ILS/src/sql/Pg/upgrade/XXXX.data.bre_format.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0825.data.bre_format.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.bre_format.sql
+
+commit 32c06280e2f72980bc2753beceb75c82dc1296f9
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Thu Nov 8 11:27:13 2012 -0500
+
+    reset title variable when looping with biblio A/T
+    
+    Two templates that I'm concerned with, though there may be others that could use
+    this treatment: biblio.record_entry.email and biblio.record_entry.print
+    
+    Basically, they can group events from the same user and consolidate bibs, but as
+    they loop through the bibs they're not clearing the temporary variable that
+    contains the bib title, so we get duplicated and run-on titles in the output.
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+2	2	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+18	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.bre_format.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.bre_format.sql
+
+commit 0778472f110cb1b008f24395de55c08a519c74c3
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon Aug 19 14:29:23 2013 -0400
+
+    The ILS User reports source branches to an All Hold Requests linked source
+    that was marked class="circ" instead of class="ahr".  This corrects that problem.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/examples/fm_IDL.xml
+
+commit e60941abf0d126e369a4b281996a460b93ca39aa
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Sep 6 22:49:30 2013 -0400
+
+    Fix some bad break syntax
+    
+    Change </br> to a more appropriate <br/>
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/templates/opac/password_reset.tt2
+
+commit 33934d4c51d98f7763d79be009b1ed352e7092ca
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Sep 3 11:10:12 2013 -0400
+
+    .gitignore installed files more generically
+    
+    Avoid naming specific versions to ignore when possible.
+    
+    * Ignore any files in root directory (Evergreen/) that match js
+      or JavaScript (from the installer).
+    * Ignore all xulrunner*.bz2 and xulrunner*.zip
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+4	8	.gitignore
+
+commit ddd89d8914f8b29d2f3f21a95166f639f6e4714e
+Author: Ben Shum <bshum@biblio.org>
+Date:   Thu Aug 22 13:56:25 2013 -0400
+
+    Add xulrunner 14, built libmar tools, and some javascript files to .gitignore
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+12	0	.gitignore
+
+commit b606aa0d48fba0b4c0e3b490223b64cac1d45c7b
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Aug 22 12:36:17 2013 -0400
+
+    Add some 'make check' objects to .gitignore
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	0	.gitignore
+
+commit 8ad0e3f554061317006e3930780a2f9e2fcc2182
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Thu Aug 22 12:29:51 2013 -0400
+
+    Add more built things to .gitignore for master
+    
+    Tired of seeing all this meaningless red from `git status`
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+8	0	.gitignore
+
+commit 268d97e446911f16a01986343076d5a1f7ea30dd
+Author: Pasi Kallinen <pasi.kallinen@pttk.fi>
+Date:   Wed Sep 4 09:07:47 2013 +0300
+
+    Unify appellee/appellant relators
+    
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+3	3	Open-ILS/src/templates/opac/parts/relators.tt2
+
+commit fc5cfbdf88373f8a95e8a854c22825b3db0b779e
+Author: Pasi Kallinen <pasi.kallinen@pttk.fi>
+Date:   Wed Jul 17 19:07:45 2013 +0300
+
+    Save times in HH:MM format for hours of operation
+    
+    When editing Hours of Operation, save the times in HH:MM format,
+    as that is what the database wants.
+    
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+14	14	Open-ILS/web/conify/global/actor/org_unit.html
+5	0	Open-ILS/web/conify/global/actor/org_unit.js
+
+commit 1841f750c0b5022522b5ea1b96b568ea018583d2
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon Jul 22 12:35:46 2013 -0400
+
+    Fixing LP 1203796.
+    
+    The alternate view in the Item Status screen shows a "Total Circs"
+    field that was under-counting circulations because UNION filtered
+    out duplicates.  This commit replaces UNION with UNION ALL, which
+    allows duplicate rows.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	2	Open-ILS/examples/fm_IDL.xml
+
+commit c1c03659cc4fed0304426b384175b3a8984e8144
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Sun Aug 25 00:39:46 2013 -0400
+
+    Schema.org: improve MusicGroup vs. Person parsing
+    
+    Take a stricter approach to defining MusicGroups instead of Persons for
+    the main authors of MusicAlbums. Music groups are generally catalogued
+    as a 110 or 710 tag, and this avoids defining birthDates and deathDates
+    for groups (which, however valid that might be in the real world, is not
+    valid for schema.org).
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/templates/opac/parts/record/authors.tt2
