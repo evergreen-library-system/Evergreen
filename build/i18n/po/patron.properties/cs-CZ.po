@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-15 19:42+0000\n"
-"PO-Revision-Date: 2013-01-03 09:10+0000\n"
+"POT-Creation-Date: 2013-09-26 18:17-0400\n"
+"PO-Revision-Date: 2013-06-06 13:06+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-16 06:01+0000\n"
-"X-Generator: Launchpad (build 16532)\n"
+"X-Launchpad-Export-Date: 2013-09-28 05:30+0000\n"
+"X-Generator: Launchpad (build 16774)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -503,30 +503,28 @@ msgid "Retrieving..."
 msgstr "Načítání..."
 
 #: staff.patron.display.init.network_request.alert_message
-msgid "Alert message: \"%1$s\"<br/><br/>"
-msgstr "Upozornění: \"%1$s\"<br/><br/>"
+msgid "Alert message: \"%1$s\""
+msgstr ""
 
 #: staff.patron.display.init.network_request.inactive_card
-msgid "Patron account retrieved with an INACTIVE card.<br/><br/>"
-msgstr "Byl načten čtenář s NEAKTIVNÍM průkazem"
+msgid "Patron account retrieved with an INACTIVE card."
+msgstr ""
 
 #: staff.patron.display.init.network_request.account_barred
-msgid "Patron account is BARRED.<br/><br/>"
-msgstr "Čtenářský účet má OMEZENÉ TRANSAKCE.<br/><br/>"
+msgid "Patron account is BARRED."
+msgstr ""
 
 #: staff.patron.display.init.network_request.account_inactive
-msgid "Patron account is INACTIVE.<br/><br/>"
-msgstr "Čtenářský účet je NEAKTIVNÍ.<br/><br/>"
+msgid "Patron account is INACTIVE."
+msgstr ""
 
 #: staff.patron.display.init.network_request.account_expire_soon
-msgid "Patron account will expire soon.  Please renew.<br/><br/>"
+msgid "Patron account will expire soon.  Please renew."
 msgstr ""
-"Registrační období čtenáře brzy skončí. Je nutné obnovit "
-"registraci.<br/><br/>"
 
 #: staff.patron.display.init.network_request.account_expired
-msgid "Patron account is EXPIRED.<br/><br/>"
-msgstr "Platnost registrace čtenářského účtu VYPRŠELA. </br></br>"
+msgid "Patron account is EXPIRED."
+msgstr ""
 
 #: staff.patron.display.init.holds_ready
 msgid "Holds available: %1$s"
@@ -1764,7 +1762,7 @@ msgstr "Účet vytvořen"
 
 #: staff.patron.summary.expires_on
 msgid "Expires on"
-msgstr "Vyprší dne"
+msgstr "Registrace platná do"
 
 #: staff.patron.summary.last_activity
 msgid "Last Activity"
@@ -2010,5 +2008,29 @@ msgstr "Přesto pokračovat"
 msgid "User Not Found"
 msgstr "Uživatel nenalezen"
 
+#. # hold count tooltip labels
+#: staff.patron.summary.hold_counts_behind_desk
+msgid "Available / Total (Behind Desk)"
+msgstr ""
+
+#: staff.patron.summary.hold_counts
+msgid "Available / Total"
+msgstr ""
+
 #~ msgid "Record ID: %1$s Create Date: %2$s "
 #~ msgstr "ID záznamu: %1$s Datum vytvoření: %2$s "
+
+#~ msgid "Patron account is INACTIVE.<br/><br/>"
+#~ msgstr "Čtenářský účet je NEAKTIVNÍ.<br/><br/>"
+
+#~ msgid "Patron account retrieved with an INACTIVE card.<br/><br/>"
+#~ msgstr "Byl načten čtenář s NEAKTIVNÍM průkazem"
+
+#~ msgid "Alert message: \"%1$s\"<br/><br/>"
+#~ msgstr "Upozornění: \"%1$s\"<br/><br/>"
+
+#~ msgid "Patron account is BARRED.<br/><br/>"
+#~ msgstr "Čtenářský účet má OMEZENÉ TRANSAKCE.<br/><br/>"
+
+#~ msgid "Patron account is EXPIRED.<br/><br/>"
+#~ msgstr "Platnost registrace čtenářského účtu VYPRŠELA. </br></br>"

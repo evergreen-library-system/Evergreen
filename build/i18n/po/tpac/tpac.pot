@@ -787,11 +787,11 @@ msgid "Contestant"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
-msgid "Contestant -appellant"
+msgid "Contestant-appellant"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
-msgid "Contestant -appellee"
+msgid "Contestant-appellee"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
@@ -1124,7 +1124,7 @@ msgstr ""
 msgid "Email address associated with the account:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:75
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:79
 msgid "Enabled"
 msgstr ""
 
@@ -1931,7 +1931,7 @@ msgstr ""
 msgid "No holds found."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:79
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:74
 msgid "No notification preferences are configured"
 msgstr ""
 
@@ -1967,7 +1967,7 @@ msgstr ""
 msgid "Notification Preferences"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:74
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:78
 msgid "Notification Type"
 msgstr ""
 
@@ -2198,11 +2198,11 @@ msgid "Plaintiff"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
-msgid "Plaintiff -appellee"
+msgid "Plaintiff-appellant"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
-msgid "Plaintiff-appellant"
+msgid "Plaintiff-appellee"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
@@ -2523,7 +2523,7 @@ msgstr ""
 msgid "Rubricator"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:206 ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:93 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:102
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:206 ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:96 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:102
 msgid "Save"
 msgstr ""
 

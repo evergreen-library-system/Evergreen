@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-04 13:44-0400\n"
-"PO-Revision-Date: 2012-09-13 18:57+0000\n"
+"POT-Creation-Date: 2013-09-26 18:17-0400\n"
+"PO-Revision-Date: 2013-07-04 11:49+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-09-14 04:37+0000\n"
-"X-Generator: Launchpad (build 15944)\n"
+"X-Launchpad-Export-Date: 2013-09-28 05:21+0000\n"
+"X-Generator: Launchpad (build 16774)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -563,7 +563,7 @@ msgstr "Editor exemplářů"
 
 #: staff.cat.copy_editor.create_copies
 msgid "Modify/Create Copies"
-msgstr "Upravit/vytvořit exempláře"
+msgstr "Uložit/vytvořit exempláře"
 
 #: staff.cat.copy_editor.create_copies.accesskey
 msgid "M"
@@ -763,6 +763,10 @@ msgstr "<Odstranit ochranu>"
 msgid "<Remove Circulate as Type>"
 msgstr "<Odstranit Vypůjčit jako typ>"
 
+#: staff.cat.copy_editor.remove_floating
+msgid "<Remove Floating>"
+msgstr ""
+
 #: staff.cat.copy_editor.field.unset_or_null
 msgctxt "staff.cat.copy_editor.field.unset_or_null"
 msgid "<Unset>"
@@ -839,16 +843,6 @@ msgstr "Ne"
 #: staff.cat.copy_editor.field.floating.label
 msgid "Floating?"
 msgstr "Pohyblivý exemplář?"
-
-#: staff.cat.copy_editor.field.floating.yes_or_true
-msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
-msgid "Yes"
-msgstr "Ano"
-
-#: staff.cat.copy_editor.field.floating.no_or_false
-msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
-msgid "No"
-msgstr "Ne"
 
 #: staff.cat.copy_editor.field.age_based_hold_protection.label
 msgid "Age-based Hold Protection"
@@ -2451,6 +2445,14 @@ msgstr "%1$s volných"
 
 #~ msgid "Call Numbers"
 #~ msgstr "Signatury"
+
+#~ msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
+#~ msgid "Yes"
+#~ msgstr "Ano"
+
+#~ msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
+#~ msgid "No"
+#~ msgstr "Ne"
 
 #~ msgid ""
 #~ "You must delete all the copies on the volume before you may delete the "

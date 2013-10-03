@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > lang.dtd.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-15 19:37+0000\n"
+"POT-Creation-Date: 2013-09-26 18:16-0400\n"
 "PO-Revision-Date: 2013-01-29 06:50+0000\n"
-"Last-Translator: Hélion du Mas des Bourboux <helion331990@gmail.com>\n"
+"Last-Translator: londumas <helion331990@gmail.com>\n"
 "Language-Team: NRCan Library <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-16 05:59+0000\n"
-"X-Generator: Launchpad (build 16532)\n"
+"X-Launchpad-Export-Date: 2013-09-28 05:27+0000\n"
+"X-Generator: Launchpad (build 16774)\n"
 "X-Poedit-Country: CANADA\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: French\n"
@@ -223,6 +223,26 @@ msgstr "Supprimer la transaction sélectionnée"
 msgid "&Save these transactions"
 msgstr "Enregi&strer ces transactions"
 
+#: common.debug.label
+msgid "Debug:"
+msgstr ""
+
+#: common.debug.btn.execute
+msgid "Execute"
+msgstr ""
+
+#: common.debug.btn.inspect
+msgid "Inspect"
+msgstr ""
+
+#: common.debug.btn.js2JSON
+msgid "js2JSON"
+msgstr ""
+
+#: common.debug.menu.btn
+msgid "Debug"
+msgstr ""
+
 #: common.true
 msgid "True"
 msgstr "Vrai"
@@ -296,6 +316,16 @@ msgstr "Supprimer"
 msgctxt "common.textbox.select_all"
 msgid "Select All"
 msgstr "Tout sélectionner"
+
+#: common.clipboard.copy_data.desc
+msgid "Choose the data to copy into the clipboard:"
+msgstr ""
+
+#: common.clipboard.close.label
+#: common.clipboard.close.accesskey
+msgctxt "common.clipboard.close.label common.clipboard.close.accesskey"
+msgid "&Close"
+msgstr ""
 
 #: common.sort.first.ascending
 msgid "Sort First (Ascending)"
@@ -898,6 +928,20 @@ msgstr "Usagers avec un solde négatif"
 msgid "&Actions for Selected Patrons"
 msgstr "Mesures à prendre pour les usagers sélectionn"
 
+#: staff.auth.help_btn.label
+#: staff.auth.help_btn.accesskey
+msgid "He&lp"
+msgstr ""
+
+#: staff.auth.help.menu.contents.label
+#: staff.auth.help.menu.contents.accesskey
+msgid "&Contents"
+msgstr ""
+
+#: staff.auth.help.menu.check_upgrades.label
+msgid "Check for upgrades"
+msgstr ""
+
 #: staff.auth.login_header
 msgid "Log in"
 msgstr "Ouvrir une session"
@@ -944,8 +988,9 @@ msgid "Exit Evergreen"
 msgstr "Quitter Evergreen"
 
 #: staff.auth.quit_prompt.accesskey
+msgctxt "staff.auth.quit_prompt.accesskey"
 msgid "x"
-msgstr "x"
+msgstr ""
 
 #: staff.auth.submit_prompt
 msgctxt "staff.auth.submit_prompt"
@@ -1019,6 +1064,26 @@ msgstr ""
 
 #: staff.auth.change_type_permanent
 msgid "Permanent"
+msgstr ""
+
+#: staff.symbols.west_european
+msgid "West-European"
+msgstr ""
+
+#: staff.symbols.turkish
+msgid "Turkish"
+msgstr ""
+
+#: staff.symbols.cyrillic
+msgid "Cyrillic"
+msgstr ""
+
+#: staff.symbols.slavic
+msgid "Slavic"
+msgstr ""
+
+#: staff.symbols.hungarian
+msgid "Hungarian"
 msgstr ""
 
 #: staff.bills_current_payment_label
@@ -1238,6 +1303,18 @@ msgstr "VIS"
 msgctxt "staff.cat.fixed.VIS.key"
 msgid "V"
 msgstr "V"
+
+#: staff.bibs_abreast.view_bib
+msgid "View Bib"
+msgstr ""
+
+#: staff.bibs_abreast.edit_bib
+msgid "Edit Bib"
+msgstr ""
+
+#: staff.bibs_abreast.holdings
+msgid "Holdings"
+msgstr ""
 
 #: staff.cat.opac.add_bucket.label
 #: staff.cat.opac.add_bucket.accesskey
@@ -2780,8 +2857,9 @@ msgid "-"
 msgstr "-"
 
 #: staff.main.menu.admin.change_session.label
-msgid "Operator Change: New"
-msgstr "Changement d’opérateur : Nouveau"
+#: staff.main.menu.admin.change_session.accesskey
+msgid "&Operator Change: New"
+msgstr ""
 
 #: staff.main.menu.admin.clear_cache.accesskey
 msgctxt "staff.main.menu.admin.clear_cache.accesskey"
@@ -2966,6 +3044,10 @@ msgstr "Serveurs Z39.50"
 msgid "Org Unit Proximity Adjustments"
 msgstr ""
 
+#: staff.main.menu.admin.server_admin.conify.z3950_index_field_map.label
+msgid "Z39.50 Index Field Maps"
+msgstr ""
+
 #: staff.main.menu.admin.server_admin.conify.circulation_modifier.label
 msgid "Circulation Modifiers"
 msgstr "Modificateurs de prêts"
@@ -3049,6 +3131,10 @@ msgstr "Indicateurs globaux"
 
 #: staff.main.menu.admin.server_admin.conify.circulation_limit_group.label
 msgid "Circulation Limit Groups"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.conify.floating_groups.label
+msgid "Floating Groups"
 msgstr ""
 
 #: staff.main.menu.admin.server_admin.acq.label
@@ -3293,6 +3379,10 @@ msgstr ""
 
 #: staff.main.menu.admin.client.search_prefs.label
 msgid "Set Search Preferences"
+msgstr ""
+
+#: staff.main.menu.admin.client.server_addon_ws_configure.label
+msgid "Server Add-ons"
 msgstr ""
 
 #: staff.main.menu.admin.client.toolbars
@@ -3755,7 +3845,7 @@ msgid "&Browse Holds Shelf"
 msgstr "&Parcourir l’« étagère » d’articles en réserve"
 
 #: staff.main.menu.circ.hold_clear.label
-msgid "Clear Shelf-Expired Holds"
+msgid "Clear Holds Shelf"
 msgstr ""
 
 #: staff.main.menu.circ.hold_capture.label
@@ -4030,8 +4120,9 @@ msgid "Bib Records"
 msgstr "Comptes de bibliothèque"
 
 #: staff.main.menu.entity.copy.label
+msgctxt "staff.main.menu.entity.copy.label"
 msgid "Items"
-msgstr "Articles"
+msgstr ""
 
 #: staff.main.menu.entity.patron.label
 msgid "Patrons"
@@ -5585,8 +5676,9 @@ msgid "Title"
 msgstr "Titre"
 
 #: staff.next.range
+msgctxt "staff.next.range"
 msgid "Next"
-msgstr "Suivant"
+msgstr ""
 
 #: staff.next.range.key
 msgctxt "staff.next.range.key"
@@ -5733,6 +5825,10 @@ msgstr "Articles mis en réserve :"
 msgctxt "staff.patron_display.holds_available.label"
 msgid "Available:"
 msgstr "Disponible :"
+
+#: staff.patron_display.holds_available_behind_desk.label
+msgid "Behind Desk:"
+msgstr ""
 
 #: staff.patron_display.home_ou.label
 msgctxt "staff.patron_display.home_ou.label"
@@ -6218,8 +6314,8 @@ msgid "I"
 msgstr "I"
 
 #: staff.patron_navbar.items.problem_items.caption
-msgid "Lost, Claimed Returned, Long Overdue, Has Unpaid Billings"
-msgstr "Perdu, demandé retourné, très en retard, a des factures impayées"
+msgid "Other/Special Circulations"
+msgstr ""
 
 #: staff.patron_navbar.refresh
 msgctxt "staff.patron_navbar.refresh"
@@ -6350,8 +6446,9 @@ msgid "Patron Statistical Categories"
 msgstr "Catégories statistiques des clients"
 
 #: staff.previous.range
+msgctxt "staff.previous.range"
 msgid "Previous"
-msgstr "Précédent"
+msgstr ""
 
 #: staff.previous.range.key
 msgctxt "staff.previous.range.key"
@@ -6427,6 +6524,15 @@ msgstr "Modifier un enregistrement MFHD"
 msgid "Delete MFHD Record"
 msgstr "Supprimer un enregistrement MFHD"
 
+#: staff.serial.scap_editor.title.label
+msgid "Caption and Pattern"
+msgstr ""
+
+#: staff.serial.pattern_wizard.title
+msgctxt "staff.serial.pattern_wizard.title"
+msgid "Pattern Code Wizard"
+msgstr ""
+
 #: staff.serial.scap_editor.pattern_wizard.label
 #: staff.serial.scap_editor.pattern_wizard.accesskey
 msgid "Pattern Code Wi&zard"
@@ -6447,9 +6553,17 @@ msgstr ""
 msgid "Caption and Pattern &Notes"
 msgstr ""
 
+#: staff.serial.sbsum_editor.basicsummary.label
+msgid "Basic Summary"
+msgstr ""
+
 #: staff.serial.sbsum_editor.modify.label
 #: staff.serial.sbsum_editor.modify.accesskey
 msgid "&Modify Basic Summary"
+msgstr ""
+
+#: staff.serial.sisum_editor.title.label
+msgid "Index Summary"
 msgstr ""
 
 #: staff.serial.sisum_editor.modify.label
@@ -6460,6 +6574,10 @@ msgstr ""
 #: staff.serial.sssum_editor.modify.label
 #: staff.serial.sssum_editor.modify.accesskey
 msgid "&Modify Supplement Summary"
+msgstr ""
+
+#: staff.serial.sssum_editor.summary.label
+msgid "Supplement Summary"
 msgstr ""
 
 #: staff.serial.sdist_editor.modify.label
@@ -6475,6 +6593,18 @@ msgstr ""
 #: staff.serial.sdist_editor.notes.label
 #: staff.serial.sdist_editor.notes.accesskey
 msgid "Distribution &Notes"
+msgstr ""
+
+#: staff.serial.sdist_editor.distribution.value
+msgid "Distribution"
+msgstr ""
+
+#: staff.serial.sdist_editor.libopt.label
+msgid "Library Specific Options"
+msgstr ""
+
+#: staff.serial.sdist_editor.libopt.desc
+msgid "Note: Changing the 'Holding Lib' will unset all of these values"
 msgstr ""
 
 #: staff.serial.serctrl_view.label
@@ -6511,6 +6641,27 @@ msgstr ""
 msgid "Item &Notes"
 msgstr ""
 
+#: staff.serial.sitem_editor.title
+msgid "Item Editor"
+msgstr ""
+
+#: staff.serial.sitem_editor.item.label
+msgid "Item"
+msgstr ""
+
+#: staff.serial.sitem_editor.item_dates.btn
+msgid "Item Dates"
+msgstr ""
+
+#: staff.serial.sitem_editor.item_dates.accesskey
+msgctxt "staff.serial.sitem_editor.item_dates.accesskey"
+msgid "1"
+msgstr ""
+
+#: staff.serial.sstr_editor.stream.label
+msgid "Stream"
+msgstr ""
+
 #: staff.serial.sstr_editor.modify.label
 #: staff.serial.sstr_editor.modify.accesskey
 msgid "&Modify Stream(s)"
@@ -6534,6 +6685,30 @@ msgstr ""
 #: staff.serial.ssub_editor.notes.label
 #: staff.serial.ssub_editor.notes.accesskey
 msgid "Subscription &Notes"
+msgstr ""
+
+#: staff.serial.manage_dists.title.label
+msgctxt "staff.serial.manage_dists.title.label"
+msgid "Distributions"
+msgstr ""
+
+#: staff.serial.manage_dists.show_sdists.label
+msgid "Show Dists."
+msgstr ""
+
+#: staff.serial.manage_dists.show_sdists_groups.label
+msgctxt "staff.serial.manage_dists.show_sdists_groups.label"
+msgid "Show Groups"
+msgstr ""
+
+#: staff.serial.manage_dists.actions.cmd_menu.label
+msgctxt "staff.serial.manage_dists.actions.cmd_menu.label"
+msgid "Actions for Selected Row"
+msgstr ""
+
+#: staff.serial.manage_dists.actions.select_obj.desc
+msgctxt "staff.serial.manage_dists.actions.select_obj.desc"
+msgid "Please select an object to edit"
 msgstr ""
 
 #: staff.serial.manage_dists.actions.cmd_add_sstr.label
@@ -6650,6 +6825,454 @@ msgstr "Autre…"
 
 #: staff.serial.manage_items.context.label
 msgid "Context:"
+msgstr ""
+
+#: staff.serial.manage_subs.tab.label
+msgctxt "staff.serial.manage_subs.tab.label"
+msgid "Subscriptions"
+msgstr ""
+
+#: staff.serial.manage_subs.cmd_add_sub.label
+msgid "Add Subscription"
+msgstr ""
+
+#: staff.serial.manage_subs.cmd_add_sdist.label
+msgid "Add Distribution"
+msgstr ""
+
+#: staff.serial.manage_subs.cmd_add_siss.label
+msgid "Add Issuance"
+msgstr ""
+
+#: staff.serial.manage_subs.cmd_add_scap.label
+msgid "Add Caption/Pattern"
+msgstr ""
+
+#: staff.serial.manage_subs.cmd_make_predictions.label
+msgid "Make Predictions"
+msgstr ""
+
+#: staff.serial.manage_subs.cmd_del_ssub.label
+msgid "Delete Subscription"
+msgstr ""
+
+#: staff.serial.manage_subs.cmd_del_sdist.label
+msgid "Delete Distribution"
+msgstr ""
+
+#: staff.serial.manage_subs.cmd_del_siss.label
+msgid "Delete Issuance"
+msgstr ""
+
+#: staff.serial.manage_subs.cmd_del_scap.label
+msgid "Delete Caption/Pattern"
+msgstr ""
+
+#: staff.serial.manage_subs.show_subs.label
+msgid "Show Subs."
+msgstr ""
+
+#: staff.serial.manage_subs.show_subs_groups.label
+msgctxt "staff.serial.manage_subs.show_subs_groups.label"
+msgid "Show Groups"
+msgstr ""
+
+#: staff.serial.manage_subs.actions_menu.label
+msgctxt "staff.serial.manage_subs.actions_menu.label"
+msgid "Actions for Selected Row"
+msgstr ""
+
+#: staff.serial.manage_subs.deck.desc
+msgctxt "staff.serial.manage_subs.deck.desc"
+msgid "Please select an object to edit"
+msgstr ""
+
+#: staff.select_aou.title
+msgid "Select Org Unit"
+msgstr ""
+
+#: staff.select_aou.caption
+msgid "Select an Org Unit"
+msgstr ""
+
+#: staff.select_aou.desc
+msgid "Please select an Org Unit"
+msgstr ""
+
+#: staff.select_aou.select_btn.label
+#: staff.select_aou.select_btn.accesskey
+msgid "&Select"
+msgstr ""
+
+#: staff.serial.patternwiz.caption
+msgctxt "staff.serial.patternwiz.caption"
+msgid "Pattern Code Wizard"
+msgstr ""
+
+#: staff.serial.patternwiz.previous.btn
+msgctxt "staff.serial.patternwiz.previous.btn"
+msgid "Previous"
+msgstr ""
+
+#: staff.serial.patternwiz.next.btn
+msgctxt "staff.serial.patternwiz.next.btn"
+msgid "Next"
+msgstr ""
+
+#: staff.serial.patternwiz.use_enum.label
+msgid "Use enumerations?"
+msgstr ""
+
+#: staff.serial.patternwiz.use_enum.desc
+msgid ""
+"\"v.\" and \"no.\" are common first and second level enumeration captions."
+msgstr ""
+
+#: staff.serial.patternwiz.enum_row.enum_capt
+msgid "Enumeration Caption"
+msgstr ""
+
+#: staff.serial.patternwiz.enum_row.units_per_higher_lvl
+msgid "Units Per Higher Level"
+msgstr ""
+
+#: staff.serial.patternwiz.enum_row.number_cont
+msgid "Numbering Continuity"
+msgstr ""
+
+#: staff.serial.patternwiz.units_per.number.label
+msgid "Number"
+msgstr ""
+
+#: staff.serial.patternwiz.units_per.varies.label
+msgid "Varies"
+msgstr ""
+
+#: staff.serial.patternwiz.units_per.undetermined.label
+msgid "Undetermined"
+msgstr ""
+
+#: staff.serial.patternwiz.continuity.continuous.label
+msgid "Increments continuously"
+msgstr ""
+
+#: staff.serial.patternwiz.continuity.restarts.label
+msgid "Restarts at unit completion"
+msgstr ""
+
+#: staff.serial.patternwiz.enum_row.remove
+msgid "Remove"
+msgstr ""
+
+#: staff.serial.patternwiz.enum_row.add.label
+#: staff.serial.patternwiz.enum_row.add.accesskey
+msgid "Add &Enumeration"
+msgstr ""
+
+#: staff.serial.patternwiz.enum_row.add_alt.label
+#: staff.serial.patternwiz.enum_row.add_alt.accesskey
+msgid "&Add Alternate Enumeration"
+msgstr ""
+
+#: staff.serial.patternwiz.use_cal_change
+msgid "Use calendar changes?"
+msgstr ""
+
+#: staff.serial.patternwiz.use_cal_change.desc
+msgid ""
+"Identify any points during the year at which the highest level enumeration "
+"caption changes."
+msgstr ""
+
+#: staff.serial.patternwiz.cal_change_head.type
+msgctxt "staff.serial.patternwiz.cal_change_head.type"
+msgid "Type"
+msgstr ""
+
+#: staff.serial.patternwiz.cal_change_head.point
+msgid "Point"
+msgstr ""
+
+#: staff.serial.patternwiz.cal_row.month
+msgid "At start of a month"
+msgstr ""
+
+#: staff.serial.patternwiz.cal_row.season
+msgid "At start of a season"
+msgstr ""
+
+#: staff.serial.patternwiz.cal_row.date
+msgid "On a date"
+msgstr ""
+
+#: staff.serial.patternwiz.season.spring
+msgid "Spring"
+msgstr ""
+
+#: staff.serial.patternwiz.season.summer
+msgid "Summer"
+msgstr ""
+
+#: staff.serial.patternwiz.season.autumn
+msgid "Autumn"
+msgstr ""
+
+#: staff.serial.patternwiz.season.winter
+msgid "Winter"
+msgstr ""
+
+#: staff.serial.patternwiz.cal_change.add.btn
+msgid "Add Calendar Change"
+msgstr ""
+
+#: staff.serial.patternwiz.cal_change.add.accesskey
+msgctxt "staff.serial.patternwiz.cal_change.add.accesskey"
+msgid "C"
+msgstr ""
+
+#: staff.serial.patternwiz.use_chron.label
+msgid "Use chronology captions?"
+msgstr ""
+
+#: staff.serial.patternwiz.use_chron.desc
+msgid ""
+"Each caption must be a smaller unit of time than the preceding caption."
+msgstr ""
+
+#: staff.serial.patternwiz.chron_row_head.caption
+msgid "Caption"
+msgstr ""
+
+#: staff.serial.patternwiz.chron_row_head.include
+msgid "Include this actual word in the caption?"
+msgstr ""
+
+#: staff.serial.patternwiz.chron_row.year
+msgid "Year"
+msgstr ""
+
+#: staff.serial.patternwiz.chron_row.season
+msgctxt "staff.serial.patternwiz.chron_row.season"
+msgid "Season"
+msgstr ""
+
+#: staff.serial.patternwiz.chron_row.month
+msgctxt "staff.serial.patternwiz.chron_row.month"
+msgid "Month"
+msgstr ""
+
+#: staff.serial.patternwiz.chron_row.week
+msgid "Week"
+msgstr ""
+
+#: staff.serial.patternwiz.chron_row.day
+msgid "Day"
+msgstr ""
+
+#: staff.serial.patternwiz.chron_row.hour
+msgid "Hour"
+msgstr ""
+
+#: staff.serial.patternwiz.chron_caption.add.label
+#: staff.serial.patternwiz.chron_caption.add.accesskey
+msgid "Add &Chronology Caption"
+msgstr ""
+
+#: staff.serial.patternwiz.compress.label
+msgid "Compressibility and Expandability:"
+msgstr ""
+
+#: staff.serial.patternwiz.compress.cannot
+msgid "Cannot compress or expand"
+msgstr ""
+
+#: staff.serial.patternwiz.compress.can_compress
+msgid "Can compress but not expand"
+msgstr ""
+
+#: staff.serial.patternwiz.compress.both
+msgid "Can compress or expand"
+msgstr ""
+
+#: staff.serial.patternwiz.compress.unknown
+msgid "Unknown"
+msgstr ""
+
+#: staff.serial.patternwiz.caption_eval.label
+msgid "Caption Evaluation:"
+msgstr ""
+
+#: staff.serial.patternwiz.caption_eval.yes_all
+msgid "Captions verified; all levels present"
+msgstr ""
+
+#: staff.serial.patternwiz.caption_eval.yes_some
+msgid "Captions verified; all levels may not be present"
+msgstr ""
+
+#: staff.serial.patternwiz.caption_eval.no_all
+msgid "Captions unverified; all levels present"
+msgstr ""
+
+#: staff.serial.patternwiz.caption_eval.no_some
+msgid "Captions unverified; all levels may not be present"
+msgstr ""
+
+#: staff.serial.patternwiz.freq.label
+#: staff.serial.patternwiz.freq.accesskey
+msgid "Select &frequency:"
+msgstr ""
+
+#: staff.serial.patternwiz.freq.item.a
+msgid "Annual"
+msgstr ""
+
+#: staff.serial.patternwiz.freq.item.b
+msgid "Bimonthly"
+msgstr ""
+
+#: staff.serial.patternwiz.freq.item.c
+msgid "Semiweekly"
+msgstr ""
+
+#: staff.serial.patternwiz.freq.item.d
+msgid "Daily"
+msgstr ""
+
+#: staff.serial.patternwiz.freq.item.e
+msgid "Biweekly"
+msgstr ""
+
+#: staff.serial.patternwiz.freq.item.f
+msgid "Semiannual"
+msgstr ""
+
+#: staff.serial.patternwiz.freq.item.g
+msgid "Biennial"
+msgstr ""
+
+#: staff.serial.patternwiz.freq.item.h
+msgid "Triennial"
+msgstr ""
+
+#: staff.serial.patternwiz.freq.item.i
+msgid "Three times a week"
+msgstr ""
+
+#: staff.serial.patternwiz.freq.item.j
+msgid "Three times a month"
+msgstr ""
+
+#: staff.serial.patternwiz.freq.item.k
+msgid "Continuously updated"
+msgstr ""
+
+#: staff.serial.patternwiz.freq.item.m
+msgid "Monthly"
+msgstr ""
+
+#: staff.serial.patternwiz.freq.item.q
+msgid "Quarterly"
+msgstr ""
+
+#: staff.serial.patternwiz.freq.item.s
+msgid "Semimonthly"
+msgstr ""
+
+#: staff.serial.patternwiz.freq.item.t
+msgid "Three times a year"
+msgstr ""
+
+#: staff.serial.patternwiz.freq.item.w
+msgid "Weekly"
+msgstr ""
+
+#: staff.serial.patternwiz.freq.item.x
+msgid "Completely irregular"
+msgstr ""
+
+#: staff.serial.patternwiz.issues_per_year.label
+#: staff.serial.patternwiz.issues_per_year.accesskey
+msgid "Use number of &issues per year:"
+msgstr ""
+
+#: staff.serial.patternwiz.use_regularity
+msgid ""
+"Use specific regularity information (published, omitted, and/or combined "
+"issues)?"
+msgstr ""
+
+#: staff.serial.patternwiz.regularity.item.p
+msgid "Published"
+msgstr ""
+
+#: staff.serial.patternwiz.regularity.item.o
+msgid "Omitted"
+msgstr ""
+
+#: staff.serial.patternwiz.regularity.item.c
+msgid "Combined"
+msgstr ""
+
+#: staff.serial.patternwiz.regularity.typecode.d1
+msgid "Day of the week"
+msgstr ""
+
+#: staff.serial.patternwiz.regularity.typecode.d2
+msgid "Day of the month"
+msgstr ""
+
+#: staff.serial.patternwiz.regularity.typecode.d3
+msgid "Date of the year"
+msgstr ""
+
+#: staff.serial.patternwiz.regularity.typecode.m
+msgctxt "staff.serial.patternwiz.regularity.typecode.m"
+msgid "Month"
+msgstr ""
+
+#: staff.serial.patternwiz.regularity.typecode.s
+msgctxt "staff.serial.patternwiz.regularity.typecode.s"
+msgid "Season"
+msgstr ""
+
+#: staff.serial.patternwiz.regularity.typecode.w1
+msgid "Weekday of the month"
+msgstr ""
+
+#: staff.serial.patternwiz.regularity.typecode.w2
+msgid "Weekday of specific month"
+msgstr ""
+
+#: staff.serial.patternwiz.regularity.typecode.w3
+msgid "Week of specific month"
+msgstr ""
+
+#: staff.serial.patternwiz.regularity.typecode.y
+msgid "Span over two years"
+msgstr ""
+
+#: staff.serial.patternwiz.subrow.add.label
+msgid "Add sub-row"
+msgstr ""
+
+#: staff.serial.patternwiz.subrow.remove.label
+msgid "Remove whole row"
+msgstr ""
+
+#: staff.serial.patternwiz.addrow.label
+#: staff.serial.patternwiz.addrow.accesskey
+msgid "Add More Regularit&y Information"
+msgstr ""
+
+#: staff.serial.patternwiz.submit.desc
+msgid ""
+"Are you ready to create a pattern code from your selections in this wizard?"
+msgstr ""
+
+#: staff.serial.patternwiz.submit.label
+#: staff.serial.patternwiz.submit.accesskey
+msgid "Create &Pattern Code"
 msgstr ""
 
 #: staff.serial.batch_receive
@@ -7574,6 +8197,10 @@ msgstr "Format de date invalide"
 msgid "Invalid time format"
 msgstr "Format d’heure invalide"
 
+#: staff.server.admin.closed_dates.date_span.invalid
+msgid "Ending date is earlier than starting date"
+msgstr ""
+
 #: staff.server.admin.closed_dates.success
 msgid "Closed date successfully updated"
 msgstr "La date de fermeture a été mise à jour"
@@ -8055,8 +8682,9 @@ msgid "Transit List"
 msgstr "Liste des transits"
 
 #: staff.server.admin.index.conify
+msgctxt "staff.server.admin.index.conify"
 msgid "Server Settings"
-msgstr "Paramètres du serveur"
+msgstr ""
 
 #: staff.server.admin.index.external_text_editor.label
 #: staff.server.admin.index.external_text_editor.accesskey
@@ -8903,7 +9531,7 @@ msgstr ""
 
 #: staff.circ.checkin_overlay.checkin_clear_shelf_expired.label
 #: staff.circ.checkin_overlay.checkin_clear_shelf_expired.accesskey
-msgid "&Clear Shelf-Expired Holds"
+msgid "&Clear Holds Shelf"
 msgstr ""
 
 #: staff.circ.checkin_overlay.checkin_auto_retarget.label
@@ -8923,6 +9551,11 @@ msgstr ""
 #: staff.circ.checkin_overlay.checkin_local_hold_as_transit.label
 #: staff.circ.checkin_overlay.checkin_local_hold_as_transit.accesskey
 msgid "Capture &Local Holds as Transits"
+msgstr ""
+
+#: staff.circ.checkin_overlay.checkin_manual_float.label
+#: staff.circ.checkin_overlay.checkin_manual_float.accesskey
+msgid "Manual &Floating Active"
 msgstr ""
 
 #: staff.circ.renew_overlay.background_text
@@ -9980,8 +10613,12 @@ msgid "Transfer to Marked Title"
 msgstr "Transférer au titre indiqué"
 
 #: staff.circ.holds.view_expired_onshelf_holds.label
+msgid "View Clearable Holds"
+msgstr ""
+
 #: staff.circ.holds.view_expired_onshelf_holds.accesskey
-msgid "View Shelf-E&xpired Holds"
+msgctxt "staff.circ.holds.view_expired_onshelf_holds.accesskey"
+msgid "x"
 msgstr ""
 
 #: staff.circ.holds.clear_expired_onshelf_holds.label
@@ -10055,18 +10692,16 @@ msgstr "Motif et notes"
 
 #: staff.hold_list.cancel_hold_dialog.cancel_btn.label
 #: staff.hold_list.cancel_hold_dialog.cancel_btn.accesskey
-msgctxt ""
-"staff.hold_list.cancel_hold_dialog.cancel_btn.label "
-"staff.hold_list.cancel_hold_dialog.cancel_btn.accesskey"
-msgid "&Cancel"
-msgstr "&Annuler"
+msgid "&No"
+msgstr ""
 
 #: staff.hold_list.cancel_hold_dialog.apply_btn.label
 #: staff.hold_list.cancel_hold_dialog.apply_btn.accesskey
-msgctxt ""
-"staff.hold_list.cancel_hold_dialog.apply_btn.label "
-"staff.hold_list.cancel_hold_dialog.apply_btn.accesskey"
-msgid "&Apply"
+msgid "&Yes"
+msgstr ""
+
+#: staff.hold_list.cancel_hold_dialog.confirmation
+msgid "Are you sure you want to cancel the hold(s)?"
 msgstr ""
 
 #: staff.cat.manage_multi_bib_items.caption
@@ -10112,6 +10747,41 @@ msgstr ""
 #: staff.cat.manage_multi_bib_items.barcode.submit.label
 #: staff.cat.manage_multi_bib_items.barcode.submit.accesskey
 msgid "Link to Bib (&Submit)"
+msgstr ""
+
+#: staff.cat.serial_control.title.label
+msgid "Serial Control"
+msgstr ""
+
+#: staff.cat.serial_control.tab.items
+msgctxt "staff.cat.serial_control.tab.items"
+msgid "Items"
+msgstr ""
+
+#: staff.cat.serial_control.tab.units
+msgid "Units"
+msgstr ""
+
+#: staff.cat.serial_control.tab.distributions
+msgctxt "staff.cat.serial_control.tab.distributions"
+msgid "Distributions"
+msgstr ""
+
+#: staff.cat.serial_control.tab.subscriptions
+msgctxt "staff.cat.serial_control.tab.subscriptions"
+msgid "Subscriptions"
+msgstr ""
+
+#: staff.cat.serial_control.tab.claims
+msgid "Claims"
+msgstr ""
+
+#: staff.cat.serial_control.tab.units.desc
+msgid "This tab will contain an alternative unit view/editor."
+msgstr ""
+
+#: staff.cat.serial_control.tab.claims.desc
+msgid "This tab will contain a claims interface."
 msgstr ""
 
 #: staff.cat.copy_browser.actions.sel_clip.label
@@ -10767,8 +11437,10 @@ msgstr "&Modifier les copies"
 
 #: staff.cat.copy_editor.cancel.label
 #: staff.cat.copy_editor.cancel.accesskey
+msgctxt ""
+"staff.cat.copy_editor.cancel.label staff.cat.copy_editor.cancel.accesskey"
 msgid "&Close"
-msgstr "&Fermer"
+msgstr ""
 
 #: staff.cat.copy_editor.hide_fields.label
 msgid "Hide Fields"
@@ -11233,6 +11905,23 @@ msgstr "XML"
 #: staff.cat.record_buckets_overlay.menuitem.export_eg_bre.label
 msgid "Evergreen BRE"
 msgstr "Evergreen BRE"
+
+#: staff.cat.select_unit.title
+msgid "Select Serial Unit"
+msgstr ""
+
+#: staff.cat.record_buckets_quick.select.label
+#: staff.cat.record_buckets_quick.select.accesskey
+msgid "&Select a Serial Unit"
+msgstr ""
+
+#: staff.cat.record_buckets_quick.select.desc
+msgid "Please select a Serial Unit"
+msgstr ""
+
+#: staff.cat.record_buckets_quick.select.btn
+msgid "Select"
+msgstr ""
 
 #: staff.cat.record_buckets_quick.groupbox.caption
 msgctxt "staff.cat.record_buckets_quick.groupbox.caption"
@@ -12050,6 +12739,14 @@ msgstr "Payé"
 msgid "Red Items are still Checked Out"
 msgstr "Les articles en rouge sont toujours non disponibles"
 
+#: staff.patron.bills_overlay.longoverdue_checked_out.label
+msgid "Orange Items are Long Overdue"
+msgstr ""
+
+#: staff.patron.bills_overlay.lost_checked_out.label
+msgid "Dark Red Items are Lost"
+msgstr ""
+
 #: staff.patron.bills_overlay.uncheck_all.label
 #: staff.patron.bills_overlay.uncheck_all.accesskey
 msgid "&Uncheck All"
@@ -12095,8 +12792,9 @@ msgid "&Number of Copies:"
 msgstr ""
 
 #: staff.patron.bills_overlay.summary.label
+msgctxt "staff.patron.bills_overlay.summary.label"
 msgid "Summary"
-msgstr "Sommaire"
+msgstr ""
 
 #: staff.patron.bills_overlay.net_balance.value
 msgid "Net Balance"
@@ -12197,6 +12895,11 @@ msgstr ""
 #: staff.patron.bills_overlay.apply_payment.accesskey
 msgid "Apply &Payment!"
 msgstr "Appliquer le &paiement!"
+
+#: staff.patron.bill_summary_overlay.caption
+msgctxt "staff.patron.bill_summary_overlay.caption"
+msgid "Summary"
+msgstr ""
 
 #: staff.patron.bill_summary_overlay.bill_number.value
 msgid "Bill #"
@@ -12343,6 +13046,10 @@ msgstr "(Factures maximum)"
 msgid "(Maximum Overdues)"
 msgstr "(Retards maximum)"
 
+#: staff.patron.display_overlay.max_lost.value
+msgid "(Maximum Lost)"
+msgstr ""
+
 #: staff.patron.display_overlay.max_checked_out.value
 msgid "(Maximum Checked Out)"
 msgstr ""
@@ -12354,6 +13061,10 @@ msgstr "(a accumulé des factures)"
 #: staff.patron.display_overlay.has_overdues.value
 msgid "(Has Overdues)"
 msgstr "(a accumulé des retards)"
+
+#: staff.patron.display_overlay.has_lost.value
+msgid "(Has Lost)"
+msgstr ""
 
 #: staff.patron.display_overlay.invalid_dob.value
 msgid "(Invalid Date of Birth)"
@@ -13446,6 +14157,10 @@ msgctxt "staff.patron.items_overlay.items_export.label"
 msgid "Export"
 msgstr "Exporter"
 
+#: staff.patron.items_overlay.print_one.label
+msgid "Print Item Receipt"
+msgstr ""
+
 #: staff.generic.list_actions.label
 #: staff.generic.list_actions.accesskey
 msgctxt ""
@@ -13907,6 +14622,10 @@ msgstr ""
 msgid "Evergreen Staff Client Portal"
 msgstr "Portail du client des membres du personnel d'Evergreen"
 
+#: staff.client.portal.tab_name
+msgid "Portal"
+msgstr ""
+
 #: staff.client.portal.welcome
 msgid "Welcome to Evergreen"
 msgstr "Bienvenue à Evergreen"
@@ -13947,6 +14666,14 @@ msgstr ""
 #: staff.client.portal.patronreg.description
 msgctxt "staff.client.portal.patronreg.description"
 msgid "Register Patron(s)"
+msgstr ""
+
+#: staff.client.portal.patronreg.tab_name
+msgid "Register Patron"
+msgstr ""
+
+#: staff.client.portal.patronreg_edit.tab_name
+msgid "Editing Related Patron"
 msgstr ""
 
 #: staff.client.portal.patronsearch
@@ -14003,6 +14730,11 @@ msgctxt "staff.client.portal.marcutil.description"
 msgid "MARC Batch Import / Export"
 msgstr ""
 
+#: staff.client.portal.marcutil.tab_name
+msgctxt "staff.client.portal.marcutil.tab_name"
+msgid "Server Settings"
+msgstr ""
+
 #: staff.client.portal.z3950
 msgctxt "staff.client.portal.z3950"
 msgid "z39.50 Import"
@@ -14033,6 +14765,11 @@ msgctxt "staff.client.portal.recordbuckets.description"
 msgid "Record Buckets"
 msgstr ""
 
+#: staff.client.portal.recordbuckets.tab_name
+msgctxt "staff.client.portal.recordbuckets.tab_name"
+msgid "Record Buckets"
+msgstr ""
+
 #: staff.client.portal.admin
 msgid "Administration"
 msgstr "Administration"
@@ -14052,6 +14789,11 @@ msgstr "Rapports"
 
 #: staff.client.portal.reports.description
 msgctxt "staff.client.portal.reports.description"
+msgid "Reports"
+msgstr ""
+
+#: staff.client.portal.reports.tab_name
+msgctxt "staff.client.portal.reports.tab_name"
 msgid "Reports"
 msgstr ""
 
@@ -14080,6 +14822,27 @@ msgstr ""
 #: staff.client.portal.search.button
 msgctxt "staff.client.portal.search.button"
 msgid "Search"
+msgstr ""
+
+#: staff.client.portal.address_map.tab_name
+msgid "Locate Address In Map"
+msgstr ""
+
+#: staff.client.portal.local_admin.tab_name
+msgid "Local Administration"
+msgstr ""
+
+#: staff.client.portal.on_shelf_pull_list.tab_name
+msgid "On Shelf Pull List"
+msgstr ""
+
+#: staff.client.portal.catalog.tab_name
+msgid "Catalog"
+msgstr ""
+
+#: staff.client.portal.copybuckets.tab_name
+msgctxt "staff.client.portal.copybuckets.tab_name"
+msgid "Copy Buckets"
 msgstr ""
 
 #: staff.item.batch.hold.groupbox_caption
@@ -14195,8 +14958,59 @@ msgstr ""
 msgid "Preferences cleared"
 msgstr ""
 
+#: staff.bucketz39_search.dialog_label
+msgid "Locate Z39.50 Matches"
+msgstr ""
+
+#: staff.bucketz39_search.servers
+msgid "Z39.50 Servers:"
+msgstr ""
+
+#: staff.bucketz39_search.indexes
+msgid "Z39.50 Search Indexes:"
+msgstr ""
+
+#: staff.bucketz39_search.queue
+msgid "Add Results to Queue:"
+msgstr ""
+
+#: staff.bucketz39_search.match_set
+msgid "Match Set:"
+msgstr ""
+
+#: staff.bucketz39_search.match_set_select
+msgid "-- Select Match Set --"
+msgstr ""
+
+#: staff.bucketz39_search.perform_search
+msgid "Perform Search"
+msgstr ""
+
+#: staff.bucketz39_search.bib_count
+msgid "Bib Records to Search:"
+msgstr ""
+
+#: staff.bucketz39_search.progress
+msgid "Search Progress:"
+msgstr ""
+
+#: staff.bucketz39_search.found_matches
+msgid "Matches Found:"
+msgstr ""
+
+#: staff.bucketz39_search.close
+msgid "Close"
+msgstr ""
+
+#: staff.bucketz39_search.open_queue
+msgid "Open Queue"
+msgstr ""
+
 #~ msgid "Record ID"
 #~ msgstr "ID de l’enregistrement"
+
+#~ msgid "x"
+#~ msgstr "x"
 
 #~ msgid "Search"
 #~ msgstr "Recherche"
@@ -14216,6 +15030,9 @@ msgstr ""
 #~ msgstr ""
 #~ "&Parcourir les articles non mis en réserve pour cette bibliothèque d’emprunt"
 
+#~ msgid "Operator Change: New"
+#~ msgstr "Changement d’opérateur : Nouveau"
+
 #~ msgid "Create &New Marc Record"
 #~ msgstr "Créer un &nouveau compte MARC"
 
@@ -14232,12 +15049,24 @@ msgstr ""
 #~ msgid "Mark as \"Claimed Returned\""
 #~ msgstr "Marquer comme « demandé retourné »"
 
+#~ msgid "Items"
+#~ msgstr "Articles"
+
 #~ msgid "Search for record by Record I&D"
 #~ msgstr "Rechercher un compte par I&D de compte"
+
+#~ msgid "Next"
+#~ msgstr "Suivant"
 
 #~ msgctxt "staff.patron_display.date_of_birth.label"
 #~ msgid "Date of Birth:"
 #~ msgstr "Date de naissance :"
+
+#~ msgid "Lost, Claimed Returned, Long Overdue, Has Unpaid Billings"
+#~ msgstr "Perdu, demandé retourné, très en retard, a des factures impayées"
+
+#~ msgid "Previous"
+#~ msgstr "Précédent"
 
 #~ msgid "Small"
 #~ msgstr "Petite"
@@ -14258,11 +15087,20 @@ msgstr ""
 #~ msgid "Pull List for Hold Requests"
 #~ msgstr "Liste d’extraction des demandes d’articles mis en réserve"
 
+#~ msgid "Server Settings"
+#~ msgstr "Paramètres du serveur"
+
 #~ msgid "&Import"
 #~ msgstr "&Importer"
 
 #~ msgid "Edit Phone Notification"
 #~ msgstr "Modifier la notification téléphonique"
+
+#~ msgctxt ""
+#~ "staff.hold_list.cancel_hold_dialog.cancel_btn.label "
+#~ "staff.hold_list.cancel_hold_dialog.cancel_btn.accesskey"
+#~ msgid "&Cancel"
+#~ msgstr "&Annuler"
 
 #~ msgctxt ""
 #~ "staff.cat.copy_browser.actions.cmd_edit_items.label "
@@ -14291,11 +15129,17 @@ msgstr ""
 #~ msgid "Import"
 #~ msgstr "Importer"
 
+#~ msgid "&Close"
+#~ msgstr "&Fermer"
+
 #~ msgid "MARC Editor for &Overlay"
 #~ msgstr "Éditeur de MARC pour le &recouvrement"
 
 #~ msgid "MARC Editor for &Import"
 #~ msgstr "Éditeur de MARC pour l’&importation"
+
+#~ msgid "Summary"
+#~ msgstr "Sommaire"
 
 #~ msgctxt "staff.patron.ue.view_errors.label"
 #~ msgid "View Errors"
