@@ -139,6 +139,8 @@ include::admin/auto_suggest_search.txt[]
 
 include::admin/customize_staff_client.txt[]
 
+include::admin/phonelist.txt
+
 
 Using the Staff Client
 ======================
@@ -189,6 +191,8 @@ include::admin/cn_prefixes_and_suffixes.txt[]
 include::admin/circulation_limit_groups.txt[]
 
 include::admin/booking-admin.txt[]
+
+include::admin/floating_groups.txt[]
 
 include::admin/MARC_Import_Remove_Fields.txt[]
 
