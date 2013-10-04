@@ -176,8 +176,6 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, 
     (29, 'identifier', 'scn', oils_i18n_gettext(29, 'System Control Number', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='035']/marc:subfield[@code="a"]$$, FALSE);
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field) VALUES
     (30, 'identifier', 'lccn', oils_i18n_gettext(30, 'LC Control Number', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='010']/marc:subfield[@code="a" or @code='z']$$, FALSE);
-INSERT INTO config.metabib_field ( id, field_class, name, label, xpath, format, search_field, facet_field, browse_field) VALUES
-    (31, 'title', 'browse', oils_i18n_gettext(31, 'Title Proper (Browse)', 'cmf', 'label'), $$//mods32:mods/mods32:titleInfo[not (@type)]/mods32:title$$, 'mods32', FALSE, FALSE, TRUE);
 
 UPDATE config.metabib_field SET joiner = ' -- ' WHERE field_class = 'subject' AND name NOT IN ('name', 'complete');
 
