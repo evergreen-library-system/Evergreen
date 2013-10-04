@@ -668,14 +668,6 @@ div.format_icon {
 
 .cached_list_div { height: 25px; }
 
-.results_header_div {
-    float: left;
-    width: 0px;
-    border-left: 1px solid [% css_colors.accent_mediumdark %];
-    border-right: 1px solid [% css_colors.accent_medium %];
-    margin: 0px 13px;
-}
-
 .results_header_lbl {
     font-weight: bold;
     float: left;
@@ -1808,7 +1800,7 @@ a.preflib_change {
     #myopac_sum_fines {
         display: none;
     }
-    .results_header_div, .results_header_lbl {
+    .results_header_lbl {
         display: none;
     }
     .results_header_nav1 span.h1 {

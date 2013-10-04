@@ -38,11 +38,9 @@
                     [%- END %]
                 </div>
                 [% END %]
-                <div class="results_header_div"></div>
                     <label class="results_header_lbl">[% l('Sort by') %]
                     [% INCLUDE "opac/parts/filtersort.tt2" value=CGI.param('sort') submit_on_change=1 %]
                     </label>
-                    <div class="results_header_div"></div>
 
                     <div class='results_header_sel' id='simple-detail-view-links'>
                         [% IF CGI.param('detail_record_view') %]
@@ -50,7 +48,6 @@
                         <a href="[% mkurl('', {detail_record_view => 1}) %]">[% l('Show More Details') %]</a>
                         [% END %]
                     </div>
-                    <div class="results_header_div"></div>
 
                     <label class="results_header_lbl">
                         <input type="checkbox" id="limit_to_available" name="modifier" value="available"
@@ -61,7 +58,6 @@
                     [% IF CGI.param('detail_record_view') %]
                         <input type="hidden" name="detail_record_view" value="1" />
                     [% END %]
-                <div class="clear-both"></div>
             </div>
         </div>
     </div>
