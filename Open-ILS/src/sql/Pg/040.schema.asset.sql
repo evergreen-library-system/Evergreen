@@ -348,7 +348,7 @@ CREATE OR REPLACE FUNCTION asset.label_normalizer_generic(TEXT) RETURNS TEXT AS 
     $callnum =~ s/ {2,}/ /g;
 
     return $callnum;
-$func$ LANGUAGE PLPERLU;
+$func$ LANGUAGE PLPERLU IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION asset.label_normalizer_dewey(TEXT) RETURNS TEXT AS $func$
     # Derived from the Koha C4::ClassSortRoutine::Dewey module
@@ -387,7 +387,7 @@ CREATE OR REPLACE FUNCTION asset.label_normalizer_dewey(TEXT) RETURNS TEXT AS $f
 
     return $key;
 
-$func$ LANGUAGE PLPERLU;
+$func$ LANGUAGE PLPERLU IMMUTABLE;
 
 
 CREATE OR REPLACE FUNCTION asset.label_normalizer_lc(TEXT) RETURNS TEXT AS $func$
@@ -401,7 +401,7 @@ CREATE OR REPLACE FUNCTION asset.label_normalizer_lc(TEXT) RETURNS TEXT AS $func
     my $callnum = Library::CallNumber::LC->new(shift);
     return $callnum->normalize();
 
-$func$ LANGUAGE PLPERLU;
+$func$ LANGUAGE PLPERLU IMMUTABLE;
 
 INSERT INTO asset.call_number_class (name, normalizer, field) VALUES 
     ('Generic', 'asset.label_normalizer_generic', '050ab,055ab,060ab,070ab,080ab,082ab,086ab,088ab,090,092,096,098,099'),
