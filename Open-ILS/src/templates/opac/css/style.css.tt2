@@ -680,8 +680,23 @@ div.format_icon {
     font-weight: bold;
     float: left;
     color: [% css_colors.text %];
+    /* this border is not visible, but it keeps these labels the same size
+    as the buttons */
+    border: 1px solid [% css_colors.accent_medium %];
     background: [% css_colors.accent_medium %];
-    margin: 0.5em 0.5em 0.5em 0em;
+    margin: 0.5em 0.3em;
+    padding: 0.3em;
+}
+/* we need a negative margin on the select to allow the containing <label>
+to determine the actual size of the element.  By doing this, we can increase
+the odds that the buttons and the select will be the same size, and therefore
+collapse correctly when the window width decreases */
+.results_header_lbl select {
+    margin: -0.5em 0;
+}
+
+#limit_to_available {
+    vertical-align: middle;
 }
 
 .results_header_sel {
@@ -1218,7 +1233,6 @@ a.dash-link:hover { text-decoration: underline !important; }
 
 .results_header_btns, .results_header_sel {
     float:left;
-    margin: 0.5em 0.5em 0.5em 0em;
 }
 
 /*
@@ -1236,7 +1250,7 @@ a.dash-link:hover { text-decoration: underline !important; }
     border-radius: 5px;
     border: 1px solid [% css_colors.primary %];
     background:  [% css_colors.primary_fade %];
-    margin: 10px;
+    margin: 0.5em;
     padding: 0.3em;
     display: inline-block;
 }
@@ -1257,11 +1271,6 @@ a.dash-link:hover { text-decoration: underline !important; }
 button.opac-button::-moz-focus-inner, input.opac-button::-moz-focus-inner {
     padding: 0;
     border: 0;
-}
-
-.results_header_btns a, #simple-detail-view-links a {
-    vertical-align: middle;
-    display: table-cell;
 }
 
 .opac-button-header, #dash_wrapper .opac-button {
@@ -1839,7 +1848,7 @@ a.preflib_change {
         background-color: inherit;
     }
     .results_header_btns a {
-        margin: 0px;
+        margin: 0.3em;
     }
     #main-content {
         margin-left: 1px;
