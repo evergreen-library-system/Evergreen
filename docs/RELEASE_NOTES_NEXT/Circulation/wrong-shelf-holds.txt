@@ -1,0 +1,9 @@
+Wrong-Shelf Holds in Clearable Shelf-Expired Holds List
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following changes were made to the _Browse Holds Shelf_ interface:
+
+. Change the staff client _View Shelf-Expired Holds_ action label to _View 
+Clearable Holds_.
+. When _View Clearable Holds_ is selected, show wrong-shelf holds in addition
+to shelf-expired and canceled holds.

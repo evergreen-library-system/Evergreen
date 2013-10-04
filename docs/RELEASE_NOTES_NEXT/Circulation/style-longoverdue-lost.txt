@@ -1,0 +1,13 @@
+Different Styles for Long Overdue Lost Items in Billing Interface
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When a Lost or Long Overdue circulation, which has not yet been returned, 
+appears in the patron's list of billed trasactions, style them differently
+from other not-yet-returned items.
+
+The interface will also display a helpful message to staff indicating what 
+colors map to what types of circulations.
+
+The default colors are maroon for Lost items and orange for Long Overdue items.
+
+To change the colors, modify circ.css. To change the language for the hint,
+modify lang.dtd.

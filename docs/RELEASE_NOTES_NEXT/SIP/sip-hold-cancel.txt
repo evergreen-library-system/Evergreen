@@ -1,0 +1,26 @@
+Support SIP Hold Cancellation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Evergreen now supports a subset of the SIP 15/16 Holds message pair for holds
+cancellation.
+
+1. New oils_sip.xml configuration option "msg64_hold_datatype".  This
+is similar to msg64_summary_datatype, but affects holds instead of
+circulations.  When set to 'barcode', holds information will be
+delivered as a set of copy barcodes instead of title strings for patron
+info requests.  With barcodes, SIP clients can both find the title
+strings for display (via item info requests) and make subseqent
+hold-related action requests, like holds cancellation.
++
+----
+Copies are not an ideal identifier for holds, but SIP has a limited
+vocabulary.  With copies we can (99% of the time) work to and from hold
+requests to find a reasonable data set to work on.  If a patron has
+multiple holds for the same item and wants to cancel a specific one of
+those holds, the user should use the catalog instead of SIP.
+----
+
+2. When receiving a message 15 of with a cancellation action, find the
+newest open hold that matches the provided copy barcode and cancel the
+hold.
+

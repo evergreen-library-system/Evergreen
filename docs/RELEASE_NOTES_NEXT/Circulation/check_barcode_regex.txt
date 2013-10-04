@@ -1,0 +1,4 @@
+Patron barcode regex for patron registration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new library setting is available to set a barcode regex to be checked during
+patron registration. 

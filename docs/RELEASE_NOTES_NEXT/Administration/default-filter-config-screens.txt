@@ -1,0 +1,6 @@
+Default filter option for configuration screens
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+By default, most admin configuration screens in the staff client will now
+inclue filters allowing staff to display just those items matching a certain
+criteria.

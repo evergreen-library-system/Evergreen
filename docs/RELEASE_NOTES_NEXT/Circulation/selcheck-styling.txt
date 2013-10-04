@@ -1,0 +1,10 @@
+Changes to Self-Check Interface
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The following improvements were made to the self-check interface:
+
+* Convert action links to buttons for increased clarity
+* Convert dashed fieldsets to gradient backed bubbles for depth
+* Color line-item table headers to distinguish from actual line-items
+* Color logo background for increased contrast
+* Larger input box
+* Background on prompts to distinguish from logo background

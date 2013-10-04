@@ -1,0 +1,9 @@
+Support Reader Address Infromation in Routing Slip Template
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The serials routing slip template can now render user addresses if users with
+addresses appear on a routing list. This feature is particularly useful for
+working with homebound patrons. 
+
+Sites that don't want to see a mailing or billing address can adjust the
+default template. Sites that already use a customized templated will not be 
+affected.

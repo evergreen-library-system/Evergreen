@@ -1,0 +1,9 @@
+Inter-authority linking script
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Adds a script called authority_authority_linker.pl in support-scripts that,
+when run, will link authority reference headings to authority records that 
+containt the same main entry using a subfield 0. This causes triggers to fill
+up the authority-authority linking table and allows more information to appear
+in the bib/authority browse when a displayed heading comes from an authority
+record that has linked _See Also_ refererences.
