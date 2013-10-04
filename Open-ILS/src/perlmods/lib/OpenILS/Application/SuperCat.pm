@@ -339,15 +339,38 @@ sub _label_sortkey_from_label {
               deleted    => 'f',
               @$cp_filter
             },
-            { limit     => 1,
+            { flesh     => 1,
+              flesh_fields  => { acn => [qw/label_class/] },
+              limit     => 1,
               order_by  => { acn => "oils_text_as_bytea(label), id" }
             }
         )->gather(1);
     if (@$closest_cn) {
-        return $closest_cn->[0]->label_sortkey;
-    } else {
-        return '~~~'; #fallback to high ascii value, we are at the end
+        if ($closest_cn->[0]->label eq $label) {
+            # we found an exact match stop here
+            return $closest_cn->[0]->label_sortkey;
+        } else {
+            # we got as close as we could by label alone, let's try to
+            # normalize and get closer
+            $closest_cn = $_storage->request(
+                "open-ils.cstore.direct.asset.call_number.search.atomic",
+                { label_sortkey
+                             => { ">=" => [$closest_cn->[0]->label_class->normalizer, $label] },
+                  owning_lib => $ou_ids,
+                  deleted    => 'f',
+                  @$cp_filter
+                },
+                { limit     => 1,
+                  order_by  => { acn => "label_sortkey, id" }
+                }
+            )->gather(1);
+            if (@$closest_cn) {
+                return $closest_cn->[0]->label_sortkey;
+            }
+        }
     }
+
+    return '~~~'; #fallback to high ascii value, we are at the end of the range
 }
 
 sub cn_browse {
