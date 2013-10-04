@@ -1805,7 +1805,10 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
             var see_from = [];
             var see_also = [];
             var auth_id = dojox.xml.parser.textContent(dojo.query('datafield[tag="901"]', record).query('subfield[code="c"]')[0]);
-            var auth_org = dojox.xml.parser.textContent(dojo.query('controlfield[tag="003"]', record)[0]);
+            var auth_org = '';
+            if (dojo.query('controlfield[tag="003"]', record).length > 0) {
+                auth_org = dojox.xml.parser.textContent(dojo.query('controlfield[tag="003"]', record)[0]);
+            }
 
             // Grab the fields with tags beginning with 1 (main entries) and iterate through the subfields
             dojo.query('datafield[tag^="1"]', record).forEach(function(field) {
