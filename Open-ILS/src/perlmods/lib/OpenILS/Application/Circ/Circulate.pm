@@ -3821,18 +3821,29 @@ sub checkin_handle_lost_or_lo_now_found_restore_od {
     );
 
     $logger->debug("returning ".scalar(@$ods)." overdue charges pre-$tag");
-    for my $bill (@$ods) {
-        if( $U->is_true($bill->voided) ) {
-                $logger->info("$tag item returned - restoring overdue ".$bill->id);
-                $bill->voided('f');
-                $bill->clear_void_time;
-                $bill->voider($self->editor->requestor->id);
-                my $note = ($bill->note) ? $bill->note . "\n" : '';
-                $bill->note("${note}System: $tag RETURNED - OVERDUES REINSTATED");
-
-                $self->bail_on_events($self->editor->event)
-                        unless $self->editor->update_money_billing($bill);
-        }
+    # Because actual users get up to all kinds of unexpectedness, we
+    # only recreate up to $circ->max_fine in bills.  I know you think
+    # it wouldn't happen that bills could get created, voided, and
+    # recreated more than once, but I guaran-damn-tee you that it will
+    # happen.
+    if ($ods && @$ods) {
+        my $void_amount = 0;
+        my $void_max = $self->circ->max_fine();
+        my @billings = map {$_->id()} @$ods;
+        my $voids = $self->editor->search_money_adjustment_payment(
+            {
+                billing => \@billings
+            }
+        );
+        map {$void_amount += $_->amount()} @$voids;
+        $CC->create_bill(
+            $self->editor,
+            ($void_amount < $void_max ? $void_amount : $void_max),
+            $ods->[0]->btype(),
+            $ods->[0]->billing_type(),
+            $self->circ->id(),
+            "System: $tag RETURNED - OVERDUES REINSTATED"
+        );
     }
 }
 
