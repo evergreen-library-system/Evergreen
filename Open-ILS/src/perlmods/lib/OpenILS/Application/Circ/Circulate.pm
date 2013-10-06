@@ -2634,7 +2634,7 @@ sub finish_fines_and_voiding {
     # void overdues after fine generation to prevent concurrent DB access to overdue billings
     my $note = 'System: Amnesty Checkin' if $self->void_overdues;
 
-    my $evt = OpenILS::Application::Circ::CircCommon->void_overdues(
+    my $evt = $CC->void_overdues(
         $self->editor, $self->circ, $self->backdate, $note);
 
     return $self->bail_on_events($evt) if $evt;
@@ -3796,33 +3796,11 @@ sub make_trigger_events {
 sub checkin_handle_lost_or_lo_now_found {
     my ($self, $bill_type, $is_longoverdue) = @_;
 
-    # ------------------------------------------------------------------
-    # remove charge from patron's account if lost item is returned
-    # ------------------------------------------------------------------
-
-    my $bills = $self->editor->search_money_billing(
-        {
-            xact => $self->circ->id,
-            btype => $bill_type
-        }
-    );
-
     my $tag = $is_longoverdue ? "LONGOVERDUE" : "LOST";
-    
-    $logger->debug("voiding ".scalar(@$bills)." $tag item billings");
-    for my $bill (@$bills) {
-        if( !$U->is_true($bill->voided) ) {
-            $logger->info("$tag item returned - voiding bill ".$bill->id);
-            $bill->voided('t');
-            $bill->void_time('now');
-            $bill->voider($self->editor->requestor->id);
-            my $note = ($bill->note) ? $bill->note . "\n" : '';
-            $bill->note("${note}System: VOIDED FOR $tag ITEM RETURNED");
 
-            $self->bail_on_events($self->editor->event)
-                unless $self->editor->update_money_billing($bill);
-        }
-    }
+    $logger->debug("voiding $tag item billings");
+    my $result = $CC->void_bills_of_type($self->editor, $self->circ, $bill_type, "System: VOIDED FOR $tag ITEM RETURNED");
+    $self->bail_on_events($self->editor->event) if ($result);
 }
 
 sub checkin_handle_lost_or_lo_now_found_restore_od {
