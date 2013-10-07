@@ -27,7 +27,7 @@
                     <a href="[% mkurl(ctx.opac_root _ '/home', {$loc_name => loc_value}, 1) %]">[% l('Another Search') %]</a>
                 </div>
                 <div class="results_header_btns">
-                    <a href="[% mkurl(ctx.opac_root _ '/advanced') %]">[% l('Advanced Search') %]</a>
+                    <a href="[% mkurl(ctx.opac_root _ '/advanced',{}, general_search_parms.merge(expert_search_parms)) %]">[% l('Advanced Search') %]</a>
                 </div>
                 [% IF ctx.mylist.size %]
                 <div class="results_header_btns cached_list_div">

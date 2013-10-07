@@ -5,7 +5,7 @@
     [%- END %]
     <div>
         <span class="search_catalog_lbl">[% l('Search the Catalog') %]</span>
-        <a href="[% mkurl(ctx.opac_root _ '/advanced') %]"
+        <a href="[% mkurl(ctx.opac_root _ '/advanced', {}, general_search_parms.merge(expert_search_parms)) %]"
             id="home_adv_search_link"><span
             class="adv_search_font">[% l('Advanced Search') %]</span></a>
     </div>
