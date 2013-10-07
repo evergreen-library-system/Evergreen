@@ -12,6 +12,10 @@
     is_advanced = CGI.param("_adv").size;
     is_special = CGI.param("_special").size;
 
+    #variables to use to remove parameters via mkurk
+    expert_search_parms = ['tag','subfield','term','_special'];
+    general_search_parms = ['page','sort','query'];
+
     # -----------------------------------------------------------------------------
     # mkurl( destination_page, params_to_set, params_to_clear )
     #
