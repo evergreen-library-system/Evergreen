@@ -5,7 +5,7 @@
     [%- END %]
     <div id="search-box">
         <span class="search_catalog_lbl mobile_hide">[% l('Search the Catalog') %]</span>
-        <span class="adv_search_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/advanced') %]"
+        <span class="adv_search_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/advanced', {}, general_search_parms.merge(expert_search_parms)) %]"
             id="home_adv_search_link">[% l('Advanced Search') %]</a></span>
         <span class="browse_the_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/browse', {}, ['fi:has_browse_entry']) %]">[% l('Browse the Catalog') %]</a></span>
     </div>

@@ -65,7 +65,7 @@ BLOCK build_author_links;
                 term = term _ ' ' _ sf;
             END;
         END;
-        url = mkurl(ctx.opac_root _ '/results', {query => qterm, qtype => 'author'}, ['page', 'expand']);
+        url = mkurl(ctx.opac_root _ '/results', {query => qterm, qtype => 'author'}, stop_parms.merge(expert_search_parms, general_search_parms));
         author_type = (tlabel || label) | html;
         
         # schema.org changes
