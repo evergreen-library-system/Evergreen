@@ -1,7 +1,7 @@
 BEGIN;
 
 -- check whether patch can be applied
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0838', :eg_version);
 
 DELETE FROM config.metabib_field_index_norm_map
     WHERE field = 25 AND norm IN (
