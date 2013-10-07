@@ -133,39 +133,46 @@ Added Log Comment
 			<!-- A form of title that ignores non-filing characters; useful
 				 for not converting "L'Oreal" into "L' Oreal" at index time -->
 			<titleNonfiling>
-				<xsl:variable name="title">
-					<xsl:choose>
-						<xsl:when test="marc:subfield[@code='b']">
-							<xsl:call-template name="specialSubfieldSelect">
-								<xsl:with-param name="axis">b</xsl:with-param>
-								<xsl:with-param name="beforeCodes">afgk</xsl:with-param>
-							</xsl:call-template>
-						</xsl:when>
-						<xsl:otherwise>
+				<title>
+					<xsl:call-template name="chopPunctuation">
+						<xsl:with-param name="chopString">
 							<xsl:call-template name="subfieldSelect">
 								<xsl:with-param name="codes">abfgk</xsl:with-param>
 							</xsl:call-template>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-				<title>
-					<xsl:value-of select="$title"/>
+						</xsl:with-param>
+					</xsl:call-template>
 				</title>
-				<xsl:if test="marc:subfield[@code='b']">
-					<subTitle>
-						<xsl:call-template name="chopPunctuation">
-							<xsl:with-param name="chopString">
-								<xsl:call-template name="specialSubfieldSelect">
-									<xsl:with-param name="axis">b</xsl:with-param>
-									<xsl:with-param name="anyCodes">b</xsl:with-param>
-									<xsl:with-param name="afterCodes">afgk</xsl:with-param>
-								</xsl:call-template>
-							</xsl:with-param>
-						</xsl:call-template>
-					</subTitle>
-				</xsl:if>
 				<xsl:call-template name="part"></xsl:call-template>
 			</titleNonfiling>
+			<!-- hybrid of titleInfo and titleNonfiling which will give us a preformatted string (for punctuation)
+				 but also keep the nonSort stuff in a separate field (for sorting) -->
+			<titleBrowse>
+				<xsl:variable name="titleBrowseChop">
+					<xsl:call-template name="chopPunctuation">
+						<xsl:with-param name="chopString">
+							<xsl:call-template name="subfieldSelect">
+								<xsl:with-param name="codes">abfgk</xsl:with-param>
+							</xsl:call-template>
+						</xsl:with-param>
+					</xsl:call-template>
+				</xsl:variable>
+				<xsl:choose>
+					<xsl:when test="@ind2>0">
+						<nonSort>
+							<xsl:value-of select="substring($titleBrowseChop,1,@ind2)"/>
+						</nonSort>
+						<title>
+							<xsl:value-of select="substring($titleBrowseChop,@ind2+1)"/>
+						</title>
+					</xsl:when>
+					<xsl:otherwise>
+						<title>
+							<xsl:value-of select="$titleBrowseChop"/>
+						</title>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:call-template name="part"></xsl:call-template>
+			</titleBrowse>
 		</xsl:for-each>
 		<xsl:for-each select="marc:datafield[@tag='210']">
 			<titleInfo type="abbreviated">
