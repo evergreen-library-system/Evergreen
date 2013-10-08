@@ -151,6 +151,10 @@ int osrfAppChildInit() {
 
 	Method parameters:
 	- username
+	- nonce : optional login seed (string) provided by the caller which
+		is added to the auth init cache to differentiate between logins
+		using the same username and thus avoiding cache collisions for
+		near-simultaneous logins.
 
 	Return to client: Intermediate authentication seed.
 
@@ -166,6 +170,9 @@ int oilsAuthInit( osrfMethodContext* ctx ) {
 	OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
 	char* username  = jsonObjectToSimpleString( jsonObjectGetIndex(ctx->params, 0) );
+	const char* nonce = jsonObjectGetString(jsonObjectGetIndex(ctx->params, 1));
+	if (!nonce) nonce = "";
+
 	if( username ) {
 
 		jsonObject* resp;
@@ -179,9 +186,9 @@ int oilsAuthInit( osrfMethodContext* ctx ) {
 		} else {
 
 			// Build a key and a seed; store them in memcache.
-			char* key  = va_list_to_string( "%s%s", OILS_AUTH_CACHE_PRFX, username );
+			char* key  = va_list_to_string( "%s%s%s", OILS_AUTH_CACHE_PRFX, username, nonce );
 			char* countkey = va_list_to_string( "%s%s%s", OILS_AUTH_CACHE_PRFX, username, OILS_AUTH_COUNT_SFFX );
-			char* seed = md5sum( "%d.%ld.%s", (int) time(NULL), (long) getpid(), username );
+			char* seed = md5sum( "%d.%ld.%s.%s", (int) time(NULL), (long) getpid(), username, nonce );
 			jsonObject* countobject = osrfCacheGetObject( countkey );
 			if(!countobject) {
 				countobject = jsonNewNumberObject( (double) 0 );
@@ -275,10 +282,11 @@ static int oilsAuthCheckLoginPerm(
 	method or to receive the seed from the process that did so.
 */
 static int oilsAuthVerifyPassword( const osrfMethodContext* ctx,
-		const jsonObject* userObj, const char* uname, const char* password ) {
+		const jsonObject* userObj, const char* uname,
+		const char* password, const char* nonce ) {
 
 	// Get the username seed, as stored previously in memcache by the init method
-	char* seed = osrfCacheGetString( "%s%s", OILS_AUTH_CACHE_PRFX, uname );
+	char* seed = osrfCacheGetString( "%s%s%s", OILS_AUTH_CACHE_PRFX, uname, nonce );
 	if(!seed) {
 		return osrfAppRequestRespondException( ctx->session,
 			ctx->request, "No authentication seed found. "
@@ -288,7 +296,7 @@ static int oilsAuthVerifyPassword( const osrfMethodContext* ctx,
 	}
     
 	// We won't be needing the seed again, remove it
-	osrfCacheRemove( "%s%s", OILS_AUTH_CACHE_PRFX, uname );
+	osrfCacheRemove( "%s%s%s", OILS_AUTH_CACHE_PRFX, uname, nonce );
 
 	// Get the hashed password from the user object
 	char* realPassword = oilsFMGetString( userObj, "passwd" );
@@ -563,6 +571,7 @@ static oilsEvent* oilsAuthVerifyWorkstation(
 		- "org"
 		- "workstation"
 		- "agent" (what software/interface/3rd-party is making the request)
+		- "nonce" optional login seed to differentiate logins using the same username.
 
 	The password is required.  Either a username or a barcode must also be present.
 
@@ -586,8 +595,10 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 	const char* workstation = jsonObjectGetString(jsonObjectGetKeyConst(args, "workstation"));
 	const char* barcode     = jsonObjectGetString(jsonObjectGetKeyConst(args, "barcode"));
 	const char* ewho        = jsonObjectGetString(jsonObjectGetKeyConst(args, "agent"));
+	const char* nonce       = jsonObjectGetString(jsonObjectGetKeyConst(args, "nonce"));
 
 	const char* ws = (workstation) ? workstation : "";
+	if (!nonce) nonce = "";
 
 	/* Use __FILE__, harmless_line_number for creating
 	 * OILS_EVENT_AUTH_FAILED events (instead of OSRF_LOG_MARK) to avoid
@@ -674,9 +685,9 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 	// Now see if he or she has the right credentials.
 	int passOK = -1;
 	if(uname)
-		passOK = oilsAuthVerifyPassword( ctx, userObj, uname, password );
+		passOK = oilsAuthVerifyPassword( ctx, userObj, uname, password, nonce );
 	else if (barcode)
-		passOK = oilsAuthVerifyPassword( ctx, userObj, barcode, password );
+		passOK = oilsAuthVerifyPassword( ctx, userObj, barcode, password, nonce );
 
 	if( passOK < 0 ) {
 		jsonObjectFree(userObj);
