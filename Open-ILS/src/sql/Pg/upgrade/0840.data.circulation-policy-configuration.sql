@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0840', :eg_version);
 
 INSERT INTO config.usr_setting_type (name,grp,opac_visible,label,description,datatype) VALUES (
     'ui.grid_columns.conify.config.circ_matrix_matchpoint',
