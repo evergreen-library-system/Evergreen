@@ -223,9 +223,10 @@ sub login {
     my( $self, $username, $password ) = @_;
     syslog('LOG_DEBUG', "OILS: Logging in with username $username");
 
+    my $nonce = rand($$);
     my $seed = $U->simplereq( 
         'open-ils.auth',
-        'open-ils.auth.authenticate.init', $username );
+        'open-ils.auth.authenticate.init', $username, $nonce );
 
     my $response = $U->simplereq(
         'open-ils.auth', 
@@ -234,6 +235,7 @@ sub login {
             username => $username, 
             password => md5_hex($seed . md5_hex($password)), 
             type     => 'opac',
+            nonce    => $nonce
         }
     );
 
