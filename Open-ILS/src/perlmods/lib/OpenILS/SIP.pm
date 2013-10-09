@@ -47,7 +47,7 @@ sub disconnect {
 }
 
 sub new {
-    my ($class, $institution, $login) = @_;
+    my ($class, $institution, $login, $state) = @_;
     my $type = ref($class) || $class;
     my $self = {};
 
@@ -76,7 +76,7 @@ sub new {
     bless( $self, $type );
 
     return undef unless 
-        $self->login( $login->{id}, $login->{password} );
+        $self->login( $login->{id}, $login->{password}, $state );
 
     return $self;
 }
@@ -224,8 +224,14 @@ sub format_date {
 
 
 sub login {
-    my( $self, $username, $password ) = @_;
+    my( $self, $username, $password, $state ) = @_;
     syslog('LOG_DEBUG', "OILS: Logging in with username $username");
+
+
+    if ($state and ref $state and $$state{authtoken}) {
+        $self->{authtoken} = $$state{authtoken};
+        return $self->{authtoken} if ($self->fetch_session); # fetch the session
+    }
 
     my $nonce = rand($$);
     my $seed = $U->simplereq( 
@@ -257,6 +263,11 @@ sub login {
     $self->fetch_session; # to cache the login
 
     return $key;
+}
+
+sub state {
+    my $self = shift;
+    return { authtoken => $self->{authtoken} };
 }
 
 #
