@@ -201,7 +201,7 @@ CREATE UNIQUE INDEX config_metabib_field_class_name_idx ON config.metabib_field 
 CREATE TABLE config.metabib_search_alias (
     alias       TEXT    PRIMARY KEY,
     field_class TEXT    NOT NULL REFERENCES config.metabib_class (name),
-    field       INT     REFERENCES config.metabib_field (id)
+    field       INT     REFERENCES config.metabib_field (id) ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE TABLE config.non_cataloged_type (
