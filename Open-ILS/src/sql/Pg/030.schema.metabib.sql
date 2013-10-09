@@ -543,8 +543,16 @@ BEGIN
                 END IF;
 
                 output_row.browse_field = TRUE;
+                -- Returning browse rows with search_field = true for search+browse
+                -- configs allows us to retain granularity of being able to search
+                -- browse fields with "starts with" type operators (for example, for
+                -- titles of songs in music albums)
+                IF idx.search_field THEN
+                    output_row.search_field = TRUE;
+                END IF;
                 RETURN NEXT output_row;
                 output_row.browse_field = FALSE;
+                output_row.search_field = FALSE;
                 output_row.sort_value := NULL;
             END IF;
 
@@ -710,10 +718,8 @@ BEGIN
                 VALUES (mbe_id, ind_data.field, ind_data.source, ind_data.authority);
         END IF;
 
-        -- Avoid inserting duplicate rows, but retain granularity of being
-        -- able to search browse fields with "starts with" type operators
-        -- (for example, for titles of songs in music albums)
-        IF (ind_data.search_field OR ind_data.browse_field) AND NOT b_skip_search THEN
+        IF ind_data.search_field AND NOT b_skip_search THEN
+            -- Avoid inserting duplicate rows
             EXECUTE 'SELECT 1 FROM metabib.' || ind_data.field_class ||
                 '_field_entry WHERE field = $1 AND source = $2 AND value = $3'
                 INTO mbe_id USING ind_data.field, ind_data.source, ind_data.value;
