@@ -236,7 +236,7 @@ $$;
 
 CREATE TABLE config.metabib_field_ts_map (
 	id				SERIAL PRIMARY KEY,
-	metabib_field	INT NOT NULL REFERENCES config.metabib_field (id),
+	metabib_field	INT NOT NULL REFERENCES config.metabib_field (id) ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	ts_config		TEXT NOT NULL REFERENCES config.ts_config_list (id),
 	active			BOOL NOT NULL DEFAULT TRUE,
 	index_weight	CHAR(1) NOT NULL DEFAULT 'C' CHECK (index_weight IN ('A','B','C','D')),
@@ -253,7 +253,7 @@ $$;
 CREATE TABLE config.metabib_search_alias (
     alias       TEXT    PRIMARY KEY,
     field_class TEXT    NOT NULL REFERENCES config.metabib_class (name),
-    field       INT     REFERENCES config.metabib_field (id)
+    field       INT     REFERENCES config.metabib_field (id) ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE TABLE config.non_cataloged_type (
