@@ -414,13 +414,15 @@ circ.checkout.prototype = {
             
                         /*********************************************************************************************/
                         /* Override mvr title/author with dummy title/author for Pre cat */
-                        if (checkout.payload.copy.dummy_title()) {
-                            checkout.payload.record.title( checkout.payload.copy.dummy_title() );
+                        if (checkout.payload.copy.call_number()  == -1) {
+                            if (checkout.payload.copy.dummy_title()) {
+                                checkout.payload.record.title( checkout.payload.copy.dummy_title() );
+                            }
+                            if (checkout.payload.copy.dummy_author()) {
+                                checkout.payload.record.author( checkout.payload.copy.dummy_author() );
+                            }
                         }
-                        if (checkout.payload.copy.dummy_author()) {
-                            checkout.payload.record.author( checkout.payload.copy.dummy_author() );
-                        }
-           
+
                         if (checkout.payload.patron_money) {
                             obj.most_recent_balance_owed = checkout.payload.patron_money.balance_owed();
                         }
