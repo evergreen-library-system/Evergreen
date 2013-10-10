@@ -91,7 +91,7 @@ CREATE TRIGGER no_overlapping_deps
     BEFORE INSERT OR UPDATE ON config.db_patch_dependencies
     FOR EACH ROW EXECUTE PROCEDURE evergreen.array_overlap_check ('deprecates');
 
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0841', :eg_version); -- dbwells/senator
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0843', :eg_version); -- dbwells/rsteed
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -239,7 +239,7 @@ $$;
 
 CREATE TABLE config.metabib_field_ts_map (
 	id				SERIAL PRIMARY KEY,
-	metabib_field	INT NOT NULL REFERENCES config.metabib_field (id) DEFERRABLE INITIALLY DEFERRED,
+	metabib_field	INT NOT NULL REFERENCES config.metabib_field (id) ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	ts_config		TEXT NOT NULL REFERENCES config.ts_config_list (id),
 	active			BOOL NOT NULL DEFAULT TRUE,
 	index_weight	CHAR(1) NOT NULL DEFAULT 'C' CHECK (index_weight IN ('A','B','C','D')),
@@ -256,7 +256,7 @@ $$;
 CREATE TABLE config.metabib_search_alias (
     alias       TEXT    PRIMARY KEY,
     field_class TEXT    NOT NULL REFERENCES config.metabib_class (name),
-    field       INT     REFERENCES config.metabib_field (id) DEFERRABLE INITIALLY DEFERRED
+    field       INT     REFERENCES config.metabib_field (id) ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE TABLE config.non_cataloged_type (
@@ -1056,7 +1056,7 @@ $$;
 CREATE TABLE config.z3950_index_field_map (
     id              SERIAL  PRIMARY KEY,
     label           TEXT    NOT NULL, -- i18n
-    metabib_field   INTEGER REFERENCES config.metabib_field(id) DEFERRABLE INITIALLY DEFERRED,
+    metabib_field   INTEGER REFERENCES config.metabib_field(id) ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
     record_attr     TEXT    REFERENCES config.record_attr_definition(name),
     z3950_attr      INTEGER REFERENCES config.z3950_attr(id),
     z3950_attr_type TEXT,-- REFERENCES config.z3950_attr(name)

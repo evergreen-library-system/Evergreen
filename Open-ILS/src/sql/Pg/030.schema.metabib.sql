@@ -204,7 +204,7 @@ CREATE TRIGGER metabib_browse_entry_fti_trigger
 CREATE TABLE metabib.browse_entry_def_map (
     id BIGSERIAL PRIMARY KEY,
     entry BIGINT REFERENCES metabib.browse_entry (id),
-    def INT REFERENCES config.metabib_field (id) DEFERRABLE INITIALLY DEFERRED,
+    def INT REFERENCES config.metabib_field (id) ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
     source BIGINT REFERENCES biblio.record_entry (id),
     authority BIGINT REFERENCES authority.record_entry (id) ON DELETE SET NULL
 );
