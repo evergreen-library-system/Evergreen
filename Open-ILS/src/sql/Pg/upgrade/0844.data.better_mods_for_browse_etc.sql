@@ -1,7 +1,7 @@
 BEGIN;
 
 -- check whether patch can be applied
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0844', :eg_version);
 
 -- 953.data.MODS32-xsl.sql
 UPDATE config.xml_transform SET xslt=$$<?xml version="1.0" encoding="UTF-8"?>
