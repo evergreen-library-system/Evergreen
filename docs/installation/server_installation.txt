@@ -77,7 +77,7 @@ Evergreen has a number of prerequisite packages that must be installed
 before you can successfully configure, compile, and install Evergreen.
 
 1. Begin by installing the most recent version of OpenSRF (2.2 or later).
-   You can download OpenSRF releases from http://evergreen-ils.org/opensrf.php
+   You can download OpenSRF releases from http://evergreen-ils.org/opensrf-downloads/
 2. On many distributions, it is necessary to install PostgreSQL 9 from external
    repositories.
 +
@@ -519,15 +519,15 @@ If this does not work, it's time to do some troubleshooting.
   * If you have faithfully followed the entire set of installation steps
     listed here, you are probably extremely close to a working system.
     Gather your configuration files and log files and contact the
-    http://open-ils.org/listserv.php[Evergreen development mailing list]
-    for assistance before making any drastic changes to your system
+    http://evergreen-ils.org/communicate/mailing-lists/[Evergreen development 
+mailing list] for assistance before making any drastic changes to your system
     configuration.
 
 Getting help
 ------------
 
 Need help installing or using Evergreen? Join the mailing lists at
-http://evergreen-ils.org/listserv.php or contact us on the Freenode
+http://evergreen-ils.org/communicate/mailing-lists/ or contact us on the Freenode
 IRC network on the #evergreen channel.
 
 License
