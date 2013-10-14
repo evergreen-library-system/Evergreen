@@ -253,8 +253,8 @@ sub process_retrieval {
         eval { $class->process_parsed_msg($account, $incoming, $msg_hash) };
 
         $e->xact_begin;
-        $incoming = $e->retrieve_acq_edi_message($incoming->id);
         if ($@) {
+            $incoming = $e->retrieve_acq_edi_message($incoming->id);
             $logger->error($@);
             $incoming->status('proc_error');
             $incoming->error_time('now');
@@ -560,21 +560,60 @@ sub process_message_buyer {
                     $logger->info(
                         $log_prefix . sprintf(
                             "changing edi_account from %d to %d based on " .
-                            "vendcode '%s'",
-                            $orig_acct->id, $message->account, $vendcode
+                            "vendcode '%s' (%d match(es))",
+                            $orig_acct->id, $message->account, $vendcode,
+                            scalar(@$other_accounts)
                         )
                     );
+
+                    # If we've updated the message's account, and if we're
+                    # dealing with an invoice, we should update the invoice's
+                    # provider and shipper fields. XXX what's the difference
+                    # between shipper and provider, really?
+                    if ($eg_inv) {
+                        $eg_inv->provider(
+                            $eg_inv->shipper($other_accounts->[0]->provider)
+                        );
+                    }
                 }
             }
 
             last;
 
-        } elsif ($eg_inv) {
+        } else {
 
-            my $acct = $e->search_acq_edi_account({vendacct => $buyer})->[0];
+            my $accts = $e->search_acq_edi_account({vendacct => $buyer});
 
-            if ($acct) {
-                $eg_inv->receiver($acct->owner);
+            if (@$accts) {
+                if (grep { $_->id == $message->account } @$accts) {
+                    $logger->warn(
+                        $log_prefix . sprintf(
+                            "Not changing edi_account because we found " .
+                            "(%d) matching vendacct(s), one of which " .
+                            "being on the edi_account we already had",
+                            scalar(@$accts)
+                        )
+                    );
+                }
+
+                $logger->info(
+                    $log_prefix . sprintf(
+                        "changing edi_account from %d to %d based on " .
+                        "vendacct '%s' (%d match(es))",
+                        $message->account, $accts->[0]->id, $buyer,
+                        scalar(@$accts)
+                    )
+                );
+
+                # Both $message and $eg_inv should be saved later by the caller.
+                $message->account($accts->[0]->id);
+                if ($eg_inv) {
+                    $eg_inv->receiver($accts->[0]->owner);
+                    $eg_inv->provider(
+                        $eg_inv->shipper($accts->[0]->provider)
+                    );
+                }
+
                 last;
             }
         }
@@ -621,14 +660,18 @@ sub process_parsed_msg {
         if (not $incoming->purchase_order) {                
             # PO should come from the EDI message, but if not...
 
-            # fetch the latest copy
-            $incoming = $e->retrieve_acq_edi_message($incoming->id);
+            # NOTE: We used to refetch $incoming here, but that discarded
+            # changes made by process_message_buyer() above, and is not
+            # necessary since our caller just did that before invoking us.
+
             $incoming->purchase_order($li->purchase_order); 
 
-            unless($e->update_acq_edi_message($incoming)) {
-                $logger->error("EDI: unable to update edi_message " . $e->die_event);
-                next;
-            }
+            # NOTE: $li *just* came from the database, so if this update fails
+            # we should actually die() and thereby abort any changes from this
+            # entire message, because something weird is happening.
+            die(
+                "EDI: unable to update edi_message ". $e->die_event->{textcode}
+            ) unless $e->update_acq_edi_message($incoming);
         }
 
         my $lids = $e->json_query({
