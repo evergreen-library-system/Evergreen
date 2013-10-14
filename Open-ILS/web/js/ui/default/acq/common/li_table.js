@@ -518,7 +518,7 @@ function AcqLiTable() {
     ) {
         console.log("getSelected states = " + state);
         if (all && callback)
-            return this.getAll(callback, id_only, filter);
+            return this.getAll(callback, id_only, state);
 
         var indices = {};   /* use to uniqify. needed in paging situations. */
         dojo.forEach(this.selectors,
