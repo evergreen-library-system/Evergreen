@@ -233,21 +233,15 @@ circ.checkout.prototype = {
                                 var no_print_prompting = obj.data.hash.aous['circ.staff_client.do_not_auto_attempt_print'];
                                 if (no_print_prompting) {
                                     if (no_print_prompting.indexOf( "Checkout" ) > -1) {
-                                        obj.list.clear();
-                                        xulG.set_tab(urls.XUL_PATRON_BARCODE_ENTRY,{},{}); 
-                                        return;
+                                        obj.refresh_checkout_tab(0);
                                     }
                                 }
                                 if (document.getElementById('checkout_auto').checked) {
-                                    obj.print(true,function() { 
-                                        obj.list.clear();
-                                        xulG.set_tab(urls.XUL_PATRON_BARCODE_ENTRY,{},{}); 
-                                    });
+                                    obj.print(true);
+                                    obj.refresh_checkout_tab(1000);
                                 } else {
-                                    obj.print(false,function() {
-                                        obj.list.clear();
-                                        xulG.set_tab(urls.XUL_PATRON_BARCODE_ENTRY,{},{});
-                                    });
+                                    obj.print(false);
+                                    obj.refresh_checkout_tab(1000);
                                 }
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert('cmd_checkout_done',E);
@@ -305,7 +299,15 @@ circ.checkout.prototype = {
         }
     },
 
-    'print' : function(silent,f) {
+    'refresh_checkout_tab' : function(delay) {
+        setTimeout(function() {
+            var e = document.createEvent("Events");
+            e.initEvent('refresh_checkout', true, false);
+            document.documentElement.dispatchEvent(e);
+        }, delay);
+    },
+
+    'print' : function(silent) {
         var obj = this;
         try {
             obj.patron = obj.network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID',[ses(),obj.patron_id]);
@@ -317,20 +319,7 @@ circ.checkout.prototype = {
                     'balance_owed' : util.money.sanitize( obj.most_recent_balance_owed ),
                 },
                 'printer_context' : 'receipt',
-                'template' : 'checkout',
-                'callback' : function() {
-                    setTimeout(
-                        function(){
-                            if (typeof f == 'function') { 
-                                setTimeout( 
-                                    function() {
-                                        f();
-                                    }, 1000
-                                );
-                            } 
-                        }, 1000
-                    );
-                }
+                'template' : 'checkout'
             };
             if (silent) { params.no_prompt = true; }
             obj.list.print(params);
