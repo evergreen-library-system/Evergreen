@@ -334,6 +334,8 @@ openils.Util.addOnLoad(
                 }
 
                 ssub_grid.showCreateDialog();
+            } else {
+                ssub_grid.overrideWidgetArgs.record_entry = {widgetClass : "dijit.form.TextBox", dijitArgs : {disabled : true}};
             }
             ssub_grid.onPostUpdate = function(fmObject) {
                 parent.document.getElementById(window.name).refresh_command();
