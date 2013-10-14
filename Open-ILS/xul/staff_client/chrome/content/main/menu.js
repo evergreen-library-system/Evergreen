@@ -1766,7 +1766,7 @@ main.menu.prototype = {
             'refresh_checkout',
             function() {
                 try {
-                    obj.set_tab(obj.url_prefix('XUL_PATRON_BARCODE_ENTRY'),{},{});
+                    obj.set_tab(obj.url_prefix('XUL_PATRON_BARCODE_ENTRY'));
                 } catch(E) {
                     obj.error.sdump('D_ERROR','tab_refresh_checkout_handler: ' + js2JSON(E));
                 }
