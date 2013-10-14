@@ -51,9 +51,10 @@ util.print.prototype = {
                 );
                 return;
             }
-            if(obj.data.last_print.context) this.set_context(obj.data.last_print.context);
-            var msg = obj.data.last_print.msg;
-            var params = obj.data.last_print.params; params.no_prompt = false;
+            var last_print = JSON2js(obj.data.last_print);
+            if(last_print.context) this.set_context(last_print.context);
+            var msg = last_print.msg;
+            var params = last_print.params; params.no_prompt = false;
             obj.simple( msg, params );
         } catch(E) {
             this.error.standard_unexpected_error_alert('util.print.reprint_last',E);
@@ -115,7 +116,7 @@ util.print.prototype = {
 
             var obj = this;
 
-            obj.data.last_print = { 'msg' : msg, 'params' : params, 'context' : this.context};
+            obj.data.last_print = js2JSON({ 'msg' : msg, 'params' : params, 'context' : this.context});
             obj.data.stash('last_print');
 
             var silent = false;
