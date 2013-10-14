@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-02-21 11:20-0400\n"
+"POT-Creation-Date: 2013-09-26 18:17-0400\n"
 "PO-Revision-Date: 2012-08-13 17:16+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-02-23 05:30+0000\n"
-"X-Generator: Launchpad (build 16506)\n"
+"X-Launchpad-Export-Date: 2013-09-28 05:30+0000\n"
+"X-Generator: Launchpad (build 16774)\n"
 
 #: selfcheck.js:FAIL_PART_config_hold_matrix_test_max_holds
 msgid "The patron has reached the maximum number of holds"
@@ -29,26 +29,22 @@ msgstr "Նյութի տեղաբաշխման վայրը պահման ենթակա
 msgid "Checkout of item ${0} succeeded"
 msgstr "Նյութի տրումը ${0} հաջող է"
 
+#: selfcheck.js:WELCOME_BANNER
+msgid "Welcome, ${0}"
+msgstr "Բարի գալուստ, ${0}"
+
 #: selfcheck.js:FAIL_PART_no_ultimate_items
 msgid "The system could not find any items to match this hold request"
 msgstr ""
 "Համակարգը չի կարող գտնել որևէ նյութ որը բավարարում է պահման պահանջին։"
 
-#: selfcheck.js:TOTAL_ITEMS_ACCOUNT
-msgid "Total items on account:  <b>${0}</b>."
-msgstr "Հաշվի վրա ընդհանուր նյութերի քանակը:  <b>${0}</b>."
-
-#: selfcheck.js:WELCOME_BANNER
-msgid "Welcome, ${0}"
-msgstr "Բարի գալուստ, ${0}"
+#: selfcheck.js:TOTAL_HOLDS
+msgid "You have ${0} total holds."
+msgstr ""
 
 #: selfcheck.js:FAIL_PART_config_hold_matrix_test_holdable
 msgid "Hold rules reject this item as unholdable"
 msgstr "Պահման օրենքները մերժում են այս նյութը որպես չպահվող։"
-
-#: selfcheck.js:TOTAL_FINES_ACCOUNT
-msgid "Total fines on account: <b>$${0}</b>."
-msgstr "Հաշվի վրա ընդհանուր տուգանքը: <b>$${0}</b>."
 
 #: selfcheck.js:FAIL_PART_asset_copy_status
 msgid "The item cannot circulate at this time"
@@ -87,9 +83,9 @@ msgstr "Այս նյութը ${0} արդեն սպասարկված է"
 msgid "The available item-to-hold ratio is too low"
 msgstr "Հասանելի նյութ-պահում գործակիցը շատ ցածր է։"
 
-#: selfcheck.js:HOLD_STATUS_READY
-msgid "Ready for pickup"
-msgstr "Պատրաստ վերցնելու համար"
+#: selfcheck.js:TOTAL_ITEMS_ACCOUNT
+msgid "Total items on account:  ${0}."
+msgstr ""
 
 #: selfcheck.js:FAIL_PART_circ_holds_target_skip_me
 msgid "The item's circulation library does not fulfill holds"
@@ -107,9 +103,13 @@ msgstr "Այս նյութի ${0} թարմացումը հաջողվեց"
 msgid "The patron has too many items of this type checked out"
 msgstr "Ընթերցողը այս տեսակի նյութի համար ունի չափից շատ վերցրած նյութեր։"
 
-#: selfcheck.js:TOTAL_HOLDS
-msgid "You have <b>${0}</b> total holds."
-msgstr "Դու ունես գումարային <b>${0}</b> պահում."
+#: selfcheck.js:TOTAL_FINES_ACCOUNT
+msgid "Total fines on account: $${0}."
+msgstr ""
+
+#: selfcheck.js:MISCELLANEOUS
+msgid "Miscellaneous"
+msgstr ""
 
 #: selfcheck.js:ITEM_NOT_CATALOGED
 msgid "Item ${0} was not found in the system.  Try re-scanning the item."
@@ -134,6 +134,10 @@ msgstr ""
 msgid "The item is not in a holdable status"
 msgstr "Նյութը պահման վիճակում չէ"
 
+#: selfcheck.js:ENTER_PASSWORD
+msgid "Please enter your password"
+msgstr ""
+
 #: selfcheck.js:CC_PAYABLE_BALANCE
 msgid "Total amount to pay: $${0}"
 msgstr "Վճարման ենթակա ընդհանուր գումար: $${0}"
@@ -142,9 +146,17 @@ msgstr "Վճարման ենթակա ընդհանուր գումար: $${0}"
 msgid "The system could not find this item"
 msgstr "Համակարգը չի կարող գտնել այս նյութը։"
 
+#: selfcheck.js:PLEASE_LOGIN
+msgid "Please log in with your username or library barcode."
+msgstr ""
+
 #: selfcheck.js:FAIL_PART_no_matchpoint
 msgid "System rules do not define how to handle this item"
 msgstr "Համակարգի օրենքները չեն սահմանում ինչպես պահել նյութը։"
+
+#: selfcheck.js:ENTER_BARCODE
+msgid "Please enter an item barcode"
+msgstr ""
 
 #: selfcheck.js:FAIL_PART_asset_copy_circulate
 msgid "The item does not circulate"
@@ -154,6 +166,10 @@ msgstr "Նյութը չի սպասարկվում։"
 msgid "Login for ${0} failed"
 msgstr "Մուտքը սրա համարr ${0} ձախողվեց"
 
+#: selfcheck.js:HOLD_STATUS_READY
+msgid "Ready for pickup"
+msgstr "Պատրաստ վերցնելու համար"
+
 #: selfcheck.js:GENERIC_CIRC_FAILURE
 msgid "Unable to check out item ${0}.  Please see staff."
 msgstr "Չի կարող դուրս տալ այս նյութը ${0}։  Դիմիր աշխատակազմին։"
@@ -162,9 +178,9 @@ msgstr "Չի կարող դուրս տալ այս նյութը ${0}։  Դիմիր
 msgid "No more renewals allowed for item ${0}"
 msgstr "Այս նյութի համար նոր թարմացումներ էլ հնարավոր չէ ${0}"
 
-#: selfcheck.js:HOLDS_READY_FOR_PICKUP
-msgid "You have <b>${0}</b> item(s) ready for pickup."
-msgstr "Դու ունես <b>${0}</b> նյութեր վերցնելու համար"
+#: selfcheck.js:FAIL_PART_asset_copy_location_circulate
+msgid "Items from this shelving location do not circulate"
+msgstr "Այս գրադարակի նյութերը չեն սպասարկվում։"
 
 #: selfcheck.js:FAIL_PART_item.holdable
 msgid "The item is not holdable"
@@ -190,13 +206,9 @@ msgstr ""
 msgid "An unhandled exception occurred with error code ${0}"
 msgstr "Պատահել է չվերահսկվող սխալ այս կոդով ${0}"
 
-#: selfcheck.js:FAIL_PART_asset_copy_location_circulate
-msgid "Items from this shelving location do not circulate"
-msgstr "Այս գրադարակի նյութերը չեն սպասարկվում։"
-
 #: selfcheck.js:TOTAL_ITEMS_SESSION
-msgid "Total items this session: <b>${0}</b>."
-msgstr "Այս սեսիայի ընդհանուր նյութերը: <b>${0}</b>."
+msgid "Total items this session: ${0}."
+msgstr ""
 
 #: selfcheck.js:FAIL_PART_config_rule_age_hold_protect_prox
 msgid "The item is too new to transit this far"
@@ -205,3 +217,22 @@ msgstr "Նյութը չափից դուրս թարմ է տրանզիտի համա
 #: selfcheck.js:TOTAL_FINES_SELECTED
 msgid "Selected total: $${0}"
 msgstr "Ընդհանուր ընտրված: $${0}"
+
+#: selfcheck.js:HOLDS_READY_FOR_PICKUP
+msgid "You have ${0} item(s) ready for pickup."
+msgstr ""
+
+#~ msgid "Total fines on account: <b>$${0}</b>."
+#~ msgstr "Հաշվի վրա ընդհանուր տուգանքը: <b>$${0}</b>."
+
+#~ msgid "Total items on account:  <b>${0}</b>."
+#~ msgstr "Հաշվի վրա ընդհանուր նյութերի քանակը:  <b>${0}</b>."
+
+#~ msgid "You have <b>${0}</b> total holds."
+#~ msgstr "Դու ունես գումարային <b>${0}</b> պահում."
+
+#~ msgid "You have <b>${0}</b> item(s) ready for pickup."
+#~ msgstr "Դու ունես <b>${0}</b> նյութեր վերցնելու համար"
+
+#~ msgid "Total items this session: <b>${0}</b>."
+#~ msgstr "Այս սեսիայի ընդհանուր նյութերը: <b>${0}</b>."

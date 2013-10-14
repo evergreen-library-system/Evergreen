@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-03-15 19:42+0000\n"
-"PO-Revision-Date: 2013-04-23 12:11+0000\n"
+"POT-Creation-Date: 2013-09-26 18:17-0400\n"
+"PO-Revision-Date: 2013-10-10 18:58+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-04-24 04:49+0000\n"
-"X-Generator: Launchpad (build 16580)\n"
+"X-Launchpad-Export-Date: 2013-10-11 04:51+0000\n"
+"X-Generator: Launchpad (build 16799)\n"
 
 #: staff.serial.editor_base.handle_update.error
 msgid "serial update error:"
@@ -224,15 +224,15 @@ msgstr "Poznámky k exempláři"
 
 #: staff.serial.sstr_editor.count
 msgid "1 stream"
-msgstr "1 soubor exemplářů"
+msgstr "1 řada exemplářů"
 
 #: staff.serial.sstr_editor.count.plural
 msgid "%1$s streams"
-msgstr "%1$s soubor exemplářů"
+msgstr "%1$s řad exemplářů"
 
 #: staff.serial.sstr_editor.create.label
 msgid "Create Stream(s)"
-msgstr "Vytvořit soubor(y) exemplářů"
+msgstr "Vytvořit řady  exemplářů"
 
 #: staff.serial.sstr_editor.create.accesskey
 msgctxt "staff.serial.sstr_editor.create.accesskey"
@@ -241,7 +241,7 @@ msgstr "C"
 
 #: staff.serial.sstr_editor.modify.label
 msgid "Modify Stream(s)"
-msgstr "Upravit soubor(y) exemplářů"
+msgstr "Upravit řady exemplářů"
 
 #: staff.serial.sstr_editor.modify.accesskey
 msgctxt "staff.serial.sstr_editor.modify.accesskey"
@@ -288,15 +288,15 @@ msgstr "chyba při mazání  objektu v  manage_dists.js:"
 
 #: staff.serial.manage_dists.delete_sstr.confirm
 msgid "Are you sure you would like to delete this stream?"
-msgstr "Opravdu chcete smazat tento soubor exemplářů?"
+msgstr "Opravdu chcete smazat tuto řadu exemplářů?"
 
 #: staff.serial.manage_dists.delete_sstr.confirm.plural
 msgid "Are you sure you would like to delete these %1$s streams?"
-msgstr "Opravdu chcete smazat tyto %1$s soubory exemplářů?"
+msgstr "Opravdu chcete smazat tyto %1$s řady exemplářů?"
 
 #: staff.serial.manage_dists.delete_sstr.title
 msgid "Delete Streams?"
-msgstr "Smazat soubory exemplářů?"
+msgstr "Smazat řady exemplářů?"
 
 #: staff.serial.manage_dists.delete_sstr.override
 msgctxt "staff.serial.manage_dists.delete_sstr.override"
@@ -328,6 +328,14 @@ msgstr "%1$s položek bylo úspěšně nastaveno na \"Není vlastněno\""
 #: staff.serial.manage_items.set_not_published_success
 msgid "Successfully set %1$s item(s) to 'Not Published'"
 msgstr "%1$s položek bylo úspěšně nastaveno na \"Nebylo vydáno\""
+
+#: staff.serial.manage_items.alert_button.label
+msgid "1 Alert"
+msgstr "1 upozornění"
+
+#: staff.serial.manage_items.alert_button.plural.label
+msgid "%1s Alerts"
+msgstr "%1s upozornění"
 
 #: staff.serial.manage_subs.add.error
 msgid "error adding object in manage_subs.js:"
@@ -623,11 +631,11 @@ msgstr "<Nenastaveno>"
 
 #: serial.manage_dists.streams
 msgid "Streams"
-msgstr "Soubory exemplářů"
+msgstr "Řady exemplářů"
 
 #: serial.manage_dists.stream_num
 msgid "Stream : # %1$s"
-msgstr "Soubor exemplářů : # %1$s"
+msgstr "Řada exemplářů : # %1$s"
 
 #: serial.manage_dists.sbsum
 msgid "Basic Summary"

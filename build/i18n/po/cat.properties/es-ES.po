@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-09-04 13:44-0400\n"
-"PO-Revision-Date: 2010-10-30 19:49+0000\n"
-"Last-Translator: Gabriel Pepe <Unknown>\n"
+"POT-Creation-Date: 2013-09-26 18:17-0400\n"
+"PO-Revision-Date: 2013-10-09 17:04+0000\n"
+"Last-Translator: Jose Gutierrez <joseb.gutierrez@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-09-05 04:48+0000\n"
-"X-Generator: Launchpad (build 15901)\n"
+"X-Launchpad-Export-Date: 2013-10-10 04:43+0000\n"
+"X-Generator: Launchpad (build 16799)\n"
 
 #: bib.no_marc
 msgid "No MARC Record"
@@ -88,11 +88,11 @@ msgstr ""
 
 #: staff.cat.manage_multi_bib_items.result.column.value.peer_type_updated
 msgid "Peer Type updated"
-msgstr ""
+msgstr "Tipo Peer actualizado"
 
 #: staff.cat.manage_multi_bib_items.prompt.title
 msgid "Change Peer Type"
-msgstr ""
+msgstr "Cambiar tipo de Peer"
 
 #. # %1$s = Bib Record Database ID
 #: staff.cat.manage_multi_bib_items.prompt.confirm.unlink_item_from_bib.singular
@@ -231,6 +231,7 @@ msgstr "%1$s"
 #: staff.cat.edit_volume.exception
 msgid "An error occurred while you were trying to edit these volumes."
 msgstr ""
+"Se ha producido un error mientras estaba intentando editar estos volúmenes."
 
 #: staff.cat.copy_browser.can_have_copies.false
 msgid "Records from %1$s cannot have copies."
@@ -268,14 +269,16 @@ msgid ""
 "You must delete all the items on the volume before you may delete the volume "
 "itself."
 msgstr ""
+"Debe eliminar todos los elementos en el volumen antes de poder eliminar el "
+"mismo volumen."
 
 #: staff.cat.copy_browser.delete_volume.copies_remain.confirm
 msgid "Delete Volume and Items"
-msgstr ""
+msgstr "Eliminar volumen y Artículos"
 
 #: staff.cat.copy_browser.delete_volume.copies_remain.cancel
 msgid "Cancel Delete"
-msgstr ""
+msgstr "Cancelar Borrar"
 
 #: staff.cat.copy_browser.delete_volume.exception
 msgid "copy browser -> delete volumes"
@@ -381,6 +384,8 @@ msgstr "No todas las copias probablemente transferidas."
 msgid ""
 "Please Mark a bib record as a Target for Conjoined Items and try this again."
 msgstr ""
+"Favor de marcar un registro bib como un destino para Artículos conjuntos e "
+"intentarlo de nuevo."
 
 #: staff.cat.copy_browser.missing_library
 msgid "Missing library list."
@@ -762,6 +767,10 @@ msgstr "<Remover Protección>"
 msgid "<Remove Circulate as Type>"
 msgstr "<Remover Circular como Tipo>"
 
+#: staff.cat.copy_editor.remove_floating
+msgid "<Remove Floating>"
+msgstr ""
+
 #: staff.cat.copy_editor.field.unset_or_null
 msgctxt "staff.cat.copy_editor.field.unset_or_null"
 msgid "<Unset>"
@@ -838,16 +847,6 @@ msgstr "No"
 #: staff.cat.copy_editor.field.floating.label
 msgid "Floating?"
 msgstr "¿Flotando?"
-
-#: staff.cat.copy_editor.field.floating.yes_or_true
-msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
-msgid "Yes"
-msgstr "Sí"
-
-#: staff.cat.copy_editor.field.floating.no_or_false
-msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
-msgid "No"
-msgstr "No"
 
 #: staff.cat.copy_editor.field.age_based_hold_protection.label
 msgid "Age-based Hold Protection"
@@ -2407,6 +2406,14 @@ msgstr ""
 #~ msgstr ""
 #~ "Debe borrar todas las copias en el volumen antes de que pueda borrar el "
 #~ "volumen."
+
+#~ msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
+#~ msgid "Yes"
+#~ msgstr "Sí"
+
+#~ msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
+#~ msgid "No"
+#~ msgstr "No"
 
 #~ msgid "Record: %1$s"
 #~ msgstr "Registro: %1$s"
