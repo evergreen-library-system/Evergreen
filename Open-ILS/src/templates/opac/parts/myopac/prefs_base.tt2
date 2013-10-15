@@ -35,19 +35,21 @@
             <a class="hide_me" href="#">[% l('Export List') %]</a><!-- what does this do? -->
         </span>
     </div>
-        <!- Select box navigation for mobile view ->
-        <div id="acct_prefs_select">
-	     <form name="acct_prefs_nav">
-	       <select name="acct_prefs_url" aria-label="Select a preference page" onchange="window.location.href=document.acct_prefs_nav.acct_prefs_url.options[document.acct_prefs_nav.acct_prefs_url.selectedIndex].value">
-      [% FOREACH page IN acct_prefs_pages;
-          IF page.url != prefs_page; %]
-            <option value="[% mkurl(ctx.opac_root _ '/myopac/' _ page.url, {}, ['bbid', 'offset', 'limit']) %]">[% page.name; %]</option>;
-          [% ELSE; %]
-           <option value="" disabled selected>[% page.name; %]</option>;
-          [% END;
-       END; %]
-       </select>
-      </div>
+
+    [%- # Select box navigation for mobile view %]
+    <div id="acct_prefs_select">
+        <form name="acct_prefs_nav">
+            <select name="acct_prefs_url" aria-label="[% l('Select a preference page') %]" onchange="window.location.href=document.acct_prefs_nav.acct_prefs_url.options[document.acct_prefs_nav.acct_prefs_url.selectedIndex].value">
+        [% FOREACH page IN acct_prefs_pages;
+            IF page.url != prefs_page; -%]
+            <option value="[% mkurl(ctx.opac_root _ '/myopac/' _ page.url, {}, ['bbid', 'offset', 'limit']) %]">[% page.name; %]</option>
+            [% ELSE; -%]
+            <option value="" disabled selected>[% page.name; %]</option>
+            [% END; -%]
+        [% END; -%]
+            </select>
+        </form>
+    </div>
 
     <div class="clear-both normal-height"></div>
 
