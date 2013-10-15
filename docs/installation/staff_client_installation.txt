@@ -26,7 +26,7 @@ version of your Evergreen server, contact your system administrator.
 image::media/staff_client_installation_0.png[] 
 + 
 . Click _Next_ to accept
-desitnation folder.  
+destination folder.  
 + 
 image::media/staff_client_installation_1.png[] 
 + 

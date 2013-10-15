@@ -1,7 +1,7 @@
-Org Unit Proximity Adustments
+Org Unit Proximity Adjustments
 -----------------------------
 
-Org Unit Proximity Adustments
+Org Unit Proximity Adjustments
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Org Unit Proximity Adjustments allow libraries to indicate lending preferences for holds between libraries in an Evergreen consortium.  When a hold is placed in Evergreen, the hold targeter looks for copies that can fill the hold.  One factor that the hold targeter uses to choose the best copy to fill the hold is the distance, or proximity, between the capturing library and the pickup library for the request.  The proximity is based on the number of steps through the org tree that it takes to get from one org unit to another.    
 

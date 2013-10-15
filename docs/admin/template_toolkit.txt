@@ -214,7 +214,7 @@ in the header and footer of every page in the TPAC. Let's customize that for
 our `templates_BR1` skin.
 
 To begin with, we need to find the page(s) that contain the text in question.
-The simplest way to do that is with the handly utility `ack`, which is much
+The simplest way to do that is with the handy utility `ack`, which is much
 like `grep` but with built-in recursion and other tricks. On Debian-based
 systems, the command is `ack-grep` as `ack` conflicts with an existing utility.
 In the following example, we search for files that contain the text "Link 1":

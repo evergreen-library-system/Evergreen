@@ -46,7 +46,7 @@ The data field profile in the above SQL script refers to the user group and shou
 integer referencing the id field in permission.grp_tree. Setting this value will effect 
 the permissions for the user. See the values in permission.grp_tree for possibilities.
 +
-ident_type is the identification type used for identiying users. This is a integer value 
+ident_type is the identification type used for identifying users. This is a integer value 
 referencing config.identification_type and should match the id values of that table. The 
 default values are 1 for Drivers License, 2 for SSN or 3 for other.
 +
@@ -63,7 +63,7 @@ corresponding id in the actor.org_unit table.
     		WITH CSV HEADER;  
 -----------------------------------
 +
-The script wil vary depending on the format of your patron load file (patrons.csv). 
+The script will vary depending on the format of your patron load file (patrons.csv). 
 +
 . Formatting of some fields to fit Evergreen filed formatting may be required. Here is an example 
 of sql to adjust phone numbers in the staging table to fit the evergreen field:

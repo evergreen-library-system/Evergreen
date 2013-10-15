@@ -8,7 +8,7 @@ In the example below, a librarian has created a bibliographic record for two bes
 Using the Conjoined Items Feature
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The Conjoined Items feature was designed so that you can link items between bibliographic records when you have the item in hand, or when the item is not physically present.  Both processes are described here.  The steps are fewer if you have the item in hand, but both processes accomplish the same task.  This documentalso demonstrates the process to edit or delete links between items and bibliographic records. Finally, the permission a cataloger needs to use this feature is listed.
+The Conjoined Items feature was designed so that you can link items between bibliographic records when you have the item in hand, or when the item is not physically present.  Both processes are described here.  The steps are fewer if you have the item in hand, but both processes accomplish the same task.  This document also demonstrates the process to edit or delete links between items and bibliographic records. Finally, the permission a cataloger needs to use this feature is listed.
 
 .Scenario 1: I want to link an item to another bibliographic record, but I do not have the item in hand
 

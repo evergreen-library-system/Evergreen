@@ -20,7 +20,7 @@ The staff client must be installed on each staff workstation and requires at min
  * Windows (XP, Vista, or 7), Mac OS X, or Linux operating system
  * a reliable high speed Internet connection
  * 512Mb of RAM
- * The staff client uses the TCP protocal on ports 80 and 443 to communicate with the Evergreen server.
+ * The staff client uses the TCP protocol on ports 80 and 443 to communicate with the Evergreen server.
 
 *Barcode Scanners*
 

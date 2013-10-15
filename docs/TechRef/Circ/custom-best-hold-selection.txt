@@ -80,7 +80,7 @@ determinant in the ORDER BY clause for best-hold selection when the given
 best-hold selector order set is in play.
 
 One of the 'determinants', *aprox*, depends on the Calculated Proximity
-Adjustment enchancement (documented elsewhere).
+Adjustment enhancement (documented elsewhere).
 
 The 'determinant' *rtime*, which in practice is virtually unique among the
 set of all holds at a site, will always terminate the list of determinants

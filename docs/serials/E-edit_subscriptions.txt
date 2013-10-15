@@ -1,6 +1,6 @@
 Edit Subscriptions
 ------------------
-Subscriptions can be edite to change the caption and pattern and other information.
+Subscriptions can be edited to change the caption and pattern and other information.
 
 Serials Control View
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

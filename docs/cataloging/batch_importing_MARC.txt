@@ -242,7 +242,7 @@ in this field.
 
 
 9) Select an *Insufficient Quality Fall-Through Profile* if desired.  This
-field enables you to indicate that if the inbound record doees not meet the
+field enables you to indicate that if the inbound record does not meet the
 configured quality standards, then you may still import the record using an
 alternate merge profile.  This field is typically used for selecting a merge
 profile that allows the user to import holdings attached to a lower quality

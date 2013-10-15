@@ -396,10 +396,10 @@ Evergreen Catalog is checked by default. Click Submit.
 image::media/acq_marc_search.png[search form]
 +
 . A list of results will appear. Click the _Copies_ link to add copy information
-to the line item. See <<line_item_features, Line Item Feratures>> for more 
+to the line item. See <<line_item_features, Line Item Features>> for more 
 information.
 . Click the Notes link to add notes or line item alerts to the line item. See
-<<line_item_features, Line Item Feratures>> for more information.
+<<line_item_features, Line Item Features>> for more information.
 . Enter a price in the _Estimated Price_ field.
 . You can save the line item(s) to a selection list by checking the box on the
 line item and clicking _Actions -> Save Items to Selection List_. You can also
@@ -417,7 +417,7 @@ You can apply tags to funds so that you can group funds for easy reporting. For
 example, you have three funds for children's materials: Children's Board Books,
 Children's DVDs, and Children's CDs. Assign a fund tag of 'children's' to each
 fund. When you need to report on the amount that has been spent on all 
-hildren's materials, you can run a report on the fund tag to find total
+children's materials, you can run a report on the fund tag to find total
  expenditures on children's materials rather than reporting on each individual
 fund.
 
@@ -653,7 +653,7 @@ encumbrances.
 Fund reporting
 ^^^^^^^^^^^^^^
 
-indexterm:[aquisitions,funds,reports]
+indexterm:[acquisitions,funds,reports]
 indexterm:[reports,funds]
 
 A core source, Fund Summary, is available in the reports interface.  This
@@ -674,7 +674,7 @@ Edit a fund just as you would edit a currency type.
 Perform fiscal year close-out operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-indexterm:[aquisitions,funds,fiscal rollover]
+indexterm:[acquisitions,funds,fiscal rollover]
 
 The Fiscal Year Close-Out Operation allows you to deactivate funds for the
 current year and create analogous funds for the next year. It transfers
