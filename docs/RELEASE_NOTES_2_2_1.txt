@@ -62,7 +62,7 @@ Changes
  * Repair PCrudFilter localeStrings variable collisions
  * Repaired typo in example rsyslog config file
  * Fix version numbers in 2.1 -> 2.2 upgrade script
- * Avoid problem with 2.1 -> 2.2 upgrade script issuing error about thesuari
+ * Avoid problem with 2.1 -> 2.2 upgrade script issuing error about thesauri
  * 2.2 upgrade missing vandelay.authority_match.quality column
  * Teach the autosuggest web service to cache suggestions where appropriate
  * Add new columns to CDBI table definitions

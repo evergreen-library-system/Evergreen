@@ -1,6 +1,6 @@
 New features should be accompanied by a file in this directory for general
 features, infrastructure, performance enhancements or the like, or a
-directory below this for area- or "module"-specific addtions and changes.
+directory below this for area- or "module"-specific additions and changes.
 
 The file should be in asciidoc format and contain enough description to
 enable the documentation team to write something coherent about the new

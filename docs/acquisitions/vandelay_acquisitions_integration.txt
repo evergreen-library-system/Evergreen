@@ -45,7 +45,7 @@ records before importing an order record.
 . Select a *Record Match Set* from the drop-down menu.
 . Select a *Merge Profile.* Merge profiles enable you to specify which tags
 should be removed or preserved in incoming records.
-. Selet a *Record Source* from the drop-down menu.
+. Select a *Record Source* from the drop-down menu.
 . If you want to automatically import records on upload, select one or more of
 the following options.
   .. *Import Non-Matching Records* - import any records that don't have a match
@@ -63,10 +63,10 @@ incoming record quality score, as determined by the match set's quality
 metrics, by the record quality score of the best match that exists in the 
 catalog. If you want to ensure that the inbound record is only imported when it
 has a higher quality than the best match, then you must enter a ratio that is
-higher than 1, such as 1.1. If you want to bypass all quality restraings, enter
+higher than 1, such as 1.1. If you want to bypass all quality restraints, enter
 a 0 (zero) in this field.
 . Select an *Insufficient Quality Fall-Through Profile* if desired. This field
-enables you to indicate that if the inbound record doees not meet the
+enables you to indicate that if the inbound record does not meet the
 configured quality standards, then you may still import the record using an
 alternate merge profile. This field is typically used for selecting a merge
 profile that allows the user to import holdings attached to a lower quality

@@ -6,7 +6,7 @@ with Lebbeous Fogle-Weekley
 [abstract]
 Purpose
 -------
-Evergreen supplies a broad API for accessing, processing and interacting with library data.  Because of the relatively complex nature of the underlying database schema, and the flexibility required by clients when, in the simplest case, performing CRUD operations, focus has been given to providing a nearly direct view of various data source.  When, however, the verbosity or complexity of full object access gets in the way of performant or straight-forward UIs, there has been a tendency to create one-off data simplification calls targetting specific use cases.
+Evergreen supplies a broad API for accessing, processing and interacting with library data.  Because of the relatively complex nature of the underlying database schema, and the flexibility required by clients when, in the simplest case, performing CRUD operations, focus has been given to providing a nearly direct view of various data source.  When, however, the verbosity or complexity of full object access gets in the way of performant or straight-forward UIs, there has been a tendency to create one-off data simplification calls targeting specific use cases.
 
 A generalized API which accepts a simplified query structure and field mapping, calculates the required backend query, and flattens the hierarchical data returned for each top level row into a would facilitate the simplification of existing UIs and provide for new UIs based on simple, reusable components.
 
@@ -14,7 +14,7 @@ Overview
 --------
 The existing, public open-ils.fielder server will be extended with two new OpenSRF methods, contained in a separate package so that they will be reusable in a private service which does not require authentication.
 
-These methods will be supported by code which takes simplifed cstore/pcrud search and order-by hashes and computes the full data structure required for the query.  The simplification will leverage the IDL to discover links between classes.
+These methods will be supported by code which takes simplified cstore/pcrud search and order-by hashes and computes the full data structure required for the query.  The simplification will leverage the IDL to discover links between classes.
 
 Underlying the simplified search grammar will be a path-field mapping structure.  This will describe the layout of fields, how they are to collapse from fleshed objects, and how the shape of both the query and result data structures should be interpreted by and presented to the caller.
 

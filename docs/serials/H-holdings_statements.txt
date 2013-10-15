@@ -3,7 +3,7 @@ Holdings
 
 System Generated Holdings Statement
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-As issues are received, Evergreen creates a holding statement in the OPAC based on what is set up in the Caption and Patterns of the subscription.  The systems generated holdings can only be edited by changing caption and pattern information and there is no abilitiy to edit the statement as free text.
+As issues are received, Evergreen creates a holding statement in the OPAC based on what is set up in the Caption and Patterns of the subscription.  The systems generated holdings can only be edited by changing caption and pattern information and there is no ability to edit the statement as free text.
 
 MARC Format for Holdings Display (MFHD)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

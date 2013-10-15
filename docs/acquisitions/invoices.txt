@@ -56,7 +56,7 @@ then click the _Link_ button.
 . Evergreen automatically enters the number of items that was ordered in
 the # Invoiced and # Paid fields. Adjust these quantities as needed.
 . Enter the amount that the organization was billed. This entry will
-automatically propragate to the Paid field.
+automatically propagate to the Paid field.
 . You have the option to add charge types if applicable. Charge types are
 additional charges that can be selected from the drop-down menu. Common charge
 types include taxes and handling fees.
@@ -142,7 +142,7 @@ image::media/Search_for_line_items_from_an_invoice3.jpg[Search_for_line_items_fr
 . Evergreen automatically enters the number of items that was ordered in the
 # Invoiced and # Paid fields. Adjust these quantities as needed.
 . Enter the amount that the organization was billed. This entry will
-automatically propragate to the Paid field. The _Per Copy_ field calculates the
+automatically propagate to the Paid field. The _Per Copy_ field calculates the
 cost of each copy by dividing the amount that was billed by the number of
 copies for which the library paid.
 
@@ -183,7 +183,7 @@ the _purchase order_.
 . Evergreen automatically enters the number of items that was ordered in the
 # Invoiced and # Paid fields. Adjust these quantities as needed.
 . Enter the amount that the organization was billed. This entry will
-automatically propragate to the Paid field. The _Per Copy_ field calculates the
+automatically propagate to the Paid field. The _Per Copy_ field calculates the
 cost of each copy by dividing the amount that was billed by the number of
 copies for which the library paid.
 . You have the option to add charge types if applicable. Charge types are
@@ -258,7 +258,7 @@ Click _Search_.
 image::media/acq_invoice_view.png[Open Invoice Search]
 +
 . To view invoices on a purchase order, open a purchase order and click the
-_View Invoices_ link. The number in parentheses inidicates the number of
+_View Invoices_ link. The number in parentheses indicates the number of
 invoices that are attached to the purchase order.
 +
 image::media/acq_invoice_view-2.png[View Invoices from PO]

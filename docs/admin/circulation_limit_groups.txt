@@ -27,7 +27,7 @@ restriction by this limit set when it is applied to a circulation policy, then
 enter a zero (0) in this field.  
 . Check the box adjacent to *Global Flag* if you want all of the org units in
 your consortium to be restricted by this limit set when it is applied to a
-circulation policy.  Otherwise, Evergreen will only appy the limit to the direct
+circulation policy.  Otherwise, Evergreen will only apply the limit to the direct
 ancestors and descendants of the owning library.
 . Enter a brief *Description* of the circulation limit set.
 . Click *Save*.

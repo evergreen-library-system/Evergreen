@@ -77,7 +77,7 @@ The Captions and Patterns wizard allows you to enter caption and pattern data as
 
 
 [NOTE]
-A subscription may have multiple captions and patterns listed in the subscripiton details, but only one Caption and Pattern can be active at any time. If you want to add multiple patterns, e.g. for Basic and Supplement, Click Add Caption and Pattern.
+A subscription may have multiple captions and patterns listed in the subscription details, but only one Caption and Pattern can be active at any time. If you want to add multiple patterns, e.g. for Basic and Supplement, Click Add Caption and Pattern.
 
 
 Use the Pattern Code Wizard
@@ -123,7 +123,7 @@ Page 3: Chronology
 image::media/cap-wiz-chron.jpg[Chronology]
 	
 . To add chronological units to the captions, check the box adjacent to Use chronology captions.
-. Choose a chronology for the first level. If you want to display the terms, "year" and "month" next to the chronology caption in the catlaog, then check the box beneath Display in holding field.
+. Choose a chronology for the first level. If you want to display the terms, "year" and "month" next to the chronology caption in the catalog, then check the box beneath Display in holding field.
 . To include additional levels of chronology, click Add Chronology Caption. Each level that you add must be smaller than the previous level.
 . After you have completed the chronology caption, click Next.
 

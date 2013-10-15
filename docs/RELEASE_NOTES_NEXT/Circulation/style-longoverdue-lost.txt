@@ -1,7 +1,7 @@
 Different Styles for Long Overdue Lost Items in Billing Interface
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 When a Lost or Long Overdue circulation, which has not yet been returned, 
-appears in the patron's list of billed trasactions, style them differently
+appears in the patron's list of billed transactions, style them differently
 from other not-yet-returned items.
 
 The interface will also display a helpful message to staff indicating what 

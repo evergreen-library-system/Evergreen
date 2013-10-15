@@ -1,6 +1,6 @@
 Option to Disallow Use of a Branch as a Pickup Library for Holds
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-A new library setting is avilable to remove a branch from consideration as a
+A new library setting is available to remove a branch from consideration as a
 hold pickup library. This setting only affects the OPAC pickup library selector
 and does not otherwise affect the display of the branch in the OPAC. It also
 has no effect on hold targeting / capturing.

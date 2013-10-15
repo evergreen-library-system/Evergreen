@@ -511,7 +511,7 @@ You should see a result like:
 
 If this does not work, it's time to do some troubleshooting.
 
-  * As the *opensrf* Linux acccount, run the `settings-tester.pl` script to see
+  * As the *opensrf* Linux account, run the `settings-tester.pl` script to see
     if it finds any system configuration problems. The script is found at
     `Open-ILS/src/support-scripts/settings-tester.pl` in the Evergreen source
     tree.

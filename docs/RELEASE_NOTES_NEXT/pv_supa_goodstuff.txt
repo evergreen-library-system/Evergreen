@@ -4,8 +4,7 @@ P.V. SUPA GoodStuff Integration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 There is now a "Server Add-ons" module for integrating P.V. Supa's RFID product
 known as GoodStuff with the Evergreen staff client.
-
-To activate it, you should add the identifier "pv_supa_goodstaff" (without the
+To activate it, you should add the identifier "pv_supa_goodstuff" (without the
 quotes) to the list managed by the Admin->Workstation Administration->Server
 Add-ons menu action within the staff client.  You will need the
 ADMIN_SERVER_ADDON_FOR_WORKSTATION permission to do this.
@@ -13,7 +12,7 @@ ADMIN_SERVER_ADDON_FOR_WORKSTATION permission to do this.
 After doing this and clicking the Update Active Add-Ons button, the interface
 will refresh and show a GoodStuff tab in the Add-on Preferences section.  Within
 this tab you will have the option of specifying the hostname and port for the
-Goodstaff hardware. There is also an "Enabled" setting that needs to be checked.
+GoodStuff hardware. There is also an "Enabled" setting that needs to be checked.
 
 Currently three interfaces have been integrated:
 * Circulation -> Check In Items

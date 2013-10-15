@@ -59,7 +59,7 @@ Funds allow you to allocate credits toward specific purchases. They typically
 are used to track spending and purchases for specific collections. Some
 libraries may choose to define very broad funds for their collections (e.g.
 children's materials, adult materials) while others may choose to define more
-specific funds (e.g. adult non-fiction DVD's for BR1).
+specific funds (e.g. adult non-fiction DVDs for BR1).
 
 If your library does not wish to track fund accounting, you can create one
 large generic fund and use that fund for all of your purchases.

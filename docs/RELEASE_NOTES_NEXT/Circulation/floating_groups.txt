@@ -3,5 +3,5 @@ Floating Groups
 
 In previous versions of Evergreen, floating group copies could float or not. If they floated, then they floated everywhere with no restrictions.
 
-This enhancment provides an interface to define where a copy will float by assigning it to a floating group.
+This enhancement provides an interface to define where a copy will float by assigning it to a floating group.
 

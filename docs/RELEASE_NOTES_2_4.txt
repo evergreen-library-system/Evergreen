@@ -94,7 +94,7 @@ improve Acquisitions work flows.
   * Add optional fund, circ modifier and collection code fields to distribution
   formulas.
   * The invoices interface auto-populates "# Invoiced" column with number of
-  invoicable copies, and copies the "billed cost" column to the "amount paid"
+  invoiceable copies, and copies the "billed cost" column to the "amount paid"
   column if the latter doesn't have anything in it yet.
 
 Acquisitions MARC Upload Form Persistence
@@ -416,7 +416,7 @@ Permissions
 One new permission is added for this feature:
 
   * ADMIN_HOLD_CAPTURE_SORT
-    ** Allows staff to adminster the custom best-hold selection sort order.
+    ** Allows staff to administer the custom best-hold selection sort order.
 
 Generic CSV Notification Generator/Receiver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

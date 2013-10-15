@@ -67,7 +67,7 @@ The default dates are based on your computer settings.
 Pre-catalogued item circulation is not available on Offline Interface. If an
 existing pre-cat barcode happens to be used, it is checked out with the
 previous author and title. If a new pre-cat barcode is attempted, an error of
-`ASSET NOT FOUND` (item not found) isreturned upon processing offline
+`ASSET NOT FOUND` (item not found) is returned upon processing offline
 transactions.
 
 Renew

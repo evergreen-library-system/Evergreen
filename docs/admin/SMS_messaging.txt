@@ -24,7 +24,7 @@ Authenticate Patrons
 By default, you must be logged into your OPAC account to send a text message from Evergreen.  However, if you disable this setting, you can text message copy information without having 
 to login to your OPAC account.
 
-To disable the patron login requirmement:
+To disable the patron login requirement:
 
 . Click *Admin* -> *Local Administration* -> *Library Settings Editor.*
 . Select the setting, *Disable auth requirement for texting call numbers*.

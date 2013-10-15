@@ -15,9 +15,9 @@ alternative headings are displayed a linked to a search results page
 showing related bib records related to the alternate heading.
 
 The counts of holdings displayed next to headings from bibliographic
-records are subject to the same visiibility tests as search. This means
+records are subject to the same visibility tests as search. This means
 that the org unit (and copy location group) dropdown on the browse
-interface affects counds, and it further means that whether or not
+interface affects counts, and it further means that whether or not
 you're looking at the browse interface through the staff client makes a
 difference.
 

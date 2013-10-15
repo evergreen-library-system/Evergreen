@@ -36,7 +36,7 @@ This maps broad search classes and text search configs. Multiple can exist for a
 config.metabib_field_ts_map: Editable from the Server Admin menu
   id - Primary key for editor benefit
   metabib_field - Reference to config.metabib_field
-  ts_config - Which Text Serach config to use
+  ts_config - Which Text Search config to use
   active - Is this config active. If false will not be used for searching or indexing.
   index_weight - The FTS index weight to use for this FTS config. Should be A, B, C, or D, defaults to C.
   index_lang - If set what language the record should be set to in order for this FTS config to be used for indexing

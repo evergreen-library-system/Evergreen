@@ -1,4 +1,4 @@
-New Feature: Generic CVS Notification Generator/Receiver
+New Feature: Generic CSV Notification Generator/Receiver
 ========================================================
 
 New Action/Trigger template and sample event definitions for creating a CSV
@@ -30,7 +30,7 @@ Event Environment Requirements
     ** ausp.org_unit
     ** patron.home_ou
 
-Not all fields are relevent to all notice types.
+Not all fields are relevant to all notice types.
 
 Required Event Parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~~

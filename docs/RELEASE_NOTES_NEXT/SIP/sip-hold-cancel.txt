@@ -9,7 +9,7 @@ is similar to msg64_summary_datatype, but affects holds instead of
 circulations.  When set to 'barcode', holds information will be
 delivered as a set of copy barcodes instead of title strings for patron
 info requests.  With barcodes, SIP clients can both find the title
-strings for display (via item info requests) and make subseqent
+strings for display (via item info requests) and make subsequent
 hold-related action requests, like holds cancellation.
 +
 ----

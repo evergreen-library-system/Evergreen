@@ -161,7 +161,7 @@ Return to Line Item
 ^^^^^^^^^^^^^^^^^^^
 
 This feature enables you to return to a specific line item on a selection list,
-purchase order, or invoice after you have naviagted away from the page that
+purchase order, or invoice after you have navigated away from the page that
 contained the line item.  This feature is especially useful when you must
 identify a line item in a long list. After working with a line item, you can
 return to your place in the search results or the list of line items.

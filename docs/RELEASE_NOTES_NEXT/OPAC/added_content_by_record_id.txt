@@ -12,7 +12,7 @@ interface templates are updated to use jacket images / cover art by
 record ID by default.
 
 By using record identifiers, the Added Content handler has the
-opportnity to examine additional identifiers in the bib record.
+opportunity to examine additional identifiers in the bib record.
 Currently, these include:
 
  * ISBN

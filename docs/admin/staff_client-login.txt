@@ -33,7 +33,7 @@ Standalone Interface
 indexterm:[staff client, standalone interface]
 
 If your connection to Evergreen is lost, click _Standalone
-Interface_ tio circulate items or register patrons while connection is down. 
+Interface_ to circulate items or register patrons while connection is down. 
 
 [[preset_tabs]]
 Preset Tabs in Evergreen Client
@@ -172,7 +172,7 @@ There are several ways to end your Evergreen staff client session:
 Clicking the *x* on the application window (not the login window) will not exit
 Evergreen, but only close the window. 
 
-A new application window can be opened by cicking _Open New Window_ from the
+A new application window can be opened by clicking _Open New Window_ from the
 login window.
 ============
 

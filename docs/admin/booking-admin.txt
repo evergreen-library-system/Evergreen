@@ -192,7 +192,7 @@ Following the same procedure you may delete Resource Attributes Maps.
 
 You may also delete Resource Attribute Values, Resource Attributes and Resource Types. But you have to delete them in the reverse order when you create them to make sure the entry is not in use when you try to delete it.
 
-This is the deletion order: Resource Attribut Map/Resources --> Resource Attribute Values --> Resource Attributes --> Resource Types. 
+This is the deletion order: Resource Attribute Map/Resources --> Resource Attribute Values --> Resource Attributes --> Resource Types. 
 
 
 

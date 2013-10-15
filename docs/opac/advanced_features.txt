@@ -37,7 +37,7 @@ To find records that were edited on or before a specific date, enter the term, e
 edit_date(,2013-04-01)
 
 
-To find records that were edited on or after a sepcific date, enter the term, edit_date, and the date in the catalog search field.  For example, to find records that were edited on or after April 1, 2013, enter the following into the catalog search field:
+To find records that were edited on or after a specific date, enter the term, edit_date, and the date in the catalog search field.  For example, to find records that were edited on or after April 1, 2013, enter the following into the catalog search field:
 
 
 edit_date(2013-04-01)

@@ -17,7 +17,7 @@ Before beginning to use Acquisitions, the following must be configured by an adm
 * Merge Overlay Profiles and Record Match Sets (see link:../cataloging/batch_importing_MARC.txt[Batch Importing MARC Records] in Cataloging)
 * Providers
 
-Acquisitons Workflow
+Acquisitions Workflow
 ~~~~~~~~~~~~~~~~~~~~
 
 The following diagram shows how the workflow functions in Evergreen. One of the differences in this process you should notice is that when creating a selection list on the vendor site, libraries will be downloading and importing the vendor bibs and item records.

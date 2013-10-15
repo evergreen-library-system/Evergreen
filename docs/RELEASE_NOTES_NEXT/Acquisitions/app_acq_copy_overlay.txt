@@ -1,4 +1,4 @@
-Opportunitistic Acquisitions In-Process Copy Overlay
+Opportunistic Acquisitions In-Process Copy Overlay
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Improves existing acquisitions copy overlay code (which matches and overlays
