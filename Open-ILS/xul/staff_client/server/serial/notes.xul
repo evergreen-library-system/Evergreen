@@ -246,6 +246,7 @@
 			var edit_mode; // for clarity
 			var label_text;
 			var button_accesskey;
+			var note_fm_type;
 
 			if (typeof index != 'undefined') {
 				edit_mode = true;
@@ -253,9 +254,11 @@
 				alert = get_bool(g.notes[index].alert());
 				title = xml_encode(g.notes[index].title());
 				value = xml_encode(g.notes[index].value());
+				note_fm_type = g.notes[index].classname;
 				label_text = $('serialStrings').getString('staff.serial.notes.edit_note.label');
 				button_accesskey = $('serialStrings').getString('staff.serial.notes.edit_note.accesskey');
 			} else {
+				note_fm_type = g.fm_type;
 				label_text = $('catStrings').getString('staff.cat.copy_notes.new_note.add_note.label');
 				button_accesskey = $('catStrings').getString('staff.cat.copy_notes.new_note.add_note.accesskey');
 			}
@@ -267,7 +270,7 @@
 					<grid flex="1"><columns><column/><column flex="1"/></columns> \
 						<rows> \
 							<row><label value="' + $('catStrings').getString('staff.cat.copy_notes.new_note.public') + '"/><checkbox id="pub" name="fancy_data" checked="' + public + '"/></row> \
-							<row><label value="' + fieldmapper.IDL.fmclasses[g.notes[index].classname].field_map.alert.label + '"/><checkbox id="alert" name="fancy_data" checked="' + alert + '"/></row> \
+							<row><label value="' + fieldmapper.IDL.fmclasses[note_fm_type].field_map.alert.label + '"/><checkbox id="alert" name="fancy_data" checked="' + alert + '"/></row> \
 							<row><label value="' + $('catStrings').getString('staff.cat.copy_notes.new_note.title') + '"/><textbox id="title" name="fancy_data" context="clipboard" value="' + title + '"/></row> \
 							<row><label value="' + $('catStrings').getString('staff.cat.copy_notes.new_note.note') + '"/><textbox multiline="true" id="note" name="fancy_data" context="clipboard" value="' + value + '"/></row> \
 							<row><spacer/><hbox> \

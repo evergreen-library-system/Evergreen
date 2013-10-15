@@ -1219,7 +1219,7 @@ serial.manage_items.prototype = {
         var notes_window = win.open(
             urls.XUL_SERIAL_NOTES,
             '','chrome,resizable,modal',
-            { 'notes' : notes, 'section_titles' : section_titles, 'title' : "Serial Alerts", 'disable_create' : true, 'section_id_names' : { 'ssubn' : 'subscription', 'sdistn' : 'distribution', 'sin' : 'item'} }
+            { 'notes' : notes, 'section_titles' : section_titles, 'title' : $('serialStrings').getString('staff.serial.manage_items.alert_notes.title'), 'disable_create' : true, 'section_id_names' : { 'ssubn' : 'subscription', 'sdistn' : 'distribution', 'sin' : 'item'} }
         );
         if (notes_window.notes_updated) { // we changed some notes
             if (notes_window.notes_updated.sdistn || notes_window.notes_updated.ssubn) {
