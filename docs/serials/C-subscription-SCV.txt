@@ -96,7 +96,7 @@ Page 3: Chronology
 image::media/cap-wiz-chron.jpg[Chronology]
 
 . To add chronological units to the captions, check the box adjacent to Use chronology captions.
-. Choose a chronology for the first level. If you want to display the terms such as "year" and "month" next to the chronology caption in the catlaog, then check the box beneath Display in holding field.
+. Choose a chronology for the first level. If you want to display the terms such as "year" and "month" next to the chronology caption in the catalog, then check the box beneath Display in holding field.
 . To include additional levels of chronology, click Add Chronology Caption. Each level that you add must be smaller than the previous level.
 . After you have completed the chronology caption, click Next.
 
@@ -147,6 +147,6 @@ Generate Prediction
 
 . Open the Subscriptions tab.
 . Right-click or click Actions for Selected Row -> Make predictions.
-. A pop up box will aks you how many items you want to predict. Enter the number, and click OK.
+. A pop up box will ask you how many items you want to predict. Enter the number, and click OK.
 . A confirmation message will appear. Click OK.
 . Click the Issuances link to view the predicted issues.

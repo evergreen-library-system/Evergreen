@@ -26,7 +26,7 @@ image::media/User_Activity_Types1A.jpg[User_Activity_Types1A]
 Using this Feature
 ~~~~~~~~~~~~~~~~~~
 
-The last activty date for user logins appears in the patron's summary.
+The last activity date for user logins appears in the patron's summary.
 
 image::media/User_Activity_Types2A.jpg[User_Activity_Types2A]
  

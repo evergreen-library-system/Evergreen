@@ -42,7 +42,7 @@ Thesauri
 ~~~~~~~~
 
 A thesaurus describes the semantic rules that govern the meaning of words in a
-MARC record. The thesaurus code, which indicates the specific thesarus that
+MARC record. The thesaurus code, which indicates the specific thesaurus that
 should control a MARC record, is encoded in a fixed field using the mnemonic
 Subj in the authority record.  Eleven thesauri associated with the Library of
 Congress control set exist by default in the staff client.  
@@ -98,7 +98,7 @@ image::media/Authority_Control_Sets3.jpg[Authority_Control_Sets3]
 . Create the corresponding tag in the bibliographic record that should contain
 this information.  Click the *None* link in the *Controlled Bib Fields* column.
 . Click *New Control Set Bib Field*.
-. Add the corresponding tag in the bibiographic record.
+. Add the corresponding tag in the bibliographic record.
 . Click *Save*.
 
 image::media/Authority_Control_Sets4.jpg[Authority_Control_Sets4]

@@ -1,7 +1,7 @@
 Restrict Z39.50 Sources by Permission Group
 -------------------------------------------
 
-In Evergreen versions preceeding 2.2, all users with cataloging privileges could view all of the Z39.50 servers that were available for use in the staff client.  In Evergreen version 2.2, you can use a permission to restrict users' access to Z39.50 servers.  You can apply a permission to the Z39.50 servers to restrict access to that server, and then assign that permission to users or groups so that they can access the restricted servers.
+In Evergreen versions preceding 2.2, all users with cataloging privileges could view all of the Z39.50 servers that were available for use in the staff client.  In Evergreen version 2.2, you can use a permission to restrict users' access to Z39.50 servers.  You can apply a permission to the Z39.50 servers to restrict access to that server, and then assign that permission to users or groups so that they can access the restricted servers.
 
 Administrative Settings
 ~~~~~~~~~~~~~~~~~~~~~~~

@@ -47,7 +47,7 @@ Festival.  Asterisk is an open source PBX.  Festival is for speech synthesis.
 We'll talk about setting up Festival in a later step.  Strictly speaking, you might not need Festival if your institution doesn't
 need its notice message to contain truly dynamic parts (such as reading a
 list of overdue titles).  Asterisk can read numbers aloud by itself, and if
-you need notices to choose between a finite set of possiblities of things to
+you need notices to choose between a finite set of possibilities of things to
 say, you can just make or acquire recordings of each of those things and
 choose between them with logic either in the Action/Trigger template or in
 the Asterisk dialplan (for example, reading the name of a library branch
@@ -68,7 +68,7 @@ Configure asterisk for full logging.  When running asterisk, you should get matt
 Be sure you also installed DAHDI if you're using analog hardware to place phone calls (there are even cases when you want to install it for digital calling; grep Asterisk documentation for "timing source").
 When in doubt, just install it.  Maybe your package manager already did for you.
 
-If using analog telephony, get your hardware configured and make sure you can see the things that you're supposed to see with +/usr/sbin/dahdi_tool+ (typical install location, but look around if needed) and the command "dahdi show channels" in the Asterisk interactive console.  I'm handwaving over the specifics here.  There's a wealth of information avaiable online about how to do this.
+If using analog telephony, get your hardware configured and make sure you can see the things that you're supposed to see with +/usr/sbin/dahdi_tool+ (typical install location, but look around if needed) and the command "dahdi show channels" in the Asterisk interactive console.  I'm handwaving over the specifics here.  There's a wealth of information available online about how to do this.
 
 If using digital telephony, preferably with the SIP protocol, get that configured in asterisk and make sure your SIP channel(s) is/are up.  Again, more specifics on this are available online.
 
@@ -112,7 +112,7 @@ Exactly what to replace that X with will vary a lot depending on circumstances. 
 
 NOTE: I'm sorry I've obviously written the above from a North America-centric perspective; somebody else feel free to correct this.
 
-When you think you've got something subsituted for X that might work, do the following as root:
+When you think you've got something substituted for X that might work, do the following as root:
 
 -------------------------------------------------------
 cp yourfile /tmp
@@ -250,7 +250,7 @@ Set: titles=Harry Potter. The Da Vinci Code.
 
 where you substitute "SIP/blah/somenumber" or "DAHDI/N/somenumber" for X as in the earlier example in this document.
 
-Spool the file as per previous instructions. Does the message being read to you over the phone match the script you have?  If so, great.  Otherwise, do not continute until you get it right.
+Spool the file as per previous instructions. Does the message being read to you over the phone match the script you have?  If so, great.  Otherwise, do not continue until you get it right.
 
 Repeat this process to create a hold-available notice, assuming your institution wants one.  You'll create a similar chunk of dialplan, but you'll just change the messages and logic to reflect your script for hold-available notices rather than your script for overdue notices.
 
@@ -290,7 +290,7 @@ Reload your dialplan. Re-run the test from end of the section "expanding your di
 Action/Trigger Event Definitions
 --------------------------------
 
-It's time to create Action/Trigger Event Definitions (rows in the action_trigger.event_defintion table) for the notifications you want.
+It's time to create Action/Trigger Event Definitions (rows in the action_trigger.event_definition table) for the notifications you want.
 
 Setting up the event definition itself
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -443,7 +443,7 @@ Remember the event definition you made for telephone notices a few steps ago?  C
 Init scripts for the Asterisk box
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you installed Asterisk from source instead of from a distro package, look in the source tarball for sample init scripts.  Choose the one appropriate for your distro, put it in place, run 'chkconfig' or 'update-rc.d' or whatever's appropritate for your distro, and make sure you can start and stop Asterisk with that init script now.
+If you installed Asterisk from source instead of from a distro package, look in the source tarball for sample init scripts.  Choose the one appropriate for your distro, put it in place, run 'chkconfig' or 'update-rc.d' or whatever's appropriate for your distro, and make sure you can start and stop Asterisk with that init script now.
 
 For festival, I think on Debianesque distros you will have installed this from a package, but if you're on something Redhat-ish and you need an init script, the following will probably work.
 
@@ -564,7 +564,7 @@ Here's an example from root's crontab on Anytown Public Library's Asterisk box:
 30-59 9 * * 1-6 /usr/local/bin/eg-pbx-allocator.pl -c /usr/local/etc/eg-pbx-daemon.conf
 -------------------------------------------------------
 
-So you see how those three cron lines togeter run the allocator every minute within Anytown's 930am - 630pm Mon-Sat call window.
+So you see how those three cron lines together run the allocator every minute within Anytown's 930am - 630pm Mon-Sat call window.
 
 Cron job for action_trigger_runner.pl
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -600,7 +600,7 @@ Also, hold.available is an "active hook" as opposed to a passive one (like check
 
 This may have implications for load scheduling.  That might mean changes to the cron job on the Asterisk machine that runs eg-pbx-allocator.pl, or changes to the queue_limit value in +/usr/local/etc/eg-pbx-daemon.conf+, or other things.  Telephony is an adventure.
 
-The target for a hold.available hook is a hold, unlike a checkout.due hook for which the target is a circ, so for your event_definition's environment, notice change 'circ_lib' to 'pickup_lib'.  Then within your event_defintion's template, make the same substitution and any other reasonable changes in light of the fact that now target is an array of holds, whereas before it was an array of circs.
+The target for a hold.available hook is a hold, unlike a checkout.due hook for which the target is a circ, so for your event_definition's environment, notice change 'circ_lib' to 'pickup_lib'.  Then within your event_definition's template, make the same substitution and any other reasonable changes in light of the fact that now target is an array of holds, whereas before it was an array of circs.
 
 Troubleshooting and support
 ---------------------------
@@ -612,7 +612,7 @@ Want to see what's your telephony system is doing?  The best things you can do a
 
 TODO: Explain how info from Account in a callfile winds up in CSV, and why it's good and helpful.
 
-- Activate one of the cdr modules that come with Asterisk.  Call Detail Records wind up in either a CSV file or a database table depending on which module you activate.  You can even have the cdr_pgsql.so module put that database table in the same postgres database as Evergreen itself uses.  A cdr databse table will have one row per call made, with lots of information about what the phone number was and what happened with the call.  This information will be less reliable if you're using analog hardware, but is better if you're using digital telephony (VoIP).
+- Activate one of the cdr modules that come with Asterisk.  Call Detail Records wind up in either a CSV file or a database table depending on which module you activate.  You can even have the cdr_pgsql.so module put that database table in the same postgres database as Evergreen itself uses.  A cdr database table will have one row per call made, with lots of information about what the phone number was and what happened with the call.  This information will be less reliable if you're using analog hardware, but is better if you're using digital telephony (VoIP).
 - Check +/var/log/asterisk/full+.  grep around in this file to learn how to find all kinds of good information.
 - Run the interactive Asterisk console.  On the asterisk server, as root, run */usr/sbin/asterisk -rvvvvvvvvvv* .  Watch things happen in real time.
 - Consult the Evergreen database to see what kinds of notices have been generated.  The following is an example query to see if any telephone notices went out regarding Harry Potter (assuming you kept the titlestring part in your event definition template):

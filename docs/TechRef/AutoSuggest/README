@@ -26,12 +26,12 @@ boolean 'browse_field' column for each row in config.metabib_field as desired
 Numbers 15 (keyword|keyword) and 16 (subject|complete) should generally be set
 to false.
 
-The config.metabib_class  table has a new 'bouyant'
+The config.metabib_class  table has a new 'buoyant'
 column.  Setting this to true means that when a user is typing in the OPAC
 search box with a search class selector set to, say, 'Subject', and the cmc row
-for 'Subject' has 'bouyant' set to true, the top suggestions will definitely
+for 'Subject' has 'buoyant' set to true, the top suggestions will definitely
 come from the Subject fields of MARC records (if any).  'restrict' is like
-'bouyant', only stronger.  In that case suggestions /only/ come from the
+'buoyant', only stronger.  In that case suggestions /only/ come from the
 selected class.
 
 This is the idea behind the 'restrict' column (in both the
@@ -83,7 +83,7 @@ and in this file for the JSPAC:
 
 At bottom, autosuggest is shaped by PostgreSQL's Full Text Search features.
 Some of the arguments that are passed to TS_RANK_CD() and TS_HEADLINE() are
-expoposed via options to the openils.widget.AutoSuggest and
+exposed via options to the openils.widget.AutoSuggest and
 openils.AutoSuggestStore modules, which have comments.  You can customize your
 OPAC files to invoke these with your desired options without touching much
 actual code.

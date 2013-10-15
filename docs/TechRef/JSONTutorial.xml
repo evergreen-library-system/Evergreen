@@ -1931,7 +1931,7 @@
 			<para> Here we asked for a left outer join.  For a right outer join, code
 				<literal>"type":"right"</literal>.  For a full outer join, code
 				<literal>"type":"full"</literal>.  Any other value for "type" results in an inner
-				join, so watch out for typos.  A type of <literal>"rihgt"</literal> will give you
+				join, so watch out for typos.  A type of <literal>"right"</literal> will give you
 				a wrong join instead of a right one. </para>
 			<para> Here is the resulting SQL for this example: </para>
 

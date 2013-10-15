@@ -529,7 +529,7 @@
 			</listitem>
 			<listitem>
 				<para>in the field definition for the field in the IDL, the tag
-				<literal>"il8n"</literal> is present and true;</para>
+				<literal>"i18n"</literal> is present and true;</para>
 			</listitem>
 			<listitem>
 				<para>the query does <emphasis>not</emphasis> include the

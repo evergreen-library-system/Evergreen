@@ -3,8 +3,7 @@ Monograph Parts
 
 *Monograph Parts* enables you to differentiate between parts of monographs or other multi-part items.  This feature enables catalogers to describe items more precisely by labeling the parts of an item.  For example, catalogers might identify the parts of a monograph or the discs of a DVD set.  This feature also allows patrons more flexibility when placing holds on multi-part items.  A patron could place a hold on a specific disc of a DVD set if they want to access a specific season or episode rather than an entire series.
 
-Four new permissions are used by this functionality: CREATE_MONOGRAPH_PART, UPDATE_MONOGRAPH_PART, DELETE_MONOGRAPH_PART and MAP_MONOGRAPH_PART.  Thes
-e permissions should be assigned at the consorial level to those groups or users that will make use of the features described below.
+Four new permissions are used by this functionality: CREATE_MONOGRAPH_PART, UPDATE_MONOGRAPH_PART, DELETE_MONOGRAPH_PART and MAP_MONOGRAPH_PART.  These permissions should be assigned at the consortial level to those groups or users that will make use of the features described below.
 
 
 Add a monograph part to an existing record

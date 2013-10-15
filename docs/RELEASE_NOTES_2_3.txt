@@ -259,11 +259,11 @@ A Note on CSS Styles
 ++++++++++++++++++++
 
 If a user has a bookbag with an overly long name, the end of it will
-jut out past the right margin of the menu in FireFox and several other
+jut out past the right margin of the menu in Firefox and several other
 browsers.  To change this behavior, you may want to edit the `.popmenu
 li:hover li a` css entry in `web/css/skin/default/opac/style.css` by
 adding an `overflow` property.  If you desire to have the longer names
-clipped to the size ofthe menu then add `overlow: hidden`.  If you
+clipped to the size of the menu then add `overflow: hidden`.  If you
 prefer to have a scroll bar for oversized entries, then add `overflow:
 auto`.
 
@@ -329,7 +329,7 @@ Public Patron Notes
 Public patron notes are now visible in the 'Account Summary' box of 'My
 Account'.
 
-Auto-Override Permissable Patron Hold Fail Events
+Auto-Override Permissible Patron Hold Fail Events
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A new Library Setting is available that tells TPAC to automatically override
@@ -548,7 +548,7 @@ For example, if urls.REPLACE were set to 'oils://remote/replace':
 
 url_prefix('REPLACE/stuff') becomes 'oils://remote/replace/stuff'
 url_prefix('REPLACE?query') becomes 'oils://remote/replace?query'
-url_prefix('RPLACE|ment') becomes 'oils://remote/replacement'
+url_prefix('REPLACE|ment') becomes 'oils://remote/replacement'
 
 The pipe is intended for cases where the urls entry may or may not already
 contain a query string, say for differences between OPACs where one requires

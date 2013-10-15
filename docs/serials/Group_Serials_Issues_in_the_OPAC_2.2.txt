@@ -2,7 +2,7 @@ Group Serials Issues in the Template Toolkit OPAC
 -------------------------------------------------
 
 In previous versions of Evergreen, issues of serials displayed in a list ordered by publication date.  The list could be lengthy if the library had extensive holdings of a serial.  
-Using the Template Toolkit OPAC that is available in version 2.2, you can group issues of serials in the OPAC by chronology or enumeration. For example, you might group issues by date published or by volume. Users can expand these hyperlinked groups to view holdings of specific issues.  The result is a clean, easy-to-naviagte interface for viewing holdings of serials with a large quantity of issues.  
+Using the Template Toolkit OPAC that is available in version 2.2, you can group issues of serials in the OPAC by chronology or enumeration. For example, you might group issues by date published or by volume. Users can expand these hyperlinked groups to view holdings of specific issues.  The result is a clean, easy-to-navigate interface for viewing holdings of serials with a large quantity of issues.  
 
 NOTE: This feature is only available in the Template Toolkit OPAC.
 

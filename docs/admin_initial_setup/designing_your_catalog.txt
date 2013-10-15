@@ -421,7 +421,7 @@ social interaction of patrons to appear in your catalog. To activate ChiliFresh,
 you will need to open the Apache configuration file _/etc/apache2/eg_vhost.conf_
 and edit several lines:
 
-. Uncoment (remove the "#" at the beginning of the line) and add your chilifresh
+. Uncomment (remove the "#" at the beginning of the line) and add your ChiliFresh
 account number:
 
 ----
@@ -434,14 +434,14 @@ account number:
 #SetEnv OILS_CHILIFRESH_PROFILE
 ----
 
-Uncomment the line indicating the location of the Evergreen javaScript for
+Uncomment the line indicating the location of the Evergreen JavaScript for
 ChiliFresh:
 
 ----
 #SetEnv OILS_CHILIFRESH_URL http://chilifresh.com/on-site /js/evergreen.js
 ----
 
-. Uncomment the line indicating the secure URL for the Evergreen javaScript :
+. Uncomment the line indicating the secure URL for the Evergreen JavaScript :
 
 ----
 #SetEnv OILS_CHILIFRESH_HTTPS_URL https://secure.chilifresh.com/on-site/js/evergreen.js
@@ -475,7 +475,7 @@ place of a book cover.
 Google Analytics
 ~~~~~~~~~~~~~~~~
 
-Google Analytics is a free service to collect statisitics for your Evergreen
+Google Analytics is a free service to collect statistics for your Evergreen
 site.  In order to use Google Analytics you will first need to set up the
 service from the Google Analytics website at http://www.google.com/analytics/.
 To activate Google Analytics you will need to edit _config.tt2_ in your
@@ -510,10 +510,10 @@ SFX OpenURL resolver
 
 An OpenURL resolver allows you to find electronic resources and pull them into
 your catalog based on the ISBN or ISSN of the item. In order to use the SFX
-OpenURL resolver, you will need to subscribe to the Ex Libirs SFX service.  To
+OpenURL resolver, you will need to subscribe to the Ex Libris SFX service.  To
 activate the service in Evergreen edit the _config.tt2_ file in your template.
 Enable the resolver by changing the value of _openurl.enabled_ to _true_ and
-change the _openurl.baseurl_ setting to point to the URL of your openURL
+change the _openurl.baseurl_ setting to point to the URL of your OpenURL
 resolver. 
 
 Syndetic Solutions

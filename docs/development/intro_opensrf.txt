@@ -228,7 +228,7 @@ result directly to the client.
 .REQUEST flow in a stateless connection
 image:media/REQUEST.png[REQUEST flow in a stateless connection]
 
-When an OpenSRF client issues a `CONNECT` message to create a _stateful_ conection, the
+When an OpenSRF client issues a `CONNECT` message to create a _stateful_ connection, the
 router returns the Jabber ID of the next available service to the client so
 that the client can issue one or more `REQUEST` message directly to that
 particular service and the service will return corresponding `RESULT` messages
@@ -787,7 +787,7 @@ have been granted to the user to perform the action.
 
   * The `contextfield` attribute, if it exists, defines the field in this class
 that identifies the library within the system for which the user must have
-prvileges to work. If a user has been granted a given permission, but has not been
+privileges to work. If a user has been granted a given permission, but has not been
 granted privileges to work at a given library, they can not perform the action
 at that library.
 
@@ -1149,7 +1149,7 @@ HTTP examples>> that we previously dissected.
 Let's explore the call to `__PACKAGE__->register_method()`; most of the elements
 of the hash are optional, and for the sake of brevity we omitted them in the
 previous example. As we have seen in the results of the <<opensrfIntrospection,introspection call>>, a
-verbose regisration method call is recommended to better enable the internal
+verbose registration method call is recommended to better enable the internal
 documentation. So, for the sake of completeness here, is the set of elements
 that you should pass to `__PACKAGE__->register_method()`:
 
