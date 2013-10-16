@@ -22,10 +22,10 @@ OPAC
 
 Web-Based Patron Self-Registration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  * If a value is set for the 'opac.pending_user_expire_interval' for
-    any org units, the new /openils/bin/purge_pending_users.srfsh script 
-    should also be added the opensrf user's crontab.  Running the script once 
-    per day should suffice.
+  * If a value is set for the _Patron Self-Reg Expire Interval_
+    (opac.pending_user_expire_interval) for any org units, the new
+    /openils/bin/purge_pending_users.srfsh script should also be added to the
+    opensrf user's crontab.  Running the script once per day should suffice.
 
 
 Miscellaneous
@@ -79,8 +79,8 @@ activate the PO without loading copies into the catalog.
 Differentiate between cancelled and "delayed" lineitems
 =======================================================
 In the ACQ user interface, it is now more clear to users when a lineitem has
-been fully cancelled or if it has been cancelled temporarily (e.g. back-
-ordered).  
+been fully cancelled or if it has been cancelled temporarily (e.g.
+back-ordered).  
 
 When a lineitem is cancelled, but "keep_debits" is true on the cancel reason,
 the lineitem is in effect delayed instead of truly cancelled.  This is now
@@ -163,10 +163,6 @@ RewriteRule . - [E=locale:%1]
 </LocationMatch>
 -----------------------------------------------------------------
 
-
-
-
-
 Inter-authority linking script
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -188,7 +184,7 @@ added to Open-ILS/xul/staff_client/external/libmar.  These tools
 replace the downloadable tools from Mozilla.org that were previously
 used to generate the staff client updates files.
 
-They come with their own configuration script and are condfigured
+They come with their own configuration script and are configured
 automatically as a subpackage when you configure Evergreen for
 installation.  They are also built and ready for use when you make
 Evergreen during the installation or upgrade process.
@@ -198,7 +194,7 @@ the staff client updates has been modified to use the new tools.
 
 These tools introduce a dependency on libbz2.  This is often only
 available when installing the libbz2-dev or libbz2-devel packages.
-Thus this branch introduces a new depency on the development packages
+Thus this branch introduces a new dependency on the development packages
 for libbz2 in Evergreen.
 
 Nothing in the user facing behavior of building updates changes with
@@ -239,7 +235,7 @@ The URL is
 
 A couple of examples follow:
 
-`https://your.evergreen-server.tld/phonelist?user=circuser&passwd=password&skipemail
+`https://your.evergreen-server.tld/phonelist?user=circuser&passwd=password&skipemail`
 
 The above example would sign in as user circuser with password of
 ``password'' and get a list of patrons with holds to call who do not
@@ -267,7 +263,9 @@ Similar to purging circulations one may wish to purge old (filled or canceled) h
 
 Purged holds are moved to the action.aged_hold_request table with patron identifying information scrubbed, much like circulations are moved to action.aged_circulation.
 
-The settings allow for a default retention age as well as filled, canceled, and canceled by cancel cause ages. The most specific one wins unless a patron is retaining their hold history. In the latter case the patron's holds are retained either way.
+The settings allow for a default retention age as well as distinct retention 
+ages for holds filled, holds canceled, and holds canceled by specific cancel
+causes. The most specific one wins unless a patron is retaining their hold history. In the latter case the patron's holds are retained either way.
 
 Note that the function still needs to be called, which could be set up as a cron job or done more manually, say after statistics collection. A new script, purge_holds.srfsh, is added that can be used to purge holds from cron.
 
@@ -296,30 +294,26 @@ Cataloging
 
 :leveloffset: 3
 
-New Feature: Vandelay Item Import Defaults
-==========================================
+Vandelay Item Import Defaults
+=============================
 
-Via org settings, support auto-generation of call numbers and barcodes
-for items imported via Vandelay's Item Import interface.  Support
-settings for applying a local prefix string to auto-generated call
-numbers and barcodes.  For both, the prefix defaults to "VAN".
+Via the Library Settings Editor (Org Unit Settings), support auto-generation of
+call numbers and barcodes for items imported via the staff client's MARC Batch
+Import interface (a.k.a. Vandelay).  Support settings for applying a local
+prefix string to auto-generated call numbers and barcodes.  For both, the
+prefix defaults to "VAN".
 
 Similarly, support default copy location and circ modifiers.
 
-New Org Unit Settings
+New Library Settings
 ---------------------
 
- * vandelay.item.barcode.auto
- * vandelay.item.barcode.prefix
- * vandelay.item.call_number.auto
- * vandelay.item.call_number.prefix
- * vandelay.item.copy_location.default
- * vandelay.item.circ_modifier.default
-
-
-
-
-
+ * Vandelay Generate Default Barcodes (vandelay.item.barcode.auto)
+ * Vandelay Default Barcode Prefix (vandelay.item.barcode.prefix)
+ * Vandelay General Default Call Numbers (vandelay.item.call_number.auto)
+ * Vandelay Default Call Number Prefix (vandelay.item.call_number.prefix)
+ * Vandelay Default Copy Location (vandelay.item.copy_location.default)
+ * Vandelay Default Circulation Modifier (vandelay.item.circ_modifier.default)
 
 Z39.50 Batch Search and Queue
 =============================
@@ -346,13 +340,11 @@ inbound record matches to bib records within a record bucket.  When a record
 bucket and match set are chosen, only the records in the bucket can act as
 merge/overlay targets for the inbound Vandelay records.
 
-Configuration
--------------
+Server Admin Settings
+---------------------
 
-Z39.50 Index Field Maps
-~~~~~~~~~~~~~~~~~~~~~~~
-
-These map bib record indexes (Metabib Fields and Record Attributes) to Z39.50
+_Z39.50 Index Field Maps_ can be used to map bib record
+indexes (Metabib Fields and Record Attributes) to Z39.50
 search attributes.  The purpose of the mapping is to allow the server to
 determine which values to use for the automated Z39.50 searches.  For example,
 if the Z39.50 "title" attribute is mapped to the "Uniform Title" Metabib Field,
@@ -369,7 +361,7 @@ The management interface can be found in the staff client under
 Admin => Server Administration => Z39.50 Index Field Maps
 
 Metabib Field Additions
-^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------
 
 Stock config.metabib_field entries for author include additional author-
 related data, like dates.  For example, a value for Personal Author might 
@@ -398,18 +390,15 @@ INSERT INTO config.metabib_field
 --------------------------------------------
 
 
-Org Unit Settings
-~~~~~~~~~~~~~~~~~
+Library Settings
+-----------------
 
- * cat.z3950.batch.max_parallel 
-  ** Maximum Parallel Z39.50 Batch Searches
+ * Maximum Parallel Z39.50 Batch Searches (cat.z3950.batch.max_parallel)
   ** The maximum number of Z39.50 searches that can be in-flight at any given 
      time when performing batch Z39.50 searches
- * cat.z3950.batch.max_results
-  ** Maximum Z39.50 Batch Search Results
+ * Maximum Z39.50 Batch Search Results (cat.z3950.batch.max_results)
   ** The maximum number of search results to retrieve and queue for each 
      record + Z39 source during batch Z39.50 searches
-    
 
 :leveloffset: 0
 
@@ -417,27 +406,19 @@ Org Unit Settings
 Circulation
 ~~~~~~~~~~~
 
-
-
 Patron barcode regex for patron registration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 A new library setting is available to set a barcode regex to be checked during
 patron registration. 
 
-
-
-
 Setting for Desk Renewal to use original circulating library
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A new global flag option has been added to allow the circulating library of 
-a desk renewal (aka a renewal using the staff client) to reuse the original 
+a desk renewal (a.k.a. a renewal using the staff client) to reuse the original 
 circulation library for circ rule behaviors rather than using the workstation.
 This new setting is similar to existing options to use the originating 
 circulation library in OPAC renewals.
-
-
-
 
 Library Setting to Disable Patron Credit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -448,16 +429,12 @@ billing interface. When enabled, the setting will:
 * Hide all of the patron credit payment actions in the staff client patron
 payment interface.
 
-
-
-
 Option to Disallow Use of a Branch as a Pickup Library for Holds
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-A new library setting is avilable to remove a branch from consideration as a
+A new library setting is available to remove a branch from consideration as a
 hold pickup library. This setting only affects the OPAC pickup library selector
 and does not otherwise affect the display of the branch in the OPAC. It also
 has no effect on hold targeting / capturing.
-
 
 
 :leveloffset: 3
@@ -468,24 +445,6 @@ Floating Groups
 In previous versions of Evergreen, floating group copies could float or not. If they floated, then they floated everywhere with no restrictions.
 
 This enhancment provides an interface to define where a copy will float by assigning it to a floating group.
-
-
-
-
-
-Long-Overdue Patron Standing Penalty
-====================================
-
-This is the long-overdue version of the existing PATRON_EXCEEDS_LOST_COUNT 
-standing penalty.  When a patron exceeds the configured threshold for open
-long-overdue (i.e. non-zero balance) circulations, the penalty is applied. 
-When the number once again goes below the threshold, the penalty is removed.
-
-The penalty name is PATRON_EXCEEDS_LONGOVERDUE_COUNT / "Patron Exceeds Max 
-Long-Overdue Threshold"
-
-
-
 
 Long Overdue Circulations Management
 ====================================
@@ -498,9 +457,9 @@ Marking Circulations Long Overdue
 
 A new Action/Trigger reactor (MarkItemLongOverdue) and sample event 
 definition (6 Month Overdue Mark Long-Overdue) are included for 
-marking circulations and their associated copies as long overdue.  New org
-unit settings determine whether the item price and/or a processing fee is
-applied.  
+marking circulations and their associated copies as long overdue.  New Library
+Settings (Org Unit Settings) determine whether the item price and/or a
+processing fee is applied.  
 
 A secondary Action/Trigger hook (longoverdue.auto) and sample event 
 definition (6 Month Long Overdue Notice) are added so that (email, etc.) 
@@ -512,53 +471,29 @@ can be used to prevent long overdue processing (or any circ-based event
 definition) for patrons that are in collections processing at (or above) the 
 circulating library.
 
-New Org Unit Settings
-~~~~~~~~~~~~~~~~~~~~~
-
- * Long-Overdue Materials Processing Fee
- * Void Overdue Fines When Items are Marked Long-Overdue
- * Leave transaction open when long overdue balance equals zero
-
-A combination of 'Charge lost on zero' and 'Default Item Price' are used to
-determine the amount to charge for the item price when a circulation is 
-marked as long overdue.
-
-New Billing Types
-~~~~~~~~~~~~~~~~~
-
- * Long-Overdue Materials
- * Long-Overdue Materials Processing Fee
-
-New Permissions
-~~~~~~~~~~~~~~~
-
- * SET_CIRC_LONG_OVERDUE
-
-New Copy Status
-~~~~~~~~~~~~~~~
-
- * Long Overdue
-
 Check-in of Long Overdue Circulations
 -------------------------------------
 
-Check-in of long overdue items may result in any of the following actions, 
+Check-in of long overdue items may result in any of the following actions,
 depending on configuration.
 
- * Void the copy price billing 
- * Void the long-overdue processing fee billing 
- * Reinstate voided overdue fines 
+ * Void the copy price billing
+ * Void the long-overdue processing fee billing
+ * Reinstate voided overdue fines
 
 The process is practically identical to Lost processing.  However, one
 difference between Lost and Long Overdue check-in is that the window
 of time during which a long overdue item may be returned may be based on the
-due date (like Lost) or the last billing activity date (last payment, last 
-billing).  This is controlled with the "Long-Overdue Check-In Interval Uses 
-Last Activity Date" org unit setting.
+due date (like Lost) or the last billing activity date (last payment, last
+billing).  This is controlled with the "Long-Overdue Check-In Interval Uses
+Last Activity Date" Library Setting.
 
-New Org Unit Settings
-~~~~~~~~~~~~~~~~~~~~~
+New Library Settings
+--------------------
 
+ * Long-Overdue Materials Processing Fee
+ * Void Overdue Fines When Items are Marked Long-Overdue
+ * Leave transaction open when long overdue balance equals zero
  * Long-Overdue Items Usable on Checkin
  * Long-Overdue Max Return Interval
  * Restore Overdues on Long-Overdue Item Return
@@ -566,10 +501,27 @@ New Org Unit Settings
  * Void Processing Fee on Long-Overdue Item Return
  * Long-Overdue Check-In Interval Uses Last Activity Date
 
-New Permissions
-~~~~~~~~~~~~~~~
+A combination of 'Charge lost on zero' and 'Default Item Price' are used to
+determine the amount to charge for the item price when a circulation is 
+marked as long overdue.
 
+New Billing Types
+-----------------
+
+ * Long-Overdue Materials
+ * Long-Overdue Materials Processing Fee
+
+New Permissions
+---------------
+
+ * SET_CIRC_LONG_OVERDUE
  * COPY_STATUS_LONGOVERDUE.override
+
+New Copy Status
+---------------
+
+ * Long Overdue
+
 
 :leveloffset: 0
 
@@ -584,13 +536,25 @@ ability to assist patrons in regards to lost items.
 that will alert staff when a patron has too many lost items.  This
 setting is modified through the Group Penalty Thresholds page.
 
-* Include lost items as items out.  Through a new library setting,
+* Include lost items as items out.  Through a new Library Setting,
 'Include Lost circulations in lump sum tallies in Patron Display',
 the staff have the ability to determine if lost items will be included
 in items out.
 
+:leveloffset: 3
 
+Long-Overdue Patron Standing Penalty
+====================================
 
+This is the long-overdue version of the existing PATRON_EXCEEDS_LOST_COUNT
+standing penalty.  When a patron exceeds the configured threshold for open
+long-overdue (i.e. non-zero balance) circulations, the penalty is applied.
+When the number once again goes below the threshold, the penalty is removed.
+
+The penalty name is PATRON_EXCEEDS_LONGOVERDUE_COUNT / "Patron Exceeds Max
+Long-Overdue Threshold"
+
+:leveloffset: 0
 
 Per-Hold Behind Desk Setting
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -601,14 +565,14 @@ of captured hold items in cases where the patron setting has changed since
 hold capture.
 
 For these features to be accessible, the "Behind Desk Pickup Supported" 
-(circ.holds.behind_desk_pickup_supported) org unit setting must be set 
+(circ.holds.behind_desk_pickup_supported) Library Setting must be set 
 to true.
 
 Staff Client
 ++++++++++++
 
 In addition to the counts of ready for pickup and available holds, the
-staff client now also displays the number of behind the desk holds ready 
+staff client now also displays the number of behind-the-desk-holds ready 
 for pickup at the staff's working location.  If no items are held behind
 the desk, this information does not display, in particular, because this 
 information is useless if behind the desk holds are not supported at the 
@@ -624,20 +588,13 @@ feature, admins need to set the Opac Visible flag to "true" for the
 "Behind Desk Pickup Supported" must be set to true for the patron's
 home library.
 
-
-
-
-
 Print Single Item Receipt
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Add ability to print a receipt for just a single selected item from the patron 
-interface for Items Out or Lost, Claims Returned, Long Overdue, Has Unpaid 
-Billings. This can be used via right-click or using the 'Actions for Selected 
-Items' button.
-
-
-
+This feature adds the ability to print a receipt for just a single selected
+item from the patron interface for Items Out or Lost, Claims Returned, Long
+Overdue, Has Unpaid Billings. This can be used via right-click or using the
+'Actions for Selected Items' button.
 
 More User Name Fields Available for Simplified Hold Pull List
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -672,9 +629,9 @@ The following improvements were made to the self-check interface:
 
 Different Styles for Long Overdue Lost Items in Billing Interface
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-When a Lost or Long Overdue circulation, which has not yet been returned, 
-appears in the patron's list of billed trasactions, style them differently
-from other not-yet-returned items.
+Lost or Long Overdue circulations that have not yet been returned will appear
+in the patron's list of billed trasactions styled differently from other
+not-yet-returned items.
 
 The interface will also display a helpful message to staff indicating what 
 colors map to what types of circulations.
@@ -684,18 +641,12 @@ The default colors are maroon for Lost items and orange for Long Overdue items.
 To change the colors, modify circ.css. To change the language for the hint,
 modify lang.dtd.
 
-
-
-
 Checkout: Trim whitespace from beginning and end of barcode
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In checkout, when pasting a barcode into the lookup field, one may accidentally
 include spaces or tabs in the beginning or end of the barcode string. Trim 
 those away to avoid potential mis-scans.
-
-
-
 
 Wrong-Shelf Holds in Clearable Shelf-Expired Holds List
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -707,16 +658,13 @@ Clearable Holds_.
 . When _View Clearable Holds_ is selected, show wrong-shelf holds in addition
 to shelf-expired and canceled holds.
 
-
-
-
 Client
 ~~~~~~
 
 :leveloffset: 3
 
-New Feature: Customize Items Out Display for Lost, etc.
-=======================================================
+Customize Items Out Display for Lost, etc.
+==========================================
 
 Items which are LOST, LONGOVERDUE, or CLAIMSRETURNED may now be displayed 
 in the top/main list of circulations instead of the bottom list in the
@@ -733,20 +681,17 @@ Apart from organization, this has two additional effects:
    list, the bottom list is hidden from the UI (since nothing would display
    there), which creates more screen space for the main items out list.
 
-New Org Unit Settings
+New Library Settings
 ---------------------
 
- * ui.circ.items_out.longoverdue    | Items Out Long-Overdue display setting
- * ui.circ.items_out.lost           | Items Out Lost display setting
- * ui.circ.items_out.claimsreturned | Items Out Claims Returned display setting
+ * Items Out Long-Overdue display setting (ui.circ.items_out.longoverdue)
+ * Items Out Lost display setting (ui.circ.items_out.lost)
+ * Items Out Claims Returned display setting (ui.circ.items_out.claimsreturned)
 
 The value for each is a numeric code, describing which list the circulation
 should appear while checked out and whether the circulation should continue 
 to appear in the bottom list, when checked in, regardless of the state of
 the transaction.
-
-Value Codes
-~~~~~~~~~~~
 
  * 1 = top list, then bottom list 
  * 2 = bottom list, then bottom list
@@ -766,9 +711,6 @@ increased/decreased by using the CTRL key with + (to increase), with - (to
 decrease), and with 0 (to restore default font size). Font sizes can persist
 via a setting in user preferences.
 
-
-
-
 Standalone Mode Shortcut
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -781,15 +723,11 @@ directly into standalone (offline) mode.
 User Setting Defaults
 ^^^^^^^^^^^^^^^^^^^^^
 
-For use during Patron Registration, we can now supply default values for User Settings, under Admin -> Server Administration -> User Setting Types.
-
-
-
+For use during Patron Registration, we can now supply default values for User
+Settings, under _Admin_ -> _Server Administration_ -> _User Setting Types_.
 
 OPAC
 ~~~~
-
-
 
 Added Content by Record ID
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -846,38 +784,6 @@ In the eg_vhost.conf file, add:
 </Location>
 
 
-:leveloffset: 2
-
-Authority-enhanced bibliographic browse
----------------------------------------
-
-The Evergreen OPAC includes functionality for browsing by bibliographic terms,
-and where those terms are controlled by authority records, for linking directly
-to the records that use other authority controlled terms that are appropriately
-linked to the browse-exposed term.  In this way, one can browse authors for
-"King, Stephen" and, when appropriate and correct cataloging has been performed,
-be presented with a browse link within the author browse list to that brings the
-user to a "Bachman, Richard" entry, assuming visible bibliographic records are
-indeed attached to both records. Likewise, when browsing for "Bachman,
-Richard", users will be presented with a browse link leading to the "King,
-Stephen" browse location.
-
-Additionally, any unused but inter-authority-linked terms will appear in the
-browse list if the linked heading is in use by bibliographic records.  In this
-way, browsing for "Bachman, Richard" will lead the user the "King, Stephen" even
-if no bibliographic records make use of the "Bachman, Richard" heading.
-
-Linked authority records will not be exposed of neither is in use by visible
-bibliographic records.  This means that the feature will not lead to dead-end
-searches, but also means that this is not a complete authority browsing tool
-acceptable for use as such by a cataloger.  See the Manage Authorities interface
-exposed through the Staff Client for that functionality.
-
-
-:leveloffset: 0
-
-
-
 Bib record browser with linked authorities
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -891,13 +797,13 @@ typical backwards/forwards paging display. Headings link to search
 results pages showing the related records. If the browse heading is
 linked to any authority records, and if any *other* authority records
 point to those with "See also" or other non-main entry headings, those
-alternative headings are displayed a linked to a search results page
+alternative headings are displayed linked to a search results page
 showing related bib records related to the alternate heading.
 
 The counts of holdings displayed next to headings from bibliographic
-records are subject to the same visiibility tests as search. This means
+records are subject to the same visibility tests as search. This means
 that the org unit (and copy location group) dropdown on the browse
-interface affects counds, and it further means that whether or not
+interface affects counts, and it further means that whether or not
 you're looking at the browse interface through the staff client makes a
 difference.
 
@@ -906,36 +812,63 @@ Configuration considerations for site administrators
 There are two off-by-default features that site administrators may wish
 to enable.
 
-  * Quick paging links: By adding a value for the org unit setting
-    ''opac.browse.pager_shortcuts'' , you can make shortcut browsing
-    links such as ''0-9 A B C D ...'' appear between the Back and Next
-    buttons on the browse page. The set of shortcuts should be chosen
-    based on the languages in use at your site, but a reasonable value
-    for English might be the string "*0-9*ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-    which will yield a link for 0-9 and one for each letter A-Z.  The
-    use of asterisks in the string group a shortcut whose label is more
-    than a single letter in length.  Such longer shortcuts have the multi-
-    character string for the shortcut label, and the link just goes to the
-    first heading matching the first character of the label.  The letters
-    not enclosed in asterisks just lead to individual letter shortcuts.
+  * Quick paging links: By adding a value for the Library Setting
+    _Paging shortcut links for OPAC Browse_ (opac.browse.pager_shortcuts), you
+    can make shortcut browsing links such as ''0-9 A B C D ...'' appear
+    between the Back and Next buttons on the browse page. The set of shortcuts
+    should be chosen based on the languages in use at your site, but a
+    reasonable value for English might be the string
+    "*0-9*ABCDEFGHIJKLMNOPQRSTUVWXYZ", which will yield a link for 0-9 and one
+    for each letter A-Z.  The use of asterisks in the string group a shortcut
+    whose label is more than a single letter in length.  Such longer shortcuts
+    have the multi-character string for the shortcut label, and the link just
+    goes to the first heading matching the first character of the label.  The
+    letters not enclosed in asterisks just lead to individual letter shortcuts.
 
-
-  * There is a global flag by the name
-    ''opac.browse.warnable_regexp_per_class'' to control what leading
+  * There is a global flag by the name _Map of search classes to regular
+    expressions to warn user about leading articles_
+    (opac.browse.warnable_regexp_per_class) to control what leading
     articles in users' entered browse terms trigger a warning about how
     it might be better to search for "Rolling Stones" instead of "The
     Rolling Stones" (or whatever). This is off by default, but can be
     enabled if it suits your catalog, and can even be customized per
     search class (author, title, series, subject).
 
-Also, by default, authors are indexed for browse in such a way that
-relator roles like "creator" are dropped off the end of their headings.
-This was an aesthetic choice. If a site wanted to display those kinds
-of terms, they would update the 'config.metabib_field' table in
-the database, setting 'browse_xpath' to NULL where 'field_class' =
-''author'' and 'browse_field' is true.
+   * Also, by default, authors are indexed for browse in such a way that
+     relator roles like "creator" are dropped off the end of their headings.
+     This was an aesthetic choice. If a site wanted to display those kinds
+     of terms, they would update the 'config.metabib_field' table in
+     the database, setting 'browse_xpath' to NULL where 'field_class' =
+     ''author'' and 'browse_field' is true.
 
+:leveloffset: 2
 
+Authority-enhanced bibliographic browse
+---------------------------------------
+
+The Evergreen OPAC includes functionality for browsing by bibliographic terms,
+and, where those terms are controlled by authority records, for linking directly
+to the records that use other authority controlled terms that are appropriately
+linked to the browse-exposed term.  In this way, one can browse authors for
+"King, Stephen" and, when appropriate and correct cataloging has been performed,
+be presented with a browse link within the author browse list to that brings the
+user to a "Bachman, Richard" entry, assuming visible bibliographic records are
+indeed attached to both records. Likewise, when browsing for "Bachman,
+Richard", users will be presented with a browse link leading to the "King,
+Stephen" browse location.
+
+Additionally, any unused but inter-authority-linked terms will appear in the
+browse list if the linked heading is in use by bibliographic records.  In this
+way, browsing for "Bachman, Richard" will lead the user to "King, Stephen" even
+if no bibliographic records make use of the "Bachman, Richard" heading.
+
+Linked authority records will not be exposed if neither is in use by visible
+bibliographic records.  This means that the feature will not lead to dead-end
+searches, but also means that this is not a complete authority browsing tool
+acceptable for use as such by a cataloger.  See the Manage Authorities interface
+exposed through the Staff Client for that functionality.
+
+:leveloffset: 0
 
 Support for Conjoined Items
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -945,15 +878,10 @@ will display a copy record with a link in the copy table back to the "master"
 bib. The master bib will display a set of links to individual titles.
 
 
-
-
 Shelving Location Filter
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 Filtering by shelving location is now available from the Advanced Search screen.
-
-
-
 
 Linked library names in copy details
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -970,9 +898,6 @@ Settings Editor* and edit the *Library Information URL* setting for that
 branch. Any branches that do not have a library information URL setting display
 as normal text.
 
-
-
-
 Ability to set search context by shortname
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -982,19 +907,11 @@ able to use a branch's shortname to set the search locations whereas
 previously, sites could only use an org unit id. This parameter is case
 insensitive.
 
-
-
-
-
 OPAC Maintenance Message
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 Sites can now set a maintenance message to display in the catalog by setting
 the ctx.maintenance_message variable in config.tt2.
-
-
-
-
 
 My List Enhancements
 ^^^^^^^^^^^^^^^^^^^^
@@ -1028,16 +945,16 @@ Pending user accounts have no privileges.
 
 The form supports hiding fields, requiring fields, applying format
 validation, and displaying example text for selected fields by inspecting the 
-relevant patron registration org unit settings.
+relevant patron registration Library Settings.
 
 The "Request Library Card" link appears as the second default "bottom link"
 in the TPAC.  
 
-If a user is logged in when clicking the register link, the logged in
+If a user is logged in when clicking the register link, the logged-in
 user will be tracked as the requesting user for the pending account.
 Additionally, the home org unit and some address fields will be pre-populated
 for convenience (with the assumption that these will likely be the same for
-the pending user -- they can of course be changed).  When a requesting user
+the pending user -- they can, of course, be changed).  When a requesting user
 is present on the pending user, a link to the requesting user will be 
 displayed within the patron registration form in the staff client.
 
@@ -1048,12 +965,15 @@ Technical Details
 -----------------
 
   * To activate the web form and allow pending patrons to be created, set
-    the 'opac.allow_pending_user' org unit setting to true where appropriate.
+    the _Allow Patron Self-Registration_ (opac.allow_pending_user) Library
+    Setting to true where appropriate.
   * To purge old pending user accounts, set an interval value for the new
-    'opac.pending_user_expire_interval' org unit setting.
-  * The org unit settings to indicate show/require/regex/example are 
-    loaded dynamically, so any similar org unit settings added in the future
-    will also be honored.  Any setting matching the following format is used:
+    _Patron Self_Reg Expire Interval_ (opac.pending_user_expire_interval)
+    Library Setting.
+  * The Library Settings to indicate show/require/regex/example for patron
+    registration are loaded dynamically, so any Library Settings added in the
+    future will also be honored.  Any setting matching the following format is
+    used:
     ** ui.patron.edit.[au|aua].*.show
     ** ui.patron.edit.[au|aua].*.require
     ** ui.patron.edit.[au|aua].*.regex
@@ -1184,7 +1104,7 @@ Support for SIP "Renew All" messages
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Evergreen now supports SIP "Renew All" functionality, AKA SIP message pair
-65/66. When a 65 message is received, the SIP code collcets all open 
+65/66. When a 65 message is received, the SIP code collects all open 
 transactions for the user and renews them all. The set of successful and
 failed renewals is returned to the caller via the SIP BM and BN fields.
 
@@ -1208,7 +1128,7 @@ ADMIN_SERVER_ADDON_FOR_WORKSTATION permission to do this.
 After doing this and clicking the Update Active Add-Ons button, the interface
 will refresh and show a GoodStuff tab in the Add-on Preferences section.  Within
 this tab you will have the option of specifying the hostname and port for the
-Goodstaff hardware. There is also an "Enabled" setting that needs to be checked.
+Goodstuff hardware. There is also an "Enabled" setting that needs to be checked.
 
 Currently three interfaces have been integrated:
 
@@ -1216,7 +1136,7 @@ Currently three interfaces have been integrated:
   * Circulation -> Check Out Items (where you scan the patron barcode)
   * Circulation -> Check Out Items (where you scan the item barcodes)
 
-Each interface gets an RFID checkbox if the "Enabled" preference has been set,
+Each interface gets an RFID checkbox if the "Enabled" preference has been set
 that can activate/deactivate the functionality on a per interface basis.  The
 checkbox states persist (i.e. are sticky).
 
