@@ -4,7 +4,7 @@ Serials Control View
 
 As of Evergreen 2.4, the Serial Control View incorporates the Alternate Serial Control interface in the Subscription editor. Serial Control View enables you to manage serials in a single tabbed interface. This view also enables you to bind units. Serial Control View consists of five tabs: Items, Units, Distributions, Subscriptions, and Claims. Units and Claims are not functional in 2.4.
 
-Create a subscription
+Create a Subscription
 ~~~~~~~~~~~~~~~~~~~~~
 A subscription is designed to hold all information related to a single serial title.  Therefore, each library is likely to have only one subscription per serial title.
 
@@ -21,7 +21,7 @@ image::media/scv-combined-sub.png[Subscription]
 [NOTE]
 You can add notes to the subscription by clicking View/Edit Notes. These notes can also be accessed from the Items tab by right-clicking on an item and choosing View Sub. Notes. Also, the Notes column in the Items tab displays the total notes of each kind (Item notes, then Distribution notes, then Subscription notes).
 
-Create a distribution
+Create a Distribution
 ~~~~~~~~~~~~~~~~~~~~~
 
 Distributions indicate the branches that should receive copies of a serial. Distributions work together with streams to indicate the number of copies that should be sent to each branch.
