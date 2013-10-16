@@ -1,7 +1,7 @@
 Alternate Serial Control View
 -----------------------------
 
-Using the Alternate Serial Control View, you can create a subscription, a distribution, a stream, and a caption and pattern, and you can generate predictions and receive issues. To access Alternate Serial Control View, open a serials record, and click Actions for this Record >> Alternate Serial Control. This opens the Subscriptions interface
+Using the Alternate Serial Control View, you can create a subscription, a distribution, a stream, and a caption and pattern, and you can generate predictions and receive issues. To access Alternate Serial Control View, open a serials record, and click *Actions for this Record* -> *Alternate Serial Control*. This opens the Subscriptions interface
 
 . Create a subscription
 . Create a distribution
@@ -181,8 +181,8 @@ Generate Item Predictions
 
 After you manually create the first issue, Evergreen will predict future issuances. Use the Generate Predictions functionality to predict future issues.
 
-. Click Subscription Details -> Issuances -> Generate Predictions.
-. Choose the length of time for which you want to predict issues. If you select the radio button to predict until end of subscription, then Evergreen will predict issues until the end date that you created when you created the subscription. See simplesect . 1 for more information. If you do not have an end date, select the radio button to predict a certain number of issuances, and enter a number in the field.
+. Click *Subscription Details* -> *Issuances* -> *Generate Predictions*.
+. Choose the length of time for which you want to predict issues. If you select the radio button to predict until end of subscription, then Evergreen will predict issues until the end date that you created when you created the subscription. See link:_alternate_serial_control_view.html#_creating_a_subscription[] for more information. If you do not have an end date, select the radio button to predict a certain number of issuances, and enter a number in the field.
 . Click Generate.
 . Evergreen will predict a run of issuances and copies. The prediction will appear in a list.
 . You can delete the first, manual issuance by clicking the check box adjacent to the issuance and clicking Delete Selected.
