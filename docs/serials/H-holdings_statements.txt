@@ -12,7 +12,7 @@ Evergreen users can create, edit and delete their own MFHD.
 Create an MFHD record
 ^^^^^^^^^^^^^^^^^^^^^
 
-. Open a serial record, and in the bottom right corner above the copy information, click Add MFHD Record. You can also add the MFHD statement by clicking Actions for this Record .MFHD Holdings .Add MFHD Record.
+. Open a serial record, and in the bottom right corner above the copy information, click Add MFHD Record. You can also add the MFHD statement by clicking *Actions for this Record* -> *MFHD Holdings* -> *Add MFHD Record*.
 . A message will confirm that you have created the MFHD Record. Click OK.
 . Click Reload in the top left corner of the record.
 . The Holdings Summary will appear. Click Edit Holdings in the right corner.
@@ -24,12 +24,12 @@ Create an MFHD record
 Edit a MFHD record
 ^^^^^^^^^^^^^^^^^^
 
-. Open a serial record, and in the Actions for this Record, click MFHD Record>>Edit MFHD Record and select the appropriate MFHD. 
+. Open a serial record, click *Actions for this Record* -> *MFHD Record* -> *Edit MFHD Record* and select the appropriate MFHD. 
 . Edit the MFHD
 . Click Save MFHD
 
 Delete a MFHD Record
 ^^^^^^^^^^^^^^^^^^^^
 
-. Open a serial record, and in the Actions for this Record, click MFHD Record>>Delete MFHD Record and select the appropriate MFHD. 
+. Open a serial record, click *Actions for this Record* -> *MFHD Record* -> *Delete MFHD Record* and select the appropriate MFHD. 
 . Click to confirm the deletion of the MFHD
