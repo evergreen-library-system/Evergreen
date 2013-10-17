@@ -21,6 +21,23 @@ image::media/scv-rec.png[Receiving]
 
 After receiving items, you can view the updated holdings in the OPAC.
 
+Notes in the Receiving Interface
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+image::media/scv-notes.png[Alert Notes in Receiving Interface]
+
+The total number of notes for each item is displayed in the "Notes" column in the Items tab. The column header says "Notes (Item/Dist/Sub)" to explain how the numbers are organized in the column: First is the total number of Item Notes on that item, second is the number of Distribution Notes for that item's distribution, and last is the number of Subscription Notes on that item's subscription. To view and modify any of these notes, right-click on an item and click *View Sub. Notes*, *View Dist. Notes* or *View Item Notes*.
+
+Serial Alerts At Receive Time
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In the Serial Control View, you can now flag a note as an "alert" to
+make it more visible on the receiving interface. This flag is available
+as a checkbox on subscription, distribution and item notes. The new *Alerts*
+button on the Items tab displays the number of alert notes that are available
+for the selected items, and clicking this button opens a window which
+displays all applicable alert notes, sorted by type. Notes can also be
+edited or deleted from this window.
+
 Set Special Statuses
 ^^^^^^^^^^^^^^^^^^^^
 
