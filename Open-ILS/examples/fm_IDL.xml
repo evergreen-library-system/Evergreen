@@ -3829,8 +3829,8 @@ SELECT  usr,
         ) AS overdue,
 
         SUM( CASE WHEN (xact_finish IS NULL AND stop_fines = 'LOST') THEN 1 ELSE 0 END) AS lost,
-        SUM( CASE WHEN (xact_finish IS NULL AND stop_fines = 'CLAIMSRETURNED') THEN 1 ELSE 0 END) AS claims_returned,
-        SUM( CASE WHEN (xact_finish IS NULL AND stop_fines = 'LONGOVERDUE') THEN 1 ELSE 0 END) AS long_overdue
+        SUM( CASE WHEN stop_fines = 'CLAIMSRETURNED' THEN 1 ELSE 0 END) AS claims_returned,
+        SUM( CASE WHEN stop_fines = 'LONGOVERDUE' THEN 1 ELSE 0 END) AS long_overdue
   FROM  action.circulation
   WHERE checkin_time IS NULL
   GROUP BY 1
@@ -3871,8 +3871,8 @@ SELECT  usr,
         ,',') AS overdue,
 
         STRING_AGG( CASE WHEN (xact_finish IS NULL AND stop_fines = 'LOST') THEN id::TEXT ELSE '0' END,',') AS lost,
-        STRING_AGG( CASE WHEN (xact_finish IS NULL AND stop_fines = 'CLAIMSRETURNED') THEN id::TEXT ELSE '0' END,',') AS claims_returned,
-        STRING_AGG( CASE WHEN (xact_finish IS NULL AND stop_fines = 'LONGOVERDUE') THEN id::TEXT ELSE '0' END,',') AS long_overdue
+        STRING_AGG( CASE WHEN stop_fines = 'CLAIMSRETURNED' THEN id::TEXT ELSE '0' END,',') AS claims_returned,
+        STRING_AGG( CASE WHEN stop_fines = 'LONGOVERDUE' THEN id::TEXT ELSE '0' END,',') AS long_overdue
   FROM  action.circulation
   WHERE checkin_time IS NULL
   GROUP BY 1
