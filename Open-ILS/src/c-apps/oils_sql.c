@@ -4461,7 +4461,7 @@ char* SELECT (
 #if 0
 			    if (is_agg->size || (flags & SELECT_DISTINCT)) {
 
-					const jsonObject* aggregate_obj = jsonObjectGetKeyConst( elfield, "aggregate");
+					const jsonObject* aggregate_obj = jsonObjectGetKeyConst( selfield, "aggregate");
 				    if ( ! obj_is_true( aggregate_obj ) ) {
 					    if (gfirst) {
 						    gfirst = 0;
