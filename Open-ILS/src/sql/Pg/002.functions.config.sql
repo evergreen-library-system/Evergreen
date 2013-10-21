@@ -523,10 +523,6 @@ $xml =~ s/\p{Cc}//go;
 # Embed a version of OpenILS::Application::AppUtils->entityize()
 # to avoid having to set PERL5LIB for PostgreSQL as well
 
-# If we are going to convert non-ASCII characters to XML entities,
-# we had better be dealing with a UTF8 string to begin with
-$xml = decode_utf8($xml);
-
 $xml = NFC($xml);
 
 # Convert raw ampersands to entities
@@ -654,10 +650,6 @@ if ($create or $munge) {
     # Embed a version of OpenILS::Application::AppUtils->entityize()
     # to avoid having to set PERL5LIB for PostgreSQL as well
 
-    # If we are going to convert non-ASCII characters to XML entities,
-    # we had better be dealing with a UTF8 string to begin with
-    $xml = decode_utf8($xml);
-
     $xml = NFC($xml);
 
     # Convert raw ampersands to entities
@@ -700,7 +692,7 @@ CREATE OR REPLACE FUNCTION public.naco_normalize( TEXT, TEXT ) RETURNS TEXT AS $
     use Unicode::Normalize;
     use Encode;
 
-    my $str = decode_utf8(shift);
+    my $str = shift;
     my $sf = shift;
 
     # Apply NACO normalization to input string; based on
@@ -766,7 +758,7 @@ CREATE OR REPLACE FUNCTION public.search_normalize( TEXT, TEXT ) RETURNS TEXT AS
     use Unicode::Normalize;
     use Encode;
 
-    my $str = decode_utf8(shift);
+    my $str = shift;
     my $sf = shift;
 
     # Apply NACO normalization to input string; based on
