@@ -1512,10 +1512,6 @@ sub entityize {
     my($self, $string, $form) = @_;
 	$form ||= "";
 
-	# If we're going to convert non-ASCII characters to XML entities,
-	# we had better be dealing with a UTF8 string to begin with
-	$string = decode_utf8($string);
-
 	if ($form eq 'D') {
 		$string = NFD($string);
 	} else {
