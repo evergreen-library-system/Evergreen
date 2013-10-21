@@ -2997,6 +2997,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             }
             switch(Number(check.copy.status())) {
                 case 0: /* AVAILABLE */
+                case 4: /* MISSING */
                 case 7: /* RESHELVING */
                     check.what_happened = 'success';
                     sound.special('checkin.success');
