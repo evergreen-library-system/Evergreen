@@ -1,3 +1,4 @@
+:leveloffset: 1
 Floating Groups
 ===============
 
@@ -118,3 +119,4 @@ One member:
 * Stop Depth: 0
 * Max Depth: Unset
 * Exclude: Off 
+:leveloffset: 0
