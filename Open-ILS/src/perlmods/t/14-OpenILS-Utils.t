@@ -1,6 +1,8 @@
 #!perl -T
 
-use Test::More tests => 29;
+use Test::More tests => 31;
+use Test::Warn;
+use utf8;
 
 use_ok( 'OpenILS::Utils::Configure' );
 use_ok( 'OpenILS::Utils::Cronscript' );
@@ -80,6 +82,8 @@ my $exp_xml = '<record><leader>01614nmm a22003975u 4500</leader><controlfield ta
 my $clean_xml = OpenILS::Utils::Normalize::clean_marc($raw_marcxml);
 is($clean_xml, $exp_xml, "clean_marc: header and space normalization");
 
+is(OpenILS::Application::AppUtils->entityize('èöçÇÈÀ'), '&#xE8;&#xF6;&#xE7;&#xC7;&#xC8;&#xC0;', 'entityize: diacritics NFC');
+is(OpenILS::Application::AppUtils->entityize('èöçÇÈÀ', 'D'), 'e&#x300;o&#x308;c&#x327;C&#x327;E&#x300;A&#x300;', 'entityize: diacritics NFD');
 is(OpenILS::Utils::Normalize::clean_marc('èöçÇÈÀ'), '&#xE8;&#xF6;&#xE7;&#xC7;&#xC8;&#xC0;', 'clean_marc: diacritics');
 
 my $edi_invoice = "UNA:+.? 'UNB+UNOC:3+1556150:31B+123EVER:31B+120926:1621+4'UNH+11+INVOIC:D:96A:UN'BGM+380+5TST084026+9'DTM+137:20120924:102'RFF+ON:24'NAD+BY+123EVER 0001::91'NAD+SU+1691503::31B'CUX+2:USD:4'LIN+1++9780446360272'QTY+47:5'MOA+146:4.5:USD:10'MOA+203:14.65'PRI+AAF:2.93:DI:NTP'RFF+LI:24/102'LIN+2++9780446357197'QTY+47:8'MOA+146:6.5:USD:10'MOA+203:33.84'PRI+AAF:4.23:DI:NTP'RFF+LI:24/100'UNS+S'MOA+86:66.18'ALC+C++++DL'MOA+8:2'ALC+C++++CA'MOA+131:12.3'ALC+C++++TX'MOA+8:3.39'UNT+28+11'UNH+12+INVOIC:D:96A:UN'BGM+380+5TST084027+9'DTM+137:20120924:102'RFF+ON:26'NAD+BY+123EVER 0001::91'NAD+SU+1691503::31B'CUX+2:USD:4'LIN+1++9780446360272'QTY+47:1'MOA+146:4.5:USD:10'MOA+203:4.05'PRI+AAF:4.05:DI:NTP'RFF+LI:26/106'LIN+2++9780446350105'QTY+47:3'MOA+146:6.99:USD:10'MOA+203:14.67'PRI+AAF:4.89:DI:NTP'RFF+LI:26/105'UNS+S'MOA+86:25.03'ALC+C++++DL'MOA+8:2'ALC+C++++CA'MOA+131:3'ALC+C++++TX'MOA+8:1.31'UNT+28+12'UNZ+4+4'";
