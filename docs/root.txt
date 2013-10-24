@@ -192,7 +192,13 @@ include::admin/circulation_limit_groups.txt[]
 
 include::admin/booking-admin.txt[]
 
+// Push titles down one level.
+:leveloffset: 1
+
 include::admin/floating_groups.txt[]
+
+// Return to normal title levels.
+:leveloffset: 0
 
 include::admin/MARC_Import_Remove_Fields.txt[]
 
