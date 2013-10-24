@@ -163,8 +163,10 @@
         # Full publisher info
         args.pubinfo = "$args.pubplace $args.publisher $args.pubdate";
 
+        # RDA adds 264 to the pubinfo 880 consideration mix
         graphic_880s = [];
         get_graphic_880s(target_field='260');
+        get_graphic_880s(target_field='264');
         args.graphic_pubinfos = graphic_880s;
         args.pubinfos = [];
         FOR pubinfo IN args.graphic_pubinfos;
