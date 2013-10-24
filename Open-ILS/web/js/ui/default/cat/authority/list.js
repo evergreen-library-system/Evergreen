@@ -379,7 +379,7 @@ function displayRecords(parms) {
         + dijit.byId('authAxis').attr('value')
         // + '/' + dijit.byId('authOU').attr('value')
         + '/1' // replace with preceding line if OUs gain some meaning
-        + '/' + dijit.byId('authTerm').attr('value')
+        + '/' + encodeURIComponent(dijit.byId('authTerm').attr('value'))
         + '/' + dijit.byId('authPage').attr('value')
         + '/' + '20' // 20 results per page
     ;
