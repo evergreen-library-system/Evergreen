@@ -557,7 +557,7 @@ div.format_icon {
 }
 #main-content {
     padding-left: 0px;
-    margin-left: 1em;
+    margin: 0 1em;
     clear: both;
 }
 
@@ -1820,7 +1820,7 @@ a.preflib_change {
         margin: 0.3em;
     }
     #main-content {
-        margin-left: 1px;
+        margin: 0 1px;
     }
     #rdetails_status thead {
         display: none;
