@@ -20,7 +20,7 @@ img {
 }
 
 #topnav_logo {
-    padding-bottom: 25px;
+    margin: 2em 0;
 }
 
 #homesearch_main_logo {
@@ -93,48 +93,31 @@ div.select-box-wrapper {
     text-align:left;
 }
 
-#dash_wrapper {
-    position: relative;
-    top: -2em;
-}
-
 #dash_wrapper div {
-    position: relative;
-    vertical-align: middle;
     background: [% css_colors.primary %];
     border-radius: 5px;
-    height: 3em;
-    padding: 0em 1em 0em 1em;
+    padding: 0em 1em;
 }
 
-span.dash_divider {
-    margin: 0em 1em 0em 1em;
-    position: relative;
-    top: 10px;
+.dash_divider {
+    margin: 1em;
     color: [% css_colors.primary_fade %];
+    display:inline-block;
 }
 
 #dashboard {
-    clear:both;
-    float:right;
     margin-top: 1em;
-    background: [% css_colors.primary %];
-    border-radius: 5px;
     height: 3em;
 }
 
 #dashboard span.dash-align a {
     font-weight: bold;
     text-decoration: none;
-    position: relative;
-    top: 10px;
 }
 
 #dash_user {
     font-weight: bold;
     text-transform: capitalize;
-    position: relative;
-    top: 10px;
 }
 
 #logout_link { left: 1px; }
@@ -152,8 +135,8 @@ span.dash_divider {
 }
 #header {
     color: [% css_colors.background %];
-    padding-top: 26px;
     margin-left: 1em;
+    margin-right: 1em;
     font-size: [% css_fonts.size_small %];
 }
 
@@ -204,8 +187,8 @@ span.dash_divider {
     text-decoration: underline;
 }
 
-#header #your-acct-login {
-    padding-top:10px;
+#your-acct-login {
+    padding-top:2em;
 }
 
 #gold-links {
@@ -1269,7 +1252,6 @@ button.opac-button::-moz-focus-inner, input.opac-button::-moz-focus-inner {
     background: [% css_colors.control %];
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
     font-size: [% css_fonts.size_base %];
-    display:inline;
 }
 a.opac-button-header:hover, #dash_wrapper a.opac-button:hover {
     border-color: [% css_colors.control %];
@@ -1277,11 +1259,6 @@ a.opac-button-header:hover, #dash_wrapper a.opac-button:hover {
 
 .opac-multiline-button > a {
     display: inline-block;
-}
-
-#dash_wrapper .opac-button {
-    position: relative;
-    top: 10px;
 }
 
 #myopac_checked_div {
@@ -1738,14 +1715,14 @@ a.preflib_change {
     }
     #your-acct-login {
         padding: 0px;
-        padding-top: 10px;
+        padding-top: 5px;
     }
     #your-acct-login a {
         margin: 0px;
         padding: 5px;
     }
     #topnav_logo {
-        padding: 0px;
+        margin: 0;
     }
     #topnav_logo img {
         width: 200px;
@@ -1922,6 +1899,10 @@ a.preflib_change {
     .mobile_hide {
 	display: none;
     } 
+    #dash_user {
+        display: block;
+        padding: 0.5em;
+    }
     .dash_divider {
 	display: none;
     }
