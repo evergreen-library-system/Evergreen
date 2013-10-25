@@ -1,0 +1,7 @@
+For the tests we put here, let's not assume the stock test data is loaded.
+
+You can run all of the unit and regression tests using the ''pg_prove''
+command, which accepts standard ''psql'' command line options for
+authentication. For example:
+
+pg_prove -U evergreen t t/regress
