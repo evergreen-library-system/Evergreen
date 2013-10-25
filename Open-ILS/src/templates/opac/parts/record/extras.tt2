@@ -1,6 +1,6 @@
 [%
-    arrow_img = ctx.media_prefix _ '/images/rdetail_arrow.png';
-    arrow_down_img = ctx.media_prefix _ '/images/rdetail_arrow_down.png';
+    arrow_right = '&#9658;';
+    arrow_down = '&#9660;';
 %]
 <div>
     <div id='rdetail_extras_div' style='width: 100%;'> 
@@ -13,8 +13,8 @@
         <div id="gbp_extra" class="rdetail_extras hide_me">
             <div class="rdetail_extras_hr"></div>
             <div id="gbp_extra_links" class="rdetail_extras_link">
-                <a id='gbp_arrow_link' name='[% name %]' href='[% href %]'><img alt='[% label %]' src='[% arrow_img %]'/></a>
-                <a id='gbp_arrow_down_link' name='[% name %]' href='[% href %]' class='hide_me'><img alt='[% label %]' src='[% arrow_down_img %]'/></a>
+                <a id='gbp_arrow_link' name='[% name %]' href='[% href %]' class='rdetail_extras_lbl'>[% arrow_right %]</a>
+                <a id='gbp_arrow_down_link' name='[% name %]' href='[% href %]' class='rdetail_extras_lbl hide_me'>[% arrow_down %]</a>
                 <a name='[% name %]_lbl' href='[% href %]' class="rdetail_extras_lbl">[% label %]</a></div>
         </div>
         <div id="gbp_extra_container" class='rdetail_extras_div'></div>
@@ -75,18 +75,17 @@
                 [%  
                     IF tab_is_active(name);
                         href = mkurl('', {}, ['expand', 'ac']);
-                        img_url = arrow_down_img;
+                        arrow = arrow_down;
                     ELSE;
                         IF name == 'addedcontent' AND default_ac;
                             href = mkurl('', {expand => name, ac => default_ac}) _ '#' _ name; 
                         ELSE;
                             href = mkurl('', {expand => name}) _ '#' _ name; 
                         END;
-                        img_url = arrow_img;
+                        arrow = arrow_right;
                     END;
                 %]
-                <a name='[% name %]' href='[% href %]'><img alt='[% extra.label %]' src='[% img_url %]'/></a>
-                <a name='[% name %]_lbl' href='[% href %]' class="rdetail_extras_lbl">[% extra.label %]</a>
+                <a name='[% name %]' href='[% href %]' class="rdetail_extras_lbl">[% arrow %] [% extra.label %]</a>
             </div>
         </div>
         <div class='rdetail_extras_div'>

@@ -495,12 +495,14 @@ div.format_icon {
 }
 
 .rdetail_extras {
-    height: 29px;
-    background: [% css_colors.primary %];
+    background: [% css_colors.primary_fade %];
+    border: 1px solid [% css_colors.primary %];
     padding-top:1px;
-    margin-bottom: 10px;
-    margin-top: 10px;
     clear:both;
+}
+
+#rdetail_extras_div {
+    margin: 1em 0;
 }
 
 .rdetail_extras_hr {
@@ -511,18 +513,15 @@ div.format_icon {
 }
 
 .rdetail_extras_link {
-    padding-top: 4px;
-    padding-left: 12px;
+    padding: 6px 12px;
     font-size: [% css_fonts.size_smaller %];
     text-transform: uppercase;
     font-weight: bold;
 }
 
 .rdetail_extras_lbl {
-    position: relative;
-    top: -4px;
-    left: 7px;
     color: [% css_colors.text_invert %];
+    text-decoration: none;
 }
 
 ##rdetail_extras_expand, #rdetail_extras_collapse, #rdetail_locs_collapse {
