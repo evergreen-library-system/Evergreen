@@ -20,6 +20,7 @@ use Time::HiRes;
 use OpenILS::WWW::EGCatLoader::Util;
 use OpenILS::WWW::EGCatLoader::Account;
 use OpenILS::WWW::EGCatLoader::Browse;
+use OpenILS::WWW::EGCatLoader::Library;
 use OpenILS::WWW::EGCatLoader::Search;
 use OpenILS::WWW::EGCatLoader::Record;
 use OpenILS::WWW::EGCatLoader::Container;
@@ -121,6 +122,7 @@ sub load {
     return $self->load_simple("advanced") if
         $path =~ m:opac/(advanced|numeric|expert):;
 
+    return $self->load_library if $path =~ m|opac/library|;
     return $self->load_rresults if $path =~ m|opac/results|;
     return $self->load_print_record if $path =~ m|opac/record/print|;
     return $self->load_record if $path =~ m|opac/record/\d|;

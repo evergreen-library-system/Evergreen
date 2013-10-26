@@ -1,0 +1,57 @@
+<h2>[% l('Opening hours') %]</h2>
+[%- IF ctx.hours.dow_0_open == ctx.hours.dow_0_close; %]
+<div class="opening-hours">[% l('Monday: closed') %]</div>
+[%- ELSE %]
+<div class="opening-hours" property="openingHoursSpecification" typeof="OpeningHoursSpecification"><link property="dayOfWeek" href="http://purl.org/goodrelations/v1#Monday" />[%
+    l('Monday: [_1]-[_2]', '<span property="opens">' _ ctx.hours.dow_0_open.substr(0, 5) _ '</span>',
+     '<span property="closes">' _ ctx.hours.dow_0_close.substr(0, 5) _ '</span>') -%]
+</div>
+[%- END %]
+[%- IF ctx.hours.dow_1_open == ctx.hours.dow_1_close; %]
+<div class="opening-hours">[% l('Tuesday: closed') %]</div>
+[%- ELSE %]
+<div class="opening-hours" property="openingHoursSpecification" typeof="OpeningHoursSpecification"><link property="dayOfWeek" href="http://purl.org/goodrelations/v1#Tuesday" />[%
+    l('Tuesday: [_1]-[_2]', '<span property="opens">' _ ctx.hours.dow_1_open.substr(0, 5) _ '</span>',
+     '<span property="closes">' _ ctx.hours.dow_1_close.substr(0, 5) _ '</span>') -%]
+</div>
+[%- END %]
+[%- IF ctx.hours.dow_2_open == ctx.hours.dow_2_close; %]
+<div class="opening-hours">[% l('Wednesday: closed') %]</div>
+[%- ELSE %]
+<div class="opening-hours" property="openingHoursSpecification" typeof="OpeningHoursSpecification"><link property="dayOfWeek" href="http://purl.org/goodrelations/v1#Wednesday" />[%
+    l('Wednesday: [_1]-[_2]', '<span property="opens">' _ ctx.hours.dow_2_open.substr(0, 5) _ '</span>',
+     '<span property="closes">' _ ctx.hours.dow_2_close.substr(0, 5) _ '</span>') -%]
+</div>
+[%- END %]
+[%- IF ctx.hours.dow_3_open == ctx.hours.dow_3_close; %]
+<div class="opening-hours">[% l('Thursday: closed') %]</div>
+[%- ELSE %]
+<div class="opening-hours" property="openingHoursSpecification" typeof="OpeningHoursSpecification"><link property="dayOfWeek" href="http://purl.org/goodrelations/v1#Thursday" />[%
+    l('Thursday: [_1]-[_2]', '<span property="opens">' _ ctx.hours.dow_3_open.substr(0, 5) _ '</span>',
+     '<span property="closes">' _ ctx.hours.dow_3_close.substr(0, 5) _ '</span>') -%]
+</div>
+[%- END %]
+[%- IF ctx.hours.dow_4_open == ctx.hours.dow_4_close; %]
+<div class="opening-hours">[% l('Friday: closed') %]</div>
+[%- ELSE %]
+<div class="opening-hours" property="openingHoursSpecification" typeof="OpeningHoursSpecification"><link property="dayOfWeek" href="http://purl.org/goodrelations/v1#Friday" />[%
+    l('Friday: [_1]-[_2]', '<span property="opens">' _ ctx.hours.dow_4_open.substr(0, 5) _ '</span>',
+     '<span property="closes">' _ ctx.hours.dow_4_close.substr(0, 5) _ '</span>') -%]
+</div>
+[%- END %]
+[%- IF ctx.hours.dow_5_open == ctx.hours.dow_5_close; %]
+<div class="opening-hours">[% l('Saturday: closed') %]</div>
+[%- ELSE %]
+<div class="opening-hours" property="openingHoursSpecification" typeof="OpeningHoursSpecification"><link property="dayOfWeek" href="http://purl.org/goodrelations/v1#Saturday" />[%
+    l('Saturday: [_1]-[_2]', '<span property="opens">' _ ctx.hours.dow_5_open.substr(0, 5) _ '</span>',
+     '<span property="closes">' _ ctx.hours.dow_5_close.substr(0, 5) _ '</span>') -%]
+</div>
+[%- END %]
+[%- IF ctx.hours.dow_6_open == ctx.hours.dow_6_close; %]
+<div class="opening-hours">[% l('Sunday: closed') %]</div>
+[%- ELSE %]
+<div class="opening-hours" property="openingHoursSpecification" typeof="OpeningHoursSpecification"><link property="dayOfWeek" href="http://purl.org/goodrelations/v1#Sunday" />[%
+    l('Sunday: [_1]-[_2]', '<span property="opens">' _ ctx.hours.dow_6_open.substr(0, 5) _ '</span>',
+     '<span property="closes">' _ ctx.hours.dow_6_close.substr(0, 5) _ '</span>') -%]
+</div>
+[%- END %]
