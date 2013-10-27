@@ -473,8 +473,8 @@ div.format_icon {
     white-space: nowrap;
 }
 
-#rdetails_status td[header=copy_header_library], 
-#rdetails_status td[header=copy_header_shelfloc] {
+#rdetails_status td[headers=copy_header_library], 
+#rdetails_status td[headers=copy_header_shelfloc] {
     white-space: normal;
 }
 
