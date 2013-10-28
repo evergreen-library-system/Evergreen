@@ -30,7 +30,7 @@
                 <div id="refine_hits" class="results_header_btns result_block_visible"><a onclick="getFacety();">[% l('Refine these results') %]</a></div>
                 <div id="return_to_hits" class="results_header_btns"><a onclick="getResulty();">[% l('Back to results') %]</a></div>
                 [% IF ctx.mylist.size %]
-                <div class="results_header_btns cached_list_div">
+                <div class="results_header_btns">
                     [%- IF ctx.user; %]
                     <a href="[% mkurl(ctx.opac_root _ '/myopac/lists') %]">[% l('View My List') %]</a>
                     [%- ELSE %]

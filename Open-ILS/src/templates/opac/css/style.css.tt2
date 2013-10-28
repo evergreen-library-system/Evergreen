@@ -652,8 +652,6 @@ div.format_icon {
     border-bottom:1px solid [% css_colors.accent_mediumdark %];
 }
 
-.cached_list_div { height: 25px; }
-
 .results_header_lbl {
     font-weight: bold;
     float: left;
