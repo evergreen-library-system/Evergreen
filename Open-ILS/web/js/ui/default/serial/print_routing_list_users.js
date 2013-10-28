@@ -49,11 +49,14 @@ function ListRenderer() {
     };
 
     this._render_reader_addresses = function(reader, node) {
+        var used_ids = {};
         ["mailing", "billing"].forEach(
             function(addr_type) {
                 var addr = reader[addr_type + "_address"]();
-                if (!addr || !addr.valid())
+                if (!addr || !addr.valid() || used_ids[addr.id()])
                     return;
+
+                used_ids[addr.id()] = true;
 
                 var prefix = addr_type + "_address_";
                 var container = n(prefix + "container", node);
@@ -135,11 +138,9 @@ function ListRenderer() {
 
         iframe.contentWindow.document.open();
         iframe.contentWindow.document.write(
-            "<html><head><style type='text/css'>" +
-            ".item-title { font-size: 130%; font-weight: bold; }\n" +
-            ".item-issuance-label { font-size: 120%; }\n" +
-            ".item-dist-and-stream { font-size: 110%; }\n" +
-            ".hidden { display: none; }\n" +
+            "<html><head><link rel='stylesheet' href='" +
+            dojo.byId("serials_stylesheet_link").href +
+            "' type='text/css' />" +
             "</style></head>\n<body></body></html>"
         );
         iframe.contentWindow.document.close();

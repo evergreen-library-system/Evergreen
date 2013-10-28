@@ -26,3 +26,8 @@
 .serial-holding-code td { border: 0 !important; padding: 3px; margin: 0 !important; }
 .serial-holding-code td[colspan="2"] { text-align:center; }
 input[readonly] { color: #999; }
+.item-title { font-size: 130%; font-weight: bold; }
+.item-issuance-label { font-size: 120%; }
+.item-dist-and-stream { font-size: 110%; }
+div[name='reader_container'] > div { border-bottom: 1px #000 solid; }
+.hidden { display: none; }
