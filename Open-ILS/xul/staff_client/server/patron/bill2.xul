@@ -78,7 +78,12 @@
                         <row>
                             <vbox pack="center"><label value="&staff.patron.bill_interface.total_checked;" class="big_emphasis1" /></vbox><vbox pack="center"><label id="checked_owed2" class="big_emphasis1"/></vbox>
                             <spacer flex="1"/>
-                            <vbox pack="center"><label value='&staff.patron.bill_interface.credit_available;' class="big_emphasis2"/></vbox><vbox pack="center"><label id="credit_forward" class="big_emphasis2"/></vbox>
+                            <vbox class="hide_patron_credit" pack="center">
+                                <label value='&staff.patron.bill_interface.credit_available;' class="big_emphasis2"/>
+                            </vbox>
+                            <vbox class="hide_patron_credit" pack="center">
+                                <label id="credit_forward" class="big_emphasis2"/>
+                            </vbox>
                         </row>
                     </rows>
                 </grid>
