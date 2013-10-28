@@ -21,6 +21,7 @@
                     <!-- XXX i18n?  This template can be customized for
                     other address layouts if needed. -->
                     <div name="mailing_address_container" class="hidden">
+                        [% l('Mailing address:') %]
                         <span name="mailing_address_street1"></span>
                         <span name="mailing_address_street2"></span><br />
                         <span name="mailing_address_city"></span>,
@@ -30,6 +31,7 @@
                         <span name="mailing_address_country"></span>
                     </div>
                     <div name="billing_address_container" class="hidden">
+                        [% l('Billing address:') %]
                         <span name="billing_address_street1"></span>
                         <span name="billing_address_street2"></span><br />
                         <span name="billing_address_city"></span>,
@@ -55,4 +57,5 @@
 <div id="iframe_in_here"></div>
 <script type="text/javascript"
     src="[% ctx.media_prefix %]/js/ui/default/serial/print_routing_list_users.js"></script>
+<link id="serials_stylesheet_link" rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/[% ctx.skin %]/serial.css" />
 [% END %]
