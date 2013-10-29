@@ -410,14 +410,14 @@ foreach my $rec_id (@records) {
                 my $match_tag;
                 my @searches;
                 foreach my $c_subfield (@c_subfields) {
-                    my $sf = $bib_field->subfield($c_subfield);
-                    if ($sf) {
+                    my @sf_values = $bib_field->subfield($c_subfield);
+                    if (@sf_values) {
                         # Give me the first element of the list of authority controlling tags for this subfield
                         # XXX Will we need to support more than one controlling tag per subfield? Probably. That
                         # will suck. Oh well, leave that up to Ole to implement.
                         $match_subfields{$c_subfield} = (keys %{$controllees{$c_tag}{$c_subfield}})[0];
                         $match_tag = $match_subfields{$c_subfield};
-                        push @searches, {term => $sf, subfield => $c_subfield};
+                        push @searches, map {{term => $_, subfield => $c_subfield}} @sf_values;
                     }
                 }
                 # print Dumper(\%match_subfields);
