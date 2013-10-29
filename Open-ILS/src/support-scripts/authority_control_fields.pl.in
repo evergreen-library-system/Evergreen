@@ -32,7 +32,7 @@ use Pod::Usage qw/ pod2usage /;
 
 MARC::Charset->assume_unicode(1);
 
-my ($start_id, $end_id);
+my ($start_id, $end_id, $refresh);
 my ($days_back);
 my $bootstrap = '@sysconfdir@/opensrf_core.xml';
 my @records;
@@ -42,6 +42,7 @@ my $result = GetOptions(
     \%options,
     'configuration=s' => \$bootstrap,
     'record=i' => \@records,
+    'refresh' => \$refresh,
     'all', 'help',
     'start_id=i' => \$start_id,
     'end_id=i' => \$end_id,
@@ -384,7 +385,7 @@ foreach my $rec_id (@records) {
     # print "$rec_id\n";
 
     # State variable; was the record changed?
-    my $changed;
+    my $changed = 0;
 
     # get the record
     my $record = $e->retrieve_biblio_record_entry($rec_id);
@@ -406,6 +407,12 @@ foreach my $rec_id (@records) {
             my @bib_fields = ($marc->field($c_tag));
             foreach my $bib_field (@bib_fields) {
                 # print $_->as_formatted(); 
+
+                if ($refresh and defined(scalar($bib_field->subfield('0')))) {
+                    $bib_field->delete_subfield(code => '0');
+                    $changed = 1;
+                }
+                    
                 my %match_subfields;
                 my $match_tag;
                 my @searches;
@@ -442,29 +449,30 @@ foreach my $rec_id (@records) {
                 # Protect against failed (error condition) search request
                 if (!$validates) {
                     print STDERR "Search for matching authority failed; record # $rec_id\n";
-                    next;
+                    next if (!$changed);
                 }
 
-                if (scalar(@$validates) == 0) {
-                    next;
-                }
+                # Only add linking if one or more was found, but we may have changed
+                # the record already if in --refresh mode.
+                if (scalar(@$validates) > 0) {
 
-                # Iterate through the returned authority record IDs to delete any
-                # matching $0 subfields already in the bib record
-                foreach my $auth_zero (@$validates) {
-                    $bib_field->delete_subfield(code => '0', match => qr/\)$auth_zero$/);
+                    # Iterate through the returned authority record IDs to delete any
+                    # matching $0 subfields already in the bib record
+                    foreach my $auth_zero (@$validates) {
+                        $bib_field->delete_subfield(code => '0', match => qr/\)$auth_zero$/);
+                    }
+    
+                    # Okay, we have a matching authority control; time to
+                    # add the magical subfield 0. Use the first returned auth
+                    # record as a match.
+                    my $auth_id = @$validates[0];
+                    my $auth_rec = $e->retrieve_authority_record_entry($auth_id);
+                    my $auth_marc = MARC::Record->new_from_xml($auth_rec->marc());
+                    my $cni = $auth_marc->field('003')->data();
+                    
+                    $bib_field->add_subfields('0' => "($cni)$auth_id");
+                    $changed = 1;
                 }
-
-                # Okay, we have a matching authority control; time to
-                # add the magical subfield 0. Use the first returned auth
-                # record as a match.
-                my $auth_id = @$validates[0];
-                my $auth_rec = $e->retrieve_authority_record_entry($auth_id);
-                my $auth_marc = MARC::Record->new_from_xml($auth_rec->marc());
-                my $cni = $auth_marc->field('003')->data();
-                
-                $bib_field->add_subfields('0' => "($cni)$auth_id");
-                $changed = 1;
             }
         }
         if ($changed) {
@@ -496,7 +504,7 @@ authority_control_fields.pl - Controls fields in bibliographic records with auth
 
 =head1 SYNOPSIS
 
-C<authority_control_fields.pl> [B<--configuration>=I<opensrf_core.conf>]
+C<authority_control_fields.pl> [B<--configuration>=I<opensrf_core.conf>] [B<--refresh>]
 [[B<--record>=I<record>[ B<--record>=I<record>]]] | [B<--all>] | [B<--start_id>=I<start-ID> B<--end_id>=I<end-ID>]
 
 =head1 DESCRIPTION
@@ -558,6 +566,12 @@ to process multiple records in a single run.
 
 Specifies that all bibliographic records should be processed. For large
 databases, this may take an extraordinarily long amount of time.
+
+=item * B<-r>, B<--refresh>
+
+Specifies that all authority links should be removed from the target
+bibliographic record(s).  This will effectively rewrite all authority
+linking anew.
 
 =item * B<-s> I<start-ID>, B<--start_id>=I<start-ID>
 
