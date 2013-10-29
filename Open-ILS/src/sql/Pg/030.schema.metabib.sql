@@ -1823,7 +1823,7 @@ CREATE OR REPLACE FUNCTION metabib.browse_bib_pivot(
             )
       WHERE mbe.sort_value >= public.naco_normalize($2)
       ORDER BY mbe.sort_value, mbe.value LIMIT 1;
-$p$ LANGUAGE SQL;
+$p$ LANGUAGE SQL STABLE;
 
 CREATE OR REPLACE FUNCTION metabib.browse_authority_pivot(
     INT[],
@@ -1839,7 +1839,7 @@ CREATE OR REPLACE FUNCTION metabib.browse_authority_pivot(
             )
       WHERE mbe.sort_value >= public.naco_normalize($2)
       ORDER BY mbe.sort_value, mbe.value LIMIT 1;
-$p$ LANGUAGE SQL;
+$p$ LANGUAGE SQL STABLE;
 
 CREATE OR REPLACE FUNCTION metabib.browse_authority_refs_pivot(
     INT[],
@@ -1855,7 +1855,7 @@ CREATE OR REPLACE FUNCTION metabib.browse_authority_refs_pivot(
             )
       WHERE mbe.sort_value >= public.naco_normalize($2)
       ORDER BY mbe.sort_value, mbe.value LIMIT 1;
-$p$ LANGUAGE SQL;
+$p$ LANGUAGE SQL STABLE;
 
 CREATE OR REPLACE FUNCTION metabib.browse_pivot(
     INT[],
@@ -1867,7 +1867,7 @@ CREATE OR REPLACE FUNCTION metabib.browse_pivot(
                 metabib.browse_authority_refs_pivot($1,$2) -- only look in 4xx, 5xx, 7xx of authority
             )
       ORDER BY sort_value, value LIMIT 1;
-$p$ LANGUAGE SQL;
+$p$ LANGUAGE SQL STABLE;
 
 
 CREATE OR REPLACE FUNCTION metabib.staged_browse(
