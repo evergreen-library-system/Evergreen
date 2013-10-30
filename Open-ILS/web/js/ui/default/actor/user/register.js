@@ -84,6 +84,7 @@ function load() {
     allCards.attr("label", localeStrings.SEE_ALL);
     dojo.byId('uedit-dupe-username-warning').innerHTML = localeStrings.DUPE_USERNAME;
     generatePassword.attr("label", localeStrings.RESET_PASSWORD);
+    setExpireDate.attr("label", localeStrings.UPDATE_EXPIRE_DATE);
     dojo.byId('verifyPassword').innerHTML = localeStrings.VERIFY_PASSWORD;
     dojo.byId('parentGuardian').innerHTML = localeStrings.PARENT_OR_GUARDIAN;
     dojo.byId('userSettings').innerHTML = localeStrings.USER_SETTINGS;
@@ -293,6 +294,8 @@ function load() {
 
 	dojo.connect(generatePassword, 'onClick', generatePasswordHandler);
 
+	dojo.connect(setExpireDate, 'onClick', setExpireDateHandler);
+
     if(!patron.isnew() && !checkGrpAppPerm(patron.profile()) && patron.id() != openils.User.user.id()) {
         // we are not allowed to edit this user, so disable the save option
         saveButton.attr('disabled', true);
@@ -491,6 +494,28 @@ function generatePasswordHandler() {
 	f.widget.attr('value', patron.passwd());
 	f = findWidget('au', 'passwd2');
 	f.widget.attr('value', patron.passwd());
+}
+
+/**
+ * Set Expire Date field based on today and current profile group
+ */
+function setExpireDateHandler() {
+    var profileWidget, expireWidget;
+    profileWidget = findWidget('au', 'profile');
+    expireWidget = findWidget('au', 'expire_date');
+
+    // This technique is borrowed with slight modifications
+    // from the profile widget onChange handler
+    function found(items) {
+        if (items.length == 0) return;
+        var item = items[0];
+        var interval = profileWidget.widget.store.getValue(item, 'perm_interval');
+        expireWidget.widget.attr('value', dojo.date.add(new Date(),
+            'second', openils.Util.intervalToSeconds(interval)));
+    }
+
+    profileWidget.widget.store.fetch({onComplete:found, query:{id:profileWidget.widget.attr('value')}});
+
 }
 
 /**

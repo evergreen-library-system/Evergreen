@@ -41,7 +41,12 @@
     <tr fmclass='au' fmfield='other_phone'/>
     <tr fmclass='au' fmfield='home_ou' required='required'/>
     <tr fmclass='au' fmfield='profile' required='required'/>
-    <tr fmclass='au' fmfield='expire_date' required='required'/>
+    <tr fmclass='au' fmfield='expire_date' required='required'>
+        <td/><td/><td/>
+        <td>
+            <button dojoType='dijit.form.Button' jsId='setExpireDate' scrollOnFocus='false'></button>
+        </td>
+    </tr>
     <tr fmclass='au' fmfield='net_access_level' required='required'/>
     <tr fmclass='au' fmfield='active'/>
     <tr fmclass='au' fmfield='barred'/>

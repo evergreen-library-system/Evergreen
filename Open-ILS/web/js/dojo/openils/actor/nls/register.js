@@ -40,5 +40,6 @@
     "HOLD_NOTIFY_PHONE": "Phone: ",
     "HOLD_NOTIFY_EMAIL": "Email: ",
     "HOLD_NOTIFY_SMS": "SMS: ",
-    "REQUESTING_USER" : "Account requested by ${0} ${1}"
+    "REQUESTING_USER" : "Account requested by ${0} ${1}",
+    "UPDATE_EXPIRE_DATE": "Update Expire Date"
 }
