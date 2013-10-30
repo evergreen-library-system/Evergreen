@@ -1347,6 +1347,10 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
 
             case 'usrname':
                 widget.widget.isValid = function() {
+                    // Not empty
+                    if(this.attr("value") == '') {
+                        return false;
+                    }
                     // No spaces
                     if(this.attr("value").match(/\s/)) {
                         return false;
