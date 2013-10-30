@@ -1380,7 +1380,9 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
                         var input = findWidget('au', 'usrname');
                         var usrname = input.widget.attr('value');
 
-                        if(!usrname) {
+                        // Skip username check if the value is not yet present, or if this
+                        // is a patron which already existed and the usrname value is unchanged
+                        if(!usrname || (!patron.isnew() && usrname == patron.usrname())) {
                             dupeUsrname = false;
                             dojo.addClass(dojo.byId('uedit-dupe-username-warning'), 'hidden');
                             return;
