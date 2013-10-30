@@ -578,6 +578,11 @@ function uEditLoadStageUser(stageUname) {
         }
     }
 
+    // Clear the usrname if it looks like a UUID
+    if (patron['usrname']().replace(/-/g,'').match(/[0-9a-f]{32}/)) {
+        patron['usrname']('');
+    }
+
     // copy the data into our new address objects
     // TODO: uses the first mailing address only
     if(data.mailing_addresses.length) {
@@ -627,6 +632,10 @@ function uEditLoadStageUser(stageUname) {
         var card = new fieldmapper.ac();
         card.id(-1); // virtual ID
         patron.card().barcode(data.cards[0].barcode());
+        // Set usrname to barcode if usrname is empty
+        if (patron.usrname() == '') {
+            patron.usrname(card.barcode());
+        }
     }
 
     return patron;
