@@ -391,6 +391,10 @@ sub delete_rec {
 sub title_is_empty {
     my($class, $editor, $rid, $vol_id) = @_;
 
+    # check if $rid is an object, because may be passing the volume
+    # with a fleshed record in one of our callers.
+    $rid = $rid->id() if (ref($rid));
+
     return 0 if $rid == OILS_PRECAT_RECORD;
 
     my $cnlist = $editor->search_asset_call_number(
