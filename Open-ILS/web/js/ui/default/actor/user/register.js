@@ -302,7 +302,9 @@ function load() {
         saveCloneButton.attr('disabled', true);
     }
         
-    uUpdateContactInvalidators();
+    if (!patron.isnew()) { // Only existing users get Invalidators
+        uUpdateContactInvalidators();
+    }
 
     // Cancel mouse scroll events from propagating to table rows which are
     // using the dijit.form.NumberSpinner widget, because the mouse scroll
