@@ -1940,6 +1940,9 @@ function _uEditSave(doClone) {
                     if(stageUser) uEditRemoveStage();
                     uEditFinishSave(newPatron, doClone);
                 }
+            },
+            onmethoderror: function(req, status, status_text) {
+                alert("Method error: " + status + ": " + status_text);
             }
         }
     );
