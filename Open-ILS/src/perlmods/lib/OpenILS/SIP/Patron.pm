@@ -392,7 +392,7 @@ sub screen_msg {
     my $expire = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($u->expire_date));
     return $b if CORE::time > $expire->epoch;
 
-    return 'OK';
+    return '';
 }
 
 sub print_line {            # not implemented
