@@ -3,13 +3,13 @@ Upgrading the Evergreen Server
 Before upgrading, it is important to carefully plan an upgrade strategy to minimize system downtime and service interruptions.
 All of the steps in this chapter are to be completed from the command line.
 
-Software Prerequisites:
-~~~~~~~~~~~~~~~~~~~~~~~
+Software Prerequisites
+~~~~~~~~~~~~~~~~~~~~~~
 
   * **PostgreSQL**: Version 9.1 is recommended. The minimum supported version
     is 9.1.
-  * **Linux**: Evergreen 2.5 has been tested on Debian Wheezy (7.0) Debian Squeeze (6.0),
-    Ubuntu Lucid Lynx (10.04) and Ubuntu Precise Pangolin (12.04). If you are
+  * **Linux**: Evergreen 2.5 has been tested on Debian Wheezy (7.0), Debian Squeeze (6.0),
+    Ubuntu Precise Pangolin (12.04) and Ubuntu Lucid Lynx (10.04). If you are
     running an older version of these distributions, you may want to upgrade
     before upgrading Evergreen. For instructions on upgrading these
     distributions, visit the Debian or Ubuntu websites.
@@ -47,31 +47,29 @@ the http://evergreen-ils.org/opensrf-downloads/[OpenSRF download page].
 [source, bash]
 -----------------------------------------------
 wget http://evergreen-ils.org/downloads/previews/Evergreen-ILS-2.5-beta1.tar.gz
-tar xzf http://evergreen-ils.org/downloads/previews/Evergreen-ILS-2.5-beta1.tar.gz
+tar xzf Evergreen-ILS-2.5-beta1.tar.gz
 -----------------------------------------------
 +
 [NOTE]
 For the latest edition of Evergreen, check the http://evergreen-ils.org/downloads.php[Evergreen download page] and adjust upgrading instructions accordingly.
-+
+
 . As the root user, install the prerequisites:
 +
 [source, bash]
-----------------------------------------------
+---------------------------------------------
 cd /home/opensrf/Evergreen-ILS-2.5-beta1
 ---------------------------------------------
 +
 On the next command, replace `[distribution]` with one of these values for your
 distribution of Debian or Ubuntu:
-
++
 indexterm:[Linux, Debian]
-
 indexterm:[Linux, Ubuntu]
-
-
++
   * `debian-wheezy` for Debian Wheezy (7.0)
   * `debian-squeeze` for Debian Squeeze (6.0)
-  * `ubuntu-lucid` for Ubuntu Lucid Lynx (10.04)
   * `ubuntu-precise` for Ubuntu Precise Pangolin (12.04)
+  * `ubuntu-lucid` for Ubuntu Lucid Lynx (10.04)
 +
 [source, bash]
 ------------------------------------------------------------
