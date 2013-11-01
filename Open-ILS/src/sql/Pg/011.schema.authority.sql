@@ -367,9 +367,12 @@ DECLARE
     main_entry          authority.control_set_authority_field%ROWTYPE;
     bib_field           authority.control_set_bib_field%ROWTYPE;
     auth_id             INT DEFAULT oils_xpath_string('//*[@tag="901"]/*[local-name()="subfield" and @code="c"]', source_xml)::INT;
+    tmp_data            XML;
     replace_data        XML[] DEFAULT '{}'::XML[];
     replace_rules       TEXT[] DEFAULT '{}'::TEXT[];
     auth_field          XML[];
+    auth_i1             TEXT;
+    auth_i2             TEXT;
 BEGIN
     IF auth_id IS NULL THEN
         RETURN NULL;
@@ -410,20 +413,30 @@ BEGIN
 
     FOR main_entry IN SELECT * FROM authority.control_set_authority_field acsaf WHERE acsaf.control_set = cset AND acsaf.main_entry IS NULL LOOP
         auth_field := XPATH('//*[@tag="'||main_entry.tag||'"][1]',source_xml::XML);
+        auth_i1 = (XPATH('@ind1',auth_field[1]))[1];
+        auth_i2 = (XPATH('@ind2',auth_field[1]))[1];
         IF ARRAY_LENGTH(auth_field,1) > 0 THEN
             FOR bib_field IN SELECT * FROM authority.control_set_bib_field WHERE authority_field = main_entry.id LOOP
-                replace_data := replace_data || XMLELEMENT( name datafield, XMLATTRIBUTES(bib_field.tag AS tag), XPATH('//*[local-name()="subfield"]',auth_field[1])::XML[]);
+                SELECT XMLELEMENT( -- XMLAGG avoids magical <element> creation, but requires unnest subquery
+                    name datafield,
+                    XMLATTRIBUTES(bib_field.tag AS tag, auth_i1 AS ind1, auth_i2 AS ind2),
+                    XMLAGG(UNNEST)
+                ) INTO tmp_data FROM UNNEST(XPATH('//*[local-name()="subfield"]', auth_field[1]));
+                replace_data := replace_data || tmp_data;
                 replace_rules := replace_rules || ( bib_field.tag || main_entry.sf_list || E'[0~\\)' || auth_id || '$]' );
+                tmp_data = NULL;
             END LOOP;
             EXIT;
         END IF;
     END LOOP;
 
+    SELECT XMLAGG(UNNEST) INTO tmp_data FROM UNNEST(replace_data);
+
     RETURN XMLELEMENT(
         name record,
         XMLATTRIBUTES('http://www.loc.gov/MARC21/slim' AS xmlns),
         XMLELEMENT( name leader, '00881nam a2200193   4500'),
-        replace_data,
+        tmp_data,
         XMLELEMENT(
             name datafield,
             XMLATTRIBUTES( '905' AS tag, ' ' AS ind1, ' ' AS ind2),
