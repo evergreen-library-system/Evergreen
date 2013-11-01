@@ -62,12 +62,10 @@ cd /home/opensrf/Evergreen-ILS-2.4.2
 +
 On the next command, replace `[distribution]` with one of these values for your
 distribution of Debian or Ubuntu:
-
++
 indexterm:[Linux, Debian]
-
 indexterm:[Linux, Ubuntu]
-
-
++
   * `debian-squeeze` for Debian Squeeze (6.0)
   * `ubuntu-lucid` for Ubuntu Lucid Lynx (10.04)
   * `ubuntu-precise` for Ubuntu Precise Pangolin (12.04)
