@@ -2,6 +2,7 @@
 @import "default/acq.css";
 @import "default/admin.css";
 @import "default/serial.css";
+@import "default/biblio.css";
 /* import the dojo CSS */
 @import "/js/dojo/dojo/resources/dojo.css";
 @import "/js/dojo/dijit/themes/tundra/tundra.css";

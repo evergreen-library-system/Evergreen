@@ -1,0 +1,12 @@
+.biblio-merge-item {
+	font-family : monospace;
+        font-weight : bold;
+        font-size   : 16px;
+}
+
+.biblio-merge-item:hover {
+        background-color : LawnGreen;
+}
+.biblio-merge-prevail-title {
+        font-weight : bold;
+}

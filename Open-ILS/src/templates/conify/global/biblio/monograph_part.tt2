@@ -1,37 +1,43 @@
 [% WRAPPER base.tt2 %]
 [% ctx.page_title = l('Configure Monograph Parts') %]
-<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-        <div>[% l('Monograph Parts') %]</div>
-        <div>
-            <button dojoType='dijit.form.Button' onClick='monoPartGrid.showCreateDialog()'>[% l('New Monograph Part') %]</button>
-            <button dojoType='dijit.form.Button' onClick='monoPartGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
+    <div dojoType="dijit.layout.BorderContainer" design="headline" >
+
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel' region="top" style="height:30px;">
+            <div>[% l('Monograph Parts') %]</div>
+            <div>
+               <button dojoType='dijit.form.Button' onClick='openils.biblio.monographPartMerge.showMergeDialog(monoPartGrid)'>[% l('Merge Selected') %]</button>
+               <button dojoType='dijit.form.Button' onClick='monoPartGrid.showCreateDialog()'>[% l('New Monograph Part') %]</button>
+               <button dojoType='dijit.form.Button' onClick='monoPartGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
+               &nbsp;&nbsp;
+            </div>
         </div>
-    </div>
-    <div>
-    <table  jsId="monoPartGrid"
+     <div id="sortContentPane" dojoType="dijit.layout.ContentPane" layoutAlign="client" region="center" style="width:500px;overflow-x:hidden;">
+       <table id="monoGrid" jsId="monoPartGrid"
             dojoType="openils.widget.AutoGrid"
-            autoHeight='true'
+            hidePaginator='true'
+            autoHeight='true' 
             fieldOrder="['label']"
+            displayLimit=0 
             suppressFields="['id','record','label_sortkey']"
             suppressEditFields="['id','label_sortkey']"
             query="{id: null}"
             fmClass='bmp'
             editOnEnter='true'/>
-</div>
+     </div>
+  </div>
 
 <script type="text/javascript">
+    dojo.require('dijit.layout.BorderContainer');
     dojo.require('openils.CGI');
     dojo.require('openils.Util');
     dojo.require('openils.widget.AutoGrid');
+    dojo.require('openils.biblio.monographPartMerge');
 
     var cgi = new openils.CGI();
     openils.Util.addOnLoad( function() {
         monoPartGrid.overrideEditWidgets.record = new dijit.form.TextBox({"disabled": true});
         monoPartGrid.overrideEditWidgets.record.shove = { create : cgi.param('r') };
-        monoPartGrid.loadAll({order_by : {bmp : 'label'}}, {record : cgi.param('r')});
+        monoPartGrid.loadAll({order_by : [{class : 'bmp', field : 'label_sortkey'}]}, {record : cgi.param('r')});
     });
 </script>
 [% END %]
-
-
