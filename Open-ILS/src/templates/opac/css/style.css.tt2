@@ -93,6 +93,10 @@ div.select-box-wrapper {
     text-align:left;
 }
 
+#dash_wrapper {
+    margin-left: 0.5em;
+}
+
 #dash_wrapper div {
     background: [% css_colors.primary %];
     border-radius: 5px;
@@ -1547,7 +1551,8 @@ a.preflib_change {
     
 #locale_picker_form {
     float: right;
-    padding: 0.5em 1em 0.5em 0;
+    padding: 0.5em;
+    margin-top: 2em;
     border-right: thin [% css_colors.control %] solid;
 }
 
