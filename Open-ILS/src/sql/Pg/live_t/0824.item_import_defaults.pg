@@ -15,12 +15,10 @@
 -- let's do this thing
 BEGIN;
 
-SELECT plan(2);
+SELECT plan(1);
 
 INSERT INTO actor.org_unit_setting (org_unit,name,value) VALUES
-(4,'vandelay.item.barcode.auto','true'),
-(4,'vandelay.item.circ_modifier.default','"BOOK"'),
-(4,'vandelay.item.call_number.auto','true');
+(4,'vandelay.item.circ_modifier.default','"BOOK"');
 
 INSERT INTO vandelay.bib_queue (owner,name,item_attr_def)
 VALUES (
@@ -47,58 +45,11 @@ VALUES (
 <datafield ind1=" " ind2="0" tag="650"><subfield code="a">Popular music</subfield><subfield code="y">1961-1970</subfield></datafield>
 <datafield ind1="0" ind2=" " tag="740"><subfield code="a">Songs of the sixties.</subfield></datafield>
 <datafield ind1=" " ind2=" " tag="830"><subfield code="a">DE (Series)</subfield></datafield>
-<datafield tag="852" ind1="4" ind2=" "><subfield code="c">Stacks</subfield><subfield code="b">BR1</subfield><subfield code="j">CN-label</subfield><subfield code="b">BR1</subfield><subfield code="p">BC1234567890</subfield><subfield code="z">Available</subfield></datafield><!-- full from Z -->
-<datafield ind1="0" ind2="0" tag="913"><subfield code="a">*SOT60S99000</subfield></datafield>
-</record>$$,
-    CURRVAL('vandelay.queue_id_seq')
-);
-
-/*
-SELECT * FROM vandelay.ingest_items(
-    CURRVAL('vandelay.queued_record_id_seq'),
-    (SELECT item_attr_def FROM vandelay.bib_queue WHERE id = CURRVAL('vandelay.queue_id_seq'))
-);
-*/
-
-SELECT isnt_empty(
-    $$SELECT * FROM vandelay.ingest_items(
-        CURRVAL('vandelay.queued_record_id_seq'),
-        (SELECT item_attr_def FROM vandelay.bib_queue WHERE id = CURRVAL('vandelay.queue_id_seq'))
-    ) WHERE circ_modifier = 'BOOK' AND barcode = 'BC1234567890';$$,
-    'Should have a row with barcode BC1234567890 and auto-circ mod of BOOK'
-);
-
-
-INSERT INTO vandelay.queued_bib_record (marc,queue)
-VALUES (
-    $$<record xmlns="http://www.loc.gov/MARC21/slim">
-<leader>00663ncm a2200229Ia 4500</leader>
-<controlfield tag="001">ocm20612671</controlfield><controlfield tag="005">20090604115400.0</controlfield>
-<controlfield tag="008">891108s1989    mnupp    i     n    eng d</controlfield>
-<datafield ind1=" " ind2=" " tag="020"><subfield code="z">HL00361126 :</subfield><subfield code="c">$14.95</subfield></datafield>
-<datafield ind1=" " ind2=" " tag="040"><subfield code="a">TUL</subfield><subfield code="c">TUL</subfield><subfield code="d">UtOrBLW</subfield></datafield>
-<datafield ind1=" " ind2=" " tag="049"><subfield code="a">MRQA</subfield></datafield>
-<datafield ind1=" " ind2=" " tag="092"><subfield code="a">782.421630264</subfield><subfield code="b">S6986 1989</subfield></datafield>
-<datafield ind1="0" ind2="0" tag="245"><subfield code="a">Songs of the 60's :</subfield><subfield code="b">piano, vocal, guitar.</subfield></datafield>
-<datafield ind1=" " ind2=" " tag="260"><subfield code="a">Winona, MN :</subfield><subfield code="b">H. Leonard,</subfield><subfield code="c">c1989.</subfield></datafield>
-<datafield ind1=" " ind2=" " tag="300"><subfield code="a">1 score (175 p.) :</subfield><subfield code="b">ill. ;</subfield><subfield code="c">31 cm.</subfield></datafield>
-<datafield ind1=" " ind2="4" tag="440"><subfield code="a">Decade series</subfield></datafield>
-<datafield ind1=" " ind2=" " tag="500"><subfield code="a">With a preface by Stanley Green.</subfield></datafield>
-<datafield ind1=" " ind2="0" tag="650"><subfield code="a">Popular music</subfield><subfield code="y">1961-1970</subfield></datafield>
-<datafield ind1="0" ind2=" " tag="740"><subfield code="a">Songs of the sixties.</subfield></datafield>
-<datafield ind1=" " ind2=" " tag="830"><subfield code="a">DE (Series)</subfield></datafield>
 <datafield tag="852" ind1="4" ind2=" "><subfield code="c">Stacks</subfield><subfield code="b">BR1</subfield><subfield code="b">BR1</subfield><subfield code="z">Available</subfield></datafield><!-- missing barcode and call number -->
 <datafield ind1="0" ind2="0" tag="913"><subfield code="a">*SOT60S99000</subfield></datafield>
 </record>$$,
     CURRVAL('vandelay.queue_id_seq')
 );
-
-/*
-SELECT * FROM vandelay.ingest_items(
-    CURRVAL('vandelay.queued_record_id_seq'),
-    (SELECT item_attr_def FROM vandelay.bib_queue WHERE id = CURRVAL('vandelay.queue_id_seq'))
-);
-*/
 
 SELECT isnt_empty(
     $$SELECT * FROM vandelay.ingest_items(
