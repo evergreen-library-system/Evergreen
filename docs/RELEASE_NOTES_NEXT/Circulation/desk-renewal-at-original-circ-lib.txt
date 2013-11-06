@@ -1,8 +1,0 @@
-Setting for Desk Renewal to use original circulating library
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-A new global flag option has been added to allow the circulating library of 
-a desk renewal (aka a renewal using the staff client) to reuse the original 
-circulation library for circ rule behaviors rather than using the workstation.
-This new setting is similar to existing options to use the originating 
-circulation library in OPAC renewals.

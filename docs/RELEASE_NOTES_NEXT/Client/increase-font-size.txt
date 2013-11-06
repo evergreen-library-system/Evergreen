@@ -1,6 +1,0 @@
-Adjustable font size in the staff client catalog
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-When using the staff client, the font size in the catalog can now be
-increased/decreased by using the CTRL key with + (to increase), with - (to
-decrease), and with 0 (to restore default font size). Font sizes can persist
-via a setting in user preferences.

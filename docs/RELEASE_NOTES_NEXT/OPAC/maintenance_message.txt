@@ -1,6 +1,0 @@
-OPAC Maintenance Message
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-Sites can now set a maintenance message to display in the catalog by setting
-the ctx.maintenance_message variable in config.tt2.
-

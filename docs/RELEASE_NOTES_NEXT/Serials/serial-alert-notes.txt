@@ -1,9 +1,0 @@
-Serial Alerts At Receive Time
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-In the Serial Control View, you can now flag a note as an "alert" to
-make it more visible on the receiving interface. This flag is available
-on subscription, distribution and item notes. The new "Alerts" button
-on the Items tab displays the number of alert notes that are available
-for the selected items, and clicking this button opens a window which
-displays all applicable alert notes, sorted by type. Notes can also be
-edited or deleted from this window.

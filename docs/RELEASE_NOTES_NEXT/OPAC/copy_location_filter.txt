@@ -1,4 +1,0 @@
-Shelving Location Filter
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-Filtering by shelving location is now available from the Advanced Search screen.

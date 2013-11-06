@@ -1,9 +1,0 @@
-Ability to set search context by shortname
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-When searching in the catalog, sites are able to set the search location by
-embedding a locg parameter in the URL. With this new features, sites will be
-able to use a branch's shortname to set the search locations whereas
-previously, sites could only use an org unit id. This parameter is case
-insensitive.
-

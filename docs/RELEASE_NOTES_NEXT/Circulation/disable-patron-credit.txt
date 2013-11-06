@@ -1,8 +1,0 @@
-Library Setting to Disable Patron Credit
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-A new library setting is available to disable patron credit payments in the
-billing interface. When enabled, the setting will:
-
-* Disallow patron_credit payments in the payment API.
-* Hide all of the patron credit payment actions in the staff client patron
-payment interface.
