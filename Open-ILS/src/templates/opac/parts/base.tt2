@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         [% IF ctx.refresh %]
         <meta http-equiv="refresh" content="[% ctx.refresh %]">
-        [% ELSIF ctx.authtime %]
+        [% ELSIF ctx.authtime AND !ctx.is_staff %]
         <meta http-equiv="refresh" content="[% ctx.authtime %]; url=[% ctx.logout_page %]">
         [% END %]
         <meta name = "viewport" content = "initial-scale = 1.0">
