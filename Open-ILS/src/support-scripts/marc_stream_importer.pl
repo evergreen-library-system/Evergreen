@@ -23,7 +23,7 @@ use MARC::File::USMARC;
 
 use Data::Dumper;
 use File::Basename qw/fileparse/;
-use File::Temp;
+use File::Temp qw/tempfile/;
 use Getopt::Long qw(:DEFAULT GetOptionsFromArray);
 use Pod::Usage;
 use Socket;
@@ -333,7 +333,7 @@ sub process_batch_data {
 
     my ($handle, $tempfile);
     if (!$isfile) {
-        ($handle, $tempfile) = File::Temp->tempfile("$0_XXXX", DIR => $tempdir) or die "Cannot write tempfile in $tempdir";
+        ($handle, $tempfile) = tempfile("$0_XXXX", DIR => $tempdir) or die "Cannot write tempfile in $tempdir";
         print $handle $data;
         close $handle;
     } else {
