@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-09-26 18:16-0400\n"
-"PO-Revision-Date: 2013-10-13 06:23+0000\n"
+"PO-Revision-Date: 2013-10-30 20:43+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-10-14 05:16+0000\n"
-"X-Generator: Launchpad (build 16799)\n"
+"X-Launchpad-Export-Date: 2013-10-31 05:19+0000\n"
+"X-Generator: Launchpad (build 16820)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -643,11 +643,11 @@ msgstr "Identifikační doklad"
 
 #: staff.au_ident_value2_label
 msgid "Identification Value2"
-msgstr "Hodnota identifikačního dokladu 2"
+msgstr "Číslo identifikačního dokladu 2"
 
 #: staff.au_ident_value_label
 msgid "Identification Value"
-msgstr "Hodnota identifikačního dokladu"
+msgstr "Číslo dokladu"
 
 #: staff.au_ischanged_label
 msgctxt "staff.au_ischanged_label"
@@ -1931,7 +1931,7 @@ msgstr "Identifikační doklad"
 
 #: staff.circ.offline_register.ident_value.label
 msgid "Ident Value:"
-msgstr "Identifikační údaje"
+msgstr "Číslo dokladu"
 
 #: staff.circ.offline_register.billing_address.label
 msgctxt "staff.circ.offline_register.billing_address.label"
@@ -5776,7 +5776,7 @@ msgstr "Telefonní čísla"
 #: staff.patron_display.tab.identification.label
 msgctxt "staff.patron_display.tab.identification.label"
 msgid "Identification"
-msgstr "Identifikační údaje"
+msgstr "Číslo dokladu"
 
 #: staff.patron_display.tab.group.label
 msgctxt "staff.patron_display.tab.group.label"
@@ -8730,7 +8730,7 @@ msgstr "Použít na všechna umístění"
 #: staff.server.admin.org_settings.staff_timeout
 msgid "Staff Login Inactivity Timeout (in seconds)"
 msgstr ""
-"Čas, po něm při nečinnosti vypršelí přihlášení zaměstnance (v sekundách)"
+"Čas, po něm při nečinnosti vyprší přihlášení zaměstnance (v sekundách)"
 
 #: staff.server.admin.org_settings.lost_fee
 msgid "Lost Materials Processing Fee"
@@ -8927,13 +8927,13 @@ msgid ""
 "If true, patrons will be required to enter their password in addition to "
 "their username/barcode to log into the selfcheck interface"
 msgstr ""
-"Je-li tato hodnota nastavena jako pravdivá, čtenáři budou v rozhraní "
-"samoobslužné výpůjční stanice muset zadávat kromě svého uživatelského "
+"Je-li tato hodnota nastavena jako pravdivá, čtenáři budou muset  v rozhraní "
+"samoobslužné výpůjční stanice zadávat kromě svého uživatelského "
 "jména/čárového kódu také své heslo"
 
 #: staff.server.admin.org_settings.global.juvenile_age_threshold
 msgid "Juvenile Age Threshold"
-msgstr "Práh věku mládeže"
+msgstr "Hranice zletilosti"
 
 #: staff.server.admin.org_settings.global.juvenile_age_threshold.desc
 msgid ""

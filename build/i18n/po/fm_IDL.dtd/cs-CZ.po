@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2013-09-26 18:17-0400\n"
-"PO-Revision-Date: 2013-10-10 19:00+0000\n"
+"PO-Revision-Date: 2013-10-29 19:50+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-10-11 04:51+0000\n"
-"X-Generator: Launchpad (build 16799)\n"
+"X-Launchpad-Export-Date: 2013-10-30 05:19+0000\n"
+"X-Generator: Launchpad (build 16820)\n"
 "X-Accelerator-Marker: &\n"
 
 #: field.bre.source.label:2715
@@ -413,7 +413,7 @@ msgstr "Minimální hloubka"
 
 #: field.acqpon.value.label:8017
 msgid "Vote Value"
-msgstr ""
+msgstr "Hodnota hlasování"
 
 #: field.vii.definition.label:271
 msgid "Attribute Definition"
@@ -1593,7 +1593,7 @@ msgstr "Neuhrazené pohledávky"
 
 #: class.auoi.label:708
 msgid "User Sharing Opt-in"
-msgstr ""
+msgstr "Souhlas se sdílením mezi uživateli"
 
 #: field.aun.title.label:1927 field.acpn.title.label:3209
 msgid "Note Title"
@@ -2470,7 +2470,7 @@ msgstr "Označení v OPACu"
 
 #: field.atevdef.usr_field.label:1139
 msgid "Opt-In User Field"
-msgstr "Pole uživatelské předvolby"
+msgstr "Pole pro souhlas uživatele s posíláním e-mailů"
 
 #: field.au.survey_responses.label:2957
 msgid "Survey Responses"
@@ -3679,7 +3679,7 @@ msgstr "Rozdělení fondu"
 
 #: field.auoi.id.label:710
 msgid "Opt-in ID"
-msgstr "ID uživatelské předvolby"
+msgstr "ID souhlasu s posíláním e-mailů"
 
 #: field.asvq.answers.label:1851
 msgid "Answers"
@@ -4037,7 +4037,7 @@ msgstr "Podřízený typ stromu výrazů"
 
 #: field.auoi.opt_in_ts.label:715
 msgid "Opt-in Date/Time"
-msgstr "Datum / čas uživatelské předvolby"
+msgstr "Datum / čas souhlasu se zasíláním e-mailů"
 
 #: field.afscv.col.label:9095 field.qxp.column_name.label:9272
 #: field.qrc.column_name.label:9335 field.xcol.column_name.label:9454
@@ -8038,7 +8038,7 @@ msgstr "Aktivita uživatele"
 
 #: field.atevdef.opt_in_setting.label:1140
 msgid "Opt-In Setting Type"
-msgstr "Typ nastavení uživatelské předvolby"
+msgstr "Typ nastavení souhlasu se zasíláním e-mailů"
 
 #: field.rmobbol.balance.label:10650 field.rmobbcol.balance.label:10677
 #: field.rmobbhol.balance.label:10705
