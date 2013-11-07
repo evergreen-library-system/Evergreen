@@ -1,4 +1,73 @@
 --Upgrade Script for 2.4.3 to 2.5.0
+
+\qecho **** Libraries that upgraded or installed 2.0 before May 2011 never
+\qecho **** got this schema, so add it first.
+\qecho **** If this fails, don't worry, it probably won't be an issue.
+\qecho
+
+BEGIN;
+
+CREATE SCHEMA staging;
+
+CREATE TABLE staging.user_stage (
+        row_id                  BIGSERIAL PRIMARY KEY,
+        row_date                TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        usrname                 TEXT NOT NULL,
+        profile                 TEXT,
+        email                   TEXT,
+        passwd                  TEXT,
+        ident_type              INT DEFAULT 3,
+        first_given_name        TEXT,
+        second_given_name       TEXT,
+        family_name             TEXT,
+        day_phone               TEXT,
+        evening_phone           TEXT,
+        home_ou                 INT DEFAULT 2,
+        dob                     TEXT,
+        complete                BOOL DEFAULT FALSE
+);
+
+CREATE TABLE staging.card_stage ( -- for new library barcodes
+        row_id          BIGSERIAL PRIMARY KEY,
+        row_date        TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        usrname         TEXT NOT NULL,
+        barcode         TEXT NOT NULL,
+        complete        BOOL DEFAULT FALSE
+);
+
+CREATE TABLE staging.mailing_address_stage (
+        row_id          BIGSERIAL PRIMARY KEY,
+        row_date        TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        usrname         TEXT NOT NULL,  -- user's SIS barcode, for linking
+        street1         TEXT,
+        street2         TEXT,
+        city            TEXT NOT NULL DEFAULT '',
+        state           TEXT    NOT NULL DEFAULT 'OK',
+        country         TEXT NOT NULL DEFAULT 'US',
+        post_code       TEXT NOT NULL,
+        complete        BOOL DEFAULT FALSE
+);
+
+CREATE TABLE staging.billing_address_stage (
+        LIKE staging.mailing_address_stage INCLUDING DEFAULTS
+);
+
+ALTER TABLE staging.billing_address_stage ADD PRIMARY KEY (row_id);
+
+CREATE TABLE staging.statcat_stage (
+        row_id          BIGSERIAL PRIMARY KEY,
+        row_date        TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        usrname         TEXT NOT NULL,
+        statcat         TEXT NOT NULL, -- for things like 'Year of study'
+        value           TEXT NOT NULL, -- and the value, such as 'Freshman'
+        complete        BOOL DEFAULT FALSE
+);
+
+COMMIT;
+
+
+\qecho **** REAL 2.5 upgrade starting now...
+
 \set eg_version '''2.5.0'''
 BEGIN;
 INSERT INTO config.upgrade_log (version, applied_to) VALUES ('2.5.0', :eg_version);
@@ -484,7 +553,7 @@ $BODY$
     ROWS 1000;
 
 
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0795', :eg_version); -- berick/dbwells
+SELECT evergreen.upgrade_deps_block_check('0795', :eg_version);
 
 CREATE OR REPLACE FUNCTION 
     evergreen.z3950_attr_name_is_valid(TEXT) RETURNS BOOLEAN AS $func$
@@ -589,7 +658,7 @@ INSERT INTO vandelay.bib_attr_definition (id, code, description, xpath)
 
 
 
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0796', :eg_version); -- berick/dbwells
+SELECT evergreen.upgrade_deps_block_check('0796', :eg_version);
 
 ALTER TABLE vandelay.bib_queue ADD COLUMN match_bucket
    INTEGER REFERENCES container.biblio_record_entry_bucket(id)
@@ -723,7 +792,7 @@ END;
 $$ LANGUAGE PLPGSQL;
 
 
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0797', :eg_version); -- tsbere/Dyrcona/dbwells
+SELECT evergreen.upgrade_deps_block_check('0797', :eg_version);
 
 -- New global flags for the purge function
 INSERT INTO config.global_flag  (name, label, enabled)
@@ -1093,7 +1162,7 @@ CREATE TRIGGER action_hold_request_aging_tgr
 	EXECUTE PROCEDURE action.age_hold_on_delete ();
 
 
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0798', :eg_version); -- tsbere/Dyrcona/dbwells
+SELECT evergreen.upgrade_deps_block_check('0798', :eg_version);
 
 INSERT INTO config.global_flag (name, label)
     VALUES (
@@ -9268,13 +9337,6 @@ INSERT INTO config.org_unit_setting_type (
 );
 
 
-\qecho This is a browse-only reingest of your bib records. It may take a while.
-\qecho You may cancel now without losing the effect of the rest of the
-\qecho upgrade script, and arrange the reingest later.
-\qecho .
-SELECT metabib.reingest_metabib_field_entries(id, TRUE, FALSE, TRUE)
-    FROM biblio.record_entry;
-
 -- NOTE: very IDs are still correct for perms and event_def data at merge.
 
 SELECT evergreen.upgrade_deps_block_check('0817', :eg_version);
@@ -10173,7 +10235,6 @@ END;
 $$ LANGUAGE PLPGSQL;
 
 
-
 SELECT evergreen.upgrade_deps_block_check('0826', :eg_version);
 
 INSERT INTO permission.perm_list ( id, code, description ) VALUES (
@@ -10186,12 +10247,6 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES (
         'description'
     )
 );
-
-
-
-SELECT evergreen.upgrade_deps_block_check('0827', :eg_version);
-
-ALTER TABLE action_trigger.event_definition ADD COLUMN repeat_delay INTERVAL;
 
 
 
@@ -12021,10 +12076,6 @@ DELETE FROM config.metabib_field_index_norm_map
         WHERE func IN ('search_normalize','split_date_range')
     );
 
-\qecho If your site's bibcn searches are affected by this issue, you may wish
-\qecho to reingest your bib records now.  It's probably not worth it for many
-\qecho sites.
-
 
 -- check whether patch can be applied
 SELECT evergreen.upgrade_deps_block_check('0839', :eg_version);
@@ -12037,97 +12088,6 @@ SET
 WHERE
     field_class = 'title' AND name = 'alternative' ;
 
-
--- The following function only appears in the upgrade script and not the
--- baseline schema because it's not necessary in the latter (and it's a
--- temporary function).  It just serves to do a hopefully cheaper, more
--- focused reingest just to hit the alternative title index.
-
--- This cribs from the guts of metabib.reingest_metabib_field_entries(),
--- and if it actually is a timesaver over a full reingest, then at some
--- point in the future it would be nice if we broke it out into a separate
--- function to make things like this easier.
-
-CREATE OR REPLACE FUNCTION pg_temp.alternative_title_reingest( bib_id BIGINT ) RETURNS VOID AS $func$
-DECLARE
-    ind_data        metabib.field_entry_template%ROWTYPE;
-    mbe_row         metabib.browse_entry%ROWTYPE;
-    mbe_id          BIGINT;
-    b_skip_facet    BOOL := false;
-    b_skip_browse   BOOL := false;
-    b_skip_search   BOOL := false;
-    alt_title       INT;
-    value_prepped   TEXT;
-BEGIN
-    SELECT INTO alt_title id FROM config.metabib_field WHERE field_class = 'title' AND name = 'alternative';
-    FOR ind_data IN SELECT * FROM biblio.extract_metabib_field_entry( bib_id ) WHERE field = alt_title LOOP
-        IF ind_data.field < 0 THEN
-            ind_data.field = -1 * ind_data.field;
-        END IF;
-
-        IF ind_data.facet_field AND NOT b_skip_facet THEN
-            INSERT INTO metabib.facet_entry (field, source, value)
-                VALUES (ind_data.field, ind_data.source, ind_data.value);
-        END IF;
-
-        IF ind_data.browse_field AND NOT b_skip_browse THEN
-            -- A caveat about this SELECT: this should take care of replacing
-            -- old mbe rows when data changes, but not if normalization (by
-            -- which I mean specifically the output of
-            -- evergreen.oils_tsearch2()) changes.  It may or may not be
-            -- expensive to add a comparison of index_vector to index_vector
-            -- to the WHERE clause below.
-
-            value_prepped := metabib.browse_normalize(ind_data.value, ind_data.field);
-            SELECT INTO mbe_row * FROM metabib.browse_entry
-                WHERE value = value_prepped AND sort_value = ind_data.sort_value;
-
-            IF FOUND THEN
-                mbe_id := mbe_row.id;
-            ELSE
-                INSERT INTO metabib.browse_entry
-                    ( value, sort_value ) VALUES
-                    ( value_prepped, ind_data.sort_value );
-
-                mbe_id := CURRVAL('metabib.browse_entry_id_seq'::REGCLASS);
-            END IF;
-
-            INSERT INTO metabib.browse_entry_def_map (entry, def, source, authority)
-                VALUES (mbe_id, ind_data.field, ind_data.source, ind_data.authority);
-        END IF;
-
-        -- Avoid inserting duplicate rows, but retain granularity of being
-        -- able to search browse fields with "starts with" type operators
-        -- (for example, for titles of songs in music albums)
-        IF (ind_data.search_field OR ind_data.browse_field) AND NOT b_skip_search THEN
-            EXECUTE 'SELECT 1 FROM metabib.' || ind_data.field_class ||
-                '_field_entry WHERE field = $1 AND source = $2 AND value = $3'
-                INTO mbe_id USING ind_data.field, ind_data.source, ind_data.value;
-                -- RAISE NOTICE 'Search for an already matching row returned %', mbe_id;
-            IF mbe_id IS NULL THEN
-                EXECUTE $$
-                INSERT INTO metabib.$$ || ind_data.field_class || $$_field_entry (field, source, value)
-                    VALUES ($$ ||
-                        quote_literal(ind_data.field) || $$, $$ ||
-                        quote_literal(ind_data.source) || $$, $$ ||
-                        quote_literal(ind_data.value) ||
-                    $$);$$;
-            END IF;
-        END IF;
-
-    END LOOP;
-
-    IF NOT b_skip_search THEN
-        PERFORM metabib.update_combined_index_vectors(bib_id);
-    END IF;
-
-    RETURN;
-END;
-$func$ LANGUAGE PLPGSQL;
-
-\qecho This is a partial reingest of your bib records. It may take a while.
-
-SELECT pg_temp.alternative_title_reingest(id) FROM biblio.record_entry WHERE NOT deleted;
 
 SELECT evergreen.upgrade_deps_block_check('0840', :eg_version);
 
@@ -15843,15 +15803,6 @@ UPDATE config.metabib_field SET browse_field = FALSE, browse_xpath = NULL, brows
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, search_field, authority_xpath, browse_field, browse_sort_xpath ) VALUES
     (31, 'title', 'browse', oils_i18n_gettext(31, 'Title Proper (Browse)', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:titleBrowse$$, FALSE, '//@xlink:href', TRUE, $$*[local-name() != "nonSort"]$$ );
 
-
-\qecho This is a browse-only reingest of your bib records. It may take a while.
-\qecho You may cancel now without losing the effect of the rest of the
-\qecho upgrade script, and arrange the reingest later.
-\qecho .
-SELECT metabib.reingest_metabib_field_entries(id, TRUE, FALSE, TRUE)
-    FROM biblio.record_entry;
-
--- check whether patch can be applied
 SELECT evergreen.upgrade_deps_block_check('0845', :eg_version);
 
 ALTER FUNCTION metabib.browse_pivot (integer[], text) STABLE;
@@ -16032,4 +15983,35 @@ BEGIN
 END;
 $f$ STABLE LANGUAGE PLPGSQL;
 
+SELECT evergreen.upgrade_deps_block_check('0827', :eg_version);
+SET CONSTRAINTS ALL IMMEDIATE;
+-- otherwise, the ALTER TABLE statement below
+-- will fail with pending trigger events.
+ALTER TABLE action_trigger.event_definition ADD COLUMN repeat_delay INTERVAL;
+
 COMMIT;
+
+\qecho
+\qecho
+\qecho **** Certain improvements in 2.5, particularly browse, require a reingest
+\qecho **** of all records.  In order to allow this to continue without locking
+\qecho **** your entire bibliographic data set, consider generating SQL scripts
+\qecho **** with the following queries, then running those via psql:
+\qecho
+\qecho **** If you require a more responsive catalog/database while reingesting,
+\qecho **** consider adding 'pg_sleep()' calls between each reingest select or
+\qecho **** update.
+\qecho
+\qecho '\\t'
+\qecho '\\o /tmp/reingest_2.5_bib_recs.sql'
+\qecho 'SELECT ''select metabib.reingest_metabib_field_entries('' || id || '');'' FROM biblio.record_entry WHERE NOT DELETED AND id > 0;'
+\qecho
+\qecho '\\o /tmp/reingest_2.5_auth_recs.sql'
+\qecho 'SELECT ''-- Grab current setting'';'
+\qecho 'SELECT ''\\set force_reingest '' || enabled FROM config.internal_flag WHERE name = ''ingest.reingest.force_on_same_marc'';'
+\qecho 'SELECT ''update config.internal_flag set enabled = true where name = ''''ingest.reingest.force_on_same_marc'''';'';'
+\qecho 'SELECT ''update authority.record_entry set id = id where id = '' || id || '';'' FROM authority.record_entry WHERE NOT DELETED;'
+\qecho 'SELECT ''-- Restore previous setting'';'
+\qecho 'SELECT ''update config.internal_flag set enabled = :force_reingest where name = \'\'ingest.reingest.force_on_same_marc\'\';'';'
+\qecho '\\o'
+\qecho '\\t'
