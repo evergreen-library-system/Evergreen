@@ -2,7 +2,7 @@
 
 GIT_ABS=`git rev-parse --show-toplevel`
 GIT_BRANCH=`git rev-parse --abbrev-ref HEAD | sed 's|.*/||'`
-HEADURLBASE="http://git.evergreen-ils.org/Evergreen.git?h=refs/heads/"
+HEADURLBASE="http://git.evergreen-ils.org/?p=Evergreen.git;a=shortlog;h=refs/heads/tags/"
 HEADURL="$HEADURLBASE$GIT_BRANCH"
 
 # Drop to the root of the checkout
@@ -246,7 +246,7 @@ if [ $PREV_BRANCH != "PACKAGE" ]; then
     grep -i -m 1 Signed-off-by ChangeLog &> /dev/null
     if [ $? -ne 0 ]; then
         echo "Building ChangeLog"
-        git log --cherry-pick --right-only --no-merges --pretty --summary --numstat $PREV_BRANCH..HEAD > $GIT_ABS/ChangeLog
+        git log --cherry-pick --right-only --no-merges --pretty --summary --numstat $PREV_BRANCH...HEAD > $GIT_ABS/ChangeLog
     else
         echo "Not overwriting existing ChangeLog!"
     fi
@@ -257,6 +257,8 @@ if [ $PREV_BRANCH != "PACKAGE" ]; then
         COMMIT_MESSAGE="Bumping version numbers, adding Upgrade Script and Changelog"
     fi
     git commit -asm "$COMMIT_MESSAGE"
+
+    read -p "If you wish to make manual edits before building, suspend and do so now..."
 fi
 
 echo "Building release dump"
@@ -283,24 +285,25 @@ if [ ! -f "../dojo.tgz" ]; then
     wget http://evergreen-ils.org/downloads/dojo.tgz -O ../dojo.tgz
 fi
 tar xzf ../dojo.tgz -C Open-ILS/web/js/dojo/
-echo "Grabbing XULRunner (to avoid issues with version changes)"
-cd Open-ILS/xul/staff_client
-XULRUNNER_VERSION=`grep '^XULRUNNER_VERSION' Makefile.am`
-XULRUNNER_VERSION=${XULRUNNER_VERSION##XULRUNNER_VERSION=}
-wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.win32.zip
-wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.linux-i686.tar.bz2
-wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.linux-x86_64.tar.bz2
+cd ..
 
 echo "Prepping server download files"
-cd ../../../../
 tar czf Evergreen-ILS-$VERSION.tar.gz Evergreen-ILS-$VERSION/
 md5sum Evergreen-ILS-$VERSION.tar.gz > Evergreen-ILS-$VERSION.tar.gz.md5
 if [ $PREV_BRANCH != "PACKAGE" ]; then # We need to have tagged to do this ;)
     cp Evergreen-ILS-$VERSION/ChangeLog ChangeLog-$PREV_VERSION-$VERSION
 fi
 
+echo "Grabbing XULRunner (to avoid issues with version changes)"
+cd Evergreen-ILS-$VERSION/Open-ILS/xul/staff_client
+XULRUNNER_VERSION=`grep '^XULRUNNER_VERSION' Makefile.am`
+XULRUNNER_VERSION=${XULRUNNER_VERSION##XULRUNNER_VERSION=}
+wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.win32.zip
+wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.linux-i686.tar.bz2
+wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.linux-x86_64.tar.bz2
+cd ../../..
+
 echo "Running enough of configure to build staff client"
-cd Evergreen-ILS-$VERSION/
 ./configure --disable-core --disable-web --disable-updates --disable-apache-modules --disable-reporter
 
 echo "Building Release Staff Clients"
