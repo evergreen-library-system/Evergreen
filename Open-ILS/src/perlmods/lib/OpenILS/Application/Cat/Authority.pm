@@ -150,7 +150,7 @@ sub retrieve_authority_record {
     my($self, $conn, $auth, $rec_id, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
-    my $rec = $e->retrieve_authority_record($rec_id) or return $e->event;
+    my $rec = $e->retrieve_authority_record_entry($rec_id) or return $e->event;
     $rec->clear_marc if $$options{clear_marc};
     return $rec;
 }
@@ -172,7 +172,7 @@ sub batch_retrieve_authority_record {
     my $e = new_editor(authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
     for my $rec_id (@$rec_id_list) {
-        my $rec = $e->retrieve_authority_record($rec_id) or return $e->event;
+        my $rec = $e->retrieve_authority_record_entry($rec_id) or return $e->event;
         $rec->clear_marc if $$options{clear_marc};
         $conn->respond($rec);
     }
