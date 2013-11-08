@@ -7278,11 +7278,13 @@ SELECT  usr,
 			<field reporter:label="Voiding Staff Member" name="voider" reporter:datatype="link"/>
 			<field reporter:label="Transaction" name="xact" reporter:datatype="link"/>
 			<field reporter:label="Type" name="btype" reporter:datatype="link"/>
+			<field reporter:label="Adjustments" name="adjustments" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 			<link field="voider" reltype="has_a" key="id" map="" class="au"/>
 			<link field="btype" reltype="has_a" key="id" map="" class="cbt"/>
+			<link field="adjustments" reltype="has_many" key="billing" map="" class="maa"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>

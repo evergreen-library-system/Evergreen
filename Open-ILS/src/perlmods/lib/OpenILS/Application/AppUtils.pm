@@ -2231,6 +2231,9 @@ sub check_open_xact {
 # values are all multiplied by 100 before being used, and the result
 # is divided by 100 in order to avoid decimal rounding errors inherent
 # in floating point math.
+#
+# XXX shifting using multiplication/division *may* still introduce
+# rounding errors -- better to implement using string manipulation?
 sub fpdiff {
     my ($class, @args) = @_;
     my $result = shift(@args) * 100;
@@ -2239,6 +2242,16 @@ sub fpdiff {
     }
     return $result / 100;
 }
+
+sub fpsum {
+    my ($class, @args) = @_;
+    my $result = shift(@args) * 100;
+    while (my $arg = shift(@args)) {
+        $result += $arg * 100;
+    }
+    return $result / 100;
+}
+
 
 1;
 

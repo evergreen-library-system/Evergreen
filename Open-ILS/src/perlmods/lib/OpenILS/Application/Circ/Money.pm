@@ -922,6 +922,156 @@ sub void_bill {
 
 
 __PACKAGE__->register_method(
+    method => 'adjust_bills_to_zero_manual',
+    api_name => 'open-ils.circ.money.billable_xact.adjust_to_zero',
+    signature => {
+        desc => q/
+            Given a list of billable transactions, manipulate the
+            transaction using account adjustments to result in a
+            balance of $0.
+            /,
+        params => [
+            {desc => 'Authtoken', type => 'string'},
+            {desc => 'Array of transaction IDs', type => 'array'}
+        ],
+        return => {
+            desc => q/Array of IDs for each transaction updated,
+            Event on error./
+        }
+    }
+);
+
+sub _rebill_xact {
+    my ($e, $xact) = @_;
+
+    my $xact_id = $xact->id;
+    # the plan: rebill voided billings until we get a positive balance
+    #
+    # step 1: get the voided/adjusted billings
+    my $billings = $e->search_money_billing([
+        {
+            xact => $xact_id,
+        },
+        {
+            order_by => {mb => 'amount desc'},
+            flesh => 1,
+            flesh_fields => {mb => ['adjustments']},
+        }
+    ]);
+    my @billings = grep { $U->is_true($_->voided) or @{$_->adjustments} } @$billings;
+
+    my $xact_balance = $xact->balance_owed;
+    $logger->debug("rebilling for xact $xact_id with balance $xact_balance");
+
+    my $rebill_amount = 0;
+    my @rebill_ids;
+    # step 2: generate new bills just like the old ones
+    for my $billing (@billings) {
+        my $amount = 0;
+        if ($U->is_true($billing->voided)) {
+            $amount = $billing->amount;
+        } else { # adjusted billing
+            map { $amount = $U->fpadd($amount, $_->amount) } @{$billing->adjustments};
+        }
+        my $evt = $CC->create_bill(
+            $e,
+            $amount,
+            $billing->btype,
+            $billing->billing_type,
+            $xact_id,
+            "System: MANUAL ADJUSTMENT, BILLING #".$billing->id." REINSTATED\n(PREV: ".$billing->note.")",
+            $billing->billing_ts()
+        );
+        return $evt if $evt;
+        $rebill_amount += $billing->amount;
+
+        # if we have a postive (or zero) balance now, stop
+        last if $rebill_amount >= $xact_balance;
+    }
+}
+
+sub _is_fully_adjusted {
+    my ($billing) = @_;
+
+    my $amount_adj = 0;
+    map { $amount_adj = $U->fpadd($amount_adj, $_->amount) } @{$billing->adjustments};
+
+    return $billing->amount == $amount_adj;
+}
+
+sub adjust_bills_to_zero_manual {
+    my ($self, $client, $auth, $xact_ids) = @_;
+
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    # in case a bare ID is passed
+    $xact_ids = [$xact_ids] unless ref $xact_ids;
+
+    my @modified;
+    for my $xact_id (@$xact_ids) {
+
+        my $xact =
+            $e->retrieve_money_billable_transaction_summary([
+                $xact_id,
+                {flesh => 1, flesh_fields => {mbts => ['usr']}}
+            ]) or return $e->die_event;
+
+        return $e->die_event unless
+            $e->allowed('ADJUST_BILLS', $xact->usr->home_ou);
+
+        if ($xact->balance_owed < 0) {
+            my $evt = _rebill_xact($e, $xact);
+            return $evt if $evt;
+            # refetch xact to get new balance
+            $xact =
+                $e->retrieve_money_billable_transaction_summary([
+                    $xact_id,
+                    {flesh => 1, flesh_fields => {mbts => ['usr']}}
+                ]) or return $e->die_event;
+        }
+
+        my $billings = $e->search_money_billing([
+            {
+                xact => $xact_id,
+            },
+            {
+                order_by => {mb => 'amount desc'},
+                flesh => 1,
+                flesh_fields => {mb => ['adjustments']},
+            }
+        ]);
+
+        if ($xact->balance_owed == 0) {
+            # if was zero, or we rebilled it to zero
+            next;
+        } else {
+            # it's positive and needs to be adjusted
+            my @billings_to_zero = grep { !$U->is_true($_->voided) or !_is_fully_adjusted($_) } @$billings;
+            $CC->adjust_bills_to_zero($e, \@billings_to_zero, "System: MANUAL ADJUSTMENT");
+        }
+
+        push(@modified, $xact->id);
+
+        # now we see if we can close the transaction
+        # same logic as make_payments();
+        my $circ = $e->retrieve_action_circulation($xact_id);
+        if ($circ and !$CC->can_close_circ($e, $circ)) {
+            # we don't check to see if the xact is already closed.  since the
+            # xact had a negative balance, it should not have been closed, so
+            # assume 'now' is the correct close time regardless.
+            my $trans = $e->retrieve_money_billable_transaction($xact_id);
+            $trans->xact_finish("now");
+            $e->update_money_billable_transaction($trans) or return $e->die_event;
+        }
+    }
+
+    $e->commit;
+    return \@modified;
+}
+
+
+__PACKAGE__->register_method(
     method        =>    'edit_bill_note',
     api_name        => 'open-ils.circ.money.billing.note.edit',
     signature    => q/
