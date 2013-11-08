@@ -1274,8 +1274,7 @@ function item_columns(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : false,
-            'render' : function(my) { return my.sitem.id(); },
-            'persist' : 'hidden width ordinal'
+            'render' : function(my) { return my.sitem.id(); }
         },
         {
             'id' : 'label',
@@ -1283,8 +1282,7 @@ function item_columns(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : false,
-            'render' : function(my) { return my.sitem.issuance().label(); },
-            'persist' : 'hidden width ordinal'
+            'render' : function(my) { return my.sitem.issuance().label(); }
         },
         {
             'id' : 'distribution',
@@ -1292,7 +1290,6 @@ function item_columns(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : false,
-            'persist' : 'hidden width ordinal',
             'render' : function(my) { return my.parent_obj.sdist_map[my.sitem.stream().distribution()].label(); }
         },
         {
@@ -1301,7 +1298,6 @@ function item_columns(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : false,
-            'persist' : 'hidden width ordinal',
             'render' : function(my) { return my.parent_obj.sdist_map[my.sitem.stream().distribution()].holding_lib().shortname(); }
         },
         {
@@ -1310,7 +1306,6 @@ function item_columns(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : false,
-            'persist' : 'hidden width ordinal',
             'render' : function(my) { return my.sitem.stream().id(); }
         },
         {
@@ -1319,8 +1314,7 @@ function item_columns(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : false,
-            'render' : function(my) { return my.sitem.issuance().date_published().substr(0,10); },
-            'persist' : 'hidden width ordinal'
+            'render' : function(my) { return my.sitem.issuance().date_published().substr(0,10); }
         },
         {
             'id' : 'date_expected',
@@ -1328,8 +1322,7 @@ function item_columns(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : false,
-            'render' : function(my) { return my.sitem.date_expected().substr(0,10); },
-            'persist' : 'hidden width ordinal'
+            'render' : function(my) { return my.sitem.date_expected().substr(0,10); }
         },
         {
             'id' : 'date_received',
@@ -1337,8 +1330,7 @@ function item_columns(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : false,
-            'render' : function(my) { return my.sitem.date_received().substr(0,10); },
-            'persist' : 'hidden width ordinal'
+            'render' : function(my) { return my.sitem.date_received().substr(0,10); }
         },
         {
             'id' : 'notes',
@@ -1346,8 +1338,7 @@ function item_columns(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : false,
-            'render' : function(my) { return my.sitem.notes().length + ' / ' + my.parent_obj.sdist_map[my.sitem.stream().distribution()].notes().length + ' / ' + my.parent_obj.ssub_map[my.sitem.issuance().subscription().id()].notes().length; },
-            'persist' : 'hidden width ordinal'
+            'render' : function(my) { return my.sitem.notes().length + ' / ' + my.parent_obj.sdist_map[my.sitem.stream().distribution()].notes().length + ' / ' + my.parent_obj.ssub_map[my.sitem.issuance().subscription().id()].notes().length; }
         },
         {
             'id' : 'call_number',
@@ -1355,7 +1346,6 @@ function item_columns(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : false,
-            'persist' : 'hidden width ordinal',
             'render' : function(my) { return my.sitem.unit().call_number().label(); }
         },
         {
@@ -1364,8 +1354,7 @@ function item_columns(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : false,
-            'render' : function(my) { return '[' + my.sitem.unit().id() + '] ' + my.sitem.unit().summary_contents() ; },
-            'persist' : 'hidden width ordinal'
+            'render' : function(my) { return '[' + my.sitem.unit().id() + '] ' + my.sitem.unit().summary_contents() ; }
         },
         {
             'id' : 'creator',
@@ -1373,7 +1362,6 @@ function item_columns(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'persist' : 'hidden width ordinal',
             'render' : function(my) { return my.sitem.creator().usrname(); }
         },
         {
@@ -1382,7 +1370,6 @@ function item_columns(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'persist' : 'hidden width ordinal',
             'render' : function(my) { return my.sitem.create_date().substr(0,10); }
         },
         {
@@ -1391,7 +1378,6 @@ function item_columns(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'persist' : 'hidden width ordinal',
             'render' : function(my) { return my.sitem.editor().usrname(); }
         },
         {
@@ -1400,7 +1386,6 @@ function item_columns(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : false,
-            'persist' : 'hidden width ordinal',
             'render' : function(my) { return my.sitem.edit_date().substr(0,10); }
         },
         {
@@ -1409,8 +1394,7 @@ function item_columns(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'render' : function(my) { return my.sitem.issuance().holding_code(); },
-            'persist' : 'hidden width ordinal'
+            'render' : function(my) { return my.sitem.issuance().holding_code(); }
         },
         {
             'id' : 'holding_type',
@@ -1418,8 +1402,7 @@ function item_columns(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'render' : function(my) { return my.sitem.issuance().holding_type(); },
-            'persist' : 'hidden width ordinal'
+            'render' : function(my) { return my.sitem.issuance().holding_type(); }
         },
         {
             'id' : 'holding_link_id',
@@ -1427,8 +1410,7 @@ function item_columns(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'render' : function(my) { return my.sitem.issuance().holding_link_id(); },
-            'persist' : 'hidden width ordinal'
+            'render' : function(my) { return my.sitem.issuance().holding_link_id(); }
         }
     ];
     for (var i = 0; i < c.length; i++) {
