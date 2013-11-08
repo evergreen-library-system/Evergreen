@@ -521,8 +521,7 @@ circ.util.columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.acp.id(); },
-            'persist' : 'hidden width ordinal'
+            'editable' : false, 'render' : function(my) { return my.acp.id(); }
         },
         {
             'id' : 'circ_id',
@@ -531,8 +530,7 @@ circ.util.columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.circ ? my.circ.id() : ""; },
-            'persist' : 'hidden width ordinal'
+            'editable' : false, 'render' : function(my) { return my.circ ? my.circ.id() : ""; }
         },
         {
             'id' : 'mvr_doc_id',
@@ -541,11 +539,9 @@ circ.util.columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.mvr.doc_id(); },
-            'persist' : 'hidden width ordinal'
+            'editable' : false, 'render' : function(my) { return my.mvr.doc_id(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'service',
             'label' : document.getElementById('commonStrings').getString('staff.checkout_column_label_service'),
             'flex' : 1,
@@ -560,8 +556,7 @@ circ.util.columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.acp.barcode(); },
-            'persist' : 'hidden width ordinal'
+            'editable' : false, 'render' : function(my) { return my.acp.barcode(); }
         },
         {
             'id' : 'call_number',
@@ -613,8 +608,7 @@ circ.util.columns = function(modify,params) {
                     }
                     return my.acn.label();
                 }
-            },
-            'persist' : 'hidden width ordinal'
+            }
         },
         {
             'id' : 'owning_lib',
@@ -629,8 +623,7 @@ circ.util.columns = function(modify,params) {
                 } else {
                     return my.acn.owning_lib().shortname();
                 }
-            },
-            'persist' : 'hidden width ordinal'
+            }
         },
         {
             'id' : 'prefix',
@@ -686,8 +679,7 @@ circ.util.columns = function(modify,params) {
                 return (typeof my.acn.prefix() == 'object')
                     ? my.acn.prefix().label()
                     : data.lookup("acnp", my.acn.prefix() ).label();
-            },
-            'persist' : 'hidden width ordinal'
+            }
         },
         {
             'id' : 'suffix',
@@ -743,8 +735,7 @@ circ.util.columns = function(modify,params) {
                 return (typeof my.acn.suffix() == 'object')
                     ? my.acn.suffix().label()
                     : data.lookup("acns", my.acn.suffix() ).label();
-            },
-            'persist' : 'hidden width ordinal'
+            }
         },
         {
             'id' : 'label_class',
@@ -798,8 +789,7 @@ circ.util.columns = function(modify,params) {
 
                 if (typeof my.acn != 'object') return '';
                 return (typeof my.acn.label_class() == 'object') ? my.acn.label_class().name() : my.acn.label_class();
-            },
-            'persist' : 'hidden width ordinal'
+            }
         },
         {
             'id' : 'parts',
@@ -824,8 +814,7 @@ circ.util.columns = function(modify,params) {
                     }
                 }
                 return display_string;
-            },
-            'persist' : 'hidden width ordinal'
+            }
         },
         {
             'id' : 'copy_number',
@@ -835,8 +824,7 @@ circ.util.columns = function(modify,params) {
             'sort_type' : 'number',
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.acp.copy_number(); },
-            'persist' : 'hidden width ordinal'
+            'editable' : false, 'render' : function(my) { return my.acp.copy_number(); }
         },
         {
             'id' : 'location',
@@ -851,8 +839,7 @@ circ.util.columns = function(modify,params) {
                 } else {
                     return my.acp.location().name();
                 }
-            },
-            'persist' : 'hidden width ordinal'
+            }
         },
         {
             'id' : 'loan_duration',
@@ -873,8 +860,7 @@ circ.util.columns = function(modify,params) {
                         return document.getElementById('circStrings').getString('staff.circ.utils.loan_duration.long');
                         break;
                 };
-            },
-            'persist' : 'hidden width ordinal'
+            }
         },
         {
             'id' : 'circ_lib',
@@ -889,8 +875,7 @@ circ.util.columns = function(modify,params) {
                 } else {
                     return my.acp.circ_lib().shortname();
                 }
-            },
-            'persist' : 'hidden width ordinal'
+            }
         },
         {
             'id' : 'fine_level',
@@ -911,8 +896,7 @@ circ.util.columns = function(modify,params) {
                         return document.getElementById('circStrings').getString('staff.circ.utils.fine_level.high');
                         break;
                 };
-            },
-            'persist' : 'hidden width ordinal'
+            }
         },
         {
             'id' : 'circulate',
@@ -927,8 +911,7 @@ circ.util.columns = function(modify,params) {
                 } else {
                     return document.getElementById('circStrings').getString('staff.circ.utils.no');
                 }
-            },
-            'persist' : 'hidden width ordinal'
+            }
         },
         {
             'id' : 'deleted',
@@ -943,8 +926,7 @@ circ.util.columns = function(modify,params) {
                 } else {
                     return document.getElementById('circStrings').getString('staff.circ.utils.no');
                 }
-            },
-            'persist' : 'hidden width ordinal'
+            }
         },
         {
             'id' : 'holdable',
@@ -959,8 +941,7 @@ circ.util.columns = function(modify,params) {
                 } else {
                     return document.getElementById('circStrings').getString('staff.circ.utils.no');
                 }
-            },
-            'persist' : 'hidden width ordinal'
+            }
         },
         {
             'id' : 'floating',
@@ -979,8 +960,7 @@ circ.util.columns = function(modify,params) {
                         return document.getElementById('circStrings').getString('staff.circ.utils.no');
                     }
                 }
-            },
-            'persist' : 'hidden width ordinal'
+            }
         },
 
         {
@@ -996,11 +976,9 @@ circ.util.columns = function(modify,params) {
                 } else {
                     return document.getElementById('circStrings').getString('staff.circ.utils.no');
                 }
-            },
-            'persist' : 'hidden width ordinal'
+            }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'acp_mint_condition',
             'fm_class' : 'acp',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.acp_mint_condition'),
@@ -1016,7 +994,6 @@ circ.util.columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'acp',
             'id' : 'ref',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.reference'),
@@ -1032,7 +1009,6 @@ circ.util.columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'acp',
             'id' : 'deposit',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.deposit'),
@@ -1048,7 +1024,6 @@ circ.util.columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'acp',
             'id' : 'deposit_amount',
             'label' : document.getElementById('commonStrings').getString('staff.acp_label_deposit_amount'),
@@ -1065,7 +1040,6 @@ circ.util.columns = function(modify,params) {
             'sort_type' : 'money'
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'acp',
             'id' : 'price',
             'label' : document.getElementById('commonStrings').getString('staff.acp_label_price'),
@@ -1082,7 +1056,6 @@ circ.util.columns = function(modify,params) {
             'sort_type' : 'money'
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'acp',
             'id' : 'circ_as_type',
             'label' : document.getElementById('commonStrings').getString('staff.acp_label_circ_as_type'),
@@ -1099,7 +1072,6 @@ circ.util.columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'acp',
             'id' : 'circ_modifier',
             'label' : document.getElementById('commonStrings').getString('staff.acp_label_circ_modifier'),
@@ -1117,8 +1089,7 @@ circ.util.columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.acp.status_changed_time(), '%{localized}' ); },
-            'persist' : 'hidden width ordinal'
-            ,'sort_value' : function(my) {
+            'sort_value' : function(my) {
                 return util.date.db_date2Date(
                     my.acp
                     ? my.acp.status_changed_time()
@@ -1127,7 +1098,6 @@ circ.util.columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'circ',
             'id' : 'checkout_lib',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.checkout_lib'),
@@ -1143,7 +1113,6 @@ circ.util.columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'circ',
             'id' : 'xact_start',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.xact_start'),
@@ -1167,7 +1136,6 @@ circ.util.columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'circ',
             'id' : 'checkin_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.checkin_time'),
@@ -1191,7 +1159,6 @@ circ.util.columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'circ',
             'id' : 'xact_finish',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.xact_finish'),
@@ -1208,7 +1175,6 @@ circ.util.columns = function(modify,params) {
                 ).getTime(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'circ',
             'id' : 'due_date',
             'label' : document.getElementById('commonStrings').getString('staff.circ_label_due_date'),
@@ -1232,7 +1198,6 @@ circ.util.columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'acp',
             'id' : 'acp_create_date',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.create_date'),
@@ -1250,7 +1215,6 @@ circ.util.columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'acp',
             'id' : 'acp_edit_date',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.edit_date'),
@@ -1268,7 +1232,6 @@ circ.util.columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'mvr',
             'id' : 'title',
             'label' : document.getElementById('commonStrings').getString('staff.mvr_label_title'),
@@ -1289,7 +1252,6 @@ circ.util.columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'mvr',
             'id' : 'author',
             'label' : document.getElementById('commonStrings').getString('staff.mvr_label_author'),
@@ -1309,7 +1271,6 @@ circ.util.columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'mvr',
             'id' : 'edition',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.edition'),
@@ -1319,7 +1280,6 @@ circ.util.columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.mvr.edition(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'mvr',
             'id' : 'isbn',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.isbn'),
@@ -1339,7 +1299,6 @@ circ.util.columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'mvr',
             'id' : 'pubdate',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.pubdate'),
@@ -1349,7 +1308,6 @@ circ.util.columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.mvr.pubdate(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'mvr',
             'id' : 'publisher',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.publisher'),
@@ -1359,7 +1317,6 @@ circ.util.columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.mvr.publisher(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'mvr',
             'id' : 'tcn',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.tcn'),
@@ -1369,7 +1326,6 @@ circ.util.columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.mvr.tcn(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'circ',
             'id' : 'renewal_remaining',
             'label' : document.getElementById('commonStrings').getString('staff.circ_label_renewal_remaining'),
@@ -1386,7 +1342,6 @@ circ.util.columns = function(modify,params) {
             'sort_type' : 'number'
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'circ',
             'id' : 'stop_fines',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.stop_fines'),
@@ -1402,7 +1357,6 @@ circ.util.columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'circ',
             'id' : 'stop_fines_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.stop_fines_time'),
@@ -1426,7 +1380,6 @@ circ.util.columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'acp',
             'id' : 'acp_status',
             'label' : document.getElementById('commonStrings').getString('staff.acp_label_status'),
@@ -1442,7 +1395,6 @@ circ.util.columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'route_to',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.route_to'),
             'flex' : 1,
@@ -1451,7 +1403,6 @@ circ.util.columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.route_to.toString(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'message',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.message'),
             'flex' : 1,
@@ -1460,7 +1411,6 @@ circ.util.columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.message.toString(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'uses',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.uses'),
             'flex' : 1,
@@ -1470,7 +1420,6 @@ circ.util.columns = function(modify,params) {
             'sort_type' : 'number'
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'acp',
             'id' : 'alert_message',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.alert_message'),
@@ -1480,7 +1429,6 @@ circ.util.columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.acp.alert_message(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'circ',
             'id' : 'checkin_workstation',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.checkin_workstation'),
@@ -1490,7 +1438,6 @@ circ.util.columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.circ ? ( typeof my.circ.checkin_workstation() == 'object' ? my.circ.checkin_workstation().name() : my.circ.checkin_workstation() ) : ""; },
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'circ',
             'id' : 'checkout_workstation',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.checkout_workstation'),
@@ -1500,7 +1447,6 @@ circ.util.columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.circ ? ( typeof my.circ.workstation() == 'object' ? my.circ.workstation().name() : my.circ.workstation() ) : ""; },
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'circ',
             'id' : 'checkout_workstation_top_of_chain',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.checkout_workstation_top_of_chain'),
@@ -1510,7 +1456,6 @@ circ.util.columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { if (my.circ&&!my.original_circ) { if(!get_bool(my.circ.desk_renewal())&&!get_bool(my.circ.opac_renewal())&&!get_bool(my.circ.phone_renewal())){my.original_circ = my.circ;}}; return my.original_circ ? ( typeof my.original_circ.workstation() == 'object' ? my.original_circ.workstation().name() : my.original_circ.workstation() ) : ""; },
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'circ',
             'id' : 'checkin_scan_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.checkin_scan_time'),
@@ -1528,7 +1473,6 @@ circ.util.columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'bre',
             'id' : 'owner',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.owner'),
@@ -1538,7 +1482,6 @@ circ.util.columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.bre ? (typeof my.bre.owner() == 'object' ? my.bre.owner().shortname() : data.hash.aou[my.bre.owner()].shortname() ) : ''; }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'bre',
             'id' : 'creator',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.creator'),
@@ -1548,7 +1491,6 @@ circ.util.columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.bre ? (typeof my.bre.creator() == 'object' ? my.bre.creator().usrname() : '#' + my.bre.creator() ) : ''; }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'bre',
             'id' : 'editor',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.editor'),
@@ -1558,7 +1500,6 @@ circ.util.columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.bre ? (typeof my.bre.editor() == 'object' ? my.bre.editor().usrname() : '#' + my.bre.editor() ) : ''; }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'bre',
             'id' : 'create_date',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.bre.create_date'),
@@ -1576,7 +1517,6 @@ circ.util.columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'bre',
             'id' : 'edit_date',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.bre.edit_date'),
@@ -1594,7 +1534,6 @@ circ.util.columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'bre',
             'id' : 'tcn_value',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.tcn'),
@@ -1604,7 +1543,6 @@ circ.util.columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.bre ? my.bre.tcn_value() : ''; }
         },
         {
-            'persist' : 'hidden width ordinal',
             'fm_class' : 'bre',
             'id' : 'tcn_source',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.tcn_source'),
@@ -1651,7 +1589,6 @@ circ.util.work_log_columns = function(modify,params) {
 
     var c = [
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'message',
             'label' : document.getElementById('circStrings').getString('staff.circ.work_log_column.message'),
             'flex' : 3,
@@ -1660,7 +1597,6 @@ circ.util.work_log_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.message; }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'when',
             'label' : document.getElementById('circStrings').getString('staff.circ.work_log_column.when'),
             'flex' : 1,
@@ -1707,7 +1643,6 @@ circ.util.transit_columns = function(modify,params) {
 
     var c = [
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'transit_item_barcode',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.barcode'),
             'flex' : 1,
@@ -1716,7 +1651,6 @@ circ.util.transit_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.acp.barcode(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'transit_item_title',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.title'),
             'flex' : 1,
@@ -1728,7 +1662,6 @@ circ.util.transit_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'transit_item_author',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.author'),
             'flex' : 1,
@@ -1740,7 +1673,6 @@ circ.util.transit_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'transit_item_callnumber',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.callnumber'),
             'flex' : 1,
@@ -1749,7 +1681,6 @@ circ.util.transit_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.acn.label(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'transit_id',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.transit_id'),
             'flex' : 1,
@@ -1758,7 +1689,6 @@ circ.util.transit_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.atc.id(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'transit_source',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.transit_source'),
             'flex' : 1,
@@ -1773,7 +1703,6 @@ circ.util.transit_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'transit_source_send_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.transit_source_send_time'),
             'flex' : 1,
@@ -1790,7 +1719,6 @@ circ.util.transit_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'transit_dest_lib',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.transit_dest'),
             'flex' : 1,
@@ -1805,7 +1733,6 @@ circ.util.transit_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'transit_dest_recv_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.transit_dest_recv_time'),
             'flex' : 1,
@@ -1822,7 +1749,6 @@ circ.util.transit_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'transit_target_copy',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.transit_target_copy'),
             'flex' : 1,
@@ -1836,7 +1762,6 @@ circ.util.transit_columns = function(modify,params) {
             // appear as a MACRO for the 'transit_slip' receipt.
             // Note that the actual value (for checkin) is 
             // collected below in circ.util.checkin_via_barcode2().
-            'persist' : 'hidden width ordinal',
             'id' : 'transit_copy_status',
             'label' : document.getElementById('circStrings').
                 getString('staff.circ.utils.transit_copy_status'),
@@ -1894,7 +1819,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'cancel_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.hold_cancel_time'),
             'flex' : 1,
@@ -1911,7 +1835,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'cancel_cause',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.hold_cancel_cause'),
             'flex' : 1,
@@ -1920,7 +1843,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return typeof my.ahr.cancel_cause == 'object' ? my.ahr.cancel_cause().label() : data.hash.ahrcc[ my.ahr.cancel_cause() ].label(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'cancel_note',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.hold_cancel_note'),
             'flex' : 1,
@@ -1929,7 +1851,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.ahr.cancel_note(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'request_lib',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.request_lib'),
             'flex' : 1,
@@ -1944,7 +1865,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'request_lib_shortname',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.request_lib_shortname'),
             'flex' : 0,
@@ -1959,7 +1879,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'request_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.request_time'),
             'flex' : 0,
@@ -1976,7 +1895,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'shelf_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.holds.shelf_time'),
             'flex' : 0,
@@ -1993,7 +1911,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'shelf_expire_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.holds.shelf_expire_time'),
             'flex' : 0,
@@ -2010,7 +1927,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'available_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.available_time'),
             'flex' : 1,
@@ -2032,7 +1948,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'capture_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.capture_time'),
             'flex' : 1,
@@ -2049,7 +1964,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'ahr_status',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_status_label'),
             'flex' : 1,
@@ -2088,7 +2002,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'hold_type',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_hold_type_label'),
             'flex' : 0,
@@ -2097,7 +2010,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.ahr.hold_type(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'ahr_mint_condition',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.ahr_mint_condition'),
             'flex' : 0,
@@ -2112,7 +2024,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'frozen',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.active'),
             'flex' : 0,
@@ -2127,7 +2038,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'thaw_date',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.thaw_date'),
             'flex' : 0,
@@ -2150,7 +2060,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'pickup_lib',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.pickup_lib'),
             'flex' : 1,
@@ -2165,7 +2074,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'pickup_lib_shortname',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_pickup_lib_label'),
             'flex' : 0,
@@ -2180,7 +2088,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'current_shelf_lib',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.current_shelf_lib'),
             'flex' : 1,
@@ -2195,7 +2102,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'current_shelf_lib_shortname',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_current_shelf_lib_label'),
             'flex' : 0,
@@ -2211,7 +2117,6 @@ circ.util.hold_columns = function(modify,params) {
         },
 
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'current_copy',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_current_copy_label'),
             'flex' : 1,
@@ -2226,7 +2131,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'current_copy_location',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_current_copy_location_label'),
             'flex' : 1,
@@ -2237,7 +2141,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'email_notify',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_email_notify_label'),
             'flex' : 1,
@@ -2252,7 +2155,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'expire_date',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_expire_date_label'),
             'flex' : 1,
@@ -2269,7 +2171,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'fulfillment_time',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_fulfillment_time_label'),
             'flex' : 1,
@@ -2286,7 +2187,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'holdable_formats',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_holdable_formats_label'),
             'flex' : 1,
@@ -2295,7 +2195,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.ahr.holdable_formats(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'holdable_part',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_holdable_part_label'),
             'flex' : 1,
@@ -2304,7 +2203,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.part.label(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'issuance_label',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_issuance_label_label'),
             'flex' : 1,
@@ -2313,7 +2211,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.issuance.label(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'ahr_id',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_id_label'),
             'flex' : 1,
@@ -2322,7 +2219,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.ahr.id(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'phone_notify',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_phone_notify_label'),
             'flex' : 1,
@@ -2331,7 +2227,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.ahr.phone_notify(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'sms_notify',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_sms_notify_label'),
             'flex' : 1,
@@ -2340,7 +2235,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.ahr.sms_notify(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'sms_carrier',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_sms_carrier_label'),
             'flex' : 1,
@@ -2349,7 +2243,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return data.hash.csc[ my.ahr.sms_carrier() ].name(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'prev_check_time',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_prev_check_time_label'),
             'flex' : 1,
@@ -2366,7 +2259,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'requestor',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_requestor_label'),
             'flex' : 1,
@@ -2375,7 +2267,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.ahr.requestor(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'selection_depth',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_selection_depth_label'),
             'flex' : 1,
@@ -2384,7 +2275,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.ahr.selection_depth(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'top_of_queue',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_top_of_queue_label'),
             'flex' : 1,
@@ -2393,7 +2283,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return get_bool( my.ahr.cut_in_line() ) ? document.getElementById('commonStrings').getString('common.yes') : document.getElementById('commonStrings').getString('common.no') ; }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'target',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_target_label'),
             'flex' : 1,
@@ -2402,7 +2291,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.ahr.target(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'usr',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_usr_label'),
             'flex' : 1,
@@ -2411,7 +2299,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.ahr.usr(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'title',
             'label' : document.getElementById('commonStrings').getString('staff.mvr_label_title'),
             'flex' : 1,
@@ -2427,7 +2314,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'author',
             'label' : document.getElementById('commonStrings').getString('staff.mvr_label_author'),
             'flex' : 1,
@@ -2442,7 +2328,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'edition',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.edition'),
             'flex' : 1,
@@ -2451,7 +2336,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.mvr.edition(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'isbn',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.isbn'),
             'flex' : 1,
@@ -2460,7 +2344,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.mvr.isbn(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'pubdate',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.pubdate'),
             'flex' : 1,
@@ -2469,7 +2352,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.mvr.pubdate(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'publisher',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.publisher'),
             'flex' : 1,
@@ -2478,7 +2360,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.mvr.publisher(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'tcn',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.tcn'),
             'flex' : 1,
@@ -2487,7 +2368,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.mvr.tcn(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'notify_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.notify_time'),
             'flex' : 1,
@@ -2504,7 +2384,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'notify_count',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.notify_count'),
             'flex' : 1,
@@ -2513,7 +2392,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.ahr.notify_count(); }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'transit_source',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.transit_source'),
             'flex' : 1,
@@ -2528,7 +2406,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'transit_source_send_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.transit_source_send_time'),
             'flex' : 1,
@@ -2545,7 +2422,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'transit_dest_lib',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.transit_dest'),
             'flex' : 1,
@@ -2554,7 +2430,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.ahr.transit() ?  data.hash.aou[ my.ahr.transit().dest() ].shortname() : ""; }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'transit_dest_recv_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.transit_dest_recv_time'),
             'flex' : 1,
@@ -2571,7 +2446,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'patron_barcode',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.patron_barcode'),
             'flex' : 1,
@@ -2580,7 +2454,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.patron_barcode ? my.patron_barcode : ""; }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'patron_family_name',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.patron_family_name'),
             'flex' : 1,
@@ -2598,7 +2471,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.patron_alias ? my.patron_alias : ""; }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'patron_first_given_name',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.patron_first_given_name'),
             'flex' : 1,
@@ -2656,8 +2528,7 @@ circ.util.hold_columns = function(modify,params) {
                     }
                     return my.acn.label();
                 }
-            },
-            'persist' : 'hidden width ordinal'
+            }
         },
         {
             'id' : 'prefix',
@@ -2671,8 +2542,7 @@ circ.util.hold_columns = function(modify,params) {
                 return (typeof my.acn.prefix() == 'object')
                     ? my.acn.prefix().label()
                     : data.lookup("acnp", my.acn.prefix() ).label();
-            },
-            'persist' : 'hidden width ordinal'
+            }
         },
         {
             'id' : 'suffix',
@@ -2686,11 +2556,9 @@ circ.util.hold_columns = function(modify,params) {
                 return (typeof my.acn.suffix() == 'object')
                     ? my.acn.suffix().label()
                     : data.lookup("acns", my.acn.suffix() ).label();
-            },
-            'persist' : 'hidden width ordinal'
+            }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'total_holds',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.total_holds'),
             'flex' : 1,
@@ -2699,7 +2567,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.total_holds; }
         },
                 {
-            'persist' : 'hidden width ordinal',
             'id' : 'queue_position',
             'sort_type' : 'number',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.queue_position'),
@@ -2709,7 +2576,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.queue_position; }
         },
                 {
-            'persist' : 'hidden width ordinal',
             'id' : 'potential_copies',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.potential_copies'),
             'flex' : 1,
@@ -2718,7 +2584,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.potential_copies; }
         },
                 {
-            'persist' : 'hidden width ordinal',
             'id' : 'estimated_wait',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.estimated_wait'),
             'flex' : 1,
@@ -2727,7 +2592,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.estimated_wait; }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'hold_note',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.hold_note'),
             'flex' : 1,
@@ -2736,7 +2600,6 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.ahrn_count; }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'hold_note_text',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.hold_note_text'),
             'flex' : 1,
@@ -2752,7 +2615,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'staff_hold',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.staff_hold'),
             'flex' : 1,
@@ -2768,7 +2630,6 @@ circ.util.hold_columns = function(modify,params) {
             }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'behind_desk',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.hold.behind_desk'),
             'flex' : 1,

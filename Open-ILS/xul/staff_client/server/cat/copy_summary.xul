@@ -72,7 +72,7 @@
                 ).concat(
                     {
                         'id' : 'total_circs', 'label' : $('catStrings').getString('staff.cat.copy_summary.total_circs.label'), 'flex' : 1,
-                        'primary' : false, 'hidden' : false, 'persist' : 'hidden width ordinal',
+                        'primary' : false, 'hidden' : false,
                         'render' : 'v = obj.network.simple_request("FM_CIRC_COUNT_RETRIEVE_VIA_COPY",[ my.acp.id() ]).total.count; v;' 
                     }
                 );
