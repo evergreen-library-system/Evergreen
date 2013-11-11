@@ -108,6 +108,12 @@ function event_listeners() {
             false
         );
 
+        window.bill_event_listeners.add($('adjust_to_zero'),
+            'command',
+            handle_adjust_to_zero,
+            false
+        );
+
         window.bill_event_listeners.add($('opac'), 
             'command',
             handle_opac,
@@ -382,6 +388,48 @@ function handle_refund() {
     distribute_payment();
 }
 
+/**
+ * Calls open-ils.circ.money.billable_xact.adjust_to_zero on selected
+ * transactions to produce a zero-balance transaction.
+ * Successfully cleared transactions will disappear from the billing list.
+ */
+function handle_adjust_to_zero() {
+
+    var msgkey = g.bill_list_selection.length > 1 ?
+        'staff.patron.bills.handle_adjust_to_zero.message_plural' :
+        'staff.patron.bills.handle_adjust_to_zero.message_singular';
+
+    var msg = $("patronStrings").getFormattedString(
+        msgkey, [g.bill_list_selection]);
+
+    var r = g.error.yns_alert(msg,
+        $("patronStrings").getString(
+            'staff.patron.bills.handle_adjust_to_zero.title'),
+        $("patronStrings").getString(
+            'staff.patron.bills.handle_adjust_to_zero.btn_yes'),
+        $("patronStrings").getString(
+            'staff.patron.bills.handle_adjust_to_zero.btn_no'),null,
+        $("patronStrings").getString(
+            'staff.patron.bills.handle_adjust_to_zero.confirm_message'));
+
+    if (r == 0) {
+        var xact_ids = [];
+        for (var i = 0; i < g.bill_list_selection.length; i++) {
+            var bill_id = g.bill_list_selection[i];
+            xact_ids.push(bill_id);
+        }
+
+        var mod_ids = g.network.simple_request(
+            'ADJUST_BILLS_TO_ZERO', [ses(), xact_ids]);
+
+        g.error.sdump('D_DEBUG', 'adjusted to zero transactions ' + mod_ids);
+
+        refresh();
+        tally_all();
+        distribute_payment();
+    }
+}
+
 
 function check_all() {
     try {
@@ -524,6 +572,7 @@ function init_lists() {
             $('details').setAttribute('disabled', g.bill_list_selection.length == 0);
             $('add').setAttribute('disabled', g.bill_list_selection.length == 0);
             $('voidall').setAttribute('disabled', g.bill_list_selection.length == 0);
+            $('adjust_to_zero').setAttribute('disabled', g.bill_list_selection.length == 0);
             $('refund').setAttribute('disabled', g.bill_list_selection.length == 0);
             $('opac').setAttribute('disabled', g.bill_list_selection.length == 0);
             $('copy_details').setAttribute('disabled', g.bill_list_selection.length == 0);

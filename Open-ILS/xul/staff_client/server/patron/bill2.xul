@@ -41,6 +41,7 @@
         <command id="opac" label="&staff.patron.bill_interface.show_in_catalog.label;" accesskey="&staff.patron.bill_interface.show_in_catalog.accesskey;" disabled="true"/>
         <command id="copy_details" label="&staff.patron.items_overlay.sel_copy_details.label;" accesskey="&staff.patron.items_overlay.sel_copy_details.accesskey;" disabled="true"/>
         <command id="voidall" label="&staff.patron.bill_interface.void_all_billings.label;" accesskey="&staff.patron.bill_interface.void_all_billings.accesskey;" disabled="true"/>
+        <command id="adjust_to_zero" label="&staff.patron.bill_interface.adjust_to_zero.label;" accesskey="&staff.patron.bill_interface.adjust_to_zero.accesskey;" disabled="true"/>
         <command id="refund" label="&staff.patron.bill_interface.refund.label;" accesskey="&staff.patron.bill_interface.refund.accesskey;" disabled="true"/>
         <command id="add" label="&staff.patron.bill_interface.add_billing.label;" accesskey="&staff.patron.bill_interface.add_billing.accesskey;" disabled="true"/>
         <command id="details" label="&staff.patron.bill_interface.full_details.label;" accesskey="&staff.patron.bill_interface.full_details.accesskey;" disabled="true"/>
@@ -51,6 +52,7 @@
             <menuitem command="opac" />
             <menuitem command="copy_details" />
             <menuitem command="voidall" />
+            <menuitem command="adjust_to_zero" />
             <menuitem command="refund" />
             <menuitem command="add" />
             <menuitem command="details" />

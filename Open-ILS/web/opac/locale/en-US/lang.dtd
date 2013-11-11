@@ -3323,6 +3323,8 @@
 <!ENTITY staff.patron.bill_interface.void_all_billings.accesskey "V">
 <!ENTITY staff.patron.bill_interface.refund.label "Refund">
 <!ENTITY staff.patron.bill_interface.refund.accesskey "R">
+<!ENTITY staff.patron.bill_interface.adjust_to_zero.label "Adjust to Zero">
+<!ENTITY staff.patron.bill_interface.adjust_to_zero.accesskey "Z">
 <!ENTITY staff.patron.bill_interface.full_details.label "Full Details">
 <!ENTITY staff.patron.bill_interface.full_details.accesskey "D">
 <!ENTITY staff.patron.bill_interface.show_in_catalog.label "Show in Catalog">
