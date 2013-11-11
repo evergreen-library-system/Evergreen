@@ -1323,6 +1323,63 @@ sub acn_sms_msg {
 
 
 
+__PACKAGE__->register_method(
+    method    => "fixed_field_values_by_rec_type",
+    api_name  => "open-ils.cat.biblio.fixed_field_values.by_rec_type",
+    argc      => 2,
+    signature => {
+        desc   => 'Given a record type (as in cmfpm.rec_type), return fixed fields and their possible values as known to the DB',
+        params => [
+            {desc => 'Record Type', type => 'string'},
+            {desc => '(Optional) Fixed field', type => 'string'},
+        ]
+    },
+    return => {desc => 'an object in which the keys are fixed fields and the values are arrays representing the set of all unique values for that fixed field in that record type', type => 'object' }
+);
+
+
+sub fixed_field_values_by_rec_type {
+    my ($self, $conn, $rec_type, $fixed_field) = @_;
+
+    my $e = new_editor;
+    my $values = $e->json_query({
+        select => {
+            crad => ["fixed_field"],
+            ccvm => [qw/code value/],
+        },
+        distinct => 1,
+        from => {
+            ccvm => {
+                crad => {
+                    join => {
+                        cmfpm => {
+                            fkey => "fixed_field",
+                            field => "fixed_field"
+                        }
+                    }
+                }
+            }
+        },
+        where => {
+            "+cmfpm" => {rec_type => $rec_type},
+            defined $fixed_field ?
+                ("+crad" => {fixed_field => $fixed_field}) : ()
+        },
+        order_by => [
+            {class => "crad", field => "fixed_field"},
+            {class => "ccvm", field => "code"}
+        ]
+    }) or return $e->die_event;
+
+    my $result = {};
+    for my $row (@$values) {
+        $result->{$row->{fixed_field}} ||= [];
+        push @{$result->{$row->{fixed_field}}}, [@$row{qw/code value/}];
+    }
+
+    return $result;
+}
+
 1;
 
 # vi:et:ts=4:sw=4

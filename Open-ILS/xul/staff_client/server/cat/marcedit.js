@@ -42,6 +42,9 @@ var p;
 var auth_pages = {};
 var show_auth_menu = false;
 
+var _fixed_field_values = {}, _fixed_field_context_menus = {};
+var _fixed_field_anonymous_func_counter = 0;
+
 function $(id) { return document.getElementById(id); }
 
 var acs; // AuthorityControlSet
@@ -407,6 +410,7 @@ function my_init() {
         req.send(null);
 
         loadRecord();
+
 
         if (! xulG.fast_add_item) {
             document.getElementById('fastItemAdd_checkbox').hidden = true;
@@ -883,6 +887,113 @@ function changeFFEditor (type) {
         }
     });
 
+    getFFValuesForType(
+        type,
+        function() {
+            updateFFEditorContexts(grid, type);
+        },
+        function() {
+            alert(  /* XXX i18n - the marc editor either isn't tied in to
+                       an overall i18n infrastructure, or it's different
+                       enough from other Evergreen parts that I don't
+                       understand the right way to do i18n here */
+                "failed to load fixed field values for rec_type '" +
+                type + "'\n"
+            );
+        }
+    );
+}
+
+function getFFValuesForType(type, callback, errback) {
+    if (_fixed_field_values[type]) {
+        callback();
+    } else {
+        dojo.require("openils.Util");
+
+        fieldmapper.standardRequest(
+            ["open-ils.cat",
+                "open-ils.cat.biblio.fixed_field_values.by_rec_type"], {
+                "async": true,
+                "params": [type],
+                "oncomplete": function(r) {
+                    if (r = openils.Util.readResponse(r)) {
+                        _fixed_field_values[type] = r;
+                        callback();
+                    } else {
+                        errback();
+                    }
+                },
+                "onerror": errback
+            }
+        );
+    }
+}
+
+function updateFFEditorContexts(grid, type) {
+
+    /* XXX Dojo to navigate a XUL DOM.  Bad form?  We do it elsewhere in this
+     * file, but I think I've heard it scoffed at. */
+
+    var rows_node = dojo.query("rows", grid)[0];
+    dojo.query("row", rows_node).forEach(
+        function(row) {
+            dojo.query("textbox", row).forEach(
+                function(tb) {
+                    var name = tb.getAttribute("name");
+                    if (_fixed_field_values[type][name]) {
+                        tb.setAttribute(
+                            "context", getFFContextMenu(type, name)
+                        );
+                    } else {
+                        tb.setAttribute("context", "clipboard");
+                    }
+                }
+            );
+        }
+    );
+}
+
+function getFFContextMenu(type, name) {
+    if (!_fixed_field_context_menus[type]) {
+        _fixed_field_context_menus[type] = {};
+    }
+
+    var context_menu_id = "_fixed_field_context_menus_" + type + "_" + name;
+
+    if (!_fixed_field_context_menus[type][name]) {
+        var p = document.getElementsByTagName("popupset")[0];
+        var m = document.createElement("menupopup");
+        m.setAttribute("id", context_menu_id);
+        _fixed_field_values[type][name].forEach(
+            function(v) {
+                var mi = document.createElement("menuitem");
+                var funcname = "_ff_anon_" +
+                    String(_fixed_field_anonymous_func_counter++);
+
+                /* These anon functions linger and take up memory, but due
+                 * to caching there's a limit on how much, and that limit is
+                 * a function of the size of the dataset defined in the
+                 * ccvm/cmfpm tables. */
+                var code = v[0];
+                var el = document.getElementById(name + "_tb");
+                window[funcname] = function() {
+                    el.value = code;
+                    updateFixedFields(el);
+                };
+
+                /* In XUL land we can't set an element's
+                 * attribute like oncommand to a code reference. It has to be
+                 * an actual string to be eval'd. */
+                mi.setAttribute("oncommand", funcname + "()");
+                mi.setAttribute("label", v[0] + ": " + v[1]); /* XXX i18n ? */
+                m.appendChild(mi);
+            }
+        );
+        _fixed_field_context_menus[type][name] = m;
+        p.appendChild(m);
+    }
+
+    return context_menu_id;
 }
 
 function fillFixedFields () {
