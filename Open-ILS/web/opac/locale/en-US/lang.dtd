@@ -3033,6 +3033,8 @@
 <!ENTITY staff.cat.marcedit.toggleFFE.label "Fixed Fields -- Record type: ">
 <!ENTITY staff.cat.marcedit.source.caption "Bibliographic source">
 <!ENTITY staff.cat.marcedit.source.submit.label "Update source">
+<!ENTITY staff.cat.marcedit.phys_char_wizard.label "Physical Characteristics Wizard">
+<!ENTITY staff.cat.marcedit.phys_char_wizard.accesskey "W">
 <!ENTITY staff.cat.marc_new.load.label "Load">
 <!ENTITY staff.cat.marc_new.load.accesskey "L">
 <!ENTITY staff.cat.marc_new.set_default.label "Set Workstation Default">

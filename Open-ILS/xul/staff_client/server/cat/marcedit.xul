@@ -283,6 +283,9 @@
         <menuitem label="COM" oncommand="changeFFEditor('COM');"/>
         <menuitem label="MFHD" oncommand="changeFFEditor('MFHD');"/>
     </menupopup>
+    <menupopup id="physCharWizardContext" position="after_start">
+        <menuitem label="&staff.cat.marcedit.phys_char_wizard.label;" accesskey="&staff.cat.marcedit.phys_char_wizard.accesskey;" oncommand="launchPhysCharWizard(document.popupNode);" />
+    </menupopup>
 </popupset>
 
 </window>

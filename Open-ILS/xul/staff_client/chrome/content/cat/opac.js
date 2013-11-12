@@ -277,7 +277,8 @@ function set_marc_edit() {
                 }
             },
             'lock_tab' : xulG.lock_tab,
-            'unlock_tab' : xulG.unlock_tab
+            'unlock_tab' : xulG.unlock_tab,
+            'url_prefix': xulG.url_prefix
         };
     if (marc_edit_reset) {
         bottom_pane.reset_iframe( a,b,c );

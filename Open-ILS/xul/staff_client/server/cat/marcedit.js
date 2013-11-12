@@ -257,12 +257,26 @@ function my_init() {
         }
 
         document.getElementById('save-button').setAttribute('label', window.xulG.save.label);
+        /* Ugh. Sorry about the spaghetti. */
         document.getElementById('save-button').setAttribute('oncommand',
+            'var to_save = function() { ' + /* begin to_save() */
             'if ($("xul-editor").hidden) set_flat_editor(false); ' +
             'mangle_005(); ' + 
             'var xml_string = xml_escape_unicode( xml_record.toXMLString() ); ' + 
             'save_attempt( xml_string ); ' +
-            'loadRecord();'
+            'loadRecord(); ' +
+            '}; ' + /* end to_save() */
+
+            'if (typeof _owPCW == "object") { ' +
+            ' for (var k in _owPCW) { ' +
+            '  if (_owPCW[k].active) { ' +
+            '    try { _owPCW[k].apply(to_save); to_save.ran = true; } ' +
+            '    catch (E) { alert("_ow_PCW[" + k + "]: " + E); } ' +
+            '    break; ' +
+            '  }' +
+            ' }' +
+            '} ' +
+            'if (!to_save.ran) to_save();'
         );
 
         if (window.xulG.record.url) {
@@ -430,7 +444,9 @@ function my_init() {
             buildBibSourceList(authtoken, xulG.record.id);
         }
 
+        preparePhysCharWizardContext();
         dojo.require('MARC.FixedFields');
+        dojo.require("openils.widget.PhysCharWizard");
 
     } catch(E) {
         alert('FIXME, MARC Editor, my_init: ' + E);
@@ -996,6 +1012,36 @@ function getFFContextMenu(type, name) {
     return context_menu_id;
 }
 
+/* This just sets up a special context menu for a 007 data field to use, so
+ * that users can right-click for a menu and get a choice to launch the
+ * Physical Characteristics Wizard.
+ */
+function preparePhysCharWizardContext() {
+    var menu = document.getElementById("physCharWizardContext");
+    menu.appendChild(document.createElement("menuseparator"));
+
+    var clipb_children = document.getElementById("clipboard").childNodes;
+    for (var i = 0; i < clipb_children.length; i++) /* collection not array */ {
+        var child = clipb_children[i];
+        if (child.nodeName == 'menuitem')
+            menu.appendChild(child.cloneNode(true));
+    }
+}
+
+function launchPhysCharWizard(popup_node) {
+    try {
+        new openils.widget.PhysCharWizard({
+            "node": popup_node,
+            "onapply": function(v) {
+                createControlField("007", v);
+                loadRecord();
+            }
+        });
+    } catch (E) {
+        alert("Exception raised by openils.widget.PhysCharWizard:\n" + E);
+    }
+}
+
 function fillFixedFields () {
     try {
             var grid = document.getElementById('leaderGrid');
@@ -1095,7 +1141,7 @@ function marcControlfield (field) {
                 { value : field.text(),
                   class : 'plain marcEditableControlfield',
                   name : 'CONTROL' + tagname,
-                  context : 'clipboard',
+                  context : tagname == 7 ? 'physCharWizardContext': 'clipboard',
                   size : 50,
                   maxlength : 50 } )
             );

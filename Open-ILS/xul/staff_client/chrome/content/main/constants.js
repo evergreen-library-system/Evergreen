@@ -507,6 +507,7 @@ var urls = {
     'EG_ACQ_USER_REQUESTS' : 'oils://remote/eg/acq/picklist/user_request',
     'XUL_SERIAL_BATCH_RECEIVE': 'oils://remote/xul/server/serial/batch_receive.xul',
     'XUL_SERIAL_PATTERN_WIZARD' : 'oils://remote/xul/server/serial/pattern_wizard.xul',
+    'EG_MARCEDIT_PHYS_CHAR_WIZARD' : 'oils://remote/eg/cat/marcedit/phys_char_wizard',
     'CUSTOM_JS' : '/xul/server/skin/custom.js',
     'ACQ_LINEITEM' : 'oils://remote/eg/acq/lineitem/related/',
     'SERIAL_LIST_SUBSCRIPTION' : 'oils://remote/eg/serial/list_subscription',
