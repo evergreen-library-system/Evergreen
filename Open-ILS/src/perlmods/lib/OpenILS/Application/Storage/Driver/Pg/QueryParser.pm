@@ -818,6 +818,8 @@ SQL
 sub flatten {
     my $self = shift;
 
+    die 'ERROR: nesting too deep or boolean list too long' if ($self->plan_level > 40);
+
     my $from = shift || '';
     my $where = shift || '';
     my $with = '';
