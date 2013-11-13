@@ -55,6 +55,8 @@ my @default_queries = (
     'audience(a) (concerto || item_type(a) || (piano music item_form(b)))',
     'concerto && (item_type(a) || piano) && (item_form(b) || music)',
     'concerto && (piano || item_type(a)) && (music || item_form(b))',
+    'Cancer du sujet {circ}ag{acute}e',
+    'a || b || c || d || e || f || g || h || i || j || k || l || m || n || o || p || q || r || s || t || u || v || w || x || y || z', # will run afoul of depth restrictions 
 
 );
 
