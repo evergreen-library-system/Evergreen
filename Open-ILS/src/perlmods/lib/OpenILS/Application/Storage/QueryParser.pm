@@ -788,15 +788,20 @@ Parse the specified query, or the query already associated with the QueryParser
 object.
 =cut
 
+our $last_type = '';
+our $last_class = '';
+our $floating = 0;
+our $fstart;
 sub parse {
     my $self = shift;
     my $pkg = ref($self) || $self;
     warn " ** parse package is $pkg\n" if $self->debug;
-#    $self->parse_tree(
-#        $self->decompose(
-#            $self->query( shift() )
-#        )
-#    );
+
+    # Reset at each top-level parsing request
+    $last_class = '';
+    $last_type = '';
+    $floating = 0;
+    $fstart = undef;
 
     $self->decompose( $self->query( shift() ) );
 
@@ -819,15 +824,13 @@ Returns the top level query plan, or the query plan from a lower level plus
 the portion of the query string that needs to be processed at a higher level.
 =cut
 
-our $last_class = '';
-our $last_type = '';
-our $floating = 0;
-our $fstart;
-
+our $_compiled_decomposer = {};
 sub decompose {
     my $self = shift;
     my $pkg = ref($self) || $self;
 
+    my $r = $$_compiled_decomposer{$pkg};
+    my $compiled = defined($r);
 
     $_ = shift;
     my $current_class = shift || $self->default_search_class;
@@ -835,11 +838,19 @@ sub decompose {
     my $recursing = shift || 0;
     my $phrase_helper = shift || 0;
 
-    # Build the search class+field uber-regexp
-    my $search_class_re = '^\s*(';
-    my $first_class = 1;
+    warn '  'x$recursing." ** QP: decompose package is $pkg" if $self->debug;
 
-    warn '  'x$recursing." ** decompose package is $pkg\n" if $self->debug;
+    if (!$compiled) {
+        $r = $$_compiled_decomposer{$pkg} = {};
+        warn '  'x$recursing." ** Compiling decomposer\n" if $self->debug;
+
+        # Build the search class+field uber-regexp
+        $$r{search_class_re} = '^\s*(';
+    } else {
+        warn '  'x$recursing." ** Decomposer already compiled\n" if $self->debug;
+    }
+
+    my $first_class = 1;
 
     my %seen_classes;
     for my $class ( keys %{$pkg->search_field_aliases} ) {
@@ -856,10 +867,12 @@ sub decompose {
             }
         }
 
-        $search_class_re .= '|' unless ($first_class);
-        $first_class = 0;
-        $search_class_re .= $class . '(?:[|#][^:|]+)*';
-        $seen_classes{$class} = 1;
+        if (!$compiled) {
+            $$r{search_class_re} .= '|' unless ($first_class);
+            $first_class = 0;
+            $$r{search_class_re} .= $class . '(?:[|#][^:|]+)*';
+            $seen_classes{$class} = 1;
+        }
     }
 
     for my $class ( keys %{$pkg->search_class_aliases} ) {
@@ -871,62 +884,67 @@ sub decompose {
             warn '  'x$recursing." *** Rewriting: $alias ($aliasr) as $class\n" if $self->debug;
         }
 
-        if (!$seen_classes{$class}) {
-            $search_class_re .= '|' unless ($first_class);
+        if (!$compiled and !$seen_classes{$class}) {
+            $$r{search_class_re} .= '|' unless ($first_class);
             $first_class = 0;
 
-            $search_class_re .= $class . '(?:[|#][^:|]+)*';
+            $$r{search_class_re} .= $class . '(?:[|#][^:|]+)*';
             $seen_classes{$class} = 1;
         }
     }
-    $search_class_re .= '):';
+    $$r{search_class_re} .= '):' if (!$compiled);
 
     warn '  'x$recursing." ** Rewritten query: $_\n" if $self->debug;
-    warn '  'x$recursing." ** Search class RE: $search_class_re\n" if $self->debug;
-
-    my $required_op = $pkg->operator('required');
-    my $required_re = qr/\Q$required_op\E/;
-
-    my $disallowed_op = $pkg->operator('disallowed');
-    my $disallowed_re = qr/\Q$disallowed_op\E/;
-
-    my $negated_op = $pkg->operator('negated');
-    my $negated_re = qr/\Q$negated_op\E/;
-
-    my $and_op = $pkg->operator('and');
-    my $and_re = qr/^\s*\Q$and_op\E/;
-
-    my $or_op = $pkg->operator('or');
-    my $or_re = qr/^\s*\Q$or_op\E/;
 
     my $group_start = $pkg->operator('group_start');
-    my $group_start_re = qr/^\s*($negated_re|$disallowed_re)?\Q$group_start\E/;
-
     my $group_end = $pkg->operator('group_end');
-    my $group_end_re = qr/^\s*\Q$group_end\E/;
+    if (!$compiled) {
+        warn '  'x$recursing." ** Search class RE: $$r{search_class_re}\n" if $self->debug;
 
-    my $float_start = $pkg->operator('float_start');
-    my $float_start_re = qr/^\s*\Q$float_start\E/;
+        my $required_op = $pkg->operator('required');
+        $$r{required_re} = qr/\Q$required_op\E/;
 
-    my $float_end = $pkg->operator('float_end');
-    my $float_end_re = qr/^\s*\Q$float_end\E/;
+        my $disallowed_op = $pkg->operator('disallowed');
+        $$r{disallowed_re} = qr/\Q$disallowed_op\E/;
 
-    my $modifier_tag = $pkg->operator('modifier');
-    my $modifier_tag_re = qr/^\s*\Q$modifier_tag\E/;
+        my $negated_op = $pkg->operator('negated');
+        $$r{negated_re} = qr/\Q$negated_op\E/;
 
-    # Group start/end normally are ( and ), but can be overridden.
-    # We thus include ( and ) specifically due to filters, as well as : for classes.
-    my $phrase_cleanup_re = qr/\s*(\Q$required_op\E|\Q$disallowed_op\E|\Q$and_op\E|\Q$or_op\E|\Q$group_start\E|\Q$group_end\E|\Q$float_start\E|\Q$float_end\E|\Q$modifier_tag\E|\Q$negated_op\E|:|\(|\))/;
+        my $and_op = $pkg->operator('and');
+        $$r{and_re} = qr/^\s*\Q$and_op\E/;
 
-    # Build the filter and modifier uber-regexps
-    my $facet_re = '^\s*(-?)((?:' . join( '|', @{$pkg->facet_classes}) . ')(?:\|\w+)*)\[(.+?)\](?!\[)';
-    warn '  'x$recursing." ** Facet RE: $facet_re\n" if $self->debug;
+        my $or_op = $pkg->operator('or');
+        $$r{or_re} = qr/^\s*\Q$or_op\E/;
 
-    my $filter_re = '^\s*(-?)(' . join( '|', @{$pkg->filters}) . ')\(([^()]+)\)';
-    my $filter_as_class_re = '^\s*(-?)(' . join( '|', @{$pkg->filters}) . '):\s*(\S+)';
+        $$r{group_start_re} = qr/^\s*($$r{negated_re}|$$r{disallowed_re})?\Q$group_start\E/;
 
-    my $modifier_re = '^\s*'.$modifier_tag_re.'(' . join( '|', @{$pkg->modifiers}) . ')\b';
-    my $modifier_as_class_re = '^\s*(' . join( '|', @{$pkg->modifiers}) . '):\s*(\S+)';
+        $$r{group_end_re} = qr/^\s*\Q$group_end\E/;
+
+        my $float_start = $pkg->operator('float_start');
+        $$r{float_start_re} = qr/^\s*\Q$float_start\E/;
+
+        my $float_end = $pkg->operator('float_end');
+        $$r{float_end_re} = qr/^\s*\Q$float_end\E/;
+
+        $$r{atom_re} = qr/.+?(?=\Q$float_start\E|\Q$group_start\E|\Q$float_end\E|\Q$group_end\E|\s|"|$)/;
+
+        my $modifier_tag = $pkg->operator('modifier');
+        $$r{modifier_tag_re} = qr/^\s*\Q$modifier_tag\E/;
+
+        # Group start/end normally are ( and ), but can be overridden.
+        # We thus include ( and ) specifically due to filters, as well as : for classes.
+        $$r{phrase_cleanup_re} = qr/\s*(\Q$required_op\E|\Q$disallowed_op\E|\Q$and_op\E|\Q$or_op\E|\Q$group_start\E|\Q$group_end\E|\Q$float_start\E|\Q$float_end\E|\Q$modifier_tag\E|\Q$negated_op\E|:|\(|\))/;
+
+        # Build the filter and modifier uber-regexps
+        $$r{facet_re} = '^\s*(-?)((?:' . join( '|', @{$pkg->facet_classes}) . ')(?:\|\w+)*)\[(.+?)\](?!\[)';
+
+        $$r{filter_re} = '^\s*(-?)(' . join( '|', @{$pkg->filters}) . ')\(([^()]+)\)';
+        $$r{filter_as_class_re} = '^\s*(-?)(' . join( '|', @{$pkg->filters}) . '):\s*(\S+)';
+
+        $$r{modifier_re} = '^\s*'.$$r{modifier_tag_re}.'(' . join( '|', @{$pkg->modifiers}) . ')\b';
+        $$r{modifier_as_class_re} = '^\s*(' . join( '|', @{$pkg->modifiers}) . '):\s*(\S+)';
+
+    }
 
     my $struct = shift || $self->new_plan( level => $recursing );
     $self->parse_tree( $struct ) if (!$self->parse_tree);
@@ -944,9 +962,9 @@ sub decompose {
         }
 
         if (/^\s*$/) { # end of an explicit group
-            local $last_type = '';
+            $last_type = '';
             last;
-        } elsif (/$float_end_re/) { # end of an explicit group
+        } elsif (/$$r{float_end_re}/) { # end of an explicit group
             warn '  'x$recursing."Encountered explicit float end, remainder: $'\n" if $self->debug;
 
             $remainder = $';
@@ -955,14 +973,14 @@ sub decompose {
             $floating = 0;
             $last_type = 'FEND';
             last;
-        } elsif (/$group_end_re/) { # end of an explicit group
+        } elsif (/$$r{group_end_re}/) { # end of an explicit group
             warn '  'x$recursing."Encountered explicit group end, remainder: $'\n" if $self->debug;
 
             $remainder = $';
             $_ = '';
 
-            local $last_type = '';
-        } elsif ($self->filter_count && /$filter_re/) { # found a filter
+            $last_type = '';
+        } elsif ($self->filter_count && /$$r{filter_re}/) { # found a filter
             warn '  'x$recursing."Encountered search filter: $1$2 set to $3\n" if $self->debug;
 
             my $negate = ($1 eq $pkg->operator('disallowed')) ? 1 : 0;
@@ -979,8 +997,8 @@ sub decompose {
             }
 
 
-            local $last_type = '';
-        } elsif ($self->filter_count && /$filter_as_class_re/) { # found a filter
+            $last_type = '';
+        } elsif ($self->filter_count && /$$r{filter_as_class_re}/) { # found a filter
             warn '  'x$recursing."Encountered search filter: $1$2 set to $3\n" if $self->debug;
 
             my $negate = ($1 eq $pkg->operator('disallowed')) ? 1 : 0;
@@ -996,8 +1014,8 @@ sub decompose {
                 $struct->new_filter( $filter => $params, $negate );
             }
 
-            local $last_type = '';
-        } elsif ($self->modifier_count && /$modifier_re/) { # found a modifier
+            $last_type = '';
+        } elsif ($self->modifier_count && /$$r{modifier_re}/) { # found a modifier
             warn '  'x$recursing."Encountered search modifier: $1\n" if $self->debug;
 
             $_ = $';
@@ -1007,8 +1025,8 @@ sub decompose {
                 $struct->new_modifier($1);
             }
 
-            local $last_type = '';
-        } elsif ($self->modifier_count && /$modifier_as_class_re/) { # found a modifier
+            $last_type = '';
+        } elsif ($self->modifier_count && /$$r{modifier_as_class_re}/) { # found a modifier
             warn '  'x$recursing."Encountered search modifier: $1\n" if $self->debug;
 
             my $mod = $1;
@@ -1020,8 +1038,8 @@ sub decompose {
                 $struct->new_modifier($mod);
             }
 
-            local $last_type = '';
-        } elsif (/$float_start_re/) { # start of an explicit float
+            $last_type = '';
+        } elsif (/$$r{float_start_re}/) { # start of an explicit float
             warn '  'x$recursing."Encountered explicit float start\n" if $self->debug;
             $floating = 1;
             $fstart = $struct;
@@ -1039,7 +1057,7 @@ sub decompose {
             $current_class = $last_class;
 
             $last_type = '';
-        } elsif (/$group_start_re/) { # start of an explicit group
+        } elsif (/$$r{group_start_re}/) { # start of an explicit group
             warn '  'x$recursing."Encountered explicit group start\n" if $self->debug;
             my $negate = $1;
             my ($substruct, $subremainder) = $self->decompose( $', $current_class, $recursing + 1 );
@@ -1048,14 +1066,14 @@ sub decompose {
             $_ = $subremainder;
             warn '  'x$recursing."Query remainder after bool group: $_\n" if $self->debug;
 
-            local $last_type = '';
+            $last_type = '';
 
-        } elsif (/$and_re/) { # ANDed expression
+        } elsif (/$$r{and_re}/) { # ANDed expression
             $_ = $';
             warn '  'x$recursing."Encountered AND\n" if $self->debug;
             do {warn '  'x$recursing."!!! Already doing the bool dance for AND\n" if $self->debug; next} if ($last_type eq 'AND');
             do {warn '  'x$recursing."!!! Already doing the bool dance for OR\n" if $self->debug; next} if ($last_type eq 'OR');
-            local $last_type = 'AND';
+            $last_type = 'AND';
 
             warn '  'x$recursing."Saving LHS, building RHS\n" if $self->debug;
             my $LHS = $struct;
@@ -1083,13 +1101,13 @@ sub decompose {
 
             $self->parse_tree( $struct ) if ($self->parse_tree == $LHS);
 
-            local $last_type = '';
-        } elsif (/$or_re/) { # ORed expression
+            $last_type = '';
+        } elsif (/$$r{or_re}/) { # ORed expression
             $_ = $';
             warn '  'x$recursing."Encountered OR\n" if $self->debug;
             do {warn '  'x$recursing."!!! Already doing the bool dance for AND\n" if $self->debug; next} if ($last_type eq 'AND');
             do {warn '  'x$recursing."!!! Already doing the bool dance for OR\n" if $self->debug; next} if ($last_type eq 'OR');
-            local $last_type = 'OR';
+            $last_type = 'OR';
 
             warn '  'x$recursing."Saving LHS, building RHS\n" if $self->debug;
             my $LHS = $struct;
@@ -1117,8 +1135,8 @@ sub decompose {
 
             $self->parse_tree( $struct ) if ($self->parse_tree == $LHS);
 
-            local $last_type = '';
-        } elsif ($self->facet_class_count && /$facet_re/) { # changing current class
+            $last_type = '';
+        } elsif ($self->facet_class_count && /$$r{facet_re}/) { # changing current class
             warn '  'x$recursing."Encountered facet: $1$2 => $3\n" if $self->debug;
 
             my $negate = ($1 eq $pkg->operator('disallowed')) ? 1 : 0;
@@ -1127,8 +1145,8 @@ sub decompose {
             $struct->new_facet( $facet => $facet_value, $negate );
             $_ = $';
 
-            local $last_type = '';
-        } elsif ($self->search_class_count && /$search_class_re/) { # changing current class
+            $last_type = '';
+        } elsif ($self->search_class_count && /$$r{search_class_re}/) { # changing current class
 
             if ($last_type eq 'CLASS') {
                 $struct->remove_last_node( $current_class );
@@ -1140,12 +1158,12 @@ sub decompose {
             $current_class = $struct->classed_node( $1 )->requested_class();
             $_ = $';
 
-            local $last_type = 'CLASS';
-        } elsif (/^\s*($required_re|$disallowed_re|$negated_re)?"([^"]+)"/) { # phrase, always anded
+            $last_type = 'CLASS';
+        } elsif (/^\s*($$r{required_re}|$$r{disallowed_re}|$$r{negated_re})?"([^"]+)"/) { # phrase, always anded
             warn '  'x$recursing.'Encountered' . ($1 ? " ['$1' modified]" : '') . " phrase: $2\n" if $self->debug;
 
             my $req_ness = $1 || '';
-            $req_ness = $disallowed_op if ($req_ness eq $negated_op);
+            $req_ness = $pkg->operator('disallowed') if ($req_ness eq $pkg->operator('negated'));
             my $phrase = $2;
 
             if (!$phrase_helper) {
@@ -1155,12 +1173,12 @@ sub decompose {
                 $struct->add_node( $substruct ) if ($substruct);
                 $_ = $after;
             } else {
-                warn '  'x$recursing."Directly parsing the phrase subquery\n" if $self->debug;
+                warn '  'x$recursing."Directly parsing the phrase [ $phrase ] subquery\n" if $self->debug;
                 $struct->joiner( '&' );
 
                 my $class_node = $struct->classed_node($current_class);
 
-                if ($req_ness eq $disallowed_op) {
+                if ($req_ness eq $pkg->operator('disallowed')) {
                     $class_node->negate(1);
                 }
                 $class_node->add_phrase( $phrase );
@@ -1169,21 +1187,21 @@ sub decompose {
                 my $temp_val = $';
 
                 # Cleanup the phrase to make it so that we don't parse things in it as anything other than atoms
-                $phrase =~ s/$phrase_cleanup_re/ /g;
+                $phrase =~ s/$$r{phrase_cleanup_re}/ /g;
 
                 $_ = $phrase . $temp_val;
 
             }
 
-            local $last_type = '';
+            $last_type = '';
 
-        } elsif (/^\s*($required_re|$disallowed_re)([^${group_end}${float_end}\s"]+)/) { # convert require/disallow word to {un}phrase
+        } elsif (/^\s*($$r{required_re}|$$r{disallowed_re})($$r{atom_re})/) { # convert require/disallow word to {un}phrase
             warn '  'x$recursing."Encountered required atom (mini phrase), transforming for phrase parse: $1\n" if $self->debug;
 
             $_ = $1 . '"' . $2 . '"' . $';
 
-            local $last_type = '';
-        } elsif (/^\s*([^${group_end}${float_end}\s]+)/o) { # atom
+            $last_type = '';
+        } elsif (/^\s*($$r{atom_re})/) { # atom
             warn '  'x$recursing."Encountered atom: $1\n" if $self->debug;
             warn '  'x$recursing."Remainder: $'\n" if $self->debug;
 
@@ -1191,22 +1209,25 @@ sub decompose {
             my $after = $';
 
             $_ = $after;
-            local $last_type = '';
+            $last_type = '';
 
             my $class_node = $struct->classed_node($current_class);
 
-            my $prefix = ($atom =~ s/^$negated_re//o) ? '!' : '';
+            my $prefix = ($atom =~ s/^$$r{negated_re}//o) ? '!' : '';
             my $truncate = ($atom =~ s/\*$//o) ? '*' : '';
 
             if ($atom ne '' and !grep { $atom =~ /^\Q$_\E+$/ } ('&','|')) { # throw away & and |, not allowed in tsquery, and not really useful anyway
-#                $class_node->add_phrase( $atom ) if ($atom =~ s/^$required_re//o);
+#                $class_node->add_phrase( $atom ) if ($atom =~ s/^$$r{required_re}//o);
 
                 $class_node->add_fts_atom( $atom, suffix => $truncate, prefix => $prefix, node => $class_node );
                 $struct->joiner( '&' );
             }
 
-            local $last_type = '';
-        } 
+            $last_type = '';
+        } else {
+            warn '  'x$recursing."Cannot parse: $_\n" if $self->debug;
+            $_ = '';
+        }
 
         last unless ($_);
 
@@ -1672,8 +1693,10 @@ sub add_node {
     my $node = shift;
 
     $self->{query} ||= [];
-    push(@{$self->{query}}, $self->joiner) if (@{$self->{query}});
-    push(@{$self->{query}}, $node);
+    if ($node) {
+        push(@{$self->{query}}, $self->joiner) if (@{$self->{query}});
+        push(@{$self->{query}}, $node);
+    }
 
     return $self;
 }
