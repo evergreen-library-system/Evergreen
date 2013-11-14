@@ -26,9 +26,9 @@ function no_hold_submit(event) {
     }
     return true;
 }
-var cur_hold_barcode = undefined;
 function staff_hold_usr_barcode_changed(isload) {
     if(typeof xulG != 'undefined' && xulG.get_barcode_and_settings) {
+        var cur_hold_barcode = undefined;
         var barcode = isload;
         if(!barcode || barcode === true) barcode = document.getElementById('staff_barcode').value;
         var only_settings = true;
