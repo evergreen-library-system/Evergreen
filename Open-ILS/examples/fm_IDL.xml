@@ -2810,10 +2810,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="B Weight" name="b_weight" reporter:datatype="float" />
 			<field reporter:label="C Weight" name="c_weight" reporter:datatype="float" />
 			<field reporter:label="D Weight" name="d_weight" reporter:datatype="float" />
+			<field reporter:label="Representative Field" name="representative_field" reporter:datatype="link" />
 			<field reporter:label="Fields" name="fields" reporter:datatype="link" oils_persist:virtual="true"/>
 		</fields>
 		<links>
 			<link field="fields" reltype="has_many" key="name" map="" class="cmf"/>
+			<link field="representative_field" reltype="has_a" key="id" map="" class="cmf"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -3720,6 +3722,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="mde" controller="open-ils.cstore open-ils.pcrud" 
 			oils_obj:fieldmapper="metabib::display_entry" 
 			oils_persist:tablename="metabib.display_entry" 
+			oils_persist:field_safe="true"
 			reporter:label="Display Field Entry" oils_persist:readonly="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="metabib.display_entry_id_seq">
 			<field name="id" reporter:datatype="id" />
@@ -3739,17 +3742,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 	<class id="mfde" controller="open-ils.cstore open-ils.pcrud" 
 		oils_obj:fieldmapper="metabib::flat_display_entry" 
+		oils_persist:field_safe="true"
 		reporter:label="Flat Display Field Entry View" oils_persist:readonly="true">
 		<oils_persist:source_definition>
-			SELECT 
-				mde.source, 
-				mde.value, 
+			SELECT
+				mde.source,
+				mde.value,
 				cmf.id AS field,
-				cmf.field_class, 
-				cmf.name, 
-				cmf.label 
-				FROM metabib.display_entry mde 
-				JOIN config.metabib_field cmf ON (cmf.id = mde.field)
+				cmf.field_class,
+				cmf.name,
+				cmf.label,
+				cmc.name AS representative
+			FROM metabib.display_entry mde
+			JOIN config.metabib_field cmf ON (cmf.id = mde.field)                                                                                                                LEFT JOIN config.metabib_class cmc ON
+				(cmc.name = cmf.field_class AND cmc.representative_field = cmf.id)
 		</oils_persist:source_definition>
 		<fields>
 			<field name="source" reporter:datatype="id" />
@@ -3758,6 +3764,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="field_class" reporter:datatype="text"/>
 			<field name="name" reporter:datatype="text"/>
 			<field name="label" reporter:datatype="text"/>
+			<field name="representative" reporter:datatype="text"/>
 		</fields>
 		<links>
 			<link field="source" reltype="has_a" key="id" map="" class="bre"/>

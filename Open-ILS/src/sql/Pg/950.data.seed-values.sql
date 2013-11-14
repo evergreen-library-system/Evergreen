@@ -96,8 +96,8 @@ SELECT SETVAL('config.standing_penalty_id_seq', 100);
 
 INSERT INTO config.metabib_class ( name, label ) VALUES ( 'identifier', oils_i18n_gettext('identifier', 'Identifier', 'cmc', 'label') );
 INSERT INTO config.metabib_class ( name, label ) VALUES ( 'keyword', oils_i18n_gettext('keyword', 'Keyword', 'cmc', 'label') );
-INSERT INTO config.metabib_class ( name, label ) VALUES ( 'title', oils_i18n_gettext('title', 'Title', 'cmc', 'label') );
-INSERT INTO config.metabib_class ( name, label ) VALUES ( 'author', oils_i18n_gettext('author', 'Author', 'cmc', 'label') );
+INSERT INTO config.metabib_class ( name, label, representative_field ) VALUES ( 'title', oils_i18n_gettext('title', 'Title', 'cmc', 'label'), 6 );
+INSERT INTO config.metabib_class ( name, label, representative_field ) VALUES ( 'author', oils_i18n_gettext('author', 'Author', 'cmc', 'label'), 8 );
 INSERT INTO config.metabib_class ( name, label ) VALUES ( 'subject', oils_i18n_gettext('subject', 'Subject', 'cmc', 'label') );
 INSERT INTO config.metabib_class ( name, label ) VALUES ( 'series', oils_i18n_gettext('series', 'Series', 'cmc', 'label') );
 

@@ -183,6 +183,16 @@ INSERT INTO config.biblio_fingerprint (name, xpath, format)
         'mods32'
     );
 
+CREATE OR REPLACE FUNCTION 
+    config.metabib_representative_field_is_valid(INTEGER, TEXT) RETURNS BOOLEAN AS $$
+    SELECT EXISTS (SELECT 1 FROM config.metabib_field WHERE id = $1 AND field_class = $2);
+$$ LANGUAGE SQL STRICT IMMUTABLE;
+
+COMMENT ON FUNCTION config.metabib_representative_field_is_valid(INTEGER, TEXT) IS $$
+Ensure the field_class value on the selected representative field matches
+the class name.
+$$;
+
 CREATE TABLE config.metabib_class (
     name     TEXT    PRIMARY KEY,
     label    TEXT    NOT NULL UNIQUE,
@@ -193,6 +203,12 @@ CREATE TABLE config.metabib_class (
     b_weight NUMERIC  DEFAULT 0.4 NOT NULL,
     c_weight NUMERIC  DEFAULT 0.2 NOT NULL,
     d_weight NUMERIC  DEFAULT 0.1 NOT NULL
+    representative_field INTEGER REFERENCES config.metabib_field(id),
+    CONSTRAINT rep_field_unique UNIQUE(representative_field),
+    CONSTRAINT rep_field_is_valid CHECK (
+        representative_field IS NULL OR
+        config.metabib_representative_field_is_valid(representative_field, name)
+    )
 );
 
 CREATE TABLE config.metabib_field (

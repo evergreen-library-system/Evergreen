@@ -1,8 +1,28 @@
 
 BEGIN;
 
-ALTER TABLE config.metabib_field ADD COLUMN display_xpath TEXT, display_field BOOL NOT NULL DEFAULT TRUE;
-UPDATE config.metabib_field SET display_field = FALSE WHERE field_class = 'keyword' OR name = 'complete';
+ALTER TABLE config.metabib_field 
+    ADD COLUMN display_xpath TEXT, 
+    ADD COLUMN display_field BOOL NOT NULL DEFAULT TRUE;
+
+CREATE OR REPLACE FUNCTION 
+    config.metabib_representative_field_is_valid(INTEGER, TEXT) RETURNS BOOLEAN AS $$
+    SELECT EXISTS (SELECT 1 FROM config.metabib_field WHERE id = $1 AND field_class = $2);
+$$ LANGUAGE SQL STRICT IMMUTABLE;
+
+COMMENT ON FUNCTION config.metabib_representative_field_is_valid(INTEGER, TEXT) IS $$
+Ensure the field_class value on the selected representative field matches
+the class name.
+$$;
+
+ALTER TABLE config.metabib_class
+    ADD COLUMN representative_field 
+        INTEGER REFERENCES config.metabib_field(id),
+    ADD CONSTRAINT rep_field_unique UNIQUE(representative_field),
+    ADD CONSTRAINT rep_field_is_valid CHECK (
+        representative_field IS NULL OR
+        config.metabib_representative_field_is_valid(representative_field, name)
+    );
 
 CREATE TABLE metabib.display_entry (
     id      BIGSERIAL  PRIMARY KEY,
@@ -66,9 +86,6 @@ $$ LANGUAGE PLPGSQL;
 CREATE TRIGGER display_field_force_nfc_tgr
 	BEFORE UPDATE OR INSERT ON metabib.display_entry
 	FOR EACH ROW EXECUTE PROCEDURE evergreen.display_field_force_nfc();
-
-ALTER TABLE config.metabib_field
-    ADD COLUMN display_field BOOL NOT NULL DEFAULT TRUE;
 
 ALTER TYPE metabib.field_entry_template ADD ATTRIBUTE display_field BOOL;
 
@@ -392,23 +409,68 @@ END;
 $func$ LANGUAGE PLPGSQL;
 
 
--- DATA -------------------
+-- DATA --------------------------------------
 
--- "General Keywords" and "All Subjects"
--- more?
-UPDATE config.metabib_field SET display_field = FALSE WHERE id IN (15, 16);
+UPDATE config.metabib_field SET display_field = FALSE 
+    WHERE field_class = 'keyword' OR name = 'complete';
 
 INSERT INTO config.internal_flag (name, enabled) 
     VALUES ('ingest.skip_display_indexing', FALSE);
 
--- TODO: targeted ingest?
-
--- Dumb Reingest ---
---UPDATE config.internal_flag SET enabled = TRUE 
---    WHERE name = 'ingest.reingest.force_on_same_marc';
---UPDATE biblio.record_entry SET marc = marc;
---UPDATE config.internal_flag SET enabled = FALSE
---    WHERE name = 'ingest.reingest.force_on_same_marc';
+-- personal author
+UPDATE config.metabib_class SET representative_field = 8 WHERE name = 'author';
+-- title proper
+UPDATE config.metabib_class SET representative_field = 6 WHERE name = 'title';
 
 COMMIT;
---ROLLBACK;
+
+
+/* 
+-- Ham-fisted reingest for Testing ---------------------
+
+-- disable everything we can for reindexing
+UPDATE config.internal_flag SET enabled = TRUE WHERE name IN (
+    'ingest.assume_inserts_only',
+    'ingest.disable_authority_auto_update',
+    'ingest.disable_authority_linking',
+    'ingest.disable_located_uri',
+    'ingest.disable_metabib_field_entry',
+    'ingest.disable_metabib_full_rec',
+    'ingest.disable_metabib_rec_descriptor',
+    'ingest.metarecord_mapping.preserve_on_delete',
+    'ingest.metarecord_mapping.skip_on_insert',
+    'ingest.metarecord_mapping.skip_on_update',
+    'ingest.reingest.force_on_same_marc',
+    'ingest.skip_browse_indexing',
+    'ingest.skip_facet_indexing',
+    'ingest.skip_search_indexing'
+);
+
+UPDATE config.internal_flag SET enabled = TRUE 
+    WHERE name = 'ingest.reingest.force_on_same_marc';
+
+UPDATE biblio.record_entry SET marc = marc;
+
+UPDATE config.internal_flag SET enabled = FALSE
+    WHERE name = 'ingest.reingest.force_on_same_marc';
+
+-- re-enable the default ingest flags
+UPDATE config.internal_flag SET enabled = FALSE WHERE name IN (
+    'ingest.assume_inserts_only',
+    'ingest.disable_authority_auto_update',
+    'ingest.disable_authority_linking',
+    'ingest.disable_located_uri',
+    'ingest.disable_metabib_field_entry',
+    'ingest.disable_metabib_full_rec',
+    'ingest.disable_metabib_rec_descriptor',
+    'ingest.metarecord_mapping.preserve_on_delete',
+    'ingest.metarecord_mapping.skip_on_insert',
+    'ingest.metarecord_mapping.skip_on_update',
+    'ingest.reingest.force_on_same_marc',
+    'ingest.skip_browse_indexing',
+    'ingest.skip_facet_indexing',
+    'ingest.skip_search_indexing'
+);
+
+*/
+
