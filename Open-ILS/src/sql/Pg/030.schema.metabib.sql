@@ -192,8 +192,6 @@ CREATE TABLE metabib.display_entry (
 
 CREATE INDEX metabib_display_entry_field_idx 
     ON metabib.display_entry (field);
-CREATE INDEX metabib_display_entry_value_idx 
-    ON metabib.display_entry (SUBSTRING(value,1,1024));
 CREATE INDEX metabib_display_entry_source_idx 
     ON metabib.display_entry (source);
 
@@ -778,6 +776,25 @@ BEGIN
                 output_row.facet_field = FALSE;
             END IF;
 
+            -- insert raw node text for display
+            IF idx.display_field THEN
+
+                IF idx.display_xpath IS NOT NULL AND idx.display_xpath <> '' THEN
+                    display_text := oils_xpath_string( idx.display_xpath, xml_node, joiner, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]] );
+                ELSE
+                    display_text := curr_text;
+                END IF;
+
+                output_row.field_class = idx.field_class;
+                output_row.field = -1 * idx.id;
+                output_row.source = rid;
+                output_row.value = BTRIM(REGEXP_REPLACE(display_text, E'\\s+', ' ', 'g'));
+
+                output_row.display_field = TRUE;
+                RETURN NEXT output_row;
+                output_row.display_field = FALSE;
+            END IF;
+
         END LOOP;
 
         CONTINUE WHEN raw_text IS NULL OR raw_text = '';
@@ -792,17 +809,6 @@ BEGIN
             output_row.search_field = TRUE;
             RETURN NEXT output_row;
             output_row.search_field = FALSE;
-        END IF;
-
-        IF idx.display_field THEN
-            output_row.field_class = idx.field_class;
-            output_row.field = idx.id;
-            output_row.source = rid;
-            output_row.value = BTRIM(REGEXP_REPLACE(raw_text, E'\\s+', ' ', 'g'));
-
-            output_row.display_field = TRUE;
-            RETURN NEXT output_row;
-            output_row.display_field = FALSE;
         END IF;
 
     END LOOP;

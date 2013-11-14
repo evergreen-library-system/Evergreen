@@ -209,6 +209,7 @@ CREATE TABLE config.metabib_field (
 	browse_xpath   TEXT,
 	browse_sort_xpath TEXT,
 	facet_xpath	TEXT,
+	display_xpath	TEXT,
 	authority_xpath TEXT,
 	joiner      TEXT,
 	restrict	BOOL    DEFAULT FALSE NOT NULL,

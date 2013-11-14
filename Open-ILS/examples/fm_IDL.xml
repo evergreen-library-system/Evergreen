@@ -2837,6 +2837,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Search Field" name="search_field" reporter:datatype="bool" />
 			<field reporter:label="Facet Field" name="facet_field" reporter:datatype="bool" />
 			<field reporter:label="Facet XPath" name="facet_xpath" reporter:datatype="text" />
+			<field reporter:label="Display XPath" name="display_xpath" reporter:datatype="text" />
 			<field reporter:label="Browse Field" name="browse_field" reporter:datatype="bool" />
 			<field reporter:label="Browse XPath" name="browse_xpath" reporter:datatype="text" />
 			<field reporter:label="Restrict?" name="restrict" reporter:datatype="bool" />
@@ -3719,7 +3720,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="mde" controller="open-ils.cstore open-ils.pcrud" 
 			oils_obj:fieldmapper="metabib::display_entry" 
 			oils_persist:tablename="metabib.display_entry" 
-			reporter:label="Combined display Entry" oils_persist:readonly="true">
+			reporter:label="Display Field Entry" oils_persist:readonly="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="metabib.display_entry_id_seq">
 			<field name="id" reporter:datatype="id" />
 			<field name="field" reporter:datatype="link"/>
@@ -3738,7 +3739,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 	<class id="mfde" controller="open-ils.cstore open-ils.pcrud" 
 		oils_obj:fieldmapper="metabib::flat_display_entry" 
-		reporter:label="Flat Display Entry View" oils_persist:readonly="true">
+		reporter:label="Flat Display Field Entry View" oils_persist:readonly="true">
 		<oils_persist:source_definition>
 			SELECT 
 				mde.source, 
