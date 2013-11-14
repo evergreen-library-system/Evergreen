@@ -1013,19 +1013,15 @@ div.adv_search_available {
 
 div#facet_sidebar {
     float: left;
-    border-right: 1px solid [% css_colors.border_standard %];
     margin-right: 1em;
 }
 
 .facet_box_temp {
     padding-bottom:3px;
-    width: 15em;
-    overflow:hidden;
 }
 
 .facet_box_temp .header {
-    height: 2.5em;
-    overflow:hidden;
+    height: 2.3em;
     background:[% css_colors.primary %];
     -moz-border-top-left-radius: 5px;
     border-top-left-radius: 5px;
@@ -1040,7 +1036,6 @@ div#facet_sidebar {
     float:left;
     padding-top:6px;
     padding-left:12px;
-    overflow:hidden;
 }
 
 .facet_box_temp .header a.button {
@@ -1050,45 +1045,36 @@ div#facet_sidebar {
     color:[% css_colors.text_invert %];
 }
 
-.facet_box_wrapper .box_wrapper {
-    position:relative;
-    top:-4px;
-    margin-bottom:-5px;
-    *margin-bottom:-6px;
-}
-
 .facet_box_wrapper .box_wrapper .box {
-    width: 14em;
     border-top:1px solid [% css_colors.border_standard %];
     border-left:1px solid [% css_colors.border_standard %];
     border-right:1px solid [% css_colors.border_standard %];
-    background:[% css_colors.background %];
-    padding-left:12px;
-    padding-top:6px;
+    padding: 0 0.5em;
+    width: 14em;
+    overflow: hidden;
 }
 
 .facet_template {
-    clear: both;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    display: table;
+    margin: 0.5em 0;
+    width: 100%;
 }
 
-.facet_template .facet {
-    float:left;
-    width: 12em;
-    margin-bottom: 0.5em;
+.facet_template div {
+    display: table-cell;
+    padding: 2px;
 }
 
 .facet_template .count {
-    float:right;
+    text-align: right;
     color: [% css_colors.accent_mediumdark %];
 }
 
-.facet_template_selected .facet {
+.facet_template_selected {
     background-color: [% css_colors.accent_lighter2 %];
-}
-
-.facet_border {
-    border-left: 1px solid [% css_colors.border_standard %];
-    padding-right: 0.5em;
+    border: 1px solid [% css_colors.accent_medium %];
 }
 
 #footer-wrap {
