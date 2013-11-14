@@ -183,6 +183,20 @@ CREATE INDEX metabib_facet_entry_field_idx ON metabib.facet_entry (field);
 CREATE INDEX metabib_facet_entry_value_idx ON metabib.facet_entry (SUBSTRING(value,1,1024));
 CREATE INDEX metabib_facet_entry_source_idx ON metabib.facet_entry (source);
 
+CREATE TABLE metabib.display_entry (
+    id      BIGSERIAL  PRIMARY KEY,
+    source  BIGINT     NOT NULL,
+    field   INT        NOT NULL,
+    value   TEXT       NOT NULL
+);
+
+CREATE INDEX metabib_display_entry_field_idx 
+    ON metabib.display_entry (field);
+CREATE INDEX metabib_display_entry_value_idx 
+    ON metabib.display_entry (SUBSTRING(value,1,1024));
+CREATE INDEX metabib_display_entry_source_idx 
+    ON metabib.display_entry (source);
+
 CREATE TABLE metabib.browse_entry (
     id BIGSERIAL PRIMARY KEY,
     value TEXT,
@@ -219,6 +233,58 @@ CREATE TABLE metabib.browse_entry_simple_heading_map (
 );
 CREATE INDEX browse_entry_sh_map_entry_idx ON metabib.browse_entry_simple_heading_map (entry);
 CREATE INDEX browse_entry_sh_map_sh_idx ON metabib.browse_entry_simple_heading_map (simple_heading);
+
+CREATE OR REPLACE FUNCTION metabib.display_field_normalize_trigger () 
+    RETURNS TRIGGER AS $$
+DECLARE
+    normalizer  RECORD;
+    display_field_text  TEXT;
+BEGIN
+    display_field_text := NEW.value;
+
+    FOR normalizer IN
+        SELECT  n.func AS func,
+                n.param_count AS param_count,
+                m.params AS params
+          FROM  config.index_normalizer n
+                JOIN config.metabib_field_index_norm_map m ON (m.norm = n.id)
+          WHERE m.field = NEW.field AND m.pos < 0
+          ORDER BY m.pos LOOP
+
+            EXECUTE 'SELECT ' || normalizer.func || '(' ||
+                quote_literal( display_field_text ) ||
+                CASE
+                    WHEN normalizer.param_count > 0
+                        THEN ',' || REPLACE(REPLACE(BTRIM(
+                            normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
+                        ELSE ''
+                    END ||
+                ')' INTO display_field_text;
+
+    END LOOP;
+
+    NEW.value = display_field_text;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER display_field_normalize_tgr
+	BEFORE UPDATE OR INSERT ON metabib.display_entry
+	FOR EACH ROW EXECUTE PROCEDURE metabib.display_field_normalize_trigger();
+
+CREATE OR REPLACE FUNCTION evergreen.display_field_force_nfc() 
+    RETURNS TRIGGER AS $$
+BEGIN
+    NEW.value := force_unicode_normal_form(NEW.value,'NFC');
+    RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER display_field_force_nfc_tgr
+	BEFORE UPDATE OR INSERT ON metabib.display_entry
+	FOR EACH ROW EXECUTE PROCEDURE evergreen.display_field_force_nfc();
+
 
 CREATE OR REPLACE FUNCTION metabib.facet_normalize_trigger () RETURNS TRIGGER AS $$
 DECLARE
@@ -551,6 +617,7 @@ CREATE TYPE metabib.field_entry_template AS (
     field_class         TEXT,
     field               INT,
     facet_field         BOOL,
+    display_field       BOOL,
     search_field        BOOL,
     browse_field        BOOL,
     source              BIGINT,
@@ -558,7 +625,6 @@ CREATE TYPE metabib.field_entry_template AS (
     authority           BIGINT,
     sort_value          TEXT
 );
-
 
 CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry ( rid BIGINT, default_joiner TEXT ) RETURNS SETOF metabib.field_entry_template AS $func$
 DECLARE
@@ -570,6 +636,7 @@ DECLARE
     xml_node    TEXT;
     xml_node_list   TEXT[];
     facet_text  TEXT;
+    display_text TEXT;
     browse_text TEXT;
     sort_value  TEXT;
     raw_text    TEXT;
@@ -583,6 +650,7 @@ BEGIN
     -- Start out with no field-use bools set
     output_row.browse_field = FALSE;
     output_row.facet_field = FALSE;
+    output_row.display_field = FALSE;
     output_row.search_field = FALSE;
 
     -- Get the record
@@ -726,6 +794,17 @@ BEGIN
             output_row.search_field = FALSE;
         END IF;
 
+        IF idx.display_field THEN
+            output_row.field_class = idx.field_class;
+            output_row.field = idx.id;
+            output_row.source = rid;
+            output_row.value = BTRIM(REGEXP_REPLACE(raw_text, E'\\s+', ' ', 'g'));
+
+            output_row.display_field = TRUE;
+            RETURN NEXT output_row;
+            output_row.display_field = FALSE;
+        END IF;
+
     END LOOP;
 
 END;
@@ -785,19 +864,24 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION metabib.reingest_metabib_field_entries( bib_id BIGINT, skip_facet BOOL DEFAULT FALSE, skip_browse BOOL DEFAULT FALSE, skip_search BOOL DEFAULT FALSE ) RETURNS VOID AS $func$
+CREATE OR REPLACE FUNCTION metabib.reingest_metabib_field_entries( 
+    bib_id BIGINT, skip_facet BOOL DEFAULT FALSE, 
+    skip_display BOOL DEFAULT FALSE, skip_browse BOOL DEFAULT FALSE, 
+    skip_search BOOL DEFAULT FALSE ) RETURNS VOID AS $func$
 DECLARE
     fclass          RECORD;
     ind_data        metabib.field_entry_template%ROWTYPE;
     mbe_row         metabib.browse_entry%ROWTYPE;
     mbe_id          BIGINT;
     b_skip_facet    BOOL;
+    b_skip_display    BOOL;
     b_skip_browse   BOOL;
     b_skip_search   BOOL;
     value_prepped   TEXT;
 BEGIN
 
     SELECT COALESCE(NULLIF(skip_facet, FALSE), EXISTS (SELECT enabled FROM config.internal_flag WHERE name =  'ingest.skip_facet_indexing' AND enabled)) INTO b_skip_facet;
+    SELECT COALESCE(NULLIF(skip_display, FALSE), EXISTS (SELECT enabled FROM config.internal_flag WHERE name =  'ingest.skip_display_indexing' AND enabled)) INTO b_skip_display;
     SELECT COALESCE(NULLIF(skip_browse, FALSE), EXISTS (SELECT enabled FROM config.internal_flag WHERE name =  'ingest.skip_browse_indexing' AND enabled)) INTO b_skip_browse;
     SELECT COALESCE(NULLIF(skip_search, FALSE), EXISTS (SELECT enabled FROM config.internal_flag WHERE name =  'ingest.skip_search_indexing' AND enabled)) INTO b_skip_search;
 
@@ -811,6 +895,9 @@ BEGIN
         END IF;
         IF NOT b_skip_facet THEN
             DELETE FROM metabib.facet_entry WHERE source = bib_id;
+        END IF;
+        IF NOT b_skip_display THEN
+            DELETE FROM metabib.display_entry WHERE source = bib_id;
         END IF;
         IF NOT b_skip_browse THEN
             DELETE FROM metabib.browse_entry_def_map WHERE source = bib_id;
@@ -830,6 +917,12 @@ BEGIN
             INSERT INTO metabib.facet_entry (field, source, value)
                 VALUES (ind_data.field, ind_data.source, ind_data.value);
         END IF;
+
+        IF ind_data.display_field AND NOT b_skip_display THEN
+            INSERT INTO metabib.display_entry (field, source, value)
+                VALUES (ind_data.field, ind_data.source, ind_data.value);
+        END IF;
+
 
         IF ind_data.browse_field AND NOT b_skip_browse THEN
             -- A caveat about this SELECT: this should take care of replacing

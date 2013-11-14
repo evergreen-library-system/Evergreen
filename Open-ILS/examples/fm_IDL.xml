@@ -3129,6 +3129,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Subscriptions" name="subscriptions" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="SVF Attributes" name="attrs" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="MVF Attributes" name="mattrs" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Display Fields" name="display_entries" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Flat Display Fields" name="flat_display_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
@@ -3152,6 +3154,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="attrs" reltype="might_have" key="id" map="" class="mra"/>
 			<link field="mattrs" reltype="might_have" key="id" map="" class="mraf"/>
 			<link field="source" reltype="has_a" key="id" map="" class="cbs"/>
+			<link field="display_entries" reltype="has_many" key="source" map="" class="mde"/>
+			<link field="flat_display_entries" reltype="has_many" key="source" map="" class="mfde"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -3711,6 +3715,58 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="source" reltype="has_a" key="id" map="" class="bre"/>
 			<link field="metarecord" reltype="has_a" key="id" map="" class="mmr"/>
 		</links>
+	</class>
+	<class id="mde" controller="open-ils.cstore open-ils.pcrud" 
+			oils_obj:fieldmapper="metabib::display_entry" 
+			oils_persist:tablename="metabib.display_entry" 
+			reporter:label="Combined display Entry" oils_persist:readonly="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="metabib.display_entry_id_seq">
+			<field name="id" reporter:datatype="id" />
+			<field name="field" reporter:datatype="link"/>
+			<field name="source" reporter:datatype="link"/>
+			<field name="value"  reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="source" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve/>
+			</actions>
+		</permacrud>
+	</class>
+	<class id="mfde" controller="open-ils.cstore open-ils.pcrud" 
+		oils_obj:fieldmapper="metabib::flat_display_entry" 
+		reporter:label="Flat Display Entry View" oils_persist:readonly="true">
+		<oils_persist:source_definition>
+			SELECT 
+				mde.source, 
+				mde.value, 
+				cmf.id AS field,
+				cmf.field_class, 
+				cmf.name, 
+				cmf.label 
+				FROM metabib.display_entry mde 
+				JOIN config.metabib_field cmf ON (cmf.id = mde.field)
+		</oils_persist:source_definition>
+		<fields>
+			<field name="source" reporter:datatype="id" />
+			<field name="value" reporter:datatype="text"/>
+			<field name="field" reporter:datatype="link"/>
+			<field name="field_class" reporter:datatype="text"/>
+			<field name="name" reporter:datatype="text"/>
+			<field name="label" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="source" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve/>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="mfae" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::facet_entry" oils_persist:tablename="metabib.facet_entry" reporter:label="Combined Facet Entry" oils_persist:readonly="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="metabib.facet_entry_id_seq">
