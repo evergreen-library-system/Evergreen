@@ -471,7 +471,7 @@ The Year End Closeout Operation allows you to deactivate funds for the current y
 
 . Click _Process_.
 
-. Evergreen will begin the propagation process. Evergreen will make a clone of each fund, but it will increment the year by .
+. Evergreen will begin the propagation process. Evergreen will make a clone of each fund, but it will increment the year by 1.
 
 Enhancements to Fiscal Rollover
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
