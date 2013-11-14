@@ -428,7 +428,8 @@ function BatchReceiver() {
         var node = dojo.query("*", node_by_name(field, row))[0];
 
         if (typeof(value) == "undefined") {
-            return node.value;
+            return node.selectedItem ?
+                node.selectedItem.value : node.value;
         } else {
             /* XXX The new two lines /should/ each do the same thing, but
              * apparently they don't.  With only one or the other, I get
