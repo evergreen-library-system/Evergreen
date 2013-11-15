@@ -169,7 +169,10 @@ sub make_payments {
     my @unique_xact_payments;
     for my $pay (@{$payments->{payments}}) {
         my $xact_id = $pay->[0];
-        next if (exists($xacts{$xact_id}));
+        if (exists($xacts{$xact_id})) {
+            $e->rollback;
+            return OpenILS::Event->new('MULTIPLE_PAYMENTS_FOR_XACT');
+        }
 
         my $xact = $e->retrieve_money_billable_transaction_summary($xact_id)
             or return $e->die_event;
