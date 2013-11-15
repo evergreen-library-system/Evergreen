@@ -403,6 +403,19 @@ It also creates the configuration files required by the Evergreen `cgi-bin`
 administration scripts, and sets the user name and password for the *egadmin*
 Evergreen administrator account to your requested values.
 
+You can get a complete set of options for `eg_db_config.pl` by passing the
+`--help` parameter.
+
+Loading sample data
+~~~~~~~~~~~~~~~~~~~
+If you add the `--load-all-sample` parameter to the `eg_db_config` command,
+a set of authority and bibliographic records, call numbers, copies, staff
+and regular users, and transactions will be loaded into your target
+database. This sample dataset is commonly referred to as the _concerto_
+sample data, and can be useful for testing out Evergreen functionality and
+for creating problem reports that developers can easily recreate with their
+own copy of the _concerto_ sample data.
+
 Creating the database on a remote server
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 In a production instance of Evergreen, your PostgreSQL server should be
