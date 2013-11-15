@@ -162,8 +162,16 @@ sub make_payments {
     # first collect the transactions and make sure the transaction
     # user matches the requested user
     my %xacts;
+
+    # We rewrite the payments array for sanity's sake, to avoid more
+    # than one payment per transaction per call, which is not legitimate
+    # but has been seen in the wild coming from the staff client.  This
+    # is presumably a staff client (xulrunner) bug.
+    my @unique_xact_payments;
     for my $pay (@{$payments->{payments}}) {
         my $xact_id = $pay->[0];
+        next if (exists($xacts{$xact_id}));
+
         my $xact = $e->retrieve_money_billable_transaction_summary($xact_id)
             or return $e->die_event;
         
@@ -173,7 +181,9 @@ sub make_payments {
         }
 
         $xacts{$xact_id} = $xact;
+        push @unique_xact_payments, $pay;
     }
+    $payments->{payments} = \@unique_xact_payments;
 
     my @payment_objs;
 
