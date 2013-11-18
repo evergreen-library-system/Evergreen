@@ -369,8 +369,6 @@ include::opac/advanced_features.txt[]
 
 include::opac/search_form.txt[]
 
-include::opac/authority_enhanced_browse.txt[]
-
 // Return to normal title levels.
 :leveloffset: 0
 
