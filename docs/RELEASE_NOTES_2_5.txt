@@ -74,10 +74,9 @@ activate the PO without loading copies into the catalog.
 
 
 
-:leveloffset: 3
 
 Differentiate between cancelled and "delayed" lineitems
-=======================================================
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 In the ACQ user interface, it is now more clear to users when a lineitem has
 been fully cancelled or if it has been cancelled temporarily (e.g.
 back-ordered).  
@@ -88,7 +87,6 @@ more obvious in the interface with different row styling for cancelled vs
 delayed lineitems.  We also always show the lineitem cancel reason (label) 
 next to the non-title attributes in the lineitem list display.
 
-:leveloffset: 0
 
 
 
@@ -207,10 +205,9 @@ operating systems other than Linux.  They also remove a dependency on
 a third-party tool, that is typically downloaded as a binary.
 
 
-:leveloffset: 3
 
 Phonelist.pm Module
-===================
+^^^^^^^^^^^^^^^^^^^
 
 PhoneList.pm is a mod_perl module for Apache that works with Evergreen
 to generate callings lists for patron holds. It outputs a csv file
@@ -258,7 +255,7 @@ The above logs in as ``user'' with ``password'' and runs overdues for location I
 
 
 "Purge Holds"
-=============
+^^^^^^^^^^^^^
 Similar to purging circulations one may wish to purge old (filled or canceled) hold information. This feature adds a database function and settings for doing so.
 
 Purged holds are moved to the action.aged_hold_request table with patron identifying information scrubbed, much like circulations are moved to action.aged_circulation.
@@ -270,7 +267,6 @@ causes. The most specific one wins unless a patron is retaining their hold histo
 Note that the function still needs to be called, which could be set up as a cron job or done more manually, say after statistics collection. A new script, purge_holds.srfsh, is added that can be used to purge holds from cron.
 
 
-:leveloffset: 0
 
 
 Action Trigger Event Repeatability
@@ -292,10 +288,9 @@ interval, if present.
 Cataloging
 ~~~~~~~~~~
 
-:leveloffset: 3
 
 Vandelay Item Import Defaults
-=============================
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Via the Library Settings Editor (Org Unit Settings), support auto-generation of
 call numbers and barcodes for items imported via the staff client's MARC Batch
@@ -306,7 +301,7 @@ prefix defaults to "VAN".
 Similarly, support default copy location and circ modifiers.
 
 New Library Settings
----------------------
++++++++++++++++++++++
 
  * Vandelay Generate Default Barcodes (vandelay.item.barcode.auto)
  * Vandelay Default Barcode Prefix (vandelay.item.barcode.prefix)
@@ -316,10 +311,10 @@ New Library Settings
  * Vandelay Default Circulation Modifier (vandelay.item.circ_modifier.default)
 
 Z39.50 Batch Search and Queue
-=============================
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Staff Work Flow
----------------
++++++++++++++++
 
  * Staff add records to bib record buckets
  * Staff select the new "Locate Z39.50 Matches" action for a selected bucket.
@@ -332,7 +327,7 @@ Staff Work Flow
    catalog records using the existing Vandelay import/merge/overlay features.
 
 Vandelay Limit to Bucket
-------------------------
+++++++++++++++++++++++++
 
 As a side effect of this feature, Vandelay now has a new option in the 
 interface which allows staff to limit which catalog records to which an 
@@ -341,7 +336,7 @@ bucket and match set are chosen, only the records in the bucket can act as
 merge/overlay targets for the inbound Vandelay records.
 
 Server Admin Settings
----------------------
++++++++++++++++++++++
 
 _Z39.50 Index Field Maps_ can be used to map bib record
 indexes (Metabib Fields and Record Attributes) to Z39.50
@@ -361,7 +356,7 @@ The management interface can be found in the staff client under
 Admin => Server Administration => Z39.50 Index Field Maps
 
 Metabib Field Additions
------------------------
++++++++++++++++++++++++
 
 Stock config.metabib_field entries for author include additional author-
 related data, like dates.  For example, a value for Personal Author might 
@@ -391,7 +386,7 @@ INSERT INTO config.metabib_field
 
 
 Library Settings
------------------
++++++++++++++++++
 
  * Maximum Parallel Z39.50 Batch Searches (cat.z3950.batch.max_parallel)
   ** The maximum number of Z39.50 searches that can be in-flight at any given 
@@ -400,7 +395,6 @@ Library Settings
   ** The maximum number of search results to retrieve and queue for each 
      record + Z39 source during batch Z39.50 searches
 
-:leveloffset: 0
 
 
 Circulation
@@ -437,23 +431,22 @@ and does not otherwise affect the display of the branch in the OPAC. It also
 has no effect on hold targeting / capturing.
 
 
-:leveloffset: 3
 
 Floating Groups
-===============
+^^^^^^^^^^^^^^^
 
 In previous versions of Evergreen, floating group copies could float or not. If they floated, then they floated everywhere with no restrictions.
 
 This enhancement provides an interface to define where a copy will float by assigning it to a floating group.
 
 Long Overdue Circulations Management
-====================================
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This is a two-part feature, which covers marking circulations as long
 overdue via automated processing and check-in of long overdue circulations.
 
 Marking Circulations Long Overdue
----------------------------------
++++++++++++++++++++++++++++++++++
 
 A new Action/Trigger reactor (MarkItemLongOverdue) and sample event 
 definition (6 Month Overdue Mark Long-Overdue) are included for 
@@ -472,7 +465,7 @@ definition) for patrons that are in collections processing at (or above) the
 circulating library.
 
 Check-in of Long Overdue Circulations
--------------------------------------
++++++++++++++++++++++++++++++++++++++
 
 Check-in of long overdue items may result in any of the following actions,
 depending on configuration.
@@ -489,7 +482,7 @@ billing).  This is controlled with the "Long-Overdue Check-In Interval Uses
 Last Activity Date" Library Setting.
 
 New Library Settings
---------------------
+++++++++++++++++++++
 
  * Long-Overdue Materials Processing Fee
  * Void Overdue Fines When Items are Marked Long-Overdue
@@ -506,24 +499,23 @@ determine the amount to charge for the item price when a circulation is
 marked as long overdue.
 
 New Billing Types
------------------
++++++++++++++++++
 
  * Long-Overdue Materials
  * Long-Overdue Materials Processing Fee
 
 New Permissions
----------------
++++++++++++++++
 
  * SET_CIRC_LONG_OVERDUE
  * COPY_STATUS_LONGOVERDUE.override
 
 New Copy Status
----------------
++++++++++++++++
 
  * Long Overdue
 
 
-:leveloffset: 0
 
 
 Patron blocking by lost items and include lost as items out
@@ -541,10 +533,9 @@ setting is modified through the Group Penalty Thresholds page.
 the staff have the ability to determine if lost items will be included
 in items out.
 
-:leveloffset: 3
 
 Long-Overdue Patron Standing Penalty
-====================================
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This is the long-overdue version of the existing PATRON_EXCEEDS_LOST_COUNT
 standing penalty.  When a patron exceeds the configured threshold for open
@@ -554,7 +545,6 @@ When the number once again goes below the threshold, the penalty is removed.
 The penalty name is PATRON_EXCEEDS_LONGOVERDUE_COUNT / "Patron Exceeds Max
 Long-Overdue Threshold"
 
-:leveloffset: 0
 
 Per-Hold Behind Desk Setting
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -661,10 +651,9 @@ to shelf-expired and canceled holds.
 Client
 ~~~~~~
 
-:leveloffset: 3
 
 Customize Items Out Display for Lost, etc.
-==========================================
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Items which are LOST, LONGOVERDUE, or CLAIMSRETURNED may now be displayed 
 in the top/main list of circulations instead of the bottom list in the
@@ -682,7 +671,7 @@ Apart from organization, this has two additional effects:
    there), which creates more screen space for the main items out list.
 
 New Library Settings
----------------------
++++++++++++++++++++++
 
  * Items Out Long-Overdue display setting (ui.circ.items_out.longoverdue)
  * Items Out Lost display setting (ui.circ.items_out.lost)
@@ -701,7 +690,6 @@ the transaction.
 Hint: to hide the bottom list entirely, set the value for all three settings 
 to '5'.
 
-:leveloffset: 0
 
 
 Adjustable font size in the staff client catalog
@@ -841,10 +829,9 @@ to enable.
      the database, setting 'browse_xpath' to NULL where 'field_class' =
      ''author'' and 'browse_field' is true.
 
-:leveloffset: 2
 
 Authority-enhanced bibliographic browse
----------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Evergreen OPAC includes functionality for browsing by bibliographic terms,
 and, where those terms are controlled by authority records, for linking directly
@@ -868,7 +855,6 @@ searches, but also means that this is not a complete authority browsing tool
 acceptable for use as such by a cataloger.  See the Manage Authorities interface
 exposed through the Staff Client for that functionality.
 
-:leveloffset: 0
 
 Support for Conjoined Items
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -928,13 +914,12 @@ display in each page;
 that they really want to delete the list.
 
 
-:leveloffset: 3
 
 Web-Based Patron Self-Registration
-==================================
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Feature Summary
----------------
++++++++++++++++
 
 Patrons may now fill out a web-based form from within the TPAC to create 
 pending user accounts.  The goal is to make the registration process more 
@@ -962,7 +947,7 @@ Pending patron accounts which sit unattended in the database for too long
 are purged via a regularly running (CRON) script.
 
 Technical Details
------------------
++++++++++++++++++
 
   * To activate the web form and allow pending patrons to be created, set
     the _Allow Patron Self-Registration_ (opac.allow_pending_user) Library
@@ -979,7 +964,6 @@ Technical Details
     ** ui.patron.edit.[au|aua].*.regex
     ** ui.patron.edit.[au|aua].*.example
 
-:leveloffset: 0
 
 
 Responsive catalog
@@ -1113,10 +1097,9 @@ failed renewals is returned to the caller via the SIP BM and BN fields.
 Miscellaneous
 ~~~~~~~~~~~~~
 
-:leveloffset: 1
 
 P.V. SUPA GoodStuff Integration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 There is now a "Server Add-ons" module for integrating P.V. Supa's RFID product
 known as GoodStuff with the Evergreen staff client.
 
@@ -1140,5 +1123,4 @@ Each interface gets an RFID checkbox if the "Enabled" preference has been set
 that can activate/deactivate the functionality on a per interface basis.  The
 checkbox states persist (i.e. are sticky).
 
-:leveloffset: 0
 
