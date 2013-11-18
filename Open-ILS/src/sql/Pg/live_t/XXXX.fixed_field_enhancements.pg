@@ -1,0 +1,65 @@
+\set ECHO
+\set QUIET 1
+-- Turn off echo and keep things quiet.
+
+-- Format the output for nice TAP.
+\pset format unaligned
+\pset tuples_only true
+\pset pager
+
+-- Revert all changes on failure.
+\set ON_ERROR_ROLLBACK 1
+\set ON_ERROR_STOP true
+\set QUIET 1
+
+-- let's do this thing
+BEGIN;
+
+SELECT plan(1);
+
+CREATE OR REPLACE FUNCTION pg_temp.test_phys_char_no_overlaps() RETURNS BOOL AS $$
+DECLARE
+    ptype   TEXT;
+    str     TEXT;
+    subf    RECORD;
+    gap     INT;
+BEGIN
+    FOR ptype IN
+        SELECT ptype_key FROM config.marc21_physical_characteristic_type_map
+    LOOP
+        str := ptype;
+
+        FOR subf IN
+            SELECT subfield, start_pos, length
+            FROM config.marc21_physical_characteristic_subfield_map
+            WHERE ptype_key = ptype
+            ORDER BY subfield
+        LOOP
+            gap := subf.start_pos - LENGTH(str);
+            IF gap > 0 THEN
+                str := str || REPEAT(' ', gap);
+            ELSIF gap < 0 THEN
+                -- This is a WARNING instead of an ERROR just so we can
+                -- fail the test nicely. But it really is an error.
+                RAISE WARNING 'subfield % for ptype % backs up!',
+                    ptype, subf.subfield;
+                RETURN FALSE;
+            END IF;
+            str := str || REPEAT('|', subf.length);
+        END LOOP;
+        -- RAISE DEBUG '%', str;
+    END LOOP;
+
+    RETURN TRUE;
+END;
+$$ LANGUAGE PLPGSQL;
+
+SELECT is(
+    pg_temp.test_phys_char_no_overlaps(),
+    TRUE,
+    'Ensure that no set of subfields for a given Physical Characteristics ''type'' (00/a) contains any overlaps.'
+);
+
+SELECT * FROM finish();
+ROLLBACK;
+
