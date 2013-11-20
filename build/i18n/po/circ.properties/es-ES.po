@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-03-15 19:41+0000\n"
-"PO-Revision-Date: 2012-08-26 11:18+0000\n"
-"Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
+"POT-Creation-Date: 2013-09-26 18:17-0400\n"
+"PO-Revision-Date: 2013-11-14 20:17+0000\n"
+"Last-Translator: Gerson Vazquez <gerson.v.h@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-16 05:55+0000\n"
-"X-Generator: Launchpad (build 16532)\n"
+"X-Launchpad-Export-Date: 2013-11-15 05:49+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #: staff.circ.alert
 msgid "Alert"
@@ -210,15 +210,15 @@ msgstr "%1$s fracasado."
 
 #: staff.circ.checkout.non_cataloged.pending
 msgid "Non-cataloged checkout pending..."
-msgstr ""
+msgstr "Préstamo no catalogado pendiente..."
 
 #: staff.circ.checkout.barcode.pending
 msgid "%1$s checkout pending..."
-msgstr ""
+msgstr "%1$s préstamo pendiente..."
 
 #: staff.circ.checkout.barcode.failed.alert
 msgid "Check Out Failed %1$s"
-msgstr ""
+msgstr "%1$s prestamos fallidos"
 
 #: staff.circ.checkout.override.confirm
 msgid "Override Checkout Failure?"
@@ -262,7 +262,7 @@ msgstr "No-catalogado"
 
 #: staff.circ.checkout.cancelled
 msgid "Checkout cancelled"
-msgstr ""
+msgstr "Préstamo cancelado"
 
 #: staff.circ.checkout.card.inactive
 msgid ""
@@ -274,7 +274,7 @@ msgstr ""
 
 #: staff.circ.checkout.barcode.check_out_failed
 msgid "Check Out Failed"
-msgstr ""
+msgstr "Préstamo fallido"
 
 #: staff.circ.checkout.account.inactive
 msgid "This account is inactive and may not circulate items."
@@ -512,8 +512,8 @@ msgid "Add Item for record # %1$s"
 msgstr "Agregar Artículo para el registro # %1$s"
 
 #: staff.circ.copy_status.del_items.confirm
-msgid "Are you sure sure you want to delete these items? %1$s"
-msgstr "¿Esta seguro que desea borrar estos artículos? %1$s"
+msgid "Are you sure you want to delete these items? %1$s"
+msgstr "¿Está seguro de querer eliminar estos ejemplares? %1$s"
 
 #: staff.circ.copy_status.del_items.title
 msgctxt "staff.circ.copy_status.del_items.title"
@@ -526,7 +526,7 @@ msgstr "Elementos eliminados"
 
 #: staff.circ.copy_status.del_items.success.error
 msgid "Batch Item Deletion"
-msgstr ""
+msgstr "Borrar ejemplares en lote"
 
 #: staff.circ.copy_status.transfer_items.mark_destination
 msgid "Please mark a volume as the destination and then try this again."
@@ -1283,6 +1283,10 @@ msgstr "Hora Que El Tránsito Fue Completado"
 msgid "Transit Copy ID"
 msgstr "Identificación De La Copia En Tránsito"
 
+#: staff.circ.utils.transit_copy_status
+msgid "Transit Copy Status"
+msgstr ""
+
 #: staff.circ.utils.request_lib
 msgid "Request Library (Full Name)"
 msgstr "Biblioteca Solicitada (Nombre Completo)"
@@ -1310,6 +1314,10 @@ msgstr "Fecha de Captura"
 #: staff.circ.utils.hold_cancel_time
 msgid "Cancel Time"
 msgstr "Hora Que Fue Cancelado"
+
+#: staff.circ.utils.hold.behind_desk
+msgid "Behind Desk"
+msgstr ""
 
 #. # Controlled entry for why the hold was cancelled
 #: staff.circ.utils.hold_cancel_cause
@@ -1350,6 +1358,7 @@ msgid "Suspended"
 msgstr ""
 
 #: staff.circ.utils.hold_status.8
+msgctxt "staff.circ.utils.hold_status.8"
 msgid "Wrong Shelf"
 msgstr ""
 
@@ -1368,6 +1377,11 @@ msgstr "Necesario para Tránsito"
 #: staff.circ.utils.hold_post_clear_shelf_action.shelf
 msgid "Reshelve"
 msgstr "Devolver al estante"
+
+#: staff.circ.utils.hold_post_clear_shelf_action.pl_changed
+msgctxt "staff.circ.utils.hold_post_clear_shelf_action.pl_changed"
+msgid "Wrong Shelf"
+msgstr ""
 
 #: staff.circ.utils.frozen
 msgid "Frozen?"
@@ -1389,6 +1403,10 @@ msgstr "Sin Fecha"
 #: staff.circ.utils.pickup_lib
 msgid "Pickup Library (Full Name)"
 msgstr "Biblioteca De Recolección (Nombre Completo)"
+
+#: staff.circ.utils.current_shelf_lib
+msgid "Current Shelf Library (Full Name)"
+msgstr ""
 
 #: staff.circ.utils.current_copy.none
 msgid "No Copy"
@@ -2036,6 +2054,9 @@ msgstr "Ningun artículo con el código de barras \"%1$s\""
 #~ msgstr ""
 #~ "Artículo escaneado mal o no catálogado. ¿Prestar como un artículo "
 #~ "previamente catalogado?"
+
+#~ msgid "Are you sure sure you want to delete these items? %1$s"
+#~ msgstr "¿Esta seguro que desea borrar estos artículos? %1$s"
 
 #~ msgid "Volumes deleted."
 #~ msgstr "Volúmenes eliminados."

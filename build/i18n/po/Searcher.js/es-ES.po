@@ -8,18 +8,18 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2012-04-22 23:59+0000\n"
-"Last-Translator: A. Byrne <Unknown>\n"
+"PO-Revision-Date: 2013-11-15 20:18+0000\n"
+"Last-Translator: Gerson Vazquez <gerson.v.h@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-24 04:54+0000\n"
-"X-Generator: Launchpad (build 15135)\n"
+"X-Launchpad-Export-Date: 2013-11-16 05:47+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #: Searcher.js:before
 msgid "Published Before"
-msgstr ""
+msgstr "Publicado anteriormente"
 
 #: Searcher.js:lit_form
 msgid "Literary Form"
@@ -39,7 +39,7 @@ msgstr "Más.."
 
 #: Searcher.js:after
 msgid "Published After"
-msgstr ""
+msgstr "Publicado posteriormente"
 
 #: Searcher.js:basic
 msgid "Basic"
@@ -83,19 +83,19 @@ msgstr ""
 
 #: Searcher.js:during
 msgid "In Publication"
-msgstr ""
+msgstr "En publicación"
 
 #: Searcher.js:exact
 msgid "Exactly Matches"
-msgstr ""
+msgstr "Coincidencias exactas"
 
 #: Searcher.js:advanced
 msgid "Advanced"
-msgstr ""
+msgstr "Avanzado"
 
 #: Searcher.js:between
 msgid "Published Between"
-msgstr ""
+msgstr "Publicado entre"
 
 #: Searcher.js:new_filter
 msgid "New Filter"
@@ -107,7 +107,7 @@ msgstr ""
 
 #: Searcher.js:perform_search
 msgid "Go!"
-msgstr ""
+msgstr "Buscar"
 
 #: Searcher.js:remove
 msgid "Remove"

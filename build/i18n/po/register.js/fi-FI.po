@@ -1,16 +1,17 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2013-02-21 11:20-0400\n"
-"PO-Revision-Date: 2012-12-20 15:22+0000\n"
-"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"POT-Creation-Date: 2013-09-26 18:17-0400\n"
+"PO-Revision-Date: 2013-10-15 09:09+0000\n"
+"Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-02-23 05:29+0000\n"
-"X-Generator: Launchpad (build 16506)\n"
+"X-Launchpad-Export-Date: 2013-10-16 04:42+0000\n"
+"X-Generator: Launchpad (build 16799)\n"
 "Language: fi\n"
 
 #: register.js:USER_SETTINGS
@@ -37,11 +38,9 @@ msgstr "Osoitteen omistaa toinen käyttäjä: "
 msgid "New Address"
 msgstr "Uusi osoite"
 
-#: register.js:REPLACED_ADDRESS
-msgid ""
-"<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
-msgstr ""
-"<div>Korvaa osoitteen <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
+#: register.js:SAVE
+msgid "Save"
+msgstr "Tallenna"
 
 #: register.js:SHOW_REQUIRED
 msgid "Show Only Required Fields"
@@ -50,10 +49,6 @@ msgstr "Näytä vain vaaditut kentät"
 #: register.js:DUPE_PATRON_ADDR
 msgid "Found ${0} patron(s) with the same address"
 msgstr "${0} asiakkaalla on sama osoite"
-
-#: register.js:SAVE
-msgid "Save"
-msgstr "Tallenna"
 
 #: register.js:DUPE_PATRON_IDENT
 msgid "Found ${0} patron(s) with the same identification"
@@ -75,9 +70,9 @@ msgstr "Osoite vaaditaan rekisteröityessä."
 msgid "Primary"
 msgstr "Ensisijainen"
 
-#: register.js:BARCODE_IN_USE
-msgid "Barcode is already in use"
-msgstr "Asiakastunnus on jo käytössä"
+#: register.js:PARENT_OR_GUARDIAN
+msgid "Parent/Guardian"
+msgstr "Vanhempi/huoltaja"
 
 #: register.js:ADDRESS_HEADER
 msgid "Address"
@@ -95,9 +90,13 @@ msgstr "${0} asiakkaalla on sama puhelinnumero"
 msgid "Form is invalid.  Please edit and try again."
 msgstr "Muoto ei kelpaa. Muokkaa ja yritä uudelleen."
 
-#: register.js:PARENT_OR_GUARDIAN
-msgid "Parent/Guardian"
-msgstr "Vanhempi/huoltaja"
+#: register.js:BARCODE_IN_USE
+msgid "Barcode is already in use"
+msgstr "Asiakastunnus on jo käytössä"
+
+#: register.js:RESET_PASSWORD
+msgid "Generate Password"
+msgstr "Luo salasana"
 
 #: register.js:EXAMPLE
 msgid "Example: "
@@ -126,6 +125,10 @@ msgstr "${0} asiakkaalla on sama nimi"
 #: register.js:DEFAULT_ADDRESS_TYPE
 msgid "MAILING"
 msgstr "POSTITUS"
+
+#: register.js:REQUESTING_USER
+msgid "Account requested by ${0} ${1}"
+msgstr "Tilin pyytäjä: ${0} ${1}"
 
 #: register.js:HOLD_NOTIFY_SMS
 msgid "SMS: "
@@ -159,10 +162,6 @@ msgstr "Tilastolliset kategoriat"
 msgid "Barcode"
 msgstr "Asiakastunnus"
 
-#: register.js:RESET_PASSWORD
-msgid "Reset Password"
-msgstr "Uusi salasana"
-
 #: register.js:HOLD_NOTIFY_EMAIL
 msgid "Email: "
 msgstr "Sähköposti: "
@@ -178,3 +177,12 @@ msgstr "Sulje"
 #: register.js:DELETE_ADDRESS
 msgid "Delete address ${0}?"
 msgstr "Poistetaanko osoite ${0}?"
+
+#: register.js:REPLACED_ADDRESS
+msgid "Replaces address ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
+msgstr "Korvaa osoitteen ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
+
+#~ msgid ""
+#~ "<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
+#~ msgstr ""
+#~ "<div>Korvaa osoitteen <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
