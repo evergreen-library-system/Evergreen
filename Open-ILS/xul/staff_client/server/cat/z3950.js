@@ -10,7 +10,7 @@ cat.z3950 = function (params) {
     } catch(E) {
         dump('cat.z3950: ' + E + '\n');
     }
-}
+};
 
 cat.z3950.prototype = {
 
@@ -19,6 +19,12 @@ cat.z3950.prototype = {
     'number_of_result_sets' : 0,
 
     'result_set' : [],
+
+    'results_buffer' : [],
+
+    'on_display' : [],        // Values transfered to display
+
+    'save_count' : [],        // Values available from data source
 
     'limit' : 10,
 
@@ -519,7 +525,11 @@ cat.z3950.prototype = {
     'initial_search' : function() {
         try {
             var obj = this;
-            obj.result_set = []; obj.number_of_result_sets = 0;
+            obj.result_set = []; 
+            obj.number_of_result_sets = 0;
+            obj.results_buffer = [];
+            obj.on_display = [];
+            obj.save_count = [];
             JSAN.use('util.widgets');
             util.widgets.remove_children( obj.controller.view.result_message );
             var x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
@@ -542,7 +552,7 @@ cat.z3950.prototype = {
                 obj.search_params.username_array.push( document.getElementById( obj.active_services[i]+'_username' ).value );
                 obj.search_params.password_array.push( document.getElementById( obj.active_services[i]+'_password' ).value );
             }
-            obj.search_params.limit = Math.ceil( obj.limit / obj.active_services.length );
+            obj.search_params.limit = obj.limit;
             obj.search_params.offset = 0;
 
             obj.search_params.search = {};
@@ -567,7 +577,11 @@ cat.z3950.prototype = {
     'initial_raw_search' : function(raw) {
         try {
             var obj = this;
-            obj.result_set = []; obj.number_of_result_sets = 0;
+            obj.result_set = []; 
+            obj.results_buffer = [];
+            obj.on_display = [];
+            obj.save_count = [];
+            obj.number_of_result_sets = 0;
             JSAN.use('util.widgets');
             util.widgets.remove_children( obj.controller.view.result_message );
             var x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
@@ -598,7 +612,7 @@ cat.z3950.prototype = {
                 obj.search_params.username_array.push( document.getElementById( obj.active_services[i]+'_username' ).value );
                 obj.search_params.password_array.push( document.getElementById( obj.active_services[i]+'_password' ).value );
             }
-            obj.search_params.limit = Math.ceil( obj.limit / obj.active_services.length );
+            obj.search_params.limit = obj.limit;
             obj.search_params.offset = 0;
 
             obj.search_params.query = raw;
@@ -671,27 +685,81 @@ cat.z3950.prototype = {
             obj.controller.view.cmd_z3950_csv_to_printer.setAttribute('disabled','false');
             if (typeof results.length == 'undefined') results = [ results ];
 
-            var total_showing = 0;
-            var total_count = 0;
-            var tooltip_msg = '';
+            var total_showing = 0;	// On screen
+            var total_count = 0;	// available if you want 'em
+            var tooltip_msg = '';	// Tooltip for message under "Results"
+            var set_tally = [];		// Keeps track of records per data source
 
+            /* Pass 1: Move results into FIFO buffers */
             for (var i = 0; i < results.length; i++) {
+                if (typeof obj.save_count[i] == 'undefined') {
+                       obj.save_count[i] = results[i].count;	// We'll need this later
+                }
+                if (typeof obj.results_buffer[i] == 'undefined') {
+                       obj.results_buffer[i] = new Array(); 
+                }
+                while (results[i].records.length) {
+                   obj.results_buffer[i].push(results[i].records.pop());
+                }
+               
+                /* Set up array that keeps track of # of recs in the buffer */
+                var buff_info = {};
+                buff_info.indx = i;
+                buff_info.ele_count = obj.results_buffer[i].length;
+                set_tally.push(buff_info);  
+            }
+
+            /* Pass 2: figure out optimal fill from buffers to result frame and move them */
+            var sorted_tally = set_tally.sort( function(e1, e2) {
+                                                   return e1.ele_count - e2.ele_count;
+                                               }
+                                             );
+
+            var available = obj.limit;               // Slots to fill in this batch
+            for (i = 0; i < sorted_tally.length; i++) {
+                var use_count = Math.floor(available / (sorted_tally.length-i));
+                var res_index = sorted_tally[i].indx;
+
+                /* Don't use more records than we have */
+                if (sorted_tally[i].ele_count < use_count) {
+                    use_count = sorted_tally[i].ele_count;
+                }
+               
+                results[res_index].count = use_count > 0 ?
+                                           obj.save_count[res_index] :
+                                           undefined;
+
+                available = available - use_count;
+                while (use_count) {
+                    results[res_index].records.push(
+                         obj.results_buffer[res_index].shift()
+                     );
+                    use_count--; 
+                }
+            }
+             
+            /* Pass 3: Process the records from the results array */
+            for (i = 0; i < results.length; i++) {
                 if (results[i].query) {
                     tooltip_msg += $("catStrings").getFormattedString('staff.cat.z3950.handle_results.raw_query', [results[i].query]) + '\n';
                 }
+                if (typeof obj.on_display[i] == 'undefined') {
+                            obj.on_display[i] = 0;
+                }
                 if (results[i].count) {
                     if (results[i].records) {
-                        var showing = obj.search_params.offset + results[i].records.length; 
-                        total_showing += obj.search_params.offset + results[i].records.length; 
+                        obj.on_display[i] += results[i].records.length;
+                        total_showing += obj.on_display[i];
                         total_count += results[i].count;
-                        tooltip_msg += $("catStrings").getFormattedString('staff.cat.z3950.handle_results.showing_results', [(showing > results[i].count ? results[i].count : showing), results[i].count, results[i].service]) + '\n';
-                    }
-                    if (obj.search_params.offset + obj.search_params.limit <= results[i].count) {
-                        obj.controller.view.page_next.disabled = false;
+                        tooltip_msg += $("catStrings").getFormattedString('staff.cat.z3950.handle_results.showing_results', [obj.on_display[i], results[i].count, results[i].service]) + '\n';
                     }
                 } else {
-                    tooltip_msg += $("catStrings").getFormattedString('staff.cat.z3950.handle_results.num_of_results', [(results[i].count ? results[i].count : 0)]) + '\n';
+                    total_showing += obj.on_display[i];
+                    total_count += obj.on_display[i];
+                    tooltip_msg += $("catStrings").getFormattedString('staff.cat.z3950.handle_results.showing_results', [obj.on_display[i], obj.on_display[i], results[i].service]) + '\n';
+
                 }
+
                 if (results[i].records) {
                     obj.result_set[ ++obj.number_of_result_sets ] = results[i];
                     obj.controller.view.marc_import.disabled = true;
@@ -741,6 +809,8 @@ cat.z3950.prototype = {
                     );
                 }
             }
+
+            obj.controller.view.page_next.disabled = total_showing >= total_count;
             if (total_showing) {
                 x = document.createElement('description'); 
                 x.setAttribute('crop','end');
