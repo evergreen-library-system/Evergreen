@@ -304,7 +304,7 @@ system.
 
 include::circulation/circulating_items.txt[]
 
-include::circulation/holds_management.txt[]
+include::circulation/holds.txt[]
 
 include::circulation/booking.txt[]
 
