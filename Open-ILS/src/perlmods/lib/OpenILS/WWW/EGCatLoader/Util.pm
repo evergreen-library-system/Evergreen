@@ -175,7 +175,8 @@ sub init_ro_object_cache {
                     }
                 }
 
-                $cache{aouct_tree}{$ctx->{locale}} = $node_tree->org_unit;
+                $cache{aouct_tree}{$ctx->{locale}} = 
+                    $node_tree->org_unit if $node_tree;
             }
         }
 
