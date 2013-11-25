@@ -1,5 +1,6 @@
 <script type="text/javascript">
 var GBisbns = Array();
+var GBPreviewLink = '';
 var GBPreviewShowing = false;
 
 /**
@@ -27,6 +28,10 @@ function GBPreviewCallback(GBPBookInfo) {
   }
 
   if ( accessInfo.embeddable ) {
+    GPPreviewLink = GBPBookInfo.items[0].volumeInfo.previewLink;
+    if ( !GPPreviewLink) {
+        return;
+    }
     /* Add a button below the book cover image to load the preview. */
     var GBPBadge = document.createElement( 'img' );
     GBPBadge.id = 'gbpbadge';
@@ -66,7 +71,7 @@ function GBDisplayPreview(scroll_to_div) {
 
 function GBPViewerLoadCallback() {
   var GBPViewer = new google.books.DefaultViewer(dojo.byId('rdetail_preview_div'));
-  GBPViewer.load('ISBN:' + GBisbns[0]);
+  GBPViewer.load(GPPreviewLink);
   GBPViewer.resize();
   var GBPBadgelink = dojo.byId('gbpbadge_link');
   GBPBadgelink.href = 'javascript:GBShowHidePreview(true);';
