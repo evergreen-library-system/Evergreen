@@ -8,18 +8,18 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2012-04-28 14:18-0400\n"
-"PO-Revision-Date: 2011-06-25 19:18+0000\n"
-"Last-Translator: Paco Molinero <paco@byasl.com>\n"
+"PO-Revision-Date: 2013-11-15 19:32+0000\n"
+"Last-Translator: Gerson Vazquez <gerson.v.h@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-30 04:51+0000\n"
-"X-Generator: Launchpad (build 15171)\n"
+"X-Launchpad-Export-Date: 2013-11-16 05:47+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #: authority.js:CONFIRM_DELETE_RESULT
 msgid "Deleted authority record # ${0}."
-msgstr ""
+msgstr "Eliminar registro de autoridad # ${0}."
 
 #: authority.js:MENU_MERGE
 msgid "Mark for Merge"
@@ -27,11 +27,11 @@ msgstr "Marcar para mezclar"
 
 #: authority.js:VIEW_MARC
 msgid "View MARC"
-msgstr ""
+msgstr "Ver MARC"
 
 #: authority.js:SAVE
 msgid "Save"
-msgstr ""
+msgstr "Guardar"
 
 #: authority.js:TARGET_RECORD
 msgid "Target"
@@ -39,7 +39,7 @@ msgstr "Objetivo"
 
 #: authority.js:CONFIRM_DELETE_TITLE
 msgid "Delete the authority record: \"${0}\"?"
-msgstr ""
+msgstr "¿Desea eliminar el registro de autoridad: \"${0}\"?"
 
 #: authority.js:MENU_EDIT
 msgid "Edit"
@@ -51,52 +51,52 @@ msgstr "El registro se ha guardado"
 
 #: authority.js:HIDE_MARC
 msgid "Hide MARC"
-msgstr ""
+msgstr "Ocultar MARC"
 
 #: authority.js:ACTIONS
 msgid "Actions"
-msgstr ""
+msgstr "Acciones"
 
 #: authority.js:AUTHORITY_FIELDS
 msgid "Authority Fields (${0})"
-msgstr ""
+msgstr "Campos de Autoridad (${0})"
 
 #: authority.js:LINKED_BIBS
 msgid "Number of linked bibliographic records: ${0}"
-msgstr ""
+msgstr "Numero de registros bibliográficos ligados: ${0}"
 
 #: authority.js:CONTROL_SET_METADATA
 msgid "(${0}) ${1} / ${2}"
-msgstr ""
+msgstr "(${0}) ${1} / ${2}"
 
 #: authority.js:MASTER_RECORD
 msgid "Master"
-msgstr ""
+msgstr "Principal"
 
 #: authority.js:CONFIRM_DELETE_PROMPT
 msgid "Confirm deletion of record # ${0}"
-msgstr ""
+msgstr "Confirmar eliminación del registro # ${0}"
 
 #: authority.js:MERGE_RESULT_SUCCESS
 msgid "Record merge is complete."
-msgstr ""
+msgstr "Unión de registros completa"
 
 #: authority.js:CANCEL
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: authority.js:THESAURI
 msgid "Thesauri (${0})"
-msgstr ""
+msgstr "Tesauro (${0})"
 
 #: authority.js:NONE_LINK
 msgid "[None]"
-msgstr ""
+msgstr "[Ninguno]"
 
 #: authority.js:AUTHORITY_FIELD_METADATA
 msgid "${3} (${1} ‡${2}) ${4}"
-msgstr ""
+msgstr "${3} (${1} ‡${2}) ${4}"
 
 #: authority.js:MENU_DELETE authority.js:DELETE
 msgid "Delete"
-msgstr ""
+msgstr "Eliminar"

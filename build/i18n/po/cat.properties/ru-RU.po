@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-04 13:44-0400\n"
+"POT-Creation-Date: 2013-09-26 18:17-0400\n"
 "PO-Revision-Date: 2010-03-23 07:40+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-09-05 04:48+0000\n"
-"X-Generator: Launchpad (build 15901)\n"
+"X-Launchpad-Export-Date: 2013-09-28 05:21+0000\n"
+"X-Generator: Launchpad (build 16774)\n"
 "X-Accelerator-Marker: &\n"
 
 #: bib.no_marc
@@ -759,6 +759,10 @@ msgstr "<Удалить защиту>"
 msgid "<Remove Circulate as Type>"
 msgstr "<Удалить циркулировать как Тип>"
 
+#: staff.cat.copy_editor.remove_floating
+msgid "<Remove Floating>"
+msgstr ""
+
 #: staff.cat.copy_editor.field.unset_or_null
 msgctxt "staff.cat.copy_editor.field.unset_or_null"
 msgid "<Unset>"
@@ -835,16 +839,6 @@ msgstr "Нет"
 #: staff.cat.copy_editor.field.floating.label
 msgid "Floating?"
 msgstr ""
-
-#: staff.cat.copy_editor.field.floating.yes_or_true
-msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
-msgid "Yes"
-msgstr "Да"
-
-#: staff.cat.copy_editor.field.floating.no_or_false
-msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
-msgid "No"
-msgstr "Нет"
 
 #: staff.cat.copy_editor.field.age_based_hold_protection.label
 msgid "Age-based Hold Protection"
@@ -2434,3 +2428,11 @@ msgstr ""
 
 #~ msgid "Call Numbers"
 #~ msgstr "Растановочные Шифры"
+
+#~ msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
+#~ msgid "Yes"
+#~ msgstr "Да"
+
+#~ msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
+#~ msgid "No"
+#~ msgstr "Нет"

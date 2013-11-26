@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:44-0400\n"
-"PO-Revision-Date: 2011-08-18 20:33+0000\n"
-"Last-Translator: Jonay <jonay.santana@gmail.com>\n"
+"PO-Revision-Date: 2013-11-05 19:59+0000\n"
+"Last-Translator: Sergio I. <korgzak@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-08-19 04:38+0000\n"
-"X-Generator: Launchpad (build 13697)\n"
+"X-Launchpad-Export-Date: 2013-11-06 05:29+0000\n"
+"X-Generator: Launchpad (build 16820)\n"
 
 #: vandelay.add.existing.queue
 msgid "or Add to an Existing Queue"
@@ -113,7 +113,7 @@ msgstr "Descripción"
 
 #: vandelay.dest.match.point
 msgid "Destination Match Point"
-msgstr "Punto de destino no corresponde"
+msgstr "Punto de coincidencia de destino"
 
 #: vandelay.display
 msgid "Display"

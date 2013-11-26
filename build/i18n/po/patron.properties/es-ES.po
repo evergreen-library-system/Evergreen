@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-03-15 19:42+0000\n"
-"PO-Revision-Date: 2012-04-25 15:50+0000\n"
+"POT-Creation-Date: 2013-09-26 18:17-0400\n"
+"PO-Revision-Date: 2013-11-15 20:16+0000\n"
 "Last-Translator: Gerson Vazquez <gerson.v.h@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-16 06:01+0000\n"
-"X-Generator: Launchpad (build 16532)\n"
+"X-Launchpad-Export-Date: 2013-11-16 05:47+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #: staff.patron.barcode_entry.user_permission_editor
 msgid "User Permission Editor"
@@ -90,12 +90,12 @@ msgstr "bill_details.xul, my_init:"
 
 #: staff.patron.bill_details.my_cleanup.error
 msgid "bill_details.xul, my_cleanup:"
-msgstr ""
+msgstr "bill_details.xul, my_cleanup:"
 
 #: staff.patron.bill_details.handle_edit_bill_note.note_dialog.title
 msgctxt "staff.patron.bill_details.handle_edit_bill_note.note_dialog.title"
 msgid "Replacement Note"
-msgstr ""
+msgstr "Nota de remplazo"
 
 #: staff.patron.bill_details.handle_edit_bill_note.note_dialog.prompt
 msgctxt "staff.patron.bill_details.handle_edit_bill_note.note_dialog.prompt"
@@ -110,7 +110,7 @@ msgstr ""
 msgctxt ""
 "staff.patron.bill_details.handle_edit_payment_note.note_dialog.title"
 msgid "Replacement Note"
-msgstr ""
+msgstr "Nota de remplazo"
 
 #: staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt
 msgctxt ""
@@ -160,7 +160,7 @@ msgstr ""
 
 #: staff.patron.bill_history.retrieve_mbts_for_list.close_win_try_again
 msgid "Please close this window and try again."
-msgstr ""
+msgstr "Favor de cerrar esta ventana e intentar nuevamente."
 
 #: staff.patron.bill_history.my_init.current_bills
 msgid "Current Bills"
@@ -168,7 +168,7 @@ msgstr "Multas actuales"
 
 #: staff.patron.bill_history.my_init.bill_history
 msgid "Bill History"
-msgstr ""
+msgstr "Historial de multas"
 
 #: staff.patron.bill_history.handle_add.message_plural
 msgid "Are you sure you would like to add a billing to bills %1$s?"
@@ -180,7 +180,7 @@ msgstr ""
 
 #: staff.patron.bill_history.handle_add.title
 msgid "Bill Patron"
-msgstr ""
+msgstr "Multar usuario"
 
 #: staff.patron.bill_history.handle_add.btn_yes
 msgctxt "staff.patron.bill_history.handle_add.btn_yes"
@@ -213,17 +213,17 @@ msgstr ""
 #: staff.patron.bill_history.handle_void.btn_yes
 msgctxt "staff.patron.bill_history.handle_void.btn_yes"
 msgid "Yes"
-msgstr ""
+msgstr "Sí"
 
 #: staff.patron.bill_history.handle_void.btn_no
 msgctxt "staff.patron.bill_history.handle_void.btn_no"
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #: staff.patron.bill_history.handle_void.confirm_message
 msgctxt "staff.patron.bill_history.handle_void.confirm_message"
 msgid "Check here to confirm this message"
-msgstr ""
+msgstr "Marque aquí para confirmar este mensaje"
 
 #: staff.patron.bills.handle_refund.message_plural
 msgid ""
@@ -250,17 +250,17 @@ msgstr ""
 #: staff.patron.bills.handle_refund.btn_yes
 msgctxt "staff.patron.bills.handle_refund.btn_yes"
 msgid "Yes"
-msgstr ""
+msgstr "Si"
 
 #: staff.patron.bills.handle_refund.btn_no
 msgctxt "staff.patron.bills.handle_refund.btn_no"
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #: staff.patron.bills.handle_refund.confirm_message
 msgctxt "staff.patron.bills.handle_refund.confirm_message"
 msgid "Check here to confirm this message"
-msgstr ""
+msgstr "Marce aquí pare confirmar este mensaje"
 
 #: staff.patron.bill_history.print_bills.print_error
 msgid "printing bills"
@@ -268,7 +268,7 @@ msgstr ""
 
 #: staff.patron.bill_history.column.xact_type.label
 msgid "Transaction Type"
-msgstr ""
+msgstr "Tipo de Transacción"
 
 #: staff.patron.bill_history.column.last_billing_type.label
 msgid "Last Billing Type"
@@ -277,7 +277,7 @@ msgstr ""
 #: staff.patron.bill_history.column.title.label
 msgctxt "staff.patron.bill_history.column.title.label"
 msgid "Title"
-msgstr ""
+msgstr "Título"
 
 #: staff.patron.bills.init_controller.money_summary_label
 msgid "Money Summary"
@@ -325,12 +325,12 @@ msgstr ""
 
 #: staff.patron.bills.info_box.label_value.reservation
 msgid "Reservation"
-msgstr ""
+msgstr "Reservación"
 
 #. # 1 - Resource Barcode  2 - Resource Type Name
 #: staff.patron.bills.info_box.value_format.reservation
 msgid "%1$s : %2$s"
-msgstr ""
+msgstr "%1$s : %2$s"
 
 #: staff.patron.bills.info_box.label_value.title
 msgctxt "staff.patron.bills.info_box.label_value.title"
@@ -343,11 +343,11 @@ msgstr "Tipo"
 
 #: staff.patron.bills.info_box.label_value.last_billing
 msgid "Last Billing:"
-msgstr ""
+msgstr "Ultima multa:"
 
 #: staff.patron.bills.info_box.label_value.add_billing
 msgid "Add Billing"
-msgstr ""
+msgstr "Añadir multa"
 
 #: staff.patron.bills.info_box.label_value.refund
 msgid "Refund"
@@ -403,15 +403,15 @@ msgstr ""
 
 #: staff.patron.bill_wizard.patron_bill_finish.billing_added
 msgid "Billing added."
-msgstr ""
+msgstr "Multas añadidas."
 
 #: staff.patron.display.cmd_search_form.no_patron
 msgid "No Patron Selected"
-msgstr ""
+msgstr "No se ha seleccionado ningún usuario"
 
 #: staff.patron.display.cmd_patron_delete.dialog.title
 msgid "Delete Patron Account"
-msgstr ""
+msgstr "Eliminar cuenta de usuario"
 
 #: staff.patron.display.cmd_patron_delete.dialog.message
 msgid ""
@@ -478,27 +478,27 @@ msgid "Retrieving..."
 msgstr "Obteniendo…"
 
 #: staff.patron.display.init.network_request.alert_message
-msgid "Alert message: \"%1$s\"<br/><br/>"
-msgstr "Mensaje de alerta: \"%1$s\"<br/><br/>"
+msgid "Alert message: \"%1$s\""
+msgstr ""
 
 #: staff.patron.display.init.network_request.inactive_card
-msgid "Patron account retrieved with an INACTIVE card.<br/><br/>"
+msgid "Patron account retrieved with an INACTIVE card."
 msgstr ""
 
 #: staff.patron.display.init.network_request.account_barred
-msgid "Patron account is BARRED.<br/><br/>"
+msgid "Patron account is BARRED."
 msgstr ""
 
 #: staff.patron.display.init.network_request.account_inactive
-msgid "Patron account is INACTIVE.<br/><br/>"
+msgid "Patron account is INACTIVE."
 msgstr ""
 
 #: staff.patron.display.init.network_request.account_expire_soon
-msgid "Patron account will expire soon.  Please renew.<br/><br/>"
+msgid "Patron account will expire soon.  Please renew."
 msgstr ""
 
 #: staff.patron.display.init.network_request.account_expired
-msgid "Patron account is EXPIRED.<br/><br/>"
+msgid "Patron account is EXPIRED."
 msgstr ""
 
 #: staff.patron.display.init.holds_ready
@@ -1907,3 +1907,15 @@ msgstr ""
 #: staff.item.batch.hold.user_not_found
 msgid "User Not Found"
 msgstr ""
+
+#. # hold count tooltip labels
+#: staff.patron.summary.hold_counts_behind_desk
+msgid "Available / Total (Behind Desk)"
+msgstr ""
+
+#: staff.patron.summary.hold_counts
+msgid "Available / Total"
+msgstr ""
+
+#~ msgid "Alert message: \"%1$s\"<br/><br/>"
+#~ msgstr "Mensaje de alerta: \"%1$s\"<br/><br/>"

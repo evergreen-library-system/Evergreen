@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-15 19:41+0000\n"
-"PO-Revision-Date: 2013-04-23 10:46+0000\n"
+"POT-Creation-Date: 2013-09-26 18:17-0400\n"
+"PO-Revision-Date: 2013-10-04 12:23+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <petrkubiska@seznam.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-04-24 04:49+0000\n"
-"X-Generator: Launchpad (build 16580)\n"
+"X-Launchpad-Export-Date: 2013-10-05 05:16+0000\n"
+"X-Generator: Launchpad (build 16791)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -527,7 +527,7 @@ msgid "Add Item for record # %1$s"
 msgstr "Přidat exemplář k záznamu # %1$s"
 
 #: staff.circ.copy_status.del_items.confirm
-msgid "Are you sure sure you want to delete these items? %1$s"
+msgid "Are you sure you want to delete these items? %1$s"
 msgstr "Opravdu chcete smazat tyto exempláře? %1$s"
 
 #: staff.circ.copy_status.del_items.title
@@ -1300,6 +1300,10 @@ msgstr "Čas dokončení přepravy"
 msgid "Transit Copy ID"
 msgstr "ID exempláře v přepravě"
 
+#: staff.circ.utils.transit_copy_status
+msgid "Transit Copy Status"
+msgstr "Status exempláře v přesunu"
+
 #: staff.circ.utils.request_lib
 msgid "Request Library (Full Name)"
 msgstr "Žádající knihovna (úplný název)"
@@ -1327,6 +1331,10 @@ msgstr "Datum zachycení"
 #: staff.circ.utils.hold_cancel_time
 msgid "Cancel Time"
 msgstr "Čas zrušení"
+
+#: staff.circ.utils.hold.behind_desk
+msgid "Behind Desk"
+msgstr "U výpůjčního pultu"
 
 #. # Controlled entry for why the hold was cancelled
 #: staff.circ.utils.hold_cancel_cause
@@ -1367,8 +1375,9 @@ msgid "Suspended"
 msgstr "Pozastaveno"
 
 #: staff.circ.utils.hold_status.8
+msgctxt "staff.circ.utils.hold_status.8"
 msgid "Wrong Shelf"
-msgstr "Nesprávný regál"
+msgstr "Nesprávná police"
 
 #: staff.circ.utils.hold_post_clear_shelf_action.label
 msgid "Post-Clear"
@@ -1385,6 +1394,11 @@ msgstr "Potřebné pro přepravu"
 #: staff.circ.utils.hold_post_clear_shelf_action.shelf
 msgid "Reshelve"
 msgstr "Znovu zařadit na regál"
+
+#: staff.circ.utils.hold_post_clear_shelf_action.pl_changed
+msgctxt "staff.circ.utils.hold_post_clear_shelf_action.pl_changed"
+msgid "Wrong Shelf"
+msgstr "Nesprávná police"
 
 #: staff.circ.utils.frozen
 msgid "Frozen?"
@@ -1406,6 +1420,10 @@ msgstr "Bez data"
 #: staff.circ.utils.pickup_lib
 msgid "Pickup Library (Full Name)"
 msgstr "Knihovna k vyzvednutí (úplné jméno)"
+
+#: staff.circ.utils.current_shelf_lib
+msgid "Current Shelf Library (Full Name)"
+msgstr "Plné jméno knihovny, kde se nachází dané umístění (police)"
 
 #: staff.circ.utils.current_copy.none
 msgid "No Copy"
@@ -2065,3 +2083,6 @@ msgstr "Exemplář s čárovým kódem \"%1$s\" neexistuje"
 #~ msgstr ""
 #~ "Špatně načtený čárový kód nebo nezkatalogizovaný exemplář. Vypůjčit jako "
 #~ "předkatalogizovaný exemplář?"
+
+#~ msgid "Are you sure sure you want to delete these items? %1$s"
+#~ msgstr "Opravdu chcete smazat tyto exempláře? %1$s"

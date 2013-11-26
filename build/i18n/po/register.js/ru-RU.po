@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-02-21 11:20-0400\n"
+"POT-Creation-Date: 2013-09-26 18:17-0400\n"
 "PO-Revision-Date: 2011-07-31 17:37+0000\n"
 "Last-Translator: Alexander Sapronov <Unknown>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-02-23 05:29+0000\n"
-"X-Generator: Launchpad (build 16506)\n"
+"X-Launchpad-Export-Date: 2013-09-28 05:30+0000\n"
+"X-Generator: Launchpad (build 16774)\n"
 
 #: register.js:USER_SETTINGS
 msgid "User Settings"
@@ -41,11 +41,9 @@ msgstr "Этот адрес принадлежит другому пользов
 msgid "New Address"
 msgstr "Новый адрес"
 
-#: register.js:REPLACED_ADDRESS
-msgid ""
-"<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
-msgstr ""
-"<div>Заменяет адрес <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
+#: register.js:SAVE
+msgid "Save"
+msgstr "Сохранить"
 
 #: register.js:SHOW_REQUIRED
 msgid "Show Only Required Fields"
@@ -54,10 +52,6 @@ msgstr "Показать только обязательные для запол
 #: register.js:DUPE_PATRON_ADDR
 msgid "Found ${0} patron(s) with the same address"
 msgstr "Найдено $ {0} пользователь(я,ей) с таким же адресом"
-
-#: register.js:SAVE
-msgid "Save"
-msgstr "Сохранить"
 
 #: register.js:DUPE_PATRON_IDENT
 msgid "Found ${0} patron(s) with the same identification"
@@ -79,9 +73,9 @@ msgstr "При регистрации требуется адрес"
 msgid "Primary"
 msgstr ""
 
-#: register.js:BARCODE_IN_USE
-msgid "Barcode is already in use"
-msgstr "Штрих-код уже используется"
+#: register.js:PARENT_OR_GUARDIAN
+msgid "Parent/Guardian"
+msgstr "Родитель/Опекун"
 
 #: register.js:ADDRESS_HEADER
 msgid "Address"
@@ -101,9 +95,13 @@ msgstr ""
 "Форма является недействительной. Пожалуйста, редактируйте и попробуйте еще "
 "раз."
 
-#: register.js:PARENT_OR_GUARDIAN
-msgid "Parent/Guardian"
-msgstr "Родитель/Опекун"
+#: register.js:BARCODE_IN_USE
+msgid "Barcode is already in use"
+msgstr "Штрих-код уже используется"
+
+#: register.js:RESET_PASSWORD
+msgid "Generate Password"
+msgstr ""
 
 #: register.js:EXAMPLE
 msgid "Example: "
@@ -132,6 +130,10 @@ msgstr "Найден(о) ${0} пользователь(я.ей) с таким ж
 #: register.js:DEFAULT_ADDRESS_TYPE
 msgid "MAILING"
 msgstr "ПОЧТОВЫЙ"
+
+#: register.js:REQUESTING_USER
+msgid "Account requested by ${0} ${1}"
+msgstr ""
 
 #: register.js:HOLD_NOTIFY_SMS
 msgid "SMS: "
@@ -165,10 +167,6 @@ msgstr "Статистические категории"
 msgid "Barcode"
 msgstr ""
 
-#: register.js:RESET_PASSWORD
-msgid "Reset Password"
-msgstr "Сбросить пароль"
-
 #: register.js:HOLD_NOTIFY_EMAIL
 msgid "Email: "
 msgstr ""
@@ -184,3 +182,12 @@ msgstr ""
 #: register.js:DELETE_ADDRESS
 msgid "Delete address ${0}?"
 msgstr "Удалить адрес ${0}?"
+
+#: register.js:REPLACED_ADDRESS
+msgid "Replaces address ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
+msgstr ""
+
+#~ msgid ""
+#~ "<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
+#~ msgstr ""
+#~ "<div>Заменяет адрес <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"

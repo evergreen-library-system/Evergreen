@@ -3,18 +3,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-15 19:42+0000\n"
-"PO-Revision-Date: 2013-03-19 20:13+0000\n"
-"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"POT-Creation-Date: 2013-11-07 11:34-0400\n"
+"PO-Revision-Date: 2013-10-15 08:52+0000\n"
+"Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-20 04:44+0000\n"
-"X-Generator: Launchpad (build 16532)\n"
+"X-Launchpad-Export-Date: 2013-11-10 05:55+0000\n"
+"X-Generator: Launchpad (build 16820)\n"
 "X-Project-Style: mozilla\n"
 "X-Accelerator-Marker: &\n"
 "Language: fi\n"
+"X-Merge-On: location\n"
 
 #: staff.serial.editor_base.handle_update.error
 msgid "serial update error:"
@@ -223,15 +224,15 @@ msgstr "Nideilmoitukset"
 
 #: staff.serial.sstr_editor.count
 msgid "1 stream"
-msgstr "1 jakelu"
+msgstr "1 jakelukanava"
 
 #: staff.serial.sstr_editor.count.plural
 msgid "%1$s streams"
-msgstr "%1$s jakelua"
+msgstr "%1$s jakelukanavaa"
 
 #: staff.serial.sstr_editor.create.label
 msgid "Create Stream(s)"
-msgstr "Luo jakeluita"
+msgstr "Luo jakelukanavia"
 
 #: staff.serial.sstr_editor.create.accesskey
 msgctxt "staff.serial.sstr_editor.create.accesskey"
@@ -240,7 +241,7 @@ msgstr "C"
 
 #: staff.serial.sstr_editor.modify.label
 msgid "Modify Stream(s)"
-msgstr "Muokkaa jakeluita"
+msgstr "Muokkaa jakelukanavia"
 
 #: staff.serial.sstr_editor.modify.accesskey
 msgctxt "staff.serial.sstr_editor.modify.accesskey"
@@ -287,15 +288,15 @@ msgstr "objektin poisto tiedostossa manage_dists.js epäonnistui:"
 
 #: staff.serial.manage_dists.delete_sstr.confirm
 msgid "Are you sure you would like to delete this stream?"
-msgstr "Haluatko varmasti tuhota jakelun?"
+msgstr "Haluatko varmasti tuhota jakelukanavan?"
 
 #: staff.serial.manage_dists.delete_sstr.confirm.plural
 msgid "Are you sure you would like to delete these %1$s streams?"
-msgstr "Haluatko varmasti tuhota %1$s jakelua?"
+msgstr "Haluatko varmasti tuhota %1$s jakelukanavaa?"
 
 #: staff.serial.manage_dists.delete_sstr.title
 msgid "Delete Streams?"
-msgstr "Tuhotaanko jakelut?"
+msgstr "Tuhotaanko jakelukanavat?"
 
 #: staff.serial.manage_dists.delete_sstr.override
 msgctxt "staff.serial.manage_dists.delete_sstr.override"
@@ -311,7 +312,7 @@ msgstr "Tilaaja"
 
 #: staff.serial.manage_items.holder.label
 msgid "Holder"
-msgstr "Varaaja"
+msgstr "Sijainti"
 
 #: staff.serial.manage_items.notes_column.label
 msgid "Notes (Item/Dist/Sub)"
@@ -319,15 +320,27 @@ msgstr "Ilmoitukset (Nide/jakelu/tilaus)"
 
 #: staff.serial.manage_items.set_claimed_success
 msgid "Successfully claimed %1$s item(s)"
-msgstr "%1$s niteen lunastus onnistui"
+msgstr "%1$s niteen reklamointi onnistui"
 
 #: staff.serial.manage_items.set_not_held_success
 msgid "Successfully set %1$s item(s) to 'Not Held'"
-msgstr "%1$s niteen varaukset poistettiin onnistuneesti"
+msgstr "%1$s nidettä ei kokoelmassa"
 
 #: staff.serial.manage_items.set_not_published_success
 msgid "Successfully set %1$s item(s) to 'Not Published'"
-msgstr "%1$s niteen julkaisut poistettiin onnistuneesti"
+msgstr "%1$s nidettä ei julkaistu"
+
+#: staff.serial.manage_items.alert_notes.title
+msgid "Serial Alerts"
+msgstr ""
+
+#: staff.serial.manage_items.alert_button.label
+msgid "1 Alert"
+msgstr "1 huomautus"
+
+#: staff.serial.manage_items.alert_button.plural.label
+msgid "%1s Alerts"
+msgstr "%1s huomautusta"
 
 #: staff.serial.manage_subs.add.error
 msgid "error adding object in manage_subs.js:"
@@ -621,11 +634,11 @@ msgstr "<Ei määritetty>"
 
 #: serial.manage_dists.streams
 msgid "Streams"
-msgstr "Jakelut"
+msgstr "Jakelukanavat"
 
 #: serial.manage_dists.stream_num
 msgid "Stream : # %1$s"
-msgstr "Jakelu : # %1$s"
+msgstr "Jakelukanava : # %1$s"
 
 #: serial.manage_dists.sbsum
 msgid "Basic Summary"
