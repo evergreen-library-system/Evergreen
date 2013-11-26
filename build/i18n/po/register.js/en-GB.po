@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-02-21 11:20-0400\n"
+"POT-Creation-Date: 2013-09-26 18:17-0400\n"
 "PO-Revision-Date: 2012-05-02 18:41+0000\n"
 "Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-02-23 05:29+0000\n"
-"X-Generator: Launchpad (build 16506)\n"
+"X-Launchpad-Export-Date: 2013-09-28 05:30+0000\n"
+"X-Generator: Launchpad (build 16774)\n"
 
 #: register.js:USER_SETTINGS
 msgid "User Settings"
@@ -41,11 +41,9 @@ msgstr "This address is owned by another user: "
 msgid "New Address"
 msgstr "New Address"
 
-#: register.js:REPLACED_ADDRESS
-msgid ""
-"<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
-msgstr ""
-"<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
+#: register.js:SAVE
+msgid "Save"
+msgstr "Save"
 
 #: register.js:SHOW_REQUIRED
 msgid "Show Only Required Fields"
@@ -54,10 +52,6 @@ msgstr "Show Only Required Fields"
 #: register.js:DUPE_PATRON_ADDR
 msgid "Found ${0} patron(s) with the same address"
 msgstr "Found ${0} patron(s) with the same address"
-
-#: register.js:SAVE
-msgid "Save"
-msgstr "Save"
 
 #: register.js:DUPE_PATRON_IDENT
 msgid "Found ${0} patron(s) with the same identification"
@@ -79,9 +73,9 @@ msgstr "An address is required during registration."
 msgid "Primary"
 msgstr "Primary"
 
-#: register.js:BARCODE_IN_USE
-msgid "Barcode is already in use"
-msgstr "Barcode is already in use"
+#: register.js:PARENT_OR_GUARDIAN
+msgid "Parent/Guardian"
+msgstr "Parent/Guardian"
 
 #: register.js:ADDRESS_HEADER
 msgid "Address"
@@ -99,9 +93,13 @@ msgstr "Found ${0} patron(s) with the same phone number"
 msgid "Form is invalid.  Please edit and try again."
 msgstr "Form is invalid.  Please edit and try again."
 
-#: register.js:PARENT_OR_GUARDIAN
-msgid "Parent/Guardian"
-msgstr "Parent/Guardian"
+#: register.js:BARCODE_IN_USE
+msgid "Barcode is already in use"
+msgstr "Barcode is already in use"
+
+#: register.js:RESET_PASSWORD
+msgid "Generate Password"
+msgstr ""
 
 #: register.js:EXAMPLE
 msgid "Example: "
@@ -130,6 +128,10 @@ msgstr "Found ${0} patron(s) with the same name"
 #: register.js:DEFAULT_ADDRESS_TYPE
 msgid "MAILING"
 msgstr "MAILING"
+
+#: register.js:REQUESTING_USER
+msgid "Account requested by ${0} ${1}"
+msgstr ""
 
 #: register.js:HOLD_NOTIFY_SMS
 msgid "SMS: "
@@ -163,10 +165,6 @@ msgstr "Statistical Categories"
 msgid "Barcode"
 msgstr "Barcode"
 
-#: register.js:RESET_PASSWORD
-msgid "Reset Password"
-msgstr "Reset Password"
-
 #: register.js:HOLD_NOTIFY_EMAIL
 msgid "Email: "
 msgstr "Email: "
@@ -182,3 +180,12 @@ msgstr "Close"
 #: register.js:DELETE_ADDRESS
 msgid "Delete address ${0}?"
 msgstr "Delete address ${0}?"
+
+#: register.js:REPLACED_ADDRESS
+msgid "Replaces address ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
+msgstr ""
+
+#~ msgid ""
+#~ "<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
+#~ msgstr ""
+#~ "<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"

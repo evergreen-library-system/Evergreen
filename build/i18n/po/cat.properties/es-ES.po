@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-09-04 13:44-0400\n"
-"PO-Revision-Date: 2010-10-30 19:49+0000\n"
-"Last-Translator: Gabriel Pepe <Unknown>\n"
+"POT-Creation-Date: 2013-09-26 18:17-0400\n"
+"PO-Revision-Date: 2013-11-15 19:07+0000\n"
+"Last-Translator: Gerson Vazquez <gerson.v.h@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-09-05 04:48+0000\n"
-"X-Generator: Launchpad (build 15901)\n"
+"X-Launchpad-Export-Date: 2013-11-16 05:47+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #: bib.no_marc
 msgid "No MARC Record"
@@ -68,15 +68,15 @@ msgstr ""
 
 #: staff.cat.manage_multi_bib_items.result.column.value.error
 msgid "Error"
-msgstr ""
+msgstr "Error"
 
 #: staff.cat.manage_multi_bib_items.result.column.value.success
 msgid "Success"
-msgstr ""
+msgstr "Correcto"
 
 #: staff.cat.manage_multi_bib_items.result.column.value.failed
 msgid "Failed"
-msgstr ""
+msgstr "Falló"
 
 #: staff.cat.manage_multi_bib_items.result.column.value.item_linked_to_bib
 msgid "Item linked to bib"
@@ -88,11 +88,11 @@ msgstr ""
 
 #: staff.cat.manage_multi_bib_items.result.column.value.peer_type_updated
 msgid "Peer Type updated"
-msgstr ""
+msgstr "Tipo Peer actualizado"
 
 #: staff.cat.manage_multi_bib_items.prompt.title
 msgid "Change Peer Type"
-msgstr ""
+msgstr "Cambiar tipo de Peer"
 
 #. # %1$s = Bib Record Database ID
 #: staff.cat.manage_multi_bib_items.prompt.confirm.unlink_item_from_bib.singular
@@ -188,7 +188,7 @@ msgstr "Copiar al navegador -> borrar artículos"
 #: staff.cat.copy_browser.print_spine.tab
 msgctxt "staff.cat.copy_browser.print_spine.tab"
 msgid "Spine Labels"
-msgstr ""
+msgstr "Etiquetas de lomo"
 
 #: staff.cat.copy_browser.print_spine.error
 msgid "copy browser -> Spine Labels"
@@ -231,6 +231,7 @@ msgstr "%1$s"
 #: staff.cat.edit_volume.exception
 msgid "An error occurred while you were trying to edit these volumes."
 msgstr ""
+"Se ha producido un error mientras estaba intentando editar estos volúmenes."
 
 #: staff.cat.copy_browser.can_have_copies.false
 msgid "Records from %1$s cannot have copies."
@@ -268,14 +269,16 @@ msgid ""
 "You must delete all the items on the volume before you may delete the volume "
 "itself."
 msgstr ""
+"Debe eliminar todos los elementos en el volumen antes de poder eliminar el "
+"mismo volumen."
 
 #: staff.cat.copy_browser.delete_volume.copies_remain.confirm
 msgid "Delete Volume and Items"
-msgstr ""
+msgstr "Eliminar volumen y Artículos"
 
 #: staff.cat.copy_browser.delete_volume.copies_remain.cancel
 msgid "Cancel Delete"
-msgstr ""
+msgstr "Cancelar Borrar"
 
 #: staff.cat.copy_browser.delete_volume.exception
 msgid "copy browser -> delete volumes"
@@ -381,6 +384,8 @@ msgstr "No todas las copias probablemente transferidas."
 msgid ""
 "Please Mark a bib record as a Target for Conjoined Items and try this again."
 msgstr ""
+"Favor de marcar un registro bib como un destino para Artículos conjuntos e "
+"intentarlo de nuevo."
 
 #: staff.cat.copy_browser.missing_library
 msgid "Missing library list."
@@ -388,7 +393,7 @@ msgstr "Lista de bibliotecas faltantes."
 
 #: staff.cat.copy_browser.consortial_copy_count.error
 msgid "Error retrieving consortial copy count."
-msgstr ""
+msgstr "Error cargando la cuenta de copias consorciadas"
 
 #: staff.cat.copy_browser.list_init.tree_location
 msgid "Location/Barcode"
@@ -504,7 +509,7 @@ msgstr ""
 
 #: staff.cat.copy_buckets.batch.error
 msgid "Batch Item Deletion"
-msgstr ""
+msgstr "Borrar ejemplares en lote"
 
 #: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.no_volume
 msgid ""
@@ -762,6 +767,10 @@ msgstr "<Remover Protección>"
 msgid "<Remove Circulate as Type>"
 msgstr "<Remover Circular como Tipo>"
 
+#: staff.cat.copy_editor.remove_floating
+msgid "<Remove Floating>"
+msgstr ""
+
 #: staff.cat.copy_editor.field.unset_or_null
 msgctxt "staff.cat.copy_editor.field.unset_or_null"
 msgid "<Unset>"
@@ -839,16 +848,6 @@ msgstr "No"
 msgid "Floating?"
 msgstr "¿Flotando?"
 
-#: staff.cat.copy_editor.field.floating.yes_or_true
-msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
-msgid "Yes"
-msgstr "Sí"
-
-#: staff.cat.copy_editor.field.floating.no_or_false
-msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
-msgid "No"
-msgstr "No"
-
 #: staff.cat.copy_editor.field.age_based_hold_protection.label
 msgid "Age-based Hold Protection"
 msgstr "Protección De Reserva Basado En Edad"
@@ -923,7 +922,7 @@ msgstr "Precio"
 
 #: staff.cat.copy_editor.field.opac_visible.label
 msgid "OPAC Visible?"
-msgstr ""
+msgstr "¿Visible en el Catálogo en Línea?"
 
 #: staff.cat.copy_editor.field.opac_visible.yes_or_true
 msgctxt "staff.cat.copy_editor.field.opac_visible.yes_or_true"
@@ -1092,11 +1091,11 @@ msgstr "No Fue Catalogado"
 
 #: staff.cat.marcedit.authority_see_also
 msgid "See also: %1$s"
-msgstr ""
+msgstr "Vea también: %1$s"
 
 #: staff.cat.marcedit.authority_see_from
 msgid "See from: %1$s"
-msgstr ""
+msgstr "Vea desde: %1$s"
 
 #: staff.cat.marcedit.help.add_row
 msgid "Add Row: CTRL+Enter"
@@ -1144,7 +1143,7 @@ msgstr "Guardar Registro"
 
 #: staff.cat.marcedit.marcTag.LDR.label
 msgid "MARC Leader"
-msgstr ""
+msgstr "Líder MARC"
 
 #: staff.cat.marcedit.add_row.label
 msgid "Add Row"
@@ -1212,7 +1211,7 @@ msgstr "Crear y Editar..."
 
 #: staff.cat.marc_new.tab_name
 msgid "MARC Template"
-msgstr ""
+msgstr "Plantilla MARC"
 
 #: staff.cat.marc_new.create_record.label
 msgid "Create Record"
@@ -1229,7 +1228,7 @@ msgstr "Cargando Título..."
 
 #: staff.cat.marc_new.creating_record.error
 msgid "Error creating MARC record."
-msgstr ""
+msgstr "Error al crear registro MARC"
 
 #: staff.cat.marc_new.loading_template.error
 msgid "Error loading MARC template: %1$s"
@@ -1237,7 +1236,7 @@ msgstr "Error cargando la plantilla MARC: %1$s"
 
 #: staff.cat.marc_new.set_default.error
 msgid "Error setting default MARC template: %1$s"
-msgstr ""
+msgstr "Error al establecer plantilla MARC como predeterminada: %1$s"
 
 #: staff.cat.marc_new.set_default.success
 msgid "Default template set to %1$s"
@@ -1479,7 +1478,7 @@ msgstr "Generar"
 #: staff.cat.spine_labels.preview.title
 msgctxt "staff.cat.spine_labels.preview.title"
 msgid "Spine Labels"
-msgstr ""
+msgstr "Etiquetas de lomo"
 
 #: staff.cat.spine_labels.preview.std_unexpected_err
 msgid "Preview and Print"
@@ -1534,6 +1533,8 @@ msgid ""
 "Please mark a volume as the destination from within holdings maintenance and "
 "then try this again."
 msgstr ""
+"Señale un volumen como destino dentro del mantenimiento de apartados e "
+"intente de nuevo."
 
 #: staff.cat.util.transfer_copies.params_message
 msgid ""
@@ -1580,12 +1581,12 @@ msgstr "Todos los artículos probablemente no fueron transferidos."
 #: staff.cat.util.spine_editor.tab_name
 msgctxt "staff.cat.util.spine_editor.tab_name"
 msgid "Spine Labels"
-msgstr ""
+msgstr "Etiquetas de lomo"
 
 #: staff.cat.util.spine_editor.spine_editor_error
 msgctxt "staff.cat.util.spine_editor.spine_editor_error"
 msgid "Spine Labels"
-msgstr ""
+msgstr "Etiquetas de lomo"
 
 #: staff.cat.util.show_in_opac.unknown_barcode
 msgid "%1$s is not cataloged"
@@ -1598,7 +1599,7 @@ msgstr ""
 
 #: staff.cat.util.copy_editor.batch_in_title
 msgid "Batch "
-msgstr ""
+msgstr "Lote "
 
 #: staff.cat.util.copy_editor.edit_in_title
 msgctxt "staff.cat.util.copy_editor.edit_in_title"
@@ -1705,6 +1706,8 @@ msgstr "Marce aquí para confirmar esta acción"
 #: staff.cat.util.mark_item_damaged.item_circulating_to_patron
 msgid "Item %1$s is checked out to patron, %2$s, and is due on %3$s. "
 msgstr ""
+"El ejemplar %1$s está prestado al usuario, %2$s, la fecha de devolución es "
+"%3$s. "
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.message
 msgid ""
@@ -1714,23 +1717,23 @@ msgstr ""
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.title
 msgid "Charge Patron For Damaged Item? "
-msgstr ""
+msgstr "¿Multar al usuario por material dañado? "
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.ok_label
 msgid "OK "
-msgstr ""
+msgstr "Aceptar "
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.change_amount_label
 msgid "Change Amount "
-msgstr ""
+msgstr "Cambiar cantidad "
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.cancel_label
 msgid "No Charge"
-msgstr ""
+msgstr "Sin cargo"
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.confirm_action
 msgid "Check here to confirm this action "
-msgstr ""
+msgstr "Marque aquí para confirmar esta acción "
 
 #: staff.cat.util.mark_item_damaged.marking_error
 msgid "Error marking item %1$s damaged."
@@ -1851,7 +1854,7 @@ msgstr ""
 #: staff.cat.util.show_in_opac.retrieving_title
 msgctxt "staff.cat.util.show_in_opac.retrieving_title"
 msgid "Retrieving title..."
-msgstr ""
+msgstr "Cargando título..."
 
 #: staff.cat.util.add_titles_to_bucket.number_of_precats_skipped
 msgid "Skipping %1$s pre-cat records..."
@@ -2407,6 +2410,14 @@ msgstr ""
 #~ msgstr ""
 #~ "Debe borrar todas las copias en el volumen antes de que pueda borrar el "
 #~ "volumen."
+
+#~ msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
+#~ msgid "Yes"
+#~ msgstr "Sí"
+
+#~ msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
+#~ msgid "No"
+#~ msgstr "No"
 
 #~ msgid "Record: %1$s"
 #~ msgstr "Registro: %1$s"
