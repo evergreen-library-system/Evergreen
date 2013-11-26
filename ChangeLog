@@ -1,3 +1,469 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 92ba29f2c208325e847f1367e32f2ed18de84cb0
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Nov 26 14:35:22 2013 -0500
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 45b2335bfefb3a5b77dbec6e1afdd9b12dbd7528
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Nov 13 18:15:21 2013 -0500
+
+    Fix boolean lists; Better atom regex; Caching
+    
+    First, we didn't need to make $last_type local, and it broke explicit
+    grouping anyway.  That's removed, and we now reset that (and a few more
+    like it) at calls to the top level parse() method.  This introduces a
+    situation where a long list of booleans could cause query plan problems,
+    so we limit the plan depth to 40 (20 ||'d conditions).
+    
+    Second, we are smarter about finding the boundary of atoms.  Previous
+    to this commit, and curly brace could send the parser into a tailspin
+    from which it would not recover.  Now we use alternation instead of
+    a character class, which is much safer with the default multi-character
+    float syntax specifier.
+    
+    Third, as a catch-all, if we can't parse the remained of a query we
+    now simply say so (when in debug mode) and go away, instead of risking
+    an infinite loop.  We do this via a final, unqualified "else" clause
+    in decompose().
+    
+    Finally, instead of building 10+ regexp objects on each query parse,
+    cache them per QP subclass and reuse them.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+117	94	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/QueryParser.pm
+2	0	Open-ILS/src/support-scripts/test-scripts/query_tests.pl
+
+commit b4f1dfba98a0971eabb8824188d5fe0f21b8351f
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Oct 28 10:24:37 2013 -0400
+
+    LP#1238015 hide patron credit summary when disabled
+    
+    When the circ.disable_patron_credit / "Disable Patron Credit" org unit
+    setting is disabled, also hide the patron credit summary information in
+    the bills interface.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+6	1	Open-ILS/xul/staff_client/server/patron/bill2.xul
+
+commit 33fe2cee4b94a382fd62e02bfd6dcd6f5bb0684f
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Nov 25 10:14:08 2013 -0500
+
+    Re-apply the changes provided by  0802 for backport
+    
+    Preserve record order of subfields for authority heading extraction
+    
+    When extracting headings from authority records we currently read the
+    subfields of a tag in configuration order.  We should, instead, read
+    them in record order, to preserve the desired sorting properties that
+    the cataloger has encoded in the record.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+170	0	Open-ILS/src/sql/Pg/upgrade/0848.function.authority-sf-file-order-again.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0848.function.authority-sf-file-order-again.sql
+
+commit 165d51a2843954dafdd9cbb904908d17f789daea
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Sun Oct 27 13:11:37 2013 -0400
+
+    Fix copy_table HTML markup errors
+    
+    TD elements take a "headers" attribute, not a "header" attribute. Also,
+    we have a few typos in identifying the header attributes.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	2	Open-ILS/src/templates/opac/css/style.css.tt2
+19	19	Open-ILS/src/templates/opac/parts/record/copy_table.tt2
+
+commit 7db96d3ea576c2f774208c450f3baf9a72e02703
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Nov 22 14:55:26 2013 -0500
+
+    LP#1254146 gracefully handle custom trees sans entries
+    
+    Avoid references to custom tree entries when no tree entries for a
+    custom tree exist.  Prevents:
+    
+    egweb: template error: undef error - Can't call method "org_unit" on an
+    undefined value at
+    /usr/local/share/perl/5.10.1/OpenILS/WWW/EGCatLoader/Util.pm line 185.\n
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Util.pm
+
+commit 1fff24ee104c1965003d4eea3123fe9227360562
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Nov 14 15:12:46 2013 -0500
+
+    Improve facet styling
+    
+    1) Facets currently display very poorly when the number reaches 3-4
+    digits.  Facet data is more or less a two column table, so let's style
+    it that way to make it more robust.
+    
+    2) Rearrange some styles to reduce redundancy, and allow overflow
+    where possible.
+    
+    3) Change the selected highlight to look a little better.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+15	29	Open-ILS/src/templates/opac/css/style.css.tt2
+
+commit 7de0e1f55055f9afebab2b122ec3dd49e4c7bb26
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Nov 20 14:45:18 2013 -0500
+
+    Pulling in new version upgrade
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+275	0	Open-ILS/src/sql/Pg/version-upgrade/2.4.3-2.4.4-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.4.3-2.4.4-upgrade-db.sql
+
+commit 916e8442af4d6bcca6a7397df7880dde942b0010
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Nov 15 17:06:53 2013 -0500
+
+    LP#1251774 exit and alert on multiple payments per xact
+    
+    If more than one payment for a transaction is received, exit the API
+    call early and return a MULTIPLE_PAYMENTS_FOR_XACT event.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+4	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Money.pm
+
+commit 8ea35f2e331e41e2198f71f205b3331277ef61fa
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Nov 15 16:40:36 2013 -0500
+
+    Enforce one-payment-per-xact-per-call
+    
+    There is no legitimate reason for a transaction to receive more than
+    one payment per call to open-ils.circ open-ils.circ.money.payment,
+    but we have seen the staff client generate such a data structure. This
+    leads to seemingly duplicate payments, and is bad all around.  So,
+    we will enforce the restriction by taking only the first payment per
+    xact in the list of payments.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+10	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Money.pm
+
+commit cdac86e1201d94b610678cdcf84e0e93107fdc05
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Fri Nov 8 15:02:53 2013 -0500
+
+    Replace erroneous calls to $e->retrieve_authority_record($rec_id).
+    
+    On lines 153 and 175 of OpenILS::Application::Cat::Authority calls
+    like the above should be $e->retrieve_authority_record_entry($rec_id).
+    This branch replaces the two misspelled calls with the proper ones.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat/Authority.pm
+
+commit 95cbc4d3cc154fe3a503a261d3146b63fa3b491a
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Thu Sep 12 12:02:15 2013 -0400
+
+    LP1093856 fix Fast Item Add with Z39.50 import
+    
+    The first time I tried this fix I ran afoul of
+    https://bugs.launchpad.net/evergreen/+bug/787561
+    
+    But a second attempt worked.  So I didn't kill
+    two birds with one stone, but this should take
+    care of 1093856.
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+12	3	Open-ILS/xul/staff_client/server/cat/marcedit.js
+
+commit 950dede4146fed9023f6fbf8d289b522bf615a6d
+Author: Liam Whalen <whalen.ld@gmail.com>
+Date:   Sun Oct 6 22:11:56 2013 -0700
+
+    LP#1037171 Removed Expert Search paramters from subject links
+    
+    After performing an Expert Search, if a user visits a record and then
+    clicks on one of the author, subject, or series search links within that
+    record, then they are given the results of the Expert Search again
+    instead of the relevant subject or author search.
+    
+    This is happening because the Expert Search parameters are retained in
+    the URLs via the TT2 MACRO mkurl.  In particular, the tag parameter is
+    used to identify an Expert Search, so if it is present in a URL, than an
+    Expert Search will be attempted regardless of which other paramaters are
+    in the URL.
+    
+    To fix this, I created two varialbes within header.tt2 above the
+    definition of mkurl.  These variables group common URL paramters for
+    Expert Searches and General Search parameters together.  These variables
+    can be used wherever mkurl is used to strip out unneeded search
+    paramters.
+    
+    There is a third variable that is already present within many of these
+    pages named stop_parms.  While I initially tried to modify this
+    variable, I found that there are some instances where the general search
+    parameters should be retained while the Expert Search parameters must go.
+    
+    This commit uses these three variables togehter as input into the third
+    arugment of the mkurl MACRO.  The third arugment specifies which
+    paramtes to remove from the previous URL before making a new URL based
+    on the pervious URL.
+    
+    I also added the query parameter to the Place Hold's hold_source_page
+    URL variable.  I did this, so that the query terms would be preserved
+    once the user is done placing the hold or decides to cancle the placing
+    of the hold.
+    
+    As well, I used the new variables to remove Expert Search paramters
+    from the Advanced Search links on the results and record pages.
+    
+    Conflicts:
+    
+    	Open-ILS/src/templates/opac/parts/searchbar.tt2
+    
+    Signed-off-by: Liam Whalen <whalen.ld@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+4	0	Open-ILS/src/templates/opac/parts/header.tt2
+1	1	Open-ILS/src/templates/opac/parts/record/authors.tt2
+1	1	Open-ILS/src/templates/opac/parts/record/series.tt2
+1	1	Open-ILS/src/templates/opac/parts/record/subjects.tt2
+2	2	Open-ILS/src/templates/opac/parts/result/table.tt2
+1	1	Open-ILS/src/templates/opac/parts/searchbar.tt2
+1	1	Open-ILS/src/templates/opac/results.tt2
+
+commit 7169398270feea25e79e4682dbde3029f7de083b
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Mon Nov 18 15:42:36 2013 -0500
+
+    Docs: Remove ref to missing included file
+    
+    This file was moved into the 2.5 release notes. If others believe it
+    belongs in the main documentation, it can easily be added in again. For
+    now, we will remove the reference because it only generates an asciidoc
+    warning.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+0	2	docs/root.txt
+
+commit 2f20d95461119fbe6360cc0eaa346d07ebaddd47
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Mon Nov 18 15:21:09 2013 -0500
+
+    Docs: Fix leveloffset bug, raise REL NOTES level
+    
+    We should restrict our use of the asciidoc leveloffset command to the
+    root.txt file, since it is a global setting and cannot be set relative
+    to an existing offset.
+    
+    This commit also raises the Release Notes section to the highest level
+    in order to prevent the lowest level subsections within it from being
+    lost. This is in response to asciidoc errors:
+    
+        WARNING: RELEASE_NOTES_2_5.txt: line 950: missing section: [sect5]
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+27	45	docs/RELEASE_NOTES_2_5.txt
+0	4	docs/root.txt
+
+commit 6353e2b8b6e72e83ffb1513720faf1b6d7c78d2b
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Fri Nov 15 11:25:35 2013 -0500
+
+    Document how to load concerto sample data
+    
+    We might as well make it as easy as possible for people to use the
+    sample dataset that we created!
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+13	0	docs/installation/server_installation.txt
+
+commit c925dc2564141656f41cd298de2ed031e0e55b6b
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Nov 14 18:17:58 2013 -0500
+
+    Add basic docs for testing with pgTAP
+    
+    This can be expanded to describe how to create pgTAP tests later. For
+    now, let's help people actually set up their environment and test.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+39	0	docs/development/pgtap.txt
+1	0	docs/root.txt
+ create mode 100644 docs/development/pgtap.txt
+
+commit b0711f572cab48341af687a80bf721241e616859
+Author: Pasi Kallinen <pasi.kallinen@pttk.fi>
+Date:   Tue Jul 9 09:52:22 2013 +0300
+
+    Fix untranslatable strings in several dijits:
+    
+    AutoGrid, EditPane, FlattenerGrid, GridColumnPicker and HoldingCode.
+    
+    [LFW: One string amended in conflict resolution; commit message edited
+    to wrap; one line of code moved (this.nls assignment in
+    GridColumnPicker.js).]
+    
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+9	0	Open-ILS/web/js/dojo/openils/serial/nls/serial.js
+6	3	Open-ILS/web/js/dojo/openils/widget/AutoGrid.js
+7	5	Open-ILS/web/js/dojo/openils/widget/EditPane.js
+2	1	Open-ILS/web/js/dojo/openils/widget/FlattenerGrid.js
+12	10	Open-ILS/web/js/dojo/openils/widget/GridColumnPicker.js
+12	13	Open-ILS/web/js/dojo/openils/widget/HoldingCode.js
+13	0	Open-ILS/web/js/dojo/openils/widget/nls/AutoFieldWidget.js
+
+commit 6ea75506c952a66d0f3aa98b5a662c3da91a8617
+Author: Steven Callender <stevecallender@esilibrary.com>
+Date:   Thu Nov 14 15:42:12 2013 -0500
+
+    LP1251424 - Fix for submit button when placing holds in staff client
+    
+    I've moved the initializing of the cur_hold_barcode variable
+    to within the function rather than floating outside of it.
+    This seemed to fix an intermittent issue where the submit
+    button would not become activatable when first going to the
+    place hold screen via the staff client. To create the hold,
+    ths user had to cycle through the "Place hold by patron barcode"
+    option and then back to "Place hold for me" option.
+    
+    It looked like behind the scenes for certain org units that
+    variable would not be set and the button will not open until
+    it at least has something. This causes it to be set on the initial
+    loading of the screen.
+    
+    Signed-off-by: Steven Callender <stevecallender@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/web/js/ui/default/opac/staff.js
+
+commit eaf9c8ec442c7da292ac377c6ccd83695920caf0
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Mon Jul 22 14:30:04 2013 -0400
+
+    lp1012237 HOLD_ITEM_CHECKED_OUT display
+    
+    Added a definition to the HOLD_ITEM_CHECKED_OUT event in ils_events.xml.
+    Trying to be generic between the opac and the staff client the message
+    reads, "The item you have attempted to place on hold is already checked
+    out to the requestor."
+    
+    [LFW: I made a tiny spelling change to be consistent with other
+    appearances in Evergreen of the term "requestor".]
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+3	0	Open-ILS/src/extras/ils_events.xml
+
+commit 7604c810051ec85cdcac40c69fde9cc4f8b930a0
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Mon Nov 11 14:15:25 2013 -0500
+
+    Update version of release notes in 2.5 docs
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+1	1	docs/root.txt
+
+commit 88ced5b157978dab2260296859319cadb7675e9d
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Mon Oct 14 17:28:07 2013 -0400
+
+    Acq: Improvements to account-matching incoming EDI messages
+    
+    The way the EDI fetcher works gives us a problem. That process iterates
+    over EDI accounts for which it has FTP host and credential information,
+    downloads documents from each of those sites, and files the messages
+    within those documents under the EDI account from which the login
+    credentials came. The problem is that in practice the exact same host
+    and login information is used by multiple accounts under the same
+    vendor, and files relating to these sub-accounts are commingled, so that
+    you can't make the decision about which messages should be filed under
+    which accounts based on the name of the document or its location. You
+    have to make that decision later, based on its contents.
+    
+    We are already incompletely doing this, distinguishing between
+    sub-accounts under which we could file our messages when the vendor
+    specifies the buyer's SAN next to the specific sub-account number *and*
+    those sub-accounts belong to different Evergreen org units. We still
+    need ways to distinguish in other cases.
+    
+    This will do what is natural for at least one vendor, and match the
+    message content against the vendacct field of the acq.edi_account table.
+    
+    *Also,*
+    
+    We were re-retrieving the working acq.edi_message row from the database
+    before writing it, throwing away possible changes to the object in hand
+    made by O::A::Acq::EDI::process_parsed_msg(). We should only do that in
+    the case where that function has raised an exception.
+    
+    We were doing the same kind of thing in another place actually inside
+    process_parsed_msg() where we set the edi_message's purchase_order field
+    based on the first lineitem encountered if the message itself didn't
+    specify a valid PO identifier.
+    
+    This supports making account-correction work for ORDRSP messages in
+    addition to INVOIC messages.
+    
+    We also propagate that same correction to the provider and shipper
+    fields of any invoices that get created from said edi_message.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+56	13	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/EDI.pm
+
+commit b52e340ac3407558ebecace2334fb75dc9aaadea
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Oct 28 11:23:08 2013 -0400
+
+    TPAC: Remove fixed height from 'View My List' button
+    
+    The TPAC button styles have been largely consolidated, but this little
+    outlier got missed.  It doesn't do anything of noticeable value in
+    recent browsers, and in fact hurts the display by causing the "Sort by"
+    widget to "hang" when resizing the window to certain intermediate
+    sizes.  Remove it.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+0	2	Open-ILS/src/templates/opac/css/style.css.tt2
+1	1	Open-ILS/src/templates/opac/results.tt2
