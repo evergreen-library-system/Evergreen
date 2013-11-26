@@ -1,3 +1,1171 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 6fda90189ec7aaf0cc832fcf0a0a7d8925af0eb8
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Nov 26 15:22:43 2013 -0500
+
+    Updating translations; Fixing make_release for ChangeLog generation
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	build/i18n/po/AutoFieldWidget.js/fi-FI.po
+1	1	build/i18n/po/Searcher.js/fi-FI.po
+1	1	build/i18n/po/TranslatorPopup.js/fi-FI.po
+1	1	build/i18n/po/User.js/fi-FI.po
+2	4	build/i18n/po/XULTermLoader.js/XULTermLoader.js.pot
+1	1	build/i18n/po/XULTermLoader.js/fi-FI.po
+15	37	build/i18n/po/acq.js/acq.js.pot
+1	1	build/i18n/po/admin.properties/fi-FI.po
+1	1	build/i18n/po/auth.properties/fi-FI.po
+1	1	build/i18n/po/authority.js/fi-FI.po
+2	4	build/i18n/po/capture.js/capture.js.pot
+1	1	build/i18n/po/capture.js/fi-FI.po
+1	1	build/i18n/po/cat.properties/fi-FI.po
+2	2	build/i18n/po/circ.properties/circ.properties.pot
+1	1	build/i18n/po/circ.properties/fi-FI.po
+1	1	build/i18n/po/common.properties/fi-FI.po
+7	19	build/i18n/po/conify.js/conify.js.pot
+1	1	build/i18n/po/conify.js/fi-FI.po
+691	691	build/i18n/po/db.seed/db.seed.pot
+1	1	build/i18n/po/db.seed/fi-FI.po
+1	1	build/i18n/po/fm_IDL.dtd/fi-FI.po
+17	17	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+1	1	build/i18n/po/ils_events.xml/fi-FI.po
+298	358	build/i18n/po/ils_events.xml/ils_events.xml.pot
+1	1	build/i18n/po/lang.dtd/fi-FI.po
+6	2	build/i18n/po/lang.dtd/lang.dtd.pot
+1	1	build/i18n/po/offline.properties/fi-FI.po
+1	1	build/i18n/po/opac.dtd/fi-FI.po
+1	1	build/i18n/po/opac.js/fi-FI.po
+4	11	build/i18n/po/opac.js/opac.js.pot
+1	1	build/i18n/po/patron.properties/fi-FI.po
+1	1	build/i18n/po/pickup_and_return.js/fi-FI.po
+1	1	build/i18n/po/pull_list.js/fi-FI.po
+1	1	build/i18n/po/register.js/fi-FI.po
+10	11	build/i18n/po/register.js/register.js.pot
+1	1	build/i18n/po/reports.dtd/fi-FI.po
+1	1	build/i18n/po/reports.js/fi-FI.po
+1	1	build/i18n/po/reservation.js/fi-FI.po
+2	5	build/i18n/po/reservation.js/reservation.js.pot
+1	1	build/i18n/po/selfcheck.js/fi-FI.po
+3	8	build/i18n/po/selfcheck.js/selfcheck.js.pot
+1	1	build/i18n/po/serial.properties/fi-FI.po
+6	6	build/i18n/po/tpac/tpac.pot
+1	1	build/tools/make_release
+
+commit 175315f314d1eabf8871c75a9a2f2c22264f327b
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Nov 26 14:57:46 2013 -0500
+
+    Updating PO files from launchpad
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	build/i18n/po/AutoFieldWidget.js/fi-FI.po
+9	9	build/i18n/po/Searcher.js/es-ES.po
+1	1	build/i18n/po/Searcher.js/fi-FI.po
+1	1	build/i18n/po/TranslatorPopup.js/fi-FI.po
+1	1	build/i18n/po/User.js/fi-FI.po
+1	1	build/i18n/po/XULTermLoader.js/fi-FI.po
+13	11	build/i18n/po/admin.properties/es-ES.po
+1	1	build/i18n/po/admin.properties/fi-FI.po
+1	1	build/i18n/po/auth.properties/fi-FI.po
+21	21	build/i18n/po/authority.js/es-ES.po
+1	1	build/i18n/po/authority.js/fi-FI.po
+1	1	build/i18n/po/capture.js/fi-FI.po
+16	14	build/i18n/po/cat.properties/cs-CZ.po
+15	13	build/i18n/po/cat.properties/de-DE.po
+15	13	build/i18n/po/cat.properties/en-CA.po
+15	13	build/i18n/po/cat.properties/en-GB.po
+53	42	build/i18n/po/cat.properties/es-ES.po
+18	15	build/i18n/po/cat.properties/fi-FI.po
+15	13	build/i18n/po/cat.properties/fr-CA.po
+15	13	build/i18n/po/cat.properties/hy-AM.po
+15	13	build/i18n/po/cat.properties/oc-FR.po
+15	13	build/i18n/po/cat.properties/pt-BR.po
+15	13	build/i18n/po/cat.properties/ru-RU.po
+7	13	build/i18n/po/cat.properties/tr-TR.po
+27	6	build/i18n/po/circ.properties/cs-CZ.po
+22	4	build/i18n/po/circ.properties/de-DE.po
+27	6	build/i18n/po/circ.properties/en-CA.po
+27	6	build/i18n/po/circ.properties/en-GB.po
+34	13	build/i18n/po/circ.properties/es-ES.po
+30	8	build/i18n/po/circ.properties/fi-FI.po
+26	5	build/i18n/po/circ.properties/fr-CA.po
+27	6	build/i18n/po/circ.properties/hy-AM.po
+22	4	build/i18n/po/circ.properties/oc-FR.po
+27	6	build/i18n/po/circ.properties/pt-BR.po
+26	5	build/i18n/po/circ.properties/ru-RU.po
+22	4	build/i18n/po/circ.properties/tr-TR.po
+12	4	build/i18n/po/common.properties/cs-CZ.po
+11	3	build/i18n/po/common.properties/de-DE.po
+11	3	build/i18n/po/common.properties/en-CA.po
+11	3	build/i18n/po/common.properties/en-GB.po
+17	9	build/i18n/po/common.properties/es-ES.po
+21	12	build/i18n/po/common.properties/fi-FI.po
+11	3	build/i18n/po/common.properties/fr-CA.po
+11	3	build/i18n/po/common.properties/hy-AM.po
+11	3	build/i18n/po/common.properties/oc-FR.po
+11	3	build/i18n/po/common.properties/pt-BR.po
+11	3	build/i18n/po/common.properties/ru-RU.po
+6	6	build/i18n/po/conify.js/es-ES.po
+1	1	build/i18n/po/conify.js/fi-FI.po
+9543	3073	build/i18n/po/db.seed/cs-CZ.po
+8455	2323	build/i18n/po/db.seed/de-DE.po
+8753	2722	build/i18n/po/db.seed/en-CA.po
+8761	2795	build/i18n/po/db.seed/en-GB.po
+8438	2405	build/i18n/po/db.seed/es-ES.po
+9624	3331	build/i18n/po/db.seed/fi-FI.po
+9764	3798	build/i18n/po/db.seed/fr-CA.po
+9808	3842	build/i18n/po/db.seed/hy-AM.po
+8480	2343	build/i18n/po/db.seed/oc-FR.po
+9317	3270	build/i18n/po/db.seed/pt-BR.po
+9164	3120	build/i18n/po/db.seed/ru-RU.po
+7960	1826	build/i18n/po/db.seed/tr-TR.po
+2679	2480	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+2637	2444	build/i18n/po/fm_IDL.dtd/de-DE.po
+2670	2468	build/i18n/po/fm_IDL.dtd/en-CA.po
+2669	2467	build/i18n/po/fm_IDL.dtd/en-GB.po
+2643	2450	build/i18n/po/fm_IDL.dtd/es-ES.po
+2731	2528	build/i18n/po/fm_IDL.dtd/fi-FI.po
+2639	2446	build/i18n/po/fm_IDL.dtd/fr-CA.po
+2670	2468	build/i18n/po/fm_IDL.dtd/hy-AM.po
+2636	2443	build/i18n/po/fm_IDL.dtd/oc-FR.po
+2655	2462	build/i18n/po/fm_IDL.dtd/pt-BR.po
+2655	2462	build/i18n/po/fm_IDL.dtd/ru-RU.po
+2634	2441	build/i18n/po/fm_IDL.dtd/tr-TR.po
+270	257	build/i18n/po/ils_events.xml/cs-CZ.po
+267	254	build/i18n/po/ils_events.xml/de-DE.po
+269	256	build/i18n/po/ils_events.xml/en-CA.po
+269	256	build/i18n/po/ils_events.xml/en-GB.po
+286	270	build/i18n/po/ils_events.xml/es-ES.po
+272	258	build/i18n/po/ils_events.xml/fi-FI.po
+270	257	build/i18n/po/ils_events.xml/fr-CA.po
+269	256	build/i18n/po/ils_events.xml/hy-AM.po
+269	256	build/i18n/po/ils_events.xml/pt-BR.po
+269	256	build/i18n/po/ils_events.xml/ru-RU.po
+827	16	build/i18n/po/lang.dtd/ar-AR.po
+900	38	build/i18n/po/lang.dtd/cs-CZ.po
+853	21	build/i18n/po/lang.dtd/de-DE.po
+883	30	build/i18n/po/lang.dtd/en-CA.po
+882	29	build/i18n/po/lang.dtd/en-GB.po
+856	30	build/i18n/po/lang.dtd/es-ES.po
+1485	629	build/i18n/po/lang.dtd/fi-FI.po
+871	27	build/i18n/po/lang.dtd/fr-CA.po
+883	30	build/i18n/po/lang.dtd/hy-AM.po
+835	18	build/i18n/po/lang.dtd/oc-FR.po
+877	27	build/i18n/po/lang.dtd/pt-BR.po
+877	27	build/i18n/po/lang.dtd/ru-RU.po
+843	20	build/i18n/po/lang.dtd/tr-TR.po
+8	4	build/i18n/po/offline.properties/cs-CZ.po
+7	3	build/i18n/po/offline.properties/de-DE.po
+7	3	build/i18n/po/offline.properties/en-CA.po
+7	3	build/i18n/po/offline.properties/en-GB.po
+59	44	build/i18n/po/offline.properties/es-ES.po
+10	5	build/i18n/po/offline.properties/fi-FI.po
+7	3	build/i18n/po/offline.properties/fr-CA.po
+7	3	build/i18n/po/offline.properties/hy-AM.po
+9	5	build/i18n/po/offline.properties/oc-FR.po
+7	3	build/i18n/po/offline.properties/pt-BR.po
+7	3	build/i18n/po/offline.properties/ru-RU.po
+7	3	build/i18n/po/offline.properties/tr-TR.po
+16	10	build/i18n/po/opac.dtd/es-ES.po
+7	6	build/i18n/po/opac.dtd/fi-FI.po
+6	5	build/i18n/po/opac.js/es-ES.po
+1	1	build/i18n/po/opac.js/fi-FI.po
+41	18	build/i18n/po/patron.properties/cs-CZ.po
+38	14	build/i18n/po/patron.properties/de-DE.po
+39	15	build/i18n/po/patron.properties/en-CA.po
+39	15	build/i18n/po/patron.properties/en-GB.po
+44	32	build/i18n/po/patron.properties/es-ES.po
+44	19	build/i18n/po/patron.properties/fi-FI.po
+38	14	build/i18n/po/patron.properties/fr-CA.po
+39	15	build/i18n/po/patron.properties/hy-AM.po
+18	9	build/i18n/po/patron.properties/oc-FR.po
+38	14	build/i18n/po/patron.properties/pt-BR.po
+38	14	build/i18n/po/patron.properties/ru-RU.po
+23	11	build/i18n/po/patron.properties/tr-TR.po
+21	20	build/i18n/po/pickup_and_return.js/es-ES.po
+1	1	build/i18n/po/pickup_and_return.js/fi-FI.po
+6	6	build/i18n/po/pull_list.js/es-ES.po
+1	1	build/i18n/po/pull_list.js/fi-FI.po
+30	23	build/i18n/po/register.js/cs-CZ.po
+29	22	build/i18n/po/register.js/de-DE.po
+29	22	build/i18n/po/register.js/en-CA.po
+29	22	build/i18n/po/register.js/en-GB.po
+36	29	build/i18n/po/register.js/es-ES.po
+32	24	build/i18n/po/register.js/fi-FI.po
+29	22	build/i18n/po/register.js/fr-CA.po
+29	22	build/i18n/po/register.js/hy-AM.po
+29	22	build/i18n/po/register.js/oc-FR.po
+30	23	build/i18n/po/register.js/pt-BR.po
+29	22	build/i18n/po/register.js/ru-RU.po
+23	20	build/i18n/po/register.js/tr-TR.po
+20	8	build/i18n/po/reports.dtd/es-ES.po
+8	7	build/i18n/po/reports.dtd/fi-FI.po
+1	1	build/i18n/po/reports.js/fi-FI.po
+1	1	build/i18n/po/reservation.js/fi-FI.po
+62	30	build/i18n/po/selfcheck.js/cs-CZ.po
+41	25	build/i18n/po/selfcheck.js/de-DE.po
+60	29	build/i18n/po/selfcheck.js/en-CA.po
+60	29	build/i18n/po/selfcheck.js/en-GB.po
+67	42	build/i18n/po/selfcheck.js/es-ES.po
+63	31	build/i18n/po/selfcheck.js/fi-FI.po
+60	29	build/i18n/po/selfcheck.js/fr-CA.po
+60	29	build/i18n/po/selfcheck.js/hy-AM.po
+44	25	build/i18n/po/selfcheck.js/oc-FR.po
+60	29	build/i18n/po/selfcheck.js/pt-BR.po
+40	24	build/i18n/po/selfcheck.js/ru-RU.po
+25	13	build/i18n/po/serial.properties/cs-CZ.po
+15	3	build/i18n/po/serial.properties/de-DE.po
+15	3	build/i18n/po/serial.properties/en-CA.po
+15	3	build/i18n/po/serial.properties/en-GB.po
+19	7	build/i18n/po/serial.properties/es-ES.po
+31	18	build/i18n/po/serial.properties/fi-FI.po
+15	3	build/i18n/po/serial.properties/fr-CA.po
+15	3	build/i18n/po/serial.properties/hy-AM.po
+15	3	build/i18n/po/serial.properties/oc-FR.po
+15	3	build/i18n/po/serial.properties/pt-BR.po
+15	3	build/i18n/po/serial.properties/tr-TR.po
+5	5	build/i18n/po/vandelay.dtd/es-ES.po
+
+commit 68e39c83414b8fbb94eedaa3df95e5097b491095
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Nov 13 18:15:21 2013 -0500
+
+    Fix boolean lists; Better atom regex; Caching
+    
+    First, we didn't need to make $last_type local, and it broke explicit
+    grouping anyway.  That's removed, and we now reset that (and a few more
+    like it) at calls to the top level parse() method.  This introduces a
+    situation where a long list of booleans could cause query plan problems,
+    so we limit the plan depth to 40 (20 ||'d conditions).
+    
+    Second, we are smarter about finding the boundary of atoms.  Previous
+    to this commit, and curly brace could send the parser into a tailspin
+    from which it would not recover.  Now we use alternation instead of
+    a character class, which is much safer with the default multi-character
+    float syntax specifier.
+    
+    Third, as a catch-all, if we can't parse the remained of a query we
+    now simply say so (when in debug mode) and go away, instead of risking
+    an infinite loop.  We do this via a final, unqualified "else" clause
+    in decompose().
+    
+    Finally, instead of building 10+ regexp objects on each query parse,
+    cache them per QP subclass and reuse them.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+117	94	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/QueryParser.pm
+2	0	Open-ILS/src/support-scripts/test-scripts/query_tests.pl
+
+commit 3aba1ebc23c891841e72befcd6770879172909a6
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Nov 26 12:44:41 2013 -0500
+
+    Push 0848 into the baseline schema
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+44	34	Open-ILS/src/sql/Pg/011.schema.authority.sql
+
+commit 4cdd332845de84370015c843f74bb138ae9bd21a
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Nov 25 10:14:08 2013 -0500
+
+    Re-apply the changes provided by  0802 for backport
+    
+    Preserve record order of subfields for authority heading extraction
+    
+    When extracting headings from authority records we currently read the
+    subfields of a tag in configuration order.  We should, instead, read
+    them in record order, to preserve the desired sorting properties that
+    the cataloger has encoded in the record.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+170	0	Open-ILS/src/sql/Pg/upgrade/0848.function.authority-sf-file-order-again.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0848.function.authority-sf-file-order-again.sql
+
+commit 0d87a3253106f3110a325c290d35ea1a62dcc872
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Nov 22 14:55:26 2013 -0500
+
+    LP#1254146 gracefully handle custom trees sans entries
+    
+    Avoid references to custom tree entries when no tree entries for a
+    custom tree exist.  Prevents:
+    
+    egweb: template error: undef error - Can't call method "org_unit" on an
+    undefined value at
+    /usr/local/share/perl/5.10.1/OpenILS/WWW/EGCatLoader/Util.pm line 185.\n
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Util.pm
+
+commit da75e94d037be0de04469b9140770a5201c1a8b5
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Oct 3 17:54:03 2013 -0400
+
+    Relax MFHD subfield 'a' requirement for caption/patterns
+    
+    If going by the book, every caption/pattern field would have a
+    subfield 'a', since the data from subfield 'i' would be moved to
+    'a' if 'a' was empty.  Since that is arcane, and our own wizards
+    used to bend this rule, let's make some minor adjustments to our
+    expectations:
+    
+    1) When calculating date progression, don't expect there to be an 'a'
+    subfield which needs to be "carried" into.
+    2) When determining whether a field is 'open-ended', check the first
+    availabile enum/chron subfield rather than hard-coding the check to
+    'a'.
+    
+    These changes do not affect the display formatters, so strings
+    generated from 'a'-less caption/pattern combos are not exactly right,
+    but they suffice.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+5	1	Open-ILS/src/perlmods/lib/OpenILS/Utils/MFHD/Caption.pm
+3	1	Open-ILS/src/perlmods/lib/OpenILS/Utils/MFHD/Holding.pm
+
+commit 77256cc92f1d97484fd4e850f3942b6656582a5f
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Nov 20 10:57:42 2013 -0500
+
+    Pulling these into the base of 2.4
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+196	0	Open-ILS/src/sql/Pg/version-upgrade/2.4.1-2.4.2-upgrade-db.sql
+21	0	Open-ILS/src/sql/Pg/version-upgrade/2.4.2-2.4.3-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.4.1-2.4.2-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.4.2-2.4.3-upgrade-db.sql
+
+commit 65a6d603736a8e8e7a8b91ea3c88b192ce8460e5
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Nov 15 17:06:53 2013 -0500
+
+    LP#1251774 exit and alert on multiple payments per xact
+    
+    If more than one payment for a transaction is received, exit the API
+    call early and return a MULTIPLE_PAYMENTS_FOR_XACT event.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+4	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Money.pm
+
+commit 3c4aa090a4e177bc55158b4b7d368654b91fa1f6
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Nov 15 16:40:36 2013 -0500
+
+    Enforce one-payment-per-xact-per-call
+    
+    There is no legitimate reason for a transaction to receive more than
+    one payment per call to open-ils.circ open-ils.circ.money.payment,
+    but we have seen the staff client generate such a data structure. This
+    leads to seemingly duplicate payments, and is bad all around.  So,
+    we will enforce the restriction by taking only the first payment per
+    xact in the list of payments.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+10	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Money.pm
+
+commit ccc0a8dbcef48ddd19ff94f8a72848bed11612e0
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Fri Nov 8 15:02:53 2013 -0500
+
+    Replace erroneous calls to $e->retrieve_authority_record($rec_id).
+    
+    On lines 153 and 175 of OpenILS::Application::Cat::Authority calls
+    like the above should be $e->retrieve_authority_record_entry($rec_id).
+    This branch replaces the two misspelled calls with the proper ones.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    
+    Conflicts [just whitespace]:
+    	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat/Authority.pm
+
+4	4	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat/Authority.pm
+
+commit ae6aadb3adfacf101e2d16d233a44832c971398a
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Thu Sep 12 12:02:15 2013 -0400
+
+    LP1093856 fix Fast Item Add with Z39.50 import
+    
+    The first time I tried this fix I ran afoul of
+    https://bugs.launchpad.net/evergreen/+bug/787561
+    
+    But a second attempt worked.  So I didn't kill
+    two birds with one stone, but this should take
+    care of 1093856.
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+12	3	Open-ILS/xul/staff_client/server/cat/marcedit.js
+
+commit 441b3f949b9362573e89cdcfaf1a8c197a2ba46b
+Author: Liam Whalen <whalen.ld@gmail.com>
+Date:   Sun Oct 6 22:11:56 2013 -0700
+
+    LP#1037171 Removed Expert Search paramters from subject links
+    
+    After performing an Expert Search, if a user visits a record and then
+    clicks on one of the author, subject, or series search links within
+    that record, then they are given the results of the Expert Search again
+    instead of the relevant subject or author search.
+    
+    This is happening because the Expert Search parameters are retained in
+    the URLs via the TT2 MACRO mkurl.  In particular, the tag parameter is
+    used to identify an Expert Search, so if it is present in a URL, than an
+    Expert Search will be attempted regardless of which other paramaters are
+    in the URL.
+    
+    To fix this, I created two varialbes within header.tt2 above the
+    definition of mkurl.  These variables group common URL paramters for
+    Expert Searches and General Search parameters together.  These variables
+    can be used wherever mkurl is used to strip out unneeded search
+    paramters.
+    
+    There is a third variable that is already present within many of these
+    pages named stop_parms.  While I initially tried to modify this
+    variable, I found that there are some instances where the general search
+    parameters should be retained while the Expert Search parameters must go.
+    
+    This commit uses these three variables togehter as input into the third
+    arugment of the mkurl MACRO.  The third arugment specifies which
+    paramtes to remove from the previous URL before making a new URL based
+    on the pervious URL.
+    
+    I also added the query parameter to the Place Hold's hold_source_page
+    URL variable.  I did this, so that the query terms would be preserved
+    once the user is done placing the hold or decides to cancle the placing
+    of the hold.
+    
+    As well, I used the new variables to remove Expert Search paramters
+    from the Advanced Search links on the results and record pages.
+    
+    Signed-off-by: Liam Whalen <whalen.ld@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+4	0	Open-ILS/src/templates/opac/parts/header.tt2
+1	1	Open-ILS/src/templates/opac/parts/record/authors.tt2
+1	1	Open-ILS/src/templates/opac/parts/record/series.tt2
+1	1	Open-ILS/src/templates/opac/parts/record/subjects.tt2
+2	2	Open-ILS/src/templates/opac/parts/result/table.tt2
+1	1	Open-ILS/src/templates/opac/parts/searchbar.tt2
+1	1	Open-ILS/src/templates/opac/results.tt2
+
+commit ff1df8ea5ca2598c84f1505309b5ceeee893a9df
+Author: Steven Callender <stevecallender@esilibrary.com>
+Date:   Thu Nov 14 15:42:12 2013 -0500
+
+    LP1251424 - Fix for submit button when placing holds in staff client
+    
+    I've moved the initializing of the cur_hold_barcode variable
+    to within the function rather than floating outside of it.
+    This seemed to fix an intermittent issue where the submit
+    button would not become activatable when first going to the
+    place hold screen via the staff client. To create the hold,
+    ths user had to cycle through the "Place hold by patron barcode"
+    option and then back to "Place hold for me" option.
+    
+    It looked like behind the scenes for certain org units that
+    variable would not be set and the button will not open until
+    it at least has something. This causes it to be set on the initial
+    loading of the screen.
+    
+    Signed-off-by: Steven Callender <stevecallender@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/web/js/ui/default/opac/staff.js
+
+commit 4c178f7dcd9bdb7d148edcc94e83ecb2979ce663
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Mon Jul 22 14:30:04 2013 -0400
+
+    lp1012237 HOLD_ITEM_CHECKED_OUT display
+    
+    Added a definition to the HOLD_ITEM_CHECKED_OUT event in ils_events.xml.
+    Trying to be generic between the opac and the staff client the message
+    reads, "The item you have attempted to place on hold is already checked
+    out to the requestor."
+    
+    [LFW: I made a tiny spelling change to be consistent with other
+    appearances in Evergreen of the term "requestor".]
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    
+    Conflicts:
+    	Open-ILS/src/extras/ils_events.xml
+
+3	4	Open-ILS/src/extras/ils_events.xml
+
+commit 58e051181ea229d3260d4dd1483bb359904623e5
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Mon Oct 14 17:28:07 2013 -0400
+
+    Acq: Improvements to account-matching incoming EDI messages
+    
+    The way the EDI fetcher works gives us a problem. That process iterates
+    over EDI accounts for which it has FTP host and credential information,
+    downloads documents from each of those sites, and files the messages
+    within those documents under the EDI account from which the login
+    credentials came. The problem is that in practice the exact same host
+    and login information is used by multiple accounts under the same
+    vendor, and files relating to these sub-accounts are commingled, so that
+    you can't make the decision about which messages should be filed under
+    which accounts based on the name of the document or its location. You
+    have to make that decision later, based on its contents.
+    
+    We are already incompletely doing this, distinguishing between
+    sub-accounts under which we could file our messages when the vendor
+    specifies the buyer's SAN next to the specific sub-account number *and*
+    those sub-accounts belong to different Evergreen org units. We still
+    need ways to distinguish in other cases.
+    
+    This will do what is natural for at least one vendor, and match the
+    message content against the vendacct field of the acq.edi_account table.
+    
+    *Also,*
+    
+    We were re-retrieving the working acq.edi_message row from the database
+    before writing it, throwing away possible changes to the object in hand
+    made by O::A::Acq::EDI::process_parsed_msg(). We should only do that in
+    the case where that function has raised an exception.
+    
+    We were doing the same kind of thing in another place actually inside
+    process_parsed_msg() where we set the edi_message's purchase_order field
+    based on the first lineitem encountered if the message itself didn't
+    specify a valid PO identifier.
+    
+    This supports making account-correction work for ORDRSP messages in
+    addition to INVOIC messages.
+    
+    We also propagate that same correction to the provider and shipper
+    fields of any invoices that get created from said edi_message.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+56	13	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/EDI.pm
+
+commit 53b95bb34f395848ef7da78e6b6497eb269bcd63
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Wed Nov 6 12:07:07 2013 -0500
+
+    Don't auto-logout TPAC in staff client
+    
+    Wrap the meta refresh in TPAC within a check for ctx.is_staff, so
+    that idle TPAC tabs will not log out when running within the staff
+    client.
+    
+    This is intended to resolve the primary cause of symptoms mentioned
+    in bug 1036318 "OPAC timeout within the client"
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	1	Open-ILS/src/templates/opac/parts/base.tt2
+
+commit d68a509d7c7de473da9f24b7f992979ee5d320d2
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Fri Nov 1 16:04:59 2013 -0400
+
+    Fix formatting in upgrade instructions
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+2	4	docs/installation/server_upgrade.txt
+
+commit a72b5ea9ff4b332a78f93a4cffb45ad77e910246
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Nov 1 16:45:09 2013 -0400
+
+    Stamping 0847: improved auth overlay generation
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+94	0	Open-ILS/src/sql/Pg/upgrade/0847.function.auth_overlay_generator.sql
+0	94	Open-ILS/src/sql/Pg/upgrade/XXXX.function.auth_overlay_generator.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0847.function.auth_overlay_generator.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.auth_overlay_generator.sql
+
+commit 0089afe08d72b777bdc7696e883795021b266d46
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Nov 1 13:57:35 2013 -0400
+
+    Add indicators; Remove junk tags
+    
+    First, we were not supplying authority tag indicators when generating the
+    overlay template.  The xml merge function does not currently transfer
+    indicators, but we need to do this anyway because newer MARC::Field version
+    balk at fields with no indicators.
+    
+    Second, PG 9.1+ adds wrapper tags to xml content that is passed to XMLELEMENT
+    as an array.  So, we'll use XMLAGG to get around that.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+15	2	Open-ILS/src/sql/Pg/011.schema.authority.sql
+94	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.auth_overlay_generator.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.auth_overlay_generator.sql
+
+commit e54bbbbe0c0462cbb07612f16b6c92c015ba47e4
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Oct 29 12:15:56 2013 -0400
+
+    Add --refresh mode to completely rewrite linking
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+36	22	Open-ILS/src/support-scripts/authority_control_fields.pl.in
+
+commit cbff8b11d02118cbb0be74549eb1e2331e9b0a8f
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Oct 29 11:37:36 2013 -0400
+
+    Use all subfield values to link authority records to bibs
+    
+    Given an Evergreen instance with two authority records loaded, one
+    being a more specific than the other via a repeated subdivision subfield,
+    we must make sure that we use all the bib-supplied subfield values when
+    attempting to auto-link to the correct authority.  Otherwise, the "shorter"
+    authority record may be selected as appropriate, and data in the bib record
+    would be lost.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+3	3	Open-ILS/src/support-scripts/authority_control_fields.pl.in
+
+commit f0e75d70147afc087af0d63a3f70163a409971c5
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Oct 14 09:21:58 2013 -0700
+
+    LP#1086458: remove unecessary anonymous hashes when calling xulG.set_tab()
+    
+    This follows up on observations made by Steven Chan that
+    suggests that even the act of creating an anonymous hash and
+    passing it to a global function can cause (I assume) JavaScript
+    execution contexts to be leaked.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/xul/staff_client/chrome/content/main/menu.js
+
+commit 2c03e0d8481d043f68b83894550d4a7030b08860
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Oct 14 08:47:49 2013 -0700
+
+    LP#1086458: invoke new 'refresh_checkout' event
+    
+    This implements using the new custom event rather than
+    xulG.set_tab() to refresh a refresh of the checkout tab. It
+    also removes use of a callback function to request the tab
+    refresh in favor of a simple setTimeout().
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+15	26	Open-ILS/xul/staff_client/server/circ/checkout.js
+
+commit b79032ac05dcfa7a6d955c826579a70d281f50c9
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Sep 26 13:05:26 2013 -0700
+
+    LP#1086458: define custom event for refreshing the checkout page
+    
+    Using a custom event handled by a chrome event handler rather
+    than calling xulG.set_tab() directly avoids any possibility of
+    leaking objects and executation contexts from the code that's
+    requesting refresh of the checkout page.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+14	0	Open-ILS/xul/staff_client/chrome/content/main/menu.js
+
+commit 0c07c042166c8114cf38359de60ac83edcabff39
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Oct 14 08:23:23 2013 -0700
+
+    LP#1086458: convert last-print information hash to JSON string before caching
+    
+    By serializing the printing message and context information to a
+    JSON string before caching it, we avoid inadvertantly dragging in
+    things like Javascript execution contexts and possibly references
+    to objects created by the checkout interface.  This was contributing
+    to the staff client memory leaks observed during receipt printing.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+5	4	Open-ILS/xul/staff_client/chrome/content/util/print.js
+
+commit 30254da66050e4a6ba1262b62391eb016e83a72f
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Oct 30 15:33:28 2013 -0400
+
+    Stamping 0846: overlay subfield order fix
+    
+    Respect source XML subfield order during overlay
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+83	0	Open-ILS/src/sql/Pg/upgrade/0846.function.vand-add_field.sql
+0	83	Open-ILS/src/sql/Pg/upgrade/XXXX.function.vand-add_field.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0846.function.vand-add_field.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.vand-add_field.sql
+
+commit bcef2183a73035ef13e76a1ee19594452c224f83
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Oct 25 12:15:25 2013 -0400
+
+    Respect source XML subfield order during overlay
+    
+    When adding specific subfields to a field as described by an add
+    or replace rule we were adding them in rule-order.  Instead, they
+    should be added in source-XML physical order.  This commit does
+    that.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+3	2	Open-ILS/src/sql/Pg/012.schema.vandelay.sql
+83	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.vand-add_field.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.vand-add_field.sql
+
+commit 4ea0ee9e445714d24e24d20abcd44f5516f56b29
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Mon Oct 21 16:37:22 2013 -0400
+
+    Handle Missing copy status (4) in checkin_via_barcode2 in circ.util.js.
+    
+    We treate just like available and reshelving.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	0	Open-ILS/xul/staff_client/server/circ/util.js
+
+commit b52dd5fce7bae16c3413ec5e79bfce11180c88e3
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Oct 24 16:10:00 2013 -0400
+
+    Make sure that # can be used in auth browse
+    
+    Because we use URLs to call the SuperCat browse API, we need to
+    be more careful about encoding parameters.  #, in particular, breaks
+    auth browse because it's seen as a URL fragment separator by the browser
+    and web server.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/web/js/ui/default/cat/authority/list.js
+
+commit 3dc127fb66962e2f4bff7e84ed1b4d0c8e00308e
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Oct 24 09:54:49 2013 -0400
+
+    RDA / TPAC: Add 264 for pubinfo graphic 880 lookups
+    
+    Per https://bugs.launchpad.net/evergreen/+bug/1243746 the publication
+    info in search results was coming up empty for RDA records because they
+    use 264 for publication info instead of 260.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	0	Open-ILS/src/templates/opac/parts/misc_util.tt2
+
+commit ff4f67aecca40f3a8e69d35b8459b565a1d87abc
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Oct 16 16:13:50 2013 -0400
+
+    Serials Docs: Improve format, fix typos, and update
+    
+    This commit makes several minor changes to the Serials doc files, mostly
+    changes in formatting or corrections of bugs/typos. This list covers
+    most of the changes:
+    
+        - Add row on 'receiving' to Serials interfaces comparison table
+        - Improve formatting of actionable items (using bold and arrows),
+          e.g. Click on *First Menu* -> *Next Menu* -> *Last Menu*
+        - Standardize formatting of form field names (using italics)
+        - Improve unclear wording
+        - Correct an outdated description of copy template 'status' field
+          (changed before 2.3)
+        - Change heading level for a subsection
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+2	1	docs/serials/A-intro.txt
+23	25	docs/serials/B-copy_template.txt
+39	39	docs/serials/C-subscription-SCV.txt
+3	3	docs/serials/D-subscription-ASCV.txt
+2	2	docs/serials/E-edit_subscriptions.txt
+23	23	docs/serials/F-Receiving.txt
+3	3	docs/serials/H-holdings_statements.txt
+
+commit b8d0ec9299bf079984619b0b932361413dd94f02
+Author: Ben Ostrowsky <sylvar@gmail.com>
+Date:   Tue Oct 15 16:52:27 2013 -0400
+
+    LP#1240207: Spellchecked the docs
+    
+    Signed-off-by: Ben Ostrowsky <sylvar@gmail.com>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+1	1	docs/QueryParser_Changes.txt
+7	7	docs/RELEASE_NOTES_2_2.txt
+1	1	docs/RELEASE_NOTES_2_2_1.txt
+4	4	docs/RELEASE_NOTES_2_3.txt
+2	2	docs/RELEASE_NOTES_2_4.txt
+1	1	docs/RELEASE_NOTES_NEXT/README
+4	4	docs/TechRef/AutoSuggest/README
+1	1	docs/TechRef/Circ/custom-best-hold-selection.txt
+2	2	docs/TechRef/Flattener/design.txt
+1	1	docs/TechRef/JSONGrammar.xml
+1	1	docs/TechRef/JSONTutorial.xml
+9	9	docs/TechRef/Telephony/telephony-setup-guide.txt
+2	2	docs/TechRef/notify_csv.txt
+1	1	docs/acquisitions/introduction.txt
+4	4	docs/acquisitions/invoices.txt
+1	1	docs/acquisitions/selection_lists_po.txt
+3	3	docs/acquisitions/vandelay_acquisitions_integration.txt
+3	3	docs/admin/Org_Unit_Proximity_Adjustments.txt
+1	1	docs/admin/SMS_messaging.txt
+5	5	docs/admin/acquisitions_admin.txt
+2	2	docs/admin/authorities.txt
+1	1	docs/admin/booking-admin.txt
+1	1	docs/admin/circulation_limit_groups.txt
+1	1	docs/admin/lsa-statcat.txt
+1	1	docs/admin/restrict_Z39.50_sources_by_perm_group.txt
+2	2	docs/admin/staff_client-login.txt
+1	1	docs/admin/template_toolkit.txt
+1	1	docs/admin/user_activity_type.txt
+7	7	docs/admin/workstation_admin.txt
+1	1	docs/admin_initial_setup/describing_your_people.txt
+6	6	docs/admin_initial_setup/designing_your_catalog.txt
+2	2	docs/admin_initial_setup/migrating_patron_data.txt
+1	1	docs/admin_initial_setup/ordering_materials.txt
+1	1	docs/cataloging/batch_importing_MARC.txt
+1	1	docs/cataloging/conjoined_items.txt
+1	2	docs/cataloging/monograph_parts.txt
+1	1	docs/circulation/offline_mode.txt
+3	3	docs/development/intro_opensrf.txt
+1	1	docs/installation/server_installation.txt
+1	1	docs/installation/staff_client_installation.txt
+1	1	docs/installation/system_requirements.txt
+1	1	docs/opac/advanced_features.txt
+1	1	docs/opac/kids_opac.txt
+1	1	docs/opac/my_lists.txt
+2	2	docs/serials/C-subscription-SCV.txt
+2	2	docs/serials/D-subscription-ASCV.txt
+1	1	docs/serials/E-edit_subscriptions.txt
+1	1	docs/serials/Group_Serials_Issues_in_the_OPAC_2.2.txt
+1	1	docs/serials/H-holdings_statements.txt
+
+commit 211dcf5aea872bfbc0c36cd3ea6ca7da9c026db9
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Oct 21 11:12:06 2013 -0400
+
+    Fix "elfield" typo noted by Ben Ostrowsky
+    
+    Per sylvar in IRC and in
+    https://bugs.launchpad.net/evergreen/+bug/1240636, "elfield" should be
+    "selfield" (even though the code in question is currently inside an "#if
+    0" block and will never execute).
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	1	Open-ILS/src/c-apps/oils_sql.c
+
+commit d6688ef320cdeda5154ed1e374237688e79e3456
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Oct 14 16:07:17 2013 -0400
+
+    Fix typo in acq code to allow quick PO creation
+    
+    When using 'Actions for this Record'->'View/Place Orders', the
+    'Create Purchase Order' button dies due to an undefined variable,
+    'filter'.
+    
+    Looking at the commit which caused the problem, it seems like this
+    variable should have been 'state'.  Simple testing bears this out.
+    
+    Original change was part of:
+    LP1193095 lineitem batch actions sanity filters
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	1	Open-ILS/web/js/ui/default/acq/common/li_table.js
+
+commit 69416167a5da8dd3fa01187b81af771c0fde6d52
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Oct 14 15:24:39 2013 -0400
+
+    Fix integrated subscription editor record field
+    
+    When trying to edit a subscription using the new 'integrated' editor,
+    it foolishly tries to populate an unfiltered bre dropdown selector.
+    This works OK in test environments, but (as expected) fails miserably
+    with production-size data sets.
+    
+    The end result is that the dropdown either never populates, or takes
+    a really long time.  If the user saves before the dropdown loads, the
+    associated record ID is lost, and the subscription is no longer
+    properly associated with the record.
+    
+    To fix this, simply turn the dropdown into a disabled text input
+    instead, as the ability to edit this field would generally be more
+    harmful than it is necessary.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2	0	Open-ILS/web/js/ui/default/serial/subscription.js
+
+commit d7daf48b20186aa34aba7f6c3d68aa6f5fa8f940
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Sep 4 14:55:57 2013 -0400
+
+    Vandelay copy overlay call number merge
+    
+    When overlaying a copy, if the copy brings with it a new call number
+    which collides with an existing call number AND said copy is the only
+    copy linked to its (old) call number, merge the copy's (old) call
+    number into the (new) existing call number, i.e. the one we collided
+    with.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+48	9	Open-ILS/src/perlmods/lib/OpenILS/Application/Vandelay.pm
+
+commit 8a190982e8b0f557e7f8f2f52e5abdf4cb95f7a0
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Sep 18 15:38:08 2013 -0400
+
+    ACQ general search sort funds; display year
+    
+    * Display fiscal year next to fund code in the search fund selector.
+    * Sort by newest fiscal year first, followed by code
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+6	1	Open-ILS/web/js/ui/default/acq/search/unified.js
+
+commit c79d3f9bd62ed7fc21de920d950cc11f2893fb6d
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Oct 10 15:54:40 2013 -0400
+
+    Adding 0842 due to 2_3 backport issues
+    
+    A clean backport of 0841 was not possible due to partial schema
+    differences in the upgrade.  While we may have planned ahead better,
+    add a script just for 2_3 upgraders which ends up being a no-op for
+    2_4+
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+11	0	Open-ILS/src/sql/Pg/upgrade/0842.schema.redo_config_metabib_field_sequence_2_3_to_2_4.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0842.schema.redo_config_metabib_field_sequence_2_3_to_2_4.sql
+
+commit 9f655af1015f66e12b75a8584b03672d16272f50
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Oct 10 13:32:41 2013 -0400
+
+    Stamping 0841: make space in config.metabib_field sequence
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+53	0	Open-ILS/src/sql/Pg/upgrade/0841.schema.redo_config_metabib_field_sequence.sql
+0	53	Open-ILS/src/sql/Pg/upgrade/WWWW.schema.redo_config_metabib_field_sequence.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0841.schema.redo_config_metabib_field_sequence.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/WWWW.schema.redo_config_metabib_field_sequence.sql
+
+commit d660b73c828a49c5cb7ad61aa937dba018579ef5
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Oct 9 09:38:21 2013 -0400
+
+    Upgrade script for config.metabib_field sequence redo
+    
+    [LFW: s/DROP FUNCTION/DROP FUNCTION IF EXISTS/]
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+53	0	Open-ILS/src/sql/Pg/upgrade/WWWW.schema.redo_config_metabib_field_sequence.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/WWWW.schema.redo_config_metabib_field_sequence.sql
+
+commit 38a967b159327612ddfaaf4d210d7122e2a3e692
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Oct 9 09:29:01 2013 -0400
+
+    Make some FK constraints on config.metabib_field.id deferrable
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2	2	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+
+commit 9b803984418b52b2649a082dc5a3c6b80315499a
+Author: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+Date:   Thu Oct 10 13:07:43 2013 -0400
+
+    Documentation: Update upgrade instructions to 2.4.2
+    
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+13	12	docs/installation/server_upgrade.txt
+
+commit 9241a6a79be141059a7b0d8f2b328d36afb2e15a
+Author: Elliot V <evoris@slcconline.edu>
+Date:   Thu Oct 10 10:03:13 2013 -0400
+
+    Documentation: Update links in installation instructions.
+    
+    Addresses these bugs reported in launchpad:
+    https://bugs.launchpad.net/evergreen/+bug/1237781
+    https://bugs.launchpad.net/evergreen/+bug/1237785
+    
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+4	4	docs/installation/server_installation.txt
+
+commit 788ccaeeab5ea5a38bd48433f69ffe8c1368fb6d
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Thu May 9 15:33:04 2013 -0400
+
+    Set config.metabib_field_id_seq to 1000 in 950.data.seed-values.sql.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    
+    Boosted to 1000 as suggested by Dan Scott and seconded by Bill
+    Erickson.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+commit bb6b0992b760cf98ba7481ee704b3357cb89dba7
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Tue Oct 8 15:05:14 2013 -0400
+
+    Stamping upgrade script for 0840 circulation column picker data.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+24	0	Open-ILS/src/sql/Pg/upgrade/0840.data.circulation-policy-configuration.sql
+0	24	Open-ILS/src/sql/Pg/upgrade/XXXX.data.circulation-policy-configuration.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0840.data.circulation-policy-configuration.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.circulation-policy-configuration.sql
+
+commit 421e084dde54bf29b365a8c4646473e0e6f94a27
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Sun Aug 4 16:10:26 2013 -0400
+
+    lp1193487 Circulation Policy Column Picker not saving configuration.
+    
+    The circulation policy column picker is not saving its configuration
+    because ui.grid_columns.conify.config.circ_matrix_matchpoint is not
+    defined in the config.usr_setting_type table.  This updates the sql
+    to populate the table.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+17	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+24	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.circulation-policy-configuration.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.circulation-policy-configuration.sql
+
+commit bd6222b211c2a52fb907e77ea20dd2ad268d39ab
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Oct 7 16:10:04 2013 -0400
+
+    Stamping 0838 - remove bibcn normalizers
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+17	0	Open-ILS/src/sql/Pg/upgrade/0838.data.bibcn_index_normalizers.sql
+0	17	Open-ILS/src/sql/Pg/upgrade/XXXX.data.bibcn_index_normalizers.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0838.data.bibcn_index_normalizers.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.bibcn_index_normalizers.sql
+
+commit 2063fe5d7fe535a2ad752af373138321f4546b04
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Wed Oct 2 15:28:35 2013 -0400
+
+    The identifier|bibcn field is best served by having no normalizers applied
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+17	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.bibcn_index_normalizers.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.bibcn_index_normalizers.sql
+
+commit 958fc7cf67d38fd57f165a481f45d855e94c44f8
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Wed Oct 2 15:18:17 2013 -0400
+
+    OPAC: Make advanced search -> numeric search -> bib cn hone in on right target
+    
+    The bib call number search under the advanced search page's numeric
+    search pane was doing the wrong thing.  By thinking the search field
+    desired was called 'bib_cn' where it's actually called 'bibcn', it
+    generated searches that just fell back to the broader search class
+    'identifier'.  This would often find your matches, but would also find
+    too many records that *shouldn't* have been matches.
+    
+    Discovered with help from Erica Rohlfs and Mike Rylander.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/templates/opac/parts/advanced/numeric.tt2
+
+commit b40cf110454ef5f85611dabaaa4c93e71f85cef1
+Author: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+Date:   Thu Oct 3 15:48:19 2013 -0400
+
+    Documentation: Add migrating patron data from 2.1 docs.
+    
+    Converted and added documentation from http://docs.evergreen-ils.org/2.1/html/migratingpatrons.html.
+    
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+228	0	docs/admin_initial_setup/migrating_patron_data.txt
+2	0	docs/root.txt
+ create mode 100644 docs/admin_initial_setup/migrating_patron_data.txt
