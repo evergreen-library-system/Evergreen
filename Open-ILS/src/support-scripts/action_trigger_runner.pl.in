@@ -27,8 +27,8 @@ my $req_timeout = 10800;
 # DEFAULT values
 
 my $opt_lockfile      = '/tmp/action-trigger-LOCK';
-my $opt_osrf_config   = '/openils/conf/opensrf_core.xml';
-my $opt_custom_filter = '/openils/conf/action_trigger_filters.json';
+my $opt_osrf_config   = '@sysconfdir@/opensrf_core.xml';
+my $opt_custom_filter = '@sysconfdir@/action_trigger_filters.json';
 my $opt_max_sleep     = 3600;  # default to 1 hour
 my $opt_run_pending   = 0;
 my $opt_debug_stdout  = 0;
@@ -92,12 +92,12 @@ $0 : Create and process action/trigger events
 
     --osrf-config=<config_file>
         OpenSRF core config file.  Defaults to:
-            /openils/conf/opensrf_core.xml
+            @sysconfdir@/opensrf_core.xml
 
     --custom-filters=<filter_file>
         File containing a JSON Object which describes any hooks that should
         use a user-defined filter to find their target objects.  Defaults to:
-            /openils/conf/action_trigger_filters.json
+            @sysconfdir@/action_trigger_filters.json
 
     --run-pending
         Run pending events
@@ -132,10 +132,10 @@ $0 : Create and process action/trigger events
 
         # To run all pending events.  This is what you tell CRON to run at
         # regular intervals
-        perl $0 --osrf-config /openils/conf/opensrf_core.xml --run-pending
+        perl $0 --osrf-config @sysconfdir@/opensrf_core.xml --run-pending
 
         # To batch create all "checkout.due" events
-        perl $0 --osrf-config /openils/conf/opensrf_core.xml --hooks checkout.due
+        perl $0 --osrf-config @sysconfdir@/opensrf_core.xml --hooks checkout.due
 
 HELP
 }

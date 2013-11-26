@@ -32,8 +32,8 @@ OPTIONS:
 --verbose   give feedback on STDERR, including number of barcodes fetched
 --help      print this message
 
---config   =[file] core config file             default: /openils/conf/opensrf_core.xml
---requestor=[/path/to/requstor]                 default: /openils/bin/oils_requestor
+--config   =[file] core config file             default: @sysconfdir@/opensrf_core.xml
+--requestor=[/path/to/requstor]                 default: @sysconfdir@/bin/oils_requestor
 --hostname =[my.fqdn.com]                       default: hostfqdn()
                                                 (Only used by new style.)  
      May be necessary if hostfqdn does not match router configs.
@@ -49,7 +49,7 @@ OPTIONS:
 EXAMPLES:
 
 # Use the old style with a custom config
-$0 --config /openils/conf/test_core.xml --oldstyle
+$0 --config @sysconfdir@/conf/test_core.xml --oldstyle
 
 # Append just lost and barred barcodes to file, showing feedback on STDERR
 $0 --verbose --barcodes L=lost --barcodes B=barred >>file
@@ -62,8 +62,8 @@ END_OF_USAGE
 
 ### DEFAULTS
 
-my $config    = '/openils/conf/opensrf_core.xml';
-my $oils_reqr = '/openils/bin/oils_requestor';
+my $config    = '@sysconfdir@/opensrf_core.xml';
+my $oils_reqr = '@bindir@/oils_requestor';
 my $context   = 'opensrf';
 my $hostname  = hostfqdn();
 my $help      = 0;

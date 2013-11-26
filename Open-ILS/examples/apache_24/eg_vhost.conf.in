@@ -33,9 +33,10 @@ RedirectMatch 301 ^/opac/extras/slimpac/start.html$    /opac/en-US/extras/slimpa
 RedirectMatch 301 ^/opac/extras/slimpac/advanced.html$ /opac/en-US/extras/slimpac/advanced.html
 
 # ----------------------------------------------------------------------------------
-# Configure the gateway
+# Configure the gateway and translator
 # ----------------------------------------------------------------------------------
 OSRFGatewayConfig @sysconfdir@/opensrf_core.xml
+OSRFTranslatorConfig @sysconfdir@/opensrf_core.xml
 # Translator memcache server.  Default is localhost
 # OSRFTranslatorCacheServer 127.0.0.1:11211
 

@@ -33,8 +33,7 @@ supportscr = @srcdir@/support-scripts
 
 # Collect files to be used by multiple targets
 
-autojsbinscripts = @srcdir@/extras/autogen.sh \
-	@srcdir@/support-scripts/offline-blocked-list.pl 
+autojsbinscripts = @srcdir@/extras/autogen.sh
 
 # Decide which entities to build
 
@@ -71,7 +70,6 @@ core_scripts =   $(examples)/oils_ctl.sh \
 		 $(supportscr)/juv_to_adult.srfsh \
 		 $(supportscr)/thaw_expired_frozen_holds.srfsh \
 		 $(supportscr)/long-overdue-status-update.pl \
-		 $(supportscr)/action_trigger_runner.pl \
 		 $(supportscr)/purge_holds.srfsh \
 		 $(supportscr)/purge_circulations.srfsh \
 		 $(srcdir)/extras/eg_config \
@@ -141,10 +139,12 @@ gen_scripts = \
 	@srcdir@/extras/import/marc2bre.pl \
 	@srcdir@/extras/import/marc2sre.pl \
 	@srcdir@/extras/import/parallel_pg_loader.pl \
+	$(supportscr)/action_trigger_runner.pl \
 	$(supportscr)/authority_control_fields.pl \
 	$(supportscr)/authority_authority_linker.pl \
 	$(supportscr)/eg_db_config \
-	$(supportscr)/marc_export
+	$(supportscr)/marc_export \
+	$(supportscr)/offline-blocked-list.pl
 
 gen_docs = \
 	$(examples)/apache/eg.conf \
@@ -220,6 +220,10 @@ uninstall-hook:
 	$(do_subst) @srcdir@/extras/import/parallel_pg_loader.pl.in > "$@"
 	chmod 755 "$@"
 
+$(supportscr)/action_trigger_runner.pl: Makefile $(supportscr)/action_trigger_runner.pl.in
+	$(do_subst) $(supportscr)/action_trigger_runner.pl.in > "$@"
+	chmod 755 "$@"
+
 $(supportscr)/authority_authority_linker.pl: Makefile $(supportscr)/authority_authority_linker.pl.in
 	$(do_subst) $(supportscr)/authority_authority_linker.pl.in > "$@"
 	chmod 755 "$@"
@@ -234,6 +238,10 @@ $(supportscr)/eg_db_config: Makefile $(supportscr)/eg_db_config.in
 
 $(supportscr)/marc_export: Makefile $(supportscr)/marc_export.in
 	$(do_subst) $(supportscr)/marc_export.in > "$@"
+	chmod 755 "$@"
+
+$(supportscr)/offline-blocked-list.pl: Makefile $(supportscr)/offline-blocked-list.pl.in
+	$(do_subst) $(supportscr)/offline-blocked-list.pl.in > "$@"
 	chmod 755 "$@"
 
 $(examples)/apache/eg.conf: Makefile $(examples)/apache/eg.conf.in
@@ -281,7 +289,6 @@ ilscore-install:
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/long-overdue-status-update.pl'
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@bindir@/long-overdue-status-update.pl'
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/thaw_expired_frozen_holds.srfsh'
-	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/offline-blocked-list.pl'
 	sed -i 's|LOCALSTATEDIR|@localstatedir@|g' '$(DESTDIR)@bindir@/oils_ctl.sh'
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@bindir@/oils_ctl.sh'
 
