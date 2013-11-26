@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-15 19:42+0000\n"
+"POT-Creation-Date: 2013-09-26 18:17-0400\n"
 "PO-Revision-Date: 2013-04-01 14:21+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-04-02 05:19+0000\n"
-"X-Generator: Launchpad (build 16546)\n"
+"X-Launchpad-Export-Date: 2013-09-28 05:30+0000\n"
+"X-Generator: Launchpad (build 16774)\n"
 "X-Accelerator-Marker: &\n"
 
 #: staff.patron.summary.patron_net_access
@@ -511,28 +511,28 @@ msgid "Retrieving..."
 msgstr "Կանչվում է..."
 
 #: staff.patron.display.init.network_request.alert_message
-msgid "Alert message: \"%1$s\"<br/><br/>"
-msgstr "Զգուշացնող հաղորդում: \"%1$s\"<br/><br/>"
+msgid "Alert message: \"%1$s\""
+msgstr ""
 
 #: staff.patron.display.init.network_request.inactive_card
-msgid "Patron account retrieved with an INACTIVE card.<br/><br/>"
-msgstr "Ընթերցողի հաշիվը կանչված է ՈՉ ԱԿՏԻՎ տոմսով:<br/><br/>"
+msgid "Patron account retrieved with an INACTIVE card."
+msgstr ""
 
 #: staff.patron.display.init.network_request.account_barred
-msgid "Patron account is BARRED.<br/><br/>"
-msgstr "Ընթերցողի հաշիվը կասեցված է:<br/><br/>"
+msgid "Patron account is BARRED."
+msgstr ""
 
 #: staff.patron.display.init.network_request.account_inactive
-msgid "Patron account is INACTIVE.<br/><br/>"
-msgstr "Ընթերցողի հաշիվը ՈՉ ԱԿՏԻՎ է:<br/><br/>"
+msgid "Patron account is INACTIVE."
+msgstr ""
 
 #: staff.patron.display.init.network_request.account_expire_soon
-msgid "Patron account will expire soon.  Please renew.<br/><br/>"
-msgstr "Ընթերցողի հաշիվը շուտով կլրանա։ Թարմացրու.<br/><br/>"
+msgid "Patron account will expire soon.  Please renew."
+msgstr ""
 
 #: staff.patron.display.init.network_request.account_expired
-msgid "Patron account is EXPIRED.<br/><br/>"
-msgstr "Ընթերցողի հաշիվը ԺԱՄԿԵՏԱՆՑ Է:<br/><br/>"
+msgid "Patron account is EXPIRED."
+msgstr ""
 
 #: staff.patron.display.init.holds_ready
 msgid "Holds available: %1$s"
@@ -2022,6 +2022,30 @@ msgstr "Վերաբաշխիր"
 #: staff.item.batch.hold.user_not_found
 msgid "User Not Found"
 msgstr "Օգտվողը չի գտնված"
+
+#. # hold count tooltip labels
+#: staff.patron.summary.hold_counts_behind_desk
+msgid "Available / Total (Behind Desk)"
+msgstr ""
+
+#: staff.patron.summary.hold_counts
+msgid "Available / Total"
+msgstr ""
+
+#~ msgid "Alert message: \"%1$s\"<br/><br/>"
+#~ msgstr "Զգուշացնող հաղորդում: \"%1$s\"<br/><br/>"
+
+#~ msgid "Patron account retrieved with an INACTIVE card.<br/><br/>"
+#~ msgstr "Ընթերցողի հաշիվը կանչված է ՈՉ ԱԿՏԻՎ տոմսով:<br/><br/>"
+
+#~ msgid "Patron account is BARRED.<br/><br/>"
+#~ msgstr "Ընթերցողի հաշիվը կասեցված է:<br/><br/>"
+
+#~ msgid "Patron account is INACTIVE.<br/><br/>"
+#~ msgstr "Ընթերցողի հաշիվը ՈՉ ԱԿՏԻՎ է:<br/><br/>"
+
+#~ msgid "Patron account is EXPIRED.<br/><br/>"
+#~ msgstr "Ընթերցողի հաշիվը ԺԱՄԿԵՏԱՆՑ Է:<br/><br/>"
 
 #~ msgid "Record ID: %1$s Create Date: %2$s "
 #~ msgstr "Գրառման ID: %1$s Ստեղծիր ամսաթիվ Date: %2$s "

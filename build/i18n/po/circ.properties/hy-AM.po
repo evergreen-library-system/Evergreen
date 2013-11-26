@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-15 19:41+0000\n"
+"POT-Creation-Date: 2013-09-26 18:17-0400\n"
 "PO-Revision-Date: 2013-04-01 14:34+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-04-02 05:19+0000\n"
-"X-Generator: Launchpad (build 16546)\n"
+"X-Launchpad-Export-Date: 2013-09-28 05:21+0000\n"
+"X-Generator: Launchpad (build 16774)\n"
 "X-Accelerator-Marker: &\n"
 
 #: staff.circ.alert
@@ -519,8 +519,8 @@ msgid "Add Item for record # %1$s"
 msgstr "Ավելացրու նյութը # %1$s գրառման համար"
 
 #: staff.circ.copy_status.del_items.confirm
-msgid "Are you sure sure you want to delete these items? %1$s"
-msgstr "Վստա՞հ ես որ ցանկանում ես ջնջել այս նյութերը %1$s"
+msgid "Are you sure you want to delete these items? %1$s"
+msgstr ""
 
 #: staff.circ.copy_status.del_items.title
 msgctxt "staff.circ.copy_status.del_items.title"
@@ -1294,6 +1294,10 @@ msgstr "Տրանզիտի ավարտի ժամ"
 msgid "Transit Copy ID"
 msgstr "Տրանզիտի օրինակի ID"
 
+#: staff.circ.utils.transit_copy_status
+msgid "Transit Copy Status"
+msgstr ""
+
 #: staff.circ.utils.request_lib
 msgid "Request Library (Full Name)"
 msgstr "Հարցրու գրադարան (լրիվ անուն)"
@@ -1321,6 +1325,10 @@ msgstr "Որսալու ամսաթիվ"
 #: staff.circ.utils.hold_cancel_time
 msgid "Cancel Time"
 msgstr "Չեղյալ անելու ժամ"
+
+#: staff.circ.utils.hold.behind_desk
+msgid "Behind Desk"
+msgstr ""
 
 #. # Controlled entry for why the hold was cancelled
 #: staff.circ.utils.hold_cancel_cause
@@ -1361,8 +1369,9 @@ msgid "Suspended"
 msgstr "Կասեցված"
 
 #: staff.circ.utils.hold_status.8
+msgctxt "staff.circ.utils.hold_status.8"
 msgid "Wrong Shelf"
-msgstr "Սխալ դարակ"
+msgstr ""
 
 #: staff.circ.utils.hold_post_clear_shelf_action.label
 msgid "Post-Clear"
@@ -1379,6 +1388,11 @@ msgstr "Կարիք կա տրանզիտի"
 #: staff.circ.utils.hold_post_clear_shelf_action.shelf
 msgid "Reshelve"
 msgstr "Վերադասավորիր"
+
+#: staff.circ.utils.hold_post_clear_shelf_action.pl_changed
+msgctxt "staff.circ.utils.hold_post_clear_shelf_action.pl_changed"
+msgid "Wrong Shelf"
+msgstr ""
 
 #: staff.circ.utils.frozen
 msgid "Frozen?"
@@ -1400,6 +1414,10 @@ msgstr "Ամսաթիվ շկա"
 #: staff.circ.utils.pickup_lib
 msgid "Pickup Library (Full Name)"
 msgstr "Ստանալու գրադարան (Լրիվ անուն)"
+
+#: staff.circ.utils.current_shelf_lib
+msgid "Current Shelf Library (Full Name)"
+msgstr ""
 
 #: staff.circ.utils.current_copy.none
 msgid "No Copy"
@@ -2045,6 +2063,9 @@ msgstr "Չկա նյութ այս շտրիխ կոդով \"%1$s\""
 
 #~ msgid "Mis-scan or non-cataloged item.  Checkout as a pre-cataloged item?"
 #~ msgstr "Սխալ սկան կամ չմուտքագրված նյութ: Սպասարկե՞լ որպես քարտագրված նյութ:"
+
+#~ msgid "Are you sure sure you want to delete these items? %1$s"
+#~ msgstr "Վստա՞հ ես որ ցանկանում ես ջնջել այս նյութերը %1$s"
 
 #~ msgid ""
 #~ "You must delete all the copies on the volume before you may delete the "

@@ -4,17 +4,18 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-21 11:19-0400\n"
-"PO-Revision-Date: 2013-03-19 19:39+0000\n"
-"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"PO-Revision-Date: 2013-10-15 09:03+0000\n"
+"Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-20 04:44+0000\n"
-"X-Generator: Launchpad (build 16532)\n"
+"X-Launchpad-Export-Date: 2013-10-16 04:42+0000\n"
+"X-Generator: Launchpad (build 16799)\n"
 "X-Project-Style: mozilla\n"
 "X-Accelerator-Marker: &\n"
 "Language: fi\n"
+"X-Merge-On: location\n"
 
 #. =================================================================
 #. Some generic stuff
@@ -193,7 +194,7 @@ msgstr "Käyttäjää ei löydy"
 #: opac.advanced.wizard.title
 msgctxt "opac.advanced.wizard.title"
 msgid "Advanced Search"
-msgstr "Monipuolinen haku"
+msgstr "Tarkennettu haku"
 
 #: common.nowSearching
 msgid "Now searching "
@@ -1293,7 +1294,7 @@ msgstr "Siirry kotisivulle"
 #: opac.navigate.advanced
 msgctxt "opac.navigate.advanced"
 msgid "Advanced Search"
-msgstr "Monipuolinen haku"
+msgstr "Tarkennettu haku"
 
 #: opac.navigate.advanced.title
 msgid "Go to the Advanced Search Page"

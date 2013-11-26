@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:44-0400\n"
-"PO-Revision-Date: 2011-12-24 14:12+0000\n"
-"Last-Translator: José Miguel Acosta Martín <Unknown>\n"
+"PO-Revision-Date: 2013-11-15 19:16+0000\n"
+"Last-Translator: Gerson Vazquez <gerson.v.h@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-12-25 04:54+0000\n"
-"X-Generator: Launchpad (build 14560)\n"
+"X-Launchpad-Export-Date: 2013-11-16 05:47+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. Common Entities
 #: reports.common.logged_in_as
@@ -98,7 +98,7 @@ msgstr "Evergreen: Creador de informes"
 
 #: reports.oils_rpt_builder.reports_home
 msgid "Reports Home"
-msgstr ""
+msgstr "Reportes - Inicio"
 
 #: reports.oils_rpt_builder.cloning_template
 msgid "Cloning template"
@@ -234,7 +234,7 @@ msgstr "Descendente"
 
 #: reports.oils_rpt_builder.add_sort
 msgid "Add Sort"
-msgstr ""
+msgstr "Añadir arreglo"
 
 #: reports.oils_rpt_builder.close_window
 msgid "Close Window"
@@ -380,6 +380,8 @@ msgid ""
 "One or more of the user-defined parameters has been left empty. Please fill "
 "in all fields."
 msgstr ""
+"Uno o más parámetros definidos por el usuario están vacíos. Por favor "
+"rellene todos los campos."
 
 #: reports.oils_rpt_editor.same_name
 msgid "There is already a report in this folder with the given name."
@@ -575,6 +577,8 @@ msgid ""
 "One or more of The selected reports could not be deleted because there are "
 "outputs that depend on them."
 msgstr ""
+"Uno o más informes seleccionados no se pueden eliminar porque hay productos "
+"que dependen de ellos."
 
 #: reports.oils_rpt_folder_window.cannot_delete_another_users_data
 msgid "You may not delete another user's items"
@@ -594,6 +598,14 @@ msgid ""
 " \n"
 "Do you wish to continue?"
 msgstr ""
+"        Esto también eliminará todos los informes correspondientes y los "
+"resultados de \n"
+"esta plantilla. \n"
+" \n"
+"Si otros usuarios tiene informes o productos adjuntos a esta plantilla, \n"
+"todo quedará intacto y la plantilla no será eliminada. \n"
+" \n"
+"¿Desea continuar?"
 
 #: reports.oils_rpt_folder_window.delete_all_attached_outputs
 msgid ""
@@ -698,7 +710,7 @@ msgstr "Tipo de salida"
 
 #: reports.xul.template_builder.source_add.label
 msgid "Add Selected Fields"
-msgstr ""
+msgstr "Agregar Campos Seleccionados"
 
 #: reports.xul.template_builder.template_config_caption.label
 msgid "Template Configuration"
@@ -727,7 +739,7 @@ msgstr "Filtros base"
 #: reports.xul.template_builder.aggregate_filters.label
 msgctxt "reports.xul.template_builder.aggregate_filters.label"
 msgid "Aggregate Filters"
-msgstr ""
+msgstr "Agregar filtros"
 
 #: reports.xul.template_builder.display_name.label
 msgid "Display Name"

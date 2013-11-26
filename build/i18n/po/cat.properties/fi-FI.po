@@ -3,18 +3,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-04 13:44-0400\n"
-"PO-Revision-Date: 2013-03-19 19:54+0000\n"
-"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"POT-Creation-Date: 2013-09-26 18:17-0400\n"
+"PO-Revision-Date: 2013-10-15 09:03+0000\n"
+"Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-20 04:44+0000\n"
-"X-Generator: Launchpad (build 16532)\n"
+"X-Launchpad-Export-Date: 2013-10-16 04:39+0000\n"
+"X-Generator: Launchpad (build 16799)\n"
 "X-Project-Style: mozilla\n"
 "X-Accelerator-Marker: &\n"
 "Language: fi\n"
+"X-Merge-On: location\n"
 
 #: bib.no_marc
 msgid "No MARC Record"
@@ -770,6 +771,10 @@ msgstr "<Poista suojaus>"
 msgid "<Remove Circulate as Type>"
 msgstr "<Poista lainaa tyyppinä>"
 
+#: staff.cat.copy_editor.remove_floating
+msgid "<Remove Floating>"
+msgstr "<Poista kellunta>"
+
 #: staff.cat.copy_editor.field.unset_or_null
 msgctxt "staff.cat.copy_editor.field.unset_or_null"
 msgid "<Unset>"
@@ -846,16 +851,6 @@ msgstr "Ei"
 #: staff.cat.copy_editor.field.floating.label
 msgid "Floating?"
 msgstr "Kelluva?"
-
-#: staff.cat.copy_editor.field.floating.yes_or_true
-msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
-msgid "Yes"
-msgstr "Kyllä"
-
-#: staff.cat.copy_editor.field.floating.no_or_false
-msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
-msgid "No"
-msgstr "Ei"
 
 #: staff.cat.copy_editor.field.age_based_hold_protection.label
 msgid "Age-based Hold Protection"
@@ -2409,3 +2404,11 @@ msgstr "Niteitä:"
 #: staff.cat.bib_brief.items.available.tooltip
 msgid "%1$s available"
 msgstr "%1$s saatavilla"
+
+#~ msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
+#~ msgid "Yes"
+#~ msgstr "Kyllä"
+
+#~ msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
+#~ msgid "No"
+#~ msgstr "Ei"
