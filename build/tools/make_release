@@ -258,7 +258,7 @@ if [ $PREV_BRANCH != "PACKAGE" ]; then
     grep -i -m 1 Signed-off-by ChangeLog &> /dev/null
     if [ $? -ne 0 ]; then
         echo "Building ChangeLog"
-        git log --cherry-pick --right-only --no-merges --pretty --summary --numstat $PREV_BRANCH..HEAD > $GIT_ABS/ChangeLog
+        git log --cherry-pick --no-merges --pretty --summary --numstat $PREV_BRANCH..HEAD > $GIT_ABS/ChangeLog
     else
         echo "Not overwriting existing ChangeLog!"
     fi
