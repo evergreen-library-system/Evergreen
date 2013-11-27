@@ -143,8 +143,12 @@
 <!ENTITY reports.oils_rpt_folder_window.select_folder "Select Folder">
 <!ENTITY reports.oils_rpt_folder_window.cancel "Cancel">
 <!ENTITY reports.oils_rpt_folder_window.confirm_delete "Are you sure you wish to delete the selected item(s)?">
-<!ENTITY reports.oils_rpt_folder_window.dependant_reports_no_delete "One or more of the selected templates could not be deleted because there are reports that depend on them.">
-<!ENTITY reports.oils_rpt_folder_window.dependant_outputs_no_delete "One or more of The selected reports could not be deleted because there are outputs that depend on them.">
+<!ENTITY reports.oils_rpt_folder_window.dependant_reports_no_delete "
+        One or more of the selected templates could not be deleted because
+        there are reports or outputs that depend on them.">
+<!ENTITY reports.oils_rpt_folder_window.dependant_outputs_no_delete "
+        One or more of the selected reports could not be deleted because
+        there are outputs that depend on them.">
 <!ENTITY reports.oils_rpt_folder_window.cannot_delete_another_users_data "You may not delete another user's items">
 <!ENTITY reports.oils_rpt_folder_window.cannot_move_another_users_data "You may not move another user's items">
 <!ENTITY reports.oils_rpt_folder_window.delete_all_attached_reports "

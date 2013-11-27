@@ -444,6 +444,7 @@ oilsRptFolderWindow.prototype.deleteTemplates = function(list, idx, callback, er
 					req.callback(function(r) {
 						var res = r.getResultObject();
 						if( res == 0 ) return oilsRptAlertFailure();
+						if( res == 1 ) errid = 'oils_rpt_folder_contents_template_no_delete';
 						obj.deleteTemplates(list, ++idx, callback, errid)
 					});
 					req.send();
