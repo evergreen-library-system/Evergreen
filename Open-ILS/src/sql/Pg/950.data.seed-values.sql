@@ -5146,15 +5146,15 @@ INSERT INTO container.copy_bucket_type (code,label) VALUES ( 'circ_history', 'Ci
 INSERT INTO container.call_number_bucket_type (code,label) VALUES ('misc', oils_i18n_gettext('misc', 'Miscellaneous', 'ccnbt', 'label'));
 INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('misc', oils_i18n_gettext('misc', 'Miscellaneous', 'cbrebt', 'label'));
 INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('staff_client', oils_i18n_gettext('staff_client', 'General Staff Client container', 'cbrebt', 'label'));
-INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('bookbag', oils_i18n_gettext('bookbag', 'Book Bag', 'cbrebt', 'label'));
+INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('bookbag', oils_i18n_gettext('bookbag', 'Book List', 'cbrebt', 'label'));
 INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('reading_list', oils_i18n_gettext('reading_list', 'Reading List', 'cbrebt', 'label'));
 INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('template_merge',oils_i18n_gettext('template_merge','Template Merge Container', 'cbrebt', 'label'));
 INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('url_verify', oils_i18n_gettext('url_verify', 'URL Verification Queue', 'cbrebt', 'label'));
 
 INSERT INTO container.user_bucket_type (code,label) VALUES ('misc', oils_i18n_gettext('misc', 'Miscellaneous', 'cubt', 'label'));
 INSERT INTO container.user_bucket_type (code,label) VALUES ('folks', oils_i18n_gettext('folks', 'Friends', 'cubt', 'label'));
-INSERT INTO container.user_bucket_type (code,label) VALUES ('folks:pub_book_bags.view', oils_i18n_gettext('folks:pub_book_bags.view', 'List Published Book Bags', 'cubt', 'label'));
-INSERT INTO container.user_bucket_type (code,label) VALUES ('folks:pub_book_bags.add', oils_i18n_gettext('folks:pub_book_bags.add', 'Add to Published Book Bags', 'cubt', 'label'));
+INSERT INTO container.user_bucket_type (code,label) VALUES ('folks:pub_book_bags.view', oils_i18n_gettext('folks:pub_book_bags.view', 'List Published Book Lists', 'cubt', 'label'));
+INSERT INTO container.user_bucket_type (code,label) VALUES ('folks:pub_book_bags.add', oils_i18n_gettext('folks:pub_book_bags.add', 'Add to Published Book Lists', 'cubt', 'label'));
 INSERT INTO container.user_bucket_type (code,label) VALUES ('folks:circ.view', oils_i18n_gettext('folks:circ.view', 'View Circulations', 'cubt', 'label'));
 INSERT INTO container.user_bucket_type (code,label) VALUES ('folks:circ.renew', oils_i18n_gettext('folks:circ.renew', 'Renew Circulations', 'cubt', 'label'));
 INSERT INTO container.user_bucket_type (code,label) VALUES ('folks:circ.checkout', oils_i18n_gettext('folks:circ.checkout', 'Checkout Items', 'cubt', 'label'));
@@ -10931,7 +10931,7 @@ VALUES (
     'cbreb',
     oils_i18n_gettext(
         'container.biblio_record_entry_bucket.csv',
-        'Produce a CSV file representing a bookbag',
+        'Produce a CSV file representing a book list',
         'ath',
         'description'
     ),
@@ -10943,7 +10943,7 @@ VALUES (
     'ContainerCSV',
     oils_i18n_gettext(
         'ContainerCSV',
-        'Facilitates produce a CSV file representing a bookbag by introducing an "items" variable into the TT environment, sorted as dictated according to user params',
+        'Facilitates producing a CSV file representing a book list by introducing an "items" variable into the TT environment, sorted as dictated according to user params',
         'atr',
         'description'
     )
@@ -10955,11 +10955,11 @@ INSERT INTO action_trigger.event_definition (
     validator, template
 ) VALUES (
     48, TRUE, 1,
-    'Bookbag CSV', 'container.biblio_record_entry_bucket.csv', 'ContainerCSV',
+    'Book List CSV', 'container.biblio_record_entry_bucket.csv', 'ContainerCSV',
     'NOOP_True',
 $$
 [%-
-# target is the bookbag itself. The 'items' variable does not need to be in
+# target is the book list itself. The 'items' variable does not need to be in
 # the environment because a special reactor will take care of filling it in.
 
 FOR item IN items;
@@ -12802,7 +12802,7 @@ INSERT into config.org_unit_setting_type
         ),
         oils_i18n_gettext(
             'opac.patron.temporary_list_warn',
-            'Present a warning dialog to the patron when a patron adds a book to a temporary book bag.',
+            'Present a warning dialog to the patron when a patron adds a book to a temporary book list.',
             'coust',
             'description'
         ),
@@ -12838,13 +12838,13 @@ VALUES (
     FALSE,
     oils_i18n_gettext(
         'opac.default_list',
-        'Default list to use when adding to a bookbag',
+        'Default list to use when adding to a list',
         'cust',
         'label'
     ),
     oils_i18n_gettext(
         'opac.default_list',
-        'Default list to use when adding to a bookbag',
+        'Default list to use when adding to a list',
         'cust',
         'description'
     ),

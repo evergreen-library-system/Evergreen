@@ -8,7 +8,7 @@
     [%- INCLUDE "opac/parts/record/navigation.tt2" %]
     [%- IF ctx.bib_is_dead %]
     <div id='rdetail_deleted_exp'>
-        [% l("This record has been deleted from the database.  We recommend that you remove this title from any bookbags it may have been added to.") %]
+        [% l("This record has been deleted from the database.  We recommend that you remove this title from any lists it may have been added to.") %]
     </div>
     [%- END %]
     [% INCLUDE "opac/parts/record/summary.tt2" %]

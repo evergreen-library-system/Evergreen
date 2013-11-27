@@ -6,10 +6,10 @@
     offset = ctx.bookbags_offset;
     item_page = ctx.bookbags_item_page;
     bb_publish_text = l(
-"Sharing a Bookbag means that the contents " _
-"of the Bookbag will be visible to others. " _
-"To see the public view of a shared Bookbag, " _
-"click on the Bookbag\\'s name in the Bookbag list.");
+"Sharing a list means that the contents " _
+"of the list will be visible to others. " _
+"To see the public view of a shared list, " _
+"click on the HTML View link in the Saved Lists section.");
 %]
 <h3 class="sr-only">[% l('My Lists') %]</h3>
 <div id='myopac_bookbag_div' style="padding:5px;">
