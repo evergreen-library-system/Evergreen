@@ -16,7 +16,7 @@ staff members have the ability to assign elevated permissions to a user, and
 which staff members have the ability to edit users in particular groups.
 
 Staff Accounts
-~~~~~~~~~~~~~
+~~~~~~~~~~~~~~
 
 New staff accounts are created in much the same way as patron accounts, using
 _Circulation -> Register Patron_ or *Shift+F1*. Select one of the staff

@@ -15,9 +15,6 @@ Patrons and staff will be able to browse authorities in the OPAC.  The following
 fields are browsable by default: author, series, subject, title, and topic.  You
 will be able to add custom browse axes in addition to these default fields.
 
-Control Sets
-^^^^^^^^^^^^
-
 You can specify the MARC tags and subfields that an authority record should
 contain.  The Library of Congress control set exists in the staff client by
 default.  The control sets feature enables librarians to add or customize new
@@ -26,7 +23,8 @@ control sets.
 To access existing control sets, click *Admin* -> *Server Administration* ->
 *Authorities* -> *Control Sets*.
 
-To add a *control set*:
+Add a Control Set
+^^^^^^^^^^^^^^^^^
 
 . Click *Admin* -> *Server Administration* -> *Authorities* -> *Control Sets*.
 . Click *New Control Set*.  
@@ -53,7 +51,8 @@ want to access, or click *Admin* -> *Server Administration* -> *Authorities* ->
 *Thesauri*.
 
 
-To add a *Thesaurus*:
+Add a Thesaurus
+^^^^^^^^^^^^^^^
 
 . Click *Admin* -> *Server Administration* -> *Authorities* -> *Control Sets*,
 and choose the hyperlinked thesaurus that you want to access, or click *Admin*
@@ -77,8 +76,8 @@ by a Library of Congress control set, the 100 tag would contain a "Heading -
 Personal Name."  Authority fields also enable you to create the corresponding
 tag in the bibliographic record that would contain the same data. 
 
-To create an *Authority Field*: 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Create an Authority Field
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 . Click *Admin* -> *Server Administration* -> *Authorities* -> *Control Sets*.
 . Click *Authority Fields*.  The number in parentheses indicates the number of
@@ -115,7 +114,8 @@ subject, title, and topic. Use the *Browse Axes* feature to create additional
 axes.
 
 
-Create a new *Browse Axis*:
+Create a new Browse Axis
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 . Click *Admin* -> *Server Administration* -> *Authorities* -> *Browse Axes*
 . Click *New Browse Axis*.
@@ -146,7 +146,8 @@ OPAC Searching of Authorities
 Patrons and librarians can browse authorities through the OPAC.
 
 
-To search for *Authorities*:
+Search for Authorities
+^^^^^^^^^^^^^^^^^^^^^^
 
 . Click *Advanced Search* in the OPAC.
 . Find the *Authority Browse* column in the left side of the screen.

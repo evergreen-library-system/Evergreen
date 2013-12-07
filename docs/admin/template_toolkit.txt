@@ -2,7 +2,7 @@ TPac Configuration and Customization
 ------------------------------------
 
 Template toolkit documentation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For more general information about template toolkit see:  http://template-toolkit.org/docs/index.html[official
 documentation]. 
@@ -11,14 +11,14 @@ The purpose of this chapter is to focus on the
 Evergreen-specific uses of Template Toolkit ('TT') in the OPAC.
 
 TPAC URL
-~~~~~~~
+~~~~~~~~
 
 The URL for the TPAC on a default Evergreen system is
 http://localhost/eg/opac/home (adjust `localhost` to match your hostname or IP
 address, naturally!)
 
 Perl modules used directly by TPAC
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   * `Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader.pm`
   * `Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Account.pm`
@@ -28,7 +28,7 @@ Perl modules used directly by TPAC
   * `Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Util.pm`
 
 Default templates
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
 
 The source template files are found in `Open-ILS/src/templates/opac`.
 
@@ -43,7 +43,7 @@ ready to commit the changes to a branch. See below for information on template
 overrides.
 
 Apache configuration files
-~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The base Evergreen configuration file on Debian-based systems can be found in
 `/etc/apache2/sites-enabled/eg.conf`. This file defines the basic virtual host
@@ -52,7 +52,7 @@ bulk of the configuration for each virtual host by including
 `/etc/apache2/eg_vhost.conf`.
 
 TPAC CSS and media files
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 The CSS files used by the default TPAC templates are stored in the repo in
 `Open-ILS/web/css/skin/default/opac/` and installed in
