@@ -1,5 +1,5 @@
 Patron Border Color Enhancement
-------------------------------
+-------------------------------
 
 This feature gives librarians new choices for color coding patron penalties.  
 
