@@ -134,6 +134,12 @@ RewriteRule /opac/[^/]*/skin/[^/]*/xml/rresult.xml /eg/opac/results?%{ENV:OILS_J
 # Images, CSS, etc can stick around.
 RewriteRule /opac/[^/]*/skin/.*(xml|htm|html|/)$ /eg/opac/home?%{ENV:OILS_JSPAC_SEARCH_TYPE}%{ENV:OILS_JSPAC_SEARCH_TERMS}%{ENV:OILS_JSPAC_SEARCH_LOCATION} [NE,R,L]
 
+# -----------------------------------------------------------------------------$
+# Force HTTPS for /eg/circ/selfcheck
+# -----------------------------------------------------------------------------$
+RewriteCond %{HTTPS} off
+RewriteRule ^(/eg/circ/selfcheck) https://%{HTTP_HOST}%{REQUEST_URI} [NC,R=301,L]
+
 # ----------------------------------------------------------------------------------
 # For sanity reasons, default indexes to Off
 # ----------------------------------------------------------------------------------
