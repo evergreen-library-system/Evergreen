@@ -83,7 +83,7 @@
                     [% IF !ctx.user.email %]disabled="true"[% ELSIF ctx.default_email_notify %]checked="checked"[% END %]/>
                     <label for="email_notify">[% l('Yes, by Email') %]</label><br/>
                 <blockquote>
-                    [% IF !ctx.user.email; l('No configured Email address. See "My Account" for setting your Email address.');
+                    [% IF !ctx.user.email and !ctx.is_staff; l('No configured Email address. See "My Account" for setting your Email address.');
                      ELSE; l('Email Address:') %] <span name="email_address">[% ctx.user.email %]</span>[% END %]
                 </blockquote>
                 [%- IF allow_phone_notifications == 'true' %]
