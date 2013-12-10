@@ -79,6 +79,21 @@
         END;
     END;
 
+    # Get CCVM labels
+    BLOCK get_ccvm_label;
+        IF !ctx.ccvm_cache.$id;
+            fetch_ccvm = ctx.search_ccvm('id', id);
+            IF fetch_ccvm;
+                ctx.ccvm_cache.$id = fetch_ccvm.0;
+            END;
+        END;
+        IF search_label and ctx.ccvm_cache.$id.search_label;
+            ctx.ccvm_cache.$id.search_label;
+        ELSE;
+            ctx.ccvm_cache.$id.value;
+        END;
+    END;
+
     # Extract MARC fields from XML
     #   get_marc_attrs( { marc_xml => doc } )
     BLOCK get_marc_attrs;
@@ -429,7 +444,10 @@
                 '//*[local-name()="attributes"]/*[local-name()="field"][@name="' _ icon_style _ '"]');
             IF node AND node.textContent;
                 type = node.textContent;
-                args.format_label = node.getAttribute('coded-value')
+                args.format_label = PROCESS get_ccvm_label id=node.getAttribute('cvmid') search_label=1;
+                IF !args.format_label;
+                    args.format_label = node.getAttribute('coded-value');
+                END;
                 args.schema.itemtype = schema_typemap.$type || 'CreativeWork';
                 args.format_icon = ctx.media_prefix _ '/images/format_icons/' _ icon_style _ '/' _ type _ '.png';
                 LAST;
