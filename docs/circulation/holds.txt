@@ -383,6 +383,45 @@ Hold shelf expire time is inserted when a hold achieves on-hold-shelf status. It
 The clear-hold-shelf function cancels shelf-expired holds only. It does not include holds canceled by patron. Staff needs to trace these items manually according to the hold slip date.
 ===========
 
+
+Alternate Hold Pick up Location
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*Abstract*
+
+This feature enables libraries to configure an alternate hold pick up location.  The alternate pick up location will appear in the staff client to inform library staff that a patron has a hold waiting at that location.  In the stock Evergreen code, the default alternate location is called "Behind Desk".  This label can be changed to accommodate a library's specific hold pick up location.  For example, if a library has a drive thru window for hold pick up, the alternate location can be changed to display as "Drive Thru".  
+
+*Configuration*
+
+The alternate pick up location is disabled in Evergreen by default.  It can be enabled by setting *Holds: Behind Desk Pickup Supported* to 'True' in the Library Settings Editor.  Server side changes to configuration files are required to enable this feature and edit the alternate pick up location label.  The following files and labels need to be changed:
+
+* Open-ILS/src/templates/opac/myopac/prefs_settings.tt2
+<td><label for='[% setting %]'>[% l('Pickup holds from the drive-thru when possible?') 
+%]</label></td>
+
+*  Open-ILS/web/opac/locale/en-US/lang.dtd
+<!ENTITY staff.patron_display.holds_available_behind_desk.label 'Drive-Thru:'>
+
+* Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
+staff.circ.utils.hold.behind_desk=Drive-Thru
+
+* Open-ILS/xul/staff_client/server/locale/en-US/patron.properties
+staff.patron.summary.hold_counts_behind_desk=Available / Total (Drive-Thru)
+
+Libraries can also choose to give patrons the ability to opt-in to pick up holds at the alternate location through their OPAC account.  To add this option, set the *OPAC/Patron Visible* field in the User Setting Type *Hold is behind Circ Desk* to 'True'.  The User Setting Types can be found under *Admin -> Server Administration -> User Setting Types*.
+
+*Display*
+
+When enabled, the alternate pick up location will appear in several places in the staff client.  The alternate pick up location and the number of items that are ready for pick up at that location will be displayed in the Patron Account Summary and under the Holds button in the patron account.  Staff will also see the general number of holds available and holds placed by the patron.
+
+image::media/custom_hold_pickup_location1.JPG[Custom Hold Pickup Location]
+
+
+If configured, patrons will see the option to opt-in to the alternate location in the Account Preferences section of their OPAC Account.
+
+image::media/custom_hold_pickup_location2.JPG[OPAC Account]
+
+
 Display Hold Types on Pull Lists
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

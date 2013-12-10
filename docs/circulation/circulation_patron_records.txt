@@ -634,3 +634,18 @@ after the deletion.
 
 
 
+Lost and Long Overdue Bill Colors
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This stylization enhancement distinguishes Lost and Long Overdue circulations that appear within the billed transactions of a patron’s account from other items that are still checked out.  
+
+Within the patron’s list of billed transactions, Lost or Long Overdue items, which have not yet been returned, display differently from other items that are still checked out. The color distinctions are applied to the entire row of the billed transaction (previous to version 2.5, only the title of the billed transaction was highlighted). These color enhancements are accompanied by helpful indicators that define the meaning of the colors for staff.  
+
+By default, Lost circulations will appear in dark red. The default indicator reads, “Dark Red Items are Lost.”  
+
+When the 6 Month Overdue Mark Long-Overdue trigger event definition is enabled, Long Overdue circulations will appear in orange, by default. The default indicator reads, “Orange Items are Long Overdue.”  
+ 
+image::media/Billed Transaction Color.jpeg[Billed Transaction Color]
+ 
+Both the color distinctions and indicators are customizable. To customize, a change to circ.css (for the color) and lang.dtd (for the indicator) are required.   
+
