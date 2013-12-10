@@ -135,6 +135,8 @@ CREATE TABLE authority.record_entry (
 );
 CREATE INDEX authority_record_entry_creator_idx ON authority.record_entry ( creator );
 CREATE INDEX authority_record_entry_editor_idx ON authority.record_entry ( editor );
+CREATE INDEX authority_record_entry_create_date_idx ON authority.record_entry ( create_date );
+CREATE INDEX authority_record_entry_edit_date_idx ON authority.record_entry ( edit_date );
 CREATE INDEX authority_record_deleted_idx ON authority.record_entry(deleted) WHERE deleted IS FALSE OR deleted = false;
 CREATE TRIGGER a_marcxml_is_well_formed BEFORE INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE biblio.check_marcxml_well_formed();
 CREATE TRIGGER b_maintain_901 BEFORE INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE evergreen.maintain_901();
