@@ -285,3 +285,25 @@ image::media/Batch_Importing_MARC_Records12.jpg[Batch_Importing_MARC_Records12]
 
 image::media/Batch_Importing_MARC_Records14.jpg[Batch_Importing_MARC_Records14] 
 
+
+Default Values for Item Import 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Evergreen now supports additional functionality for importing items through *Cataloging* -> *MARC Batch Import/Export*.  When items are imported via a *Holdings Import Profile* in *Cataloging* -> *MARC Batch Import/Export*, Evergreen will create an item-level record for each copy.  If an item barcode, call number, copy location, or circulation modifier is not set in the embedded holdings, Evergreen will apply a default value based on the configured Library Settings.  A default prefix can be applied to the auto-generated call numbers and item barcodes.
+
+The following *Library Settings* can be configured to apply these default values to imported items:
+
+* *Vandelay: Generate Default Barcodes* —Auto-generate default item barcodes when no item barcode is present
+
+* *Vandelay: Default Barcode Prefix* —Apply this prefix to any auto-generated item barcodes
+
+* *Vandelay: Generate Default Call Numbers* —Auto-generate default item call numbers when no item call number is present
+
+* *Vandelay: Default Call Number Prefix* —Apply this prefix to any auto-generated item call numbers
+
+* *Vandelay: Default Copy Location* —Default copy location value for imported items
+
+* *Vandelay: Default Circulation Modifier* —Default circulation modifier value for imported items
+
+
+

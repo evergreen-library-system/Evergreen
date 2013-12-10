@@ -265,6 +265,8 @@ include::cataloging/batch_importing_MARC.txt[]
 
 include::cataloging/overlay_record_3950_import.txt[]
 
+include::cataloging/z39.50_search_enhancements.txt[]
+
 include::cataloging/monograph_parts.txt[]
 
 include::cataloging/conjoined_items.txt[]
@@ -361,6 +363,8 @@ Use this part for information about searching the Evergreen public access catalo
 include::opac/my_lists.txt[]
 
 include::opac/kids_opac.txt[]
+
+include::opac/catalog_browse.txt[]
 
 include::opac/advanced_features.txt[]
 
