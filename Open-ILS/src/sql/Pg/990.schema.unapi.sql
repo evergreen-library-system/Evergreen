@@ -1127,6 +1127,7 @@ CREATE OR REPLACE FUNCTION unapi.mra ( obj_id BIGINT, format TEXT,  ename TEXT, 
                                 XMLATTRIBUTES(
                                     key AS name,
                                     cvm.value AS "coded-value",
+                                    cvm.id AS "cvmid",
                                     rad.filter,
                                     rad.sorter
                                 ),
