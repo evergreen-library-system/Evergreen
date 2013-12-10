@@ -632,6 +632,12 @@ Items may be deleted from the catalog even if a charge for that item is still
 attached to the patron's record.  The charge will remain on the patron's account
 after the deletion.
 
+Sorting Money Columns in Billing Interface
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This enhancement enables Evergreen to sort money columns numerically in the billing interface.  You can perform an ascending or descending sort on these columns.
+
+To view and sort patron bills, retrieve the patron's account, and click the *Bills* tab in the top right corner of the screen.  You can view the money that is owed or paid in the "Total Billed" and *Total Paid* columns. Simply click on the headers of these columns to sort the columns numerically.
 
 
 Lost and Long Overdue Bill Colors
