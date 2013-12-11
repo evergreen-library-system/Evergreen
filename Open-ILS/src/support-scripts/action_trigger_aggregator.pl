@@ -143,14 +143,28 @@ print "Processing event-defs @event_defs\n" if $verbose;
 
 my %date_filter;
 $date_filter{run_time} = {'>=' => $start_date} if $start_date;
-$date_filter{run_time} = {'<' => $end_date} if $end_date;
+
+if ($end_date) {
+    if ($date_filter{run_time}) {
+        # both filters requested, -and them together
+        $date_filter{'-and'} = [
+            {run_time => delete $date_filter{run_time}},
+            {run_time => {'<' => $end_date}}
+        ];
+    } else {
+        $date_filter{run_time} = {'<' => $end_date};
+    }
+}
+                
 
 # collect the event tempate output data
 # use a real session here so we can stream results directly to the output file
 my $ses = OpenSRF::AppSession->create('open-ils.cstore');
 my $req = $ses->request(
     'open-ils.cstore.json_query', {
-        select => {ateo => ['data']},
+        select => {ateo => [
+            # ateo's may be linked to multiple atev's; select distinct.
+            {column => 'id', transform => 'distinct'}, 'data']},
         from => {ateo => { atev => {
             filter => {state => 'complete', %date_filter},
             join => {atevdef => {filter => {
