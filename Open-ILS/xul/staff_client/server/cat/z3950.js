@@ -495,6 +495,7 @@ cat.z3950.prototype = {
     'focus' : function() {
         var obj = this;
         var focus_me; var or_focus_me;
+        if (!obj.active_services) return;
         for (var i = 0; i < obj.active_services.length; i++) {
             if (obj.creds.hosts[ obj.data.server_unadorned ] && obj.creds.hosts[ obj.data.server_unadorned ].services[ obj.active_services[i] ]) {
                 var x = obj.creds.hosts[ obj.data.server_unadorned ].services[ obj.active_services[i] ].default_attr;
