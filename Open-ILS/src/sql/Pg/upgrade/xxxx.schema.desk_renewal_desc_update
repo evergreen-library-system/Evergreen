@@ -1,0 +1,10 @@
+BEGIN;
+
+INSERT INTO config.upgrade_log (version) VALUES ('xxxx');
+
+UPDATE config.global_flag
+    SET label = 'Circ: Use original circulation library on desk renewal instead of the workstation library'
+    WHERE name = 'circ.desk_renewal.use_original_circ_lib';
+
+COMMIT;
+
