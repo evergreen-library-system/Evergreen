@@ -462,7 +462,7 @@ RETURNS XML AS $F$
                         FROM evergreen.ranked_volumes($1, $2, $4, $6, $7, $9, $5) AS y
                         UNION ALL
                         -- Located URIs
-                        SELECT unapi.acn(uris.id,'xml','volume',evergreen.array_remove_item_by_value( evergreen.array_remove_item_by_value($5,'holdings_xml'),'bre'), $3, $4, $6, $7, FALSE), 0, name, label_sortkey
+                        SELECT unapi.acn(uris.id,'xml','volume',evergreen.array_remove_item_by_value( evergreen.array_remove_item_by_value($5,'holdings_xml'),'bre'), $3, $4, $6, $7, FALSE), uris.rank, name, label_sortkey
                         FROM evergreen.located_uris($1, $2, $9) AS uris
                      )x)
                  ),
