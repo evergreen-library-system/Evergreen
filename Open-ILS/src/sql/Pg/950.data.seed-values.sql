@@ -9292,7 +9292,7 @@ INSERT INTO config.global_flag (name, label, enabled)
         'circ.desk_renewal.use_original_circ_lib',
         oils_i18n_gettext(
             'circ.desk_renewal.use_original_circ_lib',
-            'Circ: Use original circulation library on desk renewal instead of user home library',
+            'Circ: Use original circulation library on desk renewal instead of the workstation library',
             'cgf',
             'label'
         ),
