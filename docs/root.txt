@@ -321,6 +321,8 @@ include::circulation/offline_mode.txt[]
 
 include::circulation/self_check.txt[]
 
+include::rfid_product_integration.txt[]
+
 // Return to normal title levels.
 :leveloffset: 0
 

@@ -98,6 +98,85 @@ Local Admin -> Statistical Categories Editor_).
 * Staff accounts may also function as patron accounts.
 ============================================================================
 
+
+Patron Self-Registration
+~~~~~~~~~~~~~~~~~~~~~~~~
+*Abstract*
+
+Patron Self-Registration allows patrons to initiate registration for a library account through the OPAC.  Patrons can fill out a web-based form with basic information that will be stored as a “pending patron” in Evergreen.  Library staff can review pending patrons in the staff-client and use the pre-loaded account information to create a full patron account.  Pending patron accounts that are not approved within a configurable amount of time will be automatically deleted.  
+
+*Patron Self-Registration*
+
+. In the OPAC, click on the link to *Request Library Card*
+
+. Fill out the self-registration form to request a library card, and click *Submit Registration*.
+
+. Patrons will see a confirmation message: “Registration successful!  Please see library staff to complete your registration.”
+
+image::media/patron_self_registration2.JPG[Patron Self-Registration form]
+
+*Managing Pending Patrons*
+
+. In the staff client select *Circulation* -> *Pending Patrons*.
+
+. Select the patron you would like to review.  In this screen you have the option to *Delete* a pending patron account or *Load* the pending patron information to create a permanent library account.
+
+. To create a permanent library account for the patron, click on the patron’s row, right-click and select *Load Patron* or click on the *Load Patron* button at the top of the screen.  This will load the patron self-registration information into the main *Patron Registration* form. 
+
+. Fill in the necessary patron information for your library, and click *Save* to create the permanent patron account.
+
+
+
+*Library Settings*
+
+Three new Library Settings have been created to manage patron self-registration:
+
+* *OPAC: Allow Patron Self-Registration* must be set to ‘True’ to enable use of this feature.
+
+* *OPAC: Patron Self-Reg. Expire Interval* allows each library to set the amount of time after which pending patron accounts should be deleted.
+
+* *OPAC: Patron Self-Reg. Display Timeout* allows each library to set the amount of time after which the patron self-registration screen will timeout in the OPAC.  The default is 5 minutes.
+
+Several existing Library Settings can be used to determine if a field should be required or hidden in the self-registration form:
+
+* *GUI: Require day_phone field on patron registration*
+
+* *GUI: Show day_phone on patron registration*
+
+* *GUI: Require dob (date of birth) field on patron registration*
+
+* *GUI: Show dob field on patron registration*
+
+* *GUI: Require email field on patron registration*
+
+* *GUI: Show email field on patron registration*
+
+* *GUI: Require State field on patron registration*
+
+* *GUI: Show State field on patron registration*
+
+* *GUI: Require county field on patron registration*
+
+* *GUI: Show county field on patron registration*  [New Setting]
+
+Several existing Library Settings can be used to verify values in certain fields and provide examples for data format on the registration form:
+
+* *Global: Patron username format*
+
+* *GUI: Regex for phone fields on patron registration* OR *GUI: Regex for day_phone field on patron registration*
+
+* *GUI: Regex for email field on patron registration*
+
+* *GUI: Regex for post_code field on patron registration*
+
+* *GUI: Example for email field on patron registration*
+
+* *GUI: Example for post_code field on patron registration*
+
+* *GUI: Example for day_phone field on patron registration* OR *GUI: Example for phone fields on patron registration*
+
+
+
 [[updating_patron_information]] 
 Updating Patron Information
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -639,6 +718,34 @@ This enhancement enables Evergreen to sort money columns numerically in the bill
 
 To view and sort patron bills, retrieve the patron's account, and click the *Bills* tab in the top right corner of the screen.  You can view the money that is owed or paid in the "Total Billed" and *Total Paid* columns. Simply click on the headers of these columns to sort the columns numerically.
 
+Disable Patron Credit in Billing Interface
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The Library Setting, *Disable Patron Credit*, allows staff to disable the Patron Credit payment type and to hide patron credit payment actions within the billing interface of a patron’s account. 
+
+By default, the payment type *Patron Credit* is enabled in the staff client. Within the Bills interface of a patron’s account, the Patron Credit payment type, the Credit Available, and the option to Convert Change to Patron Credit are exposed by default in the staff client. 
+
+image::media/Default Patron Billing Screen.jpg[Default Patron Billing Screen]
+
+When the Library Setting, *Disable Patron Credit*, is set to *True*, the patron credit payment type will be disabled. Patron Credit will not be an option within the payment type dropdown menu. The Convert Change to Patron Credit and the summary of Credit Available will be hidden from the patron billing interface in the staff client. 
+
+image::media/Disabled Patron Credit Patron Billing Screen.jpg[Disabled Patron Credit Patron Billing Screen]
+
+To set the new Library Setting:
+
+. Click *Admin* -> *Local Administration* -> *Library Settings Editor*
+
+. Search for *Disable Patron Credit*
+
+. Click *Edit*
+
+. Set the value to *True*
+
+. Click *Update Setting*
+
+image::media/Disable Patron Credit Library Setting.jpg[Disable Patron Credit Library Setting]
+
+[NOTE] After applying changes to this library setting, it is necessary to restart the staff client to see the changes take effect.  
+
 
 Lost and Long Overdue Bill Colors
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -651,7 +758,7 @@ By default, Lost circulations will appear in dark red. The default indicator rea
 
 When the 6 Month Overdue Mark Long-Overdue trigger event definition is enabled, Long Overdue circulations will appear in orange, by default. The default indicator reads, “Orange Items are Long Overdue.”  
  
-image::media/Billed Transaction Color.jpeg[Billed Transaction Color]
+image::media/Billed Transaction Color.JPG[Billed Transaction Color]
  
 Both the color distinctions and indicators are customizable. To customize, a change to circ.css (for the color) and lang.dtd (for the indicator) are required.   
 
