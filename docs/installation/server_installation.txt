@@ -283,6 +283,14 @@ place.
 a2dissite default  # OPTIONAL: disable the default site (the "It Works" page)
 a2ensite eg.conf
 ------------------------------------------------------------------------------
+8. (Ubuntu): As the *root* Linux account, enable Apache to write
+   to the lock directory; this is currently necessary because Apache
+   is running as the `opensrf` user:
++
+[source,bash]
+------------------------------------------------------------------------------
+chown opensrf /var/lock/apache2
+------------------------------------------------------------------------------
 
 Configure OpenSRF for the Evergreen application
 -----------------------------------------------
@@ -445,10 +453,10 @@ Net::Domain::hostfqdn() . "\n";'`, you should not use the `-l` flag.
 +
 [source, bash]
 ------------------------------------------------------------------------------
-osrf_ctl.sh -l -a start_all
+osrf_control -l --start-all
 ------------------------------------------------------------------------------
 +
-  ** If you receive the error message `bash: osrf_ctl.sh: command not found`,
+  ** If you receive the error message `bash: osrf_control: command not found`,
      then your environment variable `PATH` does not include the `/openils/bin`
      directory; this should have been set in the *opensrf* Linux account's
      `.bashrc` configuration file. To manually set the `PATH` variable, edit the
