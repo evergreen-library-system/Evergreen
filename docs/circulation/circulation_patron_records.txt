@@ -724,7 +724,7 @@ The Library Setting, *Disable Patron Credit*, allows staff to disable the Patron
 
 By default, the payment type *Patron Credit* is enabled in the staff client. Within the Bills interface of a patron’s account, the Patron Credit payment type, the Credit Available, and the option to Convert Change to Patron Credit are exposed by default in the staff client. 
 
-image::media/Default_Patron_Billing Screen.jpg[Default Patron Billing Screen]
+image::media/Default_Patron_Billing_Screen.jpg[Default Patron Billing Screen]
 
 When the Library Setting, *Disable Patron Credit*, is set to *True*, the patron credit payment type will be disabled. Patron Credit will not be an option within the payment type dropdown menu. The Convert Change to Patron Credit and the summary of Credit Available will be hidden from the patron billing interface in the staff client. 
 
