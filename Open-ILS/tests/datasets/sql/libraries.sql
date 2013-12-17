@@ -53,3 +53,16 @@ INSERT INTO actor.hours_of_operation (id, dow_0_open, dow_0_close, dow_1_open, d
     (6, '08:00', '23:30', '08:00', '23:30', '08:00', '23:30', '08:00', '23:30', '09:00', '23:30', '13:00', '23:30', '09:00', '23:30'),
 -- BR4 - closed on weekends (convention is 00:00 - 00:00)
     (7, '08:00', '23:30', '08:00', '23:30', '08:00', '23:30', '08:00', '23:30', '09:00', '23:30', '00:00', '00:00', '00:00', '00:00');
+
+-- Set some information URLs for library branches
+INSERT INTO actor.org_unit_setting(org_unit, name, value) VALUES
+    (4, 'lib.info_url', '"http://example.com/BR1"'), -- BR1
+    (5, 'lib.info_url', '"http://example.com/BR2"'), -- BR2
+    (6, 'lib.info_url', '"http://br3.example.com"'), -- BR3
+    (7, 'lib.info_url', '"http://br4.example.com/info"'); -- BR4
+
+
+UPDATE actor.org_unit SET email = 'br1@example.com', phone = '(555)-555-0271' WHERE shortname = 'BR1';
+UPDATE actor.org_unit SET email = 'br2@example.com', phone = '(555)-555-0272' WHERE shortname = 'BR2';
+UPDATE actor.org_unit SET email = 'br3@example.com', phone = '(555)-555-0273' WHERE shortname = 'BR3';
+UPDATE actor.org_unit SET email = 'br4@example.com', phone = '(555)-555-0274' WHERE shortname = 'BR4';
