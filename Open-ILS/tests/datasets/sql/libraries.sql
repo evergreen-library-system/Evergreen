@@ -15,10 +15,41 @@ INSERT INTO actor.org_unit (id, parent_ou, ou_type, shortname, name) VALUES
 INSERT INTO actor.org_unit (id, parent_ou, ou_type, shortname, name) VALUES 
     (9, 6, 5, 'BM1', oils_i18n_gettext(9, 'Example Bookmobile 1', 'aou', 'name'));
 
-INSERT INTO actor.org_address (org_unit, street1, city, state, country, post_code)
-SELECT id, '123 Main St.', 'Anywhere', 'GA', 'US', '30303'
-FROM actor.org_unit;
+-- Address for the Consortium
+SELECT evergreen.create_aou_address(1, '123 Main St.', NULL, 'Anywhere', 'GA', 'US', '30303', NULL);
 
-UPDATE actor.org_unit SET holds_address = id, ill_address = id, billing_address = id, mailing_address = id;
+-- Addresses for System 1
+SELECT evergreen.create_aou_address(2, '234 Side St.', NULL, 'Anywhere', 'GA', 'US', '30304', NULL);
 
+-- Addresses for System 2
+SELECT evergreen.create_aou_address(3, '345 Corner Crescent', NULL, 'Elsewhere', 'GA', 'US', '30335', NULL);
 
+-- Addresses for Branch 1
+SELECT evergreen.create_aou_address(4, 'BR1', '123 Main St.', 'Anywhere', 'GA', 'US', '30303', 'billing mailing');
+SELECT evergreen.create_aou_address(4, 'Holds and ILL', '125 Main St.', 'Anywhere', 'GA', 'US', '30303', 'interlibrary holds');
+
+-- Addresses for Branch 2
+SELECT evergreen.create_aou_address(5, 'BR2', '234 Side St.', 'Anywhere', 'GA', 'US', '30304', 'mailing');
+SELECT evergreen.create_aou_address(5, 'BR2 - Billing', '234 Side St.', 'Anywhere', 'GA', 'US', '30304', 'billing');
+SELECT evergreen.create_aou_address(5, 'BR2 - Holds and ILL', '234 Side St.', 'Anywhere', 'GA', 'US', '30304', 'interlibrary holds');
+
+-- Addresses for Branch 3
+SELECT evergreen.create_aou_address(6, 'BR3', '347 Corner Crescent', 'Elsewhere', 'GA', 'US', '30335', NULL);
+
+-- Addresses for Branch 4
+SELECT evergreen.create_aou_address(7, 'BR4', '446 Nowhere Road', 'Elsewhere', 'GA', 'US', '30404', 'mailing');
+SELECT evergreen.create_aou_address(7, 'BR4 - Billing Dept', '446 Nowhere Road', 'Elsewhere', 'GA', 'US', '30404', 'billing');
+SELECT evergreen.create_aou_address(7, 'BR4 - Holds and ILL', '756 Industrial Lane', 'Elsewhere', 'GA', 'US', '30304', 'interlibrary holds');
+
+-- Hours for branches
+INSERT INTO actor.hours_of_operation (id, dow_0_open, dow_0_close, dow_1_open, dow_1_close,
+    dow_2_open, dow_2_close, dow_3_open, dow_3_close, dow_4_open, dow_4_close,
+    dow_5_open, dow_5_close, dow_6_open, dow_6_close) VALUES
+-- BR1 - accept defaults of 09:00 - 17:00 for each day
+    (4, '09:00', '17:00', '09:00', '17:00', '09:00', '17:00', '09:00', '17:00', '09:00', '17:00', '09:00', '17:00', '09:00', '17:00'),
+-- BR2 - accept defaults of 09:00 - 17:00 for some days
+    (5, '08:30', '21:30', '09:30', '14:30', '10:00', '21:30', '08:30', '17:00', '09:00', '17:00', '09:00', '17:00', '09:00', '17:00'),
+-- BR3 - accept defaults of 09:00 - 17:00 for some days
+    (6, '08:00', '23:30', '08:00', '23:30', '08:00', '23:30', '08:00', '23:30', '09:00', '23:30', '13:00', '23:30', '09:00', '23:30'),
+-- BR4 - closed on weekends (convention is 00:00 - 00:00)
+    (7, '08:00', '23:30', '08:00', '23:30', '08:00', '23:30', '08:00', '23:30', '09:00', '23:30', '00:00', '00:00', '00:00', '00:00');

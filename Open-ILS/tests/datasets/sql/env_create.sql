@@ -5,6 +5,43 @@
 CREATE TABLE marcxml_import (id SERIAL PRIMARY KEY, marc TEXT, tag TEXT);
 
 /**
+ * Create an address for a given actor.org_unit
+ *
+ * The "address_type" parameter accepts a TEXT value that contains the
+ * strings 'mailing', 'interlibrary', 'billing', and 'holds' to enable
+ * you to provide granular control over which address is associated for
+ * each function; if given NULL, then all functions are associated with
+ * the incoming address.
+ *
+ * This will happily create duplicate addresses if given duplicate info.
+ */
+CREATE FUNCTION evergreen.create_aou_address
+    (owning_lib INTEGER, street1 TEXT, street2 TEXT, city TEXT, state TEXT, country TEXT,
+     post_code TEXT, address_type TEXT)
+RETURNS void AS $$
+BEGIN
+    INSERT INTO actor.org_address (org_unit, street1, street2, city, state, country, post_code)
+        VALUES ($1, $2, $3, $4, $5, $6, $7);
+    
+    IF $8 IS NULL THEN
+	UPDATE actor.org_unit SET holds_address = currval('actor.org_address_id_seq'), ill_address = currval('actor.org_address_id_seq'), billing_address = currval('actor.org_address_id_seq'), mailing_address = currval('actor.org_address_id_seq') WHERE id = $1;
+    END IF;
+    IF $8 ~ 'holds' THEN
+	UPDATE actor.org_unit SET holds_address = currval('actor.org_address_id_seq') WHERE id = $1;
+    END IF;
+    IF $8 ~ 'interlibrary' THEN
+	UPDATE actor.org_unit SET ill_address = currval('actor.org_address_id_seq') WHERE id = $1;
+    END IF;
+    IF $8 ~ 'billing' THEN
+	UPDATE actor.org_unit SET billing_address = currval('actor.org_address_id_seq') WHERE id = $1;
+    END IF;
+    IF $8 ~ 'mailing' THEN
+	UPDATE actor.org_unit SET mailing_address = currval('actor.org_address_id_seq') WHERE id = $1;
+    END IF;
+END
+$$ LANGUAGE PLPGSQL;
+
+/**
  * create a callnumber for every bib record in the database,
  * appending the bib ID to the callnumber label to differentiate.
  * If set, 'bib_tag' will limit the inserted callnumbers to bibs
