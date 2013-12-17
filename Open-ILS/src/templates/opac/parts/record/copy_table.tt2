@@ -93,12 +93,16 @@ END; # FOREACH bib
             [%- IF serial_holdings %]<td headers='copy_header_holding_label' class='rdetail-issue-issue'>
                 [%- copy_info.holding_label | html; -%]
             </td>
-            [%- ELSE %]<td headers='copy_header_library' property="seller">
+            [%- ELSE %]<td headers='copy_header_library'>
             [%-
                 org_name = ctx.get_aou(copy_info.circ_lib).name;
+                org_sname = ctx.get_aou(copy_info.circ_lib).shortname;
                 lib_url = ctx.get_org_setting(copy_info.circ_lib, 'lib.info_url');
-                IF lib_url; '<a href="'; lib_url | url; '">'; END;
-                org_name | html;
+                UNLESS lib_url;
+                    lib_url = mkurl(ctx.opac_root _ '/library/' _ ctx.get_aou(copy_info.circ_lib).shortname, {}, 1);
+                END; 
+                IF lib_url; '<a property="seller" typeof="Library" href="'; lib_url | url; '">'; END;
+                '<span property="name">'; org_name | html; '</span>';
                 IF lib_url; '</a>'; END;
             -%]
                 <link property="businessFunction" href="http://purl.org/goodrelations/v1#LeaseOut">
