@@ -564,7 +564,7 @@ main.menu.prototype = {
                             {}, 
                             { 
                                 'show_print_button' : true , 
-                                'tab_name' : offline.getString('menu.cmd_patron_register.related.tab'),
+                                'tab_name' : offlineStrings.getString('menu.cmd_patron_register.related.tab'),
                                 'passthru_content_params' : {
                                     'spawn_search' : function(s) { obj.spawn_search(s); },
                                     'spawn_editor' : spawn_editor,
