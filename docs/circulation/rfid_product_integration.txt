@@ -1,8 +1,8 @@
 RFID Product Integration
-------------------------
+========================
 
 Evergreen Integration with PV Supa GoodStuff RFID Reader
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------------------------------------
 
 This feature enables the Evergreen staff client to "talk" to the PV Supa Goodstuff RFID reader so that libraries can utilize PV Supa Goodstuff's RFID technology when checking items in and out. 
 

@@ -724,11 +724,11 @@ The Library Setting, *Disable Patron Credit*, allows staff to disable the Patron
 
 By default, the payment type *Patron Credit* is enabled in the staff client. Within the Bills interface of a patron’s account, the Patron Credit payment type, the Credit Available, and the option to Convert Change to Patron Credit are exposed by default in the staff client. 
 
-image::media/Default Patron Billing Screen.jpg[Default Patron Billing Screen]
+image::media/Default_Patron_Billing Screen.jpg[Default Patron Billing Screen]
 
 When the Library Setting, *Disable Patron Credit*, is set to *True*, the patron credit payment type will be disabled. Patron Credit will not be an option within the payment type dropdown menu. The Convert Change to Patron Credit and the summary of Credit Available will be hidden from the patron billing interface in the staff client. 
 
-image::media/Disabled Patron Credit Patron Billing Screen.jpg[Disabled Patron Credit Patron Billing Screen]
+image::media/Disabled_Patron_Credit_Patron_Billing_Screen.jpg[Disabled Patron Credit Patron Billing Screen]
 
 To set the new Library Setting:
 
@@ -742,9 +742,9 @@ To set the new Library Setting:
 
 . Click *Update Setting*
 
-image::media/Disable Patron Credit Library Setting.jpg[Disable Patron Credit Library Setting]
+image::media/Disable_Patron_Credit_Library_Setting.jpg[Disable Patron Credit Library Setting]
 
-[NOTE] After applying changes to this library setting, it is necessary to restart the staff client to see the changes take effect.  
+NOTE: After applying changes to this library setting, it is necessary to restart the staff client to see the changes take effect.  
 
 
 Lost and Long Overdue Bill Colors
@@ -758,7 +758,7 @@ By default, Lost circulations will appear in dark red. The default indicator rea
 
 When the 6 Month Overdue Mark Long-Overdue trigger event definition is enabled, Long Overdue circulations will appear in orange, by default. The default indicator reads, “Orange Items are Long Overdue.”  
  
-image::media/Billed Transaction Color.JPG[Billed Transaction Color]
+image::media/Billed_Transaction_Color.JPG[Billed Transaction Color]
  
 Both the color distinctions and indicators are customizable. To customize, a change to circ.css (for the color) and lang.dtd (for the indicator) are required.   
 
