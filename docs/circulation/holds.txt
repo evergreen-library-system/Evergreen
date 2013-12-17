@@ -5,7 +5,7 @@ Holds Management
 Placing Holds
 ~~~~~~~~~~~~~
 
-Holds can be placed by staff in the _Staff Client_ and by patrons in the OPAC. In this chapter we demonstrate placing holds on the _Staff Client_.
+Holds can be placed by staff in the _Staff Client_ and by patrons in the OPAC. In this chapter we demonstrate placing holds in the _Staff Client_.
 
 Holds Levels
 ~~~~~~~~~~~~
@@ -396,17 +396,20 @@ This feature enables libraries to configure an alternate hold pick up location. 
 The alternate pick up location is disabled in Evergreen by default.  It can be enabled by setting *Holds: Behind Desk Pickup Supported* to 'True' in the Library Settings Editor.  Server side changes to configuration files are required to enable this feature and edit the alternate pick up location label.  The following files and labels need to be changed:
 
 * Open-ILS/src/templates/opac/myopac/prefs_settings.tt2
-<td><label for='[% setting %]'>[% l('Pickup holds from the drive-thru when possible?') 
-%]</label></td>
++
+`<td><label for='[% setting %]'>[% l('Pickup holds from the drive-thru when possible?') %]</label></td>`
 
 *  Open-ILS/web/opac/locale/en-US/lang.dtd
-<!ENTITY staff.patron_display.holds_available_behind_desk.label 'Drive-Thru:'>
++
+`<!ENTITY staff.patron_display.holds_available_behind_desk.label 'Drive-Thru:'>`
 
 * Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
-staff.circ.utils.hold.behind_desk=Drive-Thru
++
+`staff.circ.utils.hold.behind_desk=Drive-Thru`
 
 * Open-ILS/xul/staff_client/server/locale/en-US/patron.properties
-staff.patron.summary.hold_counts_behind_desk=Available / Total (Drive-Thru)
++
+`staff.patron.summary.hold_counts_behind_desk=Available / Total (Drive-Thru)`
 
 Libraries can also choose to give patrons the ability to opt-in to pick up holds at the alternate location through their OPAC account.  To add this option, set the *OPAC/Patron Visible* field in the User Setting Type *Hold is behind Circ Desk* to 'True'.  The User Setting Types can be found under *Admin -> Server Administration -> User Setting Types*.
 

@@ -1,7 +1,7 @@
 Action Triggers
 ---------------
 
-indexedterm:[action triggers, event definitions]
+indexterm:[action triggers, event definitions]
 
 Action Triggers give administrators the ability to set up actions for
 specific events. They are useful for notification events such as hold notifications.
