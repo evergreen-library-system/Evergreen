@@ -1,3 +1,7 @@
+BEGIN;
+
+SELECT evergreen.upgrade_deps_block_check('0850', :eg_version);
+
 CREATE OR REPLACE FUNCTION unapi.mra ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
         SELECT  XMLELEMENT(
                     name attributes,
@@ -27,3 +31,5 @@ CREATE OR REPLACE FUNCTION unapi.mra ( obj_id BIGINT, format TEXT,  ename TEXT, 
           FROM  metabib.record_attr mra
           WHERE mra.id = $1;
 $F$ LANGUAGE SQL STABLE;
+
+COMMIT;
