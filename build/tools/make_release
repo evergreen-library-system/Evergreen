@@ -15,8 +15,10 @@ NO_UPGRADE=AUTO # -n
 IS_PREVIEW=AUTO # -p
 TAG_ONLY=NO # -t
 BUILD_ONLY=NO # -b
+UPGRADE_PREVIEW=NO # -r
+SKIP_I18N=NO # -i
 
-while getopts ":hv:f:F:nptb" opt; do
+while getopts ":hv:f:F:nptbri" opt; do
     case $opt in
         v)
             VERSION=$OPTARG
@@ -29,6 +31,12 @@ while getopts ":hv:f:F:nptb" opt; do
         ;;
         n)
             NO_UPGRADE=YES
+        ;;
+        r)
+            UPGRADE_PREVIEW=YES
+        ;;
+        i)
+            SKIP_I18N=YES
         ;;
         p)
             IS_PREVIEW=YES
@@ -56,6 +64,8 @@ while getopts ":hv:f:F:nptb" opt; do
             echo "   -p specifies that this is a preview build."
             echo "   -t turns on tag only mode."
             echo "   -b turns on build only mode."
+            echo "   -r prompt to preview upgrade SQL in editor before committing."
+            echo "   -i skip i18n; primarily useful for (quickly) testing this script."
             echo "   NOTE: -t and -b override PREV_BRANCH/PREV_VERSION, but -b overrides -t."
             exit -1
         ;;
@@ -237,8 +247,10 @@ if [ $PREV_BRANCH != "PACKAGE" ]; then
                 echo "$MAYBE_DUPES" > maybe_dupes.txt
             fi
             echo ""
-            read -p "Please manually check the upgrade file."
-            ${EDITOR:-vi} $UPGRADE_FILE
+            if [ "$UPGRADE_PREVIEW" = "YES" ]; then
+                read -p "Please manually check the upgrade file."
+                ${EDITOR:-vi} $UPGRADE_FILE
+            fi;
             git add $UPGRADE_FILE
         fi
     fi
@@ -271,25 +283,27 @@ else
     echo "Running autoreconf"
     autoreconf -i
 fi
-cd build/i18n
-echo "Building i18n"
-make install_all_locales
-echo "i18n Cleanup"
-cd ..
-rm -rf i18n
+
+if [ "$SKIP_I18N" = "NO" ]; then
+    cd build/i18n
+    echo "Building i18n"
+    make install_all_locales
+    echo "i18n Cleanup"
+    cd ..
+    rm -rf i18n
+    cd ..
+fi;
+
 echo "Installing Dojo"
-cd ..
 if [ ! -f "../dojo.tgz" ]; then
     wget http://evergreen-ils.org/downloads/dojo.tgz -O ../dojo.tgz
 fi
 tar xzf ../dojo.tgz -C Open-ILS/web/js/dojo/
-echo "Grabbing XULRunner (to avoid issues with version changes)"
+
+# set version for later
 cd Open-ILS/xul/staff_client
 XULRUNNER_VERSION=`grep '^XULRUNNER_VERSION' Makefile.am`
 XULRUNNER_VERSION=${XULRUNNER_VERSION##XULRUNNER_VERSION=}
-wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.win32.zip
-wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.linux-i686.tar.bz2
-wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.linux-x86_64.tar.bz2
 
 echo "Prepping server download files"
 cd ../../../../
@@ -305,6 +319,12 @@ cd Evergreen-ILS-$VERSION/
 
 echo "Building Release Staff Clients"
 cd Open-ILS/xul/staff_client
+
+echo "Grabbing XULRunner (to avoid issues with version changes)"
+wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.win32.zip
+wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.linux-i686.tar.bz2
+wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.linux-x86_64.tar.bz2
+
 make rigrelease
 make STAFF_CLIENT_STAMP_ID=rel_$UNDER_VERSION build
 make win-client
