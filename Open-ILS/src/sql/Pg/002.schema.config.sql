@@ -74,7 +74,7 @@ DECLARE
     fld     TEXT;
     cnt     INT;
 BEGIN
-    fld := TG_ARGV[1];
+    fld := TG_ARGV[0];
     EXECUTE 'SELECT COUNT(*) FROM '|| TG_TABLE_SCHEMA ||'.'|| TG_TABLE_NAME ||' WHERE '|| fld ||' && ($1).'|| fld INTO cnt USING NEW;
     IF cnt > 0 THEN
         RAISE EXCEPTION 'Cannot insert duplicate array into field % of table %', fld, TG_TABLE_SCHEMA ||'.'|| TG_TABLE_NAME;
@@ -853,7 +853,7 @@ $f$ LANGUAGE PLPGSQL;
 CREATE OR REPLACE FUNCTION evergreen.upgrade_list_applied_deprecates ( my_db_patch TEXT ) RETURNS SETOF evergreen.patch AS $$
     SELECT  DISTINCT l.version
       FROM  config.upgrade_log l
-            JOIN config.db_patch_dependencies d ON (l.version::TEXT[] && d.deprecates)
+            JOIN config.db_patch_dependencies d ON (l.version = ANY(d.deprecates))
       WHERE d.db_patch = $1
 $$ LANGUAGE SQL;
 
@@ -861,7 +861,7 @@ $$ LANGUAGE SQL;
 CREATE OR REPLACE FUNCTION evergreen.upgrade_list_applied_supersedes ( my_db_patch TEXT ) RETURNS SETOF evergreen.patch AS $$
     SELECT  DISTINCT l.version
       FROM  config.upgrade_log l
-            JOIN config.db_patch_dependencies d ON (l.version::TEXT[] && d.supersedes)
+            JOIN config.db_patch_dependencies d ON (l.version = ANY(d.supersedes))
       WHERE d.db_patch = $1
 $$ LANGUAGE SQL;
 
@@ -907,8 +907,8 @@ Upgrade script % can not be applied:
   deprecated by %
   superseded by %',
             my_db_patch,
-            ARRAY_AGG(evergreen.upgrade_list_applied_deprecates(my_db_patch)),
-            ARRAY_AGG(evergreen.upgrade_list_applied_supersedes(my_db_patch)),
+            (SELECT ARRAY_AGG(patch) FROM evergreen.upgrade_list_applied_deprecates(my_db_patch)),
+            (SELECT ARRAY_AGG(patch) FROM evergreen.upgrade_list_applied_supersedes(my_db_patch)),
             evergreen.upgrade_list_applied_deprecated(my_db_patch),
             evergreen.upgrade_list_applied_superseded(my_db_patch);
     END IF;

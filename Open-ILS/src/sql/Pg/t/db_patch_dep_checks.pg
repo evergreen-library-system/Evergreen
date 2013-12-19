@@ -1,0 +1,36 @@
+BEGIN;
+
+SELECT plan(5);
+
+INSERT INTO config.db_patch_dependencies (db_patch, supersedes, deprecates)
+    VALUES
+        ('AAAE', '{AAAD}', '{}'),
+        ('AAAF', '{}', '{AAAC,AAAB}');
+
+-- AAAB is deprecated by AAAF
+SELECT is(evergreen.upgrade_list_applied_deprecated('AAAB'), 'AAAF', 'deprecated');
+
+-- AAAC is deprecated by AAAF
+SELECT is(evergreen.upgrade_list_applied_deprecated('AAAC'), 'AAAF', 'deprecated');
+
+-- AAAD is superseded by AAAE
+SELECT is(evergreen.upgrade_list_applied_superseded('AAAD'), 'AAAE', 'superseded');
+
+-- add some applied versions
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('AAAB', 'AAAA');
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('AAAC', 'AAAB');
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('AAAD', 'AAAC');
+
+-- AAAE supersedes AAAD
+SELECT is(
+    (SELECT ARRAY_AGG(patch) FROM evergreen.upgrade_list_applied_supersedes('AAAE')),
+    '{AAAD}'
+);
+
+-- AAAF deprecates AAAB, AAAC
+SELECT is(
+    (SELECT ARRAY_AGG(patch) FROM evergreen.upgrade_list_applied_deprecates('AAAF')),
+    '{AAAB,AAAC}'
+);
+
+ROLLBACK;
