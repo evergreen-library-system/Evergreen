@@ -13,7 +13,7 @@
         <span class='search_box_wrapper'>
             [%- # autosuggest breaks accessibility, as the aria-label
                 # attribute is removed when the Dijit is created. :(  %]
-            <label id="search_box_label">[% l('Search: ') %]
+            <label id="search_box_label" for="search_box">[% l('Search: ') %]
             <input type="text" id="search_box" name="query" aria-label="[%
                     l('Enter search query:');
                 %]" value="[% is_advanced ? ctx.naive_query_scrub(ctx.processed_search_query) : CGI.param('query') | html %]"
@@ -28,35 +28,40 @@
                 [%- END # autosuggest enabled %] />
             </label>
         </span>
-        <label id="search_qtype_label">
+        <label id="search_qtype_label" for="qtype">
         [%- 
             l('Type: ');
             INCLUDE "opac/parts/qtype_selector.tt2" id="qtype";
         -%]
         </label>
-        <label id="search_itype_label">
+        <label id="search_itype_label" for="search_itype_selector">
         [%-
             l('Format: ');
             IF search.basic_config.type == 'attr';
                 INCLUDE "opac/parts/coded_value_selector.tt2"
-                    attr=search.basic_config.group none_ok=1 none_label=search.basic_config.none_label;
+                    attr=search.basic_config.group none_ok=1 
+                    id='search_itype_selector'
+                    none_label=search.basic_config.none_label;
             ELSIF search.basic_config.type == 'filter';
                 INCLUDE "opac/parts/filter_group_selector.tt2"
-                    filter_group=search.basic_config.group none_ok=1 none_label=search.basic_config.none_label;
+                    filter_group=search.basic_config.group none_ok=1 
+                    id='search_itype_selector'
+                    none_label=search.basic_config.none_label;
             END;
         -%]
         </label>
-        <label id="search_locg_label">
+        <label id="search_locg_label" for="search_org_selector">
         [%- 
             l('Library: ');
             select_lib_label = l("Select search library");
-            INCLUDE build_org_selector arialabel=select_lib_label show_loc_groups=1
+            INCLUDE build_org_selector arialabel=select_lib_label 
+              id='search_org_selector' show_loc_groups=1
         -%]
         </label>
     <span>
-        <input id='search-submit-go' type="submit" value="[% l('Search') %]" alt="[% l('Search') %]" class="opac-button"
+        <input id='search-submit-go' type="submit" value="[% l('Search') %]" class="opac-button"
             onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"}, 2000)'/>
-        <img id='search-submit-spinner' src='/opac/images/progressbar_green.gif' style='height:16px;width:16px;' class='hidden' alt=''/>
+        <img id='search-submit-spinner' src='/opac/images/progressbar_green.gif' style='height:16px;width:16px;' class='hidden' alt='[% l("Search In Progress") %]'/>
     </span>
     </div>
     [% IF ctx.bookbag %]
