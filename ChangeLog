@@ -1,3 +1,363 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 8fe91eed0b7089988347de3fd84d02848b91ebc5
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Nov 26 15:22:43 2013 -0500
+
+    Updating translations; Fixing make_release for ChangeLog generation
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	build/i18n/po/AutoFieldWidget.js/fi-FI.po
+1	1	build/i18n/po/Searcher.js/fi-FI.po
+1	1	build/i18n/po/TranslatorPopup.js/fi-FI.po
+1	1	build/i18n/po/User.js/fi-FI.po
+2	4	build/i18n/po/XULTermLoader.js/XULTermLoader.js.pot
+1	1	build/i18n/po/XULTermLoader.js/fi-FI.po
+15	37	build/i18n/po/acq.js/acq.js.pot
+1	1	build/i18n/po/admin.properties/fi-FI.po
+1	1	build/i18n/po/auth.properties/fi-FI.po
+1	1	build/i18n/po/authority.js/fi-FI.po
+2	4	build/i18n/po/capture.js/capture.js.pot
+1	1	build/i18n/po/capture.js/fi-FI.po
+1	1	build/i18n/po/cat.properties/fi-FI.po
+2	2	build/i18n/po/circ.properties/circ.properties.pot
+1	1	build/i18n/po/circ.properties/fi-FI.po
+1	1	build/i18n/po/common.properties/fi-FI.po
+7	19	build/i18n/po/conify.js/conify.js.pot
+1	1	build/i18n/po/conify.js/fi-FI.po
+691	691	build/i18n/po/db.seed/db.seed.pot
+1	1	build/i18n/po/db.seed/fi-FI.po
+1	1	build/i18n/po/fm_IDL.dtd/fi-FI.po
+17	17	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+1	1	build/i18n/po/ils_events.xml/fi-FI.po
+298	358	build/i18n/po/ils_events.xml/ils_events.xml.pot
+1	1	build/i18n/po/lang.dtd/fi-FI.po
+6	2	build/i18n/po/lang.dtd/lang.dtd.pot
+1	1	build/i18n/po/offline.properties/fi-FI.po
+1	1	build/i18n/po/opac.dtd/fi-FI.po
+1	1	build/i18n/po/opac.js/fi-FI.po
+4	11	build/i18n/po/opac.js/opac.js.pot
+1	1	build/i18n/po/patron.properties/fi-FI.po
+1	1	build/i18n/po/pickup_and_return.js/fi-FI.po
+1	1	build/i18n/po/pull_list.js/fi-FI.po
+1	1	build/i18n/po/register.js/fi-FI.po
+10	11	build/i18n/po/register.js/register.js.pot
+1	1	build/i18n/po/reports.dtd/fi-FI.po
+1	1	build/i18n/po/reports.js/fi-FI.po
+1	1	build/i18n/po/reservation.js/fi-FI.po
+2	5	build/i18n/po/reservation.js/reservation.js.pot
+1	1	build/i18n/po/selfcheck.js/fi-FI.po
+3	8	build/i18n/po/selfcheck.js/selfcheck.js.pot
+1	1	build/i18n/po/serial.properties/fi-FI.po
+6	6	build/i18n/po/tpac/tpac.pot
+1	1	build/tools/make_release
+
+commit 37b9a2cf5789364918b333418314e8fd57a458d6
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Nov 26 14:57:46 2013 -0500
+
+    Updating PO files from launchpad
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	build/i18n/po/AutoFieldWidget.js/fi-FI.po
+9	9	build/i18n/po/Searcher.js/es-ES.po
+1	1	build/i18n/po/Searcher.js/fi-FI.po
+1	1	build/i18n/po/TranslatorPopup.js/fi-FI.po
+1	1	build/i18n/po/User.js/fi-FI.po
+1	1	build/i18n/po/XULTermLoader.js/fi-FI.po
+13	11	build/i18n/po/admin.properties/es-ES.po
+1	1	build/i18n/po/admin.properties/fi-FI.po
+1	1	build/i18n/po/auth.properties/fi-FI.po
+21	21	build/i18n/po/authority.js/es-ES.po
+1	1	build/i18n/po/authority.js/fi-FI.po
+1	1	build/i18n/po/capture.js/fi-FI.po
+16	14	build/i18n/po/cat.properties/cs-CZ.po
+15	13	build/i18n/po/cat.properties/de-DE.po
+15	13	build/i18n/po/cat.properties/en-CA.po
+15	13	build/i18n/po/cat.properties/en-GB.po
+53	42	build/i18n/po/cat.properties/es-ES.po
+18	15	build/i18n/po/cat.properties/fi-FI.po
+15	13	build/i18n/po/cat.properties/fr-CA.po
+15	13	build/i18n/po/cat.properties/hy-AM.po
+15	13	build/i18n/po/cat.properties/oc-FR.po
+15	13	build/i18n/po/cat.properties/pt-BR.po
+15	13	build/i18n/po/cat.properties/ru-RU.po
+7	13	build/i18n/po/cat.properties/tr-TR.po
+27	6	build/i18n/po/circ.properties/cs-CZ.po
+22	4	build/i18n/po/circ.properties/de-DE.po
+27	6	build/i18n/po/circ.properties/en-CA.po
+27	6	build/i18n/po/circ.properties/en-GB.po
+34	13	build/i18n/po/circ.properties/es-ES.po
+30	8	build/i18n/po/circ.properties/fi-FI.po
+26	5	build/i18n/po/circ.properties/fr-CA.po
+27	6	build/i18n/po/circ.properties/hy-AM.po
+22	4	build/i18n/po/circ.properties/oc-FR.po
+27	6	build/i18n/po/circ.properties/pt-BR.po
+26	5	build/i18n/po/circ.properties/ru-RU.po
+22	4	build/i18n/po/circ.properties/tr-TR.po
+12	4	build/i18n/po/common.properties/cs-CZ.po
+11	3	build/i18n/po/common.properties/de-DE.po
+11	3	build/i18n/po/common.properties/en-CA.po
+11	3	build/i18n/po/common.properties/en-GB.po
+17	9	build/i18n/po/common.properties/es-ES.po
+21	12	build/i18n/po/common.properties/fi-FI.po
+11	3	build/i18n/po/common.properties/fr-CA.po
+11	3	build/i18n/po/common.properties/hy-AM.po
+11	3	build/i18n/po/common.properties/oc-FR.po
+11	3	build/i18n/po/common.properties/pt-BR.po
+11	3	build/i18n/po/common.properties/ru-RU.po
+6	6	build/i18n/po/conify.js/es-ES.po
+1	1	build/i18n/po/conify.js/fi-FI.po
+9543	3073	build/i18n/po/db.seed/cs-CZ.po
+8455	2323	build/i18n/po/db.seed/de-DE.po
+8753	2722	build/i18n/po/db.seed/en-CA.po
+8761	2795	build/i18n/po/db.seed/en-GB.po
+8438	2405	build/i18n/po/db.seed/es-ES.po
+9624	3331	build/i18n/po/db.seed/fi-FI.po
+9764	3798	build/i18n/po/db.seed/fr-CA.po
+9808	3842	build/i18n/po/db.seed/hy-AM.po
+8480	2343	build/i18n/po/db.seed/oc-FR.po
+9317	3270	build/i18n/po/db.seed/pt-BR.po
+9164	3120	build/i18n/po/db.seed/ru-RU.po
+7960	1826	build/i18n/po/db.seed/tr-TR.po
+2679	2480	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+2637	2444	build/i18n/po/fm_IDL.dtd/de-DE.po
+2670	2468	build/i18n/po/fm_IDL.dtd/en-CA.po
+2669	2467	build/i18n/po/fm_IDL.dtd/en-GB.po
+2643	2450	build/i18n/po/fm_IDL.dtd/es-ES.po
+2731	2528	build/i18n/po/fm_IDL.dtd/fi-FI.po
+2639	2446	build/i18n/po/fm_IDL.dtd/fr-CA.po
+2670	2468	build/i18n/po/fm_IDL.dtd/hy-AM.po
+2636	2443	build/i18n/po/fm_IDL.dtd/oc-FR.po
+2655	2462	build/i18n/po/fm_IDL.dtd/pt-BR.po
+2655	2462	build/i18n/po/fm_IDL.dtd/ru-RU.po
+2634	2441	build/i18n/po/fm_IDL.dtd/tr-TR.po
+270	257	build/i18n/po/ils_events.xml/cs-CZ.po
+267	254	build/i18n/po/ils_events.xml/de-DE.po
+269	256	build/i18n/po/ils_events.xml/en-CA.po
+269	256	build/i18n/po/ils_events.xml/en-GB.po
+286	270	build/i18n/po/ils_events.xml/es-ES.po
+272	258	build/i18n/po/ils_events.xml/fi-FI.po
+270	257	build/i18n/po/ils_events.xml/fr-CA.po
+269	256	build/i18n/po/ils_events.xml/hy-AM.po
+269	256	build/i18n/po/ils_events.xml/pt-BR.po
+269	256	build/i18n/po/ils_events.xml/ru-RU.po
+827	16	build/i18n/po/lang.dtd/ar-AR.po
+900	38	build/i18n/po/lang.dtd/cs-CZ.po
+853	21	build/i18n/po/lang.dtd/de-DE.po
+883	30	build/i18n/po/lang.dtd/en-CA.po
+882	29	build/i18n/po/lang.dtd/en-GB.po
+856	30	build/i18n/po/lang.dtd/es-ES.po
+1485	629	build/i18n/po/lang.dtd/fi-FI.po
+871	27	build/i18n/po/lang.dtd/fr-CA.po
+883	30	build/i18n/po/lang.dtd/hy-AM.po
+835	18	build/i18n/po/lang.dtd/oc-FR.po
+877	27	build/i18n/po/lang.dtd/pt-BR.po
+877	27	build/i18n/po/lang.dtd/ru-RU.po
+843	20	build/i18n/po/lang.dtd/tr-TR.po
+8	4	build/i18n/po/offline.properties/cs-CZ.po
+7	3	build/i18n/po/offline.properties/de-DE.po
+7	3	build/i18n/po/offline.properties/en-CA.po
+7	3	build/i18n/po/offline.properties/en-GB.po
+59	44	build/i18n/po/offline.properties/es-ES.po
+10	5	build/i18n/po/offline.properties/fi-FI.po
+7	3	build/i18n/po/offline.properties/fr-CA.po
+7	3	build/i18n/po/offline.properties/hy-AM.po
+9	5	build/i18n/po/offline.properties/oc-FR.po
+7	3	build/i18n/po/offline.properties/pt-BR.po
+7	3	build/i18n/po/offline.properties/ru-RU.po
+7	3	build/i18n/po/offline.properties/tr-TR.po
+16	10	build/i18n/po/opac.dtd/es-ES.po
+7	6	build/i18n/po/opac.dtd/fi-FI.po
+6	5	build/i18n/po/opac.js/es-ES.po
+1	1	build/i18n/po/opac.js/fi-FI.po
+41	18	build/i18n/po/patron.properties/cs-CZ.po
+38	14	build/i18n/po/patron.properties/de-DE.po
+39	15	build/i18n/po/patron.properties/en-CA.po
+39	15	build/i18n/po/patron.properties/en-GB.po
+44	32	build/i18n/po/patron.properties/es-ES.po
+44	19	build/i18n/po/patron.properties/fi-FI.po
+38	14	build/i18n/po/patron.properties/fr-CA.po
+39	15	build/i18n/po/patron.properties/hy-AM.po
+18	9	build/i18n/po/patron.properties/oc-FR.po
+38	14	build/i18n/po/patron.properties/pt-BR.po
+38	14	build/i18n/po/patron.properties/ru-RU.po
+23	11	build/i18n/po/patron.properties/tr-TR.po
+21	20	build/i18n/po/pickup_and_return.js/es-ES.po
+1	1	build/i18n/po/pickup_and_return.js/fi-FI.po
+6	6	build/i18n/po/pull_list.js/es-ES.po
+1	1	build/i18n/po/pull_list.js/fi-FI.po
+30	23	build/i18n/po/register.js/cs-CZ.po
+29	22	build/i18n/po/register.js/de-DE.po
+29	22	build/i18n/po/register.js/en-CA.po
+29	22	build/i18n/po/register.js/en-GB.po
+36	29	build/i18n/po/register.js/es-ES.po
+32	24	build/i18n/po/register.js/fi-FI.po
+29	22	build/i18n/po/register.js/fr-CA.po
+29	22	build/i18n/po/register.js/hy-AM.po
+29	22	build/i18n/po/register.js/oc-FR.po
+30	23	build/i18n/po/register.js/pt-BR.po
+29	22	build/i18n/po/register.js/ru-RU.po
+23	20	build/i18n/po/register.js/tr-TR.po
+20	8	build/i18n/po/reports.dtd/es-ES.po
+8	7	build/i18n/po/reports.dtd/fi-FI.po
+1	1	build/i18n/po/reports.js/fi-FI.po
+1	1	build/i18n/po/reservation.js/fi-FI.po
+62	30	build/i18n/po/selfcheck.js/cs-CZ.po
+41	25	build/i18n/po/selfcheck.js/de-DE.po
+60	29	build/i18n/po/selfcheck.js/en-CA.po
+60	29	build/i18n/po/selfcheck.js/en-GB.po
+67	42	build/i18n/po/selfcheck.js/es-ES.po
+63	31	build/i18n/po/selfcheck.js/fi-FI.po
+60	29	build/i18n/po/selfcheck.js/fr-CA.po
+60	29	build/i18n/po/selfcheck.js/hy-AM.po
+44	25	build/i18n/po/selfcheck.js/oc-FR.po
+60	29	build/i18n/po/selfcheck.js/pt-BR.po
+40	24	build/i18n/po/selfcheck.js/ru-RU.po
+25	13	build/i18n/po/serial.properties/cs-CZ.po
+15	3	build/i18n/po/serial.properties/de-DE.po
+15	3	build/i18n/po/serial.properties/en-CA.po
+15	3	build/i18n/po/serial.properties/en-GB.po
+19	7	build/i18n/po/serial.properties/es-ES.po
+31	18	build/i18n/po/serial.properties/fi-FI.po
+15	3	build/i18n/po/serial.properties/fr-CA.po
+15	3	build/i18n/po/serial.properties/hy-AM.po
+15	3	build/i18n/po/serial.properties/oc-FR.po
+15	3	build/i18n/po/serial.properties/pt-BR.po
+15	3	build/i18n/po/serial.properties/tr-TR.po
+5	5	build/i18n/po/vandelay.dtd/es-ES.po
+
+commit d7ef743766389a85111f9061cce17687ba5326a1
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Nov 25 10:05:21 2013 -0800
+
+    LP#1254816: prevent cases where a Google Book preview is not displayed
+    
+    Due to quirks in how different parts of the Google Books API
+    processes ISBN searches, it is possible for a Google Books Preview
+    badge to get displayed, but when the user tries to display the preview,
+    the embedded preview does not get displayed.
+    
+    This patch fixes the problem by grabbing the preview link from
+    the GB volumes search results, which in turn can be fed into the
+    Embedded Viewer initialization.
+    
+    An ISBN that can be used to reproduce the problem is 9781937994198.
+    Before the patch, the badge is displayed but not the preview; after
+    the patch, both badge and preview should be displayed.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+6	1	Open-ILS/src/templates/opac/parts/ac_google_books.tt2
+
+commit ccc9672ab69909cfe9c7dcdd52b9fa84d0784c44
+Author: Angela Kilsdonk <akilsdonk@esilibrary.com>
+Date:   Tue Dec 10 14:52:18 2013 -0500
+
+    Documentation for Sorting Billing Columns
+    
+    Docs for sorting money columns in billing interface.  In ersions 2.3-2.5.
+    
+    Signed-off-by: Angela Kilsdonk <akilsdonk@esilibrary.com>
+
+6	0	docs/circulation/circulation_patron_records.txt
+
+commit 95ae747f0e0317013dd6838b65187544769b092c
+Author: Steven Chan <schan@sitka.bclibraries.ca>
+Date:   Wed May 15 14:30:15 2013 -0700
+
+    Fix LP1180140, View Holds not working for a serial with subscription and no issuances
+    
+    A request is made to
+    open-ils.circ.holds.retrieve_all_from_title,
+    which is the function Circ/Holds.pm/all_rec_holds().
+    
+    In the function, when checking for issuance holds, there is a missing @
+    to dereference the list of issuance IDs, so that the ahr table is search
+    with badly formed input, which results in returning an undefined list
+    instead of an empty list.  The error will occur for any record with a
+    serial.subscription entry but with no related entries in
+    serial.issuance.
+    
+    We also recode the initialization of the response object in order to
+    clarify its expected structure, a hash of array references.
+    
+    Signed-off-by: Steven Chan <schan@sitka.bclibraries.ca>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+11	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit b22be745f55541d841c20ce98d2f98db03012f57
+Author: Elliot Voris <evoris@slcconline.edu>
+Date:   Sat Dec 7 15:24:46 2013 -0600
+
+    Documentation typo in Authorities chapter subheading
+    Addresses this bugs reported in launchpad:
+    https://bugs.launchpad.net/evergreen/+bug/1248726
+    
+    I also browsed through the rest of the docs/admin
+    directory, and made some (very non-consequential)
+    changes.
+    
+    Signed-off-by: Elliot Voris <evoris@slcconline.edu>
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+10	9	docs/admin/authorities.txt
+1	1	docs/admin/permissions.txt
+1	1	docs/admin/staff_client-patron_border.txt
+6	6	docs/admin/template_toolkit.txt
+
+commit d9841721ee0851fa44ad2ce3d4df99672cb9b3c9
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Dec 5 10:59:06 2013 -0500
+
+    Pushing upgrade scripts forward
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+445	0	Open-ILS/src/sql/Pg/version-upgrade/2.4.3-2.4.4-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.4.3-2.4.4-upgrade-db.sql
+
+commit 171abfb94ffe77884c8f4a2d111f97e6e7a4e07f
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Dec 5 10:08:34 2013 -0500
+
+    Forward port 2.3.11->2.3.12 DB upgrade
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+171	0	Open-ILS/src/sql/Pg/version-upgrade/2.3.11-2.3.12-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.3.11-2.3.12-upgrade-db.sql
+
+commit d27a18003babad0170e7608c1fb520cd8d26e4ce
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Dec 4 09:35:30 2013 -0500
+
+    Fix a broken link in the holds docs
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+1	1	docs/circulation/holds.txt
+
+commit 6c27190e92c0cc5b1238db4b55ce6242afb6ecd7
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Nov 21 10:29:22 2013 -0500
+
+    Docs: integrate holds docs from EG 2.1
+    
+    The small amount of Holds docs present in master seemed to fit well at
+    the end of the older Holds documentation, so this commit appends them
+    to the new holds.txt file, deletes the previous holds_management.txt file,
+    and makes the appropriate change to root.txt.
+    
+    This commit also includes several small formatting improvements, wording
+    changes, and bug fixes.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+410	0	docs/circulation/holds.txt
+0	28	docs/circulation/holds_management.txt
+1	1	docs/root.txt
+ create mode 100644 docs/circulation/holds.txt
+ delete mode 100644 docs/circulation/holds_management.txt
