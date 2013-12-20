@@ -1,7 +1,7 @@
 [% BLOCK results_count_header %]
 <div class="results_header_nav1">
     <span class="h1">[% ctx.bookbag ? l('List Contents') : l('Search Results') %]</span>
-    <span nowrap="nowrap" class="result_number">
+    <span class="result_number">
                 [%~ |l('<span class="result_count_number">' _ ctx.result_start _'</span>',
                 '<span class="result_count_number">' _ ctx.result_stop _ '</span>',
                 '<span class="result_count_number">' _ ctx.hit_count _ '</span>')  ~%]
