@@ -11,7 +11,7 @@
     <!-- new list creation -->
     <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="post" id="create_form">
         <h1>[% l('Create New List') %]</h1><a name="createnewlist"></a>
-        <table cellpadding="0" border="0" id="list_create_table">
+        <table class="table_no_cell_pad" id="list_create_table">
             <tr>
                 <td>
                     <label for="list_create_name">[% l('Enter the name of the new list:') %]</label>
@@ -274,7 +274,7 @@
         <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="post">
         <input type="hidden" name="list" value="[% bbag.id %]" />
         <input type="hidden" name="sort" value="[% CGI.param('sort') | uri %]" />
-        <table class="bookbag-specific" cellpadding='0' cellspacing='0' border='0'>
+        <table class="bookbag-specific table_no_cell_pad table_no_border_space table_no_border">
             <thead id="acct_list_header">
                 <tr>
                     <td class="list_checkbox">

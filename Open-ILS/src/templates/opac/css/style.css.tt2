@@ -689,6 +689,20 @@ collapse correctly when the window width decreases */
     color:[% css_colors.primary_fade %];
 }
 
+.table_no_border_space {
+  border-spacing: 0px;
+}
+.table_no_cell_pad td {
+  padding: 0px;
+}
+.table_no_border {
+  border-collapse: collapse;
+}
+
+#result_table_table {
+  margin-top:10px;
+}
+
 #result_table_div {
     margin-top: 1em;
 }
