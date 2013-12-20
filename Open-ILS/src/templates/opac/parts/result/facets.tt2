@@ -67,9 +67,16 @@ FOR facet IN sorted_facets;
                         expand_url  = mkurl('', {}, ['long_facet']);
                     END;
                 %]
-                    <a class="button" href="[% expand_url %]">[% l("Fewer") %]</a>
+                    <a class="button" href="[% expand_url %]"
+                      title="[% l('Show Fewer [_1] Entries', facet.cmf.label) %]">
+                      [% l("Fewer") %]
+                    </a>
                 [% ELSIF facet.data.size > DEFAULT_DISPLAY_COUNT %]
-                    <a class="button" href="[% mkurl('', {long_facet => long_facets.merge([long_key])}) %]">[% l("More") %]</a>
+                    <a class="button" 
+                      title="[% l('Show More [_1] Entries', facet.cmf.label) %]"
+                      href="[% mkurl('', {long_facet => long_facets.merge([long_key])}) %]">
+                      [% l("More") %]
+                    </a>
                 [% END %]
             <div class="title">[% facet.cmf.label %]</div>
         </div>
