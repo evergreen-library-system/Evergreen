@@ -12,13 +12,13 @@
             <thead>
                 <tr>
                     <td>
-                        <a class='classic_link' 
-                            href="[% mkurl('', {cnoffset => cnoffset - 1}) %]#cnbrowse"><b>[% l("&lt;&lt; Previous Page") %]</b></a>
+                        <a class='classic_link lbl1' 
+                            href="[% mkurl('', {cnoffset => cnoffset - 1}) %]#cnbrowse">[% l("&lt;&lt; Previous Page") %]</a>
                     </td>
                     <td colspan='1' align='center'>[% l("Shelf Browser") %]</td>
                     <td>
-                        <a class='classic_link' 
-                            href="[% mkurl('', {cnoffset => cnoffset + 1}) %]#cnbrowse"><b>[% l("Next Page &gt;&gt;") %]</b></a>
+                        <a class='classic_link lbl1' 
+                            href="[% mkurl('', {cnoffset => cnoffset + 1}) %]#cnbrowse">[% l("Next Page &gt;&gt;") %]</a>
                     </td>
                 </tr>
             </thead>
@@ -33,7 +33,8 @@
                         [%  rec_attrs = {marc_xml => cn.record.marc};
                             PROCESS get_marc_attrs args=rec_attrs; %]
                         <a href="[% mkurl(ctx.opac_root _ '/record/' _ cn.record.id, {$loc_name => loc_value}, 1) %]"><img height='60' width='50' 
-                            class='cn_browse_info' name='cn_browse_pic' border='0'
+                            class='cn_browse_info' name='cn_browse_pic' border='0' 
+                            [% img_alt(l('Go to record [_1]', rec_attrs.title)) %]
                             src="[% ctx.media_prefix %]/opac/extras/ac/jacket/small/r/[% cn.record.id | uri %]" /></a>
                         <div class='cn_browse_info bold' name='cn_browse_cn'>[% cn.label | html %]</div>
                         <div class='cn_browse_info'>

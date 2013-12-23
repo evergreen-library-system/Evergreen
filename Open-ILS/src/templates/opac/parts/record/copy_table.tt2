@@ -236,12 +236,12 @@ END; # FOREACH bib
                 [%- more_copies_limit = 50 %] [%# TODO: config %]
                 [%- IF  ctx.copy_limit != more_copies_limit AND copies.size >= ctx.copy_limit %]
                     <div class="rdetail_show_copies">
-                        <img src="[% ctx.media_prefix %]/images/plus_sign.png" />
+                        <img src="[% ctx.media_prefix %]/images/plus_sign.png" alt="[% l('Show more copies icon') %]"/>
                         <a href="[% mkurl('', {copy_limit => more_copies_limit, copy_offset => 0}) %]">[% l('Show more copies') %]</a>
                     </div>
                 [%- ELSIF ctx.copy_limit == more_copies_limit %]
                     <div  class="rdetail_show_copies">
-                        <img src="[% ctx.media_prefix %]/images/minus_sign.png" />
+                        <img src="[% ctx.media_prefix %]/images/minus_sign.png" alt="[% l('Show fewer copies icon') %]"/>
                         <a href="[% mkurl('', {copy_limit => 0, copy_offset => 0}) %]">[% l('Show fewer copies') %]</a>
                     </div>
                 [%- END %]

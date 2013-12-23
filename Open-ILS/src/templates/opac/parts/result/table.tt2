@@ -47,10 +47,10 @@
                                             <td class='result_table_title_cell' name='result_table_title_cell'>
                                                <div class="result_metadata">
                                                     <abbr class="unapi-id" title='tag:[% ctx.hostname %],[% date.format(date.now, '%Y') %]:biblio-record_entry/[% rec.id %]'></abbr>
-                                                    <a class='record_title' name='record_[% rec.id %]' name='item_title'
+                                                    <a class='record_title search_link' name='record_[% rec.id %]'
                                                         href="[% mkurl(ctx.opac_root _ '/record/' _ rec.id) %]"
                                                         [% HTML.attributes(title => l('Display record details for "[_1]"', attrs.title)) %]
-                                                        class='search_link'>[% attrs.title | html %]</a>
+                                                        >[% attrs.title | html %]</a>
 [%-
 FOR entry IN attrs.graphic_titles;
     FOR alt IN entry.graphic;
@@ -330,7 +330,7 @@ END;
                                                                 href="[% ctx.ext_proto %]://contentcafe2.btol.com/ContentCafeClient/ContentCafe.aspx?UserID=[%- 
                                                                     ENV.OILS_CONTENT_CAFE_USER %]&amp;Password=[%-
                                                                     ENV.OILS_CONTENT_CAFE_PASS %]&amp;ItemKey=[% ident | uri %]&amp;Options=Y">
-                                                                <img src='[% ctx.media_prefix %]/images/starz.png' alt="[% l('Ratings Stars') %]"/> 
+                                                                <img src='[% ctx.media_prefix %]/images/starz.png' alt="[% l('Ratings Icon') %]"/> 
                                                                 <span class="results_reviews">[% l('Reviews &amp; More') %]</span>
                                                             </a>
                                                         </div>
