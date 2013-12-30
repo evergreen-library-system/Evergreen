@@ -181,7 +181,7 @@ sub _add_bib_rec {
     $rec->purpose( $purpose ) if ($purpose);
     $rec->bib_source($bib_source);
 
-    return $e->create_vandelay_queued_bib_record( $rec );
+    return $e->create_vandelay_queued_bib_record( $rec, {timeout => 600} );
 }
 
 sub add_record_to_authority_queue {
@@ -225,7 +225,7 @@ sub _add_auth_rec {
     $rec->queue( $queue );
     $rec->purpose( $purpose ) if ($purpose);
 
-    return $e->create_vandelay_queued_authority_record( $rec );
+    return $e->create_vandelay_queued_authority_record( $rec, {timeout => 600} );
 }
 
 sub process_spool {
