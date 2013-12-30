@@ -42,7 +42,10 @@
                         [% l('Browse for [_1] starting with [_2] in [_3]', control_qtype, control_bterm, control_locg) %]
 
 			<input id='search-submit-go' type="submit" value="[% l('Browse') %]" alt="[% l('Browse') %]" class="opac-button"/>
-                        <img id="browse-submit-spinner" src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif" class="hidden" style="width: 16px; height: 16px;" alt="" />
+                        <img id="browse-submit-spinner" 
+                        src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif" 
+                        class="hidden" style="width: 16px; height: 16px;" 
+                        alt="[% l('Search in progress icon') %]" />
                     </form>
                 </div>
 
@@ -64,7 +67,10 @@
                     <a class="opac-button" href="[% mkurl('', {bpivot => ctx.forward_pivot}) %]" onclick="$('browse-pager-spinner-[% id %]').className = '';">[%l ('Next') %] &rarr;</a>
                     [% END %]
 
-                    <img id="browse-pager-spinner-[% id %]" src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif" class="hidden" style="width: 16px; height: 16px;" alt="" />
+                    <img id="browse-pager-spinner-[% id %]" 
+                        src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif" 
+                        class="hidden" style="width: 16px; height: 16px;" 
+                        alt="[% l('Search in progress icon') %]" />
                 </div>
                 [% END %]
 
@@ -111,7 +117,7 @@
                                 [% END %]
                             </span>
 
-                            <ul class="browse-result-authority-headings">
+                            [% auth_headings_ul_added = 0 %];
                                 [% seenit = {}; # for headings we've rendered
                                    FOR a IN result.sees;
                                     PROCESS authority_notes authority=a;
@@ -135,7 +141,13 @@
                                             # defined when h.target is.
 
                                             IF h.target AND h.target_count AND result.list_authorities.grep('^' _ h.target _ '$').size == 0;
-                                                id = h.target; NEXT IF seenit.$id; seenit.$id = 1; %]
+                                                id = h.target; NEXT IF seenit.$id; seenit.$id = 1; 
+                                                IF !auth_headings_ul_added;
+                                                    # only add a <ul> if we have at least one <li> (WCAG 2.0)
+                                                    auth_headings_ul_added = 1; %]
+                                                <ul class="browse-result-authority-headings"> 
+                                                [% END %]
+
                                                 <li><span class="browse-result-authority-field-name">[% field.name %]</span>
                                                 <a href="[% mkurl(ctx.opac_root _ '/browse', {bterm => h.heading}, ['bpivot']) %]">[% h.heading | html %]</a>
                                                 <span class="browse-result-authority-bib-links">([% h.target_count %])</span>
@@ -166,7 +178,12 @@
                                             # defined when h.target is.
 
                                             IF h.target AND h.target_count AND result.list_sees.grep('^' _ h.target _ '$').size == 0 AND !h.main_entry;
-                                                id = h.target; NEXT IF seenit.$id; seenit.$id = 1; %]
+                                                id = h.target; NEXT IF seenit.$id; seenit.$id = 1; 
+                                                IF !auth_headings_ul_added;
+                                                    # only add a <ul> if we have at least one <li> (WCAG 2.0)
+                                                    auth_headings_ul_added = 1; %]
+                                                <ul class="browse-result-authority-headings"> 
+                                                [% END %]
                                                 <li><span class="browse-result-authority-field-name">[% field.name %]</span>
                                                 <a href="[% mkurl(ctx.opac_root _ '/results', {query => 'identifier|authority_id[' _ h.target _ ']'}) %]">[% h.heading | html %]</a>
                                                 <span class="browse-result-authority-bib-links">([% h.target_count %])</span>
@@ -175,7 +192,7 @@
                                         [% END %]
                                     [% END %]
                                 [% END %]
-                            </ul>
+                            [% IF auth_headings_ul_added %]</ul>[% END %]
                         </li>
                     [% END %]
                     </ul>

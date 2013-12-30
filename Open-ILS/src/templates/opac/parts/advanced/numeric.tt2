@@ -14,7 +14,6 @@
                     <option value="identifier|tcn">[% l('TCN') %]</option>
                     <option value="item_barcode">[% l('Item Barcode') %]</option>
                 </select>
-                </label>
 	
                 <input type="text" name="query" size="16" autofocus placeholder='[% l("Identifier") %]' />
 	    <br/>
