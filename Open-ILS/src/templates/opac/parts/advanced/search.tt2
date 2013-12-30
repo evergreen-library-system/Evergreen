@@ -35,7 +35,8 @@
         <span>
             <input id='search-submit-go' type="submit" value="[% l('Search') %]" alt="[% l('Search') %]" class="opac-button"
                 onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"}, 2000)'/>
-            <img id='search-submit-spinner' src='/opac/images/progressbar_green.gif' class='hidden' alt=''/>
+            <img id='search-submit-spinner' src='/opac/images/progressbar_green.gif' 
+                class='hidden' alt="[% l('Search in progress icon') %]"/>
         </span>
 
         <a href="[% mkurl(ctx.opac_root _ '/advanced', {$loc_name => loc_value}, 1) %]"
@@ -51,10 +52,10 @@
         NEXT IF adv_chunk.adv_hide;
         IF in_row == 0;
             in_row = 1; %]
-            <div id='adv_filter_block'>
+            <div class='adv_filter_block'>
 [%
         END; %]
-            <div id='adv_filter_block_item'>
+            <div class='adv_filter_block_item'>
             <div valign='top'[% IF adv_chunk.js_only %]
                 id='adv_chunk_[% adv_chunk.adv_special %]'
                 class='hidden'[% END %]>
@@ -74,8 +75,8 @@
                             </div>
 [%
                 CASE "pub_year"; %]
-                            <select name='pubdate' onchange='
-                                if(this.selectedIndex == 3)
+                            <select name='pubdate' 
+                                onchange='if(this.selectedIndex == 3)
                                     unHideMe($("adv_global_pub_date_2_span"));
                                 else
                                     hideMe($("adv_global_pub_date_2_span"));'>
@@ -123,7 +124,6 @@
         END;
     END; %]
 
-            </div>
         </div>
     </div>
 </div>

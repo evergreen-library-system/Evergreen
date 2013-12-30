@@ -286,12 +286,12 @@ div.select-box-wrapper {
 #adv_search_rows {
     border-bottom: none;
 }
-#adv_filter_block {
+.adv_filter_block {
     padding: 15px;
     float: left;
-    clear: both;
+    /*clear: both;*/
 }
-#adv_filter_block_item {
+.adv_filter_block_item {
     float: left;
     padding: 5px;
 }
