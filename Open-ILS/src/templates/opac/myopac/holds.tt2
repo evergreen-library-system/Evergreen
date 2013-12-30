@@ -121,6 +121,7 @@
                 <th>[% l('Cancel if not filled by') %]</th>
                 <th>[% l('Active') %]</th>
                 <th>[% l('Status') %]</th>
+                <th>[% l('Notes') %]</th>
             </tr>
             </thead>
             <tbody id="holds_temp_parent">
@@ -178,6 +179,17 @@
                         <div name="acct_holds_status">
                             [% PROCESS get_hold_status hold=hold; %]
                         </div>
+                    </td>
+                    <td class="hold_notes">
+                    [%- FOREACH pubnote IN ahr.notes;
+                        IF pubnote.pub == 't';
+                    %]
+                        <div class="hold_note">
+                            <span class="hold_note_title">[% pubnote.title | html %]</span>
+                            <br />
+                            <span class="hold_note_body">[% pubnote.body | html %]</span>
+                        </div>
+                    [%- END; END; %]
                     </td>
                     <td class="opac-auto-161">
                         <a href="[% mkurl(ctx.opac_root _ '/myopac/holds/edit', {id => ahr.id}) %]">Edit</a>

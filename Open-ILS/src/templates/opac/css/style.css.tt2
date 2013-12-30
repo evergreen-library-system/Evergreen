@@ -873,6 +873,13 @@ table.acct_notes th {
     border-collapse: collapse;
 }
 
+.hold_notes {
+    text-transform: none;
+    font-weight: normal;
+}
+
+.hold_note_title { font-weight: bold; }
+
 #acct_checked_main_header td, #acct_holds_main_header td, #acct_checked_hist_header td, #acct_list_header td, #acct_list_header_anon td, #temp_list_holds td {
     background: [% css_colors.accent_lighter2 %];
     padding: 10px;

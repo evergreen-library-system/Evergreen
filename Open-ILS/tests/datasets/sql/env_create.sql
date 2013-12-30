@@ -194,6 +194,22 @@ BEGIN
         frozen,
         thawdate
     );
+
+    -- Create hold notes for staff-placed holds: 1 public, 1 private
+    IF requestor != patron_id THEN
+        INSERT INTO action.hold_request_note (hold, title, body, pub, staff)
+            VALUES (
+               currval('action.hold_request_id_seq'),
+               'Public: Title of hold# ' || currval('action.hold_request_id_seq'),
+               'Public: Hold note body for ' || currval('action.hold_request_id_seq'),
+               TRUE, TRUE
+            ), (
+               currval('action.hold_request_id_seq'),
+               'Private: title of hold# ' || currval('action.hold_request_id_seq'),
+               'Private: Hold note body for ' || currval('action.hold_request_id_seq'),
+               FALSE, TRUE 
+            );
+    END IF;
 END;
 $$ LANGUAGE PLPGSQL;
 
