@@ -1,7 +1,7 @@
 [% time_format = ctx.get_org_setting(ctx.library.id, 'format.time');
 
-   UNLESS time_fmt;
-       time_format = '%H:%M %p';
+   UNLESS time_format;
+       time_format = '%l:%M %p';
    END;
 
    USE date (format = time_format);
