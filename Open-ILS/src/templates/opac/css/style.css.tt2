@@ -121,7 +121,6 @@ div.select-box-wrapper {
 
 #dash_user {
     font-weight: bold;
-    text-transform: capitalize;
 }
 
 #logout_link { left: 1px; }
@@ -482,7 +481,6 @@ div.format_icon {
     background-color: [% css_colors.accent_lighter2 %];
     padding: 13px 0px 13px 13px;
     font-size: [% css_fonts.size_smaller %];
-    text-transform: uppercase;
     font-weight: bold;
     text-align: left;
 }
@@ -519,7 +517,6 @@ div.format_icon {
 .rdetail_extras_link {
     padding: 6px 12px;
     font-size: [% css_fonts.size_smaller %];
-    text-transform: uppercase;
     font-weight: bold;
 }
 
@@ -738,7 +735,6 @@ div.result_table_utils_cont {
 }
 
 .icon_text {
-    text-transform:capitalize;
 }
 
 #myopac_summary_div p {
@@ -758,16 +754,13 @@ div.result_table_utils_cont {
 }
 
 #zero_hits_term {
-    text-transform: uppercase;
     font-weight: bold;
 }
 
 #zero_search_hits #spell_check_link {
-    text-transform: uppercase;
 }
 
 #zero_search_hits #zero_hits_suggestions {
-    text-transform: uppercase;
 }
 
 #lowhits_help {
@@ -823,9 +816,6 @@ div.result_table_utils_cont {
 .acct_sum_table {
     border-collapse: collapse;
     background: [% css_colors.accent_ultralight %];
-    font-size: [% css_fonts.size_smaller %];
-    font-weight: bold;
-    text-transform: uppercase;
 }
 
 .acct_sum_table tr {
@@ -880,9 +870,6 @@ table.acct_notes th {
 }
 
 #acct_checked_main_header, #acct_holds_main_header, #acct_checked_hist_header, #acct_list_header, #acct_list_header_anon, #temp_list_holds {
-    font-weight:bold;
-    text-transform:uppercase;
-    font-size: [% css_fonts.size_smaller %];
     border-collapse: collapse;
 }
 
@@ -899,13 +886,6 @@ table.acct_notes th {
 #acct_list_header select, #acct_list_header_anon select {
     font-weight:normal;
     text-transform:none;
-}
-
-#acct_holds_activates_table label {
-    font-weight: bold;
-    font-size: [% css_fonts.size_small %];
-    text-transform:uppercase;
-    padding-right: 5px;
 }
 
 .search_catalog_lbl {
@@ -1103,9 +1083,7 @@ div#facet_sidebar {
 }
 
 .color_4 {
-    text-transform: uppercase;
     font-weight: bold;
-    font-size: [% css_fonts.size_smaller %];
 }
 
 .advanced_div { padding-top: 15px; }
