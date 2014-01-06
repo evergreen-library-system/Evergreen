@@ -62,7 +62,7 @@ INSERT INTO actor.org_unit_setting(org_unit, name, value) VALUES
     (7, 'lib.info_url', '"http://br4.example.com/info"'); -- BR4
 
 
-UPDATE actor.org_unit SET email = 'br1@example.com', phone = '(555)-555-0271' WHERE shortname = 'BR1';
-UPDATE actor.org_unit SET email = 'br2@example.com', phone = '(555)-555-0272' WHERE shortname = 'BR2';
-UPDATE actor.org_unit SET email = 'br3@example.com', phone = '(555)-555-0273' WHERE shortname = 'BR3';
-UPDATE actor.org_unit SET email = 'br4@example.com', phone = '(555)-555-0274' WHERE shortname = 'BR4';
+UPDATE actor.org_unit SET email = 'br1@example.com', phone = '(555) 555-0271' WHERE shortname = 'BR1';
+UPDATE actor.org_unit SET email = 'br2@example.com', phone = '(555) 555-0272' WHERE shortname = 'BR2';
+UPDATE actor.org_unit SET email = 'br3@example.com', phone = '(555) 555-0273' WHERE shortname = 'BR3';
+UPDATE actor.org_unit SET email = 'br4@example.com', phone = '(555) 555-0274' WHERE shortname = 'BR4';
