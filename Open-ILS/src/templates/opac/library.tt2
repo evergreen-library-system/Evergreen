@@ -11,7 +11,7 @@
     [%-
         lib_url = ctx.get_org_setting(ctx.library.id, 'lib.info_url');
         IF lib_url;
-            '<div id="library-url"><a href="'; lib_url | url; '" property="url">'; l('External web site'); '</a></div>';
+            '<div id="library-url"><a href="'; lib_url | url; '" property="url">'; l('Library web site'); '</a></div>';
         END;
     -%]
 
