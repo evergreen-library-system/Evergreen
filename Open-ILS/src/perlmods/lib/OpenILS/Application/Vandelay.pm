@@ -930,8 +930,8 @@ sub import_record_list_impl {
     $bib_sources{$_->id} = $_->source for @$sources;
 
     if($type eq 'auth') {
-        $overlay_func =~ s/bib/auth/o;
-        $auto_overlay_func = s/bib/auth/o;
+        $overlay_func =~ s/bib/authority/o; 
+        $auto_overlay_func =~ s/bib/authority/o; 
         $retrieve_func =~ s/bib/authority/o;
         $retrieve_queue_func =~ s/bib/authority/o;
         $update_queue_func =~ s/bib/authority/o;
