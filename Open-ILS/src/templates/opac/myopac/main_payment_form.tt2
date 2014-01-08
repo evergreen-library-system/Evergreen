@@ -34,13 +34,14 @@
         <input type="hidden" name="xact_misc" value="[% xact | html %]" />
         [% END %]
 
-        <table>
+        <table title="[% l('Billing Information') %]">
             <tbody>
                 <tr>
                     <td colspan='2'><strong>[% l('Billing Information') %]</strong></td>
                     <td rowspan='13' valign='top'>
                         <p>[% l('Selected fines you are paying for:') %]</p>
-                        <table class="table_no_border_space table_no_cell_pad" class="myopac_payments_table">
+                        <table title="[% l('List of Transactions') %]"
+                            class="table_no_border_space table_no_cell_pad myopac_payments_table">
                             <thead>
                                 <tr>
                                     <th>[% l('Name') %]</th>
@@ -84,35 +85,43 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>[% l('First Name') %]</td>
-                    <td><input type="text" name="billing_first" value="[% ctx.user.first_given_name | html %]" /></td>
+                    <td><label for="payment-first-name">[% l('First Name') %]</label></td>
+                    <td><input type="text"  name="billing_first" id="payment-first-name" 
+                        value="[% ctx.user.first_given_name | html %]" /></td>
                 </tr>
                 <tr>
-                    <td>[% l('Last Name') %]</td>
-                    <td><input type="text" name="billing_last" value="[% ctx.user.family_name | html %]" /></td>
+                    <td><label for="payment-last-name">[% l('Last Name') %]</label></td>
+                    <td><input type="text" name="billing_last" id="payment-last-name" 
+                        value="[% ctx.user.family_name | html %]" /></td>
                 </tr>
                 <tr>
-                    <td>[% l('Email Address') %]</td>
+                    <td><label for="payment-email-addr">[% l('Email Address') %]</label></td>
                     <td>
-                        <input type="text" disabled="disabled" readonly="readonly" value="[% ctx.user.email | html %]" />
-                        <a href="[% ctx.opac_root %]/myopac/update_email?return_to_referer=1">[% l("Update") %]</a>
+                        <input id="payment-email-addr" type="text" disabled="disabled" 
+                            readonly="readonly" value="[% ctx.user.email | html %]" />
+                        <a title="[% l('Update Email Address') %]"
+                            href="[% ctx.opac_root %]/myopac/update_email?return_to_referer=1">[% l("Update") %]</a>
                     </td>
                 </tr>
                 <tr>
-                    <td>[% l('Street Address') %]</td>
-                    <td><input type="text" name="billing_address" value="[% ctx.user.billing_address.street1 _ ctx.user.billing_address.street2 | html %]" /></td>
+                    <td><label for="payment-billing-address">[% l('Street Address') %]</label></td>
+                    <td><input type="text" name="billing_address" id="payment-billing-address" 
+                        value="[% ctx.user.billing_address.street1 _ ctx.user.billing_address.street2 | html %]" /></td>
                 </tr>
                 <tr>
-                    <td>[% l('City' )%]</td>
-                    <td><input type="text" name="billing_city" value="[% ctx.user.billing_address.city | html %]" /></td>
+                    <td><label for="payment-billing-city">[% l('City' )%]</label></td>
+                    <td><input type="text" name="billing_city" id="payment-billing-city" 
+                        value="[% ctx.user.billing_address.city | html %]" /></td>
                 </tr>
                 <tr>
-                    <td>[% l('State or Province') %]</td>
-                    <td><input type="text" name="billing_state" value="[% ctx.user.billing_address.state | html %]" /></td>
+                    <td><label for="payment-billing-state">[% l('State or Province') %]</label></td>
+                    <td><input type="text" name="billing_state" id="payment-billing-state"
+                        value="[% ctx.user.billing_address.state | html %]" /></td>
                 </tr>
                 <tr>
-                    <td>[% l('ZIP or Postal Code') %]</td>
-                    <td><input type="text" name="billing_zip" value="[% ctx.user.billing_address.post_code | html %]" /></td>
+                    <td><label for="paymenet-billing-zip">[% l('ZIP or Postal Code') %]</label></td>
+                    <td><input type="text" name="billing_zip" id="paymenet-billing-zip"
+                        value="[% ctx.user.billing_address.post_code | html %]" /></td>
                 </tr>
                 <tr>
                   <td colspan='2'><strong>[% l('Credit Card Information') %]</strong></td>
@@ -130,19 +139,21 @@
                 </tr>
                 -->
                 <tr>
-                    <td>[% l('Credit Card #') %]</td>
-                    <td><input type="text" name="number" maxlength="16" /></td>
+                    <td><label for="payment-credit-card">[% l('Credit Card #') %]</label></td>
+                    <td><input type="text" name="number" 
+                        id="payment-credit-card" maxlength="16" /></td>
                 </tr>
                 <tr>
-                    <td>[% l('Security Code') %]</td>
+                    <td><label for="payment-security-code">[% l('Security Code') %]</label></td>
                     <td>
-                        <input type="text" size="4" maxlength="5" name="cvv2" />
+                        <input type="text" size="4" maxlength="5" 
+                            name="cvv2" id="payment-security-code"/>
                     </td>
                 </tr>
                 <tr>
-                    <td>[% l('Expiration Month') %]</td>
+                    <td><label for="payment-expire-month">[% l('Expiration Month') %]</label></td>
                     <td>
-                        <select name="expire_month">
+                        <select name="expire_month" id="payment-expire-month">
                             <option value="01">[% l("January") %]</option>
                             <option value="02">[% l("February") %]</option>
                             <option value="03">[% l("March") %]</option>
@@ -159,9 +170,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>[% l('Expiration Year') %]</td>
+                    <td><label for="payment-expire-year">[% l('Expiration Year') %]</label></td>
                     <td>
-                        <select name="expire_year">
+                        <select name="expire_year" id="payment-expire-year">
                         [% year = date.format(date.now, '%Y');
                         y = year;
                         WHILE y < year + 10; # show ten years starting now %]

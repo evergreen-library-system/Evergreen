@@ -26,7 +26,7 @@
             <a href='[% mkurl('circ_history', {limit => limit, offset => (offset + limit)}) %]'
                [% IF ctx.circs.size < limit %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
         </span>
-        <span class="float-left">
+        <div class="float-left">
             <form action="[% mkurl(ctx.opac_root _ '/myopac/circ_history/export') %]" method="post">
                 <div>
                     [%- INCLUDE "opac/parts/preserve_params.tt2" %]
@@ -36,7 +36,7 @@
                     [% END %]
                 </div>
             </form>
-        </span>
+        </div>
     </div>
     <div class="clear-both"></div>
 
@@ -45,7 +45,8 @@
     [% ELSE %]
 
     <div id='checked_main'>
-        <table id="acct_checked_main_header">
+        <table id="acct_checked_main_header"
+            title="[% l('History of Items Checked Out') %]">
             <thead>
                 <tr>
                     <th>[% l('Title / Author') %]</th>
@@ -63,7 +64,9 @@
                     <tr>
                         <td>
                             <a href="[% mkurl(ctx.opac_root _ '/record/' _ circ.circ.target_copy.call_number.record.id) %]" 
-                                name="[% l('Catalog record') %]">[% attrs.title | html %]</a>
+                                [% html_text_attr('title', l('Catalog record [_1]', attrs.title)) %]>
+                                [% attrs.title | html %]
+                            </a>
                             [% IF attrs.author %] /
                             <a href="[% mkurl(ctx.opac_root _ '/results',
                                 {qtype => 'author', query => attrs.author.replace('[,\.:;]', '')}

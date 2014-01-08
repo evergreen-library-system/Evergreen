@@ -21,7 +21,8 @@
     <div class="clear-both"></div>
 
     [% IF ctx.payments.size %]
-    <table class='myopac_payments_table data_grid' width='100%'>
+    <table title="[% l('Payments') %]" 
+        class='myopac_payments_table data_grid' width='100%'>
         <thead><tr>
             <th>[% l('Payment Date') %]</th>
             <th>[% l('Payment For') %]</th>

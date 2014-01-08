@@ -109,14 +109,20 @@
         want_dojo = 1;
     END;
 
-    # Recommend max length for image alt text is 75 for screen
-    # reader support / WCAG compliance.  This macro trims the text 
-    # to this length and and produces a full alt="abc" attribute.
+    # Especially useful for image 'alt' tags and link title tags,
+    # where the content may need to be unique (making it longer)
+    # but should not exceed 75 chars for ideal screen reader support.
+    # usage: html_text_attr('title', 'Link to item I Have A Super Long Title')
+    # the full HTML attribute key="value" is produced
+    MACRO html_text_attr(name, value) BLOCK;
+        IF value.length >= 75;
+            value = value.substr(71, value.length, '...');                        
+        END;                                                                   
+        value = value.replace('\s*$', ''); # remove trailing whitespace          
+        HTML.attributes($name => value); 
+    END;
+
     MACRO img_alt(text) BLOCK;
-        IF text.length >= 75;
-            text = text.substr(71, text.length, '...');
-        END;
-        text = text.replace('\s*$', ''); # remove trailing whitespace
-        HTML.attributes(alt => text);
+        html_text_attr('alt', text);
     END;
 %]

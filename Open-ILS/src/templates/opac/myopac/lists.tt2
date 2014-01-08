@@ -5,6 +5,11 @@
     limit = ctx.bookbags_limit;
     offset = ctx.bookbags_offset;
     item_page = ctx.bookbags_item_page;
+    bb_publish_text = l(
+"Sharing a Bookbag means that the contents " _
+"of the Bookbag will be visible to others. " _
+"To see the public view of a shared Bookbag, " _
+"click on the Bookbag\\'s name in the Bookbag list.");
 %]
 <div id='myopac_bookbag_div' style="padding:5px;">
 
@@ -33,8 +38,12 @@
                         <option value="0">[% l('No') %]
                         <option value="1">[% l('Yes') %]
                     </select>
-                    <a href="javascript:void(0);" onclick="alert(document.getElementById('bb_publish_text').innerHTML);"><img alt="[% l('Sharing Help') %]"
-                        src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
+                    <a href="javascript:void(0);" 
+                        onclick="alert('[% bb_publish_text %]')">
+                        <img alt="[% l('Sharing Help') %]"
+                            [% html_text_attr('title', bb_publish_text) %]
+                            src="[% ctx.media_prefix %]/images/question-mark.png" />
+                    </a>
                 </td>
                 <td class="list-create-table-buttons">
                     <input type="submit"
@@ -278,10 +287,10 @@
             <thead id="acct_list_header">
                 <tr>
                     <td class="list_checkbox">
-                    <input type="checkbox" onclick="
-                        var inputs=document.getElementsByTagName('input'); 
+                    <input type="checkbox" 
+                      onclick="var inputs=document.getElementsByTagName('input'); 
                         for (i = 0; i < inputs.length; i++) { 
-                            if (inputs[i].name == 'selected_item' && !inputs[i].disabled && inputs[i].getAttribute('bbag') == [% bbag.id %]) 
+                            if (inputs[i].name == 'selected_item' &amp;&amp; !inputs[i].disabled &amp;&amp; inputs[i].getAttribute('bbag') == [% bbag.id %]) 
                                 inputs[i].checked = this.checked;}"/>
 
                     </td>
@@ -450,12 +459,5 @@
         [% END %]
     </div>
     [% END %]
-
-    <span id='bb_publish_text' class='hide_me'>
-[% l("Sharing a Bookbag means that the contents " _
-"of the Bookbag will be visible to others. " _
-"To see the public view of a shared Bookbag, " _
-"click on the Bookbag's name in the Bookbag list.") %]
-    </span>
 </div>
 [% END %]

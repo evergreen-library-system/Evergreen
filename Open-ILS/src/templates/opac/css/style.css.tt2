@@ -2004,3 +2004,4 @@ a.preflib_change {
         table#acct_holds_main_header td:nth-of-type(9):before { content: "[% l('Status') %]"; }
         table#acct_holds_main_header td.hold_notes:before { content: "[% l('Notes') %]"; }
 }
+

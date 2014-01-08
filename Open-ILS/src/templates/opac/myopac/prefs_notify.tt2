@@ -8,7 +8,8 @@
     <input name='[% setting %]' type="hidden"
         [% IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]' [% END %]/>
 
-    <table class="full-width data_grid" id="acct_search_main">
+    <table class="full-width data_grid" id="acct_search_main" 
+        title="[% l('Search Preferences') %]">
         <tbody>
 
             [% IF ctx.updated_user_settings %]
@@ -21,11 +22,17 @@
 
             [% setting = 'opac.hold_notify' %]
             <tr>
-                <td><label for='[% setting %].email'>[%
-                    l('Notify by Email by default when a hold is ready for pickup?')
-                %]</label></td>
+                [%# WCAG insists that labels for checkboxes contain the input
+                    or directly follow the input, which would not look right
+                    with the rest of the table.  As an alternative, we can
+                    repeat the label as a title attr.
+                    http://www.w3.org/TR/WCAG20-TECHS/H44.html %]
+                [% email_label = l('Notify by Email by default when a hold is ready for pickup?') %]
+
+                <td><label for='[% setting %].email'>[% email_label %]</label></td>
                 <td>
-                    <input id='[% setting %].email' name='[% setting %].email' type="checkbox"
+                    <input id='[% setting %].email' name='[% setting %].email' 
+                        type="checkbox" title="[% email_label %]"
                         [% IF (matches = ctx.user_setting_map.$setting.match('email')); %] checked='checked' [% END %]/>
                 </td>
             </tr>
@@ -33,11 +40,11 @@
                 setting = 'opac.hold_notify'; 
             -%]
             <tr>
-                <td><label for='[% setting %].phone'>[%
-                    l('Notify by Phone by default when a hold is ready for pickup?')
-                %]</label></td>
+                [% phone_label = l('Notify by Phone by default when a hold is ready for pickup?') %]
+                <td><label for='[% setting %].phone'>[% phone_label %]</label></td>
                 <td>
-                    <input id='[% setting %].phone' name='[% setting %].phone' type="checkbox"
+                    <input id='[% setting %].phone' name='[% setting %].phone' 
+                        type="checkbox" title="[% phone_label %]"
                         [% IF (matches = ctx.user_setting_map.$setting.match('phone')); %] checked='checked' [% END %]/>
                 </td>
             </tr>
@@ -54,11 +61,11 @@
                setting = 'opac.hold_notify';
             -%]
             <tr>
-                <td><label for='[% setting %].sms'>[%
-                    l('Notify by Text by default when a hold is ready for pickup?')
-                %]</label></td>
+                [% sms_label = l('Notify by Text by default when a hold is ready for pickup?') %]
+                <td><label for='[% setting %].sms'>[% sms_label %]</label></td>
                 <td>
-                    <input id='[% setting %].sms' name='[% setting %].sms' type="checkbox"
+                    <input id='[% setting %].sms' name='[% setting %].sms' 
+                        type="checkbox" title="[% sms_label %]"
                         [% IF (matches = ctx.user_setting_map.$setting.match('sms')); %] checked='checked' [% END %]/>
                 </td>
             </tr>
@@ -93,6 +100,7 @@
                     <td>
                         <input type='checkbox' name='setting' 
                             value='[% optin.cust.name | uri %]' 
+                            title="[% optin.cust.label | html %]"
                             [% IF optin.value %] checked='checked' [% END %]/>
                     </td>
                 </tr>
@@ -101,7 +109,7 @@
       </table>
     </div>
     [% END %]
-    <input type='submit' value="[% l('Save') %]" alt="[% l('Save') %]" class="opac-button" />
+    <input type='submit' value="[% l('Save') %]" class="opac-button" />
 </form>
 [% END %]
 

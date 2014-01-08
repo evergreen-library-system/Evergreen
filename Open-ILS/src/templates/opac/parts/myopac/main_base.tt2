@@ -18,22 +18,26 @@
     <div id="myopac_sum_fines">
         <div style="position:absolute;">
             <div style="position:relative;top:-15px;left:-23px;">
-                <img src="[% ctx.media_prefix %]/images/acct_sum_fines_tl.png" />
+                <img src="[% ctx.media_prefix %]/images/acct_sum_fines_tl.png" 
+                    alt="[% l('Account Fines Border Image 1') %]"/>
             </div>
         </div>
         <div style="position:absolute;">
             <div style="position:relative;top:-15px;left:172px;">
-                <img src="[% ctx.media_prefix %]/images/acct_sum_fines_tr.png" />
+                <img src="[% ctx.media_prefix %]/images/acct_sum_fines_tr.png" 
+                    alt="[% l('Account Fines Border Image 2') %]"/>
             </div>
         </div>
         <div style="position:absolute;">
             <div style="position:relative;top:161px;left:-23px;">
-                <img src="[% ctx.media_prefix %]/images/acct_sum_fines_bl.png" />
+                <img src="[% ctx.media_prefix %]/images/acct_sum_fines_bl.png" 
+                    alt="[% l('Account Fines Border Image 3') %]"/>
             </div>
         </div>
         <div style="position:absolute;">
             <div style="position:relative;top:161px;left:172px;">
-                <img src="[% ctx.media_prefix %]/images/acct_sum_fines_br.png" />
+                <img src="[% ctx.media_prefix %]/images/acct_sum_fines_br.png" 
+                    alt="[% l('Account Fines Border Image 4') %]"/>
             </div>
         </div>
         [% l('Fines:') %]
@@ -42,7 +46,7 @@
         </span><br />
         [% IF (ctx.fines.grocery.size OR ctx.fines.circulation.size) AND ctx.get_org_setting(ctx.user.home_ou, 'credit.payments.allow') == 1 %]
         <form action="[% ctx.opac_root %]/myopac/main_payment_form" method="get"><input
-            type="submit" title="[% l('Pay Fines') %]" alt="[% l('Pay Fines') %]"
+            type="submit" title="[% l('Pay Fines') %]"
             value="[% l('Pay Fines') %]" class="pos-rel-top-5 opac-button" /></form>
         [% END %]
     </div>
@@ -57,24 +61,33 @@
             <span class="alert">[% l("Your library card expired on [_1]. Please contact a librarian to resolve this issue.", fmt_expire_date) %]</span>
             [% END %]
             </div>
-            <table class="acct_sum_table">
+            <table class="acct_sum_table" title="[% l('Account Summary') %]">
                 <tr>
-                        <td>[% l("Items Currently Checked out ([_1])", ctx.user_stats.checkouts.total_out) %]</td>
-                        <td align="right">
-                            <a href="[% mkurl(ctx.opac_root _ '/myopac/circs') %]">[% l("View All") %]</a>
-                        </td>
+                    <td>[% l("Items Currently Checked out ([_1])", ctx.user_stats.checkouts.total_out) %]</td>
+                    <td align="right">
+                        <a href="[% mkurl(ctx.opac_root _ '/myopac/circs') %]"
+                            title="[% l('View My Checked Out Items') %]">
+                            [% l("View All") %]
+                        </a>
+                    </td>
                 </tr>
                 <tr>
-                        <td>[% l('Items Currently on Hold ([_1])', ctx.user_stats.holds.total) %]</td>
-                        <td align="right">
-                            <a href="[% mkurl(ctx.opac_root _ '/myopac/holds') %]">[% l('View All') %]</a>
-                        </td>
+                    <td>[% l('Items Currently on Hold ([_1])', ctx.user_stats.holds.total) %]</td>
+                    <td align="right">
+                        <a href="[% mkurl(ctx.opac_root _ '/myopac/holds') %]"
+                            title="[% l('View My Holds') %]">
+                            [% l('View All') %]
+                        </a>
+                    </td>
                 </tr>
                 <tr>
-                        <td>[% l('Items ready for pickup ([_1])', ctx.user_stats.holds.ready) %]</td>
-                        <td align="right">
-                            <a href="[% mkurl(ctx.opac_root _ '/myopac/holds', {available => 1}) %]">[% l('View All') %]</a>
-                        </td>
+                    <td>[% l('Items ready for pickup ([_1])', ctx.user_stats.holds.ready) %]</td>
+                    <td align="right">
+                        <a href="[% mkurl(ctx.opac_root _ '/myopac/holds', {available => 1}) %]"
+                            title="[% l('View My Holds Ready for Pickup') %]">
+                            [% l('View All') %]
+                        </a>
+                    </td>
                 </tr>
             </table>
         </div>

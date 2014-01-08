@@ -8,10 +8,15 @@
         myopac_cc_allowed = 1;
     END
 %]
+[%  IF myopac_cc_allowed;
+    # http://www.w3.org/TR/WCAG20-TECHS/H32.html
+    # avoid forms w/ no submit action %]
 <form action="[% ctx.opac_root %]/myopac/main_payment_form" method="get">
+[% END %]
+
     [% IF ctx.fines.circulation.size > 0 %]
     <div id='myopac_circ_trans_div'>
-        <table width='100%' class='data_grid'>
+        <table width='100%' class='data_grid' title="[% l('Items Checked Out') %]">
             <thead>
                 <tr>
                     <td colspan='10' style='padding: 6px'>
@@ -107,11 +112,11 @@
         <hr class='opac-auto-013'  color="#dcdbdb" />
         <br/>
         <table width='100%' class='data_grid data_grid_center'
-            id='myopac_trans_table'>
+            id='myopac_trans_table' title="[% l('Other Fines and Fees') %]">
             <thead>
                 <tr>
                     <td colspan='8' style='padding: 6px'>
-                        <b>[% l("Other Fees") %]</b>
+                        <span class="bold">[% l("Other Fees") %]</span>
                     </td>
                 </tr>
                 <tr>
@@ -175,10 +180,12 @@
     <div class="text-right pad-top-ten">
         <input type="submit"
             value="[% l('Pay selected fines') %]"
-            alt="[% l('Pay selected fines') %]"
             title="[% l('Pay selected fines') %]"
             class="opac-button" />
     </div>
     [% END %]
+[% IF myopac_cc_allowed %]
 </form>
+[% END %]
+
 [% END %]

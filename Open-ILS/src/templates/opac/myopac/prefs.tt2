@@ -4,44 +4,9 @@
     prefs_page = 'prefs' %]
 
 <div id="acct_info_main">
-    <div id='myopac.expired.alert'
-         class='hide_me'
-         style='margin-bottom: 20px;'>
-        <table class='data_grid'
-               width='100%'>
-            <tbody>
-                <tr>
-                    <td width='100%' class='alert'>
-                        [% l("Your account expired on") %]
-                        <span id='myopac.expired.date'></span>!
-                        [% l("Please see a librarian to renew your account.") %]</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
 
-    <div id='myopac.notes.div'
-         class='hide_me'>
-        <table class='data_grid'
-               width='100%'>
-            <thead>
-                <tr>
-                    <td colspan='2'>
-                    <b>[% l("* Staff Notes *") %]</b></td>
-                </tr>
-            </thead>
-
-            <tbody id='myopac.notes.tbody'>
-                <tr id='myopac.notes.tr'>
-                    <td><b name='title'></b> : <span name=
-                    'value'></span></td>
-                </tr>
-            </tbody>
-        </table><br />
-    </div>
-
-    <table width='70%'
-           class='light_border data_grid'>
+    <table width='70%' title="[% l('Account preference') %]"
+        class='light_border data_grid'>
         <tbody id='myopac_summary_tbody'>
             <tr>
                 <td width='30%'
@@ -78,16 +43,14 @@
             <tr>
                 <td class='color_4 light_border'>
                     <div style="position:absolute">
-                        <div class="hide_me" style="position:relative;left:70px;top:-3px;">
-                            <a href="#"><img alt="[% l('Username Help') %]" src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
-                        </div>
-                    </div>[% l("Username") %]
+                   </div>[% l("Username") %]
                 </td>
                 <td class='light_border'>[% ctx.user.usrname | html %]</td>
                 [%- IF ctx.username_change_disallowed %]
                 <td></td>
                 [%- ELSE %]
-                <td class='light_border'><a href='update_username'>[% l("Change") %]</a></td>
+                <td class='light_border'><a href='update_username'
+                    title="[% l('Change Username') %]">[% l("Change") %]</a></td>
                 [%- END %]
             </tr>
             <tr>
@@ -96,7 +59,8 @@
                 [%- IF disable_password_change == 'true' %]
                 <td></td>
                 [%- ELSE %]
-                <td class='light_border'><a href='update_password'>[% l("Change") %]</a></td>
+                <td class='light_border'><a href='update_password'
+                    title="[% l('Change Password') %]">[% l("Change") %]</a></td>
                 [%- END %]
             </tr>
             <tr>
@@ -105,7 +69,8 @@
                 [%- IF disable_email_change == 'true' %]
                 <td></td>
                 [%- ELSE %]
-                <td class='light_border'><a href='update_email'>[% l('Change') %]</a></td>
+                <td class='light_border'><a href='update_email'
+                    title="[% l('Update Email Address') %]">[% l('Change') %]</a></td>
                 [%- END %]
             </tr>
 
@@ -145,7 +110,7 @@
     <hr class='opac-auto-013' color="#DCDBDB" />
     <br />
 
-    <table width='100%' class='light_border data_grid'>
+    <table width='100%' class='light_border data_grid' title="[% l('Addresses') %]">
         <thead>
             <tr>
                 <td><strong>[% l("Addresses") %]</strong></td>
@@ -175,7 +140,7 @@
             <tr>
                 <td>
                     <!-- read-only address display -->
-                    <table class='light_border'>
+                    <table class='light_border' title="[% l('Active Addresses') %]">
                         <tr><td>[% l("Address Type") %]</td><td>[% addr.address_type | html %]</td></tr>
                         <tr><td>[% l("Street") %]</td><td>[% addr.street1 | html %]</td></tr>
                         <tr><td>[% l("Street") %]</td><td>[% addr.street2 | html %]</td></tr>
@@ -205,40 +170,26 @@
                         [% ELSE %]
                             <input type='hidden' name='replace_addr' value='[% edit_addr_id | html %]'/>
                         [% END %]
-                        <table class='pending-addr'>
+                        <table class='pending-addr' title="[% l('Pending Addresses') %]">
+                        [% addr_fields = [
+                            {label => l("Address Type"), name => 'address_type', value => update_addr.address_type},
+                            {label => l("Street"), name => 'street1', value => update_addr.street1},
+                            {label => l("Street"), name => 'street2', value => update_addr.street2},
+                            {label => l("City"), name => 'city', value => update_addr.city},
+                            {label => l("County"), name => 'county', value => update_addr.county},
+                            {label => l("State"), name => 'state', value => update_addr.state},
+                            {label => l("Country"), name => 'country', value => update_addr.country},
+                            {label => l("ZIP"), name => 'post_code', value => update_addr.post_code},
+                        ];
+                        FOR field IN addr_fields %]
                             <tr>
-                                <td>[% l("Address Type") %]</td>
-                                <td><input name='address_type' value='[% update_addr.address_type | html %]'/></td>
+                                <td><label for="addr-form-[% field.name %]">[% field.label %]</label></td>
+                                <td><input name="[% field.name %]" 
+                                    id="addr-form-[% field.name %]"
+                                    value="[% field.value | html %]">
+                                </td>
                             </tr>
-                            <tr>
-                                <td>[% l("Street") %]</td>
-                                <td><input name='street1' value='[% update_addr.street1 | html %]'/></td>
-                            </tr>
-                            <tr>
-                                <td>[% l("Street") %]</td>
-                                <td><input name='street2' value='[% update_addr.street2 | html %]'/></td>
-                            </tr>
-                            <tr>
-                                <td>[% l("City") %]</td>
-                                <td><input name='city' value='[% update_addr.city | html %]'/></td>
-                            </tr>
-                            <tr>
-                                <td>[% l("County") %]</td>
-                                <td><input name='county' value='[% update_addr.county| html %]'/></td>
-                            </tr>
-                            <tr>
-                                <td>[% l("State") %]</td>
-                                <td><input name='state' value='[% update_addr.state | html %]'</td>
-                            </tr>
-                            <tr>
-                                <td>[% l("Country") %]</td>
-                                <td><input name='country' value='[% update_addr.country | html %]'/></td>
-                            </tr>
-
-                            <tr>
-                                <td>[% l("Zip") %]</td>
-                                <td><input name='post_code' value='[% update_addr.post_code | html %]'/></td>
-                            </tr>
+                        [% END %]
                             <tr>
                                 <td><input type='submit' value="[% l('Save Changes') %]"/></td>
                                 <td>

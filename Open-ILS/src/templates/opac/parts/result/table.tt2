@@ -49,7 +49,7 @@
                                                     <abbr class="unapi-id" title='tag:[% ctx.hostname %],[% date.format(date.now, '%Y') %]:biblio-record_entry/[% rec.id %]'></abbr>
                                                     <a class='record_title search_link' name='record_[% rec.id %]'
                                                         href="[% mkurl(ctx.opac_root _ '/record/' _ rec.id) %]"
-                                                        [% HTML.attributes(title => l('Display record details for "[_1]"', attrs.title)) %]
+                                                        [% html_text_attr('title', l('Display record details for "[_1]"', attrs.title)) %]
                                                         >[% attrs.title | html %]</a>
 [%-
 FOR entry IN attrs.graphic_titles;
@@ -297,7 +297,7 @@ END;
                                                         <div class="results_aux_utils place_hold"><a
                                                                 href="[% mkurl(ctx.opac_root _ '/place_hold',
                                                                     {hold_target => rec.id, hold_type => 'T', hold_source_page => mkurl()}, ['query']) %]"
-                                                                [% HTML.attributes(title => l('Place Hold on [_1]', attrs.title)) %]
+                                                                [% html_text_attr('title', l('Place Hold on [_1]', attrs.title)) %]
                                                                     name="place_hold_link" class="no-dec"><img
                                                                 src="[% ctx.media_prefix %]/images/green_check.png"
                                                                 alt=""/><span class="result_place_hold">[% l('Place Hold') %]</span></a>
@@ -316,7 +316,8 @@ END;
                                                                 href = mkurl(ctx.opac_root _ '/mylist/' _ operation, 
                                                                         {record => rec.id, anchor => 'record_' _ rec.id}, 1);
                                                             %]      
-                                                            <a href="[% href %]" class="no-dec" [% HTML.attributes(title => title_label) %]>
+                                                            <a href="[% href %]" class="no-dec" 
+                                                                [% html_text_attr('title', title_label) %]>
                                                                 <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
                                                                 [% label %]
                                                             </a>
@@ -326,7 +327,7 @@ END;
                                                         [% ident = attrs.isbn_clean || attrs.upc %]
                                                         <div class="results_aux_utils result_util">
                                                             <a target='_blank' 
-                                                               [% HTML.attributes(title => l('Reviews and More for [_1]', attrs.title)) %]
+                                                               [% html_text_attr('title', l('Reviews and More for [_1]', attrs.title)) %]
                                                                 href="[% ctx.ext_proto %]://contentcafe2.btol.com/ContentCafeClient/ContentCafe.aspx?UserID=[%- 
                                                                     ENV.OILS_CONTENT_CAFE_USER %]&amp;Password=[%-
                                                                     ENV.OILS_CONTENT_CAFE_PASS %]&amp;ItemKey=[% ident | uri %]&amp;Options=Y">

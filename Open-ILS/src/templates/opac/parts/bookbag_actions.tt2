@@ -22,6 +22,8 @@
         rec_anchor => ctx.bre_id;
     END;
 
+    record_title = attrs.title; # same for either context
+
     IF ctx.user_setting_map.defined(dsetting);
         default_list = ctx.user_setting_map.$dsetting;
     END;
@@ -36,7 +38,8 @@
 %]
 <ul class="popmenu">
     <li><a href="#" class="no-dec">
-          <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
+          <img src="[% ctx.media_prefix %]/images/clipboard.png" 
+              [% html_text_attr('alt', 'Add item to a list: [_1]', record_title) %]/>
           [% l("Add to my list") %]
         </a>
     <ul>

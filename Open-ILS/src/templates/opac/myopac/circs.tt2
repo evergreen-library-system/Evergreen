@@ -33,31 +33,35 @@
     <div id='checked_main'>
         <form method="post" id="circ-form"
             onsubmit="return confirm('[% l("Are you sure you wish to renew the selected item(s)?") %]');">
-        <table class="table_no_border_space table_no_cell_pad item_list_padding">
-            <tr>
-                <td>
-                    <select name="action">
-                        <option value="renew">[% l('Renew Selected Titles') %]</option>
-                    </select>
-                </td>
-                <td style="padding-left:9px;">
-                    <input type="submit"
-                        value="[% l('Go') %]"
-                        alt="[% l('Go') %]" title="[% l('Go') %]"
-                        class="opac-button" />
-                </td>
-                <td style="padding-left:5px;">
-                    <a href="#"><img alt="[% l('Renewing Help') %]"
-                        src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
-                </td>
-            </tr>
-        </table>
-        <table id="acct_checked_main_header" cellpadding='0' cellspacing='0' border='0'>
+        <div>
+            <span>
+                <select name="action" title="[% l('Select Action') %]">
+                    <option value="renew">[% l('Renew Selected Titles') %]</option>
+                </select>
+            </span>
+            <span style="padding-left:9px;">
+                <input type="submit"
+                    value="[% l('Go') %]"
+                    title="[% l('Go') %]"
+                    class="opac-button" />
+            </span>
+            <span style="padding-left:5px;">
+                <a href="#"><img 
+                    alt="[% l('Renewing Help') %]"
+                    title="[% l('Actions for checked out items') %]"
+                    src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
+            </span>
+        </div>
+
+        <table id="acct_checked_main_header" 
+            title="[% l('Items Checked Out') %]"
+            class="table_no_border_space table_no_cell_pad item_list_padding">
             <thead>
             <tr>
                 <th class="checkbox_column">
                     <input type="checkbox" id="check_all_checked"
-                        onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'circ' && !inputs[i].disabled) inputs[i].checked = this.checked;}"
+                        title="[% l('Select All Items') %]"
+                        onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'circ' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"
                     />
                 </th>
                 <th>[% l('Title / Author') %]</th>
@@ -67,13 +71,14 @@
                 <th>[% l('Call number') %]</th>
             </tr>
             </thead>
-            <tbody>
+                <tbody>
                     [% FOR circ IN ctx.circs;
                         attrs = {marc_xml => circ.marc_xml};
                         PROCESS get_marc_attrs args=attrs; %]
                     <tr>
                         <td class="checkbox_column" valign="top">
                             <input type="checkbox" name="circ"
+                                title="[% l('Item Selected') %]"
                                 [% IF circ.circ.renewal_remaining < 1 %] disabled="disabled" [% END %]
                                 value="[% circ.circ.id %]" />
                         </td>
@@ -121,9 +126,8 @@
                     </tr>
                     [%  END;
                     END %]
-                </table>
-            </div>
-        </div>
+                </tbody>
+            </table>
         </form>
     </div>
     [% END %]

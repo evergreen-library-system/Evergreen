@@ -6,7 +6,8 @@
 
     <form method='post'>
 
-       <table class="full-width data_grid" id="acct_search_main">
+       <table class="full-width data_grid" id="acct_search_main"
+            title="[% l('List Preferences') %]">
             <tbody>
 
                 [% IF ctx.updated_user_settings %]
@@ -59,7 +60,7 @@
                 </tr>
             </tbody>
         </table>
-        <input type="submit" value="[% l('Save') %]" alt="[% l('Save') %]" class="opac-button"/>
+        <input type="submit" value="[% l('Save') %]" class="opac-button"/>
     </form>
     [% INCLUDE "opac/parts/myopac/prefs_hints.tt2" %]
 [% END %]
