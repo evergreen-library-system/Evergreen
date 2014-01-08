@@ -2042,7 +2042,7 @@ sub basic_record_holdings {
 	$logger->debug("Searching for holdings at orgs [".join(',',@ou_ids)."], based on $ou");
 
 	for my $cn (@{$tree->call_numbers}) {
-        next unless ( $cn->deleted eq 'f' || $cn->deleted == 0 );
+        next unless ( $cn->deleted eq 'f' || !$cn->deleted );
 
 		my $found = 0;
 		for my $c (@{$cn->copies}) {
@@ -2078,7 +2078,7 @@ sub _cp_is_visible {
     my $cp = shift;
 
     my $visible = 0;
-    if ( ($cp->deleted eq 'f' || $cp->deleted == 0) &&
+    if ( ($cp->deleted eq 'f' || !$cp->deleted) &&
          $cp->location->opac_visible eq 't' && 
          $cp->status->opac_visible eq 't' &&
          $cp->opac_visible eq 't' &&
