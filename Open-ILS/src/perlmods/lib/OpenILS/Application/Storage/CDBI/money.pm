@@ -144,5 +144,13 @@ __PACKAGE__->table('money_credit_payment');
 
 #-------------------------------------------------------------------------------
 
+package money::adjustment_payment;
+use base qw/money/;
+__PACKAGE__->table('money_adjustment_payment');
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(Essential => qw/xact amount payment_ts note accepting_usr
+                                     amount_collected voided billing/);
+#-------------------------------------------------------------------------------
+
 1;
 
