@@ -36,6 +36,7 @@ FEDORA_RPMS = \
 	perl-LDAP \
 	perl-Library-CallNumber-LC \
 	perl-Locale-Codes \
+	perl-Locale-Maketext-Lexicon \
 	perl-MARC-Charset \
 	perl-MARC-Record \
 	perl-MARC-XML \
