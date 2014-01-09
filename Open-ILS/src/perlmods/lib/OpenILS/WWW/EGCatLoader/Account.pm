@@ -1799,9 +1799,15 @@ sub load_myopac_bookbags {
         $self->ctx->{add_rec} = $add_rec;
         # But not in the staff client, 'cause that breaks things.
         unless ($self->ctx->{is_staff}) {
-            $self->ctx->{where_from} = $self->ctx->{referer};
-            if ( my $anchor = $self->cgi->param('anchor') ) {
-                $self->ctx->{where_from} =~ s/#.*|$/#$anchor/;
+            # allow caller to provide the where_from in cases where
+            # the referer is an intermediate error page
+            if ($self->cgi->param('where_from')) {
+                $self->ctx->{where_from} = $self->cgi->param('where_from');
+            } else {
+                $self->ctx->{where_from} = $self->ctx->{referer};
+                if ( my $anchor = $self->cgi->param('anchor') ) {
+                    $self->ctx->{where_from} =~ s/#.*|$/#$anchor/;
+                }
             }
         }
     }
@@ -1849,26 +1855,33 @@ sub load_myopac_bookbag_update {
     }
 
     if ($action eq 'create') {
-        $list = Fieldmapper::container::biblio_record_entry_bucket->new;
-        $list->name($name);
-        $list->description($description);
-        $list->owner($e->requestor->id);
-        $list->btype('bookbag');
-        $list->pub($shared ? 't' : 'f');
-        $success = $U->simplereq('open-ils.actor',
-            'open-ils.actor.container.create', $e->authtoken, 'biblio', $list);
-        if (ref($success) ne 'HASH' && scalar @add_rec) {
-            $list_id = (ref($success)) ? $success->id : $success;
-            foreach my $add_rec (@add_rec) {
-                my $item = Fieldmapper::container::biblio_record_entry_bucket_item->new;
-                $item->bucket($list_id);
-                $item->target_biblio_record_entry($add_rec);
-                $success = $U->simplereq('open-ils.actor',
-                                         'open-ils.actor.container.item.create', $e->authtoken, 'biblio', $item);
-                last unless $success;
+
+        if ($name) {
+            $list = Fieldmapper::container::biblio_record_entry_bucket->new;
+            $list->name($name);
+            $list->description($description);
+            $list->owner($e->requestor->id);
+            $list->btype('bookbag');
+            $list->pub($shared ? 't' : 'f');
+            $success = $U->simplereq('open-ils.actor',
+                'open-ils.actor.container.create', $e->authtoken, 'biblio', $list);
+            if (ref($success) ne 'HASH' && scalar @add_rec) {
+                $list_id = (ref($success)) ? $success->id : $success;
+                foreach my $add_rec (@add_rec) {
+                    my $item = Fieldmapper::container::biblio_record_entry_bucket_item->new;
+                    $item->bucket($list_id);
+                    $item->target_biblio_record_entry($add_rec);
+                    $success = $U->simplereq('open-ils.actor',
+                                             'open-ils.actor.container.item.create', $e->authtoken, 'biblio', $item);
+                    last unless $success;
+                }
             }
             $url = $cgi->param('where_from') if ($success && $cgi->param('where_from'));
+
+        } else { # no name
+            $self->ctx->{bucket_failure_noname} = 1;
         }
+
     } elsif($action eq 'place_hold') {
 
         # @hold_recs comes from anon lists redirect; selected_itesm comes from existing buckets
@@ -1986,9 +1999,7 @@ sub load_myopac_bookbag_update {
 
     return $self->generic_redirect($url) if $success;
 
-    # XXX FIXME Bucket failure doesn't have a page to show the user anything
-    # right now. User just sees a 404 currently.
-
+    $self->ctx->{where_from} = $cgi->param('where_from');
     $self->ctx->{bucket_action} = $action;
     $self->ctx->{bucket_action_failed} = 1;
     return Apache2::Const::OK;
