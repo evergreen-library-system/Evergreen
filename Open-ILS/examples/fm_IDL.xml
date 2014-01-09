@@ -603,7 +603,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</fields>
 		<links>
 			<link field="queued_record" reltype="has_a" key="id" map="" class="vqar"/>
-			<link field="eg_record" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="eg_record" reltype="has_a" key="id" map="" class="are"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
