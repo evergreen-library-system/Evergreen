@@ -45,14 +45,14 @@ SELECT evergreen.create_aou_address(7, 'BR4 - Holds and ILL', '756 Industrial La
 INSERT INTO actor.hours_of_operation (id, dow_0_open, dow_0_close, dow_1_open, dow_1_close,
     dow_2_open, dow_2_close, dow_3_open, dow_3_close, dow_4_open, dow_4_close,
     dow_5_open, dow_5_close, dow_6_open, dow_6_close) VALUES
--- BR1 - accept defaults of 09:00 - 17:00 for each day
-    (4, '09:00', '17:00', '09:00', '17:00', '09:00', '17:00', '09:00', '17:00', '09:00', '17:00', '09:00', '17:00', '09:00', '17:00'),
+-- BR1 - closed on weekends (convention is 00:00 - 00:00)
+    (4, '08:00', '23:30', '08:00', '23:30', '08:00', '23:30', '08:00', '23:30', '09:00', '23:30', '00:00', '00:00', '00:00', '00:00'),
 -- BR2 - accept defaults of 09:00 - 17:00 for some days
     (5, '08:30', '21:30', '09:30', '14:30', '10:00', '21:30', '08:30', '17:00', '09:00', '17:00', '09:00', '17:00', '09:00', '17:00'),
 -- BR3 - accept defaults of 09:00 - 17:00 for some days
     (6, '08:00', '23:30', '08:00', '23:30', '08:00', '23:30', '08:00', '23:30', '09:00', '23:30', '13:00', '23:30', '09:00', '23:30'),
--- BR4 - closed on weekends (convention is 00:00 - 00:00)
-    (7, '08:00', '23:30', '08:00', '23:30', '08:00', '23:30', '08:00', '23:30', '09:00', '23:30', '00:00', '00:00', '00:00', '00:00');
+-- BR4 - accept defaults of 09:00 - 17:00 for each day
+    (7, '09:00', '17:00', '09:00', '17:00', '09:00', '17:00', '09:00', '17:00', '09:00', '17:00', '09:00', '17:00', '09:00', '17:00');
 
 -- Set some information URLs for library branches
 INSERT INTO actor.org_unit_setting(org_unit, name, value) VALUES
