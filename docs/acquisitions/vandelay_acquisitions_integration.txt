@@ -15,10 +15,10 @@ For detailed instructions on record matching and importing, see
 Basic Upload Options
 ~~~~~~~~~~~~~~~~~~~~
 . Click *Acquisitions* -> *Load MARC Order Records*.
-. If you want to upload the MARC records to a new purchase order, then click
-the check box adjacent to Create Purchase Order.
+. If you want to upload the MARC records to a new purchase order, then
+check _Create Purchase Order_.
 . If you want to activate the purchase order at the time of creation, then
-click the check box adjacent to _Activate Purchase Order_.
+check _Activate Purchase Order_.
 . Enter the name of the *Provider*. The text will auto-complete.
 . Select an org unit from the drop down menu. The context org unit is the org
 unit responsible for placing and managing the order. It defines what org unit
@@ -57,7 +57,7 @@ the following options.
   .. *Merge on Best Match* - If more than one match is found in the catalog for
   a given record, Evergreen will attempt to perform the best match as defined
   by the match score.
-. To only import records that has a quality equal to or greater than the
+. To only import records that have a quality equal to or greater than the
 existing record, enter a *Best/Single Match Minimum Quality Ratio*.  Divide the
 incoming record quality score, as determined by the match set's quality
 metrics, by the record quality score of the best match that exists in the 
@@ -73,8 +73,9 @@ profile that allows the user to import holdings attached to a lower quality
 record without replacing the existing (target) record with the incoming record.
 This field is optional.
 . If your order records contain holdings information, by default, Evergreen 
-will load them as acquisitions copies. Select *Load Items for Imported Records*
-to automatically load them as live copies that display in the catalog.
+will load them as acquisitions copies. (Note: These can be overlayed with real copies
+during the MARC batch importing process.) Or you can select *Load Items for
+Imported Records* to load them as live copies that display in the catalog.
 
 Default Upload Settings
 ~~~~~~~~~~~~~~~~~~~~~~~

@@ -199,38 +199,37 @@ incoming record.  We will import the record according to the guidelines set by
 our record match set, quality metrics, and merge/overlay choices that we will
 select.
 
+. Select a *Record Type* from the drop down menu.
 
-1) Select a *Record Type* from the drop down menu.
-
-2) Create a queue to which you can upload your records, or add you records to
+. Create a queue to which you can upload your records, or add you records to
 an existing queue.  Queues are linked to match sets and a holdings import
 profile. You cannot change a holdings import or record match set for a queue.
 
-3) Select a *Record Match Set* from the drop down menu.
+. Select a *Record Match Set* from the drop down menu.
 
-4) Select a *Holdings Import Profile* if you want to import holdings that are
+. Select a *Holdings Import Profile* if you want to import holdings that are
 attached to your records.
 
-5) Select a *Record Source* from the drop down menu.
+. Select a *Record Source* from the drop down menu.
 
-6) Select a *Merge Profile*.  Merge profiles enable you to specify which tags
+. Select a *Merge Profile*.  Merge profiles enable you to specify which tags
 should be removed or preserved in incoming records.
 
-7) Choose one of the following import options if you want to auto-import
+. Choose one of the following import options if you want to auto-import
 records:
 
-a. *Merge on Single Match* - Using the Record Match Set, Evergreen will only
+.. *Merge on Single Match* - Using the Record Match Set, Evergreen will only
 attempt to perform the merge/overlay action if only one match was found in the
 catalog.
 
-b. *Merge on Best Match* - If more than one match is found in the catalog for a
+.. *Merge on Best Match* - If more than one match is found in the catalog for a
 given record, Evergreen will attempt to perform the merge/overlay action with
 the best match as defined by the match score and quality metric.
-
++
 NOTE: Quality ratio affects only the *Merge on Single Match* and *Merge on Best
 Match* options.
 
-8) Enter a *Best/Single Match Minimum Quality Ratio.*  Divide the incoming
+. Enter a *Best/Single Match Minimum Quality Ratio.*  Divide the incoming
 record quality score by the record quality score of the best match that might
 exist in the catalog.  By default, Evergreen will assign any record a quality
 score of 1 (one).  If you want to ensure that the inbound record is only
@@ -240,8 +239,7 @@ have twice the quality of an existing record, then you should enter a 2 (two)
 in this field.  If you want to bypass all quality restraints, enter a 0 (zero)
 in this field.
 
-
-9) Select an *Insufficient Quality Fall-Through Profile* if desired.  This
+. Select an *Insufficient Quality Fall-Through Profile* if desired.  This
 field enables you to indicate that if the inbound record does not meet the
 configured quality standards, then you may still import the record using an
 alternate merge profile.  This field is typically used for selecting a merge
@@ -249,40 +247,48 @@ profile that allows the user to import holdings attached to a lower quality
 record without replacing the existing (target) record with the incoming record.
 This field is optional.  
 
-10) *Browse* to find the appropriate file, and click *Upload*.  The files will
+. Under *Copy Import Actions*, choose _Auto-overlay In-process Acquisitions
+Copies_ if you want to overlay temporary copies that were created by the
+Acquisitions module.  The system will attempt to overlay copies that:
+
+* have associated lineitem details (that is, they were created by the acquisitions process),
+* that lineitem detail has the same owning_lib as the incoming copy's owning_lib, and
+* the current copy associated with that lineitem detail is _In process_.
+
+. *Browse* to find the appropriate file, and click *Upload*.  The files will
 be uploaded to a queue.
++
+image::media/marc_batch_import_acq_overlay.png[Batch Importing MARC Records]
 
-image::media/Batch_Importing_MARC_Records9.jpg[Batch_Importing_MARC_Records9]
-
-11) The screen will display records that have been uploaded to your queue.
-  
+. The screen will display records that have been uploaded to your queue.
++
 image::media/Batch_Importing_MARC_Records15.jpg[Batch_Importing_MARC_Records15]
 
-12) If Evergreen indicates that matching records exist, then click the
+. If Evergreen indicates that matching records exist, then click the
 *Matches* link to view the matching records.  Check the box adjacent to the
 existing record that you want to merge with the incoming record. 
-
++
 image::media/Batch_Importing_MARC_Records10.jpg[Batch_Importing_MARC_Records10]
 
-13) Click *Back to Import Queue*.
+. Click *Back to Import Queue*.
 
-14) Check the boxes of the records that you want to import, and click *Import
+. Check the boxes of the records that you want to import, and click *Import
 Selected Records*, or click *Import All Records*.
 
-15) A pop up window will offer you the same import choices that were present on
+. A pop up window will offer you the same import choices that were present on
 the *Import Records* screen.  You can choose one of the import options, or
 click *Import*.
++
+image::media/marc_batch_import_popup.png[Batch Importing MARC Records Popup]
 
-image::media/Batch_Importing_MARC_Records9.jpg[Batch_Importing_MARC_Records9]
-
-16) The screen will refresh.  The *Queue Summary* indicates that the record was
+. The screen will refresh.  The *Queue Summary* indicates that the record was
 imported.  The *Import Time* column records the date that the record was
 imported.
-
++
 image::media/Batch_Importing_MARC_Records12.jpg[Batch_Importing_MARC_Records12] 
 
-17) Search the catalog to confirm that the record was imported.
-
+. Search the catalog to confirm that the record was imported.
++
 image::media/Batch_Importing_MARC_Records14.jpg[Batch_Importing_MARC_Records14] 
 
 
