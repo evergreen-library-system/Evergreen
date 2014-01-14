@@ -159,10 +159,13 @@ function TermSelectorFactory(terms) {
                 );
             } else if (term.hint == "acqlia" ||
                 (term.hint == "jub" && term.field == "eg_bib_id") ||
+                (term.hint == "acqlid" && term.field == "eg_copy_id") ||
                 (term.datatype == "link" && target == "au")) {
-                /* The test for jub.eg_bib_id is a special case to prevent
-                 * AutoFieldWidget from trying to render a ridiculous dropdown
-                 * of every bib record ID in the system. */
+                /* The tests for jub.eg_bib_id and acqlid.eg_copy_id are
+                 * special cases to prevent AutoFieldWidget from trying
+                 * to render a ridiculous dropdown of every bib or copy
+                 * record ID in the system.
+                 */
                 wStore[widgetKey] = dojo.create(
                     "input", {"type": "text"}, parentNode, "only"
                 );
