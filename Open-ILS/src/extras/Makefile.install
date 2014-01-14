@@ -44,6 +44,18 @@ export LIBDBI=libdbi-0.8.3
 export LIBDBI_DRIVERS=libdbi-drivers-0.8.3
 export LIBDBI_HOST=http://open-ils.org/~denials/evergreen
 
+# As this Makefile is designed to be used by a make process running as
+# root, this will avoid problems on some systems when tar extracts
+# files and tries to give them the same UID/GID as they have in their
+# archives, but those accounts don't exist on the local system.
+#
+# e.g, libdbi has files set 1000/1000. On most systems, there's a user
+# and a group with these IDs, but there can be systems where nothing
+# uses those IDs, and where tar fails with e.g. 'tar: libdbi-0.8.3:
+# Cannot change ownership to uid 1000, gid 1000: Invalid argument'
+#
+export TAR_OPTIONS=--no-same-owner --no-same-permissions
+
 # ----------------------------------------------------------------------------
 
 # avoid hard-coding the path to related makefiles
