@@ -770,8 +770,10 @@ CREATE TABLE config.record_attr_definition (
     name        TEXT    PRIMARY KEY,
     label       TEXT    NOT NULL, -- I18N
     description TEXT,
+    multi       BOOL    NOT NULL DEFAULT TRUE,  -- will store all values from a record
     filter      BOOL    NOT NULL DEFAULT TRUE,  -- becomes QP filter if true
     sorter      BOOL    NOT NULL DEFAULT FALSE, -- becomes QP sort() axis if true
+    composite   BOOL    NOT NULL DEFAULT FALSE, -- its values are derived from others
 
 -- For pre-extracted fields. Takes the first occurance, uses naive subfield ordering
     tag         TEXT, -- LIKE format
@@ -848,6 +850,11 @@ BEGIN
     END IF;
 END;
 $f$ LANGUAGE PLPGSQL;
+
+CREATE TABLE config.composite_attr_entry_definition(
+    coded_value PRIMARY KEY NOT NULL REFERENCES config.coded_value_map (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    definition  TEXT        NOT NULL -- JSON
+);
 
 -- List applied db patches that are deprecated by (and block the application of) my_db_patch
 CREATE OR REPLACE FUNCTION evergreen.upgrade_list_applied_deprecates ( my_db_patch TEXT ) RETURNS SETOF evergreen.patch AS $$

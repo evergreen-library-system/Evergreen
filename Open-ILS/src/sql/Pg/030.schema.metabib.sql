@@ -268,6 +268,82 @@ CREATE TRIGGER facet_force_nfc_tgr
 	BEFORE UPDATE OR INSERT ON metabib.facet_entry
 	FOR EACH ROW EXECUTE PROCEDURE evergreen.facet_force_nfc();
 
+-- DECREMENTING serial starts at -1
+CREATE SEQUENCE metabib.uncontrolled_record_attr_value_id_seq INCREMENT BY -1;
+
+CREATE TABLE metabib.uncontrolled_record_attr_value (
+    id      BIGINT  PRIMARY KEY DEFAULT nextval('metabib.uncontrolled_record_attr_value_id_seq'),
+    attr    TEXT    NOT NULL REFERENCES config.record_attr_definition (name),
+    value   TEXT    NOT NULL
+);
+CREATE UNIQUE INDEX muv_once_idx ON metabib.uncontrolled_record_attr_value (attr,value);
+
+CREATE VIEW metabib.record_attr_id_map AS
+    SELECT id, attr, value FROM metabib.uncontrolled_record_attr_value
+        UNION
+    SELECT  c.id, c.ctype AS attr, c.code AS value
+      FROM  config.coded_value_map c
+            JOIN config.record_attr_definition d ON (d.name = c.ctype AND NOT d.composite);
+
+CREATE VIEW metabib.composite_attr_id_map AS
+    SELECT  c.id, c.ctype AS attr, c.code AS value
+      FROM  config.coded_value_map c
+            JOIN config.record_attr_definition d ON (d.name = c.ctype AND d.composite);
+
+CREATE VIEW metabib.full_attr_id_map AS
+    SELECT id, attr, value FROM metabib.record_attr_id_map
+        UNION
+    SELECT id, attr, value FROM metabib.composite_attr_id_map;
+
+
+CREATE FUNCTION metabib.compile_composite_attr ( cattr_id INT ) RETURNS query_int AS $func$
+
+    use JSON;
+    my $cid = shift;
+
+    my $cattr = spi_exec_query(
+        "SELECT * FROM config.composite_attr_entry_defintion WHERE id = $cid"
+    )->{rows}[0];
+
+    die("Composite attribute not found with an id of $cid") unless $cattr;
+
+    my $plan = spi_prepare('SELECT * FROM metabib.full_attr_id_map WHERE attr = $1 AND value = $2', qw/TEXT TEXT/);
+    my $def = from_json $cattr->{definition};
+
+    sub recurse {
+        my $d = shift;
+        my $j = '&';
+        my @list;
+
+        if (ref $d eq 'HASH') { # node or AND
+            if (exists $d->{_attr}) { # it is a node
+                return spi_query_prepared(
+                    $plan, {limit => 1}, $d->{_attr}, $d->{_val}
+                )->{rows}[0]{id};
+            } elsif (exists $d->{_not} && scalar(keys(%$d)) == 1) { # it is a NOT
+                return '!' . recurse($$d{_not});
+            } else { # an AND list
+                @list = map { recurse($$d{$_}) } sort keys %$d;
+            }
+        } elsif (ref $d eq 'ARRAY')
+            $j = '|'
+            @list = map { recurse($_) } @$d;
+        }
+        return '(' . join($j,@list) . ')' if @list;
+        return '';
+    }
+
+    return recurse($def);
+
+$func$ STRICT STABLE IMMUTABLE LANGUAGE plperlu;
+
+CREATE TABLE metabib.record_attr_vector_list (
+    source  BIGINT  PRIMARY KEY REFERNECES  biblio.record_entry (id),
+    vlist   INT[]   NOT NULL -- stores id from ccvm AND murav
+);
+CREATE INDEX mrca_vlist_idx ON metabib.record_attr_vector_list USING gin ( vlist gin__int_ops );
+
+/* This becomes a view, and we do sorters differently ...
 CREATE TABLE metabib.record_attr (
 	id		BIGINT	PRIMARY KEY REFERENCES biblio.record_entry (id) ON DELETE CASCADE,
 	attrs	HSTORE	NOT NULL DEFAULT ''::HSTORE
@@ -275,8 +351,37 @@ CREATE TABLE metabib.record_attr (
 CREATE INDEX metabib_svf_attrs_idx ON metabib.record_attr USING GIST (attrs);
 CREATE INDEX metabib_svf_date1_idx ON metabib.record_attr ((attrs->'date1'));
 CREATE INDEX metabib_svf_dates_idx ON metabib.record_attr ((attrs->'date1'),(attrs->'date2'));
+*/
 
--- Back-compat view ... we're moving to an HSTORE world
+/* ... like this */
+CREATE TABLE metabib.record_sorter (
+    id      BIGSERIAL   PRIMARY KEY,
+    source  BIGINT      NOT NULL REFERENCES biblio.record_entry (id) ON DELETE CASCADE,
+    attr    TEXT        NOT NULL REFERENCES config.record_attr_definition (name) ON DELETE CASCADE,
+    value   TEXT        NOT NULL
+);
+CREATE INDEX metabib_sorter_source_idx ON metabib.record_sorter (source); -- we may not need one of this or the next ... stats will tell
+CREATE INDEX metabib_sorter_s_a_idx ON metabib.record_sorter (source, attr);
+CREATE INDEX metabib_sorter_a_v_idx ON metabib.record_sorter (attr, value);
+
+
+CREATE TYPE metabib.record_attr_type AS (
+    id      BIGINT,
+    attrs   HSTORE
+);
+
+-- Back-compat view ... we're moving to an INTARRAY world
+CREATE VIEW metabib.record_attr_flat AS
+    SELECT  v.source AS id,
+            m.attr,
+            m.value
+      FROM  metabib.full_attr_id_map m
+            JOIN  metabib.record_attr_vector_list v ( m.id = ANY( v.vlist ) );
+
+CREATE VIEW metabib.record_attr AS
+    SELECT id, HSTORE( ARRAY_AGG( attr ), ARRAY_AGG( value ) ) AS attrs FROM metabib.record_attr_flat GROUP BY 1;
+
+-- Back-back-compat view ... we use to live in an HSTORE world
 CREATE TYPE metabib.rec_desc_type AS (
     item_type       TEXT,
     item_form       TEXT,
@@ -832,6 +937,36 @@ CREATE OR REPLACE FUNCTION biblio.marc21_record_type( rid BIGINT ) RETURNS confi
     SELECT * FROM vandelay.marc21_record_type( (SELECT marc FROM biblio.record_entry WHERE id = $1) );
 $func$ LANGUAGE SQL;
 
+CREATE OR REPLACE FUNCTION vandelay.marc21_extract_fixed_field_list( marc TEXT, ff TEXT ) RETURNS TEXT[] AS $func$
+DECLARE
+    rtype       TEXT;
+    ff_pos      RECORD;
+    tag_data    RECORD;
+    val         TEXT;
+    collection  TEXT[] := '{}'::TEXT[];
+BEGIN
+    rtype := (vandelay.marc21_record_type( marc )).code;
+    FOR ff_pos IN SELECT * FROM config.marc21_ff_pos_map WHERE fixed_field = ff AND rec_type = rtype ORDER BY tag DESC LOOP
+        IF ff_pos.tag = 'ldr' THEN
+            val := oils_xpath_string('//*[local-name()="leader"]', marc);
+            IF val IS NOT NULL THEN
+                val := SUBSTRING( val, ff_pos.start_pos + 1, ff_pos.length );
+                collection := collection || val;
+            END IF;
+        ELSE
+            FOR tag_data IN SELECT value FROM UNNEST( oils_xpath( '//*[@tag="' || UPPER(ff_pos.tag) || '"]/text()', marc ) ) x(value) LOOP
+                val := SUBSTRING( tag_data.value, ff_pos.start_pos + 1, ff_pos.length );
+                collection := collection || val;
+            END LOOP;
+        END IF;
+        val := REPEAT( ff_pos.default_val, ff_pos.length );
+        collection := collection || val;
+    END LOOP;
+
+    RETURN collection;
+END;
+$func$ LANGUAGE PLPGSQL;
+
 CREATE OR REPLACE FUNCTION vandelay.marc21_extract_fixed_field( marc TEXT, ff TEXT ) RETURNS TEXT AS $func$
 DECLARE
     rtype       TEXT;
@@ -860,6 +995,10 @@ BEGIN
     RETURN NULL;
 END;
 $func$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION biblio.marc21_extract_fixed_field_list( rid BIGINT, ff TEXT ) RETURNS TEXT[] AS $func$
+    SELECT * FROM vandelay.marc21_extract_fixed_field_list( (SELECT marc FROM biblio.record_entry WHERE id = $1), $2 );
+$func$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION biblio.marc21_extract_fixed_field( rid BIGINT, ff TEXT ) RETURNS TEXT AS $func$
     SELECT * FROM vandelay.marc21_extract_fixed_field( (SELECT marc FROM biblio.record_entry WHERE id = $1), $2 );
@@ -1250,16 +1389,213 @@ CREATE OR REPLACE FUNCTION biblio.map_authority_linking (bibid BIGINT, marc TEXT
     SELECT $1;
 $func$ LANGUAGE SQL;
 
--- AFTER UPDATE OR INSERT trigger for biblio.record_entry
-CREATE OR REPLACE FUNCTION biblio.indexing_ingest_or_delete () RETURNS TRIGGER AS $func$
+CREATE OR REPLACE FUNCTION metabib.reingest_record_attributes (rid BIGINT, pattr_list TEXT[] DEFAULT NULL, prmarc TEXT DEFAULT NULL, rdeleted BOOL DEFAULT TRUE) RETURNS VOID AS $func$
 DECLARE
     transformed_xml TEXT;
+    rmarc           TEXT := prmarc;
+    tmp_val         TEXT;
     prev_xfrm       TEXT;
     normalizer      RECORD;
     xfrm            config.xml_transform%ROWTYPE;
-    attr_value      TEXT;
-    new_attrs       HSTORE := ''::HSTORE;
+    attr_vector     INT[] := '{}'::INT[];
+    attr_vector_tmp INT[];
+    attr_list       TEXT[] := pattr_list;
+    attr_value      TEXT[];
+    norm_attr_value TEXT[];
+    tmp_xml         XML;
     attr_def        config.record_attr_definition%ROWTYPE;
+    ccvm_row        config.code_value_map%ROWTYPE;
+BEGIN
+
+    IF attr_list IS NULL OR rdeleted THEN -- need to do the full dance on INSERT or undelete
+        SELECT ARRAY_AGG(name) INTO attr_list FROM config.record_attr_definition;
+    END IF;
+
+    IF rmarc IS NULL THEN
+        SELECT marc INTO rmarc FROM biblio.record_entry WHERE id = rid;
+    END IF;
+
+    FOR attr_def IN SELECT * FROM config.record_attr_definition WHERE NOT composite AND name = ANY( attr_list ) ORDER BY format LOOP
+
+        attr_value := '{}'::TEXT[]
+        norm_attr_value := '{}'::TEXT[]
+        attr_vector_tmp := '{}'::INT[]
+
+        SELECT * INTO ccvm_row FROM config.code_value_map c WHERE c.ctype = attr_def.name; 
+
+        -- tag+sf attrs only support SVF
+        IF attr_def.tag IS NOT NULL THEN -- tag (and optional subfield list) selection
+            SELECT  ARRAY[ARRAY_TO_STRING(ARRAY_AGG(value), COALESCE(attr_def.joiner,' '))] INTO attr_value
+              FROM  (SELECT * FROM metabib.full_rec ORDER BY tag, subfield) AS x
+              WHERE record = rid
+                    AND tag LIKE attr_def.tag
+                    AND CASE
+                        WHEN attr_def.sf_list IS NOT NULL 
+                            THEN POSITION(subfield IN attr_def.sf_list) > 0
+                        ELSE TRUE
+                        END
+              GROUP BY tag
+              ORDER BY tag
+              LIMIT 1;
+
+        ELSIF attr_def.fixed_field IS NOT NULL THEN -- a named fixed field, see config.marc21_ff_pos_map.fixed_field
+            attr_value := vandelay.marc21_extract_fixed_field_list(rmarc, attr_def.fixed_field);
+
+            IF NOT attr_def.multi THEN
+                attr_value := ARRAY[attr_value[1]];
+            END IF;
+
+        ELSIF attr_def.xpath IS NOT NULL THEN -- and xpath expression
+
+            SELECT INTO xfrm * FROM config.xml_transform WHERE name = attr_def.format;
+    
+            -- See if we can skip the XSLT ... it's expensive
+            IF prev_xfrm IS NULL OR prev_xfrm <> xfrm.name THEN
+                -- Can't skip the transform
+                IF xfrm.xslt <> '---' THEN
+                    transformed_xml := oils_xslt_process(rmarc,xfrm.xslt);
+                ELSE
+                    transformed_xml := rmarc;
+                END IF;
+    
+                prev_xfrm := xfrm.name;
+            END IF;
+
+            IF xfrm.name IS NULL THEN
+                -- just grab the marcxml (empty) transform
+                SELECT INTO xfrm * FROM config.xml_transform WHERE xslt = '---' LIMIT 1;
+                prev_xfrm := xfrm.name;
+            END IF;
+
+            FOR tmp_xml IN SELECT XPATH(attr_def.xpath, transformed_xml, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]) LOOP
+                attr_value := attr_value ||
+                                oils_xpath_string(
+                                    '//*',
+                                    tmp_xml::TEXT,
+                                    COALESCE(attr_def.joiner,' '),
+                                    ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]
+                                );
+                EXIT WHEN NOT attr_def.multi;
+            END LOOP;
+
+        ELSIF attr_def.phys_char_sf IS NOT NULL THEN -- a named Physical Characteristic, see config.marc21_physical_characteristic_*_map
+            SELECT  ARRAY_AGG(m.value) INTO attr_vlue
+              FROM  vandelay.marc21_physical_characteristics(rmarc) v
+                    LEFT JOIN config.marc21_physical_characteristic_value_map m ON (m.id = v.value)
+              WHERE v.subfield = attr_def.phys_char_sf
+                    AND ( ccvm.id IS NULL OR ( ccvm.id IS NOT NULL AND v.id IS NOT NULL) );
+
+            IF NOT attr_def.multi THEN
+                attr_value := ARRAY[attr_value[1]];
+            END IF;
+
+        END IF;
+
+        -- apply index normalizers to attr_value
+        FOR tmp_val IN SELECT value FROM UNNEST(attr_value) x(value);
+            FOR normalizer IN
+                SELECT  n.func AS func,
+                        n.param_count AS param_count,
+                        m.params AS params
+                  FROM  config.index_normalizer n
+                        JOIN config.record_attr_index_norm_map m ON (m.norm = n.id)
+                  WHERE attr = attr_def.name
+                  ORDER BY m.pos LOOP
+                    EXECUTE 'SELECT ' || normalizer.func || '(' ||
+                        COALESCE( quote_literal( tmp_val ), 'NULL' ) ||
+                        CASE
+                            WHEN normalizer.param_count > 0
+                                THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
+                                ELSE ''
+                            END ||
+                        ')' INTO tmp_val;
+
+            END LOOP;
+            norm_attr_value := norm_attr_value || tmp_val;
+        END LOOP;
+
+        IF attr_def.filter THEN
+            -- Create unknown uncontrolled values and find the IDs of the values
+            IF ccvm.id IS NULL THEN
+                FOR tmp_val FROM SELECT value FROM UNNEST(norm_attr_value) x(value) LOOP
+                    BEGIN; -- use subtransaction to isolate unique constraint violations
+                        INSERT INTO metabib.uncontrolled_record_attr_value ( attr, value ) VALUES ( attr_def.name, tmp_val );
+                    EXCEPTION WHEN unique_violation THEN END;
+                END LOOP;
+    
+                SELECT ARRAY_AGG(id) INTO attr_vector_tmp FROM metabib.uncontrolled_record_attr_value WHERE attr = attr_def.name AND value = ANY( norm_attr_value );
+            ELSE
+                SELECT ARRAY_AGG(id) INTO attr_vector_tmp FROM config.coded_value_map WHERE ctype = attr_def.name AND value = ANY( norm_attr_value );
+            END IF;
+
+            -- Add the new value to the vector
+            attr_vector := attr_vector || attr_vector_tmp;
+        END IF;
+
+        IF attr_def.sorter THEN
+            DELETE FROM metabib.record_sorter WHERE source = rid AND attr = attr_def.name;
+            INSERT INTO metabib.record_sorter (source, attr, value) VALUES (rid, attr_def.name, norm_attr_value[1]);
+        END IF;
+
+    END LOOP;
+
+/* We may need to rewrite the vlist to contain
+   the intersection of new values for requested
+   attrs and old values for ignored attrs. To
+   do this, we take the old attr vlist and
+   subtract any values that are valid for the
+   requested attrs, and then add back the new
+   set of attr values. */
+
+    IF ARRAY_LENGTH(pattr_list, 1) > 0 THEN 
+        SELECT vlist INTO attr_vector_tmp FROM metabib.record_attr_vector_list WHERE source = rid;
+        SELECT attr_vector_tmp - ARRAY_AGG(id) INTO attr_vector_tmp FROM metabib.full_attr_id_map WHERE attr = ANY (pattr_list);
+        attr_vector := attr_vector || attr_vector_tmp;
+    END IF;
+
+    -- On to composite attributes, now that the record attrs have been pulled.  Processed in name order, so later composite
+    -- attributes can depend on earlier ones.
+    FOR attr_def IN SELECT * FROM config.record_attr_definition WHERE composite AND name = ANY( attr_list ) ORDER BY name LOOP
+
+        FOR ccvm_row IN SELECT * FROM config.coded_value_map c WHERE c.ctype = attr_def.name ORDER BY value LOOP
+
+            tmp_val := metabib.compile_composite_attr( ccvm_row.id );
+            NEXT WHEN tmp_val IS NULL OR tmp_val = ''; -- nothing to do
+
+            IF attr_def.filter THEN
+                IF attr_vector @@ tmp_val::query_int THEN
+                    attr_vector = attr_vector + intset(ccvm_row.id);
+                    EXIT WHEN NOT attr_def.multi;
+                END IF;
+            END IF;
+
+            IF attr_def.sorter THEN
+                IF attr_vector ~~ tmp_val THEN
+                    DELETE FROM metabib.record_sorter WHERE source = rid AND attr = attr_def.name;
+                    INSERT INTO metabib.record_sorter (source, attr, value) VALUES (rid, attr_def.name, ccvm_row.code);
+                END IF;
+            END IF;
+
+        END LOOP;
+
+    END LOOP;
+
+    IF ARRAY_LENGTH(attr_vector, 1) > 0 THEN
+        IF rdeleted THEN -- initial insert OR revivication
+            DELETE FROM metabib.record_attr_vector_list WHERE source = rid;
+            INSERT INTO metabib.record_attr_vector_list (source, vlist) VALUES (rid, attr_vector);
+        ELSE
+            UPDATE metabib.record_attr_vector_list SET vlist = attr_vector WHERE source = rid;
+        END IF;
+    END IF;
+
+END;
+
+$$ LANGUAGE PLPGSQL;
+
+
+-- AFTER UPDATE OR INSERT trigger for biblio.record_entry
+CREATE OR REPLACE FUNCTION biblio.indexing_ingest_or_delete () RETURNS TRIGGER AS $func$
 BEGIN
 
     IF NEW.deleted IS TRUE THEN -- If this bib is deleted
@@ -1270,7 +1606,7 @@ BEGIN
             -- with the #deleted modifier, so one should turn on the named
             -- internal flag for that functionality.
             DELETE FROM metabib.metarecord_source_map WHERE source = NEW.id;
-            DELETE FROM metabib.record_attr WHERE id = NEW.id;
+            DELETE FROM metabib.record_attr_vector_list WHERE source = NEW.id;
         END IF;
 
         DELETE FROM authority.bib_linking WHERE bib = NEW.id; -- Avoid updating fields in bibs that are no longer visible
@@ -1301,90 +1637,7 @@ BEGIN
         -- Now we pull out attribute data, which is dependent on the mfr for all but XPath-based fields
         PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_metabib_rec_descriptor' AND enabled;
         IF NOT FOUND THEN
-            FOR attr_def IN SELECT * FROM config.record_attr_definition ORDER BY format LOOP
-
-                IF attr_def.tag IS NOT NULL THEN -- tag (and optional subfield list) selection
-                    SELECT  STRING_AGG(value, COALESCE(attr_def.joiner,' ')) INTO attr_value
-                      FROM  (SELECT * FROM metabib.full_rec ORDER BY tag, subfield) AS x
-                      WHERE record = NEW.id
-                            AND tag LIKE attr_def.tag
-                            AND CASE
-                                WHEN attr_def.sf_list IS NOT NULL 
-                                    THEN POSITION(subfield IN attr_def.sf_list) > 0
-                                ELSE TRUE
-                                END
-                      GROUP BY tag
-                      ORDER BY tag
-                      LIMIT 1;
-
-                ELSIF attr_def.fixed_field IS NOT NULL THEN -- a named fixed field, see config.marc21_ff_pos_map.fixed_field
-                    attr_value := biblio.marc21_extract_fixed_field(NEW.id, attr_def.fixed_field);
-
-                ELSIF attr_def.xpath IS NOT NULL THEN -- and xpath expression
-
-                    SELECT INTO xfrm * FROM config.xml_transform WHERE name = attr_def.format;
-            
-                    -- See if we can skip the XSLT ... it's expensive
-                    IF prev_xfrm IS NULL OR prev_xfrm <> xfrm.name THEN
-                        -- Can't skip the transform
-                        IF xfrm.xslt <> '---' THEN
-                            transformed_xml := oils_xslt_process(NEW.marc,xfrm.xslt);
-                        ELSE
-                            transformed_xml := NEW.marc;
-                        END IF;
-            
-                        prev_xfrm := xfrm.name;
-                    END IF;
-
-                    IF xfrm.name IS NULL THEN
-                        -- just grab the marcxml (empty) transform
-                        SELECT INTO xfrm * FROM config.xml_transform WHERE xslt = '---' LIMIT 1;
-                        prev_xfrm := xfrm.name;
-                    END IF;
-
-                    attr_value := oils_xpath_string(attr_def.xpath, transformed_xml, COALESCE(attr_def.joiner,' '), ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]);
-
-                ELSIF attr_def.phys_char_sf IS NOT NULL THEN -- a named Physical Characteristic, see config.marc21_physical_characteristic_*_map
-                    SELECT  m.value INTO attr_value
-                      FROM  biblio.marc21_physical_characteristics(NEW.id) v
-                            JOIN config.marc21_physical_characteristic_value_map m ON (m.id = v.value)
-                      WHERE v.subfield = attr_def.phys_char_sf
-                      LIMIT 1; -- Just in case ...
-
-                END IF;
-
-                -- apply index normalizers to attr_value
-                FOR normalizer IN
-                    SELECT  n.func AS func,
-                            n.param_count AS param_count,
-                            m.params AS params
-                      FROM  config.index_normalizer n
-                            JOIN config.record_attr_index_norm_map m ON (m.norm = n.id)
-                      WHERE attr = attr_def.name
-                      ORDER BY m.pos LOOP
-                        EXECUTE 'SELECT ' || normalizer.func || '(' ||
-                            COALESCE( quote_literal( attr_value ), 'NULL' ) ||
-                            CASE
-                                WHEN normalizer.param_count > 0
-                                    THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
-                                    ELSE ''
-                                END ||
-                            ')' INTO attr_value;
-        
-                END LOOP;
-
-                -- Add the new value to the hstore
-                new_attrs := new_attrs || hstore( attr_def.name, attr_value );
-
-            END LOOP;
-
-            IF TG_OP = 'INSERT' OR OLD.deleted THEN -- initial insert OR revivication
-                DELETE FROM metabib.record_attr WHERE id = NEW.id;
-                INSERT INTO metabib.record_attr (id, attrs) VALUES (NEW.id, new_attrs);
-            ELSE
-                UPDATE metabib.record_attr SET attrs = new_attrs WHERE id = NEW.id;
-            END IF;
-
+            PERFORM metabib.reingest_record_attributes(NEW.id, NULL, NEW.marc, TG_OP = 'INSERT' OR OLD.deleted);
         END IF;
     END IF;
 

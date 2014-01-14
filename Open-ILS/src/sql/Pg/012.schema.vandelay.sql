@@ -302,27 +302,27 @@ DECLARE
     retval  biblio.marc21_physical_characteristics%ROWTYPE;
 BEGIN
 
-    _007 := oils_xpath_string( '//*[@tag="007"]', marc );
+    FOR _007 IN SELECT oils_xpath_string('//*', value) FROM UNNEST(oils_xpath('//*[@tag="007"]', marc)) x(value) LOOP
+        IF _007 IS NOT NULL AND _007 <> '' THEN
+            SELECT * INTO ptype FROM config.marc21_physical_characteristic_type_map WHERE ptype_key = SUBSTRING( _007, 1, 1 );
 
-    IF _007 IS NOT NULL AND _007 <> '' THEN
-        SELECT * INTO ptype FROM config.marc21_physical_characteristic_type_map WHERE ptype_key = SUBSTRING( _007, 1, 1 );
+            IF ptype.ptype_key IS NOT NULL THEN
+                FOR psf IN SELECT * FROM config.marc21_physical_characteristic_subfield_map WHERE ptype_key = ptype.ptype_key LOOP
+                    SELECT * INTO pval FROM config.marc21_physical_characteristic_value_map WHERE ptype_subfield = psf.id AND value = SUBSTRING( _007, psf.start_pos + 1, psf.length );
 
-        IF ptype.ptype_key IS NOT NULL THEN
-            FOR psf IN SELECT * FROM config.marc21_physical_characteristic_subfield_map WHERE ptype_key = ptype.ptype_key LOOP
-                SELECT * INTO pval FROM config.marc21_physical_characteristic_value_map WHERE ptype_subfield = psf.id AND value = SUBSTRING( _007, psf.start_pos + 1, psf.length );
+                    IF pval.id IS NOT NULL THEN
+                        rowid := rowid + 1;
+                        retval.id := rowid;
+                        retval.ptype := ptype.ptype_key;
+                        retval.subfield := psf.id;
+                        retval.value := pval.id;
+                        RETURN NEXT retval;
+                    END IF;
 
-                IF pval.id IS NOT NULL THEN
-                    rowid := rowid + 1;
-                    retval.id := rowid;
-                    retval.ptype := ptype.ptype_key;
-                    retval.subfield := psf.id;
-                    retval.value := pval.id;
-                    RETURN NEXT retval;
-                END IF;
-
-            END LOOP;
+                END LOOP;
+            END IF;
         END IF;
-    END IF;
+    END LOOP;
 
     RETURN;
 END;

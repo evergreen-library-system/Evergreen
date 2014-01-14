@@ -6059,17 +6059,17 @@ INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, leng
 -- record attributes
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('alph','Alph','Alph');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('audience','Audn','Audn');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('bib_level','BLvl','BLvl');
+INSERT INTO config.record_attr_definition (name,label,fixed_field,multi) values ('bib_level','BLvl','BLvl',FALSE);
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('biog','Biog','Biog');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('conf','Conf','Conf');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('control_type','Ctrl','Ctrl');
+INSERT INTO config.record_attr_definition (name,label,fixed_field,multi) values ('control_type','Ctrl','Ctrl',FALSE);
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('ctry','Ctry','Ctry');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('date1','Date1','Date1');
-INSERT INTO config.record_attr_definition (name,label,fixed_field,sorter,filter) values ('pubdate','Pub Date','Date1',TRUE,FALSE);
+INSERT INTO config.record_attr_definition (name,label,fixed_field,sorter,filter,multi) values ('pubdate','Pub Date','Date1',TRUE,FALSE,FALSE);
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('date2','Date2','Date2');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('cat_form','Desc','Desc');
+INSERT INTO config.record_attr_definition (name,label,fixed_field,multi) values ('cat_form','Desc','Desc',FALSE);
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('pub_status','DtSt','DtSt');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('enc_level','ELvl','ELvl');
+INSERT INTO config.record_attr_definition (name,label,fixed_field,multi) values ('enc_level','ELvl','ELvl',FALSE);
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('fest','Fest','Fest');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('item_form','Form','Form');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('gpub','GPub','GPub');
@@ -6081,10 +6081,10 @@ INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('lit_
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('mrec','MRec','MRec');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('ff_sl','S/L','S/L');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('type_mat','TMat','TMat');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('item_type','Type','Type');
+INSERT INTO config.record_attr_definition (name,label,fixed_field,multi) values ('item_type','Type','Type',FALSE);
 INSERT INTO config.record_attr_definition (name,label,phys_char_sf) values ('vr_format','Videorecording format',72);
-INSERT INTO config.record_attr_definition (name,label,sorter,filter,tag) values ('titlesort','Title',TRUE,FALSE,'tnf');
-INSERT INTO config.record_attr_definition (name,label,sorter,filter,tag,sf_list) values ('authorsort','Author',TRUE,FALSE,'1%','abcdefgklmnopqrstvxyz');
+INSERT INTO config.record_attr_definition (name,label,sorter,filter,tag,multi) values ('titlesort','Title',TRUE,FALSE,'tnf',FALSE);
+INSERT INTO config.record_attr_definition (name,label,sorter,filter,tag,sf_list,multi) values ('authorsort','Author',TRUE,FALSE,'1%','abcdefgklmnopqrstvxyz',FALSE);
 
 -- TO-DO: Auto-generate these values from CLDR
 -- XXX These are the values used in MARC records ... does that match CLDR, including deprecated languages?
@@ -6658,6 +6658,94 @@ INSERT INTO config.coded_value_map(id, ctype, code, value) VALUES
     (554, 'vr_format', 'v', oils_i18n_gettext('554', 'DVD', 'ccvm', 'value')),
     (555, 'vr_format', 'z', oils_i18n_gettext('555', 'Other', 'ccvm', 'value')),
     (556, 'vr_format', ' ', oils_i18n_gettext('556', 'Unspecified', 'ccvm', 'value'));
+
+INSERT INTO config.record_attr_definition (name, label, phys_char_sf)
+VALUES (
+    'sr_format',
+    oils_i18n_gettext('sr_format', 'Sound recording format', 'crad', 'label'),
+    '62'
+);
+
+INSERT INTO config.coded_value_map (id, ctype, code, value) VALUES
+(557, 'sr_format', 'a', oils_i18n_gettext(557, '16 rpm', 'ccvm', 'value')),
+(558, 'sr_format', 'b', oils_i18n_gettext(558, '33 1/3 rpm', 'ccvm', 'value')),
+(559, 'sr_format', 'c', oils_i18n_gettext(559, '45 rpm', 'ccvm', 'value')),
+(560, 'sr_format', 'f', oils_i18n_gettext(560, '1.4 m. per second', 'ccvm', 'value')),
+(561, 'sr_format', 'd', oils_i18n_gettext(561, '78 rpm', 'ccvm', 'value')),
+(562, 'sr_format', 'e', oils_i18n_gettext(562, '8 rpm', 'ccvm', 'value')),
+(563, 'sr_format', 'l', oils_i18n_gettext(563, '1 7/8 ips', 'ccvm', 'value')),
+(586, 'item_form', 'o', oils_i18n_gettext('586', 'Online', 'ccvm', 'value')),
+(587, 'item_form', 'q', oils_i18n_gettext('587', 'Direct electronic', 'ccvm', 'value'));
+
+INSERT INTO config.coded_value_map
+    (id, ctype, code, value, search_label) VALUES
+(564, 'icon_format', 'book',
+    oils_i18n_gettext(564, 'Book', 'ccvm', 'value'),
+    oils_i18n_gettext(564, 'Book', 'ccvm', 'search_label')),
+(565, 'icon_format', 'braille',
+    oils_i18n_gettext(565, 'Braille', 'ccvm', 'value'),
+    oils_i18n_gettext(565, 'Braille', 'ccvm', 'search_label')),
+(566, 'icon_format', 'software',
+    oils_i18n_gettext(566, 'Software and video games', 'ccvm', 'value'),
+    oils_i18n_gettext(566, 'Software and video games', 'ccvm', 'search_label')),
+(567, 'icon_format', 'dvd',
+    oils_i18n_gettext(567, 'DVD', 'ccvm', 'value'),
+    oils_i18n_gettext(567, 'DVD', 'ccvm', 'search_label')),
+(568, 'icon_format', 'ebook',
+    oils_i18n_gettext(568, 'E-book', 'ccvm', 'value'),
+    oils_i18n_gettext(568, 'E-book', 'ccvm', 'search_label')),
+(569, 'icon_format', 'eaudio',
+    oils_i18n_gettext(569, 'E-audio', 'ccvm', 'value'),
+    oils_i18n_gettext(569, 'E-audio', 'ccvm', 'search_label')),
+(570, 'icon_format', 'kit',
+    oils_i18n_gettext(570, 'Kit', 'ccvm', 'value'),
+    oils_i18n_gettext(570, 'Kit', 'ccvm', 'search_label')),
+(571, 'icon_format', 'map',
+    oils_i18n_gettext(571, 'Map', 'ccvm', 'value'),
+    oils_i18n_gettext(571, 'Map', 'ccvm', 'search_label')),
+(572, 'icon_format', 'microform',
+    oils_i18n_gettext(572, 'Microform', 'ccvm', 'value'),
+    oils_i18n_gettext(572, 'Microform', 'ccvm', 'search_label')),
+(573, 'icon_format', 'score',
+    oils_i18n_gettext(573, 'Music Score', 'ccvm', 'value'),
+    oils_i18n_gettext(573, 'Music Score', 'ccvm', 'search_label')),
+(574, 'icon_format', 'picture',
+    oils_i18n_gettext(574, 'Picture', 'ccvm', 'value'),
+    oils_i18n_gettext(574, 'Picture', 'ccvm', 'search_label')),
+(575, 'icon_format', 'equip',
+    oils_i18n_gettext(575, 'Equipment, games, toys', 'ccvm', 'value'),
+    oils_i18n_gettext(575, 'Equipment, games, toys', 'ccvm', 'search_label')),
+(576, 'icon_format', 'serial',
+    oils_i18n_gettext(576, 'Serials and magazines', 'ccvm', 'value'),
+    oils_i18n_gettext(576, 'Serials and magazines', 'ccvm', 'search_label')),
+(577, 'icon_format', 'vhs',
+    oils_i18n_gettext(577, 'VHS', 'ccvm', 'value'),
+    oils_i18n_gettext(577, 'VHS', 'ccvm', 'search_label')),
+(578, 'icon_format', 'evideo',
+    oils_i18n_gettext(578, 'E-video', 'ccvm', 'value'),
+    oils_i18n_gettext(578, 'E-video', 'ccvm', 'search_label')),
+(579, 'icon_format', 'cdaudiobook',
+    oils_i18n_gettext(579, 'CD Audiobook', 'ccvm', 'value'),
+    oils_i18n_gettext(579, 'CD Audiobook', 'ccvm', 'search_label')),
+(580, 'icon_format', 'cdmusic',
+    oils_i18n_gettext(580, 'CD Music recording', 'ccvm', 'value'),
+    oils_i18n_gettext(580, 'CD Music recording', 'ccvm', 'search_label')),
+(581, 'icon_format', 'casaudiobook',
+    oils_i18n_gettext(581, 'Cassette audiobook', 'ccvm', 'value'),
+    oils_i18n_gettext(581, 'Cassette audiobook', 'ccvm', 'search_label')),
+(582, 'icon_format', 'casmusic',
+    oils_i18n_gettext(582, 'Audiocassette music recording', 'ccvm', 'value'),
+    oils_i18n_gettext(582, 'Audiocassette music recording', 'ccvm', 'search_label')),
+(583, 'icon_format', 'phonospoken',
+    oils_i18n_gettext(583, 'Phonograph spoken recording', 'ccvm', 'value'),
+    oils_i18n_gettext(583, 'Phonograph spoken recording', 'ccvm', 'search_label')),
+(584, 'icon_format', 'phonomusic',
+    oils_i18n_gettext(584, 'Phonograph music recording', 'ccvm', 'value'),
+    oils_i18n_gettext(584, 'Phonograph music recording', 'ccvm', 'search_label')),
+(585, 'icon_format', 'lpbook',
+    oils_i18n_gettext(585, 'Large Print Book', 'ccvm', 'value'),
+    oils_i18n_gettext(585, 'Large Print Book', 'ccvm', 'search_label'))
+;
 
 SELECT SETVAL('config.coded_value_map_id_seq'::TEXT, (SELECT max(id) FROM config.coded_value_map));
 
@@ -9421,6 +9509,99 @@ VALUES (
         'label'
     )
 );
+
+INSERT INTO config.global_flag (name, label, value, enabled) VALUES (
+    'opac.icon_attr',
+    oils_i18n_gettext(
+        'opac.icon_attr',
+        'OPAC Format Icons Attribute',
+        'cgf',
+        'label'
+    ),
+    'icon_format',
+    TRUE
+);
+
+INSERT INTO config.record_attr_definition
+    (name, label, multi, filter, composite) VALUES (
+    'icon_format',
+    oils_i18n_gettext(
+        'icon_format',
+        'OPAC Format Icons',
+        'crad',
+        'label'
+    ),
+    TRUE, TRUE, TRUE
+);
+
+INSERT INTO config.composite_attr_entry_definition
+    (coded_value, definition) VALUES
+--book
+(564, '{"0":[{"_attr":"item_type","_val":"a"},{"_attr":"item_type","_val":"t"}],"1":{"_not":[{"_attr":"item_form","_val":"a"},{"_attr":"item_form","_val":"b"},{"_attr":"item_form","_val":"c"},{"_attr":"item_form","_val":"d"},{"_attr":"item_form","_val":"f"},{"_attr":"item_form","_val":"o"},{"_attr":"item_form","_val":"q"},{"_attr":"item_form","_val":"r"},{"_attr":"item_form","_val":"s"}]},"2":[{"_attr":"bib_level","_val":"a"},{"_attr":"bib_level","_val":"c"},{"_attr":"bib_level","_val":"d"},{"_attr":"bib_level","_val":"m"}]}'),
+
+-- braille
+(565, '{"0":{"_attr":"item_type","_val":"a"},"1":{"_attr":"item_form","_val":"f"}}'),
+
+-- software
+(566, '{"_attr":"item_type","_val":"m"}'),
+
+-- dvd
+(567, '{"_attr":"vr_format","_val":"v"}'),
+
+-- ebook
+(568, '{"0":[{"_attr":"item_type","_val":"a"},{"_attr":"item_type","_val":"t"}],"1":[{"_attr":"item_form","_val":"o"},{"_attr":"item_form","_val":"s"},{"_attr":"item_form","_val":"q"}],"2":[{"_attr":"bib_level","_val":"a"},{"_attr":"bib_level","_val":"c"},{"_attr":"bib_level","_val":"d"},{"_attr":"bib_level","_val":"m"}]}'),
+
+-- eaudio
+(569, '{"0":{"_attr":"item_type","_val":"i"},"1":[{"_attr":"item_form","_val":"o"},{"_attr":"item_form","_val":"q"},{"_attr":"item_form","_val":"s"}]}'),
+
+-- kit
+(570, '[{"_attr":"item_type","_val":"o"},{"_attr":"item_type","_val":"p"}]'),
+
+-- map
+(571, '[{"_attr":"item_type","_val":"e"},{"_attr":"item_type","_val":"f"}]'),
+
+-- microform
+(572, '[{"_attr":"item_form","_val":"a"},{"_attr":"item_form","_val":"b"},{"_attr":"item_form","_val":"c"}]'),
+
+-- score
+(573, '[{"_attr":"item_type","_val":"c"},{"_attr":"item_type","_val":"d"}]'),
+
+-- picture
+(574, '{"_attr":"item_type","_val":"k"}'),
+
+-- equip
+(575, '{"_attr":"item_type","_val":"r"}'),
+
+-- serial
+(576, '[{"_attr":"bib_level","_val":"b"},{"_attr":"bib_level","_val":"s"}]'),
+
+-- vhs
+(577, '{"_attr":"vr_format","_val":"b"}'),
+
+-- evideo
+(578, '{"0":{"_attr":"item_type","_val":"g"},"1":[{"_attr":"item_form","_val":"o"},{"_attr":"item_form","_val":"s"},{"_attr":"item_form","_val":"q"}]}'),
+
+-- cdaudiobook
+(579, '{"0":{"_attr":"item_type","_val":"i"},"1":{"_attr":"sr_format","_val":"f"}}'),
+
+-- cdmusic
+(580, '{"0":{"_attr":"item_type","_val":"j"},"1":{"_attr":"sr_format","_val":"f"}}'),
+
+-- casaudiobook
+(581, '{"0":{"_attr":"item_type","_val":"i"},"1":{"_attr":"sr_format","_val":"l"}}'),
+
+-- casmusic
+(582, '{"0":{"_attr":"item_type","_val":"j"},"1":{"_attr":"sr_format","_val":"l"}}'),
+
+-- phonospoken
+(583, '{"0":{"_attr":"item_type","_val":"i"},"1":[{"_attr":"sr_format","_val":"a"},{"_attr":"sr_format","_val":"b"},{"_attr":"sr_format","_val":"c"},{"_attr":"sr_format","_val":"d"},{"_attr":"sr_format","_val":"e"}]}'),
+
+-- phonomusic
+(584, '{"0":{"_attr":"item_type","_val":"j"},"1":[{"_attr":"sr_format","_val":"a"},{"_attr":"sr_format","_val":"b"},{"_attr":"sr_format","_val":"c"},{"_attr":"sr_format","_val":"d"},{"_attr":"sr_format","_val":"e"}]}'),
+
+-- lpbook
+(585, '{"0":[{"_attr":"item_type","_val":"a"},{"_attr":"item_type","_val":"t"}],"1":{"_attr":"item_form","_val":"d"},"2":[{"_attr":"bib_level","_val":"a"},{"_attr":"bib_level","_val":"c"},{"_attr":"bib_level","_val":"d"},{"_attr":"bib_level","_val":"m"}]}');
+
 
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
     VALUES (
