@@ -402,10 +402,22 @@ serial.sdist_editor.prototype = {
                 return obj.act_lists[lib_id];
             }
             
+            /* get (and cache) list of ancestors for lib_id */
+            obj.aou_ancestor_list_by_id =
+                obj.aou_ancestor_list_by_id || [];
+
+            if (!obj.aou_ancestor_list_by_id[lib_id]) {
+                JSAN.use('util.fm_utils');
+                obj.aou_ancestor_list_by_id[lib_id] = util.fm_utils.aou_get_ancestor_list_by_id(lib_id);
+
+                if (!obj.aou_ancestor_list_by_id[lib_id].length)
+                    throw "ancestor list for " + lib_id + " empty?"; /* unlikely */
+            }
+
             var act_list = obj.network.request(
                 'open-ils.pcrud',
                 'open-ils.pcrud.search.act',
-                [ ses(), {"owning_lib" : lib_id }, {"order_by" : {"act" : "name"} } ]
+                [ ses(), {"owning_lib" : obj.aou_ancestor_list_by_id[lib_id] }, {"order_by" : {"act" : "name"} } ]
             );
 
             if (act_list == null) {

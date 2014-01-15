@@ -3,7 +3,7 @@ dump('entering util/fm_utils.js\n');
 if (typeof util == 'undefined') var util = {};
 util.fm_utils = {};
 
-util.fm_utils.EXPORT_OK    = [ 'flatten_ou_branch', 'find_ou', 'compare_aou_a_is_b_or_ancestor', 'sort_func_aou_by_depth_and_then_string', 'find_common_aou_ancestor', 'find_common_aou_ancestors' ];
+util.fm_utils.EXPORT_OK    = [ 'flatten_ou_branch', 'find_ou', 'compare_aou_a_is_b_or_ancestor', 'sort_func_aou_by_depth_and_then_string', 'find_common_aou_ancestor', 'find_common_aou_ancestors',  'aou_get_ancestor_list_by_id' ];
 util.fm_utils.EXPORT_TAGS    = { ':all' : util.fm_utils.EXPORT_OK };
 
 util.fm_utils.flatten_ou_branch = function(branch) {
@@ -145,3 +145,19 @@ util.fm_utils.find_common_aou_ancestors = function(orgs) {
     }
 }
 
+/* There wasn't already something like this in staff client JS? Really? */
+util.fm_utils.aou_get_ancestor_list_by_id = function(aou_id) {
+    JSAN.use('OpenILS.data');
+    var data = new OpenILS.data();
+    data.stash_retrieve();
+
+    var list = [];
+
+    var aou = data.hash.aou[aou_id];
+    do {
+        list.push(aou.id());
+        aou = data.hash.aou[aou.parent_ou()];
+    } while (aou);
+
+    return list;
+}
