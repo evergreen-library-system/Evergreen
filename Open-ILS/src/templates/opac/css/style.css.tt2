@@ -2005,3 +2005,19 @@ a.preflib_change {
         table#acct_holds_main_header td.hold_notes:before { content: "[% l('Notes') %]"; }
 }
 
+
+/* 
+For text which is visible only to screen readers.
+Borrowed from http://getbootstrap.com/css/#helper-classes-screen-readers 
+See also http://webaim.org/techniques/css/invisiblecontent/
+*/
+.sr-only {                                                                     
+    position: absolute;                                                          
+    width: 1px;                                                                  
+    height: 1px;                                                                 
+    padding: 0;                                                                  
+    margin: -1px;                                                                
+    overflow: hidden;                                                            
+    clip: rect(0, 0, 0, 0);                                                      
+    border: 0;                                                                   
+} 

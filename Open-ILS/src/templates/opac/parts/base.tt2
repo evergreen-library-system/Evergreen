@@ -22,7 +22,10 @@
         [% INCLUDE 'opac/parts/goog_analytics.tt2' %]
     </head>
     <body[% IF want_dojo; ' class="tundra"'; END %]>
+        <h1 class="sr-only">[% l('Catalog') %]</h1>
+        [%#Each content page needs (at minimum) an <h2> describing the content%]
         [% content %] 
+        <h2 class="sr-only">[% l('Additional Resources') %]</h2>
         [% INCLUDE 'opac/parts/footer.tt2' %]
         [% INCLUDE 'opac/parts/js.tt2' %]
         [%- IF ENV.OILS_CHILIFRESH_ACCOUNT %]

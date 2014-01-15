@@ -12,6 +12,7 @@
     depart_list = ['blimit', 'bterm', 'bpivot'];
 %]
 
+    <h2 class="sr-only">[% l('Catalog Browse') %]</h2>
     <div id="search-wrapper">
         [%# XXX TODO Give searchbar.tt2 more smarts so we can just do:
           # INCLUDE "opac/parts/searchbar.tt2" %]

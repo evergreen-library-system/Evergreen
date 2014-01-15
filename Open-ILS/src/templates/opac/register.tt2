@@ -47,6 +47,7 @@ END;
 
 %]
 
+<h2 class="sr-only">[% l('Account Registration') %]</h2>
 <div id="content-wrapper">
     <div id="main-content-register">
         <div class="common-full-pad"></div>

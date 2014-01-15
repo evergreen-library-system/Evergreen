@@ -1,3 +1,4 @@
+<h3 class="sr-only">[% l('Catalog Search') %]</h3>
 [% PROCESS "opac/parts/org_selector.tt2" %]
 <div id="search-wrapper">
     [% UNLESS took_care_of_form -%]

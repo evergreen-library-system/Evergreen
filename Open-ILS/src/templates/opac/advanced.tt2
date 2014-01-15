@@ -5,6 +5,7 @@
     pane = CGI.param("pane") || "advanced";
     loc = ctx.search_ou;
 -%]
+    <h2 class="sr-only">[% l('Advanced Search') %]</h2>
     <div id="search-wrapper">
         <div id="search-box">
             <span class="search_catalog_lbl mobile_hide">[% l('Search the Catalog') %]</span>
