@@ -15,6 +15,7 @@
     expire_time = ahr.expire_time ? date.format(ctx.parse_datetime(ahr.expire_time), DATE_FORMAT) : '';
     thaw_date = ahr.thaw_date ? date.format(ctx.parse_datetime(ahr.thaw_date), DATE_FORMAT) : '';
 %]
+<h3 class="sr-only">[% l('Edit Hold') %]</h3>
 <div class="pad-bottom-five">
     <div class="header_middle">
         <span id="acct_holds_header float-left">[% l('Editing Hold') %]</span>

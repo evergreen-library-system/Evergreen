@@ -8,6 +8,7 @@
         myopac_cc_allowed = 1;
     END
 %]
+<h3 class="sr-only">[% l('My Account Summary') %]</h3>
 [%  IF myopac_cc_allowed;
     # http://www.w3.org/TR/WCAG20-TECHS/H32.html
     # avoid forms w/ no submit action %]

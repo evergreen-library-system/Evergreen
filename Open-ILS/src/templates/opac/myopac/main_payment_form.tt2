@@ -7,6 +7,7 @@
     last_chance = CGI.param("last_chance");
 
 %]
+<h3 class="sr-only">[% l('Pay Fines') %]</h3>
 [% IF ctx.fines.balance_owed <= 0 %]
 <div>
     [% l("You either have no fines to pay or you have selected fines whose " _

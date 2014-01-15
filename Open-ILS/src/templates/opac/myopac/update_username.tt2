@@ -2,6 +2,7 @@
     PROCESS "opac/parts/misc_util.tt2";
     WRAPPER "opac/parts/myopac/base.tt2";
     myopac_page = "prefs"  %]
+<h3 class="sr-only">[% l('Update Username') %]</h3>
 <div id='myopac_summary_div' style="padding:0px;">
 
     <div class="header_middle">

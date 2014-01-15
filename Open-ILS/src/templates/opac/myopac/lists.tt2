@@ -11,6 +11,7 @@
 "To see the public view of a shared Bookbag, " _
 "click on the Bookbag\\'s name in the Bookbag list.");
 %]
+<h3 class="sr-only">[% l('My Lists') %]</h3>
 <div id='myopac_bookbag_div' style="padding:5px;">
 
     <!-- new list creation -->

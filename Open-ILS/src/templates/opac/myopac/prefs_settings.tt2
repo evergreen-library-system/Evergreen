@@ -4,6 +4,7 @@
     myopac_page = "prefs";
     prefs_page = 'prefs_settings' %]
 
+    <h3 class="sr-only">[% l('Search and History Preferences') %]</h3>
 
     <form method='post'>
 

@@ -6,6 +6,7 @@
     offset = ctx.circ_history_offset;
 %]
 
+<h3 class="sr-only">[% l('History of Checked Out Items') %]</h3>
 <div style="padding:0px;">
     
     <div id="acct_checked_tabs">

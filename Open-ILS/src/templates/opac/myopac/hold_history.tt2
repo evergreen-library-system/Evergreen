@@ -8,6 +8,7 @@
     count = ctx.hold_history_ids.size;
 %]
 
+<h3 class="sr-only">[% l('Holds History') %]</h3>
 <div id='myopac_holds_div'>
 
     <div id="acct_holds_tabs">

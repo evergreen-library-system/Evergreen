@@ -4,6 +4,7 @@
     prefs_page = 'prefs_my_lists' %]
 
 
+    <h3 class="sr-only">[% l('List Preferences') %]</h3>
     <form method='post'>
 
        <table class="full-width data_grid" id="acct_search_main"

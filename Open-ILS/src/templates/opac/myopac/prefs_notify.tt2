@@ -3,13 +3,14 @@
     myopac_page = "prefs";
     prefs_page = 'prefs_notify' %]
 
+<h3 class="sr-only">[% l('Notification Preferences') %]</h3>
 <form method='post'>
     [% setting = 'opac.hold_notify' %]
     <input name='[% setting %]' type="hidden"
         [% IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]' [% END %]/>
 
     <table class="full-width data_grid" id="acct_search_main" 
-        title="[% l('Search Preferences') %]">
+        title="[% l('Notification Preferences') %]">
         <tbody>
 
             [% IF ctx.updated_user_settings %]

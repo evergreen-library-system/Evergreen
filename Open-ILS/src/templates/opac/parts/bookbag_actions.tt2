@@ -39,7 +39,8 @@
 <ul class="popmenu">
     <li><a href="#" class="no-dec">
           <img src="[% ctx.media_prefix %]/images/clipboard.png" 
-              [% html_text_attr('alt', 'Add item to a list: [_1]', record_title) %]/>
+              [% html_text_attr('alt', 
+                l('Add item to a list: [_1]', record_title)) %]/>
           [% l("Add to my list") %]
         </a>
     <ul>
@@ -79,8 +80,8 @@
     <li>
         <a href="[% opac_wrap(mkurl(ctx.opac_root _ '/myopac/lists', {
             limit => ctx.bookbag_count, add_rec => ctx.bre_id,
-            anchor => rec_anchor
-        })) %]">
+            anchor => rec_anchor })) %]"
+           title="[% l('See all of my lists') %]">
         [% l('See All') %]
         </a>
     </li>

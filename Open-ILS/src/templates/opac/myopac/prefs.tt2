@@ -3,6 +3,7 @@
     myopac_page = "prefs";
     prefs_page = 'prefs' %]
 
+<h3 class="sr-only">[% l('Account Preferences') %]</h3>
 <div id="acct_info_main">
 
     <table width='70%' title="[% l('Account preference') %]"

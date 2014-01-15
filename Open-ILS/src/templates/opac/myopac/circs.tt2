@@ -2,6 +2,7 @@
     PROCESS "opac/parts/misc_util.tt2";
     WRAPPER "opac/parts/myopac/base.tt2";
     myopac_page = "circs"  %]
+<h3 class="sr-only">[% l('Current Items Checked Out') %]</h3>
 <div id='myopac_checked_div'>
 
     <div id="acct_checked_tabs">
