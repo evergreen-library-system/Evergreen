@@ -1201,6 +1201,7 @@ sub opensearch_osd {
     my $lib = shift;
     my $class = shift;
     my $base = shift;
+    my $host = shift;
 
     if ($version eq '1.0') {
         print <<OSD;
@@ -1243,7 +1244,7 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
   <Url type="application/x-marcxml+xml"
        template="$base/1.1/$lib/marcxml/$class/?searchTerms={searchTerms}&amp;startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
   <Url type="text/html"
-       template="$base/1.1/$lib/html-full/$class/?searchTerms={searchTerms}&amp;startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
+       template="https://$host/eg/opac/results?locg=$lib;query={searchTerms};page={startPage?};startIndex={startIndex?};count={count?};searchLang={language?}"/>
   <LongName>Search $lib</LongName>
   <Query role="example" searchTerms="harry+potter" />
   <Developer>Mike Rylander for GPLS/PINES</Developer>
@@ -1301,7 +1302,7 @@ sub opensearch_feed {
             $class = 'keyword';
         }
 
-        return opensearch_osd($version, $lib, $class, $base);
+        return opensearch_osd($version, $lib, $class, $base, $host);
     }
 
 
