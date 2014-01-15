@@ -17,12 +17,19 @@
     <table  jsId="ccvmGrid"
             autoHeight='true'
             dojoType="openils.widget.AutoGrid"
-            fieldOrder="['ctype', 'code', 'value', 'description', 'opac_visible', 'search_label']"
+            fieldOrder="['ctype', 'code', 'value', 'description', 'opac_visible', 'search_label', 'is_simple', 'composite_def']"
             query="{code: '*'}"
             defaultCellWidth='"25%"'
             fmClass='ccvm'
             showPaginator='true'
-            editOnEnter='true'/>
+            editOnEnter='true'>
+      <thead>
+        <tr><th field='composite_def' 
+                get='getCompositeDefLink' 
+                formatter='formatCompositeDefLink'>
+            [% l('Composite Definition') %]</th></tr>
+      </thead>
+    </table>
  </div>
 
 <script type ="text/javascript">
@@ -30,6 +37,22 @@
     dojo.require('dijit.form.FilteringSelect');
     dojo.require('openils.widget.AutoGrid');
     dojo.require('openils.widget.AutoFieldWidget');
+
+    function getCompositeDefLink(rowId, item) {
+      if (!item) return '';
+      return this.grid.store.getValue(item, 'id');
+    }
+
+    var isComposite = false;
+    function formatCompositeDefLink(id) {
+      if (id && isComposite) {
+        return "<a href='" + oilsBasePath +
+          "/conify/global/config/composite_attr_entry_definition/" 
+          + id + "'>Manage</a>";
+        } else {
+          return "";
+      }
+    }
 
     openils.Util.addOnLoad(
         function() {
@@ -44,6 +67,21 @@
                 function(w, ww) {
                     dojo.connect(w, 'onChange', 
                         function(newVal) {
+
+                            // see if this attr def supports composite entries
+                            w.store.fetch({
+                              onComplete : function(list) {
+                                if (!list.length) return;
+                                var comp = w.store.getValue(list[0], 'composite');
+                                if (comp == 't') {
+                                  isComposite = true;
+                                } else {
+                                  isComposite = false;
+                                }
+                              },
+                              query : {name : ''+newVal}
+                            });
+                            
                             ccvmGrid.resetStore();
                             ccvmGrid.loadAll({order_by : {ccvm : 'code'}}, {ctype : newVal});
                             ccvmGrid.overrideWidgetArgs.ctype = {dijitArgs : {value : newVal}};

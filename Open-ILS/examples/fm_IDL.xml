@@ -784,8 +784,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Name" name="name" reporter:datatype="id" reporter:selector="label"  oils_obj:required="true"/>
 			<field reporter:label="Label" name="label" reporter:datatype="text"  oils_obj:required="true"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text" />
+			<field reporter:label="Multi-valued?" name="multi" reporter:datatype="bool"/>
 			<field reporter:label="Filter?" name="filter" reporter:datatype="bool"/>
 			<field reporter:label="Sorter?" name="sorter" reporter:datatype="bool"/>
+			<field reporter:label="Composite attribute?" name="composite" reporter:datatype="bool"/>
 			<field reporter:label="MARC Tag" name="tag" reporter:datatype="text"/>
 			<field reporter:label="MARC Subfields" name="sf_list" reporter:datatype="text"/>
 			<field reporter:label="Joiner" name="joiner" reporter:datatype="text"/>
@@ -830,7 +832,77 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
-	<class id="mra" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::record_attr" oils_persist:tablename="metabib.record_attr" reporter:label="SVF Record Attribute" oils_persist:field_safe="true">
+	<class id="ccraed" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::composite_attr_entry_definition" oils_persist:tablename="config.composite_attr_entry_definition" reporter:label="Composite Attribute Definitions" oils_persist:field_safe="true">
+		<fields oils_persist:primary="coded_value">
+			<field reporter:label="Coded Value" name="coded_value" reporter:datatype="id" oils_obj:required="true"/>
+			<field reporter:label="Defintion" name="definition" reporter:datatype="text"  oils_obj:required="true"/>
+		</fields>
+		<links>
+			<link field="coded_value" reltype="has_a" key="id" map="" class="ccvm"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_CODED_VALUE" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_CODED_VALUE" global_required="true"/>
+                <delete permission="ADMIN_CODED_VALUE" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="murav" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::uncontrolled_record_attr_value" oils_persist:tablename="metabib.uncontrolled_record_attr_value" reporter:label="Uncontrolled Record Attribute Values" oils_persist:field_safe="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="metabib.uncontrolled_record_attr_value_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id" oils_obj:required="true"/>
+			<field reporter:label="Attribute" name="attr" reporter:datatype="text"  oils_obj:required="true"/>
+			<field reporter:label="Value" name="value" reporter:datatype="text"  oils_obj:required="true"/>
+		</fields>
+		<links>
+			<link field="attr" reltype="has_a" key="name" map="" class="crad"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve/>
+            </actions>
+        </permacrud>
+	</class>
+
+
+	<class id="mrs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::record_sorter" oils_persist:tablename="metabib.record_sorter" reporter:label="Record Sort Values" oils_persist:field_safe="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="metabib.record_sorter_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id" oils_obj:required="true"/>
+			<field reporter:label="Bib Record ID" name="source" reporter:datatype="int" oils_obj:required="true"/>
+			<field reporter:label="Attribute" name="attr" reporter:datatype="text"  oils_obj:required="true"/>
+			<field reporter:label="Value" name="value" reporter:datatype="text"  oils_obj:required="true"/>
+		</fields>
+		<links>
+			<link field="source" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="attr" reltype="has_a" key="name" map="" class="crad"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve/>
+            </actions>
+        </permacrud>
+	</class>
+
+
+	<class id="mravl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::record_attr_vector_list" oils_persist:tablename="metabib.record_attr_vector_list" reporter:label="MVF Record Attribute Vectors" oils_persist:field_safe="true">
+		<fields oils_persist:primary="source">
+			<field reporter:label="Record ID" name="source" reporter:datatype="id" oils_obj:required="true"/>
+			<field reporter:label="Vector" name="vlist" reporter:datatype="text"  oils_obj:required="true"/> <!-- Actually an int[], but this is the best we can do in fm_IDL.xml -->
+		</fields>
+		<links>
+			<link field="source" reltype="has_a" key="id" map="" class="bre"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve/>
+            </actions>
+        </permacrud>
+	</class>
+
+
+	<class id="mra" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::record_attr" oils_persist:tablename="metabib.record_attr" reporter:label="SVF Record Attribute" oils_persist:field_safe="true" oils_persist:readonly="true">
 		<fields oils_persist:primary="id">
 			<field reporter:label="Record ID" name="id" reporter:datatype="id" oils_obj:required="true"/>
 			<field reporter:label="Attributes" name="attrs" reporter:datatype="text"  oils_obj:required="true"/>
@@ -869,7 +941,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="ccvm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::coded_value_map" oils_persist:tablename="config.coded_value_map" reporter:label="SVF Record Attribute Coded Value Map" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.coded_value_map_id_seq">
-			<field reporter:label="ID" name="id" reporter:datatype="id"  oils_obj:required="true"/>
+			<field reporter:label="ID" name="id" reporter:datatype="id"  oils_obj:required="true" reporter:selector="value"/>
 			<field reporter:label="SVF Attribute" name="ctype" reporter:datatype="link"  oils_obj:required="true"/>
 			<field reporter:label="Code" name="code" reporter:datatype="text"  oils_obj:required="true"/>
 			<field reporter:label="Value" name="value" reporter:datatype="text"  oils_obj:required="true" oils_persist:i18n="true"/>
@@ -877,9 +949,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="OPAC Visible" name="opac_visible" reporter:datatype="bool"/>
 			<field reporter:label="Search Label" name="search_label" reporter:datatype="text" oils_persist:i18n="true"/>
             <field reporter:label="Is Simple Selector" name="is_simple" reporter:datatype="bool"/>
+            <field reporter:label="Composite Definition" name="composite_def" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="ctype" reltype="has_a" key="name" map="" class="crad"/>
+			<link field="composite_def" reltype="might_have" key="coded_value" map="" class="ccraed"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
