@@ -1,0 +1,33 @@
+= TPAC library pages =
+
+This feature adds one web page per library in the system to the TPAC at
+http://hostname/eg/opac/library/<SHORTNAME> and
+http://hostname/eg/opac/library/<ID>. The pages publish the following
+information from Evergreen (if available):
+
+* Name of the library
+* Link to the lbrary web site (from `Library Information URL` library setting)
+* Opening hours
+* Email address
+* Phone number
+* Mailing address
+* Link to parent library (if applicable)
+
+Library pages are linked from the copy table on the record details page.
+
+== Structured data ==
+
+The library web pages publish schema.org structured data, which can enable
+search engines and other systems to better understand your libraries and their
+resources.
+
+== Upgrade notes ==
+
+Evergreen 2.5 introduced the `Library information URL` library setting to
+associate a web page with a library. If set, this value was used as the target
+of the library link in the copy table on the record details page. However, the
+new default behavior is to link to the automatically generated TPAC library
+page, which in turn links to the external web site.
+
+If you wish to maintain the previous behavior, you can set the `Use external
+library information URL` library setting to `True`.
