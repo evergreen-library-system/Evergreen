@@ -852,8 +852,8 @@ END;
 $f$ LANGUAGE PLPGSQL;
 
 CREATE TABLE config.composite_attr_entry_definition(
-    coded_value PRIMARY KEY NOT NULL REFERENCES config.coded_value_map (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    definition  TEXT        NOT NULL -- JSON
+    coded_value INT  PRIMARY KEY NOT NULL REFERENCES config.coded_value_map (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    definition  TEXT    NOT NULL -- JSON
 );
 
 -- List applied db patches that are deprecated by (and block the application of) my_db_patch

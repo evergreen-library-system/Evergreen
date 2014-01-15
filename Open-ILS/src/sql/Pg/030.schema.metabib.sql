@@ -296,19 +296,12 @@ CREATE VIEW metabib.full_attr_id_map AS
     SELECT id, attr, value FROM metabib.composite_attr_id_map;
 
 
-CREATE FUNCTION metabib.compile_composite_attr ( cattr_id INT ) RETURNS query_int AS $func$
+CREATE OR REPLACE FUNCTION metabib.compile_composite_attr ( cattr_def TEXT ) RETURNS query_int AS $func$
 
-    use JSON;
-    my $cid = shift;
+    use JSON::XS;
+    my $def = decode_json(shift);
 
-    my $cattr = spi_exec_query(
-        "SELECT * FROM config.composite_attr_entry_defintion WHERE id = $cid"
-    )->{rows}[0];
-
-    die("Composite attribute not found with an id of $cid") unless $cattr;
-
-    my $plan = spi_prepare('SELECT * FROM metabib.full_attr_id_map WHERE attr = $1 AND value = $2', qw/TEXT TEXT/);
-    my $def = from_json $cattr->{definition};
+    die("Composite attribute definition not supplied") unless $def;
 
     sub recurse {
         my $d = shift;
@@ -317,28 +310,37 @@ CREATE FUNCTION metabib.compile_composite_attr ( cattr_id INT ) RETURNS query_in
 
         if (ref $d eq 'HASH') { # node or AND
             if (exists $d->{_attr}) { # it is a node
-                return spi_query_prepared(
+                my $plan = spi_prepare('SELECT * FROM metabib.full_attr_id_map WHERE attr = $1 AND value = $2', qw/TEXT TEXT/);
+                return spi_exec_prepared(
                     $plan, {limit => 1}, $d->{_attr}, $d->{_val}
                 )->{rows}[0]{id};
+                spi_freeplan($plan);
             } elsif (exists $d->{_not} && scalar(keys(%$d)) == 1) { # it is a NOT
                 return '!' . recurse($$d{_not});
             } else { # an AND list
                 @list = map { recurse($$d{$_}) } sort keys %$d;
             }
-        } elsif (ref $d eq 'ARRAY')
-            $j = '|'
+        } elsif (ref $d eq 'ARRAY') {
+            $j = '|';
             @list = map { recurse($_) } @$d;
         }
+
+        @list = grep { defined && $_ ne '' } @list;
+
         return '(' . join($j,@list) . ')' if @list;
         return '';
     }
 
-    return recurse($def);
+    return recurse($def) || undef;
 
-$func$ STRICT STABLE IMMUTABLE LANGUAGE plperlu;
+$func$ IMMUTABLE LANGUAGE plperlu;
+
+CREATE OR REPLACE FUNCTION metabib.compile_composite_attr ( cattr_id INT ) RETURNS query_int AS $func$
+    SELECT metabib.compile_composite_attr(definition) FROM config.composite_attr_entry_definition WHERE coded_value = $1;
+$func$ STRICT IMMUTABLE LANGUAGE SQL;
 
 CREATE TABLE metabib.record_attr_vector_list (
-    source  BIGINT  PRIMARY KEY REFERNECES  biblio.record_entry (id),
+    source  BIGINT  PRIMARY KEY REFERENCES biblio.record_entry (id),
     vlist   INT[]   NOT NULL -- stores id from ccvm AND murav
 );
 CREATE INDEX mrca_vlist_idx ON metabib.record_attr_vector_list USING gin ( vlist gin__int_ops );
@@ -376,7 +378,7 @@ CREATE VIEW metabib.record_attr_flat AS
             m.attr,
             m.value
       FROM  metabib.full_attr_id_map m
-            JOIN  metabib.record_attr_vector_list v ( m.id = ANY( v.vlist ) );
+            JOIN  metabib.record_attr_vector_list v ON ( m.id = ANY( v.vlist ) );
 
 CREATE VIEW metabib.record_attr AS
     SELECT id, HSTORE( ARRAY_AGG( attr ), ARRAY_AGG( value ) ) AS attrs FROM metabib.record_attr_flat GROUP BY 1;
@@ -1404,7 +1406,7 @@ DECLARE
     norm_attr_value TEXT[];
     tmp_xml         XML;
     attr_def        config.record_attr_definition%ROWTYPE;
-    ccvm_row        config.code_value_map%ROWTYPE;
+    ccvm_row        config.coded_value_map%ROWTYPE;
 BEGIN
 
     IF attr_list IS NULL OR rdeleted THEN -- need to do the full dance on INSERT or undelete
@@ -1417,11 +1419,11 @@ BEGIN
 
     FOR attr_def IN SELECT * FROM config.record_attr_definition WHERE NOT composite AND name = ANY( attr_list ) ORDER BY format LOOP
 
-        attr_value := '{}'::TEXT[]
-        norm_attr_value := '{}'::TEXT[]
-        attr_vector_tmp := '{}'::INT[]
+        attr_value := '{}'::TEXT[];
+        norm_attr_value := '{}'::TEXT[];
+        attr_vector_tmp := '{}'::INT[];
 
-        SELECT * INTO ccvm_row FROM config.code_value_map c WHERE c.ctype = attr_def.name; 
+        SELECT * INTO ccvm_row FROM config.coded_value_map c WHERE c.ctype = attr_def.name LIMIT 1; 
 
         -- tag+sf attrs only support SVF
         IF attr_def.tag IS NOT NULL THEN -- tag (and optional subfield list) selection
@@ -1433,7 +1435,7 @@ BEGIN
                         WHEN attr_def.sf_list IS NOT NULL 
                             THEN POSITION(subfield IN attr_def.sf_list) > 0
                         ELSE TRUE
-                        END
+                    END
               GROUP BY tag
               ORDER BY tag
               LIMIT 1;
@@ -1448,7 +1450,7 @@ BEGIN
         ELSIF attr_def.xpath IS NOT NULL THEN -- and xpath expression
 
             SELECT INTO xfrm * FROM config.xml_transform WHERE name = attr_def.format;
-    
+        
             -- See if we can skip the XSLT ... it's expensive
             IF prev_xfrm IS NULL OR prev_xfrm <> xfrm.name THEN
                 -- Can't skip the transform
@@ -1468,22 +1470,24 @@ BEGIN
             END IF;
 
             FOR tmp_xml IN SELECT XPATH(attr_def.xpath, transformed_xml, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]) LOOP
-                attr_value := attr_value ||
-                                oils_xpath_string(
-                                    '//*',
-                                    tmp_xml::TEXT,
-                                    COALESCE(attr_def.joiner,' '),
-                                    ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]
-                                );
-                EXIT WHEN NOT attr_def.multi;
+                tmp_val := oils_xpath_string(
+                                '//*',
+                                tmp_xml::TEXT,
+                                COALESCE(attr_def.joiner,' '),
+                                ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]
+                            );
+                IF tmp_val IS NOT NULL AND BTRIM(tmp_val) <> '' THEN
+                    attr_value := attr_value || tmp_val;
+                    EXIT WHEN NOT attr_def.multi;
+                END IF;
             END LOOP;
 
         ELSIF attr_def.phys_char_sf IS NOT NULL THEN -- a named Physical Characteristic, see config.marc21_physical_characteristic_*_map
-            SELECT  ARRAY_AGG(m.value) INTO attr_vlue
+            SELECT  ARRAY_AGG(m.value) INTO attr_value
               FROM  vandelay.marc21_physical_characteristics(rmarc) v
                     LEFT JOIN config.marc21_physical_characteristic_value_map m ON (m.id = v.value)
-              WHERE v.subfield = attr_def.phys_char_sf
-                    AND ( ccvm.id IS NULL OR ( ccvm.id IS NOT NULL AND v.id IS NOT NULL) );
+              WHERE v.subfield = attr_def.phys_char_sf AND (m.value IS NOT NULL AND BTRIM(m.value) <> '')
+                    AND ( ccvm_row.id IS NULL OR ( ccvm_row.id IS NOT NULL AND v.id IS NOT NULL) );
 
             IF NOT attr_def.multi THEN
                 attr_value := ARRAY[attr_value[1]];
@@ -1491,8 +1495,8 @@ BEGIN
 
         END IF;
 
-        -- apply index normalizers to attr_value
-        FOR tmp_val IN SELECT value FROM UNNEST(attr_value) x(value);
+                -- apply index normalizers to attr_value
+        FOR tmp_val IN SELECT value FROM UNNEST(attr_value) x(value) LOOP
             FOR normalizer IN
                 SELECT  n.func AS func,
                         n.param_count AS param_count,
@@ -1502,37 +1506,41 @@ BEGIN
                   WHERE attr = attr_def.name
                   ORDER BY m.pos LOOP
                     EXECUTE 'SELECT ' || normalizer.func || '(' ||
-                        COALESCE( quote_literal( tmp_val ), 'NULL' ) ||
+                    COALESCE( quote_literal( tmp_val ), 'NULL' ) ||
                         CASE
                             WHEN normalizer.param_count > 0
                                 THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
                                 ELSE ''
                             END ||
-                        ')' INTO tmp_val;
+                    ')' INTO tmp_val;
 
             END LOOP;
-            norm_attr_value := norm_attr_value || tmp_val;
+            IF tmp_val IS NOT NULL AND BTRIM(tmp_val) <> '' THEN
+                norm_attr_value := norm_attr_value || tmp_val;
+            END IF;
         END LOOP;
-
+        
         IF attr_def.filter THEN
             -- Create unknown uncontrolled values and find the IDs of the values
-            IF ccvm.id IS NULL THEN
-                FOR tmp_val FROM SELECT value FROM UNNEST(norm_attr_value) x(value) LOOP
-                    BEGIN; -- use subtransaction to isolate unique constraint violations
-                        INSERT INTO metabib.uncontrolled_record_attr_value ( attr, value ) VALUES ( attr_def.name, tmp_val );
-                    EXCEPTION WHEN unique_violation THEN END;
+            IF ccvm_row.id IS NULL THEN
+                FOR tmp_val IN SELECT value FROM UNNEST(norm_attr_value) x(value) LOOP
+                    IF tmp_val IS NOT NULL AND BTRIM(tmp_val) <> '' THEN
+                        BEGIN -- use subtransaction to isolate unique constraint violations
+                            INSERT INTO metabib.uncontrolled_record_attr_value ( attr, value ) VALUES ( attr_def.name, tmp_val );
+                        EXCEPTION WHEN unique_violation THEN END;
+                    END IF;
                 END LOOP;
-    
+
                 SELECT ARRAY_AGG(id) INTO attr_vector_tmp FROM metabib.uncontrolled_record_attr_value WHERE attr = attr_def.name AND value = ANY( norm_attr_value );
             ELSE
-                SELECT ARRAY_AGG(id) INTO attr_vector_tmp FROM config.coded_value_map WHERE ctype = attr_def.name AND value = ANY( norm_attr_value );
+                SELECT ARRAY_AGG(id) INTO attr_vector_tmp FROM config.coded_value_map WHERE ctype = attr_def.name AND code = ANY( norm_attr_value );
             END IF;
 
             -- Add the new value to the vector
             attr_vector := attr_vector || attr_vector_tmp;
         END IF;
 
-        IF attr_def.sorter THEN
+        IF attr_def.sorter AND norm_attr_value[1] IS NOT NULL THEN
             DELETE FROM metabib.record_sorter WHERE source = rid AND attr = attr_def.name;
             INSERT INTO metabib.record_sorter (source, attr, value) VALUES (rid, attr_def.name, norm_attr_value[1]);
         END IF;
@@ -1560,7 +1568,7 @@ BEGIN
         FOR ccvm_row IN SELECT * FROM config.coded_value_map c WHERE c.ctype = attr_def.name ORDER BY value LOOP
 
             tmp_val := metabib.compile_composite_attr( ccvm_row.id );
-            NEXT WHEN tmp_val IS NULL OR tmp_val = ''; -- nothing to do
+            CONTINUE WHEN tmp_val IS NULL OR tmp_val = ''; -- nothing to do
 
             IF attr_def.filter THEN
                 IF attr_vector @@ tmp_val::query_int THEN
@@ -1591,14 +1599,14 @@ BEGIN
 
 END;
 
-$$ LANGUAGE PLPGSQL;
+$func$ LANGUAGE PLPGSQL;
 
 
 -- AFTER UPDATE OR INSERT trigger for biblio.record_entry
 CREATE OR REPLACE FUNCTION biblio.indexing_ingest_or_delete () RETURNS TRIGGER AS $func$
 BEGIN
 
-    IF NEW.deleted IS TRUE THEN -- If this bib is deleted
+    IF NEW.deleted THEN -- If this bib is deleted
         PERFORM * FROM config.internal_flag WHERE
             name = 'ingest.metarecord_mapping.preserve_on_delete' AND enabled;
         IF NOT FOUND THEN
@@ -2471,3 +2479,4 @@ END;
 $p$ LANGUAGE PLPGSQL;
 
 COMMIT;
+

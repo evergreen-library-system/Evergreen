@@ -1122,34 +1122,46 @@ CREATE OR REPLACE FUNCTION unapi.auri ( obj_id BIGINT, format TEXT,  ename TEXT,
           GROUP BY uri.id, use_restriction, href, label;
 $F$ LANGUAGE SQL STABLE;
 
-CREATE OR REPLACE FUNCTION unapi.mra ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-        SELECT  XMLELEMENT(
-                    name attributes,
-                    XMLATTRIBUTES(
-                        CASE WHEN $9 THEN 'http://open-ils.org/spec/indexing/v1' ELSE NULL END AS xmlns,
-                        'tag:open-ils.org:U2@mra/' || mra.id AS id,
-                        'tag:open-ils.org:U2@bre/' || mra.id AS record
-                    ),
-                    (SELECT XMLAGG(foo.y)
-                      FROM (SELECT XMLELEMENT(
-                                name field,
-                                XMLATTRIBUTES(
-                                    key AS name,
-                                    cvm.value AS "coded-value",
-                                    cvm.id AS "cvmid",
-                                    rad.filter,
-                                    rad.sorter
-                                ),
-                                x.value
-                            )
-                           FROM EACH(mra.attrs) AS x
-                                JOIN config.record_attr_definition rad ON (x.key = rad.name)
-                                LEFT JOIN config.coded_value_map cvm ON (cvm.ctype = x.key AND code = x.value)
-                        )foo(y)
+CREATE OR REPLACE FUNCTION unapi.mra (
+    obj_id BIGINT,
+    format TEXT,
+    ename TEXT,
+    includes TEXT[],
+    org TEXT,
+    depth INT DEFAULT NULL,
+    slimit HSTORE DEFAULT NULL,
+    soffset HSTORE DEFAULT NULL,
+    include_xmlns BOOL DEFAULT TRUE
+) RETURNS XML AS $F$
+    SELECT  XMLELEMENT(
+        name attributes,
+        XMLATTRIBUTES(
+            CASE WHEN $9 THEN 'http://open-ils.org/spec/indexing/v1' ELSE NULL END AS xmlns,
+            'tag:open-ils.org:U2@mra/' || $1 AS id, 
+            'tag:open-ils.org:U2@bre/' || $1 AS record 
+        ),  
+        (SELECT XMLAGG(foo.y)
+          FROM (
+            SELECT  XMLELEMENT(
+                        name field,
+                        XMLATTRIBUTES(
+                            mra.attr AS name,
+                            cvm.value AS "coded-value",
+                            cvm.id AS "cvmid",
+                            rad.composite,
+                            rad.multi,
+                            rad.filter,
+                            rad.sorter
+                        ),
+                        mra.value
                     )
-                )
-          FROM  metabib.record_attr mra
-          WHERE mra.id = $1;
+              FROM  metabib.record_attr_flat mra
+                    JOIN config.record_attr_definition rad ON (mra.attr = rad.name)
+                    LEFT JOIN config.coded_value_map cvm ON (cvm.ctype = mra.attr AND code = mra.value)
+              WHERE mra.id = $1
+            )foo(y)
+        )   
+    )   
 $F$ LANGUAGE SQL STABLE;
 
 CREATE OR REPLACE FUNCTION unapi.circ (obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT DEFAULT '-', depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
