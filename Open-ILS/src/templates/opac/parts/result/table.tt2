@@ -21,8 +21,11 @@
 [% END %]
 <div id="result_table_div">
     <div class="facet_sidebar_hidden" id="facet_sidebar">
+    <h3 class="sr-only">[% l('Saved Searches') %]</h3>
     [% INCLUDE "opac/parts/staff_saved_searches.tt2" %]
+    <h3 class="sr-only">[% l('Search Results facets') %]</h3>
     [% INCLUDE 'opac/parts/result/facets.tt2' %]
+    <h3 class="sr-only">[% l('Search Results List') %]</h3>
     </div>
             <div id="result_block" class="result_block_visible">
                 <table id="result_table_table" title="[% l('Search Results') %]"
