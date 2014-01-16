@@ -2,7 +2,7 @@
 
 GIT_ABS=`git rev-parse --show-toplevel`
 GIT_BRANCH=`git rev-parse --abbrev-ref HEAD | sed 's|.*/||'`
-HEADURLBASE="http://git.evergreen-ils.org/Evergreen.git?h=refs/heads/"
+HEADURLBASE="http://git.evergreen-ils.org/?p=Evergreen.git;a=shortlog;h=refs/heads/tags/"
 HEADURL="$HEADURLBASE$GIT_BRANCH"
 
 # Drop to the root of the checkout
@@ -277,7 +277,7 @@ if [ $PREV_BRANCH != "PACKAGE" ]; then
     grep -i -m 1 Signed-off-by ChangeLog &> /dev/null
     if [ $? -ne 0 ]; then
         echo "Building ChangeLog"
-        git log --cherry-pick --right-only --no-merges --pretty --summary --numstat $PREV_BRANCH..HEAD > $GIT_ABS/ChangeLog
+        git log --cherry-pick --right-only --no-merges --pretty --summary --numstat $PREV_BRANCH...HEAD > $GIT_ABS/ChangeLog
     else
         echo "Not overwriting existing ChangeLog!"
     fi
