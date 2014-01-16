@@ -569,7 +569,7 @@ $$;
 CREATE TABLE config.z3950_index_field_map (
     id              SERIAL  PRIMARY KEY,
     label           TEXT    NOT NULL, -- i18n
-    metabib_field   INTEGER REFERENCES config.metabib_field(id),
+    metabib_field   INTEGER REFERENCES config.metabib_field(id) ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
     record_attr     TEXT    REFERENCES config.record_attr_definition(name),
     z3950_attr      INTEGER REFERENCES config.z3950_attr(id),
     z3950_attr_type TEXT,-- REFERENCES config.z3950_attr(name)
@@ -587,6 +587,62 @@ CREATE TABLE config.z3950_index_field_map (
             evergreen.z3950_attr_name_is_valid(z3950_attr_type)
     )
 );
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0841', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0842', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0843', :eg_version);
+
+ALTER TABLE config.metabib_field_ts_map DROP CONSTRAINT metabib_field_ts_map_metabib_field_fkey;
+ALTER TABLE config.metabib_search_alias DROP CONSTRAINT metabib_search_alias_field_fkey;
+ALTER TABLE metabib.browse_entry_def_map DROP CONSTRAINT browse_entry_def_map_def_fkey;
+
+ALTER TABLE config.metabib_field_ts_map ADD CONSTRAINT metabib_field_ts_map_metabib_field_fkey FOREIGN KEY (metabib_field) REFERENCES config.metabib_field(id) ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE config.metabib_search_alias ADD CONSTRAINT metabib_search_alias_field_fkey FOREIGN KEY (field) REFERENCES config.metabib_field(id) ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE metabib.browse_entry_def_map ADD CONSTRAINT browse_entry_def_map_def_fkey FOREIGN KEY (def) REFERENCES config.metabib_field(id) ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
+
+
+DROP FUNCTION IF EXISTS config.modify_metabib_field(source INT, target INT);
+CREATE FUNCTION config.modify_metabib_field(v_source INT, target INT) RETURNS INT AS $func$
+DECLARE
+    f_class TEXT;
+    check_id INT;
+    target_id INT;
+BEGIN
+    SELECT field_class INTO f_class FROM config.metabib_field WHERE id = v_source;
+    IF NOT FOUND THEN
+        RETURN 0;
+    END IF;
+    IF target IS NULL THEN
+        target_id = v_source + 1000;
+    ELSE
+        target_id = target;
+    END IF;
+    SELECT id FROM config.metabib_field INTO check_id WHERE id = target_id;
+    IF FOUND THEN
+        RAISE NOTICE 'Cannot bump config.metabib_field.id from % to %; the target ID already exists.', v_source, target_id;
+        RETURN 0;
+    END IF;
+    UPDATE config.metabib_field SET id = target_id WHERE id = v_source;
+    EXECUTE ' UPDATE metabib.' || f_class || '_field_entry SET field = ' || target_id || ' WHERE field = ' || v_source;
+    UPDATE config.metabib_field_ts_map SET metabib_field = target_id WHERE metabib_field = v_source;
+    UPDATE config.metabib_field_index_norm_map SET field = target_id WHERE field = v_source;
+    UPDATE search.relevance_adjustment SET field = target_id WHERE field = v_source;
+    UPDATE config.metabib_search_alias SET field = target_id WHERE field = v_source;
+    UPDATE config.z3950_index_field_map SET metabib_field = target_id WHERE metabib_field = v_source;
+    UPDATE metabib.browse_entry_def_map SET def = target_id WHERE def = v_source;
+    RETURN 1;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+SELECT config.modify_metabib_field(id, NULL)
+    FROM config.metabib_field
+    WHERE id > 30;
+
+SELECT SETVAL('config.metabib_field_id_seq', GREATEST(1000, (SELECT MAX(id) FROM config.metabib_field)));
+
+
 
 -- seed data
 
@@ -12109,85 +12165,6 @@ INSERT INTO config.usr_setting_type (name,grp,opac_visible,label,description,dat
     ),
     'string'
 );
-
-
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0841', :eg_version);
-
-ALTER TABLE config.metabib_field_ts_map DROP CONSTRAINT metabib_field_ts_map_metabib_field_fkey;
-ALTER TABLE config.metabib_search_alias DROP CONSTRAINT metabib_search_alias_field_fkey;
-ALTER TABLE config.z3950_index_field_map DROP CONSTRAINT z3950_index_field_map_metabib_field_fkey;
-ALTER TABLE metabib.browse_entry_def_map DROP CONSTRAINT browse_entry_def_map_def_fkey;
-
-ALTER TABLE config.metabib_field_ts_map ADD CONSTRAINT metabib_field_ts_map_metabib_field_fkey FOREIGN KEY (metabib_field) REFERENCES config.metabib_field(id) DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE config.metabib_search_alias ADD CONSTRAINT metabib_search_alias_field_fkey FOREIGN KEY (field) REFERENCES config.metabib_field(id) DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE config.z3950_index_field_map ADD CONSTRAINT z3950_index_field_map_metabib_field_fkey FOREIGN KEY (metabib_field) REFERENCES config.metabib_field(id) DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE metabib.browse_entry_def_map ADD CONSTRAINT browse_entry_def_map_def_fkey FOREIGN KEY (def) REFERENCES config.metabib_field(id) DEFERRABLE INITIALLY DEFERRED;
-
-
-DROP FUNCTION IF EXISTS config.modify_metabib_field(source INT, target INT);
-CREATE FUNCTION config.modify_metabib_field(v_source INT, target INT) RETURNS INT AS $func$
-DECLARE
-    f_class TEXT;
-    check_id INT;
-    target_id INT;
-BEGIN
-    SELECT field_class INTO f_class FROM config.metabib_field WHERE id = v_source;
-    IF NOT FOUND THEN
-        RETURN 0;
-    END IF;
-    IF target IS NULL THEN
-        target_id = v_source + 1000;
-    ELSE
-        target_id = target;
-    END IF;
-    SELECT id FROM config.metabib_field INTO check_id WHERE id = target_id;
-    IF FOUND THEN
-        RAISE NOTICE 'Cannot bump config.metabib_field.id from % to %; the target ID already exists.', v_source, target_id;
-        RETURN 0;
-    END IF;
-    UPDATE config.metabib_field SET id = target_id WHERE id = v_source;
-    EXECUTE ' UPDATE metabib.' || f_class || '_field_entry SET field = ' || target_id || ' WHERE field = ' || v_source;
-    UPDATE config.metabib_field_ts_map SET metabib_field = target_id WHERE metabib_field = v_source;
-    UPDATE config.metabib_field_index_norm_map SET field = target_id WHERE field = v_source;
-    UPDATE search.relevance_adjustment SET field = target_id WHERE field = v_source;
-    UPDATE config.metabib_search_alias SET field = target_id WHERE field = v_source;
-    UPDATE config.z3950_index_field_map SET metabib_field = target_id WHERE metabib_field = v_source;
-    UPDATE metabib.browse_entry_def_map SET def = target_id WHERE def = v_source;
-    RETURN 1;
-END;
-$func$ LANGUAGE PLPGSQL;
-
-SELECT config.modify_metabib_field(id, NULL)
-    FROM config.metabib_field
-    WHERE id > 30;
-
-SELECT SETVAL('config.metabib_field_id_seq', GREATEST(1000, (SELECT MAX(id) FROM config.metabib_field)));
-
-
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0842', :eg_version);
-
--- this upgrade is only for people coming from 2_3, and is a NO-OP for those on 2_4
-ALTER TABLE config.metabib_field_ts_map DROP CONSTRAINT metabib_field_ts_map_metabib_field_fkey;
-
-ALTER TABLE config.metabib_field_ts_map ADD CONSTRAINT metabib_field_ts_map_metabib_field_fkey FOREIGN KEY (metabib_field) REFERENCES config.metabib_field(id) ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED;
-
-
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0843', :eg_version);
-
--- this upgrade file serves 2 purposes:
--- 1) add ON UPDATE CASCADE for those upgrading 2_5/master
--- 2) alter config.z3950_index_field_map for those upgrading from 2_4 and previous (other lines
---    are no-ops in this case)
-ALTER TABLE config.metabib_search_alias DROP CONSTRAINT metabib_search_alias_field_fkey;
-ALTER TABLE config.z3950_index_field_map DROP CONSTRAINT z3950_index_field_map_metabib_field_fkey;
-ALTER TABLE metabib.browse_entry_def_map DROP CONSTRAINT browse_entry_def_map_def_fkey;
-
-ALTER TABLE config.metabib_search_alias ADD CONSTRAINT metabib_search_alias_field_fkey FOREIGN KEY (field) REFERENCES config.metabib_field(id) ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE config.z3950_index_field_map ADD CONSTRAINT z3950_index_field_map_metabib_field_fkey FOREIGN KEY (metabib_field) REFERENCES config.metabib_field(id) ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE metabib.browse_entry_def_map ADD CONSTRAINT browse_entry_def_map_def_fkey FOREIGN KEY (def) REFERENCES config.metabib_field(id) ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
 
 -- check whether patch can be applied
