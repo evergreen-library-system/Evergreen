@@ -1,3 +1,471 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit bf74bb6f45525e607079a3d33276b4574e3fefe0
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Nov 26 15:22:43 2013 -0500
+
+    Updating translations; Fixing make_release for ChangeLog generation
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	build/i18n/po/AutoFieldWidget.js/fi-FI.po
+1	1	build/i18n/po/Searcher.js/fi-FI.po
+1	1	build/i18n/po/TranslatorPopup.js/fi-FI.po
+1	1	build/i18n/po/User.js/fi-FI.po
+2	4	build/i18n/po/XULTermLoader.js/XULTermLoader.js.pot
+1	1	build/i18n/po/XULTermLoader.js/fi-FI.po
+15	37	build/i18n/po/acq.js/acq.js.pot
+1	1	build/i18n/po/admin.properties/fi-FI.po
+1	1	build/i18n/po/auth.properties/fi-FI.po
+1	1	build/i18n/po/authority.js/fi-FI.po
+2	4	build/i18n/po/capture.js/capture.js.pot
+1	1	build/i18n/po/capture.js/fi-FI.po
+1	1	build/i18n/po/cat.properties/fi-FI.po
+2	2	build/i18n/po/circ.properties/circ.properties.pot
+1	1	build/i18n/po/circ.properties/fi-FI.po
+1	1	build/i18n/po/common.properties/fi-FI.po
+7	19	build/i18n/po/conify.js/conify.js.pot
+1	1	build/i18n/po/conify.js/fi-FI.po
+691	691	build/i18n/po/db.seed/db.seed.pot
+1	1	build/i18n/po/db.seed/fi-FI.po
+1	1	build/i18n/po/fm_IDL.dtd/fi-FI.po
+17	17	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+1	1	build/i18n/po/ils_events.xml/fi-FI.po
+298	358	build/i18n/po/ils_events.xml/ils_events.xml.pot
+1	1	build/i18n/po/lang.dtd/fi-FI.po
+6	2	build/i18n/po/lang.dtd/lang.dtd.pot
+1	1	build/i18n/po/offline.properties/fi-FI.po
+1	1	build/i18n/po/opac.dtd/fi-FI.po
+1	1	build/i18n/po/opac.js/fi-FI.po
+4	11	build/i18n/po/opac.js/opac.js.pot
+1	1	build/i18n/po/patron.properties/fi-FI.po
+1	1	build/i18n/po/pickup_and_return.js/fi-FI.po
+1	1	build/i18n/po/pull_list.js/fi-FI.po
+1	1	build/i18n/po/register.js/fi-FI.po
+10	11	build/i18n/po/register.js/register.js.pot
+1	1	build/i18n/po/reports.dtd/fi-FI.po
+1	1	build/i18n/po/reports.js/fi-FI.po
+1	1	build/i18n/po/reservation.js/fi-FI.po
+2	5	build/i18n/po/reservation.js/reservation.js.pot
+1	1	build/i18n/po/selfcheck.js/fi-FI.po
+3	8	build/i18n/po/selfcheck.js/selfcheck.js.pot
+1	1	build/i18n/po/serial.properties/fi-FI.po
+6	6	build/i18n/po/tpac/tpac.pot
+1	1	build/tools/make_release
+
+commit 4ab4a216db3de9ce18c1e7fdab328ac89e731c9c
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Nov 26 14:57:46 2013 -0500
+
+    Updating PO files from launchpad
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	build/i18n/po/AutoFieldWidget.js/fi-FI.po
+9	9	build/i18n/po/Searcher.js/es-ES.po
+1	1	build/i18n/po/Searcher.js/fi-FI.po
+1	1	build/i18n/po/TranslatorPopup.js/fi-FI.po
+1	1	build/i18n/po/User.js/fi-FI.po
+1	1	build/i18n/po/XULTermLoader.js/fi-FI.po
+13	11	build/i18n/po/admin.properties/es-ES.po
+1	1	build/i18n/po/admin.properties/fi-FI.po
+1	1	build/i18n/po/auth.properties/fi-FI.po
+21	21	build/i18n/po/authority.js/es-ES.po
+1	1	build/i18n/po/authority.js/fi-FI.po
+1	1	build/i18n/po/capture.js/fi-FI.po
+16	14	build/i18n/po/cat.properties/cs-CZ.po
+15	13	build/i18n/po/cat.properties/de-DE.po
+15	13	build/i18n/po/cat.properties/en-CA.po
+15	13	build/i18n/po/cat.properties/en-GB.po
+53	42	build/i18n/po/cat.properties/es-ES.po
+18	15	build/i18n/po/cat.properties/fi-FI.po
+15	13	build/i18n/po/cat.properties/fr-CA.po
+15	13	build/i18n/po/cat.properties/hy-AM.po
+15	13	build/i18n/po/cat.properties/oc-FR.po
+15	13	build/i18n/po/cat.properties/pt-BR.po
+15	13	build/i18n/po/cat.properties/ru-RU.po
+7	13	build/i18n/po/cat.properties/tr-TR.po
+27	6	build/i18n/po/circ.properties/cs-CZ.po
+22	4	build/i18n/po/circ.properties/de-DE.po
+27	6	build/i18n/po/circ.properties/en-CA.po
+27	6	build/i18n/po/circ.properties/en-GB.po
+34	13	build/i18n/po/circ.properties/es-ES.po
+30	8	build/i18n/po/circ.properties/fi-FI.po
+26	5	build/i18n/po/circ.properties/fr-CA.po
+27	6	build/i18n/po/circ.properties/hy-AM.po
+22	4	build/i18n/po/circ.properties/oc-FR.po
+27	6	build/i18n/po/circ.properties/pt-BR.po
+26	5	build/i18n/po/circ.properties/ru-RU.po
+22	4	build/i18n/po/circ.properties/tr-TR.po
+12	4	build/i18n/po/common.properties/cs-CZ.po
+11	3	build/i18n/po/common.properties/de-DE.po
+11	3	build/i18n/po/common.properties/en-CA.po
+11	3	build/i18n/po/common.properties/en-GB.po
+17	9	build/i18n/po/common.properties/es-ES.po
+21	12	build/i18n/po/common.properties/fi-FI.po
+11	3	build/i18n/po/common.properties/fr-CA.po
+11	3	build/i18n/po/common.properties/hy-AM.po
+11	3	build/i18n/po/common.properties/oc-FR.po
+11	3	build/i18n/po/common.properties/pt-BR.po
+11	3	build/i18n/po/common.properties/ru-RU.po
+6	6	build/i18n/po/conify.js/es-ES.po
+1	1	build/i18n/po/conify.js/fi-FI.po
+9543	3073	build/i18n/po/db.seed/cs-CZ.po
+8455	2323	build/i18n/po/db.seed/de-DE.po
+8753	2722	build/i18n/po/db.seed/en-CA.po
+8761	2795	build/i18n/po/db.seed/en-GB.po
+8438	2405	build/i18n/po/db.seed/es-ES.po
+9624	3331	build/i18n/po/db.seed/fi-FI.po
+9764	3798	build/i18n/po/db.seed/fr-CA.po
+9808	3842	build/i18n/po/db.seed/hy-AM.po
+8480	2343	build/i18n/po/db.seed/oc-FR.po
+9317	3270	build/i18n/po/db.seed/pt-BR.po
+9164	3120	build/i18n/po/db.seed/ru-RU.po
+7960	1826	build/i18n/po/db.seed/tr-TR.po
+2679	2480	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+2637	2444	build/i18n/po/fm_IDL.dtd/de-DE.po
+2670	2468	build/i18n/po/fm_IDL.dtd/en-CA.po
+2669	2467	build/i18n/po/fm_IDL.dtd/en-GB.po
+2643	2450	build/i18n/po/fm_IDL.dtd/es-ES.po
+2731	2528	build/i18n/po/fm_IDL.dtd/fi-FI.po
+2639	2446	build/i18n/po/fm_IDL.dtd/fr-CA.po
+2670	2468	build/i18n/po/fm_IDL.dtd/hy-AM.po
+2636	2443	build/i18n/po/fm_IDL.dtd/oc-FR.po
+2655	2462	build/i18n/po/fm_IDL.dtd/pt-BR.po
+2655	2462	build/i18n/po/fm_IDL.dtd/ru-RU.po
+2634	2441	build/i18n/po/fm_IDL.dtd/tr-TR.po
+270	257	build/i18n/po/ils_events.xml/cs-CZ.po
+267	254	build/i18n/po/ils_events.xml/de-DE.po
+269	256	build/i18n/po/ils_events.xml/en-CA.po
+269	256	build/i18n/po/ils_events.xml/en-GB.po
+286	270	build/i18n/po/ils_events.xml/es-ES.po
+272	258	build/i18n/po/ils_events.xml/fi-FI.po
+270	257	build/i18n/po/ils_events.xml/fr-CA.po
+269	256	build/i18n/po/ils_events.xml/hy-AM.po
+269	256	build/i18n/po/ils_events.xml/pt-BR.po
+269	256	build/i18n/po/ils_events.xml/ru-RU.po
+827	16	build/i18n/po/lang.dtd/ar-AR.po
+900	38	build/i18n/po/lang.dtd/cs-CZ.po
+853	21	build/i18n/po/lang.dtd/de-DE.po
+883	30	build/i18n/po/lang.dtd/en-CA.po
+882	29	build/i18n/po/lang.dtd/en-GB.po
+856	30	build/i18n/po/lang.dtd/es-ES.po
+1485	629	build/i18n/po/lang.dtd/fi-FI.po
+871	27	build/i18n/po/lang.dtd/fr-CA.po
+883	30	build/i18n/po/lang.dtd/hy-AM.po
+835	18	build/i18n/po/lang.dtd/oc-FR.po
+877	27	build/i18n/po/lang.dtd/pt-BR.po
+877	27	build/i18n/po/lang.dtd/ru-RU.po
+843	20	build/i18n/po/lang.dtd/tr-TR.po
+8	4	build/i18n/po/offline.properties/cs-CZ.po
+7	3	build/i18n/po/offline.properties/de-DE.po
+7	3	build/i18n/po/offline.properties/en-CA.po
+7	3	build/i18n/po/offline.properties/en-GB.po
+59	44	build/i18n/po/offline.properties/es-ES.po
+10	5	build/i18n/po/offline.properties/fi-FI.po
+7	3	build/i18n/po/offline.properties/fr-CA.po
+7	3	build/i18n/po/offline.properties/hy-AM.po
+9	5	build/i18n/po/offline.properties/oc-FR.po
+7	3	build/i18n/po/offline.properties/pt-BR.po
+7	3	build/i18n/po/offline.properties/ru-RU.po
+7	3	build/i18n/po/offline.properties/tr-TR.po
+16	10	build/i18n/po/opac.dtd/es-ES.po
+7	6	build/i18n/po/opac.dtd/fi-FI.po
+6	5	build/i18n/po/opac.js/es-ES.po
+1	1	build/i18n/po/opac.js/fi-FI.po
+41	18	build/i18n/po/patron.properties/cs-CZ.po
+38	14	build/i18n/po/patron.properties/de-DE.po
+39	15	build/i18n/po/patron.properties/en-CA.po
+39	15	build/i18n/po/patron.properties/en-GB.po
+44	32	build/i18n/po/patron.properties/es-ES.po
+44	19	build/i18n/po/patron.properties/fi-FI.po
+38	14	build/i18n/po/patron.properties/fr-CA.po
+39	15	build/i18n/po/patron.properties/hy-AM.po
+18	9	build/i18n/po/patron.properties/oc-FR.po
+38	14	build/i18n/po/patron.properties/pt-BR.po
+38	14	build/i18n/po/patron.properties/ru-RU.po
+23	11	build/i18n/po/patron.properties/tr-TR.po
+21	20	build/i18n/po/pickup_and_return.js/es-ES.po
+1	1	build/i18n/po/pickup_and_return.js/fi-FI.po
+6	6	build/i18n/po/pull_list.js/es-ES.po
+1	1	build/i18n/po/pull_list.js/fi-FI.po
+30	23	build/i18n/po/register.js/cs-CZ.po
+29	22	build/i18n/po/register.js/de-DE.po
+29	22	build/i18n/po/register.js/en-CA.po
+29	22	build/i18n/po/register.js/en-GB.po
+36	29	build/i18n/po/register.js/es-ES.po
+32	24	build/i18n/po/register.js/fi-FI.po
+29	22	build/i18n/po/register.js/fr-CA.po
+29	22	build/i18n/po/register.js/hy-AM.po
+29	22	build/i18n/po/register.js/oc-FR.po
+30	23	build/i18n/po/register.js/pt-BR.po
+29	22	build/i18n/po/register.js/ru-RU.po
+23	20	build/i18n/po/register.js/tr-TR.po
+20	8	build/i18n/po/reports.dtd/es-ES.po
+8	7	build/i18n/po/reports.dtd/fi-FI.po
+1	1	build/i18n/po/reports.js/fi-FI.po
+1	1	build/i18n/po/reservation.js/fi-FI.po
+62	30	build/i18n/po/selfcheck.js/cs-CZ.po
+41	25	build/i18n/po/selfcheck.js/de-DE.po
+60	29	build/i18n/po/selfcheck.js/en-CA.po
+60	29	build/i18n/po/selfcheck.js/en-GB.po
+67	42	build/i18n/po/selfcheck.js/es-ES.po
+63	31	build/i18n/po/selfcheck.js/fi-FI.po
+60	29	build/i18n/po/selfcheck.js/fr-CA.po
+60	29	build/i18n/po/selfcheck.js/hy-AM.po
+44	25	build/i18n/po/selfcheck.js/oc-FR.po
+60	29	build/i18n/po/selfcheck.js/pt-BR.po
+40	24	build/i18n/po/selfcheck.js/ru-RU.po
+25	13	build/i18n/po/serial.properties/cs-CZ.po
+15	3	build/i18n/po/serial.properties/de-DE.po
+15	3	build/i18n/po/serial.properties/en-CA.po
+15	3	build/i18n/po/serial.properties/en-GB.po
+19	7	build/i18n/po/serial.properties/es-ES.po
+31	18	build/i18n/po/serial.properties/fi-FI.po
+15	3	build/i18n/po/serial.properties/fr-CA.po
+15	3	build/i18n/po/serial.properties/hy-AM.po
+15	3	build/i18n/po/serial.properties/oc-FR.po
+15	3	build/i18n/po/serial.properties/pt-BR.po
+15	3	build/i18n/po/serial.properties/tr-TR.po
+5	5	build/i18n/po/vandelay.dtd/es-ES.po
+
+commit 20a28c05dd6c56080596f262a8cb1d830d2ec967
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Jan 16 15:44:48 2014 -0500
+
+    Renumbering the upgrade script
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+97	0	Open-ILS/src/sql/Pg/upgrade/0852.function.prox_adjust.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0852.function.prox_adjust.sql
+
+commit 8bbe28bb5ba33d7498a95c16144648c6b7ec1671
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Jan 16 14:11:34 2014 -0500
+
+    Upgrade script
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+95	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.prox_adjust.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.prox_adjust.sql
+
+commit a9d9b42689b03791ea3ed8bd3122be76437279c1
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Jan 16 13:58:12 2014 -0500
+
+    Fix proximity adjustment calculator
+    
+    The canonical use case for proximity adjustment is to use it broadly
+    to effect the local proximity of items within a particular area, in
+    a like manner, across many parts of the org tree.  However, in cases
+    where it is lightly used, or used with non-overlapping criteria columns,
+    there are cases where the adjustment will spread beyond its intended
+    range of influence.
+    
+    The changes here create a much stricter and correct test for rule
+    matching, which will end in the correct choice of rules in all cases.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+15	5	Open-ILS/src/sql/Pg/090.schema.action.sql
+
+commit fb9e994242d337f2c5eabcd2082f334a2da9fada
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Dec 18 13:31:18 2013 -0500
+
+    make_release cleanup and options
+    
+    * Avoid packaging the XULRunner packages within the Evergree tarball
+    
+    * Skip the inline SQL upgrade script edit step by default; continue
+      supporting option inline editing with a new -r option.
+    
+    * New -i option forces the script to bypass the lengthy i18n process,
+      which is primarily useful for quickly testing changes to this script.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+34	14	build/tools/make_release
+
+commit 089c65fd9302641de0ad37fb48dd8106aff3a33c
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Tue Jan 14 17:11:45 2014 -0500
+
+    In prereq installer, don't try to chown extracted files to original UID/GID
+    
+    As this Makefile is designed to be used by a make process running as
+    root, this will avoid problems on some systems when tar extracts
+    files and tries to give them the same UID/GID as they have in their
+    archives, but those accounts don't exist on the local system.
+    
+    e.g, libdbi has files set 1000/1000. On most systems, there's a user
+    and a group with these IDs, but there can be systems where nothing
+    uses those IDs, and where tar fails with e.g. 'tar: libdbi-0.8.3:
+    Cannot change ownership to uid 1000, gid 1000: Invalid argument'
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+13	0	Open-ILS/src/extras/Makefile.install
+
+commit fbd131596284ae375aa13e2ff14480cb8b6e791b
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue Jan 14 13:30:48 2014 -0500
+
+    LP#1234201: fix menu item to display patron requests (if summary is horizontal)
+    
+    This patch adds a missing command element to the horizontal
+    patron summary display so that the 'Acquisition Requests' menu
+    item will work.
+    
+    To test:
+    
+    [1] Set the Patron circulation summary is horizontal library setting
+        to true.
+    [2] Retrieve a patron and try using the Acquisition Requests menu
+        item.  It will do nothing.
+    [3] Apply the patch and clear cache in the staff client.
+    [4] Repeat step 2.  This time, the Acquisitions Request menu item
+        should bring up the list of the patron's requests.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Srey Seng <sreyseng@gmail.com>
+
+1	0	Open-ILS/xul/staff_client/server/patron/display_horiz.xul
+
+commit 6ee0254486437cab78142de82bbc730b0b4c880f
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue Jan 14 11:00:38 2014 -0500
+
+    LP#1269042: prevent acq seach from building dropdown of every copy ID in the DB
+    
+    This patch ensures that if a user sets a search field in the
+    acquisitions general search form to the line item details copy ID
+    (labeled "LID - Evergreen Copy ID"), the form presents a normal
+    input widget rather than trying to build a drop-down containing
+    every copy ID in the database.  Except for very small databases,
+    the previous behavior would mean that an open-ils.pcrud backend
+    would eventually consume a great deal of memory trying to service
+    a request for all copies in the system.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+6	3	Open-ILS/web/js/ui/default/acq/search/unified.js
+
+commit df48a860b50af34562b8a728a60b789de62f5004
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Wed Oct 30 15:29:24 2013 -0400
+
+    Treat empty username as invalid in user editor
+    
+    There seems to be undesired interaction between the required
+    attribute and the isValid method on a dojo/dijit ValidationTextBox.
+    If both are set, isValid needs to check for an empty value,
+    otherwise the field is considered valid the moment it gains focus.
+    
+    We don't want an empty username to be considered valid, because we
+    know that we will be unable to save the user.
+    
+    We can work around this by teaching the isValid function to consider
+    an empty value as invalid.
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Melissa Ceraso <mceraso@biblio.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+4	0	Open-ILS/web/js/ui/default/actor/user/register.js
+
+commit 53d46678e79d6769572a5bca312b123cbc142ad5
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Jan 9 12:05:55 2014 -0500
+
+    LP#1267224: repair another fm_IDL.xml typo
+    
+    vam.eg_record points to authority.record_entry, not
+    biblio.record_entry.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/examples/fm_IDL.xml
+
+commit 2b4ea2b141d6527ef7bc36fa593ae2fb9e91c767
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Jan 8 14:35:05 2014 -0500
+
+    LP#1267224: Repair IDL typo for vandelay authority match / rec link
+    
+    "vqbr" should be "vqar" for authority records.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/examples/fm_IDL.xml
+
+commit d96ae637390dbe04efa459617d79cad49f79889b
+Author: Kyle Tomita <tomitakyle@gmail.com>
+Date:   Tue Sep 24 09:55:02 2013 -0700
+
+    LP1038240 - Patron editor field documentation does not display text
+    
+    Changed the legend tag to have a closing tag.
+    Also modified the css id uedit-help-div, to add a top margin so
+    it does not overlap the save div.
+    
+    Signed-off-by: Kyle Tomita <tomitakyle@gmail.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	1	Open-ILS/src/templates/actor/user/register.tt2
+1	0	Open-ILS/web/css/skin/default/register.css
+
+commit acea22baef0470dd3d613a4e83e716c10783ca0c
+Author: Srey Seng <sseng@catalystitservices.com>
+Date:   Tue Jan 7 14:30:49 2014 -0800
+
+    LP#1266937: Fix missing/incorrect regex for authority in Vandelay.pm
+    
+    Add in missing "~" in function import_record_list_impl when
+    type is authority records. Also replace "auth" with "authority"
+    so that the generated values match up with functions in the
+    database.
+    
+    Signed-off-by: Srey Seng <sreyseng@gmail.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Vandelay.pm
+
+commit ae81fc206039f3902d4ef1d7f05146b29e30c408
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed Jan 8 14:51:59 2014 -0500
+
+    fix pub date data type in reporter.classic_item_list
+    
+    As noticed by Ben Shum in IRC, reporter.classic_item_list
+    had pub_date, a free text field, classified as "int". This
+    changes that to "text" to prevent errors.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/examples/fm_IDL.xml
+
+commit cd92c579b78cdc4ffcaaf0bb0922412400d311d9
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Wed Jan 8 13:21:13 2014 -0800
+
+    Fix bug that caused deleted holdings to be visible in SRU/Z39.50 results
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    
+    Conflicts:
+    	Open-ILS/src/perlmods/lib/OpenILS/Application/SuperCat.pm
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Application/SuperCat.pm
