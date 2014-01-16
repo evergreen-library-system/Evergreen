@@ -1169,7 +1169,10 @@ a.dash-link:hover { text-decoration: underline !important; }
 
 .text-right { text-align: right; }
 .text-right-top { text-align: right; vertical-align: top; }
-.rdetail-author-div { padding-bottom: 10px; }
+.rdetail-author-div {
+    padding-bottom: 10px;
+    display: inline-block;
+}
 
 .invisible { visibility: hidden; }
 .rdetail-extras-summary { margin: 10px; }
