@@ -1,3 +1,318 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 5b0b14ee8e7905d244afaed7d7b2d37aa44dd694
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Feb 24 12:09:57 2014 -0500
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 9407725acf1d1d082520762b4797af8aa9ac93c3
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu May 29 09:15:01 2014 -0400
+
+    Forward port 2.5.4 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+79	0	Open-ILS/src/sql/Pg/version-upgrade/2.5.3-2.5.4-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.5.3-2.5.4-upgrade-db.sql
+
+commit 5dda3727fdddc7364be3afb09934700df227e4f9
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue May 20 10:09:08 2014 -0700
+
+    LP#1296937: move the $force_bc parameter of ->charged_items() to an implementation method
+    
+    Argubably, the $force_bc parameter of OpenILS::SIP::Patron->charged_items()
+    method exists solely as an implementation convenience for the renew-all
+    code.  Consequently, this patch removes the $force_bc parameter from the
+    public interface for charged_items() and spins it off into a new
+    implementation method.
+    
+    This patch should be applied at the same time that a reversion of
+    SIPServer commit c97d64412bc is applied.  Note that a user who upgrades
+    SIPServer without upgrading Evergreen to a version that contains this
+    patch will end up in a situation where the code that counts active
+    loans for the patron information response will fetch the loans using
+    $force_bc set to true; this works only by coincidence.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+
+8	1	Open-ILS/src/perlmods/lib/OpenILS/SIP/Patron.pm
+1	1	Open-ILS/src/perlmods/lib/OpenILS/SIP/Transaction/RenewAll.pm
+
+commit 1aae891b4c298fc341a8314ca3a70936491969df
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu May 22 14:41:17 2014 -0400
+
+    LP#1322303 cleanse backdate for checkin overdue voiding
+    
+    Passing raw backdates, particularly from offline transactions, which
+    have a space between the date and time, to
+    DateTime::Format::ISO8601->parse_datetime results in "Invalid date
+    format:" errors.  Pass the date through the cleanse routine first.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/CircCommon.pm
+
+commit dd50cf4828aa743ea71648f5b3826a9b255e59a2
+Author: Josh Stompro <Stomproj@larl.org>
+Date:   Wed May 21 08:37:58 2014 -0500
+
+    (doc) 'debian-wheezy' was left out of the OS options
+    
+    Just added 'debian-wheezy' to the OS options, it was left out by mistake.
+    
+    Signed-off-by: Josh Stompro <Stomproj@larl.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	docs/installation/server_installation.txt
+
+commit 688037653c36b73d7c1103dc543b542d97fa36cf
+Author: Josh Stompro <Stomproj@larl.org>
+Date:   Mon May 19 15:17:15 2014 -0500
+
+    (doc) add overdues to summary of the phone list feature
+    
+    Added "or overdues" to the summary so it is clear that phonelist
+    handles both holds and overdues.
+    
+    Signed-off-by: Josh Stompro <Stomproj@larl.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	docs/admin/phonelist.txt
+
+commit 6145fdb54b4d7f7d4acd8487c66dfaa2406731e1
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu May 22 11:24:41 2014 -0400
+
+    LP#1314920 Stamping upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+9	0	Open-ILS/src/sql/Pg/upgrade/0881.data.YAOUS-desc-update.sql
+0	9	Open-ILS/src/sql/Pg/upgrade/XXXX.data.YAOUS-desc-update.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0881.data.YAOUS-desc-update.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.YAOUS-desc-update.sql
+
+commit 15845afca54695bf052d70f3b05bc1aaf242731f
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Thu May 1 04:15:55 2014 -0400
+
+    LP#1314920 change the desc for the org hiding setting
+    
+    so that it references physical_loc instead of ol
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+9	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.YAOUS-desc-update.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.YAOUS-desc-update.sql
+
+commit 0267f38e93a5fc15f14b4821f6e45fa8860b6edd
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Wed Oct 30 14:37:10 2013 -0400
+
+    LP#1246843: Don't show contact invalidators for new users
+    
+    Don't show contact invalidator buttons for new users. This affects
+    staged users and cloned users, where the contact fields have a value
+    when the editor initially loads.
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	1	Open-ILS/web/js/ui/default/actor/user/register.js
+
+commit fbaa9890872690e9c6a7d1c240c514e601c3b494
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue May 20 14:30:20 2014 -0400
+
+    LP#1321429: Use server-local time as best-guess
+    
+    When first calculating the shelf expire time, we assume "now" as
+    the starting point by calling DateTime->now().  However, that gives
+    us the time in UTC.  That's not good because closed dates are stored
+    timezone-aware.  Instead, ask for server-local time.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit 1e9461c49e6efdf99f3484d8528914ce1cb82c39
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue May 20 16:48:57 2014 -0700
+
+    LP#1312945: pin schema update
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+68	0	Open-ILS/src/sql/Pg/upgrade/0880.function.authority.calculate_authority_linking.sql
+0	68	Open-ILS/src/sql/Pg/upgrade/XXXX.function.authority.calculate_authority_linking.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0880.function.authority.calculate_authority_linking.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.authority.calculate_authority_linking.sql
+
+commit 2b6876ade525523ac57fe4c6932910bea3b89594
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue May 20 16:46:02 2014 -0700
+
+    LP#1312945: add regression test
+    
+    This adds a test for the change to the
+    authority.calculate_authority_linking stored function.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+59	0	Open-ILS/src/sql/Pg/t/regress/lp1312945_auth_linking.pg
+ create mode 100644 Open-ILS/src/sql/Pg/t/regress/lp1312945_auth_linking.pg
+
+commit ef3b92d663580d41c482f6dec83ccca52b22c5a2
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Apr 30 18:38:29 2014 -0400
+
+    LP#1312945: baseline schema update
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Srey Seng <sreyseng@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+24	14	Open-ILS/src/sql/Pg/999.functions.global.sql
+
+commit ca08510dea1ce6c4c0b7fecc5ad430636e05f790
+Author: Srey Seng <sreyseng@gmail.com>
+Date:   Wed Apr 30 15:20:17 2014 -0700
+
+    LP#1312945: authority.calculate_authority_linking and multiple linked tags
+    
+    The function "authority.calculate_authority_linking" was not able to deal with
+    situations where there are multiple marc tags that are linkable. The function
+    only process the first tag that contains a linking_subfield and returns that
+    to be inserted into the authority_linking table, even when there are more than
+    one of the same tag with linking_subfield.
+    
+    Added an additional loop to loop through each tag, for situations where there are
+    multiples of each tag.
+    
+    Signed-off-by: Srey Seng <sreyseng@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+68	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.authority.calculate_authority_linking.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.authority.calculate_authority_linking.sql
+
+commit 923d94a66406bf1b81554b43e48c38b905219b81
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Apr 30 12:58:11 2014 -0400
+
+    LP#1312945: auth-auth linking: cache less agressively and look for all links
+    
+    There was a logic inversion that was causing miss-use of a per-
+    record cache mechanism.  I remove that entirely, as it's not helpful
+    in practice.
+    
+    Also, after finding one use of a linked field we moved on to the
+    next, though it is possible for more than one link to exist for
+    different uses of a name, say.  Now we'll loop through all fields
+    to find all possible linkages.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Srey Seng <sreyseng@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+22	23	Open-ILS/src/support-scripts/authority_authority_linker.pl.in
+
+commit 6b482e02dc50b30d907a21c10b16105d5a31a9d7
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue May 20 08:46:47 2014 -0700
+
+    LP#1296937: (follow-up) make $ids_only be the last parameter for ->charged_items()
+    
+    This change ensures that if a site fails to upgrade SIPServer at the
+    same time that they upgrade Evergreen, the renew all message won't
+    break on them.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/SIP/Patron.pm
+1	1	Open-ILS/src/perlmods/lib/OpenILS/SIP/Transaction/RenewAll.pm
+
+commit 9da789186d8cc274a1fd73c7f51cd5fd3edd5c52
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Thu Jan 23 12:07:06 2014 -0500
+
+    LP#1296937: (SIP2) Add ids_only parameter to _items functions
+    
+    This allows the caller to skip loading of barcodes and/or titles when
+    they are not needed, such as when the plan is to return counts, not
+    details.  Per bug 1321017, this is particular useful for patrons
+    that have metarecord holds.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+20	9	Open-ILS/src/perlmods/lib/OpenILS/SIP/Patron.pm
+1	1	Open-ILS/src/perlmods/lib/OpenILS/SIP/Transaction/RenewAll.pm
+
+commit d1daf577b9970224110d9b191b6c0c8c8f6a2977
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Thu May 8 17:37:07 2014 -0400
+
+    Documentation: add a 'where' clause to bib record import stored procedure
+    
+    The stored procedure for doing bib record import was lacking a 'where'
+    clause in one of the update statements.
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+2	1	docs/admin_initial_setup/migrating_your_data.txt
+
+commit d9416d170d5f1606fc91324b1262d27d55d86cbb
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu May 1 17:55:23 2014 -0400
+
+    Fix for Library Links Documentation
+    
+    Fix for the note formatting in the Library Links Documentation.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+8	0	docs/opac/linked_libraries.txt
+
+commit 7c4176e38c3d0113c1c17073a4af810cef7441f8
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Wed Apr 30 11:57:16 2014 -0400
+
+    Documentation: added missing word to 'library settings editor' docs
+    
+    Added "editor" to label of what menu should be used.
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+1	1	docs/admin/lsa-library_settings_editor.txt
+
+commit aadaebbadf2c11aad41cb8449eecc4fe906fbd48
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Sun Apr 27 01:13:59 2014 -0400
+
+    Docs for library links
+    
+    Adding documentation for the new 2.5 feature allowing sites to configure
+    links to their web sites from the catalog.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+20	0	docs/opac/linked_libraries.txt
+2	0	docs/root.txt
+ create mode 100644 docs/opac/linked_libraries.txt
