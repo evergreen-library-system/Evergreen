@@ -1291,12 +1291,17 @@ BEGIN
       FROM  actor.org_unit_proximity_adjustment adj
             LEFT JOIN actor.org_unit_ancestors_distance(copy_context_ou) acp_cl ON (acp_cl.id = adj.item_circ_lib)
             LEFT JOIN actor.org_unit_ancestors_distance(acn.owning_lib) acn_ol ON (acn_ol.id = adj.item_owning_lib)
-            LEFT JOIN actor.org_unit_ancestors_distance(acl.owning_lib) acl_ol ON (acn_ol.id = adj.copy_location)
+            LEFT JOIN actor.org_unit_ancestors_distance(acl.owning_lib) acl_ol ON (acl_ol.id = adj.copy_location)
             LEFT JOIN actor.org_unit_ancestors_distance(ahr.pickup_lib) ahr_pl ON (ahr_pl.id = adj.hold_pickup_lib)
             LEFT JOIN actor.org_unit_ancestors_distance(ahr.request_lib) ahr_rl ON (ahr_rl.id = adj.hold_request_lib)
       WHERE (adj.circ_mod IS NULL OR adj.circ_mod = acp.circ_modifier) AND
-        absolute_adjustment AND
-        COALESCE(acp_cl.id, acn_ol.id, acl_ol.id, ahr_pl.id, ahr_rl.id) IS NOT NULL
+            (adj.item_circ_lib IS NULL OR adj.item_circ_lib = acp_cl.id) AND
+            (adj.item_owning_lib IS NULL OR adj.item_owning_lib = acn_ol.id) AND
+            (adj.copy_location IS NULL OR adj.copy_location = acl_ol.id) AND
+            (adj.hold_pickup_lib IS NULL OR adj.hold_pickup_lib = ahr_pl.id) AND
+            (adj.hold_request_lib IS NULL OR adj.hold_request_lib = ahr_rl.id) AND
+            absolute_adjustment AND
+            COALESCE(acp_cl.id, acn_ol.id, acl_ol.id, ahr_pl.id, ahr_rl.id) IS NOT NULL
       ORDER BY
             COALESCE(acp_cl.distance,999)
                 + COALESCE(acn_ol.distance,999)
@@ -1320,8 +1325,13 @@ BEGIN
                 LEFT JOIN actor.org_unit_ancestors_distance(ahr.pickup_lib) ahr_pl ON (ahr_pl.id = adj.hold_pickup_lib)
                 LEFT JOIN actor.org_unit_ancestors_distance(ahr.request_lib) ahr_rl ON (ahr_rl.id = adj.hold_request_lib)
           WHERE (adj.circ_mod IS NULL OR adj.circ_mod = acp.circ_modifier) AND
-            NOT absolute_adjustment AND
-            COALESCE(acp_cl.id, acn_ol.id, acl_ol.id, ahr_pl.id, ahr_rl.id) IS NOT NULL
+                (adj.item_circ_lib IS NULL OR adj.item_circ_lib = acp_cl.id) AND
+                (adj.item_owning_lib IS NULL OR adj.item_owning_lib = acn_ol.id) AND
+                (adj.copy_location IS NULL OR adj.copy_location = acl_ol.id) AND
+                (adj.hold_pickup_lib IS NULL OR adj.hold_pickup_lib = ahr_pl.id) AND
+                (adj.hold_request_lib IS NULL OR adj.hold_request_lib = ahr_rl.id) AND
+                NOT absolute_adjustment AND
+                COALESCE(acp_cl.id, acn_ol.id, acl_ol.id, ahr_pl.id, ahr_rl.id) IS NOT NULL
     LOOP
         baseline_prox := baseline_prox + aoupa.prox_adjustment;
     END LOOP;
