@@ -1,3 +1,652 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 8acd20b13fc6f70fa47113f77c2e0d9552518c18
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Jan 16 16:01:09 2014 -0500
+
+    Rejigger 2.4.3-2.5.0 upgrade bits
+    
+    As reported in LP#1261355, Postgres fails in some cases when changing
+    constraints on existing data inside a transaction.  This may or may not
+    fix the actual problem, but it at least tidies up these changes, and
+    will make it much cleaner to move outside the transaction if needed.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+57	80	Open-ILS/src/sql/Pg/version-upgrade/2.4.3-2.5.0-upgrade-db.sql
+
+commit d7d83e62421b32224475a2f62b80abaf6b970898
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Jan 16 15:10:09 2014 -0500
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 3759277eb9466d333b7fd36a99ff2d03ca515cab
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Jan 16 15:07:40 2014 -0500
+
+    Changes to smooth out make_release
+    
+    1) Make the fake 'HeadURL' into a URL which works with our web repo.
+    Note that this has 'tags/' hardcoded in, so it only works with true
+    release branches (e.g. rel_x_y_z) not "working" branches
+    (e.g. rel_x_y).
+    
+    2) Change range selector when building log to better exclude commits
+    from previous releases.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	2	build/tools/make_release
+
+commit 882bb2351979110784264c67902f46752443a3ea
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Jan 16 15:44:48 2014 -0500
+
+    Renumbering the upgrade script
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+97	0	Open-ILS/src/sql/Pg/upgrade/0852.function.prox_adjust.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0852.function.prox_adjust.sql
+
+commit 855ae327d62ac983c966f64ba8dfffabbe512478
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Jan 16 14:11:34 2014 -0500
+
+    Upgrade script
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+95	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.prox_adjust.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.prox_adjust.sql
+
+commit 70cde9a407f47234c424d96c8db289c45b4503a2
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Jan 16 13:58:12 2014 -0500
+
+    Fix proximity adjustment calculator
+    
+    The canonical use case for proximity adjustment is to use it broadly
+    to effect the local proximity of items within a particular area, in
+    a like manner, across many parts of the org tree.  However, in cases
+    where it is lightly used, or used with non-overlapping criteria columns,
+    there are cases where the adjustment will spread beyond its intended
+    range of influence.
+    
+    The changes here create a much stricter and correct test for rule
+    matching, which will end in the correct choice of rules in all cases.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+15	5	Open-ILS/src/sql/Pg/090.schema.action.sql
+
+commit 7a8348216405d4e9c74aa2b3996c74f98edd4efe
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Dec 18 13:31:18 2013 -0500
+
+    make_release cleanup and options
+    
+    * Avoid packaging the XULRunner packages within the Evergree tarball
+    
+    * Skip the inline SQL upgrade script edit step by default; continue
+      supporting option inline editing with a new -r option.
+    
+    * New -i option forces the script to bypass the lengthy i18n process,
+      which is primarily useful for quickly testing changes to this script.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+34	14	build/tools/make_release
+
+commit f043794140fc185a88c3e108442a20dd9d7d9620
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Tue Jan 14 17:11:45 2014 -0500
+
+    In prereq installer, don't try to chown extracted files to original UID/GID
+    
+    As this Makefile is designed to be used by a make process running as
+    root, this will avoid problems on some systems when tar extracts
+    files and tries to give them the same UID/GID as they have in their
+    archives, but those accounts don't exist on the local system.
+    
+    e.g, libdbi has files set 1000/1000. On most systems, there's a user
+    and a group with these IDs, but there can be systems where nothing
+    uses those IDs, and where tar fails with e.g. 'tar: libdbi-0.8.3:
+    Cannot change ownership to uid 1000, gid 1000: Invalid argument'
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+12	0	Open-ILS/src/extras/Makefile.install
+
+commit 0c1bef5d414c8ad8df8612d415e73d99cedb0dd4
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue Jan 14 13:30:48 2014 -0500
+
+    LP#1234201: fix menu item to display patron requests (if summary is horizontal)
+    
+    This patch adds a missing command element to the horizontal
+    patron summary display so that the 'Acquisition Requests' menu
+    item will work.
+    
+    To test:
+    
+    [1] Set the Patron circulation summary is horizontal library setting
+        to true.
+    [2] Retrieve a patron and try using the Acquisition Requests menu
+        item.  It will do nothing.
+    [3] Apply the patch and clear cache in the staff client.
+    [4] Repeat step 2.  This time, the Acquisitions Request menu item
+        should bring up the list of the patron's requests.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Srey Seng <sreyseng@gmail.com>
+
+1	0	Open-ILS/xul/staff_client/server/patron/display_horiz.xul
+
+commit f7c683bd37bf7e66cb341d2cac5e5269c62e0ab6
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue Jan 14 11:00:38 2014 -0500
+
+    LP#1269042: prevent acq seach from building dropdown of every copy ID in the DB
+    
+    This patch ensures that if a user sets a search field in the
+    acquisitions general search form to the line item details copy ID
+    (labeled "LID - Evergreen Copy ID"), the form presents a normal
+    input widget rather than trying to build a drop-down containing
+    every copy ID in the database.  Except for very small databases,
+    the previous behavior would mean that an open-ils.pcrud backend
+    would eventually consume a great deal of memory trying to service
+    a request for all copies in the system.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+6	3	Open-ILS/web/js/ui/default/acq/search/unified.js
+
+commit 9b76589e0ba2ec59eaf52df073a0052dcb1ad8fd
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Wed Oct 30 15:29:24 2013 -0400
+
+    Treat empty username as invalid in user editor
+    
+    There seems to be undesired interaction between the required
+    attribute and the isValid method on a dojo/dijit ValidationTextBox.
+    If both are set, isValid needs to check for an empty value,
+    otherwise the field is considered valid the moment it gains focus.
+    
+    We don't want an empty username to be considered valid, because we
+    know that we will be unable to save the user.
+    
+    We can work around this by teaching the isValid function to consider
+    an empty value as invalid.
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Melissa Ceraso <mceraso@biblio.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+4	0	Open-ILS/web/js/ui/default/actor/user/register.js
+
+commit 33b8acf6d69b3d9555aa0acdd38118f292996d5d
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Jan 9 12:05:55 2014 -0500
+
+    LP#1267224: repair another fm_IDL.xml typo
+    
+    vam.eg_record points to authority.record_entry, not
+    biblio.record_entry.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/examples/fm_IDL.xml
+
+commit 342565fcc62d7528477d6a3512305c5876d5f2f3
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Jan 8 14:35:05 2014 -0500
+
+    LP#1267224: Repair IDL typo for vandelay authority match / rec link
+    
+    "vqbr" should be "vqar" for authority records.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/examples/fm_IDL.xml
+
+commit f958b378c8cf6d8989e01bdf8ff1dcf9e36f8e27
+Author: Kyle Tomita <tomitakyle@gmail.com>
+Date:   Tue Sep 24 09:55:02 2013 -0700
+
+    LP1038240 - Patron editor field documentation does not display text
+    
+    Changed the legend tag to have a closing tag.
+    Also modified the css id uedit-help-div, to add a top margin so
+    it does not overlap the save div.
+    
+    Signed-off-by: Kyle Tomita <tomitakyle@gmail.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	1	Open-ILS/src/templates/actor/user/register.tt2
+1	0	Open-ILS/web/css/skin/default/register.css
+
+commit 857b8f1a788ba28d4d07fe7dec61d736adce432e
+Author: Srey Seng <sseng@catalystitservices.com>
+Date:   Tue Jan 7 14:30:49 2014 -0800
+
+    LP#1266937: Fix missing/incorrect regex for authority in Vandelay.pm
+    
+    Add in missing "~" in function import_record_list_impl when
+    type is authority records. Also replace "auth" with "authority"
+    so that the generated values match up with functions in the
+    database.
+    
+    Signed-off-by: Srey Seng <sreyseng@gmail.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Vandelay.pm
+
+commit fc1ec17e41a2c5df64544f0fc518bb58935c9b98
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed Jan 8 14:51:59 2014 -0500
+
+    fix pub date data type in reporter.classic_item_list
+    
+    As noticed by Ben Shum in IRC, reporter.classic_item_list
+    had pub_date, a free text field, classified as "int". This
+    changes that to "text" to prevent errors.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/examples/fm_IDL.xml
+
+commit 693e05226dedd282d5d2ae4a5dd91a3877c7d618
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Wed Jan 8 13:21:13 2014 -0800
+
+    Fix bug that caused deleted holdings to be visible in SRU/Z39.50 results
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Application/SuperCat.pm
+
+commit 02f578de015007d348413bc4f228e30648140cdb
+Author: Ben Shum <bshum@biblio.org>
+Date:   Wed Dec 18 13:36:39 2013 -0500
+
+    Stamping 0850 - translate icon labels
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+35	0	Open-ILS/src/sql/Pg/upgrade/0850.cvm_translated.sql
+0	29	Open-ILS/src/sql/Pg/upgrade/XXXX.cvm_translated.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0850.cvm_translated.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.cvm_translated.sql
+
+commit d43cc8efa84e6a0e6ca24c11156f894811177c4f
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Tue Dec 10 13:54:40 2013 -0500
+
+    Translate the icon labels in TPAC
+    
+    Instead of just using English.
+    
+    Also, in the event we have a search_label, use it.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	0	Open-ILS/src/sql/Pg/990.schema.unapi.sql
+29	0	Open-ILS/src/sql/Pg/upgrade/XXXX.cvm_translated.sql
+19	1	Open-ILS/src/templates/opac/parts/misc_util.tt2
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.cvm_translated.sql
+
+commit 26ec2c5d54ad3a106337542fd73130406d560441
+Author: Ben Shum <bshum@biblio.org>
+Date:   Tue Dec 17 14:59:44 2013 -0500
+
+    Stamping 0849 - desk renewal description
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+10	0	Open-ILS/src/sql/Pg/upgrade/0849.schema.desk_renewal_desc_update.sql
+0	10	Open-ILS/src/sql/Pg/upgrade/xxxx.schema.desk_renewal_desc_update
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0849.schema.desk_renewal_desc_update.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.schema.desk_renewal_desc_update
+
+commit adec54f4e7804a0003dcd5ab6356a4c50bfcdaca
+Author: Steven Callender <stevecallender@esilibrary.com>
+Date:   Thu Dec 12 15:13:57 2013 -0500
+
+    Updated the label on the desk renewal global setting.
+    
+    Updated the label on the desk renewal global flag circ.desk_renewal.use_original_circ_lib
+    to properly explain the it's the workstation library that will not be used rather than the
+    user home library. The OPAC renewal uses the users home library and desk renewals use
+    the workstation library.
+    
+    Signed-off-by: Steven Callender <stevecallender@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+10	0	Open-ILS/src/sql/Pg/upgrade/xxxx.schema.desk_renewal_desc_update
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.schema.desk_renewal_desc_update
+
+commit 781f489efe44468db53bff2a8333cd0621667f54
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Wed Dec 11 10:05:18 2013 -0500
+
+    Break out of focus() in cat/z3950.js if obj.active_services is undefined.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	0	Open-ILS/xul/staff_client/server/cat/z3950.js
+
+commit 88cd3947a1b8394bd0307cbd2f6eedb8e98e3668
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Wed Dec 11 09:50:09 2013 -0500
+
+    Eliminate an annoying and useless warning in the JavaScript Console.
+    
+    Timestamp: 12/10/2013 02:52:51 PM
+    Warning: Empty string passed to getElementById().
+    Source File: oils://remote/xul/rel_3_0_20131206_120120/server/OpenILS/global_util.js
+    Line: 354
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+55	53	Open-ILS/xul/staff_client/chrome/content/OpenILS/global_util.js
+
+commit bdf6be3f19cdae07834b8cf191541202063b1805
+Author: Angela Kilsdonk <akilsdonk@esilibrary.com>
+Date:   Tue Dec 17 11:37:23 2013 -0500
+
+    Asciidoc fix
+    
+    Another asciidoc fix for 2.5 documentation:
+    -Disable patron credit.
+    
+    Signed-off-by: Angela Kilsdonk <akilsdonk@esilibrary.com>
+
+1	1	docs/circulation/circulation_patron_records.txt
+
+commit 2422dbf9df7db3eefc5ab1b1092ab5b151930376
+Author: Angela Kilsdonk <akilsdonk@esilibrary.com>
+Date:   Tue Dec 17 11:22:41 2013 -0500
+
+    Documentation for 2.5
+    
+    asciidoc fixes for:
+    -Disable Patron Credit
+    -Lost and Long Overdue Colors
+    -PV Supa Goodstuff Integration
+    
+    Signed-off-by: Angela Kilsdonk <akilsdonk@esilibrary.com>
+
+5	5	docs/circulation/circulation_patron_records.txt
+2	2	docs/circulation/rfid_product_integration.txt
+-	-	docs/media/Billed Transaction Color.JPG
+-	-	docs/media/Billed_Transaction_Color.JPG
+-	-	docs/media/Default_Patron_Billing_Screen.jpg
+-	-	docs/media/Disable_Patron_Credit_Library_Setting.jpg
+-	-	docs/media/Disabled_Patron_Credit_Patron_Billing_Screen.jpg
+ delete mode 100644 docs/media/Billed Transaction Color.JPG
+ create mode 100644 docs/media/Billed_Transaction_Color.JPG
+ create mode 100644 docs/media/Default_Patron_Billing_Screen.jpg
+ create mode 100644 docs/media/Disable_Patron_Credit_Library_Setting.jpg
+ create mode 100644 docs/media/Disabled_Patron_Credit_Patron_Billing_Screen.jpg
+
+commit 523736fd452e67bbf69da31d320e01ff3764d3d7
+Author: Angela Kilsdonk <akilsdonk@esilibrary.com>
+Date:   Mon Dec 16 13:29:16 2013 -0500
+
+    Documentation for 2.5
+    
+    Includes:
+    -Patron Self Registration
+    -PV Supa Goodstuff Integration
+    -Disable Patron Credit in Billing Interface
+    
+    Signed-off-by: Angela Kilsdonk <akilsdonk@esilibrary.com>
+
+108	1	docs/circulation/circulation_patron_records.txt
+73	0	docs/circulation/rfid_product_integration.txt
+-	-	docs/media/patron_self_registration2.JPG
+2	0	docs/root.txt
+ create mode 100644 docs/circulation/rfid_product_integration.txt
+ create mode 100644 docs/media/patron_self_registration2.JPG
+
+commit c922bb20a3e3ea5f9aed6f95ec7c8ca0b70c474d
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Nov 25 10:05:21 2013 -0800
+
+    LP#1254816: prevent cases where a Google Book preview is not displayed
+    
+    Due to quirks in how different parts of the Google Books API
+    processes ISBN searches, it is possible for a Google Books Preview
+    badge to get displayed, but when the user tries to display the preview,
+    the embedded preview does not get displayed.
+    
+    This patch fixes the problem by grabbing the preview link from
+    the GB volumes search results, which in turn can be fed into the
+    Embedded Viewer initialization.
+    
+    An ISBN that can be used to reproduce the problem is 9781937994198.
+    Before the patch, the badge is displayed but not the preview; after
+    the patch, both badge and preview should be displayed.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+6	1	Open-ILS/src/templates/opac/parts/ac_google_books.tt2
+
+commit ed310bf7a1a06c8e6b62052e7c1678e091774b87
+Author: Angela Kilsdonk <akilsdonk@esilibrary.com>
+Date:   Fri Dec 13 16:30:51 2013 -0500
+
+    Documentation for 2.5
+    
+    asciidoc fix
+    
+    Signed-off-by: Angela Kilsdonk <akilsdonk@esilibrary.com>
+
+1	1	docs/cataloging/batch_importing_MARC.txt
+
+commit 0af1f924f748ae4ebb44b22c7b5b5089ff7138bb
+Author: Angela Kilsdonk <akilsdonk@esilibrary.com>
+Date:   Tue Dec 10 14:52:18 2013 -0500
+
+    Documentation for Sorting Billing Columns
+    
+    Docs for sorting money columns in billing interface.  In ersions 2.3-2.5.
+    
+    Signed-off-by: Angela Kilsdonk <akilsdonk@esilibrary.com>
+
+6	0	docs/circulation/circulation_patron_records.txt
+
+commit cad6d05d30b28a4cb7e3b18d994161be218b1d09
+Author: Angela Kilsdonk <akilsdonk@esilibrary.com>
+Date:   Tue Dec 10 14:30:28 2013 -0500
+
+    New documentation for 2.5
+    
+    Documentation for:
+    -Z39.50 Search Enhancements
+    -Catalog Browse
+    -Alternative Hold Pick-up Location
+    -Marking Items Long Overdue
+    -Lost and Long Overdue Bill Colors
+    -Vandelay Item Load
+    
+    Signed-off-by: Angela Kilsdonk <akilsdonk@esilibrary.com>
+
+22	0	docs/cataloging/batch_importing_MARC.txt
+102	0	docs/cataloging/z39.50_search_enhancements.txt
+67	0	docs/circulation/circulating_items.txt
+15	0	docs/circulation/circulation_patron_records.txt
+39	0	docs/circulation/holds.txt
+-	-	docs/media/Billed Transaction Color.JPG
+-	-	docs/media/Locate_Z39.50_Matches1.jpg
+-	-	docs/media/Locate_Z39.50_Matches2.jpg
+-	-	docs/media/Locate_Z39.50_Matches3.jpg
+-	-	docs/media/Locate_Z39.50_Matches4.jpg
+-	-	docs/media/custom_hold_pickup_location1.JPG
+-	-	docs/media/custom_hold_pickup_location2.JPG
+-	-	docs/media/long_overdue1.JPG
+-	-	docs/media/long_overdue2.JPG
+31	0	docs/opac/catalog_browse.txt
+4	0	docs/root.txt
+ create mode 100644 docs/cataloging/z39.50_search_enhancements.txt
+ create mode 100644 docs/media/Billed Transaction Color.JPG
+ create mode 100644 docs/media/Locate_Z39.50_Matches1.jpg
+ create mode 100644 docs/media/Locate_Z39.50_Matches2.jpg
+ create mode 100644 docs/media/Locate_Z39.50_Matches3.jpg
+ create mode 100644 docs/media/Locate_Z39.50_Matches4.jpg
+ create mode 100644 docs/media/custom_hold_pickup_location1.JPG
+ create mode 100644 docs/media/custom_hold_pickup_location2.JPG
+ create mode 100644 docs/media/long_overdue1.JPG
+ create mode 100644 docs/media/long_overdue2.JPG
+ create mode 100644 docs/opac/catalog_browse.txt
+
+commit 37eff510e374360640bec86ee3be00eda28ffb0b
+Author: Steven Chan <schan@sitka.bclibraries.ca>
+Date:   Wed May 15 14:30:15 2013 -0700
+
+    Fix LP1180140, View Holds not working for a serial with subscription and no issuances
+    
+    A request is made to
+    open-ils.circ.holds.retrieve_all_from_title,
+    which is the function Circ/Holds.pm/all_rec_holds().
+    
+    In the function, when checking for issuance holds, there is a missing @
+    to dereference the list of issuance IDs, so that the ahr table is search
+    with badly formed input, which results in returning an undefined list
+    instead of an empty list.  The error will occur for any record with a
+    serial.subscription entry but with no related entries in
+    serial.issuance.
+    
+    We also recode the initialization of the response object in order to
+    clarify its expected structure, a hash of array references.
+    
+    Signed-off-by: Steven Chan <schan@sitka.bclibraries.ca>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+11	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit e55e01049cf27cf422ec4937b3b5dfb8a38983cc
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Mon Dec 9 11:15:29 2013 -0500
+
+    Always show Email Address label to staff
+    
+    When placing holds staff commonly change out patrons, and pointing staff
+    towards the "My Account" area makes no sense to begin with.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/templates/opac/parts/place_hold.tt2
+
+commit 8c5d7e5c1d2cd7504562a128dc187a4d932ab3db
+Author: Elliot Voris <evoris@slcconline.edu>
+Date:   Sat Dec 7 15:24:46 2013 -0600
+
+    Documentation typo in Authorities chapter subheading
+    Addresses this bugs reported in launchpad:
+    https://bugs.launchpad.net/evergreen/+bug/1248726
+    
+    I also browsed through the rest of the docs/admin
+    directory, and made some (very non-consequential)
+    changes.
+    
+    Signed-off-by: Elliot Voris <evoris@slcconline.edu>
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+10	9	docs/admin/authorities.txt
+1	1	docs/admin/permissions.txt
+1	1	docs/admin/staff_client-patron_border.txt
+6	6	docs/admin/template_toolkit.txt
+
+commit 91cebdc9bdfc2b6fd234b86aa99b57fa3197717c
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Dec 5 11:00:19 2013 -0500
+
+    Pushing upgrade scripts forward
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+174	4	Open-ILS/src/sql/Pg/version-upgrade/2.4.3-2.4.4-upgrade-db.sql
+
+commit 1ac2363446c86b4a21edfa4fab53a9e562d0bfb4
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Dec 5 10:08:34 2013 -0500
+
+    Forward port 2.3.11->2.3.12 DB upgrade
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+171	0	Open-ILS/src/sql/Pg/version-upgrade/2.3.11-2.3.12-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.3.11-2.3.12-upgrade-db.sql
+
+commit bc4933921c5fcc649fc0017c78131416212b693e
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Dec 5 09:49:05 2013 -0500
+
+    Pull in 2.5 version upgrade files
+    
+    For 2.5.0 and 2.5.1
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+16017	0	Open-ILS/src/sql/Pg/version-upgrade/2.4.3-2.5.0-upgrade-db.sql
+173	0	Open-ILS/src/sql/Pg/version-upgrade/2.5.0-2.5.1-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.4.3-2.5.0-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.5.0-2.5.1-upgrade-db.sql
+
+commit 8eabec0cc1cde55c4bed8ec6db15ebf295f9a03f
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Dec 4 09:35:30 2013 -0500
+
+    Fix a broken link in the holds docs
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+1	1	docs/circulation/holds.txt
+
+commit 31e3570c1e3e7f3be73cc9278f39d9fa59acd2de
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Nov 21 10:29:22 2013 -0500
+
+    Docs: integrate holds docs from EG 2.1
+    
+    The small amount of Holds docs present in master seemed to fit well at
+    the end of the older Holds documentation, so this commit appends them
+    to the new holds.txt file, deletes the previous holds_management.txt file,
+    and makes the appropriate change to root.txt.
+    
+    This commit also includes several small formatting improvements, wording
+    changes, and bug fixes.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+410	0	docs/circulation/holds.txt
+0	28	docs/circulation/holds_management.txt
+1	1	docs/root.txt
+ create mode 100644 docs/circulation/holds.txt
+ delete mode 100644 docs/circulation/holds_management.txt
