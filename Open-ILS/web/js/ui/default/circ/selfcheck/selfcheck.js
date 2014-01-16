@@ -1186,7 +1186,7 @@ SelfCheckManager.prototype.displayCheckout = function(evt, type, itemsOut) {
     var circ = evt.payload.circ;
     var row = this.circTemplate.cloneNode(true);
 
-    if(record.id()) {
+    if(record.doc_id()) {
         this.byName(row, 'jacket').setAttribute('src', '/opac/extras/ac/jacket/small/r/' + record.doc_id());
     }
 
