@@ -1,0 +1,79 @@
+\set ECHO
+\set QUIET 1
+-- Turn off echo and keep things quiet.
+
+-- Format the output for nice TAP.
+\pset format unaligned
+\pset tuples_only true
+\pset pager
+
+-- Revert all changes on failure.
+\set ON_ERROR_ROLLBACK 1
+\set ON_ERROR_STOP true
+\set QUIET 1
+
+-- let's do this thing
+BEGIN;
+
+SELECT plan(7);
+
+-- The effect of this will be rolled back, so don't worry.
+DELETE FROM actor.org_unit_proximity_adjustment;
+
+-- Tests in the directory where we are rely on stock and Concerto data being
+-- loaded.
+INSERT INTO actor.org_unit_proximity_adjustment (
+    item_circ_lib, hold_pickup_lib, absolute_adjustment, prox_adjustment
+) VALUES (2, 2, true, 0);
+
+SELECT is(
+    (SELECT pickup_lib = 5 FROM action.hold_request WHERE id = 3),
+    TRUE,
+    'Data suitable for test: hold #3 has pickup_lib 5'
+);
+
+SELECT is(
+    (SELECT pickup_lib = 9 FROM action.hold_request WHERE id = 4),
+    TRUE,
+    'Data suitable for test: hold #4 has pickup_lib 9'
+);
+
+SELECT is(
+    (SELECT circ_lib = 4 FROM asset.copy WHERE id = 2884),
+    TRUE,
+    'Data suitable for test: copy #2884 has circ_lib 4'
+);
+
+SELECT is(
+    (SELECT aou.parent_ou = 2 AND aout.depth = 2
+        FROM actor.org_unit aou
+        JOIN actor.org_unit_type aout ON (aout.id = aou.ou_type)
+        WHERE aou.id = 5),
+    TRUE,
+    'Data suitable for test: ou #5 has parent_ou 2 and depth 2'
+);
+
+SELECT is(
+    (SELECT aou.parent_ou <> 2 AND aout.depth >= 2
+        FROM actor.org_unit aou
+        JOIN actor.org_unit_type aout ON (aout.id = aou.ou_type)
+        WHERE aou.id = 9),
+    TRUE,
+    'Data suitable for test: ou #9 doesn''t have parent_ou 2, does have depth at least 2'
+);
+        
+SELECT is(
+    action.hold_copy_calculated_proximity (3, 2884)::INT,
+    0,
+    'Org unit proximity adjustment takes effect when it should'
+);
+
+SELECT is(
+    action.hold_copy_calculated_proximity (4, 2884)::INT,
+    5,
+    '(regression test) Org unit proximity adjustment doesn''t take effect when it shouldn''t'
+);
+
+SELECT * FROM finish();
+ROLLBACK;
+
