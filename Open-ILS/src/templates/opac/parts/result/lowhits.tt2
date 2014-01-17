@@ -17,7 +17,11 @@
                      IF is_advanced OR is_special;
                           l('Sorry, no entries were found for your search.');
                        ELSE;
-                          l('Sorry, no entries were found for [_1].', '<q>' _ qhtml _ '</q>');
+                          IF !qhtml;
+                             l('Please enter a search term in the Search box.');
+                          ELSE;
+                             l('Sorry, no entries were found for [_1].', '<q>' _ qhtml _ '</q>');
+                          END;
                        END;
                    END %]
             </p>

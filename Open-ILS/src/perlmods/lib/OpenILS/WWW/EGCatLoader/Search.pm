@@ -392,10 +392,7 @@ sub load_rresults {
 
     } else {
 
-        if (!$query) {
-            return Apache2::Const::OK if $internal;
-            return $self->generic_redirect;
-        }
+        return Apache2::Const::OK unless $query;
 
         # Limit and offset will stay here. Everything else should be part of
         # the query string, not special args.
