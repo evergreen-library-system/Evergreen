@@ -72,7 +72,7 @@ END;
  
                                                     <div>
                                                         <a title="[% l("Perform an Author Search") %]"
-                                                                class="record_author" name='item_author'
+                                                                class="record_author"
                                                                 href="[%- 
                                                                     authorquery = attrs.author | replace('[#"^$\+\-,\.:;&|\[\]()]', ' ');
                                                                     mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, ['page'])
@@ -108,11 +108,6 @@ END;
                                                         END
                                                     -%]
                                                     </div>
-                                                    <span name="googleBooksLink" class="hide_me">
-                                                        <a style='padding-left: 8px;'
-                                                            class='classic_link hide_me'
-                                                            name="googleBooks-link">[% l("Browse in Google Books Search") %]</a>
-                                                    </span>
                                                     <table 
                                                        title="[% l('Record Holdings Summary') %]"
                                                        class="table_no_border_space table_no_cell_pad table_no_border results_info_table">
@@ -301,7 +296,7 @@ END;
                                                                 href="[% mkurl(ctx.opac_root _ '/place_hold',
                                                                     {hold_target => rec.id, hold_type => 'T', hold_source_page => mkurl()}, ['query']) %]"
                                                                 [% html_text_attr('title', l('Place Hold on [_1]', attrs.title)) %]
-                                                                    name="place_hold_link" class="no-dec"><img
+                                                                    class="no-dec"><img
                                                                 src="[% ctx.media_prefix %]/images/green_check.png"
                                                                 alt=""/><span class="result_place_hold">[% l('Place Hold') %]</span></a>
                                                         </div>
