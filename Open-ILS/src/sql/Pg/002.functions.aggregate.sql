@@ -17,12 +17,12 @@
 
 BEGIN;
 
-DROP AGGREGATE IF EXISTS array_agg(anyelement) CASCADE;
+DROP AGGREGATE IF EXISTS array_accum(anyelement) CASCADE;
 DROP AGGREGATE IF EXISTS public.first(anyelement) CASCADE;
 DROP AGGREGATE IF EXISTS public.last(anyelement) CASCADE;
 DROP AGGREGATE IF EXISTS public.agg_text(text) CASCADE;
 
-CREATE AGGREGATE array_agg (
+CREATE AGGREGATE array_accum (
 	sfunc = array_append,
 	basetype = anyelement,
 	stype = anyarray,
