@@ -314,12 +314,15 @@ connection information in `opensrf.xml` for you.
 Creating the Evergreen database
 -------------------------------
 
-By default, the `Makefile.install` prerequisite installer does not install
-the PostgreSQL 9 database server required by every Evergreen system;
-for production use, most libraries install the PostgreSQL database server on a
-dedicated machine. You can install the packages required by Debian or Ubuntu Lucid
-on the machine of your choice using the following commands as the *root*
-Linux account:
+Setting up the PostgreSQL server
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For production use, most libraries install the PostgreSQL database server on a
+dedicated machine. Therefore, by default, the `Makefile.install` prerequisite
+installer does *not* install the PostgreSQL 9 database server that is required
+by every Evergreen system. You can install the packages required by Debian or
+Ubuntu Lucid on the machine of your choice using the following commands as the
+*root* Linux account:
 
 .(Debian / Ubuntu / Fedora) Installing PostgreSQL server packages
 
@@ -339,11 +342,13 @@ make -f Open-ILS/src/extras/Makefile.install postgres-server-fedora
 
 .(Fedora) Postgres initialization
 
-Installing Postgres on Fedora requires one additional step.
+Installing Postgres on Fedora also requires you to initialize the PostgreSQL
+cluster and start the service. Issue the following commands as the *root* user:
 
 [source, bash]
 ------------------------------------------------------------------------------
 postgresql-setup initdb
+systemctl start postgresql
 ------------------------------------------------------------------------------
 
 For a standalone PostgreSQL server, install the following Perl modules as the
@@ -379,6 +384,31 @@ password:
 ------------------------------------------------------------------------------
 createuser -s -P evergreen
 ------------------------------------------------------------------------------
+
+.Enabling connections to the PostgreSQL database
+
+Your PostgreSQL database may be configured by default to prevent connections,
+for example, it might reject attempts to connect via TCP/IP or from other
+servers. To enable TCP/IP connections from localhost, check your `pg_hba.conf`
+file, found in the `/etc/postgresql/` directory on Debian and Ubuntu, and in
+the `/var/lib/pgsql/data/` directory on Fedora. A simple way to enable TCP/IP
+connections from localhost to all databases with password authentication, which
+would be suitable for a test install of Evergreen on a single server, is to
+ensure the file contains the following entries _before_ any "host ... ident"
+entries:
+
+------------------------------------------------------------------------------
+host    all             all             ::1/128                 md5
+host    all             all             127.0.0.1/32            md5
+------------------------------------------------------------------------------
+
+When you change the `pg_hba.conf` file, you will need to reload PostgreSQL to
+make the changes take effect.  For more information on configuring connectivity
+to PostgreSQL, see
+http://www.postgresql.org/docs/devel/static/auth-pg-hba-conf.html
+
+Creating the Evergreen database and schema
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Once you have created the *evergreen* PostgreSQL account, you also need to
 create the database and schema, and configure your configuration files to point
