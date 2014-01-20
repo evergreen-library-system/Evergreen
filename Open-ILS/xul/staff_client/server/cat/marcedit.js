@@ -65,7 +65,7 @@ function get_new_008() {
     if (xml_record.datafield.(@tag == '041')) {
 	var field = xml_record.datafield.(@tag == '041')[0];
 	if (field && field.subfield.(@code == 'a')) {
-	    lang = field.subfield.(@code == 'a');
+	    lang = field.subfield.(@code == 'a')[0];
 	}
     }
 
@@ -74,7 +74,7 @@ function get_new_008() {
     if (xml_record.datafield.(@tag == '044')) {
 	var field = xml_record.datafield.(@tag == '044')[0];
 	if (field && field.subfield.(@code == 'a')) {
-	    country = field.subfield.(@code == 'a');
+	    country = field.subfield.(@code == 'a')[0];
 	}
     }
     while (country.length < 3) country = country + ' ';
@@ -85,7 +85,7 @@ function get_new_008() {
     if (xml_record.datafield.(@tag == '260')) {
 	var field = xml_record.datafield.(@tag == '260')[0];
 	if (field && field.subfield.(@code == 'c')) {
-	    var tmpd = field.subfield.(@code == 'c').replace(/[^0-9]/g, '');
+	    var tmpd = field.subfield.(@code == 'c')[0].replace(/[^0-9]/g, '');
 	    if (tmpd.match(/^\d\d\d\d/)) {
 		date1 = tmpd.substr(0, 4);
 	    }
