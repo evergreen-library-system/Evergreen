@@ -1,0 +1,100 @@
+[% WRAPPER base.tt2 %]
+<style type="text/css">
+  #tree-container { font-size: 120%; }
+  #tree-container td { padding: 10px; }
+  #tree-container tr:nth-child(odd) {background: #E7A555;}
+  #tree-expression {font-size: 110%; border: 1px solid #555; padding: 10px; }
+  .new-data-item  { padding: 10px; }
+  .new-data-item td { padding: 10px; }
+  .new-data-item-odd  { background: #E7A555;}
+  .exp-val { font-weight: bold; color: #833; }
+</style>
+
+<h1>[% l('Composite Attribute Entry Definitions') %]</h1>
+
+<h2>
+  <div>[% l('Record Attribute: ') %] <span id='attr-def-name'></span></div>
+  <div>[% l('Coded Value: ') %] <span id='coded-value-map-name'></span></div>
+</h2>
+
+<button dojoType='dijit.form.Button' id='return-to-ccvm' scrollOnFocus='false'>
+    [% l('&#x2196; Return To Coded Value Maps') %]
+</button>
+
+<h2>[% l('Composite Data Expression') %]</h2>
+<div id='tree-expression'></div>
+
+<h2>
+  [% l('Composite Data Tree') %]
+  <div dojoType='dijit.form.Button' onclick='addChild(null)'
+    jsId='newTreeBtn'>[% l('New Tree') %]</div>
+  <div dojoType='dijit.form.Button' onclick='delTree()'
+    jsId='delTreeBtn'>[% l('Delete Tree') %]</div>
+  <div dojoType='dijit.form.Button' onclick='saveTree()'
+    jsId='saveTreeBtn'>[% l('Save Changes') %]</div>
+</h2>
+<table>
+  <tbody id='tree-container'>
+    <tr id='node-template' class='node-template'>
+      <td class='node-column'>
+        <span name='attr'></span>
+        <span class='invisible'> => </span>
+        <span name='val'></span>
+      </td>
+      <td><a name='del-child' href='javascript:;'
+        onclick='delChild(this)'>[% l('Delete') %]</a></td>
+      <td><a name='add-child' href='javascript:;' 
+        onclick='addChild(this)'>[% l('Add Child') %]</a></span></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class='hidden'>
+  <span id='tree-pad' style='padding: 0px 8px 0px 8px;'> - </span>
+</div>
+
+<div class='hidden'>
+  <div dojoType='dijit.Dialog' jsId='newDataDialog'>
+    <div class='new-data-item new-data-item-odd'>
+      <input type='radio' name='data-type' id='new-data-and' value='and'/>
+        [% l('Boolean: AND') %]
+    </div>
+    <div class='new-data-item'>
+      <input type='radio' name='data-type' id='new-data-or' value='or'/>
+        [% l('Boolean: OR') %]
+    </div>
+    <div class='new-data-item new-data-item-odd'>
+      <label>
+        <input type='radio' name='data-type' id='new-data-not' value='not'/>
+        [% l('Boolean: NOT') %]
+      </label>
+    </div>
+    <div class='new-data-item'>
+      <label>
+        <input type='radio' name='data-type' id='new-data-attr' value='attr' checked='checked'/>
+        [% l('Record Attribute') %]
+      </label>
+      <table>
+        <tr>
+          <td>[% l('Select Attribute Type: ') %]</td>
+          <td><div id='new-data-crad-selector'></td>
+        </tr>
+        <tr>
+          <td>[% l('Select Value: ') %]</td>
+          <td><div dojoType='dijit.form.FilteringSelect' 
+            jsId='ccvmSelector'></div></td>
+        </tr>
+      </table>
+    </div>
+    <div dojoType='dijit.form.Button' 
+      type='submit' jsId='newDataSubmit'>[% l('Submit') %]</div>
+  </div>
+</div>
+
+<script>var ccvmId = '[% ctx.page_args.0 %]'</script>
+<script type="text/javascript" 
+  src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/composite_attr_entry_definition.js'>
+</script>
+
+[% END %]
+

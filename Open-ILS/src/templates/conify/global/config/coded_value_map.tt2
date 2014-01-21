@@ -48,11 +48,13 @@
       if (id && isComposite) {
         return "<a href='" + oilsBasePath +
           "/conify/global/config/composite_attr_entry_definition/" 
-          + id + "'>Manage</a>";
+          + id + "'>[% l('Manage') %]</a>";
         } else {
           return "";
       }
     }
+
+    var cradName = '[% ctx.page_args.0 %]';
 
     openils.Util.addOnLoad(
         function() {
@@ -88,6 +90,9 @@
                             // ^-- why is this not working?
                         }
                     );
+
+                    // if a crad is already selected via URL, fetch the ccvm's
+                    if (cradName) w.attr('value', cradName);
                 }
             );
 

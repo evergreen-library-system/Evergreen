@@ -18,11 +18,34 @@
             query="{name: '*'}"
             fmClass='crad'
             showPaginator='true'
-            editOnEnter='true'/>
+            editOnEnter='true'>
+      <thead>
+        <tr><th field='coded_value_maps' 
+                get='getCcvms' 
+                formatter='formatCcvmsLink'>
+            [% l('Coded Value Maps') %]</th></tr>
+      </thead>
+    </table>
  </div>
 
 <script type ="text/javascript">
     dojo.require('openils.widget.AutoGrid');
+
+    function getCcvms(rowId, item) {
+      if (!item) return '';
+      return this.grid.store.getValue(item, 'name');
+    }
+
+    function formatCcvmsLink(name) {
+      if (name) {
+        return "<a href='" + oilsBasePath +
+          "/conify/global/config/coded_value_map/"
+          + name + "'>[% l('Manage') %]</a>";
+        } else {
+          return "";
+      }
+    }
+
     openils.Util.addOnLoad(
         function() {
             // avoid loading the entire config.xml_transform object
