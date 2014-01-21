@@ -515,8 +515,15 @@ sub nearest_hold {
         $cp_circ_lib = $cp->circ_lib;
     }
 
+    my $cp_owning_lib;
+    if (ref $cp->call_number->owning_lib) {
+        $cp_owning_lib = $cp->call_number->owning_lib->id;
+    } else {
+        $cp_owning_lib = $cp->call_number->owning_lib;
+    }
+
     my ($holdsort, $addl_cte, $addl_join) =
-        build_hold_sort_clause(get_hold_sort_order($here), $cp, $here);
+        build_hold_sort_clause(get_hold_sort_order($cp_owning_lib), $cp, $here);
 
     local $OpenILS::Application::Storage::WRITE = 1;
 
