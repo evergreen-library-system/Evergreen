@@ -1592,9 +1592,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
         'Allows a user to specify which Server Add-ons get invoked at the current workstation', 'ppl', 'description')),
  ( 552, 'ADMIN_FLOAT_GROUPS', oils_i18n_gettext( 552,
     'Allows administration of floating groups', 'ppl', 'description' )),
- ( 552, 'UPDATE_ORG_UNIT_SETTING.circ.min_item_price', oils_i18n_gettext( 552,
+ ( 553, 'UPDATE_ORG_UNIT_SETTING.circ.min_item_price', oils_i18n_gettext( 553,
     'UPDATE_ORG_UNIT_SETTING.circ.min_item_price', 'ppl', 'description' )),
- ( 553, 'UPDATE_ORG_UNIT_SETTING.circ.max_item_price', oils_i18n_gettext( 553,
+ ( 554, 'UPDATE_ORG_UNIT_SETTING.circ.max_item_price', oils_i18n_gettext( 554,
     'UPDATE_ORG_UNIT_SETTING.circ.max_item_price', 'ppl', 'description' ))
 ;
 

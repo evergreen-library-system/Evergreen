@@ -1,21 +1,21 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0854', :eg_version);
 
 INSERT INTO permission.perm_list ( id, code, description ) VALUES (
-    551, -- VERIFY
+    553,
     'UPDATE_ORG_UNIT_SETTING.circ.min_item_price',
     oils_i18n_gettext(
-        551, -- VERIFY
+        553,
         'UPDATE_ORG_UNIT_SETTING.circ.min_item_price',
         'ppl',
         'description'
     )
 ), (
-	552, -- VERIFY
+	554,
     'UPDATE_ORG_UNIT_SETTING.circ.max_item_price',
     oils_i18n_gettext(
-        552, -- VERIFY
+        554,
         'UPDATE_ORG_UNIT_SETTING.circ.max_item_price',
         'ppl',
         'description'
