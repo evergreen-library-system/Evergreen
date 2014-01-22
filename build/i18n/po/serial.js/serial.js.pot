@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2013-06-06 12:12:00-0400\n"
+"POT-Creation-Date: 2014-01-22 16:26:21-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,22 +15,58 @@ msgstr ""
 msgid "Save Successful"
 msgstr ""
 
-#: serial.js:NOTES_SSUB
-msgid "Subscription Notes (ID: ${0})"
+#: serial.js:SEASON_SUMMER
+msgid "Summer"
+msgstr ""
+
+#: serial.js:SELECT_VALID_CAP
+msgid "Have you selected a valid caption and pattern?"
+msgstr ""
+
+#: serial.js:SEASON_WINTER
+msgid "Winter"
 msgstr ""
 
 #: serial.js:CREATE_ISSUANCE
 msgid "Create Issuance"
 msgstr ""
 
+#: serial.js:NOTES_SSUB
+msgid "Subscription Notes (ID: ${0})"
+msgstr ""
+
 #: serial.js:REQUIRE_ONE_ROW
 msgid "Use the checkboxes to select exactly one row for this operation."
+msgstr ""
+
+#: serial.js:SEASON_SPRING
+msgid "Spring"
+msgstr ""
+
+#: serial.js:WIZARD
+msgid "Wizard"
 msgstr ""
 
 #: serial.js:MODIFY_ISSUANCE
 msgid "Modify Issuance"
 msgstr ""
 
+#: serial.js:NO_CAP_SUBFIELDS
+msgid "No caption subfields in selected caption and pattern"
+msgstr ""
+
 #: serial.js:NOTES_SDIST
 msgid "Distribution Notes (ID: ${0})"
+msgstr ""
+
+#: serial.js:ERROR_BLANK_FIELDS
+msgid "A valid holding code cannot be produced with any blank fields."
+msgstr ""
+
+#: serial.js:COMPILE
+msgid "Create Holding Code"
+msgstr ""
+
+#: serial.js:SEASON_FALL
+msgid "Fall"
 msgstr ""

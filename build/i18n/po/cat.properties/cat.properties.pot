@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-26 18:17-0400\n"
+"POT-Creation-Date: 2014-01-22 16:26-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -425,6 +425,10 @@ msgstr ""
 
 #: staff.cat.copy_buckets.menulist.change_bucket.error
 msgid "Error retrieving bucket.  Did you use a valid bucket id?"
+msgstr ""
+
+#: staff.cat.copy_buckets.copy_buckets_batch_copy_delete.confirm
+msgid "Are you sure you want to delete all items in bucket from catalog?"
 msgstr ""
 
 #: staff.cat.copy_buckets.copy_buckets_add.error

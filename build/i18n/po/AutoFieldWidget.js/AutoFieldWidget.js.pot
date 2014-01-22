@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45:32-0400\n"
+"POT-Creation-Date: 2014-01-22 16:26:21-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,18 +11,70 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: AutoFieldWidget.js:TRUE
-msgid "True"
+#: AutoFieldWidget.js:REQ_FIELDS_EMPTY
+msgid "${0} edit pane has ${1} required field(s) that contain no value(s)"
 msgstr ""
 
 #: AutoFieldWidget.js:FALSE
 msgid "False"
 msgstr ""
 
-#: AutoFieldWidget.js:UNSET
-msgid "Unset"
+#: AutoFieldWidget.js:SAVE
+msgid "Save"
+msgstr ""
+
+#: AutoFieldWidget.js:COLUMN
+msgid "Column"
+msgstr ""
+
+#: AutoFieldWidget.js:BACK
+msgid "Back"
+msgstr ""
+
+#: AutoFieldWidget.js:DISPLAY
+msgid "Display"
+msgstr ""
+
+#: AutoFieldWidget.js:NEXT
+msgid "Next"
+msgstr ""
+
+#: AutoFieldWidget.js:FILTER
+msgid "Filter"
+msgstr ""
+
+#: AutoFieldWidget.js:COLUMN_PICKER
+msgid "Column Picker"
 msgstr ""
 
 #: AutoFieldWidget.js:INHERITED
 msgid "Inherited"
+msgstr ""
+
+#: AutoFieldWidget.js:CANCEL
+msgid "Cancel"
+msgstr ""
+
+#: AutoFieldWidget.js:SORT_PRIORITY
+msgid "Sort Priority"
+msgstr ""
+
+#: AutoFieldWidget.js:SORT_PRIORITY_MINUS
+msgid "Apply a negative Sort Priority for descending sort."
+msgstr ""
+
+#: AutoFieldWidget.js:SORT_PRIORITY_ZERO
+msgid "A Sort Priority of '0' means no sorting is applied."
+msgstr ""
+
+#: AutoFieldWidget.js:TRUE
+msgid "True"
+msgstr ""
+
+#: AutoFieldWidget.js:AUTO_WIDTH
+msgid "Auto Width"
+msgstr ""
+
+#: AutoFieldWidget.js:UNSET
+msgid "Unset"
 msgstr ""
