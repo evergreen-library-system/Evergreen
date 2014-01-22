@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2012-01-14 23:47+0000\n"
-"Last-Translator: Carlos Morawski <Unknown>\n"
+"PO-Revision-Date: 2013-11-15 19:25+0000\n"
+"Last-Translator: Gerson Vazquez <gerson.v.h@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-01-16 05:22+0000\n"
-"X-Generator: Launchpad (build 14664)\n"
+"X-Launchpad-Export-Date: 2013-11-16 05:47+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #: pickup_and_return.js:NO_SUCH_RETURNABLE_RESOURCE
 msgid "No such returnable resource."
@@ -23,7 +23,7 @@ msgstr ""
 
 #: pickup_and_return.js:PICKUP_ERROR
 msgid "Error communicating with server (attempting pickup):"
-msgstr ""
+msgstr "Error comunicando con el servidor (intentando contestar):"
 
 #: pickup_and_return.js:ADDRESS
 msgid ""
@@ -37,11 +37,11 @@ msgstr ""
 
 #: pickup_and_return.js:AUTO_ready_bresv
 msgid "Patron has these reservations ready for pickup:"
-msgstr ""
+msgstr "El usuario tiene estas reservaciones listas para ser recogidas:"
 
 #: pickup_and_return.js:AUTO_ATTR_VALUE_pickup
 msgid "Pick up"
-msgstr ""
+msgstr "Contestar"
 
 #: pickup_and_return.js:RETURN_ERROR
 msgid "Error communicating with server (attempting return):"
@@ -49,15 +49,15 @@ msgstr ""
 
 #: pickup_and_return.js:AUTO_no_in_bresv
 msgid "Patron has not returned any resources today."
-msgstr ""
+msgstr "EL usuario no ha entregado ningún recurso el día de hoy"
 
 #: pickup_and_return.js:NO_PATRON_BARCODE
 msgid "Please enter a patron barcode."
-msgstr ""
+msgstr "Introduzca el código de barras del usuario"
 
 #: pickup_and_return.js:AUTO_ATTR_VALUE_return
 msgid "Return"
-msgstr ""
+msgstr "Enter"
 
 #: pickup_and_return.js:AUTO_no_out_bresv
 msgid "Patron has no more reservations out at this time."
@@ -69,11 +69,11 @@ msgstr "Error comunicando con el servidor (pidiendo reservaciones):"
 
 #: pickup_and_return.js:AUTO_return_h1
 msgid "Reservations Return"
-msgstr ""
+msgstr "Devolución de reservaciones"
 
 #: pickup_and_return.js:AUTO_ATTR_VALUE_reset
 msgid "Clear / New Patron"
-msgstr ""
+msgstr "Limpiar / Nuevo usuario"
 
 #: pickup_and_return.js:AUTO_h1
 msgid "Reservations Pickup"
@@ -82,6 +82,7 @@ msgstr ""
 #: pickup_and_return.js:AUTO_no_ready_bresv
 msgid "Patron has no reservations ready for pickup at this time."
 msgstr ""
+"En este momento el usuario no tiene reservaciones listas para recolección."
 
 #: pickup_and_return.js:AUTO_resource
 msgid "Resource"
@@ -109,11 +110,11 @@ msgstr ""
 
 #: pickup_and_return.js:SELECT_SOMETHING
 msgid "You have not selected any reservations."
-msgstr ""
+msgstr "No ha seleccionado ninguna reservación"
 
 #: pickup_and_return.js:AUTO_out_bresv
 msgid "Patron currently has these reservations out:"
-msgstr ""
+msgstr "Actualmente el usuario tiene estas reservaciones en su custodia:"
 
 #: pickup_and_return.js:RESERVATIONS_NO_RESPONSE
 msgid "No response from server when asking for reservations."
@@ -121,7 +122,7 @@ msgstr ""
 
 #: pickup_and_return.js:AUTO_barcode_type
 msgid "Return by barcode of"
-msgstr ""
+msgstr "Regresar por código de barras de"
 
 #: pickup_and_return.js:RETURN_NO_RESPONSE
 msgid "No response from server when attempting return."
@@ -129,11 +130,11 @@ msgstr ""
 
 #: pickup_and_return.js:RETURN_SUCCESS
 msgid "Return successful."
-msgstr ""
+msgstr "Devolución exitosa."
 
 #: pickup_and_return.js:AUTO_patron_barcode
 msgid "Enter patron barcode:"
-msgstr ""
+msgstr "Introducir código de barras del usuario:"
 
 #: pickup_and_return.js:PICKUP_NO_RESPONSE
 msgid "No response from server when attempting pickup."
@@ -145,12 +146,12 @@ msgstr ""
 
 #: pickup_and_return.js:AUTO_patron
 msgid "Patron"
-msgstr ""
+msgstr "Usuario"
 
 #: pickup_and_return.js:AUTO_in_bresv
 msgid "Patron has returned these resources today:"
-msgstr ""
+msgstr "El usuario ha devuelto estos recursos el día de hoy:"
 
 #: pickup_and_return.js:AUTO_ATTR_VALUE_go
 msgid "Go"
-msgstr ""
+msgstr "Ir"

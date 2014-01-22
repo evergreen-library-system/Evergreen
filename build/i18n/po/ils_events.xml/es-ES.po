@@ -8,18 +8,18 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-09-26 18:17-0400\n"
-"PO-Revision-Date: 2011-05-14 05:59+0000\n"
-"Last-Translator: Julian Lamus <Unknown>\n"
+"PO-Revision-Date: 2013-11-15 20:21+0000\n"
+"Last-Translator: Gerson Vazquez <gerson.v.h@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-09-28 05:26+0000\n"
-"X-Generator: Launchpad (build 16774)\n"
+"X-Launchpad-Export-Date: 2013-11-16 05:47+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #: 1621.CONTAINER_COPY_BUCKET_NOT_FOUND:511
 msgid "The requested container_copy_bucket was not found"
-msgstr "el container_copy_bucket requerido no se ha encontrado"
+msgstr "El container_copy_bucket solicitado no fue encontrado"
 
 #: 1208.TITLE_LAST_COPY:71
 msgid "The last copy attached to a title is being removed or deleted"
@@ -68,6 +68,8 @@ msgstr "el metabib_series_field_entry requerido no ha sido encontrado"
 msgid ""
 "Payments by patron credit are not allowed for the selected transaction"
 msgstr ""
+"Los pagos mediante crédito del usuario no están permitidos para la "
+"transacción seleccionada."
 
 #: 4003.CREDIT_PROCESSOR_NOT_ALLOWED:790
 msgid "The credit card processor you have named is not allowed"
@@ -102,7 +104,7 @@ msgstr ""
 
 #: 1589.ACTOR_CARD_NOT_FOUND:415
 msgid "The requested actor_card was not found"
-msgstr ""
+msgstr "La actor_card solicitada no fue encontrada"
 
 #: 1608.METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND:472
 msgid "The requested metabib_subject_field_entry was not found"
@@ -133,11 +135,11 @@ msgstr ""
 
 #: 1538.ACTION_SURVEY_RESPONSE_NOT_FOUND:269
 msgid "The requested action_survey_response was not found"
-msgstr ""
+msgstr "La  action_survey_response solicitada no fue encontrada"
 
 #: 1555.MONEY_OPEN_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND:317
 msgid "The requested money_open_billable_transaction_summary was not found"
-msgstr ""
+msgstr "La money_open_billable_transaction_summary no fue encontrada"
 
 #: 7000.ROUTE_ITEM:833
 msgid ""
@@ -163,7 +165,7 @@ msgstr ""
 
 #: 7016.ITEM_ON_HOLDS_SHELF:886
 msgid "This requested item is currently on the holds shelf"
-msgstr ""
+msgstr "El ejmplar solicitado está en la estantería de apartados"
 
 #: 2001.DATABASE_UPDATE_FAILED:767
 msgid "The attempt to write to the DB failed"
@@ -232,7 +234,7 @@ msgstr ""
 
 #: 7011.COPY_STATUS_LOST:871
 msgid "Copy is marked as lost"
-msgstr ""
+msgstr "Copia señalada como perdida"
 
 #: 7004.COPY_NOT_AVAILABLE:850
 msgid "Copy is not available"
@@ -252,7 +254,7 @@ msgstr ""
 
 #: 7008.MAX_RENEWALS_REACHED:862
 msgid "Circulation has no more renewals remaining"
-msgstr ""
+msgstr "El préstamo ya no tiene renovaciones disponibles"
 
 #: 1217.PATRON_INACTIVE:106
 msgid "This account is marked as inactive"
@@ -292,7 +294,7 @@ msgstr ""
 
 #: 1229.VOLUME_DELETED:152
 msgid "The requested volume is marked as deleted"
-msgstr ""
+msgstr "El volumen solicitado está señalado como eliminado"
 
 #: 1635.REPORTER_REPORT_NOT_FOUND:553
 msgid "The requested reporter_report was not found"
@@ -418,11 +420,11 @@ msgstr ""
 
 #: 1205.CARD_EXISTS:62
 msgid "The given user barcode already exists"
-msgstr ""
+msgstr "El código de barras de usuario proporcionado ya existe"
 
 #: 1713.SURVEY_RESPONSES_EXIST:746
 msgid "Responses to this survey exist"
-msgstr ""
+msgstr "Existen respuestas a esta encuesta"
 
 #: 1544.CONFIG_METABIB_FIELD_NOT_FOUND:287
 msgid "The requested config_metabib_field was not found"
@@ -462,7 +464,7 @@ msgstr ""
 
 #: 7007.COPY_NEEDED_FOR_HOLD:859
 msgid "Copy is needed to fulfill a hold"
-msgstr ""
+msgstr "Se necesita una copia para cumplir con el apartado"
 
 #: 1562.METABIB_METARECORD_SOURCE_MAP_NOT_FOUND:337
 msgid "The requested metabib_metarecord_source_map was not found"
@@ -512,7 +514,7 @@ msgstr ""
 
 #: 1704.TCN_EXISTS:719
 msgid "A record already exists with the requested TCN value"
-msgstr ""
+msgstr "Ya existe un registro con el valor TCN solicitado"
 
 #: 1.UNKNOWN:17
 msgid "Placeholder event.  Used for development only"
@@ -543,6 +545,7 @@ msgstr ""
 #: 1222.PATRON_NO_EMAIL_ADDRESS:124
 msgid "The user does not have a valid email address assigned"
 msgstr ""
+"El usuario no tiene asignada una dirección de correo electrónico valida"
 
 #: 2005.OBJECT_UNIQUE_IDENTIFIER_USED:779
 msgid ""
@@ -576,7 +579,7 @@ msgstr ""
 
 #: 7012.COPY_STATUS_MISSING:874
 msgid "Copy is marked as missing"
-msgstr ""
+msgstr "Copia señalada como faltante"
 
 #: 1500.ACTION_CIRCULATION_NOT_FOUND:180
 msgid ""
@@ -594,7 +597,7 @@ msgstr ""
 
 #: 7005.LOCATION_CIRC_NOT_ALLOWED:853
 msgid "Location does not allow materials to circulate"
-msgstr ""
+msgstr "La ubicación no permite que los materiales circulen"
 
 #: 1508.ASSET_CALL_NUMBER_NOT_FOUND:215
 msgid "Requested asset_call_number was not found"
@@ -602,7 +605,7 @@ msgstr ""
 
 #: 1209.Z3950_LOGIN_FAILED:74
 msgid "The login failed"
-msgstr ""
+msgstr "Fallo el inicio de sesión."
 
 #: 1543.MONEY_CREDIT_CARD_PAYMENT_NOT_FOUND:284
 msgid "The requested money_credit_card_payment was not found"

@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-09-26 18:17-0400\n"
-"PO-Revision-Date: 2012-11-18 14:30+0000\n"
+"PO-Revision-Date: 2013-12-27 09:51+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-09-28 05:21+0000\n"
-"X-Generator: Launchpad (build 16774)\n"
+"X-Launchpad-Export-Date: 2013-12-28 05:21+0000\n"
+"X-Generator: Launchpad (build 16877)\n"
 "X-Accelerator-Marker: &\n"
 
 #: bib.no_marc
@@ -754,7 +754,7 @@ msgstr "<Հեռացրու սպասարկումը որպես տեսակ>"
 
 #: staff.cat.copy_editor.remove_floating
 msgid "<Remove Floating>"
-msgstr ""
+msgstr "<Հեռացրու լողացողը>"
 
 #: staff.cat.copy_editor.field.unset_or_null
 msgctxt "staff.cat.copy_editor.field.unset_or_null"

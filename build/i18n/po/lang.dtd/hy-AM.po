@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-09-26 18:16-0400\n"
-"PO-Revision-Date: 2013-04-01 14:55+0000\n"
+"PO-Revision-Date: 2013-12-30 14:21+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-09-28 05:26+0000\n"
-"X-Generator: Launchpad (build 16774)\n"
+"X-Launchpad-Export-Date: 2013-12-31 04:58+0000\n"
+"X-Generator: Launchpad (build 16877)\n"
 "X-Accelerator-Marker: &\n"
 
 #: common.logout
@@ -302,23 +302,23 @@ msgstr "&Հիշիր այս տրանզակցիան"
 
 #: common.debug.label
 msgid "Debug:"
-msgstr ""
+msgstr "Սխալների շտկում։"
 
 #: common.debug.btn.execute
 msgid "Execute"
-msgstr ""
+msgstr "Կատարում"
 
 #: common.debug.btn.inspect
 msgid "Inspect"
-msgstr ""
+msgstr "Ստուգել"
 
 #: common.debug.btn.js2JSON
 msgid "js2JSON"
-msgstr ""
+msgstr "js2JSON"
 
 #: common.debug.menu.btn
 msgid "Debug"
-msgstr ""
+msgstr "Վերացնել թերությունները"
 
 #: common.true
 msgid "True"
@@ -386,13 +386,13 @@ msgstr "Ընտրիր լրիվ"
 
 #: common.clipboard.copy_data.desc
 msgid "Choose the data to copy into the clipboard:"
-msgstr ""
+msgstr "Ընտրի տվյալները աշխատանքային հիշողություն պատճենելու համար։"
 
 #: common.clipboard.close.label
 #: common.clipboard.close.accesskey
 msgctxt "common.clipboard.close.label common.clipboard.close.accesskey"
 msgid "&Close"
-msgstr ""
+msgstr "&Փակիր"
 
 #: common.sort.first.ascending
 msgid "Sort First (Ascending)"
@@ -996,16 +996,16 @@ msgstr "&Գործողություններ ընտրված օգտվողների հ
 #: staff.auth.help_btn.label
 #: staff.auth.help_btn.accesskey
 msgid "He&lp"
-msgstr ""
+msgstr "Օգնությու&ն"
 
 #: staff.auth.help.menu.contents.label
 #: staff.auth.help.menu.contents.accesskey
 msgid "&Contents"
-msgstr ""
+msgstr "&Բովանդակություն"
 
 #: staff.auth.help.menu.check_upgrades.label
 msgid "Check for upgrades"
-msgstr ""
+msgstr "Ստուգիր թարմացումների համար"
 
 #: staff.auth.login_header
 msgid "Log in"
@@ -1055,7 +1055,7 @@ msgstr "Ելք Evergreen-ից"
 #: staff.auth.quit_prompt.accesskey
 msgctxt "staff.auth.quit_prompt.accesskey"
 msgid "x"
-msgstr ""
+msgstr "x"
 
 #: staff.auth.submit_prompt
 msgctxt "staff.auth.submit_prompt"
@@ -1137,23 +1137,23 @@ msgstr "Մշտական"
 
 #: staff.symbols.west_european
 msgid "West-European"
-msgstr ""
+msgstr "Արևմտաեվրոպական"
 
 #: staff.symbols.turkish
 msgid "Turkish"
-msgstr ""
+msgstr "Թուրքերեն"
 
 #: staff.symbols.cyrillic
 msgid "Cyrillic"
-msgstr ""
+msgstr "Կիրիլլիցա"
 
 #: staff.symbols.slavic
 msgid "Slavic"
-msgstr ""
+msgstr "Սլավոներեն"
 
 #: staff.symbols.hungarian
 msgid "Hungarian"
-msgstr ""
+msgstr "Հունգարերեն"
 
 #: staff.bills_current_payment_label
 msgid "Current Payment"
@@ -1375,15 +1375,15 @@ msgstr "V"
 
 #: staff.bibs_abreast.view_bib
 msgid "View Bib"
-msgstr ""
+msgstr "Դիտիր Bib"
 
 #: staff.bibs_abreast.edit_bib
 msgid "Edit Bib"
-msgstr ""
+msgstr "Խմբագրի Bib"
 
 #: staff.bibs_abreast.holdings
 msgid "Holdings"
-msgstr ""
+msgstr "Պահումներ"
 
 #: staff.cat.opac.add_bucket.label
 #: staff.cat.opac.add_bucket.accesskey
@@ -2914,7 +2914,7 @@ msgstr "-"
 #: staff.main.menu.admin.change_session.label
 #: staff.main.menu.admin.change_session.accesskey
 msgid "&Operator Change: New"
-msgstr ""
+msgstr "&Օպերատորի փոփոխություն: Նոր"
 
 #: staff.main.menu.admin.clear_cache.accesskey
 msgctxt "staff.main.menu.admin.clear_cache.accesskey"
@@ -3101,7 +3101,7 @@ msgstr "Org Unit Proximity Adjustments"
 
 #: staff.main.menu.admin.server_admin.conify.z3950_index_field_map.label
 msgid "Z39.50 Index Field Maps"
-msgstr ""
+msgstr "Z39.50 ցուցիչի դաշտի քարտեզներ"
 
 #: staff.main.menu.admin.server_admin.conify.circulation_modifier.label
 msgid "Circulation Modifiers"
@@ -3189,7 +3189,7 @@ msgstr "Տացքի սահմանափակման խմբեր"
 
 #: staff.main.menu.admin.server_admin.conify.floating_groups.label
 msgid "Floating Groups"
-msgstr ""
+msgstr "Լողացող խմբեր"
 
 #: staff.main.menu.admin.server_admin.acq.label
 #: staff.main.menu.admin.server_admin.acq.accesskey
@@ -3437,7 +3437,7 @@ msgstr "Կարգաբերի փնտրման նախապատվությունները
 
 #: staff.main.menu.admin.client.server_addon_ws_configure.label
 msgid "Server Add-ons"
-msgstr ""
+msgstr "Սերվերային հավելումներ"
 
 #: staff.main.menu.admin.client.toolbars
 msgid "Toolbars"
@@ -3900,7 +3900,7 @@ msgstr "&Դիտիր պահումների դարակը"
 
 #: staff.main.menu.circ.hold_clear.label
 msgid "Clear Holds Shelf"
-msgstr ""
+msgstr "Մաքրել պահումների դարակը"
 
 #: staff.main.menu.circ.hold_capture.label
 #: staff.main.menu.circ.hold_capture.accesskey
@@ -4159,7 +4159,7 @@ msgstr "Գրադարանային գրառումներ"
 #: staff.main.menu.entity.copy.label
 msgctxt "staff.main.menu.entity.copy.label"
 msgid "Items"
-msgstr ""
+msgstr "Նյութեր"
 
 #: staff.main.menu.entity.patron.label
 msgid "Patrons"
@@ -5701,7 +5701,7 @@ msgstr "Վերնագիր"
 #: staff.next.range
 msgctxt "staff.next.range"
 msgid "Next"
-msgstr ""
+msgstr "Հաջորդը"
 
 #: staff.next.range.key
 msgctxt "staff.next.range.key"
@@ -5851,7 +5851,7 @@ msgstr "Մատչելի"
 
 #: staff.patron_display.holds_available_behind_desk.label
 msgid "Behind Desk:"
-msgstr ""
+msgstr "Դարակի հետևում։"
 
 #: staff.patron_display.home_ou.label
 msgctxt "staff.patron_display.home_ou.label"
@@ -6338,7 +6338,7 @@ msgstr "I"
 
 #: staff.patron_navbar.items.problem_items.caption
 msgid "Other/Special Circulations"
-msgstr ""
+msgstr "Այլ/հատուկ տացք"
 
 #: staff.patron_navbar.refresh
 msgctxt "staff.patron_navbar.refresh"
@@ -6471,7 +6471,7 @@ msgstr "Ընթերցողի վիճակագրական դասեր"
 #: staff.previous.range
 msgctxt "staff.previous.range"
 msgid "Previous"
-msgstr ""
+msgstr "Նախորդը"
 
 #: staff.previous.range.key
 msgctxt "staff.previous.range.key"
@@ -6549,12 +6549,12 @@ msgstr "Ջնջիր MFHD գրառումը"
 
 #: staff.serial.scap_editor.title.label
 msgid "Caption and Pattern"
-msgstr ""
+msgstr "Որսալ և պատկերներ"
 
 #: staff.serial.pattern_wizard.title
 msgctxt "staff.serial.pattern_wizard.title"
 msgid "Pattern Code Wizard"
-msgstr ""
+msgstr "Ձևապատկերների կոդի նմուշ"
 
 #: staff.serial.scap_editor.pattern_wizard.label
 #: staff.serial.scap_editor.pattern_wizard.accesskey
@@ -6578,7 +6578,7 @@ msgstr "Որսման և ձևերի &նշումներ"
 
 #: staff.serial.sbsum_editor.basicsummary.label
 msgid "Basic Summary"
-msgstr ""
+msgstr "Հիմնական համառոտագրություն"
 
 #: staff.serial.sbsum_editor.modify.label
 #: staff.serial.sbsum_editor.modify.accesskey
@@ -6587,7 +6587,7 @@ msgstr "&Ձևափոխիր հիմնական համառոտագրությունը"
 
 #: staff.serial.sisum_editor.title.label
 msgid "Index Summary"
-msgstr ""
+msgstr "Ցուցիչի համառոտագրություն"
 
 #: staff.serial.sisum_editor.modify.label
 #: staff.serial.sisum_editor.modify.accesskey
@@ -6601,7 +6601,7 @@ msgstr "&Ձևափոխիր հավելվածի համառոտագրություն�
 
 #: staff.serial.sssum_editor.summary.label
 msgid "Supplement Summary"
-msgstr ""
+msgstr "Հավելվածի համառոտագրություն"
 
 #: staff.serial.sdist_editor.modify.label
 #: staff.serial.sdist_editor.modify.accesskey
@@ -6620,15 +6620,15 @@ msgstr "Բաշխման &նշումներ"
 
 #: staff.serial.sdist_editor.distribution.value
 msgid "Distribution"
-msgstr ""
+msgstr "Տարածում"
 
 #: staff.serial.sdist_editor.libopt.label
 msgid "Library Specific Options"
-msgstr ""
+msgstr "Գրադարանի որոշակի ընտրանքներ"
 
 #: staff.serial.sdist_editor.libopt.desc
 msgid "Note: Changing the 'Holding Lib' will unset all of these values"
-msgstr ""
+msgstr "Նշում։ փոխելով 'Holding Lib' կզրոյացնի բոլոր այս արժեքները"
 
 #: staff.serial.serctrl_view.label
 msgid "Serial Control View"
@@ -6666,24 +6666,24 @@ msgstr "Նյութի &նշումներ"
 
 #: staff.serial.sitem_editor.title
 msgid "Item Editor"
-msgstr ""
+msgstr "Նյութի խմբագրիչ"
 
 #: staff.serial.sitem_editor.item.label
 msgid "Item"
-msgstr ""
+msgstr "Նյութ"
 
 #: staff.serial.sitem_editor.item_dates.btn
 msgid "Item Dates"
-msgstr ""
+msgstr "Նյութի ամսաթվեր"
 
 #: staff.serial.sitem_editor.item_dates.accesskey
 msgctxt "staff.serial.sitem_editor.item_dates.accesskey"
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #: staff.serial.sstr_editor.stream.label
 msgid "Stream"
-msgstr ""
+msgstr "Հոսք"
 
 #: staff.serial.sstr_editor.modify.label
 #: staff.serial.sstr_editor.modify.accesskey
@@ -6713,26 +6713,26 @@ msgstr "Բաժանորդագրության &նշումներ"
 #: staff.serial.manage_dists.title.label
 msgctxt "staff.serial.manage_dists.title.label"
 msgid "Distributions"
-msgstr ""
+msgstr "Բաշխումներ"
 
 #: staff.serial.manage_dists.show_sdists.label
 msgid "Show Dists."
-msgstr ""
+msgstr "Ցույց տուր Dists."
 
 #: staff.serial.manage_dists.show_sdists_groups.label
 msgctxt "staff.serial.manage_dists.show_sdists_groups.label"
 msgid "Show Groups"
-msgstr ""
+msgstr "Ցույց տուր խմբերը"
 
 #: staff.serial.manage_dists.actions.cmd_menu.label
 msgctxt "staff.serial.manage_dists.actions.cmd_menu.label"
 msgid "Actions for Selected Row"
-msgstr ""
+msgstr "Ը նտրված տողի համար գործողություններ"
 
 #: staff.serial.manage_dists.actions.select_obj.desc
 msgctxt "staff.serial.manage_dists.actions.select_obj.desc"
 msgid "Please select an object to edit"
-msgstr ""
+msgstr "Ընտրի օբյեկտը խմբագրման համար"
 
 #: staff.serial.manage_dists.actions.cmd_add_sstr.label
 msgid "Add Stream"
@@ -6853,450 +6853,458 @@ msgstr "բովանդակություն"
 #: staff.serial.manage_subs.tab.label
 msgctxt "staff.serial.manage_subs.tab.label"
 msgid "Subscriptions"
-msgstr ""
+msgstr "Բաժանորդագրություններ"
 
 #: staff.serial.manage_subs.cmd_add_sub.label
 msgid "Add Subscription"
-msgstr ""
+msgstr "Ավելացրու բաժանորդագրություններ"
 
 #: staff.serial.manage_subs.cmd_add_sdist.label
 msgid "Add Distribution"
-msgstr ""
+msgstr "Ավելացրու բաշխումները"
 
 #: staff.serial.manage_subs.cmd_add_siss.label
 msgid "Add Issuance"
-msgstr ""
+msgstr "Ավելացրու տրումը"
 
 #: staff.serial.manage_subs.cmd_add_scap.label
 msgid "Add Caption/Pattern"
-msgstr ""
+msgstr "Ավելացրու որսումը/ձևապատկերը"
 
 #: staff.serial.manage_subs.cmd_make_predictions.label
 msgid "Make Predictions"
-msgstr ""
+msgstr "Ստեղծիր կանխատեսումներ"
 
 #: staff.serial.manage_subs.cmd_del_ssub.label
 msgid "Delete Subscription"
-msgstr ""
+msgstr "Ջնջիր բաժանորդագրությունը"
 
 #: staff.serial.manage_subs.cmd_del_sdist.label
 msgid "Delete Distribution"
-msgstr ""
+msgstr "Ջնջիր բաշխումը"
 
 #: staff.serial.manage_subs.cmd_del_siss.label
 msgid "Delete Issuance"
-msgstr ""
+msgstr "Ջնջիր տրումը"
 
 #: staff.serial.manage_subs.cmd_del_scap.label
 msgid "Delete Caption/Pattern"
-msgstr ""
+msgstr "Ջնջիր Որսալը/ձևապատկերը"
 
 #: staff.serial.manage_subs.show_subs.label
 msgid "Show Subs."
-msgstr ""
+msgstr "Ցույց տուր Subs."
 
 #: staff.serial.manage_subs.show_subs_groups.label
 msgctxt "staff.serial.manage_subs.show_subs_groups.label"
 msgid "Show Groups"
-msgstr ""
+msgstr "Ցույց տուր խմբերը"
 
 #: staff.serial.manage_subs.actions_menu.label
 msgctxt "staff.serial.manage_subs.actions_menu.label"
 msgid "Actions for Selected Row"
-msgstr ""
+msgstr "Ը նտրված տողի համար գործողություններ"
 
 #: staff.serial.manage_subs.deck.desc
 msgctxt "staff.serial.manage_subs.deck.desc"
 msgid "Please select an object to edit"
-msgstr ""
+msgstr "Ընտրի օբյեկտը խմբագրման համար"
 
 #: staff.select_aou.title
 msgid "Select Org Unit"
-msgstr ""
+msgstr "Ընտրի Org միավորը"
 
 #: staff.select_aou.caption
 msgid "Select an Org Unit"
-msgstr ""
+msgstr "Ընտրի Org միավորը"
 
 #: staff.select_aou.desc
 msgid "Please select an Org Unit"
-msgstr ""
+msgstr "Խնդրվում է ընտրել Org միավոր"
 
 #: staff.select_aou.select_btn.label
 #: staff.select_aou.select_btn.accesskey
 msgid "&Select"
-msgstr ""
+msgstr "&Ընտրել"
 
 #: staff.serial.patternwiz.caption
 msgctxt "staff.serial.patternwiz.caption"
 msgid "Pattern Code Wizard"
-msgstr ""
+msgstr "Ձևապատկերի կոդի նմուշ"
 
 #: staff.serial.patternwiz.previous.btn
 msgctxt "staff.serial.patternwiz.previous.btn"
 msgid "Previous"
-msgstr ""
+msgstr "Նախորդը"
 
 #: staff.serial.patternwiz.next.btn
 msgctxt "staff.serial.patternwiz.next.btn"
 msgid "Next"
-msgstr ""
+msgstr "Հաջորդը"
 
 #: staff.serial.patternwiz.use_enum.label
 msgid "Use enumerations?"
-msgstr ""
+msgstr "Օգտագործե՞լ համարակալումը"
 
 #: staff.serial.patternwiz.use_enum.desc
 msgid ""
 "\"v.\" and \"no.\" are common first and second level enumeration captions."
 msgstr ""
+"\"v.\" և \"no.\" հաճախ օտագործվող առաջին և երկրորդ մակարդակների "
+"համարակուլմներ են։"
 
 #: staff.serial.patternwiz.enum_row.enum_capt
 msgid "Enumeration Caption"
-msgstr ""
+msgstr "Համարակալման որսում"
 
 #: staff.serial.patternwiz.enum_row.units_per_higher_lvl
 msgid "Units Per Higher Level"
-msgstr ""
+msgstr "Միավորներ ըստ ավելի բարձր մակարդակի"
 
 #: staff.serial.patternwiz.enum_row.number_cont
 msgid "Numbering Continuity"
-msgstr ""
+msgstr "Հաշվարկման հաջորդականություն"
 
 #: staff.serial.patternwiz.units_per.number.label
 msgid "Number"
-msgstr ""
+msgstr "Թիվ"
 
 #: staff.serial.patternwiz.units_per.varies.label
 msgid "Varies"
-msgstr ""
+msgstr "Փոփոխվում է"
 
 #: staff.serial.patternwiz.units_per.undetermined.label
 msgid "Undetermined"
-msgstr ""
+msgstr "Չորոշված"
 
 #: staff.serial.patternwiz.continuity.continuous.label
 msgid "Increments continuously"
-msgstr ""
+msgstr "Աճում է շարունակաբար"
 
 #: staff.serial.patternwiz.continuity.restarts.label
 msgid "Restarts at unit completion"
-msgstr ""
+msgstr "Վերսկսվում է միավորի ավարտից"
 
 #: staff.serial.patternwiz.enum_row.remove
 msgid "Remove"
-msgstr ""
+msgstr "Հեռացնել"
 
 #: staff.serial.patternwiz.enum_row.add.label
 #: staff.serial.patternwiz.enum_row.add.accesskey
 msgid "Add &Enumeration"
-msgstr ""
+msgstr "Ավելացրու &Համարակալում"
 
 #: staff.serial.patternwiz.enum_row.add_alt.label
 #: staff.serial.patternwiz.enum_row.add_alt.accesskey
 msgid "&Add Alternate Enumeration"
-msgstr ""
+msgstr "&Ավելացրու այլընտրանքային համարակալում"
 
 #: staff.serial.patternwiz.use_cal_change
 msgid "Use calendar changes?"
-msgstr ""
+msgstr "Օգտագործե՞լ օրացույցի փոփոխությունները։"
 
 #: staff.serial.patternwiz.use_cal_change.desc
 msgid ""
 "Identify any points during the year at which the highest level enumeration "
 "caption changes."
 msgstr ""
+"Բնութագրի տարվա ընթացքում ցանկացած կետ որի դեպքում ամենաբարձր մակարդակի "
+"համարակալման որսումը փոփոխվել է։"
 
 #: staff.serial.patternwiz.cal_change_head.type
 msgctxt "staff.serial.patternwiz.cal_change_head.type"
 msgid "Type"
-msgstr ""
+msgstr "Տեսակ"
 
 #: staff.serial.patternwiz.cal_change_head.point
 msgid "Point"
-msgstr ""
+msgstr "Կետ"
 
 #: staff.serial.patternwiz.cal_row.month
 msgid "At start of a month"
-msgstr ""
+msgstr "Ամսվա սկզբին"
 
 #: staff.serial.patternwiz.cal_row.season
 msgid "At start of a season"
-msgstr ""
+msgstr "Սեզոնի սկզբին"
 
 #: staff.serial.patternwiz.cal_row.date
 msgid "On a date"
-msgstr ""
+msgstr "Ժամկետում"
 
 #: staff.serial.patternwiz.season.spring
 msgid "Spring"
-msgstr ""
+msgstr "Գարուն"
 
 #: staff.serial.patternwiz.season.summer
 msgid "Summer"
-msgstr ""
+msgstr "Ամառ"
 
 #: staff.serial.patternwiz.season.autumn
 msgid "Autumn"
-msgstr ""
+msgstr "Աշում"
 
 #: staff.serial.patternwiz.season.winter
 msgid "Winter"
-msgstr ""
+msgstr "Ձմեռ"
 
 #: staff.serial.patternwiz.cal_change.add.btn
 msgid "Add Calendar Change"
-msgstr ""
+msgstr "Ավելացրու օրացույցի փոփոխությունը"
 
 #: staff.serial.patternwiz.cal_change.add.accesskey
 msgctxt "staff.serial.patternwiz.cal_change.add.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.serial.patternwiz.use_chron.label
 msgid "Use chronology captions?"
-msgstr ""
+msgstr "Օգտագործե՞լ ժամանակագրական որսումները"
 
 #: staff.serial.patternwiz.use_chron.desc
 msgid ""
 "Each caption must be a smaller unit of time than the preceding caption."
 msgstr ""
+"Յուրաքանչյուր որսում պետք է լինի ավելի փոքր միավոր քան նախորդ որսումն էր"
 
 #: staff.serial.patternwiz.chron_row_head.caption
 msgid "Caption"
-msgstr ""
+msgstr "Որսում"
 
 #: staff.serial.patternwiz.chron_row_head.include
 msgid "Include this actual word in the caption?"
-msgstr ""
+msgstr "Ներառե՞լ այս այժմեական բառը որսման մեջ"
 
 #: staff.serial.patternwiz.chron_row.year
 msgid "Year"
-msgstr ""
+msgstr "Տարի"
 
 #: staff.serial.patternwiz.chron_row.season
 msgctxt "staff.serial.patternwiz.chron_row.season"
 msgid "Season"
-msgstr ""
+msgstr "Սեզոն"
 
 #: staff.serial.patternwiz.chron_row.month
 msgctxt "staff.serial.patternwiz.chron_row.month"
 msgid "Month"
-msgstr ""
+msgstr "Ամիս"
 
 #: staff.serial.patternwiz.chron_row.week
 msgid "Week"
-msgstr ""
+msgstr "Շաբաթ"
 
 #: staff.serial.patternwiz.chron_row.day
 msgid "Day"
-msgstr ""
+msgstr "Օր"
 
 #: staff.serial.patternwiz.chron_row.hour
 msgid "Hour"
-msgstr ""
+msgstr "Ժամ"
 
 #: staff.serial.patternwiz.chron_caption.add.label
 #: staff.serial.patternwiz.chron_caption.add.accesskey
 msgid "Add &Chronology Caption"
-msgstr ""
+msgstr "Ավելացրու &ժամանակագրական որսումը"
 
 #: staff.serial.patternwiz.compress.label
 msgid "Compressibility and Expandability:"
-msgstr ""
+msgstr "Սեղմելիություն և ընդլայնում"
 
 #: staff.serial.patternwiz.compress.cannot
 msgid "Cannot compress or expand"
-msgstr ""
+msgstr "Չի կարող սեղմել կամ ընդլայնել"
 
 #: staff.serial.patternwiz.compress.can_compress
 msgid "Can compress but not expand"
-msgstr ""
+msgstr "Կարող է սեղմել բայց չի կարող ընդլայնել"
 
 #: staff.serial.patternwiz.compress.both
 msgid "Can compress or expand"
-msgstr ""
+msgstr "Կարող է սեղմել կամ ընդլայնել"
 
 #: staff.serial.patternwiz.compress.unknown
 msgid "Unknown"
-msgstr ""
+msgstr "Անհայտ"
 
 #: staff.serial.patternwiz.caption_eval.label
 msgid "Caption Evaluation:"
-msgstr ""
+msgstr "Որսման գնահատում"
 
 #: staff.serial.patternwiz.caption_eval.yes_all
 msgid "Captions verified; all levels present"
-msgstr ""
+msgstr "Որսումները համեմատված են. բոլոր մակարդակները ներկա են"
 
 #: staff.serial.patternwiz.caption_eval.yes_some
 msgid "Captions verified; all levels may not be present"
-msgstr ""
+msgstr "Որսումները համեմատված են. բոլոր մակարդակները կարող է ներկա չեն"
 
 #: staff.serial.patternwiz.caption_eval.no_all
 msgid "Captions unverified; all levels present"
-msgstr ""
+msgstr "Որսումները չեն համեմատված. բոլոր մակարդակները ներկա են"
 
 #: staff.serial.patternwiz.caption_eval.no_some
 msgid "Captions unverified; all levels may not be present"
-msgstr ""
+msgstr "Որսումները չեն համեմատված. բոլոր մակարդակները կարող է ներկա չեն"
 
 #: staff.serial.patternwiz.freq.label
 #: staff.serial.patternwiz.freq.accesskey
 msgid "Select &frequency:"
-msgstr ""
+msgstr "Ընտրի &հաճախականությունը"
 
 #: staff.serial.patternwiz.freq.item.a
 msgid "Annual"
-msgstr ""
+msgstr "Տարեկան"
 
 #: staff.serial.patternwiz.freq.item.b
 msgid "Bimonthly"
-msgstr ""
+msgstr "Երկամսյա"
 
 #: staff.serial.patternwiz.freq.item.c
 msgid "Semiweekly"
-msgstr ""
+msgstr "Կիսաշաբաթական"
 
 #: staff.serial.patternwiz.freq.item.d
 msgid "Daily"
-msgstr ""
+msgstr "Օրական"
 
 #: staff.serial.patternwiz.freq.item.e
 msgid "Biweekly"
-msgstr ""
+msgstr "երկշաբաթյա"
 
 #: staff.serial.patternwiz.freq.item.f
 msgid "Semiannual"
-msgstr ""
+msgstr "Կեստարյա"
 
 #: staff.serial.patternwiz.freq.item.g
 msgid "Biennial"
-msgstr ""
+msgstr "Երկտարյա"
 
 #: staff.serial.patternwiz.freq.item.h
 msgid "Triennial"
-msgstr ""
+msgstr "Եռամյա"
 
 #: staff.serial.patternwiz.freq.item.i
 msgid "Three times a week"
-msgstr ""
+msgstr "Շաբաթական երեք անգամ"
 
 #: staff.serial.patternwiz.freq.item.j
 msgid "Three times a month"
-msgstr ""
+msgstr "Ամսական երեք անգամ"
 
 #: staff.serial.patternwiz.freq.item.k
 msgid "Continuously updated"
-msgstr ""
+msgstr "Շարունակաբար թարմացվել է"
 
 #: staff.serial.patternwiz.freq.item.m
 msgid "Monthly"
-msgstr ""
+msgstr "Ամսական"
 
 #: staff.serial.patternwiz.freq.item.q
 msgid "Quarterly"
-msgstr ""
+msgstr "Եռամսյակային"
 
 #: staff.serial.patternwiz.freq.item.s
 msgid "Semimonthly"
-msgstr ""
+msgstr "Կիսամսյակային"
 
 #: staff.serial.patternwiz.freq.item.t
 msgid "Three times a year"
-msgstr ""
+msgstr "Տարեկան երեք անգամ"
 
 #: staff.serial.patternwiz.freq.item.w
 msgid "Weekly"
-msgstr ""
+msgstr "Շաբաթական"
 
 #: staff.serial.patternwiz.freq.item.x
 msgid "Completely irregular"
-msgstr ""
+msgstr "Ամբողջովին անկանոն"
 
 #: staff.serial.patternwiz.issues_per_year.label
 #: staff.serial.patternwiz.issues_per_year.accesskey
 msgid "Use number of &issues per year:"
-msgstr ""
+msgstr "Օգտագործի &համարների քանակը տարեկան:"
 
 #: staff.serial.patternwiz.use_regularity
 msgid ""
 "Use specific regularity information (published, omitted, and/or combined "
 "issues)?"
 msgstr ""
+"Օգտագործե՞լ հատուկ կանոնակարգման տեղեկատվությունը (հրատարակված, բաց թողնված, "
+"և/կամ կոմբինացված համարներ)"
 
 #: staff.serial.patternwiz.regularity.item.p
 msgid "Published"
-msgstr ""
+msgstr "Հրատարակված"
 
 #: staff.serial.patternwiz.regularity.item.o
 msgid "Omitted"
-msgstr ""
+msgstr "Բաց թողնված"
 
 #: staff.serial.patternwiz.regularity.item.c
 msgid "Combined"
-msgstr ""
+msgstr "Կոմբինացված"
 
 #: staff.serial.patternwiz.regularity.typecode.d1
 msgid "Day of the week"
-msgstr ""
+msgstr "Շաբաթվա օրը"
 
 #: staff.serial.patternwiz.regularity.typecode.d2
 msgid "Day of the month"
-msgstr ""
+msgstr "Ամսվա օրը"
 
 #: staff.serial.patternwiz.regularity.typecode.d3
 msgid "Date of the year"
-msgstr ""
+msgstr "Տարվա օրը"
 
 #: staff.serial.patternwiz.regularity.typecode.m
 msgctxt "staff.serial.patternwiz.regularity.typecode.m"
 msgid "Month"
-msgstr ""
+msgstr "Ամիս"
 
 #: staff.serial.patternwiz.regularity.typecode.s
 msgctxt "staff.serial.patternwiz.regularity.typecode.s"
 msgid "Season"
-msgstr ""
+msgstr "Սեզոն"
 
 #: staff.serial.patternwiz.regularity.typecode.w1
 msgid "Weekday of the month"
-msgstr ""
+msgstr "Ամսվա աշխատանքային օրը"
 
 #: staff.serial.patternwiz.regularity.typecode.w2
 msgid "Weekday of specific month"
-msgstr ""
+msgstr "Ամսվա որոշակի աշխատանքային օրը"
 
 #: staff.serial.patternwiz.regularity.typecode.w3
 msgid "Week of specific month"
-msgstr ""
+msgstr "Որոշակի ամսվա շաբաթը"
 
 #: staff.serial.patternwiz.regularity.typecode.y
 msgid "Span over two years"
-msgstr ""
+msgstr "Փռվածքը ավելի քան երկու տարվա ընթացքում"
 
 #: staff.serial.patternwiz.subrow.add.label
 msgid "Add sub-row"
-msgstr ""
+msgstr "Ավելացրու ենթասյունակ"
 
 #: staff.serial.patternwiz.subrow.remove.label
 msgid "Remove whole row"
-msgstr ""
+msgstr "Հեռացրու ողջ տողը"
 
 #: staff.serial.patternwiz.addrow.label
 #: staff.serial.patternwiz.addrow.accesskey
 msgid "Add More Regularit&y Information"
-msgstr ""
+msgstr "Ավելացրու ավելի կարգավորո&ղ տեղեկատվություն"
 
 #: staff.serial.patternwiz.submit.desc
 msgid ""
 "Are you ready to create a pattern code from your selections in this wizard?"
 msgstr ""
+"Դու պատրա՞ստ ես այս նմուշի քո ընտրածներից ստեղծելու նոր ձևանմուշի կոդ։"
 
 #: staff.serial.patternwiz.submit.label
 #: staff.serial.patternwiz.submit.accesskey
 msgid "Create &Pattern Code"
-msgstr ""
+msgstr "Ստեղծիր &ձևանմուշի կոդ"
 
 #: staff.serial.batch_receive
 msgid "Batch Receive"
@@ -8216,7 +8224,7 @@ msgstr "Ժամի սխալ ձևաչափ"
 
 #: staff.server.admin.closed_dates.date_span.invalid
 msgid "Ending date is earlier than starting date"
-msgstr ""
+msgstr "Ավարտի ամսաթիվը ավելի վաղ է քան սկզբի ամսաթիվը"
 
 #: staff.server.admin.closed_dates.success
 msgid "Closed date successfully updated"
@@ -8700,7 +8708,7 @@ msgstr "Տրանզիտի ցուցակ"
 #: staff.server.admin.index.conify
 msgctxt "staff.server.admin.index.conify"
 msgid "Server Settings"
-msgstr ""
+msgstr "Սպասարկող կայանի կարգաբերումներ"
 
 #: staff.server.admin.index.external_text_editor.label
 #: staff.server.admin.index.external_text_editor.accesskey
@@ -9528,7 +9536,7 @@ msgstr "Հետ ընդունման &Ձևափոխիչներ"
 #: staff.circ.checkin_overlay.checkin_clear_shelf_expired.label
 #: staff.circ.checkin_overlay.checkin_clear_shelf_expired.accesskey
 msgid "&Clear Holds Shelf"
-msgstr ""
+msgstr "&Ջնջիր պահման դարակը"
 
 #: staff.circ.checkin_overlay.checkin_auto_retarget.label
 #: staff.circ.checkin_overlay.checkin_auto_retarget.accesskey
@@ -9552,7 +9560,7 @@ msgstr "Որսա &տեղային պահումները որպես տրանզիտ"
 #: staff.circ.checkin_overlay.checkin_manual_float.label
 #: staff.circ.checkin_overlay.checkin_manual_float.accesskey
 msgid "Manual &Floating Active"
-msgstr ""
+msgstr "ձեռքով կարգաբերվող &սահողը ակտիվ է"
 
 #: staff.circ.renew_overlay.background_text
 msgid "Renew Item"
@@ -10610,12 +10618,12 @@ msgstr "Տեղափոխիր դեպի նշված վերնագրեր"
 
 #: staff.circ.holds.view_expired_onshelf_holds.label
 msgid "View Clearable Holds"
-msgstr ""
+msgstr "Դիտիր մաքրվող պահումները"
 
 #: staff.circ.holds.view_expired_onshelf_holds.accesskey
 msgctxt "staff.circ.holds.view_expired_onshelf_holds.accesskey"
 msgid "x"
-msgstr ""
+msgstr "x"
 
 #: staff.circ.holds.clear_expired_onshelf_holds.label
 msgid "Clear these Holds"
@@ -10689,16 +10697,16 @@ msgstr "Պատճառ և նշումներ"
 #: staff.hold_list.cancel_hold_dialog.cancel_btn.label
 #: staff.hold_list.cancel_hold_dialog.cancel_btn.accesskey
 msgid "&No"
-msgstr ""
+msgstr "&Ոչ"
 
 #: staff.hold_list.cancel_hold_dialog.apply_btn.label
 #: staff.hold_list.cancel_hold_dialog.apply_btn.accesskey
 msgid "&Yes"
-msgstr ""
+msgstr "&Այո"
 
 #: staff.hold_list.cancel_hold_dialog.confirmation
 msgid "Are you sure you want to cancel the hold(s)?"
-msgstr ""
+msgstr "Վստա՞հ ես որ ցանկանում ես չեղյալ անել այս պահում(ներ)ը"
 
 #: staff.cat.manage_multi_bib_items.caption
 msgid "Manage Conjoined Items"
@@ -10747,38 +10755,38 @@ msgstr "Կապիր Մատենին (&հաստատիր)"
 
 #: staff.cat.serial_control.title.label
 msgid "Serial Control"
-msgstr ""
+msgstr "Պարբերականի վերահսկում"
 
 #: staff.cat.serial_control.tab.items
 msgctxt "staff.cat.serial_control.tab.items"
 msgid "Items"
-msgstr ""
+msgstr "Նյութեր"
 
 #: staff.cat.serial_control.tab.units
 msgid "Units"
-msgstr ""
+msgstr "Միավորներ"
 
 #: staff.cat.serial_control.tab.distributions
 msgctxt "staff.cat.serial_control.tab.distributions"
 msgid "Distributions"
-msgstr ""
+msgstr "Բաշխումներ"
 
 #: staff.cat.serial_control.tab.subscriptions
 msgctxt "staff.cat.serial_control.tab.subscriptions"
 msgid "Subscriptions"
-msgstr ""
+msgstr "Բաժանորդագրություններ"
 
 #: staff.cat.serial_control.tab.claims
 msgid "Claims"
-msgstr ""
+msgstr "Պահանջագրեր"
 
 #: staff.cat.serial_control.tab.units.desc
 msgid "This tab will contain an alternative unit view/editor."
-msgstr ""
+msgstr "Այս տաբը կպարունակի դիտման/խմբագրման այլընտրանքային միավոր"
 
 #: staff.cat.serial_control.tab.claims.desc
 msgid "This tab will contain a claims interface."
-msgstr ""
+msgstr "Այս տաբը կպարունակի պահանջագրերի միջերեսը։"
 
 #: staff.cat.copy_browser.actions.sel_clip.label
 #: staff.cat.copy_browser.actions.sel_clip.accesskey
@@ -11430,7 +11438,7 @@ msgstr "&Ձևափոխիր օրինակները"
 msgctxt ""
 "staff.cat.copy_editor.cancel.label staff.cat.copy_editor.cancel.accesskey"
 msgid "&Close"
-msgstr ""
+msgstr "&Փակիր"
 
 #: staff.cat.copy_editor.hide_fields.label
 msgid "Hide Fields"
@@ -11898,20 +11906,20 @@ msgstr "Evergreen BRE"
 
 #: staff.cat.select_unit.title
 msgid "Select Serial Unit"
-msgstr ""
+msgstr "Ընտրի պարբերականի միավորը"
 
 #: staff.cat.record_buckets_quick.select.label
 #: staff.cat.record_buckets_quick.select.accesskey
 msgid "&Select a Serial Unit"
-msgstr ""
+msgstr "&Ընտրի որևէ պարբերականի միավորը"
 
 #: staff.cat.record_buckets_quick.select.desc
 msgid "Please select a Serial Unit"
-msgstr ""
+msgstr "Խնդրվում է Ընտրել պարբերականի միավորը"
 
 #: staff.cat.record_buckets_quick.select.btn
 msgid "Select"
-msgstr ""
+msgstr "Ընտրել"
 
 #: staff.cat.record_buckets_quick.groupbox.caption
 msgctxt "staff.cat.record_buckets_quick.groupbox.caption"
@@ -12728,11 +12736,11 @@ msgstr "Կարմիրով նյութերը դեռ հետ չեն վերադարձ�
 
 #: staff.patron.bills_overlay.longoverdue_checked_out.label
 msgid "Orange Items are Long Overdue"
-msgstr ""
+msgstr "Նարնջագույն նյութերը երկարաժամկետ ուշացումներ են"
 
 #: staff.patron.bills_overlay.lost_checked_out.label
 msgid "Dark Red Items are Lost"
-msgstr ""
+msgstr "Մուգ կարմիր նյութերը Կորածներ են"
 
 #: staff.patron.bills_overlay.uncheck_all.label
 #: staff.patron.bills_overlay.uncheck_all.accesskey
@@ -12781,7 +12789,7 @@ msgstr "&Քանակ օրինակների:"
 #: staff.patron.bills_overlay.summary.label
 msgctxt "staff.patron.bills_overlay.summary.label"
 msgid "Summary"
-msgstr ""
+msgstr "Ամփոփում"
 
 #: staff.patron.bills_overlay.net_balance.value
 msgid "Net Balance"
@@ -12886,7 +12894,7 @@ msgstr "Կիրառիր &Վճարումը"
 #: staff.patron.bill_summary_overlay.caption
 msgctxt "staff.patron.bill_summary_overlay.caption"
 msgid "Summary"
-msgstr ""
+msgstr "Ամփոփում"
 
 #: staff.patron.bill_summary_overlay.bill_number.value
 msgid "Bill #"
@@ -13035,7 +13043,7 @@ msgstr "(Մաքսիմում ժամկետանցեր)"
 
 #: staff.patron.display_overlay.max_lost.value
 msgid "(Maximum Lost)"
-msgstr ""
+msgstr "Ամենաշատ կորածը"
 
 #: staff.patron.display_overlay.max_checked_out.value
 msgid "(Maximum Checked Out)"
@@ -13051,7 +13059,7 @@ msgstr "(Ունի ժամկետանցեր)"
 
 #: staff.patron.display_overlay.has_lost.value
 msgid "(Has Lost)"
-msgstr ""
+msgstr "(Կորած է)"
 
 #: staff.patron.display_overlay.invalid_dob.value
 msgid "(Invalid Date of Birth)"
@@ -14132,7 +14140,7 @@ msgstr "Արտահանիր"
 
 #: staff.patron.items_overlay.print_one.label
 msgid "Print Item Receipt"
-msgstr ""
+msgstr "Տպել նյութի ստացականը"
 
 #: staff.generic.list_actions.label
 #: staff.generic.list_actions.accesskey
@@ -14619,7 +14627,7 @@ msgstr "Էվերգրին աշխատակազմի հաճախորդի պորտալ"
 
 #: staff.client.portal.tab_name
 msgid "Portal"
-msgstr ""
+msgstr "Հանգույց"
 
 #: staff.client.portal.welcome
 msgid "Welcome to Evergreen"
@@ -14665,11 +14673,11 @@ msgstr "Գրանցիր ընթերցող(ներ)ին"
 
 #: staff.client.portal.patronreg.tab_name
 msgid "Register Patron"
-msgstr ""
+msgstr "Գրանցիր ընթերցողին"
 
 #: staff.client.portal.patronreg_edit.tab_name
 msgid "Editing Related Patron"
-msgstr ""
+msgstr "Խմբագրվում է հարակից ընթերցողը"
 
 #: staff.client.portal.patronsearch
 msgctxt "staff.client.portal.patronsearch"
@@ -14728,7 +14736,7 @@ msgstr "ՄԵԸՔ փաթեթով ներմուծում / Արտածում"
 #: staff.client.portal.marcutil.tab_name
 msgctxt "staff.client.portal.marcutil.tab_name"
 msgid "Server Settings"
-msgstr ""
+msgstr "Սպասարկող կայանի կարգաբերումներ"
 
 #: staff.client.portal.z3950
 msgctxt "staff.client.portal.z3950"
@@ -14763,7 +14771,7 @@ msgstr "Գրանցիր փնջերը"
 #: staff.client.portal.recordbuckets.tab_name
 msgctxt "staff.client.portal.recordbuckets.tab_name"
 msgid "Record Buckets"
-msgstr ""
+msgstr "Գրանցիր փնջերը"
 
 #: staff.client.portal.admin
 msgid "Administration"
@@ -14790,7 +14798,7 @@ msgstr "Հաշվետվություններ"
 #: staff.client.portal.reports.tab_name
 msgctxt "staff.client.portal.reports.tab_name"
 msgid "Reports"
-msgstr ""
+msgstr "Հաշվետվություններ"
 
 #: staff.client.portal.receipts
 msgctxt "staff.client.portal.receipts"
@@ -14823,24 +14831,24 @@ msgstr "Որոնում"
 
 #: staff.client.portal.address_map.tab_name
 msgid "Locate Address In Map"
-msgstr ""
+msgstr "Տեղորոշի հասցեն քարտեզի վրա"
 
 #: staff.client.portal.local_admin.tab_name
 msgid "Local Administration"
-msgstr ""
+msgstr "Տէղային կառավարում"
 
 #: staff.client.portal.on_shelf_pull_list.tab_name
 msgid "On Shelf Pull List"
-msgstr ""
+msgstr "Դարակի վրայի ցուցակ"
 
 #: staff.client.portal.catalog.tab_name
 msgid "Catalog"
-msgstr ""
+msgstr "Քարտարան"
 
 #: staff.client.portal.copybuckets.tab_name
 msgctxt "staff.client.portal.copybuckets.tab_name"
 msgid "Copy Buckets"
-msgstr ""
+msgstr "Պատճենիր փնջերը"
 
 #: staff.item.batch.hold.groupbox_caption
 msgid "Request Details"
@@ -14968,51 +14976,51 @@ msgstr "Նախապատվությունները մաքրված են"
 
 #: staff.bucketz39_search.dialog_label
 msgid "Locate Z39.50 Matches"
-msgstr ""
+msgstr "Որոշիր Z39.50 համընկնումները"
 
 #: staff.bucketz39_search.servers
 msgid "Z39.50 Servers:"
-msgstr ""
+msgstr "Z39.50 կայաններ:"
 
 #: staff.bucketz39_search.indexes
 msgid "Z39.50 Search Indexes:"
-msgstr ""
+msgstr "Z39.50 որոնման ցուցիչներ:"
 
 #: staff.bucketz39_search.queue
 msgid "Add Results to Queue:"
-msgstr ""
+msgstr "Ավելացրու արդյունքները հերթին"
 
 #: staff.bucketz39_search.match_set
 msgid "Match Set:"
-msgstr ""
+msgstr "Հանընկնման բազմություն"
 
 #: staff.bucketz39_search.match_set_select
 msgid "-- Select Match Set --"
-msgstr ""
+msgstr "-- Ընտրի համընկնման բազմությունը --"
 
 #: staff.bucketz39_search.perform_search
 msgid "Perform Search"
-msgstr ""
+msgstr "Իրականացրու փնտրում"
 
 #: staff.bucketz39_search.bib_count
 msgid "Bib Records to Search:"
-msgstr ""
+msgstr "Փնտրման համար Բիբ գրառումներ"
 
 #: staff.bucketz39_search.progress
 msgid "Search Progress:"
-msgstr ""
+msgstr "Որոնումը ընթացքում է։"
 
 #: staff.bucketz39_search.found_matches
 msgid "Matches Found:"
-msgstr ""
+msgstr "Գտնված եմ համընկնումներ։"
 
 #: staff.bucketz39_search.close
 msgid "Close"
-msgstr ""
+msgstr "Փակել"
 
 #: staff.bucketz39_search.open_queue
 msgid "Open Queue"
-msgstr ""
+msgstr "Բացել հերթը"
 
 #~ msgid "Record ID"
 #~ msgstr "Գրառման ID"

@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-09-26 18:17-0400\n"
-"PO-Revision-Date: 2013-10-10 18:58+0000\n"
+"POT-Creation-Date: 2013-11-07 11:34-0400\n"
+"PO-Revision-Date: 2014-01-18 09:57+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-10-11 04:51+0000\n"
-"X-Generator: Launchpad (build 16799)\n"
+"X-Launchpad-Export-Date: 2014-01-19 05:27+0000\n"
+"X-Generator: Launchpad (build 16901)\n"
 
 #: staff.serial.editor_base.handle_update.error
 msgid "serial update error:"
@@ -328,6 +328,10 @@ msgstr "%1$s položek bylo úspěšně nastaveno na \"Není vlastněno\""
 #: staff.serial.manage_items.set_not_published_success
 msgid "Successfully set %1$s item(s) to 'Not Published'"
 msgstr "%1$s položek bylo úspěšně nastaveno na \"Nebylo vydáno\""
+
+#: staff.serial.manage_items.alert_notes.title
+msgid "Serial Alerts"
+msgstr "Upozornění k seriálům"
 
 #: staff.serial.manage_items.alert_button.label
 msgid "1 Alert"

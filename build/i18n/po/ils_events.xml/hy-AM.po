@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2013-09-26 18:17-0400\n"
-"PO-Revision-Date: 2013-04-01 14:24+0000\n"
+"PO-Revision-Date: 2013-12-27 09:46+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-09-28 05:26+0000\n"
-"X-Generator: Launchpad (build 16774)\n"
+"X-Launchpad-Export-Date: 2013-12-28 05:21+0000\n"
+"X-Generator: Launchpad (build 16877)\n"
 
 #: 1208.TITLE_LAST_COPY:71
 msgid "The last copy attached to a title is being removed or deleted"
@@ -64,6 +64,7 @@ msgstr "Հարցվող metabib_series_field_entry չի գտնված:"
 msgid ""
 "Payments by patron credit are not allowed for the selected transaction"
 msgstr ""
+"Ընտրված տրանզակցիաների համար վճարումները ըստ ընթերցողի կրեդիտի արգելված են։"
 
 #: 4003.CREDIT_PROCESSOR_NOT_ALLOWED:790
 msgid "The credit card processor you have named is not allowed"
@@ -1003,7 +1004,7 @@ msgstr "Սեսիայի անունը սխալ է"
 
 #: 7025.COPY_STATUS_LONG_OVERDUE:916
 msgid "Copy is marked as long-overdue"
-msgstr ""
+msgstr "Պատճենը նշված է որպես երկարաժամկետ ուշացած։"
 
 #: 7009.CIRC_CLAIMS_RETURNED:865
 msgid "Requested circulation is marked claims returned"
@@ -1081,7 +1082,7 @@ msgstr "Չկա org id"
 
 #: 1236.PATRON_EXCEEDS_LOST_COUNT:174
 msgid "The patron has too many lost items."
-msgstr ""
+msgstr "Ընթերցողը ունի չափից շատ կորած նյութեր։"
 
 #: 8001.OFFLINE_SESSION_FILE_EXISTS:927
 msgid "An offline file for this workstation exists within this session"

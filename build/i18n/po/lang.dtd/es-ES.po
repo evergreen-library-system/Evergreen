@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-09-26 18:16-0400\n"
-"PO-Revision-Date: 2013-06-25 20:36+0000\n"
-"Last-Translator: Mariano Couto <mariano.couto@pjn.gov.ar>\n"
+"PO-Revision-Date: 2013-11-16 18:43+0000\n"
+"Last-Translator: Gerson Vazquez <gerson.v.h@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-09-28 05:29+0000\n"
-"X-Generator: Launchpad (build 16774)\n"
+"X-Launchpad-Export-Date: 2013-11-17 05:24+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #: lang.version
 msgid "remote v1"
@@ -27,7 +27,7 @@ msgstr "Inglés"
 
 #: lang.author
 msgid "PINES"
-msgstr ""
+msgstr "PINES"
 
 #: common.check_date.description
 msgid "Check today's date above."
@@ -60,11 +60,11 @@ msgstr "Hoy + 14 días"
 
 #: common.date_helper.21_days
 msgid "Today + 21 days"
-msgstr ""
+msgstr "Hoy + 21 días"
 
 #: common.date_helper.28_days
 msgid "Today + 28 days"
-msgstr ""
+msgstr "Hoy + 28 días"
 
 #: common.date_helper.30_days
 msgid "Today + 30 days"
@@ -226,15 +226,15 @@ msgstr "Guardar e&stas transacciones"
 
 #: common.debug.label
 msgid "Debug:"
-msgstr ""
+msgstr "Depurar:"
 
 #: common.debug.btn.execute
 msgid "Execute"
-msgstr ""
+msgstr "Ejecutar"
 
 #: common.debug.btn.inspect
 msgid "Inspect"
-msgstr ""
+msgstr "Inspeccionar"
 
 #: common.debug.btn.js2JSON
 msgid "js2JSON"
@@ -242,7 +242,7 @@ msgstr ""
 
 #: common.debug.menu.btn
 msgid "Debug"
-msgstr ""
+msgstr "Depurar"
 
 #: common.true
 msgid "True"
@@ -255,17 +255,17 @@ msgstr "Falso"
 #: common.browser.forward.label
 #: common.browser.forward.accesskey
 msgid "Go Forwar&d"
-msgstr ""
+msgstr "Adelante"
 
 #: common.browser.backward.label
 #: common.browser.backward.accesskey
 msgid "Go &Back"
-msgstr ""
+msgstr "Ir &atrás"
 
 #: common.browser.reload.label
 #: common.browser.reload.accesskey
 msgid "Re&load"
-msgstr ""
+msgstr "&Recargar"
 
 #: common.browser.print.label
 #: common.browser.print.accesskey
@@ -276,7 +276,7 @@ msgstr "Im&primir página"
 #: common.browser.help.accesskey
 msgctxt "common.browser.help.label common.browser.help.accesskey"
 msgid "&Help"
-msgstr ""
+msgstr "&Ayuda"
 
 #: common.browser.find.label
 #: common.browser.find.accesskey
@@ -744,7 +744,7 @@ msgstr ""
 #: staff.au_profile_label
 msgctxt "staff.au_profile_label"
 msgid "Profile"
-msgstr ""
+msgstr "Perfil"
 
 #: staff.au_second_given_name_label
 msgid "Second Given Name"
@@ -1033,7 +1033,7 @@ msgstr ""
 #: staff.auth.verify.submit.label
 #: staff.auth.verify.submit.accesskey
 msgid "&Verify"
-msgstr ""
+msgstr "&Verificar"
 
 #: staff.auth.verify.retrieve.label
 #: staff.auth.verify.retrieve.accesskey

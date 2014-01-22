@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-09-26 18:16-0400\n"
-"PO-Revision-Date: 2013-10-30 20:43+0000\n"
+"PO-Revision-Date: 2014-01-20 11:02+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-10-31 05:19+0000\n"
-"X-Generator: Launchpad (build 16820)\n"
+"X-Launchpad-Export-Date: 2014-01-21 05:44+0000\n"
+"X-Generator: Launchpad (build 16901)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -7085,19 +7085,19 @@ msgstr "Přidat označení ch&ronologie"
 
 #: staff.serial.patternwiz.compress.label
 msgid "Compressibility and Expandability:"
-msgstr ""
+msgstr "Z"
 
 #: staff.serial.patternwiz.compress.cannot
 msgid "Cannot compress or expand"
-msgstr ""
+msgstr "Zkrácení a rozpis"
 
 #: staff.serial.patternwiz.compress.can_compress
 msgid "Can compress but not expand"
-msgstr ""
+msgstr "Lze zkrátit ale nikoli rozepsat"
 
 #: staff.serial.patternwiz.compress.both
 msgid "Can compress or expand"
-msgstr ""
+msgstr "Lze zkrátit nebo rozepsat"
 
 #: staff.serial.patternwiz.compress.unknown
 msgid "Unknown"
@@ -7109,19 +7109,19 @@ msgstr "Hodnota označení"
 
 #: staff.serial.patternwiz.caption_eval.yes_all
 msgid "Captions verified; all levels present"
-msgstr ""
+msgstr "Ověřené označení; všechny úrovně"
 
 #: staff.serial.patternwiz.caption_eval.yes_some
 msgid "Captions verified; all levels may not be present"
-msgstr ""
+msgstr "Ověřené označení; ne nezbytně pro všechny úrovně"
 
 #: staff.serial.patternwiz.caption_eval.no_all
 msgid "Captions unverified; all levels present"
-msgstr ""
+msgstr "Neověřené označení; všechny úrovně"
 
 #: staff.serial.patternwiz.caption_eval.no_some
 msgid "Captions unverified; all levels may not be present"
-msgstr ""
+msgstr "Neověřené označení ; ne nezbytně pro všechny úrovně"
 
 #: staff.serial.patternwiz.freq.label
 #: staff.serial.patternwiz.freq.accesskey
@@ -14999,7 +14999,7 @@ msgstr "Z39.50 servery:"
 
 #: staff.bucketz39_search.indexes
 msgid "Z39.50 Search Indexes:"
-msgstr ""
+msgstr "Vyhledávací indexy Z39.50"
 
 #: staff.bucketz39_search.queue
 msgid "Add Results to Queue:"

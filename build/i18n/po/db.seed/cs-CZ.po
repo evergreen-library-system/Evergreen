@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2013-10-14 19:23-0400\n"
-"PO-Revision-Date: 2013-11-05 23:26+0000\n"
+"PO-Revision-Date: 2014-01-18 11:22+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-11-06 05:29+0000\n"
-"X-Generator: Launchpad (build 16820)\n"
+"X-Launchpad-Export-Date: 2014-01-19 05:27+0000\n"
+"X-Generator: Launchpad (build 16901)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -500,6 +500,10 @@ msgid ""
 "hold could match when the item is not holdable. With this set only holdable "
 "items will match."
 msgstr ""
+"Při plnění příslušné rezervace při výpůjčce odpovědět pouze exempláři, které "
+"jsou v souladu s příhodným zachycením rezervace. Bez tohoto nastavení může "
+"dojít k zachycení titulů nebo svazků, které nejsou rezervovatelné. S tímto "
+"nastavení budou využity pouze rezervovaelné exempláře."
 
 #: 950.data.seed-values.sql:559
 msgid ""
@@ -1449,6 +1453,11 @@ msgid ""
 "bottom list.  2 = bottom list, bottom list.  5 = top list, do not display.  "
 "6 = bottom list, do not display."
 msgstr ""
+"Hodnoutou se rozumí číselný kód popisující, který seznam výpůjček se má "
+"objevit při půjčování a jestli se má výpůjčka dále objevit  ve spodním "
+"seznamu při vracení v případě vzniklých pokut. 1 = horní seznam, spodní "
+"seznam. 2= spodní seznam, spodní seznam. 5 = horní seznam, nezobrazovat. 6 = "
+"spodní seznam, nezobrazovat."
 
 #: 950.data.seed-values.sql:1583
 msgid "Allows staff to manage search filter groups and entries"
@@ -3605,6 +3614,11 @@ msgid ""
 "because it only creates new overdue fines.  Use both settings together to "
 "get the full complement of overdue fines for a lost item"
 msgstr ""
+"Použití tohoto nastavení způsobí retroaktivní vytvoření ještě neexistujího "
+"zpozdného na ztracené výpůjčky, až do bodu času výpůjčky (nebo dosažení "
+"maximální pokuty). Liší se od \"znovunastavit pokuty na ztracené "
+"exempláře\", protože to pouze vytvoří nové pokuty za zpozdné. Použitím obou "
+"nastavení společně docílíte úplných pokut za zpozdné ztacených exemplářů."
 
 #: 950.data.seed-values.sql:3465
 msgid ""
@@ -4935,7 +4949,7 @@ msgstr "Djula"
 
 #: 950.data.seed-values.sql:1601
 msgid "Allows a user to make changes to best-hold selection sort order"
-msgstr ""
+msgstr "Povolí uživateli provádět změny pořadí výběru nejlepší rezervace."
 
 #: 950.data.seed-values.sql:2476
 msgid "Patron via phone"
@@ -6428,6 +6442,11 @@ msgid ""
 "followed by the last billing time, followed by the due date.  See also "
 "circ.max_accept_return_of_longoverdue"
 msgstr ""
+"Pro určení , jestli byl exemplář půjčen příliš dlouho při procesu zpracování "
+"dlouhodobě nevrácených výpůjček, použít místo due_date (data vrácení) "
+"poslední aktivitu dlouhodobě nevrácené výpůjčky . Při tomto nastavení systém "
+"nejprve zkonroluje čas poslední platby, poté čas posledního naúčtovaného "
+"poplatku a poté datm vrácení. Viz také circ.max_accept_return_of_longoverdue"
 
 #: 950.data.seed-values.sql:2840
 msgid ""
@@ -6441,10 +6460,13 @@ msgid ""
 "When a serial issuance is received, copies (units) of the previous issuance "
 "will be automatically moved into the configured shelving location"
 msgstr ""
+"Při příjmání čísla seriálu, exempláře (jednotky) předchozího čísla budou "
+"automaticky přesunuty do nastaveného umístění exempláře."
 
 #: 950.data.seed-values.sql:4476
 msgid "Show evening_phone field on patron registration"
 msgstr ""
+"Zobrazit pole \"telefon večer\" (evening_phone) při registraci čtenáře"
 
 #: 950.data.seed-values.sql:12136
 msgid "Verification via srfsh"
@@ -6452,11 +6474,13 @@ msgstr "Ověření prostřednictvím srfsh"
 
 #: 950.data.seed-values.sql:609
 msgid "Allow a user to determine whether another user can check out an item"
-msgstr ""
+msgstr "Povolit uživateli, yby určil, zda jiný uživatel může půjčit exemplář"
 
 #: 950.data.seed-values.sql:709
 msgid "Allow a user to override the copy_is_reference event"
 msgstr ""
+"Povolit uživateli obejít událost \"exemplář pro prezenční výpůjčku\" "
+"(copy_is_reference)"
 
 #: 950.data.seed-values.sql:6081
 msgid "Beja"
@@ -6490,31 +6514,36 @@ msgstr ""
 
 #: 950.data.seed-values.sql:851
 msgid "Allow a user to view and purchase from a provider"
-msgstr ""
+msgstr "Povolit uživateli zobrazení nákupu od dodavatele"
 
 #: 950.data.seed-values.sql:3246
 msgid "Use weight-based hold targeting"
-msgstr ""
+msgstr "Použít směrování rezervací založené na výpočtu vah."
 
 #: 950.data.seed-values.sql:1612
 msgid ""
 "Allows a user to specify which Server Add-ons get invoked at the current "
 "workstation"
 msgstr ""
+"Povolit uživateli určit, které serverové doplňky mají být uplatněny na "
+"aktuální pracovní stanici"
 
 #: 950.data.seed-values.sql:13404
 msgid ""
 "Auto-generate default item call numbers when no item call number is present"
 msgstr ""
+"Automaticky generovat signatury exemplářů, pokud u exempláře  není přítomná "
+"signatura"
 
 #: 950.data.seed-values.sql:3228
 msgid "Truncated loan period."
-msgstr ""
+msgstr "Zkrácená doba výpůjčky"
 
 #: 950.data.seed-values.sql:1519
 msgid ""
 "Allows update of a workstation during workstation registration override."
 msgstr ""
+"Povolí aktualizaci pracovní stanice při obejití registace pracovní stanice."
 
 #: 950.data.seed-values.sql:6440
 msgid "Serer"
@@ -6526,7 +6555,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:3858
 msgid "Format Dates with this pattern."
-msgstr ""
+msgstr "Formátovat datum podle tohoto vzoru"
 
 #: 950.data.seed-values.sql:6270
 msgid "Kru"
@@ -6538,11 +6567,11 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1553
 msgid "Allows a user to create new authority records"
-msgstr ""
+msgstr "Povolí uživateli vytvořit nové autoritní záznamy"
 
 #: 950.data.seed-values.sql:8734
 msgid "An email has been requested for a payment receipt."
-msgstr ""
+msgstr "Pro potvrzení o platbě je vyžadován e-mail."
 
 #: 950.data.seed-values.sql:4802
 msgid ""
@@ -6551,6 +6580,10 @@ msgid ""
 "and record details pages.  If you actually don't want to see this feature at "
 "all, set this value to zero at the top of your organizational tree."
 msgstr ""
+"Pokud není nastaveno, OPAC (pouze ve ve služebním klientu) bude ve výsledcíh "
+"vyhledávání standardně zobrazovat vlevo na stránce detailního záznamu vašich "
+"posledních deset hledání. Pokud vůbec nechcete toto zobrazení, nastavte ve "
+"vrcholu stromu vašich organizačních jednotek tuto hodnotu na nulu."
 
 #: 950.data.seed-values.sql:6410
 msgid "Selkup"
@@ -6566,11 +6599,11 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1259
 msgid "Allow a user to update trigger validators"
-msgstr ""
+msgstr "Povolit uživateli aktualizovat validátor spouštěče"
 
 #: 950.data.seed-values.sql:8223
 msgid "Purchase order is delivered via EDI"
-msgstr ""
+msgstr "Objednávka je doručena prostřednictvím EDI"
 
 #: 950.data.seed-values.sql:2466
 msgid "Stacks"
@@ -6578,7 +6611,7 @@ msgstr "Regály"
 
 #: 950.data.seed-values.sql:11904
 msgid "Viaero"
-msgstr ""
+msgstr "Viaero"
 
 #: 950.data.seed-values.sql:13051
 msgid ""
@@ -6588,7 +6621,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:3042
 msgid "Holds: Hard boundary"
-msgstr ""
+msgstr "Rezervace: Pevná hranice"
 
 #: 950.data.seed-values.sql:10522
 msgid "Heading -- Corporate Name"
@@ -6596,7 +6629,7 @@ msgstr "Záhlaví - název korporace"
 
 #: 950.data.seed-values.sql:10760 950.data.seed-values.sql:10766
 msgid "Default SMS/Text Number"
-msgstr ""
+msgstr "Výchozí číslo SMS/zprávy"
 
 #: 950.data.seed-values.sql:3964
 msgid ""
@@ -6610,6 +6643,9 @@ msgid ""
 "fulfilled, this is the minimum estimated length of time to assume an item "
 "will be checked out. Examples: \"2 weeks\", \"5 days\""
 msgstr ""
+"Při předpovídání času, po který bude čtenář čekat na splnění rezervaci, toto "
+"je minimum odhadované délky času předpokládaného do půjčení exempláře. "
+"Příklad: \"2 týdny\", 5 \"dní\""
 
 #: 950.data.seed-values.sql:1303
 msgid "ADMIN_ACQ_FUND_TAG"
@@ -6618,6 +6654,7 @@ msgstr ""
 #: 950.data.seed-values.sql:4638
 msgid "Show second_given_name field on patron registration"
 msgstr ""
+"Zobrazit pole druhé jméno ( second_given_name) při registraci čtenáře"
 
 #: 950.data.seed-values.sql:3339
 msgid ""

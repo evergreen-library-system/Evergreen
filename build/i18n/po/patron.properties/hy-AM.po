@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-09-26 18:17-0400\n"
-"PO-Revision-Date: 2013-04-01 14:21+0000\n"
+"PO-Revision-Date: 2013-12-27 09:44+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-09-28 05:30+0000\n"
-"X-Generator: Launchpad (build 16774)\n"
+"X-Launchpad-Export-Date: 2013-12-28 05:22+0000\n"
+"X-Generator: Launchpad (build 16877)\n"
 "X-Accelerator-Marker: &\n"
 
 #: staff.patron.summary.patron_net_access
@@ -512,27 +512,27 @@ msgstr "Կանչվում է..."
 
 #: staff.patron.display.init.network_request.alert_message
 msgid "Alert message: \"%1$s\""
-msgstr ""
+msgstr "Ահազանգի հաղորդագրություն: \"%1$s\""
 
 #: staff.patron.display.init.network_request.inactive_card
 msgid "Patron account retrieved with an INACTIVE card."
-msgstr ""
+msgstr "Ընթերցողի հաշիվը կանչվել է որպես ՈՉԱԿՏԻՎ քարտ։"
 
 #: staff.patron.display.init.network_request.account_barred
 msgid "Patron account is BARRED."
-msgstr ""
+msgstr "Ընթերցողի հաշիվը ԿԱՍԵՑՎԵԼ Է։"
 
 #: staff.patron.display.init.network_request.account_inactive
 msgid "Patron account is INACTIVE."
-msgstr ""
+msgstr "Ընթերցողի հաշիվը ՈՉԱԿՏԻՎ Է։"
 
 #: staff.patron.display.init.network_request.account_expire_soon
 msgid "Patron account will expire soon.  Please renew."
-msgstr ""
+msgstr "Ընթերցողի հաշիվը շուտով կսպառվի։ Թարմացրու։"
 
 #: staff.patron.display.init.network_request.account_expired
 msgid "Patron account is EXPIRED."
-msgstr ""
+msgstr "Ընթերցողի հաշվի ԺԱՄԿԵՏԸ ԼՐԱՑԵԼ Է։"
 
 #: staff.patron.display.init.holds_ready
 msgid "Holds available: %1$s"
@@ -2026,11 +2026,11 @@ msgstr "Օգտվողը չի գտնված"
 #. # hold count tooltip labels
 #: staff.patron.summary.hold_counts_behind_desk
 msgid "Available / Total (Behind Desk)"
-msgstr ""
+msgstr "Հասանելի / Ընդամենը (Սեղանի հետևում)"
 
 #: staff.patron.summary.hold_counts
 msgid "Available / Total"
-msgstr ""
+msgstr "Հասսանելի / Ընդամենը"
 
 #~ msgid "Alert message: \"%1$s\"<br/><br/>"
 #~ msgstr "Զգուշացնող հաղորդում: \"%1$s\"<br/><br/>"

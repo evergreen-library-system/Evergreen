@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-09-26 18:17-0400\n"
-"PO-Revision-Date: 2013-11-05 20:09+0000\n"
+"PO-Revision-Date: 2013-11-15 20:06+0000\n"
 "Last-Translator: Gerson Vazquez <gerson.v.h@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-11-06 05:29+0000\n"
-"X-Generator: Launchpad (build 16820)\n"
+"X-Launchpad-Export-Date: 2013-11-16 05:47+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #: common.exception
 msgid ""
@@ -36,12 +36,12 @@ msgstr "El objeto de la librería JSAN no se ha encontrado."
 #: common.ok
 msgctxt "common.ok"
 msgid "Ok"
-msgstr ""
+msgstr "Aceptar"
 
 #: common.ok.label
 msgctxt "common.ok.label"
 msgid "Ok"
-msgstr ""
+msgstr "Aceptar"
 
 #: common.ok.accesskey
 msgid "O"
@@ -50,7 +50,7 @@ msgstr ""
 #: common.cancel.label
 msgctxt "common.cancel.label"
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: common.cancel.accesskey
 msgctxt "common.cancel.accesskey"
@@ -76,6 +76,7 @@ msgstr "Copiar mensaje"
 #: common.barcode.status.warning
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3$s."
 msgstr ""
+"Advertencia: A partir de %1$s, este código de barras (%2$s) fue marcado %3$s."
 
 #: common.barcode.status.warning.lost
 msgid "Lost"
@@ -123,11 +124,11 @@ msgstr "Aun no implementado"
 
 #: cat.bib_record
 msgid "Bib Record: %1$s"
-msgstr ""
+msgstr "Registro bibliográfico: %1$s"
 
 #: serial.delete_record.confirm
 msgid "Are you sure you want to delete MFHD record #%1$s?"
-msgstr ""
+msgstr "¿Desea eliminar el registro MFHD #%1$s?"
 
 #: cat.opac.delete_record.confirm
 msgid "Are you sure you want to delete title record #%1$s from the catalog?"
@@ -157,7 +158,7 @@ msgstr "Recuperar"
 #: cat.opac.cancel
 msgctxt "cat.opac.cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: cat.opac.record_deleted
 msgid "Record deleted."
@@ -275,10 +276,14 @@ msgstr ""
 #: circ.offline_checkout.barcode.flagged.lost
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Lost."
 msgstr ""
+"Atención: A partir de %1$s, este código de barras (%2$s) fue señalado como "
+"Perdido."
 
 #: circ.offline_checkout.barcode.flagged.expired
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Expired."
 msgstr ""
+"Atención: A partir de %1$s, este código de barras (%2$s) fue señalado como "
+"Expirado."
 
 #: circ.offline_checkout.barcode.flagged.barred
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Barred."
@@ -287,16 +292,20 @@ msgstr ""
 #: circ.offline_checkout.barcode.flagged.blocked
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Blocked."
 msgstr ""
+"Atención: A partir de %1$s, el código de barras (%2$s) fue señalado como "
+"Bloqueado."
 
 #: circ.offline_checkout.barcode.flagged.unknown
 msgid ""
 "Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: "
 "%3$s."
 msgstr ""
+"Atención: A partir de %1$s, el código de barras (%2$s) fue señalado con un "
+"código desconocido: %3$s."
 
 #: circ.offline_checkout.date.early
 msgid "Due date needs to be after today."
-msgstr ""
+msgstr "La fecha de entrega debe ser posterior al día de hoy."
 
 #: circ.offline_checkout.required_field
 msgid "Required Field"
@@ -324,19 +333,19 @@ msgstr "Elija una respuesta..."
 
 #: circ.offline_register.missing.post_code
 msgid "Missing Address : Postal Code"
-msgstr ""
+msgstr "Falta dirección: Código Postal"
 
 #: circ.offline_register.missing.state
 msgid "Missing Address : State"
-msgstr ""
+msgstr "Falta dirección: Estado"
 
 #: circ.offline_register.missing.city
 msgid "Missing Address : City"
-msgstr ""
+msgstr "Falta dirección: Ciudad"
 
 #: circ.offline_register.missing.street1
 msgid "Missing Address : Line 1"
-msgstr ""
+msgstr "Falta dirección: Linea 1"
 
 #: circ.offline_register.missing.ident_value
 msgid "Missing Identification Value"
@@ -348,27 +357,27 @@ msgstr ""
 
 #: circ.offline_register.missing.dob
 msgid "Missing Date of Birth"
-msgstr ""
+msgstr "Falta fecha de nacimiento"
 
 #: circ.offline_register.missing.first_given_name
 msgid "Missing First Name"
-msgstr ""
+msgstr "Falta primer nombre"
 
 #: circ.offline_register.missing.family_name
 msgid "Missing Last Name"
-msgstr ""
+msgstr "Falta apellido"
 
 #: circ.offline_register.missing.passwd
 msgid "Missing Password"
-msgstr ""
+msgstr "Falta contraseña"
 
 #: circ.offline_register.missing.barcode
 msgid "Missing Barcode"
-msgstr ""
+msgstr "Falta código de barras"
 
 #: circ.offline_register.missing.profile
 msgid "Missing Profile"
-msgstr ""
+msgstr "Falta perfil"
 
 #: circ.offline_register.missing.home_ou
 msgid "Missing Home Library"
@@ -380,7 +389,7 @@ msgstr "Por favor, arregle lo siguiente:"
 
 #: circ.offline_register.patron.saved
 msgid "Patron Registration Saved"
-msgstr ""
+msgstr "Registro de usuario guardado"
 
 #: circ.offline_register.missing.library.list
 msgid "Missing library list."
@@ -430,7 +439,7 @@ msgstr ""
 
 #: menu.cmd_replace_barcode.prompt
 msgid "Enter original barcode for the item:"
-msgstr ""
+msgstr "Ingrese código de barras original para el ejemplar:"
 
 #: menu.cmd_replace_barcode.label
 msgctxt "menu.cmd_replace_barcode.label"
@@ -439,11 +448,11 @@ msgstr "Reemplazar código de barras"
 
 #: menu.cmd_replace_barcode.retrieval.error
 msgid "We were unable to retrieve an item with barcode \"%1$s\"."
-msgstr ""
+msgstr "No se pudo recuperar el ejemplar con código de barras \"%1$s\"."
 
 #: menu.cmd_replace_barcode.replacement.prompt
 msgid "Enter the replacement barcode for the item:"
-msgstr ""
+msgstr "Introduzca el código de barras de remplazo para el ejemplar:"
 
 #: menu.cmd_replace_barcode.replacement.label
 msgctxt "menu.cmd_replace_barcode.replacement.label"
@@ -516,25 +525,25 @@ msgstr ""
 
 #: menu.cmd_patron_register.tab
 msgid "Register Patron"
-msgstr ""
+msgstr "Registrar usuario"
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode
 #: staff.circ.work_log_patron_registration.message
 msgid "%1$s registered %3$s (%2$s)"
-msgstr ""
+msgstr "%1$s registró a %3$s (%2$s)"
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Hold ID  5 - Hold Type
 #: staff.circ.work_log_hold_placed.message
 msgid "%1$s placed hold %4$s (%5$s) for %3$s (%2$s)"
-msgstr ""
+msgstr "%1$s creó apartado %4$s (%5$s) para %3$s (%2$s)"
 
 #: menu.cmd_browse_holds.tab
 msgid "Hold Browser"
-msgstr ""
+msgstr "Navegador de apartados"
 
 #: menu.cmd_browse_holds_shelf.tab
 msgid "Holds Shelf"
-msgstr ""
+msgstr "Estantería de apartados"
 
 #: menu.cmd_browse_hold_pull_list.tab
 msgid "On Shelf Pull List"
@@ -546,11 +555,11 @@ msgstr "Administración local"
 
 #: menu.cmd_open_vandelay.tab
 msgid "MARC Import/Export"
-msgstr ""
+msgstr "Importar/Exportar MARC"
 
 #: menu.cmd_marc_batch_edit.tab
 msgid "MARC Batch Edit"
-msgstr ""
+msgstr "Edición MARC en lote"
 
 #: menu.cmd_open_conify.tab
 msgid "Server Settings"
@@ -570,7 +579,7 @@ msgstr "Obteniendo título..."
 
 #: menu.cmd_chg_session.label
 msgid "Change Login"
-msgstr ""
+msgstr "Cambiar datos de sesión."
 
 #: menu.cmd_chg_session.operator.label
 msgid "Change Operator: %1$s"
@@ -578,7 +587,7 @@ msgstr "Cambiar operador: %1$s"
 
 #: menu.cmd_manage_offline_xacts.tab
 msgid "Offline Transactions"
-msgstr ""
+msgstr "Transacciones fuera de línea"
 
 #: menu.cmd_download_patrons.complete.status
 msgid "Download completed"
@@ -608,7 +617,7 @@ msgstr "Consola JavaScript"
 
 #: menu.cmd_shell.tab
 msgid "JavaScript Shell"
-msgstr ""
+msgstr "JavaScript Shell"
 
 #: menu.cmd_xuleditor.tab
 msgid "XUL Editor"
@@ -620,7 +629,7 @@ msgstr ""
 
 #: menu.cmd_public_opac.tab
 msgid "OPAC"
-msgstr ""
+msgstr "OPAC"
 
 #: menu.cmd_extension_manager.tab
 msgid "Extension Manager"
@@ -644,17 +653,19 @@ msgstr "Verificar credenciales"
 
 #: menu.close_all_tabs.error
 msgid "Error closing all tabs"
-msgstr ""
+msgstr "Error al cerrar todas las pestañas"
 
 #: menu.new_tab.tab
 msgid "Tab"
-msgstr ""
+msgstr "Pestaña"
 
 #: menu.new_tab.max_tab_dialog
 msgid ""
 "Sorry, we can't create any more tabs in this window.\n"
 "Would you like to create a new tab in another window?"
 msgstr ""
+"Lo sentimos. no se pueden crear más pestañas en esta ventana.\n"
+"¿Desea crear una pestaña nueva en otra ventana?"
 
 #: main.session_cookie.error
 msgid "Error setting session cookie: %1$s"
@@ -750,7 +761,7 @@ msgstr ""
 
 #: main.new_window_btn.login_first_warning
 msgid "Please login first!"
-msgstr ""
+msgstr "Favor de iniciar sesión"
 
 #: main.settings.migrate
 msgid ""
@@ -810,7 +821,7 @@ msgstr "Autorizar"
 
 #: network.new_session.expired
 msgid "Session Expired"
-msgstr ""
+msgstr "Sesión expirada"
 
 #: network.new_session.expired.prompt
 msgid "Please enter the credentials for a new login session."
@@ -911,7 +922,7 @@ msgstr "Error con get_contentWindow(%1$s): %2$s"
 
 #: openils.global_util.font_size.error
 msgid "Error adjusting the font size: %1$s"
-msgstr ""
+msgstr "Error al ajustar el tamaño de la fuente: %1$s"
 
 #: list.row_fetch_warning
 msgid ""
@@ -923,7 +934,7 @@ msgstr ""
 
 #: list.columns_saved
 msgid "Column configuration saved."
-msgstr ""
+msgstr "Configuración de columna guardada."
 
 #: list.column_save_disabled
 msgid "Column configuration save disabled by server policy."

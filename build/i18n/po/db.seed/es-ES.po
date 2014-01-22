@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-10-14 19:23-0400\n"
-"PO-Revision-Date: 2013-10-09 16:57+0000\n"
-"Last-Translator: Jose Gutierrez <joseb.gutierrez@gmail.com>\n"
+"PO-Revision-Date: 2013-11-16 18:40+0000\n"
+"Last-Translator: Gerson Vazquez <gerson.v.h@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-10-16 04:41+0000\n"
-"X-Generator: Launchpad (build 16799)\n"
+"X-Launchpad-Export-Date: 2013-11-17 05:24+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #: 950.data.seed-values.sql:114
 msgid "Series Title"
@@ -87,11 +87,12 @@ msgstr ""
 
 #: 950.data.seed-values.sql:4755
 msgid "Require at least one address for Patron Registration"
-msgstr ""
+msgstr "Al menos una dirección es necesaria para el registro del usuario"
 
 #: 950.data.seed-values.sql:1571
 msgid "Allows a user to create/retrieve/update/delete address alerts"
 msgstr ""
+"Permite al usuario crear/recuperar/actualizar/borrar direcciones para alertas"
 
 #: 950.data.seed-values.sql:292
 msgid "10_cent_per_day"
@@ -139,7 +140,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:72
 msgid "Patron had an invalid evening phone number"
-msgstr ""
+msgstr "El usuario tenía un número telefónico vespertino incorrecto"
 
 #: 950.data.seed-values.sql:6335
 msgid "Nahuatl"
@@ -151,7 +152,7 @@ msgstr "Fecha De Inicio De Apartado De Retención Histórico"
 
 #: 950.data.seed-values.sql:451
 msgid "Bookmobile"
-msgstr ""
+msgstr "Biblioteca ambulante"
 
 #: 950.data.seed-values.sql:6253
 msgid "Kawi"
@@ -163,7 +164,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:3039
 msgid "Hard boundary"
-msgstr ""
+msgstr "Encuadernación de pasta dura"
 
 #: 950.data.seed-values.sql:11067 950.data.seed-values.sql:11853
 msgid "Virgin Mobile"
@@ -197,11 +198,11 @@ msgstr ""
 
 #: 950.data.seed-values.sql:9133
 msgid "Deleted"
-msgstr ""
+msgstr "Borrado"
 
 #: 950.data.seed-values.sql:809
 msgid "Allow a user to view a funding source"
-msgstr ""
+msgstr "Permitir al usuario ver origen del financiamiento"
 
 #: 950.data.seed-values.sql:4807
 msgid "Target copies for a hold even if copy's circ lib is closed"
@@ -223,7 +224,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:13065
 msgid "Maximum Z39.50 Batch Search Results"
-msgstr ""
+msgstr "Máximo de resultados de búsquedas en lote utilizando Z39.50"
 
 #: 950.data.seed-values.sql:33
 msgid "Alerting Note, no blocks"
@@ -257,7 +258,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1651
 msgid "Data Review"
-msgstr ""
+msgstr "Revisión de datos"
 
 #: 950.data.seed-values.sql:11581
 msgid "Chariton Valley Wireless"
@@ -265,7 +266,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:611
 msgid "Allow a user to edit copies in batch"
-msgstr ""
+msgstr "Permitir al usuario editar copias en lote"
 
 #: 950.data.seed-values.sql:1341
 msgid "ADMIN_INVOICE_PAYMENT_METHOD"
@@ -310,11 +311,11 @@ msgstr "Oriya"
 
 #: 950.data.seed-values.sql:751
 msgid "Allow a user to add/remove users to/from the \"User\" group"
-msgstr ""
+msgstr "Permitir al usuario añadir/eliminar usuarios de/al grupo \"User\""
 
 #: 950.data.seed-values.sql:117
 msgid "Abbreviated Title"
-msgstr ""
+msgstr "Título abreviado"
 
 #: 950.data.seed-values.sql:342
 msgid "English (Canada)"
@@ -341,6 +342,8 @@ msgstr ""
 #: 950.data.seed-values.sql:777
 msgid "Allow a user to renew an item past the maximum renewal count"
 msgstr ""
+"Permitir al usuario renovar un ejemplar excediendo el contador de "
+"renovaciones"
 
 #: 950.data.seed-values.sql:1151
 msgid "UPDATE_ORG_UNIT_SETTING_ALL"
@@ -348,7 +351,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:11167
 msgid "Alaska, USA"
-msgstr ""
+msgstr "Alaska, EUA"
 
 #: 950.data.seed-values.sql:3867
 msgid "Format Times with this pattern."
@@ -385,7 +388,7 @@ msgstr "Correo de Código"
 
 #: 950.data.seed-values.sql:6054
 msgid "Apache languages"
-msgstr ""
+msgstr "Lenguas Apache"
 
 #: 950.data.seed-values.sql:1309
 msgid "ADMIN_ASSET_COPY_TEMPLATE"
@@ -393,7 +396,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:887
 msgid "Allows a user to create a purchase order"
-msgstr ""
+msgstr "Permite al usuario crear una orden de compra"
 
 #: 950.data.seed-values.sql:3597
 msgid "Content of header_text include"
@@ -413,7 +416,7 @@ msgstr "Archivo de computadora"
 
 #: 950.data.seed-values.sql:11751
 msgid "Nextel"
-msgstr ""
+msgstr "Nextel"
 
 #: 950.data.seed-values.sql:9121
 msgid "EDI"
@@ -434,7 +437,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:3462
 msgid "Change reshelving status interval"
-msgstr ""
+msgstr "Cambiar el intervalo del estado de reacomodo"
 
 #: 950.data.seed-values.sql:2948
 msgid ""
@@ -502,7 +505,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:11445
 msgid "Alltel (Allied Wireless)"
-msgstr ""
+msgstr "Alltel (Allied Wireless)"
 
 #: 950.data.seed-values.sql:6195
 msgid "German, Old High (ca. 750-1050)"
