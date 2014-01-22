@@ -70,11 +70,14 @@ DECLARE
     visible_count       INT := 0;
     excluded_count      INT := 0;
 
+    luri_as_copy        BOOL;
 BEGIN
 
     check_limit := COALESCE( param_check, 1000 );
     core_limit  := COALESCE( param_limit, 25000 );
     core_offset := COALESCE( param_offset, 0 );
+
+    SELECT COALESCE( enabled, FALSE ) INTO luri_as_copy FROM config.global_flag WHERE name = 'opac.located_uri.act_as_copy';
 
     -- core_skip_chk := COALESCE( param_skip_chk, 1 );
 
@@ -85,13 +88,23 @@ BEGIN
             SELECT ARRAY_AGG(distinct id) INTO search_org_list FROM actor.org_unit_descendants( param_search_ou );
         END IF;
 
-        SELECT ARRAY_AGG(distinct id) INTO luri_org_list FROM actor.org_unit_ancestors( param_search_ou );
+        IF luri_as_copy THEN
+            SELECT ARRAY_AGG(distinct id) INTO luri_org_list FROM actor.org_unit_full_path( param_search_ou );
+        ELSE
+            SELECT ARRAY_AGG(distinct id) INTO luri_org_list FROM actor.org_unit_ancestors( param_search_ou );
+        END IF;
 
     ELSIF param_search_ou < 0 THEN
         SELECT ARRAY_AGG(distinct org_unit) INTO search_org_list FROM actor.org_lasso_map WHERE lasso = -param_search_ou;
 
         FOR tmp_int IN SELECT * FROM UNNEST(search_org_list) LOOP
-            SELECT ARRAY_AGG(distinct id) INTO tmp_int_list FROM actor.org_unit_ancestors( tmp_int );
+
+            IF luri_as_copy THEN
+                SELECT ARRAY_AGG(distinct id) INTO tmp_int_list FROM actor.org_unit_full_path( tmp_int );
+            ELSE
+                SELECT ARRAY_AGG(distinct id) INTO tmp_int_list FROM actor.org_unit_ancestors( tmp_int );
+            END IF;
+
             luri_org_list := luri_org_list || tmp_int_list;
         END LOOP;
 
@@ -102,7 +115,12 @@ BEGIN
     END IF;
 
     IF param_pref_ou IS NOT NULL THEN
-        SELECT array_agg(distinct id) INTO tmp_int_list FROM actor.org_unit_ancestors(param_pref_ou);
+            IF luri_as_copy THEN
+                SELECT ARRAY_AGG(distinct id) INTO tmp_int_list FROM actor.org_unit_full_path( param_pref_ou );
+            ELSE
+                SELECT ARRAY_AGG(distinct id) INTO tmp_int_list FROM actor.org_unit_ancestors( param_pref_ou );
+            END IF;
+
         luri_org_list := luri_org_list || tmp_int_list;
     END IF;
 
