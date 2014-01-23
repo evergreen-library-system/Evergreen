@@ -16,7 +16,7 @@
                 {trail = trail_splice(page_id)}, clear_params) %]">[% page.name | html %]</a>
     [%  END %]
 
-    [% IF ctx.page != 'index' AND ctx.page != 'category' %]
+    [% IF ctx.page != 'index' AND ctx.page != 'category' AND ctx.page != 'library' %]
 
         <!-- search results -->
         <div class="bread_green_mid">&nbsp;</div>
