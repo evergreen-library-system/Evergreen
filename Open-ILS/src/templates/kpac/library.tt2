@@ -1,8 +1,6 @@
 [%- PROCESS "opac/parts/header.tt2";
-    WRAPPER "opac/parts/base.tt2";
-    INCLUDE "opac/parts/topnav.tt2";
+    WRAPPER "kpac/parts/subpage.tt2";
     ctx.page_title = l("Library details: [_1]", ctx.library.name);
 -%]
-    [%- INCLUDE "opac/parts/searchbar.tt2" %]
     [%- INCLUDE "opac/parts/library/core_info.tt2"; %]
 [%- END; %]

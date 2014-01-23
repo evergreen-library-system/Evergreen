@@ -29,6 +29,7 @@ sub load {
     return $self->load_simple("category") if $path =~ m|kpac/category|;
     return $self->load_kpac_rresults if $path =~ m|kpac/results|;
     return $self->load_record(no_search => 1) if $path =~ m|kpac/record|; 
+    return $self->load_library if $path =~ m|kpac/library|;
 
     # ----------------------------------------------------------------
     #  Everything below here requires SSL
