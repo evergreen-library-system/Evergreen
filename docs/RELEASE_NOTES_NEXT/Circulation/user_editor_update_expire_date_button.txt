@@ -1,0 +1,17 @@
+User Editor: "Update Expire Date" button
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new button labeled "Update Expire Date" is added in the user
+editor next to expire date field. This button can be used to
+re-calculate the user's expire date based on the current profile's
+permission interval and today's date.
+
+This is similar to how the expire date is populated when creating a
+new user, or when changing the profile group.
+
+This button simplifies the process of "renewing" a user, by
+eliminating the requirement that staff manually enter a new expire
+date.
+
+A button is used here so that the updating of the expire date
+remains an  intentional process, not one that happens upon any edit.
+
