@@ -1,0 +1,21 @@
+Located URI visibility options
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Before this, Evergreen restricted the visibility of bibliographic records
+that make use of Located URIs in a way that attempts to model licensing
+restrictions.
+
+There now exists a global flag to allow sites the option of changing the
+behaviour of Located URIs so that they act in a way analogous to copies
+for visibility testing.  When the opac.located_uri.act_as_copy global flag
+is enabled, Located URIs will cause their containing bib records to become
+visible in searches where the URI is in scope to either ancestors of the
+search library, as before, or descendents of the search library, as copies
+do.  As before, if a preferred library is supplied by the user, it is
+added to the list of visible org units to check.
+
+Additionally, while the underlying UnAPI and supporting code was capable
+of providing a reasonable and logical sort order for the Located URIs when
+embedded as XML holdings elements, the client-facing UnAPI method was not
+making use of that.  It now does, and uses the same sorting algorithm as
+is used for copies.
+
