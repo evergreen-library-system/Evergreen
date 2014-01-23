@@ -1,3 +1,9 @@
+[%-
+    opac_root = ctx.opac_root;
+    IF ctx.kpac_root;
+        opac_root = ctx.kpac_root;
+    END;
+-%]
 <div id="content-wrapper">
     <div id="main-content" class="content-wrapper-library-page" vocab="http://schema.org/" typeof="Library">
     <h1 property="name">[% ctx.library.name | html %]</h1>
@@ -41,7 +47,7 @@
     [%- IF ctx.library.parent_ou; %]
     <h2>Branch relationship</h2>
     <div id="branch-info">[% l('Parent library: ') %]
-        <a property="branchOf" href="[% mkurl(ctx.opac_root _ '/library/' _ ctx.parent.shortname, {}, 1) %]">[% ctx.parent.name | html %]</a>
+        <a property="branchOf" href="[% mkurl(opac_root _ '/library/' _ ctx.parent.shortname, {}, 1) %]">[% ctx.parent.name | html %]</a>
     </div>
     [%  END; -%]
 
