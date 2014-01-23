@@ -1030,3 +1030,21 @@ div.hr {
     color: #fff;
     text-align: center;
 }
+
+.content-wrapper-library-page {
+    padding: 1.5em;
+}
+
+.content-wrapper-library-page h2 {
+    font-size: 18px;
+    color: #b53ea6;
+    padding-bottom: 0.5em;
+    padding-top: 0.5em;
+}
+
+.content-wrapper-library-page h3 {
+    font-size: 14px;
+    color: #b53ea6;
+    padding-bottom: 0.5em;
+    padding-top: 0.5em;
+}
