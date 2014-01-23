@@ -456,21 +456,23 @@ sub too_many_billed {
 # List of outstanding holds placed
 #
 sub hold_items {
-    my ($self, $start, $end) = @_;
+    my ($self, $start, $end, $ids_only) = @_;
     syslog('LOG_DEBUG', 'OILS: Patron->hold_items()');
 
-     # all of my open holds
-     my $holds = $self->{editor}->search_action_hold_request({ 
+
+    # all of my open holds
+    my $holds = $self->{editor}->search_action_hold_request({ 
         usr => $self->{user}->id, 
         fulfillment_time => undef, 
         cancel_time => undef 
     });
 
-     return $self->__format_holds($holds, $start, $end);
+    return $holds if $ids_only;
+    return $self->__format_holds($holds, $start, $end);
 }
 
 sub unavail_holds {
-     my ($self, $start, $end) = @_;
+     my ($self, $start, $end, $ids_only) = @_;
      syslog('LOG_DEBUG', 'OILS: Patron->unavail_holds()');
 
      my $holds = $self->{editor}->search_action_hold_request({
@@ -483,6 +485,7 @@ sub unavail_holds {
         ]
     });
 
+    return $holds if $ids_only;
     return $self->__format_holds($holds, $start, $end);
 }
 
@@ -693,11 +696,13 @@ sub __patron_items_info {
 
 
 sub overdue_items {
-    my ($self, $start, $end) = @_;
+    my ($self, $start, $end, $ids_only) = @_;
 
     $self->__patron_items_info();
     my @overdues = @{$self->{item_info}->{overdue}};
     #$overdues[$_] = __circ_to_title($self->{editor}, $overdues[$_]) for @overdues;
+
+    return \@overdues if $ids_only;
 
     my @o;
     syslog('LOG_DEBUG', "OILS: overdue_items() fleshing circs @overdues");
@@ -736,7 +741,7 @@ sub __circ_to_title {
 
 # force_bc -- return barcode data regardless of msg64_summary_datatype
 sub charged_items {
-    my ($self, $start, $end, $force_bc) = shift;
+    my ($self, $start, $end, $ids_only, $force_bc) = shift;
 
     $self->__patron_items_info();
 
@@ -746,6 +751,8 @@ sub charged_items {
         );
 
     #$charges[$_] = __circ_to_title($self->{editor}, $charges[$_]) for @charges;
+
+    return \@charges if $ids_only;
 
     my @c;
     syslog('LOG_DEBUG', "OILS: charged_items() fleshing circs @charges");
@@ -769,11 +776,15 @@ sub charged_items {
 }
 
 sub fine_items {
-    my ($self, $start, $end) = @_;
+    my ($self, $start, $end, $ids_only) = @_;
     my @fines;
     eval {
        my $xacts = $U->simplereq('open-ils.actor', 'open-ils.actor.user.transactions.history.have_balance', $self->{authtoken}, $self->{user}->id);
        foreach my $xact (@{$xacts}) {
+           if ($ids_only) {
+               push @fines, $xact;
+               next;
+           }
            my $line = $xact->balance_owed . " " . $xact->last_billing_type . " ";
            if ($xact->xact_type eq 'circulation') {
                my $mods = $U->simplereq('open-ils.circ', 'open-ils.circ.circ_transaction.find_title', $self->{authtoken}, $xact->id);
@@ -792,7 +803,7 @@ sub fine_items {
 
 # not currently supported
 sub recall_items {
-    my ($self, $start, $end) = @_;
+    my ($self, $start, $end, $ids_only) = @_;
     return [];
 }
 
