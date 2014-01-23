@@ -37,13 +37,7 @@ END;
         -%]
         <tr>
             <td class="location">
-            [%-
-                org_name = ctx.get_aou(copy_info.circ_lib).name;
-                lib_url = ctx.get_org_setting(copy_info.circ_lib, 'lib.info_url');
-                IF lib_url; '<a href="'; lib_url | url; '">'; END;
-                org_name | html;
-                IF lib_url; '</a>'; END;
-            -%]
+            [%- INCLUDE "opac/parts/library_name_link.tt2"; -%]
             </td>
             [%- IF has_parts == 'true' %]
             <td class="callnumber">[% l('[_1] ([_2])', callnum, copy_info.part_label) | html %]</td>

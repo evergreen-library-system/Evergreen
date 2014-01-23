@@ -1,0 +1,13 @@
+[%-
+    org_name = ctx.get_aou(copy_info.circ_lib).name;
+    org_sname = ctx.get_aou(copy_info.circ_lib).shortname;
+    lib_url = ctx.get_org_setting(copy_info.circ_lib, 'lib.info_url');
+    prefer_external_url = ctx.get_org_setting(copy_info.circ_lib, 'lib.prefer_external_url');
+    UNLESS lib_url && prefer_external_url;
+        lib_url = mkurl(ctx.opac_root _ '/library/' _ ctx.get_aou(copy_info.circ_lib).shortname, {}, 1);
+    END; 
+    IF lib_url; '<a property="seller" typeof="Library" href="'; lib_url | url; '">'; END;
+    '<span property="name">'; org_name | html; '</span>';
+    IF lib_url; '</a>'; END;
+-%]
+
