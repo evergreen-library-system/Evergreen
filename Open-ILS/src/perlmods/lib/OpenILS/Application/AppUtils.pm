@@ -1285,15 +1285,17 @@ sub ou_ancestor_setting {
     $e = $e || OpenILS::Utils::CStoreEditor->new(
         (defined $auth) ? (authtoken => $auth) : ()
     );
-    my $coust = $e->retrieve_config_org_unit_setting_type([
-        $name, {flesh => 1, flesh_fields => {coust => ['view_perm']}}
-    ]);
 
-    if ($auth && $coust && $coust->view_perm) {
-        # And you can't have permission if you don't have a valid session.
-        return undef if not $e->checkauth;
-        # And now that we know you MIGHT have permission, we check it.
-        return undef if not $e->allowed($coust->view_perm->code, $orgid);
+    if ($auth) {
+        my $coust = $e->retrieve_config_org_unit_setting_type([
+            $name, {flesh => 1, flesh_fields => {coust => ['view_perm']}}
+        ]);
+        if ($coust && $coust->view_perm) {
+            # And you can't have permission if you don't have a valid session.
+            return undef if not $e->checkauth;
+            # And now that we know you MIGHT have permission, we check it.
+            return undef if not $e->allowed($coust->view_perm->code, $orgid);
+        }
     }
 
     my $query = {from => ['actor.org_unit_ancestor_setting', $name, $orgid]};
