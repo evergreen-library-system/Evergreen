@@ -363,10 +363,10 @@ END;
     [% ctx.results_count_header %]
 </div>
 <script>
-resultBlock = document.querySelector('#result_block');
-resultButton = document.querySelector('#return_to_hits');
-facetSidebar = document.querySelector('#facet_sidebar');
-facetButton =  document.querySelector('#refine_hits');
+resultBlock = document.getElementById('result_block');
+resultButton = document.getElementById('return_to_hits');
+facetSidebar = document.getElementById('facet_sidebar');
+facetButton =  document.getElementById('refine_hits');
 function getFacety() {
     resultBlock.setAttribute('class', 'result_block_hidden');
     resultButton.setAttribute('class', 'results_header_btns result_block_visible');
