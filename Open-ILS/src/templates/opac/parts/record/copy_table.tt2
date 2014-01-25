@@ -94,7 +94,7 @@ END; # FOREACH bib
                 [%- copy_info.holding_label | html; -%]
             </td>
             [%- ELSE %]<td headers='copy_header_library'>
-            [%- copy_info = copy;
+            [%- copy = copy_info;
                 INCLUDE "opac/parts/library_name_link.tt2";
             -%]
                 <link property="businessFunction" href="http://purl.org/goodrelations/v1#LeaseOut">
