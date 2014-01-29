@@ -52,8 +52,7 @@ var fundStyles = {
  * Is this all of 'em?
  */
 var li_pre_po_states = ["new", "selector-ready", "order-ready", "approved"];
-var li_post_po_states = ["pending-order", "on-order", "received"];
-// i.e. not-canceled ("cancelled") lineitems
+var li_post_po_states = ["pending-order", "on-order", "received", "cancelled"];
 var li_active_states = li_pre_po_states.concat(li_post_po_states);
 
 function AcqLiTable() {
