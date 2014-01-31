@@ -351,71 +351,69 @@
                     }
                 }
                 var cmd = nodes[i].getAttribute('command');
-                if (cmd) {
-                    var cmd_el = document.getElementById(cmd);
-                    if (nodes[i].disabled == false && nodes[i].hidden == false) {
-                        var no_poke = nodes[i].getAttribute('oils_persist_no_poke');
-                        if (no_poke && no_poke == 'true') {
-                            // Timing issue for some checkboxes; don't poke them with an event
-                            dump('\tnot poking\n');
-                        } else {
-                            if (cmd_el) {
-                                dump('\tpoking @command\n');
-                                var evt = document.createEvent("Events");
-                                evt.initEvent( 'command', true, true );
-                                cmd_el.dispatchEvent(evt);
-                            } else {
-                                dump('\tpoking\n');
-                                var evt = document.createEvent("Events");
-                                evt.initEvent( 'command', true, true );
-                                nodes[i].dispatchEvent(evt);
-                            }
-                        }
-                    }
-                    if (cmd_el) {
-                        window.persist_helper_event_listeners.add(cmd_el, 
-                            'command',
-                            gen_event_handler('command',cmd_el),
-                            false
-                        );
-                        window.persist_helper_event_listeners.add(cmd_el, 
-                            'oils_persist',
-                            gen_oils_persist_handler( base_key, nodes[i] ),
-                            false
-                        );
+                var cmd_el = document.getElementById(cmd);
+                if (nodes[i].disabled == false && nodes[i].hidden == false) {
+                    var no_poke = nodes[i].getAttribute('oils_persist_no_poke');
+                    if (no_poke && no_poke == 'true') {
+                        // Timing issue for some checkboxes; don't poke them with an event
+                        dump('\tnot poking\n');
                     } else {
-                        var node = nodes[i];
-                        var event_types = [];
-                        if (node.hasAttribute('oils_persist_events')) {
-                            var event_type_list = node.getAttribute('oils_persist_events').split(' ');
-                            for (var j = 0; j < event_type_list.length; j++) {
-                                event_types.push( event_type_list[j] );
-                            }
+                        if (cmd_el) {
+                            dump('\tpoking @command\n');
+                            var evt = document.createEvent("Events");
+                            evt.initEvent( 'command', true, true );
+                            cmd_el.dispatchEvent(evt);
                         } else {
-                            if (node.nodeName == 'textbox') { 
-                                event_types.push('change');
-                            } else if (node.nodeName == 'menulist') { 
-                                event_types.push('select');  
-                            } else if (node.nodeName == 'window') {
-                                event_types.push('resize'); 
-                                node = window; // xul window is an element of window.document
-                            } else {
-                                event_types.push('command'); 
-                            }
+                            dump('\tpoking\n');
+                            var evt = document.createEvent("Events");
+                            evt.initEvent( 'command', true, true );
+                            nodes[i].dispatchEvent(evt);
                         }
-                        for (var j = 0; j < event_types.length; j++) {
-                            window.persist_helper_event_listeners.add(node, 
-                                event_types[j],
-                                gen_event_handler(event_types[j],node),
-                                false
-                            );
+                    }
+                }
+                if (cmd_el) {
+                    window.persist_helper_event_listeners.add(cmd_el, 
+                        'command',
+                        gen_event_handler('command',cmd_el),
+                        false
+                    );
+                    window.persist_helper_event_listeners.add(cmd_el, 
+                        'oils_persist',
+                        gen_oils_persist_handler( base_key, nodes[i] ),
+                        false
+                    );
+                } else {
+                    var node = nodes[i];
+                    var event_types = [];
+                    if (node.hasAttribute('oils_persist_events')) {
+                        var event_type_list = node.getAttribute('oils_persist_events').split(' ');
+                        for (var j = 0; j < event_type_list.length; j++) {
+                            event_types.push( event_type_list[j] );
                         }
+                    } else {
+                        if (node.nodeName == 'textbox') { 
+                            event_types.push('change');
+                        } else if (node.nodeName == 'menulist') { 
+                            event_types.push('select');  
+                        } else if (node.nodeName == 'window') {
+                            event_types.push('resize'); 
+                            node = window; // xul window is an element of window.document
+                        } else {
+                            event_types.push('command'); 
+                        }
+                    }
+                    for (var j = 0; j < event_types.length; j++) {
                         window.persist_helper_event_listeners.add(node, 
-                            'oils_persist',
-                            gen_oils_persist_handler( base_key, node ),
+                            event_types[j],
+                            gen_event_handler(event_types[j],node),
                             false
                         );
                     }
+                    window.persist_helper_event_listeners.add(node, 
+                        'oils_persist',
+                        gen_oils_persist_handler( base_key, node ),
+                        false
+                    );
                 }
             }
         } catch(E) {
