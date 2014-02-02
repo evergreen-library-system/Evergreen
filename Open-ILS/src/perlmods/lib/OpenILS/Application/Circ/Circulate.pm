@@ -3771,18 +3771,13 @@ sub do_renew {
     my $self = shift;
     $self->log_me("do_renew()");
 
-    # Make sure there is an open circ to renew that is not
-    # marked as LOST, CLAIMSRETURNED, or LONGOVERDUE
+    # Make sure there is an open circ to renew
     my $usrid = $self->patron->id if $self->patron;
     my $circ = $self->editor->search_action_circulation({
         target_copy => $self->copy->id,
         xact_finish => undef,
         checkin_time => undef,
-        ($usrid ? (usr => $usrid) : ()),
-        '-or' => [
-            {stop_fines => undef},
-            {stop_fines => OILS_STOP_FINES_MAX_FINES}
-        ]
+        ($usrid ? (usr => $usrid) : ())
     })->[0];
 
     return $self->bail_on_events($self->editor->event) unless $circ;
