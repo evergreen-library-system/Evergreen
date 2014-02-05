@@ -1,62 +1,105 @@
 #!/usr/bin/perl
-# vim:et:sw=4:ts=4:
+# ---------------------------------------------------------------
+# Copyright © 2013 Merrimack Valley Library Consortium
+# Jason Stephenson <jstephenson@mvlc.org>
+#
+# This program is part of Evergreen; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# ---------------------------------------------------------------
 use strict;
 use warnings;
-use bytes;
-
-use OpenSRF::System;
-use OpenSRF::EX qw/:try/;
-use OpenSRF::AppSession;
-use OpenSRF::Utils::JSON;
-use OpenSRF::Utils::SettingsClient;
-use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Fieldmapper;
-use OpenILS::Utils::CStoreEditor;
-
+use OpenILS::Application::AppUtils;
+use OpenSRF::Utils::JSON;
+use MARC::Field;
 use MARC::Record;
-use MARC::File::XML ( BinaryEncoding => 'UTF-8' );
-use UNIVERSAL::require;
+use MARC::File::XML (BinaryEncoding => 'UTF-8');
+use Date::Manip::Date;
+my $U = 'OpenILS::Application::AppUtils';
 
-use Time::HiRes qw/time/;
+binmode(STDERR, ':utf8');
+
+package Marque;
+
+our $config = Marque::Config->new();
+Fieldmapper->import(IDL => $config->option_value('xml-idl'));
+
+# Look for passed in ids:
+my @ids = ();
+if ($config->need_ids()) {
+    print STDERR "Waiting for input\n";
+    while (my $i = <>) {
+        push @ids, $i if ($i =~ /^\s*[0-9]+\s*$/);
+    }
+}
+
+my $exporter;
+if ($config->option_value('type') eq 'authority') {
+    $exporter = Marque::Authority->new(\@ids);
+} else {
+    $exporter = Marque::Biblio->new(\@ids);
+}
+
+Marque::Output::output($exporter);
+
+# ------------------------------------------------------------------
+package Marque::Config;
+
 use Getopt::Long;
+use List::MoreUtils qw(none);
+use OpenSRF::System;
+use OpenSRF::Utils::SettingsClient;
+
+use constant FORMATS => qw(USMARC UNIMARC XML BRE ARE);
+use constant STORES => qw(reporter cstore storage);
+use constant TYPES => qw(authority biblio);
 
 
-my @formats = qw/USMARC UNIMARC XML BRE ARE/;
+sub new {
+    my $class = shift;
 
-my $config = '@sysconfdir@/opensrf_core.xml';
-my $format = 'USMARC';
-my $encoding = 'MARC8';
-my $location = '';
-my $dollarsign = '$';
-my $idl = 0;
-my $help = undef;
-my $holdings = undef;
-my $timeout = 0;
-my $export_mfhd = undef;
-my $type = 'biblio';
-my $all_records = undef;
-my $replace_001 = undef;
-my @library = ();
+    my $self = {};
 
-GetOptions(
-        'help'       => \$help,
-        'items'      => \$holdings,
-        'mfhd'       => \$export_mfhd,
-        'all'        => \$all_records,
-        'replace_001'=> \$replace_001,
-        'location=s' => \$location,
-        'money=s'    => \$dollarsign,
-        'config=s'   => \$config,
-        'format=s'   => \$format,
-        'type=s'     => \$type,
-        'xml-idl=s'  => \$idl,
-        'encoding=s' => \$encoding,
-        'timeout=i'  => \$timeout,
-        'library=s'  => \@library,
-);
+    # For command line options.
+    my %opts;
 
-if ($help) {
-print <<"HELP";
+    # set some default values
+    $opts{'format'} = 'USMARC';
+    $opts{'encoding'} = 'MARC8';
+    $opts{'type'} = 'biblio';
+    $opts{'money'} = '$';
+    $opts{'timeout'} = 0;
+    $opts{'config'} = '@sysconfdir@/opensrf_core.xml';
+    $opts{'store'} = 'reporter';
+
+    GetOptions(\%opts,
+               'help',
+               'items',
+               'mfhd',
+               'all',
+               'replace_001',
+               'location=s',
+               'money=s',
+               'config=s',
+               'format=s',
+               'type=s',
+               'xml-idl=s',
+               'encoding=s',
+               'timeout=i',
+               'library=s@',
+               'since=s',
+               'store=s',
+               'debug');
+
+    if ($opts{help}) {
+        print <<"HELP";
 This script exports MARC authority, bibliographic, and serial holdings
 records from an Evergreen database. 
 
@@ -76,15 +119,13 @@ Usage: $0 [options]
  --format or -f     Output format (USMARC, UNIMARC, XML, BRE, ARE) [USMARC]
  --encoding or -e   Output encoding (UTF-8, ISO-8859-?, MARC8) [MARC8]
  --xml-idl or -x    Location of the IDL XML
- --timeout          Timeout for exporting a single record; increase if you
-                    are using --holdings and are exporting records that
-                    have a lot of items attached to them.
+ --timeout          Remains for backward compatibility. No longer used.
  --type or -t       Record type (BIBLIO, AUTHORITY) [BIBLIO]
  --all or -a        Export all records; ignores input list
- --library          Export the bibliographic records that have attached
-                    holdings for the listed library or libraries as
-                    identified by shortname
  --replace_001      Replace the 001 field value with the record ID
+ --store            Use the given storage backend to connect to the database.
+                    Choices are (reporter, cstore, storage) [reporter]
+ --since            Export records modified since a certain date and time.
 
  Additional options for type = 'BIBLIO':
  --items or -i      Include items (holdings) in the output
@@ -93,6 +134,9 @@ Usage: $0 [options]
                     Not compatible with --format=BRE
  --location or -l   MARC Location Code for holdings from
                     http://www.loc.gov/marc/organizations/orgshome.html
+ --library          Export the bibliographic records that have attached
+                    holdings for the listed library or libraries as
+                    identified by shortname
 
 Examples:
 
@@ -111,315 +155,656 @@ libraries with the short names "BR1" and "BR2":
   $0 --library BR1 --library BR2 --encoding UTF-8 > sys1_bibs.mrc
 
 HELP
-    exit;
+        exit;
+    }
+
+    OpenSRF::System->bootstrap_client( config_file => $opts{config} );
+    my $sclient = OpenSRF::Utils::SettingsClient->new();
+    unless ($opts{'xml-idl'}) {
+        $opts{'xml-idl'} = $sclient->config_value('IDL');
+    }
+
+    # Validate some of the settings.
+    if ($opts{all} && $opts{library}) {
+        die('Incompatible arguments: you cannot combine a request for all ' .
+                'records with a request for records by library');
+    }
+    if ($opts{all} && $opts{since}) {
+        die('Incompatible arguments: you cannot combine a request for all ' .
+                'records with a request for records added or changed since a certain date');
+    }
+    $opts{type} = lc($opts{type});
+    if (none {$_ eq $opts{type}} (TYPES)) {
+        die "Please select a supported type.  ".
+            "Right now that means one of [".
+                join('|',(FORMATS)). "]\n";
+    }
+    $opts{format} = uc($opts{format});
+    if (none {$_ eq $opts{format}} (FORMATS)) {
+        die "Please select a supported format.  ".
+            "Right now that means one of [".
+                join('|',(FORMATS)). "]\n";
+    }
+
+    if ($opts{format} eq 'ARE' && $opts{type} ne 'authority') {
+        die "Format ARE is not compatible with type " . $opts{type};
+    }
+    if ($opts{format} eq 'BRE' && $opts{type} ne 'biblio') {
+        die "Format BRE is not compatible with type " . $opts{type};
+    }
+    if ($opts{format} eq 'BRE' && $opts{items}) {
+        die "Format BRE is not compatible with exporting holdings."
+    }
+
+    if ($opts{mfhd}) {
+        if ($opts{type} ne 'biblio') {
+            die "MFHD export only works with bibliographic records.";
+        } elsif ($opts{format} eq 'BRE') {
+            die "MFHD export incompatible with format BRE.";
+        }
+    }
+
+    $opts{store} = lc($opts{store});
+    if (none {$_ eq $opts{store}} (STORES)) {
+        die "Please select a supported store.  ".
+            "Right now that means one of [".
+                join('|',(STORES)). "]\n";
+    } else {
+        my $app;
+        if ($opts{store} eq 'reporter') {
+            $app = 'open-ils.reporter-store';
+        } else {
+            $app = 'open-ils.' . $opts{store};
+        }
+        if ($app eq 'open-ils.storage') {
+            $self->{dbsettings} = $sclient->config_value(
+                apps => $app => app_settings => databases => 'database');
+        } else {
+            $self->{dbsettings} = $sclient->config_value(
+                apps => $app => app_settings => 'database');
+        }
+    }
+    $opts{encoding} = uc($opts{encoding});
+
+    $self->{'options'} = \%opts;
+    bless $self, $class;
+    return $self;
 }
 
-if ($all_records && @library) {
-    die('Incompatible arguments: you cannot combine a request for all ' .
-        'records with a request for records by library');
+sub option_value {
+    my ($self, $option) = @_;
+    return $self->{options}->{$option};
 }
 
-$type = lc($type);
-$format = uc($format);
-$encoding = uc($encoding);
-
-binmode(STDOUT, ':raw') if ($encoding ne 'UTF-8');
-binmode(STDOUT, ':utf8') if ($encoding eq 'UTF-8');
-
-if (!grep { $format eq $_ } @formats) {
-    die "Please select a supported format.  ".
-        "Right now that means one of [".
-        join('|',@formats). "]\n";
+sub database_settings {
+    my $self = shift;
+    return $self->{dbsettings};
 }
 
-if ($format ne 'XML') {
-    my $type = 'MARC::File::' . $format;
-    $type->require;
+sub need_ids {
+    my $self = shift;
+    my $rv = 1;
+
+    $rv = 0 if ($self->{options}->{all});
+    $rv = 0 if ($self->{options}->{since});
+    $rv = 0 if ($self->{options}->{library});
+
+    return $rv;
 }
 
-if ($timeout <= 0) {
-    # set default timeout and/or correct silly user who 
-    # supplied a negative timeout; default timeout of
-    # 300 seconds if exporting items determined empirically.
-    $timeout = $holdings ? 300 : 1;
+# ------------------------------------------------------------------
+# This package exists to get a connection to the database.  Since
+# we'll need one for both biblio records and authorities, we've made a
+# single subpackage with a function so that we don't have to duplicate
+# code.
+package Marque::Connector;
+
+use DBI;
+
+# Pass a Marque::Config object's database_settings return value into
+# this to get a DBI connection.
+# ex:
+# my $db = Marque::Connector::connect($config->database_settings);
+sub connect {
+    my $args = shift;
+
+    # Build a connect string from the args.
+    my $connect_string = 'DBI:Pg:';
+    $connect_string .= 'dbname=' . $args->{db} . ';';
+    $connect_string .= 'host=' . $args->{host} . ';';
+    $connect_string .= 'port=' . $args->{port};
+
+    my $db_handle = DBI->connect($connect_string,
+                                 $args->{user}, $args->{pw});
+    return $db_handle;
 }
 
-OpenSRF::System->bootstrap_client( config_file => $config );
+# A function to get the date into a format better for PostgreSQL.
+sub db_date {
+    my $input = shift;
+    my $date;
+    if (ref($input) eq 'Date::Manip::Date') {
+        $date = $input;
+    } else {
+        $date = Date::Manip::Date->new();
+        if ($date->parse($input)) {
+            die "Can't parse date $input";
+        }
+    }
+    return $date->printf("%Y-%m-%dT%H:%M:%S%z");
+ }
 
-if (!$idl) {
-    $idl = OpenSRF::Utils::SettingsClient->new->config_value("IDL");
+# ------------------------------------------------------------------
+# You would typically have the next two packages inherit from a common
+# superclass, but ineritance doesn't seem to work when all packages
+# are in single file, so we have some duplicated code between these
+# two.
+
+# Get bibliographic records from the database.
+package Marque::Biblio;
+
+sub new {
+    my $class = shift;
+    my $idlist = shift;
+    my $self = {idlist => $idlist};
+    $self->{handle} = Marque::Connector::connect(
+        $Marque::config->database_settings);
+    $self->{since_date} = Date::Manip::Date->new;
+    $self->{since_date}->parse($Marque::config->option_value('since'));
+
+    # We need multiple fieldmapper classes depending on our
+    # options. We'll just get the information that we'll need for them
+    # all right here instead of only fetching the information when
+    # needed.
+    $self->{breClass} = Fieldmapper::class_for_hint('bre');
+    $self->{acnClass} = Fieldmapper::class_for_hint('acn');
+    $self->{acpClass} = Fieldmapper::class_for_hint('acp');
+    $self->{sreClass} = Fieldmapper::class_for_hint('sre');
+
+    # Make an arrayref of shortname ids if the library option was
+    # specified:
+    $self->{libs} = [];
+    if ($Marque::config->option_value('library')) {
+        # This is done not only for speed, but to prevent SQL injection.
+        my $sth = $self->{handle}->prepare('select id from actor.org_unit where shortname=any(?::text[])');
+        if ($sth->execute($Marque::config->option_value('library'))) {
+            my $r = $sth->fetchall_arrayref();
+            my @ids = map {$_->[0]} @{$r};
+            $self->{libs} = \@ids;
+            $sth->finish();
+        }
+    }
+
+    bless $self, $class;
+    return $self;
 }
 
-Fieldmapper->import(IDL => $idl);
+sub build_query {
+    my $self = shift;
 
-my $ses = OpenSRF::AppSession->create('open-ils.cstore');
-OpenILS::Utils::CStoreEditor::init();
-my $editor = OpenILS::Utils::CStoreEditor->new();
+    # Get the field names and tables for our classes. We add the fully
+    # qualified table names to the fields so that the joins will work.
+    my $breTable = $self->{breClass}->Table();
+    my @breFields = map {$breTable . '.' . $_} $self->{breClass}->real_fields();
+    my $acnTable = $self->{acnClass}->Table();
+    my $acpTable = $self->{acpClass}->Table();
 
-print <<HEADER if ($format eq 'XML');
+    # Now we build the query in pieces:
+
+    # We always select the bre fields:
+    my $select = 'select distinct ' . join(',', @breFields);
+    # We always use the bre table.
+    my $from = "from $breTable";
+
+    # If have the libraries or items options, we need to join the
+    # asset.call_number table. If we have both, this variable checks
+    # that it has already been joined so we don't create an invalid
+    # query.
+    my $acn_joined = 0;
+    # Join to the acn table as needed for the library option.
+    if (@{$self->{libs}}) {
+        $acn_joined = 1;
+        $from .= <<ACN_JOIN;
+
+join $acnTable on $acnTable.record = $breTable.id
+and $acnTable.owning_lib in (
+ACN_JOIN
+        $from .= join(',', @{$self->{libs}}) . ")";
+        $from .= "\nand $acnTable.deleted = 'f'" unless ($Marque::config->option_value('since'));
+    }
+
+    if ($Marque::config->option_value('items')) {
+        unless ($acn_joined) {
+            $from .= "\njoin $acnTable on $acnTable.record = $breTable.id";
+            $from .= "\nand $acnTable.deleted = 'f'" unless ($Marque::config->option_value('since'));
+        }
+        $from .= "\njoin $acpTable on $acpTable.call_number = $acnTable.id";
+        $from .= "\nand $acpTable.deleted = 'f'" unless ($Marque::config->option_value('since'));
+    }
+
+    # The where really depends on a few options:
+    my $where = "where $breTable.id > 0 and ";
+    # We fill in the where as necessary.
+    if ($self->{idlist} && @{$self->{idlist}}) {
+        $where .= "$breTable.id in (" . join(',', @{$self->{idlist}}) . ')';
+    } elsif ($Marque::config->option_value('since')) {
+        my $since_str = Marque::Connector::db_date($self->{since_date});
+        $where .= "($breTable.edit_date > '$since_str'";
+        $where .= " or $breTable.create_date > '$since_str')";
+    } else {
+        # We want all non-deleted records.
+        $where .= "$breTable.deleted = 'f'";
+    }
+
+    $self->{query} = $select . "\n" . $from . "\n" . $where;
+}
+
+sub execute_query {
+    my $self = shift;
+    $self->build_query() unless ($self->{query});
+    $self->{sth} = $self->{handle}->prepare($self->{query});
+    return $self->{sth}->execute;
+}
+
+sub next {
+    my $self = shift;
+    my $output;
+
+    # $r holds the record object, either sre or bre.  $marc holds the
+    # current record's MARC, either sre.marc or bre.marc
+    my ($r,$marc);
+    # If we have the mfhd option and we've previously retrieved some
+    # sres, then we output one of the retrieved sres for each call
+    # until we run out.  These sres "go with" the previous bib record.
+    if ($Marque::config->option_value('mfhd') && $self->{mfhds} && @{$self->{mfhds}}) {
+        $r = shift(@{$self->{mfhds}});
+        eval {
+            $marc = MARC::Record->new_from_xml($r->marc(),
+                                               $Marque::config->option_value('encoding'),
+                                               $Marque::config->option_value('format'));
+        };
+        if ($@) {
+            print STDERR "Error in serial record " . $r->id() . "\n";
+            print STDERR "$@\n";
+            import MARC::File::XML; # Reset SAX Parser.
+            return $self->next();
+        }
+    } else {
+        my $data = $self->{sth}->fetchrow_hashref;
+        if ($data) {
+            $r = $self->{breClass}->from_bare_hash($data);
+            if ($Marque::config->option_value('format') eq 'BRE') {
+                $output = OpenSRF::Utils::JSON->perl2JSON($r);
+            } else {
+                eval {
+                    $marc = MARC::Record->new_from_xml($r->marc(),
+                                                       $Marque::config->option_value('encoding'),
+                                                       $Marque::config->option_value('format'));
+                };
+                if ($@) {
+                    print STDERR "Error in bibliograpic record " . $r->id() . "\n";
+                    print STDERR "$@\n";
+                    import MARC::File::XML; # Reset SAX Parser.
+                    return $self->next();
+                }
+                if ($Marque::config->option_value('replace_001')) {
+                    my $tcn = $marc->field('001');
+                    if ($tcn) {
+                        $tcn->update($r->id());
+                    } else {
+                        $tcn = MARC::Field->new('001', $r->id());
+                        $marc->insert_fields_ordered($tcn);
+                    }
+                }
+                if ($Marque::config->option_value('items')) {
+                    my @acps = $self->acps_for_bre($r);
+                    foreach my $acp (@acps) {
+                        next unless ($acp);
+                        my $location = $Marque::config->option_value('location');
+                        my $price = ($acp->price() ? $Marque::config->option_value('money').$acp->price() : '');
+                        $marc->insert_grouped_field(
+                            MARC::Field->new(
+                                '852', '4', ' ',
+                                ($location ? ('a' => $location) : ()),
+                                b => $acp->call_number()->owning_lib()->shortname(),
+                                b => $acp->circ_lib()->shortname(),
+                                c => $acp->location()->name(),
+                                j => $acp->call_number()->label(),
+                                ($acp->circ_modifier() ? (g => $acp->circ_modifier()) : ()),
+                                p => $acp->barcode(),
+                                ($price ? (y => $price) : ()),
+                                ($acp->copy_number() ? (t => $acp->copy_number()) : ()),
+                                ($U->is_true($acp->ref()) ? (x => 'reference') : ()),
+                                (!$U->is_true($acp->holdable()) ? (x => 'unholdable') : ()),
+                                (!$U->is_true($acp->circulate()) ? (x => 'noncirculating') : ()),
+                                (!$U->is_true($acp->opac_visible()) ? (x => 'hidden') : ())
+                            ));
+                    }
+                }
+                if ($Marque::config->option_value('mfhd')) {
+                    $self->{mfhds} = [$self->sres_for_bre($r)];
+                }
+            }
+        }
+    }
+    # Common stuff that doesn't depend on record type.
+    if ($marc) {
+        if ($Marque::config->option_value('since')) {
+            my $leader = $marc->leader();
+            if ($U->is_true($r->deleted())) {
+                substr($leader, 5, 1) = 'd';
+                $marc->leader($leader);
+            } else {
+                my $create_date = Date::Manip::Date->new;
+                $create_date->parse($r->create_date());
+                my $edit_date = Date::Manip::Date->new;
+                $edit_date->parse($r->edit_date());
+                if ($self->{since_date}->cmp($create_date) < 0) {
+                    substr($leader, 5, 1) = 'n';
+                    $marc->leader($leader);
+                } elsif ($self->{since_date}->cmp($edit_date) < 0) {
+                    substr($leader, 5, 1) = 'c';
+                    $marc->leader($leader);
+                }
+            }
+        }
+        if ($Marque::config->option_value('format') eq 'XML') {
+            $output = $marc->as_xml_record;
+            $output =~ s/^<\?.+?\?>$//mo;
+        } else {
+            $output = $marc->as_usmarc;
+        }
+    }
+    return $output;
+}
+
+# Returns a list of aou objects in an array.
+sub orgs {
+    my $self = shift;
+    unless ($self->{orgs} && @{$self->{orgs}}) {
+        my $fmClass = Fieldmapper::class_for_hint('aou');
+        my @classFields = $fmClass->real_fields();
+        my $classTable = $fmClass->Table();
+        my $query = 'select ' . join(',', @classFields);
+        $query .= "\nfrom $classTable";
+        my $sth = $self->{handle}->prepare($query);
+        if ($sth->execute()) {
+            my $result = $sth->fetchall_arrayref({});
+            my @orgs = map {$fmClass->from_bare_hash($_)} @{$result};
+            $self->{orgs} = \@orgs;
+        } else {
+            $self->{orgs} = [];
+        }
+    }
+    return @{$self->{orgs}};
+}
+
+# Returns an array of acpl objects.
+sub shelves {
+    my $self = shift;
+
+    unless ($self->{shelves} && @{$self->{shelves}}) {
+        my $fmClass = Fieldmapper::class_for_hint('acpl');
+        my @classFields = $fmClass->real_fields();
+        my $classTable = $fmClass->Table();
+        my $query = 'select ' . join(',', @classFields);
+        $query .= "\nfrom $classTable";
+        my $result = $self->{handle}->selectall_arrayref($query, {Slice=>{}});
+        my @shelves = map {$fmClass->from_bare_hash($_)} @{$result};
+        $self->{shelves} = \@shelves;
+    }
+
+    return @{$self->{shelves}};
+}
+
+# Returns an array of acn objects for a given bre object or id.
+sub acns_for_bre {
+    my $self = shift;
+    my $bre = shift;
+    $bre = $bre->id() if (ref($bre));
+
+    unless ($self->{acnHandle}) {
+        my $query = "select " . join(',', $self->{acnClass}->real_fields());
+        $query .= "\nfrom " . $self->{acnClass}->Table();
+        $query .= "\nwhere record = ?";
+        if (@{$self->{libs}}) {
+            $query .= "\nand owning_lib in (";
+            $query .= join(',', @{$self->{libs}}) . ")";
+        }
+        $query .= "\nand deleted = 'f'" unless($Marque::config->option_value('since'));
+        $self->{acnHandle} = $self->{handle}->prepare($query);
+    }
+
+    if ($self->{acnHandle}->execute($bre)) {
+        my $result = $self->{acnHandle}->fetchall_arrayref({});
+        return map {$self->{acnClass}->from_bare_hash($_)} @{$result};
+    }
+
+    # If for some reason, we don't find anything.
+    return undef;
+}
+
+# Returns an array of acp objects for a given bre object or id.
+sub acps_for_bre {
+    my $self = shift;
+    my $bre = shift;
+    $bre = $bre->id() if (ref($bre));
+
+    my @orgs = $self->orgs();
+    my @locations = $self->shelves();
+
+    my @acns = $self->acns_for_bre($bre);
+    if (@acns) {
+        my $query = 'select ' . join(',', $self->{acpClass}->real_fields());
+        $query .= "\nfrom " . $self->{acpClass}->Table();
+        $query .= "\nwhere call_number in (";
+        $query .= join(',', map {$_->id()} @acns);
+        $query .= ")";
+        $query .= "\nand deleted = 'f'" unless ($Marque::config->option_value('since'));
+        my $result = $self->{handle}->selectall_arrayref($query, {Slice=>{}});
+        if ($result && @{$result}) {
+            my @acps = map {$self->{acpClass}->from_bare_hash($_)} @{$result};
+            foreach (@acps) {
+                my $cn = $_->call_number();
+                my $clib = $_->circ_lib();
+                my $loc = $_->location();
+                my ($org) = grep {$_->id() == $clib} @orgs;
+                my ($acn) = grep {$_->id() == $cn} @acns;
+                my ($location) = grep {$_->id() == $loc} @locations;
+                my $olib = $acn->owning_lib();
+                my ($owner) = grep {$_->id() == $olib} @orgs;
+                $acn->owning_lib($owner);
+                $_->call_number($acn);
+                $_->circ_lib($org);
+                $_->location($location);
+            }
+            return @acps;
+        }
+    }
+
+    # If for some reason, we don't find anything.
+    return undef;
+}
+
+# Retreive an array for sre objects when the --mfhd option is used.
+sub sres_for_bre {
+    my $self = shift;
+    my $bre = shift;
+    $bre = $bre->id() if (ref($bre));
+    my @sres;
+    # Build a query to retrieve SREs when the MFHD option is passed.
+    if ($Marque::config->option_value('mfhd')) {
+        # Create a persistent handle as needed.
+        unless ($self->{sreSth}) {
+            my $query = "select " . join(',', $self->{sreClass}->real_fields());
+            $query .= "\nfrom " . $self->{sreClass}->Table();
+            $query .= "\nwhere record = ?";
+            $query .= "\nand deleted = 'f'" unless ($Marque::config->option_value('since'));
+            $self->{sreSth} = $self->{handle}->prepare($query);
+        }
+        if ($self->{sreSth}->execute($bre)) {
+            while (my $data = $self->{sreSth}->fetchrow_hashref) {
+                push @sres, $self->{sreClass}->from_bare_hash($data);
+            }
+            $self->{sreSth}->finish; # Sometimes DBI complains.
+        }
+    }
+    # May be empty.
+    return @sres;
+}
+
+# Get authority records from the database.
+package Marque::Authority;
+
+sub new {
+    my $class = shift;
+    my $idlist = shift;
+    my $self = {idlist => $idlist};
+    $self->{handle} = Marque::Connector::connect(
+        $Marque::config->database_settings);
+    $self->{fmClass} = Fieldmapper::class_for_hint('are');
+    $self->{since_date} = Date::Manip::Date->new;
+    $self->{since_date}->parse($Marque::config->option_value('since'));
+    bless $self, $class;
+    return $self;
+}
+
+sub build_query {
+    my $self = shift;
+
+    # Get the information for are object from the Fieldmapper:
+    my @fields  = $self->{fmClass}->real_fields();
+    my $table = $self->{fmClass}->Table();
+
+    # Build the actual query.
+    my $select = "select " . join(',', @fields);
+    my $from = "from $table";
+    my $where = 'where ';
+
+    # If we have an idlist, we pretty much ignore anything else.
+    if ($self->{idlist} && @{$self->{idlist}}) {
+        $where .= 'id in (' . join(',', @{$self->{idlist}}) . ')';
+    } elsif ($Marque::config->option_value('since')) {
+        my $since_str = Marque::Connector::db_date($self->{since_date});
+        $where .= "edit_date > '$since_str'";
+        $where .= " or create_date > '$since_str'";
+    } else {
+        # We want all non-deleted records.
+        $where .= "deleted = 'f'";
+    }
+
+    $self->{query} = $select . "\n" . $from . "\n" . $where;
+}
+
+sub execute_query {
+    my $self = shift;
+    $self->build_query() unless ($self->{query});
+    $self->{sth} = $self->{handle}->prepare($self->{query});
+    return $self->{sth}->execute;
+}
+
+sub next {
+    my $self = shift;
+    my $output;
+    my $data = $self->{sth}->fetchrow_hashref;
+
+    if ($data) {
+        my $format = $Marque::config->option_value('format');
+        my $are = $self->{fmClass}->from_bare_hash($data);
+        if ($format eq 'ARE') {
+            $output = OpenSRF::Utils::JSON->perl2JSON($are);
+        } else {
+            my $r;
+            eval {
+                $r = MARC::Record->new_from_xml($are->marc(),
+                                                $Marque::config->option_value('encoding'),
+                                                $Marque::config->option_value('format'));
+            };
+            if ($@) {
+                print STDERR "Error in authority record " . $are->id() . "\n";
+                print STDERR "$@\n";
+                import MARC::File::XML; # Reset SAX Parser.
+                return $self->next();
+            }
+            if ($Marque::config->option_value('replace_001')) {
+                my $tcn = $r->field('001');
+                if ($tcn) {
+                    $tcn->update($are->id());
+                } else {
+                    $tcn = MARC::Field->new('001', $are->id());
+                    $r->insert_fields_ordered($tcn);
+                }
+            }
+            if ($Marque::config->option_value('since')) {
+                my $leader = $r->leader();
+                if ($U->is_true($are->deleted())) {
+                    substr($leader, 5, 1) = 'd';
+                    $r->leader($leader);
+                } else {
+                    my $create_date = Date::Manip::Date->new;
+                    $create_date->parse($are->create_date());
+                    my $edit_date = Date::Manip::Date->new;
+                    $edit_date->parse($are->edit_date());
+                    if ($self->{since_date}->cmp($create_date) < 0) {
+                        substr($leader, 5, 1) = 'n';
+                        $r->leader($leader);
+                    } elsif ($self->{since_date}->cmp($edit_date) < 0) {
+                        substr($leader, 5, 1) = 'c';
+                        $r->leader($leader);
+                    }
+                }
+            }
+            if ($Marque::config->option_value('format') eq 'XML') {
+                $output = $r->as_xml_record;
+                $output =~ s/^<\?.+?\?>$//mo;
+            } else {
+                $output = $r->as_usmarc;
+            }
+        }
+    }
+
+    return $output;
+}
+
+# ------------------------------------------------------------------
+# Since the ultimate output is largely independent of the type of the
+# records, we use a single subpackage to group our output routines.
+package Marque::Output;
+
+sub output {
+    my $extractor = shift;
+    if ($extractor->execute_query) {
+        if ($Marque::config->option_value('encoding') eq 'UTF-8') {
+            binmode(STDOUT, ':utf8');
+        } else {
+            binmode(STDOUT, ':raw');
+        }
+
+        &preamble;
+        while (my $output = $extractor->next()) {
+            print $output;
+        }
+        &postamble;
+    } else {
+        print STDERR $extractor->{query} if ($Marque::config->option_value('debug'));
+        die "Database query failed!";
+    }
+}
+
+sub preamble {
+    if ($Marque::config->option_value('format') eq 'XML') {
+        my $encoding = $Marque::config->option_value('encoding');
+        print <<PREAMBLE;
 <?xml version="1.0" encoding="$encoding"?>
 <collection xmlns='http://www.loc.gov/MARC21/slim'>
-HEADER
-
-my %orgs;
-my %shelves;
-
-my $flesh = {};
-
-if ($holdings) {
-    get_bib_locations();
-}
-
-my $start = time;
-my $last_time = time;
-my %count = ('bib' => 0, 'did' => 0);
-my $speed = 0;
-
-if ($all_records) {
-    my $top_record = 0;
-    if ($type eq 'biblio') {
-        $top_record = $editor->search_biblio_record_entry([
-            {deleted => 'f'},
-            {order_by => { 'bre' => 'id DESC' }, limit => 1}
-        ])->[0]->id;
-    } elsif ($type eq 'authority') {
-        $top_record = $editor->search_authority_record_entry([
-            {deleted => 'f'},
-            {order_by => { 'are' => 'id DESC' }, limit => 1}
-        ])->[0]->id;
-    }
-    for (my $i = 0; $i++ < $top_record;) {
-        export_record($i);
-    }
-} elsif (@library) {
-    my $recids = $editor->json_query({
-        select => { bre => ['id'] },
-        from => { bre => 'acn' },
-        where => {
-            '+bre' => { deleted => 'f' },
-            '+acn' => { 
-                deleted => 'f', 
-                owning_lib => {
-                    in => {
-                        select => {'aou' => ['id'] },
-                        from => 'aou',
-                        where => { shortname => { in => \@library } }
-                    } 
-                }
-            }
-        },
-        distinct => 1,
-        order_by => [{
-            class => 'bre',
-            field => 'id',
-            direction => 'ASC' 
-        }]
-    });
-
-    foreach my $record (@$recids) {
-        export_record($record->{id});
-    }; 
-} else {
-    while ( my $i = <> ) {
-        export_record($i);
+PREAMBLE
     }
 }
-print "</collection>\n" if ($format eq 'XML');
 
-$speed = $count{did} / (time - $start);
-my $time = time - $start;
-print STDERR <<DONE;
-
-Exports Attempted : $count{bib}
-Exports Completed : $count{did}
-Overall Speed     : $speed
-Total Time Elapsed: $time seconds
-
-DONE
-
-sub export_record {
-    my $id = int(shift);
-
-    my $bib; 
-
-    my $r = $ses->request( "open-ils.cstore.direct.$type.record_entry.retrieve", $id, $flesh );
-    my $s = $r->recv(timeout => $timeout);
-    if (!$s) {
-        warn "\n!!!!! Failed trying to read record $id\n";
-        return;
-    }
-    if ($r->failed) {
-        warn "\n!!!!!! Failed trying to read record $id: " . $r->failed->stringify . "\n";
-        return;
-    }
-    if ($r->timed_out) {
-        warn "\n!!!!!! Timed out trying to read record $id\n";
-        return;
-    }
-    $bib = $s->content;
-    $r->finish;
-
-    $count{bib}++;
-    return unless $bib;
-
-    if ($format eq 'ARE' or $format eq 'BRE') {
-        print OpenSRF::Utils::JSON->perl2JSON($bib);
-        stats();
-        $count{did}++;
-        return;
-    }
-
-    try {
-
-        my $r = MARC::Record->new_from_xml( $bib->marc, $encoding, $format );
-        if ($type eq 'biblio') {
-            add_bib_holdings($bib, $r);
-        }
-
-        if ($replace_001) {
-            my $tcn = $r->field('001');
-            if ($tcn) {
-                $tcn->update($id);
-            } else {
-                my $new_001 = MARC::Field->new('001', $id);
-                $r->insert_fields_ordered($new_001);
-            }
-        }
-
-        if ($format eq 'XML') {
-            my $xml = $r->as_xml_record;
-            $xml =~ s/^<\?.+?\?>$//mo;
-            print $xml;
-        } elsif ($format eq 'UNIMARC') {
-            print $r->as_usmarc;
-        } elsif ($format eq 'USMARC') {
-            print $r->as_usmarc;
-        }
-
-        $count{did}++;
-
-    } otherwise {
-        my $e = shift;
-        warn "\n$e\n";
-        import MARC::File::XML; # reset SAX parser so that one bad record doesn't kill the entire export
-    };
-
-    if ($export_mfhd and $type eq 'biblio') {
-        my $mfhds = $editor->search_serial_record_entry({record => $id, deleted => 'f'});
-        foreach my $mfhd (@$mfhds) {
-            try {
-                my $r = MARC::Record->new_from_xml( $mfhd->marc, $encoding, $format );
-
-                if ($format eq 'XML') {
-                    my $xml = $r->as_xml_record;
-                    $xml =~ s/^<\?.+?\?>$//mo;
-                    print $xml;
-                } elsif ($format eq 'UNIMARC') {
-                    print $r->as_usmarc;
-                } elsif ($format eq 'USMARC') {
-                    print $r->as_usmarc;
-                }
-            } otherwise {
-                my $e = shift;
-                warn "\n$e\n";
-                import MARC::File::XML; # reset SAX parser so that one bad record doesn't kill the entire export
-            };
-        }
-    }
-
-    stats() if (! ($count{bib} % 50 ));
-}
-
-sub stats {
-    try {
-        no warnings;
-
-        $speed = $count{did} / (time - $start);
-
-        my $speed_now = ($count{did} - $count{did_last}) / (time - $count{time_last});
-        my $cn_speed = $count{cn} / (time - $start);
-        my $cp_speed = $count{cp} / (time - $start);
-
-        printf STDERR "\r  $count{did} of $count{bib} @  \%0.4f/s ttl / \%0.4f/s rt ".
-                "($count{cn} CNs @ \%0.4f/s :: $count{cp} CPs @ \%0.4f/s)\r",
-                $speed,
-                $speed_now,
-                $cn_speed,
-                $cp_speed;
-    } otherwise {};
-    $count{did_last} = $count{did};
-    $count{time_last} = time;
-}
-
-sub get_bib_locations {
-    print STDERR "Retrieving Org Units ... ";
-    my $r = $ses->request( 'open-ils.cstore.direct.actor.org_unit.search', { id => { '!=' => undef } } );
-
-    while (my $o = $r->recv) {
-        die $r->failed->stringify if ($r->failed);
-        $o = $o->content;
-        last unless ($o);
-        $orgs{$o->id} = $o;
-    }
-    $r->finish;
-    print STDERR "OK\n";
-
-    print STDERR "Retrieving Shelving locations ... ";
-    $r = $ses->request( 'open-ils.cstore.direct.asset.copy_location.search', { id => { '!=' => undef } } );
-
-    while (my $s = $r->recv) {
-        die $r->failed->stringify if ($r->failed);
-        $s = $s->content;
-        last unless ($s);
-        $shelves{$s->id} = $s;
-    }
-    $r->finish;
-    print STDERR "OK\n";
-
-    $flesh = { flesh => 2, flesh_fields => { bre => [ 'call_numbers' ], acn => [ 'copies' ] } };
-}
-
-sub add_bib_holdings {
-    my $bib = shift;
-    my $r = shift;
-
-    my $cn_list = $bib->call_numbers;
-    if ($cn_list && @$cn_list) {
-        $cn_list = [ grep { $_->deleted eq 'f' } @$cn_list ];
-        $count{cn} += @$cn_list;
-
-        my $cp_list = [ grep { $_->deleted eq 'f' } map { @{ $_->copies } } @$cn_list ];
-        if ($cp_list && @$cp_list) {
-
-            my %cn_map;
-            push @{$cn_map{$_->call_number}}, $_ for (@$cp_list);
-                            
-            for my $cn ( @$cn_list ) {
-                my $cn_map_list = $cn_map{$cn->id};
-
-                for my $cp ( @$cn_map_list ) {
-                    $count{cp}++;
-                            
-                    $r->insert_grouped_field( MARC::Field->new( '852', '4', ' ',
-                            ($location ? ( 'a' => $location ) : ()),
-                            b => $orgs{$cn->owning_lib}->shortname,
-                            b => $orgs{$cp->circ_lib}->shortname,
-                            c => $shelves{$cp->location}->name,
-                            j => $cn->label,
-                            ($cp->circ_modifier ? ( g => $cp->circ_modifier ) : ()),
-                            p => $cp->barcode,
-                            ($cp->price ? ( y => $dollarsign.$cp->price ) : ()),
-                            ($cp->copy_number ? ( t => $cp->copy_number ) : ()),
-                            ($cp->ref eq 't' ? ( x => 'reference' ) : ()),
-                            ($cp->holdable eq 'f' ? ( x => 'unholdable' ) : ()),
-                            ($cp->circulate eq 'f' ? ( x => 'noncirculating' ) : ()),
-                            ($cp->opac_visible eq 'f' ? ( x => 'hidden' ) : ()),
-                        )
-                    );
-
-                    stats() if (! ($count{cp} % 100 ));
-                }
-            }
-        }
+sub postamble {
+    if ($Marque::config->option_value('format') eq 'XML') {
+        print "</collection>\n";
     }
 }
+
+1;
