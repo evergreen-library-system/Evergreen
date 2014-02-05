@@ -439,19 +439,18 @@
         END;
 
         # "mattype" == "custom marc format specifier"
-        FOR icon_style IN ['mattype', 'item_type']; 
-            node = xml.findnodes(
-                '//*[local-name()="attributes"]/*[local-name()="field"][@name="' _ icon_style _ '"]');
-            IF node AND node.textContent;
-                type = node.textContent;
-                args.format_label = PROCESS get_ccvm_label id=node.getAttribute('cvmid') search_label=1;
-                IF !args.format_label;
-                    args.format_label = node.getAttribute('coded-value');
-                END;
-                args.schema.itemtype = schema_typemap.$type || 'CreativeWork';
-                args.format_icon = ctx.media_prefix _ '/images/format_icons/' _ icon_style _ '/' _ type _ '.png';
-                LAST;
+        icon_style = ctx.get_cgf('opac.icon_attr').value || 'item_type';
+        node = xml.findnodes(
+            '//*[local-name()="attributes"]/*[local-name()="field"][@name="' _ icon_style _ '"]');
+        IF node AND node.textContent;
+            type = node.textContent;
+            args.format_label = PROCESS get_ccvm_label id=node.getAttribute('cvmid') search_label=1;
+            IF !args.format_label;
+                args.format_label = node.getAttribute('coded-value');
             END;
+            args.schema.itemtype = schema_typemap.$type || 'CreativeWork';
+            args.format_icon = ctx.media_prefix _ '/images/format_icons/' _ icon_style _ '/' _ type _ '.png';
+            LAST;
         END;
 	
         args.bibid = [];
