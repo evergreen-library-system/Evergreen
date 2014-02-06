@@ -1,0 +1,5 @@
+Restore OpenSearch Support
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Restore previously held functionality from JSPAC to support OpenSearch in TPAC. 
+This allows users to easily add the Evergreen search engine to their browser's 
+built-in set of search engines.
