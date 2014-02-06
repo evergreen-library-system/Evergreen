@@ -1,0 +1,39 @@
+marc_export script replacement
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The `/openils/bin/marc_export` script is completely rewritten.  This
+new version accepts all of the same command line options as the old
+version as well as some new options.
+
+The rewritten `marc_export` talks directly to your Evergreen database
+and is a great deal faster than the previous version.  Because the new
+script talks directly to the database, it needs to know how to
+connect.  To facilitate this, a new option, `--store`, was added that
+allows the user to specify one of three Evergreen storage backends to
+use when exporting records.  The valid choices are `reporter`,
+`cstore`, or `storage`.  The default of `reporter` should work in most
+cases, but if you do have a separate reporter database and you know
+you want to talk directly to your main production database, then you
+will probably want to choose either `cstore` or `storage`.
+
+In addition to the `--store` option, a `--since` option is also added
+so that you can specify output of an update file of records changed,
+added, and/or deleted since the given date.  The `--since` option uses
+a fairly flexible date parser and can accept a wide range of date
+formats including ISO 8601, man common date formats such as M/D/Y
+(common in the US) or D/Mon/Y (with the first 3 characters or more of
+the month spelled out), as well as several less common date formats.
+Special date strings such as `yesterday`, `today`, `yesterday week`,
+and `today week` are also supported.  For more information see the
+VALID DATE FORMATS section of the `Date::Manip::Date` man page.
+Available online here:
+
+http://search.cpan.org/~sbeck/Date-Manip-6.42/lib/Date/Manip/Date.pod#VALID_DATE_FORMATS
+
+There is one final difference between the new script and the old
+`marc_export`.  The new script does not output progress as it
+executes.  Many of the statistics that the script reported are not
+readily available to the new script.  It was deemed better to just not
+output any progress rather than to output something different from the
+old program.  If your scripts parse the output from `marc_export`,
+they will need to modified not to expect any.
