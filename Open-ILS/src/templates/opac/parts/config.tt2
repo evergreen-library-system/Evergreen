@@ -147,7 +147,7 @@ search.default_qtypes = ['keyword','title','author'];
 
 search.basic_config = {
     type => 'attr',
-    group => ['mattype','item_type'],
+    group => [ctx.get_cgf('opac.icon_attr').value, 'item_type'],
     none_label => l("All Formats"),
 };
 
