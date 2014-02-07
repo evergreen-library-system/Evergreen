@@ -3707,8 +3707,8 @@ SELECT  usr,
                 WHEN (
                     ((fine_interval >= '1 day' AND due_date >= 'today') OR (fine_interval &lt; '1 day'  AND due_date > 'now'))
                     AND (stop_fines IS NULL OR stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE'))
-                ) THEN id
-                ELSE 0
+                ) THEN id::TEXT
+                ELSE '0'
             END
         ,',') AS out,
 
@@ -3717,14 +3717,14 @@ SELECT  usr,
                 WHEN (
                     ((fine_interval >= '1 day' AND due_date &lt; 'today') OR (fine_interval &lt; '1 day'  AND due_date &lt; 'now'))
                     AND (stop_fines IS NULL OR stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE'))
-                ) THEN id
-                ELSE 0
+                ) THEN id::TEXT
+                ELSE '0'
             END
         ,',') AS overdue,
 
-        STRING_AGG( CASE WHEN (xact_finish IS NULL AND stop_fines = 'LOST') THEN id ELSE 0 END,',') AS lost,
-        STRING_AGG( CASE WHEN (xact_finish IS NULL AND stop_fines = 'CLAIMSRETURNED') THEN id ELSE 0 END,',') AS claims_returned,
-        STRING_AGG( CASE WHEN (xact_finish IS NULL AND stop_fines = 'LONGOVERDUE') THEN id ELSE 0 END,',') AS long_overdue
+        STRING_AGG( CASE WHEN (xact_finish IS NULL AND stop_fines = 'LOST') THEN id::TEXT ELSE '0' END,',') AS lost,
+        STRING_AGG( CASE WHEN (xact_finish IS NULL AND stop_fines = 'CLAIMSRETURNED') THEN id::TEXT ELSE '0' END,',') AS claims_returned,
+        STRING_AGG( CASE WHEN (xact_finish IS NULL AND stop_fines = 'LONGOVERDUE') THEN id::TEXT ELSE '0' END,',') AS long_overdue
   FROM  action.circulation
   WHERE checkin_time IS NULL
   GROUP BY 1
