@@ -548,7 +548,7 @@ sub nearest_hold {
                 ON ( csp.id = ausp.standing_penalty AND csp.block_list LIKE '%CAPTURE%' )
             $addl_join
           WHERE hm.target_copy = ?
-            AND (AGE(NOW(),h.request_time) >= CAST(? AS INTERVAL) OR p.prox = 0)
+            AND (AGE(NOW(),h.request_time) >= CAST(? AS INTERVAL) OR hm.proximity = 0 OR p.prox = 0)
             AND h.capture_time IS NULL
             AND h.cancel_time IS NULL
             AND (h.expire_time IS NULL OR h.expire_time > NOW())
