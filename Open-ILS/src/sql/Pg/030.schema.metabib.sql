@@ -1922,7 +1922,7 @@ BEGIN
         -- Gather aggregate data based on the MBE row we're looking at now, authority axis
         SELECT INTO all_arecords, result_row.sees, afields
                 ARRAY_AGG(DISTINCT abl.bib), -- bibs to check for visibility
-                ARRAY_TO_STRING(ARRAY_AGG(DISTINCT aal.source), $$,$$), -- authority record ids
+                STRING_AGG(DISTINCT aal.source, $$,$$), -- authority record ids
                 ARRAY_AGG(DISTINCT map.metabib_field) -- authority-tag-linked CMF rows
 
           FROM  metabib.browse_entry_simple_heading_map mbeshm
@@ -1939,13 +1939,13 @@ BEGIN
         -- Gather aggregate data based on the MBE row we're looking at now, bib axis
         SELECT INTO all_brecords, result_row.authorities, bfields
                 ARRAY_AGG(DISTINCT source),
-                ARRAY_TO_STRING(ARRAY_AGG(DISTINCT authority), $$,$$),
+                STRING_AGG(DISTINCT authority, $$,$$),
                 ARRAY_AGG(DISTINCT def)
           FROM  metabib.browse_entry_def_map
           WHERE entry = rec.id
                 AND def = ANY(fields);
 
-        SELECT INTO result_row.fields ARRAY_TO_STRING(ARRAY_AGG(DISTINCT x), $$,$$) FROM UNNEST(afields || bfields) x;
+        SELECT INTO result_row.fields STRING_AGG(DISTINCT x, $$,$$) FROM UNNEST(afields || bfields) x;
 
         result_row.sources := 0;
         result_row.asources := 0;

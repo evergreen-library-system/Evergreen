@@ -702,7 +702,7 @@ CREATE OR REPLACE FUNCTION authority.axis_authority_tags_refs(a TEXT) RETURNS IN
     SELECT ARRAY_AGG(y) from (
        SELECT  unnest(ARRAY_CAT(
                  ARRAY[a.field],
-                 (SELECT ARRAY_ACCUM(x.id) FROM authority.control_set_authority_field x WHERE x.main_entry = a.field)
+                 (SELECT ARRAY_AGG(x.id) FROM authority.control_set_authority_field x WHERE x.main_entry = a.field)
              )) y
        FROM  authority.browse_axis_authority_field_map a
        WHERE axis = $1) x
@@ -718,7 +718,7 @@ CREATE OR REPLACE FUNCTION authority.btag_authority_tags_refs(btag TEXT) RETURNS
     SELECT ARRAY_AGG(y) from (
         SELECT  unnest(ARRAY_CAT(
                     ARRAY[a.authority_field],
-                    (SELECT ARRAY_ACCUM(x.id) FROM authority.control_set_authority_field x WHERE x.main_entry = a.authority_field)
+                    (SELECT ARRAY_AGG(x.id) FROM authority.control_set_authority_field x WHERE x.main_entry = a.authority_field)
                 )) y
       FROM  authority.control_set_bib_field a
       WHERE a.tag = $1) x
@@ -733,7 +733,7 @@ CREATE OR REPLACE FUNCTION authority.atag_authority_tags_refs(atag TEXT) RETURNS
     SELECT ARRAY_AGG(y) from (
         SELECT  unnest(ARRAY_CAT(
                     ARRAY[a.id],
-                    (SELECT ARRAY_ACCUM(x.id) FROM authority.control_set_authority_field x WHERE x.main_entry = a.id)
+                    (SELECT ARRAY_AGG(x.id) FROM authority.control_set_authority_field x WHERE x.main_entry = a.id)
                 )) y
       FROM  authority.control_set_authority_field a
       WHERE a.tag = $1) x
