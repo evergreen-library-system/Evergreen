@@ -4,7 +4,7 @@
 
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0855', :eg_version);
 
 -- from 000.functions.general.sql
 
