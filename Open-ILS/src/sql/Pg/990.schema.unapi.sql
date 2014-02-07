@@ -109,27 +109,36 @@ $$
 LANGUAGE SQL STABLE;
 
 CREATE OR REPLACE FUNCTION evergreen.located_uris (
-    bibid BIGINT, 
+    bibid BIGINT,
     ouid INT,
     pref_lib INT DEFAULT NULL
 ) RETURNS TABLE (id BIGINT, name TEXT, label_sortkey TEXT, rank INT) AS $$
-    SELECT acn.id, aou.name, acn.label_sortkey, evergreen.rank_ou(aou.id, $2, $3) AS pref_ou
+    WITH all_orgs AS (SELECT COALESCE( enabled, FALSE ) AS flag FROM config.global_flag WHERE name = 'opac.located_uri.act_as_copy')
+    SELECT DISTINCT ON (id) * FROM (
+    SELECT acn.id, COALESCE(aou.name,aoud.name), acn.label_sortkey, evergreen.rank_ou(aou.id, $2, $3) AS pref_ou
       FROM asset.call_number acn
-           INNER JOIN asset.uri_call_number_map auricnm ON acn.id = auricnm.call_number 
+           INNER JOIN asset.uri_call_number_map auricnm ON acn.id = auricnm.call_number
            INNER JOIN asset.uri auri ON auri.id = auricnm.uri
-           INNER JOIN actor.org_unit_ancestors( COALESCE($3, $2) ) aou ON (acn.owning_lib = aou.id)
+           LEFT JOIN actor.org_unit_ancestors( COALESCE($3, $2) ) aou ON (acn.owning_lib = aou.id)
+           LEFT JOIN actor.org_unit_descendants( COALESCE($3, $2) ) aoud ON (acn.owning_lib = aoud.id),
+           all_orgs
       WHERE acn.record = $1
           AND acn.deleted IS FALSE
           AND auri.active IS TRUE
+          AND ((NOT all_orgs.flag AND aou.id IS NOT NULL) OR COALESCE(aou.id,aoud.id) IS NOT NULL)
     UNION
-    SELECT acn.id, aou.name, acn.label_sortkey, evergreen.rank_ou(aou.id, $2, $3) AS pref_ou
+    SELECT acn.id, COALESCE(aou.name,aoud.name) AS name, acn.label_sortkey, evergreen.rank_ou(aou.id, $2, $3) AS pref_ou
       FROM asset.call_number acn
-           INNER JOIN asset.uri_call_number_map auricnm ON acn.id = auricnm.call_number 
+           INNER JOIN asset.uri_call_number_map auricnm ON acn.id = auricnm.call_number
            INNER JOIN asset.uri auri ON auri.id = auricnm.uri
-           INNER JOIN actor.org_unit_ancestors( $2 ) aou ON (acn.owning_lib = aou.id)
+           LEFT JOIN actor.org_unit_ancestors( $2 ) aou ON (acn.owning_lib = aou.id)
+           LEFT JOIN actor.org_unit_descendants( $2 ) aoud ON (acn.owning_lib = aoud.id),
+           all_orgs
       WHERE acn.record = $1
           AND acn.deleted IS FALSE
-          AND auri.active IS TRUE;
+          AND auri.active IS TRUE
+          AND ((NOT all_orgs.flag AND aou.id IS NOT NULL) OR COALESCE(aou.id,aoud.id) IS NOT NULL))x
+    ORDER BY id, pref_ou DESC;
 $$
 LANGUAGE SQL STABLE;
 
