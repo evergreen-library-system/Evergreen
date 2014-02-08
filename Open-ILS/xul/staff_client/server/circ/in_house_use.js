@@ -229,8 +229,7 @@ circ.in_house_use.prototype = {
                     if ( obj.test_barcode(barcode) ) { /* good */ } else { /* bad */ return; }
                 }
             } else {
-                barcode = ( obj.controller.view.in_house_use_menu.value );
-                //barcode = obj.data.hash.cnct[ obj.controller.view.in_house_use_menu.value ].name()
+                barcode = obj.data.hash.cnct[ obj.controller.view.in_house_use_menu.value ].name();
             }
             var multiplier = Number( obj.controller.view.in_house_use_multiplier_textbox.value );
 
