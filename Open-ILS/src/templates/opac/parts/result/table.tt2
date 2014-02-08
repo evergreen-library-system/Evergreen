@@ -247,7 +247,7 @@ END;
                                                                 [% FOR copy IN args.holdings %]
                                                                         <tr>
                                                                             <td>
-[%- copy = copy_info;
+[%- copy_info = copy;
     INCLUDE "opac/parts/library_name_link.tt2"; %]
                                                                             </td>
                                                                             <td>[% copy.location | html %]</td>
