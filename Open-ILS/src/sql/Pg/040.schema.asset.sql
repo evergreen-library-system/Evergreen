@@ -683,7 +683,7 @@ DECLARE
     ans RECORD;
     trans INT;
 BEGIN
-    SELECT 1 INTO trans FROM biblio.record_entry b JOIN config.bib_source src ON (b.source = src.id) WHERE src.transcendant AND b.id = rid;
+    SELECT 1 INTO trans FROM biblio.record_entry b JOIN config.bib_source src ON (b.source = src.id) JOIN metabib.metarecord_source_map m ON (m.source = b.id) WHERE src.transcendant AND m.metarecord = rid;
 
     FOR ans IN SELECT u.id, t.depth FROM actor.org_unit_ancestors(org) AS u JOIN actor.org_unit_type t ON (u.ou_type = t.id) LOOP
         RETURN QUERY
@@ -695,9 +695,9 @@ BEGIN
                 trans
           FROM  
                 actor.org_unit_descendants(ans.id) d
-                JOIN asset.opac_visible_copies av ON (av.record = rid AND av.circ_lib = d.id)
+                JOIN asset.opac_visible_copies av ON (av.circ_lib = d.id)
                 JOIN asset.copy cp ON (cp.id = av.copy_id)
-                JOIN metabib.metarecord_source_map m ON (m.source = av.record)
+                JOIN metabib.metarecord_source_map m ON (m.metarecord = rid AND m.source = av.record)
           GROUP BY 1,2,6;
 
         IF NOT FOUND THEN
@@ -715,7 +715,7 @@ DECLARE
     ans RECORD;
     trans INT;
 BEGIN
-    SELECT 1 INTO trans FROM biblio.record_entry b JOIN config.bib_source src ON (b.source = src.id) WHERE src.transcendant AND b.id = rid;
+    SELECT 1 INTO trans FROM biblio.record_entry b JOIN config.bib_source src ON (b.source = src.id) JOIN metabib.metarecord_source_map m ON (m.source = b.id) WHERE src.transcendant AND m.metarecord = rid;
 
     FOR ans IN SELECT u.org_unit AS id FROM actor.org_lasso_map AS u WHERE lasso = i_lasso LOOP
         RETURN QUERY
@@ -727,9 +727,9 @@ BEGIN
                 trans
           FROM
                 actor.org_unit_descendants(ans.id) d
-                JOIN asset.opac_visible_copies av ON (av.record = rid AND av.circ_lib = d.id)
+                JOIN asset.opac_visible_copies av ON (av.circ_lib = d.id)
                 JOIN asset.copy cp ON (cp.id = av.copy_id)
-                JOIN metabib.metarecord_source_map m ON (m.source = av.record)
+                JOIN metabib.metarecord_source_map m ON (m.metarecord = rid AND m.source = av.record)
           GROUP BY 1,2,6;
 
         IF NOT FOUND THEN
@@ -747,7 +747,7 @@ DECLARE
     ans RECORD; 
     trans INT;
 BEGIN
-    SELECT 1 INTO trans FROM biblio.record_entry b JOIN config.bib_source src ON (b.source = src.id) WHERE src.transcendant AND b.id = rid;
+    SELECT 1 INTO trans FROM biblio.record_entry b JOIN config.bib_source src ON (b.source = src.id) JOIN metabib.metarecord_source_map m ON (m.source = b.id) WHERE src.transcendant AND m.metarecord = rid;
 
     FOR ans IN SELECT u.id, t.depth FROM actor.org_unit_ancestors(org) AS u JOIN actor.org_unit_type t ON (u.ou_type = t.id) LOOP
         RETURN QUERY
@@ -760,8 +760,8 @@ BEGIN
           FROM
                 actor.org_unit_descendants(ans.id) d
                 JOIN asset.copy cp ON (cp.circ_lib = d.id AND NOT cp.deleted)
-                JOIN asset.call_number cn ON (cn.record = rid AND cn.id = cp.call_number AND NOT cn.deleted)
-                JOIN metabib.metarecord_source_map m ON (m.source = cn.record)
+                JOIN asset.call_number cn ON (cn.id = cp.call_number AND NOT cn.deleted)
+                JOIN metabib.metarecord_source_map m ON (m.metarecord = rid AND m.source = cn.record)
           GROUP BY 1,2,6;
 
         IF NOT FOUND THEN
@@ -779,7 +779,7 @@ DECLARE
     ans RECORD;
     trans INT;
 BEGIN
-    SELECT 1 INTO trans FROM biblio.record_entry b JOIN config.bib_source src ON (b.source = src.id) WHERE src.transcendant AND b.id = rid;
+    SELECT 1 INTO trans FROM biblio.record_entry b JOIN config.bib_source src ON (b.source = src.id) JOIN metabib.metarecord_source_map m ON (m.source = b.id) WHERE src.transcendant AND m.metarecord = rid;
 
     FOR ans IN SELECT u.org_unit AS id FROM actor.org_lasso_map AS u WHERE lasso = i_lasso LOOP
         RETURN QUERY
@@ -792,8 +792,8 @@ BEGIN
           FROM
                 actor.org_unit_descendants(ans.id) d
                 JOIN asset.copy cp ON (cp.circ_lib = d.id AND NOT cp.deleted)
-                JOIN asset.call_number cn ON (cn.record = rid AND cn.id = cp.call_number AND NOT cn.deleted)
-                JOIN metabib.metarecord_source_map m ON (m.source = cn.record)
+                JOIN asset.call_number cn ON (cn.id = cp.call_number AND NOT cn.deleted)
+                JOIN metabib.metarecord_source_map m ON (m.metarecord = rid AND m.source = cn.record)
           GROUP BY 1,2,6;
 
         IF NOT FOUND THEN
