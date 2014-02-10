@@ -74,10 +74,11 @@ function select_all_checkboxes(name, checked) {
     }
 }
 
-function limit_to_avail_onchange(checkbox, submitOnChange) {
+function search_modifier_onchange(type, checkbox, submitOnChange) {
     if (checkbox.form._adv && !checkbox.checked) {
         var search_box = $('search_box');
-        search_box.value = search_box.value.replace(/#available ?/g, "");
+        var reg = new RegExp('#' + type + ' ?', 'g');
+        search_box.value = search_box.value.replace(reg, "");
     }
 
     if (submitOnChange) {  

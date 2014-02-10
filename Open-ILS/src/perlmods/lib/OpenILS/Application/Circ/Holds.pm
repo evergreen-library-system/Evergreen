@@ -92,8 +92,15 @@ sub test_and_create_hold_batch {
     elsif ($$params{'hold_type'} eq 'P') { $target_field = 'partid'; }
     else { return undef; }
 
+    my $formats_map = delete $$params{holdable_formats_map};
+
     foreach (@$target_list) {
         $$params{$target_field} = $_;
+
+        # copy the requested formats from the target->formats map
+        # into the top-level formats attr for each hold
+        $$params{holdable_formats} = $formats_map->{$_};
+
         my $res;
         ($res) = $self->method_lookup(
             'open-ils.circ.title_hold.is_possible')->run($auth, $params, $override ? $oargs : {});
@@ -2470,10 +2477,9 @@ sub do_possibility_checks {
 
     } elsif( $hold_type eq OILS_HOLD_TYPE_METARECORD ) {
 
-        my $maps = $e->search_metabib_metarecord_source_map({metarecord=>$mrid});
-        my @recs = map { $_->source } @$maps;
+        my ($recs) = __PACKAGE__->method_lookup('open-ils.circ.holds.metarecord.filterd_records')->run($mrid, $holdable_formats);
         my @status = ();
-        for my $rec (@recs) {
+        for my $rec (@$recs) {
             @status = _check_title_hold_is_possible(
                 $rec, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou, $holdable_formats, $oargs
             );
@@ -2483,6 +2489,15 @@ sub do_possibility_checks {
     }
 #   else { Unrecognized hold_type ! }   # FIXME: return error? or 0?
 }
+
+sub MR_filter_records {
+    return $U->storagereq('open-ils.storage.metarecord.filtered_records.atomic', $_[2], $_[3]);
+}
+__PACKAGE__->register_method(
+    method   => 'MR_filter_records',
+    api_name => 'open-ils.circ.holds.metarecord.filterd_records',
+);
+
 
 my %prox_cache;
 sub create_ranged_org_filter {
@@ -2511,11 +2526,7 @@ sub create_ranged_org_filter {
 
 sub _check_title_hold_is_possible {
     my( $titleid, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou, $holdable_formats, $oargs ) = @_;
-
-    my ($types, $formats, $lang);
-    if (defined($holdable_formats)) {
-        ($types, $formats, $lang) = split '-', $holdable_formats;
-    }
+    # $holdable_formats is now unused. We pre-filter the MR's records.
 
     my $e = new_editor();
     my %org_filter = create_ranged_org_filter($e, $selection_ou, $depth);
@@ -2529,23 +2540,7 @@ sub _check_title_hold_is_possible {
                     acn => {
                         field  => 'id',
                         fkey   => 'call_number',
-                        'join' => {
-                            bre => {
-                                field  => 'id',
-                                filter => { id => $titleid },
-                                fkey   => 'record'
-                            },
-                            mrd => {
-                                field  => 'record',
-                                fkey   => 'record',
-                                filter => {
-                                    record => $titleid,
-                                    ( $types   ? (item_type => [split '', $types])   : () ),
-                                    ( $formats ? (item_form => [split '', $formats]) : () ),
-                                    ( $lang    ? (item_lang => $lang)                : () )
-                                }
-                            }
-                        }
+                        filter => { record => $titleid }
                     },
                     acpl => { field => 'id', filter => { holdable => 't'}, fkey => 'location' },
                     ccs  => { field => 'id', filter => { holdable => 't'}, fkey => 'status'   },
@@ -4203,6 +4198,137 @@ sub calculate_expire_time
         return $U->epoch2ISO8601($date->epoch);
     }
     return undef;
+}
+
+
+__PACKAGE__->register_method(
+    method    => 'mr_hold_filter_attrs',
+    api_name  => 'open-ils.circ.mmr.holds.filters',
+    authoritative => 1,
+    stream => 1,
+    signature => {
+        desc => q/
+            Returns the set of available formats and languages for the
+            constituent records of the provided metarcord.
+            If an array of hold IDs is also provided, information about
+            each is returned as well.  This information includes:
+            1. a slightly easier to read version of holdable_formats
+            2. attributes describing the set of format icons included
+               in the set of desired, constituent records.
+        /,
+        params => [
+            {desc => 'Metarecord ID', type => 'number'},
+            {desc => 'Hold ID List', type => 'array'},
+        ],
+        return => {
+            desc => q/
+                Stream of objects.  The first will have a 'metarecord' key
+                containing non-hold-specific metarecord information, subsequent
+                responses will contain a 'hold' key containing hold-specific
+                information
+            /, 
+            type => 'object'
+        }
+    }
+);
+
+sub mr_hold_filter_attrs {
+    my ($self, $client, $mr_id, $hold_ids) = @_;
+    my $e = new_editor();
+
+
+    my $mr = $e->retrieve_metabib_metarecord($mr_id) or return $e->event;
+    my $bre_ids = $e->json_query({
+        select => {mmrsm => ['source']},
+        from => 'mmrsm',
+        where => {'+mmrsm' => {metarecord => $mr_id}}
+    });
+    $bre_ids = [map {$_->{source}} @$bre_ids];
+
+    my $item_lang_attr = 'item_lang'; # configurable?
+    my $format_attr = $e->retrieve_config_global_flag(
+        'opac.metarecord.holds.format_attr')->value;
+
+    # helper sub for fetching ccvms for a batch of record IDs
+    sub get_batch_ccvms {
+        my ($e, $attr, $bre_ids) = @_;
+        return [] unless $bre_ids and @$bre_ids;
+        my $vals = $e->search_metabib_record_attr_flat({
+            attr => $attr,
+            id => $bre_ids
+        });
+        return [] unless @$vals;
+        return $e->search_config_coded_value_map({
+            ctype => $attr,
+            code => [map {$_->value} @$vals]
+        });
+    }
+
+    my $langs = get_batch_ccvms($e, $item_lang_attr, $bre_ids);
+    my $formats = get_batch_ccvms($e, $format_attr, $bre_ids);
+
+    $client->respond({
+        metarecord => {
+            id => $mr_id,
+            formats => $formats,
+            langs => $langs
+        }
+    });
+
+    return unless $hold_ids;
+    my $icon_attr = $e->retrieve_config_global_flag('opac.icon_attr');
+    $icon_attr = $icon_attr ? $icon_attr->value : '';
+
+    for my $hold_id (@$hold_ids) {
+        my $hold = $e->retrieve_action_hold_request($hold_id) 
+            or return $e->event;
+
+        next unless $hold->hold_type eq 'M';
+
+        my $resp = {
+            hold => {
+                id => $hold_id,
+                formats => [],
+                langs => []
+            }
+        };
+
+        # collect the ccvm's for the selected formats / language (
+        # (i.e. the holdable formats) on the MR.
+        # this assumes a two-key structure for format / language,
+        # though assumption is made about the keys themselves.
+        my $hformats = OpenSRF::Utils::JSON->JSON2perl($hold->holdable_formats);
+        my $lang_vals = [];
+        my $format_vals = [];
+        for my $val (values %$hformats) {
+            # val is either a single ccvm or an array of them
+            $val = [$val] unless ref $val eq 'ARRAY';
+            for my $node (@$val) {
+                push (@$lang_vals, $node->{_val})   
+                    if $node->{_attr} eq $item_lang_attr; 
+                push (@$format_vals, $node->{_val})   
+                    if $node->{_attr} eq $format_attr;
+            }
+        }
+
+        # fetch the ccvm's for consistency with the {metarecord} blob
+        $resp->{hold}{formats} = $e->search_config_coded_value_map({
+            ctype => $format_attr, code => $format_vals});
+        $resp->{hold}{langs} = $e->search_config_coded_value_map({
+            ctype => $item_lang_attr, code => $lang_vals});
+
+        # find all of the bib records within this metarcord whose 
+        # format / language match the holdable formats on the hold
+        my ($bre_ids) = $self->method_lookup(
+            'open-ils.circ.holds.metarecord.filterd_records')->run(
+                $hold->target, $hold->holdable_formats);
+
+        # now find all of the 'icon' attributes for the records
+        $resp->{hold}{icons} = get_batch_ccvms($e, $icon_attr, $bre_ids);
+        $client->respond($resp);
+    }
+
+    return;
 }
 
 1;

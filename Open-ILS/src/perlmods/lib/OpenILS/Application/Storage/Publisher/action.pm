@@ -1283,6 +1283,47 @@ __PACKAGE__->register_method(
 );
 
 
+sub MR_records_matching_format {
+    my $self = shift;
+    my $client = shift;
+    my $MR = shift;
+    my $filter = shift;
+
+    # find filters for MR holds
+    my $mr_filter;
+    if (defined($filter)) {
+        ($mr_filter) = @{action::hold_request->db_Main->selectcol_arrayref(
+            'SELECT metabib.compile_composite_attr(?)',
+            {},
+            $filter
+        )};
+    }
+
+    my $records = [metabib::metarecord->retrieve($MR)->source_records];
+
+    if (!$mr_filter) {
+        $client->respond( $_->id ) for @$records;
+    } else {
+        for my $r ( map { isTrue($_->deleted) ?  () : ($_->id) } @$records ) {
+            $client->respond($r) if
+                @{action::hold_request->db_Main->selectcol_arrayref(
+                    'SELECT source FROM metabib.record_attr_vector_list WHERE source = ? AND vlist @@ ?',
+                    {},
+                    $r,
+                    $mr_filter
+                )};
+        }
+    }
+    return; # discard final l-val
+}
+__PACKAGE__->register_method(
+    api_name        => 'open-ils.storage.metarecord.filtered_records',
+    api_level       => 1,
+    stream          => 1,
+    argc            => 2,
+    method          => 'MR_records_matching_format',
+);
+
 
 sub new_hold_copy_targeter {
     my $self = shift;
@@ -1432,41 +1473,23 @@ sub new_hold_copy_targeter {
 
             my $all_copies = [];
 
-            # find filters for MR holds
-            my ($types, $formats, $lang);
-            if (defined($hold->holdable_formats)) {
-                ($types, $formats, $lang) = split '-', $hold->holdable_formats;
-            }
-
             # find all the potential copies
             if ($hold->hold_type eq 'M') {
-                my $records = [
-                    map {
-                        isTrue($_->deleted) ?  () : ($_->id)
-                    } metabib::metarecord->retrieve($hold->target)->source_records
-                ];
-                if(@$records > 0) {
-                    for my $r ( map
-                            {$_->record}
-                            metabib::record_descriptor
-                                ->search(
-                                    record => $records,
-                                    ( $types   ? (item_type => [split '', $types])   : () ),
-                                    ( $formats ? (item_form => [split '', $formats]) : () ),
-                                    ( $lang    ? (item_lang => $lang)                : () ),
-                                )
-                    ) {
-                        my ($rtree) = $self
-                            ->method_lookup( 'open-ils.storage.biblio.record_entry.ranged_tree')
-                            ->run( $r->id, $hold->selection_ou, $hold->selection_depth );
+                for my $r_id (
+                    $self->method_lookup(
+                        'open-ils.storage.metarecord.filtered_records'
+                    )->run( $hold->target, $hold->holdable_formats )
+                ) {
+                    my ($rtree) = $self
+                        ->method_lookup( 'open-ils.storage.biblio.record_entry.ranged_tree')
+                        ->run( $r_id, $hold->selection_ou, $hold->selection_depth );
 
-                        for my $cn ( @{ $rtree->call_numbers } ) {
-                            push @$all_copies,
-                                asset::copy->search_where(
-                                    { id => [map {$_->id} @{ $cn->copies }],
-                                      deleted => 'f' }
-                                ) if ($cn && @{ $cn->copies });
-                        }
+                    for my $cn ( @{ $rtree->call_numbers } ) {
+                        push @$all_copies,
+                            asset::copy->search_where(
+                                { id => [map {$_->id} @{ $cn->copies }],
+                                  deleted => 'f' }
+                            ) if ($cn && @{ $cn->copies });
                     }
                 }
             } elsif ($hold->hold_type eq 'T') {
@@ -2323,32 +2346,5 @@ sub title_hold_capture {
     $self->volume_hold_capture($hold,$cn_list) if (ref $cn_list and @$cn_list);
 }
 
-sub metarecord_hold_capture {
-    my $self = shift;
-    my $hold = shift;
-
-    my $titles;
-    try {
-        $titles = [ metabib::metarecord_source_map->search( metarecord => $hold->target) ];
-    
-    } catch Error with {
-        my $e = shift;
-        die "Could not retrieve initial title list:\n\n$e\n";
-    };
-
-    try {
-        my @recs = map {$_->record} metabib::record_descriptor->search( record => $titles, item_type => [split '', $hold->holdable_formats] ); 
-
-        $titles = [ biblio::record_entry->search( id => \@recs ) ];
-    
-    } catch Error with {
-        my $e = shift;
-        die "Could not retrieve format-pruned title list:\n\n$e\n";
-    };
-
-
-    $cache{titles}{$_->id} = $_ for (@$titles);
-    $self->title_hold_capture($hold,$titles) if (ref $titles and @$titles);
-}
 
 1;

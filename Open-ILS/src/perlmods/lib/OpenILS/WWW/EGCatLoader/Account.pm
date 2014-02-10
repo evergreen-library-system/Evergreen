@@ -571,9 +571,35 @@ sub fetch_user_holds {
 
         if(@collected) {
             while(my $blob = pop(@collected)) {
-                my (undef, @data) = $self->get_records_and_facets(
-                    [$blob->{hold}->{bre_id}], undef, {flesh => '{mra}'}
-                );
+                my @data;
+
+                # in the holds edit UI, we need to know what formats and
+                # languages the user selected for this hold, plus what
+                # formats/langs are available on the MR as a whole.
+                if ($blob->{hold}{hold}->hold_type eq 'M') {
+                    my $hold = $blob->{hold}->{hold};
+
+                    # for MR, fetch the combined MR unapi blob
+                    (undef, @data) = $self->get_records_and_facets(
+                        [$hold->target], undef, {flesh => '{mra}', metarecord => 1});
+
+                    my $filter_data = $U->simplereq(
+                        'open-ils.circ',
+                        'open-ils.circ.mmr.holds.filters.authoritative.atomic', 
+                        $hold->target, [$hold->id]
+                    );
+
+                    $blob->{metarecord_filters} = 
+                        $filter_data->[0]->{metarecord};
+                    $blob->{metarecord_selected_filters} = 
+                        $filter_data->[1]->{hold};
+                } else {
+
+                    (undef, @data) = $self->get_records_and_facets(
+                        [$blob->{hold}->{bre_id}], undef, {flesh => '{mra}'}
+                    );
+                }
+
                 $blob->{marc_xml} = $data[0]->{marc_xml};
                 push(@holds, $blob);
             }
@@ -652,6 +678,10 @@ sub handle_hold_update {
                     m:^(\d{2})/(\d{2})/(\d{4})$:;
                 $val->{$field} = "$3-$1-$2";
             }
+
+            $val->{holdable_formats} = # no-op for non-MR holds
+                $self->compile_holdable_formats(undef, $_);
+
             $val;
         } @hold_ids;
 
@@ -777,8 +807,37 @@ sub load_place_hold {
     };
 
     my $type_dispatch = {
+        M => sub {
+            # target metarecords
+            my $mrecs = $e->batch_retrieve_metabib_metarecord([
+                \@targets, 
+                {flesh => 1, flesh_fields => {mmr => ['master_record']}}], 
+                {substream => 1}
+            );
+
+            for my $id (@targets) {
+                my ($mr) = grep {$_->id eq $id} @$mrecs;
+
+                my $filter_data = $U->simplereq(
+                    'open-ils.circ',
+                    'open-ils.circ.mmr.holds.filters.authoritative', $mr->id);
+
+                my $holdable_formats = 
+                    $self->compile_holdable_formats($mr->id);
+
+                push(@hold_data, $data_filler->({
+                    target => $mr, 
+                    record => $mr->master_record,
+                    holdable_formats => $holdable_formats,
+                    metarecord_filters => $filter_data->{metarecord}
+                }));
+            }
+        },
         T => sub {
-            my $recs = $e->batch_retrieve_biblio_record_entry(\@targets, {substream => 1});
+            my $recs = $e->batch_retrieve_biblio_record_entry(
+                [\@targets,  {flesh => 1, flesh_fields => {bre => ['metarecord']}}],
+                {substream => 1}
+            );
 
             for my $id (@targets) { # force back into the correct order
                 my ($rec) = grep {$_->id eq $id} @$recs;
@@ -984,13 +1043,23 @@ sub attempt_hold_placement {
 
     if(@create_targets) {
 
+        # holdable formats may be different for each MR hold.
+        # map each set to the ID of the target.
+        my $holdable_formats = {};
+        if ($hold_type eq 'M') {
+            $holdable_formats->{$_->{target_id}} = 
+                $_->{holdable_formats} for @hold_data;
+        }
+
         my $bses = OpenSRF::AppSession->create('open-ils.circ');
         my $breq = $bses->request( 
             $method, 
             $e->authtoken, 
-            $data_filler->({   patronid => $usr,
+            $data_filler->({   
+                patronid => $usr,
                 pickup_lib => $pickup_lib, 
-                hold_type => $hold_type
+                hold_type => $hold_type,
+                holdable_formats_map => $holdable_formats
             }),
             \@create_targets
         );
@@ -1051,6 +1120,63 @@ sub attempt_hold_placement {
 
         $bses->kill_me;
     }
+}
+
+# pull the selected formats and languages for metarecord holds
+# from the CGI params and map them into the JSON holdable
+# formats...er, format.
+# if no metarecord is provided, we'll pull it from the target
+# of the provided hold.
+sub compile_holdable_formats {
+    my ($self, $mr_id, $hold_id) = @_;
+    my $e = $self->editor;
+    my $cgi = $self->cgi;
+
+    # exit early if not needed
+    return "" unless 
+        grep /metarecord_formats_|metarecord_langs_/, 
+        $cgi->param;
+
+    # CGI params are based on the MR id, since during hold placement
+    # we have no old ID.  During hold edit, map the hold ID back to 
+    # the metarecod target.
+    $mr_id = 
+        $e->retrieve_action_hold_request($hold_id)->target 
+        unless $mr_id;
+
+    my $format_attr = $self->ctx->{get_cgf}->(
+        'opac.metarecord.holds.format_attr');
+
+    if (!$format_attr) {
+        $logger->error("Missing config.global_flag: ".
+            "opac.metarecord.holds.format_attr!");
+        return "";
+    }
+
+    $format_attr = $format_attr->value;
+
+    # during hold placement or edit submission, the user selects
+    # which of the available formats/langs are acceptable.
+    # Capture those here as the holdable_formats for the MR hold.
+    my @selected_formats = $cgi->param("metarecord_formats_$mr_id");
+    my @selected_langs = $cgi->param("metarecord_langs_$mr_id");
+
+    # map the selected attrs into the JSON holdable_formats structure
+    my $blob = {};
+    if (@selected_formats) {
+        $blob->{0} = [
+            map { {_attr => $format_attr, _val => $_} } 
+            @selected_formats
+        ];
+    }
+    if (@selected_langs) {
+        $blob->{1} = [
+            map { {_attr => 'item_lang', _val => $_} } 
+            @selected_langs
+        ];
+    }
+
+    return OpenSRF::Utils::JSON->perl2JSON($blob);
 }
 
 sub fetch_user_circs {

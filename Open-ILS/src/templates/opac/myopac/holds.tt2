@@ -150,8 +150,10 @@
                     </td>
                     <td>
                         <div class="format_icon">
-                            [% IF attrs.format_icon %]
-                            <img title="[% attrs.format_label | html %]" alt="[% attrs.format_label | html %]" src="[% attrs.format_icon %]" />
+                            [% IF attrs.all_formats.size %]
+                                [% FOR format IN attrs.all_formats %]
+                                <img title="[% format.label | html %]" alt="[% format.label | html %]" src="[% format.icon %]" />
+                                [% END %]
                             [% END %]
                         </div>
                     </td>

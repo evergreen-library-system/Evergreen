@@ -162,4 +162,11 @@ ctx.google_books_preview = 0;
 #
 # ctx.maintenance_message = "The system will not be available February 29, 2104.";
 
+
+##############################################################################
+# Metarecords configuration
+# metarecords.disabled = 1; # disable all metarecord access points
+##############################################################################
+
+
 %]

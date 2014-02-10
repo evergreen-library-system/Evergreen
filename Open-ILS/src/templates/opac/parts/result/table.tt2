@@ -37,21 +37,46 @@
                             IF CGI.param('detail_record_view');
                                 attrs.title = attrs.title_extended;
                             END;
+                            # note: rec.id refers to the record identifier, regardless
+                            # of the type of record. i.e. rec.id = mmr_id ? mmr_id : bre_id
+                            IF rec.mmr_id;
+                                IF rec.mr_has_multi;
+                                    # metarecords link to record list page
+                                    record_url = mkurl(ctx.opac_root _ '/results', 
+                                        {metarecord => rec.mmr_id}, ['page']);
+                                ELSE;
+                                    # for MR, bre_id refers to the master and in
+                                    # this case, only, record
+                                    record_url = mkurl(ctx.opac_root _ '/record/' _ rec.bre_id);
+                                END;
+                                hold_type = 'M';
+                            ELSE;
+                                record_url = mkurl(ctx.opac_root _ '/record/' _ rec.bre_id);
+                                hold_type = 'T';
+                            END;
                     -%]
                         <tr class="result_table_row">
                                             <td class="results_row_count" name="results_row_count">[%
                                                     result_count; result_count = result_count + 1
                                                 %].</td>
                                             <td class='result_table_pic_header'>
-                                                <a href="[% mkurl(ctx.opac_root _ '/record/' _ rec.id) %]"><img alt="[% l('Image of item') %]"
+                                                <a href="[% record_url %]"><img alt="[% l('Image of item') %]"
                                                         name='item_jacket' class='result_table_pic' width="55"
-                                                        src='[% ctx.media_prefix %]/opac/extras/ac/jacket/small/r/[% rec.id | uri %]' /></a><br />
+                                                        src='[% ctx.media_prefix %]/opac/extras/ac/jacket/small/r/[% rec.bre_id | uri %]' /></a><br />
                                             </td>
                                             <td class='result_table_title_cell' name='result_table_title_cell'>
                                                <div class="result_metadata">
-                                                    <abbr class="unapi-id" title='tag:[% ctx.hostname %],[% date.format(date.now, '%Y') %]:biblio-record_entry/[% rec.id %]'></abbr>
+                                                    [% IF rec.mmr_id %]
+                                                    <abbr class="unapi-id" 
+                                                      title='tag:[% ctx.hostname %],[% date.format(date.now, '%Y') %]:metabib-metarecord/[% rec.mmr_id %]'>
+                                                    </abbr>
+                                                    [% ELSE %]
+                                                    <abbr class="unapi-id" 
+                                                      title='tag:[% ctx.hostname %],[% date.format(date.now, '%Y') %]:biblio-record_entry/[% rec.bre_id %]'>
+                                                    </abbr>
+                                                    [% END %]
                                                     <a class='record_title search_link' name='record_[% rec.id %]'
-                                                        href="[% mkurl(ctx.opac_root _ '/record/' _ rec.id) %]"
+                                                        href="[% record_url %]"
                                                         [% html_text_attr('title', l('Display record details for "[_1]"', attrs.title)) %]
                                                         >[% attrs.title | html %]</a>
 [%-
@@ -96,7 +121,12 @@ END;
                                                     </div>
                                                     <div class='result_table_title_cell'>
                                                     [%- IF attrs.format_label; %]
-                                                        <img title="[% attrs.format_label | html %]" alt="[% attrs.format_label | html %]" src="[% attrs.format_icon %]" /> [% attrs.format_label; %]
+                                                        [% FOR format IN attrs.all_formats %]
+                                                            <img title="[% format.label | html %]" 
+                                                                alt="[% format.label | html %]" 
+                                                                src="[% format.icon %]" /> 
+                                                            [% format.label | html %]
+                                                        [% END %]
                                                     [%- END %]
                                                     [%- UNLESS CGI.param('detail_record_view')
                                                             OR (show_more_details.default == 'true'
@@ -294,7 +324,8 @@ END;
 %]
                                                         <div class="results_aux_utils place_hold"><a
                                                                 href="[% mkurl(ctx.opac_root _ '/place_hold',
-                                                                    {hold_target => rec.id, hold_type => 'T', hold_source_page => mkurl()}, ['query']) %]"
+                                                                    {hold_target => rec.id, hold_type => hold_type, 
+                                                                      hold_source_page => mkurl()}, ['query']) %]"
                                                                 [% html_text_attr('title', l('Place Hold on [_1]', attrs.title)) %]
                                                                     class="no-dec"><img
                                                                 src="[% ctx.media_prefix %]/images/green_check.png"

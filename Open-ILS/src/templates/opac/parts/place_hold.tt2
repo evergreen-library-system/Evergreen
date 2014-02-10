@@ -1,5 +1,6 @@
 [%  PROCESS "opac/parts/misc_util.tt2";
     PROCESS "opac/parts/hold_error_messages.tt2";
+    PROCESS "opac/parts/metarecord_hold_filters.tt2";
 %]
 
 <div id='holds_box' class='canvas' style='margin-top: 6px;'>
@@ -63,6 +64,16 @@
                         <input type='hidden' name='part' value=''/>
                         [% END %]
                     [% END %]
+                    [% IF NOT metarecords.disabled %]
+                        [% IF CGI.param('hold_type') == 'T' AND hdata.record.metarecord %]
+                            <a href="[% mkurl('', {hold_type => 'M', hold_target => hdata.record.metarecord.id}) %]">
+                                [% l('Advanced Hold Options') %]</a>
+                        [% END %]
+                        [% IF hdata.metarecord_filters.formats.size OR # should this be size > 1
+                            hdata.metarecord_filters.langs.size > 1;
+                            PROCESS metarecord_hold_filters_selector hold_data=hdata;
+                        END;
+                    END %]
                 </td>
             </tr>
         [% END %]

@@ -186,7 +186,10 @@ sub load_context {
         parse_accept_lang($r->headers_in->get('Accept-Language'));
 
     # set the editor default locale for each page load
-    OpenSRF::AppSession->default_locale(parse_eg_locale($ctx->{locale}));
+    my $ses_locale = parse_eg_locale($ctx->{locale});
+    OpenSRF::AppSession->default_locale($ses_locale);
+    # give templates access to the en-US style locale
+    $ctx->{eg_locale} = $ses_locale;
 
     my $mprefix = $ctx->{media_prefix};
     if($mprefix and $mprefix !~ /^http/ and $mprefix !~ /^\//) {

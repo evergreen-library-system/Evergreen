@@ -67,7 +67,8 @@ sub _prepare_biblio_search {
 
     foreach ($cgi->param('modifier')) {
         # The unless bit is to avoid stacking modifiers.
-        $query = ('#' . $_ . ' ' . $query) unless $query =~ qr/\#\Q$_/;
+        $query = ('#' . $_ . ' ' . $query) unless 
+            $query =~ qr/\#\Q$_/ or $_ eq 'metabib';
     }
 
     # filters
@@ -307,6 +308,13 @@ sub load_rresults {
     my $ctx = $self->ctx;
     my $e = $self->editor;
 
+    # 1. param->metarecord : view constituent bib records for a metarecord
+    # 2. param->modifier=metabib : perform a metarecord search
+    my $metarecord = $ctx->{metarecord} = $cgi->param('metarecord');
+    my @mods = $cgi->param('modifier');
+    my $is_meta = (@mods and grep {$_ eq 'metabib'} @mods and !$metarecord);
+    my $id_key = $is_meta ? 'mmr_id' : 'bre_id';
+
     # find the last record in the set, then redirect
     my $find_last = $cgi->param('find_last');
 
@@ -343,7 +351,6 @@ sub load_rresults {
     $ctx->{search_ou} = $self->_get_search_lib();
     $ctx->{pref_ou} = $self->_get_pref_lib() || $ctx->{search_ou};
     my $offset = $page * $limit;
-    my $metarecord = $cgi->param('metarecord');
     my $results; 
     my $tag_circs = $self->tag_circed_items;
     $self->timelog("Got search parameters");
@@ -408,12 +415,14 @@ sub load_rresults {
 
         $query = "$_ $query" for @facets;
 
-        $logger->activity("EGWeb: [search] $query");
+        my $ltag = $is_meta ? '[mmr search]' : '[bre search]';
+        $logger->activity("EGWeb: $ltag $query");
 
         try {
 
             my $method = 'open-ils.search.biblio.multiclass.query';
             $method .= '.staff' if $ctx->{is_staff};
+            $method =~ s/biblio/metabib/ if $is_meta;
 
             my $ses = OpenSRF::AppSession->create('open-ils.search');
 
@@ -440,6 +449,7 @@ sub load_rresults {
         my $rec_id = pop @$rec_ids;
         $cgi->delete('find_last');
         my $url = $cgi->url(-full => 1, -path => 1, -query => 1);
+        # TODO: metarecord => /rresults?metarecord=$mmr_id
         $url =~ s|/results|/record/$rec_id|;
         return $self->generic_redirect($url);
     }
@@ -448,12 +458,27 @@ sub load_rresults {
 
     $self->load_rresults_bookbag_item_notes($rec_ids) if $ctx->{bookbag};
 
+    my $fetch_recs = $rec_ids;
+
+    my $metarecord_master;
+    if ($metarecord) {
+        # when listing the contents of a metarecord, be sure to fetch
+        # the lead record for summary display.  Adding the ID to
+        # $fetch_recs lets us grab the record (if necessary) w/o it
+        # unintentially becoming a member of the result set.
+        my $mr = $e->retrieve_metabib_metarecord($metarecord);
+        push(@$fetch_recs, $mr->master_record)
+            unless grep {$_ eq $mr->master_record} @$fetch_recs;
+        $metarecord_master = $mr->master_record;
+    }
+
     $self->timelog("Calling get_records_and_facets()");
     my ($facets, @data) = $self->get_records_and_facets(
-        $rec_ids, $results->{facet_key}, 
+        $fetch_recs, $results->{facet_key}, 
         {
             flesh => '{holdings_xml,mra,acp,acnp,acns,bmp}',
             site => $site,
+            metarecord => $is_meta,
             depth => $depth,
             pref_lib => $ctx->{pref_ou},
         }
@@ -461,6 +486,7 @@ sub load_rresults {
     $self->timelog("Returned from get_records_and_facets()");
 
     if ($page == 0) {
+        # TODO: handle metarecords
         my $stat = $self->check_1hit_redirect($rec_ids);
         return $stat if $stat;
     }
@@ -470,19 +496,26 @@ sub load_rresults {
 
     # shove recs into context in search results order
     for my $rec_id (@$rec_ids) {
-        push(
-            @{$ctx->{records}},
-            grep { $_->{id} == $rec_id } @data
-        );
+        my ($rec) = grep { $_->{$id_key} == $rec_id } @data;
+        push(@{$ctx->{records}}, $rec);
+
+        $ctx->{metarecord_master} = $rec
+            if $metarecord_master and $metarecord_master eq $rec_id;
+
+        # MR's with multiple constituent records will have a
+        # null value in position 2 of the result set.  
+        my ($res_rec) = grep { $_->[0] == $rec_id} @{$results->{ids}};
+        $rec->{mr_has_multi} = !$res_rec->[2];
     }
 
     if ($tag_circs) {
         for my $rec (@{$ctx->{records}}) {
-            my ($res_rec) = grep { $_->[0] == $rec->{id} } @{$results->{ids}};
+            my ($res_rec) = grep { $_->[0] == $rec->{$id_key} } @{$results->{ids}};
             # index 1 in the per-record result array is a boolean which
             # indicates whether the record in question is in the users
             # accessible circ history list
-            $rec->{user_circulated} = 1 if $res_rec->[1];
+            my $index = $is_meta ? 3 : 1;
+            $rec->{user_circulated} = 1 if $res_rec->[$index];
         }
     }
 

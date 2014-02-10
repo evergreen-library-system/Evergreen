@@ -2,6 +2,7 @@
     PROCESS "opac/parts/misc_util.tt2";
     PROCESS "opac/parts/hold_status.tt2";
     PROCESS "opac/parts/org_selector.tt2";
+    PROCESS "opac/parts/metarecord_hold_filters.tt2";
     WRAPPER "opac/parts/myopac/base.tt2";
     myopac_page = "holds"; # in this case, just for tab coloring.
 
@@ -100,6 +101,14 @@
                         </td>
                     </tr>
                     [% END %]
+                     
+                    <tr><td colspan='2'>
+                    [% IF hold.metarecord_filters.formats.size OR
+                        hold.metarecord_filters.langs.size > 1;
+                            PROCESS metarecord_hold_filters_selector 
+                                hold_data=hold; END %]
+                    </td></tr>
+
                     <tr>
                         <td colspan="2" class="hold-editor-controls">
                             <a href="[% ctx.opac_root %]/myopac/holds"><button 

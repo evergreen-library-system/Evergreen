@@ -277,9 +277,13 @@ sub get_records_and_facets {
     $unapi_args->{depth} ||= $self->ctx->{aou_tree}->()->ou_type->depth;
     $unapi_args->{flesh_depth} ||= 5;
 
+    my $is_meta = delete $unapi_args->{metarecord};
+    my $unapi_type = $is_meta ? 'unapi.mmr' : 'unapi.bre';
+
     $unapi_cache ||= OpenSRF::Utils::Cache->new('global');
     my $unapi_cache_key_suffix = join(
         '_',
+        $is_meta || 0,
         $unapi_args->{site},
         $unapi_args->{depth},
         $unapi_args->{flesh_depth},
@@ -299,36 +303,59 @@ sub get_records_and_facets {
             $outer_self->timelog("get_records_and_facets(): got response content");
 
             # Protect against requests for non-existent records
-            return unless $data->{'unapi.bre'};
+            return unless $data->{$unapi_type};
 
-            my $xml = XML::LibXML->new->parse_string($data->{'unapi.bre'})->documentElement;
+            my $xml = XML::LibXML->new->parse_string($data->{$unapi_type})->documentElement;
 
             $outer_self->timelog("get_records_and_facets(): parsed xml");
             # Protect against legacy invalid MARCXML that might not have a 901c
             my $bre_id;
+            my $mmr_id;
             my $bre_id_nodes =  $xml->find('*[@tag="901"]/*[@code="c"]');
             if ($bre_id_nodes) {
                 $bre_id =  $bre_id_nodes->[0]->textContent;
             } else {
                 $logger->warn("Missing 901 subfield 'c' in " . $xml->toString());
             }
-            $tmp_data{$bre_id} = {id => $bre_id, marc_xml => $xml};
 
-            if ($bre_id) {
-                # Let other backends grab our data now that we're done.
-                my $key = 'TPAC_unapi_cache_'.$bre_id.'_'.$unapi_cache_key_suffix;
-                my $cache_data = $unapi_cache->get_cache($key);
-                if ($$cache_data{running}) {
-                    $unapi_cache->put_cache($key, { id => $bre_id, marc_xml => $data->{'unapi.bre'} }, 10);
+            if ($is_meta) {
+                # extract metarecord ID from mmr.unapi tag
+                for my $node ($xml->getElementsByTagName('abbr')) {
+                    my $title = $node->getAttribute('title');
+                    ($mmr_id = $title) =~ 
+                        s/tag:open-ils.org:U2\@mmr\/(\d+)\/.*/$1/g;
+                    last if $mmr_id;
                 }
             }
 
+            my $rec_id = $mmr_id ? $mmr_id : $bre_id;
+            $tmp_data{$rec_id} = {
+                id => $rec_id, 
+                bre_id => $bre_id, 
+                mmr_id => $mmr_id,
+                marc_xml => $xml
+            };
+
+            if ($rec_id) {
+                # Let other backends grab our data now that we're done.
+                my $key = 'TPAC_unapi_cache_'.$rec_id.'_'.$unapi_cache_key_suffix;
+                my $cache_data = $unapi_cache->get_cache($key);
+                if ($$cache_data{running}) {
+                    $unapi_cache->put_cache($key, {
+                        bre_id => $bre_id,
+                        mmr_id => $mmr_id,
+                        id => $rec_id, 
+                        marc_xml => $data->{$unapi_type} 
+                    }, 10);
+                }
+            }
 
             $outer_self->timelog("get_records_and_facets(): end of success handler");
         }
     );
 
-    $self->timelog("get_records_and_facets(): about to call unapi.bre via json_query (rec_ids has " . scalar(@$rec_ids));
+    $self->timelog("get_records_and_facets(): about to call ".
+        "$unapi_type via json_query (rec_ids has " . scalar(@$rec_ids));
 
     my @loop_recs = @$rec_ids;
     my %rec_timeout;
@@ -359,19 +386,26 @@ sub get_records_and_facets {
             $tmp_data{$unapi_data->{id}} = $unapi_data;
         } else { # we're the first or we timed out. success_handler will populate the real value
             $unapi_cache->put_cache($unapi_cache_key, { running => $$ }, 10);
+
+            my $sdepth = $unapi_args->{flesh_depth};
+            my $slimit = "acn=>$sdepth,acp=>$sdepth";
+            $slimit .= ",bre=>$sdepth" if $is_meta;
+            my $flesh = $unapi_args->{flesh} || '';
+
+            # tag the record with the MR id
+            $flesh =~ s/}$/,mmr.unapi}/g if $is_meta;
+
             $ses->request(
                 'open-ils.cstore.json_query',
                  {from => [
-                    'unapi.bre', $bid, 'marcxml','record', 
-                    $unapi_args->{flesh}, 
+                    $unapi_type, $bid, 'marcxml','record', $flesh,
                     $unapi_args->{site}, 
                     $unapi_args->{depth}, 
-                    'acn=>' . $unapi_args->{flesh_depth} . ',acp=>' . $unapi_args->{flesh_depth}, 
+                    $slimit,
                     undef, undef, $unapi_args->{pref_lib}
                 ]}
             );
         }
-
     }
 
 

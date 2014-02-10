@@ -21,7 +21,19 @@
     [% INCLUDE "opac/parts/searchbar.tt2" took_care_of_form=1 %]
     <h3 class="sr-only">[% l('Additional search filters and navigation') %]</h3>
     <div class="almost-content-wrapper">
-        <div id="results_header_bar">
+
+        [%# hide the header bar when displaying metarecord constituents 
+          instead of skipping it altogether to allow the search form
+          variables to propagate %]
+        [% IF ctx.metarecord;
+          mr_attrs = {marc_xml => ctx.metarecord_master.marc_xml};
+          PROCESS get_marc_attrs args=mr_attrs %]
+          <div class="results_header_lbl">
+            [% l('Viewing Results for Grouped Record: [_1]', 
+                mr_attrs.title) | html %]
+          </div>
+        [% END %]
+        <div class="results_header_bar[%- IF ctx.metarecord %] hidden[% END -%]">
             <div id="results_header_inner">
                 <div class="results_header_btns">
                     <a href="[% mkurl(ctx.opac_root _ '/home', {$loc_name => loc_value}, 1) %]">[% l('Another Search') %]</a>
@@ -53,10 +65,18 @@
 
                     <label class="results_header_lbl" for="limit_to_available">
                         <input type="checkbox" id="limit_to_available" name="modifier" value="available"
-                            onchange="limit_to_avail_onchange(this, true)"
+                            onchange="search_modifier_onchange('available', this, true)"
                             [% CGI.param('modifier').grep('available').size ? ' checked="checked"' : '' %] />
                         [% l('Limit to available items') %]
                     </label>
+                    [% IF NOT metarecords.disabled %]
+                        <label class="results_header_lbl">
+                            <input type="checkbox" name="modifier" value="metabib"
+                                onchange="search_modifier_onchange('metabib', this, true)"
+                                [% CGI.param('modifier').grep('metabib').size ? ' checked="checked"' : '' %] />
+                            [% l('Group Formats and Editions') %]
+                        </label>
+                    [% END %]
                     [% IF CGI.param('detail_record_view') %]
                         <input type="hidden" name="detail_record_view" value="1" />
                     [% END %]

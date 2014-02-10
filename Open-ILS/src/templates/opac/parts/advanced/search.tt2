@@ -99,8 +99,22 @@
                 CASE "sort_selector";
                     INCLUDE "opac/parts/filtersort.tt2"
                         value=CGI.param('sort') class='results_header_sel';
+                    %]
 
-                CASE "copy_location" %]
+                    [% IF NOT metarecords.disabled %]
+                        <br/><!-- <br> may seem redundant, but it allows the
+                            <input> (below) to drop down inline w/ its label -->
+                        <div class="adv_search_available">
+                            <input type='checkbox' name="modifier" value="metabib"
+                              [%- CGI.param('modifier').grep('metabib').size ? 
+                                    ' checked="checked"' : '' %]
+                                id='opac.result.ismetabib' />
+                            <label for='opac.result.ismetabib'>
+                                [% l("Group Formats and Editions") %]</label>
+                        </div>
+                    [% END %]
+
+                [% CASE "copy_location" %]
                     <select id="adv_copy_location_selector" 
                         aria-label="[% l('Select Shelving Location') %]"
                         name="fi:locations" size="3" multiple="multiple">

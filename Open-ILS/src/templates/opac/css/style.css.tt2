@@ -982,6 +982,7 @@ table.acct_notes th {
 div.adv_search_available {
     margin-top: 1em;
 }
+
 #myopac_loading {
     width:100%;
     text-align:center;
