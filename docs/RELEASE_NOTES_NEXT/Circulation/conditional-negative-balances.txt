@@ -1,0 +1,38 @@
+Conditional Negative Balances
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Evergreen sites will now have more control over whether a negative balance can
+be applied to a user's billing record and when that negative balance can be 
+applied. Through a series of Library Settings, a site can prohibit negative
+balances on bills or can allow those negative balances to be applied for a
+specific period of time after a lost or overdue bill is charged to the user.
+Sites can set a default for all types of bills or can apply distinct settings
+for lost bills and for overdue fines. The more specific settings will override
+the default. 
+
+Sites that opt to allow negative balances for a specific period of time must
+1) enable the relevant "prohibit negative balances" setting(s) and 2) specify
+the time period in the relevant Negative Balance Interval setting(s).  
+
+In addition to the new library settings, the system now has a new account 
+adjustment payment type. This payment type will be utilized for libraries 
+prohibiting negative balances to replace the previous voiding behavior that 
+caused the negative balances to occur. The account adjustment payment type will
+also be used for all libraries, regardless of the state of negative balance
+settings, in cases where overdue fines are adjusted when an overdue item is
+marked lost.
+
+An _Adjust to Zero_ option replaces the _Void All Billings_ option in the bills
+area of the patron record. This option will always adjust the selected bill to
+a zero balance. It can also be used to clear a negative balance from the
+patron's record. 
+
+New Library Settings
+++++++++++++++++++++
+ * Negative Balance Interval (Default) (bill.negative_balance_interval_default)
+ * Negative Balance Interval for Lost (bill.negative_balance_interval_on_lost) -
+ * Negative Balance Interval for Overdues (bill.negative_balance_interval_on_overdues
+ * Prohibit negative balance on bills (Default) (bill.prohibit_negative_balance_default)
+ * Prohibit negative balance on bills for lost materials (bill.prohibit_negative_balance_on_lost)
+ * Prohibit negative balance on bills for overdue materials (bill.prohibit_negative_balance_on_overdues)
+ 
+ 
