@@ -901,6 +901,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
+	<class id="mraf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::record_attr_flat" oils_persist:tablename="metabib.record_attr_flat" reporter:label="MVF Record Attribute Flat List" oils_persist:field_safe="true">
+		<fields>
+			<field reporter:label="Record ID" name="id" reporter:datatype="id" oils_obj:required="true"/>
+			<field reporter:label="Attribute" name="attr" reporter:datatype="text"  oils_obj:required="true"/>
+			<field reporter:label="Value" name="value" reporter:datatype="text"  oils_obj:required="true"/>
+		</fields>
+		<links>
+			<link field="source" reltype="has_a" key="id" map="" class="bre"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve/>
+            </actions>
+        </permacrud>
+	</class>
 
 	<class id="mra" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::record_attr" oils_persist:tablename="metabib.record_attr" reporter:label="SVF Record Attribute" oils_persist:field_safe="true" oils_persist:readonly="true">
 		<fields oils_persist:primary="id">
