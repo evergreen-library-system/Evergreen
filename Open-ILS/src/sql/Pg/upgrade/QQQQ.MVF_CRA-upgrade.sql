@@ -707,17 +707,6 @@ INSERT INTO config.composite_attr_entry_definition
 
 
 
--- SEED DATA ---------------------------------------------------------------
-
--- by default, use the same format record attribute as that used for icons
--- TODO: verify attr name still matches
-INSERT INTO config.global_flag (name, label, value, enabled) VALUES (
-    'opac.metarecord.holds.format_attr', 
-    'OPAC Metarecord Hold Formats Attribute', 
-    'local_format', 
-    TRUE
-);
-
 CREATE OR REPLACE FUNCTION unapi.mra (
     obj_id BIGINT,
     format TEXT,
