@@ -16,30 +16,6 @@
     <div id="myopac_sum_fines_placehold"></div>
     [% ELSE %]
     <div id="myopac_sum_fines">
-        <div style="position:absolute;">
-            <div style="position:relative;top:-15px;left:-23px;">
-                <img src="[% ctx.media_prefix %]/images/acct_sum_fines_tl.png" 
-                    alt="[% l('Account Fines Border Image 1') %]"/>
-            </div>
-        </div>
-        <div style="position:absolute;">
-            <div style="position:relative;top:-15px;left:172px;">
-                <img src="[% ctx.media_prefix %]/images/acct_sum_fines_tr.png" 
-                    alt="[% l('Account Fines Border Image 2') %]"/>
-            </div>
-        </div>
-        <div style="position:absolute;">
-            <div style="position:relative;top:161px;left:-23px;">
-                <img src="[% ctx.media_prefix %]/images/acct_sum_fines_bl.png" 
-                    alt="[% l('Account Fines Border Image 3') %]"/>
-            </div>
-        </div>
-        <div style="position:absolute;">
-            <div style="position:relative;top:161px;left:172px;">
-                <img src="[% ctx.media_prefix %]/images/acct_sum_fines_br.png" 
-                    alt="[% l('Account Fines Border Image 4') %]"/>
-            </div>
-        </div>
         [% l('Fines:') %]
         <span class='[% ctx.user_stats.fines.balance_owed ? "alert" : ""%]'>
             [% money(ctx.user_stats.fines.balance_owed) %]
