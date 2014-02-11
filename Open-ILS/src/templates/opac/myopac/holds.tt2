@@ -191,7 +191,7 @@
                         <a href="[% mkurl(ctx.opac_root _ '/myopac/holds/edit', {id => ahr.id}) %]"
                             [% html_text_attr('title', l('Edit hold for item [_1]', attrs.title)) %]>
                             [% l('Edit') %]
-                        ]</a>
+                        </a>
                     </td>
                 </tr>
                 [% END %]
