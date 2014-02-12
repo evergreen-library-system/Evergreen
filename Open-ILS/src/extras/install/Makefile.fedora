@@ -49,6 +49,7 @@ FEDORA_RPMS = \
 	perl-SOAP-Lite \
 	perl-Spreadsheet-WriteExcel \
 	perl-Test-Warn \
+	perl-Test-Output \
 	perl-Text-Aspell \
 	perl-Text-CSV \
 	perl-Text-CSV_XS \

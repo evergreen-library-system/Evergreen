@@ -49,6 +49,7 @@ export DEBS = \
     libuuid-tiny-perl\
 	libbz2-dev\
 	libtest-warn-perl\
+	libtest-output-perl\
 	libsoap-lite-perl
 
 export DEB_APACHE_MODS = \

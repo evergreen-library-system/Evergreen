@@ -47,6 +47,7 @@ export DEBS = \
 	libsru-perl\
 	libssh2-1-dev\
 	libtest-warn-perl\
+	libtest-output-perl\
 	libtext-aspell-perl\
 	libtext-csv-perl\
 	libuniversal-require-perl\
