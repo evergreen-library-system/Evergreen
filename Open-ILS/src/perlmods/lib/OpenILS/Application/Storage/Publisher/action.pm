@@ -744,15 +744,20 @@ sub hold_pull_list {
 		  FROM	$h_table h
 		  	JOIN $a_table a ON (h.current_copy = a.id)
 		  	LEFT JOIN $ord_table ord ON (a.location = ord.location AND a.circ_lib = ord.org)
-			LEFT JOIN actor.usr_standing_penalty ausp 
-				ON ( h.usr = ausp.usr AND ( ausp.stop_date IS NULL OR ausp.stop_date > NOW() ) )
-			LEFT JOIN config.standing_penalty csp
-				ON ( csp.id = ausp.standing_penalty AND csp.block_list LIKE '%CAPTURE%' )
 		  WHERE	a.circ_lib = ?
 		  	AND h.capture_time IS NULL
 		  	AND h.cancel_time IS NULL
 		  	AND (h.expire_time IS NULL OR h.expire_time > NOW())
-			AND csp.id IS NULL
+			AND NOT EXISTS (
+				SELECT  1
+				FROM  actor.usr_standing_penalty ausp
+				JOIN config.standing_penalty csp ON (
+					csp.id = ausp.standing_penalty
+					AND csp.block_list LIKE '%CAPTURE%'
+					)
+				WHERE h.usr = ausp.usr
+				AND ( ausp.stop_date IS NULL OR ausp.stop_date > NOW() )
+			)
 			$status_filter
 		  ORDER BY CASE WHEN ord.position IS NOT NULL THEN ord.position ELSE 999 END, h.request_time
 		  LIMIT $limit
@@ -761,18 +766,23 @@ sub hold_pull_list {
 
     if ($count) {
         $select = <<"        SQL";
-            SELECT    count(*)
+            SELECT    count(DISTINCT h.id)
               FROM    $h_table h
                   JOIN $a_table a ON (h.current_copy = a.id)
-                  LEFT JOIN actor.usr_standing_penalty ausp 
-                    ON ( h.usr = ausp.usr AND ( ausp.stop_date IS NULL OR ausp.stop_date > NOW() ) )
-                  LEFT JOIN config.standing_penalty csp
-                    ON ( csp.id = ausp.standing_penalty AND csp.block_list LIKE '%CAPTURE%' )
               WHERE    a.circ_lib = ?
                   AND h.capture_time IS NULL
                   AND h.cancel_time IS NULL
                   AND (h.expire_time IS NULL OR h.expire_time > NOW())
-                  AND csp.id IS NULL
+                  AND NOT EXISTS (
+                    SELECT  1
+                      FROM  actor.usr_standing_penalty ausp
+                            JOIN config.standing_penalty csp ON (
+                                csp.id = ausp.standing_penalty
+                                AND csp.block_list LIKE '%CAPTURE%'
+                            )
+                      WHERE h.usr = ausp.usr
+                            AND ( ausp.stop_date IS NULL OR ausp.stop_date > NOW() )
+                )
                 $status_filter
         SQL
     }
