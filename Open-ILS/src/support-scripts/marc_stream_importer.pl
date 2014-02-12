@@ -54,7 +54,10 @@ my %defaults = (
     'noqueue'       => 0,
     'nodaemon'      => 0,
     'wait=i'        => 5,
-    'import-by-queue' => 0
+    'import-by-queue' => 0,
+    'auto-overlay-exact' => 0,
+    'auto-overlay-1match' => 0,
+    'auto-overlay-best-match' => 0
 );
 
 $OpenILS::Utils::Cronscript::debug=1 if $debug;
@@ -250,11 +253,15 @@ sub process_spool { # filename
 
 sub bib_queue_import {
     my $rec_ids = shift;
-    my $extra = {
-        auto_overlay_exact => 1,
-        import_no_match    => 1,
-    };
+    my $extra = {import_no_match => 1};
     $extra->{merge_profile} = $merge_profile if $merge_profile;
+    $extra->{auto_overlay_1match} = 1 if $real_opts->{'auto-overlay-1match'};
+    $extra->{auto_overlay_best_match} = 1 if $real_opts->{'auto-overlay-best-match'};
+
+    # default to exact match if no strategy is chosen
+    $extra->{auto_overlay_exact} = 1 
+        if $real_opts->{'auto-overlay-exact'} or
+        not ($extra->{auto_overlay_1match} or $extra->{auto_overlay_best_match});
 
     my $req;
     my @cleanup_recs;
