@@ -6091,7 +6091,7 @@ INSERT INTO config.record_attr_definition (name, label, multi, filter, composite
     VALUES ('icon_format', oils_i18n_gettext('icon_format', 'OPAC Format Icons', 'crad', 'label'), TRUE, TRUE, TRUE);
 INSERT INTO config.record_attr_definition (name, label, multi, filter, composite) 
     VALUES ('mr_hold_format', oils_i18n_gettext('mr_hold_format', 'Metarecord Hold Formats', 'crad', 'label'),
-    TRUE, TRUE, TRUE
+    TRUE, TRUE, TRUE);
 
 -- TO-DO: Auto-generate these values from CLDR
 -- XXX These are the values used in MARC records ... does that match CLDR, including deprecated languages?
@@ -9677,18 +9677,6 @@ INSERT INTO config.global_flag (name, label, value, enabled) VALUES (
     ),
     'icon_format',
     TRUE
-);
-
-INSERT INTO config.record_attr_definition
-    (name, label, multi, filter, composite) VALUES (
-    'icon_format',
-    oils_i18n_gettext(
-        'icon_format',
-        'OPAC Format Icons',
-        'crad',
-        'label'
-    ),
-    TRUE, TRUE, TRUE
 );
 
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
@@ -13924,19 +13912,6 @@ VALUES (
 
 INSERT INTO config.floating_group(name) VALUES ('Everywhere');
 INSERT INTO config.floating_group_member(floating_group, org_unit) VALUES (1, 1);
-
-INSERT INTO config.global_flag (name, label, value, enabled) VALUES (
-    'opac.icon_attr',
-    oils_i18n_gettext(
-        'opac.icon_attr', 
-        'OPAC Format Icons Attribute',
-        'cgf',
-        'label'
-    ),
-    'icon_format', 
-    TRUE
-);
-
 
 INSERT INTO config.global_flag (name, label, value, enabled) VALUES (
     'opac.metarecord.holds.format_attr', 
