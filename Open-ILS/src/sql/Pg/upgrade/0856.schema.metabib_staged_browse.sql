@@ -1,3 +1,7 @@
+BEGIN;
+
+SELECT evergreen.upgrade_deps_block_check('0856', :eg_version);
+
 CREATE OR REPLACE FUNCTION metabib.staged_browse(
     query                   TEXT,
     fields                  INT[],
@@ -204,4 +208,5 @@ BEGIN
 END;
 $p$ LANGUAGE PLPGSQL;
 
+COMMIT;
 
