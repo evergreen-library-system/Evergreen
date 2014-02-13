@@ -12,6 +12,21 @@ INSERT INTO config.global_flag (name, label, value, enabled) VALUES (
     TRUE
 );
 
+-- until we have a custom attribute for the selector, 
+-- default to the icon_format attribute
+INSERT INTO config.global_flag (name, label, value, enabled) VALUES (
+    'opac.format_selector.attr', 
+    oils_i18n_gettext(
+        'opac.format_selector.attr', 
+        'OPAC Format Selector Attribute', 
+        'cgf',
+        'label'
+    ),
+    'icon_format', 
+    TRUE
+);
+
+
 INSERT INTO config.record_attr_definition 
     (name, label, multi, filter, composite) 
 VALUES (
