@@ -2477,7 +2477,8 @@ sub do_possibility_checks {
 
     } elsif( $hold_type eq OILS_HOLD_TYPE_METARECORD ) {
 
-        my ($recs) = __PACKAGE__->method_lookup('open-ils.circ.holds.metarecord.filterd_records')->run($mrid, $holdable_formats);
+
+        my ($recs) = __PACKAGE__->method_lookup('open-ils.circ.holds.metarecord.filterd_records')->run($mrid, $holdable_formats, $selection_ou, $depth);
         my @status = ();
         for my $rec (@$recs) {
             @status = _check_title_hold_is_possible(
@@ -2491,7 +2492,15 @@ sub do_possibility_checks {
 }
 
 sub MR_filter_records {
-    return $U->storagereq('open-ils.storage.metarecord.filtered_records.atomic', $_[2], $_[3]);
+    my $self = shift;
+    my $client = shift;
+    my $m = shift;
+    my $f = shift;
+    my $o = shift;
+    my $d = shift;
+    
+    my $org_at_depth = defined($d) ? $U->org_unit_ancestor_at_depth($o, $d) : $o;
+    return $U->storagereq('open-ils.storage.metarecord.filtered_records.atomic', $m, $f, $org_at_depth);
 }
 __PACKAGE__->register_method(
     method   => 'MR_filter_records',

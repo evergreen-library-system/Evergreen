@@ -656,7 +656,7 @@ BEGIN
 END;
 $f$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION asset.record_has_holdable_copy ( rid BIGINT ) RETURNS BOOL AS $f$
+CREATE OR REPLACE FUNCTION asset.record_has_holdable_copy ( rid BIGINT, ou INT DEFAULT NULL) RETURNS BOOL AS $f$
 BEGIN
     PERFORM 1
         FROM
@@ -670,6 +670,7 @@ BEGIN
             AND acpl.holdable = true
             AND ccs.holdable = true
             AND acp.deleted = false
+            AND acp.circ_lib IN (SELECT id FROM actor.org_unit_descendants(COALESCE($2,(SELECT id FROM evergreen.org_top()))))
         LIMIT 1;
     IF FOUND THEN
         RETURN true;
@@ -826,7 +827,7 @@ BEGIN
 END;
 $f$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION asset.metarecord_has_holdable_copy ( rid BIGINT ) RETURNS BOOL AS $f$
+CREATE OR REPLACE FUNCTION asset.metarecord_has_holdable_copy ( rid BIGINT, ou INT DEFAULT NULL) RETURNS BOOL AS $f$
 BEGIN
     PERFORM 1
         FROM
@@ -841,6 +842,7 @@ BEGIN
             AND acpl.holdable = true
             AND ccs.holdable = true
             AND acp.deleted = false
+            AND acp.circ_lib IN (SELECT id FROM actor.org_unit_descendants(COALESCE($2,(SELECT id FROM evergreen.org_top()))))
         LIMIT 1;
     IF FOUND THEN
         RETURN true;

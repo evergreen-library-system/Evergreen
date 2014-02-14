@@ -1288,6 +1288,7 @@ sub MR_records_matching_format {
     my $client = shift;
     my $MR = shift;
     my $filter = shift;
+    my $org = shift;
 
     # find filters for MR holds
     my $mr_filter;
@@ -1301,19 +1302,19 @@ sub MR_records_matching_format {
 
     my $records = [metabib::metarecord->retrieve($MR)->source_records];
 
+    my $q = 'SELECT source FROM metabib.record_attr_vector_list WHERE source = ? AND vlist @@ ? AND asset.record_has_holdable_copy(?,?)';
+    my @args = ( $mr_filter, $org );
     if (!$mr_filter) {
-        $client->respond( $_->id ) for @$records;
-    } else {
-        for my $r ( map { isTrue($_->deleted) ?  () : ($_->id) } @$records ) {
-            $client->respond($r) if
-                @{action::hold_request->db_Main->selectcol_arrayref(
-                    'SELECT source FROM metabib.record_attr_vector_list WHERE source = ? AND vlist @@ ?',
-                    {},
-                    $r,
-                    $mr_filter
-                )};
-        }
+        $q = 'SELECT true WHERE asset.record_has_holdable_copy(?,?)';
+        @args = ( $org );
     }
+
+    for my $r ( map { isTrue($_->deleted) ?  () : ($_->id) } @$records ) {
+        # the map{} below is tricky. it puts the record ID in front of each param. see $q above
+        $client->respond($r)
+            if @{action::hold_request->db_Main->selectcol_arrayref( $q, {}, map { ( $r => $_ ) } @args )};
+    }
+
     return; # discard final l-val
 }
 __PACKAGE__->register_method(

@@ -1,5 +1,54 @@
 BEGIN;
 
+DROP FUNCTION asset.record_has_holdable_copy (BIGINT);
+CREATE FUNCTION asset.record_has_holdable_copy ( rid BIGINT, ou INT DEFAULT NULL) RETURNS BOOL AS $f$
+BEGIN
+    PERFORM 1
+        FROM
+            asset.copy acp
+            JOIN asset.call_number acn ON acp.call_number = acn.id
+            JOIN asset.copy_location acpl ON acp.location = acpl.id
+            JOIN config.copy_status ccs ON acp.status = ccs.id
+        WHERE
+            acn.record = rid
+            AND acp.holdable = true
+            AND acpl.holdable = true
+            AND ccs.holdable = true
+            AND acp.deleted = false
+            AND acp.circ_lib IN (SELECT id FROM actor.org_unit_descendants(COALESCE($2,(SELECT id FROM evergreen.org_top()))))
+        LIMIT 1;
+    IF FOUND THEN
+        RETURN true;
+    END IF;
+    RETURN FALSE;
+END;
+$f$ LANGUAGE PLPGSQL;
+
+DROP FUNCTION asset.metarecord_has_holdable_copy (BIGINT);
+CREATE FUNCTION asset.metarecord_has_holdable_copy ( rid BIGINT, ou INT DEFAULT NULL) RETURNS BOOL AS $f$
+BEGIN
+    PERFORM 1
+        FROM
+            asset.copy acp
+            JOIN asset.call_number acn ON acp.call_number = acn.id
+            JOIN asset.copy_location acpl ON acp.location = acpl.id
+            JOIN config.copy_status ccs ON acp.status = ccs.id
+            JOIN metabib.metarecord_source_map mmsm ON acn.record = mmsm.source
+        WHERE
+            mmsm.metarecord = rid
+            AND acp.holdable = true
+            AND acpl.holdable = true
+            AND ccs.holdable = true
+            AND acp.deleted = false
+            AND acp.circ_lib IN (SELECT id FROM actor.org_unit_descendants(COALESCE($2,(SELECT id FROM evergreen.org_top()))))
+        LIMIT 1;
+    IF FOUND THEN
+        RETURN true;
+    END IF;
+    RETURN FALSE;
+END;
+$f$ LANGUAGE PLPGSQL;
+
 CREATE OR REPLACE FUNCTION asset.opac_ou_metarecord_copy_count (org INT, rid BIGINT) RETURNS TABLE (depth INT, org_unit INT, visible BIGINT, available BIGINT, unshadow BIGINT, transcendant INT) AS $f$
 DECLARE
     ans RECORD;
