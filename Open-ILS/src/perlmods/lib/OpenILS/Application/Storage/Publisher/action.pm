@@ -1555,15 +1555,17 @@ sub new_hold_copy_targeter {
             $found_copy = 1 if($find_copy and grep $_ == $find_copy, @$all_copies);
 
             # map the potentials, so that we can pick up checkins
-            # XXX Loop-based targeting may require that /only/ copies from this loop should be added to
-            # XXX the potentials list.  If this is the cased, hold_copy_map creation will move down further.
+            my $hold_copy_map = {};
+            $hold_copy_map->{$_->hold}->{$_->target_copy} = $_->proximity
+                for (
+                    map {
+                        action::hold_copy_map->create( { hold => $hold->id, target_copy => $_->id } )
+                    } @$all_copies
+                );
+
             my $pu_lib = ''.$hold->pickup_lib;
-            my $prox_list = create_prox_list( $self, $pu_lib, $all_copies, $hold );
+            my $prox_list = create_prox_list( $self, $pu_lib, $all_copies, $hold, $hold_copy_map );
             $log->debug( "\tMapping ".scalar(@$all_copies)." potential copies for hold ".$hold->id);
-            for my $prox ( keys %$prox_list ) {
-                action::hold_copy_map->create( { proximity => $prox, hold => $hold->id, target_copy => $_ } )
-                    for keys( %{{ map { $_->id => 1 } @{$$prox_list{$prox}} }} );
-            }
 
             #$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
@@ -1647,7 +1649,7 @@ sub new_hold_copy_targeter {
             $prox_list = create_prox_list(
                 $self, $pu_lib,
                 [ grep { $_->status == 0 || $_->status == 7 } @good_copies ],
-                $hold
+                $hold, $hold_copy_map
             );
 
             $all_copies = [ grep { ''.$_->circ_lib ne $pu_lib && ( $_->status == 0 || $_->status == 7 ) } @good_copies ];
@@ -1748,7 +1750,7 @@ sub new_hold_copy_targeter {
                         die "OK\n";
                     }
 
-                    $prox_list = create_prox_list( $self, $pu_lib, $all_copies, $hold );
+                    $prox_list = create_prox_list( $self, $pu_lib, $all_copies, $hold, $hold_copy_map );
 
                     $client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
@@ -2242,11 +2244,13 @@ sub create_prox_list {
     my $lib = shift;
     my $copies = shift;
     my $hold = shift;
+    my $hold_copy_map = shift || {};
 
     my %prox_list;
     my $editor = new_editor;
     for my $cp (@$copies) {
-        my ($prox) = $self->method_lookup('open-ils.storage.asset.copy.proximity')->run( $cp, $lib, $hold );
+        my $prox = $hold_copy_map->{"$hold"}->{"$cp"}; # Allow CDBI stringification to get the pkey
+        ($prox) = $self->method_lookup('open-ils.storage.asset.copy.proximity')->run( $cp, $lib, $hold ) unless (defined $prox);
         next unless (defined($prox));
 
         my $copy_circ_lib = ''.$cp->circ_lib;
