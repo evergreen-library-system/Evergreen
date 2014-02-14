@@ -220,7 +220,7 @@ CREATE OR REPLACE FUNCTION unapi.mmr (
 RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
 CREATE OR REPLACE FUNCTION unapi.bmp    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
 CREATE OR REPLACE FUNCTION unapi.mra    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.mmr_mra    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.mmr_mra    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE, pref_lib INT DEFAULT NULL) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
 CREATE OR REPLACE FUNCTION unapi.circ   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT DEFAULT '-', depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
 
 CREATE OR REPLACE FUNCTION unapi.holdings_xml (
@@ -1226,7 +1226,8 @@ CREATE OR REPLACE FUNCTION unapi.mmr_mra (
     depth INT DEFAULT NULL,
     slimit HSTORE DEFAULT NULL,
     soffset HSTORE DEFAULT NULL,
-    include_xmlns BOOL DEFAULT TRUE
+    include_xmlns BOOL DEFAULT TRUE,
+    pref_lib INT DEFAULT NULL
 ) RETURNS XML AS $F$
     SELECT  XMLELEMENT(
         name attributes,
@@ -1255,7 +1256,21 @@ CREATE OR REPLACE FUNCTION unapi.mmr_mra (
                     JOIN config.record_attr_definition rad ON (mra.attr = rad.name)
                     LEFT JOIN config.coded_value_map cvm ON (cvm.ctype = mra.attr AND code = mra.value)
                     LEFT JOIN metabib.uncontrolled_record_attr_value uvm ON (uvm.attr = mra.attr AND uvm.value = mra.value)
-              WHERE mra.id IN (SELECT source FROM metabib.metarecord_source_map WHERE metarecord = $1)
+              WHERE mra.id IN (
+                    WITH aou AS (SELECT COALESCE(id, (evergreen.org_top()).id) AS id 
+                        FROM actor.org_unit WHERE shortname = $5 LIMIT 1)
+                    SELECT source 
+                    FROM metabib.metarecord_source_map, aou
+                    WHERE metarecord = $1 AND (
+                        EXISTS (
+                            SELECT 1 FROM asset.opac_visible_copies 
+                            WHERE record = source AND circ_lib IN (
+                                SELECT id FROM actor.org_unit_descendants(aou.id, $6)) 
+                            LIMIT 1
+                        )
+                        OR EXISTS (SELECT 1 FROM located_uris(source, aou.id, $10) LIMIT 1)
+                    )
+                )
               ORDER BY 1
             )foo(id,y)
         )
@@ -1405,7 +1420,7 @@ BEGIN
 
     -- Grab distinct MVF for all records if requested
     IF ('mra' = ANY (includes)) THEN 
-        axml := unapi.mmr_mra(obj_id,NULL,NULL,NULL,NULL,NULL,NULL,NULL,TRUE);
+        axml := unapi.mmr_mra(obj_id,NULL,NULL,NULL,org,depth,NULL,NULL,TRUE,pref_lib);
     ELSE
         axml := NULL::XML;
     END IF;
