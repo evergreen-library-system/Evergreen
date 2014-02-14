@@ -485,9 +485,17 @@ sub load_rresults {
     );
     $self->timelog("Returned from get_records_and_facets()");
 
-    if ($page == 0) {
-        # TODO: handle metarecords
-        my $stat = $self->check_1hit_redirect($rec_ids);
+    if ($page == 0 and @$rec_ids == 1) {
+        my $stat = 0;
+        if ($is_meta) {
+            # if the MR has a single constituent record, it will
+            # be in array position 2 of the result blob.
+            # otherwise, we don't want to redirect anyway.
+            my $bre_id = $results->{ids}->[0]->[2];
+            $stat = $self->check_1hit_redirect([$bre_id]) if $bre_id;
+        } else {
+            my $stat = $self->check_1hit_redirect($rec_ids);
+        }
         return $stat if $stat;
     }
 
