@@ -2478,7 +2478,7 @@ sub do_possibility_checks {
     } elsif( $hold_type eq OILS_HOLD_TYPE_METARECORD ) {
 
 
-        my ($recs) = __PACKAGE__->method_lookup('open-ils.circ.holds.metarecord.filterd_records')->run($mrid, $holdable_formats, $selection_ou, $depth);
+        my ($recs) = __PACKAGE__->method_lookup('open-ils.circ.holds.metarecord.filtered_records')->run($mrid, $holdable_formats, $selection_ou, $depth);
         my @status = ();
         for my $rec (@$recs) {
             @status = _check_title_hold_is_possible(
@@ -2504,7 +2504,7 @@ sub MR_filter_records {
 }
 __PACKAGE__->register_method(
     method   => 'MR_filter_records',
-    api_name => 'open-ils.circ.holds.metarecord.filterd_records',
+    api_name => 'open-ils.circ.holds.metarecord.filtered_records',
 );
 
 
@@ -4227,6 +4227,7 @@ __PACKAGE__->register_method(
         /,
         params => [
             {desc => 'Metarecord ID', type => 'number'},
+            {desc => 'Context Org ID', type => 'number'},
             {desc => 'Hold ID List', type => 'array'},
         ],
         return => {
@@ -4241,18 +4242,19 @@ __PACKAGE__->register_method(
     }
 );
 
-sub mr_hold_filter_attrs {
-    my ($self, $client, $mr_id, $hold_ids) = @_;
+sub mr_hold_filter_attrs { 
+    my ($self, $client, $mr_id, $org_id, $hold_ids) = @_;
     my $e = new_editor();
 
+    # providing a context org means we filter out records that
+    # cannot possibly be held.
+    my $org_depth = $U->ou_ancestor_setting_value(
+        $org_id, OILS_SETTING_HOLD_HARD_BOUNDARY) if $org_id;
 
-    my $mr = $e->retrieve_metabib_metarecord($mr_id) or return $e->event;
-    my $bre_ids = $e->json_query({
-        select => {mmrsm => ['source']},
-        from => 'mmrsm',
-        where => {'+mmrsm' => {metarecord => $mr_id}}
-    });
-    $bre_ids = [map {$_->{source}} @$bre_ids];
+    # get all org-scoped records w/ holdable copies for this metarecord
+    my ($bre_ids) = $self->method_lookup(
+        'open-ils.circ.holds.metarecord.filtered_records')->run(
+            $mr_id, undef, $org_id, $org_depth);
 
     my $item_lang_attr = 'item_lang'; # configurable?
     my $format_attr = $e->retrieve_config_global_flag(
@@ -4302,10 +4304,10 @@ sub mr_hold_filter_attrs {
             }
         };
 
-        # collect the ccvm's for the selected formats / language (
+        # collect the ccvm's for the selected formats / language
         # (i.e. the holdable formats) on the MR.
         # this assumes a two-key structure for format / language,
-        # though assumption is made about the keys themselves.
+        # though no assumption is made about the keys themselves.
         my $hformats = OpenSRF::Utils::JSON->JSON2perl($hold->holdable_formats);
         my $lang_vals = [];
         my $format_vals = [];
@@ -4329,8 +4331,9 @@ sub mr_hold_filter_attrs {
         # find all of the bib records within this metarcord whose 
         # format / language match the holdable formats on the hold
         my ($bre_ids) = $self->method_lookup(
-            'open-ils.circ.holds.metarecord.filterd_records')->run(
-                $hold->target, $hold->holdable_formats);
+            'open-ils.circ.holds.metarecord.filtered_records')->run(
+                $hold->target, $hold->holdable_formats, 
+                $hold->selection_ou, $hold->selection_depth);
 
         # now find all of the 'icon' attributes for the records
         $resp->{hold}{icons} = get_batch_ccvms($e, $icon_attr, $bre_ids);

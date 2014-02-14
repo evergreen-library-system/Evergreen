@@ -586,7 +586,7 @@ sub fetch_user_holds {
                     my $filter_data = $U->simplereq(
                         'open-ils.circ',
                         'open-ils.circ.mmr.holds.filters.authoritative.atomic', 
-                        $hold->target, [$hold->id]
+                        $hold->target, $hold->selection_ou, [$hold->id]
                     );
 
                     $blob->{metarecord_filters} = 
@@ -818,9 +818,10 @@ sub load_place_hold {
             for my $id (@targets) {
                 my ($mr) = grep {$_->id eq $id} @$mrecs;
 
+                my $ou_id = $cgi->param('pickup_lib') || $self->ctx->{search_ou};
                 my $filter_data = $U->simplereq(
                     'open-ils.circ',
-                    'open-ils.circ.mmr.holds.filters.authoritative', $mr->id);
+                    'open-ils.circ.mmr.holds.filters.authoritative', $mr->id, $ou_id);
 
                 my $holdable_formats = 
                     $self->compile_holdable_formats($mr->id);
