@@ -55,6 +55,7 @@ my %defaults = (
     'nodaemon'      => 0,
     'wait=i'        => 5,
     'import-by-queue' => 0,
+    'import-no-match' => 0,
     'auto-overlay-exact' => 0,
     'auto-overlay-1match' => 0,
     'auto-overlay-best-match' => 0
@@ -253,8 +254,9 @@ sub process_spool { # filename
 
 sub bib_queue_import {
     my $rec_ids = shift;
-    my $extra = {import_no_match => 1};
+    my $extra = {report_all => 1};
     $extra->{merge_profile} = $merge_profile if $merge_profile;
+    $extra->{import_no_match} = 1 if $real_opts->{'import-no-match'};
     $extra->{auto_overlay_1match} = 1 if $real_opts->{'auto-overlay-1match'};
     $extra->{auto_overlay_best_match} = 1 if $real_opts->{'auto-overlay-best-match'};
 
