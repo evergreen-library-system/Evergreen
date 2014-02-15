@@ -3693,7 +3693,9 @@ circ.util.renew_via_barcode = function ( params, async ) {
                         case 7008 /* MAX_RENEWALS_REACHED */ : break;
                         case 7009 /* CIRC_CLAIMS_RETURNED */ : break;
                         case 7010 /* COPY_ALERT_MESSAGE */ : break;
+                        case 7011 /* COPY_STATUS_LOST */ : break;
                         case 7013 /* PATRON_EXCEEDS_FINES */ : break;
+                        case 7025 /* COPY_STATUS_LONG_OVERDUE */ : break;
                         case 11106 /* TOTAL_HOLD_COPY_RATIO_EXCEEDED */ : break;
                         case 11107 /* AVAIL_HOLD_COPY_RATIO_EXCEEDED */ : break;
                         default:
@@ -3774,7 +3776,9 @@ circ.util.renew_via_barcode = function ( params, async ) {
                     7008 /* MAX_RENEWALS_REACHED */,
                     7009 /* CIRC_CLAIMS_RETURNED */,
                     7010 /* COPY_ALERT_MESSAGE */,
+                    7011 /* COPY_STATUS_LOST */,
                     7013 /* PATRON_EXCEEDS_FINES */,
+                    7025 /* COPY_STATUS_LONG_OVERDUE */,
                     11106 /* TOTAL_HOLD_COPY_RATIO_EXCEEDED */,
                     11107 /* AVAIL_HOLD_COPY_RATIO_EXCEEDED */
                 ],
@@ -3804,7 +3808,13 @@ circ.util.renew_via_barcode = function ( params, async ) {
                     '7010' : function(r) {
                         return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode.msg', [params.barcode, r.payload]);
                     },
-                    '7013' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [params.barcode]); }
+                    '7011' : function(r) {
+                        return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode.status', [params.barcode, typeof r.payload.status() == 'object' ? r.payload.status().name() : obj.data.hash.ccs[ r.payload.status() ].name()]);
+                    },
+                    '7013' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [params.barcode]); },
+                    '7025' : function(r) {
+                        return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode.status', [params.barcode, typeof r.payload.status() == 'object' ? r.payload.status().name() : obj.data.hash.ccs[ r.payload.status() ].name()]);
+                    }
                 }
             }
         );
