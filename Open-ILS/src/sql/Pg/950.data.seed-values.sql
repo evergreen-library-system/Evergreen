@@ -6811,6 +6811,13 @@ INSERT INTO config.coded_value_map
     oils_i18n_gettext(606, 'Large Print Book', 'ccvm', 'value'),
     oils_i18n_gettext(606, 'Large Print Book', 'ccvm', 'search_label')) ;
 
+-- catch-all music of unkown format
+INSERT INTO config.coded_value_map
+    (id, ctype, code, value, search_label) VALUES 
+(607, 'icon_format', 'music', 
+    oils_i18n_gettext(607, 'Musical Sound Recording (Unknown Format)', 'ccvm', 'value'),
+    oils_i18n_gettext(607, 'Musical Sound Recording (Unknown Format)', 'ccvm', 'search_label'));
+
 -- carve out a slot of 10k IDs for stock CCVMs
 SELECT SETVAL('config.coded_value_map_id_seq'::TEXT, 10000);
 
@@ -6884,6 +6891,11 @@ INSERT INTO config.composite_attr_entry_definition
 
 -- lpbook
 (585, '{"0":[{"_attr":"item_type","_val":"a"},{"_attr":"item_type","_val":"t"}],"1":{"_attr":"item_form","_val":"d"},"2":[{"_attr":"bib_level","_val":"a"},{"_attr":"bib_level","_val":"c"},{"_attr":"bib_level","_val":"d"},{"_attr":"bib_level","_val":"m"}]}');
+
+-- music (catch-all)
+INSERT INTO config.composite_attr_entry_definition 
+    (coded_value, definition) VALUES
+(607, '{"0":{"_attr":"item_type","_val":"j"},"1":{"_not":[{"_attr":"sr_format","_val":"a"},{"_attr":"sr_format","_val":"b"},{"_attr":"sr_format","_val":"c"},{"_attr":"sr_format","_val":"d"},{"_attr":"sr_format","_val":"f"},{"_attr":"sr_format","_val":"e"},{"_attr":"sr_format","_val":"l"}]}}');
 
 -- use the definitions from the icon_format as the basis for the MR hold format definitions
 DO $$
