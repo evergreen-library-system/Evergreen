@@ -8,7 +8,7 @@ open-ils.ingest, and you may also wish to remove the
 OpenILS/Application/Ingest.pm file from your Perl @INC path.
 
 In opensrf.xml, remove the entire <open-ils.ingest> element from the
-<apps> element, and remove <appname>open-ils.actor</appname> from
+<apps> element, and remove <appname>open-ils.ingest</appname> from
 any <activeapps> elements where it is present.
 
 If you have the perldoc command installed, you can use the following
