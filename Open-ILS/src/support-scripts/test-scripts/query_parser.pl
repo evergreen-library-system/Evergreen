@@ -34,6 +34,7 @@ $query = 'concerto && (piano || item_type(a)) && (music || item_form(b))';
 my $superpage = 1;
 my $superpage_size = 1000;
 my $core_limit = 25000;
+my $noconnect;
 my $debug;
 my $config = '/openils/conf/opensrf_core.xml';
 my $quiet = 0;
@@ -43,12 +44,11 @@ GetOptions(
     'superpage-size=i' => \$superpage_size,
     'core-limit=i' => \$core_limit,
     'query=s' => \$query,
+    'no-connect' => \$noconnect,
     'debug' => \$debug,
     'quiet' => \$quiet,
     'config=s' => \$config
 );
-
-osrf_connect($config);
 
 my $parser = OpenILS::Application::Storage::Driver::Pg::QueryParser->new( 
     superpage_size => $superpage_size, 
@@ -58,42 +58,46 @@ my $parser = OpenILS::Application::Storage::Driver::Pg::QueryParser->new(
     debug => $debug 
 );
 
-# load the parser config
-my $cstore = OpenSRF::AppSession->create( 'open-ils.cstore' );
-$parser->initialize(
-    config_record_attr_index_norm_map =>
-        $cstore->request(
-            'open-ils.cstore.direct.config.record_attr_index_norm_map.search.atomic',
-            { id => { "!=" => undef } },
-            { flesh => 1, flesh_fields => { crainm => [qw/norm/] }, order_by => [{ class => "crainm", field => "pos" }] }
-        )->gather(1),
-    search_relevance_adjustment         =>
-        $cstore->request(
-            'open-ils.cstore.direct.search.relevance_adjustment.search.atomic',
-            { id => { "!=" => undef } }
-        )->gather(1),
-    config_metabib_field                =>
-        $cstore->request(
-            'open-ils.cstore.direct.config.metabib_field.search.atomic',
-            { id => { "!=" => undef } }
-        )->gather(1),
-    config_metabib_search_alias         =>
-        $cstore->request(
-            'open-ils.cstore.direct.config.metabib_search_alias.search.atomic',
-            { alias => { "!=" => undef } }
-        )->gather(1),
-    config_metabib_field_index_norm_map =>
-        $cstore->request(
-            'open-ils.cstore.direct.config.metabib_field_index_norm_map.search.atomic',
-            { id => { "!=" => undef } },
-            { flesh => 1, flesh_fields => { cmfinm => [qw/norm/] }, order_by => [{ class => "cmfinm", field => "pos" }] }
-        )->gather(1),
-    config_record_attr_definition       =>
-        $cstore->request(
-            'open-ils.cstore.direct.config.record_attr_definition.search.atomic',
-            { name => { "!=" => undef } }
-        )->gather(1),
-);
+if (!$noconnect) {
+    osrf_connect($config);
+
+    # load the parser config
+    my $cstore = OpenSRF::AppSession->create( 'open-ils.cstore' );
+    $parser->initialize(
+        config_record_attr_index_norm_map =>
+            $cstore->request(
+                'open-ils.cstore.direct.config.record_attr_index_norm_map.search.atomic',
+                { id => { "!=" => undef } },
+                { flesh => 1, flesh_fields => { crainm => [qw/norm/] }, order_by => [{ class => "crainm", field => "pos" }] }
+            )->gather(1),
+        search_relevance_adjustment         =>
+            $cstore->request(
+                'open-ils.cstore.direct.search.relevance_adjustment.search.atomic',
+                { id => { "!=" => undef } }
+            )->gather(1),
+        config_metabib_field                =>
+            $cstore->request(
+                'open-ils.cstore.direct.config.metabib_field.search.atomic',
+                { id => { "!=" => undef } }
+            )->gather(1),
+        config_metabib_search_alias         =>
+            $cstore->request(
+                'open-ils.cstore.direct.config.metabib_search_alias.search.atomic',
+                { alias => { "!=" => undef } }
+            )->gather(1),
+        config_metabib_field_index_norm_map =>
+            $cstore->request(
+                'open-ils.cstore.direct.config.metabib_field_index_norm_map.search.atomic',
+                { id => { "!=" => undef } },
+                { flesh => 1, flesh_fields => { cmfinm => [qw/norm/] }, order_by => [{ class => "cmfinm", field => "pos" }] }
+            )->gather(1),
+        config_record_attr_definition       =>
+            $cstore->request(
+                'open-ils.cstore.direct.config.record_attr_definition.search.atomic',
+                { name => { "!=" => undef } }
+            )->gather(1),
+    );
+}
 
 $parser->parse;
 
