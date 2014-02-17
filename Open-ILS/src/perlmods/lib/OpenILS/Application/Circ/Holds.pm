@@ -4246,10 +4246,15 @@ sub mr_hold_filter_attrs {
     my ($self, $client, $mr_id, $org_id, $hold_ids) = @_;
     my $e = new_editor();
 
-    # providing a context org means we filter out records that
-    # cannot possibly be held.
-    my $org_depth = $U->ou_ancestor_setting_value(
-        $org_id, OILS_SETTING_HOLD_HARD_BOUNDARY) if $org_id;
+    # by default, return MR / hold attributes for all constituent
+    # records with holdable copies.  If there is a hard boundary,
+    # though, limit to records with copies within the boundary,
+    # since anything outside the boundary can never be held.
+    my $org_depth = 0;
+    if ($org_id) {
+        $org_depth = $U->ou_ancestor_setting_value(
+            $org_id, OILS_SETTING_HOLD_HARD_BOUNDARY) || 0;
+    }
 
     # get all org-scoped records w/ holdable copies for this metarecord
     my ($bre_ids) = $self->method_lookup(
