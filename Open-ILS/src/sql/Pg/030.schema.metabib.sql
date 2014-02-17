@@ -1557,7 +1557,7 @@ BEGIN
 
     IF ARRAY_LENGTH(pattr_list, 1) > 0 THEN 
         SELECT vlist INTO attr_vector_tmp FROM metabib.record_attr_vector_list WHERE source = rid;
-        SELECT attr_vector_tmp - ARRAY_AGG(id) INTO attr_vector_tmp FROM metabib.full_attr_id_map WHERE attr = ANY (pattr_list);
+        SELECT attr_vector_tmp - ARRAY_AGG(id::INT) INTO attr_vector_tmp FROM metabib.full_attr_id_map WHERE attr = ANY (pattr_list);
         attr_vector := attr_vector || attr_vector_tmp;
     END IF;
 
