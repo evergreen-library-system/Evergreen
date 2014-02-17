@@ -3,6 +3,7 @@ use warnings;
 
 package QueryParser;
 use OpenSRF::Utils::JSON;
+use Data::Dumper;
 
 =head1 NAME
 
@@ -810,6 +811,8 @@ sub parse {
         $self->parse_tree( $self->floating_plan );
     }
 
+    warn "Query tree before pullup:\n" . Dumper($self->parse_tree) if $self->debug;
+    $self->parse_tree( $self->parse_tree->pullup );
     $self->parse_tree->plan_level(0);
 
     return $self;
@@ -1065,9 +1068,16 @@ sub decompose {
             $last_type = '';
         } elsif (/$$r{group_start_re}/) { # start of an explicit group
             warn '  'x$recursing."Encountered explicit group start\n" if $self->debug;
+
+            if ($last_type eq 'CLASS') {
+                warn '  'x$recursing."Previous class change generated an empty node. Removing...\n" if $self->debug;
+                $struct->remove_last_node;
+            }
+
             my $negate = $1;
             my ($substruct, $subremainder) = $self->decompose( $', $current_class, $recursing + 1 );
             $substruct->negate(1) if ($substruct && $negate);
+            $substruct->explicit(1) if ($substruct);
             $struct->add_node( $substruct ) if ($substruct);
             $_ = $subremainder;
             warn '  'x$recursing."Query remainder after bool group: $_\n" if $self->debug;
@@ -1090,11 +1100,11 @@ sub decompose {
             warn '  'x$recursing."RHS built\n" if $self->debug;
             warn '  'x$recursing."Post-AND remainder: $subremainder\n" if $self->debug;
 
-            my $wrapper = $self->new_plan( level => $recursing + 1 );
+            my $wrapper = $self->new_plan( level => $recursing + 1, joiner => '&'  );
 
             if ($LHS->floating) {
                 $wrapper->{query} = $LHS->{query};
-                my $outer_wrapper = $self->new_plan( level => $recursing + 1 );
+                my $outer_wrapper = $self->new_plan( level => $recursing + 1, joiner => '&'  );
                 $outer_wrapper->add_node($_) for ($wrapper,$RHS);
                 $LHS->{query} = [$outer_wrapper];
                 $struct = $LHS;
@@ -1507,6 +1517,199 @@ sub abstract_query2str_impl {
 
 #-------------------------------
 package QueryParser::query_plan;
+use Data::Dumper;
+$Data::Dumper::Indent = 0;
+
+sub atoms_only {
+    my $self = shift;
+    return @{$self->filters} == 0 &&
+            @{$self->modifiers} == 0 &&
+            @{[map { @{$_->phrases} } grep { ref($_) && $_->isa('QueryParser::query_plan::node')} @{$self->query_nodes}]} == 0
+    ;
+}
+
+sub _identical {
+    my( $left, $right ) = @_;
+    return 0 if scalar @$left != scalar @$right;
+    my %hash;
+    @hash{ @$left, @$right } = ();
+    return scalar keys %hash == scalar @$left;
+}
+
+sub pullup {
+    my $self = shift;
+    my $current_joiner = shift;
+
+    # burrow down until we our kids have no subqueries
+    my $downlink_joiner;
+    for my $qnode (@{ $self->query_nodes }) {
+        $downlink_joiner = $qnode if (!ref($qnode));
+        if (ref($qnode) && $qnode->can('pullup')) {
+            $qnode->pullup($downlink_joiner);
+        }
+    }
+
+    warn "Entering pullup depth ". $self->plan_level . "\n"
+        if $self->QueryParser->debug;
+
+    # PASS 1: loop, attempting to pull up simple nodes
+    my @new_nodes;
+    my $prev_node;
+    my $prev_op;
+
+    my $prev_joiner;
+
+    my $old_qnodes = $self->query_nodes; # we will ignore all but ::node objects in this list
+    warn @$old_qnodes . " plans at pullup depth ". $self->plan_level . "\n"
+        if $self->QueryParser->debug;
+
+    while (my $p = shift(@$old_qnodes)) {
+
+        # joiners and ::node's get pushed onto the stack of new nodes
+        if (!ref($p) or !$p->isa('QueryParser::query_plan')) {
+            push @new_nodes, $p;
+            next;
+        }
+
+        # keep explicit and floating plans
+        if ($p->explicit or $p->floating) {
+            push @new_nodes, $p;
+            next;
+        }
+
+        if ($p->atoms_only) {
+
+            # 1-node plans get pulled up regardless of the plan's joiner
+            if (@{$p->query_nodes} == 1) {
+                for my $a (@{$p->query_nodes}) {
+                    if (ref($a) and $a->can('plan')) {
+                        $a->plan($self);
+                    }
+                    push @new_nodes, $a;
+                }
+                next;
+            }
+
+            # gather the joiners
+            my %joiners = ( '&' => 0, '|' => 0 );
+            my @nodelist = @{$p->query_nodes};
+            while (my $n = shift(@nodelist)) {
+                next if ref($n); # only look at joiners
+                $joiners{$n}++;
+            }
+
+            if (!($joiners{'&'} > 0 and $joiners{'|'} > 0)) { # mix of joiners? stop
+                if ($joiners{$self->joiner} > 0) { # needs to be our joiner in use
+                    for my $a (@{$p->query_nodes}) {
+                        if (ref($a) and $a->can('plan')) {
+                            $a->plan($self);
+                        }
+                        push @new_nodes, $a;
+                    }
+                    next;
+                }
+            }
+        }
+
+        # default is to keep the whole plan
+        push @new_nodes, $p;
+    }
+                
+    warn @new_nodes . " nodes after pullup of simple nodes at depth ". $self->plan_level . "\n"
+        if $self->QueryParser->debug;
+
+
+    # PASS 2: merge adjacent ::node's
+    my $dangling = 0;
+    my $sync_node = $prev_joiner = undef;
+    $old_qnodes = [@new_nodes];
+    @new_nodes = ();
+    while ( my $n = shift(@$old_qnodes) ) {
+
+        # joiners
+        if (!ref($n)) {
+            $prev_joiner = $current_joiner;
+            $current_joiner = $n;
+            warn "Joiner, recording it. [$prev_joiner => $current_joiner]\n" if $self->QueryParser->debug;
+            next;
+        }
+
+        # ::plan's etc get pushed onto the stack of new nodes
+        if (!$n->isa('QueryParser::query_plan::node')) {
+            push @new_nodes, $current_joiner if (@new_nodes);
+            push @new_nodes, $n;
+            $sync_node = undef;
+            warn "Not a ::node, pushing onto the stack [$n]\n" if $self->QueryParser->debug;
+            next;
+        }
+
+        # grab the current target node
+        if (!$sync_node) {
+            warn "No sync_node, picking a new one\n" if $self->QueryParser->debug;
+            $sync_node = $n;
+            push @new_nodes, $current_joiner if (@new_nodes);
+            push @new_nodes, $n;
+            next;
+        }
+
+        if (@{$n->query_atoms} == 0) {
+            warn "weird ... empty node ...skipping\n" if $self->QueryParser->debug;
+            push @new_nodes, $current_joiner if (@new_nodes);
+            shift @$old_qnodes;
+            next;
+        }
+
+        my $sync_joiner = $sync_node->effective_joiner;
+        my $n_joiner = $n->effective_joiner;
+
+        # plans of a different class or field set stay where they are
+        if ($sync_node->classname ne $n->classname or !_identical($sync_node->fields,$n->fields)) {
+            warn "Class/Field change! Need a new sync_node\n" if $self->QueryParser->debug;
+            push @new_nodes, $current_joiner;
+            push @new_nodes, $n;
+            $sync_node = $n;
+            $dangling = 1;
+            next;
+        }
+
+        if (!$sync_joiner or !$n_joiner) { # a node has a mix ... can't merge either
+            warn "Mixed joiners, need a new sync_node\n" if $self->QueryParser->debug;
+            push @new_nodes, $current_joiner;
+            push @new_nodes, $n;
+            $sync_node = $n;
+            $dangling = 1;
+            next;
+        } elsif ($sync_joiner ne $n_joiner) { # different joiners, can't merge
+            warn "Differing joiners, need a new sync_node\n" if $self->QueryParser->debug;
+            push @new_nodes, $current_joiner;
+            push @new_nodes, $n;
+            $sync_node = $n;
+            $dangling = 1;
+            next;
+        }
+
+        # we can push the next ::node's atoms onto our stack
+        push @{$sync_node->query_atoms}, $current_joiner;
+        for my $a (@{$n->query_atoms}) {
+            if (ref($a)) {
+                $a->{node} = $sync_node;
+            }
+            push @{$sync_node->query_atoms}, $a;
+        }
+
+        warn "Merged ".@{$n->query_atoms}." atoms into sync_node\n" if $self->QueryParser->debug;
+        $dangling = 0;
+
+    }
+
+    push @new_nodes, $sync_node if ($dangling && $sync_node != $new_nodes[-1]);
+   
+    warn @new_nodes . " nodes at pullup depth ". $self->plan_level . " after compression\n"
+        if $self->QueryParser->debug;
+
+    $self->{query} = \@new_nodes;
+    return $self;
+}
 
 sub QueryParser {
     my $self = shift;
@@ -1693,6 +1896,13 @@ sub floating {
     return $self->{floating};
 }
 
+sub explicit {
+    my $self = shift;
+    my $f = shift;
+    $self->{explicit} = $f if (defined $f);
+    return $self->{explicit};
+}
+
 sub add_node {
     my $self = shift;
     my $node = shift;
@@ -1853,6 +2063,27 @@ sub to_abstract_query {
 package QueryParser::query_plan::node;
 use Data::Dumper;
 $Data::Dumper::Indent = 0;
+
+sub effective_joiner {
+    my $node = shift;
+
+    my @nodelist = @{$node->query_atoms};
+    return $node->plan->joiner if (@nodelist == 1);
+
+    # gather the joiners
+    my %joiners = ( '&' => 0, '|' => 0 );
+    while (my $n = shift(@nodelist)) {
+        next if ref($n); # only look at joiners
+        $joiners{$n}++;
+    }
+
+    if (!($joiners{'&'} > 0 and $joiners{'|'} > 0)) { # no mix of joiners
+        return '|' if ($joiners{'|'});
+        return '&';
+    }
+
+    return undef;
+}
 
 sub new {
     my $pkg = shift;
