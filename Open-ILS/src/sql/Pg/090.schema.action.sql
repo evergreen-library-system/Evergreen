@@ -587,7 +587,8 @@ CREATE OR REPLACE VIEW action.all_hold_request AS
            ahr.cut_in_line,
            ahr.mint_condition,
            ahr.shelf_expire_time,
-           ahr.current_shelf_lib
+           ahr.current_shelf_lib,
+           ahr.behind_desk
     FROM action.hold_request ahr
          JOIN actor.usr p ON (ahr.usr = p.id)
          LEFT JOIN actor.usr_address a ON (p.mailing_address = a.id)
@@ -629,7 +630,8 @@ CREATE OR REPLACE VIEW action.all_hold_request AS
            cut_in_line,
            mint_condition,
            shelf_expire_time,
-           current_shelf_lib
+           current_shelf_lib,
+           behind_desk
     FROM action.aged_hold_request;
 
 CREATE OR REPLACE FUNCTION action.age_hold_on_delete () RETURNS TRIGGER AS $$
@@ -673,7 +675,8 @@ BEGIN
             cut_in_line,
             mint_condition,
             shelf_expire_time,
-            current_shelf_lib)
+            current_shelf_lib,
+            behind_desk)
       SELECT 
            usr_post_code,
            usr_home_ou,
@@ -710,7 +713,8 @@ BEGIN
            cut_in_line,
            mint_condition,
            shelf_expire_time,
-           current_shelf_lib
+           current_shelf_lib,
+           behind_desk
         FROM action.all_hold_request WHERE id = OLD.id;
 
     RETURN OLD;

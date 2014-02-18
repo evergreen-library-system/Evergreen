@@ -5628,6 +5628,7 @@ SELECT  usr,
 			<field reporter:label="Is Mint Condition" name="mint_condition" reporter:datatype="bool" />
 			<field reporter:label="Shelf Expire Time" name="shelf_expire_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Current Shelf Lib" name="current_shelf_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Behind Desk" name="behind_desk" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="fulfillment_lib" reltype="has_a" key="id" map="" class="aou"/>
