@@ -296,12 +296,43 @@ CREATE VIEW metabib.full_attr_id_map AS
     SELECT id, attr, value FROM metabib.composite_attr_id_map;
 
 
+CREATE OR REPLACE FUNCTION metabib.compile_composite_attr_cache_init () RETURNS BOOL AS $f$
+    $_SHARED{metabib_compile_composite_attr_cache} = {}
+        if ! exists $_SHARED{metabib_compile_composite_attr_cache};
+    return exists $_SHARED{metabib_compile_composite_attr_cache};
+$f$ LANGUAGE PLPERLU;
+
+CREATE OR REPLACE FUNCTION metabib.compile_composite_attr_cache_disable () RETURNS BOOL AS $f$
+    delete $_SHARED{metabib_compile_composite_attr_cache};
+    return ! exists $_SHARED{metabib_compile_composite_attr_cache};
+$f$ LANGUAGE PLPERLU;
+
+CREATE OR REPLACE FUNCTION metabib.compile_composite_attr_cache_invalidate () RETURNS BOOL AS $f$
+    SELECT metabib.compile_composite_attr_cache_disable() AND metabib.compile_composite_attr_cache_init();
+$f$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION metabib.composite_attr_def_cache_inval_tgr () RETURNS TRIGGER AS $f$
+BEGIN
+    PERFORM metabib.compile_composite_attr_cache_invalidate();
+    RETURN NULL;
+END;
+$f$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER ccraed_cache_inval_tgr AFTER INSERT OR UPDATE OR DELETE ON config.composite_attr_entry_definition FOR EACH STATEMENT EXECUTE PROCEDURE metabib.composite_attr_def_cache_inval_tgr();
+    
 CREATE OR REPLACE FUNCTION metabib.compile_composite_attr ( cattr_def TEXT ) RETURNS query_int AS $func$
 
     use JSON::XS;
-    my $def = decode_json(shift);
+
+    my $json = shift;
+    my $def = decode_json($json);
 
     die("Composite attribute definition not supplied") unless $def;
+
+    my $_cache = (exists $_SHARED{metabib_compile_composite_attr_cache}) ? 1 : 0;
+
+    return $_SHARED{metabib_compile_composite_attr_cache}{$json}
+        if ($_cache && $_SHARED{metabib_compile_composite_attr_cache}{$json});
 
     sub recurse {
         my $d = shift;
@@ -311,10 +342,11 @@ CREATE OR REPLACE FUNCTION metabib.compile_composite_attr ( cattr_def TEXT ) RET
         if (ref $d eq 'HASH') { # node or AND
             if (exists $d->{_attr}) { # it is a node
                 my $plan = spi_prepare('SELECT * FROM metabib.full_attr_id_map WHERE attr = $1 AND value = $2', qw/TEXT TEXT/);
-                return spi_exec_prepared(
+                my $id = spi_exec_prepared(
                     $plan, {limit => 1}, $d->{_attr}, $d->{_val}
                 )->{rows}[0]{id};
                 spi_freeplan($plan);
+                return $id;
             } elsif (exists $d->{_not} && scalar(keys(%$d)) == 1) { # it is a NOT
                 return '!' . recurse($$d{_not});
             } else { # an AND list
@@ -331,7 +363,9 @@ CREATE OR REPLACE FUNCTION metabib.compile_composite_attr ( cattr_def TEXT ) RET
         return '';
     }
 
-    return recurse($def) || undef;
+    my $val = recurse($def) || undef;
+    $_SHARED{metabib_compile_composite_attr_cache}{$json} = $val if $_cache;
+    return $val;
 
 $func$ IMMUTABLE LANGUAGE plperlu;
 
@@ -1563,6 +1597,7 @@ BEGIN
 
     -- On to composite attributes, now that the record attrs have been pulled.  Processed in name order, so later composite
     -- attributes can depend on earlier ones.
+    PERFORM metabib.compile_composite_attr_cache_init();
     FOR attr_def IN SELECT * FROM config.record_attr_definition WHERE composite AND name = ANY( attr_list ) ORDER BY name LOOP
 
         FOR ccvm_row IN SELECT * FROM config.coded_value_map c WHERE c.ctype = attr_def.name ORDER BY value LOOP
