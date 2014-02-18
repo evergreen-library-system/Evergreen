@@ -995,6 +995,7 @@ function getFFContextMenu(type, name) {
                 window[funcname] = function() {
                     el.value = code;
                     updateFixedFields(el);
+                    oils_lock_page();
                 };
 
                 /* In XUL land we can't set an element's
@@ -1034,6 +1035,7 @@ function launchPhysCharWizard(popup_node) {
             "node": popup_node,
             "onapply": function(v) {
                 createControlField("007", v);
+                oils_lock_page();
                 loadRecord();
             }
         });
